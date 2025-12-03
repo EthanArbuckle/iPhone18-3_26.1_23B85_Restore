@@ -1,25 +1,25 @@
 @interface ASActivityDataNotificationRulesEngine
-- (id)_filterNotificationGroup:(id)a3 ruleset:(id *)a4;
-- (id)filterNotificationGroup:(id)a3;
+- (id)_filterNotificationGroup:(id)group ruleset:(id *)ruleset;
+- (id)filterNotificationGroup:(id)group;
 @end
 
 @implementation ASActivityDataNotificationRulesEngine
 
-- (id)filterNotificationGroup:(id)a3
+- (id)filterNotificationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v12 = ASStandardNotificationRuleset;
   v13 = unk_27E345FD0;
-  v5 = [(ASActivityDataNotificationRulesEngine *)self _filterNotificationGroup:v4 ruleset:&v12];
-  v6 = [v5 allNotifications];
-  v7 = [v6 count];
+  v5 = [(ASActivityDataNotificationRulesEngine *)self _filterNotificationGroup:groupCopy ruleset:&v12];
+  allNotifications = [v5 allNotifications];
+  v7 = [allNotifications count];
   v8 = ASStrictNotificationThreshold;
 
   if (v7 >= v8)
   {
     v12 = ASStrictNotificationRuleset;
     v13 = unk_27E345FF0;
-    v9 = [(ASActivityDataNotificationRulesEngine *)self _filterNotificationGroup:v4 ruleset:&v12];
+    v9 = [(ASActivityDataNotificationRulesEngine *)self _filterNotificationGroup:groupCopy ruleset:&v12];
   }
 
   else
@@ -32,10 +32,10 @@
   return v10;
 }
 
-- (id)_filterNotificationGroup:(id)a3 ruleset:(id *)a4
+- (id)_filterNotificationGroup:(id)group ruleset:(id *)ruleset
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v5 = [MEMORY[0x277CBEB98] set];
   v60 = [MEMORY[0x277CBEB98] set];
   v54 = [MEMORY[0x277CBEB98] set];
@@ -44,9 +44,9 @@
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v57 = v4;
-  v7 = [v4 allNotifications];
-  v8 = [v7 countByEnumeratingWithState:&v73 objects:v82 count:16];
+  v57 = groupCopy;
+  allNotifications = [groupCopy allNotifications];
+  v8 = [allNotifications countByEnumeratingWithState:&v73 objects:v82 count:16];
   if (v8)
   {
     v9 = v8;
@@ -57,22 +57,22 @@
       {
         if (*v74 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allNotifications);
         }
 
         v12 = *(*(&v73 + 1) + 8 * i);
-        v13 = [v12 friend];
+        friend = [v12 friend];
 
-        if (v13)
+        if (friend)
         {
-          v14 = [v12 friend];
-          v15 = [v6 setByAddingObject:v14];
+          friend2 = [v12 friend];
+          v15 = [v6 setByAddingObject:friend2];
 
           v6 = v15;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v73 objects:v82 count:16];
+      v9 = [allNotifications countByEnumeratingWithState:&v73 objects:v82 count:16];
     }
 
     while (v9);
@@ -106,9 +106,9 @@
         if (os_log_type_enabled(ASLogNotifications, OS_LOG_TYPE_DEFAULT))
         {
           v22 = v21;
-          v23 = [v20 UUID];
+          uUID = [v20 UUID];
           *buf = 138543618;
-          v78 = v23;
+          v78 = uUID;
           v79 = 2112;
           v80 = v20;
           _os_log_impl(&dword_23E4FA000, v22, OS_LOG_TYPE_DEFAULT, "Collecting notifications for friend %{public}@ - %@", buf, 0x16u);
@@ -127,31 +127,31 @@
 
         else
         {
-          v25 = [v57 workoutNotifications];
+          workoutNotifications = [v57 workoutNotifications];
           v66[0] = MEMORY[0x277D85DD0];
           v66[1] = 3221225472;
-          v26 = *&a4->var2;
-          v67 = *&a4->var0;
+          v26 = *&ruleset->var2;
+          v67 = *&ruleset->var0;
           v66[2] = __74__ASActivityDataNotificationRulesEngine__filterNotificationGroup_ruleset___block_invoke;
           v66[3] = &unk_278C46B18;
           v66[4] = v20;
           v68 = v26;
           v27 = [MEMORY[0x277CCAC30] predicateWithBlock:v66];
-          v28 = [v25 filteredSetUsingPredicate:v27];
+          v28 = [workoutNotifications filteredSetUsingPredicate:v27];
 
           v58 = [v5 setByAddingObjectsFromSet:v28];
 
-          v29 = [v57 achievementNotifications];
+          achievementNotifications = [v57 achievementNotifications];
           v63[0] = MEMORY[0x277D85DD0];
           v63[1] = 3221225472;
-          v30 = *&a4->var2;
-          v64 = *&a4->var0;
+          v30 = *&ruleset->var2;
+          v64 = *&ruleset->var0;
           v63[2] = __74__ASActivityDataNotificationRulesEngine__filterNotificationGroup_ruleset___block_invoke_295;
           v63[3] = &unk_278C46B18;
           v63[4] = v20;
           v65 = v30;
           v31 = [MEMORY[0x277CCAC30] predicateWithBlock:v63];
-          v32 = [v29 filteredSetUsingPredicate:v31];
+          v32 = [achievementNotifications filteredSetUsingPredicate:v31];
 
           v62[0] = MEMORY[0x277D85DD0];
           v62[1] = 3221225472;
@@ -159,7 +159,7 @@
           v62[3] = &unk_278C46B40;
           v62[4] = v20;
           v33 = [v32 hk_filter:v62];
-          var2 = a4->var2;
+          var2 = ruleset->var2;
           v35 = [v33 count];
           if (var2 >= v35)
           {
@@ -172,8 +172,8 @@
           }
 
           v37 = MEMORY[0x277CBEB98];
-          v38 = [v33 allObjects];
-          v39 = [v38 subarrayWithRange:{0, v36}];
+          allObjects = [v33 allObjects];
+          v39 = [allObjects subarrayWithRange:{0, v36}];
           v40 = [v37 setWithArray:v39];
 
           v41 = [v60 setByAddingObjectsFromSet:v40];
@@ -188,7 +188,7 @@
             v42 = [v40 count] == 0;
           }
 
-          var3 = a4->var3;
+          var3 = ruleset->var3;
           ASLoggingInitialize();
           v44 = ASLogNotifications;
           v45 = os_log_type_enabled(ASLogNotifications, OS_LOG_TYPE_DEFAULT);
@@ -200,14 +200,14 @@
               _os_log_impl(&dword_23E4FA000, v44, OS_LOG_TYPE_DEFAULT, "Goal completions allowed, collecting", buf, 2u);
             }
 
-            v46 = [v57 goalCompletionNotifications];
+            goalCompletionNotifications = [v57 goalCompletionNotifications];
             v61[0] = MEMORY[0x277D85DD0];
             v61[1] = 3221225472;
             v61[2] = __74__ASActivityDataNotificationRulesEngine__filterNotificationGroup_ruleset___block_invoke_299;
             v61[3] = &unk_278C46B68;
             v61[4] = v20;
             v47 = [MEMORY[0x277CCAC30] predicateWithBlock:v61];
-            v48 = [v46 filteredSetUsingPredicate:v47];
+            v48 = [goalCompletionNotifications filteredSetUsingPredicate:v47];
 
             v49 = [v54 setByAddingObjectsFromSet:v48];
 

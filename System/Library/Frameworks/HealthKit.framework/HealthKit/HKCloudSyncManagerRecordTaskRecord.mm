@@ -1,12 +1,12 @@
 @interface HKCloudSyncManagerRecordTaskRecord
 - (HKCloudSyncManagerRecordTaskRecord)init;
-- (HKCloudSyncManagerRecordTaskRecord)initWithOwnerID:(id)a3 zoneID:(id)a4 recordID:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (HKCloudSyncManagerRecordTaskRecord)initWithOwnerID:(id)d zoneID:(id)iD recordID:(id)recordID;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCloudSyncManagerRecordTaskRecord
 
-- (HKCloudSyncManagerRecordTaskRecord)initWithOwnerID:(id)a3 zoneID:(id)a4 recordID:(id)a5
+- (HKCloudSyncManagerRecordTaskRecord)initWithOwnerID:(id)d zoneID:(id)iD recordID:(id)recordID
 {
   v6 = sub_191CC67B8();
   v8 = v7;
@@ -27,11 +27,11 @@
   return [(HKCloudSyncManagerRecordTaskRecord *)&v18 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  HKCloudSyncManagerRecordTaskRecord.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  HKCloudSyncManagerRecordTaskRecord.encode(with:)(coderCopy);
 }
 
 - (HKCloudSyncManagerRecordTaskRecord)init

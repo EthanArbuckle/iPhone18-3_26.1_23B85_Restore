@@ -1,24 +1,24 @@
 @interface TSWPDeletionRangeMap
-- (BOOL)containsCharIndex:(unint64_t)a3;
-- (TSWPDeletionRangeMap)initWithSubRange:(_NSRange)a3 removeRanges:(id)a4;
-- (_NSRange)mappedCharRange:(_NSRange)a3;
+- (BOOL)containsCharIndex:(unint64_t)index;
+- (TSWPDeletionRangeMap)initWithSubRange:(_NSRange)range removeRanges:(id)ranges;
+- (_NSRange)mappedCharRange:(_NSRange)range;
 - (_NSRange)subRange;
-- (_NSRange)unmappedCharRange:(_NSRange)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSRange)unmappedCharRange:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)deletedRanges;
-- (id)inverseRangesInStorageRange:(_NSRange)a3;
-- (unint64_t)mappedCharIndex:(unint64_t)a3;
-- (unint64_t)unmappedCharIndex:(unint64_t)a3;
-- (void)adjustByDelta:(int64_t)a3 startingAt:(unint64_t)a4;
+- (id)inverseRangesInStorageRange:(_NSRange)range;
+- (unint64_t)mappedCharIndex:(unint64_t)index;
+- (unint64_t)unmappedCharIndex:(unint64_t)index;
+- (void)adjustByDelta:(int64_t)delta startingAt:(unint64_t)at;
 @end
 
 @implementation TSWPDeletionRangeMap
 
-- (TSWPDeletionRangeMap)initWithSubRange:(_NSRange)a3 removeRanges:(id)a4
+- (TSWPDeletionRangeMap)initWithSubRange:(_NSRange)range removeRanges:(id)ranges
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  rangesCopy = ranges;
   v15.receiver = self;
   v15.super_class = TSWPDeletionRangeMap;
   v8 = [(TSWPDeletionRangeMap *)&v15 init];
@@ -27,7 +27,7 @@
   {
     v8->_subRange.location = location;
     v8->_subRange.length = length;
-    v12 = objc_msgSend_mutableCopy(v7, v9, v10);
+    v12 = objc_msgSend_mutableCopy(rangesCopy, v9, v10);
     removedRanges = v11->_removedRanges;
     v11->_removedRanges = v12;
   }
@@ -35,7 +35,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSWPDeletionRangeMap alloc];
   length = self->_subRange.length;
@@ -45,9 +45,9 @@
   return objc_msgSend_initWithSubRange_removeRanges_(v4, v5, location, length, removedRanges);
 }
 
-- (unint64_t)mappedCharIndex:(unint64_t)a3
+- (unint64_t)mappedCharIndex:(unint64_t)index
 {
-  if (self->_subRange.location > a3)
+  if (self->_subRange.location > index)
   {
     return 0;
   }
@@ -62,17 +62,17 @@
   v8[2] = sub_276E1C720;
   v8[3] = &unk_27A6F5050;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = index;
   objc_msgSend_enumerateRanges_(removedRanges, a2, v8);
-  v3 = a3 - self->_subRange.location - *(v10 + 6);
+  v3 = index - self->_subRange.location - *(v10 + 6);
   _Block_object_dispose(&v9, 8);
   return v3;
 }
 
-- (unint64_t)unmappedCharIndex:(unint64_t)a3
+- (unint64_t)unmappedCharIndex:(unint64_t)index
 {
-  v4 = self->_subRange.location + a3;
-  v5 = objc_msgSend_preferDeletedRangeStartsForUnmapping(self, a2, a3);
+  v4 = self->_subRange.location + index;
+  v5 = objc_msgSend_preferDeletedRangeStartsForUnmapping(self, a2, index);
   v8 = objc_msgSend_rangeCount(self->_removedRanges, v6, v7);
   if (v8)
   {
@@ -116,11 +116,11 @@
   return v4 + v16;
 }
 
-- (_NSRange)mappedCharRange:(_NSRange)a3
+- (_NSRange)mappedCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_mappedCharIndex_(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_mappedCharIndex_(self, a2, range.location);
   v8 = objc_msgSend_mappedCharIndex_(self, v7, location + length);
   if (v6 <= v8)
   {
@@ -143,11 +143,11 @@
   return result;
 }
 
-- (_NSRange)unmappedCharRange:(_NSRange)a3
+- (_NSRange)unmappedCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_unmappedCharIndex_(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_unmappedCharIndex_(self, a2, range.location);
   v8 = v6;
   if (length)
   {
@@ -185,33 +185,33 @@
   return result;
 }
 
-- (void)adjustByDelta:(int64_t)a3 startingAt:(unint64_t)a4
+- (void)adjustByDelta:(int64_t)delta startingAt:(unint64_t)at
 {
   location = self->_subRange.location;
-  if (location >= a4)
+  if (location >= at)
   {
-    self->_subRange.location = location + a3;
+    self->_subRange.location = location + delta;
   }
 
-  v8 = objc_msgSend_rangeCount(self->_removedRanges, a2, a3);
+  v8 = objc_msgSend_rangeCount(self->_removedRanges, a2, delta);
   if (v8)
   {
     v10 = v8;
     for (i = 0; i != v10; ++i)
     {
       v12 = objc_msgSend_rangeAtIndex_(self->_removedRanges, v9, i);
-      if (v12 >= a4)
+      if (v12 >= at)
       {
-        objc_msgSend_replaceRangeAtIndex_withRange_(self->_removedRanges, v9, i, v12 + a3, v9);
+        objc_msgSend_replaceRangeAtIndex_withRange_(self->_removedRanges, v9, i, v12 + delta, v9);
       }
     }
   }
 }
 
-- (id)inverseRangesInStorageRange:(_NSRange)a3
+- (id)inverseRangesInStorageRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [TSWPMutableRangeArray alloc];
   v8 = objc_msgSend_initWithRange_(v6, v7, location, length);
   removedRanges = self->_removedRanges;
@@ -234,9 +234,9 @@
   return v3;
 }
 
-- (BOOL)containsCharIndex:(unint64_t)a3
+- (BOOL)containsCharIndex:(unint64_t)index
 {
-  if (self->_subRange.location <= a3 && (v5 = objc_msgSend_rangeCount(self->_removedRanges, a2, a3)) != 0)
+  if (self->_subRange.location <= index && (v5 = objc_msgSend_rangeCount(self->_removedRanges, a2, index)) != 0)
   {
     v7 = 0;
     v8 = 0;
@@ -244,11 +244,11 @@
     do
     {
       v10 = objc_msgSend_rangeAtIndex_(self->_removedRanges, v6, v8);
-      v11 = a3 - v10 < v6 && a3 >= v10;
+      v11 = index - v10 < v6 && index >= v10;
       v7 |= v11;
     }
 
-    while (a3 > v10 && a3 - v10 >= v6 && v9 != v8++);
+    while (index > v10 && index - v10 >= v6 && v9 != v8++);
   }
 
   else

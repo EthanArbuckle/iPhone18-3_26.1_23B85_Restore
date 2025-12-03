@@ -3,50 +3,50 @@
 + (id)sharedInstance;
 - (CarChromeModeCoordinator)init;
 - (SiriDirectActionSource)siriActionSource;
-- (id)_appendOrReplaceRoutePlanningContextForSession:(id)a3 currentContexts:(id)a4;
-- (id)_replaceTopmostSearchResultContexts:(id)a3 withContext:(id)a4;
-- (void)_displayIncidentReportingFromMapControl:(BOOL)a3;
-- (void)_displayKeyboardSearchWithInteractionModel:(unint64_t)a3 resultsProvider:(id)a4 animated:(BOOL)a5;
-- (void)_displayMapRegion:(id *)a3 animated:(BOOL)a4;
-- (void)_displayNavigationAnimated:(BOOL)a3;
-- (void)_displaySearchAlongTheRouteForMapItems:(id)a3 selectedItemIndex:(unint64_t)a4;
-- (void)_displaySearchAlongTheRouteForSearchSession:(id)a3;
+- (id)_appendOrReplaceRoutePlanningContextForSession:(id)session currentContexts:(id)contexts;
+- (id)_replaceTopmostSearchResultContexts:(id)contexts withContext:(id)context;
+- (void)_displayIncidentReportingFromMapControl:(BOOL)control;
+- (void)_displayKeyboardSearchWithInteractionModel:(unint64_t)model resultsProvider:(id)provider animated:(BOOL)animated;
+- (void)_displayMapRegion:(id *)region animated:(BOOL)animated;
+- (void)_displayNavigationAnimated:(BOOL)animated;
+- (void)_displaySearchAlongTheRouteForMapItems:(id)items selectedItemIndex:(unint64_t)index;
+- (void)_displaySearchAlongTheRouteForSearchSession:(id)session;
 - (void)_displaySiriSearch;
-- (void)_handleClientResolvedResultForSearchSession:(id)a3;
-- (void)_performActionForCarBlock:(id)a3 dashboardMapBlock:(id)a4 smallWidgetsBlock:(id)a5;
-- (void)_resolveSearchFieldItemWithSearchInfo:(id)a3 withCompletion:(id)a4;
-- (void)_scheduleCoordinatedContextChangeForViewController:(id)a3 carBlock:(id)a4 dashboardMapBlock:(id)a5 smallWidgetsBlock:(id)a6;
-- (void)_scheduleCoordinatedContextChangeWithCarBlock:(id)a3 dashboardMapBlock:(id)a4 smallWidgetsBlock:(id)a5;
+- (void)_handleClientResolvedResultForSearchSession:(id)session;
+- (void)_performActionForCarBlock:(id)block dashboardMapBlock:(id)mapBlock smallWidgetsBlock:(id)widgetsBlock;
+- (void)_resolveSearchFieldItemWithSearchInfo:(id)info withCompletion:(id)completion;
+- (void)_scheduleCoordinatedContextChangeForViewController:(id)controller carBlock:(id)block dashboardMapBlock:(id)mapBlock smallWidgetsBlock:(id)widgetsBlock;
+- (void)_scheduleCoordinatedContextChangeWithCarBlock:(id)block dashboardMapBlock:(id)mapBlock smallWidgetsBlock:(id)widgetsBlock;
 - (void)_sendSearchCancelFeedback;
 - (void)cleanupForDisconnect;
 - (void)dealloc;
 - (void)displayAllSharedTrips;
 - (void)displayAudioControlView;
-- (void)displayIncidentReportSubmissionWithItem:(id)a3 report:(id)a4;
-- (void)displayKeyboardSearchWithInteractionModel:(unint64_t)a3;
-- (void)displayNavigationForRouteCollection:(id)a3 options:(NavigationDetailsOptions *)a4;
-- (void)displayPlaceCardWithPlaceCardItem:(id)a3 shouldNotify:(BOOL)a4;
-- (void)displayPlaceCardWithSearchResult:(id)a3;
+- (void)displayIncidentReportSubmissionWithItem:(id)item report:(id)report;
+- (void)displayKeyboardSearchWithInteractionModel:(unint64_t)model;
+- (void)displayNavigationForRouteCollection:(id)collection options:(NavigationDetailsOptions *)options;
+- (void)displayPlaceCardWithPlaceCardItem:(id)item shouldNotify:(BOOL)notify;
+- (void)displayPlaceCardWithSearchResult:(id)result;
 - (void)displayRouteGenius;
-- (void)displayRoutePlanningForDestination:(id)a3 userInfo:(id)a4;
+- (void)displayRoutePlanningForDestination:(id)destination userInfo:(id)info;
 - (void)displayRoutePlanningForExistingRoute;
-- (void)displayRoutePlanningForSession:(id)a3 userInfo:(id)a4;
-- (void)displaySearchAlongTheRouteForCategory:(id)a3;
-- (void)displaySearchResultsWithCategory:(id)a3;
-- (void)displaySearchResultsWithCollection:(id)a3;
-- (void)displaySearchSession:(id)a3;
-- (void)displaySearchWithInteractionModel:(unint64_t)a3;
-- (void)displaySharedTrip:(id)a3;
+- (void)displayRoutePlanningForSession:(id)session userInfo:(id)info;
+- (void)displaySearchAlongTheRouteForCategory:(id)category;
+- (void)displaySearchResultsWithCategory:(id)category;
+- (void)displaySearchResultsWithCollection:(id)collection;
+- (void)displaySearchSession:(id)session;
+- (void)displaySearchWithInteractionModel:(unint64_t)model;
+- (void)displaySharedTrip:(id)trip;
 - (void)displaySiriTripSharing;
 - (void)displayTripSharing;
-- (void)displayTripSharingContactKeyboardSearchWithInteractionModel:(unint64_t)a3 dataSource:(id)a4 searchHandler:(id)a5;
-- (void)endPlaceCardWithItem:(id)a3;
-- (void)endSearchSession:(id)a3;
+- (void)displayTripSharingContactKeyboardSearchWithInteractionModel:(unint64_t)model dataSource:(id)source searchHandler:(id)handler;
+- (void)endPlaceCardWithItem:(id)item;
+- (void)endSearchSession:(id)session;
 - (void)goToDetail;
 - (void)goToOverview;
-- (void)launchIntoKeyboardSearchWithRequestedInteractionModel:(unint64_t)a3;
-- (void)popFromContext:(id)a3;
-- (void)refreshSessionWithEVResults:(id)a3 contexts:(id)a4;
+- (void)launchIntoKeyboardSearchWithRequestedInteractionModel:(unint64_t)model;
+- (void)popFromContext:(id)context;
+- (void)refreshSessionWithEVResults:(id)results contexts:(id)contexts;
 @end
 
 @implementation CarChromeModeCoordinator
@@ -57,7 +57,7 @@
   block[1] = 3221225472;
   block[2] = sub_10096A908;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195DE58 != -1)
   {
     dispatch_once(&qword_10195DE58, block);
@@ -121,8 +121,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSHashTable *)self->_chromeViewControllers allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allObjects = [(NSHashTable *)self->_chromeViewControllers allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -134,7 +134,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v7 + 1) + 8 * v6) scheduleCoordinatedContextChange:&stru_10162FF00 completionHandler:0];
@@ -142,7 +142,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -152,18 +152,18 @@
 - (void)displaySiriTripSharing
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v6 = [SiriDirectActionContext mapShareEtaDirectActionWithAppBundleId:v4];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v6 = [SiriDirectActionContext mapShareEtaDirectActionWithAppBundleId:bundleIdentifier];
 
-  v5 = [(CarChromeModeCoordinator *)self siriActionSource];
-  [v5 activateWithContext:v6];
+  siriActionSource = [(CarChromeModeCoordinator *)self siriActionSource];
+  [siriActionSource activateWithContext:v6];
 }
 
-- (void)displayTripSharingContactKeyboardSearchWithInteractionModel:(unint64_t)a3 dataSource:(id)a4 searchHandler:(id)a5
+- (void)displayTripSharingContactKeyboardSearchWithInteractionModel:(unint64_t)model dataSource:(id)source searchHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [[CarShareTripKeyboardSearchController alloc] initWithContactSearchResults:0 dataSource:v8 searchHandler:v9];
+  sourceCopy = source;
+  handlerCopy = handler;
+  v10 = [[CarShareTripKeyboardSearchController alloc] initWithContactSearchResults:0 dataSource:sourceCopy searchHandler:handlerCopy];
   objc_initWeak(&location, v10);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -172,21 +172,21 @@
   v11[4] = self;
   objc_copyWeak(&v12, &location);
   [(CarShareTripKeyboardSearchController *)v10 setDismissHandler:v11];
-  [(CarChromeModeCoordinator *)self _displayKeyboardSearchWithInteractionModel:a3 resultsProvider:v10 animated:1];
+  [(CarChromeModeCoordinator *)self _displayKeyboardSearchWithInteractionModel:model resultsProvider:v10 animated:1];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)displaySharedTrip:(id)a3
+- (void)displaySharedTrip:(id)trip
 {
-  v4 = a3;
+  tripCopy = trip;
   if (MSPSharedTripReceivingAvailable())
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100961514;
     v10[3] = &unk_10165FB98;
-    v11 = v4;
+    v11 = tripCopy;
     v5 = objc_retainBlock(v10);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v5 dashboardMapBlock:0 smallWidgetsBlock:0];
 
@@ -274,9 +274,9 @@ LABEL_9:
 - (void)goToOverview
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 isAnyCarSceneHostingNavigation];
+  isAnyCarSceneHostingNavigation = [v3 isAnyCarSceneHostingNavigation];
 
-  if (v4)
+  if (isAnyCarSceneHostingNavigation)
   {
 
     [(CarChromeModeCoordinator *)self _performActionForCarBlock:&stru_10162FE80 dashboardMapBlock:&stru_10162FEA0 smallWidgetsBlock:0];
@@ -296,9 +296,9 @@ LABEL_9:
 - (void)goToDetail
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 isAnyCarSceneHostingNavigation];
+  isAnyCarSceneHostingNavigation = [v3 isAnyCarSceneHostingNavigation];
 
-  if (v4)
+  if (isAnyCarSceneHostingNavigation)
   {
 
     [(CarChromeModeCoordinator *)self _performActionForCarBlock:&stru_10162FE40 dashboardMapBlock:&stru_10162FE60 smallWidgetsBlock:0];
@@ -315,37 +315,37 @@ LABEL_9:
   }
 }
 
-- (void)_displayNavigationAnimated:(BOOL)a3
+- (void)_displayNavigationAnimated:(BOOL)animated
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1009622F8;
   v12[3] = &unk_10162FD60;
-  v13 = a3;
+  animatedCopy = animated;
   v5 = objc_retainBlock(v12);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100962A1C;
   v10[3] = &unk_10162FC70;
   v10[4] = self;
-  v11 = a3;
+  animatedCopy2 = animated;
   v6 = objc_retainBlock(v10);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1009633E8;
   v8[3] = &unk_10162FD60;
-  v9 = a3;
+  animatedCopy3 = animated;
   v7 = objc_retainBlock(v8);
   [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v5 dashboardMapBlock:v6 smallWidgetsBlock:v7];
 }
 
-- (void)displayNavigationForRouteCollection:(id)a3 options:(NavigationDetailsOptions *)a4
+- (void)displayNavigationForRouteCollection:(id)collection options:(NavigationDetailsOptions *)options
 {
-  v5 = a3;
-  v6 = [v5 currentRoute];
-  v7 = [v6 carplayDestinationHandoffRequired];
+  collectionCopy = collection;
+  currentRoute = [collectionCopy currentRoute];
+  carplayDestinationHandoffRequired = [currentRoute carplayDestinationHandoffRequired];
 
-  if (v7)
+  if (carplayDestinationHandoffRequired)
   {
     v8 = sub_100006E1C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -357,19 +357,19 @@ LABEL_9:
   }
 
   v9 = +[CarDisplayController sharedInstance];
-  v10 = [v9 platformController];
+  platformController = [v9 platformController];
 
-  v11 = [v10 currentSession];
+  currentSession = [platformController currentSession];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v15 = [v10 currentSession];
+    currentSession2 = [platformController currentSession];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = currentSession2;
     }
 
     else
@@ -379,11 +379,11 @@ LABEL_9:
 
     v13 = v16;
 
-    v17 = [v10 currentSession];
+    currentSession3 = [platformController currentSession];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = currentSession3;
     }
 
     else
@@ -396,80 +396,80 @@ LABEL_9:
     v38 = v19;
     if (v19)
     {
-      v20 = [v19 configuration];
-      v21 = [v20 isResumingMultipointRoute];
-      v22 = 0;
+      configuration = [v19 configuration];
+      isResumingMultipointRoute = [configuration isResumingMultipointRoute];
+      sharingContacts = 0;
     }
 
     else
     {
       if (!v13)
       {
-        v22 = 0;
-        v21 = 0;
+        sharingContacts = 0;
+        isResumingMultipointRoute = 0;
 LABEL_23:
         v25 = [NavigationSessionBuilder alloc];
         v26 = +[CarDisplayController sharedInstance];
-        v27 = [v26 chromeViewController];
-        v28 = [v27 currentTraits];
-        v29 = *&a4->guidanceType;
-        *buf = *&a4->shouldSimulateLocations;
+        chromeViewController = [v26 chromeViewController];
+        currentTraits = [chromeViewController currentTraits];
+        v29 = *&options->guidanceType;
+        *buf = *&options->shouldSimulateLocations;
         v40 = v29;
-        v41 = *&a4->isReconnecting;
-        navigationModeContext = a4->navigationModeContext;
-        v30 = [(NavigationSessionBuilder *)v25 initWithRouteCollection:v5 navigationDetailsOptions:buf mapServiceTraits:v28 sessionInitiator:2 isResumingMultipointRoute:v21 tracePlaybackPath:0];
-        v31 = [(NavigationSessionBuilder *)v30 build];
+        v41 = *&options->isReconnecting;
+        navigationModeContext = options->navigationModeContext;
+        v30 = [(NavigationSessionBuilder *)v25 initWithRouteCollection:collectionCopy navigationDetailsOptions:buf mapServiceTraits:currentTraits sessionInitiator:2 isResumingMultipointRoute:isResumingMultipointRoute tracePlaybackPath:0];
+        build = [(NavigationSessionBuilder *)v30 build];
 
-        if ([v22 count])
+        if ([sharingContacts count])
         {
-          v32 = [v31 configuration];
-          v33 = [v32 sharedTripPrefetchContext];
+          configuration2 = [build configuration];
+          sharedTripPrefetchContext = [configuration2 sharedTripPrefetchContext];
 
-          [v33 setAutomaticSharingContacts:v22];
+          [sharedTripPrefetchContext setAutomaticSharingContacts:sharingContacts];
           v34 = sub_100006E1C();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = [v22 count];
+            v35 = [sharingContacts count];
             *buf = 134217984;
             *&buf[4] = v35;
             _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Populated %lu Share ETA contacts from RG entry", buf, 0xCu);
           }
         }
 
-        v36 = [v10 currentSession];
+        currentSession4 = [platformController currentSession];
         objc_opt_class();
         v37 = objc_opt_isKindOfClass();
 
         if (v37)
         {
-          [v10 replaceCurrentSessionWithSession:v31];
+          [platformController replaceCurrentSessionWithSession:build];
         }
 
         else
         {
-          [v10 pushSession:v31];
+          [platformController pushSession:build];
         }
 
-        v14 = v38;
+        currentSession5 = v38;
 
         goto LABEL_31;
       }
 
-      v23 = [v13 routeGeniusEntry];
-      v20 = [v23 entry];
+      routeGeniusEntry = [v13 routeGeniusEntry];
+      configuration = [routeGeniusEntry entry];
 
-      if ([v20 type] == 11)
+      if ([configuration type] == 11)
       {
-        v24 = [v20 waypoints];
-        v21 = [v24 count] > 2;
+        waypoints = [configuration waypoints];
+        isResumingMultipointRoute = [waypoints count] > 2;
       }
 
       else
       {
-        v21 = 0;
+        isResumingMultipointRoute = 0;
       }
 
-      v22 = [v20 sharingContacts];
+      sharingContacts = [configuration sharingContacts];
     }
 
     goto LABEL_23;
@@ -478,9 +478,9 @@ LABEL_23:
   v13 = sub_100006E1C();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [v10 currentSession];
+    currentSession5 = [platformController currentSession];
     *buf = 138412290;
-    *&buf[4] = v14;
+    *&buf[4] = currentSession5;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Attempted to begin navigation, but there is already a NavigationSession on the sessionStack: %@", buf, 0xCu);
 LABEL_31:
   }
@@ -489,13 +489,13 @@ LABEL_31:
 - (void)displayRoutePlanningForExistingRoute
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 platformController];
-  v5 = [v4 currentSession];
+  platformController = [v3 platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = currentSession;
   }
 
   else
@@ -528,10 +528,10 @@ LABEL_31:
   }
 }
 
-- (void)displayRoutePlanningForDestination:(id)a3 userInfo:(id)a4
+- (void)displayRoutePlanningForDestination:(id)destination userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  infoCopy = info;
   v8 = sub_10000B11C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -540,19 +540,19 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  if (v6)
+  if (destinationCopy)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100964404;
     v17[3] = &unk_10162FBB0;
-    v18 = v6;
-    v9 = v7;
+    v18 = destinationCopy;
+    v9 = infoCopy;
     v19 = v9;
-    v20 = self;
+    selfCopy = self;
     v10 = objc_retainBlock(v17);
     v11 = [v9 objectForKeyedSubscript:@"skipEndNavigationPrompt"];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
     v13 = +[CarSessionController sharedInstance];
     v15[0] = _NSConcreteStackBlock;
@@ -562,35 +562,35 @@ LABEL_31:
     v15[4] = self;
     v16 = v10;
     v14 = v10;
-    [v13 endNavigationIfNeededWithPrompt:v12 ^ 1 andPerformBlock:v15];
+    [v13 endNavigationIfNeededWithPrompt:bOOLValue ^ 1 andPerformBlock:v15];
   }
 }
 
-- (id)_appendOrReplaceRoutePlanningContextForSession:(id)a3 currentContexts:(id)a4
+- (id)_appendOrReplaceRoutePlanningContextForSession:(id)session currentContexts:(id)contexts
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 _maps_firstContextOfClass:objc_opt_class()];
+  sessionCopy = session;
+  contextsCopy = contexts;
+  v7 = [contextsCopy _maps_firstContextOfClass:objc_opt_class()];
   v8 = v7;
   if (v7)
   {
-    [v7 setRoutePlanningSession:v5];
-    v9 = [v6 _maps_subarrayToIndex:{objc_msgSend(v6, "indexOfObject:", v8)}];
+    [v7 setRoutePlanningSession:sessionCopy];
+    v9 = [contextsCopy _maps_subarrayToIndex:{objc_msgSend(contextsCopy, "indexOfObject:", v8)}];
   }
 
   else
   {
-    v10 = [[_TtC4Maps23CarRoutePlanningContext alloc] initWithRoutePlanningSession:v5];
-    v9 = [v6 arrayByAddingObject:v10];
+    v10 = [[_TtC4Maps23CarRoutePlanningContext alloc] initWithRoutePlanningSession:sessionCopy];
+    v9 = [contextsCopy arrayByAddingObject:v10];
   }
 
   return v9;
 }
 
-- (void)displayRoutePlanningForSession:(id)a3 userInfo:(id)a4
+- (void)displayRoutePlanningForSession:(id)session userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  infoCopy = info;
   v8 = sub_10000B11C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -599,72 +599,72 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"skipEndNavigationPrompt"];
+  v9 = [infoCopy objectForKeyedSubscript:@"skipEndNavigationPrompt"];
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
   v11 = +[CarSessionController sharedInstance];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100965140;
   v13[3] = &unk_101661570;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
-  [v11 endNavigationIfNeededWithPrompt:v10 ^ 1 andPerformBlock:v13];
+  v14 = sessionCopy;
+  v12 = sessionCopy;
+  [v11 endNavigationIfNeededWithPrompt:bOOLValue ^ 1 andPerformBlock:v13];
 }
 
-- (void)displaySearchResultsWithCollection:(id)a3
+- (void)displaySearchResultsWithCollection:(id)collection
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1009652A4;
   v6[3] = &unk_10165FB98;
-  v7 = a3;
-  v4 = v7;
+  collectionCopy = collection;
+  v4 = collectionCopy;
   v5 = objc_retainBlock(v6);
   [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v5 dashboardMapBlock:0 smallWidgetsBlock:0];
 }
 
-- (void)endPlaceCardWithItem:(id)a3
+- (void)endPlaceCardWithItem:(id)item
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1009654D0;
   v5[3] = &unk_10165FB98;
-  v6 = a3;
-  v4 = v6;
+  itemCopy = item;
+  v4 = itemCopy;
   [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v5 dashboardMapBlock:0 smallWidgetsBlock:0];
 }
 
-- (void)displayPlaceCardWithSearchResult:(id)a3
+- (void)displayPlaceCardWithSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [[PlaceCardItem alloc] initWithSearchResult:v4];
+  resultCopy = result;
+  v5 = [[PlaceCardItem alloc] initWithSearchResult:resultCopy];
 
   [(CarChromeModeCoordinator *)self displayPlaceCardWithPlaceCardItem:v5];
 }
 
-- (void)displayPlaceCardWithPlaceCardItem:(id)a3 shouldNotify:(BOOL)a4
+- (void)displayPlaceCardWithPlaceCardItem:(id)item shouldNotify:(BOOL)notify
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  notifyCopy = notify;
+  itemCopy = item;
+  v7 = itemCopy;
+  if (itemCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100965740;
     v15[3] = &unk_10165FB98;
-    v8 = v6;
+    v8 = itemCopy;
     v16 = v8;
     v9 = objc_retainBlock(v15);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v9 dashboardMapBlock:0 smallWidgetsBlock:0];
-    if (v4)
+    if (notifyCopy)
     {
       v10 = [PlaceCardSynchronizationNotificationInfo alloc];
       v11 = +[CarDisplayController sharedInstance];
-      v12 = [v11 platformController];
-      v13 = [(PlaceCardSynchronizationNotificationInfo *)v10 initWithPlaceCardItem:v8 platformController:v12];
+      platformController = [v11 platformController];
+      v13 = [(PlaceCardSynchronizationNotificationInfo *)v10 initWithPlaceCardItem:v8 platformController:platformController];
 
       v14 = +[NSNotificationCenter defaultCenter];
       [v14 postNotificationName:@"CarPlaceCardDidPresent" object:v13];
@@ -672,28 +672,28 @@ LABEL_31:
   }
 }
 
-- (id)_replaceTopmostSearchResultContexts:(id)a3 withContext:(id)a4
+- (id)_replaceTopmostSearchResultContexts:(id)contexts withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  contextsCopy = contexts;
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
     v7 = objc_opt_isKindOfClass() & 1;
     *buf = 0;
     v15 = buf;
     v16 = 0x2020000000;
-    v17 = [v5 count] - 1;
+    v17 = [contextsCopy count] - 1;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100965A28;
     v12[3] = &unk_10162FD00;
     v13 = v7;
     v12[4] = buf;
-    [v5 enumerateObjectsWithOptions:2 usingBlock:v12];
-    v8 = [v5 _maps_subarrayToIndex:*(v15 + 3)];
+    [contextsCopy enumerateObjectsWithOptions:2 usingBlock:v12];
+    v8 = [contextsCopy _maps_subarrayToIndex:*(v15 + 3)];
 
-    v9 = [v8 arrayByAddingObject:v6];
+    v9 = [v8 arrayByAddingObject:contextCopy];
     _Block_object_dispose(buf, 8);
   }
 
@@ -706,32 +706,32 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Tried to replace top-most non-search mode with a nil. -> Ignoring the call.", buf, 2u);
     }
 
-    v8 = v5;
+    v8 = contextsCopy;
     v9 = v8;
   }
 
   return v9;
 }
 
-- (void)displaySearchResultsWithCategory:(id)a3
+- (void)displaySearchResultsWithCategory:(id)category
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100965CF0;
   v6[3] = &unk_10165FB98;
-  v7 = a3;
-  v4 = v7;
+  categoryCopy = category;
+  v4 = categoryCopy;
   v5 = objc_retainBlock(v6);
   [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v5 dashboardMapBlock:0 smallWidgetsBlock:0];
 }
 
-- (void)_displayKeyboardSearchWithInteractionModel:(unint64_t)a3 resultsProvider:(id)a4 animated:(BOOL)a5
+- (void)_displayKeyboardSearchWithInteractionModel:(unint64_t)model resultsProvider:(id)provider animated:(BOOL)animated
 {
-  v8 = a4;
+  providerCopy = provider;
   v9 = +[MapsExternalDevice sharedInstance];
-  v10 = [v9 disableSoftwareKeyboard];
+  disableSoftwareKeyboard = [v9 disableSoftwareKeyboard];
 
-  if (v10)
+  if (disableSoftwareKeyboard)
   {
     v11 = sub_100006E1C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -747,9 +747,9 @@ LABEL_31:
     v13[1] = 3221225472;
     v13[2] = sub_100966018;
     v13[3] = &unk_10162FCB8;
-    v16 = a5;
-    v15 = a3;
-    v14 = v8;
+    animatedCopy = animated;
+    modelCopy = model;
+    v14 = providerCopy;
     v12 = objc_retainBlock(v13);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v12 dashboardMapBlock:0 smallWidgetsBlock:0];
 
@@ -757,16 +757,16 @@ LABEL_31:
   }
 }
 
-- (void)displayKeyboardSearchWithInteractionModel:(unint64_t)a3
+- (void)displayKeyboardSearchWithInteractionModel:(unint64_t)model
 {
   v5 = objc_alloc_init(CarKeyboardSearchResultsViewController);
-  [(CarChromeModeCoordinator *)self _displayKeyboardSearchWithInteractionModel:a3 resultsProvider:v5 animated:1];
+  [(CarChromeModeCoordinator *)self _displayKeyboardSearchWithInteractionModel:model resultsProvider:v5 animated:1];
 }
 
-- (void)launchIntoKeyboardSearchWithRequestedInteractionModel:(unint64_t)a3
+- (void)launchIntoKeyboardSearchWithRequestedInteractionModel:(unint64_t)model
 {
   v5 = objc_alloc_init(CarKeyboardSearchResultsViewController);
-  [(CarChromeModeCoordinator *)self _displayKeyboardSearchWithInteractionModel:a3 resultsProvider:v5 animated:0];
+  [(CarChromeModeCoordinator *)self _displayKeyboardSearchWithInteractionModel:model resultsProvider:v5 animated:0];
 }
 
 - (void)_sendSearchCancelFeedback
@@ -779,25 +779,25 @@ LABEL_31:
   }
 
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 chromeViewController];
-  [v4 captureUserAction:18];
+  chromeViewController = [v3 chromeViewController];
+  [chromeViewController captureUserAction:18];
 }
 
 - (void)_displaySiriSearch
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v8 = [SiriDirectActionContext mapSearchDirectActionWithAppBundleId:v4];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v8 = [SiriDirectActionContext mapSearchDirectActionWithAppBundleId:bundleIdentifier];
 
-  v5 = [(CarChromeModeCoordinator *)self siriActionSource];
-  [v5 activateWithContext:v8];
+  siriActionSource = [(CarChromeModeCoordinator *)self siriActionSource];
+  [siriActionSource activateWithContext:v8];
 
   v6 = +[CarDisplayController sharedInstance];
-  v7 = [v6 chromeViewController];
-  [v7 captureUserAction:8009 onTarget:1010];
+  chromeViewController = [v6 chromeViewController];
+  [chromeViewController captureUserAction:8009 onTarget:1010];
 }
 
-- (void)displaySearchWithInteractionModel:(unint64_t)a3
+- (void)displaySearchWithInteractionModel:(unint64_t)model
 {
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 BOOLForKey:@"StarkSearchEnableKeyboard"];
@@ -812,7 +812,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Will show CarKeyboardModeController because it is set in user defaults", buf, 2u);
     }
 
-    [(CarChromeModeCoordinator *)self displayKeyboardSearchWithInteractionModel:a3];
+    [(CarChromeModeCoordinator *)self displayKeyboardSearchWithInteractionModel:model];
   }
 
   else
@@ -827,28 +827,28 @@ LABEL_31:
   }
 }
 
-- (void)displayIncidentReportSubmissionWithItem:(id)a3 report:(id)a4
+- (void)displayIncidentReportSubmissionWithItem:(id)item report:(id)report
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10096666C;
   v9[3] = &unk_10162FBB0;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  v6 = v11;
-  v7 = v10;
+  itemCopy = item;
+  reportCopy = report;
+  selfCopy = self;
+  v6 = reportCopy;
+  v7 = itemCopy;
   v8 = objc_retainBlock(v9);
   [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v8 dashboardMapBlock:0 smallWidgetsBlock:0];
 }
 
-- (void)_displayIncidentReportingFromMapControl:(BOOL)a3
+- (void)_displayIncidentReportingFromMapControl:(BOOL)control
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100966864;
   v5[3] = &unk_10162FC70;
-  v6 = a3;
+  controlCopy = control;
   v5[4] = self;
   v4 = objc_retainBlock(v5);
   [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v4 dashboardMapBlock:0 smallWidgetsBlock:0];
@@ -865,17 +865,17 @@ LABEL_31:
   [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v3 dashboardMapBlock:0 smallWidgetsBlock:0];
 }
 
-- (void)endSearchSession:(id)a3
+- (void)endSearchSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100966D60;
     v8[3] = &unk_10165FB98;
-    v9 = v4;
+    v9 = sessionCopy;
     v6 = objc_retainBlock(v8);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v6 dashboardMapBlock:0 smallWidgetsBlock:0];
 
@@ -893,17 +893,17 @@ LABEL_31:
   }
 }
 
-- (void)_displaySearchAlongTheRouteForMapItems:(id)a3 selectedItemIndex:(unint64_t)a4
+- (void)_displaySearchAlongTheRouteForMapItems:(id)items selectedItemIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([v6 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
     v11 = sub_100967274;
     v12 = &unk_10162FC28;
-    v13 = v6;
-    v14 = a4;
+    v13 = itemsCopy;
+    indexCopy = index;
     v7 = objc_retainBlock(&v9);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v7 dashboardMapBlock:0 smallWidgetsBlock:0, v9, v10, v11, v12];
 
@@ -921,19 +921,19 @@ LABEL_31:
   }
 }
 
-- (void)_displaySearchAlongTheRouteForSearchSession:(id)a3
+- (void)_displaySearchAlongTheRouteForSearchSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 currentResults];
-  if ([v5 count])
+  sessionCopy = session;
+  currentResults = [sessionCopy currentResults];
+  if ([currentResults count])
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100967580;
     v8[3] = &unk_10162FBB0;
-    v9 = v5;
-    v10 = v4;
-    v11 = self;
+    v9 = currentResults;
+    v10 = sessionCopy;
+    selfCopy = self;
     v6 = objc_retainBlock(v8);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v6 dashboardMapBlock:0 smallWidgetsBlock:0];
 
@@ -951,42 +951,42 @@ LABEL_31:
   }
 }
 
-- (void)_handleClientResolvedResultForSearchSession:(id)a3
+- (void)_handleClientResolvedResultForSearchSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 currentResultsSearchInfo];
+  sessionCopy = session;
+  currentResultsSearchInfo = [sessionCopy currentResultsSearchInfo];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100967828;
   v7[3] = &unk_10162FC00;
-  v8 = v4;
-  v6 = v4;
-  [(CarChromeModeCoordinator *)self _resolveSearchFieldItemWithSearchInfo:v5 withCompletion:v7];
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  [(CarChromeModeCoordinator *)self _resolveSearchFieldItemWithSearchInfo:currentResultsSearchInfo withCompletion:v7];
 }
 
-- (void)_resolveSearchFieldItemWithSearchInfo:(id)a3 withCompletion:(id)a4
+- (void)_resolveSearchFieldItemWithSearchInfo:(id)info withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = objc_alloc_init(ClientTypeResolver);
-    v8 = [v5 clientResolvedResult];
-    v9 = [v8 itemType];
-    if (v9 > 6)
+    clientResolvedResult = [infoCopy clientResolvedResult];
+    itemType = [clientResolvedResult itemType];
+    if (itemType > 6)
     {
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    if (((1 << v9) & 0x19) != 0)
+    if (((1 << itemType) & 0x19) != 0)
     {
       v12 = sub_100006E1C();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v25 = [v8 itemType];
+        itemType2 = [clientResolvedResult itemType];
         v13 = "Unsupported clientResolved type: %ld";
         v14 = v12;
         v15 = 12;
@@ -997,31 +997,31 @@ LABEL_10:
 
     else
     {
-      if (((1 << v9) & 0x46) != 0)
+      if (((1 << itemType) & 0x46) != 0)
       {
-        v10 = [(ClientTypeResolver *)v7 personalizedItemSource];
-        v11 = [v8 itemType];
+        personalizedItemSource = [(ClientTypeResolver *)v7 personalizedItemSource];
+        itemType3 = [clientResolvedResult itemType];
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_100967B10;
         v22[3] = &unk_10164C6E8;
-        v23 = v6;
-        [v10 addressOrLOIWithType:v11 completion:v22];
+        v23 = completionCopy;
+        [personalizedItemSource addressOrLOIWithType:itemType3 completion:v22];
 
         goto LABEL_12;
       }
 
-      v16 = [v8 resultIndex];
-      v17 = [v5 results];
-      v18 = [v17 count];
+      resultIndex = [clientResolvedResult resultIndex];
+      results = [infoCopy results];
+      v18 = [results count];
 
-      if (v16 < v18)
+      if (resultIndex < v18)
       {
-        v19 = [v5 results];
-        v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v8, "resultIndex")}];
+        results2 = [infoCopy results];
+        v20 = [results2 objectAtIndexedSubscript:{objc_msgSend(clientResolvedResult, "resultIndex")}];
 
         v21 = [SearchFieldItem searchFieldItemWithObject:v20];
-        (*(v6 + 2))(v6, v21);
+        (*(completionCopy + 2))(completionCopy, v21);
 
         goto LABEL_12;
       }
@@ -1050,46 +1050,46 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)refreshSessionWithEVResults:(id)a3 contexts:(id)a4
+- (void)refreshSessionWithEVResults:(id)results contexts:(id)contexts
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count])
+  resultsCopy = results;
+  contextsCopy = contexts;
+  if (![contextsCopy count])
   {
-    v9 = sub_100006E1C();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    lastObject2 = sub_100006E1C();
+    if (os_log_type_enabled(lastObject2, OS_LOG_TYPE_ERROR))
     {
       *v10 = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "There are no contexts available. Ignoring the call to refresh the ev chargers.", v10, 2u);
+      _os_log_impl(&_mh_execute_header, lastObject2, OS_LOG_TYPE_ERROR, "There are no contexts available. Ignoring the call to refresh the ev chargers.", v10, 2u);
     }
 
     goto LABEL_6;
   }
 
-  v7 = [v6 lastObject];
+  lastObject = [contextsCopy lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v6 lastObject];
-    [v9 updateChargerAvailabilityWithResults:v5];
+    lastObject2 = [contextsCopy lastObject];
+    [lastObject2 updateChargerAvailabilityWithResults:resultsCopy];
 LABEL_6:
   }
 }
 
-- (void)displaySearchAlongTheRouteForCategory:(id)a3
+- (void)displaySearchAlongTheRouteForCategory:(id)category
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  categoryCopy = category;
+  v5 = categoryCopy;
+  if (categoryCopy)
   {
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_100967DEC;
     v11 = &unk_10162FBD8;
-    v12 = v4;
-    v13 = self;
+    v12 = categoryCopy;
+    selfCopy = self;
     v6 = objc_retainBlock(&v8);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v6 dashboardMapBlock:0 smallWidgetsBlock:0, v8, v9, v10, v11];
 
@@ -1107,32 +1107,32 @@ LABEL_6:
   }
 }
 
-- (void)displaySearchSession:(id)a3
+- (void)displaySearchSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 currentResultsSearchInfo];
-  v6 = [v5 placeCollections];
-  if ([v6 count])
+  sessionCopy = session;
+  currentResultsSearchInfo = [sessionCopy currentResultsSearchInfo];
+  placeCollections = [currentResultsSearchInfo placeCollections];
+  if ([placeCollections count])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 publisher];
-    v7 = v8 != 0;
+    publisher = [currentResultsSearchInfo publisher];
+    v7 = publisher != 0;
   }
 
-  v9 = [v5 results];
-  v10 = [v9 count];
+  results = [currentResultsSearchInfo results];
+  v10 = [results count];
 
   if (v10 || !v7)
   {
-    v11 = [v5 clientResolvedResult];
+    clientResolvedResult = [currentResultsSearchInfo clientResolvedResult];
 
-    if (v11)
+    if (clientResolvedResult)
     {
-      [(CarChromeModeCoordinator *)self _handleClientResolvedResultForSearchSession:v4];
+      [(CarChromeModeCoordinator *)self _handleClientResolvedResultForSearchSession:sessionCopy];
     }
 
     else
@@ -1162,9 +1162,9 @@ LABEL_6:
             v19[1] = 3221225472;
             v19[2] = sub_1009681D4;
             v19[3] = &unk_10162FBB0;
-            v20 = v4;
-            v21 = v5;
-            v22 = self;
+            v20 = sessionCopy;
+            v21 = currentResultsSearchInfo;
+            selfCopy = self;
             v17 = objc_retainBlock(v19);
             [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeForViewController:v16 carBlock:v17 dashboardMapBlock:0 smallWidgetsBlock:0];
 
@@ -1181,7 +1181,7 @@ LABEL_6:
   }
 }
 
-- (void)_displayMapRegion:(id *)a3 animated:(BOOL)a4
+- (void)_displayMapRegion:(id *)region animated:(BOOL)animated
 {
   v8 = v5;
   v9 = v4;
@@ -1197,7 +1197,7 @@ LABEL_6:
 
   else
   {
-    v12 = a3;
+    regionCopy = region;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100968C70;
@@ -1206,7 +1206,7 @@ LABEL_6:
     *&v18[5] = v5;
     *&v18[6] = v6;
     *&v18[7] = v7;
-    v19 = a3;
+    regionCopy2 = region;
     v14 = objc_retainBlock(v18);
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -1216,7 +1216,7 @@ LABEL_6:
     *&v16[5] = v8;
     *&v16[6] = v10;
     *&v16[7] = v11;
-    v17 = v12;
+    v17 = regionCopy;
     v15 = objc_retainBlock(v16);
     [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeWithCarBlock:v14 dashboardMapBlock:v15 smallWidgetsBlock:0];
   }
@@ -1228,8 +1228,8 @@ LABEL_6:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSHashTable *)self->_chromeViewControllers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allObjects = [(NSHashTable *)self->_chromeViewControllers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1241,15 +1241,15 @@ LABEL_6:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
         v9 = +[CarDisplayController sharedInstance];
-        v10 = [v9 routeGeniusManager];
-        v11 = [v10 isActive];
+        routeGeniusManager = [v9 routeGeniusManager];
+        isActive = [routeGeniusManager isActive];
 
-        if (v11)
+        if (isActive)
         {
           [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeForViewController:v8 carBlock:&stru_10162FA48 dashboardMapBlock:&stru_10162FA68 smallWidgetsBlock:&stru_10162FA88];
         }
@@ -1268,24 +1268,24 @@ LABEL_6:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_scheduleCoordinatedContextChangeWithCarBlock:(id)a3 dashboardMapBlock:(id)a4 smallWidgetsBlock:(id)a5
+- (void)_scheduleCoordinatedContextChangeWithCarBlock:(id)block dashboardMapBlock:(id)mapBlock smallWidgetsBlock:(id)widgetsBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  mapBlockCopy = mapBlock;
+  widgetsBlockCopy = widgetsBlock;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(NSHashTable *)self->_chromeViewControllers allObjects];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allObjects = [(NSHashTable *)self->_chromeViewControllers allObjects];
+  v12 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1297,51 +1297,51 @@ LABEL_6:
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
-        [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeForViewController:*(*(&v16 + 1) + 8 * v15) carBlock:v8 dashboardMapBlock:v9 smallWidgetsBlock:v10];
+        [(CarChromeModeCoordinator *)self _scheduleCoordinatedContextChangeForViewController:*(*(&v16 + 1) + 8 * v15) carBlock:blockCopy dashboardMapBlock:mapBlockCopy smallWidgetsBlock:widgetsBlockCopy];
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)_scheduleCoordinatedContextChangeForViewController:(id)a3 carBlock:(id)a4 dashboardMapBlock:(id)a5 smallWidgetsBlock:(id)a6
+- (void)_scheduleCoordinatedContextChangeForViewController:(id)controller carBlock:(id)block dashboardMapBlock:(id)mapBlock smallWidgetsBlock:(id)widgetsBlock
 {
-  v16 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = objc_retainBlock(a4);
+  controllerCopy = controller;
+  mapBlockCopy = mapBlock;
+  widgetsBlockCopy = widgetsBlock;
+  v11 = objc_retainBlock(block);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v13 = v9;
-  if (isKindOfClass & 1) != 0 || (objc_opt_class(), v14 = objc_opt_isKindOfClass(), v13 = v10, (v14))
+  v13 = mapBlockCopy;
+  if (isKindOfClass & 1) != 0 || (objc_opt_class(), v14 = objc_opt_isKindOfClass(), v13 = widgetsBlockCopy, (v14))
   {
     v15 = objc_retainBlock(v13);
 
     v11 = v15;
   }
 
-  [v16 scheduleCoordinatedContextChange:v11 completionHandler:0];
+  [controllerCopy scheduleCoordinatedContextChange:v11 completionHandler:0];
 }
 
-- (void)_performActionForCarBlock:(id)a3 dashboardMapBlock:(id)a4 smallWidgetsBlock:(id)a5
+- (void)_performActionForCarBlock:(id)block dashboardMapBlock:(id)mapBlock smallWidgetsBlock:(id)widgetsBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v21 = a5;
+  blockCopy = block;
+  mapBlockCopy = mapBlock;
+  widgetsBlockCopy = widgetsBlock;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [(NSHashTable *)self->_chromeViewControllers allObjects];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allObjects = [(NSHashTable *)self->_chromeViewControllers allObjects];
+  v11 = [allObjects countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1353,15 +1353,15 @@ LABEL_6:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allObjects);
         }
 
         v15 = *(*(&v22 + 1) + 8 * v14);
-        v16 = objc_retainBlock(v8);
+        v16 = objc_retainBlock(blockCopy);
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        v18 = v9;
-        if (isKindOfClass & 1) != 0 || (objc_opt_class(), v19 = objc_opt_isKindOfClass(), v18 = v21, (v19))
+        v18 = mapBlockCopy;
+        if (isKindOfClass & 1) != 0 || (objc_opt_class(), v19 = objc_opt_isKindOfClass(), v18 = widgetsBlockCopy, (v19))
         {
           v20 = objc_retainBlock(v18);
 
@@ -1377,22 +1377,22 @@ LABEL_6:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)popFromContext:(id)a3
+- (void)popFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(NSHashTable *)self->_chromeViewControllers allObjects];
+    allObjects = [(NSHashTable *)self->_chromeViewControllers allObjects];
     *buf = 138412290;
-    v21 = v6;
+    v21 = allObjects;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "The top context will be popped. All chrome controllers : %@", buf, 0xCu);
   }
 
@@ -1400,8 +1400,8 @@ LABEL_6:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(NSHashTable *)self->_chromeViewControllers allObjects];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObjects2 = [(NSHashTable *)self->_chromeViewControllers allObjects];
+  v8 = [allObjects2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1413,7 +1413,7 @@ LABEL_6:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObjects2);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
@@ -1421,14 +1421,14 @@ LABEL_6:
         v13[1] = 3221225472;
         v13[2] = sub_10096A530;
         v13[3] = &unk_10165FB98;
-        v14 = v4;
+        v14 = contextCopy;
         [v12 scheduleCoordinatedContextChange:v13 completionHandler:0];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allObjects2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -1452,8 +1452,8 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(CarChromeModeCoordinator *)self siriActionSource];
-  [v3 invalidate];
+  siriActionSource = [(CarChromeModeCoordinator *)self siriActionSource];
+  [siriActionSource invalidate];
 
   v4 = +[NSDistributedNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -1486,7 +1486,7 @@ LABEL_6:
 
 + (id)createHomeContext
 {
-  [a1 getHomeContextClass];
+  [self getHomeContextClass];
   v2 = objc_opt_new();
 
   return v2;

@@ -1,15 +1,15 @@
 @interface VNTrackMaskRequestConfiguration
-- (VNTrackMaskRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNTrackMaskRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNTrackMaskRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = VNTrackMaskRequestConfiguration;
-  v4 = [(VNStatefulRequestConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(VNStatefulRequestConfiguration *)&v6 copyWithZone:zone];
   if (v4)
   {
     [v4 setGenerateCropRect:{-[VNTrackMaskRequestConfiguration generateCropRect](self, "generateCropRect")}];
@@ -18,11 +18,11 @@
   return v4;
 }
 
-- (VNTrackMaskRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNTrackMaskRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNTrackMaskRequestConfiguration;
-  result = [(VNStatefulRequestConfiguration *)&v4 initWithRequestClass:a3];
+  result = [(VNStatefulRequestConfiguration *)&v4 initWithRequestClass:class];
   if (result)
   {
     result->_generateCropRect = 0;

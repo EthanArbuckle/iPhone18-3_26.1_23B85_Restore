@@ -1,11 +1,11 @@
 @interface HCXPCMessage
-+ (id)messageWithPayload:(id)a3;
-+ (id)messageWithPayload:(id)a3 xpcMessage:(id)a4 andClient:(id)a5;
-- (BOOL)hasEntitlement:(id)a3;
++ (id)messageWithPayload:(id)payload;
++ (id)messageWithPayload:(id)payload xpcMessage:(id)message andClient:(id)client;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (HCXPCClient)client;
-- (HCXPCMessage)initWithPayload:(id)a3;
+- (HCXPCMessage)initWithPayload:(id)payload;
 - (id)description;
-- (id)replyMessageWithPayload:(id)a3;
+- (id)replyMessageWithPayload:(id)payload;
 - (void)dealloc;
 @end
 
@@ -17,11 +17,11 @@
   v11.receiver = self;
   v11.super_class = HCXPCMessage;
   v4 = [(HCXPCMessage *)&v11 description];
-  v5 = [(HCXPCMessage *)self error];
-  v6 = [(HCXPCMessage *)self payload];
-  v7 = [(HCXPCMessage *)self error];
-  v8 = [(HCXPCMessage *)self client];
-  v9 = [v3 stringWithFormat:@"%@ [%d | %@] {%@} - Client: %@", v4, v5 == 0, v6, v7, v8];
+  error = [(HCXPCMessage *)self error];
+  payload = [(HCXPCMessage *)self payload];
+  error2 = [(HCXPCMessage *)self error];
+  client = [(HCXPCMessage *)self client];
+  v9 = [v3 stringWithFormat:@"%@ [%d | %@] {%@} - Client: %@", v4, error == 0, payload, error2, client];
 
   return v9;
 }
@@ -43,17 +43,17 @@
   [(HCXPCMessage *)&v3 dealloc];
 }
 
-+ (id)messageWithPayload:(id)a3 xpcMessage:(id)a4 andClient:(id)a5
++ (id)messageWithPayload:(id)payload xpcMessage:(id)message andClient:(id)client
 {
-  if (a5)
+  if (client)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
-    v10 = [[HCXPCMessage alloc] initWithPayload:v9];
+    clientCopy = client;
+    messageCopy = message;
+    payloadCopy = payload;
+    v10 = [[HCXPCMessage alloc] initWithPayload:payloadCopy];
 
-    [(HCXPCMessage *)v10 setXpcMessage:v8];
-    [(HCXPCMessage *)v10 setClient:v7];
+    [(HCXPCMessage *)v10 setXpcMessage:messageCopy];
+    [(HCXPCMessage *)v10 setClient:clientCopy];
   }
 
   else
@@ -64,17 +64,17 @@
   return v10;
 }
 
-+ (id)messageWithPayload:(id)a3
++ (id)messageWithPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPayload:v3];
+  payloadCopy = payload;
+  v4 = [objc_alloc(objc_opt_class()) initWithPayload:payloadCopy];
 
   return v4;
 }
 
-- (HCXPCMessage)initWithPayload:(id)a3
+- (HCXPCMessage)initWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -84,34 +84,34 @@
     self = v5;
     if (v5)
     {
-      [(HCXPCMessage *)v5 setPayload:v4];
+      [(HCXPCMessage *)v5 setPayload:payloadCopy];
     }
   }
 
   return self;
 }
 
-- (id)replyMessageWithPayload:(id)a3
+- (id)replyMessageWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HCXPCMessage *)self xpcMessage];
-  v6 = [(HCXPCMessage *)self client];
-  v7 = [HCXPCMessage messageWithPayload:v4 xpcMessage:v5 andClient:v6];
+  payloadCopy = payload;
+  xpcMessage = [(HCXPCMessage *)self xpcMessage];
+  client = [(HCXPCMessage *)self client];
+  v7 = [HCXPCMessage messageWithPayload:payloadCopy xpcMessage:xpcMessage andClient:client];
 
   return v7;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(HCXPCMessage *)self client];
-  v6 = [v5 xpcConnection];
+  entitlementCopy = entitlement;
+  client = [(HCXPCMessage *)self client];
+  xpcConnection = [client xpcConnection];
 
-  if (v6 && (v15 = 0u, v16 = 0u, xpc_connection_get_audit_token(), memset(&cf, 0, sizeof(cf)), (v7 = SecTaskCreateWithAuditToken(0, &cf)) != 0))
+  if (xpcConnection && (v15 = 0u, v16 = 0u, xpc_connection_get_audit_token(), memset(&cf, 0, sizeof(cf)), (v7 = SecTaskCreateWithAuditToken(0, &cf)) != 0))
   {
     v8 = v7;
     *cf.val = 0;
-    v9 = SecTaskCopyValueForEntitlement(v7, v4, &cf);
+    v9 = SecTaskCopyValueForEntitlement(v7, entitlementCopy, &cf);
     if (*cf.val)
     {
       v10 = HCLogHearingAids();

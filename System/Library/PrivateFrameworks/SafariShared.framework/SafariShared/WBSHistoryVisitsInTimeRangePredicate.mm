@@ -1,39 +1,39 @@
 @interface WBSHistoryVisitsInTimeRangePredicate
-- (BOOL)evaluateVisit:(id)a3;
+- (BOOL)evaluateVisit:(id)visit;
 - (NSString)description;
-- (WBSHistoryVisitsInTimeRangePredicate)initWithCoder:(id)a3;
-- (WBSHistoryVisitsInTimeRangePredicate)initWithStartDate:(id)a3 endDate:(id)a4 urlString:(id)a5 urlHash:(id)a6 urlSalt:(id)a7;
-- (id)statementForDatabase:(id)a3 cache:(id)a4 fetchOptions:(unint64_t)a5 error:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (WBSHistoryVisitsInTimeRangePredicate)initWithCoder:(id)coder;
+- (WBSHistoryVisitsInTimeRangePredicate)initWithStartDate:(id)date endDate:(id)endDate urlString:(id)string urlHash:(id)hash urlSalt:(id)salt;
+- (id)statementForDatabase:(id)database cache:(id)cache fetchOptions:(unint64_t)options error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHistoryVisitsInTimeRangePredicate
 
-- (WBSHistoryVisitsInTimeRangePredicate)initWithStartDate:(id)a3 endDate:(id)a4 urlString:(id)a5 urlHash:(id)a6 urlSalt:(id)a7
+- (WBSHistoryVisitsInTimeRangePredicate)initWithStartDate:(id)date endDate:(id)endDate urlString:(id)string urlHash:(id)hash urlSalt:(id)salt
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  stringCopy = string;
+  hashCopy = hash;
+  saltCopy = salt;
   v28.receiver = self;
   v28.super_class = WBSHistoryVisitsInTimeRangePredicate;
   v17 = [(WBSHistoryVisitsInTimeRangePredicate *)&v28 init];
   if (v17)
   {
-    [v12 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v17->_startTime = v18;
-    [v13 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     v17->_endTime = v19;
-    v20 = [v14 copy];
+    v20 = [stringCopy copy];
     urlString = v17->_urlString;
     v17->_urlString = v20;
 
-    v22 = [v15 copy];
+    v22 = [hashCopy copy];
     urlHash = v17->_urlHash;
     v17->_urlHash = v22;
 
-    v24 = [v16 copy];
+    v24 = [saltCopy copy];
     urlSalt = v17->_urlSalt;
     v17->_urlSalt = v24;
 
@@ -43,27 +43,27 @@
   return v17;
 }
 
-- (WBSHistoryVisitsInTimeRangePredicate)initWithCoder:(id)a3
+- (WBSHistoryVisitsInTimeRangePredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WBSHistoryVisitsInTimeRangePredicate;
   v5 = [(WBSHistoryVisitsInTimeRangePredicate *)&v16 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"startTime"];
+    [coderCopy decodeDoubleForKey:@"startTime"];
     v5->_startTime = v6;
-    [v4 decodeDoubleForKey:@"endTime"];
+    [coderCopy decodeDoubleForKey:@"endTime"];
     v5->_endTime = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     urlString = v5->_urlString;
     v5->_urlString = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
     urlHash = v5->_urlHash;
     v5->_urlHash = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlSalt"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlSalt"];
     urlSalt = v5->_urlSalt;
     v5->_urlSalt = v12;
 
@@ -73,20 +73,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeDouble:@"startTime" forKey:self->_startTime];
-  [v4 encodeDouble:@"endTime" forKey:self->_endTime];
-  [v4 encodeObject:self->_urlString forKey:@"url"];
-  [v4 encodeObject:self->_urlHash forKey:@"urlHash"];
-  [v4 encodeObject:self->_urlSalt forKey:@"urlSalt"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"startTime" forKey:self->_startTime];
+  [coderCopy encodeDouble:@"endTime" forKey:self->_endTime];
+  [coderCopy encodeObject:self->_urlString forKey:@"url"];
+  [coderCopy encodeObject:self->_urlHash forKey:@"urlHash"];
+  [coderCopy encodeObject:self->_urlSalt forKey:@"urlSalt"];
 }
 
-- (id)statementForDatabase:(id)a3 cache:(id)a4 fetchOptions:(unint64_t)a5 error:(id *)a6
+- (id)statementForDatabase:(id)database cache:(id)cache fetchOptions:(unint64_t)options error:(id *)error
 {
-  v8 = a4;
-  v9 = v8;
+  cacheCopy = cache;
+  v9 = cacheCopy;
   if (self->_urlString)
   {
     v10 = @"SELECT history_visits.* FROM history_visits INNER JOIN history_items ON history_items.id = history_visits.history_item WHERE visit_time > ? AND visit_time < ? AND history_items.url = ?";
@@ -102,7 +102,7 @@
     v10 = @"SELECT history_visits.* FROM history_visits where visit_time > ? AND visit_time < ?";
   }
 
-  v11 = [v8 statementForQuery:v10 error:a6];
+  v11 = [cacheCopy statementForQuery:v10 error:error];
   v12 = v11;
   if (v11)
   {
@@ -130,10 +130,10 @@
   return v12;
 }
 
-- (BOOL)evaluateVisit:(id)a3
+- (BOOL)evaluateVisit:(id)visit
 {
-  v4 = a3;
-  [v4 visitTime];
+  visitCopy = visit;
+  [visitCopy visitTime];
   if (self->_startTime >= v5 || v5 >= self->_endTime)
   {
     v8 = 0;
@@ -143,9 +143,9 @@
   {
     if (self->_urlString)
     {
-      v6 = [v4 item];
-      v7 = [v6 urlString];
-      v8 = [v7 isEqualToString:self->_urlString];
+      item = [visitCopy item];
+      urlString = [item urlString];
+      v8 = [urlString isEqualToString:self->_urlString];
     }
 
     else
@@ -157,9 +157,9 @@
       }
 
       urlSalt = self->_urlSalt;
-      v6 = [v4 item];
-      v7 = [v6 urlString];
-      v10 = WBSHistorySHA512(urlSalt, v7);
+      item = [visitCopy item];
+      urlString = [item urlString];
+      v10 = WBSHistorySHA512(urlSalt, urlString);
       v8 = [v10 isEqualToData:self->_urlHash];
     }
   }

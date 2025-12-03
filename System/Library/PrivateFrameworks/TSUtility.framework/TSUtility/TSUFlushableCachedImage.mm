@@ -1,28 +1,28 @@
 @interface TSUFlushableCachedImage
 - (CGImage)newImage;
-- (TSUFlushableCachedImage)initWithDelegate:(id)a3 createImageSelector:(SEL)a4;
+- (TSUFlushableCachedImage)initWithDelegate:(id)delegate createImageSelector:(SEL)selector;
 - (void)dealloc;
 @end
 
 @implementation TSUFlushableCachedImage
 
-- (TSUFlushableCachedImage)initWithDelegate:(id)a3 createImageSelector:(SEL)a4
+- (TSUFlushableCachedImage)initWithDelegate:(id)delegate createImageSelector:(SEL)selector
 {
   result = [(TSUFlushableObject *)self init];
   if (result)
   {
-    result->_delegate = a3;
-    if (a4)
+    result->_delegate = delegate;
+    if (selector)
     {
-      v7 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v7 = 0;
+      selectorCopy = 0;
     }
 
-    result->_delegateCreateImageSelector = v7;
+    result->_delegateCreateImageSelector = selectorCopy;
   }
 
   return result;

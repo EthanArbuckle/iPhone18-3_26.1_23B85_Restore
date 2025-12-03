@@ -1,22 +1,22 @@
 @interface _SFActivityItemProviderCollection
 - (_SFActivityItemProvider)standaloneImageProvider;
 - (_SFActivityItemProvider)webArchiveProvider;
-- (_SFActivityItemProviderCollection)initWithWebView:(id)a3;
-- (id)activityItemProvidersWithCustomizationController:(id)a3;
+- (_SFActivityItemProviderCollection)initWithWebView:(id)view;
+- (id)activityItemProvidersWithCustomizationController:(id)controller;
 @end
 
 @implementation _SFActivityItemProviderCollection
 
-- (_SFActivityItemProviderCollection)initWithWebView:(id)a3
+- (_SFActivityItemProviderCollection)initWithWebView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _SFActivityItemProviderCollection;
   v6 = [(_SFActivityItemProviderCollection *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webView, a3);
+    objc_storeStrong(&v6->_webView, view);
     v8 = v7;
   }
 
@@ -68,70 +68,70 @@ LABEL_5:
   return v8;
 }
 
-- (id)activityItemProvidersWithCustomizationController:(id)a3
+- (id)activityItemProvidersWithCustomizationController:(id)controller
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if ([v4 canShareAsLink])
+  controllerCopy = controller;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([controllerCopy canShareAsLink])
   {
-    v6 = [(_SFActivityItemProviderCollection *)self linkProvider];
-    [v5 safari_addObjectUnlessNil:v6];
-    v7 = [(_SFActivityItemProviderCollection *)self javaScriptExtensionProvider];
-    [v5 safari_addObjectUnlessNil:v7];
+    linkProvider = [(_SFActivityItemProviderCollection *)self linkProvider];
+    [array safari_addObjectUnlessNil:linkProvider];
+    javaScriptExtensionProvider = [(_SFActivityItemProviderCollection *)self javaScriptExtensionProvider];
+    [array safari_addObjectUnlessNil:javaScriptExtensionProvider];
   }
 
   else
   {
-    v6 = 0;
+    linkProvider = 0;
   }
 
-  v8 = [(_SFActivityItemProviderCollection *)self standaloneImageProvider];
-  if ([v4 canShareAsStandaloneImage] && v8)
+  standaloneImageProvider = [(_SFActivityItemProviderCollection *)self standaloneImageProvider];
+  if ([controllerCopy canShareAsStandaloneImage] && standaloneImageProvider)
   {
-    [v5 addObject:v8];
-    v9 = [v6 excludedActivityTypes];
-    v10 = [v9 setByAddingObject:*MEMORY[0x1E69CDAB0]];
+    [array addObject:standaloneImageProvider];
+    excludedActivityTypes = [linkProvider excludedActivityTypes];
+    v10 = [excludedActivityTypes setByAddingObject:*MEMORY[0x1E69CDAB0]];
   }
 
   else
   {
-    v9 = [v6 excludedActivityTypes];
-    v10 = [v9 safari_setByRemovingObject:*MEMORY[0x1E69CDAB0]];
+    excludedActivityTypes = [linkProvider excludedActivityTypes];
+    v10 = [excludedActivityTypes safari_setByRemovingObject:*MEMORY[0x1E69CDAB0]];
   }
 
   v11 = v10;
-  [v6 setExcludedActivityTypes:v10];
+  [linkProvider setExcludedActivityTypes:v10];
 
-  if ([v4 canPrint])
+  if ([controllerCopy canPrint])
   {
-    v12 = [(_SFActivityItemProviderCollection *)self printProvider];
-    [v5 safari_addObjectUnlessNil:v12];
+    printProvider = [(_SFActivityItemProviderCollection *)self printProvider];
+    [array safari_addObjectUnlessNil:printProvider];
 
-    -[_SFPrintActivityItemProvider setCanVendPDFRepresentation:](self->_printProvider, "setCanVendPDFRepresentation:", [v4 canShareAsPDF]);
+    -[_SFPrintActivityItemProvider setCanVendPDFRepresentation:](self->_printProvider, "setCanVendPDFRepresentation:", [controllerCopy canShareAsPDF]);
   }
 
-  if ([v4 canShareAsDownload])
+  if ([controllerCopy canShareAsDownload])
   {
-    v13 = [(_SFActivityItemProviderCollection *)self downloadProvider];
-    if (v13)
+    downloadProvider = [(_SFActivityItemProviderCollection *)self downloadProvider];
+    if (downloadProvider)
     {
-      [v5 addObject:v13];
-      v14 = [v6 excludedActivityTypes];
-      v15 = [v14 setByAddingObject:*MEMORY[0x1E69CDA78]];
-      [v6 setExcludedActivityTypes:v15];
+      [array addObject:downloadProvider];
+      excludedActivityTypes2 = [linkProvider excludedActivityTypes];
+      v15 = [excludedActivityTypes2 setByAddingObject:*MEMORY[0x1E69CDA78]];
+      [linkProvider setExcludedActivityTypes:v15];
     }
   }
 
-  if ([v4 canShareAsWebArchive] && !-[_SFActivityItemProviderCollection displayingDigitalHealthLockoutView](self, "displayingDigitalHealthLockoutView"))
+  if ([controllerCopy canShareAsWebArchive] && !-[_SFActivityItemProviderCollection displayingDigitalHealthLockoutView](self, "displayingDigitalHealthLockoutView"))
   {
-    v16 = [(_SFActivityItemProviderCollection *)self webArchiveProvider];
-    [v5 safari_addObjectUnlessNil:v16];
+    webArchiveProvider = [(_SFActivityItemProviderCollection *)self webArchiveProvider];
+    [array safari_addObjectUnlessNil:webArchiveProvider];
   }
 
-  v17 = [(_SFActivityItemProviderCollection *)self documentProvider];
-  [v5 safari_addObjectUnlessNil:v17];
+  documentProvider = [(_SFActivityItemProviderCollection *)self documentProvider];
+  [array safari_addObjectUnlessNil:documentProvider];
 
-  return v5;
+  return array;
 }
 
 @end

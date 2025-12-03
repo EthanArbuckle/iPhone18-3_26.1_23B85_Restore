@@ -1,13 +1,13 @@
 @interface TITypologyLogArchiverDelegate
 - (TITypologyLogArchiverDelegate)init;
-- (id)archiver:(id)a3 willEncodeObject:(id)a4;
+- (id)archiver:(id)archiver willEncodeObject:(id)object;
 @end
 
 @implementation TITypologyLogArchiverDelegate
 
-- (id)archiver:(id)a3 willEncodeObject:(id)a4
+- (id)archiver:(id)archiver willEncodeObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -17,29 +17,29 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v6 = [(TITypologyLogArchiverDelegate *)self objects];
-        v7 = [v6 count];
+        objects = [(TITypologyLogArchiverDelegate *)self objects];
+        v7 = [objects count];
 
-        v8 = [(TITypologyLogArchiverDelegate *)self objects];
-        [v8 addObject:v5];
+        objects2 = [(TITypologyLogArchiverDelegate *)self objects];
+        [objects2 addObject:objectCopy];
 
-        v9 = [(TITypologyLogArchiverDelegate *)self objects];
-        v10 = [v9 count];
+        objects3 = [(TITypologyLogArchiverDelegate *)self objects];
+        v10 = [objects3 count];
 
         if (v10 == v7)
         {
-          v11 = [(TITypologyLogArchiverDelegate *)self objects];
-          v12 = [v11 member:v5];
+          objects4 = [(TITypologyLogArchiverDelegate *)self objects];
+          v12 = [objects4 member:objectCopy];
 
-          v5 = v12;
+          objectCopy = v12;
         }
       }
     }
   }
 
-  v13 = v5;
+  v13 = objectCopy;
 
-  return v5;
+  return objectCopy;
 }
 
 - (TITypologyLogArchiverDelegate)init

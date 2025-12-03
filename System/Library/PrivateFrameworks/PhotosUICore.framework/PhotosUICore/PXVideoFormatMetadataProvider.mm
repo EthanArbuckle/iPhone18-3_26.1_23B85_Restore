@@ -1,23 +1,23 @@
 @interface PXVideoFormatMetadataProvider
 - (_TtC12PhotosUICore29PXVideoFormatMetadataProvider)init;
-- (_TtC12PhotosUICore29PXVideoFormatMetadataProvider)initWithImageManager:(id)a3;
+- (_TtC12PhotosUICore29PXVideoFormatMetadataProvider)initWithImageManager:(id)manager;
 - (void)cancelActiveRequest;
-- (void)requestVideoMetadataFor:(id)a3 processingQueue:(id)a4 callbackQueue:(id)a5 completion:(id)a6;
+- (void)requestVideoMetadataFor:(id)for processingQueue:(id)queue callbackQueue:(id)callbackQueue completion:(id)completion;
 @end
 
 @implementation PXVideoFormatMetadataProvider
 
-- (_TtC12PhotosUICore29PXVideoFormatMetadataProvider)initWithImageManager:(id)a3
+- (_TtC12PhotosUICore29PXVideoFormatMetadataProvider)initWithImageManager:(id)manager
 {
   v4 = self + OBJC_IVAR____TtC12PhotosUICore29PXVideoFormatMetadataProvider_activeRequestID;
   *v4 = 0;
   v4[4] = 1;
-  *(&self->super.isa + OBJC_IVAR____TtC12PhotosUICore29PXVideoFormatMetadataProvider_imageManager) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC12PhotosUICore29PXVideoFormatMetadataProvider_imageManager) = manager;
   *v4 = 0;
   v4[4] = 1;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PXVideoFormatMetadataProvider();
-  v5 = a3;
+  managerCopy = manager;
   return [(PXVideoFormatMetadataProvider *)&v7 init];
 }
 
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)requestVideoMetadataFor:(id)a3 processingQueue:(id)a4 callbackQueue:(id)a5 completion:(id)a6
+- (void)requestVideoMetadataFor:(id)for processingQueue:(id)queue callbackQueue:(id)callbackQueue completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = swift_allocObject();
@@ -39,11 +39,11 @@
   *(v12 + 24) = v11;
   v13 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x88);
   swift_unknownObjectRetain();
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
+  queueCopy = queue;
+  callbackQueueCopy = callbackQueue;
+  selfCopy = self;
 
-  v13(a3, v14, v15, sub_1A4426BD8, v12);
+  v13(for, queueCopy, callbackQueueCopy, sub_1A4426BD8, v12);
 
   swift_unknownObjectRelease();
 }

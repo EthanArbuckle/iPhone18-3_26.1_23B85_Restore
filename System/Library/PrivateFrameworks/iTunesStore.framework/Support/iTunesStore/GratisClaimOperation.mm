@@ -1,7 +1,7 @@
 @interface GratisClaimOperation
 - (BOOL)suppressesErrorDialogs;
-- (GratisClaimOperation)initWithPurchase:(id)a3;
-- (GratisClaimOperation)initWithRequestBody:(id)a3;
+- (GratisClaimOperation)initWithPurchase:(id)purchase;
+- (GratisClaimOperation)initWithRequestBody:(id)body;
 - (NSData)clientAuditTokenData;
 - (NSDictionary)rawOutput;
 - (NSString)authenticationReasonDescription;
@@ -10,45 +10,45 @@
 - (id)_authenticationContext;
 - (id)_bodyData;
 - (id)_newDefaultRequestProperties;
-- (id)_newRetryRequestPropertiesWithURL:(id)a3;
+- (id)_newRetryRequestPropertiesWithURL:(id)l;
 - (void)dealloc;
-- (void)operation:(id)a3 didAuthenticateWithDSID:(id)a4;
+- (void)operation:(id)operation didAuthenticateWithDSID:(id)d;
 - (void)run;
-- (void)setAuthenticationReasonDescription:(id)a3;
-- (void)setClientAuditTokenData:(id)a3;
-- (void)setSuppressesErrorDialogs:(BOOL)a3;
+- (void)setAuthenticationReasonDescription:(id)description;
+- (void)setClientAuditTokenData:(id)data;
+- (void)setSuppressesErrorDialogs:(BOOL)dialogs;
 @end
 
 @implementation GratisClaimOperation
 
-- (GratisClaimOperation)initWithPurchase:(id)a3
+- (GratisClaimOperation)initWithPurchase:(id)purchase
 {
   v10.receiver = self;
   v10.super_class = GratisClaimOperation;
   v4 = [(GratisClaimOperation *)&v10 init];
   if (v4)
   {
-    v4->_accountID = [a3 accountIdentifier];
-    v4->_defaultRequestProperties = [a3 requestProperties];
-    v4->_suppressesErrorDialogs = [objc_msgSend(a3 valueForDownloadProperty:{SSDownloadPropertyShouldSuppressErrorDialogs), "BOOLValue"}];
+    v4->_accountID = [purchase accountIdentifier];
+    v4->_defaultRequestProperties = [purchase requestProperties];
+    v4->_suppressesErrorDialogs = [objc_msgSend(purchase valueForDownloadProperty:{SSDownloadPropertyShouldSuppressErrorDialogs), "BOOLValue"}];
     v5 = [[SSVGratisRequestBody alloc] initWithRequestStyle:1];
     v4->_requestBody = v5;
     [(SSVGratisRequestBody *)v5 setAccountIdentifier:v4->_accountID];
-    v6 = [a3 gratisIdentifiers];
-    if ([v6 count])
+    gratisIdentifiers = [purchase gratisIdentifiers];
+    if ([gratisIdentifiers count])
     {
-      [v6 objectAtIndex:0];
+      [gratisIdentifiers objectAtIndex:0];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       requestBody = v4->_requestBody;
       if (isKindOfClass)
       {
-        [(SSVGratisRequestBody *)requestBody setItemIdentifiers:v6];
+        [(SSVGratisRequestBody *)requestBody setItemIdentifiers:gratisIdentifiers];
       }
 
       else
       {
-        [(SSVGratisRequestBody *)requestBody setBundleIdentifiers:v6];
+        [(SSVGratisRequestBody *)requestBody setBundleIdentifiers:gratisIdentifiers];
       }
     }
   }
@@ -56,15 +56,15 @@
   return v4;
 }
 
-- (GratisClaimOperation)initWithRequestBody:(id)a3
+- (GratisClaimOperation)initWithRequestBody:(id)body
 {
   v6.receiver = self;
   v6.super_class = GratisClaimOperation;
   v4 = [(GratisClaimOperation *)&v6 init];
   if (v4)
   {
-    v4->_accountID = [objc_msgSend(a3 "accountIdentifier")];
-    v4->_requestBody = [a3 copy];
+    v4->_accountID = [objc_msgSend(body "accountIdentifier")];
+    v4->_requestBody = [body copy];
     v4->_suppressesErrorDialogs = 1;
   }
 
@@ -105,36 +105,36 @@
   return v3;
 }
 
-- (void)setAuthenticationReasonDescription:(id)a3
+- (void)setAuthenticationReasonDescription:(id)description
 {
   [(GratisClaimOperation *)self lock];
   authenticationReasonDescription = self->_authenticationReasonDescription;
-  if (authenticationReasonDescription != a3)
+  if (authenticationReasonDescription != description)
   {
 
-    self->_authenticationReasonDescription = [a3 copy];
+    self->_authenticationReasonDescription = [description copy];
   }
 
   [(GratisClaimOperation *)self unlock];
 }
 
-- (void)setClientAuditTokenData:(id)a3
+- (void)setClientAuditTokenData:(id)data
 {
   [(GratisClaimOperation *)self lock];
   clientAuditTokenData = self->_clientAuditTokenData;
-  if (clientAuditTokenData != a3)
+  if (clientAuditTokenData != data)
   {
 
-    self->_clientAuditTokenData = a3;
+    self->_clientAuditTokenData = data;
   }
 
   [(GratisClaimOperation *)self unlock];
 }
 
-- (void)setSuppressesErrorDialogs:(BOOL)a3
+- (void)setSuppressesErrorDialogs:(BOOL)dialogs
 {
   [(GratisClaimOperation *)self lock];
-  self->_suppressesErrorDialogs = a3;
+  self->_suppressesErrorDialogs = dialogs;
 
   [(GratisClaimOperation *)self unlock];
 }
@@ -158,7 +158,7 @@
 
 - (void)run
 {
-  v3 = [(GratisClaimOperation *)self _newDefaultRequestProperties];
+  _newDefaultRequestProperties = [(GratisClaimOperation *)self _newDefaultRequestProperties];
   v4 = &CFDictionaryGetValue_ptr;
   p_cache = &OBJC_METACLASS___AMSPurchaseShim.cache;
   v6 = &CFDictionaryGetValue_ptr;
@@ -168,30 +168,30 @@
     v7 = objc_alloc_init(v4[304]);
     [v7 setDelegate:self];
     [v7 setShouldSendXTokenHeader:1];
-    v8 = [(GratisClaimOperation *)self _authenticationContext];
-    [v7 setAuthenticationContext:v8];
-    v9 = [p_cache + 123 provider];
-    [v9 setAuthenticationContext:v8];
-    [v7 setDataProvider:v9];
-    [v7 setRequestProperties:v3];
-    v10 = [v6[412] sharedDaemonConfig];
-    if (!v10)
+    _authenticationContext = [(GratisClaimOperation *)self _authenticationContext];
+    [v7 setAuthenticationContext:_authenticationContext];
+    provider = [p_cache + 123 provider];
+    [provider setAuthenticationContext:_authenticationContext];
+    [v7 setDataProvider:provider];
+    [v7 setRequestProperties:_newDefaultRequestProperties];
+    sharedDaemonConfig = [v6[412] sharedDaemonConfig];
+    if (!sharedDaemonConfig)
     {
-      v10 = [v6[412] sharedConfig];
+      sharedDaemonConfig = [v6[412] sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
-    if ([v10 shouldLogToDisk])
+    shouldLog = [sharedDaemonConfig shouldLog];
+    if ([sharedDaemonConfig shouldLogToDisk])
     {
-      v11 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled([sharedDaemonConfig OSLogObject], OS_LOG_TYPE_INFO))
     {
-      v11 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v11)
+    if (shouldLog)
     {
       v12 = objc_opt_class();
       requestBody = self->_requestBody;
@@ -214,34 +214,34 @@
 
     *v33 = 0;
     v17 = [(GratisClaimOperation *)self runSubOperation:v7 returningError:v33, v29];
-    v18 = [v9 redirectedClaimURL];
-    if (v18)
+    redirectedClaimURL = [provider redirectedClaimURL];
+    if (redirectedClaimURL)
     {
 
-      v3 = [(GratisClaimOperation *)self _newRetryRequestPropertiesWithURL:v18];
+      _newDefaultRequestProperties = [(GratisClaimOperation *)self _newRetryRequestPropertiesWithURL:redirectedClaimURL];
     }
 
     else
     {
       [(GratisClaimOperation *)self lock];
-      v19 = [v9 output];
-      if (v19)
+      output = [provider output];
+      if (output)
       {
-        v20 = v19;
-        v31 = [NSPropertyListSerialization dataWithPropertyList:v19 format:100 options:0 error:0];
+        v20 = output;
+        v31 = [NSPropertyListSerialization dataWithPropertyList:output format:100 options:0 error:0];
         self->_rawOutput = v20;
-        v21 = v3;
+        v21 = _newDefaultRequestProperties;
         v22 = v6;
         v23 = p_cache;
         v24 = v4;
         v25 = [SSURLConnectionResponse alloc];
-        v26 = [v7 response];
+        response = [v7 response];
         v27 = v25;
         v4 = v24;
         p_cache = v23;
         v6 = v22;
-        v3 = v21;
-        self->_urlResponse = [v27 initWithURLResponse:v26 bodyData:v31];
+        _newDefaultRequestProperties = v21;
+        self->_urlResponse = [v27 initWithURLResponse:response bodyData:v31];
         v28 = [v20 objectForKey:@"duAnonymousPings"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -260,22 +260,22 @@
     objc_autoreleasePoolPop(context);
   }
 
-  while (v18);
+  while (redirectedClaimURL);
 }
 
-- (void)operation:(id)a3 didAuthenticateWithDSID:(id)a4
+- (void)operation:(id)operation didAuthenticateWithDSID:(id)d
 {
   [(GratisClaimOperation *)self lock];
 
-  self->_accountID = [a4 copy];
+  self->_accountID = [d copy];
   [(GratisClaimOperation *)self unlock];
-  v7 = [(GratisClaimOperation *)self _authenticationContext];
-  [objc_msgSend(a3 "dataProvider")];
-  [a3 setAuthenticationContext:v7];
-  v8 = [a3 _requestProperties];
-  v9 = [(GratisClaimOperation *)self _bodyData];
+  _authenticationContext = [(GratisClaimOperation *)self _authenticationContext];
+  [objc_msgSend(operation "dataProvider")];
+  [operation setAuthenticationContext:_authenticationContext];
+  _requestProperties = [operation _requestProperties];
+  _bodyData = [(GratisClaimOperation *)self _bodyData];
 
-  [v8 setHTTPBody:v9];
+  [_requestProperties setHTTPBody:_bodyData];
 }
 
 - (id)_accountID
@@ -288,10 +288,10 @@
     return v3;
   }
 
-  v4 = [(SSVGratisRequestBody *)self->_requestBody accountIdentifier];
-  if (v4)
+  accountIdentifier = [(SSVGratisRequestBody *)self->_requestBody accountIdentifier];
+  if (accountIdentifier)
   {
-    return v4;
+    return accountIdentifier;
   }
 
   v6 = [+[SSAccountStore defaultStore](SSAccountStore "defaultStore")];
@@ -309,8 +309,8 @@
   }
 
   [v3 setReasonDescription:{-[GratisClaimOperation authenticationReasonDescription](self, "authenticationReasonDescription")}];
-  v4 = [(SSURLRequestProperties *)self->_defaultRequestProperties HTTPHeaders];
-  [v3 setValue:objc_msgSend(v4 forHTTPHeaderField:{"objectForKey:", SSHTTPHeaderUserAgent), SSHTTPHeaderUserAgent}];
+  hTTPHeaders = [(SSURLRequestProperties *)self->_defaultRequestProperties HTTPHeaders];
+  [v3 setValue:objc_msgSend(hTTPHeaders forHTTPHeaderField:{"objectForKey:", SSHTTPHeaderUserAgent), SSHTTPHeaderUserAgent}];
 
   return v3;
 }
@@ -318,11 +318,11 @@
 - (id)_bodyData
 {
   v3 = [(SSVGratisRequestBody *)self->_requestBody copy];
-  v4 = [(GratisClaimOperation *)self _accountID];
-  [v3 setAccountIdentifier:v4];
-  if (v4)
+  _accountID = [(GratisClaimOperation *)self _accountID];
+  [v3 setAccountIdentifier:_accountID];
+  if (_accountID)
   {
-    v5 = sub_1000B18E8([v4 unsignedLongLongValue], 1);
+    v5 = sub_1000B18E8([_accountID unsignedLongLongValue], 1);
     v6 = [(__CFData *)v5 base64EncodedStringWithOptions:0];
     if (v6)
     {
@@ -330,9 +330,9 @@
     }
   }
 
-  v7 = [v3 propertyListBodyData];
+  propertyListBodyData = [v3 propertyListBodyData];
 
-  return v7;
+  return propertyListBodyData;
 }
 
 - (id)_newDefaultRequestProperties
@@ -359,9 +359,9 @@
   return v3;
 }
 
-- (id)_newRetryRequestPropertiesWithURL:(id)a3
+- (id)_newRetryRequestPropertiesWithURL:(id)l
 {
-  v4 = [[SSMutableURLRequestProperties alloc] initWithURL:a3];
+  v4 = [[SSMutableURLRequestProperties alloc] initWithURL:l];
   [v4 setAllowedRetryCount:0];
   [v4 setHTTPHeaders:{-[SSURLRequestProperties HTTPHeaders](self->_defaultRequestProperties, "HTTPHeaders")}];
   [v4 setITunesStoreRequest:1];

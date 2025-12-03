@@ -1,7 +1,7 @@
 @interface WFEventTracker
 + (id)sharedTracker;
 - (WFEventTracker)init;
-- (void)trackEvent:(id)a3;
+- (void)trackEvent:(id)event;
 @end
 
 @implementation WFEventTracker
@@ -32,10 +32,10 @@ void __31__WFEventTracker_sharedTracker__block_invoke()
   return [(WFEventTracker *)&v3 init];
 }
 
-- (void)trackEvent:(id)a3
+- (void)trackEvent:(id)event
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventCopy = event;
   v6 = getWFEventTrackerLogObject();
   v7 = os_signpost_id_generate(v6);
 
@@ -49,44 +49,44 @@ void __31__WFEventTracker_sharedTracker__block_invoke()
     _os_signpost_emit_with_name_impl(&dword_1CA256000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "TrackEvent", "event=%{signpost.description:attribute}@", buf, 0xCu);
   }
 
-  if (!v5)
+  if (!eventCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"WFEventTracker.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"event"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEventTracker.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
   v11 = objc_opt_class();
   if (([v11 isSubclassOfClass:objc_opt_class()] & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFEventTracker.m" lineNumber:43 description:{@"Invalid event tracking attempted with eventClass: %@", objc_opt_class()}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFEventTracker.m" lineNumber:43 description:{@"Invalid event tracking attempted with eventClass: %@", objc_opt_class()}];
   }
 
-  v12 = [v5 coreAnalyticsKey];
+  coreAnalyticsKey = [eventCopy coreAnalyticsKey];
 
   v13 = getWFEventTrackerLogObject();
   v14 = v13;
-  if (v12)
+  if (coreAnalyticsKey)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v15 = objc_opt_class();
       v16 = v15;
-      v17 = [v5 coreAnalyticsKey];
-      v18 = [v5 serializableEvent];
+      coreAnalyticsKey2 = [eventCopy coreAnalyticsKey];
+      serializableEvent = [eventCopy serializableEvent];
       *buf = 136315906;
       v29 = "[WFEventTracker trackEvent:]";
       v30 = 2114;
       v31 = v15;
       v32 = 2114;
-      v33 = v17;
+      v33 = coreAnalyticsKey2;
       v34 = 2114;
-      v35 = v18;
+      v35 = serializableEvent;
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_INFO, "%s Logging event to CoreAnalytics %{public}@ using key %{public}@ %{public}@", buf, 0x2Au);
     }
 
-    v19 = [v5 coreAnalyticsKey];
-    v27 = v5;
+    coreAnalyticsKey3 = [eventCopy coreAnalyticsKey];
+    v27 = eventCopy;
     AnalyticsSendEventLazy();
 
     v14 = v27;

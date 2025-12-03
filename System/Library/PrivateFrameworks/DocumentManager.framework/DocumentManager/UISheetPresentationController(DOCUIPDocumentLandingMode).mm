@@ -7,21 +7,21 @@
 
 - (id)doc_detentForDocumentLandingMode:()DOCUIPDocumentLandingMode
 {
-  v4 = [a1 detents];
-  v5 = v4;
+  detents = [self detents];
+  v5 = detents;
   if (a3)
   {
-    [v4 firstObject];
+    [detents firstObject];
   }
 
   else
   {
-    [v4 lastObject];
+    [detents lastObject];
   }
   v6 = ;
-  v7 = [v6 identifier];
+  identifier = [v6 identifier];
 
-  return v7;
+  return identifier;
 }
 
 - (uint64_t)doc_documentLandingModeForDetent:()DOCUIPDocumentLandingMode
@@ -46,8 +46,8 @@ LABEL_3:
         objc_enumerationMutation(&unk_1F5F53438);
       }
 
-      v9 = [*(*(&v13 + 1) + 8 * v8) integerValue];
-      v10 = [a1 doc_detentForDocumentLandingMode:v9];
+      integerValue = [*(*(&v13 + 1) + 8 * v8) integerValue];
+      v10 = [self doc_detentForDocumentLandingMode:integerValue];
       v11 = [v10 isEqual:v4];
 
       if (v11)
@@ -71,10 +71,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v9 = 1;
+    integerValue = 1;
   }
 
-  return v9;
+  return integerValue;
 }
 
 @end

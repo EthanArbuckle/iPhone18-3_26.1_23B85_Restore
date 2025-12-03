@@ -6,11 +6,11 @@
 
 - (id)tvp_numberValue
 {
-  v1 = [a1 value];
+  value = [self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = value;
 LABEL_5:
     v4 = v2;
     goto LABEL_7;
@@ -20,7 +20,7 @@ LABEL_5:
   if (objc_opt_isKindOfClass())
   {
     v3 = MEMORY[0x277CCABB0];
-    [v1 doubleValue];
+    [value doubleValue];
     v2 = [v3 numberWithDouble:?];
     goto LABEL_5;
   }

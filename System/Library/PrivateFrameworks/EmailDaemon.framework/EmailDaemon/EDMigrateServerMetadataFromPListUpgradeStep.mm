@@ -1,14 +1,14 @@
 @interface EDMigrateServerMetadataFromPListUpgradeStep
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 - (EDMigrateServerMetadataFromPListUpgradeStep)init;
 @end
 
 @implementation EDMigrateServerMetadataFromPListUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  sub_1C6417E38(v3);
+  connectionCopy = connection;
+  sub_1C6417E38(connectionCopy);
 
   return 0;
 }

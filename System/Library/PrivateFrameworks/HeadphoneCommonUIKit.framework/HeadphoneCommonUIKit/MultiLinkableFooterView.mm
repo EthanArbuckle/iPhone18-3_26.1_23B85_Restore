@@ -4,10 +4,10 @@
 + (NSString)footerLinkReuseIDKey;
 + (NSString)footerLinkStringsKey;
 + (NSString)footerLinkTargetsKey;
-- (_TtC20HeadphoneCommonUIKit23MultiLinkableFooterView)initWithReuseIdentifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
-- (void)refreshContentsWithSpecifier:(id)a3;
+- (_TtC20HeadphoneCommonUIKit23MultiLinkableFooterView)initWithReuseIdentifier:(id)identifier;
+- (double)preferredHeightForWidth:(double)width;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
+- (void)refreshContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation MultiLinkableFooterView
@@ -62,16 +62,16 @@
   return v3;
 }
 
-- (void)refreshContentsWithSpecifier:(id)a3
+- (void)refreshContentsWithSpecifier:(id)specifier
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](specifier);
   MEMORY[0x1E69E5928](self);
   sub_1AC390E00();
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](specifier);
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   MEMORY[0x1E69E5928](self);
   v5 = sub_1AC390ED8();
@@ -79,24 +79,24 @@
   return v5;
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](view);
   MEMORY[0x1E69E5928](self);
   v8 = sub_1AC390FA0();
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a4);
+  MEMORY[0x1E69E5920](view);
   return v8;
 }
 
-- (_TtC20HeadphoneCommonUIKit23MultiLinkableFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC20HeadphoneCommonUIKit23MultiLinkableFooterView)initWithReuseIdentifier:(id)identifier
 {
-  MEMORY[0x1E69E5928](a3);
-  if (a3)
+  MEMORY[0x1E69E5928](identifier);
+  if (identifier)
   {
     sub_1AC3B7EF4();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](identifier);
     v4 = v5;
   }
 

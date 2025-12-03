@@ -2,16 +2,16 @@
 - (id)portalLayer;
 - (void)_configurePortalViewIfNeeded;
 - (void)didMoveToWindow;
-- (void)setSourceView:(id)a3;
+- (void)setSourceView:(id)view;
 @end
 
 @implementation _SAUIPortalView
 
 - (id)portalLayer
 {
-  v2 = [(_SAUIPortalView *)self layer];
+  layer = [(_SAUIPortalView *)self layer];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = layer;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -32,18 +32,18 @@
 
 - (void)_configurePortalViewIfNeeded
 {
-  v3 = [(UIView *)self->_sourceView layer];
-  objc_initWeak(&location, v3);
-  v4 = [(_SAUIPortalView *)self portalLayer];
-  v5 = [v4 sourceLayer];
-  v6 = v5;
-  if (v5 == v3)
+  layer = [(UIView *)self->_sourceView layer];
+  objc_initWeak(&location, layer);
+  portalLayer = [(_SAUIPortalView *)self portalLayer];
+  sourceLayer = [portalLayer sourceLayer];
+  v6 = sourceLayer;
+  if (sourceLayer == layer)
   {
   }
 
   else
   {
-    v7 = [(_SAUIPortalView *)self portalLayer];
+    portalLayer2 = [(_SAUIPortalView *)self portalLayer];
     v8 = CALayerGetContext();
 
     if (v8)
@@ -66,8 +66,8 @@
 
       else
       {
-        v9 = [(_SAUIPortalView *)self portalLayer];
-        [v9 setSourceLayer:v3];
+        portalLayer3 = [(_SAUIPortalView *)self portalLayer];
+        [portalLayer3 setSourceLayer:layer];
       }
     }
   }
@@ -83,15 +83,15 @@
   [(_SAUIPortalView *)self _configurePortalViewIfNeeded];
 }
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  v5 = a3;
-  if (self->_sourceView != v5)
+  viewCopy = view;
+  if (self->_sourceView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sourceView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_sourceView, view);
     [(_SAUIPortalView *)self _configurePortalViewIfNeeded];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 

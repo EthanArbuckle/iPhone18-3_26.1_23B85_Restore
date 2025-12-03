@@ -1,40 +1,40 @@
 @interface BMMapsRecentConversationsIntentContactInformation
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMapsRecentConversationsIntentContactInformation)initWithIdentifier:(id)a3 fullDisplayName:(id)a4 friendlyName:(id)a5 emailAddress:(id)a6 phoneNumber:(id)a7;
-- (BMMapsRecentConversationsIntentContactInformation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMapsRecentConversationsIntentContactInformation)initWithIdentifier:(id)identifier fullDisplayName:(id)name friendlyName:(id)friendlyName emailAddress:(id)address phoneNumber:(id)number;
+- (BMMapsRecentConversationsIntentContactInformation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_emailAddressJSONArray;
 - (id)_phoneNumberJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMapsRecentConversationsIntentContactInformation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
-    v14 = [v5 fullDisplayName];
-    v15 = v14;
-    if (v13 == v14)
+    fullDisplayName = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
+    fullDisplayName2 = [v5 fullDisplayName];
+    v15 = fullDisplayName2;
+    if (fullDisplayName == fullDisplayName2)
     {
     }
 
     else
     {
-      v16 = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
-      v17 = [v5 fullDisplayName];
-      v18 = [v16 isEqual:v17];
+      fullDisplayName3 = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
+      fullDisplayName4 = [v5 fullDisplayName];
+      v18 = [fullDisplayName3 isEqual:fullDisplayName4];
 
       if (!v18)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v19 = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
-    v20 = [v5 friendlyName];
-    v21 = v20;
-    if (v19 == v20)
+    friendlyName = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
+    friendlyName2 = [v5 friendlyName];
+    v21 = friendlyName2;
+    if (friendlyName == friendlyName2)
     {
     }
 
     else
     {
-      v22 = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
-      v23 = [v5 friendlyName];
-      v24 = [v22 isEqual:v23];
+      friendlyName3 = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
+      friendlyName4 = [v5 friendlyName];
+      v24 = [friendlyName3 isEqual:friendlyName4];
 
       if (!v24)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v25 = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
-    v26 = [v5 emailAddress];
-    v27 = v26;
-    if (v25 == v26)
+    emailAddress = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
+    emailAddress2 = [v5 emailAddress];
+    v27 = emailAddress2;
+    if (emailAddress == emailAddress2)
     {
     }
 
     else
     {
-      v28 = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
-      v29 = [v5 emailAddress];
-      v30 = [v28 isEqual:v29];
+      emailAddress3 = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
+      emailAddress4 = [v5 emailAddress];
+      v30 = [emailAddress3 isEqual:emailAddress4];
 
       if (!v30)
       {
@@ -103,18 +103,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
-    v32 = [v5 phoneNumber];
-    if (v31 == v32)
+    phoneNumber = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
+    phoneNumber2 = [v5 phoneNumber];
+    if (phoneNumber == phoneNumber2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
-      v34 = [v5 phoneNumber];
-      v12 = [v33 isEqual:v34];
+      phoneNumber3 = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
+      phoneNumber4 = [v5 phoneNumber];
+      v12 = [phoneNumber3 isEqual:phoneNumber4];
     }
 
     goto LABEL_23;
@@ -129,56 +129,56 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
-  v4 = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
-  v5 = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
-  v6 = [(BMMapsRecentConversationsIntentContactInformation *)self _emailAddressJSONArray];
-  v7 = [(BMMapsRecentConversationsIntentContactInformation *)self _phoneNumberJSONArray];
+  identifier = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
+  fullDisplayName = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
+  friendlyName = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
+  _emailAddressJSONArray = [(BMMapsRecentConversationsIntentContactInformation *)self _emailAddressJSONArray];
+  _phoneNumberJSONArray = [(BMMapsRecentConversationsIntentContactInformation *)self _phoneNumberJSONArray];
   v18 = @"identifier";
-  v8 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"fullDisplayName";
-  v9 = v4;
-  if (!v4)
+  null2 = fullDisplayName;
+  if (!fullDisplayName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"friendlyName";
-  v10 = v5;
-  if (!v5)
+  null3 = friendlyName;
+  if (!friendlyName)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"emailAddress";
-  v11 = v6;
-  if (!v6)
+  null4 = _emailAddressJSONArray;
+  if (!_emailAddressJSONArray)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"phoneNumber";
-  v12 = v7;
-  if (!v7)
+  null5 = _phoneNumberJSONArray;
+  if (!_phoneNumberJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (_phoneNumberJSONArray)
   {
-    if (v6)
+    if (_emailAddressJSONArray)
     {
       goto LABEL_13;
     }
@@ -187,10 +187,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (_emailAddressJSONArray)
     {
 LABEL_13:
-      if (v5)
+      if (friendlyName)
       {
         goto LABEL_14;
       }
@@ -199,17 +199,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (friendlyName)
   {
 LABEL_14:
-    if (v4)
+    if (fullDisplayName)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (identifier)
     {
       goto LABEL_16;
     }
@@ -219,13 +219,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!fullDisplayName)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (identifier)
   {
     goto LABEL_16;
   }
@@ -246,8 +246,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  phoneNumber = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
+  v5 = [phoneNumber countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -258,13 +258,13 @@ LABEL_16:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(phoneNumber);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [phoneNumber countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -283,8 +283,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  emailAddress = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
+  v5 = [emailAddress countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -295,13 +295,13 @@ LABEL_16:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(emailAddress);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [emailAddress countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -312,17 +312,17 @@ LABEL_16:
   return v3;
 }
 
-- (BMMapsRecentConversationsIntentContactInformation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMapsRecentConversationsIntentContactInformation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v106[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -335,7 +335,7 @@ LABEL_16:
         v35 = [v34 initWithDomain:v31 code:2 userInfo:v33];
         v8 = 0;
         v36 = 0;
-        *a4 = v35;
+        *error = v35;
         goto LABEL_72;
       }
 
@@ -352,13 +352,13 @@ LABEL_16:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"fullDisplayName"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"fullDisplayName"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v39 = v9;
         v40 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -373,7 +373,7 @@ LABEL_16:
         v45 = [v44 initWithDomain:v41 code:2 userInfo:?];
         v32 = 0;
         v36 = 0;
-        *a4 = v45;
+        *error = v45;
         goto LABEL_71;
       }
 
@@ -390,7 +390,7 @@ LABEL_16:
     v77 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"friendlyName"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"friendlyName"];
   v74 = v9;
   v75 = v7;
   v78 = v10;
@@ -399,7 +399,7 @@ LABEL_16:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v46 = objc_alloc(MEMORY[0x1E696ABC0]);
         v47 = *MEMORY[0x1E698F240];
@@ -410,7 +410,7 @@ LABEL_16:
         v48 = [v46 initWithDomain:v47 code:2 userInfo:v15];
         v76 = 0;
         v36 = 0;
-        *a4 = v48;
+        *error = v48;
         v32 = v77;
         goto LABEL_69;
       }
@@ -429,15 +429,15 @@ LABEL_16:
     v76 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"emailAddress"];
-  v13 = [MEMORY[0x1E695DFB0] null];
-  v14 = [v12 isEqual:v13];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"emailAddress"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v14 = [v12 isEqual:null];
 
   if (v14)
   {
-    v72 = v6;
-    v73 = a4;
-    v71 = self;
+    v72 = dictionaryCopy;
+    errorCopy3 = error;
+    selfCopy2 = self;
 
     v12 = 0;
   }
@@ -449,7 +449,7 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v36 = 0;
           v32 = v77;
@@ -457,7 +457,7 @@ LABEL_16:
         }
 
         v54 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v55 = a4;
+        errorCopy2 = error;
         v56 = *MEMORY[0x1E698F240];
         v99 = *MEMORY[0x1E696A578];
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"emailAddress"];
@@ -465,14 +465,14 @@ LABEL_16:
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
         v57 = [v54 initWithDomain:v56 code:2 userInfo:v21];
         v36 = 0;
-        *v55 = v57;
+        *errorCopy2 = v57;
         goto LABEL_58;
       }
     }
 
-    v72 = v6;
-    v73 = a4;
-    v71 = self;
+    v72 = dictionaryCopy;
+    errorCopy3 = error;
+    selfCopy2 = self;
   }
 
   v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
@@ -503,7 +503,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v73)
+        if (errorCopy3)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v25 = *MEMORY[0x1E698F240];
@@ -516,7 +516,7 @@ LABEL_16:
 LABEL_38:
           v8 = v70;
           v32 = v77;
-          *v73 = [v28 initWithDomain:v29 code:2 userInfo:v27];
+          *errorCopy3 = [v28 initWithDomain:v29 code:2 userInfo:v27];
 
           v36 = 0;
           v21 = v12;
@@ -526,8 +526,8 @@ LABEL_38:
 LABEL_41:
         v36 = 0;
         v21 = v12;
-        self = v71;
-        v6 = v72;
+        self = selfCopy2;
+        dictionaryCopy = v72;
         v8 = v70;
 LABEL_58:
         v32 = v77;
@@ -537,7 +537,7 @@ LABEL_58:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v73)
+        if (errorCopy3)
         {
           v37 = objc_alloc(MEMORY[0x1E696ABC0]);
           v38 = *MEMORY[0x1E698F240];
@@ -563,10 +563,10 @@ LABEL_58:
   while (v17);
 LABEL_26:
 
-  v6 = v72;
+  dictionaryCopy = v72;
   v21 = [v72 objectForKeyedSubscript:@"phoneNumber"];
-  v22 = [MEMORY[0x1E695DFB0] null];
-  v23 = [v21 isEqual:v22];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v23 = [v21 isEqual:null2];
 
   if (v23)
   {
@@ -580,7 +580,7 @@ LABEL_26:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v73)
+      if (errorCopy3)
       {
         v66 = objc_alloc(MEMORY[0x1E696ABC0]);
         v67 = *MEMORY[0x1E698F240];
@@ -588,7 +588,7 @@ LABEL_26:
         v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"phoneNumber"];
         v93 = v26;
         v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-        *v73 = [v66 initWithDomain:v67 code:2 userInfo:v68];
+        *errorCopy3 = [v66 initWithDomain:v67 code:2 userInfo:v68];
 
         v36 = 0;
         v32 = v77;
@@ -596,7 +596,7 @@ LABEL_26:
       }
 
       v36 = 0;
-      self = v71;
+      self = selfCopy2;
       goto LABEL_58;
     }
   }
@@ -632,7 +632,7 @@ LABEL_46:
       {
         v8 = v70;
         v32 = v77;
-        if (v73)
+        if (errorCopy3)
         {
           v58 = objc_alloc(MEMORY[0x1E696ABC0]);
           v69 = *MEMORY[0x1E698F240];
@@ -644,7 +644,7 @@ LABEL_46:
           v62 = &v89;
 LABEL_64:
           v63 = [v60 dictionaryWithObjects:v61 forKeys:v62 count:1];
-          *v73 = [v58 initWithDomain:v69 code:2 userInfo:v63];
+          *errorCopy3 = [v58 initWithDomain:v69 code:2 userInfo:v63];
         }
 
 LABEL_65:
@@ -658,7 +658,7 @@ LABEL_65:
       {
         v8 = v70;
         v32 = v77;
-        if (v73)
+        if (errorCopy3)
         {
           v58 = objc_alloc(MEMORY[0x1E696ABC0]);
           v69 = *MEMORY[0x1E698F240];
@@ -696,13 +696,13 @@ LABEL_55:
 
   v8 = v70;
   v32 = v77;
-  v36 = [(BMMapsRecentConversationsIntentContactInformation *)v71 initWithIdentifier:v70 fullDisplayName:v77 friendlyName:v76 emailAddress:v15 phoneNumber:v26];
-  v71 = v36;
+  v36 = [(BMMapsRecentConversationsIntentContactInformation *)selfCopy2 initWithIdentifier:v70 fullDisplayName:v77 friendlyName:v76 emailAddress:v15 phoneNumber:v26];
+  selfCopy2 = v36;
 LABEL_66:
-  v6 = v72;
+  dictionaryCopy = v72;
 LABEL_67:
 
-  self = v71;
+  self = selfCopy2;
 LABEL_68:
 
 LABEL_69:
@@ -724,15 +724,15 @@ LABEL_73:
 {
   v3 = objc_opt_new();
   [(BMMapsRecentConversationsIntentContactInformation *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -815,9 +815,9 @@ LABEL_73:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMMapsRecentConversationsIntentContactInformation;
   v5 = [(BMEventBase *)&v32 init];
@@ -828,12 +828,12 @@ LABEL_73:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -844,18 +844,18 @@ LABEL_73:
       while (1)
       {
         v33 = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v33 & 0x7F) << v9;
@@ -872,9 +872,9 @@ LABEL_73:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -943,10 +943,10 @@ LABEL_37:
       }
 
 LABEL_34:
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v25 = [v6 copy];
@@ -957,8 +957,8 @@ LABEL_34:
   phoneNumber = v5->_phoneNumber;
   v5->_phoneNumber = v27;
 
-  v29 = [v4 hasError];
-  if (v29)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_39:
     v30 = 0;
@@ -976,34 +976,34 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
-  v5 = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
-  v6 = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
-  v7 = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
-  v8 = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
-  v9 = [v3 initWithFormat:@"BMMapsRecentConversationsIntentContactInformation with identifier: %@, fullDisplayName: %@, friendlyName: %@, emailAddress: %@, phoneNumber: %@", v4, v5, v6, v7, v8];
+  identifier = [(BMMapsRecentConversationsIntentContactInformation *)self identifier];
+  fullDisplayName = [(BMMapsRecentConversationsIntentContactInformation *)self fullDisplayName];
+  friendlyName = [(BMMapsRecentConversationsIntentContactInformation *)self friendlyName];
+  emailAddress = [(BMMapsRecentConversationsIntentContactInformation *)self emailAddress];
+  phoneNumber = [(BMMapsRecentConversationsIntentContactInformation *)self phoneNumber];
+  v9 = [v3 initWithFormat:@"BMMapsRecentConversationsIntentContactInformation with identifier: %@, fullDisplayName: %@, friendlyName: %@, emailAddress: %@, phoneNumber: %@", identifier, fullDisplayName, friendlyName, emailAddress, phoneNumber];
 
   return v9;
 }
 
-- (BMMapsRecentConversationsIntentContactInformation)initWithIdentifier:(id)a3 fullDisplayName:(id)a4 friendlyName:(id)a5 emailAddress:(id)a6 phoneNumber:(id)a7
+- (BMMapsRecentConversationsIntentContactInformation)initWithIdentifier:(id)identifier fullDisplayName:(id)name friendlyName:(id)friendlyName emailAddress:(id)address phoneNumber:(id)number
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  friendlyNameCopy = friendlyName;
+  addressCopy = address;
+  numberCopy = number;
   v20.receiver = self;
   v20.super_class = BMMapsRecentConversationsIntentContactInformation;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v17->_fullDisplayName, a4);
-    objc_storeStrong(&v17->_friendlyName, a5);
-    objc_storeStrong(&v17->_emailAddress, a6);
-    objc_storeStrong(&v17->_phoneNumber, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v17->_fullDisplayName, name);
+    objc_storeStrong(&v17->_friendlyName, friendlyName);
+    objc_storeStrong(&v17->_emailAddress, address);
+    objc_storeStrong(&v17->_phoneNumber, number);
   }
 
   return v17;
@@ -1066,9 +1066,9 @@ id __60__BMMapsRecentConversationsIntentContactInformation_columns__block_invoke
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1076,8 +1076,8 @@ id __60__BMMapsRecentConversationsIntentContactInformation_columns__block_invoke
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMapsRecentConversationsIntentContactInformation alloc] initByReadFrom:v7];
     v4 = v8;

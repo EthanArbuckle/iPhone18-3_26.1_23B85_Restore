@@ -1,36 +1,36 @@
 @interface SHLShazamKey
-+ (SHLShazamKey)keyWithValue:(id)a3;
-- (BOOL)isShazamKeyValid:(id)a3;
-- (SHLShazamKey)initWithKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (SHLShazamKey)keyWithValue:(id)value;
+- (BOOL)isShazamKeyValid:(id)valid;
+- (SHLShazamKey)initWithKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SHLShazamKey
 
-+ (SHLShazamKey)keyWithValue:(id)a3
++ (SHLShazamKey)keyWithValue:(id)value
 {
-  v3 = a3;
-  v4 = [[SHLShazamKey alloc] initWithKey:v3];
+  valueCopy = value;
+  v4 = [[SHLShazamKey alloc] initWithKey:valueCopy];
 
   return v4;
 }
 
-- (SHLShazamKey)initWithKey:(id)a3
+- (SHLShazamKey)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = SHLShazamKey;
   v6 = [(SHLShazamKey *)&v10 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    if (![(SHLShazamKey *)v6 isShazamKeyValid:v5])
+    if (![(SHLShazamKey *)v6 isShazamKeyValid:keyCopy])
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(p_isa + 1, a3);
+    objc_storeStrong(p_isa + 1, key);
   }
 
   v8 = p_isa;
@@ -39,17 +39,17 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isShazamKeyValid:(id)a3
+- (BOOL)isShazamKeyValid:(id)valid
 {
-  v3 = a3;
-  if ([v3 length])
+  validCopy = valid;
+  if ([validCopy length])
   {
     v4 = +[NSCharacterSet decimalDigitCharacterSet];
-    v5 = [v4 invertedSet];
+    invertedSet = [v4 invertedSet];
 
-    if ([v3 rangeOfCharacterFromSet:v5] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([validCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 longLongValue]);
+      v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [validCopy longLongValue]);
       v7 = [v6 unsignedIntegerValue] != -1;
     }
 
@@ -67,11 +67,11 @@ LABEL_6:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHLShazamKey allocWithZone:?];
-  v6 = [(SHLShazamKey *)self validatedKey];
-  v7 = [v6 copyWithZone:a3];
+  validatedKey = [(SHLShazamKey *)self validatedKey];
+  v7 = [validatedKey copyWithZone:zone];
   v8 = [(SHLShazamKey *)v5 initWithKey:v7];
 
   return v8;

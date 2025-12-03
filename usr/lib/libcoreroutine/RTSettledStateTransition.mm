@@ -1,22 +1,22 @@
 @interface RTSettledStateTransition
-+ (id)createWithManagedObject:(id)a3;
-+ (id)createWithSettledStateTransitionMO:(id)a3;
-- (RTSettledStateTransition)initWithDate:(id)a3 transitionFromType:(int64_t)a4 transitionToType:(int64_t)a5;
-- (id)managedObjectWithContext:(id)a3;
++ (id)createWithManagedObject:(id)object;
++ (id)createWithSettledStateTransitionMO:(id)o;
+- (RTSettledStateTransition)initWithDate:(id)date transitionFromType:(int64_t)type transitionToType:(int64_t)toType;
+- (id)managedObjectWithContext:(id)context;
 @end
 
 @implementation RTSettledStateTransition
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() createWithSettledStateTransitionMO:v3];
+      v4 = [objc_opt_class() createWithSettledStateTransitionMO:objectCopy];
       goto LABEL_8;
     }
 
@@ -24,7 +24,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412802;
-      v8 = v3;
+      v8 = objectCopy;
       v9 = 2080;
       v10 = "+[RTSettledStateTransition(RTCoreDataTransformable) createWithManagedObject:]";
       v11 = 1024;
@@ -39,11 +39,11 @@ LABEL_8:
   return v4;
 }
 
-+ (id)createWithSettledStateTransitionMO:(id)a3
++ (id)createWithSettledStateTransitionMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (oCopy)
   {
     *buf = 0;
     v13 = buf;
@@ -51,14 +51,14 @@ LABEL_8:
     v15 = __Block_byref_object_copy__45;
     v16 = __Block_byref_object_dispose__45;
     v17 = 0;
-    v5 = [v3 managedObjectContext];
+    managedObjectContext = [oCopy managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __88__RTSettledStateTransition_RTCoreDataTransformable__createWithSettledStateTransitionMO___block_invoke;
     v9[3] = &unk_2788C7FB0;
     v11 = buf;
     v10 = v4;
-    [v5 performBlockAndWait:v9];
+    [managedObjectContext performBlockAndWait:v9];
 
     v6 = *(v13 + 5);
     _Block_object_dispose(buf, 8);
@@ -92,11 +92,11 @@ void __88__RTSettledStateTransition_RTCoreDataTransformable__createWithSettledSt
   *(v7 + 40) = v6;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTSettledStateTransitionMO managedObjectWithSettledStateTransition:self inManagedObjectContext:a3];
+    v3 = [RTSettledStateTransitionMO managedObjectWithSettledStateTransition:self inManagedObjectContext:context];
   }
 
   else
@@ -114,10 +114,10 @@ void __88__RTSettledStateTransition_RTCoreDataTransformable__createWithSettledSt
   return v3;
 }
 
-- (RTSettledStateTransition)initWithDate:(id)a3 transitionFromType:(int64_t)a4 transitionToType:(int64_t)a5
+- (RTSettledStateTransition)initWithDate:(id)date transitionFromType:(int64_t)type transitionToType:(int64_t)toType
 {
-  v8 = a3;
-  if (!v8)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -129,11 +129,11 @@ void __88__RTSettledStateTransition_RTCoreDataTransformable__createWithSettledSt
 
 LABEL_14:
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  if (a4 >= 3)
+  if (type >= 3)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -146,7 +146,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a5 >= 3)
+  if (toType >= 3)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -159,7 +159,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a4 == a5)
+  if (type == toType)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -179,19 +179,19 @@ LABEL_13:
   v13 = [(RTSettledStateTransition *)&v16 init];
   if (v13)
   {
-    v14 = [v8 copy];
+    v14 = [dateCopy copy];
     date = v13->_date;
     v13->_date = v14;
 
-    v13->_transitionFromType = a4;
-    v13->_transitionToType = a5;
+    v13->_transitionFromType = type;
+    v13->_transitionToType = toType;
   }
 
   self = v13;
-  v11 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v11;
+  return selfCopy;
 }
 
 @end

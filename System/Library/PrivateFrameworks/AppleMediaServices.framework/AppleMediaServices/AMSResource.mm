@@ -1,14 +1,14 @@
 @interface AMSResource
-+ (id)loadHARFileWithName:(id)a3 bundle:(id)a4;
-+ (id)loadHARFileWithName:(id)a3 bundle:(id)a4 inDirectory:(id)a5;
-+ (id)loadPropertyListWithName:(id)a3 bundle:(id)a4 error:(id *)a5;
++ (id)loadHARFileWithName:(id)name bundle:(id)bundle;
++ (id)loadHARFileWithName:(id)name bundle:(id)bundle inDirectory:(id)directory;
++ (id)loadPropertyListWithName:(id)name bundle:(id)bundle error:(id *)error;
 @end
 
 @implementation AMSResource
 
-+ (id)loadHARFileWithName:(id)a3 bundle:(id)a4
++ (id)loadHARFileWithName:(id)name bundle:(id)bundle
 {
-  v4 = [a4 pathForResource:a3 ofType:@"har"];
+  v4 = [bundle pathForResource:name ofType:@"har"];
   v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v4];
   if (v5)
   {
@@ -29,9 +29,9 @@
   return v7;
 }
 
-+ (id)loadHARFileWithName:(id)a3 bundle:(id)a4 inDirectory:(id)a5
++ (id)loadHARFileWithName:(id)name bundle:(id)bundle inDirectory:(id)directory
 {
-  v5 = [a4 pathForResource:a3 ofType:@"har" inDirectory:a5];
+  v5 = [bundle pathForResource:name ofType:@"har" inDirectory:directory];
   v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v5];
   if (v6)
   {
@@ -52,15 +52,15 @@
   return v8;
 }
 
-+ (id)loadPropertyListWithName:(id)a3 bundle:(id)a4 error:(id *)a5
++ (id)loadPropertyListWithName:(id)name bundle:(id)bundle error:(id *)error
 {
-  v6 = [a4 pathForResource:a3 ofType:@"plist"];
+  v6 = [bundle pathForResource:name ofType:@"plist"];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v6 options:0 error:a5];
+    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v6 options:0 error:error];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696AE40] propertyListWithData:v7 options:0 format:0 error:a5];
+      v8 = [MEMORY[0x1E696AE40] propertyListWithData:v7 options:0 format:0 error:error];
       v9 = v8;
       if (v8)
       {
@@ -76,10 +76,10 @@
         else
         {
 
-          if (a5)
+          if (error)
           {
             AMSError(2, @"Invalid Property List", @"Expected the property list to be a dictionary", 0);
-            *a5 = v12 = 0;
+            *error = v12 = 0;
           }
 
           else
@@ -101,10 +101,10 @@
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     AMSError(7, @"File not found", @"Could not find the file.", 0);
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else

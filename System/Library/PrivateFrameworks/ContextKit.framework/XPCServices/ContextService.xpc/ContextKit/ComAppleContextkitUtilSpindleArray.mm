@@ -1,29 +1,29 @@
 @interface ComAppleContextkitUtilSpindleArray
-- (id)lookupWithComAppleContextkitUtilSpindleArray_State:(id)a3 withJavaUtilList:(id)a4 withJavaUtilIterator:(id)a5;
+- (id)lookupWithComAppleContextkitUtilSpindleArray_State:(id)state withJavaUtilList:(id)list withJavaUtilIterator:(id)iterator;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitUtilSpindleArray
 
-- (id)lookupWithComAppleContextkitUtilSpindleArray_State:(id)a3 withJavaUtilList:(id)a4 withJavaUtilIterator:(id)a5
+- (id)lookupWithComAppleContextkitUtilSpindleArray_State:(id)state withJavaUtilList:(id)list withJavaUtilIterator:(id)iterator
 {
-  v6 = a4;
-  v40 = a3;
-  if (!a3)
+  listCopy = list;
+  stateCopy = state;
+  if (!state)
   {
-    v40 = [(ComAppleContextkitUtilSpindleArray *)self newState];
-    if (v6)
+    stateCopy = [(ComAppleContextkitUtilSpindleArray *)self newState];
+    if (listCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_33:
-    v6 = new_JavaUtilArrayList_init();
+    listCopy = new_JavaUtilArrayList_init();
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!list)
   {
     goto LABEL_33;
   }
@@ -35,9 +35,9 @@ LABEL_3:
     JreThrowNullPointerException();
   }
 
-  v37 = [(OrgApacheLuceneStoreIndexInput *)in clone];
-  v39 = v6;
-  if (!a5)
+  clone = [(OrgApacheLuceneStoreIndexInput *)in clone];
+  v39 = listCopy;
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
@@ -46,32 +46,32 @@ LABEL_3:
   v10 = 0;
   v11 = -1;
   v38 = -1;
-  while ([a5 hasNext])
+  while ([iterator hasNext])
   {
-    v12 = [a5 next];
-    if (!v12)
+    next = [iterator next];
+    if (!next)
     {
 LABEL_34:
       JreThrowNullPointerException();
     }
 
-    v13 = [v12 intValue];
-    v21 = v13;
-    if ((v13 & 0x80000000) != 0 || v13 >= self->numEntries_)
+    intValue = [next intValue];
+    v21 = intValue;
+    if ((intValue & 0x80000000) != 0 || intValue >= self->numEntries_)
     {
       v36 = new_JavaIoIOException_initWithNSString_(@"entryId out of bounds");
 LABEL_40:
       objc_exception_throw(v36);
     }
 
-    if (v13 < v11)
+    if (intValue < v11)
     {
       v35 = JreStrcat("$I$I", v14, v15, v16, v17, v18, v19, v20, @"Entries must be passed in ascending order: ");
       v36 = new_JavaIoIOException_initWithNSString_(v35);
       goto LABEL_40;
     }
 
-    if (v13 != v11)
+    if (intValue != v11)
     {
       while (1)
       {
@@ -99,7 +99,7 @@ LABEL_40:
       {
         v24 = self->offsets_;
         v25 = [ComAppleContextkitUtilSpindleArray_Bucket alloc];
-        sub_10013FCC0(v25, v40, v37, v24, (v10 - 2), 1, v26, v27);
+        sub_10013FCC0(v25, stateCopy, clone, v24, (v10 - 2), 1, v26, v27);
         v9 = v25;
         v38 = v10;
       }
@@ -109,7 +109,7 @@ LABEL_40:
         goto LABEL_36;
       }
 
-      if ([(ComAppleContextkitUtilSpindleArray_Bucket *)v9 skipToEntryIdWithComAppleContextkitUtilSpindleArray_State:v40 withInt:v21])
+      if ([(ComAppleContextkitUtilSpindleArray_Bucket *)v9 skipToEntryIdWithComAppleContextkitUtilSpindleArray_State:stateCopy withInt:v21])
       {
         v28 = 0;
         v29 = v9;
@@ -117,17 +117,17 @@ LABEL_40:
 
       else
       {
-        if (!v40)
+        if (!stateCopy)
         {
           goto LABEL_36;
         }
 
-        JreStrongAssign(v40 + 2, 0);
+        JreStrongAssign(stateCopy + 2, 0);
         v30 = self->offsets_;
         v31 = [ComAppleContextkitUtilSpindleArray_Bucket alloc];
-        sub_10013FCC0(v31, v40, v37, v30, v38, 0, v32, v33);
+        sub_10013FCC0(v31, stateCopy, clone, v30, v38, 0, v32, v33);
         v29 = v31;
-        [(ComAppleContextkitUtilSpindleArray_Bucket *)v29 completeEntryWithComAppleContextkitUtilSpindleArray_State:v40];
+        [(ComAppleContextkitUtilSpindleArray_Bucket *)v29 completeEntryWithComAppleContextkitUtilSpindleArray_State:stateCopy];
         v38 += 2;
         v28 = v9;
       }
@@ -138,7 +138,7 @@ LABEL_36:
         JreThrowNullPointerException();
       }
 
-      [(JavaUtilArrayList *)v39 addWithId:sub_10013F928(v40, v29, v28)];
+      [(JavaUtilArrayList *)v39 addWithId:sub_10013F928(stateCopy, v29, v28)];
       v11 = v21;
       v9 = v29;
       if (v28)
@@ -150,9 +150,9 @@ LABEL_36:
     }
   }
 
-  if (v37)
+  if (clone)
   {
-    [v37 close];
+    [clone close];
   }
 
   return v39;

@@ -1,24 +1,24 @@
 @interface SBSimScrollToIconTestRecipe
-- (void)_simulateScrollToIconWithDisplayIdentifier:(id)a3;
+- (void)_simulateScrollToIconWithDisplayIdentifier:(id)identifier;
 @end
 
 @implementation SBSimScrollToIconTestRecipe
 
-- (void)_simulateScrollToIconWithDisplayIdentifier:(id)a3
+- (void)_simulateScrollToIconWithDisplayIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v18 = +[SBWorkspace mainWorkspace];
-  v4 = [v18 mainWindowScene];
-  v5 = [v4 homeScreenController];
-  v6 = [v5 iconManager];
-  v7 = [v6 iconModel];
-  v8 = [v7 leafIconForIdentifier:v3];
+  mainWindowScene = [v18 mainWindowScene];
+  homeScreenController = [mainWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  iconModel = [iconManager iconModel];
+  v8 = [iconModel leafIconForIdentifier:identifierCopy];
 
   if (v8)
   {
-    [v6 setIconToReveal:v8 revealingPrevious:1];
-    v9 = [v4 switcherController];
-    if (!v9)
+    [iconManager setIconToReveal:v8 revealingPrevious:1];
+    switcherController = [mainWindowScene switcherController];
+    if (!switcherController)
     {
       v10 = SBLogCommon();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
@@ -29,23 +29,23 @@
       }
     }
 
-    v12 = [v18 transientOverlayPresentationManager];
-    if ([v12 hasActivePresentation])
+    transientOverlayPresentationManager = [v18 transientOverlayPresentationManager];
+    if ([transientOverlayPresentationManager hasActivePresentation])
     {
     }
 
     else
     {
-      v13 = [v9 layoutStatePrimaryElement];
-      [v13 workspaceEntity];
-      v14 = v17 = v5;
-      v15 = [v14 applicationSceneEntity];
-      v16 = [v15 sceneHandle];
+      layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+      [layoutStatePrimaryElement workspaceEntity];
+      v14 = v17 = homeScreenController;
+      applicationSceneEntity = [v14 applicationSceneEntity];
+      sceneHandle = [applicationSceneEntity sceneHandle];
 
-      v5 = v17;
-      if (!v16)
+      homeScreenController = v17;
+      if (!sceneHandle)
       {
-        [v6 tryScrollToIconToRevealAnimated:1];
+        [iconManager tryScrollToIconToRevealAnimated:1];
         goto LABEL_9;
       }
     }

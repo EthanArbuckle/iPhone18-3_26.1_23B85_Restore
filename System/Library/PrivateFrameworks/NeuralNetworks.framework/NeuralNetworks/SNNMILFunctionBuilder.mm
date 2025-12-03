@@ -1,46 +1,46 @@
 @interface SNNMILFunctionBuilder
-- (BOOL)isUniqueOutputName:(id)a3;
-- (BOOL)retainOutputs:(id)a3;
-- (BOOL)retainOutputsWithNames:(id)a3;
+- (BOOL)isUniqueOutputName:(id)name;
+- (BOOL)retainOutputs:(id)outputs;
+- (BOOL)retainOutputsWithNames:(id)names;
 - (SNNMILContext)context;
-- (SNNMILFunctionBuilder)initWithName:(id)a3 context:(id)a4 location:(id)a5;
+- (SNNMILFunctionBuilder)initWithName:(id)name context:(id)context location:(id)location;
 - (basic_string<char,)milName;
-- (const)tensorValueTypeWithShape:(id)a3 dataType:(unint64_t)a4;
+- (const)tensorValueTypeWithShape:(id)shape dataType:(unint64_t)type;
 - (id).cxx_construct;
 - (id)build;
-- (id)constantOperationWithValue:(unique_ptr<const)MIL:(std:(id)a4 :(id)a5 default_delete<const MIL::IRValue>>)a3 :IRValue name:location:;
-- (id)constantScalar:(id)a3 dataType:(unint64_t)a4 location:(id)a5;
-- (id)constantScalar:(id)a3 dataType:(unint64_t)a4 name:(id)a5 location:(id)a6;
-- (id)constantScalar:(id)a3 location:(id)a4;
-- (id)constantScalar:(id)a3 name:(id)a4 location:(id)a5;
-- (id)constantTensorBlobWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6 location:(id)a7;
-- (id)constantTensorBlobWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6 name:(id)a7 location:(id)a8;
-- (id)constantTensorWithBytes:(void *)a3 shape:(id)a4 dataType:(unint64_t)a5 location:(id)a6;
-- (id)constantTensorWithBytes:(void *)a3 shape:(id)a4 dataType:(unint64_t)a5 name:(id)a6 location:(id)a7;
-- (id)constantTensorWithScalars:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 location:(id)a6;
-- (id)constantTensorWithScalars:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 name:(id)a6 location:(id)a7;
-- (id)constantValue:(id)a3 name:(id)a4 location:(id)a5;
+- (id)constantOperationWithValue:(unique_ptr<const)MIL:(std:(id)l :(id)a5 default_delete<const MIL::IRValue>>)a3 :IRValue name:location:;
+- (id)constantScalar:(id)scalar dataType:(unint64_t)type location:(id)location;
+- (id)constantScalar:(id)scalar dataType:(unint64_t)type name:(id)name location:(id)location;
+- (id)constantScalar:(id)scalar location:(id)location;
+- (id)constantScalar:(id)scalar name:(id)name location:(id)location;
+- (id)constantTensorBlobWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset location:(id)location;
+- (id)constantTensorBlobWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset name:(id)name location:(id)location;
+- (id)constantTensorWithBytes:(void *)bytes shape:(id)shape dataType:(unint64_t)type location:(id)location;
+- (id)constantTensorWithBytes:(void *)bytes shape:(id)shape dataType:(unint64_t)type name:(id)name location:(id)location;
+- (id)constantTensorWithScalars:(id)scalars shape:(id)shape dataType:(unint64_t)type location:(id)location;
+- (id)constantTensorWithScalars:(id)scalars shape:(id)shape dataType:(unint64_t)type name:(id)name location:(id)location;
+- (id)constantValue:(id)value name:(id)name location:(id)location;
 - (id)nextSymbol;
-- (id)outputsByApplyingOperatorNamed:(id)a3 toInputs:(id)a4 outputs:(id)a5 attributes:(id)a6 location:(id)a7;
-- (id)outputsByApplyingOperatorNamed:(id)a3 toInputs:(id)a4 outputs:(id)a5 location:(id)a6;
-- (id)placeholderWithShape:(id)a3 dataType:(unint64_t)a4 location:(id)a5;
-- (id)placeholderWithShape:(id)a3 dataType:(unint64_t)a4 name:(id)a5 location:(id)a6;
-- (unique_ptr<MIL::IRArgument,)milArgumentForSNNMILValue:(id)a3;
+- (id)outputsByApplyingOperatorNamed:(id)named toInputs:(id)inputs outputs:(id)outputs attributes:(id)attributes location:(id)location;
+- (id)outputsByApplyingOperatorNamed:(id)named toInputs:(id)inputs outputs:(id)outputs location:(id)location;
+- (id)placeholderWithShape:(id)shape dataType:(unint64_t)type location:(id)location;
+- (id)placeholderWithShape:(id)shape dataType:(unint64_t)type name:(id)name location:(id)location;
+- (unique_ptr<MIL::IRArgument,)milArgumentForSNNMILValue:(id)value;
 @end
 
 @implementation SNNMILFunctionBuilder
 
-- (SNNMILFunctionBuilder)initWithName:(id)a3 context:(id)a4 location:(id)a5
+- (SNNMILFunctionBuilder)initWithName:(id)name context:(id)context location:(id)location
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  contextCopy = context;
+  locationCopy = location;
   v18.receiver = self;
   v18.super_class = SNNMILFunctionBuilder;
   v12 = [(SNNMILFunctionBuilder *)&v18 init];
-  objc_storeStrong(&v12->_name, a3);
-  objc_storeWeak(&v12->_context, v10);
-  v13 = [SNNMILSourceLocation locationOrEmpty:v11];
+  objc_storeStrong(&v12->_name, name);
+  objc_storeWeak(&v12->_context, contextCopy);
+  v13 = [SNNMILSourceLocation locationOrEmpty:locationCopy];
   location = v12->_location;
   v12->_location = v13;
 
@@ -53,11 +53,11 @@
 
 - (basic_string<char,)milName
 {
-  v3 = [v1 name];
-  v5 = v3;
-  if (v3)
+  name = [v1 name];
+  v5 = name;
+  if (name)
   {
-    [v3 cxxString];
+    [name cxxString];
   }
 
   else
@@ -107,8 +107,8 @@
     v25 = 0;
     v26 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v7 = [WeakRetained platformOpset];
-    v8 = (*(*v7 + 16))(v7);
+    platformOpset = [WeakRetained platformOpset];
+    v8 = (*(*platformOpset + 16))(platformOpset);
     v10 = v9;
     if (v9 >= 0x7FFFFFFFFFFFFFF8)
     {
@@ -151,11 +151,11 @@
 
     v22 = 0;
     v30[0] = 0;
-    v12 = [(SNNMILFunctionBuilder *)self name];
-    v13 = v12;
-    if (v12)
+    name = [(SNNMILFunctionBuilder *)self name];
+    v13 = name;
+    if (name)
     {
-      [v12 cxxString];
+      [name cxxString];
     }
 
     else
@@ -198,11 +198,11 @@
   return v3;
 }
 
-- (id)placeholderWithShape:(id)a3 dataType:(unint64_t)a4 name:(id)a5 location:(id)a6
+- (id)placeholderWithShape:(id)shape dataType:(unint64_t)type name:(id)name location:(id)location
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  shapeCopy = shape;
+  nameCopy = name;
   v34 = 0;
   v35 = 0;
   v36 = 0;
@@ -210,7 +210,7 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = v9;
+  v11 = shapeCopy;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v12)
   {
@@ -256,9 +256,9 @@
     while (v12);
   }
 
-  if (a4 - 1 <= 0xB)
+  if (type - 1 <= 0xB)
   {
-    v20 = dword_25BCBADEC[a4 - 1];
+    v20 = dword_25BCBADEC[type - 1];
   }
 
   v21 = objc_loadWeakRetained(&self->_context);
@@ -270,9 +270,9 @@
   }
 
   v29 = v22;
-  if (v10)
+  if (nameCopy)
   {
-    [v10 cxxString];
+    [nameCopy cxxString];
   }
 
   else
@@ -290,7 +290,7 @@
     operator delete(__p);
   }
 
-  v23 = [[SNNMILNamedValue alloc] initWithName:v10];
+  v23 = [[SNNMILNamedValue alloc] initWithName:nameCopy];
   if (v34)
   {
     v35 = v34;
@@ -302,37 +302,37 @@
   return v23;
 }
 
-- (id)placeholderWithShape:(id)a3 dataType:(unint64_t)a4 location:(id)a5
+- (id)placeholderWithShape:(id)shape dataType:(unint64_t)type location:(id)location
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SNNMILFunctionBuilder *)self nextSymbol];
-  v11 = [(SNNMILFunctionBuilder *)self placeholderWithShape:v8 dataType:a4 name:v10 location:v9];
+  shapeCopy = shape;
+  locationCopy = location;
+  nextSymbol = [(SNNMILFunctionBuilder *)self nextSymbol];
+  v11 = [(SNNMILFunctionBuilder *)self placeholderWithShape:shapeCopy dataType:type name:nextSymbol location:locationCopy];
 
   return v11;
 }
 
-- (BOOL)retainOutputsWithNames:(id)a3
+- (BOOL)retainOutputsWithNames:(id)names
 {
   v34 = *MEMORY[0x277D85DE8];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  namesCopy = names;
+  v5 = [namesCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = *v29;
     p_outputs = &self->_outputs;
-    v8 = v4;
+    v8 = namesCopy;
     do
     {
       for (i = 0; i != v5; ++i)
       {
         if (*v29 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namesCopy);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
@@ -401,7 +401,7 @@
           v32.__begin_ = v22;
           std::__split_buffer<std::string>::~__split_buffer(&v32);
           self->_outputs.__end_ = v18;
-          v4 = v8;
+          namesCopy = v8;
         }
 
         else
@@ -412,7 +412,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v5 = [namesCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v5);
@@ -422,16 +422,16 @@
   return 1;
 }
 
-- (BOOL)retainOutputs:(id)a3
+- (BOOL)retainOutputs:(id)outputs
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  outputsCopy = outputs;
   v5 = [MEMORY[0x277CBEBF8] mutableCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = outputsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -446,8 +446,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) name];
-        [v5 addObject:v10];
+        name = [*(*(&v14 + 1) + 8 * v9) name];
+        [v5 addObject:name];
 
         ++v9;
       }
@@ -464,10 +464,10 @@
   return v11;
 }
 
-- (id)constantOperationWithValue:(unique_ptr<const)MIL:(std:(id)a4 :(id)a5 default_delete<const MIL::IRValue>>)a3 :IRValue name:location:
+- (id)constantOperationWithValue:(unique_ptr<const)MIL:(std:(id)l :(id)a5 default_delete<const MIL::IRValue>>)a3 :IRValue name:location:
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  lCopy = l;
   v9 = a5;
   WeakRetained = objc_loadWeakRetained(&self->_context);
   [WeakRetained platformOpset];
@@ -482,7 +482,7 @@
   v12 = v11;
   if (v11)
   {
-    [v11 milValueForString:v8];
+    [v11 milValueForString:lCopy];
   }
 
   else
@@ -523,9 +523,9 @@
   v32[0] = 0;
   v32[1] = 0;
   v31 = v32;
-  if (v8)
+  if (lCopy)
   {
-    [v8 cxxString];
+    [lCopy cxxString];
   }
 
   else
@@ -630,7 +630,7 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v45);
   }
 
-  v19 = [[SNNMILNamedValue alloc] initWithName:v8];
+  v19 = [[SNNMILNamedValue alloc] initWithName:lCopy];
   v20 = v40;
   v40 = 0;
   if (v20)
@@ -655,13 +655,13 @@
   return v19;
 }
 
-- (id)constantValue:(id)a3 name:(id)a4 location:(id)a5
+- (id)constantValue:(id)value name:(id)name location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 conformsToProtocol:&unk_286D64AF0];
-  v11 = v8;
+  valueCopy = value;
+  nameCopy = name;
+  locationCopy = location;
+  [valueCopy conformsToProtocol:&unk_286D64AF0];
+  v11 = valueCopy;
   WeakRetained = objc_loadWeakRetained(&self->_context);
   if (v11)
   {
@@ -675,7 +675,7 @@
 
   v17 = v18;
   v18 = 0;
-  v13 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v17 name:v9 location:v10];
+  v13 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v17 name:nameCopy location:locationCopy];
   v14 = v17;
   v17 = 0;
   if (v14)
@@ -693,16 +693,16 @@
   return v13;
 }
 
-- (id)constantScalar:(id)a3 name:(id)a4 location:(id)a5
+- (id)constantScalar:(id)scalar name:(id)name location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  scalarCopy = scalar;
+  nameCopy = name;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->_context);
   v12 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained milValueForString:v8];
+    [WeakRetained milValueForString:scalarCopy];
   }
 
   else
@@ -712,7 +712,7 @@
 
   v17 = v18;
   v18 = 0;
-  v13 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v17 name:v9 location:v10];
+  v13 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v17 name:nameCopy location:locationCopy];
   v14 = v17;
   v17 = 0;
   if (v14)
@@ -730,22 +730,22 @@
   return v13;
 }
 
-- (id)constantScalar:(id)a3 location:(id)a4
+- (id)constantScalar:(id)scalar location:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SNNMILFunctionBuilder *)self nextSymbol];
-  v9 = [(SNNMILFunctionBuilder *)self constantScalar:v6 name:v8 location:v7];
+  scalarCopy = scalar;
+  locationCopy = location;
+  nextSymbol = [(SNNMILFunctionBuilder *)self nextSymbol];
+  v9 = [(SNNMILFunctionBuilder *)self constantScalar:scalarCopy name:nextSymbol location:locationCopy];
 
   return v9;
 }
 
-- (id)constantScalar:(id)a3 dataType:(unint64_t)a4 name:(id)a5 location:(id)a6
+- (id)constantScalar:(id)scalar dataType:(unint64_t)type name:(id)name location:(id)location
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[SNNMILDataValue alloc] initWithScalar:v10 dataType:a4];
+  scalarCopy = scalar;
+  nameCopy = name;
+  locationCopy = location;
+  v13 = [[SNNMILDataValue alloc] initWithScalar:scalarCopy dataType:type];
   WeakRetained = objc_loadWeakRetained(&self->_context);
   if (v13)
   {
@@ -759,7 +759,7 @@
 
   v19 = v20;
   v20 = 0;
-  v15 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v19 name:v11 location:v12];
+  v15 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v19 name:nameCopy location:locationCopy];
   v16 = v19;
   v19 = 0;
   if (v16)
@@ -777,13 +777,13 @@
   return v15;
 }
 
-- (id)constantTensorWithScalars:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 name:(id)a6 location:(id)a7
+- (id)constantTensorWithScalars:(id)scalars shape:(id)shape dataType:(unint64_t)type name:(id)name location:(id)location
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[SNNMILDataValue alloc] initWithShape:v13 scalars:v12 dataType:a5];
+  scalarsCopy = scalars;
+  shapeCopy = shape;
+  nameCopy = name;
+  locationCopy = location;
+  v16 = [[SNNMILDataValue alloc] initWithShape:shapeCopy scalars:scalarsCopy dataType:type];
   WeakRetained = objc_loadWeakRetained(&self->_context);
   if (v16)
   {
@@ -797,7 +797,7 @@
 
   v22 = v23;
   v23 = 0;
-  v18 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v22 name:v14 location:v15];
+  v18 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v22 name:nameCopy location:locationCopy];
   v19 = v22;
   v22 = 0;
   if (v19)
@@ -815,37 +815,37 @@
   return v18;
 }
 
-- (id)constantScalar:(id)a3 dataType:(unint64_t)a4 location:(id)a5
+- (id)constantScalar:(id)scalar dataType:(unint64_t)type location:(id)location
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SNNMILFunctionBuilder *)self nextSymbol];
-  v11 = [(SNNMILFunctionBuilder *)self constantScalar:v8 dataType:a4 name:v10 location:v9];
+  scalarCopy = scalar;
+  locationCopy = location;
+  nextSymbol = [(SNNMILFunctionBuilder *)self nextSymbol];
+  v11 = [(SNNMILFunctionBuilder *)self constantScalar:scalarCopy dataType:type name:nextSymbol location:locationCopy];
 
   return v11;
 }
 
-- (id)constantTensorWithScalars:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 location:(id)a6
+- (id)constantTensorWithScalars:(id)scalars shape:(id)shape dataType:(unint64_t)type location:(id)location
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SNNMILFunctionBuilder *)self nextSymbol];
-  v14 = [(SNNMILFunctionBuilder *)self constantTensorWithScalars:v10 shape:v11 dataType:a5 name:v13 location:v12];
+  scalarsCopy = scalars;
+  shapeCopy = shape;
+  locationCopy = location;
+  nextSymbol = [(SNNMILFunctionBuilder *)self nextSymbol];
+  v14 = [(SNNMILFunctionBuilder *)self constantTensorWithScalars:scalarsCopy shape:shapeCopy dataType:type name:nextSymbol location:locationCopy];
 
   return v14;
 }
 
-- (id)constantTensorWithBytes:(void *)a3 shape:(id)a4 dataType:(unint64_t)a5 name:(id)a6 location:(id)a7
+- (id)constantTensorWithBytes:(void *)bytes shape:(id)shape dataType:(unint64_t)type name:(id)name location:(id)location
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  shapeCopy = shape;
+  nameCopy = name;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->_context);
   v16 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained milValueForTensorWithBytes:a3 shape:v12 dataType:a5];
+    [WeakRetained milValueForTensorWithBytes:bytes shape:shapeCopy dataType:type];
   }
 
   else
@@ -855,7 +855,7 @@
 
   v21 = v22;
   v22 = 0;
-  v17 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v21 name:v13 location:v14];
+  v17 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v21 name:nameCopy location:locationCopy];
   v18 = v21;
   v21 = 0;
   if (v18)
@@ -873,28 +873,28 @@
   return v17;
 }
 
-- (id)constantTensorWithBytes:(void *)a3 shape:(id)a4 dataType:(unint64_t)a5 location:(id)a6
+- (id)constantTensorWithBytes:(void *)bytes shape:(id)shape dataType:(unint64_t)type location:(id)location
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(SNNMILFunctionBuilder *)self nextSymbol];
-  v13 = [(SNNMILFunctionBuilder *)self constantTensorWithBytes:a3 shape:v10 dataType:a5 name:v12 location:v11];
+  shapeCopy = shape;
+  locationCopy = location;
+  nextSymbol = [(SNNMILFunctionBuilder *)self nextSymbol];
+  v13 = [(SNNMILFunctionBuilder *)self constantTensorWithBytes:bytes shape:shapeCopy dataType:type name:nextSymbol location:locationCopy];
 
   return v13;
 }
 
-- (id)constantTensorBlobWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6 name:(id)a7 location:(id)a8
+- (id)constantTensorBlobWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset name:(id)name location:(id)location
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  filenameCopy = filename;
+  shapeCopy = shape;
+  offsetCopy = offset;
+  nameCopy = name;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->_context);
   v20 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained milValueForTensorBlobWithFilename:v14 shape:v15 dataType:a5 offset:v16];
+    [WeakRetained milValueForTensorBlobWithFilename:filenameCopy shape:shapeCopy dataType:type offset:offsetCopy];
   }
 
   else
@@ -904,7 +904,7 @@
 
   v25 = v26;
   v26 = 0;
-  v21 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v25 name:v17 location:v18];
+  v21 = [(SNNMILFunctionBuilder *)self constantOperationWithValue:&v25 name:nameCopy location:locationCopy];
   v22 = v25;
   v25 = 0;
   if (v22)
@@ -922,26 +922,26 @@
   return v21;
 }
 
-- (id)constantTensorBlobWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6 location:(id)a7
+- (id)constantTensorBlobWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset location:(id)location
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(SNNMILFunctionBuilder *)self nextSymbol];
-  v17 = [(SNNMILFunctionBuilder *)self constantTensorBlobWithFilename:v12 shape:v13 dataType:a5 offset:v14 name:v16 location:v15];
+  filenameCopy = filename;
+  shapeCopy = shape;
+  offsetCopy = offset;
+  locationCopy = location;
+  nextSymbol = [(SNNMILFunctionBuilder *)self nextSymbol];
+  v17 = [(SNNMILFunctionBuilder *)self constantTensorBlobWithFilename:filenameCopy shape:shapeCopy dataType:type offset:offsetCopy name:nextSymbol location:locationCopy];
 
   return v17;
 }
 
-- (id)outputsByApplyingOperatorNamed:(id)a3 toInputs:(id)a4 outputs:(id)a5 attributes:(id)a6 location:(id)a7
+- (id)outputsByApplyingOperatorNamed:(id)named toInputs:(id)inputs outputs:(id)outputs attributes:(id)attributes location:(id)location
 {
   v115 = *MEMORY[0x277D85DE8];
-  v61 = a3;
-  v12 = a4;
-  v60 = a5;
-  v59 = a6;
-  v62 = a7;
+  namedCopy = named;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
+  attributesCopy = attributes;
+  locationCopy = location;
   v106[1] = 0;
   v106[0] = 0;
   v105 = v106;
@@ -949,7 +949,7 @@
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  obj = v12;
+  obj = inputsCopy;
   v13 = [obj countByEnumeratingWithState:&v101 objects:v114 count:16];
   if (v13)
   {
@@ -977,8 +977,8 @@
           v99 = 0u;
           v100 = 0u;
           v68 = v17;
-          v18 = [v17 values];
-          v19 = [v18 countByEnumeratingWithState:&v97 objects:v113 count:16];
+          values = [v17 values];
+          v19 = [values countByEnumeratingWithState:&v97 objects:v113 count:16];
           v20 = v68;
           if (v19)
           {
@@ -990,7 +990,7 @@
               {
                 if (*v98 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(values);
                 }
 
                 v23 = *(*(&v97 + 1) + 8 * j);
@@ -1014,7 +1014,7 @@
                 v79 = 0;
               }
 
-              v19 = [v18 countByEnumeratingWithState:&v97 objects:v113 count:16];
+              v19 = [values countByEnumeratingWithState:&v97 objects:v113 count:16];
             }
 
             while (v19);
@@ -1079,7 +1079,7 @@
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v64 = v60;
+  v64 = outputsCopy;
   v24 = [v64 countByEnumeratingWithState:&v90 objects:v112 count:16];
   if (v24)
   {
@@ -1094,11 +1094,11 @@
         }
 
         v27 = *(*(&v90 + 1) + 8 * k);
-        v28 = [v27 dimensions];
-        -[SNNMILFunctionBuilder tensorValueTypeWithShape:dataType:](self, "tensorValueTypeWithShape:dataType:", v28, [v27 dataType]);
+        dimensions = [v27 dimensions];
+        -[SNNMILFunctionBuilder tensorValueTypeWithShape:dataType:](self, "tensorValueTypeWithShape:dataType:", dimensions, [v27 dataType]);
 
-        v29 = [v27 name];
-        if (v29)
+        name = [v27 name];
+        if (name)
         {
           [v27 name];
         }
@@ -1208,7 +1208,7 @@
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v69 = v59;
+  v69 = attributesCopy;
   v44 = [v69 countByEnumeratingWithState:&v83 objects:v111 count:16];
   if (v44)
   {
@@ -1271,9 +1271,9 @@
 
   v51 = objc_loadWeakRetained(&self->_context);
   [v51 platformOpset];
-  if (v61)
+  if (namedCopy)
   {
-    [v61 cxxString];
+    [namedCopy cxxString];
   }
 
   else
@@ -1294,9 +1294,9 @@
     __assert_rtn("[SNNMILFunctionBuilder outputsByApplyingOperatorNamed:toInputs:outputs:attributes:location:]", "SNNMILBuilders.mm", 324, "op");
   }
 
-  if (v62)
+  if (locationCopy)
   {
-    [v62 milLocation];
+    [locationCopy milLocation];
     v52 = v74;
   }
 
@@ -1346,7 +1346,7 @@
     (*(*v53 + 8))(v53);
   }
 
-  if (!v62)
+  if (!locationCopy)
   {
     v54 = v73;
     v73 = 0;
@@ -1398,14 +1398,14 @@
   return v55;
 }
 
-- (id)outputsByApplyingOperatorNamed:(id)a3 toInputs:(id)a4 outputs:(id)a5 location:(id)a6
+- (id)outputsByApplyingOperatorNamed:(id)named toInputs:(id)inputs outputs:(id)outputs location:(id)location
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  namedCopy = named;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
+  locationCopy = location;
   v14 = [MEMORY[0x277CBEC10] mutableCopy];
-  v15 = [(SNNMILFunctionBuilder *)self outputsByApplyingOperatorNamed:v10 toInputs:v11 outputs:v12 attributes:v14 location:v13];
+  v15 = [(SNNMILFunctionBuilder *)self outputsByApplyingOperatorNamed:namedCopy toInputs:inputsCopy outputs:outputsCopy attributes:v14 location:locationCopy];
 
   return v15;
 }
@@ -1418,7 +1418,7 @@
   return [v2 stringWithFormat:@"data_%lu", symbolCounter];
 }
 
-- (const)tensorValueTypeWithShape:(id)a3 dataType:(unint64_t)a4
+- (const)tensorValueTypeWithShape:(id)shape dataType:(unint64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
   __p = 0;
@@ -1428,8 +1428,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+  shapeCopy = shape;
+  v7 = [shapeCopy countByEnumeratingWithState:&v22 objects:v29 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -1439,7 +1439,7 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(shapeCopy);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -1468,15 +1468,15 @@
         std::vector<MIL::IRDimension const*>::push_back[abi:ne200100](&__p, &v20);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+      v7 = [shapeCopy countByEnumeratingWithState:&v22 objects:v29 count:16];
     }
 
     while (v7);
   }
 
-  if (a4 - 1 <= 0xB)
+  if (type - 1 <= 0xB)
   {
-    v15 = dword_25BCBADEC[a4 - 1];
+    v15 = dword_25BCBADEC[type - 1];
   }
 
   v16 = objc_loadWeakRetained(&self->_context);
@@ -1497,17 +1497,17 @@
   return v17;
 }
 
-- (unique_ptr<MIL::IRArgument,)milArgumentForSNNMILValue:(id)a3
+- (unique_ptr<MIL::IRArgument,)milArgumentForSNNMILValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 name];
-    v6 = v5;
-    if (v5)
+    name = [valueCopy name];
+    v6 = name;
+    if (name)
     {
-      [v5 cxxString];
+      [name cxxString];
     }
 
     else
@@ -1525,8 +1525,8 @@
 
   else
   {
-    [v4 conformsToProtocol:&unk_286D64AF0];
-    v7 = v4;
+    [valueCopy conformsToProtocol:&unk_286D64AF0];
+    v7 = valueCopy;
     WeakRetained = objc_loadWeakRetained(&self->_context);
     if (v7)
     {
@@ -1549,13 +1549,13 @@
   return v9;
 }
 
-- (BOOL)isUniqueOutputName:(id)a3
+- (BOOL)isUniqueOutputName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    [v4 cxxString];
+    [nameCopy cxxString];
   }
 
   else

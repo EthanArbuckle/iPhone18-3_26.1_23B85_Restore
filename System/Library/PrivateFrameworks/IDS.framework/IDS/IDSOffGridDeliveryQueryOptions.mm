@@ -1,9 +1,9 @@
 @interface IDSOffGridDeliveryQueryOptions
 + (id)cached;
 - (IDSOffGridDeliveryQueryOptions)init;
-- (IDSOffGridDeliveryQueryOptions)initWithCached:(BOOL)a3;
-- (IDSOffGridDeliveryQueryOptions)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IDSOffGridDeliveryQueryOptions)initWithCached:(BOOL)cached;
+- (IDSOffGridDeliveryQueryOptions)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSOffGridDeliveryQueryOptions
@@ -28,30 +28,30 @@
   return result;
 }
 
-- (IDSOffGridDeliveryQueryOptions)initWithCached:(BOOL)a3
+- (IDSOffGridDeliveryQueryOptions)initWithCached:(BOOL)cached
 {
   v5.receiver = self;
   v5.super_class = IDSOffGridDeliveryQueryOptions;
   result = [(IDSOffGridDeliveryQueryOptions *)&v5 init];
   if (result)
   {
-    result->_cached = a3;
+    result->_cached = cached;
   }
 
   return result;
 }
 
-- (IDSOffGridDeliveryQueryOptions)initWithCoder:(id)a3
+- (IDSOffGridDeliveryQueryOptions)initWithCoder:(id)coder
 {
-  v4 = -[IDSOffGridDeliveryQueryOptions initWithCached:]([IDSOffGridDeliveryQueryOptions alloc], "initWithCached:", [a3 decodeBoolForKey:@"cached"]);
+  v4 = -[IDSOffGridDeliveryQueryOptions initWithCached:]([IDSOffGridDeliveryQueryOptions alloc], "initWithCached:", [coder decodeBoolForKey:@"cached"]);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[IDSOffGridDeliveryQueryOptions cached](self forKey:{"cached"), @"cached"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[IDSOffGridDeliveryQueryOptions cached](self forKey:{"cached"), @"cached"}];
 }
 
 @end

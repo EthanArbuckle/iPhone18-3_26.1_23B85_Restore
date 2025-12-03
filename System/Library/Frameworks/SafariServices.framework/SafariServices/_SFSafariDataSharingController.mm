@@ -1,9 +1,9 @@
 @interface _SFSafariDataSharingController
 + (id)sharedController;
 - (_SFSafariDataSharingController)init;
-- (id)systemDataContainerURLWithAppBundleID:(id)a3;
+- (id)systemDataContainerURLWithAppBundleID:(id)d;
 - (void)_loadAppBundlesWithSeparateDataIfNeeded;
-- (void)checkInAppBundleIDIfNeeded:(id)a3;
+- (void)checkInAppBundleIDIfNeeded:(id)needed;
 - (void)clearAllWebsitesData;
 @end
 
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (id)systemDataContainerURLWithAppBundleID:(id)a3
+- (id)systemDataContainerURLWithAppBundleID:(id)d
 {
-  v3 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:a3];
-  v4 = [v3 dataContainerURL];
-  v5 = [v4 URLByAppendingPathComponent:@"/SystemData/com.apple.SafariViewService"];
+  v3 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:d];
+  dataContainerURL = [v3 dataContainerURL];
+  v5 = [dataContainerURL URLByAppendingPathComponent:@"/SystemData/com.apple.SafariViewService"];
 
   return v5;
 }
@@ -51,32 +51,32 @@
 {
   if (!self->_appBundlesWithSeparateData)
   {
-    v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v4 = [v3 arrayForKey:@"AppBundleIDsWithSeperateData"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v4 = [safari_browserDefaults arrayForKey:@"AppBundleIDsWithSeperateData"];
     v5 = [v4 mutableCopy];
     appBundlesWithSeparateData = self->_appBundlesWithSeparateData;
     self->_appBundlesWithSeparateData = v5;
 
     if (!self->_appBundlesWithSeparateData)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v8 = self->_appBundlesWithSeparateData;
-      self->_appBundlesWithSeparateData = v7;
+      self->_appBundlesWithSeparateData = array;
     }
   }
 }
 
-- (void)checkInAppBundleIDIfNeeded:(id)a3
+- (void)checkInAppBundleIDIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   dataSharingQueue = self->_dataSharingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61___SFSafariDataSharingController_checkInAppBundleIDIfNeeded___block_invoke;
   v7[3] = &unk_1E848F548;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = neededCopy;
+  v6 = neededCopy;
   dispatch_async(dataSharingQueue, v7);
 }
 

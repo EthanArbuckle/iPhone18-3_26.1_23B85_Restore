@@ -1,14 +1,14 @@
 @interface HMDAppleMediaAccessoryInfoController
 + (id)logCategory;
-- (HMDAppleMediaAccessoryInfoController)initWithQueue:(id)a3 dataSource:(id)a4 delegate:(id)a5 notificationCenter:(id)a6 wifiManager:(id)a7;
+- (HMDAppleMediaAccessoryInfoController)initWithQueue:(id)queue dataSource:(id)source delegate:(id)delegate notificationCenter:(id)center wifiManager:(id)manager;
 - (HMDAppleMediaAccessoryInfoControllerDataSource)dataSource;
 - (HMDAppleMediaAccessoryInfoControllerDelegate)delegate;
 - (id)currentWifiNetworkInfo;
-- (void)_notifyDelegateWifiInfoUpdated:(id)a3;
-- (void)_postUpdateSoftwareVersionIfDifferent:(id)a3;
-- (void)_postUpdateWifiNetworkInfoIfDifferent:(id)a3;
+- (void)_notifyDelegateWifiInfoUpdated:(id)updated;
+- (void)_postUpdateSoftwareVersionIfDifferent:(id)different;
+- (void)_postUpdateWifiNetworkInfoIfDifferent:(id)different;
 - (void)configure;
-- (void)handleCurrentNetworkChangedNotification:(id)a3;
+- (void)handleCurrentNetworkChangedNotification:(id)notification;
 @end
 
 @implementation HMDAppleMediaAccessoryInfoController
@@ -27,32 +27,32 @@
   return WeakRetained;
 }
 
-- (void)_notifyDelegateWifiInfoUpdated:(id)a3
+- (void)_notifyDelegateWifiInfoUpdated:(id)updated
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 SSID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  updatedCopy = updated;
+  v5 = updatedCopy;
+  if (updatedCopy && ([updatedCopy SSID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(HMDAppleMediaAccessoryInfoController *)self delegate];
+    delegate = [(HMDAppleMediaAccessoryInfoController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(HMDAppleMediaAccessoryInfoController *)self queue];
+      queue = [(HMDAppleMediaAccessoryInfoController *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __71__HMDAppleMediaAccessoryInfoController__notifyDelegateWifiInfoUpdated___block_invoke;
       block[3] = &unk_27868A010;
       block[4] = self;
       v15 = v5;
-      v16 = v7;
-      dispatch_async(v8, block);
+      v16 = delegate;
+      dispatch_async(queue, block);
     }
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -93,26 +93,26 @@ uint64_t __71__HMDAppleMediaAccessoryInfoController__notifyDelegateWifiInfoUpdat
   return result;
 }
 
-- (void)_postUpdateSoftwareVersionIfDifferent:(id)a3
+- (void)_postUpdateSoftwareVersionIfDifferent:(id)different
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  differentCopy = different;
+  if (differentCopy)
   {
-    v5 = [(HMDAppleMediaAccessoryInfoController *)self queue];
+    queue = [(HMDAppleMediaAccessoryInfoController *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __78__HMDAppleMediaAccessoryInfoController__postUpdateSoftwareVersionIfDifferent___block_invoke;
     v11[3] = &unk_27868A750;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v5, v11);
+    v12 = differentCopy;
+    dispatch_async(queue, v11);
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -258,27 +258,27 @@ void __78__HMDAppleMediaAccessoryInfoController__postUpdateSoftwareVersionIfDiff
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postUpdateWifiNetworkInfoIfDifferent:(id)a3
+- (void)_postUpdateWifiNetworkInfoIfDifferent:(id)different
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 SSID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  differentCopy = different;
+  v5 = differentCopy;
+  if (differentCopy && ([differentCopy SSID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(HMDAppleMediaAccessoryInfoController *)self queue];
+    queue = [(HMDAppleMediaAccessoryInfoController *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __78__HMDAppleMediaAccessoryInfoController__postUpdateWifiNetworkInfoIfDifferent___block_invoke;
     v13[3] = &unk_27868A750;
     v13[4] = self;
     v14 = v5;
-    dispatch_async(v7, v13);
+    dispatch_async(queue, v13);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -430,32 +430,32 @@ void __78__HMDAppleMediaAccessoryInfoController__postUpdateWifiNetworkInfoIfDiff
 
 - (id)currentWifiNetworkInfo
 {
-  v3 = [(HMDAppleMediaAccessoryInfoController *)self wifiManager];
-  v4 = [v3 MACAddress];
+  wifiManager = [(HMDAppleMediaAccessoryInfoController *)self wifiManager];
+  mACAddress = [wifiManager MACAddress];
 
-  v5 = [(HMDAppleMediaAccessoryInfoController *)self wifiManager];
-  v6 = [v5 currentNetworkSSID];
+  wifiManager2 = [(HMDAppleMediaAccessoryInfoController *)self wifiManager];
+  currentNetworkSSID = [wifiManager2 currentNetworkSSID];
 
-  v7 = [(HMDAppleMediaAccessoryInfoController *)self wifiManager];
-  v8 = [v7 currentNetworkAssociation];
+  wifiManager3 = [(HMDAppleMediaAccessoryInfoController *)self wifiManager];
+  currentNetworkAssociation = [wifiManager3 currentNetworkAssociation];
 
   v9 = objc_alloc(MEMORY[0x277D0F958]);
-  v10 = [v8 BSSID];
-  v11 = [v10 formattedString];
-  v12 = [v8 gatewayIPAddress];
-  v13 = [v8 gatewayMACAddress];
-  v14 = [v13 formattedString];
-  v15 = [v9 initWithMACAddress:v4 SSID:v6 BSSID:v11 gatewayIPAddress:v12 gatewayMACAddress:v14];
+  bSSID = [currentNetworkAssociation BSSID];
+  formattedString = [bSSID formattedString];
+  gatewayIPAddress = [currentNetworkAssociation gatewayIPAddress];
+  gatewayMACAddress = [currentNetworkAssociation gatewayMACAddress];
+  formattedString2 = [gatewayMACAddress formattedString];
+  v15 = [v9 initWithMACAddress:mACAddress SSID:currentNetworkSSID BSSID:formattedString gatewayIPAddress:gatewayIPAddress gatewayMACAddress:formattedString2];
 
   return v15;
 }
 
-- (void)handleCurrentNetworkChangedNotification:(id)a3
+- (void)handleCurrentNetworkChangedNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -463,31 +463,31 @@ void __78__HMDAppleMediaAccessoryInfoController__postUpdateWifiNetworkInfoIfDiff
     v20 = 138543618;
     v21 = v8;
     v22 = 2112;
-    v23 = v4;
+    v23 = notificationCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Received current network changed notification: %@", &v20, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAppleMediaAccessoryInfoController *)v6 lastWifiNetworkInfo];
-  if (v9)
+  lastWifiNetworkInfo = [(HMDAppleMediaAccessoryInfoController *)selfCopy lastWifiNetworkInfo];
+  if (lastWifiNetworkInfo)
   {
-    v10 = v9;
-    v11 = [(HMDAppleMediaAccessoryInfoController *)v6 lastWifiNetworkInfo];
-    v12 = [v11 SSID];
-    v13 = [(HMDAppleMediaAccessoryInfoController *)v6 wifiManager];
-    v14 = [v13 currentNetworkSSID];
-    v15 = [v12 isEqualToString:v14];
+    v10 = lastWifiNetworkInfo;
+    lastWifiNetworkInfo2 = [(HMDAppleMediaAccessoryInfoController *)selfCopy lastWifiNetworkInfo];
+    sSID = [lastWifiNetworkInfo2 SSID];
+    wifiManager = [(HMDAppleMediaAccessoryInfoController *)selfCopy wifiManager];
+    currentNetworkSSID = [wifiManager currentNetworkSSID];
+    v15 = [sSID isEqualToString:currentNetworkSSID];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(HMDAppleMediaAccessoryInfoController *)v6 currentWifiNetworkInfo];
-      [(HMDAppleMediaAccessoryInfoController *)v6 setLastWifiNetworkInfo:v16];
+      currentWifiNetworkInfo = [(HMDAppleMediaAccessoryInfoController *)selfCopy currentWifiNetworkInfo];
+      [(HMDAppleMediaAccessoryInfoController *)selfCopy setLastWifiNetworkInfo:currentWifiNetworkInfo];
 
-      v17 = [(HMDAppleMediaAccessoryInfoController *)v6 lastWifiNetworkInfo];
-      [(HMDAppleMediaAccessoryInfoController *)v6 _notifyDelegateWifiInfoUpdated:v17];
+      lastWifiNetworkInfo3 = [(HMDAppleMediaAccessoryInfoController *)selfCopy lastWifiNetworkInfo];
+      [(HMDAppleMediaAccessoryInfoController *)selfCopy _notifyDelegateWifiInfoUpdated:lastWifiNetworkInfo3];
 
-      v18 = [(HMDAppleMediaAccessoryInfoController *)v6 lastWifiNetworkInfo];
-      [(HMDAppleMediaAccessoryInfoController *)v6 _postUpdateWifiNetworkInfoIfDifferent:v18];
+      lastWifiNetworkInfo4 = [(HMDAppleMediaAccessoryInfoController *)selfCopy lastWifiNetworkInfo];
+      [(HMDAppleMediaAccessoryInfoController *)selfCopy _postUpdateWifiNetworkInfoIfDifferent:lastWifiNetworkInfo4];
     }
   }
 
@@ -496,45 +496,45 @@ void __78__HMDAppleMediaAccessoryInfoController__postUpdateWifiNetworkInfoIfDiff
 
 - (void)configure
 {
-  v3 = [(HMDAppleMediaAccessoryInfoController *)self currentWifiNetworkInfo];
-  [(HMDAppleMediaAccessoryInfoController *)self setLastWifiNetworkInfo:v3];
+  currentWifiNetworkInfo = [(HMDAppleMediaAccessoryInfoController *)self currentWifiNetworkInfo];
+  [(HMDAppleMediaAccessoryInfoController *)self setLastWifiNetworkInfo:currentWifiNetworkInfo];
 
-  v4 = [(HMDAppleMediaAccessoryInfoController *)self lastWifiNetworkInfo];
-  [(HMDAppleMediaAccessoryInfoController *)self _notifyDelegateWifiInfoUpdated:v4];
+  lastWifiNetworkInfo = [(HMDAppleMediaAccessoryInfoController *)self lastWifiNetworkInfo];
+  [(HMDAppleMediaAccessoryInfoController *)self _notifyDelegateWifiInfoUpdated:lastWifiNetworkInfo];
 
-  v5 = [(HMDAppleMediaAccessoryInfoController *)self lastWifiNetworkInfo];
-  [(HMDAppleMediaAccessoryInfoController *)self _postUpdateWifiNetworkInfoIfDifferent:v5];
+  lastWifiNetworkInfo2 = [(HMDAppleMediaAccessoryInfoController *)self lastWifiNetworkInfo];
+  [(HMDAppleMediaAccessoryInfoController *)self _postUpdateWifiNetworkInfoIfDifferent:lastWifiNetworkInfo2];
 
-  v6 = [(HMDAppleMediaAccessoryInfoController *)self dataSource];
-  v7 = [v6 currentAccessorySoftwareVersion];
-  [(HMDAppleMediaAccessoryInfoController *)self _postUpdateSoftwareVersionIfDifferent:v7];
+  dataSource = [(HMDAppleMediaAccessoryInfoController *)self dataSource];
+  currentAccessorySoftwareVersion = [dataSource currentAccessorySoftwareVersion];
+  [(HMDAppleMediaAccessoryInfoController *)self _postUpdateSoftwareVersionIfDifferent:currentAccessorySoftwareVersion];
 
-  v8 = [(HMDAppleMediaAccessoryInfoController *)self notificationCenter];
+  notificationCenter = [(HMDAppleMediaAccessoryInfoController *)self notificationCenter];
   v9 = *MEMORY[0x277D0F768];
-  [v8 removeObserver:self name:*MEMORY[0x277D0F768] object:0];
+  [notificationCenter removeObserver:self name:*MEMORY[0x277D0F768] object:0];
 
-  v10 = [(HMDAppleMediaAccessoryInfoController *)self notificationCenter];
-  [v10 addObserver:self selector:sel_handleCurrentNetworkChangedNotification_ name:v9 object:0];
+  notificationCenter2 = [(HMDAppleMediaAccessoryInfoController *)self notificationCenter];
+  [notificationCenter2 addObserver:self selector:sel_handleCurrentNetworkChangedNotification_ name:v9 object:0];
 }
 
-- (HMDAppleMediaAccessoryInfoController)initWithQueue:(id)a3 dataSource:(id)a4 delegate:(id)a5 notificationCenter:(id)a6 wifiManager:(id)a7
+- (HMDAppleMediaAccessoryInfoController)initWithQueue:(id)queue dataSource:(id)source delegate:(id)delegate notificationCenter:(id)center wifiManager:(id)manager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  queueCopy = queue;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  centerCopy = center;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = HMDAppleMediaAccessoryInfoController;
   v18 = [(HMDAppleMediaAccessoryInfoController *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queue, a3);
-    objc_storeWeak(&v19->_dataSource, v14);
-    objc_storeWeak(&v19->_delegate, v15);
-    objc_storeStrong(&v19->_notificationCenter, a6);
-    objc_storeStrong(&v19->_wifiManager, a7);
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeWeak(&v19->_dataSource, sourceCopy);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    objc_storeStrong(&v19->_notificationCenter, center);
+    objc_storeStrong(&v19->_wifiManager, manager);
   }
 
   return v19;

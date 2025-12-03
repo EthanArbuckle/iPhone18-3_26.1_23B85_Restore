@@ -1,29 +1,29 @@
 @interface FLOWSchemaFLOWMediaPlayerMediaItem
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsAlternative:(BOOL)a3;
-- (void)setHasIsNlsContainerResult:(BOOL)a3;
-- (void)setHasIsNlsResult:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsAlternative:(BOOL)alternative;
+- (void)setHasIsNlsContainerResult:(BOOL)result;
+- (void)setHasIsNlsResult:(BOOL)result;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMediaPlayerMediaItem
 
-- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = FLOWSchemaFLOWMediaPlayerMediaItem;
   v5 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(FLOWSchemaFLOWMediaPlayerMediaItem *)v5 setTitle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"artist"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"artist"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,14 +39,14 @@
       [(FLOWSchemaFLOWMediaPlayerMediaItem *)v5 setArtist:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mediaType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mediaType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerMediaItem setMediaType:](v5, "setMediaType:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"entityId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"entityId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,21 +54,21 @@
       [(FLOWSchemaFLOWMediaPlayerMediaItem *)v5 setEntityId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isAlternative"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isAlternative"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerMediaItem setIsAlternative:](v5, "setIsAlternative:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isNlsResult"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isNlsResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerMediaItem setIsNlsResult:](v5, "setIsNlsResult:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isNlsContainerResult"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isNlsContainerResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMediaPlayerMediaItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,26 +117,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_artist)
   {
-    v4 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"artist"];
+    artist = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
+    v5 = [artist copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"artist"];
   }
 
   if (self->_entityId)
   {
-    v6 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"entityId"];
+    entityId = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
+    v7 = [entityId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"entityId"];
   }
 
   v8 = *(&self->_isNlsContainerResult + 1);
   if ((v8 & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerMediaItem isAlternative](self, "isAlternative")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isAlternative"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isAlternative"];
 
     v8 = *(&self->_isNlsContainerResult + 1);
     if ((v8 & 8) == 0)
@@ -157,7 +157,7 @@ LABEL_7:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerMediaItem isNlsContainerResult](self, "isNlsContainerResult")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isNlsContainerResult"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isNlsContainerResult"];
 
   v8 = *(&self->_isNlsContainerResult + 1);
   if ((v8 & 4) == 0)
@@ -173,7 +173,7 @@ LABEL_8:
 
 LABEL_12:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerMediaItem isNlsResult](self, "isNlsResult")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isNlsResult"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isNlsResult"];
 
   if (!*(&self->_isNlsContainerResult + 1))
   {
@@ -192,18 +192,18 @@ LABEL_13:
     v13 = off_1E78D5DC8[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"mediaType"];
+  [dictionary setObject:v13 forKeyedSubscript:@"mediaType"];
 LABEL_17:
   if (self->_title)
   {
-    v14 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"title"];
+    title = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
+    v15 = [title copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"title"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -259,28 +259,28 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
+  title2 = [equalCopy title];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
-  if (v7)
+  title3 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
+  if (title3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
-    v10 = [v4 title];
-    v11 = [v9 isEqual:v10];
+    v8 = title3;
+    title4 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
+    title5 = [equalCopy title];
+    v11 = [title4 isEqual:title5];
 
     if (!v11)
     {
@@ -292,20 +292,20 @@ LABEL_7:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
-  v6 = [v4 artist];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
+  title2 = [equalCopy artist];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
-  if (v12)
+  artist = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
+  if (artist)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
-    v15 = [v4 artist];
-    v16 = [v14 isEqual:v15];
+    v13 = artist;
+    artist2 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
+    artist3 = [equalCopy artist];
+    v16 = [artist2 isEqual:artist3];
 
     if (!v16)
     {
@@ -317,7 +317,7 @@ LABEL_7:
   {
   }
 
-  if (*(&self->_isNlsContainerResult + 1) != (v4[43] & 1))
+  if (*(&self->_isNlsContainerResult + 1) != (equalCopy[43] & 1))
   {
     goto LABEL_20;
   }
@@ -325,28 +325,28 @@ LABEL_7:
   if (*(&self->_isNlsContainerResult + 1))
   {
     mediaType = self->_mediaType;
-    if (mediaType != [v4 mediaType])
+    if (mediaType != [equalCopy mediaType])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
-  v6 = [v4 entityId];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
+  title2 = [equalCopy entityId];
+  if ((title != 0) == (title2 == 0))
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v18 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
-  if (v18)
+  entityId = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
+  if (entityId)
   {
-    v19 = v18;
-    v20 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
-    v21 = [v4 entityId];
-    v22 = [v20 isEqual:v21];
+    v19 = entityId;
+    entityId2 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
+    entityId3 = [equalCopy entityId];
+    v22 = [entityId2 isEqual:entityId3];
 
     if (!v22)
     {
@@ -360,19 +360,19 @@ LABEL_19:
 
   v25 = *(&self->_isNlsContainerResult + 1);
   v26 = (v25 >> 1) & 1;
-  v27 = v4[43];
+  v27 = equalCopy[43];
   if (v26 == ((v27 >> 1) & 1))
   {
     if (v26)
     {
       isAlternative = self->_isAlternative;
-      if (isAlternative != [v4 isAlternative])
+      if (isAlternative != [equalCopy isAlternative])
       {
         goto LABEL_20;
       }
 
       v25 = *(&self->_isNlsContainerResult + 1);
-      v27 = v4[43];
+      v27 = equalCopy[43];
     }
 
     v29 = (v25 >> 2) & 1;
@@ -381,19 +381,19 @@ LABEL_19:
       if (v29)
       {
         isNlsResult = self->_isNlsResult;
-        if (isNlsResult != [v4 isNlsResult])
+        if (isNlsResult != [equalCopy isNlsResult])
         {
           goto LABEL_20;
         }
 
         v25 = *(&self->_isNlsContainerResult + 1);
-        v27 = v4[43];
+        v27 = equalCopy[43];
       }
 
       v31 = (v25 >> 3) & 1;
       if (v31 == ((v27 >> 3) & 1))
       {
-        if (!v31 || (isNlsContainerResult = self->_isNlsContainerResult, isNlsContainerResult == [v4 isNlsContainerResult]))
+        if (!v31 || (isNlsContainerResult = self->_isNlsContainerResult, isNlsContainerResult == [equalCopy isNlsContainerResult]))
         {
           v23 = 1;
           goto LABEL_21;
@@ -409,19 +409,19 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
+  toCopy = to;
+  title = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self title];
 
-  if (v4)
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
+  artist = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self artist];
 
-  if (v5)
+  if (artist)
   {
     PBDataWriterWriteStringField();
   }
@@ -431,19 +431,19 @@ LABEL_21:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
+  entityId = [(FLOWSchemaFLOWMediaPlayerMediaItem *)self entityId];
 
-  if (v6)
+  if (entityId)
   {
     PBDataWriterWriteStringField();
   }
 
   v7 = *(&self->_isNlsContainerResult + 1);
-  v8 = v9;
+  v8 = toCopy;
   if ((v7 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v8 = v9;
+    v8 = toCopy;
     v7 = *(&self->_isNlsContainerResult + 1);
     if ((v7 & 4) == 0)
     {
@@ -463,20 +463,20 @@ LABEL_11:
   }
 
   PBDataWriterWriteBOOLField();
-  v8 = v9;
+  v8 = toCopy;
   if ((*(&self->_isNlsContainerResult + 1) & 8) != 0)
   {
 LABEL_12:
     PBDataWriterWriteBOOLField();
-    v8 = v9;
+    v8 = toCopy;
   }
 
 LABEL_13:
 }
 
-- (void)setHasIsNlsContainerResult:(BOOL)a3
+- (void)setHasIsNlsContainerResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -489,9 +489,9 @@ LABEL_13:
   *(&self->_isNlsContainerResult + 1) = *(&self->_isNlsContainerResult + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsNlsResult:(BOOL)a3
+- (void)setHasIsNlsResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 4;
   }
@@ -504,9 +504,9 @@ LABEL_13:
   *(&self->_isNlsContainerResult + 1) = *(&self->_isNlsContainerResult + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsAlternative:(BOOL)a3
+- (void)setHasIsAlternative:(BOOL)alternative
 {
-  if (a3)
+  if (alternative)
   {
     v3 = 2;
   }
@@ -519,41 +519,41 @@ LABEL_13:
   *(&self->_isNlsContainerResult + 1) = *(&self->_isNlsContainerResult + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = FLOWSchemaFLOWMediaPlayerMediaItem;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteTitle];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteArtist];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteEntityId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteTitle];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteArtist];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteEntityId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteTitle];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteArtist];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteEntityId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteTitle];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteArtist];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteEntityId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteTitle];
     [(FLOWSchemaFLOWMediaPlayerMediaItem *)self deleteArtist];

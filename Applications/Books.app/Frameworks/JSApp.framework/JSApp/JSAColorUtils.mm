@@ -1,5 +1,5 @@
 @interface JSAColorUtils
-+ (id)blendHexColors:(id)a3 :(id)a4 :(id)a5;
++ (id)blendHexColors:(id)colors :(id)a4 :(id)a5;
 - (_TtC5JSApp13JSAColorUtils)init;
 @end
 
@@ -12,7 +12,7 @@
   return [(JSAColorUtils *)&v3 init];
 }
 
-+ (id)blendHexColors:(id)a3 :(id)a4 :(id)a5
++ (id)blendHexColors:(id)colors :(id)a4 :(id)a5
 {
   v5 = sub_843AC();
   v7 = v6;

@@ -1,12 +1,12 @@
 @interface AntBlockPowerLimitPolicyClient
 - (AntBlockPowerLimitPolicyClient)init;
-- (AntBlockPowerLimitPolicyClient)initWithClient:(unsigned int)a3;
+- (AntBlockPowerLimitPolicyClient)initWithClient:(unsigned int)client;
 - (id)constructXpcMessage;
 - (id)constructXpcMessagePolicyEntries;
-- (void)extractPolicy:(id)a3;
-- (void)extractPolicyEntries:(id)a3;
-- (void)extractPolicyGlobalParam:(id)a3;
-- (void)setParameterDenyVoiceProtect:(BOOL)a3 MitigationTimer:(unsigned int)a4 DurationGranularity:(unsigned int)a5 LQMThreshold:(unsigned int)a6;
+- (void)extractPolicy:(id)policy;
+- (void)extractPolicyEntries:(id)entries;
+- (void)extractPolicyGlobalParam:(id)param;
+- (void)setParameterDenyVoiceProtect:(BOOL)protect MitigationTimer:(unsigned int)timer DurationGranularity:(unsigned int)granularity LQMThreshold:(unsigned int)threshold;
 @end
 
 @implementation AntBlockPowerLimitPolicyClient
@@ -24,12 +24,12 @@
   return v2;
 }
 
-- (AntBlockPowerLimitPolicyClient)initWithClient:(unsigned int)a3
+- (AntBlockPowerLimitPolicyClient)initWithClient:(unsigned int)client
 {
   v8.receiver = self;
   v8.super_class = AntBlockPowerLimitPolicyClient;
   v4 = [(AntBlockPowerLimitPolicyClient *)&v8 init];
-  v4->_mClient = a3;
+  v4->_mClient = client;
   v5 = objc_alloc_init(NSMutableArray);
   mPolicy = v4->_mPolicy;
   v4->_mPolicy = v5;
@@ -37,21 +37,21 @@
   return v4;
 }
 
-- (void)setParameterDenyVoiceProtect:(BOOL)a3 MitigationTimer:(unsigned int)a4 DurationGranularity:(unsigned int)a5 LQMThreshold:(unsigned int)a6
+- (void)setParameterDenyVoiceProtect:(BOOL)protect MitigationTimer:(unsigned int)timer DurationGranularity:(unsigned int)granularity LQMThreshold:(unsigned int)threshold
 {
-  self->_mDenyVoiceProtect = a3;
-  self->_mDurationGranularity = a5;
-  self->_mMitigationTimer = a4;
-  self->_mLqmThreshold = a6;
+  self->_mDenyVoiceProtect = protect;
+  self->_mDurationGranularity = granularity;
+  self->_mMitigationTimer = timer;
+  self->_mLqmThreshold = threshold;
 }
 
-- (void)extractPolicyEntries:(id)a3
+- (void)extractPolicyEntries:(id)entries
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entriesCopy = entries;
+  v5 = entriesCopy;
+  if (entriesCopy)
   {
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client %u", [v4 count], self->_mClient);
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client %u", [entriesCopy count], self->_mClient);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -104,50 +104,50 @@
   }
 }
 
-- (void)extractPolicyGlobalParam:(id)a3
+- (void)extractPolicyGlobalParam:(id)param
 {
-  v12 = a3;
+  paramCopy = param;
   [WCM_Logging logLevel:3 message:@"Extract antenna blocking/Power limiting policy for client %u", self->_mClient];
-  v4 = [v12 objectForKey:@"Deny_Voice_Protect"];
+  bOOLValue = [paramCopy objectForKey:@"Deny_Voice_Protect"];
 
-  if (v4)
+  if (bOOLValue)
   {
-    v5 = [v12 objectForKey:@"Deny_Voice_Protect"];
-    v4 = [v5 BOOLValue];
+    v5 = [paramCopy objectForKey:@"Deny_Voice_Protect"];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  v6 = [v12 objectForKey:@"Mitigation_Timer_ms"];
+  integerValue = [paramCopy objectForKey:@"Mitigation_Timer_ms"];
 
-  if (v6)
+  if (integerValue)
   {
-    v7 = [v12 objectForKey:@"Mitigation_Timer_ms"];
-    v6 = [v7 integerValue];
+    v7 = [paramCopy objectForKey:@"Mitigation_Timer_ms"];
+    integerValue = [v7 integerValue];
   }
 
-  v8 = [v12 objectForKey:@"Duration_Granularity"];
+  integerValue2 = [paramCopy objectForKey:@"Duration_Granularity"];
 
-  if (v8)
+  if (integerValue2)
   {
-    v9 = [v12 objectForKey:@"Duration_Granularity"];
-    v8 = [v9 integerValue];
+    v9 = [paramCopy objectForKey:@"Duration_Granularity"];
+    integerValue2 = [v9 integerValue];
   }
 
-  v10 = [v12 objectForKey:@"LQM_Threshold"];
+  integerValue3 = [paramCopy objectForKey:@"LQM_Threshold"];
 
-  if (v10)
+  if (integerValue3)
   {
-    v11 = [v12 objectForKey:@"LQM_Threshold"];
-    v10 = [v11 integerValue];
+    v11 = [paramCopy objectForKey:@"LQM_Threshold"];
+    integerValue3 = [v11 integerValue];
   }
 
-  [(AntBlockPowerLimitPolicyClient *)self setParameterDenyVoiceProtect:v4 MitigationTimer:v6 DurationGranularity:v8 LQMThreshold:v10];
+  [(AntBlockPowerLimitPolicyClient *)self setParameterDenyVoiceProtect:bOOLValue MitigationTimer:integerValue DurationGranularity:integerValue2 LQMThreshold:integerValue3];
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
-  v4 = a3;
-  [(AntBlockPowerLimitPolicyClient *)self extractPolicyGlobalParam:v4];
-  v5 = [v4 objectForKey:@"Policy"];
+  policyCopy = policy;
+  [(AntBlockPowerLimitPolicyClient *)self extractPolicyGlobalParam:policyCopy];
+  v5 = [policyCopy objectForKey:@"Policy"];
 
   [(AntBlockPowerLimitPolicyClient *)self extractPolicyEntries:v5];
 }
@@ -174,8 +174,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
-        xpc_array_append_value(v3, v9);
+        constructXpcMessage = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
+        xpc_array_append_value(v3, constructXpcMessage);
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -199,8 +199,8 @@
       xpc_dictionary_set_uint64(v4, "kWCMCellularSetAntBlocking_DurationGranularity", self->_mDurationGranularity);
       xpc_dictionary_set_BOOL(v4, "kWCMCellularSetAntBlocking_DenyProtectVoice", self->_mDenyVoiceProtect);
       xpc_dictionary_set_uint64(v4, "kWCMCellularSetAntBlocking_MitigationTimer", self->_mMitigationTimer);
-      v5 = [(AntBlockPowerLimitPolicyClient *)self constructXpcMessagePolicyEntries];
-      xpc_dictionary_set_value(v4, "kWCMCellularSetAntBlocking_PolicySet", v5);
+      constructXpcMessagePolicyEntries = [(AntBlockPowerLimitPolicyClient *)self constructXpcMessagePolicyEntries];
+      xpc_dictionary_set_value(v4, "kWCMCellularSetAntBlocking_PolicySet", constructXpcMessagePolicyEntries);
     }
   }
 

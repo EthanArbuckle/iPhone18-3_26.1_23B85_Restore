@@ -1,6 +1,6 @@
 @interface PXPhotosAssetsFetcherConfiguration
 - (PXPhotosAssetsFetcherConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -34,7 +34,7 @@
   PXDisplayAssetCollectionCurationLengthDescription();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXPhotosAssetsFetcherConfiguration);
   [(PXPhotosAssetsFetcherConfiguration *)v4 setCurationKind:[(PXPhotosAssetsFetcherConfiguration *)self curationKind]];
@@ -42,17 +42,17 @@
   [(PXPhotosAssetsFetcherConfiguration *)v4 setOptions:[(PXPhotosAssetsFetcherConfiguration *)self options]];
   [(PXPhotosAssetsFetcherConfiguration *)v4 setLibraryFilter:[(PXPhotosAssetsFetcherConfiguration *)self libraryFilter]];
   [(PXPhotosAssetsFetcherConfiguration *)v4 setFetchLimit:[(PXPhotosAssetsFetcherConfiguration *)self fetchLimit]];
-  v5 = [(PXPhotosAssetsFetcherConfiguration *)self filterPredicate];
-  [(PXPhotosAssetsFetcherConfiguration *)v4 setFilterPredicate:v5];
+  filterPredicate = [(PXPhotosAssetsFetcherConfiguration *)self filterPredicate];
+  [(PXPhotosAssetsFetcherConfiguration *)v4 setFilterPredicate:filterPredicate];
 
-  v6 = [(PXPhotosAssetsFetcherConfiguration *)self inclusionPredicate];
-  [(PXPhotosAssetsFetcherConfiguration *)v4 setInclusionPredicate:v6];
+  inclusionPredicate = [(PXPhotosAssetsFetcherConfiguration *)self inclusionPredicate];
+  [(PXPhotosAssetsFetcherConfiguration *)v4 setInclusionPredicate:inclusionPredicate];
 
-  v7 = [(PXPhotosAssetsFetcherConfiguration *)self sortDescriptors];
-  [(PXPhotosAssetsFetcherConfiguration *)v4 setSortDescriptors:v7];
+  sortDescriptors = [(PXPhotosAssetsFetcherConfiguration *)self sortDescriptors];
+  [(PXPhotosAssetsFetcherConfiguration *)v4 setSortDescriptors:sortDescriptors];
 
-  v8 = [(PXPhotosAssetsFetcherConfiguration *)self fetchPropertySets];
-  [(PXPhotosAssetsFetcherConfiguration *)v4 setFetchPropertySets:v8];
+  fetchPropertySets = [(PXPhotosAssetsFetcherConfiguration *)self fetchPropertySets];
+  [(PXPhotosAssetsFetcherConfiguration *)v4 setFetchPropertySets:fetchPropertySets];
 
   [(PXPhotosAssetsFetcherConfiguration *)v4 setIncludeUnsavedSyndicatedAssets:[(PXPhotosAssetsFetcherConfiguration *)self includeUnsavedSyndicatedAssets]];
   [(PXPhotosAssetsFetcherConfiguration *)v4 setIncludeSharedCollectionAssets:[(PXPhotosAssetsFetcherConfiguration *)self includeSharedCollectionAssets]];
@@ -60,11 +60,11 @@
   [(PXPhotosAssetsFetcherConfiguration *)v4 setReverseSortOrder:[(PXPhotosAssetsFetcherConfiguration *)self reverseSortOrder]];
   [(PXPhotosAssetsFetcherConfiguration *)v4 setHideHiddenAssets:[(PXPhotosAssetsFetcherConfiguration *)self hideHiddenAssets]];
   [(PXPhotosAssetsFetcherConfiguration *)v4 setCurationType:[(PXPhotosAssetsFetcherConfiguration *)self curationType]];
-  v9 = [(PXPhotosAssetsFetcherConfiguration *)self referencePersons];
-  [(PXPhotosAssetsFetcherConfiguration *)v4 setReferencePersons:v9];
+  referencePersons = [(PXPhotosAssetsFetcherConfiguration *)self referencePersons];
+  [(PXPhotosAssetsFetcherConfiguration *)v4 setReferencePersons:referencePersons];
 
-  v10 = [(PXPhotosAssetsFetcherConfiguration *)self referenceAsset];
-  [(PXPhotosAssetsFetcherConfiguration *)v4 setReferenceAsset:v10];
+  referenceAsset = [(PXPhotosAssetsFetcherConfiguration *)self referenceAsset];
+  [(PXPhotosAssetsFetcherConfiguration *)v4 setReferenceAsset:referenceAsset];
 
   [(PXPhotosAssetsFetcherConfiguration *)v4 setIncludeOthersInSocialGroupAssets:[(PXPhotosAssetsFetcherConfiguration *)self includeOthersInSocialGroupAssets]];
   return v4;

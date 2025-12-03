@@ -1,23 +1,23 @@
 @interface PKPeerPaymentAddress
-+ (id)addressFromPostalAddress:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentAddress)initWithCoder:(id)a3;
-- (PKPeerPaymentAddress)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)addressFromPostalAddress:(id)address;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentAddress)initWithCoder:(id)coder;
+- (PKPeerPaymentAddress)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)postalAddress;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentAddress
 
-+ (id)addressFromPostalAddress:(id)a3
++ (id)addressFromPostalAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = objc_alloc_init(PKPeerPaymentAddress);
-  v5 = [v3 street];
-  v6 = [v5 componentsSeparatedByString:@"\n"];
+  street = [addressCopy street];
+  v6 = [street componentsSeparatedByString:@"\n"];
 
   v7 = [v6 objectAtIndexedSubscript:0];
   [(PKPeerPaymentAddress *)v4 setAddressLine1:v7];
@@ -28,58 +28,58 @@
     [(PKPeerPaymentAddress *)v4 setAddressLine2:v8];
   }
 
-  v9 = [v3 city];
-  [(PKPeerPaymentAddress *)v4 setCity:v9];
+  city = [addressCopy city];
+  [(PKPeerPaymentAddress *)v4 setCity:city];
 
-  v10 = [v3 state];
-  [(PKPeerPaymentAddress *)v4 setState:v10];
+  state = [addressCopy state];
+  [(PKPeerPaymentAddress *)v4 setState:state];
 
-  v11 = [v3 postalCode];
-  [(PKPeerPaymentAddress *)v4 setPostalCode:v11];
+  postalCode = [addressCopy postalCode];
+  [(PKPeerPaymentAddress *)v4 setPostalCode:postalCode];
 
   [(PKPeerPaymentAddress *)v4 setValid:1];
 
   return v4;
 }
 
-- (PKPeerPaymentAddress)initWithDictionary:(id)a3
+- (PKPeerPaymentAddress)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKPeerPaymentAddress;
   v5 = [(PKPeerPaymentAddress *)&v25 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"addressLine1"];
+    v6 = [dictionaryCopy PKStringForKey:@"addressLine1"];
     v7 = [v6 copy];
     addressLine1 = v5->_addressLine1;
     v5->_addressLine1 = v7;
 
-    v9 = [v4 PKStringForKey:@"addressLine2"];
+    v9 = [dictionaryCopy PKStringForKey:@"addressLine2"];
     v10 = [v9 copy];
     addressLine2 = v5->_addressLine2;
     v5->_addressLine2 = v10;
 
-    v12 = [v4 PKStringForKey:@"city"];
+    v12 = [dictionaryCopy PKStringForKey:@"city"];
     v13 = [v12 copy];
     city = v5->_city;
     v5->_city = v13;
 
-    v15 = [v4 PKStringForKey:@"state"];
+    v15 = [dictionaryCopy PKStringForKey:@"state"];
     v16 = [v15 copy];
     state = v5->_state;
     v5->_state = v16;
 
-    v18 = [v4 PKStringForKey:@"postalCode"];
+    v18 = [dictionaryCopy PKStringForKey:@"postalCode"];
     v19 = [v18 copy];
     postalCode = v5->_postalCode;
     v5->_postalCode = v19;
 
-    v5->_valid = [v4 PKBoolForKey:@"valid"];
-    v21 = [v4 PKStringForKey:@"source"];
+    v5->_valid = [dictionaryCopy PKBoolForKey:@"valid"];
+    v21 = [dictionaryCopy PKStringForKey:@"source"];
     v5->_source = PKPaymentSetupFieldSourceFromString(v21);
 
-    v22 = [v4 PKDateForKey:@"restrictionDate"];
+    v22 = [dictionaryCopy PKDateForKey:@"restrictionDate"];
     restrictionDate = v5->_restrictionDate;
     v5->_restrictionDate = v22;
   }
@@ -110,37 +110,37 @@
   return v4;
 }
 
-- (PKPeerPaymentAddress)initWithCoder:(id)a3
+- (PKPeerPaymentAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKPeerPaymentAddress;
   v5 = [(PKPeerPaymentAddress *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addressLine1"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addressLine1"];
     addressLine1 = v5->_addressLine1;
     v5->_addressLine1 = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addressLine2"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addressLine2"];
     addressLine2 = v5->_addressLine2;
     v5->_addressLine2 = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"city"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"city"];
     city = v5->_city;
     v5->_city = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     state = v5->_state;
     v5->_state = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postalCode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postalCode"];
     postalCode = v5->_postalCode;
     v5->_postalCode = v14;
 
-    v5->_valid = [v4 decodeBoolForKey:@"valid"];
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restrictionDate"];
+    v5->_valid = [coderCopy decodeBoolForKey:@"valid"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restrictionDate"];
     restrictionDate = v5->_restrictionDate;
     v5->_restrictionDate = v16;
   }
@@ -148,39 +148,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   addressLine1 = self->_addressLine1;
-  v5 = a3;
-  [v5 encodeObject:addressLine1 forKey:@"addressLine1"];
-  [v5 encodeObject:self->_addressLine2 forKey:@"addressLine2"];
-  [v5 encodeObject:self->_city forKey:@"city"];
-  [v5 encodeObject:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_postalCode forKey:@"postalCode"];
-  [v5 encodeBool:self->_valid forKey:@"valid"];
-  [v5 encodeInteger:self->_source forKey:@"source"];
-  [v5 encodeObject:self->_restrictionDate forKey:@"restrictionDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:addressLine1 forKey:@"addressLine1"];
+  [coderCopy encodeObject:self->_addressLine2 forKey:@"addressLine2"];
+  [coderCopy encodeObject:self->_city forKey:@"city"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_postalCode forKey:@"postalCode"];
+  [coderCopy encodeBool:self->_valid forKey:@"valid"];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_restrictionDate forKey:@"restrictionDate"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_addressLine1];
-  [v3 safelyAddObject:self->_addressLine2];
-  [v3 safelyAddObject:self->_city];
-  [v3 safelyAddObject:self->_state];
-  [v3 safelyAddObject:self->_postalCode];
-  [v3 safelyAddObject:self->_restrictionDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_addressLine1];
+  [array safelyAddObject:self->_addressLine2];
+  [array safelyAddObject:self->_city];
+  [array safelyAddObject:self->_state];
+  [array safelyAddObject:self->_postalCode];
+  [array safelyAddObject:self->_restrictionDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_valid - v4 + 32 * v4;
   v6 = self->_source - v5 + 32 * v5;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -188,7 +188,7 @@
   }
 
   addressLine1 = self->_addressLine1;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (addressLine1 && v6)
   {
     if (([(NSString *)addressLine1 isEqual:?]& 1) == 0)
@@ -203,7 +203,7 @@
   }
 
   addressLine2 = self->_addressLine2;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (addressLine2 && v8)
   {
     if (([(NSString *)addressLine2 isEqual:?]& 1) == 0)
@@ -218,7 +218,7 @@
   }
 
   city = self->_city;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (city && v10)
   {
     if (([(NSString *)city isEqual:?]& 1) == 0)
@@ -233,7 +233,7 @@
   }
 
   state = self->_state;
-  v12 = v4[5];
+  v12 = equalCopy[5];
   if (state && v12)
   {
     if (([(NSString *)state isEqual:?]& 1) == 0)
@@ -248,7 +248,7 @@
   }
 
   postalCode = self->_postalCode;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (postalCode && v14)
   {
     if (([(NSString *)postalCode isEqual:?]& 1) == 0)
@@ -263,7 +263,7 @@
   }
 
   restrictionDate = self->_restrictionDate;
-  v16 = v4[7];
+  v16 = equalCopy[7];
   if (!restrictionDate || !v16)
   {
     if (restrictionDate == v16)
@@ -282,12 +282,12 @@ LABEL_34:
   }
 
 LABEL_32:
-  if (self->_valid != *(v4 + 8))
+  if (self->_valid != *(equalCopy + 8))
   {
     goto LABEL_34;
   }
 
-  v17 = self->_source == v4[8];
+  v17 = self->_source == equalCopy[8];
 LABEL_35:
 
   return v17;
@@ -309,26 +309,26 @@ LABEL_35:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPeerPaymentAddress allocWithZone:](PKPeerPaymentAddress init];
-  v6 = [(NSString *)self->_addressLine1 copyWithZone:a3];
+  v6 = [(NSString *)self->_addressLine1 copyWithZone:zone];
   addressLine1 = v5->_addressLine1;
   v5->_addressLine1 = v6;
 
-  v8 = [(NSString *)self->_addressLine2 copyWithZone:a3];
+  v8 = [(NSString *)self->_addressLine2 copyWithZone:zone];
   addressLine2 = v5->_addressLine2;
   v5->_addressLine2 = v8;
 
-  v10 = [(NSString *)self->_city copyWithZone:a3];
+  v10 = [(NSString *)self->_city copyWithZone:zone];
   city = v5->_city;
   v5->_city = v10;
 
-  v12 = [(NSString *)self->_state copyWithZone:a3];
+  v12 = [(NSString *)self->_state copyWithZone:zone];
   state = v5->_state;
   v5->_state = v12;
 
-  v14 = [(NSString *)self->_postalCode copyWithZone:a3];
+  v14 = [(NSString *)self->_postalCode copyWithZone:zone];
   postalCode = v5->_postalCode;
   v5->_postalCode = v14;
 

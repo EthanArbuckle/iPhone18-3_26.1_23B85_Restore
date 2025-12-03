@@ -1,54 +1,54 @@
 @interface HKSPSleepWidgetManager
-+ (id)_widgetReloadDescription:(unint64_t)a3;
++ (id)_widgetReloadDescription:(unint64_t)description;
 + (id)defaultRelevanceController;
 + (id)defaultTimelineControllers;
 + (id)widgetBundleIdentifierForCurrentDevice;
 + (id)widgetContainerBundleIdentifierForCurrentDevice;
 + (id)widgetKinds;
 - (HKSPSleepWidgetManager)init;
-- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)a3 relevanceController:(id)a4;
-- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)a3 relevanceController:(id)a4 timelineScheduler:(id)a5;
+- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)controllers relevanceController:(id)controller;
+- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)controllers relevanceController:(id)controller timelineScheduler:(id)scheduler;
 - (HKSPSleepWidgetManagerDelegate)delegate;
 - (void)invalidateRelevances;
-- (void)reloadWidgetsWithReason:(unint64_t)a3;
+- (void)reloadWidgetsWithReason:(unint64_t)reason;
 @end
 
 @implementation HKSPSleepWidgetManager
 
 - (HKSPSleepWidgetManager)init
 {
-  v3 = [objc_opt_class() defaultTimelineControllers];
-  v4 = [objc_opt_class() defaultRelevanceController];
-  v5 = [(HKSPSleepWidgetManager *)self initWithTimelineControllers:v3 relevanceController:v4];
+  defaultTimelineControllers = [objc_opt_class() defaultTimelineControllers];
+  defaultRelevanceController = [objc_opt_class() defaultRelevanceController];
+  v5 = [(HKSPSleepWidgetManager *)self initWithTimelineControllers:defaultTimelineControllers relevanceController:defaultRelevanceController];
 
   return v5;
 }
 
-- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)a3 relevanceController:(id)a4
+- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)controllers relevanceController:(id)controller
 {
   v6 = MEMORY[0x277D2C938];
-  v7 = a4;
-  v8 = a3;
+  controllerCopy = controller;
+  controllersCopy = controllers;
   v9 = [v6 serialDispatchQueueSchedulerWithName:@"com.apple.HKSPSleepWidgetManager.serial"];
-  v10 = [(HKSPSleepWidgetManager *)self initWithTimelineControllers:v8 relevanceController:v7 timelineScheduler:v9];
+  v10 = [(HKSPSleepWidgetManager *)self initWithTimelineControllers:controllersCopy relevanceController:controllerCopy timelineScheduler:v9];
 
   return v10;
 }
 
-- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)a3 relevanceController:(id)a4 timelineScheduler:(id)a5
+- (HKSPSleepWidgetManager)initWithTimelineControllers:(id)controllers relevanceController:(id)controller timelineScheduler:(id)scheduler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllersCopy = controllers;
+  controllerCopy = controller;
+  schedulerCopy = scheduler;
   v16.receiver = self;
   v16.super_class = HKSPSleepWidgetManager;
   v12 = [(HKSPSleepWidgetManager *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_timelineControllers, a3);
-    objc_storeStrong(&v13->_relevanceController, a4);
-    objc_storeStrong(&v13->_chsScheduler, a5);
+    objc_storeStrong(&v12->_timelineControllers, controllers);
+    objc_storeStrong(&v13->_relevanceController, controller);
+    objc_storeStrong(&v13->_chsScheduler, scheduler);
     v14 = v13;
   }
 
@@ -57,13 +57,13 @@
 
 + (id)defaultTimelineControllers
 {
-  v3 = [a1 widgetKinds];
+  widgetKinds = [self widgetKinds];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__HKSPSleepWidgetManager_defaultTimelineControllers__block_invoke;
   v6[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v6[4] = a1;
-  v4 = [v3 na_map:v6];
+  v6[4] = self;
+  v4 = [widgetKinds na_map:v6];
 
   return v4;
 }
@@ -116,9 +116,9 @@ id __52__HKSPSleepWidgetManager_defaultTimelineControllers__block_invoke(uint64_
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedWidgetService];
+  sharedWidgetService = [v2 sharedWidgetService];
 
-  return v4;
+  return sharedWidgetService;
 }
 
 + (id)widgetKinds
@@ -130,11 +130,11 @@ id __52__HKSPSleepWidgetManager_defaultTimelineControllers__block_invoke(uint64_
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v4 = [v2 arrayWithArray:v3];
 
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 features];
-  v7 = [v6 sleepDetails];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  sleepDetails = [features sleepDetails];
 
-  if (v7)
+  if (sleepDetails)
   {
     [v4 addObject:@"com.apple.health.SleepScoreWidget"];
   }
@@ -146,10 +146,10 @@ id __52__HKSPSleepWidgetManager_defaultTimelineControllers__block_invoke(uint64_
   return v8;
 }
 
-- (void)reloadWidgetsWithReason:(unint64_t)a3
+- (void)reloadWidgetsWithReason:(unint64_t)reason
 {
-  v5 = [objc_opt_class() _widgetReloadDescription:a3];
-  v6 = [objc_opt_class() _shouldForceWidgetReload:a3];
+  v5 = [objc_opt_class() _widgetReloadDescription:reason];
+  v6 = [objc_opt_class() _shouldForceWidgetReload:reason];
   timelineControllers = self->_timelineControllers;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -281,13 +281,13 @@ LABEL_9:
 
 - (void)invalidateRelevances
 {
-  v3 = [objc_opt_class() widgetKinds];
+  widgetKinds = [objc_opt_class() widgetKinds];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__HKSPSleepWidgetManager_invalidateRelevances__block_invoke;
   v4[3] = &unk_279C75810;
   v4[4] = self;
-  [v3 na_each:v4];
+  [widgetKinds na_each:v4];
 }
 
 void __46__HKSPSleepWidgetManager_invalidateRelevances__block_invoke(uint64_t a1, void *a2)
@@ -398,11 +398,11 @@ LABEL_6:
 
 + (id)widgetBundleIdentifierForCurrentDevice
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 hksp_device];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_device = [mEMORY[0x277CCDD30] hksp_device];
 
-  v4 = v3 > 6 || ((1 << v3) & 0x7A) == 0;
-  if (!v4 || v3 == 1000)
+  v4 = hksp_device > 6 || ((1 << hksp_device) & 0x7A) == 0;
+  if (!v4 || hksp_device == 1000)
   {
     return @"com.apple.Health.Sleep.SleepWidgetExtension";
   }
@@ -415,10 +415,10 @@ LABEL_6:
 
 + (id)widgetContainerBundleIdentifierForCurrentDevice
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 hksp_device];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_device = [mEMORY[0x277CCDD30] hksp_device];
 
-  if (v3 == 2)
+  if (hksp_device == 2)
   {
     v4 = @"com.apple.NanoSleep.watchkitapp";
   }
@@ -431,16 +431,16 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_widgetReloadDescription:(unint64_t)a3
++ (id)_widgetReloadDescription:(unint64_t)description
 {
-  if (a3 > 5)
+  if (description > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279C75890[a3];
+    return off_279C75890[description];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface CAPresentationModifier
-- (BOOL)supportsNewValue:(_BOOL8)a1;
+- (BOOL)supportsNewValue:(_BOOL8)value;
 @end
 
 @implementation CAPresentationModifier
 
-- (BOOL)supportsNewValue:(_BOOL8)a1
+- (BOOL)supportsNewValue:(_BOOL8)value
 {
-  v2 = a1;
-  if (a1)
+  valueCopy = value;
+  if (value)
   {
     v3 = a2;
-    v4 = [v2 value];
-    v5 = [v4 CA_numericValueCount];
-    v6 = [v3 CA_numericValueCount];
+    value = [valueCopy value];
+    cA_numericValueCount = [value CA_numericValueCount];
+    cA_numericValueCount2 = [v3 CA_numericValueCount];
 
-    v2 = v5 == v6;
+    valueCopy = cA_numericValueCount == cA_numericValueCount2;
   }
 
-  return v2;
+  return valueCopy;
 }
 
 @end

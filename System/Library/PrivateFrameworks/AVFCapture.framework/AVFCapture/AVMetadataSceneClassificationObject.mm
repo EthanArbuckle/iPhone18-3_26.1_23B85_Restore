@@ -1,43 +1,43 @@
 @interface AVMetadataSceneClassificationObject
-+ (id)sceneClassificationObjectWithConfidences:(id)a3 input:(id)a4 time:(id *)a5;
-- (float)_confidenceForKey:(id)a3;
++ (id)sceneClassificationObjectWithConfidences:(id)confidences input:(id)input time:(id *)time;
+- (float)_confidenceForKey:(id)key;
 - (id)description;
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6;
-- (id)initSceneClassificationObjectWithConfidences:(id)a3 time:(id *)a4 sourceCaptureInput:(id)a5;
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment;
+- (id)initSceneClassificationObjectWithConfidences:(id)confidences time:(id *)time sourceCaptureInput:(id)input;
 - (void)dealloc;
 @end
 
 @implementation AVMetadataSceneClassificationObject
 
-+ (id)sceneClassificationObjectWithConfidences:(id)a3 input:(id)a4 time:(id *)a5
++ (id)sceneClassificationObjectWithConfidences:(id)confidences input:(id)input time:(id *)time
 {
   v8 = objc_alloc(objc_opt_class());
-  v10 = *a5;
-  return [v8 initSceneClassificationObjectWithConfidences:a3 time:&v10 sourceCaptureInput:a4];
+  v10 = *time;
+  return [v8 initSceneClassificationObjectWithConfidences:confidences time:&v10 sourceCaptureInput:input];
 }
 
-- (id)initSceneClassificationObjectWithConfidences:(id)a3 time:(id *)a4 sourceCaptureInput:(id)a5
+- (id)initSceneClassificationObjectWithConfidences:(id)confidences time:(id *)time sourceCaptureInput:(id)input
 {
   v11.receiver = self;
   v11.super_class = AVMetadataSceneClassificationObject;
-  v10 = *a4;
+  v10 = *time;
   v8 = *MEMORY[0x1E6960C70];
   v9 = *(MEMORY[0x1E6960C70] + 16);
-  v6 = [(AVMetadataObject *)&v11 initWithType:@"sceneClassification" time:&v10 duration:&v8 bounds:0 optionalInfoDict:0 originalMetadataObject:a5 sourceCaptureInput:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v6 = [(AVMetadataObject *)&v11 initWithType:@"sceneClassification" time:&v10 duration:&v8 bounds:0 optionalInfoDict:0 originalMetadataObject:input sourceCaptureInput:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v6)
   {
-    v6->_confidences = [a3 copy];
+    v6->_confidences = [confidences copy];
   }
 
   return v6;
 }
 
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment
 {
-  v8 = [a3 confidences];
-  if (a3)
+  confidences = [object confidences];
+  if (object)
   {
-    [a3 time];
+    [object time];
   }
 
   else
@@ -45,7 +45,7 @@
     memset(v10, 0, sizeof(v10));
   }
 
-  return -[AVMetadataSceneClassificationObject initSceneClassificationObjectWithConfidences:time:sourceCaptureInput:](self, "initSceneClassificationObjectWithConfidences:time:sourceCaptureInput:", v8, v10, [a3 input]);
+  return -[AVMetadataSceneClassificationObject initSceneClassificationObjectWithConfidences:time:sourceCaptureInput:](self, "initSceneClassificationObjectWithConfidences:time:sourceCaptureInput:", confidences, v10, [object input]);
 }
 
 - (void)dealloc
@@ -55,9 +55,9 @@
   [(AVMetadataObject *)&v3 dealloc];
 }
 
-- (float)_confidenceForKey:(id)a3
+- (float)_confidenceForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_confidences objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_confidences objectForKeyedSubscript:key];
   if (!v3)
   {
     return -1.0;

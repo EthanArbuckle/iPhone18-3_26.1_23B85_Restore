@@ -1,12 +1,12 @@
 @interface VMUOptionParser
 - (VMUOptionParser)init;
-- (id)parseArguments:(char *)a3 withBlock:(id)a4;
-- (id)parseArgumentsArray:(id)a3 withBlock:(id)a4;
+- (id)parseArguments:(char *)arguments withBlock:(id)block;
+- (id)parseArgumentsArray:(id)array withBlock:(id)block;
 - (void)clearOptionDescriptions;
 - (void)dealloc;
-- (void)printOptionDescriptions:(id)a3;
-- (void)registerOptionWithLongName:(id)a3 shortName:(id)a4 argumentKind:(int)a5 argumentName:(id)a6 optionDescription:(id)a7 flags:(unint64_t)a8 handler:(id)a9;
-- (void)usage:(id)a3 shouldExit:(BOOL)a4;
+- (void)printOptionDescriptions:(id)descriptions;
+- (void)registerOptionWithLongName:(id)name shortName:(id)shortName argumentKind:(int)kind argumentName:(id)argumentName optionDescription:(id)description flags:(unint64_t)flags handler:(id)handler;
+- (void)usage:(id)usage shouldExit:(BOOL)exit;
 @end
 
 @implementation VMUOptionParser
@@ -60,90 +60,90 @@
   [(VMUOptionParser *)&v4 dealloc];
 }
 
-- (void)registerOptionWithLongName:(id)a3 shortName:(id)a4 argumentKind:(int)a5 argumentName:(id)a6 optionDescription:(id)a7 flags:(unint64_t)a8 handler:(id)a9
+- (void)registerOptionWithLongName:(id)name shortName:(id)shortName argumentKind:(int)kind argumentName:(id)argumentName optionDescription:(id)description flags:(unint64_t)flags handler:(id)handler
 {
-  v9 = a8;
-  v47 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  flagsCopy = flags;
+  nameCopy = name;
+  shortNameCopy = shortName;
+  argumentNameCopy = argumentName;
+  descriptionCopy = description;
+  handlerCopy = handler;
   v19 = objc_autoreleasePoolPush();
-  if (v47)
+  if (nameCopy)
   {
-    v20 = [v47 length];
-    v46 = v15;
-    v21 = v17;
-    v22 = v18;
-    v23 = v16;
+    v20 = [nameCopy length];
+    v46 = shortNameCopy;
+    v21 = descriptionCopy;
+    v22 = handlerCopy;
+    v23 = argumentNameCopy;
     v24 = v19;
-    v25 = v9;
+    v25 = flagsCopy;
     v26 = malloc_type_malloc(v20 + 33, 0xA88CB961uLL);
-    v27 = v47;
-    strlcpy(v26 + 32, [v47 UTF8String], v20 + 33);
+    v27 = nameCopy;
+    strlcpy(v26 + 32, [nameCopy UTF8String], v20 + 33);
     *v26 = v26 + 32;
-    *(v26 + 2) = a5;
+    *(v26 + 2) = kind;
     *(v26 + 2) = 0;
     *(v26 + 6) = 1;
     v28 = v26;
-    v9 = v25;
+    flagsCopy = v25;
     v19 = v24;
-    v16 = v23;
-    v18 = v22;
-    v17 = v21;
-    v15 = v46;
+    argumentNameCopy = v23;
+    handlerCopy = v22;
+    descriptionCopy = v21;
+    shortNameCopy = v46;
     CFArrayAppendValue(self->_longOptStructs, v28);
     optionBlockByString = self->_optionBlockByString;
-    v30 = _Block_copy(v18);
-    [(NSMutableDictionary *)optionBlockByString setObject:v30 forKey:v47];
+    v30 = _Block_copy(handlerCopy);
+    [(NSMutableDictionary *)optionBlockByString setObject:v30 forKey:nameCopy];
   }
 
-  if (v15)
+  if (shortNameCopy)
   {
-    [(NSMutableString *)self->_shortOpts appendString:v15];
-    if (a5 == 1)
+    [(NSMutableString *)self->_shortOpts appendString:shortNameCopy];
+    if (kind == 1)
     {
       [(NSMutableString *)self->_shortOpts appendString:@":"];
     }
 
     v31 = self->_optionBlockByString;
-    v32 = _Block_copy(v18);
-    [(NSMutableDictionary *)v31 setObject:v32 forKey:v15];
+    v32 = _Block_copy(handlerCopy);
+    [(NSMutableDictionary *)v31 setObject:v32 forKey:shortNameCopy];
   }
 
-  if (v17)
+  if (descriptionCopy)
   {
     v33 = [MEMORY[0x1E696AD60] stringWithString:@"        "];
     v34 = v33;
-    if (v15)
+    if (shortNameCopy)
     {
-      [v33 appendFormat:@"-%@", v15];
-      if (!v47)
+      [v33 appendFormat:@"-%@", shortNameCopy];
+      if (!nameCopy)
       {
-        if (!a5 || !v16)
+        if (!kind || !argumentNameCopy)
         {
           goto LABEL_34;
         }
 
-        v37 = a5 == 1;
+        v37 = kind == 1;
         goto LABEL_22;
       }
 
       [v34 appendString:@"/"];
-      v35 = v47;
+      v35 = nameCopy;
     }
 
     else
     {
-      v35 = v47;
-      if (!v47)
+      v35 = nameCopy;
+      if (!nameCopy)
       {
-        if (!a5 || !v16)
+        if (!kind || !argumentNameCopy)
         {
           goto LABEL_34;
         }
 
-        v37 = a5 == 1;
+        v37 = kind == 1;
 LABEL_26:
         if (self->_parametersShowAsAssignment)
         {
@@ -170,13 +170,13 @@ LABEL_26:
     }
 
     [v34 appendFormat:@"%s%@", v36, v35];
-    if (!a5 || !v16)
+    if (!kind || !argumentNameCopy)
     {
       goto LABEL_34;
     }
 
-    v37 = a5 == 1;
-    if (!v15)
+    v37 = kind == 1;
+    if (!shortNameCopy)
     {
       goto LABEL_26;
     }
@@ -198,11 +198,11 @@ LABEL_29:
       v41 = 60;
     }
 
-    [v34 appendFormat:@"%c%c%@%c", v38, v41, v16, v45];
+    [v34 appendFormat:@"%c%c%@%c", v38, v41, argumentNameCopy, v45];
 LABEL_34:
     v42 = [v34 length];
-    [v34 appendFormat:@"[@@@spacing@@@]%@", v17];
-    if (v9)
+    [v34 appendFormat:@"[@@@spacing@@@]%@", descriptionCopy];
+    if (flagsCopy)
     {
       if (!os_variant_has_internal_content())
       {
@@ -234,17 +234,17 @@ LABEL_42:
   objc_autoreleasePoolPop(v19);
 }
 
-- (id)parseArgumentsArray:(id)a3 withBlock:(id)a4
+- (id)parseArgumentsArray:(id)array withBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = malloc_type_malloc(8 * [v6 count] + 8, 0x10040436913F5uLL);
+  arrayCopy = array;
+  blockCopy = block;
+  v8 = malloc_type_malloc(8 * [arrayCopy count] + 8, 0x10040436913F5uLL);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   v11 = v8;
   if (v10)
@@ -272,7 +272,7 @@ LABEL_42:
   }
 
   *v11 = 0;
-  v16 = [(VMUOptionParser *)self parseArguments:v8 withBlock:v7];
+  v16 = [(VMUOptionParser *)self parseArguments:v8 withBlock:blockCopy];
   free(v8);
 
   v17 = *MEMORY[0x1E69E9840];
@@ -280,20 +280,20 @@ LABEL_42:
   return v16;
 }
 
-- (id)parseArguments:(char *)a3 withBlock:(id)a4
+- (id)parseArguments:(char *)arguments withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(NSMutableString *)self->_shortOpts UTF8String];
-  if (a3 && *a3)
+  uTF8String = [(NSMutableString *)self->_shortOpts UTF8String];
+  if (arguments && *arguments)
   {
-    v56 = v8;
+    v56 = uTF8String;
     context = v7;
     v9 = -1;
     v10 = 1;
     do
     {
-      v11 = a3[v10];
+      v11 = arguments[v10];
       ++v9;
       ++v10;
     }
@@ -319,10 +319,10 @@ LABEL_42:
       while (Count != v15);
     }
 
-    v53 = v6;
+    v53 = blockCopy;
     v61 = 0;
     v19 = v56;
-    v20 = getopt_long_only(v9 + 1, a3, v56, v14, &v61);
+    v20 = getopt_long_only(v9 + 1, arguments, v56, v14, &v61);
     if (v20 != -1)
     {
       v26 = v20;
@@ -330,7 +330,7 @@ LABEL_42:
       v28 = 0;
       v29 = 0;
       v54 = v14;
-      v55 = a3 - 1;
+      v55 = arguments - 1;
       while (1)
       {
         v30 = *MEMORY[0x1E69E98E0];
@@ -400,8 +400,8 @@ LABEL_42:
             {
               v38 = v27;
               v39 = self->_optionBlockByString;
-              v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c", v26, context];
-              v35 = [(NSMutableDictionary *)v39 objectForKey:v40];
+              context = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c", v26, context];
+              v35 = [(NSMutableDictionary *)v39 objectForKey:context];
 
               if (v35)
               {
@@ -443,7 +443,7 @@ LABEL_42:
         v27 = v35 = v27;
 LABEL_40:
 
-        v26 = getopt_long_only(v9 + 1, a3, v19, v14, &v61);
+        v26 = getopt_long_only(v9 + 1, arguments, v19, v14, &v61);
         if (v26 == -1)
         {
           goto LABEL_44;
@@ -459,12 +459,12 @@ LABEL_44:
     v44 = *MEMORY[0x1E69E98F0];
     if (*MEMORY[0x1E69E98F0] <= v9)
     {
-      v6 = v53;
+      blockCopy = v53;
       while (1)
       {
         if (v53)
         {
-          v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3[v44]];
+          v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:arguments[v44]];
           if (v28)
           {
             v47 = v29;
@@ -510,7 +510,7 @@ LABEL_44:
     else
     {
       v45 = v28;
-      v6 = v53;
+      blockCopy = v53;
     }
 
 LABEL_59:
@@ -541,15 +541,15 @@ LABEL_59:
   return v43;
 }
 
-- (void)usage:(id)a3 shouldExit:(BOOL)a4
+- (void)usage:(id)usage shouldExit:(BOOL)exit
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [v15 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E696A578]];
+  exitCopy = exit;
+  usageCopy = usage;
+  userInfo = [usageCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
 
   v8 = MEMORY[0x1E69E9848];
-  if (v7 && [v15 code])
+  if (v7 && [usageCopy code])
   {
     fprintf(*v8, "[invalid usage]: %s\n\n", [v7 UTF8String]);
   }
@@ -590,14 +590,14 @@ LABEL_59:
     }
   }
 
-  if (v4)
+  if (exitCopy)
   {
     if (self->_abortOnError)
     {
       abort();
     }
 
-    exit([v15 code]);
+    exit([usageCopy code]);
   }
 }
 
@@ -609,14 +609,14 @@ LABEL_59:
   [(NSMutableArray *)appleInternalOptionDescriptions removeAllObjects];
 }
 
-- (void)printOptionDescriptions:(id)a3
+- (void)printOptionDescriptions:(id)descriptions
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = a3;
+  obj = descriptions;
   v4 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {

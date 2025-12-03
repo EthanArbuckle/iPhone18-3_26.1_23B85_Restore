@@ -1,15 +1,15 @@
 @interface ARKeyFrame
-- (ARKeyFrame)initWithKeyframeData:(float32x4_t)a3 featurePoints:(float32x4_t)a4 referenceOriginTransform:(float32x4_t)a5;
-- (__n128)setCameraIntrinsics:(__n128)a3;
+- (ARKeyFrame)initWithKeyframeData:(float32x4_t)data featurePoints:(float32x4_t)points referenceOriginTransform:(float32x4_t)transform;
+- (__n128)setCameraIntrinsics:(__n128)intrinsics;
 - (id)description;
 @end
 
 @implementation ARKeyFrame
 
-- (ARKeyFrame)initWithKeyframeData:(float32x4_t)a3 featurePoints:(float32x4_t)a4 referenceOriginTransform:(float32x4_t)a5
+- (ARKeyFrame)initWithKeyframeData:(float32x4_t)data featurePoints:(float32x4_t)points referenceOriginTransform:(float32x4_t)transform
 {
   v10 = a8;
-  v63.receiver = a1;
+  v63.receiver = self;
   v63.super_class = ARKeyFrame;
   v11 = [(ARKeyFrame *)&v63 init];
   if (v11)
@@ -85,7 +85,7 @@
     v64 = v65;
     do
     {
-      v65.columns[v33] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*&v64.columns[v33])), a3, *v64.columns[v33].f32, 1), a4, v64.columns[v33], 2), a5, v64.columns[v33], 3);
+      v65.columns[v33] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*&v64.columns[v33])), data, *v64.columns[v33].f32, 1), points, v64.columns[v33], 2), transform, v64.columns[v33], 3);
       ++v33;
     }
 
@@ -117,17 +117,17 @@
   v5 = NSStringFromClass(v4);
   [(ARKeyFrame *)self transform];
   v10 = ARMatrix4x4Description(0, v6, v7, v8, v9);
-  v11 = [(ARKeyFrame *)self featurePoints];
-  v12 = [v11 description];
+  featurePoints = [(ARKeyFrame *)self featurePoints];
+  v12 = [featurePoints description];
   v13 = [v3 stringWithFormat:@"<%@: %p transform=%@ featurePoints=%@>", v5, self, v10, v12];
 
   return v13;
 }
 
-- (__n128)setCameraIntrinsics:(__n128)a3
+- (__n128)setCameraIntrinsics:(__n128)intrinsics
 {
   result[1] = a2;
-  result[2] = a3;
+  result[2] = intrinsics;
   result[3] = a4;
   return result;
 }

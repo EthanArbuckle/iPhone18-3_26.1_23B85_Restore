@@ -1,7 +1,7 @@
 @interface STStgInfo
 - ($DF246ECBFA7C13B1931CDA33BA2B4196)getCLSID;
 - (STStgInfo)init;
-- (STStgInfo)initWithStgInfo:(const _StgInfo *)a3;
+- (STStgInfo)initWithStgInfo:(const _StgInfo *)info;
 @end
 
 @implementation STStgInfo
@@ -28,26 +28,26 @@
   return v2;
 }
 
-- (STStgInfo)initWithStgInfo:(const _StgInfo *)a3
+- (STStgInfo)initWithStgInfo:(const _StgInfo *)info
 {
   v11.receiver = self;
   v11.super_class = STStgInfo;
   v4 = [(STStgInfo *)&v11 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:a3->var0 length:_ChWcslen(a3->var0)];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:info->var0 length:_ChWcslen(info->var0)];
     v6 = *(v4 + 1);
     *(v4 + 1) = v5;
 
-    *(v4 + 4) = a3->var1 != 1;
-    var3 = a3->var3;
-    var4 = a3->var4;
-    *(v4 + 5) = a3->var2;
+    *(v4 + 4) = info->var1 != 1;
+    var3 = info->var3;
+    var4 = info->var4;
+    *(v4 + 5) = info->var2;
     *(v4 + 6) = var3;
     *(v4 + 4) = var4;
-    *(v4 + 5) = a3->var5;
-    *(v4 + 12) = STStgModeFromStgMode(a3->var6);
-    *(v4 + 52) = a3->var7;
+    *(v4 + 5) = info->var5;
+    *(v4 + 12) = STStgModeFromStgMode(info->var6);
+    *(v4 + 52) = info->var7;
     v9 = v4;
   }
 

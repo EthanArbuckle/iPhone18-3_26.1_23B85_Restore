@@ -1,7 +1,7 @@
 @interface ICSCarPlayServicesController
-- (void)acquireAssertionWithActivation:(BOOL)a3;
+- (void)acquireAssertionWithActivation:(BOOL)activation;
 - (void)invalidateAssertion;
-- (void)setAllowsBanners:(BOOL)a3;
+- (void)setAllowsBanners:(BOOL)banners;
 @end
 
 @implementation ICSCarPlayServicesController
@@ -11,25 +11,25 @@
   v3 = sub_100004F84();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICSCarPlayServicesController *)self assertion];
+    assertion = [(ICSCarPlayServicesController *)self assertion];
     v6 = 138412290;
-    v7 = v4;
+    v7 = assertion;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating CarPlay assertion: %@", &v6, 0xCu);
   }
 
-  v5 = [(ICSCarPlayServicesController *)self assertion];
-  [v5 invalidate];
+  assertion2 = [(ICSCarPlayServicesController *)self assertion];
+  [assertion2 invalidate];
 
   [(ICSCarPlayServicesController *)self setAssertion:0];
 }
 
-- (void)acquireAssertionWithActivation:(BOOL)a3
+- (void)acquireAssertionWithActivation:(BOOL)activation
 {
-  v3 = a3;
-  v5 = [(ICSCarPlayServicesController *)self assertion];
-  if (v5)
+  activationCopy = activation;
+  assertion = [(ICSCarPlayServicesController *)self assertion];
+  if (assertion)
   {
-    v6 = v3;
+    v6 = activationCopy;
   }
 
   else
@@ -37,9 +37,9 @@
     v6 = 1;
   }
 
-  v7 = [(ICSCarPlayServicesController *)self assertion];
+  assertion2 = [(ICSCarPlayServicesController *)self assertion];
 
-  if (!v7)
+  if (!assertion2)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -55,32 +55,32 @@
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ICSCarPlayServicesController *)self assertion];
+    assertion3 = [(ICSCarPlayServicesController *)self assertion];
     v13 = 138412290;
-    v14 = v11;
+    v14 = assertion3;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@", &v13, 0xCu);
   }
 
   if (v6)
   {
-    v12 = [(ICSCarPlayServicesController *)self assertion];
-    [v12 activate];
+    assertion4 = [(ICSCarPlayServicesController *)self assertion];
+    [assertion4 activate];
   }
 }
 
-- (void)setAllowsBanners:(BOOL)a3
+- (void)setAllowsBanners:(BOOL)banners
 {
-  v3 = a3;
+  bannersCopy = banners;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = bannersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting banners allowed %d on CarPlay assertion", v7, 8u);
   }
 
-  v6 = [(ICSCarPlayServicesController *)self assertion];
-  [v6 setAllowsBanners:v3];
+  assertion = [(ICSCarPlayServicesController *)self assertion];
+  [assertion setAllowsBanners:bannersCopy];
 }
 
 @end

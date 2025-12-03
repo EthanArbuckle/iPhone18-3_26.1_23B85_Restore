@@ -4,47 +4,47 @@
 - (BOOL)canDisplayUITabBar;
 - (BOOL)ignoresDefaultTabBarVisibilityAnimation;
 - (BOOL)supportsResizingSidebar;
-- (CGRect)adjustedTransitionViewFrame:(CGRect)a3;
+- (CGRect)adjustedTransitionViewFrame:(CGRect)frame;
 - (CGRect)contentLayoutGuideFrame;
 - (UIAction)overrideTidebarButtonAction;
 - (UIEdgeInsets)absoluteSidebarInsets;
 - (UIEdgeInsets)additionalContentMargins;
 - (UIEdgeInsets)additionalSidebarInsets;
 - (UIEdgeInsets)bottomAccessoryInsets;
-- (UIEdgeInsets)edgeInsetsForChildViewController:(id)a3;
+- (UIEdgeInsets)edgeInsetsForChildViewController:(id)controller;
 - (id)_tabCustomizationProxy;
 - (id)childViewControllerForStatusBarStyle;
 - (id)sidebar;
-- (int64_t)_effectivePartStyleForEdge:(int64_t)a3;
+- (int64_t)_effectivePartStyleForEdge:(int64_t)edge;
 - (int64_t)preferredLeadingStatusBarStyle;
 - (int64_t)preferredTrafficLightStyle;
 - (unint64_t)defaultMaxItems;
 - (void)_setNeedsContentLayout;
-- (void)_updateBarAvailabilityAnimated:(BOOL)a3;
-- (void)_updateBarsWithWantsHostedTabBarMetrics:(BOOL)a3;
+- (void)_updateBarAvailabilityAnimated:(BOOL)animated;
+- (void)_updateBarsWithWantsHostedTabBarMetrics:(BOOL)metrics;
 - (void)_updateContentLayoutForSidebarAppearanceIfNeeded;
-- (void)_updateNavigationBarHostingWithSelectedViewController:(id)a3;
+- (void)_updateNavigationBarHostingWithSelectedViewController:(id)controller;
 - (void)_updateSidebarResolvedLayout;
 - (void)didUpdateVisibleAppearance;
 - (void)editingStateDidChange;
 - (void)loadViews;
-- (void)navigationControllerDidUpdate:(id)a3;
+- (void)navigationControllerDidUpdate:(id)update;
 - (void)preferredSidebarModeDidChange;
 - (void)selectedViewControllerDidChange;
-- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)a3;
-- (void)setAdditionalSidebarInsets:(UIEdgeInsets)a3;
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setBottomBarSuppressedByNavigation:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOverrideTidebarButtonAction:(id)a3;
-- (void)setSupportsResizingSidebar:(BOOL)a3;
+- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)insets;
+- (void)setAdditionalSidebarInsets:(UIEdgeInsets)insets;
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setBottomBarSuppressedByNavigation:(BOOL)navigation animated:(BOOL)animated;
+- (void)setOverrideTidebarButtonAction:(id)action;
+- (void)setSupportsResizingSidebar:(BOOL)sidebar;
 - (void)sidebarLayoutDidChange;
-- (void)sidebarVisibilityDidChangeWithAnimator:(id)a3;
+- (void)sidebarVisibilityDidChangeWithAnimator:(id)animator;
 - (void)tabBarDidChange;
-- (void)tabContentDidChange:(id)a3;
-- (void)updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:(id)a3;
+- (void)tabContentDidChange:(id)change;
+- (void)updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:(id)coordinator;
 - (void)updateTabBarLayout;
-- (void)updateViewControllerForReselection:(id)a3;
-- (void)updateViewControllers:(BOOL)a3;
+- (void)updateViewControllerForReselection:(id)reselection;
+- (void)updateViewControllers:(BOOL)controllers;
 - (void)willUpdateViewControllers;
 @end
 
@@ -52,26 +52,26 @@
 
 - (UIAction)overrideTidebarButtonAction
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  v3 = [v2 overrideTidebarButtonAction];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  overrideTidebarButtonAction = [tabContainerView overrideTidebarButtonAction];
 
-  return v3;
+  return overrideTidebarButtonAction;
 }
 
-- (void)setOverrideTidebarButtonAction:(id)a3
+- (void)setOverrideTidebarButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v5 setOverrideTidebarButtonAction:v4];
+  actionCopy = action;
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView setOverrideTidebarButtonAction:actionCopy];
 }
 
 - (unint64_t)defaultMaxItems
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  traitCollection = [tabBarController traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -83,62 +83,62 @@
 
 - (BOOL)ignoresDefaultTabBarVisibilityAnimation
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  v3 = [v2 tabBarContentLayoutManager];
-  v4 = v3 != 0;
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  tabBarContentLayoutManager = [tabContainerView tabBarContentLayoutManager];
+  v4 = tabBarContentLayoutManager != 0;
 
   return v4;
 }
 
 - (void)tabBarDidChange
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v6 = [(UITabBarController *)v3 _internalTabBar];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
 
-  v4 = v6;
-  if (v6)
+  v4 = _internalTabBar;
+  if (_internalTabBar)
   {
     if (_UITabBarControllerShouldUpdateTabBarOnChange_onceToken != -1)
     {
       dispatch_once(&_UITabBarControllerShouldUpdateTabBarOnChange_onceToken, &__block_literal_global_689);
-      v4 = v6;
+      v4 = _internalTabBar;
     }
 
     if (_UITabBarControllerShouldUpdateTabBarOnChange_shouldUpdateTabBar == 1)
     {
-      v5 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-      [v5 setTabBar:v6];
+      tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+      [tabContainerView setTabBar:_internalTabBar];
 
-      v4 = v6;
+      v4 = _internalTabBar;
     }
   }
 }
 
 - (void)loadViews
 {
-  v9 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
   v3 = self->_tabContainerView;
   if (!v3)
   {
-    v4 = [(UITabBarController *)v9 _internalTabBar];
-    v3 = [[_UITabContainerView alloc] initWithTabBarController:v9];
+    _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
+    v3 = [[_UITabContainerView alloc] initWithTabBarController:tabBarController];
     [(_UITabContainerView *)v3 setDelegate:self];
     objc_storeStrong(&self->_tabContainerView, v3);
-    if (!v4)
+    if (!_internalTabBar)
     {
-      v5 = [(_UITabContainerView *)v3 tabBar];
-      [v9 setTabBar:v5];
+      tabBar = [(_UITabContainerView *)v3 tabBar];
+      [tabBarController setTabBar:tabBar];
     }
 
-    v6 = [(_UITabContainerView *)v3 tabBarContentLayoutManager];
-    [v6 tabBarDidChange:0];
+    tabBarContentLayoutManager = [(_UITabContainerView *)v3 tabBarContentLayoutManager];
+    [tabBarContentLayoutManager tabBarDidChange:0];
   }
 
   if (dyld_program_sdk_at_least())
   {
     v7 = +[UIColor systemBackgroundColor];
-    v8 = [v9 view];
-    [v8 setBackgroundColor:v7];
+    view = [tabBarController view];
+    [view setBackgroundColor:v7];
   }
 
   if (dyld_program_sdk_at_least())
@@ -147,18 +147,18 @@
   }
 }
 
-- (void)_updateNavigationBarHostingWithSelectedViewController:(id)a3
+- (void)_updateNavigationBarHostingWithSelectedViewController:(id)controller
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v6 = [(UITabBarController *)v5 _viewControllersForTabs];
+  controllerCopy = controller;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _viewControllersForTabs = [(UITabBarController *)tabBarController _viewControllersForTabs];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v6;
+  v7 = _viewControllersForTabs;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -174,27 +174,27 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 _hostingNavigationBar];
-        if (!v13)
+        _hostingNavigationBar = [v12 _hostingNavigationBar];
+        if (!_hostingNavigationBar)
         {
-          v14 = [v12 _hostingSplitViewControllerForTabBar];
-          v15 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-          [v14 _setTabBarHostedView:v15];
+          _hostingSplitViewControllerForTabBar = [v12 _hostingSplitViewControllerForTabBar];
+          tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+          [_hostingSplitViewControllerForTabBar _setTabBarHostedView:tabContainerView];
 
           goto LABEL_10;
         }
 
         if ([v12 _shouldOverlayTabBar])
         {
-          [v13 _setActiveTabBarHost:v12 == v4];
-          v14 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-          [v13 _setTabBarHostedView:v14];
+          [_hostingNavigationBar _setActiveTabBarHost:v12 == controllerCopy];
+          _hostingSplitViewControllerForTabBar = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+          [_hostingNavigationBar _setTabBarHostedView:_hostingSplitViewControllerForTabBar];
 LABEL_10:
 
           goto LABEL_12;
         }
 
-        [v13 _setTabBarHostedView:0];
+        [_hostingNavigationBar _setTabBarHostedView:0];
 LABEL_12:
       }
 
@@ -204,8 +204,8 @@ LABEL_12:
     while (v9);
   }
 
-  v16 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  [v16 _updateContentOverlayInsetsForSelfAndChildren];
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  [tabBarController2 _updateContentOverlayInsetsForSelfAndChildren];
 }
 
 - (void)updateTabBarLayout
@@ -215,9 +215,9 @@ LABEL_12:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v12 = [v11 view];
-  [v12 bounds];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  view = [tabBarController view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -254,9 +254,9 @@ LABEL_12:
   [(_UITabBarControllerAdaptiveVisualStyle *)self _updateSidebarResolvedLayout];
   [(_UITabBarControllerAdaptiveVisualStyle *)self _updateContentLayoutForSidebarAppearanceIfNeeded];
   [(_UITabBarControllerAdaptiveVisualStyle *)self _updateBarsWithWantsHostedTabBarMetrics:1];
-  v21 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v22 = [v21 selectedViewController];
-  [(_UITabBarControllerAdaptiveVisualStyle *)self _updateNavigationBarHostingWithSelectedViewController:v22];
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  selectedViewController = [tabBarController2 selectedViewController];
+  [(_UITabBarControllerAdaptiveVisualStyle *)self _updateNavigationBarHostingWithSelectedViewController:selectedViewController];
 
   if (_UITabBarControllerShouldUpdateTabBarOnChange_onceToken != -1)
   {
@@ -278,14 +278,14 @@ LABEL_12:
   v17.super_class = _UITabBarControllerAdaptiveVisualStyle;
   [(_UITabBarControllerVisualStyle *)&v17 willUpdateViewControllers];
   [(_UITabBarControllerAdaptiveVisualStyle *)self _updateBarsWithWantsHostedTabBarMetrics:0];
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = [(UITabBarController *)v3 _viewControllersForTabs];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _viewControllersForTabs = [(UITabBarController *)tabBarController _viewControllersForTabs];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = _viewControllersForTabs;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
@@ -301,11 +301,11 @@ LABEL_12:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 _hostingNavigationBar];
-        [v11 _setTabBarHostedView:0];
+        _hostingNavigationBar = [v10 _hostingNavigationBar];
+        [_hostingNavigationBar _setTabBarHostedView:0];
 
-        v12 = [v10 _hostingSplitViewControllerForTabBar];
-        [v12 _setTabBarHostedView:0];
+        _hostingSplitViewControllerForTabBar = [v10 _hostingSplitViewControllerForTabBar];
+        [_hostingSplitViewControllerForTabBar _setTabBarHostedView:0];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
@@ -315,13 +315,13 @@ LABEL_12:
   }
 }
 
-- (void)updateViewControllers:(BOOL)a3
+- (void)updateViewControllers:(BOOL)controllers
 {
-  v3 = a3;
+  controllersCopy = controllers;
   v5.receiver = self;
   v5.super_class = _UITabBarControllerAdaptiveVisualStyle;
   [(_UITabBarControllerVisualStyle_iOS *)&v5 updateViewControllers:?];
-  [(_UITabBarControllerAdaptiveVisualStyle *)self _updateBarAvailabilityAnimated:v3];
+  [(_UITabBarControllerAdaptiveVisualStyle *)self _updateBarAvailabilityAnimated:controllersCopy];
   [(_UITabBarControllerAdaptiveVisualStyle *)self _updateBarsWithWantsHostedTabBarMetrics:1];
 }
 
@@ -330,12 +330,12 @@ LABEL_12:
   v6.receiver = self;
   v6.super_class = _UITabBarControllerAdaptiveVisualStyle;
   [(_UITabBarControllerVisualStyle *)&v6 selectedViewControllerDidChange];
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = [v3 selectedViewController];
-  [(_UITabBarControllerAdaptiveVisualStyle *)self _updateNavigationBarHostingWithSelectedViewController:v4];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  selectedViewController = [tabBarController selectedViewController];
+  [(_UITabBarControllerAdaptiveVisualStyle *)self _updateNavigationBarHostingWithSelectedViewController:selectedViewController];
 
-  v5 = [(_UITabContainerView *)self->_tabContainerView tabBarContentLayoutManager];
-  [v5 updateHostedElementsAnimated:0];
+  tabBarContentLayoutManager = [(_UITabContainerView *)self->_tabContainerView tabBarContentLayoutManager];
+  [tabBarContentLayoutManager updateHostedElementsAnimated:0];
 }
 
 - (UIEdgeInsets)bottomAccessoryInsets
@@ -348,40 +348,40 @@ LABEL_12:
   return result;
 }
 
-- (void)updateViewControllerForReselection:(id)a3
+- (void)updateViewControllerForReselection:(id)reselection
 {
-  v4 = a3;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v6 = [v5 _selectedTabElement];
+  reselectionCopy = reselection;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _selectedTabElement = [tabBarController _selectedTabElement];
 
-  v7 = [(_UITabBarControllerAdaptiveVisualStyle *)self shouldEnforceChildSelectionInGroupTabs];
-  if (![v6 _isGroup] || (objc_msgSend(v6, "_isSidebarDestination") & 1) != 0 || !v7)
+  shouldEnforceChildSelectionInGroupTabs = [(_UITabBarControllerAdaptiveVisualStyle *)self shouldEnforceChildSelectionInGroupTabs];
+  if (![_selectedTabElement _isGroup] || (objc_msgSend(_selectedTabElement, "_isSidebarDestination") & 1) != 0 || !shouldEnforceChildSelectionInGroupTabs)
   {
     v8.receiver = self;
     v8.super_class = _UITabBarControllerAdaptiveVisualStyle;
-    [(_UITabBarControllerVisualStyle *)&v8 updateViewControllerForReselection:v4];
+    [(_UITabBarControllerVisualStyle *)&v8 updateViewControllerForReselection:reselectionCopy];
   }
 }
 
-- (void)navigationControllerDidUpdate:(id)a3
+- (void)navigationControllerDidUpdate:(id)update
 {
-  v3 = [(_UITabContainerView *)self->_tabContainerView tabBarContentLayoutManager];
-  [v3 updateHostedElementsAnimated:0];
+  tabBarContentLayoutManager = [(_UITabContainerView *)self->_tabContainerView tabBarContentLayoutManager];
+  [tabBarContentLayoutManager updateHostedElementsAnimated:0];
 }
 
-- (void)_updateBarsWithWantsHostedTabBarMetrics:(BOOL)a3
+- (void)_updateBarsWithWantsHostedTabBarMetrics:(BOOL)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v6 = [(UITabBarController *)v5 _viewControllersForTabs];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _viewControllersForTabs = [(UITabBarController *)tabBarController _viewControllersForTabs];
 
-  v7 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  if ([v7 canShowFloatingUI])
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  if ([tabContainerView canShowFloatingUI])
   {
-    v8 = [(_UITabBarControllerAdaptiveVisualStyle *)self canDisplayTabBar];
+    canDisplayTabBar = [(_UITabBarControllerAdaptiveVisualStyle *)self canDisplayTabBar];
 
-    if (v8)
+    if (canDisplayTabBar)
     {
       goto LABEL_6;
     }
@@ -391,24 +391,24 @@ LABEL_12:
   {
   }
 
-  v3 = 0;
+  metricsCopy = 0;
 LABEL_6:
   if ([(_UITabBarControllerVisualStyle *)self isBarHidden])
   {
-    v9 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v10 = [v9 _overrideTidebarButtonAction];
+    tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _overrideTidebarButtonAction = [tabBarController2 _overrideTidebarButtonAction];
 
-    if (!v10)
+    if (!_overrideTidebarButtonAction)
     {
-      v3 = 0;
+      metricsCopy = 0;
     }
   }
 
-  v11 = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
-  if (([(UITabBarControllerSidebar *)v11 _isSidebarSupportedAndVisible]& 1) != 0)
+  sidebar = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
+  if (([(UITabBarControllerSidebar *)sidebar _isSidebarSupportedAndVisible]& 1) != 0)
   {
-    v12 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-    v13 = [v12 sidebarLayout] != 2;
+    tabContainerView2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+    v13 = [tabContainerView2 sidebarLayout] != 2;
 
     v14 = 2 * v13;
   }
@@ -423,7 +423,7 @@ LABEL_6:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = v6;
+  v15 = _viewControllersForTabs;
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
@@ -439,13 +439,13 @@ LABEL_6:
         }
 
         v20 = *(*(&v24 + 1) + 8 * i);
-        v21 = [v20 _hostingNavigationBar];
-        [v21 _setWantsHostedTabBarMetrics:{v3 & objc_msgSend(v20, "_shouldOverlayTabBar")}];
-        [v21 _setEdgesRequiringContentMargin:v14];
-        v22 = [v20 navigationController];
-        v23 = [v22 _floatingBarContainerView];
+        _hostingNavigationBar = [v20 _hostingNavigationBar];
+        [_hostingNavigationBar _setWantsHostedTabBarMetrics:{metricsCopy & objc_msgSend(v20, "_shouldOverlayTabBar")}];
+        [_hostingNavigationBar _setEdgesRequiringContentMargin:v14];
+        navigationController = [v20 navigationController];
+        _floatingBarContainerView = [navigationController _floatingBarContainerView];
 
-        [v23 _setEdgesRequiringContentMargin:v14];
+        [_floatingBarContainerView _setEdgesRequiringContentMargin:v14];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -455,40 +455,40 @@ LABEL_6:
   }
 }
 
-- (void)tabContentDidChange:(id)a3
+- (void)tabContentDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 _isBridgedItem])
+  changeCopy = change;
+  if ([changeCopy _isBridgedItem])
   {
     v5.receiver = self;
     v5.super_class = _UITabBarControllerAdaptiveVisualStyle;
-    [(_UITabBarControllerVisualStyle_iOS *)&v5 tabContentDidChange:v4];
+    [(_UITabBarControllerVisualStyle_iOS *)&v5 tabContentDidChange:changeCopy];
   }
 }
 
 - (id)_tabCustomizationProxy
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  v3 = [v2 floatingTabBar];
-  v4 = [v3 tabCustomizationProxy];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  floatingTabBar = [tabContainerView floatingTabBar];
+  tabCustomizationProxy = [floatingTabBar tabCustomizationProxy];
 
-  return v4;
+  return tabCustomizationProxy;
 }
 
 - (id)sidebar
 {
-  v2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v3 = [v2 sidebar];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  sidebar = [tabBarController sidebar];
 
-  return v3;
+  return sidebar;
 }
 
 - (BOOL)canDisplayUITabBar
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  v3 = [v2 canShowFloatingUI];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  canShowFloatingUI = [tabContainerView canShowFloatingUI];
 
-  return v3 ^ 1;
+  return canShowFloatingUI ^ 1;
 }
 
 - (BOOL)canDisplaySidebar
@@ -499,16 +499,16 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = [v3 mode];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  mode = [tabBarController mode];
 
-  if (v4 == 2)
+  if (mode == 2)
   {
     LOBYTE(v7) = 1;
     return v7;
   }
 
-  if (v4)
+  if (mode)
   {
 LABEL_13:
     LOBYTE(v7) = 0;
@@ -520,10 +520,10 @@ LABEL_13:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v6 = [v5 _tabElements];
+    tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _tabElements = [tabBarController2 _tabElements];
 
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [_tabElements countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = *v12;
@@ -533,7 +533,7 @@ LABEL_13:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_tabElements);
           }
 
           if ([*(*(&v11 + 1) + 8 * i) _isGroup])
@@ -543,7 +543,7 @@ LABEL_13:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [_tabElements countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v7)
         {
           continue;
@@ -559,28 +559,28 @@ LABEL_17:
   return v7;
 }
 
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UITabBarControllerVisualStyle *)self isBarHidden];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  isBarHidden = [(_UITabBarControllerVisualStyle *)self isBarHidden];
   v8.receiver = self;
   v8.super_class = _UITabBarControllerAdaptiveVisualStyle;
-  [(_UITabBarControllerVisualStyle *)&v8 setBarHidden:v5 animated:v4];
-  if (v7 != v5)
+  [(_UITabBarControllerVisualStyle *)&v8 setBarHidden:hiddenCopy animated:animatedCopy];
+  if (isBarHidden != hiddenCopy)
   {
-    [(_UITabBarControllerAdaptiveVisualStyle *)self _updateBarAvailabilityAnimated:v4];
+    [(_UITabBarControllerAdaptiveVisualStyle *)self _updateBarAvailabilityAnimated:animatedCopy];
   }
 }
 
-- (void)setBottomBarSuppressedByNavigation:(BOOL)a3 animated:(BOOL)a4
+- (void)setBottomBarSuppressedByNavigation:(BOOL)navigation animated:(BOOL)animated
 {
-  v4 = a3;
+  navigationCopy = navigation;
   v7.receiver = self;
   v7.super_class = _UITabBarControllerAdaptiveVisualStyle;
-  [(_UITabBarControllerVisualStyle *)&v7 setBarHidden:a3 animated:a4];
-  v6 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v6 setIsBottomBarSuppressed:v4];
+  [(_UITabBarControllerVisualStyle *)&v7 setBarHidden:navigation animated:animated];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView setIsBottomBarSuppressed:navigationCopy];
 }
 
 - (void)preferredSidebarModeDidChange
@@ -598,36 +598,36 @@ LABEL_17:
   [(_UITabBarControllerAdaptiveVisualStyle *)self _updateContentLayoutForSidebarAppearanceIfNeeded];
 }
 
-- (void)sidebarVisibilityDidChangeWithAnimator:(id)a3
+- (void)sidebarVisibilityDidChangeWithAnimator:(id)animator
 {
-  v8 = a3;
-  v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v5 = [v4 view];
-  v6 = [v5 _window];
-  v7 = v6 != 0;
+  animatorCopy = animator;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  view = [tabBarController view];
+  _window = [view _window];
+  v7 = _window != 0;
 
-  [(_UITabContainerView *)self->_tabContainerView updateSidebarAppearanceStateAnimated:v7 animator:v8];
+  [(_UITabContainerView *)self->_tabContainerView updateSidebarAppearanceStateAnimated:v7 animator:animatorCopy];
 }
 
 - (BOOL)supportsResizingSidebar
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  v3 = [v2 supportsResizingSidebar];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  supportsResizingSidebar = [tabContainerView supportsResizingSidebar];
 
-  return v3;
+  return supportsResizingSidebar;
 }
 
-- (void)setSupportsResizingSidebar:(BOOL)a3
+- (void)setSupportsResizingSidebar:(BOOL)sidebar
 {
-  v3 = a3;
-  v4 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v4 setSupportsResizingSidebar:v3];
+  sidebarCopy = sidebar;
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView setSupportsResizingSidebar:sidebarCopy];
 }
 
 - (UIEdgeInsets)additionalSidebarInsets
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v2 additionalSidebarInsets];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView additionalSidebarInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -644,20 +644,20 @@ LABEL_17:
   return result;
 }
 
-- (void)setAdditionalSidebarInsets:(UIEdgeInsets)a3
+- (void)setAdditionalSidebarInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v7 setAdditionalSidebarInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView setAdditionalSidebarInsets:{top, left, bottom, right}];
 }
 
 - (UIEdgeInsets)absoluteSidebarInsets
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v2 absoluteSidebarInsets];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView absoluteSidebarInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -674,25 +674,25 @@ LABEL_17:
   return result;
 }
 
-- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)a3
+- (void)setAbsoluteSidebarInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v7 setAbsoluteSidebarInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView setAbsoluteSidebarInsets:{top, left, bottom, right}];
 }
 
 - (void)editingStateDidChange
 {
-  v2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v2 updateEditModeAppearanceAnimated:1];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView updateEditModeAppearanceAnimated:1];
 }
 
-- (void)_updateBarAvailabilityAnimated:(BOOL)a3
+- (void)_updateBarAvailabilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(_UITabBarControllerAdaptiveVisualStyle *)self canDisplaySidebar])
   {
     v5 = 2;
@@ -722,35 +722,35 @@ LABEL_17:
   [(_UITabContainerView *)self->_tabContainerView setSupportedComponent:v5];
   tabContainerView = self->_tabContainerView;
 
-  [(_UITabContainerView *)tabContainerView setAvailableComponent:v6 animated:v3];
+  [(_UITabContainerView *)tabContainerView setAvailableComponent:v6 animated:animatedCopy];
 }
 
-- (void)updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:(id)a3
+- (void)updateContentLayoutForSidebarAppearanceWithTransitionCoordinator:(id)coordinator
 {
-  v18 = a3;
-  v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v5 = [v4 _transitionView];
-  [v5 bounds];
+  coordinatorCopy = coordinator;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _transitionView = [tabBarController _transitionView];
+  [_transitionView bounds];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 view];
-  [v10 bounds];
+  view = [tabBarController view];
+  [view bounds];
   [(_UITabBarControllerAdaptiveVisualStyle *)self adjustedTransitionViewFrame:?];
   v12 = v11;
   v14 = v13;
 
   if (v7 != v12 || v9 != v14)
   {
-    v16 = v18;
-    if (!v18)
+    _definiteTransitionCoordinator = coordinatorCopy;
+    if (!coordinatorCopy)
     {
-      v16 = [v4 _definiteTransitionCoordinator];
+      _definiteTransitionCoordinator = [tabBarController _definiteTransitionCoordinator];
     }
 
-    v18 = v16;
-    v17 = [v4 _selectedViewControllerInTabBar];
-    [v17 viewWillTransitionToSize:v18 withTransitionCoordinator:{v12, v14}];
+    coordinatorCopy = _definiteTransitionCoordinator;
+    _selectedViewControllerInTabBar = [tabBarController _selectedViewControllerInTabBar];
+    [_selectedViewControllerInTabBar viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{v12, v14}];
   }
 
   [(_UITabBarControllerAdaptiveVisualStyle *)self _setNeedsContentLayout];
@@ -759,10 +759,10 @@ LABEL_17:
 
 - (void)didUpdateVisibleAppearance
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = [v3 _isInSidebarTransition];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _isInSidebarTransition = [tabBarController _isInSidebarTransition];
 
-  if ((v4 & 1) == 0)
+  if ((_isInSidebarTransition & 1) == 0)
   {
     [(_UITabBarControllerAdaptiveVisualStyle *)self _setNeedsContentLayout];
 
@@ -772,17 +772,17 @@ LABEL_17:
 
 - (BOOL)_isSidebarAvailable
 {
-  v3 = [(_UITabBarControllerAdaptiveVisualStyle *)self canDisplaySidebar];
-  if (v3)
+  canDisplaySidebar = [(_UITabBarControllerAdaptiveVisualStyle *)self canDisplaySidebar];
+  if (canDisplaySidebar)
   {
-    v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v5 = [v4 traitCollection];
-    v6 = [v5 horizontalSizeClass];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    traitCollection = [tabBarController traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    LOBYTE(v3) = v6 == 2;
+    LOBYTE(canDisplaySidebar) = horizontalSizeClass == 2;
   }
 
-  return v3;
+  return canDisplaySidebar;
 }
 
 - (void)_setNeedsContentLayout
@@ -790,25 +790,25 @@ LABEL_17:
   if (!self->_needsContentLayout)
   {
     self->_needsContentLayout = 1;
-    v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v3 = [v4 _existingView];
-    [v3 setNeedsLayout];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _existingView = [tabBarController _existingView];
+    [_existingView setNeedsLayout];
   }
 }
 
 - (void)_updateSidebarResolvedLayout
 {
-  v4 = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
-  v5 = [(UITabBarControllerSidebar *)v4 _resolvedLayout];
+  sidebar = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
+  _resolvedLayout = [(UITabBarControllerSidebar *)sidebar _resolvedLayout];
 
-  if (!v5)
+  if (!_resolvedLayout)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UITabBarControllerAdaptiveVisualStyle.m" lineNumber:555 description:@"Resolved sidebar layout cannot be automatic."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITabBarControllerAdaptiveVisualStyle.m" lineNumber:555 description:@"Resolved sidebar layout cannot be automatic."];
   }
 
-  v6 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v6 bounds];
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView bounds];
   v8 = v7;
   if (v7 <= v9)
   {
@@ -828,12 +828,12 @@ LABEL_17:
   else
   {
     v12 = 1;
-    if (v5 != 2)
+    if (_resolvedLayout != 2)
     {
       v12 = 2;
     }
 
-    if (v5 == 1)
+    if (_resolvedLayout == 1)
     {
       v11 = 0;
     }
@@ -844,19 +844,19 @@ LABEL_17:
     }
   }
 
-  v14 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v14 setPreferredSidebarLayout:v11];
+  tabContainerView2 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView2 setPreferredSidebarLayout:v11];
 }
 
 - (void)_updateContentLayoutForSidebarAppearanceIfNeeded
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = v3;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  v4 = tabBarController;
   if (self->_needsContentLayout)
   {
-    v5 = [v3 _window];
+    _window = [tabBarController _window];
 
-    if (v5)
+    if (_window)
     {
       self->_needsContentLayout = 0;
       v10[0] = MEMORY[0x1E69E9820];
@@ -884,14 +884,14 @@ LABEL_17:
   }
 }
 
-- (CGRect)adjustedTransitionViewFrame:(CGRect)a3
+- (CGRect)adjustedTransitionViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-  [v7 adjustedFrameForContentTransitionViewFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+  [tabContainerView adjustedFrameForContentTransitionViewFrame:{x, y, width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -910,38 +910,38 @@ LABEL_17:
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v3 = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
-  if (([(UITabBarControllerSidebar *)v3 _isSidebarSupportedAndVisible]& 1) != 0)
+  sidebar = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
+  if (([(UITabBarControllerSidebar *)sidebar _isSidebarSupportedAndVisible]& 1) != 0)
   {
-    v4 = 0;
+    childViewControllerForStatusBarStyle = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = _UITabBarControllerAdaptiveVisualStyle;
-    v4 = [(_UITabBarControllerVisualStyle *)&v6 childViewControllerForStatusBarStyle];
+    childViewControllerForStatusBarStyle = [(_UITabBarControllerVisualStyle *)&v6 childViewControllerForStatusBarStyle];
   }
 
-  return v4;
+  return childViewControllerForStatusBarStyle;
 }
 
 - (int64_t)preferredLeadingStatusBarStyle
 {
-  v3 = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
-  if (([(UITabBarControllerSidebar *)v3 _isSidebarSupportedAndVisible]& 1) != 0)
+  sidebar = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
+  if (([(UITabBarControllerSidebar *)sidebar _isSidebarSupportedAndVisible]& 1) != 0)
   {
-    v4 = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
-    v5 = [v4 _outlineView];
-    if (!v5)
+    sidebar2 = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
+    _outlineView = [sidebar2 _outlineView];
+    if (!_outlineView)
     {
 
 LABEL_4:
-      v7 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-      v8 = [v7 traitCollection];
-      v9 = [v8 userInterfaceStyle];
+      tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+      traitCollection = [tabBarController traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v9 == 2)
+      if (userInterfaceStyle == 2)
       {
         return 1;
       }
@@ -952,7 +952,7 @@ LABEL_4:
       }
     }
 
-    v6 = v5[53];
+    v6 = _outlineView[53];
 
     if (!v6)
     {
@@ -969,37 +969,37 @@ LABEL_4:
 
 - (int64_t)preferredTrafficLightStyle
 {
-  v3 = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
-  v4 = [(UITabBarControllerSidebar *)v3 _isSidebarSupportedAndVisible];
+  sidebar = [(_UITabBarControllerAdaptiveVisualStyle *)self sidebar];
+  _isSidebarSupportedAndVisible = [(UITabBarControllerSidebar *)sidebar _isSidebarSupportedAndVisible];
 
-  if (v4)
+  if (_isSidebarSupportedAndVisible)
   {
-    v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v6 = [v5 traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    traitCollection = [tabBarController traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
   else
   {
-    v8 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-    v9 = [v8 isShowingFloatingTabBar];
+    tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+    isShowingFloatingTabBar = [tabContainerView isShowingFloatingTabBar];
 
-    if (!v9)
+    if (!isShowingFloatingTabBar)
     {
-      v12 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-      v13 = [v12 _selectedViewControllerInTabBar];
-      v14 = [v13 _effectiveStatusBarStyleViewController];
+      tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+      _selectedViewControllerInTabBar = [tabBarController2 _selectedViewControllerInTabBar];
+      _effectiveStatusBarStyleViewController = [_selectedViewControllerInTabBar _effectiveStatusBarStyleViewController];
 
-      v15 = [v14 preferredTrafficLightStyle];
-      return v15;
+      preferredTrafficLightStyle = [_effectiveStatusBarStyleViewController preferredTrafficLightStyle];
+      return preferredTrafficLightStyle;
     }
 
-    v5 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-    v6 = [v5 floatingTabBar];
-    v7 = [v6 effectiveUserInterfaceStyle];
+    tabBarController = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+    traitCollection = [tabBarController floatingTabBar];
+    userInterfaceStyle = [traitCollection effectiveUserInterfaceStyle];
   }
 
-  v10 = v7;
+  v10 = userInterfaceStyle;
 
   if (v10 == 2)
   {
@@ -1012,49 +1012,49 @@ LABEL_4:
   }
 }
 
-- (int64_t)_effectivePartStyleForEdge:(int64_t)a3
+- (int64_t)_effectivePartStyleForEdge:(int64_t)edge
 {
-  v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v5 = [v4 _selectedViewControllerInTabBar];
-  v6 = [v5 _effectiveStatusBarStyleViewController];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _selectedViewControllerInTabBar = [tabBarController _selectedViewControllerInTabBar];
+  _effectiveStatusBarStyleViewController = [_selectedViewControllerInTabBar _effectiveStatusBarStyleViewController];
 
-  v7 = _viewControllerIfStatusBarPartStyleProviding(v6);
+  v7 = _viewControllerIfStatusBarPartStyleProviding(_effectiveStatusBarStyleViewController);
   v8 = v7;
   if (!v7)
   {
     goto LABEL_9;
   }
 
-  switch(a3)
+  switch(edge)
   {
     case 2:
-      v9 = [v7 preferredTrailingStatusBarStyle];
+      preferredTrailingStatusBarStyle = [v7 preferredTrailingStatusBarStyle];
 LABEL_8:
-      v10 = v9;
-      if (v9 != 4)
+      v10 = preferredTrailingStatusBarStyle;
+      if (preferredTrailingStatusBarStyle != 4)
       {
         goto LABEL_12;
       }
 
       break;
     case 1:
-      v9 = [v7 preferredCenterStatusBarStyle];
+      preferredTrailingStatusBarStyle = [v7 preferredCenterStatusBarStyle];
       goto LABEL_8;
     case 0:
-      v9 = [v7 preferredLeadingStatusBarStyle];
+      preferredTrailingStatusBarStyle = [v7 preferredLeadingStatusBarStyle];
       goto LABEL_8;
   }
 
 LABEL_9:
-  v11 = [v6 preferredStatusBarStyle];
-  if (v11 == 1)
+  preferredStatusBarStyle = [_effectiveStatusBarStyleViewController preferredStatusBarStyle];
+  if (preferredStatusBarStyle == 1)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = 2 * (v11 == 3);
+    v10 = 2 * (preferredStatusBarStyle == 3);
   }
 
 LABEL_12:
@@ -1062,20 +1062,20 @@ LABEL_12:
   return v10;
 }
 
-- (UIEdgeInsets)edgeInsetsForChildViewController:(id)a3
+- (UIEdgeInsets)edgeInsetsForChildViewController:(id)controller
 {
   tabContainerView = self->_tabContainerView;
-  v5 = a3;
+  controllerCopy = controller;
   if ([(_UITabContainerView *)tabContainerView canShowFloatingUI])
   {
-    [(_UITabContainerView *)self->_tabContainerView edgeInsetsForChildViewController:v5];
+    [(_UITabContainerView *)self->_tabContainerView edgeInsetsForChildViewController:controllerCopy];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = _UITabBarControllerAdaptiveVisualStyle;
-    [(_UITabBarControllerVisualStyle *)&v18 edgeInsetsForChildViewController:v5];
+    [(_UITabBarControllerVisualStyle *)&v18 edgeInsetsForChildViewController:controllerCopy];
   }
 
   v10 = v6;
@@ -1121,8 +1121,8 @@ LABEL_12:
 {
   if ([(_UITabContainerView *)self->_tabContainerView canShowFloatingUI])
   {
-    v3 = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
-    [v3 contentLayoutGuideFrame];
+    tabContainerView = [(_UITabBarControllerAdaptiveVisualStyle *)self tabContainerView];
+    [tabContainerView contentLayoutGuideFrame];
     v5 = v4;
     v7 = v6;
     v9 = v8;

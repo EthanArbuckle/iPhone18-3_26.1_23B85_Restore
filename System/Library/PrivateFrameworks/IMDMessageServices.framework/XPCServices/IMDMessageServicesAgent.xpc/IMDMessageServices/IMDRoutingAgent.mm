@@ -1,53 +1,53 @@
 @interface IMDRoutingAgent
 + (id)sharedInstance;
-- (BOOL)__attachmentPassesDurationRestrictions:(id)a3;
-- (BOOL)__attachmentPassesMMSRestrictions:(id)a3;
-- (BOOL)__isSendableType:(id)a3;
-- (BOOL)_attachmentCanBeSentViaMMS:(id)a3;
-- (BOOL)_messageHasDowngradeMarkers:(id)a3;
-- (BOOL)canSendMessage:(id)a3;
-- (BOOL)shouldSendMessage:(id)a3;
+- (BOOL)__attachmentPassesDurationRestrictions:(id)restrictions;
+- (BOOL)__attachmentPassesMMSRestrictions:(id)restrictions;
+- (BOOL)__isSendableType:(id)type;
+- (BOOL)_attachmentCanBeSentViaMMS:(id)s;
+- (BOOL)_messageHasDowngradeMarkers:(id)markers;
+- (BOOL)canSendMessage:(id)message;
+- (BOOL)shouldSendMessage:(id)message;
 - (IMDRoutingAgent)init;
-- (double)_lowerDowngradeIntervalForMessage:(id)a3;
-- (double)_upperDowngradeIntervalForMessage:(id)a3;
+- (double)_lowerDowngradeIntervalForMessage:(id)message;
+- (double)_upperDowngradeIntervalForMessage:(id)message;
 - (int)_undeliveredMessageWaterMark;
-- (int64_t)_bagValueForKey:(id)a3 defaultValue:(int64_t)a4 minimumValue:(int64_t)a5;
-- (void)_getCandidateMessages:(id)a3;
-- (void)getRoutableMessages:(id)a3;
+- (int64_t)_bagValueForKey:(id)key defaultValue:(int64_t)value minimumValue:(int64_t)minimumValue;
+- (void)_getCandidateMessages:(id)messages;
+- (void)getRoutableMessages:(id)messages;
 @end
 
 @implementation IMDRoutingAgent
 
-- (BOOL)__isSendableType:(id)a3
+- (BOOL)__isSendableType:(id)type
 {
-  if (sub_100001FEC(a3) || sub_100001F68(a3) || sub_100001F94(a3))
+  if (sub_100001FEC(type) || sub_100001F68(type) || sub_100001F94(type))
   {
     return 1;
   }
 
-  return sub_100001FC0(a3);
+  return sub_100001FC0(type);
 }
 
-- (BOOL)__attachmentPassesDurationRestrictions:(id)a3
+- (BOOL)__attachmentPassesDurationRestrictions:(id)restrictions
 {
-  v3 = a3;
-  v4 = [a3 UTIType];
-  v5 = [v3 path];
-  LOBYTE(v3) = sub_100001F94(v4);
-  v6 = sub_100001F68(v4);
-  if ((v3 & 1) == 0 && !v6)
+  restrictionsCopy = restrictions;
+  uTIType = [restrictions UTIType];
+  path = [restrictionsCopy path];
+  LOBYTE(restrictionsCopy) = sub_100001F94(uTIType);
+  v6 = sub_100001F68(uTIType);
+  if ((restrictionsCopy & 1) == 0 && !v6)
   {
     return 1;
   }
 
   v7 = 0.0;
-  if (![v5 length])
+  if (![path length])
   {
     goto LABEL_8;
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [NSURL fileURLWithPath:v5];
+  v9 = [NSURL fileURLWithPath:path];
   if (!v9)
   {
     objc_autoreleasePoolPop(v8);
@@ -74,7 +74,7 @@ LABEL_8:
   objc_autoreleasePoolPop(v8);
   if (Seconds > 0.0)
   {
-    if (sub_100001F94(v4))
+    if (sub_100001F94(uTIType))
     {
       [IMCTSMSUtilities IMMMSMaximumVideoDurationForPhoneNumber:0 simID:0];
     }
@@ -126,7 +126,7 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)__attachmentPassesMMSRestrictions:(id)a3
+- (BOOL)__attachmentPassesMMSRestrictions:(id)restrictions
 {
   if (![IMCTSMSUtilities IMMMSRestrictedModeEnabledForPhoneNumber:0 simID:0])
   {
@@ -136,15 +136,15 @@ LABEL_16:
   width = CGSizeZero.width;
   height = CGSizeZero.height;
   v6 = objc_alloc_init(NSFileManager);
-  v7 = [a3 path];
-  v8 = [a3 UTIType];
-  v9 = [a3 mimeType];
-  if ([v6 fileExistsAtPath:v7])
+  path = [restrictions path];
+  uTIType = [restrictions UTIType];
+  mimeType = [restrictions mimeType];
+  if ([v6 fileExistsAtPath:path])
   {
-    LODWORD(v10) = [objc_msgSend(objc_msgSend(v6 attributesOfItemAtPath:v7 error:{0), "objectForKey:", NSFileSize), "intValue"}];
-    if (sub_100001FEC(v8))
+    LODWORD(v10) = [objc_msgSend(objc_msgSend(v6 attributesOfItemAtPath:path error:{0), "objectForKey:", NSFileSize), "intValue"}];
+    if (sub_100001FEC(uTIType))
     {
-      v11 = CFURLCreateWithFileSystemPath(0, v7, kCFURLPOSIXPathStyle, 0);
+      v11 = CFURLCreateWithFileSystemPath(0, path, kCFURLPOSIXPathStyle, 0);
       if (v11)
       {
         v12 = v11;
@@ -209,16 +209,16 @@ LABEL_16:
   v26.n128_f64[0] = width;
   v27.n128_f64[0] = height;
 
-  return _IMMMSPartCanBeSent(v9, v10, v26, v27);
+  return _IMMMSPartCanBeSent(mimeType, v10, v26, v27);
 }
 
-- (BOOL)_attachmentCanBeSentViaMMS:(id)a3
+- (BOOL)_attachmentCanBeSentViaMMS:(id)s
 {
-  if (-[IMDRoutingAgent __isSendableType:](self, "__isSendableType:", [a3 UTIType]))
+  if (-[IMDRoutingAgent __isSendableType:](self, "__isSendableType:", [s UTIType]))
   {
-    if ([(IMDRoutingAgent *)self __attachmentPassesMMSRestrictions:a3])
+    if ([(IMDRoutingAgent *)self __attachmentPassesMMSRestrictions:s])
     {
-      if ([(IMDRoutingAgent *)self __attachmentPassesDurationRestrictions:a3])
+      if ([(IMDRoutingAgent *)self __attachmentPassesDurationRestrictions:s])
       {
         LOBYTE(v5) = 1;
         return v5;
@@ -268,7 +268,7 @@ LABEL_14:
       if (v5)
       {
         v12 = 138412290;
-        v13 = [a3 UTIType];
+        uTIType = [s UTIType];
         v7 = "UTI type (%@) is not sendable via MMS";
         v8 = v6;
         v9 = 12;
@@ -282,15 +282,15 @@ LABEL_15:
   return v5;
 }
 
-- (double)_upperDowngradeIntervalForMessage:(id)a3
+- (double)_upperDowngradeIntervalForMessage:(id)message
 {
-  v5 = [a3 service];
-  if ([v5 isEqualToString:IMServiceNameiMessage])
+  service = [message service];
+  if ([service isEqualToString:IMServiceNameiMessage])
   {
     return [(IMDRoutingAgent *)self _bagValueForKey:@"md-auto-resend-as-sms-timeout-upper" defaultValue:600 minimumValue:30];
   }
 
-  [(IMDRoutingAgent *)self _lowerDowngradeIntervalForMessage:a3];
+  [(IMDRoutingAgent *)self _lowerDowngradeIntervalForMessage:message];
   return v7 + v7;
 }
 
@@ -317,7 +317,7 @@ LABEL_15:
   return v3;
 }
 
-- (void)_getCandidateMessages:(id)a3
+- (void)_getCandidateMessages:(id)messages
 {
   [(IMDRoutingAgent *)self _undeliveredMessageWaterMark];
   v4 = IMDMessageRecordCopyUndeliveredOneToOneiMessages();
@@ -328,7 +328,7 @@ LABEL_15:
     goto LABEL_32;
   }
 
-  v21 = a3;
+  messagesCopy = messages;
   v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
   v23 = 0u;
   v24 = 0u;
@@ -385,11 +385,11 @@ LABEL_15:
         if (!v16)
         {
           v17 = [[IMDMSAMessage alloc] initWithMessage:v11 inChat:v15];
-          v18 = [(IMDMSAMessage *)v17 service];
-          if (![(NSString *)v18 isEqualToString:IMServiceNameiMessage]|| IMSMSFallbackEnabled())
+          service = [(IMDMSAMessage *)v17 service];
+          if (![(NSString *)service isEqualToString:IMServiceNameiMessage]|| IMSMSFallbackEnabled())
           {
-            v19 = [(IMDMSAMessage *)v17 service];
-            if (![(NSString *)v19 isEqualToString:IMServiceNameRCS]|| ![(IMDMSAMessage *)v17 isEncrypted]|| IMSMSFallbackEnabled())
+            service2 = [(IMDMSAMessage *)v17 service];
+            if (![(NSString *)service2 isEqualToString:IMServiceNameRCS]|| ![(IMDMSAMessage *)v17 isEncrypted]|| IMSMSFallbackEnabled())
             {
               [v6 addObject:v17];
             }
@@ -414,32 +414,32 @@ LABEL_27:
 LABEL_30:
   v20 = [v6 copy];
 
-  a3 = v21;
+  messages = messagesCopy;
 LABEL_32:
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000611C;
   block[3] = &unk_100010788;
   block[4] = v20;
-  block[5] = a3;
+  block[5] = messages;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)_messageHasDowngradeMarkers:(id)a3
+- (BOOL)_messageHasDowngradeMarkers:(id)markers
 {
-  v3 = [a3 chatProperties];
-  v4 = [v3 objectForKey:kFZChatPropertyLastDowngradedMessageTime];
+  chatProperties = [markers chatProperties];
+  v4 = [chatProperties objectForKey:kFZChatPropertyLastDowngradedMessageTime];
   if (v4)
   {
-    v5 = [v3 objectForKey:kFZChatPropertyManuallyDowngradedMessageCount];
-    v6 = [v3 objectForKey:kFZChatPropertyAutoDowngradedMessageCount];
+    v5 = [chatProperties objectForKey:kFZChatPropertyManuallyDowngradedMessageCount];
+    v6 = [chatProperties objectForKey:kFZChatPropertyAutoDowngradedMessageCount];
     LOBYTE(v4) = [v5 integerValue] > 0 || objc_msgSend(v6, "integerValue") > 0;
   }
 
   return v4;
 }
 
-- (double)_lowerDowngradeIntervalForMessage:(id)a3
+- (double)_lowerDowngradeIntervalForMessage:(id)message
 {
   v5 = IMGetCachedDomainValueForKey();
   if (v5)
@@ -450,11 +450,11 @@ LABEL_2:
     return result;
   }
 
-  v7 = [a3 service];
-  if (![v7 isEqualToString:IMServiceNameiMessage])
+  service = [message service];
+  if (![service isEqualToString:IMServiceNameiMessage])
   {
-    v11 = [a3 service];
-    if (![v11 isEqualToString:IMServiceNameRCS])
+    service2 = [message service];
+    if (![service2 isEqualToString:IMServiceNameRCS])
     {
       return 300.0;
     }
@@ -463,21 +463,21 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  if ([(IMDRoutingAgent *)self _messageHasDowngradeMarkers:a3])
+  if ([(IMDRoutingAgent *)self _messageHasDowngradeMarkers:message])
   {
     v8 = @"md-auto-resend-as-sms-timeout-shortened";
-    v9 = self;
+    selfCopy2 = self;
     v10 = 25;
   }
 
   else
   {
     v8 = @"md-auto-resend-as-sms-timeout-lower";
-    v9 = self;
+    selfCopy2 = self;
     v10 = 300;
   }
 
-  return [(IMDRoutingAgent *)v9 _bagValueForKey:v8 defaultValue:v10 minimumValue:20];
+  return [(IMDRoutingAgent *)selfCopy2 _bagValueForKey:v8 defaultValue:v10 minimumValue:20];
 }
 
 + (id)sharedInstance
@@ -507,33 +507,33 @@ LABEL_2:
   return [(IMDRoutingAgent *)&v3 init];
 }
 
-- (int64_t)_bagValueForKey:(id)a3 defaultValue:(int64_t)a4 minimumValue:(int64_t)a5
+- (int64_t)_bagValueForKey:(id)key defaultValue:(int64_t)value minimumValue:(int64_t)minimumValue
 {
-  v7 = [+[FTServerBag sharedInstanceForBagType:](FTServerBag sharedInstanceForBagType:{1), "objectForKey:", a3}];
+  v7 = [+[FTServerBag sharedInstanceForBagType:](FTServerBag sharedInstanceForBagType:{1), "objectForKey:", key}];
   if (!v7)
   {
-    return a4;
+    return value;
   }
 
   v8 = v7;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
-  a4 = a5;
-  if ([v8 integerValue] < a5)
+  value = minimumValue;
+  if ([v8 integerValue] < minimumValue)
   {
-    return a4;
+    return value;
   }
 
   return [v8 integerValue];
 }
 
-- (BOOL)shouldSendMessage:(id)a3
+- (BOOL)shouldSendMessage:(id)message
 {
-  v5 = [a3 GUID];
-  v6 = [objc_msgSend(a3 "participants")];
+  gUID = [message GUID];
+  v6 = [objc_msgSend(message "participants")];
   if (v6 != 1)
   {
     v9 = v6;
@@ -549,7 +549,7 @@ LABEL_2:
     }
 
     v15 = 138412546;
-    v16 = v5;
+    v16 = gUID;
     v17 = 1024;
     LODWORD(v18) = v9;
     v11 = "Cannot send message (%@) via SMS because it has an incorrect number of recipients (%d)";
@@ -558,7 +558,7 @@ LABEL_2:
     goto LABEL_12;
   }
 
-  v7 = [objc_msgSend(a3 "participants")];
+  v7 = [objc_msgSend(message "participants")];
   if (([v7 _appearsToBePhoneNumber] & 1) == 0)
   {
     if (!IMOSLoggingEnabled())
@@ -573,7 +573,7 @@ LABEL_2:
     }
 
     v15 = 138412546;
-    v16 = v5;
+    v16 = gUID;
     v17 = 2112;
     v18 = v7;
     v11 = "Cannot send message (%@) via SMS because it is not to a phone number: %@";
@@ -584,12 +584,12 @@ LABEL_12:
     return 0;
   }
 
-  return [(IMDRoutingAgent *)self canSendMessage:a3];
+  return [(IMDRoutingAgent *)self canSendMessage:message];
 }
 
-- (BOOL)canSendMessage:(id)a3
+- (BOOL)canSendMessage:(id)message
 {
-  if ([a3 iMessageOnly])
+  if ([message iMessageOnly])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -603,12 +603,12 @@ LABEL_12:
     }
 
     *buf = 138412290;
-    *&buf[4] = [a3 GUID];
+    *&buf[4] = [message GUID];
     v6 = "Message (%@) cannot be sent via SMS because it uses an iMessage only feature";
     goto LABEL_26;
   }
 
-  if ([a3 isKeyTransparencyVerifiedMessage])
+  if ([message isKeyTransparencyVerifiedMessage])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -622,12 +622,12 @@ LABEL_12:
     }
 
     *buf = 138412290;
-    *&buf[4] = [a3 GUID];
+    *&buf[4] = [message GUID];
     v6 = "Message (%@) cannot be sent via SMS because it is in a verified chat";
     goto LABEL_26;
   }
 
-  if ([a3 isCheckInMessage])
+  if ([message isCheckInMessage])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -641,7 +641,7 @@ LABEL_12:
     }
 
     *buf = 138412290;
-    *&buf[4] = [a3 GUID];
+    *&buf[4] = [message GUID];
     v6 = "Check In Message (%@) cannot be sent via SMS as its not supported";
     goto LABEL_26;
   }
@@ -650,8 +650,8 @@ LABEL_12:
   {
     if ((+[IMCTSMSUtilities isMessagesTheDefaultTextApp]& 1) != 0)
     {
-      v7 = [a3 service];
-      if ([v7 isEqualToString:IMServiceNameRCS] && objc_msgSend(a3, "isEncrypted"))
+      service = [message service];
+      if ([service isEqualToString:IMServiceNameRCS] && objc_msgSend(message, "isEncrypted"))
       {
         if (!IMOSLoggingEnabled())
         {
@@ -665,13 +665,13 @@ LABEL_12:
         }
 
         *buf = 138412290;
-        *&buf[4] = [a3 GUID];
+        *&buf[4] = [message GUID];
         v6 = "Message (%@) cannot be sent via SMS because it is using RCS Encryption.";
         goto LABEL_26;
       }
 
-      v12 = [objc_msgSend(a3 "attachments")];
-      if (!(v12 | [objc_msgSend(a3 "subject")]))
+      v12 = [objc_msgSend(message "attachments")];
+      if (!(v12 | [objc_msgSend(message "subject")]))
       {
         return 1;
       }
@@ -692,7 +692,7 @@ LABEL_12:
           }
 
           *buf = 138412546;
-          *&buf[4] = [a3 GUID];
+          *&buf[4] = [message GUID];
           *&buf[12] = 1024;
           *&buf[14] = v12;
           v6 = "Message (%@) cannot be sent via MMS because it has too many attachments (%d)";
@@ -726,7 +726,7 @@ LABEL_12:
         v27[6] = buf;
         v27[7] = &v36;
         v27[8] = &v32;
-        [objc_msgSend(a3 "attachments")];
+        [objc_msgSend(message "attachments")];
         if ((v29[3] & 1) == 0)
         {
           goto LABEL_57;
@@ -767,10 +767,10 @@ LABEL_58:
               return v10;
             }
 
-            v25 = [a3 GUID];
+            gUID = [message GUID];
             v26 = *(*&buf[8] + 24);
             *v40 = 138412802;
-            v41 = v25;
+            v41 = gUID;
             v42 = 1024;
             v43 = v26;
             v44 = 1024;
@@ -800,11 +800,11 @@ LABEL_56:
           goto LABEL_57;
         }
 
-        v15 = [a3 GUID];
+        gUID2 = [message GUID];
         v16 = v33[3];
         v17 = v37[3];
         *v40 = 138413058;
-        v41 = v15;
+        v41 = gUID2;
         v42 = 1024;
         v43 = v16;
         v44 = 1024;
@@ -829,7 +829,7 @@ LABEL_56:
       }
 
       *buf = 138412290;
-      *&buf[4] = [a3 GUID];
+      *&buf[4] = [message GUID];
       v6 = "Message (%@) cannot be sent via SMS because it needs MMS which is not enabled";
     }
 
@@ -847,7 +847,7 @@ LABEL_56:
       }
 
       *buf = 138412290;
-      *&buf[4] = [a3 GUID];
+      *&buf[4] = [message GUID];
       v6 = "Message (%@) cannot be sent via SMS because it is not the default text app";
     }
   }
@@ -866,7 +866,7 @@ LABEL_56:
     }
 
     *buf = 138412290;
-    *&buf[4] = [a3 GUID];
+    *&buf[4] = [message GUID];
     v6 = "Message (%@) cannot be sent via SMS because sms is not enabled";
   }
 
@@ -878,14 +878,14 @@ LABEL_27:
   return 0;
 }
 
-- (void)getRoutableMessages:(id)a3
+- (void)getRoutableMessages:(id)messages
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000077B4;
   v3[3] = &unk_100010838;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = messages;
   [(IMDRoutingAgent *)self _getCandidateMessages:v3];
 }
 

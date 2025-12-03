@@ -1,28 +1,28 @@
 @interface MADAutoAssetLookupResult
-- (MADAutoAssetLookupResult)initWithAssetCatalog:(id)a3 forAssetSelector:(id)a4 forSetConfiguration:(id)a5 forAssetAudience:(id)a6;
-- (MADAutoAssetLookupResult)initWithCoder:(id)a3;
+- (MADAutoAssetLookupResult)initWithAssetCatalog:(id)catalog forAssetSelector:(id)selector forSetConfiguration:(id)configuration forAssetAudience:(id)audience;
+- (MADAutoAssetLookupResult)initWithCoder:(id)coder;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetLookupResult
 
-- (MADAutoAssetLookupResult)initWithAssetCatalog:(id)a3 forAssetSelector:(id)a4 forSetConfiguration:(id)a5 forAssetAudience:(id)a6
+- (MADAutoAssetLookupResult)initWithAssetCatalog:(id)catalog forAssetSelector:(id)selector forSetConfiguration:(id)configuration forAssetAudience:(id)audience
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  catalogCopy = catalog;
+  selectorCopy = selector;
+  configurationCopy = configuration;
+  audienceCopy = audience;
   v20.receiver = self;
   v20.super_class = MADAutoAssetLookupResult;
   v15 = [(MADAutoAssetLookupResult *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_assetSelector, a4);
-    objc_storeStrong(&v16->_setConfiguration, a5);
-    objc_storeStrong(&v16->_assetAudience, a6);
-    objc_storeStrong(&v16->_autoAssetCatalog, a3);
+    objc_storeStrong(&v15->_assetSelector, selector);
+    objc_storeStrong(&v16->_setConfiguration, configuration);
+    objc_storeStrong(&v16->_assetAudience, audience);
+    objc_storeStrong(&v16->_autoAssetCatalog, catalog);
     v17 = objc_alloc_init(NSDate);
     recordedTimestamp = v16->_recordedTimestamp;
     v16->_recordedTimestamp = v17;
@@ -31,9 +31,9 @@
   return v16;
 }
 
-- (MADAutoAssetLookupResult)initWithCoder:(id)a3
+- (MADAutoAssetLookupResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MADAutoAssetLookupResult;
   v5 = [(MADAutoAssetLookupResult *)&v19 init];
@@ -50,23 +50,23 @@
     v6 = [NSArray arrayWithObjects:v20 count:8];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
     assetSelector = v5->_assetSelector;
     v5->_assetSelector = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setConfiguration"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setConfiguration"];
     setConfiguration = v5->_setConfiguration;
     v5->_setConfiguration = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetAudience"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetAudience"];
     assetAudience = v5->_assetAudience;
     v5->_assetAudience = v12;
 
-    v14 = [v4 decodeObjectOfClasses:v7 forKey:@"autoAssetCatalog"];
+    v14 = [coderCopy decodeObjectOfClasses:v7 forKey:@"autoAssetCatalog"];
     autoAssetCatalog = v5->_autoAssetCatalog;
     v5->_autoAssetCatalog = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordedTimestamp"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordedTimestamp"];
     recordedTimestamp = v5->_recordedTimestamp;
     v5->_recordedTimestamp = v16;
   }
@@ -74,49 +74,49 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLookupResult *)self assetSelector];
-  [v4 encodeObject:v5 forKey:@"assetSelector"];
+  coderCopy = coder;
+  assetSelector = [(MADAutoAssetLookupResult *)self assetSelector];
+  [coderCopy encodeObject:assetSelector forKey:@"assetSelector"];
 
-  v6 = [(MADAutoAssetLookupResult *)self setConfiguration];
-  [v4 encodeObject:v6 forKey:@"setConfiguration"];
+  setConfiguration = [(MADAutoAssetLookupResult *)self setConfiguration];
+  [coderCopy encodeObject:setConfiguration forKey:@"setConfiguration"];
 
-  v7 = [(MADAutoAssetLookupResult *)self assetAudience];
-  [v4 encodeObject:v7 forKey:@"assetAudience"];
+  assetAudience = [(MADAutoAssetLookupResult *)self assetAudience];
+  [coderCopy encodeObject:assetAudience forKey:@"assetAudience"];
 
-  v8 = [(MADAutoAssetLookupResult *)self autoAssetCatalog];
-  [v4 encodeObject:v8 forKey:@"autoAssetCatalog"];
+  autoAssetCatalog = [(MADAutoAssetLookupResult *)self autoAssetCatalog];
+  [coderCopy encodeObject:autoAssetCatalog forKey:@"autoAssetCatalog"];
 
-  v9 = [(MADAutoAssetLookupResult *)self recordedTimestamp];
-  [v4 encodeObject:v9 forKey:@"recordedTimestamp"];
+  recordedTimestamp = [(MADAutoAssetLookupResult *)self recordedTimestamp];
+  [coderCopy encodeObject:recordedTimestamp forKey:@"recordedTimestamp"];
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoAssetLookupResult *)self recordedTimestamp];
-  v4 = [MADAutoAssetScheduler stringFromDate:v3];
+  recordedTimestamp = [(MADAutoAssetLookupResult *)self recordedTimestamp];
+  v4 = [MADAutoAssetScheduler stringFromDate:recordedTimestamp];
 
-  v5 = [(MADAutoAssetLookupResult *)self setConfiguration];
+  setConfiguration = [(MADAutoAssetLookupResult *)self setConfiguration];
 
-  if (v5)
+  if (setConfiguration)
   {
-    v6 = [(MADAutoAssetLookupResult *)self setConfiguration];
+    setConfiguration2 = [(MADAutoAssetLookupResult *)self setConfiguration];
     v7 = @"[recorded:%@|setConfig:%@|audience:%@|catalog:%@]";
   }
 
   else
   {
-    v6 = [(MADAutoAssetLookupResult *)self assetSelector];
+    setConfiguration2 = [(MADAutoAssetLookupResult *)self assetSelector];
     v7 = @"[recorded:%@|selector:%@|audience:%@|catalog:%@]";
   }
 
-  v8 = [v6 summary];
-  v9 = [(MADAutoAssetLookupResult *)self assetAudience];
-  v10 = [(MADAutoAssetLookupResult *)self autoAssetCatalog];
-  v11 = [v10 safeSummary];
-  v12 = [NSString stringWithFormat:v7, v4, v8, v9, v11];
+  summary = [setConfiguration2 summary];
+  assetAudience = [(MADAutoAssetLookupResult *)self assetAudience];
+  autoAssetCatalog = [(MADAutoAssetLookupResult *)self autoAssetCatalog];
+  safeSummary = [autoAssetCatalog safeSummary];
+  v12 = [NSString stringWithFormat:v7, v4, summary, assetAudience, safeSummary];
 
   return v12;
 }

@@ -1,26 +1,26 @@
 @interface SWWeakMessageHandler
-+ (id)handlerWithMessageHandler:(id)a3;
++ (id)handlerWithMessageHandler:(id)handler;
 - (SWMessageHandler)messageHandler;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation SWWeakMessageHandler
 
-+ (id)handlerWithMessageHandler:(id)a3
++ (id)handlerWithMessageHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc(objc_opt_class());
-  objc_storeWeak(v4 + 1, v3);
+  objc_storeWeak(v4 + 1, handlerCopy);
 
   return v4;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWWeakMessageHandler *)self messageHandler];
-  [v8 didReceiveMessage:v7 securityOrigin:v6];
+  originCopy = origin;
+  messageCopy = message;
+  messageHandler = [(SWWeakMessageHandler *)self messageHandler];
+  [messageHandler didReceiveMessage:messageCopy securityOrigin:originCopy];
 }
 
 - (SWMessageHandler)messageHandler

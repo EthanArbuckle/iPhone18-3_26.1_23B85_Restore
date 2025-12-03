@@ -1,41 +1,41 @@
 @interface CDRichComplicationView
-- (BOOL)viewShouldIgnoreTwoPieceImage:(id)a3;
+- (BOOL)viewShouldIgnoreTwoPieceImage:(id)image;
 - (CDComplicationDisplayObserver)displayObserver;
-- (CDRichComplicationView)initWithFamily:(int64_t)a3;
+- (CDRichComplicationView)initWithFamily:(int64_t)family;
 - (CLKMonochromeFilterProvider)filterProvider;
 - (NSDate)complicationDate;
-- (id)_fontWithSize:(double)a3 withFontDescriptor:(id)a4;
-- (id)backgroundColorForView:(id)a3;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)interpolatedColorForView:(id)a3;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
-- (void)_setWhistlerAnalogEditingAlphaTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5;
-- (void)_updateColoringLabel:(id)a3 withFontDescriptor:(id)a4 andSizeFactor:(double)a5;
-- (void)setEditing:(BOOL)a3;
-- (void)setFontStyle:(int64_t)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (id)_fontWithSize:(double)size withFontDescriptor:(id)descriptor;
+- (id)backgroundColorForView:(id)view;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)interpolatedColorForView:(id)view;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
+- (void)_setWhistlerAnalogEditingAlphaTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position;
+- (void)_updateColoringLabel:(id)label withFontDescriptor:(id)descriptor andSizeFactor:(double)factor;
+- (void)setEditing:(BOOL)editing;
+- (void)setFontStyle:(int64_t)style;
+- (void)setPaused:(BOOL)paused;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CDRichComplicationView
 
-- (CDRichComplicationView)initWithFamily:(int64_t)a3
+- (CDRichComplicationView)initWithFamily:(int64_t)family
 {
   v9.receiver = self;
   v9.super_class = CDRichComplicationView;
   v4 = [(CDRichComplicationView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-    v6 = [v5 device];
+    mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+    device = [mEMORY[0x277CBBB68] device];
     device = v4->_device;
-    v4->_device = v6;
+    v4->_device = device;
 
-    v4->_family = a3;
+    v4->_family = family;
     v4->_paused = 1;
     [(CDRichComplicationView *)v4 setUserInteractionEnabled:0];
   }
@@ -43,26 +43,26 @@
   return v4;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(CDRichComplicationView *)self _applyPausedUpdate];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CDRichComplicationView;
-  [(CDRichComplicationView *)&v4 traitCollectionDidChange:a3];
+  [(CDRichComplicationView *)&v4 traitCollectionDidChange:change];
   [(CDRichComplicationView *)self setNeedsLayout];
 }
 
-- (void)_setWhistlerAnalogEditingAlphaTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5
+- (void)_setWhistlerAnalogEditingAlphaTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position
 {
-  if (a5 == 1)
+  if (position == 1)
   {
     CLKCompressFraction();
     v6 = v8;
@@ -71,35 +71,35 @@
   else
   {
     v6 = 0.0;
-    if (!a5)
+    if (!position)
     {
       CLKCompressFraction();
       v6 = 1.0 - v7;
     }
   }
 
-  [(CDRichComplicationView *)self setAlpha:a4, v6];
+  [(CDRichComplicationView *)self setAlpha:direction, v6];
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v6 = a3;
-  objc_storeStrong(&self->_timeTravelDate, a3);
+  dateCopy = date;
+  objc_storeStrong(&self->_timeTravelDate, date);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__CDRichComplicationView_setTimeTravelDate_animated___block_invoke;
   v8[3] = &unk_278DF3710;
-  v9 = v6;
-  v7 = v6;
+  v9 = dateCopy;
+  v7 = dateCopy;
   [(CDRichComplicationView *)self _enumerateLabelsWithBlock:v8];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
-    if (!a3)
+    self->_editing = editing;
+    if (!editing)
     {
       [(CDRichComplicationView *)self setAlpha:1.0];
       [(CDRichComplicationView *)self _editingDidEnd];
@@ -114,70 +114,70 @@
   timeTravelDate = self->_timeTravelDate;
   if (timeTravelDate)
   {
-    v3 = timeTravelDate;
+    complicationDate = timeTravelDate;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBBAD8] complicationDate];
+    complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
   }
 
-  return v3;
+  return complicationDate;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationView *)self filterProvider];
-  v7 = [v6 filtersForView:self style:a4];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:style];
 
   return v7;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v9 = [filterProvider filtersForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationView *)self filterProvider];
-  v9 = [v8 filterForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v9 = [filterProvider filterForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationView *)self filterProvider];
-  v7 = [v6 filterForView:self style:a4];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v7 = [filterProvider filterForView:self style:style];
 
   return v7;
 }
 
-- (id)interpolatedColorForView:(id)a3
+- (id)interpolatedColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationView *)self filterProvider];
-  v6 = [v5 interpolatedColorForView:v4];
+  viewCopy = view;
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v6 = [filterProvider interpolatedColorForView:viewCopy];
 
   return v6;
 }
 
-- (id)backgroundColorForView:(id)a3
+- (id)backgroundColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationView *)self filterProvider];
-  v6 = [v5 backgroundColorForView:v4];
+  viewCopy = view;
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v6 = [filterProvider backgroundColorForView:viewCopy];
 
   return v6;
 }
 
-- (BOOL)viewShouldIgnoreTwoPieceImage:(id)a3
+- (BOOL)viewShouldIgnoreTwoPieceImage:(id)image
 {
-  v4 = [(CDRichComplicationView *)self filterProvider];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -185,36 +185,36 @@
     return 0;
   }
 
-  v6 = [(CDRichComplicationView *)self filterProvider];
-  v7 = [v6 viewShouldIgnoreTwoPieceImage:self];
+  filterProvider2 = [(CDRichComplicationView *)self filterProvider];
+  v7 = [filterProvider2 viewShouldIgnoreTwoPieceImage:self];
 
   return v7;
 }
 
-- (void)setFontStyle:(int64_t)a3
+- (void)setFontStyle:(int64_t)style
 {
-  if (self->_fontStyle != a3)
+  if (self->_fontStyle != style)
   {
     v4 = 0;
     v5 = 0;
-    self->_fontStyle = a3;
-    if (a3 > 2)
+    self->_fontStyle = style;
+    if (style > 2)
     {
-      if (a3 == 3)
+      if (style == 3)
       {
         v4 = CDRichComplicationSemiboldFontDescriptor();
         goto LABEL_11;
       }
 
       v6 = 0;
-      if (a3 == 5)
+      if (style == 5)
       {
         v4 = CDRichComplicationOpenFontDescriptor();
         goto LABEL_11;
       }
     }
 
-    else if (a3 == 1)
+    else if (style == 1)
     {
       v4 = 0;
       v6 = 0;
@@ -224,7 +224,7 @@
     else
     {
       v6 = 0;
-      if (a3 == 2)
+      if (style == 2)
       {
         v4 = CDRichComplicationMonoFontDescriptor();
 LABEL_11:
@@ -241,32 +241,32 @@ LABEL_11:
   }
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  objc_storeStrong(&self->_fontDescriptor, a3->var1);
-  self->_fontSizeFactor = a3->var2;
-  var1 = a3->var1;
+  objc_storeStrong(&self->_fontDescriptor, configuration->var1);
+  self->_fontSizeFactor = configuration->var2;
+  var1 = configuration->var1;
 }
 
-- (void)_updateColoringLabel:(id)a3 withFontDescriptor:(id)a4 andSizeFactor:(double)a5
+- (void)_updateColoringLabel:(id)label withFontDescriptor:(id)descriptor andSizeFactor:(double)factor
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 font];
-  [v10 pointSize];
-  v12 = [(CDRichComplicationView *)self _fontWithSize:v8 withFontDescriptor:v11 * a5];
+  descriptorCopy = descriptor;
+  labelCopy = label;
+  font = [labelCopy font];
+  [font pointSize];
+  factor = [(CDRichComplicationView *)self _fontWithSize:descriptorCopy withFontDescriptor:v11 * factor];
 
-  [v9 setFont:v12];
+  [labelCopy setFont:factor];
 
   [(CDRichComplicationView *)self setNeedsLayout];
 }
 
-- (id)_fontWithSize:(double)a3 withFontDescriptor:(id)a4
+- (id)_fontWithSize:(double)size withFontDescriptor:(id)descriptor
 {
-  v4 = [MEMORY[0x277CBBB08] fontWithDescriptor:a4 size:a3];
-  v5 = [v4 CLKFontWithAlternativePunctuation];
+  v4 = [MEMORY[0x277CBBB08] fontWithDescriptor:descriptor size:size];
+  cLKFontWithAlternativePunctuation = [v4 CLKFontWithAlternativePunctuation];
 
-  return v5;
+  return cLKFontWithAlternativePunctuation;
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

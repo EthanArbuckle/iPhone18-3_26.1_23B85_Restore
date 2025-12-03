@@ -6,8 +6,8 @@
 
 - (id)icon
 {
-  v1 = [a1 identifier];
-  v2 = [v1 isEqualToString:@"com.apple.shortcuts.askllm.chatgpt"];
+  identifier = [self identifier];
+  v2 = [identifier isEqualToString:@"com.apple.shortcuts.askllm.chatgpt"];
 
   v3 = objc_alloc(MEMORY[0x277D79FD0]);
   v4 = MEMORY[0x277D79FC8];

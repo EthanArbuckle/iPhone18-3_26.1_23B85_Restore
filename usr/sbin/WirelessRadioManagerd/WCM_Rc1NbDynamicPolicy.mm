@@ -1,16 +1,16 @@
 @interface WCM_Rc1NbDynamicPolicy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation WCM_Rc1NbDynamicPolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     uplinkLowFreq_Hz = self->_uplinkLowFreq_Hz;
     if (uplinkLowFreq_Hz != [v6 uplinkLowFreq_Hz])
     {

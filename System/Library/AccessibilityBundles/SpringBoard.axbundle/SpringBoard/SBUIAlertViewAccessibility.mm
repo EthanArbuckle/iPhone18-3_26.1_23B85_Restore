@@ -1,14 +1,14 @@
 @interface SBUIAlertViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation SBUIAlertViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIAlertView" hasInstanceMethod:@"show" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUIController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIAlertView" hasInstanceMethod:@"show" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUIController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
 }
 
 @end

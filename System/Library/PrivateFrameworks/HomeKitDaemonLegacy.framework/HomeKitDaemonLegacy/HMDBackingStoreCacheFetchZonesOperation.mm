@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheFetchZonesOperation
-- (HMDBackingStoreCacheFetchZonesOperation)initWithFetchResult:(id)a3;
+- (HMDBackingStoreCacheFetchZonesOperation)initWithFetchResult:(id)result;
 - (id)mainReturningError;
 @end
 
@@ -7,29 +7,29 @@
 
 - (id)mainReturningError
 {
-  v3 = [(HMDBackingStoreCacheFetchZonesOperation *)self fetchResult];
+  fetchResult = [(HMDBackingStoreCacheFetchZonesOperation *)self fetchResult];
 
-  if (v3)
+  if (fetchResult)
   {
-    v4 = [(HMDBackingStoreCacheFetchZonesOperation *)self fetchResult];
-    v5 = [(HMDBackingStoreOperation *)self store];
-    v6 = [v5 local];
-    v7 = [v6 zoneCache];
-    (v4)[2](v4, v7, 0);
+    fetchResult2 = [(HMDBackingStoreCacheFetchZonesOperation *)self fetchResult];
+    store = [(HMDBackingStoreOperation *)self store];
+    local = [store local];
+    zoneCache = [local zoneCache];
+    (fetchResult2)[2](fetchResult2, zoneCache, 0);
   }
 
   return 0;
 }
 
-- (HMDBackingStoreCacheFetchZonesOperation)initWithFetchResult:(id)a3
+- (HMDBackingStoreCacheFetchZonesOperation)initWithFetchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = HMDBackingStoreCacheFetchZonesOperation;
   v5 = [(HMDBackingStoreOperation *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(resultCopy);
     fetchResult = v5->_fetchResult;
     v5->_fetchResult = v6;
 

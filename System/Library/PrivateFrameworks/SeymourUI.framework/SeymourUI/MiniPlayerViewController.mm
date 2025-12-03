@@ -1,12 +1,12 @@
 @interface MiniPlayerViewController
-- (_TtC9SeymourUI24MiniPlayerViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI24MiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI24MiniPlayerViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI24MiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation MiniPlayerViewController
 
-- (_TtC9SeymourUI24MiniPlayerViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI24MiniPlayerViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI24MiniPlayerViewController_contentOverlayView) = 0;
@@ -19,11 +19,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB56338();
 }
 
-- (_TtC9SeymourUI24MiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI24MiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

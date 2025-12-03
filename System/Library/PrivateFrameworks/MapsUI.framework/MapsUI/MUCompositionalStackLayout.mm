@@ -1,30 +1,30 @@
 @interface MUCompositionalStackLayout
-- (MUCompositionalStackLayout)initWithContainer:(id)a3 group:(id)a4;
-- (void)setGroup:(id)a3;
+- (MUCompositionalStackLayout)initWithContainer:(id)container group:(id)group;
+- (void)setGroup:(id)group;
 @end
 
 @implementation MUCompositionalStackLayout
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  if (self->_group != a3)
+  if (self->_group != group)
   {
-    v4 = [a3 copy];
+    v4 = [group copy];
     group = self->_group;
     self->_group = v4;
 
-    v6 = [(MUCompositionalStackLayoutGroup *)self->_group internal];
-    [(MUCompositionalStackLayoutInternal *)self->_internal setGroup:v6];
+    internal = [(MUCompositionalStackLayoutGroup *)self->_group internal];
+    [(MUCompositionalStackLayoutInternal *)self->_internal setGroup:internal];
   }
 }
 
-- (MUCompositionalStackLayout)initWithContainer:(id)a3 group:(id)a4
+- (MUCompositionalStackLayout)initWithContainer:(id)container group:(id)group
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  containerCopy = container;
+  v7 = [group copy];
   v8 = [MUCompositionalStackLayoutInternal alloc];
-  v9 = [v7 internal];
-  v10 = [(MUCompositionalStackLayoutInternal *)v8 initWithContainer:v6 group:v9];
+  internal = [v7 internal];
+  v10 = [(MUCompositionalStackLayoutInternal *)v8 initWithContainer:containerCopy group:internal];
 
   v14.receiver = self;
   v14.super_class = MUCompositionalStackLayout;

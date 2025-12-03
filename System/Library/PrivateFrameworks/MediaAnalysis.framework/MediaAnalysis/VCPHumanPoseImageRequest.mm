@@ -1,11 +1,11 @@
 @interface VCPHumanPoseImageRequest
-+ (int)parseResults:(id)a3 observations:(id)a4 revision:(unsigned int)a5;
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4;
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4;
++ (int)parseResults:(id)results observations:(id)observations revision:(unsigned int)revision;
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error;
+- (BOOL)updateWithOptions:(id)options error:(id *)error;
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error;
 - (VCPHumanPoseImageRequest)init;
-- (VCPHumanPoseImageRequest)initWithOptions:(id)a3;
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5;
+- (VCPHumanPoseImageRequest)initWithOptions:(id)options;
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error;
 @end
 
 @implementation VCPHumanPoseImageRequest
@@ -21,13 +21,13 @@
   return 0;
 }
 
-- (VCPHumanPoseImageRequest)initWithOptions:(id)a3
+- (VCPHumanPoseImageRequest)initWithOptions:(id)options
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v21.receiver = self;
   v21.super_class = VCPHumanPoseImageRequest;
-  v5 = [(VCPRequest *)&v21 initWithOptions:v4];
+  v5 = [(VCPRequest *)&v21 initWithOptions:optionsCopy];
   v7 = v5;
   if (v5)
   {
@@ -113,23 +113,23 @@ LABEL_26:
   return v19;
 }
 
-+ (int)parseResults:(id)a3 observations:(id)a4 revision:(unsigned int)a5
++ (int)parseResults:(id)results observations:(id)observations revision:(unsigned int)revision
 {
   v101 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v78 = a4;
-  v75 = v7;
-  if (v78)
+  resultsCopy = results;
+  observationsCopy = observations;
+  v75 = resultsCopy;
+  if (observationsCopy)
   {
     v95 = 0u;
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    obj = v7;
+    obj = resultsCopy;
     v74 = [obj countByEnumeratingWithState:&v93 objects:v100 count:16];
     if (v74)
     {
-      v70 = a5;
+      revisionCopy = revision;
       v76 = *v94;
       while (2)
       {
@@ -160,7 +160,7 @@ LABEL_26:
               }
 
               v72 = objc_alloc_init(VCPPersonObservation);
-              v14 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
               v91 = 0u;
               v92 = 0u;
               v89 = 0u;
@@ -198,7 +198,7 @@ LABEL_26:
                     [v25 floatValue];
                     [(VCPKeypoint *)v19 setConfidence:?];
 
-                    [v14 addObject:v19];
+                    [array addObject:v19];
                   }
 
                   v15 = [v80 countByEnumeratingWithState:&v89 objects:v99 count:16];
@@ -211,9 +211,9 @@ LABEL_26:
                 }
               }
 
-              [(VCPPersonObservation *)v72 setKeypoints:v14];
-              v26 = v70;
-              if (v70 == 3)
+              [(VCPPersonObservation *)v72 setKeypoints:array];
+              v26 = revisionCopy;
+              if (revisionCopy == 3)
               {
                 v27 = [v9 objectForKeyedSubscript:@"attributes"];
                 v67 = [v27 objectForKeyedSubscript:@"humanID"];
@@ -241,7 +241,7 @@ LABEL_26:
                     goto LABEL_54;
                   }
 
-                  v36 = [MEMORY[0x1E695DF70] array];
+                  array2 = [MEMORY[0x1E695DF70] array];
                   v87 = 0u;
                   v88 = 0u;
                   v85 = 0u;
@@ -278,7 +278,7 @@ LABEL_23:
                       [v47 floatValue];
                       [(VCPKeypoint *)v41 setConfidence:?];
 
-                      [v36 addObject:v41];
+                      [array2 addObject:v41];
                       if (v37 == ++v39)
                       {
                         v37 = [v71 countByEnumeratingWithState:&v85 objects:v98 count:16];
@@ -293,7 +293,7 @@ LABEL_23:
                   }
 
                   v48 = objc_alloc_init(VCPHandObservation);
-                  [(VCPHandObservation *)v48 setKeypoints:v36];
+                  [(VCPHandObservation *)v48 setKeypoints:array2];
                   [(VCPHandObservation *)v48 setChirality:0xFFFFFFFFLL];
                   -[VCPHandObservation setGroupID:](v48, "setGroupID:", [v67 intValue]);
                   v102 = NSRectFromString(aString);
@@ -308,7 +308,7 @@ LABEL_23:
                     goto LABEL_54;
                   }
 
-                  v36 = [MEMORY[0x1E695DF70] array];
+                  array2 = [MEMORY[0x1E695DF70] array];
                   v83 = 0u;
                   v84 = 0u;
                   v81 = 0u;
@@ -345,7 +345,7 @@ LABEL_34:
                       [v59 floatValue];
                       [(VCPKeypoint *)v53 setConfidence:?];
 
-                      [v36 addObject:v53];
+                      [array2 addObject:v53];
                       if (v49 == ++v51)
                       {
                         v49 = [v71 countByEnumeratingWithState:&v81 objects:v97 count:16];
@@ -372,7 +372,7 @@ LABEL_49:
 LABEL_40:
 
                   v60 = objc_alloc_init(VCPHandObservation);
-                  [(VCPHandObservation *)v60 setKeypoints:v36];
+                  [(VCPHandObservation *)v60 setKeypoints:array2];
                   [(VCPHandObservation *)v60 setChirality:1];
                   -[VCPHandObservation setGroupID:](v60, "setGroupID:", [v67 intValue]);
                   v103 = NSRectFromString(v64);
@@ -386,7 +386,7 @@ LABEL_40:
               }
 
               [(VCPPersonObservation *)v72 setRevision:v26];
-              [v78 addObject:v72];
+              [observationsCopy addObject:v72];
 
               v11 = v79;
             }
@@ -420,10 +420,10 @@ LABEL_51:
   return v61;
 }
 
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v27 = 0;
   analyzerBottomUp = self->_analyzerBottomUp;
   analyzerTopDown = self->_analyzerTopDown;
@@ -432,14 +432,14 @@ LABEL_51:
     if (!analyzerTopDown)
     {
       v25 = 0;
-      v11 = [(VCPImageHumanPoseAnalyzer *)analyzerBottomUp analyzePixelBuffer:a3 flags:&v27 results:&v25 cancel:&__block_literal_global_199];
+      v11 = [(VCPImageHumanPoseAnalyzer *)analyzerBottomUp analyzePixelBuffer:image flags:&v27 results:&v25 cancel:&__block_literal_global_199];
       v12 = v25;
       goto LABEL_6;
     }
 
 LABEL_5:
     v26 = 0;
-    v11 = [(VCPImageHumanPoseAnalyzerTopDown *)analyzerTopDown analyzePixelBuffer:a3 flags:&v27 results:&v26 cancel:&__block_literal_global_8];
+    v11 = [(VCPImageHumanPoseAnalyzerTopDown *)analyzerTopDown analyzePixelBuffer:image flags:&v27 results:&v26 cancel:&__block_literal_global_8];
     v12 = v26;
     goto LABEL_6;
   }
@@ -458,7 +458,7 @@ LABEL_5:
   }
 
   v24 = 0;
-  v11 = [(VCPImageHumanPoseAnalyzerHolistic *)analyzerHolistic analyzePixelBuffer:a3 flags:&v27 results:&v24 cancel:&__block_literal_global_201];
+  v11 = [(VCPImageHumanPoseAnalyzerHolistic *)analyzerHolistic analyzePixelBuffer:image flags:&v27 results:&v24 cancel:&__block_literal_global_201];
   v12 = v24;
 LABEL_6:
   v13 = v12;
@@ -468,39 +468,39 @@ LABEL_6:
     v18 = [v13 objectForKeyedSubscript:@"HumanPoseResults"];
     v19 = v18 == 0;
 
-    if (v19 || (v20 = objc_opt_class(), [v14 objectForKeyedSubscript:@"HumanPoseResults"], v21 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v20, "parseResults:observations:revision:", v21, v8, self->super._revision), v21, !v11))
+    if (v19 || (v20 = objc_opt_class(), [v14 objectForKeyedSubscript:@"HumanPoseResults"], v21 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v20, "parseResults:observations:revision:", v21, array, self->super._revision), v21, !v11))
     {
-      a5 = v8;
+      error = array;
       goto LABEL_12;
     }
   }
 
 LABEL_7:
-  if (a5)
+  if (error)
   {
     v15 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A578];
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: failed to processImage"];
     v29[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    *a5 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:v17];
+    *error = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:v17];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_12:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4
+- (BOOL)updateWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   width = self->super._width;
   height = self->super._height;
   v28.receiver = self;
   v28.super_class = VCPHumanPoseImageRequest;
-  [(VCPRequest *)&v28 updateWithOptions:v6 error:a4];
+  [(VCPRequest *)&v28 updateWithOptions:optionsCopy error:error];
   analyzerBottomUp = self->_analyzerBottomUp;
   if (!analyzerBottomUp)
   {
@@ -561,7 +561,7 @@ LABEL_13:
     if (v17 < 1)
     {
 LABEL_26:
-      v20 = [v6 objectForKeyedSubscript:@"maxNumOfPersons"];
+      v20 = [optionsCopy objectForKeyedSubscript:@"maxNumOfPersons"];
       [(VCPImageHumanPoseAnalyzerTopDown *)analyzerTopDown updateMaxNumPersons:v20];
 
 LABEL_27:
@@ -598,7 +598,7 @@ LABEL_37:
         goto LABEL_37;
       }
 
-      v26 = [v6 objectForKeyedSubscript:@"maxNumOfPersons"];
+      v26 = [optionsCopy objectForKeyedSubscript:@"maxNumOfPersons"];
       [(VCPImageHumanPoseAnalyzerHolistic *)analyzerHolistic updateMaxNumPersons:v26];
 
       goto LABEL_42;
@@ -625,9 +625,9 @@ LABEL_43:
   return v25;
 }
 
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   analyzerBottomUp = self->_analyzerBottomUp;
   if (analyzerBottomUp)
   {
@@ -656,7 +656,7 @@ LABEL_43:
   return result;
 }
 
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error
 {
   analyzerBottomUp = self->_analyzerBottomUp;
   self->_analyzerBottomUp = 0;

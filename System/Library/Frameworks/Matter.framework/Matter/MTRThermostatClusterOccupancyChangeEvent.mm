@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterOccupancyChangeEvent
 - (MTRThermostatClusterOccupancyChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterOccupancyChangeEvent);
-  v5 = [(MTRThermostatClusterOccupancyChangeEvent *)self previousOccupancy];
-  [(MTRThermostatClusterOccupancyChangeEvent *)v4 setPreviousOccupancy:v5];
+  previousOccupancy = [(MTRThermostatClusterOccupancyChangeEvent *)self previousOccupancy];
+  [(MTRThermostatClusterOccupancyChangeEvent *)v4 setPreviousOccupancy:previousOccupancy];
 
-  v6 = [(MTRThermostatClusterOccupancyChangeEvent *)self currentOccupancy];
-  [(MTRThermostatClusterOccupancyChangeEvent *)v4 setCurrentOccupancy:v6];
+  currentOccupancy = [(MTRThermostatClusterOccupancyChangeEvent *)self currentOccupancy];
+  [(MTRThermostatClusterOccupancyChangeEvent *)v4 setCurrentOccupancy:currentOccupancy];
 
   return v4;
 }

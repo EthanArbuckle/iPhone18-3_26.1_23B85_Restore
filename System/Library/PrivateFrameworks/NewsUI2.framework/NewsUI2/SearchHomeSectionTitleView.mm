@@ -1,10 +1,10 @@
 @interface SearchHomeSectionTitleView
-- (_TtC7NewsUI226SearchHomeSectionTitleView)initWithCoder:(id)a3;
+- (_TtC7NewsUI226SearchHomeSectionTitleView)initWithCoder:(id)coder;
 @end
 
 @implementation SearchHomeSectionTitleView
 
-- (_TtC7NewsUI226SearchHomeSectionTitleView)initWithCoder:(id)a3
+- (_TtC7NewsUI226SearchHomeSectionTitleView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsUI226SearchHomeSectionTitleView_titleLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756B8]) initWithFrame_];

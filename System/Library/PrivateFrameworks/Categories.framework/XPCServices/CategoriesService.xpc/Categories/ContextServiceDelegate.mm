@@ -10,8 +10,8 @@
   v13.super_class = ContextServiceDelegate;
   v2 = [(ContextServiceDelegate *)&v13 init];
   v3 = +[CTCategory client];
-  v4 = [v3 indexVersionId];
-  v5 = [v4 copy];
+  indexVersionId = [v3 indexVersionId];
+  v5 = [indexVersionId copy];
   currentIndexVersionID = v2->_currentIndexVersionID;
   v2->_currentIndexVersionID = v5;
 

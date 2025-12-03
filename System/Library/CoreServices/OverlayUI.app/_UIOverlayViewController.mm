@@ -7,18 +7,18 @@
 
 - (UIWindow)window
 {
-  v2 = [(_UIOverlayViewController *)self view];
-  v3 = [v2 window];
+  view = [(_UIOverlayViewController *)self view];
+  window = [view window];
 
-  return v3;
+  return window;
 }
 
 - (UIWindowScene)windowScene
 {
-  v2 = [(_UIOverlayViewController *)self window];
-  v3 = [v2 windowScene];
+  window = [(_UIOverlayViewController *)self window];
+  windowScene = [window windowScene];
 
-  return v3;
+  return windowScene;
 }
 
 @end

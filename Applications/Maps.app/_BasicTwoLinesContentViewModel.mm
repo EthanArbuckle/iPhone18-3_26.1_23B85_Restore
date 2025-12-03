@@ -1,12 +1,12 @@
 @interface _BasicTwoLinesContentViewModel
 - (CGSize)imageSize;
 - (GEOObserverHashTable)observers;
-- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)a3 subtitleText:(id)a4 cancelableImageCreationBlock:(id)a5;
-- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)a3 subtitleText:(id)a4 imageCreationBlock:(id)a5;
+- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)text subtitleText:(id)subtitleText cancelableImageCreationBlock:(id)block;
+- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)text subtitleText:(id)subtitleText imageCreationBlock:(id)block;
 - (void)dealloc;
-- (void)fetchImageForScreenScale:(double)a3 withCompletionHandler:(id)a4;
+- (void)fetchImageForScreenScale:(double)scale withCompletionHandler:(id)handler;
 - (void)invalidateCachedImage;
-- (void)setImageCreationCanBeCached:(BOOL)a3;
+- (void)setImageCreationCanBeCached:(BOOL)cached;
 @end
 
 @implementation _BasicTwoLinesContentViewModel
@@ -20,26 +20,26 @@
   return result;
 }
 
-- (void)fetchImageForScreenScale:(double)a3 withCompletionHandler:(id)a4
+- (void)fetchImageForScreenScale:(double)scale withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(_BasicTwoLinesContentViewModel *)self imageCreationCanBeCached]&& (cachedImage = self->_cachedImage) != 0)
     {
-      v6[2](v6, cachedImage, self->_cachedImageAllowsClipping);
+      handlerCopy[2](handlerCopy, cachedImage, self->_cachedImageAllowsClipping);
     }
 
     else
     {
-      v8 = [(_BasicTwoLinesContentViewModel *)self imageCreationBlock];
+      imageCreationBlock = [(_BasicTwoLinesContentViewModel *)self imageCreationBlock];
 
-      if (v8)
+      if (imageCreationBlock)
       {
         if ([(_BasicTwoLinesContentViewModel *)self imageCreationCanBeCached]&& (v9 = self->_pendingImageCreationCompletionBlock) != 0)
         {
           v10 = objc_retainBlock(v9);
-          v11 = [v6 copy];
+          v11 = [handlerCopy copy];
           pendingImageCreationCompletionBlock = self->_pendingImageCreationCompletionBlock;
           self->_pendingImageCreationCompletionBlock = v11;
 
@@ -60,21 +60,21 @@
 
           if ([(_BasicTwoLinesContentViewModel *)self imageCreationCanBeCached])
           {
-            v16 = [v6 copy];
+            v16 = [handlerCopy copy];
             v17 = self->_pendingImageCreationCompletionBlock;
             self->_pendingImageCreationCompletionBlock = v16;
           }
 
           objc_initWeak(&location, self);
-          v18 = [(_BasicTwoLinesContentViewModel *)self imageCreationBlock];
+          imageCreationBlock2 = [(_BasicTwoLinesContentViewModel *)self imageCreationBlock];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_100C47434;
           v21[3] = &unk_10164EC10;
           objc_copyWeak(&v23, &location);
           v21[4] = self;
-          v22 = v6;
-          v19 = (v18)[2](v18, v21, a3);
+          v22 = handlerCopy;
+          v19 = (imageCreationBlock2)[2](imageCreationBlock2, v21, scale);
           v20 = self->_cancelImageCreation;
           self->_cancelImageCreation = v19;
 
@@ -99,12 +99,12 @@
   }
 }
 
-- (void)setImageCreationCanBeCached:(BOOL)a3
+- (void)setImageCreationCanBeCached:(BOOL)cached
 {
-  if (self->_imageCreationCanBeCached != a3)
+  if (self->_imageCreationCanBeCached != cached)
   {
-    self->_imageCreationCanBeCached = a3;
-    if (!a3)
+    self->_imageCreationCanBeCached = cached;
+    if (!cached)
     {
       [(_BasicTwoLinesContentViewModel *)self invalidateCachedImage];
     }
@@ -146,38 +146,38 @@
   [(_BasicTwoLinesContentViewModel *)&v7 dealloc];
 }
 
-- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)a3 subtitleText:(id)a4 imageCreationBlock:(id)a5
+- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)text subtitleText:(id)subtitleText imageCreationBlock:(id)block
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100C47730;
   v11[3] = &unk_10164EBE8;
-  v12 = a5;
-  v8 = v12;
-  v9 = [(_BasicTwoLinesContentViewModel *)self initWithTitleText:a3 subtitleText:a4 cancelableImageCreationBlock:v11];
+  blockCopy = block;
+  v8 = blockCopy;
+  v9 = [(_BasicTwoLinesContentViewModel *)self initWithTitleText:text subtitleText:subtitleText cancelableImageCreationBlock:v11];
 
   return v9;
 }
 
-- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)a3 subtitleText:(id)a4 cancelableImageCreationBlock:(id)a5
+- (_BasicTwoLinesContentViewModel)initWithTitleText:(id)text subtitleText:(id)subtitleText cancelableImageCreationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  subtitleTextCopy = subtitleText;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = _BasicTwoLinesContentViewModel;
   v11 = [(_BasicTwoLinesContentViewModel *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [textCopy copy];
     titleText = v11->_titleText;
     v11->_titleText = v12;
 
-    v14 = [v9 copy];
+    v14 = [subtitleTextCopy copy];
     subtitleText = v11->_subtitleText;
     v11->_subtitleText = v14;
 
-    v16 = [v10 copy];
+    v16 = [blockCopy copy];
     imageCreationBlock = v11->_imageCreationBlock;
     v11->_imageCreationBlock = v16;
   }

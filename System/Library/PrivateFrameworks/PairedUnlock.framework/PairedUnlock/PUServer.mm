@@ -1,20 +1,20 @@
 @interface PUServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PUServer)init;
 - (void)_handlePasscodeRemoval;
-- (void)_removeConnection:(id)a3;
+- (void)_removeConnection:(id)connection;
 - (void)checkIn;
 - (void)dealloc;
-- (void)didCompleteRemoteAction:(BOOL)a3 error:(id)a4;
+- (void)didCompleteRemoteAction:(BOOL)action error:(id)error;
 - (void)disableOnlyRemoteUnlock;
-- (void)enableOnlyRemoteUnlockWithPasscode:(id)a3;
-- (void)peer:(id)a3 didNotifyRemoteState:(id)a4 error:(id)a5;
-- (void)peer:(id)a3 remoteDeviceRequestsRemoteAction:(int64_t)a4 type:(int64_t)a5 existingPasscode:(id)a6 completionHandler:(id)a7;
-- (void)peerRemoteDeviceDidUnlock:(id)a3;
-- (void)queryRemoteDeviceState:(id)a3;
-- (void)requestRemoteDeviceRemoteAction:(int64_t)a3 type:(int64_t)a4;
+- (void)enableOnlyRemoteUnlockWithPasscode:(id)passcode;
+- (void)peer:(id)peer didNotifyRemoteState:(id)state error:(id)error;
+- (void)peer:(id)peer remoteDeviceRequestsRemoteAction:(int64_t)action type:(int64_t)type existingPasscode:(id)passcode completionHandler:(id)handler;
+- (void)peerRemoteDeviceDidUnlock:(id)unlock;
+- (void)queryRemoteDeviceState:(id)state;
+- (void)requestRemoteDeviceRemoteAction:(int64_t)action type:(int64_t)type;
 - (void)requestRemoteDeviceRemoveLockout;
-- (void)setGizmoWantsNotificationOnNextUnlock:(BOOL)a3;
+- (void)setGizmoWantsNotificationOnNextUnlock:(BOOL)unlock;
 - (void)unpairForUnlock;
 @end
 
@@ -112,11 +112,11 @@
   [(PUServer *)&v9 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
 LABEL_10:
     v18 = 1;
@@ -130,28 +130,28 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Server got new connection", buf, 2u);
   }
 
-  v9 = [v7 valueForEntitlement:PUAuthorizationEntitlement];
-  v10 = [v9 BOOLValue];
+  v9 = [connectionCopy valueForEntitlement:PUAuthorizationEntitlement];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PUUnlockClient];
-    [v7 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
     v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PUUnlockServer];
-    [v7 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, connectionCopy);
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_10000B7B8;
     v24 = &unk_1000189C8;
     objc_copyWeak(&v25, &from);
     objc_copyWeak(&v26, &location);
-    [v7 setInvalidationHandler:&v21];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v21];
+    [connectionCopy resume];
     v13 = pu_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -161,7 +161,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "received connection %@", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_connections addObject:v7];
+    [(NSMutableSet *)self->_connections addObject:connectionCopy];
     v15 = pu_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -184,7 +184,7 @@ LABEL_10:
   v19 = pu_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    sub_10000D644(v7, v19);
+    sub_10000D644(connectionCopy, v19);
   }
 
   v18 = 0;
@@ -193,29 +193,29 @@ LABEL_14:
   return v18;
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = pu_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = v4;
+    v7 = connectionCopy;
     v8 = 1024;
-    v9 = [v4 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Server lost connection %@ to PID %d", &v6, 0x12u);
   }
 
-  [(NSMutableSet *)self->_connections removeObject:v4];
+  [(NSMutableSet *)self->_connections removeObject:connectionCopy];
 }
 
-- (void)peerRemoteDeviceDidUnlock:(id)a3
+- (void)peerRemoteDeviceDidUnlock:(id)unlock
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableSet *)self->_connections copy:a3];
+  v3 = [(NSMutableSet *)self->_connections copy:unlock];
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -231,8 +231,8 @@ LABEL_14:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
-        [v8 remoteDeviceDidUnlock];
+        remoteObjectProxy = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
+        [remoteObjectProxy remoteDeviceDidUnlock];
 
         v7 = v7 + 1;
       }
@@ -245,10 +245,10 @@ LABEL_14:
   }
 }
 
-- (void)peer:(id)a3 didNotifyRemoteState:(id)a4 error:(id)a5
+- (void)peer:(id)peer didNotifyRemoteState:(id)state error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  stateCopy = state;
+  errorCopy = error;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -269,8 +269,8 @@ LABEL_14:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v15 + 1) + 8 * v13) remoteObjectProxy];
-        [v14 didGetRemoteDeviceState:v7 error:v8];
+        remoteObjectProxy = [*(*(&v15 + 1) + 8 * v13) remoteObjectProxy];
+        [remoteObjectProxy didGetRemoteDeviceState:stateCopy error:errorCopy];
 
         v13 = v13 + 1;
       }
@@ -283,26 +283,26 @@ LABEL_14:
   }
 }
 
-- (void)peer:(id)a3 remoteDeviceRequestsRemoteAction:(int64_t)a4 type:(int64_t)a5 existingPasscode:(id)a6 completionHandler:(id)a7
+- (void)peer:(id)peer remoteDeviceRequestsRemoteAction:(int64_t)action type:(int64_t)type existingPasscode:(id)passcode completionHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
+  handlerCopy = handler;
+  passcodeCopy = passcode;
   v13 = pu_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v19 = a4;
+    actionCopy = action;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Remote device requested passcode action %li", buf, 0xCu);
   }
 
-  v14 = [(NSXPCConnection *)self->_actionServerConnection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_actionServerConnection remoteObjectProxy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000BDE0;
   v16[3] = &unk_1000189F0;
-  v17 = v11;
-  v15 = v11;
-  [v14 requestRemoteAction:a4 type:a5 existingPasscode:v12 completion:v16];
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  [remoteObjectProxy requestRemoteAction:action type:type existingPasscode:passcodeCopy completion:v16];
 }
 
 - (void)checkIn
@@ -315,7 +315,7 @@ LABEL_14:
   }
 }
 
-- (void)requestRemoteDeviceRemoteAction:(int64_t)a3 type:(int64_t)a4
+- (void)requestRemoteDeviceRemoteAction:(int64_t)action type:(int64_t)type
 {
   objc_initWeak(&location, self);
   peer = self->_peer;
@@ -324,17 +324,17 @@ LABEL_14:
   v8[2] = sub_10000C0D4;
   v8[3] = &unk_100018A18;
   objc_copyWeak(&v9, &location);
-  [(PUPeer *)peer requestRemoteDeviceRemoteAction:a3 type:a4 completionHandler:v8];
+  [(PUPeer *)peer requestRemoteDeviceRemoteAction:action type:type completionHandler:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)didCompleteRemoteAction:(BOOL)a3 error:(id)a4
+- (void)didCompleteRemoteAction:(BOOL)action error:(id)error
 {
   requestRemoteActionHandler = self->_requestRemoteActionHandler;
   if (requestRemoteActionHandler)
   {
-    requestRemoteActionHandler[2](requestRemoteActionHandler, 0, a4);
+    requestRemoteActionHandler[2](requestRemoteActionHandler, 0, error);
     v6 = self->_requestRemoteActionHandler;
     self->_requestRemoteActionHandler = 0;
   }
@@ -354,7 +354,7 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)enableOnlyRemoteUnlockWithPasscode:(id)a3
+- (void)enableOnlyRemoteUnlockWithPasscode:(id)passcode
 {
   peer = self->_peer;
   v4[0] = _NSConcreteStackBlock;
@@ -362,7 +362,7 @@ LABEL_14:
   v4[2] = sub_10000C4F8;
   v4[3] = &unk_100018A40;
   v4[4] = self;
-  [(PUPeer *)peer enableOnlyRemoteUnlockWithPasscode:a3 completionHandler:v4];
+  [(PUPeer *)peer enableOnlyRemoteUnlockWithPasscode:passcode completionHandler:v4];
 }
 
 - (void)disableOnlyRemoteUnlock
@@ -376,16 +376,16 @@ LABEL_14:
   [(PUPeer *)peer disableOnlyRemoteUnlockWithCompletionHandler:v3];
 }
 
-- (void)queryRemoteDeviceState:(id)a3
+- (void)queryRemoteDeviceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   peer = self->_peer;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000C854;
   v7[3] = &unk_100018658;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   [(PUPeer *)peer queryRemoteDeviceState:v7];
 }
 
@@ -400,10 +400,10 @@ LABEL_14:
   [(PUPeer *)peer requestRemoteDeviceRemoveLockout:v3];
 }
 
-- (void)setGizmoWantsNotificationOnNextUnlock:(BOOL)a3
+- (void)setGizmoWantsNotificationOnNextUnlock:(BOOL)unlock
 {
   v3 = &kCFBooleanTrue;
-  if (!a3)
+  if (!unlock)
   {
     v3 = &kCFBooleanFalse;
   }

@@ -1,7 +1,7 @@
 @interface TSWPImageBulletProvider
 + (id)sharedInstance;
 - (NSArray)predefinedImages;
-- (id)dataForImageBullet:(id)a3 withContext:(id)a4;
+- (id)dataForImageBullet:(id)bullet withContext:(id)context;
 - (id)p_pathToPredefinedImages;
 - (id)p_predefinedImageNames;
 @end
@@ -31,19 +31,19 @@ TSWPImageBulletProvider *__41__TSWPImageBulletProvider_sharedInstance__block_inv
   result = &self->_images->super;
   if (!result)
   {
-    v4 = [(TSWPImageBulletProvider *)self p_predefinedImageNames];
-    v5 = [v4 count];
+    p_predefinedImageNames = [(TSWPImageBulletProvider *)self p_predefinedImageNames];
+    v5 = [p_predefinedImageNames count];
     if (v5)
     {
       v6 = v5;
       self->_images = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v5];
       self->_filenames = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v6];
-      v7 = [(TSWPImageBulletProvider *)self p_pathToPredefinedImages];
+      p_pathToPredefinedImages = [(TSWPImageBulletProvider *)self p_pathToPredefinedImages];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v8 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [p_predefinedImageNames countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         v9 = v8;
@@ -55,11 +55,11 @@ TSWPImageBulletProvider *__41__TSWPImageBulletProvider_sharedInstance__block_inv
           {
             if (*v19 != v10)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(p_predefinedImageNames);
             }
 
             v12 = *(*(&v18 + 1) + 8 * v11);
-            v13 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:{objc_msgSend(v7, "stringByAppendingPathComponent:", v12)}];
+            v13 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:{objc_msgSend(p_pathToPredefinedImages, "stringByAppendingPathComponent:", v12)}];
             if (v13)
             {
               v14 = v13;
@@ -72,7 +72,7 @@ TSWPImageBulletProvider *__41__TSWPImageBulletProvider_sharedInstance__block_inv
           }
 
           while (v9 != v11);
-          v9 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v9 = [p_predefinedImageNames countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v9);
@@ -82,9 +82,9 @@ TSWPImageBulletProvider *__41__TSWPImageBulletProvider_sharedInstance__block_inv
     result = &self->_images->super;
     if (!result)
     {
-      v16 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPImageBulletProvider predefinedImages]"];
-      [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPImageBulletProvider.mm"), 66, @"Empty predefined bullet image array."}];
+      [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPImageBulletProvider.mm"), 66, @"Empty predefined bullet image array."}];
       result = objc_alloc_init(MEMORY[0x277CBEB18]);
       self->_images = result;
     }
@@ -93,14 +93,14 @@ TSWPImageBulletProvider *__41__TSWPImageBulletProvider_sharedInstance__block_inv
   return result;
 }
 
-- (id)dataForImageBullet:(id)a3 withContext:(id)a4
+- (id)dataForImageBullet:(id)bullet withContext:(id)context
 {
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (v7)
   {
 LABEL_10:
-    result = [TSPData dataFromURL:v7 context:a4];
+    result = [TSPData dataFromURL:v7 context:context];
     if (result)
     {
       return result;
@@ -121,17 +121,17 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!bullet)
   {
     goto LABEL_7;
   }
 
-  v9 = [(NSMutableArray *)self->_images indexOfObject:a3];
+  v9 = [(NSMutableArray *)self->_images indexOfObject:bullet];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPImageBulletProvider dataForImageBullet:withContext:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPImageBulletProvider.mm"), 104, @"Unknown image - TSPData requires path to image file"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPImageBulletProvider.mm"), 104, @"Unknown image - TSPData requires path to image file"}];
 LABEL_7:
     v9 = 0;
   }

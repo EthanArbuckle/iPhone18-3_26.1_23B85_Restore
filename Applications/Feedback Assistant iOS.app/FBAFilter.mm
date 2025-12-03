@@ -1,21 +1,21 @@
 @interface FBAFilter
 - (NSString)title;
 - (_TtC18Feedback_Assistant9FBAFilter)init;
-- (_TtC18Feedback_Assistant9FBAFilter)initWithPredicate:(id)a3 title:(id)a4 image:(id)a5;
-- (void)setActive:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setPredicate:(id)a3;
-- (void)setTitle:(id)a3;
+- (_TtC18Feedback_Assistant9FBAFilter)initWithPredicate:(id)predicate title:(id)title image:(id)image;
+- (void)setActive:(BOOL)active;
+- (void)setImage:(id)image;
+- (void)setPredicate:(id)predicate;
+- (void)setTitle:(id)title;
 - (void)toggle;
 @end
 
 @implementation FBAFilter
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant9FBAFilter_predicate);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant9FBAFilter_predicate) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant9FBAFilter_predicate) = predicate;
+  predicateCopy = predicate;
 }
 
 - (NSString)title
@@ -28,7 +28,7 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant9FBAFilter_title);
@@ -37,26 +37,26 @@
   v5[1] = v7;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant9FBAFilter_image);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant9FBAFilter_image) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant9FBAFilter_image) = image;
+  imageCopy = image;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v4 = self;
-  sub_1000707DC(a3);
+  selfCopy = self;
+  sub_1000707DC(active);
 }
 
-- (_TtC18Feedback_Assistant9FBAFilter)initWithPredicate:(id)a3 title:(id)a4 image:(id)a5
+- (_TtC18Feedback_Assistant9FBAFilter)initWithPredicate:(id)predicate title:(id)title image:(id)image
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
-  v11 = a5;
-  v12 = sub_100070DB8(v10, v7, v9, a5);
+  predicateCopy = predicate;
+  imageCopy = image;
+  v12 = sub_100070DB8(predicateCopy, v7, v9, image);
 
   return v12;
 }
@@ -64,9 +64,9 @@
 - (void)toggle
 {
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   _KeyValueCodingAndObserving.willChangeValue<A>(for:)();
-  [(FBAFilter *)v3 setActive:[(FBAFilter *)v3 active]^ 1];
+  [(FBAFilter *)selfCopy setActive:[(FBAFilter *)selfCopy active]^ 1];
   swift_getKeyPath();
   _KeyValueCodingAndObserving.didChangeValue<A>(for:)();
   sub_100070BB0();

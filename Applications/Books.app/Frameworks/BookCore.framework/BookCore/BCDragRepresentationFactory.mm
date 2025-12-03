@@ -1,31 +1,31 @@
 @interface BCDragRepresentationFactory
-+ (BOOL)registerFileRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4;
-+ (id)dataForTypeIdentifier:(id)a3 dragInfo:(id)a4;
-+ (id)providerDataTypesForDragInfo:(id)a3;
-+ (id)providerFileTypesForDragInfo:(id)a3;
-+ (void)registerPlainTextRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4;
-+ (void)registerRepresentationsFromAssetDragInfo:(id)a3 withProvider:(id)a4 canDragToNewCanvas:(BOOL)a5;
-+ (void)registerSceneRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4;
-+ (void)registerURLRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4;
++ (BOOL)registerFileRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider;
++ (id)dataForTypeIdentifier:(id)identifier dragInfo:(id)info;
++ (id)providerDataTypesForDragInfo:(id)info;
++ (id)providerFileTypesForDragInfo:(id)info;
++ (void)registerPlainTextRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider;
++ (void)registerRepresentationsFromAssetDragInfo:(id)info withProvider:(id)provider canDragToNewCanvas:(BOOL)canvas;
++ (void)registerSceneRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider;
++ (void)registerURLRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider;
 @end
 
 @implementation BCDragRepresentationFactory
 
-+ (void)registerSceneRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4
++ (void)registerSceneRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 assetID];
-  v8 = [v5 contentType];
-  if ([v7 length] && v8 && (v8 - 7) <= 0xFFFFFFFFFFFFFFFDLL)
+  infoCopy = info;
+  providerCopy = provider;
+  assetID = [infoCopy assetID];
+  contentType = [infoCopy contentType];
+  if ([assetID length] && contentType && (contentType - 7) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v9 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.iBooks.assetReading"];
-    v10 = [v5 title];
-    v11 = v10;
+    title = [infoCopy title];
+    v11 = title;
     v12 = &stru_2D2930;
-    if (v10)
+    if (title)
     {
-      v12 = v10;
+      v12 = title;
     }
 
     v13 = v12;
@@ -33,83 +33,83 @@
     [v9 setTitle:v13];
     v15[0] = @"assetID";
     v15[1] = BCBookDisplayTitle;
-    v16[0] = v7;
+    v16[0] = assetID;
     v16[1] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
 
     [v9 setUserInfo:v14];
-    [v6 registerObject:v9 visibility:0];
+    [providerCopy registerObject:v9 visibility:0];
   }
 }
 
-+ (BOOL)registerFileRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4
++ (BOOL)registerFileRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 localFileURL];
+  infoCopy = info;
+  providerCopy = provider;
+  localFileURL = [infoCopy localFileURL];
 
-  if (v7)
+  if (localFileURL)
   {
-    v7 = v5;
-    v8 = sub_DA6A0(v7);
-    v9 = [v8 stringByDeletingPathExtension];
+    localFileURL = infoCopy;
+    v8 = sub_DA6A0(localFileURL);
+    stringByDeletingPathExtension = [v8 stringByDeletingPathExtension];
 
-    v10 = [v7 contentType];
-    v11 = [v7 localFileURL];
+    contentType = [localFileURL contentType];
+    v7LocalFileURL = [localFileURL localFileURL];
 
-    if (v10 == &dword_4 + 2)
+    if (contentType == &dword_4 + 2)
     {
-      v12 = sub_D9D30(v11);
+      v12 = sub_D9D30(v7LocalFileURL);
 
-      v11 = v12;
+      v7LocalFileURL = v12;
     }
 
-    v13 = [v11 bu_utType];
-    v14 = [v13 preferredFilenameExtension];
+    bu_utType = [v7LocalFileURL bu_utType];
+    preferredFilenameExtension = [bu_utType preferredFilenameExtension];
 
-    if (v14)
+    if (preferredFilenameExtension)
     {
-      v15 = [v9 stringByAppendingPathExtension:v14];
+      v15 = [stringByDeletingPathExtension stringByAppendingPathExtension:preferredFilenameExtension];
 
-      v9 = v15;
+      stringByDeletingPathExtension = v15;
     }
 
-    [v6 setSuggestedName:v9];
-    [v6 setPreferredPresentationStyle:2];
-    [v7 assetID];
+    [providerCopy setSuggestedName:stringByDeletingPathExtension];
+    [providerCopy setPreferredPresentationStyle:2];
+    [localFileURL assetID];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_D9ADC;
     v16 = v28[3] = &unk_2CB178;
     v29 = v16;
-    [v6 registerItemForTypeIdentifier:@"com.apple.iBooksX.BKLibraryAssetPasteboardType" loadHandler:v28];
-    v17 = [v7 localFileURL];
-    v18 = [v17 bu_utType];
-    v19 = [v18 identifier];
+    [providerCopy registerItemForTypeIdentifier:@"com.apple.iBooksX.BKLibraryAssetPasteboardType" loadHandler:v28];
+    v7LocalFileURL2 = [localFileURL localFileURL];
+    bu_utType2 = [v7LocalFileURL2 bu_utType];
+    identifier = [bu_utType2 identifier];
 
-    if (!v19)
+    if (!identifier)
     {
       v30[0] = @"epub";
       v30[1] = @"ibooks";
       v31[0] = @"org.idpf.epub-folder";
       v31[1] = @"com.apple.ibooks-folder";
       v20 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
-      v21 = [v17 pathExtension];
-      v22 = [v21 lowercaseString];
+      pathExtension = [v7LocalFileURL2 pathExtension];
+      lowercaseString = [pathExtension lowercaseString];
 
-      v23 = [v20 objectForKeyedSubscript:v22];
+      v23 = [v20 objectForKeyedSubscript:lowercaseString];
       if (v23)
       {
-        v19 = v23;
+        identifier = v23;
       }
 
       else
       {
-        v19 = [BKAssetUtilities utiTypeForContentType:[BKAssetUtilities contentTypeForExtension:v22]];
+        identifier = [BKAssetUtilities utiTypeForContentType:[BKAssetUtilities contentTypeForExtension:lowercaseString]];
 
-        if (!v19)
+        if (!identifier)
         {
-          LOBYTE(v7) = 0;
+          LOBYTE(localFileURL) = 0;
           goto LABEL_11;
         }
       }
@@ -119,89 +119,89 @@
     v25[1] = 3221225472;
     v25[2] = sub_D9BC8;
     v25[3] = &unk_2CCE20;
-    v26 = v17;
-    v27 = v7;
-    [v6 registerFileRepresentationForTypeIdentifier:v19 fileOptions:0 visibility:0 loadHandler:v25];
+    v26 = v7LocalFileURL2;
+    v27 = localFileURL;
+    [providerCopy registerFileRepresentationForTypeIdentifier:identifier fileOptions:0 visibility:0 loadHandler:v25];
 
-    LOBYTE(v7) = 1;
+    LOBYTE(localFileURL) = 1;
 LABEL_11:
   }
 
-  return v7;
+  return localFileURL;
 }
 
-+ (void)registerURLRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4
++ (void)registerURLRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 storeID];
+  infoCopy = info;
+  providerCopy = provider;
+  storeID = [infoCopy storeID];
 
-  if (v7)
+  if (storeID)
   {
     v8 = objc_opt_class();
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_DA028;
     v9[3] = &unk_2CCE48;
-    v10 = v5;
-    [v6 registerObjectOfClass:v8 visibility:0 loadHandler:v9];
+    v10 = infoCopy;
+    [providerCopy registerObjectOfClass:v8 visibility:0 loadHandler:v9];
   }
 }
 
-+ (void)registerPlainTextRepresentationFromAssetDragInfo:(id)a3 withProvider:(id)a4
++ (void)registerPlainTextRepresentationFromAssetDragInfo:(id)info withProvider:(id)provider
 {
-  v5 = a4;
-  v6 = sub_DA244(a3);
+  providerCopy = provider;
+  v6 = sub_DA244(info);
   if (v6)
   {
-    v7 = [UTTypeUTF8PlainText identifier];
+    identifier = [UTTypeUTF8PlainText identifier];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_DA564;
     v8[3] = &unk_2CCE70;
     v9 = v6;
-    [v5 registerDataRepresentationForTypeIdentifier:v7 visibility:0 loadHandler:v8];
+    [providerCopy registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v8];
   }
 }
 
-+ (void)registerRepresentationsFromAssetDragInfo:(id)a3 withProvider:(id)a4 canDragToNewCanvas:(BOOL)a5
++ (void)registerRepresentationsFromAssetDragInfo:(id)info withProvider:(id)provider canDragToNewCanvas:(BOOL)canvas
 {
-  v5 = a5;
-  v9 = a3;
-  v7 = a4;
-  v8 = sub_DA6A0(v9);
-  [v7 setSuggestedName:v8];
+  canvasCopy = canvas;
+  infoCopy = info;
+  providerCopy = provider;
+  v8 = sub_DA6A0(infoCopy);
+  [providerCopy setSuggestedName:v8];
 
-  [v7 setPreferredPresentationStyle:1];
-  if (v5)
+  [providerCopy setPreferredPresentationStyle:1];
+  if (canvasCopy)
   {
-    [BCDragRepresentationFactory registerSceneRepresentationFromAssetDragInfo:v9 withProvider:v7];
+    [BCDragRepresentationFactory registerSceneRepresentationFromAssetDragInfo:infoCopy withProvider:providerCopy];
   }
 
-  if (![BCDragRepresentationFactory registerFileRepresentationFromAssetDragInfo:v9 withProvider:v7])
+  if (![BCDragRepresentationFactory registerFileRepresentationFromAssetDragInfo:infoCopy withProvider:providerCopy])
   {
-    [BCDragRepresentationFactory registerURLRepresentationFromAssetDragInfo:v9 withProvider:v7];
-    [BCDragRepresentationFactory registerPlainTextRepresentationFromAssetDragInfo:v9 withProvider:v7];
+    [BCDragRepresentationFactory registerURLRepresentationFromAssetDragInfo:infoCopy withProvider:providerCopy];
+    [BCDragRepresentationFactory registerPlainTextRepresentationFromAssetDragInfo:infoCopy withProvider:providerCopy];
   }
 }
 
-+ (id)providerDataTypesForDragInfo:(id)a3
++ (id)providerDataTypesForDragInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 localFileURL];
+  localFileURL = [infoCopy localFileURL];
 
-  if (!v5)
+  if (!localFileURL)
   {
-    v6 = [UTTypeUTF8PlainText identifier];
-    [v4 addObject:v6];
+    identifier = [UTTypeUTF8PlainText identifier];
+    [v4 addObject:identifier];
 
-    v7 = [v3 storeURL];
+    storeURL = [infoCopy storeURL];
 
-    if (v7)
+    if (storeURL)
     {
-      v8 = [UTTypeURL identifier];
-      [v4 addObject:v8];
+      identifier2 = [UTTypeURL identifier];
+      [v4 addObject:identifier2];
     }
   }
 
@@ -210,21 +210,21 @@ LABEL_11:
   return v9;
 }
 
-+ (id)providerFileTypesForDragInfo:(id)a3
++ (id)providerFileTypesForDragInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 localFileURL];
+  localFileURL = [infoCopy localFileURL];
 
-  if (v5)
+  if (localFileURL)
   {
-    v6 = [v3 localFileURL];
-    v7 = [v6 bu_utType];
-    v8 = [v7 identifier];
+    localFileURL2 = [infoCopy localFileURL];
+    bu_utType = [localFileURL2 bu_utType];
+    identifier = [bu_utType identifier];
 
-    if (v8)
+    if (identifier)
     {
-      [v4 addObject:v8];
+      [v4 addObject:identifier];
     }
   }
 
@@ -233,12 +233,12 @@ LABEL_11:
   return v9;
 }
 
-+ (id)dataForTypeIdentifier:(id)a3 dragInfo:(id)a4
++ (id)dataForTypeIdentifier:(id)identifier dragInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [UTTypeURL identifier];
-  v8 = [v5 isEqualToString:v7];
+  identifierCopy = identifier;
+  infoCopy = info;
+  identifier = [UTTypeURL identifier];
+  v8 = [identifierCopy isEqualToString:identifier];
 
   if (v8)
   {
@@ -250,19 +250,19 @@ LABEL_11:
     v25 = sub_DAB90;
     v26 = sub_DABA0;
     v27 = 0;
-    v10 = [v6 storeURL];
+    storeURL = [infoCopy storeURL];
 
-    if (v10)
+    if (storeURL)
     {
-      v11 = [v6 storeURL];
-      v12 = [UTTypeURL identifier];
+      storeURL2 = [infoCopy storeURL];
+      identifier2 = [UTTypeURL identifier];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_DABA8;
       v19[3] = &unk_2CCE98;
       v21 = &v22;
       v20 = v9;
-      v13 = [v11 loadDataWithTypeIdentifier:v12 forItemProviderCompletionHandler:v19];
+      v13 = [storeURL2 loadDataWithTypeIdentifier:identifier2 forItemProviderCompletionHandler:v19];
 
       v14 = v20;
     }
@@ -283,8 +283,8 @@ LABEL_11:
 
   else
   {
-    v15 = [UTTypeUTF8PlainText identifier];
-    v16 = [v5 isEqualToString:v15];
+    identifier3 = [UTTypeUTF8PlainText identifier];
+    v16 = [identifierCopy isEqualToString:identifier3];
 
     if (!v16)
     {
@@ -292,7 +292,7 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v9 = sub_DA244(v6);
+    v9 = sub_DA244(infoCopy);
     v17 = [v9 dataUsingEncoding:4];
   }
 

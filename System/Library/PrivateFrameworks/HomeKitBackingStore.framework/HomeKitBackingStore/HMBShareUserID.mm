@@ -1,54 +1,54 @@
 @interface HMBShareUserID
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (HMBShareUserID)initWithCoder:(id)a3;
-- (HMBShareUserID)initWithUserRecordID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMBShareUserID)initWithCoder:(id)coder;
+- (HMBShareUserID)initWithUserRecordID:(id)d;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMBShareUserID
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMBShareUserID *)self userRecordID];
-  [v4 encodeObject:v5 forKey:@"HMBShareUserID.CodingKey.UserRecordID"];
+  coderCopy = coder;
+  userRecordID = [(HMBShareUserID *)self userRecordID];
+  [coderCopy encodeObject:userRecordID forKey:@"HMBShareUserID.CodingKey.UserRecordID"];
 }
 
-- (HMBShareUserID)initWithCoder:(id)a3
+- (HMBShareUserID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBShareUserID.CodingKey.UserRecordID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBShareUserID.CodingKey.UserRecordID"];
 
   if (v5)
   {
     self = [(HMBShareUserID *)self initWithUserRecordID:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMBShareUserID *)self userRecordID];
-  v3 = [v2 hash];
+  userRecordID = [(HMBShareUserID *)self userRecordID];
+  v3 = [userRecordID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -58,11 +58,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMBShareUserID *)self userRecordID];
-      v7 = [(HMBShareUserID *)v5 userRecordID];
+      v5 = equalCopy;
+      userRecordID = [(HMBShareUserID *)self userRecordID];
+      userRecordID2 = [(HMBShareUserID *)v5 userRecordID];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [userRecordID isEqual:userRecordID2];
     }
 
     else
@@ -78,8 +78,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBShareUserID *)self userRecordID];
-  v5 = [v3 initWithName:@"userRecordID" value:v4];
+  userRecordID = [(HMBShareUserID *)self userRecordID];
+  v5 = [v3 initWithName:@"userRecordID" value:userRecordID];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -90,25 +90,25 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMBShareUserID *)self userRecordID];
-  v3 = [v2 recordName];
+  userRecordID = [(HMBShareUserID *)self userRecordID];
+  recordName = [userRecordID recordName];
 
-  return v3;
+  return recordName;
 }
 
-- (HMBShareUserID)initWithUserRecordID:(id)a3
+- (HMBShareUserID)initWithUserRecordID:(id)d
 {
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = v5;
+    v6 = dCopy;
     v12.receiver = self;
     v12.super_class = HMBShareUserID;
     v7 = [(HMBShareUserID *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_userRecordID, a3);
+      objc_storeStrong(&v7->_userRecordID, d);
     }
 
     return v8;

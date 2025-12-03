@@ -1,35 +1,35 @@
 @interface UITextContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)keyboardInputChanged:(id)a3;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)keyboardInputChanged:(id)changed;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3;
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3;
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range;
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme;
 - (id)_accessibilitySupplementaryHeaderViews;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
-- (void)_accessibilitySetValue:(id)a3;
-- (void)keyboardInputChangedSelection:(id)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
+- (void)_accessibilitySetValue:(id)value;
+- (void)keyboardInputChangedSelection:(id)selection;
 @end
 
 @implementation UITextContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"UITextContentView";
   v4 = "B";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -47,9 +47,9 @@
 {
   v8[2] = self;
   v8[1] = a2;
-  v4 = [(UITextContentViewAccessibility *)self _accessibleNonSupplementarySubviews];
-  v8[0] = [v4 mutableCopy];
-  *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
+  _accessibleNonSupplementarySubviews = [(UITextContentViewAccessibility *)self _accessibleNonSupplementarySubviews];
+  v8[0] = [_accessibleNonSupplementarySubviews mutableCopy];
+  *&v2 = MEMORY[0x29EDC9740](_accessibleNonSupplementarySubviews).n128_u64[0];
   v5 = v8[0];
   v6 = [v8[0] indexesOfObjectsPassingTest:{&__block_literal_global_45, v2}];
   [v5 removeObjectsAtIndexes:?];
@@ -73,9 +73,9 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 - (BOOL)_accessibilitySupportsActivateAction
 {
   v3 = [(UITextContentViewAccessibility *)self safeValueForKey:@"canBecomeFirstResponder"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)accessibilityActivate
@@ -93,60 +93,60 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
   return v4;
 }
 
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme
 {
   v4 = [(UITextContentViewAccessibility *)self safeValueForKey:@"m_webView"];
-  v5 = [v4 _accessibilityDataDetectorScheme:{a3.x, a3.y}];
+  v5 = [v4 _accessibilityDataDetectorScheme:{scheme.x, scheme.y}];
   MEMORY[0x29EDC9740](v4);
 
   return v5;
 }
 
-- (void)_accessibilitySetValue:(id)a3
+- (void)_accessibilitySetValue:(id)value
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UITextContentViewAccessibility *)v8 safeValueForKey:@"isFirstResponder"];
-    v6 = [v5 BOOLValue];
+    v5 = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"isFirstResponder"];
+    bOOLValue = [v5 BOOLValue];
     *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-    if ((v6 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v4 = [(UITextContentViewAccessibility *)v8 safeValueForKey:@"becomeFirstResponder", v3];
+      v4 = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"becomeFirstResponder", v3];
     }
 
-    [(UITextContentViewAccessibility *)v8 setText:location[0], v3];
+    [(UITextContentViewAccessibility *)selfCopy setText:location[0], v3];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)keyboardInputChanged:(id)a3
+- (BOOL)keyboardInputChanged:(id)changed
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v8;
+  objc_storeStrong(location, changed);
+  v5.receiver = selfCopy;
   v5.super_class = UITextContentViewAccessibility;
   v6 = [(UITextContentViewAccessibility *)&v5 keyboardInputChanged:location[0]];
-  [(UITextContentViewAccessibility *)v8 _accessibilitySetBoolValue:0 forKey:@"AXAttrCacheIsClean"];
+  [(UITextContentViewAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXAttrCacheIsClean"];
   v4 = v6;
   objc_storeStrong(location, 0);
   return v4 & 1;
 }
 
-- (void)keyboardInputChangedSelection:(id)a3
+- (void)keyboardInputChangedSelection:(id)selection
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, selection);
+  v3.receiver = selfCopy;
   v3.super_class = UITextContentViewAccessibility;
   [(UITextContentViewAccessibility *)&v3 keyboardInputChangedSelection:location[0]];
   _UIAccessibilitySetAssociatedElementContextForNextNotification();
@@ -154,40 +154,40 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
   objc_storeStrong(location, 0);
 }
 
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  rangeCopy = range;
   v25 = 0;
-  v24 = [(UITextContentViewAccessibility *)self _accessibilityAXAttributedValue];
+  _accessibilityAXAttributedValue = [(UITextContentViewAccessibility *)self _accessibilityAXAttributedValue];
   v23 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v24 cfAttributedString];
+    cfAttributedString = [_accessibilityAXAttributedValue cfAttributedString];
     v5 = v23;
-    v23 = v4;
+    v23 = cfAttributedString;
     v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
   }
 
-  else if (v24)
+  else if (_accessibilityAXAttributedValue)
   {
-    v6 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:v24];
+    v6 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:_accessibilityAXAttributedValue];
     v7 = v23;
     v23 = v6;
     v3 = MEMORY[0x29EDC9740](v7).n128_u64[0];
   }
 
-  length = v26->length;
-  v29 = v26->location;
+  length = rangeCopy->length;
+  v29 = rangeCopy->location;
   v30 = length;
-  if (v29 + length <= [v24 length])
+  if (v29 + length <= [_accessibilityAXAttributedValue length])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v20 = [v23 attributedSubstringFromRange:{v26->location, v26->length}];
+      v20 = [v23 attributedSubstringFromRange:{rangeCopy->location, rangeCopy->length}];
       v9 = [v20 mutableCopy];
       v10 = v25;
       v25 = v9;
@@ -198,10 +198,10 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
   if (!v25)
   {
-    location = [(UITextContentViewAccessibility *)v28 safeValueForKey:@"m_webView"];
+    location = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"m_webView"];
     if ([location _accessibilityIsWebDocumentView])
     {
-      v19 = [location _accessibilityAttributedValueForRange:v26];
+      v19 = [location _accessibilityAttributedValueForRange:rangeCopy];
       v11 = [v19 mutableCopy];
       v12 = v25;
       v25 = v11;
@@ -211,9 +211,9 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
     if (![v25 length])
     {
-      v21.receiver = v28;
+      v21.receiver = selfCopy;
       v21.super_class = UITextContentViewAccessibility;
-      v18 = [(UITextContentViewAccessibility *)&v21 _accessibilityAttributedValueForRange:v26];
+      v18 = [(UITextContentViewAccessibility *)&v21 _accessibilityAttributedValueForRange:rangeCopy];
       v13 = [v18 mutableCopy];
       v14 = v25;
       v25 = v13;
@@ -224,11 +224,11 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
     objc_storeStrong(&location, 0);
   }
 
-  [(UITextContentViewAccessibility *)v28 _accessibilityConvertStyleAttributesToAccessibility:v25, &v25];
-  [(UITextContentViewAccessibility *)v28 _accessibilityAddMispellingsToAttributedString:v25];
+  [(UITextContentViewAccessibility *)selfCopy _accessibilityConvertStyleAttributesToAccessibility:v25, &v25];
+  [(UITextContentViewAccessibility *)selfCopy _accessibilityAddMispellingsToAttributedString:v25];
   v17 = MEMORY[0x29EDC9748](v25);
   objc_storeStrong(&v23, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&_accessibilityAXAttributedValue, 0);
   objc_storeStrong(v16, 0);
 
   return v17;
@@ -236,12 +236,12 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
 - (id)accessibilityValue
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = [(UITextContentViewAccessibility *)self accessibilityUserDefinedValue];
   if (!v15[0])
   {
-    v15[0] = [(UITextContentViewAccessibility *)v16 safeValueForKey:@"attributedText"];
+    v15[0] = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"attributedText"];
     MEMORY[0x29EDC9740](0);
     v2 = UIAccessibilityConvertAttachmentsInAttributedStringToAX();
     v3 = v15[0];
@@ -249,20 +249,20 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
     *&v4 = MEMORY[0x29EDC9740](v3).n128_u64[0];
     if (!v15[0])
     {
-      v15[0] = [(UITextContentViewAccessibility *)v16 safeValueForKey:@"text", v4];
+      v15[0] = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"text", v4];
       MEMORY[0x29EDC9740](0);
     }
   }
 
-  v5 = [(UITextContentViewAccessibility *)v16 accessibilityTraits];
-  if ((v5 & *MEMORY[0x29EDC7568]) == *MEMORY[0x29EDC7568])
+  accessibilityTraits = [(UITextContentViewAccessibility *)selfCopy accessibilityTraits];
+  if ((accessibilityTraits & *MEMORY[0x29EDC7568]) == *MEMORY[0x29EDC7568])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v15[0] string];
+      string = [v15[0] string];
       v7 = v15[0];
-      v15[0] = v6;
+      v15[0] = string;
       MEMORY[0x29EDC9740](v7);
     }
 
@@ -305,28 +305,28 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
 - (CGRect)accessibilityFrame
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v29 = [(UITextContentViewAccessibility *)self superview];
-  while (v29)
+  superview = [(UITextContentViewAccessibility *)self superview];
+  while (superview)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(location, v29);
+      objc_storeStrong(location, superview);
       break;
     }
 
-    v2 = [v29 superview];
-    v3 = v29;
-    v29 = v2;
+    v29Superview = [superview superview];
+    v3 = superview;
+    superview = v29Superview;
     MEMORY[0x29EDC9740](v3);
   }
 
   if (location[0])
   {
-    [(UITextContentViewAccessibility *)v31 bounds];
+    [(UITextContentViewAccessibility *)selfCopy bounds];
     v25 = v4;
     v26 = v5;
     v27 = v6;
@@ -341,7 +341,7 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
   else
   {
-    v19.receiver = v31;
+    v19.receiver = selfCopy;
     v19.super_class = UITextContentViewAccessibility;
     [(UITextContentViewAccessibility *)&v19 accessibilityFrame];
   }
@@ -351,7 +351,7 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
   v34 = v13;
   v35 = v14;
   v20 = 1;
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&superview, 0);
   objc_storeStrong(location, 0);
   v15 = v32;
   v16 = v33;
@@ -366,21 +366,21 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
 - (id)accessibilityCustomRotors
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [MEMORY[0x29EDB8DE8] array];
-  v7 = [(UITextContentViewAccessibility *)v9 _accessibilityInternalTextLinkCustomRotors];
+  _accessibilityInternalTextLinkCustomRotors = [(UITextContentViewAccessibility *)selfCopy _accessibilityInternalTextLinkCustomRotors];
   [v8[0] axSafelyAddObjectsFromArray:?];
-  if (([(UITextContentViewAccessibility *)v9 isEditable]& 1) != 0)
+  if (([(UITextContentViewAccessibility *)selfCopy isEditable]& 1) != 0)
   {
-    v6 = [(UITextContentViewAccessibility *)v9 _accessibilityCommonStylingRotors];
+    _accessibilityCommonStylingRotors = [(UITextContentViewAccessibility *)selfCopy _accessibilityCommonStylingRotors];
     [v8[0] axSafelyAddObjectsFromArray:?];
-    v2 = [(UITextContentViewAccessibility *)v9 keyboardType];
-    if (!AXUIKeyboardTypeSupportsMisspelledRotor(v2))
+    keyboardType = [(UITextContentViewAccessibility *)selfCopy keyboardType];
+    if (!AXUIKeyboardTypeSupportsMisspelledRotor(keyboardType))
     {
-      v5 = [(UITextContentViewAccessibility *)v9 _accessibilityMisspelledRotor];
+      _accessibilityMisspelledRotor = [(UITextContentViewAccessibility *)selfCopy _accessibilityMisspelledRotor];
       [v8[0] removeObject:?];
-      MEMORY[0x29EDC9740](v5);
+      MEMORY[0x29EDC9740](_accessibilityMisspelledRotor);
     }
   }
 
@@ -392,7 +392,7 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
 - (unint64_t)accessibilityTraits
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20 = 0;
   if (([(UITextContentViewAccessibility *)self isEditable]& 1) != 0)
@@ -405,34 +405,34 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
     v20 = *MEMORY[0x29EDC7FD0] | *MEMORY[0x29EDBDC00];
   }
 
-  v7 = [(UITextContentViewAccessibility *)v22 safeValueForKey:@"selectedRange"];
-  v18 = [v7 rangeValue];
+  v7 = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"selectedRange"];
+  rangeValue = [v7 rangeValue];
   v19 = v2;
-  v8 = [(UITextContentViewAccessibility *)v22 safeValueForKey:@"isEditing", MEMORY[0x29EDC9740](v7).n128_f64[0]];
+  v8 = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"isEditing", MEMORY[0x29EDC9740](v7).n128_f64[0]];
   v16 = 0;
   v14 = 0;
   v9 = 0;
   if ([v8 BOOLValue])
   {
     v9 = 0;
-    if (v18 != 0x7FFFFFFFFFFFFFFFLL)
+    if (rangeValue != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = [(UITextContentViewAccessibility *)v22 _accessibilityWindow];
+      _accessibilityWindow = [(UITextContentViewAccessibility *)selfCopy _accessibilityWindow];
       v16 = 1;
-      v15 = [v17 firstResponder];
+      firstResponder = [_accessibilityWindow firstResponder];
       v14 = 1;
-      v9 = v15 == v22;
+      v9 = firstResponder == selfCopy;
     }
   }
 
   if (v14)
   {
-    MEMORY[0x29EDC9740](v15);
+    MEMORY[0x29EDC9740](firstResponder);
   }
 
   if (v16)
   {
-    MEMORY[0x29EDC9740](v17);
+    MEMORY[0x29EDC9740](_accessibilityWindow);
   }
 
   *&v3 = MEMORY[0x29EDC9740](v8).n128_u64[0];
@@ -441,10 +441,10 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
     v20 |= *MEMORY[0x29EDC7528];
   }
 
-  v13 = [(UITextContentViewAccessibility *)v22 accessibilityUserDefinedTraits];
-  if (v13)
+  accessibilityUserDefinedTraits = [(UITextContentViewAccessibility *)selfCopy accessibilityUserDefinedTraits];
+  if (accessibilityUserDefinedTraits)
   {
-    v20 |= [v13 unsignedLongLongValue];
+    v20 |= [accessibilityUserDefinedTraits unsignedLongLongValue];
   }
 
   v12 = 0;
@@ -452,22 +452,22 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
   v11 = __UIAccessibilityCastAsClass();
   v10 = MEMORY[0x29EDC9748](v11);
   objc_storeStrong(&v11, 0);
-  v4 = [(UIView *)v10 _accessibilityTextAreaTraits];
-  v20 |= v4;
+  _accessibilityTextAreaTraits = [(UIView *)v10 _accessibilityTextAreaTraits];
+  v20 |= _accessibilityTextAreaTraits;
   MEMORY[0x29EDC9740](v10);
   v6 = v20;
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&accessibilityUserDefinedTraits, 0);
   return v6;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v2 = [(UITextContentViewAccessibility *)self accessibilityTraits];
-  if ((v2 & *MEMORY[0x29EDC7528]) != 0)
+  accessibilityTraits = [(UITextContentViewAccessibility *)self accessibilityTraits];
+  if ((accessibilityTraits & *MEMORY[0x29EDC7528]) != 0)
   {
-    v10 = [(UITextContentViewAccessibility *)v14 safeValueForKey:@"m_webView"];
+    v10 = [(UITextContentViewAccessibility *)selfCopy safeValueForKey:@"m_webView"];
     v9 = [v10 safeValueForKey:@"caretRect"];
     [v9 rectValue];
     MEMORY[0x29EDC9740](v9);
@@ -484,7 +484,7 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
 
   else
   {
-    v11.receiver = v14;
+    v11.receiver = selfCopy;
     v11.super_class = UITextContentViewAccessibility;
     [(UITextContentViewAccessibility *)&v11 accessibilityActivationPoint];
   }
@@ -502,46 +502,46 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  v5 = a3;
-  v4 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITextContentViewAccessibility *)self accessibilityValue];
   if (!location[0])
   {
-    location[0] = [(UITextContentViewAccessibility *)v4 accessibilityLabel];
+    location[0] = [(UITextContentViewAccessibility *)selfCopy accessibilityLabel];
     MEMORY[0x29EDC9740](0);
   }
 
-  if (v5.length || (v6 = v5.location, v7 = 0, v5.location > [location[0] length]))
+  if (rangeCopy.length || (v6 = rangeCopy.location, v7 = 0, rangeCopy.location > [location[0] length]))
   {
-    if (v5.length)
+    if (rangeCopy.length)
     {
-      [v4 _accessibilitySetTextSelection:v5.length];
+      [selfCopy _accessibilitySetTextSelection:rangeCopy.length];
     }
   }
 
   else
   {
-    [(UITextContentViewAccessibility *)v4 setSelectedRange:v5.location, v5.length];
+    [(UITextContentViewAccessibility *)selfCopy setSelectedRange:rangeCopy.location, rangeCopy.length];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text
 {
-  v13 = a4;
-  v12 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  v8.receiver = v12;
+  objc_storeStrong(&v10, text);
+  v8.receiver = selfCopy;
   v8.super_class = UITextContentViewAccessibility;
-  v9 = [(UITextContentViewAccessibility *)&v8 keyboardInput:location[0] shouldReplaceTextInRange:v13.location replacementText:v13.length, v10];
+  v9 = [(UITextContentViewAccessibility *)&v8 keyboardInput:location[0] shouldReplaceTextInRange:rangeCopy.location replacementText:rangeCopy.length, v10];
   if ((v9 & 1) == 0)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7458], 0);
@@ -553,18 +553,18 @@ BOOL __72__UITextContentViewAccessibility__accessibilitySupplementaryHeaderViews
   return v6 & 1;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a5;
-  v9.receiver = v14;
+  objc_storeStrong(&v12, text);
+  markedTextCopy = markedText;
+  v9.receiver = selfCopy;
   v9.super_class = UITextContentViewAccessibility;
-  v10 = [(UITextContentViewAccessibility *)&v9 keyboardInput:location[0] shouldInsertText:v12 isMarkedText:a5];
+  v10 = [(UITextContentViewAccessibility *)&v9 keyboardInput:location[0] shouldInsertText:v12 isMarkedText:markedText];
   if ((v10 & 1) == 0)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7458], 0);

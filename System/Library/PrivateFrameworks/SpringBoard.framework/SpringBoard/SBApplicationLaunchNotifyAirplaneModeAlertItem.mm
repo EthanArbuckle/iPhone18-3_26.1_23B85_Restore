@@ -1,38 +1,38 @@
 @interface SBApplicationLaunchNotifyAirplaneModeAlertItem
 - (BOOL)_isOnCellular;
-- (SBApplicationLaunchNotifyAirplaneModeAlertItem)initWithApplication:(id)a3;
-- (id)_alertTitleForOnCellular:(int)a3 isMessagesApplication:;
+- (SBApplicationLaunchNotifyAirplaneModeAlertItem)initWithApplication:(id)application;
+- (id)_alertTitleForOnCellular:(int)cellular isMessagesApplication:;
 - (id)_createSystemApertureElement;
 - (uint64_t)_primaryActionTriggeredForOnCellular:(uint64_t)result;
-- (void)_configureForAirplaneModeDataAlertOnCellular:(int)a3 isMessagesApplication:;
+- (void)_configureForAirplaneModeDataAlertOnCellular:(int)cellular isMessagesApplication:;
 - (void)_isMessagesApplication;
 - (void)_sendUserToSettings;
 - (void)_turnOffAirplaneMode;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBApplicationLaunchNotifyAirplaneModeAlertItem
 
-- (SBApplicationLaunchNotifyAirplaneModeAlertItem)initWithApplication:(id)a3
+- (SBApplicationLaunchNotifyAirplaneModeAlertItem)initWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v7.receiver = self;
   v7.super_class = SBApplicationLaunchNotifyAirplaneModeAlertItem;
-  v5 = [(SBApplicationLaunchNotifyAlertItem *)&v7 initWithApplication:v4];
+  v5 = [(SBApplicationLaunchNotifyAlertItem *)&v7 initWithApplication:applicationCopy];
   if (v5)
   {
-    v5->_usesCellNetwork = ([v4 dataUsage] & 4) != 0;
+    v5->_usesCellNetwork = ([applicationCopy dataUsage] & 4) != 0;
   }
 
   return v5;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isOnCellular];
-  v6 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isMessagesApplication];
+  _isOnCellular = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isOnCellular];
+  _isMessagesApplication = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isMessagesApplication];
 
-  [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _configureForAirplaneModeDataAlertOnCellular:v5 isMessagesApplication:v6];
+  [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _configureForAirplaneModeDataAlertOnCellular:_isOnCellular isMessagesApplication:_isMessagesApplication];
 }
 
 void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureElement__block_invoke(uint64_t a1)
@@ -43,13 +43,13 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
 
 - (BOOL)_isOnCellular
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 application];
-  v2 = [v1 dataUsage] != 0;
+  application = [self application];
+  v2 = [application dataUsage] != 0;
 
   return v2;
 }
@@ -58,9 +58,9 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
 {
   if (result)
   {
-    v1 = [result application];
-    v2 = [v1 bundleIdentifier];
-    v3 = [v2 isEqualToString:@"com.apple.MobileSMS"];
+    application = [result application];
+    bundleIdentifier = [application bundleIdentifier];
+    v3 = [bundleIdentifier isEqualToString:@"com.apple.MobileSMS"];
 
     return v3;
   }
@@ -68,16 +68,16 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
   return result;
 }
 
-- (void)_configureForAirplaneModeDataAlertOnCellular:(int)a3 isMessagesApplication:
+- (void)_configureForAirplaneModeDataAlertOnCellular:(int)cellular isMessagesApplication:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [a1 alertController];
-    v7 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)a1 _alertTitleForOnCellular:a2 isMessagesApplication:a3];
-    [v6 setTitle:v7];
+    alertController = [self alertController];
+    v7 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _alertTitleForOnCellular:a2 isMessagesApplication:cellular];
+    [alertController setTitle:v7];
 
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = v8;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = mainBundle;
     if (a2)
     {
       v10 = @"AIRPLANE_DISABLE";
@@ -98,27 +98,27 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
       v11 = @"AIRPLANE_DATA_OK";
     }
 
-    v12 = [v8 localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoard"];
+    v12 = [mainBundle localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoard"];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __117__SBApplicationLaunchNotifyAirplaneModeAlertItem__configureForAirplaneModeDataAlertOnCellular_isMessagesApplication___block_invoke;
     v18[3] = &unk_2783C0D28;
-    v18[4] = a1;
+    v18[4] = self;
     v19 = a2;
     v13 = [MEMORY[0x277D750F8] actionWithTitle:v12 style:0 handler:v18];
-    [v6 addAction:v13];
+    [alertController addAction:v13];
 
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle2 localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __117__SBApplicationLaunchNotifyAirplaneModeAlertItem__configureForAirplaneModeDataAlertOnCellular_isMessagesApplication___block_invoke_2;
     v17[3] = &unk_2783A8A40;
-    v17[4] = a1;
+    v17[4] = self;
     v16 = [MEMORY[0x277D750F8] actionWithTitle:v15 style:a2 handler:v17];
-    [v6 addAction:v16];
+    [alertController addAction:v16];
   }
 }
 
@@ -126,26 +126,26 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
 {
   v3 = objc_alloc_init(MEMORY[0x277D67DF0]);
   v4 = [objc_alloc(MEMORY[0x277D67E20]) initWithSystemImageName:@"airplane"];
-  v5 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v4 setContentColor:v5];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [v4 setContentColor:systemOrangeColor];
 
   [v3 setLeadingContentViewProvider:v4];
-  v6 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isOnCellular];
-  v7 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isMessagesApplication];
-  v8 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _alertTitleForOnCellular:v6 isMessagesApplication:v7];
+  _isOnCellular = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isOnCellular];
+  _isMessagesApplication = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _isMessagesApplication];
+  v8 = [(SBApplicationLaunchNotifyAirplaneModeAlertItem *)self _alertTitleForOnCellular:_isOnCellular isMessagesApplication:_isMessagesApplication];
   v9 = [objc_alloc(MEMORY[0x277D67E58]) initWithText:v8 style:0];
   [v9 setNumberOfLines:0];
   [v3 setPrimaryContentViewProvider:v9];
   objc_initWeak(&location, self);
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  if (v6)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  if (_isOnCellular)
   {
-    [v10 localizedStringForKey:@"AIRPLANE_DISABLE" value:&stru_283094718 table:@"SpringBoard"];
+    [mainBundle localizedStringForKey:@"AIRPLANE_DISABLE" value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
   {
-    [v10 localizedStringForKey:@"AIRPLANE_DATA_GO_TO_SETTINGS" value:&stru_283094718 table:@"SpringBoard"];
+    [mainBundle localizedStringForKey:@"AIRPLANE_DATA_GO_TO_SETTINGS" value:&stru_283094718 table:@"SpringBoard"];
   }
   v11 = ;
 
@@ -156,7 +156,7 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
   v18[2] = __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureElement__block_invoke;
   v18[3] = &unk_2783B3190;
   objc_copyWeak(&v19, &location);
-  v20 = v6;
+  v20 = _isOnCellular;
   v14 = [v13 actionWithTitle:v11 image:0 identifier:0 handler:v18];
   v15 = [v12 initWithDefaultTextActionConfigurationWithAction:v14];
 
@@ -169,29 +169,29 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
   return v16;
 }
 
-- (id)_alertTitleForOnCellular:(int)a3 isMessagesApplication:
+- (id)_alertTitleForOnCellular:(int)cellular isMessagesApplication:
 {
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (cellular)
     {
-      v3 = [MEMORY[0x277CCA8D8] mainBundle];
-      v4 = v3;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v4 = mainBundle;
       v5 = @"AIRPLANE_CELL_PROMPT_SMS";
     }
 
     else if (a2)
     {
-      v3 = [MEMORY[0x277CCA8D8] mainBundle];
-      v4 = v3;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v4 = mainBundle;
       v5 = @"AIRPLANE_CELL_PROMPT";
     }
 
     else if (MGGetBoolAnswer())
     {
       v6 = MGGetBoolAnswer();
-      v3 = [MEMORY[0x277CCA8D8] mainBundle];
-      v4 = v3;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v4 = mainBundle;
       if (v6)
       {
         v5 = @"AIRPLANE_DATA_PROMPT_WLAN";
@@ -205,12 +205,12 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
 
     else
     {
-      v3 = [MEMORY[0x277CCA8D8] mainBundle];
-      v4 = v3;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v4 = mainBundle;
       v5 = @"AIRPLANE_DATA_PROMPT_NO_WIFI";
     }
 
-    v7 = [v3 localizedStringForKey:v5 value:&stru_283094718 table:@"SpringBoard"];
+    v7 = [mainBundle localizedStringForKey:v5 value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
@@ -244,7 +244,7 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
 
 - (void)_turnOffAirplaneMode
 {
-  if (a1)
+  if (self)
   {
     v1 = +[SBAirplaneModeController sharedInstance];
     [v1 setInAirplaneMode:0];
@@ -253,7 +253,7 @@ void __78__SBApplicationLaunchNotifyAirplaneModeAlertItem__createSystemApertureE
 
 - (void)_sendUserToSettings
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=ROOT#AIRPLANE_MODE"];
     SBWorkspaceActivateApplicationFromURL(v1, 0, 0);

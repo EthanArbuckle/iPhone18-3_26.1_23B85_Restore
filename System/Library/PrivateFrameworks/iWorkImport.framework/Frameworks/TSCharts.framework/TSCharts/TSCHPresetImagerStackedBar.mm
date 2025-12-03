@@ -1,14 +1,14 @@
 @interface TSCHPresetImagerStackedBar
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerStackedBar
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  width = a4.width;
+  width = size.width;
   v119 = *MEMORY[0x277D85DE8];
-  v97 = a6;
+  presetCopy = preset;
   objc_msgSend_p_nativeSize(self, v11, v12, v13, v14);
   v16 = width / v15;
   v114[0] = sub_27628CE94(8.0, 11.0, 127.0, 17.0, v16);
@@ -27,7 +27,7 @@
   v116 = v26;
   v117 = v27;
   v118 = v28;
-  v30 = objc_msgSend_seriesStyles(v97, v29, v115, v26, v27);
+  v30 = objc_msgSend_seriesStyles(presetCopy, v29, v115, v26, v27);
   v35 = objc_msgSend_objectAtIndexedSubscript_(v30, v31, v32, v33, v34, 0);
   if (objc_msgSend_count(v30, v36, v37, v38, v39) <= 1)
   {
@@ -57,7 +57,7 @@
     v106[2] = sub_276319AC8;
     v106[3] = &unk_27A6B99C8;
     v106[4] = self;
-    v109 = a3;
+    contextCopy = context;
     v110 = v61;
     v111 = v62;
     v112 = v63 * 0.5;
@@ -66,7 +66,7 @@
     v107 = v65;
     v66 = v54;
     v108 = v66;
-    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v67, v61, v62, v63 * 0.5, a3, v97, v65, 0, v106, v64, v61, v62, v63, v64);
+    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v67, v61, v62, v63 * 0.5, context, presetCopy, v65, 0, v106, v64, v61, v62, v63, v64);
 
     v59 += 4;
   }
@@ -95,7 +95,7 @@
     v98[2] = sub_276319AE0;
     v98[3] = &unk_27A6B99C8;
     v98[4] = self;
-    v101 = a3;
+    contextCopy2 = context;
     v102 = v85 + v87 * 0.5;
     v103 = v86;
     v104 = v87 * 0.5;
@@ -104,16 +104,16 @@
     v99 = v89;
     v90 = v78;
     v100 = v90;
-    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v91, v85 + v87 * 0.5, v86, v87 * 0.5, a3, v97, v89, 0, v98, v88, v85, v86, v87, v88);
+    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v91, v85 + v87 * 0.5, v86, v87 * 0.5, context, presetCopy, v89, 0, v98, v88, v85, v86, v87, v88);
 
     v83 += 4;
   }
 
   while (v83 != 16);
 
-  if (a8)
+  if (cache)
   {
-    *a8 = v93;
+    *cache = v93;
   }
 }
 

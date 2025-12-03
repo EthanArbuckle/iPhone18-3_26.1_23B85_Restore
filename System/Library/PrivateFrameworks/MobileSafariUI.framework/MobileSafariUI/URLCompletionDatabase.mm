@@ -1,18 +1,18 @@
 @interface URLCompletionDatabase
-- (URLCompletionDatabase)initWithCloudTabStore:(id)a3 profileIdentifier:(id)a4 searchableCollectionsMask:(int)a5 bookmarkProvider:(id)a6;
-- (id)fakeBookmarkMatchDataWithURLString:(id)a3 title:(id)a4 shouldPreload:(BOOL)a5;
-- (void)_updateCloudDevices:(id)a3;
+- (URLCompletionDatabase)initWithCloudTabStore:(id)store profileIdentifier:(id)identifier searchableCollectionsMask:(int)mask bookmarkProvider:(id)provider;
+- (id)fakeBookmarkMatchDataWithURLString:(id)string title:(id)title shouldPreload:(BOOL)preload;
+- (void)_updateCloudDevices:(id)devices;
 - (void)dealloc;
-- (void)enumerateMatchDataForTypedStringHint:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 options:(unint64_t)a5 withBlock:(id)a6;
+- (void)enumerateMatchDataForTypedStringHint:(id)hint filterResultsUsingProfileIdentifier:(id)identifier options:(unint64_t)options withBlock:(id)block;
 @end
 
 @implementation URLCompletionDatabase
 
-- (URLCompletionDatabase)initWithCloudTabStore:(id)a3 profileIdentifier:(id)a4 searchableCollectionsMask:(int)a5 bookmarkProvider:(id)a6
+- (URLCompletionDatabase)initWithCloudTabStore:(id)store profileIdentifier:(id)identifier searchableCollectionsMask:(int)mask bookmarkProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  storeCopy = store;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v27.receiver = self;
   v27.super_class = URLCompletionDatabase;
   v14 = [(WBSURLCompletionDatabase *)&v27 init];
@@ -20,27 +20,27 @@
   if (v14)
   {
     [(WBSURLCompletionDatabase *)v14 setDataSource:v14];
-    v15->_searchableCollectionsMask = a5;
-    v16 = [v12 copy];
+    v15->_searchableCollectionsMask = mask;
+    v16 = [identifierCopy copy];
     profileIdentifier = v15->_profileIdentifier;
     v15->_profileIdentifier = v16;
 
-    objc_storeStrong(&v15->_cloudTabStore, a3);
+    objc_storeStrong(&v15->_cloudTabStore, store);
     v18 = dispatch_queue_create("com.apple.mobilesafari.iCloudTabsAccessQueue", 0);
     cloudTabsAccessQueue = v15->_cloudTabsAccessQueue;
     v15->_cloudTabsAccessQueue = v18;
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v15 selector:sel__updateCloudDevices_ name:@"CloudTabStoreDidUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__updateCloudDevices_ name:@"CloudTabStoreDidUpdateNotification" object:0];
     v21 = objc_alloc_init(MEMORY[0x277CBEA78]);
     bookmarksCache = v15->_bookmarksCache;
     v15->_bookmarksCache = v21;
 
     [(NSCache *)v15->_bookmarksCache setCountLimit:1];
-    objc_storeStrong(&v15->_bookmarkProvider, a6);
+    objc_storeStrong(&v15->_bookmarkProvider, provider);
     v23 = +[Application sharedApplication];
-    v24 = [v23 tabGroupManager];
-    [v24 addCloudTabsObserver:v15];
+    tabGroupManager = [v23 tabGroupManager];
+    [tabGroupManager addCloudTabsObserver:v15];
 
     v25 = v15;
   }
@@ -50,15 +50,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = URLCompletionDatabase;
   [(URLCompletionDatabase *)&v4 dealloc];
 }
 
-- (void)_updateCloudDevices:(id)a3
+- (void)_updateCloudDevices:(id)devices
 {
   cloudTabsAccessQueue = self->_cloudTabsAccessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -78,39 +78,39 @@ void __45__URLCompletionDatabase__updateCloudDevices___block_invoke(uint64_t a1)
   *(v3 + 136) = v2;
 }
 
-- (void)enumerateMatchDataForTypedStringHint:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 options:(unint64_t)a5 withBlock:(id)a6
+- (void)enumerateMatchDataForTypedStringHint:(id)hint filterResultsUsingProfileIdentifier:(id)identifier options:(unint64_t)options withBlock:(id)block
 {
   v80 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v49 = a4;
-  v10 = a6;
+  hintCopy = hint;
+  identifierCopy = identifier;
+  blockCopy = block;
   v11 = +[Application sharedApplication];
-  v12 = [v11 historyController];
-  v48 = [v12 historyForProfileIdentifier:v49 loadIfNeeded:1];
+  historyController = [v11 historyController];
+  v48 = [historyController historyForProfileIdentifier:identifierCopy loadIfNeeded:1];
 
   group = dispatch_group_create();
   searchableCollectionsMask = self->_searchableCollectionsMask;
   if ((searchableCollectionsMask & 4) != 0)
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     dispatch_group_enter(group);
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [v15 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v17 = v16;
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __116__URLCompletionDatabase_enumerateMatchDataForTypedStringHint_filterResultsUsingProfileIdentifier_options_withBlock___block_invoke;
     v75[3] = &unk_2781DB760;
     v76 = v48;
-    v18 = v14;
+    v18 = array;
     v77 = v18;
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
     v72[2] = __116__URLCompletionDatabase_enumerateMatchDataForTypedStringHint_filterResultsUsingProfileIdentifier_options_withBlock___block_invoke_2;
     v72[3] = &unk_2781DB788;
-    v73 = v53;
+    v73 = hintCopy;
     v74 = group;
-    [v76 searchForUserTypedString:v73 options:a5 currentTime:v75 enumerationBlock:v72 completionHandler:v17];
+    [v76 searchForUserTypedString:v73 options:options currentTime:v75 enumerationBlock:v72 completionHandler:v17];
 
     searchableCollectionsMask = self->_searchableCollectionsMask;
     v50 = v18;
@@ -141,9 +141,9 @@ LABEL_3:
   block[2] = __116__URLCompletionDatabase_enumerateMatchDataForTypedStringHint_filterResultsUsingProfileIdentifier_options_withBlock___block_invoke_285;
   block[3] = &unk_2781DB7B0;
   block[4] = self;
-  v69 = v53;
-  v71 = a5;
-  v70 = v10;
+  v69 = hintCopy;
+  optionsCopy = options;
+  v70 = blockCopy;
   dispatch_sync(cloudTabsAccessQueue, block);
 
   searchableCollectionsMask = self->_searchableCollectionsMask;
@@ -160,8 +160,8 @@ LABEL_4:
 
 LABEL_8:
   bookmarksCache = self->_bookmarksCache;
-  v21 = [v53 normalizedString];
-  v47 = [(NSCache *)bookmarksCache objectForKey:v21];
+  normalizedString = [hintCopy normalizedString];
+  v47 = [(NSCache *)bookmarksCache objectForKey:normalizedString];
 
   if (v47)
   {
@@ -184,14 +184,14 @@ LABEL_8:
           }
 
           v25 = *(*(&v64 + 1) + 8 * i);
-          v26 = [v25 address];
-          v27 = [v25 title];
+          address = [v25 address];
+          title = [v25 title];
           hasMatchWithOptions = SafariShared::BookmarkAndHistoryCompletionMatch::hasMatchWithOptions();
 
           if (hasMatchWithOptions)
           {
             v31 = matchDataWithBookmark(v25, v29, v30);
-            (*(v10 + 2))(v10, v31);
+            (*(blockCopy + 2))(blockCopy, v31);
           }
         }
 
@@ -204,17 +204,17 @@ LABEL_8:
 
   else
   {
-    v32 = [v53 components];
-    v33 = [v32 firstObject];
-    v34 = v33;
-    if (v33)
+    components = [hintCopy components];
+    firstObject = [components firstObject];
+    v34 = firstObject;
+    if (firstObject)
     {
-      obj = v33;
+      obj = firstObject;
     }
 
     else
     {
-      obj = [v53 normalizedString];
+      obj = [hintCopy normalizedString];
     }
 
     v35 = [MEMORY[0x277CBEB18] arrayWithCapacity:16];
@@ -223,17 +223,17 @@ LABEL_8:
     v58[1] = 3221225472;
     v58[2] = __116__URLCompletionDatabase_enumerateMatchDataForTypedStringHint_filterResultsUsingProfileIdentifier_options_withBlock___block_invoke_2_287;
     v58[3] = &unk_2781DB7D8;
-    v37 = v53;
+    v37 = hintCopy;
     v59 = v37;
-    v63 = a5;
+    optionsCopy2 = options;
     v38 = v35;
     v60 = v38;
-    v62 = v10;
+    v62 = blockCopy;
     v61 = v48;
     [(WBBookmarkProvider *)bookmarkProvider enumerateBookmarks:1 andReadingListItems:1 matchingString:obj usingBlock:v58];
     v39 = self->_bookmarksCache;
-    v40 = [v37 normalizedString];
-    [(NSCache *)v39 setObject:v38 forKey:v40];
+    normalizedString2 = [v37 normalizedString];
+    [(NSCache *)v39 setObject:v38 forKey:normalizedString2];
   }
 
   if ((self->_searchableCollectionsMask & 4) != 0)
@@ -245,7 +245,7 @@ LABEL_24:
       v42 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
-        [URLCompletionDatabase enumerateMatchDataForTypedStringHint:v53 filterResultsUsingProfileIdentifier:v42 options:? withBlock:?];
+        [URLCompletionDatabase enumerateMatchDataForTypedStringHint:hintCopy filterResultsUsingProfileIdentifier:v42 options:? withBlock:?];
       }
     }
 
@@ -269,7 +269,7 @@ LABEL_24:
               objc_enumerationMutation(v43);
             }
 
-            (*(v10 + 2))(v10, *(*(&v54 + 1) + 8 * j));
+            (*(blockCopy + 2))(blockCopy, *(*(&v54 + 1) + 8 * j));
           }
 
           v44 = [v43 countByEnumeratingWithState:&v54 objects:v78 count:16];
@@ -407,13 +407,13 @@ void __116__URLCompletionDatabase_enumerateMatchDataForTypedStringHint_filterRes
   }
 }
 
-- (id)fakeBookmarkMatchDataWithURLString:(id)a3 title:(id)a4 shouldPreload:(BOOL)a5
+- (id)fakeBookmarkMatchDataWithURLString:(id)string title:(id)title shouldPreload:(BOOL)preload
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x277D7B5A0]) initWithTitle:v8 address:v7 collectionType:0];
-  v10 = [objc_alloc(MEMORY[0x277D28E80]) initWithBookmark:v9 shouldPreload:v5 isSynthesizedTopHit:1];
+  preloadCopy = preload;
+  stringCopy = string;
+  titleCopy = title;
+  v9 = [objc_alloc(MEMORY[0x277D7B5A0]) initWithTitle:titleCopy address:stringCopy collectionType:0];
+  v10 = [objc_alloc(MEMORY[0x277D28E80]) initWithBookmark:v9 shouldPreload:preloadCopy isSynthesizedTopHit:1];
 
   return v10;
 }

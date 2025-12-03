@@ -1,12 +1,12 @@
 @interface SBAccessoryConnectionInfoProvider
 + (SBAccessoryConnectionInfoProvider)sharedInstance;
 - (SBAccessoryConnectionInfoProvider)init;
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7;
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4;
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5;
-- (void)addObserver:(id)a3;
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection;
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection;
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBAccessoryConnectionInfoProvider
@@ -41,13 +41,13 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
   v2 = [(SBAccessoryConnectionInfoProvider *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CFD210] sharedInstance];
+    mEMORY[0x277CFD210] = [MEMORY[0x277CFD210] sharedInstance];
     connectionInfo = v2->_connectionInfo;
-    v2->_connectionInfo = v3;
+    v2->_connectionInfo = mEMORY[0x277CFD210];
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
@@ -64,18 +64,18 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
   [(SBAccessoryConnectionInfoProvider *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers addObject:a3];
+  [(NSHashTable *)self->_observers addObject:observer];
   [(ACCConnectionInfo *)self->_connectionInfo registerDelegate:0];
   connectionInfo = self->_connectionInfo;
 
   [(ACCConnectionInfo *)connectionInfo registerDelegate:self];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     connectionInfo = self->_connectionInfo;
@@ -84,13 +84,13 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
   }
 }
 
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection
 {
-  v9 = *&a4;
+  v9 = *&type;
   v26 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v11 = a6;
-  v12 = a7;
+  attachedCopy = attached;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -114,7 +114,7 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
         v18 = *(*(&v21 + 1) + 8 * v17);
         if (objc_opt_respondsToSelector())
         {
-          [v18 accessoryConnectionInfoProvider:self accessoryEndpointAttached:v20 transportType:v9 protocol:a5 properties:v11 forConnection:v12];
+          [v18 accessoryConnectionInfoProvider:self accessoryEndpointAttached:attachedCopy transportType:v9 protocol:protocol properties:propertiesCopy forConnection:connectionCopy];
         }
 
         ++v17;
@@ -128,12 +128,12 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
   }
 }
 
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changedCopy = changed;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -157,7 +157,7 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 accessoryConnectionInfoProvider:self accessoryEndpointInfoPropertyChanged:v8 properties:v9 forConnection:{v10, v17}];
+          [v16 accessoryConnectionInfoProvider:self accessoryEndpointInfoPropertyChanged:changedCopy properties:propertiesCopy forConnection:{connectionCopy, v17}];
         }
 
         ++v15;
@@ -171,11 +171,11 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
   }
 }
 
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detachedCopy = detached;
+  connectionCopy = connection;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -199,7 +199,7 @@ void __51__SBAccessoryConnectionInfoProvider_sharedInstance__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 accessoryConnectionInfoProvider:self accessoryEndpointDetached:v6 forConnection:{v7, v14}];
+          [v13 accessoryConnectionInfoProvider:self accessoryEndpointDetached:detachedCopy forConnection:{connectionCopy, v14}];
         }
 
         ++v12;

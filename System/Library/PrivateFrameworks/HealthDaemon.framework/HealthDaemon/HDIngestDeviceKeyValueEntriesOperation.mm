@@ -1,37 +1,37 @@
 @interface HDIngestDeviceKeyValueEntriesOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDIngestDeviceKeyValueEntriesOperation)initWithAccessibilityAssertion:(id)a3 containerIdentifier:(id)a4;
-- (HDIngestDeviceKeyValueEntriesOperation)initWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDIngestDeviceKeyValueEntriesOperation)initWithAccessibilityAssertion:(id)assertion containerIdentifier:(id)identifier;
+- (HDIngestDeviceKeyValueEntriesOperation)initWithCoder:(id)coder;
 - (id)transactionContext;
 @end
 
 @implementation HDIngestDeviceKeyValueEntriesOperation
 
-- (HDIngestDeviceKeyValueEntriesOperation)initWithAccessibilityAssertion:(id)a3 containerIdentifier:(id)a4
+- (HDIngestDeviceKeyValueEntriesOperation)initWithAccessibilityAssertion:(id)assertion containerIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HDIngestDeviceKeyValueEntriesOperation;
   v9 = [(HDIngestDeviceKeyValueEntriesOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assertion, a3);
-    objc_storeStrong(&v10->_containerIdentifier, a4);
+    objc_storeStrong(&v9->_assertion, assertion);
+    objc_storeStrong(&v10->_containerIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v97 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v60 = a4;
-  v8 = v7;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  v8 = profileCopy;
   v9 = v8;
-  v65 = self;
+  selfCopy = self;
   v61 = v8;
   if (!self)
   {
@@ -55,7 +55,7 @@ LABEL_47:
   v77 = __Block_byref_object_dispose__35;
   v78 = 0;
   v10 = dispatch_semaphore_create(0);
-  v11 = [v9 cloudSyncManager];
+  cloudSyncManager = [v9 cloudSyncManager];
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
   *&buf[16] = __67__HDIngestDeviceKeyValueEntriesOperation__fetchRepositories_error___block_invoke;
@@ -64,7 +64,7 @@ LABEL_47:
   v92 = &v80;
   v12 = v10;
   v90 = v12;
-  [v11 cloudSyncRepositoriesForClient:0 completion:buf];
+  [cloudSyncManager cloudSyncRepositoriesForClient:0 completion:buf];
 
   v13 = dispatch_time(0, 15000000000);
   if (dispatch_semaphore_wait(v12, v13))
@@ -79,10 +79,10 @@ LABEL_47:
   {
     v17 = v16;
     v18 = v17;
-    if (a5)
+    if (error)
     {
       v19 = v17;
-      *a5 = v18;
+      *error = v18;
     }
 
     else
@@ -125,7 +125,7 @@ LABEL_47:
         v67 = v66;
         v63 = v61;
         v23 = v22;
-        v64 = v60;
+        v64 = transactionCopy;
         v80 = 0;
         v81 = &v80;
         v82 = 0x3032000000;
@@ -133,8 +133,8 @@ LABEL_47:
         v84 = __Block_byref_object_dispose__35;
         v85 = 0;
         v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v25 = [[HDCloudSyncCachedCloudState alloc] initWithRepository:v23 accessibilityAssertion:v65->_assertion];
-        containerIdentifier = v65->_containerIdentifier;
+        v25 = [[HDCloudSyncCachedCloudState alloc] initWithRepository:v23 accessibilityAssertion:selfCopy->_assertion];
+        containerIdentifier = selfCopy->_containerIdentifier;
         v27 = (v81 + 5);
         v79 = v81[5];
         v28 = [(HDCloudSyncCachedCloudState *)v25 contextSyncZoneForContainerID:containerIdentifier error:&v79];
@@ -146,7 +146,7 @@ LABEL_47:
           v74 = 3221225472;
           v75 = __108__HDIngestDeviceKeyValueEntriesOperation__pullDeviceKeyValueEntriesForProfile_repository_transaction_error___block_invoke;
           v76 = &unk_2786186D8;
-          v77 = v65;
+          v77 = selfCopy;
           v30 = v24;
           v78 = v30;
           [v28 recordsForClass:v29 epoch:0 error:&v67 enumerationHandler:&v73];
@@ -161,7 +161,7 @@ LABEL_47:
             *&buf[8] = 3221225472;
             *&buf[16] = __81__HDIngestDeviceKeyValueEntriesOperation__fetchRemoteCloudEntriesFromZone_error___block_invoke;
             v89 = &unk_2786186D8;
-            v90 = v65;
+            v90 = selfCopy;
             v35 = v33;
             v91 = v35;
             v36 = [v32 recordsForClass:v34 epoch:0 error:&v86 enumerationHandler:buf];
@@ -188,7 +188,7 @@ LABEL_47:
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
               {
                 *v93 = 138543618;
-                v94 = v65;
+                v94 = selfCopy;
                 v95 = 2114;
                 v96 = v43;
                 _os_log_error_impl(&dword_228986000, v45, OS_LOG_TYPE_ERROR, "%{public}@: Error enumerating over remote key value entries %{public}@", v93, 0x16u);
@@ -200,15 +200,15 @@ LABEL_47:
             v41 = v39 != 0;
             if (v39)
             {
-              v46 = [v23 cloudSyncShimProvider];
-              v47 = [v46 contextSyncShim];
+              cloudSyncShimProvider = [v23 cloudSyncShimProvider];
+              contextSyncShim = [cloudSyncShimProvider contextSyncShim];
               v72[0] = MEMORY[0x277D85DD0];
               v72[1] = 3221225472;
               v72[2] = __108__HDIngestDeviceKeyValueEntriesOperation__pullDeviceKeyValueEntriesForProfile_repository_transaction_error___block_invoke_300;
               v72[3] = &unk_278618700;
               v72[5] = &v80;
-              v72[4] = v65;
-              [v47 updateKeyValuePairsForRemoteEntries:v39 deviceContexts:v30 completion:v72];
+              v72[4] = selfCopy;
+              [contextSyncShim updateKeyValuePairsForRemoteEntries:v39 deviceContexts:v30 completion:v72];
             }
           }
 
@@ -234,9 +234,9 @@ LABEL_47:
             v48 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
             {
-              v49 = v65->_containerIdentifier;
+              v49 = selfCopy->_containerIdentifier;
               *buf = 138543618;
-              *&buf[4] = v65;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2114;
               *&buf[14] = v49;
               _os_log_impl(&dword_228986000, v48, OS_LOG_TYPE_DEFAULT, "%{public}@: Context sync zone not present for container identifier: %{public}@", buf, 0x16u);
@@ -265,10 +265,10 @@ LABEL_47:
       v20 = v51;
       if (v51)
       {
-        if (a5)
+        if (error)
         {
           v52 = v51;
-          *a5 = v20;
+          *error = v20;
         }
 
         else
@@ -435,10 +435,10 @@ uint64_t __81__HDIngestDeviceKeyValueEntriesOperation__fetchRemoteCloudEntriesFr
   return v4;
 }
 
-- (HDIngestDeviceKeyValueEntriesOperation)initWithCoder:(id)a3
+- (HDIngestDeviceKeyValueEntriesOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContainerIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContainerIdentifier"];
 
   v6 = [(HDIngestDeviceKeyValueEntriesOperation *)self initWithAccessibilityAssertion:0 containerIdentifier:v5];
   return v6;

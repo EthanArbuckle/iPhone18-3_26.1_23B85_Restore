@@ -1,20 +1,20 @@
 @interface NFMProtoPlaySoundRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBehaviorOverride:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBehaviorOverride:(BOOL)override;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NFMProtoPlaySoundRequest
 
-- (void)setHasBehaviorOverride:(BOOL)a3
+- (void)setHasBehaviorOverride:(BOOL)override
 {
-  if (a3)
+  if (override)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NFMProtoPlaySoundRequest;
   v4 = [(NFMProtoPlaySoundRequest *)&v8 description];
-  v5 = [(NFMProtoPlaySoundRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NFMProtoPlaySoundRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeStamp];
-    [v3 setObject:v5 forKey:@"timeStamp"];
+    [dictionary setObject:v5 forKey:@"timeStamp"];
 
     has = self->_has;
   }
@@ -54,22 +54,22 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_behaviorOverride];
-    [v3 setObject:v6 forKey:@"behaviorOverride"];
+    [dictionary setObject:v6 forKey:@"behaviorOverride"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     timeStamp = self->_timeStamp;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -77,31 +77,31 @@
   {
     behaviorOverride = self->_behaviorOverride;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = *&self->_timeStamp;
-    *(v4 + 20) |= 1u;
+    toCopy[1] = *&self->_timeStamp;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_behaviorOverride;
-    *(v4 + 20) |= 2u;
+    *(toCopy + 4) = self->_behaviorOverride;
+    *(toCopy + 20) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -119,33 +119,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_timeStamp != *(v4 + 1))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_timeStamp != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_behaviorOverride != *(v4 + 4))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_behaviorOverride != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
@@ -206,20 +206,20 @@ LABEL_12:
   return v8 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_timeStamp = *(v4 + 1);
+    self->_timeStamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_behaviorOverride = *(v4 + 4);
+    self->_behaviorOverride = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

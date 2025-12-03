@@ -1,23 +1,23 @@
 @interface AWDPairedSyncSyncReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDefaultByteCount:(BOOL)a3;
-- (void)setHasIsAutomated:(BOOL)a3;
-- (void)setHasRecordCount:(BOOL)a3;
-- (void)setHasSawADropout:(BOOL)a3;
-- (void)setHasSyncByteCount:(BOOL)a3;
-- (void)setHasSyncErrorCode:(BOOL)a3;
-- (void)setHasSyncType:(BOOL)a3;
-- (void)setHasTimeoutCount:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUrgentByteCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDefaultByteCount:(BOOL)count;
+- (void)setHasIsAutomated:(BOOL)automated;
+- (void)setHasRecordCount:(BOOL)count;
+- (void)setHasSawADropout:(BOOL)dropout;
+- (void)setHasSyncByteCount:(BOOL)count;
+- (void)setHasSyncErrorCode:(BOOL)code;
+- (void)setHasSyncType:(BOOL)type;
+- (void)setHasTimeoutCount:(BOOL)count;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUrgentByteCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPairedSyncSyncReport
@@ -32,9 +32,9 @@
   [(AWDPairedSyncSyncReport *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasIsAutomated:(BOOL)a3
+- (void)setHasIsAutomated:(BOOL)automated
 {
-  if (a3)
+  if (automated)
   {
     v3 = 512;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasSyncErrorCode:(BOOL)a3
+- (void)setHasSyncErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 32;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTimeoutCount:(BOOL)a3
+- (void)setHasTimeoutCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasSyncType:(BOOL)a3
+- (void)setHasSyncType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -107,9 +107,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRecordCount:(BOOL)a3
+- (void)setHasRecordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -122,9 +122,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSyncByteCount:(BOOL)a3
+- (void)setHasSyncByteCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -137,9 +137,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDefaultByteCount:(BOOL)a3
+- (void)setHasDefaultByteCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -152,9 +152,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasUrgentByteCount:(BOOL)a3
+- (void)setHasUrgentByteCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSawADropout:(BOOL)a3
+- (void)setHasSawADropout:(BOOL)dropout
 {
-  if (a3)
+  if (dropout)
   {
     v3 = 1024;
   }
@@ -191,46 +191,46 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 0x200) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isAutomated), @"isAutomated"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isAutomated), @"isAutomated"}];
   }
 
   gizmoBuild = self->_gizmoBuild;
   if (gizmoBuild)
   {
-    [v3 setObject:gizmoBuild forKey:@"gizmoBuild"];
+    [dictionary setObject:gizmoBuild forKey:@"gizmoBuild"];
   }
 
   gizmoHardware = self->_gizmoHardware;
   if (gizmoHardware)
   {
-    [v3 setObject:gizmoHardware forKey:@"gizmoHardware"];
+    [dictionary setObject:gizmoHardware forKey:@"gizmoHardware"];
   }
 
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_syncDuration), @"syncDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_syncDuration), @"syncDuration"}];
   }
 
   activityName = self->_activityName;
   if (activityName)
   {
-    [v3 setObject:activityName forKey:@"activityName"];
+    [dictionary setObject:activityName forKey:@"activityName"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_syncErrorCode), @"syncErrorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_syncErrorCode), @"syncErrorCode"}];
     v8 = self->_has;
     if ((v8 & 0x80) == 0)
     {
@@ -249,7 +249,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeoutCount), @"timeoutCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeoutCount), @"timeoutCount"}];
   v8 = self->_has;
   if ((v8 & 0x40) == 0)
   {
@@ -263,7 +263,7 @@ LABEL_16:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_syncType), @"syncType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_syncType), @"syncType"}];
   v8 = self->_has;
   if ((v8 & 8) == 0)
   {
@@ -277,7 +277,7 @@ LABEL_17:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_recordCount), @"recordCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_recordCount), @"recordCount"}];
   v8 = self->_has;
   if ((v8 & 0x10) == 0)
   {
@@ -291,7 +291,7 @@ LABEL_18:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_syncByteCount), @"syncByteCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_syncByteCount), @"syncByteCount"}];
   v8 = self->_has;
   if ((v8 & 4) == 0)
   {
@@ -302,17 +302,17 @@ LABEL_19:
     }
 
 LABEL_29:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_urgentByteCount), @"urgentByteCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_urgentByteCount), @"urgentByteCount"}];
     if ((*&self->_has & 0x400) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_21;
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_defaultByteCount), @"defaultByteCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_defaultByteCount), @"defaultByteCount"}];
   v8 = self->_has;
   if ((v8 & 0x100) != 0)
   {
@@ -323,13 +323,13 @@ LABEL_20:
   if ((v8 & 0x400) != 0)
   {
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_sawADropout), @"sawADropout"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_sawADropout), @"sawADropout"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -477,48 +477,48 @@ LABEL_29:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 42) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 42) |= 2u;
     has = self->_has;
   }
 
   if ((has & 0x200) != 0)
   {
-    *(a3 + 80) = self->_isAutomated;
-    *(a3 + 42) |= 0x200u;
+    *(to + 80) = self->_isAutomated;
+    *(to + 42) |= 0x200u;
   }
 
   if (self->_gizmoBuild)
   {
-    [a3 setGizmoBuild:?];
+    [to setGizmoBuild:?];
   }
 
   if (self->_gizmoHardware)
   {
-    [a3 setGizmoHardware:?];
+    [to setGizmoHardware:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_syncDuration;
-    *(a3 + 42) |= 1u;
+    *(to + 1) = self->_syncDuration;
+    *(to + 42) |= 1u;
   }
 
   if (self->_activityName)
   {
-    [a3 setActivityName:?];
+    [to setActivityName:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x20) != 0)
   {
-    *(a3 + 16) = self->_syncErrorCode;
-    *(a3 + 42) |= 0x20u;
+    *(to + 16) = self->_syncErrorCode;
+    *(to + 42) |= 0x20u;
     v6 = self->_has;
     if ((v6 & 0x80) == 0)
     {
@@ -537,8 +537,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  *(a3 + 18) = self->_timeoutCount;
-  *(a3 + 42) |= 0x80u;
+  *(to + 18) = self->_timeoutCount;
+  *(to + 42) |= 0x80u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -552,8 +552,8 @@ LABEL_16:
   }
 
 LABEL_25:
-  *(a3 + 17) = self->_syncType;
-  *(a3 + 42) |= 0x40u;
+  *(to + 17) = self->_syncType;
+  *(to + 42) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -567,8 +567,8 @@ LABEL_17:
   }
 
 LABEL_26:
-  *(a3 + 14) = self->_recordCount;
-  *(a3 + 42) |= 8u;
+  *(to + 14) = self->_recordCount;
+  *(to + 42) |= 8u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -582,8 +582,8 @@ LABEL_18:
   }
 
 LABEL_27:
-  *(a3 + 15) = self->_syncByteCount;
-  *(a3 + 42) |= 0x10u;
+  *(to + 15) = self->_syncByteCount;
+  *(to + 42) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -597,8 +597,8 @@ LABEL_19:
   }
 
 LABEL_28:
-  *(a3 + 8) = self->_defaultByteCount;
-  *(a3 + 42) |= 4u;
+  *(to + 8) = self->_defaultByteCount;
+  *(to + 42) |= 4u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -612,21 +612,21 @@ LABEL_20:
   }
 
 LABEL_29:
-  *(a3 + 19) = self->_urgentByteCount;
-  *(a3 + 42) |= 0x100u;
+  *(to + 19) = self->_urgentByteCount;
+  *(to + 42) |= 0x100u;
   if ((*&self->_has & 0x400) == 0)
   {
     return;
   }
 
 LABEL_21:
-  *(a3 + 81) = self->_sawADropout;
-  *(a3 + 42) |= 0x400u;
+  *(to + 81) = self->_sawADropout;
+  *(to + 42) |= 0x400u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -642,15 +642,15 @@ LABEL_21:
     *(v5 + 84) |= 0x200u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_gizmoBuild copyWithZone:a3];
-  *(v6 + 48) = [(NSString *)self->_gizmoHardware copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_gizmoBuild copyWithZone:zone];
+  *(v6 + 48) = [(NSString *)self->_gizmoHardware copyWithZone:zone];
   if (*&self->_has)
   {
     *(v6 + 8) = self->_syncDuration;
     *(v6 + 84) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_activityName copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_activityName copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
@@ -761,15 +761,15 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 42);
+    v6 = *(equal + 42);
     if ((*&self->_has & 2) != 0)
     {
-      if ((v6 & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((v6 & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_17;
       }
@@ -782,42 +782,42 @@ LABEL_15:
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 42) & 0x200) == 0)
+      if ((*(equal + 42) & 0x200) == 0)
       {
         goto LABEL_17;
       }
 
-      v11 = *(a3 + 80);
+      v11 = *(equal + 80);
       if (self->_isAutomated)
       {
-        if ((*(a3 + 80) & 1) == 0)
+        if ((*(equal + 80) & 1) == 0)
         {
           goto LABEL_17;
         }
       }
 
-      else if (*(a3 + 80))
+      else if (*(equal + 80))
       {
         goto LABEL_17;
       }
     }
 
-    else if ((*(a3 + 42) & 0x200) != 0)
+    else if ((*(equal + 42) & 0x200) != 0)
     {
       goto LABEL_17;
     }
 
     gizmoBuild = self->_gizmoBuild;
-    if (!(gizmoBuild | *(a3 + 5)) || (v5 = [(NSString *)gizmoBuild isEqual:?]) != 0)
+    if (!(gizmoBuild | *(equal + 5)) || (v5 = [(NSString *)gizmoBuild isEqual:?]) != 0)
     {
       gizmoHardware = self->_gizmoHardware;
-      if (!(gizmoHardware | *(a3 + 6)) || (v5 = [(NSString *)gizmoHardware isEqual:?]) != 0)
+      if (!(gizmoHardware | *(equal + 6)) || (v5 = [(NSString *)gizmoHardware isEqual:?]) != 0)
       {
         has = self->_has;
-        v10 = *(a3 + 42);
+        v10 = *(equal + 42);
         if (has)
         {
-          if ((v10 & 1) == 0 || self->_syncDuration != *(a3 + 1))
+          if ((v10 & 1) == 0 || self->_syncDuration != *(equal + 1))
           {
             goto LABEL_17;
           }
@@ -829,7 +829,7 @@ LABEL_15:
         }
 
         activityName = self->_activityName;
-        if (activityName | *(a3 + 3))
+        if (activityName | *(equal + 3))
         {
           v5 = [(NSString *)activityName isEqual:?];
           if (!v5)
@@ -840,10 +840,10 @@ LABEL_15:
           has = self->_has;
         }
 
-        v13 = *(a3 + 42);
+        v13 = *(equal + 42);
         if ((has & 0x20) != 0)
         {
-          if ((v13 & 0x20) == 0 || self->_syncErrorCode != *(a3 + 16))
+          if ((v13 & 0x20) == 0 || self->_syncErrorCode != *(equal + 16))
           {
             goto LABEL_17;
           }
@@ -856,7 +856,7 @@ LABEL_15:
 
         if ((has & 0x80) != 0)
         {
-          if ((v13 & 0x80) == 0 || self->_timeoutCount != *(a3 + 18))
+          if ((v13 & 0x80) == 0 || self->_timeoutCount != *(equal + 18))
           {
             goto LABEL_17;
           }
@@ -869,7 +869,7 @@ LABEL_15:
 
         if ((has & 0x40) != 0)
         {
-          if ((v13 & 0x40) == 0 || self->_syncType != *(a3 + 17))
+          if ((v13 & 0x40) == 0 || self->_syncType != *(equal + 17))
           {
             goto LABEL_17;
           }
@@ -882,7 +882,7 @@ LABEL_15:
 
         if ((has & 8) != 0)
         {
-          if ((v13 & 8) == 0 || self->_recordCount != *(a3 + 14))
+          if ((v13 & 8) == 0 || self->_recordCount != *(equal + 14))
           {
             goto LABEL_17;
           }
@@ -895,7 +895,7 @@ LABEL_15:
 
         if ((has & 0x10) != 0)
         {
-          if ((v13 & 0x10) == 0 || self->_syncByteCount != *(a3 + 15))
+          if ((v13 & 0x10) == 0 || self->_syncByteCount != *(equal + 15))
           {
             goto LABEL_17;
           }
@@ -908,7 +908,7 @@ LABEL_15:
 
         if ((has & 4) != 0)
         {
-          if ((v13 & 4) == 0 || self->_defaultByteCount != *(a3 + 8))
+          if ((v13 & 4) == 0 || self->_defaultByteCount != *(equal + 8))
           {
             goto LABEL_17;
           }
@@ -921,13 +921,13 @@ LABEL_15:
 
         if ((has & 0x100) != 0)
         {
-          if ((*(a3 + 42) & 0x100) == 0 || self->_urgentByteCount != *(a3 + 19))
+          if ((*(equal + 42) & 0x100) == 0 || self->_urgentByteCount != *(equal + 19))
           {
             goto LABEL_17;
           }
         }
 
-        else if ((*(a3 + 42) & 0x100) != 0)
+        else if ((*(equal + 42) & 0x100) != 0)
         {
           goto LABEL_17;
         }
@@ -938,20 +938,20 @@ LABEL_15:
           return v5;
         }
 
-        if ((*(a3 + 42) & 0x400) == 0)
+        if ((*(equal + 42) & 0x400) == 0)
         {
           goto LABEL_17;
         }
 
         if (self->_sawADropout)
         {
-          if (*(a3 + 81))
+          if (*(equal + 81))
           {
             goto LABEL_70;
           }
         }
 
-        else if (!*(a3 + 81))
+        else if (!*(equal + 81))
         {
 LABEL_70:
           LOBYTE(v5) = 1;
@@ -1113,49 +1113,49 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 42);
+    v5 = *(from + 42);
   }
 
   if ((v5 & 0x200) != 0)
   {
-    self->_isAutomated = *(a3 + 80);
+    self->_isAutomated = *(from + 80);
     *&self->_has |= 0x200u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDPairedSyncSyncReport *)self setGizmoBuild:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDPairedSyncSyncReport *)self setGizmoHardware:?];
   }
 
-  if (*(a3 + 42))
+  if (*(from + 42))
   {
-    self->_syncDuration = *(a3 + 1);
+    self->_syncDuration = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDPairedSyncSyncReport *)self setActivityName:?];
   }
 
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x20) != 0)
   {
-    self->_syncErrorCode = *(a3 + 16);
+    self->_syncErrorCode = *(from + 16);
     *&self->_has |= 0x20u;
-    v6 = *(a3 + 42);
+    v6 = *(from + 42);
     if ((v6 & 0x80) == 0)
     {
 LABEL_15:
@@ -1173,9 +1173,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  self->_timeoutCount = *(a3 + 18);
+  self->_timeoutCount = *(from + 18);
   *&self->_has |= 0x80u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x40) == 0)
   {
 LABEL_16:
@@ -1188,9 +1188,9 @@ LABEL_16:
   }
 
 LABEL_25:
-  self->_syncType = *(a3 + 17);
+  self->_syncType = *(from + 17);
   *&self->_has |= 0x40u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 8) == 0)
   {
 LABEL_17:
@@ -1203,9 +1203,9 @@ LABEL_17:
   }
 
 LABEL_26:
-  self->_recordCount = *(a3 + 14);
+  self->_recordCount = *(from + 14);
   *&self->_has |= 8u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x10) == 0)
   {
 LABEL_18:
@@ -1218,9 +1218,9 @@ LABEL_18:
   }
 
 LABEL_27:
-  self->_syncByteCount = *(a3 + 15);
+  self->_syncByteCount = *(from + 15);
   *&self->_has |= 0x10u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 4) == 0)
   {
 LABEL_19:
@@ -1233,9 +1233,9 @@ LABEL_19:
   }
 
 LABEL_28:
-  self->_defaultByteCount = *(a3 + 8);
+  self->_defaultByteCount = *(from + 8);
   *&self->_has |= 4u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x100) == 0)
   {
 LABEL_20:
@@ -1248,15 +1248,15 @@ LABEL_20:
   }
 
 LABEL_29:
-  self->_urgentByteCount = *(a3 + 19);
+  self->_urgentByteCount = *(from + 19);
   *&self->_has |= 0x100u;
-  if ((*(a3 + 42) & 0x400) == 0)
+  if ((*(from + 42) & 0x400) == 0)
   {
     return;
   }
 
 LABEL_21:
-  self->_sawADropout = *(a3 + 81);
+  self->_sawADropout = *(from + 81);
   *&self->_has |= 0x400u;
 }
 

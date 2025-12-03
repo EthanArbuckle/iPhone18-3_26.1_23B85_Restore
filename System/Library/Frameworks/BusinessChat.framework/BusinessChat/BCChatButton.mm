@@ -1,22 +1,22 @@
 @interface BCChatButton
 - (BCChatButton)initWithCoder:(NSCoder *)coder;
-- (BCChatButton)initWithFrame:(CGRect)a3;
+- (BCChatButton)initWithFrame:(CGRect)frame;
 - (BCChatButton)initWithStyle:(BCChatButtonStyle)style;
 - (double)calculateButtonLayout;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)updateAppearanceForState:(id *)result;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
 - (uint64_t)setup;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)sizeToFit;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation BCChatButton
@@ -40,82 +40,82 @@
 {
   v2 = +[BCShared classBundle];
   v3 = [v2 localizedStringForKey:@"CHAT_BUTTON_DOUBLE_LINE_INVERTED" value:&stru_2849DDCD8 table:0];
-  *(a1 + 456) = [v3 isEqual:@"true"];
+  *(self + 456) = [v3 isEqual:@"true"];
 
   v4 = objc_opt_new();
-  v5 = *(a1 + 496);
-  *(a1 + 496) = v4;
+  v5 = *(self + 496);
+  *(self + 496) = v4;
 
   v6 = objc_alloc(MEMORY[0x277D755E8]);
   v7 = MEMORY[0x277D755B8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v7 imageNamed:@"MessagesIcon" inBundle:v8];
   v10 = [v6 initWithImage:v9];
-  v11 = *(a1 + 488);
-  *(a1 + 488) = v10;
+  v11 = *(self + 488);
+  *(self + 488) = v10;
 
   v12 = objc_opt_new();
-  v13 = *(a1 + 472);
-  *(a1 + 472) = v12;
+  v13 = *(self + 472);
+  *(self + 472) = v12;
 
   v14 = *MEMORY[0x277D74410];
   v15 = [MEMORY[0x277D74300] systemFontOfSize:23.0 weight:*MEMORY[0x277D74410]];
-  [*(a1 + 472) setFont:v15];
+  [*(self + 472) setFont:v15];
 
   v16 = +[BCShared classBundle];
   v17 = [v16 localizedStringForKey:@"CHAT_BUTTON_DOUBLE_LINE_LARGE_LABEL" value:&stru_2849DDCD8 table:0];
-  [*(a1 + 472) setText:v17];
+  [*(self + 472) setText:v17];
 
-  [*(a1 + 472) setTextAlignment:0];
-  [*(a1 + 472) setContentMode:7];
+  [*(self + 472) setTextAlignment:0];
+  [*(self + 472) setContentMode:7];
   v18 = objc_opt_new();
-  v19 = *(a1 + 480);
-  *(a1 + 480) = v18;
+  v19 = *(self + 480);
+  *(self + 480) = v18;
 
   v20 = [MEMORY[0x277D74300] systemFontOfSize:11.0 weight:v14];
-  [*(a1 + 480) setFont:v20];
+  [*(self + 480) setFont:v20];
 
   v21 = +[BCShared classBundle];
   v22 = [v21 localizedStringForKey:@"CHAT_BUTTON_DOUBLE_LINE_SMALL_LABEL" value:&stru_2849DDCD8 table:0];
-  [*(a1 + 480) setText:v22];
+  [*(self + 480) setText:v22];
 
-  [*(a1 + 480) setTextAlignment:0];
-  [a1 _setContinuousCornerRadius:8.0];
-  v23 = [a1 layer];
-  [v23 setMasksToBounds:1];
+  [*(self + 480) setTextAlignment:0];
+  [self _setContinuousCornerRadius:8.0];
+  layer = [self layer];
+  [layer setMasksToBounds:1];
 
-  v24 = [a1 layer];
-  [v24 setBorderWidth:1.0];
+  layer2 = [self layer];
+  [layer2 setBorderWidth:1.0];
 
-  v25 = *(a1 + 472);
-  v26 = *(a1 + 496);
+  v25 = *(self + 472);
+  v26 = *(self + 496);
   [v26 addSubview:v25];
 
-  v27 = *(a1 + 480);
-  v28 = *(a1 + 496);
+  v27 = *(self + 480);
+  v28 = *(self + 496);
   [v28 addSubview:v27];
 
-  v29 = *(a1 + 488);
-  v30 = *(a1 + 496);
+  v29 = *(self + 488);
+  v30 = *(self + 496);
   [v30 addSubview:v29];
 
-  [a1 addSubview:*(a1 + 496)];
-  [(BCChatButton *)a1 updateAppearanceForState:?];
+  [self addSubview:*(self + 496)];
+  [(BCChatButton *)self updateAppearanceForState:?];
   v31 = +[BCShared classBundle];
   v32 = [v31 localizedStringForKey:@"CHAT_BUTTON_ACCESSIBILITY_LABEL" value:&stru_2849DDCD8 table:0];
-  [a1 setAccessibilityLabel:v32];
+  [self setAccessibilityLabel:v32];
 
-  [a1 setAccessibilityTraits:*MEMORY[0x277D76548]];
+  [self setAccessibilityTraits:*MEMORY[0x277D76548]];
 
-  return [a1 sizeToFit];
+  return [self sizeToFit];
 }
 
-- (BCChatButton)initWithFrame:(CGRect)a3
+- (BCChatButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(BCChatButton *)self initWithStyle:1];
   v8 = v7;
   if (v7)
@@ -141,14 +141,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"BCChatButtonStyleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"BCChatButtonStyleIdentifier"];
   v6.receiver = self;
   v6.super_class = BCChatButton;
-  [(BCChatButton *)&v6 encodeWithCoder:v5];
+  [(BCChatButton *)&v6 encodeWithCoder:coderCopy];
 }
 
 - (id)updateAppearanceForState:(id *)result
@@ -161,9 +161,9 @@
       a2 = 1;
     }
 
-    v4 = [v3 isEnabled];
+    isEnabled = [v3 isEnabled];
     v5 = 2;
-    if (v4)
+    if (isEnabled)
     {
       v5 = a2;
     }
@@ -179,15 +179,15 @@
 
     v11 = &dbl_236EB4F60[85 * v3[58] + v6];
     v12 = [MEMORY[0x277D75348] colorWithRed:*v11 green:v11[1] blue:v11[2] alpha:v11[3]];
-    v13 = [v12 CGColor];
-    v14 = [v3 layer];
-    [v14 setBackgroundColor:v13];
+    cGColor = [v12 CGColor];
+    layer = [v3 layer];
+    [layer setBackgroundColor:cGColor];
 
     v15 = &dbl_236EB4F60[85 * v3[58] + v6];
     v16 = [MEMORY[0x277D75348] colorWithRed:v15[12] green:v15[13] blue:v15[14] alpha:v15[15]];
-    v17 = [v16 CGColor];
-    v18 = [v3 layer];
-    [v18 setBorderColor:v17];
+    cGColor2 = [v16 CGColor];
+    layer2 = [v3 layer];
+    [layer2 setBorderColor:cGColor2];
 
     v19 = dbl_236EB4F60[85 * v3[58] + 16 + v6];
     v20 = v3[61];
@@ -201,45 +201,45 @@
 - (double)calculateButtonLayout
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = *MEMORY[0x277D74410];
     v3 = [MEMORY[0x277D74300] systemFontOfSize:11.0 weight:*MEMORY[0x277D74410]];
     v4 = [MEMORY[0x277D74300] systemFontOfSize:23.0 weight:v2];
-    v5 = *(a1 + 480);
-    v6 = [v5 text];
+    v5 = *(self + 480);
+    text = [v5 text];
     v44 = *MEMORY[0x277D740A8];
     v7 = v44;
     v45[0] = v3;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
 
-    [v6 sizeWithAttributes:v8];
+    [text sizeWithAttributes:v8];
     v10 = v9;
     v12 = v11;
 
-    v13 = *(a1 + 472);
-    v14 = [v13 text];
+    v13 = *(self + 472);
+    text2 = [v13 text];
     v42 = v7;
     v43 = v4;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
 
-    [v14 sizeWithAttributes:v15];
+    [text2 sizeWithAttributes:v15];
     v17 = v16;
     v19 = v18;
 
-    if (*(a1 + 456) == 1)
+    if (*(self + 456) == 1)
     {
-      [*(a1 + 472) setFrame:{41.0, -6.0, v17, v19}];
+      [*(self + 472) setFrame:{41.0, -6.0, v17, v19}];
       v20 = &OBJC_IVAR___BCChatButton__smallLabel;
-      v21 = *(a1 + 472);
+      v21 = *(self + 472);
       [v21 frame];
       v23 = v19 + v22;
     }
 
     else
     {
-      [*(a1 + 480) setFrame:{41.0, -1.0, v10, v12}];
-      v21 = *(a1 + 480);
+      [*(self + 480) setFrame:{41.0, -1.0, v10, v12}];
+      v21 = *(self + 480);
       [v21 frame];
       v23 = v12 + v24 + -3.0;
       v10 = v17;
@@ -247,25 +247,25 @@
       v20 = &OBJC_IVAR___BCChatButton__label;
     }
 
-    [*(a1 + *v20) setFrame:{41.0, v23, v10, v12}];
+    [*(self + *v20) setFrame:{41.0, v23, v10, v12}];
 
-    v25 = *(a1 + 472);
+    v25 = *(self + 472);
     [v25 frame];
     v27 = v26;
-    v28 = *(a1 + 472);
+    v28 = *(self + 472);
     [v28 frame];
     v30 = v27 + v29;
-    v31 = *(a1 + 480);
+    v31 = *(self + 480);
     [v31 frame];
     v33 = v32;
-    [*(a1 + 480) frame];
+    [*(self + 480) frame];
     v35 = fmax(v30, v33 + v34);
 
-    [*(a1 + 488) setFrame:{0.0, 0.0, 32.0, 32.0}];
-    [a1 bounds];
+    [*(self + 488) setFrame:{0.0, 0.0, 32.0, 32.0}];
+    [self bounds];
     v37 = v36 * 0.5 - v35 * 0.5;
-    [a1 bounds];
-    [*(a1 + 496) setFrame:{v37, v38 * 0.5 + -16.0, v35, 32.0}];
+    [self bounds];
+    [*(self + 496) setFrame:{v37, v38 * 0.5 + -16.0, v35, 32.0}];
     v39 = fmax(v35 + 18.0, 156.0);
   }
 
@@ -278,13 +278,13 @@
   return v39;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = BCChatButton;
   [(BCChatButton *)&v6 setEnabled:?];
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 0;
   }
@@ -297,31 +297,31 @@
   [(BCChatButton *)&self->super.super.super.super.isa updateAppearanceForState:v5];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = BCChatButton;
   [(BCChatButton *)&v5 setHighlighted:?];
-  [(BCChatButton *)&self->super.super.super.super.isa updateAppearanceForState:v3];
+  [(BCChatButton *)&self->super.super.super.super.isa updateAppearanceForState:highlightedCopy];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = BCChatButton;
-  [(BCChatButton *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BCChatButton *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (self)
   {
     [(BCChatButton *)self calculateButtonLayout];
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v3.receiver = self;
   v3.super_class = BCChatButton;
-  [(BCChatButton *)&v3 _populateArchivedSubviews:a3];
+  [(BCChatButton *)&v3 _populateArchivedSubviews:subviews];
 }
 
 - (void)sizeToFit
@@ -334,11 +334,11 @@
   [(BCChatButton *)self setFrame:v4];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = BCChatButton;
-  [(BCChatButton *)&v6 touchesBegan:a3 withEvent:a4];
+  [(BCChatButton *)&v6 touchesBegan:began withEvent:event];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__BCChatButton_touchesBegan_withEvent___block_invoke;
@@ -347,11 +347,11 @@
   [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0.2];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = BCChatButton;
-  [(BCChatButton *)&v6 touchesEnded:a3 withEvent:a4];
+  [(BCChatButton *)&v6 touchesEnded:ended withEvent:event];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__BCChatButton_touchesEnded_withEvent___block_invoke;
@@ -360,24 +360,24 @@
   [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0.2];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(BCChatButton *)self bounds];
   v10.x = x;
   v10.y = y;
   if (CGRectContainsPoint(v11, v10))
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)layoutSubviews

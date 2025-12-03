@@ -1,36 +1,36 @@
 @interface FHPeerPaymentForecastingSignalOverallSpend
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FHPeerPaymentForecastingSignalOverallSpend)init;
-- (FHPeerPaymentForecastingSignalOverallSpend)initWithCoder:(id)a3;
+- (FHPeerPaymentForecastingSignalOverallSpend)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHPeerPaymentForecastingSignalOverallSpend
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FHPeerPaymentForecastingSignalOverallSpend;
-  v4 = a3;
-  [(FHPeerPaymentForecastingSignal *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_amount forKey:{@"amount", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_direction forKey:@"direction"];
+  coderCopy = coder;
+  [(FHPeerPaymentForecastingSignal *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_amount forKey:{@"amount", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_direction forKey:@"direction"];
 }
 
-- (FHPeerPaymentForecastingSignalOverallSpend)initWithCoder:(id)a3
+- (FHPeerPaymentForecastingSignalOverallSpend)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = FHPeerPaymentForecastingSignalOverallSpend;
-  v5 = [(FHPeerPaymentForecastingSignal *)&v8 initWithCoder:v4];
+  v5 = [(FHPeerPaymentForecastingSignal *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     [(FHPeerPaymentForecastingSignalOverallSpend *)v5 setAmount:v6];
 
-    -[FHPeerPaymentForecastingSignalOverallSpend setDirection:](v5, "setDirection:", [v4 decodeIntegerForKey:@"direction"]);
+    -[FHPeerPaymentForecastingSignalOverallSpend setDirection:](v5, "setDirection:", [coderCopy decodeIntegerForKey:@"direction"]);
   }
 
   return v5;
@@ -69,29 +69,29 @@
   v7.receiver = self;
   v7.super_class = FHPeerPaymentForecastingSignalOverallSpend;
   v3 = [(FHPeerPaymentForecastingSignal *)&v7 hash];
-  v4 = [(FHPeerPaymentForecastingSignalOverallSpend *)self amount];
-  v5 = [v4 hash] + 43 * v3;
+  amount = [(FHPeerPaymentForecastingSignalOverallSpend *)self amount];
+  v5 = [amount hash] + 43 * v3;
 
   return [(FHPeerPaymentForecastingSignalOverallSpend *)self direction]+ 43 * v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v6 = [(FHPeerPaymentForecastingSignal *)self forecastingType], v6 == [(FHPeerPaymentForecastingSignal *)v5 forecastingType]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v6 = [(FHPeerPaymentForecastingSignal *)self forecastingType], v6 == [(FHPeerPaymentForecastingSignal *)v5 forecastingType]))
   {
-    v7 = [(FHPeerPaymentForecastingSignalOverallSpend *)self amount];
-    v8 = [(FHPeerPaymentForecastingSignalOverallSpend *)v5 amount];
-    if ([v7 isEqual:v8])
+    amount = [(FHPeerPaymentForecastingSignalOverallSpend *)self amount];
+    amount2 = [(FHPeerPaymentForecastingSignalOverallSpend *)v5 amount];
+    if ([amount isEqual:amount2])
     {
-      v9 = [(FHPeerPaymentForecastingSignalOverallSpend *)self direction];
-      v10 = v9 == [(FHPeerPaymentForecastingSignalOverallSpend *)v5 direction];
+      direction = [(FHPeerPaymentForecastingSignalOverallSpend *)self direction];
+      v10 = direction == [(FHPeerPaymentForecastingSignalOverallSpend *)v5 direction];
     }
 
     else

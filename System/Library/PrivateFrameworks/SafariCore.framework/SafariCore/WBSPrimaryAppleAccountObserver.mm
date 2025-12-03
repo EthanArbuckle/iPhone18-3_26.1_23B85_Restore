@@ -4,13 +4,13 @@
 - (BOOL)isUsingICloud;
 - (WBSPrimaryAppleAccountObserver)init;
 - (void)_registerForUpdates;
-- (void)_setAccountIfPrimary:(id)a3;
-- (void)_setAccountOnInternalQueue:(id)a3;
-- (void)accountWasRemoved:(id)a3;
-- (void)getPrimaryAppleAccountAltDSIDWithCompletionHandler:(id)a3;
-- (void)getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)a3;
-- (void)getPrimaryAppleAccountWithCompletionHandler:(id)a3;
-- (void)needsToVerifyTermsWithCompletionHandler:(id)a3;
+- (void)_setAccountIfPrimary:(id)primary;
+- (void)_setAccountOnInternalQueue:(id)queue;
+- (void)accountWasRemoved:(id)removed;
+- (void)getPrimaryAppleAccountAltDSIDWithCompletionHandler:(id)handler;
+- (void)getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)handler;
+- (void)getPrimaryAppleAccountWithCompletionHandler:(id)handler;
+- (void)needsToVerifyTermsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSPrimaryAppleAccountObserver
@@ -61,9 +61,9 @@ void __48__WBSPrimaryAppleAccountObserver_sharedObserver__block_invoke()
 
 - (void)_registerForUpdates
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getACAccountTypeIdentifierAppleAccount(void)"];
-  [v0 handleFailureInFunction:v1 file:@"WBSPrimaryAppleAccountObserver.m" lineNumber:16 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"WBSPrimaryAppleAccountObserver.m" lineNumber:16 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -87,62 +87,62 @@ void __48__WBSPrimaryAppleAccountObserver_sharedObserver__block_invoke()
   return v3;
 }
 
-- (void)_setAccountOnInternalQueue:(id)a3
+- (void)_setAccountOnInternalQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_queue);
   primaryAppleAccount = self->_primaryAppleAccount;
-  self->_primaryAppleAccount = v4;
-  v6 = v4;
+  self->_primaryAppleAccount = queueCopy;
+  v6 = queueCopy;
 
-  v7 = [(ACAccount *)self->_primaryAppleAccount aa_altDSID];
+  aa_altDSID = [(ACAccount *)self->_primaryAppleAccount aa_altDSID];
   primaryAppleAccountAltDSID = self->_primaryAppleAccountAltDSID;
-  self->_primaryAppleAccountAltDSID = v7;
+  self->_primaryAppleAccountAltDSID = aa_altDSID;
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v9 postNotificationName:@"WBSPrimaryAppleAccountDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"WBSPrimaryAppleAccountDidChangeNotification" object:self];
 }
 
-- (void)getPrimaryAppleAccountWithCompletionHandler:(id)a3
+- (void)getPrimaryAppleAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__WBSPrimaryAppleAccountObserver_getPrimaryAppleAccountWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF1888;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getPrimaryAppleAccountAltDSIDWithCompletionHandler:(id)a3
+- (void)getPrimaryAppleAccountAltDSIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__WBSPrimaryAppleAccountObserver_getPrimaryAppleAccountAltDSIDWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF1888;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)a3
+- (void)getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__WBSPrimaryAppleAccountObserver_getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF1888;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -173,11 +173,11 @@ void __98__WBSPrimaryAppleAccountObserver_getPrimaryAppleAccountHasSafariSyncEna
   (*(v1 + 16))(v1, [v2 isEnabledForDataclass:v5]);
 }
 
-- (void)_setAccountIfPrimary:(id)a3
+- (void)_setAccountIfPrimary:(id)primary
 {
-  v4 = a3;
+  primaryCopy = primary;
   v5 = getAAAccountClassPrimary();
-  v6 = [v4 aa_isAccountClass:v5];
+  v6 = [primaryCopy aa_isAccountClass:v5];
 
   if (v6)
   {
@@ -187,7 +187,7 @@ void __98__WBSPrimaryAppleAccountObserver_getPrimaryAppleAccountHasSafariSyncEna
     v8[2] = __55__WBSPrimaryAppleAccountObserver__setAccountIfPrimary___block_invoke;
     v8[3] = &unk_1E7CF1708;
     v8[4] = self;
-    v9 = v4;
+    v9 = primaryCopy;
     dispatch_async(queue, v8);
   }
 }
@@ -218,17 +218,17 @@ uint64_t __57__WBSPrimaryAppleAccountObserver_isCurrentAppleIDManaged__block_inv
   return result;
 }
 
-- (void)needsToVerifyTermsWithCompletionHandler:(id)a3
+- (void)needsToVerifyTermsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__WBSPrimaryAppleAccountObserver_needsToVerifyTermsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF1888;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -241,11 +241,11 @@ uint64_t __74__WBSPrimaryAppleAccountObserver_needsToVerifyTermsWithCompletionHa
   return v3(v1, v2);
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v5 = getAAAccountClassPrimary();
-  v6 = [v4 aa_isAccountClass:v5];
+  v6 = [removedCopy aa_isAccountClass:v5];
 
   if (v6)
   {

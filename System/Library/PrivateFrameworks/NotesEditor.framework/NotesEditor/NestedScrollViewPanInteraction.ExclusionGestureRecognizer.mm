@@ -1,19 +1,19 @@
 @interface NestedScrollViewPanInteraction.ExclusionGestureRecognizer
-- (void)_scrollingChangedWithEvent:(id)a3;
+- (void)_scrollingChangedWithEvent:(id)event;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation NestedScrollViewPanInteraction.ExclusionGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_2151A6C9C(0, &unk_27CA5A330);
   sub_215433E44();
   v5 = sub_2154A20CC();
   v6 = OBJC_IVAR____TtCC11NotesEditor30NestedScrollViewPanInteraction26ExclusionGestureRecognizer_touch;
   v7 = *(&self->super.super.isa + OBJC_IVAR____TtCC11NotesEditor30NestedScrollViewPanInteraction26ExclusionGestureRecognizer_touch);
-  v11 = self;
+  selfCopy = self;
   if (v7)
   {
 
@@ -30,7 +30,7 @@
     v8 = 3;
   }
 
-  [(NestedScrollViewPanInteraction.ExclusionGestureRecognizer *)v11 setState:v8];
+  [(NestedScrollViewPanInteraction.ExclusionGestureRecognizer *)selfCopy setState:v8];
 }
 
 - (void)reset
@@ -39,12 +39,12 @@
   *(&self->super.super.isa + OBJC_IVAR____TtCC11NotesEditor30NestedScrollViewPanInteraction26ExclusionGestureRecognizer_touch) = 0;
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
-  v3 = self;
-  if (![(NestedScrollViewPanInteraction.ExclusionGestureRecognizer *)v3 state])
+  selfCopy = self;
+  if (![(NestedScrollViewPanInteraction.ExclusionGestureRecognizer *)selfCopy state])
   {
-    [(NestedScrollViewPanInteraction.ExclusionGestureRecognizer *)v3 setState:3];
+    [(NestedScrollViewPanInteraction.ExclusionGestureRecognizer *)selfCopy setState:3];
   }
 }
 

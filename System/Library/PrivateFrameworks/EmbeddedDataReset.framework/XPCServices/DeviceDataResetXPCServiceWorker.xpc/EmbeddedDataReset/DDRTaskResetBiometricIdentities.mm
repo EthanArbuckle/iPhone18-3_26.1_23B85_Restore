@@ -6,8 +6,8 @@
 
 - (void)_resetIdentities
 {
-  v2 = [NSClassFromString(@"BiometricKit") manager];
-  v3 = [v2 identities:0];
+  manager = [NSClassFromString(@"BiometricKit") manager];
+  v3 = [manager identities:0];
   v4 = [v3 copy];
 
   v17 = 0u;
@@ -32,7 +32,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v11 = [v2 removeIdentity:{*(*(&v15 + 1) + 8 * v10), v14, v15}];
+        v11 = [manager removeIdentity:{*(*(&v15 + 1) + 8 * v10), v14, v15}];
         if (v11)
         {
           v12 = v11;

@@ -1,8 +1,8 @@
 @interface UIGestureDelayedTouch
 - (NSString)description;
 - (double)timestampForDelivery;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initWithEvent:(void *)a3 touch:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initWithEvent:(void *)event touch:;
 - (int64_t)phaseForDelivery;
 - (uint64_t)saveCurrentTouchState;
 @end
@@ -50,30 +50,30 @@
   return [*(&self->super.isa + v2) phase];
 }
 
-- (id)initWithEvent:(void *)a3 touch:
+- (id)initWithEvent:(void *)event touch:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  eventCopy = event;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = UIGestureDelayedTouch;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 6, a2);
-      objc_storeStrong(a1 + 3, a3);
+      objc_storeStrong(self + 3, event);
       v9 = objc_alloc_init(UITouch);
-      v10 = a1[4];
-      a1[4] = v9;
+      v10 = self[4];
+      self[4] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIGestureDelayedTouch allocWithZone:?]];
   v5 = objc_alloc_init(UITouch);
@@ -91,7 +91,7 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   touch = self->_touch;
   if (touch)
@@ -108,29 +108,29 @@
     v10 = @"(nil)";
   }
 
-  [v3 appendFormat:@"<%@: %p; touch = %@", v4, self, v10];
+  [string appendFormat:@"<%@: %p; touch = %@", v4, self, v10];
 
   if (self->_clonedForSecondDelivery)
   {
-    [v3 appendString:@"; clone = YES"];
+    [string appendString:@"; clone = YES"];
   }
 
-  v11 = [(UITouch *)self->_stateWhenDelayed _phaseDescription];
-  [v3 appendFormat:@"; delayed phase = %@", v11];
+  _phaseDescription = [(UITouch *)self->_stateWhenDelayed _phaseDescription];
+  [string appendFormat:@"; delayed phase = %@", _phaseDescription];
 
   if (self->_clonedForSecondDelivery)
   {
     stateWhenDelivered = self->_stateWhenDelivered;
     if (stateWhenDelivered)
     {
-      v13 = [(UITouch *)stateWhenDelivered _phaseDescription];
-      [v3 appendFormat:@"; current phase = %@", v13];
+      _phaseDescription2 = [(UITouch *)stateWhenDelivered _phaseDescription];
+      [string appendFormat:@"; current phase = %@", _phaseDescription2];
     }
   }
 
-  [v3 appendFormat:@">"];
+  [string appendFormat:@">"];
 
-  return v3;
+  return string;
 }
 
 @end

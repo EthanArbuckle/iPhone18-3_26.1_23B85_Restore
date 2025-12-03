@@ -1,28 +1,28 @@
 @interface PAImageConversionServiceClient
 - (PAImageConversionServiceClient)init;
-- (void)convertImageAtSourceURL:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)convertImageAtSourceURLCollection:(id)a3 toDestinationURLCollection:(id)a4 options:(id)a5 completionHandler:(id)a6;
+- (void)convertImageAtSourceURL:(id)l options:(id)options completionHandler:(id)handler;
+- (void)convertImageAtSourceURLCollection:(id)collection toDestinationURLCollection:(id)lCollection options:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)requestStatusWithCompletionHandler:(id)a3;
-- (void)sendRequestWithOptions:(id)a3 sourceURLCollection:(id)a4 destinationURLCollection:(id)a5 jobIdentifier:(id)a6 attemptCount:(int64_t)a7 completionHandler:(id)a8;
+- (void)requestStatusWithCompletionHandler:(id)handler;
+- (void)sendRequestWithOptions:(id)options sourceURLCollection:(id)collection destinationURLCollection:(id)lCollection jobIdentifier:(id)identifier attemptCount:(int64_t)count completionHandler:(id)handler;
 - (void)setupServiceConnection;
 @end
 
 @implementation PAImageConversionServiceClient
 
-- (void)requestStatusWithCompletionHandler:(id)a3
+- (void)requestStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PAImageConversionServiceClient *)self serviceConnection];
+  handlerCopy = handler;
+  serviceConnection = [(PAImageConversionServiceClient *)self serviceConnection];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __69__PAImageConversionServiceClient_requestStatusWithCompletionHandler___block_invoke;
   v11 = &unk_27989B4B8;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:&v8];
-  [v7 requestStatusWithReply:{v6, v8, v9, v10, v11, v12}];
+  selfCopy = self;
+  v13 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [serviceConnection remoteObjectProxyWithErrorHandler:&v8];
+  [v7 requestStatusWithReply:{v6, v8, v9, v10, v11, selfCopy}];
 }
 
 void __69__PAImageConversionServiceClient_requestStatusWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -41,110 +41,110 @@ void __69__PAImageConversionServiceClient_requestStatusWithCompletionHandler___b
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequestWithOptions:(id)a3 sourceURLCollection:(id)a4 destinationURLCollection:(id)a5 jobIdentifier:(id)a6 attemptCount:(int64_t)a7 completionHandler:(id)a8
+- (void)sendRequestWithOptions:(id)options sourceURLCollection:(id)collection destinationURLCollection:(id)lCollection jobIdentifier:(id)identifier attemptCount:(int64_t)count completionHandler:(id)handler
 {
   v67 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  optionsCopy = options;
+  collectionCopy = collection;
+  lCollectionCopy = lCollection;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v19 = [v15 logMessageSummary];
+    logMessageSummary = [collectionCopy logMessageSummary];
     *buf = 138544130;
-    v60 = v17;
+    v60 = identifierCopy;
     v61 = 2112;
-    v62 = v19;
+    v62 = logMessageSummary;
     v63 = 2048;
-    v64 = a7;
+    countCopy = count;
     v65 = 1024;
     v66 = 2;
     _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Sending image conversion request %{public}@ for %@ (attempt %ld of %d)", buf, 0x26u);
   }
 
-  if (!v16)
+  if (!lCollectionCopy)
   {
-    [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
+    [optionsCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
     goto LABEL_8;
   }
 
   v58 = 0;
-  v20 = [v16 ensureFilesExistWithError:&v58];
+  v20 = [lCollectionCopy ensureFilesExistWithError:&v58];
   v21 = v58;
   if ((v20 & 1) == 0)
   {
-    v18[2](v18, 2, 0, v21);
+    handlerCopy[2](handlerCopy, 2, 0, v21);
     goto LABEL_13;
   }
 
   v57 = 0;
-  v22 = [v16 bookmarkDataDictionaryRepresentationWithError:&v57];
+  v22 = [lCollectionCopy bookmarkDataDictionaryRepresentationWithError:&v57];
   v23 = v57;
   if (v22)
   {
-    [v14 setObject:v22 forKeyedSubscript:@"PAMediaConversionServiceDestinationBookmarkCollectionKey"];
+    [optionsCopy setObject:v22 forKeyedSubscript:@"PAMediaConversionServiceDestinationBookmarkCollectionKey"];
 
 LABEL_8:
-    v24 = v14;
-    v40 = v14;
-    v38 = [MEMORY[0x277CBEAA8] date];
-    v37 = [(PAImageConversionServiceClient *)self serviceConnection];
+    v24 = optionsCopy;
+    v40 = optionsCopy;
+    date = [MEMORY[0x277CBEAA8] date];
+    serviceConnection = [(PAImageConversionServiceClient *)self serviceConnection];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __147__PAImageConversionServiceClient_sendRequestWithOptions_sourceURLCollection_destinationURLCollection_jobIdentifier_attemptCount_completionHandler___block_invoke;
     v49[3] = &unk_27989B458;
-    v25 = v17;
+    v25 = identifierCopy;
     v50 = v25;
-    v56 = a7;
+    countCopy2 = count;
     v26 = v24;
     v51 = v26;
-    v52 = self;
-    v53 = v15;
-    v39 = v17;
-    v27 = v16;
+    selfCopy = self;
+    v53 = collectionCopy;
+    v39 = identifierCopy;
+    v27 = lCollectionCopy;
     v54 = v27;
-    v28 = v18;
-    v29 = v16;
-    v30 = v18;
-    v31 = v15;
+    v28 = handlerCopy;
+    v29 = lCollectionCopy;
+    v30 = handlerCopy;
+    v31 = collectionCopy;
     v32 = v28;
     v55 = v28;
-    v33 = [v37 remoteObjectProxyWithErrorHandler:v49];
+    v33 = [serviceConnection remoteObjectProxyWithErrorHandler:v49];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __147__PAImageConversionServiceClient_sendRequestWithOptions_sourceURLCollection_destinationURLCollection_jobIdentifier_attemptCount_completionHandler___block_invoke_96;
     v41[3] = &unk_27989B490;
     v42 = v26;
-    v43 = v38;
+    v43 = date;
     v44 = v25;
-    v48 = a7;
+    countCopy3 = count;
     v34 = v32;
-    v15 = v31;
-    v18 = v30;
-    v16 = v29;
+    collectionCopy = v31;
+    handlerCopy = v30;
+    lCollectionCopy = v29;
     v47 = v34;
     v35 = v27;
-    v17 = v39;
+    identifierCopy = v39;
     v45 = v35;
-    v46 = self;
-    v21 = v38;
+    selfCopy2 = self;
+    v21 = date;
     [v33 convertImageWithOptions:v42 reply:v41];
 
-    v14 = v40;
+    optionsCopy = v40;
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v60 = v17;
+    v60 = identifierCopy;
     v61 = 2114;
     v62 = v23;
     _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Image conversion request %{public}@ unable to generate destination bookmark data: %{public}@", buf, 0x16u);
   }
 
-  v18[2](v18, 2, 0, v23);
+  handlerCopy[2](handlerCopy, 2, 0, v23);
 
 LABEL_13:
   v36 = *MEMORY[0x277D85DE8];
@@ -318,68 +318,68 @@ LABEL_12:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)convertImageAtSourceURLCollection:(id)a3 toDestinationURLCollection:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)convertImageAtSourceURLCollection:(id)collection toDestinationURLCollection:(id)lCollection options:(id)options completionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v43 = a4;
-  v11 = a5;
-  v12 = a6;
-  v45 = v10;
-  if ([v10 urlCount])
+  collectionCopy = collection;
+  lCollectionCopy = lCollection;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v45 = collectionCopy;
+  if ([collectionCopy urlCount])
   {
-    if (v11)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_32:
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"imageConversionOptions"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"imageConversionOptions"}];
 
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_33:
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"originalCompletionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"originalCompletionHandler"}];
 
     goto LABEL_4;
   }
 
-  v37 = [MEMORY[0x277CCA890] currentHandler];
-  [v37 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"sourceURLCollection.urlCount > 0"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"sourceURLCollection.urlCount > 0"}];
 
-  if (!v11)
+  if (!optionsCopy)
   {
     goto LABEL_32;
   }
 
 LABEL_3:
-  if (!v12)
+  if (!handlerCopy)
   {
     goto LABEL_33;
   }
 
 LABEL_4:
-  v13 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
   if (v13)
   {
-    v14 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
+    v14 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
 
     if (v14)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"!(imageConversionOptions[PAMediaConversionServiceOptionApplyOrientationTransformKey] && imageConversionOptions[PAMediaConversionServiceOptionOrientationKey])"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"!(imageConversionOptions[PAMediaConversionServiceOptionApplyOrientationTransformKey] && imageConversionOptions[PAMediaConversionServiceOptionOrientationKey])"}];
     }
   }
 
-  v16 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
-  if (v16)
+  currentHandler5 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
+  if (currentHandler5)
   {
-    v17 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
     if (!v17)
     {
 LABEL_11:
@@ -387,25 +387,25 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v18 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumLongSideLengthKey"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumLongSideLengthKey"];
 
     if (v18)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"!(imageConversionOptions[PAMediaConversionServiceOptionMaximumPixelCountKey] && imageConversionOptions[PAMediaConversionServiceOptionScaleFactorKey] && imageConversionOptions[PAMediaConversionServiceOptionMaximumLongSideLengthKey])"}];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"!(imageConversionOptions[PAMediaConversionServiceOptionMaximumPixelCountKey] && imageConversionOptions[PAMediaConversionServiceOptionScaleFactorKey] && imageConversionOptions[PAMediaConversionServiceOptionMaximumLongSideLengthKey])"}];
       goto LABEL_11;
     }
   }
 
 LABEL_12:
-  v44 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
+  v44 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
   if (v44)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v40 = [MEMORY[0x277CCA890] currentHandler];
-      [v40 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:NSString.class]"}];
+      currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler6 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:NSString.class]"}];
     }
   }
 
@@ -413,26 +413,26 @@ LABEL_12:
   state.opaque[1] = 0;
   v41 = _os_activity_create(&dword_2585D9000, "mediaconversion-image", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v41, &state);
-  v19 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+  v19 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
   v20 = v19;
   if (v19)
   {
-    v21 = v19;
+    uUIDString = v19;
   }
 
   else
   {
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v22 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
   v23 = MEMORY[0x277D86220];
-  v24 = os_signpost_id_make_with_pointer(MEMORY[0x277D86220], v21);
+  v24 = os_signpost_id_make_with_pointer(MEMORY[0x277D86220], uUIDString);
   v25 = v23;
   if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(MEMORY[0x277D86220]))
   {
     *buf = 138543362;
-    v52 = v21;
+    v52 = uUIDString;
     _os_signpost_emit_with_name_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_SIGNPOST_INTERVAL_BEGIN, v24, "com.apple.photos.mediaconversion.client.image", "Image conversion request %{public}@", buf, 0xCu);
   }
 
@@ -441,11 +441,11 @@ LABEL_12:
   v47[2] = __121__PAImageConversionServiceClient_convertImageAtSourceURLCollection_toDestinationURLCollection_options_completionHandler___block_invoke;
   v47[3] = &unk_27989B410;
   v49 = v24;
-  v26 = v12;
+  v26 = handlerCopy;
   v48 = v26;
   v27 = MEMORY[0x259C84340](v47);
-  v28 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v11];
-  [v28 setObject:v21 forKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+  v28 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:optionsCopy];
+  [v28 setObject:uUIDString forKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
   v46 = 0;
   v29 = [v45 bookmarkDataDictionaryRepresentationWithError:&v46];
   v30 = v46;
@@ -457,8 +457,8 @@ LABEL_12:
 
     if (v32)
     {
-      v33 = [MEMORY[0x277CCACC8] callStackReturnAddresses];
-      v34 = [v33 valueForKey:@"stringValue"];
+      callStackReturnAddresses = [MEMORY[0x277CCACC8] callStackReturnAddresses];
+      v34 = [callStackReturnAddresses valueForKey:@"stringValue"];
       v35 = [v34 componentsJoinedByString:@" "];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -471,7 +471,7 @@ LABEL_12:
       [v28 setObject:v35 forKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
     }
 
-    [(PAImageConversionServiceClient *)self sendRequestWithOptions:v28 sourceURLCollection:v45 destinationURLCollection:v43 jobIdentifier:v21 attemptCount:1 completionHandler:v27];
+    [(PAImageConversionServiceClient *)self sendRequestWithOptions:v28 sourceURLCollection:v45 destinationURLCollection:lCollectionCopy jobIdentifier:uUIDString attemptCount:1 completionHandler:v27];
   }
 
   else
@@ -479,7 +479,7 @@ LABEL_12:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v52 = v21;
+      v52 = uUIDString;
       v53 = 2114;
       v54 = v30;
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Image conversion request %{public}@ unable to generate source bookmark data: %{public}@", buf, 0x16u);
@@ -516,48 +516,48 @@ void __121__PAImageConversionServiceClient_convertImageAtSourceURLCollection_toD
   }
 }
 
-- (void)convertImageAtSourceURL:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)convertImageAtSourceURL:(id)l options:(id)options completionHandler:(id)handler
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v15;
-  v12 = v10;
-  if (!v15)
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  if (!lCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"sourceURL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"sourceURL"}];
 
     v11 = 0;
   }
 
   v13 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:v11];
-  [(PAImageConversionServiceClient *)self convertImageAtSourceURLCollection:v13 toDestinationURLCollection:0 options:v9 completionHandler:v12];
+  [(PAImageConversionServiceClient *)self convertImageAtSourceURLCollection:v13 toDestinationURLCollection:0 options:optionsCopy completionHandler:v12];
 }
 
 - (void)setupServiceConnection
 {
   if (self->_serviceConnection)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:42 description:@"Unexpected non-nil service connection during connection setup"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PAImageConversionServiceClient.m" lineNumber:42 description:@"Unexpected non-nil service connection during connection setup"];
   }
 
   v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.photos.ImageConversionService" options:0];
   [(PAImageConversionServiceClient *)self setServiceConnection:v3];
 
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869A8358];
-  v5 = [(PAImageConversionServiceClient *)self serviceConnection];
-  [v5 setRemoteObjectInterface:v4];
+  serviceConnection = [(PAImageConversionServiceClient *)self serviceConnection];
+  [serviceConnection setRemoteObjectInterface:v4];
 
-  v8 = [(PAImageConversionServiceClient *)self serviceConnection];
-  [v8 resume];
+  serviceConnection2 = [(PAImageConversionServiceClient *)self serviceConnection];
+  [serviceConnection2 resume];
 }
 
 - (void)dealloc
 {
-  v3 = [(PAImageConversionServiceClient *)self serviceConnection];
-  [v3 invalidate];
+  serviceConnection = [(PAImageConversionServiceClient *)self serviceConnection];
+  [serviceConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = PAImageConversionServiceClient;

@@ -1,24 +1,24 @@
 @interface STCoreAnalyticsManager
-+ (id)_createScreenTimePopulationEventWithContext:(id)a3;
-- (STCoreAnalyticsManager)initWithPersistenceController:(id)a3;
-- (id)_createCommunicationSafetyStateEventWithContext:(id)a3;
-- (id)_createRecoveryEmailMismatchEventWithContext:(id)a3;
-- (id)_createWebContentFilterEventWithContext:(id)a3;
++ (id)_createScreenTimePopulationEventWithContext:(id)context;
+- (STCoreAnalyticsManager)initWithPersistenceController:(id)controller;
+- (id)_createCommunicationSafetyStateEventWithContext:(id)context;
+- (id)_createRecoveryEmailMismatchEventWithContext:(id)context;
+- (id)_createWebContentFilterEventWithContext:(id)context;
 - (void)startSendingEvents;
 @end
 
 @implementation STCoreAnalyticsManager
 
-- (STCoreAnalyticsManager)initWithPersistenceController:(id)a3
+- (STCoreAnalyticsManager)initWithPersistenceController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = STCoreAnalyticsManager;
   v6 = [(STCoreAnalyticsManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistenceController, a3);
+    objc_storeStrong(&v6->_persistenceController, controller);
     v8 = [[NSBackgroundActivityScheduler alloc] initWithIdentifier:@"com.apple.screentime.activity.analytics"];
     backgroundActivity = v7->_backgroundActivity;
     v7->_backgroundActivity = v8;
@@ -29,28 +29,28 @@
 
 - (void)startSendingEvents
 {
-  v3 = [(STCoreAnalyticsManager *)self backgroundActivity];
-  [v3 setPreregistered:1];
+  backgroundActivity = [(STCoreAnalyticsManager *)self backgroundActivity];
+  [backgroundActivity setPreregistered:1];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10009E3EC;
   v4[3] = &unk_1001A6258;
   v4[4] = self;
-  [v3 scheduleWithBlock:v4];
+  [backgroundActivity scheduleWithBlock:v4];
 }
 
-+ (id)_createScreenTimePopulationEventWithContext:(id)a3
++ (id)_createScreenTimePopulationEventWithContext:(id)context
 {
   v19 = 0;
-  v3 = [STCoreUser fetchLocalUserInContext:a3 error:&v19];
+  v3 = [STCoreUser fetchLocalUserInContext:context error:&v19];
   v4 = v19;
   if (v3)
   {
     v5 = [STScreenTimePopulationCoreAnalyticsEvent alloc];
-    v6 = [v3 screenTimeEnabled];
-    v7 = [v3 syncingEnabled];
+    screenTimeEnabled = [v3 screenTimeEnabled];
+    syncingEnabled = [v3 syncingEnabled];
     v8 = v5;
-    v9 = v6;
+    v9 = screenTimeEnabled;
   }
 
   else
@@ -63,18 +63,18 @@
 
     v8 = [STScreenTimePopulationCoreAnalyticsEvent alloc];
     v9 = 0;
-    v7 = 0;
+    syncingEnabled = 0;
   }
 
-  v17 = [v8 initWithIsScreenTimeEnabled:v9 isShareAcrossDevicesEnabled:v7];
+  v17 = [v8 initWithIsScreenTimeEnabled:v9 isShareAcrossDevicesEnabled:syncingEnabled];
 
   return v17;
 }
 
-- (id)_createCommunicationSafetyStateEventWithContext:(id)a3
+- (id)_createCommunicationSafetyStateEventWithContext:(id)context
 {
   v14 = 0;
-  v3 = [STCoreUser fetchLocalUserInContext:a3 error:&v14];
+  v3 = [STCoreUser fetchLocalUserInContext:context error:&v14];
   v4 = v14;
   if (v3)
   {
@@ -95,17 +95,17 @@
   return v5;
 }
 
-- (id)_createWebContentFilterEventWithContext:(id)a3
+- (id)_createWebContentFilterEventWithContext:(id)context
 {
   v32 = 0;
-  v3 = [STCoreUser fetchLocalUserInContext:a3 error:&v32];
+  v3 = [STCoreUser fetchLocalUserInContext:context error:&v32];
   v4 = v32;
   if (v3)
   {
-    v5 = [v3 dsid];
+    dsid = [v3 dsid];
     v6 = STBlueprintTypeRestrictions;
-    v7 = [v3 managingOrganization];
-    v8 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:v5 ofType:v6 fromOrganization:v7];
+    managingOrganization = [v3 managingOrganization];
+    v8 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:dsid ofType:v6 fromOrganization:managingOrganization];
 
     v31 = v4;
     v9 = [v8 execute:&v31];
@@ -113,16 +113,16 @@
 
     if (v9)
     {
-      v11 = [v9 firstObject];
-      v12 = v11;
-      if (v11 && [v11 enabled])
+      firstObject = [v9 firstObject];
+      v12 = firstObject;
+      if (firstObject && [firstObject enabled])
       {
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v13 = [v12 configurations];
-        v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        configurations = [v12 configurations];
+        v14 = [configurations countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v14)
         {
           v15 = v14;
@@ -137,12 +137,12 @@
             {
               if (*v34 != v17)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(configurations);
               }
 
               v19 = *(*(&v33 + 1) + 8 * i);
-              v20 = [v19 type];
-              v21 = [v20 isEqualToString:v16];
+              type = [v19 type];
+              v21 = [type isEqualToString:v16];
 
               if (v21)
               {
@@ -151,7 +151,7 @@
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+            v15 = [configurations countByEnumeratingWithState:&v33 objects:v37 count:16];
             if (v15)
             {
               continue;
@@ -174,35 +174,35 @@ LABEL_18:
 
         if (v22)
         {
-          v24 = [v22 cemConfiguration];
+          cemConfiguration = [v22 cemConfiguration];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v25 = [v24 payloadUseContentFilter];
-            v23 = [v25 BOOLValue];
+            payloadUseContentFilter = [cemConfiguration payloadUseContentFilter];
+            bOOLValue = [payloadUseContentFilter BOOLValue];
           }
 
           else
           {
-            v23 = 0;
+            bOOLValue = 0;
           }
         }
 
         else
         {
-          v23 = 0;
+          bOOLValue = 0;
         }
       }
 
       else
       {
-        v23 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v23 = 0;
+      bOOLValue = 0;
     }
 
     v4 = v10;
@@ -210,47 +210,47 @@ LABEL_18:
 
   else
   {
-    v23 = 0;
+    bOOLValue = 0;
   }
 
-  v26 = [[STWebContentFilterCoreAnalyticsEvent alloc] initWithWebContentFilterEnabled:v23];
+  v26 = [[STWebContentFilterCoreAnalyticsEvent alloc] initWithWebContentFilterEnabled:bOOLValue];
 
   return v26;
 }
 
-- (id)_createRecoveryEmailMismatchEventWithContext:(id)a3
+- (id)_createRecoveryEmailMismatchEventWithContext:(id)context
 {
   v21 = 0;
-  v3 = [STCoreUser fetchLocalUserInContext:a3 error:&v21];
+  v3 = [STCoreUser fetchLocalUserInContext:context error:&v21];
   v4 = v21;
   if (v3)
   {
     if (([v3 isManaged] & 1) == 0)
     {
-      v5 = [v3 effectivePasscode];
-      if (!v5)
+      effectivePasscode = [v3 effectivePasscode];
+      if (!effectivePasscode)
       {
         goto LABEL_10;
       }
 
-      v14 = [v3 effectiveRecoveryAltDSID];
+      effectiveRecoveryAltDSID = [v3 effectiveRecoveryAltDSID];
 
-      if (v14)
+      if (effectiveRecoveryAltDSID)
       {
         v15 = objc_opt_new();
-        v16 = [v15 aa_primaryAppleAccount];
-        v17 = [v16 aa_altDSID];
-        v18 = [v3 effectiveRecoveryAltDSID];
-        v19 = [v18 isEqualToString:v17];
+        aa_primaryAppleAccount = [v15 aa_primaryAppleAccount];
+        aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+        effectiveRecoveryAltDSID2 = [v3 effectiveRecoveryAltDSID];
+        v19 = [effectiveRecoveryAltDSID2 isEqualToString:aa_altDSID];
 
-        v5 = v19 ^ 1;
+        effectivePasscode = v19 ^ 1;
         goto LABEL_10;
       }
     }
 
-    v5 = 0;
+    effectivePasscode = 0;
 LABEL_10:
-    v13 = [[STRecoveryEmailMismatchCoreAnalyticsEvent alloc] initWithRecoveryEmailMismatched:v5];
+    v13 = [[STRecoveryEmailMismatchCoreAnalyticsEvent alloc] initWithRecoveryEmailMismatched:effectivePasscode];
     goto LABEL_11;
   }
 

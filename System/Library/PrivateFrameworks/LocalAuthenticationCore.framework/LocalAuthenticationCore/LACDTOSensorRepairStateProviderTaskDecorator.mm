@@ -1,8 +1,8 @@
 @interface LACDTOSensorRepairStateProviderTaskDecorator
-- (LACDTOSensorRepairStateProviderTaskDecorator)initWithProvider:(id)a3 replyQueue:(id)a4;
+- (LACDTOSensorRepairStateProviderTaskDecorator)initWithProvider:(id)provider replyQueue:(id)queue;
 - (id)_repairStateBackgroundTask;
 - (void)dealloc;
-- (void)fetchRepairStateWithCompletion:(id)a3;
+- (void)fetchRepairStateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOSensorRepairStateProviderTaskDecorator
@@ -11,31 +11,31 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B0233000, a2, OS_LOG_TYPE_DEBUG, "%@ will dealloc", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (LACDTOSensorRepairStateProviderTaskDecorator)initWithProvider:(id)a3 replyQueue:(id)a4
+- (LACDTOSensorRepairStateProviderTaskDecorator)initWithProvider:(id)provider replyQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACDTOSensorRepairStateProviderTaskDecorator;
   v9 = [(LACDTOSensorRepairStateProviderTaskDecorator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_provider, a3);
-    objc_storeStrong(&v10->_replyQueue, a4);
+    objc_storeStrong(&v9->_provider, provider);
+    objc_storeStrong(&v10->_replyQueue, queue);
   }
 
   return v10;
 }
 
-- (void)fetchRepairStateWithCompletion:(id)a3
+- (void)fetchRepairStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_backgroundTask);
 
   if (WeakRetained)
@@ -48,12 +48,12 @@
       [(LACDTOSensorRepairStateProviderCRAdapter *)self _fetchRepairStateWithCompletion:v7, v8];
     }
 
-    v4[2](v4, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 
   else
   {
-    v9 = [(LACDTOSensorRepairStateProviderTaskDecorator *)self _repairStateBackgroundTask];
+    _repairStateBackgroundTask = [(LACDTOSensorRepairStateProviderTaskDecorator *)self _repairStateBackgroundTask];
     objc_initWeak(&location, self);
     replyQueue = self->_replyQueue;
     v11[0] = MEMORY[0x1E69E9820];
@@ -61,8 +61,8 @@
     v11[2] = __79__LACDTOSensorRepairStateProviderTaskDecorator_fetchRepairStateWithCompletion___block_invoke;
     v11[3] = &unk_1E7A958F8;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
-    v6 = v9;
+    v13 = completionCopy;
+    v6 = _repairStateBackgroundTask;
     v12 = v6;
     [v6 runWithTimeout:replyQueue queue:v11 completion:1.0];
     objc_storeWeak(&self->_backgroundTask, v6);

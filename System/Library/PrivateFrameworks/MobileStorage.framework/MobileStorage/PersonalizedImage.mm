@@ -1,26 +1,26 @@
 @interface PersonalizedImage
-- (BOOL)initializeDeviceAttributes:(id *)a3;
-- (BOOL)initializeImageProperties:(id *)a3;
-- (BOOL)mountImage:(id *)a3;
-- (BOOL)mountImage:(id)a3 serverTicket:(id)a4 imageDigest:(id)a5 trustCacheURL:(id)a6 error:(id *)a7;
-- (PersonalizedImage)initWithBundleURL:(id)a3 imageVariant:(id)a4 remoteDevice:(id)a5 options:(id)a6;
-- (id)digestFileSha1:(id)a3 error:(id *)a4;
-- (id)digestFileSha384:(id)a3 error:(id *)a4;
+- (BOOL)initializeDeviceAttributes:(id *)attributes;
+- (BOOL)initializeImageProperties:(id *)properties;
+- (BOOL)mountImage:(id *)image;
+- (BOOL)mountImage:(id)image serverTicket:(id)ticket imageDigest:(id)digest trustCacheURL:(id)l error:(id *)error;
+- (PersonalizedImage)initWithBundleURL:(id)l imageVariant:(id)variant remoteDevice:(id)device options:(id)options;
+- (id)digestFileSha1:(id)sha1 error:(id *)error;
+- (id)digestFileSha384:(id)sha384 error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation PersonalizedImage
 
-- (PersonalizedImage)initWithBundleURL:(id)a3 imageVariant:(id)a4 remoteDevice:(id)a5 options:(id)a6
+- (PersonalizedImage)initWithBundleURL:(id)l imageVariant:(id)variant remoteDevice:(id)device options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  lCopy = l;
+  variantCopy = variant;
+  deviceCopy = device;
+  optionsCopy = options;
+  if (!variantCopy)
   {
 LABEL_26:
-    v41 = 0;
+    selfCopy = 0;
     goto LABEL_27;
   }
 
@@ -29,15 +29,15 @@ LABEL_26:
   self = [(PersonalizedImage *)&v45 init];
   if (self)
   {
-    v14 = [v10 copy];
+    v14 = [lCopy copy];
     bundlePathURL = self->_bundlePathURL;
     self->_bundlePathURL = v14;
 
-    v16 = [v11 copy];
+    v16 = [variantCopy copy];
     imageVariant = self->_imageVariant;
     self->_imageVariant = v16;
 
-    objc_storeStrong(&self->_remoteDevice, a5);
+    objc_storeStrong(&self->_remoteDevice, device);
     self->_digestLength = 48;
     self->_useCredentials = 1;
     v18 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"https://gs.apple.com:443"];
@@ -45,9 +45,9 @@ LABEL_26:
     self->_signingServerURL = v18;
 
     objc_storeStrong(&self->_imageType, @"Personalized");
-    if (v13)
+    if (optionsCopy)
     {
-      v20 = [v13 objectForKeyedSubscript:@"UseCredentials"];
+      v20 = [optionsCopy objectForKeyedSubscript:@"UseCredentials"];
       v21 = v20;
       if (v20)
       {
@@ -59,7 +59,7 @@ LABEL_26:
         }
       }
 
-      v23 = [v13 objectForKeyedSubscript:@"SigningServerURL"];
+      v23 = [optionsCopy objectForKeyedSubscript:@"SigningServerURL"];
       v24 = v23;
       if (v23)
       {
@@ -74,7 +74,7 @@ LABEL_26:
       }
 
       v43 = v21;
-      v28 = [v13 objectForKeyedSubscript:@"MountedBundlePath"];
+      v28 = [optionsCopy objectForKeyedSubscript:@"MountedBundlePath"];
       v29 = v28;
       if (v28)
       {
@@ -88,7 +88,7 @@ LABEL_26:
         }
       }
 
-      v33 = [v13 objectForKeyedSubscript:@"ImagePath"];
+      v33 = [optionsCopy objectForKeyedSubscript:@"ImagePath"];
       v34 = v33;
       if (v33)
       {
@@ -102,7 +102,7 @@ LABEL_26:
         }
       }
 
-      v38 = [v13 objectForKeyedSubscript:@"UseCryptexFlow"];
+      v38 = [optionsCopy objectForKeyedSubscript:@"UseCryptexFlow"];
       v39 = v38;
       if (v38)
       {
@@ -115,7 +115,7 @@ LABEL_26:
       }
     }
 
-    if (!v10 && !self->_userProvidedBundleMountPathURL && !self->_userProvidedImagePathURL)
+    if (!lCopy && !self->_userProvidedBundleMountPathURL && !self->_userProvidedImagePathURL)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -128,10 +128,10 @@ LABEL_26:
   }
 
   self = self;
-  v41 = self;
+  selfCopy = self;
 LABEL_27:
 
-  return v41;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -141,12 +141,12 @@ LABEL_27:
   [(PersonalizedImage *)&v2 dealloc];
 }
 
-- (id)digestFileSha1:(id)a3 error:(id *)a4
+- (id)digestFileSha1:(id)sha1 error:(id *)error
 {
-  v5 = a3;
-  v9 = v5;
+  sha1Copy = sha1;
+  v9 = sha1Copy;
   memset(&c, 0, sizeof(c));
-  if (!v5)
+  if (!sha1Copy)
   {
     v24 = createMobileStorageError("[PersonalizedImage digestFileSha1:error:]", 377, -2, 0, @"Invalid inputs.", v6, v7, v8, v27);
     v12 = 0;
@@ -156,8 +156,8 @@ LABEL_9:
   }
 
   v10 = MEMORY[0x277CCA9F8];
-  v11 = [v5 path];
-  v12 = [v10 fileHandleForReadingAtPath:v11];
+  path = [sha1Copy path];
+  v12 = [v10 fileHandleForReadingAtPath:path];
 
   if (!v12)
   {
@@ -183,7 +183,7 @@ LABEL_9:
     CC_SHA1_Final(v19, &c);
     v23 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v19 length:20];
     v24 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -194,7 +194,7 @@ LABEL_9:
   v24 = createMobileStorageError("[PersonalizedImage digestFileSha1:error:]", 391, -2, 0, @"Failed to allocate digest memory.", v16, v17, v18, v27);
 LABEL_10:
   v23 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -203,7 +203,7 @@ LABEL_11:
   if (!v23)
   {
     v25 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
 LABEL_13:
@@ -215,12 +215,12 @@ LABEL_13:
   return v23;
 }
 
-- (id)digestFileSha384:(id)a3 error:(id *)a4
+- (id)digestFileSha384:(id)sha384 error:(id *)error
 {
-  v5 = a3;
-  v9 = v5;
+  sha384Copy = sha384;
+  v9 = sha384Copy;
   memset(&c, 0, sizeof(c));
-  if (!v5)
+  if (!sha384Copy)
   {
     v24 = createMobileStorageError("[PersonalizedImage digestFileSha384:error:]", 428, -2, 0, @"Invalid inputs.", v6, v7, v8, v28);
     v12 = 0;
@@ -230,8 +230,8 @@ LABEL_9:
   }
 
   v10 = MEMORY[0x277CCA9F8];
-  v11 = [v5 path];
-  v12 = [v10 fileHandleForReadingAtPath:v11];
+  path = [sha384Copy path];
+  v12 = [v10 fileHandleForReadingAtPath:path];
 
   if (!v12)
   {
@@ -257,7 +257,7 @@ LABEL_9:
     CC_SHA384_Final(v19, &c);
     v23 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v19 length:48];
     v24 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -268,7 +268,7 @@ LABEL_9:
   v24 = createMobileStorageError("[PersonalizedImage digestFileSha384:error:]", 442, -2, 0, @"Failed to allocate digest memory.", v16, v17, v18, v28);
 LABEL_10:
   v23 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -277,7 +277,7 @@ LABEL_11:
   if (!v23)
   {
     v25 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
 LABEL_13:
@@ -291,21 +291,21 @@ LABEL_13:
   return v26;
 }
 
-- (BOOL)initializeImageProperties:(id *)a3
+- (BOOL)initializeImageProperties:(id *)properties
 {
-  v3 = self;
+  selfCopy = self;
   v191 = *MEMORY[0x277D85DE8];
-  v4 = [(PersonalizedImage *)self userProvidedImagePathURL];
+  userProvidedImagePathURL = [(PersonalizedImage *)self userProvidedImagePathURL];
 
-  if (v4)
+  if (userProvidedImagePathURL)
   {
-    v5 = [(PersonalizedImage *)v3 userProvidedImagePathURL];
-    v6 = [v5 path];
+    userProvidedImagePathURL2 = [(PersonalizedImage *)selfCopy userProvidedImagePathURL];
+    path = [userProvidedImagePathURL2 path];
 
-    if (v6)
+    if (path)
     {
-      v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
-      [(PersonalizedImage *)v3 setImagePathURL:v7];
+      v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
+      [(PersonalizedImage *)selfCopy setImagePathURL:v7];
 
       v8 = 0;
       v9 = 0;
@@ -319,21 +319,21 @@ LABEL_13:
 
   else
   {
-    v16 = [(PersonalizedImage *)v3 userProvidedBundleMountPathURL];
+    userProvidedBundleMountPathURL = [(PersonalizedImage *)selfCopy userProvidedBundleMountPathURL];
 
-    if (v16)
+    if (userProvidedBundleMountPathURL)
     {
-      v173 = v3;
-      v17 = [(PersonalizedImage *)v3 userProvidedBundleMountPathURL];
-      v18 = [v17 path];
-      v19 = [v18 copy];
+      v173 = selfCopy;
+      userProvidedBundleMountPathURL2 = [(PersonalizedImage *)selfCopy userProvidedBundleMountPathURL];
+      path2 = [userProvidedBundleMountPathURL2 path];
+      v19 = [path2 copy];
 
       goto LABEL_20;
     }
 
-    v6 = [(PersonalizedImage *)v3 mountedVolumeEntry];
+    path = [(PersonalizedImage *)selfCopy mountedVolumeEntry];
 
-    if (!v6)
+    if (!path)
     {
       v9 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 532, -2, 0, @"Bundle mounting not support on this platform.", v50, v51, v52, v165);
       v14 = 0;
@@ -344,15 +344,15 @@ LABEL_13:
     }
   }
 
-  v173 = v3;
+  v173 = selfCopy;
   v19 = 0;
 LABEL_20:
   v53 = MEMORY[0x277CBEAC0];
   v54 = [v19 stringByAppendingPathComponent:@"Restore/BuildManifest.plist"];
-  v6 = [v53 dictionaryWithContentsOfFile:v54];
+  path = [v53 dictionaryWithContentsOfFile:v54];
 
   v171 = v19;
-  if (!v6)
+  if (!path)
   {
     v9 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 544, -2, 0, @"Failed to load build manifest.", v55, v56, v57, v165);
     v14 = 0;
@@ -366,41 +366,41 @@ LABEL_97:
     goto LABEL_101;
   }
 
-  v175 = v6;
+  v175 = path;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v58 = [v6 objectForKeyedSubscript:@"ManifestVersion"];
+    v58 = [path objectForKeyedSubscript:@"ManifestVersion"];
     *buf = 138412290;
     *&buf[4] = v58;
     _os_log_impl(&dword_259B65000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Manifest Version: %@", buf, 0xCu);
 
-    v6 = v175;
+    path = v175;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v59 = [v6 objectForKeyedSubscript:@"ProductVersion"];
+    v59 = [path objectForKeyedSubscript:@"ProductVersion"];
     *buf = 138412290;
     *&buf[4] = v59;
     _os_log_impl(&dword_259B65000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Product Version: %@", buf, 0xCu);
 
-    v6 = v175;
+    path = v175;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v60 = [v6 objectForKeyedSubscript:@"ProductBuildVersion"];
+    v60 = [path objectForKeyedSubscript:@"ProductBuildVersion"];
     *buf = 138412290;
     *&buf[4] = v60;
     _os_log_impl(&dword_259B65000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Product Build Version: %@", buf, 0xCu);
 
-    v6 = v175;
+    path = v175;
   }
 
-  v61 = [v6 objectForKeyedSubscript:@"BuildIdentities"];
-  v6 = isNSArray(v61);
+  v61 = [path objectForKeyedSubscript:@"BuildIdentities"];
+  path = isNSArray(v61);
 
-  if (!v6)
+  if (!path)
   {
     obj = v61;
     v9 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 556, -2, 0, @"Missing key 'BuildIdentities'.", v62, v63, v64, v165);
@@ -520,11 +520,11 @@ LABEL_59:
         if ([v69 scanHexLongLong:buf])
         {
           v88 = *buf;
-          v89 = [(PersonalizedImage *)v173 securityDomain];
-          v90 = [v89 unsignedLongLongValue];
+          securityDomain = [(PersonalizedImage *)v173 securityDomain];
+          unsignedLongLongValue = [securityDomain unsignedLongLongValue];
 
           v9 = v179;
-          if (v88 != v90)
+          if (v88 != unsignedLongLongValue)
           {
             goto LABEL_59;
           }
@@ -620,8 +620,8 @@ LABEL_82:
             goto LABEL_55;
           }
 
-          v120 = [(PersonalizedImage *)v173 imageVariant];
-          v166 = [v114 isEqualToString:v120];
+          imageVariant = [(PersonalizedImage *)v173 imageVariant];
+          v166 = [v114 isEqualToString:imageVariant];
 
           if (v166)
           {
@@ -724,25 +724,25 @@ LABEL_88:
   if (!v168)
   {
 LABEL_94:
-    v147 = [(PersonalizedImage *)v173 imageVariant];
-    v151 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 678, -2, v9, @"Failed to find image for variant %@.", v148, v149, v150, v147);
+    imageVariant2 = [(PersonalizedImage *)v173 imageVariant];
+    v151 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 678, -2, v9, @"Failed to find image for variant %@.", v148, v149, v150, imageVariant2);
 
     v14 = 0;
     v13 = 0;
     v12 = 0;
-    v6 = 0;
+    path = 0;
 LABEL_100:
     v9 = v151;
     goto LABEL_101;
   }
 
-  v6 = [@"Restore" stringByAppendingPathComponent:v168];
+  path = [@"Restore" stringByAppendingPathComponent:v168];
 
   v140 = MEMORY[0x277CBEBC0];
   v8 = v171;
-  v141 = [v171 stringByAppendingPathComponent:v6];
+  v141 = [v171 stringByAppendingPathComponent:path];
   v142 = [v140 fileURLWithPath:v141];
-  v3 = v173;
+  selfCopy = v173;
   [(PersonalizedImage *)v173 setImagePathURL:v142];
 
   if (v172)
@@ -764,11 +764,11 @@ LABEL_100:
 
   v10 = obj;
 LABEL_4:
-  v11 = [(PersonalizedImage *)v3 remoteDevice];
+  remoteDevice = [(PersonalizedImage *)selfCopy remoteDevice];
 
   v171 = v8;
   obj = v10;
-  if (v11)
+  if (remoteDevice)
   {
     v12 = 0;
     v13 = 0;
@@ -776,7 +776,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v174 = v3;
+  v174 = selfCopy;
   v13 = copyWorkingDirectory();
   if (!v13)
   {
@@ -788,9 +788,9 @@ LABEL_99:
     goto LABEL_100;
   }
 
-  v23 = [MEMORY[0x277CCAD78] UUID];
-  v24 = [v23 UUIDString];
-  v14 = [v13 stringByAppendingPathComponent:v24];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [v13 stringByAppendingPathComponent:uUIDString];
 
   if (!v14)
   {
@@ -807,30 +807,30 @@ LABEL_99:
     goto LABEL_100;
   }
 
-  v31 = [MEMORY[0x277CCAA00] defaultManager];
-  v32 = [(PersonalizedImage *)v174 imagePathURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  imagePathURL = [(PersonalizedImage *)v174 imagePathURL];
   v33 = v9;
   v184 = v9;
-  v34 = [v31 copyItemAtURL:v32 toURL:v12 error:&v184];
+  v34 = [defaultManager copyItemAtURL:imagePathURL toURL:v12 error:&v184];
   v9 = v184;
 
   if ((v34 & 1) == 0)
   {
-    v155 = [(PersonalizedImage *)v174 imagePathURL];
+    imagePathURL2 = [(PersonalizedImage *)v174 imagePathURL];
     v156 = v9;
-    v9 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 736, -2, v9, @"Failed to copy %@ to %@.", v157, v158, v159, v155);
+    v9 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 736, -2, v9, @"Failed to copy %@ to %@.", v157, v158, v159, imagePathURL2);
 
     goto LABEL_101;
   }
 
   [(PersonalizedImage *)v174 setImagePathURL:v12];
-  v35 = [(PersonalizedImage *)v174 trustCacheURL];
+  trustCacheURL = [(PersonalizedImage *)v174 trustCacheURL];
 
-  if (v35)
+  if (trustCacheURL)
   {
-    v36 = [MEMORY[0x277CCAD78] UUID];
-    v37 = [v36 UUIDString];
-    v38 = [v13 stringByAppendingPathComponent:v37];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v38 = [v13 stringByAppendingPathComponent:uUIDString2];
 
     v42 = v9;
     if (v38)
@@ -839,10 +839,10 @@ LABEL_99:
 
       if (v43)
       {
-        v47 = [MEMORY[0x277CCAA00] defaultManager];
-        v48 = [(PersonalizedImage *)v174 trustCacheURL];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        trustCacheURL2 = [(PersonalizedImage *)v174 trustCacheURL];
         v183 = v9;
-        v49 = [v47 copyItemAtURL:v48 toURL:v43 error:&v183];
+        v49 = [defaultManager2 copyItemAtURL:trustCacheURL2 toURL:v43 error:&v183];
         v9 = v183;
 
         if (v49)
@@ -854,8 +854,8 @@ LABEL_99:
           goto LABEL_104;
         }
 
-        v160 = [(PersonalizedImage *)v174 trustCacheURL];
-        v164 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 756, -2, v9, @"Failed to copy %@ to %@.", v161, v162, v163, v160);
+        trustCacheURL3 = [(PersonalizedImage *)v174 trustCacheURL];
+        v164 = createMobileStorageError("[PersonalizedImage initializeImageProperties:]", 756, -2, v9, @"Failed to copy %@ to %@.", v161, v162, v163, trustCacheURL3);
 
         v9 = v164;
         v14 = v38;
@@ -879,11 +879,11 @@ LABEL_99:
     }
 
 LABEL_101:
-    if (a3)
+    if (properties)
     {
       v152 = v9;
       v15 = 0;
-      *a3 = v9;
+      *properties = v9;
     }
 
     else
@@ -904,22 +904,22 @@ LABEL_104:
   return v15;
 }
 
-- (BOOL)initializeDeviceAttributes:(id *)a3
+- (BOOL)initializeDeviceAttributes:(id *)attributes
 {
   v127 = *MEMORY[0x277D85DE8];
   cf = 0;
   memset(v126, 0, sizeof(v126));
   v124 = @"PersonalizedImageType";
-  v5 = [(PersonalizedImage *)self imageVariant];
-  v125 = v5;
+  imageVariant = [(PersonalizedImage *)self imageVariant];
+  v125 = imageVariant;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
 
-  v7 = [(PersonalizedImage *)self remoteDevice];
+  remoteDevice = [(PersonalizedImage *)self remoteDevice];
 
-  if (v7)
+  if (remoteDevice)
   {
-    v8 = [(PersonalizedImage *)self remoteDevice];
-    v9 = MobileStorageRemoteCopyPersonalizationIdentifiersWithError(v8, v6, &cf);
+    remoteDevice2 = [(PersonalizedImage *)self remoteDevice];
+    v9 = MobileStorageRemoteCopyPersonalizationIdentifiersWithError(remoteDevice2, v6, &cf);
   }
 
   else
@@ -945,24 +945,24 @@ LABEL_19:
     v34 = 0;
     v35 = 0;
     v119 = 0;
-    if (!a3)
+    if (!attributes)
     {
       goto LABEL_40;
     }
 
 LABEL_39:
     v53 = v23;
-    v54 = a3;
-    LOBYTE(a3) = 0;
-    *v54 = v23;
+    attributesCopy = attributes;
+    LOBYTE(attributes) = 0;
+    *attributesCopy = v23;
     goto LABEL_40;
   }
 
-  v13 = [(PersonalizedImage *)self remoteDevice];
+  remoteDevice3 = [(PersonalizedImage *)self remoteDevice];
 
-  if (v13)
+  if (remoteDevice3)
   {
-    v14 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice4 = [(PersonalizedImage *)self remoteDevice];
     v15 = copy_remote_device_property();
   }
 
@@ -988,9 +988,9 @@ LABEL_39:
     goto LABEL_19;
   }
 
-  v20 = [(PersonalizedImage *)self remoteDevice];
+  remoteDevice5 = [(PersonalizedImage *)self remoteDevice];
 
-  if (v20)
+  if (remoteDevice5)
   {
     v21 = @"Bridge";
   }
@@ -1021,24 +1021,24 @@ LABEL_39:
   v32 = isNSNumber(v31);
   if (v32)
   {
-    v33 = v32;
+    remoteDevice7 = v32;
   }
 
   else
   {
-    v36 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice6 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v36)
+    if (!remoteDevice6)
     {
       goto LABEL_24;
     }
 
-    v33 = [(PersonalizedImage *)self remoteDevice];
-    v37 = a3;
+    remoteDevice7 = [(PersonalizedImage *)self remoteDevice];
+    attributesCopy2 = attributes;
     v38 = copy_remote_device_property();
 
     v31 = v38;
-    a3 = v37;
+    attributes = attributesCopy2;
   }
 
 LABEL_24:
@@ -1061,7 +1061,7 @@ LABEL_37:
 LABEL_38:
     v34 = 0;
     v35 = 0;
-    if (!a3)
+    if (!attributes)
     {
       goto LABEL_40;
     }
@@ -1073,24 +1073,24 @@ LABEL_38:
   v42 = isNSNumber(v24);
   if (v42)
   {
-    v43 = v42;
+    remoteDevice9 = v42;
   }
 
   else
   {
-    v44 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice8 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v44)
+    if (!remoteDevice8)
     {
       goto LABEL_31;
     }
 
-    v43 = [(PersonalizedImage *)self remoteDevice];
-    v45 = a3;
+    remoteDevice9 = [(PersonalizedImage *)self remoteDevice];
+    attributesCopy3 = attributes;
     v46 = copy_remote_device_property();
 
     v24 = v46;
-    a3 = v45;
+    attributes = attributesCopy3;
   }
 
 LABEL_31:
@@ -1107,24 +1107,24 @@ LABEL_31:
   v51 = isNSNumber(v50);
   if (v51)
   {
-    v52 = v51;
+    remoteDevice11 = v51;
   }
 
   else
   {
-    v57 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice10 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v57)
+    if (!remoteDevice10)
     {
       goto LABEL_46;
     }
 
-    v52 = [(PersonalizedImage *)self remoteDevice];
-    v58 = a3;
+    remoteDevice11 = [(PersonalizedImage *)self remoteDevice];
+    attributesCopy4 = attributes;
     v59 = copy_remote_device_property();
 
     v50 = v59;
-    a3 = v58;
+    attributes = attributesCopy4;
   }
 
 LABEL_46:
@@ -1142,24 +1142,24 @@ LABEL_46:
   v63 = isNSNumber(v122);
   if (v63)
   {
-    v64 = v63;
+    remoteDevice13 = v63;
   }
 
   else
   {
-    v65 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice12 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v65)
+    if (!remoteDevice12)
     {
       goto LABEL_53;
     }
 
-    v64 = [(PersonalizedImage *)self remoteDevice];
-    v66 = a3;
+    remoteDevice13 = [(PersonalizedImage *)self remoteDevice];
+    attributesCopy5 = attributes;
     v67 = copy_remote_device_property();
 
     v122 = v67;
-    a3 = v66;
+    attributes = attributesCopy5;
   }
 
 LABEL_53:
@@ -1174,22 +1174,22 @@ LABEL_53:
 
   v27 = [v9 objectForKeyedSubscript:@"EffectiveSecurityModeAp"];
   v71 = isNSNumber(v27);
-  v114 = a3;
+  attributesCopy6 = attributes;
   if (v71)
   {
-    v72 = v71;
+    remoteDevice15 = v71;
   }
 
   else
   {
-    v73 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice14 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v73)
+    if (!remoteDevice14)
     {
       goto LABEL_60;
     }
 
-    v72 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice15 = [(PersonalizedImage *)self remoteDevice];
     v74 = copy_remote_device_property();
 
     v27 = v74;
@@ -1214,19 +1214,19 @@ LABEL_79:
   v78 = isNSNumber(v16);
   if (v78)
   {
-    v79 = v78;
+    remoteDevice17 = v78;
   }
 
   else
   {
-    v80 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice16 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v80)
+    if (!remoteDevice16)
     {
       goto LABEL_67;
     }
 
-    v79 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice17 = [(PersonalizedImage *)self remoteDevice];
     v81 = copy_remote_device_property();
 
     v16 = v81;
@@ -1249,19 +1249,19 @@ LABEL_78:
   v86 = isNSNumber(v25);
   if (v86)
   {
-    v87 = v86;
+    remoteDevice19 = v86;
   }
 
   else
   {
-    v88 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice18 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v88)
+    if (!remoteDevice18)
     {
       goto LABEL_74;
     }
 
-    v87 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice19 = [(PersonalizedImage *)self remoteDevice];
     v89 = copy_remote_device_property();
 
     v25 = v89;
@@ -1281,19 +1281,19 @@ LABEL_74:
   v94 = isNSNumber(v26);
   if (v94)
   {
-    v95 = v94;
+    remoteDevice21 = v94;
   }
 
   else
   {
-    v96 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice20 = [(PersonalizedImage *)self remoteDevice];
 
-    if (!v96)
+    if (!remoteDevice20)
     {
       goto LABEL_85;
     }
 
-    v95 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice21 = [(PersonalizedImage *)self remoteDevice];
     v97 = v9;
     v98 = v6;
     v99 = copy_remote_device_property();
@@ -1309,13 +1309,13 @@ LABEL_85:
   if (v35)
   {
     v35 = [v9 objectForKeyedSubscript:{@"Ap, SikaFuse"}];
-    v103 = [(PersonalizedImage *)self remoteDevice];
+    remoteDevice22 = [(PersonalizedImage *)self remoteDevice];
 
-    if (v103)
+    if (remoteDevice22)
     {
-      v104 = [(PersonalizedImage *)self remoteDevice];
+      remoteDevice23 = [(PersonalizedImage *)self remoteDevice];
       v22 = v6;
-      v34 = MobileStorageRemoteCopyPersonalizationNonceWithError(v104, v6, &cf);
+      v34 = MobileStorageRemoteCopyPersonalizationNonceWithError(remoteDevice23, v6, &cf);
     }
 
     else
@@ -1328,11 +1328,11 @@ LABEL_85:
 
     if (v105)
     {
-      v109 = [(PersonalizedImage *)self remoteDevice];
+      remoteDevice24 = [(PersonalizedImage *)self remoteDevice];
 
-      if (v109)
+      if (remoteDevice24)
       {
-        v110 = [(PersonalizedImage *)self remoteDevice];
+        remoteDevice25 = [(PersonalizedImage *)self remoteDevice];
         v115 = copy_remote_device_property();
 
         v111 = v115;
@@ -1348,12 +1348,12 @@ LABEL_85:
 
       if (v112)
       {
-        a3 = v116;
+        attributes = v116;
       }
 
       else
       {
-        a3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v126 length:160];
+        attributes = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v126 length:160];
       }
 
       [(PersonalizedImage *)self setDeviceClass:v119];
@@ -1368,11 +1368,11 @@ LABEL_85:
       [(PersonalizedImage *)self setCertificateProductionStatus:v26];
       [(PersonalizedImage *)self setImage4Supported:MEMORY[0x277CBEC38]];
       [(PersonalizedImage *)self setApNonce:v34];
-      [(PersonalizedImage *)self setSepNonce:a3];
+      [(PersonalizedImage *)self setSepNonce:attributes];
       [(PersonalizedImage *)self setSikaFuse:v35];
 
       v23 = 0;
-      LOBYTE(a3) = 1;
+      LOBYTE(attributes) = 1;
       goto LABEL_40;
     }
 
@@ -1387,8 +1387,8 @@ LABEL_85:
   }
 
 LABEL_80:
-  a3 = v114;
-  if (v114)
+  attributes = attributesCopy6;
+  if (attributesCopy6)
   {
     goto LABEL_39;
   }
@@ -1400,21 +1400,21 @@ LABEL_40:
   }
 
   v55 = *MEMORY[0x277D85DE8];
-  return a3;
+  return attributes;
 }
 
-- (BOOL)mountImage:(id)a3 serverTicket:(id)a4 imageDigest:(id)a5 trustCacheURL:(id)a6 error:(id *)a7
+- (BOOL)mountImage:(id)image serverTicket:(id)ticket imageDigest:(id)digest trustCacheURL:(id)l error:(id *)error
 {
   v94[3] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v85 = v13;
+  imageCopy = image;
+  ticketCopy = ticket;
+  digestCopy = digest;
+  lCopy = l;
+  v85 = digestCopy;
   cf = 0;
-  v82 = v14;
-  v83 = v12;
-  if (!v11 || !v12 || !v13)
+  v82 = lCopy;
+  v83 = ticketCopy;
+  if (!imageCopy || !ticketCopy || !digestCopy)
   {
     v26 = createMobileStorageError("[PersonalizedImage mountImage:serverTicket:imageDigest:trustCacheURL:error:]", 981, -2, 0, @"Invalid input(s).", v15, v16, v17, v77);
     v27 = 0;
@@ -1426,14 +1426,14 @@ LABEL_40:
     goto LABEL_42;
   }
 
-  v18 = v14;
+  v18 = lCopy;
   v19 = objc_alloc(MEMORY[0x277CBEB38]);
   v93[0] = @"DeviceType";
   v93[1] = @"DiskImageType";
   v94[0] = @"DiskImage";
   v94[1] = @"Personalized";
   v93[2] = @"ImageSignature";
-  v94[2] = v12;
+  v94[2] = ticketCopy;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v94 forKeys:v93 count:3];
   v84 = [v19 initWithDictionary:v20];
 
@@ -1463,26 +1463,26 @@ LABEL_40:
   v81 = v25;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(PersonalizedImage *)self hardwareModel];
-    v32 = [(PersonalizedImage *)self deviceClass];
-    v33 = [(PersonalizedImage *)self ecid];
+    hardwareModel = [(PersonalizedImage *)self hardwareModel];
+    deviceClass = [(PersonalizedImage *)self deviceClass];
+    ecid = [(PersonalizedImage *)self ecid];
     *buf = 138413058;
-    *v88 = v11;
+    *v88 = imageCopy;
     *&v88[8] = 2112;
-    *v89 = v31;
+    *v89 = hardwareModel;
     *&v89[8] = 2112;
-    v90 = v32;
+    v90 = deviceClass;
     v91 = 2112;
-    v92 = v33;
+    v92 = ecid;
     _os_log_impl(&dword_259B65000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Preparing to mount %@ on %@ (deviceClass: %@ ecid: %@)", buf, 0x2Au);
   }
 
-  v34 = [(PersonalizedImage *)self remoteDevice];
+  remoteDevice = [(PersonalizedImage *)self remoteDevice];
 
-  if (v34)
+  if (remoteDevice)
   {
-    v35 = [(PersonalizedImage *)self remoteDevice];
-    v30 = MobileStorageRemoteCopyDevicesWithError(v35, 0, &cf);
+    remoteDevice2 = [(PersonalizedImage *)self remoteDevice];
+    v30 = MobileStorageRemoteCopyDevicesWithError(remoteDevice2, 0, &cf);
   }
 
   else
@@ -1501,37 +1501,37 @@ LABEL_40:
     goto LABEL_42;
   }
 
-  v78 = self;
-  v79 = v11;
+  selfCopy = self;
+  v79 = imageCopy;
   if (![v30 count])
   {
     v27 = 0;
     v28 = 0;
     v29 = 0;
 LABEL_36:
-    v51 = [(PersonalizedImage *)v78 remoteDevice];
+    remoteDevice3 = [(PersonalizedImage *)selfCopy remoteDevice];
 
-    if (v51)
+    if (remoteDevice3)
     {
-      v52 = [(PersonalizedImage *)v78 remoteDevice];
-      v11 = v79;
-      v53 = [v79 path];
-      v54 = MobileStorageRemoteMountWithError(v52, v53, v84, &cf);
+      remoteDevice4 = [(PersonalizedImage *)selfCopy remoteDevice];
+      imageCopy = v79;
+      path = [v79 path];
+      v54 = MobileStorageRemoteMountWithError(remoteDevice4, path, v84, &cf);
 
       if (v54)
       {
         v55 = cf;
-        v56 = [v79 path];
-        createMobileStorageError("[PersonalizedImage mountImage:serverTicket:imageDigest:trustCacheURL:error:]", 1049, -2, v55, @"Failed to mount %@.", v57, v58, v59, v56);
+        path2 = [v79 path];
+        createMobileStorageError("[PersonalizedImage mountImage:serverTicket:imageDigest:trustCacheURL:error:]", 1049, -2, v55, @"Failed to mount %@.", v57, v58, v59, path2);
         v26 = LABEL_41:;
 
 LABEL_42:
-        if (a7)
+        if (error)
         {
           v70 = v26;
           v71 = 0;
           v75 = 0;
-          *a7 = v26;
+          *error = v26;
         }
 
         else
@@ -1551,24 +1551,24 @@ LABEL_49:
 
     else
     {
-      v11 = v79;
-      v60 = [v79 path];
-      v75 = MobileStorageMountWithError(v60, v84, &cf, v61, v62, v63, v64, v65);
+      imageCopy = v79;
+      path3 = [v79 path];
+      v75 = MobileStorageMountWithError(path3, v84, &cf, v61, v62, v63, v64, v65);
 
       if (!v75)
       {
         v66 = cf;
-        v56 = [v79 path];
-        createMobileStorageError("[PersonalizedImage mountImage:serverTicket:imageDigest:trustCacheURL:error:]", 1055, -2, v66, @"Failed to mount %@.", v67, v68, v69, v56);
+        path2 = [v79 path];
+        createMobileStorageError("[PersonalizedImage mountImage:serverTicket:imageDigest:trustCacheURL:error:]", 1055, -2, v66, @"Failed to mount %@.", v67, v68, v69, path2);
         goto LABEL_41;
       }
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v72 = [v11 path];
+      path4 = [imageCopy path];
       *buf = 138412290;
-      *v88 = v72;
+      *v88 = path4;
       _os_log_impl(&dword_259B65000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@ successfully mounted on device.", buf, 0xCu);
     }
 
@@ -1670,7 +1670,7 @@ LABEL_29:
   v75 = [v29 objectForKeyedSubscript:@"MountPath"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v11 = v79;
+    imageCopy = v79;
     [PersonalizedImage mountImage:v79 serverTicket:v75 imageDigest:? trustCacheURL:? error:?];
     v26 = 0;
     v71 = 1;
@@ -1680,7 +1680,7 @@ LABEL_29:
   {
     v26 = 0;
     v71 = 1;
-    v11 = v79;
+    imageCopy = v79;
   }
 
 LABEL_50:
@@ -1693,7 +1693,7 @@ LABEL_50:
   return v71;
 }
 
-- (BOOL)mountImage:(id *)a3
+- (BOOL)mountImage:(id *)image
 {
   v104[5] = *MEMORY[0x277D85DE8];
   v97 = 0;
@@ -1711,7 +1711,7 @@ LABEL_50:
     v24 = 0;
     v93 = 0;
     v25 = 0;
-    if (!a3)
+    if (!image)
     {
       goto LABEL_10;
     }
@@ -1719,10 +1719,10 @@ LABEL_50:
     goto LABEL_9;
   }
 
-  v92 = a3;
+  imageCopy = image;
   v96 = v6;
   v8 = [(PersonalizedImage *)self initializeImageProperties:&v96];
-  v9 = v96;
+  imagePathURL2 = v96;
 
   if (!v8)
   {
@@ -1734,7 +1734,7 @@ LABEL_50:
     v24 = 0;
     v93 = 0;
     v25 = 0;
-    v7 = v9;
+    v7 = imagePathURL2;
     goto LABEL_20;
   }
 
@@ -1751,7 +1751,7 @@ LABEL_50:
     goto LABEL_17;
   }
 
-  v15 = [(PersonalizedImage *)self signingServerURL];
+  signingServerURL = [(PersonalizedImage *)self signingServerURL];
   v16 = AMAuthInstallSetSigningServerURL();
 
   if (v16)
@@ -1770,8 +1770,8 @@ LABEL_18:
 LABEL_19:
 
 LABEL_20:
-    a3 = v92;
-    if (!v92)
+    image = imageCopy;
+    if (!imageCopy)
     {
 LABEL_10:
       v27 = 0;
@@ -1786,7 +1786,7 @@ LABEL_10:
 
 LABEL_9:
     v26 = v7;
-    *a3 = v7;
+    *image = v7;
     goto LABEL_10;
   }
 
@@ -1802,35 +1802,35 @@ LABEL_9:
     }
   }
 
-  v36 = [(PersonalizedImage *)self imagePathURL];
-  v95 = v9;
-  v22 = [(PersonalizedImage *)self digestFile:v36 digestLength:[(PersonalizedImage *)self digestLength] error:&v95];
+  imagePathURL = [(PersonalizedImage *)self imagePathURL];
+  v95 = imagePathURL2;
+  v22 = [(PersonalizedImage *)self digestFile:imagePathURL digestLength:[(PersonalizedImage *)self digestLength] error:&v95];
   v37 = v95;
 
   if (!v22)
   {
-    v9 = [(PersonalizedImage *)self imagePathURL];
-    v7 = createMobileStorageError("[PersonalizedImage mountImage:]", 1141, -2, v37, @"Failed to digest %@.", v41, v42, v43, v9);
+    imagePathURL2 = [(PersonalizedImage *)self imagePathURL];
+    v7 = createMobileStorageError("[PersonalizedImage mountImage:]", 1141, -2, v37, @"Failed to digest %@.", v41, v42, v43, imagePathURL2);
 
     v20 = 0;
     v21 = 0;
     goto LABEL_18;
   }
 
-  v38 = [(PersonalizedImage *)self trustCacheURL];
+  trustCacheURL = [(PersonalizedImage *)self trustCacheURL];
 
   v93 = v22;
-  if (v38)
+  if (trustCacheURL)
   {
-    v39 = [(PersonalizedImage *)self trustCacheURL];
+    trustCacheURL2 = [(PersonalizedImage *)self trustCacheURL];
     v94 = v37;
-    v25 = [(PersonalizedImage *)self digestFile:v39 digestLength:[(PersonalizedImage *)self digestLength] error:&v94];
+    v25 = [(PersonalizedImage *)self digestFile:trustCacheURL2 digestLength:[(PersonalizedImage *)self digestLength] error:&v94];
     v40 = v94;
 
     if (!v25)
     {
-      v9 = [(PersonalizedImage *)self trustCacheURL];
-      v7 = createMobileStorageError("[PersonalizedImage mountImage:]", 1150, -2, v40, @"Failed to digest %@", v79, v80, v81, v9);
+      imagePathURL2 = [(PersonalizedImage *)self trustCacheURL];
+      v7 = createMobileStorageError("[PersonalizedImage mountImage:]", 1150, -2, v40, @"Failed to digest %@", v79, v80, v81, imagePathURL2);
 
       v20 = 0;
       v21 = 0;
@@ -1858,15 +1858,15 @@ LABEL_9:
   v104[1] = MEMORY[0x277CBEC38];
   v46 = *MEMORY[0x277D825A8];
   v103[2] = *MEMORY[0x277D825A8];
-  v47 = [(PersonalizedImage *)self effectiveProductionStatus];
-  v104[2] = v47;
+  effectiveProductionStatus = [(PersonalizedImage *)self effectiveProductionStatus];
+  v104[2] = effectiveProductionStatus;
   v48 = *MEMORY[0x277D825B0];
   v103[3] = *MEMORY[0x277D825B0];
-  v49 = [(PersonalizedImage *)self effectiveSecurityMode];
-  v104[3] = v49;
+  effectiveSecurityMode = [(PersonalizedImage *)self effectiveSecurityMode];
+  v104[3] = effectiveSecurityMode;
   v103[4] = *MEMORY[0x277D825B8];
-  v50 = [(PersonalizedImage *)self imageVariant];
-  v104[4] = v50;
+  imageVariant = [(PersonalizedImage *)self imageVariant];
+  v104[4] = imageVariant;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v104 forKeys:v103 count:5];
 
   if (v25)
@@ -1876,11 +1876,11 @@ LABEL_9:
     v102[0] = v25;
     v102[1] = MEMORY[0x277CBEC38];
     v101[2] = v46;
-    v51 = [(PersonalizedImage *)self effectiveProductionStatus];
-    v102[2] = v51;
+    effectiveProductionStatus2 = [(PersonalizedImage *)self effectiveProductionStatus];
+    v102[2] = effectiveProductionStatus2;
     v101[3] = v48;
-    v52 = [(PersonalizedImage *)self effectiveSecurityMode];
-    v102[3] = v52;
+    effectiveSecurityMode2 = [(PersonalizedImage *)self effectiveSecurityMode];
+    v102[3] = effectiveSecurityMode2;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:v101 count:4];
   }
 
@@ -1891,30 +1891,30 @@ LABEL_9:
 
   v53 = MEMORY[0x277CBEB38];
   v99[0] = *MEMORY[0x277D82588];
-  v89 = [(PersonalizedImage *)self certificateSecurityMode];
-  v100[0] = v89;
+  certificateSecurityMode = [(PersonalizedImage *)self certificateSecurityMode];
+  v100[0] = certificateSecurityMode;
   v99[1] = *MEMORY[0x277D82570];
-  v86 = [(PersonalizedImage *)self certificateProductionStatus];
-  v100[1] = v86;
+  certificateProductionStatus = [(PersonalizedImage *)self certificateProductionStatus];
+  v100[1] = certificateProductionStatus;
   v99[2] = *MEMORY[0x277D82580];
-  v85 = [(PersonalizedImage *)self securityDomain];
-  v100[2] = v85;
+  securityDomain = [(PersonalizedImage *)self securityDomain];
+  v100[2] = securityDomain;
   v99[3] = *MEMORY[0x277D82548];
-  v84 = [(PersonalizedImage *)self boardID];
-  v100[3] = v84;
+  boardID = [(PersonalizedImage *)self boardID];
+  v100[3] = boardID;
   v99[4] = *MEMORY[0x277D82550];
-  v83 = [(PersonalizedImage *)self chipID];
-  v100[4] = v83;
+  chipID = [(PersonalizedImage *)self chipID];
+  v100[4] = chipID;
   v99[5] = *MEMORY[0x277D82558];
-  v54 = [(PersonalizedImage *)self ecid];
-  v100[5] = v54;
+  ecid = [(PersonalizedImage *)self ecid];
+  v100[5] = ecid;
   v99[6] = *MEMORY[0x277D82578];
-  v55 = [(PersonalizedImage *)self image4Supported];
-  v100[6] = v55;
+  image4Supported = [(PersonalizedImage *)self image4Supported];
+  v100[6] = image4Supported;
   v99[7] = *MEMORY[0x277D82568];
-  v56 = [(PersonalizedImage *)self apNonce];
+  apNonce = [(PersonalizedImage *)self apNonce];
   v57 = *MEMORY[0x277D825D0];
-  v100[7] = v56;
+  v100[7] = apNonce;
   v100[8] = MEMORY[0x277CBEC28];
   v58 = *MEMORY[0x277D82540];
   v99[8] = v57;
@@ -1923,20 +1923,20 @@ LABEL_9:
   v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v100 forKeys:v99 count:10];
   v20 = [v53 dictionaryWithDictionary:v59];
 
-  v60 = [(PersonalizedImage *)self sepNonce];
+  sepNonce = [(PersonalizedImage *)self sepNonce];
 
-  if (v60)
+  if (sepNonce)
   {
-    v61 = [(PersonalizedImage *)self sepNonce];
-    [v20 setObject:v61 forKeyedSubscript:*MEMORY[0x277D82590]];
+    sepNonce2 = [(PersonalizedImage *)self sepNonce];
+    [v20 setObject:sepNonce2 forKeyedSubscript:*MEMORY[0x277D82590]];
   }
 
-  v62 = [(PersonalizedImage *)self sikaFuse];
+  sikaFuse = [(PersonalizedImage *)self sikaFuse];
 
-  if (v62)
+  if (sikaFuse)
   {
-    v63 = [(PersonalizedImage *)self sikaFuse];
-    [v20 setObject:v63 forKeyedSubscript:*MEMORY[0x277D82598]];
+    sikaFuse2 = [(PersonalizedImage *)self sikaFuse];
+    [v20 setObject:sikaFuse2 forKeyedSubscript:*MEMORY[0x277D82598]];
   }
 
   if (v23)
@@ -1953,7 +1953,7 @@ LABEL_9:
     v21 = 0;
     v24 = 0;
 LABEL_42:
-    v9 = v91;
+    imagePathURL2 = v91;
     goto LABEL_19;
   }
 
@@ -1967,17 +1967,17 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v90 = [(PersonalizedImage *)self imagePathURL];
-  v73 = [(PersonalizedImage *)self trustCacheURL];
-  v74 = self;
-  v75 = v73;
-  v87 = [PersonalizedImage mountImage:v74 serverTicket:"mountImage:serverTicket:imageDigest:trustCacheURL:error:" imageDigest:v90 trustCacheURL:v24 error:v93];
+  imagePathURL3 = [(PersonalizedImage *)self imagePathURL];
+  trustCacheURL3 = [(PersonalizedImage *)self trustCacheURL];
+  selfCopy = self;
+  v75 = trustCacheURL3;
+  v87 = [PersonalizedImage mountImage:selfCopy serverTicket:"mountImage:serverTicket:imageDigest:trustCacheURL:error:" imageDigest:imagePathURL3 trustCacheURL:v24 error:v93];
   v7 = v91;
 
   if (!v87)
   {
     createMobileStorageError("[PersonalizedImage mountImage:]", 1221, -2, v7, @"Failed to mount image.", v76, v77, v78, v82);
-    v7 = v9 = v7;
+    v7 = imagePathURL2 = v7;
     goto LABEL_19;
   }
 

@@ -1,22 +1,22 @@
 @interface LanguageOptionResolutionResult
-+ (id)confirmationRequiredWithLanguageOptionToConfirm:(id)a3;
-+ (id)disambiguationWithLanguageOptionsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedLanguageOption:(id)a3;
++ (id)confirmationRequiredWithLanguageOptionToConfirm:(id)confirm;
++ (id)disambiguationWithLanguageOptionsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedLanguageOption:(id)option;
 @end
 
 @implementation LanguageOptionResolutionResult
 
-+ (id)successWithResolvedLanguageOption:(id)a3
++ (id)successWithResolvedLanguageOption:(id)option
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B2F5B4(v4);
+  optionCopy = option;
+  v5 = sub_268B2F5B4(optionCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithLanguageOptionsToDisambiguate:(id)a3
++ (id)disambiguationWithLanguageOptionsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for LanguageOption();
   v3 = sub_268B37CF4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithLanguageOptionToConfirm:(id)a3
++ (id)confirmationRequiredWithLanguageOptionToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B2F710(a3);
+  confirmCopy = confirm;
+  v5 = sub_268B2F710(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_268B2CDF4();
   sub_268B37CF4();

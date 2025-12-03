@@ -1,33 +1,33 @@
 @interface TIKeyboardListController
-+ (id)attributedStringForSymbolName:(id)a3;
-+ (id)attributedTitleForSymbolName:(id)a3 cellTitle:(id)a4;
-+ (id)availableInputModesForLanguage:(id)a3;
-+ (id)availableSoftwareLayoutsForBaseInputMode:(id)a3;
-+ (id)displayNameForHardwareLayout:(id)a3 inputMode:(id)a4;
++ (id)attributedStringForSymbolName:(id)name;
++ (id)attributedTitleForSymbolName:(id)name cellTitle:(id)title;
++ (id)availableInputModesForLanguage:(id)language;
++ (id)availableSoftwareLayoutsForBaseInputMode:(id)mode;
++ (id)displayNameForHardwareLayout:(id)layout inputMode:(id)mode;
 + (id)inputModes;
-+ (id)softwareLayoutsForBaseInputMode:(id)a3;
-+ (id)supportedBaseInputModesForLanguage:(id)a3;
-+ (id)supportedInputModesForLanguage:(id)a3;
++ (id)softwareLayoutsForBaseInputMode:(id)mode;
++ (id)supportedBaseInputModesForLanguage:(id)language;
++ (id)supportedInputModesForLanguage:(id)language;
 + (unint64_t)count;
-+ (void)setInputModes:(id)a3;
++ (void)setInputModes:(id)modes;
 - (TIKeyboardListController)init;
-- (id)specifierForExtensionInputMode:(id)a3;
-- (id)specifierForInputMode:(id)a3;
-- (id)specifierForMultilingualInputModes:(id)a3;
+- (id)specifierForExtensionInputMode:(id)mode;
+- (id)specifierForInputMode:(id)mode;
+- (id)specifierForMultilingualInputModes:(id)modes;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_writeKeyboards;
-- (void)addNewKeyboards:(id)a3;
+- (void)addNewKeyboards:(id)keyboards;
 - (void)dealloc;
 - (void)emitNavigationEventForKeyboardListController;
-- (void)manager:(id)a3 didUpdateStatus:(int64_t)a4 forInputMode:(id)a5;
+- (void)manager:(id)manager didUpdateStatus:(int64_t)status forInputMode:(id)mode;
 - (void)reloadSpecifiers;
-- (void)removeInputModeWithIdentifier:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
+- (void)removeInputModeWithIdentifier:(id)identifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
 - (void)updateEditButtonState;
 - (void)viewDidLoad;
 @end
@@ -84,29 +84,29 @@
 
 - (void)updateEditButtonState
 {
-  v2 = [(TIKeyboardListController *)self parentController];
+  parentController = [(TIKeyboardListController *)self parentController];
   if (objc_opt_respondsToSelector())
   {
 
-    [v2 setNeedsReloadSpecifiers:1];
+    [parentController setNeedsReloadSpecifiers:1];
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  if ([a4 section])
+  if ([path section])
   {
     return 0;
   }
 
-  v8 = [objc_msgSend(a3 cellForRowAtIndexPath:{a4), "specifier"}];
+  v8 = [objc_msgSend(view cellForRowAtIndexPath:{path), "specifier"}];
   [v8 propertyForKey:PSIDKey];
   return ([UIKeyboardInputModeGetNormalizedIdentifier() isEqualToString:@"emoji"] & 1) != 0 || self->_numberOfEnabledKeyboards - self->_emojiEnabled > 1;
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  if ([(TIKeyboardListController *)self isEditing:a3]&& self->deletingRow)
+  if ([(TIKeyboardListController *)self isEditing:view]&& self->deletingRow)
   {
     [(TIKeyboardListController *)self setEditing:0 animated:1];
   }
@@ -114,20 +114,20 @@
   self->deletingRow = 0;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  if ([a4 section])
+  if ([path section])
   {
     sub_2C58C(a2, self);
   }
 
-  if ([a5 section])
+  if ([indexPath section])
   {
     sub_2C5E8(a2, self);
   }
 
-  v9 = [a4 row];
-  v10 = [a5 row];
+  v9 = [path row];
+  v10 = [indexPath row];
   v11 = objc_alloc_init(NSMutableArray);
   v12 = OBJC_IVAR___PSListController__specifiers;
   [v11 addObjectsFromArray:*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers]];
@@ -141,7 +141,7 @@
   [(TIKeyboardListController *)self _writeKeyboards];
 }
 
-- (id)specifierForInputMode:(id)a3
+- (id)specifierForInputMode:(id)mode
 {
   v5 = objc_opt_class();
   if ([objc_msgSend(v5 availableSoftwareLayoutsForBaseInputMode:{UIKeyboardInputModeGetNormalizedIdentifier()), "count"}] || (TIInputModeIsChineseShuangpin() & 1) != 0 || TIInputModeIsChineseWubi())
@@ -155,27 +155,27 @@
   }
 
   v7 = v6;
-  [v6 setProperty:a3 forKey:PSIDKey];
+  [v6 setProperty:mode forKey:PSIDKey];
   [v7 setProperty:objc_opt_class() forKey:PSCellClassKey];
   return v7;
 }
 
-- (id)specifierForMultilingualInputModes:(id)a3
+- (id)specifierForMultilingualInputModes:(id)modes
 {
   v4 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
-  v5 = [a3 firstObject];
-  [v4 setProperty:v5 forKey:PSIDKey];
-  [v4 setProperty:a3 forKey:PSValueKey];
+  firstObject = [modes firstObject];
+  [v4 setProperty:firstObject forKey:PSIDKey];
+  [v4 setProperty:modes forKey:PSValueKey];
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
   return v4;
 }
 
-- (id)specifierForExtensionInputMode:(id)a3
+- (id)specifierForExtensionInputMode:(id)mode
 {
   v5 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:3 edit:0];
-  [v5 setProperty:a3 forKey:PSIDKey];
+  [v5 setProperty:mode forKey:PSIDKey];
   [v5 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v6 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:a3];
+  v6 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:mode];
   v23 = v6;
   [v5 setProperty:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", &v23, 1), @"TIKBIdentifiersKey"}];
   v7 = +[NSMutableArray array];
@@ -212,8 +212,8 @@
   }
 
   [v5 setProperty:v7 forKey:@"TIKBAllIdentifiersKey"];
-  v14 = [(UIKeyboardInputMode *)v6 containingBundle];
-  v15 = [v14 objectForInfoDictionaryKey:_kCFBundleDisplayNameKey];
+  containingBundle = [(UIKeyboardInputMode *)v6 containingBundle];
+  v15 = [containingBundle objectForInfoDictionaryKey:_kCFBundleDisplayNameKey];
   if (!v15)
   {
     v15 = [-[UIKeyboardInputMode containingBundle](v6 "containingBundle")];
@@ -383,29 +383,29 @@ LABEL_30:
   return v21;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v7 = [(TIKeyboardListController *)self aboutPrivacyController];
+  aboutPrivacyController = [(TIKeyboardListController *)self aboutPrivacyController];
 
-  [(TIAboutKeyboardPrivacyController *)v7 addPrivacyLinkViewIfNecessaryToHeaderView:a4 forSection:a5];
+  [(TIAboutKeyboardPrivacyController *)aboutPrivacyController addPrivacyLinkViewIfNecessaryToHeaderView:footerView forSection:section];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = TIKeyboardListController;
-  v6 = [(TIKeyboardListController *)&v9 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(TIKeyboardListController *)self specifierAtIndex:[(TIKeyboardListController *)self indexForIndexPath:a4]];
+  v6 = [(TIKeyboardListController *)&v9 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(TIKeyboardListController *)self specifierAtIndex:[(TIKeyboardListController *)self indexForIndexPath:path]];
   [v6 setAccessibilityIdentifier:{objc_msgSend(v7, "propertyForKey:", PSIDKey)}];
   return v6;
 }
 
-- (void)addNewKeyboards:(id)a3
+- (void)addNewKeyboards:(id)keyboards
 {
   v5 = objc_alloc_init(TIAddKeyboardLanguageListSetupController);
   [(TIAddKeyboardLanguageListSetupController *)v5 setParentController:self];
-  [(TIAddKeyboardLanguageListSetupController *)v5 setSpecifier:a3];
-  [a3 setTarget:self];
+  [(TIAddKeyboardLanguageListSetupController *)v5 setSpecifier:keyboards];
+  [keyboards setTarget:self];
 
   [(TIKeyboardListController *)self showController:v5];
 }
@@ -496,11 +496,11 @@ LABEL_30:
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{objc_msgSend(a5, "row", a3) + 1}];
+    v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{objc_msgSend(path, "row", view) + 1}];
     -[TIKeyboardListController removeInputModeWithIdentifier:](self, "removeInputModeWithIdentifier:", [v6 propertyForKey:PSIDKey]);
     [(TIKeyboardListController *)self removeSpecifier:v6 animated:1];
     [(TIKeyboardListController *)self updateEditButtonState];
@@ -518,9 +518,9 @@ LABEL_30:
   }
 }
 
-- (void)removeInputModeWithIdentifier:(id)a3
+- (void)removeInputModeWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     [(NSMutableArray *)self->_keyboardsArray removeObject:?];
     --self->_numberOfEnabledKeyboards;
@@ -585,19 +585,19 @@ LABEL_30:
   }
 }
 
-- (void)manager:(id)a3 didUpdateStatus:(int64_t)a4 forInputMode:(id)a5
+- (void)manager:(id)manager didUpdateStatus:(int64_t)status forInputMode:(id)mode
 {
   v9 = KeyboardSettingsLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138413058;
-    v11 = a3;
+    managerCopy = manager;
     v12 = 2112;
-    v13 = [NSNumber numberWithInteger:a4];
+    v13 = [NSNumber numberWithInteger:status];
     v14 = 2112;
-    v15 = a5;
+    modeCopy = mode;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Asset status manager %@ did update status for input mode %@ to %@ (delegate = %@)", &v10, 0x2Au);
   }
 
@@ -614,9 +614,9 @@ LABEL_30:
 
   else
   {
-    v4 = [a1 inputModes];
+    inputModes = [self inputModes];
 
-    return [v4 count];
+    return [inputModes count];
   }
 }
 
@@ -627,17 +627,17 @@ LABEL_30:
   return [v2 enabledInputModeIdentifiers];
 }
 
-+ (void)setInputModes:(id)a3
++ (void)setInputModes:(id)modes
 {
   v4 = +[UIKeyboardImpl sharedInstance];
-  [(UIKeyboardImpl *)v4 saveInputModesPreference:a3];
+  [(UIKeyboardImpl *)v4 saveInputModesPreference:modes];
 
   [(UIKeyboardImpl *)v4 setShouldUpdateCacheOnInputModesChange:1];
 }
 
-+ (id)supportedBaseInputModesForLanguage:(id)a3
++ (id)supportedBaseInputModesForLanguage:(id)language
 {
-  if (!a3)
+  if (!language)
   {
     return 0;
   }
@@ -648,19 +648,19 @@ LABEL_30:
   v6[1] = 3221225472;
   v6[2] = sub_13764;
   v6[3] = &unk_492C0;
-  v6[4] = a3;
+  v6[4] = language;
   return [v4 objectsAtIndexes:{objc_msgSend(v4, "indexesOfObjectsPassingTest:", v6)}];
 }
 
-+ (id)softwareLayoutsForBaseInputMode:(id)a3
++ (id)softwareLayoutsForBaseInputMode:(id)mode
 {
   SupportedSoftwareKeyboardsForInputMode = UIKeyboardGetSupportedSoftwareKeyboardsForInputMode();
-  if (([a3 isEqualToString:@"ja_JP-Kana"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"ja_JP"))
+  if (([mode isEqualToString:@"ja_JP-Kana"] & 1) != 0 || objc_msgSend(mode, "isEqualToString:", @"ja_JP"))
   {
-    v5 = [SupportedSoftwareKeyboardsForInputMode firstObject];
-    if (v5)
+    firstObject = [SupportedSoftwareKeyboardsForInputMode firstObject];
+    if (firstObject)
     {
-      v7 = v5;
+      v7 = firstObject;
       return [NSArray arrayWithObjects:&v7 count:1];
     }
 
@@ -675,15 +675,15 @@ LABEL_30:
   return TIFilteredLayoutsByCurrentShuangpinType(SupportedSoftwareKeyboardsForInputMode);
 }
 
-+ (id)supportedInputModesForLanguage:(id)a3
++ (id)supportedInputModesForLanguage:(id)language
 {
   v5 = +[NSMutableArray array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v18 = a1;
-  obj = [a1 supportedBaseInputModesForLanguage:a3];
+  selfCopy = self;
+  obj = [self supportedBaseInputModesForLanguage:language];
   v19 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v19)
   {
@@ -704,7 +704,7 @@ LABEL_30:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v8 = [v18 softwareLayoutsForBaseInputMode:v7];
+        v8 = [selfCopy softwareLayoutsForBaseInputMode:v7];
         v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v9)
         {
@@ -752,10 +752,10 @@ LABEL_30:
   return v5;
 }
 
-+ (id)availableInputModesForLanguage:(id)a3
++ (id)availableInputModesForLanguage:(id)language
 {
   v5 = [+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController "sharedInputModeController")];
-  v6 = [objc_msgSend(a1 supportedInputModesForLanguage:{a3), "mutableCopy"}];
+  v6 = [objc_msgSend(self supportedInputModesForLanguage:{language), "mutableCopy"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -801,7 +801,7 @@ LABEL_30:
   return v6;
 }
 
-+ (id)availableSoftwareLayoutsForBaseInputMode:(id)a3
++ (id)availableSoftwareLayoutsForBaseInputMode:(id)mode
 {
   v4 = [UIKeyboardGetSupportedSoftwareKeyboardsForInputMode() mutableCopy];
   if (TIInputModeIsChineseShuangpin())
@@ -829,10 +829,10 @@ LABEL_30:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([a3 isEqualToString:UIKeyboardInputModeGetNormalizedIdentifier()])
+        if ([mode isEqualToString:UIKeyboardInputModeGetNormalizedIdentifier()])
         {
           v11 = [UIKeyboardInputModeGetComponentsFromIdentifier() objectForKey:@"sw"];
-          if ([a3 hasPrefix:@"ja_JP"] && (objc_msgSend(v11, "_containsSubstring:", @"Kana") & 1) != 0)
+          if ([mode hasPrefix:@"ja_JP"] && (objc_msgSend(v11, "_containsSubstring:", @"Kana") & 1) != 0)
           {
             [v4 removeAllObjects];
             return v4;
@@ -855,13 +855,13 @@ LABEL_30:
   return v4;
 }
 
-+ (id)displayNameForHardwareLayout:(id)a3 inputMode:(id)a4
++ (id)displayNameForHardwareLayout:(id)layout inputMode:(id)mode
 {
-  v5 = a3;
-  if ([a3 isEqualToString:@"Automatic"])
+  layoutCopy = layout;
+  if ([layout isEqualToString:@"Automatic"])
   {
     v6 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"Automatic", &stru_49C80, @"KeyboardLayouts"];
-    v5 = [+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController "sharedInputModeController")];
+    layoutCopy = [+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController "sharedInputModeController")];
   }
 
   else
@@ -872,10 +872,10 @@ LABEL_30:
   v7 = qword_56998;
   if (qword_56998 || (v8 = [UISystemRootDirectory() stringByAppendingPathComponent:@"System/Library/KeyboardLayouts/USBKeyboardLayouts.bundle"], v7 = +[NSBundle bundleWithPath:](NSBundle, "bundleWithPath:", objc_msgSend(v8, "stringByResolvingSymlinksInPath")), (qword_56998 = v7) != 0) || (NSLog(@"%s: Error: could not locate bundle at '%@'", "+[TIKeyboardListController displayNameForHardwareLayout:inputMode:]", v8), (v7 = qword_56998) != 0))
   {
-    v5 = [(NSBundle *)v7 localizedStringForKey:v5 value:0 table:@"InfoPlist"];
+    layoutCopy = [(NSBundle *)v7 localizedStringForKey:layoutCopy value:0 table:@"InfoPlist"];
     if (v6)
     {
-      return [NSString localizedStringWithFormat:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"%@ — %@", &stru_49C80, @"Automatic - <Resolved Keyboard Layout Name>"], v6, v5];
+      return [NSString localizedStringWithFormat:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"%@ — %@", &stru_49C80, @"Automatic - <Resolved Keyboard Layout Name>"], v6, layoutCopy];
     }
   }
 
@@ -884,15 +884,15 @@ LABEL_30:
     return v6;
   }
 
-  return v5;
+  return layoutCopy;
 }
 
-+ (id)attributedTitleForSymbolName:(id)a3 cellTitle:(id)a4
++ (id)attributedTitleForSymbolName:(id)name cellTitle:(id)title
 {
   v6 = objc_alloc_init(NSMutableAttributedString);
-  if (a3)
+  if (name)
   {
-    v7 = [objc_opt_class() attributedStringForSymbolName:a3];
+    v7 = [objc_opt_class() attributedStringForSymbolName:name];
     if (v7)
     {
       v8 = v7;
@@ -907,7 +907,7 @@ LABEL_30:
     }
   }
 
-  [v6 appendAttributedString:{objc_msgSend([NSAttributedString alloc], "initWithString:", a4)}];
+  [v6 appendAttributedString:{objc_msgSend([NSAttributedString alloc], "initWithString:", title)}];
   v9 = [+[NSParagraphStyle defaultParagraphStyle](NSParagraphStyle mutableCopy];
   v13[0] = [[NSTextTab alloc] initWithTextAlignment:4 location:&__NSDictionary0__struct options:0.0];
   v13[1] = [[NSTextTab alloc] initWithTextAlignment:1 location:&__NSDictionary0__struct options:10.0];
@@ -919,9 +919,9 @@ LABEL_30:
   return v6;
 }
 
-+ (id)attributedStringForSymbolName:(id)a3
++ (id)attributedStringForSymbolName:(id)name
 {
-  v4 = [[NSAttributedString alloc] initWithString:a3];
+  v4 = [[NSAttributedString alloc] initWithString:name];
   v5 = [[UIImage systemImageNamed:?], "imageWithRenderingMode:", 2];
   if (!v5)
   {

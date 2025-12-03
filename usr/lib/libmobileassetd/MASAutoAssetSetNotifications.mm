@@ -1,24 +1,24 @@
 @interface MASAutoAssetSetNotifications
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetSetNotifications
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (__isPlatformVersionAtLeast(2, 17, 0, 0))
     {
-      v4 = v3;
+      v4 = classesCopy;
       if (objc_opt_class())
       {
-        v4 = [v3 setByAddingObject:objc_opt_class()];
+        v4 = [classesCopy setByAddingObject:objc_opt_class()];
       }
     }
   }
@@ -31,55 +31,55 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetNotifications alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetNotifications alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
     v6 = objc_alloc_init(MAAutoAssetSetNotifications);
     if (objc_opt_respondsToSelector())
     {
-      [v6 setAtomicInstanceDiscovered:{objc_msgSend(v3, "atomicInstanceDiscovered")}];
+      [v6 setAtomicInstanceDiscovered:{objc_msgSend(frameworkCopy, "atomicInstanceDiscovered")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setAtomicInstanceAvailableForUse:{objc_msgSend(v3, "atomicInstanceAvailableForUse")}];
+      [v6 setAtomicInstanceAvailableForUse:{objc_msgSend(frameworkCopy, "atomicInstanceAvailableForUse")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setLockUsageCheck:{objc_msgSend(v3, "lockUsageCheck")}];
+      [v6 setLockUsageCheck:{objc_msgSend(frameworkCopy, "lockUsageCheck")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setFilesystemSpaceCritical:{objc_msgSend(v3, "filesystemSpaceCritical")}];
+      [v6 setFilesystemSpaceCritical:{objc_msgSend(frameworkCopy, "filesystemSpaceCritical")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setAtomicInstancePurged:{objc_msgSend(v3, "atomicInstancePurged")}];
+      [v6 setAtomicInstancePurged:{objc_msgSend(frameworkCopy, "atomicInstancePurged")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setDownloadPending:{objc_msgSend(v3, "downloadPending")}];
+      [v6 setDownloadPending:{objc_msgSend(frameworkCopy, "downloadPending")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setDownloadProgress:{objc_msgSend(v3, "downloadProgress")}];
+      [v6 setDownloadProgress:{objc_msgSend(frameworkCopy, "downloadProgress")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setDownloadAbandoned:{objc_msgSend(v3, "downloadAbandoned")}];
+      [v6 setDownloadAbandoned:{objc_msgSend(frameworkCopy, "downloadAbandoned")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setDownloadedBecameIncomplete:{objc_msgSend(v3, "downloadedBecameIncomplete")}];
+      [v6 setDownloadedBecameIncomplete:{objc_msgSend(frameworkCopy, "downloadedBecameIncomplete")}];
     }
   }
 
@@ -91,12 +91,12 @@
   return v6;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetNotifications alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetNotifications alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v7 = objc_alloc_init(MANAutoAssetSetNotifications);
     if (objc_opt_respondsToSelector())
     {
@@ -152,17 +152,17 @@
   return v7;
 }
 
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  messageCopy = message;
+  keyCopy = key;
+  v7 = keyCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (messageCopy && keyCopy)
   {
     if (__isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v9 = [MAAutoAssetSetNotifications alloc], v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v5 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      v11 = [messageCopy safeObjectForKey:v7 ofClass:objc_opt_class()];
       v8 = [MASAutoAssetSetNotifications newShimmedFromFramework:v11];
     }
 

@@ -3,14 +3,14 @@
 + (NSXPCInterface)remoteObjectInterface;
 + (OS_os_log)log;
 + (id)_mailUninstalledFile;
-+ (void)setCachedMailAppIsInstalled:(BOOL)a3;
++ (void)setCachedMailAppIsInstalled:(BOOL)installed;
 - (EMBlockedSenderManager)blockedSenderManager;
-- (EMDaemonInterface)initWithListenerEndpoint:(id)a3;
+- (EMDaemonInterface)initWithListenerEndpoint:(id)endpoint;
 - (NSXPCConnection)test_connection;
-- (id)_connectionForProtocol:(id)a3 error:(id *)a4;
-- (id)_initByAdoptingConnection:(id)a3 useNegotiatedConnection:(BOOL)a4 configureBlockedSenderManager:(BOOL)a5;
-- (id)connectionForProtocol:(id)a3;
-- (id)generateProxyForProtocol:(id)a3 error:(id *)a4;
+- (id)_connectionForProtocol:(id)protocol error:(id *)error;
+- (id)_initByAdoptingConnection:(id)connection useNegotiatedConnection:(BOOL)negotiatedConnection configureBlockedSenderManager:(BOOL)manager;
+- (id)connectionForProtocol:(id)protocol;
+- (id)generateProxyForProtocol:(id)protocol error:(id *)error;
 - (id)initForTesting;
 - (void)_invalidate;
 - (void)dealloc;
@@ -75,9 +75,9 @@
 
 - (void)launchDaemon
 {
-  v3 = [(EMDaemonInterface *)self proxyCreator];
-  v2 = [v3 remoteObjectProxy];
-  [v2 launchForAppLaunch:&__block_literal_global_329];
+  proxyCreator = [(EMDaemonInterface *)self proxyCreator];
+  remoteObjectProxy = [proxyCreator remoteObjectProxy];
+  [remoteObjectProxy launchForAppLaunch:&__block_literal_global_329];
 }
 
 - (void)handleDaemonAvailability
@@ -105,7 +105,7 @@ void __24__EMDaemonInterface_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __24__EMDaemonInterface_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_11 != -1)
   {
     dispatch_once(&log_onceToken_11, block);
@@ -196,25 +196,25 @@ void __45__EMDaemonInterface_handleDaemonAvailability__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (EMDaemonInterface)initWithListenerEndpoint:(id)a3
+- (EMDaemonInterface)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
   v6 = [(EMDaemonInterface *)self _initByAdoptingConnection:v5 useNegotiatedConnection:0 configureBlockedSenderManager:0];
 
   return v6;
 }
 
-- (id)_initByAdoptingConnection:(id)a3 useNegotiatedConnection:(BOOL)a4 configureBlockedSenderManager:(BOOL)a5
+- (id)_initByAdoptingConnection:(id)connection useNegotiatedConnection:(BOOL)negotiatedConnection configureBlockedSenderManager:(BOOL)manager
 {
-  v8 = a3;
+  connectionCopy = connection;
   v79.receiver = self;
   v79.super_class = EMDaemonInterface;
   v9 = [(EMDaemonInterface *)&v79 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
+    objc_storeStrong(&v9->_connection, connection);
     v11 = +[EMDaemonInterface remoteObjectInterface];
     [(NSXPCConnection *)v10->_connection setRemoteObjectInterface:v11];
 
@@ -224,14 +224,14 @@ void __45__EMDaemonInterface_handleDaemonAvailability__block_invoke(uint64_t a1)
     v76[2] = __101__EMDaemonInterface__initByAdoptingConnection_useNegotiatedConnection_configureBlockedSenderManager___block_invoke;
     v76[3] = &unk_1E826C070;
     objc_copyWeak(&v77, &location);
-    [v8 setInterruptionHandler:v76];
+    [connectionCopy setInterruptionHandler:v76];
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
     v74[2] = __101__EMDaemonInterface__initByAdoptingConnection_useNegotiatedConnection_configureBlockedSenderManager___block_invoke_7;
     v74[3] = &unk_1E826C070;
     objc_copyWeak(&v75, &location);
-    [v8 setInvalidationHandler:v74];
-    [v8 resume];
+    [connectionCopy setInvalidationHandler:v74];
+    [connectionCopy resume];
     v12 = [MEMORY[0x1E699B830] observableOnNotifyTokenWithName:@"com.apple.email.maild.launched"];
     v13 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.email.maild.launched" qualityOfService:17];
     v14 = [v12 debounceWithTimeInterval:v13 scheduler:0.05];
@@ -250,9 +250,9 @@ void __45__EMDaemonInterface_handleDaemonAvailability__block_invoke(uint64_t a1)
     queue = v10->_queue;
     v10->_queue = v19;
 
-    v21 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     connections = v10->_connections;
-    v10->_connections = v21;
+    v10->_connections = weakObjectsHashTable;
 
     v23 = [EMAccountRepository alloc];
     v24 = [(EMDaemonInterface *)v10 connectionForProtocol:&unk_1F4641828];
@@ -327,7 +327,7 @@ void __45__EMDaemonInterface_handleDaemonAvailability__block_invoke(uint64_t a1)
     v10->_diagnosticInfoGatherer = v69;
 
     atomic_store(0, &v10->_invalidated);
-    v10->_wantsBlockedSenderManager = a5;
+    v10->_wantsBlockedSenderManager = manager;
     objc_destroyWeak(&v73);
 
     objc_destroyWeak(&v75);
@@ -452,12 +452,12 @@ void __101__EMDaemonInterface__initByAdoptingConnection_useNegotiatedConnection_
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EMDaemonInterface.m" lineNumber:224 description:{@"%s can only be called from unit tests", "-[EMDaemonInterface test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMDaemonInterface.m" lineNumber:224 description:{@"%s can only be called from unit tests", "-[EMDaemonInterface test_tearDown]"}];
   }
 
-  v4 = [(EMDaemonInterface *)self blockedSenderManager];
-  [v4 test_tearDown];
+  blockedSenderManager = [(EMDaemonInterface *)self blockedSenderManager];
+  [blockedSenderManager test_tearDown];
 
   [(EMDaemonInterface *)self _invalidate];
 }
@@ -466,8 +466,8 @@ void __101__EMDaemonInterface__initByAdoptingConnection_useNegotiatedConnection_
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EMDaemonInterface.m" lineNumber:230 description:{@"%s can only be called from unit tests", "-[EMDaemonInterface test_connection]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMDaemonInterface.m" lineNumber:230 description:{@"%s can only be called from unit tests", "-[EMDaemonInterface test_connection]"}];
   }
 
   connection = self->_connection;
@@ -475,28 +475,28 @@ void __101__EMDaemonInterface__initByAdoptingConnection_useNegotiatedConnection_
   return connection;
 }
 
-- (id)_connectionForProtocol:(id)a3 error:(id *)a4
+- (id)_connectionForProtocol:(id)protocol error:(id *)error
 {
-  v6 = a3;
+  protocolCopy = protocol;
   if (_connectionForProtocol_error__onceToken != -1)
   {
     [EMDaemonInterface _connectionForProtocol:error:];
   }
 
-  Value = CFDictionaryGetValue(_connectionForProtocol_error__map, v6);
+  Value = CFDictionaryGetValue(_connectionForProtocol_error__map, protocolCopy);
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__2;
   v26 = __Block_byref_object_dispose__2;
   v27 = 0;
-  v8 = [(EMDaemonInterface *)self proxyCreator];
+  proxyCreator = [(EMDaemonInterface *)self proxyCreator];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __50__EMDaemonInterface__connectionForProtocol_error___block_invoke_324;
   v21[3] = &unk_1E826CBE0;
   v21[4] = &v22;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v9 = [proxyCreator synchronousRemoteObjectProxyWithErrorHandler:v21];
 
   v15 = 0;
   v16 = &v15;
@@ -518,9 +518,9 @@ void __101__EMDaemonInterface__initByAdoptingConnection_useNegotiatedConnection_
     v11 = v16[5];
   }
 
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = v23[5];
+    *error = v23[5];
     v11 = v16[5];
   }
 
@@ -595,17 +595,17 @@ void __50__EMDaemonInterface__connectionForProtocol_error___block_invoke_2(uint6
   *(v4 + 40) = v3;
 }
 
-- (id)generateProxyForProtocol:(id)a3 error:(id *)a4
+- (id)generateProxyForProtocol:(id)protocol error:(id *)error
 {
-  v4 = [(EMDaemonInterface *)self _connectionForProtocol:a3 error:a4];
+  v4 = [(EMDaemonInterface *)self _connectionForProtocol:protocol error:error];
 
   return v4;
 }
 
-- (id)connectionForProtocol:(id)a3
+- (id)connectionForProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [[EMRemoteConnection alloc] initWithProtocol:v4 proxyGenerator:self];
+  protocolCopy = protocol;
+  v5 = [[EMRemoteConnection alloc] initWithProtocol:protocolCopy proxyGenerator:self];
   os_unfair_lock_lock(&self->_lock);
   [(NSHashTable *)self->_connections addObject:v5];
   os_unfair_lock_unlock(&self->_lock);
@@ -735,37 +735,37 @@ void __45__EMDaemonInterface_resetProtocolConnections__block_invoke(uint64_t a1)
 
 + (BOOL)cachedMailAppIsInstalled
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [a1 _mailUninstalledFile];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _mailUninstalledFile = [self _mailUninstalledFile];
+  path = [_mailUninstalledFile path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   return v6 ^ 1;
 }
 
-+ (void)setCachedMailAppIsInstalled:(BOOL)a3
++ (void)setCachedMailAppIsInstalled:(BOOL)installed
 {
-  v3 = a3;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [a1 _mailUninstalledFile];
-  if (v3)
+  installedCopy = installed;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _mailUninstalledFile = [self _mailUninstalledFile];
+  if (installedCopy)
   {
-    [v8 removeItemAtURL:v5 error:0];
+    [defaultManager removeItemAtURL:_mailUninstalledFile error:0];
   }
 
   else
   {
-    v6 = [v5 path];
-    v7 = [MEMORY[0x1E695DEF0] data];
-    [v8 createFileAtPath:v6 contents:v7 attributes:0];
+    path = [_mailUninstalledFile path];
+    data = [MEMORY[0x1E695DEF0] data];
+    [defaultManager createFileAtPath:path contents:data attributes:0];
   }
 }
 
 - (void)repopulateBusinessesTables
 {
-  v3 = [(EMDaemonInterface *)self proxyCreator];
-  v2 = [v3 remoteObjectProxy];
-  [v2 repopulateBusinessesTables];
+  proxyCreator = [(EMDaemonInterface *)self proxyCreator];
+  remoteObjectProxy = [proxyCreator remoteObjectProxy];
+  [remoteObjectProxy repopulateBusinessesTables];
 }
 
 - (EMBlockedSenderManager)blockedSenderManager

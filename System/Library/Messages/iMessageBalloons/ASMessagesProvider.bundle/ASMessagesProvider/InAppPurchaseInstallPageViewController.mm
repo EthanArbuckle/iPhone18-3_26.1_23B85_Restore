@@ -1,16 +1,16 @@
 @interface InAppPurchaseInstallPageViewController
-- (_TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)as_viewDidBecomeFullyVisible;
 - (void)as_viewDidBecomePartiallyVisible;
 - (void)as_viewWillBecomeFullyVisible;
 - (void)as_viewWillBecomePartiallyVisible;
 - (void)didEnterBackground;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 - (void)willEnterForeground;
 @end
@@ -19,71 +19,71 @@
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_59FDD0(1);
-  *(&v2->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController_isInBackground) = 0;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController_isInBackground) = 0;
 }
 
 - (void)didEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_59FDD0(0);
-  *(&v2->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController_isInBackground) = 1;
-  *(&v2->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController_didProgressWhileForegrounded) = 0;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController_isInBackground) = 1;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController_didProgressWhileForegrounded) = 0;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_5A0558();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_5A07E4(a3);
+  selfCopy = self;
+  sub_5A07E4(appear);
 }
 
 - (void)as_viewWillBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_5A0CA4(&selRef_as_viewWillBecomeFullyVisible, &enum case for StoreViewControllerLifecycleEvent.willAppear(_:));
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_5A0A64(a3);
+  selfCopy = self;
+  sub_5A0A64(appear);
 }
 
 - (void)as_viewDidBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_5A0CA4(&selRef_as_viewDidBecomeFullyVisible, &enum case for StoreViewControllerLifecycleEvent.didAppear(_:));
 }
 
 - (void)as_viewWillBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_5A0EB8();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_5A10CC(a3);
+  selfCopy = self;
+  sub_5A10CC(disappear);
 }
 
 - (void)as_viewDidBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_5A0CA4(&selRef_as_viewDidBecomePartiallyVisible, &enum case for StoreViewControllerLifecycleEvent.didDisappear(_:));
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_5A1364(a3);
+  selfCopy = self;
+  sub_5A1364(disappear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -109,11 +109,11 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(InAppPurchaseInstallPageViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(InAppPurchaseInstallPageViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -124,7 +124,7 @@
   }
 }
 
-- (_TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider38InAppPurchaseInstallPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

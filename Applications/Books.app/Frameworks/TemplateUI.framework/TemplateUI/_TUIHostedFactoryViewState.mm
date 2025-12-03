@@ -1,37 +1,37 @@
 @interface _TUIHostedFactoryViewState
 - (CGPoint)anchorPoint;
-- (_TUIHostedFactoryViewState)initWithIdentifier:(id)a3 view:(id)a4 flags:(unint64_t)a5;
-- (void)recycleViewWithController:(id)a3;
+- (_TUIHostedFactoryViewState)initWithIdentifier:(id)identifier view:(id)view flags:(unint64_t)flags;
+- (void)recycleViewWithController:(id)controller;
 @end
 
 @implementation _TUIHostedFactoryViewState
 
-- (_TUIHostedFactoryViewState)initWithIdentifier:(id)a3 view:(id)a4 flags:(unint64_t)a5
+- (_TUIHostedFactoryViewState)initWithIdentifier:(id)identifier view:(id)view flags:(unint64_t)flags
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = _TUIHostedFactoryViewState;
   v11 = [(_TUIHostedFactoryViewState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_view, a4);
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_view, view);
     v12->_previouslyAppeared = 1;
-    v12->_flags = a5;
+    v12->_flags = flags;
   }
 
   return v12;
 }
 
-- (void)recycleViewWithController:(id)a3
+- (void)recycleViewWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(UIView *)self->_view removeFromSuperview];
   if ((self->_flags & 8) != 0)
   {
-    [v4 makeAvailableForReuse:self];
+    [controllerCopy makeAvailableForReuse:self];
   }
 }
 

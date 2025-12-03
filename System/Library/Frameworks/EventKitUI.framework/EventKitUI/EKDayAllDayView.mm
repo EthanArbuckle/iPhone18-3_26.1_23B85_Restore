@@ -8,53 +8,53 @@
 + (id)allDayLabelFont;
 + (id)localizedAllDayString;
 + (void)clearStaticCache;
-- (BOOL)containsEvent:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKDayAllDayView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4;
+- (BOOL)containsEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKDayAllDayView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class;
 - (EKDayAllDayViewDelegate)delegate;
-- (double)_allDayAreaHeightForEventCount:(int64_t)a3;
+- (double)_allDayAreaHeightForEventCount:(int64_t)count;
 - (double)_height;
-- (double)_languageAwareAllDayEventHeight:(id)a3;
+- (double)_languageAwareAllDayEventHeight:(id)height;
 - (double)naturalHeight;
 - (double)nextAvailableOccurrenceViewYOrigin;
-- (id)_findSelectedCopySubviewOfView:(id)a3;
+- (id)_findSelectedCopySubviewOfView:(id)view;
 - (id)_selectedCopyView;
-- (id)occurrenceViewForEvent:(id)a3;
+- (id)occurrenceViewForEvent:(id)event;
 - (id)presentationControllerForEditMenu;
 - (id)selectedEventsForEditMenu;
 - (int64_t)_sizeClass;
 - (void)_clearTemporaryViews;
-- (void)_configureOccurrenceViewMarginAndPadding:(id)a3;
-- (void)_localeChanged:(id)a3;
+- (void)_configureOccurrenceViewMarginAndPadding:(id)padding;
+- (void)_localeChanged:(id)changed;
 - (void)_saveTemporaryViews;
 - (void)_setUpBirthdayCountViewIfNeeded;
 - (void)_smallTextSettingChanged;
-- (void)addViewToScroller:(id)a3;
+- (void)addViewToScroller:(id)scroller;
 - (void)attemptDisplayReviewPrompt;
-- (void)configureOccurrenceViewForGestureController:(id)a3;
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4;
+- (void)configureOccurrenceViewForGestureController:(id)controller;
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source;
 - (void)layoutSubviews;
-- (void)lockUseOfSmallTextToState:(BOOL)a3;
+- (void)lockUseOfSmallTextToState:(BOOL)state;
 - (void)reAdjustAllDayLabelLayout;
 - (void)removeAllOccurrenceViews;
-- (void)selectEvent:(id)a3;
-- (void)setAllDayLabelHighlighted:(BOOL)a3;
-- (void)setAllowsOccurrenceSelection:(BOOL)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setDimmedOccurrence:(id)a3;
-- (void)setDividerLineVisualEffect:(id)a3;
-- (void)setFixedHeight:(double)a3;
-- (void)setOccurrenceInset:(double)a3 labelInset:(double)a4;
-- (void)setOccurrences:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setShowBirthdayCountInsteadOfEvents:(BOOL)a3;
-- (void)setShowsBorderLines:(BOOL)a3;
-- (void)setShowsLabel:(BOOL)a3;
-- (void)setShowsSelection:(BOOL)a3;
+- (void)selectEvent:(id)event;
+- (void)setAllDayLabelHighlighted:(BOOL)highlighted;
+- (void)setAllowsOccurrenceSelection:(BOOL)selection;
+- (void)setBorderColor:(id)color;
+- (void)setDimmedOccurrence:(id)occurrence;
+- (void)setDividerLineVisualEffect:(id)effect;
+- (void)setFixedHeight:(double)height;
+- (void)setOccurrenceInset:(double)inset labelInset:(double)labelInset;
+- (void)setOccurrences:(id)occurrences;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setShowBirthdayCountInsteadOfEvents:(BOOL)events;
+- (void)setShowsBorderLines:(BOOL)lines;
+- (void)setShowsLabel:(BOOL)label;
+- (void)setShowsSelection:(BOOL)selection;
 - (void)shouldAnnotateAppEntitiesChanged;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateLabelFont;
-- (void)viewTintColorDidChangeForView:(id)a3 toColor:(id)a4;
+- (void)viewTintColorDidChangeForView:(id)view toColor:(id)color;
 @end
 
 @implementation EKDayAllDayView
@@ -66,12 +66,12 @@
   if (*&s_allDay1LineWidth == 0.0)
   {
     v8 = *MEMORY[0x1E69DB648];
-    v4 = [a1 allDayLabelFont];
-    v9[0] = v4;
+    allDayLabelFont = [self allDayLabelFont];
+    v9[0] = allDayLabelFont;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-    v6 = [a1 localizedAllDayString];
-    [v6 sizeWithAttributes:v5];
+    localizedAllDayString = [self localizedAllDayString];
+    [localizedAllDayString sizeWithAttributes:v5];
     s_allDay1LineWidth = v7;
 
     return *&s_allDay1LineWidth;
@@ -83,8 +83,8 @@
 + (id)allDayLabelFont
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v3 = [v2 fontDescriptor];
-  [v3 pointSize];
+  fontDescriptor = [v2 fontDescriptor];
+  [fontDescriptor pointSize];
   v5 = v4;
 
   CalRoundToScreenScale(v5);
@@ -108,8 +108,8 @@
   if (!s_allDayContainSpaces)
   {
     v3 = MEMORY[0x1E696AD98];
-    v4 = [a1 localizedAllDayString];
-    v5 = [v3 numberWithInt:{objc_msgSend(v4, "rangeOfString:", @" "}];
+    localizedAllDayString = [self localizedAllDayString];
+    v5 = [v3 numberWithInt:{objc_msgSend(localizedAllDayString, "rangeOfString:", @" "}];
     v6 = s_allDayContainSpaces;
     s_allDayContainSpaces = v5;
 
@@ -122,8 +122,8 @@
 + (double)maxAllowableAllDayTextWidth
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v3 = [v2 fontDescriptor];
-  [v3 pointSize];
+  fontDescriptor = [v2 fontDescriptor];
+  [fontDescriptor pointSize];
   v5 = v4;
 
   CalRoundToScreenScale(v5 * 3.57545455);
@@ -156,16 +156,16 @@
 
 + (BOOL)shouldAllDayTextUseTwoLines
 {
-  v3 = [a1 allDayContainSpaces];
-  if (v3)
+  allDayContainSpaces = [self allDayContainSpaces];
+  if (allDayContainSpaces)
   {
-    [a1 allDay1LineWidth];
+    [self allDay1LineWidth];
     v5 = v4;
-    [a1 maxAllowableAllDayTextWidth];
-    LOBYTE(v3) = v5 > v6;
+    [self maxAllowableAllDayTextWidth];
+    LOBYTE(allDayContainSpaces) = v5 > v6;
   }
 
-  return v3;
+  return allDayContainSpaces;
 }
 
 - (void)_smallTextSettingChanged
@@ -225,16 +225,16 @@
   v5 = v4;
   [(EKDayAllDayView *)self bounds];
   v7 = v6;
-  v8 = self;
-  v9 = v8;
-  if (v8->_showBirthdayCount && v8->_birthdayCountOccurrenceView)
+  selfCopy = self;
+  v9 = selfCopy;
+  if (selfCopy->_showBirthdayCount && selfCopy->_birthdayCountOccurrenceView)
   {
     v10 = [MEMORY[0x1E695DEC8] arrayWithObject:?];
   }
 
   else
   {
-    v10 = v8->_occurrenceViews;
+    v10 = selfCopy->_occurrenceViews;
   }
 
   v11 = v10;
@@ -281,8 +281,8 @@
       if ((CalSolariumEnabled() & 1) == 0)
       {
         v32 = v9->_scroller;
-        v33 = [(EKDayAllDayView *)v9 backgroundColor];
-        [(UIScrollView *)v32 setBackgroundColor:v33];
+        backgroundColor = [(EKDayAllDayView *)v9 backgroundColor];
+        [(UIScrollView *)v32 setBackgroundColor:backgroundColor];
       }
     }
 
@@ -312,20 +312,20 @@ LABEL_18:
   v35 = objc_opt_new();
   CalRoundToScreenScale(v12 * 0.5);
   v37 = v36;
-  v38 = [(EKDayAllDayView *)v9 _selectedCopyView];
-  v39 = v38;
+  _selectedCopyView = [(EKDayAllDayView *)v9 _selectedCopyView];
+  v39 = _selectedCopyView;
   if (v13)
   {
-    v121 = v38;
+    v121 = _selectedCopyView;
     v40 = 0;
     v120 = v37 + -3.5;
     do
     {
       v41 = [(NSMutableArray *)v11 objectAtIndex:v40];
-      v42 = [v41 currentImageState];
-      v43 = [v42 requiresLanguageAwarePadding];
+      currentImageState = [v41 currentImageState];
+      requiresLanguageAwarePadding = [currentImageState requiresLanguageAwarePadding];
 
-      if (v43)
+      if (requiresLanguageAwarePadding)
       {
         v45 = MEMORY[0x1E696AD98];
         [(EKDayAllDayView *)v9 _languageAwareAllDayEventHeight:v41];
@@ -375,20 +375,20 @@ LABEL_18:
     {
       v53 = v11;
       v54 = [(NSMutableArray *)v11 objectAtIndex:v50];
-      v55 = [v54 superview];
+      superview = [v54 superview];
 
-      if (v55 != v123)
+      if (superview != v123)
       {
         [(UIScrollView *)v123 addSubview:v54];
       }
 
       v56 = v13 == 1;
-      v57 = [(EKDayAllDayView *)v9 forceSingleColumnLayout];
-      v58 = v57;
+      forceSingleColumnLayout = [(EKDayAllDayView *)v9 forceSingleColumnLayout];
+      v58 = forceSingleColumnLayout;
       if (v50)
       {
         v56 = 0;
-        v59 = v57;
+        v59 = forceSingleColumnLayout;
       }
 
       else
@@ -418,10 +418,10 @@ LABEL_18:
 
       else
       {
-        v63 = [(EKDayAllDayView *)v9 forceSingleColumnLayout];
+        forceSingleColumnLayout2 = [(EKDayAllDayView *)v9 forceSingleColumnLayout];
         if (v50)
         {
-          v64 = v63;
+          v64 = forceSingleColumnLayout2;
         }
 
         else
@@ -518,8 +518,8 @@ LABEL_61:
         [(EKDayAllDayView *)v9 reAdjustAllDayLabelLayout];
       }
 
-      v86 = [v54 occurrence];
-      v87 = [v86 isEqual:v9->_dimmedOccurrence];
+      occurrence = [v54 occurrence];
+      v87 = [occurrence isEqual:v9->_dimmedOccurrence];
 
       if (v87)
       {
@@ -527,9 +527,9 @@ LABEL_61:
         [v88 setDimmed:1];
       }
 
-      v89 = [v54 occurrence];
-      v90 = [v121 occurrence];
-      v91 = [v89 isEqual:v90];
+      occurrence2 = [v54 occurrence];
+      occurrence3 = [v121 occurrence];
+      v91 = [occurrence2 isEqual:occurrence3];
 
       if (v91)
       {
@@ -579,15 +579,15 @@ LABEL_54:
   }
 
   v124 = 0;
-  if (!v38)
+  if (!_selectedCopyView)
   {
     goto LABEL_85;
   }
 
 LABEL_80:
-  v93 = [v39 superview];
+  superview2 = [v39 superview];
 
-  if (v93 == v123)
+  if (superview2 == v123)
   {
     [(UIScrollView *)v123 bringSubviewToFront:v39];
   }
@@ -643,18 +643,18 @@ LABEL_85:
   dividerLineSuperview = v9->_dividerLineSuperview;
   if (dividerLineSuperview)
   {
-    v107 = [(EKUIVisualEffectView *)dividerLineSuperview contentView];
+    contentView = [(EKUIVisualEffectView *)dividerLineSuperview contentView];
   }
 
   else
   {
-    v107 = v9;
+    contentView = v9;
   }
 
-  v108 = v107;
-  v109 = [(UIView *)v9->_dividerLineViewTop superview];
+  v108 = contentView;
+  superview3 = [(UIView *)v9->_dividerLineViewTop superview];
 
-  if (!v109)
+  if (!superview3)
   {
     [(EKDayAllDayView *)v108 addSubview:v9->_dividerLineViewTop];
     [(UIView *)v9->_dividerLineViewTop setAutoresizingMask:34];
@@ -663,9 +663,9 @@ LABEL_85:
     [(UIView *)dividerLineViewTop setFrame:0.0, 0.0];
   }
 
-  v111 = [(UIView *)v9->_dividerLineViewBottom superview];
+  superview4 = [(UIView *)v9->_dividerLineViewBottom superview];
 
-  if (!v111)
+  if (!superview4)
   {
     [(EKDayAllDayView *)v108 addSubview:v9->_dividerLineViewBottom];
     [(UIView *)v9->_dividerLineViewBottom setAutoresizingMask:10];
@@ -688,9 +688,9 @@ LABEL_85:
 
 - (int64_t)_sizeClass
 {
-  v3 = [(EKDayAllDayView *)self window];
+  window = [(EKDayAllDayView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     return self->_targetSizeClass;
   }
@@ -760,8 +760,8 @@ LABEL_85:
 + (double)maxAllowableAllDayTextTwoLineHeight
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v3 = [v2 fontDescriptor];
-  [v3 pointSize];
+  fontDescriptor = [v2 fontDescriptor];
+  [fontDescriptor pointSize];
   v5 = v4;
 
   CalRoundToScreenScale(v5 * 2.54545455);
@@ -773,22 +773,22 @@ LABEL_85:
   v12[1] = *MEMORY[0x1E69E9840];
   if (*&s_allDay1LineWidth == 0.0)
   {
-    if ([a1 shouldAllDayTextUseTwoLines])
+    if ([self shouldAllDayTextUseTwoLines])
     {
-      v3 = [a1 localizedAllDayString];
-      [a1 maxAllowableAllDayTextWidth];
+      localizedAllDayString = [self localizedAllDayString];
+      [self maxAllowableAllDayTextWidth];
       v5 = v4;
       v11 = *MEMORY[0x1E69DB648];
-      v6 = [a1 allDayLabelFont];
-      v12[0] = v6;
+      allDayLabelFont = [self allDayLabelFont];
+      v12[0] = allDayLabelFont;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      [v3 boundingRectWithSize:1 options:v7 attributes:0 context:{v5, 1.79769313e308}];
+      [localizedAllDayString boundingRectWithSize:1 options:v7 attributes:0 context:{v5, 1.79769313e308}];
       s_allDayWidth = v8;
     }
 
     else
     {
-      [a1 allDay1LineWidth];
+      [self allDay1LineWidth];
       s_allDayWidth = v9;
     }
   }
@@ -805,21 +805,21 @@ LABEL_85:
   s_allDayWidth = 0;
 }
 
-- (EKDayAllDayView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4
+- (EKDayAllDayView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class
 {
   v20.receiver = self;
   v20.super_class = EKDayAllDayView;
-  v5 = [(EKDayAllDayView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(EKDayAllDayView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     if (CalCanvasPocketEnabled())
     {
-      v6 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
     }
 
     else
     {
-      if (a4 == 1)
+      if (class == 1)
       {
         [MEMORY[0x1E69DC888] systemBackgroundColor];
       }
@@ -828,28 +828,28 @@ LABEL_85:
       {
         CUIKAllDayBackgroundColor();
       }
-      v6 = ;
+      clearColor = ;
     }
 
-    v7 = v6;
-    [(EKDayAllDayView *)v5 setBackgroundColor:v6];
+    v7 = clearColor;
+    [(EKDayAllDayView *)v5 setBackgroundColor:clearColor];
 
     v8 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, 0.0, 100.0, 50.0}];
     allDay = v5->_allDay;
     v5->_allDay = v8;
 
     v10 = v5->_allDay;
-    v11 = [objc_opt_class() allDayLabelFont];
-    [(UILabel *)v10 setFont:v11];
+    allDayLabelFont = [objc_opt_class() allDayLabelFont];
+    [(UILabel *)v10 setFont:allDayLabelFont];
 
     v12 = v5->_allDay;
-    v13 = [objc_opt_class() localizedAllDayString];
-    [(UILabel *)v12 setText:v13];
+    localizedAllDayString = [objc_opt_class() localizedAllDayString];
+    [(UILabel *)v12 setText:localizedAllDayString];
 
     [(UILabel *)v5->_allDay setTextAlignment:2];
     v14 = v5->_allDay;
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v14 setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v14 setTextColor:secondaryLabelColor];
 
     [(EKDayAllDayView *)v5 reAdjustAllDayLabelLayout];
     [(EKDayAllDayView *)v5 addSubview:v5->_allDay];
@@ -857,33 +857,33 @@ LABEL_85:
     v5->_maxVisibleRows = 2;
     v5->_showsLabel = 1;
     v5->_fixedHeight = -1.0;
-    v5->_targetSizeClass = a4;
+    v5->_targetSizeClass = class;
     [(EKDayAllDayView *)v5 setClipsToBounds:1];
     v16 = objc_opt_new();
     temporaryViewCache = v5->_temporaryViewCache;
     v5->_temporaryViewCache = v16;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v5 selector:sel__localeChanged_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__localeChanged_ name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v5;
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   v3 = objc_opt_class();
 
   [v3 clearStaticCache];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v9 = a3;
-  if ([v9 count] == 1)
+  endedCopy = ended;
+  if ([endedCopy count] == 1)
   {
-    v5 = [v9 anyObject];
-    if (v5)
+    anyObject = [endedCopy anyObject];
+    if (anyObject)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v7 = objc_opt_respondsToSelector();
@@ -898,14 +898,14 @@ LABEL_85:
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(EKDayAllDayView *)self _height:a3.width];
+  width = fits.width;
+  [(EKDayAllDayView *)self _height:fits.width];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -913,15 +913,15 @@ LABEL_85:
   return result;
 }
 
-- (id)_findSelectedCopySubviewOfView:(id)a3
+- (id)_findSelectedCopySubviewOfView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [view subviews];
+  v4 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -932,7 +932,7 @@ LABEL_85:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -947,7 +947,7 @@ LABEL_85:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -959,10 +959,10 @@ LABEL_12:
   return v9;
 }
 
-- (id)occurrenceViewForEvent:(id)a3
+- (id)occurrenceViewForEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -982,8 +982,8 @@ LABEL_12:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 occurrence];
-        v11 = [v10 isEqual:v4];
+        occurrence = [v9 occurrence];
+        v11 = [occurrence isEqual:eventCopy];
 
         if (v11)
         {
@@ -1021,21 +1021,21 @@ LABEL_11:
   return v4;
 }
 
-- (void)addViewToScroller:(id)a3
+- (void)addViewToScroller:(id)scroller
 {
-  v4 = a3;
+  scrollerCopy = scroller;
   if (self->_scroller)
   {
-    v16 = v4;
-    v5 = [v4 superview];
+    v16 = scrollerCopy;
+    superview = [scrollerCopy superview];
     scroller = self->_scroller;
 
-    v4 = v16;
-    if (v5 != scroller)
+    scrollerCopy = v16;
+    if (superview != scroller)
     {
-      v7 = [v16 superview];
+      superview2 = [v16 superview];
       [v16 frame];
-      [v7 convertRect:self->_scroller toView:?];
+      [superview2 convertRect:self->_scroller toView:?];
       v9 = v8;
       v11 = v10;
       v13 = v12;
@@ -1043,15 +1043,15 @@ LABEL_11:
 
       [(UIScrollView *)self->_scroller addSubview:v16];
       [v16 setFrame:{v9, v11, v13, v15}];
-      v4 = v16;
+      scrollerCopy = v16;
     }
   }
 }
 
-- (BOOL)containsEvent:(id)a3
+- (BOOL)containsEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1070,8 +1070,8 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) occurrence];
-        v10 = [v9 isEqual:v4];
+        occurrence = [*(*(&v12 + 1) + 8 * i) occurrence];
+        v10 = [occurrence isEqual:eventCopy];
 
         if (v10)
         {
@@ -1095,28 +1095,28 @@ LABEL_11:
   return v6;
 }
 
-- (void)selectEvent:(id)a3
+- (void)selectEvent:(id)event
 {
-  v6 = a3;
-  if (self->_selectedEvent != v6)
+  eventCopy = event;
+  if (self->_selectedEvent != eventCopy)
   {
-    v7 = v6;
-    if (v6 && ![(EKDayAllDayView *)self containsEvent:v6])
+    v7 = eventCopy;
+    if (eventCopy && ![(EKDayAllDayView *)self containsEvent:eventCopy])
     {
       [(EKDayAllDayView *)a2 selectEvent:?];
     }
 
-    objc_storeStrong(&self->_selectedEvent, a3);
-    v6 = v7;
+    objc_storeStrong(&self->_selectedEvent, event);
+    eventCopy = v7;
   }
 }
 
-- (void)setDimmedOccurrence:(id)a3
+- (void)setDimmedOccurrence:(id)occurrence
 {
-  v5 = a3;
+  occurrenceCopy = occurrence;
   dimmedOccurrence = self->_dimmedOccurrence;
-  v9 = v5;
-  if (dimmedOccurrence != v5)
+  v9 = occurrenceCopy;
+  if (dimmedOccurrence != occurrenceCopy)
   {
     if (dimmedOccurrence)
     {
@@ -1124,7 +1124,7 @@ LABEL_11:
       [v7 setDimmed:0];
     }
 
-    objc_storeStrong(&self->_dimmedOccurrence, a3);
+    objc_storeStrong(&self->_dimmedOccurrence, occurrence);
     if (self->_dimmedOccurrence)
     {
       v8 = [(EKDayAllDayView *)self occurrenceViewForEvent:?];
@@ -1133,16 +1133,16 @@ LABEL_11:
   }
 }
 
-- (void)setOccurrenceInset:(double)a3 labelInset:(double)a4
+- (void)setOccurrenceInset:(double)inset labelInset:(double)labelInset
 {
-  self->_occurrenceInset = a3;
+  self->_occurrenceInset = inset;
   [(UILabel *)self->_allDay frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   if (CalInterfaceIsLeftToRight())
   {
-    v12 = a4 - v9 + -1.0;
+    v12 = labelInset - v9 + -1.0;
     if (v12 < 0.0)
     {
       v9 = v9 + v12;
@@ -1153,7 +1153,7 @@ LABEL_11:
   else
   {
     [(EKDayAllDayView *)self bounds];
-    v12 = CGRectGetWidth(v17) - a4 + 1.0;
+    v12 = CGRectGetWidth(v17) - labelInset + 1.0;
     v18.origin.x = v12;
     v18.origin.y = v7;
     v18.size.width = v9;
@@ -1177,19 +1177,19 @@ LABEL_11:
   [(UILabel *)allDay setFrame:v12, v7, v9, v11];
 }
 
-- (void)lockUseOfSmallTextToState:(BOOL)a3
+- (void)lockUseOfSmallTextToState:(BOOL)state
 {
-  self->_usesSmallText = a3;
+  self->_usesSmallText = state;
   self->_smallTextSettingLocked = 1;
   [(EKDayAllDayView *)self _smallTextSettingChanged];
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  self->_orientation = a3;
+  self->_orientation = orientation;
   if (!self->_smallTextSettingLocked)
   {
-    self->_usesSmallText = (a3 - 3) < 2;
+    self->_usesSmallText = (orientation - 3) < 2;
     [(EKDayAllDayView *)self _smallTextSettingChanged];
   }
 }
@@ -1203,10 +1203,10 @@ LABEL_11:
     for (i = 0; i != v4; ++i)
     {
       v6 = [(NSMutableArray *)self->_occurrenceViews objectAtIndex:i];
-      v7 = [v6 occurrence];
-      v8 = [v7 calendarItemIdentifier];
+      occurrence = [v6 occurrence];
+      calendarItemIdentifier = [occurrence calendarItemIdentifier];
 
-      if (!v8 || ([(NSMutableDictionary *)self->_temporaryViewCache objectForKeyedSubscript:v8], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+      if (!calendarItemIdentifier || ([(NSMutableDictionary *)self->_temporaryViewCache objectForKeyedSubscript:calendarItemIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
       {
         [v6 removeFromSuperview];
       }
@@ -1217,27 +1217,27 @@ LABEL_11:
   self->_occurrenceViews = 0;
 }
 
-- (double)_languageAwareAllDayEventHeight:(id)a3
+- (double)_languageAwareAllDayEventHeight:(id)height
 {
-  v4 = a3;
+  heightCopy = height;
   [EKDayOccurrenceView minimumHeightForSizeClass:[(EKDayAllDayView *)self _sizeClass] orientation:self->_orientation isAllDay:1];
   v6 = v5;
-  v7 = [v4 currentImageState];
-  v8 = [v7 requiresLanguageAwarePadding];
+  currentImageState = [heightCopy currentImageState];
+  requiresLanguageAwarePadding = [currentImageState requiresLanguageAwarePadding];
 
-  if (v8)
+  if (requiresLanguageAwarePadding)
   {
-    v9 = [v4 currentImageState];
-    [v9 totalLanguageAwareHeightPadding];
+    currentImageState2 = [heightCopy currentImageState];
+    [currentImageState2 totalLanguageAwareHeightPadding];
     v6 = v6 + v10;
   }
 
   return v6;
 }
 
-- (double)_allDayAreaHeightForEventCount:(int64_t)a3
+- (double)_allDayAreaHeightForEventCount:(int64_t)count
 {
-  if (a3 < 1)
+  if (count < 1)
   {
     return 0.0;
   }
@@ -1246,24 +1246,24 @@ LABEL_11:
   v6 = v5;
   if ([(EKDayAllDayView *)self forceSingleColumnLayout])
   {
-    v7 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v7 = (a3 + 1) >> 1;
+    countCopy = (count + 1) >> 1;
   }
 
-  v8 = [(EKDayAllDayView *)self forceSingleColumnLayout];
+  forceSingleColumnLayout = [(EKDayAllDayView *)self forceSingleColumnLayout];
   v9 = 0;
-  if (a3 >= 4)
+  if (count >= 4)
   {
-    v10 = 4;
+    countCopy2 = 4;
   }
 
   else
   {
-    v10 = a3;
+    countCopy2 = count;
   }
 
   v11 = 0.0;
@@ -1294,8 +1294,8 @@ LABEL_10:
 
     else
     {
-      v15 = a3 == 3 && v9 == 2;
-      if (a3 == 1 || v15)
+      v15 = count == 3 && v9 == 2;
+      if (count == 1 || v15)
       {
         goto LABEL_10;
       }
@@ -1306,22 +1306,22 @@ LABEL_24:
     ++v9;
   }
 
-  while (v10 != v9);
-  v20 = 2;
-  if ((a3 + 1) >> 1 < 2)
+  while (countCopy2 != v9);
+  countCopy3 = 2;
+  if ((count + 1) >> 1 < 2)
   {
-    v20 = (a3 + 1) >> 1;
+    countCopy3 = (count + 1) >> 1;
   }
 
-  if (v8)
+  if (forceSingleColumnLayout)
   {
-    v20 = a3;
+    countCopy3 = count;
   }
 
-  v21 = floor(v11) + 4.0 + (v20 - 1) * 2.0;
+  v21 = floor(v11) + 4.0 + (countCopy3 - 1) * 2.0;
   v22 = v21 + 4.0;
   v23 = floor(v6 * 0.5) + 2.0 + v21;
-  if (v7 >= 3)
+  if (countCopy >= 3)
   {
     v24 = v23;
   }
@@ -1339,47 +1339,47 @@ LABEL_24:
   return v24;
 }
 
-- (void)configureOccurrenceViewForGestureController:(id)a3
+- (void)configureOccurrenceViewForGestureController:(id)controller
 {
-  v19 = a3;
-  [(EKDayAllDayView *)self _configureOccurrenceViewMarginAndPadding:v19];
-  v4 = [v19 occurrence];
+  controllerCopy = controller;
+  [(EKDayAllDayView *)self _configureOccurrenceViewMarginAndPadding:controllerCopy];
+  occurrence = [controllerCopy occurrence];
 
-  if (v4)
+  if (occurrence)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = [WeakRetained allDayViewRequestsCurrentDisplayDate:self];
 
-    v7 = [v6 calendarDateForDay];
-    [v7 absoluteTime];
+    calendarDateForDay = [v6 calendarDateForDay];
+    [calendarDateForDay absoluteTime];
     v9 = v8;
 
-    v10 = [v6 calendarDateForEndOfDay];
-    [v10 absoluteTime];
+    calendarDateForEndOfDay = [v6 calendarDateForEndOfDay];
+    [calendarDateForEndOfDay absoluteTime];
     v12 = v11 + 1.0;
 
-    v13 = [v19 occurrence];
-    v14 = [v13 startDate];
-    [v14 timeIntervalSinceReferenceDate];
-    [v19 setHasPrecedingDuration:v15 < v9];
+    occurrence2 = [controllerCopy occurrence];
+    startDate = [occurrence2 startDate];
+    [startDate timeIntervalSinceReferenceDate];
+    [controllerCopy setHasPrecedingDuration:v15 < v9];
 
-    v16 = [v19 occurrence];
-    v17 = [v16 endDateUnadjustedForLegacyClients];
-    [v17 timeIntervalSinceReferenceDate];
-    [v19 setHasTrailingDuration:v18 > v12];
+    occurrence3 = [controllerCopy occurrence];
+    endDateUnadjustedForLegacyClients = [occurrence3 endDateUnadjustedForLegacyClients];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceReferenceDate];
+    [controllerCopy setHasTrailingDuration:v18 > v12];
   }
 }
 
-- (void)_configureOccurrenceViewMarginAndPadding:(id)a3
+- (void)_configureOccurrenceViewMarginAndPadding:(id)padding
 {
-  v14 = a3;
+  paddingCopy = padding;
   +[EKDayOccurrenceView defaultPadding];
   v5 = v4;
   v7 = v6;
-  v8 = [v14 hasIcon];
-  v9 = [(EKDayAllDayView *)self window];
+  hasIcon = [paddingCopy hasIcon];
+  window = [(EKDayAllDayView *)self window];
 
-  if (v9)
+  if (window)
   {
     if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(self))
     {
@@ -1406,30 +1406,30 @@ LABEL_6:
   }
 
   v13 = 0.5;
-  if (v8)
+  if (hasIcon)
   {
     v13 = 1.5;
   }
 
-  [v14 setPadding:{v11, v13, v5, v7}];
+  [paddingCopy setPadding:{v11, v13, v5, v7}];
 }
 
-- (void)setOccurrences:(id)a3
+- (void)setOccurrences:(id)occurrences
 {
-  v45 = a3;
+  occurrencesCopy = occurrences;
   [(EKDayAllDayView *)self _saveTemporaryViews];
   [(EKDayAllDayView *)self removeAllOccurrenceViews];
-  v4 = [v45 count];
+  v4 = [occurrencesCopy count];
   self->_birthdayCount = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained allDayViewRequestsCurrentDisplayDate:self];
 
-  v7 = [v6 calendarDateForDay];
-  [v7 absoluteTime];
+  calendarDateForDay = [v6 calendarDateForDay];
+  [calendarDateForDay absoluteTime];
   v9 = v8;
 
-  v10 = [v6 calendarDateForEndOfDay];
-  [v10 absoluteTime];
+  calendarDateForEndOfDay = [v6 calendarDateForEndOfDay];
+  [calendarDateForEndOfDay absoluteTime];
   v12 = v11;
 
   v13 = objc_loadWeakRetained(&self->_delegate);
@@ -1464,13 +1464,13 @@ LABEL_6:
   v22 = *(MEMORY[0x1E695F058] + 24);
   do
   {
-    v23 = [v45 objectAtIndexedSubscript:{v17, v43}];
-    v24 = [v23 calendarItemIdentifier];
-    v25 = [(NSMutableDictionary *)self->_temporaryViewCache objectForKeyedSubscript:v24];
+    v23 = [occurrencesCopy objectAtIndexedSubscript:{v17, v43}];
+    calendarItemIdentifier = [v23 calendarItemIdentifier];
+    v25 = [(NSMutableDictionary *)self->_temporaryViewCache objectForKeyedSubscript:calendarItemIdentifier];
     if (v25)
     {
       v26 = v25;
-      [(NSMutableDictionary *)self->_temporaryViewCache removeObjectForKey:v24];
+      [(NSMutableDictionary *)self->_temporaryViewCache removeObjectForKey:calendarItemIdentifier];
     }
 
     else
@@ -1483,12 +1483,12 @@ LABEL_6:
     [v26 setAllDayDrawingStyle:1];
     [v26 setDelegate:self];
     [v26 setIsSelectedCopyView:0];
-    v27 = [v23 startDate];
-    [v27 timeIntervalSinceReferenceDate];
+    startDate = [v23 startDate];
+    [startDate timeIntervalSinceReferenceDate];
     [v26 setHasPrecedingDuration:v28 < v9];
 
-    v29 = [v23 endDateUnadjustedForLegacyClients];
-    [v29 timeIntervalSinceReferenceDate];
+    endDateUnadjustedForLegacyClients = [v23 endDateUnadjustedForLegacyClients];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceReferenceDate];
     [v26 setHasTrailingDuration:v30 > v18];
 
     [v26 setMultiAllDayRoundCorners:1];
@@ -1572,12 +1572,12 @@ LABEL_16:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 occurrence];
-        v10 = [v9 calendarItemIdentifier];
+        occurrence = [v8 occurrence];
+        calendarItemIdentifier = [occurrence calendarItemIdentifier];
 
-        if (v10)
+        if (calendarItemIdentifier)
         {
-          [(NSMutableDictionary *)self->_temporaryViewCache setObject:v8 forKeyedSubscript:v10];
+          [(NSMutableDictionary *)self->_temporaryViewCache setObject:v8 forKeyedSubscript:calendarItemIdentifier];
         }
       }
 
@@ -1595,8 +1595,8 @@ LABEL_16:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_temporaryViewCache allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_temporaryViewCache allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1608,14 +1608,14 @@ LABEL_16:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -1631,8 +1631,8 @@ LABEL_16:
   {
     if ([(NSMutableArray *)self->_occurrenceViews count])
     {
-      v4 = [(NSMutableArray *)self->_occurrenceViews firstObject];
-      [v4 frame];
+      firstObject = [(NSMutableArray *)self->_occurrenceViews firstObject];
+      [firstObject frame];
       v6 = v5;
       v8 = v7;
       v10 = v9;
@@ -1668,14 +1668,14 @@ LABEL_16:
   [(EKDayOccurrenceView *)birthdayCountOccurrenceView setBirthdayCount:birthdayCount];
 }
 
-- (void)setShowBirthdayCountInsteadOfEvents:(BOOL)a3
+- (void)setShowBirthdayCountInsteadOfEvents:(BOOL)events
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (self->_showBirthdayCount != a3)
+  if (self->_showBirthdayCount != events)
   {
-    v3 = a3;
-    self->_showBirthdayCount = a3;
-    if (a3)
+    eventsCopy = events;
+    self->_showBirthdayCount = events;
+    if (events)
     {
       v21 = 0uLL;
       v22 = 0uLL;
@@ -1739,17 +1739,17 @@ LABEL_16:
       }
     }
 
-    [(EKDayOccurrenceView *)self->_birthdayCountOccurrenceView setHidden:!v3, v15];
+    [(EKDayOccurrenceView *)self->_birthdayCountOccurrenceView setHidden:!eventsCopy, v15];
     [(EKDayAllDayView *)self setNeedsLayout];
   }
 }
 
-- (void)setAllowsOccurrenceSelection:(BOOL)a3
+- (void)setAllowsOccurrenceSelection:(BOOL)selection
 {
-  if (self->_allowSelection != a3)
+  if (self->_allowSelection != selection)
   {
-    v3 = a3;
-    self->_allowSelection = a3;
+    selectionCopy = selection;
+    self->_allowSelection = selection;
     v5 = [(NSMutableArray *)self->_occurrenceViews count];
     if (v5)
     {
@@ -1757,65 +1757,65 @@ LABEL_16:
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSMutableArray *)self->_occurrenceViews objectAtIndex:i];
-        [v8 setEnabled:v3];
+        [v8 setEnabled:selectionCopy];
       }
     }
   }
 }
 
-- (void)setShowsSelection:(BOOL)a3
+- (void)setShowsSelection:(BOOL)selection
 {
-  if (self->_showSelection != a3)
+  if (self->_showSelection != selection)
   {
-    self->_showSelection = a3;
+    self->_showSelection = selection;
   }
 }
 
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source
 {
-  v10 = a3;
+  selectedCopy = selected;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v10 occurrence];
-    [v8 allDayView:self didSelectEvent:v9 userInitiated:{+[EKDayOccurrenceView isUserInitiated:](EKDayOccurrenceView, "isUserInitiated:", a4)}];
+    occurrence = [selectedCopy occurrence];
+    [v8 allDayView:self didSelectEvent:occurrence userInitiated:{+[EKDayOccurrenceView isUserInitiated:](EKDayOccurrenceView, "isUserInitiated:", source)}];
   }
 }
 
 - (id)presentationControllerForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained presentationControllerForEditMenu];
+  presentationControllerForEditMenu = [WeakRetained presentationControllerForEditMenu];
 
-  return v3;
+  return presentationControllerForEditMenu;
 }
 
 - (id)selectedEventsForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained selectedEventsForEditMenu];
+  selectedEventsForEditMenu = [WeakRetained selectedEventsForEditMenu];
 
-  return v3;
+  return selectedEventsForEditMenu;
 }
 
 - (void)attemptDisplayReviewPrompt
 {
-  v3 = [(EKDayAllDayView *)self delegate];
+  delegate = [(EKDayAllDayView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(EKDayAllDayView *)self delegate];
-    [v5 attemptDisplayReviewPrompt];
+    delegate2 = [(EKDayAllDayView *)self delegate];
+    [delegate2 attemptDisplayReviewPrompt];
   }
 }
 
-- (void)setFixedHeight:(double)a3
+- (void)setFixedHeight:(double)height
 {
-  self->_fixedHeight = a3;
+  self->_fixedHeight = height;
   [(EKDayAllDayView *)self frame];
   v5 = v4;
   v7 = v6;
@@ -1825,23 +1825,23 @@ LABEL_16:
   [(EKDayAllDayView *)self setFrame:v5, v7, v9, v10];
 }
 
-- (void)setAllDayLabelHighlighted:(BOOL)a3
+- (void)setAllDayLabelHighlighted:(BOOL)highlighted
 {
-  if (self->_allDayLabelHighlighted != a3)
+  if (self->_allDayLabelHighlighted != highlighted)
   {
-    self->_allDayLabelHighlighted = a3;
+    self->_allDayLabelHighlighted = highlighted;
   }
 }
 
-- (void)setShowsBorderLines:(BOOL)a3
+- (void)setShowsBorderLines:(BOOL)lines
 {
-  if (self->_showsBorderLines != a3)
+  if (self->_showsBorderLines != lines)
   {
-    v3 = a3;
-    self->_showsBorderLines = a3;
+    linesCopy = lines;
+    self->_showsBorderLines = lines;
     [(UIView *)self->_dividerLineViewTop setHidden:1];
     dividerLineViewBottom = self->_dividerLineViewBottom;
-    if (v3)
+    if (linesCopy)
     {
       if (!dividerLineViewBottom)
       {
@@ -1858,8 +1858,8 @@ LABEL_16:
 
         else
         {
-          v9 = [MEMORY[0x1E69DC888] separatorColor];
-          [(UIView *)self->_dividerLineViewBottom setBackgroundColor:v9];
+          separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+          [(UIView *)self->_dividerLineViewBottom setBackgroundColor:separatorColor];
         }
       }
     }
@@ -1872,42 +1872,42 @@ LABEL_16:
   }
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
   dividerLineViewTop = self->_dividerLineViewTop;
-  v5 = a3;
-  [(UIView *)dividerLineViewTop setBackgroundColor:v5];
-  [(UIView *)self->_dividerLineViewBottom setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIView *)dividerLineViewTop setBackgroundColor:colorCopy];
+  [(UIView *)self->_dividerLineViewBottom setBackgroundColor:colorCopy];
 }
 
-- (void)setShowsLabel:(BOOL)a3
+- (void)setShowsLabel:(BOOL)label
 {
-  if (self->_showsLabel != a3)
+  if (self->_showsLabel != label)
   {
-    self->_showsLabel = a3;
-    [(UILabel *)self->_allDay setHidden:!a3];
+    self->_showsLabel = label;
+    [(UILabel *)self->_allDay setHidden:!label];
   }
 }
 
 - (void)updateLabelFont
 {
   allDay = self->_allDay;
-  v4 = [objc_opt_class() allDayLabelFont];
-  [(UILabel *)allDay setFont:v4];
+  allDayLabelFont = [objc_opt_class() allDayLabelFont];
+  [(UILabel *)allDay setFont:allDayLabelFont];
 
   [(UILabel *)self->_allDay sizeToFit];
 
   [(EKDayAllDayView *)self setNeedsLayout];
 }
 
-- (void)setDividerLineVisualEffect:(id)a3
+- (void)setDividerLineVisualEffect:(id)effect
 {
-  v11 = a3;
+  effectCopy = effect;
   [(UIView *)self->_dividerLineViewTop removeFromSuperview];
   [(UIView *)self->_dividerLineViewBottom removeFromSuperview];
   [(EKDayAllDayView *)self setNeedsLayout];
   dividerLineSuperview = self->_dividerLineSuperview;
-  if (v11)
+  if (effectCopy)
   {
     if (!dividerLineSuperview)
     {
@@ -1917,8 +1917,8 @@ LABEL_16:
       v7 = self->_dividerLineSuperview;
       self->_dividerLineSuperview = v6;
 
-      v8 = [MEMORY[0x1E69DC888] clearColor];
-      [(EKUIVisualEffectView *)self->_dividerLineSuperview setBackgroundColor:v8];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(EKUIVisualEffectView *)self->_dividerLineSuperview setBackgroundColor:clearColor];
 
       [(EKUIVisualEffectView *)self->_dividerLineSuperview setUserInteractionEnabled:0];
       [(EKUIVisualEffectView *)self->_dividerLineSuperview setAutoresizingMask:18];
@@ -1927,7 +1927,7 @@ LABEL_16:
       dividerLineSuperview = self->_dividerLineSuperview;
     }
 
-    [(EKUIVisualEffectView *)dividerLineSuperview setEffect:v11];
+    [(EKUIVisualEffectView *)dividerLineSuperview setEffect:effectCopy];
     if (self->_dividerLineVisualEffectColor)
     {
       [(EKDayAllDayView *)self setBorderColor:?];
@@ -1945,11 +1945,11 @@ LABEL_16:
   }
 }
 
-- (void)viewTintColorDidChangeForView:(id)a3 toColor:(id)a4
+- (void)viewTintColorDidChangeForView:(id)view toColor:(id)color
 {
-  objc_storeStrong(&self->_dividerLineVisualEffectColor, a4);
-  v6 = a4;
-  [(EKDayAllDayView *)self setBorderColor:v6];
+  objc_storeStrong(&self->_dividerLineVisualEffectColor, color);
+  colorCopy = color;
+  [(EKDayAllDayView *)self setBorderColor:colorCopy];
 }
 
 - (EKDayAllDayViewDelegate)delegate

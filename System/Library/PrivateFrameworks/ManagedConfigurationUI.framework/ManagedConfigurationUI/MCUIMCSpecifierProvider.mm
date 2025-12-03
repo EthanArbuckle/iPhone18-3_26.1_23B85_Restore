@@ -1,12 +1,12 @@
 @interface MCUIMCSpecifierProvider
-- (id)_specifierForAppSigner:(id)a3;
-- (id)_specifierForBlockedApp:(id)a3;
+- (id)_specifierForAppSigner:(id)signer;
+- (id)_specifierForBlockedApp:(id)app;
 - (id)specifiers;
-- (void)_loadAppSignerFromSpecifier:(id)a3;
-- (void)_presentErrorTitle:(id)a3 message:(id)a4;
-- (void)_selectInstalledProfileIdentifier:(id)a3;
-- (void)_selectUninstalledProfileIdentifier:(id)a3;
-- (void)loadProfileFromSpecifier:(id)a3;
+- (void)_loadAppSignerFromSpecifier:(id)specifier;
+- (void)_presentErrorTitle:(id)title message:(id)message;
+- (void)_selectInstalledProfileIdentifier:(id)identifier;
+- (void)_selectUninstalledProfileIdentifier:(id)identifier;
+- (void)loadProfileFromSpecifier:(id)specifier;
 @end
 
 @implementation MCUIMCSpecifierProvider
@@ -33,10 +33,10 @@
   v55 = v9;
   if (v4)
   {
-    v11 = [MEMORY[0x277CB8F48] defaultStore];
-    v12 = [v11 dmc_visibleRemoteManagementAccounts];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    dmc_visibleRemoteManagementAccounts = [defaultStore dmc_visibleRemoteManagementAccounts];
 
-    if (![v12 count])
+    if (![dmc_visibleRemoteManagementAccounts count])
     {
       v78[0] = v4;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:1];
@@ -248,21 +248,21 @@
   return v10;
 }
 
-- (id)_specifierForAppSigner:(id)a3
+- (id)_specifierForAppSigner:(id)signer
 {
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [(MCUISpecifierProvider *)self specifierWithName:v5 detail:objc_opt_class()];
+  signerCopy = signer;
+  identity = [signerCopy identity];
+  v6 = [(MCUISpecifierProvider *)self specifierWithName:identity detail:objc_opt_class()];
 
-  v7 = [v4 displayName];
-  [v6 setProperty:v7 forKey:*MEMORY[0x277D40170]];
+  displayName = [signerCopy displayName];
+  [v6 setProperty:displayName forKey:*MEMORY[0x277D40170]];
 
-  if ([v4 isTrusted])
+  if ([signerCopy isTrusted])
   {
     v8 = MEMORY[0x277CCABB8];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v4 applications];
-    v11 = [v9 numberWithInteger:{objc_msgSend(v10, "count")}];
+    applications = [signerCopy applications];
+    v11 = [v9 numberWithInteger:{objc_msgSend(applications, "count")}];
     v12 = [v8 localizedStringFromNumber:v11 numberStyle:0];
   }
 
@@ -272,41 +272,41 @@
   }
 
   [v6 setProperty:v12 forKey:*MEMORY[0x277D40160]];
-  [v6 setProperty:v4 forKey:@"MCUIPSItemKey"];
+  [v6 setProperty:signerCopy forKey:@"MCUIPSItemKey"];
   [v6 setControllerLoadAction:sel__loadAppSignerFromSpecifier_];
   [v6 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
 
   return v6;
 }
 
-- (void)_loadAppSignerFromSpecifier:(id)a3
+- (void)_loadAppSignerFromSpecifier:(id)specifier
 {
-  v8 = a3;
-  v4 = [v8 propertyForKey:@"MCUIPSItemKey"];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:@"MCUIPSItemKey"];
   if (v4)
   {
     v5 = [[MCUIAppSignerViewController alloc] initWithAppSigner:v4];
-    v6 = [(MCUISpecifierProvider *)self delegate];
-    v7 = [v6 mcuiViewController];
-    [v7 dmc_pushViewController:v5 animated:1];
+    delegate = [(MCUISpecifierProvider *)self delegate];
+    mcuiViewController = [delegate mcuiViewController];
+    [mcuiViewController dmc_pushViewController:v5 animated:1];
   }
 
   else
   {
-    NSLog(&cfstr_McuiMcSpecifie_0.isa, v8);
+    NSLog(&cfstr_McuiMcSpecifie_0.isa, specifierCopy);
   }
 }
 
-- (id)_specifierForBlockedApp:(id)a3
+- (id)_specifierForBlockedApp:(id)app
 {
-  v4 = a3;
-  if ([v4 isBlocked])
+  appCopy = app;
+  if ([appCopy isBlocked])
   {
-    v5 = [v4 bundleID];
-    v6 = v5;
-    if (v5)
+    bundleID = [appCopy bundleID];
+    v6 = bundleID;
+    if (bundleID)
     {
-      v7 = v5;
+      v7 = bundleID;
     }
 
     else
@@ -316,11 +316,11 @@
 
     v9 = v7;
 
-    v10 = [v4 name];
-    v11 = v10;
-    if (v10)
+    name = [appCopy name];
+    v11 = name;
+    if (name)
     {
-      v12 = v10;
+      v12 = name;
     }
 
     else
@@ -331,16 +331,16 @@
     v13 = v12;
 
     v8 = [(MCUISpecifierProvider *)self specifierWithName:v13 detail:objc_opt_class()];
-    v14 = [v4 misCDHash];
-    [v8 setProperty:v14 forKey:@"MCUIBlockedAppCdHash"];
+    misCDHash = [appCopy misCDHash];
+    [v8 setProperty:misCDHash forKey:@"MCUIBlockedAppCdHash"];
 
-    v15 = [v4 misHashType];
-    [v8 setProperty:v15 forKey:@"MCUIBlockedAppHashType"];
+    misHashType = [appCopy misHashType];
+    [v8 setProperty:misHashType forKey:@"MCUIBlockedAppHashType"];
 
     [v8 setProperty:v13 forKey:@"MCUIBlockedAppName"];
     [v8 setProperty:v13 forKey:*MEMORY[0x277D40170]];
 
-    v16 = [v4 iconForVariant:0];
+    v16 = [appCopy iconForVariant:0];
     [v8 setProperty:v16 forKey:*MEMORY[0x277D3FFC0]];
 
     [v8 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
@@ -354,53 +354,53 @@
   return v8;
 }
 
-- (void)loadProfileFromSpecifier:(id)a3
+- (void)loadProfileFromSpecifier:(id)specifier
 {
-  v4 = a3;
-  v7 = [v4 propertyForKey:@"MCUIPSItemKey"];
+  specifierCopy = specifier;
+  v7 = [specifierCopy propertyForKey:@"MCUIPSItemKey"];
   if (v7)
   {
-    v5 = [v4 propertyForKey:@"MCUIPSInstalledKey"];
+    v5 = [specifierCopy propertyForKey:@"MCUIPSInstalledKey"];
 
     if (v5 && [v5 BOOLValue])
     {
-      v6 = [v7 identifier];
-      [(MCUIMCSpecifierProvider *)self _selectInstalledProfileIdentifier:v6];
+      identifier = [v7 identifier];
+      [(MCUIMCSpecifierProvider *)self _selectInstalledProfileIdentifier:identifier];
     }
 
     else
     {
-      v6 = [v7 identifier];
-      [(MCUIMCSpecifierProvider *)self _selectUninstalledProfileIdentifier:v6];
+      identifier = [v7 identifier];
+      [(MCUIMCSpecifierProvider *)self _selectUninstalledProfileIdentifier:identifier];
     }
   }
 
   else
   {
-    NSLog(&cfstr_McuiMcSpecifie_1.isa, v4);
-    v5 = v4;
+    NSLog(&cfstr_McuiMcSpecifie_1.isa, specifierCopy);
+    v5 = specifierCopy;
   }
 }
 
-- (void)_selectInstalledProfileIdentifier:(id)a3
+- (void)_selectInstalledProfileIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D262A0];
-  v5 = a3;
-  v6 = [v4 sharedConnection];
-  v10 = [v6 installedProfileWithIdentifier:v5];
+  identifierCopy = identifier;
+  sharedConnection = [v4 sharedConnection];
+  v10 = [sharedConnection installedProfileWithIdentifier:identifierCopy];
 
   v7 = [[MCRemoveProfileViewController alloc] initWithProfile:v10];
-  v8 = [(MCUISpecifierProvider *)self delegate];
-  v9 = [v8 mcuiViewController];
-  [v9 dmc_pushViewController:v7 animated:1];
+  delegate = [(MCUISpecifierProvider *)self delegate];
+  mcuiViewController = [delegate mcuiViewController];
+  [mcuiViewController dmc_pushViewController:v7 animated:1];
 }
 
-- (void)_selectUninstalledProfileIdentifier:(id)a3
+- (void)_selectUninstalledProfileIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D262A0];
-  v5 = a3;
-  v6 = [v4 sharedConnection];
-  v7 = [v6 uninstalledProfileDataWithIdentifier:v5 targetDevice:{objc_msgSend(MEMORY[0x277D26290], "thisDeviceType")}];
+  identifierCopy = identifier;
+  sharedConnection = [v4 sharedConnection];
+  v7 = [sharedConnection uninstalledProfileDataWithIdentifier:identifierCopy targetDevice:{objc_msgSend(MEMORY[0x277D26290], "thisDeviceType")}];
 
   v15 = 0;
   v8 = [MEMORY[0x277D26290] profileWithData:v7 outError:&v15];
@@ -418,9 +418,9 @@
     {
       v10 = [[MCInstallProfileViewController alloc] initWithInstallableProfileData:v7 fromSource:1];
       v12 = [objc_alloc(MEMORY[0x277D03260]) initWithRootViewController:v10];
-      v13 = [(MCUISpecifierProvider *)self delegate];
-      v14 = [v13 mcuiViewController];
-      [v14 presentViewController:v12 animated:1 completion:0];
+      delegate = [(MCUISpecifierProvider *)self delegate];
+      mcuiViewController = [delegate mcuiViewController];
+      [mcuiViewController presentViewController:v12 animated:1 completion:0];
 
       goto LABEL_6;
     }
@@ -435,15 +435,15 @@
 LABEL_6:
 }
 
-- (void)_presentErrorTitle:(id)a3 message:(id)a4
+- (void)_presentErrorTitle:(id)title message:(id)message
 {
-  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = MCUILocalizedString(@"OK");
   [v8 MCUIAddCancelActionWithTitle:v5];
 
-  v6 = [(MCUISpecifierProvider *)self delegate];
-  v7 = [v6 mcuiViewController];
-  [v7 dmc_presentAlert:v8 completion:0];
+  delegate = [(MCUISpecifierProvider *)self delegate];
+  mcuiViewController = [delegate mcuiViewController];
+  [mcuiViewController dmc_presentAlert:v8 completion:0];
 }
 
 @end

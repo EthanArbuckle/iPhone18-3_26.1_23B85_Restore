@@ -1,25 +1,25 @@
 @interface CuttlefishPCSIdentity
-- (CuttlefishPCSIdentity)initWithCoder:(id)a3;
+- (CuttlefishPCSIdentity)initWithCoder:(id)coder;
 - (id)description;
-- (id)init:(id)a3 item:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)init:(id)init item:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CuttlefishPCSIdentity
 
-- (CuttlefishPCSIdentity)initWithCoder:(id)a3
+- (CuttlefishPCSIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CuttlefishPCSIdentity;
   v5 = [(CuttlefishPCSIdentity *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"service"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"service"];
     service = v5->_service;
     v5->_service = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"item"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"item"];
     item = v5->_item;
     v5->_item = v8;
   }
@@ -27,36 +27,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CuttlefishPCSIdentity *)self service];
-  [v4 encodeObject:v5 forKey:@"service"];
+  coderCopy = coder;
+  service = [(CuttlefishPCSIdentity *)self service];
+  [coderCopy encodeObject:service forKey:@"service"];
 
-  v6 = [(CuttlefishPCSIdentity *)self item];
-  [v4 encodeObject:v6 forKey:@"item"];
+  item = [(CuttlefishPCSIdentity *)self item];
+  [coderCopy encodeObject:item forKey:@"item"];
 }
 
 - (id)description
 {
-  v2 = [(CuttlefishPCSIdentity *)self service];
-  v3 = [NSString stringWithFormat:@"<CuttlefishPCSIdentity(%@)>", v2];
+  service = [(CuttlefishPCSIdentity *)self service];
+  v3 = [NSString stringWithFormat:@"<CuttlefishPCSIdentity(%@)>", service];
 
   return v3;
 }
 
-- (id)init:(id)a3 item:(id)a4
+- (id)init:(id)init item:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = CuttlefishPCSIdentity;
   v9 = [(CuttlefishPCSIdentity *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_service, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_service, init);
+    objc_storeStrong(p_isa + 2, item);
   }
 
   return p_isa;

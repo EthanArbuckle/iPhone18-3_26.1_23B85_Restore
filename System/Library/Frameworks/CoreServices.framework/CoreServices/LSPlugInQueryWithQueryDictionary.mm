@@ -1,11 +1,11 @@
 @interface LSPlugInQueryWithQueryDictionary
-- (BOOL)isEqual:(id)a3;
-- (LSPlugInQueryWithQueryDictionary)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LSPlugInQueryWithQueryDictionary)initWithCoder:(id)coder;
 - (id).cxx_construct;
-- (id)_initWithQueryDictionary:(id)a3 applyFilter:(id)a4;
+- (id)_initWithQueryDictionary:(id)dictionary applyFilter:(id)filter;
 - (id)systemMode;
 - (unint64_t)hash;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
 @end
 
 @implementation LSPlugInQueryWithQueryDictionary
@@ -25,16 +25,16 @@
   if (!self->_cachedSystemMode.__engaged_)
   {
     v4 = +[LSApplicationWorkspace defaultWorkspace];
-    v5 = [v4 systemMode];
+    systemMode = [v4 systemMode];
     if (self->_cachedSystemMode.__engaged_)
     {
       val = p_cachedSystemMode->var0.__val_;
-      p_cachedSystemMode->var0.__val_ = v5;
+      p_cachedSystemMode->var0.__val_ = systemMode;
     }
 
     else
     {
-      p_cachedSystemMode->var0.__val_ = v5;
+      p_cachedSystemMode->var0.__val_ = systemMode;
       self->_cachedSystemMode.__engaged_ = 1;
     }
 
@@ -54,45 +54,45 @@
   return v7;
 }
 
-- (id)_initWithQueryDictionary:(id)a3 applyFilter:(id)a4
+- (id)_initWithQueryDictionary:(id)dictionary applyFilter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  filterCopy = filter;
   v23.receiver = self;
   v23.super_class = LSPlugInQueryWithQueryDictionary;
-  v8 = [(LSPlugInQuery *)&v23 _init];
-  if (v8)
+  _init = [(LSPlugInQuery *)&v23 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    v10 = v8[2];
-    v8[2] = v9;
+    v9 = [dictionaryCopy copy];
+    v10 = _init[2];
+    _init[2] = v9;
 
-    v11 = [v6 ls_parseQueryForIdentifiers:@"NSExtensionIdentifier"];
+    v11 = [dictionaryCopy ls_parseQueryForIdentifiers:@"NSExtensionIdentifier"];
     v12 = [v11 copy];
-    v13 = v8[3];
-    v8[3] = v12;
+    v13 = _init[3];
+    _init[3] = v12;
 
-    v14 = [v6 ls_parseQueryForIdentifiers:@"NSExtensionPointName"];
+    v14 = [dictionaryCopy ls_parseQueryForIdentifiers:@"NSExtensionPointName"];
     v15 = [v14 copy];
-    v16 = v8[4];
-    v8[4] = v15;
+    v16 = _init[4];
+    _init[4] = v15;
 
-    v17 = [v7 copy];
-    v18 = v8[5];
-    v8[5] = v17;
+    v17 = [filterCopy copy];
+    v18 = _init[5];
+    _init[5] = v17;
 
-    v19 = [v6 objectForKey:@"LSShouldORIdentifiers"];
+    v19 = [dictionaryCopy objectForKey:@"LSShouldORIdentifiers"];
 
     if (v19)
     {
-      v20 = v8[2];
-      v8[2] = 0;
+      v20 = _init[2];
+      _init[2] = 0;
     }
   }
 
   if (_LSEntitledForPluginQuery())
   {
-    v21 = v8;
+    v21 = _init;
   }
 
   else
@@ -220,12 +220,12 @@ void __74__LSPlugInQueryWithQueryDictionary_matchesPlugin_pluginData_withDatabas
   }
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  connectionCopy = connection;
+  blockCopy = block;
+  if (connectionCopy)
   {
     v8 = _LSDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ void __74__LSPlugInQueryWithQueryDictionary_matchesPlugin_pluginData_withDatabas
       v33[2] = __70__LSPlugInQueryWithQueryDictionary__enumerateWithXPCConnection_block___block_invoke;
       v33[3] = &unk_1EEF63C80;
       v34 = v11;
-      v35 = self;
+      selfCopy = self;
       v36 = v38;
       v12 = MEMORY[0x1865D71B0](v33);
       v31 = 0u;
@@ -317,13 +317,13 @@ void __74__LSPlugInQueryWithQueryDictionary_matchesPlugin_pluginData_withDatabas
       _CSStoreEnumerateUnits();
     }
 
-    [(LSPlugInQuery *)self sort:1 pluginIDs:v11 andYield:v7 context:&v38];
+    [(LSPlugInQuery *)self sort:1 pluginIDs:v11 andYield:blockCopy context:&v38];
     _LSContextDestroy(&v38);
   }
 
   else
   {
-    v7[2](v7, 0, v10);
+    blockCopy[2](blockCopy, 0, v10);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -353,25 +353,25 @@ void __70__LSPlugInQueryWithQueryDictionary__enumerateWithXPCConnection_block___
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = LSPlugInQueryWithQueryDictionary;
-  if (![(LSPlugInQuery *)&v12 isEqual:v4]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (![(LSPlugInQuery *)&v12 isEqual:equalCopy]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = 0;
     goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   queryDict = self->_queryDict;
   if (!queryDict)
   {
-    v8 = [v5 _queryDictionary];
+    _queryDictionary = [v5 _queryDictionary];
 
-    if (!v8)
+    if (!_queryDictionary)
     {
       v10 = 1;
       goto LABEL_7;
@@ -380,8 +380,8 @@ void __70__LSPlugInQueryWithQueryDictionary__enumerateWithXPCConnection_block___
     queryDict = self->_queryDict;
   }
 
-  v9 = [v6 _queryDictionary];
-  v10 = [(NSDictionary *)queryDict isEqual:v9];
+  _queryDictionary2 = [v6 _queryDictionary];
+  v10 = [(NSDictionary *)queryDict isEqual:_queryDictionary2];
 
 LABEL_7:
 LABEL_9:
@@ -391,15 +391,15 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(NSDictionary *)self->_queryDict ls_hashQuery];
+  ls_hashQuery = [(NSDictionary *)self->_queryDict ls_hashQuery];
   v5.receiver = self;
   v5.super_class = LSPlugInQueryWithQueryDictionary;
-  return [(LSPlugInQuery *)&v5 hash]^ v3;
+  return [(LSPlugInQuery *)&v5 hash]^ ls_hashQuery;
 }
 
-- (LSPlugInQueryWithQueryDictionary)initWithCoder:(id)a3
+- (LSPlugInQueryWithQueryDictionary)initWithCoder:(id)coder
 {
-  v4 = [a3 decodePropertyListForKey:@"query"];
+  v4 = [coder decodePropertyListForKey:@"query"];
   v5 = [(LSPlugInQueryWithQueryDictionary *)self _initWithQueryDictionary:v4 applyFilter:0];
 
   return v5;

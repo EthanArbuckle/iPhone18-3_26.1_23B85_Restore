@@ -1,5 +1,5 @@
 @interface DeviceAngleController
-- (id)readDeviceAnglesFrom:(id)a3;
+- (id)readDeviceAnglesFrom:(id)from;
 - (void)start;
 - (void)teardown;
 @end
@@ -11,10 +11,10 @@
   v3 = objc_alloc_init(CMMotionManager);
   [(DeviceAngleController *)self setMotionManager:v3];
 
-  v4 = [(DeviceAngleController *)self motionManager];
-  v5 = [v4 isDeviceMotionAvailable];
+  motionManager = [(DeviceAngleController *)self motionManager];
+  isDeviceMotionAvailable = [motionManager isDeviceMotionAvailable];
 
-  if (v5)
+  if (isDeviceMotionAvailable)
   {
     v6 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -26,18 +26,18 @@
 
     v7 = dispatch_semaphore_create(0);
     v8 = objc_alloc_init(NSOperationQueue);
-    v9 = [(DeviceAngleController *)self motionManager];
-    [v9 setDeviceMotionUpdateInterval:0.100000001];
+    motionManager2 = [(DeviceAngleController *)self motionManager];
+    [motionManager2 setDeviceMotionUpdateInterval:0.100000001];
 
-    v10 = [(DeviceAngleController *)self motionManager];
+    motionManager3 = [(DeviceAngleController *)self motionManager];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_100000F2C;
     v19 = &unk_1000040F8;
     v11 = v7;
     v20 = v11;
-    v21 = self;
-    [v10 startDeviceMotionUpdatesToQueue:v8 withHandler:&v16];
+    selfCopy = self;
+    [motionManager3 startDeviceMotionUpdatesToQueue:v8 withHandler:&v16];
 
     v12 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v11, v12))
@@ -57,8 +57,8 @@
 
   else
   {
-    v15 = [(DeviceAngleController *)self result];
-    [v15 setStatusCode:&off_1000041A8];
+    result = [(DeviceAngleController *)self result];
+    [result setStatusCode:&off_1000041A8];
 
     [(DeviceAngleController *)self setFinished:1];
   }
@@ -66,9 +66,9 @@
 
 - (void)teardown
 {
-  v3 = [(DeviceAngleController *)self motionManager];
+  motionManager = [(DeviceAngleController *)self motionManager];
 
-  if (v3)
+  if (motionManager)
   {
     v4 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -77,21 +77,21 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping motion updates", v6, 2u);
     }
 
-    v5 = [(DeviceAngleController *)self motionManager];
-    [v5 stopDeviceMotionUpdates];
+    motionManager2 = [(DeviceAngleController *)self motionManager];
+    [motionManager2 stopDeviceMotionUpdates];
 
     [(DeviceAngleController *)self setMotionManager:0];
   }
 }
 
-- (id)readDeviceAnglesFrom:(id)a3
+- (id)readDeviceAnglesFrom:(id)from
 {
-  v3 = [a3 attitude];
-  [v3 roll];
+  attitude = [from attitude];
+  [attitude roll];
   v5 = v4 * 57.2957802;
-  [v3 pitch];
+  [attitude pitch];
   v7 = v6 * 57.2957802;
-  [v3 yaw];
+  [attitude yaw];
   v9 = v8 * 57.2957802;
   v10 = [NSString stringWithFormat:@"%f", v7];
   v11 = [NSString stringWithFormat:@"%f", v5];

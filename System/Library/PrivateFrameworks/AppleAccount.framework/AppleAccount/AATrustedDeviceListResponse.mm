@@ -1,17 +1,17 @@
 @interface AATrustedDeviceListResponse
 + (id)_privacySensitiveKeys;
-- (AATrustedDeviceListResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AATrustedDeviceListResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (id)privacySensitiveResponseBody;
 @end
 
 @implementation AATrustedDeviceListResponse
 
-- (AATrustedDeviceListResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AATrustedDeviceListResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v42 = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = AATrustedDeviceListResponse;
-  v4 = [(AAResponse *)&v36 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v4 = [(AAResponse *)&v36 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v5 = v4;
   if (!v4)
   {
@@ -20,8 +20,8 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v6 = [(AAResponse *)v4 responseDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"manageDevices"];
+  responseDictionary = [(AAResponse *)v4 responseDictionary];
+  v7 = [responseDictionary objectForKeyedSubscript:@"manageDevices"];
 
   v8 = [v7 objectForKeyedSubscript:@"devices"];
   if (v8)
@@ -29,7 +29,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
@@ -56,7 +56,7 @@ LABEL_14:
             {
               v16 = [AATrustedDevice alloc];
               v17 = [(AATrustedDevice *)v16 initWithDictionary:v15, v32];
-              [(NSArray *)v9 addObject:v17];
+              [(NSArray *)array addObject:v17];
             }
 
             ++v14;
@@ -70,11 +70,11 @@ LABEL_14:
       }
 
       devices = v5->_devices;
-      v5->_devices = v9;
+      v5->_devices = array;
 
       v19 = MEMORY[0x1E696AD98];
-      v20 = [(AAResponse *)v5 responseDictionary];
-      v21 = [v20 objectForKeyedSubscript:@"defaultNumberOfDevicesToShow"];
+      responseDictionary2 = [(AAResponse *)v5 responseDictionary];
+      v21 = [responseDictionary2 objectForKeyedSubscript:@"defaultNumberOfDevicesToShow"];
       v22 = [v19 numberWithInt:{objc_msgSend(v21, "intValue")}];
       defaultNumberOfDevicesToShow = v5->_defaultNumberOfDevicesToShow;
       v5->_defaultNumberOfDevicesToShow = v22;
@@ -83,11 +83,11 @@ LABEL_14:
     }
   }
 
-  v25 = [(AAResponse *)v5 responseDictionary];
-  v26 = [v25 objectForKeyedSubscript:@"status"];
+  responseDictionary3 = [(AAResponse *)v5 responseDictionary];
+  v26 = [responseDictionary3 objectForKeyedSubscript:@"status"];
 
-  v27 = [(AAResponse *)v5 responseDictionary];
-  v28 = [v27 objectForKeyedSubscript:@"status-message"];
+  responseDictionary4 = [(AAResponse *)v5 responseDictionary];
+  v28 = [responseDictionary4 objectForKeyedSubscript:@"status-message"];
 
   v29 = _AALogSystem();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -132,14 +132,14 @@ void __52__AATrustedDeviceListResponse__privacySensitiveKeys__block_invoke()
 
 - (id)privacySensitiveResponseBody
 {
-  v3 = [(AAResponse *)self responseDictionary];
+  responseDictionary = [(AAResponse *)self responseDictionary];
 
-  if (v3)
+  if (responseDictionary)
   {
     v4 = [AAPrivacySensitiveDictionaryLog alloc];
-    v5 = [(AAResponse *)self responseDictionary];
+    responseDictionary2 = [(AAResponse *)self responseDictionary];
     v6 = +[AATrustedDeviceListResponse _privacySensitiveKeys];
-    v7 = [(AAPrivacySensitiveDictionaryLog *)v4 initWithDictionary:v5 forKeys:v6];
+    v7 = [(AAPrivacySensitiveDictionaryLog *)v4 initWithDictionary:responseDictionary2 forKeys:v6];
   }
 
   else

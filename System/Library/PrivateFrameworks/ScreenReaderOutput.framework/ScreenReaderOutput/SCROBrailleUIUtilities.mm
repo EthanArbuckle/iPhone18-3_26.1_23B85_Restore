@@ -1,18 +1,18 @@
 @interface SCROBrailleUIUtilities
 + (id)brailleForBackButton;
-+ (void)tryDownloadingIfNeededForURL:(id)a3;
++ (void)tryDownloadingIfNeededForURL:(id)l;
 @end
 
 @implementation SCROBrailleUIUtilities
 
-+ (void)tryDownloadingIfNeededForURL:(id)a3
++ (void)tryDownloadingIfNeededForURL:(id)l
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v30 = 0;
   v4 = *MEMORY[0x277CBE8B8];
   v29 = 0;
-  [v3 getResourceValue:&v30 forKey:v4 error:&v29];
+  [lCopy getResourceValue:&v30 forKey:v4 error:&v29];
   v5 = v30;
   v6 = v29;
   if ([v5 BOOLValue])
@@ -21,7 +21,7 @@
     v28 = 0;
     v8 = *MEMORY[0x277CBE948];
     v27 = 0;
-    [v3 getResourceValue:&v28 forKey:v8 error:&v27];
+    [lCopy getResourceValue:&v28 forKey:v8 error:&v27];
     v9 = v28;
     v10 = v27;
 
@@ -30,16 +30,16 @@
       v11 = _SCROD_LOG();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v3 path];
+        path = [lCopy path];
         *buf = 138412290;
-        v32 = v12;
+        v32 = path;
         _os_log_impl(&dword_26490B000, v11, OS_LOG_TYPE_DEFAULT, "Braille UI: Starting download for iCloud file %@", buf, 0xCu);
       }
 
       v13 = dispatch_semaphore_create(0);
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v26 = v10;
-      [v14 startDownloadingUbiquitousItemAtURL:v3 error:&v26];
+      [defaultManager startDownloadingUbiquitousItemAtURL:lCopy error:&v26];
       v15 = v26;
 
       if (v15)
@@ -47,9 +47,9 @@
         v16 = _SCROD_LOG();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v3 path];
+          path2 = [lCopy path];
           *buf = 138412546;
-          v32 = v17;
+          v32 = path2;
           v33 = 2112;
           v34 = v15;
           _os_log_impl(&dword_26490B000, v16, OS_LOG_TYPE_DEFAULT, "Braille UI: Failed to start downloading iCloud file %@: %@", buf, 0x16u);
@@ -66,7 +66,7 @@
         v23[3] = &unk_279B748F0;
         v18 = v13;
         v24 = v18;
-        [v16 coordinateReadingItemAtURL:v3 options:1 error:&v25 byAccessor:v23];
+        [v16 coordinateReadingItemAtURL:lCopy options:1 error:&v25 byAccessor:v23];
         v15 = v25;
         v19 = dispatch_time(0, 10000000000);
         if (dispatch_semaphore_wait(v18, v19))
@@ -74,9 +74,9 @@
           v20 = _SCROD_LOG();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v3 path];
+            path3 = [lCopy path];
             *buf = 138412290;
-            v32 = v21;
+            v32 = path3;
             _os_log_impl(&dword_26490B000, v20, OS_LOG_TYPE_DEFAULT, "Braille UI: Timeout waiting for iCloud file to download %@", buf, 0xCu);
           }
         }

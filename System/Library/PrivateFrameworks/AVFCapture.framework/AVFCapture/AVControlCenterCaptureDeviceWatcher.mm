@@ -1,19 +1,19 @@
 @interface AVControlCenterCaptureDeviceWatcher
-- (AVControlCenterCaptureDeviceWatcher)initWithSupportedVideoEffectsDidChangeHandler:(id)a3;
+- (AVControlCenterCaptureDeviceWatcher)initWithSupportedVideoEffectsDidChangeHandler:(id)handler;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation AVControlCenterCaptureDeviceWatcher
 
-- (AVControlCenterCaptureDeviceWatcher)initWithSupportedVideoEffectsDidChangeHandler:(id)a3
+- (AVControlCenterCaptureDeviceWatcher)initWithSupportedVideoEffectsDidChangeHandler:(id)handler
 {
   v11.receiver = self;
   v11.super_class = AVControlCenterCaptureDeviceWatcher;
   v4 = [(AVControlCenterCaptureDeviceWatcher *)&v11 init];
   if (v4)
   {
-    v4->_handler = [a3 copy];
+    v4->_handler = [handler copy];
     if (MGCopyAnswer() == *MEMORY[0x1E695E4D0])
     {
       v10[0] = @"AVCaptureDeviceTypeBuiltInWideAngleCamera";
@@ -46,27 +46,27 @@
   [(AVControlCenterCaptureDeviceWatcher *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVCCM_CaptureDeviceListChangedContext != a6)
+  if (AVCCM_CaptureDeviceListChangedContext != context)
   {
     return;
   }
 
   v37 = v6;
   v38 = v7;
-  v8 = [a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], a4}];
+  v8 = [change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], object}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   obj = v8;
   v25 = [v8 countByEnumeratingWithState:&v33 objects:v32 count:16];
-  v9 = 0;
-  v10 = 0;
-  v11 = 0;
-  v12 = 0;
-  v13 = 0;
+  reactionEffectsSupported = 0;
+  isStudioLightSupported = 0;
+  isSmartCropSupported = 0;
+  isBackgroundBlurSupported = 0;
+  isCenterStageSupported = 0;
   if (!v25)
   {
     goto LABEL_27;
@@ -89,8 +89,8 @@
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v16 = [v15 formats];
-      v17 = [v16 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      formats = [v15 formats];
+      v17 = [formats countByEnumeratingWithState:&v28 objects:v27 count:16];
       if (v17)
       {
         v18 = v17;
@@ -101,14 +101,14 @@
           {
             if (*v29 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(formats);
             }
 
             v21 = *(*(&v28 + 1) + 8 * i);
-            if (v13)
+            if (isCenterStageSupported)
             {
-              v13 = 1;
-              if ((v11 & 1) == 0)
+              isCenterStageSupported = 1;
+              if ((isSmartCropSupported & 1) == 0)
               {
                 goto LABEL_14;
               }
@@ -116,12 +116,12 @@
 
             else
             {
-              v13 = [*(*(&v28 + 1) + 8 * i) isCenterStageSupported];
-              if ((v11 & 1) == 0)
+              isCenterStageSupported = [*(*(&v28 + 1) + 8 * i) isCenterStageSupported];
+              if ((isSmartCropSupported & 1) == 0)
               {
 LABEL_14:
-                v11 = [v21 isSmartCropSupported];
-                if ((v12 & 1) == 0)
+                isSmartCropSupported = [v21 isSmartCropSupported];
+                if ((isBackgroundBlurSupported & 1) == 0)
                 {
                   goto LABEL_15;
                 }
@@ -130,12 +130,12 @@ LABEL_14:
               }
             }
 
-            v11 = 1;
-            if ((v12 & 1) == 0)
+            isSmartCropSupported = 1;
+            if ((isBackgroundBlurSupported & 1) == 0)
             {
 LABEL_15:
-              v12 = [v21 isBackgroundBlurSupported];
-              if ((v10 & 1) == 0)
+              isBackgroundBlurSupported = [v21 isBackgroundBlurSupported];
+              if ((isStudioLightSupported & 1) == 0)
               {
                 goto LABEL_16;
               }
@@ -144,12 +144,12 @@ LABEL_15:
             }
 
 LABEL_20:
-            v12 = 1;
-            if ((v10 & 1) == 0)
+            isBackgroundBlurSupported = 1;
+            if ((isStudioLightSupported & 1) == 0)
             {
 LABEL_16:
-              v10 = [v21 isStudioLightSupported];
-              if ((v9 & 1) == 0)
+              isStudioLightSupported = [v21 isStudioLightSupported];
+              if ((reactionEffectsSupported & 1) == 0)
               {
                 goto LABEL_17;
               }
@@ -158,19 +158,19 @@ LABEL_16:
             }
 
 LABEL_21:
-            v10 = 1;
-            if ((v9 & 1) == 0)
+            isStudioLightSupported = 1;
+            if ((reactionEffectsSupported & 1) == 0)
             {
 LABEL_17:
-              v9 = [v21 reactionEffectsSupported];
+              reactionEffectsSupported = [v21 reactionEffectsSupported];
               continue;
             }
 
 LABEL_22:
-            v9 = 1;
+            reactionEffectsSupported = 1;
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v28 objects:v27 count:16];
+          v18 = [formats countByEnumeratingWithState:&v28 objects:v27 count:16];
         }
 
         while (v18);
@@ -185,11 +185,11 @@ LABEL_22:
 
   while (v25);
 LABEL_27:
-  self->_centerStageSupported = v13 & 1;
-  self->_backgroundBlurSupported = v12 & 1;
-  self->_studioLightingSupported = v10 & 1;
-  *&self->_reactionEffectsSupported = v9 & 1;
-  if ((v11 & 1) != 0 && (_os_feature_enabled_impl() & 1) == 0)
+  self->_centerStageSupported = isCenterStageSupported & 1;
+  self->_backgroundBlurSupported = isBackgroundBlurSupported & 1;
+  self->_studioLightingSupported = isStudioLightSupported & 1;
+  *&self->_reactionEffectsSupported = reactionEffectsSupported & 1;
+  if ((isSmartCropSupported & 1) != 0 && (_os_feature_enabled_impl() & 1) == 0)
   {
     self->_centerStageSupported = 0;
   }

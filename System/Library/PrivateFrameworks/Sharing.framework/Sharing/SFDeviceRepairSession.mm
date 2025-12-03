@@ -15,7 +15,7 @@
 - (int)_runTRSessionStart;
 - (int)_runWiFiSetup;
 - (void)_cleanup;
-- (void)_reportRepairResultMetrics:(id)a3;
+- (void)_reportRepairResultMetrics:(id)metrics;
 - (void)_run;
 - (void)activate;
 - (void)dealloc;
@@ -150,16 +150,16 @@ uint64_t __35__SFDeviceRepairSession_invalidate__block_invoke(uint64_t a1)
   return [v2 _cleanup];
 }
 
-- (void)_reportRepairResultMetrics:(id)a3
+- (void)_reportRepairResultMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   if (gLogCategory_SFDeviceRepairSession <= 40 && (gLogCategory_SFDeviceRepairSession != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceRepairSession _reportRepairResultMetrics:];
   }
 
-  v3 = [v4 dict];
-  SFMetricsLog(@"com.apple.sharing.RepairResult", v3);
+  dict = [metricsCopy dict];
+  SFMetricsLog(@"com.apple.sharing.RepairResult", dict);
 }
 
 - (BOOL)_remotePeerNeedsAppleIDRepair
@@ -279,7 +279,7 @@ uint64_t __35__SFDeviceRepairSession_invalidate__block_invoke(uint64_t a1)
     {
       if (Int64Ranged != 1)
       {
-        v23 = Int64Ranged;
+        osVersion2 = Int64Ranged;
         v9 = NSPrintF();
         if (v9)
         {
@@ -287,15 +287,15 @@ uint64_t __35__SFDeviceRepairSession_invalidate__block_invoke(uint64_t a1)
         }
       }
 
-      v10 = [(SFDevice *)self->_peerDevice bleDevice];
-      v11 = [v10 advertisementData];
-      if ([v11 length])
+      bleDevice = [(SFDevice *)self->_peerDevice bleDevice];
+      advertisementData = [bleDevice advertisementData];
+      if ([advertisementData length])
       {
-        v12 = [(SFDevice *)self->_peerDevice osVersion];
+        osVersion = [(SFDevice *)self->_peerDevice osVersion];
 
-        if (v12 <= 0xA)
+        if (osVersion <= 0xA)
         {
-          v23 = [(SFDevice *)self->_peerDevice osVersion];
+          osVersion2 = [(SFDevice *)self->_peerDevice osVersion];
           v9 = NSPrintF();
           if (v9)
           {
@@ -320,7 +320,7 @@ LABEL_45:
       }
     }
 
-    if (CFPrefs_GetInt64() && [v8 isEqual:{@"AppleWiFi", v23}])
+    if (CFPrefs_GetInt64() && [v8 isEqual:{@"AppleWiFi", osVersion2}])
     {
       goto LABEL_44;
     }
@@ -1059,9 +1059,9 @@ LABEL_12:
       trOperations = self->_trOperations;
       self->_trOperations = v7;
 
-      v9 = [(SFSession *)self->_sfSession trSession];
+      trSession = [(SFSession *)self->_sfSession trSession];
       trSession = self->_trSession;
-      self->_trSession = v9;
+      self->_trSession = trSession;
 
       if (self->_trSession)
       {
@@ -1154,10 +1154,10 @@ LABEL_29:
       [(NSMutableArray *)self->_trOperations addObject:v6];
       v18 = 0;
       Int64 = CFPrefs_GetInt64();
-      v8 = [(SFDeviceRepairSession *)self disableSilentAuth];
+      disableSilentAuth = [(SFDeviceRepairSession *)self disableSilentAuth];
       if (Int64)
       {
-        v9 = v8;
+        v9 = disableSilentAuth;
       }
 
       else
@@ -1402,8 +1402,8 @@ void __37__SFDeviceRepairSession__runCDPSetup__block_invoke(uint64_t a1, void *a
 
       v7 = mach_absolute_time();
       v8 = [objc_alloc(getAISRepairContextClass_0[0]()) initWithAltDSID:v4];
-      v9 = [(SFSession *)self->_sfSession messageSessionTemplate];
-      [v8 setMessageSessionTemplate:v9];
+      messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+      [v8 setMessageSessionTemplate:messageSessionTemplate];
 
       [v8 setRemoteRole:3];
       v10 = objc_alloc_init(getAISRepairControllerClass_0[0]());
@@ -1517,8 +1517,8 @@ uint64_t __47__SFDeviceRepairSession__runAppleIDSetupRepair__block_invoke_2(void
       [(SFDeviceOperationHomeKitSetup *)self->_homeKitSetupOperation setDispatchQueue:self->_dispatchQueue];
       [(SFDeviceOperationHomeKitSetup *)self->_homeKitSetupOperation setKeyExchangeOnly:1];
       [(SFDeviceOperationHomeKitSetup *)self->_homeKitSetupOperation setUserInteractive:0];
-      v7 = [(SFSession *)self->_sfSession trSession];
-      [(SFDeviceOperationHomeKitSetup *)self->_homeKitSetupOperation setTrSession:v7];
+      trSession = [(SFSession *)self->_sfSession trSession];
+      [(SFDeviceOperationHomeKitSetup *)self->_homeKitSetupOperation setTrSession:trSession];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -1685,23 +1685,23 @@ void __35__SFDeviceRepairSession__runFinish__block_invoke_2(uint64_t a1, void *a
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v3 = [(SFDeviceRepairSession *)self _runPreflightWiFiEarly];
-    if (v3 == 4 || v3 == 2)
+    _runPreflightWiFiEarly = [(SFDeviceRepairSession *)self _runPreflightWiFiEarly];
+    if (_runPreflightWiFiEarly == 4 || _runPreflightWiFiEarly == 2)
     {
-      v5 = [(SFDeviceRepairSession *)self _runSFSessionStart];
-      if (v5 == 4 || v5 == 2)
+      _runSFSessionStart = [(SFDeviceRepairSession *)self _runSFSessionStart];
+      if (_runSFSessionStart == 4 || _runSFSessionStart == 2)
       {
         if (self->_sessionSecured || ((v7 = [(SFDeviceRepairSession *)self _runPairVerify], v7 != 4) ? (v8 = v7 == 2) : (v8 = 1), v8))
         {
-          v9 = [(SFDeviceRepairSession *)self _runGetProblems];
-          if (v9 == 4 || v9 == 2)
+          _runGetProblems = [(SFDeviceRepairSession *)self _runGetProblems];
+          if (_runGetProblems == 4 || _runGetProblems == 2)
           {
             if ((self->_problemFlags & 0x10) == 0 && (self->_repairFlags & 1) == 0 || ((v11 = [(SFDeviceRepairSession *)self _runPreflightWiFiFull], v11 != 4) ? (v12 = v11 == 2) : (v12 = 1), v12 && ((v13 = [(SFDeviceRepairSession *)self _runWiFiSetup], v13 != 4) ? (v14 = v13 == 2) : (v14 = 1), v14 && (!self->_presentingViewController || (self->_problemFlags & 0x200000) == 0 && (self->_repairFlags & 0x20) == 0 || ((v15 = [(SFDeviceRepairSession *)self _runCaptiveJoin], v15 != 4) ? (v16 = v15 == 2) : (v16 = 1), v16)))))
             {
               if ([(SFDeviceRepairSession *)self _remotePeerNeedsAppleIDRepair])
               {
-                v17 = [(SFDeviceRepairSession *)self _runAppleIDSetupRepair];
-                if (v17 != 2 && v17 != 4)
+                _runAppleIDSetupRepair = [(SFDeviceRepairSession *)self _runAppleIDSetupRepair];
+                if (_runAppleIDSetupRepair != 2 && _runAppleIDSetupRepair != 4)
                 {
                   return;
                 }
@@ -1711,14 +1711,14 @@ void __35__SFDeviceRepairSession__runFinish__block_invoke_2(uint64_t a1, void *a
               {
                 if ((self->_problemFlags & 6) != 0 || (self->_repairFlags & 6) != 0)
                 {
-                  v19 = [(SFDeviceRepairSession *)self _runTRSessionStart];
-                  if (v19 != 4 && v19 != 2)
+                  _runTRSessionStart = [(SFDeviceRepairSession *)self _runTRSessionStart];
+                  if (_runTRSessionStart != 4 && _runTRSessionStart != 2)
                   {
                     return;
                   }
 
-                  v21 = [(SFDeviceRepairSession *)self _runTRAuthentication];
-                  if (v21 != 4 && v21 != 2)
+                  _runTRAuthentication = [(SFDeviceRepairSession *)self _runTRAuthentication];
+                  if (_runTRAuthentication != 4 && _runTRAuthentication != 2)
                   {
                     return;
                   }
@@ -1726,8 +1726,8 @@ void __35__SFDeviceRepairSession__runFinish__block_invoke_2(uint64_t a1, void *a
 
                 if (self->_cdpEnabled && ((self->_problemFlags & 0x20000) != 0 || (self->_repairFlags & 8) != 0))
                 {
-                  v23 = [(SFDeviceRepairSession *)self _runCDPSetup];
-                  if (v23 != 4 && v23 != 2)
+                  _runCDPSetup = [(SFDeviceRepairSession *)self _runCDPSetup];
+                  if (_runCDPSetup != 4 && _runCDPSetup != 2)
                   {
                     return;
                   }

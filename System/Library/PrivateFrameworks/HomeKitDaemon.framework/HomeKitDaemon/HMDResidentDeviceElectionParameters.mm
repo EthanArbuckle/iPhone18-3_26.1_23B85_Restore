@@ -1,10 +1,10 @@
 @interface HMDResidentDeviceElectionParameters
-- (BOOL)isEqual:(id)a3;
-- (HMDResidentDeviceElectionParameters)initWithResident:(id)a3 dictionaryRepresentation:(id)a4;
-- (HMDResidentDeviceElectionParameters)initWithResident:(id)a3 enabled:(id)a4 location:(int64_t)a5 accessories:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMDResidentDeviceElectionParameters)initWithResident:(id)resident dictionaryRepresentation:(id)representation;
+- (HMDResidentDeviceElectionParameters)initWithResident:(id)resident enabled:(id)enabled location:(int64_t)location accessories:(id)accessories;
 - (NSDictionary)dictionaryRepresentation;
 - (id)attributeDescriptions;
-- (int64_t)compare:(id)a3 outCriteria:(unint64_t *)a4;
+- (int64_t)compare:(id)compare outCriteria:(unint64_t *)criteria;
 - (unint64_t)hash;
 @end
 
@@ -14,18 +14,18 @@
 {
   v23[5] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v22 = [(HMDResidentDeviceElectionParameters *)self resident];
-  v21 = [v22 shortDescription];
-  v20 = [v3 initWithName:@"Resident" value:v21];
+  resident = [(HMDResidentDeviceElectionParameters *)self resident];
+  shortDescription = [resident shortDescription];
+  v20 = [v3 initWithName:@"Resident" value:shortDescription];
   v23[0] = v20;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDResidentDeviceElectionParameters *)self version];
-  v6 = [v5 versionString];
-  v7 = [v4 initWithName:@"Version" value:v6];
+  version = [(HMDResidentDeviceElectionParameters *)self version];
+  versionString = [version versionString];
+  v7 = [v4 initWithName:@"Version" value:versionString];
   v23[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDResidentDeviceElectionParameters *)self isEnabled];
-  v10 = [v8 initWithName:@"Enabled" value:v9];
+  isEnabled = [(HMDResidentDeviceElectionParameters *)self isEnabled];
+  v10 = [v8 initWithName:@"Enabled" value:isEnabled];
   v23[2] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDResidentDeviceElectionParameters *)self location];
@@ -33,8 +33,8 @@
   v13 = [v11 initWithName:@"Location" value:v12];
   v23[3] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
-  v15 = [(HMDResidentDeviceElectionParameters *)self accessories];
-  v16 = [v14 initWithName:@"Accessories" value:v15];
+  accessories = [(HMDResidentDeviceElectionParameters *)self accessories];
+  v16 = [v14 initWithName:@"Accessories" value:accessories];
   v23[4] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:5];
 
@@ -43,13 +43,13 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -73,22 +73,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDResidentDeviceElectionParameters *)self resident];
-  v3 = [v2 hash];
+  resident = [(HMDResidentDeviceElectionParameters *)self resident];
+  v3 = [resident hash];
 
   return v3;
 }
 
-- (int64_t)compare:(id)a3 outCriteria:(unint64_t *)a4
+- (int64_t)compare:(id)compare outCriteria:(unint64_t *)criteria
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self != v6)
+  compareCopy = compare;
+  if (self != compareCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = compareCopy;
     }
 
     else
@@ -102,30 +102,30 @@
       goto LABEL_35;
     }
 
-    if (a4)
+    if (criteria)
     {
-      *a4 = 1;
+      *criteria = 1;
     }
 
-    v9 = [(HMDResidentDeviceElectionParameters *)self isEnabled];
-    v10 = [(HMDResidentDeviceElectionParameters *)v8 isEnabled];
+    isEnabled = [(HMDResidentDeviceElectionParameters *)self isEnabled];
+    isEnabled2 = [(HMDResidentDeviceElectionParameters *)v8 isEnabled];
     if ((HMFEqualObjects() & 1) == 0)
     {
-      if (v9 && v10)
+      if (isEnabled && isEnabled2)
       {
 LABEL_33:
-        v21 = [v9 compare:v10];
+        v21 = [isEnabled compare:isEnabled2];
 LABEL_60:
 
         goto LABEL_61;
       }
 
-      if ([v9 BOOLValue])
+      if ([isEnabled BOOLValue])
       {
         goto LABEL_59;
       }
 
-      if ([v10 BOOLValue])
+      if ([isEnabled2 BOOLValue])
       {
 LABEL_40:
         v21 = -1;
@@ -133,58 +133,58 @@ LABEL_40:
       }
     }
 
-    if (a4)
+    if (criteria)
     {
-      *a4 = 3;
+      *criteria = 3;
     }
 
-    v11 = [(HMDResidentDeviceElectionParameters *)self location];
-    v12 = [(HMDResidentDeviceElectionParameters *)v8 location];
-    if (v11 == v12)
+    location = [(HMDResidentDeviceElectionParameters *)self location];
+    location2 = [(HMDResidentDeviceElectionParameters *)v8 location];
+    if (location == location2)
     {
 LABEL_12:
-      if (a4)
+      if (criteria)
       {
-        *a4 = 4;
+        *criteria = 4;
       }
 
-      v9 = [(HMDResidentDeviceElectionParameters *)self productInfo];
-      v10 = [(HMDResidentDeviceElectionParameters *)v8 productInfo];
-      v13 = [v9 productClass];
-      if (v13 != [v10 productClass])
+      isEnabled = [(HMDResidentDeviceElectionParameters *)self productInfo];
+      isEnabled2 = [(HMDResidentDeviceElectionParameters *)v8 productInfo];
+      productClass = [isEnabled productClass];
+      if (productClass != [isEnabled2 productClass])
       {
-        if ([v9 productClass] == 3)
+        if ([isEnabled productClass] == 3)
         {
           goto LABEL_40;
         }
 
-        if ([v10 productClass] == 3)
+        if ([isEnabled2 productClass] == 3)
         {
           goto LABEL_59;
         }
       }
 
-      if (a4)
+      if (criteria)
       {
-        *a4 = 6;
+        *criteria = 6;
       }
 
-      v9 = [(HMDResidentDeviceElectionParameters *)self version];
-      v10 = [(HMDResidentDeviceElectionParameters *)v8 version];
-      v14 = [v9 majorVersion];
-      if (v14 == [v10 majorVersion] || !v9)
+      isEnabled = [(HMDResidentDeviceElectionParameters *)self version];
+      isEnabled2 = [(HMDResidentDeviceElectionParameters *)v8 version];
+      majorVersion = [isEnabled majorVersion];
+      if (majorVersion == [isEnabled2 majorVersion] || !isEnabled)
       {
-        if (a4)
+        if (criteria)
         {
-          *a4 = 9;
+          *criteria = 9;
         }
 
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v15 = [(HMDResidentDeviceElectionParameters *)self accessories];
-        v16 = [v15 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        accessories = [(HMDResidentDeviceElectionParameters *)self accessories];
+        v16 = [accessories countByEnumeratingWithState:&v36 objects:v41 count:16];
         if (v16)
         {
           v17 = v16;
@@ -196,13 +196,13 @@ LABEL_12:
             {
               if (*v37 != v19)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(accessories);
               }
 
               v18 += [*(*(&v36 + 1) + 8 * i) isReachable];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v36 objects:v41 count:16];
+            v17 = [accessories countByEnumeratingWithState:&v36 objects:v41 count:16];
           }
 
           while (v17);
@@ -213,14 +213,14 @@ LABEL_12:
           v18 = 0;
         }
 
-        v31 = v10;
+        v31 = isEnabled2;
 
         v34 = 0u;
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v22 = [(HMDResidentDeviceElectionParameters *)v8 accessories];
-        v23 = [v22 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        accessories2 = [(HMDResidentDeviceElectionParameters *)v8 accessories];
+        v23 = [accessories2 countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v23)
         {
           v24 = v23;
@@ -232,13 +232,13 @@ LABEL_12:
             {
               if (*v33 != v26)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(accessories2);
               }
 
               v25 += [*(*(&v32 + 1) + 8 * j) isReachable];
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v24 = [accessories2 countByEnumeratingWithState:&v32 objects:v40 count:16];
           }
 
           while (v24);
@@ -252,29 +252,29 @@ LABEL_12:
         if (v18 < v25)
         {
           v21 = -1;
-          v10 = v31;
+          isEnabled2 = v31;
           goto LABEL_60;
         }
 
-        v10 = v31;
+        isEnabled2 = v31;
         if (v18 <= v25)
         {
-          v30 = [v9 compare:v31];
+          v30 = [isEnabled compare:v31];
           if (v30)
           {
             v21 = v30;
-            if (a4)
+            if (criteria)
             {
-              *a4 = 7;
+              *criteria = 7;
             }
           }
 
           else
           {
             v21 = 0;
-            if (a4)
+            if (criteria)
             {
-              *a4 = 0;
+              *criteria = 0;
             }
           }
 
@@ -289,9 +289,9 @@ LABEL_59:
       goto LABEL_33;
     }
 
-    if (v11 != 1)
+    if (location != 1)
     {
-      if (v12 != 1)
+      if (location2 != 1)
       {
         goto LABEL_12;
       }
@@ -311,9 +311,9 @@ LABEL_61:
   }
 
   v21 = 0;
-  if (a4)
+  if (criteria)
   {
-    *a4 = 0;
+    *criteria = 0;
   }
 
 LABEL_62:
@@ -325,13 +325,13 @@ LABEL_62:
 - (NSDictionary)dictionaryRepresentation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentDeviceElectionParameters *)self accessories];
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  accessories = [(HMDResidentDeviceElectionParameters *)self accessories];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(accessories, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = accessories;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
@@ -346,8 +346,8 @@ LABEL_62:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-        [v4 addEntriesFromDictionary:v10];
+        dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+        [v4 addEntriesFromDictionary:dictionaryRepresentation];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
@@ -358,13 +358,13 @@ LABEL_62:
 
   v24[0] = @"kEnabledKey";
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(HMDResidentDeviceElectionParameters *)self isEnabled];
-  v13 = [v11 numberWithBool:{objc_msgSend(v12, "BOOLValue")}];
+  isEnabled = [(HMDResidentDeviceElectionParameters *)self isEnabled];
+  v13 = [v11 numberWithBool:{objc_msgSend(isEnabled, "BOOLValue")}];
   v25[0] = v13;
   v24[1] = @"kAtHomeStateKey";
-  v14 = [(HMDResidentDeviceElectionParameters *)self location];
+  location = [(HMDResidentDeviceElectionParameters *)self location];
   v15 = MEMORY[0x277CBEC28];
-  if (v14 == 1)
+  if (location == 1)
   {
     v15 = MEMORY[0x277CBEC38];
   }
@@ -380,12 +380,12 @@ LABEL_62:
   return v17;
 }
 
-- (HMDResidentDeviceElectionParameters)initWithResident:(id)a3 enabled:(id)a4 location:(int64_t)a5 accessories:(id)a6
+- (HMDResidentDeviceElectionParameters)initWithResident:(id)resident enabled:(id)enabled location:(int64_t)location accessories:(id)accessories
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  residentCopy = resident;
+  enabledCopy = enabled;
+  accessoriesCopy = accessories;
+  if (residentCopy)
   {
     v27.receiver = self;
     v27.super_class = HMDResidentDeviceElectionParameters;
@@ -393,45 +393,45 @@ LABEL_62:
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_resident, a3);
-      v16 = [v11 device];
-      v17 = [v16 productInfo];
+      objc_storeStrong(&v14->_resident, resident);
+      device = [residentCopy device];
+      productInfo = [device productInfo];
       productInfo = v15->_productInfo;
-      v15->_productInfo = v17;
+      v15->_productInfo = productInfo;
 
-      v19 = [v16 version];
+      version = [device version];
       version = v15->_version;
-      v15->_version = v19;
+      v15->_version = version;
 
-      v21 = [v12 copy];
+      v21 = [enabledCopy copy];
       enabled = v15->_enabled;
       v15->_enabled = v21;
 
-      v15->_location = a5;
-      v23 = [v13 copy];
+      v15->_location = location;
+      v23 = [accessoriesCopy copy];
       accessories = v15->_accessories;
       v15->_accessories = v23;
     }
 
     self = v15;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
-- (HMDResidentDeviceElectionParameters)initWithResident:(id)a3 dictionaryRepresentation:(id)a4
+- (HMDResidentDeviceElectionParameters)initWithResident:(id)resident dictionaryRepresentation:(id)representation
 {
-  v6 = a4;
+  representationCopy = representation;
   v7 = MEMORY[0x277CBEB58];
-  v8 = a3;
+  residentCopy = resident;
   v9 = [v7 set];
-  v10 = [v6 hmf_numberForKey:@"kEnabledKey"];
+  v10 = [representationCopy hmf_numberForKey:@"kEnabledKey"];
   v11 = v10;
   if (v10)
   {
@@ -443,7 +443,7 @@ LABEL_62:
     v12 = 0;
   }
 
-  v13 = [v6 hmf_numberForKey:@"kAtHomeStateKey"];
+  v13 = [representationCopy hmf_numberForKey:@"kAtHomeStateKey"];
   v14 = v13;
   if (v13)
   {
@@ -463,7 +463,7 @@ LABEL_62:
     v15 = 2;
   }
 
-  v16 = [v6 hmf_dictionaryForKey:@"kAccessoriesListKey"];
+  v16 = [representationCopy hmf_dictionaryForKey:@"kAccessoriesListKey"];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __81__HMDResidentDeviceElectionParameters_initWithResident_dictionaryRepresentation___block_invoke;
@@ -472,7 +472,7 @@ LABEL_62:
   v17 = v9;
   [v16 enumerateKeysAndObjectsUsingBlock:v20];
 
-  v18 = [(HMDResidentDeviceElectionParameters *)self initWithResident:v8 enabled:v12 location:v15 accessories:v17];
+  v18 = [(HMDResidentDeviceElectionParameters *)self initWithResident:residentCopy enabled:v12 location:v15 accessories:v17];
   return v18;
 }
 

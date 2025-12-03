@@ -1,50 +1,50 @@
 @interface WPDScanManager
-+ (int64_t)zonesAvailableForType:(unsigned __int8)a3;
-- (BOOL)heySiriScanActive:(BOOL)a3;
++ (int64_t)zonesAvailableForType:(unsigned __int8)type;
+- (BOOL)heySiriScanActive:(BOOL)active;
 - (BOOL)isScannerTestMode;
 - (BOOL)retainDuplicates;
-- (BOOL)scanOptionsChanged:(id)a3 ForRequests:(id)a4;
+- (BOOL)scanOptionsChanged:(id)changed ForRequests:(id)requests;
 - (BOOL)shallStop;
 - (BOOL)updateScanRules;
 - (OS_dispatch_queue)serverQueue;
-- (WPDScanManager)initWithServer:(id)a3;
-- (id)addPeerTrackingRequest:(id)a3 forClient:(id)a4;
-- (id)addScanRequest:(id)a3 forClient:(id)a4;
-- (id)clearDuplicateFilterCache:(id)a3 forClient:(id)a4;
-- (id)connectToPeripheral:(id)a3 fromClient:(id)a4 withOptions:(id)a5;
-- (id)disconnectFromPeripheral:(id)a3 withSubscribedCharacteristics:(id)a4 forClient:(id)a5;
+- (WPDScanManager)initWithServer:(id)server;
+- (id)addPeerTrackingRequest:(id)request forClient:(id)client;
+- (id)addScanRequest:(id)request forClient:(id)client;
+- (id)clearDuplicateFilterCache:(id)cache forClient:(id)client;
+- (id)connectToPeripheral:(id)peripheral fromClient:(id)client withOptions:(id)options;
+- (id)disconnectFromPeripheral:(id)peripheral withSubscribedCharacteristics:(id)characteristics forClient:(id)client;
 - (id)generateStateDumpStrings;
-- (id)getScanRequestsForClient:(id)a3;
-- (id)removePeerTrackingRequest:(id)a3 checkZonesAvailable:(BOOL)a4 forClient:(id)a5;
-- (id)removeScanRequest:(id)a3 forClient:(id)a4;
-- (id)retrievePeripheralWithUUID:(id)a3;
-- (id)ruleHashesFromScanOptions:(id)a3;
-- (id)scanRequestHashesFromScanRequests:(id)a3;
-- (void)addSpyScanClient:(id)a3;
-- (void)assertCBDiscoveryScan:(BOOL)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverMultiplePeripherals:(id)a4;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToScanWithError:(id)a4;
-- (void)centralManager:(id)a3 didFindPeripheral:(id)a4 forType:(id)a5;
-- (void)centralManager:(id)a3 didLosePeripheral:(id)a4 forType:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (id)getScanRequestsForClient:(id)client;
+- (id)removePeerTrackingRequest:(id)request checkZonesAvailable:(BOOL)available forClient:(id)client;
+- (id)removeScanRequest:(id)request forClient:(id)client;
+- (id)retrievePeripheralWithUUID:(id)d;
+- (id)ruleHashesFromScanOptions:(id)options;
+- (id)scanRequestHashesFromScanRequests:(id)requests;
+- (void)addSpyScanClient:(id)client;
+- (void)assertCBDiscoveryScan:(BOOL)scan;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverMultiplePeripherals:(id)peripherals;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToScanWithError:(id)error;
+- (void)centralManager:(id)manager didFindPeripheral:(id)peripheral forType:(id)type;
+- (void)centralManager:(id)manager didLosePeripheral:(id)peripheral forType:(id)type;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)cleanup;
 - (void)clearExistingConnections;
-- (void)disconnectFromCentral:(id)a3 forClient:(id)a4;
-- (void)duplicateRulesGuard:(id)a3 forRule:(id)a4;
+- (void)disconnectFromCentral:(id)central forClient:(id)client;
+- (void)duplicateRulesGuard:(id)guard forRule:(id)rule;
 - (void)isScannerTestMode;
-- (void)logScanRequests:(id)a3 method:(BOOL)a4 window:(int64_t)a5 interval:(int64_t)a6;
-- (void)logScanTypes:(id)a3 method:(BOOL)a4 window:(int64_t)a5 interval:(int64_t)a6;
-- (void)reconcileScanRule:(id)a3 withRule:(id)a4;
-- (void)removeAllPeerTrackingRequestsForClient:(id)a3;
-- (void)removeConflictingRequest:(id)a3 forClient:(id)a4;
-- (void)removePeripheralConnection:(id)a3 forClient:(id)a4;
-- (void)removePeripheralConnectionsForClient:(id)a3;
-- (void)removeScanRequestsForClient:(id)a3;
-- (void)removeSpyScanClient:(id)a3;
+- (void)logScanRequests:(id)requests method:(BOOL)method window:(int64_t)window interval:(int64_t)interval;
+- (void)logScanTypes:(id)types method:(BOOL)method window:(int64_t)window interval:(int64_t)interval;
+- (void)reconcileScanRule:(id)rule withRule:(id)withRule;
+- (void)removeAllPeerTrackingRequestsForClient:(id)client;
+- (void)removeConflictingRequest:(id)request forClient:(id)client;
+- (void)removePeripheralConnection:(id)connection forClient:(id)client;
+- (void)removePeripheralConnectionsForClient:(id)client;
+- (void)removeScanRequestsForClient:(id)client;
+- (void)removeSpyScanClient:(id)client;
 - (void)shallStop;
 - (void)update;
 - (void)updateScanner;
@@ -54,19 +54,19 @@
 
 - (BOOL)retainDuplicates
 {
-  v2 = [(WPDScanManager *)self scanRetainDuplicates];
-  v3 = [v2 BOOLValue];
+  scanRetainDuplicates = [(WPDScanManager *)self scanRetainDuplicates];
+  bOOLValue = [scanRetainDuplicates BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)updateScanner
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(WPDManager *)self server];
-  v4 = [v3 cbState];
+  server = [(WPDManager *)self server];
+  cbState = [server cbState];
 
-  if (v4 != 3)
+  if (cbState != 3)
   {
     if (WPLogInitOnce != -1)
     {
@@ -113,11 +113,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v5 = [(WPDScanManager *)self scanOptions];
-  v6 = v5;
-  if (v5)
+  scanOptions = [(WPDScanManager *)self scanOptions];
+  v6 = scanOptions;
+  if (scanOptions)
   {
-    [v5 objectForKeyedSubscript:*MEMORY[0x277CBDDE0]];
+    [scanOptions objectForKeyedSubscript:*MEMORY[0x277CBDDE0]];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -138,9 +138,9 @@ LABEL_18:
           }
 
           v13 = [*(*(&v27 + 1) + 8 * i) objectForKeyedSubscript:{v11, v27}];
-          v14 = [v13 integerValue];
+          integerValue = [v13 integerValue];
 
-          if (v14 == 8)
+          if (integerValue == 8)
           {
             v15 = 1;
             goto LABEL_25;
@@ -168,27 +168,27 @@ LABEL_25:
 
   [(WPDScanManager *)self assertCBDiscoveryScan:v15, v27];
 
-  v22 = [(WPDScanManager *)self scanOptions];
+  scanOptions2 = [(WPDScanManager *)self scanOptions];
 
-  if (v22)
+  if (scanOptions2)
   {
     if ([(WPDScanManager *)self shallStop])
     {
-      v23 = [(WPDScanManager *)self centralManager];
-      [v23 stopScan];
+      centralManager = [(WPDScanManager *)self centralManager];
+      [centralManager stopScan];
     }
 
     [(WPDScanManager *)self setScanning:1];
-    v24 = [(WPDScanManager *)self centralManager];
-    v25 = [(WPDScanManager *)self scanOptions];
-    [v24 scanForPeripheralsWithServices:0 options:v25];
+    centralManager2 = [(WPDScanManager *)self centralManager];
+    scanOptions3 = [(WPDScanManager *)self scanOptions];
+    [centralManager2 scanForPeripheralsWithServices:0 options:scanOptions3];
   }
 
   else
   {
     [(WPDScanManager *)self setScanning:0];
-    v26 = [(WPDScanManager *)self centralManager];
-    [v26 stopScan];
+    centralManager3 = [(WPDScanManager *)self centralManager];
+    [centralManager3 stopScan];
   }
 
 LABEL_19:
@@ -199,8 +199,8 @@ LABEL_19:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(WPDScanManager *)self scanOptions];
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDE30]];
+    scanOptions = [(WPDScanManager *)self scanOptions];
+    v4 = [scanOptions objectForKeyedSubscript:*MEMORY[0x277CBDE30]];
     v5 = [v4 BOOLValue] ^ 1;
 
     if (WPLogInitOnce != -1)
@@ -270,12 +270,12 @@ void __33__WPDScanManager_updateScanRules__block_invoke_5(uint64_t a1, void *a2,
 - (BOOL)updateScanRules
 {
   v316 = *MEMORY[0x277D85DE8];
-  v3 = [(WPDManager *)self server];
-  v4 = [v3 statsManager];
-  [v4 stopActivity:0];
+  server = [(WPDManager *)self server];
+  statsManager = [server statsManager];
+  [statsManager stopActivity:0];
 
-  v5 = [(WPDScanManager *)self scanRequests];
-  v6 = [v5 count];
+  scanRequests = [(WPDScanManager *)self scanRequests];
+  v6 = [scanRequests count];
 
   if (!v6)
   {
@@ -295,11 +295,11 @@ void __33__WPDScanManager_updateScanRules__block_invoke_5(uint64_t a1, void *a2,
     goto LABEL_213;
   }
 
-  v167 = [MEMORY[0x277CBEB18] array];
-  v166 = [MEMORY[0x277CBEB18] array];
-  v140 = [(WPDScanManager *)self isScannerTestMode];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  isScannerTestMode = [(WPDScanManager *)self isScannerTestMode];
   v7 = [(WPDScanManager *)self heySiriScanActive:?];
-  v168 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v288 = 0u;
   v287 = 0u;
   v286 = 0u;
@@ -339,13 +339,13 @@ void __33__WPDScanManager_updateScanRules__block_invoke_5(uint64_t a1, void *a2,
 
       v142 = i;
       v10 = *(*(&v285 + 1) + 8 * i);
-      if (!v140 || (-[WPDManager server](self, "server"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isClientTestMode:v10], v11, (v12 & 1) != 0))
+      if (!isScannerTestMode || (-[WPDManager server](self, "server"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isClientTestMode:v10], v11, (v12 & 1) != 0))
       {
-        v13 = [(WPDManager *)self server];
-        v169 = [v13 getClientForUUID:v10];
+        server2 = [(WPDManager *)self server];
+        v169 = [server2 getClientForUUID:v10];
 
-        v14 = [(WPDScanManager *)self scanRequests];
-        v15 = [v14 objectForKeyedSubscript:v10];
+        scanRequests2 = [(WPDScanManager *)self scanRequests];
+        v15 = [scanRequests2 objectForKeyedSubscript:v10];
 
         v284 = 0u;
         v283 = 0u;
@@ -370,8 +370,8 @@ void __33__WPDScanManager_updateScanRules__block_invoke_5(uint64_t a1, void *a2,
             }
 
             v19 = *(*(&v281 + 1) + 8 * v18);
-            v20 = [v19 clientType];
-            if (![(WPDManager *)self isScanAllowlistedForType:v20])
+            clientType = [v19 clientType];
+            if (![(WPDManager *)self isScanAllowlistedForType:clientType])
             {
               if (WPLogInitOnce != -1)
               {
@@ -382,14 +382,14 @@ void __33__WPDScanManager_updateScanRules__block_invoke_5(uint64_t a1, void *a2,
               if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134217984;
-                *&buf[4] = v20;
+                *&buf[4] = clientType;
                 _os_log_impl(&dword_272965000, v25, OS_LOG_TYPE_DEFAULT, "Not scanning for client type (%ld) when denylisted or not allowlisted", buf, 0xCu);
               }
 
               goto LABEL_148;
             }
 
-            if (v20 == 8)
+            if (clientType == 8)
             {
               v21 = 1;
             }
@@ -410,7 +410,7 @@ void __33__WPDScanManager_updateScanRules__block_invoke_5(uint64_t a1, void *a2,
               if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 134217984;
-                *&buf[4] = v20;
+                *&buf[4] = clientType;
                 v23 = v22;
                 v24 = "Not scanning for client type (%ld) when HeySiri scan is active";
 LABEL_23:
@@ -421,12 +421,12 @@ LABEL_23:
               goto LABEL_148;
             }
 
-            if (v20 == 16)
+            if (clientType == 16)
             {
-              v33 = [(WPDManager *)self server];
-              v34 = [v33 screenOff];
+              server3 = [(WPDManager *)self server];
+              screenOff = [server3 screenOff];
 
-              if (!v34)
+              if (!screenOff)
               {
                 goto LABEL_76;
               }
@@ -437,8 +437,8 @@ LABEL_23:
                 [v19 scanningRates];
               }
 
-              v35 = [(WPDManager *)self server];
-              if ([v35 isMirroring])
+              server4 = [(WPDManager *)self server];
+              if ([server4 isMirroring])
               {
                 if (v19)
                 {
@@ -452,14 +452,14 @@ LABEL_23:
                       [WPDScanManager updateScanRules];
                     }
 
-                    v29 = WiProxLog;
-                    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+                    server5 = WiProxLog;
+                    if (os_log_type_enabled(server5, OS_LOG_TYPE_DEFAULT))
                     {
                       *v308 = 134218240;
                       *&v308[4] = *&buf[8];
                       *&v308[12] = 2048;
                       *&v308[14] = 16;
-                      v36 = v29;
+                      v36 = server5;
                       v37 = "Boosting screen off scan interval to %ld for client type (%ld) when mirroring";
                       goto LABEL_65;
                     }
@@ -468,8 +468,8 @@ LABEL_23:
                   }
 
 LABEL_58:
-                  v29 = [(WPDManager *)self server];
-                  if (([v29 isMirroring]& 1) != 0)
+                  server5 = [(WPDManager *)self server];
+                  if (([server5 isMirroring]& 1) != 0)
                   {
                     goto LABEL_74;
                   }
@@ -492,14 +492,14 @@ LABEL_58:
                       [WPDScanManager updateScanRules];
                     }
 
-                    v29 = WiProxLog;
-                    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+                    server5 = WiProxLog;
+                    if (os_log_type_enabled(server5, OS_LOG_TYPE_DEFAULT))
                     {
                       *v308 = 134218240;
                       *&v308[4] = *&buf[8];
                       *&v308[12] = 2048;
                       *&v308[14] = 16;
-                      v36 = v29;
+                      v36 = server5;
                       v37 = "Resetting screen off scan interval to %ld for client type (%ld) when not mirroring";
 LABEL_65:
                       _os_log_impl(&dword_272965000, v36, OS_LOG_TYPE_DEFAULT, v37, v308, 0x16u);
@@ -523,12 +523,12 @@ LABEL_75:
               goto LABEL_58;
             }
 
-            if (v20 == 12)
+            if (clientType == 12)
             {
-              v26 = [(WPDManager *)self server];
-              v27 = [v26 screenOff];
+              server6 = [(WPDManager *)self server];
+              screenOff2 = [server6 screenOff];
 
-              if (v27)
+              if (screenOff2)
               {
                 memset(buf, 0, sizeof(buf));
                 if (v19)
@@ -536,8 +536,8 @@ LABEL_75:
                   [v19 scanningRates];
                 }
 
-                v28 = [(WPDManager *)self server];
-                if ([v28 isMirroring])
+                server7 = [(WPDManager *)self server];
+                if ([server7 isMirroring])
                 {
                   if (v19)
                   {
@@ -552,8 +552,8 @@ LABEL_75:
                         [WPDScanManager updateScanRules];
                       }
 
-                      v29 = WiProxLog;
-                      if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+                      server5 = WiProxLog;
+                      if (!os_log_type_enabled(server5, OS_LOG_TYPE_DEFAULT))
                       {
                         goto LABEL_74;
                       }
@@ -562,15 +562,15 @@ LABEL_75:
                       *&v308[4] = *&buf[8];
                       *&v308[12] = 2048;
                       *&v308[14] = 12;
-                      v30 = v29;
+                      v30 = server5;
                       v31 = "Enabling screen off scan interval of %ld for client type (%ld) when mirroring";
                       v32 = 22;
                       goto LABEL_71;
                     }
 
 LABEL_52:
-                    v29 = [(WPDManager *)self server];
-                    if (([v29 isMirroring]& 1) != 0)
+                    server5 = [(WPDManager *)self server];
+                    if (([server5 isMirroring]& 1) != 0)
                     {
                       goto LABEL_74;
                     }
@@ -598,15 +598,15 @@ LABEL_52:
                       [WPDScanManager updateScanRules];
                     }
 
-                    v29 = WiProxLog;
-                    if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+                    server5 = WiProxLog;
+                    if (!os_log_type_enabled(server5, OS_LOG_TYPE_DEFAULT))
                     {
                       goto LABEL_74;
                     }
 
                     *v308 = 134217984;
                     *&v308[4] = 12;
-                    v30 = v29;
+                    v30 = server5;
                     v31 = "Disabling screen off scan for client type (%ld) when not mirroring";
                     v32 = 12;
 LABEL_71:
@@ -624,8 +624,8 @@ LABEL_71:
             }
 
 LABEL_76:
-            v38 = [(WPDManager *)self server];
-            if (![v38 screenOff])
+            server8 = [(WPDManager *)self server];
+            if (![server8 screenOff])
             {
               goto LABEL_84;
             }
@@ -653,7 +653,7 @@ LABEL_84:
               if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 134217984;
-                *&buf[4] = v20;
+                *&buf[4] = clientType;
                 v23 = v39;
                 v24 = "Not scanning for client type (%ld) because we don't scan when screen is off";
                 goto LABEL_23;
@@ -663,12 +663,12 @@ LABEL_84:
             }
 
 LABEL_85:
-            v40 = [(WPDManager *)self server];
-            if ([v40 systemLocked])
+            server9 = [(WPDManager *)self server];
+            if ([server9 systemLocked])
             {
-              v41 = [v19 scanWhenLocked];
+              scanWhenLocked = [v19 scanWhenLocked];
 
-              if ((v41 & 1) == 0)
+              if ((scanWhenLocked & 1) == 0)
               {
                 if (WPLogInitOnce != -1)
                 {
@@ -679,7 +679,7 @@ LABEL_85:
                 if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 134217984;
-                  *&buf[4] = v20;
+                  *&buf[4] = clientType;
                   v23 = v42;
                   v24 = "Not scanning for client type (%ld) because screen is locked";
                   goto LABEL_23;
@@ -698,14 +698,14 @@ LABEL_85:
               goto LABEL_100;
             }
 
-            v43 = [(WPDManager *)self server];
-            if (![v43 screenOff])
+            server10 = [(WPDManager *)self server];
+            if (![server10 screenOff])
             {
 
 LABEL_100:
               v46 = MEMORY[0x277CBEB38];
               v312 = v164;
-              v47 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v20];
+              v47 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:clientType];
               v313 = v47;
               v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v313 forKeys:&v312 count:1];
               v49 = [v46 dictionaryWithDictionary:v48];
@@ -713,9 +713,9 @@ LABEL_100:
               v50 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v19, "allowDuplicates")}];
               [v49 setObject:v50 forKeyedSubscript:v162];
 
-              if ((v20 - 15) > 1u)
+              if ((clientType - 15) > 1u)
               {
-                if (v20 == 8)
+                if (clientType == 8)
                 {
                   [v49 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v145];
                   [v49 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v144];
@@ -806,72 +806,72 @@ LABEL_115:
                 }
               }
 
-              v60 = [v169 bundleID];
+              bundleID = [v169 bundleID];
 
-              if (v60)
+              if (bundleID)
               {
                 v61 = MEMORY[0x277CBEA60];
-                v62 = [v169 bundleID];
-                v63 = [v61 arrayWithObject:v62];
+                bundleID2 = [v169 bundleID];
+                v63 = [v61 arrayWithObject:bundleID2];
                 [v49 setObject:v63 forKeyedSubscript:v160];
               }
 
-              v64 = [v19 blobValue];
-              v65 = [v64 length] == 0;
+              blobValue = [v19 blobValue];
+              v65 = [blobValue length] == 0;
 
               if (!v65)
               {
-                v66 = [v19 blobValue];
-                [v49 setObject:v66 forKeyedSubscript:v158];
+                blobValue2 = [v19 blobValue];
+                [v49 setObject:blobValue2 forKeyedSubscript:v158];
               }
 
-              v67 = [v19 maskValue];
-              v68 = [v67 length] == 0;
+              maskValue = [v19 maskValue];
+              v68 = [maskValue length] == 0;
 
               if (!v68)
               {
-                v69 = [v19 maskValue];
-                [v49 setObject:v69 forKeyedSubscript:v156];
+                maskValue2 = [v19 maskValue];
+                [v49 setObject:maskValue2 forKeyedSubscript:v156];
               }
 
-              v70 = [v19 peers];
-              v71 = [v70 count] == 0;
+              peers = [v19 peers];
+              v71 = [peers count] == 0;
 
               if (!v71)
               {
-                v72 = [v19 peers];
-                [v49 setObject:v72 forKeyedSubscript:v154];
+                peers2 = [v19 peers];
+                [v49 setObject:peers2 forKeyedSubscript:v154];
               }
 
-              v73 = [v19 rssiThreshold];
+              rssiThreshold = [v19 rssiThreshold];
 
-              if (v73)
+              if (rssiThreshold)
               {
-                v74 = [v19 rssiThreshold];
-                [v49 setObject:v74 forKeyedSubscript:v152];
+                rssiThreshold2 = [v19 rssiThreshold];
+                [v49 setObject:rssiThreshold2 forKeyedSubscript:v152];
               }
 
-              v75 = [v19 useCaseList];
-              v76 = [v75 count] == 0;
+              useCaseList = [v19 useCaseList];
+              v76 = [useCaseList count] == 0;
 
               if (!v76)
               {
-                v77 = [v19 useCaseList];
-                [v49 setObject:v77 forKeyedSubscript:@"kCBOptionUseCaseList"];
+                useCaseList2 = [v19 useCaseList];
+                [v49 setObject:useCaseList2 forKeyedSubscript:@"kCBOptionUseCaseList"];
               }
 
               if ([v19 range] && -[WPDScanManager isRanging](self, "isRanging"))
               {
-                v78 = [(WPDScanManager *)self rangingTypes];
-                if (![v78 containsIndex:v20])
+                rangingTypes = [(WPDScanManager *)self rangingTypes];
+                if (![rangingTypes containsIndex:clientType])
                 {
                   goto LABEL_136;
                 }
 
-                v79 = [(WPDManager *)self server];
-                v80 = [v79 screenOff];
+                server11 = [(WPDManager *)self server];
+                screenOff3 = [server11 screenOff];
 
-                if ((v80 & 1) == 0)
+                if ((screenOff3 & 1) == 0)
                 {
                   [v49 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v143];
                   if (WPLogInitOnce != -1)
@@ -879,32 +879,32 @@ LABEL_115:
                     [WPDScanManager updateScanRules];
                   }
 
-                  v78 = WiProxLog;
-                  if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
+                  rangingTypes = WiProxLog;
+                  if (os_log_type_enabled(rangingTypes, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = v137;
                     *&buf[4] = v49;
-                    _os_log_debug_impl(&dword_272965000, v78, OS_LOG_TYPE_DEBUG, "[Ranging] scan rule with ranging: %@", buf, 0xCu);
+                    _os_log_debug_impl(&dword_272965000, rangingTypes, OS_LOG_TYPE_DEBUG, "[Ranging] scan rule with ranging: %@", buf, 0xCu);
                   }
 
 LABEL_136:
                 }
               }
 
-              if ([v168 containsIndex:v20])
+              if ([indexSet containsIndex:clientType])
               {
-                [(WPDScanManager *)self duplicateRulesGuard:v167 forRule:v49];
+                [(WPDScanManager *)self duplicateRulesGuard:array forRule:v49];
               }
 
               else
               {
-                [v167 addObject:v49];
-                [v168 addIndex:v20];
+                [array addObject:v49];
+                [indexSet addIndex:clientType];
               }
 
-              [v166 addObject:v19];
-              v81 = [(WPDManager *)self server];
-              if ([v81 screenOff])
+              [array2 addObject:v19];
+              server12 = [(WPDManager *)self server];
+              if ([server12 screenOff])
               {
                 if (v19)
                 {
@@ -934,9 +934,9 @@ LABEL_136:
               }
 
               v82 = v19 > 299;
-              v83 = [(WPDManager *)self server];
-              v84 = [v83 statsManager];
-              [v84 startActivity:0 forType:v20 scanRate:v82];
+              server13 = [(WPDManager *)self server];
+              statsManager2 = [server13 statsManager];
+              [statsManager2 startActivity:0 forType:clientType scanRate:v82];
 
               goto LABEL_148;
             }
@@ -957,7 +957,7 @@ LABEL_136:
             if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
             {
               *buf = 134217984;
-              *&buf[4] = v20;
+              *&buf[4] = clientType;
               v23 = v45;
               v24 = "Not scanning for client type (%ld) when screen is off and ADV Buffer is enabled";
               goto LABEL_23;
@@ -1003,9 +1003,9 @@ LABEL_155:
   while (v141);
 LABEL_157:
 
-  if ([v167 count])
+  if ([array count])
   {
-    v87 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:v168];
+    v87 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:indexSet];
     [(WPDScanManager *)self setCurrentScanners:v87];
 
     v237 = 0;
@@ -1028,7 +1028,7 @@ LABEL_157:
     v228[5] = &v237;
     v228[6] = &v233;
     v228[7] = &v229;
-    [v166 enumerateObjectsUsingBlock:v228];
+    [array2 enumerateObjectsUsingBlock:v228];
     if (v238[3] >= 0xFFFF)
     {
       if (WPLogInitOnce != -1)
@@ -1081,7 +1081,7 @@ LABEL_157:
       v94[2] = v95;
       v94[3] = &unk_279E59668;
       v94[4] = v308;
-      [v166 enumerateObjectsUsingBlock:v137];
+      [array2 enumerateObjectsUsingBlock:v137];
       v220 = 0;
       v221 = &v220;
       v222 = 0x3032000000;
@@ -1094,7 +1094,7 @@ LABEL_157:
       v219[3] = &unk_279E59690;
       v219[4] = self;
       v219[5] = &v220;
-      [v166 enumerateObjectsUsingBlock:v219];
+      [array2 enumerateObjectsUsingBlock:v219];
       v213 = 0;
       v214 = &v213;
       v215 = 0x3032000000;
@@ -1106,7 +1106,7 @@ LABEL_157:
       v212[2] = __33__WPDScanManager_updateScanRules__block_invoke_4;
       v212[3] = &unk_279E59668;
       v212[4] = &v213;
-      [v166 enumerateObjectsUsingBlock:v212];
+      [array2 enumerateObjectsUsingBlock:v212];
       v206 = 0;
       v207 = &v206;
       v208 = 0x3032000000;
@@ -1118,7 +1118,7 @@ LABEL_157:
       v205[2] = __33__WPDScanManager_updateScanRules__block_invoke_5;
       v205[3] = &unk_279E59668;
       v205[4] = &v206;
-      [v166 enumerateObjectsUsingBlock:v205];
+      [array2 enumerateObjectsUsingBlock:v205];
       v199 = 0;
       v200 = &v199;
       v201 = 0x3032000000;
@@ -1130,7 +1130,7 @@ LABEL_157:
       v198[2] = __33__WPDScanManager_updateScanRules__block_invoke_6;
       v198[3] = &unk_279E59668;
       v198[4] = &v199;
-      [v166 enumerateObjectsUsingBlock:v198];
+      [array2 enumerateObjectsUsingBlock:v198];
       v194 = 0;
       v195 = &v194;
       v196 = 0x2020000000;
@@ -1146,11 +1146,11 @@ LABEL_157:
       v189[6] = &v194;
       v189[5] = &v190;
       v189[4] = self;
-      [v166 enumerateObjectsUsingBlock:v189];
+      [array2 enumerateObjectsUsingBlock:v189];
       scanRetainDuplicates = self->_scanRetainDuplicates;
       self->_scanRetainDuplicates = v93;
 
-      v97 = v166;
+      v97 = array2;
       if (_os_feature_enabled_impl())
       {
         *buf = 0;
@@ -1162,15 +1162,15 @@ LABEL_157:
         v184 = 0x2020000000;
         if ([v221[5] BOOLValue])
         {
-          v98 = 1;
+          bOOLValue = 1;
         }
 
         else
         {
-          v98 = [*(*&v308[8] + 40) BOOLValue];
+          bOOLValue = [*(*&v308[8] + 40) BOOLValue];
         }
 
-        LOBYTE(v185) = v98;
+        LOBYTE(v185) = bOOLValue;
         if ((v183[3] & 1) == 0)
         {
           v188[0] = MEMORY[0x277D85DD0];
@@ -1179,7 +1179,7 @@ LABEL_157:
           v188[3] = &unk_279E596E0;
           v188[4] = buf;
           v188[5] = &v182;
-          [v166 enumerateObjectsUsingBlock:v188];
+          [array2 enumerateObjectsUsingBlock:v188];
         }
 
         if (*(*&buf[8] + 24) == 1)
@@ -1204,11 +1204,11 @@ LABEL_157:
         v102 = WiProxLog;
         if (os_log_type_enabled(v102, OS_LOG_TYPE_INFO))
         {
-          v103 = [(NSNumber *)self->_scanRetainDuplicates BOOLValue];
+          bOOLValue2 = [(NSNumber *)self->_scanRetainDuplicates BOOLValue];
           v104 = *(*&buf[8] + 24);
           v105 = *(v183 + 24);
           *v302 = 67109632;
-          *&v302[4] = v103;
+          *&v302[4] = bOOLValue2;
           LOWORD(v303) = 1024;
           *(&v303 + 2) = v104;
           HIWORD(v303) = 1024;
@@ -1216,8 +1216,8 @@ LABEL_157:
           _os_log_impl(&dword_272965000, v102, OS_LOG_TYPE_INFO, "Retain duplicates:%d (askRetain:%d askReset:%d)", v302, 0x14u);
         }
 
-        v97 = v166;
-        [v166 enumerateObjectsUsingBlock:&__block_literal_global_322];
+        v97 = array2;
+        [array2 enumerateObjectsUsingBlock:&__block_literal_global_322];
         _Block_object_dispose(&v182, 8);
         _Block_object_dispose(buf, 8);
       }
@@ -1246,13 +1246,13 @@ LABEL_157:
       v180[3] = &unk_279E59668;
       v180[4] = v302;
       [v97 enumerateObjectsUsingBlock:v180];
-      v106 = [v221[5] BOOLValue];
-      [(WPDScanManager *)self logScanTypes:v168 method:v106 window:v234[3] interval:v238[3]];
+      bOOLValue3 = [v221[5] BOOLValue];
+      [(WPDScanManager *)self logScanTypes:indexSet method:bOOLValue3 window:v234[3] interval:v238[3]];
       v178 = 0u;
       v179 = 0u;
       v176 = 0u;
       v177 = 0u;
-      v165 = v167;
+      v165 = array;
       v107 = [v165 countByEnumeratingWithState:&v176 objects:v301 count:16];
       if (v107)
       {
@@ -1287,22 +1287,22 @@ LABEL_157:
             {
               log = v111;
               v175 = [v110 objectForKeyedSubscript:v161];
-              v170 = [v175 integerValue];
+              integerValue = [v175 integerValue];
               v173 = [v110 objectForKeyedSubscript:v159];
-              v112 = [v173 integerValue];
+              integerValue2 = [v173 integerValue];
               v113 = [v110 objectForKeyedSubscript:v157];
-              v114 = [v113 BOOLValue];
+              bOOLValue4 = [v113 BOOLValue];
               v115 = [v110 objectForKeyedSubscript:v155];
               v116 = [v110 objectForKeyedSubscript:v153];
               v117 = [v110 objectForKeyedSubscript:v151];
               v118 = [v117 count];
               v119 = [v110 objectForKeyedSubscript:v149];
               *buf = 134219522;
-              *&buf[4] = v170;
+              *&buf[4] = integerValue;
               *&buf[12] = 2048;
-              *&buf[14] = v112;
+              *&buf[14] = integerValue2;
               *&buf[22] = 1024;
-              v292 = v114;
+              v292 = bOOLValue4;
               v293 = 2114;
               v294 = v115;
               v295 = 2114;
@@ -1377,7 +1377,7 @@ LABEL_157:
       v290[15] = v133;
       v134 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v290 forKeys:v289 count:16];
 
-      v91 = [(WPDScanManager *)self scanOptionsChanged:v134 ForRequests:v166];
+      v91 = [(WPDScanManager *)self scanOptionsChanged:v134 ForRequests:array2];
       _Block_object_dispose(v302, 8);
 
       _Block_object_dispose(&v182, 8);
@@ -1534,14 +1534,14 @@ void __33__WPDScanManager_updateScanRules__block_invoke_306(uint64_t a1, void *a
   v9 = 0;
   if ([(WPDManager *)self testMode])
   {
-    v3 = [(WPDScanManager *)self scanRequests];
+    scanRequests = [(WPDScanManager *)self scanRequests];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __35__WPDScanManager_isScannerTestMode__block_invoke;
     v6[3] = &unk_279E595C8;
     v6[4] = self;
     v6[5] = &v7;
-    [v3 enumerateKeysAndObjectsUsingBlock:v6];
+    [scanRequests enumerateKeysAndObjectsUsingBlock:v6];
 
     if (WPLogInitOnce != -1)
     {
@@ -1640,34 +1640,34 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   }
 }
 
-- (WPDScanManager)initWithServer:(id)a3
+- (WPDScanManager)initWithServer:(id)server
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   v38.receiver = self;
   v38.super_class = WPDScanManager;
-  v5 = [(WPDManager *)&v38 initWithServer:v4 Name:@"Scanner Central"];
+  v5 = [(WPDManager *)&v38 initWithServer:serverCopy Name:@"Scanner Central"];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     scanRequests = v5->_scanRequests;
-    v5->_scanRequests = v6;
+    v5->_scanRequests = dictionary;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     peerRequests = v5->_peerRequests;
-    v5->_peerRequests = v8;
+    v5->_peerRequests = dictionary2;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     connectionsInProgress = v5->_connectionsInProgress;
-    v5->_connectionsInProgress = v10;
+    v5->_connectionsInProgress = dictionary3;
 
     v12 = [MEMORY[0x277CBEB58] set];
     peripheralConnections = v5->_peripheralConnections;
     v5->_peripheralConnections = v12;
 
-    v14 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
     currentScanners = v5->_currentScanners;
-    v5->_currentScanners = v14;
+    v5->_currentScanners = indexSet;
 
     v5->_scanning = 0;
     v16 = [MEMORY[0x277CBEB58] set];
@@ -1683,8 +1683,8 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
     scanRuleHashes = v5->_scanRuleHashes;
     v5->_scanRuleHashes = 0;
 
-    v21 = [v4 serverQueue];
-    objc_storeWeak(&v5->_serverQueue, v21);
+    serverQueue = [serverCopy serverQueue];
+    objc_storeWeak(&v5->_serverQueue, serverQueue);
 
     cbDiscoveryAsserter = v5->_cbDiscoveryAsserter;
     v5->_cbDiscoveryAsserter = 0;
@@ -1693,33 +1693,33 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
     v5->_scanRetainDuplicates = MEMORY[0x277CBEC28];
 
     v5->_isRanging = 0;
-    v24 = [MEMORY[0x277CCAB58] indexSet];
-    [v24 addIndex:15];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
+    [indexSet2 addIndex:15];
     if (+[WPDaemonServer supportsRanging])
     {
-      [v24 addIndex:19];
+      [indexSet2 addIndex:19];
     }
 
-    v25 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:v24];
+    v25 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:indexSet2];
     rangingTypes = v5->_rangingTypes;
     v5->_rangingTypes = v25;
 
     v27 = objc_alloc(MEMORY[0x277CBDFF8]);
-    v28 = [(WPDScanManager *)v5 serverQueue];
+    serverQueue2 = [(WPDScanManager *)v5 serverQueue];
     v39 = *MEMORY[0x277CBDF08];
     v40[0] = MEMORY[0x277CBEC38];
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-    v30 = [v27 initWithDelegate:v5 queue:v28 options:v29];
+    v30 = [v27 initWithDelegate:v5 queue:serverQueue2 options:v29];
     [(WPDScanManager *)v5 setCentralManager:v30];
 
     v31 = MEMORY[0x277CBEB98];
-    v32 = [(WPDScanManager *)v5 centralManager];
-    v33 = [v31 setWithObject:v32];
+    centralManager = [(WPDScanManager *)v5 centralManager];
+    v33 = [v31 setWithObject:centralManager];
     [(WPDManager *)v5 setCbManagers:v33];
 
-    v34 = [v4 wpdState];
-    v35 = [(WPDScanManager *)v5 centralManager];
-    [v34 registerManager:v35];
+    wpdState = [serverCopy wpdState];
+    centralManager2 = [(WPDScanManager *)v5 centralManager];
+    [wpdState registerManager:centralManager2];
   }
 
   v36 = *MEMORY[0x277D85DE8];
@@ -1729,12 +1729,12 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
 - (void)cleanup
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(WPDScanManager *)self cbDiscoveryAsserter];
+  cbDiscoveryAsserter = [(WPDScanManager *)self cbDiscoveryAsserter];
 
-  if (v3)
+  if (cbDiscoveryAsserter)
   {
-    v4 = [(WPDScanManager *)self cbDiscoveryAsserter];
-    [v4 invalidate];
+    cbDiscoveryAsserter2 = [(WPDScanManager *)self cbDiscoveryAsserter];
+    [cbDiscoveryAsserter2 invalidate];
 
     [(WPDScanManager *)self setCbDiscoveryAsserter:0];
   }
@@ -1743,8 +1743,8 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(WPDScanManager *)self peripheralConnections];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  peripheralConnections = [(WPDScanManager *)self peripheralConnections];
+  v6 = [peripheralConnections countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1756,28 +1756,28 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(peripheralConnections);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        v11 = [(WPDScanManager *)self centralManager];
-        [v11 cancelPeripheralConnection:v10];
+        centralManager = [(WPDScanManager *)self centralManager];
+        [centralManager cancelPeripheralConnection:v10];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [peripheralConnections countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(WPDScanManager *)self scanRequests];
-  [v12 removeAllObjects];
+  scanRequests = [(WPDScanManager *)self scanRequests];
+  [scanRequests removeAllObjects];
 
-  v13 = [(WPDScanManager *)self spyScanClients];
-  [v13 removeAllObjects];
+  spyScanClients = [(WPDScanManager *)self spyScanClients];
+  [spyScanClients removeAllObjects];
 
   [(WPDScanManager *)self updateScanner];
   v15.receiver = self;
@@ -1788,42 +1788,42 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
 
 - (id)generateStateDumpStrings
 {
-  v2 = self;
+  selfCopy = self;
   v95 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
   v90.receiver = self;
   v90.super_class = WPDScanManager;
-  v4 = [(WPDManager *)&v90 generateStateDumpStrings];
-  v66 = [v3 arrayWithArray:v4];
+  generateStateDumpStrings = [(WPDManager *)&v90 generateStateDumpStrings];
+  v66 = [v3 arrayWithArray:generateStateDumpStrings];
 
-  v73 = v2;
-  if ([(WPDManager *)v2 isInternalBuild])
+  v73 = selfCopy;
+  if ([(WPDManager *)selfCopy isInternalBuild])
   {
-    v5 = v2;
+    v5 = selfCopy;
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(WPDManager *)v5 scanAllowlist];
-    if (v7)
+    scanAllowlist = [(WPDManager *)v5 scanAllowlist];
+    if (scanAllowlist)
     {
-      v8 = [(WPDManager *)v5 scanAllowlist];
+      scanAllowlist2 = [(WPDManager *)v5 scanAllowlist];
     }
 
     else
     {
-      v8 = @"all";
+      scanAllowlist2 = @"all";
     }
 
-    v9 = [v6 stringWithFormat:@"allowlisted scan types: %@\n", v8];
+    v9 = [v6 stringWithFormat:@"allowlisted scan types: %@\n", scanAllowlist2];
     [v66 addObject:v9];
 
-    if (v7)
+    if (scanAllowlist)
     {
     }
 
-    v2 = v73;
+    selfCopy = v73;
   }
 
   v10 = MEMORY[0x277CCACA8];
-  if ([(WPDScanManager *)v2 isRanging])
+  if ([(WPDScanManager *)selfCopy isRanging])
   {
     v11 = "yes";
   }
@@ -1833,36 +1833,36 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
     v11 = "no";
   }
 
-  v12 = [(WPDScanManager *)v2 rangingTypes];
-  v13 = [v10 stringWithFormat:@"ranging: %s, supported types: %@\n", v11, v12];
+  rangingTypes = [(WPDScanManager *)selfCopy rangingTypes];
+  v13 = [v10 stringWithFormat:@"ranging: %s, supported types: %@\n", v11, rangingTypes];
   [v66 addObject:v13];
 
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v15 = [(WPDScanManager *)v2 scanRequests];
-  v16 = [v15 allKeys];
+  scanRequests = [(WPDScanManager *)selfCopy scanRequests];
+  allKeys = [scanRequests allKeys];
 
-  v71 = [v16 countByEnumeratingWithState:&v86 objects:v94 count:16];
+  v71 = [allKeys countByEnumeratingWithState:&v86 objects:v94 count:16];
   if (v71)
   {
     v17 = *v87;
     v67 = *v87;
-    v68 = v16;
+    v68 = allKeys;
     do
     {
       for (i = 0; i != v71; ++i)
       {
         if (*v87 != v17)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v86 + 1) + 8 * i);
-        v20 = [(WPDScanManager *)v2 scanRequests];
-        v21 = [v20 objectForKeyedSubscript:v19];
+        scanRequests2 = [(WPDScanManager *)selfCopy scanRequests];
+        v21 = [scanRequests2 objectForKeyedSubscript:v19];
 
         v22 = v21;
         if (v21 && [v21 count])
@@ -1888,16 +1888,16 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
                 }
 
                 v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@: %@\n", v19, *(*(&v82 + 1) + 8 * j)];
-                [v14 addObject:v28];
+                [array addObject:v28];
               }
 
               v25 = [v23 countByEnumeratingWithState:&v82 objects:v93 count:16];
             }
 
             while (v25);
-            v2 = v73;
+            selfCopy = v73;
             v17 = v67;
-            v16 = v68;
+            allKeys = v68;
           }
 
           v22 = v69;
@@ -1906,29 +1906,29 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
         else
         {
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@: (nil)\n"], v19);
-          [v14 addObject:v23];
+          [array addObject:v23];
         }
       }
 
-      v71 = [v16 countByEnumeratingWithState:&v86 objects:v94 count:16];
+      v71 = [allKeys countByEnumeratingWithState:&v86 objects:v94 count:16];
     }
 
     while (v71);
   }
 
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"scan requests (%lu):\n", objc_msgSend(v14, "count")];
+  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"scan requests (%lu):\n", objc_msgSend(array, "count")];
   [v66 addObject:v29];
 
-  [v66 addObjectsFromArray:v14];
-  v72 = [MEMORY[0x277CBEB18] array];
+  [v66 addObjectsFromArray:array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v30 = [(WPDScanManager *)v2 peerRequests];
-  v31 = [v30 allKeys];
+  peerRequests = [(WPDScanManager *)selfCopy peerRequests];
+  allKeys2 = [peerRequests allKeys];
 
-  v32 = [v31 countByEnumeratingWithState:&v78 objects:v92 count:16];
+  v32 = [allKeys2 countByEnumeratingWithState:&v78 objects:v92 count:16];
   if (v32)
   {
     v33 = v32;
@@ -1939,39 +1939,39 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
       {
         if (*v79 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(allKeys2);
         }
 
         v36 = *(*(&v78 + 1) + 8 * k);
-        v37 = [(WPDScanManager *)v73 peerRequests];
-        v38 = [v37 objectForKeyedSubscript:v36];
+        peerRequests2 = [(WPDScanManager *)v73 peerRequests];
+        v38 = [peerRequests2 objectForKeyedSubscript:v36];
 
         if (v38 && [v38 count])
         {
           v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@: %@\n", v36, v38];
-          [v72 addObject:v39];
+          [array2 addObject:v39];
         }
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v78 objects:v92 count:16];
+      v33 = [allKeys2 countByEnumeratingWithState:&v78 objects:v92 count:16];
     }
 
     while (v33);
   }
 
-  v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"tracked peers (%lu):\n", objc_msgSend(v72, "count")];
+  v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"tracked peers (%lu):\n", objc_msgSend(array2, "count")];
   [v66 addObject:v40];
 
-  [v66 addObjectsFromArray:v72];
-  v70 = [MEMORY[0x277CBEB18] array];
+  [v66 addObjectsFromArray:array2];
+  array3 = [MEMORY[0x277CBEB18] array];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v41 = [(WPDScanManager *)v73 connectionsInProgress];
-  v42 = [v41 allKeys];
+  connectionsInProgress = [(WPDScanManager *)v73 connectionsInProgress];
+  allKeys3 = [connectionsInProgress allKeys];
 
-  v43 = [v42 countByEnumeratingWithState:&v74 objects:v91 count:16];
+  v43 = [allKeys3 countByEnumeratingWithState:&v74 objects:v91 count:16];
   if (v43)
   {
     v44 = v43;
@@ -1982,31 +1982,31 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
       {
         if (*v75 != v45)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(allKeys3);
         }
 
         v47 = *(*(&v74 + 1) + 8 * m);
-        v48 = [(WPDScanManager *)v73 connectionsInProgress];
-        v49 = [v48 objectForKeyedSubscript:v47];
+        connectionsInProgress2 = [(WPDScanManager *)v73 connectionsInProgress];
+        v49 = [connectionsInProgress2 objectForKeyedSubscript:v47];
 
         if (v49 && [v49 count])
         {
           [v49 count];
           v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@: %@\n", v47, v49];
-          [v70 addObject:v50];
+          [array3 addObject:v50];
         }
       }
 
-      v44 = [v42 countByEnumeratingWithState:&v74 objects:v91 count:16];
+      v44 = [allKeys3 countByEnumeratingWithState:&v74 objects:v91 count:16];
     }
 
     while (v44);
   }
 
-  v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"connections in progress (%lu):\n", objc_msgSend(v70, "count")];
+  v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"connections in progress (%lu):\n", objc_msgSend(array3, "count")];
   [v66 addObject:v51];
 
-  [v66 addObjectsFromArray:v70];
+  [v66 addObjectsFromArray:array3];
   v52 = MEMORY[0x277CCACA8];
   if ([(WPDScanManager *)v73 scanning])
   {
@@ -2018,21 +2018,21 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
     v53 = "no";
   }
 
-  v54 = [(WPDScanManager *)v73 currentScanners];
-  v55 = [v54 count];
-  v56 = [(WPDScanManager *)v73 currentScanners];
-  v57 = [v56 count];
+  currentScanners = [(WPDScanManager *)v73 currentScanners];
+  v55 = [currentScanners count];
+  currentScanners2 = [(WPDScanManager *)v73 currentScanners];
+  v57 = [currentScanners2 count];
   if (v57)
   {
-    v58 = [(WPDScanManager *)v73 currentScanners];
+    currentScanners3 = [(WPDScanManager *)v73 currentScanners];
   }
 
   else
   {
-    v58 = &stru_2881F83F8;
+    currentScanners3 = &stru_2881F83F8;
   }
 
-  v59 = [v52 stringWithFormat:@"scanning: %s types (%lu): %@\n", v53, v55, v58];
+  v59 = [v52 stringWithFormat:@"scanning: %s types (%lu): %@\n", v53, v55, currentScanners3];
   [v66 addObject:v59];
 
   if (v57)
@@ -2040,8 +2040,8 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   }
 
   v60 = MEMORY[0x277CCACA8];
-  v61 = [(WPDScanManager *)v73 scanOptions];
-  v62 = [v60 stringWithFormat:@"options: %@\n", v61];
+  scanOptions = [(WPDScanManager *)v73 scanOptions];
+  v62 = [v60 stringWithFormat:@"options: %@\n", scanOptions];
   [v66 addObject:v62];
 
   v63 = [MEMORY[0x277CBEA60] arrayWithArray:v66];
@@ -2051,10 +2051,10 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   return v63;
 }
 
-- (void)addSpyScanClient:(id)a3
+- (void)addSpyScanClient:(id)client
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager addSpyScanClient:];
@@ -2064,19 +2064,19 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(WPDScanManager *)self spyScanClients];
+    spyScanClients = [(WPDScanManager *)self spyScanClients];
     v15 = 138412290;
-    v16 = v7;
+    v16 = spyScanClients;
     _os_log_impl(&dword_272965000, v6, OS_LOG_TYPE_DEFAULT, "Current spy scan clients: %@", &v15, 0xCu);
   }
 
-  v8 = [(WPDScanManager *)self spyScanClients];
-  v9 = [v8 containsObject:v4];
+  spyScanClients2 = [(WPDScanManager *)self spyScanClients];
+  v9 = [spyScanClients2 containsObject:clientCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(WPDScanManager *)self spyScanClients];
-    [v10 addObject:v4];
+    spyScanClients3 = [(WPDScanManager *)self spyScanClients];
+    [spyScanClients3 addObject:clientCopy];
   }
 
   if (WPLogInitOnce != -1)
@@ -2088,21 +2088,21 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(WPDScanManager *)self spyScanClients];
+    spyScanClients4 = [(WPDScanManager *)self spyScanClients];
     v15 = 138412546;
-    v16 = v13;
+    v16 = spyScanClients4;
     v17 = 2112;
-    v18 = v4;
+    v18 = clientCopy;
     _os_log_impl(&dword_272965000, v12, OS_LOG_TYPE_DEFAULT, "Current spy scan clients: %@ after adding client %@", &v15, 0x16u);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSpyScanClient:(id)a3
+- (void)removeSpyScanClient:(id)client
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager removeSpyScanClient:];
@@ -2112,19 +2112,19 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(WPDScanManager *)self spyScanClients];
+    spyScanClients = [(WPDScanManager *)self spyScanClients];
     v15 = 138412290;
-    v16 = v7;
+    v16 = spyScanClients;
     _os_log_impl(&dword_272965000, v6, OS_LOG_TYPE_DEFAULT, "Current spy scan clients: %@", &v15, 0xCu);
   }
 
-  v8 = [(WPDScanManager *)self spyScanClients];
-  v9 = [v8 count];
+  spyScanClients2 = [(WPDScanManager *)self spyScanClients];
+  v9 = [spyScanClients2 count];
 
   if (v9)
   {
-    v10 = [(WPDScanManager *)self spyScanClients];
-    [v10 removeObject:v4];
+    spyScanClients3 = [(WPDScanManager *)self spyScanClients];
+    [spyScanClients3 removeObject:clientCopy];
 
     if (WPLogInitOnce != -1)
     {
@@ -2135,11 +2135,11 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(WPDScanManager *)self spyScanClients];
+      spyScanClients4 = [(WPDScanManager *)self spyScanClients];
       v15 = 138412546;
-      v16 = v13;
+      v16 = spyScanClients4;
       v17 = 2112;
-      v18 = v4;
+      v18 = clientCopy;
       _os_log_impl(&dword_272965000, v12, OS_LOG_TYPE_DEFAULT, "Current spy scan clients: %@ after removing client %@", &v15, 0x16u);
     }
   }
@@ -2147,17 +2147,17 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeConflictingRequest:(id)a3 forClient:(id)a4
+- (void)removeConflictingRequest:(id)request forClient:(id)client
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WPDManager *)self server];
-  v9 = [v8 isClientTestMode:v7];
+  requestCopy = request;
+  clientCopy = client;
+  server = [(WPDManager *)self server];
+  v9 = [server isClientTestMode:clientCopy];
 
-  v10 = [v6 clientType];
-  v11 = v10;
-  if ((v9 & 1) != 0 || v10 == 18)
+  clientType = [requestCopy clientType];
+  v11 = clientType;
+  if ((v9 & 1) != 0 || clientType == 18)
   {
     if (WPLogInitOnce != -1)
     {
@@ -2168,7 +2168,7 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
     {
       *v40 = 138412802;
-      *&v40[4] = v7;
+      *&v40[4] = clientCopy;
       *&v40[12] = 1024;
       *&v40[14] = v9;
       *&v40[18] = 1024;
@@ -2191,17 +2191,17 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
     v33 = __Block_byref_object_copy__2;
     v34 = __Block_byref_object_dispose__2;
     v35 = 0;
-    v12 = [(WPDScanManager *)self scanRequests];
+    scanRequests = [(WPDScanManager *)self scanRequests];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_180;
     v25[3] = &unk_279E59580;
     v25[4] = self;
-    v26 = v6;
-    v27 = v7;
+    v26 = requestCopy;
+    v27 = clientCopy;
     v28 = v40;
     v29 = &v30;
-    [v12 enumerateKeysAndObjectsUsingBlock:v25];
+    [scanRequests enumerateKeysAndObjectsUsingBlock:v25];
 
     if (*(*&v40[8] + 40))
     {
@@ -2214,8 +2214,8 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = *(*&v40[8] + 40);
-        v15 = [(WPDScanManager *)self scanRequests];
-        v16 = [v15 objectForKeyedSubscript:*(*&v40[8] + 40)];
+        scanRequests2 = [(WPDScanManager *)self scanRequests];
+        v16 = [scanRequests2 objectForKeyedSubscript:*(*&v40[8] + 40)];
         *buf = 138412546;
         v37 = v14;
         v38 = 2112;
@@ -2223,8 +2223,8 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
         _os_log_impl(&dword_272965000, v13, OS_LOG_TYPE_DEFAULT, "Before removing scan request for client: %@ - %@", buf, 0x16u);
       }
 
-      v17 = [(WPDScanManager *)self scanRequests];
-      v18 = [v17 objectForKeyedSubscript:*(*&v40[8] + 40)];
+      scanRequests3 = [(WPDScanManager *)self scanRequests];
+      v18 = [scanRequests3 objectForKeyedSubscript:*(*&v40[8] + 40)];
 
       [v18 removeObject:v31[5]];
       if (WPLogInitOnce != -1)
@@ -2236,8 +2236,8 @@ void __33__WPDScanManager_updateScanRules__block_invoke_8(uint64_t a1, void *a2)
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = *(*&v40[8] + 40);
-        v21 = [(WPDScanManager *)self scanRequests];
-        v22 = [v21 objectForKeyedSubscript:*(*&v40[8] + 40)];
+        scanRequests4 = [(WPDScanManager *)self scanRequests];
+        v22 = [scanRequests4 objectForKeyedSubscript:*(*&v40[8] + 40)];
         *buf = 138412546;
         v37 = v20;
         v38 = 2112;
@@ -2311,11 +2311,11 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addScanRequest:(id)a3 forClient:(id)a4
+- (id)addScanRequest:(id)request forClient:(id)client
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager addScanRequest:forClient:];
@@ -2330,15 +2330,15 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
 
   if ([(WPDManager *)self state]== 3)
   {
-    [(WPDScanManager *)self removeConflictingRequest:v6 forClient:v7];
-    v9 = [(WPDScanManager *)self scanRequests];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    [(WPDScanManager *)self removeConflictingRequest:requestCopy forClient:clientCopy];
+    scanRequests = [(WPDScanManager *)self scanRequests];
+    v10 = [scanRequests objectForKeyedSubscript:clientCopy];
 
     if (!v10)
     {
       v11 = [MEMORY[0x277CBEB58] set];
-      v12 = [(WPDScanManager *)self scanRequests];
-      [v12 setObject:v11 forKeyedSubscript:v7];
+      scanRequests2 = [(WPDScanManager *)self scanRequests];
+      [scanRequests2 setObject:v11 forKeyedSubscript:clientCopy];
     }
 
     v13 = [MEMORY[0x277CBEB58] set];
@@ -2346,10 +2346,10 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v42 = self;
-    v14 = [(WPDScanManager *)self scanRequests];
-    v43 = v7;
-    v15 = [v14 objectForKeyedSubscript:v7];
+    selfCopy = self;
+    scanRequests3 = [(WPDScanManager *)self scanRequests];
+    v43 = clientCopy;
+    v15 = [scanRequests3 objectForKeyedSubscript:clientCopy];
 
     v16 = [v15 countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (v16)
@@ -2367,8 +2367,8 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
           }
 
           v20 = *(*(&v44 + 1) + 8 * v19);
-          v21 = [v20 clientType];
-          if (v21 == [v6 clientType])
+          clientType = [v20 clientType];
+          if (clientType == [requestCopy clientType])
           {
             if (WPLogInitOnce != -1)
             {
@@ -2379,11 +2379,11 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
             if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
             {
               v23 = v22;
-              v24 = [v6 clientType];
+              clientType2 = [requestCopy clientType];
               *buf = 138412546;
               *&buf[4] = v43;
               *&buf[12] = 2048;
-              *&buf[14] = v24;
+              *&buf[14] = clientType2;
               _os_log_debug_impl(&dword_272965000, v23, OS_LOG_TYPE_DEBUG, "%@ is already scanning for type %ld. Replacing scan request", buf, 0x16u);
             }
 
@@ -2400,8 +2400,8 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
       while (v17);
     }
 
-    v25 = [(WPDScanManager *)v42 scanRequests];
-    v26 = [v25 objectForKeyedSubscript:v43];
+    scanRequests4 = [(WPDScanManager *)selfCopy scanRequests];
+    v26 = [scanRequests4 objectForKeyedSubscript:v43];
     [v26 minusSet:v13];
 
     *buf = 0;
@@ -2410,30 +2410,30 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
     v52 = 0;
     v53[0] = 0;
     *(v53 + 6) = 0;
-    v27 = [v6 blobValue];
-    v28 = [v6 maskValue];
-    if ([v27 length])
+    blobValue = [requestCopy blobValue];
+    maskValue = [requestCopy maskValue];
+    if ([blobValue length])
     {
-      [v27 getBytes:buf length:{objc_msgSend(v27, "length")}];
-      if ([v28 length])
+      [blobValue getBytes:buf length:{objc_msgSend(blobValue, "length")}];
+      if ([maskValue length])
       {
-        [v28 getBytes:&v52 length:{objc_msgSend(v28, "length")}];
+        [maskValue getBytes:&v52 length:{objc_msgSend(maskValue, "length")}];
       }
 
       else
       {
-        [v27 length];
+        [blobValue length];
         __memset_chk();
       }
     }
 
     v33 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:22];
     v34 = [MEMORY[0x277CBEA90] dataWithBytes:&v52 length:22];
-    [v6 setBlobValue:v33];
-    [v6 setMaskValue:v34];
+    [requestCopy setBlobValue:v33];
+    [requestCopy setMaskValue:v34];
     if (_os_feature_enabled_impl())
     {
-      [v6 setStartPending:1];
+      [requestCopy setStartPending:1];
     }
 
     if (WPLogInitOnce != -1)
@@ -2445,22 +2445,22 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *v48 = 138543618;
-      v49 = v6;
+      v49 = requestCopy;
       v50 = 2114;
       v51 = v43;
       _os_log_impl(&dword_272965000, v35, OS_LOG_TYPE_DEFAULT, "Adding scan request %{public}@ for client %{public}@", v48, 0x16u);
     }
 
-    v36 = [(WPDScanManager *)v42 scanRequests];
-    v37 = [v36 objectForKeyedSubscript:v43];
-    [v37 addObject:v6];
+    scanRequests5 = [(WPDScanManager *)selfCopy scanRequests];
+    v37 = [scanRequests5 objectForKeyedSubscript:v43];
+    [v37 addObject:requestCopy];
 
-    v38 = [(WPDManager *)v42 server];
-    v39 = [v38 statsManager];
-    [v39 resetActivity:0 forType:{objc_msgSend(v6, "clientType")}];
+    server = [(WPDManager *)selfCopy server];
+    statsManager = [server statsManager];
+    [statsManager resetActivity:0 forType:{objc_msgSend(requestCopy, "clientType")}];
 
-    [(WPDScanManager *)v42 updateScanner];
-    v7 = v43;
+    [(WPDScanManager *)selfCopy updateScanner];
+    clientCopy = v43;
 
     v31 = 0;
   }
@@ -2481,7 +2481,7 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
     v32 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [(WPDScanManager *)v32 addScanRequest:v6 forClient:self];
+      [(WPDScanManager *)v32 addScanRequest:requestCopy forClient:self];
     }
   }
 
@@ -2490,18 +2490,18 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
   return v31;
 }
 
-- (id)removeScanRequest:(id)a3 forClient:(id)a4
+- (id)removeScanRequest:(id)request forClient:(id)client
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  clientCopy = client;
   v8 = MEMORY[0x277CCA9B8];
   v39 = *MEMORY[0x277CCA450];
   v40[0] = @"CoreBluetooth isn't scanning for this device type";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
   v10 = [v8 errorWithDomain:@"WPErrorDomain" code:10 userInfo:v9];
 
-  if (!v6)
+  if (!requestCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -2523,9 +2523,9 @@ void __53__WPDScanManager_removeConflictingRequest_forClient___block_invoke_2(ui
     }
 
 LABEL_26:
-    v25 = [(WPDManager *)self server];
-    v26 = [v25 statsManager];
-    [v26 resetActivity:0 forType:{objc_msgSend(v6, "clientType")}];
+    server = [(WPDManager *)self server];
+    statsManager = [server statsManager];
+    [statsManager resetActivity:0 forType:{objc_msgSend(requestCopy, "clientType")}];
 
     [(WPDScanManager *)self updateScanner];
     goto LABEL_27;
@@ -2536,10 +2536,10 @@ LABEL_26:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v29 = self;
-  v12 = [(WPDScanManager *)self scanRequests];
-  v13 = v7;
-  v14 = [v12 objectForKeyedSubscript:v7];
+  selfCopy = self;
+  scanRequests = [(WPDScanManager *)self scanRequests];
+  v13 = clientCopy;
+  v14 = [scanRequests objectForKeyedSubscript:clientCopy];
 
   v15 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v15)
@@ -2557,8 +2557,8 @@ LABEL_26:
         }
 
         v19 = *(*(&v30 + 1) + 8 * v18);
-        v20 = [v19 clientType];
-        if (v20 == [v6 clientType])
+        clientType = [v19 clientType];
+        if (clientType == [requestCopy clientType])
         {
           if (WPLogInitOnce != -1)
           {
@@ -2569,7 +2569,7 @@ LABEL_26:
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v35 = v6;
+            v35 = requestCopy;
             v36 = 2114;
             v37 = v13;
             _os_log_impl(&dword_272965000, v21, OS_LOG_TYPE_DEFAULT, "Removing scan request %{public}@ for client %{public}@", buf, 0x16u);
@@ -2590,10 +2590,10 @@ LABEL_26:
     while (v16);
   }
 
-  self = v29;
-  v22 = [(WPDScanManager *)v29 scanRequests];
-  v7 = v13;
-  v23 = [v22 objectForKeyedSubscript:v13];
+  self = selfCopy;
+  scanRequests2 = [(WPDScanManager *)selfCopy scanRequests];
+  clientCopy = v13;
+  v23 = [scanRequests2 objectForKeyedSubscript:v13];
   [v23 minusSet:v11];
 
   if (!v10)
@@ -2611,7 +2611,7 @@ LABEL_21:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v35 = v7;
+    v35 = clientCopy;
     _os_log_impl(&dword_272965000, v24, OS_LOG_TYPE_INFO, "WirelessProximity has no scan requests for client %@", buf, 0xCu);
   }
 
@@ -2622,21 +2622,21 @@ LABEL_27:
   return v10;
 }
 
-- (id)getScanRequestsForClient:(id)a3
+- (id)getScanRequestsForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(WPDScanManager *)self scanRequests];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientCopy = client;
+  scanRequests = [(WPDScanManager *)self scanRequests];
+  v6 = [scanRequests objectForKeyedSubscript:clientCopy];
 
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
-- (void)removeScanRequestsForClient:(id)a3
+- (void)removeScanRequestsForClient:(id)client
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager removeScanRequestsForClient:];
@@ -2646,23 +2646,23 @@ LABEL_27:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = clientCopy;
     _os_log_impl(&dword_272965000, v5, OS_LOG_TYPE_DEFAULT, "Removing all scan requests for client %{public}@", &v8, 0xCu);
   }
 
-  v6 = [(WPDScanManager *)self scanRequests];
-  [v6 removeObjectForKey:v4];
+  scanRequests = [(WPDScanManager *)self scanRequests];
+  [scanRequests removeObjectForKey:clientCopy];
 
   [(WPDScanManager *)self updateScanner];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertCBDiscoveryScan:(BOOL)a3
+- (void)assertCBDiscoveryScan:(BOOL)scan
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v3)
+  scanCopy = scan;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (scanCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -2674,23 +2674,23 @@ LABEL_27:
       [WPDScanManager assertCBDiscoveryScan:];
     }
 
-    v5 = [(WPDScanManager *)v4 cbDiscoveryAsserter];
+    cbDiscoveryAsserter = [(WPDScanManager *)selfCopy cbDiscoveryAsserter];
 
-    if (!v5)
+    if (!cbDiscoveryAsserter)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBE010]);
-      [(WPDScanManager *)v4 setCbDiscoveryAsserter:v6];
+      [(WPDScanManager *)selfCopy setCbDiscoveryAsserter:v6];
     }
 
-    v7 = [(WPDScanManager *)v4 cbDiscoveryAsserter];
-    [v7 activateAssertionWithFlags:1 completion:&__block_literal_global_224_0];
+    cbDiscoveryAsserter2 = [(WPDScanManager *)selfCopy cbDiscoveryAsserter];
+    [cbDiscoveryAsserter2 activateAssertionWithFlags:1 completion:&__block_literal_global_224_0];
   }
 
   else
   {
-    v8 = [(WPDScanManager *)v4 cbDiscoveryAsserter];
+    cbDiscoveryAsserter3 = [(WPDScanManager *)selfCopy cbDiscoveryAsserter];
 
-    if (v8)
+    if (cbDiscoveryAsserter3)
     {
       if (WPLogInitOnce != -1)
       {
@@ -2702,10 +2702,10 @@ LABEL_27:
         [WPDScanManager assertCBDiscoveryScan:];
       }
 
-      v9 = [(WPDScanManager *)v4 cbDiscoveryAsserter];
-      [v9 invalidate];
+      cbDiscoveryAsserter4 = [(WPDScanManager *)selfCopy cbDiscoveryAsserter];
+      [cbDiscoveryAsserter4 invalidate];
 
-      [(WPDScanManager *)v4 setCbDiscoveryAsserter:0];
+      [(WPDScanManager *)selfCopy setCbDiscoveryAsserter:0];
       if (WPLogInitOnce != -1)
       {
         [WPDScanManager assertCBDiscoveryScan:];
@@ -2720,7 +2720,7 @@ LABEL_27:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __40__WPDScanManager_assertCBDiscoveryScan___block_invoke(uint64_t a1, void *a2)
@@ -2780,20 +2780,20 @@ void __35__WPDScanManager_isScannerTestMode__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (BOOL)heySiriScanActive:(BOOL)a3
+- (BOOL)heySiriScanActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v36 = *MEMORY[0x277D85DE8];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(WPDScanManager *)self scanRequests];
-  v23 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  scanRequests = [(WPDScanManager *)self scanRequests];
+  v23 = [scanRequests countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v23)
   {
     v6 = *v31;
-    v24 = v5;
+    v24 = scanRequests;
     v22 = *v31;
     while (2)
     {
@@ -2801,12 +2801,12 @@ void __35__WPDScanManager_isScannerTestMode__block_invoke(uint64_t a1, void *a2,
       {
         if (*v31 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(scanRequests);
         }
 
         v8 = *(*(&v30 + 1) + 8 * i);
-        v9 = [(WPDScanManager *)self scanRequests];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        scanRequests2 = [(WPDScanManager *)self scanRequests];
+        v10 = [scanRequests2 objectForKeyedSubscript:v8];
 
         v28 = 0u;
         v29 = 0u;
@@ -2829,13 +2829,13 @@ LABEL_8:
 
             if ([*(*(&v26 + 1) + 8 * v15) clientType] == 8)
             {
-              if (!v3)
+              if (!activeCopy)
               {
                 break;
               }
 
-              v16 = [(WPDManager *)self server];
-              v17 = [v16 isClientTestMode:v8];
+              server = [(WPDManager *)self server];
+              v17 = [server isClientTestMode:v8];
 
               if (v17)
               {
@@ -2880,7 +2880,7 @@ LABEL_8:
 
 LABEL_16:
 
-        v5 = v24;
+        scanRequests = v24;
         v6 = v22;
       }
 
@@ -2911,30 +2911,30 @@ LABEL_26:
   return v18;
 }
 
-- (void)reconcileScanRule:(id)a3 withRule:(id)a4
+- (void)reconcileScanRule:(id)rule withRule:(id)withRule
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBDE00]];
-  v8 = [v7 integerValue];
+  ruleCopy = rule;
+  withRuleCopy = withRule;
+  v7 = [ruleCopy objectForKeyedSubscript:*MEMORY[0x277CBDE00]];
+  integerValue = [v7 integerValue];
 
-  if (v8 == 18)
+  if (integerValue == 18)
   {
     v9 = MEMORY[0x277CBEB58];
-    v10 = [v5 allKeys];
-    v11 = [v9 setWithArray:v10];
+    allKeys = [ruleCopy allKeys];
+    v11 = [v9 setWithArray:allKeys];
 
     v12 = MEMORY[0x277CBEB98];
-    v13 = [v6 allKeys];
-    v14 = [v12 setWithArray:v13];
+    allKeys2 = [withRuleCopy allKeys];
+    v14 = [v12 setWithArray:allKeys2];
     [v11 unionSet:v14];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __45__WPDScanManager_reconcileScanRule_withRule___block_invoke_255;
     v15[3] = &unk_279E595F0;
-    v16 = v5;
-    v17 = v6;
+    v16 = ruleCopy;
+    v17 = withRuleCopy;
     v18 = 18;
     [v11 enumerateObjectsUsingBlock:v15];
     if (WPLogInitOnce != -1)
@@ -3091,23 +3091,23 @@ LABEL_16:
 LABEL_30:
 }
 
-- (void)duplicateRulesGuard:(id)a3 forRule:(id)a4
+- (void)duplicateRulesGuard:(id)guard forRule:(id)rule
 {
-  v6 = a4;
+  ruleCopy = rule;
   v7 = *MEMORY[0x277CBDE00];
-  v8 = a3;
-  v9 = [v6 objectForKeyedSubscript:v7];
-  v10 = [v9 integerValue];
+  guardCopy = guard;
+  v9 = [ruleCopy objectForKeyedSubscript:v7];
+  integerValue = [v9 integerValue];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __46__WPDScanManager_duplicateRulesGuard_forRule___block_invoke;
   v12[3] = &unk_279E59618;
-  v14 = v10;
+  v14 = integerValue;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v8 enumerateObjectsUsingBlock:v12];
+  v13 = ruleCopy;
+  v11 = ruleCopy;
+  [guardCopy enumerateObjectsUsingBlock:v12];
 }
 
 void __46__WPDScanManager_duplicateRulesGuard_forRule___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -3137,13 +3137,13 @@ void __33__WPDScanManager_updateScanRules__block_invoke_2_314(uint64_t a1, void 
   }
 }
 
-- (id)ruleHashesFromScanOptions:(id)a3
+- (id)ruleHashesFromScanOptions:(id)options
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  optionsCopy = options;
+  v4 = optionsCopy;
+  if (optionsCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDDE0]];
+    v5 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277CBDDE0]];
     if (v5)
     {
       v9 = 0;
@@ -3151,7 +3151,7 @@ void __33__WPDScanManager_updateScanRules__block_invoke_2_314(uint64_t a1, void 
       v11 = 0x3032000000;
       v12 = __Block_byref_object_copy__2;
       v13 = __Block_byref_object_dispose__2;
-      v14 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __44__WPDScanManager_ruleHashesFromScanOptions___block_invoke;
@@ -3183,23 +3183,23 @@ void __44__WPDScanManager_ruleHashesFromScanOptions___block_invoke(uint64_t a1, 
   [v2 addObject:v3];
 }
 
-- (id)scanRequestHashesFromScanRequests:(id)a3
+- (id)scanRequestHashesFromScanRequests:(id)requests
 {
-  v3 = a3;
-  if (v3)
+  requestsCopy = requests;
+  if (requestsCopy)
   {
     v7 = 0;
     v8 = &v7;
     v9 = 0x3032000000;
     v10 = __Block_byref_object_copy__2;
     v11 = __Block_byref_object_dispose__2;
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __52__WPDScanManager_scanRequestHashesFromScanRequests___block_invoke;
     v6[3] = &unk_279E59668;
     v6[4] = &v7;
-    [v3 enumerateObjectsUsingBlock:v6];
+    [requestsCopy enumerateObjectsUsingBlock:v6];
     v4 = [MEMORY[0x277CBEB98] setWithArray:v8[5]];
     _Block_object_dispose(&v7, 8);
   }
@@ -3219,11 +3219,11 @@ void __52__WPDScanManager_scanRequestHashesFromScanRequests___block_invoke(uint6
   [v2 addObject:v3];
 }
 
-- (BOOL)scanOptionsChanged:(id)a3 ForRequests:(id)a4
+- (BOOL)scanOptionsChanged:(id)changed ForRequests:(id)requests
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  requestsCopy = requests;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -3233,14 +3233,14 @@ void __52__WPDScanManager_scanRequestHashesFromScanRequests___block_invoke(uint6
   v33[1] = 0x3032000000;
   v33[2] = __Block_byref_object_copy__2;
   v33[3] = __Block_byref_object_dispose__2;
-  v34 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v8 = objc_autoreleasePoolPush();
-  v9 = [(WPDScanManager *)self ruleHashesFromScanOptions:v6];
-  v10 = [(WPDScanManager *)self scanRequestHashesFromScanRequests:v7];
-  if (!v6 || ([(WPDScanManager *)self scanOptions], v11 = objc_claimAutoreleasedReturnValue(), v12 = v11 == 0, v11, v12))
+  v9 = [(WPDScanManager *)self ruleHashesFromScanOptions:changedCopy];
+  v10 = [(WPDScanManager *)self scanRequestHashesFromScanRequests:requestsCopy];
+  if (!changedCopy || ([(WPDScanManager *)self scanOptions], v11 = objc_claimAutoreleasedReturnValue(), v12 = v11 == 0, v11, v12))
   {
-    v15 = [(WPDScanManager *)self scanOptions];
-    *(v36 + 24) = (v6 | v15) != 0;
+    scanOptions = [(WPDScanManager *)self scanOptions];
+    *(v36 + 24) = (changedCopy | scanOptions) != 0;
 
     if (WPLogInitOnce != -1)
     {
@@ -3268,7 +3268,7 @@ LABEL_29:
     v31[4] = self;
     v31[5] = &v35;
     v31[6] = &v32;
-    [v6 enumerateKeysAndObjectsUsingBlock:v31];
+    [changedCopy enumerateKeysAndObjectsUsingBlock:v31];
     if (WPLogInitOnce != -1)
     {
       [WPDScanManager scanOptionsChanged:ForRequests:];
@@ -3300,8 +3300,8 @@ LABEL_29:
 
     else
     {
-      v19 = [(WPDScanManager *)self scanRequestHashes];
-      v20 = [v10 isEqualToSet:v19];
+      scanRequestHashes = [(WPDScanManager *)self scanRequestHashes];
+      v20 = [v10 isEqualToSet:scanRequestHashes];
       *(v36 + 24) = v20 ^ 1;
     }
 
@@ -3326,8 +3326,8 @@ LABEL_29:
 
     else
     {
-      v23 = [(WPDScanManager *)self scanRuleHashes];
-      v24 = [v9 isEqualToSet:v23];
+      scanRuleHashes = [(WPDScanManager *)self scanRuleHashes];
+      v24 = [v9 isEqualToSet:scanRuleHashes];
       *(v36 + 24) = v24 ^ 1;
     }
 
@@ -3349,7 +3349,7 @@ LABEL_29:
 
   if (*(v36 + 24) == 1)
   {
-    [(WPDScanManager *)self setScanOptions:v6];
+    [(WPDScanManager *)self setScanOptions:changedCopy];
     [(WPDScanManager *)self setScanRequestHashes:v10];
     [(WPDScanManager *)self setScanRuleHashes:v9];
   }
@@ -3401,10 +3401,10 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
   }
 }
 
-- (void)logScanRequests:(id)a3 method:(BOOL)a4 window:(int64_t)a5 interval:(int64_t)a6
+- (void)logScanRequests:(id)requests method:(BOOL)method window:(int64_t)window interval:(int64_t)interval
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (method)
   {
     v8 = @"Actively";
   }
@@ -3415,7 +3415,7 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
   }
 
   v9 = MEMORY[0x277CCAB68];
-  v10 = a3;
+  requestsCopy = requests;
   v11 = [v9 stringWithFormat:@"%@ scanning for devices of types: ", v8];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -3423,9 +3423,9 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
   v15[3] = &unk_279E59778;
   v12 = v11;
   v16 = v12;
-  [v10 enumerateObjectsUsingBlock:v15];
+  [requestsCopy enumerateObjectsUsingBlock:v15];
 
-  [v12 appendFormat:@"(Window: %ld/Interval: %ld)", a5, a6];
+  [v12 appendFormat:@"(Window: %ld/Interval: %ld)", window, interval];
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager logScanRequests:method:window:interval:];
@@ -3442,10 +3442,10 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logScanTypes:(id)a3 method:(BOOL)a4 window:(int64_t)a5 interval:(int64_t)a6
+- (void)logScanTypes:(id)types method:(BOOL)method window:(int64_t)window interval:(int64_t)interval
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (method)
   {
     v8 = @"Actively";
   }
@@ -3456,7 +3456,7 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
   }
 
   v9 = MEMORY[0x277CCAB68];
-  v10 = a3;
+  typesCopy = types;
   v11 = [v9 stringWithFormat:@"%@ scanning for devices of types: ", v8];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -3464,9 +3464,9 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
   v15[3] = &unk_279E597A0;
   v12 = v11;
   v16 = v12;
-  [v10 enumerateIndexesUsingBlock:v15];
+  [typesCopy enumerateIndexesUsingBlock:v15];
 
-  [v12 appendFormat:@"(Window: %ld/Interval: %ld)", a5, a6];
+  [v12 appendFormat:@"(Window: %ld/Interval: %ld)", window, interval];
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager logScanTypes:method:window:interval:];
@@ -3483,25 +3483,25 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)clearDuplicateFilterCache:(id)a3 forClient:(id)a4
+- (id)clearDuplicateFilterCache:(id)cache forClient:(id)client
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  clientCopy = client;
   v8 = MEMORY[0x277CCA9B8];
   v34 = *MEMORY[0x277CCA450];
   v35[0] = @"CoreBluetooth isn't scanning for this device type";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   v10 = [v8 errorWithDomain:@"WPErrorDomain" code:10 userInfo:v9];
 
-  if (v6)
+  if (cacheCopy)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v11 = [(WPDScanManager *)self scanRequests];
-    v12 = [v11 objectForKeyedSubscript:v7];
+    scanRequests = [(WPDScanManager *)self scanRequests];
+    v12 = [scanRequests objectForKeyedSubscript:clientCopy];
 
     v13 = [v12 countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v13)
@@ -3517,8 +3517,8 @@ void __49__WPDScanManager_scanOptionsChanged_ForRequests___block_invoke(uint64_t
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v27 + 1) + 8 * i) clientType];
-          if (v17 == [v6 clientType])
+          clientType = [*(*(&v27 + 1) + 8 * i) clientType];
+          if (clientType == [cacheCopy clientType])
           {
 
             v10 = 0;
@@ -3563,7 +3563,7 @@ LABEL_12:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v32 = v7;
+      v32 = clientCopy;
       _os_log_impl(&dword_272965000, v18, OS_LOG_TYPE_INFO, "WirelessProximity has no scan requests for client %@", buf, 0xCu);
     }
   }
@@ -3579,18 +3579,18 @@ LABEL_12:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v6 clientType];
+      clientType2 = [cacheCopy clientType];
       *buf = 67109120;
-      LODWORD(v32) = v21;
+      LODWORD(v32) = clientType2;
       _os_log_impl(&dword_272965000, v20, OS_LOG_TYPE_DEFAULT, "About to clearDuplicateFilterCache for type: %d", buf, 8u);
     }
 
-    v22 = [MEMORY[0x277CBEB38] dictionary];
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v6, "clientType")}];
-    [v22 setObject:v23 forKey:*MEMORY[0x277CBDDA0]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(cacheCopy, "clientType")}];
+    [dictionary setObject:v23 forKey:*MEMORY[0x277CBDDA0]];
 
-    v24 = [(WPDScanManager *)self centralManager];
-    [v24 clearDuplicateFilterCache:v22];
+    centralManager = [(WPDScanManager *)self centralManager];
+    [centralManager clearDuplicateFilterCache:dictionary];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -3600,15 +3600,15 @@ LABEL_12:
 
 - (void)clearExistingConnections
 {
-  v3 = [(WPDScanManager *)self connectionsInProgress];
-  [v3 removeAllObjects];
+  connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+  [connectionsInProgress removeAllObjects];
 
-  v4 = [(WPDScanManager *)self peripheralConnections];
-  [v4 removeAllObjects];
+  peripheralConnections = [(WPDScanManager *)self peripheralConnections];
+  [peripheralConnections removeAllObjects];
 
-  v6 = [(WPDManager *)self server];
-  v5 = [v6 getAllClients];
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_384_0];
+  server = [(WPDManager *)self server];
+  getAllClients = [server getAllClients];
+  [getAllClients enumerateObjectsUsingBlock:&__block_literal_global_384_0];
 }
 
 void __42__WPDScanManager_clearExistingConnections__block_invoke(uint64_t a1, void *a2)
@@ -3650,11 +3650,11 @@ void __42__WPDScanManager_clearExistingConnections__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v3.receiver = self;
   v3.super_class = WPDScanManager;
-  [(WPDManager *)&v3 cbManagerDidUpdateState:a3];
+  [(WPDManager *)&v3 cbManagerDidUpdateState:state];
 }
 
 - (void)update
@@ -3676,10 +3676,10 @@ void __42__WPDScanManager_clearExistingConnections__block_invoke(uint64_t a1, vo
     _os_log_impl(&dword_272965000, v4, OS_LOG_TYPE_DEFAULT, "Scanner Central manager update with state: %d restricted: %d", &v23, 0xEu);
   }
 
-  v5 = [(WPDManager *)self state];
-  if (v5 > 1)
+  state = [(WPDManager *)self state];
+  if (state > 1)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
       if (WPLogInitOnce != -1)
       {
@@ -3690,23 +3690,23 @@ void __42__WPDScanManager_clearExistingConnections__block_invoke(uint64_t a1, vo
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v15 = v14;
-        v16 = [(WPDScanManager *)self centralManager];
-        v17 = [v16 state];
-        v18 = [(WPDScanManager *)self connectionsInProgress];
-        v19 = [(WPDScanManager *)self peripheralConnections];
+        centralManager = [(WPDScanManager *)self centralManager];
+        state2 = [centralManager state];
+        connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+        peripheralConnections = [(WPDScanManager *)self peripheralConnections];
         v23 = 134218498;
-        *v24 = v17;
+        *v24 = state2;
         *&v24[8] = 2112;
-        v25 = v18;
+        v25 = connectionsInProgress;
         v26 = 2112;
-        v27 = v19;
+        v27 = peripheralConnections;
         _os_log_impl(&dword_272965000, v15, OS_LOG_TYPE_DEFAULT, "Scanner Central manager is unknown, powered off, unauthorized or not supported (%ld) - reset connection in progress %@ and peripheral connections %@", &v23, 0x20u);
       }
 
       goto LABEL_27;
     }
 
-    if (v5 == 3)
+    if (state == 3)
     {
       if (WPLogInitOnce != -1)
       {
@@ -3717,9 +3717,9 @@ void __42__WPDScanManager_clearExistingConnections__block_invoke(uint64_t a1, vo
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [(WPDManager *)self restricted];
+        restricted = [(WPDManager *)self restricted];
         v23 = 67109120;
-        *v24 = v12;
+        *v24 = restricted;
         _os_log_impl(&dword_272965000, v11, OS_LOG_TYPE_DEFAULT, "Scanner Central manager is powered on, restricted: %d", &v23, 8u);
       }
 
@@ -3727,9 +3727,9 @@ void __42__WPDScanManager_clearExistingConnections__block_invoke(uint64_t a1, vo
     }
   }
 
-  else if (v5)
+  else if (state)
   {
-    if (v5 == 1)
+    if (state == 1)
     {
       if (WPLogInitOnce != -1)
       {
@@ -3740,20 +3740,20 @@ void __42__WPDScanManager_clearExistingConnections__block_invoke(uint64_t a1, vo
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [(WPDScanManager *)self connectionsInProgress];
-        v9 = [(WPDScanManager *)self peripheralConnections];
+        connectionsInProgress2 = [(WPDScanManager *)self connectionsInProgress];
+        peripheralConnections2 = [(WPDScanManager *)self peripheralConnections];
         v23 = 138412546;
-        *v24 = v8;
+        *v24 = connectionsInProgress2;
         *&v24[8] = 2112;
-        v25 = v9;
+        v25 = peripheralConnections2;
         _os_log_impl(&dword_272965000, v7, OS_LOG_TYPE_DEFAULT, "Scanner Central manager is resetting - reset connection in progress %@ and peripheral connections %@", &v23, 0x16u);
       }
 
 LABEL_27:
       [(WPDScanManager *)self clearExistingConnections];
-      v20 = [(WPDManager *)self server];
-      v21 = [v20 statsManager];
-      [v21 stopActivity:0];
+      server = [(WPDManager *)self server];
+      statsManager = [server statsManager];
+      [statsManager stopActivity:0];
     }
   }
 
@@ -3775,13 +3775,13 @@ LABEL_27:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  iCopy = i;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager centralManager:didDiscoverPeripheral:advertisementData:RSSI:];
@@ -3790,37 +3790,37 @@ LABEL_27:
   v14 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [WPDScanManager centralManager:v14 didDiscoverPeripheral:v11 advertisementData:v13 RSSI:?];
+    [WPDScanManager centralManager:v14 didDiscoverPeripheral:peripheralCopy advertisementData:iCopy RSSI:?];
   }
 
-  v15 = [(WPDScanManager *)self scanRequests];
-  v16 = [(WPDScanManager *)self currentScanners];
-  v52 = self;
-  v17 = [(WPDScanManager *)self spyScanClients];
-  v18 = [v12 objectForKeyedSubscript:*MEMORY[0x277CBDD10]];
-  v19 = [v18 bytes];
+  scanRequests = [(WPDScanManager *)self scanRequests];
+  currentScanners = [(WPDScanManager *)self currentScanners];
+  selfCopy = self;
+  spyScanClients = [(WPDScanManager *)self spyScanClients];
+  v18 = [dataCopy objectForKeyedSubscript:*MEMORY[0x277CBDD10]];
+  bytes = [v18 bytes];
   v20 = [v18 length];
-  if (v20 < 2 || *v19 != 76 || v19[1])
+  if (v20 < 2 || *bytes != 76 || bytes[1])
   {
     goto LABEL_30;
   }
 
   v21 = v20;
-  v46 = v12;
-  v47 = v11;
-  v48 = v10;
-  v51 = [MEMORY[0x277CBEB38] dictionary];
+  v46 = dataCopy;
+  v47 = peripheralCopy;
+  v48 = managerCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (v21 < 4)
   {
     goto LABEL_26;
   }
 
-  v23 = &v19[v21];
-  v24 = v19 + 2;
+  v23 = &bytes[v21];
+  v24 = bytes + 2;
   *&v22 = 134218242;
   v45 = v22;
-  v49 = &v19[v21];
-  v50 = v19;
+  v49 = &bytes[v21];
+  v50 = bytes;
   while (1)
   {
     v25 = *v24;
@@ -3854,22 +3854,22 @@ LABEL_27:
     }
 
 LABEL_18:
-    if ([v16 containsIndex:{*v24, v45}])
+    if ([currentScanners containsIndex:{*v24, v45}])
     {
       [MEMORY[0x277CBEB28] dataWithBytes:v50 length:2];
-      v31 = v17;
-      v32 = v16;
-      v33 = v15;
-      v35 = v34 = v13;
+      v31 = spyScanClients;
+      v32 = currentScanners;
+      v33 = scanRequests;
+      v35 = v34 = iCopy;
       [v35 appendBytes:v24 length:v27 + 2];
       v36 = [MEMORY[0x277CBEA90] dataWithData:v35];
       v37 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v25];
-      [v51 setObject:v36 forKey:v37];
+      [dictionary setObject:v36 forKey:v37];
 
-      v13 = v34;
-      v15 = v33;
-      v16 = v32;
-      v17 = v31;
+      iCopy = v34;
+      scanRequests = v33;
+      currentScanners = v32;
+      spyScanClients = v31;
       v23 = v49;
     }
 
@@ -3906,39 +3906,39 @@ LABEL_20:
   }
 
 LABEL_26:
-  v11 = v47;
-  v39 = [v47 name];
-  if (v39)
+  peripheralCopy = v47;
+  name = [v47 name];
+  if (name)
   {
-    v40 = [v47 name];
+    name2 = [v47 name];
   }
 
   else
   {
-    v40 = @"Unknown";
+    name2 = @"Unknown";
   }
 
-  v12 = v46;
+  dataCopy = v46;
 
-  v41 = [v47 identifier];
+  identifier = [v47 identifier];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __78__WPDScanManager_centralManager_didDiscoverPeripheral_advertisementData_RSSI___block_invoke_427;
   v53[3] = &unk_279E59810;
-  v54 = v15;
-  v55 = v41;
+  v54 = scanRequests;
+  v55 = identifier;
   v56 = v46;
-  v57 = v52;
+  v57 = selfCopy;
   v58 = v47;
-  v59 = v13;
+  v59 = iCopy;
   v60 = v18;
-  v61 = v40;
-  v62 = v17;
-  v42 = v40;
-  v43 = v41;
-  [v51 enumerateKeysAndObjectsUsingBlock:v53];
+  v61 = name2;
+  v62 = spyScanClients;
+  v42 = name2;
+  v43 = identifier;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v53];
 
-  v10 = v48;
+  managerCopy = v48;
 LABEL_30:
 
   v44 = *MEMORY[0x277D85DE8];
@@ -4292,10 +4292,10 @@ void __78__WPDScanManager_centralManager_didDiscoverPeripheral_advertisementData
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverMultiplePeripherals:(id)a4
+- (void)centralManager:(id)manager didDiscoverMultiplePeripherals:(id)peripherals
 {
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  peripheralsCopy = peripherals;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager centralManager:didDiscoverMultiplePeripherals:];
@@ -4308,11 +4308,11 @@ void __78__WPDScanManager_centralManager_didDiscoverPeripheral_advertisementData
   }
 }
 
-- (void)centralManager:(id)a3 didFailToScanWithError:(id)a4
+- (void)centralManager:(id)manager didFailToScanWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager centralManager:didFailToScanWithError:];
@@ -4322,7 +4322,7 @@ void __78__WPDScanManager_centralManager_didDiscoverPeripheral_advertisementData
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v6;
+    v11 = errorCopy;
     _os_log_impl(&dword_272965000, v7, OS_LOG_TYPE_DEFAULT, "WPDScanManager UNEXPECTED didFailToScanWithError %{public}@", &v10, 0xCu);
   }
 
@@ -4341,9 +4341,9 @@ void __78__WPDScanManager_centralManager_didDiscoverPeripheral_advertisementData
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)zonesAvailableForType:(unsigned __int8)a3
++ (int64_t)zonesAvailableForType:(unsigned __int8)type
 {
-  if (a3 - 9) < 8u && ((0xCBu >> (a3 - 9)))
+  if (type - 9) < 8u && ((0xCBu >> (type - 9)))
   {
     return 15;
   }
@@ -4361,23 +4361,23 @@ void __78__WPDScanManager_centralManager_didDiscoverPeripheral_advertisementData
   return 0;
 }
 
-- (id)addPeerTrackingRequest:(id)a3 forClient:(id)a4
+- (id)addPeerTrackingRequest:(id)request forClient:(id)client
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 clientType];
+  requestCopy = request;
+  clientCopy = client;
+  clientType = [requestCopy clientType];
   if ([(WPDManager *)self state]== 3)
   {
-    v9 = [(WPDScanManager *)self peerRequests];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    peerRequests = [(WPDScanManager *)self peerRequests];
+    v10 = [peerRequests objectForKeyedSubscript:clientCopy];
 
     if (!v10)
     {
       v10 = [MEMORY[0x277CBEB58] set];
     }
 
-    if ([v10 containsObject:v6])
+    if ([v10 containsObject:requestCopy])
     {
       if (WPLogInitOnce != -1)
       {
@@ -4388,9 +4388,9 @@ void __78__WPDScanManager_centralManager_didDiscoverPeripheral_advertisementData
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
       {
         v12 = v11;
-        v13 = [v6 peerUUID];
+        peerUUID = [requestCopy peerUUID];
         *buf = 138412290;
-        v39 = v13;
+        clientType2 = peerUUID;
         _os_log_impl(&dword_272965000, v12, OS_LOG_TYPE_INFO, "Peer %@ is already being tracked", buf, 0xCu);
       }
 
@@ -4399,14 +4399,14 @@ LABEL_24:
       goto LABEL_34;
     }
 
-    v16 = [WPDScanManager zonesAvailableForType:v8];
+    v16 = [WPDScanManager zonesAvailableForType:clientType];
     if ([v10 count] >= v16)
     {
-      v24 = [(WPDManager *)self server];
-      v25 = [v24 getClientForUUID:v7];
+      server = [(WPDManager *)self server];
+      v25 = [server getClientForUUID:clientCopy];
       [v25 peerTrackingFull];
 
-      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Peer tracking maxed out for client %ld (%lu slots)", objc_msgSend(v6, "clientType"), objc_msgSend(v10, "count")];
+      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Peer tracking maxed out for client %ld (%lu slots)", objc_msgSend(requestCopy, "clientType"), objc_msgSend(v10, "count")];
       v27 = MEMORY[0x277CCA9B8];
       v36 = *MEMORY[0x277CCA450];
       v37 = v26;
@@ -4422,14 +4422,14 @@ LABEL_24:
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v39 = v26;
+        clientType2 = v26;
         _os_log_impl(&dword_272965000, v29, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
       }
     }
 
     else
     {
-      [v10 addObject:v6];
+      [v10 addObject:requestCopy];
       if (WPLogInitOnce != -1)
       {
         [WPDScanManager addPeerTrackingRequest:forClient:];
@@ -4440,7 +4440,7 @@ LABEL_24:
       {
         v18 = v17;
         *buf = 134218496;
-        v39 = [v6 clientType];
+        clientType2 = [requestCopy clientType];
         v40 = 2048;
         v41 = [v10 count];
         v42 = 2048;
@@ -4448,14 +4448,14 @@ LABEL_24:
         _os_log_impl(&dword_272965000, v18, OS_LOG_TYPE_INFO, "Adding peer tracking request for client %ld. Using (%lu/%lu) tracking slots", buf, 0x20u);
       }
 
-      v19 = [v6 peerUUID];
-      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v8];
-      v21 = [(WPDScanManager *)self startTrackingPeripheral:v19 ofType:v20];
+      peerUUID2 = [requestCopy peerUUID];
+      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:clientType];
+      v21 = [(WPDScanManager *)self startTrackingPeripheral:peerUUID2 ofType:v20];
 
       if (v21)
       {
-        v22 = [(WPDScanManager *)self peerRequests];
-        [v22 setObject:v10 forKeyedSubscript:v7];
+        peerRequests2 = [(WPDScanManager *)self peerRequests];
+        [peerRequests2 setObject:v10 forKeyedSubscript:clientCopy];
 
         if (WPLogInitOnce != -1)
         {
@@ -4515,11 +4515,11 @@ LABEL_34:
   return v15;
 }
 
-- (id)removePeerTrackingRequest:(id)a3 checkZonesAvailable:(BOOL)a4 forClient:(id)a5
+- (id)removePeerTrackingRequest:(id)request checkZonesAvailable:(BOOL)available forClient:(id)client
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager removePeerTrackingRequest:checkZonesAvailable:forClient:];
@@ -4530,21 +4530,21 @@ LABEL_34:
   {
     v11 = v10;
     *buf = 67109120;
-    v28 = [(WPDManager *)self state];
+    state = [(WPDManager *)self state];
     _os_log_impl(&dword_272965000, v11, OS_LOG_TYPE_DEFAULT, "Remove peer tracking when central state is %d", buf, 8u);
   }
 
-  v12 = [v8 clientType];
-  v13 = [v8 peerUUID];
-  v14 = [(WPDScanManager *)self peerRequests];
-  v15 = [v14 objectForKeyedSubscript:v9];
+  clientType = [requestCopy clientType];
+  peerUUID = [requestCopy peerUUID];
+  peerRequests = [(WPDScanManager *)self peerRequests];
+  v15 = [peerRequests objectForKeyedSubscript:clientCopy];
 
-  if (![v15 containsObject:v8])
+  if (![v15 containsObject:requestCopy])
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Couldn't find peer tracking request for peer %@ of type %ld (internal error)", v13, v12];
+    server = [MEMORY[0x277CCACA8] stringWithFormat:@"Couldn't find peer tracking request for peer %@ of type %ld (internal error)", peerUUID, clientType];
     v21 = MEMORY[0x277CCA9B8];
     v25 = *MEMORY[0x277CCA450];
-    v26 = v18;
+    v26 = server;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v20 = [v21 errorWithDomain:@"WPErrorDomain" code:16 userInfo:v22];
 
@@ -4571,17 +4571,17 @@ LABEL_34:
     [WPDScanManager removePeerTrackingRequest:checkZonesAvailable:forClient:];
   }
 
-  [v15 removeObject:v8];
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v12];
-  [(WPDScanManager *)self stopTrackingPeripheral:v13 ofType:v16];
+  [v15 removeObject:requestCopy];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:clientType];
+  [(WPDScanManager *)self stopTrackingPeripheral:peerUUID ofType:v16];
 
-  if (a4)
+  if (available)
   {
-    v17 = [WPDScanManager zonesAvailableForType:v12];
+    v17 = [WPDScanManager zonesAvailableForType:clientType];
     if ([v15 count] < v17)
     {
-      v18 = [(WPDManager *)self server];
-      v19 = [v18 getClientForUUID:v9];
+      server = [(WPDManager *)self server];
+      v19 = [server getClientForUUID:clientCopy];
       [v19 peerTrackingAvailable];
 
       v20 = 0;
@@ -4599,12 +4599,12 @@ LABEL_19:
   return v20;
 }
 
-- (void)removeAllPeerTrackingRequestsForClient:(id)a3
+- (void)removeAllPeerTrackingRequestsForClient:(id)client
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WPDScanManager *)self peerRequests];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientCopy = client;
+  peerRequests = [(WPDScanManager *)self peerRequests];
+  v6 = [peerRequests objectForKeyedSubscript:clientCopy];
 
   if (WPLogInitOnce != -1)
   {
@@ -4615,7 +4615,7 @@ LABEL_19:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = clientCopy;
     _os_log_impl(&dword_272965000, v7, OS_LOG_TYPE_DEFAULT, "Removing all peer tracking requests for client %{public}@", buf, 0xCu);
   }
 
@@ -4624,25 +4624,25 @@ LABEL_19:
   v10[2] = __57__WPDScanManager_removeAllPeerTrackingRequestsForClient___block_invoke_499;
   v10[3] = &unk_279E59838;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = clientCopy;
+  v8 = clientCopy;
   [v6 enumerateObjectsUsingBlock:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)retrievePeripheralWithUUID:(id)a3
+- (id)retrievePeripheralWithUUID:(id)d
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if ([(WPDManager *)self state]== 3)
   {
-    v5 = [(WPDScanManager *)self centralManager];
-    v12[0] = v4;
+    centralManager = [(WPDScanManager *)self centralManager];
+    v12[0] = dCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    v7 = [v5 retrievePeripheralsWithIdentifiers:v6];
+    v7 = [centralManager retrievePeripheralsWithIdentifiers:v6];
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
@@ -4658,19 +4658,19 @@ LABEL_19:
       [WPDScanManager retrievePeripheralWithUUID:v9];
     }
 
-    v8 = 0;
+    firstObject = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
-- (void)centralManager:(id)a3 didLosePeripheral:(id)a4 forType:(id)a5
+- (void)centralManager:(id)manager didLosePeripheral:(id)peripheral forType:(id)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a4 identifier];
+  typeCopy = type;
+  identifier = [peripheral identifier];
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager centralManager:didLosePeripheral:forType:];
@@ -4681,23 +4681,23 @@ LABEL_19:
   {
     v10 = v9;
     *buf = 138412546;
-    v20 = v8;
+    v20 = identifier;
     v21 = 2048;
-    v22 = [v7 integerValue];
+    integerValue = [typeCopy integerValue];
     _os_log_impl(&dword_272965000, v10, OS_LOG_TYPE_INFO, "Lost a peer %@ of type %ld", buf, 0x16u);
   }
 
-  v11 = [(WPDScanManager *)self peerRequests];
+  peerRequests = [(WPDScanManager *)self peerRequests];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__WPDScanManager_centralManager_didLosePeripheral_forType___block_invoke_505;
   v15[3] = &unk_279E59888;
-  v16 = v8;
-  v17 = v7;
-  v18 = self;
-  v12 = v7;
-  v13 = v8;
-  [v11 enumerateKeysAndObjectsUsingBlock:v15];
+  v16 = identifier;
+  v17 = typeCopy;
+  selfCopy = self;
+  v12 = typeCopy;
+  v13 = identifier;
+  [peerRequests enumerateKeysAndObjectsUsingBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -4745,11 +4745,11 @@ void __59__WPDScanManager_centralManager_didLosePeripheral_forType___block_invok
 LABEL_5:
 }
 
-- (void)centralManager:(id)a3 didFindPeripheral:(id)a4 forType:(id)a5
+- (void)centralManager:(id)manager didFindPeripheral:(id)peripheral forType:(id)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a4 identifier];
+  typeCopy = type;
+  identifier = [peripheral identifier];
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager centralManager:didFindPeripheral:forType:];
@@ -4760,23 +4760,23 @@ LABEL_5:
   {
     v10 = v9;
     *buf = 138412546;
-    v20 = v8;
+    v20 = identifier;
     v21 = 2048;
-    v22 = [v7 integerValue];
+    integerValue = [typeCopy integerValue];
     _os_log_impl(&dword_272965000, v10, OS_LOG_TYPE_DEFAULT, "Found a peer %@ of type %ld", buf, 0x16u);
   }
 
-  v11 = [(WPDScanManager *)self peerRequests];
+  peerRequests = [(WPDScanManager *)self peerRequests];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__WPDScanManager_centralManager_didFindPeripheral_forType___block_invoke_508;
   v15[3] = &unk_279E59888;
-  v16 = v8;
-  v17 = v7;
-  v18 = self;
-  v12 = v7;
-  v13 = v8;
-  [v11 enumerateKeysAndObjectsUsingBlock:v15];
+  v16 = identifier;
+  v17 = typeCopy;
+  selfCopy = self;
+  v12 = typeCopy;
+  v13 = identifier;
+  [peerRequests enumerateKeysAndObjectsUsingBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -4822,20 +4822,20 @@ void __59__WPDScanManager_centralManager_didFindPeripheral_forType___block_invok
 LABEL_5:
 }
 
-- (id)connectToPeripheral:(id)a3 fromClient:(id)a4 withOptions:(id)a5
+- (id)connectToPeripheral:(id)peripheral fromClient:(id)client withOptions:(id)options
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  clientCopy = client;
+  optionsCopy = options;
   if ([(WPDManager *)self state]== 3)
   {
-    v11 = [(WPDScanManager *)self connectionsInProgress];
-    v12 = [v11 objectForKeyedSubscript:v8];
+    connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+    v12 = [connectionsInProgress objectForKeyedSubscript:peripheralCopy];
 
     if (v12 && [v12 count])
     {
-      if ([v12 containsObject:v9])
+      if ([v12 containsObject:clientCopy])
       {
         if (WPLogInitOnce != -1)
         {
@@ -4846,9 +4846,9 @@ LABEL_5:
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v8;
+          *&buf[4] = peripheralCopy;
           *&buf[12] = 2112;
-          *&buf[14] = v9;
+          *&buf[14] = clientCopy;
           _os_log_impl(&dword_272965000, v13, OS_LOG_TYPE_DEFAULT, "Wireless Proximity is already connecting to peripheral %@ for client %@ - ignore the processing", buf, 0x16u);
         }
 
@@ -4858,9 +4858,9 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v18 = [(WPDManager *)self server];
-      v19 = [v18 getClientForUUID:v9];
-      v20 = [v19 clientTypeString];
+      server = [(WPDManager *)self server];
+      v19 = [server getClientForUUID:clientCopy];
+      clientTypeString = [v19 clientTypeString];
 
       v14 = buf;
       *buf = 0;
@@ -4874,7 +4874,7 @@ LABEL_30:
       v37[2] = __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_invoke_514;
       v37[3] = &unk_279E598B0;
       v37[4] = self;
-      v21 = v20;
+      v21 = clientTypeString;
       v38 = v21;
       v39 = buf;
       [v12 enumerateObjectsUsingBlock:v37];
@@ -4901,29 +4901,29 @@ LABEL_30:
       }
     }
 
-    v23 = [(WPDScanManager *)self retrievePeripheralWithUUID:v8];
+    v23 = [(WPDScanManager *)self retrievePeripheralWithUUID:peripheralCopy];
     if (v23)
     {
-      v24 = [(WPDScanManager *)self centralManager];
-      [v24 connectPeripheral:v23 options:v10];
+      centralManager = [(WPDScanManager *)self centralManager];
+      [centralManager connectPeripheral:v23 options:optionsCopy];
 
-      v25 = [(WPDScanManager *)self connectionsInProgress];
-      v26 = [v25 objectForKeyedSubscript:v8];
+      connectionsInProgress2 = [(WPDScanManager *)self connectionsInProgress];
+      v26 = [connectionsInProgress2 objectForKeyedSubscript:peripheralCopy];
       v27 = v26 == 0;
 
       if (v27)
       {
         v28 = [MEMORY[0x277CBEB58] set];
-        v29 = [(WPDScanManager *)self connectionsInProgress];
-        [v29 setObject:v28 forKeyedSubscript:v8];
+        connectionsInProgress3 = [(WPDScanManager *)self connectionsInProgress];
+        [connectionsInProgress3 setObject:v28 forKeyedSubscript:peripheralCopy];
       }
 
-      v30 = [(WPDScanManager *)self connectionsInProgress];
-      v31 = [v30 objectForKeyedSubscript:v8];
-      [v31 addObject:v9];
+      connectionsInProgress4 = [(WPDScanManager *)self connectionsInProgress];
+      v31 = [connectionsInProgress4 objectForKeyedSubscript:peripheralCopy];
+      [v31 addObject:clientCopy];
 
-      v32 = [(WPDScanManager *)self peripheralConnections];
-      [v32 addObject:v23];
+      peripheralConnections = [(WPDScanManager *)self peripheralConnections];
+      [peripheralConnections addObject:v23];
 
       v14 = 0;
     }
@@ -5001,12 +5001,12 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)disconnectFromPeripheral:(id)a3 withSubscribedCharacteristics:(id)a4 forClient:(id)a5
+- (id)disconnectFromPeripheral:(id)peripheral withSubscribedCharacteristics:(id)characteristics forClient:(id)client
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicsCopy = characteristics;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager disconnectFromPeripheral:withSubscribedCharacteristics:forClient:];
@@ -5016,21 +5016,21 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v58 = v8;
+    v58 = peripheralCopy;
     v59 = 2114;
-    v60 = v9;
+    v60 = characteristicsCopy;
     v61 = 2114;
-    v62 = v10;
+    v62 = clientCopy;
     _os_log_impl(&dword_272965000, v11, OS_LOG_TYPE_DEFAULT, "Disconnect from peripheral: %{public}@, characteristics: %{public}@, for client: %{public}@", buf, 0x20u);
   }
 
-  v12 = [(WPDScanManager *)self retrievePeripheralWithUUID:v8];
+  v12 = [(WPDScanManager *)self retrievePeripheralWithUUID:peripheralCopy];
   v13 = v12;
   if (v12)
   {
-    v38 = self;
-    v39 = v10;
-    v40 = v8;
+    selfCopy = self;
+    v39 = clientCopy;
+    v40 = peripheralCopy;
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
@@ -5056,8 +5056,8 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v16 = [v15 characteristics];
-          v17 = [v16 countByEnumeratingWithState:&v45 objects:v53 count:16];
+          characteristics = [v15 characteristics];
+          v17 = [characteristics countByEnumeratingWithState:&v45 objects:v53 count:16];
           if (v17)
           {
             v18 = v17;
@@ -5069,13 +5069,13 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
               {
                 if (*v46 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(characteristics);
                 }
 
                 v21 = *(*(&v45 + 1) + 8 * v20);
-                v22 = [v21 UUID];
-                v23 = [v22 UUIDString];
-                v24 = [v9 containsObject:v23];
+                uUID = [v21 UUID];
+                uUIDString = [uUID UUIDString];
+                v24 = [characteristicsCopy containsObject:uUIDString];
 
                 if (v24)
                 {
@@ -5088,10 +5088,10 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
                   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
                   {
                     v26 = v25;
-                    v27 = [v21 UUID];
-                    v28 = [v27 UUIDString];
+                    uUID2 = [v21 UUID];
+                    uUIDString2 = [uUID2 UUIDString];
                     *buf = 138543362;
-                    v58 = v28;
+                    v58 = uUIDString2;
                     _os_log_impl(&dword_272965000, v26, OS_LOG_TYPE_DEFAULT, "Setting notify value to off for characteristic %{public}@", buf, 0xCu);
                   }
 
@@ -5102,7 +5102,7 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
               }
 
               while (v18 != v20);
-              v18 = [v16 countByEnumeratingWithState:&v45 objects:v53 count:16];
+              v18 = [characteristics countByEnumeratingWithState:&v45 objects:v53 count:16];
             }
 
             while (v18);
@@ -5118,19 +5118,19 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
       while (v43);
     }
 
-    v29 = [(WPDScanManager *)v38 connectionsInProgress];
-    v30 = [v13 identifier];
-    [v29 removeObjectForKey:v30];
+    connectionsInProgress = [(WPDScanManager *)selfCopy connectionsInProgress];
+    identifier = [v13 identifier];
+    [connectionsInProgress removeObjectForKey:identifier];
 
-    v31 = [(WPDScanManager *)v38 peripheralConnections];
-    [v31 removeObject:v13];
+    peripheralConnections = [(WPDScanManager *)selfCopy peripheralConnections];
+    [peripheralConnections removeObject:v13];
 
-    v32 = [(WPDScanManager *)v38 centralManager];
-    [v32 cancelPeripheralConnection:v13];
+    centralManager = [(WPDScanManager *)selfCopy centralManager];
+    [centralManager cancelPeripheralConnection:v13];
 
     v33 = 0;
-    v10 = v39;
-    v8 = v40;
+    clientCopy = v39;
+    peripheralCopy = v40;
   }
 
   else
@@ -5157,11 +5157,11 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
   return v33;
 }
 
-- (void)disconnectFromCentral:(id)a3 forClient:(id)a4
+- (void)disconnectFromCentral:(id)central forClient:(id)client
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  centralCopy = central;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager disconnectFromCentral:forClient:];
@@ -5171,37 +5171,37 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = v6;
+    v19 = centralCopy;
     v20 = 2114;
-    v21 = v7;
+    v21 = clientCopy;
     _os_log_impl(&dword_272965000, v8, OS_LOG_TYPE_DEFAULT, "Disconnecting from central %{public}@ for client %{public}@", buf, 0x16u);
   }
 
-  v9 = [(WPDScanManager *)self retrievePeripheralWithUUID:v6];
+  v9 = [(WPDScanManager *)self retrievePeripheralWithUUID:centralCopy];
   if (v9)
   {
-    v10 = [(WPDScanManager *)self centralManager];
+    centralManager = [(WPDScanManager *)self centralManager];
     v16 = *MEMORY[0x277CBDD68];
     v17 = MEMORY[0x277CBEC38];
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    [v10 cancelPeripheralConnection:v9 options:v11];
+    [centralManager cancelPeripheralConnection:v9 options:v11];
 
-    v12 = [(WPDScanManager *)self connectionsInProgress];
-    v13 = [v9 identifier];
-    [v12 removeObjectForKey:v13];
+    connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+    identifier = [v9 identifier];
+    [connectionsInProgress removeObjectForKey:identifier];
 
-    v14 = [(WPDScanManager *)self peripheralConnections];
-    [v14 removeObject:v9];
+    peripheralConnections = [(WPDScanManager *)self peripheralConnections];
+    [peripheralConnections removeObject:v9];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager centralManager:didConnectPeripheral:];
@@ -5211,23 +5211,23 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 name];
-    v11 = [v7 identifier];
+    name = [peripheralCopy name];
+    identifier = [peripheralCopy identifier];
     *buf = 138543874;
-    v24 = v10;
+    v24 = name;
     v25 = 2114;
-    v26 = v11;
+    v26 = identifier;
     v27 = 2048;
-    v28 = [v7 role];
+    role = [peripheralCopy role];
     _os_log_impl(&dword_272965000, v9, OS_LOG_TYPE_DEFAULT, "Connected to device (%{public}@) with UUID %{public}@ and role %ld", buf, 0x20u);
   }
 
-  v12 = [(WPDScanManager *)self peripheralConnections];
-  [v12 removeObject:v7];
+  peripheralConnections = [(WPDScanManager *)self peripheralConnections];
+  [peripheralConnections removeObject:peripheralCopy];
 
-  v13 = [(WPDScanManager *)self connectionsInProgress];
-  v14 = [v7 identifier];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+  identifier2 = [peripheralCopy identifier];
+  v15 = [connectionsInProgress objectForKeyedSubscript:identifier2];
 
   if (WPLogInitOnce != -1)
   {
@@ -5247,10 +5247,10 @@ void __61__WPDScanManager_connectToPeripheral_fromClient_withOptions___block_inv
   v20[2] = __54__WPDScanManager_centralManager_didConnectPeripheral___block_invoke_541;
   v20[3] = &unk_279E598D8;
   v20[4] = self;
-  v21 = v7;
+  v21 = peripheralCopy;
   v22 = v15;
   v17 = v15;
-  v18 = v7;
+  v18 = peripheralCopy;
   [v17 enumerateObjectsUsingBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -5460,11 +5460,11 @@ LABEL_51:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager centralManager:didFailToConnectPeripheral:error:];
@@ -5473,13 +5473,13 @@ LABEL_51:
   v11 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
   {
-    [WPDScanManager centralManager:v11 didFailToConnectPeripheral:v9 error:?];
+    [WPDScanManager centralManager:v11 didFailToConnectPeripheral:peripheralCopy error:?];
   }
 
-  v12 = v9;
-  v13 = [(WPDScanManager *)self connectionsInProgress];
-  v14 = [v12 identifier];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  v12 = peripheralCopy;
+  connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+  identifier = [v12 identifier];
+  v15 = [connectionsInProgress objectForKeyedSubscript:identifier];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -5487,16 +5487,16 @@ LABEL_51:
   v21[3] = &unk_279E598D8;
   v21[4] = self;
   v22 = v12;
-  v23 = v10;
-  v16 = v10;
+  v23 = errorCopy;
+  v16 = errorCopy;
   v17 = v12;
   [v15 enumerateObjectsUsingBlock:v21];
-  v18 = [(WPDScanManager *)self connectionsInProgress];
-  v19 = [v17 identifier];
-  [v18 removeObjectForKey:v19];
+  connectionsInProgress2 = [(WPDScanManager *)self connectionsInProgress];
+  identifier2 = [v17 identifier];
+  [connectionsInProgress2 removeObjectForKey:identifier2];
 
-  v20 = [(WPDScanManager *)self peripheralConnections];
-  [v20 removeObject:v17];
+  peripheralConnections = [(WPDScanManager *)self peripheralConnections];
+  [peripheralConnections removeObject:v17];
 }
 
 void __66__WPDScanManager_centralManager_didFailToConnectPeripheral_error___block_invoke_571(uint64_t a1, void *a2)
@@ -5510,15 +5510,15 @@ void __66__WPDScanManager_centralManager_didFailToConnectPeripheral_error___bloc
   [v7 connectedDevice:v6 withError:*(a1 + 48) shouldDiscover:0];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = v7;
-  v10 = [(WPDScanManager *)self connectionsInProgress];
-  v11 = [v9 identifier];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  v9 = peripheralCopy;
+  connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+  identifier = [v9 identifier];
+  v12 = [connectionsInProgress objectForKeyedSubscript:identifier];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -5527,15 +5527,15 @@ void __66__WPDScanManager_centralManager_didFailToConnectPeripheral_error___bloc
   v23[4] = self;
   v13 = v9;
   v24 = v13;
-  v14 = v8;
+  v14 = errorCopy;
   v25 = v14;
   [v12 enumerateObjectsUsingBlock:v23];
-  v15 = [(WPDScanManager *)self connectionsInProgress];
-  v16 = [v13 identifier];
-  [v15 removeObjectForKey:v16];
+  connectionsInProgress2 = [(WPDScanManager *)self connectionsInProgress];
+  identifier2 = [v13 identifier];
+  [connectionsInProgress2 removeObjectForKey:identifier2];
 
-  v17 = [(WPDScanManager *)self peripheralConnections];
-  [v17 removeObject:v13];
+  peripheralConnections = [(WPDScanManager *)self peripheralConnections];
+  [peripheralConnections removeObject:v13];
 
   if (WPLogInitOnce != -1)
   {
@@ -5546,12 +5546,12 @@ void __66__WPDScanManager_centralManager_didFailToConnectPeripheral_error___bloc
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [v13 identifier];
-    v21 = [v14 localizedDescription];
+    identifier3 = [v13 identifier];
+    localizedDescription = [v14 localizedDescription];
     *buf = 138543618;
-    v27 = v20;
+    v27 = identifier3;
     v28 = 2114;
-    v29 = v21;
+    v29 = localizedDescription;
     _os_log_impl(&dword_272965000, v19, OS_LOG_TYPE_DEFAULT, "Disconnected from peripheral %{public}@ with Error: %{public}@", buf, 0x16u);
   }
 
@@ -5569,11 +5569,11 @@ void __63__WPDScanManager_centralManager_didDisconnectPeripheral_error___block_i
   [v7 disconnectedPeer:v6 error:*(a1 + 48)];
 }
 
-- (void)removePeripheralConnection:(id)a3 forClient:(id)a4
+- (void)removePeripheralConnection:(id)connection forClient:(id)client
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDScanManager removePeripheralConnection:forClient:];
@@ -5583,23 +5583,23 @@ void __63__WPDScanManager_centralManager_didDisconnectPeripheral_error___block_i
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = v6;
+    v19 = connectionCopy;
     v20 = 2114;
-    v21 = v7;
+    v21 = clientCopy;
     _os_log_impl(&dword_272965000, v8, OS_LOG_TYPE_DEFAULT, "Removing connection to peer %{public}@ for client %{public}@", buf, 0x16u);
   }
 
-  v9 = [(WPDScanManager *)self connectionsInProgress];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
+  v10 = [connectionsInProgress objectForKeyedSubscript:connectionCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__WPDScanManager_removePeripheralConnection_forClient___block_invoke_576;
   v14[3] = &unk_279E598D8;
-  v15 = v7;
-  v16 = self;
-  v17 = v6;
-  v11 = v6;
-  v12 = v7;
+  v15 = clientCopy;
+  selfCopy = self;
+  v17 = connectionCopy;
+  v11 = connectionCopy;
+  v12 = clientCopy;
   [v10 enumerateObjectsUsingBlock:v14];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -5672,18 +5672,18 @@ void __55__WPDScanManager_removePeripheralConnection_forClient___block_invoke_57
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePeripheralConnectionsForClient:(id)a3
+- (void)removePeripheralConnectionsForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(WPDScanManager *)self connectionsInProgress];
+  clientCopy = client;
+  connectionsInProgress = [(WPDScanManager *)self connectionsInProgress];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__WPDScanManager_removePeripheralConnectionsForClient___block_invoke;
   v7[3] = &unk_279E59900;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = clientCopy;
+  selfCopy = self;
+  v6 = clientCopy;
+  [connectionsInProgress enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __55__WPDScanManager_removePeripheralConnectionsForClient___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5757,7 +5757,7 @@ void __40__WPDScanManager_assertCBDiscoveryScan___block_invoke_cold_2(void *a1)
 - (void)isScannerTestMode
 {
   v7 = *MEMORY[0x277D85DE8];
-  *(*a1 + 24);
+  *(*self + 24);
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);

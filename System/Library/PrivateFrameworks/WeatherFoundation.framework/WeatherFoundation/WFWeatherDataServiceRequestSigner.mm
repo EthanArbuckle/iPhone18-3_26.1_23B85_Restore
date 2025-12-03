@@ -1,46 +1,46 @@
 @interface WFWeatherDataServiceRequestSigner
-+ (id)buildAuthHeader:(id)a3 withSecret:(id)a4 andDate:(id)a5;
-+ (id)roundDate:(id)a3 toMinutes:(unint64_t)a4;
-+ (void)signRequest:(id)a3 withDate:(id)a4;
-+ (void)signRequest:(id)a3 withSecret:(id)a4 andDate:(id)a5;
++ (id)buildAuthHeader:(id)header withSecret:(id)secret andDate:(id)date;
++ (id)roundDate:(id)date toMinutes:(unint64_t)minutes;
++ (void)signRequest:(id)request withDate:(id)date;
++ (void)signRequest:(id)request withSecret:(id)secret andDate:(id)date;
 @end
 
 @implementation WFWeatherDataServiceRequestSigner
 
-+ (void)signRequest:(id)a3 withDate:(id)a4
++ (void)signRequest:(id)request withDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() signRequest:v6 withSecret:@"m7K5xE7hT9lf4luzWj6CO9PDWdtkoNQbI3akfwHNu+A=" andDate:v5];
+  dateCopy = date;
+  requestCopy = request;
+  [objc_opt_class() signRequest:requestCopy withSecret:@"m7K5xE7hT9lf4luzWj6CO9PDWdtkoNQbI3akfwHNu+A=" andDate:dateCopy];
 }
 
-+ (void)signRequest:(id)a3 withSecret:(id)a4 andDate:(id)a5
++ (void)signRequest:(id)request withSecret:(id)secret andDate:(id)date
 {
-  v9 = a3;
-  v6 = a5;
-  v7 = [v9 URL];
+  requestCopy = request;
+  dateCopy = date;
+  v7 = [requestCopy URL];
   if (v7)
   {
-    v8 = [objc_opt_class() buildAuthHeader:v7 withSecret:@"m7K5xE7hT9lf4luzWj6CO9PDWdtkoNQbI3akfwHNu+A=" andDate:v6];
-    [v9 addValue:v8 forHTTPHeaderField:@"Authorization"];
+    v8 = [objc_opt_class() buildAuthHeader:v7 withSecret:@"m7K5xE7hT9lf4luzWj6CO9PDWdtkoNQbI3akfwHNu+A=" andDate:dateCopy];
+    [requestCopy addValue:v8 forHTTPHeaderField:@"Authorization"];
   }
 }
 
-+ (id)buildAuthHeader:(id)a3 withSecret:(id)a4 andDate:(id)a5
++ (id)buildAuthHeader:(id)header withSecret:(id)secret andDate:(id)date
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CBEA90];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithBase64EncodedString:v9 options:0];
+  dateCopy = date;
+  secretCopy = secret;
+  headerCopy = header;
+  v11 = [[v7 alloc] initWithBase64EncodedString:secretCopy options:0];
 
   v12 = [@"GET" dataUsingEncoding:4];
-  v13 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v10 resolvingAgainstBaseURL:0];
+  v13 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:headerCopy resolvingAgainstBaseURL:0];
 
   [v13 setScheme:0];
-  v14 = [v13 string];
-  v15 = [v14 stringByReplacingOccurrencesOfString:@"//" withString:&stru_28823D638];
+  string = [v13 string];
+  v15 = [string stringByReplacingOccurrencesOfString:@"//" withString:&stru_28823D638];
 
   v24 = v15;
   v16 = [v15 dataUsingEncoding:4];
@@ -49,7 +49,7 @@
     +[WFWeatherDataServiceRequestSigner buildAuthHeader:withSecret:andDate:];
   }
 
-  v17 = [objc_opt_class() roundDate:v8 toMinutes:3];
+  v17 = [objc_opt_class() roundDate:dateCopy toMinutes:3];
 
   v18 = [buildAuthHeader_withSecret_andDate__formatter stringFromDate:v17];
   v19 = [v18 dataUsingEncoding:4];
@@ -75,16 +75,16 @@ uint64_t __72__WFWeatherDataServiceRequestSigner_buildAuthHeader_withSecret_andD
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)roundDate:(id)a3 toMinutes:(unint64_t)a4
++ (id)roundDate:(id)date toMinutes:(unint64_t)minutes
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a3;
-  v7 = [v5 currentCalendar];
-  v8 = [v7 components:3145852 fromDate:v6];
+  dateCopy = date;
+  currentCalendar = [v5 currentCalendar];
+  v8 = [currentCalendar components:3145852 fromDate:dateCopy];
 
-  [v8 setCalendar:v7];
-  [v8 setMinute:{objc_msgSend(v8, "minute") / a4 * a4}];
-  v9 = [v7 dateFromComponents:v8];
+  [v8 setCalendar:currentCalendar];
+  [v8 setMinute:{objc_msgSend(v8, "minute") / minutes * minutes}];
+  v9 = [currentCalendar dateFromComponents:v8];
 
   return v9;
 }

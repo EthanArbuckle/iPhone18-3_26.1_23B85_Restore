@@ -1,8 +1,8 @@
 @interface ExecutableMember
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSynthetic;
 - (BOOL)isVarArgs;
-- (ExecutableMember)initWithMethodSignature:(id)a3 selector:(SEL)a4 class:(id)a5 metadata:(id)a6;
+- (ExecutableMember)initWithMethodSignature:(id)signature selector:(SEL)selector class:(id)class metadata:(id)metadata;
 - (const)getBinaryParameterTypes;
 - (id)getDeclaredAnnotations;
 - (id)getExceptionTypes;
@@ -20,27 +20,27 @@
 
 @implementation ExecutableMember
 
-- (ExecutableMember)initWithMethodSignature:(id)a3 selector:(SEL)a4 class:(id)a5 metadata:(id)a6
+- (ExecutableMember)initWithMethodSignature:(id)signature selector:(SEL)selector class:(id)class metadata:(id)metadata
 {
   v13.receiver = self;
   v13.super_class = ExecutableMember;
   v10 = [(JavaLangReflectAccessibleObject *)&v13 init];
   if (v10)
   {
-    v10->methodSignature_ = a3;
-    if (a4)
+    v10->methodSignature_ = signature;
+    if (selector)
     {
-      v11 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v11 = 0;
+      selectorCopy = 0;
     }
 
-    v10->selector_ = v11;
-    v10->class_ = a5;
-    v10->metadata_ = a6;
+    v10->selector_ = selectorCopy;
+    v10->class_ = class;
+    v10->metadata_ = metadata;
   }
 
   return v10;
@@ -62,8 +62,8 @@
 
 - (id)getParameterTypes
 {
-  v3 = [(ExecutableMember *)self getNumParams];
-  v4 = [IOSObjectArray arrayWithLength:v3 type:IOSClass_class_()];
+  getNumParams = [(ExecutableMember *)self getNumParams];
+  v4 = [IOSObjectArray arrayWithLength:getNumParams type:IOSClass_class_()];
   if (self->selector_)
   {
     selector = self->selector_;
@@ -78,7 +78,7 @@
   if ([(NSString *)v6 hasPrefix:@"init"])
   {
     v7 = [[(NSString *)v6 substringFromIndex:4] componentsSeparatedByString:@":"];
-    if (v3 < 1)
+    if (getNumParams < 1)
     {
       return v4;
     }
@@ -86,7 +86,7 @@
     goto LABEL_12;
   }
 
-  if (v3 > 0)
+  if (getNumParams > 0)
   {
     v8 = [(NSString *)v6 rangeOfString:@":"];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
@@ -154,7 +154,7 @@ LABEL_24:
 LABEL_26:
       [(IOSObjectArray *)v4 replaceObjectAtIndex:v11++ withObject:v21];
       v12 += &_mh_execute_header;
-      if (v3 == v11)
+      if (getNumParams == v11)
       {
         return v4;
       }
@@ -175,15 +175,15 @@ LABEL_25:
   binaryParameterTypes = self->binaryParameterTypes_;
   if (!binaryParameterTypes)
   {
-    v4 = [(ExecutableMember *)self getParameterTypes];
-    v5 = [v4 length];
+    getParameterTypes = [(ExecutableMember *)self getParameterTypes];
+    v5 = [getParameterTypes length];
     binaryParameterTypes = malloc_type_malloc(v5 + 1, 0x100004077774924uLL);
     v6 = binaryParameterTypes;
     if (v5 >= 1)
     {
       for (i = 0; i != v5; ++i)
       {
-        binaryParameterTypes[i] = *[objc_msgSend(objc_msgSend(v4 objectAtIndex:{i), "binaryName"), "UTF8String"}];
+        binaryParameterTypes[i] = *[objc_msgSend(objc_msgSend(getParameterTypes objectAtIndex:{i), "binaryName"), "UTF8String"}];
       }
 
       v6 = &binaryParameterTypes[i];
@@ -260,8 +260,8 @@ LABEL_25:
 
 - (id)getDeclaredAnnotations
 {
-  v3 = [(IOSClass *)self->class_ objcClass];
-  if (v3 && JreFindClassMethod(v3, -[NSString UTF8String](+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"__annotations_%@", [-[ExecutableMember internalName](self "internalName")]), "UTF8String")))
+  objcClass = [(IOSClass *)self->class_ objcClass];
+  if (objcClass && JreFindClassMethod(objcClass, -[NSString UTF8String](+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"__annotations_%@", [-[ExecutableMember internalName](self "internalName")]), "UTF8String")))
   {
 
     method_invoke();
@@ -279,8 +279,8 @@ LABEL_25:
 
 - (id)getParameterAnnotations
 {
-  v3 = [(IOSClass *)self->class_ objcClass];
-  if (v3 && JreFindClassMethod(v3, -[NSString UTF8String](+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"__annotations_%@_params", [-[ExecutableMember internalName](self "internalName")]), "UTF8String")))
+  objcClass = [(IOSClass *)self->class_ objcClass];
+  if (objcClass && JreFindClassMethod(objcClass, -[NSString UTF8String](+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"__annotations_%@_params", [-[ExecutableMember internalName](self "internalName")]), "UTF8String")))
   {
 
     method_invoke();
@@ -300,10 +300,10 @@ LABEL_25:
 {
   v3 = [[JavaLangStringBuilder alloc] initWithInt:80];
   v4 = sub_10027F124(self);
-  v5 = [(ExecutableMember *)self getModifiers];
-  if (v5)
+  getModifiers = [(ExecutableMember *)self getModifiers];
+  if (getModifiers)
   {
-    [-[JavaLangStringBuilder appendWithNSString:](v3 appendWithNSString:{JavaLangReflectModifier_toStringWithInt_(v5 & 0xFF7F)), "appendWithChar:", 32}];
+    [-[JavaLangStringBuilder appendWithNSString:](v3 appendWithNSString:{JavaLangReflectModifier_toStringWithInt_(getModifiers & 0xFF7F)), "appendWithChar:", 32}];
   }
 
   if (v4)
@@ -341,11 +341,11 @@ LABEL_25:
     }
   }
 
-  v10 = [(ExecutableMember *)self getDeclaringClass];
+  getDeclaringClass = [(ExecutableMember *)self getDeclaringClass];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    LibcoreReflectTypes_appendTypeName_class_(v3, v10);
+    LibcoreReflectTypes_appendTypeName_class_(v3, getDeclaringClass);
   }
 
   else
@@ -357,7 +357,7 @@ LABEL_25:
     }
 
     [(JavaLangStringBuilder *)v3 appendWithChar:32];
-    LibcoreReflectTypes_appendTypeName_class_(v3, v10);
+    LibcoreReflectTypes_appendTypeName_class_(v3, getDeclaringClass);
     [-[JavaLangStringBuilder appendWithNSString:](v3 appendWithNSString:{@".", "appendWithNSString:", -[ExecutableMember getName](self, "getName")}];
   }
 
@@ -394,10 +394,10 @@ LABEL_25:
   return metadata;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->class_ != *(a3 + 2))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->class_ != *(equal + 2))
   {
     return 0;
   }
@@ -412,9 +412,9 @@ LABEL_25:
     selector = 0;
   }
 
-  if (*(a3 + 3))
+  if (*(equal + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(equal + 3);
   }
 
   else

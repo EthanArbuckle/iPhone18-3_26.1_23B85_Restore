@@ -1,38 +1,38 @@
 @interface MNNavigationTraceManager
-+ (void)_clearOldTracesInDirectory:(id)a3 matchingExpression:(id)a4 beforeDate:(id)a5;
++ (void)_clearOldTracesInDirectory:(id)directory matchingExpression:(id)expression beforeDate:(id)date;
 + (void)clearOldTraces;
 - (GEOMotionContextProviderDelegate)motionDelegate;
 - (MNLocationProviderDelegate)delegate;
 - (MNNavigationTraceManagerDelegate)traceManagerDelegate;
 - (MNVirtualGarageProviderDelegate)virtualGarageDelegate;
-- (id)_defaultTraceNameForDestination:(id)a3 isSimulation:(BOOL)a4;
+- (id)_defaultTraceNameForDestination:(id)destination isSimulation:(BOOL)simulation;
 - (id)hardwareModel;
 - (unint64_t)_startIndexForNavigation;
 - (unint64_t)traceVersion;
-- (void)_copyTraceToCrashReporterDirectory:(id)a3;
-- (void)_createSymlinkForTracePath:(id)a3;
-- (void)_recordEnvironmentInfo:(id)a3;
-- (void)_recordStylesheet:(id)a3;
+- (void)_copyTraceToCrashReporterDirectory:(id)directory;
+- (void)_createSymlinkForTracePath:(id)path;
+- (void)_recordEnvironmentInfo:(id)info;
+- (void)_recordStylesheet:(id)stylesheet;
 - (void)close;
 - (void)dealloc;
-- (void)openForPlaybackWithTracePath:(id)a3;
-- (void)openForSimulationWithRoute:(id)a3 traceRecordingData:(id)a4 traceNameOverride:(id)a5;
-- (void)saveRoutePlanningTrace:(id)a3;
+- (void)openForPlaybackWithTracePath:(id)path;
+- (void)openForSimulationWithRoute:(id)route traceRecordingData:(id)data traceNameOverride:(id)override;
+- (void)saveRoutePlanningTrace:(id)trace;
 - (void)startUpdatingLocation;
-- (void)tracePlayer:(id)a3 didPlayAtTime:(double)a4;
-- (void)tracePlayer:(id)a3 didReceiveLocationError:(id)a4;
-- (void)tracePlayer:(id)a3 didSeekToTime:(double)a4 fromTime:(double)a5 location:(id)a6;
-- (void)tracePlayer:(id)a3 didUpdateEVData:(id)a4;
-- (void)tracePlayer:(id)a3 didUpdateHeading:(id)a4;
-- (void)tracePlayer:(id)a3 didUpdateLocation:(id)a4;
-- (void)tracePlayer:(id)a3 didUpdateMotion:(unint64_t)a4 exitType:(unint64_t)a5 confidence:(unint64_t)a6;
-- (void)tracePlayer:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5;
-- (void)tracePlayer:(id)a3 didUpdateVehicleSpeed:(double)a4 timestamp:(id)a5;
-- (void)tracePlayerDidPause:(id)a3;
-- (void)tracePlayerDidPauseLocationUpdates:(id)a3;
-- (void)tracePlayerDidResume:(id)a3;
-- (void)tracePlayerDidResumeLocationUpdates:(id)a3;
-- (void)updatedVehicleStateWithHandler:(id)a3;
+- (void)tracePlayer:(id)player didPlayAtTime:(double)time;
+- (void)tracePlayer:(id)player didReceiveLocationError:(id)error;
+- (void)tracePlayer:(id)player didSeekToTime:(double)time fromTime:(double)fromTime location:(id)location;
+- (void)tracePlayer:(id)player didUpdateEVData:(id)data;
+- (void)tracePlayer:(id)player didUpdateHeading:(id)heading;
+- (void)tracePlayer:(id)player didUpdateLocation:(id)location;
+- (void)tracePlayer:(id)player didUpdateMotion:(unint64_t)motion exitType:(unint64_t)type confidence:(unint64_t)confidence;
+- (void)tracePlayer:(id)player didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp;
+- (void)tracePlayer:(id)player didUpdateVehicleSpeed:(double)speed timestamp:(id)timestamp;
+- (void)tracePlayerDidPause:(id)pause;
+- (void)tracePlayerDidPauseLocationUpdates:(id)updates;
+- (void)tracePlayerDidResume:(id)resume;
+- (void)tracePlayerDidResumeLocationUpdates:(id)updates;
+- (void)updatedVehicleStateWithHandler:(id)handler;
 @end
 
 @implementation MNNavigationTraceManager
@@ -65,42 +65,42 @@
   return WeakRetained;
 }
 
-- (void)updatedVehicleStateWithHandler:(id)a3
+- (void)updatedVehicleStateWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v12 = v4;
+    v12 = handlerCopy;
     if (self->_tracePlayer)
     {
       v5 = objc_alloc_init(MNTraceEVDataRow);
       [(MNTracePlayer *)self->_tracePlayer position];
       [(MNTraceEVDataRow *)v5 setTimestamp:?];
-      v6 = [(MNTracePlayer *)self->_tracePlayer trace];
-      v7 = [v6 evData];
+      trace = [(MNTracePlayer *)self->_tracePlayer trace];
+      evData = [trace evData];
 
-      v8 = [v7 indexOfObject:v5 inSortedRange:0 options:objc_msgSend(v7 usingComparator:{"count"), 1024, &__block_literal_global_3378}];
-      if (v8 >= [v7 count])
+      v8 = [evData indexOfObject:v5 inSortedRange:0 options:objc_msgSend(evData usingComparator:{"count"), 1024, &__block_literal_global_3378}];
+      if (v8 >= [evData count])
       {
         (*(v12 + 2))(v12, 0, 0);
       }
 
       else
       {
-        v9 = [v7 objectAtIndexedSubscript:v8];
-        v10 = [v9 vehicle];
-        (*(v12 + 2))(v12, v10, 0);
+        v9 = [evData objectAtIndexedSubscript:v8];
+        vehicle = [v9 vehicle];
+        (*(v12 + 2))(v12, vehicle, 0);
         WeakRetained = objc_loadWeakRetained(&self->_virtualGarageProviderDelegate);
-        [WeakRetained virtualGarageProvider:self didUpdateSelectedVehicle:v10];
+        [WeakRetained virtualGarageProvider:self didUpdateSelectedVehicle:vehicle];
       }
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
-    v4 = v12;
+    handlerCopy = v12;
   }
 }
 
@@ -122,20 +122,20 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
 
 - (unint64_t)traceVersion
 {
-  v2 = [(MNTracePlayer *)self->_tracePlayer trace];
-  v3 = [v2 originalVersion];
+  trace = [(MNTracePlayer *)self->_tracePlayer trace];
+  originalVersion = [trace originalVersion];
 
-  return v3;
+  return originalVersion;
 }
 
 - (void)startUpdatingLocation
 {
   if ((self->_navigationType & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v3 = [(MNNavigationTraceManager *)self _startIndexForNavigation];
+    _startIndexForNavigation = [(MNNavigationTraceManager *)self _startIndexForNavigation];
     tracePlayer = self->_tracePlayer;
 
-    [(MNTracePlayer *)tracePlayer startAtLocationIndex:v3];
+    [(MNTracePlayer *)tracePlayer startAtLocationIndex:_startIndexForNavigation];
   }
 
   else
@@ -147,85 +147,85 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
   }
 }
 
-- (void)tracePlayer:(id)a3 didUpdateEVData:(id)a4
+- (void)tracePlayer:(id)player didUpdateEVData:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_virtualGarageProviderDelegate);
-  [WeakRetained virtualGarageProvider:self didUpdateSelectedVehicle:v5];
+  [WeakRetained virtualGarageProvider:self didUpdateSelectedVehicle:dataCopy];
 }
 
-- (void)tracePlayer:(id)a3 didUpdateVehicleSpeed:(double)a4 timestamp:(id)a5
+- (void)tracePlayer:(id)player didUpdateVehicleSpeed:(double)speed timestamp:(id)timestamp
 {
-  v7 = a5;
+  timestampCopy = timestamp;
   WeakRetained = objc_loadWeakRetained(&self->_locationProviderDelegate);
-  [WeakRetained locationProvider:self didUpdateVehicleSpeed:v7 timestamp:a4];
+  [WeakRetained locationProvider:self didUpdateVehicleSpeed:timestampCopy timestamp:speed];
 }
 
-- (void)tracePlayer:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5
+- (void)tracePlayer:(id)player didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp
 {
-  v7 = a5;
+  timestampCopy = timestamp;
   WeakRetained = objc_loadWeakRetained(&self->_locationProviderDelegate);
-  [WeakRetained locationProvider:self didUpdateVehicleHeading:v7 timestamp:a4];
+  [WeakRetained locationProvider:self didUpdateVehicleHeading:timestampCopy timestamp:heading];
 }
 
-- (void)tracePlayer:(id)a3 didUpdateMotion:(unint64_t)a4 exitType:(unint64_t)a5 confidence:(unint64_t)a6
+- (void)tracePlayer:(id)player didUpdateMotion:(unint64_t)motion exitType:(unint64_t)type confidence:(unint64_t)confidence
 {
   WeakRetained = objc_loadWeakRetained(&self->_motionContextProviderDelegate);
-  [WeakRetained motionContextProvider:self didUpdateMotion:a4 exitType:a5 confidence:a6];
+  [WeakRetained motionContextProvider:self didUpdateMotion:motion exitType:type confidence:confidence];
 }
 
-- (void)tracePlayer:(id)a3 didUpdateHeading:(id)a4
+- (void)tracePlayer:(id)player didUpdateHeading:(id)heading
 {
-  v5 = a4;
+  headingCopy = heading;
   WeakRetained = objc_loadWeakRetained(&self->_locationProviderDelegate);
-  [WeakRetained locationProvider:self didUpdateHeading:v5];
+  [WeakRetained locationProvider:self didUpdateHeading:headingCopy];
 }
 
-- (void)tracePlayerDidResumeLocationUpdates:(id)a3
+- (void)tracePlayerDidResumeLocationUpdates:(id)updates
 {
   WeakRetained = objc_loadWeakRetained(&self->_locationProviderDelegate);
   [WeakRetained locationProviderDidResumeLocationUpdates:self];
 }
 
-- (void)tracePlayerDidPauseLocationUpdates:(id)a3
+- (void)tracePlayerDidPauseLocationUpdates:(id)updates
 {
   WeakRetained = objc_loadWeakRetained(&self->_locationProviderDelegate);
   [WeakRetained locationProviderDidPauseLocationUpdates:self];
 }
 
-- (void)tracePlayer:(id)a3 didReceiveLocationError:(id)a4
+- (void)tracePlayer:(id)player didReceiveLocationError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_locationProviderDelegate);
-  [WeakRetained locationProvider:self didReceiveError:v5];
+  [WeakRetained locationProvider:self didReceiveError:errorCopy];
 }
 
-- (void)tracePlayer:(id)a3 didUpdateLocation:(id)a4
+- (void)tracePlayer:(id)player didUpdateLocation:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->_locationProviderDelegate);
-  [WeakRetained locationProvider:self didUpdateLocation:v5];
+  [WeakRetained locationProvider:self didUpdateLocation:locationCopy];
 }
 
-- (void)tracePlayer:(id)a3 didPlayAtTime:(double)a4
+- (void)tracePlayer:(id)player didPlayAtTime:(double)time
 {
   v7 = objc_alloc_init(MNTracePlaybackDetails);
   [(MNTracePlaybackDetails *)v7 setEventType:4];
-  [(MNTracePlaybackDetails *)v7 setCurrentPosition:a4];
+  [(MNTracePlaybackDetails *)v7 setCurrentPosition:time];
   WeakRetained = objc_loadWeakRetained(&self->_traceManagerDelegate);
   [WeakRetained navigationTraceManager:self didUpdateTracePlaybackDetails:v7];
 }
 
-- (void)tracePlayer:(id)a3 didSeekToTime:(double)a4 fromTime:(double)a5 location:(id)a6
+- (void)tracePlayer:(id)player didSeekToTime:(double)time fromTime:(double)fromTime location:(id)location
 {
   v9 = objc_alloc_init(MNTracePlaybackDetails);
   [(MNTracePlaybackDetails *)v9 setEventType:5];
-  [(MNTracePlaybackDetails *)v9 setCurrentPosition:a4];
+  [(MNTracePlaybackDetails *)v9 setCurrentPosition:time];
   WeakRetained = objc_loadWeakRetained(&self->_traceManagerDelegate);
   [WeakRetained navigationTraceManager:self didUpdateTracePlaybackDetails:v9];
 }
 
-- (void)tracePlayerDidResume:(id)a3
+- (void)tracePlayerDidResume:(id)resume
 {
   v5 = objc_alloc_init(MNTracePlaybackDetails);
   [(MNTracePlaybackDetails *)v5 setEventType:2];
@@ -233,7 +233,7 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
   [WeakRetained navigationTraceManager:self didUpdateTracePlaybackDetails:v5];
 }
 
-- (void)tracePlayerDidPause:(id)a3
+- (void)tracePlayerDidPause:(id)pause
 {
   v5 = objc_alloc_init(MNTracePlaybackDetails);
   [(MNTracePlaybackDetails *)v5 setEventType:3];
@@ -241,31 +241,31 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
   [WeakRetained navigationTraceManager:self didUpdateTracePlaybackDetails:v5];
 }
 
-- (void)_copyTraceToCrashReporterDirectory:(id)a3
+- (void)_copyTraceToCrashReporterDirectory:(id)directory
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:directoryCopy])
   {
     v15 = 0;
-    v5 = [v4 createDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Maps/NavTraces" withIntermediateDirectories:1 attributes:0 error:&v15];
+    v5 = [defaultManager createDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Maps/NavTraces" withIntermediateDirectories:1 attributes:0 error:&v15];
     v6 = v15;
     if (v5)
     {
-      v7 = [v3 lastPathComponent];
-      v8 = [@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Maps/NavTraces" stringByAppendingPathComponent:v7];
+      lastPathComponent = [directoryCopy lastPathComponent];
+      v8 = [@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Maps/NavTraces" stringByAppendingPathComponent:lastPathComponent];
 
-      if ([v4 fileExistsAtPath:v8])
+      if ([defaultManager fileExistsAtPath:v8])
       {
         v14 = v6;
-        [v4 removeItemAtPath:v8 error:&v14];
+        [defaultManager removeItemAtPath:v8 error:&v14];
         v9 = v14;
 
         v6 = v9;
       }
 
-      if (v6 || (v13 = 0, [v4 copyItemAtPath:v3 toPath:v8 error:&v13], (v6 = v13) != 0))
+      if (v6 || (v13 = 0, [defaultManager copyItemAtPath:directoryCopy toPath:v8 error:&v13], (v6 = v13) != 0))
       {
         v10 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -282,7 +282,7 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v17 = v3;
+          v17 = directoryCopy;
           v18 = 2112;
           v19 = v8;
           _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_DEFAULT, "%@ successfully copied to %@", buf, 0x16u);
@@ -310,7 +310,7 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v3;
+      v17 = directoryCopy;
       _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_ERROR, "Error copying trace to CrashReporter directory because origin trace does not exist: %@", buf, 0xCu);
     }
   }
@@ -318,36 +318,36 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createSymlinkForTracePath:(id)a3
+- (void)_createSymlinkForTracePath:(id)path
 {
-  v9 = a3;
+  pathCopy = path;
   if (GEOConfigGetBOOL())
   {
     v3 = +[MNFilePaths navTracesDirectoryPath];
     v4 = [v3 stringByAppendingPathComponent:@"LatestTrace.navtrace"];
 
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 attributesOfItemAtPath:v4 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager attributesOfItemAtPath:v4 error:0];
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696A3D8]];
     v8 = *MEMORY[0x1E696A3F0];
 
     if (v7 == v8)
     {
-      [v5 removeItemAtPath:v4 error:0];
+      [defaultManager removeItemAtPath:v4 error:0];
     }
 
-    [v5 createSymbolicLinkAtPath:v4 withDestinationPath:v9 error:0];
+    [defaultManager createSymbolicLinkAtPath:v4 withDestinationPath:pathCopy error:0];
   }
 }
 
-- (void)_recordStylesheet:(id)a3
+- (void)_recordStylesheet:(id)stylesheet
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  stylesheetCopy = stylesheet;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = GEOResourcesPath();
-  v14 = v3;
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:0];
+  v14 = defaultManager;
+  v5 = [defaultManager contentsOfDirectoryAtPath:v4 error:0];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -372,7 +372,7 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
           v11 = [v4 stringByAppendingPathComponent:v10];
           v12 = [v14 contentsAtPath:v11];
 
-          [v15 recordStylesheet:v10 data:v12];
+          [stylesheetCopy recordStylesheet:v10 data:v12];
         }
       }
 
@@ -385,32 +385,32 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recordEnvironmentInfo:(id)a3
+- (void)_recordEnvironmentInfo:(id)info
 {
   v4 = MEMORY[0x1E69A2398];
-  v5 = a3;
-  v16 = [v4 sharedPlatform];
+  infoCopy = info;
+  sharedPlatform = [v4 sharedPlatform];
   v6 = *MEMORY[0x1E69A1A10];
   v7 = *(MEMORY[0x1E69A1A10] + 8);
   v8 = GEOConfigGetString();
-  v9 = [MEMORY[0x1E69A2478] modernManager];
-  v10 = [v9 activeTileGroup];
-  v11 = [v10 releaseInfo];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  activeTileGroup = [modernManager activeTileGroup];
+  releaseInfo = [activeTileGroup releaseInfo];
 
-  v12 = [v16 productName];
-  [v5 recordEnvironmentInfo:@"ProductName" value:v12];
+  productName = [sharedPlatform productName];
+  [infoCopy recordEnvironmentInfo:@"ProductName" value:productName];
 
-  v13 = [v16 buildVersion];
-  [v5 recordEnvironmentInfo:@"BuildVersion" value:v13];
+  buildVersion = [sharedPlatform buildVersion];
+  [infoCopy recordEnvironmentInfo:@"BuildVersion" value:buildVersion];
 
-  v14 = [v16 hardwareIdentifier];
-  [v5 recordEnvironmentInfo:@"HardwareIdentifier" value:v14];
+  hardwareIdentifier = [sharedPlatform hardwareIdentifier];
+  [infoCopy recordEnvironmentInfo:@"HardwareIdentifier" value:hardwareIdentifier];
 
-  v15 = [(MNNavigationTraceManager *)self hardwareModel];
-  [v5 recordEnvironmentInfo:@"HardwareModel" value:v15];
+  hardwareModel = [(MNNavigationTraceManager *)self hardwareModel];
+  [infoCopy recordEnvironmentInfo:@"HardwareModel" value:hardwareModel];
 
-  [v5 recordEnvironmentInfo:@"EnvironmentName" value:v8];
-  [v5 recordEnvironmentInfo:@"EnvironmentReleaseName" value:v11];
+  [infoCopy recordEnvironmentInfo:@"EnvironmentName" value:v8];
+  [infoCopy recordEnvironmentInfo:@"EnvironmentReleaseName" value:releaseInfo];
 }
 
 - (id)hardwareModel
@@ -428,29 +428,29 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
   return hardwareModel;
 }
 
-- (id)_defaultTraceNameForDestination:(id)a3 isSimulation:(BOOL)a4
+- (id)_defaultTraceNameForDestination:(id)destination isSimulation:(BOOL)simulation
 {
-  v4 = a4;
+  simulationCopy = simulation;
   v5 = MEMORY[0x1E696AB78];
-  v6 = a3;
+  destinationCopy = destination;
   v7 = objc_alloc_init(v5);
   [v7 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-  v8 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v7 setTimeZone:v8];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v7 setTimeZone:localTimeZone];
 
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [v7 stringFromDate:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  v10 = [v7 stringFromDate:date];
 
-  v11 = [v6 navDisplayName];
+  navDisplayName = [destinationCopy navDisplayName];
 
-  v12 = [v11 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+  v12 = [navDisplayName stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
 
   if (!v12)
   {
     v12 = @"Unknown";
   }
 
-  if (v4)
+  if (simulationCopy)
   {
     v13 = @"%@_%@_(Simulation)";
   }
@@ -467,17 +467,17 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
 
 - (unint64_t)_startIndexForNavigation
 {
-  v2 = [(MNTracePlayer *)self->_tracePlayer trace];
-  v3 = [v2 locations];
-  v4 = [v3 count] > 1;
+  trace = [(MNTracePlayer *)self->_tracePlayer trace];
+  locations = [trace locations];
+  v4 = [locations count] > 1;
 
   return v4;
 }
 
 - (void)close
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  if ([v3 _navigation_isNavd])
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  if ([processInfo _navigation_isNavd])
   {
     v4 = +[MNLocationManager shared];
   }
@@ -490,17 +490,17 @@ uint64_t __59__MNNavigationTraceManager_updatedVehicleStateWithHandler___block_i
   traceRecorder = self->_traceRecorder;
   if (traceRecorder)
   {
-    v6 = [(MNTraceRecorder *)traceRecorder tracePath];
+    tracePath = [(MNTraceRecorder *)traceRecorder tracePath];
     v7 = self->_traceRecorder;
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __33__MNNavigationTraceManager_close__block_invoke;
     v17 = &unk_1E8430D50;
-    v18 = self;
-    v19 = v6;
-    v8 = v6;
+    selfCopy = self;
+    v19 = tracePath;
+    v8 = tracePath;
     [(MNTraceRecorder *)v7 saveTraceWithCompletionHandler:&v14];
-    [v4 setLocationRecorder:{0, v14, v15, v16, v17, v18}];
+    [v4 setLocationRecorder:{0, v14, v15, v16, v17, selfCopy}];
     v9 = +[MNVirtualGarageManager sharedManager];
     [v9 setTraceRecorder:0];
 
@@ -572,14 +572,14 @@ LABEL_9:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveRoutePlanningTrace:(id)a3
+- (void)saveRoutePlanningTrace:(id)trace
 {
-  v37 = a3;
+  traceCopy = trace;
   if (GEOConfigGetBOOL())
   {
-    v4 = [v37 waypoints];
-    v5 = [v4 lastObject];
-    v6 = [(MNNavigationTraceManager *)self _defaultTraceNameForDestination:v5 isSimulation:0];
+    waypoints = [traceCopy waypoints];
+    lastObject = [waypoints lastObject];
+    v6 = [(MNNavigationTraceManager *)self _defaultTraceNameForDestination:lastObject isSimulation:0];
 
     v7 = +[MNFilePaths routePlanningTraceExtension];
     v8 = +[MNFilePaths routePlanningTracesDirectoryPath];
@@ -587,16 +587,16 @@ LABEL_9:
     v9 = [MNFilePaths tracePathForTraceName:v6 extension:v7 directoryPath:v8];
 
     v10 = v9;
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v12 = v10;
-    if ([v11 fileExistsAtPath:v10])
+    if ([defaultManager fileExistsAtPath:v10])
     {
       v13 = 2;
       v12 = v10;
       do
       {
-        v14 = [v10 stringByDeletingPathExtension];
-        v15 = [v14 stringByAppendingFormat:@" %u", v13];
+        stringByDeletingPathExtension = [v10 stringByDeletingPathExtension];
+        v15 = [stringByDeletingPathExtension stringByAppendingFormat:@" %u", v13];
 
         v16 = +[MNFilePaths routePlanningTraceExtension];
         v12 = [v15 stringByAppendingPathExtension:v16];
@@ -604,7 +604,7 @@ LABEL_9:
         v13 = (v13 + 1);
       }
 
-      while (([v11 fileExistsAtPath:v12] & 1) != 0);
+      while (([defaultManager fileExistsAtPath:v12] & 1) != 0);
     }
 
     v17 = objc_alloc_init(MNTraceRecorder);
@@ -612,50 +612,50 @@ LABEL_9:
     self->_traceRecorder = v17;
 
     [(MNTraceRecorder *)self->_traceRecorder startWritingTraceToPath:v12 traceType:1 withErrorHandler:0];
-    v35 = [v37 initialUserLocation];
-    v19 = [v35 timestamp];
-    [(MNTraceRecorder *)self->_traceRecorder setRecordingStartDate:v19];
+    initialUserLocation = [traceCopy initialUserLocation];
+    timestamp = [initialUserLocation timestamp];
+    [(MNTraceRecorder *)self->_traceRecorder setRecordingStartDate:timestamp];
 
-    v20 = [(MNTraceRecorder *)self->_traceRecorder recordingStartDate];
-    [v20 timeIntervalSinceReferenceDate];
+    recordingStartDate = [(MNTraceRecorder *)self->_traceRecorder recordingStartDate];
+    [recordingStartDate timeIntervalSinceReferenceDate];
     v22 = v21;
 
-    [v37 initialDirectionsRequestTimestamp];
+    [traceCopy initialDirectionsRequestTimestamp];
     v23 = 0.0;
     v24 = 0.0;
     if (v25 > 0.0)
     {
-      [v37 initialDirectionsRequestTimestamp];
+      [traceCopy initialDirectionsRequestTimestamp];
       v24 = v26 - v22;
     }
 
-    [v37 initialDirectionsResponseTimestamp];
+    [traceCopy initialDirectionsResponseTimestamp];
     if (v27 > 0.0)
     {
-      [v37 initialDirectionsResponseTimestamp];
+      [traceCopy initialDirectionsResponseTimestamp];
       v23 = v28 - v22;
     }
 
     v29 = self->_traceRecorder;
-    v30 = [v37 initialDirectionsRequest];
-    v31 = [v37 initialDirectionsResponse];
-    v32 = [v37 initialDirectionsRequestError];
-    v33 = [v37 waypoints];
-    v34 = [v37 initialDirectionsResponse];
-    -[MNTraceRecorder recordDirectionsRequest:response:error:waypoints:selectedRouteIndex:requestTimestamp:responseTimestamp:](v29, "recordDirectionsRequest:response:error:waypoints:selectedRouteIndex:requestTimestamp:responseTimestamp:", v30, v31, v32, v33, [v34 selectedRouteIndex], v24, v23);
+    initialDirectionsRequest = [traceCopy initialDirectionsRequest];
+    initialDirectionsResponse = [traceCopy initialDirectionsResponse];
+    initialDirectionsRequestError = [traceCopy initialDirectionsRequestError];
+    waypoints2 = [traceCopy waypoints];
+    initialDirectionsResponse2 = [traceCopy initialDirectionsResponse];
+    -[MNTraceRecorder recordDirectionsRequest:response:error:waypoints:selectedRouteIndex:requestTimestamp:responseTimestamp:](v29, "recordDirectionsRequest:response:error:waypoints:selectedRouteIndex:requestTimestamp:responseTimestamp:", initialDirectionsRequest, initialDirectionsResponse, initialDirectionsRequestError, waypoints2, [initialDirectionsResponse2 selectedRouteIndex], v24, v23);
 
-    [(MNTraceRecorder *)self->_traceRecorder recordLocation:v35 timestamp:0.0];
+    [(MNTraceRecorder *)self->_traceRecorder recordLocation:initialUserLocation timestamp:0.0];
     [(MNNavigationTraceManager *)self close];
   }
 }
 
-- (void)openForSimulationWithRoute:(id)a3 traceRecordingData:(id)a4 traceNameOverride:(id)a5
+- (void)openForSimulationWithRoute:(id)route traceRecordingData:(id)data traceNameOverride:(id)override
 {
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  routeCopy = route;
+  dataCopy = data;
+  overrideCopy = override;
+  v11 = overrideCopy;
   if (self->_traceRecorder)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Trace recording already in progress."];
@@ -705,10 +705,10 @@ LABEL_8:
   }
 
   v15 = @"LatestSimulation";
-  v57 = v10;
-  if (v10)
+  v57 = overrideCopy;
+  if (overrideCopy)
   {
-    v15 = v10;
+    v15 = overrideCopy;
   }
 
   v16 = v15;
@@ -717,13 +717,13 @@ LABEL_8:
   v56 = v16;
   v19 = [MNFilePaths tracePathForTraceName:v16 extension:v17 directoryPath:v18];
 
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v20 fileExistsAtPath:v19])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:v19])
   {
-    [v20 removeItemAtPath:v19 error:0];
+    [defaultManager removeItemAtPath:v19 error:0];
   }
 
-  [(MNNavigationTraceManager *)self _createSymlinkForTracePath:v19, v20];
+  [(MNNavigationTraceManager *)self _createSymlinkForTracePath:v19, defaultManager];
   self->_isSimulation = 1;
   v21 = objc_alloc_init(MNTraceRecorder);
   traceRecorder = self->_traceRecorder;
@@ -735,33 +735,33 @@ LABEL_8:
   [(MNTraceRecorder *)self->_traceRecorder resetLocationsForSimulation];
   [(MNNavigationTraceManager *)self _recordEnvironmentInfo:self->_traceRecorder];
   [(MNNavigationTraceManager *)self _recordStylesheet:self->_traceRecorder];
-  v23 = [(MNTraceRecorder *)self->_traceRecorder recordingStartDate];
-  [v23 timeIntervalSinceReferenceDate];
+  recordingStartDate = [(MNTraceRecorder *)self->_traceRecorder recordingStartDate];
+  [recordingStartDate timeIntervalSinceReferenceDate];
   v25 = v24;
 
   v26 = self->_traceRecorder;
-  v27 = [v9 initialDirectionsRequest];
-  v28 = [v9 initialDirectionsResponse];
-  v29 = [v9 initialDirectionsRequestError];
-  v30 = [v9 waypoints];
-  v31 = [v8 route];
-  v32 = [v31 indexInResponse];
-  [v9 initialDirectionsRequestTimestamp];
+  initialDirectionsRequest = [dataCopy initialDirectionsRequest];
+  initialDirectionsResponse = [dataCopy initialDirectionsResponse];
+  initialDirectionsRequestError = [dataCopy initialDirectionsRequestError];
+  waypoints = [dataCopy waypoints];
+  route = [routeCopy route];
+  indexInResponse = [route indexInResponse];
+  [dataCopy initialDirectionsRequestTimestamp];
   v34 = v33 - v25;
-  [v9 initialDirectionsResponseTimestamp];
-  [(MNTraceRecorder *)v26 recordDirectionsRequest:v27 response:v28 error:v29 waypoints:v30 selectedRouteIndex:v32 requestTimestamp:v34 responseTimestamp:v35 - v25];
+  [dataCopy initialDirectionsResponseTimestamp];
+  [(MNTraceRecorder *)v26 recordDirectionsRequest:initialDirectionsRequest response:initialDirectionsResponse error:initialDirectionsRequestError waypoints:waypoints selectedRouteIndex:indexInResponse requestTimestamp:v34 responseTimestamp:v35 - v25];
 
   v36 = self->_traceRecorder;
-  v37 = [v8 route];
-  v38 = [v37 indexInResponse];
-  v39 = [v9 initialDirectionsResponse];
-  v40 = [v39 directionsResponseID];
-  [(MNTraceRecorder *)v36 recordRouteChangeWithIndex:v38 directionsResponseID:v40 etauResponseID:0 rerouteReason:0];
+  route2 = [routeCopy route];
+  indexInResponse2 = [route2 indexInResponse];
+  initialDirectionsResponse2 = [dataCopy initialDirectionsResponse];
+  directionsResponseID = [initialDirectionsResponse2 directionsResponseID];
+  [(MNTraceRecorder *)v36 recordRouteChangeWithIndex:indexInResponse2 directionsResponseID:directionsResponseID etauResponseID:0 rerouteReason:0];
 
   [(MNTraceRecorder *)self->_traceRecorder beginTransaction];
   v41 = objc_opt_new();
   [v41 setSimulationType:1];
-  [v41 setInitialRoute:v8];
+  [v41 setInitialRoute:routeCopy];
   v42 = [[MNSimulatedLocationGenerator alloc] initWithSimulationParameters:v41];
   v43 = [(MNSimulatedLocationGenerator *)v42 nextSimulatedLocationWithElapsedTime:0.0];
   [(MNTraceRecorder *)self->_traceRecorder timeSinceRecordingBegan];
@@ -799,9 +799,9 @@ LABEL_8:
   [(MNTracePlaybackDetails *)v50 setTracePath:v55];
   [(MNTracePlayer *)self->_tracePlayer duration];
   [(MNTracePlaybackDetails *)v50 setTraceDuration:?];
-  v51 = [(MNTracePlayer *)self->_tracePlayer trace];
-  v52 = [v51 serializableBookmarks];
-  [(MNTracePlaybackDetails *)v50 setBookmarks:v52];
+  trace = [(MNTracePlayer *)self->_tracePlayer trace];
+  serializableBookmarks = [trace serializableBookmarks];
+  [(MNTracePlaybackDetails *)v50 setBookmarks:serializableBookmarks];
 
   WeakRetained = objc_loadWeakRetained(&self->_traceManagerDelegate);
   [WeakRetained navigationTraceManager:self didUpdateTracePlaybackDetails:v50];
@@ -812,14 +812,14 @@ LABEL_9:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)openForPlaybackWithTracePath:(id)a3
+- (void)openForPlaybackWithTracePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[MNTraceNetworkConditionHelper getCurrentState];
   initialNetworkState = self->_initialNetworkState;
   self->_initialNetworkState = v5;
 
-  v7 = [[MNTracePlayer alloc] initWithPath:v4];
+  v7 = [[MNTracePlayer alloc] initWithPath:pathCopy];
   tracePlayer = self->_tracePlayer;
   self->_tracePlayer = v7;
 
@@ -829,34 +829,34 @@ LABEL_9:
   [(MNTracePlayer *)self->_tracePlayer setShouldPlayETARequests:GEOConfigGetBOOL()];
   [(MNTracePlayer *)self->_tracePlayer setShouldPlayNetworkEvents:GEOConfigGetBOOL()];
   [(MNTracePlayer *)self->_tracePlayer registerObserver:self];
-  v25 = [(MNTracePlayer *)self->_tracePlayer trace];
+  trace = [(MNTracePlayer *)self->_tracePlayer trace];
   v9 = objc_alloc_init(MNTracePlaybackDetails);
   [(MNTracePlaybackDetails *)v9 setEventType:1];
-  [(MNTracePlaybackDetails *)v9 setTracePath:v4];
+  [(MNTracePlaybackDetails *)v9 setTracePath:pathCopy];
 
   [(MNTracePlayer *)self->_tracePlayer duration];
   [(MNTracePlaybackDetails *)v9 setTraceDuration:?];
-  v10 = [v25 serializableBookmarks];
-  [(MNTracePlaybackDetails *)v9 setBookmarks:v10];
+  serializableBookmarks = [trace serializableBookmarks];
+  [(MNTracePlaybackDetails *)v9 setBookmarks:serializableBookmarks];
 
-  v11 = [v25 locations];
-  v12 = [v11 count];
+  locations = [trace locations];
+  v12 = [locations count];
 
   if (v12)
   {
-    v13 = [v25 miscInfo];
-    v14 = [v13 objectForKeyedSubscript:@"pedestrian_trace_path"];
+    miscInfo = [trace miscInfo];
+    v14 = [miscInfo objectForKeyedSubscript:@"pedestrian_trace_path"];
 
-    v15 = [v25 miscInfo];
-    v16 = [v15 objectForKeyedSubscript:@"pedestrian_trace_relative_timestamp"];
+    miscInfo2 = [trace miscInfo];
+    v16 = [miscInfo2 objectForKeyedSubscript:@"pedestrian_trace_relative_timestamp"];
 
     if (v14 && v16)
     {
-      v17 = [v14 stringValue];
-      [(MNTracePlaybackDetails *)v9 setPedestrianTracePath:v17];
+      stringValue = [v14 stringValue];
+      [(MNTracePlaybackDetails *)v9 setPedestrianTracePath:stringValue];
 
-      v18 = [v25 locations];
-      v19 = [v18 objectAtIndexedSubscript:1];
+      locations2 = [trace locations];
+      v19 = [locations2 objectAtIndexedSubscript:1];
 
       [v16 doubleValue];
       v21 = v20;
@@ -885,16 +885,16 @@ LABEL_9:
   [(MNNavigationTraceManager *)&v3 dealloc];
 }
 
-+ (void)_clearOldTracesInDirectory:(id)a3 matchingExpression:(id)a4 beforeDate:(id)a5
++ (void)_clearOldTracesInDirectory:(id)directory matchingExpression:(id)expression beforeDate:(id)date
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 contentsOfDirectoryAtPath:v7 error:0];
-  v30 = v8;
-  v29 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self like %@", v8];
+  directoryCopy = directory;
+  expressionCopy = expression;
+  dateCopy = date;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:0];
+  v30 = expressionCopy;
+  expressionCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self like %@", expressionCopy];
   v12 = [v11 filteredArrayUsingPredicate:?];
 
   v41 = 0u;
@@ -909,7 +909,7 @@ LABEL_9:
     v35 = *MEMORY[0x1E696A3D8];
     v34 = *MEMORY[0x1E696A3E0];
     v33 = *MEMORY[0x1E696A350];
-    v31 = v9;
+    v31 = dateCopy;
     do
     {
       for (i = 0; i != v37; ++i)
@@ -920,8 +920,8 @@ LABEL_9:
         }
 
         v14 = *(*(&v39 + 1) + 8 * i);
-        v15 = [v7 stringByAppendingPathComponent:v14];
-        v16 = [v10 attributesOfItemAtPath:v15 error:0];
+        v15 = [directoryCopy stringByAppendingPathComponent:v14];
+        v16 = [defaultManager attributesOfItemAtPath:v15 error:0];
         v17 = [v16 objectForKeyedSubscript:v35];
 
         if (v17 != v34)
@@ -930,11 +930,11 @@ LABEL_9:
           v19 = v18;
           if (v18)
           {
-            if ([v18 compare:v9]== -1)
+            if ([v18 compare:dateCopy]== -1)
             {
-              v20 = v7;
+              v20 = directoryCopy;
               v38 = 0;
-              v21 = [v10 removeItemAtPath:v15 error:&v38];
+              v21 = [defaultManager removeItemAtPath:v15 error:&v38];
               v22 = v38;
               v23 = GEOFindOrCreateLog();
               v24 = v23;
@@ -966,8 +966,8 @@ LABEL_16:
                 _os_log_impl(&dword_1D311E000, v25, v26, v27, buf, 0x16u);
               }
 
-              v7 = v20;
-              v9 = v31;
+              directoryCopy = v20;
+              dateCopy = v31;
 LABEL_18:
             }
 
@@ -1004,7 +1004,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __64__MNNavigationTraceManager_CleanTracesDirectory__clearOldTraces__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(global_queue, block);
 }
 

@@ -1,32 +1,32 @@
 @interface SSRRemoteControlClient
-- (BOOL)_isImplicitTrainingRequiredForVoiceProfileId:(id)a3 locale:(id)a4 error:(id *)a5;
+- (BOOL)_isImplicitTrainingRequiredForVoiceProfileId:(id)id locale:(id)locale error:(id *)error;
 - (BOOL)isConnected;
-- (BOOL)waitingForConnection:(double)a3 error:(id *)a4;
-- (SSRRemoteControlClient)initWithRemoteDeviceUUID:(id)a3;
-- (void)_handleServerError:(id)a3;
-- (void)_handleServerEvent:(id)a3;
-- (void)addImplicitTrainingUtteranceToRemoteFilePath:(id)a3 forVoiceProfileId:(id)a4 withVoiceTriggerCtxt:(id)a5 locale:(id)a6 withOtherCtxt:(id)a7 completion:(id)a8;
+- (BOOL)waitingForConnection:(double)connection error:(id *)error;
+- (SSRRemoteControlClient)initWithRemoteDeviceUUID:(id)d;
+- (void)_handleServerError:(id)error;
+- (void)_handleServerEvent:(id)event;
+- (void)addImplicitTrainingUtteranceToRemoteFilePath:(id)path forVoiceProfileId:(id)id withVoiceTriggerCtxt:(id)ctxt locale:(id)locale withOtherCtxt:(id)otherCtxt completion:(id)completion;
 - (void)dealloc;
-- (void)didDeviceConnect:(id)a3;
-- (void)didDeviceDisconnect:(id)a3;
+- (void)didDeviceConnect:(id)connect;
+- (void)didDeviceDisconnect:(id)disconnect;
 @end
 
 @implementation SSRRemoteControlClient
 
-- (BOOL)_isImplicitTrainingRequiredForVoiceProfileId:(id)a3 locale:(id)a4 error:(id *)a5
+- (BOOL)_isImplicitTrainingRequiredForVoiceProfileId:(id)id locale:(id)locale error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  localeCopy = locale;
   dispatch_assert_queue_V2(self->_queue);
-  if (v9)
+  if (localeCopy)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v10, "COMMAND", "queryImplicitTrainingRequired");
-    xpc_dictionary_set_string(v10, "languageCode", [v9 UTF8String]);
-    if (v8)
+    xpc_dictionary_set_string(v10, "languageCode", [localeCopy UTF8String]);
+    if (idCopy)
     {
-      xpc_dictionary_set_string(v10, "voiceProfileId", [v8 UTF8String]);
+      xpc_dictionary_set_string(v10, "voiceProfileId", [idCopy UTF8String]);
     }
 
     if (self->_connection)
@@ -72,7 +72,7 @@
           LOBYTE(v16) = 0;
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_18;
         }
@@ -92,14 +92,14 @@
 
         LOBYTE(v16) = 0;
         v14 = v18;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_18;
         }
       }
 
       v20 = v14;
-      *a5 = v14;
+      *error = v14;
 LABEL_18:
 
 LABEL_32:
@@ -112,17 +112,17 @@ LABEL_32:
       v27 = 136315138;
       v28 = "[SSRRemoteControlClient _isImplicitTrainingRequiredForVoiceProfileId:locale:error:]";
       _os_log_error_impl(&dword_225E12000, v21, OS_LOG_TYPE_ERROR, "%s attempt to send message while connection does not exsit", &v27, 0xCu);
-      if (a5)
+      if (error)
       {
         goto LABEL_21;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_21:
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1003 userInfo:&unk_283933608];
-      *a5 = LOBYTE(v16) = 0;
+      *error = LOBYTE(v16) = 0;
       goto LABEL_32;
     }
 
@@ -136,7 +136,7 @@ LABEL_21:
     v27 = 136315138;
     v28 = "[SSRRemoteControlClient _isImplicitTrainingRequiredForVoiceProfileId:locale:error:]";
     _os_log_error_impl(&dword_225E12000, v15, OS_LOG_TYPE_ERROR, "%s Invalid locale", &v27, 0xCu);
-    if (a5)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -146,30 +146,30 @@ LABEL_29:
     goto LABEL_33;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_29;
   }
 
 LABEL_10:
   [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:&unk_283933590];
-  *a5 = LOBYTE(v16) = 0;
+  *error = LOBYTE(v16) = 0;
 LABEL_33:
 
   v25 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (void)addImplicitTrainingUtteranceToRemoteFilePath:(id)a3 forVoiceProfileId:(id)a4 withVoiceTriggerCtxt:(id)a5 locale:(id)a6 withOtherCtxt:(id)a7 completion:(id)a8
+- (void)addImplicitTrainingUtteranceToRemoteFilePath:(id)path forVoiceProfileId:(id)id withVoiceTriggerCtxt:(id)ctxt locale:(id)locale withOtherCtxt:(id)otherCtxt completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = [v13 lastPathComponent];
-  v19 = [@"VoiceTrigger/SAT_implicit/audio/" stringByAppendingPathComponent:v18];
+  pathCopy = path;
+  idCopy = id;
+  ctxtCopy = ctxt;
+  localeCopy = locale;
+  completionCopy = completion;
+  lastPathComponent = [pathCopy lastPathComponent];
+  v19 = [@"VoiceTrigger/SAT_implicit/audio/" stringByAppendingPathComponent:lastPathComponent];
 
   v20 = MEMORY[0x277D01970];
   v21 = *MEMORY[0x277D01970];
@@ -178,18 +178,18 @@ LABEL_33:
     *buf = 136315650;
     v38 = "[SSRRemoteControlClient addImplicitTrainingUtteranceToRemoteFilePath:forVoiceProfileId:withVoiceTriggerCtxt:locale:withOtherCtxt:completion:]";
     v39 = 2114;
-    v40 = v13;
+    v40 = pathCopy;
     v41 = 2114;
-    v42 = v14;
+    v42 = idCopy;
     _os_log_impl(&dword_225E12000, v21, OS_LOG_TYPE_DEFAULT, "%s %{public}@, voiceProfileId %{public}@", buf, 0x20u);
   }
 
-  if (v13 && v19)
+  if (pathCopy && v19)
   {
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v22 fileExistsAtPath:v13])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:pathCopy])
     {
-      if (v16)
+      if (localeCopy)
       {
         queue = self->_queue;
         block[0] = MEMORY[0x277D85DD0];
@@ -197,12 +197,12 @@ LABEL_33:
         block[2] = __142__SSRRemoteControlClient_addImplicitTrainingUtteranceToRemoteFilePath_forVoiceProfileId_withVoiceTriggerCtxt_locale_withOtherCtxt_completion___block_invoke;
         block[3] = &unk_278578318;
         block[4] = self;
-        v31 = v14;
-        v32 = v16;
-        v36 = v17;
-        v33 = v15;
+        v31 = idCopy;
+        v32 = localeCopy;
+        v36 = completionCopy;
+        v33 = ctxtCopy;
         v34 = v19;
-        v35 = v13;
+        v35 = pathCopy;
         dispatch_async(queue, block);
 
 LABEL_17:
@@ -215,13 +215,13 @@ LABEL_17:
         *buf = 136315138;
         v38 = "[SSRRemoteControlClient addImplicitTrainingUtteranceToRemoteFilePath:forVoiceProfileId:withVoiceTriggerCtxt:locale:withOtherCtxt:completion:]";
         _os_log_error_impl(&dword_225E12000, v27, OS_LOG_TYPE_ERROR, "%s Invalid locale", buf, 0xCu);
-        if (!v17)
+        if (!completionCopy)
         {
           goto LABEL_17;
         }
       }
 
-      else if (!v17)
+      else if (!completionCopy)
       {
         goto LABEL_17;
       }
@@ -238,15 +238,15 @@ LABEL_17:
         *buf = 136315394;
         v38 = "[SSRRemoteControlClient addImplicitTrainingUtteranceToRemoteFilePath:forVoiceProfileId:withVoiceTriggerCtxt:locale:withOtherCtxt:completion:]";
         v39 = 2114;
-        v40 = v13;
+        v40 = pathCopy;
         _os_log_error_impl(&dword_225E12000, v24, OS_LOG_TYPE_ERROR, "%s File does not exists : %{public}@", buf, 0x16u);
-        if (!v17)
+        if (!completionCopy)
         {
           goto LABEL_17;
         }
       }
 
-      else if (!v17)
+      else if (!completionCopy)
       {
         goto LABEL_17;
       }
@@ -256,15 +256,15 @@ LABEL_17:
     }
 
     v28 = [v25 errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:v26];
-    (*(v17 + 2))(v17, v28);
+    (*(completionCopy + 2))(completionCopy, v28);
 
     goto LABEL_17;
   }
 
-  if (v17)
+  if (completionCopy)
   {
-    v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:&unk_2839334C8];
-    (*(v17 + 2))(v17, v22);
+    defaultManager = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:&unk_2839334C8];
+    (*(completionCopy + 2))(completionCopy, defaultManager);
     goto LABEL_17;
   }
 
@@ -451,14 +451,14 @@ void __142__SSRRemoteControlClient_addImplicitTrainingUtteranceToRemoteFilePath_
   }
 }
 
-- (void)_handleServerError:(id)a3
+- (void)_handleServerError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (errorCopy)
   {
-    if (v4 == MEMORY[0x277D863F8] || v4 == MEMORY[0x277D863F0])
+    if (errorCopy == MEMORY[0x277D863F8] || errorCopy == MEMORY[0x277D863F0])
     {
       v6 = *MEMORY[0x277D01970];
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -476,7 +476,7 @@ void __142__SSRRemoteControlClient_addImplicitTrainingUtteranceToRemoteFilePath_
 
     else
     {
-      string = xpc_dictionary_get_string(v4, *MEMORY[0x277D86400]);
+      string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x277D86400]);
       v8 = *MEMORY[0x277D01970];
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
       {
@@ -492,14 +492,14 @@ void __142__SSRRemoteControlClient_addImplicitTrainingUtteranceToRemoteFilePath_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleServerEvent:(id)a3
+- (void)_handleServerEvent:(id)event
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (eventCopy)
   {
-    if (MEMORY[0x22AA717E0](v4) == MEMORY[0x277D86480])
+    if (MEMORY[0x22AA717E0](eventCopy) == MEMORY[0x277D86480])
     {
       v5 = *MEMORY[0x277D01970];
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -509,7 +509,7 @@ void __142__SSRRemoteControlClient_addImplicitTrainingUtteranceToRemoteFilePath_
         _os_log_error_impl(&dword_225E12000, v5, OS_LOG_TYPE_ERROR, "%s remoteXPC connection get failed", &v8, 0xCu);
       }
 
-      [(SSRRemoteControlClient *)self _handleServerError:v4];
+      [(SSRRemoteControlClient *)self _handleServerError:eventCopy];
     }
   }
 
@@ -556,10 +556,10 @@ uint64_t __37__SSRRemoteControlClient_isConnected__block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)waitingForConnection:(double)a3 error:(id *)a4
+- (BOOL)waitingForConnection:(double)connection error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [(CSDispatchGroup *)self->_deviceWaitingGroup waitWithTimeout:dispatch_time(0, (a3 * 1000000000.0))];
+  v7 = [(CSDispatchGroup *)self->_deviceWaitingGroup waitWithTimeout:dispatch_time(0, (connection * 1000000000.0))];
   if (!v7)
   {
     if ([(SSRRemoteControlClient *)self isConnected])
@@ -574,13 +574,13 @@ uint64_t __37__SSRRemoteControlClient_isConnected__block_invoke(uint64_t result)
       v15 = 136315138;
       v16 = "[SSRRemoteControlClient waitingForConnection:error:]";
       _os_log_error_impl(&dword_225E12000, v11, OS_LOG_TYPE_ERROR, "%s Device is connected but RemoteXPC service is not connected", &v15, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_14;
     }
@@ -595,22 +595,22 @@ uint64_t __37__SSRRemoteControlClient_isConnected__block_invoke(uint64_t result)
     v15 = 136315394;
     v16 = "[SSRRemoteControlClient waitingForConnection:error:]";
     v17 = 2050;
-    v18 = a3;
+    connectionCopy = connection;
     _os_log_fault_impl(&dword_225E12000, v8, OS_LOG_TYPE_FAULT, "%s Device connection waiting %{public}.3f seconds timed out", &v15, 0x16u);
-    if (a4)
+    if (error)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_4:
     v9 = 1002;
 LABEL_10:
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:v9 userInfo:0];
     v10 = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_15;
   }
 
@@ -631,7 +631,7 @@ LABEL_15:
   return result;
 }
 
-- (void)didDeviceDisconnect:(id)a3
+- (void)didDeviceDisconnect:(id)disconnect
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D01970];
@@ -659,10 +659,10 @@ void __46__SSRRemoteControlClient_didDeviceDisconnect___block_invoke(uint64_t a1
   *(v1 + 16) = 0;
 }
 
-- (void)didDeviceConnect:(id)a3
+- (void)didDeviceConnect:(id)connect
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectCopy = connect;
   v5 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
@@ -676,9 +676,9 @@ void __46__SSRRemoteControlClient_didDeviceDisconnect___block_invoke(uint64_t a1
   v9[1] = 3221225472;
   v9[2] = __43__SSRRemoteControlClient_didDeviceConnect___block_invoke;
   v9[3] = &unk_278579350;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = connectCopy;
+  selfCopy = self;
+  v7 = connectCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -774,18 +774,18 @@ void __43__SSRRemoteControlClient_didDeviceConnect___block_invoke_9(uint64_t a1,
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRRemoteControlClient)initWithRemoteDeviceUUID:(id)a3
+- (SSRRemoteControlClient)initWithRemoteDeviceUUID:(id)d
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if ([MEMORY[0x277D018F8] isDarwinOS])
   {
 LABEL_10:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v18 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -815,7 +815,7 @@ LABEL_10:
     v10 = v5->_queue;
     v29[0] = 0;
     v29[1] = 0;
-    v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+    v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
     [v11 getUUIDBytes:v29];
     v12 = remote_device_copy_device_with_uuid();
     device = v5->_device;
@@ -838,7 +838,7 @@ LABEL_10:
       *buf = 136315394;
       v26 = "[SSRRemoteControlClient initWithRemoteDeviceUUID:]";
       v27 = 2114;
-      v28 = v4;
+      v28 = dCopy;
       _os_log_impl(&dword_225E12000, v16, OS_LOG_TYPE_DEFAULT, "%s Creating remoteControlClient for deviceUUID %{public}@", buf, 0x16u);
     }
 
@@ -849,11 +849,11 @@ LABEL_10:
   }
 
   self = v5;
-  v17 = self;
+  selfCopy = self;
 LABEL_11:
 
   v19 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
 void __51__SSRRemoteControlClient_initWithRemoteDeviceUUID___block_invoke(uint64_t a1, void *a2)

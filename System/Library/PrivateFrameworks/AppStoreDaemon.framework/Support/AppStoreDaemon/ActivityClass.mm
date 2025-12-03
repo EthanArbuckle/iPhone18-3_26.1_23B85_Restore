@@ -12,7 +12,7 @@
   __chkstk_darwin(v3);
   v6 = v11 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x50);
-  v8 = self;
+  selfCopy = self;
   v7();
   sub_100085D40(&qword_10059C808);
   XPCDictionary.withUnsafeUnderlyingDictionary<A>(_:)();

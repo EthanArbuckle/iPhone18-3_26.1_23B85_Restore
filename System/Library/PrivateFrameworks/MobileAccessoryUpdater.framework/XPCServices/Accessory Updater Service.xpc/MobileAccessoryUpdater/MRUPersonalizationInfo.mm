@@ -1,8 +1,8 @@
 @interface MRUPersonalizationInfo
-- (MRUPersonalizationInfo)initWithCoder:(id)a3;
-- (MRUPersonalizationInfo)initWithHardwareInfo:(id)a3 componentName:(id)a4 objectName:(id)a5 nonce:(id)a6;
-- (MRUPersonalizationInfo)initWithHardwareInfo:(id)a3 componentName:(id)a4 objectName:(id)a5 nonce:(id)a6 tagNumber:(id)a7;
-- (MRUPersonalizationInfo)initWithOptions:(id)a3 error:(id *)a4;
+- (MRUPersonalizationInfo)initWithCoder:(id)coder;
+- (MRUPersonalizationInfo)initWithHardwareInfo:(id)info componentName:(id)name objectName:(id)objectName nonce:(id)nonce;
+- (MRUPersonalizationInfo)initWithHardwareInfo:(id)info componentName:(id)name objectName:(id)objectName nonce:(id)nonce tagNumber:(id)number;
+- (MRUPersonalizationInfo)initWithOptions:(id)options error:(id *)error;
 - (NSDictionary)asDictionary;
 - (NSString)_componentNameSuffix;
 - (NSString)_propertyNameSuffix;
@@ -16,27 +16,27 @@
 - (NSString)tag;
 - (NSString)ticketName;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRUPersonalizationInfo
 
-- (MRUPersonalizationInfo)initWithHardwareInfo:(id)a3 componentName:(id)a4 objectName:(id)a5 nonce:(id)a6
+- (MRUPersonalizationInfo)initWithHardwareInfo:(id)info componentName:(id)name objectName:(id)objectName nonce:(id)nonce
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  infoCopy = info;
+  nameCopy = name;
+  objectNameCopy = objectName;
+  nonceCopy = nonce;
   v19.receiver = self;
   v19.super_class = MRUPersonalizationInfo;
   v15 = [(MRUPersonalizationInfo *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_hardwareInfo, a3);
-    objc_storeStrong(&v16->_componentName, a4);
-    objc_storeStrong(&v16->_objectName, a5);
-    objc_storeStrong(&v16->_nonce, a6);
+    objc_storeStrong(&v15->_hardwareInfo, info);
+    objc_storeStrong(&v16->_componentName, name);
+    objc_storeStrong(&v16->_objectName, objectName);
+    objc_storeStrong(&v16->_nonce, nonce);
     tagNumber = v16->_tagNumber;
     v16->_tagNumber = 0;
   }
@@ -44,46 +44,46 @@
   return v16;
 }
 
-- (MRUPersonalizationInfo)initWithHardwareInfo:(id)a3 componentName:(id)a4 objectName:(id)a5 nonce:(id)a6 tagNumber:(id)a7
+- (MRUPersonalizationInfo)initWithHardwareInfo:(id)info componentName:(id)name objectName:(id)objectName nonce:(id)nonce tagNumber:(id)number
 {
-  v13 = a7;
-  v14 = [(MRUPersonalizationInfo *)self initWithHardwareInfo:a3 componentName:a4 objectName:a5 nonce:a6];
+  numberCopy = number;
+  v14 = [(MRUPersonalizationInfo *)self initWithHardwareInfo:info componentName:name objectName:objectName nonce:nonce];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_tagNumber, a7);
+    objc_storeStrong(&v14->_tagNumber, number);
   }
 
   return v15;
 }
 
-- (MRUPersonalizationInfo)initWithCoder:(id)a3
+- (MRUPersonalizationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MRUPersonalizationInfo;
   v5 = [(MRUPersonalizationInfo *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"hardwareInfo"];
+    v6 = [coderCopy decodeObjectForKey:@"hardwareInfo"];
     hardwareInfo = v5->_hardwareInfo;
     v5->_hardwareInfo = v6;
 
-    v8 = [v4 decodeObjectForKey:@"componentName"];
+    v8 = [coderCopy decodeObjectForKey:@"componentName"];
     componentName = v5->_componentName;
     v5->_componentName = v8;
 
-    v10 = [v4 decodeObjectForKey:@"objectName"];
+    v10 = [coderCopy decodeObjectForKey:@"objectName"];
     objectName = v5->_objectName;
     v5->_objectName = v10;
 
-    v12 = [v4 decodeObjectForKey:@"nonce"];
+    v12 = [coderCopy decodeObjectForKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v12;
 
-    if ([v4 containsValueForKey:@"tagNumber"])
+    if ([coderCopy containsValueForKey:@"tagNumber"])
     {
-      v14 = [v4 decodeObjectForKey:@"tagNumber"];
+      v14 = [coderCopy decodeObjectForKey:@"tagNumber"];
     }
 
     else
@@ -98,9 +98,9 @@
   return v5;
 }
 
-- (MRUPersonalizationInfo)initWithOptions:(id)a3 error:(id *)a4
+- (MRUPersonalizationInfo)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v31.receiver = self;
   v31.super_class = MRUPersonalizationInfo;
   v7 = [(MRUPersonalizationInfo *)&v31 init];
@@ -109,16 +109,16 @@
     goto LABEL_24;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"HardwareInfo"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"HardwareInfo"];
   if (!v8)
   {
-    if (*a4)
+    if (*error)
     {
       v40 = NSLocalizedDescriptionKey;
       v19 = [NSString stringWithFormat:@"No hardwareInfo in options dict"];
       v41 = v19;
       v20 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v20];
+      *error = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v20];
     }
 
     goto LABEL_19;
@@ -130,7 +130,7 @@
   v11 = v30;
   if (!v10)
   {
-    if (*a4)
+    if (*error)
     {
       v38[0] = NSLocalizedDescriptionKey;
       v21 = [NSString stringWithFormat:@"Failed to create hardwareInfo, options: %@", v9];
@@ -138,23 +138,23 @@
       v39[0] = v21;
       v39[1] = v11;
       v22 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
-      *a4 = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:3 userInfo:v22];
+      *error = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:3 userInfo:v22];
     }
 
     goto LABEL_18;
   }
 
   objc_storeStrong(&v7->_hardwareInfo, v10);
-  v12 = [v6 objectForKeyedSubscript:@"ComponentName"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"ComponentName"];
   if (!v12)
   {
-    if (*a4)
+    if (*error)
     {
       v36 = NSLocalizedDescriptionKey;
       v23 = [NSString stringWithFormat:@"No component name in options dict"];
       v37 = v23;
       v24 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v24];
+      *error = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v24];
     }
 
     goto LABEL_17;
@@ -162,16 +162,16 @@
 
   v13 = v12;
   objc_storeStrong(&v7->_componentName, v12);
-  v14 = [v6 objectForKeyedSubscript:@"ObjectName"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"ObjectName"];
   if (!v14)
   {
-    if (*a4)
+    if (*error)
     {
       v34 = NSLocalizedDescriptionKey;
       v25 = [NSString stringWithFormat:@"No object name in options dict"];
       v35 = v25;
       v26 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v26];
+      *error = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v26];
     }
 
 LABEL_17:
@@ -182,18 +182,18 @@ LABEL_18:
 
   v15 = v14;
   objc_storeStrong(&v7->_objectName, v14);
-  v16 = [v6 objectForKeyedSubscript:@"Nonce"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"Nonce"];
   if (v16)
   {
     objc_storeStrong(&v7->_nonce, v16);
-    v17 = [v6 objectForKeyedSubscript:@"TagNumber"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"TagNumber"];
     tagNumber = v7->_tagNumber;
     v7->_tagNumber = v17;
   }
 
   else
   {
-    if (!*a4)
+    if (!*error)
     {
       goto LABEL_23;
     }
@@ -202,7 +202,7 @@ LABEL_18:
     tagNumber = [NSString stringWithFormat:@"No nonce in options dict"];
     v33 = tagNumber;
     v29 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v29];
+    *error = [NSError errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:2 userInfo:v29];
   }
 
 LABEL_23:
@@ -220,25 +220,25 @@ LABEL_25:
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_hardwareInfo forKey:@"hardwareInfo"];
-  [v5 encodeObject:self->_componentName forKey:@"componentName"];
-  [v5 encodeObject:self->_objectName forKey:@"objectName"];
-  [v5 encodeObject:self->_nonce forKey:@"nonce"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_hardwareInfo forKey:@"hardwareInfo"];
+  [coderCopy encodeObject:self->_componentName forKey:@"componentName"];
+  [coderCopy encodeObject:self->_objectName forKey:@"objectName"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
   tagNumber = self->_tagNumber;
   if (tagNumber)
   {
-    [v5 encodeObject:tagNumber forKey:@"tagNumber"];
+    [coderCopy encodeObject:tagNumber forKey:@"tagNumber"];
   }
 }
 
 - (NSDictionary)asDictionary
 {
   v9[0] = @"HardwareInfo";
-  v3 = [(MRUHardwareInfo *)self->_hardwareInfo asDictionary];
-  v10 = v3;
+  asDictionary = [(MRUHardwareInfo *)self->_hardwareInfo asDictionary];
+  v10 = asDictionary;
   v11 = *&self->_componentName;
   v9[1] = @"ComponentName";
   v9[2] = @"ObjectName";
@@ -293,8 +293,8 @@ LABEL_25:
 - (NSString)ticketName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _componentNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@%@, Ticket", componentName, v3];
+  _componentNameSuffix = [(MRUPersonalizationInfo *)self _componentNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@%@, Ticket", componentName, _componentNameSuffix];
 
   return v4;
 }
@@ -303,8 +303,8 @@ LABEL_25:
 {
   componentName = self->_componentName;
   objectName = self->_objectName;
-  v4 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v5 = [NSString stringWithFormat:@"%@, %@%@", componentName, objectName, v4];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v5 = [NSString stringWithFormat:@"%@, %@%@", componentName, objectName, _propertyNameSuffix];
 
   return v5;
 }
@@ -312,8 +312,8 @@ LABEL_25:
 - (NSString)boardIDPropertyName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@, BoardID%@", componentName, v3];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@, BoardID%@", componentName, _propertyNameSuffix];
 
   return v4;
 }
@@ -321,8 +321,8 @@ LABEL_25:
 - (NSString)chipIDPropertyName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@, ChipID%@", componentName, v3];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@, ChipID%@", componentName, _propertyNameSuffix];
 
   return v4;
 }
@@ -330,8 +330,8 @@ LABEL_25:
 - (NSString)ecidPropertyName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@, ECID%@", componentName, v3];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@, ECID%@", componentName, _propertyNameSuffix];
 
   return v4;
 }
@@ -339,8 +339,8 @@ LABEL_25:
 - (NSString)noncePropertyName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@, Nonce%@", componentName, v3];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@, Nonce%@", componentName, _propertyNameSuffix];
 
   return v4;
 }
@@ -348,8 +348,8 @@ LABEL_25:
 - (NSString)productionModePropertyName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@, ProductionMode%@", componentName, v3];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@, ProductionMode%@", componentName, _propertyNameSuffix];
 
   return v4;
 }
@@ -357,8 +357,8 @@ LABEL_25:
 - (NSString)securityDomainPropertyName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@, SecurityDomain%@", componentName, v3];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@, SecurityDomain%@", componentName, _propertyNameSuffix];
 
   return v4;
 }
@@ -366,8 +366,8 @@ LABEL_25:
 - (NSString)securityModePropertyName
 {
   componentName = self->_componentName;
-  v3 = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
-  v4 = [NSString stringWithFormat:@"%@, SecurityMode%@", componentName, v3];
+  _propertyNameSuffix = [(MRUPersonalizationInfo *)self _propertyNameSuffix];
+  v4 = [NSString stringWithFormat:@"%@, SecurityMode%@", componentName, _propertyNameSuffix];
 
   return v4;
 }
@@ -381,8 +381,8 @@ LABEL_25:
   v6 = [(MRUHardwareInfo *)self->_hardwareInfo description];
   [v5 appendFormat:@"\thardwareInfo: %s\n", objc_msgSend(v6, "UTF8String")];
 
-  v7 = [(MRUPersonalizationInfo *)self ticketName];
-  [v5 appendFormat:@"\tticketName: %s\n", objc_msgSend(v7, "UTF8String")];
+  ticketName = [(MRUPersonalizationInfo *)self ticketName];
+  [v5 appendFormat:@"\tticketName: %s\n", objc_msgSend(ticketName, "UTF8String")];
 
   v8 = [(MRUPersonalizationInfo *)self tag];
   [v5 appendFormat:@"\ttagName: %s\n", objc_msgSend(v8, "UTF8String")];

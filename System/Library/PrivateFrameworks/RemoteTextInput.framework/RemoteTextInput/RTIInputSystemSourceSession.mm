@@ -4,12 +4,12 @@
 - (RTIInputSystemPayloadDelegate)payloadDelegate;
 - (RTIInputSystemSourceSession)init;
 - (id)sessionIndependentPayloadDelegate;
-- (void)addSessionDelegate:(id)a3;
+- (void)addSessionDelegate:(id)delegate;
 - (void)flushOperations;
-- (void)handleForwardingResponseActionPayload:(id)a3;
-- (void)handleTextActionPayload:(id)a3;
-- (void)notifySessionDelegateDidBegin:(id)a3;
-- (void)setSessionDelegate:(id)a3;
+- (void)handleForwardingResponseActionPayload:(id)payload;
+- (void)handleTextActionPayload:(id)payload;
+- (void)notifySessionDelegateDidBegin:(id)begin;
+- (void)setSessionDelegate:(id)delegate;
 @end
 
 @implementation RTIInputSystemSourceSession
@@ -29,9 +29,9 @@
 
 - (void)flushOperations
 {
-  v3 = [(RTIInputSystemSession *)self textOperations];
+  textOperations = [(RTIInputSystemSession *)self textOperations];
 
-  if (v3)
+  if (textOperations)
   {
     WeakRetained = objc_loadWeakRetained(&self->_payloadDelegate);
     if (WeakRetained)
@@ -43,78 +43,78 @@
       if (v7)
       {
         v8 = objc_alloc_init(RTIInputSystemDataPayload);
-        v9 = [(RTIInputSystemSession *)self textOperations];
-        [(RTIInputSystemDataPayload *)v8 setTextOperations:v9];
+        textOperations2 = [(RTIInputSystemSession *)self textOperations];
+        [(RTIInputSystemDataPayload *)v8 setTextOperations:textOperations2];
 
         v10 = objc_loadWeakRetained(&self->_payloadDelegate);
         [v10 handleTextActionPayload:v8];
       }
     }
 
-    v11 = [(RTIInputSystemSession *)self textOperations];
-    v12 = [(RTIInputSystemSession *)self documentState];
-    [(RTIInputSystemSession *)self _applyLocalTextOperations:v11 toDocumentState:v12];
+    textOperations3 = [(RTIInputSystemSession *)self textOperations];
+    documentState = [(RTIInputSystemSession *)self documentState];
+    [(RTIInputSystemSession *)self _applyLocalTextOperations:textOperations3 toDocumentState:documentState];
 
     [(RTIInputSystemSession *)self setTextOperations:0];
   }
 }
 
-- (void)notifySessionDelegateDidBegin:(id)a3
+- (void)notifySessionDelegateDidBegin:(id)begin
 {
-  v5 = a3;
+  beginCopy = begin;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(RTIInputSystemSession *)self beginOptions];
-    [v5 inputSessionDidBegin:self options:v4];
+    beginOptions = [(RTIInputSystemSession *)self beginOptions];
+    [beginCopy inputSessionDidBegin:self options:beginOptions];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v5 inputSessionDidBegin:self];
+    [beginCopy inputSessionDidBegin:self];
   }
 }
 
-- (void)setSessionDelegate:(id)a3
+- (void)setSessionDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = RTIInputSystemSourceSession;
-  v4 = a3;
-  [(RTIInputSystemSession *)&v5 setSessionDelegate:v4];
-  [(RTIInputSystemSourceSession *)self notifySessionDelegateDidBegin:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(RTIInputSystemSession *)&v5 setSessionDelegate:delegateCopy];
+  [(RTIInputSystemSourceSession *)self notifySessionDelegateDidBegin:delegateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)addSessionDelegate:(id)a3
+- (void)addSessionDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = RTIInputSystemSourceSession;
-  v4 = a3;
-  [(RTIInputSystemSession *)&v5 addSessionDelegate:v4];
-  [(RTIInputSystemSourceSession *)self notifySessionDelegateDidBegin:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(RTIInputSystemSession *)&v5 addSessionDelegate:delegateCopy];
+  [(RTIInputSystemSourceSession *)self notifySessionDelegateDidBegin:delegateCopy, v5.receiver, v5.super_class];
 }
 
 - (RTIDataPayload)currentForwardingDataPayload
 {
   v3 = [RTIInputSystemDataPayload payloadWithData:0 version:[(RTIInputSystemSourceSession *)self payloadVersion]];
-  v4 = [(RTIInputSystemSession *)self documentTraits];
-  [v3 setDocumentTraits:v4];
+  documentTraits = [(RTIInputSystemSession *)self documentTraits];
+  [v3 setDocumentTraits:documentTraits];
 
-  v5 = [(RTIInputSystemSession *)self documentState];
-  [v3 setDocumentState:v5];
+  documentState = [(RTIInputSystemSession *)self documentState];
+  [v3 setDocumentState:documentState];
 
-  v6 = [(RTIInputSystemSession *)self _textOperations];
-  [v3 setTextOperations:v6];
+  _textOperations = [(RTIInputSystemSession *)self _textOperations];
+  [v3 setTextOperations:_textOperations];
 
-  v7 = [(RTIInputSystemSession *)self uuid];
-  [v3 setSessionUUID:v7];
+  uuid = [(RTIInputSystemSession *)self uuid];
+  [v3 setSessionUUID:uuid];
 
   [v3 updateData];
 
   return v3;
 }
 
-- (void)handleForwardingResponseActionPayload:(id)a3
+- (void)handleForwardingResponseActionPayload:(id)payload
 {
-  v16 = a3;
+  payloadCopy = payload;
   WeakRetained = objc_loadWeakRetained(&self->_payloadDelegate);
   if (WeakRetained)
   {
@@ -125,27 +125,27 @@
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_payloadDelegate);
-      [v8 handleTextActionPayload:v16];
+      [v8 handleTextActionPayload:payloadCopy];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v16;
+    v9 = payloadCopy;
   }
 
   else
   {
-    v10 = [v16 data];
-    v9 = +[RTIInputSystemDataPayload payloadWithData:version:](RTIInputSystemDataPayload, "payloadWithData:version:", v10, [v16 version]);
+    data = [payloadCopy data];
+    v9 = +[RTIInputSystemDataPayload payloadWithData:version:](RTIInputSystemDataPayload, "payloadWithData:version:", data, [payloadCopy version]);
   }
 
   payloadVersion = self->_payloadVersion;
-  v12 = [v16 version];
-  if (payloadVersion >= v12)
+  version = [payloadCopy version];
+  if (payloadVersion >= version)
   {
-    v13 = v12;
+    v13 = version;
   }
 
   else
@@ -154,39 +154,39 @@
   }
 
   self->_payloadVersion = v13;
-  v14 = [v9 textOperations];
-  v15 = [(RTIInputSystemSession *)self documentState];
-  [(RTIInputSystemSession *)self _applyLocalTextOperations:v14 toDocumentState:v15];
+  textOperations = [v9 textOperations];
+  documentState = [(RTIInputSystemSession *)self documentState];
+  [(RTIInputSystemSession *)self _applyLocalTextOperations:textOperations toDocumentState:documentState];
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(RTIInputSystemSourceSession *)self forwardingPayloadDelegate];
+  payloadCopy = payload;
+  forwardingPayloadDelegate = [(RTIInputSystemSourceSession *)self forwardingPayloadDelegate];
 
-  if (v5)
+  if (forwardingPayloadDelegate)
   {
-    v6 = [(RTIInputSystemSourceSession *)self forwardingPayloadDelegate];
-    [v6 handleTextActionPayload:v4];
+    forwardingPayloadDelegate2 = [(RTIInputSystemSourceSession *)self forwardingPayloadDelegate];
+    [forwardingPayloadDelegate2 handleTextActionPayload:payloadCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 copy];
+    v7 = [payloadCopy copy];
   }
 
   else
   {
-    v8 = [v4 data];
-    v7 = +[RTIInputSystemDataPayload payloadWithData:version:](RTIInputSystemDataPayload, "payloadWithData:version:", v8, [v4 version]);
+    data = [payloadCopy data];
+    v7 = +[RTIInputSystemDataPayload payloadWithData:version:](RTIInputSystemDataPayload, "payloadWithData:version:", data, [payloadCopy version]);
   }
 
   payloadVersion = self->_payloadVersion;
-  v10 = [v4 version];
-  if (payloadVersion >= v10)
+  version = [payloadCopy version];
+  if (payloadVersion >= version)
   {
-    v11 = v10;
+    v11 = version;
   }
 
   else
@@ -197,17 +197,17 @@
   self->_payloadVersion = v11;
   if ([v7 version] == 1)
   {
-    v12 = [v7 sessionUUID];
+    sessionUUID = [v7 sessionUUID];
 
-    if (v12)
+    if (sessionUUID)
     {
-      v13 = [v7 sessionUUID];
-      [(RTIInputSystemSession *)self setUuid:v13];
+      sessionUUID2 = [v7 sessionUUID];
+      [(RTIInputSystemSession *)self setUuid:sessionUUID2];
     }
 
-    v14 = [v7 data];
+    data2 = [v7 data];
 
-    if (!v14)
+    if (!data2)
     {
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
@@ -217,12 +217,12 @@
       [(RTIInputSystemSession *)self enumerateSessionDelegatesUsingBlock:v29];
     }
 
-    v15 = [v7 documentTraits];
+    documentTraits = [v7 documentTraits];
 
-    if (v15)
+    if (documentTraits)
     {
-      v16 = [v7 documentTraits];
-      v17 = [v16 copy];
+      documentTraits2 = [v7 documentTraits];
+      v17 = [documentTraits2 copy];
       [(RTIInputSystemSession *)self setDocumentTraits:v17];
 
       v28[0] = MEMORY[0x1E69E9820];
@@ -233,15 +233,15 @@
       [(RTIInputSystemSession *)self enumerateSessionDelegatesUsingBlock:v28];
     }
 
-    v18 = [v7 documentState];
+    documentState = [v7 documentState];
 
-    if (v18)
+    if (documentState)
     {
-      v19 = [(RTIInputSystemSession *)self documentState];
-      v20 = v19;
-      if (v19)
+      documentState2 = [(RTIInputSystemSession *)self documentState];
+      v20 = documentState2;
+      if (documentState2)
       {
-        v21 = v19;
+        v21 = documentState2;
       }
 
       else
@@ -252,8 +252,8 @@
       v22 = v21;
 
       v27 = 0;
-      v23 = [v7 documentState];
-      v24 = [v23 copy];
+      documentState3 = [v7 documentState];
+      v24 = [documentState3 copy];
       v25 = [(RTIDocumentState *)v22 documentStateByMergingInDocumentState:v24 mergeResultOut:&v27];
       [(RTIInputSystemSession *)self setDocumentState:v25];
 

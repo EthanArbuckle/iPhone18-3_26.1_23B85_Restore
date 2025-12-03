@@ -1,26 +1,26 @@
 @interface SBSAPreferencesMutator
-- (SBSAPreferencesMutator)initWithPreferences:(id)a3;
+- (SBSAPreferencesMutator)initWithPreferences:(id)preferences;
 - (SBSystemApertureContainerRenderingConfiguration)curtainRenderingConfiguration;
 - (SBSystemApertureContainerRenderingConfiguration)highLevelCurtainRenderingConfiguration;
-- (void)addMilestones:(id)a3 forPropertyIdentity:(id)a4;
-- (void)associateAnimatedTransitionDescriptionOfProperty:(id)a3 overridingExistingUnanimatedSettings:(BOOL)a4 withProperty:(id)a5 withMilestones:(id)a6;
-- (void)setAnimatedTransitionDescription:(id)a3 overridingExistingUnanimatedSettings:(BOOL)a4 forProperty:(id)a5 withMilestones:(id)a6;
-- (void)setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
-- (void)setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
+- (void)addMilestones:(id)milestones forPropertyIdentity:(id)identity;
+- (void)associateAnimatedTransitionDescriptionOfProperty:(id)property overridingExistingUnanimatedSettings:(BOOL)settings withProperty:(id)withProperty withMilestones:(id)milestones;
+- (void)setAnimatedTransitionDescription:(id)description overridingExistingUnanimatedSettings:(BOOL)settings forProperty:(id)property withMilestones:(id)milestones;
+- (void)setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
+- (void)setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
 @end
 
 @implementation SBSAPreferencesMutator
 
-- (SBSAPreferencesMutator)initWithPreferences:(id)a3
+- (SBSAPreferencesMutator)initWithPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9.receiver = self;
   v9.super_class = SBSAPreferencesMutator;
   v6 = [(SBSAPreferencesMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferences, a3);
+    objc_storeStrong(&v6->_preferences, preferences);
   }
 
   return v7;
@@ -40,10 +40,10 @@
   return result;
 }
 
-- (void)setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)setCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
   preferences = self->_preferences;
-  v4 = *a3;
+  v4 = *configuration;
   [(SBSAPreferences *)preferences _setCurtainRenderingConfiguration:&v4];
 }
 
@@ -61,68 +61,68 @@
   return result;
 }
 
-- (void)setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)setHighLevelCurtainRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
   preferences = self->_preferences;
-  v4 = *a3;
+  v4 = *configuration;
   [(SBSAPreferences *)preferences _setHighLevelCurtainRenderingConfiguration:&v4];
 }
 
-- (void)setAnimatedTransitionDescription:(id)a3 overridingExistingUnanimatedSettings:(BOOL)a4 forProperty:(id)a5 withMilestones:(id)a6
+- (void)setAnimatedTransitionDescription:(id)description overridingExistingUnanimatedSettings:(BOOL)settings forProperty:(id)property withMilestones:(id)milestones
 {
-  v8 = a4;
-  v13 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v13 && v10)
+  settingsCopy = settings;
+  descriptionCopy = description;
+  propertyCopy = property;
+  milestonesCopy = milestones;
+  if (descriptionCopy && propertyCopy)
   {
-    v12 = [(SBSAPreferences *)self->_preferences _interfaceElementPropertiesToBehaviorSettings];
-    if (!v12)
+    _interfaceElementPropertiesToBehaviorSettings = [(SBSAPreferences *)self->_preferences _interfaceElementPropertiesToBehaviorSettings];
+    if (!_interfaceElementPropertiesToBehaviorSettings)
     {
-      v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [(SBSAPreferences *)self->_preferences _setInterfaceElementPropertiesToBehaviorSettings:v12];
+      _interfaceElementPropertiesToBehaviorSettings = objc_alloc_init(MEMORY[0x277CBEB38]);
+      [(SBSAPreferences *)self->_preferences _setInterfaceElementPropertiesToBehaviorSettings:_interfaceElementPropertiesToBehaviorSettings];
     }
 
-    if (![(SBSAPreferences *)self->_preferences _doesUnanimatedTransitionDescriptionExistForProperty:v10]|| v8)
+    if (![(SBSAPreferences *)self->_preferences _doesUnanimatedTransitionDescriptionExistForProperty:propertyCopy]|| settingsCopy)
     {
-      [v12 setObject:v13 forKey:v10];
+      [_interfaceElementPropertiesToBehaviorSettings setObject:descriptionCopy forKey:propertyCopy];
     }
 
-    if ([v11 count])
+    if ([milestonesCopy count])
     {
-      [(SBSAPreferencesMutator *)self addMilestones:v11 forPropertyIdentity:v10];
+      [(SBSAPreferencesMutator *)self addMilestones:milestonesCopy forPropertyIdentity:propertyCopy];
     }
   }
 }
 
-- (void)associateAnimatedTransitionDescriptionOfProperty:(id)a3 overridingExistingUnanimatedSettings:(BOOL)a4 withProperty:(id)a5 withMilestones:(id)a6
+- (void)associateAnimatedTransitionDescriptionOfProperty:(id)property overridingExistingUnanimatedSettings:(BOOL)settings withProperty:(id)withProperty withMilestones:(id)milestones
 {
-  v8 = a4;
-  v19 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v19 && v11)
+  settingsCopy = settings;
+  propertyCopy = property;
+  withPropertyCopy = withProperty;
+  milestonesCopy = milestones;
+  if (propertyCopy && withPropertyCopy)
   {
     if (BSEqualObjects())
     {
-      [SBSAPreferencesMutator associateAnimatedTransitionDescriptionOfProperty:v19 overridingExistingUnanimatedSettings:v11 withProperty:a2 withMilestones:self];
+      [SBSAPreferencesMutator associateAnimatedTransitionDescriptionOfProperty:propertyCopy overridingExistingUnanimatedSettings:withPropertyCopy withProperty:a2 withMilestones:self];
     }
 
-    v13 = [(SBSAPreferences *)self->_preferences _interfaceElementPropertiesToBehaviorSettings];
-    v14 = [v13 objectForKey:v19];
+    _interfaceElementPropertiesToBehaviorSettings = [(SBSAPreferences *)self->_preferences _interfaceElementPropertiesToBehaviorSettings];
+    v14 = [_interfaceElementPropertiesToBehaviorSettings objectForKey:propertyCopy];
     if (objc_opt_respondsToSelector())
     {
       while ((objc_opt_respondsToSelector() & 1) != 0)
       {
         if (BSEqualObjects())
         {
-          v18 = [MEMORY[0x277CCA890] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"SBSAPreferences.m" lineNumber:629 description:@"Attempting to associate animated transition description with another causing cycle."];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SBSAPreferences.m" lineNumber:629 description:@"Attempting to associate animated transition description with another causing cycle."];
 
           goto LABEL_24;
         }
 
-        v15 = [v13 objectForKey:v14];
+        v15 = [_interfaceElementPropertiesToBehaviorSettings objectForKey:v14];
 
         v14 = v15;
         if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -134,9 +134,9 @@
 
     v15 = v14;
 LABEL_11:
-    if ([(SBSAPreferences *)self->_preferences _doesUnanimatedTransitionDescriptionExistForProperty:v11])
+    if ([(SBSAPreferences *)self->_preferences _doesUnanimatedTransitionDescriptionExistForProperty:withPropertyCopy])
     {
-      v16 = !v8;
+      v16 = !settingsCopy;
     }
 
     else
@@ -146,7 +146,7 @@ LABEL_11:
 
     if (!v16)
     {
-      [v13 setObject:v19 forKey:v11];
+      [_interfaceElementPropertiesToBehaviorSettings setObject:propertyCopy forKey:withPropertyCopy];
     }
 
     v17 = objc_opt_class();
@@ -164,37 +164,37 @@ LABEL_11:
       }
     }
 
-    if ([v12 count] && v17)
+    if ([milestonesCopy count] && v17)
     {
-      [(SBSAPreferencesMutator *)self addMilestones:v12 forPropertyIdentity:v11];
+      [(SBSAPreferencesMutator *)self addMilestones:milestonesCopy forPropertyIdentity:withPropertyCopy];
     }
 
 LABEL_24:
   }
 }
 
-- (void)addMilestones:(id)a3 forPropertyIdentity:(id)a4
+- (void)addMilestones:(id)milestones forPropertyIdentity:(id)identity
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 count];
-  if (v6 && v7)
+  milestonesCopy = milestones;
+  identityCopy = identity;
+  v7 = [milestonesCopy count];
+  if (identityCopy && v7)
   {
-    v8 = [(SBSAPreferences *)self->_preferences _interfaceElementPropertiesToMilestones];
-    if (!v8)
+    _interfaceElementPropertiesToMilestones = [(SBSAPreferences *)self->_preferences _interfaceElementPropertiesToMilestones];
+    if (!_interfaceElementPropertiesToMilestones)
     {
-      v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [(SBSAPreferences *)self->_preferences _setInterfaceElementPropertiesToMilestones:v8];
+      _interfaceElementPropertiesToMilestones = objc_alloc_init(MEMORY[0x277CBEB38]);
+      [(SBSAPreferences *)self->_preferences _setInterfaceElementPropertiesToMilestones:_interfaceElementPropertiesToMilestones];
     }
 
-    v9 = [v8 objectForKey:v6];
+    v9 = [_interfaceElementPropertiesToMilestones objectForKey:identityCopy];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      [v8 setObject:v9 forKey:v6];
+      [_interfaceElementPropertiesToMilestones setObject:v9 forKey:identityCopy];
     }
 
-    [v9 unionSet:v10];
+    [v9 unionSet:milestonesCopy];
   }
 }
 

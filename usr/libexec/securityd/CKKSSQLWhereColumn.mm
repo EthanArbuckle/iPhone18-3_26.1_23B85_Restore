@@ -1,27 +1,27 @@
 @interface CKKSSQLWhereColumn
-+ (id)op:(unint64_t)a3 column:(unint64_t)a4;
-- (CKKSSQLWhereColumn)initWithOperation:(unint64_t)a3 columnName:(unint64_t)a4;
++ (id)op:(unint64_t)op column:(unint64_t)column;
+- (CKKSSQLWhereColumn)initWithOperation:(unint64_t)operation columnName:(unint64_t)name;
 @end
 
 @implementation CKKSSQLWhereColumn
 
-- (CKKSSQLWhereColumn)initWithOperation:(unint64_t)a3 columnName:(unint64_t)a4
+- (CKKSSQLWhereColumn)initWithOperation:(unint64_t)operation columnName:(unint64_t)name
 {
   v7.receiver = self;
   v7.super_class = CKKSSQLWhereColumn;
   result = [(CKKSSQLWhereColumn *)&v7 init];
   if (result)
   {
-    result->_sqlOp = a3;
-    result->_columnName = a4;
+    result->_sqlOp = operation;
+    result->_columnName = name;
   }
 
   return result;
 }
 
-+ (id)op:(unint64_t)a3 column:(unint64_t)a4
++ (id)op:(unint64_t)op column:(unint64_t)column
 {
-  v4 = [[CKKSSQLWhereColumn alloc] initWithOperation:a3 columnName:a4];
+  v4 = [[CKKSSQLWhereColumn alloc] initWithOperation:op columnName:column];
 
   return v4;
 }

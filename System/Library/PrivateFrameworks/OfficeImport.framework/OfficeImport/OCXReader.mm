@@ -1,5 +1,5 @@
 @interface OCXReader
-- (BOOL)retainDecryptorWithErrorCode:(int *)a3;
+- (BOOL)retainDecryptorWithErrorCode:(int *)code;
 - (BOOL)verifyFileFormat;
 - (OCPZipPackage)zipPackage;
 - (void)restartReaderToUseDecryptedDocument;
@@ -11,27 +11,27 @@
 {
   if (!self->mZipPackage)
   {
-    v3 = [(OCDReader *)self fileName];
+    fileName = [(OCDReader *)self fileName];
 
-    if (v3)
+    if (fileName)
     {
       v4 = [OCPZipPackage alloc];
-      v5 = [(OCDReader *)self fileName];
-      v6 = [(OCPZipPackage *)v4 initWithPath:v5];
+      fileName2 = [(OCDReader *)self fileName];
+      v6 = [(OCPZipPackage *)v4 initWithPath:fileName2];
     }
 
     else
     {
-      v7 = [(OCDReader *)self data];
+      data = [(OCDReader *)self data];
 
-      if (!v7)
+      if (!data)
       {
         goto LABEL_7;
       }
 
       v8 = [OCPZipPackage alloc];
-      v5 = [(OCDReader *)self data];
-      v6 = [(OCPZipPackage *)v8 initWithData:v5];
+      fileName2 = [(OCDReader *)self data];
+      v6 = [(OCPZipPackage *)v8 initWithData:fileName2];
     }
 
     mZipPackage = self->mZipPackage;
@@ -47,9 +47,9 @@ LABEL_7:
 - (BOOL)verifyFileFormat
 {
   [(OCDEncryptedReader *)self useUnencryptedDocument];
-  v3 = [(OCXReader *)self zipPackage];
+  zipPackage = [(OCXReader *)self zipPackage];
 
-  if (!v3)
+  if (!zipPackage)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
@@ -57,7 +57,7 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)retainDecryptorWithErrorCode:(int *)a3
+- (BOOL)retainDecryptorWithErrorCode:(int *)code
 {
   if (self->super.mDecryptor)
   {
@@ -69,13 +69,13 @@ LABEL_7:
     mFileName = self->super.super.mFileName;
     if (mFileName)
     {
-      v7 = [(NSString *)mFileName UTF8String];
-      UsingInputFile = OCCXmlStreamer::createUsingInputFile(v7, a3, v8, v9);
+      uTF8String = [(NSString *)mFileName UTF8String];
+      UsingInputFile = OCCXmlStreamer::createUsingInputFile(uTF8String, code, v8, v9);
       v13 = UsingInputFile;
       if (UsingInputFile)
       {
-        v14 = [(OCDEncryptedReader *)self defaultPassphrase];
-        OCCXmlStreamer::setDefaultPassphrase(v13, [v14 UTF8String]);
+        defaultPassphrase = [(OCDEncryptedReader *)self defaultPassphrase];
+        OCCXmlStreamer::setDefaultPassphrase(v13, [defaultPassphrase UTF8String]);
 
         v15 = [[OCCDecryptor alloc] initWithStreamer:v13];
         mDecryptor = self->super.mDecryptor;
@@ -97,7 +97,7 @@ LABEL_7:
       {
         self->mDataBytes = [(NSData *)mData bytes];
         v11 = [(NSData *)self->super.super.mData length];
-        OCCXmlStreamer::createUsingInputBuffer(&self->mDataBytes, v11, a3, v12);
+        OCCXmlStreamer::createUsingInputBuffer(&self->mDataBytes, v11, code, v12);
       }
     }
   }
@@ -107,7 +107,7 @@ LABEL_7:
 
 - (void)restartReaderToUseDecryptedDocument
 {
-  v3 = [(OCCDecryptor *)self->super.mDecryptor outputFilename];
+  outputFilename = [(OCCDecryptor *)self->super.mDecryptor outputFilename];
   [(OCDReader *)self setFileName:?];
 }
 

@@ -1,20 +1,20 @@
 @interface FindMyTheftAndLossDisclaimerViewController
 - (FindMyTheftAndLossDisclaimerViewController)init;
-- (void)disclaimerLabelForContext:(id)a3 completion:(id)a4;
-- (void)disclaimerViewControllerForContext:(id)a3 confirmActionHandler:(id)a4 cancelActionHandler:(id)a5 completion:(id)a6;
+- (void)disclaimerLabelForContext:(id)context completion:(id)completion;
+- (void)disclaimerViewControllerForContext:(id)context confirmActionHandler:(id)handler cancelActionHandler:(id)actionHandler completion:(id)completion;
 @end
 
 @implementation FindMyTheftAndLossDisclaimerViewController
 
-- (void)disclaimerViewControllerForContext:(id)a3 confirmActionHandler:(id)a4 cancelActionHandler:(id)a5 completion:(id)a6
+- (void)disclaimerViewControllerForContext:(id)context confirmActionHandler:(id)handler cancelActionHandler:(id)actionHandler completion:(id)completion
 {
   ObjectType = swift_getObjectType();
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC8580);
   MEMORY[0x28223BE20](v11 - 8);
   v13 = &v25 - v12;
-  v14 = _Block_copy(a4);
-  v15 = _Block_copy(a5);
-  v16 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
+  v15 = _Block_copy(actionHandler);
+  v16 = _Block_copy(completion);
   v17 = swift_allocObject();
   *(v17 + 16) = v14;
   if (v15)
@@ -34,7 +34,7 @@
   v20 = sub_24B2D56D4();
   (*(*(v20 - 8) + 56))(v13, 1, 1, v20);
   sub_24B2D5694();
-  v21 = a3;
+  contextCopy = context;
 
   sub_24AFD5880(v15);
 
@@ -43,7 +43,7 @@
   v24 = MEMORY[0x277D85700];
   v23[2] = v22;
   v23[3] = v24;
-  v23[4] = v21;
+  v23[4] = contextCopy;
   v23[5] = sub_24B2C6380;
   v23[6] = v17;
   v23[7] = v15;
@@ -56,26 +56,26 @@
   sub_24AFD5890(v15);
 }
 
-- (void)disclaimerLabelForContext:(id)a3 completion:(id)a4
+- (void)disclaimerLabelForContext:(id)context completion:(id)completion
 {
   ObjectType = swift_getObjectType();
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC8580);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = sub_24B2D56D4();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   sub_24B2D5694();
-  v13 = a3;
+  contextCopy = context;
 
   v14 = sub_24B2D5684();
   v15 = swift_allocObject();
   v16 = MEMORY[0x277D85700];
   v15[2] = v14;
   v15[3] = v16;
-  v15[4] = v13;
+  v15[4] = contextCopy;
   v15[5] = sub_24B2C6330;
   v15[6] = v11;
   v15[7] = ObjectType;

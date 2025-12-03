@@ -1,5 +1,5 @@
 @interface NotificationViewController
-- (void)didReceiveNotification:(id)a3;
+- (void)didReceiveNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
@@ -26,56 +26,56 @@
   self->_subtitle = v6;
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v71 = v4;
+    v71 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "NotificationViewController::didReceiveNotification...: %@", buf, 0xCu);
   }
 
-  v6 = [(UILabel *)v4 request];
-  v7 = [v6 content];
-  v8 = [v7 categoryIdentifier];
-  v9 = [(NotificationViewController *)self isLiveNotification:v8];
+  request = [(UILabel *)notificationCopy request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
+  v9 = [(NotificationViewController *)self isLiveNotification:categoryIdentifier];
 
   if (v9)
   {
     v10 = HAENLocalizationUtilityGetBundle();
-    v11 = [v10 localizedStringForKey:@"MessageLonglookLoud" value:&stru_100004188 table:0];
+    request3 = [v10 localizedStringForKey:@"MessageLonglookLoud" value:&stru_100004188 table:0];
 
-    v12 = [(UILabel *)v4 request];
-    v13 = [v12 content];
-    v14 = [v13 body];
-    v15 = [NSString stringWithFormat:@"%@\n\n%@", v14, v11];
+    request2 = [(UILabel *)notificationCopy request];
+    content2 = [request2 content];
+    body = [content2 body];
+    v15 = [NSString stringWithFormat:@"%@\n\n%@", body, request3];
     [(UILabel *)self->_message setText:v15];
   }
 
   else
   {
-    v11 = [(UILabel *)v4 request];
-    v12 = [v11 content];
-    v13 = [v12 body];
-    [(UILabel *)self->_message setText:v13];
+    request3 = [(UILabel *)notificationCopy request];
+    request2 = [request3 content];
+    content2 = [request2 body];
+    [(UILabel *)self->_message setText:content2];
   }
 
-  v16 = [(UILabel *)v4 request];
-  v17 = [v16 content];
-  v18 = [v17 title];
-  [(UILabel *)self->_subtitle setText:v18];
+  request4 = [(UILabel *)notificationCopy request];
+  content3 = [request4 content];
+  title = [content3 title];
+  [(UILabel *)self->_subtitle setText:title];
 
   v19 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
   [(UILabel *)self->_subtitle setFont:v19];
 
   [(UILabel *)self->_subtitle setAdjustsFontForContentSizeCategory:1];
-  v20 = [(NotificationViewController *)self view];
-  [v20 frame];
+  view = [(NotificationViewController *)self view];
+  [view frame];
   v22 = v21 + -20.0;
-  v23 = [(NotificationViewController *)self subtitle];
-  [v23 intrinsicContentSize];
+  subtitle = [(NotificationViewController *)self subtitle];
+  [subtitle intrinsicContentSize];
   [(UILabel *)self->_subtitle setFrame:13.0, 0.0, v22, v24];
 
   [(UILabel *)self->_subtitle sizeToFit];
@@ -83,14 +83,14 @@
   [(UILabel *)self->_message setFont:v25];
 
   [(UILabel *)self->_message setAdjustsFontForContentSizeCategory:1];
-  v26 = [(NotificationViewController *)self subtitle];
-  [v26 intrinsicContentSize];
+  subtitle2 = [(NotificationViewController *)self subtitle];
+  [subtitle2 intrinsicContentSize];
   v28 = v27;
-  v29 = [(NotificationViewController *)self view];
-  [v29 frame];
+  view2 = [(NotificationViewController *)self view];
+  [view2 frame];
   v31 = v30 + -20.0;
-  v32 = [(NotificationViewController *)self message];
-  [v32 intrinsicContentSize];
+  message = [(NotificationViewController *)self message];
+  [message intrinsicContentSize];
   [(UILabel *)self->_message setFrame:13.0, v28, v31, v33];
 
   [(UILabel *)self->_message setTextAlignment:0];
@@ -106,38 +106,38 @@
   [(UILabel *)self->_message setPreferredMaxLayoutWidth:200.0];
   [(UILabel *)self->_message setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_message sizeToFit];
-  v38 = [(NotificationViewController *)self view];
-  [v38 frame];
+  view3 = [(NotificationViewController *)self view];
+  [view3 frame];
   v40 = v39;
-  v41 = [(NotificationViewController *)self subtitle];
-  [v41 frame];
+  subtitle3 = [(NotificationViewController *)self subtitle];
+  [subtitle3 frame];
   v43 = v42;
-  v44 = [(NotificationViewController *)self message];
-  [v44 frame];
+  message2 = [(NotificationViewController *)self message];
+  [message2 frame];
   v46 = v43 + v45;
-  v47 = [(NotificationViewController *)self view];
-  [v47 setFrame:{0.0, 0.0, v40, v46}];
+  view4 = [(NotificationViewController *)self view];
+  [view4 setFrame:{0.0, 0.0, v40, v46}];
 
-  v48 = [(NotificationViewController *)self view];
-  [v48 addSubview:self->_subtitle];
+  view5 = [(NotificationViewController *)self view];
+  [view5 addSubview:self->_subtitle];
 
-  v49 = [(NotificationViewController *)self view];
-  [v49 addSubview:self->_message];
+  view6 = [(NotificationViewController *)self view];
+  [view6 addSubview:self->_message];
 
-  v50 = [(NotificationViewController *)self view];
-  [v50 sizeToFit];
+  view7 = [(NotificationViewController *)self view];
+  [view7 sizeToFit];
 
-  v51 = [(NotificationViewController *)self view];
-  [v51 setNeedsLayout];
+  view8 = [(NotificationViewController *)self view];
+  [view8 setNeedsLayout];
 
-  v52 = [(NotificationViewController *)self view];
-  [v52 layoutIfNeeded];
+  view9 = [(NotificationViewController *)self view];
+  [view9 layoutIfNeeded];
 
-  v53 = [(NotificationViewController *)self view];
-  [v53 frame];
+  view10 = [(NotificationViewController *)self view];
+  [view10 frame];
   v55 = v54;
-  v56 = [(NotificationViewController *)self view];
-  [v56 frame];
+  view11 = [(NotificationViewController *)self view];
+  [view11 frame];
   [(NotificationViewController *)self setPreferredContentSize:v55, v57 + 15.0];
 
   v58 = HAENotificationsLog();
@@ -161,20 +161,20 @@
   v62 = HAENotificationsLog();
   if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
   {
-    v63 = [(NotificationViewController *)self view];
+    view12 = [(NotificationViewController *)self view];
     *buf = 138412290;
-    v71 = v63;
+    v71 = view12;
     _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
   v64 = HAENotificationsLog();
   if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
   {
-    v65 = [(NotificationViewController *)self view];
-    [v65 bounds];
+    view13 = [(NotificationViewController *)self view];
+    [view13 bounds];
     v67 = v66;
-    v68 = [(NotificationViewController *)self view];
-    [v68 bounds];
+    view14 = [(NotificationViewController *)self view];
+    [view14 bounds];
     *buf = 134218240;
     v71 = v67;
     v72 = 2048;

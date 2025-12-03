@@ -1,27 +1,27 @@
 @interface NTKSnowglobeFaceView
 + (id)_sharedRenderTargetQueue;
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_isBlackColor;
-- (NTKSnowglobeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (NTKSnowglobeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_finalizeForSnapshotting:(id)a3;
+- (void)_finalizeForSnapshotting:(id)snapshotting;
 - (void)_loadCornerOverlayView;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
 - (void)_setupScene;
-- (void)_tappedWithSender:(id)a3;
+- (void)_tappedWithSender:(id)sender;
 - (void)_unloadCornerOverlayView;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateMotionPauseState;
 - (void)_updateScene;
 - (void)dealloc;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 @end
 
 @implementation NTKSnowglobeFaceView
@@ -43,11 +43,11 @@
   return v2;
 }
 
-- (NTKSnowglobeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSnowglobeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = NTKSnowglobeFaceView;
-  v5 = [(NTKSnowglobeFaceView *)&v13 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKSnowglobeFaceView *)&v13 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (v5)
   {
     v6 = +[NTKSnowglobeAssetLibrary sharedInstance];
@@ -55,8 +55,8 @@
     v5->_assetLibrary = v6;
 
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = [objc_opt_class() _sharedRenderTargetQueue];
-    v10 = dispatch_queue_create_with_target_V2("com.apple.NanoTimeKit.NTKSnowglobeFaceView.asyncRenderQueue", v8, v9);
+    _sharedRenderTargetQueue = [objc_opt_class() _sharedRenderTargetQueue];
+    v10 = dispatch_queue_create_with_target_V2("com.apple.NanoTimeKit.NTKSnowglobeFaceView.asyncRenderQueue", v8, _sharedRenderTargetQueue);
     asyncRenderQueue = v5->_asyncRenderQueue;
     v5->_asyncRenderQueue = v10;
   }
@@ -85,26 +85,26 @@
   self->_sceneController = v8;
 
   v10 = [NTKSnowglobeSceneQuad alloc];
-  v11 = [(NTKSnowglobeSceneController *)self->_sceneController scene];
+  scene = [(NTKSnowglobeSceneController *)self->_sceneController scene];
   v12 = self->_sceneController;
-  v13 = [(NTKSnowglobeAssetLibrary *)self->_assetLibrary sharedDevice];
-  v14 = [(NTKSnowglobeFaceView *)self device];
-  [v14 screenScale];
-  v15 = [(NTKSnowglobeSceneQuad *)v10 initWithScene:v11 delegate:v12 device:v13 screenScale:?];
+  sharedDevice = [(NTKSnowglobeAssetLibrary *)self->_assetLibrary sharedDevice];
+  device = [(NTKSnowglobeFaceView *)self device];
+  [device screenScale];
+  v15 = [(NTKSnowglobeSceneQuad *)v10 initWithScene:scene delegate:v12 device:sharedDevice screenScale:?];
   sceneQuad = self->_sceneQuad;
   self->_sceneQuad = v15;
 
   [(CLKUIQuadView *)v4 addQuad:self->_sceneQuad];
-  v17 = [(NTKSnowglobeSceneQuad *)self->_sceneQuad renderer];
-  [(NTKSnowglobeSceneController *)self->_sceneController setRenderer:v17];
+  renderer = [(NTKSnowglobeSceneQuad *)self->_sceneQuad renderer];
+  [(NTKSnowglobeSceneController *)self->_sceneController setRenderer:renderer];
 
   [(NTKSnowglobeSceneController *)self->_sceneController setIdealizedState:1 editing:[(NTKSnowglobeFaceView *)self editing]];
   quadView = self->_quadView;
   self->_quadView = v4;
   v20 = v4;
 
-  v19 = [(NTKSnowglobeFaceView *)self contentView];
-  [v19 addSubview:self->_quadView];
+  contentView = [(NTKSnowglobeFaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(NTKSnowglobeFaceView *)self _applyFrozen];
   [(CLKUIQuadView *)v20 setPreferredFramesPerSecond:30];
@@ -116,9 +116,9 @@
 {
   sceneController = self->_sceneController;
   v4 = ([(NTKSnowglobeFaceView *)self editing]& 1) != 0 || [(NTKSnowglobeFaceView *)self dataMode]!= 1;
-  v5 = [(NTKSnowglobeFaceView *)self editing];
+  editing = [(NTKSnowglobeFaceView *)self editing];
 
-  [(NTKSnowglobeSceneController *)sceneController setIdealizedState:v4 editing:v5];
+  [(NTKSnowglobeSceneController *)sceneController setIdealizedState:v4 editing:editing];
 }
 
 - (void)_applyFrozen
@@ -126,9 +126,9 @@
   v4.receiver = self;
   v4.super_class = NTKSnowglobeFaceView;
   [(NTKSnowglobeFaceView *)&v4 _applyFrozen];
-  v3 = [(NTKSnowglobeFaceView *)self isFrozen];
+  isFrozen = [(NTKSnowglobeFaceView *)self isFrozen];
   [(NTKSnowglobeFaceView *)self _updateMotionPauseState];
-  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:v3 ^ 1u];
+  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:isFrozen ^ 1u];
 }
 
 - (void)_updateMotionPauseState
@@ -148,38 +148,38 @@
     }
 
     v6 = +[NTKSnowglobeMotionManager sharedInstance];
-    v4 = [(NTKSnowglobeMotionToken *)v6 acquireToken];
+    acquireToken = [(NTKSnowglobeMotionToken *)v6 acquireToken];
     v5 = self->_motionToken;
-    self->_motionToken = v4;
+    self->_motionToken = acquireToken;
 
     motionToken = v6;
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKSnowglobeFaceView;
-  v6 = a3;
-  [(NTKSnowglobeFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKSnowglobeSceneController *)self->_sceneController setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKSnowglobeFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKSnowglobeSceneController *)self->_sceneController setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v5.receiver = self;
   v5.super_class = NTKSnowglobeFaceView;
   [(NTKSnowglobeFaceView *)&v5 setTimeOffset:?];
-  [(NTKSnowglobeSceneController *)self->_sceneController setTimeOffset:a3];
+  [(NTKSnowglobeSceneController *)self->_sceneController setTimeOffset:offset];
 }
 
 - (BOOL)_isBlackColor
 {
-  v2 = [(NTKSnowglobeFaceView *)self faceColorPalette];
-  v3 = [v2 pigmentEditOption];
+  faceColorPalette = [(NTKSnowglobeFaceView *)self faceColorPalette];
+  pigmentEditOption = [faceColorPalette pigmentEditOption];
 
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:0];
+  identifier = [pigmentEditOption identifier];
+  v5 = [identifier isEqualToString:0];
 
   return v5;
 }
@@ -229,19 +229,19 @@
 - (void)_loadCornerOverlayView
 {
   v3 = objc_alloc(MEMORY[0x277D2C0E0]);
-  v4 = [(NTKSnowglobeFaceView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKSnowglobeFaceView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKSnowglobeFaceView *)self device];
-  v14 = [v3 initWithFrame:v13 forDeviceCornerRadius:{v6, v8, v10, v12}];
+  device = [(NTKSnowglobeFaceView *)self device];
+  v14 = [v3 initWithFrame:device forDeviceCornerRadius:{v6, v8, v10, v12}];
   cornerOverlayView = self->_cornerOverlayView;
   self->_cornerOverlayView = v14;
 
-  v16 = [(NTKSnowglobeFaceView *)self contentView];
-  [v16 addSubview:self->_cornerOverlayView];
+  contentView2 = [(NTKSnowglobeFaceView *)self contentView];
+  [contentView2 addSubview:self->_cornerOverlayView];
 }
 
 - (void)_unloadCornerOverlayView
@@ -251,23 +251,23 @@
   self->_cornerOverlayView = 0;
 }
 
-- (void)_finalizeForSnapshotting:(id)a3
+- (void)_finalizeForSnapshotting:(id)snapshotting
 {
-  v4 = a3;
+  snapshottingCopy = snapshotting;
   sceneController = self->_sceneController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_23C081E00;
   v7[3] = &unk_278BAC5C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshottingCopy;
+  v6 = snapshottingCopy;
   [(NTKSnowglobeSceneController *)sceneController flushWithCompletion:v7];
 }
 
-- (void)_tappedWithSender:(id)a3
+- (void)_tappedWithSender:(id)sender
 {
-  [a3 locationInView:self];
+  [sender locationInView:self];
   sceneController = self->_sceneController;
 
   MEMORY[0x2821F9670](sceneController, sel_tapAtPoint_);
@@ -280,16 +280,16 @@
   return v2;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v14 = a3;
-  v8 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v11 = [v14 background];
+    background = [optionCopy background];
     sceneController = self->_sceneController;
     v13 = 0.0;
-    if (!v11)
+    if (!background)
     {
       v13 = 1.0;
     }
@@ -297,49 +297,49 @@
     [(NTKSnowglobeSceneController *)self->_sceneController setBackgroundObjectOpacity:v13];
   }
 
-  else if (a4 == 10)
+  else if (mode == 10)
   {
-    v9 = [(NTKSnowglobeFaceView *)self colorPalette];
-    [(NTKSnowglobeFaceView *)self _updateViewColorsWithPalette:v9];
+    colorPalette = [(NTKSnowglobeFaceView *)self colorPalette];
+    [(NTKSnowglobeFaceView *)self _updateViewColorsWithPalette:colorPalette];
 
-    v10 = [(NTKSnowglobeFaceView *)self delegate];
-    [v10 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKSnowglobeFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v19 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (a6 == 15)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v15 = [v19 background];
-    v16 = [v12 background];
+    background = [optionCopy background];
+    background2 = [toOptionCopy background];
     v17 = 1.0;
-    if (v16 == 1)
+    if (background2 == 1)
     {
-      v17 = 1.0 - a3;
+      v17 = 1.0 - fraction;
     }
 
-    v18 = 0.0;
-    if (!v16)
+    fractionCopy = 0.0;
+    if (!background2)
     {
-      v18 = a3;
+      fractionCopy = fraction;
     }
 
-    if (v15 == 1)
+    if (background == 1)
     {
-      v17 = v18;
+      v17 = fractionCopy;
     }
 
     [(NTKSnowglobeSceneController *)self->_sceneController setBackgroundObjectOpacity:v17];
   }
 
-  else if (a6 == 10)
+  else if (mode == 10)
   {
-    v14 = [(NTKSnowglobeFaceView *)self interpolatedColorPalette];
-    [(NTKSnowglobeFaceView *)self _updateViewColorsWithPalette:v14];
+    interpolatedColorPalette = [(NTKSnowglobeFaceView *)self interpolatedColorPalette];
+    [(NTKSnowglobeFaceView *)self _updateViewColorsWithPalette:interpolatedColorPalette];
   }
 }
 
@@ -357,9 +357,9 @@
   MEMORY[0x2821F9670](self, sel__updateScene);
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &unk_284EDC7F0;
   }
@@ -370,24 +370,24 @@
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  optionsCopy = options;
+  if (mode == 15)
   {
     if (qword_27E1EDDE0 != -1)
     {
       sub_23C08ED50();
     }
 
-    v10 = v8;
-    v11 = [v9 objectForKeyedSubscript:&unk_284EDC748];
-    v12 = [v10 background];
+    v10 = optionCopy;
+    v11 = [optionsCopy objectForKeyedSubscript:&unk_284EDC748];
+    background = [v10 background];
     v13 = MEMORY[0x277CCACA8];
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "background")}];
-    v15 = [v11 identifier];
-    v16 = [v13 stringWithFormat:@"%@-%@", v14, v15];
+    identifier = [v11 identifier];
+    v16 = [v13 stringWithFormat:@"%@-%@", v14, identifier];
 
     v17 = [qword_27E1EDDD8 objectForKey:v16];
     if (!v17)
@@ -395,7 +395,7 @@
       [(NTKSnowglobeSceneController *)self->_sceneController backgroundObjectOpacity];
       v19 = v18;
       v20 = 0.0;
-      if (!v12)
+      if (!background)
       {
         v20 = 1.0;
       }
@@ -406,8 +406,8 @@
       v24 = v23;
       [(NTKSnowglobeFaceView *)self bounds];
       v25 = CGRectGetHeight(v31) / v24;
-      v26 = [(NTKSnowglobeFaceView *)self device];
-      [v26 screenScale];
+      device = [(NTKSnowglobeFaceView *)self device];
+      [device screenScale];
       v28 = v25 * v27;
 
       v17 = [(CLKUIQuadView *)self->_quadView snapshotInRect:0.0 scale:0.0 time:v22, v24, v28, CACurrentMediaTime()];

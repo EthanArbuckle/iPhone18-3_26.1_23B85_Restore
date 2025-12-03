@@ -13,7 +13,7 @@
   v9 = *MEMORY[0x277D85DE8];
   memset(&v7, 0, sizeof(v7));
   CC_MD5_Init(&v7);
-  v2 = [a1 cStringUsingEncoding:4];
+  v2 = [self cStringUsingEncoding:4];
   v3 = strlen(v2);
   if (HIDWORD(v3))
   {
@@ -36,12 +36,12 @@
 
 - (id)MSHexData
 {
-  v2 = malloc_type_malloc([a1 length] >> 1, 0xD7030CC7uLL);
-  v3 = [a1 cStringUsingEncoding:1];
-  if ([a1 length] == 1)
+  v2 = malloc_type_malloc([self length] >> 1, 0xD7030CC7uLL);
+  v3 = [self cStringUsingEncoding:1];
+  if ([self length] == 1)
   {
 LABEL_6:
-    v11 = [MEMORY[0x277CBEA90] dataWithBytes:v2 length:{objc_msgSend(a1, "length") >> 1}];
+    v11 = [MEMORY[0x277CBEA90] dataWithBytes:v2 length:{objc_msgSend(self, "length") >> 1}];
   }
 
   else
@@ -67,7 +67,7 @@ LABEL_6:
 
       *v5++ = (v10 - "0123456789abcdef") | (16 * (v8 - "0123456789abcdef"));
       v4 += 2;
-      if (v4 >= [a1 length] - 1)
+      if (v4 >= [self length] - 1)
       {
         goto LABEL_6;
       }

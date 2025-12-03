@@ -1,20 +1,20 @@
 @interface _OSDrainPrev12Next12Predictor
 + (id)sharedInstance;
 - (_OSDrainPrev12Next12Predictor)init;
-- (double)durationPerIntervalFromBatteryTimeStampData:(id)a3;
-- (double)meanHourDrainRateForQueryDate:(id)a3 fromArray:(id)a4 fromBatteryTimeStampData:(id)a5;
-- (double)meanOfRollingDrains:(id)a3 overPastDays:(int64_t)a4 startingAtDate:(id)a5 endingAtDate:(id)a6 withDataSamplingInterval:(double)a7;
-- (id)batteryLevelAndTimeFromFilePath:(id)a3;
-- (id)drainDataOverRollingWindowOfHours:(int64_t)a3 fromBatteryTimeStampData:(id)a4;
-- (id)expandingSumFromArray:(id)a3;
-- (id)highDayDrainAroundCurrentDateWithError:(id *)a3 fromFilePath:(id)a4;
-- (id)sliceArray:(id)a3 overPastDays:(int64_t)a4 startingAtDate:(id)a5 endingAtDate:(id)a6 withDataSamplingInterval:(double)a7 includeLastIndex:(BOOL)a8;
-- (int64_t)countBatteryDrainIn:(id)a3 moreThanEqualTo:(int64_t)a4 overPastDays:(int64_t)a5 startingAtDate:(id)a6 endingAtDate:(id)a7 withDataSamplingInterval:(double)a8;
-- (int64_t)drainDataForStartTimestamp:(id)a3 toEndTimestamp:(id)a4 fromBatteryTimeStampData:(id)a5 netDrain:(BOOL)a6;
-- (int64_t)netDrainFor:(id)a3 fromStartIndex:(int)a4 toEndIndex:(int)a5;
-- (int64_t)percentileCategoryForBatteryDrain:(int64_t)a3 inRollingDrainData:(id)a4;
-- (int64_t)percentileCategoryForBatteryDrain:(int64_t)a3 withFirstQuartile:(id)a4 withSecondQuartile:(id)a5 withThirdQuartile:(id)a6;
-- (int64_t)totalDrainFor:(id)a3 fromStartIndex:(int)a4 toEndIndex:(int)a5;
+- (double)durationPerIntervalFromBatteryTimeStampData:(id)data;
+- (double)meanHourDrainRateForQueryDate:(id)date fromArray:(id)array fromBatteryTimeStampData:(id)data;
+- (double)meanOfRollingDrains:(id)drains overPastDays:(int64_t)days startingAtDate:(id)date endingAtDate:(id)atDate withDataSamplingInterval:(double)interval;
+- (id)batteryLevelAndTimeFromFilePath:(id)path;
+- (id)drainDataOverRollingWindowOfHours:(int64_t)hours fromBatteryTimeStampData:(id)data;
+- (id)expandingSumFromArray:(id)array;
+- (id)highDayDrainAroundCurrentDateWithError:(id *)error fromFilePath:(id)path;
+- (id)sliceArray:(id)array overPastDays:(int64_t)days startingAtDate:(id)date endingAtDate:(id)atDate withDataSamplingInterval:(double)interval includeLastIndex:(BOOL)index;
+- (int64_t)countBatteryDrainIn:(id)in moreThanEqualTo:(int64_t)to overPastDays:(int64_t)days startingAtDate:(id)date endingAtDate:(id)atDate withDataSamplingInterval:(double)interval;
+- (int64_t)drainDataForStartTimestamp:(id)timestamp toEndTimestamp:(id)endTimestamp fromBatteryTimeStampData:(id)data netDrain:(BOOL)drain;
+- (int64_t)netDrainFor:(id)for fromStartIndex:(int)index toEndIndex:(int)endIndex;
+- (int64_t)percentileCategoryForBatteryDrain:(int64_t)drain inRollingDrainData:(id)data;
+- (int64_t)percentileCategoryForBatteryDrain:(int64_t)drain withFirstQuartile:(id)quartile withSecondQuartile:(id)secondQuartile withThirdQuartile:(id)thirdQuartile;
+- (int64_t)totalDrainFor:(id)for fromStartIndex:(int)index toEndIndex:(int)endIndex;
 @end
 
 @implementation _OSDrainPrev12Next12Predictor
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001AA58;
   block[3] = &unk_100094818;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000B6A30 != -1)
   {
     dispatch_once(&qword_1000B6A30, block);
@@ -56,9 +56,9 @@
   return v2;
 }
 
-- (id)batteryLevelAndTimeFromFilePath:(id)a3
+- (id)batteryLevelAndTimeFromFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = os_transaction_create();
   v6 = +[NSMutableArray array];
   v69 = +[NSMutableArray array];
@@ -77,17 +77,17 @@
   log = self->_log;
   v14 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
   v60 = v12;
-  if (v4)
+  if (pathCopy)
   {
     v15 = v7;
     if (v14)
     {
       *buf = 138412290;
-      v81 = v4;
+      v81 = pathCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting PPS Data from filePath %@", buf, 0xCu);
     }
 
-    v16 = [NSURL fileURLWithPath:v4];
+    v16 = [NSURL fileURLWithPath:pathCopy];
     v17 = [[PPSRequestDispatcher alloc] initWithFilepath:v16];
     v79 = 0;
     v18 = [v17 dataForRequest:v64 withError:&v79];
@@ -148,9 +148,9 @@ LABEL_39:
   }
 
   context = v7;
-  v57 = self;
+  selfCopy = self;
   v58 = v5;
-  v59 = v4;
+  v59 = pathCopy;
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
@@ -173,12 +173,12 @@ LABEL_39:
 
         v27 = *(*(&v74 + 1) + 8 * i);
         v28 = objc_autoreleasePoolPush();
-        v29 = [v27 metricKeysAndValues];
-        v30 = [v29 objectForKeyedSubscript:@"CurrentCapacity"];
+        metricKeysAndValues = [v27 metricKeysAndValues];
+        v30 = [metricKeysAndValues objectForKeyedSubscript:@"CurrentCapacity"];
         if (v30)
         {
           v31 = v30;
-          v32 = [v29 objectForKeyedSubscript:@"CurrentCapacity"];
+          v32 = [metricKeysAndValues objectForKeyedSubscript:@"CurrentCapacity"];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -188,11 +188,11 @@ LABEL_39:
             v34 = [NSDate dateWithTimeIntervalSince1970:?];
             if (v68)
             {
-              v35 = [v29 objectForKeyedSubscript:@"CurrentCapacity"];
+              v35 = [metricKeysAndValues objectForKeyedSubscript:@"CurrentCapacity"];
               [v66 setObject:v35 forKeyedSubscript:v65];
             }
 
-            v36 = [v29 objectForKeyedSubscript:@"CurrentCapacity"];
+            v36 = [metricKeysAndValues objectForKeyedSubscript:@"CurrentCapacity"];
             [v66 setObject:v36 forKeyedSubscript:v34];
 
             v68 = 0;
@@ -210,8 +210,8 @@ LABEL_39:
 
   objc_autoreleasePoolPop(context);
   v37 = [_OSITimeSeriesUtilities resampleTimeSeries:v66 withMaxDays:31 withFrequency:900.0];
-  v38 = [v37 allKeys];
-  v39 = [v38 sortedArrayUsingSelector:"compare:"];
+  allKeys = [v37 allKeys];
+  v39 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v72 = 0u;
   v73 = 0u;
@@ -248,57 +248,57 @@ LABEL_39:
   v47 = +[NSMutableDictionary dictionary];
   [v47 setObject:v6 forKeyedSubscript:@"batteryLevels"];
   [v47 setObject:v69 forKeyedSubscript:@"timestamps"];
-  v48 = v57->_log;
+  v48 = selfCopy->_log;
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
     v49 = v48;
-    v50 = [v69 firstObject];
-    v51 = [v6 firstObject];
-    v52 = [v69 lastObject];
-    v53 = [v6 lastObject];
+    firstObject = [v69 firstObject];
+    firstObject2 = [v6 firstObject];
+    lastObject = [v69 lastObject];
+    lastObject2 = [v6 lastObject];
     v54 = [v69 count];
     *buf = 138413314;
-    v81 = v50;
+    v81 = firstObject;
     v82 = 2112;
-    v83 = v51;
+    v83 = firstObject2;
     v84 = 2112;
-    v85 = v52;
+    v85 = lastObject;
     v86 = 2112;
-    v87 = v53;
+    v87 = lastObject2;
     v88 = 2048;
     v89 = v54;
     _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "PPS Response first %@: %@, last %@: %@, total %ld", buf, 0x34u);
   }
 
   v5 = v58;
-  v4 = v59;
+  pathCopy = v59;
 LABEL_40:
 
   return v47;
 }
 
-- (int64_t)totalDrainFor:(id)a3 fromStartIndex:(int)a4 toEndIndex:(int)a5
+- (int64_t)totalDrainFor:(id)for fromStartIndex:(int)index toEndIndex:(int)endIndex
 {
-  v8 = a3;
-  v9 = v8;
-  if (!v8 || ![v8 count])
+  forCopy = for;
+  v9 = forCopy;
+  if (!forCopy || ![forCopy count])
   {
 LABEL_7:
     v11 = 0;
     goto LABEL_8;
   }
 
-  if (a4 < 0 || [v9 count] - 1 < a4 || (v13 = objc_msgSend(v9, "count"), a5 < a4) || (v13 - 1) < a5)
+  if (index < 0 || [v9 count] - 1 < index || (v13 = objc_msgSend(v9, "count"), endIndex < index) || (v13 - 1) < endIndex)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
-      v22 = a5;
+      endIndexCopy = endIndex;
       v23 = log;
       v24 = 134218496;
-      v25 = a4;
+      indexCopy = index;
       v26 = 2048;
-      v27 = v22;
+      v27 = endIndexCopy;
       v28 = 2048;
       v29 = [v9 count];
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Incorrect index: Start %ld, End %ld. Battery array count %ld", &v24, 0x20u);
@@ -307,11 +307,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v14 = [v9 objectAtIndexedSubscript:a4];
-  v15 = [v14 integerValue];
+  v14 = [v9 objectAtIndexedSubscript:index];
+  integerValue = [v14 integerValue];
 
-  v16 = -v15;
-  if (a4 >= a5)
+  v16 = -integerValue;
+  if (index >= endIndex)
   {
     v17 = 0;
   }
@@ -319,54 +319,54 @@ LABEL_7:
   else
   {
     v17 = 0;
-    v18 = a4 + 1;
-    v19 = v15;
+    v18 = index + 1;
+    v19 = integerValue;
     do
     {
       v20 = [v9 objectAtIndexedSubscript:v18];
-      v21 = [v20 integerValue];
+      integerValue2 = [v20 integerValue];
 
-      if (v21 > v19)
+      if (integerValue2 > v19)
       {
-        v17 += v15 + v16;
-        v15 = v21;
+        v17 += integerValue + v16;
+        integerValue = integerValue2;
       }
 
-      v16 = -v21;
-      ++a4;
+      v16 = -integerValue2;
+      ++index;
       ++v18;
-      v19 = v21;
+      v19 = integerValue2;
     }
 
-    while (a4 < a5);
+    while (index < endIndex);
   }
 
-  v11 = v16 + v17 + v15;
+  v11 = v16 + v17 + integerValue;
 LABEL_8:
 
   return v11;
 }
 
-- (int64_t)netDrainFor:(id)a3 fromStartIndex:(int)a4 toEndIndex:(int)a5
+- (int64_t)netDrainFor:(id)for fromStartIndex:(int)index toEndIndex:(int)endIndex
 {
-  v8 = a3;
-  v9 = v8;
-  if (!v8 || ![v8 count])
+  forCopy = for;
+  v9 = forCopy;
+  if (!forCopy || ![forCopy count])
   {
     goto LABEL_7;
   }
 
-  if (a4 < 0 || [v9 count] - 1 < a4 || (v13 = objc_msgSend(v9, "count"), a5 < a4) || (v13 - 1) < a5)
+  if (index < 0 || [v9 count] - 1 < index || (v13 = objc_msgSend(v9, "count"), endIndex < index) || (v13 - 1) < endIndex)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
-      v19 = a5;
+      endIndexCopy = endIndex;
       v20 = log;
       v21 = 134218496;
-      v22 = a4;
+      indexCopy = index;
       v23 = 2048;
-      v24 = v19;
+      v24 = endIndexCopy;
       v25 = 2048;
       v26 = [v9 count];
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Incorrect index: Start %ld, End %ld. Battery array count %ld", &v21, 0x20u);
@@ -375,10 +375,10 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v14 = [v9 objectAtIndexedSubscript:a4];
-  v15 = [v14 integerValue];
+  v14 = [v9 objectAtIndexedSubscript:index];
+  integerValue = [v14 integerValue];
 
-  if (a4 >= a5)
+  if (index >= endIndex)
   {
 LABEL_7:
     v11 = 0;
@@ -386,32 +386,32 @@ LABEL_7:
   }
 
   v11 = 0;
-  v16 = a4 + 1;
+  v16 = index + 1;
   do
   {
     v17 = [v9 objectAtIndexedSubscript:v16];
-    v18 = [v17 integerValue];
+    integerValue2 = [v17 integerValue];
 
-    v11 = &v15[v11] - v18;
-    ++a4;
+    v11 = &integerValue[v11] - integerValue2;
+    ++index;
     ++v16;
-    v15 = v18;
+    integerValue = integerValue2;
   }
 
-  while (a4 < a5);
+  while (index < endIndex);
 LABEL_8:
 
   return v11;
 }
 
-- (int64_t)drainDataForStartTimestamp:(id)a3 toEndTimestamp:(id)a4 fromBatteryTimeStampData:(id)a5 netDrain:(BOOL)a6
+- (int64_t)drainDataForStartTimestamp:(id)timestamp toEndTimestamp:(id)endTimestamp fromBatteryTimeStampData:(id)data netDrain:(BOOL)drain
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v12 && [v12 count])
+  drainCopy = drain;
+  timestampCopy = timestamp;
+  endTimestampCopy = endTimestamp;
+  dataCopy = data;
+  v13 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
     v14 = [v13 objectForKeyedSubscript:@"timestamps"];
     v15 = [v14 count];
@@ -421,7 +421,7 @@ LABEL_8:
       while (1)
       {
         v17 = [v14 objectAtIndexedSubscript:v16];
-        [v17 timeIntervalSinceDate:v10];
+        [v17 timeIntervalSinceDate:timestampCopy];
         v19 = v18;
 
         if (v19 >= 0.0)
@@ -448,7 +448,7 @@ LABEL_7:
       while (1)
       {
         v21 = [v14 objectAtIndexedSubscript:v20];
-        [v21 timeIntervalSinceDate:v11];
+        [v21 timeIntervalSinceDate:endTimestampCopy];
         v23 = v22;
 
         if (v23 > 0.0)
@@ -476,7 +476,7 @@ LABEL_7:
 LABEL_17:
     v25 = v15 - 1;
     v26 = [v13 objectForKeyedSubscript:@"batteryLevels"];
-    if (v6)
+    if (drainCopy)
     {
       v27 = [(_OSDrainPrev12Next12Predictor *)self netDrainFor:v26 fromStartIndex:v16 toEndIndex:v25];
     }
@@ -497,11 +497,11 @@ LABEL_17:
   return v24;
 }
 
-- (id)expandingSumFromArray:(id)a3
+- (id)expandingSumFromArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  if ([v3 count])
+  arrayCopy = array;
+  v4 = [arrayCopy mutableCopy];
+  if ([arrayCopy count])
   {
     v5 = 0;
     v6 = -1;
@@ -514,9 +514,9 @@ LABEL_17:
         do
         {
           v9 = [v4 objectAtIndexedSubscript:v5];
-          v10 = [v9 integerValue];
-          v11 = [v3 objectAtIndexedSubscript:v8];
-          v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", &v10[[v11 integerValue]]);
+          integerValue = [v9 integerValue];
+          v11 = [arrayCopy objectAtIndexedSubscript:v8];
+          v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", &integerValue[[v11 integerValue]]);
           [v4 setObject:v12 atIndexedSubscript:v5];
 
           ++v8;
@@ -526,7 +526,7 @@ LABEL_17:
       }
 
       ++v5;
-      v13 = [v3 count];
+      v13 = [arrayCopy count];
       v6 = v7 + 1;
     }
 
@@ -536,11 +536,11 @@ LABEL_17:
   return v4;
 }
 
-- (id)drainDataOverRollingWindowOfHours:(int64_t)a3 fromBatteryTimeStampData:(id)a4
+- (id)drainDataOverRollingWindowOfHours:(int64_t)hours fromBatteryTimeStampData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v7 = os_transaction_create();
-  v8 = [v6 objectForKeyedSubscript:@"timestamps"];
+  v8 = [dataCopy objectForKeyedSubscript:@"timestamps"];
   v9 = v8;
   if (v8 && [v8 count] >= 2)
   {
@@ -549,7 +549,7 @@ LABEL_17:
     [v12 timeIntervalSinceDate:v13];
     v15 = v14;
 
-    v16 = ((3600 * a3) / v15);
+    v16 = ((3600 * hours) / v15);
     v17 = (86400.0 / v15) - v16;
     v18 = v16 + v17 - 1;
     v10 = +[NSMutableArray array];
@@ -561,7 +561,7 @@ LABEL_17:
       {
         v20 = [v9 objectAtIndexedSubscript:v19];
         v21 = [v9 objectAtIndexedSubscript:v18];
-        v22 = [NSNumber numberWithInteger:[(_OSDrainPrev12Next12Predictor *)self drainDataForStartTimestamp:v20 toEndTimestamp:v21 fromBatteryTimeStampData:v6 netDrain:0]];
+        v22 = [NSNumber numberWithInteger:[(_OSDrainPrev12Next12Predictor *)self drainDataForStartTimestamp:v20 toEndTimestamp:v21 fromBatteryTimeStampData:dataCopy netDrain:0]];
         [v10 addObject:v22];
 
         ++v19;
@@ -581,16 +581,16 @@ LABEL_17:
   return v10;
 }
 
-- (double)meanHourDrainRateForQueryDate:(id)a3 fromArray:(id)a4 fromBatteryTimeStampData:(id)a5
+- (double)meanHourDrainRateForQueryDate:(id)date fromArray:(id)array fromBatteryTimeStampData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
-  [OSIntelligenceUtilities getHourBinID:a3 forHourBin:1];
+  arrayCopy = array;
+  dataCopy = data;
+  [OSIntelligenceUtilities getHourBinID:date forHourBin:1];
   v10 = v9;
-  v11 = [v8 objectForKeyedSubscript:@"timestamps"];
-  v12 = [v8 objectForKeyedSubscript:@"batteryLevels"];
+  v11 = [dataCopy objectForKeyedSubscript:@"timestamps"];
+  v12 = [dataCopy objectForKeyedSubscript:@"batteryLevels"];
   v13 = [v12 count];
-  v14 = v13 - [v7 count];
+  v14 = v13 - [arrayCopy count];
   v15 = objc_alloc_init(NSMutableArray);
   if (v14 < [v12 count])
   {
@@ -602,7 +602,7 @@ LABEL_17:
       [OSIntelligenceUtilities getHourBinID:v18 forHourBin:1];
       if (v19 == v17)
       {
-        v20 = [v7 objectAtIndexedSubscript:v16];
+        v20 = [arrayCopy objectAtIndexedSubscript:v16];
         [v15 addObject:v20];
       }
 
@@ -619,21 +619,21 @@ LABEL_17:
   return v22;
 }
 
-- (id)sliceArray:(id)a3 overPastDays:(int64_t)a4 startingAtDate:(id)a5 endingAtDate:(id)a6 withDataSamplingInterval:(double)a7 includeLastIndex:(BOOL)a8
+- (id)sliceArray:(id)array overPastDays:(int64_t)days startingAtDate:(id)date endingAtDate:(id)atDate withDataSamplingInterval:(double)interval includeLastIndex:(BOOL)index
 {
-  v8 = a8;
-  v14 = a3;
-  [a6 timeIntervalSinceDate:a5];
+  indexCopy = index;
+  arrayCopy = array;
+  [atDate timeIntervalSinceDate:date];
   log = self->_log;
-  if (v16 >= a4 * 86400.0)
+  if (v16 >= days * 86400.0)
   {
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      sub_10005BB08(log, v14);
+      sub_10005BB08(log, arrayCopy);
     }
 
-    v18 = (3600.0 / a7 * (24 * a4));
-    v19 = [v14 count] - v18;
+    v18 = (3600.0 / interval * (24 * days));
+    v19 = [arrayCopy count] - v18;
     if (v19 < 0)
     {
       v21 = self->_log;
@@ -641,20 +641,20 @@ LABEL_17:
       {
         v23 = v21;
         v24 = 134218496;
-        v25 = [v14 count];
+        v25 = [arrayCopy count];
         v26 = 2048;
-        v27 = (3600.0 / a7 * (24 * a4));
+        v27 = (3600.0 / interval * (24 * days));
         v28 = 2048;
-        v29 = a4;
+        daysCopy = days;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Array count %ld, less than look back index %ld for %ld days, returning unsliced array", &v24, 0x20u);
       }
 
-      v20 = v14;
+      v20 = arrayCopy;
     }
 
     else
     {
-      v20 = [v14 subarrayWithRange:{v19, v18 - !v8}];
+      v20 = [arrayCopy subarrayWithRange:{v19, v18 - !indexCopy}];
     }
 
     v17 = v20;
@@ -673,9 +673,9 @@ LABEL_17:
   return v17;
 }
 
-- (double)meanOfRollingDrains:(id)a3 overPastDays:(int64_t)a4 startingAtDate:(id)a5 endingAtDate:(id)a6 withDataSamplingInterval:(double)a7
+- (double)meanOfRollingDrains:(id)drains overPastDays:(int64_t)days startingAtDate:(id)date endingAtDate:(id)atDate withDataSamplingInterval:(double)interval
 {
-  v7 = [(_OSDrainPrev12Next12Predictor *)self sliceArray:a3 overPastDays:a4 startingAtDate:a5 endingAtDate:a6 withDataSamplingInterval:0 includeLastIndex:a7];
+  v7 = [(_OSDrainPrev12Next12Predictor *)self sliceArray:drains overPastDays:days startingAtDate:date endingAtDate:atDate withDataSamplingInterval:0 includeLastIndex:interval];
   if (v7)
   {
     [OSIntelligenceUtilities meanOf:v7];
@@ -690,16 +690,16 @@ LABEL_17:
   return v9;
 }
 
-- (int64_t)countBatteryDrainIn:(id)a3 moreThanEqualTo:(int64_t)a4 overPastDays:(int64_t)a5 startingAtDate:(id)a6 endingAtDate:(id)a7 withDataSamplingInterval:(double)a8
+- (int64_t)countBatteryDrainIn:(id)in moreThanEqualTo:(int64_t)to overPastDays:(int64_t)days startingAtDate:(id)date endingAtDate:(id)atDate withDataSamplingInterval:(double)interval
 {
-  v9 = [(_OSDrainPrev12Next12Predictor *)self sliceArray:a3 overPastDays:a5 startingAtDate:a6 endingAtDate:a7 withDataSamplingInterval:0 includeLastIndex:a8];
+  v9 = [(_OSDrainPrev12Next12Predictor *)self sliceArray:in overPastDays:days startingAtDate:date endingAtDate:atDate withDataSamplingInterval:0 includeLastIndex:interval];
   v10 = v9;
   if (v9 && (v21 = 0u, v22 = 0u, v19 = 0u, v20 = 0u, (v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16]) != 0))
   {
     v12 = v11;
     v13 = 0;
     v14 = *v20;
-    v15 = a4;
+    toCopy = to;
     do
     {
       for (i = 0; i != v12; i = i + 1)
@@ -710,7 +710,7 @@ LABEL_17:
         }
 
         [*(*(&v19 + 1) + 8 * i) floatValue];
-        if (v17 >= v15)
+        if (v17 >= toCopy)
         {
           ++v13;
         }
@@ -730,20 +730,20 @@ LABEL_17:
   return v13;
 }
 
-- (int64_t)percentileCategoryForBatteryDrain:(int64_t)a3 withFirstQuartile:(id)a4 withSecondQuartile:(id)a5 withThirdQuartile:(id)a6
+- (int64_t)percentileCategoryForBatteryDrain:(int64_t)drain withFirstQuartile:(id)quartile withSecondQuartile:(id)secondQuartile withThirdQuartile:(id)thirdQuartile
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  [v9 floatValue];
-  if (v13 <= a3)
+  quartileCopy = quartile;
+  secondQuartileCopy = secondQuartile;
+  thirdQuartileCopy = thirdQuartile;
+  drainCopy = drain;
+  [quartileCopy floatValue];
+  if (v13 <= drain)
   {
-    [v9 floatValue];
-    if (v15 > v12 || ([v10 floatValue], v16 <= v12))
+    [quartileCopy floatValue];
+    if (v15 > drainCopy || ([secondQuartileCopy floatValue], v16 <= drainCopy))
     {
-      [v10 floatValue];
-      if (v17 > v12 || ([v11 floatValue], v18 <= v12))
+      [secondQuartileCopy floatValue];
+      if (v17 > drainCopy || ([thirdQuartileCopy floatValue], v18 <= drainCopy))
       {
         v14 = 3;
       }
@@ -768,25 +768,25 @@ LABEL_17:
   return v14;
 }
 
-- (int64_t)percentileCategoryForBatteryDrain:(int64_t)a3 inRollingDrainData:(id)a4
+- (int64_t)percentileCategoryForBatteryDrain:(int64_t)drain inRollingDrainData:(id)data
 {
-  v6 = a4;
-  [OSIntelligenceUtilities qthPercentileOf:v6 withQ:25.0];
+  dataCopy = data;
+  [OSIntelligenceUtilities qthPercentileOf:dataCopy withQ:25.0];
   v7 = [NSNumber numberWithDouble:?];
-  [OSIntelligenceUtilities qthPercentileOf:v6 withQ:50.0];
+  [OSIntelligenceUtilities qthPercentileOf:dataCopy withQ:50.0];
   v8 = [NSNumber numberWithDouble:?];
-  [OSIntelligenceUtilities qthPercentileOf:v6 withQ:75.0];
+  [OSIntelligenceUtilities qthPercentileOf:dataCopy withQ:75.0];
   v10 = v9;
 
   v11 = [NSNumber numberWithDouble:v10];
-  v12 = [(_OSDrainPrev12Next12Predictor *)self percentileCategoryForBatteryDrain:a3 withFirstQuartile:v7 withSecondQuartile:v8 withThirdQuartile:v11];
+  v12 = [(_OSDrainPrev12Next12Predictor *)self percentileCategoryForBatteryDrain:drain withFirstQuartile:v7 withSecondQuartile:v8 withThirdQuartile:v11];
 
   return v12;
 }
 
-- (double)durationPerIntervalFromBatteryTimeStampData:(id)a3
+- (double)durationPerIntervalFromBatteryTimeStampData:(id)data
 {
-  v3 = [a3 objectForKeyedSubscript:@"timestamps"];
+  v3 = [data objectForKeyedSubscript:@"timestamps"];
   v4 = [v3 objectAtIndexedSubscript:1];
   v5 = [v3 objectAtIndexedSubscript:0];
   [v4 timeIntervalSinceDate:v5];
@@ -795,26 +795,26 @@ LABEL_17:
   return v7;
 }
 
-- (id)highDayDrainAroundCurrentDateWithError:(id *)a3 fromFilePath:(id)a4
+- (id)highDayDrainAroundCurrentDateWithError:(id *)error fromFilePath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v7 = os_transaction_create();
   if (![(_OSDrainPrev12Next12Predictor *)self hasEnoughHistory])
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_10005BC30();
-      if (a3)
+      if (error)
       {
         goto LABEL_14;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
 LABEL_14:
       [NSError errorWithDomain:@"com.apple.OSIntelligence" code:3 userInfo:0];
-      *a3 = v26 = 0;
+      *error = v26 = 0;
       goto LABEL_36;
     }
 
@@ -822,7 +822,7 @@ LABEL_14:
     goto LABEL_36;
   }
 
-  v8 = [(_OSDrainPrev12Next12Predictor *)self batteryLevelAndTimeFromFilePath:v6];
+  v8 = [(_OSDrainPrev12Next12Predictor *)self batteryLevelAndTimeFromFilePath:pathCopy];
   v9 = v8;
   if (v8 && [v8 count])
   {
@@ -845,12 +845,12 @@ LABEL_14:
           if (v17)
           {
             v18 = [v9 objectForKeyedSubscript:@"timestamps"];
-            v19 = [v18 lastObject];
+            lastObject = [v18 lastObject];
 
             v20 = [v9 objectForKeyedSubscript:@"timestamps"];
-            v21 = [v20 firstObject];
+            firstObject = [v20 firstObject];
 
-            [v19 timeIntervalSinceDate:v21];
+            [lastObject timeIntervalSinceDate:firstObject];
             v23 = v22;
             [(_OSDrainPrev12Next12Predictor *)self durationPerIntervalFromBatteryTimeStampData:v9];
             v25 = v24;
@@ -867,11 +867,11 @@ LABEL_14:
                 v34[3] = &unk_100094E10;
                 v34[4] = self;
                 v35 = v9;
-                v36 = v19;
+                v36 = lastObject;
                 v40 = v25;
                 v37 = v27;
-                v38 = v21;
-                v41 = a3;
+                v38 = firstObject;
+                errorCopy = error;
                 v31 = v29;
                 v39 = v31;
                 dispatch_sync(queue, v34);
@@ -888,7 +888,7 @@ LABEL_14:
                 }
 
                 [NSError errorWithDomain:@"com.apple.OSIntelligence" code:3 userInfo:0];
-                *a3 = v26 = 0;
+                *error = v26 = 0;
               }
             }
 
@@ -900,7 +900,7 @@ LABEL_14:
               }
 
               [NSError errorWithDomain:@"com.apple.OSIntelligence" code:3 userInfo:0];
-              *a3 = v26 = 0;
+              *error = v26 = 0;
             }
 
             goto LABEL_35;
@@ -910,7 +910,7 @@ LABEL_14:
         if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
         {
           sub_10005BD8C();
-          if (a3)
+          if (error)
           {
             goto LABEL_23;
           }
@@ -919,7 +919,7 @@ LABEL_14:
         }
 
 LABEL_22:
-        if (a3)
+        if (error)
         {
           goto LABEL_23;
         }
@@ -936,7 +936,7 @@ LABEL_34:
     }
 
     sub_10005BDC8();
-    if (!a3)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -950,7 +950,7 @@ LABEL_34:
     }
 
     sub_10005BD8C();
-    if (!a3)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -958,7 +958,7 @@ LABEL_34:
 
 LABEL_23:
   [NSError errorWithDomain:@"com.apple.OSIntelligence" code:3 userInfo:0];
-  *a3 = v26 = 0;
+  *error = v26 = 0;
 LABEL_35:
 
 LABEL_36:

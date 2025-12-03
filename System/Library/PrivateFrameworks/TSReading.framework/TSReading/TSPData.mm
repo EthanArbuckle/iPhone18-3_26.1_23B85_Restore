@@ -1,28 +1,28 @@
 @interface TSPData
-+ (BOOL)updateDigest:(void *)a3 withProtobufString:(const void *)a4;
++ (BOOL)updateDigest:(void *)digest withProtobufString:(const void *)string;
 + (id)cullingListeners;
 + (id)cullingListenersQueue;
-+ (id)dataFromDataRep:(id)a3 filename:(id)a4 context:(id)a5;
-+ (id)dataFromNSData:(id)a3 filename:(id)a4 context:(id)a5;
-+ (id)dataFromReadChannel:(id)a3 filename:(id)a4 context:(id)a5;
-+ (id)dataFromURL:(id)a3 context:(id)a4;
-+ (id)dataFromURL:(id)a3 useExternalReferenceIfAllowed:(BOOL)a4 context:(id)a5;
-+ (id)dataFromURL:(id)a3 useExternalReferenceIfAllowed:(BOOL)a4 useFileCoordination:(BOOL)a5 context:(id)a6;
++ (id)dataFromDataRep:(id)rep filename:(id)filename context:(id)context;
++ (id)dataFromNSData:(id)data filename:(id)filename context:(id)context;
++ (id)dataFromReadChannel:(id)channel filename:(id)filename context:(id)context;
++ (id)dataFromURL:(id)l context:(id)context;
++ (id)dataFromURL:(id)l useExternalReferenceIfAllowed:(BOOL)allowed context:(id)context;
++ (id)dataFromURL:(id)l useExternalReferenceIfAllowed:(BOOL)allowed useFileCoordination:(BOOL)coordination context:(id)context;
 + (id)null;
-+ (id)readOnlyDataFromDataRep:(id)a3 filename:(id)a4 context:(id)a5;
-+ (id)readOnlyDataFromNSData:(id)a3 filename:(id)a4 context:(id)a5;
-+ (id)readOnlyDataFromURL:(id)a3 context:(id)a4;
-+ (id)readOnlyDataWithoutDataDigestFromURL:(id)a3 context:(id)a4;
++ (id)readOnlyDataFromDataRep:(id)rep filename:(id)filename context:(id)context;
++ (id)readOnlyDataFromNSData:(id)data filename:(id)filename context:(id)context;
++ (id)readOnlyDataFromURL:(id)l context:(id)context;
++ (id)readOnlyDataWithoutDataDigestFromURL:(id)l context:(id)context;
 + (id)requiredAVAssetOptions;
-+ (void)addCullingListener:(id)a3;
-+ (void)removeCullingListener:(id)a3;
++ (void)addCullingListener:(id)listener;
++ (void)removeCullingListener:(id)listener;
 - (BOOL)isApplicationData;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExternalData;
-- (BOOL)isLengthLikelyToBeGreaterThan:(unint64_t)a3;
-- (BOOL)isStorageInPackage:(id)a3;
+- (BOOL)isLengthLikelyToBeGreaterThan:(unint64_t)than;
+- (BOOL)isStorageInPackage:(id)package;
 - (BOOL)needsDownload;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
+- (BOOL)writeToURL:(id)l error:(id *)error;
 - (CGDataProvider)newCGDataProvider;
 - (CGImage)newCGImage;
 - (CGImageSource)newCGImageSource;
@@ -30,59 +30,59 @@
 - (NSString)filename;
 - (NSString)packageLocator;
 - (NSString)type;
-- (TSPData)initWithIdentifier:(int64_t)a3 digest:(const void *)a4 filename:(id)a5 storage:(id)a6 manager:(id)a7;
+- (TSPData)initWithIdentifier:(int64_t)identifier digest:(const void *)digest filename:(id)filename storage:(id)storage manager:(id)manager;
 - (TSPDataStorage)storage;
 - (TSPObjectContext)context;
-- (id)AVAssetWithOptions:(id)a3;
+- (id)AVAssetWithOptions:(id)options;
 - (id)NSData;
 - (id)bookmarkData;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (id)description;
 - (id)preferredFilename;
 - (unint64_t)encodedLength;
 - (unsigned)packageIdentifier;
-- (void)addDownloadObserver:(id)a3 completionHandler:(id)a4;
+- (void)addDownloadObserver:(id)observer completionHandler:(id)handler;
 - (void)dealloc;
-- (void)performIOChannelReadWithAccessor:(id)a3;
-- (void)performInputStreamReadWithAccessor:(id)a3;
-- (void)setFilename:(id)a3 storage:(id)a4;
-- (void)setStorage:(id)a3;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
+- (void)performInputStreamReadWithAccessor:(id)accessor;
+- (void)setFilename:(id)filename storage:(id)storage;
+- (void)setStorage:(id)storage;
 - (void)willCull;
 @end
 
 @implementation TSPData
 
-+ (id)dataFromURL:(id)a3 context:(id)a4
++ (id)dataFromURL:(id)l context:(id)context
 {
-  v4 = [a1 dataFromURL:a3 useExternalReferenceIfAllowed:0 context:a4];
+  v4 = [self dataFromURL:l useExternalReferenceIfAllowed:0 context:context];
 
   return v4;
 }
 
-+ (id)dataFromURL:(id)a3 useExternalReferenceIfAllowed:(BOOL)a4 context:(id)a5
++ (id)dataFromURL:(id)l useExternalReferenceIfAllowed:(BOOL)allowed context:(id)context
 {
-  v5 = [a1 dataFromURL:a3 useExternalReferenceIfAllowed:a4 useFileCoordination:1 context:a5];
+  v5 = [self dataFromURL:l useExternalReferenceIfAllowed:allowed useFileCoordination:1 context:context];
 
   return v5;
 }
 
-+ (id)dataFromURL:(id)a3 useExternalReferenceIfAllowed:(BOOL)a4 useFileCoordination:(BOOL)a5 context:(id)a6
++ (id)dataFromURL:(id)l useExternalReferenceIfAllowed:(BOOL)allowed useFileCoordination:(BOOL)coordination context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (v8 && [v10 areNewExternalReferencesToDataAllowed])
+  coordinationCopy = coordination;
+  allowedCopy = allowed;
+  lCopy = l;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (allowedCopy && [contextCopy areNewExternalReferencesToDataAllowed])
   {
-    v12 = [v11 dataManager];
-    v13 = [v12 dataFromExternalReferenceURL:v9 useFileCoordination:v7];
+    dataManager = [v11 dataManager];
+    v13 = [dataManager dataFromExternalReferenceURL:lCopy useFileCoordination:coordinationCopy];
   }
 
   else
   {
-    v12 = [v11 dataManager];
-    v13 = [v12 dataFromURL:v9 useFileCoordination:v7];
+    dataManager = [v11 dataManager];
+    v13 = [dataManager dataFromURL:lCopy useFileCoordination:coordinationCopy];
   }
 
   v14 = v13;
@@ -90,48 +90,48 @@
   return v14;
 }
 
-+ (id)dataFromNSData:(id)a3 filename:(id)a4 context:(id)a5
++ (id)dataFromNSData:(id)data filename:(id)filename context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 dataManager];
-  v10 = [v9 dataFromNSData:v7 filename:v8];
+  dataCopy = data;
+  filenameCopy = filename;
+  dataManager = [context dataManager];
+  v10 = [dataManager dataFromNSData:dataCopy filename:filenameCopy];
 
   return v10;
 }
 
-+ (id)dataFromDataRep:(id)a3 filename:(id)a4 context:(id)a5
++ (id)dataFromDataRep:(id)rep filename:(id)filename context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[TSPDataRepReadChannel alloc] initWithRepresentation:v7];
-  v11 = [v9 dataManager];
-  v12 = [v11 dataFromReadChannel:v10 filename:v8];
+  repCopy = rep;
+  filenameCopy = filename;
+  contextCopy = context;
+  v10 = [[TSPDataRepReadChannel alloc] initWithRepresentation:repCopy];
+  dataManager = [contextCopy dataManager];
+  v12 = [dataManager dataFromReadChannel:v10 filename:filenameCopy];
 
   return v12;
 }
 
-+ (id)dataFromReadChannel:(id)a3 filename:(id)a4 context:(id)a5
++ (id)dataFromReadChannel:(id)channel filename:(id)filename context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 dataManager];
-  v10 = [v9 dataFromReadChannel:v7 filename:v8];
+  channelCopy = channel;
+  filenameCopy = filename;
+  dataManager = [context dataManager];
+  v10 = [dataManager dataFromReadChannel:channelCopy filename:filenameCopy];
 
   return v10;
 }
 
-+ (id)readOnlyDataFromURL:(id)a3 context:(id)a4
++ (id)readOnlyDataFromURL:(id)l context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[TSPReadOnlyFileDataStorage alloc] initWithURL:v5];
+  lCopy = l;
+  contextCopy = context;
+  v7 = [[TSPReadOnlyFileDataStorage alloc] initWithURL:lCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v8 = [objc_alloc(MEMORY[0x277D6C2D0]) initForReadingURL:v5];
+  v8 = [objc_alloc(MEMORY[0x277D6C2D0]) initForReadingURL:lCopy];
   if (v8)
   {
     v9 = dispatch_semaphore_create(0);
@@ -155,9 +155,9 @@
 
   v11 = [TSPData alloc];
   v12 = v22[3];
-  v13 = [v5 lastPathComponent];
-  v14 = [v6 dataManager];
-  v15 = [(TSPData *)v11 initWithIdentifier:0 digest:v12 filename:v13 storage:v7 manager:v14];
+  lastPathComponent = [lCopy lastPathComponent];
+  dataManager = [contextCopy dataManager];
+  v15 = [(TSPData *)v11 initWithIdentifier:0 digest:v12 filename:lastPathComponent storage:v7 manager:dataManager];
 
   v16 = v22[3];
   if (v16)
@@ -185,54 +185,54 @@ void __39__TSPData_readOnlyDataFromURL_context___block_invoke(uint64_t a1, int a
   }
 }
 
-+ (id)readOnlyDataFromNSData:(id)a3 filename:(id)a4 context:(id)a5
++ (id)readOnlyDataFromNSData:(id)data filename:(id)filename context:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[TSPReadOnlyMemoryDataStorage alloc] initWithNSData:v7];
+  dataCopy = data;
+  filenameCopy = filename;
+  contextCopy = context;
+  v10 = [[TSPReadOnlyMemoryDataStorage alloc] initWithNSData:dataCopy];
   CC_SHA1_Init(&c);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__TSPData_readOnlyDataFromNSData_filename_context___block_invoke;
   v15[3] = &__block_descriptor_40_e29_v40__0r_v8__NSRange_QQ_16_B32l;
   v15[4] = &c;
-  [v7 enumerateByteRangesUsingBlock:v15];
+  [dataCopy enumerateByteRangesUsingBlock:v15];
   CC_SHA1_Final(md, &c);
   v11 = [TSPData alloc];
-  v12 = [v9 dataManager];
-  v13 = [(TSPData *)v11 initWithIdentifier:0 digest:md filename:v8 storage:v10 manager:v12];
+  dataManager = [contextCopy dataManager];
+  v13 = [(TSPData *)v11 initWithIdentifier:0 digest:md filename:filenameCopy storage:v10 manager:dataManager];
 
   return v13;
 }
 
-+ (id)readOnlyDataFromDataRep:(id)a3 filename:(id)a4 context:(id)a5
++ (id)readOnlyDataFromDataRep:(id)rep filename:(id)filename context:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[TSPReadOnlyProvidedDataStorage alloc] initWithDataRepresentation:v7];
+  repCopy = rep;
+  filenameCopy = filename;
+  contextCopy = context;
+  v10 = [[TSPReadOnlyProvidedDataStorage alloc] initWithDataRepresentation:repCopy];
   LODWORD(v16) = 0;
   v11 = [TSPData alloc];
-  v12 = [v9 dataManager];
-  v13 = [(TSPData *)v11 initWithIdentifier:0 digest:&v15 filename:v8 storage:v10 manager:v12];
+  dataManager = [contextCopy dataManager];
+  v13 = [(TSPData *)v11 initWithIdentifier:0 digest:&v15 filename:filenameCopy storage:v10 manager:dataManager];
 
   return v13;
 }
 
-+ (id)readOnlyDataWithoutDataDigestFromURL:(id)a3 context:(id)a4
++ (id)readOnlyDataWithoutDataDigestFromURL:(id)l context:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [[TSPReadOnlyFileDataStorage alloc] initWithURL:v5];
+  lCopy = l;
+  contextCopy = context;
+  v7 = [[TSPReadOnlyFileDataStorage alloc] initWithURL:lCopy];
   LODWORD(v14) = 0;
   v8 = [TSPData alloc];
-  v9 = [v5 lastPathComponent];
-  v10 = [v6 dataManager];
-  v11 = [(TSPData *)v8 initWithIdentifier:0 digest:&v13 filename:v9 storage:v7 manager:v10];
+  lastPathComponent = [lCopy lastPathComponent];
+  dataManager = [contextCopy dataManager];
+  v11 = [(TSPData *)v8 initWithIdentifier:0 digest:&v13 filename:lastPathComponent storage:v7 manager:dataManager];
 
   return v11;
 }
@@ -279,22 +279,22 @@ uint64_t __32__TSPData_cullingListenersQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)addCullingListener:(id)a3
++ (void)addCullingListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   if (+[TSPData addCullingListener:]::onceToken != -1)
   {
     +[TSPData addCullingListener:];
   }
 
-  v5 = [a1 cullingListenersQueue];
+  cullingListenersQueue = [self cullingListenersQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__TSPData_addCullingListener___block_invoke_2;
   block[3] = &unk_279D469B8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  dispatch_async(cullingListenersQueue, block);
 }
 
 uint64_t __30__TSPData_addCullingListener___block_invoke()
@@ -304,17 +304,17 @@ uint64_t __30__TSPData_addCullingListener___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)removeCullingListener:(id)a3
++ (void)removeCullingListener:(id)listener
 {
-  v4 = a3;
-  v5 = [a1 cullingListenersQueue];
+  listenerCopy = listener;
+  cullingListenersQueue = [self cullingListenersQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__TSPData_removeCullingListener___block_invoke;
   block[3] = &unk_279D469B8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  dispatch_async(cullingListenersQueue, block);
 }
 
 + (id)cullingListeners
@@ -325,13 +325,13 @@ uint64_t __30__TSPData_addCullingListener___block_invoke()
   v9 = __Block_byref_object_copy__3;
   v10 = __Block_byref_object_dispose__3;
   v11 = 0;
-  v2 = [a1 cullingListenersQueue];
+  cullingListenersQueue = [self cullingListenersQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__TSPData_cullingListeners__block_invoke;
   block[3] = &unk_279D47018;
   block[4] = &v6;
-  dispatch_sync(v2, block);
+  dispatch_sync(cullingListenersQueue, block);
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -379,8 +379,8 @@ void __27__TSPData_cullingListeners__block_invoke(uint64_t a1)
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = [objc_opt_class() cullingListeners];
-    v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    cullingListeners = [objc_opt_class() cullingListeners];
+    v5 = [cullingListeners countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v5)
     {
       v6 = *v9;
@@ -391,14 +391,14 @@ void __27__TSPData_cullingListeners__block_invoke(uint64_t a1)
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(cullingListeners);
           }
 
           [*(*(&v8 + 1) + 8 * v7++) willCullData:self];
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [cullingListeners countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -408,34 +408,34 @@ void __27__TSPData_cullingListeners__block_invoke(uint64_t a1)
 
 - (id)bookmarkData
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 bookmarkDataWithOptions:0];
+  storage = [(TSPData *)self storage];
+  v3 = [storage bookmarkDataWithOptions:0];
 
   return v3;
 }
 
 - (id)NSData
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 NSDataWithOptions:0];
+  storage = [(TSPData *)self storage];
+  v3 = [storage NSDataWithOptions:0];
 
   return v3;
 }
 
 - (CGDataProvider)newCGDataProvider
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 newCGDataProvider];
+  storage = [(TSPData *)self storage];
+  newCGDataProvider = [storage newCGDataProvider];
 
-  return v3;
+  return newCGDataProvider;
 }
 
 - (CGImageSource)newCGImageSource
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 newCGImageSource];
+  storage = [(TSPData *)self storage];
+  newCGImageSource = [storage newCGImageSource];
 
-  return v3;
+  return newCGImageSource;
 }
 
 - (CGImage)newCGImage
@@ -452,20 +452,20 @@ void __27__TSPData_cullingListeners__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)AVAssetWithOptions:(id)a3
+- (id)AVAssetWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [objc_opt_class() requiredAVAssetOptions];
-  v6 = [v5 mutableCopy];
+  optionsCopy = options;
+  requiredAVAssetOptions = [objc_opt_class() requiredAVAssetOptions];
+  v6 = [requiredAVAssetOptions mutableCopy];
 
-  if (v4)
+  if (optionsCopy)
   {
-    [v6 addEntriesFromDictionary:v4];
+    [v6 addEntriesFromDictionary:optionsCopy];
   }
 
-  v7 = [(TSPData *)self storage];
-  v8 = [(TSPData *)self type];
-  v9 = [v7 AVAssetWithOptions:v6 contentTypeUTI:v8];
+  storage = [(TSPData *)self storage];
+  type = [(TSPData *)self type];
+  v9 = [storage AVAssetWithOptions:v6 contentTypeUTI:type];
 
   return v9;
 }
@@ -484,7 +484,7 @@ void __27__TSPData_cullingListeners__block_invoke(uint64_t a1)
 {
   if (self->_isDeallocating)
   {
-    v2 = [(TSPData *)self preferredFilename];
+    preferredFilename = [(TSPData *)self preferredFilename];
   }
 
   else
@@ -503,11 +503,11 @@ void __27__TSPData_cullingListeners__block_invoke(uint64_t a1)
     v5[4] = self;
     v5[5] = &v6;
     dispatch_sync(accessQueue, v5);
-    v2 = v7[5];
+    preferredFilename = v7[5];
     _Block_object_dispose(&v6, 8);
   }
 
-  return v2;
+  return preferredFilename;
 }
 
 uint64_t __19__TSPData_filename__block_invoke(uint64_t a1)
@@ -519,11 +519,11 @@ uint64_t __19__TSPData_filename__block_invoke(uint64_t a1)
 
 - (NSString)type
 {
-  v2 = [(TSPData *)self filename];
-  v3 = [v2 pathExtension];
-  if (v3)
+  filename = [(TSPData *)self filename];
+  pathExtension = [filename pathExtension];
+  if (pathExtension)
   {
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], v3, 0);
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], pathExtension, 0);
   }
 
   else
@@ -536,15 +536,15 @@ uint64_t __19__TSPData_filename__block_invoke(uint64_t a1)
 
 - (BOOL)isApplicationData
 {
-  v2 = [(TSPData *)self documentResourceLocator];
-  v3 = v2 != 0;
+  documentResourceLocator = [(TSPData *)self documentResourceLocator];
+  v3 = documentResourceLocator != 0;
 
   return v3;
 }
 
 - (BOOL)isExternalData
 {
-  v2 = [(TSPData *)self storage];
+  storage = [(TSPData *)self storage];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -553,63 +553,63 @@ uint64_t __19__TSPData_filename__block_invoke(uint64_t a1)
 
 - (NSString)documentResourceLocator
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 documentResourceLocator];
+  storage = [(TSPData *)self storage];
+  documentResourceLocator = [storage documentResourceLocator];
 
-  return v3;
+  return documentResourceLocator;
 }
 
 - (NSString)packageLocator
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 packageLocator];
+  storage = [(TSPData *)self storage];
+  packageLocator = [storage packageLocator];
 
-  return v3;
+  return packageLocator;
 }
 
 - (unsigned)packageIdentifier
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 packageIdentifier];
+  storage = [(TSPData *)self storage];
+  packageIdentifier = [storage packageIdentifier];
 
-  return v3;
+  return packageIdentifier;
 }
 
 - (TSPObjectContext)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v3 = [WeakRetained context];
+  context = [WeakRetained context];
 
-  return v3;
+  return context;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = [a3 dataManager];
-  v5 = [v4 copyData:self];
+  dataManager = [context dataManager];
+  v5 = [dataManager copyData:self];
 
   return v5;
 }
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v5 = a3;
-  v4 = [(TSPData *)self storage];
-  [v4 performIOChannelReadWithAccessor:v5];
+  accessorCopy = accessor;
+  storage = [(TSPData *)self storage];
+  [storage performIOChannelReadWithAccessor:accessorCopy];
 }
 
-- (void)performInputStreamReadWithAccessor:(id)a3
+- (void)performInputStreamReadWithAccessor:(id)accessor
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accessorCopy = accessor;
+  v5 = accessorCopy;
+  if (accessorCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__TSPData_performInputStreamReadWithAccessor___block_invoke;
     v6[3] = &unk_279D47040;
     v6[4] = self;
-    v7 = v4;
+    v7 = accessorCopy;
     [(TSPData *)self performIOChannelReadWithAccessor:v6];
   }
 }
@@ -634,35 +634,35 @@ void __46__TSPData_performInputStreamReadWithAccessor___block_invoke(uint64_t a1
 
 - (BOOL)needsDownload
 {
-  v2 = [(TSPData *)self storage];
+  storage = [(TSPData *)self storage];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 needsDownload];
+    needsDownload = [storage needsDownload];
   }
 
   else
   {
-    v3 = 0;
+    needsDownload = 0;
   }
 
-  return v3;
+  return needsDownload;
 }
 
-- (void)addDownloadObserver:(id)a3 completionHandler:(id)a4
+- (void)addDownloadObserver:(id)observer completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(TSPData *)self storage];
+  observerCopy = observer;
+  handlerCopy = handler;
+  storage = [(TSPData *)self storage];
   if (objc_opt_respondsToSelector())
   {
-    [v7 addDownloadObserver:v8 forData:self completionHandler:v6];
+    [storage addDownloadObserver:observerCopy forData:self completionHandler:handlerCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -672,15 +672,15 @@ void __46__TSPData_performInputStreamReadWithAccessor___block_invoke(uint64_t a1
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TSPData *)self context];
-      v7 = [(TSPData *)v5 context];
+      v5 = equalCopy;
+      context = [(TSPData *)self context];
+      context2 = [(TSPData *)v5 context];
 
-      if (v6 == v7)
+      if (context == context2)
       {
-        v9 = [(TSPData *)self digest];
-        v10 = [(TSPData *)v5 digest];
-        v8 = *v9 == *v10 && v9[1] == *(v10 + 8) && *(v9 + 4) == *(v10 + 16);
+        digest = [(TSPData *)self digest];
+        digest2 = [(TSPData *)v5 digest];
+        v8 = *digest == *digest2 && digest[1] == *(digest2 + 8) && *(digest + 4) == *(digest2 + 16);
       }
 
       else
@@ -703,25 +703,25 @@ void __46__TSPData_performInputStreamReadWithAccessor___block_invoke(uint64_t a1
   v11.receiver = self;
   v11.super_class = TSPData;
   v3 = [(TSPData *)&v11 description];
-  v4 = [(TSPData *)self preferredFilename];
-  if ([v4 length])
+  preferredFilename = [(TSPData *)self preferredFilename];
+  if ([preferredFilename length])
   {
-    v5 = [v3 stringByAppendingFormat:@" %@", v4];
+    v5 = [v3 stringByAppendingFormat:@" %@", preferredFilename];
 
     v3 = v5;
   }
 
-  v6 = [(TSPDataStorage *)self->_storage documentResourceLocator];
+  documentResourceLocator = [(TSPDataStorage *)self->_storage documentResourceLocator];
 
-  v7 = [(TSPDataStorage *)self->_storage readOnly];
-  if ((v6 != 0) | v7 & 1)
+  readOnly = [(TSPDataStorage *)self->_storage readOnly];
+  if ((documentResourceLocator != 0) | readOnly & 1)
   {
     v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:32];
     objc_msgSend(v8, "appendString:", @"(");
-    if (v6)
+    if (documentResourceLocator)
     {
       [v8 appendString:@"application data"];
-      if (v7)
+      if (readOnly)
       {
         [v8 appendString:{@", "}];
 LABEL_8:
@@ -729,7 +729,7 @@ LABEL_8:
       }
     }
 
-    else if (v7)
+    else if (readOnly)
     {
       goto LABEL_8;
     }
@@ -743,16 +743,16 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (([v6 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v14 = 0;
     goto LABEL_7;
   }
 
-  v7 = [v6 path];
+  path = [lCopy path];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -763,8 +763,8 @@ LABEL_8:
   v27 = __Block_byref_object_copy__3;
   v28 = __Block_byref_object_dispose__3;
   v29 = 0;
-  unlink([v7 fileSystemRepresentation]);
-  v8 = [v6 path];
+  unlink([path fileSystemRepresentation]);
+  path2 = [lCopy path];
   v9 = TSUOpen();
 
   if (v9 < 0)
@@ -774,7 +774,7 @@ LABEL_8:
     v17 = v25[5];
     v25[5] = v16;
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -799,10 +799,10 @@ LABEL_8:
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
 
   close(v9);
-  if (a4)
+  if (error)
   {
 LABEL_4:
-    *a4 = v25[5];
+    *error = v25[5];
   }
 
 LABEL_5:
@@ -905,40 +905,40 @@ uint64_t __28__TSPData_writeToURL_error___block_invoke_3(uint64_t a1, int a2, in
   return 0;
 }
 
-- (BOOL)isLengthLikelyToBeGreaterThan:(unint64_t)a3
+- (BOOL)isLengthLikelyToBeGreaterThan:(unint64_t)than
 {
-  v4 = [(TSPData *)self storage];
-  LOBYTE(a3) = [v4 encodedLength] > a3;
+  storage = [(TSPData *)self storage];
+  LOBYTE(than) = [storage encodedLength] > than;
 
-  return a3;
+  return than;
 }
 
 - (unint64_t)encodedLength
 {
-  v2 = [(TSPData *)self storage];
-  v3 = [v2 encodedLength];
+  storage = [(TSPData *)self storage];
+  encodedLength = [storage encodedLength];
 
-  return v3;
+  return encodedLength;
 }
 
-- (TSPData)initWithIdentifier:(int64_t)a3 digest:(const void *)a4 filename:(id)a5 storage:(id)a6 manager:(id)a7
+- (TSPData)initWithIdentifier:(int64_t)identifier digest:(const void *)digest filename:(id)filename storage:(id)storage manager:(id)manager
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  filenameCopy = filename;
+  storageCopy = storage;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = TSPData;
   v16 = [(TSPData *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    *(v16 + 2) = a3;
-    v18 = *a4;
-    *(v16 + 18) = *(a4 + 4);
+    *(v16 + 2) = identifier;
+    v18 = *digest;
+    *(v16 + 18) = *(digest + 4);
     *(v16 + 56) = v18;
-    objc_storeStrong(v16 + 5, a5);
-    objc_storeStrong(&v17->_storage, a6);
-    objc_storeWeak(&v17->_manager, v15);
+    objc_storeStrong(v16 + 5, filename);
+    objc_storeStrong(&v17->_storage, storage);
+    objc_storeWeak(&v17->_manager, managerCopy);
     v19 = dispatch_queue_create("TSPData.Access", MEMORY[0x277D85CD8]);
     accessQueue = v17->_accessQueue;
     v17->_accessQueue = v19;
@@ -979,15 +979,15 @@ uint64_t __28__TSPData_writeToURL_error___block_invoke_3(uint64_t a1, int a2, in
   return v2;
 }
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   if (self->_isDeallocating)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPData setStorage:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPData.mm"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:662 description:@"Storage should not be modified while TSPData is being deallocated"];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:662 description:@"Storage should not be modified while TSPData is being deallocated"];
   }
 
   accessQueue = self->_accessQueue;
@@ -996,21 +996,21 @@ uint64_t __28__TSPData_writeToURL_error___block_invoke_3(uint64_t a1, int a2, in
   v10[2] = __22__TSPData_setStorage___block_invoke;
   v10[3] = &unk_279D46A58;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = storageCopy;
+  v9 = storageCopy;
   dispatch_barrier_async(accessQueue, v10);
 }
 
-- (void)setFilename:(id)a3 storage:(id)a4
+- (void)setFilename:(id)filename storage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  filenameCopy = filename;
+  storageCopy = storage;
   if (self->_isDeallocating)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPData setFilename:storage:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPData.mm"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:671 description:@"Filename and storage should not be modified while TSPData is being deallocated"];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:671 description:@"Filename and storage should not be modified while TSPData is being deallocated"];
   }
 
   accessQueue = self->_accessQueue;
@@ -1019,10 +1019,10 @@ uint64_t __28__TSPData_writeToURL_error___block_invoke_3(uint64_t a1, int a2, in
   block[2] = __31__TSPData_setFilename_storage___block_invoke;
   block[3] = &unk_279D46F28;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = filenameCopy;
+  v16 = storageCopy;
+  v12 = storageCopy;
+  v13 = filenameCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 
@@ -1052,18 +1052,18 @@ void __31__TSPData_setFilename_storage___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)isStorageInPackage:(id)a3
+- (BOOL)isStorageInPackage:(id)package
 {
-  v4 = a3;
-  v5 = [(TSPData *)self storage];
-  v6 = [v5 isInPackage:v4];
+  packageCopy = package;
+  storage = [(TSPData *)self storage];
+  v6 = [storage isInPackage:packageCopy];
 
   return v6;
 }
 
-+ (BOOL)updateDigest:(void *)a3 withProtobufString:(const void *)a4
++ (BOOL)updateDigest:(void *)digest withProtobufString:(const void *)string
 {
-  v4 = *(a4 + 23);
+  v4 = *(string + 23);
   if ((v4 & 0x80000000) == 0)
   {
     if (v4 != 20)
@@ -1072,15 +1072,15 @@ void __31__TSPData_setFilename_storage___block_invoke(uint64_t a1)
     }
 
 LABEL_6:
-    v5 = *a4;
-    *(a3 + 4) = *(a4 + 4);
-    *a3 = v5;
+    v5 = *string;
+    *(digest + 4) = *(string + 4);
+    *digest = v5;
     return 1;
   }
 
-  if (*(a4 + 1) == 20)
+  if (*(string + 1) == 20)
   {
-    a4 = *a4;
+    string = *string;
     goto LABEL_6;
   }
 

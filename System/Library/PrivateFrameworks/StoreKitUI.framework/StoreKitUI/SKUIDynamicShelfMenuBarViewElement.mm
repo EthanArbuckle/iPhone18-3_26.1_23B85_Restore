@@ -1,8 +1,8 @@
 @interface SKUIDynamicShelfMenuBarViewElement
 - (BOOL)isDynamicContainer;
 - (SKUIViewElement)cellTemplateViewElement;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)setShelfItemViewElementValidator:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)setShelfItemViewElementValidator:(id)validator;
 @end
 
 @implementation SKUIDynamicShelfMenuBarViewElement
@@ -36,9 +36,9 @@
   return cellTemplateViewElement;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -53,13 +53,13 @@
 
   v18.receiver = self;
   v18.super_class = SKUIDynamicShelfMenuBarViewElement;
-  v13 = [(SKUIShelfMenuBarViewElement *)&v18 applyUpdatesWithElement:v4];
+  v13 = [(SKUIShelfMenuBarViewElement *)&v18 applyUpdatesWithElement:elementCopy];
   v14 = v13;
-  if (v4 != self || [v13 updateType])
+  if (elementCopy != self || [v13 updateType])
   {
-    v15 = [(SKUIDynamicShelfMenuBarViewElement *)v4 cellTemplateViewElement];
+    cellTemplateViewElement = [(SKUIDynamicShelfMenuBarViewElement *)elementCopy cellTemplateViewElement];
     cellTemplateViewElement = self->_cellTemplateViewElement;
-    self->_cellTemplateViewElement = v15;
+    self->_cellTemplateViewElement = cellTemplateViewElement;
   }
 
   return v14;
@@ -82,9 +82,9 @@
   return 1;
 }
 
-- (void)setShelfItemViewElementValidator:(id)a3
+- (void)setShelfItemViewElementValidator:(id)validator
 {
-  v4 = a3;
+  validatorCopy = validator;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -99,7 +99,7 @@
 
   v14.receiver = self;
   v14.super_class = SKUIDynamicShelfMenuBarViewElement;
-  [(SKUIShelfViewElement *)&v14 setShelfItemViewElementValidator:v4];
+  [(SKUIShelfViewElement *)&v14 setShelfItemViewElementValidator:validatorCopy];
   cellTemplateViewElement = self->_cellTemplateViewElement;
   self->_cellTemplateViewElement = 0;
 }

@@ -1,15 +1,15 @@
 @interface SUUIDownloadsViewController
-+ (int64_t)_sizeClassForSize:(CGSize)a3;
-- (SUUIDownloadsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)childViewController:(id)a3 artworkForDownload:(id)a4;
++ (int64_t)_sizeClassForSize:(CGSize)size;
+- (SUUIDownloadsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)childViewController:(id)controller artworkForDownload:(id)download;
 - (void)_reloadBadge;
 - (void)_reloadView;
-- (void)_reloadViewControllerWithSize:(CGSize)a3;
-- (void)_setArtwork:(id)a3 forURLString:(id)a4;
-- (void)childViewController:(id)a3 performActionForDownload:(id)a4;
+- (void)_reloadViewControllerWithSize:(CGSize)size;
+- (void)_setArtwork:(id)artwork forURLString:(id)string;
+- (void)childViewController:(id)controller performActionForDownload:(id)download;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)downloadManagerDownloadsDidChange:(id)a3;
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change;
+- (void)downloadManagerDownloadsDidChange:(id)change;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 @end
@@ -66,17 +66,17 @@ void __43__SUUIDownloadsViewController__reloadBadge__block_invoke_2(uint64_t a1)
   [v2 setBadgeValue:*(a1 + 40)];
 }
 
-- (SUUIDownloadsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUUIDownloadsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v36[5] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = SUUIDownloadsViewController;
-  v4 = [(SUUIDownloadsViewController *)&v34 initWithNibName:a3 bundle:a4];
+  v4 = [(SUUIDownloadsViewController *)&v34 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D69AC8]);
-    v6 = [MEMORY[0x277D69AB8] ITunesDownloadKinds];
-    [v5 setDownloadKinds:v6];
+    iTunesDownloadKinds = [MEMORY[0x277D69AB8] ITunesDownloadKinds];
+    [v5 setDownloadKinds:iTunesDownloadKinds];
 
     v7 = *MEMORY[0x277D69E80];
     v36[0] = *MEMORY[0x277D69E78];
@@ -174,8 +174,8 @@ void __54__SUUIDownloadsViewController_initWithNibName_bundle___block_invoke(uin
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SUUIDownloadsViewController *)self view];
-  [v3 frame];
+  view = [(SUUIDownloadsViewController *)self view];
+  [view frame];
   [(SUUIDownloadsViewController *)self _reloadViewControllerWithSize:v4, v5];
 
   v6.receiver = self;
@@ -183,11 +183,11 @@ void __54__SUUIDownloadsViewController_initWithNibName_bundle___block_invoke(uin
   [(SUUIDownloadsViewController *)&v6 viewDidLayoutSubviews];
 }
 
-- (void)childViewController:(id)a3 performActionForDownload:(id)a4
+- (void)childViewController:(id)controller performActionForDownload:(id)download
 {
-  v8 = a4;
-  v4 = [v8 valueForProperty:*MEMORY[0x277D69FC8]];
-  v5 = [v8 valueForProperty:*MEMORY[0x277D69FA0]];
+  downloadCopy = download;
+  v4 = [downloadCopy valueForProperty:*MEMORY[0x277D69FC8]];
+  v5 = [downloadCopy valueForProperty:*MEMORY[0x277D69FA0]];
   if ([v5 BOOLValue])
   {
     v6 = [v4 isEqual:*MEMORY[0x277D69F30]];
@@ -212,7 +212,7 @@ void __54__SUUIDownloadsViewController_initWithNibName_bundle___block_invoke(uin
     }
 
 LABEL_8:
-    [v8 pause];
+    [downloadCopy pause];
     goto LABEL_11;
   }
 
@@ -222,15 +222,15 @@ LABEL_8:
   }
 
 LABEL_10:
-  [v8 resume];
+  [downloadCopy resume];
 LABEL_11:
 }
 
-- (id)childViewController:(id)a3 artworkForDownload:(id)a4
+- (id)childViewController:(id)controller artworkForDownload:(id)download
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForProperty:*MEMORY[0x277D6A0D0]];
+  controllerCopy = controller;
+  downloadCopy = download;
+  v8 = [downloadCopy valueForProperty:*MEMORY[0x277D6A0D0]];
   if (!v8)
   {
     goto LABEL_7;
@@ -267,8 +267,8 @@ LABEL_11:
     v17 = v13;
     [v12 setOutputBlock:v16];
     [(NSMutableDictionary *)self->_imageOperations setObject:v12 forKey:v13];
-    v14 = [(SUUIViewController *)self operationQueue];
-    [v14 addOperation:v12];
+    operationQueue = [(SUUIViewController *)self operationQueue];
+    [operationQueue addOperation:v12];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -304,16 +304,16 @@ void __70__SUUIDownloadsViewController_childViewController_artworkForDownload___
   [WeakRetained _setArtwork:*(a1 + 32) forURLString:*(a1 + 40)];
 }
 
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SUUIDownloadsViewController_downloadManager_downloadStatesDidChange___block_invoke;
   v7[3] = &unk_2798F5AF8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -364,7 +364,7 @@ void __71__SUUIDownloadsViewController_downloadManager_downloadStatesDidChange__
   [*(*(a1 + 40) + 1096) reloadDownloadsAtIndexes:v2];
 }
 
-- (void)downloadManagerDownloadsDidChange:(id)a3
+- (void)downloadManagerDownloadsDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -382,10 +382,10 @@ void __65__SUUIDownloadsViewController_downloadManagerDownloadsDidChange___block
   [v1 _reloadViewControllerWithSize:{v2, v3}];
 }
 
-- (void)_reloadViewControllerWithSize:(CGSize)a3
+- (void)_reloadViewControllerWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SUUIDownloadsViewController *)self _reloadBadge];
   v6 = [objc_opt_class() _sizeClassForSize:{width, height}];
   if (v6 == 2)
@@ -393,19 +393,19 @@ void __65__SUUIDownloadsViewController_downloadManagerDownloadsDidChange___block
     iphoneViewController = self->_iphoneViewController;
     if (iphoneViewController)
     {
-      v16 = [(SUUIIPhoneDownloadsViewController *)iphoneViewController view];
-      [v16 removeFromSuperview];
+      view = [(SUUIIPhoneDownloadsViewController *)iphoneViewController view];
+      [view removeFromSuperview];
 
       [(SUUIIPhoneDownloadsViewController *)self->_iphoneViewController removeFromParentViewController];
       [(SUUIIPhoneDownloadsViewController *)self->_iphoneViewController setDelegate:0];
       v17 = self->_iphoneViewController;
       self->_iphoneViewController = 0;
 
-      v18 = [(SUUIDownloadsViewController *)self navigationItem];
-      [v18 setLeftBarButtonItems:0];
+      navigationItem = [(SUUIDownloadsViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItems:0];
 
-      v19 = [(SUUIDownloadsViewController *)self navigationItem];
-      [v19 setRightBarButtonItems:0];
+      navigationItem2 = [(SUUIDownloadsViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItems:0];
     }
 
     p_ipadViewController = &self->_ipadViewController;
@@ -424,19 +424,19 @@ void __65__SUUIDownloadsViewController_downloadManagerDownloadsDidChange___block
       v7 = self->_ipadViewController;
       if (v7)
       {
-        v8 = [(SUUIIPadDownloadsViewController *)v7 view];
-        [v8 removeFromSuperview];
+        view2 = [(SUUIIPadDownloadsViewController *)v7 view];
+        [view2 removeFromSuperview];
 
         [(SUUIIPadDownloadsViewController *)self->_ipadViewController removeFromParentViewController];
         [(SUUIIPadDownloadsViewController *)self->_ipadViewController setDelegate:0];
         v9 = self->_ipadViewController;
         self->_ipadViewController = 0;
 
-        v10 = [(SUUIDownloadsViewController *)self navigationItem];
-        [v10 setLeftBarButtonItems:0];
+        navigationItem3 = [(SUUIDownloadsViewController *)self navigationItem];
+        [navigationItem3 setLeftBarButtonItems:0];
 
-        v11 = [(SUUIDownloadsViewController *)self navigationItem];
-        [v11 setRightBarButtonItems:0];
+        navigationItem4 = [(SUUIDownloadsViewController *)self navigationItem];
+        [navigationItem4 setRightBarButtonItems:0];
       }
     }
 
@@ -451,21 +451,21 @@ LABEL_11:
       *p_ipadViewController = v20;
 
       v22 = *p_ipadViewController;
-      v23 = [(SUUIDownloadsViewController *)self navigationItem];
-      [v22 _setExistingNavigationItem:v23];
+      navigationItem5 = [(SUUIDownloadsViewController *)self navigationItem];
+      [v22 _setExistingNavigationItem:navigationItem5];
 
       [*p_ipadViewController setDelegate:self];
       v24 = *p_ipadViewController;
-      v25 = [(SUUIViewController *)self clientContext];
-      [v24 setClientContext:v25];
+      clientContext = [(SUUIViewController *)self clientContext];
+      [v24 setClientContext:clientContext];
 
       [(SUUIDownloadsViewController *)self addChildViewController:*p_ipadViewController];
       ipadViewController = *p_ipadViewController;
     }
   }
 
-  v26 = [(SUUIDownloadsViewController *)self downloads];
-  [ipadViewController setDownloads:v26];
+  downloads = [(SUUIDownloadsViewController *)self downloads];
+  [ipadViewController setDownloads:downloads];
 
   [(SUUIDownloadsViewController *)self _reloadView];
 }
@@ -474,36 +474,36 @@ LABEL_11:
 {
   if ([(SUUIDownloadsViewController *)self isViewLoaded])
   {
-    v5 = [(SUUIDownloadsViewController *)self view];
+    view = [(SUUIDownloadsViewController *)self view];
     ipadViewController = self->_ipadViewController;
     if (!ipadViewController)
     {
       ipadViewController = self->_iphoneViewController;
     }
 
-    v4 = [ipadViewController view];
-    [v5 frame];
-    [v4 setFrame:?];
-    [v4 setAutoresizingMask:18];
-    [v5 addSubview:v4];
+    view2 = [ipadViewController view];
+    [view frame];
+    [view2 setFrame:?];
+    [view2 setAutoresizingMask:18];
+    [view addSubview:view2];
   }
 }
 
-- (void)_setArtwork:(id)a3 forURLString:(id)a4
+- (void)_setArtwork:(id)artwork forURLString:(id)string
 {
-  v18 = a3;
-  v6 = a4;
-  [(NSMutableDictionary *)self->_imageOperations removeObjectForKey:v6];
-  nullImage = v18;
-  if (!v18)
+  artworkCopy = artwork;
+  stringCopy = string;
+  [(NSMutableDictionary *)self->_imageOperations removeObjectForKey:stringCopy];
+  nullImage = artworkCopy;
+  if (!artworkCopy)
   {
     nullImage = self->_nullImage;
   }
 
-  [(NSCache *)self->_images setObject:nullImage forKey:v6];
-  v8 = [MEMORY[0x277CCAB58] indexSet];
-  v9 = [(SUUIDownloadsViewController *)self downloads];
-  v10 = [v9 count];
+  [(NSCache *)self->_images setObject:nullImage forKey:stringCopy];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  downloads = [(SUUIDownloadsViewController *)self downloads];
+  v10 = [downloads count];
 
   if (v10)
   {
@@ -511,30 +511,30 @@ LABEL_11:
     v12 = *MEMORY[0x277D6A0D0];
     do
     {
-      v13 = [(SUUIDownloadsViewController *)self downloads];
-      v14 = [v13 objectAtIndex:v11];
+      downloads2 = [(SUUIDownloadsViewController *)self downloads];
+      v14 = [downloads2 objectAtIndex:v11];
       v15 = [v14 valueForProperty:v12];
 
-      if ([v15 isEqualToString:v6])
+      if ([v15 isEqualToString:stringCopy])
       {
-        [v8 addIndex:v11];
+        [indexSet addIndex:v11];
       }
 
       ++v11;
-      v16 = [(SUUIDownloadsViewController *)self downloads];
-      v17 = [v16 count];
+      downloads3 = [(SUUIDownloadsViewController *)self downloads];
+      v17 = [downloads3 count];
     }
 
     while (v11 < v17);
   }
 
-  [(SUUIIPadDownloadsViewController *)self->_ipadViewController reloadDownloadsAtIndexes:v8];
-  [(SUUIIPhoneDownloadsViewController *)self->_iphoneViewController reloadDownloadsAtIndexes:v8];
+  [(SUUIIPadDownloadsViewController *)self->_ipadViewController reloadDownloadsAtIndexes:indexSet];
+  [(SUUIIPhoneDownloadsViewController *)self->_iphoneViewController reloadDownloadsAtIndexes:indexSet];
 }
 
-+ (int64_t)_sizeClassForSize:(CGSize)a3
++ (int64_t)_sizeClassForSize:(CGSize)size
 {
-  if (a3.width <= 600.0)
+  if (size.width <= 600.0)
   {
     return 1;
   }

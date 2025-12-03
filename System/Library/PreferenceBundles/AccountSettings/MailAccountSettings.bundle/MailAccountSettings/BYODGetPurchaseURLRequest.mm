@@ -1,25 +1,25 @@
 @interface BYODGetPurchaseURLRequest
-- (BYODGetPurchaseURLRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5;
+- (BYODGetPurchaseURLRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain;
 - (id)bodyDictionary;
 - (id)urlString;
-- (void)performRequestWithCallback:(id)a3;
+- (void)performRequestWithCallback:(id)callback;
 @end
 
 @implementation BYODGetPurchaseURLRequest
 
-- (BYODGetPurchaseURLRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5
+- (BYODGetPurchaseURLRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BYODGetPurchaseURLRequest *)self urlString];
+  accountCopy = account;
+  storeCopy = store;
+  domainCopy = domain;
+  urlString = [(BYODGetPurchaseURLRequest *)self urlString];
   v14.receiver = self;
   v14.super_class = BYODGetPurchaseURLRequest;
-  v12 = [(BYODRequest *)&v14 initWithURLString:v11 accountStore:v9 appleAccount:v8 httpRequestType:@"POST" requestBody:0 httpHeader:0];
+  v12 = [(BYODRequest *)&v14 initWithURLString:urlString accountStore:storeCopy appleAccount:accountCopy httpRequestType:@"POST" requestBody:0 httpHeader:0];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_domainName, a5);
+    objc_storeStrong(&v12->_domainName, domain);
   }
 
   return v12;
@@ -27,21 +27,21 @@
 
 - (id)urlString
 {
-  v2 = [(BYODRequest *)self iCloudAppleAccount];
-  v3 = [v2 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
+  iCloudAppleAccount = [(BYODRequest *)self iCloudAppleAccount];
+  v3 = [iCloudAppleAccount propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
   v4 = [v3 objectForKeyedSubscript:@"purchaseDomainURL"];
 
   return v4;
 }
 
-- (void)performRequestWithCallback:(id)a3
+- (void)performRequestWithCallback:(id)callback
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5EA34;
   v5[3] = &unk_B97F0;
-  v6 = a3;
-  v4 = v6;
+  callbackCopy = callback;
+  v4 = callbackCopy;
   [(BYODRequest *)self performRequestWithHandler:v5];
 }
 

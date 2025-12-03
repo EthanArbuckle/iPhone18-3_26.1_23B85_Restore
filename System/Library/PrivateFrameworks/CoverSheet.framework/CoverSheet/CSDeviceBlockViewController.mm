@@ -2,50 +2,50 @@
 - (BOOL)_isFindMyChangingState;
 - (BOOL)_isFindMyEnabled;
 - (BOOL)_shouldShowUnblockDeviceButton;
-- (CSDeviceBlockViewController)initWithDeviceBlockStatusProvider:(id)a3;
-- (id)_obfuscateUsername:(id)a3;
+- (CSDeviceBlockViewController)initWithDeviceBlockStatusProvider:(id)provider;
+- (id)_obfuscateUsername:(id)username;
 - (id)_unblockPolicy;
 - (id)view;
 - (id)viewIfLoaded;
 - (void)_attemptErase;
 - (void)_attemptRecovery;
-- (void)_attemptToDisableFindMyWithAccount:(id)a3 completion:(id)a4;
-- (void)_cancelPendingActionAfterDelay:(double)a3;
-- (void)_disableFindMyInContext:(unint64_t)a3 withWipeToken:(id)a4 completion:(id)a5;
-- (void)_eraseDeviceWithCompletion:(id)a3;
-- (void)_getUserAccountWithCompletion:(id)a3;
-- (void)_handleDeviceLocatorStateDidChange:(id)a3;
-- (void)_performFMIPAuthenticationForContext:(id)a3 account:(id)a4 completion:(id)a5;
+- (void)_attemptToDisableFindMyWithAccount:(id)account completion:(id)completion;
+- (void)_cancelPendingActionAfterDelay:(double)delay;
+- (void)_disableFindMyInContext:(unint64_t)context withWipeToken:(id)token completion:(id)completion;
+- (void)_eraseDeviceWithCompletion:(id)completion;
+- (void)_getUserAccountWithCompletion:(id)completion;
+- (void)_handleDeviceLocatorStateDidChange:(id)change;
+- (void)_performFMIPAuthenticationForContext:(id)context account:(id)account completion:(id)completion;
 - (void)_presentAuthenticationViewController;
 - (void)_presentUnblockDeviceViewController;
-- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)a3 completion:(id)a4;
+- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)path completion:(id)completion;
 - (void)_setUpNetworkPathMonitor;
 - (void)_updateText;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)authViewController:(id)a3 didConfirmEraseAfterAuthenticationWithResults:(id)a4 shouldEraseDataPlan:(BOOL)a5;
-- (void)authViewControllerDidCancelToEraseDeviceAfterAuthentication:(id)a3;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)authViewController:(id)controller didConfirmEraseAfterAuthenticationWithResults:(id)results shouldEraseDataPlan:(BOOL)plan;
+- (void)authViewControllerDidCancelToEraseDeviceAfterAuthentication:(id)authentication;
 - (void)cancelButtonTapped;
 - (void)dealloc;
 - (void)deviceUnblockViewModelHandleDidRequestCancel;
 - (void)handleEmergencyButtonAction;
-- (void)handleSecondaryActionForView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleSecondaryActionForView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation CSDeviceBlockViewController
 
-- (CSDeviceBlockViewController)initWithDeviceBlockStatusProvider:(id)a3
+- (CSDeviceBlockViewController)initWithDeviceBlockStatusProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = CSDeviceBlockViewController;
   v6 = [(CSDeviceBlockViewController *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_blockStatusProvider, a3);
+    objc_storeStrong(&v6->_blockStatusProvider, provider);
     v8 = objc_alloc_init(MEMORY[0x277CB8F48]);
     accountStore = v7->_accountStore;
     v7->_accountStore = v8;
@@ -67,7 +67,7 @@
     networkMonitorQueue = v7->_networkMonitorQueue;
     v7->_networkMonitorQueue = v17;
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
@@ -93,7 +93,7 @@
       [CSDeviceBlockViewController initWithDeviceBlockStatusProvider:];
     }
 
-    [v19 addObserver:v7 selector:sel__handleDeviceLocatorStateDidChange_ name:*v20 object:0];
+    [defaultCenter addObserver:v7 selector:sel__handleDeviceLocatorStateDidChange_ name:*v20 object:0];
 
     [(CSDeviceBlockViewController *)v7 _setUpNetworkPathMonitor];
   }
@@ -103,8 +103,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBFDeviceBlockTimer *)self->_blockTimer invalidate];
   v4.receiver = self;
@@ -116,18 +116,18 @@
 {
   v4.receiver = self;
   v4.super_class = CSDeviceBlockViewController;
-  v2 = [(CSModalViewControllerBase *)&v4 view];
+  view = [(CSModalViewControllerBase *)&v4 view];
 
-  return v2;
+  return view;
 }
 
 - (id)viewIfLoaded
 {
   v4.receiver = self;
   v4.super_class = CSDeviceBlockViewController;
-  v2 = [(CSModalViewControllerBase *)&v4 viewIfLoaded];
+  viewIfLoaded = [(CSModalViewControllerBase *)&v4 viewIfLoaded];
 
-  return v2;
+  return viewIfLoaded;
 }
 
 - (void)viewDidLoad
@@ -144,24 +144,24 @@
   v19[3] = &unk_27838B748;
   objc_copyWeak(&v20, &location);
   [(SBFDeviceBlockTimer *)v5 setHandler:v19];
-  v6 = [(CSDeviceBlockViewController *)self view];
-  [v6 setDeviceBlockDelegate:self];
-  v7 = [(SBFDeviceBlockTimer *)self->_blockTimer titleText];
-  [v6 setTitleText:v7];
+  view = [(CSDeviceBlockViewController *)self view];
+  [view setDeviceBlockDelegate:self];
+  titleText = [(SBFDeviceBlockTimer *)self->_blockTimer titleText];
+  [view setTitleText:titleText];
 
-  v8 = [(SBFDeviceBlockTimer *)self->_blockTimer subtitleText];
-  [v6 setSubtitleText:v8];
+  subtitleText = [(SBFDeviceBlockTimer *)self->_blockTimer subtitleText];
+  [view setSubtitleText:subtitleText];
 
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"DASHBOARD_BLOCK_ERASE_LINK" value:&stru_28302FDA0 table:@"CoverSheet"];
-  [v6 setSecondarySubtitleText:v10];
+  [view setSecondarySubtitleText:v10];
 
-  v11 = [MEMORY[0x277CF0D60] preferredFontProvider];
-  v12 = [v11 preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:1];
-  [v6 setOverrideSecondarySubtitleFont:v12];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+  v12 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:1];
+  [view setOverrideSecondarySubtitleFont:v12];
 
-  v13 = [MEMORY[0x277D75348] grayColor];
-  [v6 setOverrideSecondarySubtitleTextColor:v13];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [view setOverrideSecondarySubtitleTextColor:grayColor];
 
   if (__sb__runningInSpringBoard())
   {
@@ -173,15 +173,15 @@
     goto LABEL_5;
   }
 
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v15 != 1)
+  if (userInterfaceIdiom != 1)
   {
 LABEL_5:
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"DASHBOARD_BLOCK_EMERGENCY_BUTTON" value:&stru_28302FDA0 table:@"CoverSheet"];
-    [v6 setSecondaryActionButtonText:v17];
+    [view setSecondaryActionButtonText:v17];
   }
 
 LABEL_6:
@@ -207,51 +207,51 @@ void __42__CSDeviceBlockViewController_viewDidLoad__block_invoke(uint64_t a1)
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSDeviceBlockViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(SBFDeviceBlockTimer *)self->_blockTimer invalidate];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v16.receiver = self;
   v16.super_class = CSDeviceBlockViewController;
-  v4 = a3;
-  [(CSModalViewControllerBase *)&v16 aggregateAppearance:v4];
+  appearanceCopy = appearance;
+  [(CSModalViewControllerBase *)&v16 aggregateAppearance:appearanceCopy];
   v5 = [CSComponent homeAffordance:v16.receiver];
   v6 = [v5 priority:80];
-  v7 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  v8 = [v6 identifier:v7];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  v8 = [v6 identifier:appearanceIdentifier];
   v9 = [v8 hidden:1];
-  [v4 addComponent:v9];
+  [appearanceCopy addComponent:v9];
 
   v10 = +[CSComponent proudLock];
   v11 = [v10 priority:80];
   v12 = [v11 hidden:1];
-  [v4 addComponent:v12];
+  [appearanceCopy addComponent:v12];
 
   v13 = +[CSComponent whitePoint];
   v14 = [v13 priority:80];
   v15 = [v14 hidden:1];
-  [v4 addComponent:v15];
+  [appearanceCopy addComponent:v15];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = [(CSDeviceBlockViewController *)self viewIfLoaded];
-  if ([v5 isShowingAuthenticationView])
+  behaviorCopy = behavior;
+  viewIfLoaded = [(CSDeviceBlockViewController *)self viewIfLoaded];
+  if ([viewIfLoaded isShowingAuthenticationView])
   {
     v6 = 12;
   }
 
   else
   {
-    v7 = [(CSDeviceBlockViewController *)self viewIfLoaded];
-    if (([v7 isShowingUnblockDeviceView] & 1) != 0 || self->_attemptingErase)
+    viewIfLoaded2 = [(CSDeviceBlockViewController *)self viewIfLoaded];
+    if (([viewIfLoaded2 isShowingUnblockDeviceView] & 1) != 0 || self->_attemptingErase)
     {
       v6 = 12;
     }
@@ -269,19 +269,19 @@ void __42__CSDeviceBlockViewController_viewDidLoad__block_invoke(uint64_t a1)
 
   v8.receiver = self;
   v8.super_class = CSDeviceBlockViewController;
-  [(CSModalViewControllerBase *)&v8 aggregateBehavior:v4];
-  [v4 addRestrictedCapabilities:1048632];
-  [v4 setIdleTimerDuration:v6];
+  [(CSModalViewControllerBase *)&v8 aggregateBehavior:behaviorCopy];
+  [behaviorCopy addRestrictedCapabilities:1048632];
+  [behaviorCopy setIdleTimerDuration:v6];
 }
 
-- (void)handleSecondaryActionForView:(id)a3
+- (void)handleSecondaryActionForView:(id)view
 {
   if (![(CSDeviceBlockViewController *)self _shouldShowUnblockDeviceButton])
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v6 = [CSAction actionWithType:2];
       [(CSCoverSheetViewControllerBase *)self sendAction:v6];
@@ -295,17 +295,17 @@ void __42__CSDeviceBlockViewController_viewDidLoad__block_invoke(uint64_t a1)
   [(CSCoverSheetViewControllerBase *)self sendAction:v3];
 }
 
-- (void)authViewController:(id)a3 didConfirmEraseAfterAuthenticationWithResults:(id)a4 shouldEraseDataPlan:(BOOL)a5
+- (void)authViewController:(id)controller didConfirmEraseAfterAuthenticationWithResults:(id)results shouldEraseDataPlan:(BOOL)plan
 {
-  v5 = a5;
+  planCopy = plan;
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  resultsCopy = results;
+  controllerCopy = controller;
   v10 = SBLogDashBoard();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v5)
+    if (planCopy)
     {
       v11 = @"YES";
     }
@@ -316,18 +316,18 @@ void __42__CSDeviceBlockViewController_viewDidLoad__block_invoke(uint64_t a1)
   }
 
   authenticationViewController = self->_authenticationViewController;
-  if (authenticationViewController == v9)
+  if (authenticationViewController == controllerCopy)
   {
-    self->_shouldEraseDataPlan = v5;
-    v13 = [v8 objectForKeyedSubscript:*MEMORY[0x277CEFFC8]];
+    self->_shouldEraseDataPlan = planCopy;
+    v13 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFC8]];
     [(ACAccount *)self->_findMyAccount aa_setPassword:v13];
     [(CSDeviceBlockViewController *)self _attemptErase];
   }
 }
 
-- (void)authViewControllerDidCancelToEraseDeviceAfterAuthentication:(id)a3
+- (void)authViewControllerDidCancelToEraseDeviceAfterAuthentication:(id)authentication
 {
-  if (self->_authenticationViewController == a3)
+  if (self->_authenticationViewController == authentication)
   {
     v7 = v3;
     v8 = v4;
@@ -342,8 +342,8 @@ void __42__CSDeviceBlockViewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (void)cancelButtonTapped
 {
-  v3 = [(CSDeviceBlockViewController *)self view];
-  v4 = v3;
+  view = [(CSDeviceBlockViewController *)self view];
+  v4 = view;
   authenticationViewController = self->_authenticationViewController;
   if (authenticationViewController)
   {
@@ -351,8 +351,8 @@ void __42__CSDeviceBlockViewController_viewDidLoad__block_invoke(uint64_t a1)
     v10[1] = 3221225472;
     v10[2] = __49__CSDeviceBlockViewController_cancelButtonTapped__block_invoke;
     v10[3] = &unk_27838BA70;
-    v11 = v3;
-    v12 = self;
+    v11 = view;
+    selfCopy = self;
     [(CSDeviceBlockViewController *)self bs_removeChildViewController:authenticationViewController animated:0 transitionBlock:v10];
   }
 
@@ -364,7 +364,7 @@ void __42__CSDeviceBlockViewController_viewDidLoad__block_invoke(uint64_t a1)
     v7[2] = __49__CSDeviceBlockViewController_cancelButtonTapped__block_invoke_2;
     v7[3] = &unk_27838BA70;
     v8 = v4;
-    v9 = self;
+    selfCopy2 = self;
     [(CSDeviceBlockViewController *)self bs_removeChildViewController:deviceUnblockViewController animated:0 transitionBlock:v7];
   }
 }
@@ -395,8 +395,8 @@ void __49__CSDeviceBlockViewController_cancelButtonTapped__block_invoke_2(uint64
 
 - (void)deviceUnblockViewModelHandleDidRequestCancel
 {
-  v3 = [(CSDeviceBlockViewController *)self view];
-  v4 = v3;
+  view = [(CSDeviceBlockViewController *)self view];
+  v4 = view;
   deviceUnblockViewController = self->_deviceUnblockViewController;
   if (deviceUnblockViewController)
   {
@@ -405,7 +405,7 @@ void __49__CSDeviceBlockViewController_cancelButtonTapped__block_invoke_2(uint64
     v6[2] = __75__CSDeviceBlockViewController_deviceUnblockViewModelHandleDidRequestCancel__block_invoke;
     v6[3] = &unk_27838BA70;
     v6[4] = self;
-    v7 = v3;
+    v7 = view;
     [(CSDeviceBlockViewController *)self bs_removeChildViewController:deviceUnblockViewController animated:0 transitionBlock:v6];
   }
 }
@@ -432,16 +432,16 @@ void __75__CSDeviceBlockViewController_deviceUnblockViewModelHandleDidRequestCan
   }
 
   dispatch_async(_presentUnblockDeviceViewController_forgotPasscodeEventQueue, &__block_literal_global_82);
-  v3 = [(CSDeviceBlockViewController *)self view];
-  v4 = [(CSDeviceBlockViewController *)self _unblockPolicy];
-  v5 = [v4 canUnblockDeviceUsingRecovery];
+  view = [(CSDeviceBlockViewController *)self view];
+  _unblockPolicy = [(CSDeviceBlockViewController *)self _unblockPolicy];
+  canUnblockDeviceUsingRecovery = [_unblockPolicy canUnblockDeviceUsingRecovery];
   v6 = off_27838A350;
-  if (!v5)
+  if (!canUnblockDeviceUsingRecovery)
   {
     v6 = off_27838A2F0;
   }
 
-  v7 = [objc_alloc(*v6) initWithUnblockPolicy:v4 blockViewController:self];
+  v7 = [objc_alloc(*v6) initWithUnblockPolicy:_unblockPolicy blockViewController:self];
   v8 = [[CSDeviceUnblockViewController alloc] initWithViewModel:v7];
   deviceUnblockViewController = self->_deviceUnblockViewController;
   self->_deviceUnblockViewController = v8;
@@ -451,9 +451,9 @@ void __75__CSDeviceBlockViewController_deviceUnblockViewModelHandleDidRequestCan
   v13 = 3221225472;
   v14 = __66__CSDeviceBlockViewController__presentUnblockDeviceViewController__block_invoke_3;
   v15 = &unk_27838BA70;
-  v16 = v3;
-  v17 = self;
-  v11 = v3;
+  v16 = view;
+  selfCopy = self;
+  v11 = view;
   [(CSDeviceBlockViewController *)self bs_addChildViewController:v10 animated:0 transitionBlock:&v12];
   [(CSCoverSheetViewControllerBase *)self rebuildAppearance:v12];
   [v11 setNeedsLayout];
@@ -486,7 +486,7 @@ void __66__CSDeviceBlockViewController__presentUnblockDeviceViewController__bloc
 
 - (void)_presentAuthenticationViewController
 {
-  v3 = [(CSDeviceBlockViewController *)self view];
+  view = [(CSDeviceBlockViewController *)self view];
   if (!self->_authenticationViewController)
   {
     v4 = objc_alloc_init(CSEraseDeviceAuthViewController);
@@ -501,8 +501,8 @@ void __66__CSDeviceBlockViewController__presentUnblockDeviceViewController__bloc
     v7[2] = __67__CSDeviceBlockViewController__presentAuthenticationViewController__block_invoke;
     v7[3] = &unk_27838D6C8;
     objc_copyWeak(&v10, &location);
-    v8 = v3;
-    v9 = self;
+    v8 = view;
+    selfCopy = self;
     [(CSDeviceBlockViewController *)self bs_addChildViewController:v6 animated:0 transitionBlock:v7];
 
     objc_destroyWeak(&v10);
@@ -571,28 +571,28 @@ void __67__CSDeviceBlockViewController__presentAuthenticationViewController__blo
 
 - (void)_updateText
 {
-  v3 = [(CSDeviceBlockViewController *)self viewIfLoaded];
-  v4 = [(SBFDeviceBlockTimer *)self->_blockTimer subtitleText];
-  [v3 setSubtitleText:v4];
+  viewIfLoaded = [(CSDeviceBlockViewController *)self viewIfLoaded];
+  subtitleText = [(SBFDeviceBlockTimer *)self->_blockTimer subtitleText];
+  [viewIfLoaded setSubtitleText:subtitleText];
 
   if (_os_feature_enabled_impl())
   {
-    v5 = [(CSDeviceBlockViewController *)self _shouldShowUnblockDeviceButton];
-    v6 = [(CSDeviceBlockViewController *)self viewIfLoaded];
-    v7 = v6;
-    if (v5)
+    _shouldShowUnblockDeviceButton = [(CSDeviceBlockViewController *)self _shouldShowUnblockDeviceButton];
+    viewIfLoaded2 = [(CSDeviceBlockViewController *)self viewIfLoaded];
+    v7 = viewIfLoaded2;
+    if (_shouldShowUnblockDeviceButton)
     {
-      [v6 addDeviceUnblockButtons];
+      [viewIfLoaded2 addDeviceUnblockButtons];
     }
 
     else
     {
-      [v6 removeDeviceUnblockButtons];
+      [viewIfLoaded2 removeDeviceUnblockButtons];
     }
   }
 }
 
-- (void)_handleDeviceLocatorStateDidChange:(id)a3
+- (void)_handleDeviceLocatorStateDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -706,18 +706,18 @@ LABEL_6:
 
 - (BOOL)_isFindMyEnabled
 {
-  v2 = [getAAUIDeviceLocatorServiceClass() sharedInstance];
-  v3 = [v2 isEnabled];
+  sharedInstance = [getAAUIDeviceLocatorServiceClass() sharedInstance];
+  isEnabled = [sharedInstance isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (BOOL)_isFindMyChangingState
 {
-  v2 = [getAAUIDeviceLocatorServiceClass() sharedInstance];
-  v3 = [v2 isChangingState];
+  sharedInstance = [getAAUIDeviceLocatorServiceClass() sharedInstance];
+  isChangingState = [sharedInstance isChangingState];
 
-  return v3;
+  return isChangingState;
 }
 
 - (void)_setUpNetworkPathMonitor
@@ -732,8 +732,8 @@ LABEL_6:
   update_handler[4] = self;
   nw_path_monitor_set_update_handler(networkPathMonitor, update_handler);
   nw_path_monitor_set_queue(self->_networkPathMonitor, self->_networkMonitorQueue);
-  v4 = [(CSDeviceBlockViewController *)self networkPathMonitor];
-  nw_path_monitor_start(v4);
+  networkPathMonitor = [(CSDeviceBlockViewController *)self networkPathMonitor];
+  nw_path_monitor_start(networkPathMonitor);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -779,19 +779,19 @@ void __55__CSDeviceBlockViewController__setUpNetworkPathMonitor__block_invoke_3(
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)a3 completion:(id)a4
+- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__CSDeviceBlockViewController__setNetworkMonitorUpdateHandlerWithPath_completion___block_invoke;
   block[3] = &unk_27838C060;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = pathCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -809,17 +809,17 @@ uint64_t __82__CSDeviceBlockViewController__setNetworkMonitorUpdateHandlerWithPa
   return result;
 }
 
-- (void)_getUserAccountWithCompletion:(id)a3
+- (void)_getUserAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accountStore = self->_accountStore;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__CSDeviceBlockViewController__getUserAccountWithCompletion___block_invoke;
   v7[3] = &unk_27838D740;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(ACAccountStore *)accountStore aa_primaryAppleAccountWithCompletion:v7];
 }
 
@@ -844,11 +844,11 @@ void __61__CSDeviceBlockViewController__getUserAccountWithCompletion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_attemptToDisableFindMyWithAccount:(id)a3 completion:(id)a4
+- (void)_attemptToDisableFindMyWithAccount:(id)account completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v8 = SBLogDashBoard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -865,15 +865,15 @@ void __61__CSDeviceBlockViewController__getUserAccountWithCompletion___block_inv
     v18[1] = 3221225472;
     v18[2] = __77__CSDeviceBlockViewController__attemptToDisableFindMyWithAccount_completion___block_invoke;
     v18[3] = &unk_27838D768;
-    v20 = v7;
+    v20 = completionCopy;
     v18[4] = self;
-    v19 = v6;
-    v10 = self;
+    v19 = accountCopy;
+    selfCopy = self;
     v11 = MEMORY[0x223D698D0](v18);
-    pendingAction = v10->_pendingAction;
-    v10->_pendingAction = v11;
+    pendingAction = selfCopy->_pendingAction;
+    selfCopy->_pendingAction = v11;
 
-    [(CSDeviceBlockViewController *)v10 _cancelPendingActionAfterDelay:10.0];
+    [(CSDeviceBlockViewController *)selfCopy _cancelPendingActionAfterDelay:10.0];
   }
 
   else if ([(CSDeviceBlockViewController *)self _isFindMyEnabled])
@@ -896,22 +896,22 @@ void __61__CSDeviceBlockViewController__getUserAccountWithCompletion___block_inv
 
     v14 = v13;
     _Block_object_dispose(&v21, 8);
-    v10 = objc_alloc_init(v13);
-    [(CSDeviceBlockViewController *)v10 setAccount:v6];
+    selfCopy = objc_alloc_init(v13);
+    [(CSDeviceBlockViewController *)selfCopy setAccount:accountCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __77__CSDeviceBlockViewController__attemptToDisableFindMyWithAccount_completion___block_invoke_2;
     v16[3] = &unk_27838D790;
     v16[4] = self;
-    v17 = v7;
-    v15 = self;
-    [(CSDeviceBlockViewController *)v15 _performFMIPAuthenticationForContext:v10 account:v6 completion:v16];
+    v17 = completionCopy;
+    selfCopy2 = self;
+    [(CSDeviceBlockViewController *)selfCopy2 _performFMIPAuthenticationForContext:selfCopy account:accountCopy completion:v16];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSDeviceBlockEraseErrorDomain" code:3 userInfo:0];
-    (*(v7 + 2))(v7, v10);
+    selfCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSDeviceBlockEraseErrorDomain" code:3 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, selfCopy);
   }
 }
 
@@ -950,11 +950,11 @@ void __77__CSDeviceBlockViewController__attemptToDisableFindMyWithAccount_comple
   [*(a1 + 32) _disableFindMyInContext:4 withWipeToken:v4 completion:*(a1 + 40)];
 }
 
-- (void)_performFMIPAuthenticationForContext:(id)a3 account:(id)a4 completion:(id)a5
+- (void)_performFMIPAuthenticationForContext:(id)context account:(id)account completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  accountCopy = account;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -973,16 +973,16 @@ void __77__CSDeviceBlockViewController__attemptToDisableFindMyWithAccount_comple
 
   v11 = v10;
   _Block_object_dispose(&v18, 8);
-  v12 = [[v10 alloc] initWithAccount:v8];
-  v13 = [v7 customRequestHeaders];
-  [v12 setCustomHeaders:v13];
+  v12 = [[v10 alloc] initWithAccount:accountCopy];
+  customRequestHeaders = [contextCopy customRequestHeaders];
+  [v12 setCustomHeaders:customRequestHeaders];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__CSDeviceBlockViewController__performFMIPAuthenticationForContext_account_completion___block_invoke;
   v15[3] = &unk_27838D7B8;
-  v16 = v9;
-  v14 = v9;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [v12 performRequestWithHandler:v15];
 }
 
@@ -1002,19 +1002,19 @@ void __87__CSDeviceBlockViewController__performFMIPAuthenticationForContext_acco
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_disableFindMyInContext:(unint64_t)a3 withWipeToken:(id)a4 completion:(id)a5
+- (void)_disableFindMyInContext:(unint64_t)context withWipeToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [getAAUIDeviceLocatorServiceClass() sharedInstance];
+  completionCopy = completion;
+  tokenCopy = token;
+  sharedInstance = [getAAUIDeviceLocatorServiceClass() sharedInstance];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__CSDeviceBlockViewController__disableFindMyInContext_withWipeToken_completion___block_invoke;
   v12[3] = &unk_27838C010;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [v10 disableInContext:a3 withWipeToken:v9 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [sharedInstance disableInContext:context withWipeToken:tokenCopy completion:v12];
 }
 
 void __80__CSDeviceBlockViewController__disableFindMyInContext_withWipeToken_completion___block_invoke(uint64_t a1, char a2)
@@ -1077,21 +1077,21 @@ void __80__CSDeviceBlockViewController__disableFindMyInContext_withWipeToken_com
   }
 }
 
-- (void)_eraseDeviceWithCompletion:(id)a3
+- (void)_eraseDeviceWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277D072B0];
-  v5 = a3;
+  completionCopy = completion;
   v8 = objc_alloc_init(v4);
   [v8 setHideProgress:0];
   [v8 setEraseDataPlan:self->_shouldEraseDataPlan];
   v6 = [objc_alloc(MEMORY[0x277D072B8]) initWithMode:4 options:v8 reason:@"BlockedDeviceUserErase"];
-  v7 = [MEMORY[0x277D072C0] sharedInstance];
-  [v7 resetWithRequest:v6 completion:v5];
+  mEMORY[0x277D072C0] = [MEMORY[0x277D072C0] sharedInstance];
+  [mEMORY[0x277D072C0] resetWithRequest:v6 completion:completionCopy];
 }
 
-- (void)_cancelPendingActionAfterDelay:(double)a3
+- (void)_cancelPendingActionAfterDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__CSDeviceBlockViewController__cancelPendingActionAfterDelay___block_invoke;
@@ -1112,22 +1112,22 @@ void __62__CSDeviceBlockViewController__cancelPendingActionAfterDelay___block_in
   }
 }
 
-- (id)_obfuscateUsername:(id)a3
+- (id)_obfuscateUsername:(id)username
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"@"] - 1;
+  usernameCopy = username;
+  v4 = [usernameCopy rangeOfString:@"@"] - 1;
   v5 = [&stru_28302FDA0 stringByPaddingToLength:4 withString:@"*" startingAtIndex:0];
-  v6 = [v3 stringByReplacingCharactersInRange:1 withString:{v4, v5}];
+  v6 = [usernameCopy stringByReplacingCharactersInRange:1 withString:{v4, v5}];
 
   return v6;
 }
 
 - (BOOL)_shouldShowUnblockDeviceButton
 {
-  v2 = [(CSDeviceBlockViewController *)self _unblockPolicy];
-  v3 = [v2 canUnblockDevice];
+  _unblockPolicy = [(CSDeviceBlockViewController *)self _unblockPolicy];
+  canUnblockDevice = [_unblockPolicy canUnblockDevice];
 
-  return v3;
+  return canUnblockDevice;
 }
 
 - (id)_unblockPolicy

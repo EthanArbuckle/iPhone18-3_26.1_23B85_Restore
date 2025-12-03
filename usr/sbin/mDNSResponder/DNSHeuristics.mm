@@ -1,23 +1,23 @@
 @interface DNSHeuristics
-+ (BOOL)setNetworkAsFiltered:(id)a3 filtered:(BOOL)a4;
-+ (BOOL)updateHeuristicState:(BOOL)a3 isTimeout:(BOOL)a4;
++ (BOOL)setNetworkAsFiltered:(id)filtered filtered:(BOOL)a4;
++ (BOOL)updateHeuristicState:(BOOL)state isTimeout:(BOOL)timeout;
 + (id)copyEmptyHeuristicState;
 + (unint64_t)currentTimeMs;
 @end
 
 @implementation DNSHeuristics
 
-+ (BOOL)updateHeuristicState:(BOOL)a3 isTimeout:(BOOL)a4
++ (BOOL)updateHeuristicState:(BOOL)state isTimeout:(BOOL)timeout
 {
-  v4 = a4;
-  v5 = a3;
+  timeoutCopy = timeout;
+  stateCopy = state;
   v6 = objc_opt_new();
-  v7 = [v6 requestParameters];
-  [v7 setQualityOfService:25];
+  requestParameters = [v6 requestParameters];
+  [requestParameters setQualityOfService:25];
 
   [v6 activate];
-  v52 = [v6 currentKnownNetworkProfile];
-  v8 = [DNSHeuristics copyNetworkSettings:v52];
+  currentKnownNetworkProfile = [v6 currentKnownNetworkProfile];
+  v8 = [DNSHeuristics copyNetworkSettings:currentKnownNetworkProfile];
   if (v8)
   {
     v9 = v8;
@@ -30,7 +30,7 @@
 
   v10 = [v9 objectForKey:@"LastFailureTimestamp"];
 
-  v11 = v4;
+  v11 = timeoutCopy;
   if (!v10)
   {
     v12 = +[DNSHeuristics copyEmptyHeuristicState];
@@ -40,23 +40,23 @@
 
   v13 = +[DNSHeuristics currentTimeMs];
   v14 = [v9 objectForKeyedSubscript:@"LastFailureTimestamp"];
-  v15 = [v14 unsignedIntegerValue];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
   v16 = [v9 objectForKeyedSubscript:@"LongCount"];
-  v17 = [v16 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
   v18 = [v9 objectForKeyedSubscript:@"BurstCount"];
-  v19 = [v18 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v18 unsignedIntegerValue];
 
-  v20 = v52;
-  v21 = [DNSHeuristics getNetworkFilteredFlag:v52];
-  if (!v5)
+  v20 = currentKnownNetworkProfile;
+  v21 = [DNSHeuristics getNetworkFilteredFlag:currentKnownNetworkProfile];
+  if (!stateCopy)
   {
     v26 = v11;
     if (v11)
     {
-      v27 = v13 - v15;
-      if (v13 > v15 && v15 + 30000 > v13)
+      v27 = v13 - unsignedIntegerValue;
+      if (v13 > unsignedIntegerValue && unsignedIntegerValue + 30000 > v13)
       {
         v22 = _mdns_heuristics_log();
         LOBYTE(v28) = 1;
@@ -67,13 +67,13 @@
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Logging DoH timeout failure after only %llums, not incrementing failure counter", buf, 0xCu);
         }
 
-        v20 = v52;
+        v20 = currentKnownNetworkProfile;
         goto LABEL_49;
       }
     }
 
-    v29 = v17 + 1;
-    v30 = v19 + (v13 - v15) / 0x1D4C0;
+    v29 = unsignedIntegerValue2 + 1;
+    v30 = unsignedIntegerValue3 + (v13 - unsignedIntegerValue) / 0x1D4C0;
     if (v30 >= 0xA)
     {
       v30 = 10;
@@ -187,23 +187,23 @@ LABEL_48:
     v54[2] = v48;
     v22 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:3];
 
-    v20 = v52;
-    LODWORD(v46) = [DNSHeuristics setNetworkSettings:v52 value:v22];
-    v28 = v46 & [DNSHeuristics setNetworkAsFiltered:v52 filtered:v35];
+    v20 = currentKnownNetworkProfile;
+    LODWORD(v46) = [DNSHeuristics setNetworkSettings:currentKnownNetworkProfile value:v22];
+    v28 = v46 & [DNSHeuristics setNetworkAsFiltered:currentKnownNetworkProfile filtered:v35];
     v49 = [NSSet setWithObjects:&off_100155608, &off_100155620, 0];
-    [v6 updateKnownNetworkProfile:v52 properties:v49 error:0];
+    [v6 updateKnownNetworkProfile:currentKnownNetworkProfile properties:v49 error:0];
 
     goto LABEL_49;
   }
 
   if (v21)
   {
-    if (v15 + 86400000 >= v13)
+    if (unsignedIntegerValue + 86400000 >= v13)
     {
       v38 = _mdns_heuristics_log();
       v22 = v38;
-      v39 = v13 - v15;
-      if (v13 > v15)
+      v39 = v13 - unsignedIntegerValue;
+      if (v13 > unsignedIntegerValue)
       {
         LOBYTE(v28) = 1;
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -235,18 +235,18 @@ LABEL_48:
 LABEL_40:
 
         v43 = +[DNSHeuristics copyEmptyHeuristicState];
-        v44 = [DNSHeuristics setNetworkSettings:v52 value:v43];
+        v44 = [DNSHeuristics setNetworkSettings:currentKnownNetworkProfile value:v43];
 
-        v28 = v44 & [DNSHeuristics setNetworkAsFiltered:v52 filtered:0];
+        v28 = v44 & [DNSHeuristics setNetworkAsFiltered:currentKnownNetworkProfile filtered:0];
         v22 = [NSSet setWithObjects:&off_100155608, &off_100155620, 0];
-        [v6 updateKnownNetworkProfile:v52 properties:v22 error:0];
+        [v6 updateKnownNetworkProfile:currentKnownNetworkProfile properties:v22 error:0];
 LABEL_49:
 
         goto LABEL_50;
       }
 
       *buf = 134217984;
-      v56 = (v13 - v15);
+      v56 = (v13 - unsignedIntegerValue);
       v23 = "Logging DoH success after %llums, clearing filtered state";
       v24 = v22;
       v25 = 12;
@@ -288,16 +288,16 @@ LABEL_50:
   return v4;
 }
 
-+ (BOOL)setNetworkAsFiltered:(id)a3 filtered:(BOOL)a4
++ (BOOL)setNetworkAsFiltered:(id)filtered filtered:(BOOL)a4
 {
   if (a4)
   {
-    return [DNSHeuristics setNetworkAsFiltered:a3];
+    return [DNSHeuristics setNetworkAsFiltered:filtered];
   }
 
   else
   {
-    return [DNSHeuristics clearNetworkAsFiltered:a3];
+    return [DNSHeuristics clearNetworkAsFiltered:filtered];
   }
 }
 

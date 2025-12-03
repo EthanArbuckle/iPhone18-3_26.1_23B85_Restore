@@ -1,24 +1,24 @@
 @interface AKShapesPickerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setShapes:(id)a3;
+- (void)setShapes:(id)shapes;
 @end
 
 @implementation AKShapesPickerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKShapesPicker" hasInstanceMethod:@"setShapes:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AKShapesPicker" isKindOfClass:@"AKModernToolbarPicker"];
-  [v3 validateClass:@"AKModernToolbarPicker" hasInstanceMethod:@"stackview" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKShapesPicker" hasInstanceMethod:@"setShapes:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AKShapesPicker" isKindOfClass:@"AKModernToolbarPicker"];
+  [validationsCopy validateClass:@"AKModernToolbarPicker" hasInstanceMethod:@"stackview" withFullSignature:{"@", 0}];
 }
 
-- (void)setShapes:(id)a3
+- (void)setShapes:(id)shapes
 {
   v4.receiver = self;
   v4.super_class = AKShapesPickerAccessibility;
-  [(AKShapesPickerAccessibility *)&v4 setShapes:a3];
+  [(AKShapesPickerAccessibility *)&v4 setShapes:shapes];
   [(AKShapesPickerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -33,9 +33,9 @@
   v13 = 0u;
   v14 = 0u;
   v3 = [(AKShapesPickerAccessibility *)self safeUIViewForKey:@"stackview", 0];
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -46,7 +46,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -58,7 +58,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v6);

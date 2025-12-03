@@ -1,27 +1,27 @@
 @interface RTMapItemProviderProactiveExperts
-- (BOOL)skipForOptions:(id)a3 error:(id *)a4;
-- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapServiceManager:(id)a5 parameters:(id)a6 personalizationPortraitManager:(id)a7;
-- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapServiceManager:(id)a5 personalizationPortraitManager:(id)a6;
-- (id)_filterConnectionLocations:(id)a3 location:(id)a4 distance:(double)a5 error:(id *)a6;
-- (id)_mapItemsWithConnectionsLocations:(id)a3 options:(id)a4;
-- (id)_recentLocationsFrom:(id)a3 error:(id *)a4;
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)skipForOptions:(id)options error:(id *)error;
+- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapServiceManager:(id)serviceManager parameters:(id)parameters personalizationPortraitManager:(id)portraitManager;
+- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapServiceManager:(id)serviceManager personalizationPortraitManager:(id)portraitManager;
+- (id)_filterConnectionLocations:(id)locations location:(id)location distance:(double)distance error:(id *)error;
+- (id)_mapItemsWithConnectionsLocations:(id)locations options:(id)options;
+- (id)_recentLocationsFrom:(id)from error:(id *)error;
+- (id)mapItemsWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation RTMapItemProviderProactiveExperts
 
-- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapServiceManager:(id)a5 personalizationPortraitManager:(id)a6
+- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapServiceManager:(id)serviceManager personalizationPortraitManager:(id)portraitManager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  serviceManagerCopy = serviceManager;
+  portraitManagerCopy = portraitManager;
+  if (managerCopy)
   {
-    v14 = [[RTMapItemProviderProactiveExpertsParameters alloc] initWithDefaultsManager:v10];
-    self = [(RTMapItemProviderProactiveExperts *)self initWithDefaultsManager:v10 distanceCalculator:v11 mapServiceManager:v12 parameters:v14 personalizationPortraitManager:v13];
+    v14 = [[RTMapItemProviderProactiveExpertsParameters alloc] initWithDefaultsManager:managerCopy];
+    self = [(RTMapItemProviderProactiveExperts *)self initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy mapServiceManager:serviceManagerCopy parameters:v14 personalizationPortraitManager:portraitManagerCopy];
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -33,21 +33,21 @@
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v18, 2u);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapServiceManager:(id)a5 parameters:(id)a6 personalizationPortraitManager:(id)a7
+- (RTMapItemProviderProactiveExperts)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapServiceManager:(id)serviceManager parameters:(id)parameters personalizationPortraitManager:(id)portraitManager
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v16)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  serviceManagerCopy = serviceManager;
+  parametersCopy = parameters;
+  portraitManagerCopy = portraitManager;
+  if (!portraitManagerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -62,7 +62,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v14)
+  if (!serviceManagerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v15)
+  if (!parametersCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -87,19 +87,19 @@ LABEL_16:
 
 LABEL_17:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   v25.receiver = self;
   v25.super_class = RTMapItemProviderProactiveExperts;
-  v17 = [(RTMapItemProviderBase *)&v25 initWithDefaultsManager:v12 distanceCalculator:v13];
+  v17 = [(RTMapItemProviderBase *)&v25 initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy];
   p_isa = &v17->super.super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_personalizationPortraitManager, a7);
-    objc_storeStrong(p_isa + 4, a5);
-    objc_storeStrong(p_isa + 5, a6);
+    objc_storeStrong(&v17->_personalizationPortraitManager, portraitManager);
+    objc_storeStrong(p_isa + 4, serviceManager);
+    objc_storeStrong(p_isa + 5, parameters);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v19 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -114,20 +114,20 @@ LABEL_17:
   }
 
   self = p_isa;
-  v21 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v21;
+  return selfCopy;
 }
 
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4
+- (id)mapItemsWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  [v6 distance];
+  optionsCopy = options;
+  [optionsCopy distance];
   v8 = v7;
-  v9 = [v6 location];
-  v10 = [v6 startDate];
-  v11 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v10 sinceDate:-16200.0];
+  location = [optionsCopy location];
+  startDate = [optionsCopy startDate];
+  v11 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:startDate sinceDate:-16200.0];
 
   v33 = 0;
   v12 = [(RTMapItemProviderProactiveExperts *)self _recentLocationsFrom:v11 error:&v33];
@@ -135,11 +135,11 @@ LABEL_18:
   if (v13)
   {
     v14 = v13;
-    if (a4)
+    if (error)
     {
       v15 = v13;
       v16 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else
@@ -151,16 +151,16 @@ LABEL_18:
   else
   {
     v32 = 0;
-    v17 = [(RTMapItemProviderProactiveExperts *)self _filterConnectionLocations:v12 location:v9 distance:&v32 error:v8];
+    v17 = [(RTMapItemProviderProactiveExperts *)self _filterConnectionLocations:v12 location:location distance:&v32 error:v8];
     v18 = v32;
     v14 = v18;
     if (v18)
     {
-      if (a4)
+      if (error)
       {
         v19 = v18;
         v16 = 0;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -172,12 +172,12 @@ LABEL_18:
     else
     {
       v28 = objc_alloc(MEMORY[0x277D011B0]);
-      v20 = [v6 useBackground];
+      useBackground = [optionsCopy useBackground];
       v21 = objc_opt_class();
       NSStringFromClass(v21);
       v22 = v30 = v17;
-      v23 = [v6 clientIdentifier];
-      v29 = [v28 initWithUseBackgroundTraits:v20 analyticsIdentifier:v22 clientIdentifier:v23];
+      clientIdentifier = [optionsCopy clientIdentifier];
+      v29 = [v28 initWithUseBackgroundTraits:useBackground analyticsIdentifier:v22 clientIdentifier:clientIdentifier];
 
       v24 = [(RTMapItemProviderProactiveExperts *)self _mapItemsWithConnectionsLocations:v30 options:v29];
       v25 = [[_RTMap alloc] initWithInput:v24];
@@ -189,7 +189,7 @@ LABEL_18:
       v26 = [(_RTMap *)v25 withBlock:v31];
 
       v17 = v30;
-      v16 = [(RTMapItemProviderBase *)self filterInferredMapItems:v26 byDistance:v9 fromLocation:2048 andAppendSource:a4 error:v8];
+      v16 = [(RTMapItemProviderBase *)self filterInferredMapItems:v26 byDistance:location fromLocation:2048 andAppendSource:error error:v8];
     }
   }
 
@@ -207,10 +207,10 @@ id __63__RTMapItemProviderProactiveExperts_mapItemsWithOptions_error___block_inv
   return v6;
 }
 
-- (id)_recentLocationsFrom:(id)a3 error:(id *)a4
+- (id)_recentLocationsFrom:(id)from error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  fromCopy = from;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -224,7 +224,7 @@ id __63__RTMapItemProviderProactiveExperts_mapItemsWithOptions_error___block_inv
   v41 = __Block_byref_object_copy__13;
   v42 = __Block_byref_object_dispose__13;
   v43 = 0;
-  v8 = [(RTMapItemProviderProactiveExperts *)self personalizationPortraitManager];
+  personalizationPortraitManager = [(RTMapItemProviderProactiveExperts *)self personalizationPortraitManager];
   v31 = MEMORY[0x277D85DD0];
   v32 = 3221225472;
   v33 = __64__RTMapItemProviderProactiveExperts__recentLocationsFrom_error___block_invoke;
@@ -233,7 +233,7 @@ id __63__RTMapItemProviderProactiveExperts_mapItemsWithOptions_error___block_inv
   v37 = &v38;
   v9 = v7;
   v35 = v9;
-  [v8 fetchRecentLocationDonationsSince:v6 handler:&v31];
+  [personalizationPortraitManager fetchRecentLocationDonationsSince:fromCopy handler:&v31];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -245,11 +245,11 @@ id __63__RTMapItemProviderProactiveExperts_mapItemsWithOptions_error___block_inv
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_11];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -286,12 +286,12 @@ LABEL_8:
     objc_storeStrong(v45 + 5, v24);
   }
 
-  if (a4)
+  if (error)
   {
     v28 = v45[5];
     if (v28)
     {
-      *a4 = v28;
+      *error = v28;
     }
   }
 
@@ -316,25 +316,25 @@ void __64__RTMapItemProviderProactiveExperts__recentLocationsFrom_error___block_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_filterConnectionLocations:(id)a3 location:(id)a4 distance:(double)a5 error:(id *)a6
+- (id)_filterConnectionLocations:(id)locations location:(id)location distance:(double)distance error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v33 = a4;
-  if (!v8)
+  locationsCopy = locations;
+  locationCopy = location;
+  if (!locationsCopy)
   {
-    v34 = 0;
+    array = 0;
     goto LABEL_27;
   }
 
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = [MEMORY[0x277CBEB58] set];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v31 = v8;
-  v10 = v8;
+  v31 = locationsCopy;
+  v10 = locationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v11)
   {
@@ -355,11 +355,11 @@ void __64__RTMapItemProviderProactiveExperts__recentLocationsFrom_error___block_
       }
 
       v16 = *(*(&v36 + 1) + 8 * i);
-      v17 = [v16 name];
-      if ([v17 length])
+      name = [v16 name];
+      if ([name length])
       {
-        v18 = [v16 name];
-        v19 = [v9 containsObject:v18];
+        name2 = [v16 name];
+        v19 = [v9 containsObject:name2];
 
         if (v19)
         {
@@ -371,21 +371,21 @@ void __64__RTMapItemProviderProactiveExperts__recentLocationsFrom_error___block_
       {
       }
 
-      v20 = [v16 location];
+      location = [v16 location];
 
-      if (!v20)
+      if (!location)
       {
         goto LABEL_19;
       }
 
-      v21 = [(RTMapItemProviderBase *)self distanceCalculator];
-      v22 = [v16 location];
+      distanceCalculator = [(RTMapItemProviderBase *)self distanceCalculator];
+      location2 = [v16 location];
       v35 = v13;
-      [v21 distanceFromLocation:v33 toLocation:v22 error:&v35];
+      [distanceCalculator distanceFromLocation:locationCopy toLocation:location2 error:&v35];
       v24 = v23;
       v25 = v35;
 
-      if (v24 <= a5)
+      if (v24 <= distance)
       {
         v26 = 0;
       }
@@ -409,14 +409,14 @@ void __64__RTMapItemProviderProactiveExperts__recentLocationsFrom_error___block_
         }
 
 LABEL_19:
-        [v34 addObject:v16];
-        v27 = [v16 name];
-        v28 = [v27 length];
+        [array addObject:v16];
+        name3 = [v16 name];
+        v28 = [name3 length];
 
         if (v28)
         {
-          v29 = [v16 name];
-          [v9 addObject:v29];
+          name4 = [v16 name];
+          [v9 addObject:name4];
         }
 
         continue;
@@ -429,25 +429,25 @@ LABEL_19:
   while (v12);
 LABEL_26:
 
-  v8 = v31;
+  locationsCopy = v31;
 LABEL_27:
 
-  return v34;
+  return array;
 }
 
-- (id)_mapItemsWithConnectionsLocations:(id)a3 options:(id)a4
+- (id)_mapItemsWithConnectionsLocations:(id)locations options:(id)options
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationsCopy = locations;
+  optionsCopy = options;
+  if (locationsCopy)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(locationsCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v6;
+    v9 = locationsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -463,8 +463,8 @@ LABEL_27:
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = [(RTMapItemProviderProactiveExperts *)self mapServiceManager];
-          v16 = [v14 mapItemUsingMapServiceManager:v15 options:v7];
+          mapServiceManager = [(RTMapItemProviderProactiveExperts *)self mapServiceManager];
+          v16 = [v14 mapItemUsingMapServiceManager:mapServiceManager options:optionsCopy];
 
           if (v16)
           {
@@ -487,13 +487,13 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)skipForOptions:(id)a3 error:(id *)a4
+- (BOOL)skipForOptions:(id)options error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 endDate];
-  v6 = [v4 startDate];
+  optionsCopy = options;
+  endDate = [optionsCopy endDate];
+  startDate = [optionsCopy startDate];
 
-  [v5 timeIntervalSinceDate:v6];
+  [endDate timeIntervalSinceDate:startDate];
   v8 = v7;
 
   return v8 <= 900.0;

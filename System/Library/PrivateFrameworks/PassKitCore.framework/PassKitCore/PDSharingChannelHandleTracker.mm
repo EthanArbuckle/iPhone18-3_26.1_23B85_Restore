@@ -1,20 +1,20 @@
 @interface PDSharingChannelHandleTracker
 - (PDSharingChannelHandle)handle;
-- (PDSharingChannelHandleTracker)initWithHandle:(id)a3;
+- (PDSharingChannelHandleTracker)initWithHandle:(id)handle;
 @end
 
 @implementation PDSharingChannelHandleTracker
 
-- (PDSharingChannelHandleTracker)initWithHandle:(id)a3
+- (PDSharingChannelHandleTracker)initWithHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v8.receiver = self;
   v8.super_class = PDSharingChannelHandleTracker;
   v5 = [(PDSharingChannelHandleTracker *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_handle, v4);
+    objc_storeWeak(&v5->_handle, handleCopy);
   }
 
   return v6;

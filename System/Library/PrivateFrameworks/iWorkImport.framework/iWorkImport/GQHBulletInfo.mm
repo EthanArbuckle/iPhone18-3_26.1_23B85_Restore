@@ -1,7 +1,7 @@
 @interface GQHBulletInfo
 - (void)dealloc;
-- (void)setBulletChar:(__CFString *)a3;
-- (void)setStyle:(id)a3;
+- (void)setBulletChar:(__CFString *)char;
+- (void)setStyle:(id)style;
 @end
 
 @implementation GQHBulletInfo
@@ -19,11 +19,11 @@
   [(GQHBulletInfo *)&v4 dealloc];
 }
 
-- (void)setBulletChar:(__CFString *)a3
+- (void)setBulletChar:(__CFString *)char
 {
-  if (a3)
+  if (char)
   {
-    CFRetain(a3);
+    CFRetain(char);
   }
 
   mChar = self->mChar;
@@ -32,14 +32,14 @@
     CFRelease(mChar);
   }
 
-  self->mChar = a3;
+  self->mChar = char;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
 
-  self->mStyle = a3;
+  self->mStyle = style;
 }
 
 @end

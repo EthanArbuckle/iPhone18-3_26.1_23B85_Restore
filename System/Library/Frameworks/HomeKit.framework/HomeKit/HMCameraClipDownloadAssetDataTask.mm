@@ -1,18 +1,18 @@
 @interface HMCameraClipDownloadAssetDataTask
-- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)a3 httpHeaderFields:(id)a4;
-- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)a3 httpHeaderFields:(id)a4 handler:(id)a5;
-- (id)downloadDataForByteRange:(_NSRange)a3;
+- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)l httpHeaderFields:(id)fields;
+- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)l httpHeaderFields:(id)fields handler:(id)handler;
+- (id)downloadDataForByteRange:(_NSRange)range;
 @end
 
 @implementation HMCameraClipDownloadAssetDataTask
 
-- (id)downloadDataForByteRange:(_NSRange)a3
+- (id)downloadDataForByteRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v32 = *MEMORY[0x1E69E9840];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -20,34 +20,34 @@
     v33.location = location;
     v33.length = length;
     v10 = NSStringFromRange(v33);
-    v11 = [(HMCameraClipDownloadAssetDataTask *)v7 urlRequest];
+    urlRequest = [(HMCameraClipDownloadAssetDataTask *)selfCopy urlRequest];
     *buf = 138543874;
     v27 = v9;
     v28 = 2112;
     v29 = v10;
     v30 = 2112;
-    v31 = v11;
+    v31 = urlRequest;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Downloading data with byte range %@ for URL request %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc_init(MEMORY[0x1E69B3780]);
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=%lu-%lu", location, length + location - 1];
-  v14 = [(HMCameraClipDownloadAssetDataTask *)v7 urlRequest];
-  [v14 setValue:v13 forHTTPHeaderField:@"Range"];
+  urlRequest2 = [(HMCameraClipDownloadAssetDataTask *)selfCopy urlRequest];
+  [urlRequest2 setValue:v13 forHTTPHeaderField:@"Range"];
 
-  v15 = [(HMCameraClipDownloadAssetDataTask *)v7 handler];
-  v16 = [(HMCameraClipDownloadAssetDataTask *)v7 urlRequest];
+  handler = [(HMCameraClipDownloadAssetDataTask *)selfCopy handler];
+  urlRequest3 = [(HMCameraClipDownloadAssetDataTask *)selfCopy urlRequest];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __62__HMCameraClipDownloadAssetDataTask_downloadDataForByteRange___block_invoke;
   v22[3] = &unk_1E7548848;
-  v22[4] = v7;
+  v22[4] = selfCopy;
   v17 = v12;
   v23 = v17;
   v24 = location;
   v25 = length;
-  [v15 resumeDataTaskWithRequest:v16 completionHandler:v22];
+  [handler resumeDataTaskWithRequest:urlRequest3 completionHandler:v22];
 
   v18 = v23;
   v19 = v17;
@@ -163,33 +163,33 @@ LABEL_22:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)a3 httpHeaderFields:(id)a4 handler:(id)a5
+- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)l httpHeaderFields:(id)fields handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  fieldsCopy = fields;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = HMCameraClipDownloadAssetDataTask;
   v11 = [(HMCameraClipDownloadAssetDataTask *)&v15 init];
   if (v11)
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v8];
+    v12 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:lCopy];
     urlRequest = v11->_urlRequest;
     v11->_urlRequest = v12;
 
-    [(NSMutableURLRequest *)v11->_urlRequest setAllHTTPHeaderFields:v9];
-    objc_storeStrong(&v11->_handler, a5);
+    [(NSMutableURLRequest *)v11->_urlRequest setAllHTTPHeaderFields:fieldsCopy];
+    objc_storeStrong(&v11->_handler, handler);
   }
 
   return v11;
 }
 
-- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)a3 httpHeaderFields:(id)a4
+- (HMCameraClipDownloadAssetDataTask)initWithURL:(id)l httpHeaderFields:(id)fields
 {
-  v6 = a4;
-  v7 = a3;
+  fieldsCopy = fields;
+  lCopy = l;
   v8 = objc_alloc_init(HMCameraClipDownloadAssetDataTaskHandler);
-  v9 = [(HMCameraClipDownloadAssetDataTask *)self initWithURL:v7 httpHeaderFields:v6 handler:v8];
+  v9 = [(HMCameraClipDownloadAssetDataTask *)self initWithURL:lCopy httpHeaderFields:fieldsCopy handler:v8];
 
   return v9;
 }

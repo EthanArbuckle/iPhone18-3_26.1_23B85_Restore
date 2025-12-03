@@ -1,32 +1,32 @@
 @interface PRPosterCollection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollection:(id)a3;
-- (BOOL)isPosterConfigurationAnAssociatedPoster:(id)a3 parentPoster:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollection:(id)collection;
+- (BOOL)isPosterConfigurationAnAssociatedPoster:(id)poster parentPoster:(id *)parentPoster;
 - (NSSet)associatedPosterUUIDs;
 - (NSSet)associatedPosters;
 - (NSSet)posterExtensions;
-- (PRPosterCollection)initWithSelectedPoster:(id)a3 posters:(id)a4 associatedPosterMap:(id)a5 attributeProvider:(id)a6;
+- (PRPosterCollection)initWithSelectedPoster:(id)poster posters:(id)posters associatedPosterMap:(id)map attributeProvider:(id)provider;
 - (id)associatedHomeScreenConfigurationsMap;
-- (id)associatedPosterForPoster:(id)a3;
-- (id)associatedPosterForUUID:(id)a3;
-- (id)attributeForPoster:(id)a3 ofType:(id)a4;
-- (id)attributesForPoster:(id)a3 ofTypes:(id)a4;
+- (id)associatedPosterForPoster:(id)poster;
+- (id)associatedPosterForUUID:(id)d;
+- (id)attributeForPoster:(id)poster ofType:(id)type;
+- (id)attributesForPoster:(id)poster ofTypes:(id)types;
 - (id)chargerIdentifierRelationships;
-- (id)configuredPropertiesForPoster:(id)a3;
+- (id)configuredPropertiesForPoster:(id)poster;
 - (id)debugDescription;
-- (id)fallbackSelectedForSortedConfigurations:(id)a3 reverse:(BOOL)a4;
-- (id)posterWithUUID:(id)a3;
+- (id)fallbackSelectedForSortedConfigurations:(id)configurations reverse:(BOOL)reverse;
+- (id)posterWithUUID:(id)d;
 @end
 
 @implementation PRPosterCollection
 
-- (PRPosterCollection)initWithSelectedPoster:(id)a3 posters:(id)a4 associatedPosterMap:(id)a5 attributeProvider:(id)a6
+- (PRPosterCollection)initWithSelectedPoster:(id)poster posters:(id)posters associatedPosterMap:(id)map attributeProvider:(id)provider
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v12;
+  posterCopy = poster;
+  postersCopy = posters;
+  mapCopy = map;
+  providerCopy = provider;
+  v16 = posterCopy;
   if (v16)
   {
     NSClassFromString(&cfstr_Prposterconfig.isa);
@@ -36,7 +36,7 @@
     }
   }
 
-  v17 = v13;
+  v17 = postersCopy;
   NSClassFromString(&cfstr_Nsorderedset.isa);
   if (!v17)
   {
@@ -48,7 +48,7 @@
     [PRPosterCollection initWithSelectedPoster:a2 posters:? associatedPosterMap:? attributeProvider:?];
   }
 
-  v18 = v14;
+  v18 = mapCopy;
   NSClassFromString(&cfstr_Nsmaptable.isa);
   if (!v18)
   {
@@ -66,7 +66,7 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_selectedPoster, a3);
+    objc_storeStrong(&v19->_selectedPoster, poster);
     v21 = [v17 copy];
     orderedPosters = v20->_orderedPosters;
     v20->_orderedPosters = v21;
@@ -75,7 +75,7 @@
     associatedPosterMap = v20->_associatedPosterMap;
     v20->_associatedPosterMap = v23;
 
-    v25 = [v15 copy];
+    v25 = [providerCopy copy];
     attributeProvider = v20->_attributeProvider;
     v20->_attributeProvider = v25;
   }
@@ -87,21 +87,21 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRPosterCollection *)self selectedPoster];
-  v5 = [v3 appendObject:v4 withName:@"selectedPoster" skipIfNil:1];
+  selectedPoster = [(PRPosterCollection *)self selectedPoster];
+  v5 = [v3 appendObject:selectedPoster withName:@"selectedPoster" skipIfNil:1];
 
-  v6 = [(PRPosterCollection *)self orderedPosterUUIDs];
-  v7 = [v6 array];
+  orderedPosterUUIDs = [(PRPosterCollection *)self orderedPosterUUIDs];
+  array = [orderedPosterUUIDs array];
   v20 = v3;
-  [v3 appendArraySection:v7 withName:@"posterUUIDs" skipIfEmpty:1];
+  [v3 appendArraySection:array withName:@"posterUUIDs" skipIfEmpty:1];
 
   v21 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(PRPosterCollection *)self orderedPosterUUIDs];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  orderedPosterUUIDs2 = [(PRPosterCollection *)self orderedPosterUUIDs];
+  v9 = [orderedPosterUUIDs2 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -112,52 +112,52 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(orderedPosterUUIDs2);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
         v14 = [(PRPosterCollection *)self associatedPosterForUUID:v13];
-        v15 = [v14 _path];
-        v16 = [v15 serverIdentity];
-        v17 = [v16 posterUUID];
+        _path = [v14 _path];
+        serverIdentity = [_path serverIdentity];
+        posterUUID = [serverIdentity posterUUID];
 
-        if (v17)
+        if (posterUUID)
         {
-          [v21 setObject:v17 forKeyedSubscript:v13];
+          [v21 setObject:posterUUID forKeyedSubscript:v13];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [orderedPosterUUIDs2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
   }
 
   [v20 appendDictionarySection:v21 withName:@"parentToAssocPoster" skipIfEmpty:1];
-  v18 = [v20 build];
+  build = [v20 build];
 
-  return v18;
+  return build;
 }
 
-- (BOOL)isEqualToCollection:(id)a3
+- (BOOL)isEqualToCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [[PRPosterCollectionDiffInspector alloc] initWithCollection:self newCollection:v4];
+  collectionCopy = collection;
+  v5 = [[PRPosterCollectionDiffInspector alloc] initWithCollection:self newCollection:collectionCopy];
 
   v6 = [(PRPosterCollectionDiffInspector *)v5 isEqual];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -180,10 +180,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)posterWithUUID:(id)a3
+- (id)posterWithUUID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -204,10 +204,10 @@ LABEL_7:
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 _path];
-        v11 = [v10 serverIdentity];
-        v12 = [v11 posterUUID];
-        v13 = [v12 isEqual:v4];
+        _path = [v9 _path];
+        serverIdentity = [_path serverIdentity];
+        posterUUID = [serverIdentity posterUUID];
+        v13 = [posterUUID isEqual:dCopy];
 
         if (v13)
         {
@@ -216,10 +216,10 @@ LABEL_7:
         }
 
         v14 = [(PRPosterCollection *)self associatedPosterForPoster:v9];
-        v15 = [v14 _path];
-        v16 = [v15 serverIdentity];
-        v17 = [v16 posterUUID];
-        v18 = [v17 isEqual:v4];
+        _path2 = [v14 _path];
+        serverIdentity2 = [_path2 serverIdentity];
+        posterUUID2 = [serverIdentity2 posterUUID];
+        v18 = [posterUUID2 isEqual:dCopy];
 
         if (v18)
         {
@@ -248,10 +248,10 @@ LABEL_13:
   return v14;
 }
 
-- (id)associatedPosterForUUID:(id)a3
+- (id)associatedPosterForUUID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -272,10 +272,10 @@ LABEL_3:
       }
 
       v9 = [(PRPosterCollection *)self associatedPosterForPoster:*(*(&v16 + 1) + 8 * v8)];
-      v10 = [v9 _path];
-      v11 = [v10 serverIdentity];
-      v12 = [v11 posterUUID];
-      v13 = [v12 isEqual:v4];
+      _path = [v9 _path];
+      serverIdentity = [_path serverIdentity];
+      posterUUID = [serverIdentity posterUUID];
+      v13 = [posterUUID isEqual:dCopy];
 
       if (v13)
       {
@@ -312,8 +312,8 @@ LABEL_9:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PRPosterCollection *)self orderedPosters];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  orderedPosters = [(PRPosterCollection *)self orderedPosters];
+  v5 = [orderedPosters countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -324,7 +324,7 @@ LABEL_9:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(orderedPosters);
         }
 
         v9 = [(PRPosterCollection *)self associatedPosterForPoster:*(*(&v11 + 1) + 8 * i)];
@@ -334,7 +334,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [orderedPosters countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -343,18 +343,18 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)isPosterConfigurationAnAssociatedPoster:(id)a3 parentPoster:(id *)a4
+- (BOOL)isPosterConfigurationAnAssociatedPoster:(id)poster parentPoster:(id *)parentPoster
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = [a3 _path];
-  v7 = [v6 serverIdentity];
-  v8 = [v7 posterUUID];
+  _path = [poster _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  v9 = [(PRPosterCollection *)self associatedPosterUUIDs];
-  v24 = v8;
-  LODWORD(v7) = [v9 containsObject:v8];
+  associatedPosterUUIDs = [(PRPosterCollection *)self associatedPosterUUIDs];
+  v24 = posterUUID;
+  LODWORD(serverIdentity) = [associatedPosterUUIDs containsObject:posterUUID];
 
-  if (v7)
+  if (serverIdentity)
   {
     v27 = 0u;
     v28 = 0u;
@@ -365,7 +365,7 @@ LABEL_9:
     if (v10)
     {
       v11 = v10;
-      v22 = a4;
+      parentPosterCopy = parentPoster;
       v12 = *v26;
       while (2)
       {
@@ -378,16 +378,16 @@ LABEL_9:
 
           v14 = *(*(&v25 + 1) + 8 * i);
           v15 = [(NSMapTable *)self->_associatedPosterMap objectForKey:v14];
-          v16 = [v15 _path];
-          v17 = [v16 serverIdentity];
-          v18 = [v17 posterUUID];
-          v19 = [v18 isEqual:v24];
+          _path2 = [v15 _path];
+          serverIdentity2 = [_path2 serverIdentity];
+          posterUUID2 = [serverIdentity2 posterUUID];
+          v19 = [posterUUID2 isEqual:v24];
 
           if (v19)
           {
-            if (v22)
+            if (parentPosterCopy)
             {
-              *v22 = [(PRPosterCollection *)self posterWithUUID:v14];
+              *parentPosterCopy = [(PRPosterCollection *)self posterWithUUID:v14];
             }
 
             v20 = 1;
@@ -419,16 +419,16 @@ LABEL_15:
 
 - (id)associatedHomeScreenConfigurationsMap
 {
-  v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v4 = [(PRPosterCollection *)self orderedPosters];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  orderedPosters = [(PRPosterCollection *)self orderedPosters];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PRPosterCollection_associatedHomeScreenConfigurationsMap__block_invoke;
   v9[3] = &unk_1E7844BD8;
   v9[4] = self;
-  v5 = v3;
+  v5 = strongToStrongObjectsMapTable;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [orderedPosters enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -454,9 +454,9 @@ void __59__PRPosterCollection_associatedHomeScreenConfigurationsMap__block_invok
 
 - (NSSet)posterExtensions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  posterExtensions = v2->_posterExtensions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  posterExtensions = selfCopy->_posterExtensions;
   if (posterExtensions)
   {
     v4 = posterExtensions;
@@ -465,23 +465,23 @@ void __59__PRPosterCollection_associatedHomeScreenConfigurationsMap__block_invok
   else
   {
     v5 = objc_opt_new();
-    v6 = [(PRPosterCollection *)v2 orderedPosters];
+    orderedPosters = [(PRPosterCollection *)selfCopy orderedPosters];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __38__PRPosterCollection_posterExtensions__block_invoke;
     v11[3] = &unk_1E7844C00;
     v7 = v5;
     v12 = v7;
-    [v6 enumerateObjectsUsingBlock:v11];
+    [orderedPosters enumerateObjectsUsingBlock:v11];
 
     v8 = [v7 copy];
-    v9 = v2->_posterExtensions;
-    v2->_posterExtensions = v8;
+    v9 = selfCopy->_posterExtensions;
+    selfCopy->_posterExtensions = v8;
 
-    v4 = v2->_posterExtensions;
+    v4 = selfCopy->_posterExtensions;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -514,8 +514,8 @@ id __40__PRPosterCollection_orderedPosterUUIDs__block_invoke(uint64_t a1, void *
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(NSMapTable *)self->_associatedPosterMap keyEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    keyEnumerator = [(NSMapTable *)self->_associatedPosterMap keyEnumerator];
+    v5 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -526,21 +526,21 @@ id __40__PRPosterCollection_orderedPosterUUIDs__block_invoke(uint64_t a1, void *
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v9 = [(NSMapTable *)self->_associatedPosterMap objectForKey:*(*(&v14 + 1) + 8 * i)];
-          v10 = [v9 _path];
-          v11 = [v10 serverIdentity];
-          v12 = [v11 posterUUID];
+          _path = [v9 _path];
+          serverIdentity = [_path serverIdentity];
+          posterUUID = [serverIdentity posterUUID];
 
-          if (v12)
+          if (posterUUID)
           {
-            [v3 addObject:v12];
+            [v3 addObject:posterUUID];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -550,71 +550,71 @@ id __40__PRPosterCollection_orderedPosterUUIDs__block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (id)associatedPosterForPoster:(id)a3
+- (id)associatedPosterForPoster:(id)poster
 {
   associatedPosterMap = self->_associatedPosterMap;
-  v4 = [a3 _path];
-  v5 = [v4 serverIdentity];
-  v6 = [v5 posterUUID];
-  v7 = [(NSMapTable *)associatedPosterMap objectForKey:v6];
+  _path = [poster _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
+  v7 = [(NSMapTable *)associatedPosterMap objectForKey:posterUUID];
 
   return v7;
 }
 
-- (id)attributeForPoster:(id)a3 ofType:(id)a4
+- (id)attributeForPoster:(id)poster ofType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PRPosterCollection *)self orderedPosters];
-  if ([(PRPosterCollection *)v8 containsObject:v6]&& self->_attributeProvider)
+  posterCopy = poster;
+  typeCopy = type;
+  selfCopy = [(PRPosterCollection *)self orderedPosters];
+  if ([(PRPosterCollection *)selfCopy containsObject:posterCopy]&& self->_attributeProvider)
   {
 
-    if (!v7)
+    if (!typeCopy)
     {
       v14 = 0;
       goto LABEL_17;
     }
 
-    v8 = self;
-    objc_sync_enter(v8);
-    posterToAttributeMap = v8->_posterToAttributeMap;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    posterToAttributeMap = selfCopy->_posterToAttributeMap;
     if (!posterToAttributeMap)
     {
-      v10 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-      v11 = v8->_posterToAttributeMap;
-      v8->_posterToAttributeMap = v10;
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      v11 = selfCopy->_posterToAttributeMap;
+      selfCopy->_posterToAttributeMap = weakToStrongObjectsMapTable;
 
-      posterToAttributeMap = v8->_posterToAttributeMap;
+      posterToAttributeMap = selfCopy->_posterToAttributeMap;
     }
 
-    v12 = [(NSMapTable *)posterToAttributeMap objectForKey:v6];
+    v12 = [(NSMapTable *)posterToAttributeMap objectForKey:posterCopy];
     if (!v12)
     {
       v12 = objc_opt_new();
-      [(NSMapTable *)v8->_posterToAttributeMap setObject:v12 forKey:v6];
+      [(NSMapTable *)selfCopy->_posterToAttributeMap setObject:v12 forKey:posterCopy];
     }
 
-    v13 = [v12 objectForKey:v7];
+    v13 = [v12 objectForKey:typeCopy];
 
     if (v13)
     {
-      v14 = [v12 objectForKey:v7];
+      v14 = [v12 objectForKey:typeCopy];
     }
 
     else
     {
       attributeProvider = self->_attributeProvider;
-      v16 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-      v17 = attributeProvider[2](attributeProvider, v6, v16);
+      v16 = [MEMORY[0x1E695DFD8] setWithObject:typeCopy];
+      v17 = attributeProvider[2](attributeProvider, posterCopy, v16);
 
-      v14 = [v17 objectForKey:v7];
+      v14 = [v17 objectForKey:typeCopy];
       if (v14)
       {
-        [v12 setObject:v14 forKeyedSubscript:v7];
+        [v12 setObject:v14 forKeyedSubscript:typeCopy];
       }
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -627,12 +627,12 @@ LABEL_17:
   return v14;
 }
 
-- (id)attributesForPoster:(id)a3 ofTypes:(id)a4
+- (id)attributesForPoster:(id)poster ofTypes:(id)types
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v39 = a4;
-  v8 = v7;
+  posterCopy = poster;
+  typesCopy = types;
+  v8 = posterCopy;
   NSClassFromString(&cfstr_Prposterconfig.isa);
   if (!v8)
   {
@@ -646,9 +646,9 @@ LABEL_17:
 
   v40 = v8;
 
-  v9 = [(PRPosterCollection *)self orderedPosters];
+  orderedPosters = [(PRPosterCollection *)self orderedPosters];
   v10 = v8;
-  if (![v9 containsObject:v8])
+  if (![orderedPosters containsObject:v8])
   {
 
     goto LABEL_13;
@@ -663,17 +663,17 @@ LABEL_13:
     goto LABEL_36;
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  obj = v12;
-  posterToAttributeMap = v12->_posterToAttributeMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  posterToAttributeMap = selfCopy->_posterToAttributeMap;
   if (!posterToAttributeMap)
   {
-    v14 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-    v15 = v12->_posterToAttributeMap;
-    v12->_posterToAttributeMap = v14;
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    v15 = selfCopy->_posterToAttributeMap;
+    selfCopy->_posterToAttributeMap = weakToStrongObjectsMapTable;
 
-    posterToAttributeMap = v12->_posterToAttributeMap;
+    posterToAttributeMap = selfCopy->_posterToAttributeMap;
   }
 
   v16 = [(NSMapTable *)posterToAttributeMap objectForKey:v10];
@@ -683,9 +683,9 @@ LABEL_13:
   }
 
   v17 = MEMORY[0x1E695DFD8];
-  v18 = [v16 allKeys];
-  v19 = [v17 setWithArray:v18];
-  if (![v19 isEqualToSet:v39])
+  allKeys = [v16 allKeys];
+  v19 = [v17 setWithArray:allKeys];
+  if (![v19 isEqualToSet:typesCopy])
   {
 
     goto LABEL_15;
@@ -702,7 +702,7 @@ LABEL_15:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v24 = v39;
+    v24 = typesCopy;
     v25 = [v24 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v25)
     {
@@ -740,8 +740,8 @@ LABEL_15:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v31 = [v30 keyEnumerator];
-    v32 = [v31 countByEnumeratingWithState:&v41 objects:v49 count:16];
+    keyEnumerator = [v30 keyEnumerator];
+    v32 = [keyEnumerator countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v32)
     {
       v33 = *v42;
@@ -751,7 +751,7 @@ LABEL_15:
         {
           if (*v42 != v33)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v35 = *(*(&v41 + 1) + 8 * j);
@@ -763,7 +763,7 @@ LABEL_15:
           }
         }
 
-        v32 = [v31 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v32 = [keyEnumerator countByEnumeratingWithState:&v41 objects:v49 count:16];
       }
 
       while (v32);
@@ -782,11 +782,11 @@ LABEL_36:
   return v21;
 }
 
-- (id)configuredPropertiesForPoster:(id)a3
+- (id)configuredPropertiesForPoster:(id)poster
 {
-  v5 = a3;
+  posterCopy = poster;
   NSClassFromString(&cfstr_Prposterconfig.isa);
-  if (!v5)
+  if (!posterCopy)
   {
     [PRPosterCollection configuredPropertiesForPoster:a2];
   }
@@ -796,12 +796,12 @@ LABEL_36:
     [PRPosterCollection configuredPropertiesForPoster:a2];
   }
 
-  v6 = [(PRPosterCollection *)self orderedPosters];
-  v7 = [v6 containsObject:v5];
+  orderedPosters = [(PRPosterCollection *)self orderedPosters];
+  v7 = [orderedPosters containsObject:posterCopy];
 
   if (v7)
   {
-    v8 = [v5 loadConfiguredPropertiesWithError:0];
+    v8 = [posterCopy loadConfiguredPropertiesWithError:0];
   }
 
   else
@@ -815,7 +815,7 @@ LABEL_36:
 - (id)chargerIdentifierRelationships
 {
   v3 = objc_opt_new();
-  v4 = [(PRPosterCollection *)self orderedPosters];
+  orderedPosters = [(PRPosterCollection *)self orderedPosters];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__PRPosterCollection_chargerIdentifierRelationships__block_invoke;
@@ -823,7 +823,7 @@ LABEL_36:
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [orderedPosters enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -885,18 +885,18 @@ void __52__PRPosterCollection_chargerIdentifierRelationships__block_invoke(uint6
   }
 }
 
-- (id)fallbackSelectedForSortedConfigurations:(id)a3 reverse:(BOOL)a4
+- (id)fallbackSelectedForSortedConfigurations:(id)configurations reverse:(BOOL)reverse
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  reverseCopy = reverse;
+  configurationsCopy = configurations;
+  v7 = configurationsCopy;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__4;
   v20 = __Block_byref_object_dispose__4;
   v21 = 0;
-  if (v4)
+  if (reverseCopy)
   {
     v8 = 2;
   }
@@ -906,7 +906,7 @@ void __52__PRPosterCollection_chargerIdentifierRelationships__block_invoke(uint6
     v8 = 0;
   }
 
-  if (v6 && [v6 count])
+  if (configurationsCopy && [configurationsCopy count])
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -923,7 +923,7 @@ void __52__PRPosterCollection_chargerIdentifierRelationships__block_invoke(uint6
         [PRPosterCollection fallbackSelectedForSortedConfigurations:v9 reverse:?];
       }
 
-      if (v4)
+      if (reverseCopy)
       {
         [v7 lastObject];
       }

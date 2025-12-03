@@ -1,7 +1,7 @@
 @interface STUIStatusBarAnimationFactory
-+ (id)fadeAnimationWithDuration:(double)a3 scale:(double)a4 offset:(UIOffset)a5;
++ (id)fadeAnimationWithDuration:(double)duration scale:(double)scale offset:(UIOffset)offset;
 + (id)noAnimation;
-+ (id)pulseAnimationWithDuration:(double)a3 scale:(double)a4;
++ (id)pulseAnimationWithDuration:(double)duration scale:(double)scale;
 @end
 
 @implementation STUIStatusBarAnimationFactory
@@ -29,16 +29,16 @@ uint64_t __44__STUIStatusBarAnimationFactory_noAnimation__block_invoke()
   return [v2 setIdentifier:@"noAnimation"];
 }
 
-+ (id)fadeAnimationWithDuration:(double)a3 scale:(double)a4 offset:(UIOffset)a5
++ (id)fadeAnimationWithDuration:(double)duration scale:(double)scale offset:(UIOffset)offset
 {
-  vertical = a5.vertical;
-  horizontal = a5.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
   v23[3] = __Block_byref_object_copy__6;
   v23[4] = __Block_byref_object_dispose__6;
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = *MEMORY[0x277CBF2C0];
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   *&v22.a = *MEMORY[0x277CBF2C0];
@@ -53,10 +53,10 @@ uint64_t __44__STUIStatusBarAnimationFactory_noAnimation__block_invoke()
     CGAffineTransformTranslate(&v22, &v21, horizontal, vertical);
   }
 
-  if (a4 != 1.0)
+  if (scale != 1.0)
   {
     v20 = v22;
-    CGAffineTransformScale(&v21, &v20, a4, a4);
+    CGAffineTransformScale(&v21, &v20, scale, scale);
     v22 = v21;
   }
 
@@ -66,7 +66,7 @@ uint64_t __44__STUIStatusBarAnimationFactory_noAnimation__block_invoke()
   v17[2] = __72__STUIStatusBarAnimationFactory_fadeAnimationWithDuration_scale_offset___block_invoke;
   v17[3] = &unk_279D397B0;
   v17[4] = v23;
-  v19 = a3;
+  durationCopy = duration;
   v13 = [STUIStatusBarAnimation animationWithBlock:v17];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -74,7 +74,7 @@ uint64_t __44__STUIStatusBarAnimationFactory_noAnimation__block_invoke()
   v16[3] = &unk_279D38588;
   v16[4] = v23;
   [v13 setPrepareBlock:v16];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"fadeAnimation[%.2f]", *&a3];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"fadeAnimation[%.2f]", *&duration];
   [v13 setIdentifier:v14];
 
   _Block_object_dispose(v23, 8);
@@ -189,14 +189,14 @@ LABEL_8:
   return v8 != 3;
 }
 
-+ (id)pulseAnimationWithDuration:(double)a3 scale:(double)a4
++ (id)pulseAnimationWithDuration:(double)duration scale:(double)scale
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__STUIStatusBarAnimationFactory_pulseAnimationWithDuration_scale___block_invoke;
   v6[3] = &__block_descriptor_48_e71_v32__0__STUIStatusBarAnimation_8__STUIStatusBarDisplayItem_16___v__B_24l;
-  *&v6[4] = a3;
-  *&v6[5] = a4;
+  *&v6[4] = duration;
+  *&v6[5] = scale;
   v4 = [STUIStatusBarAnimation animationWithBlock:v6];
 
   return v4;

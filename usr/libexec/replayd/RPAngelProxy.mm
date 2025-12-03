@@ -3,15 +3,15 @@
 - (RPAngelProxy)init;
 - (id)connectionManagerQueue;
 - (id)getBSServiceInterface;
-- (void)connectToAngelWithCompletionHandler:(id)a3;
+- (void)connectToAngelWithCompletionHandler:(id)handler;
 - (void)disableCameraPip;
 - (void)enableCameraPip;
 - (void)hideAndStopRecordingBanner;
 - (void)pauseCurrentSystemSession;
 - (void)resumeCurrentSystemSession;
 - (void)setupConnection;
-- (void)showBannerWithURL:(id)a3 identifier:(id)a4 sessionID:(id)a5 completionHandler:(id)a6;
-- (void)updateTimer:(id)a3;
+- (void)showBannerWithURL:(id)l identifier:(id)identifier sessionID:(id)d completionHandler:(id)handler;
+- (void)updateTimer:(id)timer;
 @end
 
 @implementation RPAngelProxy
@@ -127,12 +127,12 @@
   }
 }
 
-- (void)showBannerWithURL:(id)a3 identifier:(id)a4 sessionID:(id)a5 completionHandler:(id)a6
+- (void)showBannerWithURL:(id)l identifier:(id)identifier sessionID:(id)d completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -150,7 +150,7 @@
 
   if (v17)
   {
-    [v17 showBannerWithURL:v10 identifier:v11 sessionID:v12 completionHandler:v13];
+    [v17 showBannerWithURL:lCopy identifier:identifierCopy sessionID:dCopy completionHandler:handlerCopy];
   }
 
   else
@@ -165,13 +165,13 @@
     }
 
     v18 = [NSError _rpUserErrorForCode:-5800 userInfo:0];
-    v13[2](v13, v18);
+    handlerCopy[2](handlerCopy, v18);
   }
 }
 
-- (void)updateTimer:(id)a3
+- (void)updateTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -181,7 +181,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  if (v4)
+  if (timerCopy)
   {
     connection = self->_connection;
     v6 = [RBSDomainAttribute attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
@@ -191,7 +191,7 @@
 
     if (v8)
     {
-      [v8 updateTimer:v4];
+      [v8 updateTimer:timerCopy];
     }
 
     else if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -210,9 +210,9 @@
   }
 }
 
-- (void)connectToAngelWithCompletionHandler:(id)a3
+- (void)connectToAngelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -230,7 +230,7 @@
 
   if (v8)
   {
-    [v8 connectToAngelWithCompletionHandler:v4];
+    [v8 connectToAngelWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -245,7 +245,7 @@
     }
 
     v9 = [NSError _rpUserErrorForCode:-5800 userInfo:0];
-    v4[2](v4, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 }
 

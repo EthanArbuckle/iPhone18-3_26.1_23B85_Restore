@@ -1,27 +1,27 @@
 @interface BSProcessHandle
 + (id)processHandle;
-+ (id)processHandleForAuditToken:(id)a3;
-+ (id)processHandleForAuditToken:(id)a3 bundleID:(id)a4;
-+ (id)processHandleForNSXPCConnection:(id)a3;
-+ (id)processHandleForPID:(int)a3;
-+ (id)processHandleForPID:(int)a3 bundleID:(id)a4;
-+ (id)processHandleForTaskNameRight:(id)a3;
-+ (id)processHandleForTaskNameRight:(id)a3 bundleID:(id)a4;
-+ (id)processHandleForXPCConnection:(id)a3;
++ (id)processHandleForAuditToken:(id)token;
++ (id)processHandleForAuditToken:(id)token bundleID:(id)d;
++ (id)processHandleForNSXPCConnection:(id)connection;
++ (id)processHandleForPID:(int)d;
++ (id)processHandleForPID:(int)d bundleID:(id)iD;
++ (id)processHandleForTaskNameRight:(id)right;
++ (id)processHandleForTaskNameRight:(id)right bundleID:(id)d;
++ (id)processHandleForXPCConnection:(id)connection;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BSProcessHandle)init;
-- (_DWORD)_initWithPID:(void *)a1;
-- (_DWORD)_initWithPID:(void *)a3 bundleID:;
-- (_DWORD)_initWithTaskNameRight:(void *)a3 bundleID:;
-- (id)_bundleIDGeneratingIfNeeded:(void *)a1;
-- (id)_initWithAuditToken:(void *)a3 bundleID:;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_DWORD)_initWithPID:(void *)d;
+- (_DWORD)_initWithPID:(void *)d bundleID:;
+- (_DWORD)_initWithTaskNameRight:(void *)right bundleID:;
+- (id)_bundleIDGeneratingIfNeeded:(void *)needed;
+- (id)_initWithAuditToken:(void *)token bundleID:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)membersForCoder;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 - (uint64_t)_isRunningWithCertainty:(uint64_t)result;
 - (void)dealloc;
 @end
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __32__BSProcessHandle_processHandle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED44FF58 != -1)
   {
     dispatch_once(&qword_1ED44FF58, block);
@@ -55,10 +55,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    BSXPCAutoCodingInitialize(a1, &__block_literal_global_26);
+    BSXPCAutoCodingInitialize(self, &__block_literal_global_26);
   }
 }
 
@@ -118,14 +118,14 @@ void __29__BSProcessHandle_initialize__block_invoke(uint64_t a1, void *a2)
     taskNameRight = v4->_taskNameRight;
     v4->_taskNameRight = v5;
 
-    v7 = [(BSMachPortTaskNameRight *)v4->_taskNameRight auditToken];
+    auditToken = [(BSMachPortTaskNameRight *)v4->_taskNameRight auditToken];
     auditToken = v4->_auditToken;
-    v4->_auditToken = v7;
+    v4->_auditToken = auditToken;
 
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleID = v4->_bundleID;
-    v4->_bundleID = v10;
+    v4->_bundleID = bundleIdentifier;
   }
 
   return v4;
@@ -253,27 +253,27 @@ void __32__BSProcessHandle_processHandle__block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(BSProcessHandle *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSProcessHandle *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-+ (id)processHandleForAuditToken:(id)a3
++ (id)processHandleForAuditToken:(id)token
 {
-  v4 = a3;
-  v5 = [v4 pid];
+  tokenCopy = token;
+  v5 = [tokenCopy pid];
   if (v5 == getpid())
   {
-    v6 = [a1 processHandle];
+    processHandle = [self processHandle];
 LABEL_5:
-    v7 = v6;
+    v7 = processHandle;
     goto LABEL_6;
   }
 
-  if (v4)
+  if (tokenCopy)
   {
-    v6 = [(BSProcessHandle *)[a1 alloc] _initWithAuditToken:v4 bundleID:0];
+    processHandle = [(BSProcessHandle *)[self alloc] _initWithAuditToken:tokenCopy bundleID:0];
     goto LABEL_5;
   }
 
@@ -283,12 +283,12 @@ LABEL_6:
   return v7;
 }
 
-- (id)_initWithAuditToken:(void *)a3 bundleID:
+- (id)_initWithAuditToken:(void *)token bundleID:
 {
   v34 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  tokenCopy = token;
+  if (self)
   {
     v8 = v6;
     if (v8)
@@ -307,7 +307,7 @@ LABEL_6:
           v24 = 2114;
           v25 = v20;
           v26 = 2048;
-          v27 = a1;
+          selfCopy = self;
           v28 = 2114;
           v29 = @"BSProcessHandle.m";
           v30 = 1024;
@@ -324,7 +324,7 @@ LABEL_6:
       }
     }
 
-    v9 = -[BSProcessHandle _initWithPID:](a1, [v8 pid]);
+    v9 = -[BSProcessHandle _initWithPID:](self, [v8 pid]);
     v10 = v9;
     if (v9)
     {
@@ -333,8 +333,8 @@ LABEL_6:
       v12 = v10[5];
       v10[5] = v11;
 
-      v13 = v7;
-      if (!v7)
+      v13 = tokenCopy;
+      if (!tokenCopy)
       {
         v13 = [(BSAuditToken *)v10[3] _bundleIDGeneratingIfNeeded:?];
       }
@@ -343,7 +343,7 @@ LABEL_6:
       v15 = v10[2];
       v10[2] = v14;
 
-      if (!v7)
+      if (!tokenCopy)
       {
       }
     }
@@ -357,44 +357,44 @@ LABEL_6:
   return v10;
 }
 
-+ (id)processHandleForXPCConnection:(id)a3
++ (id)processHandleForXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = BSPIDForXPCConnection(v4);
+  connectionCopy = connection;
+  v5 = BSPIDForXPCConnection(connectionCopy);
   if (v5 == getpid())
   {
-    v6 = [a1 processHandle];
+    processHandle = [self processHandle];
   }
 
   else
   {
-    v7 = [a1 alloc];
-    v8 = _BSBundleIDForXPCConnectionAndIKnowWhatImDoingISwear(v4);
-    v9 = v4;
+    v7 = [self alloc];
+    v8 = _BSBundleIDForXPCConnectionAndIKnowWhatImDoingISwear(connectionCopy);
+    v9 = connectionCopy;
     v10 = v8;
     if (v7)
     {
       v11 = BSPIDForXPCConnection(v9);
-      v6 = [(BSProcessHandle *)v7 _initWithPID:v11];
-      if (v6)
+      processHandle = [(BSProcessHandle *)v7 _initWithPID:v11];
+      if (processHandle)
       {
-        v12 = [BSMachPortTaskNameRight taskNameForPID:*(v6 + 12)];
-        v13 = *(v6 + 40);
-        *(v6 + 40) = v12;
+        v12 = [BSMachPortTaskNameRight taskNameForPID:*(processHandle + 12)];
+        v13 = *(processHandle + 40);
+        *(processHandle + 40) = v12;
 
         v14 = [BSAuditToken tokenFromXPCConnection:v9];
-        v15 = *(v6 + 24);
-        *(v6 + 24) = v14;
+        v15 = *(processHandle + 24);
+        *(processHandle + 24) = v14;
 
         v16 = v10;
         if (!v10)
         {
-          v16 = [(BSAuditToken *)*(v6 + 24) _bundleIDGeneratingIfNeeded:?];
+          v16 = [(BSAuditToken *)*(processHandle + 24) _bundleIDGeneratingIfNeeded:?];
         }
 
         v17 = [v16 copy];
-        v18 = *(v6 + 16);
-        *(v6 + 16) = v17;
+        v18 = *(processHandle + 16);
+        *(processHandle + 16) = v17;
 
         if (!v10)
         {
@@ -404,57 +404,57 @@ LABEL_6:
 
     else
     {
-      v6 = 0;
+      processHandle = 0;
     }
   }
 
-  return v6;
+  return processHandle;
 }
 
-+ (id)processHandleForNSXPCConnection:(id)a3
++ (id)processHandleForNSXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 processIdentifier];
-  if (v5 == getpid())
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  if (processIdentifier == getpid())
   {
-    v6 = [a1 processHandle];
+    processHandle = [self processHandle];
   }
 
   else
   {
-    v7 = [a1 alloc];
-    v8 = [BSAuditToken tokenFromNSXPCConnection:v4];
-    v6 = [(BSProcessHandle *)v7 _initWithAuditToken:v8 bundleID:0];
+    v7 = [self alloc];
+    v8 = [BSAuditToken tokenFromNSXPCConnection:connectionCopy];
+    processHandle = [(BSProcessHandle *)v7 _initWithAuditToken:v8 bundleID:0];
   }
 
-  return v6;
+  return processHandle;
 }
 
-+ (id)processHandleForPID:(int)a3
++ (id)processHandleForPID:(int)d
 {
-  v3 = [(BSProcessHandle *)[a1 alloc] _initWithPID:a3 bundleID:0];
+  v3 = [(BSProcessHandle *)[self alloc] _initWithPID:d bundleID:0];
 
   return v3;
 }
 
-- (_DWORD)_initWithPID:(void *)a3 bundleID:
+- (_DWORD)_initWithPID:(void *)d bundleID:
 {
-  v5 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v6 = [(BSProcessHandle *)a1 _initWithPID:a2];
+    v6 = [(BSProcessHandle *)self _initWithPID:a2];
     if (v6)
     {
       v7 = [BSMachPortTaskNameRight taskNameForPID:v6[3]];
       v8 = *(v6 + 5);
       *(v6 + 5) = v7;
 
-      v9 = [*(v6 + 5) auditToken];
+      auditToken = [*(v6 + 5) auditToken];
       v10 = *(v6 + 3);
-      *(v6 + 3) = v9;
+      *(v6 + 3) = auditToken;
 
-      v11 = v5;
-      if (!v5)
+      v11 = dCopy;
+      if (!dCopy)
       {
         v11 = [(BSAuditToken *)*(v6 + 3) _bundleIDGeneratingIfNeeded:?];
       }
@@ -463,7 +463,7 @@ LABEL_6:
       v13 = *(v6 + 2);
       *(v6 + 2) = v12;
 
-      if (!v5)
+      if (!dCopy)
       {
       }
     }
@@ -477,20 +477,20 @@ LABEL_6:
   return v6;
 }
 
-+ (id)processHandleForTaskNameRight:(id)a3
++ (id)processHandleForTaskNameRight:(id)right
 {
-  v4 = a3;
-  v5 = [(BSProcessHandle *)[a1 alloc] _initWithTaskNameRight:v4 bundleID:0];
+  rightCopy = right;
+  v5 = [(BSProcessHandle *)[self alloc] _initWithTaskNameRight:rightCopy bundleID:0];
 
   return v5;
 }
 
-- (_DWORD)_initWithTaskNameRight:(void *)a3 bundleID:
+- (_DWORD)_initWithTaskNameRight:(void *)right bundleID:
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  rightCopy = right;
+  if (self)
   {
     v7 = v5;
     if (v7)
@@ -509,7 +509,7 @@ LABEL_6:
           v24 = 2114;
           v25 = v20;
           v26 = 2048;
-          v27 = a1;
+          selfCopy = self;
           v28 = 2114;
           v29 = @"BSProcessHandle.m";
           v30 = 1024;
@@ -526,19 +526,19 @@ LABEL_6:
       }
     }
 
-    v8 = -[BSProcessHandle _initWithPID:](a1, [v7 pid]);
+    v8 = -[BSProcessHandle _initWithPID:](self, [v7 pid]);
     if (v8)
     {
       v9 = [v7 copy];
       v10 = *(v8 + 5);
       *(v8 + 5) = v9;
 
-      v11 = [*(v8 + 5) auditToken];
+      auditToken = [*(v8 + 5) auditToken];
       v12 = *(v8 + 3);
-      *(v8 + 3) = v11;
+      *(v8 + 3) = auditToken;
 
-      v13 = v6;
-      if (!v6)
+      v13 = rightCopy;
+      if (!rightCopy)
       {
         v13 = [(BSAuditToken *)*(v8 + 3) _bundleIDGeneratingIfNeeded:?];
       }
@@ -547,7 +547,7 @@ LABEL_6:
       v15 = *(v8 + 2);
       *(v8 + 2) = v14;
 
-      if (!v6)
+      if (!rightCopy)
       {
       }
     }
@@ -561,40 +561,40 @@ LABEL_6:
   return v8;
 }
 
-+ (id)processHandleForPID:(int)a3 bundleID:(id)a4
++ (id)processHandleForPID:(int)d bundleID:(id)iD
 {
-  v6 = a4;
-  v7 = [(BSProcessHandle *)[a1 alloc] _initWithPID:a3 bundleID:v6];
+  iDCopy = iD;
+  v7 = [(BSProcessHandle *)[self alloc] _initWithPID:d bundleID:iDCopy];
 
   return v7;
 }
 
-+ (id)processHandleForTaskNameRight:(id)a3 bundleID:(id)a4
++ (id)processHandleForTaskNameRight:(id)right bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSProcessHandle *)[a1 alloc] _initWithTaskNameRight:v6 bundleID:v7];
+  rightCopy = right;
+  dCopy = d;
+  v8 = [(BSProcessHandle *)[self alloc] _initWithTaskNameRight:rightCopy bundleID:dCopy];
 
   return v8;
 }
 
-+ (id)processHandleForAuditToken:(id)a3 bundleID:(id)a4
++ (id)processHandleForAuditToken:(id)token bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSProcessHandle *)[a1 alloc] _initWithAuditToken:v6 bundleID:v7];
+  tokenCopy = token;
+  dCopy = d;
+  v8 = [(BSProcessHandle *)[self alloc] _initWithAuditToken:tokenCopy bundleID:dCopy];
 
   return v8;
 }
 
-- (_DWORD)_initWithPID:(void *)a1
+- (_DWORD)_initWithPID:(void *)d
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = d;
   v9.super_class = BSProcessHandle;
   v3 = objc_msgSendSuper2(&v9, sel_init);
   v4 = v3;
@@ -610,16 +610,16 @@ LABEL_6:
   return v4;
 }
 
-- (id)_bundleIDGeneratingIfNeeded:(void *)a1
+- (id)_bundleIDGeneratingIfNeeded:(void *)needed
 {
-  if (a1)
+  if (needed)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    if (a2 && !*(v3 + 2) && (*(v3 + 8) & 1) == 0)
+    neededCopy = needed;
+    objc_sync_enter(neededCopy);
+    if (a2 && !*(neededCopy + 2) && (*(neededCopy + 8) & 1) == 0)
     {
-      *(v3 + 8) = 1;
-      v4 = *(v3 + 3);
+      *(neededCopy + 8) = 1;
+      v4 = *(neededCopy + 3);
       if (v4)
       {
         [(BSAuditToken *)v4 _bundleIDGeneratingIfNeeded:?];
@@ -627,15 +627,15 @@ LABEL_6:
 
       else
       {
-        BSBundleIDForPID(*(v3 + 3));
+        BSBundleIDForPID(*(neededCopy + 3));
       }
       v5 = ;
-      v6 = *(v3 + 2);
-      *(v3 + 2) = v5;
+      v6 = *(neededCopy + 2);
+      *(neededCopy + 2) = v5;
     }
 
-    v7 = *(v3 + 2);
-    objc_sync_exit(v3);
+    v7 = *(neededCopy + 2);
+    objc_sync_exit(neededCopy);
   }
 
   else
@@ -702,35 +702,35 @@ LABEL_11:
   return result;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v3 = [(BSAuditToken *)self->_auditToken valueForEntitlement:a3];
+  v3 = [(BSAuditToken *)self->_auditToken valueForEntitlement:entitlement];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   LODWORD(self) = [(BSProcessHandle *)self pid];
-  LOBYTE(self) = self == [v4 pid];
+  LOBYTE(self) = self == [equalCopy pid];
 
   return self;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSProcessHandle *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSProcessHandle *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSProcessHandle *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSProcessHandle *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

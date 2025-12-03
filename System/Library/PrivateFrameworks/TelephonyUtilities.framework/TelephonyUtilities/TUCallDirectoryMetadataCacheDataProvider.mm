@@ -1,8 +1,8 @@
 @interface TUCallDirectoryMetadataCacheDataProvider
 - (TUCallDirectoryMetadataCacheDataProvider)init;
-- (TUCallDirectoryMetadataCacheDataProvider)initWithCacheOnly:(BOOL)a3;
+- (TUCallDirectoryMetadataCacheDataProvider)initWithCacheOnly:(BOOL)only;
 - (void)dealloc;
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4;
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group;
 @end
 
 @implementation TUCallDirectoryMetadataCacheDataProvider
@@ -102,10 +102,10 @@ void __48__TUCallDirectoryMetadataCacheDataProvider_init__block_invoke_3(uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (TUCallDirectoryMetadataCacheDataProvider)initWithCacheOnly:(BOOL)a3
+- (TUCallDirectoryMetadataCacheDataProvider)initWithCacheOnly:(BOOL)only
 {
   result = [(TUCallDirectoryMetadataCacheDataProvider *)self init];
-  result->_cacheOnly = a3;
+  result->_cacheOnly = only;
   return result;
 }
 
@@ -117,24 +117,24 @@ void __48__TUCallDirectoryMetadataCacheDataProvider_init__block_invoke_3(uint64_
   [(TUCallDirectoryMetadataCacheDataProvider *)&v3 dealloc];
 }
 
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  group = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dsCopy = ds;
+  group = group;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v5;
+  v7 = dsCopy;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
   v27 = v7;
   if (v8)
   {
     v9 = v8;
     v10 = *v34;
-    v28 = v6;
+    v28 = dictionary;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -145,44 +145,44 @@ void __48__TUCallDirectoryMetadataCacheDataProvider_init__block_invoke_3(uint64_
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 handle];
-        if ([v13 type] == 2)
+        handle = [v12 handle];
+        if ([handle type] == 2)
         {
-          v14 = [v13 normalizedValue];
-          if (![v14 length])
+          normalizedValue = [handle normalizedValue];
+          if (![normalizedValue length])
           {
-            v15 = [v13 value];
+            value = [handle value];
 
-            v14 = v15;
+            normalizedValue = value;
           }
 
-          if ([v14 length])
+          if ([normalizedValue length])
           {
-            [v6 setObject:v12 forKeyedSubscript:v14];
-            if (([v14 pn_hasInternationalDirectDialingPrefix] & 1) == 0)
+            [dictionary setObject:v12 forKeyedSubscript:normalizedValue];
+            if (([normalizedValue pn_hasInternationalDirectDialingPrefix] & 1) == 0)
             {
-              v16 = [v13 isoCountryCode];
-              if ([v16 length])
+              isoCountryCode = [handle isoCountryCode];
+              if ([isoCountryCode length])
               {
-                v17 = [MEMORY[0x1E695DF58] nationalDirectDialingPrefixForISOCountryCode:v16];
-                if ([v17 length] && objc_msgSend(v14, "hasPrefix:", v17))
+                v17 = [MEMORY[0x1E695DF58] nationalDirectDialingPrefixForISOCountryCode:isoCountryCode];
+                if ([v17 length] && objc_msgSend(normalizedValue, "hasPrefix:", v17))
                 {
-                  v18 = [v14 substringFromIndex:{objc_msgSend(v17, "length")}];
+                  v18 = [normalizedValue substringFromIndex:{objc_msgSend(v17, "length")}];
 
-                  v14 = v18;
+                  normalizedValue = v18;
                 }
 
-                v19 = [(TUCallDirectoryMetadataCacheDataProvider *)self countryDialingCode];
-                v20 = (v19)[2](v19, v16);
+                countryDialingCode = [(TUCallDirectoryMetadataCacheDataProvider *)self countryDialingCode];
+                v20 = (countryDialingCode)[2](countryDialingCode, isoCountryCode);
 
-                v21 = [v20 stringByAppendingString:v14];
+                v21 = [v20 stringByAppendingString:normalizedValue];
                 if ([v21 length])
                 {
                   [v28 setObject:v12 forKeyedSubscript:v21];
                 }
 
                 v7 = v27;
-                v6 = v28;
+                dictionary = v28;
               }
             }
           }
@@ -195,19 +195,19 @@ void __48__TUCallDirectoryMetadataCacheDataProvider_init__block_invoke_3(uint64_
     while (v9);
   }
 
-  if ([v6 count])
+  if ([dictionary count])
   {
     dispatch_group_enter(group);
-    v22 = [(TUCallDirectoryMetadataCacheDataProvider *)self firstIdentificationEntriesForEnabledExtensions];
-    v23 = [v6 allKeys];
+    firstIdentificationEntriesForEnabledExtensions = [(TUCallDirectoryMetadataCacheDataProvider *)self firstIdentificationEntriesForEnabledExtensions];
+    allKeys = [dictionary allKeys];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __84__TUCallDirectoryMetadataCacheDataProvider_updateCacheWithDestinationIDs_withGroup___block_invoke;
     v29[3] = &unk_1E7424C88;
-    v30 = v6;
-    v31 = self;
-    v32 = group;
-    (v22)[2](v22, v23, v29);
+    v30 = dictionary;
+    selfCopy = self;
+    groupCopy = group;
+    (firstIdentificationEntriesForEnabledExtensions)[2](firstIdentificationEntriesForEnabledExtensions, allKeys, v29);
 
     v7 = v27;
   }

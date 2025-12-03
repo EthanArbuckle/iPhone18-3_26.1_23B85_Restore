@@ -1,41 +1,41 @@
 @interface TSCHChartCategoryAxisLabelsLayoutItem
-- (CGPoint)axisAnchorForPosition:(int)a3 degrees:(float)a4 inLayoutSize:(CGSize)a5 unrotatedSize:(CGSize)a6 unitSpaceValue:(double)a7;
-- (CGPoint)labelAnchorForPosition:(int)a3 degrees:(float)a4;
-- (TSCHChartCategoryAxisLabelsLayoutItem)initWithParent:(id)a3;
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4;
-- (unint64_t)numberOfLabelsForAxis:(id)a3;
+- (CGPoint)axisAnchorForPosition:(int)position degrees:(float)degrees inLayoutSize:(CGSize)size unrotatedSize:(CGSize)unrotatedSize unitSpaceValue:(double)value;
+- (CGPoint)labelAnchorForPosition:(int)position degrees:(float)degrees;
+- (TSCHChartCategoryAxisLabelsLayoutItem)initWithParent:(id)parent;
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index;
+- (unint64_t)numberOfLabelsForAxis:(id)axis;
 @end
 
 @implementation TSCHChartCategoryAxisLabelsLayoutItem
 
-- (TSCHChartCategoryAxisLabelsLayoutItem)initWithParent:(id)a3
+- (TSCHChartCategoryAxisLabelsLayoutItem)initWithParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = TSCHChartCategoryAxisLabelsLayoutItem;
-  return [(TSCHChartLayoutItem *)&v4 initWithParent:a3];
+  return [(TSCHChartLayoutItem *)&v4 initWithParent:parent];
 }
 
-- (unint64_t)numberOfLabelsForAxis:(id)a3
+- (unint64_t)numberOfLabelsForAxis:(id)axis
 {
-  v6 = objc_msgSend_model(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_model(axis, a2, v3, v4, v5);
   v11 = objc_msgSend_numberOfValues(v6, v7, v8, v9, v10);
 
   return v11;
 }
 
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index
 {
-  v8 = objc_msgSend_model(a3, a2, v4, v5, v6);
-  v13 = objc_msgSend_nameForCategory_(v8, v9, v10, v11, v12, a4);
+  v8 = objc_msgSend_model(axis, a2, v4, v5, v6);
+  v13 = objc_msgSend_nameForCategory_(v8, v9, v10, v11, v12, index);
 
   return v13;
 }
 
-- (CGPoint)axisAnchorForPosition:(int)a3 degrees:(float)a4 inLayoutSize:(CGSize)a5 unrotatedSize:(CGSize)a6 unitSpaceValue:(double)a7
+- (CGPoint)axisAnchorForPosition:(int)position degrees:(float)degrees inLayoutSize:(CGSize)size unrotatedSize:(CGSize)unrotatedSize unitSpaceValue:(double)value
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a4 * -0.0174532925;
+  height = unrotatedSize.height;
+  width = unrotatedSize.width;
+  v13 = degrees * -0.0174532925;
   TSURectWithSize();
   v83 = v15;
   rect.origin.x = v14;
@@ -49,25 +49,25 @@
   v22 = v21;
   v23 = *MEMORY[0x277CBF348];
   v24 = *(MEMORY[0x277CBF348] + 8);
-  *&v20 = a4;
+  *&v20 = degrees;
   v27 = objc_msgSend_snappedLabelAngleInDegree_(self, v25, v20, v21, v26);
-  if (a3 > 6)
+  if (position > 6)
   {
     goto LABEL_43;
   }
 
   v31 = v27;
-  if (((1 << a3) & 0x2A) != 0)
+  if (((1 << position) & 0x2A) != 0)
   {
     v90.origin.x = rect.origin.x;
     v90.origin.y = v17;
     v90.size.width = v83;
     v90.size.height = v19;
     MinY = CGRectGetMinY(v90);
-    v32 = MinY + v19 * a7;
-    if (a3 != 3)
+    v32 = MinY + v19 * value;
+    if (position != 3)
     {
-      if (a3 != 1)
+      if (position != 1)
       {
         goto LABEL_46;
       }
@@ -114,7 +114,7 @@ LABEL_33:
       goto LABEL_46;
     }
 
-    v56 = MinY + v19 * a7;
+    v56 = MinY + v19 * value;
     v57 = MEMORY[0x277D81150];
     v58 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, MinY, v32, v35, "[TSCHChartCategoryAxisLabelsLayoutItem axisAnchorForPosition:degrees:inLayoutSize:unrotatedSize:unitSpaceValue:]");
     v63 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v59, v60, v61, v62, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartCategoryAxisLabelsLayoutItem.m");
@@ -161,10 +161,10 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (((1 << a3) & 0x14) == 0)
+  if (((1 << position) & 0x14) == 0)
   {
     v32 = v24;
-    if (a3 == 6)
+    if (position == 6)
     {
       v36 = objc_msgSend_chartInfo(self, v28, v29, v24, v30);
       objc_msgSend_floatValueForProperty_defaultValue_(v36, v37, 0.0, v38, v39, 1109);
@@ -173,7 +173,7 @@ LABEL_35:
       v46 = objc_msgSend_model(self, v42, v43, v44, v45);
       v51 = objc_msgSend_numberOfValues(v46, v47, v48, v49, v50);
 
-      CGAffineTransformMakeRotation(&rect.origin.y, 6.28318531 / v51 * ((v51 + -1.0) * a7));
+      CGAffineTransformMakeRotation(&rect.origin.y, 6.28318531 / v51 * ((v51 + -1.0) * value));
       v52 = v86 + v19 * -0.5 * rect.size.height + rect.origin.y * 0.0;
       v53 = v87 + v19 * -0.5 * v85 + rect.size.width * 0.0;
       CGAffineTransformMakeRotation(&rect.origin.y, v41);
@@ -191,8 +191,8 @@ LABEL_35:
   v89.origin.x = rect.origin.x;
   v89.size.width = v83;
   v89.size.height = v19;
-  v23 = CGRectGetMinX(v89) + v83 * a7;
-  if (a3 == 4)
+  v23 = CGRectGetMinX(v89) + v83 * value;
+  if (position == 4)
   {
     if (v31 > 179)
     {
@@ -236,7 +236,7 @@ LABEL_45:
   }
 
   v32 = v24;
-  if (a3 == 2)
+  if (position == 2)
   {
     if (v31 <= 179)
     {
@@ -287,14 +287,14 @@ LABEL_46:
   return result;
 }
 
-- (CGPoint)labelAnchorForPosition:(int)a3 degrees:(float)a4
+- (CGPoint)labelAnchorForPosition:(int)position degrees:(float)degrees
 {
-  v7 = objc_msgSend_snappedLabelAngleInDegree_(self, a2, *&a4, v4, v5);
+  v7 = objc_msgSend_snappedLabelAngleInDegree_(self, a2, *&degrees, v4, v5);
   v11 = v7;
   v12 = 0.5;
-  if (a3 > 2)
+  if (position > 2)
   {
-    if (a3 == 3)
+    if (position == 3)
     {
       v18 = MEMORY[0x277D81150];
       v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, 0.5, v10, "[TSCHChartCategoryAxisLabelsLayoutItem labelAnchorForPosition:degrees:]");
@@ -330,7 +330,7 @@ LABEL_46:
         v16 = v17;
       }
 
-      if (a3 == 4)
+      if (position == 4)
       {
         v13 = v16;
       }
@@ -340,7 +340,7 @@ LABEL_46:
         v13 = 0.5;
       }
 
-      if (a3 == 4)
+      if (position == 4)
       {
         v12 = 0.5;
       }
@@ -377,7 +377,7 @@ LABEL_46:
       v13 = 1.0;
     }
 
-    if (a3 == 2)
+    if (position == 2)
     {
       v12 = 0.5;
     }
@@ -387,7 +387,7 @@ LABEL_46:
       v13 = 0.5;
     }
 
-    if (a3 == 1)
+    if (position == 1)
     {
       v13 = v14;
       v12 = v15;

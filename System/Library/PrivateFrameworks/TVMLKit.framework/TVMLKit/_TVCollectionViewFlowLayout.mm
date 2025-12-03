@@ -1,7 +1,7 @@
 @interface _TVCollectionViewFlowLayout
 - (_TVCollectionViewFlowLayout)init;
-- (double)contentHeightThatFitsItemCount:(int64_t)a3 expectedWidth:(double)a4;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
+- (double)contentHeightThatFitsItemCount:(int64_t)count expectedWidth:(double)width;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
 @end
 
 @implementation _TVCollectionViewFlowLayout
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (double)contentHeightThatFitsItemCount:(int64_t)a3 expectedWidth:(double)a4
+- (double)contentHeightThatFitsItemCount:(int64_t)count expectedWidth:(double)width
 {
-  v7 = [(_TVCollectionViewFlowLayout *)self collectionView];
-  v8 = [v7 numberOfSections];
+  collectionView = [(_TVCollectionViewFlowLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
   [(UICollectionViewFlowLayout *)self itemSize];
   v10 = v9;
   v12 = v11;
@@ -38,40 +38,40 @@
   v23 = v22;
   if ([(UICollectionViewFlowLayout *)self scrollDirection]== 1)
   {
-    v24 = v17 + v14 + v12 * a3 + v21 * (a3 - 1);
+    v24 = v17 + v14 + v12 * count + v21 * (count - 1);
   }
 
   else
   {
     v42 = v10;
     v24 = 0.0;
-    if (a3 > 0 || a4 > 0.0)
+    if (count > 0 || width > 0.0)
     {
-      if (a3 || ![(_TVCollectionViewFlowLayout *)self isHeterogeneous]&& (a3 = ((v21 + a4 - v43 - v19) / (v42 + v21))) != 0)
+      if (count || ![(_TVCollectionViewFlowLayout *)self isHeterogeneous]&& (count = ((v21 + width - v43 - v19) / (v42 + v21))) != 0)
       {
-        if (v8 >= 1)
+        if (numberOfSections >= 1)
         {
-          for (i = 0; i != v8; ++i)
+          for (i = 0; i != numberOfSections; ++i)
           {
-            v26 = [v7 numberOfItemsInSection:{i, *&v42}];
-            v24 = v24 + v17 + v14 + v12 * ((a3 - 1 + v26) / a3) + v23 * ((a3 - 1 + v26) / a3 - 1);
+            v26 = [collectionView numberOfItemsInSection:{i, *&v42}];
+            v24 = v24 + v17 + v14 + v12 * ((count - 1 + v26) / count) + v23 * ((count - 1 + v26) / count - 1);
           }
         }
       }
 
       else
       {
-        v27 = [v7 delegate];
+        delegate = [collectionView delegate];
         v28 = objc_opt_respondsToSelector();
 
-        if ((v28 & 1) != 0 && v8 >= 1)
+        if ((v28 & 1) != 0 && numberOfSections >= 1)
         {
           v29 = 0;
           v30 = v14 + v17;
           do
           {
             v31 = v30 + v24;
-            v32 = [v7 numberOfItemsInSection:v29];
+            v32 = [collectionView numberOfItemsInSection:v29];
             if (v32 < 1)
             {
               v24 = v30 + v24;
@@ -83,22 +83,22 @@
               v34 = 0;
               do
               {
-                v35 = a4;
+                widthCopy = width;
                 while (1)
                 {
                   v36 = [MEMORY[0x277CCAA70] indexPathForItem:v34 inSection:v29];
-                  v37 = [v7 delegate];
-                  [v37 collectionView:v7 layout:self sizeForItemAtIndexPath:v36];
+                  delegate2 = [collectionView delegate];
+                  [delegate2 collectionView:collectionView layout:self sizeForItemAtIndexPath:v36];
                   v39 = v38;
 
-                  if (v35 < v39)
+                  if (widthCopy < v39)
                   {
-                    v40 = v35 == a4;
+                    v40 = widthCopy == width;
                     goto LABEL_24;
                   }
 
-                  v35 = v35 - (v21 + v39);
-                  if (v35 < 0.0)
+                  widthCopy = widthCopy - (v21 + v39);
+                  if (widthCopy < 0.0)
                   {
                     break;
                   }
@@ -124,7 +124,7 @@ LABEL_25:
             ++v29;
           }
 
-          while (v29 != v8);
+          while (v29 != numberOfSections);
         }
       }
     }
@@ -133,20 +133,20 @@ LABEL_25:
   return v24;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v20.receiver = self;
   v20.super_class = _TVCollectionViewFlowLayout;
   v10 = [(UICollectionViewFlowLayout *)&v20 invalidationContextForBoundsChange:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(UICollectionViewFlowLayout *)self scrollDirection];
-    if (v11)
+    scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
+    if (scrollDirection)
     {
       if ([(UICollectionViewFlowLayout *)self scrollDirection]!= 1)
       {
@@ -156,8 +156,8 @@ LABEL_25:
 
     else
     {
-      v3 = [(_TVCollectionViewFlowLayout *)self collectionView];
-      [v3 bounds];
+      collectionView = [(_TVCollectionViewFlowLayout *)self collectionView];
+      [collectionView bounds];
       if (v14 != x)
       {
 LABEL_10:
@@ -165,8 +165,8 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v4 = [(_TVCollectionViewFlowLayout *)self collectionView];
-      [v4 bounds];
+      collectionView2 = [(_TVCollectionViewFlowLayout *)self collectionView];
+      [collectionView2 bounds];
       if (v15 != width)
       {
 LABEL_9:
@@ -181,12 +181,12 @@ LABEL_9:
       }
     }
 
-    v12 = [(_TVCollectionViewFlowLayout *)self collectionView];
-    [v12 bounds];
+    collectionView3 = [(_TVCollectionViewFlowLayout *)self collectionView];
+    [collectionView3 bounds];
     if (v13 != y)
     {
 
-      if (v11)
+      if (scrollDirection)
       {
 LABEL_11:
         [v10 setInvalidateFlowLayoutDelegateMetrics:1];
@@ -196,11 +196,11 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    v17 = [(_TVCollectionViewFlowLayout *)self collectionView];
-    [v17 bounds];
+    collectionView4 = [(_TVCollectionViewFlowLayout *)self collectionView];
+    [collectionView4 bounds];
     v19 = v18;
 
-    if (!v11)
+    if (!scrollDirection)
     {
     }
 

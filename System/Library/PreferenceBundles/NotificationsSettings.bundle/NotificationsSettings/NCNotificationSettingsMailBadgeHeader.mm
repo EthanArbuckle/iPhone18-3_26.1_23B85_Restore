@@ -1,25 +1,25 @@
 @interface NCNotificationSettingsMailBadgeHeader
-- (NCNotificationSettingsMailBadgeHeader)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (NCNotificationSettingsMailBadgeHeader)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation NCNotificationSettingsMailBadgeHeader
 
-- (NCNotificationSettingsMailBadgeHeader)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (NCNotificationSettingsMailBadgeHeader)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v36.receiver = self;
   v36.super_class = NCNotificationSettingsMailBadgeHeader;
-  v5 = [(NCNotificationSettingsMailBadgeHeader *)&v36 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(NCNotificationSettingsMailBadgeHeader *)&v36 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(NCNotificationSettingsMailBadgeHeader *)v5 contentView];
+    contentView = [(NCNotificationSettingsMailBadgeHeader *)v5 contentView];
     [(NCNotificationSettingsMailBadgeHeader *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     v8 = objc_alloc_init(UIStackView);
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v8 setAxis:1];
     [v8 setSpacing:12.0];
     [v8 setLayoutMargins:{25.0, 25.0, 25.0, 25.0}];
-    [v7 addSubview:v8];
+    [contentView addSubview:v8];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v35 = [UIImage imageNamed:@"mailBadgeHeader" inBundle:v9];
 
@@ -42,26 +42,26 @@
     [v11 setTextAlignment:1];
     [v11 setNumberOfLines:10];
     [v8 addArrangedSubview:v11];
-    v33 = [v10 heightAnchor];
-    v32 = [v33 constraintEqualToConstant:80.0];
+    heightAnchor = [v10 heightAnchor];
+    v32 = [heightAnchor constraintEqualToConstant:80.0];
     v37[0] = v32;
-    v31 = [v8 topAnchor];
-    v30 = [v7 topAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30 constant:25.0];
+    topAnchor = [v8 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:25.0];
     v37[1] = v29;
-    v27 = [v8 leadingAnchor];
-    v26 = [v7 leadingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26 constant:20.0];
+    leadingAnchor = [v8 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v37[2] = v25;
-    v28 = v7;
-    v16 = [v7 trailingAnchor];
-    v17 = [v8 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:20.0];
+    v28 = contentView;
+    trailingAnchor = [contentView trailingAnchor];
+    trailingAnchor2 = [v8 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:20.0];
     v37[3] = v18;
-    [v7 bottomAnchor];
+    [contentView bottomAnchor];
     v20 = v19 = v6;
-    v21 = [v8 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:25.0];
+    bottomAnchor = [v8 bottomAnchor];
+    v22 = [v20 constraintEqualToAnchor:bottomAnchor constant:25.0];
     v37[4] = v22;
     v23 = [NSArray arrayWithObjects:v37 count:5];
     [NSLayoutConstraint activateConstraints:v23];

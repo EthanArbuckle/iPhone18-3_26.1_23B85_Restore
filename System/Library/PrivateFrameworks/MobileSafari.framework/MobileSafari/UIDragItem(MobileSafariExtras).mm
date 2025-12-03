@@ -17,7 +17,7 @@
   v9 = a3;
   v10 = a6;
   v11 = dispatch_group_create();
-  v12 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x3812000000;
@@ -30,7 +30,7 @@
   aBlock[2] = __117__UIDragItem_MobileSafariExtras___sf_loadObjectsFromDragItems_usingLocalObjectLoader_objectLoader_completionHandler___block_invoke;
   aBlock[3] = &unk_1E721DE88;
   v37 = v38;
-  v13 = v12;
+  v13 = dictionary;
   v36 = v13;
   v14 = _Block_copy(aBlock);
   v31 = 0;
@@ -78,18 +78,18 @@
 {
   v3 = a3;
   v4 = objc_alloc(MEMORY[0x1E696ACA0]);
-  v5 = [v3 richTextForPasteboard];
-  v6 = [v4 initWithObject:v5];
+  richTextForPasteboard = [v3 richTextForPasteboard];
+  v6 = [v4 initWithObject:richTextForPasteboard];
 
   if ([v3 isSyncable])
   {
     v7 = MEMORY[0x1E69636A8];
     v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v9 = [v3 lastSelectedTabUUID];
-    v10 = [v8 initWithUUIDString:v9];
+    lastSelectedTabUUID = [v3 lastSelectedTabUUID];
+    v10 = [v8 initWithUUIDString:lastSelectedTabUUID];
     v11 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v12 = [v3 uuid];
-    v13 = [v11 initWithUUIDString:v12];
+    uuid = [v3 uuid];
+    v13 = [v11 initWithUUIDString:uuid];
     v14 = [v7 _sf_windowCreationActivityWithTabUUID:v10 tabGroupUUID:v13 browserControllerUUID:0];
 
     [v6 registerObject:v14 visibility:0];
@@ -106,23 +106,23 @@
   v4 = a3;
   if (([v4 isFolder] & 1) == 0)
   {
-    v10 = [v4 address];
-    v6 = [v10 safari_bestURLForUserTypedString];
+    address = [v4 address];
+    safari_bestURLForUserTypedString = [address safari_bestURLForUserTypedString];
 
     v11 = MEMORY[0x1E696ACA0];
-    v8 = [v4 title];
-    v9 = [v11 itemProviderWithURL:v6 title:v8];
+    title = [v4 title];
+    v9 = [v11 itemProviderWithURL:safari_bestURLForUserTypedString title:title];
     goto LABEL_5;
   }
 
   v5 = [_SFNavigationIntentBuilder builderWithModifierFlags:0];
-  v6 = [v5 navigationIntentWithBookmark:v4];
+  safari_bestURLForUserTypedString = [v5 navigationIntentWithBookmark:v4];
 
-  if (v6)
+  if (safari_bestURLForUserTypedString)
   {
     v7 = objc_alloc(MEMORY[0x1E696ACA0]);
-    v8 = [MEMORY[0x1E69636A8] _sf_windowCreationActivityWithNavigationIntent:v6];
-    v9 = [v7 initWithObject:v8];
+    title = [MEMORY[0x1E69636A8] _sf_windowCreationActivityWithNavigationIntent:safari_bestURLForUserTypedString];
+    v9 = [v7 initWithObject:title];
 LABEL_5:
     v12 = v9;
 
@@ -132,7 +132,7 @@ LABEL_5:
   v12 = objc_alloc_init(MEMORY[0x1E696ACA0]);
 LABEL_6:
 
-  v13 = [a1 initWithItemProvider:v12];
+  v13 = [self initWithItemProvider:v12];
   v14 = v13;
   if (v13)
   {
@@ -155,17 +155,17 @@ LABEL_6:
 {
   v4 = a3;
   v5 = MEMORY[0x1E696ACA0];
-  v6 = [v4 pageURL];
-  v7 = [v4 title];
-  v8 = [v5 itemProviderWithURL:v6 title:v7];
+  pageURL = [v4 pageURL];
+  title = [v4 title];
+  v8 = [v5 itemProviderWithURL:pageURL title:title];
 
-  v9 = [a1 initWithItemProvider:v8];
+  v9 = [self initWithItemProvider:v8];
   return v9;
 }
 
 - (id)_sf_localBookmark
 {
-  v1 = [a1 localObject];
+  localObject = [self localObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -175,20 +175,20 @@ LABEL_6:
 
   else
   {
-    v3 = v1;
+    v3 = localObject;
   }
 
   if ((isKindOfClass & 1) == 0)
   {
-    v1 = 0;
+    localObject = 0;
   }
 
-  return v1;
+  return localObject;
 }
 
 - (id)_sf_localURL
 {
-  v1 = [a1 localObject];
+  localObject = [self localObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -198,20 +198,20 @@ LABEL_6:
 
   else
   {
-    v3 = v1;
+    v3 = localObject;
   }
 
   if ((isKindOfClass & 1) == 0)
   {
-    v1 = 0;
+    localObject = 0;
   }
 
-  return v1;
+  return localObject;
 }
 
 - (id)_sf_localTabGroup
 {
-  v1 = [a1 localObject];
+  localObject = [self localObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -221,15 +221,15 @@ LABEL_6:
 
   else
   {
-    v3 = v1;
+    v3 = localObject;
   }
 
   if ((isKindOfClass & 1) == 0)
   {
-    v1 = 0;
+    localObject = 0;
   }
 
-  return v1;
+  return localObject;
 }
 
 - (id)safari_itemWithCustomBackgroundForPreviewView:()MobileSafariExtras
@@ -243,16 +243,16 @@ LABEL_6:
     v9[2] = __80__UIDragItem_MobileSafariExtras__safari_itemWithCustomBackgroundForPreviewView___block_invoke;
     v9[3] = &unk_1E721DF28;
     v10 = v4;
-    [a1 setPreviewProvider:v9];
-    v6 = a1;
+    [self setPreviewProvider:v9];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = a1;
+    selfCopy2 = self;
   }
 
-  return a1;
+  return self;
 }
 
 @end

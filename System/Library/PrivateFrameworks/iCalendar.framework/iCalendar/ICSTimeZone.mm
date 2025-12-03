@@ -1,21 +1,21 @@
 @interface ICSTimeZone
-+ (BOOL)_isTimeZone:(id)a3 pseudoDSTForDate:(id)a4;
-+ (BOOL)perfectMatchForSubarray:(id)a3 inTZChangeArray:(id)a4;
-+ (id)blocksAfterDate:(id)a3 untilDate:(id)a4 forTimeZone:(id)a5;
++ (BOOL)_isTimeZone:(id)zone pseudoDSTForDate:(id)date;
++ (BOOL)perfectMatchForSubarray:(id)subarray inTZChangeArray:(id)array;
++ (id)blocksAfterDate:(id)date untilDate:(id)untilDate forTimeZone:(id)zone;
 + (id)quickTimeZoneNames;
 + (id)slowTimeZoneNames;
-+ (id)timeZoneWithSystemTimeZoneName:(id)a3;
-+ (int64_t)matchTypeForSubarray:(id)a3 inTZChangeArray:(id)a4;
-- (BOOL)isEqualToNSTimeZone:(id)a3 forDate:(id)a4;
-- (ICSTimeZone)initWithSystemTimeZone:(id)a3;
-- (ICSTimeZone)initWithTimeZone:(id)a3 fromDate:(id)a4 options:(int)a5;
++ (id)timeZoneWithSystemTimeZoneName:(id)name;
++ (int64_t)matchTypeForSubarray:(id)subarray inTZChangeArray:(id)array;
+- (BOOL)isEqualToNSTimeZone:(id)zone forDate:(id)date;
+- (ICSTimeZone)initWithSystemTimeZone:(id)zone;
+- (ICSTimeZone)initWithTimeZone:(id)zone fromDate:(id)date options:(int)options;
 - (NSString)tzid;
-- (id)_previousDSTTransitionForDate:(id)a3 timezone:(id)a4;
-- (id)computeTimeZoneChangeListFromDate:(id)a3 toDate:(id)a4;
-- (id)getNSTimeZone:(id)a3;
-- (id)getNSTimeZoneFromDate:(id)a3 toDate:(id)a4;
+- (id)_previousDSTTransitionForDate:(id)date timezone:(id)timezone;
+- (id)computeTimeZoneChangeListFromDate:(id)date toDate:(id)toDate;
+- (id)getNSTimeZone:(id)zone;
+- (id)getNSTimeZoneFromDate:(id)date toDate:(id)toDate;
 - (id)propertiesToExcludeForChecksum;
-- (id)systemTimeZoneForDate:(id)a3;
+- (id)systemTimeZoneForDate:(id)date;
 @end
 
 @implementation ICSTimeZone
@@ -53,36 +53,36 @@ void __45__ICSTimeZone_propertiesToExcludeForChecksum__block_invoke(uint64_t a1)
 - (NSString)tzid
 {
   v2 = [(ICSComponent *)self propertiesForName:@"TZID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
-- (id)systemTimeZoneForDate:(id)a3
+- (id)systemTimeZoneForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   systemTimeZone = self->_systemTimeZone;
   if (!systemTimeZone)
   {
-    v6 = [(ICSTimeZone *)self getNSTimeZone:v4];
+    v6 = [(ICSTimeZone *)self getNSTimeZone:dateCopy];
     v7 = self->_systemTimeZone;
     self->_systemTimeZone = v6;
 
     systemTimeZone = self->_systemTimeZone;
     if (!systemTimeZone)
     {
-      v8 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       v9 = self->_systemTimeZone;
-      self->_systemTimeZone = v8;
+      self->_systemTimeZone = null;
 
       systemTimeZone = self->_systemTimeZone;
     }
   }
 
-  v10 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (systemTimeZone == v10)
+  if (systemTimeZone == null2)
   {
     v11 = 0;
   }
@@ -95,20 +95,20 @@ void __45__ICSTimeZone_propertiesToExcludeForChecksum__block_invoke(uint64_t a1)
   return v11;
 }
 
-+ (id)blocksAfterDate:(id)a3 untilDate:(id)a4 forTimeZone:(id)a5
++ (id)blocksAfterDate:(id)date untilDate:(id)untilDate forTimeZone:(id)zone
 {
   v197 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBEB18] array];
-  v157 = v8;
-  v12 = [v10 nextDaylightSavingTimeTransitionAfterDate:v8];
+  dateCopy = date;
+  untilDateCopy = untilDate;
+  zoneCopy = zone;
+  array = [MEMORY[0x277CBEB18] array];
+  v157 = dateCopy;
+  v12 = [zoneCopy nextDaylightSavingTimeTransitionAfterDate:dateCopy];
   v163 = *MEMORY[0x277CBE5C0];
-  v166 = v9;
-  v182 = v11;
-  v162 = v10;
-  if ([v12 compare:v9] == -1)
+  v166 = untilDateCopy;
+  v182 = array;
+  v162 = zoneCopy;
+  if ([v12 compare:untilDateCopy] == -1)
   {
     v167 = 0;
     v168 = 0;
@@ -121,11 +121,11 @@ void __45__ICSTimeZone_propertiesToExcludeForChecksum__block_invoke(uint64_t a1)
     v173 = 0;
     v174 = 0;
     v19 = v12;
-    v158 = a1;
+    selfCopy = self;
     while (1)
     {
       v20 = [v19 dateByAddingTimeInterval:1.0];
-      if ([v10 isDaylightSavingTimeForDate:v20])
+      if ([zoneCopy isDaylightSavingTimeForDate:v20])
       {
         v176 = 0;
         v183 = 1;
@@ -133,17 +133,17 @@ void __45__ICSTimeZone_propertiesToExcludeForChecksum__block_invoke(uint64_t a1)
 
       else
       {
-        v183 = [a1 _isTimeZone:v10 pseudoDSTForDate:v20];
+        v183 = [self _isTimeZone:zoneCopy pseudoDSTForDate:v20];
         v176 = v183;
       }
 
-      obj = [v10 abbreviationForDate:v20];
+      obj = [zoneCopy abbreviationForDate:v20];
       v21 = [v19 dateByAddingTimeInterval:-1.0];
-      v22 = [v10 secondsFromGMTForDate:v21];
+      v22 = [zoneCopy secondsFromGMTForDate:v21];
 
       v186 = v20;
-      v23 = [v10 secondsFromGMTForDate:v20];
-      if ([v11 count] && v22 == v23)
+      v23 = [zoneCopy secondsFromGMTForDate:v20];
+      if ([array count] && v22 == v23)
       {
         v180 = v18;
         v14 = v17;
@@ -166,12 +166,12 @@ void __45__ICSTimeZone_propertiesToExcludeForChecksum__block_invoke(uint64_t a1)
       }
 
       v30 = v29;
-      v31 = [v29 dtstart];
-      v32 = [v31 value];
+      dtstart = [v29 dtstart];
+      value = [dtstart value];
 
-      [v25 setTimeZone:v10];
-      v33 = [v32 components];
-      v34 = [v25 dateFromComponents:v33];
+      [v25 setTimeZone:zoneCopy];
+      components = [value components];
+      v34 = [v25 dateFromComponents:components];
 
       v35 = v174;
       if (!v183)
@@ -187,7 +187,7 @@ void __45__ICSTimeZone_propertiesToExcludeForChecksum__block_invoke(uint64_t a1)
 
       v36 = MEMORY[0x277CBEBB0];
       v37 = [v34 dateByAddingTimeInterval:-1.0];
-      v38 = [v36 timeZoneForSecondsFromGMT:{objc_msgSend(v10, "secondsFromGMTForDate:", v37)}];
+      v38 = [v36 timeZoneForSecondsFromGMT:{objc_msgSend(zoneCopy, "secondsFromGMTForDate:", v37)}];
       [v25 setTimeZone:v38];
 
       v39 = [v25 components:1788 fromDate:v34];
@@ -202,7 +202,7 @@ void __45__ICSTimeZone_propertiesToExcludeForChecksum__block_invoke(uint64_t a1)
 LABEL_23:
       v42 = MEMORY[0x277CBEBB0];
       v43 = [v171 dateByAddingTimeInterval:-1.0];
-      v44 = [v42 timeZoneForSecondsFromGMT:{objc_msgSend(v10, "secondsFromGMTForDate:", v43)}];
+      v44 = [v42 timeZoneForSecondsFromGMT:{objc_msgSend(zoneCopy, "secondsFromGMTForDate:", v43)}];
       [v25 setTimeZone:v44];
 
       if (v171)
@@ -227,20 +227,20 @@ LABEL_23:
       if (v46 == [v30 tzoffsetfrom] && v180 == objc_msgSend(v30, "tzoffsetto") && ((v176 ^ 1 | v172) & 1) != 0)
       {
         v156 = v30;
-        v49 = [v30 tzname];
-        v50 = [v49 lastObject];
-        if ([obj isEqualToString:v50] && objc_msgSend(v45, "year") == v159 + 1 && (v51 = objc_msgSend(v45, "month"), v51 == objc_msgSend(v165, "month")) && (v52 = objc_msgSend(v45, "weekday"), v52 == objc_msgSend(v165, "weekday")) && (v53 = objc_msgSend(v45, "weekdayOrdinal"), v53 == objc_msgSend(v165, "weekdayOrdinal")) && (v54 = objc_msgSend(v45, "hour"), v54 == objc_msgSend(v165, "hour")))
+        tzname = [v30 tzname];
+        lastObject = [tzname lastObject];
+        if ([obj isEqualToString:lastObject] && objc_msgSend(v45, "year") == v159 + 1 && (v51 = objc_msgSend(v45, "month"), v51 == objc_msgSend(v165, "month")) && (v52 = objc_msgSend(v45, "weekday"), v52 == objc_msgSend(v165, "weekday")) && (v53 = objc_msgSend(v45, "weekdayOrdinal"), v53 == objc_msgSend(v165, "weekdayOrdinal")) && (v54 = objc_msgSend(v45, "hour"), v54 == objc_msgSend(v165, "hour")))
         {
-          v55 = [v45 minute];
-          v56 = [v165 minute];
+          minute = [v45 minute];
+          minute2 = [v165 minute];
 
-          v57 = v55 == v56;
+          v57 = minute == minute2;
           v48 = v183;
           v30 = v156;
           if (v57)
           {
-            v58 = [v156 rrule];
-            v59 = [v58 count];
+            rrule = [v156 rrule];
+            v59 = [rrule count];
 
             v60 = v156;
             if (!v59)
@@ -253,9 +253,9 @@ LABEL_23:
 
               v65 = MEMORY[0x277CBEA60];
               v160 = [ICSByDayValue alloc];
-              v66 = [v45 weekday];
+              weekday = [v45 weekday];
               v67 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v45, "weekdayOrdinal")}];
-              v68 = [(ICSByDayValue *)v160 initWithWeekday:v66 number:v67];
+              v68 = [(ICSByDayValue *)v160 initWithWeekday:weekday number:v67];
               v69 = [v65 arrayWithObject:v68];
               [(ICSRecurrenceRule *)v61 setByday:v69];
 
@@ -282,8 +282,8 @@ LABEL_23:
             }
 
             v87 = [(ICSDateTimeValue *)[ICSDateTimeUTCValue alloc] initWithYear:[(ICSDate *)v73 year] month:[(ICSDate *)v73 month] day:[(ICSDate *)v73 day] hour:[(ICSDate *)v73 hour] minute:[(ICSDate *)v73 minute] second:[(ICSDate *)v73 second]];
-            v161 = [v156 rrule];
-            v95 = [v161 objectAtIndex:0];
+            rrule2 = [v156 rrule];
+            v95 = [rrule2 objectAtIndex:0];
 
             [v95 setUntil:v87];
             goto LABEL_49;
@@ -319,18 +319,18 @@ LABEL_23:
       v167 = v27;
       v168 = v26;
       v76 = [ICSDate alloc];
-      v77 = [v45 year];
-      v78 = [v45 month];
+      year = [v45 year];
+      month = [v45 month];
       v79 = [v45 day];
-      v80 = [v45 hour];
+      hour = [v45 hour];
       v81 = v25;
-      v82 = [v45 minute];
-      v83 = [v45 second];
+      minute3 = [v45 minute];
+      second = [v45 second];
       v84 = v79;
-      v10 = v162;
-      v85 = v82;
+      zoneCopy = v162;
+      v85 = minute3;
       v25 = v81;
-      v73 = [(ICSDate *)v76 initWithYear:v77 month:v78 day:v84 hour:v80 minute:v85 second:v83];
+      v73 = [(ICSDate *)v76 initWithYear:year month:month day:v84 hour:hour minute:v85 second:second];
       [v75 setDtstart:v73];
       v24 = obj;
       v86 = [MEMORY[0x277CBEA60] arrayWithObject:obj];
@@ -347,7 +347,7 @@ LABEL_23:
       v19 = v171;
 LABEL_49:
 
-      v88 = [v45 year];
+      year2 = [v45 year];
       v15 = v183;
       v89 = v172;
       if (v183)
@@ -363,13 +363,13 @@ LABEL_49:
 
       else
       {
-        v90 = v88;
+        v90 = year2;
       }
 
       v91 = v174;
       if (v183)
       {
-        v91 = v88;
+        v91 = year2;
       }
 
       v173 = v90;
@@ -380,10 +380,10 @@ LABEL_49:
       v169 = v92;
       v170 = v93;
       v14 = v178;
-      a1 = v158;
-      v11 = v182;
+      self = selfCopy;
+      array = v182;
 LABEL_57:
-      v12 = [v10 nextDaylightSavingTimeTransitionAfterDate:v186];
+      v12 = [zoneCopy nextDaylightSavingTimeTransitionAfterDate:v186];
       if ([v12 compare:v19] != 1)
       {
 
@@ -431,7 +431,7 @@ LABEL_63:
   v181 = v13;
   if ((v172 & 1) != 0 && (v15 & 1) == 0)
   {
-    [v11 removeAllObjects];
+    [array removeAllObjects];
   }
 
   v177 = v12;
@@ -442,7 +442,7 @@ LABEL_63:
   v192 = 0u;
   v193 = 0u;
   v194 = 0u;
-  obja = [v11 copy];
+  obja = [array copy];
   v96 = [obja countByEnumeratingWithState:&v191 objects:v196 count:16];
   if (!v96)
   {
@@ -465,8 +465,8 @@ LABEL_63:
       }
 
       v102 = *(*(&v191 + 1) + 8 * i);
-      v103 = [v102 rrule];
-      v104 = [v103 count];
+      rrule3 = [v102 rrule];
+      v104 = [rrule3 count];
 
       if (!v104)
       {
@@ -482,25 +482,25 @@ LABEL_63:
         }
 
         v106 = v105;
-        v107 = [v106 rrule];
-        v108 = [v107 count];
+        rrule4 = [v106 rrule];
+        v108 = [rrule4 count];
 
         if (!v108)
         {
-          v109 = [v106 tzoffsetfrom];
-          if (v109 == [v102 tzoffsetfrom])
+          tzoffsetfrom = [v106 tzoffsetfrom];
+          if (tzoffsetfrom == [v102 tzoffsetfrom])
           {
-            v110 = [v106 tzoffsetto];
-            if (v110 == [v102 tzoffsetto])
+            tzoffsetto = [v106 tzoffsetto];
+            if (tzoffsetto == [v102 tzoffsetto])
             {
-              v111 = [v106 tzname];
-              v112 = [v102 tzname];
-              v187 = [v111 isEqualToArray:v112];
+              tzname2 = [v106 tzname];
+              tzname3 = [v102 tzname];
+              v187 = [tzname2 isEqualToArray:tzname3];
 
               if (v187)
               {
-                v113 = [v102 dtstart];
-                [v106 addRecurrenceDate:v113];
+                dtstart2 = [v102 dtstart];
+                [v106 addRecurrenceDate:dtstart2];
 
                 [v182 removeObjectIdenticalTo:v102];
                 goto LABEL_87;
@@ -543,71 +543,71 @@ LABEL_87:
 LABEL_91:
 
   v116 = [objc_alloc(MEMORY[0x277CBEA80]) initWithCalendarIdentifier:v163];
-  v117 = [MEMORY[0x277CBEAA8] date];
-  v118 = [v116 components:4 fromDate:v117];
+  date = [MEMORY[0x277CBEAA8] date];
+  v118 = [v116 components:4 fromDate:date];
 
-  v119 = [v99 rrule];
-  v120 = [v119 count];
+  rrule5 = [v99 rrule];
+  v120 = [rrule5 count];
 
   v121 = v182;
   if (v120)
   {
-    v122 = [v99 rrule];
-    v123 = [v122 objectAtIndex:0];
+    rrule6 = [v99 rrule];
+    v123 = [rrule6 objectAtIndex:0];
 
-    v124 = [v123 until];
-    v125 = [v124 year];
-    if (v125 > [v118 year] + 10)
+    until = [v123 until];
+    year3 = [until year];
+    if (year3 > [v118 year] + 10)
     {
       [v123 setCount:0];
       [v123 setUntil:0];
     }
   }
 
-  v126 = [v98 rrule];
-  v127 = [v126 count];
+  rrule7 = [v98 rrule];
+  v127 = [rrule7 count];
 
   if (v127)
   {
-    v128 = [v98 rrule];
-    v129 = [v128 objectAtIndex:0];
+    rrule8 = [v98 rrule];
+    v129 = [rrule8 objectAtIndex:0];
 
-    v130 = [v129 until];
-    v131 = [v130 year];
-    if (v131 > [v118 year] + 10)
+    until2 = [v129 until];
+    year4 = [until2 year];
+    if (year4 > [v118 year] + 10)
     {
       [v129 setCount:0];
       [v129 setUntil:0];
     }
   }
 
-  v132 = [v99 rrule];
-  if (![v132 count])
+  rrule9 = [v99 rrule];
+  if (![rrule9 count])
   {
     goto LABEL_109;
   }
 
-  v133 = [v98 rrule];
-  v134 = [v133 count];
+  rrule10 = [v98 rrule];
+  v134 = [rrule10 count];
 
   if (v134)
   {
     v175 = v118;
-    v132 = [v99 rrule];
-    v135 = [v132 objectAtIndex:0];
-    v136 = [(ICSDate *)v135 until];
-    if (!v136)
+    rrule9 = [v99 rrule];
+    v135 = [rrule9 objectAtIndex:0];
+    until3 = [(ICSDate *)v135 until];
+    if (!until3)
     {
       goto LABEL_108;
     }
 
-    v137 = v136;
-    v138 = [v98 rrule];
-    v139 = [v138 objectAtIndex:0];
-    v140 = [v139 until];
+    v137 = until3;
+    rrule11 = [v98 rrule];
+    v139 = [rrule11 objectAtIndex:0];
+    until4 = [v139 until];
 
     v118 = v175;
-    if (v140)
+    if (until4)
     {
       v141 = off_27A64B680;
       if ((v184 & 1) == 0)
@@ -615,19 +615,19 @@ LABEL_91:
         v141 = off_27A64B688;
       }
 
-      v132 = objc_alloc_init(*v141);
+      rrule9 = objc_alloc_init(*v141);
       v135 = -[ICSDate initWithYear:month:day:hour:minute:second:]([ICSDate alloc], "initWithYear:month:day:hour:minute:second:", [v169 year], objc_msgSend(v169, "month"), objc_msgSend(v169, "day"), objc_msgSend(v169, "hour"), objc_msgSend(v169, "minute"), objc_msgSend(v169, "second"));
-      [v132 setDtstart:v135];
+      [rrule9 setDtstart:v135];
       if (v170)
       {
         v195 = v170;
         v142 = [MEMORY[0x277CBEA60] arrayWithObjects:&v195 count:1];
-        [v132 setTzname:v142];
+        [rrule9 setTzname:v142];
       }
 
-      [v132 setTzoffsetfrom:v179];
-      [v132 setTzoffsetto:v181];
-      [v182 addObject:v132];
+      [rrule9 setTzoffsetfrom:v179];
+      [rrule9 setTzoffsetto:v181];
+      [v182 addObject:rrule9];
 LABEL_108:
 
       v118 = v175;
@@ -669,11 +669,11 @@ LABEL_109:
   return v121;
 }
 
-+ (BOOL)_isTimeZone:(id)a3 pseudoDSTForDate:(id)a4
++ (BOOL)_isTimeZone:(id)zone pseudoDSTForDate:(id)date
 {
-  v5 = a4;
-  v6 = [a3 name];
-  v7 = [v6 isEqualToString:@"Europe/Moscow"];
+  dateCopy = date;
+  name = [zone name];
+  v7 = [name isEqualToString:@"Europe/Moscow"];
 
   if (v7)
   {
@@ -682,11 +682,11 @@ LABEL_109:
       +[ICSTimeZone(TimeZoneGeneration) _isTimeZone:pseudoDSTForDate:];
     }
 
-    v8 = [_isTimeZone_pseudoDSTForDate__beginEffectiveDST laterDate:v5];
-    if (v8 == v5)
+    v8 = [_isTimeZone_pseudoDSTForDate__beginEffectiveDST laterDate:dateCopy];
+    if (v8 == dateCopy)
     {
-      v9 = [_isTimeZone_pseudoDSTForDate__endEffectiveDST earlierDate:v5];
-      LOBYTE(v7) = v9 == v5;
+      v9 = [_isTimeZone_pseudoDSTForDate__endEffectiveDST earlierDate:dateCopy];
+      LOBYTE(v7) = v9 == dateCopy;
     }
 
     else
@@ -709,15 +709,15 @@ uint64_t __64__ICSTimeZone_TimeZoneGeneration___isTimeZone_pseudoDSTForDate___bl
   return MEMORY[0x2821F96F8]();
 }
 
-- (ICSTimeZone)initWithSystemTimeZone:(id)a3
+- (ICSTimeZone)initWithSystemTimeZone:(id)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zoneCopy = zone;
   v5 = [(ICSComponent *)self init];
   if (v5)
   {
-    v6 = [v4 name];
-    [(ICSTimeZone *)v5 setTzid:v6];
+    name = [zoneCopy name];
+    [(ICSTimeZone *)v5 setTzid:name];
 
     v7 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     v8 = objc_alloc(MEMORY[0x277CBEA80]);
@@ -729,7 +729,7 @@ uint64_t __64__ICSTimeZone_TimeZoneGeneration___isTimeZone_pseudoDSTForDate___bl
     v11 = [v9 dateFromComponents:v7];
     [v7 setYear:2050];
     v12 = [v9 dateFromComponents:v7];
-    v13 = [ICSTimeZone blocksAfterDate:v11 untilDate:v12 forTimeZone:v4];
+    v13 = [ICSTimeZone blocksAfterDate:v11 untilDate:v12 forTimeZone:zoneCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -764,21 +764,21 @@ uint64_t __64__ICSTimeZone_TimeZoneGeneration___isTimeZone_pseudoDSTForDate___bl
   return v5;
 }
 
-- (ICSTimeZone)initWithTimeZone:(id)a3 fromDate:(id)a4 options:(int)a5
+- (ICSTimeZone)initWithTimeZone:(id)zone fromDate:(id)date options:(int)options
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v51 = a4;
+  zoneCopy = zone;
+  dateCopy = date;
   v9 = [(ICSComponent *)self init];
   if (v9)
   {
-    v10 = [v8 tzid];
-    [(ICSTimeZone *)v9 setTzid:v10];
+    tzid = [zoneCopy tzid];
+    [(ICSTimeZone *)v9 setTzid:tzid];
 
     v53 = [MEMORY[0x277CBEB58] set];
-    v52 = a5;
-    v48 = v8;
-    if (a5 == 1)
+    optionsCopy = options;
+    v48 = zoneCopy;
+    if (options == 1)
     {
       v11 = objc_alloc(MEMORY[0x277CBEA80]);
       v12 = [v11 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
@@ -790,34 +790,34 @@ uint64_t __64__ICSTimeZone_TimeZoneGeneration___isTimeZone_pseudoDSTForDate___bl
       v14 = v12;
       v54 = [v12 dateFromComponents:v56];
       v15 = MEMORY[0x277CBEBB0];
-      v16 = [v8 tzid];
-      v17 = [v15 timeZoneWithName:v16];
+      tzid2 = [zoneCopy tzid];
+      v17 = [v15 timeZoneWithName:tzid2];
 
-      a5 = 1;
+      options = 1;
       v18 = objc_opt_new();
-      [v18 setYear:{objc_msgSend(v51, "year")}];
-      [v18 setMonth:{objc_msgSend(v51, "month")}];
-      [v18 setDay:{objc_msgSend(v51, "day")}];
-      [v18 setHour:{objc_msgSend(v51, "hour")}];
-      [v18 setMinute:{objc_msgSend(v51, "minute")}];
-      [v18 setSecond:{objc_msgSend(v51, "second")}];
+      [v18 setYear:{objc_msgSend(dateCopy, "year")}];
+      [v18 setMonth:{objc_msgSend(dateCopy, "month")}];
+      [v18 setDay:{objc_msgSend(dateCopy, "day")}];
+      [v18 setHour:{objc_msgSend(dateCopy, "hour")}];
+      [v18 setMinute:{objc_msgSend(dateCopy, "minute")}];
+      [v18 setSecond:{objc_msgSend(dateCopy, "second")}];
       [v18 setTimeZone:v17];
       v19 = v14;
       v20 = [v14 dateFromComponents:v18];
       v21 = [(ICSTimeZone *)v9 _previousDSTTransitionForDate:v20 timezone:v17];
       v22 = [v21 dateByAddingTimeInterval:-1.0];
-      v23 = [ICSTimeZone blocksAfterDate:v22 untilDate:v54 forTimeZone:v17];
+      components = [ICSTimeZone blocksAfterDate:v22 untilDate:v54 forTimeZone:v17];
 
       v24 = 1;
     }
 
     else
     {
-      v23 = [v8 components];
+      components = [zoneCopy components];
       v24 = -1;
     }
 
-    if ([v23 count])
+    if ([components count])
     {
       v25 = 0;
       v55 = 0;
@@ -826,10 +826,10 @@ uint64_t __64__ICSTimeZone_TimeZoneGeneration___isTimeZone_pseudoDSTForDate___bl
       v50 = v24;
       while (1)
       {
-        v27 = [v23 objectAtIndex:v25];
-        if (++v25 >= [v23 count])
+        v27 = [components objectAtIndex:v25];
+        if (++v25 >= [components count])
         {
-          v32 = 0;
+          value = 0;
         }
 
         else
@@ -838,7 +838,7 @@ uint64_t __64__ICSTimeZone_TimeZoneGeneration___isTimeZone_pseudoDSTForDate___bl
           while (1)
           {
             v29 = objc_opt_class();
-            v30 = [v23 objectAtIndex:v28];
+            v30 = [components objectAtIndex:v28];
             v31 = objc_opt_class();
 
             if (v29 == v31)
@@ -846,16 +846,16 @@ uint64_t __64__ICSTimeZone_TimeZoneGeneration___isTimeZone_pseudoDSTForDate___bl
               break;
             }
 
-            if (++v28 >= [v23 count])
+            if (++v28 >= [components count])
             {
-              v32 = 0;
+              value = 0;
               goto LABEL_14;
             }
           }
 
-          v33 = [v23 objectAtIndex:v28];
-          v34 = [v33 dtstart];
-          v32 = [v34 value];
+          v33 = [components objectAtIndex:v28];
+          dtstart = [v33 dtstart];
+          value = [dtstart value];
 
 LABEL_14:
           v26 = 0x27A64B000uLL;
@@ -865,14 +865,14 @@ LABEL_14:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v36 = [objc_alloc(*(v26 + 1400)) initWithYear:objc_msgSend(v32 month:"year") day:objc_msgSend(v32 hour:"month") minute:objc_msgSend(v32 second:{"day"), objc_msgSend(v32, "hour"), objc_msgSend(v32, "minute"), objc_msgSend(v32, "second")}];
+          v36 = [objc_alloc(*(v26 + 1400)) initWithYear:objc_msgSend(value month:"year") day:objc_msgSend(value hour:"month") minute:objc_msgSend(value second:{"day"), objc_msgSend(value, "hour"), objc_msgSend(value, "minute"), objc_msgSend(value, "second")}];
           v37 = v36;
           if (v36)
           {
-            a5 = v52;
+            options = optionsCopy;
             v24 = v50;
             v26 = 0x27A64B000;
-            if ([v36 compare:v51] != 1)
+            if ([v36 compare:dateCopy] != 1)
             {
               goto LABEL_35;
             }
@@ -880,7 +880,7 @@ LABEL_14:
 
           else
           {
-            a5 = v52;
+            options = optionsCopy;
             v24 = v50;
             v26 = 0x27A64B000;
           }
@@ -891,7 +891,7 @@ LABEL_14:
           v37 = 0;
         }
 
-        if (a5 == 2)
+        if (options == 2)
         {
           [v53 addObject:v27];
           goto LABEL_35;
@@ -931,7 +931,7 @@ LABEL_33:
 
 LABEL_35:
 
-        if (v25 >= [v23 count])
+        if (v25 >= [components count])
         {
           goto LABEL_38;
         }
@@ -953,8 +953,8 @@ LABEL_38:
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v40 = [v53 allObjects];
-    v41 = [v40 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v53 allObjects];
+    v41 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     v42 = [v41 countByEnumeratingWithState:&v58 objects:v62 count:16];
     if (v42)
@@ -979,26 +979,26 @@ LABEL_38:
       while (v43);
     }
 
-    v8 = v49;
+    zoneCopy = v49;
   }
 
   v46 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (id)_previousDSTTransitionForDate:(id)a3 timezone:(id)a4
+- (id)_previousDSTTransitionForDate:(id)date timezone:(id)timezone
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  timezoneCopy = timezone;
   v7 = objc_alloc(MEMORY[0x277CBEA80]);
   v8 = [v7 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  [v8 setTimeZone:v6];
-  v9 = [v8 dateByAddingUnit:4 value:-1 toDate:v5 options:1];
-  v10 = [v8 timeZone];
-  v11 = [v10 nextDaylightSavingTimeTransitionAfterDate:v9];
+  [v8 setTimeZone:timezoneCopy];
+  v9 = [v8 dateByAddingUnit:4 value:-1 toDate:dateCopy options:1];
+  timeZone = [v8 timeZone];
+  v11 = [timeZone nextDaylightSavingTimeTransitionAfterDate:v9];
 
   v12 = v11;
-  v13 = [v12 earlierDate:v5];
+  v13 = [v12 earlierDate:dateCopy];
   v14 = [v13 isEqualToDate:v12];
 
   v15 = v12;
@@ -1012,10 +1012,10 @@ LABEL_38:
     v16 = v12;
     v12 = v15;
 
-    v17 = [v8 timeZone];
-    v15 = [v17 nextDaylightSavingTimeTransitionAfterDate:v12];
+    timeZone2 = [v8 timeZone];
+    v15 = [timeZone2 nextDaylightSavingTimeTransitionAfterDate:v12];
 
-    v18 = [v15 earlierDate:v5];
+    v18 = [v15 earlierDate:dateCopy];
     v19 = [v18 isEqualToDate:v15];
   }
 
@@ -1023,12 +1023,12 @@ LABEL_38:
   if ((v14 & 1) == 0)
   {
 LABEL_4:
-    v20 = [v8 components:252 fromDate:v5];
+    v20 = [v8 components:252 fromDate:dateCopy];
     [v20 setMonth:1];
     [v20 setDay:1];
     v21 = [v8 dateFromComponents:v20];
-    v22 = [v8 timeZone];
-    v23 = [v22 nextDaylightSavingTimeTransitionAfterDate:v21];
+    timeZone3 = [v8 timeZone];
+    v23 = [timeZone3 nextDaylightSavingTimeTransitionAfterDate:v21];
 
     v12 = v23;
   }
@@ -1036,11 +1036,11 @@ LABEL_4:
   return v12;
 }
 
-+ (id)timeZoneWithSystemTimeZoneName:(id)a3
++ (id)timeZoneWithSystemTimeZoneName:(id)name
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = _sCache;
   if (!_sCache)
   {
@@ -1051,51 +1051,51 @@ LABEL_4:
     v6 = _sCache;
   }
 
-  v9 = [v6 objectForKey:v4];
+  v9 = [v6 objectForKey:nameCopy];
   if (!v9)
   {
     v10 = [ICSTimeZone alloc];
-    v11 = [MEMORY[0x277CBEBB0] timeZoneWithName:v4];
+    v11 = [MEMORY[0x277CBEBB0] timeZoneWithName:nameCopy];
     v9 = [(ICSTimeZone *)v10 initWithSystemTimeZone:v11];
 
-    [_sCache setObject:v9 forKey:v4];
+    [_sCache setObject:v9 forKey:nameCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (BOOL)isEqualToNSTimeZone:(id)a3 forDate:(id)a4
+- (BOOL)isEqualToNSTimeZone:(id)zone forDate:(id)date
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  zoneCopy = zone;
+  if (zoneCopy)
   {
-    v7 = a4;
-    v25 = self;
-    v8 = -[ICSDateTimeValue initWithYear:month:day:hour:minute:second:]([ICSDateTimeValue alloc], "initWithYear:month:day:hour:minute:second:", [v7 year] - 1, objc_msgSend(v7, "month"), objc_msgSend(v7, "day"), objc_msgSend(v7, "hour"), objc_msgSend(v7, "minute"), objc_msgSend(v7, "second"));
+    dateCopy = date;
+    selfCopy = self;
+    v8 = -[ICSDateTimeValue initWithYear:month:day:hour:minute:second:]([ICSDateTimeValue alloc], "initWithYear:month:day:hour:minute:second:", [dateCopy year] - 1, objc_msgSend(dateCopy, "month"), objc_msgSend(dateCopy, "day"), objc_msgSend(dateCopy, "hour"), objc_msgSend(dateCopy, "minute"), objc_msgSend(dateCopy, "second"));
     v9 = [ICSDateTimeValue alloc];
-    v10 = [v7 year];
-    v11 = [v7 month];
-    v12 = [v7 day];
-    v13 = [v7 hour];
-    v14 = [v7 minute];
-    v15 = [v7 second];
+    year = [dateCopy year];
+    month = [dateCopy month];
+    v12 = [dateCopy day];
+    hour = [dateCopy hour];
+    minute = [dateCopy minute];
+    second = [dateCopy second];
 
-    v16 = [(ICSDateTimeValue *)v9 initWithYear:v10 + 1 month:v11 day:v12 hour:v13 minute:v14 second:v15];
-    v17 = [(ICSTimeZone *)v25 computeTimeZoneChangeListFromDate:v8 toDate:v16];
-    v18 = [v6 ICSComputeTimeZoneChangeListFromDate:v8 toDate:v16];
+    v16 = [(ICSDateTimeValue *)v9 initWithYear:year + 1 month:month day:v12 hour:hour minute:minute second:second];
+    v17 = [(ICSTimeZone *)selfCopy computeTimeZoneChangeListFromDate:v8 toDate:v16];
+    v18 = [zoneCopy ICSComputeTimeZoneChangeListFromDate:v8 toDate:v16];
     v19 = [v18 ICSContainsArray:v17];
     if ((v19 & 1) == 0)
     {
       v20 = logHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v6 name];
-        v24 = [(ICSComponent *)v25 ICSStringWithOptions:0];
+        name = [zoneCopy name];
+        v24 = [(ICSComponent *)selfCopy ICSStringWithOptions:0];
         *buf = 138413570;
-        v27 = v23;
+        v27 = name;
         v28 = 2112;
         v29 = v8;
         v30 = 2112;
@@ -1120,22 +1120,22 @@ LABEL_4:
   return v19;
 }
 
-- (id)getNSTimeZoneFromDate:(id)a3 toDate:(id)a4
+- (id)getNSTimeZoneFromDate:(id)date toDate:(id)toDate
 {
   v93 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v54 = a4;
-  v55 = self;
-  v6 = [(ICSTimeZone *)self tzid];
-  v7 = [MEMORY[0x277CBEBB0] timeZoneWithName:v6];
-  if (v7 && [v6 rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
+  dateCopy = date;
+  toDateCopy = toDate;
+  selfCopy = self;
+  tzid = [(ICSTimeZone *)self tzid];
+  v7 = [MEMORY[0x277CBEBB0] timeZoneWithName:tzid];
+  if (v7 && [tzid rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = v7;
-    v15 = v12;
+    systemTimeZone = v7;
+    v15 = systemTimeZone;
     goto LABEL_40;
   }
 
-  v8 = [(ICSTimeZone *)self computeTimeZoneChangeListFromDate:v53 toDate:v54];
+  v8 = [(ICSTimeZone *)self computeTimeZoneChangeListFromDate:dateCopy toDate:toDateCopy];
   v74 = 0;
   v75 = &v74;
   v76 = 0x3032000000;
@@ -1146,31 +1146,31 @@ LABEL_4:
   v68[1] = 3221225472;
   v68[2] = __54__ICSTimeZone_Internal__getNSTimeZoneFromDate_toDate___block_invoke;
   v68[3] = &unk_27A64C2B0;
-  v9 = v53;
+  v9 = dateCopy;
   v69 = v9;
-  v10 = v54;
+  v10 = toDateCopy;
   v70 = v10;
-  v71 = self;
+  selfCopy2 = self;
   v52 = v8;
   v72 = v52;
   v73 = &v74;
   v11 = MEMORY[0x277C799E0](v68);
-  v12 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
 
-  if (!(v11)[2](v11, v12))
+  if (!(v11)[2](v11, systemTimeZone))
   {
-    v16 = [(ICSTimeZone *)self tzid];
-    v17 = v16 == 0;
+    tzid2 = [(ICSTimeZone *)self tzid];
+    v17 = tzid2 == 0;
 
     if (v17)
     {
-      v14 = v6;
+      v14 = tzid;
     }
 
     else
     {
-      v18 = [(ICSTimeZone *)v55 tzid];
-      v14 = [ICSTimeZoneTranslator timeZoneNameForNonstandardTimeZone:v18];
+      tzid3 = [(ICSTimeZone *)selfCopy tzid];
+      v14 = [ICSTimeZoneTranslator timeZoneNameForNonstandardTimeZone:tzid3];
 
       if (v14)
       {
@@ -1183,7 +1183,7 @@ LABEL_4:
             v20 = logHandle();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
-              v50 = [(ICSComponent *)v55 ICSStringWithOptions:0];
+              v50 = [(ICSComponent *)selfCopy ICSStringWithOptions:0];
               *buf = 138413314;
               v84 = v14;
               v85 = 2112;
@@ -1199,11 +1199,11 @@ LABEL_4:
           }
 
           v13 = v19;
-          v12 = v13;
+          systemTimeZone = v13;
           goto LABEL_5;
         }
 
-        v12 = 0;
+        systemTimeZone = 0;
       }
     }
 
@@ -1211,41 +1211,41 @@ LABEL_4:
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v21 = [objc_opt_class() quickTimeZoneNames];
-    v22 = [v21 countByEnumeratingWithState:&v64 objects:v82 count:16];
+    quickTimeZoneNames = [objc_opt_class() quickTimeZoneNames];
+    v22 = [quickTimeZoneNames countByEnumeratingWithState:&v64 objects:v82 count:16];
     if (v22)
     {
       v23 = *v65;
       while (2)
       {
         v24 = 0;
-        v25 = v12;
+        v25 = systemTimeZone;
         v26 = v14;
         do
         {
           if (*v65 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(quickTimeZoneNames);
           }
 
           v14 = *(*(&v64 + 1) + 8 * v24);
 
-          v12 = [MEMORY[0x277CBEBB0] timeZoneWithName:v14];
+          systemTimeZone = [MEMORY[0x277CBEBB0] timeZoneWithName:v14];
 
-          if ((v11)[2](v11, v12))
+          if ((v11)[2](v11, systemTimeZone))
           {
-            v12 = v12;
+            systemTimeZone = systemTimeZone;
 
             goto LABEL_38;
           }
 
           ++v24;
-          v25 = v12;
+          v25 = systemTimeZone;
           v26 = v14;
         }
 
         while (v22 != v24);
-        v22 = [v21 countByEnumeratingWithState:&v64 objects:v82 count:16];
+        v22 = [quickTimeZoneNames countByEnumeratingWithState:&v64 objects:v82 count:16];
         if (v22)
         {
           continue;
@@ -1259,8 +1259,8 @@ LABEL_4:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v27 = [objc_opt_class() slowTimeZoneNames];
-    v28 = [v27 countByEnumeratingWithState:&v60 objects:v81 count:16];
+    slowTimeZoneNames = [objc_opt_class() slowTimeZoneNames];
+    v28 = [slowTimeZoneNames countByEnumeratingWithState:&v60 objects:v81 count:16];
     if (v28)
     {
       v14 = 0;
@@ -1268,33 +1268,33 @@ LABEL_4:
       while (2)
       {
         v30 = 0;
-        v31 = v12;
+        v31 = systemTimeZone;
         v32 = v14;
         do
         {
           if (*v61 != v29)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(slowTimeZoneNames);
           }
 
           v14 = *(*(&v60 + 1) + 8 * v30);
 
-          v12 = [MEMORY[0x277CBEBB0] timeZoneWithName:v14];
+          systemTimeZone = [MEMORY[0x277CBEBB0] timeZoneWithName:v14];
 
-          if ((v11)[2](v11, v12))
+          if ((v11)[2](v11, systemTimeZone))
           {
-            v12 = v12;
+            systemTimeZone = systemTimeZone;
 
             goto LABEL_38;
           }
 
           ++v30;
-          v31 = v12;
+          v31 = systemTimeZone;
           v32 = v14;
         }
 
         while (v28 != v30);
-        v28 = [v27 countByEnumeratingWithState:&v60 objects:v81 count:16];
+        v28 = [slowTimeZoneNames countByEnumeratingWithState:&v60 objects:v81 count:16];
         if (v28)
         {
           continue;
@@ -1317,9 +1317,9 @@ LABEL_4:
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v36 = [objc_opt_class() quickTimeZoneNames];
-      v37 = [objc_opt_class() slowTimeZoneNames];
-      obj = [v36 arrayByAddingObjectsFromArray:v37];
+      quickTimeZoneNames2 = [objc_opt_class() quickTimeZoneNames];
+      slowTimeZoneNames2 = [objc_opt_class() slowTimeZoneNames];
+      obj = [quickTimeZoneNames2 arrayByAddingObjectsFromArray:slowTimeZoneNames2];
 
       v38 = [obj countByEnumeratingWithState:&v56 objects:v80 count:16];
       if (v38)
@@ -1330,7 +1330,7 @@ LABEL_4:
         {
           v40 = v38;
           v41 = 0;
-          v42 = v12;
+          v42 = systemTimeZone;
           v43 = v14;
           do
           {
@@ -1341,22 +1341,22 @@ LABEL_4:
 
             v14 = *(*(&v56 + 1) + 8 * v41);
 
-            v12 = [MEMORY[0x277CBEBB0] timeZoneWithName:v14];
+            systemTimeZone = [MEMORY[0x277CBEBB0] timeZoneWithName:v14];
 
-            v44 = [MEMORY[0x277CBEAF8] currentLocale];
-            v45 = [v12 localizedName:0 locale:v44];
-            v46 = [(ICSTimeZone *)v55 tzid];
-            v47 = [v45 isEqualToString:v46];
+            currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+            v45 = [systemTimeZone localizedName:0 locale:currentLocale];
+            tzid4 = [(ICSTimeZone *)selfCopy tzid];
+            v47 = [v45 isEqualToString:tzid4];
 
             if (v47)
             {
-              v12 = v12;
+              systemTimeZone = systemTimeZone;
 
               goto LABEL_38;
             }
 
             ++v41;
-            v42 = v12;
+            v42 = systemTimeZone;
             v43 = v14;
           }
 
@@ -1376,10 +1376,10 @@ LABEL_4:
         v48 = [v52 objectAtIndex:0];
         v49 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:{objc_msgSend(v48, "tzOffsetTo")}];
 
-        v12 = v49;
+        systemTimeZone = v49;
         v14 = 0;
 LABEL_38:
-        v15 = v12;
+        v15 = systemTimeZone;
       }
 
       else
@@ -1392,15 +1392,15 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v13 = v12;
-  v12 = v13;
-  v14 = v6;
+  v13 = systemTimeZone;
+  systemTimeZone = v13;
+  v14 = tzid;
 LABEL_5:
   v15 = v13;
 LABEL_39:
 
   _Block_object_dispose(&v74, 8);
-  v6 = v14;
+  tzid = v14;
 LABEL_40:
 
   v34 = *MEMORY[0x277D85DE8];
@@ -1471,7 +1471,7 @@ void __43__ICSTimeZone_Internal__quickTimeZoneNames__block_invoke()
   block[1] = 3221225472;
   block[2] = __42__ICSTimeZone_Internal__slowTimeZoneNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (slowTimeZoneNames_onceToken != -1)
   {
     dispatch_once(&slowTimeZoneNames_onceToken, block);
@@ -1501,37 +1501,37 @@ void __42__ICSTimeZone_Internal__slowTimeZoneNames__block_invoke(uint64_t a1)
   slowTimeZoneNames__slowTimeZones = v7;
 }
 
-- (id)getNSTimeZone:(id)a3
+- (id)getNSTimeZone:(id)zone
 {
-  v4 = a3;
-  v5 = -[ICSDateTimeValue initWithYear:month:day:hour:minute:second:]([ICSDateTimeValue alloc], "initWithYear:month:day:hour:minute:second:", [v4 year] - 1, objc_msgSend(v4, "month"), objc_msgSend(v4, "day"), objc_msgSend(v4, "hour"), objc_msgSend(v4, "minute"), objc_msgSend(v4, "second"));
+  zoneCopy = zone;
+  v5 = -[ICSDateTimeValue initWithYear:month:day:hour:minute:second:]([ICSDateTimeValue alloc], "initWithYear:month:day:hour:minute:second:", [zoneCopy year] - 1, objc_msgSend(zoneCopy, "month"), objc_msgSend(zoneCopy, "day"), objc_msgSend(zoneCopy, "hour"), objc_msgSend(zoneCopy, "minute"), objc_msgSend(zoneCopy, "second"));
   v6 = [ICSDateTimeValue alloc];
-  v7 = [v4 year];
-  v8 = [v4 month];
-  v9 = [v4 day];
-  v10 = [v4 hour];
-  v11 = [v4 minute];
-  v12 = [v4 second];
+  year = [zoneCopy year];
+  month = [zoneCopy month];
+  v9 = [zoneCopy day];
+  hour = [zoneCopy hour];
+  minute = [zoneCopy minute];
+  second = [zoneCopy second];
 
-  v13 = [(ICSDateTimeValue *)v6 initWithYear:v7 + 1 month:v8 day:v9 hour:v10 minute:v11 second:v12];
+  v13 = [(ICSDateTimeValue *)v6 initWithYear:year + 1 month:month day:v9 hour:hour minute:minute second:second];
   v14 = [(ICSTimeZone *)self getNSTimeZoneFromDate:v5 toDate:v13];
 
   return v14;
 }
 
-+ (BOOL)perfectMatchForSubarray:(id)a3 inTZChangeArray:(id)a4
++ (BOOL)perfectMatchForSubarray:(id)subarray inTZChangeArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && (v7 = objc_msgSend(v5, "count"), v7 <= objc_msgSend(v6, "count")) && (objc_msgSend(v5, "objectAtIndex:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v6, "indexOfObject:", v8), v8, v9 != 0x7FFFFFFFFFFFFFFFLL) && (v10 = objc_msgSend(v5, "count") + v9, v10 <= objc_msgSend(v6, "count")))
+  subarrayCopy = subarray;
+  arrayCopy = array;
+  if ([subarrayCopy count] && (v7 = objc_msgSend(subarrayCopy, "count"), v7 <= objc_msgSend(arrayCopy, "count")) && (objc_msgSend(subarrayCopy, "objectAtIndex:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(arrayCopy, "indexOfObject:", v8), v8, v9 != 0x7FFFFFFFFFFFFFFFLL) && (v10 = objc_msgSend(subarrayCopy, "count") + v9, v10 <= objc_msgSend(arrayCopy, "count")))
   {
-    if ([v5 count] >= 2)
+    if ([subarrayCopy count] >= 2)
     {
       v13 = 1;
       do
       {
-        v14 = [v5 objectAtIndex:v13];
-        v15 = [v6 objectAtIndex:v9 + v13];
+        v14 = [subarrayCopy objectAtIndex:v13];
+        v15 = [arrayCopy objectAtIndex:v9 + v13];
         v11 = [v14 isEqual:v15];
 
         if ((v11 & 1) == 0)
@@ -1542,7 +1542,7 @@ void __42__ICSTimeZone_Internal__slowTimeZoneNames__block_invoke(uint64_t a1)
         ++v13;
       }
 
-      while (v13 < [v5 count]);
+      while (v13 < [subarrayCopy count]);
     }
 
     else
@@ -1559,24 +1559,24 @@ void __42__ICSTimeZone_Internal__slowTimeZoneNames__block_invoke(uint64_t a1)
   return v11;
 }
 
-+ (int64_t)matchTypeForSubarray:(id)a3 inTZChangeArray:(id)a4
++ (int64_t)matchTypeForSubarray:(id)subarray inTZChangeArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 perfectMatchForSubarray:v6 inTZChangeArray:v7])
+  subarrayCopy = subarray;
+  arrayCopy = array;
+  if ([self perfectMatchForSubarray:subarrayCopy inTZChangeArray:arrayCopy])
   {
     v8 = 2;
   }
 
   else
   {
-    v9 = [v7 objectAtIndexedSubscript:0];
-    v10 = [v9 tzOffsetTo];
+    v9 = [arrayCopy objectAtIndexedSubscript:0];
+    tzOffsetTo = [v9 tzOffsetTo];
 
-    v11 = [v6 objectAtIndexedSubscript:0];
-    v12 = [v11 tzOffsetTo];
+    v11 = [subarrayCopy objectAtIndexedSubscript:0];
+    tzOffsetTo2 = [v11 tzOffsetTo];
 
-    if ([v7 count])
+    if ([arrayCopy count])
     {
       v13 = 0;
       v14 = 0;
@@ -1584,16 +1584,16 @@ void __42__ICSTimeZone_Internal__slowTimeZoneNames__block_invoke(uint64_t a1)
       v16 = 0;
       do
       {
-        v17 = [v7 objectAtIndexedSubscript:v13];
+        v17 = [arrayCopy objectAtIndexedSubscript:v13];
         v18 = v17;
-        v15 = v15 || [v17 tzOffsetTo] != v10;
-        if (v14 < [v6 count])
+        v15 = v15 || [v17 tzOffsetTo] != tzOffsetTo;
+        if (v14 < [subarrayCopy count])
         {
-          v19 = [v6 objectAtIndexedSubscript:v14];
+          v19 = [subarrayCopy objectAtIndexedSubscript:v14];
           if ([v18 isCloseTo:v19])
           {
             ++v14;
-            v16 = v16 || [v19 tzOffsetTo] != v12;
+            v16 = v16 || [v19 tzOffsetTo] != tzOffsetTo2;
           }
 
           else if (v14)
@@ -1606,7 +1606,7 @@ void __42__ICSTimeZone_Internal__slowTimeZoneNames__block_invoke(uint64_t a1)
         ++v13;
       }
 
-      while (v13 < [v7 count]);
+      while (v13 < [arrayCopy count]);
       v8 = (v14 != 0) & (v16 ^ v15 ^ 1u);
     }
 
@@ -1620,17 +1620,17 @@ LABEL_18:
   return v8;
 }
 
-- (id)computeTimeZoneChangeListFromDate:(id)a3 toDate:(id)a4
+- (id)computeTimeZoneChangeListFromDate:(id)date toDate:(id)toDate
 {
   v86 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v58 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  dateCopy = date;
+  toDateCopy = toDate;
+  array = [MEMORY[0x277CBEB18] array];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v55 = self;
+  selfCopy = self;
   obj = [(ICSComponent *)self components];
   v7 = [obj countByEnumeratingWithState:&v77 objects:v85 count:16];
   if (v7)
@@ -1650,7 +1650,7 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 computeTimeZoneChangeListFromDate:v57 toDate:v58];
+          v12 = [v11 computeTimeZoneChangeListFromDate:dateCopy toDate:toDateCopy];
           v73 = 0u;
           v74 = 0u;
           v75 = 0u;
@@ -1670,9 +1670,9 @@ LABEL_18:
                 }
 
                 v17 = *(*(&v73 + 1) + 8 * j);
-                if (([v6 containsObject:v17] & 1) == 0)
+                if (([array containsObject:v17] & 1) == 0)
                 {
-                  [v6 addObject:v17];
+                  [array addObject:v17];
                 }
               }
 
@@ -1690,14 +1690,14 @@ LABEL_18:
     while (v8);
   }
 
-  if (![v6 count])
+  if (![array count])
   {
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v18 = [(ICSComponent *)v55 components];
-    v19 = [v18 countByEnumeratingWithState:&v69 objects:v83 count:16];
+    components = [(ICSComponent *)selfCopy components];
+    v19 = [components countByEnumeratingWithState:&v69 objects:v83 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1706,7 +1706,7 @@ LABEL_18:
       v22 = *v70;
       v23 = 0x27A64B000uLL;
       v51 = *v70;
-      v52 = v18;
+      v52 = components;
       do
       {
         v24 = 0;
@@ -1715,7 +1715,7 @@ LABEL_18:
         {
           if (*v70 != v22)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(components);
           }
 
           v25 = *(*(&v69 + 1) + 8 * v24);
@@ -1723,15 +1723,15 @@ LABEL_18:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v27 = [v25 dtstart];
-            v28 = [v27 value];
+            dtstart = [v25 dtstart];
+            value = [dtstart value];
 
-            if ([v28 compare:v58] == -1)
+            if ([value compare:toDateCopy] == -1)
             {
-              v54 = v28;
-              if (!v21 || [v28 compare:v21] == 1)
+              v54 = value;
+              if (!v21 || [value compare:v21] == 1)
               {
-                v29 = v28;
+                v29 = value;
 
                 obja = [v25 tzoffsetto];
                 v21 = v29;
@@ -1742,8 +1742,8 @@ LABEL_18:
               v68 = 0u;
               v65 = 0u;
               v66 = 0u;
-              v30 = [v25 rrule];
-              v31 = [v30 countByEnumeratingWithState:&v65 objects:v82 count:16];
+              rrule = [v25 rrule];
+              v31 = [rrule countByEnumeratingWithState:&v65 objects:v82 count:16];
               if (v31)
               {
                 v32 = v31;
@@ -1754,23 +1754,23 @@ LABEL_18:
                   {
                     if (*v66 != v33)
                     {
-                      objc_enumerationMutation(v30);
+                      objc_enumerationMutation(rrule);
                     }
 
                     v35 = *(*(&v65 + 1) + 8 * k);
-                    v36 = [v35 until];
-                    v37 = [v36 compare:v21];
+                    until = [v35 until];
+                    v37 = [until compare:v21];
 
                     if (v37 == 1)
                     {
-                      v38 = [v35 until];
+                      until2 = [v35 until];
 
                       obja = [v25 tzoffsetto];
-                      v21 = v38;
+                      v21 = until2;
                     }
                   }
 
-                  v32 = [v30 countByEnumeratingWithState:&v65 objects:v82 count:16];
+                  v32 = [rrule countByEnumeratingWithState:&v65 objects:v82 count:16];
                 }
 
                 while (v32);
@@ -1780,8 +1780,8 @@ LABEL_18:
               v64 = 0u;
               v61 = 0u;
               v62 = 0u;
-              v39 = [v25 rdate];
-              v40 = [v39 countByEnumeratingWithState:&v61 objects:v81 count:16];
+              rdate = [v25 rdate];
+              v40 = [rdate countByEnumeratingWithState:&v61 objects:v81 count:16];
               if (v40)
               {
                 v41 = v40;
@@ -1792,33 +1792,33 @@ LABEL_18:
                   {
                     if (*v62 != v42)
                     {
-                      objc_enumerationMutation(v39);
+                      objc_enumerationMutation(rdate);
                     }
 
                     v44 = *(*(&v61 + 1) + 8 * m);
-                    v45 = [v44 value];
-                    v46 = [v45 compare:v21];
+                    value2 = [v44 value];
+                    v46 = [value2 compare:v21];
 
                     if (v46 == 1)
                     {
-                      v47 = [v44 value];
+                      value3 = [v44 value];
 
                       obja = [v25 tzoffsetto];
-                      v21 = v47;
+                      v21 = value3;
                     }
                   }
 
-                  v41 = [v39 countByEnumeratingWithState:&v61 objects:v81 count:16];
+                  v41 = [rdate countByEnumeratingWithState:&v61 objects:v81 count:16];
                 }
 
                 while (v41);
               }
 
               v22 = v51;
-              v18 = v52;
+              components = v52;
               v23 = 0x27A64B000;
               v20 = v53;
-              v28 = v54;
+              value = v54;
               v24 = v56;
             }
           }
@@ -1827,7 +1827,7 @@ LABEL_18:
         }
 
         while (v24 != v20);
-        v20 = [v18 countByEnumeratingWithState:&v69 objects:v83 count:16];
+        v20 = [components countByEnumeratingWithState:&v69 objects:v83 count:16];
       }
 
       while (v20);
@@ -1840,14 +1840,14 @@ LABEL_18:
     }
 
     v48 = [[ICSTimeZoneChange alloc] initWithTimeInterval:obja tzOffsetTo:0.0];
-    [v6 addObject:v48];
+    [array addObject:v48];
   }
 
-  [v6 sortUsingSelector:{sel_compare_, v51, v52}];
+  [array sortUsingSelector:{sel_compare_, v51, v52}];
 
   v49 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
 @end

@@ -2,8 +2,8 @@
 - (CGPath)copyMaskPath;
 - (void)_reloadMask;
 - (void)dealloc;
-- (void)setFrame:(CGRect)a3;
-- (void)setMaskProvider:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setMaskProvider:(id)provider;
 @end
 
 @implementation SUMaskedView
@@ -38,24 +38,24 @@
   return result;
 }
 
-- (void)setMaskProvider:(id)a3
+- (void)setMaskProvider:(id)provider
 {
   maskProvider = self->_maskProvider;
-  if (maskProvider != a3)
+  if (maskProvider != provider)
   {
 
-    self->_maskProvider = a3;
+    self->_maskProvider = provider;
 
     [(SUMaskedView *)self _reloadMask];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SUMaskedView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -85,25 +85,25 @@
   if (!v6 && v3 > 0.00000011920929)
   {
     v12 = [(SUMaskProvider *)maskProvider copyMaskImageWithSize:v3, v4];
-    v8 = [(SUMaskedView *)self layer];
-    v9 = [v8 mask];
-    v10 = v9;
-    if (!v9 && v12)
+    layer = [(SUMaskedView *)self layer];
+    mask = [layer mask];
+    v10 = mask;
+    if (!mask && v12)
     {
       v10 = objc_alloc_init(MEMORY[0x1E6979398]);
-      [v8 setMask:v10];
+      [layer setMask:v10];
     }
 
     [v10 setContents:{objc_msgSend(v12, "CGImage")}];
-    v11 = v12;
+    mainScreen = v12;
     if (!v12)
     {
-      v11 = [MEMORY[0x1E69DCEB0] mainScreen];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
     }
 
-    [v11 scale];
+    [mainScreen scale];
     [v10 setContentsScale:?];
-    [v8 bounds];
+    [layer bounds];
     [v10 setFrame:?];
   }
 }

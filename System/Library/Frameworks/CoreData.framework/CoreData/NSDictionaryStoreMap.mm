@@ -1,19 +1,19 @@
 @interface NSDictionaryStoreMap
-- (NSDictionaryStoreMap)initWithStore:(id)a3 fromArchivedData:(id)a4;
-- (NSDictionaryStoreMap)initWithStore:(id)a3 fromPath:(id)a4;
-- (id)handleFetchRequest:(id)a3;
-- (id)retainedObjectIDsForRelationship:(id)a3 forObjectID:(id)a4;
+- (NSDictionaryStoreMap)initWithStore:(id)store fromArchivedData:(id)data;
+- (NSDictionaryStoreMap)initWithStore:(id)store fromPath:(id)path;
+- (id)handleFetchRequest:(id)request;
+- (id)retainedObjectIDsForRelationship:(id)relationship forObjectID:(id)d;
 - (uint64_t)_archivedData;
-- (void)addObject:(id)a3 objectIDMap:(id)a4;
+- (void)addObject:(id)object objectIDMap:(id)map;
 - (void)dealloc;
-- (void)removeObject:(id)a3 objectIDMap:(id)a4;
-- (void)saveToPath:(uint64_t)a1;
-- (void)updateObject:(id)a3 objectIDMap:(id)a4;
+- (void)removeObject:(id)object objectIDMap:(id)map;
+- (void)saveToPath:(uint64_t)path;
+- (void)updateObject:(id)object objectIDMap:(id)map;
 @end
 
 @implementation NSDictionaryStoreMap
 
-- (NSDictionaryStoreMap)initWithStore:(id)a3 fromPath:(id)a4
+- (NSDictionaryStoreMap)initWithStore:(id)store fromPath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -21,12 +21,12 @@
   v6 = [(NSPersistentStoreMap *)&v24 initWithStore:?];
   if (v6)
   {
-    if (a4)
+    if (path)
     {
       v7 = objc_alloc_init(NSBinaryObjectStoreFile);
-      v7->_storeOptions = [objc_msgSend(a3 "options")];
+      v7->_storeOptions = [objc_msgSend(store "options")];
       v23 = 0;
-      if (![(NSBinaryObjectStoreFile *)v7 readFromFile:a4 error:&v23])
+      if (![(NSBinaryObjectStoreFile *)v7 readFromFile:path error:&v23])
       {
 
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObject:v23 forKey:*MEMORY[0x1E696AA08]];
@@ -48,8 +48,8 @@
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v9 = [(NSMutableDictionary *)v8 allValues];
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      allValues = [(NSMutableDictionary *)v8 allValues];
+      v10 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v10)
       {
         v11 = *v20;
@@ -60,14 +60,14 @@
           {
             if (*v20 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allValues);
             }
 
             [(NSStoreMapNode *)*(*(&v19 + 1) + 8 * v12++) _setMap:v6];
           }
 
           while (v10 != v12);
-          v10 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
+          v10 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
         }
 
         while (v10);
@@ -87,7 +87,7 @@
   return v6;
 }
 
-- (NSDictionaryStoreMap)initWithStore:(id)a3 fromArchivedData:(id)a4
+- (NSDictionaryStoreMap)initWithStore:(id)store fromArchivedData:(id)data
 {
   v41[1] = *MEMORY[0x1E69E9840];
   v36.receiver = self;
@@ -95,13 +95,13 @@
   v6 = [(NSPersistentStoreMap *)&v36 initWithStore:?];
   if (v6)
   {
-    if (a4)
+    if (data)
     {
-      v7 = [a3 options];
-      v8 = v7;
+      options = [store options];
+      v8 = options;
       if (byte_1ED4BEEC4 == 1)
       {
-        v9 = [v7 objectForKey:@"_NSBinaryStoreInsecureDecodingCompatibilityOption"];
+        v9 = [options objectForKey:@"_NSBinaryStoreInsecureDecodingCompatibilityOption"];
         if (v9)
         {
           v10 = [v9 BOOLValue] ^ 1;
@@ -118,15 +118,15 @@
         v10 = 0;
       }
 
-      v35 = 0;
-      v11 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:a4 error:&v35];
-      if (v35)
+      error = 0;
+      v11 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:data error:&error];
+      if (error)
       {
-        v24 = [v35 code];
+        code = [error code];
         v40 = *MEMORY[0x1E696AA08];
-        v41[0] = v35;
+        v41[0] = error;
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-        v26 = [_NSCoreDataException exceptionWithName:v24 code:@"Keyed archiver failure" reason:v25 userInfo:?];
+        v26 = [_NSCoreDataException exceptionWithName:code code:@"Keyed archiver failure" reason:v25 userInfo:?];
         objc_exception_throw(v26);
       }
 
@@ -162,13 +162,13 @@
         [(NSPersistentStoreMap *)v6 _setMetadata:v15];
       }
 
-      v16 = [v11 decodeObjectOfClass:objc_opt_class() forKey:@"_NSStoreMapArchiveNextPK"];
-      if (v16)
+      unsignedLongLongValue = [v11 decodeObjectOfClass:objc_opt_class() forKey:@"_NSStoreMapArchiveNextPK"];
+      if (unsignedLongLongValue)
       {
-        v16 = [v16 unsignedLongLongValue];
+        unsignedLongLongValue = [unsignedLongLongValue unsignedLongLongValue];
       }
 
-      v6->super._nextPK64 = v16;
+      v6->super._nextPK64 = unsignedLongLongValue;
       v17 = [v11 decodeObjectOfClasses:v12 forKey:@"_NSStoreMapArchiveData"];
       v6->_theMap = v17;
       if (v17)
@@ -177,8 +177,8 @@
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v18 = [(NSMutableDictionary *)v17 allValues];
-        v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        allValues = [(NSMutableDictionary *)v17 allValues];
+        v19 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v19)
         {
           v20 = *v32;
@@ -188,13 +188,13 @@
             {
               if (*v32 != v20)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(allValues);
               }
 
               [(NSStoreMapNode *)*(*(&v31 + 1) + 8 * i) _setMap:v6];
             }
 
-            v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v19 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
           }
 
           while (v19);
@@ -203,18 +203,18 @@
 
       if ([v11 error])
       {
-        v35 = [v11 error];
-        v28 = [v35 code];
+        error = [v11 error];
+        code2 = [error code];
         v37 = *MEMORY[0x1E696AA08];
-        v38 = v35;
+        v38 = error;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-        v30 = [_NSCoreDataException exceptionWithName:v28 code:@"Keyed archiver failure" reason:v29 userInfo:?];
+        v30 = [_NSCoreDataException exceptionWithName:code2 code:@"Keyed archiver failure" reason:v29 userInfo:?];
         objc_exception_throw(v30);
       }
 
       [v11 finishDecoding];
 
-      if (v35)
+      if (error)
       {
 
         v6 = 0;
@@ -231,21 +231,21 @@
   return v6;
 }
 
-- (void)saveToPath:(uint64_t)a1
+- (void)saveToPath:(uint64_t)path
 {
-  if (!a1)
+  if (!path)
   {
     return;
   }
 
   v25 = 0;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [a2 stringByDeletingLastPathComponent];
-  if (([v4 fileExistsAtPath:v5 isDirectory:&v25] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [a2 stringByDeletingLastPathComponent];
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v25] & 1) == 0)
   {
     v10 = [_NSCoreDataException alloc];
     v11 = *MEMORY[0x1E695D940];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Directory does not exist : %@", v5];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Directory does not exist : %@", stringByDeletingLastPathComponent];
 LABEL_10:
     v13 = v12;
     v14 = v10;
@@ -259,14 +259,14 @@ LABEL_10:
   {
     v10 = [_NSCoreDataException alloc];
     v11 = *MEMORY[0x1E695D940];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not a directory : %@", v5];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not a directory : %@", stringByDeletingLastPathComponent];
     goto LABEL_10;
   }
 
   v6 = objc_alloc_init(NSBinaryObjectStoreFile);
-  v6->_storeOptions = [objc_msgSend(*(a1 + 8) "options")];
+  v6->_storeOptions = [objc_msgSend(*(path + 8) "options")];
   v6->_databaseVersion = 134481920;
-  v7 = *(a1 + 24);
+  v7 = *(path + 24);
   if (v6->_fullMetadata != v7)
   {
     v8 = [(NSDictionary *)v7 copy];
@@ -274,7 +274,7 @@ LABEL_10:
     v6->_fullMetadata = v8;
   }
 
-  v6->_primaryKeyGeneration = *(a1 + 32);
+  v6->_primaryKeyGeneration = *(path + 32);
   [(NSXPCStoreServerConnectionContext *)v6 setActiveStore:?];
   v24 = 0;
   v9 = [(NSBinaryObjectStoreFile *)v6 writeToFile:a2 error:&v24];
@@ -297,7 +297,7 @@ LABEL_16:
 
         v21 = [_NSCoreDataException alloc];
         v22 = *MEMORY[0x1E695D940];
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Directory is not writable : %@", v5];
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Directory is not writable : %@", stringByDeletingLastPathComponent];
         v14 = v21;
         v15 = v22;
         v16 = 513;
@@ -327,9 +327,9 @@ LABEL_11:
   [(NSPersistentStoreMap *)&v3 dealloc];
 }
 
-- (void)addObject:(id)a3 objectIDMap:(id)a4
+- (void)addObject:(id)object objectIDMap:(id)map
 {
-  v4 = a3;
+  objectCopy = object;
   v53 = *MEMORY[0x1E69E9840];
   if (!self)
   {
@@ -337,10 +337,10 @@ LABEL_11:
     goto LABEL_41;
   }
 
-  v8 = [a3 entity];
-  v9 = [a3 objectID];
-  v42 = a3;
-  if (!a3)
+  entity = [object entity];
+  objectID = [object objectID];
+  objectCopy2 = object;
+  if (!object)
   {
     v39 = MEMORY[0x1E695DF30];
     v40 = *MEMORY[0x1E695D940];
@@ -348,13 +348,13 @@ LABEL_11:
     goto LABEL_50;
   }
 
-  v10 = v9;
-  if ([v9 isTemporaryID])
+  v10 = objectID;
+  if ([objectID isTemporaryID])
   {
-    v10 = [a4 objectForKey:v10];
+    v10 = [map objectForKey:v10];
   }
 
-  if (!v8)
+  if (!entity)
   {
     v39 = MEMORY[0x1E695DF30];
     v40 = *MEMORY[0x1E695D930];
@@ -363,25 +363,25 @@ LABEL_50:
     objc_exception_throw([v39 exceptionWithName:v40 reason:v41 userInfo:0]);
   }
 
-  v11 = *(v8 + 112);
-  v45 = [objc_msgSend(v8 "propertiesByName")];
-  v12 = PF_CALLOC_OBJECT_ARRAY([*(v8 + 104) length]);
-  if ([a3 isFault])
+  v11 = *(entity + 112);
+  v45 = [objc_msgSend(entity "propertiesByName")];
+  v12 = PF_CALLOC_OBJECT_ARRAY([*(entity + 104) length]);
+  if ([object isFault])
   {
-    [a3 willAccessValueForKey:0];
+    [object willAccessValueForKey:0];
   }
 
-  v47 = _kvcPropertysPrimitiveGetters(v8);
+  v47 = _kvcPropertysPrimitiveGetters(entity);
   v46 = [[NSDictionaryMapNode alloc] initWithValues:v12 objectID:v10];
   [(NSStoreMapNode *)v46 _setMap:?];
   v14 = v11[6];
   v13 = v11[7];
-  v4 = v42;
+  objectCopy = objectCopy2;
   if (v14 < v13 + v14)
   {
     do
     {
-      _PF_Handler_Primitive_GetProperty(v42, v14, 0, *(v47 + 8 * v14));
+      _PF_Handler_Primitive_GetProperty(objectCopy2, v14, 0, *(v47 + 8 * v14));
       if (v15)
       {
         v12[v14] = v15;
@@ -401,32 +401,32 @@ LABEL_50:
   {
     do
     {
-      v19 = [*(v18 + 8 * v16) name];
-      _PF_Handler_Primitive_GetProperty(v42, v16, v19, *(v47 + 8 * v16));
+      name = [*(v18 + 8 * v16) name];
+      _PF_Handler_Primitive_GetProperty(objectCopy2, v16, name, *(v47 + 8 * v16));
       if (v20)
       {
         v21 = v20;
         if ([(NSManagedObject *)v20 _isValidRelationshipDestination__])
         {
-          v22 = [v21 objectID];
-          if ([v22 isTemporaryID])
+          objectID2 = [v21 objectID];
+          if ([objectID2 isTemporaryID])
           {
-            v22 = [a4 objectForKey:v22];
+            objectID2 = [map objectForKey:objectID2];
           }
 
-          if ([v22 persistentStore] != self->super._store)
+          if ([objectID2 persistentStore] != self->super._store)
           {
-            v37 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v42, @"Source object", v21, @"Destination Object", *(v45 + 8 * v16), @"Relationship", 0}];
+            v37 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{objectCopy2, @"Source object", v21, @"Destination Object", *(v45 + 8 * v16), @"Relationship", 0}];
 
 LABEL_45:
             v38 = [_NSCoreDataException exceptionWithName:133010 code:@"CoreData does not support persistent cross-store relationships" reason:v37 userInfo:?];
             objc_exception_throw(v38);
           }
 
-          v23 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{objc_msgSend(v22, "_referenceData"), 0}];
+          v23 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{objc_msgSend(objectID2, "_referenceData"), 0}];
           if (v46)
           {
-            [(NSMutableDictionary *)v46->super._relatedNodes setObject:v23 forKey:v19];
+            [(NSMutableDictionary *)v46->super._relatedNodes setObject:v23 forKey:name];
           }
 
           v18 = v45;
@@ -446,12 +446,12 @@ LABEL_45:
   {
     do
     {
-      v25 = [*(v18 + 8 * v24) name];
-      _PF_Handler_Primitive_GetProperty(v4, v24, v25, *(v47 + 8 * v24));
+      name2 = [*(v18 + 8 * v24) name];
+      _PF_Handler_Primitive_GetProperty(objectCopy, v24, name2, *(v47 + 8 * v24));
       if (v26)
       {
         v27 = v26;
-        v43 = v25;
+        v43 = name2;
         v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v26, "count")}];
         v48 = 0u;
         v49 = 0u;
@@ -474,20 +474,20 @@ LABEL_45:
               v33 = *(*(&v48 + 1) + 8 * i);
               if ([(NSManagedObject *)v33 _isValidRelationshipDestination__])
               {
-                v34 = [v33 objectID];
-                if ([v34 isTemporaryID])
+                objectID3 = [v33 objectID];
+                if ([objectID3 isTemporaryID])
                 {
-                  v34 = [a4 objectForKey:v34];
+                  objectID3 = [map objectForKey:objectID3];
                 }
 
-                if ([v34 persistentStore] != self->super._store)
+                if ([objectID3 persistentStore] != self->super._store)
                 {
-                  v37 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v42, @"Source object", v33, @"Destination Object", *(v45 + 8 * v24), @"Relationship", 0}];
+                  v37 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{objectCopy2, @"Source object", v33, @"Destination Object", *(v45 + 8 * v24), @"Relationship", 0}];
 
                   goto LABEL_45;
                 }
 
-                [v28 addObject:{objc_msgSend(v34, "_referenceData")}];
+                [v28 addObject:{objc_msgSend(objectID3, "_referenceData")}];
               }
             }
 
@@ -503,7 +503,7 @@ LABEL_45:
           [(NSMutableDictionary *)v46->super._relatedNodes setObject:v28 forKey:v43];
         }
 
-        v4 = v42;
+        objectCopy = objectCopy2;
         v18 = v45;
       }
 
@@ -514,25 +514,25 @@ LABEL_45:
   }
 
 LABEL_41:
-  -[NSMutableDictionary setObject:forKey:](self->_theMap, "setObject:forKey:", v46, [objc_msgSend(v4 "objectID")]);
+  -[NSMutableDictionary setObject:forKey:](self->_theMap, "setObject:forKey:", v46, [objc_msgSend(objectCopy "objectID")]);
   [(NSStoreMapNode *)v46 _setVersionNumber:1];
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObject:(id)a3 objectIDMap:(id)a4
+- (void)removeObject:(id)object objectIDMap:(id)map
 {
-  v5 = [objc_msgSend(a3 "objectID")];
+  v5 = [objc_msgSend(object "objectID")];
   theMap = self->_theMap;
 
   [(NSMutableDictionary *)theMap removeObjectForKey:v5];
 }
 
-- (void)updateObject:(id)a3 objectIDMap:(id)a4
+- (void)updateObject:(id)object objectIDMap:(id)map
 {
-  v7 = [a3 entity];
-  if (v7)
+  entity = [object entity];
+  if (entity)
   {
-    v8 = v7[14];
+    v8 = entity[14];
   }
 
   else
@@ -540,14 +540,14 @@ LABEL_41:
     v8 = 0;
   }
 
-  v9 = _kvcPropertysPrimitiveGetters(v7);
+  v9 = _kvcPropertysPrimitiveGetters(entity);
   v10 = v8[18];
   v11 = v8[19];
   if (v10 < v11 + v10)
   {
     do
     {
-      _PF_Handler_Primitive_GetProperty(a3, v10, 0, *(v9 + 8 * v10));
+      _PF_Handler_Primitive_GetProperty(object, v10, 0, *(v9 + 8 * v10));
       [v12 count];
       ++v10;
       --v11;
@@ -562,7 +562,7 @@ LABEL_41:
   {
     do
     {
-      _PF_Handler_Primitive_GetProperty(a3, v13, 0, *(v9 + 8 * v13));
+      _PF_Handler_Primitive_GetProperty(object, v13, 0, *(v9 + 8 * v13));
       [v15 count];
       ++v13;
       --v14;
@@ -571,18 +571,18 @@ LABEL_41:
     while (v14);
   }
 
-  v16 = [objc_msgSend(a3 "objectID")];
+  v16 = [objc_msgSend(object "objectID")];
   v17 = [-[NSMutableDictionary objectForKey:](self->_theMap objectForKey:{v16), "_versionNumber"}];
-  [(NSDictionaryStoreMap *)self removeObject:a3 objectIDMap:a4];
-  [(NSDictionaryStoreMap *)self addObject:a3 objectIDMap:a4];
+  [(NSDictionaryStoreMap *)self removeObject:object objectIDMap:map];
+  [(NSDictionaryStoreMap *)self addObject:object objectIDMap:map];
   v18 = [(NSMutableDictionary *)self->_theMap objectForKey:v16];
 
   [v18 _setVersionNumber:(v17 + 1)];
 }
 
-- (id)retainedObjectIDsForRelationship:(id)a3 forObjectID:(id)a4
+- (id)retainedObjectIDsForRelationship:(id)relationship forObjectID:(id)d
 {
-  v5 = [-[NSMutableDictionary objectForKey:](self->_theMap objectForKey:{objc_msgSend(a4, "_referenceData")), "destinationsForRelationship:", objc_msgSend(a3, "name")}];
+  v5 = [-[NSMutableDictionary objectForKey:](self->_theMap objectForKey:{objc_msgSend(d, "_referenceData")), "destinationsForRelationship:", objc_msgSend(relationship, "name")}];
   v6 = v5;
   if (v5)
   {
@@ -610,33 +610,33 @@ LABEL_41:
   return v8;
 }
 
-- (id)handleFetchRequest:(id)a3
+- (id)handleFetchRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_theMap allValues];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [a3 entity];
-  v7 = [a3 predicate];
-  v8 = [a3 fetchLimit];
-  v26 = v8;
-  if ([a3 sortDescriptors])
+  allValues = [(NSMutableDictionary *)self->_theMap allValues];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allValues, "count")}];
+  entity = [request entity];
+  predicate = [request predicate];
+  fetchLimit = [request fetchLimit];
+  v26 = fetchLimit;
+  if ([request sortDescriptors])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8 == 0;
+    v9 = fetchLimit == 0;
   }
 
   v10 = !v9;
-  v11 = [a3 includesSubentities];
+  includesSubentities = [request includesSubentities];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = v4;
-  v13 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v12 = allValues;
+  v13 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -651,8 +651,8 @@ LABEL_9:
       }
 
       v17 = *(*(&v27 + 1) + 8 * v16);
-      v18 = [v17 entity];
-      if ((v6 == v18 || v11 && [v6 _subentitiesIncludes:v18]) && (!v7 || objc_msgSend(v7, "evaluateWithObject:", v17)))
+      entity2 = [v17 entity];
+      if ((entity == entity2 || includesSubentities && [entity _subentitiesIncludes:entity2]) && (!predicate || objc_msgSend(predicate, "evaluateWithObject:", v17)))
       {
         [v5 addObject:v17];
       }
@@ -675,10 +675,10 @@ LABEL_9:
     }
   }
 
-  v19 = [v25 sortDescriptors];
-  if (v19)
+  sortDescriptors = [v25 sortDescriptors];
+  if (sortDescriptors)
   {
-    [v5 sortUsingDescriptors:v19];
+    [v5 sortUsingDescriptors:sortDescriptors];
   }
 
   v20 = [v5 count];
@@ -697,7 +697,7 @@ LABEL_9:
 
 - (uint64_t)_archivedData
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -705,9 +705,9 @@ LABEL_9:
   v2 = [MEMORY[0x1E695DF88] dataWithCapacity:1024];
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initForWritingWithMutableData:v2];
   [v3 encodeInt:134481920 forKey:@"_NSStoreMapArchiveVersion"];
-  [v3 encodeObject:a1[3] forKey:@"_NSStoreMapArchiveMetadata"];
-  [v3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", a1[4]), @"_NSStoreMapArchiveNextPK"}];
-  [v3 encodeObject:a1[6] forKey:@"_NSStoreMapArchiveData"];
+  [v3 encodeObject:self[3] forKey:@"_NSStoreMapArchiveMetadata"];
+  [v3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self[4]), @"_NSStoreMapArchiveNextPK"}];
+  [v3 encodeObject:self[6] forKey:@"_NSStoreMapArchiveData"];
   [v3 finishEncoding];
 
   return v2;

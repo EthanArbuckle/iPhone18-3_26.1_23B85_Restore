@@ -1,6 +1,6 @@
 @interface SearchUIVisualResponseHandler
 - (SearchUIVisualResponseHandler)init;
-- (id)buildResponseView:(id)a3 delegate:(id)a4;
+- (id)buildResponseView:(id)view delegate:(id)delegate;
 @end
 
 @implementation SearchUIVisualResponseHandler
@@ -13,16 +13,16 @@
   return self;
 }
 
-- (id)buildResponseView:(id)a3 delegate:(id)a4
+- (id)buildResponseView:(id)view delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SearchUIVisualResponseHandler *)self provider];
-  v9 = [v8 viewForModel:v7 mode:1];
+  delegateCopy = delegate;
+  viewCopy = view;
+  provider = [(SearchUIVisualResponseHandler *)self provider];
+  v9 = [provider viewForModel:viewCopy mode:1];
 
   if (v9)
   {
-    [v9 setInteractionDelegate:v6];
+    [v9 setInteractionDelegate:delegateCopy];
     v10 = v9;
   }
 

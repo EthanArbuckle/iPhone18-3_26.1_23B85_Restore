@@ -1,109 +1,109 @@
 @interface CKConversationList
 + (BOOL)spamInboxEnabled;
-+ (id)conversationListAlertSuppressionContextForFilterMode:(unint64_t)a3;
++ (id)conversationListAlertSuppressionContextForFilterMode:(unint64_t)mode;
 + (id)sharedConversationList;
-+ (void)_handleRegistryDidLoadNotification:(id)a3;
++ (void)_handleRegistryDidLoadNotification:(id)notification;
 + (void)initialize;
-- (BOOL)_chatHasRelevantUnreadLastMessage:(id)a3;
-- (BOOL)_isUnreadChat:(id)a3 ignoringMessages:(id)a4;
-- (BOOL)_shouldFilterForParticipants:(id)a3;
-- (BOOL)_shouldTreatConversationAsNonSMSCategorized:(id)a3;
-- (BOOL)conversation:(id)a3 includedInFilterMode:(unint64_t)a4;
+- (BOOL)_chatHasRelevantUnreadLastMessage:(id)message;
+- (BOOL)_isUnreadChat:(id)chat ignoringMessages:(id)messages;
+- (BOOL)_shouldFilterForParticipants:(id)participants;
+- (BOOL)_shouldTreatConversationAsNonSMSCategorized:(id)categorized;
+- (BOOL)conversation:(id)conversation includedInFilterMode:(unint64_t)mode;
 - (BOOL)hasActiveConversations;
-- (CKConversation)_beginTrackingConversationWithChat:(uint64_t)a3 shouldUpdateEarliestMessageDate:;
+- (CKConversation)_beginTrackingConversationWithChat:(uint64_t)chat shouldUpdateEarliestMessageDate:;
 - (CKConversationList)init;
 - (CKConversationListScrollingController)scrollingController;
 - (NSArray)conversations;
 - (NSMutableArray)trackedConversations;
-- (id)_conversationForChat:(id)a3;
-- (id)_copyEntitiesForAddressStrings:(id)a3;
-- (id)_emptyConversationsDictionaryWithConversationsCount:(unint64_t)a3;
-- (id)_filterConversations:(id)a3 byHandleID:(id)a4 simID:(id)a5;
+- (id)_conversationForChat:(id)chat;
+- (id)_copyEntitiesForAddressStrings:(id)strings;
+- (id)_emptyConversationsDictionaryWithConversationsCount:(unint64_t)count;
+- (id)_filterConversations:(id)conversations byHandleID:(id)d simID:(id)iD;
 - (id)_nonPlaceholderConversations;
 - (id)_testingTrackedConversations;
 - (id)calculatePrimaryFilterModesDictionary;
-- (id)conversationForContacts:(id)a3;
-- (id)conversationForExistingChatWithChatIdentifier:(id)a3;
-- (id)conversationForExistingChatWithDeviceIndependentID:(id)a3;
-- (id)conversationForExistingChatWithGUID:(id)a3;
-- (id)conversationForExistingChatWithGroupID:(id)a3;
-- (id)conversationForExistingChatWithPersonCentricID:(id)a3;
-- (id)conversationForExistingChatWithPinningIdentifier:(id)a3;
-- (id)conversationForHandles:(id)a3 displayName:(id)a4 lastAddressedHandle:(id)a5 lastAddressedSIMID:(id)a6 joinedChatsOnly:(BOOL)a7 findMatchingNamedGroups:(BOOL)a8 create:(BOOL)a9;
-- (id)conversationsContainingFilterMode:(unint64_t)a3;
-- (id)conversationsForExistingChatsWithGUIDs:(id)a3;
-- (id)conversationsForFilterMode:(unint64_t)a3;
+- (id)conversationForContacts:(id)contacts;
+- (id)conversationForExistingChatWithChatIdentifier:(id)identifier;
+- (id)conversationForExistingChatWithDeviceIndependentID:(id)d;
+- (id)conversationForExistingChatWithGUID:(id)d;
+- (id)conversationForExistingChatWithGroupID:(id)d;
+- (id)conversationForExistingChatWithPersonCentricID:(id)d;
+- (id)conversationForExistingChatWithPinningIdentifier:(id)identifier;
+- (id)conversationForHandles:(id)handles displayName:(id)name lastAddressedHandle:(id)handle lastAddressedSIMID:(id)d joinedChatsOnly:(BOOL)only findMatchingNamedGroups:(BOOL)groups create:(BOOL)create;
+- (id)conversationsContainingFilterMode:(unint64_t)mode;
+- (id)conversationsForExistingChatsWithGUIDs:(id)ds;
+- (id)conversationsForFilterMode:(unint64_t)mode;
 - (id)defaultPrimaryFilterModeConversations;
 - (id)description;
-- (id)filterModesForConversation:(id)a3;
-- (id)firstUnreadFilteredConversationIgnoringMessages:(id)a3;
-- (id)identifiersSetForConversations:(id)a3;
+- (id)filterModesForConversation:(id)conversation;
+- (id)firstUnreadFilteredConversationIgnoringMessages:(id)messages;
+- (id)identifiersSetForConversations:(id)conversations;
 - (id)pendingConversationCreatingIfNecessary;
 - (id)pinningIdentifierMap;
 - (id)relevantUnreadLastMessages;
-- (id)subclassifiedConversationsForFilterMode:(unint64_t)a3;
+- (id)subclassifiedConversationsForFilterMode:(unint64_t)mode;
 - (id)topMostConversation;
-- (int64_t)unreadCountForFilterMode:(unint64_t)a3;
-- (int64_t)unreadFilteredConversationCountIgnoringMessages:(id)a3;
-- (unint64_t)_filterModeForConversationAsNonSMSCategorized:(id)a3;
-- (unint64_t)primaryFilterModeForConversation:(id)a3;
-- (void)_abChanged:(id)a3;
-- (void)_abPartialChanged:(id)a3;
+- (int64_t)unreadCountForFilterMode:(unint64_t)mode;
+- (int64_t)unreadFilteredConversationCountIgnoringMessages:(id)messages;
+- (unint64_t)_filterModeForConversationAsNonSMSCategorized:(id)categorized;
+- (unint64_t)primaryFilterModeForConversation:(id)conversation;
+- (void)_abChanged:(id)changed;
+- (void)_abPartialChanged:(id)changed;
 - (void)_beginTrackingAllExistingChatsIfNeeded;
-- (void)_beginTrackingConversation:(id)a3 forChat:(id)a4 shouldUpdateEarliestMessageDate:(BOOL)a5;
-- (void)_beginTrackingConversationWithChat:(id)a3 completion:(id)a4;
-- (void)_chatItemsDidChange:(id)a3;
-- (void)_chatPropertiesChanged:(id)a3;
+- (void)_beginTrackingConversation:(id)conversation forChat:(id)chat shouldUpdateEarliestMessageDate:(BOOL)date;
+- (void)_beginTrackingConversationWithChat:(id)chat completion:(id)completion;
+- (void)_chatItemsDidChange:(id)change;
+- (void)_chatPropertiesChanged:(id)changed;
 - (void)_configureForOscarEnabledUnsortedConversationList;
 - (void)_configureForUnsortedConversationList;
-- (void)_deleteBrandLogosIfNeededForConversations:(id)a3;
-- (void)_handleChatJoinStateDidChange:(id)a3;
-- (void)_handleChatParticipantsDidChange:(id)a3;
-- (void)_handleChatsDidRemergeNotification:(id)a3;
-- (void)_handleEngroupFinishedUpdating:(id)a3;
-- (void)_handleGroupNameChanged:(id)a3;
-- (void)_handleGroupPhotoChanged:(id)a3;
-- (void)_handleHistoryClearedNotification:(id)a3;
-- (void)_handleMemoryWarning:(id)a3;
-- (void)_handlePreferredServiceChangedNotification:(id)a3;
-- (void)_handleRegistryDidRegisterChatNotification:(id)a3;
-- (void)_handleRegistryWillUnregisterChatNotification:(id)a3;
-- (void)_handleUpdatedMessagesWithSummariesNotification:(id)a3;
-- (void)_insertConversationIntoSortedConversationList:(id)a3;
-- (void)_invalidatePartialABCaches:(id)a3;
+- (void)_deleteBrandLogosIfNeededForConversations:(id)conversations;
+- (void)_handleChatJoinStateDidChange:(id)change;
+- (void)_handleChatParticipantsDidChange:(id)change;
+- (void)_handleChatsDidRemergeNotification:(id)notification;
+- (void)_handleEngroupFinishedUpdating:(id)updating;
+- (void)_handleGroupNameChanged:(id)changed;
+- (void)_handleGroupPhotoChanged:(id)changed;
+- (void)_handleHistoryClearedNotification:(id)notification;
+- (void)_handleMemoryWarning:(id)warning;
+- (void)_handlePreferredServiceChangedNotification:(id)notification;
+- (void)_handleRegistryDidRegisterChatNotification:(id)notification;
+- (void)_handleRegistryWillUnregisterChatNotification:(id)notification;
+- (void)_handleUpdatedMessagesWithSummariesNotification:(id)notification;
+- (void)_insertConversationIntoSortedConversationList:(id)list;
+- (void)_invalidatePartialABCaches:(id)caches;
 - (void)_postConversationListChangedNotification;
-- (void)_postConversationListUpdateVisibleConversationsNotificationForUID:(id)a3;
-- (void)_removeConversationsFromRecentlyDeleted:(id)a3;
-- (void)_setConversations:(id)a3 forFilterMode:(unint64_t)a4;
-- (void)_trackSendEventForMySenderID:(id)a3 andParticipants:(id)a4;
-- (void)_updateConversationsForNewPinnedConversations:(id)a3;
-- (void)_updatePinnedConversationsControllerForRemovedConversations:(id)a3;
+- (void)_postConversationListUpdateVisibleConversationsNotificationForUID:(id)d;
+- (void)_removeConversationsFromRecentlyDeleted:(id)deleted;
+- (void)_setConversations:(id)conversations forFilterMode:(unint64_t)mode;
+- (void)_trackSendEventForMySenderID:(id)d andParticipants:(id)participants;
+- (void)_updateConversationsForNewPinnedConversations:(id)conversations;
+- (void)_updatePinnedConversationsControllerForRemovedConversations:(id)conversations;
 - (void)_updateRecoverableConversationList;
 - (void)clearHoldInUnreadFilter;
-- (void)deleteConversation:(id)a3;
-- (void)deleteConversations:(id)a3;
-- (void)logConversationsTopCount:(int64_t)a3 bottomCount:(int64_t)a4;
-- (void)permanentlyDeleteRecoverableMessagesInConversations:(id)a3 synchronousQuery:(BOOL)a4 completionHandler:(id)a5;
+- (void)deleteConversation:(id)conversation;
+- (void)deleteConversations:(id)conversations;
+- (void)logConversationsTopCount:(int64_t)count bottomCount:(int64_t)bottomCount;
+- (void)permanentlyDeleteRecoverableMessagesInConversations:(id)conversations synchronousQuery:(BOOL)query completionHandler:(id)handler;
 - (void)postFinishedInitalPinLoadIfNecessary;
-- (void)recoverDeletedMessagesInConversations:(id)a3 synchronousQuery:(BOOL)a4 completionHandler:(id)a5;
-- (void)recoverJunkMessagesInConversations:(id)a3;
-- (void)recoverableDeleteForConversations:(id)a3 deleteDate:(id)a4 synchronousQuery:(BOOL)a5 completionHandler:(id)a6;
-- (void)removeConversation:(id)a3;
+- (void)recoverDeletedMessagesInConversations:(id)conversations synchronousQuery:(BOOL)query completionHandler:(id)handler;
+- (void)recoverJunkMessagesInConversations:(id)conversations;
+- (void)recoverableDeleteForConversations:(id)conversations deleteDate:(id)date synchronousQuery:(BOOL)query completionHandler:(id)handler;
+- (void)removeConversation:(id)conversation;
 - (void)resetCaches;
 - (void)resort;
-- (void)setFilterMode:(unint64_t)a3;
+- (void)setFilterMode:(unint64_t)mode;
 - (void)setNeedsReload;
-- (void)setPendingConversation:(id)a3;
-- (void)stopTrackingConversation:(id)a3;
+- (void)setPendingConversation:(id)conversation;
+- (void)stopTrackingConversation:(id)conversation;
 - (void)unpendConversation;
 - (void)updateConversationFilterModes;
 - (void)updateConversationFilteredFlagsAndReportSpam;
 - (void)updateConversationListsAndSortIfEnabled;
-- (void)updateConversationsForNewPinnedConversations:(id)a3;
+- (void)updateConversationsForNewPinnedConversations:(id)conversations;
 - (void)updateConversationsWasKnownSender;
-- (void)updateEarliestMessageDateForConversations:(id)a3;
-- (void)updateFilteredByFocusStateForConversations:(id)a3;
-- (void)updatePinnedConversationsFromDataSourceWithConversationFetch:(BOOL)a3;
+- (void)updateEarliestMessageDateForConversations:(id)conversations;
+- (void)updateFilteredByFocusStateForConversations:(id)conversations;
+- (void)updatePinnedConversationsFromDataSourceWithConversationFetch:(BOOL)fetch;
 - (void)updateRecoverableConversationList;
 @end
 
@@ -111,8 +111,8 @@
 
 + (void)initialize
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:a1 selector:sel__handleRegistryDidLoadNotification_ name:*MEMORY[0x1E69A58A0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleRegistryDidLoadNotification_ name:*MEMORY[0x1E69A58A0] object:0];
 }
 
 + (id)sharedConversationList
@@ -137,42 +137,42 @@
   v2 = [(CKConversationList *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__invalidateABCaches_ name:*MEMORY[0x1E69A6830] object:0];
-    [v3 addObserver:v2 selector:sel__abChanged_ name:*MEMORY[0x1E69A6828] object:0];
-    [v3 addObserver:v2 selector:sel__invalidatePartialABCaches_ name:*MEMORY[0x1E69A6870] object:0];
-    [v3 addObserver:v2 selector:sel__abPartialChanged_ name:*MEMORY[0x1E69A6838] object:0];
-    [v3 addObserver:v2 selector:sel__handleChatParticipantsDidChange_ name:*MEMORY[0x1E69A5848] object:0];
-    [v3 addObserver:v2 selector:sel__handleChatJoinStateDidChange_ name:*MEMORY[0x1E69A57F8] object:0];
-    [v3 addObserver:v2 selector:sel__handlePreferredServiceChangedNotification_ name:*MEMORY[0x1E69A5908] object:0];
-    [v3 addObserver:v2 selector:sel__chatItemsDidChange_ name:*MEMORY[0x1E69A5748] object:0];
-    [v3 addObserver:v2 selector:sel__handleEngroupFinishedUpdating_ name:*MEMORY[0x1E69A5710] object:0];
-    [v3 addObserver:v2 selector:sel__chatPropertiesChanged_ name:*MEMORY[0x1E69A5870] object:0];
-    [v3 addObserver:v2 selector:sel__handleChatsWillRemergeNotification_ name:*MEMORY[0x1E69A58F8] object:0];
-    [v3 addObserver:v2 selector:sel__handleChatsDidRemergeNotification_ name:*MEMORY[0x1E69A58C8] object:0];
-    [v3 addObserver:v2 selector:sel__handleUpdatedMessagesWithSummariesNotification_ name:*MEMORY[0x1E69A58E0] object:0];
-    [v3 addObserver:v2 selector:sel__handleHistoryClearedNotification_ name:*MEMORY[0x1E69A5728] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__invalidateABCaches_ name:*MEMORY[0x1E69A6830] object:0];
+    [defaultCenter addObserver:v2 selector:sel__abChanged_ name:*MEMORY[0x1E69A6828] object:0];
+    [defaultCenter addObserver:v2 selector:sel__invalidatePartialABCaches_ name:*MEMORY[0x1E69A6870] object:0];
+    [defaultCenter addObserver:v2 selector:sel__abPartialChanged_ name:*MEMORY[0x1E69A6838] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleChatParticipantsDidChange_ name:*MEMORY[0x1E69A5848] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleChatJoinStateDidChange_ name:*MEMORY[0x1E69A57F8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handlePreferredServiceChangedNotification_ name:*MEMORY[0x1E69A5908] object:0];
+    [defaultCenter addObserver:v2 selector:sel__chatItemsDidChange_ name:*MEMORY[0x1E69A5748] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleEngroupFinishedUpdating_ name:*MEMORY[0x1E69A5710] object:0];
+    [defaultCenter addObserver:v2 selector:sel__chatPropertiesChanged_ name:*MEMORY[0x1E69A5870] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleChatsWillRemergeNotification_ name:*MEMORY[0x1E69A58F8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleChatsDidRemergeNotification_ name:*MEMORY[0x1E69A58C8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleUpdatedMessagesWithSummariesNotification_ name:*MEMORY[0x1E69A58E0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleHistoryClearedNotification_ name:*MEMORY[0x1E69A5728] object:0];
     if (CKIsRunningInPreferences() || CKIsRunningInNanoSettings() || CKIsRunningInMessagesOrSpringBoard())
     {
-      [v3 addObserver:v2 selector:sel__handleRegistryDidRegisterChatNotification_ name:*MEMORY[0x1E69A58C0] object:0];
-      [v3 addObserver:v2 selector:sel__handleRegistryWillUnregisterChatNotification_ name:*MEMORY[0x1E69A5900] object:0];
-      [v3 addObserver:v2 selector:sel__handleMemoryWarning_ name:*MEMORY[0x1E69DDAD8] object:0];
+      [defaultCenter addObserver:v2 selector:sel__handleRegistryDidRegisterChatNotification_ name:*MEMORY[0x1E69A58C0] object:0];
+      [defaultCenter addObserver:v2 selector:sel__handleRegistryWillUnregisterChatNotification_ name:*MEMORY[0x1E69A5900] object:0];
+      [defaultCenter addObserver:v2 selector:sel__handleMemoryWarning_ name:*MEMORY[0x1E69DDAD8] object:0];
     }
 
-    [v3 addObserver:v2 selector:sel_updateConversationsForNewPinnedConversations_ name:*MEMORY[0x1E69A5A40] object:0];
-    [v3 addObserver:v2 selector:sel__handleGroupPhotoChanged_ name:*MEMORY[0x1E69A5718] object:0];
-    [v3 addObserver:v2 selector:sel__handleGroupNameChanged_ name:*MEMORY[0x1E69A5700] object:0];
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    [defaultCenter addObserver:v2 selector:sel_updateConversationsForNewPinnedConversations_ name:*MEMORY[0x1E69A5A40] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleGroupPhotoChanged_ name:*MEMORY[0x1E69A5718] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleGroupNameChanged_ name:*MEMORY[0x1E69A5700] object:0];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     conversationsDictionary = v2->_conversationsDictionary;
-    v2->_conversationsDictionary = v4;
+    v2->_conversationsDictionary = dictionary;
 
     v2->_simFilterIndex = -1;
     v6 = MEMORY[0x193AF5640](@"com.apple.MobileSMS", @"simFilterIndex");
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
 
-    if ((v7 - 1) <= 1)
+    if ((integerValue - 1) <= 1)
     {
-      v2->_simFilterIndex = v7;
+      v2->_simFilterIndex = integerValue;
     }
   }
 
@@ -225,10 +225,10 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v9 = [v8 cachedChats];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    cachedChats = [mEMORY[0x1E69A5AF8] cachedChats];
 
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    v10 = [cachedChats countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v10)
     {
       v11 = *v18;
@@ -239,14 +239,14 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(cachedChats);
           }
 
           v13 = [(CKConversationList *)&self->super.isa _beginTrackingConversationWithChat:0 shouldUpdateEarliestMessageDate:?];
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v10 = [cachedChats countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v10);
@@ -272,16 +272,16 @@
       [(CKConversationList *)self updatePinnedConversationsFromDataSource];
     }
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 postNotificationName:@"CKConversationListFinishedLoadingNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListFinishedLoadingNotification" object:self userInfo:0];
   }
 }
 
 - (void)_postConversationListChangedNotification
 {
-  v3 = [(CKConversationList *)self loadingConversations];
+  loadingConversations = [(CKConversationList *)self loadingConversations];
   v4 = IMOSLoggingEnabled();
-  if (v3)
+  if (loadingConversations)
   {
     if (v4)
     {
@@ -306,8 +306,8 @@
       }
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"CKConversationListChangedNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListChangedNotification" object:self userInfo:0];
   }
 }
 
@@ -336,9 +336,9 @@
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 chat];
-        v10 = [MEMORY[0x1E69A5C38] sharedInstance];
-        v11 = [v10 matchingIdentifierForChat:v9];
+        chat = [v8 chat];
+        mEMORY[0x1E69A5C38] = [MEMORY[0x1E69A5C38] sharedInstance];
+        v11 = [mEMORY[0x1E69A5C38] matchingIdentifierForChat:chat];
 
         if (v11)
         {
@@ -391,8 +391,8 @@
 
 - (NSArray)conversations
 {
-  v2 = [(CKConversationList *)self trackedConversations];
-  v3 = [v2 copy];
+  trackedConversations = [(CKConversationList *)self trackedConversations];
+  v3 = [trackedConversations copy];
 
   return v3;
 }
@@ -414,8 +414,8 @@
   if (![(CKConversationList *)self loadedPinnedConversations])
   {
     [(CKConversationList *)self setLoadedPinnedConversations:1];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"CKConversationListFinishedInitalPinLoadNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListFinishedInitalPinLoadNotification" object:self userInfo:0];
   }
 }
 
@@ -424,8 +424,8 @@
   if (![(CKConversationList *)self loadingConversations])
   {
     trackedConversations = self->_trackedConversations;
-    v4 = [(CKConversationList *)self _conversationSortComparator];
-    [(NSMutableArray *)trackedConversations sortUsingComparator:v4];
+    _conversationSortComparator = [(CKConversationList *)self _conversationSortComparator];
+    [(NSMutableArray *)trackedConversations sortUsingComparator:_conversationSortComparator];
 
     [(CKConversationList *)self logConversationsTopCount:20 bottomCount:10];
   }
@@ -434,14 +434,14 @@
 - (void)updateConversationListsAndSortIfEnabled
 {
   v41 = *MEMORY[0x1E69E9840];
-  v27 = [(CKConversationList *)self conversations];
-  [(CKConversationList *)self updateFilteredByFocusStateForConversations:v27];
+  conversations = [(CKConversationList *)self conversations];
+  [(CKConversationList *)self updateFilteredByFocusStateForConversations:conversations];
   [(CKConversationList *)self _updateRecoverableConversationList];
   v26 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:0];
   v3 = [v26 objectForKey:@"stop-auto-report-unknown"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -451,23 +451,23 @@
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v6)
+  if (isModernFilteringEnabled)
   {
     [(CKConversationList *)self updateConversationFilterModes];
-    v7 = [(CKConversationList *)self calculatePrimaryFilterModesDictionary];
-    v8 = [v7 mutableCopy];
+    calculatePrimaryFilterModesDictionary = [(CKConversationList *)self calculatePrimaryFilterModesDictionary];
+    v8 = [calculatePrimaryFilterModesDictionary mutableCopy];
 
     [(CKConversationList *)self setConversationsDictionary:v8];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"CKConversationListDidFinishSorting" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListDidFinishSorting" object:0 userInfo:0];
   }
 
   else if ([(CKConversationList *)self _shouldShowInboxUI]|| [(CKConversationList *)self _messageUnknownFilteringEnabled])
   {
-    if (v4 && [(CKConversationList *)self _messageUnknownFilteringEnabled])
+    if (bOOLValue && [(CKConversationList *)self _messageUnknownFilteringEnabled])
     {
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
@@ -477,8 +477,8 @@
       dispatch_async(MEMORY[0x1E69E96A0], v34);
     }
 
-    v25 = [(CKConversationList *)self _nonPlaceholderConversations];
-    v10 = -[CKConversationList _emptyConversationsDictionaryWithConversationsCount:](self, "_emptyConversationsDictionaryWithConversationsCount:", [v25 count]);
+    _nonPlaceholderConversations = [(CKConversationList *)self _nonPlaceholderConversations];
+    v10 = -[CKConversationList _emptyConversationsDictionaryWithConversationsCount:](self, "_emptyConversationsDictionaryWithConversationsCount:", [_nonPlaceholderConversations count]);
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __61__CKConversationList_updateConversationListsAndSortIfEnabled__block_invoke_3;
@@ -486,7 +486,7 @@
     v32[4] = self;
     v11 = v10;
     v33 = v11;
-    [v25 enumerateObjectsUsingBlock:v32];
+    [_nonPlaceholderConversations enumerateObjectsUsingBlock:v32];
     for (i = 1; i != 27; ++i)
     {
       if (i != 7)
@@ -504,8 +504,8 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v15 = [MEMORY[0x1E69A8210] fetchSMSFilterExtensionParams];
-      v16 = [v15 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      fetchSMSFilterExtensionParams = [MEMORY[0x1E69A8210] fetchSMSFilterExtensionParams];
+      v16 = [fetchSMSFilterExtensionParams countByEnumeratingWithState:&v28 objects:v40 count:16];
       if (v16)
       {
         v17 = *v29;
@@ -515,7 +515,7 @@
           {
             if (*v29 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(fetchSMSFilterExtensionParams);
             }
 
             v19 = *(*(&v28 + 1) + 8 * j);
@@ -533,26 +533,26 @@
                 v22 = OSLogHandleForIMFoundationCategory();
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
                 {
-                  v23 = [v19 filterMode];
+                  filterMode = [v19 filterMode];
                   *buf = 138412546;
                   v37 = 0;
                   v38 = 2048;
-                  v39 = v23;
+                  v39 = filterMode;
                   _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "%@ found for filterMode: %ld, this will result in empty sub-classification folder", buf, 0x16u);
                 }
               }
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v28 objects:v40 count:16];
+          v16 = [fetchSMSFilterExtensionParams countByEnumeratingWithState:&v28 objects:v40 count:16];
         }
 
         while (v16);
       }
     }
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 postNotificationName:@"CKConversationListDidFinishSorting" object:0 userInfo:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"CKConversationListDidFinishSorting" object:0 userInfo:0];
   }
 
   else if (IMIsOscarEnabled())
@@ -569,24 +569,24 @@
 - (void)_updateRecoverableConversationList
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v5 = [v4 cachedChats];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  cachedChats = [mEMORY[0x1E69A5AF8] cachedChats];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __56__CKConversationList__updateRecoverableConversationList__block_invoke;
   v12 = &unk_1E72ED430;
-  v13 = self;
+  selfCopy = self;
   v6 = v3;
   v14 = v6;
-  [v5 enumerateObjectsUsingBlock:&v9];
+  [cachedChats enumerateObjectsUsingBlock:&v9];
 
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LOBYTE(v5) = [v7 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LOBYTE(cachedChats) = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((cachedChats & 1) == 0)
   {
-    v8 = [(CKConversationList *)self _recoverableSortComparator];
-    [v6 sortUsingComparator:v8];
+    _recoverableSortComparator = [(CKConversationList *)self _recoverableSortComparator];
+    [v6 sortUsingComparator:_recoverableSortComparator];
 
     [(CKConversationList *)self _setConversations:v6 forFilterMode:7];
   }
@@ -619,13 +619,13 @@ void __56__CKConversationList__updateRecoverableConversationList__block_invoke(u
 
 - (void)updateConversationFilterModes
 {
-  v2 = self;
+  selfCopy = self;
   CKConversationList.updateConversationFilterModes()();
 }
 
 - (id)calculatePrimaryFilterModesDictionary
 {
-  v2 = self;
+  selfCopy = self;
   CKConversationList.calculatePrimaryFilterModesDictionary()();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD606A0);
@@ -640,8 +640,8 @@ void __56__CKConversationList__updateRecoverableConversationList__block_invoke(u
   if (!scrollingController)
   {
     v4 = [CKConversationListScrollingController alloc];
-    v5 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v6 = [(CKConversationListScrollingController *)v4 initWithConversationList:self chatRegistry:v5];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    v6 = [(CKConversationListScrollingController *)v4 initWithConversationList:self chatRegistry:mEMORY[0x1E69A5AF8]];
     v7 = self->_scrollingController;
     self->_scrollingController = v6;
 
@@ -653,15 +653,15 @@ void __56__CKConversationList__updateRecoverableConversationList__block_invoke(u
 
 - (void)updateConversationFilteredFlagsAndReportSpam
 {
-  v2 = [(CKConversationList *)self conversations];
-  v3 = v2;
+  conversations = [(CKConversationList *)self conversations];
+  v3 = conversations;
   if (updateConversationFilteredFlagsAndReportSpam_onceToken != -1)
   {
     [CKConversationList updateConversationFilteredFlagsAndReportSpam];
-    v2 = v3;
+    conversations = v3;
   }
 
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_397_0];
+  [conversations enumerateObjectsUsingBlock:&__block_literal_global_397_0];
   if ((updateConversationFilteredFlagsAndReportSpam_sAlreadyMigrated & 1) == 0)
   {
     updateConversationFilteredFlagsAndReportSpam_sAlreadyMigrated = 1;
@@ -868,10 +868,10 @@ LABEL_71:
 
 - (void)updateRecoverableConversationList
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v4)
+  if (isModernFilteringEnabled)
   {
 
     [(CKConversationList *)self updateConversationListsAndSortIfEnabled];
@@ -884,20 +884,20 @@ LABEL_71:
   }
 }
 
-+ (void)_handleRegistryDidLoadNotification:(id)a3
++ (void)_handleRegistryDidLoadNotification:(id)notification
 {
-  v3 = [a1 sharedConversationList];
-  [v3 _beginTrackingAllExistingChatsIfNeeded];
+  sharedConversationList = [self sharedConversationList];
+  [sharedConversationList _beginTrackingAllExistingChatsIfNeeded];
 
   v4 = objc_alloc_init(CKConversationMutedChatListMigrator);
   [(CKConversationMutedChatListMigrator *)v4 migrateMutedChatListInfoIfNeeded];
 }
 
-+ (id)conversationListAlertSuppressionContextForFilterMode:(unint64_t)a3
++ (id)conversationListAlertSuppressionContextForFilterMode:(unint64_t)mode
 {
-  if (a3 > 1)
+  if (mode > 1)
   {
-    v4 = IMConversationListFilterModeStringValue(a3);
+    v4 = IMConversationListFilterModeStringValue(mode);
     v3 = [@"ConversationListSuppressionContext" stringByAppendingString:v4];
   }
 
@@ -912,13 +912,13 @@ LABEL_71:
 - (id)description
 {
   v33 = *MEMORY[0x1E69E9840];
-  v2 = [(CKConversationList *)self conversations];
-  v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  conversations = [(CKConversationList *)self conversations];
+  v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(conversations, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v2;
+  obj = conversations;
   v26 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v26)
   {
@@ -932,28 +932,28 @@ LABEL_71:
           objc_enumerationMutation(obj);
         }
 
-        v4 = [*(*(&v28 + 1) + 8 * i) chat];
-        v5 = [v4 lastFinishedMessageID];
-        v6 = [v4 __ck_watermarkMessageID];
-        v7 = [v4 lastFinishedMessageDate];
-        v8 = [v4 __ck_watermarkDate];
+        chat = [*(*(&v28 + 1) + 8 * i) chat];
+        lastFinishedMessageID = [chat lastFinishedMessageID];
+        __ck_watermarkMessageID = [chat __ck_watermarkMessageID];
+        lastFinishedMessageDate = [chat lastFinishedMessageDate];
+        __ck_watermarkDate = [chat __ck_watermarkDate];
         v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-        if (v5 <= v6)
+        if (lastFinishedMessageID <= __ck_watermarkMessageID)
         {
-          v10 = v6;
+          v10 = __ck_watermarkMessageID;
         }
 
         else
         {
-          v10 = v5;
+          v10 = lastFinishedMessageID;
         }
 
-        v11 = [v7 laterDate:v8];
-        v12 = [v4 guid];
-        [v7 timeIntervalSinceReferenceDate];
+        v11 = [lastFinishedMessageDate laterDate:__ck_watermarkDate];
+        guid = [chat guid];
+        [lastFinishedMessageDate timeIntervalSinceReferenceDate];
         v14 = v13;
-        [v8 timeIntervalSinceReferenceDate];
-        v16 = [v9 initWithFormat:@"%lld - %@ | %@ (%lld, %lld) (%f, %f)", v10, v11, v12, v5, v6, v14, v15];
+        [__ck_watermarkDate timeIntervalSinceReferenceDate];
+        v16 = [v9 initWithFormat:@"%lld - %@ | %@ (%lld, %lld) (%f, %f)", v10, v11, guid, lastFinishedMessageID, __ck_watermarkMessageID, v14, v15];
 
         [v25 addObject:v16];
       }
@@ -980,14 +980,14 @@ void __89__CKConversationList__beginTrackingConversationWithChat_shouldUpdateEar
   v2 = [v3 draftForConversation:*(a1 + 32)];
 }
 
-- (void)_beginTrackingConversationWithChat:(id)a3 completion:(id)a4
+- (void)_beginTrackingConversationWithChat:(id)chat completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
+  chatCopy = chat;
+  completionCopy = completion;
+  v8 = [(CKConversationList *)self _alreadyTrackedConversationForChat:chatCopy];
   if (!v8)
   {
-    v8 = [[CKConversation alloc] initWithChat:v6];
+    v8 = [[CKConversation alloc] initWithChat:chatCopy];
     if ([(CKConversationList *)self loadedConversations])
     {
       v9 = dispatch_get_global_queue(0, 0);
@@ -1001,10 +1001,10 @@ void __89__CKConversationList__beginTrackingConversationWithChat_shouldUpdateEar
     }
   }
 
-  [v6 setContextInfo:v8];
-  if (v7)
+  [chatCopy setContextInfo:v8];
+  if (completionCopy)
   {
-    v7[2](v7, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
@@ -1014,15 +1014,15 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   v2 = [v3 draftForConversation:*(a1 + 32)];
 }
 
-- (id)_conversationForChat:(id)a3
+- (id)_conversationForChat:(id)chat
 {
-  v4 = a3;
-  if (v4)
+  chatCopy = chat;
+  if (chatCopy)
   {
-    v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v4];
+    v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:chatCopy];
     if (!v5)
     {
-      v5 = [(CKConversationList *)&self->super.isa _beginTrackingConversationWithChat:v4 shouldUpdateEarliestMessageDate:0];
+      v5 = [(CKConversationList *)&self->super.isa _beginTrackingConversationWithChat:chatCopy shouldUpdateEarliestMessageDate:0];
     }
   }
 
@@ -1034,14 +1034,14 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v5;
 }
 
-- (id)conversationForExistingChatWithPinningIdentifier:(id)a3
+- (id)conversationForExistingChatWithPinningIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = MEMORY[0x1E69A5AF8];
-    v5 = a3;
-    v6 = [v4 sharedRegistry];
-    v7 = [v6 existingChatWithPinningIdentifier:v5];
+    identifierCopy = identifier;
+    sharedRegistry = [v4 sharedRegistry];
+    v7 = [sharedRegistry existingChatWithPinningIdentifier:identifierCopy];
 
     v8 = [(CKConversationList *)self _conversationForChat:v7];
   }
@@ -1054,14 +1054,14 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v8;
 }
 
-- (id)conversationForExistingChatWithDeviceIndependentID:(id)a3
+- (id)conversationForExistingChatWithDeviceIndependentID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = MEMORY[0x1E69A5AF8];
-    v5 = a3;
-    v6 = [v4 sharedRegistry];
-    v7 = [v6 existingChatWithDeviceIndependentID:v5];
+    dCopy = d;
+    sharedRegistry = [v4 sharedRegistry];
+    v7 = [sharedRegistry existingChatWithDeviceIndependentID:dCopy];
 
     v8 = [(CKConversationList *)self _conversationForChat:v7];
   }
@@ -1074,13 +1074,13 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v8;
 }
 
-- (id)conversationForExistingChatWithChatIdentifier:(id)a3
+- (id)conversationForExistingChatWithChatIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length] && (objc_msgSend(v4, "isEqualToString:", @"-1") & 1) == 0)
+  identifierCopy = identifier;
+  if ([identifierCopy length] && (objc_msgSend(identifierCopy, "isEqualToString:", @"-1") & 1) == 0)
   {
-    v6 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v7 = [v6 existingChatWithChatIdentifier:v4];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    v7 = [mEMORY[0x1E69A5AF8] existingChatWithChatIdentifier:identifierCopy];
 
     v5 = [(CKConversationList *)self _conversationForChat:v7];
   }
@@ -1093,14 +1093,14 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v5;
 }
 
-- (id)conversationForExistingChatWithGroupID:(id)a3
+- (id)conversationForExistingChatWithGroupID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:@"-1"] & 1) == 0)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && ([dCopy isEqualToString:@"-1"] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v8 = [v7 existingChatWithGroupID:v5];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    v8 = [mEMORY[0x1E69A5AF8] existingChatWithGroupID:v5];
 
     v6 = [(CKConversationList *)self _conversationForChat:v8];
   }
@@ -1113,14 +1113,14 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v6;
 }
 
-- (id)conversationForExistingChatWithPersonCentricID:(id)a3
+- (id)conversationForExistingChatWithPersonCentricID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && [dCopy length])
   {
-    v6 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v7 = [v6 existingChatWithPersonID:v5];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    v7 = [mEMORY[0x1E69A5AF8] existingChatWithPersonID:v5];
 
     v8 = [(CKConversationList *)self _conversationForChat:v7];
   }
@@ -1133,14 +1133,14 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v8;
 }
 
-- (id)conversationForExistingChatWithGUID:(id)a3
+- (id)conversationForExistingChatWithGUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && [dCopy length])
   {
-    v6 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v7 = [v6 existingChatWithGUID:v5];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    v7 = [mEMORY[0x1E69A5AF8] existingChatWithGUID:v5];
 
     v8 = [(CKConversationList *)self _conversationForChat:v7];
   }
@@ -1153,14 +1153,14 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v8;
 }
 
-- (id)conversationsForExistingChatsWithGUIDs:(id)a3
+- (id)conversationsForExistingChatsWithGUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  dsCopy = ds;
+  v5 = dsCopy;
+  if (dsCopy && [dsCopy count])
   {
-    v6 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v7 = [v6 existingChatsWithGUIDs:v5];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    v7 = [mEMORY[0x1E69A5AF8] existingChatsWithGUIDs:v5];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -1178,31 +1178,31 @@ void __68__CKConversationList__beginTrackingConversationWithChat_completion___bl
   return v8;
 }
 
-- (void)stopTrackingConversation:(id)a3
+- (void)stopTrackingConversation:(id)conversation
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 chat];
-      v7 = [v6 guid];
+      chat = [conversationCopy chat];
+      guid = [chat guid];
       v10 = 138412290;
-      v11 = v7;
+      v11 = guid;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Stop tracking conversation: %@", &v10, 0xCu);
     }
   }
 
-  if (v4)
+  if (conversationCopy)
   {
-    v8 = [v4 isPinned];
-    v9 = [v4 chat];
-    [v9 setContextInfo:0];
-    [(NSMutableArray *)self->_trackedConversations removeObject:v4];
+    isPinned = [conversationCopy isPinned];
+    chat2 = [conversationCopy chat];
+    [chat2 setContextInfo:0];
+    [(NSMutableArray *)self->_trackedConversations removeObject:conversationCopy];
     [(CKConversationList *)self _postConversationListChangedNotification];
-    if (v8)
+    if (isPinned)
     {
       [(CKConversationList *)self updatePinnedConversationsFromDataSourceWithConversationFetch:0];
     }
@@ -1223,10 +1223,10 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
   }
 }
 
-- (void)_handleRegistryWillUnregisterChatNotification:(id)a3
+- (void)_handleRegistryWillUnregisterChatNotification:(id)notification
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(26);
@@ -1245,44 +1245,44 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
     _CKLog();
   }
 
-  v6 = [v4 object];
-  if (v6)
+  object = [notificationCopy object];
+  if (object)
   {
-    v7 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
+    v7 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
     if (v7)
     {
       [(CKConversationList *)self stopTrackingConversation:v7];
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"CKConversationListConversationLeftNotification" object:v7 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"CKConversationListConversationLeftNotification" object:v7 userInfo:0];
     }
 
-    v9 = [(CKConversationList *)self pendingConversation];
-    v10 = [v9 chat];
-    v11 = [v10 isEqual:v6];
+    pendingConversation = [(CKConversationList *)self pendingConversation];
+    chat = [pendingConversation chat];
+    v11 = [chat isEqual:object];
 
     if (v11)
     {
-      v12 = [(CKConversationList *)self pendingConversation];
+      pendingConversation2 = [(CKConversationList *)self pendingConversation];
       v13 = +[CKConversation newPendingConversation];
-      v14 = [v6 participants];
-      [v13 setPendingHandles:v14];
+      participants = [object participants];
+      [v13 setPendingHandles:participants];
 
       [(CKConversationList *)self setPendingConversation:v13];
       v18 = @"CKConversationListWasPendingKey";
       v19 = MEMORY[0x1E695E118];
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 postNotificationName:@"CKConversationListConversationLeftNotification" object:v12 userInfo:v15];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"CKConversationListConversationLeftNotification" object:pendingConversation2 userInfo:v15];
     }
   }
 }
 
-- (id)_copyEntitiesForAddressStrings:(id)a3
+- (id)_copyEntitiesForAddressStrings:(id)strings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  stringsCopy = strings;
+  v4 = stringsCopy;
+  if (stringsCopy && [stringsCopy count])
   {
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
     v14 = 0u;
@@ -1332,34 +1332,34 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
   return v12;
 }
 
-- (id)conversationForHandles:(id)a3 displayName:(id)a4 lastAddressedHandle:(id)a5 lastAddressedSIMID:(id)a6 joinedChatsOnly:(BOOL)a7 findMatchingNamedGroups:(BOOL)a8 create:(BOOL)a9
+- (id)conversationForHandles:(id)handles displayName:(id)name lastAddressedHandle:(id)handle lastAddressedSIMID:(id)d joinedChatsOnly:(BOOL)only findMatchingNamedGroups:(BOOL)groups create:(BOOL)create
 {
-  v9 = a8;
-  v10 = a7;
+  groupsCopy = groups;
+  onlyCopy = only;
   v15 = MEMORY[0x1E69A5AF8];
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [v15 sharedRegistry];
-  LOBYTE(v24) = a9;
-  v21 = [v20 _ck_chatForHandles:v19 displayName:v18 lastAddressedHandle:v17 lastAddressedSIMID:v16 joinedChatsOnly:v10 findMatchingNamedGroups:v9 createIfNecessary:v24];
+  dCopy = d;
+  handleCopy = handle;
+  nameCopy = name;
+  handlesCopy = handles;
+  sharedRegistry = [v15 sharedRegistry];
+  LOBYTE(v24) = create;
+  v21 = [sharedRegistry _ck_chatForHandles:handlesCopy displayName:nameCopy lastAddressedHandle:handleCopy lastAddressedSIMID:dCopy joinedChatsOnly:onlyCopy findMatchingNamedGroups:groupsCopy createIfNecessary:v24];
 
   v22 = [(CKConversationList *)self _conversationForChat:v21];
 
   return v22;
 }
 
-- (id)conversationForContacts:(id)a3
+- (id)conversationForContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [CKConversation conversationForContacts:v4 candidateConversation:0];
+  contactsCopy = contacts;
+  v5 = [CKConversation conversationForContacts:contactsCopy candidateConversation:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
     v11 = 0;
-    v7 = [v6 existingChatWithContacts:v4 bestHandles:&v11];
+    v7 = [mEMORY[0x1E69A5AF8] existingChatWithContacts:contactsCopy bestHandles:&v11];
     v8 = v11;
 
     v9 = [(CKConversationList *)self conversationForHandles:v8 displayName:0 joinedChatsOnly:1 create:1];
@@ -1376,12 +1376,12 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
 - (void)resetCaches
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [(NSMutableArray *)self->_trackedConversations _copyForEnumerating];
+  _copyForEnumerating = [(NSMutableArray *)self->_trackedConversations _copyForEnumerating];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = v2;
+  v3 = _copyForEnumerating;
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -1442,9 +1442,9 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
   }
 }
 
-- (void)updatePinnedConversationsFromDataSourceWithConversationFetch:(BOOL)a3
+- (void)updatePinnedConversationsFromDataSourceWithConversationFetch:(BOOL)fetch
 {
-  v3 = a3;
+  fetchCopy = fetch;
   v38 = *MEMORY[0x1E69E9840];
   if ([MEMORY[0x1E69A5C38] processSupportsPinnedConversations])
   {
@@ -1459,16 +1459,16 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
     }
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [MEMORY[0x1E69A5C38] sharedInstance];
-    v24 = [v6 pinnedConversationIdentifiers];
+    mEMORY[0x1E69A5C38] = [MEMORY[0x1E69A5C38] sharedInstance];
+    pinnedConversationIdentifiers = [mEMORY[0x1E69A5C38] pinnedConversationIdentifiers];
 
-    if (v3)
+    if (fetchCopy)
     {
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v7 = v24;
+      v7 = pinnedConversationIdentifiers;
       v8 = [v7 countByEnumeratingWithState:&v30 objects:v37 count:16];
       if (v8)
       {
@@ -1503,12 +1503,12 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
       }
     }
 
-    v14 = [(CKConversationList *)self pinningIdentifierMap];
+    pinningIdentifierMap = [(CKConversationList *)self pinningIdentifierMap];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = v24;
+    v15 = pinnedConversationIdentifiers;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v16)
     {
@@ -1523,7 +1523,7 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
           }
 
           v19 = *(*(&v26 + 1) + 8 * j);
-          v20 = [v14 objectForKey:v19];
+          v20 = [pinningIdentifierMap objectForKey:v19];
           if (v20)
           {
             [v5 addObject:v20];
@@ -1539,9 +1539,9 @@ void __65__CKConversationList__handleRegistryDidRegisterChatNotification___block
               _os_log_error_impl(&dword_19020E000, v21, OS_LOG_TYPE_ERROR, "A CKConversation with pinningIdentifier %@ was not found in pinningIdentifierMap. This conversation will appear as not pinned.", buf, 0xCu);
             }
 
-            if (v14)
+            if (pinningIdentifierMap)
             {
-              [v14 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_29];
+              [pinningIdentifierMap enumerateKeysAndObjectsUsingBlock:&__block_literal_global_29];
             }
 
             else if (IMOSLoggingEnabled())
@@ -1595,24 +1595,24 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
   }
 }
 
-- (void)updateConversationsForNewPinnedConversations:(id)a3
+- (void)updateConversationsForNewPinnedConversations:(id)conversations
 {
-  v4 = [a3 object];
-  [(CKConversationList *)self _updateConversationsForNewPinnedConversations:v4];
+  object = [conversations object];
+  [(CKConversationList *)self _updateConversationsForNewPinnedConversations:object];
 }
 
-- (void)_updateConversationsForNewPinnedConversations:(id)a3
+- (void)_updateConversationsForNewPinnedConversations:(id)conversations
 {
   v27 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  conversationsCopy = conversations;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = self;
-  v5 = [(CKConversationList *)self pinnedConversations];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  selfCopy = self;
+  pinnedConversations = [(CKConversationList *)self pinnedConversations];
+  v6 = [pinnedConversations countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v6)
   {
     v7 = *v19;
@@ -1622,14 +1622,14 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pinnedConversations);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 pinningIdentifier];
-        if (v10)
+        pinningIdentifier = [v9 pinningIdentifier];
+        if (pinningIdentifier)
         {
-          [v4 addObject:v10];
+          [v4 addObject:pinningIdentifier];
         }
 
         else if (IMOSLoggingEnabled())
@@ -1637,23 +1637,23 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
           v11 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v12 = [(CKConversationList *)v17 pinnedConversations];
+            pinnedConversations2 = [(CKConversationList *)selfCopy pinnedConversations];
             *buf = 138412546;
             v23 = v9;
             v24 = 2112;
-            v25 = v12;
+            v25 = pinnedConversations2;
             _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "An existing pinned conversation's pinningIdentifier was nil. existingPinnedConversation: %@, pinnedConversations: %@", buf, 0x16u);
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v6 = [pinnedConversations countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v6);
   }
 
-  if ([v4 isEqualToOrderedSet:v16])
+  if ([v4 isEqualToOrderedSet:conversationsCopy])
   {
     if (IMOSLoggingEnabled())
     {
@@ -1665,59 +1665,59 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
       }
     }
 
-    [(CKConversationList *)v17 postFinishedInitalPinLoadIfNecessary];
+    [(CKConversationList *)selfCopy postFinishedInitalPinLoadIfNecessary];
   }
 
   else
   {
-    [(CKConversationList *)v17 updatePinnedConversationsFromDataSource];
+    [(CKConversationList *)selfCopy updatePinnedConversationsFromDataSource];
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v14 setObject:v4 forKeyedSubscript:@"previousPinnedConversationIdentifiers"];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 postNotificationName:@"CKConversationListPinnedConversationsChangedNotification" object:v17 userInfo:v14];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListPinnedConversationsChangedNotification" object:selfCopy userInfo:v14];
 
-    [(CKConversationList *)v17 postFinishedInitalPinLoadIfNecessary];
+    [(CKConversationList *)selfCopy postFinishedInitalPinLoadIfNecessary];
   }
 }
 
-- (void)_handleGroupPhotoChanged:(id)a3
+- (void)_handleGroupPhotoChanged:(id)changed
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = v4;
+      v30 = changedCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "IMChatGroupPhotoChangedNotification _handleGroupPhotoChanged called on conversation list %@ notification %@", buf, 0x16u);
     }
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 valueForKey:@"sender"];
-  v8 = [v4 object];
-  v9 = [(CKConversationList *)self conversationForExistingChat:v8];
+  userInfo = [changedCopy userInfo];
+  v7 = [userInfo valueForKey:@"sender"];
+  object = [changedCopy object];
+  v9 = [(CKConversationList *)self conversationForExistingChat:object];
   [(CKConversationList *)v9 setNeedsUpdatedGroupPhotoForVisualIdentity];
   v25 = @"conversation";
   v26 = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"CKConversationListAvatarUpdateNotification" object:0 userInfo:v10];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKConversationListAvatarUpdateNotification" object:0 userInfo:v10];
 
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(CKConversationList *)v8 guid];
+      guid = [(CKConversationList *)object guid];
       *buf = 138412546;
-      v28 = v9;
+      selfCopy = v9;
       v29 = 2112;
-      v30 = v13;
+      v30 = guid;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Found conversation %@ for chatGuid %@", buf, 0x16u);
     }
   }
@@ -1728,7 +1728,7 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v8;
+      selfCopy = object;
       _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, " => chat %@", buf, 0xCu);
     }
   }
@@ -1738,8 +1738,8 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
   {
     [(CKConversationList *)v9 setShouldShowGroupPhotoUpdateBanner:1];
     v15 = [(CKConversationList *)v9 conversationVisualIdentityWithKeys:MEMORY[0x1E695E0F0] requestedNumberOfContactsToFetch:0];
-    v16 = [v15 groupPhoto];
-    v17 = [v16 length] == 0;
+    groupPhoto = [v15 groupPhoto];
+    v17 = [groupPhoto length] == 0;
 
     v18 = [CKGroupUpdate alloc];
     if (v17)
@@ -1756,20 +1756,20 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
     v23 = @"CKGroupPhotoUpdate";
     v24 = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 postNotificationName:@"CKConversationShowGroupPhotoBannersNotification" object:v8 userInfo:v21];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"CKConversationShowGroupPhotoBannersNotification" object:object userInfo:v21];
   }
 }
 
-- (void)_handleGroupNameChanged:(id)a3
+- (void)_handleGroupNameChanged:(id)changed
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 valueForKey:@"sender"];
-  v7 = [v4 object];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo valueForKey:@"sender"];
+  object = [changedCopy object];
 
-  v8 = [(CKConversationList *)self conversationForExistingChat:v7];
+  v8 = [(CKConversationList *)self conversationForExistingChat:object];
   [v8 updateConversationVisualIdentityDisplayNameWithSender:v6];
   v9 = [v8 conversationVisualIdentityWithKeys:MEMORY[0x1E695E0F0] requestedNumberOfContactsToFetch:0];
   if ([v6 length] && objc_msgSend(v8, "shouldDisplayGroupIdentity") && ((objc_msgSend(v9, "groupName"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v12 = [CKGroupUpdate alloc], v11) ? (v13 = 1) : (v13 = 5), (v14 = -[CKGroupUpdate initWithType:handleID:](v12, "initWithType:handleID:", v13, v6)) != 0))
@@ -1782,38 +1782,38 @@ void __83__CKConversationList_updatePinnedConversationsFromDataSourceWithConvers
 
     v16 = 0;
     v20 = @"GroupNameUpdate";
-    v17 = v15;
+    null = v15;
   }
 
   else
   {
     v20 = @"GroupNameUpdate";
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v15 = 0;
     v16 = 1;
   }
 
-  v21[0] = v17;
+  v21[0] = null;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   if (v16)
   {
   }
 
-  v19 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v19 postNotificationName:@"CKConversationShowGroupNameBannersNotification" object:v7 userInfo:v18];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKConversationShowGroupNameBannersNotification" object:object userInfo:v18];
 }
 
-- (BOOL)_shouldFilterForParticipants:(id)a3
+- (BOOL)_shouldFilterForParticipants:(id)participants
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  participantsCopy = participants;
   if ([(CKConversationList *)self _messageUnknownFilteringEnabled])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = participantsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -1862,18 +1862,18 @@ LABEL_13:
   return v13;
 }
 
-- (id)firstUnreadFilteredConversationIgnoringMessages:(id)a3
+- (id)firstUnreadFilteredConversationIgnoringMessages:(id)messages
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v6 = [v5 cachedChats];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  cachedChats = [mEMORY[0x1E69A5AF8] cachedChats];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [cachedChats countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1884,14 +1884,14 @@ LABEL_13:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cachedChats);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        if ([(CKConversationList *)self _isUnreadChat:v11 ignoringMessages:v4])
+        if ([(CKConversationList *)self _isUnreadChat:v11 ignoringMessages:messagesCopy])
         {
-          v13 = [v11 persistentID];
-          v14 = [(CKConversationList *)self conversationForExistingChatWithChatIdentifier:v13];
+          persistentID = [v11 persistentID];
+          v14 = [(CKConversationList *)self conversationForExistingChatWithChatIdentifier:persistentID];
           v15 = v14;
           if (v14)
           {
@@ -1900,15 +1900,15 @@ LABEL_13:
 
           else
           {
-            v16 = [v11 persistentID];
-            v12 = [(CKConversationList *)self conversationForExistingChatWithGroupID:v16];
+            persistentID2 = [v11 persistentID];
+            v12 = [(CKConversationList *)self conversationForExistingChatWithGroupID:persistentID2];
           }
 
           goto LABEL_14;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [cachedChats countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -1931,36 +1931,36 @@ LABEL_14:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v3 = [v2 numberOfExistingChats] != 0;
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  v3 = [mEMORY[0x1E69A5AF8] numberOfExistingChats] != 0;
 
   return v3;
 }
 
-- (void)_insertConversationIntoSortedConversationList:(id)a3
+- (void)_insertConversationIntoSortedConversationList:(id)list
 {
   trackedConversations = self->_trackedConversations;
-  v8 = a3;
+  listCopy = list;
   v5 = [(NSMutableArray *)trackedConversations count];
-  v6 = [(CKConversationList *)self _conversationSortComparator];
-  v7 = [(NSMutableArray *)trackedConversations indexOfObject:v8 inSortedRange:0 options:v5 usingComparator:1024, v6];
+  _conversationSortComparator = [(CKConversationList *)self _conversationSortComparator];
+  v7 = [(NSMutableArray *)trackedConversations indexOfObject:listCopy inSortedRange:0 options:v5 usingComparator:1024, _conversationSortComparator];
 
-  [(NSMutableArray *)self->_trackedConversations insertObject:v8 atIndex:v7];
+  [(NSMutableArray *)self->_trackedConversations insertObject:listCopy atIndex:v7];
 }
 
-- (void)logConversationsTopCount:(int64_t)a3 bottomCount:(int64_t)a4
+- (void)logConversationsTopCount:(int64_t)count bottomCount:(int64_t)bottomCount
 {
-  v4 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x1E69E9840];
   v34 = [(NSMutableArray *)self->_trackedConversations count];
-  v32 = v4;
+  v32 = selfCopy;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v36 = v34;
+      countCopy = v34;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "resorted conversation list. length %ld", buf, 0xCu);
     }
   }
@@ -1971,47 +1971,47 @@ LABEL_14:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v36 = a3;
+      countCopy = count;
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "top %ld conversations:", buf, 0xCu);
     }
   }
 
-  v7 = [(NSMutableArray *)v4->_trackedConversations count];
-  if (a3 >= 1 && v7)
+  v7 = [(NSMutableArray *)selfCopy->_trackedConversations count];
+  if (count >= 1 && v7)
   {
     v8 = 1;
     do
     {
-      v9 = [(NSMutableArray *)v4->_trackedConversations objectAtIndex:v8 - 1];
+      v9 = [(NSMutableArray *)selfCopy->_trackedConversations objectAtIndex:v8 - 1];
       if (IMOSLoggingEnabled())
       {
         v10 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [v9 chat];
-          v12 = [v11 lastFinishedMessageDate];
-          v13 = [v9 chat];
-          v14 = [v13 lastTUConversationCreatedDate];
-          v15 = [v9 chat];
-          v16 = [v15 lastScheduledMessageCreatedDate];
+          chat = [v9 chat];
+          lastFinishedMessageDate = [chat lastFinishedMessageDate];
+          chat2 = [v9 chat];
+          lastTUConversationCreatedDate = [chat2 lastTUConversationCreatedDate];
+          chat3 = [v9 chat];
+          lastScheduledMessageCreatedDate = [chat3 lastScheduledMessageCreatedDate];
           *buf = 134219010;
-          v36 = v8 - 1;
+          countCopy = v8 - 1;
           v37 = 2112;
-          v38 = v12;
+          v38 = lastFinishedMessageDate;
           v39 = 2112;
-          v40 = v14;
+          v40 = lastTUConversationCreatedDate;
           v41 = 2112;
-          v42 = v16;
+          v42 = lastScheduledMessageCreatedDate;
           v43 = 2112;
           v44 = v9;
           _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "%ld. %@ (lastTUConversationCreatedDate: %@) (lastScheduledMessageCreatedDate: %@) - %@", buf, 0x34u);
 
-          v4 = v32;
+          selfCopy = v32;
         }
       }
 
-      v17 = [(NSMutableArray *)v4->_trackedConversations count];
-      if (v8 >= a3)
+      v17 = [(NSMutableArray *)selfCopy->_trackedConversations count];
+      if (v8 >= count)
       {
         break;
       }
@@ -2020,14 +2020,14 @@ LABEL_14:
     while (v8++ < v17);
   }
 
-  if (v34 - a3 >= a4)
+  if (v34 - count >= bottomCount)
   {
-    v19 = a4;
+    bottomCountCopy = bottomCount;
   }
 
   else
   {
-    v19 = v34 - a3;
+    bottomCountCopy = v34 - count;
   }
 
   if (IMOSLoggingEnabled())
@@ -2046,41 +2046,41 @@ LABEL_14:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v36 = v19 & ~(v19 >> 63);
+      countCopy = bottomCountCopy & ~(bottomCountCopy >> 63);
       _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "bottom %ld conversations:", buf, 0xCu);
     }
   }
 
-  if (v19 >= 1)
+  if (bottomCountCopy >= 1)
   {
-    v22 = v34 - (v19 & ~(v19 >> 63));
+    v22 = v34 - (bottomCountCopy & ~(bottomCountCopy >> 63));
     do
     {
-      v23 = [(NSMutableArray *)v4->_trackedConversations objectAtIndex:v22];
+      v23 = [(NSMutableArray *)selfCopy->_trackedConversations objectAtIndex:v22];
       if (IMOSLoggingEnabled())
       {
         v24 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
-          v25 = [v23 chat];
-          v26 = [v25 lastFinishedMessageDate];
-          v27 = [v23 chat];
-          v28 = [v27 lastTUConversationCreatedDate];
-          v29 = [v23 chat];
-          v30 = [v29 lastScheduledMessageCreatedDate];
+          chat4 = [v23 chat];
+          lastFinishedMessageDate2 = [chat4 lastFinishedMessageDate];
+          chat5 = [v23 chat];
+          lastTUConversationCreatedDate2 = [chat5 lastTUConversationCreatedDate];
+          chat6 = [v23 chat];
+          lastScheduledMessageCreatedDate2 = [chat6 lastScheduledMessageCreatedDate];
           *buf = 134219010;
-          v36 = v22;
+          countCopy = v22;
           v37 = 2112;
-          v38 = v26;
+          v38 = lastFinishedMessageDate2;
           v39 = 2112;
-          v40 = v28;
+          v40 = lastTUConversationCreatedDate2;
           v41 = 2112;
-          v42 = v30;
+          v42 = lastScheduledMessageCreatedDate2;
           v43 = 2112;
           v44 = v23;
           _os_log_impl(&dword_19020E000, v24, OS_LOG_TYPE_INFO, "%ld. %@ (lastTUConversationCreatedDate: %@) (lastScheduledMessageCreatedDate: %@) - %@", buf, 0x34u);
 
-          v4 = v32;
+          selfCopy = v32;
         }
       }
 
@@ -2099,16 +2099,16 @@ LABEL_14:
   return [(NSMutableArray *)trackedConversations firstObject];
 }
 
-- (void)_postConversationListUpdateVisibleConversationsNotificationForUID:(id)a3
+- (void)_postConversationListUpdateVisibleConversationsNotificationForUID:(id)d
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (![(CKConversationList *)self loadingConversations])
   {
-    if ([v4 length])
+    if ([dCopy length])
     {
       v7 = @"uid";
-      v8[0] = v4;
+      v8[0] = dCopy;
       v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     }
 
@@ -2117,17 +2117,17 @@ LABEL_14:
       v5 = 0;
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"CKConversationListUpdateVisibleConversationsNotification" object:self userInfo:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListUpdateVisibleConversationsNotification" object:self userInfo:v5];
   }
 }
 
-- (void)_beginTrackingConversation:(id)a3 forChat:(id)a4 shouldUpdateEarliestMessageDate:(BOOL)a5
+- (void)_beginTrackingConversation:(id)conversation forChat:(id)chat shouldUpdateEarliestMessageDate:(BOOL)date
 {
-  v5 = a5;
+  dateCopy = date;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  conversationCopy = conversation;
+  chatCopy = chat;
   if (![(CKConversationList *)self _shouldBailBeginTrackingForCurrentProcess])
   {
     if (IMOSLoggingEnabled())
@@ -2135,13 +2135,13 @@ LABEL_14:
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v9 guid];
+        guid = [chatCopy guid];
         *buf = 138412802;
-        v19 = v11;
+        v19 = guid;
         v20 = 2048;
-        v21 = v8;
+        v21 = conversationCopy;
         v22 = 2048;
-        v23 = v9;
+        v23 = chatCopy;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "-beginTrackingConversation called with guid %@ conversation %p chat %p", buf, 0x20u);
       }
     }
@@ -2153,29 +2153,29 @@ LABEL_14:
       self->_trackedConversations = v12;
     }
 
-    if (v8)
+    if (conversationCopy)
     {
-      [v9 setContextInfo:v8];
-      if (v5)
+      [chatCopy setContextInfo:conversationCopy];
+      if (dateCopy)
       {
         if (IMIsOscarEnabled())
         {
-          v14 = [v8 chat];
-          v15 = [v14 isFiltered] == 2;
+          chat = [conversationCopy chat];
+          v15 = [chat isFiltered] == 2;
 
           if (v15)
           {
-            v17 = v8;
+            v17 = conversationCopy;
             v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
             [(CKConversationList *)self updateEarliestMessageDateForConversations:v16];
           }
         }
       }
 
-      [(CKConversationList *)self _insertConversationIntoSortedConversationList:v8];
+      [(CKConversationList *)self _insertConversationIntoSortedConversationList:conversationCopy];
     }
 
-    [v9 setAllowsJunkConfiguration:{+[CKConversationList spamInboxEnabled](CKConversationList, "spamInboxEnabled")}];
+    [chatCopy setAllowsJunkConfiguration:{+[CKConversationList spamInboxEnabled](CKConversationList, "spamInboxEnabled")}];
     [(CKConversationList *)self _postConversationListChangedNotification];
   }
 }
@@ -2188,27 +2188,27 @@ LABEL_14:
   }
 }
 
-- (int64_t)unreadCountForFilterMode:(unint64_t)a3
+- (int64_t)unreadCountForFilterMode:(unint64_t)mode
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 == 7)
+  if (mode == 7)
   {
     return 0;
   }
 
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isUnreadCountRefactorEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isUnreadCountRefactorEnabled = [mEMORY[0x1E69A8070] isUnreadCountRefactorEnabled];
 
-  if (v7)
+  if (isUnreadCountRefactorEnabled)
   {
-    v8 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v9 = [v8 unreadCountController];
-    v10 = [v9 unreadCountForChatsWithFilterMode:a3];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    unreadCountController = [mEMORY[0x1E69A5AF8] unreadCountController];
+    v10 = [unreadCountController unreadCountForChatsWithFilterMode:mode];
 
     return v10;
   }
 
-  v12 = [(CKConversationList *)self conversationsForFilterMode:a3];
+  v12 = [(CKConversationList *)self conversationsForFilterMode:mode];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -2245,18 +2245,18 @@ LABEL_14:
   return v3;
 }
 
-- (int64_t)unreadFilteredConversationCountIgnoringMessages:(id)a3
+- (int64_t)unreadFilteredConversationCountIgnoringMessages:(id)messages
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v6 = [v5 cachedChats];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  cachedChats = [mEMORY[0x1E69A5AF8] cachedChats];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [cachedChats countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2268,13 +2268,13 @@ LABEL_14:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cachedChats);
         }
 
-        v9 += [(CKConversationList *)self _isUnreadChat:*(*(&v13 + 1) + 8 * i) ignoringMessages:v4];
+        v9 += [(CKConversationList *)self _isUnreadChat:*(*(&v13 + 1) + 8 * i) ignoringMessages:messagesCopy];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [cachedChats countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -2288,14 +2288,14 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)_isUnreadChat:(id)a3 ignoringMessages:(id)a4
+- (BOOL)_isUnreadChat:(id)chat ignoringMessages:(id)messages
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CKConversationList *)self _chatHasRelevantUnreadLastMessage:v6])
+  chatCopy = chat;
+  messagesCopy = messages;
+  if ([(CKConversationList *)self _chatHasRelevantUnreadLastMessage:chatCopy])
   {
-    v8 = [v6 persistentID];
-    v9 = [(CKConversationList *)self conversationForExistingChatWithChatIdentifier:v8];
+    persistentID = [chatCopy persistentID];
+    v9 = [(CKConversationList *)self conversationForExistingChatWithChatIdentifier:persistentID];
     v10 = v9;
     if (v9)
     {
@@ -2304,18 +2304,18 @@ LABEL_14:
 
     else
     {
-      v13 = [v6 persistentID];
-      v11 = [(CKConversationList *)self conversationForExistingChatWithGroupID:v13];
+      persistentID2 = [chatCopy persistentID];
+      v11 = [(CKConversationList *)self conversationForExistingChatWithGroupID:persistentID2];
     }
 
     if ([v11 isKnownSender] && (objc_msgSend(v11, "isMuted") & 1) == 0)
     {
-      v14 = [v6 lastMessage];
-      v15 = [v14 guid];
+      lastMessage = [chatCopy lastMessage];
+      guid = [lastMessage guid];
 
-      if (v15)
+      if (guid)
       {
-        v12 = [v7 containsObject:v15] ^ 1;
+        v12 = [messagesCopy containsObject:guid] ^ 1;
       }
 
       else
@@ -2341,47 +2341,47 @@ LABEL_14:
 - (id)relevantUnreadLastMessages
 {
   v31 = *MEMORY[0x1E69E9840];
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v4 = [v3 cachedChats];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  cachedChats = [mEMORY[0x1E69A5AF8] cachedChats];
 
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  v5 = [cachedChats countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v25;
     v20 = *MEMORY[0x1E695D930];
-    v21 = v4;
+    v21 = cachedChats;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cachedChats);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
         if ([(CKConversationList *)self _chatHasRelevantUnreadLastMessage:v9])
         {
-          v10 = [v9 lastMessage];
-          v11 = [v10 guid];
+          lastMessage = [v9 lastMessage];
+          guid = [lastMessage guid];
 
-          if (v11)
+          if (guid)
           {
-            [v23 addObject:v11];
+            [array addObject:guid];
           }
 
           else
           {
-            v12 = [v9 lastMessage];
-            if (v12)
+            lastMessage2 = [v9 lastMessage];
+            if (lastMessage2)
             {
-              [MEMORY[0x1E696AEC0] stringWithFormat:@"*** relevantUnreadLastMessages: IMMessage has nil guid: %@", v12];
+              [MEMORY[0x1E696AEC0] stringWithFormat:@"*** relevantUnreadLastMessages: IMMessage has nil guid: %@", lastMessage2];
             }
 
             else
@@ -2394,9 +2394,9 @@ LABEL_14:
             v15 = [v9 description];
             v28[1] = @"lastMessage";
             v29[0] = v15;
-            if (v12)
+            if (lastMessage2)
             {
-              v22 = [v12 description];
+              v22 = [lastMessage2 description];
               v16 = v22;
             }
 
@@ -2409,36 +2409,36 @@ LABEL_14:
             v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
             v18 = [v14 exceptionWithName:v20 reason:v13 userInfo:v17];
 
-            if (v12)
+            if (lastMessage2)
             {
             }
 
             IMLogExceptionBacktrace();
             IMLogSimulateCrashForException();
 
-            v4 = v21;
+            cachedChats = v21;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v6 = [cachedChats countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v6);
   }
 
-  return v23;
+  return array;
 }
 
-- (BOOL)_chatHasRelevantUnreadLastMessage:(id)a3
+- (BOOL)_chatHasRelevantUnreadLastMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 unreadMessageCount] && objc_msgSend(v3, "lastMessageExists") && (objc_msgSend(v3, "lastMessage"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isRead"), v4, (v5 & 1) == 0))
+  messageCopy = message;
+  if ([messageCopy unreadMessageCount] && objc_msgSend(messageCopy, "lastMessageExists") && (objc_msgSend(messageCopy, "lastMessage"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isRead"), v4, (v5 & 1) == 0))
   {
-    v8 = [v3 lastMessage];
-    v9 = [v8 isFromMe];
+    lastMessage = [messageCopy lastMessage];
+    isFromMe = [lastMessage isFromMe];
 
-    v6 = v9 ^ 1;
+    v6 = isFromMe ^ 1;
   }
 
   else
@@ -2449,10 +2449,10 @@ LABEL_14:
   return v6;
 }
 
-- (void)deleteConversation:(id)a3
+- (void)deleteConversation:(id)conversation
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(26);
@@ -2460,26 +2460,26 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = conversationCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "-deleteConversation called with: %@", buf, 0xCu);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v7 = v4;
+    v7 = conversationCopy;
     _CKLog();
   }
 
-  v8 = v4;
+  v8 = conversationCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:{1, v7}];
   [(CKConversationList *)self deleteConversations:v6];
 }
 
-- (void)deleteConversations:(id)a3
+- (void)deleteConversations:(id)conversations
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationsCopy = conversations;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(26);
@@ -2487,14 +2487,14 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v33 = v4;
+      v33 = conversationsCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "-deleteConversations called with: %@", buf, 0xCu);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v21 = v4;
+    v21 = conversationsCopy;
     _CKLog();
   }
 
@@ -2503,8 +2503,8 @@ LABEL_14:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v4 _copyForEnumerating];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  _copyForEnumerating = [conversationsCopy _copyForEnumerating];
+  v8 = [_copyForEnumerating countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = *v27;
@@ -2514,23 +2514,23 @@ LABEL_14:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_copyForEnumerating);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 chat];
-        [v12 setContextInfo:0];
+        chat = [v11 chat];
+        [chat setContextInfo:0];
         [v11 deleteAllMessagesAndRemoveGroup];
-        v13 = [v11 pinningIdentifier];
-        if ([v13 length])
+        pinningIdentifier = [v11 pinningIdentifier];
+        if ([pinningIdentifier length])
         {
-          [v6 addObject:v13];
+          [v6 addObject:pinningIdentifier];
         }
 
         [(NSMutableArray *)self->_trackedConversations removeObject:v11];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v8 = [_copyForEnumerating countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v8);
@@ -2543,16 +2543,16 @@ LABEL_14:
       goto LABEL_23;
     }
 
-    v14 = [MEMORY[0x1E69A5C38] sharedInstance];
-    [v14 conversationsWereDeletedWithIdentifiers:v6];
+    mEMORY[0x1E69A5C38] = [MEMORY[0x1E69A5C38] sharedInstance];
+    [mEMORY[0x1E69A5C38] conversationsWereDeletedWithIdentifiers:v6];
   }
 
   else
   {
-    v14 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    mEMORY[0x1E69A5C38] = IMLogHandleForCategory();
+    if (os_log_type_enabled(mEMORY[0x1E69A5C38], OS_LOG_TYPE_ERROR))
     {
-      [CKConversationList deleteConversations:v14];
+      [CKConversationList deleteConversations:mEMORY[0x1E69A5C38]];
     }
   }
 
@@ -2561,7 +2561,7 @@ LABEL_23:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = v4;
+  v15 = conversationsCopy;
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v16)
   {
@@ -2576,8 +2576,8 @@ LABEL_23:
         }
 
         v19 = *(*(&v22 + 1) + 8 * j);
-        v20 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v20 postNotificationName:@"CKConversationListConversationLeftNotification" object:v19 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"CKConversationListConversationLeftNotification" object:v19 userInfo:0];
 
         [v19 resetCaches];
         [v19 setPendingHandles:0];
@@ -2590,9 +2590,9 @@ LABEL_23:
   }
 }
 
-- (void)_abChanged:(id)a3
+- (void)_abChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(CKConversationList *)self resetCaches];
   if (IMOSLoggingEnabled())
   {
@@ -2607,13 +2607,13 @@ LABEL_23:
   [(CKConversationList *)self _postConversationListChangedNotification];
 }
 
-- (void)_invalidatePartialABCaches:(id)a3
+- (void)_invalidatePartialABCaches:(id)caches
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69A6858]];
+  cachesCopy = caches;
+  userInfo = [cachesCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A6858]];
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -2636,8 +2636,8 @@ LABEL_23:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(CKConversationList *)self conversations];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    conversations = [(CKConversationList *)self conversations];
+    v10 = [conversations countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = *v15;
@@ -2647,7 +2647,7 @@ LABEL_23:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(conversations);
           }
 
           v13 = *(*(&v14 + 1) + 8 * i);
@@ -2657,7 +2657,7 @@ LABEL_23:
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [conversations countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -2665,92 +2665,92 @@ LABEL_23:
   }
 }
 
-- (void)_abPartialChanged:(id)a3
+- (void)_abPartialChanged:(id)changed
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
   [(CKConversationList *)self _postConversationListUpdateVisibleConversationsNotificationForUID:v4];
 }
 
-- (void)_handleChatParticipantsDidChange:(id)a3
+- (void)_handleChatParticipantsDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [v4 object];
-  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
-  [v5 _handleChatParticipantsDidChange:v4];
+  changeCopy = change;
+  object = [changeCopy object];
+  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
+  [v5 _handleChatParticipantsDidChange:changeCopy];
 }
 
-- (void)_handleChatJoinStateDidChange:(id)a3
+- (void)_handleChatJoinStateDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [v4 object];
-  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
-  [v5 _handleChatJoinStateDidChange:v4];
+  changeCopy = change;
+  object = [changeCopy object];
+  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
+  [v5 _handleChatJoinStateDidChange:changeCopy];
 }
 
-- (void)_handlePreferredServiceChangedNotification:(id)a3
+- (void)_handlePreferredServiceChangedNotification:(id)notification
 {
-  v4 = a3;
-  v6 = [v4 object];
-  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
-  [v5 _handlePreferredServiceChangedNotification:v4];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
+  [v5 _handlePreferredServiceChangedNotification:notificationCopy];
 }
 
-- (void)_chatItemsDidChange:(id)a3
+- (void)_chatItemsDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [v4 object];
-  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
-  [v5 _chatItemsDidChange:v4];
+  changeCopy = change;
+  object = [changeCopy object];
+  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
+  [v5 _chatItemsDidChange:changeCopy];
 }
 
-- (void)_handleEngroupFinishedUpdating:(id)a3
+- (void)_handleEngroupFinishedUpdating:(id)updating
 {
-  v4 = a3;
-  v6 = [v4 object];
-  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
-  [v5 _handleEngroupFinishedUpdating:v4];
+  updatingCopy = updating;
+  object = [updatingCopy object];
+  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
+  [v5 _handleEngroupFinishedUpdating:updatingCopy];
 }
 
-- (void)_chatPropertiesChanged:(id)a3
+- (void)_chatPropertiesChanged:(id)changed
 {
-  v4 = a3;
-  v6 = [v4 object];
-  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v6];
-  [v5 _chatPropertiesChanged:v4];
+  changedCopy = changed;
+  object = [changedCopy object];
+  v5 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
+  [v5 _chatPropertiesChanged:changedCopy];
 }
 
-- (void)_handleChatsDidRemergeNotification:(id)a3
+- (void)_handleChatsDidRemergeNotification:(id)notification
 {
   [(CKConversationList *)self setRemergingConversations:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"CKConversationListFinishedMergingChatsNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKConversationListFinishedMergingChatsNotification" object:self];
 }
 
-- (void)_handleUpdatedMessagesWithSummariesNotification:(id)a3
+- (void)_handleUpdatedMessagesWithSummariesNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   if ([MEMORY[0x1E69A8090] messageSummarizationEnabled])
   {
-    v3 = [v5 userInfo];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"CKConversationListDidReceiveSummaries" object:0 userInfo:v3];
+    userInfo = [notificationCopy userInfo];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListDidReceiveSummaries" object:0 userInfo:userInfo];
   }
 }
 
-- (void)_handleHistoryClearedNotification:(id)a3
+- (void)_handleHistoryClearedNotification:(id)notification
 {
-  v5 = [a3 object];
-  v4 = [(CKConversationList *)self _alreadyTrackedConversationForChat:v5];
+  object = [notification object];
+  v4 = [(CKConversationList *)self _alreadyTrackedConversationForChat:object];
   [v4 setNeedsReload];
 }
 
 - (id)pendingConversationCreatingIfNecessary
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CKConversationList *)self pendingConversation];
+  pendingConversation = [(CKConversationList *)self pendingConversation];
 
-  if (!v3)
+  if (!pendingConversation)
   {
     v4 = +[CKConversation newPendingConversation];
     [(CKConversationList *)self setPendingConversation:v4];
@@ -2760,26 +2760,26 @@ LABEL_23:
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(CKConversationList *)self pendingConversation];
+        pendingConversation2 = [(CKConversationList *)self pendingConversation];
         v9 = 138412290;
-        v10 = v6;
+        v10 = pendingConversation2;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "no current pendingConversation, creating one: %@", &v9, 0xCu);
       }
     }
   }
 
-  v7 = [(CKConversationList *)self pendingConversation];
+  pendingConversation3 = [(CKConversationList *)self pendingConversation];
 
-  return v7;
+  return pendingConversation3;
 }
 
-- (void)setPendingConversation:(id)a3
+- (void)setPendingConversation:(id)conversation
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  conversationCopy = conversation;
   pendingConversation = self->_pendingConversation;
   p_pendingConversation = &self->_pendingConversation;
-  if (pendingConversation != v5)
+  if (pendingConversation != conversationCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2787,14 +2787,14 @@ LABEL_23:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v10 = 138412290;
-        v11 = v5;
+        v11 = conversationCopy;
         _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "pendingConversation changed to: %@", &v10, 0xCu);
       }
     }
 
-    objc_storeStrong(p_pendingConversation, a3);
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"CKConversationListPendingConversationChangedNotification" object:v5];
+    objc_storeStrong(p_pendingConversation, conversation);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKConversationListPendingConversationChangedNotification" object:conversationCopy];
   }
 }
 
@@ -2813,9 +2813,9 @@ LABEL_23:
   return trackedConversations;
 }
 
-- (void)_handleMemoryWarning:(id)a3
+- (void)_handleMemoryWarning:(id)warning
 {
-  v4 = a3;
+  warningCopy = warning;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(26);
@@ -2835,16 +2835,16 @@ LABEL_23:
   [(CKConversationList *)self resetCaches];
 }
 
-- (void)updateFilteredByFocusStateForConversations:(id)a3
+- (void)updateFilteredByFocusStateForConversations:(id)conversations
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8088] sharedManager];
+  conversationsCopy = conversations;
+  mEMORY[0x1E69A8088] = [MEMORY[0x1E69A8088] sharedManager];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = conversationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -2861,9 +2861,9 @@ LABEL_23:
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if ([v4 shouldDisplayFocusFilterBanner])
+        if ([mEMORY[0x1E69A8088] shouldDisplayFocusFilterBanner])
         {
-          v11 = [v4 conversationMatchesActiveFocusMode:v10];
+          v11 = [mEMORY[0x1E69A8088] conversationMatchesActiveFocusMode:v10];
         }
 
         else
@@ -2885,16 +2885,16 @@ LABEL_23:
 
 - (id)_nonPlaceholderConversations
 {
-  v2 = [(CKConversationList *)self conversations];
+  conversations = [(CKConversationList *)self conversations];
   if (CKIsRunningForDevelopmentOnSimulator() || CKIsRunningUITests())
   {
-    v3 = v2;
+    v3 = conversations;
   }
 
   else
   {
     v5 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_402];
-    v3 = [v2 filteredArrayUsingPredicate:v5];
+    v3 = [conversations filteredArrayUsingPredicate:v5];
   }
 
   return v3;
@@ -2902,24 +2902,24 @@ LABEL_23:
 
 - (void)_configureForUnsortedConversationList
 {
-  v3 = [(CKConversationList *)self _nonPlaceholderConversations];
-  [(CKConversationList *)self _setConversations:v3 forFilterMode:0];
+  _nonPlaceholderConversations = [(CKConversationList *)self _nonPlaceholderConversations];
+  [(CKConversationList *)self _setConversations:_nonPlaceholderConversations forFilterMode:0];
 }
 
 - (void)_configureForOscarEnabledUnsortedConversationList
 {
-  v3 = [(CKConversationList *)self _nonPlaceholderConversations];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [MEMORY[0x1E695DF70] array];
+  _nonPlaceholderConversations = [(CKConversationList *)self _nonPlaceholderConversations];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_nonPlaceholderConversations, "count")}];
+  array = [MEMORY[0x1E695DF70] array];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __71__CKConversationList__configureForOscarEnabledUnsortedConversationList__block_invoke;
   v11 = &unk_1E72ED3A0;
-  v12 = v5;
+  v12 = array;
   v13 = v4;
   v6 = v4;
-  v7 = v5;
-  [v3 enumerateObjectsUsingBlock:&v8];
+  v7 = array;
+  [_nonPlaceholderConversations enumerateObjectsUsingBlock:&v8];
   [(CKConversationList *)self _setConversations:v6 forFilterMode:0, v8, v9, v10, v11];
   [(CKConversationList *)self _setConversations:v7 forFilterMode:9];
 }
@@ -3044,17 +3044,17 @@ LABEL_27:
 LABEL_28:
 }
 
-- (id)_emptyConversationsDictionaryWithConversationsCount:(unint64_t)a3
+- (id)_emptyConversationsDictionaryWithConversationsCount:(unint64_t)count
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   for (i = 1; i != 27; ++i)
   {
     v7 = IMConversationListFilterModeStringValue(i);
     if (v7)
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-      [v5 setObject:v8 forKey:v7];
+      v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
+      [dictionary setObject:v8 forKey:v7];
     }
   }
 
@@ -3064,8 +3064,8 @@ LABEL_28:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [MEMORY[0x1E69A8210] fetchSMSFilterExtensionParams];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    fetchSMSFilterExtensionParams = [MEMORY[0x1E69A8210] fetchSMSFilterExtensionParams];
+    v10 = [fetchSMSFilterExtensionParams countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v10)
     {
       v12 = *v22;
@@ -3077,7 +3077,7 @@ LABEL_28:
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(fetchSMSFilterExtensionParams);
           }
 
           v14 = *(*(&v21 + 1) + 8 * j);
@@ -3086,8 +3086,8 @@ LABEL_28:
             v15 = IMConversationListFilterModeStringValue([v14 filterMode]);
             if (v15)
             {
-              v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-              [v5 setObject:v16 forKey:v15];
+              v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
+              [dictionary setObject:v16 forKey:v15];
             }
 
             else if (IMOSLoggingEnabled())
@@ -3095,34 +3095,34 @@ LABEL_28:
               v17 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
               {
-                v18 = [v14 filterMode];
+                filterMode = [v14 filterMode];
                 *buf = v20;
                 v26 = 0;
                 v27 = 2048;
-                v28 = v18;
+                v28 = filterMode;
                 _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "%@ found for filterMode: %ld, this will result in empty sub-classification folder", buf, 0x16u);
               }
             }
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v10 = [fetchSMSFilterExtensionParams countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v10);
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (BOOL)conversation:(id)a3 includedInFilterMode:(unint64_t)a4
+- (BOOL)conversation:(id)conversation includedInFilterMode:(unint64_t)mode
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  conversationCopy = conversation;
+  if (conversationCopy)
   {
-    [(CKConversationList *)self conversationsForFilterMode:a4];
+    [(CKConversationList *)self conversationsForFilterMode:mode];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -3141,11 +3141,11 @@ LABEL_28:
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v6 chat];
-          v13 = [v12 guid];
-          v14 = [v11 chat];
-          v15 = [v14 guid];
-          v16 = [v13 isEqualToString:v15];
+          chat = [conversationCopy chat];
+          guid = [chat guid];
+          chat2 = [v11 chat];
+          guid2 = [chat2 guid];
+          v16 = [guid isEqualToString:guid2];
 
           if (v16)
           {
@@ -3175,34 +3175,34 @@ LABEL_12:
   return v8;
 }
 
-- (unint64_t)primaryFilterModeForConversation:(id)a3
+- (unint64_t)primaryFilterModeForConversation:(id)conversation
 {
-  v4 = a3;
-  if (IMIsOscarEnabled() && ([v4 chat], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isFiltered"), v5, v6 == 2))
+  conversationCopy = conversation;
+  if (IMIsOscarEnabled() && ([conversationCopy chat], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isFiltered"), v5, v6 == 2))
   {
     v7 = 9;
   }
 
   else if ([(CKConversationList *)self _messageUnknownFilteringEnabled])
   {
-    if ([(CKConversationList *)self _shouldTreatConversationAsNonSMSCategorized:v4])
+    if ([(CKConversationList *)self _shouldTreatConversationAsNonSMSCategorized:conversationCopy])
     {
-      v7 = [(CKConversationList *)self _filterModeForConversationAsNonSMSCategorized:v4];
+      v7 = [(CKConversationList *)self _filterModeForConversationAsNonSMSCategorized:conversationCopy];
     }
 
-    else if ([v4 spamSubCategory])
+    else if ([conversationCopy spamSubCategory])
     {
-      v8 = [v4 spamSubCategory];
-      v7 = [v4 spamCategory] & 0xF | (16 * v8);
+      spamSubCategory = [conversationCopy spamSubCategory];
+      v7 = [conversationCopy spamCategory] & 0xF | (16 * spamSubCategory);
     }
 
     else
     {
-      v10 = [v4 spamCategory];
-      v7 = v10;
-      if (v10 != 4)
+      spamCategory = [conversationCopy spamCategory];
+      v7 = spamCategory;
+      if (spamCategory != 4)
       {
-        if (v10 == 3)
+        if (spamCategory == 3)
         {
           v7 = 5;
         }
@@ -3228,22 +3228,22 @@ LABEL_12:
   return v7;
 }
 
-- (id)filterModesForConversation:(id)a3
+- (id)filterModesForConversation:(id)conversation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isMergeFilteredThreadsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isMergeFilteredThreadsEnabled = [mEMORY[0x1E69A8070] isMergeFilteredThreadsEnabled];
 
-  if (v7)
+  if (isMergeFilteredThreadsEnabled)
   {
     if (IMIsOscarEnabled())
     {
-      v8 = [v4 chat];
-      v9 = [v8 isFiltered];
+      chat = [conversationCopy chat];
+      isFiltered = [chat isFiltered];
 
-      if (v9 == 2)
+      if (isFiltered == 2)
       {
         v10 = &unk_1F04E7800;
 LABEL_9:
@@ -3258,9 +3258,9 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    if ([(CKConversationList *)self _shouldTreatConversationAsNonSMSCategorized:v4])
+    if ([(CKConversationList *)self _shouldTreatConversationAsNonSMSCategorized:conversationCopy])
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CKConversationList _filterModeForConversationAsNonSMSCategorized:](self, "_filterModeForConversationAsNonSMSCategorized:", v4)}];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CKConversationList _filterModeForConversationAsNonSMSCategorized:](self, "_filterModeForConversationAsNonSMSCategorized:", conversationCopy)}];
       [v5 addObject:v11];
     }
 
@@ -3270,9 +3270,9 @@ LABEL_9:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v22 = v4;
-      v12 = [v4 mergedThreadFilterModes];
-      v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v22 = conversationCopy;
+      mergedThreadFilterModes = [conversationCopy mergedThreadFilterModes];
+      v13 = [mergedThreadFilterModes countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v13)
       {
         v14 = v13;
@@ -3283,24 +3283,24 @@ LABEL_9:
           {
             if (*v24 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(mergedThreadFilterModes);
             }
 
             v17 = *(*(&v23 + 1) + 8 * i);
-            v18 = [v17 intValue];
+            intValue = [v17 intValue];
             if ([v17 intValue] > 0xF)
             {
               v19 = v5;
               v20 = v17;
             }
 
-            else if ((v18 & 0xF) == 3)
+            else if ((intValue & 0xF) == 3)
             {
               v19 = v5;
               v20 = &unk_1F04E7848;
             }
 
-            else if ((v18 & 0xF) == 4)
+            else if ((intValue & 0xF) == 4)
             {
               v19 = v5;
               v20 = &unk_1F04E7830;
@@ -3321,13 +3321,13 @@ LABEL_9:
             [v19 addObject:v20];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v14 = [mergedThreadFilterModes countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v14);
       }
 
-      v4 = v22;
+      conversationCopy = v22;
     }
   }
 
@@ -3336,64 +3336,64 @@ LABEL_27:
   return v5;
 }
 
-- (BOOL)_shouldTreatConversationAsNonSMSCategorized:(id)a3
+- (BOOL)_shouldTreatConversationAsNonSMSCategorized:(id)categorized
 {
-  v4 = a3;
+  categorizedCopy = categorized;
   if (![(CKConversationList *)self _messageSpamFilteringEnabled])
   {
     goto LABEL_9;
   }
 
-  v5 = [v4 chat];
-  v6 = [v5 isRecovered];
+  chat = [categorizedCopy chat];
+  isRecovered = [chat isRecovered];
 
-  if (v6)
+  if (isRecovered)
   {
     goto LABEL_9;
   }
 
-  v7 = [v4 chat];
-  if (![v7 isFiltered])
+  chat2 = [categorizedCopy chat];
+  if (![chat2 isFiltered])
   {
 
 LABEL_9:
-    v12 = 1;
+    isKnownSender = 1;
     goto LABEL_10;
   }
 
-  v8 = [v4 chat];
-  v9 = [v8 isFiltered];
+  chat3 = [categorizedCopy chat];
+  isFiltered = [chat3 isFiltered];
 
-  if (v9 == 1)
+  if (isFiltered == 1)
   {
     goto LABEL_9;
   }
 
-  v10 = [v4 chat];
-  v11 = [v10 supportsFilteringExtensions];
+  chat4 = [categorizedCopy chat];
+  supportsFilteringExtensions = [chat4 supportsFilteringExtensions];
 
-  if (!v11 || ![v4 wasDetectedAsSMSCategory])
+  if (!supportsFilteringExtensions || ![categorizedCopy wasDetectedAsSMSCategory])
   {
     goto LABEL_9;
   }
 
-  v12 = [v4 isKnownSender];
+  isKnownSender = [categorizedCopy isKnownSender];
 LABEL_10:
 
-  return v12;
+  return isKnownSender;
 }
 
-- (unint64_t)_filterModeForConversationAsNonSMSCategorized:(id)a3
+- (unint64_t)_filterModeForConversationAsNonSMSCategorized:(id)categorized
 {
-  v3 = a3;
-  v4 = [v3 hasSetWasKnownSender];
-  v5 = [v3 wasKnownSender];
-  if ((v4 & 1) == 0)
+  categorizedCopy = categorized;
+  hasSetWasKnownSender = [categorizedCopy hasSetWasKnownSender];
+  wasKnownSender = [categorizedCopy wasKnownSender];
+  if ((hasSetWasKnownSender & 1) == 0)
   {
-    v5 = [v3 isKnownSender];
+    wasKnownSender = [categorizedCopy isKnownSender];
   }
 
-  if (v5)
+  if (wasKnownSender)
   {
     v6 = 2;
   }
@@ -3406,25 +3406,25 @@ LABEL_10:
   return v6;
 }
 
-- (id)subclassifiedConversationsForFilterMode:(unint64_t)a3
+- (id)subclassifiedConversationsForFilterMode:(unint64_t)mode
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
-  if (a3 == 4)
+  if (mode == 4)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 5)
+  if (mode == 5)
   {
-    a3 = 3;
+    mode = 3;
 LABEL_4:
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [MEMORY[0x1E69A8210] fetchSMSFilterExtensionParams];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    fetchSMSFilterExtensionParams = [MEMORY[0x1E69A8210] fetchSMSFilterExtensionParams];
+    v7 = [fetchSMSFilterExtensionParams countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = *v19;
@@ -3434,15 +3434,15 @@ LABEL_4:
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(fetchSMSFilterExtensionParams);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          if ([v10 action] == a3)
+          if ([v10 action] == mode)
           {
-            v11 = [(CKConversationList *)self conversationsDictionary];
+            conversationsDictionary = [(CKConversationList *)self conversationsDictionary];
             v12 = IMConversationListFilterModeStringValue([v10 filterMode]);
-            v13 = [v11 objectForKey:v12];
+            v13 = [conversationsDictionary objectForKey:v12];
 
             if (v13)
             {
@@ -3451,14 +3451,14 @@ LABEL_4:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [fetchSMSFilterExtensionParams countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
     }
 
-    v14 = [(CKConversationList *)self _conversationSortComparator];
-    [v5 sortUsingComparator:v14];
+    _conversationSortComparator = [(CKConversationList *)self _conversationSortComparator];
+    [v5 sortUsingComparator:_conversationSortComparator];
 
     v15 = [v5 copy];
     goto LABEL_21;
@@ -3470,7 +3470,7 @@ LABEL_4:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v24 = a3;
+      modeCopy = mode;
       _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Filter action mapping shouldn't fail. Got filterAction: %lu, returning empty array", buf, 0xCu);
     }
   }
@@ -3481,25 +3481,25 @@ LABEL_21:
   return v15;
 }
 
-- (id)conversationsForFilterMode:(unint64_t)a3
+- (id)conversationsForFilterMode:(unint64_t)mode
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v6)
+  if (isModernFilteringEnabled)
   {
-    v7 = [(CKConversationList *)self conversationsContainingFilterMode:a3];
+    v7 = [(CKConversationList *)self conversationsContainingFilterMode:mode];
 LABEL_17:
     v10 = v7;
     goto LABEL_18;
   }
 
-  v8 = [(CKConversationList *)self conversationsDictionary];
-  v9 = IMConversationListFilterModeStringValue(a3);
-  v10 = [v8 objectForKey:v9];
+  conversationsDictionary = [(CKConversationList *)self conversationsDictionary];
+  v9 = IMConversationListFilterModeStringValue(mode);
+  v10 = [conversationsDictionary objectForKey:v9];
 
-  if ([(CKConversationList *)self _isParentWithSubfoldersForFilterMode:a3])
+  if ([(CKConversationList *)self _isParentWithSubfoldersForFilterMode:mode])
   {
     if (IMOSLoggingEnabled())
     {
@@ -3507,33 +3507,33 @@ LABEL_17:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v23 = 134217984;
-        v24 = a3;
+        modeCopy = mode;
         _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Looking into sub classes of parent mode: %lu", &v23, 0xCu);
       }
     }
 
-    v12 = [(CKConversationList *)self subclassifiedConversationsForFilterMode:a3];
+    v12 = [(CKConversationList *)self subclassifiedConversationsForFilterMode:mode];
 
     v10 = v12;
   }
 
   if (v10 && [(CKConversationList *)self _messageSIMFilteringEnabled]&& self->_simFilterIndex != -1)
   {
-    v13 = [MEMORY[0x1E69A7F68] sharedInstance];
-    v14 = [v13 ctSubscriptionInfo];
-    v15 = [v14 __im_subscriptionContextForForSlotID:{-[CKConversationList simFilterIndex](self, "simFilterIndex")}];
+    mEMORY[0x1E69A7F68] = [MEMORY[0x1E69A7F68] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x1E69A7F68] ctSubscriptionInfo];
+    v15 = [ctSubscriptionInfo __im_subscriptionContextForForSlotID:{-[CKConversationList simFilterIndex](self, "simFilterIndex")}];
 
-    v16 = [v15 phoneNumber];
-    v17 = [v15 labelID];
-    v18 = [(CKConversationList *)self _filterConversations:v10 byHandleID:v16 simID:v17];
+    phoneNumber = [v15 phoneNumber];
+    labelID = [v15 labelID];
+    v18 = [(CKConversationList *)self _filterConversations:v10 byHandleID:phoneNumber simID:labelID];
 
     v10 = v18;
   }
 
-  v19 = [MEMORY[0x1E69A8088] sharedManager];
-  v20 = [v19 shouldFilterConversationsByFocus];
+  mEMORY[0x1E69A8088] = [MEMORY[0x1E69A8088] sharedManager];
+  shouldFilterConversationsByFocus = [mEMORY[0x1E69A8088] shouldFilterConversationsByFocus];
 
-  if (v20)
+  if (shouldFilterConversationsByFocus)
   {
     v21 = [(CKConversationList *)self _filterConversationsByFocus:v10];
 
@@ -3559,27 +3559,27 @@ uint64_t __62__CKConversationList__filterConversationsWithoutiMessageJunk___bloc
   return v3 ^ 1u;
 }
 
-- (id)_filterConversations:(id)a3 byHandleID:(id)a4 simID:(id)a5
+- (id)_filterConversations:(id)conversations byHandleID:(id)d simID:(id)iD
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 | v9)
+  conversationsCopy = conversations;
+  dCopy = d;
+  iDCopy = iD;
+  v10 = iDCopy;
+  if (dCopy | iDCopy)
   {
-    if (v8)
+    if (dCopy)
     {
       v11 = v21;
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v12 = __60__CKConversationList__filterConversations_byHandleID_simID___block_invoke;
-      v13 = v8;
+      v13 = dCopy;
     }
 
     else
     {
-      if (!v9)
+      if (!iDCopy)
       {
         v15 = 0;
         goto LABEL_12;
@@ -3589,14 +3589,14 @@ uint64_t __62__CKConversationList__filterConversationsWithoutiMessageJunk___bloc
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v12 = __60__CKConversationList__filterConversations_byHandleID_simID___block_invoke_2;
-      v13 = v9;
+      v13 = iDCopy;
     }
 
     v11[2] = v12;
     v11[3] = &unk_1E72ED3E8;
     v11[4] = v13;
     v16 = (v11 + 4);
-    v15 = [v7 __imArrayByFilteringWithBlock:v11];
+    v15 = [conversationsCopy __imArrayByFilteringWithBlock:v11];
 
 LABEL_12:
     if (![v15 count] && IMOSLoggingEnabled())
@@ -3605,7 +3605,7 @@ LABEL_12:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v23 = v8;
+        v23 = dCopy;
         v24 = 2112;
         v25 = v10;
         _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "SIM Filter | No conversations found for handleID: %@ simID: %@", buf, 0x16u);
@@ -3625,7 +3625,7 @@ LABEL_12:
     }
   }
 
-  v15 = v7;
+  v15 = conversationsCopy;
 LABEL_17:
 
   return v15;
@@ -3647,26 +3647,26 @@ uint64_t __60__CKConversationList__filterConversations_byHandleID_simID___block_
   return v4;
 }
 
-- (void)_setConversations:(id)a3 forFilterMode:(unint64_t)a4
+- (void)_setConversations:(id)conversations forFilterMode:(unint64_t)mode
 {
-  if (a3)
+  if (conversations)
   {
-    v6 = a3;
-    v8 = [(CKConversationList *)self conversationsDictionary];
-    v7 = IMConversationListFilterModeStringValue(a4);
-    [v8 setObject:v6 forKey:v7];
+    conversationsCopy = conversations;
+    conversationsDictionary = [(CKConversationList *)self conversationsDictionary];
+    v7 = IMConversationListFilterModeStringValue(mode);
+    [conversationsDictionary setObject:conversationsCopy forKey:v7];
   }
 }
 
-- (void)removeConversation:(id)a3
+- (void)removeConversation:(id)conversation
 {
-  v7 = a3;
+  conversationCopy = conversation;
   for (i = 0; i != 27; ++i)
   {
     v5 = [(CKConversationList *)self conversationsForFilterMode:i];
     v6 = [v5 mutableCopy];
 
-    [v6 removeObject:v7];
+    [v6 removeObject:conversationCopy];
     [(CKConversationList *)self _setConversations:v6 forFilterMode:i];
   }
 }
@@ -3675,8 +3675,8 @@ uint64_t __60__CKConversationList__filterConversations_byHandleID_simID___block_
 {
   if ([(CKConversationList *)self _messageUnknownFilteringEnabled])
   {
-    v3 = [(CKConversationList *)self conversations];
-    [v3 enumerateObjectsUsingBlock:&__block_literal_global_427_0];
+    conversations = [(CKConversationList *)self conversations];
+    [conversations enumerateObjectsUsingBlock:&__block_literal_global_427_0];
   }
 }
 
@@ -3689,27 +3689,27 @@ uint64_t __60__CKConversationList__filterConversations_byHandleID_simID___block_
   }
 }
 
-- (void)setFilterMode:(unint64_t)a3
+- (void)setFilterMode:(unint64_t)mode
 {
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isMergeFilteredThreadsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isMergeFilteredThreadsEnabled = [mEMORY[0x1E69A8070] isMergeFilteredThreadsEnabled];
 
-  if (v5)
+  if (isMergeFilteredThreadsEnabled)
   {
-    if (a3 >= 0xA)
+    if (mode >= 0xA)
     {
-      v7 = a3 & 0xF;
-      v6 = a3 & 0xFFFFFFFFFFFFFFF0;
+      v7 = mode & 0xF;
+      v6 = mode & 0xFFFFFFFFFFFFFFF0;
     }
 
     else
     {
       v6 = 0;
-      v7 = qword_190DCECE0[a3];
+      v7 = qword_190DCECE0[mode];
     }
 
-    v8 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    [v8 setCurrentMessageFilterMode:v6 | v7];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    [mEMORY[0x1E69A5AF8] setCurrentMessageFilterMode:v6 | v7];
   }
 }
 
@@ -3727,33 +3727,33 @@ uint64_t __48__CKConversationList__recoverableSortComparator__block_invoke(uint6
   return v9;
 }
 
-- (void)recoverableDeleteForConversations:(id)a3 deleteDate:(id)a4 synchronousQuery:(BOOL)a5 completionHandler:(id)a6
+- (void)recoverableDeleteForConversations:(id)conversations deleteDate:(id)date synchronousQuery:(BOOL)query completionHandler:(id)handler
 {
-  v7 = a5;
+  queryCopy = query;
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  conversationsCopy = conversations;
+  dateCopy = date;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v30 = v10;
+      v30 = conversationsCopy;
       v31 = 2112;
-      v32 = v11;
+      v32 = dateCopy;
       _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Recently Deleted | -recoverableDeleteForConversations called with: %@ with deleteDate: %@", buf, 0x16u);
     }
   }
 
-  [(CKConversationList *)self _updatePinnedConversationsControllerForRemovedConversations:v10];
+  [(CKConversationList *)self _updatePinnedConversationsControllerForRemovedConversations:conversationsCopy];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [v10 _copyForEnumerating];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  _copyForEnumerating = [conversationsCopy _copyForEnumerating];
+  v15 = [_copyForEnumerating countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
     v16 = *v25;
@@ -3764,29 +3764,29 @@ uint64_t __48__CKConversationList__recoverableSortComparator__block_invoke(uint6
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(_copyForEnumerating);
         }
 
-        [*(*(&v24 + 1) + 8 * v17++) prepareForRecoverableDeletionWithDeleteDate:v11];
+        [*(*(&v24 + 1) + 8 * v17++) prepareForRecoverableDeletionWithDeleteDate:dateCopy];
       }
 
       while (v15 != v17);
-      v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [_copyForEnumerating countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v15);
   }
 
-  v18 = [v10 __imArrayByApplyingBlock:&__block_literal_global_435_0];
-  v19 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  v18 = [conversationsCopy __imArrayByApplyingBlock:&__block_literal_global_435_0];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __102__CKConversationList_recoverableDeleteForConversations_deleteDate_synchronousQuery_completionHandler___block_invoke_2;
   v21[3] = &unk_1E72ED478;
-  v23 = v7;
-  v22 = v12;
-  v20 = v12;
-  [v19 moveMessagesInChatsToRecentlyDeleted:v18 deleteDate:v11 synchronously:v7 completionHandler:v21];
+  v23 = queryCopy;
+  v22 = handlerCopy;
+  v20 = handlerCopy;
+  [mEMORY[0x1E69A5AF8] moveMessagesInChatsToRecentlyDeleted:v18 deleteDate:dateCopy synchronously:queryCopy completionHandler:v21];
 }
 
 void __102__CKConversationList_recoverableDeleteForConversations_deleteDate_synchronousQuery_completionHandler___block_invoke_2(uint64_t a1)
@@ -3795,35 +3795,35 @@ void __102__CKConversationList_recoverableDeleteForConversations_deleteDate_sync
   [v2 updateRecoverableMessagesMetadataSynchronously:*(a1 + 40) completionHandler:*(a1 + 32)];
 }
 
-- (void)permanentlyDeleteRecoverableMessagesInConversations:(id)a3 synchronousQuery:(BOOL)a4 completionHandler:(id)a5
+- (void)permanentlyDeleteRecoverableMessagesInConversations:(id)conversations synchronousQuery:(BOOL)query completionHandler:(id)handler
 {
-  v6 = a4;
+  queryCopy = query;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  conversationsCopy = conversations;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v8;
+      v18 = conversationsCopy;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Recently Deleted | -permanentlyDeleteRecoverableMessagesInConversations called with: %@", buf, 0xCu);
     }
   }
 
-  [(CKConversationList *)self _removeConversationsFromRecentlyDeleted:v8];
-  [(CKConversationList *)self _deleteBrandLogosIfNeededForConversations:v8];
-  v11 = [v8 __imArrayByApplyingBlock:&__block_literal_global_437_0];
-  v12 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  [(CKConversationList *)self _removeConversationsFromRecentlyDeleted:conversationsCopy];
+  [(CKConversationList *)self _deleteBrandLogosIfNeededForConversations:conversationsCopy];
+  v11 = [conversationsCopy __imArrayByApplyingBlock:&__block_literal_global_437_0];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __109__CKConversationList_permanentlyDeleteRecoverableMessagesInConversations_synchronousQuery_completionHandler___block_invoke_2;
   v14[3] = &unk_1E72ED478;
-  v16 = v6;
-  v15 = v9;
-  v13 = v9;
-  [v12 permanentlyDeleteRecoverableMessagesInChats:v11 synchronously:v6 completionHandler:v14];
+  v16 = queryCopy;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [mEMORY[0x1E69A5AF8] permanentlyDeleteRecoverableMessagesInChats:v11 synchronously:queryCopy completionHandler:v14];
 }
 
 void __109__CKConversationList_permanentlyDeleteRecoverableMessagesInConversations_synchronousQuery_completionHandler___block_invoke_2(uint64_t a1)
@@ -3832,15 +3832,15 @@ void __109__CKConversationList_permanentlyDeleteRecoverableMessagesInConversatio
   [v2 updateRecoverableMessagesMetadataSynchronously:*(a1 + 40) completionHandler:*(a1 + 32)];
 }
 
-- (void)_deleteBrandLogosIfNeededForConversations:(id)a3
+- (void)_deleteBrandLogosIfNeededForConversations:(id)conversations
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  conversationsCopy = conversations;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [conversationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3851,7 +3851,7 @@ void __109__CKConversationList_permanentlyDeleteRecoverableMessagesInConversatio
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(conversationsCopy);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -3861,67 +3861,67 @@ void __109__CKConversationList_permanentlyDeleteRecoverableMessagesInConversatio
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [conversationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_updatePinnedConversationsControllerForRemovedConversations:(id)a3
+- (void)_updatePinnedConversationsControllerForRemovedConversations:(id)conversations
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationsCopy = conversations;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = conversationsCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Recently Deleted | updatingPinnedConversationsForRemovedConversations: %@", &v10, 0xCu);
     }
   }
 
   v6 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_439_0];
-  v7 = [v4 filteredArrayUsingPredicate:v6];
+  v7 = [conversationsCopy filteredArrayUsingPredicate:v6];
   v8 = [v7 valueForKey:@"pinningIdentifier"];
 
   if (![(CKConversationList *)self remergingConversations])
   {
-    v9 = [MEMORY[0x1E69A5C38] sharedInstance];
-    [v9 conversationsWereDeletedWithIdentifiers:v8];
+    mEMORY[0x1E69A5C38] = [MEMORY[0x1E69A5C38] sharedInstance];
+    [mEMORY[0x1E69A5C38] conversationsWereDeletedWithIdentifiers:v8];
   }
 }
 
-- (void)recoverDeletedMessagesInConversations:(id)a3 synchronousQuery:(BOOL)a4 completionHandler:(id)a5
+- (void)recoverDeletedMessagesInConversations:(id)conversations synchronousQuery:(BOOL)query completionHandler:(id)handler
 {
-  v6 = a4;
+  queryCopy = query;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  conversationsCopy = conversations;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v8;
+      v18 = conversationsCopy;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Recently Deleted | -recoverDeletedMessagesInConversations called with: %@", buf, 0xCu);
     }
   }
 
-  [(CKConversationList *)self _removeConversationsFromRecentlyDeleted:v8];
-  v11 = [v8 __imArrayByApplyingBlock:&__block_literal_global_444];
-  v12 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  [(CKConversationList *)self _removeConversationsFromRecentlyDeleted:conversationsCopy];
+  v11 = [conversationsCopy __imArrayByApplyingBlock:&__block_literal_global_444];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__CKConversationList_recoverDeletedMessagesInConversations_synchronousQuery_completionHandler___block_invoke_2;
   v14[3] = &unk_1E72ED478;
-  v16 = v6;
-  v15 = v9;
-  v13 = v9;
-  [v12 recoverMessagesForChats:v11 synchronously:v6 completionHandler:v14];
+  v16 = queryCopy;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [mEMORY[0x1E69A5AF8] recoverMessagesForChats:v11 synchronously:queryCopy completionHandler:v14];
 }
 
 void __95__CKConversationList_recoverDeletedMessagesInConversations_synchronousQuery_completionHandler___block_invoke_2(uint64_t a1)
@@ -3930,27 +3930,27 @@ void __95__CKConversationList_recoverDeletedMessagesInConversations_synchronousQ
   [v2 updateRecoverableMessagesMetadataSynchronously:*(a1 + 40) completionHandler:*(a1 + 32)];
 }
 
-- (void)_removeConversationsFromRecentlyDeleted:(id)a3
+- (void)_removeConversationsFromRecentlyDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = [(CKConversationList *)self conversationsForFilterMode:7];
   v6 = [v5 mutableCopy];
 
-  [v6 removeObjectsInArray:v4];
+  [v6 removeObjectsInArray:deletedCopy];
   [(CKConversationList *)self _setConversations:v6 forFilterMode:7];
 }
 
-- (void)recoverJunkMessagesInConversations:(id)a3
+- (void)recoverJunkMessagesInConversations:(id)conversations
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationsCopy = conversations;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = conversationsCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Junk Messages | -recoverJunkMessagesInConversations called with: %@", buf, 0xCu);
     }
   }
@@ -3960,13 +3960,13 @@ void __95__CKConversationList_recoverDeletedMessagesInConversations_synchronousQ
   v9[2] = __57__CKConversationList_recoverJunkMessagesInConversations___block_invoke;
   v9[3] = &unk_1E72ED4A0;
   v9[4] = self;
-  [v4 enumerateObjectsUsingBlock:v9];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [conversationsCopy enumerateObjectsUsingBlock:v9];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = @"CKConversationListRecoveredJunkConversationIdentifiersUserInfoKey";
-  v7 = [(CKConversationList *)self identifiersSetForConversations:v4];
+  v7 = [(CKConversationList *)self identifiersSetForConversations:conversationsCopy];
   v11 = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v6 postNotificationName:@"CKConversationListDidRecoverJunkConversationsNotification" object:0 userInfo:v8];
+  [defaultCenter postNotificationName:@"CKConversationListDidRecoverJunkConversationsNotification" object:0 userInfo:v8];
 }
 
 void __57__CKConversationList_recoverJunkMessagesInConversations___block_invoke(uint64_t a1, void *a2)
@@ -3994,18 +3994,18 @@ void __57__CKConversationList_recoverJunkMessagesInConversations___block_invoke(
   }
 }
 
-- (id)identifiersSetForConversations:(id)a3
+- (id)identifiersSetForConversations:(id)conversations
 {
   v3 = MEMORY[0x1E695DFA8];
-  v4 = a3;
-  v5 = [v3 setWithCapacity:{objc_msgSend(v4, "count")}];
+  conversationsCopy = conversations;
+  v5 = [v3 setWithCapacity:{objc_msgSend(conversationsCopy, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__CKConversationList_identifiersSetForConversations___block_invoke;
   v8[3] = &unk_1E72ED4A0;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [conversationsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -4018,21 +4018,21 @@ void __53__CKConversationList_identifiersSetForConversations___block_invoke(uint
   [v2 addObject:v3];
 }
 
-- (void)updateEarliestMessageDateForConversations:(id)a3
+- (void)updateEarliestMessageDateForConversations:(id)conversations
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  conversationsCopy = conversations;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(conversationsCopy, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__CKConversationList_updateEarliestMessageDateForConversations___block_invoke;
   v8[3] = &unk_1E72ED4A0;
   v9 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [conversationsCopy enumerateObjectsUsingBlock:v8];
 
-  v7 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  [v7 updateEarliestMessageDateForChats:v6 completion:0];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  [mEMORY[0x1E69A5AF8] updateEarliestMessageDateForChats:v6 completion:0];
 }
 
 void __64__CKConversationList_updateEarliestMessageDateForConversations___block_invoke(uint64_t a1, void *a2)
@@ -4042,20 +4042,20 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
   [v2 addObject:v3];
 }
 
-- (void)_trackSendEventForMySenderID:(id)a3 andParticipants:(id)a4
+- (void)_trackSendEventForMySenderID:(id)d andParticipants:(id)participants
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  dCopy = d;
+  participantsCopy = participants;
+  v7 = [participantsCopy count];
   if (v7 && v7 <= 1)
   {
-    v8 = [v6 firstObject];
-    v9 = [v8 ID];
+    firstObject = [participantsCopy firstObject];
+    v9 = [firstObject ID];
 
     v10 = [MEMORY[0x1E696AD98] numberWithInt:0xFFFFFFFFLL];
     v11 = MEMORY[0x193AF5D40](v9);
-    if (v11 && MEMORY[0x193AF5D40](v5))
+    if (v11 && MEMORY[0x193AF5D40](dCopy))
     {
       v12 = MEMORY[0x1E696AD98];
       v13 = IMCountryCodeForNumber();
@@ -4065,14 +4065,14 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
       v10 = v15;
     }
 
-    v16 = [MEMORY[0x1E69A8168] sharedInstance];
+    mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
     v19[0] = &unk_1F04E7878;
     v17 = [MEMORY[0x1E696AD98] numberWithBool:v11];
     v19[1] = &unk_1F04E7890;
     v20[0] = v17;
     v20[1] = v10;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-    [v16 trackiMessageJunkEvent:7 withDictionary:v18];
+    [mEMORY[0x1E69A8168] trackiMessageJunkEvent:7 withDictionary:v18];
   }
 }
 
@@ -4088,7 +4088,7 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
 
 - (id)defaultPrimaryFilterModeConversations
 {
-  v2 = self;
+  selfCopy = self;
   CKConversationList.defaultPrimaryFilterModeConversations()();
 
   sub_1902188FC(0, &qword_1EAD466B0);
@@ -4097,15 +4097,15 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
   return v3;
 }
 
-- (id)conversationsContainingFilterMode:(unint64_t)a3
+- (id)conversationsContainingFilterMode:(unint64_t)mode
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAD53C70);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_190DD1D90;
-  *(inited + 32) = a3;
+  *(inited + 32) = mode;
   v6 = sub_19021E69C(inited);
   swift_setDeallocating();
-  v7 = self;
+  selfCopy = self;
   sub_19021B384(v6, 0);
 
   sub_1902188FC(0, &qword_1EAD466B0);
@@ -4114,21 +4114,21 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
   return v8;
 }
 
-- (CKConversation)_beginTrackingConversationWithChat:(uint64_t)a3 shouldUpdateEarliestMessageDate:
+- (CKConversation)_beginTrackingConversationWithChat:(uint64_t)chat shouldUpdateEarliestMessageDate:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     if (CKIsRunningInPreferences() || CKIsRunningInMessages() || IMIsRunningInMessagesComposeViewService())
     {
       [v5 setNumberOfMessagesToKeepLoaded:50];
     }
 
-    v6 = [a1 _alreadyTrackedConversationForChat:v5];
+    v6 = [self _alreadyTrackedConversationForChat:v5];
     if (!v6)
     {
       v6 = [[CKConversation alloc] initWithChat:v5];
-      if ([a1 loadedConversations])
+      if ([self loadedConversations])
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -4140,9 +4140,9 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
       }
     }
 
-    if (([a1[7] containsObjectIdenticalTo:v6] & 1) == 0)
+    if (([self[7] containsObjectIdenticalTo:v6] & 1) == 0)
     {
-      [a1 _beginTrackingConversation:v6 forChat:v5 shouldUpdateEarliestMessageDate:a3];
+      [self _beginTrackingConversation:v6 forChat:v5 shouldUpdateEarliestMessageDate:chat];
     }
   }
 
@@ -4154,40 +4154,40 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
   return v6;
 }
 
-- (void)_handleRegistryDidRegisterChatNotification:(id)a3
+- (void)_handleRegistryDidRegisterChatNotification:(id)notification
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(CKConversationList *)&self->super.isa _beginTrackingConversationWithChat:v5 shouldUpdateEarliestMessageDate:1];
-  v7 = [(CKConversationList *)self pendingConversation];
-  if (v7)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  v6 = [(CKConversationList *)&self->super.isa _beginTrackingConversationWithChat:object shouldUpdateEarliestMessageDate:1];
+  pendingConversation = [(CKConversationList *)self pendingConversation];
+  if (pendingConversation)
   {
-    v8 = [(CKConversationList *)self pendingConversation];
-    v9 = [v8 chat];
+    pendingConversation2 = [(CKConversationList *)self pendingConversation];
+    chat = [pendingConversation2 chat];
 
-    if (!v9)
+    if (!chat)
     {
       if (IMOSLoggingEnabled())
       {
         v10 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [(CKConversationList *)self pendingConversation];
+          pendingConversation3 = [(CKConversationList *)self pendingConversation];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v11;
+          *(&buf + 4) = pendingConversation3;
           _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Pending conversation has no chat set: %@", &buf, 0xCu);
         }
       }
 
-      v12 = [(CKConversationList *)self pendingConversation];
-      v13 = [v6 chat];
-      v14 = [v13 participants];
-      v15 = [v14 sortedArrayUsingSelector:sel_guid];
+      pendingConversation4 = [(CKConversationList *)self pendingConversation];
+      chat2 = [v6 chat];
+      participants = [chat2 participants];
+      v15 = [participants sortedArrayUsingSelector:sel_guid];
 
-      v16 = [(CKConversationList *)self pendingConversation];
-      v17 = [v16 pendingHandles];
-      v18 = [v17 sortedArrayUsingSelector:sel_guid];
+      pendingConversation5 = [(CKConversationList *)self pendingConversation];
+      pendingHandles = [pendingConversation5 pendingHandles];
+      v18 = [pendingHandles sortedArrayUsingSelector:sel_guid];
 
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -4206,9 +4206,9 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
 
         if (*(*(&buf + 1) + 24))
         {
-          v20 = [v6 copyForPendingConversation];
-          v21 = [v12 pendingHandles];
-          [v20 setPendingHandles:v21];
+          copyForPendingConversation = [v6 copyForPendingConversation];
+          pendingHandles2 = [pendingConversation4 pendingHandles];
+          [copyForPendingConversation setPendingHandles:pendingHandles2];
 
           if (IMOSLoggingEnabled())
           {
@@ -4216,17 +4216,17 @@ void __64__CKConversationList_updateEarliestMessageDateForConversations___block_
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               *v33 = 138412290;
-              v34 = v20;
+              v34 = copyForPendingConversation;
               _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "Handles are identical, setting new pending conversation: %@", v33, 0xCu);
             }
           }
 
-          [(CKConversationList *)self setPendingConversation:v20];
+          [(CKConversationList *)self setPendingConversation:copyForPendingConversation];
           v31 = @"CKConversationListWasPendingKey";
           v32 = MEMORY[0x1E695E118];
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-          v24 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v24 postNotificationName:@"CKConversationListConversationLeftNotification" object:v12 userInfo:v23];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter postNotificationName:@"CKConversationListConversationLeftNotification" object:pendingConversation4 userInfo:v23];
         }
       }
 

@@ -1,25 +1,25 @@
 @interface HKGraphSeriesDataBlock
 + (id)emptyDataBlock;
-- (void)setChartPoints:(id)a3;
+- (void)setChartPoints:(id)points;
 @end
 
 @implementation HKGraphSeriesDataBlock
 
-- (void)setChartPoints:(id)a3
+- (void)setChartPoints:(id)points
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 copy];
+  pointsCopy = points;
+  v5 = [pointsCopy copy];
   chartPoints = self->_chartPoints;
   self->_chartPoints = v5;
 
-  if ([v4 count])
+  if ([pointsCopy count])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = v4;
+    v7 = pointsCopy;
     v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v8)
     {
@@ -37,12 +37,12 @@
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [v14 minYValue];
-          [v15 doubleValue];
+          minYValue = [v14 minYValue];
+          [minYValue doubleValue];
           v17 = v16;
 
-          v18 = [v14 maxYValue];
-          [v18 doubleValue];
+          maxYValue = [v14 maxYValue];
+          [maxYValue doubleValue];
           v20 = v19;
 
           if (v11 >= v17)

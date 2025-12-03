@@ -1,6 +1,6 @@
 @interface AVTAvatarAttributeEditorMulticolorSectionProvider
-- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithIdentifier:(id)a3 localizedName:(id)a4 subpickers:(id)a5 subpickerRemovalUpdaters:(id)a6 nestedPresetPickers:(id)a7 supplementalPicker:(id)a8 pickerItems:(id)a9 editorState:(id)a10;
-- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithLocalizedName:(id)a3 subpickers:(id)a4 nestedPresetPickers:(id)a5 supplementalPicker:(id)a6 pickerItems:(id)a7 editorState:(id)a8;
+- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithIdentifier:(id)identifier localizedName:(id)name subpickers:(id)subpickers subpickerRemovalUpdaters:(id)updaters nestedPresetPickers:(id)pickers supplementalPicker:(id)picker pickerItems:(id)items editorState:(id)self0;
+- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithLocalizedName:(id)name subpickers:(id)subpickers nestedPresetPickers:(id)pickers supplementalPicker:(id)picker pickerItems:(id)items editorState:(id)state;
 - (NSArray)sections;
 - (id)subpickerSectionIdentifiers;
 - (void)createPickerSectionIfNeeded;
@@ -8,46 +8,46 @@
 
 @implementation AVTAvatarAttributeEditorMulticolorSectionProvider
 
-- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithLocalizedName:(id)a3 subpickers:(id)a4 nestedPresetPickers:(id)a5 supplementalPicker:(id)a6 pickerItems:(id)a7 editorState:(id)a8
+- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithLocalizedName:(id)name subpickers:(id)subpickers nestedPresetPickers:(id)pickers supplementalPicker:(id)picker pickerItems:(id)items editorState:(id)state
 {
   v14 = MEMORY[0x1E696AFB0];
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v14 UUID];
-  v22 = [v21 UUIDString];
-  v23 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self initWithIdentifier:v22 localizedName:v20 subpickers:v19 nestedPresetPickers:v18 supplementalPicker:v17 pickerItems:v16 editorState:v15];
+  stateCopy = state;
+  itemsCopy = items;
+  pickerCopy = picker;
+  pickersCopy = pickers;
+  subpickersCopy = subpickers;
+  nameCopy = name;
+  uUID = [v14 UUID];
+  uUIDString = [uUID UUIDString];
+  v23 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self initWithIdentifier:uUIDString localizedName:nameCopy subpickers:subpickersCopy nestedPresetPickers:pickersCopy supplementalPicker:pickerCopy pickerItems:itemsCopy editorState:stateCopy];
 
   return v23;
 }
 
-- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithIdentifier:(id)a3 localizedName:(id)a4 subpickers:(id)a5 subpickerRemovalUpdaters:(id)a6 nestedPresetPickers:(id)a7 supplementalPicker:(id)a8 pickerItems:(id)a9 editorState:(id)a10
+- (AVTAvatarAttributeEditorMulticolorSectionProvider)initWithIdentifier:(id)identifier localizedName:(id)name subpickers:(id)subpickers subpickerRemovalUpdaters:(id)updaters nestedPresetPickers:(id)pickers supplementalPicker:(id)picker pickerItems:(id)items editorState:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  subpickersCopy = subpickers;
+  updatersCopy = updaters;
+  pickersCopy = pickers;
+  pickerCopy = picker;
+  itemsCopy = items;
+  stateCopy = state;
   v28.receiver = self;
   v28.super_class = AVTAvatarAttributeEditorMulticolorSectionProvider;
   v19 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v20->_localizedName, a4);
-    objc_storeStrong(&v20->_subpickerRemovalUpdaters, a6);
-    objc_storeStrong(&v20->_nestedPresetPickers, a7);
-    objc_storeStrong(&v20->_supplementalPicker, a8);
-    objc_storeStrong(&v20->_pickerItems, a9);
-    objc_storeStrong(&v20->_subpickers, a5);
-    objc_storeStrong(&v20->_editorState, a10);
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v20->_localizedName, name);
+    objc_storeStrong(&v20->_subpickerRemovalUpdaters, updaters);
+    objc_storeStrong(&v20->_nestedPresetPickers, pickers);
+    objc_storeStrong(&v20->_supplementalPicker, picker);
+    objc_storeStrong(&v20->_pickerItems, items);
+    objc_storeStrong(&v20->_subpickers, subpickers);
+    objc_storeStrong(&v20->_editorState, state);
   }
 
   return v20;
@@ -55,15 +55,15 @@
 
 - (void)createPickerSectionIfNeeded
 {
-  v3 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self pickerSection];
+  pickerSection = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self pickerSection];
 
-  if (!v3)
+  if (!pickerSection)
   {
     v4 = [AVTAvatarAttributeEditorMulticolorPickerSection alloc];
-    v5 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self identifier];
-    v6 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self localizedName];
-    v7 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self pickerItems];
-    v8 = [(AVTAvatarAttributeEditorMulticolorPickerSection *)v4 initWithIdentifier:v5 localizedName:v6 items:v7];
+    identifier = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self identifier];
+    localizedName = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self localizedName];
+    pickerItems = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self pickerItems];
+    v8 = [(AVTAvatarAttributeEditorMulticolorPickerSection *)v4 initWithIdentifier:identifier localizedName:localizedName items:pickerItems];
 
     [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self setPickerSection:v8];
   }
@@ -71,8 +71,8 @@
 
 - (id)subpickerSectionIdentifiers
 {
-  v2 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self subpickers];
-  v3 = [v2 avt_map:&__block_literal_global_20];
+  subpickers = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self subpickers];
+  v3 = [subpickers avt_map:&__block_literal_global_20];
 
   return v3;
 }
@@ -80,25 +80,25 @@
 - (NSArray)sections
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self editorState];
-  v4 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self identifier];
-  v5 = [v3 selectedMulticolorSubpickersIndexForMulticolorPickerIdentifier:v4];
+  editorState = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self editorState];
+  identifier = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self identifier];
+  v5 = [editorState selectedMulticolorSubpickersIndexForMulticolorPickerIdentifier:identifier];
 
   v6 = MEMORY[0x1E695DF70];
-  v7 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self nestedPresetPickers];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count") + 2}];
+  nestedPresetPickers = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self nestedPresetPickers];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(nestedPresetPickers, "count") + 2}];
 
   [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self createPickerSectionIfNeeded];
-  v9 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self pickerSection];
-  [v8 addObject:v9];
+  pickerSection = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self pickerSection];
+  [v8 addObject:pickerSection];
 
-  v10 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self subpickers];
-  v11 = [v10 objectAtIndexedSubscript:v5];
+  subpickers = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self subpickers];
+  v11 = [subpickers objectAtIndexedSubscript:v5];
 
   [v8 addObject:v11];
-  v12 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self nestedPresetPickers];
+  nestedPresetPickers2 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)self nestedPresetPickers];
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  v14 = [nestedPresetPickers2 objectForKeyedSubscript:v13];
 
   v24 = 0u;
   v25 = 0u;

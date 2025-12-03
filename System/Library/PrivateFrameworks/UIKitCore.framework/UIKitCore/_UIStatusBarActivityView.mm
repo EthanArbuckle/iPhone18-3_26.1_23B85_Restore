@@ -1,52 +1,52 @@
 @interface _UIStatusBarActivityView
 - (CGSize)intrinsicContentSize;
-- (_UIStatusBarActivityView)initWithCoder:(id)a3;
-- (_UIStatusBarActivityView)initWithFrame:(CGRect)a3;
-- (double)_thicknessForTraitCollection:(id)a3;
+- (_UIStatusBarActivityView)initWithCoder:(id)coder;
+- (_UIStatusBarActivityView)initWithFrame:(CGRect)frame;
+- (double)_thicknessForTraitCollection:(id)collection;
 - (void)_commonInit;
-- (void)_stopAnimatingWithStoppingAnimations:(BOOL)a3 completionHandler:(id)a4;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setIsSlow:(BOOL)a3;
+- (void)_stopAnimatingWithStoppingAnimations:(BOOL)animations completionHandler:(id)handler;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setColor:(id)color;
+- (void)setIsSlow:(BOOL)slow;
 - (void)startAnimating;
-- (void)stopAnimatingWithCompletionHandler:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)stopAnimatingWithCompletionHandler:(id)handler;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UIStatusBarActivityView
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 imageTintColor];
-  v6 = [v4 style] == 1;
+  attributesCopy = attributes;
+  imageTintColor = [attributesCopy imageTintColor];
+  v6 = [attributesCopy style] == 1;
 
-  v7 = [v5 colorWithAlphaComponent:dbl_18A6816B0[v6]];
+  v7 = [imageTintColor colorWithAlphaComponent:dbl_18A6816B0[v6]];
 
   [(_UIStatusBarActivityView *)self setColor:v7];
 }
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   mainLayer = self->_mainLayer;
-  self->_mainLayer = v3;
+  self->_mainLayer = layer;
 
-  v5 = [MEMORY[0x1E6979380] layer];
+  layer2 = [MEMORY[0x1E6979380] layer];
   barLayer = self->_barLayer;
-  self->_barLayer = v5;
+  self->_barLayer = layer2;
 
   [(CAGradientLayer *)self->_barLayer setStartPoint:0.0, 0.5];
   [(CAGradientLayer *)self->_barLayer setEndPoint:1.0, 0.5];
   [(CAGradientLayer *)self->_barLayer setLocations:&unk_1EFE2D570];
   [(CALayer *)self->_mainLayer addSublayer:self->_barLayer];
-  v7 = [MEMORY[0x1E6979398] layer];
+  layer3 = [MEMORY[0x1E6979398] layer];
   pointLayer = self->_pointLayer;
-  self->_pointLayer = v7;
+  self->_pointLayer = layer3;
 
   [(CALayer *)self->_mainLayer addSublayer:self->_pointLayer];
-  v9 = [(UIView *)self layer];
-  [v9 addSublayer:self->_mainLayer];
+  layer4 = [(UIView *)self layer];
+  [layer4 addSublayer:self->_mainLayer];
 
   LODWORD(v10) = 1112014848;
   [(UIView *)self setContentHuggingPriority:0 forAxis:v10];
@@ -59,20 +59,20 @@
   [(UIView *)self setContentCompressionResistancePriority:1 forAxis:v13];
 }
 
-- (_UIStatusBarActivityView)initWithFrame:(CGRect)a3
+- (_UIStatusBarActivityView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarActivityView;
-  v3 = [(UIView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UIStatusBarActivityView *)v3 _commonInit];
   return v3;
 }
 
-- (_UIStatusBarActivityView)initWithCoder:(id)a3
+- (_UIStatusBarActivityView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarActivityView;
-  v3 = [(UIView *)&v5 initWithCoder:a3];
+  v3 = [(UIView *)&v5 initWithCoder:coder];
   [(_UIStatusBarActivityView *)v3 _commonInit];
   return v3;
 }
@@ -83,7 +83,7 @@
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     [(UIView *)self bounds];
     v9 = v5;
     v10 = v6;
@@ -134,7 +134,7 @@
     LODWORD(v25) = 2139095040;
     [v16 setRepeatCount:v25];
     v26 = [_UIStatusBarCycleLayerAnimation cycleAnimationWithLayer:self->_mainLayer animation:v16 key:@"position"];
-    [v4 addObject:v26];
+    [array addObject:v26];
 
     v27 = [MEMORY[0x1E6979390] animationWithKeyPath:@"bounds.size.width"];
     [v27 setRemovedOnCompletion:0];
@@ -159,8 +159,8 @@
     LODWORD(v34) = 2139095040;
     [v27 setRepeatCount:v34];
     v35 = [_UIStatusBarCycleLayerAnimation cycleAnimationWithLayer:self->_pointLayer animation:v27 key:@"size"];
-    v36 = v4;
-    [v4 addObject:v35];
+    v36 = array;
+    [array addObject:v35];
 
     v37 = [MEMORY[0x1E6979390] animationWithKeyPath:@"locations"];
     [v37 setTimeOffset:v13 * -0.1];
@@ -194,20 +194,20 @@
   [(_UIStatusBarCycleAnimation *)cycleAnimation start];
 }
 
-- (void)stopAnimatingWithCompletionHandler:(id)a3
+- (void)stopAnimatingWithCompletionHandler:(id)handler
 {
   cycleAnimation = self->_cycleAnimation;
-  v5 = a3;
+  handlerCopy = handler;
   [(_UIStatusBarCycleAnimation *)cycleAnimation setStopsAfterReversing:0];
-  [(_UIStatusBarActivityView *)self _stopAnimatingWithStoppingAnimations:1 completionHandler:v5];
+  [(_UIStatusBarActivityView *)self _stopAnimatingWithStoppingAnimations:1 completionHandler:handlerCopy];
 }
 
-- (void)_stopAnimatingWithStoppingAnimations:(BOOL)a3 completionHandler:(id)a4
+- (void)_stopAnimatingWithStoppingAnimations:(BOOL)animations completionHandler:(id)handler
 {
-  v4 = a3;
+  animationsCopy = animations;
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([(_UIStatusBarCycleAnimation *)self->_cycleAnimation state]== 1 && v4)
+  handlerCopy = handler;
+  if ([(_UIStatusBarCycleAnimation *)self->_cycleAnimation state]== 1 && animationsCopy)
   {
     v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     [v8 setDuration:0.2];
@@ -220,18 +220,18 @@
     [(_UIStatusBarCycleAnimation *)self->_cycleAnimation setStoppingLayerAnimations:v10];
   }
 
-  [(_UIStatusBarCycleAnimation *)self->_cycleAnimation stopWithCompletionHandler:v6];
+  [(_UIStatusBarCycleAnimation *)self->_cycleAnimation stopWithCompletionHandler:handlerCopy];
 }
 
-- (void)setIsSlow:(BOOL)a3
+- (void)setIsSlow:(BOOL)slow
 {
-  if (self->_isSlow != a3)
+  if (self->_isSlow != slow)
   {
-    self->_isSlow = a3;
-    v4 = [(_UIStatusBarCycleAnimation *)self->_cycleAnimation state];
-    if (v4)
+    self->_isSlow = slow;
+    state = [(_UIStatusBarCycleAnimation *)self->_cycleAnimation state];
+    if (state)
     {
-      if (v4 == 2)
+      if (state == 2)
       {
         if ([(_UIStatusBarCycleAnimation *)self->_cycleAnimation stopsAfterReversing])
         {
@@ -242,13 +242,13 @@
         v8 = 3221225472;
         v9 = __38___UIStatusBarActivityView_setIsSlow___block_invoke_2;
         v10 = &unk_1E70F5AC0;
-        v11 = self;
+        selfCopy = self;
         v5 = &v7;
       }
 
       else
       {
-        if (v4 != 1)
+        if (state != 1)
         {
           return;
         }
@@ -258,11 +258,11 @@
         v13 = 3221225472;
         v14 = __38___UIStatusBarActivityView_setIsSlow___block_invoke;
         v15 = &unk_1E70F5AC0;
-        v16 = self;
+        selfCopy2 = self;
         v5 = &v12;
       }
 
-      [(_UIStatusBarActivityView *)self _stopAnimatingWithStoppingAnimations:0 completionHandler:v5, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16];
+      [(_UIStatusBarActivityView *)self _stopAnimatingWithStoppingAnimations:0 completionHandler:v5, v7, v8, v9, v10, selfCopy, v12, v13, v14, v15, selfCopy2];
     }
 
     else
@@ -273,9 +273,9 @@
   }
 }
 
-- (double)_thicknessForTraitCollection:(id)a3
+- (double)_thicknessForTraitCollection:(id)collection
 {
-  [a3 displayScale];
+  [collection displayScale];
   v4 = v3 <= 2.5;
   result = 2.66666667;
   if (v4)
@@ -286,16 +286,16 @@
   return result;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    objc_storeStrong(&self->_color, a3);
-    v6 = [(UIColor *)v5 colorWithAlphaComponent:1.0];
-    v7 = [(UIColor *)v5 colorWithAlphaComponent:0.0];
-    [(UIColor *)v5 alphaComponent];
+    objc_storeStrong(&self->_color, color);
+    v6 = [(UIColor *)colorCopy colorWithAlphaComponent:1.0];
+    v7 = [(UIColor *)colorCopy colorWithAlphaComponent:0.0];
+    [(UIColor *)colorCopy alphaComponent];
     *&v8 = v8;
     [(CALayer *)self->_mainLayer setOpacity:v8];
     v10[0] = [v7 CGColor];
@@ -309,13 +309,13 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = _UIStatusBarActivityView;
-  [(UIView *)&v6 traitCollectionDidChange:a3];
-  v4 = [(UIView *)self traitCollection];
-  [(_UIStatusBarActivityView *)self _thicknessForTraitCollection:v4];
+  [(UIView *)&v6 traitCollectionDidChange:change];
+  traitCollection = [(UIView *)self traitCollection];
+  [(_UIStatusBarActivityView *)self _thicknessForTraitCollection:traitCollection];
   self->_thickness = v5;
 
   [(CALayer *)self->_pointLayer setCornerRadius:self->_thickness * 0.5];

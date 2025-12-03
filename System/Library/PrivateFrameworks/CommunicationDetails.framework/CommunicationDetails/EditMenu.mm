@@ -1,10 +1,10 @@
 @interface EditMenu
-- (_TtC20CommunicationDetails8EditMenu)initWithCoder:(id)a3;
+- (_TtC20CommunicationDetails8EditMenu)initWithCoder:(id)coder;
 @end
 
 @implementation EditMenu
 
-- (_TtC20CommunicationDetails8EditMenu)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails8EditMenu)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

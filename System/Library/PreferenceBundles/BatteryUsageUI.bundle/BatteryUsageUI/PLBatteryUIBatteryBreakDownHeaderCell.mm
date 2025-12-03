@@ -1,24 +1,24 @@
 @interface PLBatteryUIBatteryBreakDownHeaderCell
-- (PLBatteryUIBatteryBreakDownHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (PLBatteryUIBatteryBreakDownHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (PLBatteryUITimeUsageCellDelegate)delegate;
-- (void)buttonAction:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)buttonAction:(id)action;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateButton;
 - (void)updateConstraints;
 @end
 
 @implementation PLBatteryUIBatteryBreakDownHeaderCell
 
-- (PLBatteryUIBatteryBreakDownHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PLBatteryUIBatteryBreakDownHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v51.receiver = self;
   v51.super_class = PLBatteryUIBatteryBreakDownHeaderCell;
-  v9 = [(PLBatteryUIBatteryBreakDownHeaderCell *)&v51 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PLBatteryUIBatteryBreakDownHeaderCell *)&v51 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v9 contentView];
+    contentView = [(PLBatteryUIBatteryBreakDownHeaderCell *)v9 contentView];
     v12 = [UILabel alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -26,90 +26,90 @@
     v16 = [v12 initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 setBreakdownTitleLabel:v16];
 
-    v17 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v17 setAccessibilityIdentifier:@"TitleLabel"];
+    breakdownTitleLabel = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel setAccessibilityIdentifier:@"TitleLabel"];
 
     v18 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v19 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v19 setFont:v18];
+    breakdownTitleLabel2 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel2 setFont:v18];
 
-    v20 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    breakdownTitleLabel3 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v21 = +[UIColor _secondaryLabelColor];
-    v22 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v22 setTextColor:v21];
+    breakdownTitleLabel4 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel4 setTextColor:v21];
 
     v23 = +[PLBatteryUIUtilities localizedLeftTextAlignment];
-    v24 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v24 setTextAlignment:v23];
+    breakdownTitleLabel5 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel5 setTextAlignment:v23];
 
     v25 = +[UIColor clearColor];
-    v26 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v26 setBackgroundColor:v25];
+    breakdownTitleLabel6 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel6 setBackgroundColor:v25];
 
-    v27 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v27 setNumberOfLines:0];
+    breakdownTitleLabel7 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel7 setNumberOfLines:0];
 
-    v28 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v28 setLineBreakMode:0];
+    breakdownTitleLabel8 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [breakdownTitleLabel8 setLineBreakMode:0];
 
-    v29 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    [v11 addSubview:v29];
+    breakdownTitleLabel9 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    [contentView addSubview:breakdownTitleLabel9];
 
     v30 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 setBreakdownToggleButton:v30];
 
-    v31 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v31 setAccessibilityIdentifier:@"ToggleButton"];
+    breakdownToggleButton = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton setAccessibilityIdentifier:@"ToggleButton"];
 
-    v32 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+    breakdownToggleButton2 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v33 = +[UIColor systemBlueColor];
-    v34 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v34 setTextColor:v33];
+    breakdownToggleButton3 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton3 setTextColor:v33];
 
-    v35 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v35 setEnabled:1];
+    breakdownToggleButton4 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton4 setEnabled:1];
 
-    v36 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v36 setHidden:0];
+    breakdownToggleButton5 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton5 setHidden:0];
 
     v37 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v38 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v38 setFont:v37];
+    breakdownToggleButton6 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton6 setFont:v37];
 
-    v39 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v39 setNumberOfLines:0];
+    breakdownToggleButton7 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton7 setNumberOfLines:0];
 
     v40 = +[PLBatteryUIUtilities localizedRightTextAlignment];
-    v41 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v41 setTextAlignment:v40];
+    breakdownToggleButton8 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton8 setTextAlignment:v40];
 
-    v42 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v42 setLineBreakMode:0];
+    breakdownToggleButton9 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton9 setLineBreakMode:0];
 
-    v43 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v11 addSubview:v43];
+    breakdownToggleButton10 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [contentView addSubview:breakdownToggleButton10];
 
     [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 setSeparatorInset:0.0, 0.0, 0.0, 0.0];
-    v44 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
-    v52[0] = v44;
-    v45 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    v52[1] = v45;
+    breakdownTitleLabel10 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownTitleLabel];
+    v52[0] = breakdownTitleLabel10;
+    breakdownToggleButton11 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    v52[1] = breakdownToggleButton11;
     v46 = [NSArray arrayWithObjects:v52 count:2];
-    [v11 setAccessibilityElements:v46];
+    [contentView setAccessibilityElements:v46];
 
-    v47 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v47 setUserInteractionEnabled:1];
+    breakdownToggleButton12 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton12 setUserInteractionEnabled:1];
 
     v48 = [[UITapGestureRecognizer alloc] initWithTarget:v10 action:"buttonAction:"];
     [v48 setNumberOfTapsRequired:1];
-    v49 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
-    [v49 addGestureRecognizer:v48];
+    breakdownToggleButton13 = [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 breakdownToggleButton];
+    [breakdownToggleButton13 addGestureRecognizer:v48];
 
-    [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 refreshCellContentsWithSpecifier:v8];
+    [(PLBatteryUIBatteryBreakDownHeaderCell *)v10 refreshCellContentsWithSpecifier:specifierCopy];
   }
 
   return v10;
@@ -117,18 +117,18 @@
 
 - (void)updateConstraints
 {
-  v3 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
-  v4 = [v3 text];
-  v5 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
-  v6 = [v5 font];
-  [PLBatteryUIUtilities getOneLineWidthOfText:v4 withFont:v6];
+  breakdownTitleLabel = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
+  text = [breakdownTitleLabel text];
+  breakdownTitleLabel2 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
+  font = [breakdownTitleLabel2 font];
+  [PLBatteryUIUtilities getOneLineWidthOfText:text withFont:font];
   v8 = v7;
 
-  v9 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
-  v10 = [v9 text];
-  v11 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
-  v12 = [v11 font];
-  [PLBatteryUIUtilities getOneLineWidthOfText:v10 withFont:v12];
+  breakdownToggleButton = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
+  text2 = [breakdownToggleButton text];
+  breakdownToggleButton2 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
+  font2 = [breakdownToggleButton2 font];
+  [PLBatteryUIUtilities getOneLineWidthOfText:text2 withFont:font2];
   v14 = v13;
 
   [(PLBatteryUIBatteryBreakDownHeaderCell *)self frame];
@@ -142,17 +142,17 @@
     v16 = 1.0;
   }
 
-  v17 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
-  v18 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
-  v19 = [NSLayoutConstraint constraintWithItem:v17 attribute:7 relatedBy:0 toItem:v18 attribute:7 multiplier:v16 constant:0.0];
+  breakdownTitleLabel3 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
+  breakdownToggleButton3 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
+  v19 = [NSLayoutConstraint constraintWithItem:breakdownTitleLabel3 attribute:7 relatedBy:0 toItem:breakdownToggleButton3 attribute:7 multiplier:v16 constant:0.0];
 
-  v20 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self widthConstraint];
+  widthConstraint = [(PLBatteryUIBatteryBreakDownHeaderCell *)self widthConstraint];
 
-  if (v20)
+  if (widthConstraint)
   {
-    v21 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self contentView];
-    v22 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self widthConstraint];
-    [v21 removeConstraint:v22];
+    contentView = [(PLBatteryUIBatteryBreakDownHeaderCell *)self contentView];
+    widthConstraint2 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self widthConstraint];
+    [contentView removeConstraint:widthConstraint2];
 
     [(PLBatteryUIBatteryBreakDownHeaderCell *)self setWidthConstraint:v19];
     v35 = v19;
@@ -167,11 +167,11 @@
   else
   {
     v24 = +[NSMutableArray array];
-    v25 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
-    [v25 sizeToFit];
+    breakdownTitleLabel4 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
+    [breakdownTitleLabel4 sizeToFit];
 
-    v26 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
-    [v26 sizeToFit];
+    breakdownToggleButton4 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
+    [breakdownToggleButton4 sizeToFit];
 
     v27 = _NSDictionaryOfVariableBindings(@"_breakdownTitleLabel, _breakdownToggleButton", self->_breakdownTitleLabel, self->_breakdownToggleButton, 0);
     v28 = _NSDictionaryOfVariableBindings(@"labelMargin", &off_173550, 0);
@@ -192,35 +192,35 @@
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v21.receiver = self;
   v21.super_class = PLBatteryUIBatteryBreakDownHeaderCell;
-  [(PLBatteryUIBatteryBreakDownHeaderCell *)&v21 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"PLBatteryUIGraphBatteryBreakdownShortStringKey"];
-  v6 = [v5 BOOLValue];
+  [(PLBatteryUIBatteryBreakDownHeaderCell *)&v21 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"PLBatteryUIGraphBatteryBreakdownShortStringKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 propertyForKey:@"PLBatteryUITimeUsageCellDelegateWrapperKey"];
+  v7 = [specifierCopy propertyForKey:@"PLBatteryUITimeUsageCellDelegateWrapperKey"];
 
   if (v7)
   {
-    v8 = [v4 propertyForKey:@"PLBatteryUITimeUsageCellDelegateWrapperKey"];
-    v9 = [v8 buiViewController];
-    [(PLBatteryUIBatteryBreakDownHeaderCell *)self setDelegate:v9];
+    v8 = [specifierCopy propertyForKey:@"PLBatteryUITimeUsageCellDelegateWrapperKey"];
+    buiViewController = [v8 buiViewController];
+    [(PLBatteryUIBatteryBreakDownHeaderCell *)self setDelegate:buiViewController];
   }
 
   [(PLBatteryUIBatteryBreakDownHeaderCell *)self updateButton];
-  v10 = [v4 propertyForKey:@"PLBatteryUIGraphTappedTimeDurationStringKey"];
-  v11 = [v4 objectForKeyedSubscript:@"PLIconDisplayTypeKey"];
-  v12 = [v11 intValue];
+  v10 = [specifierCopy propertyForKey:@"PLBatteryUIGraphTappedTimeDurationStringKey"];
+  v11 = [specifierCopy objectForKeyedSubscript:@"PLIconDisplayTypeKey"];
+  intValue = [v11 intValue];
 
-  if (v12)
+  if (intValue)
   {
     if (v10)
     {
       v13 = +[BatteryUIResourceClass inDemoMode];
-      if (v6)
+      if (bOOLValue)
       {
         if (v13)
         {
@@ -271,7 +271,7 @@ LABEL_23:
     if (v10)
     {
       v16 = +[BatteryUIResourceClass inDemoMode];
-      if (v6)
+      if (bOOLValue)
       {
         if (v16)
         {
@@ -313,8 +313,8 @@ LABEL_23:
 
   v19 = v17;
 LABEL_30:
-  v20 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
-  [v20 setText:v19];
+  breakdownTitleLabel = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownTitleLabel];
+  [breakdownTitleLabel setText:v19];
 
   [(PLBatteryUIBatteryBreakDownHeaderCell *)self setNeedsUpdateConstraints];
   [(PLBatteryUIBatteryBreakDownHeaderCell *)self setNeedsDisplay];
@@ -324,9 +324,9 @@ LABEL_30:
 {
   WeakRetained = objc_loadWeakRetained(&self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v4 = [WeakRetained objectForKeyedSubscript:@"PLIconDisplayTypeKey"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   v6 = +[BatteryUIResourceClass inDemoMode];
-  if (v5)
+  if (intValue)
   {
     if (v6)
     {
@@ -362,14 +362,14 @@ LABEL_10:
 LABEL_11:
   v11 = v8;
 
-  v9 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
-  [v9 setText:v11];
+  breakdownToggleButton = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
+  [breakdownToggleButton setText:v11];
 
-  v10 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
-  [v10 sizeToFit];
+  breakdownToggleButton2 = [(PLBatteryUIBatteryBreakDownHeaderCell *)self breakdownToggleButton];
+  [breakdownToggleButton2 sizeToFit];
 }
 
-- (void)buttonAction:(id)a3
+- (void)buttonAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didPushBatteryButton:self];

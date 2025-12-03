@@ -1,16 +1,16 @@
 @interface SFYearOfManufactureView
 - (SFYearOfManufactureView)init;
-- (SFYearOfManufactureView)initWithFrame:(CGRect)a3;
+- (SFYearOfManufactureView)initWithFrame:(CGRect)frame;
 - (void)render;
 @end
 
 @implementation SFYearOfManufactureView
 
-- (SFYearOfManufactureView)initWithFrame:(CGRect)a3
+- (SFYearOfManufactureView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SFYearOfManufactureView;
-  v3 = [(SFYearOfManufactureView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFYearOfManufactureView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,20 +37,20 @@
 - (void)render
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v3 = [(SFYearOfManufactureView *)self subviews];
-  v4 = [v3 count];
+  subviews = [(SFYearOfManufactureView *)self subviews];
+  v4 = [subviews count];
 
   if (!v4)
   {
     [(SFYearOfManufactureView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 sf_yearOfManufacture];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_yearOfManufacture = [currentDevice sf_yearOfManufacture];
 
     v7 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    if (v6)
+    if (sf_yearOfManufacture)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"製造年份 %lu", v6];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"製造年份 %lu", sf_yearOfManufacture];
       [v7 setText:v8];
 
       v9 = [MEMORY[0x277D74300] systemFontOfSize:15.0];
@@ -59,21 +59,21 @@
 
     [(SFYearOfManufactureView *)self addSubview:v7];
     v20 = MEMORY[0x277CCAAD0];
-    v24 = [(SFYearOfManufactureView *)self leadingAnchor];
-    v23 = [v7 leadingAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [(SFYearOfManufactureView *)self leadingAnchor];
+    leadingAnchor2 = [v7 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[0] = v22;
-    v21 = [(SFYearOfManufactureView *)self trailingAnchor];
-    v10 = [v7 trailingAnchor];
-    v11 = [v21 constraintEqualToAnchor:v10];
+    trailingAnchor = [(SFYearOfManufactureView *)self trailingAnchor];
+    trailingAnchor2 = [v7 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[1] = v11;
-    v12 = [v7 topAnchor];
-    v13 = [(SFYearOfManufactureView *)self topAnchor];
-    v14 = [v12 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v13 multiplier:1.0];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [(SFYearOfManufactureView *)self topAnchor];
+    v14 = [topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     v25[2] = v14;
-    v15 = [(SFYearOfManufactureView *)self bottomAnchor];
-    v16 = [v7 bottomAnchor];
-    v17 = [v15 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v16 multiplier:1.0];
+    bottomAnchor = [(SFYearOfManufactureView *)self bottomAnchor];
+    bottomAnchor2 = [v7 bottomAnchor];
+    v17 = [bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
     v25[3] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
     [v20 activateConstraints:v18];

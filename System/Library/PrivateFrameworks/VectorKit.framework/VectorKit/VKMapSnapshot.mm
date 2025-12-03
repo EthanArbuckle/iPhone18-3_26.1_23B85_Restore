@@ -1,22 +1,22 @@
 @interface VKMapSnapshot
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForPoint:(CGPoint)a3;
-- (CGPoint)pointForCoordinate:(id)a3;
-- (VKMapSnapshot)initWithCoder:(id)a3;
-- (id)_initWithImages:(id)a3 displayStyles:(id *)a4 displayStylesCount:(unint64_t)a5 scale:(double)a6 camera:(id)a7 elevationScale:(float)a8 targetPointElevation:(float)a9 colorSpace:(__CFString *)a10;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForPoint:(CGPoint)point;
+- (CGPoint)pointForCoordinate:(id)coordinate;
+- (VKMapSnapshot)initWithCoder:(id)coder;
+- (id)_initWithImages:(id)images displayStyles:(id *)styles displayStylesCount:(unint64_t)count scale:(double)scale camera:(id)camera elevationScale:(float)elevationScale targetPointElevation:(float)elevation colorSpace:(__CFString *)self0;
 - (id)description;
-- (id)imageDataInFormat:(unint64_t)a3;
-- (id)imageSurfaceAtIndex:(unint64_t)a3;
+- (id)imageDataInFormat:(unint64_t)format;
+- (id)imageSurfaceAtIndex:(unint64_t)index;
 - (id)imageSurfaces;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateImagesWithBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateImagesWithBlock:(id)block;
 @end
 
 @implementation VKMapSnapshot
 
-- (void)enumerateImagesWithBlock:(id)a3
+- (void)enumerateImagesWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   if (self->_displayStylesCount)
   {
     v6 = 0;
@@ -30,7 +30,7 @@
       v12 = 0;
       [v11 getValue:&v12];
       v3 = v3 & 0xFFFF000000000000 | (v10 | (v9 << 32)) & 0xFFFFFFFFFFFFLL;
-      v5[2](v5, v3, v12);
+      blockCopy[2](blockCopy, v3, v12);
 
       ++v7;
       ++v6;
@@ -40,7 +40,7 @@
   }
 }
 
-- (id)imageDataInFormat:(unint64_t)a3
+- (id)imageDataInFormat:(unint64_t)format
 {
   v21 = *MEMORY[0x1E69E9840];
   p_images = &self->_images;
@@ -54,7 +54,7 @@
   if (v7)
   {
     v8 = *v17;
-    if (a3)
+    if (format)
     {
       v9 = @"public.png";
     }
@@ -93,12 +93,12 @@
   return v5;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForPoint:(CGPoint)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForPoint:(CGPoint)point
 {
   vkCamera = self->_vkCamera;
   if (vkCamera)
   {
-    [(VKCamera *)vkCamera groundPointFromScreenPoint:self->_scale * a3.x / self->_width, 1.0 - self->_scale * a3.y / self->_height];
+    [(VKCamera *)vkCamera groundPointFromScreenPoint:self->_scale * point.x / self->_width, 1.0 - self->_scale * point.y / self->_height];
     v5 = v12 * 6.28318531;
     v6 = v13 * 6.28318531 + -3.14159265;
   }
@@ -119,10 +119,10 @@
   return result;
 }
 
-- (CGPoint)pointForCoordinate:(id)a3
+- (CGPoint)pointForCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v49 = *MEMORY[0x1E69E9840];
   v6 = *[(VKCamera *)self->_vkCamera position];
   v7 = tan(var0 * 0.00872664626 + 0.785398163);
@@ -155,11 +155,11 @@
           }
 
           v16 = *(*(&v42 + 1) + 8 * i);
-          v17 = [v16 tile];
-          v18 = 1 << *(v17 + 1);
+          tile = [v16 tile];
+          v18 = 1 << *(tile + 1);
           v19 = -1.0 / v18;
-          v20 = (v8 + 0.5 + v19 * *(v17 + 8)) * v18;
-          v21 = (v9 + v19 * (v18 + ~*(v17 + 4))) * v18;
+          v20 = (v8 + 0.5 + v19 * *(tile + 8)) * v18;
+          v21 = (v9 + v19 * (v18 + ~*(tile + 4))) * v18;
           v41[0] = v20;
           v41[1] = v21;
           [v16 tile];
@@ -279,21 +279,21 @@ LABEL_27:
   [(VKMapSnapshot *)&v9 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBytes:self->_displayStyles length:6 * self->_displayStylesCount forKey:@"displayStyles"];
-  [v4 encodeInteger:self->_displayStylesCount forKey:@"displayStylesCount"];
+  coderCopy = coder;
+  [coderCopy encodeBytes:self->_displayStyles length:6 * self->_displayStylesCount forKey:@"displayStyles"];
+  [coderCopy encodeInteger:self->_displayStylesCount forKey:@"displayStylesCount"];
   memoryStats = self->_memoryStats;
   if (memoryStats)
   {
-    [v4 encodeObject:memoryStats forKey:@"memoryStats"];
+    [coderCopy encodeObject:memoryStats forKey:@"memoryStats"];
   }
 
-  v6 = [(VKMapSnapshot *)self imageSurfaces];
-  if (v6)
+  imageSurfaces = [(VKMapSnapshot *)self imageSurfaces];
+  if (imageSurfaces)
   {
-    [v4 encodeObject:v6 forKey:@"imageSurfaces"];
+    [coderCopy encodeObject:imageSurfaces forKey:@"imageSurfaces"];
   }
 
   else
@@ -301,12 +301,12 @@ LABEL_27:
     v7 = [(VKMapSnapshot *)self imageDataInFormat:1];
     if (v7)
     {
-      [v4 encodeObject:v7 forKey:@"imageDatas"];
+      [coderCopy encodeObject:v7 forKey:@"imageDatas"];
     }
   }
 
-  [v4 encodeDouble:@"scale" forKey:self->_scale];
-  [v4 encodeDouble:@"targetPointElevation" forKey:self->_targetPointElevation];
+  [coderCopy encodeDouble:@"scale" forKey:self->_scale];
+  [coderCopy encodeDouble:@"targetPointElevation" forKey:self->_targetPointElevation];
   vkCamera = self->_vkCamera;
   if (vkCamera)
   {
@@ -323,17 +323,17 @@ LABEL_27:
   }
 
   v9 = [MEMORY[0x1E696B098] value:&v12 withObjCType:{"{VKCameraState={RigidTransform<double, double>={Matrix<double, 3, 1>=[3d]}{Quaternion<double>={Matrix<double, 3, 1>=[3d]}d}}d{Unit<geo::RadianUnitDescription, double>=d}d}"}];
-  [v4 encodeObject:v9 forKey:@"cameraState"];
+  [coderCopy encodeObject:v9 forKey:@"cameraState"];
 
   elevationRasters = self->_elevationRasters;
   if (elevationRasters)
   {
-    [v4 encodeObject:elevationRasters forKey:@"elevationRasters"];
+    [coderCopy encodeObject:elevationRasters forKey:@"elevationRasters"];
   }
 
   *&v10 = self->_elevationScale;
-  [v4 encodeFloat:@"elevationScale" forKey:{v10, v12, v13, v14, v15, v16}];
-  [v4 encodeObject:self->_colorSpace forKey:@"colorSpace"];
+  [coderCopy encodeFloat:@"elevationScale" forKey:{v10, v12, v13, v14, v15, v16}];
+  [coderCopy encodeObject:self->_colorSpace forKey:@"colorSpace"];
 }
 
 - (id)imageSurfaces
@@ -348,10 +348,10 @@ LABEL_27:
   return v3;
 }
 
-- (id)imageSurfaceAtIndex:(unint64_t)a3
+- (id)imageSurfaceAtIndex:(unint64_t)index
 {
   v8 = 0;
-  v3 = [(NSArray *)self->_images objectAtIndex:a3];
+  v3 = [(NSArray *)self->_images objectAtIndex:index];
   [v3 getValue:&v8];
 
   Property = CGImageGetProperty();
@@ -364,26 +364,26 @@ LABEL_27:
   return v5;
 }
 
-- (VKMapSnapshot)initWithCoder:(id)a3
+- (VKMapSnapshot)initWithCoder:(id)coder
 {
   v93 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v90.receiver = self;
   v90.super_class = VKMapSnapshot;
   v5 = [(VKMapSnapshot *)&v90 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"displayStylesCount"];
+    v6 = [coderCopy decodeIntegerForKey:@"displayStylesCount"];
     *(v5 + 9) = v6;
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorSpace"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorSpace"];
       v8 = *(v5 + 12);
       *(v5 + 12) = v7;
 
       size = 0;
-      v9 = v4;
-      v10 = [v4 decodeBytesForKey:@"displayStyles" returnedLength:&size];
+      v9 = coderCopy;
+      v10 = [coderCopy decodeBytesForKey:@"displayStyles" returnedLength:&size];
       if (size == 6 * *(v5 + 9))
       {
         v11 = malloc_type_malloc(size, 0x1000040274DC3F3uLL);
@@ -393,7 +393,7 @@ LABEL_27:
         v12 = objc_alloc(MEMORY[0x1E695DFD8]);
         v13 = objc_opt_class();
         v64 = [v12 initWithObjects:{v13, objc_opt_class(), 0}];
-        v65 = [v4 decodeObjectOfClasses:? forKey:?];
+        v65 = [coderCopy decodeObjectOfClasses:? forKey:?];
         if (v65)
         {
           objc_opt_class();
@@ -454,12 +454,12 @@ LABEL_8:
 
               v24 = DeviceRGB;
               v25 = v17;
-              v26 = [v17 baseAddress];
+              baseAddress = [v17 baseAddress];
               BytesPerElement = IOSurfaceGetBytesPerElement(v17);
               BytesPerRow = IOSurfaceGetBytesPerRow(v17);
-              v29 = [v17 allocationSize];
+              allocationSize = [v17 allocationSize];
               CFRetain(v17);
-              v30 = CGDataProviderCreateWithData(v17, v26, v29, releaseIOSurface);
+              v30 = CGDataProviderCreateWithData(v17, baseAddress, allocationSize, releaseIOSurface);
               [v17 incrementUseCount];
               image[0] = CGImageCreate(*(v5 + 2), *(v5 + 3), 8uLL, 8 * BytesPerElement, BytesPerRow, v24, 0x2006u, v30, 0, 1, kCGRenderingIntentDefault);
               CGImageSetProperty();
@@ -489,7 +489,7 @@ LABEL_8:
           v34 = MEMORY[0x1E695DFD8];
           v35 = objc_opt_class();
           v36 = [v34 setWithObjects:{v35, objc_opt_class(), 0}];
-          v69 = [v4 decodeObjectOfClasses:v36 forKey:@"imageDatas"];
+          v69 = [coderCopy decodeObjectOfClasses:v36 forKey:@"imageDatas"];
 
           if (v69)
           {
@@ -552,28 +552,28 @@ LABEL_41:
         }
 
         objc_storeStrong(v5 + 1, obj);
-        [v4 decodeDoubleForKey:@"scale"];
+        [coderCopy decodeDoubleForKey:@"scale"];
         *(v5 + 4) = v44;
-        [v4 decodeDoubleForKey:@"targetPointElevation"];
+        [coderCopy decodeDoubleForKey:@"targetPointElevation"];
         *(v5 + 6) = v45;
         v46 = MEMORY[0x1E695DFD8];
         v47 = objc_opt_class();
         v48 = objc_opt_class();
         v49 = [v46 setWithObjects:{v47, v48, objc_opt_class(), 0}];
-        v50 = [v4 decodeObjectOfClasses:v49 forKey:@"memoryStats"];
+        v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"memoryStats"];
         v51 = *(v5 + 10);
         *(v5 + 10) = v50;
 
         v52 = MEMORY[0x1E695DFD8];
         v53 = objc_opt_class();
         v54 = [v52 setWithObjects:{v53, objc_opt_class(), 0}];
-        v55 = [v4 decodeObjectOfClasses:v54 forKey:@"elevationRasters"];
+        v55 = [coderCopy decodeObjectOfClasses:v54 forKey:@"elevationRasters"];
         v56 = *(v5 + 11);
         *(v5 + 11) = v55;
 
-        [v4 decodeFloatForKey:@"elevationScale"];
+        [coderCopy decodeFloatForKey:@"elevationScale"];
         *(v5 + 10) = v57;
-        v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cameraState"];
+        v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cameraState"];
         v59 = v58;
         v14 = v58;
         if (!strcmp([v58 objCType], "{VKCameraState={RigidTransform<double, double>={Matrix<double, 3, 1>=[3d]}{Quaternion<double>={Matrix<double, 3, 1>=[3d]}d}}d{Unit<geo::RadianUnitDescription, double>=d}d}"))
@@ -614,15 +614,15 @@ LABEL_23:
   return v32;
 }
 
-- (id)_initWithImages:(id)a3 displayStyles:(id *)a4 displayStylesCount:(unint64_t)a5 scale:(double)a6 camera:(id)a7 elevationScale:(float)a8 targetPointElevation:(float)a9 colorSpace:(__CFString *)a10
+- (id)_initWithImages:(id)images displayStyles:(id *)styles displayStylesCount:(unint64_t)count scale:(double)scale camera:(id)camera elevationScale:(float)elevationScale targetPointElevation:(float)elevation colorSpace:(__CFString *)self0
 {
-  v18 = a3;
-  v19 = a7;
-  v20 = v19;
-  v21 = 0;
-  if (v18 && v19 && a6 >= 1.0)
+  imagesCopy = images;
+  cameraCopy = camera;
+  v20 = cameraCopy;
+  selfCopy = 0;
+  if (imagesCopy && cameraCopy && scale >= 1.0)
   {
-    if ([v18 count] == a5)
+    if ([imagesCopy count] == count)
     {
       v32.receiver = self;
       v32.super_class = VKMapSnapshot;
@@ -630,12 +630,12 @@ LABEL_23:
       v23 = v22;
       if (v22)
       {
-        v22->_displayStylesCount = a5;
-        v24 = 6 * a5;
+        v22->_displayStylesCount = count;
+        v24 = 6 * count;
         v25 = malloc_type_malloc(v24, 0x1000040274DC3F3uLL);
         v23->_displayStyles = v25;
-        memcpy(v25, a4, v24);
-        v26 = [v18 copy];
+        memcpy(v25, styles, v24);
+        v26 = [imagesCopy copy];
         images = v23->_images;
         v23->_images = v26;
 
@@ -652,15 +652,15 @@ LABEL_23:
           }
         }
 
-        objc_storeStrong(&v23->_vkCamera, a7);
-        v23->_scale = a6;
-        v23->_elevationScale = a8;
-        v23->_targetPointElevation = a9;
-        objc_storeStrong(&v23->_colorSpace, a10);
+        objc_storeStrong(&v23->_vkCamera, camera);
+        v23->_scale = scale;
+        v23->_elevationScale = elevationScale;
+        v23->_targetPointElevation = elevation;
+        objc_storeStrong(&v23->_colorSpace, space);
       }
 
       self = v23;
-      v21 = self;
+      selfCopy = self;
     }
 
     else
@@ -671,11 +671,11 @@ LABEL_23:
         _os_log_fault_impl(&dword_1B2754000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "Assertion failed: images.count == displayStylesCount", image, 2u);
       }
 
-      v21 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v21;
+  return selfCopy;
 }
 
 @end

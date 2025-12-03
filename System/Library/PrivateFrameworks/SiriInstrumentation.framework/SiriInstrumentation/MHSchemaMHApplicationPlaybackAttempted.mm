@@ -1,25 +1,25 @@
 @interface MHSchemaMHApplicationPlaybackAttempted
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHApplicationPlaybackAttempted)initWithDictionary:(id)a3;
-- (MHSchemaMHApplicationPlaybackAttempted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHApplicationPlaybackAttempted)initWithDictionary:(id)dictionary;
+- (MHSchemaMHApplicationPlaybackAttempted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHApplicationPlaybackAttempted
 
-- (MHSchemaMHApplicationPlaybackAttempted)initWithDictionary:(id)a3
+- (MHSchemaMHApplicationPlaybackAttempted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MHSchemaMHApplicationPlaybackAttempted;
   v5 = [(MHSchemaMHApplicationPlaybackAttempted *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appBundleName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appBundleName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(MHSchemaMHApplicationPlaybackAttempted *)v5 setAppBundleName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appBundleVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appBundleVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (MHSchemaMHApplicationPlaybackAttempted)initWithJSON:(id)a3
+- (MHSchemaMHApplicationPlaybackAttempted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHApplicationPlaybackAttempted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHApplicationPlaybackAttempted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHApplicationPlaybackAttempted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,48 +77,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appBundleName)
   {
-    v4 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appBundleName"];
+    appBundleName = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
+    v5 = [appBundleName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appBundleName"];
   }
 
   if (self->_appBundleVersion)
   {
-    v6 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"appBundleVersion"];
+    appBundleVersion = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
+    v7 = [appBundleVersion copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"appBundleVersion"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
-  v6 = [v4 appBundleName];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleName = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
+  appBundleName2 = [equalCopy appBundleName];
+  if ((appBundleName != 0) == (appBundleName2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
-  if (v7)
+  appBundleName3 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
+  if (appBundleName3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
-    v10 = [v4 appBundleName];
-    v11 = [v9 isEqual:v10];
+    v8 = appBundleName3;
+    appBundleName4 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
+    appBundleName5 = [equalCopy appBundleName];
+    v11 = [appBundleName4 isEqual:appBundleName5];
 
     if (!v11)
     {
@@ -130,12 +130,12 @@
   {
   }
 
-  v5 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
-  v6 = [v4 appBundleVersion];
-  if ((v5 != 0) != (v6 == 0))
+  appBundleName = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
+  appBundleName2 = [equalCopy appBundleVersion];
+  if ((appBundleName != 0) != (appBundleName2 == 0))
   {
-    v12 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
-    if (!v12)
+    appBundleVersion = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
+    if (!appBundleVersion)
     {
 
 LABEL_15:
@@ -143,10 +143,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
-    v15 = [v4 appBundleVersion];
-    v16 = [v14 isEqual:v15];
+    v13 = appBundleVersion;
+    appBundleVersion2 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
+    appBundleVersion3 = [equalCopy appBundleVersion];
+    v16 = [appBundleVersion2 isEqual:appBundleVersion3];
 
     if (v16)
     {
@@ -166,31 +166,31 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
+  toCopy = to;
+  appBundleName = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleName];
 
-  if (v4)
+  if (appBundleName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
+  appBundleVersion = [(MHSchemaMHApplicationPlaybackAttempted *)self appBundleVersion];
 
-  if (v5)
+  if (appBundleVersion)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = MHSchemaMHApplicationPlaybackAttempted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

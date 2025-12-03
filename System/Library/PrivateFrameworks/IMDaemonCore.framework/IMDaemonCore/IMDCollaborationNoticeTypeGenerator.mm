@@ -1,9 +1,9 @@
 @interface IMDCollaborationNoticeTypeGenerator
 + (id)sharedGenerator;
 - (IMDCollaborationNoticeTypeGenerator)init;
-- (int64_t)processMentionForPersonHandle:(id)a3;
-- (int64_t)processMentionForPersonIdentity:(id)a3 highlightURL:(id)a4;
-- (int64_t)typeForHighlightEvent:(id)a3;
+- (int64_t)processMentionForPersonHandle:(id)handle;
+- (int64_t)processMentionForPersonIdentity:(id)identity highlightURL:(id)l;
+- (int64_t)typeForHighlightEvent:(id)event;
 @end
 
 @implementation IMDCollaborationNoticeTypeGenerator
@@ -35,13 +35,13 @@
   return v2;
 }
 
-- (int64_t)typeForHighlightEvent:(id)a3
+- (int64_t)typeForHighlightEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 changeEventType];
-    if (v5 == 2)
+    changeEventType = [eventCopy changeEventType];
+    if (changeEventType == 2)
     {
       v6 = 2;
     }
@@ -51,7 +51,7 @@
       v6 = -1;
     }
 
-    if (v5 == 1)
+    if (changeEventType == 1)
     {
       v7 = 1;
     }
@@ -66,10 +66,10 @@
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 mentionedPersonHandle], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ([eventCopy mentionedPersonHandle], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
       {
-        v12 = [v4 mentionedPersonHandle];
-        v7 = [(IMDCollaborationNoticeTypeGenerator *)self processMentionForPersonHandle:v12];
+        mentionedPersonHandle = [eventCopy mentionedPersonHandle];
+        v7 = [(IMDCollaborationNoticeTypeGenerator *)self processMentionForPersonHandle:mentionedPersonHandle];
       }
 
       else
@@ -78,15 +78,15 @@
         {
           if (objc_opt_respondsToSelector())
           {
-            v14 = [v4 persistenceEventType];
-            if ((v14 - 1) >= 4)
+            persistenceEventType = [eventCopy persistenceEventType];
+            if ((persistenceEventType - 1) >= 4)
             {
               v7 = -1;
             }
 
             else
             {
-              v7 = v14 + 3;
+              v7 = persistenceEventType + 3;
             }
           }
 
@@ -98,22 +98,22 @@
           goto LABEL_26;
         }
 
-        v12 = [v4 mentionedPersonIdentity];
-        v13 = [v4 highlightURL];
-        v7 = [(IMDCollaborationNoticeTypeGenerator *)self processMentionForPersonIdentity:v12 highlightURL:v13];
+        mentionedPersonHandle = [eventCopy mentionedPersonIdentity];
+        highlightURL = [eventCopy highlightURL];
+        v7 = [(IMDCollaborationNoticeTypeGenerator *)self processMentionForPersonIdentity:mentionedPersonHandle highlightURL:highlightURL];
       }
 
       goto LABEL_26;
     }
 
-    v8 = [v4 membershipEventType];
+    membershipEventType = [eventCopy membershipEventType];
     v9 = 9;
-    if (v8 != 2)
+    if (membershipEventType != 2)
     {
       v9 = -1;
     }
 
-    if (v8 == 1)
+    if (membershipEventType == 1)
     {
       v7 = 8;
     }
@@ -129,18 +129,18 @@ LABEL_26:
   return v7;
 }
 
-- (int64_t)processMentionForPersonHandle:(id)a3
+- (int64_t)processMentionForPersonHandle:(id)handle
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  handleCopy = handle;
+  if (handleCopy)
   {
     v4 = MEMORY[0x277CBEB98];
     v5 = +[IMDAccountController sharedAccountController];
-    v6 = [v5 activeAliases];
-    v7 = [v4 setWithArray:v6];
+    activeAliases = [v5 activeAliases];
+    v7 = [v4 setWithArray:activeAliases];
 
-    if ([v7 containsObject:v3])
+    if ([v7 containsObject:handleCopy])
     {
       v8 = 3;
     }
@@ -153,7 +153,7 @@ LABEL_26:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v13 = 138412290;
-          v14 = v3;
+          v14 = handleCopy;
           _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Received a mention for a handle not associated with local account: %@", &v13, 0xCu);
         }
       }
@@ -182,19 +182,19 @@ LABEL_26:
   return v8;
 }
 
-- (int64_t)processMentionForPersonIdentity:(id)a3 highlightURL:(id)a4
+- (int64_t)processMentionForPersonIdentity:(id)identity highlightURL:(id)l
 {
   v52 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v34 = a4;
-  v6 = [(IMDCollaborationNoticeTypeGenerator *)self highlightCenter];
+  identityCopy = identity;
+  lCopy = l;
+  highlightCenter = [(IMDCollaborationNoticeTypeGenerator *)self highlightCenter];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(IMDCollaborationNoticeTypeGenerator *)self highlightCenter];
+    highlightCenter2 = [(IMDCollaborationNoticeTypeGenerator *)self highlightCenter];
     v45 = 0;
-    v33 = [v8 collaborationHighlightForURL:v34 error:&v45];
+    v33 = [highlightCenter2 collaborationHighlightForURL:lCopy error:&v45];
     v32 = v45;
 
     if (v32)
@@ -216,31 +216,31 @@ LABEL_26:
         v12 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v33 stringIdentifier];
+          stringIdentifier = [v33 stringIdentifier];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v13;
+          *(&buf + 4) = stringIdentifier;
           _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Received a mention with a person identity for highlight: %@. Attempting to find the handle for the mentioned identity.", &buf, 0xCu);
         }
       }
 
       v14 = MEMORY[0x277CBEB98];
       v15 = +[IMDAccountController sharedAccountController];
-      v16 = [v15 activeAliases];
-      v35 = [v14 setWithArray:v16];
+      activeAliases = [v15 activeAliases];
+      v35 = [v14 setWithArray:activeAliases];
 
       *&buf = 0;
       *(&buf + 1) = &buf;
       v50 = 0x2020000000;
       v51 = -1;
-      v17 = [(IMDCollaborationNoticeTypeGenerator *)self highlightCenter];
-      v31 = [v17 fetchAttributionsForHighlight:v33];
+      highlightCenter3 = [(IMDCollaborationNoticeTypeGenerator *)self highlightCenter];
+      v31 = [highlightCenter3 fetchAttributionsForHighlight:v33];
 
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v18 = [v31 attributions];
-      v19 = [v18 countByEnumeratingWithState:&v41 objects:v48 count:16];
+      attributions = [v31 attributions];
+      v19 = [attributions countByEnumeratingWithState:&v41 objects:v48 count:16];
       if (v19)
       {
         v20 = *v42;
@@ -250,25 +250,25 @@ LABEL_26:
           {
             if (*v42 != v20)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(attributions);
             }
 
-            v22 = [*(*(&v41 + 1) + 8 * i) collaborationMetadata];
+            collaborationMetadata = [*(*(&v41 + 1) + 8 * i) collaborationMetadata];
             if (objc_opt_respondsToSelector())
             {
-              v23 = [v22 handleToIdentityMap];
+              handleToIdentityMap = [collaborationMetadata handleToIdentityMap];
               v37[0] = MEMORY[0x277D85DD0];
               v37[1] = 3221225472;
               v37[2] = sub_22B50AF2C;
               v37[3] = &unk_278703250;
-              v38 = v36;
+              v38 = identityCopy;
               v39 = v35;
               p_buf = &buf;
-              [v23 enumerateKeysAndObjectsUsingBlock:v37];
+              [handleToIdentityMap enumerateKeysAndObjectsUsingBlock:v37];
             }
           }
 
-          v19 = [v18 countByEnumeratingWithState:&v41 objects:v48 count:16];
+          v19 = [attributions countByEnumeratingWithState:&v41 objects:v48 count:16];
         }
 
         while (v19);

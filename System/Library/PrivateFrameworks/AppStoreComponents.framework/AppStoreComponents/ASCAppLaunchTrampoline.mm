@@ -1,11 +1,11 @@
 @interface ASCAppLaunchTrampoline
 + (OS_os_log)log;
 - (ASCAppLaunchTrampoline)init;
-- (ASCAppLaunchTrampoline)initWithWorkspace:(id)a3;
-- (id)handleURL:(id)a3 workspace:(id)a4;
-- (id)openApplicationWithBundleIdentifier:(id)a3 payloadURL:(id)a4 universalLinkRequired:(BOOL)a5 workspace:(id)a6;
-- (id)openApplicationWithBundleIdentifier:(id)a3 payloadURL:(id)a4 workspace:(id)a5;
-- (id)productPageURLForAdamId:(id)a3 deeplink:(id)a4 eventId:(id)a5 encodedMetrics:(id)a6 sourceApplication:(id)a7 openInGamesUI:(id)a8;
+- (ASCAppLaunchTrampoline)initWithWorkspace:(id)workspace;
+- (id)handleURL:(id)l workspace:(id)workspace;
+- (id)openApplicationWithBundleIdentifier:(id)identifier payloadURL:(id)l universalLinkRequired:(BOOL)required workspace:(id)workspace;
+- (id)openApplicationWithBundleIdentifier:(id)identifier payloadURL:(id)l workspace:(id)workspace;
+- (id)productPageURLForAdamId:(id)id deeplink:(id)deeplink eventId:(id)eventId encodedMetrics:(id)metrics sourceApplication:(id)application openInGamesUI:(id)i;
 @end
 
 @implementation ASCAppLaunchTrampoline
@@ -37,9 +37,9 @@ uint64_t __29__ASCAppLaunchTrampoline_log__block_invoke()
   return v4;
 }
 
-- (ASCAppLaunchTrampoline)initWithWorkspace:(id)a3
+- (ASCAppLaunchTrampoline)initWithWorkspace:(id)workspace
 {
-  v5 = a3;
+  workspaceCopy = workspace;
   +[ASCEligibility assertCurrentProcessEligibility];
   v9.receiver = self;
   v9.super_class = ASCAppLaunchTrampoline;
@@ -47,25 +47,25 @@ uint64_t __29__ASCAppLaunchTrampoline_log__block_invoke()
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workspace, a3);
+    objc_storeStrong(&v6->_workspace, workspace);
   }
 
   return v7;
 }
 
-- (id)handleURL:(id)a3 workspace:(id)a4
+- (id)handleURL:(id)l workspace:(id)workspace
 {
   v115[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v82 = a4;
+  lCopy = l;
+  workspaceCopy = workspace;
   v6 = objc_alloc_init(MEMORY[0x277CEE600]);
-  v7 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v5 resolvingAgainstBaseURL:1];
+  v7 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:1];
   v81 = v7;
   if (_os_feature_enabled_impl())
   {
-    v8 = [v5 host];
-    v9 = [v8 lowercaseString];
-    v10 = [v9 isEqualToString:@"restoreappstore"];
+    host = [lCopy host];
+    lowercaseString = [host lowercaseString];
+    v10 = [lowercaseString isEqualToString:@"restoreappstore"];
 
     if (v10)
     {
@@ -77,7 +77,7 @@ uint64_t __29__ASCAppLaunchTrampoline_log__block_invoke()
       }
 
       v12 = +[ASCUtilities shared];
-      v13 = [v12 restoreAppStore];
+      restoreAppStore = [v12 restoreAppStore];
 
       v106[0] = MEMORY[0x277D85DD0];
       v106[1] = 3221225472;
@@ -85,14 +85,14 @@ uint64_t __29__ASCAppLaunchTrampoline_log__block_invoke()
       v106[3] = &unk_2781CC0E8;
       v14 = v6;
       v107 = v14;
-      [v13 addSuccessBlock:v106];
+      [restoreAppStore addSuccessBlock:v106];
       v104[0] = MEMORY[0x277D85DD0];
       v104[1] = 3221225472;
       v104[2] = __46__ASCAppLaunchTrampoline_handleURL_workspace___block_invoke_12;
       v104[3] = &unk_2781CBB80;
       v15 = v14;
       v105 = v15;
-      [v13 addErrorBlock:v104];
+      [restoreAppStore addErrorBlock:v104];
       v16 = v15;
 
       v17 = v107;
@@ -109,16 +109,16 @@ uint64_t __29__ASCAppLaunchTrampoline_log__block_invoke()
     v65 = v63;
     v66 = 0;
 LABEL_56:
-    v13 = [v65 errorWithDomain:@"ASCAppLaunchTrampolineErrorDomain" code:v66 userInfo:v64];
+    restoreAppStore = [v65 errorWithDomain:@"ASCAppLaunchTrampolineErrorDomain" code:v66 userInfo:v64];
 
-    [v6 finishWithError:v13];
+    [v6 finishWithError:restoreAppStore];
     v68 = v6;
     goto LABEL_65;
   }
 
-  v20 = [v5 host];
-  v21 = [v20 lowercaseString];
-  v22 = [v21 isEqualToString:@"launchapp"];
+  host2 = [lCopy host];
+  lowercaseString2 = [host2 lowercaseString];
+  v22 = [lowercaseString2 isEqualToString:@"launchapp"];
 
   if ((v22 & 1) == 0)
   {
@@ -136,8 +136,8 @@ LABEL_56:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v23 = [v7 queryItems];
-  v24 = [v23 countByEnumeratingWithState:&v100 objects:v111 count:16];
+  queryItems = [v7 queryItems];
+  v24 = [queryItems countByEnumeratingWithState:&v100 objects:v111 count:16];
   if (!v24)
   {
 
@@ -147,14 +147,14 @@ LABEL_56:
     v86 = 0;
     v87 = 0;
     v88 = 0;
-    v13 = 0;
+    restoreAppStore = 0;
     v6 = v79;
     goto LABEL_59;
   }
 
   v25 = v24;
-  v78 = v5;
-  v13 = 0;
+  v78 = lCopy;
+  restoreAppStore = 0;
   v87 = 0;
   v88 = 0;
   v85 = 0;
@@ -168,21 +168,21 @@ LABEL_56:
     {
       if (*v101 != v26)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(queryItems);
       }
 
       v28 = *(*(&v100 + 1) + 8 * i);
-      v29 = [v28 name];
-      v30 = [v29 lowercaseString];
-      if ([v30 isEqualToString:@"appid"])
+      name = [v28 name];
+      lowercaseString3 = [name lowercaseString];
+      if ([lowercaseString3 isEqualToString:@"appid"])
       {
-        v31 = [v28 value];
+        value = [v28 value];
 
-        if (v31)
+        if (value)
         {
           v32 = v28;
 
-          v13 = v32;
+          restoreAppStore = v32;
           continue;
         }
       }
@@ -191,13 +191,13 @@ LABEL_56:
       {
       }
 
-      v33 = [v28 name];
-      v34 = [v33 lowercaseString];
-      if ([v34 isEqualToString:@"bundleid"])
+      name2 = [v28 name];
+      lowercaseString4 = [name2 lowercaseString];
+      if ([lowercaseString4 isEqualToString:@"bundleid"])
       {
-        v35 = [v28 value];
+        value2 = [v28 value];
 
-        if (v35)
+        if (value2)
         {
           v36 = v28;
 
@@ -210,13 +210,13 @@ LABEL_56:
       {
       }
 
-      v37 = [v28 name];
-      v38 = [v37 lowercaseString];
-      if ([v38 isEqualToString:@"deeplink"])
+      name3 = [v28 name];
+      lowercaseString5 = [name3 lowercaseString];
+      if ([lowercaseString5 isEqualToString:@"deeplink"])
       {
-        v39 = [v28 value];
+        value3 = [v28 value];
 
-        if (v39)
+        if (value3)
         {
           v40 = v28;
 
@@ -229,13 +229,13 @@ LABEL_56:
       {
       }
 
-      v41 = [v28 name];
-      v42 = [v41 lowercaseString];
-      if ([v42 isEqualToString:@"eventid"])
+      name4 = [v28 name];
+      lowercaseString6 = [name4 lowercaseString];
+      if ([lowercaseString6 isEqualToString:@"eventid"])
       {
-        v43 = [v28 value];
+        value4 = [v28 value];
 
-        if (v43)
+        if (value4)
         {
           v44 = v28;
 
@@ -248,13 +248,13 @@ LABEL_56:
       {
       }
 
-      v45 = [v28 name];
-      v46 = [v45 lowercaseString];
-      if ([v46 isEqualToString:@"trampolinemetrics"])
+      name5 = [v28 name];
+      lowercaseString7 = [name5 lowercaseString];
+      if ([lowercaseString7 isEqualToString:@"trampolinemetrics"])
       {
-        v47 = [v28 value];
+        value5 = [v28 value];
 
-        if (v47)
+        if (value5)
         {
           v48 = v28;
 
@@ -267,13 +267,13 @@ LABEL_56:
       {
       }
 
-      v49 = [v28 name];
-      v50 = [v49 lowercaseString];
-      if ([v50 isEqualToString:@"sourceapplication"])
+      name6 = [v28 name];
+      lowercaseString8 = [name6 lowercaseString];
+      if ([lowercaseString8 isEqualToString:@"sourceapplication"])
       {
-        v51 = [v28 value];
+        value6 = [v28 value];
 
-        if (v51)
+        if (value6)
         {
           v52 = v28;
 
@@ -286,13 +286,13 @@ LABEL_56:
       {
       }
 
-      v53 = [v28 name];
-      v54 = [v53 lowercaseString];
-      if ([v54 isEqualToString:@"metrics"])
+      name7 = [v28 name];
+      lowercaseString9 = [name7 lowercaseString];
+      if ([lowercaseString9 isEqualToString:@"metrics"])
       {
-        v55 = [v28 value];
+        value7 = [v28 value];
 
-        if (v55 && !v86)
+        if (value7 && !v86)
         {
           v86 = v28;
           continue;
@@ -303,13 +303,13 @@ LABEL_56:
       {
       }
 
-      v56 = [v28 name];
-      v57 = [v56 lowercaseString];
-      if ([v57 isEqualToString:@"openingamesui"])
+      name8 = [v28 name];
+      lowercaseString10 = [name8 lowercaseString];
+      if ([lowercaseString10 isEqualToString:@"openingamesui"])
       {
-        v58 = [v28 value];
+        value8 = [v28 value];
 
-        if (v58)
+        if (value8)
         {
           v59 = v28;
 
@@ -322,19 +322,19 @@ LABEL_56:
       }
     }
 
-    v25 = [v23 countByEnumeratingWithState:&v100 objects:v111 count:16];
+    v25 = [queryItems countByEnumeratingWithState:&v100 objects:v111 count:16];
   }
 
   while (v25);
 
-  if (!v13)
+  if (!restoreAppStore)
   {
-    v5 = v78;
+    lCopy = v78;
     v6 = v79;
     goto LABEL_59;
   }
 
-  v5 = v78;
+  lCopy = v78;
   v6 = v79;
   if (!v88)
   {
@@ -343,33 +343,33 @@ LABEL_59:
     v109 = *MEMORY[0x277CCA450];
     v110 = @"Missing required parameters for app launch.";
     v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
-    v60 = [v69 errorWithDomain:@"ASCAppLaunchTrampolineErrorDomain" code:2 userInfo:v70];
+    value9 = [v69 errorWithDomain:@"ASCAppLaunchTrampolineErrorDomain" code:2 userInfo:v70];
 
-    [v6 finishWithError:v60];
+    [v6 finishWithError:value9];
     v71 = v6;
     goto LABEL_63;
   }
 
-  v60 = [v87 value];
+  value9 = [v87 value];
 
-  if (v60)
+  if (value9)
   {
-    v61 = [v87 value];
-    v62 = [v61 stringByRemovingPercentEncoding];
+    value10 = [v87 value];
+    stringByRemovingPercentEncoding = [value10 stringByRemovingPercentEncoding];
 
-    if (v62)
+    if (stringByRemovingPercentEncoding)
     {
-      v60 = [MEMORY[0x277CBEBC0] URLWithString:v62];
+      value9 = [MEMORY[0x277CBEBC0] URLWithString:stringByRemovingPercentEncoding];
     }
 
     else
     {
-      v60 = 0;
+      value9 = 0;
     }
   }
 
-  v72 = [v88 value];
-  v73 = [v82 openApplicationWithBundleIdentifier:v72 payloadURL:v60];
+  value11 = [v88 value];
+  v73 = [workspaceCopy openApplicationWithBundleIdentifier:value11 payloadURL:value9];
 
   v98[0] = MEMORY[0x277D85DD0];
   v98[1] = 3221225472;
@@ -383,8 +383,8 @@ LABEL_59:
   v89[2] = __46__ASCAppLaunchTrampoline_handleURL_workspace___block_invoke_2;
   v89[3] = &unk_2781CCF48;
   v89[4] = self;
-  v13 = v13;
-  v90 = v13;
+  restoreAppStore = restoreAppStore;
+  v90 = restoreAppStore;
   v87 = v87;
   v91 = v87;
   v85 = v85;
@@ -397,7 +397,7 @@ LABEL_59:
   v95 = v83;
   v75 = v74;
   v96 = v75;
-  v97 = v82;
+  v97 = workspaceCopy;
   [v73 addErrorBlock:v89];
   v76 = v75;
 
@@ -514,14 +514,14 @@ void __46__ASCAppLaunchTrampoline_handleURL_workspace___block_invoke_57(uint64_t
   }
 }
 
-- (id)openApplicationWithBundleIdentifier:(id)a3 payloadURL:(id)a4 workspace:(id)a5
+- (id)openApplicationWithBundleIdentifier:(id)identifier payloadURL:(id)l workspace:(id)workspace
 {
   v7 = MEMORY[0x277CEE600];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  workspaceCopy = workspace;
+  lCopy = l;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(v7);
-  v12 = [v8 openApplicationWithBundleIdentifier:v10 payloadURL:v9];
+  v12 = [workspaceCopy openApplicationWithBundleIdentifier:identifierCopy payloadURL:lCopy];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -561,15 +561,15 @@ void __83__ASCAppLaunchTrampoline_openApplicationWithBundleIdentifier_payloadURL
   [*(a1 + 32) finishWithError:v4];
 }
 
-- (id)openApplicationWithBundleIdentifier:(id)a3 payloadURL:(id)a4 universalLinkRequired:(BOOL)a5 workspace:(id)a6
+- (id)openApplicationWithBundleIdentifier:(id)identifier payloadURL:(id)l universalLinkRequired:(BOOL)required workspace:(id)workspace
 {
-  v6 = a5;
+  requiredCopy = required;
   v9 = MEMORY[0x277CEE600];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  workspaceCopy = workspace;
+  lCopy = l;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(v9);
-  v14 = [v10 openApplicationWithBundleIdentifier:v12 payloadURL:v11 universalLinkRequired:v6];
+  v14 = [workspaceCopy openApplicationWithBundleIdentifier:identifierCopy payloadURL:lCopy universalLinkRequired:requiredCopy];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -609,18 +609,18 @@ void __105__ASCAppLaunchTrampoline_openApplicationWithBundleIdentifier_payloadUR
   [*(a1 + 32) finishWithError:v4];
 }
 
-- (id)productPageURLForAdamId:(id)a3 deeplink:(id)a4 eventId:(id)a5 encodedMetrics:(id)a6 sourceApplication:(id)a7 openInGamesUI:(id)a8
+- (id)productPageURLForAdamId:(id)id deeplink:(id)deeplink eventId:(id)eventId encodedMetrics:(id)metrics sourceApplication:(id)application openInGamesUI:(id)i
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a3;
-  v19 = [[ASCAdamID alloc] initWithStringValue:v18];
+  deeplinkCopy = deeplink;
+  eventIdCopy = eventId;
+  metricsCopy = metrics;
+  applicationCopy = application;
+  iCopy = i;
+  idCopy = id;
+  v19 = [[ASCAdamID alloc] initWithStringValue:idCopy];
 
-  LODWORD(v18) = [v17 BOOLValue];
-  if (v18)
+  LODWORD(idCopy) = [iCopy BOOLValue];
+  if (idCopy)
   {
     [ASCLockupProductDetails gamesURLForLockupID:v19 ofKind:@"app" withOfferFlags:0];
   }
@@ -630,38 +630,38 @@ void __105__ASCAppLaunchTrampoline_openApplicationWithBundleIdentifier_payloadUR
     [ASCLockupProductDetails URLForLockupID:v19 ofKind:@"app" withOfferFlags:0];
   }
   v20 = ;
-  if (v20 && (v13 || v14 || v15))
+  if (v20 && (deeplinkCopy || eventIdCopy || metricsCopy))
   {
     v21 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v20 resolvingAgainstBaseURL:0];
-    v22 = [v21 queryItems];
-    v23 = [v22 mutableCopy];
+    queryItems = [v21 queryItems];
+    v23 = [queryItems mutableCopy];
 
     if (!v23)
     {
       v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
 
-    if (v13)
+    if (deeplinkCopy)
     {
-      v24 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"deeplink" value:v13];
+      v24 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"deeplink" value:deeplinkCopy];
       [v23 addObject:v24];
     }
 
-    if (v14)
+    if (eventIdCopy)
     {
-      v25 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"eventid" value:v14];
+      v25 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"eventid" value:eventIdCopy];
       [v23 addObject:v25];
     }
 
-    if (v15)
+    if (metricsCopy)
     {
-      v26 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"trampolineMetrics" value:v15];
+      v26 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"trampolineMetrics" value:metricsCopy];
       [v23 addObject:v26];
     }
 
-    if (v16)
+    if (applicationCopy)
     {
-      v27 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"sourceApplication" value:v16];
+      v27 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"sourceApplication" value:applicationCopy];
       [v23 addObject:v27];
     }
 

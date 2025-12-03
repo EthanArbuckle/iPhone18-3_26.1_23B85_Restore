@@ -1,47 +1,47 @@
 @interface OADIndexedColor
-+ (id)indexedColorWithIndex:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (OADIndexedColor)initWithIndex:(unint64_t)a3;
-- (id)colorFromPalette:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)indexedColorWithIndex:(unint64_t)index;
+- (BOOL)isEqual:(id)equal;
+- (OADIndexedColor)initWithIndex:(unint64_t)index;
+- (id)colorFromPalette:(id)palette;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation OADIndexedColor
 
-- (OADIndexedColor)initWithIndex:(unint64_t)a3
+- (OADIndexedColor)initWithIndex:(unint64_t)index
 {
   v5.receiver = self;
   v5.super_class = OADIndexedColor;
   result = [(OADIndexedColor *)&v5 init];
   if (result)
   {
-    result->mIndex = a3;
+    result->mIndex = index;
   }
 
   return result;
 }
 
-+ (id)indexedColorWithIndex:(unint64_t)a3
++ (id)indexedColorWithIndex:(unint64_t)index
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithIndex:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithIndex:index];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithIndex:", self->mIndex}];
-  v6 = [(OADColor *)self transforms];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithIndex:", self->mIndex}];
+  transforms = [(OADColor *)self transforms];
+  v7 = [transforms copyWithZone:zone];
 
   [v5 setTransforms:v7];
   return v5;
 }
 
-- (id)colorFromPalette:(id)a3
+- (id)colorFromPalette:(id)palette
 {
-  v3 = [a3 colorWithIndex:self->mIndex];
+  v3 = [palette colorWithIndex:self->mIndex];
 
   return v3;
 }
@@ -54,15 +54,15 @@
   return [(OADColor *)&v4 hash]^ mIndex;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[OADIndexedColor hash](self, "hash"), v5 == [v4 hash]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[OADIndexedColor hash](self, "hash"), v5 == [equalCopy hash]))
   {
     v8.receiver = self;
     v8.super_class = OADIndexedColor;
-    v6 = [(OADColor *)&v8 isEqual:v4];
+    v6 = [(OADColor *)&v8 isEqual:equalCopy];
   }
 
   else

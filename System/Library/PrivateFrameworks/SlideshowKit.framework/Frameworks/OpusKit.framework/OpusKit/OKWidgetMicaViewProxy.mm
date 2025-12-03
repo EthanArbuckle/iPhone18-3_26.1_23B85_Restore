@@ -1,13 +1,13 @@
 @interface OKWidgetMicaViewProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (BOOL)isPlaying;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
-- (OKWidgetMicaViewProxy)initWithWidget:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (unint64_t)countOfDictionaryProxy:(id)a3;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
+- (OKWidgetMicaViewProxy)initWithWidget:(id)widget;
+- (id)valueForUndefinedKey:(id)key;
+- (unint64_t)countOfDictionaryProxy:(id)proxy;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)loadMicaDocumentIfNeeded;
@@ -15,22 +15,22 @@
 - (void)prepareForRefresh;
 - (void)restart;
 - (void)resume;
-- (void)setSettingAutoplay:(BOOL)a3;
-- (void)setSettingDuration:(double)a3;
-- (void)setSettingOptions:(id)a3;
-- (void)setSettingResource:(id)a3;
-- (void)setSettingScaleToFit:(BOOL)a3;
+- (void)setSettingAutoplay:(BOOL)autoplay;
+- (void)setSettingDuration:(double)duration;
+- (void)setSettingOptions:(id)options;
+- (void)setSettingResource:(id)resource;
+- (void)setSettingScaleToFit:(BOOL)fit;
 - (void)unloadMicaDocument;
 - (void)updateMicaDocumentLayer;
 @end
 
 @implementation OKWidgetMicaViewProxy
 
-- (OKWidgetMicaViewProxy)initWithWidget:(id)a3
+- (OKWidgetMicaViewProxy)initWithWidget:(id)widget
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMicaViewProxy;
-  result = [(OKWidgetViewProxy *)&v4 initWithWidget:a3];
+  result = [(OKWidgetViewProxy *)&v4 initWithWidget:widget];
   if (result)
   {
     result->_resourceName = 0;
@@ -130,25 +130,25 @@ uint64_t __39__OKWidgetMicaViewProxy_layoutSubviews__block_invoke(uint64_t a1)
 + (id)supportedSettings
 {
   v20[6] = *MEMORY[0x277D85DE8];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___OKWidgetMicaViewProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v6, sel_supportedSettings)}];
   v19[0] = @"resource";
   v18[0] = &unk_287AF13B8;
   v17[0] = @"type";
   v17[1] = @"default";
-  v3 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v17[2] = @"priority";
-  v18[1] = v3;
+  v18[1] = null;
   v18[2] = &unk_287AF13D0;
   v20[0] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
   v19[1] = @"options";
   v16[0] = &unk_287AF13E8;
   v15[0] = @"type";
   v15[1] = @"default";
-  v4 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
   v15[2] = @"priority";
-  v16[1] = v4;
+  v16[1] = null2;
   v16[2] = &unk_287AF1400;
   v20[1] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v19[2] = @"autoplay";
@@ -185,9 +185,9 @@ uint64_t __39__OKWidgetMicaViewProxy_layoutSubviews__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"options"])
+  if ([key isEqualToString:@"options"])
   {
     v5 = objc_opt_new();
     [v5 setDataSource:{objc_msgSend(objc_msgSend(MEMORY[0x277CD4640], "currentThis"), "toObject")}];
@@ -199,15 +199,15 @@ uint64_t __39__OKWidgetMicaViewProxy_layoutSubviews__block_invoke(uint64_t a1)
   {
     v7.receiver = self;
     v7.super_class = OKWidgetMicaViewProxy;
-    return [(OKWidgetViewProxy *)&v7 valueForUndefinedKey:a3];
+    return [(OKWidgetViewProxy *)&v7 valueForUndefinedKey:key];
   }
 }
 
-- (void)setSettingOptions:(id)a3
+- (void)setSettingOptions:(id)options
 {
   if (([(NSDictionary *)self->_options isEqual:?]& 1) == 0)
   {
-    [(OKWidgetMicaViewProxy *)self setOptions:a3];
+    [(OKWidgetMicaViewProxy *)self setOptions:options];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __43__OKWidgetMicaViewProxy_setSettingOptions___block_invoke;
@@ -225,11 +225,11 @@ uint64_t __43__OKWidgetMicaViewProxy_setSettingOptions___block_invoke(uint64_t a
   return [v2 updateMicaDocumentLayer];
 }
 
-- (void)setSettingResource:(id)a3
+- (void)setSettingResource:(id)resource
 {
   if (![(NSString *)self->_resourceName isEqualToString:?])
   {
-    [(OKWidgetMicaViewProxy *)self setResourceName:a3];
+    [(OKWidgetMicaViewProxy *)self setResourceName:resource];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __44__OKWidgetMicaViewProxy_setSettingResource___block_invoke;
@@ -247,28 +247,28 @@ uint64_t __44__OKWidgetMicaViewProxy_setSettingResource___block_invoke(uint64_t 
   return [v2 updateMicaDocumentLayer];
 }
 
-- (void)setSettingScaleToFit:(BOOL)a3
+- (void)setSettingScaleToFit:(BOOL)fit
 {
-  if (self->_scaleToFit != a3)
+  if (self->_scaleToFit != fit)
   {
-    self->_scaleToFit = a3;
+    self->_scaleToFit = fit;
     [(OKWidgetMicaViewProxy *)self setNeedsLayout];
   }
 }
 
-- (void)setSettingAutoplay:(BOOL)a3
+- (void)setSettingAutoplay:(BOOL)autoplay
 {
-  if (self->_autoplay != a3)
+  if (self->_autoplay != autoplay)
   {
-    self->_autoplay = a3;
+    self->_autoplay = autoplay;
   }
 }
 
-- (void)setSettingDuration:(double)a3
+- (void)setSettingDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
   }
 }
 
@@ -337,17 +337,17 @@ LABEL_7:
       }
 
       seekToTime = self->_seekToTime;
-      v5 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+      rootLayer = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
 
-      [(CALayer *)v5 setTimeOffset:seekToTime];
+      [(CALayer *)rootLayer setTimeOffset:seekToTime];
     }
   }
 
   else
   {
-    v6 = [(OKWidgetViewProxy *)self prepareMode];
+    prepareMode = [(OKWidgetViewProxy *)self prepareMode];
     v7 = self->_micaDocument;
-    if (v6 == 2)
+    if (prepareMode == 2)
     {
       if (v7)
       {
@@ -356,9 +356,9 @@ LABEL_7:
           [(OKWidgetMicaViewProxy *)self pause];
         }
 
-        v8 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+        rootLayer2 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
 
-        [(CALayer *)v8 setHidden:1];
+        [(CALayer *)rootLayer2 setHidden:1];
       }
 
       else
@@ -370,18 +370,18 @@ LABEL_7:
 
     else
     {
-      v9 = [(OKWidgetMicaDocument *)v7 rootLayer];
+      rootLayer3 = [(OKWidgetMicaDocument *)v7 rootLayer];
 
-      [(CALayer *)v9 removeFromSuperlayer];
+      [(CALayer *)rootLayer3 removeFromSuperlayer];
     }
   }
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v6.receiver = self;
   v6.super_class = OKWidgetMicaViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:display];
   if (v4)
   {
     [(OKWidgetMicaViewProxy *)self updateMicaDocumentLayer];
@@ -390,11 +390,11 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v6.receiver = self;
   v6.super_class = OKWidgetMicaViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:warmup];
   if (v4)
   {
     [(OKWidgetMicaViewProxy *)self updateMicaDocumentLayer];
@@ -403,11 +403,11 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v6.receiver = self;
   v6.super_class = OKWidgetMicaViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:unload];
   if (v4)
   {
     [(OKWidgetMicaViewProxy *)self updateMicaDocumentLayer];
@@ -430,9 +430,9 @@ LABEL_7:
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] convertTime:0 fromLayer:CACurrentMediaTime()];
     v4 = v3;
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setSpeed:0.0];
-    v5 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+    rootLayer = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
 
-    [(CALayer *)v5 setTimeOffset:v4];
+    [(CALayer *)rootLayer setTimeOffset:v4];
   }
 }
 
@@ -442,18 +442,18 @@ LABEL_7:
   {
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] timeOffset];
     v4 = v3;
-    v5 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+    rootLayer = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
     LODWORD(v6) = 1.0;
-    [(CALayer *)v5 setSpeed:v6];
+    [(CALayer *)rootLayer setSpeed:v6];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setTimeOffset:0.0];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setBeginTime:0.0];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] convertTime:0 fromLayer:CACurrentMediaTime()];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setBeginTime:v7 - v4];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setDuration:self->_duration];
     v8 = *MEMORY[0x277CDA230];
-    v9 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+    rootLayer2 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
 
-    [(CALayer *)v9 setFillMode:v8];
+    [(CALayer *)rootLayer2 setFillMode:v8];
   }
 }
 
@@ -461,47 +461,47 @@ LABEL_7:
 {
   if ([(OKWidgetMicaDocument *)self->_micaDocument rootLayer])
   {
-    v3 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+    rootLayer = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
     LODWORD(v4) = 1.0;
-    [(CALayer *)v3 setSpeed:v4];
+    [(CALayer *)rootLayer setSpeed:v4];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setTimeOffset:0.0];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setBeginTime:CACurrentMediaTime()];
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] setDuration:self->_duration];
     v5 = *MEMORY[0x277CDA230];
-    v6 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+    rootLayer2 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
 
-    [(CALayer *)v6 setFillMode:v5];
+    [(CALayer *)rootLayer2 setFillMode:v5];
   }
 }
 
 - (BOOL)isPlaying
 {
-  v3 = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
-  if (v3)
+  rootLayer = [(OKWidgetMicaDocument *)self->_micaDocument rootLayer];
+  if (rootLayer)
   {
     [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] speed];
     if (v4 <= 0.0)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(rootLayer) = 0;
     }
 
     else
     {
       v5 = CACurrentMediaTime();
       [(CALayer *)[(OKWidgetMicaDocument *)self->_micaDocument rootLayer] beginTime];
-      LOBYTE(v3) = v5 - v6 < self->_duration;
+      LOBYTE(rootLayer) = v5 - v6 < self->_duration;
     }
   }
 
-  return v3;
+  return rootLayer;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMicaView"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMicaView"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
   v6 = *MEMORY[0x277CD4638];
   v24[0] = *MEMORY[0x277CD4630];
   v5 = v24[0];
@@ -516,7 +516,7 @@ LABEL_7:
   v27[2] = MEMORY[0x277CBEC28];
   v27[3] = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"pause" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v27, v24, 4)}];
-  v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
+  v10 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
   v22[0] = v5;
   v22[1] = v6;
   v23[0] = &__block_literal_global_70;
@@ -526,7 +526,7 @@ LABEL_7:
   v23[2] = MEMORY[0x277CBEC28];
   v23[3] = v7;
   [v10 defineProperty:@"resume" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v23, v22, 4)}];
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
+  v11 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
   v20[0] = v5;
   v20[1] = v6;
   v21[0] = &__block_literal_global_75;
@@ -537,7 +537,7 @@ LABEL_7:
   v21[2] = MEMORY[0x277CBEC28];
   v21[3] = v7;
   [v11 defineProperty:@"restart" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v21, v20, 4)}];
-  v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
+  v13 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
   v18[0] = *MEMORY[0x277CD4620];
   v14 = v18[0];
   v18[1] = v8;
@@ -546,7 +546,7 @@ LABEL_7:
   v18[2] = v9;
   v19[2] = v7;
   [v13 defineProperty:@"isPlaying" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v19, v18, 3)}];
-  v15 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
+  v15 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMicaView", "objectForKeyedSubscript:", @"prototype"}];
   v16[0] = v14;
   v16[1] = v8;
   v17[0] = &__block_literal_global_84;
@@ -592,11 +592,11 @@ id __48__OKWidgetMicaViewProxy_setupJavascriptContext___block_invoke_5()
   return v0;
 }
 
-- (unint64_t)countOfDictionaryProxy:(id)a3
+- (unint64_t)countOfDictionaryProxy:(id)proxy
 {
-  v3 = [(OKWidgetMicaDocument *)self->_micaDocument publishedObjectNames];
+  publishedObjectNames = [(OKWidgetMicaDocument *)self->_micaDocument publishedObjectNames];
 
-  return [v3 count];
+  return [publishedObjectNames count];
 }
 
 @end

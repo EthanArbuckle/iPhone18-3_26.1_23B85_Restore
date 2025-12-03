@@ -1,20 +1,20 @@
 @interface HMDSecureRemoteMessageFilter
-+ (BOOL)isAllowedMessage:(id)a3;
++ (BOOL)isAllowedMessage:(id)message;
 + (id)logCategory;
-- (BOOL)acceptMessage:(id)a3 target:(id)a4 errorReason:(id *)a5;
+- (BOOL)acceptMessage:(id)message target:(id)target errorReason:(id *)reason;
 @end
 
 @implementation HMDSecureRemoteMessageFilter
 
-- (BOOL)acceptMessage:(id)a3 target:(id)a4 errorReason:(id *)a5
+- (BOOL)acceptMessage:(id)message target:(id)target errorReason:(id *)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isRemote] & 1) == 0)
+  messageCopy = message;
+  targetCopy = target;
+  if (([messageCopy isRemote] & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -25,7 +25,7 @@
     v26 = 138543618;
     v27 = v15;
     v28 = 2112;
-    v29 = v8;
+    v29 = messageCopy;
     v16 = "%{public}@Accepting local message: %@";
 LABEL_7:
     v17 = v14;
@@ -33,13 +33,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [v8 name];
-  v11 = [HMDSecureRemoteMessageFilter isAllowedMessage:v10];
+  name = [messageCopy name];
+  v11 = [HMDSecureRemoteMessageFilter isAllowedMessage:name];
 
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -47,7 +47,7 @@ LABEL_7:
       v26 = 138543618;
       v27 = v15;
       v28 = 2112;
-      v29 = v8;
+      v29 = messageCopy;
       v16 = "%{public}@Accepting allowed message: %@";
       v17 = v14;
       v18 = OS_LOG_TYPE_INFO;
@@ -62,10 +62,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v8 isSecureRemote])
+  if ([messageCopy isSecureRemote])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -76,15 +76,15 @@ LABEL_9:
     v26 = 138543618;
     v27 = v15;
     v28 = 2112;
-    v29 = v8;
+    v29 = messageCopy;
     v16 = "%{public}@Accepting secure remote message: %@";
     goto LABEL_7;
   }
 
-  if (a5)
+  if (reason)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy4 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -92,13 +92,13 @@ LABEL_9:
       v26 = 138543618;
       v27 = v25;
       v28 = 2112;
-      v29 = v8;
+      v29 = messageCopy;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@Rejecting insecure remote message: %@", &v26, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
     [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-    *a5 = v19 = 0;
+    *reason = v19 = 0;
   }
 
   else
@@ -112,16 +112,16 @@ LABEL_10:
   return v19;
 }
 
-+ (BOOL)isAllowedMessage:(id)a3
++ (BOOL)isAllowedMessage:(id)message
 {
   v3 = isAllowedMessage__pred_468;
-  v4 = a3;
+  messageCopy = message;
   if (v3 != -1)
   {
     dispatch_once(&isAllowedMessage__pred_468, &__block_literal_global_471);
   }
 
-  v5 = [isAllowedMessage___allowedMessages_469 containsObject:v4];
+  v5 = [isAllowedMessage___allowedMessages_469 containsObject:messageCopy];
 
   return v5;
 }

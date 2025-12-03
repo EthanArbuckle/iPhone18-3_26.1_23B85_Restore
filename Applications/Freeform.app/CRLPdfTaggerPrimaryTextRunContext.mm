@@ -1,17 +1,17 @@
 @interface CRLPdfTaggerPrimaryTextRunContext
-- (CRLPdfTaggerPrimaryTextRunContext)initWithStateOfTagger:(id)a3 charRange:(_NSRange)a4;
+- (CRLPdfTaggerPrimaryTextRunContext)initWithStateOfTagger:(id)tagger charRange:(_NSRange)range;
 - (_NSRange)charRange;
 @end
 
 @implementation CRLPdfTaggerPrimaryTextRunContext
 
-- (CRLPdfTaggerPrimaryTextRunContext)initWithStateOfTagger:(id)a3 charRange:(_NSRange)a4
+- (CRLPdfTaggerPrimaryTextRunContext)initWithStateOfTagger:(id)tagger charRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7.receiver = self;
   v7.super_class = CRLPdfTaggerPrimaryTextRunContext;
-  result = [(CRLPdfTaggerContext *)&v7 initWithStateOfTagger:a3];
+  result = [(CRLPdfTaggerContext *)&v7 initWithStateOfTagger:tagger];
   if (result)
   {
     result->_charRange.location = location;

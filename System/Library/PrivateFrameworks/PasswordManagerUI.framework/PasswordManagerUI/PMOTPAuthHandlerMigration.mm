@@ -1,11 +1,11 @@
 @interface PMOTPAuthHandlerMigration
-- (BOOL)migrateDefaultOTPAuthHandlerWithURL:(id)a3;
+- (BOOL)migrateDefaultOTPAuthHandlerWithURL:(id)l;
 - (PMOTPAuthHandlerMigration)init;
 @end
 
 @implementation PMOTPAuthHandlerMigration
 
-- (BOOL)migrateDefaultOTPAuthHandlerWithURL:(id)a3
+- (BOOL)migrateDefaultOTPAuthHandlerWithURL:(id)l
 {
   v3 = sub_21CB80BE4();
   v4 = *(v3 - 8);

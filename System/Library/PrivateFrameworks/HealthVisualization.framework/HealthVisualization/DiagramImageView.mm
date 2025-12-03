@@ -2,21 +2,21 @@
 - (CGRect)bounds;
 - (CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (_TtC19HealthVisualization16DiagramImageView)initWithCoder:(id)a3;
-- (_TtC19HealthVisualization16DiagramImageView)initWithFrame:(CGRect)a3;
-- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)a3;
-- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC19HealthVisualization16DiagramImageView)initWithCoder:(id)coder;
+- (_TtC19HealthVisualization16DiagramImageView)initWithFrame:(CGRect)frame;
+- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)image;
+- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DiagramImageView
 
-- (_TtC19HealthVisualization16DiagramImageView)initWithFrame:(CGRect)a3
+- (_TtC19HealthVisualization16DiagramImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1D15A4148();
   sub_1D15A4138();
   sub_1D15A4128();
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -60,9 +60,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1D144FE20(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D144FE20(change);
 }
 
 - (CGSize)intrinsicContentSize
@@ -84,7 +84,7 @@
   return result;
 }
 
-- (_TtC19HealthVisualization16DiagramImageView)initWithCoder:(id)a3
+- (_TtC19HealthVisualization16DiagramImageView)initWithCoder:(id)coder
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -94,12 +94,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = DiagramImageView.init(coder:)(a3);
+  v4 = DiagramImageView.init(coder:)(coder);
 
   return v4;
 }
 
-- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)a3
+- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)image
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -114,7 +114,7 @@
   return result;
 }
 
-- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC19HealthVisualization16DiagramImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   sub_1D15A4148();
   sub_1D15A4138();

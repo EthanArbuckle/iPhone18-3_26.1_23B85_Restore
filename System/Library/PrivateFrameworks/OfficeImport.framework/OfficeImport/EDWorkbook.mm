@@ -1,24 +1,24 @@
 @interface EDWorkbook
 + (id)impliedColorMap;
-- (EDWorkbook)initWithFileName:(id)a3 andStringOptimization:(BOOL)a4;
-- (EDWorkbook)initWithStringOptimization:(BOOL)a3;
+- (EDWorkbook)initWithFileName:(id)name andStringOptimization:(BOOL)optimization;
+- (EDWorkbook)initWithStringOptimization:(BOOL)optimization;
 - (id)activeSheet;
 - (id)dateBaseDate;
 - (id)description;
-- (id)sheetAtIndex:(unint64_t)a3 loadIfNeeded:(BOOL)a4;
+- (id)sheetAtIndex:(unint64_t)index loadIfNeeded:(BOOL)needed;
 - (id)temporaryDirectory;
-- (unint64_t)indexOfSheet:(id)a3;
-- (unint64_t)indexOfSheetWithName:(id)a3;
+- (unint64_t)indexOfSheet:(id)sheet;
+- (unint64_t)indexOfSheetWithName:(id)name;
 - (unsigned)legacyDateBase;
-- (void)addSheet:(id)a3;
+- (void)addSheet:(id)sheet;
 - (void)applyProcessors;
 - (void)dealloc;
 - (void)reduceMemoryIfPossible;
-- (void)removeSheetAtIndex:(unint64_t)a3;
-- (void)setMappingContext:(id)a3;
-- (void)setResources:(id)a3;
-- (void)setTemporaryDirectory:(id)a3;
-- (void)setVisibleRange:(id)a3;
+- (void)removeSheetAtIndex:(unint64_t)index;
+- (void)setMappingContext:(id)context;
+- (void)setResources:(id)resources;
+- (void)setTemporaryDirectory:(id)directory;
+- (void)setVisibleRange:(id)range;
 @end
 
 @implementation EDWorkbook
@@ -46,15 +46,15 @@
   [(EDWorkbook *)&v6 dealloc];
 }
 
-- (EDWorkbook)initWithStringOptimization:(BOOL)a3
+- (EDWorkbook)initWithStringOptimization:(BOOL)optimization
 {
-  v3 = a3;
+  optimizationCopy = optimization;
   v20.receiver = self;
   v20.super_class = EDWorkbook;
   v4 = [(OCDDocument *)&v20 init];
   if (v4)
   {
-    v5 = [[EDResources alloc] initWithStringOptimization:v3];
+    v5 = [[EDResources alloc] initWithStringOptimization:optimizationCopy];
     mResources = v4->mResources;
     v4->mResources = v5;
 
@@ -90,28 +90,28 @@
   return v4;
 }
 
-- (EDWorkbook)initWithFileName:(id)a3 andStringOptimization:(BOOL)a4
+- (EDWorkbook)initWithFileName:(id)name andStringOptimization:(BOOL)optimization
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(EDWorkbook *)self initWithStringOptimization:v4];
+  optimizationCopy = optimization;
+  nameCopy = name;
+  v8 = [(EDWorkbook *)self initWithStringOptimization:optimizationCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->mFileName, a3);
+    objc_storeStrong(&v8->mFileName, name);
   }
 
   return v9;
 }
 
-- (void)setResources:(id)a3
+- (void)setResources:(id)resources
 {
-  v5 = a3;
-  if (self->mResources != v5)
+  resourcesCopy = resources;
+  if (self->mResources != resourcesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mResources, a3);
-    v5 = v6;
+    v6 = resourcesCopy;
+    objc_storeStrong(&self->mResources, resources);
+    resourcesCopy = v6;
   }
 }
 
@@ -130,14 +130,14 @@
   return mTemporaryDirectory;
 }
 
-- (void)setTemporaryDirectory:(id)a3
+- (void)setTemporaryDirectory:(id)directory
 {
-  v5 = a3;
-  if (self->mTemporaryDirectory != v5)
+  directoryCopy = directory;
+  if (self->mTemporaryDirectory != directoryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mTemporaryDirectory, a3);
-    v5 = v6;
+    v6 = directoryCopy;
+    objc_storeStrong(&self->mTemporaryDirectory, directory);
+    directoryCopy = v6;
   }
 }
 
@@ -215,30 +215,30 @@
   }
 }
 
-- (void)setVisibleRange:(id)a3
+- (void)setVisibleRange:(id)range
 {
-  v5 = a3;
-  if (self->mVisibleRange != v5)
+  rangeCopy = range;
+  if (self->mVisibleRange != rangeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mVisibleRange, a3);
-    v5 = v6;
+    v6 = rangeCopy;
+    objc_storeStrong(&self->mVisibleRange, range);
+    rangeCopy = v6;
   }
 }
 
-- (id)sheetAtIndex:(unint64_t)a3 loadIfNeeded:(BOOL)a4
+- (id)sheetAtIndex:(unint64_t)index loadIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  if ([(EDWorkbook *)self sheetCount]<= a3)
+  neededCopy = needed;
+  if ([(EDWorkbook *)self sheetCount]<= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->mSheets objectAtIndex:a3];
+    v7 = [(NSMutableArray *)self->mSheets objectAtIndex:index];
     v8 = v7;
-    if (v4 && ([v7 isLoaded] & 1) == 0)
+    if (neededCopy && ([v7 isLoaded] & 1) == 0)
     {
       [v8 load];
     }
@@ -247,22 +247,22 @@
   return v8;
 }
 
-- (void)removeSheetAtIndex:(unint64_t)a3
+- (void)removeSheetAtIndex:(unint64_t)index
 {
-  v5 = [(EDWorkbook *)self sheetAtIndex:a3 loadIfNeeded:0];
+  v5 = [(EDWorkbook *)self sheetAtIndex:index loadIfNeeded:0];
   if (v5)
   {
     [v5 teardown];
-    [(NSMutableArray *)self->mSheets removeObjectAtIndex:a3];
+    [(NSMutableArray *)self->mSheets removeObjectAtIndex:index];
   }
 }
 
-- (unint64_t)indexOfSheet:(id)a3
+- (unint64_t)indexOfSheet:(id)sheet
 {
-  v4 = a3;
-  if (v4)
+  sheetCopy = sheet;
+  if (sheetCopy)
   {
-    v5 = [(NSMutableArray *)self->mSheets indexOfObject:v4];
+    v5 = [(NSMutableArray *)self->mSheets indexOfObject:sheetCopy];
   }
 
   else
@@ -273,9 +273,9 @@
   return v5;
 }
 
-- (unint64_t)indexOfSheetWithName:(id)a3
+- (unint64_t)indexOfSheetWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(NSMutableArray *)self->mSheets count];
   if (v5)
   {
@@ -286,12 +286,12 @@
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 name];
-        v10 = [v9 string];
+        name = [v7 name];
+        string = [name string];
 
-        if (v10)
+        if (string)
         {
-          v11 = [v10 isEqual:v4];
+          v11 = [string isEqual:nameCopy];
 
           if (v11)
           {
@@ -316,12 +316,12 @@ LABEL_10:
   return v6;
 }
 
-- (void)addSheet:(id)a3
+- (void)addSheet:(id)sheet
 {
-  v4 = a3;
-  if (v4)
+  sheetCopy = sheet;
+  if (sheetCopy)
   {
-    [(NSMutableArray *)self->mSheets addObject:v4];
+    [(NSMutableArray *)self->mSheets addObject:sheetCopy];
   }
 }
 
@@ -340,14 +340,14 @@ LABEL_10:
   return v4;
 }
 
-- (void)setMappingContext:(id)a3
+- (void)setMappingContext:(id)context
 {
-  v5 = a3;
-  if (self->mMappingContext != v5)
+  contextCopy = context;
+  if (self->mMappingContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mMappingContext, a3);
-    v5 = v6;
+    v6 = contextCopy;
+    objc_storeStrong(&self->mMappingContext, context);
+    contextCopy = v6;
   }
 }
 
@@ -355,10 +355,10 @@ LABEL_10:
 {
   [(EDProcessors *)self->mProcessors applyProcessorsWithSheet:0];
   [(EDProcessors *)self->mProcessors removeAllObjects];
-  v3 = [(EDWorkbook *)self sheetCount];
-  if (v3)
+  sheetCount = [(EDWorkbook *)self sheetCount];
+  if (sheetCount)
   {
-    v4 = v3;
+    v4 = sheetCount;
     for (i = 0; i != v4; ++i)
     {
       v6 = [(EDWorkbook *)self sheetAtIndex:i loadIfNeeded:1];
@@ -385,10 +385,10 @@ LABEL_10:
 
 - (void)reduceMemoryIfPossible
 {
-  v3 = [(EDWorkbook *)self sheetCount];
-  if (v3)
+  sheetCount = [(EDWorkbook *)self sheetCount];
+  if (sheetCount)
   {
-    v4 = v3;
+    v4 = sheetCount;
     for (i = 0; i != v4; ++i)
     {
       v6 = [(EDWorkbook *)self sheetAtIndex:i loadIfNeeded:0];

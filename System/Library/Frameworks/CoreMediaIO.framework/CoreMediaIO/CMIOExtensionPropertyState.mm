@@ -1,19 +1,19 @@
 @interface CMIOExtensionPropertyState
 + (CMIOExtensionPropertyState)propertyStateWithValue:(id)value;
 + (CMIOExtensionPropertyState)propertyStateWithValue:(id)value attributes:(CMIOExtensionPropertyAttributes *)attributes;
-+ (id)copyPropertyStatesFromXPCDictionary:(id)a3;
-+ (id)copyXPCDictionaryFromPropertyStates:(id)a3;
-+ (id)copyXPCDictionaryFromPropertyValues:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMIOExtensionPropertyState)initWithCoder:(id)a3;
++ (id)copyPropertyStatesFromXPCDictionary:(id)dictionary;
++ (id)copyXPCDictionaryFromPropertyStates:(id)states;
++ (id)copyXPCDictionaryFromPropertyValues:(id)values;
+- (BOOL)isEqual:(id)equal;
+- (CMIOExtensionPropertyState)initWithCoder:(id)coder;
 - (CMIOExtensionPropertyState)initWithValue:(id)value attributes:(CMIOExtensionPropertyAttributes *)attributes;
-- (CMIOExtensionPropertyState)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMIOExtensionPropertyState)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCDictionary;
 - (id)description;
 - (void)copyXPCDictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMIOExtensionPropertyState
@@ -181,9 +181,9 @@ LABEL_24:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_9;
   }
@@ -196,15 +196,15 @@ LABEL_24:
   }
 
   value = self->_value;
-  if (value == [a3 value] || (v6 = objc_msgSend(self->_value, "isEqual:", objc_msgSend(a3, "value"))) != 0)
+  if (value == [equal value] || (v6 = objc_msgSend(self->_value, "isEqual:", objc_msgSend(equal, "value"))) != 0)
   {
     attributes = self->_attributes;
-    if (attributes != [a3 attributes])
+    if (attributes != [equal attributes])
     {
       v8 = self->_attributes;
-      v9 = [a3 attributes];
+      attributes = [equal attributes];
 
-      LOBYTE(v6) = [(CMIOExtensionPropertyAttributes *)v8 isEqual:v9];
+      LOBYTE(v6) = [(CMIOExtensionPropertyAttributes *)v8 isEqual:attributes];
       return v6;
     }
 
@@ -215,31 +215,31 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMIOExtensionPropertyState allocWithZone:a3];
+  v4 = [CMIOExtensionPropertyState allocWithZone:zone];
   value = self->_value;
   attributes = self->_attributes;
 
   return [(CMIOExtensionPropertyState *)v4 initWithValue:value attributes:attributes];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
   if (value)
   {
-    [a3 encodeObject:value forKey:@"value"];
+    [coder encodeObject:value forKey:@"value"];
   }
 
   if (self->_attributes)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (CMIOExtensionPropertyState)initWithCoder:(id)a3
+- (CMIOExtensionPropertyState)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
@@ -247,8 +247,8 @@ LABEL_9:
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
-  v11 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, v9, v10, objc_opt_class(), 0), @"value"}];
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
+  v11 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, v9, v10, objc_opt_class(), 0), @"value"}];
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
 
   return [(CMIOExtensionPropertyState *)self initWithValue:v11 attributes:v12];
 }
@@ -260,11 +260,11 @@ LABEL_9:
   attributes = self->_attributes;
   if (attributes)
   {
-    v5 = [(CMIOExtensionPropertyAttributes *)attributes copyXPCDictionary];
-    if (v5)
+    copyXPCDictionary = [(CMIOExtensionPropertyAttributes *)attributes copyXPCDictionary];
+    if (copyXPCDictionary)
     {
-      v6 = v5;
-      xpc_dictionary_set_value(v3, "attributes", v5);
+      v6 = copyXPCDictionary;
+      xpc_dictionary_set_value(v3, "attributes", copyXPCDictionary);
       xpc_release(v6);
     }
 
@@ -310,8 +310,8 @@ LABEL_9:
         return v3;
       }
 
-      v25 = [v24 copyXPCDictionary];
-      if (!v25)
+      copyXPCDictionary2 = [v24 copyXPCDictionary];
+      if (!copyXPCDictionary2)
       {
         v26 = CMIOLog();
         if (v26 && os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -411,8 +411,8 @@ LABEL_57:
         return v3;
       }
 
-      v25 = [v29 copyXPCDictionary];
-      if (!v25)
+      copyXPCDictionary2 = [v29 copyXPCDictionary];
+      if (!copyXPCDictionary2)
       {
         v32 = CMIOLog();
         if (v32 && os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -424,7 +424,7 @@ LABEL_57:
       }
     }
 
-    v13 = v25;
+    v13 = copyXPCDictionary2;
     goto LABEL_56;
   }
 
@@ -502,13 +502,13 @@ LABEL_58:
   return v3;
 }
 
-- (CMIOExtensionPropertyState)initWithXPCDictionary:(id)a3
+- (CMIOExtensionPropertyState)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v33 = 0;
-    uint64 = xpc_dictionary_get_uint64(a3, "type");
-    dictionary = xpc_dictionary_get_dictionary(a3, "attributes");
+    uint64 = xpc_dictionary_get_uint64(dictionary, "type");
+    dictionary = xpc_dictionary_get_dictionary(dictionary, "attributes");
     if (dictionary)
     {
       dictionary = [[CMIOExtensionPropertyAttributes alloc] initWithXPCDictionary:dictionary];
@@ -534,7 +534,7 @@ LABEL_58:
       {
         if (uint64 == 6)
         {
-          if (cmio_XPCMessageCopyCFDictionary(a3, "value", &v33))
+          if (cmio_XPCMessageCopyCFDictionary(dictionary, "value", &v33))
           {
             v21 = CMIOLog();
             if (v21)
@@ -547,7 +547,7 @@ LABEL_58:
           }
         }
 
-        else if (cmio_XPCMessageCopyCFArray(a3, "value", &v33))
+        else if (cmio_XPCMessageCopyCFArray(dictionary, "value", &v33))
         {
           v10 = CMIOLog();
           if (v10)
@@ -566,7 +566,7 @@ LABEL_58:
       {
         if (uint64 == 9)
         {
-          value = xpc_dictionary_get_value(a3, "value");
+          value = xpc_dictionary_get_value(dictionary, "value");
           if (value)
           {
             v15 = value;
@@ -640,7 +640,7 @@ LABEL_58:
         goto LABEL_50;
       }
 
-      v23 = xpc_dictionary_get_value(a3, "value");
+      v23 = xpc_dictionary_get_value(dictionary, "value");
       if (!v23)
       {
         v25 = CMIOLog();
@@ -662,7 +662,7 @@ LABEL_58:
       {
         if (uint64 == 2)
         {
-          if (cmio_XPCMessageCopyCFData(a3, "value", &v33))
+          if (cmio_XPCMessageCopyCFData(dictionary, "value", &v33))
           {
             v20 = CMIOLog();
             if (v20)
@@ -677,7 +677,7 @@ LABEL_58:
 
         else if (uint64 == 3)
         {
-          if (cmio_XPCMessageCopyCFNumber(a3, "value", &v33))
+          if (cmio_XPCMessageCopyCFNumber(dictionary, "value", &v33))
           {
             v8 = CMIOLog();
             if (v8)
@@ -695,7 +695,7 @@ LABEL_58:
 
       if (uint64 == 4)
       {
-        if (cmio_XPCMessageCopyCFString(a3, "value", &v33))
+        if (cmio_XPCMessageCopyCFString(dictionary, "value", &v33))
         {
           v22 = CMIOLog();
           if (v22)
@@ -710,7 +710,7 @@ LABEL_58:
         goto LABEL_50;
       }
 
-      v11 = xpc_dictionary_get_value(a3, "value");
+      v11 = xpc_dictionary_get_value(dictionary, "value");
       if (!v11)
       {
         v26 = CMIOLog();
@@ -737,7 +737,7 @@ LABEL_50:
   return 0;
 }
 
-+ (id)copyXPCDictionaryFromPropertyStates:(id)a3
++ (id)copyXPCDictionaryFromPropertyStates:(id)states
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   v6[0] = MEMORY[0x277D85DD0];
@@ -745,7 +745,7 @@ LABEL_50:
   v6[2] = __66__CMIOExtensionPropertyState_copyXPCDictionaryFromPropertyStates___block_invoke;
   v6[3] = &unk_27885BF70;
   v6[4] = v4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
+  [states enumerateKeysAndObjectsUsingBlock:v6];
   return v4;
 }
 
@@ -770,7 +770,7 @@ void __66__CMIOExtensionPropertyState_copyXPCDictionaryFromPropertyStates___bloc
   }
 }
 
-+ (id)copyXPCDictionaryFromPropertyValues:(id)a3
++ (id)copyXPCDictionaryFromPropertyValues:(id)values
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   v6[0] = MEMORY[0x277D85DD0];
@@ -778,7 +778,7 @@ void __66__CMIOExtensionPropertyState_copyXPCDictionaryFromPropertyStates___bloc
   v6[2] = __66__CMIOExtensionPropertyState_copyXPCDictionaryFromPropertyValues___block_invoke;
   v6[3] = &unk_27885B850;
   v6[4] = v4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
+  [values enumerateKeysAndObjectsUsingBlock:v6];
   return v4;
 }
 
@@ -819,9 +819,9 @@ void __66__CMIOExtensionPropertyState_copyXPCDictionaryFromPropertyValues___bloc
   }
 }
 
-+ (id)copyPropertyStatesFromXPCDictionary:(id)a3
++ (id)copyPropertyStatesFromXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     applier[0] = MEMORY[0x277D85DD0];
@@ -829,7 +829,7 @@ void __66__CMIOExtensionPropertyState_copyXPCDictionaryFromPropertyValues___bloc
     applier[2] = __66__CMIOExtensionPropertyState_copyPropertyStatesFromXPCDictionary___block_invoke;
     applier[3] = &unk_27885BF98;
     applier[4] = v4;
-    xpc_dictionary_apply(a3, applier);
+    xpc_dictionary_apply(dictionary, applier);
   }
 
   else

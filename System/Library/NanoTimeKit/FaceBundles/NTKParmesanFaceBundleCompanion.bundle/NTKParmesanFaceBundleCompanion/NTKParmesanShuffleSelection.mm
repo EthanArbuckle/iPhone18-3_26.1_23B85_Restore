@@ -1,12 +1,12 @@
 @interface NTKParmesanShuffleSelection
 + (id)initDaily;
-+ (id)peopleDetailTitleFor:(id)a3;
++ (id)peopleDetailTitleFor:(id)for;
 - (NSString)collectionIdentifier;
 - (NTKParmesanShuffleSelection)init;
-- (NTKParmesanShuffleSelection)initWithCollection:(id)a3;
+- (NTKParmesanShuffleSelection)initWithCollection:(id)collection;
 - (NTKParmesanShuffleSelection)initWithDaily;
-- (NTKParmesanShuffleSelection)initWithManualSelection:(id)a3;
-- (NTKParmesanShuffleSelection)initWithShuffleTypesAsNSNumbers:(id)a3 personIdentifiers:(id)a4;
+- (NTKParmesanShuffleSelection)initWithManualSelection:(id)selection;
+- (NTKParmesanShuffleSelection)initWithShuffleTypesAsNSNumbers:(id)numbers personIdentifiers:(id)identifiers;
 - (id)shuffleTypesAsNSNumbers;
 @end
 
@@ -28,7 +28,7 @@
   return v2;
 }
 
-- (NTKParmesanShuffleSelection)initWithCollection:(id)a3
+- (NTKParmesanShuffleSelection)initWithCollection:(id)collection
 {
   v4 = sub_23BFFA300();
   *(self + OBJC_IVAR___NTKParmesanShuffleSelection_shuffleTypes) = 0;
@@ -43,7 +43,7 @@
   return [(NTKParmesanShuffleSelection *)&v8 init];
 }
 
-- (NTKParmesanShuffleSelection)initWithManualSelection:(id)a3
+- (NTKParmesanShuffleSelection)initWithManualSelection:(id)selection
 {
   v4 = sub_23BFFA460();
   *(self + OBJC_IVAR___NTKParmesanShuffleSelection_shuffleTypes) = 0;
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (NTKParmesanShuffleSelection)initWithShuffleTypesAsNSNumbers:(id)a3 personIdentifiers:(id)a4
+- (NTKParmesanShuffleSelection)initWithShuffleTypesAsNSNumbers:(id)numbers personIdentifiers:(id)identifiers
 {
   sub_23BF4BDF0(0, &qword_27E1E0C68);
   v5 = sub_23BFFA460();
-  if (a4)
+  if (identifiers)
   {
     v6 = v5;
     v7 = sub_23BFFA460();
@@ -118,7 +118,7 @@
 
 - (id)shuffleTypesAsNSNumbers
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFB8EF0();
 
   sub_23BF4BDF0(0, &qword_27E1E0C68);
@@ -127,9 +127,9 @@
   return v3;
 }
 
-+ (id)peopleDetailTitleFor:(id)a3
++ (id)peopleDetailTitleFor:(id)for
 {
-  if (a3)
+  if (for)
   {
     v3 = sub_23BFFA460();
   }

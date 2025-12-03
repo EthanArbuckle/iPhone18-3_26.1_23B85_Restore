@@ -1,19 +1,19 @@
 @interface PUAssetExplorerReviewScreenActionPerformer
-- (id)_setupProgressControllerForProgress:(id)a3;
-- (void)_handleProgressControllerCanceled:(id)a3;
-- (void)_handleReviewAssetRequestCompletedWithSuccess:(BOOL)a3 canceled:(BOOL)a4 error:(id)a5 reviewAsset:(id)a6 completionHandler:(id)a7;
+- (id)_setupProgressControllerForProgress:(id)progress;
+- (void)_handleProgressControllerCanceled:(id)canceled;
+- (void)_handleReviewAssetRequestCompletedWithSuccess:(BOOL)success canceled:(BOOL)canceled error:(id)error reviewAsset:(id)asset completionHandler:(id)handler;
 - (void)_showFailedReviewAssetRequestAlert;
 - (void)executePerformUserInteractionTaskBlock;
 - (void)performUserInteractionTask;
-- (void)requestReviewAssetForDisplayAsset:(id)a3 reviewAssetProvider:(id)a4 completionHandler:(id)a5;
-- (void)setPerformUserInteractionTaskBlock:(id)a3;
+- (void)requestReviewAssetForDisplayAsset:(id)asset reviewAssetProvider:(id)provider completionHandler:(id)handler;
+- (void)setPerformUserInteractionTaskBlock:(id)block;
 @end
 
 @implementation PUAssetExplorerReviewScreenActionPerformer
 
 - (void)_showFailedReviewAssetRequestAlert
 {
-  v8 = [(PUAssetActionPerformer *)self presentedViewController];
+  presentedViewController = [(PUAssetActionPerformer *)self presentedViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -28,31 +28,31 @@
   }
 }
 
-- (void)_handleProgressControllerCanceled:(id)a3
+- (void)_handleProgressControllerCanceled:(id)canceled
 {
-  v9 = a3;
-  v5 = [(PUAssetExplorerReviewScreenActionPerformer *)self _requestProgressController];
+  canceledCopy = canceled;
+  _requestProgressController = [(PUAssetExplorerReviewScreenActionPerformer *)self _requestProgressController];
 
-  v6 = v9;
-  if (v5 != v9)
+  v6 = canceledCopy;
+  if (_requestProgressController != canceledCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenActionPerformer.m" lineNumber:144 description:@"Not expecting multiple progress controllers"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenActionPerformer.m" lineNumber:144 description:@"Not expecting multiple progress controllers"];
 
-    v6 = v9;
+    v6 = canceledCopy;
   }
 
-  v7 = [v6 progress];
-  [v7 cancel];
+  progress = [v6 progress];
+  [progress cancel];
 }
 
-- (id)_setupProgressControllerForProgress:(id)a3
+- (id)_setupProgressControllerForProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v5 = PULocalizedString(@"REVIEW_DOWNLOADING_ASSETS_TITLE");
   v6 = objc_alloc_init(MEMORY[0x1E69C3308]);
   [v6 setTitle:v5];
-  [v6 setProgress:v4];
+  [v6 setProgress:progressCopy];
   [(PUAssetExplorerReviewScreenActionPerformer *)self _setRequestProgressController:v6];
   objc_initWeak(&location, self);
   objc_initWeak(&from, v6);
@@ -78,50 +78,50 @@ void __82__PUAssetExplorerReviewScreenActionPerformer__setupProgressControllerFo
   [WeakRetained _handleProgressControllerCanceled:v2];
 }
 
-- (void)_handleReviewAssetRequestCompletedWithSuccess:(BOOL)a3 canceled:(BOOL)a4 error:(id)a5 reviewAsset:(id)a6 completionHandler:(id)a7
+- (void)_handleReviewAssetRequestCompletedWithSuccess:(BOOL)success canceled:(BOOL)canceled error:(id)error reviewAsset:(id)asset completionHandler:(id)handler
 {
-  v9 = a4;
-  v14 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(PUAssetExplorerReviewScreenActionPerformer *)self _requestProgressController];
-  [v13 hideAnimated:1 allowDelay:0];
+  canceledCopy = canceled;
+  errorCopy = error;
+  assetCopy = asset;
+  handlerCopy = handler;
+  _requestProgressController = [(PUAssetExplorerReviewScreenActionPerformer *)self _requestProgressController];
+  [_requestProgressController hideAnimated:1 allowDelay:0];
   [(PUAssetExplorerReviewScreenActionPerformer *)self _setRequestProgressController:0];
-  if (v11)
+  if (assetCopy)
   {
-    (*(v12 + 2))(v12, 1, 0, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0, assetCopy);
   }
 
   else
   {
-    if (!v9)
+    if (!canceledCopy)
     {
       [(PUAssetExplorerReviewScreenActionPerformer *)self _showFailedReviewAssetRequestAlert];
     }
 
-    (*(v12 + 2))(v12, 0, v9, v14, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, canceledCopy, errorCopy, 0);
   }
 }
 
-- (void)requestReviewAssetForDisplayAsset:(id)a3 reviewAssetProvider:(id)a4 completionHandler:(id)a5
+- (void)requestReviewAssetForDisplayAsset:(id)asset reviewAssetProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  providerCopy = provider;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    (*(v10 + 2))(v10, 1, 0, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0, assetCopy);
   }
 
   else
   {
-    v11 = [v9 reviewAssetProviderRequestForDisplayAsset:v8];
+    v11 = [providerCopy reviewAssetProviderRequestForDisplayAsset:assetCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 progress];
-      v14 = [(PUAssetExplorerReviewScreenActionPerformer *)self _setupProgressControllerForProgress:v13];
+      progress = [v11 progress];
+      v14 = [(PUAssetExplorerReviewScreenActionPerformer *)self _setupProgressControllerForProgress:progress];
       [v14 showAnimated:1 allowDelay:1];
       objc_initWeak(&location, self);
       v15[0] = MEMORY[0x1E69E9820];
@@ -129,7 +129,7 @@ void __82__PUAssetExplorerReviewScreenActionPerformer__setupProgressControllerFo
       v15[2] = __118__PUAssetExplorerReviewScreenActionPerformer_requestReviewAssetForDisplayAsset_reviewAssetProvider_completionHandler___block_invoke;
       v15[3] = &unk_1E7B75500;
       objc_copyWeak(&v17, &location);
-      v16 = v10;
+      v16 = handlerCopy;
       [v12 requestReviewAssetWithCompletionHandler:v15];
 
       objc_destroyWeak(&v17);
@@ -139,7 +139,7 @@ void __82__PUAssetExplorerReviewScreenActionPerformer__setupProgressControllerFo
     else
     {
       [(PUAssetExplorerReviewScreenActionPerformer *)self _showFailedReviewAssetRequestAlert];
-      (*(v10 + 2))(v10, 0, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0);
     }
   }
 }
@@ -156,8 +156,8 @@ void __118__PUAssetExplorerReviewScreenActionPerformer_requestReviewAssetForDisp
 {
   if ([(PUAssetActionPerformer *)self state]!= 10)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenActionPerformer.m" lineNumber:51 description:@"Should only execute performUserInteractionTaskBlock when in user interaction state"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenActionPerformer.m" lineNumber:51 description:@"Should only execute performUserInteractionTaskBlock when in user interaction state"];
   }
 
   performUserInteractionTaskBlock = self->_performUserInteractionTaskBlock;
@@ -176,23 +176,23 @@ void __118__PUAssetExplorerReviewScreenActionPerformer_requestReviewAssetForDisp
   [(PUAssetActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 }
 
-- (void)setPerformUserInteractionTaskBlock:(id)a3
+- (void)setPerformUserInteractionTaskBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   if ([(PUAssetActionPerformer *)self state])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenActionPerformer.m" lineNumber:35 description:@"Can only set performUserInteractionTaskBlock when in ready state"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenActionPerformer.m" lineNumber:35 description:@"Can only set performUserInteractionTaskBlock when in ready state"];
   }
 
-  v5 = v9;
-  if (self->_performUserInteractionTaskBlock != v9)
+  v5 = blockCopy;
+  if (self->_performUserInteractionTaskBlock != blockCopy)
   {
-    v6 = [v9 copy];
+    v6 = [blockCopy copy];
     performUserInteractionTaskBlock = self->_performUserInteractionTaskBlock;
     self->_performUserInteractionTaskBlock = v6;
 
-    v5 = v9;
+    v5 = blockCopy;
   }
 }
 

@@ -1,29 +1,29 @@
 @interface RPPreviewViewController
-+ (void)loadPreviewViewControllerWithMovieURL:(id)a3 attachmentURL:(id)a4 overrideShareMessage:(id)a5 overrideTintColor:(id)a6 completion:(id)a7;
-+ (void)loadPreviewViewControllerWithMovieURL:(id)a3 completion:(id)a4;
-+ (void)viewControllerForExtension:(id)a3 inputItems:(id)a4 completionHandler:(id)a5;
++ (void)loadPreviewViewControllerWithMovieURL:(id)l attachmentURL:(id)rL overrideShareMessage:(id)message overrideTintColor:(id)color completion:(id)completion;
++ (void)loadPreviewViewControllerWithMovieURL:(id)l completion:(id)completion;
++ (void)viewControllerForExtension:(id)extension inputItems:(id)items completionHandler:(id)handler;
 - (id)previewControllerDelegate;
-- (void)extensionDidFinishWithActivityTypes:(id)a3;
-- (void)videoEditor:(id)a3 didFinishWithActivityTypes:(id)a4;
+- (void)extensionDidFinishWithActivityTypes:(id)types;
+- (void)videoEditor:(id)editor didFinishWithActivityTypes:(id)types;
 @end
 
 @implementation RPPreviewViewController
 
-+ (void)loadPreviewViewControllerWithMovieURL:(id)a3 completion:(id)a4
++ (void)loadPreviewViewControllerWithMovieURL:(id)l completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() loadPreviewViewControllerWithMovieURL:v6 attachmentURL:0 overrideShareMessage:0 overrideTintColor:0 completion:v5];
+  completionCopy = completion;
+  lCopy = l;
+  [objc_opt_class() loadPreviewViewControllerWithMovieURL:lCopy attachmentURL:0 overrideShareMessage:0 overrideTintColor:0 completion:completionCopy];
 }
 
-+ (void)loadPreviewViewControllerWithMovieURL:(id)a3 attachmentURL:(id)a4 overrideShareMessage:(id)a5 overrideTintColor:(id)a6 completion:(id)a7
++ (void)loadPreviewViewControllerWithMovieURL:(id)l attachmentURL:(id)rL overrideShareMessage:(id)message overrideTintColor:(id)color completion:(id)completion
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  messageCopy = message;
+  colorCopy = color;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -40,48 +40,48 @@
       [RPPreviewViewController loadPreviewViewControllerWithMovieURL:v17 attachmentURL:? overrideShareMessage:? overrideTintColor:? completion:?];
     }
 
-    v15[2](v15, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v58 = v16;
-    v59 = v15;
-    v61 = [MEMORY[0x277CBEB18] array];
+    v59 = completionCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v18 = MEMORY[0x277CC2050];
-    v60 = v14;
-    if (v12)
+    v60 = colorCopy;
+    if (rLCopy)
     {
       v19 = objc_alloc_init(MEMORY[0x277CCA9D8]);
       v20 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"RPVideoEditorExtensionFileAttachmentKey" attributes:0];
       [v19 setAttributedTitle:v20];
 
       v21 = objc_alloc(MEMORY[0x277CCAA88]);
-      v22 = [v12 path];
-      v23 = [v21 initWithItem:v22 typeIdentifier:*v18];
+      path = [rLCopy path];
+      v23 = [v21 initWithItem:path typeIdentifier:*v18];
       v72[0] = v23;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:1];
       [v19 setAttachments:v24];
 
-      v14 = v60;
-      [v61 addObject:v19];
+      colorCopy = v60;
+      [array addObject:v19];
     }
 
-    if (v13)
+    if (messageCopy)
     {
       v25 = objc_alloc_init(MEMORY[0x277CCA9D8]);
       v26 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"RPVideoEditorExtensionOverrideShareMessageKey" attributes:0];
       [v25 setAttributedTitle:v26];
 
-      v27 = [objc_alloc(MEMORY[0x277CCAA88]) initWithItem:v13 typeIdentifier:*v18];
+      v27 = [objc_alloc(MEMORY[0x277CCAA88]) initWithItem:messageCopy typeIdentifier:*v18];
       v71 = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v71 count:1];
       [v25 setAttachments:v28];
 
-      [v61 addObject:v25];
+      [array addObject:v25];
     }
 
-    if (v14)
+    if (colorCopy)
     {
       v29 = objc_alloc_init(MEMORY[0x277CCA9D8]);
       v30 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"RPVideoEditorExtensionOverrideTintColorKey" attributes:0];
@@ -89,12 +89,12 @@
 
       v31 = objc_alloc(MEMORY[0x277CCAA88]);
       v32 = *v18;
-      v33 = [v31 initWithItem:v14 typeIdentifier:*v18];
+      v33 = [v31 initWithItem:colorCopy typeIdentifier:*v18];
       v70 = v33;
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
       [v29 setAttachments:v34];
 
-      [v61 addObject:v29];
+      [array addObject:v29];
     }
 
     else
@@ -102,10 +102,10 @@
       v32 = *v18;
     }
 
-    v56 = [MEMORY[0x277CCA8D8] mainBundle];
-    [v56 load];
-    v35 = [v56 infoDictionary];
-    v57 = [v35 objectForKey:*MEMORY[0x277CBEC40]];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    [mainBundle load];
+    infoDictionary = [mainBundle infoDictionary];
+    v57 = [infoDictionary objectForKey:*MEMORY[0x277CBEC40]];
 
     v36 = objc_alloc_init(MEMORY[0x277CCA9D8]);
     v37 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"RPVideoEditorExtensionAppNameKey" attributes:0];
@@ -116,46 +116,46 @@
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
     [v36 setAttachments:v39];
 
-    [v61 addObject:v36];
+    [array addObject:v36];
     v40 = objc_alloc_init(MEMORY[0x277CCA9D8]);
     v41 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"RPVideoEditorExtensionMovieURLKey" attributes:0];
     [v40 setAttributedTitle:v41];
 
     v42 = objc_alloc(MEMORY[0x277CCAA88]);
-    v43 = [v11 path];
-    v44 = [v42 initWithItem:v43 typeIdentifier:v32];
+    path2 = [lCopy path];
+    v44 = [v42 initWithItem:path2 typeIdentifier:v32];
     v68 = v44;
     [MEMORY[0x277CBEA60] arrayWithObjects:&v68 count:1];
-    v46 = v45 = v11;
+    v46 = v45 = lCopy;
     [v40 setAttachments:v46];
 
-    [v61 addObject:v40];
+    [array addObject:v40];
     v47 = objc_alloc_init(MEMORY[0x277CCA9D8]);
     v48 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"RPVideoEditorExtensionBundleIdentifierKey" attributes:0];
     [v47 setAttributedTitle:v48];
 
     v49 = objc_alloc(MEMORY[0x277CCAA88]);
-    v50 = [v56 bundleIdentifier];
-    v51 = [v49 initWithItem:v50 typeIdentifier:v32];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v51 = [v49 initWithItem:bundleIdentifier typeIdentifier:v32];
     v67 = v51;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:&v67 count:1];
     [v47 setAttachments:v52];
 
-    v11 = v45;
-    [v61 addObject:v47];
+    lCopy = v45;
+    [array addObject:v47];
     v53 = objc_opt_class();
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __129__RPPreviewViewController_loadPreviewViewControllerWithMovieURL_attachmentURL_overrideShareMessage_overrideTintColor_completion___block_invoke;
     v62[3] = &unk_278B62538;
     v63 = v45;
-    v15 = v59;
+    completionCopy = v59;
     v64 = v59;
     v54 = v53;
     v16 = v58;
-    [v54 viewControllerForExtension:v58 inputItems:v61 completionHandler:v62];
+    [v54 viewControllerForExtension:v58 inputItems:array completionHandler:v62];
 
-    v14 = v60;
+    colorCopy = v60;
     v17 = 0;
   }
 
@@ -201,26 +201,26 @@ void __129__RPPreviewViewController_loadPreviewViewControllerWithMovieURL_attach
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)viewControllerForExtension:(id)a3 inputItems:(id)a4 completionHandler:(id)a5
++ (void)viewControllerForExtension:(id)extension inputItems:(id)items completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  extensionCopy = extension;
+  itemsCopy = items;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "RPPreviewViewController:viewControllerForExtension", buf, 2u);
   }
 
-  if (v7)
+  if (extensionCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __83__RPPreviewViewController_viewControllerForExtension_inputItems_completionHandler___block_invoke;
     v10[3] = &unk_278B624C0;
-    v11 = v7;
-    v12 = v9;
-    [v11 instantiateViewControllerWithInputItems:v8 connectionHandler:v10];
+    v11 = extensionCopy;
+    v12 = handlerCopy;
+    [v11 instantiateViewControllerWithInputItems:itemsCopy connectionHandler:v10];
   }
 }
 
@@ -250,9 +250,9 @@ void __83__RPPreviewViewController_viewControllerForExtension_inputItems_complet
   }
 }
 
-- (void)videoEditor:(id)a3 didFinishWithActivityTypes:(id)a4
+- (void)videoEditor:(id)editor didFinishWithActivityTypes:(id)types
 {
-  v5 = a4;
+  typesCopy = types;
   WeakRetained = objc_loadWeakRetained(&self->_previewControllerDelegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -263,7 +263,7 @@ void __83__RPPreviewViewController_viewControllerForExtension_inputItems_complet
     block[2] = __66__RPPreviewViewController_videoEditor_didFinishWithActivityTypes___block_invoke;
     block[3] = &unk_278B61C60;
     block[4] = self;
-    v12 = v5;
+    v12 = typesCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -295,16 +295,16 @@ void __66__RPPreviewViewController_videoEditor_didFinishWithActivityTypes___bloc
   [WeakRetained previewControllerDidFinish:*(a1 + 32)];
 }
 
-- (void)extensionDidFinishWithActivityTypes:(id)a3
+- (void)extensionDidFinishWithActivityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "RPPreviewViewController:extensionDidFinish", buf, 2u);
   }
 
-  v5 = [(RPPreviewViewController *)self previewControllerDelegate];
+  previewControllerDelegate = [(RPPreviewViewController *)self previewControllerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -314,11 +314,11 @@ void __66__RPPreviewViewController_videoEditor_didFinishWithActivityTypes___bloc
     block[2] = __63__RPPreviewViewController_extensionDidFinishWithActivityTypes___block_invoke;
     block[3] = &unk_278B61C60;
     block[4] = self;
-    v11 = v4;
+    v11 = typesCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  v7 = [(RPPreviewViewController *)self previewControllerDelegate];
+  previewControllerDelegate2 = [(RPPreviewViewController *)self previewControllerDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)

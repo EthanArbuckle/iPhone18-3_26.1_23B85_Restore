@@ -1,22 +1,22 @@
 @interface VOTBrailleGesturePattern
-- (VOTBrailleGesturePattern)initWithLeftDots:(id)a3 rightDots:(id)a4;
+- (VOTBrailleGesturePattern)initWithLeftDots:(id)dots rightDots:(id)rightDots;
 - (id)description;
 @end
 
 @implementation VOTBrailleGesturePattern
 
-- (VOTBrailleGesturePattern)initWithLeftDots:(id)a3 rightDots:(id)a4
+- (VOTBrailleGesturePattern)initWithLeftDots:(id)dots rightDots:(id)rightDots
 {
-  v6 = a3;
-  v7 = a4;
+  dotsCopy = dots;
+  rightDotsCopy = rightDots;
   v11.receiver = self;
   v11.super_class = VOTBrailleGesturePattern;
   v8 = [(VOTBrailleGesturePattern *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(VOTBrailleGesturePattern *)v8 setLeftDots:v6];
-    [(VOTBrailleGesturePattern *)v9 setRightDots:v7];
+    [(VOTBrailleGesturePattern *)v8 setLeftDots:dotsCopy];
+    [(VOTBrailleGesturePattern *)v9 setRightDots:rightDotsCopy];
   }
 
   return v9;
@@ -27,9 +27,9 @@
   v8.receiver = self;
   v8.super_class = VOTBrailleGesturePattern;
   v3 = [(VOTBrailleGesturePattern *)&v8 description];
-  v4 = [(VOTBrailleGesturePattern *)self leftDots];
-  v5 = [(VOTBrailleGesturePattern *)self rightDots];
-  v6 = [v3 stringByAppendingFormat:@" - left: %@, right: %@", v4, v5];
+  leftDots = [(VOTBrailleGesturePattern *)self leftDots];
+  rightDots = [(VOTBrailleGesturePattern *)self rightDots];
+  v6 = [v3 stringByAppendingFormat:@" - left: %@, right: %@", leftDots, rightDots];
 
   return v6;
 }

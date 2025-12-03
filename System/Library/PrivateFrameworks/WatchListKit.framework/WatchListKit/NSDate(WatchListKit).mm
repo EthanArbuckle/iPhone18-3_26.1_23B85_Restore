@@ -9,7 +9,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [[a1 alloc] initWithTimeIntervalSince1970:{objc_msgSend(v4, "longLongValue") / 1000.0}];
+    v5 = [[self alloc] initWithTimeIntervalSince1970:{objc_msgSend(v4, "longLongValue") / 1000.0}];
   }
 
   else

@@ -1,9 +1,9 @@
 @interface CTSweetgumUserConsentFlowInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTSweetgumUserConsentFlowInfo)init;
-- (CTSweetgumUserConsentFlowInfo)initWithCoder:(id)a3;
+- (CTSweetgumUserConsentFlowInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSweetgumUserConsentFlowInfo
@@ -29,21 +29,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSweetgumUserConsentFlowInfo *)self webURL];
-  [v3 appendFormat:@" URL=%@", v4];
+  webURL = [(CTSweetgumUserConsentFlowInfo *)self webURL];
+  [v3 appendFormat:@" URL=%@", webURL];
 
-  v5 = [(CTSweetgumUserConsentFlowInfo *)self postData];
-  [v3 appendFormat:@" postData=%@", v5];
+  postData = [(CTSweetgumUserConsentFlowInfo *)self postData];
+  [v3 appendFormat:@" postData=%@", postData];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTSweetgumUserConsentFlowInfo *)self webURL];
-      v8 = [(CTSweetgumUserConsentFlowInfo *)v6 webURL];
-      if (v7 == v8 || (-[CTSweetgumUserConsentFlowInfo webURL](self, "webURL"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumUserConsentFlowInfo webURL](v6, "webURL"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
+      webURL = [(CTSweetgumUserConsentFlowInfo *)self webURL];
+      webURL2 = [(CTSweetgumUserConsentFlowInfo *)equalCopy webURL];
+      if (webURL == webURL2 || (-[CTSweetgumUserConsentFlowInfo webURL](self, "webURL"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumUserConsentFlowInfo webURL](equalCopy, "webURL"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
       {
-        v10 = [(CTSweetgumUserConsentFlowInfo *)self postData];
-        v11 = [(CTSweetgumUserConsentFlowInfo *)v6 postData];
-        if (v10 == v11)
+        postData = [(CTSweetgumUserConsentFlowInfo *)self postData];
+        postData2 = [(CTSweetgumUserConsentFlowInfo *)equalCopy postData];
+        if (postData == postData2)
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [(CTSweetgumUserConsentFlowInfo *)self postData];
-          v13 = [(CTSweetgumUserConsentFlowInfo *)v6 postData];
-          v9 = [v12 isEqualToString:v13];
+          postData3 = [(CTSweetgumUserConsentFlowInfo *)self postData];
+          postData4 = [(CTSweetgumUserConsentFlowInfo *)equalCopy postData];
+          v9 = [postData3 isEqualToString:postData4];
         }
 
-        if (v7 == v8)
+        if (webURL == webURL2)
         {
           goto LABEL_13;
         }
@@ -94,27 +94,27 @@ LABEL_14:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   webURL = self->_webURL;
-  v5 = a3;
-  [v5 encodeObject:webURL forKey:@"webURL"];
-  [v5 encodeObject:self->_postData forKey:@"postData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:webURL forKey:@"webURL"];
+  [coderCopy encodeObject:self->_postData forKey:@"postData"];
 }
 
-- (CTSweetgumUserConsentFlowInfo)initWithCoder:(id)a3
+- (CTSweetgumUserConsentFlowInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTSweetgumUserConsentFlowInfo;
   v5 = [(CTSweetgumUserConsentFlowInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webURL"];
     webURL = v5->_webURL;
     v5->_webURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postData"];
     postData = v5->_postData;
     v5->_postData = v8;
   }

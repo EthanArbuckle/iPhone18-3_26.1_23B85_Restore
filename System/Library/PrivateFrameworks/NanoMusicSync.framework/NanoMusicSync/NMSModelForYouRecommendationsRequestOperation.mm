@@ -1,5 +1,5 @@
 @interface NMSModelForYouRecommendationsRequestOperation
-- (void)_produceResponseWithRecommendationsArray:(id)a3 storeItemMetadataResults:(id)a4 completion:(id)a5;
+- (void)_produceResponseWithRecommendationsArray:(id)array storeItemMetadataResults:(id)results completion:(id)completion;
 - (void)execute;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)execute
 {
-  v3 = [(MPStoreModelRequestOperation *)self request];
-  if ([v3 nms_useCachedDataOnly])
+  request = [(MPStoreModelRequestOperation *)self request];
+  if ([request nms_useCachedDataOnly])
   {
     kdebug_trace();
-    v4 = [v3 nms_cachedRecommendationsArray];
-    if (v4 && (v5 = v4, [v3 nms_cachedStoreItemMetadataResults], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+    nms_cachedRecommendationsArray = [request nms_cachedRecommendationsArray];
+    if (nms_cachedRecommendationsArray && (v5 = nms_cachedRecommendationsArray, [request nms_cachedStoreItemMetadataResults], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
     {
-      v7 = [v3 nms_cachedRecommendationsArray];
-      v8 = [v3 nms_cachedStoreItemMetadataResults];
+      nms_cachedRecommendationsArray2 = [request nms_cachedRecommendationsArray];
+      nms_cachedStoreItemMetadataResults = [request nms_cachedStoreItemMetadataResults];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __56__NMSModelForYouRecommendationsRequestOperation_execute__block_invoke;
@@ -23,14 +23,14 @@
       v14[4] = self;
       v13.receiver = self;
       v13.super_class = NMSModelForYouRecommendationsRequestOperation;
-      [(MPModelForYouRecommendationsRequestOperation *)&v13 _produceResponseWithRecommendationsArray:v7 storeItemMetadataResults:v8 completion:v14];
+      [(MPModelForYouRecommendationsRequestOperation *)&v13 _produceResponseWithRecommendationsArray:nms_cachedRecommendationsArray2 storeItemMetadataResults:nms_cachedStoreItemMetadataResults completion:v14];
     }
 
     else
     {
       v9 = objc_alloc(MEMORY[0x277CD5E80]);
-      v10 = [(MPStoreModelRequestOperation *)self request];
-      v11 = [v9 initWithRequest:v10];
+      request2 = [(MPStoreModelRequestOperation *)self request];
+      v11 = [v9 initWithRequest:request2];
       [(MPStoreModelRequestOperation *)self _finishWithResponse:v11 error:0];
     }
   }
@@ -51,26 +51,26 @@ void __56__NMSModelForYouRecommendationsRequestOperation_execute__block_invoke(u
   [*(a1 + 32) _finishWithResponse:v6 error:v5];
 }
 
-- (void)_produceResponseWithRecommendationsArray:(id)a3 storeItemMetadataResults:(id)a4 completion:(id)a5
+- (void)_produceResponseWithRecommendationsArray:(id)array storeItemMetadataResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPStoreModelRequestOperation *)self request];
+  arrayCopy = array;
+  resultsCopy = results;
+  completionCopy = completion;
+  request = [(MPStoreModelRequestOperation *)self request];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __126__NMSModelForYouRecommendationsRequestOperation__produceResponseWithRecommendationsArray_storeItemMetadataResults_completion___block_invoke;
   v17[3] = &unk_27993EAD8;
-  v18 = v11;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
+  v18 = request;
+  v19 = arrayCopy;
+  v20 = resultsCopy;
+  v21 = completionCopy;
   v16.receiver = self;
   v16.super_class = NMSModelForYouRecommendationsRequestOperation;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v11;
+  v12 = completionCopy;
+  v13 = resultsCopy;
+  v14 = arrayCopy;
+  v15 = request;
   [(MPModelForYouRecommendationsRequestOperation *)&v16 _produceResponseWithRecommendationsArray:v14 storeItemMetadataResults:v13 completion:v17];
 }
 

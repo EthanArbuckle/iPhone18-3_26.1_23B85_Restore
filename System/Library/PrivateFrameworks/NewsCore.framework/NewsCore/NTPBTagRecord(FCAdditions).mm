@@ -26,23 +26,23 @@
 - (id)generateLogoImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 logoURL];
-  if (v5)
+  logoURL = [self logoURL];
+  if (logoURL)
   {
-    v6 = [a1 logoURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    logoURL2 = [self logoURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:logoURL2 lifetimeHint:v9];
   }
 
   else
@@ -56,23 +56,23 @@
 - (id)generateNameImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 nameImageURL];
-  if (v5)
+  nameImageURL = [self nameImageURL];
+  if (nameImageURL)
   {
-    v6 = [a1 nameImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    nameImageURL2 = [self nameImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:nameImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -86,23 +86,23 @@
 - (id)generateNameImageCompactAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 nameImageCompactURL];
-  if (v5)
+  nameImageCompactURL = [self nameImageCompactURL];
+  if (nameImageCompactURL)
   {
-    v6 = [a1 nameImageCompactURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    nameImageCompactURL2 = [self nameImageCompactURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:nameImageCompactURL2 lifetimeHint:v9];
   }
 
   else
@@ -116,23 +116,23 @@
 - (id)generateNameImageForDarkBackgroundAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 nameImageForDarkBackgroundURL];
-  if (v5)
+  nameImageForDarkBackgroundURL = [self nameImageForDarkBackgroundURL];
+  if (nameImageForDarkBackgroundURL)
   {
-    v6 = [a1 nameImageForDarkBackgroundURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    nameImageForDarkBackgroundURL2 = [self nameImageForDarkBackgroundURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:nameImageForDarkBackgroundURL2 lifetimeHint:v9];
   }
 
   else
@@ -170,16 +170,16 @@
   else if (v6)
   {
 LABEL_4:
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v7 assetHandleForCKAssetURLString:v6 lifetimeHint:v10];
@@ -198,23 +198,23 @@ LABEL_10:
 - (id)generateCoverImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 coverImageURL];
-  if (v5)
+  coverImageURL = [self coverImageURL];
+  if (coverImageURL)
   {
-    v6 = [a1 coverImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    coverImageURL2 = [self coverImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:coverImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -231,16 +231,16 @@ LABEL_10:
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v10];
@@ -257,23 +257,23 @@ LABEL_10:
 - (id)generateFeedNavImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 feedNavImageURL];
-  if (v5)
+  feedNavImageURL = [self feedNavImageURL];
+  if (feedNavImageURL)
   {
-    v6 = [a1 feedNavImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    feedNavImageURL2 = [self feedNavImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:feedNavImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -287,23 +287,23 @@ LABEL_10:
 - (id)generateFeedNavImageHQAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 feedNavImageHQURL];
-  if (v5)
+  feedNavImageHQURL = [self feedNavImageHQURL];
+  if (feedNavImageHQURL)
   {
-    v6 = [a1 feedNavImageHQURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    feedNavImageHQURL2 = [self feedNavImageHQURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:feedNavImageHQURL2 lifetimeHint:v9];
   }
 
   else
@@ -320,16 +320,16 @@ LABEL_10:
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v10];
@@ -349,16 +349,16 @@ LABEL_10:
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v10];
@@ -378,16 +378,16 @@ LABEL_10:
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v10];
@@ -407,16 +407,16 @@ LABEL_10:
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v10];
@@ -436,16 +436,16 @@ LABEL_10:
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v10];
@@ -462,24 +462,24 @@ LABEL_10:
 - (id)generateSportsLogoImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 sportsLogoImageURL];
+  sportsLogoImageURL = [self sportsLogoImageURL];
 
-  if (v5)
+  if (sportsLogoImageURL)
   {
-    v6 = [a1 sportsLogoImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    sportsLogoImageURL2 = [self sportsLogoImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:sportsLogoImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -493,24 +493,24 @@ LABEL_10:
 - (id)generateSportsLogoImageCompactAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 sportsLogoImageCompactURL];
+  sportsLogoImageCompactURL = [self sportsLogoImageCompactURL];
 
-  if (v5)
+  if (sportsLogoImageCompactURL)
   {
-    v6 = [a1 sportsLogoImageCompactURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    sportsLogoImageCompactURL2 = [self sportsLogoImageCompactURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:sportsLogoImageCompactURL2 lifetimeHint:v9];
   }
 
   else
@@ -524,24 +524,24 @@ LABEL_10:
 - (id)generateSportsLogoImageLargeAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 sportsLogoImageLargeURL];
+  sportsLogoImageLargeURL = [self sportsLogoImageLargeURL];
 
-  if (v5)
+  if (sportsLogoImageLargeURL)
   {
-    v6 = [a1 sportsLogoImageLargeURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    sportsLogoImageLargeURL2 = [self sportsLogoImageLargeURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:sportsLogoImageLargeURL2 lifetimeHint:v9];
   }
 
   else
@@ -555,24 +555,24 @@ LABEL_10:
 - (id)generateSportsLogoAltImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 sportsLogoAltImageURL];
+  sportsLogoAltImageURL = [self sportsLogoAltImageURL];
 
-  if (v5)
+  if (sportsLogoAltImageURL)
   {
-    v6 = [a1 sportsLogoAltImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    sportsLogoAltImageURL2 = [self sportsLogoAltImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:sportsLogoAltImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -586,24 +586,24 @@ LABEL_10:
 - (id)generateSportsLogoAltImageCompactAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 sportsLogoAltImageCompactURL];
+  sportsLogoAltImageCompactURL = [self sportsLogoAltImageCompactURL];
 
-  if (v5)
+  if (sportsLogoAltImageCompactURL)
   {
-    v6 = [a1 sportsLogoAltImageCompactURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    sportsLogoAltImageCompactURL2 = [self sportsLogoAltImageCompactURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:sportsLogoAltImageCompactURL2 lifetimeHint:v9];
   }
 
   else
@@ -617,24 +617,24 @@ LABEL_10:
 - (id)generateSportsLogoAltImageLargeAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 sportsLogoAltImageLargeURL];
+  sportsLogoAltImageLargeURL = [self sportsLogoAltImageLargeURL];
 
-  if (v5)
+  if (sportsLogoAltImageLargeURL)
   {
-    v6 = [a1 sportsLogoAltImageLargeURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    sportsLogoAltImageLargeURL2 = [self sportsLogoAltImageLargeURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:sportsLogoAltImageLargeURL2 lifetimeHint:v9];
   }
 
   else

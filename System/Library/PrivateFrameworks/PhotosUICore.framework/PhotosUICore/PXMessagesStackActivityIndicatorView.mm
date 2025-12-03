@@ -1,8 +1,8 @@
 @interface PXMessagesStackActivityIndicatorView
 - (CGRect)clippingRect;
-- (PXMessagesStackActivityIndicatorView)initWithFrame:(CGRect)a3;
+- (PXMessagesStackActivityIndicatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXMessagesStackActivityIndicatorView
@@ -20,26 +20,26 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   userData = self->_userData;
-  if (userData != v4)
+  if (userData != dataCopy)
   {
-    v9 = v4;
-    v6 = [(PXMessagesStackActivityIndicatorViewUserData *)userData isEqual:v4];
-    v4 = v9;
+    v9 = dataCopy;
+    v6 = [(PXMessagesStackActivityIndicatorViewUserData *)userData isEqual:dataCopy];
+    dataCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(PXMessagesStackActivityIndicatorViewUserData *)v9 copyWithZone:0];
       v8 = self->_userData;
       self->_userData = v7;
 
-      v4 = v9;
+      dataCopy = v9;
       if (self->_userData)
       {
         [(UIActivityIndicatorView *)self->_activityIndicatorView startAnimating];
-        v4 = v9;
+        dataCopy = v9;
       }
     }
   }
@@ -54,11 +54,11 @@
   PXSizeAdd();
 }
 
-- (PXMessagesStackActivityIndicatorView)initWithFrame:(CGRect)a3
+- (PXMessagesStackActivityIndicatorView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PXMessagesStackActivityIndicatorView;
-  v3 = [(PXMessagesStackActivityIndicatorView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXMessagesStackActivityIndicatorView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC730] effectWithStyle:10];
@@ -75,8 +75,8 @@
 
     [(UIActivityIndicatorView *)v3->_activityIndicatorView setHidesWhenStopped:0];
     [(UIActivityIndicatorView *)v3->_activityIndicatorView startAnimating];
-    v9 = [(UIVisualEffectView *)v3->_visualEffectView contentView];
-    [v9 addSubview:v3->_activityIndicatorView];
+    contentView = [(UIVisualEffectView *)v3->_visualEffectView contentView];
+    [contentView addSubview:v3->_activityIndicatorView];
   }
 
   return v3;

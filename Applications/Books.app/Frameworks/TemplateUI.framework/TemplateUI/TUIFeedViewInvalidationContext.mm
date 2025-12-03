@@ -1,14 +1,14 @@
 @interface TUIFeedViewInvalidationContext
-- (void)invalidateIndexPath:(id)a3;
-- (void)invalidateIndexPaths:(id)a3;
+- (void)invalidateIndexPath:(id)path;
+- (void)invalidateIndexPaths:(id)paths;
 @end
 
 @implementation TUIFeedViewInvalidationContext
 
-- (void)invalidateIndexPath:(id)a3
+- (void)invalidateIndexPath:(id)path
 {
-  v7 = a3;
-  if (v7)
+  pathCopy = path;
+  if (pathCopy)
   {
     invalidatedIndexPaths = self->_invalidatedIndexPaths;
     if (!invalidatedIndexPaths)
@@ -20,14 +20,14 @@
       invalidatedIndexPaths = self->_invalidatedIndexPaths;
     }
 
-    [(NSMutableArray *)invalidatedIndexPaths addObject:v7];
+    [(NSMutableArray *)invalidatedIndexPaths addObject:pathCopy];
   }
 }
 
-- (void)invalidateIndexPaths:(id)a3
+- (void)invalidateIndexPaths:(id)paths
 {
-  v7 = a3;
-  if (v7)
+  pathsCopy = paths;
+  if (pathsCopy)
   {
     invalidatedIndexPaths = self->_invalidatedIndexPaths;
     if (!invalidatedIndexPaths)
@@ -39,7 +39,7 @@
       invalidatedIndexPaths = self->_invalidatedIndexPaths;
     }
 
-    [(NSMutableArray *)invalidatedIndexPaths addObjectsFromArray:v7];
+    [(NSMutableArray *)invalidatedIndexPaths addObjectsFromArray:pathsCopy];
   }
 }
 

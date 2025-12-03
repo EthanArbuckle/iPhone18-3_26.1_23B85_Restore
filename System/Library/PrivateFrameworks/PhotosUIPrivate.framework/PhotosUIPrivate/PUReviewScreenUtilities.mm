@@ -1,50 +1,50 @@
 @interface PUReviewScreenUtilities
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBarFrame:(SEL)a3 inReferenceBounds:(CGRect)a4 orientation:(CGRect)a5;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForCameraTopBarFrame:(SEL)a3 inReferenceBounds:(CGRect)a4 forContentSize:(CGRect)a5 orientation:(CGSize)a6;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraBottomBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraContentGeometryForReferenceBounds:(SEL)a3 forContentSize:(CGRect)a4 withOrientation:(CGSize)a5 shouldShiftPreviewForUtilityBar:(int64_t)a6;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraTopBarGeometryForReferenceBounds:(SEL)a3 forContentSize:(CGRect)a4 withOrientation:(CGSize)a5;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenContentGeometryForReferenceBounds:(SEL)a3 forContentSize:(CGRect)a4 withOrientation:(CGSize)a5;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenControlBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4 safeAreaInsets:(int64_t)a5;
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenTopBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4;
-+ (BOOL)useCompactControlBarButtonsForReferenceBounds:(CGRect)a3;
-+ (CGAffineTransform)_transformForRotationAboutCenterOfReferenceBounds:(SEL)a3 withOrientationTransform:(CGRect)a4;
-+ (CGRect)_orientedBoundsForReferenceBounds:(CGRect)result sizeClass:(unint64_t)a4;
-+ (CGRect)_portraitBoundsForReferenceBounds:(CGRect)a3;
-+ (CGRect)cameraBottomBarFrameForReferenceBounds:(CGRect)a3;
-+ (CGRect)cameraContentFrameForContentAspectRatio:(double)a3 referenceBounds:(CGRect)a4;
-+ (CGRect)cameraContentFrameForContentAspectRatio:(double)a3 referenceBounds:(CGRect)a4 shouldShiftPreviewForUtilityBar:(BOOL)a5;
-+ (CGRect)cameraTopBarFrameForReferenceBounds:(CGRect)a3;
-+ (CGRect)reviewScreenControlBarFrameForReferenceBounds:(CGRect)a3;
-+ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)a3;
-+ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)a3 safeAreaInsets:(UIEdgeInsets)a4;
-+ (CGRect)reviewScreenTopBarFrameForReferenceBounds:(CGRect)a3;
-+ (UIEdgeInsets)_layoutMarginInsetsForSizeSpec:(id *)a3;
-+ (double)_cameraBottomBarHeightForSizeSpec:(id *)a3;
-+ (double)_cameraBottomBarWidthForSizeSpec:(id *)a3;
-+ (double)_cameraTopBarHeightForSizeSpec:(id *)a3;
-+ (double)_reviewScreenControlBarHeightForSizeSpec:(id *)a3;
-+ (double)_reviewScreenControlBarWidthForSizeSpec:(id *)a3;
-+ (double)_reviewScreenScrubberBarHeightForSizeClass:(unint64_t)a3;
-+ (double)_reviewScreenTopBarHeightForSizeSpec:(id *)a3;
-+ (unint64_t)doneButtonStyleForReferenceBounds:(CGRect)a3;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBarFrame:(SEL)frame inReferenceBounds:(CGRect)bounds orientation:(CGRect)orientation;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForCameraTopBarFrame:(SEL)frame inReferenceBounds:(CGRect)bounds forContentSize:(CGRect)size orientation:(CGSize)orientation;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraBottomBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraContentGeometryForReferenceBounds:(SEL)bounds forContentSize:(CGRect)size withOrientation:(CGSize)orientation shouldShiftPreviewForUtilityBar:(int64_t)bar;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraTopBarGeometryForReferenceBounds:(SEL)bounds forContentSize:(CGRect)size withOrientation:(CGSize)orientation;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenContentGeometryForReferenceBounds:(SEL)bounds forContentSize:(CGRect)size withOrientation:(CGSize)orientation;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenControlBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation safeAreaInsets:(int64_t)insets;
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenTopBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation;
++ (BOOL)useCompactControlBarButtonsForReferenceBounds:(CGRect)bounds;
++ (CGAffineTransform)_transformForRotationAboutCenterOfReferenceBounds:(SEL)bounds withOrientationTransform:(CGRect)transform;
++ (CGRect)_orientedBoundsForReferenceBounds:(CGRect)result sizeClass:(unint64_t)class;
++ (CGRect)_portraitBoundsForReferenceBounds:(CGRect)bounds;
++ (CGRect)cameraBottomBarFrameForReferenceBounds:(CGRect)bounds;
++ (CGRect)cameraContentFrameForContentAspectRatio:(double)ratio referenceBounds:(CGRect)bounds;
++ (CGRect)cameraContentFrameForContentAspectRatio:(double)ratio referenceBounds:(CGRect)bounds shouldShiftPreviewForUtilityBar:(BOOL)bar;
++ (CGRect)cameraTopBarFrameForReferenceBounds:(CGRect)bounds;
++ (CGRect)reviewScreenControlBarFrameForReferenceBounds:(CGRect)bounds;
++ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)bounds;
++ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)bounds safeAreaInsets:(UIEdgeInsets)insets;
++ (CGRect)reviewScreenTopBarFrameForReferenceBounds:(CGRect)bounds;
++ (UIEdgeInsets)_layoutMarginInsetsForSizeSpec:(id *)spec;
++ (double)_cameraBottomBarHeightForSizeSpec:(id *)spec;
++ (double)_cameraBottomBarWidthForSizeSpec:(id *)spec;
++ (double)_cameraTopBarHeightForSizeSpec:(id *)spec;
++ (double)_reviewScreenControlBarHeightForSizeSpec:(id *)spec;
++ (double)_reviewScreenControlBarWidthForSizeSpec:(id *)spec;
++ (double)_reviewScreenScrubberBarHeightForSizeClass:(unint64_t)class;
++ (double)_reviewScreenTopBarHeightForSizeSpec:(id *)spec;
++ (unint64_t)doneButtonStyleForReferenceBounds:(CGRect)bounds;
 @end
 
 @implementation PUReviewScreenUtilities
 
-+ (CGRect)_orientedBoundsForReferenceBounds:(CGRect)result sizeClass:(unint64_t)a4
++ (CGRect)_orientedBoundsForReferenceBounds:(CGRect)result sizeClass:(unint64_t)class
 {
-  if (a4 <= 6)
+  if (class <= 6)
   {
-    [a1 _portraitBoundsForReferenceBounds:{result.origin.x, result.origin.y, result.size.width, result.size.height, v4, v5}];
+    [self _portraitBoundsForReferenceBounds:{result.origin.x, result.origin.y, result.size.width, result.size.height, v4, v5}];
   }
 
   return result;
 }
 
-+ (CGAffineTransform)_transformForRotationAboutCenterOfReferenceBounds:(SEL)a3 withOrientationTransform:(CGRect)a4
++ (CGAffineTransform)_transformForRotationAboutCenterOfReferenceBounds:(SEL)bounds withOrientationTransform:(CGRect)transform
 {
   [a2 _portraitBoundsForReferenceBounds:?];
   UIRectGetCenter();
@@ -80,12 +80,12 @@
   return result;
 }
 
-+ (CGRect)_portraitBoundsForReferenceBounds:(CGRect)a3
++ (CGRect)_portraitBoundsForReferenceBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
-  v5 = fmin(a3.size.width, a3.size.height);
-  v6 = fmax(a3.size.width, a3.size.height);
+  v5 = fmin(bounds.size.width, bounds.size.height);
+  v6 = fmax(bounds.size.width, bounds.size.height);
   v7 = v5;
   result.size.height = v6;
   result.size.width = v7;
@@ -94,18 +94,18 @@
   return result;
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForCameraTopBarFrame:(SEL)a3 inReferenceBounds:(CGRect)a4 forContentSize:(CGRect)a5 orientation:(CGSize)a6
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForCameraTopBarFrame:(SEL)frame inReferenceBounds:(CGRect)bounds forContentSize:(CGRect)size orientation:(CGSize)orientation
 {
-  width = a6.width;
-  height = a5.size.height;
-  v9 = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a4.size.height;
-  v13 = a4.size.width;
-  v14 = a4.origin.y;
-  v15 = a4.origin.x;
-  result = PUReviewScreenSizeClassForReferenceSize(a5.size.width, a5.size.height);
+  width = orientation.width;
+  height = size.size.height;
+  v9 = size.size.width;
+  y = size.origin.y;
+  x = size.origin.x;
+  v12 = bounds.size.height;
+  v13 = bounds.size.width;
+  v14 = bounds.origin.y;
+  v15 = bounds.origin.x;
+  result = PUReviewScreenSizeClassForReferenceSize(size.size.width, size.size.height);
   if (result == 7)
   {
     retstr->var1 = xmmword_1B3D0D6B0;
@@ -180,14 +180,14 @@
   return CGAffineTransformMakeRotation(&retstr->var2, v28);
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBarFrame:(SEL)a3 inReferenceBounds:(CGRect)a4 orientation:(CGRect)a5
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBarFrame:(SEL)frame inReferenceBounds:(CGRect)bounds orientation:(CGRect)orientation
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
+  height = orientation.size.height;
+  width = orientation.size.width;
+  y = orientation.origin.y;
+  x = orientation.origin.x;
+  v11 = bounds.size.height;
+  v12 = bounds.size.width;
   v15 = *MEMORY[0x1E695EFF8];
   v16 = *(MEMORY[0x1E695EFF8] + 8);
   UIRectGetCenter();
@@ -225,9 +225,9 @@
   return result;
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4 safeAreaInsets:(int64_t)a5
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation safeAreaInsets:(int64_t)insets
 {
-  [a2 reviewScreenScrubberBarFrameForReferenceBounds:a4.origin.x safeAreaInsets:{a4.origin.y, a4.size.width, a4.size.height, a6.top, a6.left, a6.bottom, a6.right}];
+  [a2 reviewScreenScrubberBarFrameForReferenceBounds:orientation.origin.x safeAreaInsets:{orientation.origin.y, orientation.size.width, orientation.size.height, a6.top, a6.left, a6.bottom, a6.right}];
   retstr->var0.origin = 0u;
   retstr->var0.size = 0u;
   retstr->var1 = 0u;
@@ -235,10 +235,10 @@
   *&retstr->var2.c = 0u;
   *&retstr->var2.tx = 0u;
 
-  return [a2 _geometryForBarFrame:a5 inReferenceBounds:? orientation:?];
+  return [a2 _geometryForBarFrame:insets inReferenceBounds:? orientation:?];
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenScrubberBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation
 {
   *&retstr->var2.c = 0u;
   *&retstr->var2.tx = 0u;
@@ -246,10 +246,10 @@
   *&retstr->var2.a = 0u;
   retstr->var0.origin = 0u;
   retstr->var0.size = 0u;
-  return [a2 reviewScreenScrubberBarGeometryForReferenceBounds:a5 withOrientation:a4.origin.x safeAreaInsets:{a4.origin.y, a4.size.width, a4.size.height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  return [a2 reviewScreenScrubberBarGeometryForReferenceBounds:a5 withOrientation:orientation.origin.x safeAreaInsets:{orientation.origin.y, orientation.size.width, orientation.size.height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenControlBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenControlBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation
 {
   [a2 reviewScreenControlBarFrameForReferenceBounds:?];
   retstr->var0.origin = 0u;
@@ -262,7 +262,7 @@
   return [a2 _geometryForBarFrame:a5 inReferenceBounds:? orientation:?];
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenTopBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenTopBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation
 {
   [a2 reviewScreenTopBarFrameForReferenceBounds:?];
   retstr->var0.origin = 0u;
@@ -275,15 +275,15 @@
   return [a2 _geometryForBarFrame:a5 inReferenceBounds:? orientation:?];
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenContentGeometryForReferenceBounds:(SEL)a3 forContentSize:(CGRect)a4 withOrientation:(CGSize)a5
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)reviewScreenContentGeometryForReferenceBounds:(SEL)bounds forContentSize:(CGRect)size withOrientation:(CGSize)orientation
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = PUReviewScreenSizeClassForReferenceSize(a4.size.width, a4.size.height);
+  height = orientation.height;
+  width = orientation.width;
+  v9 = size.size.height;
+  v10 = size.size.width;
+  y = size.origin.y;
+  x = size.origin.x;
+  v15 = PUReviewScreenSizeClassForReferenceSize(size.size.width, size.size.height);
   v16 = v15 < 6;
   v17 = (a6 - 3) < 2;
   v18 = v17 && v16;
@@ -358,20 +358,20 @@
   return result;
 }
 
-+ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)a3 safeAreaInsets:(UIEdgeInsets)a4
++ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)bounds safeAreaInsets:(UIEdgeInsets)insets
 {
-  bottom = a4.bottom;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = PUReviewScreenSizeClassForReferenceSize(a3.size.width, a3.size.height);
-  [a1 _orientedBoundsForReferenceBounds:v10 sizeClass:{x, y, width, height}];
+  bottom = insets.bottom;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v10 = PUReviewScreenSizeClassForReferenceSize(bounds.size.width, bounds.size.height);
+  [self _orientedBoundsForReferenceBounds:v10 sizeClass:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [a1 _reviewScreenScrubberBarHeightForSizeClass:v10];
+  [self _reviewScreenScrubberBarHeightForSizeClass:v10];
   v20 = v19;
   v21 = bottom + v19;
   v26.origin.x = v12;
@@ -389,9 +389,9 @@
   return result;
 }
 
-+ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)a3
++ (CGRect)reviewScreenScrubberBarFrameForReferenceBounds:(CGRect)bounds
 {
-  [a1 reviewScreenScrubberBarFrameForReferenceBounds:a3.origin.x safeAreaInsets:{a3.origin.y, a3.size.width, a3.size.height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  [self reviewScreenScrubberBarFrameForReferenceBounds:bounds.origin.x safeAreaInsets:{bounds.origin.y, bounds.size.width, bounds.size.height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -399,10 +399,10 @@
   return result;
 }
 
-+ (double)_reviewScreenScrubberBarHeightForSizeClass:(unint64_t)a3
++ (double)_reviewScreenScrubberBarHeightForSizeClass:(unint64_t)class
 {
   result = 0.0;
-  if (a3 == 7)
+  if (class == 7)
   {
     if (PUPixelWidth_onceToken != -1)
     {
@@ -415,14 +415,14 @@
   return result;
 }
 
-+ (CGRect)reviewScreenControlBarFrameForReferenceBounds:(CGRect)a3
++ (CGRect)reviewScreenControlBarFrameForReferenceBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = PUReviewScreenSizeClassForReferenceSize(a3.size.width, a3.size.height);
-  [a1 _orientedBoundsForReferenceBounds:v8 sizeClass:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = PUReviewScreenSizeClassForReferenceSize(bounds.size.width, bounds.size.height);
+  [self _orientedBoundsForReferenceBounds:v8 sizeClass:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -430,12 +430,12 @@
   v25 = width;
   v26 = height;
   v27 = v8;
-  [a1 _reviewScreenControlBarHeightForSizeSpec:&v25];
+  [self _reviewScreenControlBarHeightForSizeSpec:&v25];
   v18 = v17;
   v25 = width;
   v26 = height;
   v27 = v8;
-  [a1 _reviewScreenControlBarWidthForSizeSpec:&v25];
+  [self _reviewScreenControlBarWidthForSizeSpec:&v25];
   v20 = v19;
   if (v18 == 0.0)
   {
@@ -468,40 +468,40 @@
   return result;
 }
 
-+ (double)_reviewScreenControlBarWidthForSizeSpec:(id *)a3
++ (double)_reviewScreenControlBarWidthForSizeSpec:(id *)spec
 {
-  v4 = *a3;
-  [a1 _cameraBottomBarWidthForSizeSpec:&v4];
+  v4 = *spec;
+  [self _cameraBottomBarWidthForSizeSpec:&v4];
   return result;
 }
 
-+ (double)_reviewScreenControlBarHeightForSizeSpec:(id *)a3
++ (double)_reviewScreenControlBarHeightForSizeSpec:(id *)spec
 {
-  if (!a3->var1)
+  if (!spec->var1)
   {
     return 141.0;
   }
 
-  v9 = *a3;
-  [a1 _cameraBottomBarHeightForSizeSpec:&v9];
+  v9 = *spec;
+  [self _cameraBottomBarHeightForSizeSpec:&v9];
   v6 = v5;
-  v9 = *a3;
-  [a1 _layoutMarginInsetsForSizeSpec:&v9];
+  v9 = *spec;
+  [self _layoutMarginInsetsForSizeSpec:&v9];
   return v6 + v7;
 }
 
-+ (CGRect)reviewScreenTopBarFrameForReferenceBounds:(CGRect)a3
++ (CGRect)reviewScreenTopBarFrameForReferenceBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [a1 _orientedBoundsForReferenceBounds:PUReviewScreenSizeClassForReferenceSize(a3.size.width sizeClass:{a3.size.height), a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [self _orientedBoundsForReferenceBounds:PUReviewScreenSizeClassForReferenceSize(bounds.size.width sizeClass:{bounds.size.height), bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height}];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   *v17 = width;
   *&v17[1] = height;
   v17[2] = PUReviewScreenSizeClassForReferenceSize(width, height);
-  [a1 _reviewScreenTopBarHeightForSizeSpec:v17];
+  [self _reviewScreenTopBarHeightForSizeSpec:v17];
   v13 = v12;
   v14 = v7;
   v15 = v9;
@@ -513,16 +513,16 @@
   return result;
 }
 
-+ (double)_reviewScreenTopBarHeightForSizeSpec:(id *)a3
++ (double)_reviewScreenTopBarHeightForSizeSpec:(id *)spec
 {
-  v9 = *a3;
-  [a1 _cameraTopBarHeightForSizeSpec:&v9];
+  v9 = *spec;
+  [self _cameraTopBarHeightForSizeSpec:&v9];
   if (result == 0.0)
   {
     result = 98.0;
   }
 
-  var1 = a3->var1;
+  var1 = spec->var1;
   v6 = var1 > 5;
   v7 = (1 << var1) & 0x32;
   if (!v6 && v7 != 0)
@@ -533,17 +533,17 @@
   return result;
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraContentGeometryForReferenceBounds:(SEL)a3 forContentSize:(CGRect)a4 withOrientation:(CGSize)a5 shouldShiftPreviewForUtilityBar:(int64_t)a6
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraContentGeometryForReferenceBounds:(SEL)bounds forContentSize:(CGRect)size withOrientation:(CGSize)orientation shouldShiftPreviewForUtilityBar:(int64_t)bar
 {
   v7 = a7;
-  height = a5.height;
-  width = a5.width;
-  v10 = a4.size.height;
-  v11 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = orientation.height;
+  width = orientation.width;
+  v10 = size.size.height;
+  v11 = size.size.width;
+  y = size.origin.y;
+  x = size.origin.x;
   memset(&v28, 0, sizeof(v28));
-  PUReviewScreenAffineTransformForOrientation(&v28, a6);
+  PUReviewScreenAffineTransformForOrientation(&v28, bar);
   v16 = height == 0.0 || width == 0.0;
   v17 = width / height;
   if (v16)
@@ -570,7 +570,7 @@
   return result;
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraBottomBarGeometryForReferenceBounds:(SEL)a3 withOrientation:(CGRect)a4
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraBottomBarGeometryForReferenceBounds:(SEL)bounds withOrientation:(CGRect)orientation
 {
   [a2 cameraBottomBarFrameForReferenceBounds:?];
   retstr->var0.origin = 0u;
@@ -583,10 +583,10 @@
   return [a2 _geometryForBarFrame:a5 inReferenceBounds:? orientation:?];
 }
 
-+ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraTopBarGeometryForReferenceBounds:(SEL)a3 forContentSize:(CGRect)a4 withOrientation:(CGSize)a5
++ ($3B1716E7537CC2F16D6737AAC3CCCADB)cameraTopBarGeometryForReferenceBounds:(SEL)bounds forContentSize:(CGRect)size withOrientation:(CGSize)orientation
 {
-  height = a5.height;
-  width = a5.width;
+  height = orientation.height;
+  width = orientation.width;
   [a2 cameraTopBarFrameForReferenceBounds:?];
   retstr->var0.origin = 0u;
   retstr->var0.size = 0u;
@@ -597,16 +597,16 @@
   return [a2 _geometryForCameraTopBarFrame:a6 inReferenceBounds:*&width forContentSize:*&height orientation:?];
 }
 
-+ (CGRect)cameraContentFrameForContentAspectRatio:(double)a3 referenceBounds:(CGRect)a4 shouldShiftPreviewForUtilityBar:(BOOL)a5
++ (CGRect)cameraContentFrameForContentAspectRatio:(double)ratio referenceBounds:(CGRect)bounds shouldShiftPreviewForUtilityBar:(BOOL)bar
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = PUReviewScreenSizeClassForReferenceSize(a4.size.width, a4.size.height);
-  [a1 _orientedBoundsForReferenceBounds:v12 sizeClass:{x, y, width, height}];
-  v61 = PURectWithAspectRatioFittingRect(a3, v13, v14, v15, v16);
+  barCopy = bar;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v12 = PUReviewScreenSizeClassForReferenceSize(bounds.size.width, bounds.size.height);
+  [self _orientedBoundsForReferenceBounds:v12 sizeClass:{x, y, width, height}];
+  v61 = PURectWithAspectRatioFittingRect(ratio, v13, v14, v15, v16);
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -643,8 +643,8 @@ LABEL_6:
 
   if (((v27 | v28) & 1) == 0)
   {
-    [a1 cameraTopBarFrameForReferenceBounds:{x, y, width, height}];
-    if (v5)
+    [self cameraTopBarFrameForReferenceBounds:{x, y, width, height}];
+    if (barCopy)
     {
       v63.origin.x = x;
       v63.origin.y = y;
@@ -663,10 +663,10 @@ LABEL_15:
 
   if ((v24 & v31) != 0)
   {
-    [a1 cameraBottomBarFrameForReferenceBounds:{x, y, width, height}];
+    [self cameraBottomBarFrameForReferenceBounds:{x, y, width, height}];
     v34 = v33;
-    [a1 cameraTopBarFrameForReferenceBounds:{x, y, width, height}];
-    if (!v5)
+    [self cameraTopBarFrameForReferenceBounds:{x, y, width, height}];
+    if (!barCopy)
     {
       v18 = v34 - v22;
       goto LABEL_17;
@@ -677,12 +677,12 @@ LABEL_15:
 
   if (v32)
   {
-    [a1 cameraTopBarFrameForReferenceBounds:{x, y, width, height}];
+    [self cameraTopBarFrameForReferenceBounds:{x, y, width, height}];
     v45 = v44;
     v47 = v46;
     v59 = v49;
     v60 = v48;
-    [a1 cameraBottomBarFrameForReferenceBounds:{x, y, width, height}];
+    [self cameraBottomBarFrameForReferenceBounds:{x, y, width, height}];
     v51 = v50;
     v53 = v52;
     v55 = v54;
@@ -709,9 +709,9 @@ LABEL_17:
   return result;
 }
 
-+ (CGRect)cameraContentFrameForContentAspectRatio:(double)a3 referenceBounds:(CGRect)a4
++ (CGRect)cameraContentFrameForContentAspectRatio:(double)ratio referenceBounds:(CGRect)bounds
 {
-  [a1 cameraContentFrameForContentAspectRatio:0 referenceBounds:a3 shouldShiftPreviewForUtilityBar:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  [self cameraContentFrameForContentAspectRatio:0 referenceBounds:ratio shouldShiftPreviewForUtilityBar:{bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height}];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -719,14 +719,14 @@ LABEL_17:
   return result;
 }
 
-+ (CGRect)cameraBottomBarFrameForReferenceBounds:(CGRect)a3
++ (CGRect)cameraBottomBarFrameForReferenceBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = PUReviewScreenSizeClassForReferenceSize(a3.size.width, a3.size.height);
-  [a1 _orientedBoundsForReferenceBounds:v8 sizeClass:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = PUReviewScreenSizeClassForReferenceSize(bounds.size.width, bounds.size.height);
+  [self _orientedBoundsForReferenceBounds:v8 sizeClass:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -734,17 +734,17 @@ LABEL_17:
   v27 = width;
   v28 = height;
   v29 = v8;
-  [a1 _cameraBottomBarWidthForSizeSpec:&v27];
+  [self _cameraBottomBarWidthForSizeSpec:&v27];
   v18 = v17;
   v27 = width;
   v28 = height;
   v29 = v8;
-  [a1 _cameraBottomBarHeightForSizeSpec:&v27];
+  [self _cameraBottomBarHeightForSizeSpec:&v27];
   v20 = v19;
   v27 = width;
   v28 = height;
   v29 = v8;
-  [a1 _layoutMarginInsetsForSizeSpec:&v27];
+  [self _layoutMarginInsetsForSizeSpec:&v27];
   if (v18 == 0.0)
   {
     v22 = v21;
@@ -782,12 +782,12 @@ LABEL_17:
   return result;
 }
 
-+ (double)_cameraBottomBarWidthForSizeSpec:(id *)a3
++ (double)_cameraBottomBarWidthForSizeSpec:(id *)spec
 {
   result = 0.0;
-  if (a3->var1 == 7)
+  if (spec->var1 == 7)
   {
-    result = a3->var0.width * 0.109375 + 18.0;
+    result = spec->var0.width * 0.109375 + 18.0;
     if (result > 130.0)
     {
       result = 130.0;
@@ -802,9 +802,9 @@ LABEL_17:
   return result;
 }
 
-+ (double)_cameraBottomBarHeightForSizeSpec:(id *)a3
++ (double)_cameraBottomBarHeightForSizeSpec:(id *)spec
 {
-  var1 = a3->var1;
+  var1 = spec->var1;
   result = 0.0;
   if (var1 <= 2)
   {
@@ -848,13 +848,13 @@ LABEL_17:
     {
       if (PUPixelWidth_onceToken != -1)
       {
-        v6 = a3;
+        specCopy = spec;
         dispatch_once(&PUPixelWidth_onceToken, &__block_literal_global_2);
-        a3 = v6;
+        spec = specCopy;
       }
 
       result = *&PUPixelWidth_pixelWidth + 101.0;
-      v5 = a3->var0.width * 0.409574 + -29.5638;
+      v5 = spec->var0.width * 0.409574 + -29.5638;
       if (v5 > 140.0)
       {
         v5 = 140.0;
@@ -880,14 +880,14 @@ LABEL_17:
   return result;
 }
 
-+ (CGRect)cameraTopBarFrameForReferenceBounds:(CGRect)a3
++ (CGRect)cameraTopBarFrameForReferenceBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = PUReviewScreenSizeClassForReferenceSize(a3.size.width, a3.size.height);
-  [a1 _orientedBoundsForReferenceBounds:v8 sizeClass:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = PUReviewScreenSizeClassForReferenceSize(bounds.size.width, bounds.size.height);
+  [self _orientedBoundsForReferenceBounds:v8 sizeClass:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -895,12 +895,12 @@ LABEL_17:
   v25 = width;
   v26 = height;
   v27 = v8;
-  [a1 _cameraTopBarHeightForSizeSpec:&v25];
+  [self _cameraTopBarHeightForSizeSpec:&v25];
   v18 = v17;
   v25 = width;
   v26 = height;
   v27 = v8;
-  [a1 _layoutMarginInsetsForSizeSpec:&v25];
+  [self _layoutMarginInsetsForSizeSpec:&v25];
   v20 = v19;
   v28.origin.x = v10;
   v28.origin.y = v12;
@@ -917,9 +917,9 @@ LABEL_17:
   return result;
 }
 
-+ (double)_cameraTopBarHeightForSizeSpec:(id *)a3
++ (double)_cameraTopBarHeightForSizeSpec:(id *)spec
 {
-  var1 = a3->var1;
+  var1 = spec->var1;
   if (var1 - 1 < 5)
   {
     return 44.0;
@@ -927,7 +927,7 @@ LABEL_17:
 
   if (var1 == 6)
   {
-    result = a3->var0.width * 0.0727273 + 16.7273;
+    result = spec->var0.width * 0.0727273 + 16.7273;
     if (result > 44.0)
     {
       result = 44.0;
@@ -951,25 +951,25 @@ LABEL_17:
   return result;
 }
 
-+ (BOOL)useCompactControlBarButtonsForReferenceBounds:(CGRect)a3
++ (BOOL)useCompactControlBarButtonsForReferenceBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  v4 = PUReviewScreenSizeClassForReferenceSize(a3.size.width, a3.size.height);
+  width = bounds.size.width;
+  v4 = PUReviewScreenSizeClassForReferenceSize(bounds.size.width, bounds.size.height);
   if (v4 != 6)
   {
     return v4 == 0;
   }
 
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   v5 = width < v7 * 0.5;
 
   return v5;
 }
 
-+ (unint64_t)doneButtonStyleForReferenceBounds:(CGRect)a3
++ (unint64_t)doneButtonStyleForReferenceBounds:(CGRect)bounds
 {
-  v3 = PUReviewScreenSizeClassForReferenceSize(a3.size.width, a3.size.height);
+  v3 = PUReviewScreenSizeClassForReferenceSize(bounds.size.width, bounds.size.height);
   if (v3 >= 2)
   {
     return v3 != 7;
@@ -981,24 +981,24 @@ LABEL_17:
   }
 }
 
-+ (UIEdgeInsets)_layoutMarginInsetsForSizeSpec:(id *)a3
++ (UIEdgeInsets)_layoutMarginInsetsForSizeSpec:(id *)spec
 {
-  var1 = a3->var1;
+  var1 = spec->var1;
   switch(var1)
   {
     case 5uLL:
-      v10 = *a3;
-      [a1 _cameraBottomBarHeightForSizeSpec:&v10];
+      v10 = *spec;
+      [self _cameraBottomBarHeightForSizeSpec:&v10];
       v5 = 230.0;
       break;
     case 4uLL:
-      v10 = *a3;
-      [a1 _cameraBottomBarHeightForSizeSpec:&v10];
+      v10 = *spec;
+      [self _cameraBottomBarHeightForSizeSpec:&v10];
       v5 = 203.0;
       break;
     case 1uLL:
-      v10 = *a3;
-      [a1 _cameraBottomBarHeightForSizeSpec:&v10];
+      v10 = *spec;
+      [self _cameraBottomBarHeightForSizeSpec:&v10];
       v5 = 154.0;
       break;
     default:

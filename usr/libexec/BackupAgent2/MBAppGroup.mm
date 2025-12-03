@@ -6,10 +6,10 @@
 
 - (id)domain
 {
-  v3 = [(MBContainer *)self identifier];
-  v4 = [(MBContainer *)self volumeMountPoint];
-  v5 = [(MBContainer *)self containerDir];
-  v6 = [MBDomain appGroupDomainWithIdentifier:v3 volumeMountPoint:v4 rootPath:v5];
+  identifier = [(MBContainer *)self identifier];
+  volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+  containerDir = [(MBContainer *)self containerDir];
+  v6 = [MBDomain appGroupDomainWithIdentifier:identifier volumeMountPoint:volumeMountPoint rootPath:containerDir];
 
   if (qword_10011E3E8 != -1)
   {

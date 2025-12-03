@@ -1,23 +1,23 @@
 @interface TPSCollectionSection
-+ (id)identifierForDictionary:(id)a3;
++ (id)identifierForDictionary:(id)dictionary;
 - (BOOL)isFeatured;
 - (BOOL)isYourTips;
-- (TPSCollectionSection)initWithCoder:(id)a3;
-- (TPSCollectionSection)initWithDictionary:(id)a3 collections:(id)a4;
-- (TPSCollectionSection)initWithDictionary:(id)a3 subSectionIdentifiers:(id)a4;
-- (TPSCollectionSection)initWithIdentifier:(id)a3 collections:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSCollectionSection)initWithCoder:(id)coder;
+- (TPSCollectionSection)initWithDictionary:(id)dictionary collections:(id)collections;
+- (TPSCollectionSection)initWithDictionary:(id)dictionary subSectionIdentifiers:(id)identifiers;
+- (TPSCollectionSection)initWithIdentifier:(id)identifier collections:(id)collections;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeCollections:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeCollections:(id)collections;
 @end
 
 @implementation TPSCollectionSection
 
-+ (id)identifierForDictionary:(id)a3
++ (id)identifierForDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 TPSSafeStringForKey:@"collectionLabel"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy TPSSafeStringForKey:@"collectionLabel"];
   v5 = v4;
   if (v4)
   {
@@ -26,7 +26,7 @@
 
   else
   {
-    v6 = [v3 TPSSafeStringForKey:@"collectionId"];
+    v6 = [dictionaryCopy TPSSafeStringForKey:@"collectionId"];
   }
 
   v7 = v6;
@@ -34,42 +34,42 @@
   return v7;
 }
 
-- (TPSCollectionSection)initWithIdentifier:(id)a3 collections:(id)a4
+- (TPSCollectionSection)initWithIdentifier:(id)identifier collections:(id)collections
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  collectionsCopy = collections;
   v12.receiver = self;
   v12.super_class = TPSCollectionSection;
   v9 = [(TPSCollectionSection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_collections, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_collections, collections);
   }
 
   return v10;
 }
 
-- (TPSCollectionSection)initWithDictionary:(id)a3 subSectionIdentifiers:(id)a4
+- (TPSCollectionSection)initWithDictionary:(id)dictionary subSectionIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = [(TPSCollectionSection *)self initWithDictionary:a3 collections:0];
-  [(TPSCollectionSection *)v7 setSubSectionIdentifiers:v6];
+  identifiersCopy = identifiers;
+  v7 = [(TPSCollectionSection *)self initWithDictionary:dictionary collections:0];
+  [(TPSCollectionSection *)v7 setSubSectionIdentifiers:identifiersCopy];
 
   return v7;
 }
 
-- (TPSCollectionSection)initWithDictionary:(id)a3 collections:(id)a4
+- (TPSCollectionSection)initWithDictionary:(id)dictionary collections:(id)collections
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  collectionsCopy = collections;
   v22.receiver = self;
   v22.super_class = TPSCollectionSection;
-  v8 = [(TPSSerializableObject *)&v22 initWithDictionary:v6];
+  v8 = [(TPSSerializableObject *)&v22 initWithDictionary:dictionaryCopy];
   if (v8)
   {
-    v9 = [TPSCollectionSection identifierForDictionary:v6];
+    v9 = [TPSCollectionSection identifierForDictionary:dictionaryCopy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
@@ -79,7 +79,7 @@
       goto LABEL_9;
     }
 
-    v11 = [v6 TPSSafeDictionaryForKey:@"content"];
+    v11 = [dictionaryCopy TPSSafeDictionaryForKey:@"content"];
     v12 = [v11 TPSSafeStringForKey:@"collectionTitle"];
     title = v8->_title;
     v8->_title = v12;
@@ -88,9 +88,9 @@
     text = v8->_text;
     v8->_text = v14;
 
-    if (v7)
+    if (collectionsCopy)
     {
-      v16 = v7;
+      v16 = collectionsCopy;
     }
 
     else
@@ -99,7 +99,7 @@
     }
 
     objc_storeStrong(&v8->_collections, v16);
-    v17 = [v6 TPSSafeDictionaryForKey:@"relationships"];
+    v17 = [dictionaryCopy TPSSafeDictionaryForKey:@"relationships"];
     v18 = [v17 TPSSafeStringForKey:@"supportId"];
     supportID = v8->_supportID;
     v8->_supportID = v18;
@@ -111,57 +111,57 @@ LABEL_9:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = TPSCollectionSection;
-  v4 = [(TPSSerializableObject *)&v11 copyWithZone:a3];
-  v5 = [(TPSCollectionSection *)self identifier];
-  [v4 setIdentifier:v5];
+  v4 = [(TPSSerializableObject *)&v11 copyWithZone:zone];
+  identifier = [(TPSCollectionSection *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v6 = [(TPSCollectionSection *)self supportID];
-  [v4 setSupportID:v6];
+  supportID = [(TPSCollectionSection *)self supportID];
+  [v4 setSupportID:supportID];
 
-  v7 = [(TPSCollectionSection *)self title];
-  [v4 setTitle:v7];
+  title = [(TPSCollectionSection *)self title];
+  [v4 setTitle:title];
 
-  v8 = [(TPSCollectionSection *)self text];
-  [v4 setText:v8];
+  text = [(TPSCollectionSection *)self text];
+  [v4 setText:text];
 
-  v9 = [(TPSCollectionSection *)self collections];
-  [v4 setCollections:v9];
+  collections = [(TPSCollectionSection *)self collections];
+  [v4 setCollections:collections];
 
   return v4;
 }
 
-- (TPSCollectionSection)initWithCoder:(id)a3
+- (TPSCollectionSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = TPSCollectionSection;
-  v5 = [(TPSSerializableObject *)&v20 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collectionId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collectionId"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportId"];
     supportID = v5->_supportID;
     v5->_supportID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collectionTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collectionTitle"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collectionText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collectionText"];
     text = v5->_text;
     v5->_text = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"collections"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"collections"];
     collections = v5->_collections;
     v5->_collections = v17;
   }
@@ -169,56 +169,56 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = TPSCollectionSection;
-  v4 = a3;
-  [(TPSSerializableObject *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v10 encodeWithCoder:coderCopy];
   v5 = [(TPSCollectionSection *)self identifier:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"collectionId"];
+  [coderCopy encodeObject:v5 forKey:@"collectionId"];
 
-  v6 = [(TPSCollectionSection *)self supportID];
-  [v4 encodeObject:v6 forKey:@"supportId"];
+  supportID = [(TPSCollectionSection *)self supportID];
+  [coderCopy encodeObject:supportID forKey:@"supportId"];
 
-  v7 = [(TPSCollectionSection *)self title];
-  [v4 encodeObject:v7 forKey:@"collectionTitle"];
+  title = [(TPSCollectionSection *)self title];
+  [coderCopy encodeObject:title forKey:@"collectionTitle"];
 
-  v8 = [(TPSCollectionSection *)self text];
-  [v4 encodeObject:v8 forKey:@"collectionText"];
+  text = [(TPSCollectionSection *)self text];
+  [coderCopy encodeObject:text forKey:@"collectionText"];
 
-  v9 = [(TPSCollectionSection *)self collections];
-  [v4 encodeObject:v9 forKey:@"collections"];
+  collections = [(TPSCollectionSection *)self collections];
+  [coderCopy encodeObject:collections forKey:@"collections"];
 }
 
 - (BOOL)isFeatured
 {
-  v2 = [(TPSCollectionSection *)self identifier];
-  v3 = [v2 isEqualToString:@"Featured"];
+  identifier = [(TPSCollectionSection *)self identifier];
+  v3 = [identifier isEqualToString:@"Featured"];
 
   return v3;
 }
 
 - (BOOL)isYourTips
 {
-  v2 = [(TPSCollectionSection *)self collections];
-  v3 = [v2 firstObject];
-  v4 = [v3 identifier];
+  collections = [(TPSCollectionSection *)self collections];
+  firstObject = [collections firstObject];
+  identifier = [firstObject identifier];
   v5 = +[TPSCommonDefines savedTipsCollectionIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [identifier isEqualToString:v5];
 
   return v6;
 }
 
-- (void)removeCollections:(id)a3
+- (void)removeCollections:(id)collections
 {
-  v4 = a3;
-  v5 = [(TPSCollectionSection *)self collections];
-  v10 = [v5 mutableCopy];
+  collectionsCopy = collections;
+  collections = [(TPSCollectionSection *)self collections];
+  v10 = [collections mutableCopy];
 
-  [v10 removeObjectsInArray:v4];
-  v6 = [(TPSCollectionSection *)self collections];
-  v7 = [v6 count];
+  [v10 removeObjectsInArray:collectionsCopy];
+  collections2 = [(TPSCollectionSection *)self collections];
+  v7 = [collections2 count];
   v8 = [v10 count];
 
   if (v7 != v8)
@@ -236,35 +236,35 @@ LABEL_9:
   v4 = [(TPSSerializableObject *)&v15 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSCollectionSection *)self identifier];
-  [v5 appendFormat:@"\n  %@ = %@", @"collectionId", v6];
+  identifier = [(TPSCollectionSection *)self identifier];
+  [v5 appendFormat:@"\n  %@ = %@", @"collectionId", identifier];
 
-  v7 = [(TPSCollectionSection *)self supportID];
+  supportID = [(TPSCollectionSection *)self supportID];
 
-  if (v7)
+  if (supportID)
   {
-    v8 = [(TPSCollectionSection *)self supportID];
-    [v5 appendFormat:@"%@ = %@\n", @"supportId", v8];
+    supportID2 = [(TPSCollectionSection *)self supportID];
+    [v5 appendFormat:@"%@ = %@\n", @"supportId", supportID2];
   }
 
-  v9 = [(TPSCollectionSection *)self title];
+  title = [(TPSCollectionSection *)self title];
 
-  if (v9)
+  if (title)
   {
-    v10 = [(TPSCollectionSection *)self title];
-    [v5 appendFormat:@"\n  %@ = %@", @"collectionTitle", v10];
+    title2 = [(TPSCollectionSection *)self title];
+    [v5 appendFormat:@"\n  %@ = %@", @"collectionTitle", title2];
   }
 
-  v11 = [(TPSCollectionSection *)self text];
+  text = [(TPSCollectionSection *)self text];
 
-  if (v11)
+  if (text)
   {
-    v12 = [(TPSCollectionSection *)self text];
-    [v5 appendFormat:@"\n  %@ = %@", @"collectionText", v12];
+    text2 = [(TPSCollectionSection *)self text];
+    [v5 appendFormat:@"\n  %@ = %@", @"collectionText", text2];
   }
 
-  v13 = [(TPSCollectionSection *)self collections];
-  [v5 appendFormat:@"\n  %@ = %@", @"collections", v13];
+  collections = [(TPSCollectionSection *)self collections];
+  [v5 appendFormat:@"\n  %@ = %@", @"collections", collections];
 
   return v5;
 }

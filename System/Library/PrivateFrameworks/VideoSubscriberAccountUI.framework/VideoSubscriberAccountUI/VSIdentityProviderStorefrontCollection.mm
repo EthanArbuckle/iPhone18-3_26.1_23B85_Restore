@@ -28,16 +28,16 @@
 
 - (id)featuredIdentityProviders
 {
-  v2 = [(VSIdentityProviderStorefrontCollection *)self mutableFeaturedIdentityProviders];
-  v3 = [v2 copy];
+  mutableFeaturedIdentityProviders = [(VSIdentityProviderStorefrontCollection *)self mutableFeaturedIdentityProviders];
+  v3 = [mutableFeaturedIdentityProviders copy];
 
   return v3;
 }
 
 - (id)allIdentityProviders
 {
-  v2 = [(VSIdentityProviderStorefrontCollection *)self mutableAllIdentityProviders];
-  v3 = [v2 copy];
+  mutableAllIdentityProviders = [(VSIdentityProviderStorefrontCollection *)self mutableAllIdentityProviders];
+  v3 = [mutableAllIdentityProviders copy];
 
   return v3;
 }
@@ -45,7 +45,7 @@
 - (void)featureProvidersInCurrentStorefront
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(VSIdentityProviderStorefrontCollection *)self storefrontTwoCharCode];
+  storefrontTwoCharCode = [(VSIdentityProviderStorefrontCollection *)self storefrontTwoCharCode];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -69,8 +69,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v6 = [v5 storefronts];
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        storefronts = [v5 storefronts];
+        v7 = [storefronts countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v7)
         {
           v8 = v7;
@@ -81,26 +81,26 @@
             {
               if (*v19 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(storefronts);
               }
 
               v11 = *(*(&v18 + 1) + 8 * j);
-              v12 = [v11 storefrontTwoCharCode];
-              if ([v12 isEqualToString:v3])
+              storefrontTwoCharCode2 = [v11 storefrontTwoCharCode];
+              if ([storefrontTwoCharCode2 isEqualToString:storefrontTwoCharCode])
               {
-                v13 = [v5 rankForSorting];
+                rankForSorting = [v5 rankForSorting];
 
-                if (v13)
+                if (rankForSorting)
                 {
                   continue;
                 }
 
-                v12 = [v11 sortOrdinal];
-                [v5 setRankForSorting:v12];
+                storefrontTwoCharCode2 = [v11 sortOrdinal];
+                [v5 setRankForSorting:storefrontTwoCharCode2];
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v8 = [storefronts countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v8);

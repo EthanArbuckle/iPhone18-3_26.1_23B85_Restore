@@ -1,19 +1,19 @@
 @interface _UITiltMotionEffect
-- (_UITiltMotionEffect)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UITiltMotionEffect)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRotatingSphereRadius:(double)a3;
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRotatingSphereRadius:(double)radius;
 @end
 
 @implementation _UITiltMotionEffect
 
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3.horizontal * self->_maximumHorizontalTiltAngle;
-  v5 = -(a3.vertical * self->_maximumVerticalTiltAngle);
+  v4 = offset.horizontal * self->_maximumHorizontalTiltAngle;
+  v5 = -(offset.vertical * self->_maximumVerticalTiltAngle);
   memset(&v13, 0, sizeof(v13));
   CATransform3DMakeTranslation(&v13, 0.0, 0.0, self->_rotatingSphereRadius);
   v11 = v13;
@@ -49,19 +49,19 @@
   return v9;
 }
 
-- (_UITiltMotionEffect)initWithCoder:(id)a3
+- (_UITiltMotionEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UITiltMotionEffect;
-  v5 = [(UIMotionEffect *)&v11 initWithCoder:v4];
+  v5 = [(UIMotionEffect *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"_maximumHorizontalTiltAngle"];
+    [coderCopy decodeFloatForKey:@"_maximumHorizontalTiltAngle"];
     v5->_maximumHorizontalTiltAngle = v6;
-    [v4 decodeFloatForKey:@"_maximumVerticalTiltAngle"];
+    [coderCopy decodeFloatForKey:@"_maximumVerticalTiltAngle"];
     v5->_maximumVerticalTiltAngle = v7;
-    [v4 decodeFloatForKey:@"_rotatingSphereRadius"];
+    [coderCopy decodeFloatForKey:@"_rotatingSphereRadius"];
     v5->_rotatingSphereRadius = v8;
     v9 = v5;
   }
@@ -69,28 +69,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = _UITiltMotionEffect;
-  v4 = a3;
-  [(UIMotionEffect *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UIMotionEffect *)&v8 encodeWithCoder:coderCopy];
   maximumHorizontalTiltAngle = self->_maximumHorizontalTiltAngle;
   *&maximumHorizontalTiltAngle = maximumHorizontalTiltAngle;
-  [v4 encodeFloat:@"_maximumHorizontalTiltAngle" forKey:{maximumHorizontalTiltAngle, v8.receiver, v8.super_class}];
+  [coderCopy encodeFloat:@"_maximumHorizontalTiltAngle" forKey:{maximumHorizontalTiltAngle, v8.receiver, v8.super_class}];
   maximumVerticalTiltAngle = self->_maximumVerticalTiltAngle;
   *&maximumVerticalTiltAngle = maximumVerticalTiltAngle;
-  [v4 encodeFloat:@"_maximumVerticalTiltAngle" forKey:maximumVerticalTiltAngle];
+  [coderCopy encodeFloat:@"_maximumVerticalTiltAngle" forKey:maximumVerticalTiltAngle];
   rotatingSphereRadius = self->_rotatingSphereRadius;
   *&rotatingSphereRadius = rotatingSphereRadius;
-  [v4 encodeFloat:@"_rotatingSphereRadius" forKey:rotatingSphereRadius];
+  [coderCopy encodeFloat:@"_rotatingSphereRadius" forKey:rotatingSphereRadius];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UITiltMotionEffect;
-  result = [(UIMotionEffect *)&v5 copyWithZone:a3];
+  result = [(UIMotionEffect *)&v5 copyWithZone:zone];
   *(result + 3) = *&self->_maximumHorizontalTiltAngle;
   *(result + 4) = *&self->_maximumVerticalTiltAngle;
   *(result + 5) = *&self->_rotatingSphereRadius;
@@ -107,18 +107,18 @@
   return v6;
 }
 
-- (void)setRotatingSphereRadius:(double)a3
+- (void)setRotatingSphereRadius:(double)radius
 {
-  if (a3 < 0.0)
+  if (radius < 0.0)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D940];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 raise:v6 format:{@"-[%@ rotatingSphereRadius] must be non-negative (%f provided)", v8, *&a3}];
+    [v5 raise:v6 format:{@"-[%@ rotatingSphereRadius] must be non-negative (%f provided)", v8, *&radius}];
   }
 
-  self->_rotatingSphereRadius = a3;
+  self->_rotatingSphereRadius = radius;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface OKActionBindingTransition
 + (id)supportedSettings;
 - (OKActionBindingTransition)init;
-- (OKActionBindingTransition)initWithSettings:(id)a3;
-- (id)_compatibleNavigatorViewController:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (OKActionBindingTransition)initWithSettings:(id)settings;
+- (id)_compatibleNavigatorViewController:(id)controller;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -17,35 +17,35 @@
   return [(OKActionBinding *)&v3 init];
 }
 
-- (OKActionBindingTransition)initWithSettings:(id)a3
+- (OKActionBindingTransition)initWithSettings:(id)settings
 {
   v4.receiver = self;
   v4.super_class = OKActionBindingTransition;
-  return [(OKActionBinding *)&v4 initWithSettings:a3];
+  return [(OKActionBinding *)&v4 initWithSettings:settings];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = OKActionBindingTransition;
-  return [(OKActionBindingProxy *)&v4 copyWithZone:a3];
+  return [(OKActionBindingProxy *)&v4 copyWithZone:zone];
 }
 
 + (id)supportedSettings
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingTransition;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   [v2 addEntriesFromDictionary:MEMORY[0x277CBEC10]];
   return v2;
 }
 
-- (id)_compatibleNavigatorViewController:(id)a3
+- (id)_compatibleNavigatorViewController:(id)controller
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [a3 pageViewController];
+    controller = [controller pageViewController];
   }
 
   else
@@ -57,10 +57,10 @@
     }
   }
 
-  v4 = [a3 navigatorViewController];
-  if ([v4 conformsToProtocol:&unk_287B1AAB0])
+  navigatorViewController = [controller navigatorViewController];
+  if ([navigatorViewController conformsToProtocol:&unk_287B1AAB0])
   {
-    return v4;
+    return navigatorViewController;
   }
 
   else
@@ -69,15 +69,15 @@
   }
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingTransition;
-  [(OKActionBindingProxy *)&v7 loadForResponder:a3 scope:a4];
-  v6 = [(OKActionBindingTransition *)self _compatibleNavigatorViewController:a3];
+  [(OKActionBindingProxy *)&v7 loadForResponder:responder scope:scope];
+  v6 = [(OKActionBindingTransition *)self _compatibleNavigatorViewController:responder];
   if (v6)
   {
-    [v6 registerActionBindingTransition:a3];
+    [v6 registerActionBindingTransition:responder];
   }
 }
 

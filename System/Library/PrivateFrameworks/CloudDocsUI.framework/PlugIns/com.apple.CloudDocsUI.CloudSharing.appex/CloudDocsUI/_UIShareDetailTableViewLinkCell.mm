@@ -1,45 +1,45 @@
 @interface _UIShareDetailTableViewLinkCell
-- (_UIShareDetailTableViewLinkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)copyLink:(id)a3;
+- (_UIShareDetailTableViewLinkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)copyLink:(id)link;
 @end
 
 @implementation _UIShareDetailTableViewLinkCell
 
-- (_UIShareDetailTableViewLinkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_UIShareDetailTableViewLinkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v14.receiver = self;
   v14.super_class = _UIShareDetailTableViewLinkCell;
-  v4 = [(_UIShareDetailTableViewLinkCell *)&v14 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(_UIShareDetailTableViewLinkCell *)&v14 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(_UIShareDetailTableViewLinkCell *)v4 textLabel];
-    [v6 setTextAlignment:4];
+    textLabel = [(_UIShareDetailTableViewLinkCell *)v4 textLabel];
+    [textLabel setTextAlignment:4];
 
-    v7 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
-    [v7 setLineBreakMode:5];
+    textLabel2 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
+    [textLabel2 setLineBreakMode:5];
 
     v8 = +[UIColor secondaryLabelColor];
-    v9 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
-    [v9 setTextColor:v8];
+    textLabel3 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
+    [textLabel3 setTextColor:v8];
 
     v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v11 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
-    [v11 setFont:v10];
+    textLabel4 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
+    [textLabel4 setFont:v10];
 
-    v12 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
-    [v12 setAdjustsFontForContentSizeCategory:1];
+    textLabel5 = [(_UIShareDetailTableViewLinkCell *)v5 textLabel];
+    [textLabel5 setAdjustsFontForContentSizeCategory:1];
   }
 
   return v5;
 }
 
-- (void)copyLink:(id)a3
+- (void)copyLink:(id)link
 {
   v6 = +[UIPasteboard generalPasteboard];
-  v4 = [(_UIShareDetailTableViewLinkCell *)self textLabel];
-  v5 = [v4 text];
-  [v6 setValue:v5 forPasteboardType:kUTTypeURL];
+  textLabel = [(_UIShareDetailTableViewLinkCell *)self textLabel];
+  text = [textLabel text];
+  [v6 setValue:text forPasteboardType:kUTTypeURL];
 }
 
 @end

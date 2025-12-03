@@ -1,20 +1,20 @@
 @interface UIColorPickerViewController
-- (BOOL)p_isColorSpaceP3ForColor:(id)a3;
-- (id)p_colorToSelectFromColorMatchingSelectedColorSpaceIfPossible:(id)a3;
-- (void)crl_ifVisuallyDifferentSetSelectedColor:(id)a3 preservingColorSpaceIfPossible:(BOOL)a4;
+- (BOOL)p_isColorSpaceP3ForColor:(id)color;
+- (id)p_colorToSelectFromColorMatchingSelectedColorSpaceIfPossible:(id)possible;
+- (void)crl_ifVisuallyDifferentSetSelectedColor:(id)color preservingColorSpaceIfPossible:(BOOL)possible;
 @end
 
 @implementation UIColorPickerViewController
 
-- (void)crl_ifVisuallyDifferentSetSelectedColor:(id)a3 preservingColorSpaceIfPossible:(BOOL)a4
+- (void)crl_ifVisuallyDifferentSetSelectedColor:(id)color preservingColorSpaceIfPossible:(BOOL)possible
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = v6;
-  if (!v6 || (-[UIColorPickerViewController selectedColor](self, "selectedColor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v11 _isSimilarToColor:v7 withinPercentage:0.0009765625], v7, v6 = v11, (v8 & 1) == 0))
+  possibleCopy = possible;
+  colorCopy = color;
+  v11 = colorCopy;
+  if (!colorCopy || (-[UIColorPickerViewController selectedColor](self, "selectedColor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v11 _isSimilarToColor:v7 withinPercentage:0.0009765625], v7, colorCopy = v11, (v8 & 1) == 0))
   {
-    v9 = v6;
-    if (v4)
+    v9 = colorCopy;
+    if (possibleCopy)
     {
       v10 = [(UIColorPickerViewController *)self p_colorToSelectFromColorMatchingSelectedColorSpaceIfPossible:v9];
 
@@ -23,18 +23,18 @@
 
     [(UIColorPickerViewController *)self setSelectedColor:v9];
 
-    v6 = v11;
+    colorCopy = v11;
   }
 }
 
-- (id)p_colorToSelectFromColorMatchingSelectedColorSpaceIfPossible:(id)a3
+- (id)p_colorToSelectFromColorMatchingSelectedColorSpaceIfPossible:(id)possible
 {
-  v4 = a3;
-  v5 = [(UIColorPickerViewController *)self p_isColorSpaceP3ForColor:v4];
-  v6 = [(UIColorPickerViewController *)self selectedColor];
-  v7 = [(UIColorPickerViewController *)self p_isColorSpaceP3ForColor:v6];
+  possibleCopy = possible;
+  v5 = [(UIColorPickerViewController *)self p_isColorSpaceP3ForColor:possibleCopy];
+  selectedColor = [(UIColorPickerViewController *)self selectedColor];
+  v7 = [(UIColorPickerViewController *)self p_isColorSpaceP3ForColor:selectedColor];
 
-  v8 = v4;
+  v8 = possibleCopy;
   v9 = v8;
   v10 = v8;
   if (v7)
@@ -42,9 +42,9 @@
     v10 = v8;
     if ((v5 & 1) == 0)
     {
-      v11 = [v8 CGColor];
+      cGColor = [v8 CGColor];
       v12 = sub_1000CCE28();
-      CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v12, kCGRenderingIntentDefault, v11, 0);
+      CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v12, kCGRenderingIntentDefault, cGColor, 0);
       v10 = [UIColor colorWithCGColor:CopyByMatchingToColorSpace];
 
       CGColorRelease(CopyByMatchingToColorSpace);
@@ -54,9 +54,9 @@
   return v10;
 }
 
-- (BOOL)p_isColorSpaceP3ForColor:(id)a3
+- (BOOL)p_isColorSpaceP3ForColor:(id)color
 {
-  ColorSpace = CGColorGetColorSpace([a3 CGColor]);
+  ColorSpace = CGColorGetColorSpace([color CGColor]);
   Name = CGColorSpaceGetName(ColorSpace);
   if (Name)
   {

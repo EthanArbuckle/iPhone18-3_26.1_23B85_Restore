@@ -8,9 +8,9 @@
 {
   v8 = a4;
   v9 = a5;
-  if ([a1 onClientSide])
+  if ([self onClientSide])
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &off_1F1DFB028;
     v10 = objc_msgSendSuper2(&v12, sel__accessibilityEnumerateSiblingsWithParent_options_usingBlock_, a3, v8, v9);
   }

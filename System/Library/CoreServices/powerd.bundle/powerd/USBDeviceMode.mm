@@ -5,8 +5,8 @@
 - (BOOL)start;
 - (BOOL)startMatchingNotifications;
 - (USBDeviceMode)init;
-- (void)_handleNotificationForService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5;
-- (void)_handleServiceAdded:(unsigned int)a3;
+- (void)_handleNotificationForService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument;
+- (void)_handleServiceAdded:(unsigned int)added;
 - (void)acquirePowerAssertion;
 - (void)dealloc;
 - (void)evaluatePowerAssertion;
@@ -38,8 +38,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(USBDeviceMode *)self dataRole];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dataRole = [(USBDeviceMode *)self dataRole];
+  v4 = [dataRole countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -51,18 +51,18 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataRole);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(USBDeviceMode *)self dataRole];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        dataRole2 = [(USBDeviceMode *)self dataRole];
+        v11 = [dataRole2 objectForKeyedSubscript:v9];
         v12 = [v11 intValue] == 1;
 
         v6 |= v12;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [dataRole countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -174,8 +174,8 @@
 
 - (BOOL)start
 {
-  v3 = [(USBDeviceMode *)self readBootArgOverride];
-  if (v3)
+  readBootArgOverride = [(USBDeviceMode *)self readBootArgOverride];
+  if (readBootArgOverride)
   {
     v4 = qword_1000AC970;
     if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEFAULT))
@@ -191,22 +191,22 @@
     [(USBDeviceMode *)self registerForPowerSourceUpdates];
   }
 
-  return v3 ^ 1;
+  return readBootArgOverride ^ 1;
 }
 
 - (void)registerForPowerSourceUpdates
 {
-  v2 = self;
+  selfCopy = self;
   out_token = 0;
-  v3 = [(USBDeviceMode *)self queue];
+  queue = [(USBDeviceMode *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100054DF0;
   v5[3] = &unk_1000991E8;
-  v5[4] = v2;
-  LODWORD(v2) = notify_register_dispatch("com.apple.system.powersources.source", &out_token, v3, v5);
+  v5[4] = selfCopy;
+  LODWORD(selfCopy) = notify_register_dispatch("com.apple.system.powersources.source", &out_token, queue, v5);
 
-  if (v2)
+  if (selfCopy)
   {
     v4 = qword_1000AC970;
     if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_ERROR))
@@ -242,15 +242,15 @@
   }
 
   [(USBDeviceMode *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-  v4 = [(USBDeviceMode *)self ioNotificationPort];
-  v5 = [(USBDeviceMode *)self queue];
-  IONotificationPortSetDispatchQueue(v4, v5);
+  ioNotificationPort = [(USBDeviceMode *)self ioNotificationPort];
+  queue = [(USBDeviceMode *)self queue];
+  IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
   v6 = IOServiceMatching("IOPortTransportStateUSB");
   [(__CFDictionary *)v6 setObject:&off_1000A30C0 forKey:@"IOPropertyMatch"];
-  v7 = [(USBDeviceMode *)self ioNotificationPort];
+  ioNotificationPort2 = [(USBDeviceMode *)self ioNotificationPort];
   v8 = v6;
-  v9 = IOServiceAddMatchingNotification(v7, "IOServiceMatched", v8, sub_100018B70, self, &self->_ioServiceAddedIterator);
+  v9 = IOServiceAddMatchingNotification(ioNotificationPort2, "IOServiceMatched", v8, sub_100018B70, self, &self->_ioServiceAddedIterator);
   v10 = v9;
   if (v9)
   {
@@ -285,7 +285,7 @@
   }
 }
 
-- (void)_handleServiceAdded:(unsigned int)a3
+- (void)_handleServiceAdded:(unsigned int)added
 {
   v5 = qword_1000AC970;
   if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEFAULT))
@@ -295,7 +295,7 @@
   }
 
   entryID = 0;
-  RegistryEntryID = IORegistryEntryGetRegistryEntryID(a3, &entryID);
+  RegistryEntryID = IORegistryEntryGetRegistryEntryID(added, &entryID);
   if (RegistryEntryID)
   {
     sub_10006D02C(RegistryEntryID, buf);
@@ -304,9 +304,9 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  v7 = [(USBDeviceMode *)self transportNotifiers];
+  transportNotifiers = [(USBDeviceMode *)self transportNotifiers];
   v8 = [NSNumber numberWithUnsignedLongLong:entryID];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [transportNotifiers objectForKeyedSubscript:v8];
 
   if (v9)
   {
@@ -314,7 +314,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"TransportDescription", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(added, @"TransportDescription", kCFAllocatorDefault, 0);
   v11 = qword_1000AC970;
   if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEFAULT))
   {
@@ -326,25 +326,25 @@ LABEL_16:
   }
 
   notification = 0;
-  v12 = IOServiceAddInterestNotification([(USBDeviceMode *)self ioNotificationPort], a3, "IOGeneralInterest", sub_1000182B4, self, &notification);
+  v12 = IOServiceAddInterestNotification([(USBDeviceMode *)self ioNotificationPort], added, "IOGeneralInterest", sub_1000182B4, self, &notification);
   if (v12)
   {
     sub_10006D188(v12, CFProperty, buf);
     goto LABEL_16;
   }
 
-  v13 = [(USBDeviceMode *)self transportNotifiers];
+  transportNotifiers2 = [(USBDeviceMode *)self transportNotifiers];
   v14 = [NSNumber numberWithUnsignedInt:notification];
   v15 = [NSNumber numberWithUnsignedLongLong:entryID];
-  [v13 setObject:v14 forKey:v15];
+  [transportNotifiers2 setObject:v14 forKey:v15];
 
-  v16 = IORegistryEntryCreateCFProperty(a3, @"DataRole", kCFAllocatorDefault, 0);
+  v16 = IORegistryEntryCreateCFProperty(added, @"DataRole", kCFAllocatorDefault, 0);
   if (v16)
   {
     v17 = v16;
-    v18 = [(USBDeviceMode *)self dataRole];
+    dataRole = [(USBDeviceMode *)self dataRole];
     v19 = [NSNumber numberWithUnsignedLongLong:entryID];
-    [v18 setObject:v17 forKey:v19];
+    [dataRole setObject:v17 forKey:v19];
 
     v20 = qword_1000AC970;
     if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEFAULT))
@@ -362,10 +362,10 @@ LABEL_16:
 LABEL_12:
 }
 
-- (void)_handleNotificationForService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5
+- (void)_handleNotificationForService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument
 {
   entryID = 0;
-  RegistryEntryID = IORegistryEntryGetRegistryEntryID(a3, &entryID);
+  RegistryEntryID = IORegistryEntryGetRegistryEntryID(service, &entryID);
   if (RegistryEntryID)
   {
     sub_10006D02C(RegistryEntryID, buf);
@@ -374,12 +374,12 @@ LABEL_12:
 
   else
   {
-    CFProperty = IORegistryEntryCreateCFProperty(a3, @"TransportDescription", kCFAllocatorDefault, 0);
+    CFProperty = IORegistryEntryCreateCFProperty(service, @"TransportDescription", kCFAllocatorDefault, 0);
     v10 = qword_1000AC970;
     if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109634;
-      *&buf[4] = a4;
+      *&buf[4] = type;
       *&buf[8] = 2112;
       *&buf[10] = CFProperty;
       *&buf[18] = 2048;
@@ -387,7 +387,7 @@ LABEL_12:
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Transport message arrived! (messageType: 0x%08x, transportDescription: %@, registryEntryID: %llu)", buf, 0x1Cu);
     }
 
-    if (a4 == -536870896)
+    if (type == -536870896)
     {
       v19 = qword_1000AC970;
       if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEFAULT))
@@ -401,9 +401,9 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Transport terminated! (messageType: 0x%08x, transportDescription: %@, registryEntryID: %llu)", buf, 0x1Cu);
       }
 
-      v20 = [(USBDeviceMode *)self transportNotifiers];
+      transportNotifiers = [(USBDeviceMode *)self transportNotifiers];
       v21 = [NSNumber numberWithUnsignedLongLong:entryID];
-      v22 = [v20 objectForKeyedSubscript:v21];
+      v22 = [transportNotifiers objectForKeyedSubscript:v21];
 
       if (v22)
       {
@@ -411,26 +411,26 @@ LABEL_12:
       }
     }
 
-    else if (a4 == -536870608)
+    else if (type == -536870608)
     {
-      v11 = IORegistryEntryCreateCFProperty(a3, @"DataRole", kCFAllocatorDefault, 0);
+      v11 = IORegistryEntryCreateCFProperty(service, @"DataRole", kCFAllocatorDefault, 0);
       if (v11)
       {
-        v12 = [(USBDeviceMode *)self dataRole];
+        dataRole = [(USBDeviceMode *)self dataRole];
         v13 = [NSNumber numberWithUnsignedLongLong:entryID];
-        [v12 setObject:v11 forKey:v13];
+        [dataRole setObject:v11 forKey:v13];
 
         v14 = qword_1000AC970;
         if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v14;
-          v16 = [(USBDeviceMode *)self dataRole];
+          dataRole2 = [(USBDeviceMode *)self dataRole];
           *buf = 138412290;
-          *&buf[4] = v16;
+          *&buf[4] = dataRole2;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Current date roles %@", buf, 0xCu);
         }
 
-        v17 = IORegistryEntryCreateCFProperty(a3, @"DataRoleDescription", kCFAllocatorDefault, 0);
+        v17 = IORegistryEntryCreateCFProperty(service, @"DataRoleDescription", kCFAllocatorDefault, 0);
         v18 = qword_1000AC970;
         if (os_log_type_enabled(qword_1000AC970, OS_LOG_TYPE_DEFAULT))
         {

@@ -1,46 +1,46 @@
 @interface ACXRemoteAppListObserver
-- (ACXRemoteAppListObserver)initWithObserver:(id)a3 queue:(id)a4;
+- (ACXRemoteAppListObserver)initWithObserver:(id)observer queue:(id)queue;
 - (ACXRemoteAppListObserver)observer;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ACXRemoteAppListObserver
 
-- (ACXRemoteAppListObserver)initWithObserver:(id)a3 queue:(id)a4
+- (ACXRemoteAppListObserver)initWithObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = ACXRemoteAppListObserver;
   v8 = [(ACXRemoteAppListObserver *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_observer, v6);
-    objc_storeStrong(&v9->_queue, a4);
-    v10 = [(ACXRemoteAppListObserver *)v9 observer];
-    v11 = [(ACXRemoteAppListObserver *)v9 queue];
-    v9->_hashValue = v11 ^ v10;
+    objc_storeWeak(&v8->_observer, observerCopy);
+    objc_storeStrong(&v9->_queue, queue);
+    observer = [(ACXRemoteAppListObserver *)v9 observer];
+    queue = [(ACXRemoteAppListObserver *)v9 queue];
+    v9->_hashValue = queue ^ observer;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 observer];
-    v7 = [(ACXRemoteAppListObserver *)self observer];
+    v5 = equalCopy;
+    observer = [v5 observer];
+    observer2 = [(ACXRemoteAppListObserver *)self observer];
 
-    if (v6 == v7)
+    if (observer == observer2)
     {
-      v9 = [v5 queue];
-      v10 = [(ACXRemoteAppListObserver *)self queue];
-      v8 = v9 == v10;
+      queue = [v5 queue];
+      queue2 = [(ACXRemoteAppListObserver *)self queue];
+      v8 = queue == queue2;
     }
 
     else

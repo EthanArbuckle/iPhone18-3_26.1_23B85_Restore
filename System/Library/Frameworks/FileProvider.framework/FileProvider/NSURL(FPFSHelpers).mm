@@ -27,7 +27,7 @@
 - (id)fp_isDatalessWithError:()FPFSHelpers
 {
   memset(&v8, 0, sizeof(v8));
-  if (lstat([a1 fileSystemRepresentation], &v8) < 0)
+  if (lstat([self fileSystemRepresentation], &v8) < 0)
   {
     if (a3)
     {
@@ -54,13 +54,13 @@
 - (id)_fp_lookupURLOfChildWithName:()FPFSHelpers notMatchingFileID:
 {
   v6 = a4;
-  v7 = [a1 URLByAppendingPathComponent:a3];
+  v7 = [self URLByAppendingPathComponent:a3];
   v17 = 0;
   v8 = *MEMORY[0x1E695DB00];
-  LODWORD(a1) = [v7 getResourceValue:&v17 forKey:*MEMORY[0x1E695DB00] error:0];
+  LODWORD(self) = [v7 getResourceValue:&v17 forKey:*MEMORY[0x1E695DB00] error:0];
   v9 = v17;
   v10 = v9;
-  if (a1)
+  if (self)
   {
     if (v6 && v9 && ([v6 isEqual:v9] & 1) != 0)
     {
@@ -108,7 +108,7 @@ LABEL_16:
   v88[3] = *MEMORY[0x1E69E9840];
   v10 = a3;
   v11 = a6;
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = *MEMORY[0x1E695E2B0];
   v75 = *MEMORY[0x1E695DC30];
   v88[0] = *MEMORY[0x1E695DC30];
@@ -116,8 +116,8 @@ LABEL_16:
   v14 = *MEMORY[0x1E695DB00];
   v88[2] = *MEMORY[0x1E695DB00];
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:3];
-  v70 = a1;
-  v16 = [v12 enumeratorAtURL:a1 includingPropertiesForKeys:v15 options:1 errorHandler:0];
+  selfCopy = self;
+  v16 = [defaultManager enumeratorAtURL:self includingPropertiesForKeys:v15 options:1 errorHandler:0];
 
   v84 = 0;
   v72 = v10;
@@ -134,7 +134,7 @@ LABEL_16:
   {
     v42 = 0;
     v45 = 0;
-    v43 = v19;
+    findNextAvailableBounceNumber = v19;
     goto LABEL_56;
   }
 
@@ -243,8 +243,8 @@ LABEL_17:
 
       if (v34 && ![v71 compare:v33 options:1])
       {
-        v35 = [v34 unsignedIntegerValue];
-        if (v35 <= [MEMORY[0x1E696AEC0] fp_maximumBounceLevel])
+        unsignedIntegerValue = [v34 unsignedIntegerValue];
+        if (unsignedIntegerValue <= [MEMORY[0x1E696AEC0] fp_maximumBounceLevel])
         {
           [(FPNSURLBitVectorForBounce *)v18 markBounceNumberAsFound:v34];
         }
@@ -288,12 +288,12 @@ LABEL_25:
           v42 = v23;
           if (v23)
           {
-            v43 = [(FPNSURLBitVectorForBounce *)v18 findNextAvailableBounceNumber];
-            v44 = [v43 intValue];
+            findNextAvailableBounceNumber = [(FPNSURLBitVectorForBounce *)v18 findNextAvailableBounceNumber];
+            intValue = [findNextAvailableBounceNumber intValue];
             v45 = v69;
-            if (v44 < [v69 intValue])
+            if (intValue < [v69 intValue])
             {
-              v46 = v43;
+              v46 = findNextAvailableBounceNumber;
 
               v45 = v46;
             }
@@ -327,7 +327,7 @@ LABEL_57:
   v11 = v68;
   if (!v23)
   {
-    v23 = [v70 _fp_lookupURLOfChildWithName:v72 notMatchingFileID:v68];
+    v23 = [selfCopy _fp_lookupURLOfChildWithName:v72 notMatchingFileID:v68];
   }
 
   v17 = v67;
@@ -354,12 +354,12 @@ LABEL_57:
   while (2)
   {
     v50 = [(FPNSURLBitVectorForBounce *)v18 findNextAvailableBounceNumberFromIndex:v49, v65];
-    v51 = [v50 intValue];
+    intValue2 = [v50 intValue];
     v52 = [v50 intValue] + 1;
     if (v52 >= [v69 intValue])
     {
 LABEL_53:
-      v49 = (v51 + 1);
+      v49 = (intValue2 + 1);
 
       if (v49 >= [(FPNSURLBitVectorForBounce *)v18 bitCount])
       {
@@ -374,7 +374,7 @@ LABEL_53:
   }
 
   v53 = [v48 fp_bouncedNameWithIndex:{objc_msgSend(v50, "longValue") + 1}];
-  v54 = [v70 _fp_lookupURLOfChildWithName:v53 notMatchingFileID:0];
+  v54 = [selfCopy _fp_lookupURLOfChildWithName:v53 notMatchingFileID:0];
 
   if (v54)
   {
@@ -392,16 +392,16 @@ LABEL_63:
     {
       v56 = MEMORY[0x1E696AD98];
       v57 = v23;
-      v58 = [v67 longValue];
-      v59 = [v50 longValue];
-      if (v58 <= v59)
+      longValue = [v67 longValue];
+      longValue2 = [v50 longValue];
+      if (longValue <= longValue2)
       {
-        v60 = v59;
+        v60 = longValue2;
       }
 
       else
       {
-        v60 = v58;
+        v60 = longValue;
       }
 
       v23 = v57;
@@ -464,31 +464,31 @@ LABEL_75:
   else
   {
     v21 = 0;
-    v16 = [a1 getResourceValue:&v21 forKey:*MEMORY[0x1E695DE18] error:0];
+    v16 = [self getResourceValue:&v21 forKey:*MEMORY[0x1E695DE18] error:0];
     v14 = v21;
     if ((v16 & 1) == 0)
     {
       v17 = fp_current_or_default_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        [NSURL(FPFSHelpers) fp_existingURLOfChildWithName:a1 isFolder:? notMatchingFileID:? nextAvailableBounceNumber:? forceFetchingBounceNumber:?];
+        [NSURL(FPFSHelpers) fp_existingURLOfChildWithName:self isFolder:? notMatchingFileID:? nextAvailableBounceNumber:? forceFetchingBounceNumber:?];
       }
     }
 
     if (v14 && ([v14 BOOLValue] & 1) == 0)
     {
-      v19 = [a1 _fp_lookupURLOfChildWithName:v12 notMatchingFileID:v13];
+      v19 = [self _fp_lookupURLOfChildWithName:v12 notMatchingFileID:v13];
       goto LABEL_15;
     }
 
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      [NSURL(FPFSHelpers) fp_existingURLOfChildWithName:a1 isFolder:? notMatchingFileID:? nextAvailableBounceNumber:? forceFetchingBounceNumber:?];
+      [NSURL(FPFSHelpers) fp_existingURLOfChildWithName:self isFolder:? notMatchingFileID:? nextAvailableBounceNumber:? forceFetchingBounceNumber:?];
     }
   }
 
-  v19 = [a1 fp_scanForURLOfChildWithName:v12 isFolder:a4 maxChildrenCount:objc_msgSend(a1 notMatchingFileID:"getMaxChildrenCount") nextAvailableBounceNumber:{v13, a6}];
+  v19 = [self fp_scanForURLOfChildWithName:v12 isFolder:a4 maxChildrenCount:objc_msgSend(self notMatchingFileID:"getMaxChildrenCount") nextAvailableBounceNumber:{v13, a6}];
 LABEL_15:
   v15 = v19;
 
@@ -502,8 +502,8 @@ LABEL_16:
   v14 = a8;
   v15 = a4;
   v16 = a3;
-  v17 = [a1 fp_defaultMoverBlock];
-  v18 = [a1 fp_moveUnderFolder:v16 withNewName:v15 coordinationOptions:a5 allowBounce:a6 allowCoordination:a7 moveHandler:v17 completionHandler:v14];
+  fp_defaultMoverBlock = [self fp_defaultMoverBlock];
+  v18 = [self fp_moveUnderFolder:v16 withNewName:v15 coordinationOptions:a5 allowBounce:a6 allowCoordination:a7 moveHandler:fp_defaultMoverBlock completionHandler:v14];
 
   return v18;
 }
@@ -524,7 +524,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __133__NSURL_FPFSHelpers__fp_moveUnderFolder_withNewName_coordinationOptions_allowBounce_allowCoordination_moveHandler_completionHandler___block_invoke_2;
   block[3] = &unk_1E793A380;
-  block[4] = a1;
+  block[4] = self;
   v27 = v15;
   v32 = a6;
   v33 = a7;
@@ -552,10 +552,10 @@ LABEL_16:
   v105 = 0;
   v106 = 0;
   v71 = v13;
-  v81 = [v71 fp_stringByDeletingPathBounceNo:&v106 andPathExtension:&v105 isFolder:{objc_msgSend(a1, "fp_isFolder")}];
+  v81 = [v71 fp_stringByDeletingPathBounceNo:&v106 andPathExtension:&v105 isFolder:{objc_msgSend(self, "fp_isFolder")}];
   v14 = v106;
   v72 = v105;
-  v84 = a1;
+  selfCopy = self;
   v99 = 0;
   v100 = &v99;
   v101 = 0x3032000000;
@@ -572,14 +572,14 @@ LABEL_16:
   v15 = fp_current_or_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v61 = [v84 fp_shortDescription];
-    v62 = [v12 fp_shortDescription];
+    fp_shortDescription = [selfCopy fp_shortDescription];
+    fp_shortDescription2 = [v12 fp_shortDescription];
     *v113 = 134218754;
     *&v113[4] = section;
     *&v113[12] = 2112;
-    *&v113[14] = v61;
+    *&v113[14] = fp_shortDescription;
     *&v113[22] = 2112;
-    v114 = v62;
+    v114 = fp_shortDescription2;
     LOWORD(v115) = 2112;
     *(&v115 + 2) = v71;
     _os_log_debug_impl(&dword_1AAAE1000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx moving %@ to %@ as %@", v113, 0x2Au);
@@ -592,11 +592,11 @@ LABEL_16:
   *&v115 = __Block_byref_object_dispose__1;
   *(&v115 + 1) = 0;
   v76 = [MEMORY[0x1E696ABF8] fp_fileCoordinatorForCurrentProcess:0];
-  v69 = [v84 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [selfCopy startAccessingSecurityScopedResource];
   v16 = _CFURLPromiseCopyPhysicalURL();
   if (!v16)
   {
-    v16 = v84;
+    v16 = selfCopy;
   }
 
   if (a5)
@@ -612,7 +612,7 @@ LABEL_16:
       v20 = fp_current_or_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        [v84 path];
+        [selfCopy path];
         objc_claimAutoreleasedReturnValue();
         [v17 fp_prettyDescription];
         objc_claimAutoreleasedReturnValue();
@@ -661,20 +661,20 @@ LABEL_16:
     LOBYTE(v112) = 0;
     if (v25)
     {
-      v27 = [v84 fp_isFolder];
+      fp_isFolder = [selfCopy fp_isFolder];
       if (a6)
       {
         v94 = 0;
       }
 
-      v28 = [v12 fp_existingURLOfChildWithName:v26 isFolder:v27 notMatchingFileID:v82 nextAvailableBounceNumber:v78 forceFetchingBounceNumber:0];
+      v28 = [v12 fp_existingURLOfChildWithName:v26 isFolder:fp_isFolder notMatchingFileID:v82 nextAvailableBounceNumber:v78 forceFetchingBounceNumber:0];
       if (a6)
       {
         v29 = v94;
         if (v29)
         {
-          v30 = [v14 intValue];
-          if (v30 < [v29 intValue])
+          intValue = [v14 intValue];
+          if (intValue < [v29 intValue])
           {
             v29 = v29;
 
@@ -699,11 +699,11 @@ LABEL_16:
       v31 = fp_current_or_default_log();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
-        v32 = [v12 fp_shortDescription];
+        fp_shortDescription3 = [v12 fp_shortDescription];
         *buf = 138412546;
         v108 = v26;
         v109 = 2112;
-        v110 = v32;
+        v110 = fp_shortDescription3;
         _os_log_impl(&dword_1AAAE1000, v31, OS_LOG_TYPE_INFO, "[INFO] won't create '%@' because it already exists under %@", buf, 0x16u);
       }
 
@@ -716,8 +716,8 @@ LABEL_16:
 
     else
     {
-      v36 = [v84 path];
-      v37 = [v12 URLByAppendingPathComponent:v26 isDirectory:{objc_msgSend(v36, "hasSuffix:", @"/"}];
+      path = [selfCopy path];
+      v37 = [v12 URLByAppendingPathComponent:v26 isDirectory:{objc_msgSend(path, "hasSuffix:", @"/"}];
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -736,13 +736,13 @@ LABEL_16:
       if (a7)
       {
         v85 = 0;
-        [v38 coordinateWritingItemAtURL:v84 options:a5 writingItemAtURL:v37 options:4 error:&v85 byAccessor:v39];
+        [v38 coordinateWritingItemAtURL:selfCopy options:a5 writingItemAtURL:v37 options:4 error:&v85 byAccessor:v39];
         v34 = v85;
       }
 
       else
       {
-        (*(v39 + 2))(v39, v84, v37);
+        (*(v39 + 2))(v39, selfCopy, v37);
         v34 = 0;
       }
 
@@ -753,8 +753,8 @@ LABEL_16:
 
     if (((a6 ^ 1 | *(*&v111[8] + 24)) & 1) == 0)
     {
-      v41 = [*(*&v113[8] + 40) domain];
-      if ([v41 isEqualToString:v77])
+      domain = [*(*&v113[8] + 40) domain];
+      if ([domain isEqualToString:v77])
       {
         v42 = [*(*&v113[8] + 40) code] == 516;
 
@@ -768,22 +768,22 @@ LABEL_16:
 
         v44 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v14, "intValue") + 1}];
 
-        v45 = [v44 unsignedIntegerValue];
-        if (v45 <= [MEMORY[0x1E696AEC0] fp_maximumBounceLevel])
+        unsignedIntegerValue = [v44 unsignedIntegerValue];
+        if (unsignedIntegerValue <= [MEMORY[0x1E696AEC0] fp_maximumBounceLevel])
         {
           v52 = [v81 fp_representableHFSFileNameWithNumber:v44 addedExtension:v72 makeDotFile:0];
           v23 = 1;
-          v41 = v26;
+          domain = v26;
           v50 = v81;
         }
 
         else
         {
-          v41 = objc_opt_new();
-          [v41 setDateStyle:1];
-          [v41 setTimeStyle:2];
-          v46 = [MEMORY[0x1E695DF00] date];
-          v47 = [v41 stringFromDate:v46];
+          domain = objc_opt_new();
+          [domain setDateStyle:1];
+          [domain setTimeStyle:2];
+          date = [MEMORY[0x1E695DF00] date];
+          v47 = [domain stringFromDate:date];
 
           v48 = [v47 stringByReplacingOccurrencesOfString:@":" withString:@"'"];
 
@@ -842,9 +842,9 @@ LABEL_46:
   }
 
   while (((v23 ^ 1) & 1) == 0);
-  if (v69)
+  if (startAccessingSecurityScopedResource)
   {
-    [v84 stopAccessingSecurityScopedResource];
+    [selfCopy stopAccessingSecurityScopedResource];
   }
 
   if (v34 || *(*&v113[8] + 40))
@@ -852,9 +852,9 @@ LABEL_46:
     v54 = fp_current_or_default_log();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
-      v63 = [v84 fp_shortDescription];
-      v64 = [v12 fp_shortDescription];
-      v65 = v64;
+      fp_shortDescription4 = [selfCopy fp_shortDescription];
+      fp_shortDescription5 = [v12 fp_shortDescription];
+      v65 = fp_shortDescription5;
       v66 = v34;
       if (!v34)
       {
@@ -862,9 +862,9 @@ LABEL_46:
       }
 
       *v111 = 138412802;
-      *&v111[4] = v63;
+      *&v111[4] = fp_shortDescription4;
       *&v111[12] = 2112;
-      *&v111[14] = v64;
+      *&v111[14] = fp_shortDescription5;
       *&v111[22] = 2112;
       v112 = v66;
       _os_log_error_impl(&dword_1AAAE1000, v54, OS_LOG_TYPE_ERROR, "[ERROR] couldn't move %@ to %@: %@", v111, 0x20u);
@@ -901,8 +901,8 @@ LABEL_46:
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 fp_defaultMoverBlock];
-  v11 = [a1 fp_importUnderFolder:v9 allowCoordination:a4 usingBlock:v10 completionHandler:v8];
+  fp_defaultMoverBlock = [self fp_defaultMoverBlock];
+  v11 = [self fp_importUnderFolder:v9 allowCoordination:a4 usingBlock:fp_defaultMoverBlock completionHandler:v8];
 
   return v11;
 }
@@ -912,14 +912,14 @@ LABEL_46:
   v10 = a6;
   v11 = a5;
   v12 = a3;
-  v13 = [a1 lastPathComponent];
+  lastPathComponent = [self lastPathComponent];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__NSURL_FPFSHelpers__fp_importUnderFolder_allowCoordination_usingBlock_completionHandler___block_invoke;
   v17[3] = &unk_1E793A3D0;
   v18 = v10;
   v14 = v10;
-  v15 = [a1 fp_moveUnderFolder:v12 withNewName:v13 allowBounce:0 allowCoordination:a4 moveHandler:v11 completionHandler:v17];
+  v15 = [self fp_moveUnderFolder:v12 withNewName:lastPathComponent allowBounce:0 allowCoordination:a4 moveHandler:v11 completionHandler:v17];
 
   return v15;
 }
@@ -928,8 +928,8 @@ LABEL_46:
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 lastPathComponent];
-  v11 = [a1 fp_moveUnderFolder:v9 withNewName:v10 allowBounce:0 allowCoordination:a4 completionHandler:v8];
+  lastPathComponent = [self lastPathComponent];
+  v11 = [self fp_moveUnderFolder:v9 withNewName:lastPathComponent allowBounce:0 allowCoordination:a4 completionHandler:v8];
 
   return v11;
 }
@@ -937,14 +937,14 @@ LABEL_46:
 - (uint64_t)fp_reparentUnderFolder:()FPFSHelpers withNewName:allowCoordination:completionHandler:
 {
   v10 = a3;
-  v11 = a4;
+  lastPathComponent = a4;
   v12 = a6;
-  if (!v11)
+  if (!lastPathComponent)
   {
-    v11 = [a1 lastPathComponent];
+    lastPathComponent = [self lastPathComponent];
   }
 
-  v13 = [a1 fp_moveUnderFolder:v10 withNewName:v11 allowBounce:0 allowCoordination:a5 completionHandler:v12];
+  v13 = [self fp_moveUnderFolder:v10 withNewName:lastPathComponent allowBounce:0 allowCoordination:a5 completionHandler:v12];
 
   return v13;
 }
@@ -953,8 +953,8 @@ LABEL_46:
 {
   v10 = a6;
   v11 = a3;
-  v12 = [a1 lastPathComponent];
-  v13 = [a1 fp_moveUnderFolder:v11 withNewName:v12 allowBounce:a4 allowCoordination:a5 completionHandler:v10];
+  lastPathComponent = [self lastPathComponent];
+  v13 = [self fp_moveUnderFolder:v11 withNewName:lastPathComponent allowBounce:a4 allowCoordination:a5 completionHandler:v10];
 
   return v13;
 }
@@ -963,8 +963,8 @@ LABEL_46:
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 lastPathComponent];
-  v11 = [a1 fp_moveUnderFolder:v9 withNewName:v10 coordinationOptions:1 allowBounce:1 allowCoordination:a4 completionHandler:v8];
+  lastPathComponent = [self lastPathComponent];
+  v11 = [self fp_moveUnderFolder:v9 withNewName:lastPathComponent coordinationOptions:1 allowBounce:1 allowCoordination:a4 completionHandler:v8];
 
   return v11;
 }
@@ -973,8 +973,8 @@ LABEL_46:
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 URLByDeletingLastPathComponent];
-  v11 = [a1 fp_moveUnderFolder:v10 withNewName:v9 allowBounce:0 allowCoordination:a4 completionHandler:v8];
+  uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
+  v11 = [self fp_moveUnderFolder:uRLByDeletingLastPathComponent withNewName:v9 allowBounce:0 allowCoordination:a4 completionHandler:v8];
 
   return v11;
 }
@@ -984,11 +984,11 @@ LABEL_46:
   v30 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 fp_existingURLOfChildWithName:v6 isFolder:1];
+  v8 = [self fp_existingURLOfChildWithName:v6 isFolder:1];
   if (!v8)
   {
     v25 = 0;
-    v13 = [a1 fp_uniqueTempFolderWithError:&v25];
+    v13 = [self fp_uniqueTempFolderWithError:&v25];
     v14 = v25;
     v24 = v14;
     v15 = [v13 fp_addDocumentTrackingWithError:&v24];
@@ -1003,10 +1003,10 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v16 = [a1 URLByAppendingPathComponent:v6 isDirectory:1];
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
+    v16 = [self URLByAppendingPathComponent:v6 isDirectory:1];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v23 = v11;
-    v12 = [v17 moveItemAtURL:v13 toURL:v16 error:&v23];
+    v12 = [defaultManager moveItemAtURL:v13 toURL:v16 error:&v23];
     v18 = v23;
 
     if (v12)
@@ -1018,12 +1018,12 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v19 = [v18 domain];
-    if ([v19 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v18 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v20 = [v18 code];
+      code = [v18 code];
 
-      if (v20 != 516)
+      if (code != 516)
       {
 LABEL_13:
         v7[2](v7, 0, v18);
@@ -1031,7 +1031,7 @@ LABEL_13:
       }
 
       [MEMORY[0x1E696ABC0] fp_errorForCollisionWithURL:v16];
-      v18 = v19 = v18;
+      v18 = domain = v18;
     }
 
     goto LABEL_13;
@@ -1040,11 +1040,11 @@ LABEL_13:
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [a1 fp_shortDescription];
+    fp_shortDescription = [self fp_shortDescription];
     *buf = 138412546;
     v27 = v6;
     v28 = 2112;
-    v29 = v10;
+    v29 = fp_shortDescription;
     _os_log_impl(&dword_1AAAE1000, v9, OS_LOG_TYPE_INFO, "[INFO] won't create '%@' because it already exists under %@", buf, 0x16u);
   }
 
@@ -1073,9 +1073,9 @@ LABEL_16:
   v8 = v7;
   v17 = a3;
   v14 = v8;
-  v15 = a1;
+  selfCopy = self;
   v16 = &v19;
-  [v8 coordinateReadingItemAtURL:a1 options:0x80000 error:&v18 byAccessor:v13];
+  [v8 coordinateReadingItemAtURL:self options:0x80000 error:&v18 byAccessor:v13];
   v9 = v18;
   if (v9)
   {
@@ -1106,7 +1106,7 @@ LABEL_16:
   v21 = 0;
   v6 = *MEMORY[0x1E695DA98];
   v20 = 0;
-  v7 = [a1 getResourceValue:&v21 forKey:v6 error:&v20];
+  v7 = [self getResourceValue:&v21 forKey:v6 error:&v20];
   v8 = v21;
   v9 = v20;
   if ((v7 & 1) == 0)
@@ -1114,7 +1114,7 @@ LABEL_16:
     v10 = fp_current_or_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [a1 path];
+      [self path];
       objc_claimAutoreleasedReturnValue();
       [v9 fp_prettyDescription];
       objc_claimAutoreleasedReturnValue();
@@ -1132,7 +1132,7 @@ LABEL_16:
   v18 = v22;
   v12 = v4;
   v17 = v12;
-  [v5 coordinateWritingItemAtURL:a1 options:1 error:&v19 byAccessor:v15];
+  [v5 coordinateWritingItemAtURL:self options:1 error:&v19 byAccessor:v15];
   v13 = v19;
   if (v13)
   {
@@ -1161,12 +1161,12 @@ LABEL_16:
   v8 = v7;
   if (a3)
   {
-    [a1 fp_coordinatedDeleteWithHandler:v7];
+    [self fp_coordinatedDeleteWithHandler:v7];
   }
 
   else
   {
-    (*(v7 + 2))(v7, a1, 0);
+    (*(v7 + 2))(v7, self, 0);
   }
 
   v6[2](v6, v13[5]);
@@ -1179,7 +1179,7 @@ LABEL_16:
 - (id)fp_withReadWriteAccess:()FPFSHelpers
 {
   v4 = a3;
-  v5 = open([a1 fileSystemRepresentation], 260);
+  v5 = open([self fileSystemRepresentation], 260);
   if ((v5 & 0x80000000) == 0)
   {
     v6 = v5;
@@ -1187,8 +1187,8 @@ LABEL_16:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 domain];
-      if (v9 != *MEMORY[0x1E696A798] || [v8 code] == 13)
+      domain = [v7 domain];
+      if (domain != *MEMORY[0x1E696A798] || [v8 code] == 13)
       {
 
 LABEL_6:
@@ -1205,7 +1205,7 @@ LABEL_6:
           v11 = *MEMORY[0x1E695DB48];
           v36[1] = 0;
           v34 = v11;
-          v12 = [a1 getResourceValue:&v37 forKey:? error:?];
+          v12 = [self getResourceValue:&v37 forKey:? error:?];
           v13 = v37;
           v14 = 0;
 
@@ -1231,7 +1231,7 @@ LABEL_6:
             }
 
             v36[0] = v14;
-            v18 = [a1 setResourceValue:v16 forKey:v34 error:v36];
+            v18 = [self setResourceValue:v16 forKey:v34 error:v36];
             v8 = v36[0];
 
             if ((v18 & 1) == 0)
@@ -1284,7 +1284,7 @@ LABEL_6:
           {
             v24 = v4[2](v4, v6);
 
-            if (access([a1 fileSystemRepresentation], 0))
+            if (access([self fileSystemRepresentation], 0))
             {
               close(v6);
               if (*__error() != 2)
@@ -1307,7 +1307,7 @@ LABEL_6:
             if (v13)
             {
               v35 = v24;
-              v30 = [a1 setResourceValue:v13 forKey:v34 error:&v35];
+              v30 = [self setResourceValue:v13 forKey:v34 error:&v35];
               v8 = v35;
 
               if ((v30 & 1) == 0)
@@ -1368,9 +1368,9 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      v26 = [v8 code];
+      code = [v8 code];
 
-      if (v26 == 1)
+      if (code == 1)
       {
         goto LABEL_6;
       }
@@ -1400,15 +1400,15 @@ LABEL_59:
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    selfCopy = v2;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }

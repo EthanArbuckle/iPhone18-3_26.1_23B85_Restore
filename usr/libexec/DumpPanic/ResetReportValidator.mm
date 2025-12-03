@@ -1,20 +1,20 @@
 @interface ResetReportValidator
-+ (id)ValidatorWithURL:(id)a3;
++ (id)ValidatorWithURL:(id)l;
 - (BOOL)validate;
-- (BOOL)validate_keys:(id)a3 expected:(id)a4;
-- (id)withURL:(id)a3;
+- (BOOL)validate_keys:(id)validate_keys expected:(id)expected;
+- (id)withURL:(id)l;
 @end
 
 @implementation ResetReportValidator
 
 - (BOOL)validate
 {
-  v3 = [(ResetReportValidator *)self sourcePath];
-  NSLog(@"validating reset report: %@", v3);
+  sourcePath = [(ResetReportValidator *)self sourcePath];
+  NSLog(@"validating reset report: %@", sourcePath);
 
-  v4 = [(ResetReportValidator *)self sourcePath];
-  v5 = [v4 path];
-  v6 = [NSData dataWithContentsOfFile:v5];
+  sourcePath2 = [(ResetReportValidator *)self sourcePath];
+  path = [sourcePath2 path];
+  v6 = [NSData dataWithContentsOfFile:path];
 
   v7 = [@"\n" dataUsingEncoding:4];
   v8 = [v6 rangeOfData:v7 options:0 range:{0, objc_msgSend(v6, "length")}];
@@ -38,15 +38,15 @@
   return v13;
 }
 
-- (BOOL)validate_keys:(id)a3 expected:(id)a4
+- (BOOL)validate_keys:(id)validate_keys expected:(id)expected
 {
-  v5 = a4;
-  v6 = [a3 allKeys];
+  expectedCopy = expected;
+  allKeys = [validate_keys allKeys];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = expectedCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -62,7 +62,7 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (([v6 containsObject:v12] & 1) == 0)
+        if (([allKeys containsObject:v12] & 1) == 0)
         {
           NSLog(@"missing key: %@", v12);
           v13 = 0;
@@ -86,12 +86,12 @@ LABEL_11:
   return v13;
 }
 
-- (id)withURL:(id)a3
+- (id)withURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = v4;
+    v5 = lCopy;
 
     [(ResetReportValidator *)self setSourcePath:v5];
     return self;
@@ -107,11 +107,11 @@ LABEL_11:
   return result;
 }
 
-+ (id)ValidatorWithURL:(id)a3
++ (id)ValidatorWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [ResetReportValidator alloc];
-  v5 = [(ResetReportValidator *)v4 withURL:v3];
+  v5 = [(ResetReportValidator *)v4 withURL:lCopy];
 
   return v5;
 }

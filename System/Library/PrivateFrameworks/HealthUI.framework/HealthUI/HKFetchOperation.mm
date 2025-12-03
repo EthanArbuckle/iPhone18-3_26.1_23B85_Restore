@@ -1,27 +1,27 @@
 @interface HKFetchOperation
-- (HKFetchOperation)initWithOperationDescription:(id)a3;
+- (HKFetchOperation)initWithOperationDescription:(id)description;
 - (HKFetchOperationDelegate)_delegate;
 - (void)_alertDelegateDidUpdatePriority;
-- (void)startOperationWithCompletion:(id)a3;
+- (void)startOperationWithCompletion:(id)completion;
 - (void)stopOperation;
 @end
 
 @implementation HKFetchOperation
 
-- (HKFetchOperation)initWithOperationDescription:(id)a3
+- (HKFetchOperation)initWithOperationDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v10.receiver = self;
   v10.super_class = HKFetchOperation;
   v6 = [(HKFetchOperation *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v6->_UUID;
-    v6->_UUID = v7;
+    v6->_UUID = uUID;
 
     v6->_highPriority = 0;
-    objc_storeStrong(&v6->_operationDescription, a3);
+    objc_storeStrong(&v6->_operationDescription, description);
     v6->_queueTime = 0.0;
     v6->_executionTime = 0.0;
   }
@@ -42,7 +42,7 @@
   return WeakRetained;
 }
 
-- (void)startOperationWithCompletion:(id)a3
+- (void)startOperationWithCompletion:(id)completion
 {
   objc_opt_class();
 

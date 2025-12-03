@@ -1,6 +1,6 @@
 @interface PXGMetalRecordingFrameStartEventSerializable
 - (CGSize)viewSize;
-- (PXGMetalRecordingFrameStartEventSerializable)initWithSerializableObject:(id)a3;
+- (PXGMetalRecordingFrameStartEventSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
 @end
 
@@ -51,15 +51,15 @@
   return v15;
 }
 
-- (PXGMetalRecordingFrameStartEventSerializable)initWithSerializableObject:(id)a3
+- (PXGMetalRecordingFrameStartEventSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v30.receiver = self;
   v30.super_class = PXGMetalRecordingFrameStartEventSerializable;
   v5 = [(PXGMetalRecordingFrameStartEventSerializable *)&v30 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [v6 objectForKeyedSubscript:@"viewSize"];
     v8 = [v7 objectAtIndexedSubscript:0];
     [v8 floatValue];

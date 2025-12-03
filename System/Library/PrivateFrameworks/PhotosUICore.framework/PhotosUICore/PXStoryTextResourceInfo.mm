@@ -1,67 +1,67 @@
 @interface PXStoryTextResourceInfo
-+ (BOOL)titleShouldBeUppercasedForStylePairing:(int64_t)a3 kind:(unint64_t)a4;
++ (BOOL)titleShouldBeUppercasedForStylePairing:(int64_t)pairing kind:(unint64_t)kind;
 + (NSCache)subtitleCachedCharacterSetByKind;
 + (NSCache)titleCachedCharacterSetByStyleAndKind;
-+ (id)_allowedSubtitleCharacterSetWithKind:(unint64_t)a3;
-+ (id)_allowedTitleCharacterSetWithStylePairing:(int64_t)a3 kind:(unint64_t)a4;
-+ (id)_rangesAndStylesForTitle:(id)a3;
-+ (id)_subtitleFontCacheKeyForKind:(unint64_t)a3;
-+ (id)_subtitleFontForKind:(unint64_t)a3 scale:(double)a4 hasExtendedCharacterSet:(BOOL)a5 internationalStyle:(int64_t)a6;
-+ (id)_titleFontCacheKeyForStylePairing:(int64_t)a3 kind:(unint64_t)a4;
-+ (id)_titleFontForStylePairing:(int64_t)a3 scale:(double)a4 kind:(unint64_t)a5 internationalStyle:(int64_t)a6;
-+ (id)_titlePrimaryAttributesForStylePairing:(int64_t)a3 scale:(double)a4 kind:(unint64_t)a5 layoutScheme:(int64_t)a6 allowHyphenation:(BOOL)a7 internationalStyle:(int64_t)a8;
-+ (id)subtitleAttributesForSize:(CGSize)a3 string:(id)a4 scale:(double)a5 kind:(unint64_t)a6 extendedTraitCollectionSnapshot:(id)a7 internationalStyle:(int64_t)a8;
-+ (id)titleFontDescriptorForStylePairing:(int64_t)a3 kind:(unint64_t)a4;
-+ (int64_t)stylePairingFromTitleCategory:(id)a3 string:(id)a4 kind:(unint64_t)a5 layoutScheme:(int64_t)a6;
-+ (void)_increaseMaximumLineHeightToAvoidOverlapForLines:(id)a3 attributes:(id)a4 attributedString:(id *)a5;
-+ (void)_setKashidaToParagraphStyle:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGPoint)_subtitlePositionInFrame:(CGRect)a3 titleCategory:(id)a4 displayAsset:(id)a5 currentAssetCropRect:(CGRect)a6 kind:(unint64_t)a7 relativeTo:(id)a8 extendedTraitCollectionSnapshot:(id)a9 fixedBottomPadding:(double)a10 isTitleVertical:(BOOL)a11 isSubtitleVertical:(BOOL)a12;
-- (CGPoint)bestPositionInFrame:(CGRect)a3 occlusionSize:(CGSize)a4 possiblePositions:(id)a5 displayAsset:(id)a6 currentAssetCropRect:(CGRect)a7 layoutOrientation:(int64_t)a8 desiredInternationalStyle:(int64_t)a9;
++ (id)_allowedSubtitleCharacterSetWithKind:(unint64_t)kind;
++ (id)_allowedTitleCharacterSetWithStylePairing:(int64_t)pairing kind:(unint64_t)kind;
++ (id)_rangesAndStylesForTitle:(id)title;
++ (id)_subtitleFontCacheKeyForKind:(unint64_t)kind;
++ (id)_subtitleFontForKind:(unint64_t)kind scale:(double)scale hasExtendedCharacterSet:(BOOL)set internationalStyle:(int64_t)style;
++ (id)_titleFontCacheKeyForStylePairing:(int64_t)pairing kind:(unint64_t)kind;
++ (id)_titleFontForStylePairing:(int64_t)pairing scale:(double)scale kind:(unint64_t)kind internationalStyle:(int64_t)style;
++ (id)_titlePrimaryAttributesForStylePairing:(int64_t)pairing scale:(double)scale kind:(unint64_t)kind layoutScheme:(int64_t)scheme allowHyphenation:(BOOL)hyphenation internationalStyle:(int64_t)style;
++ (id)subtitleAttributesForSize:(CGSize)size string:(id)string scale:(double)scale kind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot internationalStyle:(int64_t)style;
++ (id)titleFontDescriptorForStylePairing:(int64_t)pairing kind:(unint64_t)kind;
++ (int64_t)stylePairingFromTitleCategory:(id)category string:(id)string kind:(unint64_t)kind layoutScheme:(int64_t)scheme;
++ (void)_increaseMaximumLineHeightToAvoidOverlapForLines:(id)lines attributes:(id)attributes attributedString:(id *)string;
++ (void)_setKashidaToParagraphStyle:(id)style;
+- (BOOL)isEqual:(id)equal;
+- (CGPoint)_subtitlePositionInFrame:(CGRect)frame titleCategory:(id)category displayAsset:(id)asset currentAssetCropRect:(CGRect)rect kind:(unint64_t)kind relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)self0 isTitleVertical:(BOOL)self1 isSubtitleVertical:(BOOL)self2;
+- (CGPoint)bestPositionInFrame:(CGRect)frame occlusionSize:(CGSize)size possiblePositions:(id)positions displayAsset:(id)asset currentAssetCropRect:(CGRect)rect layoutOrientation:(int64_t)orientation desiredInternationalStyle:(int64_t)style;
 - (CGPoint)origin;
-- (CGRect)attributedStringFrameInRect:(CGRect)a3 titleCategory:(id)a4 displayAsset:(id)a5 currentAssetCropRect:(CGRect)a6 kind:(unint64_t)a7 relativeTo:(id)a8 extendedTraitCollectionSnapshot:(id)a9 fixedBottomPadding:(double)a10;
-- (CGSize)_availableSizeForRect:(CGRect)a3 extendedTraitCollectionSnapshot:(id)a4 kind:(unint64_t)a5 fixedBottomPadding:(double)a6;
-- (CGSize)_fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:(id)a3 fixedBottomPadding:(double)a4;
-- (CGSize)_occlusionSizeForSize:(CGSize)a3 kind:(unint64_t)a4 size:(CGSize)a5 containerRect:(CGRect)a6 stylePairing:(int64_t)a7 extendedTraitCollectionSnapshot:(id)a8 fixedBottomPadding:(double)a9 isVerticalText:(BOOL)a10 isKashida:(BOOL)a11;
+- (CGRect)attributedStringFrameInRect:(CGRect)rect titleCategory:(id)category displayAsset:(id)asset currentAssetCropRect:(CGRect)cropRect kind:(unint64_t)kind relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)self0;
+- (CGSize)_availableSizeForRect:(CGRect)rect extendedTraitCollectionSnapshot:(id)snapshot kind:(unint64_t)kind fixedBottomPadding:(double)padding;
+- (CGSize)_fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding;
+- (CGSize)_occlusionSizeForSize:(CGSize)size kind:(unint64_t)kind size:(CGSize)a5 containerRect:(CGRect)rect stylePairing:(int64_t)pairing extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding isVerticalText:(BOOL)self0 isKashida:(BOOL)self1;
 - (CGSize)boundingSize;
 - (NSAttributedString)attributedString;
 - (NSStringDrawingContext)drawingContext;
-- (PXStoryTextResourceInfo)initWithString:(id)a3 associatedSubtitleString:(id)a4 type:(int64_t)a5 layoutScheme:(int64_t)a6 assetCollectionUUID:(id)a7;
-- (double)_paddingBottomForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4 rect:(CGRect)a5 fixedBottomPadding:(double)a6;
-- (double)_paddingBottomScaleForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4;
-- (double)_paddingLeadingMinimumForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4;
-- (double)_paddingLeftOrRightAlignmentLeadingForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4 rect:(CGRect)a5;
-- (double)_paddingLeftOrRightAlignmentLeadingScaleForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4;
-- (double)_paddingTopForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4 rect:(CGRect)a5;
-- (double)_paddingTopScaleForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4;
-- (double)_sizeWidthMaximumForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4;
-- (double)_sizeWidthMinimumForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4;
-- (double)_sizeWidthScaleForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4;
-- (double)_subtitleLineSpacingForKind:(unint64_t)a3 size:(CGSize)a4 extendedTraitCollectionSnapshot:(id)a5 fixedBottomPadding:(double)a6 isVerticalText:(BOOL)a7;
-- (double)_subtitleScalingFactorForKind:(unint64_t)a3 size:(CGSize)a4 extendedTraitCollectionSnapshot:(id)a5 fixedBottomPadding:(double)a6;
-- (double)_titleScalingFactorForKind:(unint64_t)a3 size:(CGSize)a4 extendedTraitCollectionSnapshot:(id)a5 fixedBottomPadding:(double)a6;
-- (id)_possibleTitlePositionsForRect:(CGRect)a3 boudingSize:(CGSize)a4 occlusionSize:(CGSize)a5 kind:(unint64_t)a6 extendedTraitCollectionSnapshot:(id)a7 fixedBottomPadding:(double)a8 isTitleVertical:(BOOL)a9 isSubtitleVertical:(BOOL)a10 isKashida:(BOOL)a11;
-- (id)attributedStringBoundingSizeForSubtitle:(id)a3 size:(CGSize)a4 containerRect:(CGRect)a5 kind:(unint64_t)a6 relativeTo:(id)a7 extendedTraitCollectionSnapshot:(id)a8 fixedBottomPadding:(double)a9 desiredInternationalStyle:(int64_t)a10;
-- (id)attributedStringBoundingSizeForTitle:(id)a3 stylePairing:(int64_t)a4 availableSize:(CGSize)a5 containerRect:(CGRect)a6 kind:(unint64_t)a7 extendedTraitCollectionSnapshot:(id)a8 fixedBottomPadding:(double)a9;
-- (int64_t)_fullScreenTitlePositionWithTitleCategory:(id)a3 displayAsset:(id)a4 currentAssetCropRect:(CGRect)a5 relativeTo:(id)a6 extendedTraitCollectionSnapshot:(id)a7 fixedBottomPadding:(double)a8 desiredInternationalStyle:(int64_t)a9;
+- (PXStoryTextResourceInfo)initWithString:(id)string associatedSubtitleString:(id)subtitleString type:(int64_t)type layoutScheme:(int64_t)scheme assetCollectionUUID:(id)d;
+- (double)_paddingBottomForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot rect:(CGRect)rect fixedBottomPadding:(double)padding;
+- (double)_paddingBottomScaleForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot;
+- (double)_paddingLeadingMinimumForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape;
+- (double)_paddingLeftOrRightAlignmentLeadingForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot rect:(CGRect)rect;
+- (double)_paddingLeftOrRightAlignmentLeadingScaleForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape;
+- (double)_paddingTopForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot rect:(CGRect)rect;
+- (double)_paddingTopScaleForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot;
+- (double)_sizeWidthMaximumForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape;
+- (double)_sizeWidthMinimumForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape;
+- (double)_sizeWidthScaleForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot;
+- (double)_subtitleLineSpacingForKind:(unint64_t)kind size:(CGSize)size extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding isVerticalText:(BOOL)text;
+- (double)_subtitleScalingFactorForKind:(unint64_t)kind size:(CGSize)size extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding;
+- (double)_titleScalingFactorForKind:(unint64_t)kind size:(CGSize)size extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding;
+- (id)_possibleTitlePositionsForRect:(CGRect)rect boudingSize:(CGSize)size occlusionSize:(CGSize)occlusionSize kind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding isTitleVertical:(BOOL)vertical isSubtitleVertical:(BOOL)self0 isKashida:(BOOL)self1;
+- (id)attributedStringBoundingSizeForSubtitle:(id)subtitle size:(CGSize)size containerRect:(CGRect)rect kind:(unint64_t)kind relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding desiredInternationalStyle:(int64_t)self0;
+- (id)attributedStringBoundingSizeForTitle:(id)title stylePairing:(int64_t)pairing availableSize:(CGSize)size containerRect:(CGRect)rect kind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding;
+- (int64_t)_fullScreenTitlePositionWithTitleCategory:(id)category displayAsset:(id)asset currentAssetCropRect:(CGRect)rect relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding desiredInternationalStyle:(int64_t)style;
 - (int64_t)effectivePositionIndex;
 - (int64_t)textAlignment;
-- (void)_checkForForcedPositioning:(id *)a3;
+- (void)_checkForForcedPositioning:(id *)positioning;
 @end
 
 @implementation PXStoryTextResourceInfo
 
-- (CGPoint)bestPositionInFrame:(CGRect)a3 occlusionSize:(CGSize)a4 possiblePositions:(id)a5 displayAsset:(id)a6 currentAssetCropRect:(CGRect)a7 layoutOrientation:(int64_t)a8 desiredInternationalStyle:(int64_t)a9
+- (CGPoint)bestPositionInFrame:(CGRect)frame occlusionSize:(CGSize)size possiblePositions:(id)positions displayAsset:(id)asset currentAssetCropRect:(CGRect)rect layoutOrientation:(int64_t)orientation desiredInternationalStyle:(int64_t)style
 {
   v58 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v37 = a6;
+  positionsCopy = positions;
+  assetCopy = asset;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
   v54 = __Block_byref_object_copy__85429;
   v55 = __Block_byref_object_dispose__85430;
-  v56 = v13;
+  v56 = positionsCopy;
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x3032000000;
@@ -75,19 +75,19 @@
   v46 = &v51;
   v34 = v56;
   v44 = v34;
-  v45 = self;
+  selfCopy = self;
   v47 = v49;
   v48 = a2;
   v33 = _Block_copy(aBlock);
-  if (a9)
+  if (style)
   {
-    if (a9 == 2)
+    if (style == 2)
     {
       v33[2](v33, &unk_1F1910660);
       v14 = 0;
     }
 
-    else if (a9 == 1)
+    else if (style == 1)
     {
       v14 = 3;
     }
@@ -112,11 +112,11 @@
   v18 = +[PXStorySettings sharedInstance];
   [v18 titleFarthestDistanceThreshold];
   v32 = v18;
-  v19 = [v18 enableTitlePositioningLogs];
-  if (v19)
+  enableTitlePositioningLogs = [v18 enableTitlePositioningLogs];
+  if (enableTitlePositioningLogs)
   {
-    v20 = [(PXStoryTextResourceInfo *)self string];
-    NSLog(&cfstr_MemoriesTitles.isa, v20, v34);
+    string = [(PXStoryTextResourceInfo *)self string];
+    NSLog(&cfstr_MemoriesTitles.isa, string, v34);
   }
 
   v41 = 0u;
@@ -152,11 +152,11 @@
     while (v21);
   }
 
-  if (v19)
+  if (enableTitlePositioningLogs)
   {
-    v28 = [(PXStoryTextResourceInfo *)self string];
+    string2 = [(PXStoryTextResourceInfo *)self string];
     v29 = NSStringFromPoint(v35);
-    NSLog(&cfstr_MemoriesTitles_2.isa, v28, v29);
+    NSLog(&cfstr_MemoriesTitles_2.isa, string2, v29);
   }
 
   _Block_object_dispose(v49, 8);
@@ -221,50 +221,50 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
   }
 }
 
-- (CGPoint)_subtitlePositionInFrame:(CGRect)a3 titleCategory:(id)a4 displayAsset:(id)a5 currentAssetCropRect:(CGRect)a6 kind:(unint64_t)a7 relativeTo:(id)a8 extendedTraitCollectionSnapshot:(id)a9 fixedBottomPadding:(double)a10 isTitleVertical:(BOOL)a11 isSubtitleVertical:(BOOL)a12
+- (CGPoint)_subtitlePositionInFrame:(CGRect)frame titleCategory:(id)category displayAsset:(id)asset currentAssetCropRect:(CGRect)rect kind:(unint64_t)kind relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)self0 isTitleVertical:(BOOL)self1 isSubtitleVertical:(BOOL)self2
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a8;
-  v20 = a9;
-  [v20 layoutOrientation];
-  if (!v19)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  toCopy = to;
+  snapshotCopy = snapshot;
+  [snapshotCopy layoutOrientation];
+  if (!toCopy)
   {
     PXRectGetCenter();
   }
 
-  [(PXStoryTextResourceInfo *)self _availableSizeForRect:v20 extendedTraitCollectionSnapshot:a7 kind:x fixedBottomPadding:y, width, height, a10];
-  [PXStoryTextResourceInfo _subtitleLineSpacingForKind:"_subtitleLineSpacingForKind:size:extendedTraitCollectionSnapshot:fixedBottomPadding:isVerticalText:" size:a7 extendedTraitCollectionSnapshot:v20 fixedBottomPadding:a12 isVerticalText:?];
+  [(PXStoryTextResourceInfo *)self _availableSizeForRect:snapshotCopy extendedTraitCollectionSnapshot:kind kind:x fixedBottomPadding:y, width, height, padding];
+  [PXStoryTextResourceInfo _subtitleLineSpacingForKind:"_subtitleLineSpacingForKind:size:extendedTraitCollectionSnapshot:fixedBottomPadding:isVerticalText:" size:kind extendedTraitCollectionSnapshot:snapshotCopy fixedBottomPadding:subtitleVertical isVerticalText:?];
   v22 = v21;
-  [v19 origin];
+  [toCopy origin];
   v24 = v23;
   v26 = v25;
-  [v19 boundingSize];
+  [toCopy boundingSize];
   v28 = v27;
   v30 = v29;
-  v31 = [v19 drawingContext];
-  [v31 baselineOffset];
+  drawingContext = [toCopy drawingContext];
+  [drawingContext baselineOffset];
   v33 = v32;
 
-  v34 = [(PXStoryTextResourceInfo *)self drawingContext];
-  [v34 baselineOffset];
+  drawingContext2 = [(PXStoryTextResourceInfo *)self drawingContext];
+  [drawingContext2 baselineOffset];
   v36 = v35;
 
-  if (a12)
+  if (subtitleVertical)
   {
     rect = v28;
     v37 = ceil(width * 0.0032);
-    if ([v19 textAlignment])
+    if ([toCopy textAlignment])
     {
-      v38 = [v19 textAlignment];
-      [v19 boundingSize];
+      textAlignment = [toCopy textAlignment];
+      [toCopy boundingSize];
       v40 = v39;
       [(PXStoryTextResourceInfo *)self boundingSize];
       v42 = v26 + v40 * 0.5 + v41 * -0.5;
       v43 = v26 + v40 - v41 - v37;
-      if (v38 == 2)
+      if (textAlignment == 2)
       {
         v44 = v43;
       }
@@ -280,7 +280,7 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
       v44 = v37 + v26;
     }
 
-    if (([v19 effectivePositionIndex] - 6) > 2)
+    if (([toCopy effectivePositionIndex] - 6) > 2)
     {
       v24 = v22 + v24 + v33 - v36;
     }
@@ -300,23 +300,23 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
   else
   {
     v44 = v22 + v26 + v33 - v36;
-    v45 = [v19 effectivePositionIndex];
-    if (v45 > 8)
+    effectivePositionIndex = [toCopy effectivePositionIndex];
+    if (effectivePositionIndex > 8)
     {
       v24 = 0.0;
     }
 
-    else if (((1 << v45) & 7) != 0)
+    else if (((1 << effectivePositionIndex) & 7) != 0)
     {
-      [v19 boundingSize];
+      [toCopy boundingSize];
       v52 = v24 + v51 * 0.5;
       [(PXStoryTextResourceInfo *)self boundingSize];
       v24 = v52 + v53 * -0.5;
     }
 
-    else if (((1 << v45) & 0x38) == 0)
+    else if (((1 << effectivePositionIndex) & 0x38) == 0)
     {
-      [v19 boundingSize];
+      [toCopy boundingSize];
       v47 = v24 + v46;
       [(PXStoryTextResourceInfo *)self boundingSize];
       v24 = v47 - v48;
@@ -330,18 +330,18 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
   return result;
 }
 
-- (id)attributedStringBoundingSizeForSubtitle:(id)a3 size:(CGSize)a4 containerRect:(CGRect)a5 kind:(unint64_t)a6 relativeTo:(id)a7 extendedTraitCollectionSnapshot:(id)a8 fixedBottomPadding:(double)a9 desiredInternationalStyle:(int64_t)a10
+- (id)attributedStringBoundingSizeForSubtitle:(id)subtitle size:(CGSize)size containerRect:(CGRect)rect kind:(unint64_t)kind relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding desiredInternationalStyle:(int64_t)self0
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v19 = a4.height;
-  v20 = a4.width;
-  v22 = a3;
-  v23 = a7;
-  v24 = a8;
-  v25 = [v22 localizedUppercaseString];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v19 = size.height;
+  v20 = size.width;
+  subtitleCopy = subtitle;
+  toCopy = to;
+  snapshotCopy = snapshot;
+  localizedUppercaseString = [subtitleCopy localizedUppercaseString];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __179__PXStoryTextResourceInfo_attributedStringBoundingSizeForSubtitle_size_containerRect_kind_relativeTo_extendedTraitCollectionSnapshot_fixedBottomPadding_desiredInternationalStyle___block_invoke;
@@ -349,23 +349,23 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
   v78 = v20;
   v79 = v19;
   aBlock[4] = self;
-  v80 = a6;
-  v26 = v24;
+  kindCopy = kind;
+  v26 = snapshotCopy;
   v74 = v26;
   v81 = x;
   v82 = y;
   v83 = width;
   v84 = height;
-  v67 = v23;
+  v67 = toCopy;
   v75 = v67;
-  v27 = v22;
+  v27 = subtitleCopy;
   v76 = v27;
-  v28 = v25;
+  v28 = localizedUppercaseString;
   v77 = v28;
   v29 = _Block_copy(aBlock);
   v30 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v28];
   v68 = v26;
-  [(PXStoryTextResourceInfo *)self _subtitleScalingFactorForKind:a6 size:v26 extendedTraitCollectionSnapshot:v20 fixedBottomPadding:v19, a9];
+  [(PXStoryTextResourceInfo *)self _subtitleScalingFactorForKind:kind size:v26 extendedTraitCollectionSnapshot:v20 fixedBottomPadding:v19, padding];
   v32 = v31;
   v33 = objc_alloc_init(MEMORY[0x1E69DB7E0]);
   v34 = +[PXStorySettings sharedInstance];
@@ -375,20 +375,20 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
   [v33 setWrapsForTruncationMode:1];
   [v33 setWantsBaselineOffset:1];
   [v33 setMaximumNumberOfLines:1];
-  v35 = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
-  v36 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(v27, v35);
+  assetCollectionUUID = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
+  v36 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(v27, assetCollectionUUID);
 
-  if (v36 == a10)
+  if (v36 == style)
   {
-    v37 = a10;
+    styleCopy = style;
   }
 
   else
   {
-    v37 = 0;
+    styleCopy = 0;
   }
 
-  if (v37 == 2)
+  if (styleCopy == 2)
   {
     v70 = v30;
     v38 = v29[2](v29, &v70, v33, 0, v32, 0.0);
@@ -405,7 +405,7 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
   else
   {
     v72 = v30;
-    v38 = v29[2](v29, &v72, v33, v37, v32, 0.0);
+    v38 = v29[2](v29, &v72, v33, styleCopy, v32, 0.0);
     v39 = v72;
 
     [v38 actualScaleFactor];
@@ -420,7 +420,7 @@ void __157__PXStoryTextResourceInfo_bestPositionInFrame_occlusionSize_possiblePo
     v71 = v39;
     v42 = &v71;
     v44.n128_u64[0] = 0;
-    (v29[2])(v29, &v71, v38, v37, v45, v44);
+    (v29[2])(v29, &v71, v38, styleCopy, v45, v44);
   }
   v46 = ;
   v47 = *v42;
@@ -433,7 +433,7 @@ LABEL_9:
   v51 = ceil(v50);
   v52 = v49 + 40.0;
   v53 = v51 + 40.0;
-  if (v37 == 1)
+  if (styleCopy == 1)
   {
     if ([v39 length])
     {
@@ -458,10 +458,10 @@ LABEL_9:
     v53 = v49 + 40.0;
   }
 
-  v57 = [v27 uppercaseString];
-  v58 = [(PXStoryTextResourceInfo *)self string];
-  v59 = [v58 uppercaseString];
-  v60 = [v57 isEqualToString:v59];
+  uppercaseString = [v27 uppercaseString];
+  string = [(PXStoryTextResourceInfo *)self string];
+  uppercaseString2 = [string uppercaseString];
+  v60 = [uppercaseString isEqualToString:uppercaseString2];
 
   if (v60)
   {
@@ -508,30 +508,30 @@ id __179__PXStoryTextResourceInfo_attributedStringBoundingSizeForSubtitle_size_c
   return v11;
 }
 
-- (id)attributedStringBoundingSizeForTitle:(id)a3 stylePairing:(int64_t)a4 availableSize:(CGSize)a5 containerRect:(CGRect)a6 kind:(unint64_t)a7 extendedTraitCollectionSnapshot:(id)a8 fixedBottomPadding:(double)a9
+- (id)attributedStringBoundingSizeForTitle:(id)title stylePairing:(int64_t)pairing availableSize:(CGSize)size containerRect:(CGRect)rect kind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a5.height;
-  v16 = a5.width;
-  v19 = a5.height;
-  v20 = a3;
-  v21 = a8;
-  if ([objc_opt_class() titleShouldBeUppercasedForStylePairing:a4 kind:a7])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = size.height;
+  v16 = size.width;
+  v19 = size.height;
+  titleCopy = title;
+  snapshotCopy = snapshot;
+  if ([objc_opt_class() titleShouldBeUppercasedForStylePairing:pairing kind:kind])
   {
-    v22 = [v20 localizedUppercaseString];
+    localizedUppercaseString = [titleCopy localizedUppercaseString];
   }
 
   else
   {
-    v22 = v20;
+    localizedUppercaseString = titleCopy;
   }
 
-  v23 = v22;
-  v24 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v22];
-  [(PXStoryTextResourceInfo *)self _titleScalingFactorForKind:a7 size:v21 extendedTraitCollectionSnapshot:v16 fixedBottomPadding:v19, a9];
+  v23 = localizedUppercaseString;
+  v24 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:localizedUppercaseString];
+  [(PXStoryTextResourceInfo *)self _titleScalingFactorForKind:kind size:snapshotCopy extendedTraitCollectionSnapshot:v16 fixedBottomPadding:v19, padding];
   v26 = v25;
   v96 = 0;
   v97 = &v96;
@@ -543,9 +543,9 @@ id __179__PXStoryTextResourceInfo_attributedStringBoundingSizeForSubtitle_size_c
   aBlock[3] = &unk_1E7736458;
   v83 = v23;
   v89 = v83;
-  v90 = self;
-  v92 = a4;
-  v93 = a7;
+  selfCopy = self;
+  pairingCopy = pairing;
+  kindCopy = kind;
   v94 = v16;
   v95 = v19;
   v91 = &v96;
@@ -560,7 +560,7 @@ id __179__PXStoryTextResourceInfo_attributedStringBoundingSizeForSubtitle_size_c
   [v28 setWantsBaselineOffset:1];
   v32 = +[PXStorySettings sharedInstance];
   [v28 setMaximumNumberOfLines:{objc_msgSend(v32, "titleMaximumNumberOfLines")}];
-  v84 = v21;
+  v84 = snapshotCopy;
 
   v33 = v27[2];
   v87 = v24;
@@ -589,31 +589,31 @@ id __179__PXStoryTextResourceInfo_attributedStringBoundingSizeForSubtitle_size_c
   }
 
   v43 = 0;
-  if (a7 == 64 || v97[3] > 2)
+  if (kind == 64 || v97[3] > 2)
   {
     v58 = 0;
   }
 
   else
   {
-    v44 = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
+    assetCollectionUUID = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
 
-    if (v44)
+    if (assetCollectionUUID)
     {
-      v45 = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
-      v46 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(v20, v45);
+      assetCollectionUUID2 = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
+      v46 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(titleCopy, assetCollectionUUID2);
 
       if (v46 == 2)
       {
-        [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingForKind:a7 extendedTraitCollectionSnapshot:v84 rect:x, y, width, height];
+        [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingForKind:kind extendedTraitCollectionSnapshot:v84 rect:x, y, width, height];
         v48 = fmin(v16 * 1.25, width - (v47 + v47)) / v16;
         v49 = v16 * v48;
         v19 = v15 * v48;
         if (v97[3] == 1)
         {
-          v50 = [off_1E7721780 defaultSpecs];
-          v51 = [v35 string];
-          [v50 maximumWidthForTitle:v51 containerSize:{v49, v19}];
+          defaultSpecs = [off_1E7721780 defaultSpecs];
+          string = [v35 string];
+          [defaultSpecs maximumWidthForTitle:string containerSize:{v49, v19}];
           v53 = v52;
 
           [v34 totalBounds];
@@ -695,10 +695,10 @@ id __179__PXStoryTextResourceInfo_attributedStringBoundingSizeForSubtitle_size_c
     v64 = v65;
   }
 
-  v72 = [v20 uppercaseString];
-  v73 = [(PXStoryTextResourceInfo *)self string];
-  v74 = [v73 uppercaseString];
-  v75 = [v72 isEqualToString:v74];
+  uppercaseString = [titleCopy uppercaseString];
+  string2 = [(PXStoryTextResourceInfo *)self string];
+  uppercaseString2 = [string2 uppercaseString];
+  v75 = [uppercaseString isEqualToString:uppercaseString2];
 
   if (v75)
   {
@@ -804,29 +804,29 @@ id __161__PXStoryTextResourceInfo_attributedStringBoundingSizeForTitle_stylePair
   return v39;
 }
 
-- (double)_subtitleScalingFactorForKind:(unint64_t)a3 size:(CGSize)a4 extendedTraitCollectionSnapshot:(id)a5 fixedBottomPadding:(double)a6
+- (double)_subtitleScalingFactorForKind:(unint64_t)kind size:(CGSize)size extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding
 {
-  width = a4.width;
-  v10 = a5;
+  width = size.width;
+  snapshotCopy = snapshot;
   v11 = +[PXStorySettings sharedInstance];
-  v12 = [v11 useReferenceWidthBasedTitleLayout];
+  useReferenceWidthBasedTitleLayout = [v11 useReferenceWidthBasedTitleLayout];
 
-  v13 = [v10 layoutOrientation];
-  if (!v12)
+  layoutOrientation = [snapshotCopy layoutOrientation];
+  if (!useReferenceWidthBasedTitleLayout)
   {
     v18 = +[PXStorySettings sharedInstance];
     [v18 subtitleSizeScale];
     v20 = v19;
 
     v21 = 1.96;
-    if (v13 != 2)
+    if (layoutOrientation != 2)
     {
       v21 = 2.0;
     }
 
     if (v20 == 0.0)
     {
-      v22 = dbl_1A5380EB0[v13 == 2];
+      v22 = dbl_1A5380EB0[layoutOrientation == 2];
     }
 
     else
@@ -845,17 +845,17 @@ id __161__PXStoryTextResourceInfo_attributedStringBoundingSizeForTitle_stylePair
     }
 
     v14 = 0.0;
-    if (a3 > 127)
+    if (kind > 127)
     {
-      if (a3 > 511)
+      if (kind > 511)
       {
-        if (a3 != 512 && a3 != 1024)
+        if (kind != 512 && kind != 1024)
         {
           goto LABEL_45;
         }
       }
 
-      else if (a3 != 128 && a3 != 256)
+      else if (kind != 128 && kind != 256)
       {
         goto LABEL_45;
       }
@@ -863,16 +863,16 @@ id __161__PXStoryTextResourceInfo_attributedStringBoundingSizeForTitle_stylePair
 
     else
     {
-      if (a3 - 2 > 0x3E)
+      if (kind - 2 > 0x3E)
       {
 LABEL_20:
-        if (!a3)
+        if (!kind)
         {
           goto LABEL_44;
         }
 
         v14 = 0.0;
-        if (a3 == 1)
+        if (kind == 1)
         {
           v14 = v22;
         }
@@ -880,15 +880,15 @@ LABEL_20:
         goto LABEL_45;
       }
 
-      if (((1 << (a3 - 2)) & 0x40004044) == 0)
+      if (((1 << (kind - 2)) & 0x40004044) == 0)
       {
         v14 = v23;
-        if (a3 == 2)
+        if (kind == 2)
         {
           goto LABEL_45;
         }
 
-        if (a3 == 64)
+        if (kind == 64)
         {
           goto LABEL_44;
         }
@@ -897,7 +897,7 @@ LABEL_20:
       }
     }
 
-    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v10, dbl_1A5380EB0[v13 == 2], v21])
+    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy, dbl_1A5380EB0[layoutOrientation == 2], v21])
     {
       v25 = v23;
     }
@@ -907,28 +907,28 @@ LABEL_20:
       v25 = v22;
     }
 
-    [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:v10 fixedBottomPadding:a6];
+    [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:snapshotCopy fixedBottomPadding:padding];
     v14 = width * (v25 / v26);
     goto LABEL_45;
   }
 
   v14 = 0.0;
-  if (a3 <= 127)
+  if (kind <= 127)
   {
-    if (a3 - 1 > 0x3F)
+    if (kind - 1 > 0x3F)
     {
       goto LABEL_43;
     }
 
-    if (((1 << (a3 - 1)) & 0x8000808BLL) != 0)
+    if (((1 << (kind - 1)) & 0x8000808BLL) != 0)
     {
       goto LABEL_5;
     }
 
-    if (a3 != 64)
+    if (kind != 64)
     {
 LABEL_43:
-      if (a3)
+      if (kind)
       {
         goto LABEL_45;
       }
@@ -939,11 +939,11 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if (a3 <= 511)
+  if (kind <= 511)
   {
-    if (a3 != 128)
+    if (kind != 128)
     {
-      if (a3 != 256)
+      if (kind != 256)
       {
         goto LABEL_45;
       }
@@ -956,7 +956,7 @@ LABEL_44:
 LABEL_5:
     v15 = +[PXStorySettings sharedInstance];
     v16 = v15;
-    if (v13 != 2)
+    if (layoutOrientation != 2)
     {
       [v15 titleReferenceWidthPortrait];
       goto LABEL_24;
@@ -971,7 +971,7 @@ LABEL_24:
     goto LABEL_45;
   }
 
-  if (a3 == 512 || a3 == 1024)
+  if (kind == 512 || kind == 1024)
   {
     goto LABEL_5;
   }
@@ -981,18 +981,18 @@ LABEL_45:
   return v14;
 }
 
-- (double)_titleScalingFactorForKind:(unint64_t)a3 size:(CGSize)a4 extendedTraitCollectionSnapshot:(id)a5 fixedBottomPadding:(double)a6
+- (double)_titleScalingFactorForKind:(unint64_t)kind size:(CGSize)size extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding
 {
-  width = a4.width;
-  v10 = a5;
+  width = size.width;
+  snapshotCopy = snapshot;
   v11 = +[PXStorySettings sharedInstance];
-  v12 = [v11 useReferenceWidthBasedTitleLayout];
+  useReferenceWidthBasedTitleLayout = [v11 useReferenceWidthBasedTitleLayout];
 
-  v13 = [v10 layoutOrientation];
-  v14 = v13;
-  if (!v12)
+  layoutOrientation = [snapshotCopy layoutOrientation];
+  v14 = layoutOrientation;
+  if (!useReferenceWidthBasedTitleLayout)
   {
-    v19 = v13 == 2;
+    v19 = layoutOrientation == 2;
     v20 = +[PXStorySettings sharedInstance];
     [v20 titleSizeScale];
     v22 = v21;
@@ -1018,17 +1018,17 @@ LABEL_45:
     }
 
     v15 = 0.0;
-    if (a3 > 127)
+    if (kind > 127)
     {
-      if (a3 > 511)
+      if (kind > 511)
       {
-        if (a3 != 512 && a3 != 1024)
+        if (kind != 512 && kind != 1024)
         {
           goto LABEL_43;
         }
       }
 
-      else if (a3 != 128 && a3 != 256)
+      else if (kind != 128 && kind != 256)
       {
         goto LABEL_43;
       }
@@ -1036,16 +1036,16 @@ LABEL_45:
 
     else
     {
-      if (a3 - 2 > 0x3E)
+      if (kind - 2 > 0x3E)
       {
 LABEL_18:
-        if (!a3)
+        if (!kind)
         {
           goto LABEL_42;
         }
 
         v15 = 0.0;
-        if (a3 == 1)
+        if (kind == 1)
         {
           v15 = v24;
         }
@@ -1053,15 +1053,15 @@ LABEL_18:
         goto LABEL_43;
       }
 
-      if (((1 << (a3 - 2)) & 0x40004044) == 0)
+      if (((1 << (kind - 2)) & 0x40004044) == 0)
       {
         v15 = v23;
-        if (a3 == 2)
+        if (kind == 2)
         {
           goto LABEL_43;
         }
 
-        if (a3 == 64)
+        if (kind == 64)
         {
           goto LABEL_42;
         }
@@ -1070,7 +1070,7 @@ LABEL_18:
       }
     }
 
-    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v10, dbl_1A5380EB0[v19]])
+    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy, dbl_1A5380EB0[v19]])
     {
       v26 = v23;
     }
@@ -1080,28 +1080,28 @@ LABEL_18:
       v26 = v24;
     }
 
-    [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:v10 fixedBottomPadding:a6];
+    [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:snapshotCopy fixedBottomPadding:padding];
     v15 = width * (v26 / v27);
     goto LABEL_43;
   }
 
   v15 = 0.0;
-  if (a3 <= 127)
+  if (kind <= 127)
   {
-    if (a3 - 1 > 0x3F)
+    if (kind - 1 > 0x3F)
     {
       goto LABEL_41;
     }
 
-    if (((1 << (a3 - 1)) & 0x8000808BLL) != 0)
+    if (((1 << (kind - 1)) & 0x8000808BLL) != 0)
     {
       goto LABEL_5;
     }
 
-    if (a3 != 64)
+    if (kind != 64)
     {
 LABEL_41:
-      if (a3)
+      if (kind)
       {
         goto LABEL_43;
       }
@@ -1112,11 +1112,11 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (a3 <= 511)
+  if (kind <= 511)
   {
-    if (a3 != 128)
+    if (kind != 128)
     {
-      if (a3 != 256)
+      if (kind != 256)
       {
         goto LABEL_43;
       }
@@ -1144,7 +1144,7 @@ LABEL_22:
     goto LABEL_43;
   }
 
-  if (a3 == 512 || a3 == 1024)
+  if (kind == 512 || kind == 1024)
   {
     goto LABEL_5;
   }
@@ -1154,16 +1154,16 @@ LABEL_43:
   return v15;
 }
 
-- (int64_t)_fullScreenTitlePositionWithTitleCategory:(id)a3 displayAsset:(id)a4 currentAssetCropRect:(CGRect)a5 relativeTo:(id)a6 extendedTraitCollectionSnapshot:(id)a7 fixedBottomPadding:(double)a8 desiredInternationalStyle:(int64_t)a9
+- (int64_t)_fullScreenTitlePositionWithTitleCategory:(id)category displayAsset:(id)asset currentAssetCropRect:(CGRect)rect relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding desiredInternationalStyle:(int64_t)style
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
-  if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v14])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  snapshotCopy = snapshot;
+  assetCopy = asset;
+  categoryCopy = category;
+  if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy])
   {
     v17 = 2;
   }
@@ -1173,39 +1173,39 @@ LABEL_43:
     v17 = 1;
   }
 
-  [v14 fullScreenReferenceRect];
+  [snapshotCopy fullScreenReferenceRect];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:v14 fixedBottomPadding:a8];
+  [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:snapshotCopy fixedBottomPadding:padding];
   v27 = v26;
   v29 = v28;
   v58 = v28;
   v30 = objc_opt_class();
-  v31 = [(PXStoryTextResourceInfo *)self string];
-  v32 = [v30 stylePairingFromTitleCategory:v16 string:v31 kind:v17 layoutScheme:{-[PXStoryTextResourceInfo layoutScheme](self, "layoutScheme")}];
+  string = [(PXStoryTextResourceInfo *)self string];
+  v32 = [v30 stylePairingFromTitleCategory:categoryCopy string:string kind:v17 layoutScheme:{-[PXStoryTextResourceInfo layoutScheme](self, "layoutScheme")}];
 
-  v33 = [(PXStoryTextResourceInfo *)self string];
+  string2 = [(PXStoryTextResourceInfo *)self string];
   v34 = v29;
   v35 = v19;
   v36 = v21;
-  v37 = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForTitle:v33 stylePairing:v32 availableSize:v17 containerRect:v14 kind:v27 extendedTraitCollectionSnapshot:v34 fixedBottomPadding:v19, v21, v23, v25, a8];
+  padding = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForTitle:string2 stylePairing:v32 availableSize:v17 containerRect:snapshotCopy kind:v27 extendedTraitCollectionSnapshot:v34 fixedBottomPadding:v19, v21, v23, v25, padding];
 
-  v38 = [v37 second];
-  [v38 CGSizeValue];
+  second = [padding second];
+  [second CGSizeValue];
   v40 = v39;
   v42 = v41;
 
-  v59 = a8;
-  [(PXStoryTextResourceInfo *)self _occlusionSizeForSize:v17 kind:v32 size:v14 containerRect:a9 == 1 stylePairing:a9 == 2 extendedTraitCollectionSnapshot:v40 fixedBottomPadding:v42 isVerticalText:v27 isKashida:v58, v35, v36, v23, v25, *&a8];
+  paddingCopy = padding;
+  [(PXStoryTextResourceInfo *)self _occlusionSizeForSize:v17 kind:v32 size:snapshotCopy containerRect:style == 1 stylePairing:style == 2 extendedTraitCollectionSnapshot:v40 fixedBottomPadding:v42 isVerticalText:v27 isKashida:v58, v35, v36, v23, v25, *&padding];
   v44 = v43;
   v46 = v45;
-  if (a9 == 1)
+  if (style == 1)
   {
-    v47 = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
-    v48 = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
-    v49 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(v47, v48) == 1;
+    associatedSubtitleString = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
+    assetCollectionUUID = [(PXStoryTextResourceInfo *)self assetCollectionUUID];
+    v49 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(associatedSubtitleString, assetCollectionUUID) == 1;
   }
 
   else
@@ -1213,8 +1213,8 @@ LABEL_43:
     v49 = 0;
   }
 
-  v50 = [(PXStoryTextResourceInfo *)self _possibleTitlePositionsForRect:v17 boudingSize:v14 occlusionSize:a9 == 1 kind:v49 extendedTraitCollectionSnapshot:a9 == 2 fixedBottomPadding:v35 isTitleVertical:v36 isSubtitleVertical:v23 isKashida:v25, v40, v42, v44, v46, *&v59];
-  -[PXStoryTextResourceInfo bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:](self, "bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:", v50, v15, [v14 layoutOrientation], a9, v35, v36, v23, v25, v44, v46, *&x, *&y, *&width, *&height);
+  v50 = [(PXStoryTextResourceInfo *)self _possibleTitlePositionsForRect:v17 boudingSize:snapshotCopy occlusionSize:style == 1 kind:v49 extendedTraitCollectionSnapshot:style == 2 fixedBottomPadding:v35 isTitleVertical:v36 isSubtitleVertical:v23 isKashida:v25, v40, v42, v44, v46, *&paddingCopy];
+  -[PXStoryTextResourceInfo bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:](self, "bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:", v50, assetCopy, [snapshotCopy layoutOrientation], style, v35, v36, v23, v25, v44, v46, *&x, *&y, *&width, *&height);
   v52 = v51;
   v54 = v53;
 
@@ -1224,10 +1224,10 @@ LABEL_43:
   return v56;
 }
 
-- (CGSize)_fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:(id)a3 fixedBottomPadding:(double)a4
+- (CGSize)_fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding
 {
-  v5 = a3;
-  if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v5])
+  snapshotCopy = snapshot;
+  if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy])
   {
     v6 = 2;
   }
@@ -1237,8 +1237,8 @@ LABEL_43:
     v6 = 1;
   }
 
-  [v5 fullScreenReferenceRect];
-  [PXStoryTextResourceInfo _availableSizeForRect:"_availableSizeForRect:extendedTraitCollectionSnapshot:kind:fixedBottomPadding:" extendedTraitCollectionSnapshot:v5 kind:v6 fixedBottomPadding:?];
+  [snapshotCopy fullScreenReferenceRect];
+  [PXStoryTextResourceInfo _availableSizeForRect:"_availableSizeForRect:extendedTraitCollectionSnapshot:kind:fixedBottomPadding:" extendedTraitCollectionSnapshot:snapshotCopy kind:v6 fixedBottomPadding:?];
   v8 = v7;
   v10 = v9;
 
@@ -1249,25 +1249,25 @@ LABEL_43:
   return result;
 }
 
-- (CGSize)_availableSizeForRect:(CGRect)a3 extendedTraitCollectionSnapshot:(id)a4 kind:(unint64_t)a5 fixedBottomPadding:(double)a6
+- (CGSize)_availableSizeForRect:(CGRect)rect extendedTraitCollectionSnapshot:(id)snapshot kind:(unint64_t)kind fixedBottomPadding:(double)padding
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = [v13 layoutOrientation] == 2;
-  [(PXStoryTextResourceInfo *)self _sizeWidthMinimumForKind:a5 orientationIsLandscape:v14];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  snapshotCopy = snapshot;
+  v14 = [snapshotCopy layoutOrientation] == 2;
+  [(PXStoryTextResourceInfo *)self _sizeWidthMinimumForKind:kind orientationIsLandscape:v14];
   v16 = v15;
-  [(PXStoryTextResourceInfo *)self _sizeWidthMaximumForKind:a5 orientationIsLandscape:v14];
+  [(PXStoryTextResourceInfo *)self _sizeWidthMaximumForKind:kind orientationIsLandscape:v14];
   v28 = v17;
-  [(PXStoryTextResourceInfo *)self _sizeWidthScaleForKind:a5 extendedTraitCollectionSnapshot:v13];
+  [(PXStoryTextResourceInfo *)self _sizeWidthScaleForKind:kind extendedTraitCollectionSnapshot:snapshotCopy];
   v19 = v18;
-  [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingForKind:a5 extendedTraitCollectionSnapshot:v13 rect:x, y, width, height];
+  [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingForKind:kind extendedTraitCollectionSnapshot:snapshotCopy rect:x, y, width, height];
   v27 = v20;
-  [(PXStoryTextResourceInfo *)self _paddingTopForKind:a5 extendedTraitCollectionSnapshot:v13 rect:x, y, width, height];
+  [(PXStoryTextResourceInfo *)self _paddingTopForKind:kind extendedTraitCollectionSnapshot:snapshotCopy rect:x, y, width, height];
   v22 = v21;
-  [(PXStoryTextResourceInfo *)self _paddingBottomForKind:a5 extendedTraitCollectionSnapshot:v13 rect:x fixedBottomPadding:y, width, height, a6];
+  [(PXStoryTextResourceInfo *)self _paddingBottomForKind:kind extendedTraitCollectionSnapshot:snapshotCopy rect:x fixedBottomPadding:y, width, height, padding];
   v24 = v23;
 
   if (width * v19 >= v16 || width - v16 + v27 * -2.0 <= 0.0)
@@ -1282,29 +1282,29 @@ LABEL_43:
   return result;
 }
 
-- (id)_possibleTitlePositionsForRect:(CGRect)a3 boudingSize:(CGSize)a4 occlusionSize:(CGSize)a5 kind:(unint64_t)a6 extendedTraitCollectionSnapshot:(id)a7 fixedBottomPadding:(double)a8 isTitleVertical:(BOOL)a9 isSubtitleVertical:(BOOL)a10 isKashida:(BOOL)a11
+- (id)_possibleTitlePositionsForRect:(CGRect)rect boudingSize:(CGSize)size occlusionSize:(CGSize)occlusionSize kind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding isTitleVertical:(BOOL)vertical isSubtitleVertical:(BOOL)self0 isKashida:(BOOL)self1
 {
-  v11 = a11;
-  v12 = a10;
-  v13 = a9;
-  height = a5.height;
-  width = a5.width;
-  v16 = a4.width;
-  v17 = a3.size.height;
-  v18 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v22 = a7;
-  [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingForKind:a6 extendedTraitCollectionSnapshot:v22 rect:x, y, v18, v17];
+  kashidaCopy = kashida;
+  subtitleVerticalCopy = subtitleVertical;
+  verticalCopy = vertical;
+  height = occlusionSize.height;
+  width = occlusionSize.width;
+  v16 = size.width;
+  v17 = rect.size.height;
+  v18 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  snapshotCopy = snapshot;
+  [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingForKind:kind extendedTraitCollectionSnapshot:snapshotCopy rect:x, y, v18, v17];
   v24 = v23;
-  [(PXStoryTextResourceInfo *)self _paddingTopForKind:a6 extendedTraitCollectionSnapshot:v22 rect:x, y, v18, v17];
+  [(PXStoryTextResourceInfo *)self _paddingTopForKind:kind extendedTraitCollectionSnapshot:snapshotCopy rect:x, y, v18, v17];
   v62 = v25;
-  [(PXStoryTextResourceInfo *)self _paddingBottomForKind:a6 extendedTraitCollectionSnapshot:v22 rect:x fixedBottomPadding:y, v18, v17, a8];
+  [(PXStoryTextResourceInfo *)self _paddingBottomForKind:kind extendedTraitCollectionSnapshot:snapshotCopy rect:x fixedBottomPadding:y, v18, v17, padding];
   v27 = v26;
   v28 = +[PXStorySettings sharedInstance];
-  v29 = [v28 titleUseCenterAlignment];
+  titleUseCenterAlignment = [v28 titleUseCenterAlignment];
 
-  if (v29)
+  if (titleUseCenterAlignment)
   {
     v30 = width <= v16 + -40.0;
   }
@@ -1338,11 +1338,11 @@ LABEL_43:
   v34 = v62 + -20.0;
   v35 = v17 - height - v27 + -20.0;
   v36 = height * -0.5 + v17 * 0.5 + -20.0;
-  v37 = [v22 userInterfaceIdiom];
+  userInterfaceIdiom = [snapshotCopy userInterfaceIdiom];
 
-  v38 = a6 == 4 && v13;
+  v38 = kind == 4 && verticalCopy;
   v39 = v34 + v18 * 0.05;
-  if (!v38 || (v37 - 1) >= 2)
+  if (!v38 || (userInterfaceIdiom - 1) >= 2)
   {
     v39 = v62 + -20.0;
   }
@@ -1354,7 +1354,7 @@ LABEL_43:
 
   v43 = *MEMORY[0x1E695EFF8];
   v42 = *(MEMORY[0x1E695EFF8] + 8);
-  if (v13)
+  if (verticalCopy)
   {
     v44 = *(MEMORY[0x1E695EFF8] + 8);
   }
@@ -1364,7 +1364,7 @@ LABEL_43:
     v44 = v36;
   }
 
-  if (v13)
+  if (verticalCopy)
   {
     v45 = *MEMORY[0x1E695EFF8];
   }
@@ -1377,7 +1377,7 @@ LABEL_43:
   v46 = [MEMORY[0x1E696B098] valueWithPoint:{v45, v44}];
   [v40 setObject:v46 atIndexedSubscript:1];
 
-  if (v13 || v11)
+  if (verticalCopy || kashidaCopy)
   {
     v47 = v42;
   }
@@ -1387,7 +1387,7 @@ LABEL_43:
     v47 = v35;
   }
 
-  if (v13 || v11)
+  if (verticalCopy || kashidaCopy)
   {
     v48 = v43;
   }
@@ -1403,7 +1403,7 @@ LABEL_43:
   v50 = [MEMORY[0x1E696B098] valueWithPoint:{v31, v34}];
   [v40 setObject:v50 atIndexedSubscript:3];
 
-  v51 = v13 ^ v12 | v11;
+  v51 = verticalCopy ^ subtitleVerticalCopy | kashidaCopy;
   if (v51)
   {
     v52 = v42;
@@ -1462,47 +1462,47 @@ LABEL_43:
   return v40;
 }
 
-- (double)_paddingBottomForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4 rect:(CGRect)a5 fixedBottomPadding:(double)a6
+- (double)_paddingBottomForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot rect:(CGRect)rect fixedBottomPadding:(double)padding
 {
-  height = a5.size.height;
-  v10 = a4;
-  v11 = v10;
+  height = rect.size.height;
+  snapshotCopy = snapshot;
+  v11 = snapshotCopy;
   v12 = 14.0;
-  if (a3 != 64)
+  if (kind != 64)
   {
-    if (a6 == 0.0)
+    if (padding == 0.0)
     {
-      [(PXStoryTextResourceInfo *)self _paddingBottomScaleForKind:a3 extendedTraitCollectionSnapshot:v10];
+      [(PXStoryTextResourceInfo *)self _paddingBottomScaleForKind:kind extendedTraitCollectionSnapshot:snapshotCopy];
       v12 = height * v13;
     }
 
     else
     {
-      v14 = [v10 layoutOrientation];
+      layoutOrientation = [snapshotCopy layoutOrientation];
       v15 = 40.0;
-      if (v14 == 2)
+      if (layoutOrientation == 2)
       {
         v15 = 26.0;
       }
 
-      v12 = v15 + a6;
+      v12 = v15 + padding;
     }
   }
 
   return v12;
 }
 
-- (double)_paddingTopForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4 rect:(CGRect)a5
+- (double)_paddingTopForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot rect:(CGRect)rect
 {
-  if (a3 == 64)
+  if (kind == 64)
   {
     return 14.0;
   }
 
-  height = a5.size.height;
-  [(PXStoryTextResourceInfo *)self _paddingTopScaleForKind:a3 extendedTraitCollectionSnapshot:a4, a5.origin.x, a5.origin.y, a5.size.width];
+  height = rect.size.height;
+  [(PXStoryTextResourceInfo *)self _paddingTopScaleForKind:kind extendedTraitCollectionSnapshot:snapshot, rect.origin.x, rect.origin.y, rect.size.width];
   v9 = height * v8;
-  v10 = a3 == 8 || a3 == 4;
+  v10 = kind == 8 || kind == 4;
   v11 = 48.0;
   if (!v10)
   {
@@ -1512,57 +1512,57 @@ LABEL_43:
   return fmax(v11, v9);
 }
 
-- (double)_paddingLeftOrRightAlignmentLeadingForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4 rect:(CGRect)a5
+- (double)_paddingLeftOrRightAlignmentLeadingForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot rect:(CGRect)rect
 {
-  width = a5.size.width;
-  v8 = [a4 layoutOrientation];
-  if (a3 == 64)
+  width = rect.size.width;
+  layoutOrientation = [snapshot layoutOrientation];
+  if (kind == 64)
   {
     return 14.0;
   }
 
-  v10 = v8 == 2;
-  [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingScaleForKind:a3 orientationIsLandscape:v10];
+  v10 = layoutOrientation == 2;
+  [(PXStoryTextResourceInfo *)self _paddingLeftOrRightAlignmentLeadingScaleForKind:kind orientationIsLandscape:v10];
   v12 = width * v11;
-  [(PXStoryTextResourceInfo *)self _paddingLeadingMinimumForKind:a3 orientationIsLandscape:v10];
+  [(PXStoryTextResourceInfo *)self _paddingLeadingMinimumForKind:kind orientationIsLandscape:v10];
   return fmax(v12, v13);
 }
 
-- (double)_paddingBottomScaleForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4
+- (double)_paddingBottomScaleForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot
 {
-  v5 = [a4 layoutOrientation];
+  layoutOrientation = [snapshot layoutOrientation];
   result = 0.0;
-  if (a3 > 31)
+  if (kind > 31)
   {
-    if (a3 > 255)
+    if (kind > 255)
     {
-      if (a3 != 256 && a3 != 512 && a3 != 1024)
+      if (kind != 256 && kind != 512 && kind != 1024)
       {
         return result;
       }
     }
 
-    else if (a3 != 32)
+    else if (kind != 32)
     {
-      if (a3 == 64)
+      if (kind == 64)
       {
         return 1.0;
       }
 
-      if (a3 != 128)
+      if (kind != 128)
       {
         return result;
       }
     }
 
-    return dbl_1A5380EC0[v5 == 2];
+    return dbl_1A5380EC0[layoutOrientation == 2];
   }
 
-  if (a3 <= 3)
+  if (kind <= 3)
   {
-    if (a3)
+    if (kind)
     {
-      if (a3 == 1)
+      if (kind == 1)
       {
         v7 = +[PXStorySettings sharedInstance];
         [v7 titleRegularPaddingBottomScale];
@@ -1571,7 +1571,7 @@ LABEL_43:
         return v9;
       }
 
-      else if (a3 == 2)
+      else if (kind == 2)
       {
         return 0.14;
       }
@@ -1582,10 +1582,10 @@ LABEL_43:
     return 1.0;
   }
 
-  switch(a3)
+  switch(kind)
   {
     case 4uLL:
-      return dbl_1A5380EC0[v5 == 2];
+      return dbl_1A5380EC0[layoutOrientation == 2];
     case 8uLL:
       return 0.2;
     case 0x10uLL:
@@ -1595,59 +1595,59 @@ LABEL_43:
   return result;
 }
 
-- (double)_paddingTopScaleForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4
+- (double)_paddingTopScaleForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot
 {
-  v6 = a4;
-  v7 = [v6 layoutOrientation];
+  snapshotCopy = snapshot;
+  layoutOrientation = [snapshotCopy layoutOrientation];
   v8 = 0.0;
-  if (a3 > 31)
+  if (kind > 31)
   {
-    if (a3 > 255)
+    if (kind > 255)
     {
-      if (a3 != 256 && a3 != 512 && a3 != 1024)
+      if (kind != 256 && kind != 512 && kind != 1024)
       {
         goto LABEL_26;
       }
     }
 
-    else if (a3 != 32)
+    else if (kind != 32)
     {
-      if (a3 == 64)
+      if (kind == 64)
       {
         goto LABEL_21;
       }
 
-      if (a3 != 128)
+      if (kind != 128)
       {
         goto LABEL_26;
       }
     }
 
-    v11 = v7 == 2;
+    v11 = layoutOrientation == 2;
     v12 = dbl_1A5380EC0;
 LABEL_20:
     v8 = v12[v11];
     goto LABEL_26;
   }
 
-  if (a3 > 3)
+  if (kind > 3)
   {
-    if (a3 == 4)
+    if (kind == 4)
     {
-      v13 = v7 == 2;
-      v14 = [(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v6];
+      v13 = layoutOrientation == 2;
+      v14 = [(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy];
       v10 = dbl_1A5380ED0[v13];
       v9 = !v14;
     }
 
     else
     {
-      if (a3 != 8 && a3 != 16)
+      if (kind != 8 && kind != 16)
       {
         goto LABEL_26;
       }
 
-      v9 = ![(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v6];
+      v9 = ![(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy];
       v10 = 0.2;
     }
 
@@ -1664,14 +1664,14 @@ LABEL_20:
     goto LABEL_26;
   }
 
-  switch(a3)
+  switch(kind)
   {
     case 0uLL:
 LABEL_21:
       v8 = 1.0;
       break;
     case 1uLL:
-      v11 = v7 == 2;
+      v11 = layoutOrientation == 2;
       v12 = &unk_1A5380EE0;
       goto LABEL_20;
     case 2uLL:
@@ -1694,33 +1694,33 @@ LABEL_26:
   return v8;
 }
 
-- (double)_paddingLeftOrRightAlignmentLeadingScaleForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4
+- (double)_paddingLeftOrRightAlignmentLeadingScaleForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape
 {
   result = 0.0;
-  if (a3 > 31)
+  if (kind > 31)
   {
-    if (a3 > 255)
+    if (kind > 255)
     {
-      if (a3 != 256 && a3 != 512 && a3 != 1024)
+      if (kind != 256 && kind != 512 && kind != 1024)
       {
         return result;
       }
     }
 
-    else if (a3 != 32)
+    else if (kind != 32)
     {
-      if (a3 == 64)
+      if (kind == 64)
       {
         return 1.0;
       }
 
-      if (a3 != 128)
+      if (kind != 128)
       {
         return result;
       }
     }
 
-    v5 = !a4;
+    v5 = !landscape;
     result = 0.1;
     v6 = 0.08;
 LABEL_20:
@@ -1732,11 +1732,11 @@ LABEL_20:
     return result;
   }
 
-  if (a3 > 3)
+  if (kind > 3)
   {
-    if (a3 != 4)
+    if (kind != 4)
     {
-      if (a3 == 8 || a3 == 16)
+      if (kind == 8 || kind == 16)
       {
         return 0.07;
       }
@@ -1744,20 +1744,20 @@ LABEL_20:
       return result;
     }
 
-    v5 = !a4;
+    v5 = !landscape;
     result = 0.1;
     v6 = 0.07;
     goto LABEL_20;
   }
 
-  switch(a3)
+  switch(kind)
   {
     case 0uLL:
       return 1.0;
     case 1uLL:
       return 0.1;
     case 2uLL:
-      v5 = !a4;
+      v5 = !landscape;
       result = 0.14;
       v6 = 0.1;
       goto LABEL_20;
@@ -1766,20 +1766,20 @@ LABEL_20:
   return result;
 }
 
-- (double)_paddingLeadingMinimumForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4
+- (double)_paddingLeadingMinimumForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape
 {
   result = 0.0;
-  if (a3 > 127)
+  if (kind > 127)
   {
-    if (a3 > 511)
+    if (kind > 511)
     {
-      if (a3 != 512 && a3 != 1024)
+      if (kind != 512 && kind != 1024)
       {
         return result;
       }
     }
 
-    else if (a3 != 128 && a3 != 256)
+    else if (kind != 128 && kind != 256)
     {
       return result;
     }
@@ -1787,14 +1787,14 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if (a3 <= 3)
+  if (kind <= 3)
   {
-    if (a3 == 1)
+    if (kind == 1)
     {
       return 45.0;
     }
 
-    if (a3 == 2)
+    if (kind == 2)
     {
       return 50.0;
     }
@@ -1802,21 +1802,21 @@ LABEL_20:
     return result;
   }
 
-  if (a3 != 4)
+  if (kind != 4)
   {
-    if (a3 != 32)
+    if (kind != 32)
     {
       return result;
     }
 
 LABEL_16:
-    v5 = !a4;
+    v5 = !landscape;
     result = 35.0;
     v6 = 25.0;
     goto LABEL_17;
   }
 
-  v5 = !a4;
+  v5 = !landscape;
   result = 35.0;
   v6 = 0.0;
 LABEL_17:
@@ -1828,22 +1828,22 @@ LABEL_17:
   return result;
 }
 
-- (double)_sizeWidthScaleForKind:(unint64_t)a3 extendedTraitCollectionSnapshot:(id)a4
+- (double)_sizeWidthScaleForKind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot
 {
-  v6 = a4;
-  v7 = [v6 layoutOrientation];
+  snapshotCopy = snapshot;
+  layoutOrientation = [snapshotCopy layoutOrientation];
   v8 = +[PXStorySettings sharedInstance];
-  v9 = [v8 useReferenceWidthBasedTitleLayout];
+  useReferenceWidthBasedTitleLayout = [v8 useReferenceWidthBasedTitleLayout];
 
-  if (!v9)
+  if (!useReferenceWidthBasedTitleLayout)
   {
-    if (a3 == 2)
+    if (kind == 2)
     {
       v10 = 0.4;
       goto LABEL_41;
     }
 
-    if ((a3 == 128 || a3 == 32) && v7 == 2)
+    if ((kind == 128 || kind == 32) && layoutOrientation == 2)
     {
       v12 = 0.76;
     }
@@ -1856,20 +1856,20 @@ LABEL_17:
     goto LABEL_37;
   }
 
-  v10 = dbl_1A5380EF0[v7 == 2];
-  v11 = dbl_1A5380F00[v7 == 2];
+  v10 = dbl_1A5380EF0[layoutOrientation == 2];
+  v11 = dbl_1A5380F00[layoutOrientation == 2];
   v12 = 0.0;
-  if (a3 > 31)
+  if (kind > 31)
   {
-    if (a3 <= 255)
+    if (kind <= 255)
     {
-      if (a3 != 32)
+      if (kind != 32)
       {
-        if (a3 != 64)
+        if (kind != 64)
         {
-          if (a3 == 128)
+          if (kind == 128)
           {
-            if (v7 == 2)
+            if (layoutOrientation == 2)
             {
               v12 = 0.5;
             }
@@ -1891,13 +1891,13 @@ LABEL_17:
       goto LABEL_30;
     }
 
-    switch(a3)
+    switch(kind)
     {
       case 0x100uLL:
         v12 = 0.6;
         goto LABEL_56;
       case 0x200uLL:
-        if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v6])
+        if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy])
         {
           v12 = v11;
         }
@@ -1914,17 +1914,17 @@ LABEL_17:
     }
 
 LABEL_37:
-    if (a3 > 127)
+    if (kind > 127)
     {
-      if (a3 > 511)
+      if (kind > 511)
       {
-        if (a3 != 512 && a3 != 1024)
+        if (kind != 512 && kind != 1024)
         {
           goto LABEL_62;
         }
       }
 
-      else if (a3 != 128 && a3 != 256)
+      else if (kind != 128 && kind != 256)
       {
         goto LABEL_62;
       }
@@ -1932,15 +1932,15 @@ LABEL_37:
 
     else
     {
-      if (a3 > 0x20)
+      if (kind > 0x20)
       {
         goto LABEL_62;
       }
 
-      if (((1 << a3) & 0x100010110) == 0)
+      if (((1 << kind) & 0x100010110) == 0)
       {
         v10 = v12;
-        if (((1 << a3) & 6) == 0)
+        if (((1 << kind) & 6) == 0)
         {
           goto LABEL_62;
         }
@@ -1952,7 +1952,7 @@ LABEL_37:
 LABEL_56:
     v22 = +[PXStorySettings sharedInstance];
     v23 = v22;
-    if (v7 == 2)
+    if (layoutOrientation == 2)
     {
       [v22 titleFeedLandscapeWidthScale];
       v25 = v24;
@@ -1981,11 +1981,11 @@ LABEL_56:
     goto LABEL_62;
   }
 
-  if (a3 > 3)
+  if (kind > 3)
   {
-    if (a3 != 4)
+    if (kind != 4)
     {
-      if (a3 == 8 || a3 == 16)
+      if (kind == 8 || kind == 16)
       {
         v12 = 0.4;
       }
@@ -1994,9 +1994,9 @@ LABEL_56:
     }
 
 LABEL_30:
-    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v6])
+    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy])
     {
-      if (v7 == 2)
+      if (layoutOrientation == 2)
       {
         v12 = 0.5;
       }
@@ -2009,23 +2009,23 @@ LABEL_30:
 
     else
     {
-      v12 = dbl_1A5380F10[v7 == 2];
+      v12 = dbl_1A5380F10[layoutOrientation == 2];
     }
 
     goto LABEL_37;
   }
 
-  if (!a3)
+  if (!kind)
   {
 LABEL_34:
     v12 = 0.8;
     goto LABEL_37;
   }
 
-  if (a3 != 1)
+  if (kind != 1)
   {
-    v10 = dbl_1A5380F00[v7 == 2];
-    if (a3 != 2)
+    v10 = dbl_1A5380F00[layoutOrientation == 2];
+    if (kind != 2)
     {
       goto LABEL_37;
     }
@@ -2034,7 +2034,7 @@ LABEL_34:
 LABEL_41:
   v13 = +[PXStorySettings sharedInstance];
   v14 = v13;
-  if (v7 == 2)
+  if (layoutOrientation == 2)
   {
     [v13 titleFullScreenLandscapeWidthScale];
     v16 = v15;
@@ -2070,22 +2070,22 @@ LABEL_62:
   return v12;
 }
 
-- (double)_sizeWidthMaximumForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4
+- (double)_sizeWidthMaximumForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape
 {
-  if (a3 == 2)
+  if (kind == 2)
   {
     v5 = 600.0;
   }
 
-  else if (a3 == 128 || a3 == 32)
+  else if (kind == 128 || kind == 32)
   {
     v4 = 360.0;
-    if (a4)
+    if (landscape)
     {
       v4 = 280.0;
     }
 
-    if (a3 == 128)
+    if (kind == 128)
     {
       v5 = 680.0;
     }
@@ -2113,10 +2113,10 @@ LABEL_62:
   }
 
   v9 = +[PXStorySettings sharedInstance];
-  v10 = [v9 useReferenceWidthBasedTitleLayout];
+  useReferenceWidthBasedTitleLayout = [v9 useReferenceWidthBasedTitleLayout];
 
   result = 1.79769313e308;
-  if (!v10)
+  if (!useReferenceWidthBasedTitleLayout)
   {
     return v5;
   }
@@ -2124,17 +2124,17 @@ LABEL_62:
   return result;
 }
 
-- (double)_sizeWidthMinimumForKind:(unint64_t)a3 orientationIsLandscape:(BOOL)a4
+- (double)_sizeWidthMinimumForKind:(unint64_t)kind orientationIsLandscape:(BOOL)landscape
 {
-  if (a3 > 63)
+  if (kind > 63)
   {
-    if (a3 == 64)
+    if (kind == 64)
     {
       *&v5 = 100.0;
       goto LABEL_12;
     }
 
-    if (a3 != 128)
+    if (kind != 128)
     {
       goto LABEL_4;
     }
@@ -2142,13 +2142,13 @@ LABEL_62:
 
   else
   {
-    if (a3 == 2)
+    if (kind == 2)
     {
       *&v5 = 200.0;
       goto LABEL_12;
     }
 
-    if (a3 != 32)
+    if (kind != 32)
     {
 LABEL_4:
       *&v5 = 240.0;
@@ -2159,7 +2159,7 @@ LABEL_12:
   }
 
   v4 = 170.0;
-  if (a4)
+  if (landscape)
   {
     v6 = 170.0;
   }
@@ -2182,10 +2182,10 @@ LABEL_13:
   }
 
   v10 = +[PXStorySettings sharedInstance];
-  v11 = [v10 useReferenceWidthBasedTitleLayout];
+  useReferenceWidthBasedTitleLayout = [v10 useReferenceWidthBasedTitleLayout];
 
   result = 0.0;
-  if (!v11)
+  if (!useReferenceWidthBasedTitleLayout)
   {
     return v6;
   }
@@ -2193,32 +2193,32 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)attributedStringFrameInRect:(CGRect)a3 titleCategory:(id)a4 displayAsset:(id)a5 currentAssetCropRect:(CGRect)a6 kind:(unint64_t)a7 relativeTo:(id)a8 extendedTraitCollectionSnapshot:(id)a9 fixedBottomPadding:(double)a10
+- (CGRect)attributedStringFrameInRect:(CGRect)rect titleCategory:(id)category displayAsset:(id)asset currentAssetCropRect:(CGRect)cropRect kind:(unint64_t)kind relativeTo:(id)to extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)self0
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  x = a6.origin.x;
-  y = a6.origin.y;
-  v14 = a3.size.height;
-  v15 = a3.size.width;
-  v16 = a3.origin.y;
-  v17 = a3.origin.x;
-  v19 = a4;
-  v20 = a5;
-  v21 = a8;
-  v22 = a9;
+  height = cropRect.size.height;
+  width = cropRect.size.width;
+  x = cropRect.origin.x;
+  y = cropRect.origin.y;
+  v14 = rect.size.height;
+  v15 = rect.size.width;
+  v16 = rect.origin.y;
+  v17 = rect.origin.x;
+  categoryCopy = category;
+  assetCopy = asset;
+  toCopy = to;
+  snapshotCopy = snapshot;
   v23 = MEMORY[0x1E695F060];
   v24 = MEMORY[0x1E695EFF8];
-  if (a7 == 1)
+  if (kind == 1)
   {
-    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v22])
+    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy])
     {
-      a7 = 2;
+      kind = 2;
     }
 
     else
     {
-      a7 = 1;
+      kind = 1;
     }
   }
 
@@ -2226,20 +2226,20 @@ LABEL_13:
   v25 = v23[1];
   v28 = *v24;
   v27 = v24[1];
-  v29 = [(PXStoryTextResourceInfo *)self string];
+  string = [(PXStoryTextResourceInfo *)self string];
   v148 = v16;
   v149 = v15;
   v30 = v16;
   v31 = v14;
-  [(PXStoryTextResourceInfo *)self _availableSizeForRect:v22 extendedTraitCollectionSnapshot:a7 kind:v17 fixedBottomPadding:v30, v15, v14, a10];
+  [(PXStoryTextResourceInfo *)self _availableSizeForRect:snapshotCopy extendedTraitCollectionSnapshot:kind kind:v17 fixedBottomPadding:v30, v15, v14, padding];
   v33 = v32;
   v35 = v34;
-  v36 = [(PXStoryTextResourceInfo *)self layoutScheme];
-  v154 = v22;
-  if (v36 == 1)
+  layoutScheme = [(PXStoryTextResourceInfo *)self layoutScheme];
+  v154 = snapshotCopy;
+  if (layoutScheme == 1)
   {
-    v57 = [(PXStoryTextResourceInfo *)self type];
-    if (v57 == 1)
+    type = [(PXStoryTextResourceInfo *)self type];
+    if (type == 1)
     {
       v28 = *MEMORY[0x1E695F058];
       v27 = *(MEMORY[0x1E695F058] + 8);
@@ -2248,30 +2248,30 @@ LABEL_13:
       goto LABEL_27;
     }
 
-    v153 = v29;
-    if (!v57)
+    v153 = string;
+    if (!type)
     {
-      v58 = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
-      if ([v58 length])
+      associatedSubtitleString = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
+      if ([associatedSubtitleString length])
       {
-        v134 = [v29 stringByAppendingFormat:@"\n%@", v58];
-        v135 = v29;
+        v134 = [string stringByAppendingFormat:@"\n%@", associatedSubtitleString];
+        v135 = string;
         v136 = v134;
 
         v153 = v136;
       }
 
-      v59 = -[PXStoryTextResourceInfo attributedStringBoundingSizeForTitle:stylePairing:availableSize:containerRect:kind:extendedTraitCollectionSnapshot:fixedBottomPadding:](self, "attributedStringBoundingSizeForTitle:stylePairing:availableSize:containerRect:kind:extendedTraitCollectionSnapshot:fixedBottomPadding:", v153, [objc_opt_class() stylePairingFromTitleCategory:v19 string:v153 kind:a7 layoutScheme:{-[PXStoryTextResourceInfo layoutScheme](self, "layoutScheme")}], a7, v22, v33, v35, v17, v148, v149, v31, a10);
-      v60 = [v59 first];
-      v61 = [v59 second];
-      [v61 CGSizeValue];
+      v59 = -[PXStoryTextResourceInfo attributedStringBoundingSizeForTitle:stylePairing:availableSize:containerRect:kind:extendedTraitCollectionSnapshot:fixedBottomPadding:](self, "attributedStringBoundingSizeForTitle:stylePairing:availableSize:containerRect:kind:extendedTraitCollectionSnapshot:fixedBottomPadding:", v153, [objc_opt_class() stylePairingFromTitleCategory:categoryCopy string:v153 kind:kind layoutScheme:{-[PXStoryTextResourceInfo layoutScheme](self, "layoutScheme")}], kind, snapshotCopy, v33, v35, v17, v148, v149, v31, padding);
+      first = [v59 first];
+      second = [v59 second];
+      [second CGSizeValue];
       v26 = v62;
       v25 = v63;
 
-      v151 = [(PXStoryTextResourceInfo *)self drawingContext];
-      if ([v60 length])
+      drawingContext = [(PXStoryTextResourceInfo *)self drawingContext];
+      if ([first length])
       {
-        v64 = [v60 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
+        v64 = [first attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
       }
 
       else
@@ -2288,11 +2288,11 @@ LABEL_13:
       v159.origin.y = v148;
       v159.size.width = v149;
       v159.size.height = v31;
-      v99 = CGRectGetMaxY(v159) - a10;
+      v99 = CGRectGetMaxY(v159) - padding;
       [v64 descender];
       v27 = v99 - v100 - v25 + 20.0;
 
-      v65 = 1;
+      textAlignment = 1;
       v66 = 2;
       goto LABEL_22;
     }
@@ -2300,27 +2300,27 @@ LABEL_13:
 
   else
   {
-    v153 = v29;
-    if (!v36)
+    v153 = string;
+    if (!layoutScheme)
     {
-      v37 = [(PXStoryTextResourceInfo *)self type];
-      if (v37 != 1)
+      type2 = [(PXStoryTextResourceInfo *)self type];
+      if (type2 != 1)
       {
-        if (!v37)
+        if (!type2)
         {
-          v38 = [objc_opt_class() stylePairingFromTitleCategory:v19 string:v29 kind:a7 layoutScheme:{-[PXStoryTextResourceInfo layoutScheme](self, "layoutScheme")}];
-          v39 = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForTitle:v29 stylePairing:v38 availableSize:a7 containerRect:v22 kind:v33 extendedTraitCollectionSnapshot:v35 fixedBottomPadding:v17, v148, v149, v31, a10];
-          v40 = [v39 second];
-          [v40 CGSizeValue];
+          v38 = [objc_opt_class() stylePairingFromTitleCategory:categoryCopy string:string kind:kind layoutScheme:{-[PXStoryTextResourceInfo layoutScheme](self, "layoutScheme")}];
+          padding = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForTitle:string stylePairing:v38 availableSize:kind containerRect:snapshotCopy kind:v33 extendedTraitCollectionSnapshot:v35 fixedBottomPadding:v17, v148, v149, v31, padding];
+          second2 = [padding second];
+          [second2 CGSizeValue];
           v42 = v41;
           v44 = v43;
 
-          v140 = v39;
-          v45 = [v39 first];
-          v151 = [(PXStoryTextResourceInfo *)self drawingContext];
-          v46 = [(PXStoryTextResourceInfo *)self _isVerticalText:v45];
-          v139 = v45;
-          v47 = [(PXStoryTextResourceInfo *)self _isKashidaText:v45];
+          v140 = padding;
+          first2 = [padding first];
+          drawingContext = [(PXStoryTextResourceInfo *)self drawingContext];
+          v46 = [(PXStoryTextResourceInfo *)self _isVerticalText:first2];
+          v139 = first2;
+          v47 = [(PXStoryTextResourceInfo *)self _isKashidaText:first2];
           v48 = 2;
           if (!v47)
           {
@@ -2335,18 +2335,18 @@ LABEL_13:
           v138 = v48;
           v142 = v42;
           v25 = v44;
-          [(PXStoryTextResourceInfo *)self _occlusionSizeForSize:a7 kind:v38 size:v22 containerRect:v46 stylePairing:v47 extendedTraitCollectionSnapshot:v42 fixedBottomPadding:v44 isVerticalText:v33 isKashida:v35, v17, v148, v149, v31, *&a10];
+          [(PXStoryTextResourceInfo *)self _occlusionSizeForSize:kind kind:v38 size:snapshotCopy containerRect:v46 stylePairing:v47 extendedTraitCollectionSnapshot:v42 fixedBottomPadding:v44 isVerticalText:v33 isKashida:v35, v17, v148, v149, v31, *&padding];
           v50 = v49;
           v52 = v51;
           if (v46)
           {
-            v53 = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
+            associatedSubtitleString2 = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
             [(PXStoryTextResourceInfo *)self assetCollectionUUID];
-            v55 = v54 = v21;
-            v56 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(v53, v55) == 1;
+            v55 = v54 = toCopy;
+            v56 = PXStoryTitleInternationalStyleForStringAndAssetCollectionUUID(associatedSubtitleString2, v55) == 1;
 
-            v21 = v54;
-            v22 = v154;
+            toCopy = v54;
+            snapshotCopy = v154;
           }
 
           else
@@ -2354,18 +2354,18 @@ LABEL_13:
             v56 = 0;
           }
 
-          v91 = [(PXStoryTextResourceInfo *)self _possibleTitlePositionsForRect:a7 boudingSize:v22 occlusionSize:v46 kind:v56 extendedTraitCollectionSnapshot:v47 fixedBottomPadding:v17 isTitleVertical:v148 isSubtitleVertical:v149 isKashida:v31, v42, v25, v50, v52, *&a10];
+          v91 = [(PXStoryTextResourceInfo *)self _possibleTitlePositionsForRect:kind boudingSize:snapshotCopy occlusionSize:v46 kind:v56 extendedTraitCollectionSnapshot:v47 fixedBottomPadding:v17 isTitleVertical:v148 isSubtitleVertical:v149 isKashida:v31, v42, v25, v50, v52, *&padding];
           v92 = [v91 objectAtIndexedSubscript:5];
           [v92 pointValue];
           v28 = v93;
           v27 = v94;
 
-          if (a7 != 64)
+          if (kind != 64)
           {
             if ([(PXStoryTextResourceInfo *)self hasForcedPositioning])
             {
               v95 = [(PXStoryTextResourceInfo *)self forcedPositionIndex]== 2;
-              v96 = [(PXStoryTextResourceInfo *)self forcedPositionIndex];
+              forcedPositionIndex = [(PXStoryTextResourceInfo *)self forcedPositionIndex];
               if (v47 && v95)
               {
                 v97 = 0;
@@ -2373,7 +2373,7 @@ LABEL_13:
 
               else
               {
-                v97 = v96;
+                v97 = forcedPositionIndex;
               }
 
               if (v46 && v95)
@@ -2389,16 +2389,16 @@ LABEL_13:
 
             else
             {
-              v101 = [(PXStoryTextResourceInfo *)self _fullScreenTitlePositionWithTitleCategory:v19 displayAsset:v20 currentAssetCropRect:v21 relativeTo:v22 extendedTraitCollectionSnapshot:v138 fixedBottomPadding:x desiredInternationalStyle:y, width, height, a10];
-              if (v101 == 0x7FFFFFFFFFFFFFFFLL)
+              padding2 = [(PXStoryTextResourceInfo *)self _fullScreenTitlePositionWithTitleCategory:categoryCopy displayAsset:assetCopy currentAssetCropRect:toCopy relativeTo:snapshotCopy extendedTraitCollectionSnapshot:v138 fixedBottomPadding:x desiredInternationalStyle:y, width, height, padding];
+              if (padding2 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                -[PXStoryTextResourceInfo bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:](self, "bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:", v91, v20, [v22 layoutOrientation], v138, v17, v148, v149, v31, v50, v52, *&x, *&y, *&width, *&height);
+                -[PXStoryTextResourceInfo bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:](self, "bestPositionInFrame:occlusionSize:possiblePositions:displayAsset:currentAssetCropRect:layoutOrientation:desiredInternationalStyle:", v91, assetCopy, [snapshotCopy layoutOrientation], v138, v17, v148, v149, v31, v50, v52, *&x, *&y, *&width, *&height);
                 v28 = v102;
                 v27 = v103;
                 goto LABEL_61;
               }
 
-              v98 = v101;
+              v98 = padding2;
             }
 
             v117 = [v91 objectAtIndexedSubscript:v98];
@@ -2408,7 +2408,7 @@ LABEL_13:
           }
 
 LABEL_61:
-          v60 = v139;
+          first = v139;
           v26 = v142;
           if (v46)
           {
@@ -2424,10 +2424,10 @@ LABEL_61:
               v126 = v27 == v125;
 LABEL_64:
 
-              v65 = 2 * v126;
+              textAlignment = 2 * v126;
 LABEL_70:
               v132 = [MEMORY[0x1E696B098] valueWithCGPoint:{v28, v27}];
-              v155 = [v123 indexOfObject:v132];
+              effectivePositionIndex = [v123 indexOfObject:v132];
 
               goto LABEL_23;
             }
@@ -2438,14 +2438,14 @@ LABEL_70:
             if (v47)
             {
               v123 = v91;
-              v65 = 3;
+              textAlignment = 3;
               goto LABEL_70;
             }
 
             v127 = +[PXStorySettings sharedInstance];
-            v128 = [v127 titleUseCenterAlignment];
+            titleUseCenterAlignment = [v127 titleUseCenterAlignment];
 
-            if ((v128 & 1) == 0)
+            if ((titleUseCenterAlignment & 1) == 0)
             {
               v129 = [v91 objectAtIndexedSubscript:0];
               [v129 pointValue];
@@ -2463,26 +2463,26 @@ LABEL_70:
           }
 
           v123 = v91;
-          v65 = 1;
+          textAlignment = 1;
           goto LABEL_70;
         }
 
         goto LABEL_21;
       }
 
-      if (v21)
+      if (toCopy)
       {
-        [v21 attributedStringFrameInRect:v19 titleCategory:v20 displayAsset:a7 currentAssetCropRect:0 kind:v22 relativeTo:v17 extendedTraitCollectionSnapshot:v148 fixedBottomPadding:{v149, v31, x, y, width, height, *&a10}];
+        [toCopy attributedStringFrameInRect:categoryCopy titleCategory:assetCopy displayAsset:kind currentAssetCropRect:0 kind:snapshotCopy relativeTo:v17 extendedTraitCollectionSnapshot:v148 fixedBottomPadding:{v149, v31, x, y, width, height, *&padding}];
       }
 
-      v83 = [v21 attributedString];
-      v84 = [v21 _isVerticalText:v83];
+      attributedString = [toCopy attributedString];
+      v84 = [toCopy _isVerticalText:attributedString];
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __170__PXStoryTextResourceInfo_attributedStringFrameInRect_titleCategory_displayAsset_currentAssetCropRect_kind_relativeTo_extendedTraitCollectionSnapshot_fixedBottomPadding___block_invoke;
       aBlock[3] = &unk_1E7736430;
-      v85 = v21;
+      v85 = toCopy;
       v157 = v85;
       v86 = _Block_copy(aBlock);
       v141 = v84;
@@ -2495,8 +2495,8 @@ LABEL_70:
 
       else
       {
-        v87 = [v85 attributedString];
-        v88 = [v85 _isKashidaText:v87];
+        attributedString2 = [v85 attributedString];
+        v88 = [v85 _isKashidaText:attributedString2];
 
         v89 = v88 ^ 1;
         if (v88)
@@ -2510,16 +2510,16 @@ LABEL_70:
         }
       }
 
-      v104 = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForSubtitle:v153 size:a7 containerRect:v85 kind:v22 relativeTo:v90 extendedTraitCollectionSnapshot:v33 fixedBottomPadding:v35 desiredInternationalStyle:v17, v148, v149, v31, a10];
-      v105 = [v104 second];
-      [v105 CGSizeValue];
+      padding3 = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForSubtitle:v153 size:kind containerRect:v85 kind:snapshotCopy relativeTo:v90 extendedTraitCollectionSnapshot:v33 fixedBottomPadding:v35 desiredInternationalStyle:v17, v148, v149, v31, padding];
+      second3 = [padding3 second];
+      [second3 CGSizeValue];
       v26 = v106;
       v25 = v107;
 
-      v108 = [v104 first];
-      v151 = [(PXStoryTextResourceInfo *)self drawingContext];
-      v60 = v108;
-      v109 = [(PXStoryTextResourceInfo *)self _isVerticalText:v108];
+      first3 = [padding3 first];
+      drawingContext = [(PXStoryTextResourceInfo *)self drawingContext];
+      first = first3;
+      v109 = [(PXStoryTextResourceInfo *)self _isVerticalText:first3];
       if (v141)
       {
         v110 = x;
@@ -2527,9 +2527,9 @@ LABEL_70:
         if ((v89 & v109 & 1) == 0)
         {
 LABEL_52:
-          if ([v108 length])
+          if ([first3 length])
           {
-            v112 = [v108 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
+            v112 = [first3 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
           }
 
           else
@@ -2546,11 +2546,11 @@ LABEL_52:
           v161.origin.y = v148;
           v161.size.width = v149;
           v161.size.height = v31;
-          v115 = CGRectGetMaxY(v161) - a10;
+          v115 = CGRectGetMaxY(v161) - padding;
           [v112 descender];
           v27 = v115 - v116 - v25 + -5.0;
 
-          v155 = 2;
+          effectivePositionIndex = 2;
           goto LABEL_58;
         }
       }
@@ -2566,31 +2566,31 @@ LABEL_52:
       }
 
       LOBYTE(v137) = v109;
-      [(PXStoryTextResourceInfo *)self _subtitlePositionInFrame:v19 titleCategory:v20 displayAsset:a7 currentAssetCropRect:v85 kind:v154 relativeTo:v17 extendedTraitCollectionSnapshot:v148 fixedBottomPadding:v149 isTitleVertical:v31 isSubtitleVertical:v110, v111, width, height, *&a10, v137];
+      [(PXStoryTextResourceInfo *)self _subtitlePositionInFrame:categoryCopy titleCategory:assetCopy displayAsset:kind currentAssetCropRect:v85 kind:v154 relativeTo:v17 extendedTraitCollectionSnapshot:v148 fixedBottomPadding:v149 isTitleVertical:v31 isSubtitleVertical:v110, v111, width, height, *&padding, v137];
       v28 = v113;
       v27 = v114;
-      v155 = [v85 effectivePositionIndex];
+      effectivePositionIndex = [v85 effectivePositionIndex];
 LABEL_58:
-      v65 = [v85 textAlignment];
+      textAlignment = [v85 textAlignment];
 
       goto LABEL_23;
     }
   }
 
 LABEL_21:
-  v65 = 0;
-  v151 = 0;
-  v60 = 0;
+  textAlignment = 0;
+  drawingContext = 0;
+  first = 0;
   v66 = 5;
 LABEL_22:
-  v155 = v66;
+  effectivePositionIndex = v66;
 LABEL_23:
-  v152 = v21;
-  v150 = v20;
-  v67 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v60];
-  if ([v60 length])
+  v152 = toCopy;
+  v150 = assetCopy;
+  v67 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:first];
+  if ([first length])
   {
-    v68 = [v60 attributesAtIndex:0 effectiveRange:0];
+    v68 = [first attributesAtIndex:0 effectiveRange:0];
   }
 
   else
@@ -2598,12 +2598,12 @@ LABEL_23:
     v68 = MEMORY[0x1E695E0F8];
   }
 
-  v69 = v60;
+  v69 = first;
   v70 = *MEMORY[0x1E69DB688];
   v71 = [v68 valueForKey:*MEMORY[0x1E69DB688]];
   v72 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v68];
-  v73 = v65;
-  [v71 setAlignment:v65];
+  v73 = textAlignment;
+  [v71 setAlignment:textAlignment];
   [v72 setValue:v71 forKey:v70];
   v74 = [v72 copy];
 
@@ -2618,17 +2618,17 @@ LABEL_23:
   self->_lock_origin.x = v28;
   self->_lock_origin.y = v27;
   lock_drawingContext = self->_lock_drawingContext;
-  self->_lock_drawingContext = v151;
+  self->_lock_drawingContext = drawingContext;
   self->_lock_textAlignment = v73;
-  v78 = v151;
+  v78 = drawingContext;
 
-  self->_lock_effectivePositionIndex = v155;
+  self->_lock_effectivePositionIndex = effectivePositionIndex;
   os_unfair_lock_unlock(&self->_lock);
 
-  v20 = v150;
-  v21 = v152;
-  v29 = v153;
-  v22 = v154;
+  assetCopy = v150;
+  toCopy = v152;
+  string = v153;
+  snapshotCopy = v154;
 LABEL_27:
 
   v79 = v28;
@@ -2642,19 +2642,19 @@ LABEL_27:
   return result;
 }
 
-- (CGSize)_occlusionSizeForSize:(CGSize)a3 kind:(unint64_t)a4 size:(CGSize)a5 containerRect:(CGRect)a6 stylePairing:(int64_t)a7 extendedTraitCollectionSnapshot:(id)a8 fixedBottomPadding:(double)a9 isVerticalText:(BOOL)a10 isKashida:(BOOL)a11
+- (CGSize)_occlusionSizeForSize:(CGSize)size kind:(unint64_t)kind size:(CGSize)a5 containerRect:(CGRect)rect stylePairing:(int64_t)pairing extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding isVerticalText:(BOOL)self0 isKashida:(BOOL)self1
 {
-  v12 = a10;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  textCopy = text;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = a5.height;
   v17 = a5.width;
-  v19 = a3.height;
-  v20 = a3.width;
-  v22 = a8;
-  if (v12)
+  v19 = size.height;
+  v20 = size.width;
+  snapshotCopy = snapshot;
+  if (textCopy)
   {
     v23 = v19;
   }
@@ -2665,19 +2665,19 @@ LABEL_27:
   }
 
   v24 = v23 + -40.0;
-  v25 = [(PXStoryTextResourceInfo *)self drawingContext];
-  [v25 baselineOffset];
+  drawingContext = [(PXStoryTextResourceInfo *)self drawingContext];
+  [drawingContext baselineOffset];
   v27 = v26;
 
-  if (!a11)
+  if (!kashida)
   {
-    [(PXStoryTextResourceInfo *)self _subtitleLineSpacingForKind:a4 size:v22 extendedTraitCollectionSnapshot:v12 fixedBottomPadding:v17 isVerticalText:v16, a9];
+    [(PXStoryTextResourceInfo *)self _subtitleLineSpacingForKind:kind size:snapshotCopy extendedTraitCollectionSnapshot:textCopy fixedBottomPadding:v17 isVerticalText:v16, padding];
     v39 = v28;
-    v29 = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
-    v30 = v29;
-    if (v29)
+    associatedSubtitleString = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
+    v30 = associatedSubtitleString;
+    if (associatedSubtitleString)
     {
-      v31 = v29;
+      v31 = associatedSubtitleString;
     }
 
     else
@@ -2685,9 +2685,9 @@ LABEL_27:
       v31 = &stru_1F1741150;
     }
 
-    v32 = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForSubtitle:v31 size:a4 containerRect:self kind:v22 relativeTo:0 extendedTraitCollectionSnapshot:v17 fixedBottomPadding:v16 desiredInternationalStyle:x, y, width, height, a9];
-    v33 = [v32 second];
-    [v33 CGSizeValue];
+    padding = [(PXStoryTextResourceInfo *)self attributedStringBoundingSizeForSubtitle:v31 size:kind containerRect:self kind:snapshotCopy relativeTo:0 extendedTraitCollectionSnapshot:v17 fixedBottomPadding:v16 desiredInternationalStyle:x, y, width, height, padding];
+    second = [padding second];
+    [second CGSizeValue];
     v35 = v34;
 
     if (v24 < v35 + -40.0)
@@ -2698,7 +2698,7 @@ LABEL_27:
     v27 = v27 + v39;
   }
 
-  if (v12)
+  if (textCopy)
   {
     v36 = v24;
   }
@@ -2708,7 +2708,7 @@ LABEL_27:
     v36 = v27;
   }
 
-  if (!v12)
+  if (!textCopy)
   {
     v27 = v24;
   }
@@ -2720,13 +2720,13 @@ LABEL_27:
   return result;
 }
 
-- (double)_subtitleLineSpacingForKind:(unint64_t)a3 size:(CGSize)a4 extendedTraitCollectionSnapshot:(id)a5 fixedBottomPadding:(double)a6 isVerticalText:(BOOL)a7
+- (double)_subtitleLineSpacingForKind:(unint64_t)kind size:(CGSize)size extendedTraitCollectionSnapshot:(id)snapshot fixedBottomPadding:(double)padding isVerticalText:(BOOL)text
 {
-  v7 = a7;
-  height = a4.height;
-  width = a4.width;
-  v13 = a5;
-  if (v7)
+  textCopy = text;
+  height = size.height;
+  width = size.width;
+  snapshotCopy = snapshot;
+  if (textCopy)
   {
     v14 = 25.0;
   }
@@ -2737,17 +2737,17 @@ LABEL_27:
   }
 
   v15 = +[PXStorySettings sharedInstance];
-  v16 = [v15 useReferenceWidthBasedTitleLayout];
+  useReferenceWidthBasedTitleLayout = [v15 useReferenceWidthBasedTitleLayout];
 
-  if (v16 || a3 - 1 <= 1)
+  if (useReferenceWidthBasedTitleLayout || kind - 1 <= 1)
   {
-    [(PXStoryTextResourceInfo *)self _titleScalingFactorForKind:a3 size:v13 extendedTraitCollectionSnapshot:width fixedBottomPadding:height, a6];
+    [(PXStoryTextResourceInfo *)self _titleScalingFactorForKind:kind size:snapshotCopy extendedTraitCollectionSnapshot:width fixedBottomPadding:height, padding];
     v18 = v14 * v17;
   }
 
   else
   {
-    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:v13])
+    if ([(PXStoryTextResourceInfo *)self _isUserInterfaceIdiomPadOrMacOrTV:snapshotCopy])
     {
       v19 = 2;
     }
@@ -2757,13 +2757,13 @@ LABEL_27:
       v19 = 1;
     }
 
-    [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:v13 fixedBottomPadding:a6];
+    [(PXStoryTextResourceInfo *)self _fullScreenAvailableSizeForExtendedTraitCollectionSnapshot:snapshotCopy fixedBottomPadding:padding];
     v21 = v20;
-    [PXStoryTextResourceInfo _titleScalingFactorForKind:"_titleScalingFactorForKind:size:extendedTraitCollectionSnapshot:fixedBottomPadding:" size:v19 extendedTraitCollectionSnapshot:v13 fixedBottomPadding:?];
+    [PXStoryTextResourceInfo _titleScalingFactorForKind:"_titleScalingFactorForKind:size:extendedTraitCollectionSnapshot:fixedBottomPadding:" size:v19 extendedTraitCollectionSnapshot:snapshotCopy fixedBottomPadding:?];
     v18 = width * (v14 * v22 / v21);
   }
 
-  if (a3 == 64)
+  if (kind == 64)
   {
     v23 = 18.0;
   }
@@ -2836,23 +2836,23 @@ LABEL_27:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXStoryTextResourceInfo *)self string];
-    v7 = [v5 string];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    string = [(PXStoryTextResourceInfo *)self string];
+    string2 = [v5 string];
+    v8 = string2;
+    if (string == string2)
     {
     }
 
     else
     {
-      v9 = [v6 isEqual:v7];
+      v9 = [string isEqual:string2];
 
       if ((v9 & 1) == 0)
       {
@@ -2860,19 +2860,19 @@ LABEL_27:
       }
     }
 
-    v11 = [(PXStoryTextResourceInfo *)self type];
-    if (v11 == [v5 type])
+    type = [(PXStoryTextResourceInfo *)self type];
+    if (type == [v5 type])
     {
-      v12 = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
-      v13 = [v5 associatedSubtitleString];
-      if (v12 == v13)
+      associatedSubtitleString = [(PXStoryTextResourceInfo *)self associatedSubtitleString];
+      associatedSubtitleString2 = [v5 associatedSubtitleString];
+      if (associatedSubtitleString == associatedSubtitleString2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v12 isEqualToString:v13];
+        v10 = [associatedSubtitleString isEqualToString:associatedSubtitleString2];
       }
 
       goto LABEL_13;
@@ -2891,9 +2891,9 @@ LABEL_14:
   return v10;
 }
 
-- (void)_checkForForcedPositioning:(id *)a3
+- (void)_checkForForcedPositioning:(id *)positioning
 {
-  if ([*a3 hasSuffix:@"*"])
+  if ([*positioning hasSuffix:@"*"])
   {
     v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:9];
     [v7 setObject:@"*M1*" atIndexedSubscript:0];
@@ -2911,7 +2911,7 @@ LABEL_14:
       while (1)
       {
         v6 = [v7 objectAtIndexedSubscript:v5];
-        if ([*a3 hasSuffix:v6])
+        if ([*positioning hasSuffix:v6])
         {
           break;
         }
@@ -2922,7 +2922,7 @@ LABEL_14:
         }
       }
 
-      *a3 = [*a3 substringToIndex:{objc_msgSend(*a3, "length") - objc_msgSend(v6, "length")}];
+      *positioning = [*positioning substringToIndex:{objc_msgSend(*positioning, "length") - objc_msgSend(v6, "length")}];
       [(PXStoryTextResourceInfo *)self setHasForcedPositioning:1];
       [(PXStoryTextResourceInfo *)self setForcedPositionIndex:v5];
     }
@@ -2931,17 +2931,17 @@ LABEL_9:
   }
 }
 
-- (PXStoryTextResourceInfo)initWithString:(id)a3 associatedSubtitleString:(id)a4 type:(int64_t)a5 layoutScheme:(int64_t)a6 assetCollectionUUID:(id)a7
+- (PXStoryTextResourceInfo)initWithString:(id)string associatedSubtitleString:(id)subtitleString type:(int64_t)type layoutScheme:(int64_t)scheme assetCollectionUUID:(id)d
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  stringCopy = string;
+  subtitleStringCopy = subtitleString;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = PXStoryTextResourceInfo;
   v15 = [(PXStoryTextResourceInfo *)&v22 init];
   if (v15)
   {
-    v16 = [v12 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
+    v16 = [stringCopy stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
 
     if (PFOSVariantHasInternalUI())
     {
@@ -2953,35 +2953,35 @@ LABEL_9:
     }
 
     objc_storeStrong(&v15->_string, v16);
-    v15->_type = a5;
-    v15->_layoutScheme = a6;
-    v18 = [v13 copy];
+    v15->_type = type;
+    v15->_layoutScheme = scheme;
+    v18 = [subtitleStringCopy copy];
     associatedSubtitleString = v15->_associatedSubtitleString;
     v15->_associatedSubtitleString = v18;
 
-    objc_storeStrong(&v15->_assetCollectionUUID, a7);
+    objc_storeStrong(&v15->_assetCollectionUUID, d);
     v15->_lock._os_unfair_lock_opaque = 0;
-    v12 = v16;
+    stringCopy = v16;
   }
 
   return v15;
 }
 
-+ (BOOL)titleShouldBeUppercasedForStylePairing:(int64_t)a3 kind:(unint64_t)a4
++ (BOOL)titleShouldBeUppercasedForStylePairing:(int64_t)pairing kind:(unint64_t)kind
 {
-  v6 = MEMORY[0x1A590D320](a1, a2);
-  v8 = (a3 & 0xFFFFFFFFFFFFFFFDLL) == 1 || a4 == 64;
+  v6 = MEMORY[0x1A590D320](self, a2);
+  v8 = (pairing & 0xFFFFFFFFFFFFFFFDLL) == 1 || kind == 64;
   return (v6 & 1) == 0 && v8;
 }
 
-+ (id)_rangesAndStylesForTitle:(id)a3
++ (id)_rangesAndStylesForTitle:(id)title
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_alloc_init(v3);
   v6 = [off_1E7721930 alloc];
   v7 = MEMORY[0x1E696B098];
-  v8 = [v4 length];
+  v8 = [titleCopy length];
 
   v9 = [v7 valueWithRange:{0, v8}];
   v10 = [v6 initWithFirst:v9 second:&unk_1F190BBD8];
@@ -2990,18 +2990,18 @@ LABEL_9:
   return v5;
 }
 
-+ (void)_increaseMaximumLineHeightToAvoidOverlapForLines:(id)a3 attributes:(id)a4 attributedString:(id *)a5
++ (void)_increaseMaximumLineHeightToAvoidOverlapForLines:(id)lines attributes:(id)attributes attributedString:(id *)string
 {
-  v44 = a5;
+  stringCopy = string;
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  linesCopy = lines;
+  attributesCopy = attributes;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(linesCopy, "count")}];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v6;
+  obj = linesCopy;
   v9 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v9)
   {
@@ -3019,14 +3019,14 @@ LABEL_9:
           objc_enumerationMutation(obj);
         }
 
-        v15 = [*(*(&v53 + 1) + 8 * i) line];
-        v16 = [v7 valueForKey:v12];
-        BoundsWithOptions = CTLineGetBoundsWithOptions(v15, 0);
+        line = [*(*(&v53 + 1) + 8 * i) line];
+        v16 = [attributesCopy valueForKey:v12];
+        BoundsWithOptions = CTLineGetBoundsWithOptions(line, 0);
         x = BoundsWithOptions.origin.x;
         y = BoundsWithOptions.origin.y;
         width = BoundsWithOptions.size.width;
         height = BoundsWithOptions.size.height;
-        v61 = CTLineGetBoundsWithOptions(v15, 8uLL);
+        v61 = CTLineGetBoundsWithOptions(line, 8uLL);
         v21 = v61.size.width;
         v22 = v61.size.height;
         v46 = v61.origin.y;
@@ -3056,13 +3056,13 @@ LABEL_9:
           v29 = v26 + v28;
           if (v26 + v28 > v25)
           {
-            v30 = [v7 mutableCopy];
+            v30 = [attributesCopy mutableCopy];
             [v16 setMinimumLineHeight:v29];
             [v16 setMaximumLineHeight:v29];
             [v30 setValue:v16 forKey:v12];
             v31 = [v30 copy];
 
-            v7 = v31;
+            attributesCopy = v31;
           }
         }
 
@@ -3072,8 +3072,8 @@ LABEL_9:
         v63.size.height = v22;
         MinY = CGRectGetMinY(v63);
         v32 = MEMORY[0x1E696B098];
-        location = CTLineGetStringRange(v15).location;
-        v34 = [v32 valueWithRange:{location, CTLineGetStringRange(v15).length}];
+        location = CTLineGetStringRange(line).location;
+        v34 = [v32 valueWithRange:{location, CTLineGetStringRange(line).length}];
         [v8 addObject:v34];
       }
 
@@ -3089,7 +3089,7 @@ LABEL_9:
   v50 = 0u;
   v35 = v8;
   v36 = [v35 countByEnumeratingWithState:&v49 objects:v57 count:16];
-  v37 = v44;
+  v37 = stringCopy;
   if (v36)
   {
     v38 = v36;
@@ -3104,8 +3104,8 @@ LABEL_9:
         }
 
         v41 = *v37;
-        v42 = [*(*(&v49 + 1) + 8 * j) rangeValue];
-        [v41 setAttributes:v7 range:{v42, v43}];
+        rangeValue = [*(*(&v49 + 1) + 8 * j) rangeValue];
+        [v41 setAttributes:attributesCopy range:{rangeValue, v43}];
       }
 
       v38 = [v35 countByEnumeratingWithState:&v49 objects:v57 count:16];
@@ -3115,17 +3115,17 @@ LABEL_9:
   }
 }
 
-+ (id)subtitleAttributesForSize:(CGSize)a3 string:(id)a4 scale:(double)a5 kind:(unint64_t)a6 extendedTraitCollectionSnapshot:(id)a7 internationalStyle:(int64_t)a8
++ (id)subtitleAttributesForSize:(CGSize)size string:(id)string scale:(double)scale kind:(unint64_t)kind extendedTraitCollectionSnapshot:(id)snapshot internationalStyle:(int64_t)style
 {
   v34[3] = *MEMORY[0x1E69E9840];
   v12 = MEMORY[0x1E69DC888];
-  v13 = a4;
-  v14 = [v12 whiteColor];
-  v15 = [objc_opt_class() _allowedSubtitleCharacterSetWithKind:a6];
-  v16 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:v13];
+  stringCopy = string;
+  whiteColor = [v12 whiteColor];
+  v15 = [objc_opt_class() _allowedSubtitleCharacterSetWithKind:kind];
+  v16 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:stringCopy];
 
   v17 = [v15 isSupersetOfSet:v16];
-  v18 = a6 != 64;
+  v18 = kind != 64;
   v19 = v18 & v17;
   v20 = 14.0;
   if ((v18 & v17) == 0)
@@ -3133,10 +3133,10 @@ LABEL_9:
     v20 = 0.0;
   }
 
-  v21 = v20 * a5;
-  v22 = [a1 _subtitleFontForKind:a6 scale:v17 ^ 1u hasExtendedCharacterSet:a8 internationalStyle:a5];
-  v23 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v24 = [v23 mutableCopy];
+  v21 = v20 * scale;
+  v22 = [self _subtitleFontForKind:kind scale:v17 ^ 1u hasExtendedCharacterSet:style internationalStyle:scale];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v24 = [defaultParagraphStyle mutableCopy];
 
   [v24 setMaximumLineHeight:v21];
   [v24 setLineBreakMode:4];
@@ -3144,21 +3144,21 @@ LABEL_9:
   v33[0] = *MEMORY[0x1E69DB648];
   v33[1] = v25;
   v34[0] = v22;
-  v34[1] = v14;
+  v34[1] = whiteColor;
   v33[2] = *MEMORY[0x1E69DB688];
   v34[2] = v24;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
   v27 = [v26 mutableCopy];
 
-  if (a8 == 2)
+  if (style == 2)
   {
-    [a1 _setKashidaToParagraphStyle:v24];
+    [self _setKashidaToParagraphStyle:v24];
   }
 
   else
   {
     v28 = 2.0;
-    if (a8 != 1)
+    if (style != 1)
     {
       v28 = 0.0;
     }
@@ -3168,7 +3168,7 @@ LABEL_9:
       v28 = 1.566;
     }
 
-    v29 = v28 * a5;
+    v29 = v28 * scale;
     [v24 setAlignment:1];
     v30 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
     [v27 setObject:v30 forKeyedSubscript:*MEMORY[0x1E69DB748]];
@@ -3179,21 +3179,21 @@ LABEL_9:
   return v31;
 }
 
-+ (id)_subtitleFontForKind:(unint64_t)a3 scale:(double)a4 hasExtendedCharacterSet:(BOOL)a5 internationalStyle:(int64_t)a6
++ (id)_subtitleFontForKind:(unint64_t)kind scale:(double)scale hasExtendedCharacterSet:(BOOL)set internationalStyle:(int64_t)style
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a4 * 14.0;
+  v6 = scale * 14.0;
   if (v6 < 10.0)
   {
     v6 = 10.0;
   }
 
-  if (a3 == 64)
+  if (kind == 64)
   {
     v6 = 11.0;
   }
 
-  if (a6 == 1)
+  if (style == 1)
   {
     v7 = v6 * 1.16;
   }
@@ -3203,7 +3203,7 @@ LABEL_9:
     v7 = v6;
   }
 
-  if (a5 || MEMORY[0x1A590D320](a1, a2))
+  if (set || MEMORY[0x1A590D320](self, a2))
   {
     v8 = [MEMORY[0x1E69DB878] systemFontOfSize:v7 weight:*MEMORY[0x1E69DB980]];
   }
@@ -3231,49 +3231,49 @@ LABEL_9:
   return v8;
 }
 
-+ (id)_allowedSubtitleCharacterSetWithKind:(unint64_t)a3
++ (id)_allowedSubtitleCharacterSetWithKind:(unint64_t)kind
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [a1 _subtitleFontCacheKeyForKind:?];
-  v6 = [a1 subtitleCachedCharacterSetByKind];
-  v7 = [v6 objectForKey:v5];
+  v5 = [self _subtitleFontCacheKeyForKind:?];
+  subtitleCachedCharacterSetByKind = [self subtitleCachedCharacterSetByKind];
+  v7 = [subtitleCachedCharacterSetByKind objectForKey:v5];
 
   if (!v7)
   {
-    v8 = [a1 _subtitleFontForKind:a3 scale:0 hasExtendedCharacterSet:0 internationalStyle:1.0];
-    v9 = [v8 fontDescriptor];
-    v10 = [v9 fontAttributes];
-    v7 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69DB898]];
+    v8 = [self _subtitleFontForKind:kind scale:0 hasExtendedCharacterSet:0 internationalStyle:1.0];
+    fontDescriptor = [v8 fontDescriptor];
+    fontAttributes = [fontDescriptor fontAttributes];
+    v7 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB898]];
 
     if (!v7)
     {
-      v11 = CTFontCopyCharacterSet(v8);
-      if (!v11)
+      letterCharacterSet = CTFontCopyCharacterSet(v8);
+      if (!letterCharacterSet)
       {
         v12 = PLStoryGetLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           v15[0] = 67109120;
-          v15[1] = a3;
+          v15[1] = kind;
           _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "font missing NSCharacterSet mapping for kind: %d", v15, 8u);
         }
 
-        v11 = [MEMORY[0x1E696AB08] letterCharacterSet];
+        letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
       }
 
-      v7 = v11;
+      v7 = letterCharacterSet;
     }
 
-    v13 = [a1 subtitleCachedCharacterSetByKind];
-    [v13 setObject:v7 forKey:v5];
+    subtitleCachedCharacterSetByKind2 = [self subtitleCachedCharacterSetByKind];
+    [subtitleCachedCharacterSetByKind2 setObject:v7 forKey:v5];
   }
 
   return v7;
 }
 
-+ (id)_subtitleFontCacheKeyForKind:(unint64_t)a3
++ (id)_subtitleFontCacheKeyForKind:(unint64_t)kind
 {
-  if (a3 == 64)
+  if (kind == 64)
   {
     return &unk_1F190BBA8;
   }
@@ -3284,28 +3284,28 @@ LABEL_9:
   }
 }
 
-+ (void)_setKashidaToParagraphStyle:(id)a3
++ (void)_setKashidaToParagraphStyle:(id)style
 {
-  v3 = a3;
-  [v3 setSpansAllLines:1];
-  [v3 setAlignment:3];
+  styleCopy = style;
+  [styleCopy setSpansAllLines:1];
+  [styleCopy setAlignment:3];
 }
 
-+ (id)_titlePrimaryAttributesForStylePairing:(int64_t)a3 scale:(double)a4 kind:(unint64_t)a5 layoutScheme:(int64_t)a6 allowHyphenation:(BOOL)a7 internationalStyle:(int64_t)a8
++ (id)_titlePrimaryAttributesForStylePairing:(int64_t)pairing scale:(double)scale kind:(unint64_t)kind layoutScheme:(int64_t)scheme allowHyphenation:(BOOL)hyphenation internationalStyle:(int64_t)style
 {
-  v9 = a7;
+  hyphenationCopy = hyphenation;
   v30[3] = *MEMORY[0x1E69E9840];
-  v15 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   v16 = 0.0;
   if (MEMORY[0x1A590D320]())
   {
     goto LABEL_2;
   }
 
-  if (a5 == 64)
+  if (kind == 64)
   {
     v17 = 20.0;
-    if (a3 == 7)
+    if (pairing == 7)
     {
       v17 = 0.0;
     }
@@ -3314,13 +3314,13 @@ LABEL_9:
   }
 
   v17 = 0.0;
-  if (a3 > 3)
+  if (pairing > 3)
   {
-    if (a3 > 5)
+    if (pairing > 5)
     {
-      if (a3 != 6)
+      if (pairing != 6)
       {
-        if (a3 != 7)
+        if (pairing != 7)
         {
           goto LABEL_30;
         }
@@ -3333,7 +3333,7 @@ LABEL_9:
 
     else
     {
-      if (a3 != 4)
+      if (pairing != 4)
       {
         v16 = 0.665;
 LABEL_17:
@@ -3350,9 +3350,9 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (a3 > 1)
+  if (pairing > 1)
   {
-    if (a3 == 2)
+    if (pairing == 2)
     {
       v16 = 1.564;
 LABEL_2:
@@ -3364,9 +3364,9 @@ LABEL_2:
     goto LABEL_17;
   }
 
-  if (a3)
+  if (pairing)
   {
-    if (a3 == 1)
+    if (pairing == 1)
     {
       v16 = 1.556;
       v17 = 45.0;
@@ -3377,12 +3377,12 @@ LABEL_2:
 
 LABEL_20:
   v17 = 55.0;
-  if (a8 != 2)
+  if (style != 2)
   {
     v17 = 0.0;
   }
 
-  if (a8 == 1)
+  if (style == 1)
   {
     v16 = 4.0;
   }
@@ -3393,37 +3393,37 @@ LABEL_20:
   }
 
 LABEL_30:
-  if (a6 == 1)
+  if (scheme == 1)
   {
-    a4 = a4 * 0.8;
+    scale = scale * 0.8;
   }
 
-  v19 = a4 * v17;
-  v20 = [a1 _titleFontForStylePairing:a3 scale:a5 kind:a8 internationalStyle:a4];
-  v21 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v22 = [v21 mutableCopy];
+  v19 = scale * v17;
+  v20 = [self _titleFontForStylePairing:pairing scale:kind kind:style internationalStyle:scale];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v22 = [defaultParagraphStyle mutableCopy];
 
   [v22 setMaximumLineHeight:v19];
   [v22 setLineBreakMode:4];
-  [v22 setUsesDefaultHyphenation:v9];
+  [v22 setUsesDefaultHyphenation:hyphenationCopy];
   v23 = *MEMORY[0x1E69DB650];
   v29[0] = *MEMORY[0x1E69DB648];
   v29[1] = v23;
   v30[0] = v20;
-  v30[1] = v15;
+  v30[1] = whiteColor;
   v29[2] = *MEMORY[0x1E69DB688];
   v30[2] = v22;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
   v25 = [v24 mutableCopy];
 
-  if (a8 == 2)
+  if (style == 2)
   {
-    [a1 _setKashidaToParagraphStyle:v22];
+    [self _setKashidaToParagraphStyle:v22];
   }
 
   else
   {
-    v26 = [MEMORY[0x1E696AD98] numberWithDouble:a4 * v16];
+    v26 = [MEMORY[0x1E696AD98] numberWithDouble:scale * v16];
     [v25 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69DB748]];
   }
 
@@ -3432,27 +3432,27 @@ LABEL_30:
   return v27;
 }
 
-+ (id)_titleFontForStylePairing:(int64_t)a3 scale:(double)a4 kind:(unint64_t)a5 internationalStyle:(int64_t)a6
++ (id)_titleFontForStylePairing:(int64_t)pairing scale:(double)scale kind:(unint64_t)kind internationalStyle:(int64_t)style
 {
-  if (a5 == 64)
+  if (kind == 64)
   {
     v8 = 20.0;
 LABEL_3:
-    v9 = a4 * v8;
+    v9 = scale * v8;
 LABEL_27:
-    v16 = [objc_opt_class() titleFontDescriptorForStylePairing:a3 kind:a5];
+    v16 = [objc_opt_class() titleFontDescriptorForStylePairing:pairing kind:kind];
     v17 = [MEMORY[0x1E69DB878] fontWithDescriptor:v16 size:v9];
 
     goto LABEL_28;
   }
 
-  if (a3 > 3)
+  if (pairing > 3)
   {
-    if (a3 > 5)
+    if (pairing > 5)
     {
-      if (a3 != 6)
+      if (pairing != 6)
       {
-        if (a3 != 7)
+        if (pairing != 7)
         {
           goto LABEL_31;
         }
@@ -3466,7 +3466,7 @@ LABEL_27:
 
     else
     {
-      if (a3 == 4)
+      if (pairing == 4)
       {
         v12 = 37.0;
         goto LABEL_26;
@@ -3479,9 +3479,9 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  if (a3 > 1)
+  if (pairing > 1)
   {
-    if (a3 == 2)
+    if (pairing == 2)
     {
       v12 = 29.0;
     }
@@ -3495,13 +3495,13 @@ LABEL_27:
   }
 
   v11 = 28.0;
-  if (a3)
+  if (pairing)
   {
-    if (a3 == 1)
+    if (pairing == 1)
     {
       v12 = 45.0;
 LABEL_26:
-      v9 = v12 * a4;
+      v9 = v12 * scale;
       goto LABEL_27;
     }
 
@@ -3511,26 +3511,26 @@ LABEL_31:
   }
 
 LABEL_17:
-  v9 = v11 * a4;
-  if (MEMORY[0x1A590D320](a1, a2))
+  v9 = v11 * scale;
+  if (MEMORY[0x1A590D320](self, a2))
   {
     goto LABEL_27;
   }
 
-  if (a6 == 2)
+  if (style == 2)
   {
     v15 = MEMORY[0x1E69DB978];
     goto LABEL_34;
   }
 
-  if (a6 == 1)
+  if (style == 1)
   {
     v15 = MEMORY[0x1E69DB980];
     goto LABEL_34;
   }
 
   v14 = 0.0;
-  if (!a6)
+  if (!style)
   {
     v15 = MEMORY[0x1E69DB958];
 LABEL_34:
@@ -3543,10 +3543,10 @@ LABEL_28:
   return v17;
 }
 
-+ (id)titleFontDescriptorForStylePairing:(int64_t)a3 kind:(unint64_t)a4
++ (id)titleFontDescriptorForStylePairing:(int64_t)pairing kind:(unint64_t)kind
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  if (MEMORY[0x1A590D320](a1, a2))
+  if (MEMORY[0x1A590D320](self, a2))
   {
     v65 = *MEMORY[0x1E69DB8F0];
     v63[0] = *MEMORY[0x1E69DB990];
@@ -3566,9 +3566,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a4 == 64)
+  if (kind == 64)
   {
-    if (a3 == 7)
+    if (pairing == 7)
     {
       v61 = *MEMORY[0x1E69DB8F0];
       v59[0] = *MEMORY[0x1E69DB9C0];
@@ -3610,11 +3610,11 @@ LABEL_14:
   }
 
   v11 = 0;
-  if (a3 <= 3)
+  if (pairing <= 3)
   {
-    if (a3 > 1)
+    if (pairing > 1)
     {
-      if (a3 != 2)
+      if (pairing != 2)
       {
         v45 = *MEMORY[0x1E69DB8F0];
         v43[0] = *MEMORY[0x1E69DB990];
@@ -3649,7 +3649,7 @@ LABEL_14:
 
     else
     {
-      if (!a3)
+      if (!pairing)
       {
         v29 = *MEMORY[0x1E69DB8F0];
         v27[0] = *MEMORY[0x1E69DB990];
@@ -3665,7 +3665,7 @@ LABEL_14:
         goto LABEL_3;
       }
 
-      if (a3 != 1)
+      if (pairing != 1)
       {
         goto LABEL_15;
       }
@@ -3693,9 +3693,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 <= 5)
+  if (pairing <= 5)
   {
-    if (a3 == 4)
+    if (pairing == 4)
     {
       v41 = *MEMORY[0x1E69DB8F0];
       v39[0] = *MEMORY[0x1E69DB990];
@@ -3728,7 +3728,7 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  if (a3 == 6)
+  if (pairing == 6)
   {
     v33 = *MEMORY[0x1E69DB8F0];
     v31[0] = *MEMORY[0x1E69DB990];
@@ -3744,7 +3744,7 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  if (a3 == 7)
+  if (pairing == 7)
   {
     v25 = *MEMORY[0x1E69DB8F0];
     v23[0] = *MEMORY[0x1E69DB9C0];
@@ -3770,12 +3770,12 @@ LABEL_15:
   return v19;
 }
 
-+ (id)_titleFontCacheKeyForStylePairing:(int64_t)a3 kind:(unint64_t)a4
++ (id)_titleFontCacheKeyForStylePairing:(int64_t)pairing kind:(unint64_t)kind
 {
-  if (a4 == 64)
+  if (kind == 64)
   {
     v4 = &unk_1F190BBC0;
-    if (a3 == 7)
+    if (pairing == 7)
     {
       v4 = &unk_1F190BBA8;
     }
@@ -3785,17 +3785,17 @@ LABEL_15:
 
   else
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3 + 3];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:pairing + 3];
   }
 
   return v5;
 }
 
-+ (int64_t)stylePairingFromTitleCategory:(id)a3 string:(id)a4 kind:(unint64_t)a5 layoutScheme:(int64_t)a6
++ (int64_t)stylePairingFromTitleCategory:(id)category string:(id)string kind:(unint64_t)kind layoutScheme:(int64_t)scheme
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  categoryCopy = category;
+  stringCopy = string;
   if (MEMORY[0x1A590D320]())
   {
     v11 = 0;
@@ -3803,37 +3803,37 @@ LABEL_15:
 
   else
   {
-    if (a6 > 1)
+    if (scheme > 1)
     {
       v12 = 0;
     }
 
-    else if ([v9 isEqual:*MEMORY[0x1E69C0E00]])
+    else if ([categoryCopy isEqual:*MEMORY[0x1E69C0E00]])
     {
       v12 = 1;
     }
 
-    else if ([v9 isEqual:*MEMORY[0x1E69C0DE8]])
+    else if ([categoryCopy isEqual:*MEMORY[0x1E69C0DE8]])
     {
       v12 = 2;
     }
 
-    else if ([v9 isEqual:*MEMORY[0x1E69C0DE0]])
+    else if ([categoryCopy isEqual:*MEMORY[0x1E69C0DE0]])
     {
       v12 = 3;
     }
 
-    else if ([v9 isEqual:*MEMORY[0x1E69C0DF8]])
+    else if ([categoryCopy isEqual:*MEMORY[0x1E69C0DF8]])
     {
       v12 = 4;
     }
 
-    else if ([v9 isEqual:*MEMORY[0x1E69C0DF0]])
+    else if ([categoryCopy isEqual:*MEMORY[0x1E69C0DF0]])
     {
       v12 = 5;
     }
 
-    else if ([v9 isEqual:*MEMORY[0x1E69C0E08]])
+    else if ([categoryCopy isEqual:*MEMORY[0x1E69C0E08]])
     {
       v12 = 6;
     }
@@ -3843,8 +3843,8 @@ LABEL_15:
       v12 = 0;
     }
 
-    v13 = [objc_opt_class() _allowedTitleCharacterSetWithStylePairing:v12 kind:a5];
-    v14 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:v10];
+    v13 = [objc_opt_class() _allowedTitleCharacterSetWithStylePairing:v12 kind:kind];
+    v14 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:stringCopy];
     v15 = [v13 isSupersetOfSet:v14];
 
     if (v15)
@@ -3863,11 +3863,11 @@ LABEL_15:
       v18 = 134218754;
       v19 = v11;
       v20 = 2112;
-      v21 = v9;
+      v21 = categoryCopy;
       v22 = 2048;
-      v23 = a6;
+      schemeCopy = scheme;
       v24 = 2112;
-      v25 = v10;
+      v25 = stringCopy;
       _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEBUG, "stylePairing: %ti for titleCategory: %@, layoutScheme: %ti, string: %@", &v18, 0x2Au);
     }
   }
@@ -3875,43 +3875,43 @@ LABEL_15:
   return v11;
 }
 
-+ (id)_allowedTitleCharacterSetWithStylePairing:(int64_t)a3 kind:(unint64_t)a4
++ (id)_allowedTitleCharacterSetWithStylePairing:(int64_t)pairing kind:(unint64_t)kind
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = [a1 _titleFontCacheKeyForStylePairing:? kind:?];
-  v8 = [a1 titleCachedCharacterSetByStyleAndKind];
-  v9 = [v8 objectForKey:v7];
+  v7 = [self _titleFontCacheKeyForStylePairing:? kind:?];
+  titleCachedCharacterSetByStyleAndKind = [self titleCachedCharacterSetByStyleAndKind];
+  v9 = [titleCachedCharacterSetByStyleAndKind objectForKey:v7];
 
   if (!v9)
   {
-    v10 = [a1 _titleFontForStylePairing:a3 scale:a4 kind:0 internationalStyle:1.0];
-    v11 = [v10 fontDescriptor];
-    v12 = [v11 fontAttributes];
-    v9 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69DB898]];
+    v10 = [self _titleFontForStylePairing:pairing scale:kind kind:0 internationalStyle:1.0];
+    fontDescriptor = [v10 fontDescriptor];
+    fontAttributes = [fontDescriptor fontAttributes];
+    v9 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB898]];
 
     if (!v9)
     {
-      v13 = CTFontCopyCharacterSet(v10);
-      if (!v13)
+      letterCharacterSet = CTFontCopyCharacterSet(v10);
+      if (!letterCharacterSet)
       {
         v14 = PLStoryGetLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           v17[0] = 67109376;
-          v17[1] = a3;
+          v17[1] = pairing;
           v18 = 1024;
-          v19 = a4;
+          kindCopy = kind;
           _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "font missing NSCharacterSet mapping for stylePairing: %d, kind: %d", v17, 0xEu);
         }
 
-        v13 = [MEMORY[0x1E696AB08] letterCharacterSet];
+        letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
       }
 
-      v9 = v13;
+      v9 = letterCharacterSet;
     }
 
-    v15 = [a1 titleCachedCharacterSetByStyleAndKind];
-    [v15 setObject:v9 forKey:v7];
+    titleCachedCharacterSetByStyleAndKind2 = [self titleCachedCharacterSetByStyleAndKind];
+    [titleCachedCharacterSetByStyleAndKind2 setObject:v9 forKey:v7];
   }
 
   return v9;

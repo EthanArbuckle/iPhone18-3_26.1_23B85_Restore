@@ -1,6 +1,6 @@
 @interface MapsSuggestionsReservationsSource
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
 - (void)start;
 - (void)stop;
 @end
@@ -18,11 +18,11 @@
   dispatch_sync(queue, block);
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -42,13 +42,13 @@ LABEL_10:
 
 LABEL_11:
 
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -68,10 +68,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v6 oneSourceDelegate];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
   v22.receiver = self;
   v22.super_class = MapsSuggestionsReservationsSource;
-  v10 = [(MapsSuggestionsReservationsSource *)&v22 initWithDelegate:v9 name:v7];
+  v10 = [(MapsSuggestionsReservationsSource *)&v22 initWithDelegate:oneSourceDelegate2 name:nameCopy];
 
   if (v10)
   {
@@ -81,9 +81,9 @@ LABEL_11:
     v10->_queue = v12;
 
     v10->_suspended = 1;
-    v14 = [v6 oneAppGuardian];
+    oneAppGuardian = [depotCopy oneAppGuardian];
     guardian = v10->_guardian;
-    v10->_guardian = v14;
+    v10->_guardian = oneAppGuardian;
 
     v16 = [[MapsSuggestionsLimitedDictionary alloc] initWithMaximumCapacity:GEOConfigGetInteger()];
     mapItemCache = v10->_mapItemCache;
@@ -91,10 +91,10 @@ LABEL_11:
   }
 
   self = v10;
-  v18 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v18;
+  return selfCopy;
 }
 
 - (void)stop
@@ -109,9 +109,9 @@ LABEL_12:
   dispatch_sync(queue, block);
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -119,7 +119,7 @@ LABEL_12:
   block[2] = sub_10003A1F4;
   block[3] = &unk_100075B88;
   objc_copyWeak(&v12, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v11 = v6;
   dispatch_async(queue, block);
   GEOConfigGetDouble();

@@ -1,7 +1,7 @@
 @interface CrashCoordinator
 + (_TtC9appstored16CrashCoordinator)shared;
 - (_TtC9appstored16CrashCoordinator)init;
-- (id)getBiomeCrashesWithLogKey:(id)a3 startDate:(id)a4;
+- (id)getBiomeCrashesWithLogKey:(id)key startDate:(id)date;
 @end
 
 @implementation CrashCoordinator
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (id)getBiomeCrashesWithLogKey:(id)a3 startDate:(id)a4
+- (id)getBiomeCrashesWithLogKey:(id)key startDate:(id)date
 {
   v6 = type metadata accessor for Date();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_10013FE88();
 
   (*(v7 + 8))(v9, v6);
@@ -40,13 +40,13 @@
 {
   ObjectType = swift_getObjectType();
   v4 = OBJC_IVAR____TtC9appstored16CrashCoordinator_appCrashStream;
-  v5 = [BiomeLibrary() OSAnalytics];
+  oSAnalytics = [BiomeLibrary() OSAnalytics];
   swift_unknownObjectRelease();
-  v6 = [v5 Stability];
+  stability = [oSAnalytics Stability];
   swift_unknownObjectRelease();
-  v7 = [v6 Crash];
+  crash = [stability Crash];
   swift_unknownObjectRelease();
-  *(&self->super.isa + v4) = v7;
+  *(&self->super.isa + v4) = crash;
   v9.receiver = self;
   v9.super_class = ObjectType;
   return [(CrashCoordinator *)&v9 init];

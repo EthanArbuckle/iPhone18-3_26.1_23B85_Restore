@@ -1,37 +1,37 @@
 @interface TestProvider
-- (void)relayRegisterServiceProvider:(id)a3;
-- (void)relaySessionOpen:(id)a3 reconnect:(id)a4 serviceIdentifier:(id)a5 destination:(id)a6 transport:(int64_t)a7 completion:(id)a8;
+- (void)relayRegisterServiceProvider:(id)provider;
+- (void)relaySessionOpen:(id)open reconnect:(id)reconnect serviceIdentifier:(id)identifier destination:(id)destination transport:(int64_t)transport completion:(id)completion;
 @end
 
 @implementation TestProvider
 
-- (void)relayRegisterServiceProvider:(id)a3
+- (void)relayRegisterServiceProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1000556CC(sub_100011C50, v5);
 }
 
-- (void)relaySessionOpen:(id)a3 reconnect:(id)a4 serviceIdentifier:(id)a5 destination:(id)a6 transport:(int64_t)a7 completion:(id)a8
+- (void)relaySessionOpen:(id)open reconnect:(id)reconnect serviceIdentifier:(id)identifier destination:(id)destination transport:(int64_t)transport completion:(id)completion
 {
-  v30 = self;
-  v31 = a7;
+  selfCopy = self;
+  transportCopy = transport;
   v10 = sub_10000FC6C(&qword_1000991D8, &qword_100075780);
   v11 = *(*(v10 - 8) + 64);
   __chkstk_darwin(v10 - 8);
-  v13 = &v30 - v12;
+  v13 = &selfCopy - v12;
   v14 = type metadata accessor for UUID();
   v15 = *(v14 - 8);
   v16 = *(v15 + 64);
   v17 = __chkstk_darwin(v14);
-  v19 = &v30 - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v19 = &selfCopy - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v17);
-  v21 = &v30 - v20;
-  v22 = _Block_copy(a8);
+  v21 = &selfCopy - v20;
+  v22 = _Block_copy(completion);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (reconnect)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v23 = 0;
@@ -48,8 +48,8 @@
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v27 = swift_allocObject();
   *(v27 + 16) = v22;
-  v28 = v30;
-  sub_100055838(v21, v13, v24, v26, v19, v31, sub_10001131C, v27);
+  v28 = selfCopy;
+  sub_100055838(v21, v13, v24, v26, v19, transportCopy, sub_10001131C, v27);
 
   v29 = *(v15 + 8);
   v29(v19, v14);

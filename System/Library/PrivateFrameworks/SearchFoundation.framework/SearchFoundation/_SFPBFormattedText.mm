@@ -1,53 +1,53 @@
 @interface _SFPBFormattedText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBFormattedText)initWithDictionary:(id)a3;
-- (_SFPBFormattedText)initWithFacade:(id)a3;
-- (_SFPBFormattedText)initWithJSON:(id)a3;
+- (_SFPBFormattedText)initWithDictionary:(id)dictionary;
+- (_SFPBFormattedText)initWithFacade:(id)facade;
+- (_SFPBFormattedText)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBFormattedText
 
-- (_SFPBFormattedText)initWithFacade:(id)a3
+- (_SFPBFormattedText)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBFormattedText *)self init];
   if (v5)
   {
-    v6 = [[_SFPBText alloc] initWithFacade:v4];
+    v6 = [[_SFPBText alloc] initWithFacade:facadeCopy];
     [(_SFPBFormattedText *)v5 setText:v6];
 
-    v7 = [v4 glyph];
+    glyph = [facadeCopy glyph];
 
-    if (v7)
+    if (glyph)
     {
       v8 = [_SFPBImage alloc];
-      v9 = [v4 glyph];
-      v10 = [(_SFPBImage *)v8 initWithFacade:v9];
+      glyph2 = [facadeCopy glyph];
+      v10 = [(_SFPBImage *)v8 initWithFacade:glyph2];
       [(_SFPBFormattedText *)v5 setGlyph:v10];
     }
 
-    if ([v4 hasIsEmphasized])
+    if ([facadeCopy hasIsEmphasized])
     {
-      -[_SFPBFormattedText setIsEmphasized:](v5, "setIsEmphasized:", [v4 isEmphasized]);
+      -[_SFPBFormattedText setIsEmphasized:](v5, "setIsEmphasized:", [facadeCopy isEmphasized]);
     }
 
-    if ([v4 hasIsBold])
+    if ([facadeCopy hasIsBold])
     {
-      -[_SFPBFormattedText setIsBold:](v5, "setIsBold:", [v4 isBold]);
+      -[_SFPBFormattedText setIsBold:](v5, "setIsBold:", [facadeCopy isBold]);
     }
 
-    if ([v4 hasTextColor])
+    if ([facadeCopy hasTextColor])
     {
-      -[_SFPBFormattedText setTextColor:](v5, "setTextColor:", [v4 textColor]);
+      -[_SFPBFormattedText setTextColor:](v5, "setTextColor:", [facadeCopy textColor]);
     }
 
-    if ([v4 hasEncapsulationStyle])
+    if ([facadeCopy hasEncapsulationStyle])
     {
-      -[_SFPBFormattedText setEncapsulationStyle:](v5, "setEncapsulationStyle:", [v4 encapsulationStyle]);
+      -[_SFPBFormattedText setEncapsulationStyle:](v5, "setEncapsulationStyle:", [facadeCopy encapsulationStyle]);
     }
 
     v11 = v5;
@@ -56,15 +56,15 @@
   return v5;
 }
 
-- (_SFPBFormattedText)initWithDictionary:(id)a3
+- (_SFPBFormattedText)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = _SFPBFormattedText;
   v5 = [(_SFPBFormattedText *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(_SFPBFormattedText *)v5 setText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"glyph"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"glyph"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,28 +80,28 @@
       [(_SFPBFormattedText *)v5 setGlyph:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isEmphasized"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isEmphasized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBFormattedText setIsEmphasized:](v5, "setIsEmphasized:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isBold"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isBold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBFormattedText setIsBold:](v5, "setIsBold:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"textColor"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"textColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBFormattedText setTextColor:](v5, "setTextColor:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"encapsulationStyle"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"encapsulationStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (_SFPBFormattedText)initWithJSON:(id)a3
+- (_SFPBFormattedText)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBFormattedText *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBFormattedText *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBFormattedText *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -150,84 +150,84 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_encapsulationStyle)
   {
-    v4 = [(_SFPBFormattedText *)self encapsulationStyle];
-    if (v4 >= 3)
+    encapsulationStyle = [(_SFPBFormattedText *)self encapsulationStyle];
+    if (encapsulationStyle >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", encapsulationStyle];
     }
 
     else
     {
-      v5 = off_1E7ACE548[v4];
+      v5 = off_1E7ACE548[encapsulationStyle];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"encapsulationStyle"];
+    [dictionary setObject:v5 forKeyedSubscript:@"encapsulationStyle"];
   }
 
   if (self->_glyph)
   {
-    v6 = [(_SFPBFormattedText *)self glyph];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    glyph = [(_SFPBFormattedText *)self glyph];
+    dictionaryRepresentation = [glyph dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"glyph"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"glyph"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"glyph"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"glyph"];
     }
   }
 
   if (self->_isBold)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBFormattedText isBold](self, "isBold")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isBold"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isBold"];
   }
 
   if (self->_isEmphasized)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBFormattedText isEmphasized](self, "isEmphasized")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isEmphasized"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isEmphasized"];
   }
 
   if (self->_text)
   {
-    v11 = [(_SFPBFormattedText *)self text];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    text = [(_SFPBFormattedText *)self text];
+    dictionaryRepresentation2 = [text dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"text"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"text"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"text"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"text"];
     }
   }
 
   if (self->_textColor)
   {
-    v14 = [(_SFPBFormattedText *)self textColor];
-    if (v14 >= 8)
+    textColor = [(_SFPBFormattedText *)self textColor];
+    if (textColor >= 8)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", textColor];
     }
 
     else
     {
-      v15 = off_1E7ACE470[v14];
+      v15 = off_1E7ACE470[textColor];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"textColor"];
+    [dictionary setObject:v15 forKeyedSubscript:@"textColor"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -257,28 +257,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ (2654435761 * self->_textColor) ^ (2654435761 * self->_encapsulationStyle);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBFormattedText *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBFormattedText *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBFormattedText *)self text];
-  if (v7)
+  text3 = [(_SFPBFormattedText *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBFormattedText *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBFormattedText *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -290,22 +290,22 @@
   {
   }
 
-  v5 = [(_SFPBFormattedText *)self glyph];
-  v6 = [v4 glyph];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBFormattedText *)self glyph];
+  text2 = [equalCopy glyph];
+  if ((text != 0) == (text2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(_SFPBFormattedText *)self glyph];
-  if (v12)
+  glyph = [(_SFPBFormattedText *)self glyph];
+  if (glyph)
   {
-    v13 = v12;
-    v14 = [(_SFPBFormattedText *)self glyph];
-    v15 = [v4 glyph];
-    v16 = [v14 isEqual:v15];
+    v13 = glyph;
+    glyph2 = [(_SFPBFormattedText *)self glyph];
+    glyph3 = [equalCopy glyph];
+    v16 = [glyph2 isEqual:glyph3];
 
     if (!v16)
     {
@@ -318,16 +318,16 @@ LABEL_11:
   }
 
   isEmphasized = self->_isEmphasized;
-  if (isEmphasized == [v4 isEmphasized])
+  if (isEmphasized == [equalCopy isEmphasized])
   {
     isBold = self->_isBold;
-    if (isBold == [v4 isBold])
+    if (isBold == [equalCopy isBold])
     {
       textColor = self->_textColor;
-      if (textColor == [v4 textColor])
+      if (textColor == [equalCopy textColor])
       {
         encapsulationStyle = self->_encapsulationStyle;
-        v17 = encapsulationStyle == [v4 encapsulationStyle];
+        v17 = encapsulationStyle == [equalCopy encapsulationStyle];
         goto LABEL_13;
       }
     }
@@ -340,17 +340,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBFormattedText *)self text];
-  if (v4)
+  toCopy = to;
+  text = [(_SFPBFormattedText *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBFormattedText *)self glyph];
-  if (v5)
+  glyph = [(_SFPBFormattedText *)self glyph];
+  if (glyph)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -370,12 +370,12 @@ LABEL_13:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_SFPBFormattedText *)self encapsulationStyle];
-  v7 = v8;
-  if (v6)
+  encapsulationStyle = [(_SFPBFormattedText *)self encapsulationStyle];
+  v7 = toCopy;
+  if (encapsulationStyle)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 

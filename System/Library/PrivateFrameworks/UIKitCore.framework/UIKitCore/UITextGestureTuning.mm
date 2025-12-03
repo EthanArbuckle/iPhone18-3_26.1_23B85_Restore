@@ -1,13 +1,13 @@
 @interface UITextGestureTuning
-- (CGPoint)pointForGestureState:(int64_t)a3 point:(CGPoint)a4 translation:(CGPoint)a5;
-- (CGPoint)pointIfPlacedCarefully:(CGPoint)a3;
-- (CGPoint)touchAlignedPointForPoint:(CGPoint)a3 translation:(CGPoint)a4;
+- (CGPoint)pointForGestureState:(int64_t)state point:(CGPoint)point translation:(CGPoint)translation;
+- (CGPoint)pointIfPlacedCarefully:(CGPoint)carefully;
+- (CGPoint)touchAlignedPointForPoint:(CGPoint)point translation:(CGPoint)translation;
 - (UICoordinateSpace)containerCoordinateSpace;
 - (UICoordinateSpace)gestureCoordinateSpace;
 - (UITextGestureTuning)init;
-- (void)assertInitialPositionFromTopOfCaret:(double)a3 distanceFromCaret:(CGPoint)a4;
-- (void)updateWeightedPointWithGestureState:(int64_t)a3 location:(CGPoint)a4;
-- (void)updateWithTouches:(id)a3 gestureState:(int64_t)a4;
+- (void)assertInitialPositionFromTopOfCaret:(double)caret distanceFromCaret:(CGPoint)fromCaret;
+- (void)updateWeightedPointWithGestureState:(int64_t)state location:(CGPoint)location;
+- (void)updateWithTouches:(id)touches gestureState:(int64_t)state;
 @end
 
 @implementation UITextGestureTuning
@@ -31,11 +31,11 @@
   return v3;
 }
 
-- (CGPoint)pointForGestureState:(int64_t)a3 point:(CGPoint)a4 translation:(CGPoint)a5
+- (CGPoint)pointForGestureState:(int64_t)state point:(CGPoint)point translation:(CGPoint)translation
 {
-  if (a3 == 3)
+  if (state == 3)
   {
-    [(UITextGestureTuning *)self pointIfPlacedCarefully:a4.x, a4.y];
+    [(UITextGestureTuning *)self pointIfPlacedCarefully:point.x, point.y];
   }
 
   [UITextGestureTuning touchAlignedPointForPoint:"touchAlignedPointForPoint:translation:" translation:?];
@@ -44,44 +44,44 @@
   return result;
 }
 
-- (void)assertInitialPositionFromTopOfCaret:(double)a3 distanceFromCaret:(CGPoint)a4
+- (void)assertInitialPositionFromTopOfCaret:(double)caret distanceFromCaret:(CGPoint)fromCaret
 {
-  y = a4.y;
-  x = a4.x;
+  y = fromCaret.y;
+  x = fromCaret.x;
   [(UITextGestureTuning *)self _reset];
   self->_caretDistance.x = x;
   self->_caretDistance.y = y;
-  self->_initialOffsetFromTopOfCaret = a3;
+  self->_initialOffsetFromTopOfCaret = caret;
 }
 
-- (void)updateWithTouches:(id)a3 gestureState:(int64_t)a4
+- (void)updateWithTouches:(id)touches gestureState:(int64_t)state
 {
-  v6 = [a3 anyObject];
-  if (v6)
+  anyObject = [touches anyObject];
+  if (anyObject)
   {
-    v13 = v6;
-    [v6 _locationInSceneReferenceSpace];
+    v13 = anyObject;
+    [anyObject _locationInSceneReferenceSpace];
     v8 = v7;
     v10 = v9;
-    v11 = [v13 type];
+    type = [v13 type];
     [v13 majorRadius];
-    [(UITextGestureTuning *)self updateVisibilityOffsetForGestureState:a4 touchType:v11 locationInSceneReferenceSpace:v8 majorRadius:v10, v12];
-    v6 = v13;
+    [(UITextGestureTuning *)self updateVisibilityOffsetForGestureState:state touchType:type locationInSceneReferenceSpace:v8 majorRadius:v10, v12];
+    anyObject = v13;
   }
 }
 
-- (CGPoint)touchAlignedPointForPoint:(CGPoint)a3 translation:(CGPoint)a4
+- (CGPoint)touchAlignedPointForPoint:(CGPoint)point translation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (self->_lastTouchType)
   {
     goto LABEL_25;
   }
 
-  v7 = [UIKeyboardPreferencesController sharedPreferencesController:a3.x];
-  v8 = [v7 preferencesActions];
-  v9 = [v8 BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
+  v7 = [UIKeyboardPreferencesController sharedPreferencesController:point.x];
+  preferencesActions = [v7 preferencesActions];
+  v9 = [preferencesActions BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
 
   if (!v9)
   {
@@ -125,23 +125,23 @@ LABEL_15:
   x = x - self->_caretDistance.x;
   y = y + v12 - self->_caretDistance.y;
   self->_lineBreakProgress = fmax(v11 / 39.0, 0.0);
-  v13 = [(UITextGestureTuning *)self containerCoordinateSpace];
+  containerCoordinateSpace = [(UITextGestureTuning *)self containerCoordinateSpace];
 
-  if (v13)
+  if (containerCoordinateSpace)
   {
-    v14 = [(UITextGestureTuning *)self gestureCoordinateSpace];
+    gestureCoordinateSpace = [(UITextGestureTuning *)self gestureCoordinateSpace];
 
-    if (v14)
+    if (gestureCoordinateSpace)
     {
-      v15 = [(UITextGestureTuning *)self gestureCoordinateSpace];
-      v16 = [(UITextGestureTuning *)self containerCoordinateSpace];
-      [v15 convertPoint:v16 toCoordinateSpace:{x, y}];
+      gestureCoordinateSpace2 = [(UITextGestureTuning *)self gestureCoordinateSpace];
+      containerCoordinateSpace2 = [(UITextGestureTuning *)self containerCoordinateSpace];
+      [gestureCoordinateSpace2 convertPoint:containerCoordinateSpace2 toCoordinateSpace:{x, y}];
       x = v17;
       y = v18;
     }
 
-    v19 = [(UITextGestureTuning *)self containerCoordinateSpace];
-    [v19 bounds];
+    containerCoordinateSpace3 = [(UITextGestureTuning *)self containerCoordinateSpace];
+    [containerCoordinateSpace3 bounds];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -173,13 +173,13 @@ LABEL_15:
       y = MaxY + -1.0;
     }
 
-    v31 = [(UITextGestureTuning *)self gestureCoordinateSpace];
+    gestureCoordinateSpace3 = [(UITextGestureTuning *)self gestureCoordinateSpace];
 
-    if (v31)
+    if (gestureCoordinateSpace3)
     {
-      v32 = [(UITextGestureTuning *)self gestureCoordinateSpace];
-      v33 = [(UITextGestureTuning *)self containerCoordinateSpace];
-      [v32 convertPoint:v33 fromCoordinateSpace:{x, y}];
+      gestureCoordinateSpace4 = [(UITextGestureTuning *)self gestureCoordinateSpace];
+      containerCoordinateSpace4 = [(UITextGestureTuning *)self containerCoordinateSpace];
+      [gestureCoordinateSpace4 convertPoint:containerCoordinateSpace4 fromCoordinateSpace:{x, y}];
       x = v34;
       y = v35;
     }
@@ -193,13 +193,13 @@ LABEL_25:
   return result;
 }
 
-- (void)updateWeightedPointWithGestureState:(int64_t)a3 location:(CGPoint)a4
+- (void)updateWeightedPointWithGestureState:(int64_t)state location:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  if ((a3 - 2) >= 2)
+  y = location.y;
+  x = location.x;
+  if ((state - 2) >= 2)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -212,10 +212,10 @@ LABEL_25:
   [(UITextMagnifierTimeWeightedPoint *)weightedPoint addPoint:x, y];
 }
 
-- (CGPoint)pointIfPlacedCarefully:(CGPoint)a3
+- (CGPoint)pointIfPlacedCarefully:(CGPoint)carefully
 {
-  y = a3.y;
-  x = a3.x;
+  y = carefully.y;
+  x = carefully.x;
   if ([(UITextMagnifierTimeWeightedPoint *)self->_weightedPoint isPlacedCarefully])
   {
     [(UITextMagnifierTimeWeightedPoint *)self->_weightedPoint diffFromLastPoint];

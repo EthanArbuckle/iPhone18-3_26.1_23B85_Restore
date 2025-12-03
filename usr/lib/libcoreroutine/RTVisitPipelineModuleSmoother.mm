@@ -1,31 +1,31 @@
 @interface RTVisitPipelineModuleSmoother
-+ (BOOL)hasRawLocationsNeededToComputeSmoothedLocationAtDate:(id)a3 workingVisitExit:(id)a4 rawLocations:(id)a5 kernelWidth:(double)a6 smallestSignificantWeightExponent:(double)a7;
-+ (double)getMaxDeltaForSmoothedLocationDate:(id)a3 rawLocations:(id)a4 kernelWidth:(double)a5;
-+ (double)getTimeDeltaSignificanceThresholdForSmoothedLocationDate:(id)a3 rawLocations:(id)a4 kernelWidth:(double)a5 smallestSignificantaWeightExponent:(double)a6;
-+ (id)computeSmoothedPointForDate:(id)a3 rawLocations:(id)a4 kernelWidth:(double)a5 smallestSignificantWeightExponent:(double)a6;
-+ (id)createNewOutputClusterForSmoothedPoints:(id)a3 workingVisit:(id)a4 exit:(id)a5;
-+ (id)getEndOfGapAtDate:(id)a3 rawLocations:(id)a4 maxGapWithinVisit:(double)a5;
-+ (id)getNextDateToProcessForDate:(id)a3 firstDateToProcessForVisit:(id)a4 timeIntervalBetweenSmoothedPoints:(double)a5;
-+ (unint64_t)findIndexOfLocationInArray:(id)a3 inRange:(_NSRange)a4 afterDate:(id)a5;
-+ (void)disposeObsoleteRawLocations:(id)a3 currentDateToProcess:(id)a4 halfTimeProcessWindow:(double)a5;
-- (RTVisitPipelineModuleSmoother)initWithTimeIntervalBetweenSmoothedPoints:(double)a3 kernelWidth:(double)a4 smallestSignificantWeightExponent:(double)a5 maxGapWithinVisit:(double)a6;
-- (id)computeSmoothedPointForDate:(id)a3;
-- (id)createNewOutputClusterForSmoothedPoints:(id)a3 exit:(id)a4;
-- (id)getEndOfGapAtDate:(id)a3;
-- (id)getNextDateToProcessForDate:(id)a3;
-- (id)process:(id)a3;
++ (BOOL)hasRawLocationsNeededToComputeSmoothedLocationAtDate:(id)date workingVisitExit:(id)exit rawLocations:(id)locations kernelWidth:(double)width smallestSignificantWeightExponent:(double)exponent;
++ (double)getMaxDeltaForSmoothedLocationDate:(id)date rawLocations:(id)locations kernelWidth:(double)width;
++ (double)getTimeDeltaSignificanceThresholdForSmoothedLocationDate:(id)date rawLocations:(id)locations kernelWidth:(double)width smallestSignificantaWeightExponent:(double)exponent;
++ (id)computeSmoothedPointForDate:(id)date rawLocations:(id)locations kernelWidth:(double)width smallestSignificantWeightExponent:(double)exponent;
++ (id)createNewOutputClusterForSmoothedPoints:(id)points workingVisit:(id)visit exit:(id)exit;
++ (id)getEndOfGapAtDate:(id)date rawLocations:(id)locations maxGapWithinVisit:(double)visit;
++ (id)getNextDateToProcessForDate:(id)date firstDateToProcessForVisit:(id)visit timeIntervalBetweenSmoothedPoints:(double)points;
++ (unint64_t)findIndexOfLocationInArray:(id)array inRange:(_NSRange)range afterDate:(id)date;
++ (void)disposeObsoleteRawLocations:(id)locations currentDateToProcess:(id)process halfTimeProcessWindow:(double)window;
+- (RTVisitPipelineModuleSmoother)initWithTimeIntervalBetweenSmoothedPoints:(double)points kernelWidth:(double)width smallestSignificantWeightExponent:(double)exponent maxGapWithinVisit:(double)visit;
+- (id)computeSmoothedPointForDate:(id)date;
+- (id)createNewOutputClusterForSmoothedPoints:(id)points exit:(id)exit;
+- (id)getEndOfGapAtDate:(id)date;
+- (id)getNextDateToProcessForDate:(id)date;
+- (id)process:(id)process;
 - (id)processCachedPoints;
-- (void)disposeObsoleteRawLocationsForCurrentDateToProcess:(id)a3 halfTimeProcessWindow:(double)a4;
+- (void)disposeObsoleteRawLocationsForCurrentDateToProcess:(id)process halfTimeProcessWindow:(double)window;
 - (void)resetState;
-- (void)updateStateWithNewCluster:(id)a3;
+- (void)updateStateWithNewCluster:(id)cluster;
 @end
 
 @implementation RTVisitPipelineModuleSmoother
 
-- (RTVisitPipelineModuleSmoother)initWithTimeIntervalBetweenSmoothedPoints:(double)a3 kernelWidth:(double)a4 smallestSignificantWeightExponent:(double)a5 maxGapWithinVisit:(double)a6
+- (RTVisitPipelineModuleSmoother)initWithTimeIntervalBetweenSmoothedPoints:(double)points kernelWidth:(double)width smallestSignificantWeightExponent:(double)exponent maxGapWithinVisit:(double)visit
 {
-  v6 = self;
-  if (a3 <= 0.0)
+  selfCopy = self;
+  if (points <= 0.0)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (a4 <= 0.0)
+  if (width <= 0.0)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -74,29 +74,29 @@ LABEL_12:
     firstDateToProcessForVisit = v12->_firstDateToProcessForVisit;
     v12->_firstDateToProcessForVisit = 0;
 
-    v12->_timeIntervalBetweenSmoothedPoints = a3;
-    v12->_kernelWidth = a4;
-    v12->_smallestSignificantWeightExponent = a5;
-    v12->_maxGapInVisit = a6;
+    v12->_timeIntervalBetweenSmoothedPoints = points;
+    v12->_kernelWidth = width;
+    v12->_smallestSignificantWeightExponent = exponent;
+    v12->_maxGapInVisit = visit;
   }
 
-  v6 = v12;
-  v17 = v6;
+  selfCopy = v12;
+  v17 = selfCopy;
 LABEL_10:
 
   return v17;
 }
 
-+ (unint64_t)findIndexOfLocationInArray:(id)a3 inRange:(_NSRange)a4 afterDate:(id)a5
++ (unint64_t)findIndexOfLocationInArray:(id)array inRange:(_NSRange)range afterDate:(id)date
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8 = MEMORY[0x277D01160];
-  v9 = a5;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithLatitude:v9 longitude:0.0 horizontalUncertainty:0.0 date:0.0];
+  dateCopy = date;
+  arrayCopy = array;
+  v11 = [[v8 alloc] initWithLatitude:dateCopy longitude:0.0 horizontalUncertainty:0.0 date:0.0];
 
-  v12 = [v10 indexOfObject:v11 inSortedRange:location options:length usingComparator:{1024, &__block_literal_global_57}];
+  v12 = [arrayCopy indexOfObject:v11 inSortedRange:location options:length usingComparator:{1024, &__block_literal_global_57}];
   return v12;
 }
 
@@ -110,25 +110,25 @@ uint64_t __78__RTVisitPipelineModuleSmoother_findIndexOfLocationInArray_inRange_
   return v7;
 }
 
-+ (double)getMaxDeltaForSmoothedLocationDate:(id)a3 rawLocations:(id)a4 kernelWidth:(double)a5
++ (double)getMaxDeltaForSmoothedLocationDate:(id)date rawLocations:(id)locations kernelWidth:(double)width
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() findIndexOfLocationInArray:v8 inRange:0 afterDate:{objc_msgSend(v8, "count"), v7}];
-  if (v9 >= [v8 count])
+  dateCopy = date;
+  locationsCopy = locations;
+  v9 = [objc_opt_class() findIndexOfLocationInArray:locationsCopy inRange:0 afterDate:{objc_msgSend(locationsCopy, "count"), dateCopy}];
+  if (v9 >= [locationsCopy count])
   {
     --v9;
   }
 
   else if (v9)
   {
-    v10 = [v8 objectAtIndexedSubscript:v9];
-    v11 = [v10 date];
-    [v7 timeIntervalSinceDate:v11];
+    v10 = [locationsCopy objectAtIndexedSubscript:v9];
+    date = [v10 date];
+    [dateCopy timeIntervalSinceDate:date];
     v13 = fabs(v12);
-    v14 = [v8 objectAtIndexedSubscript:v9 - 1];
-    v15 = [v14 date];
-    [v7 timeIntervalSinceDate:v15];
+    v14 = [locationsCopy objectAtIndexedSubscript:v9 - 1];
+    date2 = [v14 date];
+    [dateCopy timeIntervalSinceDate:date2];
     v17 = fabs(v16);
 
     if (v13 >= v17)
@@ -138,20 +138,20 @@ uint64_t __78__RTVisitPipelineModuleSmoother_findIndexOfLocationInArray_inRange_
   }
 
   v18 = objc_opt_class();
-  v19 = [v8 objectAtIndexedSubscript:v9];
-  v20 = [v19 date];
-  [v18 getWeightExponentForSmoothedLocationDate:v7 rawLocationDate:v20 kernelWidth:a5 maxDelta:0.0];
+  v19 = [locationsCopy objectAtIndexedSubscript:v9];
+  date3 = [v19 date];
+  [v18 getWeightExponentForSmoothedLocationDate:dateCopy rawLocationDate:date3 kernelWidth:width maxDelta:0.0];
   v22 = v21;
 
   return v22;
 }
 
-+ (double)getTimeDeltaSignificanceThresholdForSmoothedLocationDate:(id)a3 rawLocations:(id)a4 kernelWidth:(double)a5 smallestSignificantaWeightExponent:(double)a6
++ (double)getTimeDeltaSignificanceThresholdForSmoothedLocationDate:(id)date rawLocations:(id)locations kernelWidth:(double)width smallestSignificantaWeightExponent:(double)exponent
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (a6 > 0.0)
+  dateCopy = date;
+  locationsCopy = locations;
+  if (exponent > 0.0)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -164,25 +164,25 @@ uint64_t __78__RTVisitPipelineModuleSmoother_findIndexOfLocationInArray_inRange_
     }
   }
 
-  [objc_opt_class() getMaxDeltaForSmoothedLocationDate:v9 rawLocations:v10 kernelWidth:a5];
+  [objc_opt_class() getMaxDeltaForSmoothedLocationDate:dateCopy rawLocations:locationsCopy kernelWidth:width];
   v13 = v12;
 
-  return sqrt((v13 + a6) * -2.0) * a5;
+  return sqrt((v13 + exponent) * -2.0) * width;
 }
 
-- (id)computeSmoothedPointForDate:(id)a3
+- (id)computeSmoothedPointForDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_opt_class() computeSmoothedPointForDate:v4 rawLocations:self->_rawLocations kernelWidth:self->_kernelWidth smallestSignificantWeightExponent:self->_smallestSignificantWeightExponent];
+  dateCopy = date;
+  v5 = [objc_opt_class() computeSmoothedPointForDate:dateCopy rawLocations:self->_rawLocations kernelWidth:self->_kernelWidth smallestSignificantWeightExponent:self->_smallestSignificantWeightExponent];
 
   return v5;
 }
 
-+ (id)computeSmoothedPointForDate:(id)a3 rawLocations:(id)a4 kernelWidth:(double)a5 smallestSignificantWeightExponent:(double)a6
++ (id)computeSmoothedPointForDate:(id)date rawLocations:(id)locations kernelWidth:(double)width smallestSignificantWeightExponent:(double)exponent
 {
-  v9 = a3;
-  v10 = a4;
-  if (![v10 count])
+  dateCopy = date;
+  locationsCopy = locations;
+  if (![locationsCopy count])
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -198,23 +198,23 @@ LABEL_30:
     goto LABEL_22;
   }
 
-  [objc_opt_class() getMaxDeltaForSmoothedLocationDate:v9 rawLocations:v10 kernelWidth:a5];
+  [objc_opt_class() getMaxDeltaForSmoothedLocationDate:dateCopy rawLocations:locationsCopy kernelWidth:width];
   v12 = v11;
-  [objc_opt_class() getTimeDeltaSignificanceThresholdForSmoothedLocationDate:v9 rawLocations:v10 kernelWidth:a5 smallestSignificantaWeightExponent:a6];
+  [objc_opt_class() getTimeDeltaSignificanceThresholdForSmoothedLocationDate:dateCopy rawLocations:locationsCopy kernelWidth:width smallestSignificantaWeightExponent:exponent];
   v14 = v13;
   v15 = objc_opt_class();
-  v16 = [v10 count];
-  v17 = [v9 dateByAddingTimeInterval:v14];
-  v18 = [v15 findIndexOfLocationInArray:v10 inRange:0 afterDate:{v16, v17}];
+  v16 = [locationsCopy count];
+  v17 = [dateCopy dateByAddingTimeInterval:v14];
+  v18 = [v15 findIndexOfLocationInArray:locationsCopy inRange:0 afterDate:{v16, v17}];
 
   v19 = objc_opt_class();
-  v20 = [v10 count];
-  v21 = [v9 dateByAddingTimeInterval:-v14];
-  v22 = [v19 findIndexOfLocationInArray:v10 inRange:0 afterDate:{v20, v21}];
+  v20 = [locationsCopy count];
+  v21 = [dateCopy dateByAddingTimeInterval:-v14];
+  v22 = [v19 findIndexOfLocationInArray:locationsCopy inRange:0 afterDate:{v20, v21}];
 
   if (v22 == v18)
   {
-    if (v18 + 1 >= [v10 count])
+    if (v18 + 1 >= [locationsCopy count])
     {
       v23 = v18;
     }
@@ -257,12 +257,12 @@ LABEL_30:
   do
   {
     v26 = objc_opt_class();
-    v27 = [v10 objectAtIndexedSubscript:v22];
-    v28 = [v27 date];
-    [v26 getWeightExponentForSmoothedLocationDate:v9 rawLocationDate:v28 kernelWidth:a5 maxDelta:v12];
+    v27 = [locationsCopy objectAtIndexedSubscript:v22];
+    date = [v27 date];
+    [v26 getWeightExponentForSmoothedLocationDate:dateCopy rawLocationDate:date kernelWidth:width maxDelta:v12];
     v30 = v29;
 
-    if (v30 > a6)
+    if (v30 > exponent)
     {
       v31 = pow(2.71828183, v30);
       if ((*&v31 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
@@ -279,11 +279,11 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      v32 = [v10 objectAtIndexedSubscript:v22];
+      v32 = [locationsCopy objectAtIndexedSubscript:v22];
       [v32 latitude];
       v34 = v33;
 
-      v35 = [v10 objectAtIndexedSubscript:v22];
+      v35 = [locationsCopy objectAtIndexedSubscript:v22];
       [v35 longitude];
       v37 = v36 * 3.14159265 / 180.0;
       v55.c[0] = v37 * 0.0;
@@ -332,7 +332,7 @@ LABEL_30:
   RTCommonIsCoordinateValid();
   if (v46 != 0.0)
   {
-    v42 = [objc_alloc(MEMORY[0x277D01160]) initWithLatitude:v9 longitude:v24 / v25 horizontalUncertainty:v45 date:0.0];
+    v42 = [objc_alloc(MEMORY[0x277D01160]) initWithLatitude:dateCopy longitude:v24 / v25 horizontalUncertainty:v45 date:0.0];
     goto LABEL_23;
   }
 
@@ -353,18 +353,18 @@ LABEL_23:
   return v42;
 }
 
-+ (id)getNextDateToProcessForDate:(id)a3 firstDateToProcessForVisit:(id)a4 timeIntervalBetweenSmoothedPoints:(double)a5
++ (id)getNextDateToProcessForDate:(id)date firstDateToProcessForVisit:(id)visit timeIntervalBetweenSmoothedPoints:(double)points
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  visitCopy = visit;
+  v8 = visitCopy;
+  if (date)
   {
-    v9 = [a3 dateByAddingTimeInterval:a5];
+    v9 = [date dateByAddingTimeInterval:points];
   }
 
   else
   {
-    v9 = v7;
+    v9 = visitCopy;
   }
 
   v10 = v9;
@@ -372,55 +372,55 @@ LABEL_23:
   return v10;
 }
 
-- (id)getNextDateToProcessForDate:(id)a3
+- (id)getNextDateToProcessForDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_opt_class() getNextDateToProcessForDate:v4 firstDateToProcessForVisit:self->_firstDateToProcessForVisit timeIntervalBetweenSmoothedPoints:self->_timeIntervalBetweenSmoothedPoints];
+  dateCopy = date;
+  v5 = [objc_opt_class() getNextDateToProcessForDate:dateCopy firstDateToProcessForVisit:self->_firstDateToProcessForVisit timeIntervalBetweenSmoothedPoints:self->_timeIntervalBetweenSmoothedPoints];
 
   return v5;
 }
 
-+ (void)disposeObsoleteRawLocations:(id)a3 currentDateToProcess:(id)a4 halfTimeProcessWindow:(double)a5
++ (void)disposeObsoleteRawLocations:(id)locations currentDateToProcess:(id)process halfTimeProcessWindow:(double)window
 {
-  v12 = a3;
-  v7 = a4;
+  locationsCopy = locations;
+  processCopy = process;
   v8 = objc_opt_class();
-  v9 = [v12 count];
-  v10 = [v7 dateByAddingTimeInterval:-a5];
+  v9 = [locationsCopy count];
+  v10 = [processCopy dateByAddingTimeInterval:-window];
 
-  v11 = [v8 findIndexOfLocationInArray:v12 inRange:0 afterDate:{v9, v10}];
+  v11 = [v8 findIndexOfLocationInArray:locationsCopy inRange:0 afterDate:{v9, v10}];
   if (v11)
   {
-    [v12 removeObjectsInRange:{0, v11}];
+    [locationsCopy removeObjectsInRange:{0, v11}];
   }
 }
 
-- (void)disposeObsoleteRawLocationsForCurrentDateToProcess:(id)a3 halfTimeProcessWindow:(double)a4
+- (void)disposeObsoleteRawLocationsForCurrentDateToProcess:(id)process halfTimeProcessWindow:(double)window
 {
-  v6 = a3;
-  [objc_opt_class() disposeObsoleteRawLocations:self->_rawLocations currentDateToProcess:v6 halfTimeProcessWindow:a4];
+  processCopy = process;
+  [objc_opt_class() disposeObsoleteRawLocations:self->_rawLocations currentDateToProcess:processCopy halfTimeProcessWindow:window];
 }
 
-- (id)createNewOutputClusterForSmoothedPoints:(id)a3 exit:(id)a4
+- (id)createNewOutputClusterForSmoothedPoints:(id)points exit:(id)exit
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() createNewOutputClusterForSmoothedPoints:v7 workingVisit:self->_workingVisit exit:v6];
+  exitCopy = exit;
+  pointsCopy = points;
+  v8 = [objc_opt_class() createNewOutputClusterForSmoothedPoints:pointsCopy workingVisit:self->_workingVisit exit:exitCopy];
 
-  [v7 removeAllObjects];
+  [pointsCopy removeAllObjects];
 
   return v8;
 }
 
-+ (id)createNewOutputClusterForSmoothedPoints:(id)a3 workingVisit:(id)a4 exit:(id)a5
++ (id)createNewOutputClusterForSmoothedPoints:(id)points workingVisit:(id)visit exit:(id)exit
 {
   v7 = MEMORY[0x277D01428];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  exitCopy = exit;
+  visitCopy = visit;
+  pointsCopy = points;
   v11 = [v7 alloc];
   v12 = [MEMORY[0x277CBEAA8] now];
-  if (v8)
+  if (exitCopy)
   {
     v13 = 3;
   }
@@ -430,108 +430,108 @@ LABEL_23:
     v13 = 1;
   }
 
-  v14 = [v9 location];
-  v15 = [v9 entry];
+  location = [visitCopy location];
+  entry = [visitCopy entry];
 
-  v16 = [v11 initWithDate:v12 type:v13 location:v14 entry:v15 exit:v8 dataPointCount:objc_msgSend(v10 confidence:"count") placeInference:{1.0, 0}];
+  v16 = [v11 initWithDate:v12 type:v13 location:location entry:entry exit:exitCopy dataPointCount:objc_msgSend(pointsCopy confidence:"count") placeInference:{1.0, 0}];
   v17 = [RTVisitCluster alloc];
-  v18 = [[RTVisitLocationPoints alloc] initWithLocations:v10];
+  v18 = [[RTVisitLocationPoints alloc] initWithLocations:pointsCopy];
 
   v19 = [(RTVisitCluster *)v17 initWithPoints:v18 visit:v16];
 
   return v19;
 }
 
-+ (id)getEndOfGapAtDate:(id)a3 rawLocations:(id)a4 maxGapWithinVisit:(double)a5
++ (id)getEndOfGapAtDate:(id)date rawLocations:(id)locations maxGapWithinVisit:(double)visit
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() findIndexOfLocationInArray:v8 inRange:0 afterDate:{objc_msgSend(v8, "count"), v7}];
+  dateCopy = date;
+  locationsCopy = locations;
+  v9 = [objc_opt_class() findIndexOfLocationInArray:locationsCopy inRange:0 afterDate:{objc_msgSend(locationsCopy, "count"), dateCopy}];
   if (!v9)
   {
-    if ([v8 count])
+    if ([locationsCopy count])
     {
-      v14 = [v8 objectAtIndexedSubscript:0];
-      v15 = [v14 date];
-      [v15 timeIntervalSinceDate:v7];
+      v14 = [locationsCopy objectAtIndexedSubscript:0];
+      date = [v14 date];
+      [date timeIntervalSinceDate:dateCopy];
       v17 = v16;
 
-      if (v17 > a5)
+      if (v17 > visit)
       {
-        v18 = v8;
+        v18 = locationsCopy;
         v19 = 0;
 LABEL_11:
         v12 = [v18 objectAtIndexedSubscript:v19];
-        v11 = [v12 date];
+        date2 = [v12 date];
         goto LABEL_12;
       }
     }
   }
 
-  v10 = [v8 count];
-  v11 = 0;
+  v10 = [locationsCopy count];
+  date2 = 0;
   if (v9 && v9 < v10)
   {
-    v12 = [v8 objectAtIndexedSubscript:v9];
-    v13 = [v12 date];
-    if ([v13 isEqualToDate:v7])
+    v12 = [locationsCopy objectAtIndexedSubscript:v9];
+    date3 = [v12 date];
+    if ([date3 isEqualToDate:dateCopy])
     {
 
-      v11 = 0;
+      date2 = 0;
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v20 = [v8 objectAtIndexedSubscript:v9];
-    v21 = [v20 date];
-    v22 = [v8 objectAtIndexedSubscript:v9 - 1];
-    v23 = [v22 date];
-    [v21 timeIntervalSinceDate:v23];
+    v20 = [locationsCopy objectAtIndexedSubscript:v9];
+    date4 = [v20 date];
+    v22 = [locationsCopy objectAtIndexedSubscript:v9 - 1];
+    date5 = [v22 date];
+    [date4 timeIntervalSinceDate:date5];
     v25 = v24;
 
-    if (v25 > a5)
+    if (v25 > visit)
     {
-      v18 = v8;
+      v18 = locationsCopy;
       v19 = v9;
       goto LABEL_11;
     }
 
-    v11 = 0;
+    date2 = 0;
   }
 
 LABEL_13:
 
-  return v11;
+  return date2;
 }
 
-- (id)getEndOfGapAtDate:(id)a3
+- (id)getEndOfGapAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_opt_class() getEndOfGapAtDate:v4 rawLocations:self->_rawLocations maxGapWithinVisit:self->_maxGapInVisit];
+  dateCopy = date;
+  v5 = [objc_opt_class() getEndOfGapAtDate:dateCopy rawLocations:self->_rawLocations maxGapWithinVisit:self->_maxGapInVisit];
 
   return v5;
 }
 
-+ (BOOL)hasRawLocationsNeededToComputeSmoothedLocationAtDate:(id)a3 workingVisitExit:(id)a4 rawLocations:(id)a5 kernelWidth:(double)a6 smallestSignificantWeightExponent:(double)a7
++ (BOOL)hasRawLocationsNeededToComputeSmoothedLocationAtDate:(id)date workingVisitExit:(id)exit rawLocations:(id)locations kernelWidth:(double)width smallestSignificantWeightExponent:(double)exponent
 {
-  v11 = a5;
-  v12 = a3;
-  v13 = v12;
-  if (a4)
+  locationsCopy = locations;
+  dateCopy = date;
+  lastObject = dateCopy;
+  if (exit)
   {
-    v14 = [v12 earlierDate:a4];
-    v15 = [v14 isEqualToDate:v13];
+    v14 = [dateCopy earlierDate:exit];
+    v15 = [v14 isEqualToDate:lastObject];
   }
 
   else
   {
-    [objc_opt_class() getTimeDeltaSignificanceThresholdForSmoothedLocationDate:v12 rawLocations:v11 kernelWidth:a6 smallestSignificantaWeightExponent:a7];
-    v14 = [v13 dateByAddingTimeInterval:?];
+    [objc_opt_class() getTimeDeltaSignificanceThresholdForSmoothedLocationDate:dateCopy rawLocations:locationsCopy kernelWidth:width smallestSignificantaWeightExponent:exponent];
+    v14 = [lastObject dateByAddingTimeInterval:?];
 
-    v13 = [v11 lastObject];
-    v16 = [v13 date];
-    v17 = [v14 earlierDate:v16];
+    lastObject = [locationsCopy lastObject];
+    date = [lastObject date];
+    v17 = [v14 earlierDate:date];
     v15 = [v17 isEqualToDate:v14];
   }
 
@@ -557,8 +557,8 @@ LABEL_13:
   while (1)
   {
     v6 = objc_opt_class();
-    v7 = [(RTVisit *)self->_workingVisit exit];
-    LODWORD(v6) = [v6 hasRawLocationsNeededToComputeSmoothedLocationAtDate:v5 workingVisitExit:v7 rawLocations:self->_rawLocations kernelWidth:self->_kernelWidth smallestSignificantWeightExponent:self->_smallestSignificantWeightExponent];
+    exit = [(RTVisit *)self->_workingVisit exit];
+    LODWORD(v6) = [v6 hasRawLocationsNeededToComputeSmoothedLocationAtDate:v5 workingVisitExit:exit rawLocations:self->_rawLocations kernelWidth:self->_kernelWidth smallestSignificantWeightExponent:self->_smallestSignificantWeightExponent];
 
     if (!v6)
     {
@@ -590,9 +590,9 @@ LABEL_13:
           v11 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
-            v25 = [v35 lastObject];
+            lastObject = [v35 lastObject];
             *buf = 138412290;
-            v37 = v25;
+            v37 = lastObject;
             _os_log_debug_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEBUG, "adding visit=%@", buf, 0xCu);
           }
         }
@@ -606,19 +606,19 @@ LABEL_18:
 
       else if (!self->_entryBeforeAnyGaps)
       {
-        v24 = [(RTVisit *)self->_workingVisit entry];
+        entry = [(RTVisit *)self->_workingVisit entry];
         entryBeforeAnyGaps = self->_entryBeforeAnyGaps;
-        self->_entryBeforeAnyGaps = v24;
+        self->_entryBeforeAnyGaps = entry;
         goto LABEL_18;
       }
 
       v16 = objc_alloc(MEMORY[0x277D01428]);
       v13 = [MEMORY[0x277CBEAA8] now];
-      v17 = [(RTVisit *)self->_workingVisit type];
-      v15 = [(RTVisit *)self->_workingVisit location];
+      type = [(RTVisit *)self->_workingVisit type];
+      location = [(RTVisit *)self->_workingVisit location];
       nextDateToProcess = self->_nextDateToProcess;
-      v19 = [(RTVisit *)self->_workingVisit exit];
-      v20 = [v16 initWithDate:v13 type:v17 location:v15 entry:nextDateToProcess exit:v19 dataPointCount:0 confidence:1.0 placeInference:0];
+      exit2 = [(RTVisit *)self->_workingVisit exit];
+      v20 = [v16 initWithDate:v13 type:type location:location entry:nextDateToProcess exit:exit2 dataPointCount:0 confidence:1.0 placeInference:0];
       workingVisit = self->_workingVisit;
       self->_workingVisit = v20;
 
@@ -632,7 +632,7 @@ LABEL_18:
     }
 
     v14 = [(RTVisitPipelineModuleSmoother *)self getNextDateToProcessForDate:v5];
-    v15 = self->_nextDateToProcess;
+    location = self->_nextDateToProcess;
     self->_nextDateToProcess = v14;
 LABEL_24:
 
@@ -657,8 +657,8 @@ LABEL_24:
 
   if ([v4 count])
   {
-    v27 = [(RTVisit *)self->_workingVisit exit];
-    v28 = [(RTVisitPipelineModuleSmoother *)self createNewOutputClusterForSmoothedPoints:v4 exit:v27];
+    exit3 = [(RTVisit *)self->_workingVisit exit];
+    v28 = [(RTVisitPipelineModuleSmoother *)self createNewOutputClusterForSmoothedPoints:v4 exit:exit3];
     [v35 addObject:v28];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -666,17 +666,17 @@ LABEL_24:
       v29 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
-        v34 = [v35 lastObject];
+        lastObject2 = [v35 lastObject];
         *buf = 138739971;
-        v37 = v34;
+        v37 = lastObject2;
         _os_log_debug_impl(&dword_2304B3000, v29, OS_LOG_TYPE_DEBUG, "adding visit=%{sensitive}@", buf, 0xCu);
       }
     }
   }
 
-  v30 = [(RTVisit *)self->_workingVisit exit];
+  exit4 = [(RTVisit *)self->_workingVisit exit];
 
-  if (v30)
+  if (exit4)
   {
     [(RTVisitPipelineModuleSmoother *)self resetState];
   }
@@ -721,75 +721,75 @@ LABEL_24:
   self->_previousProcessedDate = 0;
 }
 
-- (void)updateStateWithNewCluster:(id)a3
+- (void)updateStateWithNewCluster:(id)cluster
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clusterCopy = cluster;
   workingVisit = self->_workingVisit;
   if (workingVisit)
   {
-    v6 = [(RTVisit *)workingVisit entry];
-    v7 = [v4 visit];
-    v8 = [v7 entry];
-    if ([v6 isEqualToDate:v8])
+    entry = [(RTVisit *)workingVisit entry];
+    visit = [clusterCopy visit];
+    entry2 = [visit entry];
+    if ([entry isEqualToDate:entry2])
     {
     }
 
     else
     {
       entryBeforeAnyGaps = self->_entryBeforeAnyGaps;
-      v20 = [v4 visit];
-      v21 = [v20 entry];
-      LOBYTE(entryBeforeAnyGaps) = [(NSDate *)entryBeforeAnyGaps isEqualToDate:v21];
+      visit2 = [clusterCopy visit];
+      entry3 = [visit2 entry];
+      LOBYTE(entryBeforeAnyGaps) = [(NSDate *)entryBeforeAnyGaps isEqualToDate:entry3];
 
       if (entryBeforeAnyGaps)
       {
 LABEL_9:
         rawLocations = self->_rawLocations;
-        v15 = [v4 points];
-        v16 = [v15 locations];
-        [(NSMutableArray *)rawLocations addObjectsFromArray:v16];
+        points = [clusterCopy points];
+        locations = [points locations];
+        [(NSMutableArray *)rawLocations addObjectsFromArray:locations];
         goto LABEL_10;
       }
 
-      v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      entry = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+      if (os_log_type_enabled(entry, OS_LOG_TYPE_ERROR))
       {
         v25 = 136315394;
         v26 = "[RTVisitPipelineModuleSmoother updateStateWithNewCluster:]";
         v27 = 1024;
         v28 = 405;
-        _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Partial visit not closed before starting new visit. (in %s:%d)", &v25, 0x12u);
+        _os_log_error_impl(&dword_2304B3000, entry, OS_LOG_TYPE_ERROR, "Partial visit not closed before starting new visit. (in %s:%d)", &v25, 0x12u);
       }
     }
 
     goto LABEL_9;
   }
 
-  v9 = [v4 points];
-  v10 = [v9 locations];
-  v11 = [v10 objectAtIndexedSubscript:0];
-  v12 = [v11 date];
+  points2 = [clusterCopy points];
+  locations2 = [points2 locations];
+  v11 = [locations2 objectAtIndexedSubscript:0];
+  date = [v11 date];
   firstDateToProcessForVisit = self->_firstDateToProcessForVisit;
-  self->_firstDateToProcessForVisit = v12;
+  self->_firstDateToProcessForVisit = date;
 
   v14 = objc_alloc(MEMORY[0x277CBEB18]);
-  v15 = [v4 points];
-  v16 = [v15 locations];
-  v17 = [v14 initWithArray:v16 copyItems:0];
+  points = [clusterCopy points];
+  locations = [points locations];
+  v17 = [v14 initWithArray:locations copyItems:0];
   v18 = self->_rawLocations;
   self->_rawLocations = v17;
 
 LABEL_10:
-  v23 = [v4 visit];
+  visit3 = [clusterCopy visit];
   v24 = self->_workingVisit;
-  self->_workingVisit = v23;
+  self->_workingVisit = visit3;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -805,7 +805,7 @@ LABEL_10:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v4;
+  v7 = processCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v8)
   {
@@ -837,8 +837,8 @@ LABEL_10:
         }
 
         [(RTVisitPipelineModuleSmoother *)self updateStateWithNewCluster:v14, v19, v20];
-        v16 = [(RTVisitPipelineModuleSmoother *)self processCachedPoints];
-        [v6 addObjectsFromArray:v16];
+        processCachedPoints = [(RTVisitPipelineModuleSmoother *)self processCachedPoints];
+        [v6 addObjectsFromArray:processCachedPoints];
 
         ++v13;
       }

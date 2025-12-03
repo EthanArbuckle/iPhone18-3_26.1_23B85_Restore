@@ -1,21 +1,21 @@
 @interface INSendMessageAttachment
 + (INSendMessageAttachment)attachmentWithAudioMessageFile:(INFile *)audioMessageFile;
 + (INSendMessageAttachment)attachmentWithCurrentLocation;
-+ (INSendMessageAttachment)attachmentWithFile:(id)a3;
-+ (INSendMessageAttachment)attachmentWithPHAsset:(id)a3;
-+ (INSendMessageAttachment)attachmentWithPHAssetId:(id)a3;
-+ (INSendMessageAttachment)attachmentWithSharedLink:(id)a3;
-+ (INSendMessageAttachment)attachmentWithSpeechDataURL:(id)a3;
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (INSendMessageAttachment)initWithCoder:(id)a3;
++ (INSendMessageAttachment)attachmentWithFile:(id)file;
++ (INSendMessageAttachment)attachmentWithPHAsset:(id)asset;
++ (INSendMessageAttachment)attachmentWithPHAssetId:(id)id;
++ (INSendMessageAttachment)attachmentWithSharedLink:(id)link;
++ (INSendMessageAttachment)attachmentWithSpeechDataURL:(id)l;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (INSendMessageAttachment)initWithCoder:(id)coder;
 - (PHAsset)phAsset;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCurrentLocation:(BOOL)a3 file:(id)a4 speechDataURL:(id)a5 audioMessageFile:(id)a6 sharedLink:(id)a7 phAssetId:(id)a8;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
+- (id)_initWithCurrentLocation:(BOOL)location file:(id)file speechDataURL:(id)l audioMessageFile:(id)messageFile sharedLink:(id)link phAssetId:(id)id;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSendMessageAttachment
@@ -28,40 +28,40 @@
   v16[0] = v3;
   v15[1] = @"file";
   file = self->_file;
-  v5 = file;
+  null = file;
   if (!file)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v5;
+  v16[1] = null;
   v15[2] = @"speechDataURL";
   speechDataURL = self->_speechDataURL;
-  v7 = speechDataURL;
+  null2 = speechDataURL;
   if (!speechDataURL)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v7;
+  v16[2] = null2;
   v15[3] = @"audioMessageFile";
   audioMessageFile = self->_audioMessageFile;
-  v9 = audioMessageFile;
+  null3 = audioMessageFile;
   if (!audioMessageFile)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v9;
+  v16[3] = null3;
   v15[4] = @"sharedLink";
   sharedLink = self->_sharedLink;
-  v11 = sharedLink;
+  null4 = sharedLink;
   if (!sharedLink)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[4] = v11;
+  v16[4] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:5];
   if (sharedLink)
   {
@@ -112,39 +112,39 @@ LABEL_13:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currentLocation = self->_currentLocation;
-  v5 = a3;
-  [v5 encodeBool:currentLocation forKey:@"currentLocation"];
-  [v5 encodeObject:self->_file forKey:@"file"];
-  [v5 encodeObject:self->_speechDataURL forKey:@"speechDataURL"];
-  [v5 encodeObject:self->_audioMessageFile forKey:@"audioMessageFile"];
-  [v5 encodeObject:self->_sharedLink forKey:@"sharedLink"];
-  [v5 encodeObject:self->_phAssetId forKey:@"phAssetId"];
+  coderCopy = coder;
+  [coderCopy encodeBool:currentLocation forKey:@"currentLocation"];
+  [coderCopy encodeObject:self->_file forKey:@"file"];
+  [coderCopy encodeObject:self->_speechDataURL forKey:@"speechDataURL"];
+  [coderCopy encodeObject:self->_audioMessageFile forKey:@"audioMessageFile"];
+  [coderCopy encodeObject:self->_sharedLink forKey:@"sharedLink"];
+  [coderCopy encodeObject:self->_phAssetId forKey:@"phAssetId"];
 }
 
-- (INSendMessageAttachment)initWithCoder:(id)a3
+- (INSendMessageAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"currentLocation"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"speechDataURL"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioMessageFile"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedLink"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phAssetId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"currentLocation"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speechDataURL"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioMessageFile"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedLink"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phAssetId"];
 
   v11 = [objc_alloc(objc_opt_class()) _initWithCurrentLocation:v5 file:v6 speechDataURL:v7 audioMessageFile:v8 sharedLink:v9 phAssetId:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = 0;
     if (self->_currentLocation == *(v5 + 8))
     {
@@ -218,50 +218,50 @@ LABEL_13:
     v15[0] = self->_phAssetId;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v6 = [v3 fetchAssetsWithLocalIdentifiers:v5 options:0];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)_initWithCurrentLocation:(BOOL)a3 file:(id)a4 speechDataURL:(id)a5 audioMessageFile:(id)a6 sharedLink:(id)a7 phAssetId:(id)a8
+- (id)_initWithCurrentLocation:(BOOL)location file:(id)file speechDataURL:(id)l audioMessageFile:(id)messageFile sharedLink:(id)link phAssetId:(id)id
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  fileCopy = file;
+  lCopy = l;
+  messageFileCopy = messageFile;
+  linkCopy = link;
+  idCopy = id;
   v32.receiver = self;
   v32.super_class = INSendMessageAttachment;
   v19 = [(INSendMessageAttachment *)&v32 init];
   v20 = v19;
   if (v19)
   {
-    v19->_currentLocation = a3;
-    v21 = [v14 copy];
+    v19->_currentLocation = location;
+    v21 = [fileCopy copy];
     file = v20->_file;
     v20->_file = v21;
 
-    v23 = [v15 copy];
+    v23 = [lCopy copy];
     speechDataURL = v20->_speechDataURL;
     v20->_speechDataURL = v23;
 
-    v25 = [v16 copy];
+    v25 = [messageFileCopy copy];
     audioMessageFile = v20->_audioMessageFile;
     v20->_audioMessageFile = v25;
 
-    v27 = [v17 copy];
+    v27 = [linkCopy copy];
     sharedLink = v20->_sharedLink;
     v20->_sharedLink = v27;
 
-    v29 = [v18 copy];
+    v29 = [idCopy copy];
     phAssetId = v20->_phAssetId;
     v20->_phAssetId = v29;
   }
@@ -269,29 +269,29 @@ LABEL_13:
   return v20;
 }
 
-+ (INSendMessageAttachment)attachmentWithPHAssetId:(id)a3
++ (INSendMessageAttachment)attachmentWithPHAssetId:(id)id
 {
-  v3 = a3;
-  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:0 speechDataURL:0 audioMessageFile:0 sharedLink:0 phAssetId:v3];
+  idCopy = id;
+  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:0 speechDataURL:0 audioMessageFile:0 sharedLink:0 phAssetId:idCopy];
 
   return v4;
 }
 
-+ (INSendMessageAttachment)attachmentWithPHAsset:(id)a3
++ (INSendMessageAttachment)attachmentWithPHAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = [INSendMessageAttachment alloc];
-  v5 = [v3 localIdentifier];
+  localIdentifier = [assetCopy localIdentifier];
 
-  v6 = [(INSendMessageAttachment *)v4 _initWithCurrentLocation:0 file:0 speechDataURL:0 audioMessageFile:0 sharedLink:0 phAssetId:v5];
+  v6 = [(INSendMessageAttachment *)v4 _initWithCurrentLocation:0 file:0 speechDataURL:0 audioMessageFile:0 sharedLink:0 phAssetId:localIdentifier];
 
   return v6;
 }
 
-+ (INSendMessageAttachment)attachmentWithSharedLink:(id)a3
++ (INSendMessageAttachment)attachmentWithSharedLink:(id)link
 {
-  v3 = a3;
-  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:0 speechDataURL:0 audioMessageFile:0 sharedLink:v3 phAssetId:0];
+  linkCopy = link;
+  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:0 speechDataURL:0 audioMessageFile:0 sharedLink:linkCopy phAssetId:0];
 
   return v4;
 }
@@ -304,18 +304,18 @@ LABEL_13:
   return v4;
 }
 
-+ (INSendMessageAttachment)attachmentWithSpeechDataURL:(id)a3
++ (INSendMessageAttachment)attachmentWithSpeechDataURL:(id)l
 {
-  v3 = a3;
-  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:0 speechDataURL:v3 audioMessageFile:0 sharedLink:0 phAssetId:0];
+  lCopy = l;
+  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:0 speechDataURL:lCopy audioMessageFile:0 sharedLink:0 phAssetId:0];
 
   return v4;
 }
 
-+ (INSendMessageAttachment)attachmentWithFile:(id)a3
++ (INSendMessageAttachment)attachmentWithFile:(id)file
 {
-  v3 = a3;
-  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:v3 speechDataURL:0 audioMessageFile:0 sharedLink:0 phAssetId:0];
+  fileCopy = file;
+  v4 = [[INSendMessageAttachment alloc] _initWithCurrentLocation:0 file:fileCopy speechDataURL:0 audioMessageFile:0 sharedLink:0 phAssetId:0];
 
   return v4;
 }
@@ -327,56 +327,56 @@ LABEL_13:
   return v2;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [(INSendMessageAttachment *)self speechDataURL];
+  encoderCopy = encoder;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  speechDataURL = [(INSendMessageAttachment *)self speechDataURL];
 
-  if (v7)
+  if (speechDataURL)
   {
-    v8 = [(INSendMessageAttachment *)self speechDataURL];
-    v9 = [v5 encodeObject:v8];
+    speechDataURL2 = [(INSendMessageAttachment *)self speechDataURL];
+    data = [encoderCopy encodeObject:speechDataURL2];
     v10 = @"speechDataURL";
 LABEL_5:
-    [v6 if_setObjectIfNonNil:v9 forKey:v10];
+    [dictionary if_setObjectIfNonNil:data forKey:v10];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v11 = [(INSendMessageAttachment *)self sharedLink];
+  sharedLink = [(INSendMessageAttachment *)self sharedLink];
 
-  if (v11)
+  if (sharedLink)
   {
-    v8 = [(INSendMessageAttachment *)self sharedLink];
-    v9 = [v5 encodeObject:v8];
+    speechDataURL2 = [(INSendMessageAttachment *)self sharedLink];
+    data = [encoderCopy encodeObject:speechDataURL2];
     v10 = @"sharedLink";
     goto LABEL_5;
   }
 
   if (![(INSendMessageAttachment *)self currentLocation])
   {
-    v14 = [(INSendMessageAttachment *)self audioMessageFile];
+    audioMessageFile = [(INSendMessageAttachment *)self audioMessageFile];
 
-    if (v14)
+    if (audioMessageFile)
     {
-      v8 = [(INSendMessageAttachment *)self audioMessageFile];
-      if (![v8 _isFileURLBased])
+      speechDataURL2 = [(INSendMessageAttachment *)self audioMessageFile];
+      if (![speechDataURL2 _isFileURLBased])
       {
         v25[0] = @"data";
-        v9 = [v8 data];
-        v15 = [v5 encodeObject:v9];
+        data = [speechDataURL2 data];
+        v15 = [encoderCopy encodeObject:data];
         v25[1] = @"filename";
         v26[0] = v15;
-        v16 = [v8 filename];
-        v17 = [v5 encodeObject:v16];
+        filename = [speechDataURL2 filename];
+        v17 = [encoderCopy encodeObject:filename];
         v26[1] = v17;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
         v19 = @"audioMessageFile";
 LABEL_20:
-        [v6 if_setObjectIfNonNil:v18 forKey:v19];
+        [dictionary if_setObjectIfNonNil:v18 forKey:v19];
 
         goto LABEL_21;
       }
@@ -384,25 +384,25 @@ LABEL_20:
 
     else
     {
-      v8 = [(INSendMessageAttachment *)self file];
-      v20 = [v8 typeIdentifier];
+      speechDataURL2 = [(INSendMessageAttachment *)self file];
+      typeIdentifier = [speechDataURL2 typeIdentifier];
 
-      if (v20)
+      if (typeIdentifier)
       {
-        v21 = [v8 typeIdentifier];
-        v22 = [v5 encodeObject:v21];
-        [v6 if_setObjectIfNonNil:v22 forKey:@"typeIdentifier"];
+        typeIdentifier2 = [speechDataURL2 typeIdentifier];
+        v22 = [encoderCopy encodeObject:typeIdentifier2];
+        [dictionary if_setObjectIfNonNil:v22 forKey:@"typeIdentifier"];
       }
 
-      if (![v8 _isFileURLBased])
+      if (![speechDataURL2 _isFileURLBased])
       {
         v23[0] = @"data";
-        v9 = [v8 data];
-        v15 = [v5 encodeObject:v9];
+        data = [speechDataURL2 data];
+        v15 = [encoderCopy encodeObject:data];
         v23[1] = @"filename";
         v24[0] = v15;
-        v16 = [v8 filename];
-        v17 = [v5 encodeObject:v16];
+        filename = [speechDataURL2 filename];
+        v17 = [encoderCopy encodeObject:filename];
         v24[1] = v17;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
         v19 = @"file";
@@ -410,128 +410,128 @@ LABEL_20:
       }
     }
 
-    v9 = [v8 fileURL];
-    v15 = [v5 encodeObject:v9];
-    [v6 if_setObjectIfNonNil:v15 forKey:@"fileURL"];
+    data = [speechDataURL2 fileURL];
+    v15 = [encoderCopy encodeObject:data];
+    [dictionary if_setObjectIfNonNil:v15 forKey:@"fileURL"];
 LABEL_21:
 
     goto LABEL_6;
   }
 
-  [v6 if_setObjectIfNonNil:MEMORY[0x1E695E118] forKey:@"currentLocation"];
+  [dictionary if_setObjectIfNonNil:MEMORY[0x1E695E118] forKey:@"currentLocation"];
 LABEL_7:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  decoderCopy = decoder;
+  descriptionCopy = description;
+  fromCopy = from;
+  if (!fromCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v16 = 0;
+    attachmentWithCurrentLocation = 0;
     goto LABEL_9;
   }
 
-  v11 = [v10 objectForKeyedSubscript:@"speechDataURL"];
+  v11 = [fromCopy objectForKeyedSubscript:@"speechDataURL"];
 
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = [v10 objectForKeyedSubscript:@"speechDataURL"];
-    v14 = [v8 decodeObjectOfClass:v12 from:v13];
-    v15 = [a1 attachmentWithSpeechDataURL:v14];
+    v13 = [fromCopy objectForKeyedSubscript:@"speechDataURL"];
+    v14 = [decoderCopy decodeObjectOfClass:v12 from:v13];
+    v15 = [self attachmentWithSpeechDataURL:v14];
 LABEL_8:
-    v16 = v15;
+    attachmentWithCurrentLocation = v15;
 
     goto LABEL_9;
   }
 
-  v17 = [v10 objectForKeyedSubscript:@"sharedLink"];
+  v17 = [fromCopy objectForKeyedSubscript:@"sharedLink"];
 
   if (v17)
   {
     v18 = objc_opt_class();
-    v13 = [v10 objectForKeyedSubscript:@"sharedLink"];
-    v14 = [v8 decodeObjectOfClass:v18 from:v13];
-    v15 = [a1 attachmentWithSharedLink:v14];
+    v13 = [fromCopy objectForKeyedSubscript:@"sharedLink"];
+    v14 = [decoderCopy decodeObjectOfClass:v18 from:v13];
+    v15 = [self attachmentWithSharedLink:v14];
     goto LABEL_8;
   }
 
-  v20 = [v10 objectForKeyedSubscript:@"currentLocation"];
+  v20 = [fromCopy objectForKeyedSubscript:@"currentLocation"];
 
   if (v20)
   {
-    v16 = [a1 attachmentWithCurrentLocation];
+    attachmentWithCurrentLocation = [self attachmentWithCurrentLocation];
     goto LABEL_9;
   }
 
-  v21 = [v10 objectForKeyedSubscript:@"audioMessageFile"];
+  v21 = [fromCopy objectForKeyedSubscript:@"audioMessageFile"];
 
   if (v21)
   {
     v22 = objc_opt_class();
-    v23 = [v10 objectForKeyedSubscript:@"audioMessageFile"];
+    v23 = [fromCopy objectForKeyedSubscript:@"audioMessageFile"];
     v24 = [v23 objectForKeyedSubscript:@"data"];
-    v25 = [v8 decodeObjectOfClass:v22 from:v24];
+    v25 = [decoderCopy decodeObjectOfClass:v22 from:v24];
 
     v26 = objc_opt_class();
-    v27 = [v10 objectForKeyedSubscript:@"audioMessageFile"];
+    v27 = [fromCopy objectForKeyedSubscript:@"audioMessageFile"];
     v28 = [v27 objectForKeyedSubscript:@"filename"];
-    v29 = [v8 decodeObjectOfClass:v26 from:v28];
+    v29 = [decoderCopy decodeObjectOfClass:v26 from:v28];
 
     v30 = [INFile fileWithData:v25 filename:v29 typeIdentifier:0];
     if (v30)
     {
-      v16 = [a1 attachmentWithAudioMessageFile:v30];
+      attachmentWithCurrentLocation = [self attachmentWithAudioMessageFile:v30];
     }
 
     else
     {
-      v16 = 0;
+      attachmentWithCurrentLocation = 0;
     }
 
     goto LABEL_26;
   }
 
   v31 = objc_opt_class();
-  v32 = [v10 objectForKeyedSubscript:@"typeIdentifier"];
-  v25 = [v8 decodeObjectOfClass:v31 from:v32];
+  v32 = [fromCopy objectForKeyedSubscript:@"typeIdentifier"];
+  v25 = [decoderCopy decodeObjectOfClass:v31 from:v32];
 
-  v33 = [v10 objectForKeyedSubscript:@"fileURL"];
+  v33 = [fromCopy objectForKeyedSubscript:@"fileURL"];
 
   if (v33)
   {
     v34 = objc_opt_class();
-    v35 = [v10 objectForKeyedSubscript:@"fileURL"];
-    v36 = [v8 decodeObjectOfClass:v34 from:v35];
+    v35 = [fromCopy objectForKeyedSubscript:@"fileURL"];
+    v36 = [decoderCopy decodeObjectOfClass:v34 from:v35];
     v37 = [INFile fileWithFileURL:v36 filename:0 typeIdentifier:v25];
   }
 
   else
   {
-    v38 = [v10 objectForKeyedSubscript:@"file"];
+    v38 = [fromCopy objectForKeyedSubscript:@"file"];
 
     if (!v38)
     {
 LABEL_25:
-      v16 = 0;
+      attachmentWithCurrentLocation = 0;
       goto LABEL_26;
     }
 
     v39 = objc_opt_class();
-    v40 = [v10 objectForKeyedSubscript:@"file"];
+    v40 = [fromCopy objectForKeyedSubscript:@"file"];
     v41 = [v40 objectForKeyedSubscript:@"data"];
-    v35 = [v8 decodeObjectOfClass:v39 from:v41];
+    v35 = [decoderCopy decodeObjectOfClass:v39 from:v41];
 
     v42 = objc_opt_class();
-    v43 = [v10 objectForKeyedSubscript:@"file"];
+    v43 = [fromCopy objectForKeyedSubscript:@"file"];
     v44 = [v43 objectForKeyedSubscript:@"filename"];
-    v36 = [v8 decodeObjectOfClass:v42 from:v44];
+    v36 = [decoderCopy decodeObjectOfClass:v42 from:v44];
 
     v37 = [INFile fileWithData:v35 filename:v36 typeIdentifier:v25];
   }
@@ -543,21 +543,21 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v16 = [a1 attachmentWithFile:v45];
+  attachmentWithCurrentLocation = [self attachmentWithFile:v45];
 
 LABEL_26:
 LABEL_9:
 
-  return v16;
+  return attachmentWithCurrentLocation;
 }
 
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(INSendMessageAttachment *)self audioMessageFile];
-  v8 = [v7 _intents_enumerateObjectsOfClass:a3 withBlock:v6];
+  blockCopy = block;
+  audioMessageFile = [(INSendMessageAttachment *)self audioMessageFile];
+  v8 = [audioMessageFile _intents_enumerateObjectsOfClass:class withBlock:blockCopy];
 
-  if (v8 & 1) != 0 || (-[INSendMessageAttachment file](self, "file"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 _intents_enumerateObjectsOfClass:a3 withBlock:v6], v9, (v10))
+  if (v8 & 1) != 0 || (-[INSendMessageAttachment file](self, "file"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 _intents_enumerateObjectsOfClass:class withBlock:blockCopy], v9, (v10))
   {
     v11 = 1;
   }
@@ -566,7 +566,7 @@ LABEL_9:
   {
     v13.receiver = self;
     v13.super_class = INSendMessageAttachment;
-    v11 = [&v13 _intents_enumerateObjectsOfClass:a3 withBlock:v6];
+    v11 = [&v13 _intents_enumerateObjectsOfClass:class withBlock:blockCopy];
   }
 
   return v11;

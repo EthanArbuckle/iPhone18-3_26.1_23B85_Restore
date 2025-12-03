@@ -1,22 +1,22 @@
 @interface UISSlotEmptyContent
-+ (id)contentWithSize:(CGSize)a3;
++ (id)contentWithSize:(CGSize)size;
 - (CGSize)contentSize;
-- (UISSlotEmptyContent)initWithSize:(CGSize)a3;
+- (UISSlotEmptyContent)initWithSize:(CGSize)size;
 @end
 
 @implementation UISSlotEmptyContent
 
-+ (id)contentWithSize:(CGSize)a3
++ (id)contentWithSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithSize:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:{size.width, size.height}];
 
   return v3;
 }
 
-- (UISSlotEmptyContent)initWithSize:(CGSize)a3
+- (UISSlotEmptyContent)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = UISSlotEmptyContent;
   result = [(UISSlotEmptyContent *)&v6 init];

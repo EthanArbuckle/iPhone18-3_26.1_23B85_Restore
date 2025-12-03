@@ -1,12 +1,12 @@
 @interface MFMailDropMailDelivery
 + (id)_mailDropZone;
-- (BOOL)_uploadAttachmentsViaCloudKit:(id)a3 zone:(id)a4 records:(id)a5 zippedPhotos:(id)a6 attachmentRecords:(id)a7 images:(id)a8;
+- (BOOL)_uploadAttachmentsViaCloudKit:(id)kit zone:(id)zone records:(id)records zippedPhotos:(id)photos attachmentRecords:(id)attachmentRecords images:(id)images;
 - (NSArray)attachments;
 - (id)_attachmentManager;
 - (id)ckDatabase;
-- (id)deliverSynchronouslyWithCompletion:(id)a3;
+- (id)deliverSynchronouslyWithCompletion:(id)completion;
 - (int64_t)_processAttachments;
-- (void)_recordZoneIDInDatabase:(id)a3 completionHandler:(id)a4;
+- (void)_recordZoneIDInDatabase:(id)database completionHandler:(id)handler;
 @end
 
 @implementation MFMailDropMailDelivery
@@ -31,12 +31,12 @@
   {
     if (self->super._message)
     {
-      v3 = [(MFOutgoingMessageDelivery *)self message];
-      v4 = [v3 messageBody];
-      v5 = [v4 attachmentURLs];
+      message = [(MFOutgoingMessageDelivery *)self message];
+      messageBody = [message messageBody];
+      attachmentURLs = [messageBody attachmentURLs];
 
-      v6 = [(MFMailDropMailDelivery *)self _attachmentManager];
-      v7 = [v6 attachmentsForURLs:v5 error:0];
+      _attachmentManager = [(MFMailDropMailDelivery *)self _attachmentManager];
+      v7 = [_attachmentManager attachmentsForURLs:attachmentURLs error:0];
 
       v27 = 0u;
       v28 = 0u;
@@ -57,13 +57,13 @@
             }
 
             v12 = *(*(&v25 + 1) + 8 * i);
-            v13 = [v12 placeholder];
+            placeholder = [v12 placeholder];
 
-            if (v13)
+            if (placeholder)
             {
-              v14 = [v12 placeholder];
-              v15 = [v14 contentID];
-              [v12 setContentID:v15];
+              placeholder2 = [v12 placeholder];
+              contentID = [placeholder2 contentID];
+              [v12 setContentID:contentID];
             }
           }
 
@@ -106,10 +106,10 @@ uint64_t __37__MFMailDropMailDelivery_attachments__block_invoke(uint64_t a1, voi
   return isKindOfClass & 1;
 }
 
-- (id)deliverSynchronouslyWithCompletion:(id)a3
+- (id)deliverSynchronouslyWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = EMLogMailDrop();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -117,16 +117,16 @@ uint64_t __37__MFMailDropMailDelivery_attachments__block_invoke(uint64_t a1, voi
     _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "Delivering Mail Drop message", buf, 2u);
   }
 
-  v6 = [(MFMailDropMailDelivery *)self _processAttachments];
+  _processAttachments = [(MFMailDropMailDelivery *)self _processAttachments];
   v7 = EMLogMailDrop();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = v6;
+    v17 = _processAttachments;
     _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_DEFAULT, "Finished processing attachments with state: %lu", buf, 0xCu);
   }
 
-  if (v6 == 8)
+  if (_processAttachments == 8)
   {
     v10 = EMLogMailDrop();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -139,7 +139,7 @@ uint64_t __37__MFMailDropMailDelivery_attachments__block_invoke(uint64_t a1, voi
     goto LABEL_13;
   }
 
-  if (v6 == 6)
+  if (_processAttachments == 6)
   {
     v8 = EMLogMailDrop();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -150,7 +150,7 @@ uint64_t __37__MFMailDropMailDelivery_attachments__block_invoke(uint64_t a1, voi
 
     v15.receiver = self;
     v15.super_class = MFMailDropMailDelivery;
-    v9 = [(MFOutgoingMessageDelivery *)&v15 deliverSynchronouslyWithCompletion:v4];
+    v9 = [(MFOutgoingMessageDelivery *)&v15 deliverSynchronouslyWithCompletion:completionCopy];
 LABEL_13:
     v11 = v9;
     goto LABEL_17;
@@ -164,7 +164,7 @@ LABEL_13:
   }
 
   v11 = [[MFDeliveryResult alloc] initWithStatus:8];
-  [(MFDeliveryResult *)v11 setAttributes:v6];
+  [(MFDeliveryResult *)v11 setAttributes:_processAttachments];
 LABEL_17:
 
   v13 = *MEMORY[0x1E69E9840];
@@ -176,9 +176,9 @@ LABEL_17:
 {
   v2 = [MEMORY[0x1E695B888] containerWithIdentifier:@"com.apple.largeattachment"];
   [v2 setSourceApplicationBundleIdentifier:*MEMORY[0x1E69B17F0]];
-  v3 = [v2 privateCloudDatabase];
+  privateCloudDatabase = [v2 privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (int64_t)_processAttachments
@@ -191,24 +191,24 @@ LABEL_17:
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_DEFAULT, "Processing attachments", buf, 2u);
   }
 
-  v26 = [(MFMailDropMailDelivery *)self ckDatabase];
-  v4 = [(MFMailDropMailDelivery *)self attachments];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E699B868] promise];
-  if (v4 && EFProtectedDataAvailable())
+  ckDatabase = [(MFMailDropMailDelivery *)self ckDatabase];
+  attachments = [(MFMailDropMailDelivery *)self attachments];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(attachments, "count")}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(attachments, "count")}];
+  array = [MEMORY[0x1E695DF70] array];
+  promise = [MEMORY[0x1E699B868] promise];
+  if (attachments && EFProtectedDataAvailable())
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __45__MFMailDropMailDelivery__processAttachments__block_invoke;
     v28[3] = &unk_1E7AA62A0;
-    v29 = v8;
-    v30 = self;
+    v29 = promise;
+    selfCopy = self;
     v31 = v5;
     v32 = v6;
-    v33 = v7;
-    v34 = v26;
+    v33 = array;
+    v34 = ckDatabase;
     [(MFMailDropMailDelivery *)self _recordZoneIDInDatabase:v34 completionHandler:v28];
 
     v9 = v29;
@@ -223,46 +223,46 @@ LABEL_17:
     }
 
     v9 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MFMessageErrorDomain" code:1029 userInfo:0];
-    [v8 finishWithError:v9];
+    [promise finishWithError:v9];
   }
 
-  v18 = [v8 future];
+  future = [promise future];
   v27 = 0;
-  v19 = [v18 result:&v27];
+  v19 = [future result:&v27];
   v20 = v27;
-  v21 = [v19 integerValue];
+  integerValue = [v19 integerValue];
 
   v22 = EMLogMailDrop();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v20 ef_publicDescription];
+    ef_publicDescription = [v20 ef_publicDescription];
     *buf = 134218242;
-    v36 = v21;
+    v36 = integerValue;
     v37 = 2114;
-    v38 = v23;
+    v38 = ef_publicDescription;
     _os_log_impl(&dword_1B0389000, v22, OS_LOG_TYPE_DEFAULT, "Mail Drop attachments finished processing with result: %lu, error:%{public}@", buf, 0x16u);
   }
 
   if (v20)
   {
-    v21 = 0;
+    integerValue = 0;
   }
 
-  else if (v21 >= 4)
+  else if (integerValue >= 4)
   {
     if ([(MFMailDropMailDelivery *)self updateMessageWithAttachmentsSynchronously])
     {
-      v21 = 6;
+      integerValue = 6;
     }
 
     else
     {
-      v21 = 8;
+      integerValue = 8;
     }
   }
 
   v24 = *MEMORY[0x1E69E9840];
-  return v21;
+  return integerValue;
 }
 
 void __45__MFMailDropMailDelivery__processAttachments__block_invoke(id *a1, void *a2, void *a3)
@@ -704,25 +704,25 @@ LABEL_21:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_uploadAttachmentsViaCloudKit:(id)a3 zone:(id)a4 records:(id)a5 zippedPhotos:(id)a6 attachmentRecords:(id)a7 images:(id)a8
+- (BOOL)_uploadAttachmentsViaCloudKit:(id)kit zone:(id)zone records:(id)records zippedPhotos:(id)photos attachmentRecords:(id)attachmentRecords images:(id)images
 {
   v66 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v48 = a4;
-  v14 = a5;
-  v15 = a6;
-  v46 = a7;
-  v47 = a8;
+  kitCopy = kit;
+  zoneCopy = zone;
+  recordsCopy = records;
+  photosCopy = photos;
+  attachmentRecordsCopy = attachmentRecords;
+  imagesCopy = images;
   v64 = 0;
-  v51 = v15;
-  [v15 getResourceValue:&v64 forKey:*MEMORY[0x1E695DB50] error:{0, v14}];
+  v51 = photosCopy;
+  [photosCopy getResourceValue:&v64 forKey:*MEMORY[0x1E695DB50] error:{0, recordsCopy}];
   v49 = v64;
-  v16 = [v49 integerValue];
+  integerValue = [v49 integerValue];
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v17 = v14;
+  v17 = recordsCopy;
   v18 = [v17 countByEnumeratingWithState:&v60 objects:v65 count:16];
   if (v18)
   {
@@ -738,9 +738,9 @@ LABEL_21:
         }
 
         v21 = [*(*(&v60 + 1) + 8 * v20) objectForKeyedSubscript:@"filesize"];
-        v22 = [v21 integerValue];
+        integerValue2 = [v21 integerValue];
 
-        v16 += v22;
+        integerValue += integerValue2;
         ++v20;
       }
 
@@ -753,51 +753,51 @@ LABEL_21:
 
   if (v51)
   {
-    v23 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"mailAttachment" zoneID:v48];
+    v23 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"mailAttachment" zoneID:zoneCopy];
     v24 = [objc_alloc(MEMORY[0x1E695B878]) initWithFileURL:v51];
     [v23 setObject:v24 forKeyedSubscript:@"data"];
     [v23 setObject:@"application/zip" forKeyedSubscript:@"contentType"];
     [v23 setObject:v49 forKeyedSubscript:@"fileSize"];
-    v25 = [MEMORY[0x1E695DF00] date];
-    [v23 setObject:v25 forKeyedSubscript:@"uploadDate"];
+    date = [MEMORY[0x1E695DF00] date];
+    [v23 setObject:date forKeyedSubscript:@"uploadDate"];
 
     [v17 addObject:v23];
-    v26 = [(MFMailDropMailDelivery *)self imageArchiveMetadata];
-    LODWORD(v25) = v26 == 0;
+    imageArchiveMetadata = [(MFMailDropMailDelivery *)self imageArchiveMetadata];
+    LODWORD(date) = imageArchiveMetadata == 0;
 
-    if (v25)
+    if (date)
     {
-      v27 = [MEMORY[0x1E699AD00] mailDropMetadata];
-      [(MFMailDropMailDelivery *)self setImageArchiveMetadata:v27];
+      mailDropMetadata = [MEMORY[0x1E699AD00] mailDropMetadata];
+      [(MFMailDropMailDelivery *)self setImageArchiveMetadata:mailDropMetadata];
 
-      v28 = [(MFMailDropMailDelivery *)self imageArchiveMetadata];
-      [v28 setFlags:2];
+      imageArchiveMetadata2 = [(MFMailDropMailDelivery *)self imageArchiveMetadata];
+      [imageArchiveMetadata2 setFlags:2];
     }
   }
 
   v29 = objc_alloc_init(MEMORY[0x1E695BA00]);
-  [v29 setAllowsCellularAccess:v16 < 0x6400001];
+  [v29 setAllowsCellularAccess:integerValue < 0x6400001];
   v30 = [objc_alloc(MEMORY[0x1E695B9B8]) initWithRecordsToSave:v17 recordIDsToDelete:0];
   [v30 setConfiguration:v29];
-  [v30 setDatabase:v50];
+  [v30 setDatabase:kitCopy];
   [v30 setQueuePriority:8];
   [v30 setQualityOfService:25];
   [v30 setPerRecordProgressBlock:&__block_literal_global_69];
   [v30 setPerRecordCompletionBlock:&__block_literal_global_73];
-  v31 = [MEMORY[0x1E699B868] promise];
-  v32 = v16 < 0x6400001;
+  promise = [MEMORY[0x1E699B868] promise];
+  v32 = integerValue < 0x6400001;
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __107__MFMailDropMailDelivery__uploadAttachmentsViaCloudKit_zone_records_zippedPhotos_attachmentRecords_images___block_invoke_74;
   v53[3] = &unk_1E7AA6380;
-  v33 = v31;
+  v33 = promise;
   v54 = v33;
-  v55 = self;
-  v34 = v50;
+  selfCopy = self;
+  v34 = kitCopy;
   v56 = v34;
-  v35 = v46;
+  v35 = attachmentRecordsCopy;
   v57 = v35;
-  v36 = v47;
+  v36 = imagesCopy;
   v58 = v36;
   v59 = v32;
   [v30 setModifyRecordsCompletionBlock:v53];
@@ -808,9 +808,9 @@ LABEL_21:
   }
 
   [v34 addOperation:v30];
-  v39 = [v33 future];
+  future = [v33 future];
   v52 = 0;
-  v40 = [v39 result:&v52];
+  v40 = [future result:&v52];
   v41 = v52;
 
   if (!v40)
@@ -824,10 +824,10 @@ LABEL_21:
     }
   }
 
-  v43 = [v40 BOOLValue];
+  bOOLValue = [v40 BOOLValue];
 
   v44 = *MEMORY[0x1E69E9840];
-  return v43;
+  return bOOLValue;
 }
 
 void __107__MFMailDropMailDelivery__uploadAttachmentsViaCloudKit_zone_records_zippedPhotos_attachmentRecords_images___block_invoke(double a1, uint64_t a2, void *a3)
@@ -972,10 +972,10 @@ id __107__MFMailDropMailDelivery__uploadAttachmentsViaCloudKit_zone_records_zipp
   return v2;
 }
 
-- (void)_recordZoneIDInDatabase:(id)a3 completionHandler:(id)a4
+- (void)_recordZoneIDInDatabase:(id)database completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  databaseCopy = database;
+  handlerCopy = handler;
   v7 = +[MFMailDropMailDelivery _mailDropZone];
   if (v7)
   {
@@ -991,17 +991,17 @@ id __107__MFMailDropMailDelivery__uploadAttachmentsViaCloudKit_zone_records_zipp
     v14[1] = 3221225472;
     v14[2] = __68__MFMailDropMailDelivery__recordZoneIDInDatabase_completionHandler___block_invoke;
     v14[3] = &unk_1E7AA63D0;
-    v17 = v6;
+    v17 = handlerCopy;
     v12 = v9;
     v15 = v12;
-    v16 = v5;
+    v16 = databaseCopy;
     [v16 fetchRecordZoneWithID:v12 completionHandler:v14];
   }
 
   else
   {
     v13 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:@"Could not get zoneID to create zone."];
-    (*(v6 + 2))(v6, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 

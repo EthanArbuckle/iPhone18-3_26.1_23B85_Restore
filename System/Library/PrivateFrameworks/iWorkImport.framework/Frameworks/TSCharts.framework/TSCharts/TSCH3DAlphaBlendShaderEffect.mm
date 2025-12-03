@@ -1,21 +1,21 @@
 @interface TSCH3DAlphaBlendShaderEffect
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)effect;
 + (id)variableAlphaBlendValue;
-+ (void)setChartAlpha:(float)a3 effectsStates:(id)a4;
-+ (void)setElementAlpha:(float)a3 effectsStates:(id)a4;
++ (void)setChartAlpha:(float)alpha effectsStates:(id)states;
++ (void)setElementAlpha:(float)alpha effectsStates:(id)states;
 - (id)variableAlphaBlendValue;
-- (void)addVariables:(id)a3;
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4;
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
+- (void)addVariables:(id)variables;
+- (void)injectCommonShaderInto:(id)into context:(id)context;
+- (void)uploadData:(id)data effectsStates:(id)states;
 @end
 
 @implementation TSCH3DAlphaBlendShaderEffect
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCH3DAlphaBlendShaderEffect;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_2761ABEAC;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A468E0 != -1)
   {
     dispatch_once(&qword_280A468E0, block);
@@ -37,7 +37,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCH3DAlphaBlendShaderEffect allocWithZone:]");
@@ -67,37 +67,37 @@
   return objc_msgSend_variableAlphaBlendValue(v2, v3, v4, v5, v6);
 }
 
-+ (void)setElementAlpha:(float)a3 effectsStates:(id)a4
++ (void)setElementAlpha:(float)alpha effectsStates:(id)states
 {
-  v5 = a4;
+  statesCopy = states;
   v10 = objc_msgSend_stateSharingID(TSCH3DAlphaBlendShaderEffect, v6, v7, v8, v9);
   __asm { FMOV            V0.2S, #1.0 }
 
   v23 = _D0;
-  sub_27618E84C(v5, v10, &v23, &v24, v16, v17);
+  sub_27618E84C(statesCopy, v10, &v23, &v24, v16, v17);
 
-  *&v24 = a3;
+  *&v24 = alpha;
   v22 = objc_msgSend_stateSharingID(TSCH3DAlphaBlendShaderEffect, v18, v19, v20, v21);
-  sub_2761AC2E4(v5, v22, &v24);
+  sub_2761AC2E4(statesCopy, v22, &v24);
 }
 
-+ (void)setChartAlpha:(float)a3 effectsStates:(id)a4
++ (void)setChartAlpha:(float)alpha effectsStates:(id)states
 {
-  v5 = a4;
+  statesCopy = states;
   v10 = objc_msgSend_stateSharingID(TSCH3DAlphaBlendShaderEffect, v6, v7, v8, v9);
   __asm { FMOV            V0.2S, #1.0 }
 
   v23 = _D0;
-  sub_27618E84C(v5, v10, &v23, &v24, v16, v17);
+  sub_27618E84C(statesCopy, v10, &v23, &v24, v16, v17);
 
-  *(&v24 + 1) = a3;
+  *(&v24 + 1) = alpha;
   v22 = objc_msgSend_stateSharingID(TSCH3DAlphaBlendShaderEffect, v18, v19, v20, v21);
-  sub_2761AC2E4(v5, v22, &v24);
+  sub_2761AC2E4(statesCopy, v22, &v24);
 }
 
-- (void)addVariables:(id)a3
+- (void)addVariables:(id)variables
 {
-  v33 = a3;
+  variablesCopy = variables;
   v8 = objc_msgSend_variableAlphaBlendValue(self, v4, v5, v6, v7);
 
   if (!v8)
@@ -111,29 +111,29 @@
   }
 
   v28 = objc_msgSend_variableAlphaBlendValue(self, v9, v10, v11, v12);
-  objc_msgSend_addUniformVariable_(v33, v29, v30, v31, v32, v28);
+  objc_msgSend_addUniformVariable_(variablesCopy, v29, v30, v31, v32, v28);
 }
 
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4
+- (void)injectCommonShaderInto:(id)into context:(id)context
 {
-  v15 = a3;
+  intoCopy = into;
   v5 = qword_280A464B8;
   v10 = objc_msgSend_variableAlphaBlendValue(self, v6, v7, v8, v9);
-  objc_msgSend_addOutcome_statement_(v15, v11, v12, v13, v14, v5, @"tsch_vec4(@@.rgb, @@.a * @@)", v5, v5, v10);
+  objc_msgSend_addOutcome_statement_(intoCopy, v11, v12, v13, v14, v5, @"tsch_vec4(@@.rgb, @@.a * @@)", v5, v5, v10);
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  statesCopy = states;
   v12 = objc_msgSend_stateSharingID(TSCH3DAlphaBlendShaderEffect, v8, v9, v10, v11);
-  sub_2761AC6E8(v7, v12, &v26, v13, v14, v15);
+  sub_2761AC6E8(statesCopy, v12, &v26, v13, v14, v15);
 
   v20 = objc_msgSend_variableAlphaBlendValue(self, v16, v17, v18, v19);
   LODWORD(v21) = HIDWORD(v26);
   *&v22 = *&v26 * *(&v26 + 1);
   v25 = *&v26 * *(&v26 + 1);
-  objc_msgSend_uniform_vec1_(v6, v23, v22, v21, v24, v20, &v25);
+  objc_msgSend_uniform_vec1_(dataCopy, v23, v22, v21, v24, v20, &v25);
 }
 
 @end

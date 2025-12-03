@@ -59,18 +59,18 @@
   os_unfair_lock_lock(&algn_1ED4A2D62[2]);
   if ((_MergedGlobals_1396 & 1) == 0)
   {
-    v2 = [MEMORY[0x1E69C75D0] currentProcess];
-    v3 = [v2 currentState];
+    currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+    currentState = [currentProcess currentState];
 
-    if (v3)
+    if (currentState)
     {
       _MergedGlobals_1396 = 1;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v4 = [v3 assertions];
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      assertions = [currentState assertions];
+      v5 = [assertions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         v6 = v5;
@@ -81,11 +81,11 @@
           {
             if (*v14 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(assertions);
             }
 
-            v9 = [*(*(&v13 + 1) + 8 * i) domain];
-            if ([v9 hasPrefix:@"com.apple.underlying"] && objc_msgSend(v9, "rangeOfString:", @"DarwinRoleUI") != 0x7FFFFFFFFFFFFFFFLL)
+            domain = [*(*(&v13 + 1) + 8 * i) domain];
+            if ([domain hasPrefix:@"com.apple.underlying"] && objc_msgSend(domain, "rangeOfString:", @"DarwinRoleUI") != 0x7FFFFFFFFFFFFFFFLL)
             {
               if (os_variant_has_internal_diagnostics())
               {
@@ -103,7 +103,7 @@
             }
           }
 
-          v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v6 = [assertions countByEnumeratingWithState:&v13 objects:v17 count:16];
           if (v6)
           {
             continue;
@@ -146,8 +146,8 @@ LABEL_15:
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UIFenceTask.m" lineNumber:56 description:{@"must invalidate _UIFenceTask:%llu before dealloc", self->_identifier}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFenceTask.m" lineNumber:56 description:{@"must invalidate _UIFenceTask:%llu before dealloc", self->_identifier}];
   }
 
   if (os_variant_has_internal_diagnostics())

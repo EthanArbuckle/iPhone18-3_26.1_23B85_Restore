@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (ATDeviceDiskUsageProvider)init;
 - (id)_cacheDeletePurgeableStorageData;
-- (id)_diskUsageForDataClass:(id)a3;
+- (id)_diskUsageForDataClass:(id)class;
 - (id)getCurrentUsage;
-- (void)getCurrentUsageWithUpdatedDataClasses:(id)a3 withCompletion:(id)a4;
-- (void)getUpdatedUsageWithCompletion:(id)a3;
+- (void)getCurrentUsageWithUpdatedDataClasses:(id)classes withCompletion:(id)completion;
+- (void)getUpdatedUsageWithCompletion:(id)completion;
 @end
 
 @implementation ATDeviceDiskUsageProvider
@@ -17,7 +17,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Gathering purgeable metrics from CacheDelete", &v10, 0xCu);
   }
 
@@ -31,7 +31,7 @@
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v10 = 138543874;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2048;
     v13 = v8 - v5;
     v14 = 2114;
@@ -42,33 +42,33 @@
   return v6;
 }
 
-- (id)_diskUsageForDataClass:(id)a3
+- (id)_diskUsageForDataClass:(id)class
 {
-  v3 = [(ATClientController *)self->_clientController clientForDataclass:a3];
+  v3 = [(ATClientController *)self->_clientController clientForDataclass:class];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 installedAssetMetrics];
+    installedAssetMetrics = [v3 installedAssetMetrics];
   }
 
   else
   {
-    v4 = 0;
+    installedAssetMetrics = 0;
   }
 
-  return v4;
+  return installedAssetMetrics;
 }
 
-- (void)getCurrentUsageWithUpdatedDataClasses:(id)a3 withCompletion:(id)a4
+- (void)getCurrentUsageWithUpdatedDataClasses:(id)classes withCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  classesCopy = classes;
+  completionCopy = completion;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 componentsJoinedByString:{@", "}];
+    v9 = [classesCopy componentsJoinedByString:{@", "}];
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v9;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Gathering updated usage metrics for data classes %{public}@", buf, 0x16u);
@@ -80,10 +80,10 @@
   block[2] = __82__ATDeviceDiskUsageProvider_getCurrentUsageWithUpdatedDataClasses_withCompletion___block_invoke;
   block[3] = &unk_2784E58C0;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = classesCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = classesCopy;
   dispatch_async(queue, block);
 }
 
@@ -276,26 +276,26 @@ void __82__ATDeviceDiskUsageProvider_getCurrentUsageWithUpdatedDataClasses_withC
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)getUpdatedUsageWithCompletion:(id)a3
+- (void)getUpdatedUsageWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableSet *)self->_usageUpdateCompletionHandlers count];
   usageUpdateCompletionHandlers = self->_usageUpdateCompletionHandlers;
-  v7 = MEMORY[0x223DED0C0](v4);
+  v7 = MEMORY[0x223DED0C0](completionCopy);
   [(NSMutableSet *)usageUpdateCompletionHandlers addObject:v7];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(ATClientController *)self->_clientController allClients];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allClients = [(ATClientController *)self->_clientController allClients];
+    v10 = [allClients countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -307,20 +307,20 @@ void __82__ATDeviceDiskUsageProvider_getCurrentUsageWithUpdatedDataClasses_withC
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allClients);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * v13) supportedDataclasses];
-          if (v14)
+          supportedDataclasses = [*(*(&v16 + 1) + 8 * v13) supportedDataclasses];
+          if (supportedDataclasses)
           {
-            [v8 addObjectsFromArray:v14];
+            [array addObjectsFromArray:supportedDataclasses];
           }
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [allClients countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -331,7 +331,7 @@ void __82__ATDeviceDiskUsageProvider_getCurrentUsageWithUpdatedDataClasses_withC
     v15[2] = __59__ATDeviceDiskUsageProvider_getUpdatedUsageWithCompletion___block_invoke;
     v15[3] = &unk_2784E55F0;
     v15[4] = self;
-    [(ATDeviceDiskUsageProvider *)self getCurrentUsageWithUpdatedDataClasses:v8 withCompletion:v15];
+    [(ATDeviceDiskUsageProvider *)self getCurrentUsageWithUpdatedDataClasses:array withCompletion:v15];
   }
 }
 
@@ -373,7 +373,7 @@ void __59__ATDeviceDiskUsageProvider_getUpdatedUsageWithCompletion___block_invok
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
     v9 = v3;
     _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ getCurrentUsage=%{public}@", &v6, 0x16u);
@@ -407,8 +407,8 @@ void __59__ATDeviceDiskUsageProvider_getUpdatedUsageWithCompletion___block_invok
     usageUpdateCompletionHandlers = v2->_usageUpdateCompletionHandlers;
     v2->_usageUpdateCompletionHandlers = v10;
 
-    v12 = [(ATUserDefaults *)v2->_defaults diskUsageInfo];
-    v13 = [v12 mutableCopy];
+    diskUsageInfo = [(ATUserDefaults *)v2->_defaults diskUsageInfo];
+    v13 = [diskUsageInfo mutableCopy];
     diskUsageInfo = v2->_diskUsageInfo;
     v2->_diskUsageInfo = v13;
 

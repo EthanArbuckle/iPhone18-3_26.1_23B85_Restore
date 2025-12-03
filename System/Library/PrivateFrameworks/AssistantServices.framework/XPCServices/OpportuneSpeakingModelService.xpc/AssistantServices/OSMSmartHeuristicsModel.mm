@@ -1,8 +1,8 @@
 @interface OSMSmartHeuristicsModel
 - (OSMSmartHeuristicsModel)init;
-- (void)recordFeedbackOfType:(int64_t)a3 forSpeakable:(id)a4;
-- (void)setSpeakable:(id)a3;
-- (void)startWithDelegate:(id)a3;
+- (void)recordFeedbackOfType:(int64_t)type forSpeakable:(id)speakable;
+- (void)setSpeakable:(id)speakable;
+- (void)startWithDelegate:(id)delegate;
 - (void)stop;
 @end
 
@@ -22,37 +22,37 @@
   self->_delegate = 0;
 }
 
-- (void)recordFeedbackOfType:(int64_t)a3 forSpeakable:(id)a4
+- (void)recordFeedbackOfType:(int64_t)type forSpeakable:(id)speakable
 {
-  v6 = a4;
+  speakableCopy = speakable;
   v8 = +[AFOpportuneSpeakingModuleDataCollection sharedCollector];
-  v7 = [v6 speakableIdentifier];
+  speakableIdentifier = [speakableCopy speakableIdentifier];
 
-  [v8 logFeedbackOfType:a3 forSpeakableId:v7 withModelId:self->_identifier];
+  [v8 logFeedbackOfType:type forSpeakableId:speakableIdentifier withModelId:self->_identifier];
 }
 
-- (void)setSpeakable:(id)a3
+- (void)setSpeakable:(id)speakable
 {
-  v4 = a3;
+  speakableCopy = speakable;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
   {
     v46 = v5;
-    v47 = [v4 speakableDescription];
+    speakableDescription = [speakableCopy speakableDescription];
     *buf = 136315394;
     v78 = "[OSMSmartHeuristicsModel setSpeakable:]";
     v79 = 2112;
-    v80 = v47;
+    v80 = speakableDescription;
     _os_log_debug_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEBUG, "%s speakable: %@", buf, 0x16u);
   }
 
-  v6 = v4;
+  v6 = speakableCopy;
   v7 = objc_alloc_init(NSMutableArray);
   objc_opt_class();
   v9 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v49 = self;
+    selfCopy = self;
     v48 = [v6 copy];
     v10 = [[OSMNotificationFeatureMap alloc] initWithNotification:v48];
     if ([(OSMNotificationFeatureMap *)v10 isMessageSenderFavorite])
@@ -203,8 +203,8 @@
 
     [v7 addObject:v32];
 
-    v33 = [v50 feedbackManager];
-    v34 = [v33 lastNegativeFeedbackForContact:0];
+    feedbackManager = [v50 feedbackManager];
+    v34 = [feedbackManager lastNegativeFeedbackForContact:0];
 
     if (v34)
     {
@@ -229,7 +229,7 @@
         v52[0] = @"HadRecentNegativeFeedback";
         v52[1] = &off_100010CA8;
         v42 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:2];
-        self = v49;
+        self = selfCopy;
       }
 
       else
@@ -248,7 +248,7 @@
         v54[0] = @"HadRecentNegativeFeedback";
         v54[1] = &off_100010CC0;
         v42 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:2];
-        self = v49;
+        self = selfCopy;
       }
 
       [v7 addObject:v42];
@@ -256,35 +256,35 @@
 
     else
     {
-      self = v49;
+      self = selfCopy;
     }
 
     v43 = +[AFOpportuneSpeakingModuleDataCollection sharedCollector];
-    v44 = [(OSMNotificationFeatureMap *)v10 contactId];
+    contactId = [(OSMNotificationFeatureMap *)v10 contactId];
     v9 = v31;
     *&v45 = v31;
-    [v43 logSpeakable:v6 forContact:v44 withModelId:self->_identifier withFeatures:v7 withScore:v45];
+    [v43 logSpeakable:v6 forContact:contactId withModelId:self->_identifier withFeatures:v7 withScore:v45];
   }
 
   *&v8 = v9;
   [(AFOpportuneSpeakingModelDelegate *)self->_delegate modelWithIdentifier:self->_identifier didUpdateScore:v6 forSpeakable:v8];
 }
 
-- (void)startWithDelegate:(id)a3
+- (void)startWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136315394;
     v8 = "[OSMSmartHeuristicsModel startWithDelegate:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = delegateCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s delegate: %@", &v7, 0x16u);
   }
 
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 }
 
 - (OSMSmartHeuristicsModel)init
@@ -296,8 +296,8 @@
   {
     v3 = [NSString alloc];
     v4 = +[NSUUID UUID];
-    v5 = [v4 UUIDString];
-    v6 = [v3 initWithFormat:@"SmartHeuristicsModel-%@", v5];
+    uUIDString = [v4 UUIDString];
+    v6 = [v3 initWithFormat:@"SmartHeuristicsModel-%@", uUIDString];
     identifier = v2->_identifier;
     v2->_identifier = v6;
 

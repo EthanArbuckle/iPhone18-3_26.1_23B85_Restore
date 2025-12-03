@@ -1,28 +1,28 @@
 @interface AMSUIWebBagAction
-- (AMSUIWebBagAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebBagAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
-- (void)_fetchValuesForKeys:(id)a3 bag:(id)a4 startingAtIndex:(int64_t)a5 valuesArray:(id)a6 completion:(id)a7;
+- (void)_fetchValuesForKeys:(id)keys bag:(id)bag startingAtIndex:(int64_t)index valuesArray:(id)array completion:(id)completion;
 @end
 
 @implementation AMSUIWebBagAction
 
-- (AMSUIWebBagAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebBagAction)initWithJSObject:(id)object context:(id)context
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v49.receiver = self;
   v49.super_class = AMSUIWebBagAction;
-  v7 = [(AMSUIWebAction *)&v49 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v49 initWithJSObject:objectCopy context:context];
   v8 = v7;
   if (v7)
   {
-    v9 = [(AMSUIWebAction *)v7 context];
-    v10 = [v6 objectForKeyedSubscript:@"account"];
-    v11 = [v9 iTunesAccountFromJSAccount:v10];
+    context = [(AMSUIWebAction *)v7 context];
+    v10 = [objectCopy objectForKeyedSubscript:@"account"];
+    v11 = [context iTunesAccountFromJSAccount:v10];
     account = v8->_account;
     v8->_account = v11;
 
-    v13 = [v6 objectForKeyedSubscript:@"profile"];
+    v13 = [objectCopy objectForKeyedSubscript:@"profile"];
     v14 = 0x1E696A000uLL;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -38,7 +38,7 @@
     profile = v8->_profile;
     v8->_profile = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"profileVersion"];
+    v17 = [objectCopy objectForKeyedSubscript:@"profileVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,9 +54,9 @@
     v8->_profileVersion = v18;
 
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v21 = [v6 objectForKeyedSubscript:@"keys"];
+    v21 = [objectCopy objectForKeyedSubscript:@"keys"];
     objc_opt_class();
-    v41 = v6;
+    v41 = objectCopy;
     if (objc_opt_isKindOfClass())
     {
       v22 = v21;
@@ -114,7 +114,7 @@
           v30 = [v26 objectForKeyedSubscript:@"type"];
           if (objc_opt_respondsToSelector())
           {
-            v31 = [v30 integerValue];
+            integerValue = [v30 integerValue];
             if (v29)
             {
               goto LABEL_24;
@@ -123,26 +123,26 @@
 
           else
           {
-            v31 = 4;
+            integerValue = 4;
             if (v29)
             {
 LABEL_24:
-              v32 = objc_alloc_init(AMSUIWebBagKey);
-              [(AMSUIWebBagKey *)v32 setKey:v29];
-              [(AMSUIWebBagKey *)v32 setValueType:v31];
-              [(NSArray *)v20 addObject:v32];
+              mEMORY[0x1E698C968] = objc_alloc_init(AMSUIWebBagKey);
+              [(AMSUIWebBagKey *)mEMORY[0x1E698C968] setKey:v29];
+              [(AMSUIWebBagKey *)mEMORY[0x1E698C968] setValueType:integerValue];
+              [(NSArray *)v20 addObject:mEMORY[0x1E698C968]];
               goto LABEL_31;
             }
           }
 
-          v32 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-          if (!v32)
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+          if (!mEMORY[0x1E698C968])
           {
-            v32 = [MEMORY[0x1E698C968] sharedConfig];
+            mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
           }
 
-          v33 = [(AMSUIWebBagKey *)v32 OSLogObject];
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+          oSLogObject = [(AMSUIWebBagKey *)mEMORY[0x1E698C968] OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v34 = v8;
             v35 = v23;
@@ -155,7 +155,7 @@ LABEL_24:
             v53 = v37;
             v54 = 2114;
             v55 = v26;
-            _os_log_impl(&dword_1BB036000, v33, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown bag key in def: %{public}@", buf, 0x20u);
+            _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown bag key in def: %{public}@", buf, 0x20u);
 
             v8 = v34;
             v14 = 0x1E696A000;
@@ -174,7 +174,7 @@ LABEL_31:
     requestedKeys = v8->_requestedKeys;
     v8->_requestedKeys = v20;
 
-    v6 = v41;
+    objectCopy = v41;
   }
 
   v39 = *MEMORY[0x1E69E9840];
@@ -186,43 +186,43 @@ LABEL_31:
   v52 = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = AMSUIWebBagAction;
-  v3 = [(AMSUIWebAction *)&v44 runAction];
+  runAction = [(AMSUIWebAction *)&v44 runAction];
   v4 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v5 = [(AMSUIWebBagAction *)self requestedKeys];
-  v6 = [v5 count];
+  requestedKeys = [(AMSUIWebBagAction *)self requestedKeys];
+  v6 = [requestedKeys count];
 
   if (v6)
   {
-    v7 = [(AMSUIWebBagAction *)self profile];
-    v8 = [(AMSUIWebBagAction *)self profileVersion];
-    v9 = v8;
-    if (!v7 || !v8)
+    profile = [(AMSUIWebBagAction *)self profile];
+    profileVersion = [(AMSUIWebBagAction *)self profileVersion];
+    v9 = profileVersion;
+    if (!profile || !profileVersion)
     {
-      v10 = [(AMSUIWebAction *)self context];
-      v11 = [v10 bag];
-      v12 = [v11 profile];
+      context = [(AMSUIWebAction *)self context];
+      v11 = [context bag];
+      profile2 = [v11 profile];
 
-      v13 = [(AMSUIWebAction *)self context];
-      v14 = [v13 bag];
-      v15 = [v14 profileVersion];
+      context2 = [(AMSUIWebAction *)self context];
+      v14 = [context2 bag];
+      profileVersion2 = [v14 profileVersion];
 
-      v9 = v15;
-      v7 = v12;
+      v9 = profileVersion2;
+      profile = profile2;
     }
 
     v37 = v4;
     v16 = MEMORY[0x1E698C7D8];
-    v17 = [(AMSUIWebAction *)self context];
-    v18 = [v17 clientInfo];
-    v36 = [v16 bagForProfile:v7 profileVersion:v9 processInfo:v18];
+    context3 = [(AMSUIWebAction *)self context];
+    clientInfo = [context3 clientInfo];
+    v36 = [v16 bagForProfile:profile profileVersion:v9 processInfo:clientInfo];
 
     v19 = objc_alloc_init(MEMORY[0x1E698CA40]);
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v20 = [(AMSUIWebBagAction *)self requestedKeys];
-    v21 = [v20 countByEnumeratingWithState:&v40 objects:v51 count:16];
+    requestedKeys2 = [(AMSUIWebBagAction *)self requestedKeys];
+    v21 = [requestedKeys2 countByEnumeratingWithState:&v40 objects:v51 count:16];
     if (v21)
     {
       v22 = v21;
@@ -233,7 +233,7 @@ LABEL_31:
         {
           if (*v41 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(requestedKeys2);
           }
 
           v25 = *(*(&v40 + 1) + 8 * i);
@@ -241,35 +241,35 @@ LABEL_31:
           [v19 addBagKey:v26 valueType:{objc_msgSend(v25, "valueType")}];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v40 objects:v51 count:16];
+        v22 = [requestedKeys2 countByEnumeratingWithState:&v40 objects:v51 count:16];
       }
 
       while (v22);
     }
 
-    [MEMORY[0x1E698C7E0] registerBagKeySet:v19 forProfile:v7 profileVersion:v9];
-    v27 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v27)
+    [MEMORY[0x1E698C7E0] registerBagKeySet:v19 forProfile:profile profileVersion:v9];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v27 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v28 = [v27 OSLogObject];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v29 = objc_opt_class();
       v30 = AMSLogKey();
-      v31 = [(AMSUIWebBagAction *)self requestedKeys];
+      requestedKeys3 = [(AMSUIWebBagAction *)self requestedKeys];
       *buf = 138543874;
       v46 = v29;
       v47 = 2114;
       v48 = v30;
       v49 = 2114;
-      v50 = v31;
-      _os_log_impl(&dword_1BB036000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking up keys: %{public}@", buf, 0x20u);
+      v50 = requestedKeys3;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking up keys: %{public}@", buf, 0x20u);
     }
 
-    v32 = [(AMSUIWebBagAction *)self requestedKeys];
+    requestedKeys4 = [(AMSUIWebBagAction *)self requestedKeys];
     v33 = objc_opt_new();
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
@@ -277,13 +277,13 @@ LABEL_31:
     v38[3] = &unk_1E7F25BA0;
     v4 = v37;
     v39 = v37;
-    [(AMSUIWebBagAction *)self _fetchValuesForKeys:v32 bag:v36 startingAtIndex:0 valuesArray:v33 completion:v38];
+    [(AMSUIWebBagAction *)self _fetchValuesForKeys:requestedKeys4 bag:v36 startingAtIndex:0 valuesArray:v33 completion:v38];
   }
 
   else
   {
-    v7 = AMSError();
-    [v4 finishWithError:v7];
+    profile = AMSError();
+    [v4 finishWithError:profile];
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -305,38 +305,38 @@ uint64_t __30__AMSUIWebBagAction_runAction__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (void)_fetchValuesForKeys:(id)a3 bag:(id)a4 startingAtIndex:(int64_t)a5 valuesArray:(id)a6 completion:(id)a7
+- (void)_fetchValuesForKeys:(id)keys bag:(id)bag startingAtIndex:(int64_t)index valuesArray:(id)array completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 objectAtIndexedSubscript:a5];
-  v17 = [v16 valueType];
+  keysCopy = keys;
+  bagCopy = bag;
+  arrayCopy = array;
+  completionCopy = completion;
+  v16 = [keysCopy objectAtIndexedSubscript:index];
+  valueType = [v16 valueType];
   v18 = 0;
-  if (v17 <= 2)
+  if (valueType <= 2)
   {
-    if (!v17)
+    if (!valueType)
     {
       v19 = [v16 key];
-      v20 = [v13 arrayForKey:v19];
+      v20 = [bagCopy arrayForKey:v19];
       goto LABEL_23;
     }
 
-    if (v17 == 1)
+    if (valueType == 1)
     {
       v19 = [v16 key];
-      v20 = [v13 BOOLForKey:v19];
+      v20 = [bagCopy BOOLForKey:v19];
       goto LABEL_23;
     }
 
-    if (v17 != 2)
+    if (valueType != 2)
     {
       goto LABEL_25;
     }
 
     v19 = [v16 key];
-    v20 = [v13 doubleForKey:v19];
+    v20 = [bagCopy doubleForKey:v19];
 LABEL_23:
     v18 = v20;
 LABEL_24:
@@ -344,54 +344,54 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (v17 <= 4)
+  if (valueType <= 4)
   {
-    if (v17 == 3)
+    if (valueType == 3)
     {
       v19 = [v16 key];
-      [v13 integerForKey:v19];
+      [bagCopy integerForKey:v19];
     }
 
     else
     {
       v19 = [v16 key];
-      [v13 stringForKey:v19];
+      [bagCopy stringForKey:v19];
     }
     v20 = ;
     goto LABEL_23;
   }
 
-  if (v17 == 5)
+  if (valueType == 5)
   {
     v21 = objc_opt_respondsToSelector();
     v19 = [v16 key];
     if (v21)
     {
-      v22 = [(AMSUIWebBagAction *)self account];
-      v23 = v22;
-      if (!v22)
+      account = [(AMSUIWebBagAction *)self account];
+      account2 = account;
+      if (!account)
       {
-        v29 = [(AMSUIWebAction *)self context];
-        v23 = [v29 account];
+        context = [(AMSUIWebAction *)self context];
+        account2 = [context account];
       }
 
-      v30 = v23;
-      v18 = [v13 URLForKey:v19 account:v23];
-      if (!v22)
+      v30 = account2;
+      v18 = [bagCopy URLForKey:v19 account:account2];
+      if (!account)
       {
       }
 
       goto LABEL_24;
     }
 
-    v20 = [v13 URLForKey:v19];
+    v20 = [bagCopy URLForKey:v19];
     goto LABEL_23;
   }
 
-  if (v17 == 6)
+  if (valueType == 6)
   {
     v19 = [v16 key];
-    v20 = [v13 dictionaryForKey:v19];
+    v20 = [bagCopy dictionaryForKey:v19];
     goto LABEL_23;
   }
 
@@ -400,18 +400,18 @@ LABEL_25:
   v31[1] = 3221225472;
   v31[2] = __84__AMSUIWebBagAction__fetchValuesForKeys_bag_startingAtIndex_valuesArray_completion___block_invoke;
   v31[3] = &unk_1E7F25BC8;
-  v32 = v14;
+  v32 = arrayCopy;
   v33 = v16;
-  v37 = v15;
-  v38 = a5;
-  v34 = self;
-  v35 = v12;
-  v36 = v13;
-  v24 = v13;
-  v25 = v12;
-  v26 = v15;
+  v37 = completionCopy;
+  indexCopy = index;
+  selfCopy = self;
+  v35 = keysCopy;
+  v36 = bagCopy;
+  v24 = bagCopy;
+  v25 = keysCopy;
+  v26 = completionCopy;
   v27 = v16;
-  v28 = v14;
+  v28 = arrayCopy;
   [v18 valueWithCompletion:v31];
 }
 

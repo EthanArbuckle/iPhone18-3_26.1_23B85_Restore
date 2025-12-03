@@ -1,112 +1,112 @@
 @interface _SFPBPerformEntityQueryCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPerformEntityQueryCommand)initWithDictionary:(id)a3;
-- (_SFPBPerformEntityQueryCommand)initWithFacade:(id)a3;
-- (_SFPBPerformEntityQueryCommand)initWithJSON:(id)a3;
+- (_SFPBPerformEntityQueryCommand)initWithDictionary:(id)dictionary;
+- (_SFPBPerformEntityQueryCommand)initWithFacade:(id)facade;
+- (_SFPBPerformEntityQueryCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (int)enabledDomainsAtIndex:(unint64_t)a3;
+- (int)enabledDomainsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addFilterQueries:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setEnabledDomains:(id)a3;
-- (void)setEntityIdentifier:(id)a3;
-- (void)setFilterQueries:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)setTokenString:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFilterQueries:(id)queries;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setEnabledDomains:(id)domains;
+- (void)setEntityIdentifier:(id)identifier;
+- (void)setFilterQueries:(id)queries;
+- (void)setSearchString:(id)string;
+- (void)setTokenString:(id)string;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPerformEntityQueryCommand
 
-- (_SFPBPerformEntityQueryCommand)initWithFacade:(id)a3
+- (_SFPBPerformEntityQueryCommand)initWithFacade:(id)facade
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPerformEntityQueryCommand *)self init];
   if (v5)
   {
-    v6 = [v4 searchString];
+    searchString = [facadeCopy searchString];
 
-    if (v6)
+    if (searchString)
     {
-      v7 = [v4 searchString];
-      [(_SFPBPerformEntityQueryCommand *)v5 setSearchString:v7];
+      searchString2 = [facadeCopy searchString];
+      [(_SFPBPerformEntityQueryCommand *)v5 setSearchString:searchString2];
     }
 
-    v8 = [v4 tokenString];
+    tokenString = [facadeCopy tokenString];
 
-    if (v8)
+    if (tokenString)
     {
-      v9 = [v4 tokenString];
-      [(_SFPBPerformEntityQueryCommand *)v5 setTokenString:v9];
+      tokenString2 = [facadeCopy tokenString];
+      [(_SFPBPerformEntityQueryCommand *)v5 setTokenString:tokenString2];
     }
 
-    v10 = [v4 symbolImage];
+    symbolImage = [facadeCopy symbolImage];
 
-    if (v10)
+    if (symbolImage)
     {
       v11 = [_SFPBSymbolImage alloc];
-      v12 = [v4 symbolImage];
-      v13 = [(_SFPBSymbolImage *)v11 initWithFacade:v12];
+      symbolImage2 = [facadeCopy symbolImage];
+      v13 = [(_SFPBSymbolImage *)v11 initWithFacade:symbolImage2];
       [(_SFPBPerformEntityQueryCommand *)v5 setSymbolImage:v13];
     }
 
-    if ([v4 hasEntityType])
+    if ([facadeCopy hasEntityType])
     {
-      -[_SFPBPerformEntityQueryCommand setEntityType:](v5, "setEntityType:", [v4 entityType]);
+      -[_SFPBPerformEntityQueryCommand setEntityType:](v5, "setEntityType:", [facadeCopy entityType]);
     }
 
-    v14 = [v4 entityIdentifier];
+    entityIdentifier = [facadeCopy entityIdentifier];
 
-    if (v14)
+    if (entityIdentifier)
     {
-      v15 = [v4 entityIdentifier];
-      [(_SFPBPerformEntityQueryCommand *)v5 setEntityIdentifier:v15];
+      entityIdentifier2 = [facadeCopy entityIdentifier];
+      [(_SFPBPerformEntityQueryCommand *)v5 setEntityIdentifier:entityIdentifier2];
     }
 
-    v16 = [v4 entityBackgroundColor];
+    entityBackgroundColor = [facadeCopy entityBackgroundColor];
 
-    if (v16)
+    if (entityBackgroundColor)
     {
       v17 = [_SFPBColor alloc];
-      v18 = [v4 entityBackgroundColor];
-      v19 = [(_SFPBColor *)v17 initWithFacade:v18];
+      entityBackgroundColor2 = [facadeCopy entityBackgroundColor];
+      v19 = [(_SFPBColor *)v17 initWithFacade:entityBackgroundColor2];
       [(_SFPBPerformEntityQueryCommand *)v5 setEntityBackgroundColor:v19];
     }
 
-    v20 = [v4 metadata];
+    metadata = [facadeCopy metadata];
 
-    if (v20)
+    if (metadata)
     {
       v21 = [_SFPBDrillDownMetadata alloc];
-      v22 = [v4 metadata];
-      v23 = [(_SFPBDrillDownMetadata *)v21 initWithFacade:v22];
+      metadata2 = [facadeCopy metadata];
+      v23 = [(_SFPBDrillDownMetadata *)v21 initWithFacade:metadata2];
       [(_SFPBPerformEntityQueryCommand *)v5 setMetadata:v23];
     }
 
-    v24 = [v4 drilldownMetadata];
+    drilldownMetadata = [facadeCopy drilldownMetadata];
 
-    if (v24)
+    if (drilldownMetadata)
     {
       v25 = [_SFPBDrillDownMetadata alloc];
-      v26 = [v4 drilldownMetadata];
-      v27 = [(_SFPBDrillDownMetadata *)v25 initWithFacade:v26];
+      drilldownMetadata2 = [facadeCopy drilldownMetadata];
+      v27 = [(_SFPBDrillDownMetadata *)v25 initWithFacade:drilldownMetadata2];
       [(_SFPBPerformEntityQueryCommand *)v5 setDrilldownMetadata:v27];
     }
 
-    v28 = [v4 tokenImage];
+    tokenImage = [facadeCopy tokenImage];
 
-    if (v28)
+    if (tokenImage)
     {
       v29 = [_SFPBImage alloc];
-      v30 = [v4 tokenImage];
-      v31 = [(_SFPBImage *)v29 initWithFacade:v30];
+      tokenImage2 = [facadeCopy tokenImage];
+      v31 = [(_SFPBImage *)v29 initWithFacade:tokenImage2];
       [(_SFPBPerformEntityQueryCommand *)v5 setTokenImage:v31];
     }
 
-    v32 = [v4 filterQueries];
-    if (v32)
+    filterQueries = [facadeCopy filterQueries];
+    if (filterQueries)
     {
       v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -120,8 +120,8 @@
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v34 = [v4 filterQueries];
-    v35 = [v34 countByEnumeratingWithState:&v55 objects:v60 count:16];
+    filterQueries2 = [facadeCopy filterQueries];
+    v35 = [filterQueries2 countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v35)
     {
       v36 = v35;
@@ -132,7 +132,7 @@
         {
           if (*v56 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(filterQueries2);
           }
 
           if (*(*(&v55 + 1) + 8 * i))
@@ -141,15 +141,15 @@
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        v36 = [filterQueries2 countByEnumeratingWithState:&v55 objects:v60 count:16];
       }
 
       while (v36);
     }
 
     [(_SFPBPerformEntityQueryCommand *)v5 setFilterQueries:v33];
-    v39 = [v4 enabledDomains];
-    if (v39)
+    enabledDomains = [facadeCopy enabledDomains];
+    if (enabledDomains)
     {
       v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -163,8 +163,8 @@
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v41 = [v4 enabledDomains];
-    v42 = [v41 countByEnumeratingWithState:&v51 objects:v59 count:16];
+    enabledDomains2 = [facadeCopy enabledDomains];
+    v42 = [enabledDomains2 countByEnumeratingWithState:&v51 objects:v59 count:16];
     if (v42)
     {
       v43 = v42;
@@ -175,7 +175,7 @@
         {
           if (*v52 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(enabledDomains2);
           }
 
           if (*(*(&v51 + 1) + 8 * j))
@@ -184,19 +184,19 @@
           }
         }
 
-        v43 = [v41 countByEnumeratingWithState:&v51 objects:v59 count:16];
+        v43 = [enabledDomains2 countByEnumeratingWithState:&v51 objects:v59 count:16];
       }
 
       while (v43);
     }
 
     [(_SFPBPerformEntityQueryCommand *)v5 setEnabledDomains:v40];
-    v46 = [v4 bundleIdentifier];
+    bundleIdentifier = [facadeCopy bundleIdentifier];
 
-    if (v46)
+    if (bundleIdentifier)
     {
-      v47 = [v4 bundleIdentifier];
-      [(_SFPBPerformEntityQueryCommand *)v5 setBundleIdentifier:v47];
+      bundleIdentifier2 = [facadeCopy bundleIdentifier];
+      [(_SFPBPerformEntityQueryCommand *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
     v48 = v5;
@@ -206,16 +206,16 @@
   return v5;
 }
 
-- (_SFPBPerformEntityQueryCommand)initWithDictionary:(id)a3
+- (_SFPBPerformEntityQueryCommand)initWithDictionary:(id)dictionary
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v62.receiver = self;
   v62.super_class = _SFPBPerformEntityQueryCommand;
   v5 = [(_SFPBPerformEntityQueryCommand *)&v62 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"searchString"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"searchString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -223,7 +223,7 @@
       [(_SFPBPerformEntityQueryCommand *)v5 setSearchString:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"tokenString"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tokenString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,7 +232,7 @@
     }
 
     v48 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"symbolImage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"symbolImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,14 +240,14 @@
       [(_SFPBPerformEntityQueryCommand *)v5 setSymbolImage:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"entityType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"entityType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPerformEntityQueryCommand setEntityType:](v5, "setEntityType:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"entityIdentifier"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"entityIdentifier"];
     objc_opt_class();
     v53 = v13;
     if (objc_opt_isKindOfClass())
@@ -256,7 +256,7 @@
       [(_SFPBPerformEntityQueryCommand *)v5 setEntityIdentifier:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"entityBackgroundColor"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"entityBackgroundColor"];
     objc_opt_class();
     v52 = v15;
     if (objc_opt_isKindOfClass())
@@ -265,7 +265,7 @@
       [(_SFPBPerformEntityQueryCommand *)v5 setEntityBackgroundColor:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"metadata"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
     objc_opt_class();
     v51 = v17;
     if (objc_opt_isKindOfClass())
@@ -274,7 +274,7 @@
       [(_SFPBPerformEntityQueryCommand *)v5 setMetadata:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"drilldownMetadata"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"drilldownMetadata"];
     objc_opt_class();
     v50 = v19;
     if (objc_opt_isKindOfClass())
@@ -285,7 +285,7 @@
 
     v46 = v12;
     v47 = v10;
-    v21 = [v4 objectForKeyedSubscript:@"tokenImage"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"tokenImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -293,7 +293,7 @@
       [(_SFPBPerformEntityQueryCommand *)v5 setTokenImage:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"filterQueries"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"filterQueries"];
     objc_opt_class();
     v49 = v23;
     v45 = v21;
@@ -338,7 +338,7 @@
       v21 = v45;
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"enabledDomains"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"enabledDomains"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -380,7 +380,7 @@
       v21 = v45;
     }
 
-    v39 = [v4 objectForKeyedSubscript:{@"bundleIdentifier", v44}];
+    v39 = [dictionaryCopy objectForKeyedSubscript:{@"bundleIdentifier", v44}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -395,30 +395,30 @@
   return v5;
 }
 
-- (_SFPBPerformEntityQueryCommand)initWithJSON:(id)a3
+- (_SFPBPerformEntityQueryCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPerformEntityQueryCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPerformEntityQueryCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPerformEntityQueryCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -431,146 +431,146 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleIdentifier)
   {
-    v4 = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
+    v5 = [bundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_drilldownMetadata)
   {
-    v6 = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    drilldownMetadata = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
+    dictionaryRepresentation = [drilldownMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"drilldownMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"drilldownMetadata"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"drilldownMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"drilldownMetadata"];
     }
   }
 
   if ([(NSArray *)self->_enabledDomains count])
   {
-    v9 = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"enabledDomains"];
+    enabledDomains = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
+    v10 = [enabledDomains copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"enabledDomains"];
   }
 
   if (self->_entityBackgroundColor)
   {
-    v11 = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    entityBackgroundColor = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
+    dictionaryRepresentation2 = [entityBackgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"entityBackgroundColor"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"entityBackgroundColor"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"entityBackgroundColor"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"entityBackgroundColor"];
     }
   }
 
   if (self->_entityIdentifier)
   {
-    v14 = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"entityIdentifier"];
+    entityIdentifier = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
+    v15 = [entityIdentifier copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"entityIdentifier"];
   }
 
   if (self->_entityType)
   {
-    v16 = [(_SFPBPerformEntityQueryCommand *)self entityType];
-    if (v16 >= 9)
+    entityType = [(_SFPBPerformEntityQueryCommand *)self entityType];
+    if (entityType >= 9)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", entityType];
     }
 
     else
     {
-      v17 = off_1E7ACE500[v16];
+      v17 = off_1E7ACE500[entityType];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"entityType"];
+    [dictionary setObject:v17 forKeyedSubscript:@"entityType"];
   }
 
   if (self->_filterQueries)
   {
-    v18 = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"filterQueries"];
+    filterQueries = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
+    v19 = [filterQueries copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"filterQueries"];
   }
 
   if (self->_metadata)
   {
-    v20 = [(_SFPBPerformEntityQueryCommand *)self metadata];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    metadata = [(_SFPBPerformEntityQueryCommand *)self metadata];
+    dictionaryRepresentation3 = [metadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"metadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"metadata"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"metadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"metadata"];
     }
   }
 
   if (self->_searchString)
   {
-    v23 = [(_SFPBPerformEntityQueryCommand *)self searchString];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"searchString"];
+    searchString = [(_SFPBPerformEntityQueryCommand *)self searchString];
+    v24 = [searchString copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"searchString"];
   }
 
   if (self->_symbolImage)
   {
-    v25 = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    symbolImage = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
+    dictionaryRepresentation4 = [symbolImage dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"symbolImage"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"symbolImage"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"symbolImage"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"symbolImage"];
     }
   }
 
   if (self->_tokenImage)
   {
-    v28 = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    tokenImage = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
+    dictionaryRepresentation5 = [tokenImage dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"tokenImage"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"tokenImage"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"tokenImage"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"tokenImage"];
     }
   }
 
   if (self->_tokenString)
   {
-    v31 = [(_SFPBPerformEntityQueryCommand *)self tokenString];
-    v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"tokenString"];
+    tokenString = [(_SFPBPerformEntityQueryCommand *)self tokenString];
+    v32 = [tokenString copy];
+    [dictionary setObject:v32 forKeyedSubscript:@"tokenString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -589,28 +589,28 @@
   return v8 ^ v13 ^ [(NSString *)self->_bundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self searchString];
-  v6 = [v4 searchString];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self searchString];
+  searchString2 = [equalCopy searchString];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v7 = [(_SFPBPerformEntityQueryCommand *)self searchString];
-  if (v7)
+  searchString3 = [(_SFPBPerformEntityQueryCommand *)self searchString];
+  if (searchString3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPerformEntityQueryCommand *)self searchString];
-    v10 = [v4 searchString];
-    v11 = [v9 isEqual:v10];
+    v8 = searchString3;
+    searchString4 = [(_SFPBPerformEntityQueryCommand *)self searchString];
+    searchString5 = [equalCopy searchString];
+    v11 = [searchString4 isEqual:searchString5];
 
     if (!v11)
     {
@@ -622,20 +622,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self tokenString];
-  v6 = [v4 tokenString];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self tokenString];
+  searchString2 = [equalCopy tokenString];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v12 = [(_SFPBPerformEntityQueryCommand *)self tokenString];
-  if (v12)
+  tokenString = [(_SFPBPerformEntityQueryCommand *)self tokenString];
+  if (tokenString)
   {
-    v13 = v12;
-    v14 = [(_SFPBPerformEntityQueryCommand *)self tokenString];
-    v15 = [v4 tokenString];
-    v16 = [v14 isEqual:v15];
+    v13 = tokenString;
+    tokenString2 = [(_SFPBPerformEntityQueryCommand *)self tokenString];
+    tokenString3 = [equalCopy tokenString];
+    v16 = [tokenString2 isEqual:tokenString3];
 
     if (!v16)
     {
@@ -647,20 +647,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
-  v6 = [v4 symbolImage];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
+  searchString2 = [equalCopy symbolImage];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v17 = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
-  if (v17)
+  symbolImage = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
+  if (symbolImage)
   {
-    v18 = v17;
-    v19 = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
-    v20 = [v4 symbolImage];
-    v21 = [v19 isEqual:v20];
+    v18 = symbolImage;
+    symbolImage2 = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
+    symbolImage3 = [equalCopy symbolImage];
+    v21 = [symbolImage2 isEqual:symbolImage3];
 
     if (!v21)
     {
@@ -673,25 +673,25 @@
   }
 
   entityType = self->_entityType;
-  if (entityType != [v4 entityType])
+  if (entityType != [equalCopy entityType])
   {
     goto LABEL_58;
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
-  v6 = [v4 entityIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
+  searchString2 = [equalCopy entityIdentifier];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v23 = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
-  if (v23)
+  entityIdentifier = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
+  if (entityIdentifier)
   {
-    v24 = v23;
-    v25 = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
-    v26 = [v4 entityIdentifier];
-    v27 = [v25 isEqual:v26];
+    v24 = entityIdentifier;
+    entityIdentifier2 = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
+    entityIdentifier3 = [equalCopy entityIdentifier];
+    v27 = [entityIdentifier2 isEqual:entityIdentifier3];
 
     if (!v27)
     {
@@ -703,20 +703,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
-  v6 = [v4 entityBackgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
+  searchString2 = [equalCopy entityBackgroundColor];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v28 = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
-  if (v28)
+  entityBackgroundColor = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
+  if (entityBackgroundColor)
   {
-    v29 = v28;
-    v30 = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
-    v31 = [v4 entityBackgroundColor];
-    v32 = [v30 isEqual:v31];
+    v29 = entityBackgroundColor;
+    entityBackgroundColor2 = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
+    entityBackgroundColor3 = [equalCopy entityBackgroundColor];
+    v32 = [entityBackgroundColor2 isEqual:entityBackgroundColor3];
 
     if (!v32)
     {
@@ -728,20 +728,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self metadata];
-  v6 = [v4 metadata];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self metadata];
+  searchString2 = [equalCopy metadata];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v33 = [(_SFPBPerformEntityQueryCommand *)self metadata];
-  if (v33)
+  metadata = [(_SFPBPerformEntityQueryCommand *)self metadata];
+  if (metadata)
   {
-    v34 = v33;
-    v35 = [(_SFPBPerformEntityQueryCommand *)self metadata];
-    v36 = [v4 metadata];
-    v37 = [v35 isEqual:v36];
+    v34 = metadata;
+    metadata2 = [(_SFPBPerformEntityQueryCommand *)self metadata];
+    metadata3 = [equalCopy metadata];
+    v37 = [metadata2 isEqual:metadata3];
 
     if (!v37)
     {
@@ -753,20 +753,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
-  v6 = [v4 drilldownMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
+  searchString2 = [equalCopy drilldownMetadata];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v38 = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
-  if (v38)
+  drilldownMetadata = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
+  if (drilldownMetadata)
   {
-    v39 = v38;
-    v40 = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
-    v41 = [v4 drilldownMetadata];
-    v42 = [v40 isEqual:v41];
+    v39 = drilldownMetadata;
+    drilldownMetadata2 = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
+    drilldownMetadata3 = [equalCopy drilldownMetadata];
+    v42 = [drilldownMetadata2 isEqual:drilldownMetadata3];
 
     if (!v42)
     {
@@ -778,20 +778,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
-  v6 = [v4 tokenImage];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
+  searchString2 = [equalCopy tokenImage];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v43 = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
-  if (v43)
+  tokenImage = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
+  if (tokenImage)
   {
-    v44 = v43;
-    v45 = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
-    v46 = [v4 tokenImage];
-    v47 = [v45 isEqual:v46];
+    v44 = tokenImage;
+    tokenImage2 = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
+    tokenImage3 = [equalCopy tokenImage];
+    v47 = [tokenImage2 isEqual:tokenImage3];
 
     if (!v47)
     {
@@ -803,20 +803,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
-  v6 = [v4 filterQueries];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
+  searchString2 = [equalCopy filterQueries];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v48 = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
-  if (v48)
+  filterQueries = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
+  if (filterQueries)
   {
-    v49 = v48;
-    v50 = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
-    v51 = [v4 filterQueries];
-    v52 = [v50 isEqual:v51];
+    v49 = filterQueries;
+    filterQueries2 = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
+    filterQueries3 = [equalCopy filterQueries];
+    v52 = [filterQueries2 isEqual:filterQueries3];
 
     if (!v52)
     {
@@ -828,20 +828,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
-  v6 = [v4 enabledDomains];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
+  searchString2 = [equalCopy enabledDomains];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_57;
   }
 
-  v53 = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
-  if (v53)
+  enabledDomains = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
+  if (enabledDomains)
   {
-    v54 = v53;
-    v55 = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
-    v56 = [v4 enabledDomains];
-    v57 = [v55 isEqual:v56];
+    v54 = enabledDomains;
+    enabledDomains2 = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
+    enabledDomains3 = [equalCopy enabledDomains];
+    v57 = [enabledDomains2 isEqual:enabledDomains3];
 
     if (!v57)
     {
@@ -853,17 +853,17 @@
   {
   }
 
-  v5 = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
+  searchString2 = [equalCopy bundleIdentifier];
+  if ((searchString != 0) == (searchString2 == 0))
   {
 LABEL_57:
 
     goto LABEL_58;
   }
 
-  v58 = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
-  if (!v58)
+  bundleIdentifier = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
+  if (!bundleIdentifier)
   {
 
 LABEL_61:
@@ -871,10 +871,10 @@ LABEL_61:
     goto LABEL_59;
   }
 
-  v59 = v58;
-  v60 = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
-  v61 = [v4 bundleIdentifier];
-  v62 = [v60 isEqual:v61];
+  v59 = bundleIdentifier;
+  bundleIdentifier2 = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
+  bundleIdentifier3 = [equalCopy bundleIdentifier];
+  v62 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
   if (v62)
   {
@@ -888,24 +888,24 @@ LABEL_59:
   return v63;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBPerformEntityQueryCommand *)self searchString];
-  if (v5)
+  toCopy = to;
+  searchString = [(_SFPBPerformEntityQueryCommand *)self searchString];
+  if (searchString)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBPerformEntityQueryCommand *)self tokenString];
-  if (v6)
+  tokenString = [(_SFPBPerformEntityQueryCommand *)self tokenString];
+  if (tokenString)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
-  if (v7)
+  symbolImage = [(_SFPBPerformEntityQueryCommand *)self symbolImage];
+  if (symbolImage)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -915,42 +915,42 @@ LABEL_59:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
-  if (v8)
+  entityIdentifier = [(_SFPBPerformEntityQueryCommand *)self entityIdentifier];
+  if (entityIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
-  if (v9)
+  entityBackgroundColor = [(_SFPBPerformEntityQueryCommand *)self entityBackgroundColor];
+  if (entityBackgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_SFPBPerformEntityQueryCommand *)self metadata];
-  if (v10)
+  metadata = [(_SFPBPerformEntityQueryCommand *)self metadata];
+  if (metadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
-  if (v11)
+  drilldownMetadata = [(_SFPBPerformEntityQueryCommand *)self drilldownMetadata];
+  if (drilldownMetadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
-  if (v12)
+  tokenImage = [(_SFPBPerformEntityQueryCommand *)self tokenImage];
+  if (tokenImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
+  filterQueries = [(_SFPBPerformEntityQueryCommand *)self filterQueries];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v14 = [filterQueries countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v14)
   {
     v15 = v14;
@@ -962,7 +962,7 @@ LABEL_59:
       {
         if (*v31 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(filterQueries);
         }
 
         v18 = *(*(&v30 + 1) + 8 * v17);
@@ -971,18 +971,18 @@ LABEL_59:
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v15 = [filterQueries countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
+  enabledDomains = [(_SFPBPerformEntityQueryCommand *)self enabledDomains];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v20 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v20 = [enabledDomains countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v20)
   {
     v21 = v20;
@@ -994,7 +994,7 @@ LABEL_59:
       {
         if (*v27 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(enabledDomains);
         }
 
         [*(*(&v26 + 1) + 8 * v23) intValue];
@@ -1003,14 +1003,14 @@ LABEL_59:
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v21 = [enabledDomains countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v21);
   }
 
-  v24 = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
-  if (v24)
+  bundleIdentifier = [(_SFPBPerformEntityQueryCommand *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -1018,80 +1018,80 @@ LABEL_59:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (int)enabledDomainsAtIndex:(unint64_t)a3
+- (int)enabledDomainsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_enabledDomains objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_enabledDomains objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)setEnabledDomains:(id)a3
+- (void)setEnabledDomains:(id)domains
 {
-  v4 = [a3 copy];
+  v4 = [domains copy];
   enabledDomains = self->_enabledDomains;
   self->_enabledDomains = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addFilterQueries:(id)a3
+- (void)addFilterQueries:(id)queries
 {
-  v4 = a3;
+  queriesCopy = queries;
   filterQueries = self->_filterQueries;
-  v8 = v4;
+  v8 = queriesCopy;
   if (!filterQueries)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_filterQueries;
-    self->_filterQueries = v6;
+    self->_filterQueries = array;
 
-    v4 = v8;
+    queriesCopy = v8;
     filterQueries = self->_filterQueries;
   }
 
-  [(NSArray *)filterQueries addObject:v4];
+  [(NSArray *)filterQueries addObject:queriesCopy];
 }
 
-- (void)setFilterQueries:(id)a3
+- (void)setFilterQueries:(id)queries
 {
-  v4 = [a3 copy];
+  v4 = [queries copy];
   filterQueries = self->_filterQueries;
   self->_filterQueries = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setEntityIdentifier:(id)a3
+- (void)setEntityIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   entityIdentifier = self->_entityIdentifier;
   self->_entityIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTokenString:(id)a3
+- (void)setTokenString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   tokenString = self->_tokenString;
   self->_tokenString = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   searchString = self->_searchString;
   self->_searchString = v4;
 

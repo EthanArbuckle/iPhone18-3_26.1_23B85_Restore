@@ -1,27 +1,27 @@
 @interface PTSerialization
-+ (BOOL)_supportedOptions:(id)a3 forObject:(id)a4;
-+ (BOOL)registerSerializationClass:(Class)a3;
-+ (BOOL)writeObject:(id)a3 toData:(id)a4 options:(id)a5 error:(id *)a6;
-+ (Class)classForType:(unsigned int)a3;
-+ (id)_errorFromAtomError:(id)a3;
-+ (id)_errorFromAtomStream:(id)a3;
-+ (id)_errorFromAtomWriter:(id)a3;
-+ (id)dataFromObject:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)infoForType:(unsigned int)a3;
-+ (id)objectFromData:(id)a3 error:(id *)a4;
-+ (unint64_t)sizeOfSerializedObject:(id)a3 options:(id)a4;
-+ (void)registerType:(unsigned int)a3 providerClass:(Class)a4;
-+ (void)registerTypeInfo:(id)a3;
++ (BOOL)_supportedOptions:(id)options forObject:(id)object;
++ (BOOL)registerSerializationClass:(Class)class;
++ (BOOL)writeObject:(id)object toData:(id)data options:(id)options error:(id *)error;
++ (Class)classForType:(unsigned int)type;
++ (id)_errorFromAtomError:(id)error;
++ (id)_errorFromAtomStream:(id)stream;
++ (id)_errorFromAtomWriter:(id)writer;
++ (id)dataFromObject:(id)object options:(id)options error:(id *)error;
++ (id)infoForType:(unsigned int)type;
++ (id)objectFromData:(id)data error:(id *)error;
++ (unint64_t)sizeOfSerializedObject:(id)object options:(id)options;
++ (void)registerType:(unsigned int)type providerClass:(Class)class;
++ (void)registerTypeInfo:(id)info;
 @end
 
 @implementation PTSerialization
 
-+ (BOOL)registerSerializationClass:(Class)a3
++ (BOOL)registerSerializationClass:(Class)class
 {
-  v4 = [(objc_class *)a3 conformsToProtocol:&unk_283803278];
+  v4 = [(objc_class *)class conformsToProtocol:&unk_283803278];
   if (v4)
   {
-    [(objc_class *)a3 registerForSerialization];
+    [(objc_class *)class registerForSerialization];
   }
 
   else
@@ -29,20 +29,20 @@
     v5 = _PTLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(PTSerialization *)a3 registerSerializationClass:v5];
+      [(PTSerialization *)class registerSerializationClass:v5];
     }
   }
 
   return v4;
 }
 
-+ (unint64_t)sizeOfSerializedObject:(id)a3 options:(id)a4
++ (unint64_t)sizeOfSerializedObject:(id)object options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isValidObject:v6])
+  objectCopy = object;
+  optionsCopy = options;
+  if ([self isValidObject:objectCopy])
   {
-    v8 = [v6 sizeOfSerializedObjectWithOptions:v7];
+    v8 = [objectCopy sizeOfSerializedObjectWithOptions:optionsCopy];
   }
 
   else
@@ -53,14 +53,14 @@
   return v8;
 }
 
-+ (id)dataFromObject:(id)a3 options:(id)a4 error:(id *)a5
++ (id)dataFromObject:(id)object options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  optionsCopy = options;
+  objectCopy = object;
   v10 = objc_opt_new();
-  LODWORD(a5) = [a1 writeObject:v9 toData:v10 options:v8 error:a5];
+  LODWORD(error) = [self writeObject:objectCopy toData:v10 options:optionsCopy error:error];
 
-  if (a5)
+  if (error)
   {
     v11 = [v10 copy];
   }
@@ -73,18 +73,18 @@
   return v11;
 }
 
-+ (BOOL)_supportedOptions:(id)a3 forObject:(id)a4
++ (BOOL)_supportedOptions:(id)options forObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"PTSerializationVersionKey"];
+  optionsCopy = options;
+  objectCopy = object;
+  v7 = [optionsCopy objectForKeyedSubscript:@"PTSerializationVersionKey"];
 
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:@"PTSerializationVersionKey"];
-    v9 = [v8 integerValue];
+    v8 = [optionsCopy objectForKeyedSubscript:@"PTSerializationVersionKey"];
+    integerValue = [v8 integerValue];
 
-    v10 = [v6 supportsVersion:v9];
+    v10 = [objectCopy supportsVersion:integerValue];
   }
 
   else
@@ -95,59 +95,59 @@
   return v10;
 }
 
-+ (BOOL)writeObject:(id)a3 toData:(id)a4 options:(id)a5 error:(id *)a6
++ (BOOL)writeObject:(id)object toData:(id)data options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([a1 isValidObject:v10])
+  objectCopy = object;
+  dataCopy = data;
+  optionsCopy = options;
+  if ([self isValidObject:objectCopy])
   {
-    if ([a1 _supportedOptions:v12 forObject:v10])
+    if ([self _supportedOptions:optionsCopy forObject:objectCopy])
     {
-      v13 = [[PTDataByteWriter alloc] initWithMutableData:v11];
+      v13 = [[PTDataByteWriter alloc] initWithMutableData:dataCopy];
       v14 = [[PTAtomWriter alloc] initWithByteWriter:v13];
-      [v10 writeToAtomWriter:v14 options:v12];
+      [objectCopy writeToAtomWriter:v14 options:optionsCopy];
       v15 = 0;
       goto LABEL_7;
     }
 
-    v16 = [a1 _errorUnsupportedVersion];
+    _errorUnsupportedVersion = [self _errorUnsupportedVersion];
   }
 
   else
   {
-    v16 = [a1 _errorNotSerializable];
+    _errorUnsupportedVersion = [self _errorNotSerializable];
   }
 
-  v15 = v16;
+  v15 = _errorUnsupportedVersion;
   v14 = 0;
   v13 = 0;
 LABEL_7:
-  v17 = [(PTAtomWriter *)v14 error];
+  error = [(PTAtomWriter *)v14 error];
 
-  if (v17)
+  if (error)
   {
-    v18 = [a1 _errorFromAtomWriter:v14];
+    v18 = [self _errorFromAtomWriter:v14];
 
     v15 = v18;
   }
 
-  if (a6 && v15)
+  if (error && v15)
   {
     v19 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   return v15 == 0;
 }
 
-+ (void)registerTypeInfo:(id)a3
++ (void)registerTypeInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = _PTLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(PTSerialization *)v3 registerTypeInfo:v4];
+    [(PTSerialization *)infoCopy registerTypeInfo:v4];
   }
 
   os_unfair_lock_lock(&sInfoForTypeLock);
@@ -161,15 +161,15 @@ LABEL_7:
     v5 = sInfoForType;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v3, "type")}];
-  [v5 setObject:v3 forKeyedSubscript:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(infoCopy, "type")}];
+  [v5 setObject:infoCopy forKeyedSubscript:v8];
 
   os_unfair_lock_unlock(&sInfoForTypeLock);
 }
 
-+ (id)infoForType:(unsigned int)a3
++ (id)infoForType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   os_unfair_lock_lock(&sInfoForTypeLock);
   v4 = sInfoForType;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3];
@@ -180,56 +180,56 @@ LABEL_7:
   return v6;
 }
 
-+ (Class)classForType:(unsigned int)a3
++ (Class)classForType:(unsigned int)type
 {
-  v3 = [a1 infoForType:*&a3];
-  v4 = [v3 providerClass];
+  v3 = [self infoForType:*&type];
+  providerClass = [v3 providerClass];
 
-  return v4;
+  return providerClass;
 }
 
-+ (void)registerType:(unsigned int)a3 providerClass:(Class)a4
++ (void)registerType:(unsigned int)type providerClass:(Class)class
 {
-  v5 = [[PTSerializationTypeInfo alloc] initWithType:*&a3 providerClass:a4];
-  [a1 registerTypeInfo:v5];
+  v5 = [[PTSerializationTypeInfo alloc] initWithType:*&type providerClass:class];
+  [self registerTypeInfo:v5];
 }
 
-+ (id)_errorFromAtomWriter:(id)a3
++ (id)_errorFromAtomWriter:(id)writer
 {
-  v4 = [a3 error];
-  v5 = [a1 _errorFromAtomError:v4];
+  error = [writer error];
+  v5 = [self _errorFromAtomError:error];
 
   return v5;
 }
 
-+ (id)_errorFromAtomStream:(id)a3
++ (id)_errorFromAtomStream:(id)stream
 {
-  v4 = [a3 error];
-  v5 = [a1 _errorFromAtomError:v4];
+  error = [stream error];
+  v5 = [self _errorFromAtomError:error];
 
   return v5;
 }
 
-+ (id)_errorFromAtomError:(id)a3
++ (id)_errorFromAtomError:(id)error
 {
-  v4 = [a3 code];
-  if (v4)
+  code = [error code];
+  if (code)
   {
-    v4 = [a1 _errorWithCode:3];
+    code = [self _errorWithCode:3];
   }
 
-  return v4;
+  return code;
 }
 
-+ (id)objectFromData:(id)a3 error:(id *)a4
++ (id)objectFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [[PTDataByteStream alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[PTDataByteStream alloc] initWithData:dataCopy];
 
   v8 = [[PTAtomStream alloc] initWithByteStream:v7];
-  v9 = [(PTAtomStream *)v8 error];
+  error = [(PTAtomStream *)v8 error];
 
-  if (v9 || (v10 = [a1 classForType:{-[PTAtomStream atomType](v8, "atomType")}]) == 0)
+  if (error || (v10 = [self classForType:{-[PTAtomStream atomType](v8, "atomType")}]) == 0)
   {
     v11 = 0;
   }
@@ -239,11 +239,11 @@ LABEL_7:
     v11 = [v10 objectFromAtomStream:v8];
   }
 
-  v12 = [(PTAtomStream *)v8 error];
+  error2 = [(PTAtomStream *)v8 error];
 
-  if (v12)
+  if (error2)
   {
-    v13 = [a1 _errorFromAtomStream:v8];
+    _errorNotSerializable = [self _errorFromAtomStream:v8];
   }
 
   else
@@ -254,14 +254,14 @@ LABEL_7:
       goto LABEL_11;
     }
 
-    v13 = [a1 _errorNotSerializable];
+    _errorNotSerializable = [self _errorNotSerializable];
   }
 
-  v14 = v13;
-  if (a4 && v13)
+  v14 = _errorNotSerializable;
+  if (error && _errorNotSerializable)
   {
-    v15 = v13;
-    *a4 = v14;
+    v15 = _errorNotSerializable;
+    *error = v14;
   }
 
 LABEL_11:

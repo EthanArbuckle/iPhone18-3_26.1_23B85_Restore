@@ -12,15 +12,15 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 entity];
-  v6 = [v5 attributesByName];
-  v7 = [v6 allKeys];
+  entity = [self entity];
+  attributesByName = [entity attributesByName];
+  allKeys = [attributesByName allKeys];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v7;
+  v8 = allKeys;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -36,7 +36,7 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [a1 valueForKey:{v13, v16}];
+        v14 = [self valueForKey:{v13, v16}];
         [v4 encodeObject:v14 forKey:v13];
       }
 
@@ -66,18 +66,18 @@
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [v4 allKeys];
-  v7 = [v5 setWithArray:v6];
+  allKeys = [v4 allKeys];
+  v7 = [v5 setWithArray:allKeys];
 
-  v8 = [a1 _obsoleteAttributes];
-  if ([v8 intersectsSet:v7])
+  _obsoleteAttributes = [self _obsoleteAttributes];
+  if ([_obsoleteAttributes intersectsSet:v7])
   {
     v9 = [v4 mutableCopy];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = v8;
+    v10 = _obsoleteAttributes;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -116,22 +116,22 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 entity];
-  v6 = [v5 attributesByName];
-  v7 = [v6 allKeys];
+  entity = [self entity];
+  attributesByName = [entity attributesByName];
+  allKeys = [attributesByName allKeys];
 
-  v8 = [a1 entity];
-  v9 = [v8 relationshipsByName];
-  v10 = [v9 allKeys];
+  entity2 = [self entity];
+  relationshipsByName = [entity2 relationshipsByName];
+  allKeys2 = [relationshipsByName allKeys];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v4 dirtyProperties];
+    dirtyProperties = [v4 dirtyProperties];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v12 = [dirtyProperties countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -142,23 +142,23 @@
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(dirtyProperties);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
-          if ([v7 containsObject:v16])
+          if ([allKeys containsObject:v16])
           {
             v17 = [v4 valueForKey:v16];
-            [a1 setValue:v17 forKey:v16];
+            [self setValue:v17 forKey:v16];
           }
 
-          else if (([v10 containsObject:v16] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"credential") & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"accountProperties") & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"parent") & 1) == 0)
+          else if (([allKeys2 containsObject:v16] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"credential") & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"accountProperties") & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @"parent") & 1) == 0)
           {
             NSLog(@"Dirty property name '%@' not part of managed object.", v16);
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [dirtyProperties countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
@@ -167,9 +167,9 @@
 
   else
   {
-    v11 = [v4 dictionaryWithValuesForKeys:v7];
-    v18 = [a1 _removeObsoleteKeysFromDictionary:v11];
-    [a1 setValuesForKeysWithDictionary:v18];
+    dirtyProperties = [v4 dictionaryWithValuesForKeys:allKeys];
+    v18 = [self _removeObsoleteKeysFromDictionary:dirtyProperties];
+    [self setValuesForKeysWithDictionary:v18];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -179,15 +179,15 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 entity];
-  v8 = [v7 attributesByName];
+  entity = [self entity];
+  attributesByName = [entity attributesByName];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  allKeys = [attributesByName allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -198,14 +198,14 @@
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v8 objectForKey:v14];
-        v16 = [v15 isOptional];
+        v15 = [attributesByName objectForKey:v14];
+        isOptional = [v15 isOptional];
 
-        if ((v16 & 1) == 0)
+        if ((isOptional & 1) == 0)
         {
           v17 = [v6 valueForKey:v14];
 
@@ -225,7 +225,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v11)
       {
         continue;

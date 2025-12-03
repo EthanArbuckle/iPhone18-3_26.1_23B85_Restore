@@ -1,22 +1,22 @@
 @interface SDHeadphoneFeatureManager
-- (BOOL)isProxCardSupportedByProductID:(int)a3;
-- (SDHeadphoneFeatureManager)initWithBluetoothAddress:(id)a3 productID:(unsigned int)a4;
-- (id)getFeatureName:(int)a3;
+- (BOOL)isProxCardSupportedByProductID:(int)d;
+- (SDHeadphoneFeatureManager)initWithBluetoothAddress:(id)address productID:(unsigned int)d;
+- (id)getFeatureName:(int)name;
 @end
 
 @implementation SDHeadphoneFeatureManager
 
-- (SDHeadphoneFeatureManager)initWithBluetoothAddress:(id)a3 productID:(unsigned int)a4
+- (SDHeadphoneFeatureManager)initWithBluetoothAddress:(id)address productID:(unsigned int)d
 {
-  v6 = a3;
+  addressCopy = address;
   v25.receiver = self;
   v25.super_class = SDHeadphoneFeatureManager;
   v7 = [(SDHeadphoneFeatureManager *)&v25 init];
-  v8 = [v6 copy];
+  v8 = [addressCopy copy];
   v9 = *(v7 + 2);
   *(v7 + 2) = v8;
 
-  *(v7 + 2) = a4;
+  *(v7 + 2) = d;
   if (dword_100970DC0 <= 30 && (dword_100970DC0 != -1 || _LogCategory_Initialize()))
   {
     sub_100123460(v7 + 2);
@@ -46,8 +46,8 @@
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = [v17 address];
-        v19 = [v18 isEqualToString:*(v7 + 2)];
+        address = [v17 address];
+        v19 = [address isEqualToString:*(v7 + 2)];
 
         if (v19)
         {
@@ -76,39 +76,39 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)isProxCardSupportedByProductID:(int)a3
+- (BOOL)isProxCardSupportedByProductID:(int)d
 {
-  if (a3 == 1)
+  if (d == 1)
   {
     v3 = [[SFHeadphoneProduct alloc] initWithProductID:self->_productID];
-    v4 = [v3 supportsAdaptiveControlsProx];
+    supportsAdaptiveControlsProx = [v3 supportsAdaptiveControlsProx];
   }
 
   else
   {
-    if (a3)
+    if (d)
     {
       return 0;
     }
 
     v3 = [[SFHeadphoneProduct alloc] initWithProductID:self->_productID];
-    v4 = [v3 supportsMuteCallProx];
+    supportsAdaptiveControlsProx = [v3 supportsMuteCallProx];
   }
 
-  v5 = v4;
+  v5 = supportsAdaptiveControlsProx;
 
   return v5;
 }
 
-- (id)getFeatureName:(int)a3
+- (id)getFeatureName:(int)name
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (name == 1)
   {
     v3 = @"Adaptive Controls";
   }
 
-  if (a3)
+  if (name)
   {
     return v3;
   }

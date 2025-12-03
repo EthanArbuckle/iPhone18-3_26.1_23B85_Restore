@@ -17,66 +17,66 @@
   [v5 setObject:@"http://schema.org/EventReservation" forKeyedSubscript:@"@type"];
   v6 = objc_opt_new();
   [v6 setObject:@"http://schema.org/MovieShowing" forKeyedSubscript:@"@type"];
-  v7 = [v3 event];
-  v8 = [v7 name];
+  event = [v3 event];
+  name = [event name];
 
-  if (v8)
+  if (name)
   {
     v32[0] = @"@type";
     v32[1] = @"name";
     v33[0] = @"http://schema.org/Movie";
-    v9 = [v7 name];
-    v33[1] = v9;
+    name2 = [event name];
+    v33[1] = name2;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
 
     [v6 setObject:v10 forKeyedSubscript:@"movie"];
   }
 
-  v11 = [v7 eventDuration];
-  v12 = [v11 startDateComponents];
+  eventDuration = [event eventDuration];
+  startDateComponents = [eventDuration startDateComponents];
 
-  if (v12)
+  if (startDateComponents)
   {
-    v13 = [v7 eventDuration];
-    v14 = [v13 startDateComponents];
-    v15 = [v14 schema];
-    [v6 setObject:v15 forKeyedSubscript:@"startDate"];
+    eventDuration2 = [event eventDuration];
+    startDateComponents2 = [eventDuration2 startDateComponents];
+    schema = [startDateComponents2 schema];
+    [v6 setObject:schema forKeyedSubscript:@"startDate"];
   }
 
-  v16 = [v7 eventDuration];
-  v17 = [v16 endDateComponents];
+  eventDuration3 = [event eventDuration];
+  endDateComponents = [eventDuration3 endDateComponents];
 
-  if (v17)
+  if (endDateComponents)
   {
-    v18 = [v7 eventDuration];
-    v19 = [v18 endDateComponents];
-    v20 = [v19 schema];
-    [v6 setObject:v20 forKeyedSubscript:@"endDate"];
+    eventDuration4 = [event eventDuration];
+    endDateComponents2 = [eventDuration4 endDateComponents];
+    schema2 = [endDateComponents2 schema];
+    [v6 setObject:schema2 forKeyedSubscript:@"endDate"];
   }
 
-  v21 = [v7 location];
+  location = [event location];
 
-  if (v21)
+  if (location)
   {
-    v22 = [v7 location];
-    v23 = [v22 schema];
-    [v6 setObject:v23 forKeyedSubscript:@"location"];
+    location2 = [event location];
+    schema3 = [location2 schema];
+    [v6 setObject:schema3 forKeyedSubscript:@"location"];
   }
 
   [v5 setObject:v6 forKeyedSubscript:@"reservationFor"];
-  v24 = [v3 reservedSeat];
+  reservedSeat = [v3 reservedSeat];
 
-  if (v24)
+  if (reservedSeat)
   {
-    v25 = [v3 reservedSeat];
-    v26 = [v25 schema];
+    reservedSeat2 = [v3 reservedSeat];
+    schema4 = [reservedSeat2 schema];
 
-    if (v26)
+    if (schema4)
     {
       v30[0] = @"@type";
       v30[1] = @"ticketedSeat";
       v31[0] = @"http://schema.org/Ticket";
-      v31[1] = v26;
+      v31[1] = schema4;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
       [v5 setObject:v27 forKeyedSubscript:@"reservedTicket"];
     }
@@ -97,61 +97,61 @@
   [v5 setObject:@"http://schema.org/EventReservation" forKeyedSubscript:@"@type"];
   v6 = objc_opt_new();
   [v6 setObject:@"http://schema.org/Event" forKeyedSubscript:@"@type"];
-  v7 = [v3 event];
-  v8 = [v7 name];
+  event = [v3 event];
+  name = [event name];
 
-  if (v8)
+  if (name)
   {
-    v9 = [v3 event];
-    v10 = [v9 name];
-    [v6 setObject:v10 forKeyedSubscript:@"name"];
+    event2 = [v3 event];
+    name2 = [event2 name];
+    [v6 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v11 = [v7 eventDuration];
-  v12 = [v11 startDateComponents];
+  eventDuration = [event eventDuration];
+  startDateComponents = [eventDuration startDateComponents];
 
-  if (v12)
+  if (startDateComponents)
   {
-    v13 = [v7 eventDuration];
-    v14 = [v13 startDateComponents];
-    v15 = [v14 schema];
-    [v6 setObject:v15 forKeyedSubscript:@"startDate"];
+    eventDuration2 = [event eventDuration];
+    startDateComponents2 = [eventDuration2 startDateComponents];
+    schema = [startDateComponents2 schema];
+    [v6 setObject:schema forKeyedSubscript:@"startDate"];
   }
 
-  v16 = [v7 eventDuration];
-  v17 = [v16 endDateComponents];
+  eventDuration3 = [event eventDuration];
+  endDateComponents = [eventDuration3 endDateComponents];
 
-  if (v17)
+  if (endDateComponents)
   {
-    v18 = [v7 eventDuration];
-    v19 = [v18 endDateComponents];
-    v20 = [v19 schema];
-    [v6 setObject:v20 forKeyedSubscript:@"endDate"];
+    eventDuration4 = [event eventDuration];
+    endDateComponents2 = [eventDuration4 endDateComponents];
+    schema2 = [endDateComponents2 schema];
+    [v6 setObject:schema2 forKeyedSubscript:@"endDate"];
   }
 
-  v21 = [v7 location];
+  location = [event location];
 
-  if (v21)
+  if (location)
   {
-    v22 = [v7 location];
-    v23 = [v22 schema];
-    [v6 setObject:v23 forKeyedSubscript:@"location"];
+    location2 = [event location];
+    schema3 = [location2 schema];
+    [v6 setObject:schema3 forKeyedSubscript:@"location"];
   }
 
   [v5 setObject:v6 forKeyedSubscript:@"reservationFor"];
-  v24 = [v3 reservedSeat];
+  reservedSeat = [v3 reservedSeat];
 
-  if (v24)
+  if (reservedSeat)
   {
-    v25 = [v3 reservedSeat];
-    v26 = [v25 schema];
+    reservedSeat2 = [v3 reservedSeat];
+    schema4 = [reservedSeat2 schema];
 
-    if (v26)
+    if (schema4)
     {
       v30[0] = @"@type";
       v30[1] = @"ticketedSeat";
       v31[0] = @"http://schema.org/Ticket";
-      v31[1] = v26;
+      v31[1] = schema4;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
       [v5 setObject:v27 forKeyedSubscript:@"reservedTicket"];
     }
@@ -165,17 +165,17 @@
 + (id)schemaFromTicketedEventReservation:()schema
 {
   v3 = a3;
-  v4 = [v3 event];
-  v5 = [v4 category];
+  event = [v3 event];
+  category = [event category];
 
-  if (v5 == 1)
+  if (category == 1)
   {
     v6 = [MEMORY[0x277CD4260] schemaFromMovieTicketedEventReservation:v3];
   }
 
   else
   {
-    if (v5)
+    if (category)
     {
       goto LABEL_6;
     }
@@ -183,10 +183,10 @@
     v6 = [MEMORY[0x277CD4260] schemaFromGenericTicketedEventReservation:v3];
   }
 
-  v4 = v6;
+  event = v6;
 LABEL_6:
 
-  return v4;
+  return event;
 }
 
 + (id)fromSchema:()schema
@@ -228,8 +228,8 @@ LABEL_6:
   v15 = [objc_alloc(MEMORY[0x277CD4258]) initWithCategory:v11 name:v10 eventDuration:v14 location:v23];
   v16 = objc_alloc(MEMORY[0x277CD4188]);
   v17 = objc_opt_new();
-  v18 = [v17 UUIDString];
-  v19 = [v16 initWithVocabularyIdentifier:v18 spokenPhrase:@"Event" pronunciationHint:0];
+  uUIDString = [v17 UUIDString];
+  v19 = [v16 initWithVocabularyIdentifier:uUIDString spokenPhrase:@"Event" pronunciationHint:0];
 
   v20 = [objc_alloc(MEMORY[0x277CD4260]) initWithItemReference:v19 reservationNumber:v29 bookingTime:v28 reservationStatus:v26 reservationHolderName:v27 actions:0 URL:v5 reservedSeat:v6 event:v15];
 

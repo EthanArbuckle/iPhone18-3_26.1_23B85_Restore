@@ -1,11 +1,11 @@
 @interface BDSCloudSyncDiagnosticServiceClient
 + (id)sharedServiceProxy;
 - (BDSCloudSyncDiagnosticServiceClient)init;
-- (void)clearSyncMetadata:(id)a3;
-- (void)detachWithCompletionHandler:(id)a3;
-- (void)diagnosticInfoWithCompletionHandler:(id)a3;
-- (void)findLocalIdDupesWithCompletionHandler:(id)a3;
-- (void)forceFetchRemoteChanges:(id)a3;
+- (void)clearSyncMetadata:(id)metadata;
+- (void)detachWithCompletionHandler:(id)handler;
+- (void)diagnosticInfoWithCompletionHandler:(id)handler;
+- (void)findLocalIdDupesWithCompletionHandler:(id)handler;
+- (void)forceFetchRemoteChanges:(id)changes;
 @end
 
 @implementation BDSCloudSyncDiagnosticServiceClient
@@ -39,39 +39,39 @@
   return v3;
 }
 
-- (void)clearSyncMetadata:(id)a3
+- (void)clearSyncMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
-  [v5 clearSyncMetadata:v4];
+  metadataCopy = metadata;
+  serviceProxy = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
+  [serviceProxy clearSyncMetadata:metadataCopy];
 }
 
-- (void)forceFetchRemoteChanges:(id)a3
+- (void)forceFetchRemoteChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
-  [v5 forceFetchRemoteChanges:v4];
+  changesCopy = changes;
+  serviceProxy = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
+  [serviceProxy forceFetchRemoteChanges:changesCopy];
 }
 
-- (void)detachWithCompletionHandler:(id)a3
+- (void)detachWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
-  [v5 cloudSyncDiagnosticDetachWithCompletionHandler:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
+  [serviceProxy cloudSyncDiagnosticDetachWithCompletionHandler:handlerCopy];
 }
 
-- (void)findLocalIdDupesWithCompletionHandler:(id)a3
+- (void)findLocalIdDupesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
-  [v5 cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
+  [serviceProxy cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:handlerCopy];
 }
 
-- (void)diagnosticInfoWithCompletionHandler:(id)a3
+- (void)diagnosticInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
-  [v5 cloudSyncDiagnosticInfoWithCompletionHandler:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSCloudSyncDiagnosticServiceClient *)self serviceProxy];
+  [serviceProxy cloudSyncDiagnosticInfoWithCompletionHandler:handlerCopy];
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface TPPBPeerStableInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsUserControllableViewStatus:(id)a3;
+- (int)StringAsUserControllableViewStatus:(id)status;
 - (int)userControllableViewStatus;
 - (unint64_t)hash;
-- (void)addCustodianRecoveryKeys:(id)a3;
-- (void)addPolicySecrets:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFlexiblePolicyVersion:(BOOL)a3;
-- (void)setHasFrozenPolicyVersion:(BOOL)a3;
-- (void)setHasIsInheritedAccount:(BOOL)a3;
-- (void)setHasSupportsRepudiation:(BOOL)a3;
-- (void)setHasUserControllableViewStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCustodianRecoveryKeys:(id)keys;
+- (void)addPolicySecrets:(id)secrets;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFlexiblePolicyVersion:(BOOL)version;
+- (void)setHasFrozenPolicyVersion:(BOOL)version;
+- (void)setHasIsInheritedAccount:(BOOL)account;
+- (void)setHasSupportsRepudiation:(BOOL)repudiation;
+- (void)setHasUserControllableViewStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBPeerStableInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 140);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 140);
   if (v6)
   {
-    self->_clock = v4[1];
+    self->_clock = fromCopy[1];
     *&self->_has |= 1u;
-    v6 = *(v4 + 140);
+    v6 = *(fromCopy + 140);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_frozenPolicyVersion = v4[3];
+    self->_frozenPolicyVersion = fromCopy[3];
     *&self->_has |= 4u;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(TPPBPeerStableInfo *)self setFrozenPolicyHash:?];
   }
@@ -284,49 +284,49 @@ LABEL_14:
   return v20 ^ v21 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
-  v5 = *(v4 + 140);
+  v5 = *(equalCopy + 140);
   if (*&self->_has)
   {
-    if ((*(v4 + 140) & 1) == 0 || self->_clock != *(v4 + 1))
+    if ((*(equalCopy + 140) & 1) == 0 || self->_clock != *(equalCopy + 1))
     {
       goto LABEL_62;
     }
   }
 
-  else if (*(v4 + 140))
+  else if (*(equalCopy + 140))
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 140) & 4) == 0 || self->_frozenPolicyVersion != *(v4 + 3))
+    if ((*(equalCopy + 140) & 4) == 0 || self->_frozenPolicyVersion != *(equalCopy + 3))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 140) & 4) != 0)
+  else if ((*(equalCopy + 140) & 4) != 0)
   {
     goto LABEL_62;
   }
 
   frozenPolicyHash = self->_frozenPolicyHash;
-  if (frozenPolicyHash | *(v4 + 7) && ![(NSString *)frozenPolicyHash isEqual:?])
+  if (frozenPolicyHash | *(equalCopy + 7) && ![(NSString *)frozenPolicyHash isEqual:?])
   {
     goto LABEL_62;
   }
 
   policySecrets = self->_policySecrets;
-  if (policySecrets | *(v4 + 9))
+  if (policySecrets | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)policySecrets isEqual:?])
     {
@@ -335,7 +335,7 @@ LABEL_14:
   }
 
   osVersion = self->_osVersion;
-  if (osVersion | *(v4 + 8))
+  if (osVersion | *(equalCopy + 8))
   {
     if (![(NSString *)osVersion isEqual:?])
     {
@@ -344,7 +344,7 @@ LABEL_14:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 5))
+  if (deviceName | *(equalCopy + 5))
   {
     if (![(NSString *)deviceName isEqual:?])
     {
@@ -353,7 +353,7 @@ LABEL_14:
   }
 
   recoverySigningPublicKey = self->_recoverySigningPublicKey;
-  if (recoverySigningPublicKey | *(v4 + 11))
+  if (recoverySigningPublicKey | *(equalCopy + 11))
   {
     if (![(NSData *)recoverySigningPublicKey isEqual:?])
     {
@@ -362,7 +362,7 @@ LABEL_14:
   }
 
   recoveryEncryptionPublicKey = self->_recoveryEncryptionPublicKey;
-  if (recoveryEncryptionPublicKey | *(v4 + 10))
+  if (recoveryEncryptionPublicKey | *(equalCopy + 10))
   {
     if (![(NSData *)recoveryEncryptionPublicKey isEqual:?])
     {
@@ -371,7 +371,7 @@ LABEL_14:
   }
 
   serialNumber = self->_serialNumber;
-  if (serialNumber | *(v4 + 13))
+  if (serialNumber | *(equalCopy + 13))
   {
     if (![(NSString *)serialNumber isEqual:?])
     {
@@ -380,22 +380,22 @@ LABEL_14:
   }
 
   has = self->_has;
-  v14 = *(v4 + 140);
+  v14 = *(equalCopy + 140);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 140) & 2) == 0 || self->_flexiblePolicyVersion != *(v4 + 2))
+    if ((*(equalCopy + 140) & 2) == 0 || self->_flexiblePolicyVersion != *(equalCopy + 2))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 140) & 2) != 0)
+  else if ((*(equalCopy + 140) & 2) != 0)
   {
     goto LABEL_62;
   }
 
   flexiblePolicyHash = self->_flexiblePolicyHash;
-  if (flexiblePolicyHash | *(v4 + 6))
+  if (flexiblePolicyHash | *(equalCopy + 6))
   {
     if (![(NSString *)flexiblePolicyHash isEqual:?])
     {
@@ -403,12 +403,12 @@ LABEL_14:
     }
 
     has = self->_has;
-    v14 = *(v4 + 140);
+    v14 = *(equalCopy + 140);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_userControllableViewStatus != *(v4 + 28))
+    if ((v14 & 8) == 0 || self->_userControllableViewStatus != *(equalCopy + 28))
     {
       goto LABEL_62;
     }
@@ -420,13 +420,13 @@ LABEL_14:
   }
 
   custodianRecoveryKeys = self->_custodianRecoveryKeys;
-  if (custodianRecoveryKeys | *(v4 + 4) && ![(NSMutableArray *)custodianRecoveryKeys isEqual:?])
+  if (custodianRecoveryKeys | *(equalCopy + 4) && ![(NSMutableArray *)custodianRecoveryKeys isEqual:?])
   {
     goto LABEL_62;
   }
 
   secureElementIdentity = self->_secureElementIdentity;
-  if (secureElementIdentity | *(v4 + 12))
+  if (secureElementIdentity | *(equalCopy + 12))
   {
     if (![(TPPBSecureElementIdentity *)secureElementIdentity isEqual:?])
     {
@@ -435,7 +435,7 @@ LABEL_14:
   }
 
   walrus = self->_walrus;
-  if (walrus | *(v4 + 15))
+  if (walrus | *(equalCopy + 15))
   {
     if (![(TPPBPeerStableInfoSetting *)walrus isEqual:?])
     {
@@ -444,7 +444,7 @@ LABEL_14:
   }
 
   webAccess = self->_webAccess;
-  if (webAccess | *(v4 + 16))
+  if (webAccess | *(equalCopy + 16))
   {
     if (![(TPPBPeerStableInfoSetting *)webAccess isEqual:?])
     {
@@ -454,44 +454,44 @@ LABEL_14:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 140) & 0x10) == 0)
+    if ((*(equalCopy + 140) & 0x10) == 0)
     {
       goto LABEL_62;
     }
 
-    v21 = *(v4 + 136);
+    v21 = *(equalCopy + 136);
     if (self->_isInheritedAccount)
     {
-      if ((*(v4 + 136) & 1) == 0)
+      if ((*(equalCopy + 136) & 1) == 0)
       {
         goto LABEL_62;
       }
     }
 
-    else if (*(v4 + 136))
+    else if (*(equalCopy + 136))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 140) & 0x10) != 0)
+  else if ((*(equalCopy + 140) & 0x10) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 140) & 0x20) != 0)
+    if ((*(equalCopy + 140) & 0x20) != 0)
     {
       if (self->_supportsRepudiation)
       {
-        if (*(v4 + 137))
+        if (*(equalCopy + 137))
         {
           goto LABEL_64;
         }
       }
 
-      else if (!*(v4 + 137))
+      else if (!*(equalCopy + 137))
       {
 LABEL_64:
         v20 = 1;
@@ -504,16 +504,16 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v20 = (*(v4 + 140) & 0x20) == 0;
+  v20 = (*(equalCopy + 140) & 0x20) == 0;
 LABEL_63:
 
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -529,7 +529,7 @@ LABEL_63:
     *(v5 + 140) |= 4u;
   }
 
-  v8 = [(NSString *)self->_frozenPolicyHash copyWithZone:a3];
+  v8 = [(NSString *)self->_frozenPolicyHash copyWithZone:zone];
   v9 = *(v6 + 56);
   *(v6 + 56) = v8;
 
@@ -552,7 +552,7 @@ LABEL_63:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v47 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v47 + 1) + 8 * i) copyWithZone:zone];
         [v6 addPolicySecrets:v15];
       }
 
@@ -562,23 +562,23 @@ LABEL_63:
     while (v12);
   }
 
-  v16 = [(NSString *)self->_osVersion copyWithZone:a3];
+  v16 = [(NSString *)self->_osVersion copyWithZone:zone];
   v17 = *(v6 + 64);
   *(v6 + 64) = v16;
 
-  v18 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v18 = [(NSString *)self->_deviceName copyWithZone:zone];
   v19 = *(v6 + 40);
   *(v6 + 40) = v18;
 
-  v20 = [(NSData *)self->_recoverySigningPublicKey copyWithZone:a3];
+  v20 = [(NSData *)self->_recoverySigningPublicKey copyWithZone:zone];
   v21 = *(v6 + 88);
   *(v6 + 88) = v20;
 
-  v22 = [(NSData *)self->_recoveryEncryptionPublicKey copyWithZone:a3];
+  v22 = [(NSData *)self->_recoveryEncryptionPublicKey copyWithZone:zone];
   v23 = *(v6 + 80);
   *(v6 + 80) = v22;
 
-  v24 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v24 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v25 = *(v6 + 104);
   *(v6 + 104) = v24;
 
@@ -588,7 +588,7 @@ LABEL_63:
     *(v6 + 140) |= 2u;
   }
 
-  v26 = [(NSString *)self->_flexiblePolicyHash copyWithZone:a3];
+  v26 = [(NSString *)self->_flexiblePolicyHash copyWithZone:zone];
   v27 = *(v6 + 48);
   *(v6 + 48) = v26;
 
@@ -617,7 +617,7 @@ LABEL_63:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v43 + 1) + 8 * j) copyWithZone:{a3, v43}];
+        v33 = [*(*(&v43 + 1) + 8 * j) copyWithZone:{zone, v43}];
         [v6 addCustodianRecoveryKeys:v33];
       }
 
@@ -627,15 +627,15 @@ LABEL_63:
     while (v30);
   }
 
-  v34 = [(TPPBSecureElementIdentity *)self->_secureElementIdentity copyWithZone:a3];
+  v34 = [(TPPBSecureElementIdentity *)self->_secureElementIdentity copyWithZone:zone];
   v35 = *(v6 + 96);
   *(v6 + 96) = v34;
 
-  v36 = [(TPPBPeerStableInfoSetting *)self->_walrus copyWithZone:a3];
+  v36 = [(TPPBPeerStableInfoSetting *)self->_walrus copyWithZone:zone];
   v37 = *(v6 + 120);
   *(v6 + 120) = v36;
 
-  v38 = [(TPPBPeerStableInfoSetting *)self->_webAccess copyWithZone:a3];
+  v38 = [(TPPBPeerStableInfoSetting *)self->_webAccess copyWithZone:zone];
   v39 = *(v6 + 128);
   *(v6 + 128) = v38;
 
@@ -657,36 +657,36 @@ LABEL_63:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_clock;
-    *(v4 + 140) |= 1u;
+    toCopy[1] = self->_clock;
+    *(toCopy + 140) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[3] = self->_frozenPolicyVersion;
-    *(v4 + 140) |= 4u;
+    toCopy[3] = self->_frozenPolicyVersion;
+    *(toCopy + 140) |= 4u;
   }
 
-  v17 = v4;
+  v17 = toCopy;
   if (self->_frozenPolicyHash)
   {
-    [v4 setFrozenPolicyHash:?];
+    [toCopy setFrozenPolicyHash:?];
   }
 
   if ([(TPPBPeerStableInfo *)self policySecretsCount])
   {
     [v17 clearPolicySecrets];
-    v6 = [(TPPBPeerStableInfo *)self policySecretsCount];
-    if (v6)
+    policySecretsCount = [(TPPBPeerStableInfo *)self policySecretsCount];
+    if (policySecretsCount)
     {
-      v7 = v6;
+      v7 = policySecretsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(TPPBPeerStableInfo *)self policySecretsAtIndex:i];
@@ -746,10 +746,10 @@ LABEL_63:
   if ([(TPPBPeerStableInfo *)self custodianRecoveryKeysCount])
   {
     [v17 clearCustodianRecoveryKeys];
-    v11 = [(TPPBPeerStableInfo *)self custodianRecoveryKeysCount];
-    if (v11)
+    custodianRecoveryKeysCount = [(TPPBPeerStableInfo *)self custodianRecoveryKeysCount];
+    if (custodianRecoveryKeysCount)
     {
-      v12 = v11;
+      v12 = custodianRecoveryKeysCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(TPPBPeerStableInfo *)self custodianRecoveryKeysAtIndex:j];
@@ -791,10 +791,10 @@ LABEL_63:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -949,12 +949,12 @@ LABEL_63:
 - (id)dictionaryRepresentation
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_clock];
-    [v3 setObject:v5 forKey:@"clock"];
+    [dictionary setObject:v5 forKey:@"clock"];
 
     has = self->_has;
   }
@@ -962,55 +962,55 @@ LABEL_63:
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_frozenPolicyVersion];
-    [v3 setObject:v6 forKey:@"frozen_policy_version"];
+    [dictionary setObject:v6 forKey:@"frozen_policy_version"];
   }
 
   frozenPolicyHash = self->_frozenPolicyHash;
   if (frozenPolicyHash)
   {
-    [v3 setObject:frozenPolicyHash forKey:@"frozen_policy_hash"];
+    [dictionary setObject:frozenPolicyHash forKey:@"frozen_policy_hash"];
   }
 
   osVersion = self->_osVersion;
   if (osVersion)
   {
-    [v3 setObject:osVersion forKey:@"os_version"];
+    [dictionary setObject:osVersion forKey:@"os_version"];
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
-    [v3 setObject:deviceName forKey:@"device_name"];
+    [dictionary setObject:deviceName forKey:@"device_name"];
   }
 
   recoverySigningPublicKey = self->_recoverySigningPublicKey;
   if (recoverySigningPublicKey)
   {
-    [v3 setObject:recoverySigningPublicKey forKey:@"recovery_signing_public_key"];
+    [dictionary setObject:recoverySigningPublicKey forKey:@"recovery_signing_public_key"];
   }
 
   recoveryEncryptionPublicKey = self->_recoveryEncryptionPublicKey;
   if (recoveryEncryptionPublicKey)
   {
-    [v3 setObject:recoveryEncryptionPublicKey forKey:@"recovery_encryption_public_key"];
+    [dictionary setObject:recoveryEncryptionPublicKey forKey:@"recovery_encryption_public_key"];
   }
 
   serialNumber = self->_serialNumber;
   if (serialNumber)
   {
-    [v3 setObject:serialNumber forKey:@"serial_number"];
+    [dictionary setObject:serialNumber forKey:@"serial_number"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_flexiblePolicyVersion];
-    [v3 setObject:v13 forKey:@"flexible_policy_version"];
+    [dictionary setObject:v13 forKey:@"flexible_policy_version"];
   }
 
   flexiblePolicyHash = self->_flexiblePolicyHash;
   if (flexiblePolicyHash)
   {
-    [v3 setObject:flexiblePolicyHash forKey:@"flexible_policy_hash"];
+    [dictionary setObject:flexiblePolicyHash forKey:@"flexible_policy_hash"];
   }
 
   if ([(NSMutableArray *)self->_policySecrets count])
@@ -1035,8 +1035,8 @@ LABEL_63:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v46 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation = [*(*(&v46 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v46 objects:v51 count:16];
@@ -1045,7 +1045,7 @@ LABEL_63:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"policy_secrets"];
+    [dictionary setObject:v15 forKey:@"policy_secrets"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -1061,7 +1061,7 @@ LABEL_63:
       v23 = off_279DEDD48[userControllableViewStatus];
     }
 
-    [v3 setObject:v23 forKey:@"user_controllable_view_status"];
+    [dictionary setObject:v23 forKey:@"user_controllable_view_status"];
   }
 
   if ([(NSMutableArray *)self->_custodianRecoveryKeys count])
@@ -1086,8 +1086,8 @@ LABEL_63:
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v42 + 1) + 8 * j) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation2 = [*(*(&v42 + 1) + 8 * j) dictionaryRepresentation];
+          [v24 addObject:dictionaryRepresentation2];
         }
 
         v27 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v42 objects:v50 count:16];
@@ -1096,35 +1096,35 @@ LABEL_63:
       while (v27);
     }
 
-    [v3 setObject:v24 forKey:@"custodian_recovery_keys"];
+    [dictionary setObject:v24 forKey:@"custodian_recovery_keys"];
   }
 
   secureElementIdentity = self->_secureElementIdentity;
   if (secureElementIdentity)
   {
-    v32 = [(TPPBSecureElementIdentity *)secureElementIdentity dictionaryRepresentation];
-    [v3 setObject:v32 forKey:@"secureElementIdentity"];
+    dictionaryRepresentation3 = [(TPPBSecureElementIdentity *)secureElementIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"secureElementIdentity"];
   }
 
   walrus = self->_walrus;
   if (walrus)
   {
-    v34 = [(TPPBPeerStableInfoSetting *)walrus dictionaryRepresentation];
-    [v3 setObject:v34 forKey:@"walrus"];
+    dictionaryRepresentation4 = [(TPPBPeerStableInfoSetting *)walrus dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"walrus"];
   }
 
   webAccess = self->_webAccess;
   if (webAccess)
   {
-    v36 = [(TPPBPeerStableInfoSetting *)webAccess dictionaryRepresentation];
-    [v3 setObject:v36 forKey:@"web_access"];
+    dictionaryRepresentation5 = [(TPPBPeerStableInfoSetting *)webAccess dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"web_access"];
   }
 
   v37 = self->_has;
   if ((v37 & 0x10) != 0)
   {
     v38 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInheritedAccount];
-    [v3 setObject:v38 forKey:@"isInheritedAccount"];
+    [dictionary setObject:v38 forKey:@"isInheritedAccount"];
 
     v37 = self->_has;
   }
@@ -1132,12 +1132,12 @@ LABEL_63:
   if ((v37 & 0x20) != 0)
   {
     v39 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsRepudiation];
-    [v3 setObject:v39 forKey:@"supportsRepudiation"];
+    [dictionary setObject:v39 forKey:@"supportsRepudiation"];
   }
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1146,15 +1146,15 @@ LABEL_63:
   v8.receiver = self;
   v8.super_class = TPPBPeerStableInfo;
   v4 = [(TPPBPeerStableInfo *)&v8 description];
-  v5 = [(TPPBPeerStableInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBPeerStableInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasSupportsRepudiation:(BOOL)a3
+- (void)setHasSupportsRepudiation:(BOOL)repudiation
 {
-  if (a3)
+  if (repudiation)
   {
     v3 = 32;
   }
@@ -1167,9 +1167,9 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsInheritedAccount:(BOOL)a3
+- (void)setHasIsInheritedAccount:(BOOL)account
 {
-  if (a3)
+  if (account)
   {
     v3 = 16;
   }
@@ -1182,43 +1182,43 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addCustodianRecoveryKeys:(id)a3
+- (void)addCustodianRecoveryKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   custodianRecoveryKeys = self->_custodianRecoveryKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!custodianRecoveryKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_custodianRecoveryKeys;
     self->_custodianRecoveryKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     custodianRecoveryKeys = self->_custodianRecoveryKeys;
   }
 
-  [(NSMutableArray *)custodianRecoveryKeys addObject:v4];
+  [(NSMutableArray *)custodianRecoveryKeys addObject:keysCopy];
 }
 
-- (int)StringAsUserControllableViewStatus:(id)a3
+- (int)StringAsUserControllableViewStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DISABLED"])
+  else if ([statusCopy isEqualToString:@"DISABLED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ENABLED"])
+  else if ([statusCopy isEqualToString:@"ENABLED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FOLLOWING"])
+  else if ([statusCopy isEqualToString:@"FOLLOWING"])
   {
     v4 = 3;
   }
@@ -1231,9 +1231,9 @@ LABEL_63:
   return v4;
 }
 
-- (void)setHasUserControllableViewStatus:(BOOL)a3
+- (void)setHasUserControllableViewStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -1259,27 +1259,27 @@ LABEL_63:
   }
 }
 
-- (void)addPolicySecrets:(id)a3
+- (void)addPolicySecrets:(id)secrets
 {
-  v4 = a3;
+  secretsCopy = secrets;
   policySecrets = self->_policySecrets;
-  v8 = v4;
+  v8 = secretsCopy;
   if (!policySecrets)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_policySecrets;
     self->_policySecrets = v6;
 
-    v4 = v8;
+    secretsCopy = v8;
     policySecrets = self->_policySecrets;
   }
 
-  [(NSMutableArray *)policySecrets addObject:v4];
+  [(NSMutableArray *)policySecrets addObject:secretsCopy];
 }
 
-- (void)setHasFlexiblePolicyVersion:(BOOL)a3
+- (void)setHasFlexiblePolicyVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -1292,9 +1292,9 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFrozenPolicyVersion:(BOOL)a3
+- (void)setHasFrozenPolicyVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }

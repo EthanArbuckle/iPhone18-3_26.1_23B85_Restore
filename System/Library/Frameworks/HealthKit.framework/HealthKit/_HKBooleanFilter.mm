@@ -1,12 +1,12 @@
 @interface _HKBooleanFilter
 + (_HKBooleanFilter)falseFilter;
 + (_HKBooleanFilter)trueFilter;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_HKBooleanFilter)init;
-- (_HKBooleanFilter)initWithCoder:(id)a3;
-- (_HKBooleanFilter)initWithValue:(BOOL)a3;
+- (_HKBooleanFilter)initWithCoder:(id)coder;
+- (_HKBooleanFilter)initWithValue:(BOOL)value;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKBooleanFilter
@@ -21,14 +21,14 @@
   return 0;
 }
 
-- (_HKBooleanFilter)initWithValue:(BOOL)a3
+- (_HKBooleanFilter)initWithValue:(BOOL)value
 {
   v5.receiver = self;
   v5.super_class = _HKBooleanFilter;
   result = [(_HKBooleanFilter *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
@@ -58,10 +58,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -69,26 +69,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == v4->_value;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == equalCopy->_value;
   }
 
   return v5;
 }
 
-- (_HKBooleanFilter)initWithCoder:(id)a3
+- (_HKBooleanFilter)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"value"];
+  v4 = [coder decodeBoolForKey:@"value"];
 
   return [(_HKBooleanFilter *)self initWithValue:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _HKBooleanFilter;
-  v4 = a3;
-  [(_HKFilter *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_value forKey:{@"value", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_HKFilter *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_value forKey:{@"value", v5.receiver, v5.super_class}];
 }
 
 @end

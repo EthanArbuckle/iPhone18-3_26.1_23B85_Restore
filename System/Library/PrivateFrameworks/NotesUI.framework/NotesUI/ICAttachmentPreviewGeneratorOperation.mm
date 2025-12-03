@@ -1,21 +1,21 @@
 @interface ICAttachmentPreviewGeneratorOperation
-- (ICAttachmentPreviewGeneratorOperation)initWithAttachmentManagedObjectID:(id)a3;
+- (ICAttachmentPreviewGeneratorOperation)initWithAttachmentManagedObjectID:(id)d;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation ICAttachmentPreviewGeneratorOperation
 
-- (ICAttachmentPreviewGeneratorOperation)initWithAttachmentManagedObjectID:(id)a3
+- (ICAttachmentPreviewGeneratorOperation)initWithAttachmentManagedObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = ICAttachmentPreviewGeneratorOperation;
   v5 = [(ICAttachmentPreviewGeneratorOperation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICAttachmentPreviewGeneratorOperation *)v5 setAttachmentID:v4];
+    [(ICAttachmentPreviewGeneratorOperation *)v5 setAttachmentID:dCopy];
   }
 
   return v6;
@@ -23,15 +23,15 @@
 
 - (void)main
 {
-  v4 = [MEMORY[0x1E69B7800] sharedContext];
-  v5 = [v4 workerManagedObjectContext];
-  [(ICAttachmentPreviewGeneratorOperation *)self setManagedObjectContext:v5];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
+  [(ICAttachmentPreviewGeneratorOperation *)self setManagedObjectContext:workerManagedObjectContext];
 
-  v6 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
-  [v6 setAutomaticallyMergesChangesFromParent:0];
+  managedObjectContext = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
+  [managedObjectContext setAutomaticallyMergesChangesFromParent:0];
 
-  v7 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
-  [v7 setIc_debugName:@"previewGenerator"];
+  managedObjectContext2 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
+  [managedObjectContext2 setIc_debugName:@"previewGenerator"];
 
   v19[0] = 0;
   v19[1] = v19;
@@ -43,7 +43,7 @@
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v8 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
+  managedObjectContext3 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __45__ICAttachmentPreviewGeneratorOperation_main__block_invoke;
@@ -52,11 +52,11 @@
   v14[5] = v19;
   v14[6] = &v15;
   v14[7] = a2;
-  [v8 performBlockAndWait:v14];
+  [managedObjectContext3 performBlockAndWait:v14];
 
   if (*(v16 + 24) != 1 || (-[ICAttachmentPreviewGeneratorOperation attachmentModel](self, "attachmentModel"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 generatePreviewsInOperation:self], v9, (v10 & 1) != 0))
   {
-    v11 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
+    managedObjectContext4 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __45__ICAttachmentPreviewGeneratorOperation_main__block_invoke_13;
@@ -64,7 +64,7 @@
     v13[4] = self;
     v13[5] = v19;
     v13[6] = a2;
-    [v11 performBlockAndWait:v13];
+    [managedObjectContext4 performBlockAndWait:v13];
   }
 
   [(ICAttachmentPreviewGeneratorOperation *)self setManagedObjectContext:0];
@@ -176,13 +176,13 @@ uint64_t __45__ICAttachmentPreviewGeneratorOperation_main__block_invoke_13(uint6
   v6.receiver = self;
   v6.super_class = ICAttachmentPreviewGeneratorOperation;
   [(ICAttachmentPreviewGeneratorOperation *)&v6 cancel];
-  v3 = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
+  managedObjectContext = [(ICAttachmentPreviewGeneratorOperation *)self managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__ICAttachmentPreviewGeneratorOperation_cancel__block_invoke;
   v5[3] = &unk_1E8468BA0;
   v5[4] = self;
-  [v3 performBlock:v5];
+  [managedObjectContext performBlock:v5];
 
   v4 = +[ICAttachmentPreviewGenerator sharedGenerator];
   [v4 operationComplete:self];

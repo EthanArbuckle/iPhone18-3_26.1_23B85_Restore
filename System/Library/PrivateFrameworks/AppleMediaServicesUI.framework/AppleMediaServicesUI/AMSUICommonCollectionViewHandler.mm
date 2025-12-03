@@ -1,43 +1,43 @@
 @interface AMSUICommonCollectionViewHandler
 - (AMSUICommonCollectionView)collectionView;
 - (AMSUICommonCollectionViewDelegate)delegate;
-- (AMSUICommonCollectionViewHandler)initWithCollectionView:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)scrollViewDidScroll:(id)a3;
+- (AMSUICommonCollectionViewHandler)initWithCollectionView:(id)view;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation AMSUICommonCollectionViewHandler
 
-- (AMSUICommonCollectionViewHandler)initWithCollectionView:(id)a3
+- (AMSUICommonCollectionViewHandler)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = AMSUICommonCollectionViewHandler;
   v5 = [(AMSUICommonCollectionViewHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collectionView, v4);
+    objc_storeWeak(&v5->_collectionView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  cellCopy = cell;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [a3 interactions];
-  v8 = [v7 reverseObjectEnumerator];
+  interactions = [view interactions];
+  reverseObjectEnumerator = [interactions reverseObjectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -48,7 +48,7 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
@@ -56,16 +56,16 @@
         if (objc_opt_isKindOfClass())
         {
 
-          v8 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithStyle:0];
-          v20 = v8;
+          reverseObjectEnumerator = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithStyle:0];
+          v20 = reverseObjectEnumerator;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-          [v6 setInteractions:v14];
+          [cellCopy setInteractions:v14];
 
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -80,45 +80,45 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a5;
-  v6 = [(AMSUICommonCollectionViewHandler *)self delegate];
+  pathCopy = path;
+  delegate = [(AMSUICommonCollectionViewHandler *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AMSUICommonCollectionViewHandler *)self delegate];
-    v9 = [(AMSUICommonCollectionViewHandler *)self collectionView];
-    [v8 collectionView:v9 didEndDisplayingItemAtIndexPath:v10];
+    delegate2 = [(AMSUICommonCollectionViewHandler *)self delegate];
+    collectionView = [(AMSUICommonCollectionViewHandler *)self collectionView];
+    [delegate2 collectionView:collectionView didEndDisplayingItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v9 = a4;
-  v5 = [(AMSUICommonCollectionViewHandler *)self delegate];
+  pathCopy = path;
+  delegate = [(AMSUICommonCollectionViewHandler *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AMSUICommonCollectionViewHandler *)self delegate];
-    v8 = [(AMSUICommonCollectionViewHandler *)self collectionView];
-    [v7 collectionView:v8 didSelectItemAtIndexPath:v9];
+    delegate2 = [(AMSUICommonCollectionViewHandler *)self delegate];
+    collectionView = [(AMSUICommonCollectionViewHandler *)self collectionView];
+    [delegate2 collectionView:collectionView didSelectItemAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AMSUICommonCollectionViewHandler *)self delegate];
+  pathCopy = path;
+  delegate = [(AMSUICommonCollectionViewHandler *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AMSUICommonCollectionViewHandler *)self delegate];
-    v9 = [(AMSUICommonCollectionViewHandler *)self collectionView];
-    v10 = [v8 collectionView:v9 shouldHighlightItemAtIndexPath:v5];
+    delegate2 = [(AMSUICommonCollectionViewHandler *)self delegate];
+    collectionView = [(AMSUICommonCollectionViewHandler *)self collectionView];
+    v10 = [delegate2 collectionView:collectionView shouldHighlightItemAtIndexPath:pathCopy];
   }
 
   else
@@ -129,19 +129,19 @@ LABEL_11:
   return v10;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v8 = a3;
-  if (([v8 isDecelerating] & 1) != 0 || (objc_msgSend(v8, "isDragging") & 1) != 0 || objc_msgSend(v8, "isTracking"))
+  scrollCopy = scroll;
+  if (([scrollCopy isDecelerating] & 1) != 0 || (objc_msgSend(scrollCopy, "isDragging") & 1) != 0 || objc_msgSend(scrollCopy, "isTracking"))
   {
-    v4 = [(AMSUICommonCollectionViewHandler *)self delegate];
+    delegate = [(AMSUICommonCollectionViewHandler *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(AMSUICommonCollectionViewHandler *)self delegate];
-      v7 = [(AMSUICommonCollectionViewHandler *)self collectionView];
-      [v6 collectionViewDidScroll:v7];
+      delegate2 = [(AMSUICommonCollectionViewHandler *)self delegate];
+      collectionView = [(AMSUICommonCollectionViewHandler *)self collectionView];
+      [delegate2 collectionViewDidScroll:collectionView];
     }
   }
 }

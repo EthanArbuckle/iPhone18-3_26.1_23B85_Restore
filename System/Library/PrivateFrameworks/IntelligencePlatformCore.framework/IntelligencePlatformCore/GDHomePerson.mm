@@ -1,22 +1,22 @@
 @interface GDHomePerson
-- (GDHomePerson)initWithHMPerson:(id)a3;
+- (GDHomePerson)initWithHMPerson:(id)person;
 @end
 
 @implementation GDHomePerson
 
-- (GDHomePerson)initWithHMPerson:(id)a3
+- (GDHomePerson)initWithHMPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v17.receiver = self;
   v17.super_class = GDHomePerson;
   v8 = [(GDHomePerson *)&v17 init];
   if (v8)
   {
-    v9 = objc_msgSend_name(v4, v5, v6, v7);
+    v9 = objc_msgSend_name(personCopy, v5, v6, v7);
     name = v8->_name;
     v8->_name = v9;
 
-    v14 = objc_msgSend_UUID(v4, v11, v12, v13);
+    v14 = objc_msgSend_UUID(personCopy, v11, v12, v13);
     uuid = v8->_uuid;
     v8->_uuid = v14;
   }

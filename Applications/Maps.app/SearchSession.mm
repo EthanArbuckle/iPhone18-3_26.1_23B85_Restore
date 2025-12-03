@@ -1,8 +1,8 @@
 @interface SearchSession
 + (SearchSession)currentSearchSession;
 + (void)initialize;
-+ (void)performLowFuelSearchForEngineType:(int)a3 withObserver:(id)a4;
-+ (void)setCurrentSearchSession:(id)a3;
++ (void)performLowFuelSearchForEngineType:(int)type withObserver:(id)observer;
++ (void)setCurrentSearchSession:(id)session;
 - (BOOL)isInvalidated;
 - (BOOL)isOptionsLowFuel;
 - (BOOL)isSingleResultToShowAsPlacecard;
@@ -17,35 +17,35 @@
 - (NSString)printedPageTitle;
 - (NSString)stringToDisplay;
 - (SearchInfo)currentResultsSearchInfo;
-- (SearchSession)initWithOrigin:(unint64_t)a3 options:(unint64_t)a4;
+- (SearchSession)initWithOrigin:(unint64_t)origin options:(unint64_t)options;
 - (unint64_t)searchRequestType;
 - (unint64_t)selectedResultIndex;
-- (void)_notifyAllObservers:(id)a3;
-- (void)_notifyObservers:(id)a3 block:(id)a4;
+- (void)_notifyAllObservers:(id)observers;
+- (void)_notifyObservers:(id)observers block:(id)block;
 - (void)_performSearch;
 - (void)_performSearchIfNeeded;
-- (void)_processResults:(id)a3;
-- (void)_refreshEVChargers:(id)a3;
+- (void)_processResults:(id)results;
+- (void)_refreshEVChargers:(id)chargers;
 - (void)_setupTimersToRefreshEVChargers;
 - (void)_willProcessSearchFieldItem;
 - (void)cancelSearch;
 - (void)didChangeSearchFieldItem;
 - (void)didChangeSearchResults;
 - (void)invalidate;
-- (void)invalidateWithReason:(unint64_t)a3;
+- (void)invalidateWithReason:(unint64_t)reason;
 - (void)notifyPPTDidChangeSearchResults;
-- (void)notifyToRefreshEVChargers:(id)a3;
-- (void)redoSearchWithTraits:(id)a3;
-- (void)registerObserver:(id)a3;
+- (void)notifyToRefreshEVChargers:(id)chargers;
+- (void)redoSearchWithTraits:(id)traits;
+- (void)registerObserver:(id)observer;
 - (void)resetEVChargerTimers;
-- (void)restoreSearchForItem:(id)a3 withResults:(id)a4;
-- (void)searchManager:(id)a3 didReceiveSearchInfo:(id)a4 searchSessionData:(id)a5 error:(id)a6;
-- (void)searchManager:(id)a3 willProcessSearchFieldItem:(id)a4;
-- (void)setSelectedResultIndex:(unint64_t)a3;
-- (void)showExistingSearchInfo:(id)a3;
-- (void)startSearch:(id)a3;
-- (void)suggestionSearch:(id)a3 withTraits:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)restoreSearchForItem:(id)item withResults:(id)results;
+- (void)searchManager:(id)manager didReceiveSearchInfo:(id)info searchSessionData:(id)data error:(id)error;
+- (void)searchManager:(id)manager willProcessSearchFieldItem:(id)item;
+- (void)setSelectedResultIndex:(unint64_t)index;
+- (void)showExistingSearchInfo:(id)info;
+- (void)startSearch:(id)search;
+- (void)suggestionSearch:(id)search withTraits:(id)traits;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation SearchSession
@@ -57,50 +57,50 @@
     return 0;
   }
 
-  v3 = [(SearchInfo *)self->_searchInfo spotlightMapsIdentifier];
-  v4 = v3 != 0;
+  spotlightMapsIdentifier = [(SearchInfo *)self->_searchInfo spotlightMapsIdentifier];
+  v4 = spotlightMapsIdentifier != 0;
 
   return v4;
 }
 
 - (BOOL)isInvalidated
 {
-  v2 = self;
-  v3 = [(SearchSession *)self observersQueue];
-  dispatch_assert_queue_not_V2(v3);
+  selfCopy = self;
+  observersQueue = [(SearchSession *)self observersQueue];
+  dispatch_assert_queue_not_V2(observersQueue);
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(SearchSession *)v2 observersQueue];
+  observersQueue2 = [(SearchSession *)selfCopy observersQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1006521E8;
   v6[3] = &unk_101661600;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(observersQueue2, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)searchManager:(id)a3 didReceiveSearchInfo:(id)a4 searchSessionData:(id)a5 error:(id)a6
+- (void)searchManager:(id)manager didReceiveSearchInfo:(id)info searchSessionData:(id)data error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  dataCopy = data;
+  errorCopy = error;
   v12 = sub_100652444();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v9;
+    v21 = infoCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "SearchSession %@ : didReceiveSearchInfo %@ error %@", buf, 0x20u);
   }
 
@@ -111,25 +111,25 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ReceivedSearchResults", "", buf, 2u);
   }
 
-  if (v11)
+  if (errorCopy)
   {
     [(SearchSession *)self setIsLoading:0];
-    [(SearchSession *)self setSearchSessionData:v10];
-    [(SearchSession *)self setSearchInfo:v9];
-    objc_storeStrong(&self->_lastError, a6);
+    [(SearchSession *)self setSearchSessionData:dataCopy];
+    [(SearchSession *)self setSearchInfo:infoCopy];
+    objc_storeStrong(&self->_lastError, error);
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100652498;
     v17[3] = &unk_101624BF8;
     v17[4] = self;
     [(SearchSession *)self _notifyAllObservers:v17];
-    v14 = [v11 domain];
+    domain = [errorCopy domain];
     v15 = GEOErrorDomain();
-    if ([v14 isEqualToString:v15])
+    if ([domain isEqualToString:v15])
     {
-      v16 = [v11 code];
+      code = [errorCopy code];
 
-      if (v16 == -8)
+      if (code == -8)
       {
         [(SearchSession *)self notifyPPTDidChangeSearchResults];
       }
@@ -142,20 +142,20 @@
 
   else
   {
-    [(SearchSession *)self _processResults:v9];
+    [(SearchSession *)self _processResults:infoCopy];
   }
 }
 
-- (void)searchManager:(id)a3 willProcessSearchFieldItem:(id)a4
+- (void)searchManager:(id)manager willProcessSearchFieldItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v6 = sub_100652444();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = itemCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "SearchSession %@ : willProcessSearchFieldItem %@", &v8, 0x16u);
   }
 
@@ -183,24 +183,24 @@
   [(SearchSession *)self _notifyAllObservers:v4];
 }
 
-- (void)_processResults:(id)a3
+- (void)_processResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   lastError = self->_lastError;
   self->_lastError = 0;
 
   [(SearchSession *)self setIsLoading:0];
   if (GEOConfigGetBOOL())
   {
-    v6 = [v4 results];
-    v7 = [v6 count];
+    results = [resultsCopy results];
+    v7 = [results count];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [v4 results];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    results2 = [resultsCopy results];
+    v9 = [results2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -212,7 +212,7 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(results2);
           }
 
           [*(*(&v14 + 1) + 8 * v12) setPartOfMultipleResultsSet:v7 > 1];
@@ -220,7 +220,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [results2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -229,16 +229,16 @@
 
   if ([(SearchSession *)self isSuggestionSearch])
   {
-    [(SearchSession *)self setSuggestionSearchInfo:v4];
+    [(SearchSession *)self setSuggestionSearchInfo:resultsCopy];
   }
 
   else
   {
-    [(SearchSession *)self setSearchInfo:v4];
+    [(SearchSession *)self setSearchInfo:resultsCopy];
   }
 
-  v13 = [v4 searchSessionData];
-  [(SearchSession *)self setSearchSessionData:v13];
+  searchSessionData = [resultsCopy searchSessionData];
+  [(SearchSession *)self setSearchSessionData:searchSessionData];
 
   [(SearchSession *)self didChangeSearchResults];
 }
@@ -249,42 +249,42 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "SearchSession %@ : _performSearch", &v10, 0xCu);
   }
 
   searchManager = self->_searchManager;
-  v5 = [(SearchSession *)self searchFieldItem];
-  v6 = [(SearchSession *)self traits];
-  v7 = [(SearchSession *)self source];
-  v8 = [(SearchSession *)self isRedoOrAutoRedoSearchType];
-  v9 = [(SearchSession *)self searchSessionData];
-  [(SearchManager *)searchManager searchForSearchFieldItem:v5 traits:v6 source:v7 isRedoOrAutoRedoSearch:v8 searchSessionData:v9];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  traits = [(SearchSession *)self traits];
+  source = [(SearchSession *)self source];
+  isRedoOrAutoRedoSearchType = [(SearchSession *)self isRedoOrAutoRedoSearchType];
+  searchSessionData = [(SearchSession *)self searchSessionData];
+  [(SearchManager *)searchManager searchForSearchFieldItem:searchFieldItem traits:traits source:source isRedoOrAutoRedoSearch:isRedoOrAutoRedoSearchType searchSessionData:searchSessionData];
 }
 
 - (void)_performSearchIfNeeded
 {
-  v3 = [(SearchSession *)self searchFieldItem];
-  v4 = [v3 searchResult];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  searchResult = [searchFieldItem searchResult];
 
-  if (!v4)
+  if (!searchResult)
   {
-    v8 = [(SearchSession *)self searchFieldItem];
-    v9 = [v8 historyItem];
+    searchFieldItem2 = [(SearchSession *)self searchFieldItem];
+    historyItem = [searchFieldItem2 historyItem];
 
-    if (v9 && ((-[SearchSession searchFieldItem](self, "searchFieldItem"), v10 = objc_claimAutoreleasedReturnValue(), [v10 historyItem], v11 = objc_claimAutoreleasedReturnValue(), v12 = &OBJC_PROTOCOL___MSPHistoryEntryPlaceDisplay, objc_opt_class(), v13 = v11, (objc_opt_isKindOfClass() & 1) == 0) ? (v14 = 0) : (v14 = v13), (v15 = v14, v13, !v15) || (objc_msgSend(v15, "historyEntry"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "conformsToProtocol:", v12), v16, !v17) ? (v18 = 0) : (v18 = v13), v15, v12, v13, v13, v10, v18))
+    if (historyItem && ((-[SearchSession searchFieldItem](self, "searchFieldItem"), v10 = objc_claimAutoreleasedReturnValue(), [v10 historyItem], v11 = objc_claimAutoreleasedReturnValue(), v12 = &OBJC_PROTOCOL___MSPHistoryEntryPlaceDisplay, objc_opt_class(), v13 = v11, (objc_opt_isKindOfClass() & 1) == 0) ? (v14 = 0) : (v14 = v13), (v15 = v14, v13, !v15) || (objc_msgSend(v15, "historyEntry"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "conformsToProtocol:", v12), v16, !v17) ? (v18 = 0) : (v18 = v13), v15, v12, v13, v13, v10, v18))
     {
       v19 = [SearchResult alloc];
-      v20 = [v18 historyEntry];
-      v21 = [v20 geoMapItem];
-      v4 = [(SearchResult *)v19 initWithGEOMapItem:v21];
+      historyEntry = [v18 historyEntry];
+      geoMapItem = [historyEntry geoMapItem];
+      searchResult = [(SearchResult *)v19 initWithGEOMapItem:geoMapItem];
 
-      [(SearchResultRepr *)v4 setHasIncompleteMetadata:1];
-      v22 = [(SearchResult *)v4 mapItem];
-      v23 = [v22 _geoMapItem];
-      v5 = [v23 displayMapRegionOrNil];
+      [(SearchResultRepr *)searchResult setHasIncompleteMetadata:1];
+      mapItem = [(SearchResult *)searchResult mapItem];
+      _geoMapItem = [mapItem _geoMapItem];
+      displayMapRegionOrNil = [_geoMapItem displayMapRegionOrNil];
 
-      if (v4)
+      if (searchResult)
       {
         goto LABEL_3;
       }
@@ -292,18 +292,18 @@
 
     else
     {
-      v5 = 0;
+      displayMapRegionOrNil = 0;
     }
 
     [(SearchSession *)self _performSearch];
     goto LABEL_17;
   }
 
-  v5 = 0;
+  displayMapRegionOrNil = 0;
 LABEL_3:
-  v24 = v4;
+  v24 = searchResult;
   v6 = [NSArray arrayWithObjects:&v24 count:1];
-  v7 = [SearchInfo searchInfoWithResults:v6 boundingMapRegion:v5];
+  v7 = [SearchInfo searchInfoWithResults:v6 boundingMapRegion:displayMapRegionOrNil];
 
   [v7 setSelectedIndex:0];
   [(SearchSession *)self showExistingSearchInfo:v7];
@@ -311,17 +311,17 @@ LABEL_3:
 LABEL_17:
 }
 
-- (void)_notifyObservers:(id)a3 block:(id)a4
+- (void)_notifyObservers:(id)observers block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  observersCopy = observers;
+  blockCopy = block;
+  if (blockCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [observersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -333,15 +333,15 @@ LABEL_17:
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(observersCopy);
           }
 
-          v6[2](v6, *(*(&v11 + 1) + 8 * v10));
+          blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10));
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [observersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -349,13 +349,13 @@ LABEL_17:
   }
 }
 
-- (void)_notifyAllObservers:(id)a3
+- (void)_notifyAllObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(SearchSession *)self observersQueue];
-  dispatch_assert_queue_not_V2(v5);
+  observersCopy = observers;
+  observersQueue = [(SearchSession *)self observersQueue];
+  dispatch_assert_queue_not_V2(observersQueue);
 
-  if (v4)
+  if (observersCopy)
   {
     v8 = 0;
     v9 = &v8;
@@ -363,57 +363,57 @@ LABEL_17:
     v11 = sub_100652E34;
     v12 = sub_100652E44;
     v13 = 0;
-    v6 = [(SearchSession *)self observersQueue];
+    observersQueue2 = [(SearchSession *)self observersQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100652E4C;
     v7[3] = &unk_101661600;
     v7[4] = self;
     v7[5] = &v8;
-    dispatch_sync(v6, v7);
+    dispatch_sync(observersQueue2, v7);
 
-    [(SearchSession *)self _notifyObservers:v9[5] block:v4];
+    [(SearchSession *)self _notifyObservers:v9[5] block:observersCopy];
     _Block_object_dispose(&v8, 8);
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(SearchSession *)self observersQueue];
+    observersQueue = [(SearchSession *)self observersQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100652F68;
     v6[3] = &unk_101661A90;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = observerCopy;
+    dispatch_async(observersQueue, v6);
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(SearchSession *)self _assertNotInvalidated];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(SearchSession *)self observersQueue];
+    observersQueue = [(SearchSession *)self observersQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10065307C;
     v6[3] = &unk_101661A90;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = observerCopy;
+    dispatch_async(observersQueue, v6);
   }
 }
 
 - (NSHashTable)observers
 {
-  v3 = [(SearchSession *)self observersQueue];
-  dispatch_assert_queue_V2(v3);
+  observersQueue = [(SearchSession *)self observersQueue];
+  dispatch_assert_queue_V2(observersQueue);
 
   observers = self->_observers;
 
@@ -429,41 +429,41 @@ LABEL_17:
 
   else
   {
-    v13 = [(SearchSession *)self traits];
-    v14 = [v13 resultRefinementQuery];
-    v3 = v14 == 0;
+    traits = [(SearchSession *)self traits];
+    resultRefinementQuery = [traits resultRefinementQuery];
+    v3 = resultRefinementQuery == 0;
   }
 
-  v4 = [(SearchSession *)self searchInfo];
-  v5 = [v4 results];
-  if ([v5 count] != 1)
+  searchInfo = [(SearchSession *)self searchInfo];
+  results = [searchInfo results];
+  if ([results count] != 1)
   {
 
     goto LABEL_11;
   }
 
-  v6 = [(SearchSession *)self isRedoOrAutoRedoSearchType];
+  isRedoOrAutoRedoSearchType = [(SearchSession *)self isRedoOrAutoRedoSearchType];
 
-  if (v6)
+  if (isRedoOrAutoRedoSearchType)
   {
 LABEL_11:
-    v9 = [(SearchSession *)self searchInfo];
-    v10 = [v9 autocompletePerson];
-    v11 = v10 != 0;
+    searchInfo2 = [(SearchSession *)self searchInfo];
+    autocompletePerson = [searchInfo2 autocompletePerson];
+    v11 = autocompletePerson != 0;
 
     v3 |= v11;
     return v3 & 1;
   }
 
-  v7 = [(SearchSession *)self searchInfo];
-  v8 = [v7 searchResultViewType];
+  searchInfo3 = [(SearchSession *)self searchInfo];
+  searchResultViewType = [searchInfo3 searchResultViewType];
 
-  if (v8 == 1)
+  if (searchResultViewType == 1)
   {
     v3 = 0;
   }
 
-  else if (v8 == 2)
+  else if (searchResultViewType == 2)
   {
     v3 = 1;
   }
@@ -473,72 +473,72 @@ LABEL_11:
 
 - (unint64_t)searchRequestType
 {
-  v2 = [(SearchSession *)self traits];
-  v3 = [v2 searchRequestType];
+  traits = [(SearchSession *)self traits];
+  searchRequestType = [traits searchRequestType];
 
-  if (v3 == 2)
+  if (searchRequestType == 2)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 1;
+    return searchRequestType == 1;
   }
 }
 
 - (unint64_t)selectedResultIndex
 {
-  v3 = [(SearchSession *)self currentResultsSearchInfo];
-  v4 = v3;
-  if (v3)
+  currentResultsSearchInfo = [(SearchSession *)self currentResultsSearchInfo];
+  v4 = currentResultsSearchInfo;
+  if (currentResultsSearchInfo)
   {
-    v5 = [v3 selectedIndex];
-    v6 = [(SearchSession *)self currentResults];
-    v7 = [v6 count];
+    selectedIndex = [currentResultsSearchInfo selectedIndex];
+    currentResults = [(SearchSession *)self currentResults];
+    v7 = [currentResults count];
 
-    if (v5 >= v7)
+    if (selectedIndex >= v7)
     {
-      v9 = [(SearchSession *)self currentResults];
-      v8 = [v9 count] - 1;
+      currentResults2 = [(SearchSession *)self currentResults];
+      selectedIndex2 = [currentResults2 count] - 1;
     }
 
     else
     {
-      v8 = [v4 selectedIndex];
+      selectedIndex2 = [v4 selectedIndex];
     }
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    selectedIndex2 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return selectedIndex2;
 }
 
-- (void)setSelectedResultIndex:(unint64_t)a3
+- (void)setSelectedResultIndex:(unint64_t)index
 {
-  v5 = [(SearchSession *)self currentResultsSearchInfo];
-  if (v5)
+  currentResultsSearchInfo = [(SearchSession *)self currentResultsSearchInfo];
+  if (currentResultsSearchInfo)
   {
-    v7 = v5;
-    v6 = [v5 selectedIndex] == a3;
-    v5 = v7;
+    v7 = currentResultsSearchInfo;
+    v6 = [currentResultsSearchInfo selectedIndex] == index;
+    currentResultsSearchInfo = v7;
     if (!v6)
     {
-      [v7 setSelectedIndex:a3];
+      [v7 setSelectedIndex:index];
       [(SearchSession *)self didChangeSearchResults];
-      v5 = v7;
+      currentResultsSearchInfo = v7;
     }
   }
 }
 
 - (SearchInfo)currentResultsSearchInfo
 {
-  v3 = [(SearchSession *)self suggestionSearchInfo];
+  suggestionSearchInfo = [(SearchSession *)self suggestionSearchInfo];
 
-  if (v3)
+  if (suggestionSearchInfo)
   {
     [(SearchSession *)self suggestionSearchInfo];
   }
@@ -554,9 +554,9 @@ LABEL_11:
 
 - (NSArray)currentResults
 {
-  v3 = [(SearchSession *)self suggestionSearchInfo];
+  suggestionSearchInfo = [(SearchSession *)self suggestionSearchInfo];
 
-  if (v3)
+  if (suggestionSearchInfo)
   {
     [(SearchSession *)self suggestionSearchInfo];
   }
@@ -566,23 +566,23 @@ LABEL_11:
     [(SearchSession *)self searchInfo];
   }
   v4 = ;
-  v5 = [v4 results];
+  results = [v4 results];
 
-  return v5;
+  return results;
 }
 
 - (NSString)stringToDisplay
 {
   if ([(SearchSession *)self isSuggestionSearch])
   {
-    v3 = [(SearchSession *)self suggestion];
-    [v3 displayString];
+    suggestion = [(SearchSession *)self suggestion];
+    [suggestion displayString];
   }
 
   else
   {
-    v3 = [(SearchSession *)self searchFieldItem];
-    [v3 searchString];
+    suggestion = [(SearchSession *)self searchFieldItem];
+    [suggestion searchString];
   }
   v4 = ;
 
@@ -591,14 +591,14 @@ LABEL_11:
 
 - (BOOL)isVenueQuery
 {
-  v2 = [(SearchSession *)self searchFieldItem];
-  v3 = [v2 venueCategoryItem];
-  v4 = v3 != 0;
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  venueCategoryItem = [searchFieldItem venueCategoryItem];
+  v4 = venueCategoryItem != 0;
 
   return v4;
 }
 
-- (void)invalidateWithReason:(unint64_t)a3
+- (void)invalidateWithReason:(unint64_t)reason
 {
   v5 = sub_100652444();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -608,8 +608,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SearchSession %@ : invalidate", &buf, 0xCu);
   }
 
-  v6 = [(SearchSession *)self observersQueue];
-  dispatch_assert_queue_not_V2(v6);
+  observersQueue = [(SearchSession *)self observersQueue];
+  dispatch_assert_queue_not_V2(observersQueue);
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -617,26 +617,26 @@ LABEL_11:
   v17 = sub_100652E34;
   v18 = sub_100652E44;
   v19 = 0;
-  v7 = [(SearchSession *)self observersQueue];
+  observersQueue2 = [(SearchSession *)self observersQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100653790;
   block[3] = &unk_101661600;
   block[4] = self;
   block[5] = &buf;
-  dispatch_sync(v7, block);
+  dispatch_sync(observersQueue2, block);
 
   if ([*(*(&buf + 1) + 40) count])
   {
-    v8 = self;
+    selfCopy = self;
     v9 = *(*(&buf + 1) + 40);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1006537F4;
     v11[3] = &unk_101624CB0;
-    v10 = v8;
+    v10 = selfCopy;
     v12 = v10;
-    v13 = a3;
+    reasonCopy = reason;
     [(SearchSession *)v10 _notifyObservers:v9 block:v11];
   }
 
@@ -645,8 +645,8 @@ LABEL_11:
 
 - (void)cancelSearch
 {
-  v2 = [(SearchSession *)self searchManager];
-  [v2 cancelSearch];
+  searchManager = [(SearchSession *)self searchManager];
+  [searchManager cancelSearch];
 }
 
 - (void)invalidate
@@ -656,24 +656,24 @@ LABEL_11:
   [(SearchSession *)self invalidateWithReason:0];
 }
 
-- (void)notifyToRefreshEVChargers:(id)a3
+- (void)notifyToRefreshEVChargers:(id)chargers
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100653910;
   v5[3] = &unk_101624BF8;
-  v6 = a3;
-  v4 = v6;
+  chargersCopy = chargers;
+  v4 = chargersCopy;
   [(SearchSession *)self _notifyAllObservers:v5];
 }
 
-- (void)_refreshEVChargers:(id)a3
+- (void)_refreshEVChargers:(id)chargers
 {
-  v4 = a3;
+  chargersCopy = chargers;
   v5 = +[MapsOfflineUIHelper sharedHelper];
-  v6 = [v5 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v5 isUsingOfflineMaps];
 
-  if ((v6 & 1) == 0)
+  if ((isUsingOfflineMaps & 1) == 0)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -681,7 +681,7 @@ LABEL_11:
     v14[3] = &unk_101624C60;
     v7 = objc_alloc_init(NSMutableArray);
     v15 = v7;
-    [v4 enumerateObjectsUsingBlock:v14];
+    [chargersCopy enumerateObjectsUsingBlock:v14];
     if ([v7 count])
     {
       v8 = +[MKMapService sharedService];
@@ -693,7 +693,7 @@ LABEL_11:
       v10[2] = sub_100653BAC;
       v10[3] = &unk_10165DCC8;
       objc_copyWeak(&v12, &location);
-      v11 = v4;
+      v11 = chargersCopy;
       [v9 submitRefreshRequestWithHandler:v10 networkActivity:0];
 
       objc_destroyWeak(&v12);
@@ -712,10 +712,10 @@ LABEL_11:
 
 - (void)_setupTimersToRefreshEVChargers
 {
-  v2 = [(SearchSession *)self searchInfo];
-  v32 = [v2 results];
+  searchInfo = [(SearchSession *)self searchInfo];
+  results = [searchInfo results];
 
-  if ([v32 count])
+  if ([results count])
   {
     [(SearchSession *)self resetEVChargerTimers];
     v3 = +[NSMutableDictionary dictionary];
@@ -723,7 +723,7 @@ LABEL_11:
     v46 = 0u;
     v44 = 0u;
     v43 = 0u;
-    v4 = v32;
+    v4 = results;
     v5 = [v4 countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v5)
     {
@@ -738,15 +738,15 @@ LABEL_11:
           }
 
           v8 = *(*(&v43 + 1) + 8 * i);
-          v9 = [v8 mapItem];
-          v10 = [v9 _geoMapItem];
-          v11 = [v10 _hasEVCharger];
+          mapItem = [v8 mapItem];
+          _geoMapItem = [mapItem _geoMapItem];
+          _hasEVCharger = [_geoMapItem _hasEVCharger];
 
-          if (v11)
+          if (_hasEVCharger)
           {
-            v12 = [v8 mapItem];
-            v13 = [v12 _realTimeAvailableEVCharger];
-            v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 ttlSeconds]);
+            mapItem2 = [v8 mapItem];
+            _realTimeAvailableEVCharger = [mapItem2 _realTimeAvailableEVCharger];
+            v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [_realTimeAvailableEVCharger ttlSeconds]);
 
             v15 = [v3 objectForKeyedSubscript:v14];
             v16 = v15;
@@ -761,8 +761,8 @@ LABEL_11:
             }
 
             v18 = v17;
-            v19 = [v8 mapItem];
-            [v18 addObject:v19];
+            mapItem3 = [v8 mapItem];
+            [v18 addObject:mapItem3];
 
             [v3 setObject:v18 forKeyedSubscript:v14];
           }
@@ -774,13 +774,13 @@ LABEL_11:
       while (v5);
     }
 
-    v20 = [v3 allKeys];
-    v21 = [v20 count] == 0;
+    allKeys = [v3 allKeys];
+    v21 = [allKeys count] == 0;
 
     if (!v21)
     {
-      v22 = [v3 allKeys];
-      v23 = [v22 sortedArrayUsingSelector:"compare:"];
+      allKeys2 = [v3 allKeys];
+      v23 = [allKeys2 sortedArrayUsingSelector:"compare:"];
 
       v41 = 0u;
       v42 = 0u;
@@ -801,19 +801,19 @@ LABEL_11:
             }
 
             v27 = *(*(&v39 + 1) + 8 * j);
-            v28 = [v3 objectForKeyedSubscript:{v27, v32}];
+            v28 = [v3 objectForKeyedSubscript:{v27, results}];
             if ([v28 count])
             {
               v29 = dispatch_get_global_queue(9, 0);
               objc_initWeak(&location, self);
-              v30 = [v27 integerValue];
+              integerValue = [v27 integerValue];
               v35[0] = _NSConcreteStackBlock;
               v35[1] = 3221225472;
               v35[2] = sub_10065439C;
               v35[3] = &unk_10163B580;
               objc_copyWeak(&v37, &location);
               v36 = v28;
-              v31 = [GCDTimer scheduledTimerWithTimeInterval:v29 queue:1 repeating:v35 block:v30];
+              v31 = [GCDTimer scheduledTimerWithTimeInterval:v29 queue:1 repeating:v35 block:integerValue];
               [(NSMutableArray *)self->_timers addObject:v31];
 
               objc_destroyWeak(&v37);
@@ -858,18 +858,18 @@ LABEL_11:
   [(SearchSession *)self _notifyAllObservers:v2];
 }
 
-- (void)showExistingSearchInfo:(id)a3
+- (void)showExistingSearchInfo:(id)info
 {
-  [(SearchSession *)self setSearchInfo:a3];
+  [(SearchSession *)self setSearchInfo:info];
 
   [(SearchSession *)self didChangeSearchResults];
 }
 
-- (void)restoreSearchForItem:(id)a3 withResults:(id)a4
+- (void)restoreSearchForItem:(id)item withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  -[SearchSession setRestoreSingleResult:](self, "setRestoreSingleResult:", [v7 singleResultMode]);
+  itemCopy = item;
+  resultsCopy = results;
+  -[SearchSession setRestoreSingleResult:](self, "setRestoreSingleResult:", [resultsCopy singleResultMode]);
   [(SearchSession *)self _assertNotInvalidated];
   if ([(SearchSession *)self shouldBroadcast])
   {
@@ -882,49 +882,49 @@ LABEL_11:
   block[2] = sub_1006546AC;
   block[3] = &unk_101661A40;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemCopy;
+  v13 = resultsCopy;
+  v9 = resultsCopy;
+  v10 = itemCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)redoSearchWithTraits:(id)a3
+- (void)redoSearchWithTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   [(SearchSession *)self _assertNotInvalidated];
-  [(SearchSession *)self setTraits:v4];
+  [(SearchSession *)self setTraits:traitsCopy];
 
-  v13 = [(SearchSession *)self searchFieldItem];
-  v5 = [(SearchSession *)self suggestion];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  suggestion = [(SearchSession *)self suggestion];
 
-  if (v5)
+  if (suggestion)
   {
     v6 = objc_alloc_init(SearchFieldItem);
 
-    v7 = [(SearchSession *)self suggestion];
-    [(SearchFieldItem *)v6 setSuggestion:v7];
+    suggestion2 = [(SearchSession *)self suggestion];
+    [(SearchFieldItem *)v6 setSuggestion:suggestion2];
 
-    v13 = v6;
+    searchFieldItem = v6;
   }
 
   searchManager = self->_searchManager;
-  v9 = [(SearchSession *)self traits];
-  v10 = [(SearchSession *)self source];
-  v11 = [(SearchSession *)self isRedoOrAutoRedoSearchType];
-  v12 = [(SearchSession *)self searchSessionData];
-  [(SearchManager *)searchManager searchForSearchFieldItem:v13 traits:v9 source:v10 isRedoOrAutoRedoSearch:v11 searchSessionData:v12];
+  traits = [(SearchSession *)self traits];
+  source = [(SearchSession *)self source];
+  isRedoOrAutoRedoSearchType = [(SearchSession *)self isRedoOrAutoRedoSearchType];
+  searchSessionData = [(SearchSession *)self searchSessionData];
+  [(SearchManager *)searchManager searchForSearchFieldItem:searchFieldItem traits:traits source:source isRedoOrAutoRedoSearch:isRedoOrAutoRedoSearchType searchSessionData:searchSessionData];
 }
 
-- (void)suggestionSearch:(id)a3 withTraits:(id)a4
+- (void)suggestionSearch:(id)search withTraits:(id)traits
 {
-  v6 = a3;
-  v7 = a4;
+  searchCopy = search;
+  traitsCopy = traits;
   [(SearchSession *)self _assertNotInvalidated];
-  v8 = [(SearchSession *)self searchInfo];
-  v9 = [v8 defaultSuggestion];
+  searchInfo = [(SearchSession *)self searchInfo];
+  defaultSuggestion = [searchInfo defaultSuggestion];
 
-  if (v9 == v6)
+  if (defaultSuggestion == searchCopy)
   {
     [(SearchSession *)self setSuggestion:0];
     [(SearchSession *)self setSuggestionSearchInfo:0];
@@ -940,35 +940,35 @@ LABEL_11:
 
   else
   {
-    [(SearchSession *)self setSuggestion:v6];
-    [(SearchSession *)self setTraits:v7];
+    [(SearchSession *)self setSuggestion:searchCopy];
+    [(SearchSession *)self setTraits:traitsCopy];
     [(SearchSession *)self setIsSuggestionSearch:1];
     v10 = objc_alloc_init(SearchFieldItem);
-    [(SearchFieldItem *)v10 setSuggestion:v6];
+    [(SearchFieldItem *)v10 setSuggestion:searchCopy];
     searchManager = self->_searchManager;
-    v12 = [(SearchSession *)self traits];
-    v13 = [(SearchSession *)self source];
-    v14 = [(SearchSession *)self isRedoOrAutoRedoSearchType];
-    v15 = [(SearchSession *)self searchSessionData];
-    [(SearchManager *)searchManager searchForSearchFieldItem:v10 traits:v12 source:v13 isRedoOrAutoRedoSearch:v14 searchSessionData:v15];
+    traits = [(SearchSession *)self traits];
+    source = [(SearchSession *)self source];
+    isRedoOrAutoRedoSearchType = [(SearchSession *)self isRedoOrAutoRedoSearchType];
+    searchSessionData = [(SearchSession *)self searchSessionData];
+    [(SearchManager *)searchManager searchForSearchFieldItem:v10 traits:traits source:source isRedoOrAutoRedoSearch:isRedoOrAutoRedoSearchType searchSessionData:searchSessionData];
   }
 }
 
-- (void)startSearch:(id)a3
+- (void)startSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v5 = sub_100652444();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = searchCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SearchSession %@ : startSearch %@", &v7, 0x16u);
   }
 
   [(SearchSession *)self _assertNotInvalidated];
-  [(SearchSession *)self setSearchFieldItem:v4];
+  [(SearchSession *)self setSearchFieldItem:searchCopy];
   if ([(SearchSession *)self shouldBroadcast])
   {
     v6 = +[NSNotificationCenter defaultCenter];
@@ -982,14 +982,14 @@ LABEL_11:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(SearchSession *)self searchFieldItem];
-  v5 = [(SearchSession *)self currentResultsSearchInfo];
-  v6 = [NSString stringWithFormat:@"<%@: %p> %@ %@ ", v3, self, v4, v5];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  currentResultsSearchInfo = [(SearchSession *)self currentResultsSearchInfo];
+  v6 = [NSString stringWithFormat:@"<%@: %p> %@ %@ ", v3, self, searchFieldItem, currentResultsSearchInfo];
 
   return v6;
 }
 
-- (SearchSession)initWithOrigin:(unint64_t)a3 options:(unint64_t)a4
+- (SearchSession)initWithOrigin:(unint64_t)origin options:(unint64_t)options
 {
   v20.receiver = self;
   v20.super_class = SearchSession;
@@ -997,8 +997,8 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v6->_options = a4;
-    v6->_origin = a3;
+    v6->_options = options;
+    v6->_origin = origin;
     v8 = +[UIDevice currentDevice];
     if ([v8 userInterfaceIdiom] == 1)
     {
@@ -1034,9 +1034,9 @@ LABEL_11:
   return v7;
 }
 
-+ (void)setCurrentSearchSession:(id)a3
++ (void)setCurrentSearchSession:(id)session
 {
-  obj = a3;
+  obj = session;
   WeakRetained = objc_loadWeakRetained(&qword_10195CDA8);
 
   v4 = obj;
@@ -1050,9 +1050,9 @@ LABEL_11:
 + (SearchSession)currentSearchSession
 {
   WeakRetained = objc_loadWeakRetained(&qword_10195CDA8);
-  v3 = [WeakRetained isInvalidated];
+  isInvalidated = [WeakRetained isInvalidated];
 
-  if (v3)
+  if (isInvalidated)
   {
     v4 = 0;
   }
@@ -1067,45 +1067,45 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = +[NSNotificationCenter defaultCenter];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100654E88;
     v5[3] = &unk_101624BD0;
-    v5[4] = a1;
+    v5[4] = self;
     v4 = [v3 addObserverForName:@"SearchSessionWillStart" object:0 queue:0 usingBlock:v5];
   }
 }
 
 - (NSString)printedPageSubtitle
 {
-  v3 = [(SearchSession *)self searchFieldItem];
-  v4 = [(SearchSession *)self currentResults];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  currentResults = [(SearchSession *)self currentResults];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_100D116C0;
   v19 = sub_100D116D0;
   v20 = 0;
-  v5 = [v3 historyItem];
-  v6 = [v5 historyEntry];
+  historyItem = [searchFieldItem historyItem];
+  historyEntry = [historyItem historyEntry];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100D116D8;
   v14[3] = &unk_101656AE8;
   v14[4] = &v15;
-  [v6 ifSearch:v14 ifRoute:0 ifPlaceDisplay:0 ifTransitLineItem:0];
+  [historyEntry ifSearch:v14 ifRoute:0 ifPlaceDisplay:0 ifTransitLineItem:0];
 
-  if (![v16[5] length] && objc_msgSend(v4, "count"))
+  if (![v16[5] length] && objc_msgSend(currentResults, "count"))
   {
-    v7 = [v4 objectAtIndexedSubscript:0];
+    v7 = [currentResults objectAtIndexedSubscript:0];
     v8 = +[NSBundle mainBundle];
     v10 = [v8 localizedStringForKey:@"near %@" value:@"localized string not found" table:0];
-    v11 = [v7 mapItem];
-    v12 = [v11 _addressFormattedAsCity];
-    v9 = [NSString stringWithFormat:v10, v12];
+    mapItem = [v7 mapItem];
+    _addressFormattedAsCity = [mapItem _addressFormattedAsCity];
+    v9 = [NSString stringWithFormat:v10, _addressFormattedAsCity];
 
     goto LABEL_6;
   }
@@ -1129,26 +1129,26 @@ LABEL_8:
 
 - (NSString)printedPageTitle
 {
-  v2 = [(SearchSession *)self searchFieldItem];
-  v3 = [v2 title];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  title = [searchFieldItem title];
 
-  return v3;
+  return title;
 }
 
 - (NSString)currentUserTypedSearchString
 {
-  v2 = [(SearchSession *)self searchFieldItem];
-  v3 = [v2 userTypedStringForRAP];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  userTypedStringForRAP = [searchFieldItem userTypedStringForRAP];
 
-  return v3;
+  return userTypedStringForRAP;
 }
 
 - (NSString)currentSearchString
 {
-  v2 = [(SearchSession *)self searchFieldItem];
-  v3 = [v2 searchString];
+  searchFieldItem = [(SearchSession *)self searchFieldItem];
+  searchString = [searchFieldItem searchString];
 
-  return v3;
+  return searchString;
 }
 
 - (BOOL)isOptionsLowFuel
@@ -1164,14 +1164,14 @@ LABEL_8:
   }
 }
 
-+ (void)performLowFuelSearchForEngineType:(int)a3 withObserver:(id)a4
++ (void)performLowFuelSearchForEngineType:(int)type withObserver:(id)observer
 {
-  v6 = a4;
+  observerCopy = observer;
   v7 = +[CarDisplayController sharedInstance];
-  v8 = [v7 chromeViewController];
-  v9 = [v8 currentTraits];
+  chromeViewController = [v7 chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  if (v9)
+  if (currentTraits)
   {
     dword_10195F934 = 0;
     v10 = sub_100006E1C();
@@ -1181,68 +1181,68 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Initiating a fuel search", buf, 2u);
     }
 
-    if (!v6)
+    if (!observerCopy)
     {
-      v6 = +[CarDisplayController sharedInstance];
+      observerCopy = +[CarDisplayController sharedInstance];
     }
 
     v11 = +[CarDisplayController sharedInstance];
-    v12 = [v11 chromeViewController];
-    v13 = [v12 currentTraits];
+    chromeViewController2 = [v11 chromeViewController];
+    currentTraits2 = [chromeViewController2 currentTraits];
 
     v14 = +[MNNavigationService sharedService];
-    [v13 setNavigating:{objc_msgSend(v14, "isInNavigatingState")}];
+    [currentTraits2 setNavigating:{objc_msgSend(v14, "isInNavigatingState")}];
 
     v15 = +[MapsExternalAccessory sharedInstance];
-    if ([v15 primaryEngineType] == a3)
+    if ([v15 primaryEngineType] == type)
     {
 
-      v16 = a3 & 1;
+      v16 = type & 1;
     }
 
     else
     {
-      v16 = a3 & 1;
+      v16 = type & 1;
 
-      if (((a3 >> 1) & 1) + v16 + ((a3 >> 2) & 1) + ((a3 >> 3) & 1) <= 1)
+      if (((type >> 1) & 1) + v16 + ((type >> 2) & 1) + ((type >> 3) & 1) <= 1)
       {
         v19 = @"Stark-SARHybrid";
         v20 = @"Stark-SARHybrid";
-        [v13 clearEngineTypes];
-        [v13 addEngineType:3];
+        [currentTraits2 clearEngineTypes];
+        [currentTraits2 addEngineType:3];
         [BrowseManager setCacheKey:@"Stark-SARHybrid" writesToDisk:0];
         goto LABEL_25;
       }
     }
 
     v18 = @"Stark-SAR";
-    [v13 clearEngineTypes];
+    [currentTraits2 clearEngineTypes];
     if (v16)
     {
-      [v13 addEngineType:1];
+      [currentTraits2 addEngineType:1];
     }
 
-    if ((a3 & 4) != 0)
+    if ((type & 4) != 0)
     {
-      [v13 addEngineType:3];
-      if ((a3 & 2) == 0)
+      [currentTraits2 addEngineType:3];
+      if ((type & 2) == 0)
       {
 LABEL_17:
-        if ((a3 & 8) == 0)
+        if ((type & 8) == 0)
         {
 LABEL_19:
           v19 = @"Stark-SAR";
 LABEL_25:
           v21 = [[BrowseManager alloc] initWithCacheKey:v19];
-          [(BrowseManager *)v21 setTraits:v13];
+          [(BrowseManager *)v21 setTraits:currentTraits2];
 
           v23[0] = _NSConcreteStackBlock;
           v23[1] = 3221225472;
           v23[2] = sub_100FB0DE8;
           v23[3] = &unk_10165FE18;
           v24 = v21;
-          v6 = v6;
-          v25 = v6;
+          observerCopy = observerCopy;
+          v25 = observerCopy;
           v22 = v21;
           [(BrowseManager *)v22 getCategoriesWithCompletion:v23];
 
@@ -1250,18 +1250,18 @@ LABEL_25:
         }
 
 LABEL_18:
-        [v13 addEngineType:4];
+        [currentTraits2 addEngineType:4];
         goto LABEL_19;
       }
     }
 
-    else if ((a3 & 2) == 0)
+    else if ((type & 2) == 0)
     {
       goto LABEL_17;
     }
 
-    [v13 addEngineType:2];
-    if ((a3 & 8) == 0)
+    [currentTraits2 addEngineType:2];
+    if ((type & 8) == 0)
     {
       goto LABEL_19;
     }
@@ -1289,10 +1289,10 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = sub_100FB0DD8;
     block[3] = &unk_10165FDC8;
-    v28 = a1;
-    v29 = a3;
-    v6 = v6;
-    v27 = v6;
+    selfCopy = self;
+    typeCopy = type;
+    observerCopy = observerCopy;
+    v27 = observerCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 

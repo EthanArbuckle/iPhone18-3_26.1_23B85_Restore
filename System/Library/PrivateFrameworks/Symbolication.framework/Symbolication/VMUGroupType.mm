@@ -1,24 +1,24 @@
 @interface VMUGroupType
-- (void)enumerateGroups:(void *)a3 withBlock:(id)a4;
+- (void)enumerateGroups:(void *)groups withBlock:(id)block;
 @end
 
 @implementation VMUGroupType
 
-- (void)enumerateGroups:(void *)a3 withBlock:(id)a4
+- (void)enumerateGroups:(void *)groups withBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v32 = __42__VMUGroupType_enumerateGroups_withBlock___block_invoke;
   v33 = &unk_1E8278D70;
-  v34 = self;
+  selfCopy = self;
   v8 = v7;
   v35 = v8;
   v9 = v31;
-  v12 = *a3;
-  v10 = a3 + 4;
+  v12 = *groups;
+  v10 = groups + 4;
   v11 = v12;
   if (v12)
   {
@@ -59,8 +59,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = [v8 allKeys];
-  v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v8 allKeys];
+  v18 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v19)
@@ -80,7 +80,7 @@
         v23 = *(*(&v27 + 1) + 8 * v22);
         v24 = objc_autoreleasePoolPush();
         v25 = [v8 objectForKeyedSubscript:v23];
-        v6[2](v6, v25);
+        blockCopy[2](blockCopy, v25);
 
         objc_autoreleasePoolPop(v24);
         ++v22;

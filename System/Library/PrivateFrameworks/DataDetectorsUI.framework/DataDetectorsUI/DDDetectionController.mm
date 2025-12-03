@@ -1,92 +1,92 @@
 @interface DDDetectionController
-+ (BOOL)_shouldConsiderResultForCoreRecents:(__DDResult *)a3;
++ (BOOL)_shouldConsiderResultForCoreRecents:(__DDResult *)recents;
 + (BOOL)largeScreenIdiom;
-+ (id)barcodeContext:(id)a3 preview:(BOOL)a4 contact:(id)a5 ics:(id)a6;
-+ (id)filterResults:(id)a3 forTypes:(unint64_t)a4 referenceDate:(id)a5 referenceTimeZone:(id)a6;
-+ (id)lightUnderlineColorFromTextColor:(id)a3;
++ (id)barcodeContext:(id)context preview:(BOOL)preview contact:(id)contact ics:(id)ics;
++ (id)filterResults:(id)results forTypes:(unint64_t)types referenceDate:(id)date referenceTimeZone:(id)zone;
++ (id)lightUnderlineColorFromTextColor:(id)color;
 + (id)messagesActionHandler;
 + (id)sharedController;
 + (id)tapAndHoldSchemes;
-+ (id)updateContext:(id)a3 forResult:(__DDResult *)a4 atIndex:(unint64_t)a5 ofStorage:(id)a6;
-+ (void)setMessagesActionHandler:(id)a3;
++ (id)updateContext:(id)context forResult:(__DDResult *)result atIndex:(unint64_t)index ofStorage:(id)storage;
++ (void)setMessagesActionHandler:(id)handler;
 - (BCSBusinessQueryService)_bizService;
-- (BOOL)_checkIfBusinessWithResult:(__DDResult *)a3 messageable:(BOOL *)a4;
-- (BOOL)_checkIfBusinessWithURL:(id)a3 messageable:(BOOL *)a4;
-- (BOOL)_phoneNumberIsABusinessNumber:(id)a3 messageable:(BOOL *)a4;
-- (BOOL)_shouldImmediatelyLaunchDefaultActionForURL:(id)a3 result:(__DDResult *)a4;
-- (BOOL)_shouldImmediatelyShowActionSheetForCoreResult:(__DDResult *)a3;
-- (BOOL)_shouldImmediatelyShowActionSheetForURL:(id)a3;
-- (BOOL)shouldIgnoreMessageActionForURL:(id)a3;
-- (BOOL)shouldImmediatelyLaunchDefaultActionForTapAndHoldAtIndex:(unint64_t)a3 ofStorage:(id)a4;
-- (BOOL)shouldImmediatelyShowActionSheetForTapAtIndex:(unint64_t)a3 ofStorage:(id)a4;
-- (BOOL)shouldImmediatelyShowActionSheetForURL:(id)a3 forFrame:(id)a4;
-- (BOOL)shouldUseLightStyleAtIndex:(unint64_t)a3 ofStorage:(id)a4 moreHighlight:(BOOL *)a5;
-- (BOOL)tryDismissActionInView:(id)a3;
+- (BOOL)_checkIfBusinessWithResult:(__DDResult *)result messageable:(BOOL *)messageable;
+- (BOOL)_checkIfBusinessWithURL:(id)l messageable:(BOOL *)messageable;
+- (BOOL)_phoneNumberIsABusinessNumber:(id)number messageable:(BOOL *)messageable;
+- (BOOL)_shouldImmediatelyLaunchDefaultActionForURL:(id)l result:(__DDResult *)result;
+- (BOOL)_shouldImmediatelyShowActionSheetForCoreResult:(__DDResult *)result;
+- (BOOL)_shouldImmediatelyShowActionSheetForURL:(id)l;
+- (BOOL)shouldIgnoreMessageActionForURL:(id)l;
+- (BOOL)shouldImmediatelyLaunchDefaultActionForTapAndHoldAtIndex:(unint64_t)index ofStorage:(id)storage;
+- (BOOL)shouldImmediatelyShowActionSheetForTapAtIndex:(unint64_t)index ofStorage:(id)storage;
+- (BOOL)shouldImmediatelyShowActionSheetForURL:(id)l forFrame:(id)frame;
+- (BOOL)shouldUseLightStyleAtIndex:(unint64_t)index ofStorage:(id)storage moreHighlight:(BOOL *)highlight;
+- (BOOL)tryDismissActionInView:(id)view;
 - (DDDetectionController)init;
 - (DDDetectionControllerDelegate)delegate;
-- (__DDResult)_resultForAnchor:(id)a3 forFrame:(id)a4 context:(id *)a5;
-- (__DDResult)_resultForIdentifier:(id)a3 forContainer:(id)a4 context:(id *)a5;
-- (__DDResult)_resultForIdentifier:(id)a3 withResults:(id)a4 context:(id *)a5;
-- (__DDResult)_resultForURL:(id)a3 forContainer:(id)a4 context:(id *)a5;
-- (__DDResult)_resultForURL:(id)a3 withResults:(id)a4 context:(id *)a5;
-- (__DDResult)resultForDOMNode:(id)a3 forFrame:(id)a4;
-- (__DDResult)resultForLinkAtIndex:(unint64_t)a3 inTextStorage:(id)a4;
-- (__DDResult)resultForNode:(id)a3 url:(id)a4 frame:(id)a5 contextRef:(id *)a6;
-- (__DDResult)resultForURL:(id)a3 identifier:(id)a4 selectedText:(id)a5 results:(id)a6 context:(id)a7 extendedContext:(id *)a8;
-- (id)_URLForLinkAttributeValue:(id)a3;
-- (id)_applyBlock:(id)a3 withResultsAtIndex:(unint64_t)a4 ofStorage:(id)a5 context:(id)a6;
-- (id)_businessItemForNumber:(id)a3 messageable:(BOOL *)a4 brand:(id *)a5;
-- (id)_ensureURLIsURL:(id)a3;
-- (id)_newOperationForContainer:(id)a3;
-- (id)_phoneNumberFromResult:(__DDResult *)a3;
-- (id)_plainTextAugmentedContext:(id)a3 withFrame:(id)a4;
-- (id)_resultForLinkAtIndex:(unint64_t)a3 inTextStorage:(id)a4 subResult:(id *)a5 url:(id *)a6 effectiveRange:(_NSRange *)a7;
-- (id)_subResultAtIndex:(unint64_t)a3 ofResult:(id)a4;
-- (id)actionsAtIndex:(unint64_t)a3 ofStorage:(id)a4 context:(id)a5;
-- (id)actionsForAnchor:(id)a3 url:(id)a4 forFrame:(id)a5;
-- (id)actionsForDOMNode:(id)a3 forFrame:(id)a4;
-- (id)actionsForResult:(__DDResult *)a3 context:(id)a4;
-- (id)actionsForURL:(id)a3 identifier:(id)a4 selectedText:(id)a5 results:(id)a6 context:(id)a7;
-- (id)attributedTitleForResult:(__DDResult *)a3 updaterBlock:(id)a4;
-- (id)attributedTitleForResultAtIndex:(unint64_t)a3 ofStorage:(id)a4 updaterBlock:(id)a5;
-- (id)attributedTitleForURL:(id)a3 updaterBlock:(id)a4;
-- (id)barcodeActionsForContext:(id)a3 URL:(id)a4 result:(__DDResult *)a5 contact:(id)a6 ics:(id)a7;
-- (id)barcodeDefaultActionForContext:(id)a3 URL:(id)a4 result:(__DDResult *)a5 contact:(id)a6 ics:(id)a7;
-- (id)barcodePreviewActionForContext:(id)a3 URL:(id)a4 result:(__DDResult *)a5 contact:(id)a6 ics:(id)a7;
-- (id)copyContextForContainer:(id)a3;
-- (id)defaultActionAtIndex:(unint64_t)a3 ofStorage:(id)a4 context:(id)a5;
-- (id)defaultActionForAnchor:(id)a3 url:(id)a4 forFrame:(id)a5;
-- (id)defaultActionForDOMNode:(id)a3 forFrame:(id)a4;
-- (id)defaultActionForURL:(id)a3 results:(id)a4 context:(id)a5;
-- (id)linkAtIndex:(unint64_t)a3 inTextStorage:(id)a4;
-- (id)preferredTextAttributesForLinkAtCharacterIndex:(unint64_t)a3 ofStorage:(id)a4;
-- (id)titleForResult:(__DDResult *)a3 subResult:(__DDResult *)a4 withURL:(id)a5 context:(id)a6;
-- (id)titleForResultAtIndex:(unint64_t)a3 ofStorage:(id)a4 context:(id)a5;
-- (id)titleForURL:(id)a3 results:(id)a4 context:(id)a5;
-- (void)_cacheBusinessPhoneNumber:(id)a3;
-- (void)_commonResetResultsForContainer:(id)a3;
-- (void)_doURLification:(id)a3;
-- (void)_enqueueOperation:(id)a3;
-- (void)_interactionDidStartForResult:(__DDResult *)a3;
-- (void)_interactionDidStartForURL:(id)a3;
-- (void)_resetStoredResultsForContainer:(id)a3;
-- (void)_startCoalescedURLification:(id)a3 clearPreviousResults:(BOOL)a4;
-- (void)cancelURLificationForContainer:(id)a3;
-- (void)containerWillBeRemoved:(id)a3;
+- (__DDResult)_resultForAnchor:(id)anchor forFrame:(id)frame context:(id *)context;
+- (__DDResult)_resultForIdentifier:(id)identifier forContainer:(id)container context:(id *)context;
+- (__DDResult)_resultForIdentifier:(id)identifier withResults:(id)results context:(id *)context;
+- (__DDResult)_resultForURL:(id)l forContainer:(id)container context:(id *)context;
+- (__DDResult)_resultForURL:(id)l withResults:(id)results context:(id *)context;
+- (__DDResult)resultForDOMNode:(id)node forFrame:(id)frame;
+- (__DDResult)resultForLinkAtIndex:(unint64_t)index inTextStorage:(id)storage;
+- (__DDResult)resultForNode:(id)node url:(id)url frame:(id)frame contextRef:(id *)ref;
+- (__DDResult)resultForURL:(id)l identifier:(id)identifier selectedText:(id)text results:(id)results context:(id)context extendedContext:(id *)extendedContext;
+- (id)_URLForLinkAttributeValue:(id)value;
+- (id)_applyBlock:(id)block withResultsAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context;
+- (id)_businessItemForNumber:(id)number messageable:(BOOL *)messageable brand:(id *)brand;
+- (id)_ensureURLIsURL:(id)l;
+- (id)_newOperationForContainer:(id)container;
+- (id)_phoneNumberFromResult:(__DDResult *)result;
+- (id)_plainTextAugmentedContext:(id)context withFrame:(id)frame;
+- (id)_resultForLinkAtIndex:(unint64_t)index inTextStorage:(id)storage subResult:(id *)result url:(id *)url effectiveRange:(_NSRange *)range;
+- (id)_subResultAtIndex:(unint64_t)index ofResult:(id)result;
+- (id)actionsAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context;
+- (id)actionsForAnchor:(id)anchor url:(id)url forFrame:(id)frame;
+- (id)actionsForDOMNode:(id)node forFrame:(id)frame;
+- (id)actionsForResult:(__DDResult *)result context:(id)context;
+- (id)actionsForURL:(id)l identifier:(id)identifier selectedText:(id)text results:(id)results context:(id)context;
+- (id)attributedTitleForResult:(__DDResult *)result updaterBlock:(id)block;
+- (id)attributedTitleForResultAtIndex:(unint64_t)index ofStorage:(id)storage updaterBlock:(id)block;
+- (id)attributedTitleForURL:(id)l updaterBlock:(id)block;
+- (id)barcodeActionsForContext:(id)context URL:(id)l result:(__DDResult *)result contact:(id)contact ics:(id)ics;
+- (id)barcodeDefaultActionForContext:(id)context URL:(id)l result:(__DDResult *)result contact:(id)contact ics:(id)ics;
+- (id)barcodePreviewActionForContext:(id)context URL:(id)l result:(__DDResult *)result contact:(id)contact ics:(id)ics;
+- (id)copyContextForContainer:(id)container;
+- (id)defaultActionAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context;
+- (id)defaultActionForAnchor:(id)anchor url:(id)url forFrame:(id)frame;
+- (id)defaultActionForDOMNode:(id)node forFrame:(id)frame;
+- (id)defaultActionForURL:(id)l results:(id)results context:(id)context;
+- (id)linkAtIndex:(unint64_t)index inTextStorage:(id)storage;
+- (id)preferredTextAttributesForLinkAtCharacterIndex:(unint64_t)index ofStorage:(id)storage;
+- (id)titleForResult:(__DDResult *)result subResult:(__DDResult *)subResult withURL:(id)l context:(id)context;
+- (id)titleForResultAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context;
+- (id)titleForURL:(id)l results:(id)results context:(id)context;
+- (void)_cacheBusinessPhoneNumber:(id)number;
+- (void)_commonResetResultsForContainer:(id)container;
+- (void)_doURLification:(id)lification;
+- (void)_enqueueOperation:(id)operation;
+- (void)_interactionDidStartForResult:(__DDResult *)result;
+- (void)_interactionDidStartForURL:(id)l;
+- (void)_resetStoredResultsForContainer:(id)container;
+- (void)_startCoalescedURLification:(id)lification clearPreviousResults:(BOOL)results;
+- (void)cancelURLificationForContainer:(id)container;
+- (void)containerWillBeRemoved:(id)removed;
 - (void)dealloc;
-- (void)interactionDidStartAtIndex:(unint64_t)a3 ofStorage:(id)a4;
-- (void)performAction:(id)a3 fromAlertController:(id)a4 interactionDelegate:(id)a5;
-- (void)performAction:(id)a3 fromView:(id)a4 alertController:(id)a5 interactionDelegate:(id)a6;
-- (void)performAction:(id)a3 inView:(id)a4 completion:(id)a5;
-- (void)performAction:(id)a3 inView:(id)a4 interactionDelegate:(id)a5;
-- (void)resetResultsForContainer:(id)a3;
-- (void)resetResultsForFrame:(id)a3;
-- (void)resetResultsForTextView:(id)a3;
-- (void)setContext:(id)a3 forContainer:(id)a4;
-- (void)setResults:(__CFArray *)a3 forContainer:(id)a4;
-- (void)startURLificationForContainer:(id)a3 detectedTypes:(unint64_t)a4;
-- (void)startURLificationForContainer:(id)a3 detectedTypes:(unint64_t)a4 options:(int)a5;
-- (void)urlifyTextView:(id)a3 withExternalResults:(id)a4 context:(id)a5;
+- (void)interactionDidStartAtIndex:(unint64_t)index ofStorage:(id)storage;
+- (void)performAction:(id)action fromAlertController:(id)controller interactionDelegate:(id)delegate;
+- (void)performAction:(id)action fromView:(id)view alertController:(id)controller interactionDelegate:(id)delegate;
+- (void)performAction:(id)action inView:(id)view completion:(id)completion;
+- (void)performAction:(id)action inView:(id)view interactionDelegate:(id)delegate;
+- (void)resetResultsForContainer:(id)container;
+- (void)resetResultsForFrame:(id)frame;
+- (void)resetResultsForTextView:(id)view;
+- (void)setContext:(id)context forContainer:(id)container;
+- (void)setResults:(__CFArray *)results forContainer:(id)container;
+- (void)startURLificationForContainer:(id)container detectedTypes:(unint64_t)types;
+- (void)startURLificationForContainer:(id)container detectedTypes:(unint64_t)types options:(int)options;
+- (void)urlifyTextView:(id)view withExternalResults:(id)results context:(id)context;
 @end
 
 @implementation DDDetectionController
@@ -159,11 +159,11 @@ uint64_t __41__DDDetectionController_sharedController__block_invoke()
   return v3;
 }
 
-+ (void)setMessagesActionHandler:(id)a3
++ (void)setMessagesActionHandler:(id)handler
 {
-  if (_messagesActionHandler != a3)
+  if (_messagesActionHandler != handler)
   {
-    _messagesActionHandler = _Block_copy(a3);
+    _messagesActionHandler = _Block_copy(handler);
 
     MEMORY[0x2821F96F8]();
   }
@@ -185,18 +185,18 @@ uint64_t __41__DDDetectionController_sharedController__block_invoke()
   [(DDDetectionController *)&v3 dealloc];
 }
 
-- (void)setResults:(__CFArray *)a3 forContainer:(id)a4
+- (void)setResults:(__CFArray *)results forContainer:(id)container
 {
-  v6 = a4;
+  containerCopy = container;
   protectQueue = self->_protectQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__DDDetectionController_setResults_forContainer___block_invoke;
   block[3] = &unk_278290E40;
-  v10 = v6;
-  v11 = a3;
+  v10 = containerCopy;
+  resultsCopy = results;
   block[4] = self;
-  v8 = v6;
+  v8 = containerCopy;
   dispatch_sync(protectQueue, block);
 }
 
@@ -216,20 +216,20 @@ uint64_t __49__DDDetectionController_setResults_forContainer___block_invoke(void
   }
 }
 
-- (void)setContext:(id)a3 forContainer:(id)a4
+- (void)setContext:(id)context forContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  containerCopy = container;
   protectQueue = self->_protectQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__DDDetectionController_setContext_forContainer___block_invoke;
   block[3] = &unk_278290E68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  selfCopy = self;
+  v14 = containerCopy;
+  v9 = containerCopy;
+  v10 = contextCopy;
   dispatch_sync(protectQueue, block);
 }
 
@@ -248,9 +248,9 @@ uint64_t __49__DDDetectionController_setContext_forContainer___block_invoke(void
   }
 }
 
-- (id)copyContextForContainer:(id)a3
+- (id)copyContextForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -262,10 +262,10 @@ uint64_t __49__DDDetectionController_setContext_forContainer___block_invoke(void
   block[1] = 3221225472;
   block[2] = __49__DDDetectionController_copyContextForContainer___block_invoke;
   block[3] = &unk_278290E90;
-  v10 = v4;
+  v10 = containerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = containerCopy;
   dispatch_sync(protectQueue, block);
   v7 = v13[5];
 
@@ -282,67 +282,67 @@ void __49__DDDetectionController_copyContextForContainer___block_invoke(void *a1
   *(v3 + 40) = v2;
 }
 
-- (void)_resetStoredResultsForContainer:(id)a3
+- (void)_resetStoredResultsForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   protectQueue = self->_protectQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__DDDetectionController__resetStoredResultsForContainer___block_invoke;
   v7[3] = &unk_278290BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = containerCopy;
+  v6 = containerCopy;
   dispatch_sync(protectQueue, v7);
 }
 
-- (void)_commonResetResultsForContainer:(id)a3
+- (void)_commonResetResultsForContainer:(id)container
 {
-  v4 = a3;
-  [(DDDetectionController *)self cancelURLificationForContainer:v4];
-  [(DDDetectionController *)self _resetStoredResultsForContainer:v4];
+  containerCopy = container;
+  [(DDDetectionController *)self cancelURLificationForContainer:containerCopy];
+  [(DDDetectionController *)self _resetStoredResultsForContainer:containerCopy];
 }
 
-- (void)resetResultsForContainer:(id)a3
+- (void)resetResultsForContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(DDDetectionController *)self resetResultsForFrame:v5];
-    v4 = v5;
+    [(DDDetectionController *)self resetResultsForFrame:containerCopy];
+    v4 = containerCopy;
   }
 
   else
   {
-    [(DDDetectionController *)self resetResultsForTextView:v5];
-    v4 = v5;
+    [(DDDetectionController *)self resetResultsForTextView:containerCopy];
+    v4 = containerCopy;
   }
 }
 
-- (id)_newOperationForContainer:(id)a3
+- (id)_newOperationForContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   protectQueue = self->_protectQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__DDDetectionController__newOperationForContainer___block_invoke;
   block[3] = &unk_278290BC8;
   block[4] = self;
-  v7 = v5;
+  v7 = containerCopy;
   v21 = v7;
   dispatch_sync(protectQueue, block);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"DDDetectionController.m" lineNumber:203 description:@"Unknown container type"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DDDetectionController.m" lineNumber:203 description:@"Unknown container type"];
   }
 
-  v9 = [v7 dd_newOperation];
-  if (!v9)
+  dd_newOperation = [v7 dd_newOperation];
+  if (!dd_newOperation)
   {
     [(DDDetectionController *)a2 _newOperationForContainer:?];
-    v9 = 0;
+    dd_newOperation = 0;
   }
 
   v10 = self->_protectQueue;
@@ -350,9 +350,9 @@ void __49__DDDetectionController_copyContextForContainer___block_invoke(void *a1
   v16[1] = 3221225472;
   v16[2] = __51__DDDetectionController__newOperationForContainer___block_invoke_2;
   v16[3] = &unk_278290E68;
-  v11 = v9;
+  v11 = dd_newOperation;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v19 = v7;
   v12 = v7;
   dispatch_sync(v10, v16);
@@ -374,15 +374,15 @@ uint64_t __51__DDDetectionController__newOperationForContainer___block_invoke_2(
   return [v4 setObject:v3 forKey:v5];
 }
 
-- (void)_startCoalescedURLification:(id)a3 clearPreviousResults:(BOOL)a4
+- (void)_startCoalescedURLification:(id)lification clearPreviousResults:(BOOL)results
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  resultsCopy = results;
+  lificationCopy = lification;
+  v7 = lificationCopy;
+  if (resultsCopy)
   {
-    v8 = [v6 container];
-    [(DDDetectionController *)self _resetStoredResultsForContainer:v8];
+    container = [lificationCopy container];
+    [(DDDetectionController *)self _resetStoredResultsForContainer:container];
   }
 
   v10[0] = MEMORY[0x277D85DD0];
@@ -390,7 +390,7 @@ uint64_t __51__DDDetectionController__newOperationForContainer___block_invoke_2(
   v10[2] = __74__DDDetectionController__startCoalescedURLification_clearPreviousResults___block_invoke;
   v10[3] = &unk_278290BC8;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v9 = v7;
   _os_activity_initiate(&dword_21AB70000, "Data Detectors URLification", OS_ACTIVITY_FLAG_DEFAULT, v10);
 }
@@ -433,11 +433,11 @@ uint64_t __74__DDDetectionController__startCoalescedURLification_clearPreviousRe
   return [*(a1 + 40) _enqueueOperation:*(a1 + 32)];
 }
 
-- (void)startURLificationForContainer:(id)a3 detectedTypes:(unint64_t)a4 options:(int)a5
+- (void)startURLificationForContainer:(id)container detectedTypes:(unint64_t)types options:(int)options
 {
-  v5 = a5;
-  v8 = a3;
-  if (!v8 || !a4)
+  optionsCopy = options;
+  containerCopy = container;
+  if (!containerCopy || !types)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -449,21 +449,21 @@ uint64_t __74__DDDetectionController__startCoalescedURLification_clearPreviousRe
     return;
   }
 
-  if (a4 - 0x80000000 > 0xFFFFFFFF7FFFFFFELL)
+  if (types - 0x80000000 > 0xFFFFFFFF7FFFFFFELL)
   {
-    [(DDDetectionController *)self cancelURLificationForContainer:v8];
-    v9 = [(DDDetectionController *)self _newOperationForContainer:v8];
-    [v9 setDetectionTypes:a4];
+    [(DDDetectionController *)self cancelURLificationForContainer:containerCopy];
+    v9 = [(DDDetectionController *)self _newOperationForContainer:containerCopy];
+    [v9 setDetectionTypes:types];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       [DDDetectionController startURLificationForContainer:detectedTypes:options:];
-      if ((v5 & 2) == 0)
+      if ((optionsCopy & 2) == 0)
       {
         goto LABEL_10;
       }
     }
 
-    else if ((v5 & 2) == 0)
+    else if ((optionsCopy & 2) == 0)
     {
 LABEL_10:
       [(DDDetectionController *)self _startCoalescedURLification:v9];
@@ -486,28 +486,28 @@ LABEL_5:
   [DDDetectionController startURLificationForContainer:detectedTypes:options:];
 }
 
-- (void)startURLificationForContainer:(id)a3 detectedTypes:(unint64_t)a4
+- (void)startURLificationForContainer:(id)container detectedTypes:(unint64_t)types
 {
-  if (a4 == 127)
+  if (types == 127)
   {
-    a4 = 511;
+    types = 511;
   }
 
-  [(DDDetectionController *)self startURLificationForContainer:a3 detectedTypes:a4 options:0];
+  [(DDDetectionController *)self startURLificationForContainer:container detectedTypes:types options:0];
 }
 
-- (void)_enqueueOperation:(id)a3
+- (void)_enqueueOperation:(id)operation
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  operationCopy = operation;
+  objc_initWeak(&location, operationCopy);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__DDDetectionController__enqueueOperation___block_invoke;
   v11[3] = &unk_278290EE0;
   objc_copyWeak(&v12, &location);
   v11[4] = self;
-  [v4 setCompletionBlock:v11];
-  if ([v4 needsFullScanner])
+  [operationCopy setCompletionBlock:v11];
+  if ([operationCopy needsFullScanner])
   {
     fullScannerQueue = self->_fullScannerQueue;
     p_fullScannerQueue = &self->_fullScannerQueue;
@@ -535,7 +535,7 @@ LABEL_5:
     }
   }
 
-  [v5 addOperation:v4];
+  [v5 addOperation:operationCopy];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
@@ -559,9 +559,9 @@ void __43__DDDetectionController__enqueueOperation___block_invoke(uint64_t a1)
   [v3 dispatchContainerModificationBlock:v5];
 }
 
-- (void)cancelURLificationForContainer:(id)a3
+- (void)cancelURLificationForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -575,7 +575,7 @@ void __43__DDDetectionController__enqueueOperation___block_invoke(uint64_t a1)
   block[3] = &unk_278290E90;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = containerCopy;
   v11 = v6;
   dispatch_sync(protectQueue, block);
   if (v14[5])
@@ -609,18 +609,18 @@ uint64_t __56__DDDetectionController_cancelURLificationForContainer___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)containerWillBeRemoved:(id)a3
+- (void)containerWillBeRemoved:(id)removed
 {
-  v4 = a3;
-  [(DDDetectionController *)self cancelURLificationForContainer:v4];
+  removedCopy = removed;
+  [(DDDetectionController *)self cancelURLificationForContainer:removedCopy];
   protectQueue = self->_protectQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__DDDetectionController_containerWillBeRemoved___block_invoke;
   v7[3] = &unk_278290BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = removedCopy;
+  v6 = removedCopy;
   dispatch_sync(protectQueue, v7);
 }
 
@@ -633,7 +633,7 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
   return [v3 removeObjectForKey:v2];
 }
 
-+ (BOOL)_shouldConsiderResultForCoreRecents:(__DDResult *)a3
++ (BOOL)_shouldConsiderResultForCoreRecents:(__DDResult *)recents
 {
   Type = DDResultGetType();
   if (CFStringCompare(Type, *MEMORY[0x277D040E0], 0))
@@ -684,23 +684,23 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
   return SubresultWithType;
 }
 
-- (void)_doURLification:(id)a3
+- (void)_doURLification:(id)lification
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lificationCopy = lification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [DDDetectionController _doURLification:];
   }
 
-  if (!v5)
+  if (!lificationCopy)
   {
     [(DDDetectionController *)a2 _doURLification:?];
   }
 
-  v6 = [v5 container];
-  v7 = [v5 results];
-  v8 = [v5 tryCount];
+  container = [lificationCopy container];
+  results = [lificationCopy results];
+  tryCount = [lificationCopy tryCount];
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -714,15 +714,15 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
   block[3] = &unk_278290E90;
   v58 = &v59;
   block[4] = self;
-  v10 = v6;
+  v10 = container;
   v57 = v10;
   dispatch_sync(protectQueue, block);
-  if (v60[5] == v5 && ([v5 containerIsReady] & 1) != 0)
+  if (v60[5] == lificationCopy && ([lificationCopy containerIsReady] & 1) != 0)
   {
-    v11 = [v5 isDiscarded];
-    if (v7)
+    isDiscarded = [lificationCopy isDiscarded];
+    if (results)
     {
-      v12 = v11;
+      v12 = isDiscarded;
     }
 
     else
@@ -740,20 +740,20 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
 
     else
     {
-      if (v8 != -1 && [v5 needsToStartOver])
+      if (tryCount != -1 && [lificationCopy needsToStartOver])
       {
         v16 = MEMORY[0x277D86220];
         v17 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          -[DDDetectionController _doURLification:].cold.4(v5, buf, [v7 count]);
+          -[DDDetectionController _doURLification:].cold.4(lificationCopy, buf, [results count]);
         }
 
         v18 = 1;
         goto LABEL_33;
       }
 
-      if ([v7 count])
+      if ([results count])
       {
         v19 = self->_protectQueue;
         v53[0] = MEMORY[0x277D85DD0];
@@ -763,10 +763,10 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
         v53[4] = self;
         v38 = v10;
         v54 = v38;
-        v20 = v7;
+        v20 = results;
         v55 = v20;
         dispatch_sync(v19, v53);
-        v39 = [v5 doURLificationOnDocument];
+        doURLificationOnDocument = [lificationCopy doURLificationOnDocument];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         if (WeakRetained)
         {
@@ -775,15 +775,15 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
 
           if (v23)
           {
-            v24 = [v5 context];
-            if ([v5 needContinuation])
+            context = [lificationCopy context];
+            if ([lificationCopy needContinuation])
             {
               v25 = 0;
             }
 
             else
             {
-              v25 = CFRetain([v5 scanQuery]);
+              v25 = CFRetain([lificationCopy scanQuery]);
             }
 
             v27 = dispatch_get_global_queue(-2, 0);
@@ -792,16 +792,16 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
             v47[2] = __41__DDDetectionController__doURLification___block_invoke_2;
             v47[3] = &unk_278290F08;
             v48 = v20;
-            v49 = self;
-            v50 = v24;
+            selfCopy = self;
+            v50 = context;
             v52 = v25;
             v51 = v38;
-            v28 = v24;
+            v28 = context;
             dispatch_async(v27, v47);
           }
         }
 
-        v26 = v39;
+        v26 = doURLificationOnDocument;
       }
 
       else
@@ -809,12 +809,12 @@ uint64_t __48__DDDetectionController_containerWillBeRemoved___block_invoke(uint6
         v26 = 0;
       }
 
-      v29 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v65 = @"kDataDetectorsUIURLificationHadDOMModification";
       v30 = [MEMORY[0x277CCABB0] numberWithBool:v26];
       v66 = v30;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-      [v29 postNotificationName:@"DataDetectorsUIDidFinishURLificationNotification" object:v10 userInfo:v31];
+      [defaultCenter postNotificationName:@"DataDetectorsUIDidFinishURLificationNotification" object:v10 userInfo:v31];
     }
 
     v18 = 0;
@@ -828,7 +828,7 @@ LABEL_33:
     v33 = v10;
     v46 = v33;
     dispatch_sync(v32, v45);
-    if (v18 && v8 >= 2)
+    if (v18 && tryCount >= 2)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -836,7 +836,7 @@ LABEL_33:
       }
     }
 
-    else if ((v18 | [v5 needContinuation]) == 1)
+    else if ((v18 | [lificationCopy needContinuation]) == 1)
     {
       if (v18)
       {
@@ -845,7 +845,7 @@ LABEL_33:
           [DDDetectionController _doURLification:];
         }
 
-        v34 = [v5 newOperationForStartingOver];
+        newOperationForStartingOver = [lificationCopy newOperationForStartingOver];
         v35 = self->_protectQueue;
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
@@ -858,7 +858,7 @@ LABEL_33:
 
       else
       {
-        v34 = [v5 newOperationForContinuation];
+        newOperationForStartingOver = [lificationCopy newOperationForContinuation];
       }
 
       v36 = self->_protectQueue;
@@ -867,14 +867,14 @@ LABEL_33:
       v40[2] = __41__DDDetectionController__doURLification___block_invoke_2_54;
       v40[3] = &unk_278290E68;
       v40[4] = self;
-      v37 = v34;
+      v37 = newOperationForStartingOver;
       v41 = v37;
       v42 = v33;
       dispatch_sync(v36, v40);
       [(DDDetectionController *)self _startCoalescedURLification:v37 clearPreviousResults:0];
     }
 
-    [v5 cleanup];
+    [lificationCopy cleanup];
 
     goto LABEL_16;
   }
@@ -883,10 +883,10 @@ LABEL_33:
   v14 = MEMORY[0x277D86220];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    -[DDDetectionController _doURLification:].cold.3(v5, v60[5], buf, [v7 count]);
+    -[DDDetectionController _doURLification:].cold.3(lificationCopy, v60[5], buf, [results count]);
   }
 
-  [v5 cleanup];
+  [lificationCopy cleanup];
 LABEL_16:
 
   _Block_object_dispose(&v59, 8);
@@ -1006,11 +1006,11 @@ LABEL_6:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)actionsForResult:(__DDResult *)a3 context:(id)a4
+- (id)actionsForResult:(__DDResult *)result context:(id)context
 {
-  if (a3)
+  if (result)
   {
-    v5 = [(DDActionController *)self->_actionController actionsForURL:0 result:a3 context:a4];
+    v5 = [(DDActionController *)self->_actionController actionsForURL:0 result:result context:context];
   }
 
   else
@@ -1021,71 +1021,71 @@ LABEL_6:
   return v5;
 }
 
-- (void)performAction:(id)a3 inView:(id)a4 interactionDelegate:(id)a5
+- (void)performAction:(id)action inView:(id)view interactionDelegate:(id)delegate
 {
   actionController = self->_actionController;
-  v9 = a4;
-  v10 = a3;
-  [(DDActionController *)actionController setInteractionDelegate:a5];
-  [(DDActionController *)self->_actionController setBaseView:v9];
+  viewCopy = view;
+  actionCopy = action;
+  [(DDActionController *)actionController setInteractionDelegate:delegate];
+  [(DDActionController *)self->_actionController setBaseView:viewCopy];
 
   [(DDActionController *)self->_actionController setCompletion:0];
-  [(DDActionController *)self->_actionController performAction:v10];
+  [(DDActionController *)self->_actionController performAction:actionCopy];
 }
 
-- (void)performAction:(id)a3 inView:(id)a4 completion:(id)a5
+- (void)performAction:(id)action inView:(id)view completion:(id)completion
 {
   actionController = self->_actionController;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  viewCopy = view;
+  actionCopy = action;
   [(DDActionController *)actionController setInteractionDelegate:0];
-  [(DDActionController *)self->_actionController setBaseView:v10];
+  [(DDActionController *)self->_actionController setBaseView:viewCopy];
 
-  [(DDActionController *)self->_actionController setCompletion:v9];
-  [(DDActionController *)self->_actionController performAction:v11];
+  [(DDActionController *)self->_actionController setCompletion:completionCopy];
+  [(DDActionController *)self->_actionController performAction:actionCopy];
 }
 
-- (void)performAction:(id)a3 fromAlertController:(id)a4 interactionDelegate:(id)a5
+- (void)performAction:(id)action fromAlertController:(id)controller interactionDelegate:(id)delegate
 {
   actionController = self->_actionController;
-  v9 = a4;
-  v10 = a3;
-  [(DDActionController *)actionController setInteractionDelegate:a5];
-  [(DDActionController *)self->_actionController setAlertController:v9];
+  controllerCopy = controller;
+  actionCopy = action;
+  [(DDActionController *)actionController setInteractionDelegate:delegate];
+  [(DDActionController *)self->_actionController setAlertController:controllerCopy];
 
   [(DDActionController *)self->_actionController setCompletion:0];
-  [(DDActionController *)self->_actionController performAction:v10];
+  [(DDActionController *)self->_actionController performAction:actionCopy];
 }
 
-- (void)performAction:(id)a3 fromView:(id)a4 alertController:(id)a5 interactionDelegate:(id)a6
+- (void)performAction:(id)action fromView:(id)view alertController:(id)controller interactionDelegate:(id)delegate
 {
   actionController = self->_actionController;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(DDActionController *)actionController setInteractionDelegate:a6];
-  [(DDActionController *)self->_actionController setBaseView:v12];
+  controllerCopy = controller;
+  viewCopy = view;
+  actionCopy = action;
+  [(DDActionController *)actionController setInteractionDelegate:delegate];
+  [(DDActionController *)self->_actionController setBaseView:viewCopy];
 
-  [(DDActionController *)self->_actionController setAlertController:v11];
-  [(DDActionController *)self->_actionController performAction:v13];
+  [(DDActionController *)self->_actionController setAlertController:controllerCopy];
+  [(DDActionController *)self->_actionController performAction:actionCopy];
 }
 
-- (BOOL)tryDismissActionInView:(id)a3
+- (BOOL)tryDismissActionInView:(id)view
 {
-  v4 = a3;
-  v5 = [(DDActionController *)self->_actionController baseView];
-  if (!v5)
+  viewCopy = view;
+  baseView = [(DDActionController *)self->_actionController baseView];
+  if (!baseView)
   {
     goto LABEL_6;
   }
 
-  v6 = v5;
-  if (v4)
+  v6 = baseView;
+  if (viewCopy)
   {
-    v7 = [(DDActionController *)self->_actionController baseView];
+    baseView2 = [(DDActionController *)self->_actionController baseView];
 
-    if (v7 != v4)
+    if (baseView2 != viewCopy)
     {
 LABEL_6:
 
@@ -1112,9 +1112,9 @@ LABEL_5:
   return 0;
 }
 
-- (BOOL)_shouldImmediatelyLaunchDefaultActionForURL:(id)a3 result:(__DDResult *)a4
+- (BOOL)_shouldImmediatelyLaunchDefaultActionForURL:(id)l result:(__DDResult *)result
 {
-  v6 = a3;
+  lCopy = l;
   if (+[DDDetectionController largeScreenIdiom])
   {
 
@@ -1123,14 +1123,14 @@ LABEL_5:
 
   else
   {
-    if (a4)
+    if (result)
     {
-      [(DDDetectionController *)self _interactionDidStartForResult:a4];
+      [(DDDetectionController *)self _interactionDidStartForResult:result];
     }
 
-    else if (v6)
+    else if (lCopy)
     {
-      [(DDDetectionController *)self _interactionDidStartForURL:v6];
+      [(DDDetectionController *)self _interactionDidStartForURL:lCopy];
     }
 
     v8 = dd_callsRequireExternalPrompt();
@@ -1139,31 +1139,31 @@ LABEL_5:
   }
 }
 
-- (BOOL)shouldIgnoreMessageActionForURL:(id)a3
+- (BOOL)shouldIgnoreMessageActionForURL:(id)l
 {
   v5 = 0;
-  if (!a3)
+  if (!l)
   {
     return 1;
   }
 
-  v3 = [(DDDetectionController *)self _checkIfBusinessWithURL:a3 messageable:&v5];
+  v3 = [(DDDetectionController *)self _checkIfBusinessWithURL:l messageable:&v5];
   return v3 & (v5 ^ 1);
 }
 
 + (BOOL)largeScreenIdiom
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3 == 6 || (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return userInterfaceIdiom == 6 || (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
-- (__DDResult)_resultForIdentifier:(id)a3 forContainer:(id)a4 context:(id *)a5
+- (__DDResult)_resultForIdentifier:(id)identifier forContainer:(id)container context:(id *)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  containerCopy = container;
   Main = CFRunLoopGetMain();
   if (Main != CFRunLoopGetCurrent())
   {
@@ -1189,7 +1189,7 @@ LABEL_5:
   block[3] = &unk_278290F30;
   v35 = &v43;
   block[4] = self;
-  v12 = v9;
+  v12 = containerCopy;
   v34 = v12;
   v36 = &v37;
   dispatch_sync(protectQueue, block);
@@ -1197,10 +1197,10 @@ LABEL_5:
   if (v13)
   {
     v14 = v13;
-    v15 = [v8 componentsSeparatedByString:@"/"];
+    v15 = [identifierCopy componentsSeparatedByString:@"/"];
     if ([v15 count])
     {
-      v28 = a5;
+      contextCopy = context;
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
@@ -1221,8 +1221,8 @@ LABEL_5:
               objc_enumerationMutation(v16);
             }
 
-            v21 = [*(*(&v29 + 1) + 8 * v19) integerValue];
-            if (v21 < 0 || v21 >= [v20 count])
+            integerValue = [*(*(&v29 + 1) + 8 * v19) integerValue];
+            if (integerValue < 0 || integerValue >= [v20 count])
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -1233,7 +1233,7 @@ LABEL_5:
               goto LABEL_30;
             }
 
-            v22 = [v20 objectAtIndex:v21];
+            v22 = [v20 objectAtIndex:integerValue];
             v14 = DDResultGetSubResults();
 
             ++v19;
@@ -1256,7 +1256,7 @@ LABEL_5:
         v22 = 0;
       }
 
-      if (v28)
+      if (contextCopy)
       {
         v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v24 = v23;
@@ -1267,7 +1267,7 @@ LABEL_5:
 
         [v24 setObject:v44[5] forKey:@"AllResults"];
         v25 = v24;
-        *v28 = v24;
+        *contextCopy = v24;
       }
     }
 
@@ -1317,31 +1317,31 @@ uint64_t __67__DDDetectionController__resultForIdentifier_forContainer_context__
   return MEMORY[0x2821F96F8]();
 }
 
-- (__DDResult)_resultForURL:(id)a3 forContainer:(id)a4 context:(id *)a5
+- (__DDResult)_resultForURL:(id)l forContainer:(id)container context:(id *)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 scheme];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D04208]];
+  lCopy = l;
+  containerCopy = container;
+  scheme = [lCopy scheme];
+  v11 = [scheme isEqualToString:*MEMORY[0x277D04208]];
 
   if ((v11 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [DDDetectionController _resultForURL:v8 forContainer:? context:?];
+      [DDDetectionController _resultForURL:lCopy forContainer:? context:?];
     }
 
     goto LABEL_8;
   }
 
-  v12 = [v8 resourceSpecifier];
-  v13 = [v12 hasPrefix:@"//"];
+  resourceSpecifier = [lCopy resourceSpecifier];
+  v13 = [resourceSpecifier hasPrefix:@"//"];
 
   if ((v13 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [DDDetectionController _resultForURL:v8 forContainer:? context:?];
+      [DDDetectionController _resultForURL:lCopy forContainer:? context:?];
     }
 
 LABEL_8:
@@ -1349,10 +1349,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [v8 resourceSpecifier];
-  v15 = [v14 substringFromIndex:2];
+  resourceSpecifier2 = [lCopy resourceSpecifier];
+  v15 = [resourceSpecifier2 substringFromIndex:2];
 
-  v16 = [(DDDetectionController *)self _resultForIdentifier:v15 forContainer:v9 context:a5];
+  v16 = [(DDDetectionController *)self _resultForIdentifier:v15 forContainer:containerCopy context:context];
 LABEL_9:
 
   return v16;
@@ -1380,68 +1380,68 @@ LABEL_9:
   return bizService;
 }
 
-- (void)_interactionDidStartForURL:(id)a3
+- (void)_interactionDidStartForURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v9 = v4;
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    v9 = lCopy;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v4 = v9;
-    if (v6 <= 6 && ((1 << v6) & 0x43) != 0)
+    lCopy = v9;
+    if (userInterfaceIdiom <= 6 && ((1 << userInterfaceIdiom) & 0x43) != 0)
     {
       v8 = dd_phoneNumberFromTelScheme(v9);
       [(DDDetectionController *)self _cacheBusinessPhoneNumber:v8];
 
-      v4 = v9;
+      lCopy = v9;
     }
   }
 }
 
-- (void)_interactionDidStartForResult:(__DDResult *)a3
+- (void)_interactionDidStartForResult:(__DDResult *)result
 {
-  if (a3 && DDResultGetCategory() == 2)
+  if (result && DDResultGetCategory() == 2)
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6 <= 6 && ((1 << v6) & 0x43) != 0)
+    if (userInterfaceIdiom <= 6 && ((1 << userInterfaceIdiom) & 0x43) != 0)
     {
-      v8 = [(DDDetectionController *)self _phoneNumberFromResult:a3];
+      v8 = [(DDDetectionController *)self _phoneNumberFromResult:result];
       [(DDDetectionController *)self _cacheBusinessPhoneNumber:v8];
     }
   }
 }
 
-- (void)_cacheBusinessPhoneNumber:(id)a3
+- (void)_cacheBusinessPhoneNumber:(id)number
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 containsString:@"@"] & 1) == 0)
+  numberCopy = number;
+  v5 = numberCopy;
+  if (numberCopy && ([numberCopy containsString:@"@"] & 1) == 0)
   {
-    v6 = [(DDDetectionController *)self _bizService];
-    if (v6)
+    _bizService = [(DDDetectionController *)self _bizService];
+    if (_bizService)
     {
       v9[0] = v5;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-      [v6 warmCacheIfNecessaryForPhoneNumbers:v7];
+      [_bizService warmCacheIfNecessaryForPhoneNumbers:v7];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldImmediatelyShowActionSheetForCoreResult:(__DDResult *)a3
+- (BOOL)_shouldImmediatelyShowActionSheetForCoreResult:(__DDResult *)result
 {
   Category = DDResultGetCategory();
   v6 = DDShouldImmediatelyShowActionSheetForResult();
   if (Category == 2)
   {
     v7 = v6;
-    if (dd_phoneNumberResultCanBeRdarLink(a3))
+    if (dd_phoneNumberResultCanBeRdarLink(result))
     {
       LOBYTE(v6) = 1;
     }
@@ -1453,26 +1453,26 @@ LABEL_9:
 
     else
     {
-      LOBYTE(v6) = ![(DDDetectionController *)self shouldImmediatelyLaunchDefaultActionForResult:a3];
+      LOBYTE(v6) = ![(DDDetectionController *)self shouldImmediatelyLaunchDefaultActionForResult:result];
     }
   }
 
   return v6;
 }
 
-- (id)_ensureURLIsURL:(id)a3
+- (id)_ensureURLIsURL:(id)l
 {
-  v3 = a3;
-  if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  lCopy = l;
+  if (!lCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = v3;
+    v4 = lCopy;
     goto LABEL_4;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:lCopy];
 LABEL_4:
     v5 = v4;
 
@@ -1486,21 +1486,21 @@ LABEL_4:
   return v6;
 }
 
-- (BOOL)_shouldImmediatelyShowActionSheetForURL:(id)a3
+- (BOOL)_shouldImmediatelyShowActionSheetForURL:(id)l
 {
-  v3 = dd_ensureUrlIsUrl(a3);
+  v3 = dd_ensureUrlIsUrl(l);
   v4 = DDShouldImmediatelyShowActionSheetForURL();
 
   return v4;
 }
 
-- (BOOL)_checkIfBusinessWithURL:(id)a3 messageable:(BOOL *)a4
+- (BOOL)_checkIfBusinessWithURL:(id)l messageable:(BOOL *)messageable
 {
-  v6 = dd_ensureUrlIsUrl(a3);
+  v6 = dd_ensureUrlIsUrl(l);
   if (dd_isAnySimpleTelephonyScheme(v6) && (dd_phoneNumberFromTelScheme(v6), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = [(DDDetectionController *)self _phoneNumberIsABusinessNumber:v7 messageable:a4];
+    v9 = [(DDDetectionController *)self _phoneNumberIsABusinessNumber:v7 messageable:messageable];
 
     return v9;
   }
@@ -1512,9 +1512,9 @@ LABEL_4:
   }
 }
 
-- (BOOL)_checkIfBusinessWithResult:(__DDResult *)a3 messageable:(BOOL *)a4
+- (BOOL)_checkIfBusinessWithResult:(__DDResult *)result messageable:(BOOL *)messageable
 {
-  if (a3)
+  if (result)
   {
     Category = DDResultGetCategory();
     if (Category == 1)
@@ -1524,7 +1524,7 @@ LABEL_4:
       {
         v8 = v14;
         v15 = [MEMORY[0x277CBEBC0] URLWithString:v14];
-        v13 = [(DDDetectionController *)self _checkIfBusinessWithURL:v15 messageable:a4];
+        v13 = [(DDDetectionController *)self _checkIfBusinessWithURL:v15 messageable:messageable];
 
 LABEL_13:
         LOBYTE(v14) = v13;
@@ -1535,7 +1535,7 @@ LABEL_13:
     {
       if (Category == 2)
       {
-        v8 = [(DDDetectionController *)self _phoneNumberFromResult:a3];
+        v8 = [(DDDetectionController *)self _phoneNumberFromResult:result];
         if ([v8 length])
         {
           v9 = TUUnformattedPhoneNumber();
@@ -1555,7 +1555,7 @@ LABEL_13:
           v8 = v12;
         }
 
-        v13 = [(DDDetectionController *)self _phoneNumberIsABusinessNumber:v8 messageable:a4];
+        v13 = [(DDDetectionController *)self _phoneNumberIsABusinessNumber:v8 messageable:messageable];
         goto LABEL_13;
       }
 
@@ -1571,36 +1571,36 @@ LABEL_13:
   return v14;
 }
 
-- (id)_phoneNumberFromResult:(__DDResult *)a3
+- (id)_phoneNumberFromResult:(__DDResult *)result
 {
   DDResultCopyPhoneValue();
 
   return 0;
 }
 
-- (BOOL)_phoneNumberIsABusinessNumber:(id)a3 messageable:(BOOL *)a4
+- (BOOL)_phoneNumberIsABusinessNumber:(id)number messageable:(BOOL *)messageable
 {
-  v4 = [(DDDetectionController *)self _businessItemForNumber:a3 messageable:a4 brand:0];
+  v4 = [(DDDetectionController *)self _businessItemForNumber:number messageable:messageable brand:0];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)_businessItemForNumber:(id)a3 messageable:(BOOL *)a4 brand:(id *)a5
+- (id)_businessItemForNumber:(id)number messageable:(BOOL *)messageable brand:(id *)brand
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (![v8 length] || (dd_handleIsChatBot(v8) & 1) != 0 || ((objc_msgSend(MEMORY[0x277D75418], "currentDevice"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "userInterfaceIdiom"), v10, v11 <= 6) ? (v12 = ((1 << v11) & 0x43) == 0) : (v12 = 1), v12))
+  numberCopy = number;
+  if (![numberCopy length] || (dd_handleIsChatBot(numberCopy) & 1) != 0 || ((objc_msgSend(MEMORY[0x277D75418], "currentDevice"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "userInterfaceIdiom"), v10, v11 <= 6) ? (v12 = ((1 << v11) & 0x43) == 0) : (v12 = 1), v12))
   {
     v9 = 0;
   }
 
   else
   {
-    v13 = [(DDDetectionController *)self _bizService];
-    if (v13)
+    _bizService = [(DDDetectionController *)self _bizService];
+    if (_bizService)
     {
-      v25 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v14 = dispatch_group_create();
       v44 = 0;
       v45 = &v44;
@@ -1625,17 +1625,17 @@ LABEL_13:
       v26[3] = &unk_278290FD0;
       v15 = v14;
       v27 = v15;
-      v28 = v13;
-      v29 = v8;
+      v28 = _bizService;
+      v29 = numberCopy;
       v30 = &v44;
-      v33 = a5 != 0;
+      v33 = brand != 0;
       v31 = &v40;
       v32 = &v34;
       [v28 isBusinessRegisteredForPhoneNumber:v29 completion:v26];
       v16 = dispatch_time(0, 1000000000);
       if (dispatch_group_wait(v15, v16))
       {
-        v17 = v25;
+        v17 = date;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
@@ -1649,12 +1649,12 @@ LABEL_13:
       {
         v18 = MEMORY[0x277D86220];
         v19 = MEMORY[0x277D86220];
-        v17 = v25;
+        v17 = date;
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           v20 = v45[5];
           v21 = *(v41 + 24);
-          [v25 timeIntervalSinceNow];
+          [date timeIntervalSinceNow];
           *buf = 67109632;
           v51 = v20 != 0;
           v52 = 1024;
@@ -1664,15 +1664,15 @@ LABEL_13:
           _os_log_impl(&dword_21AB70000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Phone number properties business:%d messageable:%d duration:%f (BCS)", buf, 0x18u);
         }
 
-        if (a4)
+        if (messageable)
         {
-          *a4 = *(v41 + 24);
+          *messageable = *(v41 + 24);
         }
 
         v9 = v45[5];
-        if (a5)
+        if (brand)
         {
-          *a5 = v35[5];
+          *brand = v35[5];
         }
       }
 
@@ -1819,30 +1819,30 @@ void __66__DDDetectionController__businessItemForNumber_messageable_brand___bloc
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (id)barcodeContext:(id)a3 preview:(BOOL)a4 contact:(id)a5 ics:(id)a6
++ (id)barcodeContext:(id)context preview:(BOOL)preview contact:(id)contact ics:(id)ics
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4 || ([MEMORY[0x277CCA8D8] mainBundle], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "bundleIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"com.apple.BarcodeSupport.BarcodeNotificationService"), v13, v12, v14))
+  contextCopy = context;
+  contactCopy = contact;
+  icsCopy = ics;
+  if (preview || ([MEMORY[0x277CCA8D8] mainBundle], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "bundleIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"com.apple.BarcodeSupport.BarcodeNotificationService"), v13, v12, v14))
   {
-    v15 = [DDAction contextByAddingValue:MEMORY[0x277CBEC38] toKey:@"NotificationStyle" inContext:v9];
+    v15 = [DDAction contextByAddingValue:MEMORY[0x277CBEC38] toKey:@"NotificationStyle" inContext:contextCopy];
 
-    v9 = v15;
+    contextCopy = v15;
   }
 
-  v16 = [DDAction contextByAddingValue:MEMORY[0x277CBEC38] toKey:@"HeyBarcodeSheet" inContext:v9];
+  v16 = [DDAction contextByAddingValue:MEMORY[0x277CBEC38] toKey:@"HeyBarcodeSheet" inContext:contextCopy];
 
-  if (v10)
+  if (contactCopy)
   {
-    v17 = [DDAction contextByAddingValue:v10 toKey:@"Contact" inContext:v16];
+    v17 = [DDAction contextByAddingValue:contactCopy toKey:@"Contact" inContext:v16];
 
     v16 = v17;
   }
 
-  if (v11)
+  if (icsCopy)
   {
-    v18 = [DDAction contextByAddingValue:v11 toKey:@"ICS" inContext:v16];
+    v18 = [DDAction contextByAddingValue:icsCopy toKey:@"ICS" inContext:v16];
 
     v16 = v18;
   }
@@ -1850,50 +1850,50 @@ void __66__DDDetectionController__businessItemForNumber_messageable_brand___bloc
   return v16;
 }
 
-- (id)barcodeActionsForContext:(id)a3 URL:(id)a4 result:(__DDResult *)a5 contact:(id)a6 ics:(id)a7
+- (id)barcodeActionsForContext:(id)context URL:(id)l result:(__DDResult *)result contact:(id)contact ics:(id)ics
 {
-  v12 = a4;
-  v13 = [DDDetectionController barcodeContext:a3 preview:0 contact:a6 ics:a7];
-  v14 = [(DDActionController *)self->_actionController actionsForURL:v12 result:a5 context:v13];
+  lCopy = l;
+  v13 = [DDDetectionController barcodeContext:context preview:0 contact:contact ics:ics];
+  v14 = [(DDActionController *)self->_actionController actionsForURL:lCopy result:result context:v13];
 
   return v14;
 }
 
-- (id)barcodeDefaultActionForContext:(id)a3 URL:(id)a4 result:(__DDResult *)a5 contact:(id)a6 ics:(id)a7
+- (id)barcodeDefaultActionForContext:(id)context URL:(id)l result:(__DDResult *)result contact:(id)contact ics:(id)ics
 {
-  v12 = a4;
-  v13 = [DDDetectionController barcodeContext:a3 preview:0 contact:a6 ics:a7];
-  v14 = [(DDActionController *)self->_actionController defaultActionForURL:v12 result:a5 context:v13];
+  lCopy = l;
+  v13 = [DDDetectionController barcodeContext:context preview:0 contact:contact ics:ics];
+  v14 = [(DDActionController *)self->_actionController defaultActionForURL:lCopy result:result context:v13];
 
   return v14;
 }
 
-- (id)barcodePreviewActionForContext:(id)a3 URL:(id)a4 result:(__DDResult *)a5 contact:(id)a6 ics:(id)a7
+- (id)barcodePreviewActionForContext:(id)context URL:(id)l result:(__DDResult *)result contact:(id)contact ics:(id)ics
 {
-  v11 = a4;
-  v12 = [DDDetectionController barcodeContext:a3 preview:1 contact:a6 ics:a7];
-  v13 = [DDPreviewAction previewActionForURL:v11 result:a5 context:v12];
+  lCopy = l;
+  v12 = [DDDetectionController barcodeContext:context preview:1 contact:contact ics:ics];
+  v13 = [DDPreviewAction previewActionForURL:lCopy result:result context:v12];
 
   return v13;
 }
 
-+ (id)filterResults:(id)a3 forTypes:(unint64_t)a4 referenceDate:(id)a5 referenceTimeZone:(id)a6
++ (id)filterResults:(id)results forTypes:(unint64_t)types referenceDate:(id)date referenceTimeZone:(id)zone
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 count];
+  resultsCopy = results;
+  dateCopy = date;
+  zoneCopy = zone;
+  v12 = [resultsCopy count];
   if (v12)
   {
     v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v12];
-    v14 = [DDOperation shouldUrlifyBlockForTypes:a4];
+    v14 = [DDOperation shouldUrlifyBlockForTypes:types];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v9;
-    v15 = v9;
+    v23 = resultsCopy;
+    v15 = resultsCopy;
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v16)
     {
@@ -1909,7 +1909,7 @@ void __66__DDDetectionController__businessItemForNumber_messageable_brand___bloc
           }
 
           v20 = *(*(&v24 + 1) + 8 * i);
-          if ((v14)[2](v14, [v20 coreResult], v10, v11))
+          if ((v14)[2](v14, [v20 coreResult], dateCopy, zoneCopy))
           {
             [v13 addObject:v20];
           }
@@ -1921,7 +1921,7 @@ void __66__DDDetectionController__businessItemForNumber_messageable_brand___bloc
       while (v17);
     }
 
-    v9 = v23;
+    resultsCopy = v23;
   }
 
   else
@@ -1934,20 +1934,20 @@ void __66__DDDetectionController__businessItemForNumber_messageable_brand___bloc
   return v13;
 }
 
-+ (id)lightUnderlineColorFromTextColor:(id)a3
++ (id)lightUnderlineColorFromTextColor:(id)color
 {
   v8 = 0.0;
   v9 = 0;
   v7 = 0.0;
-  v3 = a3;
-  [v3 getHue:&v9 saturation:&v8 brightness:&v7 alpha:0];
+  colorCopy = color;
+  [colorCopy getHue:&v9 saturation:&v8 brightness:&v7 alpha:0];
   v4 = 0.26;
   if (v8 < 0.02 && v7 > 0.98)
   {
     v4 = 0.46;
   }
 
-  v5 = [v3 colorWithAlphaComponent:v4];
+  v5 = [colorCopy colorWithAlphaComponent:v4];
 
   return v5;
 }
@@ -1959,13 +1959,13 @@ void __66__DDDetectionController__businessItemForNumber_messageable_brand___bloc
   return WeakRetained;
 }
 
-- (void)resetResultsForFrame:(id)a3
+- (void)resetResultsForFrame:(id)frame
 {
-  v4 = a3;
-  [(DDDetectionController *)self _commonResetResultsForContainer:v4];
+  frameCopy = frame;
+  [(DDDetectionController *)self _commonResetResultsForContainer:frameCopy];
   if (WebThreadIsEnabled())
   {
-    v7 = v4;
+    v7 = frameCopy;
     WebThreadRun();
   }
 
@@ -1977,8 +1977,8 @@ void __66__DDDetectionController__businessItemForNumber_messageable_brand___bloc
       [DDDetectionController(WebKitBackEnd) resetResultsForFrame:];
     }
 
-    v6 = [v4 DOMDocument];
-    [v6 dd_resetResults];
+    dOMDocument = [frameCopy DOMDocument];
+    [dOMDocument dd_resetResults];
   }
 }
 
@@ -1988,21 +1988,21 @@ void __61__DDDetectionController_WebKitBackEnd__resetResultsForFrame___block_inv
   [v1 dd_resetResults];
 }
 
-- (BOOL)shouldImmediatelyShowActionSheetForURL:(id)a3 forFrame:(id)a4
+- (BOOL)shouldImmediatelyShowActionSheetForURL:(id)l forFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 scheme];
-  v9 = [v8 isEqualToString:*MEMORY[0x277D04208]];
+  lCopy = l;
+  frameCopy = frame;
+  scheme = [lCopy scheme];
+  v9 = [scheme isEqualToString:*MEMORY[0x277D04208]];
 
-  if (v9 && (v10 = [(DDDetectionController *)self _resultForURL:v6 forContainer:v7 context:0]) != 0)
+  if (v9 && (v10 = [(DDDetectionController *)self _resultForURL:lCopy forContainer:frameCopy context:0]) != 0)
   {
     v11 = [(DDDetectionController *)self _shouldImmediatelyShowActionSheetForCoreResult:v10];
   }
 
   else
   {
-    v11 = [(DDDetectionController *)self _shouldImmediatelyShowActionSheetForURL:v6];
+    v11 = [(DDDetectionController *)self _shouldImmediatelyShowActionSheetForURL:lCopy];
   }
 
   v12 = v11;
@@ -2010,9 +2010,9 @@ void __61__DDDetectionController_WebKitBackEnd__resetResultsForFrame___block_inv
   return v12;
 }
 
-- (id)_plainTextAugmentedContext:(id)a3 withFrame:(id)a4
+- (id)_plainTextAugmentedContext:(id)context withFrame:(id)frame
 {
-  v4 = [a3 mutableCopy];
+  v4 = [context mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -2033,28 +2033,28 @@ void __61__DDDetectionController_WebKitBackEnd__resetResultsForFrame___block_inv
   return v8;
 }
 
-- (__DDResult)_resultForAnchor:(id)a3 forFrame:(id)a4 context:(id *)a5
+- (__DDResult)_resultForAnchor:(id)anchor forFrame:(id)frame context:(id *)context
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 absoluteLinkURL];
-  v11 = [v9 getAttribute:@"x-apple-data-detectors-result"];
+  frameCopy = frame;
+  anchorCopy = anchor;
+  absoluteLinkURL = [anchorCopy absoluteLinkURL];
+  v11 = [anchorCopy getAttribute:@"x-apple-data-detectors-result"];
 
-  if (!v11 || ![v11 length] || (v12 = -[DDDetectionController _resultForIdentifier:forContainer:context:](self, "_resultForIdentifier:forContainer:context:", v11, v8, a5)) == 0)
+  if (!v11 || ![v11 length] || (v12 = -[DDDetectionController _resultForIdentifier:forContainer:context:](self, "_resultForIdentifier:forContainer:context:", v11, frameCopy, context)) == 0)
   {
-    v13 = [v10 scheme];
+    scheme = [absoluteLinkURL scheme];
     v14 = *MEMORY[0x277D04208];
-    v15 = [v13 isEqualToString:*MEMORY[0x277D04208]];
+    v15 = [scheme isEqualToString:*MEMORY[0x277D04208]];
 
-    if (!v15 || (v12 = [(DDDetectionController *)self _resultForURL:v10 forContainer:v8 context:a5]) == 0)
+    if (!v15 || (v12 = [(DDDetectionController *)self _resultForURL:absoluteLinkURL forContainer:frameCopy context:context]) == 0)
     {
-      v21 = [objc_opt_class() tapAndHoldSchemes];
-      v22 = [v10 scheme];
-      v23 = [v22 lowercaseString];
-      if ([v21 containsObject:v23])
+      tapAndHoldSchemes = [objc_opt_class() tapAndHoldSchemes];
+      scheme2 = [absoluteLinkURL scheme];
+      lowercaseString = [scheme2 lowercaseString];
+      if ([tapAndHoldSchemes containsObject:lowercaseString])
       {
-        v24 = [v10 scheme];
-        v25 = [v24 isEqualToString:v14];
+        scheme3 = [absoluteLinkURL scheme];
+        v25 = [scheme3 isEqualToString:v14];
 
         if (!v25)
         {
@@ -2070,7 +2070,7 @@ LABEL_15:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [DDDetectionController(WebKitBackEnd) _resultForAnchor:v10 forFrame:? context:?];
+        [DDDetectionController(WebKitBackEnd) _resultForAnchor:absoluteLinkURL forFrame:? context:?];
         v16 = 0;
         goto LABEL_18;
       }
@@ -2080,25 +2080,25 @@ LABEL_15:
   }
 
   v16 = v12;
-  if (v8 && a5)
+  if (frameCopy && context)
   {
-    v17 = [v8 frameView];
-    v18 = [v17 documentView];
-    v19 = [v18 selectedString];
+    frameView = [frameCopy frameView];
+    documentView = [frameView documentView];
+    selectedString = [documentView selectedString];
 
-    v20 = *a5;
+    v20 = *context;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [*a5 setObject:v19 forKey:@"SelectedText"];
+      [*context setObject:selectedString forKey:@"SelectedText"];
     }
 
     else
     {
-      v26 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:*a5];
-      [v26 setObject:v19 forKey:@"SelectedText"];
+      v26 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:*context];
+      [v26 setObject:selectedString forKey:@"SelectedText"];
       v27 = v26;
-      *a5 = v26;
+      *context = v26;
     }
   }
 
@@ -2107,14 +2107,14 @@ LABEL_18:
   return v16;
 }
 
-- (__DDResult)resultForDOMNode:(id)a3 forFrame:(id)a4
+- (__DDResult)resultForDOMNode:(id)node forFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  frameCopy = frame;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(DDDetectionController *)self _resultForAnchor:v6 forFrame:v7 context:0];
+    v8 = [(DDDetectionController *)self _resultForAnchor:nodeCopy forFrame:frameCopy context:0];
   }
 
   else
@@ -2125,30 +2125,30 @@ LABEL_18:
   return v8;
 }
 
-- (id)actionsForAnchor:(id)a3 url:(id)a4 forFrame:(id)a5
+- (id)actionsForAnchor:(id)anchor url:(id)url forFrame:(id)frame
 {
   v15 = 0;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(DDDetectionController *)self resultForNode:a3 url:v9 frame:v8 contextRef:&v15];
+  frameCopy = frame;
+  urlCopy = url;
+  v10 = [(DDDetectionController *)self resultForNode:anchor url:urlCopy frame:frameCopy contextRef:&v15];
   v11 = v15;
-  v12 = [(DDDetectionController *)self _plainTextAugmentedContext:v11 withFrame:v8];
+  v12 = [(DDDetectionController *)self _plainTextAugmentedContext:v11 withFrame:frameCopy];
 
-  v13 = [(DDActionController *)self->_actionController actionsForURL:v9 result:v10 context:v12];
+  v13 = [(DDActionController *)self->_actionController actionsForURL:urlCopy result:v10 context:v12];
 
   return v13;
 }
 
-- (__DDResult)_resultForIdentifier:(id)a3 withResults:(id)a4 context:(id *)a5
+- (__DDResult)_resultForIdentifier:(id)identifier withResults:(id)results context:(id *)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  resultsCopy = results;
+  v9 = resultsCopy;
+  if (resultsCopy)
   {
-    v10 = v8;
-    v11 = [v7 componentsSeparatedByString:@"/"];
+    v10 = resultsCopy;
+    v11 = [identifierCopy componentsSeparatedByString:@"/"];
     if ([v11 count])
     {
       v28 = 0u;
@@ -2161,7 +2161,7 @@ LABEL_18:
       {
         v14 = v13;
         v24 = v10;
-        v25 = a5;
+        contextCopy = context;
         v15 = *v27;
         v16 = v10;
         while (2)
@@ -2175,8 +2175,8 @@ LABEL_18:
               objc_enumerationMutation(v12);
             }
 
-            v18 = [*(*(&v26 + 1) + 8 * v17) integerValue];
-            if (v18 < 0 || v18 >= [v10 count])
+            integerValue = [*(*(&v26 + 1) + 8 * v17) integerValue];
+            if (integerValue < 0 || integerValue >= [v10 count])
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -2187,7 +2187,7 @@ LABEL_18:
               goto LABEL_26;
             }
 
-            v19 = [v10 objectAtIndex:v18];
+            v19 = [v10 objectAtIndex:integerValue];
             v16 = DDResultGetSubResults();
 
             ++v17;
@@ -2205,7 +2205,7 @@ LABEL_18:
         }
 
         v10 = v24;
-        a5 = v25;
+        context = contextCopy;
       }
 
       else
@@ -2214,12 +2214,12 @@ LABEL_18:
         v16 = v10;
       }
 
-      if (a5)
+      if (context)
       {
         v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
         [v20 setObject:v10 forKey:@"AllResults"];
         v21 = v20;
-        *a5 = v20;
+        *context = v20;
       }
 
       v10 = v16;
@@ -2252,31 +2252,31 @@ LABEL_26:
   return v19;
 }
 
-- (__DDResult)_resultForURL:(id)a3 withResults:(id)a4 context:(id *)a5
+- (__DDResult)_resultForURL:(id)l withResults:(id)results context:(id *)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 scheme];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D04208]];
+  lCopy = l;
+  resultsCopy = results;
+  scheme = [lCopy scheme];
+  v11 = [scheme isEqualToString:*MEMORY[0x277D04208]];
 
   if ((v11 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [DDDetectionController(WebKitBackEnd) _resultForURL:v8 withResults:? context:?];
+      [DDDetectionController(WebKitBackEnd) _resultForURL:lCopy withResults:? context:?];
     }
 
     goto LABEL_8;
   }
 
-  v12 = [v8 resourceSpecifier];
-  v13 = [v12 hasPrefix:@"//"];
+  resourceSpecifier = [lCopy resourceSpecifier];
+  v13 = [resourceSpecifier hasPrefix:@"//"];
 
   if ((v13 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [DDDetectionController(WebKitBackEnd) _resultForURL:v8 withResults:? context:?];
+      [DDDetectionController(WebKitBackEnd) _resultForURL:lCopy withResults:? context:?];
     }
 
 LABEL_8:
@@ -2284,28 +2284,28 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [v8 resourceSpecifier];
-  v15 = [v14 substringFromIndex:2];
-  v16 = [(DDDetectionController *)self _resultForIdentifier:v15 withResults:v9 context:a5];
+  resourceSpecifier2 = [lCopy resourceSpecifier];
+  v15 = [resourceSpecifier2 substringFromIndex:2];
+  v16 = [(DDDetectionController *)self _resultForIdentifier:v15 withResults:resultsCopy context:context];
 
 LABEL_9:
   return v16;
 }
 
-- (__DDResult)resultForURL:(id)a3 identifier:(id)a4 selectedText:(id)a5 results:(id)a6 context:(id)a7 extendedContext:(id *)a8
+- (__DDResult)resultForURL:(id)l identifier:(id)identifier selectedText:(id)text results:(id)results context:(id)context extendedContext:(id *)extendedContext
 {
   v46 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v37 = a5;
-  v16 = a6;
-  v38 = a7;
-  v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v16, "count")}];
+  lCopy = l;
+  identifierCopy = identifier;
+  textCopy = text;
+  resultsCopy = results;
+  contextCopy = context;
+  v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v18 = v16;
+  v18 = resultsCopy;
   v19 = [v18 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v19)
   {
@@ -2321,7 +2321,7 @@ LABEL_9:
           objc_enumerationMutation(v18);
         }
 
-        [v17 addObject:{objc_msgSend(*(*(&v41 + 1) + 8 * v22++), "coreResult", v37)}];
+        [v17 addObject:{objc_msgSend(*(*(&v41 + 1) + 8 * v22++), "coreResult", textCopy)}];
       }
 
       while (v20 != v22);
@@ -2331,12 +2331,12 @@ LABEL_9:
     while (v20);
   }
 
-  if (v15 && [v15 length])
+  if (identifierCopy && [identifierCopy length])
   {
     v40 = 0;
-    v23 = [(DDDetectionController *)self _resultForIdentifier:v15 withResults:v17 context:&v40];
+    v23 = [(DDDetectionController *)self _resultForIdentifier:identifierCopy withResults:v17 context:&v40];
     v24 = v40;
-    v25 = v38;
+    v25 = contextCopy;
     if (v23)
     {
       goto LABEL_15;
@@ -2346,16 +2346,16 @@ LABEL_9:
   else
   {
     v24 = 0;
-    v25 = v38;
+    v25 = contextCopy;
   }
 
-  v26 = [v14 scheme];
-  v27 = [v26 isEqualToString:*MEMORY[0x277D04208]];
+  scheme = [lCopy scheme];
+  v27 = [scheme isEqualToString:*MEMORY[0x277D04208]];
 
   if (!v27)
   {
     v23 = 0;
-    if (!a8)
+    if (!extendedContext)
     {
       goto LABEL_20;
     }
@@ -2364,12 +2364,12 @@ LABEL_9:
   }
 
   v39 = v24;
-  v23 = [(DDDetectionController *)self _resultForURL:v14 withResults:v17 context:&v39];
+  v23 = [(DDDetectionController *)self _resultForURL:lCopy withResults:v17 context:&v39];
   v28 = v39;
 
   v24 = v28;
 LABEL_15:
-  if (!a8)
+  if (!extendedContext)
   {
     goto LABEL_20;
   }
@@ -2385,14 +2385,14 @@ LABEL_16:
     v29 = v25;
   }
 
-  *a8 = v29;
+  *extendedContext = v29;
 LABEL_20:
   if (v23)
   {
-    v30 = v37;
+    v30 = textCopy;
     if (v24)
     {
-      [v24 setObject:v37 forKey:@"SelectedText"];
+      [v24 setObject:textCopy forKey:@"SelectedText"];
       if (v25)
       {
         [v24 addEntriesFromDictionary:v25];
@@ -2402,54 +2402,54 @@ LABEL_20:
 
   else
   {
-    v31 = [objc_opt_class() tapAndHoldSchemes];
-    v32 = [v14 scheme];
-    v33 = [v32 lowercaseString];
-    if ([v31 containsObject:v33])
+    tapAndHoldSchemes = [objc_opt_class() tapAndHoldSchemes];
+    scheme2 = [lCopy scheme];
+    lowercaseString = [scheme2 lowercaseString];
+    if ([tapAndHoldSchemes containsObject:lowercaseString])
     {
-      v34 = [v14 scheme];
-      [v34 isEqualToString:*MEMORY[0x277D04208]];
+      scheme3 = [lCopy scheme];
+      [scheme3 isEqualToString:*MEMORY[0x277D04208]];
 
-      v25 = v38;
+      v25 = contextCopy;
     }
 
-    v30 = v37;
+    v30 = textCopy;
   }
 
   v35 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-- (id)actionsForURL:(id)a3 identifier:(id)a4 selectedText:(id)a5 results:(id)a6 context:(id)a7
+- (id)actionsForURL:(id)l identifier:(id)identifier selectedText:(id)text results:(id)results context:(id)context
 {
   v17 = 0;
-  v12 = a3;
-  v13 = [(DDDetectionController *)self resultForURL:v12 identifier:a4 selectedText:a5 results:a6 context:a7 extendedContext:&v17];
+  lCopy = l;
+  v13 = [(DDDetectionController *)self resultForURL:lCopy identifier:identifier selectedText:text results:results context:context extendedContext:&v17];
   v14 = v17;
-  v15 = [(DDActionController *)self->_actionController actionsForURL:v12 result:v13 context:v14];
+  v15 = [(DDActionController *)self->_actionController actionsForURL:lCopy result:v13 context:v14];
 
   return v15;
 }
 
-- (id)defaultActionForURL:(id)a3 results:(id)a4 context:(id)a5
+- (id)defaultActionForURL:(id)l results:(id)results context:(id)context
 {
   v13 = 0;
-  v8 = a3;
-  v9 = [(DDDetectionController *)self resultForURL:v8 identifier:0 selectedText:&stru_282C1E0A8 results:a4 context:a5 extendedContext:&v13];
+  lCopy = l;
+  v9 = [(DDDetectionController *)self resultForURL:lCopy identifier:0 selectedText:&stru_282C1E0A8 results:results context:context extendedContext:&v13];
   v10 = v13;
-  v11 = [(DDActionController *)self->_actionController defaultActionForURL:v8 result:v9 context:v10];
+  v11 = [(DDActionController *)self->_actionController defaultActionForURL:lCopy result:v9 context:v10];
 
   return v11;
 }
 
-- (id)titleForURL:(id)a3 results:(id)a4 context:(id)a5
+- (id)titleForURL:(id)l results:(id)results context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  lCopy = l;
+  resultsCopy = results;
+  contextCopy = context;
+  if (lCopy)
   {
-    v11 = [(DDDetectionController *)self resultForURL:v8 identifier:0 selectedText:&stru_282C1E0A8 results:v9 context:v10 extendedContext:0];
+    v11 = [(DDDetectionController *)self resultForURL:lCopy identifier:0 selectedText:&stru_282C1E0A8 results:resultsCopy context:contextCopy extendedContext:0];
     if (v11)
     {
       actionSheetTitleForResult(v11);
@@ -2457,7 +2457,7 @@ LABEL_20:
 
     else
     {
-      actionSheetTitleForURL(v8);
+      actionSheetTitleForURL(lCopy);
     }
     v12 = ;
   }
@@ -2470,11 +2470,11 @@ LABEL_20:
   return v12;
 }
 
-- (id)attributedTitleForURL:(id)a3 updaterBlock:(id)a4
+- (id)attributedTitleForURL:(id)l updaterBlock:(id)block
 {
-  if (a3)
+  if (l)
   {
-    v4 = [(DDDetectionController *)self titleForURL:a3 results:0 context:0];
+    v4 = [(DDDetectionController *)self titleForURL:l results:0 context:0];
     if (v4)
     {
       v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v4];
@@ -2497,11 +2497,11 @@ LABEL_20:
   return v6;
 }
 
-- (id)attributedTitleForResult:(__DDResult *)a3 updaterBlock:(id)a4
+- (id)attributedTitleForResult:(__DDResult *)result updaterBlock:(id)block
 {
-  if (a3)
+  if (result)
   {
-    v4 = [(DDDetectionController *)self titleForResult:a3 subResult:0 withURL:0 context:0];
+    v4 = [(DDDetectionController *)self titleForResult:result subResult:0 withURL:0 context:0];
     if (v4)
     {
       v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v4];
@@ -2524,11 +2524,11 @@ LABEL_20:
   return v6;
 }
 
-- (id)actionsForDOMNode:(id)a3 forFrame:(id)a4
+- (id)actionsForDOMNode:(id)node forFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  nodeCopy = node;
+  frameCopy = frame;
+  v8 = nodeCopy;
   v9 = v8;
   if (v8)
   {
@@ -2541,17 +2541,17 @@ LABEL_20:
         break;
       }
 
-      v11 = [v10 parentNode];
+      parentNode = [v10 parentNode];
 
-      v10 = v11;
-      if (!v11)
+      v10 = parentNode;
+      if (!parentNode)
       {
         goto LABEL_5;
       }
     }
 
-    v13 = [v10 absoluteLinkURL];
-    v12 = [(DDDetectionController *)self actionsForAnchor:v10 url:v13 forFrame:v7];
+    absoluteLinkURL = [v10 absoluteLinkURL];
+    v12 = [(DDDetectionController *)self actionsForAnchor:v10 url:absoluteLinkURL forFrame:frameCopy];
   }
 
   else
@@ -2563,19 +2563,19 @@ LABEL_5:
   return v12;
 }
 
-- (__DDResult)resultForNode:(id)a3 url:(id)a4 frame:(id)a5 contextRef:(id *)a6
+- (__DDResult)resultForNode:(id)node url:(id)url frame:(id)frame contextRef:(id *)ref
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v13 = [(DDDetectionController *)self _resultForAnchor:v10 forFrame:v12 context:a6]) == 0)
+  nodeCopy = node;
+  urlCopy = url;
+  frameCopy = frame;
+  if (!nodeCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v13 = [(DDDetectionController *)self _resultForAnchor:nodeCopy forFrame:frameCopy context:ref]) == 0)
   {
-    v14 = [v11 scheme];
-    v15 = [v14 isEqualToString:*MEMORY[0x277D04208]];
+    scheme = [urlCopy scheme];
+    v15 = [scheme isEqualToString:*MEMORY[0x277D04208]];
 
     if (v15)
     {
-      v13 = [(DDDetectionController *)self _resultForURL:v11 forContainer:v12 context:a6];
+      v13 = [(DDDetectionController *)self _resultForURL:urlCopy forContainer:frameCopy context:ref];
     }
 
     else
@@ -2587,25 +2587,25 @@ LABEL_5:
   return v13;
 }
 
-- (id)defaultActionForAnchor:(id)a3 url:(id)a4 forFrame:(id)a5
+- (id)defaultActionForAnchor:(id)anchor url:(id)url forFrame:(id)frame
 {
   v15 = 0;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(DDDetectionController *)self resultForNode:a3 url:v9 frame:v8 contextRef:&v15];
+  frameCopy = frame;
+  urlCopy = url;
+  v10 = [(DDDetectionController *)self resultForNode:anchor url:urlCopy frame:frameCopy contextRef:&v15];
   v11 = v15;
-  v12 = [(DDDetectionController *)self _plainTextAugmentedContext:v11 withFrame:v8];
+  v12 = [(DDDetectionController *)self _plainTextAugmentedContext:v11 withFrame:frameCopy];
 
-  v13 = [(DDActionController *)self->_actionController defaultActionForURL:v9 result:v10 context:v12];
+  v13 = [(DDActionController *)self->_actionController defaultActionForURL:urlCopy result:v10 context:v12];
 
   return v13;
 }
 
-- (id)defaultActionForDOMNode:(id)a3 forFrame:(id)a4
+- (id)defaultActionForDOMNode:(id)node forFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  nodeCopy = node;
+  frameCopy = frame;
+  v8 = nodeCopy;
   v9 = v8;
   if (v8)
   {
@@ -2615,18 +2615,18 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v10 absoluteLinkURL];
-        v15 = self;
+        absoluteLinkURL = [v10 absoluteLinkURL];
+        selfCopy2 = self;
         v16 = v10;
         goto LABEL_11;
       }
 
-      v11 = [v10 parentNode];
+      parentNode = [v10 parentNode];
 
-      v10 = v11;
+      v10 = parentNode;
     }
 
-    while (v11);
+    while (parentNode);
     v10 = v9;
     while (1)
     {
@@ -2636,23 +2636,23 @@ LABEL_5:
         break;
       }
 
-      v12 = [v10 parentNode];
+      parentNode2 = [v10 parentNode];
 
-      v10 = v12;
-      if (!v12)
+      v10 = parentNode2;
+      if (!parentNode2)
       {
         goto LABEL_8;
       }
     }
 
     v17 = MEMORY[0x277CBEBC0];
-    v18 = [v10 action];
-    v14 = [v17 URLWithString:v18];
+    action = [v10 action];
+    absoluteLinkURL = [v17 URLWithString:action];
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
 LABEL_11:
-    v13 = [(DDDetectionController *)v15 defaultActionForAnchor:v16 url:v14 forFrame:v7];
+    v13 = [(DDDetectionController *)selfCopy2 defaultActionForAnchor:v16 url:absoluteLinkURL forFrame:frameCopy];
   }
 
   else
@@ -2664,12 +2664,12 @@ LABEL_8:
   return v13;
 }
 
-+ (id)updateContext:(id)a3 forResult:(__DDResult *)a4 atIndex:(unint64_t)a5 ofStorage:(id)a6
++ (id)updateContext:(id)context forResult:(__DDResult *)result atIndex:(unint64_t)index ofStorage:(id)storage
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [v9 attribute:@"DDContext" atIndex:a5 effectiveRange:0];
-  v12 = [DDAction contextByAddingValue:v9 toKey:@"TextStorage" inContext:v10];
+  storageCopy = storage;
+  contextCopy = context;
+  v11 = [storageCopy attribute:@"DDContext" atIndex:index effectiveRange:0];
+  v12 = [DDAction contextByAddingValue:storageCopy toKey:@"TextStorage" inContext:contextCopy];
 
   if (v11)
   {
@@ -2677,7 +2677,7 @@ LABEL_8:
   }
 
   v20 = xmmword_21ABCD900;
-  if (a4)
+  if (result)
   {
     *&v20 = DDResultGetRange();
     *(&v20 + 1) = v13;
@@ -2689,19 +2689,19 @@ LABEL_8:
 
   else
   {
-    v14 = [v9 attribute:*MEMORY[0x277D740E8] atIndex:a5 effectiveRange:&v20];
+    v14 = [storageCopy attribute:*MEMORY[0x277D740E8] atIndex:index effectiveRange:&v20];
     if (v20 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_10;
     }
   }
 
-  v15 = [v9 string];
-  v16 = [v15 dd_leadingTextWithNumberOfCharacters:350 beforeRange:v20];
-  v17 = [v15 dd_trailingTextWithNumberOfCharacters:350 afterRange:v20];
+  string = [storageCopy string];
+  v16 = [string dd_leadingTextWithNumberOfCharacters:350 beforeRange:v20];
+  v17 = [string dd_trailingTextWithNumberOfCharacters:350 afterRange:v20];
   if (*(&v20 + 1))
   {
-    v18 = [v15 dd_trailingTextWithNumberOfCharacters:*(&v20 + 1) afterRange:{v20, 0}];
+    v18 = [string dd_trailingTextWithNumberOfCharacters:*(&v20 + 1) afterRange:{v20, 0}];
     [v12 setObject:v18 forKey:@"MiddleText"];
   }
 
@@ -2713,24 +2713,24 @@ LABEL_10:
   return v12;
 }
 
-- (void)resetResultsForTextView:(id)a3
+- (void)resetResultsForTextView:(id)view
 {
-  v4 = a3;
-  [(DDDetectionController *)self _commonResetResultsForContainer:v4];
-  v5 = [v4 textStorage];
+  viewCopy = view;
+  [(DDDetectionController *)self _commonResetResultsForContainer:viewCopy];
+  textStorage = [viewCopy textStorage];
 
-  [v5 dd_resetResults];
+  [textStorage dd_resetResults];
 }
 
-- (id)_subResultAtIndex:(unint64_t)a3 ofResult:(id)a4
+- (id)_subResultAtIndex:(unint64_t)index ofResult:(id)result
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a4 subResults];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  subResults = [result subResults];
+  v6 = [subResults countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2741,19 +2741,19 @@ LABEL_10:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subResults);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 range];
-        if (a3 >= v11 && a3 - v11 < v12)
+        range = [v10 range];
+        if (index >= range && index - range < v12)
         {
           v14 = v10;
           goto LABEL_14;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [subResults countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -2767,61 +2767,61 @@ LABEL_14:
   return v14;
 }
 
-- (__DDResult)resultForLinkAtIndex:(unint64_t)a3 inTextStorage:(id)a4
+- (__DDResult)resultForLinkAtIndex:(unint64_t)index inTextStorage:(id)storage
 {
-  v6 = [a4 attribute:*MEMORY[0x277D041D8] atIndex:a3 effectiveRange:0];
-  v7 = [v6 type];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D04170]];
+  v6 = [storage attribute:*MEMORY[0x277D041D8] atIndex:index effectiveRange:0];
+  type = [v6 type];
+  v8 = [type isEqualToString:*MEMORY[0x277D04170]];
 
   if (v8)
   {
-    v9 = [(DDDetectionController *)self _subResultAtIndex:a3 ofResult:v6];
-    v10 = [v9 coreResult];
+    v9 = [(DDDetectionController *)self _subResultAtIndex:index ofResult:v6];
+    coreResult = [v9 coreResult];
   }
 
   else
   {
-    v10 = [v6 coreResult];
+    coreResult = [v6 coreResult];
   }
 
-  return v10;
+  return coreResult;
 }
 
-- (id)linkAtIndex:(unint64_t)a3 inTextStorage:(id)a4
+- (id)linkAtIndex:(unint64_t)index inTextStorage:(id)storage
 {
   v7 = 0;
-  v4 = [(DDDetectionController *)self _resultForLinkAtIndex:a3 inTextStorage:a4 subResult:0 url:&v7 effectiveRange:0];
+  v4 = [(DDDetectionController *)self _resultForLinkAtIndex:index inTextStorage:storage subResult:0 url:&v7 effectiveRange:0];
   v5 = v7;
 
   return v5;
 }
 
-- (id)_resultForLinkAtIndex:(unint64_t)a3 inTextStorage:(id)a4 subResult:(id *)a5 url:(id *)a6 effectiveRange:(_NSRange *)a7
+- (id)_resultForLinkAtIndex:(unint64_t)index inTextStorage:(id)storage subResult:(id *)result url:(id *)url effectiveRange:(_NSRange *)range
 {
-  v12 = a4;
-  v13 = [v12 attribute:*MEMORY[0x277D041D8] atIndex:a3 effectiveRange:a7];
+  storageCopy = storage;
+  v13 = [storageCopy attribute:*MEMORY[0x277D041D8] atIndex:index effectiveRange:range];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 type];
-    v16 = [v15 isEqualToString:*MEMORY[0x277D04170]];
+    type = [v13 type];
+    v16 = [type isEqualToString:*MEMORY[0x277D04170]];
 
-    if (a5)
+    if (result)
     {
       if (v16)
       {
-        *a5 = [(DDDetectionController *)self _subResultAtIndex:a3 ofResult:v14];
+        *result = [(DDDetectionController *)self _subResultAtIndex:index ofResult:v14];
       }
     }
   }
 
-  if (a6)
+  if (url)
   {
-    v17 = [v12 attribute:*MEMORY[0x277D740E8] atIndex:a3 effectiveRange:a7];
+    v17 = [storageCopy attribute:*MEMORY[0x277D740E8] atIndex:index effectiveRange:range];
     v18 = [(DDDetectionController *)self _URLForLinkAttributeValue:v17];
-    v19 = [v18 scheme];
-    v20 = [v19 lowercaseString];
-    if ([v20 hasPrefix:@"x-apple-data-detectors"])
+    scheme = [v18 scheme];
+    lowercaseString = [scheme lowercaseString];
+    if ([lowercaseString hasPrefix:@"x-apple-data-detectors"])
     {
       v21 = +[DDAction clientActionsDelegate];
       if (!v21)
@@ -2831,8 +2831,8 @@ LABEL_14:
       }
 
       v22 = v21;
-      v23 = [v18 scheme];
-      v24 = [v23 isEqualToString:@"x-apple-data-detectors-clientdefined"];
+      scheme2 = [v18 scheme];
+      v24 = [scheme2 isEqualToString:@"x-apple-data-detectors-clientdefined"];
 
       if (!v24)
       {
@@ -2845,18 +2845,18 @@ LABEL_14:
     }
 
     v25 = v18;
-    *a6 = v18;
+    *url = v18;
 LABEL_13:
   }
 
   return v14;
 }
 
-- (BOOL)shouldImmediatelyShowActionSheetForTapAtIndex:(unint64_t)a3 ofStorage:(id)a4
+- (BOOL)shouldImmediatelyShowActionSheetForTapAtIndex:(unint64_t)index ofStorage:(id)storage
 {
-  v6 = a4;
+  storageCopy = storage;
   v14 = 0;
-  v7 = [(DDDetectionController *)self _resultForLinkAtIndex:a3 inTextStorage:v6 subResult:&v14 url:0 effectiveRange:0];
+  v7 = [(DDDetectionController *)self _resultForLinkAtIndex:index inTextStorage:storageCopy subResult:&v14 url:0 effectiveRange:0];
   v8 = v14;
   v9 = v8;
   if (v7)
@@ -2871,7 +2871,7 @@ LABEL_13:
 
   else
   {
-    v11 = [v6 attribute:*MEMORY[0x277D740E8] atIndex:a3 effectiveRange:0];
+    v11 = [storageCopy attribute:*MEMORY[0x277D740E8] atIndex:index effectiveRange:0];
     v12 = [(DDDetectionController *)self _URLForLinkAttributeValue:v11];
     if (v12)
     {
@@ -2887,10 +2887,10 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)shouldImmediatelyLaunchDefaultActionForTapAndHoldAtIndex:(unint64_t)a3 ofStorage:(id)a4
+- (BOOL)shouldImmediatelyLaunchDefaultActionForTapAndHoldAtIndex:(unint64_t)index ofStorage:(id)storage
 {
-  v6 = a4;
-  v7 = [v6 attribute:*MEMORY[0x277D740E8] atIndex:a3 effectiveRange:0];
+  storageCopy = storage;
+  v7 = [storageCopy attribute:*MEMORY[0x277D740E8] atIndex:index effectiveRange:0];
   v8 = [(DDDetectionController *)self _URLForLinkAttributeValue:v7];
   if (v8)
   {
@@ -2899,7 +2899,7 @@ LABEL_13:
 
   else
   {
-    v10 = [(DDDetectionController *)self _resultForLinkAtIndex:a3 inTextStorage:v6 subResult:0 url:0 effectiveRange:0];
+    v10 = [(DDDetectionController *)self _resultForLinkAtIndex:index inTextStorage:storageCopy subResult:0 url:0 effectiveRange:0];
     v11 = v10;
     v9 = v10 && (v12 = [v10 coreResult]) != 0 && -[DDDetectionController shouldImmediatelyLaunchDefaultActionForResult:](self, "shouldImmediatelyLaunchDefaultActionForResult:", v12);
   }
@@ -2907,20 +2907,20 @@ LABEL_13:
   return v9;
 }
 
-- (id)_applyBlock:(id)a3 withResultsAtIndex:(unint64_t)a4 ofStorage:(id)a5 context:(id)a6
+- (id)_applyBlock:(id)block withResultsAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  blockCopy = block;
+  storageCopy = storage;
+  contextCopy = context;
   v21 = 0;
   v22 = 0;
-  v13 = [(DDDetectionController *)self _resultForLinkAtIndex:a4 inTextStorage:v11 subResult:&v22 url:&v21 effectiveRange:0];
+  v13 = [(DDDetectionController *)self _resultForLinkAtIndex:index inTextStorage:storageCopy subResult:&v22 url:&v21 effectiveRange:0];
   v14 = v22;
   v15 = v21;
-  if (v13 || ([v11 attribute:*MEMORY[0x277D740E8] atIndex:a4 effectiveRange:0], v16 = objc_claimAutoreleasedReturnValue(), -[DDDetectionController _URLForLinkAttributeValue:](self, "_URLForLinkAttributeValue:", v16), v17 = objc_claimAutoreleasedReturnValue(), v15, v16, (v15 = v17) != 0))
+  if (v13 || ([storageCopy attribute:*MEMORY[0x277D740E8] atIndex:index effectiveRange:0], v16 = objc_claimAutoreleasedReturnValue(), -[DDDetectionController _URLForLinkAttributeValue:](self, "_URLForLinkAttributeValue:", v16), v17 = objc_claimAutoreleasedReturnValue(), v15, v16, (v15 = v17) != 0))
   {
-    v18 = +[DDDetectionController updateContext:forResult:atIndex:ofStorage:](DDDetectionController, "updateContext:forResult:atIndex:ofStorage:", v12, [v13 coreResult], a4, v11);
-    v19 = v10[2](v10, v14, v13, v15, v18);
+    v18 = +[DDDetectionController updateContext:forResult:atIndex:ofStorage:](DDDetectionController, "updateContext:forResult:atIndex:ofStorage:", contextCopy, [v13 coreResult], index, storageCopy);
+    v19 = blockCopy[2](blockCopy, v14, v13, v15, v18);
   }
 
   else
@@ -2931,14 +2931,14 @@ LABEL_13:
   return v19;
 }
 
-- (id)actionsAtIndex:(unint64_t)a3 ofStorage:(id)a4 context:(id)a5
+- (id)actionsAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__DDDetectionController_TextKitBackEnd__actionsAtIndex_ofStorage_context___block_invoke;
   v7[3] = &unk_278291798;
   v7[4] = self;
-  v5 = [(DDDetectionController *)self _applyBlock:v7 withResultsAtIndex:a3 ofStorage:a4 context:a5];
+  v5 = [(DDDetectionController *)self _applyBlock:v7 withResultsAtIndex:index ofStorage:storage context:context];
 
   return v5;
 }
@@ -2977,14 +2977,14 @@ id __74__DDDetectionController_TextKitBackEnd__actionsAtIndex_ofStorage_context_
   return v16;
 }
 
-- (id)titleForResultAtIndex:(unint64_t)a3 ofStorage:(id)a4 context:(id)a5
+- (id)titleForResultAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__DDDetectionController_TextKitBackEnd__titleForResultAtIndex_ofStorage_context___block_invoke;
   v7[3] = &unk_278291798;
   v7[4] = self;
-  v5 = [(DDDetectionController *)self _applyBlock:v7 withResultsAtIndex:a3 ofStorage:a4 context:a5];
+  v5 = [(DDDetectionController *)self _applyBlock:v7 withResultsAtIndex:index ofStorage:storage context:context];
 
   return v5;
 }
@@ -3003,14 +3003,14 @@ id __81__DDDetectionController_TextKitBackEnd__titleForResultAtIndex_ofStorage_c
   return v14;
 }
 
-- (id)defaultActionAtIndex:(unint64_t)a3 ofStorage:(id)a4 context:(id)a5
+- (id)defaultActionAtIndex:(unint64_t)index ofStorage:(id)storage context:(id)context
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__DDDetectionController_TextKitBackEnd__defaultActionAtIndex_ofStorage_context___block_invoke;
   v7[3] = &unk_278291798;
   v7[4] = self;
-  v5 = [(DDDetectionController *)self _applyBlock:v7 withResultsAtIndex:a3 ofStorage:a4 context:a5];
+  v5 = [(DDDetectionController *)self _applyBlock:v7 withResultsAtIndex:index ofStorage:storage context:context];
 
   return v5;
 }
@@ -3030,23 +3030,23 @@ id __80__DDDetectionController_TextKitBackEnd__defaultActionAtIndex_ofStorage_co
   return v10;
 }
 
-- (id)titleForResult:(__DDResult *)a3 subResult:(__DDResult *)a4 withURL:(id)a5 context:(id)a6
+- (id)titleForResult:(__DDResult *)result subResult:(__DDResult *)subResult withURL:(id)l context:(id)context
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4)
+  lCopy = l;
+  contextCopy = context;
+  if (subResult)
   {
-    v11 = a4;
+    resultCopy = subResult;
   }
 
   else
   {
-    v11 = a3;
+    resultCopy = result;
   }
 
-  if (v11)
+  if (resultCopy)
   {
-    v12 = actionSheetTitleForResult(v11);
+    v12 = actionSheetTitleForResult(resultCopy);
     if ([v12 length] < 0xC9)
     {
       goto LABEL_7;
@@ -3055,9 +3055,9 @@ id __80__DDDetectionController_TextKitBackEnd__defaultActionAtIndex_ofStorage_co
     goto LABEL_6;
   }
 
-  if (v9 && ([v9 scheme], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"x-apple-data-detectors-clientdefined"), v16, (v17 & 1) == 0))
+  if (lCopy && ([lCopy scheme], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"x-apple-data-detectors-clientdefined"), v16, (v17 & 1) == 0))
   {
-    v12 = dd_urlUserVisibleString(v9);
+    v12 = dd_urlUserVisibleString(lCopy);
     if ([v12 length] >= 0xC9)
     {
       goto LABEL_6;
@@ -3082,9 +3082,9 @@ LABEL_7:
   return v12;
 }
 
-- (id)attributedTitleForResultAtIndex:(unint64_t)a3 ofStorage:(id)a4 updaterBlock:(id)a5
+- (id)attributedTitleForResultAtIndex:(unint64_t)index ofStorage:(id)storage updaterBlock:(id)block
 {
-  v5 = [(DDDetectionController *)self titleForResultAtIndex:a3 ofStorage:a4 context:0];
+  v5 = [(DDDetectionController *)self titleForResultAtIndex:index ofStorage:storage context:0];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v5];
@@ -3101,20 +3101,20 @@ LABEL_7:
   return v7;
 }
 
-- (id)_URLForLinkAttributeValue:(id)a3
+- (id)_URLForLinkAttributeValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:valueCopy];
 LABEL_5:
     v5 = v4;
 
@@ -3128,14 +3128,14 @@ LABEL_5:
   return v6;
 }
 
-- (void)interactionDidStartAtIndex:(unint64_t)a3 ofStorage:(id)a4
+- (void)interactionDidStartAtIndex:(unint64_t)index ofStorage:(id)storage
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __78__DDDetectionController_TextKitBackEnd__interactionDidStartAtIndex_ofStorage___block_invoke;
   v5[3] = &unk_278291798;
   v5[4] = self;
-  v4 = [(DDDetectionController *)self _applyBlock:v5 withResultsAtIndex:a3 ofStorage:a4 context:0];
+  v4 = [(DDDetectionController *)self _applyBlock:v5 withResultsAtIndex:index ofStorage:storage context:0];
 }
 
 uint64_t __78__DDDetectionController_TextKitBackEnd__interactionDidStartAtIndex_ofStorage___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -3153,11 +3153,11 @@ uint64_t __78__DDDetectionController_TextKitBackEnd__interactionDidStartAtIndex_
   return 0;
 }
 
-- (BOOL)shouldUseLightStyleAtIndex:(unint64_t)a3 ofStorage:(id)a4 moreHighlight:(BOOL *)a5
+- (BOOL)shouldUseLightStyleAtIndex:(unint64_t)index ofStorage:(id)storage moreHighlight:(BOOL *)highlight
 {
-  v8 = a4;
+  storageCopy = storage;
   v19 = 0;
-  v9 = [(DDDetectionController *)self _resultForLinkAtIndex:a3 inTextStorage:v8 subResult:&v19 url:0 effectiveRange:0];
+  v9 = [(DDDetectionController *)self _resultForLinkAtIndex:index inTextStorage:storageCopy subResult:&v19 url:0 effectiveRange:0];
   v10 = v19;
   v11 = v10;
   if (v9)
@@ -3172,21 +3172,21 @@ uint64_t __78__DDDetectionController_TextKitBackEnd__interactionDidStartAtIndex_
     [v9 coreResult];
     v13 = DDShouldUseLightLinksForResult();
     v14 = v13;
-    if (a5 && v13)
+    if (highlight && v13)
     {
       [v9 coreResult];
-      *a5 = DDShouldUseDebugHighlightForResult();
+      *highlight = DDShouldUseDebugHighlightForResult();
       v14 = 1;
     }
   }
 
   else
   {
-    v15 = [v8 attribute:*MEMORY[0x277D740E8] atIndex:a3 effectiveRange:0];
+    v15 = [storageCopy attribute:*MEMORY[0x277D740E8] atIndex:index effectiveRange:0];
     v16 = dd_ensureUrlIsUrl(v15);
 
-    v17 = [v16 scheme];
-    v14 = [v17 isEqualToString:@"x-apple-data-detectors-clientdefined"];
+    scheme = [v16 scheme];
+    v14 = [scheme isEqualToString:@"x-apple-data-detectors-clientdefined"];
 
     v9 = 0;
   }
@@ -3194,42 +3194,42 @@ uint64_t __78__DDDetectionController_TextKitBackEnd__interactionDidStartAtIndex_
   return v14;
 }
 
-- (id)preferredTextAttributesForLinkAtCharacterIndex:(unint64_t)a3 ofStorage:(id)a4
+- (id)preferredTextAttributesForLinkAtCharacterIndex:(unint64_t)index ofStorage:(id)storage
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  storageCopy = storage;
   v16 = 0;
-  if ([(DDDetectionController *)self shouldUseLightStyleAtIndex:a3 ofStorage:v6 moreHighlight:&v16])
+  if ([(DDDetectionController *)self shouldUseLightStyleAtIndex:index ofStorage:storageCopy moreHighlight:&v16])
   {
     if (v16 == 1)
     {
-      v7 = [MEMORY[0x277D75348] systemOrangeColor];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
     }
 
     else
     {
-      v9 = [v6 attribute:*MEMORY[0x277D740C0] atIndex:a3 effectiveRange:0];
+      v9 = [storageCopy attribute:*MEMORY[0x277D740C0] atIndex:index effectiveRange:0];
       v10 = v9;
       if (v9)
       {
-        v11 = v9;
+        labelColor = v9;
       }
 
       else
       {
-        v11 = [MEMORY[0x277D75348] labelColor];
+        labelColor = [MEMORY[0x277D75348] labelColor];
       }
 
-      v12 = v11;
+      v12 = labelColor;
 
-      v7 = [objc_opt_class() lightUnderlineColorFromTextColor:v12];
+      systemOrangeColor = [objc_opt_class() lightUnderlineColorFromTextColor:v12];
     }
 
     v13 = *MEMORY[0x277D741E8];
     v17[0] = *MEMORY[0x277D741F0];
     v17[1] = v13;
     v18[0] = &unk_282C2BDE8;
-    v18[1] = v7;
+    v18[1] = systemOrangeColor;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   }
 
@@ -3243,31 +3243,31 @@ uint64_t __78__DDDetectionController_TextKitBackEnd__interactionDidStartAtIndex_
   return v8;
 }
 
-- (void)urlifyTextView:(id)a3 withExternalResults:(id)a4 context:(id)a5
+- (void)urlifyTextView:(id)view withExternalResults:(id)results context:(id)context
 {
-  v14 = a3;
-  v9 = a4;
+  viewCopy = view;
+  resultsCopy = results;
   v10 = MEMORY[0x277CCACC8];
-  v11 = a5;
+  contextCopy = context;
   if (([v10 isMainThread] & 1) == 0)
   {
     [DDDetectionController(TextKitBackEnd) urlifyTextView:a2 withExternalResults:self context:?];
   }
 
-  v12 = [v9 valueForKey:@"coreResult"];
+  v12 = [resultsCopy valueForKey:@"coreResult"];
 
-  [(DDDetectionController *)self setResults:v12 forContainer:v14];
+  [(DDDetectionController *)self setResults:v12 forContainer:viewCopy];
   if (v12)
   {
     CFRelease(v12);
   }
 
-  [(DDDetectionController *)self setContext:v11 forContainer:v14];
-  v13 = [[DDTextKitOperation alloc] initWithContainer:v14];
+  [(DDDetectionController *)self setContext:contextCopy forContainer:viewCopy];
+  v13 = [[DDTextKitOperation alloc] initWithContainer:viewCopy];
   [(DDOperation *)v13 setDetectionTypes:0x7FFFFFFFLL];
-  [(DDOperation *)v13 setContext:v11];
+  [(DDOperation *)v13 setContext:contextCopy];
 
-  [(DDOperation *)v13 setScannerResults:v9];
+  [(DDOperation *)v13 setScannerResults:resultsCopy];
   [(DDTextKitOperation *)v13 doURLificationOnDocument];
   [(DDTextKitOperation *)v13 cleanup];
 }

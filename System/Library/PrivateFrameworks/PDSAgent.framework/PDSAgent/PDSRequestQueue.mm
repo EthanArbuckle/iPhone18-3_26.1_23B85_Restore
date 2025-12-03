@@ -1,6 +1,6 @@
 @interface PDSRequestQueue
-- (BOOL)enqueueRequest:(id)a3;
-- (PDSRequestQueue)initWithMessageDelivery:(id)a3 userTracker:(id)a4 queue:(id)a5 pushTokenBlock:(id)a6 entryStoreBlock:(id)a7;
+- (BOOL)enqueueRequest:(id)request;
+- (PDSRequestQueue)initWithMessageDelivery:(id)delivery userTracker:(id)tracker queue:(id)queue pushTokenBlock:(id)block entryStoreBlock:(id)storeBlock;
 - (PDSRequestQueueDelegate)delegate;
 - (id)_deviceInfo;
 - (id)_hwVersion;
@@ -8,25 +8,25 @@
 - (id)_osVersion;
 - (void)_cancelPendingRequests;
 - (void)_dequeueIfNeeded;
-- (void)_flightRequest:(id)a3;
-- (void)_logEntries:(id)a3;
-- (void)_logProtoUserPushToken:(id)a3;
-- (void)_reAuthAndContinueWithRequest:(id)a3 forUser:(id)a4;
-- (void)_removeDeadEntriesForUser:(id)a3 withError:(id *)a4;
+- (void)_flightRequest:(id)request;
+- (void)_logEntries:(id)entries;
+- (void)_logProtoUserPushToken:(id)token;
+- (void)_reAuthAndContinueWithRequest:(id)request forUser:(id)user;
+- (void)_removeDeadEntriesForUser:(id)user withError:(id *)error;
 @end
 
 @implementation PDSRequestQueue
 
-- (PDSRequestQueue)initWithMessageDelivery:(id)a3 userTracker:(id)a4 queue:(id)a5 pushTokenBlock:(id)a6 entryStoreBlock:(id)a7
+- (PDSRequestQueue)initWithMessageDelivery:(id)delivery userTracker:(id)tracker queue:(id)queue pushTokenBlock:(id)block entryStoreBlock:(id)storeBlock
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  deliveryCopy = delivery;
+  trackerCopy = tracker;
+  queueCopy = queue;
+  blockCopy = block;
+  storeBlockCopy = storeBlock;
+  if (deliveryCopy)
   {
-    if (v14)
+    if (trackerCopy)
     {
       goto LABEL_3;
     }
@@ -35,10 +35,10 @@
   else
   {
     [PDSRequestQueue initWithMessageDelivery:userTracker:queue:pushTokenBlock:entryStoreBlock:];
-    if (v14)
+    if (trackerCopy)
     {
 LABEL_3:
-      if (v16)
+      if (blockCopy)
       {
         goto LABEL_4;
       }
@@ -48,17 +48,17 @@ LABEL_3:
   }
 
   [PDSRequestQueue initWithMessageDelivery:userTracker:queue:pushTokenBlock:entryStoreBlock:];
-  if (v16)
+  if (blockCopy)
   {
 LABEL_4:
-    if (v15)
+    if (queueCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
     [PDSRequestQueue initWithMessageDelivery:userTracker:queue:pushTokenBlock:entryStoreBlock:];
-    if (v17)
+    if (storeBlockCopy)
     {
       goto LABEL_6;
     }
@@ -68,13 +68,13 @@ LABEL_12:
 
 LABEL_11:
   [PDSRequestQueue initWithMessageDelivery:userTracker:queue:pushTokenBlock:entryStoreBlock:];
-  if (!v15)
+  if (!queueCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v17)
+  if (storeBlockCopy)
   {
     goto LABEL_6;
   }
@@ -88,15 +88,15 @@ LABEL_6:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_messageDelivery, a3);
-    objc_storeStrong(&v19->_userTracker, a4);
-    v20 = MEMORY[0x25F8A7090](v16);
+    objc_storeStrong(&v18->_messageDelivery, delivery);
+    objc_storeStrong(&v19->_userTracker, tracker);
+    v20 = MEMORY[0x25F8A7090](blockCopy);
     pushTokenBlock = v19->_pushTokenBlock;
     v19->_pushTokenBlock = v20;
 
     v19->_authRetries = 0;
-    objc_storeStrong(&v19->_queue, a5);
-    v22 = MEMORY[0x25F8A7090](v17);
+    objc_storeStrong(&v19->_queue, queue);
+    v22 = MEMORY[0x25F8A7090](storeBlockCopy);
     entryStoreBlock = v19->_entryStoreBlock;
     v19->_entryStoreBlock = v22;
 
@@ -106,27 +106,27 @@ LABEL_6:
   return v19;
 }
 
-- (BOOL)enqueueRequest:(id)a3
+- (BOOL)enqueueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(PDSRequestQueue *)self delegate];
+  requestCopy = request;
+  delegate = [(PDSRequestQueue *)self delegate];
 
-  if (!v5)
+  if (!delegate)
   {
     goto LABEL_4;
   }
 
-  v6 = [(PDSRequestQueue *)self inflightRequest];
-  if (!v6)
+  inflightRequest = [(PDSRequestQueue *)self inflightRequest];
+  if (!inflightRequest)
   {
     goto LABEL_5;
   }
 
-  v7 = v6;
-  v8 = [(PDSRequestQueue *)self inflightRequest];
-  v9 = [v8 entries];
-  v10 = [v4 entries];
-  v11 = [v9 isEqualToSet:v10];
+  v7 = inflightRequest;
+  inflightRequest2 = [(PDSRequestQueue *)self inflightRequest];
+  entries = [inflightRequest2 entries];
+  entries2 = [requestCopy entries];
+  v11 = [entries isEqualToSet:entries2];
 
   if (v11)
   {
@@ -137,7 +137,7 @@ LABEL_4:
   else
   {
 LABEL_5:
-    [(PDSRequestQueue *)self setQueuedRequest:v4];
+    [(PDSRequestQueue *)self setQueuedRequest:requestCopy];
     [(PDSRequestQueue *)self _dequeueIfNeeded];
     v12 = 1;
   }
@@ -147,17 +147,17 @@ LABEL_5:
 
 - (void)_dequeueIfNeeded
 {
-  v3 = [(PDSRequestQueue *)self inflightRequest];
+  inflightRequest = [(PDSRequestQueue *)self inflightRequest];
 
-  if (!v3)
+  if (!inflightRequest)
   {
-    v4 = [(PDSRequestQueue *)self queuedRequest];
-    if (v4)
+    queuedRequest = [(PDSRequestQueue *)self queuedRequest];
+    if (queuedRequest)
     {
-      v5 = v4;
+      v5 = queuedRequest;
       [(PDSRequestQueue *)self setQueuedRequest:0];
       [(PDSRequestQueue *)self _flightRequest:v5];
-      v4 = v5;
+      queuedRequest = v5;
     }
   }
 }
@@ -165,19 +165,19 @@ LABEL_5:
 - (id)_deviceInfo
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PDSRequestQueue *)self _machineID];
+  _machineID = [(PDSRequestQueue *)self _machineID];
   v5 = objc_alloc_init(PDSProtoMapEntry);
   [(PDSProtoMapEntry *)v5 setKey:@"mid"];
-  [(PDSProtoMapEntry *)v5 setValue:v4];
+  [(PDSProtoMapEntry *)v5 setValue:_machineID];
   v6 = objc_alloc_init(PDSProtoMapEntry);
   [(PDSProtoMapEntry *)v6 setKey:@"hwv"];
-  v7 = [(PDSRequestQueue *)self _hwVersion];
-  [(PDSProtoMapEntry *)v6 setValue:v7];
+  _hwVersion = [(PDSRequestQueue *)self _hwVersion];
+  [(PDSProtoMapEntry *)v6 setValue:_hwVersion];
 
   v8 = objc_alloc_init(PDSProtoMapEntry);
   [(PDSProtoMapEntry *)v8 setKey:@"osv"];
-  v9 = [(PDSRequestQueue *)self _osVersion];
-  [(PDSProtoMapEntry *)v8 setValue:v9];
+  _osVersion = [(PDSRequestQueue *)self _osVersion];
+  [(PDSProtoMapEntry *)v8 setValue:_osVersion];
 
   [v3 addObject:v5];
   [v3 addObject:v6];
@@ -202,14 +202,14 @@ LABEL_5:
     NSLog(&cfstr_Anisettedatawi.isa, v3);
   }
 
-  v5 = [v2 machineID];
-  if (![(__CFString *)v5 length])
+  machineID = [v2 machineID];
+  if (![(__CFString *)machineID length])
   {
 
-    v5 = @"Unknown";
+    machineID = @"Unknown";
   }
 
-  return v5;
+  return machineID;
 }
 
 uint64_t __29__PDSRequestQueue__machineID__block_invoke()
@@ -223,35 +223,35 @@ uint64_t __29__PDSRequestQueue__machineID__block_invoke()
 - (id)_osVersion
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277D19238] sharedInstance];
-  v4 = [v3 productName];
-  v5 = [MEMORY[0x277D19238] sharedInstance];
-  v6 = [v5 productVersion];
-  v7 = [MEMORY[0x277D19238] sharedInstance];
-  v8 = [v7 productBuildVersion];
-  v9 = [v2 stringWithFormat:@"%@, %@, %@", v4, v6, v8];
+  mEMORY[0x277D19238] = [MEMORY[0x277D19238] sharedInstance];
+  productName = [mEMORY[0x277D19238] productName];
+  mEMORY[0x277D19238]2 = [MEMORY[0x277D19238] sharedInstance];
+  productVersion = [mEMORY[0x277D19238]2 productVersion];
+  mEMORY[0x277D19238]3 = [MEMORY[0x277D19238] sharedInstance];
+  productBuildVersion = [mEMORY[0x277D19238]3 productBuildVersion];
+  v9 = [v2 stringWithFormat:@"%@, %@, %@", productName, productVersion, productBuildVersion];
 
   return v9;
 }
 
 - (id)_hwVersion
 {
-  v2 = [MEMORY[0x277D19238] sharedInstance];
-  v3 = [v2 model];
+  mEMORY[0x277D19238] = [MEMORY[0x277D19238] sharedInstance];
+  model = [mEMORY[0x277D19238] model];
 
-  if (![(__CFString *)v3 length])
+  if (![(__CFString *)model length])
   {
 
-    v3 = @"Unknown";
+    model = @"Unknown";
   }
 
-  return v3;
+  return model;
 }
 
-- (void)_flightRequest:(id)a3
+- (void)_flightRequest:(id)request
 {
   v158 = *MEMORY[0x277D85DE8];
-  v128 = a3;
+  requestCopy = request;
   v3 = pds_defaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -262,30 +262,30 @@ uint64_t __29__PDSRequestQueue__machineID__block_invoke()
   v4 = pds_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v128 entries];
-    v6 = [v5 count];
+    entries = [requestCopy entries];
+    v6 = [entries count];
     *buf = 134217984;
     v154 = v6;
     _os_log_impl(&dword_25DED8000, v4, OS_LOG_TYPE_DEFAULT, "%lu total entries", buf, 0xCu);
   }
 
-  v7 = [v128 entries];
-  [(PDSRequestQueue *)self _logEntries:v7];
+  entries2 = [requestCopy entries];
+  [(PDSRequestQueue *)self _logEntries:entries2];
 
-  [(PDSRequestQueue *)self setInflightRequest:v128];
+  [(PDSRequestQueue *)self setInflightRequest:requestCopy];
   v124 = objc_alloc_init(PDSProtoBatchRegisterReq);
   v140 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v131 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v126 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [(PDSRequestQueue *)self delegate];
-  v122 = [v8 ttlForRequest:v128];
+  delegate = [(PDSRequestQueue *)self delegate];
+  v122 = [delegate ttlForRequest:requestCopy];
 
-  v123 = [(PDSRequestQueue *)self _deviceInfo];
+  _deviceInfo = [(PDSRequestQueue *)self _deviceInfo];
   v152 = 0u;
   v150 = 0u;
   v151 = 0u;
   v149 = 0u;
-  obj = [v128 entries];
+  obj = [requestCopy entries];
   v139 = [(PDSRegisterMessage *)obj countByEnumeratingWithState:&v149 objects:v157 count:16];
   if (v139)
   {
@@ -306,21 +306,21 @@ uint64_t __29__PDSRequestQueue__machineID__block_invoke()
         }
 
         v10 = *(*(&v149 + 1) + 8 * v9);
-        v11 = [v10 user];
-        v12 = [v11 userID];
-        v13 = [v140 objectForKeyedSubscript:v12];
+        user = [v10 user];
+        userID = [user userID];
+        v13 = [v140 objectForKeyedSubscript:userID];
 
         if (!v13)
         {
           v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v14 = [v10 user];
-          v15 = [v14 userID];
-          [v140 setObject:v13 forKeyedSubscript:v15];
+          user2 = [v10 user];
+          userID2 = [user2 userID];
+          [v140 setObject:v13 forKeyedSubscript:userID2];
         }
 
         v16 = MEMORY[0x277CCABB0];
-        v17 = [v10 registration];
-        v18 = [v16 numberWithChar:{objc_msgSend(v17, "pushEnvironment")}];
+        registration = [v10 registration];
+        v18 = [v16 numberWithChar:{objc_msgSend(registration, "pushEnvironment")}];
         v19 = [v13 objectForKeyedSubscript:v18];
 
         if (v19)
@@ -329,23 +329,23 @@ LABEL_13:
           if ([v10 state] != 2)
           {
             v20 = objc_alloc_init(PDSProtoTopic);
-            v21 = [v10 registration];
-            v22 = [v21 topicString];
-            if (v22)
+            registration2 = [v10 registration];
+            topicString = [registration2 topicString];
+            if (topicString)
             {
-              v23 = [v10 registration];
-              v24 = [v23 qualifierString];
-              v25 = v24 == 0;
+              registration3 = [v10 registration];
+              qualifierString = [registration3 qualifierString];
+              v25 = qualifierString == 0;
 
               if (!v25)
               {
-                v26 = [v10 registration];
-                v27 = [v26 topicString];
-                [(PDSProtoTopic *)v20 setName:v27];
+                registration4 = [v10 registration];
+                topicString2 = [registration4 topicString];
+                [(PDSProtoTopic *)v20 setName:topicString2];
 
-                v28 = [v10 registration];
-                v29 = [v28 qualifierString];
-                [(PDSProtoTopic *)v20 setQualifier:v29];
+                registration5 = [v10 registration];
+                qualifierString2 = [registration5 qualifierString];
+                [(PDSProtoTopic *)v20 setQualifier:qualifierString2];
 
                 [(PDSProtoUserPushTokenRegRequest *)v19 addTopic:v20];
                 ++v127;
@@ -370,12 +370,12 @@ LABEL_32:
           goto LABEL_34;
         }
 
-        v30 = [v10 user];
-        v31 = [v30 userID];
-        v32 = [v131 objectForKeyedSubscript:v31];
+        user3 = [v10 user];
+        userID3 = [user3 userID];
+        v32 = [v131 objectForKeyedSubscript:userID3];
         v33 = MEMORY[0x277CCABB0];
-        v34 = [v10 registration];
-        v35 = [v33 numberWithChar:{objc_msgSend(v34, "pushEnvironment")}];
+        registration6 = [v10 registration];
+        v35 = [v33 numberWithChar:{objc_msgSend(registration6, "pushEnvironment")}];
         LODWORD(v33) = [v32 containsObject:v35];
 
         if (v33)
@@ -391,34 +391,34 @@ LABEL_32:
           goto LABEL_32;
         }
 
-        v36 = [(PDSRequestQueue *)self userTracker];
+        userTracker = [(PDSRequestQueue *)self userTracker];
         v148 = 0;
-        v37 = [v10 user];
+        user4 = [v10 user];
         v147 = 0;
-        v134 = [v36 tokenAndIdentifier:&v148 forUser:v37 withError:&v147];
+        v134 = [userTracker tokenAndIdentifier:&v148 forUser:user4 withError:&v147];
         v136 = v148;
         v137 = v147;
 
         if (!v137 && v134 && v136)
         {
-          v38 = [v10 user];
-          [v126 setObject:v38 forKeyedSubscript:v136];
+          user5 = [v10 user];
+          [v126 setObject:user5 forKeyedSubscript:v136];
 
           v135 = objc_alloc_init(PDSProtoGSTokenAuth);
           [(PDSProtoGSTokenAuth *)v135 setGsAuthToken:v134];
-          v39 = objc_alloc_init(PDSProtoUserAuth);
-          [(PDSProtoUserAuth *)v39 setUserauthOneof:1];
-          [(PDSProtoUserAuth *)v39 setGsAuthToken:v135];
-          v40 = [v10 registration];
-          v41 = [v40 pushEnvironment];
+          defaultLogger = objc_alloc_init(PDSProtoUserAuth);
+          [(PDSProtoUserAuth *)defaultLogger setUserauthOneof:1];
+          [(PDSProtoUserAuth *)defaultLogger setGsAuthToken:v135];
+          registration7 = [v10 registration];
+          pushEnvironment = [registration7 pushEnvironment];
 
           v42 = v125;
-          if (v41 == 1)
+          if (pushEnvironment == 1)
           {
             goto LABEL_27;
           }
 
-          if (v41)
+          if (pushEnvironment)
           {
             v129 = 0;
           }
@@ -430,11 +430,11 @@ LABEL_27:
             v129 = v42;
           }
 
-          v66 = [(PDSRequestQueue *)self pushTokenBlock];
-          v130 = (v66)[2](v66, v129);
+          pushTokenBlock = [(PDSRequestQueue *)self pushTokenBlock];
+          v130 = (pushTokenBlock)[2](pushTokenBlock, v129);
 
-          v67 = [v130 __imHexString];
-          v68 = [v67 length] == 0;
+          __imHexString = [v130 __imHexString];
+          v68 = [__imHexString length] == 0;
 
           if (v68)
           {
@@ -446,21 +446,21 @@ LABEL_27:
               _os_log_impl(&dword_25DED8000, v78, OS_LOG_TYPE_DEFAULT, "Missing push token for environment %@! Omitting from request", buf, 0xCu);
             }
 
-            v79 = [v10 user];
-            v80 = [v79 userID];
-            v69 = [v131 objectForKeyedSubscript:v80];
+            user6 = [v10 user];
+            userID4 = [user6 userID];
+            v69 = [v131 objectForKeyedSubscript:userID4];
 
             if (!v69)
             {
               v69 = objc_alloc_init(MEMORY[0x277CBEB58]);
-              v81 = [v10 user];
-              v82 = [v81 userID];
-              [v131 setObject:v69 forKeyedSubscript:v82];
+              user7 = [v10 user];
+              userID5 = [user7 userID];
+              [v131 setObject:v69 forKeyedSubscript:userID5];
             }
 
             v83 = MEMORY[0x277CCABB0];
-            v74 = [v10 registration];
-            v84 = [v83 numberWithChar:{objc_msgSend(v74, "pushEnvironment")}];
+            registration8 = [v10 registration];
+            v84 = [v83 numberWithChar:{objc_msgSend(registration8, "pushEnvironment")}];
             [(PDSProtoUserPushToken *)v69 addObject:v84];
 
             v19 = 0;
@@ -472,10 +472,10 @@ LABEL_27:
           {
             v69 = objc_alloc_init(PDSProtoUserPushToken);
             [(PDSProtoUserPushToken *)v69 setUserId:v136];
-            v70 = [v130 __imHexString];
-            [(PDSProtoUserPushToken *)v69 setPushToken:v70];
+            __imHexString2 = [v130 __imHexString];
+            [(PDSProtoUserPushToken *)v69 setPushToken:__imHexString2];
 
-            [(PDSProtoUserPushToken *)v69 setUserAuth:v39];
+            [(PDSProtoUserPushToken *)v69 setUserAuth:defaultLogger];
             v71 = pds_defaultLog();
             if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
             {
@@ -486,16 +486,16 @@ LABEL_27:
             [(PDSRequestQueue *)self _logProtoUserPushToken:v69];
             v19 = objc_alloc_init(PDSProtoUserPushTokenRegRequest);
             [(PDSProtoUserPushTokenRegRequest *)v19 setUserPushToken:v69];
-            [(PDSProtoUserPushTokenRegRequest *)v19 setDeviceInfos:v123];
+            [(PDSProtoUserPushTokenRegRequest *)v19 setDeviceInfos:_deviceInfo];
             [(PDSProtoUserPushTokenRegRequest *)v19 setTtl:v122];
             v72 = MEMORY[0x277CCABB0];
-            v73 = [v10 registration];
-            v74 = [v72 numberWithChar:{objc_msgSend(v73, "pushEnvironment")}];
+            registration9 = [v10 registration];
+            registration8 = [v72 numberWithChar:{objc_msgSend(registration9, "pushEnvironment")}];
 
-            v75 = [v10 user];
-            v76 = [v75 userID];
-            v77 = [v140 objectForKeyedSubscript:v76];
-            [v77 setObject:v19 forKeyedSubscript:v74];
+            user8 = [v10 user];
+            userID6 = [user8 userID];
+            v77 = [v140 objectForKeyedSubscript:userID6];
+            [v77 setObject:v19 forKeyedSubscript:registration8];
 
             [(PDSProtoBatchRegisterReq *)v124 addUserPushTokenRegRequests:v19];
             v58 = 0;
@@ -514,25 +514,25 @@ LABEL_27:
           _os_log_impl(&dword_25DED8000, v44, OS_LOG_TYPE_DEFAULT, "Issue obtaining token. Error: %@ -- DSID: %@", buf, 0x16u);
         }
 
-        v45 = [v137 domain];
-        v46 = v45;
-        if (v45 != *MEMORY[0x277D37B18])
+        domain = [v137 domain];
+        v46 = domain;
+        if (domain != *MEMORY[0x277D37B18])
         {
 
 LABEL_48:
-          v59 = [v10 user];
-          [(PDSRequestQueue *)self _reAuthAndContinueWithRequest:v128 forUser:v59];
+          user9 = [v10 user];
+          [(PDSRequestQueue *)self _reAuthAndContinueWithRequest:requestCopy forUser:user9];
 
           v60 = objc_alloc(MEMORY[0x277D18A50]);
           v61 = MEMORY[0x277CCABB0];
-          v62 = [v128 requestInfo];
-          v63 = [v61 numberWithUnsignedInteger:{objc_msgSend(v62, "regReason")}];
-          v64 = [v128 requestInfo];
-          v65 = [v64 heartbeatDate];
-          v135 = [v60 initWithFailureReason:@"Auth issue - potentially recoverable" registrationReason:v63 heartbeatDate:v65];
+          requestInfo = [requestCopy requestInfo];
+          v63 = [v61 numberWithUnsignedInteger:{objc_msgSend(requestInfo, "regReason")}];
+          requestInfo2 = [requestCopy requestInfo];
+          heartbeatDate = [requestInfo2 heartbeatDate];
+          v135 = [v60 initWithFailureReason:@"Auth issue - potentially recoverable" registrationReason:v63 heartbeatDate:heartbeatDate];
 
-          v39 = [MEMORY[0x277D189A0] defaultLogger];
-          [(PDSProtoUserAuth *)v39 logMetric:v135];
+          defaultLogger = [MEMORY[0x277D189A0] defaultLogger];
+          [(PDSProtoUserAuth *)defaultLogger logMetric:v135];
           v19 = 0;
           v58 = 1;
           goto LABEL_60;
@@ -552,33 +552,33 @@ LABEL_48:
           _os_log_impl(&dword_25DED8000, v48, OS_LOG_TYPE_DEFAULT, "User is non-existent.  Skipping, removing dead entries for user, and continuing with request", buf, 2u);
         }
 
-        v49 = [v10 user];
-        v50 = [v49 userID];
-        v135 = [v131 objectForKeyedSubscript:v50];
+        user10 = [v10 user];
+        userID7 = [user10 userID];
+        v135 = [v131 objectForKeyedSubscript:userID7];
 
         if (!v135)
         {
           v135 = objc_alloc_init(MEMORY[0x277CBEB58]);
-          v51 = [v10 user];
-          v52 = [v51 userID];
-          [v131 setObject:v135 forKeyedSubscript:v52];
+          user11 = [v10 user];
+          userID8 = [user11 userID];
+          [v131 setObject:v135 forKeyedSubscript:userID8];
         }
 
         v53 = MEMORY[0x277CCABB0];
-        v54 = [v10 registration];
-        v55 = [v53 numberWithChar:{objc_msgSend(v54, "pushEnvironment")}];
+        registration10 = [v10 registration];
+        v55 = [v53 numberWithChar:{objc_msgSend(registration10, "pushEnvironment")}];
         [(PDSProtoGSTokenAuth *)v135 addObject:v55];
 
-        v56 = [v10 user];
+        user12 = [v10 user];
         v146 = 0;
-        [(PDSRequestQueue *)self _removeDeadEntriesForUser:v56 withError:&v146];
-        v39 = v146;
+        [(PDSRequestQueue *)self _removeDeadEntriesForUser:user12 withError:&v146];
+        defaultLogger = v146;
 
         v57 = pds_defaultLog();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v154 = v39;
+          v154 = defaultLogger;
           _os_log_impl(&dword_25DED8000, v57, OS_LOG_TYPE_DEFAULT, "Removed entries for user with error: %@", buf, 0xCu);
         }
 
@@ -624,8 +624,8 @@ LABEL_66:
     _os_log_impl(&dword_25DED8000, v86, OS_LOG_TYPE_DEFAULT, "Total active entries to flight: %d", buf, 8u);
   }
 
-  v87 = [(PDSProtoBatchRegisterReq *)v124 userPushTokenRegRequests];
-  v88 = [v87 count] == 0;
+  userPushTokenRegRequests = [(PDSProtoBatchRegisterReq *)v124 userPushTokenRegRequests];
+  v88 = [userPushTokenRegRequests count] == 0;
 
   if (v88)
   {
@@ -661,14 +661,14 @@ LABEL_66:
 
     v103 = objc_alloc(MEMORY[0x277D18A50]);
     v104 = MEMORY[0x277CCABB0];
-    v105 = [v128 requestInfo];
-    v106 = [v104 numberWithUnsignedInteger:{objc_msgSend(v105, "regReason")}];
-    v107 = [v128 requestInfo];
-    v108 = [v107 heartbeatDate];
-    obj = [v103 initWithFailureReason:v102 registrationReason:v106 heartbeatDate:v108];
+    requestInfo3 = [requestCopy requestInfo];
+    v106 = [v104 numberWithUnsignedInteger:{objc_msgSend(requestInfo3, "regReason")}];
+    requestInfo4 = [requestCopy requestInfo];
+    heartbeatDate2 = [requestInfo4 heartbeatDate];
+    obj = [v103 initWithFailureReason:v102 registrationReason:v106 heartbeatDate:heartbeatDate2];
 
-    v95 = [MEMORY[0x277D189A0] defaultLogger];
-    [v95 logMetric:obj];
+    defaultLogger2 = [MEMORY[0x277D189A0] defaultLogger];
+    [defaultLogger2 logMetric:obj];
   }
 
   else
@@ -684,25 +684,25 @@ LABEL_66:
     }
 
     [(PDSRegisterMessage *)obj setProtoRequest:v124];
-    v90 = [v128 requestInfo];
-    -[PDSRegisterMessage setRegReason:](obj, "setRegReason:", [v90 regReason]);
+    requestInfo5 = [requestCopy requestInfo];
+    -[PDSRegisterMessage setRegReason:](obj, "setRegReason:", [requestInfo5 regReason]);
 
     v91 = pds_defaultLog();
     if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
     {
-      v92 = [v128 requestInfo];
-      v93 = [v92 regReason];
+      requestInfo6 = [requestCopy requestInfo];
+      regReason = [requestInfo6 regReason];
       *buf = 134217984;
-      v154 = v93;
+      v154 = regReason;
       _os_log_impl(&dword_25DED8000, v91, OS_LOG_TYPE_DEFAULT, "Setting registration reason: %ld", buf, 0xCu);
     }
 
     [(IDSBaseMessage *)obj setTimeout:self->_messageTimeout];
-    v94 = [(PDSRequestQueue *)self pushTokenBlock];
-    v95 = v94[2](v94, *MEMORY[0x277CEE9F0]);
+    pushTokenBlock2 = [(PDSRequestQueue *)self pushTokenBlock];
+    defaultLogger2 = pushTokenBlock2[2](pushTokenBlock2, *MEMORY[0x277CEE9F0]);
 
-    v96 = [v95 __imHexString];
-    v97 = [v96 length] == 0;
+    __imHexString3 = [defaultLogger2 __imHexString];
+    v97 = [__imHexString3 length] == 0;
 
     if (v97)
     {
@@ -715,21 +715,21 @@ LABEL_66:
 
       v110 = objc_alloc(MEMORY[0x277D18A50]);
       v111 = MEMORY[0x277CCABB0];
-      v112 = [v128 requestInfo];
-      v113 = [v111 numberWithUnsignedInteger:{objc_msgSend(v112, "regReason")}];
-      v114 = [v128 requestInfo];
-      v115 = [v114 heartbeatDate];
-      v116 = [v110 initWithFailureReason:@"Could not fetch production push token" registrationReason:v113 heartbeatDate:v115];
+      requestInfo7 = [requestCopy requestInfo];
+      v113 = [v111 numberWithUnsignedInteger:{objc_msgSend(requestInfo7, "regReason")}];
+      requestInfo8 = [requestCopy requestInfo];
+      heartbeatDate3 = [requestInfo8 heartbeatDate];
+      v116 = [v110 initWithFailureReason:@"Could not fetch production push token" registrationReason:v113 heartbeatDate:heartbeatDate3];
 
-      v117 = [MEMORY[0x277D189A0] defaultLogger];
-      [v117 logMetric:v116];
+      defaultLogger3 = [MEMORY[0x277D189A0] defaultLogger];
+      [defaultLogger3 logMetric:v116];
 
       [(PDSRequestQueue *)self setInflightRequest:0];
     }
 
     else
     {
-      [(FTIDSMessage *)obj setPushToken:v95];
+      [(FTIDSMessage *)obj setPushToken:defaultLogger2];
       IDSAssignPushIdentityToMessage();
       objc_initWeak(buf, self);
       v141[0] = MEMORY[0x277D85DD0];
@@ -738,12 +738,12 @@ LABEL_66:
       v141[3] = &unk_2799F84B0;
       objc_copyWeak(&v145, buf);
       v142 = v126;
-      v143 = self;
-      v144 = v128;
+      selfCopy = self;
+      v144 = requestCopy;
       [(IDSBaseMessage *)obj setCompletionBlock:v141];
       [(PDSRequestQueue *)self _cancelPendingRequests];
-      v98 = [(PDSRequestQueue *)self messageDelivery];
-      [v98 sendMessage:obj];
+      messageDelivery = [(PDSRequestQueue *)self messageDelivery];
+      [messageDelivery sendMessage:obj];
 
       objc_destroyWeak(&v145);
       objc_destroyWeak(buf);
@@ -891,26 +891,26 @@ void __34__PDSRequestQueue__flightRequest___block_invoke_2(uint64_t a1)
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reAuthAndContinueWithRequest:(id)a3 forUser:(id)a4
+- (void)_reAuthAndContinueWithRequest:(id)request forUser:(id)user
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  userCopy = user;
   v8 = pds_defaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v25 = [(PDSRequestQueue *)self authRetries];
+    authRetries = [(PDSRequestQueue *)self authRetries];
     _os_log_impl(&dword_25DED8000, v8, OS_LOG_TYPE_DEFAULT, "Attempting Reauth - Current reauth attempts: %ld", buf, 0xCu);
   }
 
-  v9 = [(PDSRequestQueue *)self lastReauthAttempt];
+  lastReauthAttempt = [(PDSRequestQueue *)self lastReauthAttempt];
 
-  if (v9)
+  if (lastReauthAttempt)
   {
     v10 = [MEMORY[0x277CBEAA8] now];
-    v11 = [(PDSRequestQueue *)self lastReauthAttempt];
-    [v10 timeIntervalSinceDate:v11];
+    lastReauthAttempt2 = [(PDSRequestQueue *)self lastReauthAttempt];
+    [v10 timeIntervalSinceDate:lastReauthAttempt2];
     v13 = v12;
 
     if (v13 > 43200.0)
@@ -932,7 +932,7 @@ void __34__PDSRequestQueue__flightRequest___block_invoke_2(uint64_t a1)
   else
   {
     [(PDSRequestQueue *)self setAuthRetries:[(PDSRequestQueue *)self authRetries]+ 1];
-    [(PDSRequestQueue *)self setInflightRequest:v6];
+    [(PDSRequestQueue *)self setInflightRequest:requestCopy];
     v14 = [MEMORY[0x277CBEAA8] now];
     [(PDSRequestQueue *)self setLastReauthAttempt:v14];
 
@@ -951,9 +951,9 @@ void __34__PDSRequestQueue__flightRequest___block_invoke_2(uint64_t a1)
     v20[2] = __57__PDSRequestQueue__reAuthAndContinueWithRequest_forUser___block_invoke;
     v20[3] = &unk_2799F8528;
     v20[4] = self;
-    v21 = v7;
+    v21 = userCopy;
     objc_copyWeak(&v23, buf);
-    v22 = v6;
+    v22 = requestCopy;
     dispatch_after(v16, queue, v20);
 
     objc_destroyWeak(&v23);
@@ -1046,19 +1046,19 @@ uint64_t __57__PDSRequestQueue__reAuthAndContinueWithRequest_forUser___block_inv
 - (void)_cancelPendingRequests
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(PDSRequestQueue *)self messageDelivery];
-  v4 = [v3 hasQueuedItems];
+  messageDelivery = [(PDSRequestQueue *)self messageDelivery];
+  hasQueuedItems = [messageDelivery hasQueuedItems];
 
-  if (v4)
+  if (hasQueuedItems)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(PDSRequestQueue *)self messageDelivery];
-    v6 = [v5 queuedMessages];
+    messageDelivery2 = [(PDSRequestQueue *)self messageDelivery];
+    queuedMessages = [messageDelivery2 queuedMessages];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [queuedMessages countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1070,22 +1070,22 @@ uint64_t __57__PDSRequestQueue__reAuthAndContinueWithRequest_forUser___block_inv
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(queuedMessages);
           }
 
           v11 = *(*(&v14 + 1) + 8 * v10);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [(PDSRequestQueue *)self messageDelivery];
-            [v12 cancelMessage:v11];
+            messageDelivery3 = [(PDSRequestQueue *)self messageDelivery];
+            [messageDelivery3 cancelMessage:v11];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [queuedMessages countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -1095,14 +1095,14 @@ uint64_t __57__PDSRequestQueue__reAuthAndContinueWithRequest_forUser___block_inv
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logEntries:(id)a3
+- (void)_logEntries:(id)entries
 {
   v29 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = entries;
   v20 = [obj countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v20)
   {
@@ -1121,15 +1121,15 @@ uint64_t __57__PDSRequestQueue__reAuthAndContinueWithRequest_forUser___block_inv
         }
 
         v7 = *(*(&v22 + 1) + 8 * i);
-        v8 = [v7 registration];
-        v9 = [v8 qualifierString];
-        v10 = [v7 registration];
-        v11 = [v10 topicString];
+        registration = [v7 registration];
+        qualifierString = [registration qualifierString];
+        registration2 = [v7 registration];
+        topicString = [registration2 topicString];
         [v7 state];
         v12 = PDSStringForEntryState();
-        v13 = [v7 user];
-        v14 = [v13 userID];
-        v4 = [(__CFString *)v6 stringByAppendingFormat:@"\t PDSEntry: Qual:%@ Topic:%@ State:%@ User:%@\n", v9, v11, v12, v14];
+        user = [v7 user];
+        userID = [user userID];
+        v4 = [(__CFString *)v6 stringByAppendingFormat:@"\t PDSEntry: Qual:%@ Topic:%@ State:%@ User:%@\n", qualifierString, topicString, v12, userID];
 
         if (v21 < 5)
         {
@@ -1175,43 +1175,43 @@ uint64_t __57__PDSRequestQueue__reAuthAndContinueWithRequest_forUser___block_inv
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logProtoUserPushToken:(id)a3
+- (void)_logProtoUserPushToken:(id)token
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tokenCopy = token;
   v4 = pds_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 userId];
-    v6 = [v3 pushToken];
+    userId = [tokenCopy userId];
+    pushToken = [tokenCopy pushToken];
     v8 = 138412546;
-    v9 = v5;
+    v9 = userId;
     v10 = 2112;
-    v11 = v6;
+    v11 = pushToken;
     _os_log_impl(&dword_25DED8000, v4, OS_LOG_TYPE_DEFAULT, "PDSUserPushTokenRequest: UserID:%@ PushToken:%@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeDeadEntriesForUser:(id)a3 withError:(id *)a4
+- (void)_removeDeadEntriesForUser:(id)user withError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  userCopy = user;
   v7 = pds_defaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = userCopy;
     _os_log_impl(&dword_25DED8000, v7, OS_LOG_TYPE_DEFAULT, "Removing all entries with state [remove] for user: %@", &v12, 0xCu);
   }
 
-  v8 = [(PDSRequestQueue *)self entryStoreBlock];
-  v9 = v8[2]();
+  entryStoreBlock = [(PDSRequestQueue *)self entryStoreBlock];
+  v9 = entryStoreBlock[2]();
 
   if (v9)
   {
-    [v9 deleteEntriesForUser:v6 withState:2 withError:a4];
+    [v9 deleteEntriesForUser:userCopy withState:2 withError:error];
   }
 
   else

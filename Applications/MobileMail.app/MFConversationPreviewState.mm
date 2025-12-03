@@ -1,11 +1,11 @@
 @interface MFConversationPreviewState
 + (OS_os_log)log;
-- (MFConversationPreviewState)initWithBackgroundUpdater:(id)a3;
+- (MFConversationPreviewState)initWithBackgroundUpdater:(id)updater;
 - (NSString)description;
 - (void)previewCancelled;
-- (void)previewDidCommit:(BOOL)a3;
-- (void)setBeingPreviewed:(BOOL)a3;
-- (void)setState:(int64_t)a3;
+- (void)previewDidCommit:(BOOL)commit;
+- (void)setBeingPreviewed:(BOOL)previewed;
+- (void)setState:(int64_t)state;
 - (void)transitionAfterChangingSources;
 - (void)transitionAfterScrollingToReferenceMessage;
 - (void)transitionAfterViewDidAppear;
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001C3830;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD4B0 != -1)
   {
     dispatch_once(&qword_1006DD4B0, block);
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (MFConversationPreviewState)initWithBackgroundUpdater:(id)a3
+- (MFConversationPreviewState)initWithBackgroundUpdater:(id)updater
 {
-  v4 = a3;
+  updaterCopy = updater;
   v11.receiver = self;
   v11.super_class = MFConversationPreviewState;
   v5 = [(MFConversationPreviewState *)&v11 init];
@@ -41,9 +41,9 @@
   if (v5)
   {
     v5->_state = 0;
-    if (v4)
+    if (updaterCopy)
     {
-      v7 = v4;
+      v7 = updaterCopy;
     }
 
     else
@@ -59,9 +59,9 @@
   return v6;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = +[MFConversationPreviewState log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -77,14 +77,14 @@
         v7 = *(&off_100653E20 + v6);
       }
 
-      if ((a3 - 1) > 3)
+      if ((state - 1) > 3)
       {
         v8 = @"_MFConversationPreviewStateInvisible";
       }
 
       else
       {
-        v8 = *(&off_100653E20 + a3 - 1);
+        v8 = *(&off_100653E20 + state - 1);
       }
 
       v10 = 138543618;
@@ -94,26 +94,26 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ -> %{public}@", &v10, 0x16u);
     }
 
-    self->_state = a3;
-    if (a3)
+    self->_state = state;
+    if (state)
     {
-      v9 = [(MFConversationPreviewState *)self backgroundUpdater];
-      v9[2]();
+      backgroundUpdater = [(MFConversationPreviewState *)self backgroundUpdater];
+      backgroundUpdater[2]();
     }
   }
 }
 
 - (NSString)description
 {
-  v2 = [(MFConversationPreviewState *)self state];
-  if ((v2 - 1) > 3)
+  state = [(MFConversationPreviewState *)self state];
+  if ((state - 1) > 3)
   {
     return @"_MFConversationPreviewStateInvisible";
   }
 
   else
   {
-    return *(&off_100653E20 + v2 - 1);
+    return *(&off_100653E20 + state - 1);
   }
 }
 
@@ -126,11 +126,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[state transitionAfterViewDidAppear]", v6, 2u);
   }
 
-  v4 = [(MFConversationPreviewState *)self state];
+  state = [(MFConversationPreviewState *)self state];
   v5 = 4;
-  if (v4 && v4 != 3)
+  if (state && state != 3)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -178,9 +178,9 @@
   [(MFConversationPreviewState *)self setDidScrollToReferenceMessage:0];
 }
 
-- (void)setBeingPreviewed:(BOOL)a3
+- (void)setBeingPreviewed:(BOOL)previewed
 {
-  v3 = a3;
+  previewedCopy = previewed;
   v5 = +[MFConversationPreviewState log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -190,15 +190,15 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[state setBeingPreviewed: %@]", &v7, 0xCu);
   }
 
-  if (v3)
+  if (previewedCopy)
   {
     [(MFConversationPreviewState *)self setState:1];
   }
 }
 
-- (void)previewDidCommit:(BOOL)a3
+- (void)previewDidCommit:(BOOL)commit
 {
-  v3 = a3;
+  commitCopy = commit;
   v5 = +[MFConversationPreviewState log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -208,7 +208,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[state previewDidCommit: %@]", &v8, 0xCu);
   }
 
-  if (v3)
+  if (commitCopy)
   {
     v7 = 3;
   }

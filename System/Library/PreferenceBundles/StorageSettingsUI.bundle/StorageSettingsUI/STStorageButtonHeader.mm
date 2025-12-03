@@ -1,97 +1,97 @@
 @interface STStorageButtonHeader
-- (STStorageButtonHeader)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
-- (void)setHeaderButtonTitle:(id)a3;
+- (STStorageButtonHeader)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
+- (void)setHeaderButtonTitle:(id)title;
 - (void)updateConstraints;
 @end
 
 @implementation STStorageButtonHeader
 
-- (STStorageButtonHeader)initWithSpecifier:(id)a3
+- (STStorageButtonHeader)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v35.receiver = self;
   v35.super_class = STStorageButtonHeader;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(STStorageButtonHeader *)&v35 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v8)
+  height = [(STStorageButtonHeader *)&v35 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v9 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    titleLabel = v8->_titleLabel;
-    v8->_titleLabel = v9;
+    titleLabel = height->_titleLabel;
+    height->_titleLabel = v9;
 
-    [(UILabel *)v8->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [v4 name];
+    [(UILabel *)height->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    name = [specifierCopy name];
     v12 = +[NSLocale currentLocale];
-    v13 = [v11 uppercaseStringWithLocale:v12];
-    [(UILabel *)v8->_titleLabel setText:v13];
+    v13 = [name uppercaseStringWithLocale:v12];
+    [(UILabel *)height->_titleLabel setText:v13];
 
     v14 = PreferencesTableViewHeaderFont();
-    [(UILabel *)v8->_titleLabel setFont:v14];
+    [(UILabel *)height->_titleLabel setFont:v14];
 
     v15 = PreferencesTableViewHeaderColor();
-    [(UILabel *)v8->_titleLabel setTextColor:v15];
+    [(UILabel *)height->_titleLabel setTextColor:v15];
 
     v16 = +[UIColor clearColor];
-    [(UILabel *)v8->_titleLabel setBackgroundColor:v16];
+    [(UILabel *)height->_titleLabel setBackgroundColor:v16];
 
-    [(UILabel *)v8->_titleLabel setNumberOfLines:1];
-    [(UILabel *)v8->_titleLabel setLineBreakMode:4];
-    [(UILabel *)v8->_titleLabel sizeToFit];
-    [(STStorageButtonHeader *)v8 addSubview:v8->_titleLabel];
+    [(UILabel *)height->_titleLabel setNumberOfLines:1];
+    [(UILabel *)height->_titleLabel setLineBreakMode:4];
+    [(UILabel *)height->_titleLabel sizeToFit];
+    [(STStorageButtonHeader *)height addSubview:height->_titleLabel];
     v17 = [UIButton buttonWithType:1];
-    headerButton = v8->_headerButton;
-    v8->_headerButton = v17;
+    headerButton = height->_headerButton;
+    height->_headerButton = v17;
 
-    [(UIButton *)v8->_headerButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = v8->_headerButton;
+    [(UIButton *)height->_headerButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    v19 = height->_headerButton;
     v20 = +[UIColor systemBlueColor];
     [(UIButton *)v19 setTitleColor:v20 forState:0];
 
-    v21 = v8->_headerButton;
+    v21 = height->_headerButton;
     v22 = PreferencesTableViewHeaderFont();
     [(UIButton *)v21 _setFont:v22];
 
     v23 = +[UIColor clearColor];
-    [(UIButton *)v8->_headerButton setBackgroundColor:v23];
+    [(UIButton *)height->_headerButton setBackgroundColor:v23];
 
-    v24 = [v4 propertyForKey:@"stButtonSymbol"];
+    v24 = [specifierCopy propertyForKey:@"stButtonSymbol"];
     if (v24)
     {
-      v25 = v8->_headerButton;
+      v25 = height->_headerButton;
       v26 = [UIImage systemImageNamed:v24];
       [(UIButton *)v25 setImage:v26 forState:0];
 
-      v8->_hasSymbolButton = 1;
+      height->_hasSymbolButton = 1;
     }
 
     else
     {
-      v27 = [v4 propertyForKey:@"stButtonTitle"];
-      v28 = v8->_headerButton;
+      v27 = [specifierCopy propertyForKey:@"stButtonTitle"];
+      v28 = height->_headerButton;
       v29 = +[NSLocale currentLocale];
       v30 = [v27 uppercaseStringWithLocale:v29];
       [(UIButton *)v28 setTitle:v30 forState:0];
     }
 
-    v31 = [v4 target];
-    v32 = [v4 buttonAction];
-    if (v31)
+    target = [specifierCopy target];
+    buttonAction = [specifierCopy buttonAction];
+    if (target)
     {
-      v33 = v32;
-      if (v32)
+      v33 = buttonAction;
+      if (buttonAction)
       {
-        [(UIButton *)v8->_headerButton addTarget:v31 action:v32 forControlEvents:64];
+        [(UIButton *)height->_headerButton addTarget:target action:buttonAction forControlEvents:64];
       }
     }
 
-    [(STStorageButtonHeader *)v8 addSubview:v8->_headerButton, v33];
-    [(STStorageButtonHeader *)v8 updateConstraints];
+    [(STStorageButtonHeader *)height addSubview:height->_headerButton, v33];
+    [(STStorageButtonHeader *)height updateConstraints];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)updateConstraints
@@ -107,9 +107,9 @@
   constraints = self->_constraints;
   self->_constraints = v4;
 
-  v6 = [(UIButton *)self->_headerButton isHidden];
+  isHidden = [(UIButton *)self->_headerButton isHidden];
   v7 = self->_constraints;
-  if (v6)
+  if (isHidden)
   {
     v8 = @"H:|-16-[_titleLabel]-15-|";
   }
@@ -128,8 +128,8 @@
   v13 = [NSLayoutConstraint constraintWithItem:headerButton attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v12];
   [(NSMutableArray *)v10 addObject:v13];
 
-  v14 = [(UILabel *)self->_titleLabel text];
-  v15 = [v14 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v15 = [text length];
 
   v16 = self->_constraints;
   if (v15)
@@ -161,18 +161,18 @@
   [(STStorageButtonHeader *)&v22 updateConstraints];
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [(UILabel *)self->_titleLabel font];
-    [v6 ascender];
+    font = [(UILabel *)self->_titleLabel font];
+    [font ascender];
     v8 = v7;
-    v9 = [(UILabel *)self->_titleLabel font];
-    [v9 descender];
+    font2 = [(UILabel *)self->_titleLabel font];
+    [font2 descender];
     v11 = v8 - v10 + 12.0;
   }
 
@@ -184,17 +184,17 @@
   v12 = 20.0;
   if (!self->_hasSymbolButton)
   {
-    v13 = [(UIButton *)self->_headerButton titleLabel];
-    v14 = [v13 text];
-    v15 = [v14 length];
+    titleLabel = [(UIButton *)self->_headerButton titleLabel];
+    text2 = [titleLabel text];
+    v15 = [text2 length];
 
     if (v15)
     {
-      v16 = [v13 font];
-      [v16 ascender];
+      font3 = [titleLabel font];
+      [font3 ascender];
       v18 = v17;
-      v19 = [v13 font];
-      [v19 descender];
+      font4 = [titleLabel font];
+      [font4 descender];
       v12 = v18 - v20 + 12.0;
     }
 
@@ -207,12 +207,12 @@
   return round(fmax(v11, v12));
 }
 
-- (void)setHeaderButtonTitle:(id)a3
+- (void)setHeaderButtonTitle:(id)title
 {
   headerButton = self->_headerButton;
-  v5 = a3;
+  titleCopy = title;
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 uppercaseStringWithLocale:v6];
+  v7 = [titleCopy uppercaseStringWithLocale:v6];
 
   [(UIButton *)headerButton setTitle:v7 forState:0];
 

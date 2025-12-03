@@ -1,30 +1,30 @@
 @interface BKLocalization
-+ (id)getLocalizedString:(id)a3;
-+ (id)getLocalizedString:(id)a3 fromFile:(id)a4;
-+ (id)getLocalizedString:(id)a3 fromStringTable:(id)a4 withBundle:(id)a5;
-+ (id)getLocalizedStringOrNil:(id)a3 fromStringTable:(id)a4 withBundle:(id)a5;
++ (id)getLocalizedString:(id)string;
++ (id)getLocalizedString:(id)string fromFile:(id)file;
++ (id)getLocalizedString:(id)string fromStringTable:(id)table withBundle:(id)bundle;
++ (id)getLocalizedStringOrNil:(id)nil fromStringTable:(id)table withBundle:(id)bundle;
 + (void)reportLocalizationABC;
 @end
 
 @implementation BKLocalization
 
-+ (id)getLocalizedString:(id)a3
++ (id)getLocalizedString:(id)string
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  stringCopy = string;
   v6 = [v4 bundleWithPath:@"/System/Library/PrivateFrameworks/BiometricSupport.framework"];
-  v7 = [a1 getLocalizedString:v5 fromStringTable:@"biometrickitd" withBundle:v6];
+  v7 = [self getLocalizedString:stringCopy fromStringTable:@"biometrickitd" withBundle:v6];
 
   return v7;
 }
 
-+ (id)getLocalizedString:(id)a3 fromFile:(id)a4
++ (id)getLocalizedString:(id)string fromFile:(id)file
 {
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a4;
-  v8 = a3;
+  fileCopy = file;
+  stringCopy = string;
   v9 = [v6 bundleWithPath:@"/System/Library/PrivateFrameworks/BiometricSupport.framework"];
-  v10 = [a1 getLocalizedString:v8 fromStringTable:v7 withBundle:v9];
+  v10 = [self getLocalizedString:stringCopy fromStringTable:fileCopy withBundle:v9];
 
   return v10;
 }
@@ -42,17 +42,17 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getLocalizedString:(id)a3 fromStringTable:(id)a4 withBundle:(id)a5
++ (id)getLocalizedString:(id)string fromStringTable:(id)table withBundle:(id)bundle
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 getLocalizedStringOrNil:v8 fromStringTable:v9 withBundle:v10];
+  stringCopy = string;
+  tableCopy = table;
+  bundleCopy = bundle;
+  v11 = [self getLocalizedStringOrNil:stringCopy fromStringTable:tableCopy withBundle:bundleCopy];
   v12 = v11;
-  if (!v11 || [v11 isEqualToString:v8])
+  if (!v11 || [v11 isEqualToString:stringCopy])
   {
-    v13 = [v10 pathForResource:v9 ofType:@"loctable"];
+    v13 = [bundleCopy pathForResource:tableCopy ofType:@"loctable"];
     v14 = MEMORY[0x277D86220];
     if (__osLog)
     {
@@ -68,15 +68,15 @@
     {
       v16 = MEMORY[0x277CCAA00];
       v17 = v15;
-      v18 = [v16 defaultManager];
+      defaultManager = [v16 defaultManager];
       v26 = 138412546;
       v27 = v13;
       v28 = 1024;
-      LODWORD(v29) = [v18 fileExistsAtPath:v13];
+      LODWORD(v29) = [defaultManager fileExistsAtPath:v13];
       _os_log_impl(&dword_223E00000, v17, OS_LOG_TYPE_DEFAULT, "BKLocalization Loctable path='%@' exists=%d\n", &v26, 0x12u);
     }
 
-    v19 = [v10 localizedStringForKey:v8 value:0 table:v9 localization:@"en"];
+    v19 = [bundleCopy localizedStringForKey:stringCopy value:0 table:tableCopy localization:@"en"];
 
     if (__osLog)
     {
@@ -92,20 +92,20 @@
     {
       v21 = v19;
       v22 = v20;
-      v23 = [v19 UTF8String];
+      uTF8String = [v19 UTF8String];
       v26 = 138412546;
-      v27 = v8;
+      v27 = stringCopy;
       v28 = 2080;
-      v29 = v23;
+      v29 = uTF8String;
       _os_log_impl(&dword_223E00000, v22, OS_LOG_TYPE_DEFAULT, "BKLocalization fallback to en: %@ => %s\n", &v26, 0x16u);
     }
 
     if (!v19)
     {
-      v19 = v8;
+      v19 = stringCopy;
     }
 
-    [a1 reportLocalizationABC];
+    [self reportLocalizationABC];
 
     v12 = v19;
   }
@@ -115,13 +115,13 @@
   return v12;
 }
 
-+ (id)getLocalizedStringOrNil:(id)a3 fromStringTable:(id)a4 withBundle:(id)a5
++ (id)getLocalizedStringOrNil:(id)nil fromStringTable:(id)table withBundle:(id)bundle
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  nilCopy = nil;
+  tableCopy = table;
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v10 = CFPreferencesCopyValue(@"AppleLanguages", *MEMORY[0x277CBF008], @"mobile", *MEMORY[0x277CBF010]);
     if (v10)
@@ -140,8 +140,8 @@
         }
 
         v12 = MEMORY[0x277CCA8D8];
-        v13 = [v9 localizations];
-        v14 = [v12 preferredLocalizationsFromArray:v13 forPreferences:v10];
+        localizations = [bundleCopy localizations];
+        v14 = [v12 preferredLocalizationsFromArray:localizations forPreferences:v10];
 
         if (__osLog)
         {
@@ -185,7 +185,7 @@ LABEL_17:
             }
 
             v23 = *(*(&v36 + 1) + 8 * v22);
-            v24 = [v9 localizedStringForKey:v7 value:0 table:v8 localization:v23];
+            v24 = [bundleCopy localizedStringForKey:nilCopy value:0 table:tableCopy localization:v23];
             if (__osLog)
             {
               v25 = __osLog;
@@ -200,14 +200,14 @@ LABEL_17:
             {
               v26 = v23;
               v27 = v25;
-              v28 = [v23 UTF8String];
-              v29 = [v24 UTF8String];
+              uTF8String = [v23 UTF8String];
+              uTF8String2 = [v24 UTF8String];
               *buf = 136315650;
-              *v41 = v28;
+              *v41 = uTF8String;
               *&v41[8] = 2112;
-              *&v41[10] = v7;
+              *&v41[10] = nilCopy;
               v42 = 2080;
-              v43 = v29;
+              v43 = uTF8String2;
               _os_log_impl(&dword_223E00000, v27, OS_LOG_TYPE_DEFAULT, "BKLocalization [%s] %@ => %s\n", buf, 0x20u);
             }
 

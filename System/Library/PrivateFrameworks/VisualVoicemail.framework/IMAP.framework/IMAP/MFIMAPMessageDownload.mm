@@ -1,14 +1,14 @@
 @interface MFIMAPMessageDownload
 - (BOOL)isComplete;
-- (MFIMAPMessageDownload)initWithMessage:(id)a3;
+- (MFIMAPMessageDownload)initWithMessage:(id)message;
 - (id)data;
 - (id)topLevelPart;
-- (void)addCommandsToPipeline:(id)a3 withCache:(id)a4;
+- (void)addCommandsToPipeline:(id)pipeline withCache:(id)cache;
 - (void)dealloc;
-- (void)handleFetchResult:(id)a3;
+- (void)handleFetchResult:(id)result;
 - (void)processResults;
-- (void)setFetchBodyData:(BOOL)a3;
-- (void)setTopLevelPart:(id)a3;
+- (void)setFetchBodyData:(BOOL)data;
+- (void)setTopLevelPart:(id)part;
 @end
 
 @implementation MFIMAPMessageDownload
@@ -20,16 +20,16 @@
   [(MFIMAPCompoundDownload *)&v2 dealloc];
 }
 
-- (MFIMAPMessageDownload)initWithMessage:(id)a3
+- (MFIMAPMessageDownload)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = MFIMAPMessageDownload;
-  v6 = -[MFIMAPDownload initWithUid:](&v9, sel_initWithUid_, [v5 uid]);
+  v6 = -[MFIMAPDownload initWithUid:](&v9, sel_initWithUid_, [messageCopy uid]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;
@@ -44,13 +44,13 @@
   return v3;
 }
 
-- (void)setTopLevelPart:(id)a3
+- (void)setTopLevelPart:(id)part
 {
-  v5 = a3;
+  partCopy = part;
   [(MFIMAPMessageDownload *)self mf_lock];
-  if (self->_topLevelPart != v5)
+  if (self->_topLevelPart != partCopy)
   {
-    objc_storeStrong(&self->_topLevelPart, a3);
+    objc_storeStrong(&self->_topLevelPart, part);
   }
 
   [(MFIMAPMessageDownload *)self mf_unlock];
@@ -66,11 +66,11 @@
 
   [(MFIMAPMessageDownload *)self mf_lock];
   v3 = *(self + 64);
-  v4 = [(MFCollectingDataConsumer *)self->_headerConsumer data];
-  v5 = v4;
+  data = [(MFCollectingDataConsumer *)self->_headerConsumer data];
+  data2 = data;
   if ((v3 & 2) == 0)
   {
-    if (!v4)
+    if (!data)
     {
       v7 = 0;
       goto LABEL_23;
@@ -79,7 +79,7 @@
     Mutable = [(MFCollectingDataConsumer *)self->_textConsumer data];
     if (Mutable)
     {
-      v7 = [v5 mutableCopy];
+      v7 = [data2 mutableCopy];
       [v7 appendData:Mutable];
     }
 
@@ -91,17 +91,17 @@
     goto LABEL_22;
   }
 
-  v7 = [v4 mutableCopy];
+  v7 = [data mutableCopy];
 
-  v5 = [(MFCollectingDataConsumer *)self->_textConsumer data];
-  if (v5)
+  data2 = [(MFCollectingDataConsumer *)self->_textConsumer data];
+  if (data2)
   {
     if (!v7)
     {
       v7 = [objc_alloc(MEMORY[0x277D24F70]) initWithBytes:"\n" length:1];
     }
 
-    [v7 appendData:v5];
+    [v7 appendData:data2];
     goto LABEL_23;
   }
 
@@ -110,8 +110,8 @@
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     if (v7)
     {
-      v8 = [(MFMimePart *)self->_topLevelPart type];
-      if ([v8 isEqualToString:@"multipart"])
+      type = [(MFMimePart *)self->_topLevelPart type];
+      if ([type isEqualToString:@"multipart"])
       {
         v9 = [(MFMimePart *)self->_topLevelPart bodyParameterForKey:@"boundary"];
 
@@ -161,11 +161,11 @@ LABEL_28:
 - (BOOL)isComplete
 {
   v3 = +[MFActivityMonitor currentMonitor];
-  v4 = [v3 error];
+  error = [v3 error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [v4 mf_shouldFailDownload] ^ 1;
+    v5 = [error mf_shouldFailDownload] ^ 1;
   }
 
   else
@@ -183,11 +183,11 @@ LABEL_28:
   return [(MFIMAPCompoundDownload *)&v7 isComplete]& v5;
 }
 
-- (void)handleFetchResult:(id)a3
+- (void)handleFetchResult:(id)result
 {
-  v7 = a3;
+  resultCopy = result;
   [(MFIMAPMessageDownload *)self mf_lock];
-  if (!self->_topLevelPart && [v7 type] == 6)
+  if (!self->_topLevelPart && [resultCopy type] == 6)
   {
     pendingFetchResults = self->super.super._pendingFetchResults;
     if (!pendingFetchResults)
@@ -199,7 +199,7 @@ LABEL_28:
       pendingFetchResults = self->super.super._pendingFetchResults;
     }
 
-    [(NSMutableArray *)pendingFetchResults addObject:v7];
+    [(NSMutableArray *)pendingFetchResults addObject:resultCopy];
   }
 
   [(MFIMAPMessageDownload *)self mf_unlock];
@@ -220,11 +220,11 @@ LABEL_28:
         goto LABEL_13;
       }
 
-      v7 = [v6 bodyStructure];
-      if (v7)
+      bodyStructure = [v6 bodyStructure];
+      if (bodyStructure)
       {
         v8 = objc_alloc_init(MFMailMimePart);
-        if (([(MFMailMimePart *)v8 parseIMAPPropertyList:v7]& 1) != 0)
+        if (([(MFMailMimePart *)v8 parseIMAPPropertyList:bodyStructure]& 1) != 0)
         {
           if (v8)
           {
@@ -251,10 +251,10 @@ LABEL_13:
   [(MFIMAPMessageDownload *)self mf_unlock];
 }
 
-- (void)addCommandsToPipeline:(id)a3 withCache:(id)a4
+- (void)addCommandsToPipeline:(id)pipeline withCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  pipelineCopy = pipeline;
+  cacheCopy = cache;
   [(MFIMAPMessageDownload *)self mf_lock];
   if ((*(self + 64) & 4) == 0)
   {
@@ -263,8 +263,8 @@ LABEL_13:
     {
       if ((*(self + 64) & 0x40) != 0)
       {
-        v10 = [(MFMessage *)self->_message messageSize];
-        v9 = 2 * (v10 >= [v6 chunkSize]);
+        messageSize = [(MFMessage *)self->_message messageSize];
+        v9 = 2 * (messageSize >= [pipelineCopy chunkSize]);
         goto LABEL_10;
       }
     }
@@ -289,12 +289,12 @@ LABEL_11:
       self->_headerFilter = v13;
     }
 
-    v15 = [v7 downloadForUid:-[MFIMAPDownload uid](self section:"uid") expectedLength:@"HEADER" consumer:{1024, self->_headerFilter}];
+    v15 = [cacheCopy downloadForUid:-[MFIMAPDownload uid](self section:"uid") expectedLength:@"HEADER" consumer:{1024, self->_headerFilter}];
     [(MFIMAPCompoundDownload *)self addSubdownload:v15];
 
     if ((*(self + 64) & 2) != 0)
     {
-      [v6 addFetchCommandForUid:-[MFIMAPDownload uid](self fetchItem:"uid") expectedLength:@"BODYSTRUCTURE" bodyDataConsumer:256 consumerSection:{0, 0}];
+      [pipelineCopy addFetchCommandForUid:-[MFIMAPDownload uid](self fetchItem:"uid") expectedLength:@"BODYSTRUCTURE" bodyDataConsumer:256 consumerSection:{0, 0}];
     }
 
     else
@@ -310,7 +310,7 @@ LABEL_11:
         self->_textFilter = v18;
       }
 
-      v20 = [v7 downloadForUid:-[MFIMAPDownload uid](self section:"uid") expectedLength:@"TEXT" consumer:{-[MFMessage messageSize](self->_message, "messageSize"), self->_textFilter}];
+      v20 = [cacheCopy downloadForUid:-[MFIMAPDownload uid](self section:"uid") expectedLength:@"TEXT" consumer:{-[MFMessage messageSize](self->_message, "messageSize"), self->_textFilter}];
       [(MFIMAPCompoundDownload *)self addSubdownload:v20];
 
       *(self + 64) |= 8u;
@@ -329,13 +329,13 @@ LABEL_11:
 LABEL_19:
   v21.receiver = self;
   v21.super_class = MFIMAPMessageDownload;
-  [(MFIMAPCompoundDownload *)&v21 addCommandsToPipeline:v6 withCache:v7];
+  [(MFIMAPCompoundDownload *)&v21 addCommandsToPipeline:pipelineCopy withCache:cacheCopy];
   [(MFIMAPMessageDownload *)self mf_unlock];
 }
 
-- (void)setFetchBodyData:(BOOL)a3
+- (void)setFetchBodyData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 64;
   }

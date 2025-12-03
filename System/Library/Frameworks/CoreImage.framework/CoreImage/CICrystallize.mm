@@ -33,7 +33,7 @@
       y = v24.origin.y;
       width = v24.size.width;
       height = v24.size.height;
-      v16 = [(CICrystallize *)self _CICrystallize];
+      _CICrystallize = [(CICrystallize *)self _CICrystallize];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __28__CICrystallize_outputImage__block_invoke;
@@ -42,7 +42,7 @@
       *&v19 = v6;
       v20[2] = [CIVector vectorWithX:v6 Y:1.0 / v6, MEMORY[0x1E69E9820], 3221225472, __28__CICrystallize_outputImage__block_invoke, &__block_descriptor_36_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l, v19, inputImage, v11];
       v20[3] = v10;
-      return [v16 applyWithExtent:v18 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 4), x, y, width, height}];
+      return [_CICrystallize applyWithExtent:v18 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 4), x, y, width, height}];
     }
 
     else

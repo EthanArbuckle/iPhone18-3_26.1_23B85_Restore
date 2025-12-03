@@ -1,22 +1,22 @@
 @interface BKLibraryAssetPostProcessor
-- (BKLibraryAssetPostProcessor)initWithLibraryManager:(id)a3;
-- (id)_libraryAssetsForPostProcessingInManagedObjectContext:(id)a3;
+- (BKLibraryAssetPostProcessor)initWithLibraryManager:(id)manager;
+- (id)_libraryAssetsForPostProcessingInManagedObjectContext:(id)context;
 - (void)_postProcess;
-- (void)_postProcessExplicitFlagForProductProfiles:(id)a3;
+- (void)_postProcessExplicitFlagForProductProfiles:(id)profiles;
 - (void)dealloc;
-- (void)ownershipDidChange:(id)a3;
+- (void)ownershipDidChange:(id)change;
 @end
 
 @implementation BKLibraryAssetPostProcessor
 
-- (BKLibraryAssetPostProcessor)initWithLibraryManager:(id)a3
+- (BKLibraryAssetPostProcessor)initWithLibraryManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = [(BKLibraryAssetPostProcessor *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryManager, a3);
+    objc_storeStrong(&v6->_libraryManager, manager);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.BKLibraryAssetCoverLoader", v8);
     iVarQueue = v7->_iVarQueue;
@@ -52,10 +52,10 @@
   [(BKLibraryAssetPostProcessor *)&v4 dealloc];
 }
 
-- (void)ownershipDidChange:(id)a3
+- (void)ownershipDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"BKLibraryOwnershipAssetsKey"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"BKLibraryOwnershipAssetsKey"];
 
   v14 = 0u;
   v15 = 0u;
@@ -103,35 +103,35 @@
 LABEL_11:
 }
 
-- (void)_postProcessExplicitFlagForProductProfiles:(id)a3
+- (void)_postProcessExplicitFlagForProductProfiles:(id)profiles
 {
-  v4 = a3;
-  v5 = [(BKLibraryAssetPostProcessor *)self libraryManager];
+  profilesCopy = profiles;
+  libraryManager = [(BKLibraryAssetPostProcessor *)self libraryManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4E09C;
   v7[3] = &unk_D58E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBlockOnWorkerQueue:v7];
+  v8 = profilesCopy;
+  selfCopy = self;
+  v6 = profilesCopy;
+  [libraryManager performBlockOnWorkerQueue:v7];
 }
 
 - (void)_postProcess
 {
   kdebug_trace();
-  v3 = [(BKLibraryAssetPostProcessor *)self libraryManager];
+  libraryManager = [(BKLibraryAssetPostProcessor *)self libraryManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_4E440;
   v4[3] = &unk_D56B8;
   v4[4] = self;
-  [v3 performNamed:@"post-processing" workerQueueBlock:v4];
+  [libraryManager performNamed:@"post-processing" workerQueueBlock:v4];
 }
 
-- (id)_libraryAssetsForPostProcessingInManagedObjectContext:(id)a3
+- (id)_libraryAssetsForPostProcessingInManagedObjectContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [NSFetchRequest fetchRequestWithEntityName:@"BKLibraryAsset"];
   v5 = +[BKLibraryManager predicateForLibraryAssetsMissingExplicitContentFlag];
   v6 = +[BKLibraryManager predicateForDownloadableStoreLibraryAssets];
@@ -144,7 +144,7 @@ LABEL_11:
   [v4 setResultType:2];
   [v4 setPropertiesToFetch:&off_DE228];
   v11 = 0;
-  v9 = [v3 executeFetchRequest:v4 error:&v11];
+  v9 = [contextCopy executeFetchRequest:v4 error:&v11];
 
   return v9;
 }

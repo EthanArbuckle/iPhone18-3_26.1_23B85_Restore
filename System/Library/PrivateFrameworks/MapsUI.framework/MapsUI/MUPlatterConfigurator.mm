@@ -1,15 +1,15 @@
 @interface MUPlatterConfigurator
-+ (void)configureView:(id)a3;
++ (void)configureView:(id)view;
 @end
 
 @implementation MUPlatterConfigurator
 
-+ (void)configureView:(id)a3
++ (void)configureView:(id)view
 {
-  v3 = a3;
-  [v3 _mapsui_setCardCorner];
+  viewCopy = view;
+  [viewCopy _mapsui_setCardCorner];
   v4 = +[MUInfoCardStyle cardBackgroundColor];
-  [v3 _mapsui_setBackgroundColor:v4];
+  [viewCopy _mapsui_setBackgroundColor:v4];
 }
 
 @end

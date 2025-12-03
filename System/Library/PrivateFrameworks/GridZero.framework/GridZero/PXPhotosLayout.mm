@@ -1,43 +1,43 @@
 @interface PXPhotosLayout
 - (BOOL)_shouldShowSectionedLayout;
 - (BOOL)canScrollToInitialPosition;
-- (BOOL)stackLayout:(id)a3 shouldAlignSublayoutToVisibleTopEdge:(id)a4;
-- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)a3 scrollingVelocity:(CGPoint)a4 decelerationRate:(int64_t *)a5;
+- (BOOL)stackLayout:(id)layout shouldAlignSublayoutToVisibleTopEdge:(id)edge;
+- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)origin scrollingVelocity:(CGPoint)velocity decelerationRate:(int64_t *)rate;
 - (CGPoint)headerTitleOrigin;
-- (CGPoint)visibleOriginForScrollingToNeighboringSectionInDirection:(unint64_t)a3;
+- (CGPoint)visibleOriginForScrollingToNeighboringSectionInDirection:(unint64_t)direction;
 - (CGRect)originalPlacementRect;
 - (CGSize)_headerTitleReferenceSize;
 - (CGSize)_headerTitleSize;
-- (CGSize)contentSizeForProposedContentSize:(CGSize)a3;
+- (CGSize)contentSizeForProposedContentSize:(CGSize)size;
 - (CGSize)headerTitleSize;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (PXFloatRange)bottomCollapsibleArea;
 - (PXFloatRange)topCollapsibleArea;
-- (PXPhotosLayout)initWithViewModel:(id)a3 specManager:(id)a4 overlayController:(id)a5;
+- (PXPhotosLayout)initWithViewModel:(id)model specManager:(id)manager overlayController:(id)controller;
 - (PXPhotosLayoutDelegate)delegate;
 - (PXScrollDetent)detentForInitialScrollPosition;
-- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)a3;
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)sublayout;
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (double)_headerSubtitleLineHeight;
 - (double)_headerTitleLineHeight;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)axSpriteIndexes;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)createAnchorForScrollingToInitialPosition;
 - (id)createCurrentLayoutState;
 - (id)createDefaultAnimationForCurrentContext;
-- (id)dateIntervalFutureForContentInRect:(CGRect)a3 type:(unint64_t)a4;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)itemPlacementControllerForItemReference:(id)a3;
-- (id)locationNamesFutureForContentInRect:(CGRect)a3;
-- (id)placementInContext:(id)a3 forItemReference:(id)a4;
-- (id)regionOfInterestForAssetReference:(id)a3;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)topmostSectionHeaderSnapshotInRect:(CGRect)a3;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (id)dateIntervalFutureForContentInRect:(CGRect)rect type:(unint64_t)type;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)itemPlacementControllerForItemReference:(id)reference;
+- (id)locationNamesFutureForContentInRect:(CGRect)rect;
+- (id)placementInContext:(id)context forItemReference:(id)reference;
+- (id)regionOfInterestForAssetReference:(id)reference;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)topmostSectionHeaderSnapshotInRect:(CGRect)rect;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (unint64_t)fullyVisibleEdgesWithDefaultTolerance;
 - (unsigned)_expectedLocalSpriteCount;
 - (unsigned)_globalBackgroundSpriteIndex;
@@ -47,7 +47,7 @@
 - (void)_invalidateDynamicHeaderTitle;
 - (void)_invalidateFooter;
 - (void)_invalidateGlobalHeaderLayout;
-- (void)_invalidateHeaderAnimated:(BOOL)a3;
+- (void)_invalidateHeaderAnimated:(BOOL)animated;
 - (void)_invalidateHeaderAttributes;
 - (void)_invalidateHeaderMeasurements;
 - (void)_invalidateHeaderMeasurementsForTitleChange;
@@ -59,11 +59,11 @@
 - (void)_invalidateSectionedLayout;
 - (void)_invalidateSectionedLayoutPlacementOverrides;
 - (void)_invalidateTopHeaderLayout;
-- (void)_performPreUpdateInvalidationDeferredIfNeeded:(id)a3;
+- (void)_performPreUpdateInvalidationDeferredIfNeeded:(id)needed;
 - (void)_updateContentBelowTitle;
 - (void)_updateFooter;
 - (void)_updateGlobalHeaderLayout;
-- (void)_updateHeaderAnimated:(BOOL)a3;
+- (void)_updateHeaderAnimated:(BOOL)animated;
 - (void)_updateHeaderAttributes;
 - (void)_updateHeaderFooterAlphaAnimator;
 - (void)_updateHeaderMeasurements;
@@ -77,38 +77,38 @@
 - (void)_updateSectionedLayout;
 - (void)_updateSectionedLayoutPlacementOverrides;
 - (void)_updateTopHeaderLayout;
-- (void)adjustCopiedSprites:(id *)a3;
+- (void)adjustCopiedSprites:(id *)sprites;
 - (void)didUpdate;
 - (void)displayScaleDidChange;
-- (void)enumerateAssetCollectionsInRect:(CGRect)a3 enumerator:(id)a4;
-- (void)enumerateAssetsInRect:(CGRect)a3 enumerator:(id)a4;
-- (void)enumerateItemsGeometriesInRect:(CGRect)a3 dataSource:(id)a4 usingBlock:(id)a5;
-- (void)enumerateScrollablePagesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)hideSpritesForObjectReferences:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)enumerateAssetCollectionsInRect:(CGRect)rect enumerator:(id)enumerator;
+- (void)enumerateAssetsInRect:(CGRect)rect enumerator:(id)enumerator;
+- (void)enumerateItemsGeometriesInRect:(CGRect)rect dataSource:(id)source usingBlock:(id)block;
+- (void)enumerateScrollablePagesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)hideSpritesForObjectReferences:(id)references;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
 - (void)safeAreaInsetsDidChange;
-- (void)setAlignsHeaderTitleWithLayoutMargins:(BOOL)a3;
-- (void)setFooterView:(id)a3;
-- (void)setGlobalHeaderProvider:(id)a3;
-- (void)setHeaderSubtitle:(id)a3;
-- (void)setHeaderSubtitleOverBackgroundAttributes:(id)a3;
-- (void)setHeaderSubtitleOverContentAttributes:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setHeaderTitleBaselineToBottom:(double)a3;
-- (void)setHeaderTitleOrigin:(CGPoint)a3;
-- (void)setHeaderTitleOverBackgroundAttributes:(id)a3;
-- (void)setHeaderTitleOverContentAttributes:(id)a3;
-- (void)setHeaderTitleSize:(CGSize)a3;
-- (void)setHeaderView:(id)a3 animated:(BOOL)a4;
-- (void)setPlacementOverride:(id)a3;
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4;
-- (void)setSectionBodyProvider:(id)a3;
-- (void)setSectionHeaderProvider:(id)a3;
-- (void)setStatusBarHeight:(double)a3;
-- (void)setTitleBackgroundGradientAdditionalCoverage:(double)a3;
-- (void)setTitleBackgroundSpriteHeight:(double)a3;
-- (void)setWantsHeaderInSafeArea:(BOOL)a3;
+- (void)setAlignsHeaderTitleWithLayoutMargins:(BOOL)margins;
+- (void)setFooterView:(id)view;
+- (void)setGlobalHeaderProvider:(id)provider;
+- (void)setHeaderSubtitle:(id)subtitle;
+- (void)setHeaderSubtitleOverBackgroundAttributes:(id)attributes;
+- (void)setHeaderSubtitleOverContentAttributes:(id)attributes;
+- (void)setHeaderTitle:(id)title;
+- (void)setHeaderTitleBaselineToBottom:(double)bottom;
+- (void)setHeaderTitleOrigin:(CGPoint)origin;
+- (void)setHeaderTitleOverBackgroundAttributes:(id)attributes;
+- (void)setHeaderTitleOverContentAttributes:(id)attributes;
+- (void)setHeaderTitleSize:(CGSize)size;
+- (void)setHeaderView:(id)view animated:(BOOL)animated;
+- (void)setPlacementOverride:(id)override;
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference;
+- (void)setSectionBodyProvider:(id)provider;
+- (void)setSectionHeaderProvider:(id)provider;
+- (void)setStatusBarHeight:(double)height;
+- (void)setTitleBackgroundGradientAdditionalCoverage:(double)coverage;
+- (void)setTitleBackgroundSpriteHeight:(double)height;
+- (void)setWantsHeaderInSafeArea:(BOOL)area;
 - (void)update;
 - (void)visibleRectDidChange;
 - (void)willUpdate;
@@ -118,7 +118,7 @@
 
 - (PXScrollDetent)detentForInitialScrollPosition
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21AC112B0();
 
   return v3;
@@ -126,16 +126,16 @@
 
 - (BOOL)canScrollToInitialPosition
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21AC1139C();
 
   return v3 & 1;
 }
 
-- (CGSize)contentSizeForProposedContentSize:(CGSize)a3
+- (CGSize)contentSizeForProposedContentSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = self;
+  width = size.width;
+  selfCopy = self;
   v5 = sub_21AC11460(width);
   v7 = v6;
 
@@ -171,12 +171,12 @@
   return WeakRetained;
 }
 
-- (BOOL)stackLayout:(id)a3 shouldAlignSublayoutToVisibleTopEdge:(id)a4
+- (BOOL)stackLayout:(id)layout shouldAlignSublayoutToVisibleTopEdge:(id)edge
 {
   topHeaderLayout = self->_topHeaderLayout;
   if (topHeaderLayout)
   {
-    v5 = topHeaderLayout == a4;
+    v5 = topHeaderLayout == edge;
   }
 
   else
@@ -187,114 +187,114 @@
   return v5 && self->_topHeaderLayoutShouldFloat;
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(PXPhotosLayout *)self _globalBackgroundSpriteIndex];
-  if (v8 == -1 || v8 != a3)
+  layoutCopy = layout;
+  _globalBackgroundSpriteIndex = [(PXPhotosLayout *)self _globalBackgroundSpriteIndex];
+  if (_globalBackgroundSpriteIndex == -1 || _globalBackgroundSpriteIndex != index)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2143 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2143 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v9 = [(PXPhotosLayout *)self specManager];
-  v10 = [v9 spec];
-  v11 = [v10 contentBackgroundColor];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
+  contentBackgroundColor = [spec contentBackgroundColor];
 
-  return v11;
+  return contentBackgroundColor;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
-  if (v8 == -1 || v8 != a3)
+  layoutCopy = layout;
+  _titleBackgroundSpriteIndex = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
+  if (_titleBackgroundSpriteIndex == -1 || _titleBackgroundSpriteIndex != index)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    v18 = v17;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v18 = currentHandler;
     v19 = a2;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2132;
     goto LABEL_15;
   }
 
-  v9 = [(PXPhotosLayout *)self viewModel];
-  v10 = [v9 navBarStyle];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  navBarStyle = [viewModel navBarStyle];
 
-  if (v10 <= 8)
+  if (navBarStyle <= 8)
   {
-    if (((1 << v10) & 0x60) != 0)
+    if (((1 << navBarStyle) & 0x60) != 0)
     {
-      v13 = [(PXPhotosLayout *)self specManager];
-      v15 = [v13 spec];
-      v14 = [v15 visualEffectViewGroupName];
+      specManager = [(PXPhotosLayout *)self specManager];
+      spec = [specManager spec];
+      visualEffectViewGroupName = [spec visualEffectViewGroupName];
 
       goto LABEL_8;
     }
 
-    if (((1 << v10) & 0x84) != 0)
+    if (((1 << navBarStyle) & 0x84) != 0)
     {
-      v11 = [(PXPhotosLayout *)self specManager];
-      v12 = [v11 spec];
-      v13 = [v12 backgroundGradientImageConfiguration];
+      specManager2 = [(PXPhotosLayout *)self specManager];
+      spec2 = [specManager2 spec];
+      specManager = [spec2 backgroundGradientImageConfiguration];
 
-      v14 = [[PXTitleLegibilityDimmingViewConfiguration alloc] initWithGradientImageConfiguration:v13];
+      visualEffectViewGroupName = [[PXTitleLegibilityDimmingViewConfiguration alloc] initWithGradientImageConfiguration:specManager];
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    v18 = v17;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v18 = currentHandler;
     v19 = a2;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2115;
 LABEL_15:
-    [v17 handleFailureInMethod:v19 object:v20 file:@"PXPhotosLayout.m" lineNumber:v21 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInMethod:v19 object:selfCopy2 file:@"PXPhotosLayout.m" lineNumber:v21 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v14 = 0;
+  visualEffectViewGroupName = 0;
 LABEL_9:
 
-  return v14;
+  return visualEffectViewGroupName;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
-  if (v8 == -1 || v8 != a3)
+  layoutCopy = layout;
+  _titleBackgroundSpriteIndex = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
+  if (_titleBackgroundSpriteIndex == -1 || _titleBackgroundSpriteIndex != index)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    v13 = v12;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v13 = currentHandler;
     v14 = a2;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2101;
     goto LABEL_13;
   }
 
-  v9 = [(PXPhotosLayout *)self viewModel];
-  v10 = [v9 navBarStyle];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  navBarStyle = [viewModel navBarStyle];
 
-  if (v10 <= 8)
+  if (navBarStyle <= 8)
   {
-    if (((1 << v10) & 0x60) != 0 || ((1 << v10) & 0x84) != 0)
+    if (((1 << navBarStyle) & 0x60) != 0 || ((1 << navBarStyle) & 0x84) != 0)
     {
       self = objc_opt_class();
       goto LABEL_7;
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    v13 = v12;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v13 = currentHandler;
     v14 = a2;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2084;
 LABEL_13:
-    [v12 handleFailureInMethod:v14 object:v15 file:@"PXPhotosLayout.m" lineNumber:v16 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInMethod:v14 object:selfCopy2 file:@"PXPhotosLayout.m" lineNumber:v16 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -308,82 +308,82 @@ LABEL_7:
 {
   if (self->_managesHeaderSprites && [(PXPhotosLayout *)self localNumberOfSprites])
   {
-    v2 = [MEMORY[0x277CCAA78] indexSetWithIndex:3];
+    indexSet = [MEMORY[0x277CCAA78] indexSetWithIndex:3];
   }
 
   else
   {
-    v2 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
   }
 
-  return v2;
+  return indexSet;
 }
 
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
-  if (v8 == -1 || v8 != a3)
+  layoutCopy = layout;
+  _titleBackgroundSpriteIndex = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
+  if (_titleBackgroundSpriteIndex == -1 || _titleBackgroundSpriteIndex != index)
   {
-    if (a3 != 2)
+    if (index != 2)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2057 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2057 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v9 = [(PXPhotosLayout *)self specManager];
-    v10 = [v9 spec];
-    v11 = [v10 behindContentBackgroundGradientImageConfiguration];
+    specManager = [(PXPhotosLayout *)self specManager];
+    spec = [specManager spec];
+    behindContentBackgroundGradientImageConfiguration = [spec behindContentBackgroundGradientImageConfiguration];
   }
 
   else
   {
-    v9 = [(PXPhotosLayout *)self specManager];
-    v10 = [v9 spec];
-    v11 = [v10 backgroundGradientImageConfiguration];
+    specManager = [(PXPhotosLayout *)self specManager];
+    spec = [specManager spec];
+    behindContentBackgroundGradientImageConfiguration = [spec backgroundGradientImageConfiguration];
   }
 
-  v12 = v11;
+  v12 = behindContentBackgroundGradientImageConfiguration;
 
   return v12;
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(PXPhotosLayout *)self headerTitle];
-  v9 = [(PXPhotosLayout *)self headerSubtitle];
-  v10 = v9;
+  layoutCopy = layout;
+  headerTitle = [(PXPhotosLayout *)self headerTitle];
+  headerSubtitle = [(PXPhotosLayout *)self headerSubtitle];
+  v10 = headerSubtitle;
   v11 = 0;
-  if (v8 && v9)
+  if (headerTitle && headerSubtitle)
   {
-    if (a3 == 3)
+    if (index == 3)
     {
-      v12 = [(PXPhotosLayout *)self headerTitleOverContentAttributes];
-      v13 = [(PXPhotosLayout *)self headerSubtitleOverContentAttributes];
+      headerTitleOverContentAttributes = [(PXPhotosLayout *)self headerTitleOverContentAttributes];
+      headerSubtitleOverContentAttributes = [(PXPhotosLayout *)self headerSubtitleOverContentAttributes];
     }
 
     else
     {
-      if (a3 != 4)
+      if (index != 4)
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2038 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2038 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
 
-      v12 = [(PXPhotosLayout *)self headerTitleOverBackgroundAttributes];
-      v13 = [(PXPhotosLayout *)self headerSubtitleOverBackgroundAttributes];
+      headerTitleOverContentAttributes = [(PXPhotosLayout *)self headerTitleOverBackgroundAttributes];
+      headerSubtitleOverContentAttributes = [(PXPhotosLayout *)self headerSubtitleOverBackgroundAttributes];
     }
 
-    v14 = v13;
-    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v8 attributes:v12];
+    v14 = headerSubtitleOverContentAttributes;
+    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:headerTitle attributes:headerTitleOverContentAttributes];
     v15 = objc_alloc(MEMORY[0x277CCA898]);
-    v16 = [(PXPhotosLayout *)self headerSubtitle];
-    v17 = [@"\n" stringByAppendingString:v16];
+    headerSubtitle2 = [(PXPhotosLayout *)self headerSubtitle];
+    v17 = [@"\n" stringByAppendingString:headerSubtitle2];
     v18 = [v15 initWithString:v17 attributes:v14];
 
     [v11 appendAttributedString:v18];
@@ -392,7 +392,7 @@ LABEL_7:
   return v11;
 }
 
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = *MEMORY[0x277D73D80];
   v5 = *(MEMORY[0x277D73D80] + 8);
@@ -405,49 +405,49 @@ LABEL_7:
   return result;
 }
 
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (a3 == 4)
+  layoutCopy = layout;
+  if (index == 4)
   {
-    v8 = [(PXPhotosLayout *)self headerTitleOverBackgroundAttributes];
+    headerTitleOverBackgroundAttributes = [(PXPhotosLayout *)self headerTitleOverBackgroundAttributes];
   }
 
   else
   {
-    if (a3 != 3)
+    if (index != 3)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2006 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:2006 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXPhotosLayout *)self headerTitleOverContentAttributes];
+    headerTitleOverBackgroundAttributes = [(PXPhotosLayout *)self headerTitleOverContentAttributes];
   }
 
-  v9 = v8;
+  v9 = headerTitleOverBackgroundAttributes;
 
   return v9;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (a3 - 3 > 1)
+  layoutCopy = layout;
+  if (index - 3 > 1)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1996 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1996 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
-  v9 = [(PXPhotosLayout *)self headerTitle];
-  v10 = v9;
-  if (v9)
+  v8 = layoutCopy;
+  headerTitle = [(PXPhotosLayout *)self headerTitle];
+  v10 = headerTitle;
+  if (headerTitle)
   {
-    v11 = v9;
+    v11 = headerTitle;
   }
 
   else
@@ -460,18 +460,18 @@ LABEL_7:
   return v11;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  v10 = v9;
-  if (ViewModelObservationContext_7497 == a5)
+  observableCopy = observable;
+  v10 = observableCopy;
+  if (ViewModelObservationContext_7497 == context)
   {
-    if (a4)
+    if (change)
     {
-      v11 = [(PXPhotosLayout *)self viewModel];
-      v12 = [v11 wantsDynamicTitles];
+      viewModel = [(PXPhotosLayout *)self viewModel];
+      wantsDynamicTitles = [viewModel wantsDynamicTitles];
 
-      if (v12)
+      if (wantsDynamicTitles)
       {
         [(PXPhotosLayout *)self _invalidateDynamicHeaderTitle];
       }
@@ -492,10 +492,10 @@ LABEL_7:
       v26[3] = &unk_278298DE8;
       v26[4] = self;
       [(PXPhotosLayout *)self _performPreUpdateInvalidationDeferredIfNeeded:v26];
-      if ((a4 & 0x4000) == 0)
+      if ((change & 0x4000) == 0)
       {
 LABEL_12:
-        if ((a4 & 4) == 0)
+        if ((change & 4) == 0)
         {
           goto LABEL_13;
         }
@@ -504,16 +504,16 @@ LABEL_12:
       }
     }
 
-    else if ((a4 & 0x4000) == 0)
+    else if ((change & 0x4000) == 0)
     {
       goto LABEL_12;
     }
 
     [(PXPhotosLayout *)self _invalidateSectionedLayout];
-    if ((a4 & 4) == 0)
+    if ((change & 4) == 0)
     {
 LABEL_13:
-      if ((a4 & 0x100000000) == 0)
+      if ((change & 0x100000000) == 0)
       {
         goto LABEL_14;
       }
@@ -523,10 +523,10 @@ LABEL_13:
 
 LABEL_48:
     [(PXPhotosLayout *)self _invalidateTopHeaderLayout];
-    if ((a4 & 0x100000000) == 0)
+    if ((change & 0x100000000) == 0)
     {
 LABEL_14:
-      if ((a4 & 0x800000000) == 0)
+      if ((change & 0x800000000) == 0)
       {
         goto LABEL_15;
       }
@@ -538,10 +538,10 @@ LABEL_49:
     [(PXGStackLayout *)self invalidateAdditionalSafeAreaInsets];
     [(PXPhotosLayout *)self _invalidateLocalSprites];
     [(PXPhotosLayout *)self _invalidateLocalSpritesAlpha];
-    if ((a4 & 0x800000000) == 0)
+    if ((change & 0x800000000) == 0)
     {
 LABEL_15:
-      if ((a4 & 0x40) == 0)
+      if ((change & 0x40) == 0)
       {
         goto LABEL_16;
       }
@@ -551,10 +551,10 @@ LABEL_15:
 
 LABEL_50:
     [(PXPhotosLayout *)self _invalidateLocalSpritesAlpha];
-    if ((a4 & 0x40) == 0)
+    if ((change & 0x40) == 0)
     {
 LABEL_16:
-      if ((a4 & 0x20000000) == 0)
+      if ((change & 0x20000000) == 0)
       {
         goto LABEL_18;
       }
@@ -564,30 +564,30 @@ LABEL_16:
 
 LABEL_51:
     [(PXPhotosLayout *)self clearLastVisibleAreaAnchoringInformation];
-    if ((a4 & 0x20000000) == 0)
+    if ((change & 0x20000000) == 0)
     {
 LABEL_18:
-      if ((a4 & 0x80002000) != 0)
+      if ((change & 0x80002000) != 0)
       {
         [(PXPhotosLayout *)self _invalidateLocalSpritesAlpha];
       }
 
-      if ((a4 & 0x1001000) != 0)
+      if ((change & 0x1001000) != 0)
       {
         [(PXPhotosLayout *)self _invalidateLocalSprites];
       }
 
-      if ((a4 & 0x400000000) != 0)
+      if ((change & 0x400000000) != 0)
       {
         v13 = [(PXPhotosLayout *)self createFenceWithType:3];
         [v13 setTimeout:0.5];
 
         [(PXPhotosLayout *)self _invalidateFooter];
         [(PXPhotosLayout *)self _invalidateSectionedLayout];
-        if ((a4 & 0x100000000000) == 0)
+        if ((change & 0x100000000000) == 0)
         {
 LABEL_24:
-          if ((a4 & 0x20000000000000) == 0)
+          if ((change & 0x20000000000000) == 0)
           {
             goto LABEL_25;
           }
@@ -596,7 +596,7 @@ LABEL_24:
         }
       }
 
-      else if ((a4 & 0x100000000000) == 0)
+      else if ((change & 0x100000000000) == 0)
       {
         goto LABEL_24;
       }
@@ -605,10 +605,10 @@ LABEL_24:
       [(PXPhotosLayout *)self _invalidateSectionedLayout];
       [(PXPhotosLayout *)self _invalidateScrollDetentAnchor];
       [(PXPhotosLayout *)self _invalidateContentBelowTitle];
-      if ((a4 & 0x20000000000000) == 0)
+      if ((change & 0x20000000000000) == 0)
       {
 LABEL_25:
-        if ((a4 & 0x40000000000000) == 0)
+        if ((change & 0x40000000000000) == 0)
         {
           goto LABEL_26;
         }
@@ -618,10 +618,10 @@ LABEL_25:
 
 LABEL_34:
       [(PXPhotosLayout *)self _invalidateLocalSpritesAlpha];
-      if ((a4 & 0x40000000000000) == 0)
+      if ((change & 0x40000000000000) == 0)
       {
 LABEL_26:
-        if ((a4 & 0x400000000000) == 0)
+        if ((change & 0x400000000000) == 0)
         {
           goto LABEL_62;
         }
@@ -631,7 +631,7 @@ LABEL_26:
 
 LABEL_35:
       [(PXPhotosLayout *)self _invalidateLocalSprites];
-      if ((a4 & 0x400000000000) == 0)
+      if ((change & 0x400000000000) == 0)
       {
         goto LABEL_62;
       }
@@ -646,9 +646,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (SpecManagerObservationContext == a5)
+  if (SpecManagerObservationContext == context)
   {
-    if (a4)
+    if (change)
     {
       [(PXPhotosLayout *)self _invalidateHeaderAttributes];
       [(PXPhotosLayout *)self _invalidateHeaderMeasurements];
@@ -663,14 +663,14 @@ LABEL_17:
     goto LABEL_62;
   }
 
-  if (AlternateAppearanceMixAnimatorObservationContext == a5)
+  if (AlternateAppearanceMixAnimatorObservationContext == context)
   {
-    if ((a4 & 2) == 0)
+    if ((change & 2) == 0)
     {
       goto LABEL_62;
     }
 
-    v14 = v9;
+    v14 = observableCopy;
     if (v14)
     {
       objc_opt_class();
@@ -679,19 +679,19 @@ LABEL_17:
         goto LABEL_40;
       }
 
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v18 = objc_opt_class();
       v17 = NSStringFromClass(v18);
-      v19 = [v14 px_descriptionForAssertionMessage];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1959 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v17, v19}];
+      px_descriptionForAssertionMessage = [v14 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1959 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v17, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1959 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v17}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1959 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v17}];
     }
 
 LABEL_40:
@@ -703,14 +703,14 @@ LABEL_40:
     goto LABEL_58;
   }
 
-  if (HeaderFooterAlphaAnimatorObservationContext == a5)
+  if (HeaderFooterAlphaAnimatorObservationContext == context)
   {
-    if ((a4 & 2) == 0)
+    if ((change & 2) == 0)
     {
       goto LABEL_62;
     }
 
-    v14 = v9;
+    v14 = observableCopy;
     if (v14)
     {
       objc_opt_class();
@@ -719,19 +719,19 @@ LABEL_40:
         goto LABEL_56;
       }
 
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v23 = objc_opt_class();
       v22 = NSStringFromClass(v23);
-      v24 = [v14 px_descriptionForAssertionMessage];
-      [v20 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1966 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v22, v24}];
+      px_descriptionForAssertionMessage2 = [v14 px_descriptionForAssertionMessage];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1966 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v22, px_descriptionForAssertionMessage2}];
     }
 
     else
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      [v20 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1966 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v22}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1966 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v22}];
     }
 
 LABEL_56:
@@ -747,22 +747,22 @@ LABEL_58:
     goto LABEL_62;
   }
 
-  if (HeaderCustomizationModelObservationContext != a5)
+  if (HeaderCustomizationModelObservationContext != context)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1986 description:@"Code which should be unreachable has been reached"];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1986 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (a4)
+  if (change)
   {
     [(PXGStackLayout *)self invalidateAdditionalSafeAreaInsets];
     [(PXPhotosLayout *)self _invalidateHeaderOrigin];
-    if ((a4 & 2) == 0)
+    if ((change & 2) == 0)
     {
 LABEL_8:
-      if ((a4 & 4) == 0)
+      if ((change & 4) == 0)
       {
         goto LABEL_62;
       }
@@ -771,13 +771,13 @@ LABEL_8:
     }
   }
 
-  else if ((a4 & 2) == 0)
+  else if ((change & 2) == 0)
   {
     goto LABEL_8;
   }
 
   [(PXPhotosLayout *)self _invalidateLocalSprites];
-  if ((a4 & 4) != 0)
+  if ((change & 4) != 0)
   {
 LABEL_61:
     [(PXPhotosLayout *)self _invalidateHeaderAnimated:0];
@@ -787,10 +787,10 @@ LABEL_61:
 LABEL_62:
 }
 
-- (void)_performPreUpdateInvalidationDeferredIfNeeded:(id)a3
+- (void)_performPreUpdateInvalidationDeferredIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (self->_isUpdatingSublayouts)
   {
     objc_initWeak(&location, self);
@@ -808,7 +808,7 @@ LABEL_62:
 
   else
   {
-    (*(v4 + 2))(v4, self);
+    (*(neededCopy + 2))(neededCopy, self);
   }
 }
 
@@ -823,29 +823,29 @@ void __64__PXPhotosLayout__performPreUpdateInvalidationDeferredIfNeeded___block_
 {
   if (self->_headerProviderRespondsTo.topHeaderLayoutDidChangeDataSource && self->_topHeaderLayout)
   {
-    v6 = [(PXPhotosLayout *)self sectionHeaderProvider];
+    sectionHeaderProvider = [(PXPhotosLayout *)self sectionHeaderProvider];
     topHeaderLayout = self->_topHeaderLayout;
-    v4 = [(PXPhotosLayout *)self viewModel];
-    v5 = [v4 currentDataSource];
-    [v6 topHeaderLayout:topHeaderLayout didChangeDataSource:v5];
+    viewModel = [(PXPhotosLayout *)self viewModel];
+    currentDataSource = [viewModel currentDataSource];
+    [sectionHeaderProvider topHeaderLayout:topHeaderLayout didChangeDataSource:currentDataSource];
   }
 }
 
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotosLayout *)self viewModel];
-  v9 = [v8 currentDataSource];
-  v10 = [v9 containerCollection];
-  v11 = [v7 isEqual:v10];
+  overrideCopy = override;
+  referenceCopy = reference;
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
+  v11 = [referenceCopy isEqual:containerCollection];
 
   if (v11)
   {
-    if ([v6 hasGeometry])
+    if ([overrideCopy hasGeometry])
     {
-      v12 = v6;
+      v12 = overrideCopy;
     }
 
     else
@@ -854,7 +854,7 @@ void __64__PXPhotosLayout__performPreUpdateInvalidationDeferredIfNeeded___block_
     }
 
     [(PXPhotosLayout *)self setPlacementOverride:v12];
-    [(PXPhotosLayout *)self setDetailedPlacementOverride:v6 forItemReference:v7];
+    [(PXPhotosLayout *)self setDetailedPlacementOverride:overrideCopy forItemReference:referenceCopy];
   }
 
   else
@@ -863,21 +863,21 @@ void __64__PXPhotosLayout__performPreUpdateInvalidationDeferredIfNeeded___block_
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v7;
+      v15 = referenceCopy;
       _os_log_error_impl(&dword_21ABF3000, v13, OS_LOG_TYPE_ERROR, "unexpected itemReference %@", &v14, 0xCu);
     }
   }
 }
 
-- (id)placementInContext:(id)a3 forItemReference:(id)a4
+- (id)placementInContext:(id)context forItemReference:(id)reference
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotosLayout *)self viewModel];
-  v9 = [v8 currentDataSource];
-  v10 = [v9 containerCollection];
-  v11 = [v7 isEqual:v10];
+  contextCopy = context;
+  referenceCopy = reference;
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
+  v11 = [referenceCopy isEqual:containerCollection];
 
   if (v11)
   {
@@ -887,7 +887,7 @@ void __64__PXPhotosLayout__performPreUpdateInvalidationDeferredIfNeeded___block_
     v16[2] = __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke;
     v16[3] = &unk_278298D98;
     v16[4] = self;
-    v13 = [v12 initWithContext:v6 configuration:v16];
+    v13 = [v12 initWithContext:contextCopy configuration:v16];
   }
 
   else
@@ -896,7 +896,7 @@ void __64__PXPhotosLayout__performPreUpdateInvalidationDeferredIfNeeded___block_
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v7;
+      v18 = referenceCopy;
       _os_log_error_impl(&dword_21ABF3000, v14, OS_LOG_TYPE_ERROR, "unexpected itemReference %@", buf, 0xCu);
     }
 
@@ -921,39 +921,39 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
   [v8 setCornerRadius:{v4, v5, v6, v7}];
 }
 
-- (id)itemPlacementControllerForItemReference:(id)a3
+- (id)itemPlacementControllerForItemReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXPhotosLayout *)self viewModel];
-  v6 = [v5 currentDataSource];
-  v7 = [v6 containerCollection];
-  v8 = [v4 isEqual:v7];
+  referenceCopy = reference;
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
+  v8 = [referenceCopy isEqual:containerCollection];
 
   if (v8)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x277D73CD0]) initWithOriginalItemPlacementController:self originalItemReference:v4];
+    selfCopy = [objc_alloc(MEMORY[0x277D73CD0]) initWithOriginalItemPlacementController:self originalItemReference:referenceCopy];
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)a3
+- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)sublayout
 {
-  v4 = a3;
+  sublayoutCopy = sublayout;
   v5 = MEMORY[0x277D3CF90];
-  v6 = [(PXPhotosLayout *)self headerCustomizationModel];
-  [v6 verticalVisibilityOffset];
+  headerCustomizationModel = [(PXPhotosLayout *)self headerCustomizationModel];
+  [headerCustomizationModel verticalVisibilityOffset];
   v8 = v7;
 
-  v9 = [(PXPhotosLayout *)self viewModel];
-  [v9 floatingTitleOpacity];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  [viewModel floatingTitleOpacity];
   v11 = v10;
 
   if (v11 == 1.0)
@@ -974,11 +974,11 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
   v17 = v5[2];
   v18 = v5[3];
   topHeaderLayout = self->_topHeaderLayout;
-  if (topHeaderLayout != v4)
+  if (topHeaderLayout != sublayoutCopy)
   {
     if (topHeaderLayout)
     {
-      v20 = self->_globalHeaderLayout == v4;
+      v20 = self->_globalHeaderLayout == sublayoutCopy;
     }
 
     else
@@ -1004,26 +1004,26 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
   return result;
 }
 
-- (void)adjustCopiedSprites:(id *)a3
+- (void)adjustCopiedSprites:(id *)sprites
 {
   v21.receiver = self;
   v21.super_class = PXPhotosLayout;
-  v5 = *&a3->var2;
-  v19[0] = *&a3->var0;
+  v5 = *&sprites->var2;
+  v19[0] = *&sprites->var0;
   v19[1] = v5;
-  var4 = a3->var4;
+  var4 = sprites->var4;
   [(PXPhotosLayout *)&v21 adjustCopiedSprites:v19];
-  v6 = [(PXPhotosLayout *)self placementOverride];
-  v7 = v6;
-  if (v6)
+  placementOverride = [(PXPhotosLayout *)self placementOverride];
+  v7 = placementOverride;
+  if (placementOverride)
   {
-    [v6 alpha];
-    var0 = a3->var0;
+    [placementOverride alpha];
+    var0 = sprites->var0;
     if (var0)
     {
       v10 = 0;
       v11 = 40 * var0;
-      v12 = a3->var4 + 1;
+      v12 = sprites->var4 + 1;
       do
       {
         v13 = v12[v10];
@@ -1031,7 +1031,7 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
         v15 = (1 << v13) & 0x1DFB;
         if (!v14 && v15 != 0)
         {
-          var3 = a3->var3;
+          var3 = sprites->var3;
           v18 = v8 * *(var3 + v10);
           *(var3 + v10) = v18;
         }
@@ -1044,14 +1044,14 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
   }
 }
 
-- (void)hideSpritesForObjectReferences:(id)a3
+- (void)hideSpritesForObjectReferences:(id)references
 {
   v9.receiver = self;
   v9.super_class = PXPhotosLayout;
-  [(PXPhotosLayout *)&v9 hideSpritesForObjectReferences:a3];
-  v4 = [(PXPhotosLayout *)self pendingHideAnimationType];
+  [(PXPhotosLayout *)&v9 hideSpritesForObjectReferences:references];
+  pendingHideAnimationType = [(PXPhotosLayout *)self pendingHideAnimationType];
   [(PXPhotosLayout *)self setPendingHideAnimationType:0];
-  v5 = [PXPhotosGridHideAssetAnimationHelper createDecorationAnimationsForLayout:self animationType:v4];
+  v5 = [PXPhotosGridHideAssetAnimationHelper createDecorationAnimationsForLayout:self animationType:pendingHideAnimationType];
   if ([v5 count])
   {
     v6 = 1;
@@ -1059,7 +1059,7 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
 
   else
   {
-    v6 = v4 == 0;
+    v6 = pendingHideAnimationType == 0;
   }
 
   if (!v6)
@@ -1075,40 +1075,40 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
 
 - (id)createDefaultAnimationForCurrentContext
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  if ([v3 isAppearing])
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  if ([viewModel isAppearing])
   {
     v4 = 0;
   }
 
   else
   {
-    if ([v3 isEmbedded])
+    if ([viewModel isEmbedded])
     {
       v12.receiver = self;
       v12.super_class = PXPhotosLayout;
-      v5 = [(PXPhotosLayout *)&v12 createDefaultAnimationForCurrentContext];
-      v6 = +[PXPhotosGridSettings sharedInstance];
-      [v6 defaultAnimationDuration];
-      [v5 setDuration:?];
+      createDefaultAnimationForCurrentContext = [(PXPhotosLayout *)&v12 createDefaultAnimationForCurrentContext];
+      animationProvider = +[PXPhotosGridSettings sharedInstance];
+      [animationProvider defaultAnimationDuration];
+      [createDefaultAnimationForCurrentContext setDuration:?];
     }
 
     else
     {
-      v6 = [(PXPhotosLayout *)self animationProvider];
-      v7 = [(PXPhotosLayout *)self presentedLayoutState];
-      v8 = [(PXPhotosLayout *)self createCurrentLayoutState];
-      v5 = [v6 createAnimationForLayout:self presentedLayoutState:v7 targetLayoutState:v8];
+      animationProvider = [(PXPhotosLayout *)self animationProvider];
+      presentedLayoutState = [(PXPhotosLayout *)self presentedLayoutState];
+      createCurrentLayoutState = [(PXPhotosLayout *)self createCurrentLayoutState];
+      createDefaultAnimationForCurrentContext = [animationProvider createAnimationForLayout:self presentedLayoutState:presentedLayoutState targetLayoutState:createCurrentLayoutState];
     }
 
-    v9 = [(PXPhotosLayout *)self delegate];
-    v10 = v9;
-    if (v5 && v9)
+    delegate = [(PXPhotosLayout *)self delegate];
+    v10 = delegate;
+    if (createDefaultAnimationForCurrentContext && delegate)
     {
-      v4 = [v9 photosLayout:self animationForProposedAnimation:v5];
-      if (v5 != v4)
+      v4 = [delegate photosLayout:self animationForProposedAnimation:createDefaultAnimationForCurrentContext];
+      if (createDefaultAnimationForCurrentContext != v4)
       {
-        [(PXPhotosLayout *)self removeAnimation:v5];
+        [(PXPhotosLayout *)self removeAnimation:createDefaultAnimationForCurrentContext];
         if (v4)
         {
           [(PXPhotosLayout *)self addAnimation:v4];
@@ -1118,7 +1118,7 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
 
     else
     {
-      v4 = v5;
+      v4 = createDefaultAnimationForCurrentContext;
     }
   }
 
@@ -1168,57 +1168,57 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
   [(PXPhotosLayout *)self _invalidateContentBelowTitle];
   [(PXPhotosLayout *)self _invalidateLocalSprites];
   [(PXPhotosLayout *)self _invalidateHeaderOrigin];
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [v3 wantsDynamicTitles];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  wantsDynamicTitles = [viewModel wantsDynamicTitles];
 
-  if (v4)
+  if (wantsDynamicTitles)
   {
     [(PXPhotosLayout *)self _invalidateDynamicHeaderTitle];
   }
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
   v26.receiver = self;
   v26.super_class = PXPhotosLayout;
-  v4 = [(PXPhotosLayout *)&v26 hitTestResultForSpriteIndex:*&a3];
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D73D50]];
+  v4 = [(PXPhotosLayout *)&v26 hitTestResultForSpriteIndex:*&index];
+  identifier = [v4 identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x277D73D50]];
 
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x277D73CA8]);
-    v8 = [v4 spriteReference];
-    v9 = [v4 layout];
-    v10 = [v4 userData];
-    v11 = [v7 initWithSpriteReference:v8 layout:v9 identifier:@"PXPhotosLayoutHitTestIdentifierAsset" userData:v10];
+    spriteReference = [v4 spriteReference];
+    layout = [v4 layout];
+    userData = [v4 userData];
+    v11 = [v7 initWithSpriteReference:spriteReference layout:layout identifier:@"PXPhotosLayoutHitTestIdentifierAsset" userData:userData];
 
-    v4 = v10;
+    v4 = userData;
   }
 
   else
   {
-    v12 = [v4 identifier];
-    v13 = [v12 isEqualToString:*MEMORY[0x277D73D48]];
+    identifier2 = [v4 identifier];
+    v13 = [identifier2 isEqualToString:*MEMORY[0x277D73D48]];
 
     if (v13)
     {
       v14 = objc_alloc(MEMORY[0x277D73CA8]);
-      v8 = [v4 spriteReference];
-      v9 = [v4 layout];
+      spriteReference = [v4 spriteReference];
+      layout = [v4 layout];
       v15 = @"PXPhotosLayoutHitTestIdentifierAccessoryCell";
       v16 = v14;
-      v17 = v8;
-      v18 = v9;
+      v17 = spriteReference;
+      v18 = layout;
       v19 = 0;
     }
 
     else
     {
-      v20 = [(PXPhotosLayout *)self overlayController];
-      v21 = [v4 spriteReference];
-      v22 = [v21 objectReference];
-      v23 = [v20 canHandleObjectReference:v22];
+      overlayController = [(PXPhotosLayout *)self overlayController];
+      spriteReference2 = [v4 spriteReference];
+      objectReference = [spriteReference2 objectReference];
+      v23 = [overlayController canHandleObjectReference:objectReference];
 
       if (!v23)
       {
@@ -1226,12 +1226,12 @@ void __54__PXPhotosLayout_placementInContext_forItemReference___block_invoke(uin
       }
 
       v24 = objc_alloc(MEMORY[0x277D73CA8]);
-      v8 = [v4 spriteReference];
-      v9 = [v4 layout];
+      spriteReference = [v4 spriteReference];
+      layout = [v4 layout];
       v15 = @"PXPhotosLayoutHitTestIdentifierOverlayItem";
       v16 = v24;
-      v17 = v8;
-      v18 = v9;
+      v17 = spriteReference;
+      v18 = layout;
       v19 = v4;
     }
 
@@ -1244,20 +1244,20 @@ LABEL_9:
   return v4;
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
-  *a5 = v8;
+  referenceCopy = reference;
+  *objectReference = referenceCopy;
   if ([(PXPhotosLayout *)self _shouldShowSectionedLayout])
   {
     if (!self->_sectionedLayout)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1645 description:{@"missing _sectionedLayout in %@", self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1645 description:{@"missing _sectionedLayout in %@", self}];
     }
 
-    v9 = [(PXPhotosLayout *)self sublayoutDataStore];
-    v10 = [v9 indexOfSublayout:self->_sectionedLayout];
+    sublayoutDataStore = [(PXPhotosLayout *)self sublayoutDataStore];
+    v10 = [sublayoutDataStore indexOfSublayout:self->_sectionedLayout];
   }
 
   else
@@ -1270,15 +1270,15 @@ LABEL_9:
 
 - (void)_updateLocalSpritesAlpha
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [(PXPhotosLayout *)self specManager];
-  v5 = [v4 spec];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
   v6 = +[PXPhotosGridSettings sharedInstance];
-  v7 = [v3 navBarStyle];
-  [v5 contentBackgroundOpacity];
+  navBarStyle = [viewModel navBarStyle];
+  [spec contentBackgroundOpacity];
   v9 = v8;
-  [v3 contentBackgroundOpacity];
+  [viewModel contentBackgroundOpacity];
   if (v9 >= v10)
   {
     v11 = v9;
@@ -1289,12 +1289,12 @@ LABEL_9:
     v11 = v10;
   }
 
-  v12 = [(PXPhotosLayout *)self _globalBackgroundSpriteIndex];
-  v13 = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
-  if ((v7 - 5) <= 1)
+  _globalBackgroundSpriteIndex = [(PXPhotosLayout *)self _globalBackgroundSpriteIndex];
+  _titleBackgroundSpriteIndex = [(PXPhotosLayout *)self _titleBackgroundSpriteIndex];
+  if ((navBarStyle - 5) <= 1)
   {
     v14 = self->_topHeaderLayout == 0;
-    if (([v3 isScrolledToTop] & v14) != 0)
+    if (([viewModel isScrolledToTop] & v14) != 0)
     {
       v15 = 0.0;
     }
@@ -1304,15 +1304,15 @@ LABEL_9:
       v15 = 1.0;
     }
 
-    v16 = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
+    _expectedLocalSpriteCount = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __42__PXPhotosLayout__updateLocalSpritesAlpha__block_invoke;
     v45[3] = &unk_278298D20;
-    v17 = v16 << 32;
+    v17 = _expectedLocalSpriteCount << 32;
     *&v45[5] = v11;
-    v46 = v12;
-    v47 = v13;
+    v46 = _globalBackgroundSpriteIndex;
+    v47 = _titleBackgroundSpriteIndex;
     v48 = v15;
     v45[4] = self;
     v18 = v45;
@@ -1321,9 +1321,9 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  if (v7 == 7)
+  if (navBarStyle == 7)
   {
-    if ([v3 isScrolledToTop])
+    if ([viewModel isScrolledToTop])
     {
       v19 = 0.0;
     }
@@ -1333,24 +1333,24 @@ LABEL_14:
       v19 = 0.65;
     }
 
-    v20 = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
+    _expectedLocalSpriteCount2 = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __42__PXPhotosLayout__updateLocalSpritesAlpha__block_invoke_2;
     v42[3] = &__block_descriptor_40_e101_v40__0__PXGSpriteIndexRange_II_8_______ddd__16____f_________ffff__4f___ffffSCf____4___24____CCfqSC_32l;
-    v17 = v20 << 32;
-    v43 = v13;
+    v17 = _expectedLocalSpriteCount2 << 32;
+    v43 = _titleBackgroundSpriteIndex;
     v44 = v19;
     v18 = v42;
     goto LABEL_14;
   }
 
-  [v3 titleBackgroundOpacity];
+  [viewModel titleBackgroundOpacity];
   v22 = v21;
   [(PXNumberAnimator *)self->_alternateAppearanceMixAnimator presentationValue];
   v24 = v23;
   v25 = 1.0 - v23;
-  if ([v5 userInterfaceStyle] == 2)
+  if ([spec userInterfaceStyle] == 2)
   {
     v26 = 1.0;
   }
@@ -1361,7 +1361,7 @@ LABEL_14:
   }
 
   v27 = 0;
-  if ([v5 userInterfaceStyle] == 2)
+  if ([spec userInterfaceStyle] == 2)
   {
     v28 = 0.0;
   }
@@ -1375,17 +1375,17 @@ LABEL_14:
   v30 = v29;
   if (![(PXPhotosLayout *)self wantsHeaderInSafeArea])
   {
-    v31 = [(PXPhotosLayout *)self viewModel];
-    if ([v31 isInCompactMode])
+    viewModel2 = [(PXPhotosLayout *)self viewModel];
+    if ([viewModel2 isInCompactMode])
     {
       [v6 behindContentBackgroundGradientAlpha];
       v27 = v32;
     }
   }
 
-  if ([v3 wantsFloatingTitle])
+  if ([viewModel wantsFloatingTitle])
   {
-    [v3 floatingTitleOpacity];
+    [viewModel floatingTitleOpacity];
   }
 
   else
@@ -1394,21 +1394,21 @@ LABEL_14:
   }
 
   v34 = v33;
-  v35 = [(PXPhotosLayout *)self headerCustomizationModel];
-  v36 = v35;
-  if (v35)
+  headerCustomizationModel = [(PXPhotosLayout *)self headerCustomizationModel];
+  v36 = headerCustomizationModel;
+  if (headerCustomizationModel)
   {
-    [v35 alpha];
+    [headerCustomizationModel alpha];
     v34 = v34 * v37;
   }
 
-  v38 = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
+  _expectedLocalSpriteCount3 = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __42__PXPhotosLayout__updateLocalSpritesAlpha__block_invoke_3;
   v39[3] = &unk_278298D68;
-  v40 = v12;
-  v41 = v13;
+  v40 = _globalBackgroundSpriteIndex;
+  v41 = _titleBackgroundSpriteIndex;
   *&v39[5] = v11;
   v39[6] = v22;
   *&v39[7] = v24;
@@ -1418,7 +1418,7 @@ LABEL_14:
   *&v39[10] = v34;
   *&v39[11] = v26;
   *&v39[12] = v28;
-  [(PXPhotosLayout *)self modifySpritesInRange:v38 << 32 state:v39];
+  [(PXPhotosLayout *)self modifySpritesInRange:_expectedLocalSpriteCount3 << 32 state:v39];
 
 LABEL_31:
 }
@@ -1507,9 +1507,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_postUpdateFlags.updated & 0x1000000) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateLocalSpritesAlpha]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1570 description:{@"invalidating %lu after it already has been updated", 0x1000000}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1570 description:{@"invalidating %lu after it already has been updated", 0x1000000}];
 
       abort();
     }
@@ -1533,11 +1533,11 @@ LABEL_5:
 
 - (void)_updateLocalSprites
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [(PXPhotosLayout *)self specManager];
-  v5 = [v4 spec];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
-  v6 = [(PXPhotosLayout *)self headerCustomizationModel];
+  headerCustomizationModel = [(PXPhotosLayout *)self headerCustomizationModel];
   [(PXPhotosLayout *)self headerTitleOrigin];
   v8 = v7;
   v10 = v9;
@@ -1551,7 +1551,7 @@ LABEL_5:
   v82 = v16;
   [(PXPhotosLayout *)self visibleRect];
   v18 = v17;
-  [v6 verticalVisibilityOffset];
+  [headerCustomizationModel verticalVisibilityOffset];
   v78 = v19;
   if (v15 >= v13)
   {
@@ -1564,24 +1564,24 @@ LABEL_5:
   }
 
   v80 = v20;
-  v21 = [v3 wantsFloatingTitle];
+  wantsFloatingTitle = [viewModel wantsFloatingTitle];
   v22 = v18;
-  if ((v21 & 1) == 0)
+  if ((wantsFloatingTitle & 1) == 0)
   {
     [(PXPhotosLayout *)self safeAreaInsets];
     v22 = -v23;
   }
 
   v24 = v10 + v22;
-  v25 = [v5 isTV];
+  isTV = [spec isTV];
   v26 = 0.0;
-  if ((v25 & (v24 < 0.0)) == 0)
+  if ((isTV & (v24 < 0.0)) == 0)
   {
     v26 = v24;
   }
 
   v76 = v26;
-  [v6 verticalFloatingOffset];
+  [headerCustomizationModel verticalFloatingOffset];
   v75 = v27;
   [(PXPhotosLayout *)self safeAreaInsets];
   v74 = v28;
@@ -1597,10 +1597,10 @@ LABEL_5:
   v36 = v35;
   v69 = v38;
   v70 = v37;
-  v39 = [(PXPhotosLayout *)self viewModel];
+  viewModel2 = [(PXPhotosLayout *)self viewModel];
   v83 = v8;
   v77 = v32;
-  if ([v39 gridStyle] == 3)
+  if ([viewModel2 gridStyle] == 3)
   {
     sectionedLayout = self->_sectionedLayout;
 
@@ -1620,13 +1620,13 @@ LABEL_5:
       v116 = 0u;
       v108 = &unk_21AC883FE;
       v117 = 0;
-      v42 = [(PXPhotosLayout *)self sublayoutDataStore];
+      sublayoutDataStore = [(PXPhotosLayout *)self sublayoutDataStore];
       v104[0] = MEMORY[0x277D85DD0];
       v104[1] = 3221225472;
       v104[2] = __37__PXPhotosLayout__updateLocalSprites__block_invoke;
       v104[3] = &unk_278298CA8;
       v104[4] = &v105;
-      [v42 enumerateSublayoutGeometriesInRange:v41 options:1 usingBlock:{0, v104}];
+      [sublayoutDataStore enumerateSublayoutGeometriesInRange:v41 options:1 usingBlock:{0, v104}];
 
       v43 = +[PXZoomablePhotosSettings sharedInstance];
       [v43 interitemSpacing];
@@ -1655,7 +1655,7 @@ LABEL_5:
   {
   }
 
-  [v3 contentBackgroundInsets];
+  [viewModel contentBackgroundInsets];
   PXEdgeInsetsInsetRect();
   v71 = v54;
   y = v55;
@@ -1668,9 +1668,9 @@ LABEL_13:
   v87[1] = 3221225472;
   v87[2] = __37__PXPhotosLayout__updateLocalSprites__block_invoke_2;
   v87[3] = &unk_278298CD0;
-  v60 = v3;
+  v60 = viewModel;
   v88 = v60;
-  v89 = self;
+  selfCopy = self;
   v91 = v71;
   v92 = y;
   v93 = width;
@@ -1679,7 +1679,7 @@ LABEL_13:
   v96 = v78 + v18;
   v97 = v81;
   v98 = v74 + v73 + v72;
-  v61 = v5;
+  v61 = spec;
   v90 = v61;
   v103 = v58;
   v99 = v83;
@@ -1716,7 +1716,7 @@ LABEL_13:
     [(PXNumberAnimator *)self->_alternateAppearanceMixAnimator performChangesWithDuration:1 curve:v63 changes:vabdd_f64(v62, v65) * v66];
   }
 
-  v67 = [(PXPhotosLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXPhotosLayout *)self localNumberOfSprites];
   [(PXPhotosLayout *)self alpha];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
@@ -1724,7 +1724,7 @@ LABEL_13:
   v84[3] = &unk_278298CF8;
   v84[4] = self;
   v84[5] = v68;
-  v85 = v67;
+  v85 = localNumberOfSprites;
   [(PXPhotosLayout *)self installLayoutCompletionBlock:v84];
 }
 
@@ -1997,9 +1997,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_postUpdateFlags.updated & 0x800000) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateLocalSprites]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1420 description:{@"invalidating %lu after it already has been updated", 0x800000}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1420 description:{@"invalidating %lu after it already has been updated", 0x800000}];
 
       abort();
     }
@@ -2023,16 +2023,16 @@ LABEL_5:
 
 - (void)_updateContentBelowTitle
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [v3 currentLens];
-  v5 = [v4 ignoresTopSafeAreaInset];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  currentLens = [viewModel currentLens];
+  ignoresTopSafeAreaInset = [currentLens ignoresTopSafeAreaInset];
 
   [(PXPhotosLayout *)self headerTitleBaselineToBottom];
   v7 = v6;
   [(PXPhotosLayout *)self visibleRect];
   v9 = v8;
   [(PXPhotosLayout *)self safeAreaInsets];
-  if (v5)
+  if (ignoresTopSafeAreaInset)
   {
     v11 = v7 + v9 + v10 * 2.0 <= 0.0;
   }
@@ -2043,15 +2043,15 @@ LABEL_5:
   }
 
   v12 = !v11;
-  v13 = [(PXPhotosLayout *)self viewModel];
-  if (v12 != [v13 isContentBelowTitle])
+  viewModel2 = [(PXPhotosLayout *)self viewModel];
+  if (v12 != [viewModel2 isContentBelowTitle])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __42__PXPhotosLayout__updateContentBelowTitle__block_invoke;
     v14[3] = &__block_descriptor_33_e53_v16__0__PXPhotosViewModel_PXMutablePhotosViewModel__8l;
     v15 = v12;
-    [v13 performChanges:v14];
+    [viewModel2 performChanges:v14];
   }
 }
 
@@ -2071,9 +2071,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_postUpdateFlags.updated & 0x200000) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateContentBelowTitle]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1395 description:{@"invalidating %lu after it already has been updated", 0x200000}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1395 description:{@"invalidating %lu after it already has been updated", 0x200000}];
 
       abort();
     }
@@ -2097,14 +2097,14 @@ LABEL_5:
 
 - (void)_updateScrollDetentAnchor
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [v3 lastPreferredScrollDetent];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  lastPreferredScrollDetent = [viewModel lastPreferredScrollDetent];
 
-  if (v4)
+  if (lastPreferredScrollDetent)
   {
-    v5 = [(PXPhotosLayout *)self viewModel];
-    v6 = [v5 lastPreferredScrollDetent];
-    [v6 offset];
+    viewModel2 = [(PXPhotosLayout *)self viewModel];
+    lastPreferredScrollDetent2 = [viewModel2 lastPreferredScrollDetent];
+    [lastPreferredScrollDetent2 offset];
     PXEdgeInsetsMake();
 
     [(PXPhotosLayout *)self safeAreaInsets];
@@ -2114,16 +2114,16 @@ LABEL_5:
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(PXPhotosLayout *)self rootLayout];
-    v16 = [v15 createAnchorForScrollingToContentEdges:1 padding:{v8, v10, v12, v14}];
-    v20 = [v16 autoInvalidate];
+    rootLayout = [(PXPhotosLayout *)self rootLayout];
+    v16 = [rootLayout createAnchorForScrollingToContentEdges:1 padding:{v8, v10, v12, v14}];
+    autoInvalidate = [v16 autoInvalidate];
 
-    v17 = [(PXPhotosLayout *)self activeAnchor];
+    activeAnchor = [(PXPhotosLayout *)self activeAnchor];
 
-    if (!v17)
+    if (!activeAnchor)
     {
-      v18 = [(PXPhotosLayout *)self createAnchorWithAnchor:v20];
-      v19 = [v18 autoInvalidate];
+      v18 = [(PXPhotosLayout *)self createAnchorWithAnchor:autoInvalidate];
+      autoInvalidate2 = [v18 autoInvalidate];
     }
   }
 }
@@ -2144,9 +2144,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x800) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateScrollDetentAnchor]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1380 description:{@"invalidating %lu after it already has been updated", 2048}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1380 description:{@"invalidating %lu after it already has been updated", 2048}];
 
       abort();
     }
@@ -2170,12 +2170,12 @@ LABEL_5:
 
 - (void)_updateLocalSpritesCount
 {
-  v3 = [(PXPhotosLayout *)self localNumberOfSprites];
-  if (v3 != [(PXPhotosLayout *)self _expectedLocalSpriteCount])
+  localNumberOfSprites = [(PXPhotosLayout *)self localNumberOfSprites];
+  if (localNumberOfSprites != [(PXPhotosLayout *)self _expectedLocalSpriteCount])
   {
-    v4 = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
+    _expectedLocalSpriteCount = [(PXPhotosLayout *)self _expectedLocalSpriteCount];
 
-    [(PXPhotosLayout *)self applySpriteChangeDetails:0 countAfterChanges:v4 initialState:&__block_literal_global_85 modifyState:0];
+    [(PXPhotosLayout *)self applySpriteChangeDetails:0 countAfterChanges:_expectedLocalSpriteCount initialState:&__block_literal_global_85 modifyState:0];
   }
 }
 
@@ -2233,9 +2233,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x400) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateLocalSpritesCount]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1366 description:{@"invalidating %lu after it already has been updated", 1024}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1366 description:{@"invalidating %lu after it already has been updated", 1024}];
 
       abort();
     }
@@ -2268,14 +2268,14 @@ LABEL_5:
     v41 = *(MEMORY[0x277D73D60] + 32);
     *&v48.tx = v41;
     v4 = *(MEMORY[0x277D73D60] + 48);
-    v5 = [(PXPhotosLayout *)self placementOverride];
-    v6 = v5;
-    if (v5)
+    placementOverride = [(PXPhotosLayout *)self placementOverride];
+    v6 = placementOverride;
+    if (placementOverride)
     {
-      if (([v5 hasGeometry] & 1) == 0)
+      if (([placementOverride hasGeometry] & 1) == 0)
       {
-        v38 = [MEMORY[0x277CCA890] currentHandler];
-        [v38 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1335 description:{@"Invalid parameter not satisfying: %@", @"placementOverride.hasGeometry"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:1335 description:{@"Invalid parameter not satisfying: %@", @"placementOverride.hasGeometry"}];
       }
 
       [(PXPhotosLayout *)self originalPlacementRect];
@@ -2336,14 +2336,14 @@ LABEL_5:
     [(PXPhotosSectionedLayout *)self->_sectionedLayout setMaskCornerRadius:v32, v33, v34, v35];
     [(PXPhotosSectionedLayout *)self->_sectionedLayout setPlacementOverride:v6];
     v36 = [(PXPhotosLayout *)self indexOfSublayout:self->_sectionedLayout];
-    v37 = [(PXPhotosLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXPhotosLayout *)self sublayoutDataStore];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __58__PXPhotosLayout__updateSectionedLayoutPlacementOverrides__block_invoke;
     v44[3] = &__block_descriptor_88_e93_v40__0q8_____CGSize_dd_dS_CGSize_dd____ddd_____CGAffineTransform_dddddd_d_d_16_____v_v_24_B32l;
     v45 = v48;
     v46 = v4;
-    [v37 enumerateSublayoutGeometriesInRange:v36 options:1 usingBlock:{0, v44}];
+    [sublayoutDataStore enumerateSublayoutGeometriesInRange:v36 options:1 usingBlock:{0, v44}];
   }
 }
 
@@ -2375,9 +2375,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x40) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateSectionedLayoutPlacementOverrides]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1321 description:{@"invalidating %lu after it already has been updated", 64}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1321 description:{@"invalidating %lu after it already has been updated", 64}];
 
       abort();
     }
@@ -2401,9 +2401,9 @@ LABEL_5:
 
 - (void)_updateSectionedLayout
 {
-  v3 = [(PXPhotosLayout *)self _shouldShowSectionedLayout];
+  _shouldShowSectionedLayout = [(PXPhotosLayout *)self _shouldShowSectionedLayout];
   sectionedLayout = self->_sectionedLayout;
-  if (v3)
+  if (_shouldShowSectionedLayout)
   {
     if (sectionedLayout)
     {
@@ -2411,8 +2411,8 @@ LABEL_5:
     }
 
     v5 = [PXPhotosSectionedLayout alloc];
-    v6 = [(PXPhotosLayout *)self viewModel];
-    v7 = [(PXPhotosSectionedLayout *)v5 initWithViewModel:v6];
+    viewModel = [(PXPhotosLayout *)self viewModel];
+    v7 = [(PXPhotosSectionedLayout *)v5 initWithViewModel:viewModel];
     v8 = self->_sectionedLayout;
     self->_sectionedLayout = v7;
 
@@ -2457,31 +2457,31 @@ LABEL_5:
   }
 
 LABEL_13:
-  v12 = [(PXPhotosLayout *)self sectionHeaderProvider];
-  [(PXPhotosSectionedLayout *)self->_sectionedLayout setHeaderLayoutProvider:v12];
+  sectionHeaderProvider = [(PXPhotosLayout *)self sectionHeaderProvider];
+  [(PXPhotosSectionedLayout *)self->_sectionedLayout setHeaderLayoutProvider:sectionHeaderProvider];
 
-  v13 = [(PXPhotosLayout *)self sectionBodyProvider];
-  [(PXPhotosSectionedLayout *)self->_sectionedLayout setBodyLayoutProvider:v13];
+  sectionBodyProvider = [(PXPhotosLayout *)self sectionBodyProvider];
+  [(PXPhotosSectionedLayout *)self->_sectionedLayout setBodyLayoutProvider:sectionBodyProvider];
 
-  v14 = [(PXPhotosLayout *)self specManager];
-  v22 = [v14 spec];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
-  [(PXPhotosSectionedLayout *)self->_sectionedLayout setSpec:v22];
-  v15 = [(PXPhotosLayout *)self viewModel];
-  if ([v15 aspectFitContent])
+  [(PXPhotosSectionedLayout *)self->_sectionedLayout setSpec:spec];
+  viewModel2 = [(PXPhotosLayout *)self viewModel];
+  if ([viewModel2 aspectFitContent])
   {
-    [v22 aspectFitContentVerticalPadding];
+    [spec aspectFitContentVerticalPadding];
   }
 
   else
   {
-    [v22 squareContentVerticalPadding];
+    [spec squareContentVerticalPadding];
   }
 
   if (!self->_headerLayout)
   {
-    v16 = [(PXPhotosLayout *)self globalHeaderProvider];
-    if (v16 || ([(PXPhotosLayout *)self sectionHeaderProvider], (v16 = objc_claimAutoreleasedReturnValue()) != 0) || self->_managesHeaderSprites)
+    globalHeaderProvider = [(PXPhotosLayout *)self globalHeaderProvider];
+    if (globalHeaderProvider || ([(PXPhotosLayout *)self sectionHeaderProvider], (globalHeaderProvider = objc_claimAutoreleasedReturnValue()) != 0) || self->_managesHeaderSprites)
     {
     }
 
@@ -2491,12 +2491,12 @@ LABEL_13:
     }
   }
 
-  v17 = [(PXPhotosLayout *)self specManager];
-  v18 = [v17 gridStyle];
+  specManager2 = [(PXPhotosLayout *)self specManager];
+  gridStyle = [specManager2 gridStyle];
 
-  if (v18 >= 3)
+  if (gridStyle >= 3)
   {
-    if (v18 - 3 >= 2)
+    if (gridStyle - 3 >= 2)
     {
       goto LABEL_24;
     }
@@ -2506,11 +2506,11 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v19 = [(PXPhotosLayout *)self viewModel];
-  v20 = [v19 currentLens];
-  v21 = [v20 ignoresTopSafeAreaInset];
+  viewModel3 = [(PXPhotosLayout *)self viewModel];
+  currentLens = [viewModel3 currentLens];
+  ignoresTopSafeAreaInset = [currentLens ignoresTopSafeAreaInset];
 
-  if (v21)
+  if (ignoresTopSafeAreaInset)
   {
     goto LABEL_26;
   }
@@ -2539,9 +2539,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateSectionedLayout]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1260 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1260 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -2566,15 +2566,15 @@ LABEL_5:
 - (void)_updateFooter
 {
   footerLayout = self->_footerLayout;
-  v4 = [(PXPhotosLayout *)self footerView];
-  if (!v4)
+  footerView = [(PXPhotosLayout *)self footerView];
+  if (!footerView)
   {
     goto LABEL_4;
   }
 
-  v5 = v4;
-  v6 = [(PXPhotosLayout *)self viewModel];
-  if ([v6 contentPrivacyState] == 1)
+  v5 = footerView;
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  if ([viewModel contentPrivacyState] == 1)
   {
 
 LABEL_4:
@@ -2594,8 +2594,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [v6 currentLens];
-  [v9 defaultSectionBodyStyle];
+  currentLens = [viewModel currentLens];
+  [currentLens defaultSectionBodyStyle];
 
   if (!self->_footerLayout)
   {
@@ -2613,8 +2613,8 @@ LABEL_10:
 
   v10 = 1;
 LABEL_11:
-  v13 = [(PXPhotosLayout *)self footerView];
-  [(PXGSingleViewLayout *)self->_footerLayout setContentView:v13];
+  footerView2 = [(PXPhotosLayout *)self footerView];
+  [(PXGSingleViewLayout *)self->_footerLayout setContentView:footerView2];
 
   [(PXNumberAnimator *)self->_headerFooterAlphaAnimator presentationValue];
   [(PXGSingleViewLayout *)self->_footerLayout setAlpha:?];
@@ -2625,17 +2625,17 @@ LABEL_11:
     {
       if (!self->_footerHasAppearedInitially)
       {
-        v14 = [(PXPhotosLayout *)self viewModel];
-        v15 = [v14 hasScrollableContent];
+        viewModel2 = [(PXPhotosLayout *)self viewModel];
+        hasScrollableContent = [viewModel2 hasScrollableContent];
 
-        if ((v15 & 1) == 0)
+        if ((hasScrollableContent & 1) == 0)
         {
-          v16 = [(PXGSingleViewLayout *)self->_footerLayout createAnimation];
+          createAnimation = [(PXGSingleViewLayout *)self->_footerLayout createAnimation];
           v17 = +[PXPhotosGridSettings sharedInstance];
           [v17 defaultAnimationDuration];
-          [v16 setDuration:?];
+          [createAnimation setDuration:?];
 
-          [v16 setScope:1];
+          [createAnimation setScope:1];
         }
       }
 
@@ -2643,9 +2643,9 @@ LABEL_11:
     }
   }
 
-  v20 = [(PXPhotosLayout *)self rootLayout];
-  v18 = [v20 createAnchorForVisibleAreaIgnoringEdges:4];
-  v19 = [v18 autoInvalidate];
+  rootLayout = [(PXPhotosLayout *)self rootLayout];
+  v18 = [rootLayout createAnchorForVisibleAreaIgnoringEdges:4];
+  autoInvalidate = [v18 autoInvalidate];
 }
 
 - (void)_invalidateFooter
@@ -2664,9 +2664,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x80) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateFooter]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1220 description:{@"invalidating %lu after it already has been updated", 128}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1220 description:{@"invalidating %lu after it already has been updated", 128}];
 
       abort();
     }
@@ -2690,8 +2690,8 @@ LABEL_5:
 
 - (void)_updateHeaderFooterAlphaAnimator
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = ([v3 hideSurroundingContent] ^ 1);
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  v4 = ([viewModel hideSurroundingContent] ^ 1);
 
   [(PXNumberAnimator *)self->_headerFooterAlphaAnimator value];
   if (v5 != v4)
@@ -2706,11 +2706,11 @@ LABEL_5:
   }
 }
 
-- (void)_updateHeaderAnimated:(BOOL)a3
+- (void)_updateHeaderAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
-    v4 = [(PXPhotosLayout *)self createDefaultAnimationForCurrentContext];
+    createDefaultAnimationForCurrentContext = [(PXPhotosLayout *)self createDefaultAnimationForCurrentContext];
   }
 
   headerLayout = self->_headerLayout;
@@ -2719,18 +2719,18 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  v8 = [(PXPhotosLayout *)self headerView];
+  headerView = [(PXPhotosLayout *)self headerView];
 
-  if (v8)
+  if (headerView)
   {
     v9 = objc_alloc_init(MEMORY[0x277D73CE8]);
     v10 = self->_headerLayout;
     self->_headerLayout = v9;
 
     [(PXPhotosLayout *)self insertSublayout:self->_headerLayout atIndex:self->_topHeaderLayout != 0];
-    v7 = [(PXPhotosLayout *)self rootLayout];
-    v11 = [v7 createAnchorForVisibleAreaIgnoringEdges:1];
-    v12 = [v11 autoInvalidate];
+    rootLayout = [(PXPhotosLayout *)self rootLayout];
+    v11 = [rootLayout createAnchorForVisibleAreaIgnoringEdges:1];
+    autoInvalidate = [v11 autoInvalidate];
 
 LABEL_8:
     goto LABEL_9;
@@ -2739,31 +2739,31 @@ LABEL_8:
   if (self->_headerLayout)
   {
 LABEL_4:
-    v6 = [(PXPhotosLayout *)self headerView];
+    headerView2 = [(PXPhotosLayout *)self headerView];
 
-    if (v6)
+    if (headerView2)
     {
       goto LABEL_9;
     }
 
     [(PXGSingleViewLayout *)self->_headerLayout removeFromSuperlayout];
-    v7 = self->_headerLayout;
+    rootLayout = self->_headerLayout;
     self->_headerLayout = 0;
     goto LABEL_8;
   }
 
 LABEL_9:
-  v13 = [(PXPhotosLayout *)self headerView];
-  [(PXGSingleViewLayout *)self->_headerLayout setContentView:v13];
+  headerView3 = [(PXPhotosLayout *)self headerView];
+  [(PXGSingleViewLayout *)self->_headerLayout setContentView:headerView3];
 
   [(PXNumberAnimator *)self->_headerFooterAlphaAnimator presentationValue];
   v15 = v14;
-  v16 = [(PXPhotosLayout *)self headerCustomizationModel];
+  headerCustomizationModel = [(PXPhotosLayout *)self headerCustomizationModel];
 
-  if (v16)
+  if (headerCustomizationModel)
   {
-    v17 = [(PXPhotosLayout *)self headerCustomizationModel];
-    [v17 alpha];
+    headerCustomizationModel2 = [(PXPhotosLayout *)self headerCustomizationModel];
+    [headerCustomizationModel2 alpha];
     v15 = v15 * v18;
   }
 
@@ -2775,7 +2775,7 @@ LABEL_9:
   }
 }
 
-- (void)_invalidateHeaderAnimated:(BOOL)a3
+- (void)_invalidateHeaderAnimated:(BOOL)animated
 {
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -2784,7 +2784,7 @@ LABEL_9:
     if (!self->_updateFlags.isPerformingUpdate)
     {
       v6 = 512;
-      if (a3)
+      if (animated)
       {
         v6 = 256;
       }
@@ -2796,7 +2796,7 @@ LABEL_10:
 
 LABEL_7:
     v6 = 512;
-    if (a3)
+    if (animated)
     {
       v6 = 256;
     }
@@ -2804,9 +2804,9 @@ LABEL_7:
     if ((self->_updateFlags.updated & v6) != 0)
     {
       v9 = v6;
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateHeaderAnimated:]"];
-      [v10 handleFailureInFunction:v11 file:@"PXPhotosLayout.m" lineNumber:1178 description:{@"invalidating %lu after it already has been updated", v9}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXPhotosLayout.m" lineNumber:1178 description:{@"invalidating %lu after it already has been updated", v9}];
 
       abort();
     }
@@ -2821,7 +2821,7 @@ LABEL_7:
 
   willPerformUpdate = self->_updateFlags.willPerformUpdate;
   v8 = 512;
-  if (a3)
+  if (animated)
   {
     v8 = 256;
   }
@@ -2836,9 +2836,9 @@ LABEL_7:
 
 - (void)_updateGlobalHeaderLayout
 {
-  v17 = [(PXPhotosLayout *)self viewModel];
-  v3 = [(PXPhotosLayout *)self globalHeaderProvider];
-  v4 = v3;
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  globalHeaderProvider = [(PXPhotosLayout *)self globalHeaderProvider];
+  v4 = globalHeaderProvider;
   globalHeaderLayout = self->_globalHeaderLayout;
   if (globalHeaderLayout)
   {
@@ -2847,16 +2847,16 @@ LABEL_7:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = globalHeaderProvider == 0;
   }
 
   if (!v6)
   {
-    v7 = [(PXPhotosLayout *)self viewModel];
-    v8 = [v17 currentDataSource];
-    v9 = [(PXPhotosLayout *)self specManager];
-    v10 = [v9 spec];
-    v11 = [v4 createGlobalHeaderLayoutForPhotosViewModel:v7 dataSource:v8 spec:v10];
+    viewModel2 = [(PXPhotosLayout *)self viewModel];
+    currentDataSource = [viewModel currentDataSource];
+    specManager = [(PXPhotosLayout *)self specManager];
+    spec = [specManager spec];
+    v11 = [v4 createGlobalHeaderLayoutForPhotosViewModel:viewModel2 dataSource:currentDataSource spec:spec];
     v12 = self->_globalHeaderLayout;
     self->_globalHeaderLayout = v11;
 
@@ -2873,10 +2873,10 @@ LABEL_7:
 
   if (globalHeaderLayout)
   {
-    v14 = [v17 currentDataSource];
-    v15 = [(PXPhotosLayout *)self specManager];
-    v16 = [v15 spec];
-    [v4 configureGlobalHeaderLayout:globalHeaderLayout dataSource:v14 spec:v16];
+    currentDataSource2 = [viewModel currentDataSource];
+    specManager2 = [(PXPhotosLayout *)self specManager];
+    spec2 = [specManager2 spec];
+    [v4 configureGlobalHeaderLayout:globalHeaderLayout dataSource:currentDataSource2 spec:spec2];
   }
 
 LABEL_9:
@@ -2898,9 +2898,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateGlobalHeaderLayout]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1158 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1158 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -2932,13 +2932,13 @@ LABEL_5:
   if (self->_sectionedLayout && self->_headerProviderRespondsTo.createTopHeaderLayoutForDataSource)
   {
     v21 = 0;
-    v13 = [(PXPhotosLayout *)self sectionHeaderProvider];
+    sectionHeaderProvider = [(PXPhotosLayout *)self sectionHeaderProvider];
     sectionedLayout = self->_sectionedLayout;
-    v15 = [(PXPhotosLayout *)self viewModel];
-    v16 = [v15 currentDataSource];
-    v17 = [(PXPhotosLayout *)self specManager];
-    v18 = [v17 spec];
-    v19 = [v13 createTopHeaderLayoutForSectionedLayout:sectionedLayout dataSource:v16 spec:v18 outShouldFloat:&v21];
+    viewModel = [(PXPhotosLayout *)self viewModel];
+    currentDataSource = [viewModel currentDataSource];
+    specManager = [(PXPhotosLayout *)self specManager];
+    spec = [specManager spec];
+    v19 = [sectionHeaderProvider createTopHeaderLayoutForSectionedLayout:sectionedLayout dataSource:currentDataSource spec:spec outShouldFloat:&v21];
     topHeaderLayout = self->_topHeaderLayout;
     self->_topHeaderLayout = v19;
 
@@ -2952,24 +2952,24 @@ LABEL_5:
     if (self->_topHeaderLayout)
     {
 LABEL_2:
-      v3 = [(PXPhotosLayout *)self viewModel];
-      v4 = [v3 selectionSnapshot];
-      [(PXPhotosSectionedLayoutHeader *)self->_topHeaderLayout setSelectionSnapshot:v4];
+      viewModel2 = [(PXPhotosLayout *)self viewModel];
+      selectionSnapshot = [viewModel2 selectionSnapshot];
+      [(PXPhotosSectionedLayoutHeader *)self->_topHeaderLayout setSelectionSnapshot:selectionSnapshot];
 
-      -[PXPhotosSectionedLayoutHeader setIsInSelectMode:](self->_topHeaderLayout, "setIsInSelectMode:", [v3 isInSelectMode]);
-      v5 = [(PXPhotosLayout *)self specManager];
-      v6 = [v5 spec];
-      [(PXPhotosSectionedLayoutHeader *)self->_topHeaderLayout setSpec:v6];
+      -[PXPhotosSectionedLayoutHeader setIsInSelectMode:](self->_topHeaderLayout, "setIsInSelectMode:", [viewModel2 isInSelectMode]);
+      specManager2 = [(PXPhotosLayout *)self specManager];
+      spec2 = [specManager2 spec];
+      [(PXPhotosSectionedLayoutHeader *)self->_topHeaderLayout setSpec:spec2];
 
       if (self->_headerProviderRespondsTo.configureTopHeaderLayout)
       {
-        v7 = [(PXPhotosLayout *)self sectionHeaderProvider];
+        sectionHeaderProvider2 = [(PXPhotosLayout *)self sectionHeaderProvider];
         v8 = self->_topHeaderLayout;
-        v9 = [(PXPhotosLayout *)self viewModel];
-        v10 = [v9 currentDataSource];
-        v11 = [(PXPhotosLayout *)self specManager];
-        v12 = [v11 spec];
-        [v7 configureTopHeaderLayout:v8 dataSource:v10 spec:v12];
+        viewModel3 = [(PXPhotosLayout *)self viewModel];
+        currentDataSource2 = [viewModel3 currentDataSource];
+        specManager3 = [(PXPhotosLayout *)self specManager];
+        spec3 = [specManager3 spec];
+        [sectionHeaderProvider2 configureTopHeaderLayout:v8 dataSource:currentDataSource2 spec:spec3];
       }
     }
   }
@@ -2991,9 +2991,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateTopHeaderLayout]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1131 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1131 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -3019,8 +3019,8 @@ LABEL_5:
 {
   if (self->_managesHeaderSprites || self->_managesOnlyLegibilityGradientSprites)
   {
-    v3 = [(PXPhotosLayout *)self viewModel];
-    if ([v3 wantsDynamicTitles])
+    viewModel = [(PXPhotosLayout *)self viewModel];
+    if ([viewModel wantsDynamicTitles])
     {
       [(PXPhotosLayout *)self _headerTitleReferenceSize];
     }
@@ -3043,8 +3043,8 @@ LABEL_5:
 
     [(PXPhotosLayout *)self setHeaderTitleSize:?];
     [(PXPhotosLayout *)self _updateHeaderOrigin];
-    v7 = [(PXPhotosLayout *)self specManager];
-    v8 = [v7 spec];
+    specManager = [(PXPhotosLayout *)self specManager];
+    spec = [specManager spec];
 
     if (v6 <= 0.0)
     {
@@ -3055,21 +3055,21 @@ LABEL_5:
 
     else
     {
-      v9 = [v8 headerTitleFont];
-      [v9 descender];
+      headerTitleFont = [spec headerTitleFont];
+      [headerTitleFont descender];
       v11 = v6 - v5 + v10;
 
-      [v8 headerTitleBottomSpacing];
+      [spec headerTitleBottomSpacing];
       v13 = v6 + v12;
       [(PXPhotosLayout *)self setHeaderTitleBaselineToBottom:v6 + v12 - v11];
       v14 = 0.0;
       if (v13 > 0.0)
       {
-        v15 = [v8 isTV];
+        isTV = [spec isTV];
         v16 = 0.0;
-        if ((v15 & 1) == 0)
+        if ((isTV & 1) == 0)
         {
-          [v8 headerTitleTopSpacing];
+          [spec headerTitleTopSpacing];
         }
 
         v14 = v13 + v16;
@@ -3094,9 +3094,9 @@ LABEL_5:
     }
 
     [(PXPhotosLayout *)self setTitleBackgroundSpriteHeight:v14];
-    v21 = [v3 navBarStyle];
+    navBarStyle = [viewModel navBarStyle];
     v22 = 0.0;
-    if (v21 <= 7 && ((1 << v21) & 0x8E) != 0)
+    if (navBarStyle <= 7 && ((1 << navBarStyle) & 0x8E) != 0)
     {
       [(PXPhotosLayout *)self safeAreaInsets];
       v24 = v23;
@@ -3116,7 +3116,7 @@ LABEL_5:
     v31[2] = __43__PXPhotosLayout__updateHeaderMeasurements__block_invoke;
     v31[3] = &unk_278298E60;
     v31[4] = self;
-    [v3 performChanges:v31];
+    [viewModel performChanges:v31];
   }
 }
 
@@ -3152,9 +3152,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateHeaderMeasurements]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1080 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:1080 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -3178,10 +3178,10 @@ LABEL_5:
 
 - (void)_invalidateHeaderMeasurementsForTitleChange
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [v3 wantsDynamicTitles];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  wantsDynamicTitles = [viewModel wantsDynamicTitles];
 
-  if ((v4 & 1) == 0)
+  if ((wantsDynamicTitles & 1) == 0)
   {
 
     [(PXPhotosLayout *)self _invalidateHeaderMeasurements];
@@ -3190,28 +3190,28 @@ LABEL_5:
 
 - (void)_updateHeaderOrigin
 {
-  v3 = [(PXPhotosLayout *)self specManager];
-  v32 = [v3 spec];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
-  [v32 headerTitleLeadingSpacing];
+  [spec headerTitleLeadingSpacing];
   v5 = v4;
-  if ([v32 isTV])
+  if ([spec isTV])
   {
     [(PXPhotosLayout *)self visibleRect];
     v6 = 0.0;
     if (v7 >= 0.0)
     {
-      [v32 headerTitleTopSpacing];
+      [spec headerTitleTopSpacing];
       v6 = v8;
     }
   }
 
   else if ([(PXPhotosLayout *)self wantsHeaderInSafeArea])
   {
-    v9 = [(PXPhotosLayout *)self headerCustomizationModel];
-    [v9 verticalVisibilityOffset];
+    headerCustomizationModel = [(PXPhotosLayout *)self headerCustomizationModel];
+    [headerCustomizationModel verticalVisibilityOffset];
     v11 = v10;
-    [v9 verticalFloatingOffset];
+    [headerCustomizationModel verticalFloatingOffset];
     v13 = v11 - v12;
     [(PXPhotosLayout *)self safeAreaInsets];
     v15 = v14 - v13;
@@ -3232,14 +3232,14 @@ LABEL_5:
 
   else
   {
-    v23 = [(PXPhotosLayout *)self viewModel];
+    viewModel = [(PXPhotosLayout *)self viewModel];
     v24 = 0.0;
-    if ([v23 navBarStyle] != 5)
+    if ([viewModel navBarStyle] != 5)
     {
-      v25 = [(PXPhotosLayout *)self viewModel];
-      if ([v25 navBarStyle] != 6 && !-[PXPhotosLayout alignsHeaderTitleWithLayoutMargins](self, "alignsHeaderTitleWithLayoutMargins"))
+      viewModel2 = [(PXPhotosLayout *)self viewModel];
+      if ([viewModel2 navBarStyle] != 6 && !-[PXPhotosLayout alignsHeaderTitleWithLayoutMargins](self, "alignsHeaderTitleWithLayoutMargins"))
       {
-        [v32 headerTitleButtonAlignmentSpacing];
+        [spec headerTitleButtonAlignmentSpacing];
         v24 = v26;
       }
     }
@@ -3248,7 +3248,7 @@ LABEL_5:
 
     [(PXPhotosLayout *)self safeAreaInsets];
     v28 = v27;
-    [v32 headerTitleTopSpacing];
+    [spec headerTitleTopSpacing];
     v6 = v28 + v29;
   }
 
@@ -3271,21 +3271,21 @@ LABEL_5:
   [(PXPhotosLayout *)self _headerTitleReferenceSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXPhotosLayout *)self headerTitleDrawingOptions];
+  headerTitleDrawingOptions = [(PXPhotosLayout *)self headerTitleDrawingOptions];
   v8 = [(PXPhotosLayout *)self attributedStringForSpriteAtIndex:3 inLayout:self];
   v9 = v8;
   if (v8)
   {
-    [v8 boundingRectWithSize:v7 options:0 context:{v4, v6}];
+    [v8 boundingRectWithSize:headerTitleDrawingOptions options:0 context:{v4, v6}];
     v11 = v10;
     v13 = v12;
   }
 
   else
   {
-    v14 = [(PXPhotosLayout *)self headerTitle];
-    v15 = [(PXPhotosLayout *)self headerTitleOverContentAttributes];
-    [v14 boundingRectWithSize:v7 options:v15 attributes:0 context:{v4, v6}];
+    headerTitle = [(PXPhotosLayout *)self headerTitle];
+    headerTitleOverContentAttributes = [(PXPhotosLayout *)self headerTitleOverContentAttributes];
+    [headerTitle boundingRectWithSize:headerTitleDrawingOptions options:headerTitleOverContentAttributes attributes:0 context:{v4, v6}];
     v11 = v16;
     v13 = v17;
   }
@@ -3299,18 +3299,18 @@ LABEL_5:
 
 - (CGSize)_headerTitleReferenceSize
 {
-  v3 = [(PXPhotosLayout *)self specManager];
-  v4 = [v3 spec];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
-  [v4 headerTitleLeadingSpacing];
+  [spec headerTitleLeadingSpacing];
   v6 = v5;
-  [v4 headerTitleButtonAlignmentSpacing];
+  [spec headerTitleButtonAlignmentSpacing];
   v8 = v6 + v7;
   [(PXPhotosLayout *)self referenceSize];
   v10 = v9 + v8 * -2.0;
-  v11 = [(PXPhotosLayout *)self wantsHeaderInSafeArea];
+  wantsHeaderInSafeArea = [(PXPhotosLayout *)self wantsHeaderInSafeArea];
   v12 = 1.0;
-  if (v11)
+  if (wantsHeaderInSafeArea)
   {
     v12 = 1.5;
   }
@@ -3330,14 +3330,14 @@ LABEL_5:
 
 - (double)_headerSubtitleLineHeight
 {
-  v3 = [(PXPhotosLayout *)self specManager];
-  v4 = [v3 spec];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
-  v5 = [v4 headerSubtitleFont];
-  v6 = v5;
-  if (v5)
+  headerSubtitleFont = [spec headerSubtitleFont];
+  v6 = headerSubtitleFont;
+  if (headerSubtitleFont)
   {
-    [v5 lineHeight];
+    [headerSubtitleFont lineHeight];
     v8 = v7;
     [v6 leading];
     v10 = v8 + v9;
@@ -3354,13 +3354,13 @@ LABEL_5:
 
 - (double)_headerTitleLineHeight
 {
-  v2 = [(PXPhotosLayout *)self specManager];
-  v3 = [v2 spec];
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
-  v4 = [v3 headerTitleFont];
-  [v4 lineHeight];
+  headerTitleFont = [spec headerTitleFont];
+  [headerTitleFont lineHeight];
   v6 = v5;
-  [v4 leading];
+  [headerTitleFont leading];
   v8 = v6 + v7;
 
   return v8;
@@ -3370,35 +3370,35 @@ LABEL_5:
 {
   if (self->_managesHeaderSprites || self->_managesOnlyLegibilityGradientSprites)
   {
-    v3 = [(PXPhotosLayout *)self specManager];
-    v14 = [v3 spec];
+    specManager = [(PXPhotosLayout *)self specManager];
+    spec = [specManager spec];
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    v5 = [v14 headerTitleFont];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    headerTitleFont = [spec headerTitleFont];
     v6 = *MEMORY[0x277D740A8];
-    [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D740A8]];
+    [dictionary setObject:headerTitleFont forKeyedSubscript:*MEMORY[0x277D740A8]];
 
-    v7 = [v14 headerTitleOverContentColor];
+    headerTitleOverContentColor = [spec headerTitleOverContentColor];
     v8 = *MEMORY[0x277D740C0];
-    [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x277D740C0]];
+    [dictionary setObject:headerTitleOverContentColor forKeyedSubscript:*MEMORY[0x277D740C0]];
 
-    [(PXPhotosLayout *)self setHeaderTitleOverContentAttributes:v4];
-    v9 = [v14 headerTitleOverBackgroundColor];
-    [v4 setObject:v9 forKeyedSubscript:v8];
+    [(PXPhotosLayout *)self setHeaderTitleOverContentAttributes:dictionary];
+    headerTitleOverBackgroundColor = [spec headerTitleOverBackgroundColor];
+    [dictionary setObject:headerTitleOverBackgroundColor forKeyedSubscript:v8];
 
-    [(PXPhotosLayout *)self setHeaderTitleOverBackgroundAttributes:v4];
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    v11 = [v14 headerSubtitleFont];
-    [v10 setObject:v11 forKeyedSubscript:v6];
+    [(PXPhotosLayout *)self setHeaderTitleOverBackgroundAttributes:dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    headerSubtitleFont = [spec headerSubtitleFont];
+    [dictionary2 setObject:headerSubtitleFont forKeyedSubscript:v6];
 
-    v12 = [v14 headerTitleOverBackgroundColor];
-    [v10 setObject:v12 forKeyedSubscript:v8];
+    headerTitleOverBackgroundColor2 = [spec headerTitleOverBackgroundColor];
+    [dictionary2 setObject:headerTitleOverBackgroundColor2 forKeyedSubscript:v8];
 
-    [(PXPhotosLayout *)self setHeaderSubtitleOverBackgroundAttributes:v10];
-    v13 = [v14 headerTitleOverContentColor];
-    [v10 setObject:v13 forKeyedSubscript:v8];
+    [(PXPhotosLayout *)self setHeaderSubtitleOverBackgroundAttributes:dictionary2];
+    headerTitleOverContentColor2 = [spec headerTitleOverContentColor];
+    [dictionary2 setObject:headerTitleOverContentColor2 forKeyedSubscript:v8];
 
-    [(PXPhotosLayout *)self setHeaderSubtitleOverContentAttributes:v10];
+    [(PXPhotosLayout *)self setHeaderSubtitleOverContentAttributes:dictionary2];
   }
 }
 
@@ -3418,9 +3418,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateHeaderAttributes]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:962 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:962 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -3449,16 +3449,16 @@ LABEL_5:
   [(PXGStackLayout *)&v7 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXPhotosLayout.m" lineNumber:957 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXPhotosLayout.m" lineNumber:957 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 
   if (self->_postUpdateFlags.willPerformUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout didUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXPhotosLayout.m" lineNumber:958 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXPhotosLayout.m" lineNumber:958 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
   }
 }
 
@@ -3473,9 +3473,9 @@ LABEL_5:
 
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v39 handleFailureInFunction:v40 file:@"PXPhotosLayout.m" lineNumber:869 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v40 file:@"PXPhotosLayout.m" lineNumber:869 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 
   p_updateFlags->isPerformingUpdate = 1;
@@ -3485,15 +3485,15 @@ LABEL_5:
     [(PXPhotosLayout *)self _updatePresentedLayoutState];
   }
 
-  v5 = [(PXPhotosLayout *)self rootLayout];
-  [v5 visibleRect];
-  [v5 safeAreaInsets];
+  rootLayout = [(PXPhotosLayout *)self rootLayout];
+  [rootLayout visibleRect];
+  [rootLayout safeAreaInsets];
   PXEdgeInsetsInsetRect();
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 contentSize];
+  [rootLayout contentSize];
 
   PXRectWithOriginAndSize();
   v81.origin.x = v7;
@@ -3502,15 +3502,15 @@ LABEL_5:
   v81.size.height = v13;
   if (CGRectContainsRect(v80, v81))
   {
-    v14 = [v5 createAnchorForVisibleArea];
-    v15 = [v14 autoInvalidate];
+    createAnchorForVisibleArea = [rootLayout createAnchorForVisibleArea];
+    autoInvalidate = [createAnchorForVisibleArea autoInvalidate];
   }
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v41 handleFailureInFunction:v42 file:@"PXPhotosLayout.m" lineNumber:885 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v42 file:@"PXPhotosLayout.m" lineNumber:885 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   needsUpdate = p_updateFlags->needsUpdate;
@@ -3523,9 +3523,9 @@ LABEL_5:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v43 handleFailureInFunction:v44 file:@"PXPhotosLayout.m" lineNumber:888 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler3 handleFailureInFunction:v44 file:@"PXPhotosLayout.m" lineNumber:888 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v17 = p_updateFlags->needsUpdate;
@@ -3538,9 +3538,9 @@ LABEL_5:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v45 handleFailureInFunction:v46 file:@"PXPhotosLayout.m" lineNumber:891 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler4 handleFailureInFunction:v46 file:@"PXPhotosLayout.m" lineNumber:891 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v18 = p_updateFlags->needsUpdate;
@@ -3553,9 +3553,9 @@ LABEL_5:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v47 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v47 handleFailureInFunction:v48 file:@"PXPhotosLayout.m" lineNumber:894 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler5 handleFailureInFunction:v48 file:@"PXPhotosLayout.m" lineNumber:894 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v19 = p_updateFlags->needsUpdate;
@@ -3570,9 +3570,9 @@ LABEL_5:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v49 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
     v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v49 handleFailureInFunction:v50 file:@"PXPhotosLayout.m" lineNumber:895 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler6 handleFailureInFunction:v50 file:@"PXPhotosLayout.m" lineNumber:895 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
 
     v21 = p_updateFlags->needsUpdate;
     updated = p_updateFlags->updated;
@@ -3593,9 +3593,9 @@ LABEL_5:
 LABEL_31:
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v51 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
     v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v51 handleFailureInFunction:v52 file:@"PXPhotosLayout.m" lineNumber:899 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler7 handleFailureInFunction:v52 file:@"PXPhotosLayout.m" lineNumber:899 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v22 = p_updateFlags->needsUpdate;
@@ -3608,9 +3608,9 @@ LABEL_31:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v53 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
     v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v53 handleFailureInFunction:v54 file:@"PXPhotosLayout.m" lineNumber:902 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler8 handleFailureInFunction:v54 file:@"PXPhotosLayout.m" lineNumber:902 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v23 = p_updateFlags->needsUpdate;
@@ -3623,9 +3623,9 @@ LABEL_31:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v55 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
     v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v55 handleFailureInFunction:v56 file:@"PXPhotosLayout.m" lineNumber:905 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler9 handleFailureInFunction:v56 file:@"PXPhotosLayout.m" lineNumber:905 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v24 = p_updateFlags->needsUpdate;
@@ -3638,9 +3638,9 @@ LABEL_31:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v57 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
     v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v57 handleFailureInFunction:v58 file:@"PXPhotosLayout.m" lineNumber:908 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler10 handleFailureInFunction:v58 file:@"PXPhotosLayout.m" lineNumber:908 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v25 = p_updateFlags->needsUpdate;
@@ -3653,9 +3653,9 @@ LABEL_31:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v59 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
     v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v59 handleFailureInFunction:v60 file:@"PXPhotosLayout.m" lineNumber:911 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler11 handleFailureInFunction:v60 file:@"PXPhotosLayout.m" lineNumber:911 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v26 = p_updateFlags->needsUpdate;
@@ -3668,9 +3668,9 @@ LABEL_31:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v61 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
     v62 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v61 handleFailureInFunction:v62 file:@"PXPhotosLayout.m" lineNumber:914 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler12 handleFailureInFunction:v62 file:@"PXPhotosLayout.m" lineNumber:914 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v27 = p_updateFlags->needsUpdate;
@@ -3683,9 +3683,9 @@ LABEL_31:
 
   if (!p_updateFlags->isPerformingUpdate)
   {
-    v63 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler13 = [MEMORY[0x277CCA890] currentHandler];
     v64 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v63 handleFailureInFunction:v64 file:@"PXPhotosLayout.m" lineNumber:917 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler13 handleFailureInFunction:v64 file:@"PXPhotosLayout.m" lineNumber:917 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v28 = p_updateFlags->needsUpdate;
@@ -3700,9 +3700,9 @@ LABEL_31:
   p_updateFlags->isPerformingUpdate = 0;
   if (v28)
   {
-    v65 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler14 = [MEMORY[0x277CCA890] currentHandler];
     v66 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-    [v65 handleFailureInFunction:v66 file:@"PXPhotosLayout.m" lineNumber:920 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+    [currentHandler14 handleFailureInFunction:v66 file:@"PXPhotosLayout.m" lineNumber:920 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
   }
 
 LABEL_62:
@@ -3718,9 +3718,9 @@ LABEL_62:
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v67 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler15 = [MEMORY[0x277CCA890] currentHandler];
       v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-      [v67 handleFailureInFunction:v68 file:@"PXPhotosLayout.m" lineNumber:927 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler15 handleFailureInFunction:v68 file:@"PXPhotosLayout.m" lineNumber:927 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
     }
 
     self->_postUpdateFlags.isPerformingUpdate = 1;
@@ -3729,9 +3729,9 @@ LABEL_62:
     p_updateFlags->updated = -1;
     if (!self->_postUpdateFlags.isPerformingUpdate)
     {
-      v69 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler16 = [MEMORY[0x277CCA890] currentHandler];
       v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-      [v69 handleFailureInFunction:v70 file:@"PXPhotosLayout.m" lineNumber:928 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler16 handleFailureInFunction:v70 file:@"PXPhotosLayout.m" lineNumber:928 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
     }
 
     v31 = p_postUpdateFlags->needsUpdate;
@@ -3744,9 +3744,9 @@ LABEL_62:
 
     if (!self->_postUpdateFlags.isPerformingUpdate)
     {
-      v71 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler17 = [MEMORY[0x277CCA890] currentHandler];
       v72 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-      [v71 handleFailureInFunction:v72 file:@"PXPhotosLayout.m" lineNumber:931 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler17 handleFailureInFunction:v72 file:@"PXPhotosLayout.m" lineNumber:931 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
     }
 
     v32 = p_postUpdateFlags->needsUpdate;
@@ -3759,9 +3759,9 @@ LABEL_62:
 
     if (!self->_postUpdateFlags.isPerformingUpdate)
     {
-      v73 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler18 = [MEMORY[0x277CCA890] currentHandler];
       v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-      [v73 handleFailureInFunction:v74 file:@"PXPhotosLayout.m" lineNumber:934 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler18 handleFailureInFunction:v74 file:@"PXPhotosLayout.m" lineNumber:934 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
     }
 
     v33 = p_postUpdateFlags->needsUpdate;
@@ -3774,9 +3774,9 @@ LABEL_62:
 
     if (!self->_postUpdateFlags.isPerformingUpdate)
     {
-      v75 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler19 = [MEMORY[0x277CCA890] currentHandler];
       v76 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-      [v75 handleFailureInFunction:v76 file:@"PXPhotosLayout.m" lineNumber:937 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler19 handleFailureInFunction:v76 file:@"PXPhotosLayout.m" lineNumber:937 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
     }
 
     v34 = p_postUpdateFlags->needsUpdate;
@@ -3793,27 +3793,27 @@ LABEL_62:
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v34)
     {
-      v77 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler20 = [MEMORY[0x277CCA890] currentHandler];
       v78 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout update]"];
-      [v77 handleFailureInFunction:v78 file:@"PXPhotosLayout.m" lineNumber:940 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler20 handleFailureInFunction:v78 file:@"PXPhotosLayout.m" lineNumber:940 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 
   if (p_updateFlags->needsUpdate)
   {
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:941 description:@"post-update pass invalidated pre-update flags"];
+    currentHandler21 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler21 handleFailureInMethod:a2 object:self file:@"PXPhotosLayout.m" lineNumber:941 description:@"post-update pass invalidated pre-update flags"];
   }
 
-  v35 = [(PXPhotosLayout *)self pendingAnimations];
-  v36 = [v35 count];
+  pendingAnimations = [(PXPhotosLayout *)self pendingAnimations];
+  v36 = [pendingAnimations count];
 
   if (v36)
   {
-    v37 = [(PXPhotosLayout *)self createAnimation];
-    [v37 setCurve:0];
-    [v37 setDuration:0.0];
-    [v37 setScope:2];
+    createAnimation = [(PXPhotosLayout *)self createAnimation];
+    [createAnimation setCurve:0];
+    [createAnimation setDuration:0.0];
+    [createAnimation setScope:2];
   }
 
   [(PXPhotosLayout *)self _updatePresentedLayoutState];
@@ -3827,203 +3827,203 @@ LABEL_62:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXPhotosLayout.m" lineNumber:864 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXPhotosLayout.m" lineNumber:864 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 
   self->_postUpdateFlags.willPerformUpdate = 1;
   if (self->_postUpdateFlags.isPerformingUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout willUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXPhotosLayout.m" lineNumber:865 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXPhotosLayout.m" lineNumber:865 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
   }
 }
 
 - (void)_updatePresentedLayoutState
 {
-  v3 = [(PXPhotosLayout *)self createCurrentLayoutState];
-  [(PXPhotosLayout *)self setPresentedLayoutState:v3];
+  createCurrentLayoutState = [(PXPhotosLayout *)self createCurrentLayoutState];
+  [(PXPhotosLayout *)self setPresentedLayoutState:createCurrentLayoutState];
 }
 
 - (id)createCurrentLayoutState
 {
   v3 = objc_alloc_init(PXPhotosLayoutState);
-  v4 = [(PXPhotosLayout *)self viewModel];
-  v5 = [v4 currentLens];
-  [(PXPhotosLayoutState *)v3 setLens:v5];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  currentLens = [viewModel currentLens];
+  [(PXPhotosLayoutState *)v3 setLens:currentLens];
 
-  v6 = [(PXPhotosLayout *)self sectionBodyProvider];
-  [(PXPhotosLayoutState *)v3 setBodyProvider:v6];
+  sectionBodyProvider = [(PXPhotosLayout *)self sectionBodyProvider];
+  [(PXPhotosLayoutState *)v3 setBodyProvider:sectionBodyProvider];
 
-  v7 = [(PXPhotosLayout *)self sectionHeaderProvider];
-  [(PXPhotosLayoutState *)v3 setHeaderProvider:v7];
+  sectionHeaderProvider = [(PXPhotosLayout *)self sectionHeaderProvider];
+  [(PXPhotosLayoutState *)v3 setHeaderProvider:sectionHeaderProvider];
 
   return v3;
 }
 
-- (void)setPlacementOverride:(id)a3
+- (void)setPlacementOverride:(id)override
 {
-  v5 = a3;
-  if (self->_placementOverride != v5)
+  overrideCopy = override;
+  if (self->_placementOverride != overrideCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placementOverride, a3);
+    v6 = overrideCopy;
+    objc_storeStrong(&self->_placementOverride, override);
     [(PXPhotosLayout *)self _invalidateSectionedLayoutPlacementOverrides];
-    v5 = v6;
+    overrideCopy = v6;
   }
 }
 
-- (void)setTitleBackgroundGradientAdditionalCoverage:(double)a3
+- (void)setTitleBackgroundGradientAdditionalCoverage:(double)coverage
 {
-  if (self->_titleBackgroundGradientAdditionalCoverage != a3)
+  if (self->_titleBackgroundGradientAdditionalCoverage != coverage)
   {
-    self->_titleBackgroundGradientAdditionalCoverage = a3;
+    self->_titleBackgroundGradientAdditionalCoverage = coverage;
     [(PXPhotosLayout *)self _invalidateLocalSprites];
   }
 }
 
-- (void)setTitleBackgroundSpriteHeight:(double)a3
+- (void)setTitleBackgroundSpriteHeight:(double)height
 {
-  if (self->_titleBackgroundSpriteHeight != a3)
+  if (self->_titleBackgroundSpriteHeight != height)
   {
-    self->_titleBackgroundSpriteHeight = a3;
+    self->_titleBackgroundSpriteHeight = height;
     [(PXPhotosLayout *)self _invalidateSectionedLayout];
 
     [(PXPhotosLayout *)self _invalidateLocalSprites];
   }
 }
 
-- (void)setHeaderTitleBaselineToBottom:(double)a3
+- (void)setHeaderTitleBaselineToBottom:(double)bottom
 {
-  if (self->_headerTitleBaselineToBottom != a3)
+  if (self->_headerTitleBaselineToBottom != bottom)
   {
-    self->_headerTitleBaselineToBottom = a3;
+    self->_headerTitleBaselineToBottom = bottom;
     [(PXPhotosLayout *)self _invalidateContentBelowTitle];
   }
 }
 
-- (void)setHeaderTitleSize:(CGSize)a3
+- (void)setHeaderTitleSize:(CGSize)size
 {
-  if (self->_headerTitleSize.width != a3.width || self->_headerTitleSize.height != a3.height)
+  if (self->_headerTitleSize.width != size.width || self->_headerTitleSize.height != size.height)
   {
-    self->_headerTitleSize = a3;
+    self->_headerTitleSize = size;
     [(PXPhotosLayout *)self _invalidateLocalSprites];
   }
 }
 
-- (void)setHeaderTitleOrigin:(CGPoint)a3
+- (void)setHeaderTitleOrigin:(CGPoint)origin
 {
-  if (self->_headerTitleOrigin.x != a3.x || self->_headerTitleOrigin.y != a3.y)
+  if (self->_headerTitleOrigin.x != origin.x || self->_headerTitleOrigin.y != origin.y)
   {
-    self->_headerTitleOrigin = a3;
+    self->_headerTitleOrigin = origin;
     [(PXPhotosLayout *)self _invalidateLocalSprites];
   }
 }
 
-- (void)setHeaderSubtitleOverContentAttributes:(id)a3
+- (void)setHeaderSubtitleOverContentAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_headerSubtitleOverContentAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_headerSubtitleOverContentAttributes != attributesCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = attributesCopy;
+    attributesCopy = [attributesCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((attributesCopy & 1) == 0)
     {
       v6 = [v8 copy];
       headerSubtitleOverContentAttributes = self->_headerSubtitleOverContentAttributes;
       self->_headerSubtitleOverContentAttributes = v6;
 
-      v4 = [(PXPhotosLayout *)self _invalidateLocalSprites];
+      attributesCopy = [(PXPhotosLayout *)self _invalidateLocalSprites];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](attributesCopy, v5);
 }
 
-- (void)setHeaderSubtitleOverBackgroundAttributes:(id)a3
+- (void)setHeaderSubtitleOverBackgroundAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_headerSubtitleOverBackgroundAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_headerSubtitleOverBackgroundAttributes != attributesCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = attributesCopy;
+    attributesCopy = [attributesCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((attributesCopy & 1) == 0)
     {
       v6 = [v8 copy];
       headerSubtitleOverBackgroundAttributes = self->_headerSubtitleOverBackgroundAttributes;
       self->_headerSubtitleOverBackgroundAttributes = v6;
 
-      v4 = [(PXPhotosLayout *)self _invalidateLocalSprites];
+      attributesCopy = [(PXPhotosLayout *)self _invalidateLocalSprites];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](attributesCopy, v5);
 }
 
-- (void)setHeaderTitleOverBackgroundAttributes:(id)a3
+- (void)setHeaderTitleOverBackgroundAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_headerTitleOverBackgroundAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_headerTitleOverBackgroundAttributes != attributesCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = attributesCopy;
+    attributesCopy = [attributesCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((attributesCopy & 1) == 0)
     {
       v6 = [v8 copy];
       headerTitleOverBackgroundAttributes = self->_headerTitleOverBackgroundAttributes;
       self->_headerTitleOverBackgroundAttributes = v6;
 
-      v4 = [(PXPhotosLayout *)self _invalidateLocalSprites];
+      attributesCopy = [(PXPhotosLayout *)self _invalidateLocalSprites];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](attributesCopy, v5);
 }
 
-- (void)setHeaderTitleOverContentAttributes:(id)a3
+- (void)setHeaderTitleOverContentAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_headerTitleOverContentAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_headerTitleOverContentAttributes != attributesCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = attributesCopy;
+    attributesCopy = [attributesCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((attributesCopy & 1) == 0)
     {
       v6 = [v8 copy];
       headerTitleOverContentAttributes = self->_headerTitleOverContentAttributes;
       self->_headerTitleOverContentAttributes = v6;
 
-      v4 = [(PXPhotosLayout *)self _invalidateLocalSprites];
+      attributesCopy = [(PXPhotosLayout *)self _invalidateLocalSprites];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](attributesCopy, v5);
 }
 
-- (void)setHeaderSubtitle:(id)a3
+- (void)setHeaderSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_headerSubtitle != v4)
+  subtitleCopy = subtitle;
+  v5 = subtitleCopy;
+  if (self->_headerSubtitle != subtitleCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = subtitleCopy;
+    subtitleCopy = [subtitleCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((subtitleCopy & 1) == 0)
     {
       v6 = [v8 copy];
       headerSubtitle = self->_headerSubtitle;
@@ -4031,24 +4031,24 @@ LABEL_62:
 
       ++self->_headerTitleVersion;
       [(PXPhotosLayout *)self _invalidateHeaderMeasurementsForTitleChange];
-      v4 = [(PXPhotosLayout *)self _invalidateLocalSprites];
+      subtitleCopy = [(PXPhotosLayout *)self _invalidateLocalSprites];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](subtitleCopy, v5);
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_headerTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_headerTitle != titleCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = titleCopy;
+    titleCopy = [titleCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((titleCopy & 1) == 0)
     {
       v6 = [v8 copy];
       headerTitle = self->_headerTitle;
@@ -4056,35 +4056,35 @@ LABEL_62:
 
       ++self->_headerTitleVersion;
       [(PXPhotosLayout *)self _invalidateHeaderMeasurementsForTitleChange];
-      v4 = [(PXPhotosLayout *)self _invalidateLocalSprites];
+      titleCopy = [(PXPhotosLayout *)self _invalidateLocalSprites];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](titleCopy, v5);
 }
 
 - (void)_updateHeaderTitle
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [v3 navBarStyle] != 3 && objc_msgSend(v3, "navBarStyle") != 4 && objc_msgSend(v3, "navBarStyle") != 6 && objc_msgSend(v3, "navBarStyle") != 7;
-  if (([v3 wantsDynamicTitles] & 1) == 0 && !v4)
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  v4 = [viewModel navBarStyle] != 3 && objc_msgSend(viewModel, "navBarStyle") != 4 && objc_msgSend(viewModel, "navBarStyle") != 6 && objc_msgSend(viewModel, "navBarStyle") != 7;
+  if (([viewModel wantsDynamicTitles] & 1) == 0 && !v4)
   {
     [(PXPhotosLayout *)self setHeaderTitle:0];
     [(PXPhotosLayout *)self setHeaderSubtitle:0];
     goto LABEL_42;
   }
 
-  v5 = [v3 title];
-  v6 = [v3 currentDataSource];
-  v40 = v6;
-  if ([v3 wantsDynamicTitles])
+  title = [viewModel title];
+  currentDataSource = [viewModel currentDataSource];
+  v40 = currentDataSource;
+  if ([viewModel wantsDynamicTitles])
   {
-    v7 = [v6 identifier];
-    v8 = [PXPhotosGridHeaderUtilities dateTypeForViewModel:v3];
+    identifier = [currentDataSource identifier];
+    v8 = [PXPhotosGridHeaderUtilities dateTypeForViewModel:viewModel];
     [(PXPhotosLayout *)self visibleRect];
     v9 = [(PXPhotosLayout *)self dateIntervalFutureForContentInRect:v8 type:?];
-    v10 = v9[2](v9, v7);
+    v10 = v9[2](v9, identifier);
     if (v10)
     {
       if (_DateIntervalFormatter_onceToken != -1)
@@ -4101,7 +4101,7 @@ LABEL_62:
     v39 = v4;
     [(PXPhotosLayout *)self visibleRect];
     v14 = [(PXPhotosLayout *)self locationNamesFutureForContentInRect:?];
-    v15 = v14[2](v14, v7);
+    v15 = v14[2](v14, identifier);
     v16 = PXLocalizedComposedString();
     if (v16)
     {
@@ -4110,15 +4110,15 @@ LABEL_62:
 
     v17 = self->_dynamicDateInterval;
     v18 = v17;
-    if (v5)
+    if (title)
     {
-      v19 = v17;
+      localizedSubtitle = v17;
     }
 
     else
     {
-      v19 = self->_dynamicLocationName;
-      v5 = v18;
+      localizedSubtitle = self->_dynamicLocationName;
+      title = v18;
     }
 
     v4 = v39;
@@ -4126,26 +4126,26 @@ LABEL_62:
 
   else
   {
-    v19 = 0;
+    localizedSubtitle = 0;
   }
 
-  v20 = [(PXPhotosLayout *)self specManager];
-  v21 = [v20 spec];
-  if ([v21 allowsEmptyTitles])
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
+  if ([spec allowsEmptyTitles])
   {
-    v22 = [(PXPhotosLayout *)self viewModel];
-    v23 = [v22 currentDataSource];
-    v24 = [v23 containsAnyItems];
+    viewModel2 = [(PXPhotosLayout *)self viewModel];
+    currentDataSource2 = [viewModel2 currentDataSource];
+    containsAnyItems = [currentDataSource2 containsAnyItems];
 
-    if (v5 || (v24 & 1) == 0)
+    if (title || (containsAnyItems & 1) == 0)
     {
-      if (v19 || !v5)
+      if (localizedSubtitle || !title)
       {
         v26 = v40;
         goto LABEL_33;
       }
 
-      v25 = v24 ^ 1;
+      v25 = containsAnyItems ^ 1;
       v26 = v40;
       if (v25)
       {
@@ -4159,10 +4159,10 @@ LABEL_62:
   else
   {
 
-    if (v5)
+    if (title)
     {
       v26 = v40;
-      if (!v19)
+      if (!localizedSubtitle)
       {
         goto LABEL_32;
       }
@@ -4172,33 +4172,33 @@ LABEL_62:
   }
 
   v26 = v40;
-  v27 = [v40 containerCollection];
-  v5 = [v27 localizedTitle];
+  containerCollection = [v40 containerCollection];
+  title = [containerCollection localizedTitle];
 
-  if (!v19)
+  if (!localizedSubtitle)
   {
 LABEL_32:
-    v28 = [v26 containerCollection];
-    v19 = [v28 localizedSubtitle];
+    containerCollection2 = [v26 containerCollection];
+    localizedSubtitle = [containerCollection2 localizedSubtitle];
   }
 
 LABEL_33:
-  v29 = [(PXPhotosLayout *)self viewModel];
+  viewModel3 = [(PXPhotosLayout *)self viewModel];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __36__PXPhotosLayout__updateHeaderTitle__block_invoke;
   v41[3] = &unk_278298C40;
-  v42 = v5;
-  v43 = v19;
-  v30 = v19;
-  v31 = v5;
-  [v29 performChanges:v41];
+  v42 = title;
+  v43 = localizedSubtitle;
+  v30 = localizedSubtitle;
+  v31 = title;
+  [viewModel3 performChanges:v41];
 
-  v32 = [(PXPhotosLayout *)self specManager];
-  v33 = [v32 spec];
-  v34 = [v33 allowsEmptyTitles];
+  specManager2 = [(PXPhotosLayout *)self specManager];
+  spec2 = [specManager2 spec];
+  allowsEmptyTitles = [spec2 allowsEmptyTitles];
   v35 = @" ";
-  if ((v34 & v4) == 0)
+  if ((allowsEmptyTitles & v4) == 0)
   {
     v35 = 0;
   }
@@ -4274,9 +4274,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateHeaderTitle]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:663 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:663 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -4314,9 +4314,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_postUpdateFlags.updated & 0x400000) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosLayout _invalidateDynamicHeaderTitle]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:659 description:{@"invalidating %lu after it already has been updated", 0x400000}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosLayout.m" lineNumber:659 description:{@"invalidating %lu after it already has been updated", 0x400000}];
 
       abort();
     }
@@ -4338,9 +4338,9 @@ LABEL_5:
   }
 }
 
-- (void)enumerateScrollablePagesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateScrollablePagesWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
   v9 = self->_sectionedLayout;
@@ -4349,11 +4349,11 @@ LABEL_5:
   v13[1] = 3221225472;
   v13[2] = __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___block_invoke;
   v13[3] = &unk_278298C18;
-  v14 = v6;
+  v14 = blockCopy;
   v15 = v10;
   v16 = v11;
-  v12 = v6;
-  [(PXPhotosSectionedLayout *)v9 enumerateSectionBoundariesWithOptions:a3 usingBlock:v13];
+  v12 = blockCopy;
+  [(PXPhotosSectionedLayout *)v9 enumerateSectionBoundariesWithOptions:options usingBlock:v13];
 }
 
 uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, double a5, double a6, double a7, double a8)
@@ -4406,8 +4406,8 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
 
 - (BOOL)_shouldShowSectionedLayout
 {
-  v2 = [(PXPhotosLayout *)self viewModel];
-  v3 = [v2 contentPrivacyState] != 1;
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  v3 = [viewModel contentPrivacyState] != 1;
 
   return v3;
 }
@@ -4429,16 +4429,16 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   return result;
 }
 
-- (CGPoint)visibleOriginForScrollingToNeighboringSectionInDirection:(unint64_t)a3
+- (CGPoint)visibleOriginForScrollingToNeighboringSectionInDirection:(unint64_t)direction
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3 <= 6 && ((1 << a3) & 0x19) != 0)
+  if (direction <= 6 && ((1 << direction) & 0x19) != 0)
   {
     v5 = PXAssertGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *v26 = 134217984;
-      *&v26[4] = a3;
+      *&v26[4] = direction;
       _os_log_error_impl(&dword_21ABF3000, v5, OS_LOG_TYPE_ERROR, "unexpected direction %ti", v26, 0xCu);
     }
   }
@@ -4465,14 +4465,14 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   return result;
 }
 
-- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)a3 scrollingVelocity:(CGPoint)a4 decelerationRate:(int64_t *)a5
+- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)origin scrollingVelocity:(CGPoint)velocity decelerationRate:(int64_t *)rate
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = [(PXPhotosLayout *)self specManager];
-  v12 = [v11 spec];
+  y = velocity.y;
+  x = velocity.x;
+  v8 = origin.y;
+  v9 = origin.x;
+  specManager = [(PXPhotosLayout *)self specManager];
+  spec = [specManager spec];
 
   v13 = objc_alloc(MEMORY[0x277D3CDB0]);
   [(PXPhotosLayout *)self visibleRect];
@@ -4482,17 +4482,17 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   v21 = v20;
   [(PXPhotosLayout *)self safeAreaInsets];
   v26 = [v13 initWithSnapBehavior:0 scrollAxis:1 visibleRect:self visibilityInsets:v15 scrollablePageSource:{v17, v19, v21, v22, v23, v24, v25}];
-  [v12 configureScrollSnapController:v26];
-  v27 = [(PXPhotosLayout *)self viewModel];
-  v28 = [v27 currentLens];
-  v29 = [v28 allowsScrollSnap];
+  [spec configureScrollSnapController:v26];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  currentLens = [viewModel currentLens];
+  allowsScrollSnap = [currentLens allowsScrollSnap];
 
-  if ((v29 & 1) == 0)
+  if ((allowsScrollSnap & 1) == 0)
   {
     [v26 setSnapBehavior:0];
   }
 
-  [v26 adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:a5 scrollingVelocity:v9 decelerationRate:{v8, x, y}];
+  [v26 adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:rate scrollingVelocity:v9 decelerationRate:{v8, x, y}];
   v31 = v30;
   v33 = v32;
 
@@ -4503,18 +4503,18 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   return result;
 }
 
-- (id)regionOfInterestForAssetReference:(id)a3
+- (id)regionOfInterestForAssetReference:(id)reference
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PXPhotosLayout *)self rootLayout];
-  v6 = [v5 coordinateSpace];
-  v7 = [(PXPhotosLayout *)self spriteReferenceForObjectReference:v4];
+  referenceCopy = reference;
+  rootLayout = [(PXPhotosLayout *)self rootLayout];
+  coordinateSpace = [rootLayout coordinateSpace];
+  v7 = [(PXPhotosLayout *)self spriteReferenceForObjectReference:referenceCopy];
 
   v8 = 0;
-  if (v6 && v7)
+  if (coordinateSpace && v7)
   {
-    v9 = [v5 spriteIndexForSpriteReference:v7];
+    v9 = [rootLayout spriteIndexForSpriteReference:v7];
     if (v9 == -1)
     {
       v8 = 0;
@@ -4545,7 +4545,7 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
       v18[0] = *MEMORY[0x277D73D70];
       v18[1] = v16;
       v19 = *(MEMORY[0x277D73D70] + 32);
-      [v5 copyLayoutForSpritesInRange:v9 | 0x100000000 entities:&v21 geometries:v20 styles:&v32 infos:v18];
+      [rootLayout copyLayoutForSpritesInRange:v9 | 0x100000000 entities:&v21 geometries:v20 styles:&v32 infos:v18];
       v28 = v38;
       v29 = v39;
       v30 = v40;
@@ -4563,27 +4563,27 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   return v8;
 }
 
-- (void)enumerateItemsGeometriesInRect:(CGRect)a3 dataSource:(id)a4 usingBlock:(id)a5
+- (void)enumerateItemsGeometriesInRect:(CGRect)rect dataSource:(id)source usingBlock:(id)block
 {
   sectionedLayout = self->_sectionedLayout;
   if (sectionedLayout)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v12 = a5;
-    v13 = a4;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    blockCopy = block;
+    sourceCopy = source;
     [(PXPhotosLayout *)self convertRect:sectionedLayout toDescendantLayout:x, y, width, height];
-    [(PXPhotosSectionedLayout *)self->_sectionedLayout enumerateItemsGeometriesInRect:v13 dataSource:v12 usingBlock:?];
+    [(PXPhotosSectionedLayout *)self->_sectionedLayout enumerateItemsGeometriesInRect:sourceCopy dataSource:blockCopy usingBlock:?];
   }
 }
 
-- (id)topmostSectionHeaderSnapshotInRect:(CGRect)a3
+- (id)topmostSectionHeaderSnapshotInRect:(CGRect)rect
 {
   if (self->_sectionedLayout)
   {
-    [(PXPhotosLayout *)self convertRect:a3.origin.x toDescendantLayout:a3.origin.y, a3.size.width, a3.size.height];
+    [(PXPhotosLayout *)self convertRect:rect.origin.x toDescendantLayout:rect.origin.y, rect.size.width, rect.size.height];
     v4 = [(PXPhotosSectionedLayout *)self->_sectionedLayout topmostHeaderSnapshotInRect:?];
   }
 
@@ -4595,14 +4595,14 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   return v4;
 }
 
-- (void)enumerateAssetsInRect:(CGRect)a3 enumerator:(id)a4
+- (void)enumerateAssetsInRect:(CGRect)rect enumerator:(id)enumerator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  enumeratorCopy = enumerator;
   if (self->_sectionedLayout)
   {
     [(PXPhotosLayout *)self convertRect:x toDescendantLayout:y, width, height];
@@ -4632,25 +4632,25 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
       v19 = 138543618;
       v20 = objc_opt_class();
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ABF3000, v18, OS_LOG_TYPE_ERROR, "Failed to enumerate assets for <%{public}@:%p>", &v19, 0x16u);
     }
   }
 
   else
   {
-    [(PXPhotosSectionedLayout *)self->_sectionedLayout enumerateAssetsInRect:v9 enumerator:v11, v13, v15, v17];
+    [(PXPhotosSectionedLayout *)self->_sectionedLayout enumerateAssetsInRect:enumeratorCopy enumerator:v11, v13, v15, v17];
   }
 }
 
-- (void)enumerateAssetCollectionsInRect:(CGRect)a3 enumerator:(id)a4
+- (void)enumerateAssetCollectionsInRect:(CGRect)rect enumerator:(id)enumerator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  enumeratorCopy = enumerator;
   if (self->_sectionedLayout)
   {
     [(PXPhotosLayout *)self convertRect:x toDescendantLayout:y, width, height];
@@ -4680,22 +4680,22 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
       v19 = 138543618;
       v20 = objc_opt_class();
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ABF3000, v18, OS_LOG_TYPE_ERROR, "Failed to enumerate asset collections for <%{public}@:%p>", &v19, 0x16u);
     }
   }
 
   else
   {
-    [(PXPhotosSectionedLayout *)self->_sectionedLayout enumerateAssetCollectionsInRect:v9 enumerator:v11, v13, v15, v17];
+    [(PXPhotosSectionedLayout *)self->_sectionedLayout enumerateAssetCollectionsInRect:enumeratorCopy enumerator:v11, v13, v15, v17];
   }
 }
 
-- (id)locationNamesFutureForContentInRect:(CGRect)a3
+- (id)locationNamesFutureForContentInRect:(CGRect)rect
 {
   if (self->_sectionedLayout)
   {
-    [(PXPhotosLayout *)self convertRect:a3.origin.x toDescendantLayout:a3.origin.y, a3.size.width, a3.size.height];
+    [(PXPhotosLayout *)self convertRect:rect.origin.x toDescendantLayout:rect.origin.y, rect.size.width, rect.size.height];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -4724,11 +4724,11 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   return v13;
 }
 
-- (id)dateIntervalFutureForContentInRect:(CGRect)a3 type:(unint64_t)a4
+- (id)dateIntervalFutureForContentInRect:(CGRect)rect type:(unint64_t)type
 {
   if (self->_sectionedLayout)
   {
-    [(PXPhotosLayout *)self convertRect:a3.origin.x toDescendantLayout:a3.origin.y, a3.size.width, a3.size.height];
+    [(PXPhotosLayout *)self convertRect:rect.origin.x toDescendantLayout:rect.origin.y, rect.size.width, rect.size.height];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -4747,7 +4747,7 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
   v18.origin.y = v9;
   v18.size.width = v11;
   v18.size.height = v13;
-  if (CGRectIsNull(v18) || (PXPointIsNull() & 1) != 0 || ([(PXPhotosSectionedLayout *)self->_sectionedLayout dateIntervalFutureForContentInRect:a4 type:v7, v9, v11, v13], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (CGRectIsNull(v18) || (PXPointIsNull() & 1) != 0 || ([(PXPhotosSectionedLayout *)self->_sectionedLayout dateIntervalFutureForContentInRect:type type:v7, v9, v11, v13], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v14 = &__block_literal_global_19;
   }
@@ -4759,33 +4759,33 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
 
 - (id)createAnchorForScrollingToInitialPosition
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [v3 initialNavigationObjectReference];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  initialNavigationObjectReference = [viewModel initialNavigationObjectReference];
 
-  if (v4)
+  if (initialNavigationObjectReference)
   {
-    v5 = [v3 initialNavigationScrollPosition];
-    if (v5 > 3)
+    initialNavigationScrollPosition = [viewModel initialNavigationScrollPosition];
+    if (initialNavigationScrollPosition > 3)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = qword_21AC7D698[v5];
+      v6 = qword_21AC7D698[initialNavigationScrollPosition];
     }
 
-    v13 = [v3 navBarStyle];
-    if (v13 > 8)
+    navBarStyle = [viewModel navBarStyle];
+    if (navBarStyle > 8)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL _IsNavigationBarBackgroundVisibleForNavigationBarStyle(PXPhotosViewNavigationBarStyle)"];
-      [v18 handleFailureInFunction:v19 file:@"PXPhotosLayout.m" lineNumber:145 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v19 file:@"PXPhotosLayout.m" lineNumber:145 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if (((1 << v13) & 0x19F) != 0)
+    if (((1 << navBarStyle) & 0x19F) != 0)
     {
       v14 = v6 | 0x100;
     }
@@ -4795,14 +4795,14 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
       v14 = v6;
     }
 
-    v9 = [(PXPhotosLayout *)self rootLayout];
-    v11 = [v3 initialNavigationObjectReference];
-    v15 = [v9 createAnchorForScrollingSpriteForObjectReference:v11 toScrollPosition:v14 padding:{*MEMORY[0x277D3CF90], *(MEMORY[0x277D3CF90] + 8), *(MEMORY[0x277D3CF90] + 16), *(MEMORY[0x277D3CF90] + 24)}];
+    rootLayout = [(PXPhotosLayout *)self rootLayout];
+    initialNavigationObjectReference2 = [viewModel initialNavigationObjectReference];
+    v15 = [rootLayout createAnchorForScrollingSpriteForObjectReference:initialNavigationObjectReference2 toScrollPosition:v14 padding:{*MEMORY[0x277D3CF90], *(MEMORY[0x277D3CF90] + 8), *(MEMORY[0x277D3CF90] + 16), *(MEMORY[0x277D3CF90] + 24)}];
   }
 
   else
   {
-    if ([v3 contentStartsAtEnd])
+    if ([viewModel contentStartsAtEnd])
     {
       v7 = 4;
     }
@@ -4812,8 +4812,8 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
       v7 = 1;
     }
 
-    v8 = [(PXPhotosLayout *)self specManager];
-    v9 = [v8 spec];
+    specManager = [(PXPhotosLayout *)self specManager];
+    rootLayout = [specManager spec];
 
     if (![(PXPhotosLayout *)self canScrollToInitialPosition])
     {
@@ -4821,18 +4821,18 @@ uint64_t __65__PXPhotosLayout_enumerateScrollablePagesWithOptions_usingBlock___b
       goto LABEL_19;
     }
 
-    v10 = [(PXPhotosLayout *)self detentForInitialScrollPosition];
-    v11 = v10;
-    if (v10)
+    detentForInitialScrollPosition = [(PXPhotosLayout *)self detentForInitialScrollPosition];
+    initialNavigationObjectReference2 = detentForInitialScrollPosition;
+    if (detentForInitialScrollPosition)
     {
-      [v10 offset];
-      v12 = [v9 extendedTraitCollection];
-      [v12 safeAreaInsets];
+      [detentForInitialScrollPosition offset];
+      extendedTraitCollection = [rootLayout extendedTraitCollection];
+      [extendedTraitCollection safeAreaInsets];
     }
 
-    v16 = [(PXPhotosLayout *)self rootLayout];
+    rootLayout2 = [(PXPhotosLayout *)self rootLayout];
     PXEdgeInsetsMake();
-    v15 = [v16 createAnchorForScrollingToContentEdges:v7 padding:?];
+    v15 = [rootLayout2 createAnchorForScrollingToContentEdges:v7 padding:?];
   }
 
 LABEL_19:
@@ -4840,68 +4840,68 @@ LABEL_19:
   return v15;
 }
 
-- (void)setAlignsHeaderTitleWithLayoutMargins:(BOOL)a3
+- (void)setAlignsHeaderTitleWithLayoutMargins:(BOOL)margins
 {
-  if (self->_alignsHeaderTitleWithLayoutMargins != a3)
+  if (self->_alignsHeaderTitleWithLayoutMargins != margins)
   {
-    self->_alignsHeaderTitleWithLayoutMargins = a3;
+    self->_alignsHeaderTitleWithLayoutMargins = margins;
     [(PXPhotosLayout *)self _invalidateHeaderMeasurements];
   }
 }
 
-- (void)setWantsHeaderInSafeArea:(BOOL)a3
+- (void)setWantsHeaderInSafeArea:(BOOL)area
 {
-  if (self->_wantsHeaderInSafeArea != a3)
+  if (self->_wantsHeaderInSafeArea != area)
   {
-    self->_wantsHeaderInSafeArea = a3;
+    self->_wantsHeaderInSafeArea = area;
     [(PXPhotosLayout *)self _invalidateHeaderMeasurements];
 
     [(PXPhotosLayout *)self _invalidateLocalSpritesAlpha];
   }
 }
 
-- (void)setStatusBarHeight:(double)a3
+- (void)setStatusBarHeight:(double)height
 {
-  if (self->_statusBarHeight != a3)
+  if (self->_statusBarHeight != height)
   {
-    self->_statusBarHeight = a3;
+    self->_statusBarHeight = height;
     [(PXPhotosLayout *)self _invalidateHeaderMeasurements];
   }
 }
 
-- (void)setSectionBodyProvider:(id)a3
+- (void)setSectionBodyProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_sectionBodyProvider != v5)
+  providerCopy = provider;
+  if (self->_sectionBodyProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sectionBodyProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_sectionBodyProvider, provider);
     [(PXPhotosLayout *)self _invalidateSectionedLayout];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setGlobalHeaderProvider:(id)a3
+- (void)setGlobalHeaderProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_globalHeaderProvider != v5)
+  providerCopy = provider;
+  if (self->_globalHeaderProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_globalHeaderProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_globalHeaderProvider, provider);
     [(PXPhotosLayout *)self _invalidateGlobalHeaderLayout];
     [(PXPhotosLayout *)self _invalidateTopHeaderLayout];
     [(PXPhotosLayout *)self _invalidateSectionedLayout];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setSectionHeaderProvider:(id)a3
+- (void)setSectionHeaderProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_sectionHeaderProvider != v5)
+  providerCopy = provider;
+  if (self->_sectionHeaderProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sectionHeaderProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_sectionHeaderProvider, provider);
     self->_headerProviderRespondsTo.createTopHeaderLayoutForDataSource = objc_opt_respondsToSelector() & 1;
     self->_headerProviderRespondsTo.topHeaderLayoutDidChangeDataSource = objc_opt_respondsToSelector() & 1;
     self->_headerProviderRespondsTo.configureTopHeaderLayout = objc_opt_respondsToSelector() & 1;
@@ -4912,7 +4912,7 @@ LABEL_19:
 
     [(PXPhotosLayout *)self _invalidateTopHeaderLayout];
     [(PXPhotosLayout *)self _invalidateSectionedLayout];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -4952,13 +4952,13 @@ LABEL_19:
 
 - (PXFloatRange)topCollapsibleArea
 {
-  v3 = [(PXPhotosLayout *)self viewModel];
-  v4 = [v3 currentLens];
-  v5 = [v4 ignoresTopSafeAreaInset];
+  viewModel = [(PXPhotosLayout *)self viewModel];
+  currentLens = [viewModel currentLens];
+  ignoresTopSafeAreaInset = [currentLens ignoresTopSafeAreaInset];
 
   v6 = 0.0;
   v7 = 0.0;
-  if ((v5 & 1) == 0)
+  if ((ignoresTopSafeAreaInset & 1) == 0)
   {
     [(PXPhotosLayout *)self safeAreaInsets];
     v9 = v8;
@@ -4973,42 +4973,42 @@ LABEL_19:
   return result;
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
-  if (self->_footerView != v5)
+  viewCopy = view;
+  if (self->_footerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_footerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_footerView, view);
     [(PXPhotosLayout *)self _performPreUpdateInvalidationDeferredIfNeeded:&__block_literal_global_7571];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setHeaderView:(id)a3 animated:(BOOL)a4
+- (void)setHeaderView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_headerView != v7)
+  animatedCopy = animated;
+  viewCopy = view;
+  if (self->_headerView != viewCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_headerView, a3);
-    [(PXPhotosLayout *)self _invalidateHeaderAnimated:v4];
-    v7 = v8;
+    v8 = viewCopy;
+    objc_storeStrong(&self->_headerView, view);
+    [(PXPhotosLayout *)self _invalidateHeaderAnimated:animatedCopy];
+    viewCopy = v8;
   }
 }
 
-- (PXPhotosLayout)initWithViewModel:(id)a3 specManager:(id)a4 overlayController:(id)a5
+- (PXPhotosLayout)initWithViewModel:(id)model specManager:(id)manager overlayController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  managerCopy = manager;
+  controllerCopy = controller;
   v32.receiver = self;
   v32.super_class = PXPhotosLayout;
   v12 = [(PXGStackLayout *)&v32 init];
   if (v12)
   {
-    if ([v9 wantsSingleRowScrollingLayout])
+    if ([modelCopy wantsSingleRowScrollingLayout])
     {
       v13 = 2;
     }
@@ -5019,30 +5019,30 @@ LABEL_19:
     }
 
     [(PXGStackLayout *)v12 setAxis:v13];
-    v14 = [(PXPhotosLayout *)v12 axGroup];
-    [v14 setAxRole:3];
+    axGroup = [(PXPhotosLayout *)v12 axGroup];
+    [axGroup setAxRole:3];
 
-    v15 = [(PXPhotosLayout *)v12 axGroup];
-    [v15 setAxIdentifier:@"photos_layout"];
+    axGroup2 = [(PXPhotosLayout *)v12 axGroup];
+    [axGroup2 setAxIdentifier:@"photos_layout"];
 
     [(PXPhotosLayout *)v12 setContentSource:v12];
     [(PXGStackLayout *)v12 setSublayoutAlignmentDelegate:v12];
-    objc_storeStrong(&v12->_viewModel, a3);
+    objc_storeStrong(&v12->_viewModel, model);
     [(PXPhotosViewModel *)v12->_viewModel registerChangeObserver:v12 context:ViewModelObservationContext_7497];
-    objc_storeStrong(&v12->_specManager, a4);
+    objc_storeStrong(&v12->_specManager, manager);
     [(PXPhotosLayoutSpecManager *)v12->_specManager registerChangeObserver:v12 context:SpecManagerObservationContext];
     LODWORD(v16) = 1.0;
     v12->_titleBackgroundGradientResizableCapInsetsIndex = [(PXPhotosLayout *)v12 addResizableCapInsets:0.0, 0.0, v16, 0.0];
-    objc_storeStrong(&v12->_overlayController, a5);
+    objc_storeStrong(&v12->_overlayController, controller);
     v17 = objc_alloc_init(PXPhotosLayoutDefaultAnimationProvider);
     animationProvider = v12->_animationProvider;
     v12->_animationProvider = v17;
 
     v19 = objc_alloc(MEMORY[0x277D3CD80]);
-    v20 = [v9 requiresLightTopBars];
-    v21 = [(PXFeatureSpecManager *)v12->_specManager spec];
+    requiresLightTopBars = [modelCopy requiresLightTopBars];
+    spec = [(PXFeatureSpecManager *)v12->_specManager spec];
     v22 = 0.0;
-    if (v20)
+    if (requiresLightTopBars)
     {
       v22 = 1.0;
     }
@@ -5053,23 +5053,23 @@ LABEL_19:
 
     [(PXNumberAnimator *)v12->_alternateAppearanceMixAnimator registerChangeObserver:v12 context:AlternateAppearanceMixAnimatorObservationContext];
     [(PXNumberAnimator *)v12->_alternateAppearanceMixAnimator setLabel:@"alternateAppearanceMixAnimator"];
-    v25 = [v9 navBarStyle];
+    navBarStyle = [modelCopy navBarStyle];
     LOBYTE(v26) = 0;
-    if (v25 <= 6)
+    if (navBarStyle <= 6)
     {
-      if (((1 << v25) & 0x76) != 0)
+      if (((1 << navBarStyle) & 0x76) != 0)
       {
         LOBYTE(v26) = 1;
       }
 
-      else if (v25 == 3)
+      else if (navBarStyle == 3)
       {
         v26 = MEMORY[0x21CEE04B0]() ^ 1;
       }
     }
 
     v12->_managesHeaderSprites = v26;
-    v12->_managesOnlyLegibilityGradientSprites = [v9 navBarStyle] == 7;
+    v12->_managesOnlyLegibilityGradientSprites = [modelCopy navBarStyle] == 7;
     v27 = [objc_alloc(MEMORY[0x277D3CD80]) initWithValue:1.0];
     headerFooterAlphaAnimator = v12->_headerFooterAlphaAnimator;
     v12->_headerFooterAlphaAnimator = v27;
@@ -5077,9 +5077,9 @@ LABEL_19:
     [(PXNumberAnimator *)v12->_headerFooterAlphaAnimator registerChangeObserver:v12 context:HeaderFooterAlphaAnimatorObservationContext];
     [(PXNumberAnimator *)v12->_headerFooterAlphaAnimator setLabel:@"headerFooterAlphaAnimator"];
     v12->_headerTitleDrawingOptions = 35;
-    v29 = [v10 headerCustomizationModel];
+    headerCustomizationModel = [managerCopy headerCustomizationModel];
     headerCustomizationModel = v12->_headerCustomizationModel;
-    v12->_headerCustomizationModel = v29;
+    v12->_headerCustomizationModel = headerCustomizationModel;
 
     [(PXPhotosHeaderCustomizationModel *)v12->_headerCustomizationModel registerChangeObserver:v12 context:HeaderCustomizationModelObservationContext];
     [(PXPhotosLayout *)v12 _invalidateHeaderTitle];

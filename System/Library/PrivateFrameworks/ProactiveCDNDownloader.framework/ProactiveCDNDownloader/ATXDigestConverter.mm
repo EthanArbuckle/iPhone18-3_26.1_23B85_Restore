@@ -1,17 +1,17 @@
 @interface ATXDigestConverter
-+ (id)binToHex:(id)a3;
++ (id)binToHex:(id)hex;
 @end
 
 @implementation ATXDigestConverter
 
-+ (id)binToHex:(id)a3
++ (id)binToHex:(id)hex
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  hexCopy = hex;
+  v4 = hexCopy;
+  if (hexCopy)
   {
-    v5 = 2 * [v3 length];
-    v6 = [v4 bytes];
+    v5 = 2 * [hexCopy length];
+    bytes = [v4 bytes];
     v7 = malloc_type_calloc(v5 | 1, 1uLL, 0x7667467FuLL);
     if ([v4 length])
     {
@@ -19,7 +19,7 @@
       v9 = v7 + 1;
       do
       {
-        v10 = *(v6 + v8);
+        v10 = *(bytes + v8);
         *(v9 - 1) = a0123456789abcd[v10 >> 4];
         *v9 = a0123456789abcd[v10 & 0xF];
         v9 += 2;

@@ -1,44 +1,44 @@
 @interface FPTestingChildrenEnumeration
-- (FPTestingChildrenEnumeration)initWithCoder:(id)a3;
-- (FPTestingChildrenEnumeration)initWithOperationIdentifier:(id)a3 itemIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (FPTestingChildrenEnumeration)initWithCoder:(id)coder;
+- (FPTestingChildrenEnumeration)initWithOperationIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPTestingChildrenEnumeration
 
-- (FPTestingChildrenEnumeration)initWithOperationIdentifier:(id)a3 itemIdentifier:(id)a4
+- (FPTestingChildrenEnumeration)initWithOperationIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier
 {
-  v7 = a4;
+  itemIdentifierCopy = itemIdentifier;
   v11.receiver = self;
   v11.super_class = FPTestingChildrenEnumeration;
-  v8 = [(FPTestingOperation *)&v11 initWithOperationIdentifier:a3];
+  v8 = [(FPTestingOperation *)&v11 initWithOperationIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_itemIdentifier, a4);
+    objc_storeStrong(&v8->_itemIdentifier, itemIdentifier);
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FPTestingChildrenEnumeration;
-  v4 = a3;
-  [(FPTestingOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_itemIdentifier forKey:{@"_itemIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(FPTestingOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:{@"_itemIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (FPTestingChildrenEnumeration)initWithCoder:(id)a3
+- (FPTestingChildrenEnumeration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FPTestingChildrenEnumeration;
-  v5 = [(FPTestingOperation *)&v9 initWithCoder:v4];
+  v5 = [(FPTestingOperation *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
   }

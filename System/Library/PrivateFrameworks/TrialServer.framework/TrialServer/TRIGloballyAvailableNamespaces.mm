@@ -1,18 +1,18 @@
 @interface TRIGloballyAvailableNamespaces
-- (BOOL)setNamespaces:(id)a3;
-- (TRIGloballyAvailableNamespaces)initWithKVStore:(id)a3;
+- (BOOL)setNamespaces:(id)namespaces;
+- (TRIGloballyAvailableNamespaces)initWithKVStore:(id)store;
 - (id)namespaces;
 @end
 
 @implementation TRIGloballyAvailableNamespaces
 
-- (TRIGloballyAvailableNamespaces)initWithKVStore:(id)a3
+- (TRIGloballyAvailableNamespaces)initWithKVStore:(id)store
 {
-  v6 = a3;
-  if (!v6)
+  storeCopy = store;
+  if (!storeCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIGloballyAvailableNamespaces.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"kvStore"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIGloballyAvailableNamespaces.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"kvStore"}];
   }
 
   v11.receiver = self;
@@ -21,19 +21,19 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_kvStore, a3);
+    objc_storeStrong(&v7->_kvStore, store);
   }
 
   return v8;
 }
 
-- (BOOL)setNamespaces:(id)a3
+- (BOOL)setNamespaces:(id)namespaces
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAAB0];
-  v5 = [a3 allObjects];
+  allObjects = [namespaces allObjects];
   v11 = 0;
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:0 error:&v11];
+  v6 = [v4 archivedDataWithRootObject:allObjects requiringSecureCoding:0 error:&v11];
   v7 = v11;
 
   if (v6)

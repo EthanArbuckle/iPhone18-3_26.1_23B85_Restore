@@ -1,25 +1,25 @@
 @interface MADAlchemistAnalzyer
 + (id)sharedProcessingQueue;
-- (MADAlchemistAnalzyer)initWithOptions:(id)a3;
-- (__CVBuffer)loadImageFromURL:(id)a3;
-- (float)getFocalLengthPX:(id)a3 width:(int)a4 height:(int)a5;
-- (id)convertHeadroom:(id)a3 forImage:(id)a4;
-- (int)performAlchemistForPixelBuffer:(__CVBuffer *)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6;
-- (int)performAlchemistForURL:(id)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6;
+- (MADAlchemistAnalzyer)initWithOptions:(id)options;
+- (__CVBuffer)loadImageFromURL:(id)l;
+- (float)getFocalLengthPX:(id)x width:(int)width height:(int)height;
+- (id)convertHeadroom:(id)headroom forImage:(id)image;
+- (int)performAlchemistForPixelBuffer:(__CVBuffer *)buffer options:(id)options results:(id *)results cancel:(id)cancel;
+- (int)performAlchemistForURL:(id)l options:(id)options results:(id *)results cancel:(id)cancel;
 @end
 
 @implementation MADAlchemistAnalzyer
 
-- (MADAlchemistAnalzyer)initWithOptions:(id)a3
+- (MADAlchemistAnalzyer)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = MADAlchemistAnalzyer;
   v6 = [(MADAlchemistAnalzyer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v8 = v7;
   }
 
@@ -38,20 +38,20 @@
   return v3;
 }
 
-- (int)performAlchemistForPixelBuffer:(__CVBuffer *)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6
+- (int)performAlchemistForPixelBuffer:(__CVBuffer *)buffer options:(id)options results:(id *)results cancel:(id)cancel
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = v10;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v11 = cancelCopy;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
   v55 = sub_100002CD4;
   v56 = sub_100002CE4;
   v57 = 0;
-  if (!v10 || ((*(v10 + 2))(v10) & 1) == 0)
+  if (!cancelCopy || ((*(cancelCopy + 2))(cancelCopy) & 1) == 0)
   {
-    v39 = a5;
+    resultsCopy = results;
     v13 = +[NSFileManager defaultManager];
     if (([v13 fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"] & 1) == 0)
     {
@@ -74,11 +74,11 @@
     }
 
     v16 = +[NSUUID UUID];
-    v17 = [v16 UUIDString];
-    v41 = [NSString stringWithFormat:@"%@al-%@.mxi", @"/tmp/com.apple.mediaanalysisd/", v17];
+    uUIDString = [v16 UUIDString];
+    v41 = [NSString stringWithFormat:@"%@al-%@.mxi", @"/tmp/com.apple.mediaanalysisd/", uUIDString];
 
     v18 = [[NSURL alloc] initFileURLWithPath:v41];
-    v19 = [v9 objectForKeyedSubscript:@"AlchemistFocalLengthPX"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"AlchemistFocalLengthPX"];
     v20 = v19;
     if (v19)
     {
@@ -88,7 +88,7 @@
 
     else
     {
-      Width = CVPixelBufferGetWidth(a3);
+      Width = CVPixelBufferGetWidth(buffer);
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -96,21 +96,21 @@
       }
     }
 
-    v38 = [v9 objectForKeyedSubscript:@"AlchemistPreset"];
-    v40 = [v9 objectForKeyedSubscript:@"AlchemistResolutionCustomSize"];
-    v23 = [v9 objectForKeyedSubscript:@"AlchemistClient"];
+    v38 = [optionsCopy objectForKeyedSubscript:@"AlchemistPreset"];
+    v40 = [optionsCopy objectForKeyedSubscript:@"AlchemistResolutionCustomSize"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"AlchemistClient"];
     *buf = 0;
     v67 = buf;
     v68 = 0x3032000000;
     v69 = sub_100002CD4;
     v70 = sub_100002CE4;
     v71 = 0;
-    v24 = [objc_opt_class() sharedProcessingQueue];
+    sharedProcessingQueue = [objc_opt_class() sharedProcessingQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002CEC;
     block[3] = &unk_1000108A0;
-    v49 = a3;
+    bufferCopy = buffer;
     v50 = Width;
     v25 = v38;
     v44 = v25;
@@ -120,7 +120,7 @@
     v46 = v27;
     v47 = &v52;
     v48 = buf;
-    dispatch_sync(v24, block);
+    dispatch_sync(sharedProcessingQueue, block);
 
     if (v53[5] || !*(v67 + 5))
     {
@@ -134,7 +134,7 @@
 
     else
     {
-      v28 = [v9 objectForKeyedSubscript:@"UserInitiated"];
+      v28 = [optionsCopy objectForKeyedSubscript:@"UserInitiated"];
       if (v28)
       {
 
@@ -145,14 +145,14 @@ LABEL_21:
         v63 = v31;
         v32 = [NSDictionary dictionaryWithObjects:&v63 forKeys:&v62 count:1];
         v65 = v32;
-        *v39 = [NSDictionary dictionaryWithObjects:&v65 forKeys:&v64 count:1];
+        *resultsCopy = [NSDictionary dictionaryWithObjects:&v65 forKeys:&v64 count:1];
 
 LABEL_22:
         v12 = 0;
         goto LABEL_23;
       }
 
-      v29 = [v9 objectForKeyedSubscript:@"InProcess"];
+      v29 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
       v30 = v29 == 0;
 
       if (!v30)
@@ -172,7 +172,7 @@ LABEL_22:
         v59 = v41;
         v36 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
         v61 = v36;
-        *v39 = [NSDictionary dictionaryWithObjects:&v61 forKeys:&v60 count:1];
+        *resultsCopy = [NSDictionary dictionaryWithObjects:&v61 forKeys:&v60 count:1];
 
         goto LABEL_22;
       }
@@ -201,25 +201,25 @@ LABEL_25:
   return v12;
 }
 
-- (int)performAlchemistForURL:(id)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6
+- (int)performAlchemistForURL:(id)l options:(id)options results:(id *)results cancel:(id)cancel
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(MADAlchemistAnalzyer *)self loadImageFromURL:v10];
+  lCopy = l;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v13 = [(MADAlchemistAnalzyer *)self loadImageFromURL:lCopy];
   pixelBuffer = v13;
   if (v13)
   {
     Width = CVPixelBufferGetWidth(v13);
-    [(MADAlchemistAnalzyer *)self getFocalLengthPX:v10 width:Width height:CVPixelBufferGetHeight(pixelBuffer)];
+    [(MADAlchemistAnalzyer *)self getFocalLengthPX:lCopy width:Width height:CVPixelBufferGetHeight(pixelBuffer)];
     v16 = v15;
-    v17 = [v11 mutableCopy];
+    v17 = [optionsCopy mutableCopy];
     LODWORD(v18) = v16;
     v19 = [NSNumber numberWithFloat:v18];
     [v17 setObject:v19 forKeyedSubscript:@"AlchemistFocalLengthPX"];
 
     v20 = [v17 copy];
-    v21 = [(MADAlchemistAnalzyer *)self performAlchemistForPixelBuffer:pixelBuffer options:v20 results:a5 cancel:v12];
+    v21 = [(MADAlchemistAnalzyer *)self performAlchemistForPixelBuffer:pixelBuffer options:v20 results:results cancel:cancelCopy];
   }
 
   else
@@ -237,14 +237,14 @@ LABEL_25:
   return v21;
 }
 
-- (__CVBuffer)loadImageFromURL:(id)a3
+- (__CVBuffer)loadImageFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   pixelBufferOut = 0;
   v27 = kCIImageApplyOrientationProperty;
   v28 = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-  v6 = [CIImage imageWithContentsOfURL:v4 options:v5];
+  v6 = [CIImage imageWithContentsOfURL:lCopy options:v5];
 
   if (v6)
   {
@@ -328,11 +328,11 @@ LABEL_25:
   return v12;
 }
 
-- (float)getFocalLengthPX:(id)a3 width:(int)a4 height:(int)a5
+- (float)getFocalLengthPX:(id)x width:(int)width height:(int)height
 {
-  v7 = a3;
-  v8 = a4;
-  isrc = CGImageSourceCreateWithURL(v7, 0);
+  xCopy = x;
+  widthCopy = width;
+  isrc = CGImageSourceCreateWithURL(xCopy, 0);
   if (isrc)
   {
     v22 = kCGImageSourceShouldCache;
@@ -355,8 +355,8 @@ LABEL_25:
           [v16 floatValue];
           v18 = v17;
 
-          v19 = sqrtf((a5 * a5) + (v8 * v8)) / 43.27;
-          v8 = v18 * v19;
+          v19 = sqrtf((height * height) + (widthCopy * widthCopy)) / 43.27;
+          widthCopy = v18 * v19;
         }
       }
     }
@@ -364,17 +364,17 @@ LABEL_25:
 
   sub_1000020D0(&isrc);
 
-  return v8;
+  return widthCopy;
 }
 
-- (id)convertHeadroom:(id)a3 forImage:(id)a4
+- (id)convertHeadroom:(id)headroom forImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  headroomCopy = headroom;
+  imageCopy = image;
+  v7 = imageCopy;
+  if (headroomCopy)
   {
-    v8 = v5;
+    v8 = headroomCopy;
   }
 
   else
@@ -382,12 +382,12 @@ LABEL_25:
     v8 = &off_100010D60;
   }
 
-  [v6 contentHeadroom];
+  [imageCopy contentHeadroom];
   v10 = v9;
   [v8 floatValue];
   if (vabds_f32(v10, v11) <= 0.00000011921)
   {
-    v14 = v7;
+    outputImage = v7;
   }
 
   else
@@ -398,11 +398,11 @@ LABEL_25:
     v13 = [NSNumber numberWithFloat:?];
     [v12 setValue:v13 forKey:@"inputTargetHeadroom"];
 
-    v14 = [v12 outputImage];
+    outputImage = [v12 outputImage];
     [v12 setValue:0 forKey:kCIInputImageKey];
   }
 
-  return v14;
+  return outputImage;
 }
 
 @end

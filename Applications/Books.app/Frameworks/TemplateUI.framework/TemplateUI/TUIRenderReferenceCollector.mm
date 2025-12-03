@@ -1,13 +1,13 @@
 @interface TUIRenderReferenceCollector
-+ (id)referenceCollectorWithViewState:(id)a3;
++ (id)referenceCollectorWithViewState:(id)state;
 @end
 
 @implementation TUIRenderReferenceCollector
 
-+ (id)referenceCollectorWithViewState:(id)a3
++ (id)referenceCollectorWithViewState:(id)state
 {
-  v3 = a3;
-  v4 = [[_TUIRenderReferenceCollector alloc] initWithViewState:v3];
+  stateCopy = state;
+  v4 = [[_TUIRenderReferenceCollector alloc] initWithViewState:stateCopy];
 
   return v4;
 }

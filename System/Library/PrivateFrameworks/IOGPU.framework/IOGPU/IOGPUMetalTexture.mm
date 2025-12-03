@@ -1,35 +1,35 @@
 @interface IOGPUMetalTexture
-+ (void)initNewTextureDataWithDevice:(id)a3 descriptor:(id)a4 sysMemSize:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9;
++ (void)initNewTextureDataWithDevice:(id)device descriptor:(id)descriptor sysMemSize:(unint64_t)size sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)memSize vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args;
 - (BOOL)isAliasable;
 - (BOOL)isSparse;
 - (IOGPUMetalBuffer)buffer;
 - (IOGPUMetalResource)rootResource;
-- (IOGPUMetalTexture)initWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6;
-- (IOGPUMetalTexture)initWithBuffer:(id)a3 descriptor:(id)a4 sysMemOffset:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10;
-- (IOGPUMetalTexture)initWithBuffer:(id)a3 descriptor:(id)a4 sysMemOffset:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10 isStrideTexture:(BOOL)a11;
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 iosurface:(__IOSurface *)a5 plane:(unsigned int)a6 field:(unsigned int)a7 args:(IOGPUNewResourceArgs *)a8 argsSize:(unsigned int)a9;
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 placementSparseBytes:(unint64_t)a5 placementSparsePageSize:(int64_t)a6 placementSparseMetaDataBytes:(unint64_t)a7 placementSparseResidencyBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10;
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 sysMemPointer:(void *)a5 sysMemSize:(unint64_t)a6 sysMemLength:(unint64_t)a7 sysMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10 deallocator:(id)aBlock;
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 sysMemSize:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10;
-- (IOGPUMetalTexture)initWithHeap:(id)a3 resource:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 device:(id)a7 descriptor:(id)a8;
-- (IOGPUMetalTexture)initWithPrimaryBuffer:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7 descriptor:(id)a8 sysMemRowBytes:(unint64_t)a9 vidMemSize:(unint64_t)a10 vidMemRowBytes:(unint64_t)a11 args:(IOGPUNewResourceArgs *)a12 argsSize:(unsigned int)a13;
-- (IOGPUMetalTexture)initWithTextureInternal:(id)a3 pixelFormat:(unint64_t)a4 textureType:(unint64_t)a5 levels:(_NSRange)a6 slices:(_NSRange)a7 swizzle:(id)a8 compressedView:(BOOL)a9;
+- (IOGPUMetalTexture)initWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
+- (IOGPUMetalTexture)initWithBuffer:(id)buffer descriptor:(id)descriptor sysMemOffset:(unint64_t)offset sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)size vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0;
+- (IOGPUMetalTexture)initWithBuffer:(id)buffer descriptor:(id)descriptor sysMemOffset:(unint64_t)offset sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)size vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0 isStrideTexture:(BOOL)self1;
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unsigned int)plane field:(unsigned int)field args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)size;
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor placementSparseBytes:(unint64_t)bytes placementSparsePageSize:(int64_t)size placementSparseMetaDataBytes:(unint64_t)dataBytes placementSparseResidencyBytes:(unint64_t)residencyBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0;
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor sysMemPointer:(void *)pointer sysMemSize:(unint64_t)size sysMemLength:(unint64_t)length sysMemRowBytes:(unint64_t)bytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0 deallocator:(id)aBlock;
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor sysMemSize:(unint64_t)size sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)memSize vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0;
+- (IOGPUMetalTexture)initWithHeap:(id)heap resource:(id)resource offset:(unint64_t)offset length:(unint64_t)length device:(id)device descriptor:(id)descriptor;
+- (IOGPUMetalTexture)initWithPrimaryBuffer:(id)buffer heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length descriptor:(id)descriptor sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)self0 vidMemRowBytes:(unint64_t)self1 args:(IOGPUNewResourceArgs *)self2 argsSize:(unsigned int)self3;
+- (IOGPUMetalTexture)initWithTextureInternal:(id)internal pixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle compressedView:(BOOL)view;
 - (IOGPUMetalTexture)parentTexture;
 - (__CFArray)copyAnnotations;
 - (__IOSurface)iosurface;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (id)newSharedTextureHandle;
 - (unint64_t)allocatedSize;
 - (unint64_t)bufferBytesPerRow;
 - (unint64_t)bufferOffset;
 - (unint64_t)hazardTrackingMode;
-- (void)_setLabel:(id)a3;
-- (void)copyFromPixels:(const void *)a3 rowBytes:(unint64_t)a4 imageBytes:(unint64_t)a5 toSlice:(unint64_t)a6 mipmapLevel:(unint64_t)a7 origin:(id *)a8 size:(id *)a9;
-- (void)copyFromSlice:(unint64_t)a3 mipmapLevel:(unint64_t)a4 origin:(id *)a5 size:(id *)a6 toPixels:(void *)a7 rowBytes:(unint64_t)a8 imageBytes:(unint64_t)a9;
+- (void)_setLabel:(id)label;
+- (void)copyFromPixels:(const void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes toSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size;
+- (void)copyFromSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size toPixels:(void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes;
 - (void)dealloc;
 - (void)emitResourceInfoTraceEvent;
 - (void)makeAliasable;
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6;
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row;
 @end
 
 @implementation IOGPUMetalTexture
@@ -192,20 +192,20 @@
   }
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v26[84] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v6 = [(IOGPUMetalResource *)self retainedLabel];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  retainedLabel = [(IOGPUMetalResource *)self retainedLabel];
   v7 = MEMORY[0x1E696AEC0];
   v25.receiver = self;
   v25.super_class = IOGPUMetalTexture;
   v8 = [(IOGPUMetalTexture *)&v25 description];
   v26[0] = v5;
   v26[1] = @"label =";
-  if (v6)
+  if (retainedLabel)
   {
-    v9 = v6;
+    v9 = retainedLabel;
   }
 
   else
@@ -282,7 +282,7 @@
   parentTexture = self->_parentTexture;
   if (parentTexture)
   {
-    v18 = [(IOGPUMetalTexture *)parentTexture formattedDescription:a3 + 4];
+    v18 = [(IOGPUMetalTexture *)parentTexture formattedDescription:description + 4];
   }
 
   else
@@ -299,13 +299,13 @@
   v26[65] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_parentRelativeSlice];
   v26[66] = v5;
   v26[67] = @"buffer =";
-  v19 = [(IOGPUMetalTexture *)self buffer];
-  if (!v19)
+  buffer = [(IOGPUMetalTexture *)self buffer];
+  if (!buffer)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    buffer = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[68] = v19;
+  v26[68] = buffer;
   v26[69] = v5;
   v26[70] = @"bufferOffset =";
   v26[71] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IOGPUMetalTexture bufferOffset](self, "bufferOffset")}];
@@ -338,14 +338,14 @@
   return v22;
 }
 
-- (void)_setLabel:(id)a3
+- (void)_setLabel:(id)label
 {
   v5.receiver = self;
   v5.super_class = IOGPUMetalTexture;
   [(IOGPUMetalResource *)&v5 _setLabel:?];
   if (self->_shareable)
   {
-    IOSurfaceSetValue(self->_iosurface, *MEMORY[0x1E696CF98], a3);
+    IOSurfaceSetValue(self->_iosurface, *MEMORY[0x1E696CF98], label);
   }
 }
 
@@ -389,57 +389,57 @@
 
   v4 = objc_alloc(MEMORY[0x1E6974180]);
   iosurface = self->_iosurface;
-  v6 = [(IOGPUMetalResource *)self label];
+  label = [(IOGPUMetalResource *)self label];
 
-  return [v4 initWithIOSurface:iosurface label:v6];
+  return [v4 initWithIOSurface:iosurface label:label];
 }
 
-+ (void)initNewTextureDataWithDevice:(id)a3 descriptor:(id)a4 sysMemSize:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9
++ (void)initNewTextureDataWithDevice:(id)device descriptor:(id)descriptor sysMemSize:(unint64_t)size sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)memSize vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args
 {
-  a9->var0.var16.var0.var3.var1 = 0;
-  *&a9->var0.var14 = 0u;
-  *&a9->var0.var16.var4.var1 = 0u;
-  *&a9->var0.var6 = 0u;
-  *&a9->var0.var12 = 0u;
-  *&a9->var0.var0 = 0u;
-  v10 = [a4 descriptorPrivate];
-  if (*(v10 + 72))
+  args->var0.var16.var0.var3.var1 = 0;
+  *&args->var0.var14 = 0u;
+  *&args->var0.var16.var4.var1 = 0u;
+  *&args->var0.var6 = 0u;
+  *&args->var0.var12 = 0u;
+  *&args->var0.var0 = 0u;
+  descriptorPrivate = [descriptor descriptorPrivate];
+  if (*(descriptorPrivate + 72))
   {
     +[IOGPUMetalTexture initNewTextureDataWithDevice:descriptor:sysMemSize:sysMemRowBytes:vidMemSize:vidMemRowBytes:args:];
   }
 
-  v11 = (*(v10 + 112) & 0xFLL) == 1;
-  a9->var0.var0 = 0;
-  a9->var0.var1 = v11 << 10;
-  v12 = *(v10 + 24);
-  a9->var0.var2 = *(v10 + 16);
-  v13 = *v10;
-  a9->var0.var3 = v12;
-  a9->var0.var11 = *(v10 + 144);
+  v11 = (*(descriptorPrivate + 112) & 0xFLL) == 1;
+  args->var0.var0 = 0;
+  args->var0.var1 = v11 << 10;
+  v12 = *(descriptorPrivate + 24);
+  args->var0.var2 = *(descriptorPrivate + 16);
+  v13 = *descriptorPrivate;
+  args->var0.var3 = v12;
+  args->var0.var11 = *(descriptorPrivate + 144);
   if (v13 == 6)
   {
-    a9->var0.var4 = 6 * *(v10 + 56);
+    args->var0.var4 = 6 * *(descriptorPrivate + 56);
   }
 
   else
   {
     if (v13 == 3)
     {
-      v14 = *(v10 + 56);
+      v14 = *(descriptorPrivate + 56);
     }
 
     else
     {
       if (v13 == 1)
       {
-        a9->var0.var3 = *(v10 + 56);
+        args->var0.var3 = *(descriptorPrivate + 56);
         goto LABEL_11;
       }
 
-      v14 = *(v10 + 32);
+      v14 = *(descriptorPrivate + 32);
     }
 
-    a9->var0.var4 = v14;
+    args->var0.var4 = v14;
   }
 
 LABEL_11:
@@ -453,13 +453,13 @@ LABEL_11:
     v15 = 6;
   }
 
-  a9->var0.var6 = v15;
-  a9->var0.var7 = *(v10 + 40);
-  a9->var0.var9 = 1;
-  v16 = *(v10 + 8);
+  args->var0.var6 = v15;
+  args->var0.var7 = *(descriptorPrivate + 40);
+  args->var0.var9 = 1;
+  v16 = *(descriptorPrivate + 8);
   MTLPixelFormatGetInfoForDevice();
-  a9->var0.var9 = 0;
-  if (*(v10 + 64))
+  args->var0.var9 = 0;
+  if (*(descriptorPrivate + 64))
   {
     v17 = 64;
   }
@@ -469,62 +469,62 @@ LABEL_11:
     v17 = 0;
   }
 
-  a9->var0.var10 = v17;
-  *&a9->var0.var16.var0.var0 = 0uLL;
-  a9->var0.var16.var0.var2 = a5;
+  args->var0.var10 = v17;
+  *&args->var0.var16.var0.var0 = 0uLL;
+  args->var0.var16.var0.var2 = size;
 }
 
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 sysMemSize:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor sysMemSize:(unint64_t)size sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)memSize vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0
 {
-  v17 = [a4 descriptorPrivate];
-  v25 = *v17;
-  [IOGPUMetalTexture initNewTextureDataWithDevice:a3 descriptor:a4 sysMemSize:a5 sysMemRowBytes:a6 vidMemSize:a7 vidMemRowBytes:a8 args:a9];
-  v18 = [(IOGPUMetalResource *)self initWithDevice:a3 options:*(v17 + 112) args:a9 argsSize:a10];
+  descriptorPrivate = [descriptor descriptorPrivate];
+  v25 = *descriptorPrivate;
+  [IOGPUMetalTexture initNewTextureDataWithDevice:device descriptor:descriptor sysMemSize:size sysMemRowBytes:bytes vidMemSize:memSize vidMemRowBytes:rowBytes args:args];
+  v18 = [(IOGPUMetalResource *)self initWithDevice:device options:*(descriptorPrivate + 112) args:args argsSize:argsSize];
   v19 = v18;
   if (v18)
   {
-    v18->_textureType = *v17;
+    v18->_textureType = *descriptorPrivate;
     v20 = 6;
-    v18->_width = *(v17 + 16);
+    v18->_width = *(descriptorPrivate + 16);
     if (v25 - 5 >= 2)
     {
       v20 = 1;
     }
 
-    v18->_height = *(v17 + 24);
-    v18->_depth = *(v17 + 32);
-    v18->_mipmapLevelCount = *(v17 + 40);
-    v18->_sampleCount = *(v17 + 48);
-    v18->_arrayLength = *(v17 + 56);
+    v18->_height = *(descriptorPrivate + 24);
+    v18->_depth = *(descriptorPrivate + 32);
+    v18->_mipmapLevelCount = *(descriptorPrivate + 40);
+    v18->_sampleCount = *(descriptorPrivate + 48);
+    v18->_arrayLength = *(descriptorPrivate + 56);
     v18->_numFaces = v20;
-    v18->_pixelFormat = *(v17 + 8);
-    v18->_usage = *(v17 + 192);
-    if (*(v17 + 72))
+    v18->_pixelFormat = *(descriptorPrivate + 8);
+    v18->_usage = *(descriptorPrivate + 192);
+    if (*(descriptorPrivate + 72))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:sysMemSize:sysMemRowBytes:vidMemSize:vidMemRowBytes:args:argsSize:];
     }
 
     v18->_rotation = 0;
-    v18->_swizzle = *(v17 + 84);
-    v18->_writeSwizzleEnabled = *(v17 + 88);
+    v18->_swizzle = *(descriptorPrivate + 84);
+    v18->_writeSwizzleEnabled = *(descriptorPrivate + 88);
     v18->_isCompressed = 0;
     v18->_shareable = 0;
-    if (*(v17 + 80))
+    if (*(descriptorPrivate + 80))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:sysMemSize:sysMemRowBytes:vidMemSize:vidMemRowBytes:args:argsSize:];
     }
 
     v18->_framebufferOnly = 0;
-    v18->_isDrawable = *(v17 + 81);
-    v18->_allowGPUOptimizedContents = *(v17 + 128);
-    v18->_placementSparsePageSize = *(v17 + 184);
+    v18->_isDrawable = *(descriptorPrivate + 81);
+    v18->_allowGPUOptimizedContents = *(descriptorPrivate + 128);
+    v18->_placementSparsePageSize = *(descriptorPrivate + 184);
     if (*__globalGPUCommPage)
     {
-      [a3 deviceRef];
+      [device deviceRef];
       v21 = *&v19->super._anon_50[48];
       v22 = v19->_height | (v19->_width << 32);
       v23 = ((v19->_placementSparsePageSize != 0) << 52) | ((v19->_textureType & 0xF) << 48) | (v19->_pixelFormat << 32);
-      [a3 registryID];
+      [device registryID];
       IOGPUDeviceTraceEvent();
     }
   }
@@ -532,72 +532,72 @@ LABEL_11:
   return v19;
 }
 
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 sysMemPointer:(void *)a5 sysMemSize:(unint64_t)a6 sysMemLength:(unint64_t)a7 sysMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10 deallocator:(id)aBlock
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor sysMemPointer:(void *)pointer sysMemSize:(unint64_t)size sysMemLength:(unint64_t)length sysMemRowBytes:(unint64_t)bytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0 deallocator:(id)aBlock
 {
-  v17 = [a4 descriptorPrivate];
-  v18 = *(v17 + 112);
-  v28 = *v17;
-  [IOGPUMetalTexture initNewTextureDataWithDevice:a3 descriptor:a4 sysMemSize:a6 sysMemRowBytes:a8 vidMemSize:0 vidMemRowBytes:0 args:a9];
-  a9->var0.var0 = 128;
-  a9->var0.var16.var0.var0 = a5;
-  a9->var0.var16.var0.var1 = a5;
-  v26 = a3;
-  v19 = [(IOGPUMetalResource *)self initWithDevice:a3 options:v18 args:a9 argsSize:a10];
+  descriptorPrivate = [descriptor descriptorPrivate];
+  v18 = *(descriptorPrivate + 112);
+  v28 = *descriptorPrivate;
+  [IOGPUMetalTexture initNewTextureDataWithDevice:device descriptor:descriptor sysMemSize:size sysMemRowBytes:bytes vidMemSize:0 vidMemRowBytes:0 args:args];
+  args->var0.var0 = 128;
+  args->var0.var16.var0.var0 = pointer;
+  args->var0.var16.var0.var1 = pointer;
+  deviceCopy = device;
+  v19 = [(IOGPUMetalResource *)self initWithDevice:device options:v18 args:args argsSize:argsSize];
   v20 = v19;
   if (v19)
   {
-    v19->_textureType = *v17;
+    v19->_textureType = *descriptorPrivate;
     v21 = 6;
-    v19->_width = *(v17 + 16);
+    v19->_width = *(descriptorPrivate + 16);
     if (v28 - 5 >= 2)
     {
       v21 = 1;
     }
 
-    v19->_height = *(v17 + 24);
-    v19->_depth = *(v17 + 32);
-    v19->_mipmapLevelCount = *(v17 + 40);
-    v19->_sampleCount = *(v17 + 48);
-    v19->_arrayLength = *(v17 + 56);
+    v19->_height = *(descriptorPrivate + 24);
+    v19->_depth = *(descriptorPrivate + 32);
+    v19->_mipmapLevelCount = *(descriptorPrivate + 40);
+    v19->_sampleCount = *(descriptorPrivate + 48);
+    v19->_arrayLength = *(descriptorPrivate + 56);
     v19->_numFaces = v21;
-    v19->_pixelFormat = *(v17 + 8);
-    v19->_usage = *(v17 + 192);
-    if (*(v17 + 72))
+    v19->_pixelFormat = *(descriptorPrivate + 8);
+    v19->_usage = *(descriptorPrivate + 192);
+    if (*(descriptorPrivate + 72))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:sysMemPointer:sysMemSize:sysMemLength:sysMemRowBytes:args:argsSize:deallocator:];
     }
 
     v19->_rotation = 0;
-    v19->_swizzle = *(v17 + 84);
-    v19->_writeSwizzleEnabled = *(v17 + 88);
+    v19->_swizzle = *(descriptorPrivate + 84);
+    v19->_writeSwizzleEnabled = *(descriptorPrivate + 88);
     v19->_shareable = 0;
-    if (*(v17 + 80))
+    if (*(descriptorPrivate + 80))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:sysMemPointer:sysMemSize:sysMemLength:sysMemRowBytes:args:argsSize:deallocator:];
     }
 
     v19->_framebufferOnly = 0;
-    v19->_isDrawable = *(v17 + 81);
+    v19->_isDrawable = *(descriptorPrivate + 81);
     if (aBlock)
     {
-      v19->_length = a7;
-      v19->_pointer = a5;
+      v19->_length = length;
+      v19->_pointer = pointer;
       v19->_deallocator = _Block_copy(aBlock);
     }
 
-    v20->_allowGPUOptimizedContents = *(v17 + 128);
-    if (*(v17 + 184))
+    v20->_allowGPUOptimizedContents = *(descriptorPrivate + 128);
+    if (*(descriptorPrivate + 184))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:sysMemPointer:sysMemSize:sysMemLength:sysMemRowBytes:args:argsSize:deallocator:];
     }
 
     if (*__globalGPUCommPage)
     {
-      [a3 deviceRef];
+      [device deviceRef];
       v22 = *&v20->super._anon_50[48];
       v23 = v20->_height | (v20->_width << 32);
       v24 = ((v20->_textureType & 0xF) << 48) | (v20->_pixelFormat << 32);
-      [v26 registryID];
+      [deviceCopy registryID];
       IOGPUDeviceTraceEvent();
     }
   }
@@ -605,23 +605,23 @@ LABEL_11:
   return v20;
 }
 
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 iosurface:(__IOSurface *)a5 plane:(unsigned int)a6 field:(unsigned int)a7 args:(IOGPUNewResourceArgs *)a8 argsSize:(unsigned int)a9
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unsigned int)plane field:(unsigned int)field args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)size
 {
-  a8->var0.var16.var0.var3.var1 = 0;
-  *&a8->var0.var14 = 0u;
-  *&a8->var0.var16.var4.var1 = 0u;
-  *&a8->var0.var6 = 0u;
-  *&a8->var0.var12 = 0u;
-  *&a8->var0.var0 = 0u;
-  v13 = [a4 descriptorPrivate];
-  v14 = v13;
-  if (*(v13 + 72) >= 5uLL)
+  args->var0.var16.var0.var3.var1 = 0;
+  *&args->var0.var14 = 0u;
+  *&args->var0.var16.var4.var1 = 0u;
+  *&args->var0.var6 = 0u;
+  *&args->var0.var12 = 0u;
+  *&args->var0.var0 = 0u;
+  descriptorPrivate = [descriptor descriptorPrivate];
+  v14 = descriptorPrivate;
+  if (*(descriptorPrivate + 72) >= 5uLL)
   {
-    v38 = *(v13 + 72);
+    v38 = *(descriptorPrivate + 72);
     MTLReportFailure();
   }
 
-  v15 = IOSurfaceCopyValue(a5, *MEMORY[0x1E696CEF8]);
+  v15 = IOSurfaceCopyValue(iosurface, *MEMORY[0x1E696CEF8]);
   if (v15)
   {
     v16 = v15;
@@ -636,7 +636,7 @@ LABEL_11:
   v18 = *(v14 + 8);
   MTLPixelFormatGetInfoForDevice();
   v19 = *(v14 + 72);
-  v40 = a3;
+  deviceCopy = device;
   if (v19 <= 4 && ((1 << v19) & 0x1A) != 0)
   {
     v20 = (v14 + 16);
@@ -655,30 +655,30 @@ LABEL_11:
 
   v24 = *v21;
   v25 = *v23;
-  if (!a5)
+  if (!iosurface)
   {
     [IOGPUMetalTexture initWithDevice:descriptor:iosurface:plane:field:args:argsSize:];
   }
 
-  if (IOSurfaceGetPlaneCount(a5) == 0 && !v17)
+  if (IOSurfaceGetPlaneCount(iosurface) == 0 && !v17)
   {
-    IOSurfaceGetBaseAddress(a5);
-    IOSurfaceGetBytesPerRow(a5);
+    IOSurfaceGetBaseAddress(iosurface);
+    IOSurfaceGetBytesPerRow(iosurface);
     _mtlValidateStrideTextureParameters();
-    if (a6)
+    if (plane)
     {
       [IOGPUMetalTexture initWithDevice:descriptor:iosurface:plane:field:args:argsSize:];
     }
 
-    [a4 pixelFormat];
+    [descriptor pixelFormat];
     MTLGetTextureLevelInfoForDeviceWithOptions();
-    IOSurfaceGetBytesPerRow(a5);
-    IOSurfaceGetAllocSize(a5);
-    IOSurfaceGetBytesPerRow(a5);
+    IOSurfaceGetBytesPerRow(iosurface);
+    IOSurfaceGetAllocSize(iosurface);
+    IOSurfaceGetBytesPerRow(iosurface);
     *(v14 + 56);
-    IOSurfaceGetHeight(a5);
-    IOSurfaceGetElementHeight(a5);
-    if (!IOSurfaceAllowsPixelSizeCasting(a5) && IOSurfaceGetBytesPerElement(a5))
+    IOSurfaceGetHeight(iosurface);
+    IOSurfaceGetElementHeight(iosurface);
+    if (!IOSurfaceAllowsPixelSizeCasting(iosurface) && IOSurfaceGetBytesPerElement(iosurface))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:iosurface:plane:field:args:argsSize:];
     }
@@ -701,18 +701,18 @@ LABEL_11:
     [IOGPUMetalTexture initWithDevice:descriptor:iosurface:plane:field:args:argsSize:];
   }
 
-  *&a8->var0.var0 = 130;
-  a8->var0.var2 = *v20;
-  a8->var0.var3 = *v22;
+  *&args->var0.var0 = 130;
+  args->var0.var2 = *v20;
+  args->var0.var3 = *v22;
   if (v26 == 6)
   {
-    a8->var0.var4 = 6 * *(v14 + 56);
-    v29 = v40;
+    args->var0.var4 = 6 * *(v14 + 56);
+    v29 = deviceCopy;
   }
 
   else
   {
-    v29 = v40;
+    v29 = deviceCopy;
     if (v26 == 3)
     {
       v30 = *(v14 + 56);
@@ -722,25 +722,25 @@ LABEL_11:
     {
       if (v26 == 1)
       {
-        a8->var0.var3 = *(v14 + 56);
+        args->var0.var3 = *(v14 + 56);
         goto LABEL_33;
       }
 
       v30 = *(v14 + 32);
     }
 
-    a8->var0.var4 = v30;
+    args->var0.var4 = v30;
   }
 
 LABEL_33:
-  a8->var0.var6 = v27;
-  a8->var0.var7 = *(v14 + 40);
-  a8->var0.var9 = 0;
-  a8->var0.var10 = 0;
-  a8->var0.var16.var1.var0 = IOSurfaceGetID(a5);
-  a8->var0.var16.var1.var1 = a6;
-  a8->var0.var16.var0.var1 = a7;
-  v31 = [(IOGPUMetalResource *)self initWithDevice:v29 options:*(v14 + 112) args:a8 argsSize:a9];
+  args->var0.var6 = v27;
+  args->var0.var7 = *(v14 + 40);
+  args->var0.var9 = 0;
+  args->var0.var10 = 0;
+  args->var0.var16.var1.var0 = IOSurfaceGetID(iosurface);
+  args->var0.var16.var1.var1 = plane;
+  args->var0.var16.var0.var1 = field;
+  v31 = [(IOGPUMetalResource *)self initWithDevice:v29 options:*(v14 + 112) args:args argsSize:size];
   v32 = v31;
   if (v31)
   {
@@ -766,17 +766,17 @@ LABEL_33:
     v31->_shareable = v17;
     if (v17)
     {
-      *&v31->super._anon_50[40] = IOSurfaceCopyValue(a5, *MEMORY[0x1E696CF98]);
+      *&v31->super._anon_50[40] = IOSurfaceCopyValue(iosurface, *MEMORY[0x1E696CF98]);
     }
 
     v32->_framebufferOnly = *(v14 + 80);
-    CFRetain(a5);
-    v32->_iosurface = a5;
-    v32->_iosurfacePlane = a6;
+    CFRetain(iosurface);
+    v32->_iosurface = iosurface;
+    v32->_iosurfacePlane = plane;
     v32->_isDrawable = *(v14 + 81);
-    v32->super._res.info.iosurface = a5;
-    *(&v32->super._res.var1 + 3) = a7;
-    *&v32->super._res.var0 = IOSurfaceGetAllocSize(a5) & 0xFFFFFFFFFFFFFFLL | (*(&v32->super._res.var1 + 3) << 56);
+    v32->super._res.info.iosurface = iosurface;
+    *(&v32->super._res.var1 + 3) = field;
+    *&v32->super._res.var0 = IOSurfaceGetAllocSize(iosurface) & 0xFFFFFFFFFFFFFFLL | (*(&v32->super._res.var1 + 3) << 56);
     v32->_allowGPUOptimizedContents = *(v14 + 128);
     if (*(v14 + 184))
     {
@@ -797,10 +797,10 @@ LABEL_33:
   return v32;
 }
 
-- (IOGPUMetalTexture)initWithDevice:(id)a3 descriptor:(id)a4 placementSparseBytes:(unint64_t)a5 placementSparsePageSize:(int64_t)a6 placementSparseMetaDataBytes:(unint64_t)a7 placementSparseResidencyBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10
+- (IOGPUMetalTexture)initWithDevice:(id)device descriptor:(id)descriptor placementSparseBytes:(unint64_t)bytes placementSparsePageSize:(int64_t)size placementSparseMetaDataBytes:(unint64_t)dataBytes placementSparseResidencyBytes:(unint64_t)residencyBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0
 {
-  v17 = [a4 descriptorPrivate];
-  if ((*v17 - 5) >= 2)
+  descriptorPrivate = [descriptor descriptorPrivate];
+  if ((*descriptorPrivate - 5) >= 2)
   {
     v18 = 1;
   }
@@ -810,65 +810,65 @@ LABEL_33:
     v18 = 6;
   }
 
-  [IOGPUMetalTexture initNewTextureDataWithDevice:a3 descriptor:a4 sysMemSize:0 sysMemRowBytes:0 vidMemSize:0 vidMemRowBytes:0 args:a9];
-  if (*(v17 + 208) != 2)
+  [IOGPUMetalTexture initNewTextureDataWithDevice:device descriptor:descriptor sysMemSize:0 sysMemRowBytes:0 vidMemSize:0 vidMemRowBytes:0 args:args];
+  if (*(descriptorPrivate + 208) != 2)
   {
     [IOGPUMetalTexture initWithDevice:descriptor:placementSparseBytes:placementSparsePageSize:placementSparseMetaDataBytes:placementSparseResidencyBytes:args:argsSize:];
   }
 
-  v19 = [a3 sparseTileSizeInBytesForSparsePageSize:a6];
-  a9->var0.var0 = 64;
-  a9->var0.var16.var0.var3.var0 = v19;
-  v20 = (a5 + v19 - 1) & -v19;
-  a9->var0.var16.var0.var0 = v20;
-  if (v20 < a5)
+  v19 = [device sparseTileSizeInBytesForSparsePageSize:size];
+  args->var0.var0 = 64;
+  args->var0.var16.var0.var3.var0 = v19;
+  v20 = (bytes + v19 - 1) & -v19;
+  args->var0.var16.var0.var0 = v20;
+  if (v20 < bytes)
   {
     [IOGPUMetalTexture initWithDevice:descriptor:placementSparseBytes:placementSparsePageSize:placementSparseMetaDataBytes:placementSparseResidencyBytes:args:argsSize:];
   }
 
-  a9->var0.var16.var0.var1 = a7;
-  a9->var0.var16.var0.var2 = a8;
-  v21 = [(IOGPUMetalResource *)self initWithDevice:a3 options:*(v17 + 112) args:a9 argsSize:a10];
+  args->var0.var16.var0.var1 = dataBytes;
+  args->var0.var16.var0.var2 = residencyBytes;
+  v21 = [(IOGPUMetalResource *)self initWithDevice:device options:*(descriptorPrivate + 112) args:args argsSize:argsSize];
   v22 = v21;
   if (v21)
   {
-    v21->_textureType = *v17;
-    v21->_width = *(v17 + 16);
-    v21->_height = *(v17 + 24);
-    v21->_depth = *(v17 + 32);
-    v21->_mipmapLevelCount = *(v17 + 40);
-    v21->_sampleCount = *(v17 + 48);
-    v21->_arrayLength = *(v17 + 56);
+    v21->_textureType = *descriptorPrivate;
+    v21->_width = *(descriptorPrivate + 16);
+    v21->_height = *(descriptorPrivate + 24);
+    v21->_depth = *(descriptorPrivate + 32);
+    v21->_mipmapLevelCount = *(descriptorPrivate + 40);
+    v21->_sampleCount = *(descriptorPrivate + 48);
+    v21->_arrayLength = *(descriptorPrivate + 56);
     v21->_numFaces = v18;
-    v21->_pixelFormat = *(v17 + 8);
-    v21->_usage = *(v17 + 192);
-    if (*(v17 + 72))
+    v21->_pixelFormat = *(descriptorPrivate + 8);
+    v21->_usage = *(descriptorPrivate + 192);
+    if (*(descriptorPrivate + 72))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:placementSparseBytes:placementSparsePageSize:placementSparseMetaDataBytes:placementSparseResidencyBytes:args:argsSize:];
     }
 
     v21->_rotation = 0;
-    v21->_swizzle = *(v17 + 84);
-    v21->_writeSwizzleEnabled = *(v17 + 88);
+    v21->_swizzle = *(descriptorPrivate + 84);
+    v21->_writeSwizzleEnabled = *(descriptorPrivate + 88);
     v21->_isCompressed = 0;
     v21->_shareable = 0;
-    if (*(v17 + 80))
+    if (*(descriptorPrivate + 80))
     {
       [IOGPUMetalTexture initWithDevice:descriptor:placementSparseBytes:placementSparsePageSize:placementSparseMetaDataBytes:placementSparseResidencyBytes:args:argsSize:];
     }
 
     v21->_framebufferOnly = 0;
-    v21->_isDrawable = *(v17 + 81);
-    v21->_allowGPUOptimizedContents = *(v17 + 128);
-    v21->_placementSparsePageSize = *(v17 + 184);
+    v21->_isDrawable = *(descriptorPrivate + 81);
+    v21->_allowGPUOptimizedContents = *(descriptorPrivate + 128);
+    v21->_placementSparsePageSize = *(descriptorPrivate + 184);
     if (*__globalGPUCommPage)
     {
-      [a3 deviceRef];
+      [device deviceRef];
       v23 = *&v22->super._anon_50[48];
       v24 = v22->_height | (v22->_width << 32);
       textureType = v22->_textureType;
       v26 = v22->_pixelFormat << 32;
-      [a3 registryID];
+      [device registryID];
       IOGPUDeviceTraceEvent();
     }
   }
@@ -876,15 +876,15 @@ LABEL_33:
   return v22;
 }
 
-- (IOGPUMetalTexture)initWithTextureInternal:(id)a3 pixelFormat:(unint64_t)a4 textureType:(unint64_t)a5 levels:(_NSRange)a6 slices:(_NSRange)a7 swizzle:(id)a8 compressedView:(BOOL)a9
+- (IOGPUMetalTexture)initWithTextureInternal:(id)internal pixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle compressedView:(BOOL)view
 {
-  if (!a3)
+  if (!internal)
   {
     [IOGPUMetalTexture initWithTextureInternal:pixelFormat:textureType:levels:slices:swizzle:compressedView:];
   }
 
-  length = a6.length;
-  location = a6.location;
+  length = levels.length;
+  location = levels.location;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -893,16 +893,16 @@ LABEL_33:
 
   v15 = MTLTextureSwizzleChannelsToKey();
   _mtlValidateMTLTextureSwizzleKey();
-  [a3 device];
-  LOBYTE(v30) = a9;
+  [internal device];
+  LOBYTE(v30) = view;
   _mtlValidateArgumentsForTextureViewOnDevice();
-  v16 = [(IOGPUMetalResource *)self initWithResource:a3, v30];
+  v16 = [(IOGPUMetalResource *)self initWithResource:internal, v30];
   if (v16)
   {
-    v16->_parentTexture = a3;
-    v16->_buffer = [a3 buffer];
+    v16->_parentTexture = internal;
+    v16->_buffer = [internal buffer];
     v16->_parentRelativeLevel = location;
-    v16->_parentRelativeSlice = a7.location;
+    v16->_parentRelativeSlice = slices.location;
     if (v16->_buffer)
     {
       if (length != 1)
@@ -910,78 +910,78 @@ LABEL_33:
         [IOGPUMetalTexture initWithTextureInternal:pixelFormat:textureType:levels:slices:swizzle:compressedView:];
       }
 
-      if (a7.length != 1)
+      if (slices.length != 1)
       {
         [IOGPUMetalTexture initWithTextureInternal:pixelFormat:textureType:levels:slices:swizzle:compressedView:];
       }
     }
 
-    v16->_bufferOffset = [a3 bufferOffset];
-    v16->_bufferBytesPerRow = [a3 bufferBytesPerRow];
-    v16->_textureType = a5;
-    v17 = *(a3 + 50) >> location;
+    v16->_bufferOffset = [internal bufferOffset];
+    v16->_bufferBytesPerRow = [internal bufferBytesPerRow];
+    v16->_textureType = type;
+    v17 = *(internal + 50) >> location;
     if (v17 <= 1)
     {
       v17 = 1;
     }
 
     v16->_width = v17;
-    v18 = *(a3 + 51) >> location;
+    v18 = *(internal + 51) >> location;
     if (v18 <= 1)
     {
       v18 = 1;
     }
 
     v16->_height = v18;
-    v19 = *(a3 + 52) >> location;
+    v19 = *(internal + 52) >> location;
     if (v19 <= 1)
     {
       v19 = 1;
     }
 
     v16->_depth = v19;
-    v16->_pixelFormat = a4;
-    v16->_usage = *(a3 + 48);
+    v16->_pixelFormat = format;
+    v16->_usage = *(internal + 48);
     v20 = 6;
-    if (a5 - 5 >= 2)
+    if (type - 5 >= 2)
     {
       v20 = 1;
     }
 
     v16->_numFaces = v20;
-    v16->_arrayLength = a7.length / v20;
+    v16->_arrayLength = slices.length / v20;
     v16->_mipmapLevelCount = length;
-    v16->_sampleCount = *(a3 + 54);
-    v16->_rotation = *(a3 + 49);
+    v16->_sampleCount = *(internal + 54);
+    v16->_rotation = *(internal + 49);
     v16->_swizzle = v15;
-    v16->_writeSwizzleEnabled = *(a3 + 340);
-    if ([objc_msgSend(a3 "device")] && v16->_swizzle != 84148994)
+    v16->_writeSwizzleEnabled = *(internal + 340);
+    if ([objc_msgSend(internal "device")] && v16->_swizzle != 84148994)
     {
       if (!v16->_usage)
       {
         [IOGPUMetalTexture initWithTextureInternal:pixelFormat:textureType:levels:slices:swizzle:compressedView:];
       }
 
-      [a3 device];
+      [internal device];
       writeSwizzleEnabled = v16->_writeSwizzleEnabled;
       v16->_usage &= ~MTLGetDisallowedTextureUsagesWhenSwizzling();
       _mtlValidateTextureUsage();
     }
 
     v16->_shareable = 0;
-    v16->_framebufferOnly = *(a3 + 457);
-    v16->_iosurface = *(a3 + 44);
-    v16->_iosurfacePlane = *(a3 + 45);
-    v16->_isDrawable = *(a3 + 458);
-    v16->_allowGPUOptimizedContents = *(a3 + 512);
-    v22 = *(a3 + 27);
-    v23 = *(a3 + 28);
+    v16->_framebufferOnly = *(internal + 457);
+    v16->_iosurface = *(internal + 44);
+    v16->_iosurfacePlane = *(internal + 45);
+    v16->_isDrawable = *(internal + 458);
+    v16->_allowGPUOptimizedContents = *(internal + 512);
+    v22 = *(internal + 27);
+    v23 = *(internal + 28);
     *&v16->super._anon_50[136] = v22;
     *&v16->super._anon_50[144] = v23;
-    *&v16->super._anon_50[152] = *(a3 + 232);
-    v16->super._anon_50[168] = *(a3 + 248);
-    *&v16->super._anon_50[80] = *(a3 + 20);
-    *&v16->super._anon_50[24] = *(a3 + 13);
+    *&v16->super._anon_50[152] = *(internal + 232);
+    v16->super._anon_50[168] = *(internal + 248);
+    *&v16->super._anon_50[80] = *(internal + 20);
+    *&v16->super._anon_50[24] = *(internal + 13);
     iosurface = v16->_iosurface;
     if (iosurface != v16->super._res.info.iosurface)
     {
@@ -993,7 +993,7 @@ LABEL_33:
       CFRetain(iosurface);
     }
 
-    v16->_placementSparsePageSize = *(a3 + 65);
+    v16->_placementSparsePageSize = *(internal + 65);
     if (*__globalGPUCommPage)
     {
       [*&v16->super._anon_50[32] deviceRef];
@@ -1009,9 +1009,9 @@ LABEL_33:
   return v16;
 }
 
-- (IOGPUMetalTexture)initWithBuffer:(id)a3 descriptor:(id)a4 sysMemOffset:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10 isStrideTexture:(BOOL)a11
+- (IOGPUMetalTexture)initWithBuffer:(id)buffer descriptor:(id)descriptor sysMemOffset:(unint64_t)offset sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)size vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0 isStrideTexture:(BOOL)self1
 {
-  if (!a3)
+  if (!buffer)
   {
     [IOGPUMetalTexture initWithBuffer:descriptor:sysMemOffset:sysMemRowBytes:vidMemSize:vidMemRowBytes:args:argsSize:isStrideTexture:];
   }
@@ -1022,19 +1022,19 @@ LABEL_33:
     [IOGPUMetalTexture initWithBuffer:descriptor:sysMemOffset:sysMemRowBytes:vidMemSize:vidMemRowBytes:args:argsSize:isStrideTexture:];
   }
 
-  v41 = a7;
-  v17 = a11;
-  v18 = [a3 device];
-  *&a9->var0.var0 = 0u;
-  *&a9->var0.var6 = 0u;
-  *&a9->var0.var12 = 0u;
-  *&a9->var0.var14 = 0u;
-  *&a9->var0.var16.var4.var1 = 0u;
-  a9->var0.var16.var0.var3.var1 = 0;
-  v19 = [a4 descriptorPrivate];
-  v20 = v19;
-  v21 = *v19;
-  if ((*v19 - 5) >= 2)
+  sizeCopy = size;
+  textureCopy = texture;
+  device = [buffer device];
+  *&args->var0.var0 = 0u;
+  *&args->var0.var6 = 0u;
+  *&args->var0.var12 = 0u;
+  *&args->var0.var14 = 0u;
+  *&args->var0.var16.var4.var1 = 0u;
+  args->var0.var16.var0.var3.var1 = 0;
+  descriptorPrivate = [descriptor descriptorPrivate];
+  v20 = descriptorPrivate;
+  v21 = *descriptorPrivate;
+  if ((*descriptorPrivate - 5) >= 2)
   {
     v22 = 1;
   }
@@ -1044,34 +1044,34 @@ LABEL_33:
     v22 = 6;
   }
 
-  if (a11)
+  if (texture)
   {
-    v23 = v19[2];
-    v24 = *(a3 + 20);
+    v23 = descriptorPrivate[2];
+    v24 = *(buffer + 20);
     _mtlValidateStrideTextureParameters();
-    v25 = [(IOGPUMetalResource *)self initWithResource:a3];
+    v25 = [(IOGPUMetalResource *)self initWithResource:buffer];
     v26 = v25;
     if (!v25)
     {
       return v26;
     }
 
-    *&v25->super._anon_50[24] += a5;
+    *&v25->super._anon_50[24] += offset;
     goto LABEL_27;
   }
 
-  if (v19[9])
+  if (descriptorPrivate[9])
   {
-    v40 = v19[9];
+    v40 = descriptorPrivate[9];
     MTLReportFailure();
     v21 = *v20;
   }
 
-  a9->var0.var0 = (v20[26] != 2) << 7;
-  a9->var0.var1 = 0;
+  args->var0.var0 = (v20[26] != 2) << 7;
+  args->var0.var1 = 0;
   v27 = v20[3];
-  a9->var0.var2 = v20[2];
-  a9->var0.var3 = v27;
+  args->var0.var2 = v20[2];
+  args->var0.var3 = v27;
   switch(v21)
   {
     case 6:
@@ -1081,25 +1081,25 @@ LABEL_33:
       v28 = v20[7];
       break;
     case 1:
-      a9->var0.var3 = v20[7];
+      args->var0.var3 = v20[7];
       goto LABEL_19;
     default:
       v28 = v20[4];
       break;
   }
 
-  a9->var0.var4 = v28;
+  args->var0.var4 = v28;
 LABEL_19:
-  a9->var0.var6 = v22;
-  a9->var0.var7 = v20[5];
-  a9->var0.var9 = 1;
+  args->var0.var6 = v22;
+  args->var0.var7 = v20[5];
+  args->var0.var9 = 1;
   v46 = 0;
   v44 = 0u;
   v45 = 0u;
   v43 = 0u;
   v29 = v20[1];
   MTLPixelFormatGetInfoForDevice();
-  a9->var0.var9 = 0;
+  args->var0.var9 = 0;
   if (*(v20 + 64))
   {
     v30 = 64;
@@ -1110,41 +1110,41 @@ LABEL_19:
     v30 = 0;
   }
 
-  a9->var0.var10 = v30;
-  v31 = *(a3 + 20);
-  a9->var0.var16.var0.var0 = v31 + a5;
-  a9->var0.var16.var0.var1 = v31;
-  a9->var0.var16.var0.var2 = [a3 resourceSize];
-  v32 = *(a3 + 20);
+  args->var0.var10 = v30;
+  v31 = *(buffer + 20);
+  args->var0.var16.var0.var0 = v31 + offset;
+  args->var0.var16.var0.var1 = v31;
+  args->var0.var16.var0.var2 = [buffer resourceSize];
+  v32 = *(buffer + 20);
   if (v32)
   {
-    a9->var0.var16.var0.var3.var0 = v32;
-    a9->var0.var10 |= 0x800u;
+    args->var0.var16.var0.var3.var0 = v32;
+    args->var0.var10 |= 0x800u;
   }
 
-  v33 = *(a3 + 23) | (16 * *(a3 + 22));
-  v34 = *(a3 + 21) & 0x300;
+  v33 = *(buffer + 23) | (16 * *(buffer + 22));
+  v34 = *(buffer + 21) & 0x300;
   v42.receiver = self;
   v42.super_class = IOGPUMetalTexture;
-  v35 = [(IOGPUMetalResource *)&v42 initWithDevice:v18 options:v33 | v34 args:a9 argsSize:a10];
+  v35 = [(IOGPUMetalResource *)&v42 initWithDevice:device options:v33 | v34 args:args argsSize:argsSize];
   v26 = v35;
   if (v35)
   {
     v35->super._anon_50[128] = 0;
-    if (!v41)
+    if (!sizeCopy)
     {
-      v36 = 0;
-      v17 = 0;
+      bufferCopy = 0;
+      textureCopy = 0;
       goto LABEL_28;
     }
 
-    v17 = 0;
+    textureCopy = 0;
 LABEL_27:
-    v36 = a3;
+    bufferCopy = buffer;
 LABEL_28:
-    v26->_buffer = v36;
-    v26->_bufferOffset = a5;
-    v26->_bufferBytesPerRow = a6;
+    v26->_buffer = bufferCopy;
+    v26->_bufferOffset = offset;
+    v26->_bufferBytesPerRow = bytes;
     v26->_textureType = *v20;
     v26->_width = v20[2];
     v26->_height = v20[3];
@@ -1172,34 +1172,34 @@ LABEL_28:
     v26->_framebufferOnly = 0;
     v26->_isDrawable = *(v20 + 81);
     v26->_allowGPUOptimizedContents = *(v20 + 128);
-    v37 = *(a3 + 27);
-    v38 = *(a3 + 28);
+    v37 = *(buffer + 27);
+    v38 = *(buffer + 28);
     *&v26->super._anon_50[136] = v37;
     *&v26->super._anon_50[144] = v38;
-    *&v26->super._anon_50[152] = *(a3 + 232);
-    v26->super._anon_50[168] = *(a3 + 248);
-    if (v17 && v37)
+    *&v26->super._anon_50[152] = *(buffer + 232);
+    v26->super._anon_50[168] = *(buffer + 248);
+    if (textureCopy && v37)
     {
-      *&v26->super._anon_50[24] = *(a3 + 13) + a5;
+      *&v26->super._anon_50[24] = *(buffer + 13) + offset;
     }
 
-    *&v26->super._anon_50[80] = *(a3 + 20) + a5;
-    v26->_placementSparsePageSize = [a3 placementSparsePageSize];
+    *&v26->super._anon_50[80] = *(buffer + 20) + offset;
+    v26->_placementSparsePageSize = [buffer placementSparsePageSize];
   }
 
   return v26;
 }
 
-- (IOGPUMetalTexture)initWithBuffer:(id)a3 descriptor:(id)a4 sysMemOffset:(unint64_t)a5 sysMemRowBytes:(unint64_t)a6 vidMemSize:(unint64_t)a7 vidMemRowBytes:(unint64_t)a8 args:(IOGPUNewResourceArgs *)a9 argsSize:(unsigned int)a10
+- (IOGPUMetalTexture)initWithBuffer:(id)buffer descriptor:(id)descriptor sysMemOffset:(unint64_t)offset sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)size vidMemRowBytes:(unint64_t)rowBytes args:(IOGPUNewResourceArgs *)args argsSize:(unsigned int)self0
 {
   BYTE4(v11) = 1;
-  LODWORD(v11) = a10;
-  return [(IOGPUMetalTexture *)self initWithBuffer:a3 descriptor:a4 sysMemOffset:a5 sysMemRowBytes:a6 vidMemSize:a7 vidMemRowBytes:a8 args:a9 argsSize:v11 isStrideTexture:?];
+  LODWORD(v11) = argsSize;
+  return [(IOGPUMetalTexture *)self initWithBuffer:buffer descriptor:descriptor sysMemOffset:offset sysMemRowBytes:bytes vidMemSize:size vidMemRowBytes:rowBytes args:args argsSize:v11 isStrideTexture:?];
 }
 
-- (IOGPUMetalTexture)initWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6
+- (IOGPUMetalTexture)initWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
-  if (!a3)
+  if (!buffer)
   {
     [IOGPUMetalTexture initWithBuffer:descriptor:offset:bytesPerRow:];
   }
@@ -1210,59 +1210,59 @@ LABEL_28:
     [IOGPUMetalTexture initWithBuffer:descriptor:offset:bytesPerRow:];
   }
 
-  [a3 device];
-  v11 = [a4 descriptorPrivate];
-  v12 = *(v11 + 16);
-  v13 = *(a3 + 20);
+  [buffer device];
+  descriptorPrivate = [descriptor descriptorPrivate];
+  v12 = *(descriptorPrivate + 16);
+  v13 = *(buffer + 20);
   _mtlValidateStrideTextureParameters();
-  v14 = [(IOGPUMetalResource *)self initWithResource:a3];
+  v14 = [(IOGPUMetalResource *)self initWithResource:buffer];
   if (v14)
   {
-    v14->_buffer = a3;
-    v14->_bufferOffset = a5;
-    v14->_bufferBytesPerRow = a6;
-    v14->_textureType = *v11;
-    v14->_width = *(v11 + 16);
-    v14->_height = *(v11 + 24);
-    v14->_depth = *(v11 + 32);
-    v14->_mipmapLevelCount = *(v11 + 40);
-    v14->_sampleCount = *(v11 + 48);
-    v14->_arrayLength = *(v11 + 56);
+    v14->_buffer = buffer;
+    v14->_bufferOffset = offset;
+    v14->_bufferBytesPerRow = row;
+    v14->_textureType = *descriptorPrivate;
+    v14->_width = *(descriptorPrivate + 16);
+    v14->_height = *(descriptorPrivate + 24);
+    v14->_depth = *(descriptorPrivate + 32);
+    v14->_mipmapLevelCount = *(descriptorPrivate + 40);
+    v14->_sampleCount = *(descriptorPrivate + 48);
+    v14->_arrayLength = *(descriptorPrivate + 56);
     v15 = 6;
-    if ((*v11 - 5) >= 2)
+    if ((*descriptorPrivate - 5) >= 2)
     {
       v15 = 1;
     }
 
     v14->_numFaces = v15;
-    v14->_pixelFormat = *(v11 + 8);
-    v14->_usage = *(v11 + 192);
-    if (*(v11 + 72))
+    v14->_pixelFormat = *(descriptorPrivate + 8);
+    v14->_usage = *(descriptorPrivate + 192);
+    if (*(descriptorPrivate + 72))
     {
       [IOGPUMetalTexture initWithBuffer:descriptor:offset:bytesPerRow:];
     }
 
     v14->_rotation = 0;
-    v14->_swizzle = *(v11 + 84);
-    v14->_writeSwizzleEnabled = *(v11 + 88);
+    v14->_swizzle = *(descriptorPrivate + 84);
+    v14->_writeSwizzleEnabled = *(descriptorPrivate + 88);
     v14->_shareable = 0;
-    if (*(v11 + 80))
+    if (*(descriptorPrivate + 80))
     {
       [IOGPUMetalTexture initWithBuffer:descriptor:offset:bytesPerRow:];
     }
 
     v14->_framebufferOnly = 0;
-    v14->_isDrawable = *(v11 + 81);
-    v14->_allowGPUOptimizedContents = *(v11 + 128);
-    v16 = *(a3 + 27);
-    v17 = *(a3 + 28);
+    v14->_isDrawable = *(descriptorPrivate + 81);
+    v14->_allowGPUOptimizedContents = *(descriptorPrivate + 128);
+    v16 = *(buffer + 27);
+    v17 = *(buffer + 28);
     *&v14->super._anon_50[136] = v16;
     *&v14->super._anon_50[144] = v17;
-    *&v14->super._anon_50[152] = *(a3 + 232);
-    v14->super._anon_50[168] = *(a3 + 248);
+    *&v14->super._anon_50[152] = *(buffer + 232);
+    v14->super._anon_50[168] = *(buffer + 248);
     if (v16)
     {
-      v18 = *(a3 + 13);
+      v18 = *(buffer + 13);
     }
 
     else
@@ -1270,23 +1270,23 @@ LABEL_28:
       v18 = *&v14->super._anon_50[24];
     }
 
-    *&v14->super._anon_50[24] = v18 + a5;
-    *&v14->super._anon_50[80] = *(a3 + 20) + a5;
-    v14->_placementSparsePageSize = [a3 placementSparsePageSize];
+    *&v14->super._anon_50[24] = v18 + offset;
+    *&v14->super._anon_50[80] = *(buffer + 20) + offset;
+    v14->_placementSparsePageSize = [buffer placementSparsePageSize];
   }
 
   return v14;
 }
 
-- (IOGPUMetalTexture)initWithHeap:(id)a3 resource:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 device:(id)a7 descriptor:(id)a8
+- (IOGPUMetalTexture)initWithHeap:(id)heap resource:(id)resource offset:(unint64_t)offset length:(unint64_t)length device:(id)device descriptor:(id)descriptor
 {
-  if (!a3)
+  if (!heap)
   {
     [IOGPUMetalTexture initWithHeap:resource:offset:length:device:descriptor:];
   }
 
-  v15 = [a8 descriptorPrivate];
-  if (a4)
+  descriptorPrivate = [descriptor descriptorPrivate];
+  if (resource)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1294,129 +1294,129 @@ LABEL_28:
       [IOGPUMetalTexture initWithHeap:resource:offset:length:device:descriptor:];
     }
 
-    v16 = [(IOGPUMetalResource *)self initWithResource:a4];
+    v16 = [(IOGPUMetalResource *)self initWithResource:resource];
   }
 
   else
   {
-    v16 = [(IOGPUMetalResource *)self initMemoryless:a7 descriptor:a8];
+    v16 = [(IOGPUMetalResource *)self initMemoryless:device descriptor:descriptor];
   }
 
   v17 = v16;
   if (v16)
   {
-    v16->_textureType = *v15;
-    v16->_width = *(v15 + 16);
-    v16->_height = *(v15 + 24);
-    v16->_depth = *(v15 + 32);
-    v16->_mipmapLevelCount = *(v15 + 40);
-    v16->_sampleCount = *(v15 + 48);
-    v16->_arrayLength = *(v15 + 56);
+    v16->_textureType = *descriptorPrivate;
+    v16->_width = *(descriptorPrivate + 16);
+    v16->_height = *(descriptorPrivate + 24);
+    v16->_depth = *(descriptorPrivate + 32);
+    v16->_mipmapLevelCount = *(descriptorPrivate + 40);
+    v16->_sampleCount = *(descriptorPrivate + 48);
+    v16->_arrayLength = *(descriptorPrivate + 56);
     v18 = 6;
-    if ((*v15 - 5) >= 2)
+    if ((*descriptorPrivate - 5) >= 2)
     {
       v18 = 1;
     }
 
     v16->_numFaces = v18;
-    v16->_pixelFormat = *(v15 + 8);
-    v16->_usage = *(v15 + 192);
-    if (*(v15 + 72))
+    v16->_pixelFormat = *(descriptorPrivate + 8);
+    v16->_usage = *(descriptorPrivate + 192);
+    if (*(descriptorPrivate + 72))
     {
       [IOGPUMetalTexture initWithHeap:resource:offset:length:device:descriptor:];
     }
 
     v16->_rotation = 0;
-    v16->_swizzle = *(v15 + 84);
-    v16->_writeSwizzleEnabled = *(v15 + 88);
+    v16->_swizzle = *(descriptorPrivate + 84);
+    v16->_writeSwizzleEnabled = *(descriptorPrivate + 88);
     v16->_shareable = 0;
-    if (*(v15 + 80))
+    if (*(descriptorPrivate + 80))
     {
       [IOGPUMetalTexture initWithHeap:resource:offset:length:device:descriptor:];
     }
 
     v16->_framebufferOnly = 0;
-    v16->_isDrawable = *(v15 + 81);
-    v16->_allowGPUOptimizedContents = *(v15 + 128);
-    *&v16->super._anon_50[136] = a3;
-    *&v17->super._anon_50[144] = a4;
-    if (a4)
+    v16->_isDrawable = *(descriptorPrivate + 81);
+    v16->_allowGPUOptimizedContents = *(descriptorPrivate + 128);
+    *&v16->super._anon_50[136] = heap;
+    *&v17->super._anon_50[144] = resource;
+    if (resource)
     {
-      v19 = a6;
+      lengthCopy = length;
     }
 
     else
     {
-      v19 = 0;
+      lengthCopy = 0;
     }
 
-    *&v17->super._anon_50[152] = a5;
-    *&v17->super._anon_50[160] = v19;
+    *&v17->super._anon_50[152] = offset;
+    *&v17->super._anon_50[160] = lengthCopy;
     v17->super._anon_50[168] = 0;
-    if (![a3 type])
+    if (![heap type])
     {
       v17->super._anon_50[168] = 1;
     }
 
-    if (a4)
+    if (resource)
     {
-      *&v17->super._anon_50[80] = *(a4 + 20) + a5;
-      *&v17->super._anon_50[24] += a5;
+      *&v17->super._anon_50[80] = *(resource + 20) + offset;
+      *&v17->super._anon_50[24] += offset;
     }
   }
 
   return v17;
 }
 
-- (IOGPUMetalTexture)initWithPrimaryBuffer:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7 descriptor:(id)a8 sysMemRowBytes:(unint64_t)a9 vidMemSize:(unint64_t)a10 vidMemRowBytes:(unint64_t)a11 args:(IOGPUNewResourceArgs *)a12 argsSize:(unsigned int)a13
+- (IOGPUMetalTexture)initWithPrimaryBuffer:(id)buffer heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length descriptor:(id)descriptor sysMemRowBytes:(unint64_t)bytes vidMemSize:(unint64_t)self0 vidMemRowBytes:(unint64_t)self1 args:(IOGPUNewResourceArgs *)self2 argsSize:(unsigned int)self3
 {
   BYTE4(v19) = 0;
-  LODWORD(v19) = a13;
-  result = [(IOGPUMetalTexture *)self initWithBuffer:a3 descriptor:a8 sysMemOffset:a6 sysMemRowBytes:a9 vidMemSize:a10 vidMemRowBytes:a11 args:a12 argsSize:v19 isStrideTexture:?];
+  LODWORD(v19) = argsSize;
+  result = [(IOGPUMetalTexture *)self initWithBuffer:buffer descriptor:descriptor sysMemOffset:offset sysMemRowBytes:bytes vidMemSize:size vidMemRowBytes:rowBytes args:args argsSize:v19 isStrideTexture:?];
   if (result)
   {
     result->_rootResourceIsSuballocatedBuffer = 1;
-    result->_primaryBuffer = a3;
-    result->_primaryHeapIndex = a4;
-    result->_primaryBufferIndex = a5;
-    result->_primaryBufferOffset = a6;
-    result->_length = a7;
+    result->_primaryBuffer = buffer;
+    result->_primaryHeapIndex = index;
+    result->_primaryBufferIndex = bufferIndex;
+    result->_primaryBufferOffset = offset;
+    result->_length = length;
   }
 
   return result;
 }
 
-- (void)copyFromSlice:(unint64_t)a3 mipmapLevel:(unint64_t)a4 origin:(id *)a5 size:(id *)a6 toPixels:(void *)a7 rowBytes:(unint64_t)a8 imageBytes:(unint64_t)a9
+- (void)copyFromSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size toPixels:(void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes
 {
-  *v11 = a5->var2;
-  v9 = *&a5->var0;
-  *&v11[8] = *a6;
+  *v11 = origin->var2;
+  v9 = *&origin->var0;
+  *&v11[8] = *size;
   v10[0] = v9;
   v10[1] = *v11;
   v10[2] = *&v11[16];
   v10[3] = v9;
-  [(IOGPUMetalTexture *)self getBytes:a7 bytesPerRow:a8 bytesPerImage:a9 fromRegion:v10 mipmapLevel:a4 slice:a3];
+  [(IOGPUMetalTexture *)self getBytes:pixels bytesPerRow:bytes bytesPerImage:imageBytes fromRegion:v10 mipmapLevel:level slice:slice];
 }
 
-- (void)copyFromPixels:(const void *)a3 rowBytes:(unint64_t)a4 imageBytes:(unint64_t)a5 toSlice:(unint64_t)a6 mipmapLevel:(unint64_t)a7 origin:(id *)a8 size:(id *)a9
+- (void)copyFromPixels:(const void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes toSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size
 {
-  *v11 = a8->var2;
-  v9 = *&a8->var0;
-  *&v11[8] = *a9;
+  *v11 = origin->var2;
+  v9 = *&origin->var0;
+  *&v11[8] = *size;
   v10[0] = v9;
   v10[1] = *v11;
   v10[2] = *&v11[16];
   v10[3] = v9;
-  [(IOGPUMetalTexture *)self replaceRegion:v10 mipmapLevel:a7 slice:a6 withBytes:a3 bytesPerRow:a4 bytesPerImage:a5];
+  [(IOGPUMetalTexture *)self replaceRegion:v10 mipmapLevel:level slice:slice withBytes:pixels bytesPerRow:bytes bytesPerImage:imageBytes];
 }
 
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row
 {
-  v6 = *&a3->var0.var2;
-  v7[0] = *&a3->var0.var0;
+  v6 = *&region->var0.var2;
+  v7[0] = *&region->var0.var0;
   v7[1] = v6;
-  v7[2] = *&a3->var1.var1;
-  [(IOGPUMetalTexture *)self replaceRegion:v7 mipmapLevel:a4 slice:0 withBytes:a5 bytesPerRow:a6 bytesPerImage:0];
+  v7[2] = *&region->var1.var1;
+  [(IOGPUMetalTexture *)self replaceRegion:v7 mipmapLevel:level slice:0 withBytes:bytes bytesPerRow:row bytesPerImage:0];
 }
 
 - (__CFArray)copyAnnotations
@@ -1509,12 +1509,12 @@ LABEL_17:
     CFStringAppendFormat(v6, 0, @", %d samples", self->_sampleCount);
   }
 
-  v13 = [MEMORY[0x1E696AD60] string];
-  v14 = v13;
+  string = [MEMORY[0x1E696AD60] string];
+  v14 = string;
   usage = self->_usage;
   if (!usage)
   {
-    [v13 appendString:@" none"];
+    [string appendString:@" none"];
     usage = self->_usage;
   }
 
@@ -1617,16 +1617,16 @@ LABEL_40:
   buffer = self->_buffer;
   if (buffer)
   {
-    v21 = [(IOGPUMetalResource *)buffer gpuAddress];
+    gpuAddress = [(IOGPUMetalResource *)buffer gpuAddress];
     bufferOffset = self->_bufferOffset;
-    CFStringAppendFormat(v6, 0, @", buffer (parent %012llx, offset %lluB, stride %lluB)", v21, bufferOffset, self->_bufferBytesPerRow);
+    CFStringAppendFormat(v6, 0, @", buffer (parent %012llx, offset %lluB, stride %lluB)", gpuAddress, bufferOffset, self->_bufferBytesPerRow);
   }
 
-  v23 = [(IOGPUMetalResource *)self retainedLabel];
-  if (v23)
+  retainedLabel = [(IOGPUMetalResource *)self retainedLabel];
+  if (retainedLabel)
   {
-    v24 = v23;
-    CFStringAppendFormat(v6, 0, @", %s", [v23 UTF8String]);
+    v24 = retainedLabel;
+    CFStringAppendFormat(v6, 0, @", %s", [retainedLabel UTF8String]);
   }
 
   CFDictionaryAddValue(Mutable, @"Description", v6);
@@ -1642,13 +1642,13 @@ LABEL_40:
 
 - (BOOL)isSparse
 {
-  v2 = [(IOGPUMetalResource *)self heap];
-  if (v2)
+  heap = [(IOGPUMetalResource *)self heap];
+  if (heap)
   {
-    LOBYTE(v2) = [(MTLHeap *)v2 type]== 2;
+    LOBYTE(heap) = [(MTLHeap *)heap type]== 2;
   }
 
-  return v2;
+  return heap;
 }
 
 - (void)emitResourceInfoTraceEvent

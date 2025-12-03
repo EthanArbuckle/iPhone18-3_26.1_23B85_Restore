@@ -1,5 +1,5 @@
 @interface TabBarContainerController
-- (_TtC5TeaUI25TabBarContainerController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI25TabBarContainerController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)childViewControllerForStatusBarHidden;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -16,24 +16,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D814C6E4();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D814C808();
 }
 
-- (_TtC5TeaUI25TabBarContainerController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI25TabBarContainerController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1D814C968();
 }
 

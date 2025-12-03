@@ -1,24 +1,24 @@
 @interface PLMav4BasebandHardwareMessage
-- (BOOL)parseData:(id)a3;
-- (PLMav4BasebandHardwareMessage)initWithData:(id)a3;
-- (id)indexToRAT:(unint64_t)a3;
-- (void)logHeaderWithLogger:(id)a3;
-- (void)logModemAppWithLogger:(id)a3;
-- (void)logPeripheralsWithLogger:(id)a3;
-- (void)logProcessorWithLogger:(id)a3;
-- (void)logRFWithLogger2:(id)a3;
-- (void)logSleepWithLogger:(id)a3;
-- (void)logWithLogger:(id)a3;
+- (BOOL)parseData:(id)data;
+- (PLMav4BasebandHardwareMessage)initWithData:(id)data;
+- (id)indexToRAT:(unint64_t)t;
+- (void)logHeaderWithLogger:(id)logger;
+- (void)logModemAppWithLogger:(id)logger;
+- (void)logPeripheralsWithLogger:(id)logger;
+- (void)logProcessorWithLogger:(id)logger;
+- (void)logRFWithLogger2:(id)logger2;
+- (void)logSleepWithLogger:(id)logger;
+- (void)logWithLogger:(id)logger;
 @end
 
 @implementation PLMav4BasebandHardwareMessage
 
-- (PLMav4BasebandHardwareMessage)initWithData:(id)a3
+- (PLMav4BasebandHardwareMessage)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PLMav4BasebandHardwareMessage;
-  v5 = [(PLBasebandHardwareMessage *)&v9 initWithData:v4];
+  v5 = [(PLBasebandHardwareMessage *)&v9 initWithData:dataCopy];
   v6 = v5;
   if (!v5)
   {
@@ -41,7 +41,7 @@
   [(PLMav4BasebandHardwareMessage *)v6 setSleep_qdsp:0];
   [(PLMav4BasebandHardwareMessage *)v6 setSleep_arm:0];
   v7 = 0;
-  if ([(PLMav4BasebandHardwareMessage *)v6 parseData:v4])
+  if ([(PLMav4BasebandHardwareMessage *)v6 parseData:dataCopy])
   {
 LABEL_3:
     v7 = v6;
@@ -50,18 +50,18 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)parseData:(id)a3
+- (BOOL)parseData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bytes];
-  [(PLMav4BasebandHardwareMessage *)self setHeader:v5 + 13];
-  v6 = v5 + 33;
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  [(PLMav4BasebandHardwareMessage *)self setHeader:bytes + 13];
+  v6 = bytes + 33;
   [(PLMav4BasebandHardwareMessage *)self setLogDuration:([(PLMav4BasebandHardwareMessage *)self header][16] - [(PLMav4BasebandHardwareMessage *)self header][12])];
   if ([(PLMav4BasebandHardwareMessage *)self level])
   {
-    [(PLMav4BasebandHardwareMessage *)self setSystem:v5 + 33];
-    v6 = v5 + 45;
+    [(PLMav4BasebandHardwareMessage *)self setSystem:bytes + 33];
+    v6 = bytes + 45;
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self level]>= 4)
@@ -92,17 +92,17 @@ LABEL_3:
     v6 += 944;
   }
 
-  v7 = v6 - [v4 bytes];
-  v8 = [v4 length];
+  v7 = v6 - [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v7 > v8)
   {
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = 134218498;
-      v13 = v6 - [v4 bytes];
+      v13 = v6 - [dataCopy bytes];
       v14 = 2048;
-      v15 = [v4 length];
+      v15 = [dataCopy length];
       v16 = 2080;
       v17 = "[PLMav4BasebandHardwareMessage parseData:]";
       _os_log_error_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_ERROR, "Expected data length %lu but got %lu in %s", &v12, 0x20u);
@@ -113,13 +113,13 @@ LABEL_3:
   return v7 <= v8;
 }
 
-- (void)logWithLogger:(id)a3
+- (void)logWithLogger:(id)logger
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggerCopy = logger;
   v26.receiver = self;
   v26.super_class = PLMav4BasebandHardwareMessage;
-  [(PLBasebandHardwareMessage *)&v26 logRawWithLogger:v4];
+  [(PLBasebandHardwareMessage *)&v26 logRawWithLogger:loggerCopy];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -138,9 +138,9 @@ LABEL_3:
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLMav4BasebandHardwareMessage logWithLogger:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logWithLogger:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:151];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:151];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -153,14 +153,14 @@ LABEL_3:
   }
 
   v12 = objc_alloc_init(PLBBMavLogMsg);
-  v13 = [(PLBasebandMessage *)self agent];
-  [(PLBasebandMessage *)v12 setAgent:v13];
+  agent = [(PLBasebandMessage *)self agent];
+  [(PLBasebandMessage *)v12 setAgent:agent];
 
   [(PLBBMavLogMsg *)v12 setError:@"not set"];
-  v14 = [(PLBasebandMessage *)self seqNum];
-  v15 = [(PLBasebandMessage *)self date];
+  seqNum = [(PLBasebandMessage *)self seqNum];
+  date = [(PLBasebandMessage *)self date];
   [(PLBasebandMessage *)self timeCal];
-  [(PLBBMavLogMsg *)v12 setHeaderWithSeqNum:v14 andDate:v15 andTimeCal:?];
+  [(PLBBMavLogMsg *)v12 setHeaderWithSeqNum:seqNum andDate:date andTimeCal:?];
 
   [(PLMav4BasebandHardwareMessage *)self logHeaderWithLogger:v12];
   [(PLMav4BasebandHardwareMessage *)self logProcessorWithLogger:v12];
@@ -168,7 +168,7 @@ LABEL_3:
   [(PLMav4BasebandHardwareMessage *)self logPeripheralsWithLogger:v12];
   if ([MEMORY[0x277D3F180] fullMode])
   {
-    [(PLMav4BasebandHardwareMessage *)self logSleepWithLogger:v4];
+    [(PLMav4BasebandHardwareMessage *)self logSleepWithLogger:loggerCopy];
   }
 
   [(PLBBMavLogMsg *)v12 addToGroupPLBBMav4HwOther];
@@ -192,9 +192,9 @@ LABEL_3:
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoding Mav4 BB HW RF completed"];
       v18 = MEMORY[0x277D3F178];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v20 = [v19 lastPathComponent];
+      lastPathComponent2 = [v19 lastPathComponent];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logWithLogger:]"];
-      [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:177];
+      [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:177];
 
       v22 = PLLogCommon();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -223,10 +223,10 @@ uint64_t __47__PLMav4BasebandHardwareMessage_logWithLogger___block_invoke_377(ui
   return result;
 }
 
-- (void)logHeaderWithLogger:(id)a3
+- (void)logHeaderWithLogger:(id)logger
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggerCopy = logger;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -245,9 +245,9 @@ uint64_t __47__PLMav4BasebandHardwareMessage_logWithLogger___block_invoke_377(ui
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLMav4BasebandHardwareMessage logHeaderWithLogger:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logHeaderWithLogger:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:182];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:182];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -259,7 +259,7 @@ uint64_t __47__PLMav4BasebandHardwareMessage_logWithLogger___block_invoke_377(ui
     }
   }
 
-  v12 = v4;
+  v12 = loggerCopy;
   if ([(PLMav4BasebandHardwareMessage *)self header])
   {
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[PLMav4BasebandHardwareMessage sw_rev](self, "sw_rev")}];
@@ -307,9 +307,9 @@ uint64_t __47__PLMav4BasebandHardwareMessage_logWithLogger___block_invoke_377(ui
         v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"BB HW: bad header"];
         v23 = MEMORY[0x277D3F178];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-        v25 = [v24 lastPathComponent];
+        lastPathComponent2 = [v24 lastPathComponent];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logHeaderWithLogger:]"];
-        [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:199];
+        [v23 logMessage:v22 fromFile:lastPathComponent2 fromFunction:v26 fromLineNumber:199];
 
         v27 = PLLogCommon();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -342,9 +342,9 @@ uint64_t __47__PLMav4BasebandHardwareMessage_logWithLogger___block_invoke_377(ui
       v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded BB HW Log"];
       v30 = MEMORY[0x277D3F178];
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v32 = [v31 lastPathComponent];
+      lastPathComponent3 = [v31 lastPathComponent];
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logHeaderWithLogger:]"];
-      [v30 logMessage:v29 fromFile:v32 fromFunction:v33 fromLineNumber:203];
+      [v30 logMessage:v29 fromFile:lastPathComponent3 fromFunction:v33 fromLineNumber:203];
 
       v34 = PLLogCommon();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -380,31 +380,31 @@ uint64_t __53__PLMav4BasebandHardwareMessage_logHeaderWithLogger___block_invoke_
   return result;
 }
 
-- (void)logProcessorWithLogger:(id)a3
+- (void)logProcessorWithLogger:(id)logger
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggerCopy = logger;
   if ([(PLMav4BasebandHardwareMessage *)self system])
   {
     self->super.super.ticksInGoodState = [(PLMav4BasebandHardwareMessage *)self system][8];
     v5 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self system] ofSize:3];
-    [v4 setBbHwProcSystemState:v5];
+    [loggerCopy setBbHwProcSystemState:v5];
   }
 
   else
   {
-    [v4 appendToError:@"System_State=<unknown>"];
+    [loggerCopy appendToError:@"System_State=<unknown>"];
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self armPerf])
   {
     v6 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self armPerf] ofSize:8];
-    [v4 setBbHwProcArmPerfState:v6];
+    [loggerCopy setBbHwProcArmPerfState:v6];
   }
 
   else
   {
-    [v4 appendToError:@"ARM_Perf_Level=<unknown>"];
+    [loggerCopy appendToError:@"ARM_Perf_Level=<unknown>"];
   }
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -425,9 +425,9 @@ uint64_t __53__PLMav4BasebandHardwareMessage_logHeaderWithLogger___block_invoke_
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded BB HW Processor"];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logProcessorWithLogger:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:232];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:232];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -449,52 +449,52 @@ uint64_t __56__PLMav4BasebandHardwareMessage_logProcessorWithLogger___block_invo
   return result;
 }
 
-- (void)logModemAppWithLogger:(id)a3
+- (void)logModemAppWithLogger:(id)logger
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggerCopy = logger;
   if ([(PLMav4BasebandHardwareMessage *)self mdsp])
   {
     v5 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self mdsp] ofSize:5];
-    [v4 setBbHwModemAppMdspSpeed:v5];
+    [loggerCopy setBbHwModemAppMdspSpeed:v5];
   }
 
   else
   {
-    [v4 appendToError:@"Q6FW_Speed=<unknown>"];
+    [loggerCopy appendToError:@"Q6FW_Speed=<unknown>"];
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self mdm])
   {
     v6 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self mdm] ofSize:2];
-    [v4 setBbHwModemAppMdmState:v6];
+    [loggerCopy setBbHwModemAppMdmState:v6];
   }
 
   else
   {
-    [v4 appendToError:@"MDM=<unknown>"];
+    [loggerCopy appendToError:@"MDM=<unknown>"];
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self qdsp])
   {
     v7 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self qdsp] ofSize:5];
-    [v4 setBbHwModemAppQdspSpeed:v7];
+    [loggerCopy setBbHwModemAppQdspSpeed:v7];
   }
 
   else
   {
-    [v4 appendToError:@"Q6SW_Speed=<unknown>"];
+    [loggerCopy appendToError:@"Q6SW_Speed=<unknown>"];
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self adm])
   {
     v8 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self adm] ofSize:2];
-    [v4 setBbHwModemAppAdmState:v8];
+    [loggerCopy setBbHwModemAppAdmState:v8];
   }
 
   else
   {
-    [v4 appendToError:@"ADM=<unknown>"];
+    [loggerCopy appendToError:@"ADM=<unknown>"];
   }
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -515,9 +515,9 @@ uint64_t __56__PLMav4BasebandHardwareMessage_logProcessorWithLogger___block_invo
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded BB HW Modem/App"];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logModemAppWithLogger:]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:278];
+      [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:278];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -539,52 +539,52 @@ uint64_t __55__PLMav4BasebandHardwareMessage_logModemAppWithLogger___block_invok
   return result;
 }
 
-- (void)logPeripheralsWithLogger:(id)a3
+- (void)logPeripheralsWithLogger:(id)logger
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggerCopy = logger;
   if ([(PLMav4BasebandHardwareMessage *)self gps])
   {
     v5 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self gps] ofSize:2];
-    [v4 setBbHwPeripheralGPSState:v5];
+    [loggerCopy setBbHwPeripheralGPSState:v5];
   }
 
   else
   {
-    [v4 appendToError:@"GPS=<unknown>"];
+    [loggerCopy appendToError:@"GPS=<unknown>"];
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self usb])
   {
     v6 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self usb] ofSize:2];
-    [v4 setBbHwPeripheralUSBState:v6];
+    [loggerCopy setBbHwPeripheralUSBState:v6];
   }
 
   else
   {
-    [v4 appendToError:@"USB=<unknown>"];
+    [loggerCopy appendToError:@"USB=<unknown>"];
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self spi])
   {
     v7 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self spi] ofSize:2];
-    [v4 setBbHwPeripheralSPIState:v7];
+    [loggerCopy setBbHwPeripheralSPIState:v7];
   }
 
   else
   {
-    [v4 appendToError:@"SPI_Clock=<unknown>"];
+    [loggerCopy appendToError:@"SPI_Clock=<unknown>"];
   }
 
   if ([(PLMav4BasebandHardwareMessage *)self uart])
   {
     v8 = [(PLBasebandHardwareMessage *)self convertUint32ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self uart] ofSize:2];
-    [v4 setBbHwPeripheralUARTState:v8];
+    [loggerCopy setBbHwPeripheralUARTState:v8];
   }
 
   else
   {
-    [v4 appendToError:@"UART_Clock=<unknown>"];
+    [loggerCopy appendToError:@"UART_Clock=<unknown>"];
   }
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -605,9 +605,9 @@ uint64_t __55__PLMav4BasebandHardwareMessage_logModemAppWithLogger___block_invok
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded BB HW Peripherals"];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logPeripheralsWithLogger:]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:325];
+      [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:325];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -629,10 +629,10 @@ uint64_t __58__PLMav4BasebandHardwareMessage_logPeripheralsWithLogger___block_in
   return result;
 }
 
-- (void)logRFWithLogger2:(id)a3
+- (void)logRFWithLogger2:(id)logger2
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  logger2Copy = logger2;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -651,9 +651,9 @@ uint64_t __58__PLMav4BasebandHardwareMessage_logPeripheralsWithLogger___block_in
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLMav4BasebandHardwareMessage logRFWithLogger2:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logRFWithLogger2:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:330];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:330];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -665,18 +665,18 @@ uint64_t __58__PLMav4BasebandHardwareMessage_logPeripheralsWithLogger___block_in
     }
   }
 
-  v56 = v4;
+  v56 = logger2Copy;
   v12 = objc_alloc_init(PLBBMavLogMsg);
-  v13 = [(PLBasebandMessage *)self agent];
-  [(PLBasebandMessage *)v12 setAgent:v13];
+  agent = [(PLBasebandMessage *)self agent];
+  [(PLBasebandMessage *)v12 setAgent:agent];
 
   [(PLBBMavLogMsg *)v12 setError:&stru_282B650A0];
-  v14 = [(PLBasebandMessage *)self seqNum];
-  v15 = [(PLBasebandMessage *)self date];
+  seqNum = [(PLBasebandMessage *)self seqNum];
+  date = [(PLBasebandMessage *)self date];
   [(PLBasebandMessage *)self timeCal];
-  [(PLBBMavLogMsg *)v12 setHeaderWithSeqNum:v14 andDate:v15 andTimeCal:?];
+  [(PLBBMavLogMsg *)v12 setHeaderWithSeqNum:seqNum andDate:date andTimeCal:?];
 
-  v55 = self;
+  selfCopy = self;
   if (![(PLMav4BasebandHardwareMessage *)self rx]|| ![(PLMav4BasebandHardwareMessage *)self tx])
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -697,9 +697,9 @@ uint64_t __58__PLMav4BasebandHardwareMessage_logPeripheralsWithLogger___block_in
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: BB HW RF <RAT> is expected but not present"];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent2 = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logRFWithLogger2:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:343];
+        [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:343];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -709,7 +709,7 @@ uint64_t __58__PLMav4BasebandHardwareMessage_logPeripheralsWithLogger___block_in
           _os_log_debug_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        self = v55;
+        self = selfCopy;
       }
     }
 
@@ -783,9 +783,9 @@ uint64_t __58__PLMav4BasebandHardwareMessage_logPeripheralsWithLogger___block_in
           v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded Mav4 BB HW RF %@", v57];
           v48 = MEMORY[0x277D3F178];
           v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-          v50 = [v49 lastPathComponent];
+          lastPathComponent3 = [v49 lastPathComponent];
           v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logRFWithLogger2:]"];
-          [v48 logMessage:v47 fromFile:v50 fromFunction:v51 fromLineNumber:399];
+          [v48 logMessage:v47 fromFile:lastPathComponent3 fromFunction:v51 fromLineNumber:399];
 
           v52 = PLLogCommon();
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
@@ -795,14 +795,14 @@ uint64_t __58__PLMav4BasebandHardwareMessage_logPeripheralsWithLogger___block_in
             _os_log_debug_impl(&dword_21A4C6000, v52, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
-          self = v55;
+          self = selfCopy;
           v27 = v57;
         }
       }
 
-      v39 = [(PLBBMavLogMsg *)v12 logEventBackwardGrpEntriesBBMavHwOtherPerRAT];
-      v44 = [v39 objectForKey:@"entry"];
-      v53 = [v39 objectForKey:@"name"];
+      logEventBackwardGrpEntriesBBMavHwOtherPerRAT = [(PLBBMavLogMsg *)v12 logEventBackwardGrpEntriesBBMavHwOtherPerRAT];
+      v44 = [logEventBackwardGrpEntriesBBMavHwOtherPerRAT objectForKey:@"entry"];
+      v53 = [logEventBackwardGrpEntriesBBMavHwOtherPerRAT objectForKey:@"name"];
       [v56 addToGroupPLBBMavHwEntry:v44 withEntryKey:v53];
 
 LABEL_38:
@@ -825,22 +825,22 @@ LABEL_38:
       if (byte_2811F7E6A == 1)
       {
         v58 = v27;
-        v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: RAT unknown, cannot record"];
+        logEventBackwardGrpEntriesBBMavHwOtherPerRAT = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: RAT unknown, cannot record"];
         v40 = MEMORY[0x277D3F178];
         v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLMav4BasebandHardwareMessage.m"];
-        v42 = [v41 lastPathComponent];
+        lastPathComponent4 = [v41 lastPathComponent];
         v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMav4BasebandHardwareMessage logRFWithLogger2:]"];
-        [v40 logMessage:v39 fromFile:v42 fromFunction:v43 fromLineNumber:356];
+        [v40 logMessage:logEventBackwardGrpEntriesBBMavHwOtherPerRAT fromFile:lastPathComponent4 fromFunction:v43 fromLineNumber:356];
 
         v44 = PLLogCommon();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v64 = v39;
+          v64 = logEventBackwardGrpEntriesBBMavHwOtherPerRAT;
           _os_log_debug_impl(&dword_21A4C6000, v44, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        self = v55;
+        self = selfCopy;
         v27 = v58;
         goto LABEL_38;
       }
@@ -884,9 +884,9 @@ uint64_t __50__PLMav4BasebandHardwareMessage_logRFWithLogger2___block_invoke_455
   return result;
 }
 
-- (void)logSleepWithLogger:(id)a3
+- (void)logSleepWithLogger:(id)logger
 {
-  v8 = a3;
+  loggerCopy = logger;
   if ([(PLMav4BasebandHardwareMessage *)self sleep_qdsp])
   {
     for (i = 0; i != 52; i += 13)
@@ -894,34 +894,34 @@ uint64_t __50__PLMav4BasebandHardwareMessage_logRFWithLogger2___block_invoke_455
       if ([(PLMav4BasebandHardwareMessage *)self sleep_qdsp])
       {
         v5 = [(PLBasebandHardwareMessage *)self convertUint8ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self sleep_qdsp]+ i ofSize:13];
-        [v8 setBbHwSleepVetoClientListQdsp:v5];
+        [loggerCopy setBbHwSleepVetoClientListQdsp:v5];
       }
     }
   }
 
-  [v8 setType:@"BB HW Sleep Veto QDSP"];
+  [loggerCopy setType:@"BB HW Sleep Veto QDSP"];
   if ([(PLMav4BasebandHardwareMessage *)self sleep_arm])
   {
     for (j = 0; j != 52; j += 13)
     {
       v7 = [(PLBasebandHardwareMessage *)self convertUint8ArrayToNSArray:[(PLMav4BasebandHardwareMessage *)self sleep_arm]+ j ofSize:13];
-      [v8 setBbHwSleepVetoClientListQdsp:v7];
+      [loggerCopy setBbHwSleepVetoClientListQdsp:v7];
     }
   }
 
-  [v8 setType:@"BB HW Sleep Veto ARM"];
+  [loggerCopy setType:@"BB HW Sleep Veto ARM"];
 }
 
-- (id)indexToRAT:(unint64_t)a3
+- (id)indexToRAT:(unint64_t)t
 {
-  if (a3 > 4)
+  if (t > 4)
   {
     v4 = &stru_282B650A0;
   }
 
   else
   {
-    v4 = *off_278260FA8[a3];
+    v4 = *off_278260FA8[t];
   }
 
   return v4;

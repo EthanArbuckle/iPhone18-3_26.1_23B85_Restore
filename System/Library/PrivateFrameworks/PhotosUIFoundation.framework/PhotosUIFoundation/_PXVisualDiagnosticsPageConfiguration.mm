@@ -1,6 +1,6 @@
 @interface _PXVisualDiagnosticsPageConfiguration
 - (CGSize)pageSize;
-- (_PXVisualDiagnosticsPageConfiguration)initWithConfiguration:(id)a3;
+- (_PXVisualDiagnosticsPageConfiguration)initWithConfiguration:(id)configuration;
 @end
 
 @implementation _PXVisualDiagnosticsPageConfiguration
@@ -14,15 +14,15 @@
   return result;
 }
 
-- (_PXVisualDiagnosticsPageConfiguration)initWithConfiguration:(id)a3
+- (_PXVisualDiagnosticsPageConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = _PXVisualDiagnosticsPageConfiguration;
   v5 = [(_PXVisualDiagnosticsPageConfiguration *)&v9 init];
   if (v5)
   {
-    [v4 defaultPageSize];
+    [configurationCopy defaultPageSize];
     v5->_pageSize.width = v6;
     v5->_pageSize.height = v7;
   }

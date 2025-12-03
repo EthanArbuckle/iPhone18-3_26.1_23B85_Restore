@@ -1,10 +1,10 @@
 @interface NSObject
-- (BOOL)_maps_needsUpdateWithSelector:(SEL)a3;
+- (BOOL)_maps_needsUpdateWithSelector:(SEL)selector;
 - (CarChromeViewController)carChromeViewController;
 - (IOSBasedChromeViewController)iosBasedChromeViewController;
 - (IOSChromeViewController)iosChromeViewController;
 - (MacChromeViewController)macChromeViewController;
-- (void)_maps_setNeedsUpdate:(BOOL)a3 withSelector:(SEL)a4;
+- (void)_maps_setNeedsUpdate:(BOOL)update withSelector:(SEL)selector;
 @end
 
 @implementation NSObject
@@ -13,11 +13,11 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [self chromeViewController];
+    chromeViewController = [self chromeViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = chromeViewController;
     }
 
     else
@@ -40,11 +40,11 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [self chromeViewController];
+    chromeViewController = [self chromeViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = chromeViewController;
     }
 
     else
@@ -67,11 +67,11 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [self chromeViewController];
+    chromeViewController = [self chromeViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = chromeViewController;
     }
 
     else
@@ -90,21 +90,21 @@
   return v5;
 }
 
-- (BOOL)_maps_needsUpdateWithSelector:(SEL)a3
+- (BOOL)_maps_needsUpdateWithSelector:(SEL)selector
 {
   v4 = objc_getAssociatedObject(self, off_10192A2A8);
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(selector);
   v6 = [v4 containsObject:v5];
 
   return v6;
 }
 
-- (void)_maps_setNeedsUpdate:(BOOL)a3 withSelector:(SEL)a4
+- (void)_maps_setNeedsUpdate:(BOOL)update withSelector:(SEL)selector
 {
-  v5 = a3;
+  updateCopy = update;
   v7 = objc_getAssociatedObject(self, off_10192A2A8);
   v8 = v7;
-  if (v5)
+  if (updateCopy)
   {
     if (!v7)
     {
@@ -112,7 +112,7 @@
       objc_setAssociatedObject(self, off_10192A2A8, v8, 1);
     }
 
-    v9 = NSStringFromSelector(a4);
+    v9 = NSStringFromSelector(selector);
     [v8 addObject:v9];
 
     v10 = objc_getAssociatedObject(self, off_10192A2A0);
@@ -131,7 +131,7 @@
 
   else
   {
-    v11 = NSStringFromSelector(a4);
+    v11 = NSStringFromSelector(selector);
     [v8 removeObject:v11];
   }
 }
@@ -140,11 +140,11 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [self chromeViewController];
+    chromeViewController = [self chromeViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = chromeViewController;
     }
 
     else

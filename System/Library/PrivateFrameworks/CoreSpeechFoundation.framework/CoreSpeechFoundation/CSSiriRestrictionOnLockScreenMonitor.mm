@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (BOOL)_checkSiriRestrictedOnLockScreen;
 - (CSSiriRestrictionOnLockScreenMonitor)init;
-- (void)_didReceiveRestrictionChanged:(BOOL)a3;
-- (void)_didReceiveRestrictionChangedInQueue:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveRestrictionChanged:(BOOL)changed;
+- (void)_didReceiveRestrictionChangedInQueue:(BOOL)queue;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation CSSiriRestrictionOnLockScreenMonitor
@@ -31,41 +31,41 @@
   return v2;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [(CSSiriRestrictionOnLockScreenMonitor *)self _checkSiriRestrictedOnLockScreen:a3];
+  v5 = [(CSSiriRestrictionOnLockScreenMonitor *)self _checkSiriRestrictedOnLockScreen:notification];
   self->_isRestricted = v5;
 
   [(CSSiriRestrictionOnLockScreenMonitor *)self _didReceiveRestrictionChanged:v5];
 }
 
-- (void)_didReceiveRestrictionChanged:(BOOL)a3
+- (void)_didReceiveRestrictionChanged:(BOOL)changed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __70__CSSiriRestrictionOnLockScreenMonitor__didReceiveRestrictionChanged___block_invoke;
   v3[3] = &unk_1E865CA18;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
-- (void)_didReceiveRestrictionChangedInQueue:(BOOL)a3
+- (void)_didReceiveRestrictionChangedInQueue:(BOOL)queue
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __77__CSSiriRestrictionOnLockScreenMonitor__didReceiveRestrictionChangedInQueue___block_invoke;
   v3[3] = &unk_1E865CA18;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
 - (BOOL)_checkSiriRestrictedOnLockScreen
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69ADFC0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADDC0]];
+  mEMORY[0x1E69ADFC0] = [MEMORY[0x1E69ADFC0] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFC0] effectiveBoolValueForSetting:*MEMORY[0x1E69ADDC0]];
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -91,8 +91,8 @@
 - (void)_stopMonitoring
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69ADFC0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x1E69ADFC0] = [MEMORY[0x1E69ADFC0] sharedConnection];
+  [mEMORY[0x1E69ADFC0] unregisterObserver:self];
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -105,11 +105,11 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69ADFC0] sharedConnection];
-  [v4 registerObserver:self];
+  mEMORY[0x1E69ADFC0] = [MEMORY[0x1E69ADFC0] sharedConnection];
+  [mEMORY[0x1E69ADFC0] registerObserver:self];
 
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))

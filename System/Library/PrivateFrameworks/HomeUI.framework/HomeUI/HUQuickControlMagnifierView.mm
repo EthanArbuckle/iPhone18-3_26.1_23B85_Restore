@@ -1,42 +1,42 @@
 @interface HUQuickControlMagnifierView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HUQuickControlMagnifierView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HUQuickControlMagnifierView)initWithFrame:(CGRect)frame;
 - (double)_outlineWidth;
 - (void)layoutSubviews;
 @end
 
 @implementation HUQuickControlMagnifierView
 
-- (HUQuickControlMagnifierView)initWithFrame:(CGRect)a3
+- (HUQuickControlMagnifierView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = HUQuickControlMagnifierView;
-  v3 = [(HUQuickControlMagnifierView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUQuickControlMagnifierView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(HUQuickControlMagnifierView *)v3 setSelectedColor:0];
     [(HUQuickControlMagnifierView *)v4 _outlineWidth];
     v6 = v5;
-    v7 = [(HUQuickControlMagnifierView *)v4 layer];
-    [v7 setBorderWidth:v6];
+    layer = [(HUQuickControlMagnifierView *)v4 layer];
+    [layer setBorderWidth:v6];
 
-    v8 = [MEMORY[0x277D75348] systemWhiteColor];
-    v9 = [v8 CGColor];
-    v10 = [(HUQuickControlMagnifierView *)v4 layer];
-    [v10 setBorderColor:v9];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    cGColor = [systemWhiteColor CGColor];
+    layer2 = [(HUQuickControlMagnifierView *)v4 layer];
+    [layer2 setBorderColor:cGColor];
 
-    v11 = [(HUQuickControlMagnifierView *)v4 layer];
+    layer3 = [(HUQuickControlMagnifierView *)v4 layer];
     LODWORD(v12) = 1045220557;
-    [v11 setShadowOpacity:v12];
+    [layer3 setShadowOpacity:v12];
 
-    v13 = [(HUQuickControlMagnifierView *)v4 layer];
-    [v13 setShadowRadius:15.0];
+    layer4 = [(HUQuickControlMagnifierView *)v4 layer];
+    [layer4 setShadowRadius:15.0];
 
     v14 = *MEMORY[0x277CBF3A8];
     v15 = *(MEMORY[0x277CBF3A8] + 8);
-    v16 = [(HUQuickControlMagnifierView *)v4 layer];
-    [v16 setShadowOffset:{v14, v15}];
+    layer5 = [(HUQuickControlMagnifierView *)v4 layer];
+    [layer5 setShadowOffset:{v14, v15}];
   }
 
   return v4;
@@ -44,8 +44,8 @@
 
 - (double)_outlineWidth
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   result = 1.66666667;
@@ -57,9 +57,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(HUQuickControlMagnifierView *)self innerRadius:a3.width];
+  [(HUQuickControlMagnifierView *)self innerRadius:fits.width];
   v5 = v4;
   [(HUQuickControlMagnifierView *)self _outlineWidth];
   v7 = v5 + v6 + v5 + v6;
@@ -76,15 +76,15 @@
   [(HUQuickControlMagnifierView *)&v10 layoutSubviews];
   [(HUQuickControlMagnifierView *)self bounds];
   v4 = v3 * 0.5;
-  v5 = [(HUQuickControlMagnifierView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(HUQuickControlMagnifierView *)self layer];
+  [layer setCornerRadius:v4];
 
   v6 = MEMORY[0x277D75208];
   [(HUQuickControlMagnifierView *)self bounds];
   v7 = [v6 bezierPathWithOvalInRect:?];
-  v8 = [v7 CGPath];
-  v9 = [(HUQuickControlMagnifierView *)self layer];
-  [v9 setShadowPath:v8];
+  cGPath = [v7 CGPath];
+  layer2 = [(HUQuickControlMagnifierView *)self layer];
+  [layer2 setShadowPath:cGPath];
 }
 
 @end

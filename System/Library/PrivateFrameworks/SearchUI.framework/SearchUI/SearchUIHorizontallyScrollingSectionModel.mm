@@ -4,89 +4,89 @@
 - (BOOL)needsHorizontalNavigation;
 - (BOOL)selfSizingInTwoAxes;
 - (BOOL)shouldHeightMatchSection;
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4;
-- (SearchUIHorizontallyScrollingSectionModel)initWithRowModels:(id)a3 section:(id)a4 numberOfRows:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5;
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3;
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index;
+- (SearchUIHorizontallyScrollingSectionModel)initWithRowModels:(id)models section:(id)section numberOfRows:(int64_t)rows;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source;
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes;
 @end
 
 @implementation SearchUIHorizontallyScrollingSectionModel
 
-- (SearchUIHorizontallyScrollingSectionModel)initWithRowModels:(id)a3 section:(id)a4 numberOfRows:(int64_t)a5
+- (SearchUIHorizontallyScrollingSectionModel)initWithRowModels:(id)models section:(id)section numberOfRows:(int64_t)rows
 {
-  v8 = a3;
+  modelsCopy = models;
   v13.receiver = self;
   v13.super_class = SearchUIHorizontallyScrollingSectionModel;
-  v9 = [(SearchUISectionModel *)&v13 initWithRowModels:v8 section:a4];
+  v9 = [(SearchUISectionModel *)&v13 initWithRowModels:modelsCopy section:section];
   if (v9)
   {
-    if (a5)
+    if (rows)
     {
-      v10 = [v8 count];
-      if (v10 >= a5)
+      v10 = [modelsCopy count];
+      if (v10 >= rows)
       {
-        v11 = a5;
+        rowsCopy = rows;
       }
 
       else
       {
-        v11 = v10;
+        rowsCopy = v10;
       }
     }
 
     else
     {
-      v11 = 1;
+      rowsCopy = 1;
     }
 
-    [(SearchUIHorizontallyScrollingSectionModel *)v9 setNumberOfRows:v11];
+    [(SearchUIHorizontallyScrollingSectionModel *)v9 setNumberOfRows:rowsCopy];
   }
 
   return v9;
 }
 
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [(SearchUISectionModel *)self rowModels];
-  v55 = v6;
-  if ([v7 count])
+  sourceCopy = source;
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  v55 = sourceCopy;
+  if ([rowModels count])
   {
-    v8 = [(SearchUISectionModel *)self rowModels];
+    rowModels2 = [(SearchUISectionModel *)self rowModels];
   }
 
   else
   {
-    v9 = [v6 snapshot];
-    v8 = [v9 itemIdentifiersInSectionWithIdentifier:self];
+    snapshot = [sourceCopy snapshot];
+    rowModels2 = [snapshot itemIdentifiersInSectionWithIdentifier:self];
   }
 
-  v10 = [v8 firstObject];
-  v11 = [v10 cardSection];
+  firstObject = [rowModels2 firstObject];
+  cardSection = [firstObject cardSection];
 
   v12 = MEMORY[0x1E6995588];
-  v13 = [v11 searchUIHorizontallyScrollingSectionModel_widthDimension];
-  v14 = [v11 searchUIHorizontallyScrollingSectionModel_heightDimension];
-  v15 = [v12 sizeWithWidthDimension:v13 heightDimension:v14];
+  searchUIHorizontallyScrollingSectionModel_widthDimension = [cardSection searchUIHorizontallyScrollingSectionModel_widthDimension];
+  searchUIHorizontallyScrollingSectionModel_heightDimension = [cardSection searchUIHorizontallyScrollingSectionModel_heightDimension];
+  v15 = [v12 sizeWithWidthDimension:searchUIHorizontallyScrollingSectionModel_widthDimension heightDimension:searchUIHorizontallyScrollingSectionModel_heightDimension];
 
   v16 = [MEMORY[0x1E6995578] itemWithLayoutSize:v15];
-  v54 = v8;
-  v17 = [v8 count];
+  v54 = rowModels2;
+  v17 = [rowModels2 count];
   v18 = (v17 / [(SearchUIHorizontallyScrollingSectionModel *)self numberOfRows]);
-  v19 = [(SearchUIHorizontallyScrollingSectionModel *)self numberOfRows];
-  v20 = [v15 widthDimension];
-  v21 = [v20 isEstimated];
+  numberOfRows = [(SearchUIHorizontallyScrollingSectionModel *)self numberOfRows];
+  widthDimension = [v15 widthDimension];
+  isEstimated = [widthDimension isEstimated];
 
-  [v11 searchUIHorizontallyScrollingSectionModel_interItemSpacing];
+  [cardSection searchUIHorizontallyScrollingSectionModel_interItemSpacing];
   v23 = v22;
-  v24 = [v15 widthDimension];
-  v25 = [v24 isEstimated];
+  widthDimension2 = [v15 widthDimension];
+  isEstimated2 = [widthDimension2 isEstimated];
   v52 = v18;
-  if (v21)
+  if (isEstimated)
   {
-    if (v25)
+    if (isEstimated2)
     {
       v26 = 10000.0;
       v27 = 1;
@@ -95,23 +95,23 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    v28 = [v11 searchUIHorizontallyScrollingSectionModel_widthDimension];
-    [v28 dimension];
+    searchUIHorizontallyScrollingSectionModel_widthDimension2 = [cardSection searchUIHorizontallyScrollingSectionModel_widthDimension];
+    [searchUIHorizontallyScrollingSectionModel_widthDimension2 dimension];
     v26 = v23 * (v18 - 1) + v29 * v18;
     v30 = 1;
   }
 
   else
   {
-    if (v25)
+    if (isEstimated2)
     {
       v26 = 10000.0;
       v27 = 2;
       goto LABEL_9;
     }
 
-    v28 = [v11 searchUIHorizontallyScrollingSectionModel_widthDimension];
-    [v28 dimension];
+    searchUIHorizontallyScrollingSectionModel_widthDimension2 = [cardSection searchUIHorizontallyScrollingSectionModel_widthDimension];
+    [searchUIHorizontallyScrollingSectionModel_widthDimension2 dimension];
     v26 = v31;
     v30 = 2;
   }
@@ -124,7 +124,7 @@ LABEL_13:
   v34 = [MEMORY[0x1E6995558] estimatedDimension:1.0];
   v35 = [v32 sizeWithWidthDimension:v33 heightDimension:v34];
 
-  if (v19 < 2)
+  if (numberOfRows < 2)
   {
     v42 = MEMORY[0x1E6995568];
     v56[0] = v16;
@@ -138,7 +138,7 @@ LABEL_13:
     if ([(SearchUIHorizontallyScrollingSectionModel *)self numberOfRows])
     {
       v37 = 0;
-      if (v21)
+      if (isEstimated)
       {
         v38 = v52;
       }
@@ -165,7 +165,7 @@ LABEL_13:
   }
 
   v44 = MEMORY[0x1E6995590];
-  [v11 _superGroupSpacing];
+  [cardSection _superGroupSpacing];
   v45 = [v44 fixedSpacing:?];
   [v40 setInterItemSpacing:v45];
 
@@ -189,47 +189,47 @@ LABEL_13:
 
 - (BOOL)shouldHeightMatchSection
 {
-  v3 = [(SearchUIHorizontallyScrollingSectionModel *)self drawsBackground];
-  if (v3)
+  drawsBackground = [(SearchUIHorizontallyScrollingSectionModel *)self drawsBackground];
+  if (drawsBackground)
   {
-    LOBYTE(v3) = [(SearchUIHorizontallyScrollingSectionModel *)self numberOfRows]== 1;
+    LOBYTE(drawsBackground) = [(SearchUIHorizontallyScrollingSectionModel *)self numberOfRows]== 1;
   }
 
-  return v3;
+  return drawsBackground;
 }
 
 - (BOOL)needsHeaderSeparator
 {
-  v2 = [(SearchUISectionModel *)self rowModels];
-  v3 = [v2 firstObject];
-  v4 = [v3 cardSection];
-  v5 = [v4 searchUIHorizontallyScrollingSectionModel_needsHeaderSeparator];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
+  cardSection = [firstObject cardSection];
+  searchUIHorizontallyScrollingSectionModel_needsHeaderSeparator = [cardSection searchUIHorizontallyScrollingSectionModel_needsHeaderSeparator];
 
-  return v5;
+  return searchUIHorizontallyScrollingSectionModel_needsHeaderSeparator;
 }
 
 - (BOOL)drawsBackground
 {
-  v2 = [(SearchUISectionModel *)self rowModels];
-  v3 = [v2 firstObject];
-  v4 = [v3 cardSection];
-  v5 = [v4 searchUIHorizontallyScrollingSectionModel_useBackground];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
+  cardSection = [firstObject cardSection];
+  searchUIHorizontallyScrollingSectionModel_useBackground = [cardSection searchUIHorizontallyScrollingSectionModel_useBackground];
 
-  return v5;
+  return searchUIHorizontallyScrollingSectionModel_useBackground;
 }
 
 - (BOOL)selfSizingInTwoAxes
 {
-  v2 = [(SearchUISectionModel *)self rowModels];
-  v3 = [v2 firstObject];
-  v4 = [v3 cardSection];
-  v5 = [v4 searchUIHorizontallyScrollingSectionModel_widthDimension];
-  v6 = [v5 isEstimated];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
+  cardSection = [firstObject cardSection];
+  searchUIHorizontallyScrollingSectionModel_widthDimension = [cardSection searchUIHorizontallyScrollingSectionModel_widthDimension];
+  isEstimated = [searchUIHorizontallyScrollingSectionModel_widthDimension isEstimated];
 
-  return v6;
+  return isEstimated;
 }
 
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes
 {
   if ([(SearchUIHorizontallyScrollingSectionModel *)self drawsBackground])
   {
@@ -242,27 +242,27 @@ LABEL_13:
   }
 }
 
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v46.receiver = self;
   v46.super_class = SearchUIHorizontallyScrollingSectionModel;
-  [(SearchUISectionModel *)&v46 sectionInsetsWithAttributes:v6 sectionIndex:a4];
+  [(SearchUISectionModel *)&v46 sectionInsetsWithAttributes:attributesCopy sectionIndex:index];
   v44 = v7;
   v45 = v8;
-  v9 = [(SearchUISectionModel *)self rowModels];
-  v10 = [v9 firstObject];
-  v11 = [v10 cardSection];
-  [v11 searchUIHorizontallyScrollingSectionModel_additionalSectionInsets];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
+  cardSection = [firstObject cardSection];
+  [cardSection searchUIHorizontallyScrollingSectionModel_additionalSectionInsets];
   v13 = v12;
   v15 = v14;
   v40 = v17;
   v42 = v16;
 
-  v18 = [(SearchUISectionModel *)self rowModels];
-  v19 = [v18 firstObject];
-  v20 = [v19 cardSection];
-  [v20 searchUIHorizontallyScrollingSectionModel_customSectionInsets];
+  rowModels2 = [(SearchUISectionModel *)self rowModels];
+  firstObject2 = [rowModels2 firstObject];
+  cardSection2 = [firstObject2 cardSection];
+  [cardSection2 searchUIHorizontallyScrollingSectionModel_customSectionInsets];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -293,8 +293,8 @@ LABEL_13:
   v32 = 16.0;
   if ([MEMORY[0x1E69D9240] isMacOS])
   {
-    v33 = [(SearchUISectionModel *)self section];
-    if ([v33 isBrowseSection])
+    section = [(SearchUISectionModel *)self section];
+    if ([section isBrowseSection])
     {
       v32 = 25.0;
     }
@@ -305,11 +305,11 @@ LABEL_13:
     }
   }
 
-  v34 = [v6 shouldUseInsetRoundedSections];
+  shouldUseInsetRoundedSections = [attributesCopy shouldUseInsetRoundedSections];
   if ((v30 & 1) == 0)
   {
     v35 = 0.0;
-    if (v34)
+    if (shouldUseInsetRoundedSections)
     {
       v35 = 8.0;
     }
@@ -333,18 +333,18 @@ LABEL_13:
 
 - (BOOL)needsHorizontalNavigation
 {
-  v3 = [(SearchUISectionModel *)self rowModels];
-  v4 = [v3 count];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  v4 = [rowModels count];
   v5 = (v4 / [(SearchUIHorizontallyScrollingSectionModel *)self numberOfRows]);
 
   return v5 > 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SearchUIHorizontallyScrollingSectionModel;
-  v4 = [(SearchUISectionModel *)&v6 copyWithZone:a3];
+  v4 = [(SearchUISectionModel *)&v6 copyWithZone:zone];
   [v4 setNumberOfRows:{-[SearchUIHorizontallyScrollingSectionModel numberOfRows](self, "numberOfRows")}];
   return v4;
 }

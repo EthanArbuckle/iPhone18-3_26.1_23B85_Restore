@@ -1,7 +1,7 @@
 @interface _HKCBCentralManagerLoader
 - (_HKCBCentralManagerLoader)init;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)getCentralManagerWithCompletion:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)getCentralManagerWithCompletion:(id)completion;
 @end
 
 @implementation _HKCBCentralManagerLoader
@@ -30,25 +30,25 @@
   return v3;
 }
 
-- (void)getCentralManagerWithCompletion:(id)a3
+- (void)getCentralManagerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61___HKCBCentralManagerLoader_getCentralManagerWithCompletion___block_invoke;
   v7[3] = &unk_1E73765F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 state] == 5)
+  stateCopy = state;
+  if ([stateCopy state] == 5)
   {
     _HKInitializeLogging();
     v5 = HKLogServices;
@@ -57,7 +57,7 @@
       pendingHandlers = self->_pendingHandlers;
       v7 = v5;
       *buf = 138412546;
-      v20 = self;
+      selfCopy = self;
       v21 = 2048;
       v22 = [(NSMutableArray *)pendingHandlers count];
       _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_DEFAULT, "%@ CBCentralManager did become available, %lu pending handlers", buf, 0x16u);

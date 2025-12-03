@@ -1,12 +1,12 @@
 @interface TUIAccountKeySpecifierButtonCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation TUIAccountKeySpecifierButtonCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_8 != -1)
   {
     [TUIAccountKeySpecifierButtonCell refreshCellContentsWithSpecifier:];
@@ -19,24 +19,24 @@
 
   v13.receiver = self;
   v13.super_class = TUIAccountKeySpecifierButtonCell;
-  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:v4];
-  v5 = [MEMORY[0x277D756E0] cellConfiguration];
-  v6 = [v4 propertyForKey:*MEMORY[0x277D3FFC0]];
-  [v5 setImage:v6];
+  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:specifierCopy];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277D3FFC0]];
+  [cellConfiguration setImage:v6];
 
-  v7 = [v4 name];
-  [v5 setText:v7];
+  name = [specifierCopy name];
+  [cellConfiguration setText:name];
 
-  v8 = [(TUIAccountKeySpecifierButtonCell *)self textLabel];
-  v9 = [v8 font];
-  v10 = [v5 textProperties];
-  [v10 setFont:v9];
+  textLabel = [(TUIAccountKeySpecifierButtonCell *)self textLabel];
+  font = [textLabel font];
+  textProperties = [cellConfiguration textProperties];
+  [textProperties setFont:font];
 
-  [v5 setImageToTextPadding:5.0];
-  [(TUIAccountKeySpecifierButtonCell *)self setContentConfiguration:v5];
-  v11 = [(TUIAccountKeySpecifierButtonCell *)self imageView];
-  v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v11 setTintColor:v12];
+  [cellConfiguration setImageToTextPadding:5.0];
+  [(TUIAccountKeySpecifierButtonCell *)self setContentConfiguration:cellConfiguration];
+  imageView = [(TUIAccountKeySpecifierButtonCell *)self imageView];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [imageView setTintColor:secondaryLabelColor];
 
   [(TUIAccountKeySpecifierButtonCell *)self setNeedsLayout];
 }

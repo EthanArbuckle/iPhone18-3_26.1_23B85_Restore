@@ -2,26 +2,26 @@
 - ($91EEB31E22C960290E85DB462FB2FE46)calibrationConfig;
 - (BOOL)_extractAndRunSanityChecks;
 - (BOOL)allocateResources;
-- (BOOL)allocateResources:(id *)a3;
-- (BOOL)isImageFullResolution:(__CVBuffer *)a3;
-- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)a3;
-- (FigCalibration)initWithCommandQueue:(id)a3;
+- (BOOL)allocateResources:(id *)resources;
+- (BOOL)isImageFullResolution:(__CVBuffer *)resolution;
+- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)resolution;
+- (FigCalibration)initWithCommandQueue:(id)queue;
 - (id)selectTuningParametersForCapture;
-- (int)_detectKeypoints:(float)a3;
-- (int)prewarmWithTuningParameters:(id)a3;
+- (int)_detectKeypoints:(float)keypoints;
+- (int)prewarmWithTuningParameters:(id)parameters;
 - (int)process;
 - (void)dealloc;
-- (void)fillShiftMapMetadataWithCalModel:(CalModel *)a3 referenceGDC:(id *)a4 auxiliaryGDC:(id *)a5;
+- (void)fillShiftMapMetadataWithCalModel:(CalModel *)model referenceGDC:(id *)c auxiliaryGDC:(id *)dC;
 - (void)releaseResources;
-- (void)setCalibrationConfig:(id *)a3;
-- (void)setOptions:(id)a3;
+- (void)setCalibrationConfig:(id *)config;
+- (void)setOptions:(id)options;
 @end
 
 @implementation FigCalibration
 
-- (FigCalibration)initWithCommandQueue:(id)a3
+- (FigCalibration)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v44.receiver = self;
   v44.super_class = FigCalibration;
   v5 = [(FigCalibration *)&v44 init];
@@ -34,7 +34,7 @@
   v7 = objc_opt_class();
   v12 = objc_msgSend_bundleForClass_(v6, v8, v7, v9, v10, v11);
   v13 = objc_alloc(MEMORY[0x29EDC0A40]);
-  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v13, v14, v12, v4, v15, v16);
+  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v13, v14, v12, queueCopy, v15, v16);
   v18 = *(v5 + 16);
   *(v5 + 16) = inited;
 
@@ -84,15 +84,15 @@ LABEL_7:
   return v42;
 }
 
-- (int)prewarmWithTuningParameters:(id)a3
+- (int)prewarmWithTuningParameters:(id)parameters
 {
-  v4 = a3;
-  v7 = v4;
+  parametersCopy = parameters;
+  v7 = parametersCopy;
   self->_isPrewarming = 1;
-  if (v4)
+  if (parametersCopy)
   {
     v19 = *MEMORY[0x29EDC0298];
-    v20 = v4;
+    v20 = parametersCopy;
     v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v5, &v20, &v19, 1, v6);
     objc_msgSend_setOptions_(self, v9, v8, v10, v11, v12);
     *&self->_calibrationConfig.inputImageWidth = vdupq_n_s64(0x400uLL);
@@ -121,12 +121,12 @@ LABEL_7:
   return v17;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v5 = a3;
-  objc_storeStrong(&self->_options, a3);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v5, v6, *MEMORY[0x29EDC0298], v7, v8, v9);
-  v15 = objc_msgSend_objectForKeyedSubscript_(v5, v11, *MEMORY[0x29EDC0288], v12, v13, v14);
+  optionsCopy = options;
+  objc_storeStrong(&self->_options, options);
+  v10 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v6, *MEMORY[0x29EDC0298], v7, v8, v9);
+  v15 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v11, *MEMORY[0x29EDC0288], v12, v13, v14);
   v20 = objc_msgSend_objectForKeyedSubscript_(v10, v16, @"ADC", v17, v18, v19);
 
   if (v20)
@@ -160,7 +160,7 @@ LABEL_7:
 
     else
     {
-      v84 = v5;
+      v84 = optionsCopy;
       v33 = objc_opt_new();
       v34 = self->_calibrationTuningParameters;
       self->_calibrationTuningParameters = v33;
@@ -173,7 +173,7 @@ LABEL_7:
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v85 = self;
+      selfCopy = self;
       obj = self->_portsToConfig;
       v43 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v41, &v88, v87, 16, v42);
       if (v43)
@@ -211,7 +211,7 @@ LABEL_7:
                 goto LABEL_21;
               }
 
-              objc_msgSend_setObject_forKeyedSubscript_(v85->_calibrationTuningParameters, v81, v70, v59, v82, v83);
+              objc_msgSend_setObject_forKeyedSubscript_(selfCopy->_calibrationTuningParameters, v81, v70, v59, v82, v83);
 
               v15 = v66;
             }
@@ -229,17 +229,17 @@ LABEL_7:
 
 LABEL_21:
 
-      v5 = v84;
+      optionsCopy = v84;
     }
   }
 }
 
-- (BOOL)allocateResources:(id *)a3
+- (BOOL)allocateResources:(id *)resources
 {
-  v6 = *&a3->var2;
-  *&self->_calibrationConfig.inputImageWidth = *&a3->var0;
+  v6 = *&resources->var2;
+  *&self->_calibrationConfig.inputImageWidth = *&resources->var0;
   *&self->_calibrationConfig.maxPaddingFactor = v6;
-  return objc_msgSend_allocateResources(self, a2, a3, v3, v4, v5);
+  return objc_msgSend_allocateResources(self, a2, resources, v3, v4, v5);
 }
 
 - (BOOL)allocateResources
@@ -915,26 +915,26 @@ LABEL_29:
   }
 }
 
-- (void)fillShiftMapMetadataWithCalModel:(CalModel *)a3 referenceGDC:(id *)a4 auxiliaryGDC:(id *)a5
+- (void)fillShiftMapMetadataWithCalModel:(CalModel *)model referenceGDC:(id *)c auxiliaryGDC:(id *)dC
 {
-  v189 = a3->focalLengthPix[0];
-  v183 = a3->focalLengthPix[1];
-  v185 = a3->opticalCenterX[0];
-  v181 = a3->opticalCenterX[1];
-  v187 = a3->opticalCenterY[0];
-  v179 = a3->opticalCenterY[1];
-  v8 = a3->extrinRotRefefenceToAuxiliary[0];
-  v9 = a3->extrinRotRefefenceToAuxiliary[1];
-  v10 = a3->extrinRotRefefenceToAuxiliary[4];
-  v11 = a3->extrinRotRefefenceToAuxiliary[5];
-  v12 = a3->extrinRotRefefenceToAuxiliary[8];
-  v13 = a3->extrinRotRefefenceToAuxiliary[9];
-  v14 = a3->extrinRotRefefenceToAuxiliary[2];
-  v177 = a3->extrinRotRefefenceToAuxiliary[3];
-  v15 = a3->extrinRotRefefenceToAuxiliary[6];
-  v175 = a3->extrinRotRefefenceToAuxiliary[7];
-  v171 = a3->extrinRotRefefenceToAuxiliary[10];
-  v173 = a3->extrinRotRefefenceToAuxiliary[11];
+  v189 = model->focalLengthPix[0];
+  v183 = model->focalLengthPix[1];
+  v185 = model->opticalCenterX[0];
+  v181 = model->opticalCenterX[1];
+  v187 = model->opticalCenterY[0];
+  v179 = model->opticalCenterY[1];
+  v8 = model->extrinRotRefefenceToAuxiliary[0];
+  v9 = model->extrinRotRefefenceToAuxiliary[1];
+  v10 = model->extrinRotRefefenceToAuxiliary[4];
+  v11 = model->extrinRotRefefenceToAuxiliary[5];
+  v12 = model->extrinRotRefefenceToAuxiliary[8];
+  v13 = model->extrinRotRefefenceToAuxiliary[9];
+  v14 = model->extrinRotRefefenceToAuxiliary[2];
+  v177 = model->extrinRotRefefenceToAuxiliary[3];
+  v15 = model->extrinRotRefefenceToAuxiliary[6];
+  v175 = model->extrinRotRefefenceToAuxiliary[7];
+  v171 = model->extrinRotRefefenceToAuxiliary[10];
+  v173 = model->extrinRotRefefenceToAuxiliary[11];
   v192 = *MEMORY[0x29EDCA928];
   v193 = *(MEMORY[0x29EDCA928] + 16);
   v194 = *(MEMORY[0x29EDCA928] + 32);
@@ -947,8 +947,8 @@ LABEL_29:
   v33 = objc_alloc(MEMORY[0x29EDB8DE8]);
   v43 = objc_msgSend_initWithCapacity_(v33, v34, 8, v35, v36, v37);
   v45 = 0;
-  v191 = a4;
-  var1 = a4->var1;
+  cCopy = c;
+  var1 = c->var1;
   do
   {
     v44.f32[0] = *var1;
@@ -959,7 +959,7 @@ LABEL_29:
     v57 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v52, v53, v54, v55, v56, v51);
     objc_msgSend_setObject_atIndexedSubscript_(v26, v58, v57, v45, v59, v60);
 
-    v61 = &a5->var0[v45];
+    v61 = &dC->var0[v45];
     LODWORD(v62) = v61[8];
     v68 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v63, v64, v65, v66, v67, v62);
     objc_msgSend_setObject_atIndexedSubscript_(v32, v69, v68, v45, v70, v71);
@@ -1058,20 +1058,20 @@ LABEL_29:
   objc_msgSend_setReferenceIntrinsicMatrix_(self->_calibrationMetadata, v114, v115, v116, v117, v118, v186, v188, v190);
   objc_msgSend_setReferenceInverseLensDistortionCoefficients_(self->_calibrationMetadata, v119, v26, v120, v121, v122);
   objc_msgSend_setReferenceLensDistortionCoefficients_(self->_calibrationMetadata, v123, v195, v124, v125, v126);
-  objc_msgSend_setReferenceLensDistortionOpticalCenter_(self->_calibrationMetadata, v127, v128, v129, v130, v131, v191->var2, v191->var3);
-  *&v132 = v191->var6;
+  objc_msgSend_setReferenceLensDistortionOpticalCenter_(self->_calibrationMetadata, v127, v128, v129, v130, v131, cCopy->var2, cCopy->var3);
+  *&v132 = cCopy->var6;
   objc_msgSend_setReferencePixelSizeInMillimeters_(self->_calibrationMetadata, v133, v134, v135, v136, v137, v132);
   objc_msgSend_setAuxiliaryExtrinsicMatrix_(self->_calibrationMetadata, v138, v139, v140, v141, v142, v172, v174, v176, v178);
   objc_msgSend_setAuxiliaryIntrinsicMatrix_(self->_calibrationMetadata, v143, v144, v145, v146, v147, v180, v182, v184);
   objc_msgSend_setAuxiliaryInverseLensDistortionCoefficients_(self->_calibrationMetadata, v148, v43, v149, v150, v151);
   objc_msgSend_setAuxiliaryLensDistortionCoefficients_(self->_calibrationMetadata, v152, v32, v153, v154, v155);
-  objc_msgSend_setAuxiliaryLensDistortionOpticalCenter_(self->_calibrationMetadata, v156, v157, v158, v159, v160, a5->var2, a5->var3);
-  *&v161 = a5->var6;
+  objc_msgSend_setAuxiliaryLensDistortionOpticalCenter_(self->_calibrationMetadata, v156, v157, v158, v159, v160, dC->var2, dC->var3);
+  *&v161 = dC->var6;
   objc_msgSend_setAuxiliaryPixelSizeInMillimeters_(self->_calibrationMetadata, v162, v163, v164, v165, v166, v161);
   objc_msgSend_setVersion_(self->_calibrationMetadata, v167, 1, v168, v169, v170);
 }
 
-- (int)_detectKeypoints:(float)a3
+- (int)_detectKeypoints:(float)keypoints
 {
   v5 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, a2, self->_referenceImageLowLumaOnly, 10, 17, 0);
   if (!v5)
@@ -1108,7 +1108,7 @@ LABEL_17:
 
     else
     {
-      if (fabsf(a3 + -2.0) <= 0.05)
+      if (fabsf(keypoints + -2.0) <= 0.05)
       {
         v14 = vcvt_f32_u32(vshr_n_u32(*&self->_inputImageWidth, 2uLL));
         __asm { FMOV            V0.2S, #1.0 }
@@ -1117,8 +1117,8 @@ LABEL_17:
       else
       {
         v12 = vcvt_f32_u32(*&self->_inputImageWidth);
-        _D0 = vdiv_f32(v12, vmul_n_f32(vcvt_f32_u32(*&self->_scalerOutputWidth), a3));
-        v14 = vmul_n_f32(v12, (1.0 - (1.0 / a3)) * 0.5);
+        _D0 = vdiv_f32(v12, vmul_n_f32(vcvt_f32_u32(*&self->_scalerOutputWidth), keypoints));
+        v14 = vmul_n_f32(v12, (1.0 - (1.0 / keypoints)) * 0.5);
       }
 
       v19 = self->_keypointGridHeight * self->_keypointGridWidth;
@@ -1174,7 +1174,7 @@ LABEL_14:
     if (v21)
     {
       v26 = v21;
-      v52 = self;
+      selfCopy = self;
       v27 = *v56;
       do
       {
@@ -1186,7 +1186,7 @@ LABEL_14:
           }
 
           v29 = *(*(&v55 + 1) + 8 * i);
-          v30 = objc_msgSend_objectForKeyedSubscript_(v29, v22, @"Reference", v23, v24, v25, v52);
+          v30 = objc_msgSend_objectForKeyedSubscript_(v29, v22, @"Reference", v23, v24, v25, selfCopy);
           if (objc_msgSend_isEqualToString_(v30, v31, v13, v32, v33, v34))
           {
             v39 = objc_msgSend_objectForKeyedSubscript_(v29, v35, @"Auxiliary", v36, v37, v38);
@@ -1194,7 +1194,7 @@ LABEL_14:
 
             if (isEqualToString)
             {
-              calibrationTuningParameters = v52->_calibrationTuningParameters;
+              calibrationTuningParameters = selfCopy->_calibrationTuningParameters;
               v46 = objc_msgSend_objectForKeyedSubscript_(v29, v22, @"Config", v23, v24, v25);
               v12 = objc_msgSend_objectForKeyedSubscript_(calibrationTuningParameters, v47, v46, v48, v49, v50);
 
@@ -1220,18 +1220,18 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)isImageFullResolution:(__CVBuffer *)a3
+- (BOOL)isImageFullResolution:(__CVBuffer *)resolution
 {
   inputImageWidth = self->_inputImageWidth;
   inputImageHeight = self->_inputImageHeight;
-  return inputImageWidth == CVPixelBufferGetWidth(a3) && inputImageHeight == CVPixelBufferGetHeight(a3);
+  return inputImageWidth == CVPixelBufferGetWidth(resolution) && inputImageHeight == CVPixelBufferGetHeight(resolution);
 }
 
-- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)a3
+- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)resolution
 {
   scalerOutputWidth = self->_scalerOutputWidth;
   scalerOutputHeight = self->_scalerOutputHeight;
-  return scalerOutputWidth == CVPixelBufferGetWidth(a3) && scalerOutputHeight == CVPixelBufferGetHeight(a3);
+  return scalerOutputWidth == CVPixelBufferGetWidth(resolution) && scalerOutputHeight == CVPixelBufferGetHeight(resolution);
 }
 
 - ($91EEB31E22C960290E85DB462FB2FE46)calibrationConfig
@@ -1242,10 +1242,10 @@ LABEL_16:
   return self;
 }
 
-- (void)setCalibrationConfig:(id *)a3
+- (void)setCalibrationConfig:(id *)config
 {
-  v3 = *&a3->var2;
-  *&self->_calibrationConfig.inputImageWidth = *&a3->var0;
+  v3 = *&config->var2;
+  *&self->_calibrationConfig.inputImageWidth = *&config->var0;
   *&self->_calibrationConfig.maxPaddingFactor = v3;
 }
 

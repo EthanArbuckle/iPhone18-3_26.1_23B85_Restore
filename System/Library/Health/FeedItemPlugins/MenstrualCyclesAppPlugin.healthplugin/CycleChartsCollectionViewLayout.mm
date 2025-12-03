@@ -1,10 +1,10 @@
 @interface CycleChartsCollectionViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -19,13 +19,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_29DF7397C(x, y, width, height);
 
   if (v8)
@@ -42,14 +42,14 @@
   return v9;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_29E2BCFB4();
   v5 = *(v4 - 8);
   MEMORY[0x2A1C7C4A8](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_29DF748B4(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -57,7 +57,7 @@
   return v9;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_29E2BCFB4();
   v6 = *(v5 - 8);
@@ -66,7 +66,7 @@
   v9 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   v11 = v10;
   sub_29E2BCF44();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_29DF75318(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);
@@ -74,11 +74,11 @@
   return v13;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  v3 = a3.x + *(&self->super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31CycleChartsCollectionViewLayout_axisColumnWidthAdjustment);
+  v3 = offset.x + *(&self->super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31CycleChartsCollectionViewLayout_axisColumnWidthAdjustment);
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31CycleChartsCollectionViewLayout_headerHeightAdjustment;
-  v5 = a3.y + *(&self->super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31CycleChartsCollectionViewLayout_headerHeightAdjustment);
+  v5 = offset.y + *(&self->super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31CycleChartsCollectionViewLayout_headerHeightAdjustment);
   *(&self->super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31CycleChartsCollectionViewLayout_axisColumnWidthAdjustment) = 0;
   *(&self->super.super.isa + v4) = 0;
   result.y = v5;
@@ -86,11 +86,11 @@
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = offset.y;
+  x = offset.x;
+  selfCopy = self;
   sub_29DF76AEC(x, y);
   v8 = v7;
   v10 = v9;

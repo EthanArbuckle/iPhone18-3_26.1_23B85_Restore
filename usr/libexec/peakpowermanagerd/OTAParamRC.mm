@@ -1,48 +1,48 @@
 @interface OTAParamRC
-- (BOOL)isEqual:(id)a3;
-- (float)agingCoeffForR0AtIndex:(unint64_t)a3;
-- (float)agingCoeffForR0TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForR1AtIndex:(unint64_t)a3;
-- (float)agingCoeffForR1TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForR2AtIndex:(unint64_t)a3;
-- (float)agingCoeffForR2TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForR3AtIndex:(unint64_t)a3;
-- (float)agingCoeffForR3TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq1AtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq1TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq2AtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq2TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq3AtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq3TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq4AtIndex:(unint64_t)a3;
-- (float)agingCoeffForRCFreq4TemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)agingCoeffForRdcAtIndex:(unint64_t)a3;
-- (float)agingCoeffForRdcTemperatureCoeffAtIndex:(unint64_t)a3;
-- (float)baselineRdcAtIndex:(unint64_t)a3;
-- (float)coeffSOCAtIndex:(unint64_t)a3;
-- (float)coeffVAtIndex:(unint64_t)a3;
-- (float)gridOCVAtIndex:(unint64_t)a3;
-- (float)gridWRdcRatioAtIndex:(unint64_t)a3;
-- (float)qmaxAtIndex:(unint64_t)a3;
-- (float)slopeForR0ExtrapAtIndex:(unint64_t)a3;
-- (float)slopeForR1ExtrapAtIndex:(unint64_t)a3;
-- (float)slopeForR2ExtrapAtIndex:(unint64_t)a3;
-- (float)slopeForR3ExtrapAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)agingCoeffForR0AtIndex:(unint64_t)index;
+- (float)agingCoeffForR0TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForR1AtIndex:(unint64_t)index;
+- (float)agingCoeffForR1TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForR2AtIndex:(unint64_t)index;
+- (float)agingCoeffForR2TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForR3AtIndex:(unint64_t)index;
+- (float)agingCoeffForR3TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq1AtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq1TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq2AtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq2TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq3AtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq3TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq4AtIndex:(unint64_t)index;
+- (float)agingCoeffForRCFreq4TemperatureCoeffAtIndex:(unint64_t)index;
+- (float)agingCoeffForRdcAtIndex:(unint64_t)index;
+- (float)agingCoeffForRdcTemperatureCoeffAtIndex:(unint64_t)index;
+- (float)baselineRdcAtIndex:(unint64_t)index;
+- (float)coeffSOCAtIndex:(unint64_t)index;
+- (float)coeffVAtIndex:(unint64_t)index;
+- (float)gridOCVAtIndex:(unint64_t)index;
+- (float)gridWRdcRatioAtIndex:(unint64_t)index;
+- (float)qmaxAtIndex:(unint64_t)index;
+- (float)slopeForR0ExtrapAtIndex:(unint64_t)index;
+- (float)slopeForR1ExtrapAtIndex:(unint64_t)index;
+- (float)slopeForR2ExtrapAtIndex:(unint64_t)index;
+- (float)slopeForR3ExtrapAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMLBConfig:(id)a3;
+- (int)StringAsMLBConfig:(id)config;
 - (int)mLBConfig;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMLBConfig:(BOOL)a3;
-- (void)setHasMaxRdcR25Ratio:(BOOL)a3;
-- (void)setHasMaxRdcRatio:(BOOL)a3;
-- (void)setHasMaxRdcRatioR2Extrap:(BOOL)a3;
-- (void)setHasWRdcRatioThresh:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasMLBConfig:(BOOL)config;
+- (void)setHasMaxRdcR25Ratio:(BOOL)ratio;
+- (void)setHasMaxRdcRatio:(BOOL)ratio;
+- (void)setHasMaxRdcRatioR2Extrap:(BOOL)extrap;
+- (void)setHasWRdcRatioThresh:(BOOL)thresh;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTAParamRC
@@ -82,121 +82,121 @@
   [(OTAParamRC *)&v3 dealloc];
 }
 
-- (float)agingCoeffForR0AtIndex:(unint64_t)a3
+- (float)agingCoeffForR0AtIndex:(unint64_t)index
 {
   p_agingCoeffForR0s = &self->_agingCoeffForR0s;
   count = self->_agingCoeffForR0s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR0s->list[a3];
+  return p_agingCoeffForR0s->list[index];
 }
 
-- (float)agingCoeffForR0TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForR0TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForR0TemperatureCoeffs = &self->_agingCoeffForR0TemperatureCoeffs;
   count = self->_agingCoeffForR0TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR0TemperatureCoeffs->list[a3];
+  return p_agingCoeffForR0TemperatureCoeffs->list[index];
 }
 
-- (float)agingCoeffForR1AtIndex:(unint64_t)a3
+- (float)agingCoeffForR1AtIndex:(unint64_t)index
 {
   p_agingCoeffForR1s = &self->_agingCoeffForR1s;
   count = self->_agingCoeffForR1s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR1s->list[a3];
+  return p_agingCoeffForR1s->list[index];
 }
 
-- (float)agingCoeffForR1TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForR1TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForR1TemperatureCoeffs = &self->_agingCoeffForR1TemperatureCoeffs;
   count = self->_agingCoeffForR1TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR1TemperatureCoeffs->list[a3];
+  return p_agingCoeffForR1TemperatureCoeffs->list[index];
 }
 
-- (float)agingCoeffForR2AtIndex:(unint64_t)a3
+- (float)agingCoeffForR2AtIndex:(unint64_t)index
 {
   p_agingCoeffForR2s = &self->_agingCoeffForR2s;
   count = self->_agingCoeffForR2s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR2s->list[a3];
+  return p_agingCoeffForR2s->list[index];
 }
 
-- (float)agingCoeffForR2TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForR2TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForR2TemperatureCoeffs = &self->_agingCoeffForR2TemperatureCoeffs;
   count = self->_agingCoeffForR2TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR2TemperatureCoeffs->list[a3];
+  return p_agingCoeffForR2TemperatureCoeffs->list[index];
 }
 
-- (float)baselineRdcAtIndex:(unint64_t)a3
+- (float)baselineRdcAtIndex:(unint64_t)index
 {
   p_baselineRdcs = &self->_baselineRdcs;
   count = self->_baselineRdcs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_baselineRdcs->list[a3];
+  return p_baselineRdcs->list[index];
 }
 
-- (float)gridOCVAtIndex:(unint64_t)a3
+- (float)gridOCVAtIndex:(unint64_t)index
 {
   p_gridOCVs = &self->_gridOCVs;
   count = self->_gridOCVs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_gridOCVs->list[a3];
+  return p_gridOCVs->list[index];
 }
 
-- (void)setHasMaxRdcRatio:(BOOL)a3
+- (void)setHasMaxRdcRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 8;
   }
@@ -209,9 +209,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMaxRdcRatioR2Extrap:(BOOL)a3
+- (void)setHasMaxRdcRatioR2Extrap:(BOOL)extrap
 {
-  if (a3)
+  if (extrap)
   {
     v3 = 16;
   }
@@ -224,200 +224,200 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (float)slopeForR0ExtrapAtIndex:(unint64_t)a3
+- (float)slopeForR0ExtrapAtIndex:(unint64_t)index
 {
   p_slopeForR0Extraps = &self->_slopeForR0Extraps;
   count = self->_slopeForR0Extraps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_slopeForR0Extraps->list[a3];
+  return p_slopeForR0Extraps->list[index];
 }
 
-- (float)slopeForR1ExtrapAtIndex:(unint64_t)a3
+- (float)slopeForR1ExtrapAtIndex:(unint64_t)index
 {
   p_slopeForR1Extraps = &self->_slopeForR1Extraps;
   count = self->_slopeForR1Extraps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_slopeForR1Extraps->list[a3];
+  return p_slopeForR1Extraps->list[index];
 }
 
-- (float)slopeForR2ExtrapAtIndex:(unint64_t)a3
+- (float)slopeForR2ExtrapAtIndex:(unint64_t)index
 {
   p_slopeForR2Extraps = &self->_slopeForR2Extraps;
   count = self->_slopeForR2Extraps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_slopeForR2Extraps->list[a3];
+  return p_slopeForR2Extraps->list[index];
 }
 
-- (float)slopeForR3ExtrapAtIndex:(unint64_t)a3
+- (float)slopeForR3ExtrapAtIndex:(unint64_t)index
 {
   p_slopeForR3Extraps = &self->_slopeForR3Extraps;
   count = self->_slopeForR3Extraps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_slopeForR3Extraps->list[a3];
+  return p_slopeForR3Extraps->list[index];
 }
 
-- (float)agingCoeffForR3AtIndex:(unint64_t)a3
+- (float)agingCoeffForR3AtIndex:(unint64_t)index
 {
   p_agingCoeffForR3s = &self->_agingCoeffForR3s;
   count = self->_agingCoeffForR3s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR3s->list[a3];
+  return p_agingCoeffForR3s->list[index];
 }
 
-- (float)agingCoeffForR3TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForR3TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForR3TemperatureCoeffs = &self->_agingCoeffForR3TemperatureCoeffs;
   count = self->_agingCoeffForR3TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForR3TemperatureCoeffs->list[a3];
+  return p_agingCoeffForR3TemperatureCoeffs->list[index];
 }
 
-- (float)agingCoeffForRCFreq1AtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq1AtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq1s = &self->_agingCoeffForRCFreq1s;
   count = self->_agingCoeffForRCFreq1s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq1s->list[a3];
+  return p_agingCoeffForRCFreq1s->list[index];
 }
 
-- (float)agingCoeffForRCFreq2AtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq2AtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq2s = &self->_agingCoeffForRCFreq2s;
   count = self->_agingCoeffForRCFreq2s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq2s->list[a3];
+  return p_agingCoeffForRCFreq2s->list[index];
 }
 
-- (float)agingCoeffForRCFreq3AtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq3AtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq3s = &self->_agingCoeffForRCFreq3s;
   count = self->_agingCoeffForRCFreq3s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq3s->list[a3];
+  return p_agingCoeffForRCFreq3s->list[index];
 }
 
-- (float)agingCoeffForRCFreq4AtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq4AtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq4s = &self->_agingCoeffForRCFreq4s;
   count = self->_agingCoeffForRCFreq4s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq4s->list[a3];
+  return p_agingCoeffForRCFreq4s->list[index];
 }
 
-- (float)agingCoeffForRCFreq1TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq1TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq1TemperatureCoeffs = &self->_agingCoeffForRCFreq1TemperatureCoeffs;
   count = self->_agingCoeffForRCFreq1TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq1TemperatureCoeffs->list[a3];
+  return p_agingCoeffForRCFreq1TemperatureCoeffs->list[index];
 }
 
-- (float)agingCoeffForRCFreq2TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq2TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq2TemperatureCoeffs = &self->_agingCoeffForRCFreq2TemperatureCoeffs;
   count = self->_agingCoeffForRCFreq2TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq2TemperatureCoeffs->list[a3];
+  return p_agingCoeffForRCFreq2TemperatureCoeffs->list[index];
 }
 
-- (float)agingCoeffForRCFreq3TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq3TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq3TemperatureCoeffs = &self->_agingCoeffForRCFreq3TemperatureCoeffs;
   count = self->_agingCoeffForRCFreq3TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq3TemperatureCoeffs->list[a3];
+  return p_agingCoeffForRCFreq3TemperatureCoeffs->list[index];
 }
 
-- (float)agingCoeffForRCFreq4TemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForRCFreq4TemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForRCFreq4TemperatureCoeffs = &self->_agingCoeffForRCFreq4TemperatureCoeffs;
   count = self->_agingCoeffForRCFreq4TemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRCFreq4TemperatureCoeffs->list[a3];
+  return p_agingCoeffForRCFreq4TemperatureCoeffs->list[index];
 }
 
 - (int)mLBConfig
@@ -433,9 +433,9 @@
   }
 }
 
-- (void)setHasMLBConfig:(BOOL)a3
+- (void)setHasMLBConfig:(BOOL)config
 {
-  if (a3)
+  if (config)
   {
     v3 = 2;
   }
@@ -448,25 +448,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsMLBConfig:(id)a3
+- (int)StringAsMLBConfig:(id)config
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kPPMRegularMLB"])
+  configCopy = config;
+  if ([configCopy isEqualToString:@"kPPMRegularMLB"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"kPPMNorthSouthSplitMLB"];
+    v4 = [configCopy isEqualToString:@"kPPMNorthSouthSplitMLB"];
   }
 
   return v4;
 }
 
-- (void)setHasWRdcRatioThresh:(BOOL)a3
+- (void)setHasWRdcRatioThresh:(BOOL)thresh
 {
-  if (a3)
+  if (thresh)
   {
     v3 = 32;
   }
@@ -479,93 +479,93 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (float)gridWRdcRatioAtIndex:(unint64_t)a3
+- (float)gridWRdcRatioAtIndex:(unint64_t)index
 {
   p_gridWRdcRatios = &self->_gridWRdcRatios;
   count = self->_gridWRdcRatios.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_gridWRdcRatios->list[a3];
+  return p_gridWRdcRatios->list[index];
 }
 
-- (float)coeffSOCAtIndex:(unint64_t)a3
+- (float)coeffSOCAtIndex:(unint64_t)index
 {
   p_coeffSOCs = &self->_coeffSOCs;
   count = self->_coeffSOCs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coeffSOCs->list[a3];
+  return p_coeffSOCs->list[index];
 }
 
-- (float)coeffVAtIndex:(unint64_t)a3
+- (float)coeffVAtIndex:(unint64_t)index
 {
   p_coeffVs = &self->_coeffVs;
   count = self->_coeffVs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coeffVs->list[a3];
+  return p_coeffVs->list[index];
 }
 
-- (float)agingCoeffForRdcAtIndex:(unint64_t)a3
+- (float)agingCoeffForRdcAtIndex:(unint64_t)index
 {
   p_agingCoeffForRdcs = &self->_agingCoeffForRdcs;
   count = self->_agingCoeffForRdcs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRdcs->list[a3];
+  return p_agingCoeffForRdcs->list[index];
 }
 
-- (float)agingCoeffForRdcTemperatureCoeffAtIndex:(unint64_t)a3
+- (float)agingCoeffForRdcTemperatureCoeffAtIndex:(unint64_t)index
 {
   p_agingCoeffForRdcTemperatureCoeffs = &self->_agingCoeffForRdcTemperatureCoeffs;
   count = self->_agingCoeffForRdcTemperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_agingCoeffForRdcTemperatureCoeffs->list[a3];
+  return p_agingCoeffForRdcTemperatureCoeffs->list[index];
 }
 
-- (float)qmaxAtIndex:(unint64_t)a3
+- (float)qmaxAtIndex:(unint64_t)index
 {
   p_qmaxs = &self->_qmaxs;
   count = self->_qmaxs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_qmaxs->list[a3];
+  return p_qmaxs->list[index];
 }
 
-- (void)setHasMaxRdcR25Ratio:(BOOL)a3
+- (void)setHasMaxRdcR25Ratio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 4;
   }
@@ -583,8 +583,8 @@
   v7.receiver = self;
   v7.super_class = OTAParamRC;
   v3 = [(OTAParamRC *)&v7 description];
-  v4 = [(OTAParamRC *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(OTAParamRC *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -595,57 +595,57 @@
   r0 = self->_r0;
   if (r0)
   {
-    v5 = [(OTAResistanceData *)r0 dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"R0"];
+    dictionaryRepresentation = [(OTAResistanceData *)r0 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"R0"];
   }
 
   r1 = self->_r1;
   if (r1)
   {
-    v7 = [(OTAResistanceData *)r1 dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"R1"];
+    dictionaryRepresentation2 = [(OTAResistanceData *)r1 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"R1"];
   }
 
   baselineR1 = self->_baselineR1;
   if (baselineR1)
   {
-    v9 = [(OTAResistanceData *)baselineR1 dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"baselineR1"];
+    dictionaryRepresentation3 = [(OTAResistanceData *)baselineR1 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"baselineR1"];
   }
 
   r2 = self->_r2;
   if (r2)
   {
-    v11 = [(OTAResistanceData *)r2 dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"R2"];
+    dictionaryRepresentation4 = [(OTAResistanceData *)r2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"R2"];
   }
 
   baselineR2 = self->_baselineR2;
   if (baselineR2)
   {
-    v13 = [(OTAResistanceData *)baselineR2 dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"baselineR2"];
+    dictionaryRepresentation5 = [(OTAResistanceData *)baselineR2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"baselineR2"];
   }
 
   rCFreq1 = self->_rCFreq1;
   if (rCFreq1)
   {
-    v15 = [(OTAResistanceData *)rCFreq1 dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"RCFreq1"];
+    dictionaryRepresentation6 = [(OTAResistanceData *)rCFreq1 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"RCFreq1"];
   }
 
   rCFreq2 = self->_rCFreq2;
   if (rCFreq2)
   {
-    v17 = [(OTAResistanceData *)rCFreq2 dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"RCFreq2"];
+    dictionaryRepresentation7 = [(OTAResistanceData *)rCFreq2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation7 forKey:@"RCFreq2"];
   }
 
   rCFreq3 = self->_rCFreq3;
   if (rCFreq3)
   {
-    v19 = [(OTAResistanceData *)rCFreq3 dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"RCFreq3"];
+    dictionaryRepresentation8 = [(OTAResistanceData *)rCFreq3 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation8 forKey:@"RCFreq3"];
   }
 
   v20 = PBRepeatedFloatNSArray();
@@ -672,15 +672,15 @@
   baselineR0 = self->_baselineR0;
   if (baselineR0)
   {
-    v28 = [(OTAResistanceData *)baselineR0 dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"baselineR0"];
+    dictionaryRepresentation9 = [(OTAResistanceData *)baselineR0 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation9 forKey:@"baselineR0"];
   }
 
   bmuResistance = self->_bmuResistance;
   if (bmuResistance)
   {
-    v30 = [(OTABMUResistance *)bmuResistance dictionaryRepresentation];
-    [v3 setObject:v30 forKey:@"bmuResistance"];
+    dictionaryRepresentation10 = [(OTABMUResistance *)bmuResistance dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation10 forKey:@"bmuResistance"];
   }
 
   v31 = [NSNumber numberWithUnsignedInt:self->_chemID];
@@ -692,8 +692,8 @@
   baselineR3 = self->_baselineR3;
   if (baselineR3)
   {
-    v35 = [(OTAResistanceData *)baselineR3 dictionaryRepresentation];
-    [v3 setObject:v35 forKey:@"baselineR3"];
+    dictionaryRepresentation11 = [(OTAResistanceData *)baselineR3 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation11 forKey:@"baselineR3"];
   }
 
   has = self->_has;
@@ -749,50 +749,50 @@ LABEL_27:
   r3 = self->_r3;
   if (r3)
   {
-    v43 = [(OTAResistanceData *)r3 dictionaryRepresentation];
-    [v3 setObject:v43 forKey:@"R3"];
+    dictionaryRepresentation12 = [(OTAResistanceData *)r3 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation12 forKey:@"R3"];
   }
 
   rCFreq4 = self->_rCFreq4;
   if (rCFreq4)
   {
-    v45 = [(OTAResistanceData *)rCFreq4 dictionaryRepresentation];
-    [v3 setObject:v45 forKey:@"RCFreq4"];
+    dictionaryRepresentation13 = [(OTAResistanceData *)rCFreq4 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation13 forKey:@"RCFreq4"];
   }
 
   baselineR4 = self->_baselineR4;
   if (baselineR4)
   {
-    v47 = [(OTAResistanceData *)baselineR4 dictionaryRepresentation];
-    [v3 setObject:v47 forKey:@"baselineR4"];
+    dictionaryRepresentation14 = [(OTAResistanceData *)baselineR4 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation14 forKey:@"baselineR4"];
   }
 
   baselineRCFreq1 = self->_baselineRCFreq1;
   if (baselineRCFreq1)
   {
-    v49 = [(OTAResistanceData *)baselineRCFreq1 dictionaryRepresentation];
-    [v3 setObject:v49 forKey:@"baselineRCFreq1"];
+    dictionaryRepresentation15 = [(OTAResistanceData *)baselineRCFreq1 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation15 forKey:@"baselineRCFreq1"];
   }
 
   baselineRCFreq2 = self->_baselineRCFreq2;
   if (baselineRCFreq2)
   {
-    v51 = [(OTAResistanceData *)baselineRCFreq2 dictionaryRepresentation];
-    [v3 setObject:v51 forKey:@"baselineRCFreq2"];
+    dictionaryRepresentation16 = [(OTAResistanceData *)baselineRCFreq2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation16 forKey:@"baselineRCFreq2"];
   }
 
   baselineRCFreq3 = self->_baselineRCFreq3;
   if (baselineRCFreq3)
   {
-    v53 = [(OTAResistanceData *)baselineRCFreq3 dictionaryRepresentation];
-    [v3 setObject:v53 forKey:@"baselineRCFreq3"];
+    dictionaryRepresentation17 = [(OTAResistanceData *)baselineRCFreq3 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation17 forKey:@"baselineRCFreq3"];
   }
 
   baselineRCFreq4 = self->_baselineRCFreq4;
   if (baselineRCFreq4)
   {
-    v55 = [(OTAResistanceData *)baselineRCFreq4 dictionaryRepresentation];
-    [v3 setObject:v55 forKey:@"baselineRCFreq4"];
+    dictionaryRepresentation18 = [(OTAResistanceData *)baselineRCFreq4 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation18 forKey:@"baselineRCFreq4"];
   }
 
   v56 = PBRepeatedFloatNSArray();
@@ -871,8 +871,8 @@ LABEL_27:
   rdc = self->_rdc;
   if (rdc)
   {
-    v77 = [(OTAResistanceData *)rdc dictionaryRepresentation];
-    [v3 setObject:v77 forKey:@"Rdc"];
+    dictionaryRepresentation19 = [(OTAResistanceData *)rdc dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation19 forKey:@"Rdc"];
   }
 
   v78 = PBRepeatedFloatNSArray();
@@ -894,9 +894,9 @@ LABEL_27:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v70 = a3;
+  toCopy = to;
   if (self->_r0)
   {
     PBDataWriterWriteSubmessage();
@@ -1059,12 +1059,12 @@ LABEL_27:
   }
 
   has = self->_has;
-  v22 = v70;
+  v22 = toCopy;
   if ((has & 8) != 0)
   {
     maxRdcRatio = self->_maxRdcRatio;
     PBDataWriterWriteFloatField();
-    v22 = v70;
+    v22 = toCopy;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -1085,13 +1085,13 @@ LABEL_49:
 
   maxRdcRatioR2Extrap = self->_maxRdcRatioR2Extrap;
   PBDataWriterWriteFloatField();
-  v22 = v70;
+  v22 = toCopy;
   if (*&self->_has)
   {
 LABEL_50:
     baselineWRdc = self->_baselineWRdc;
     PBDataWriterWriteFloatField();
-    v22 = v70;
+    v22 = toCopy;
   }
 
 LABEL_51:
@@ -1102,7 +1102,7 @@ LABEL_51:
     {
       v25 = self->_slopeForR0Extraps.list[v24];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v24;
     }
 
@@ -1116,7 +1116,7 @@ LABEL_51:
     {
       v27 = self->_slopeForR1Extraps.list[v26];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v26;
     }
 
@@ -1130,7 +1130,7 @@ LABEL_51:
     {
       v29 = self->_slopeForR2Extraps.list[v28];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v28;
     }
 
@@ -1144,7 +1144,7 @@ LABEL_51:
     {
       v31 = self->_slopeForR3Extraps.list[v30];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v30;
     }
 
@@ -1154,43 +1154,43 @@ LABEL_51:
   if (self->_r3)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_rCFreq4)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_baselineR4)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_baselineRCFreq1)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_baselineRCFreq2)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_baselineRCFreq3)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_baselineRCFreq4)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_agingCoeffForR3s.count)
@@ -1200,7 +1200,7 @@ LABEL_51:
     {
       v33 = self->_agingCoeffForR3s.list[v32];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v32;
     }
 
@@ -1214,7 +1214,7 @@ LABEL_51:
     {
       v35 = self->_agingCoeffForR3TemperatureCoeffs.list[v34];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v34;
     }
 
@@ -1228,7 +1228,7 @@ LABEL_51:
     {
       v37 = self->_agingCoeffForRCFreq1s.list[v36];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v36;
     }
 
@@ -1242,7 +1242,7 @@ LABEL_51:
     {
       v39 = self->_agingCoeffForRCFreq2s.list[v38];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v38;
     }
 
@@ -1256,7 +1256,7 @@ LABEL_51:
     {
       v41 = self->_agingCoeffForRCFreq3s.list[v40];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v40;
     }
 
@@ -1270,7 +1270,7 @@ LABEL_51:
     {
       v43 = self->_agingCoeffForRCFreq4s.list[v42];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v42;
     }
 
@@ -1284,7 +1284,7 @@ LABEL_51:
     {
       v45 = self->_agingCoeffForRCFreq1TemperatureCoeffs.list[v44];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v44;
     }
 
@@ -1298,7 +1298,7 @@ LABEL_51:
     {
       v47 = self->_agingCoeffForRCFreq2TemperatureCoeffs.list[v46];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v46;
     }
 
@@ -1312,7 +1312,7 @@ LABEL_51:
     {
       v49 = self->_agingCoeffForRCFreq3TemperatureCoeffs.list[v48];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v48;
     }
 
@@ -1326,7 +1326,7 @@ LABEL_51:
     {
       v51 = self->_agingCoeffForRCFreq4TemperatureCoeffs.list[v50];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v50;
     }
 
@@ -1338,7 +1338,7 @@ LABEL_51:
   {
     mLBConfig = self->_mLBConfig;
     PBDataWriterWriteInt32Field();
-    v22 = v70;
+    v22 = toCopy;
     v52 = self->_has;
   }
 
@@ -1346,7 +1346,7 @@ LABEL_51:
   {
     wRdcRatioThresh = self->_wRdcRatioThresh;
     PBDataWriterWriteFloatField();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_gridWRdcRatios.count)
@@ -1356,7 +1356,7 @@ LABEL_51:
     {
       v56 = self->_gridWRdcRatios.list[v55];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v55;
     }
 
@@ -1370,7 +1370,7 @@ LABEL_51:
     {
       v58 = self->_coeffSOCs.list[v57];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v57;
     }
 
@@ -1384,7 +1384,7 @@ LABEL_51:
     {
       v60 = self->_coeffVs.list[v59];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v59;
     }
 
@@ -1394,7 +1394,7 @@ LABEL_51:
   if (self->_rdc)
   {
     PBDataWriterWriteSubmessage();
-    v22 = v70;
+    v22 = toCopy;
   }
 
   if (self->_agingCoeffForRdcs.count)
@@ -1404,7 +1404,7 @@ LABEL_51:
     {
       v62 = self->_agingCoeffForRdcs.list[v61];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v61;
     }
 
@@ -1418,7 +1418,7 @@ LABEL_51:
     {
       v64 = self->_agingCoeffForRdcTemperatureCoeffs.list[v63];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v63;
     }
 
@@ -1432,7 +1432,7 @@ LABEL_51:
     {
       v66 = self->_qmaxs.list[v65];
       PBDataWriterWriteFloatField();
-      v22 = v70;
+      v22 = toCopy;
       ++v65;
     }
 
@@ -1443,189 +1443,189 @@ LABEL_51:
   {
     maxRdcR25Ratio = self->_maxRdcR25Ratio;
     PBDataWriterWriteFloatField();
-    v22 = v70;
+    v22 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v91 = a3;
+  toCopy = to;
   if (self->_r0)
   {
-    [v91 setR0:?];
+    [toCopy setR0:?];
   }
 
   if (self->_r1)
   {
-    [v91 setR1:?];
+    [toCopy setR1:?];
   }
 
   if (self->_baselineR1)
   {
-    [v91 setBaselineR1:?];
+    [toCopy setBaselineR1:?];
   }
 
   if (self->_r2)
   {
-    [v91 setR2:?];
+    [toCopy setR2:?];
   }
 
   if (self->_baselineR2)
   {
-    [v91 setBaselineR2:?];
+    [toCopy setBaselineR2:?];
   }
 
   if (self->_rCFreq1)
   {
-    [v91 setRCFreq1:?];
+    [toCopy setRCFreq1:?];
   }
 
   if (self->_rCFreq2)
   {
-    [v91 setRCFreq2:?];
+    [toCopy setRCFreq2:?];
   }
 
   if (self->_rCFreq3)
   {
-    [v91 setRCFreq3:?];
+    [toCopy setRCFreq3:?];
   }
 
   if ([(OTAParamRC *)self agingCoeffForR0sCount])
   {
-    [v91 clearAgingCoeffForR0s];
-    v4 = [(OTAParamRC *)self agingCoeffForR0sCount];
-    if (v4)
+    [toCopy clearAgingCoeffForR0s];
+    agingCoeffForR0sCount = [(OTAParamRC *)self agingCoeffForR0sCount];
+    if (agingCoeffForR0sCount)
     {
-      v5 = v4;
+      v5 = agingCoeffForR0sCount;
       for (i = 0; i != v5; ++i)
       {
         [(OTAParamRC *)self agingCoeffForR0AtIndex:i];
-        [v91 addAgingCoeffForR0:?];
+        [toCopy addAgingCoeffForR0:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForR0TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForR0TemperatureCoeffs];
-    v7 = [(OTAParamRC *)self agingCoeffForR0TemperatureCoeffsCount];
-    if (v7)
+    [toCopy clearAgingCoeffForR0TemperatureCoeffs];
+    agingCoeffForR0TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForR0TemperatureCoeffsCount];
+    if (agingCoeffForR0TemperatureCoeffsCount)
     {
-      v8 = v7;
+      v8 = agingCoeffForR0TemperatureCoeffsCount;
       for (j = 0; j != v8; ++j)
       {
         [(OTAParamRC *)self agingCoeffForR0TemperatureCoeffAtIndex:j];
-        [v91 addAgingCoeffForR0TemperatureCoeff:?];
+        [toCopy addAgingCoeffForR0TemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForR1sCount])
   {
-    [v91 clearAgingCoeffForR1s];
-    v10 = [(OTAParamRC *)self agingCoeffForR1sCount];
-    if (v10)
+    [toCopy clearAgingCoeffForR1s];
+    agingCoeffForR1sCount = [(OTAParamRC *)self agingCoeffForR1sCount];
+    if (agingCoeffForR1sCount)
     {
-      v11 = v10;
+      v11 = agingCoeffForR1sCount;
       for (k = 0; k != v11; ++k)
       {
         [(OTAParamRC *)self agingCoeffForR1AtIndex:k];
-        [v91 addAgingCoeffForR1:?];
+        [toCopy addAgingCoeffForR1:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForR1TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForR1TemperatureCoeffs];
-    v13 = [(OTAParamRC *)self agingCoeffForR1TemperatureCoeffsCount];
-    if (v13)
+    [toCopy clearAgingCoeffForR1TemperatureCoeffs];
+    agingCoeffForR1TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForR1TemperatureCoeffsCount];
+    if (agingCoeffForR1TemperatureCoeffsCount)
     {
-      v14 = v13;
+      v14 = agingCoeffForR1TemperatureCoeffsCount;
       for (m = 0; m != v14; ++m)
       {
         [(OTAParamRC *)self agingCoeffForR1TemperatureCoeffAtIndex:m];
-        [v91 addAgingCoeffForR1TemperatureCoeff:?];
+        [toCopy addAgingCoeffForR1TemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForR2sCount])
   {
-    [v91 clearAgingCoeffForR2s];
-    v16 = [(OTAParamRC *)self agingCoeffForR2sCount];
-    if (v16)
+    [toCopy clearAgingCoeffForR2s];
+    agingCoeffForR2sCount = [(OTAParamRC *)self agingCoeffForR2sCount];
+    if (agingCoeffForR2sCount)
     {
-      v17 = v16;
+      v17 = agingCoeffForR2sCount;
       for (n = 0; n != v17; ++n)
       {
         [(OTAParamRC *)self agingCoeffForR2AtIndex:n];
-        [v91 addAgingCoeffForR2:?];
+        [toCopy addAgingCoeffForR2:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForR2TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForR2TemperatureCoeffs];
-    v19 = [(OTAParamRC *)self agingCoeffForR2TemperatureCoeffsCount];
-    if (v19)
+    [toCopy clearAgingCoeffForR2TemperatureCoeffs];
+    agingCoeffForR2TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForR2TemperatureCoeffsCount];
+    if (agingCoeffForR2TemperatureCoeffsCount)
     {
-      v20 = v19;
+      v20 = agingCoeffForR2TemperatureCoeffsCount;
       for (ii = 0; ii != v20; ++ii)
       {
         [(OTAParamRC *)self agingCoeffForR2TemperatureCoeffAtIndex:ii];
-        [v91 addAgingCoeffForR2TemperatureCoeff:?];
+        [toCopy addAgingCoeffForR2TemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self baselineRdcsCount])
   {
-    [v91 clearBaselineRdcs];
-    v22 = [(OTAParamRC *)self baselineRdcsCount];
-    if (v22)
+    [toCopy clearBaselineRdcs];
+    baselineRdcsCount = [(OTAParamRC *)self baselineRdcsCount];
+    if (baselineRdcsCount)
     {
-      v23 = v22;
+      v23 = baselineRdcsCount;
       for (jj = 0; jj != v23; ++jj)
       {
         [(OTAParamRC *)self baselineRdcAtIndex:jj];
-        [v91 addBaselineRdc:?];
+        [toCopy addBaselineRdc:?];
       }
     }
   }
 
   if (self->_baselineR0)
   {
-    [v91 setBaselineR0:?];
+    [toCopy setBaselineR0:?];
   }
 
-  v25 = v91;
+  v25 = toCopy;
   if (self->_bmuResistance)
   {
-    [v91 setBmuResistance:?];
-    v25 = v91;
+    [toCopy setBmuResistance:?];
+    v25 = toCopy;
   }
 
   v25[192] = self->_chemID;
   if ([(OTAParamRC *)self gridOCVsCount])
   {
-    [v91 clearGridOCVs];
-    v26 = [(OTAParamRC *)self gridOCVsCount];
-    if (v26)
+    [toCopy clearGridOCVs];
+    gridOCVsCount = [(OTAParamRC *)self gridOCVsCount];
+    if (gridOCVsCount)
     {
-      v27 = v26;
+      v27 = gridOCVsCount;
       for (kk = 0; kk != v27; ++kk)
       {
         [(OTAParamRC *)self gridOCVAtIndex:kk];
-        [v91 addGridOCV:?];
+        [toCopy addGridOCV:?];
       }
     }
   }
 
   if (self->_baselineR3)
   {
-    [v91 setBaselineR3:?];
+    [toCopy setBaselineR3:?];
   }
 
   has = self->_has;
@@ -1637,8 +1637,8 @@ LABEL_51:
     }
 
 LABEL_165:
-    *(v91 + 196) = LODWORD(self->_maxRdcRatioR2Extrap);
-    *(v91 + 868) |= 0x10u;
+    *(toCopy + 196) = LODWORD(self->_maxRdcRatioR2Extrap);
+    *(toCopy + 868) |= 0x10u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_59;
@@ -1647,8 +1647,8 @@ LABEL_165:
     goto LABEL_58;
   }
 
-  *(v91 + 195) = LODWORD(self->_maxRdcRatio);
-  *(v91 + 868) |= 8u;
+  *(toCopy + 195) = LODWORD(self->_maxRdcRatio);
+  *(toCopy + 868) |= 8u;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -1659,252 +1659,252 @@ LABEL_57:
   if (has)
   {
 LABEL_58:
-    *(v91 + 188) = LODWORD(self->_baselineWRdc);
-    *(v91 + 868) |= 1u;
+    *(toCopy + 188) = LODWORD(self->_baselineWRdc);
+    *(toCopy + 868) |= 1u;
   }
 
 LABEL_59:
   if ([(OTAParamRC *)self slopeForR0ExtrapsCount])
   {
-    [v91 clearSlopeForR0Extraps];
-    v30 = [(OTAParamRC *)self slopeForR0ExtrapsCount];
-    if (v30)
+    [toCopy clearSlopeForR0Extraps];
+    slopeForR0ExtrapsCount = [(OTAParamRC *)self slopeForR0ExtrapsCount];
+    if (slopeForR0ExtrapsCount)
     {
-      v31 = v30;
+      v31 = slopeForR0ExtrapsCount;
       for (mm = 0; mm != v31; ++mm)
       {
         [(OTAParamRC *)self slopeForR0ExtrapAtIndex:mm];
-        [v91 addSlopeForR0Extrap:?];
+        [toCopy addSlopeForR0Extrap:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self slopeForR1ExtrapsCount])
   {
-    [v91 clearSlopeForR1Extraps];
-    v33 = [(OTAParamRC *)self slopeForR1ExtrapsCount];
-    if (v33)
+    [toCopy clearSlopeForR1Extraps];
+    slopeForR1ExtrapsCount = [(OTAParamRC *)self slopeForR1ExtrapsCount];
+    if (slopeForR1ExtrapsCount)
     {
-      v34 = v33;
+      v34 = slopeForR1ExtrapsCount;
       for (nn = 0; nn != v34; ++nn)
       {
         [(OTAParamRC *)self slopeForR1ExtrapAtIndex:nn];
-        [v91 addSlopeForR1Extrap:?];
+        [toCopy addSlopeForR1Extrap:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self slopeForR2ExtrapsCount])
   {
-    [v91 clearSlopeForR2Extraps];
-    v36 = [(OTAParamRC *)self slopeForR2ExtrapsCount];
-    if (v36)
+    [toCopy clearSlopeForR2Extraps];
+    slopeForR2ExtrapsCount = [(OTAParamRC *)self slopeForR2ExtrapsCount];
+    if (slopeForR2ExtrapsCount)
     {
-      v37 = v36;
+      v37 = slopeForR2ExtrapsCount;
       for (i1 = 0; i1 != v37; ++i1)
       {
         [(OTAParamRC *)self slopeForR2ExtrapAtIndex:i1];
-        [v91 addSlopeForR2Extrap:?];
+        [toCopy addSlopeForR2Extrap:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self slopeForR3ExtrapsCount])
   {
-    [v91 clearSlopeForR3Extraps];
-    v39 = [(OTAParamRC *)self slopeForR3ExtrapsCount];
-    if (v39)
+    [toCopy clearSlopeForR3Extraps];
+    slopeForR3ExtrapsCount = [(OTAParamRC *)self slopeForR3ExtrapsCount];
+    if (slopeForR3ExtrapsCount)
     {
-      v40 = v39;
+      v40 = slopeForR3ExtrapsCount;
       for (i2 = 0; i2 != v40; ++i2)
       {
         [(OTAParamRC *)self slopeForR3ExtrapAtIndex:i2];
-        [v91 addSlopeForR3Extrap:?];
+        [toCopy addSlopeForR3Extrap:?];
       }
     }
   }
 
   if (self->_r3)
   {
-    [v91 setR3:?];
+    [toCopy setR3:?];
   }
 
   if (self->_rCFreq4)
   {
-    [v91 setRCFreq4:?];
+    [toCopy setRCFreq4:?];
   }
 
   if (self->_baselineR4)
   {
-    [v91 setBaselineR4:?];
+    [toCopy setBaselineR4:?];
   }
 
   if (self->_baselineRCFreq1)
   {
-    [v91 setBaselineRCFreq1:?];
+    [toCopy setBaselineRCFreq1:?];
   }
 
   if (self->_baselineRCFreq2)
   {
-    [v91 setBaselineRCFreq2:?];
+    [toCopy setBaselineRCFreq2:?];
   }
 
   if (self->_baselineRCFreq3)
   {
-    [v91 setBaselineRCFreq3:?];
+    [toCopy setBaselineRCFreq3:?];
   }
 
   if (self->_baselineRCFreq4)
   {
-    [v91 setBaselineRCFreq4:?];
+    [toCopy setBaselineRCFreq4:?];
   }
 
   if ([(OTAParamRC *)self agingCoeffForR3sCount])
   {
-    [v91 clearAgingCoeffForR3s];
-    v42 = [(OTAParamRC *)self agingCoeffForR3sCount];
-    if (v42)
+    [toCopy clearAgingCoeffForR3s];
+    agingCoeffForR3sCount = [(OTAParamRC *)self agingCoeffForR3sCount];
+    if (agingCoeffForR3sCount)
     {
-      v43 = v42;
+      v43 = agingCoeffForR3sCount;
       for (i3 = 0; i3 != v43; ++i3)
       {
         [(OTAParamRC *)self agingCoeffForR3AtIndex:i3];
-        [v91 addAgingCoeffForR3:?];
+        [toCopy addAgingCoeffForR3:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForR3TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForR3TemperatureCoeffs];
-    v45 = [(OTAParamRC *)self agingCoeffForR3TemperatureCoeffsCount];
-    if (v45)
+    [toCopy clearAgingCoeffForR3TemperatureCoeffs];
+    agingCoeffForR3TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForR3TemperatureCoeffsCount];
+    if (agingCoeffForR3TemperatureCoeffsCount)
     {
-      v46 = v45;
+      v46 = agingCoeffForR3TemperatureCoeffsCount;
       for (i4 = 0; i4 != v46; ++i4)
       {
         [(OTAParamRC *)self agingCoeffForR3TemperatureCoeffAtIndex:i4];
-        [v91 addAgingCoeffForR3TemperatureCoeff:?];
+        [toCopy addAgingCoeffForR3TemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq1sCount])
   {
-    [v91 clearAgingCoeffForRCFreq1s];
-    v48 = [(OTAParamRC *)self agingCoeffForRCFreq1sCount];
-    if (v48)
+    [toCopy clearAgingCoeffForRCFreq1s];
+    agingCoeffForRCFreq1sCount = [(OTAParamRC *)self agingCoeffForRCFreq1sCount];
+    if (agingCoeffForRCFreq1sCount)
     {
-      v49 = v48;
+      v49 = agingCoeffForRCFreq1sCount;
       for (i5 = 0; i5 != v49; ++i5)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq1AtIndex:i5];
-        [v91 addAgingCoeffForRCFreq1:?];
+        [toCopy addAgingCoeffForRCFreq1:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq2sCount])
   {
-    [v91 clearAgingCoeffForRCFreq2s];
-    v51 = [(OTAParamRC *)self agingCoeffForRCFreq2sCount];
-    if (v51)
+    [toCopy clearAgingCoeffForRCFreq2s];
+    agingCoeffForRCFreq2sCount = [(OTAParamRC *)self agingCoeffForRCFreq2sCount];
+    if (agingCoeffForRCFreq2sCount)
     {
-      v52 = v51;
+      v52 = agingCoeffForRCFreq2sCount;
       for (i6 = 0; i6 != v52; ++i6)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq2AtIndex:i6];
-        [v91 addAgingCoeffForRCFreq2:?];
+        [toCopy addAgingCoeffForRCFreq2:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq3sCount])
   {
-    [v91 clearAgingCoeffForRCFreq3s];
-    v54 = [(OTAParamRC *)self agingCoeffForRCFreq3sCount];
-    if (v54)
+    [toCopy clearAgingCoeffForRCFreq3s];
+    agingCoeffForRCFreq3sCount = [(OTAParamRC *)self agingCoeffForRCFreq3sCount];
+    if (agingCoeffForRCFreq3sCount)
     {
-      v55 = v54;
+      v55 = agingCoeffForRCFreq3sCount;
       for (i7 = 0; i7 != v55; ++i7)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq3AtIndex:i7];
-        [v91 addAgingCoeffForRCFreq3:?];
+        [toCopy addAgingCoeffForRCFreq3:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq4sCount])
   {
-    [v91 clearAgingCoeffForRCFreq4s];
-    v57 = [(OTAParamRC *)self agingCoeffForRCFreq4sCount];
-    if (v57)
+    [toCopy clearAgingCoeffForRCFreq4s];
+    agingCoeffForRCFreq4sCount = [(OTAParamRC *)self agingCoeffForRCFreq4sCount];
+    if (agingCoeffForRCFreq4sCount)
     {
-      v58 = v57;
+      v58 = agingCoeffForRCFreq4sCount;
       for (i8 = 0; i8 != v58; ++i8)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq4AtIndex:i8];
-        [v91 addAgingCoeffForRCFreq4:?];
+        [toCopy addAgingCoeffForRCFreq4:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq1TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForRCFreq1TemperatureCoeffs];
-    v60 = [(OTAParamRC *)self agingCoeffForRCFreq1TemperatureCoeffsCount];
-    if (v60)
+    [toCopy clearAgingCoeffForRCFreq1TemperatureCoeffs];
+    agingCoeffForRCFreq1TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForRCFreq1TemperatureCoeffsCount];
+    if (agingCoeffForRCFreq1TemperatureCoeffsCount)
     {
-      v61 = v60;
+      v61 = agingCoeffForRCFreq1TemperatureCoeffsCount;
       for (i9 = 0; i9 != v61; ++i9)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq1TemperatureCoeffAtIndex:i9];
-        [v91 addAgingCoeffForRCFreq1TemperatureCoeff:?];
+        [toCopy addAgingCoeffForRCFreq1TemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq2TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForRCFreq2TemperatureCoeffs];
-    v63 = [(OTAParamRC *)self agingCoeffForRCFreq2TemperatureCoeffsCount];
-    if (v63)
+    [toCopy clearAgingCoeffForRCFreq2TemperatureCoeffs];
+    agingCoeffForRCFreq2TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForRCFreq2TemperatureCoeffsCount];
+    if (agingCoeffForRCFreq2TemperatureCoeffsCount)
     {
-      v64 = v63;
+      v64 = agingCoeffForRCFreq2TemperatureCoeffsCount;
       for (i10 = 0; i10 != v64; ++i10)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq2TemperatureCoeffAtIndex:i10];
-        [v91 addAgingCoeffForRCFreq2TemperatureCoeff:?];
+        [toCopy addAgingCoeffForRCFreq2TemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq3TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForRCFreq3TemperatureCoeffs];
-    v66 = [(OTAParamRC *)self agingCoeffForRCFreq3TemperatureCoeffsCount];
-    if (v66)
+    [toCopy clearAgingCoeffForRCFreq3TemperatureCoeffs];
+    agingCoeffForRCFreq3TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForRCFreq3TemperatureCoeffsCount];
+    if (agingCoeffForRCFreq3TemperatureCoeffsCount)
     {
-      v67 = v66;
+      v67 = agingCoeffForRCFreq3TemperatureCoeffsCount;
       for (i11 = 0; i11 != v67; ++i11)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq3TemperatureCoeffAtIndex:i11];
-        [v91 addAgingCoeffForRCFreq3TemperatureCoeff:?];
+        [toCopy addAgingCoeffForRCFreq3TemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRCFreq4TemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForRCFreq4TemperatureCoeffs];
-    v69 = [(OTAParamRC *)self agingCoeffForRCFreq4TemperatureCoeffsCount];
-    if (v69)
+    [toCopy clearAgingCoeffForRCFreq4TemperatureCoeffs];
+    agingCoeffForRCFreq4TemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForRCFreq4TemperatureCoeffsCount];
+    if (agingCoeffForRCFreq4TemperatureCoeffsCount)
     {
-      v70 = v69;
+      v70 = agingCoeffForRCFreq4TemperatureCoeffsCount;
       for (i12 = 0; i12 != v70; ++i12)
       {
         [(OTAParamRC *)self agingCoeffForRCFreq4TemperatureCoeffAtIndex:i12];
-        [v91 addAgingCoeffForRCFreq4TemperatureCoeff:?];
+        [toCopy addAgingCoeffForRCFreq4TemperatureCoeff:?];
       }
     }
   }
@@ -1912,151 +1912,151 @@ LABEL_59:
   v72 = self->_has;
   if ((v72 & 2) != 0)
   {
-    *(v91 + 193) = self->_mLBConfig;
-    *(v91 + 868) |= 2u;
+    *(toCopy + 193) = self->_mLBConfig;
+    *(toCopy + 868) |= 2u;
     v72 = self->_has;
   }
 
   if ((v72 & 0x20) != 0)
   {
-    *(v91 + 216) = LODWORD(self->_wRdcRatioThresh);
-    *(v91 + 868) |= 0x20u;
+    *(toCopy + 216) = LODWORD(self->_wRdcRatioThresh);
+    *(toCopy + 868) |= 0x20u;
   }
 
   if ([(OTAParamRC *)self gridWRdcRatiosCount])
   {
-    [v91 clearGridWRdcRatios];
-    v73 = [(OTAParamRC *)self gridWRdcRatiosCount];
-    if (v73)
+    [toCopy clearGridWRdcRatios];
+    gridWRdcRatiosCount = [(OTAParamRC *)self gridWRdcRatiosCount];
+    if (gridWRdcRatiosCount)
     {
-      v74 = v73;
+      v74 = gridWRdcRatiosCount;
       for (i13 = 0; i13 != v74; ++i13)
       {
         [(OTAParamRC *)self gridWRdcRatioAtIndex:i13];
-        [v91 addGridWRdcRatio:?];
+        [toCopy addGridWRdcRatio:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self coeffSOCsCount])
   {
-    [v91 clearCoeffSOCs];
-    v76 = [(OTAParamRC *)self coeffSOCsCount];
-    if (v76)
+    [toCopy clearCoeffSOCs];
+    coeffSOCsCount = [(OTAParamRC *)self coeffSOCsCount];
+    if (coeffSOCsCount)
     {
-      v77 = v76;
+      v77 = coeffSOCsCount;
       for (i14 = 0; i14 != v77; ++i14)
       {
         [(OTAParamRC *)self coeffSOCAtIndex:i14];
-        [v91 addCoeffSOC:?];
+        [toCopy addCoeffSOC:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self coeffVsCount])
   {
-    [v91 clearCoeffVs];
-    v79 = [(OTAParamRC *)self coeffVsCount];
-    if (v79)
+    [toCopy clearCoeffVs];
+    coeffVsCount = [(OTAParamRC *)self coeffVsCount];
+    if (coeffVsCount)
     {
-      v80 = v79;
+      v80 = coeffVsCount;
       for (i15 = 0; i15 != v80; ++i15)
       {
         [(OTAParamRC *)self coeffVAtIndex:i15];
-        [v91 addCoeffV:?];
+        [toCopy addCoeffV:?];
       }
     }
   }
 
   if (self->_rdc)
   {
-    [v91 setRdc:?];
+    [toCopy setRdc:?];
   }
 
   if ([(OTAParamRC *)self agingCoeffForRdcsCount])
   {
-    [v91 clearAgingCoeffForRdcs];
-    v82 = [(OTAParamRC *)self agingCoeffForRdcsCount];
-    if (v82)
+    [toCopy clearAgingCoeffForRdcs];
+    agingCoeffForRdcsCount = [(OTAParamRC *)self agingCoeffForRdcsCount];
+    if (agingCoeffForRdcsCount)
     {
-      v83 = v82;
+      v83 = agingCoeffForRdcsCount;
       for (i16 = 0; i16 != v83; ++i16)
       {
         [(OTAParamRC *)self agingCoeffForRdcAtIndex:i16];
-        [v91 addAgingCoeffForRdc:?];
+        [toCopy addAgingCoeffForRdc:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self agingCoeffForRdcTemperatureCoeffsCount])
   {
-    [v91 clearAgingCoeffForRdcTemperatureCoeffs];
-    v85 = [(OTAParamRC *)self agingCoeffForRdcTemperatureCoeffsCount];
-    if (v85)
+    [toCopy clearAgingCoeffForRdcTemperatureCoeffs];
+    agingCoeffForRdcTemperatureCoeffsCount = [(OTAParamRC *)self agingCoeffForRdcTemperatureCoeffsCount];
+    if (agingCoeffForRdcTemperatureCoeffsCount)
     {
-      v86 = v85;
+      v86 = agingCoeffForRdcTemperatureCoeffsCount;
       for (i17 = 0; i17 != v86; ++i17)
       {
         [(OTAParamRC *)self agingCoeffForRdcTemperatureCoeffAtIndex:i17];
-        [v91 addAgingCoeffForRdcTemperatureCoeff:?];
+        [toCopy addAgingCoeffForRdcTemperatureCoeff:?];
       }
     }
   }
 
   if ([(OTAParamRC *)self qmaxsCount])
   {
-    [v91 clearQmaxs];
-    v88 = [(OTAParamRC *)self qmaxsCount];
-    if (v88)
+    [toCopy clearQmaxs];
+    qmaxsCount = [(OTAParamRC *)self qmaxsCount];
+    if (qmaxsCount)
     {
-      v89 = v88;
+      v89 = qmaxsCount;
       for (i18 = 0; i18 != v89; ++i18)
       {
         [(OTAParamRC *)self qmaxAtIndex:i18];
-        [v91 addQmax:?];
+        [toCopy addQmax:?];
       }
     }
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v91 + 194) = LODWORD(self->_maxRdcR25Ratio);
-    *(v91 + 868) |= 4u;
+    *(toCopy + 194) = LODWORD(self->_maxRdcR25Ratio);
+    *(toCopy + 868) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OTAResistanceData *)self->_r0 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OTAResistanceData *)self->_r0 copyWithZone:zone];
   v7 = v5[99];
   v5[99] = v6;
 
-  v8 = [(OTAResistanceData *)self->_r1 copyWithZone:a3];
+  v8 = [(OTAResistanceData *)self->_r1 copyWithZone:zone];
   v9 = v5[100];
   v5[100] = v8;
 
-  v10 = [(OTAResistanceData *)self->_baselineR1 copyWithZone:a3];
+  v10 = [(OTAResistanceData *)self->_baselineR1 copyWithZone:zone];
   v11 = v5[86];
   v5[86] = v10;
 
-  v12 = [(OTAResistanceData *)self->_r2 copyWithZone:a3];
+  v12 = [(OTAResistanceData *)self->_r2 copyWithZone:zone];
   v13 = v5[101];
   v5[101] = v12;
 
-  v14 = [(OTAResistanceData *)self->_baselineR2 copyWithZone:a3];
+  v14 = [(OTAResistanceData *)self->_baselineR2 copyWithZone:zone];
   v15 = v5[87];
   v5[87] = v14;
 
-  v16 = [(OTAResistanceData *)self->_rCFreq1 copyWithZone:a3];
+  v16 = [(OTAResistanceData *)self->_rCFreq1 copyWithZone:zone];
   v17 = v5[103];
   v5[103] = v16;
 
-  v18 = [(OTAResistanceData *)self->_rCFreq2 copyWithZone:a3];
+  v18 = [(OTAResistanceData *)self->_rCFreq2 copyWithZone:zone];
   v19 = v5[104];
   v5[104] = v18;
 
-  v20 = [(OTAResistanceData *)self->_rCFreq3 copyWithZone:a3];
+  v20 = [(OTAResistanceData *)self->_rCFreq3 copyWithZone:zone];
   v21 = v5[105];
   v5[105] = v20;
 
@@ -2067,17 +2067,17 @@ LABEL_59:
   PBRepeatedFloatCopy();
   PBRepeatedFloatCopy();
   PBRepeatedFloatCopy();
-  v22 = [(OTAResistanceData *)self->_baselineR0 copyWithZone:a3];
+  v22 = [(OTAResistanceData *)self->_baselineR0 copyWithZone:zone];
   v23 = v5[85];
   v5[85] = v22;
 
-  v24 = [(OTABMUResistance *)self->_bmuResistance copyWithZone:a3];
+  v24 = [(OTABMUResistance *)self->_bmuResistance copyWithZone:zone];
   v25 = v5[95];
   v5[95] = v24;
 
   *(v5 + 192) = self->_chemID;
   PBRepeatedFloatCopy();
-  v26 = [(OTAResistanceData *)self->_baselineR3 copyWithZone:a3];
+  v26 = [(OTAResistanceData *)self->_baselineR3 copyWithZone:zone];
   v27 = v5[88];
   v5[88] = v26;
 
@@ -2118,31 +2118,31 @@ LABEL_5:
   PBRepeatedFloatCopy();
   PBRepeatedFloatCopy();
   PBRepeatedFloatCopy();
-  v29 = [(OTAResistanceData *)self->_r3 copyWithZone:a3];
+  v29 = [(OTAResistanceData *)self->_r3 copyWithZone:zone];
   v30 = v5[102];
   v5[102] = v29;
 
-  v31 = [(OTAResistanceData *)self->_rCFreq4 copyWithZone:a3];
+  v31 = [(OTAResistanceData *)self->_rCFreq4 copyWithZone:zone];
   v32 = v5[106];
   v5[106] = v31;
 
-  v33 = [(OTAResistanceData *)self->_baselineR4 copyWithZone:a3];
+  v33 = [(OTAResistanceData *)self->_baselineR4 copyWithZone:zone];
   v34 = v5[89];
   v5[89] = v33;
 
-  v35 = [(OTAResistanceData *)self->_baselineRCFreq1 copyWithZone:a3];
+  v35 = [(OTAResistanceData *)self->_baselineRCFreq1 copyWithZone:zone];
   v36 = v5[90];
   v5[90] = v35;
 
-  v37 = [(OTAResistanceData *)self->_baselineRCFreq2 copyWithZone:a3];
+  v37 = [(OTAResistanceData *)self->_baselineRCFreq2 copyWithZone:zone];
   v38 = v5[91];
   v5[91] = v37;
 
-  v39 = [(OTAResistanceData *)self->_baselineRCFreq3 copyWithZone:a3];
+  v39 = [(OTAResistanceData *)self->_baselineRCFreq3 copyWithZone:zone];
   v40 = v5[92];
   v5[92] = v39;
 
-  v41 = [(OTAResistanceData *)self->_baselineRCFreq4 copyWithZone:a3];
+  v41 = [(OTAResistanceData *)self->_baselineRCFreq4 copyWithZone:zone];
   v42 = v5[93];
   v5[93] = v41;
 
@@ -2173,7 +2173,7 @@ LABEL_5:
   PBRepeatedFloatCopy();
   PBRepeatedFloatCopy();
   PBRepeatedFloatCopy();
-  v44 = [(OTAResistanceData *)self->_rdc copyWithZone:a3];
+  v44 = [(OTAResistanceData *)self->_rdc copyWithZone:zone];
   v45 = v5[107];
   v5[107] = v44;
 
@@ -2189,16 +2189,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_99;
   }
 
   r0 = self->_r0;
-  if (r0 | *(v4 + 99))
+  if (r0 | *(equalCopy + 99))
   {
     if (![(OTAResistanceData *)r0 isEqual:?])
     {
@@ -2207,7 +2207,7 @@ LABEL_5:
   }
 
   r1 = self->_r1;
-  if (r1 | *(v4 + 100))
+  if (r1 | *(equalCopy + 100))
   {
     if (![(OTAResistanceData *)r1 isEqual:?])
     {
@@ -2216,7 +2216,7 @@ LABEL_5:
   }
 
   baselineR1 = self->_baselineR1;
-  if (baselineR1 | *(v4 + 86))
+  if (baselineR1 | *(equalCopy + 86))
   {
     if (![(OTAResistanceData *)baselineR1 isEqual:?])
     {
@@ -2225,7 +2225,7 @@ LABEL_5:
   }
 
   r2 = self->_r2;
-  if (r2 | *(v4 + 101))
+  if (r2 | *(equalCopy + 101))
   {
     if (![(OTAResistanceData *)r2 isEqual:?])
     {
@@ -2234,7 +2234,7 @@ LABEL_5:
   }
 
   baselineR2 = self->_baselineR2;
-  if (baselineR2 | *(v4 + 87))
+  if (baselineR2 | *(equalCopy + 87))
   {
     if (![(OTAResistanceData *)baselineR2 isEqual:?])
     {
@@ -2243,7 +2243,7 @@ LABEL_5:
   }
 
   rCFreq1 = self->_rCFreq1;
-  if (rCFreq1 | *(v4 + 103))
+  if (rCFreq1 | *(equalCopy + 103))
   {
     if (![(OTAResistanceData *)rCFreq1 isEqual:?])
     {
@@ -2252,7 +2252,7 @@ LABEL_5:
   }
 
   rCFreq2 = self->_rCFreq2;
-  if (rCFreq2 | *(v4 + 104))
+  if (rCFreq2 | *(equalCopy + 104))
   {
     if (![(OTAResistanceData *)rCFreq2 isEqual:?])
     {
@@ -2261,7 +2261,7 @@ LABEL_5:
   }
 
   rCFreq3 = self->_rCFreq3;
-  if (rCFreq3 | *(v4 + 105))
+  if (rCFreq3 | *(equalCopy + 105))
   {
     if (![(OTAResistanceData *)rCFreq3 isEqual:?])
     {
@@ -2305,7 +2305,7 @@ LABEL_5:
   }
 
   baselineR0 = self->_baselineR0;
-  if (baselineR0 | *(v4 + 85))
+  if (baselineR0 | *(equalCopy + 85))
   {
     if (![(OTAResistanceData *)baselineR0 isEqual:?])
     {
@@ -2314,7 +2314,7 @@ LABEL_5:
   }
 
   bmuResistance = self->_bmuResistance;
-  if (bmuResistance | *(v4 + 95))
+  if (bmuResistance | *(equalCopy + 95))
   {
     if (![(OTABMUResistance *)bmuResistance isEqual:?])
     {
@@ -2322,7 +2322,7 @@ LABEL_5:
     }
   }
 
-  if (self->_chemID != *(v4 + 192))
+  if (self->_chemID != *(equalCopy + 192))
   {
     goto LABEL_99;
   }
@@ -2333,7 +2333,7 @@ LABEL_5:
   }
 
   baselineR3 = self->_baselineR3;
-  if (baselineR3 | *(v4 + 88))
+  if (baselineR3 | *(equalCopy + 88))
   {
     if (![(OTAResistanceData *)baselineR3 isEqual:?])
     {
@@ -2341,16 +2341,16 @@ LABEL_5:
     }
   }
 
-  v16 = *(v4 + 868);
+  v16 = *(equalCopy + 868);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 868) & 8) == 0 || self->_maxRdcRatio != *(v4 + 195))
+    if ((*(equalCopy + 868) & 8) == 0 || self->_maxRdcRatio != *(equalCopy + 195))
     {
       goto LABEL_99;
     }
   }
 
-  else if ((*(v4 + 868) & 8) != 0)
+  else if ((*(equalCopy + 868) & 8) != 0)
   {
 LABEL_99:
     v26 = 0;
@@ -2359,26 +2359,26 @@ LABEL_99:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 868) & 0x10) == 0 || self->_maxRdcRatioR2Extrap != *(v4 + 196))
+    if ((*(equalCopy + 868) & 0x10) == 0 || self->_maxRdcRatioR2Extrap != *(equalCopy + 196))
     {
       goto LABEL_99;
     }
   }
 
-  else if ((*(v4 + 868) & 0x10) != 0)
+  else if ((*(equalCopy + 868) & 0x10) != 0)
   {
     goto LABEL_99;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 868) & 1) == 0 || self->_baselineWRdc != *(v4 + 188))
+    if ((*(equalCopy + 868) & 1) == 0 || self->_baselineWRdc != *(equalCopy + 188))
     {
       goto LABEL_99;
     }
   }
 
-  else if (*(v4 + 868))
+  else if (*(equalCopy + 868))
   {
     goto LABEL_99;
   }
@@ -2404,7 +2404,7 @@ LABEL_99:
   }
 
   r3 = self->_r3;
-  if (r3 | *(v4 + 102))
+  if (r3 | *(equalCopy + 102))
   {
     if (![(OTAResistanceData *)r3 isEqual:?])
     {
@@ -2413,7 +2413,7 @@ LABEL_99:
   }
 
   rCFreq4 = self->_rCFreq4;
-  if (rCFreq4 | *(v4 + 106))
+  if (rCFreq4 | *(equalCopy + 106))
   {
     if (![(OTAResistanceData *)rCFreq4 isEqual:?])
     {
@@ -2422,7 +2422,7 @@ LABEL_99:
   }
 
   baselineR4 = self->_baselineR4;
-  if (baselineR4 | *(v4 + 89))
+  if (baselineR4 | *(equalCopy + 89))
   {
     if (![(OTAResistanceData *)baselineR4 isEqual:?])
     {
@@ -2431,7 +2431,7 @@ LABEL_99:
   }
 
   baselineRCFreq1 = self->_baselineRCFreq1;
-  if (baselineRCFreq1 | *(v4 + 90))
+  if (baselineRCFreq1 | *(equalCopy + 90))
   {
     if (![(OTAResistanceData *)baselineRCFreq1 isEqual:?])
     {
@@ -2440,7 +2440,7 @@ LABEL_99:
   }
 
   baselineRCFreq2 = self->_baselineRCFreq2;
-  if (baselineRCFreq2 | *(v4 + 91))
+  if (baselineRCFreq2 | *(equalCopy + 91))
   {
     if (![(OTAResistanceData *)baselineRCFreq2 isEqual:?])
     {
@@ -2449,7 +2449,7 @@ LABEL_99:
   }
 
   baselineRCFreq3 = self->_baselineRCFreq3;
-  if (baselineRCFreq3 | *(v4 + 92))
+  if (baselineRCFreq3 | *(equalCopy + 92))
   {
     if (![(OTAResistanceData *)baselineRCFreq3 isEqual:?])
     {
@@ -2458,7 +2458,7 @@ LABEL_99:
   }
 
   baselineRCFreq4 = self->_baselineRCFreq4;
-  if (baselineRCFreq4 | *(v4 + 93))
+  if (baselineRCFreq4 | *(equalCopy + 93))
   {
     if (![(OTAResistanceData *)baselineRCFreq4 isEqual:?])
     {
@@ -2471,29 +2471,29 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  v24 = *(v4 + 868);
+  v24 = *(equalCopy + 868);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 868) & 2) == 0 || self->_mLBConfig != *(v4 + 193))
+    if ((*(equalCopy + 868) & 2) == 0 || self->_mLBConfig != *(equalCopy + 193))
     {
       goto LABEL_99;
     }
   }
 
-  else if ((*(v4 + 868) & 2) != 0)
+  else if ((*(equalCopy + 868) & 2) != 0)
   {
     goto LABEL_99;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 868) & 0x20) == 0 || self->_wRdcRatioThresh != *(v4 + 216))
+    if ((*(equalCopy + 868) & 0x20) == 0 || self->_wRdcRatioThresh != *(equalCopy + 216))
     {
       goto LABEL_99;
     }
   }
 
-  else if ((*(v4 + 868) & 0x20) != 0)
+  else if ((*(equalCopy + 868) & 0x20) != 0)
   {
     goto LABEL_99;
   }
@@ -2514,7 +2514,7 @@ LABEL_99:
   }
 
   rdc = self->_rdc;
-  if (rdc | *(v4 + 107))
+  if (rdc | *(equalCopy + 107))
   {
     if (![(OTAResistanceData *)rdc isEqual:?])
     {
@@ -2529,7 +2529,7 @@ LABEL_99:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 868) & 4) == 0 || self->_maxRdcR25Ratio != *(v4 + 194))
+    if ((*(equalCopy + 868) & 4) == 0 || self->_maxRdcR25Ratio != *(equalCopy + 194))
     {
       goto LABEL_99;
     }
@@ -2539,7 +2539,7 @@ LABEL_99:
 
   else
   {
-    v26 = (*(v4 + 868) & 4) == 0;
+    v26 = (*(equalCopy + 868) & 4) == 0;
   }
 
 LABEL_100:
@@ -2783,12 +2783,12 @@ LABEL_33:
   return v80 ^ v81 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ (2654435761 * chemID) ^ v64 ^ v63 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v32;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   r0 = self->_r0;
-  v6 = v4[99];
-  v133 = v4;
+  v6 = fromCopy[99];
+  v133 = fromCopy;
   if (r0)
   {
     if (!v6)
@@ -2809,10 +2809,10 @@ LABEL_33:
     [(OTAParamRC *)self setR0:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_7:
   r1 = self->_r1;
-  v8 = v4[100];
+  v8 = fromCopy[100];
   if (r1)
   {
     if (!v8)
@@ -2833,10 +2833,10 @@ LABEL_7:
     [(OTAParamRC *)self setR1:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_13:
   baselineR1 = self->_baselineR1;
-  v10 = v4[86];
+  v10 = fromCopy[86];
   if (baselineR1)
   {
     if (!v10)
@@ -2857,10 +2857,10 @@ LABEL_13:
     [(OTAParamRC *)self setBaselineR1:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_19:
   r2 = self->_r2;
-  v12 = v4[101];
+  v12 = fromCopy[101];
   if (r2)
   {
     if (!v12)
@@ -2881,10 +2881,10 @@ LABEL_19:
     [(OTAParamRC *)self setR2:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_25:
   baselineR2 = self->_baselineR2;
-  v14 = v4[87];
+  v14 = fromCopy[87];
   if (baselineR2)
   {
     if (!v14)
@@ -2905,10 +2905,10 @@ LABEL_25:
     [(OTAParamRC *)self setBaselineR2:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_31:
   rCFreq1 = self->_rCFreq1;
-  v16 = v4[103];
+  v16 = fromCopy[103];
   if (rCFreq1)
   {
     if (!v16)
@@ -2929,10 +2929,10 @@ LABEL_31:
     [(OTAParamRC *)self setRCFreq1:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_37:
   rCFreq2 = self->_rCFreq2;
-  v18 = v4[104];
+  v18 = fromCopy[104];
   if (rCFreq2)
   {
     if (!v18)
@@ -2953,10 +2953,10 @@ LABEL_37:
     [(OTAParamRC *)self setRCFreq2:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_43:
   rCFreq3 = self->_rCFreq3;
-  v20 = v4[105];
+  v20 = fromCopy[105];
   if (rCFreq3)
   {
     if (!v20)
@@ -2977,12 +2977,12 @@ LABEL_43:
     [(OTAParamRC *)self setRCFreq3:?];
   }
 
-  v4 = v133;
+  fromCopy = v133;
 LABEL_49:
-  v21 = [v4 agingCoeffForR0sCount];
-  if (v21)
+  agingCoeffForR0sCount = [fromCopy agingCoeffForR0sCount];
+  if (agingCoeffForR0sCount)
   {
-    v22 = v21;
+    v22 = agingCoeffForR0sCount;
     for (i = 0; i != v22; ++i)
     {
       [v133 agingCoeffForR0AtIndex:i];
@@ -2990,10 +2990,10 @@ LABEL_49:
     }
   }
 
-  v24 = [v133 agingCoeffForR0TemperatureCoeffsCount];
-  if (v24)
+  agingCoeffForR0TemperatureCoeffsCount = [v133 agingCoeffForR0TemperatureCoeffsCount];
+  if (agingCoeffForR0TemperatureCoeffsCount)
   {
-    v25 = v24;
+    v25 = agingCoeffForR0TemperatureCoeffsCount;
     for (j = 0; j != v25; ++j)
     {
       [v133 agingCoeffForR0TemperatureCoeffAtIndex:j];
@@ -3001,10 +3001,10 @@ LABEL_49:
     }
   }
 
-  v27 = [v133 agingCoeffForR1sCount];
-  if (v27)
+  agingCoeffForR1sCount = [v133 agingCoeffForR1sCount];
+  if (agingCoeffForR1sCount)
   {
-    v28 = v27;
+    v28 = agingCoeffForR1sCount;
     for (k = 0; k != v28; ++k)
     {
       [v133 agingCoeffForR1AtIndex:k];
@@ -3012,10 +3012,10 @@ LABEL_49:
     }
   }
 
-  v30 = [v133 agingCoeffForR1TemperatureCoeffsCount];
-  if (v30)
+  agingCoeffForR1TemperatureCoeffsCount = [v133 agingCoeffForR1TemperatureCoeffsCount];
+  if (agingCoeffForR1TemperatureCoeffsCount)
   {
-    v31 = v30;
+    v31 = agingCoeffForR1TemperatureCoeffsCount;
     for (m = 0; m != v31; ++m)
     {
       [v133 agingCoeffForR1TemperatureCoeffAtIndex:m];
@@ -3023,10 +3023,10 @@ LABEL_49:
     }
   }
 
-  v33 = [v133 agingCoeffForR2sCount];
-  if (v33)
+  agingCoeffForR2sCount = [v133 agingCoeffForR2sCount];
+  if (agingCoeffForR2sCount)
   {
-    v34 = v33;
+    v34 = agingCoeffForR2sCount;
     for (n = 0; n != v34; ++n)
     {
       [v133 agingCoeffForR2AtIndex:n];
@@ -3034,10 +3034,10 @@ LABEL_49:
     }
   }
 
-  v36 = [v133 agingCoeffForR2TemperatureCoeffsCount];
-  if (v36)
+  agingCoeffForR2TemperatureCoeffsCount = [v133 agingCoeffForR2TemperatureCoeffsCount];
+  if (agingCoeffForR2TemperatureCoeffsCount)
   {
-    v37 = v36;
+    v37 = agingCoeffForR2TemperatureCoeffsCount;
     for (ii = 0; ii != v37; ++ii)
     {
       [v133 agingCoeffForR2TemperatureCoeffAtIndex:ii];
@@ -3045,10 +3045,10 @@ LABEL_49:
     }
   }
 
-  v39 = [v133 baselineRdcsCount];
-  if (v39)
+  baselineRdcsCount = [v133 baselineRdcsCount];
+  if (baselineRdcsCount)
   {
-    v40 = v39;
+    v40 = baselineRdcsCount;
     for (jj = 0; jj != v40; ++jj)
     {
       [v133 baselineRdcAtIndex:jj];
@@ -3106,10 +3106,10 @@ LABEL_76:
   v43 = v133;
 LABEL_82:
   self->_chemID = *(v43 + 192);
-  v47 = [v43 gridOCVsCount];
-  if (v47)
+  gridOCVsCount = [v43 gridOCVsCount];
+  if (gridOCVsCount)
   {
-    v48 = v47;
+    v48 = gridOCVsCount;
     for (kk = 0; kk != v48; ++kk)
     {
       [v133 gridOCVAtIndex:kk];
@@ -3175,10 +3175,10 @@ LABEL_94:
   }
 
 LABEL_95:
-  v54 = [v51 slopeForR0ExtrapsCount];
-  if (v54)
+  slopeForR0ExtrapsCount = [v51 slopeForR0ExtrapsCount];
+  if (slopeForR0ExtrapsCount)
   {
-    v55 = v54;
+    v55 = slopeForR0ExtrapsCount;
     for (mm = 0; mm != v55; ++mm)
     {
       [v133 slopeForR0ExtrapAtIndex:mm];
@@ -3186,10 +3186,10 @@ LABEL_95:
     }
   }
 
-  v57 = [v133 slopeForR1ExtrapsCount];
-  if (v57)
+  slopeForR1ExtrapsCount = [v133 slopeForR1ExtrapsCount];
+  if (slopeForR1ExtrapsCount)
   {
-    v58 = v57;
+    v58 = slopeForR1ExtrapsCount;
     for (nn = 0; nn != v58; ++nn)
     {
       [v133 slopeForR1ExtrapAtIndex:nn];
@@ -3197,10 +3197,10 @@ LABEL_95:
     }
   }
 
-  v60 = [v133 slopeForR2ExtrapsCount];
-  if (v60)
+  slopeForR2ExtrapsCount = [v133 slopeForR2ExtrapsCount];
+  if (slopeForR2ExtrapsCount)
   {
-    v61 = v60;
+    v61 = slopeForR2ExtrapsCount;
     for (i1 = 0; i1 != v61; ++i1)
     {
       [v133 slopeForR2ExtrapAtIndex:i1];
@@ -3208,10 +3208,10 @@ LABEL_95:
     }
   }
 
-  v63 = [v133 slopeForR3ExtrapsCount];
-  if (v63)
+  slopeForR3ExtrapsCount = [v133 slopeForR3ExtrapsCount];
+  if (slopeForR3ExtrapsCount)
   {
-    v64 = v63;
+    v64 = slopeForR3ExtrapsCount;
     for (i2 = 0; i2 != v64; ++i2)
     {
       [v133 slopeForR3ExtrapAtIndex:i2];
@@ -3388,10 +3388,10 @@ LABEL_146:
 
   v67 = v133;
 LABEL_152:
-  v81 = [v67 agingCoeffForR3sCount];
-  if (v81)
+  agingCoeffForR3sCount = [v67 agingCoeffForR3sCount];
+  if (agingCoeffForR3sCount)
   {
-    v82 = v81;
+    v82 = agingCoeffForR3sCount;
     for (i3 = 0; i3 != v82; ++i3)
     {
       [v133 agingCoeffForR3AtIndex:i3];
@@ -3399,10 +3399,10 @@ LABEL_152:
     }
   }
 
-  v84 = [v133 agingCoeffForR3TemperatureCoeffsCount];
-  if (v84)
+  agingCoeffForR3TemperatureCoeffsCount = [v133 agingCoeffForR3TemperatureCoeffsCount];
+  if (agingCoeffForR3TemperatureCoeffsCount)
   {
-    v85 = v84;
+    v85 = agingCoeffForR3TemperatureCoeffsCount;
     for (i4 = 0; i4 != v85; ++i4)
     {
       [v133 agingCoeffForR3TemperatureCoeffAtIndex:i4];
@@ -3410,10 +3410,10 @@ LABEL_152:
     }
   }
 
-  v87 = [v133 agingCoeffForRCFreq1sCount];
-  if (v87)
+  agingCoeffForRCFreq1sCount = [v133 agingCoeffForRCFreq1sCount];
+  if (agingCoeffForRCFreq1sCount)
   {
-    v88 = v87;
+    v88 = agingCoeffForRCFreq1sCount;
     for (i5 = 0; i5 != v88; ++i5)
     {
       [v133 agingCoeffForRCFreq1AtIndex:i5];
@@ -3421,10 +3421,10 @@ LABEL_152:
     }
   }
 
-  v90 = [v133 agingCoeffForRCFreq2sCount];
-  if (v90)
+  agingCoeffForRCFreq2sCount = [v133 agingCoeffForRCFreq2sCount];
+  if (agingCoeffForRCFreq2sCount)
   {
-    v91 = v90;
+    v91 = agingCoeffForRCFreq2sCount;
     for (i6 = 0; i6 != v91; ++i6)
     {
       [v133 agingCoeffForRCFreq2AtIndex:i6];
@@ -3432,10 +3432,10 @@ LABEL_152:
     }
   }
 
-  v93 = [v133 agingCoeffForRCFreq3sCount];
-  if (v93)
+  agingCoeffForRCFreq3sCount = [v133 agingCoeffForRCFreq3sCount];
+  if (agingCoeffForRCFreq3sCount)
   {
-    v94 = v93;
+    v94 = agingCoeffForRCFreq3sCount;
     for (i7 = 0; i7 != v94; ++i7)
     {
       [v133 agingCoeffForRCFreq3AtIndex:i7];
@@ -3443,10 +3443,10 @@ LABEL_152:
     }
   }
 
-  v96 = [v133 agingCoeffForRCFreq4sCount];
-  if (v96)
+  agingCoeffForRCFreq4sCount = [v133 agingCoeffForRCFreq4sCount];
+  if (agingCoeffForRCFreq4sCount)
   {
-    v97 = v96;
+    v97 = agingCoeffForRCFreq4sCount;
     for (i8 = 0; i8 != v97; ++i8)
     {
       [v133 agingCoeffForRCFreq4AtIndex:i8];
@@ -3454,10 +3454,10 @@ LABEL_152:
     }
   }
 
-  v99 = [v133 agingCoeffForRCFreq1TemperatureCoeffsCount];
-  if (v99)
+  agingCoeffForRCFreq1TemperatureCoeffsCount = [v133 agingCoeffForRCFreq1TemperatureCoeffsCount];
+  if (agingCoeffForRCFreq1TemperatureCoeffsCount)
   {
-    v100 = v99;
+    v100 = agingCoeffForRCFreq1TemperatureCoeffsCount;
     for (i9 = 0; i9 != v100; ++i9)
     {
       [v133 agingCoeffForRCFreq1TemperatureCoeffAtIndex:i9];
@@ -3465,10 +3465,10 @@ LABEL_152:
     }
   }
 
-  v102 = [v133 agingCoeffForRCFreq2TemperatureCoeffsCount];
-  if (v102)
+  agingCoeffForRCFreq2TemperatureCoeffsCount = [v133 agingCoeffForRCFreq2TemperatureCoeffsCount];
+  if (agingCoeffForRCFreq2TemperatureCoeffsCount)
   {
-    v103 = v102;
+    v103 = agingCoeffForRCFreq2TemperatureCoeffsCount;
     for (i10 = 0; i10 != v103; ++i10)
     {
       [v133 agingCoeffForRCFreq2TemperatureCoeffAtIndex:i10];
@@ -3476,10 +3476,10 @@ LABEL_152:
     }
   }
 
-  v105 = [v133 agingCoeffForRCFreq3TemperatureCoeffsCount];
-  if (v105)
+  agingCoeffForRCFreq3TemperatureCoeffsCount = [v133 agingCoeffForRCFreq3TemperatureCoeffsCount];
+  if (agingCoeffForRCFreq3TemperatureCoeffsCount)
   {
-    v106 = v105;
+    v106 = agingCoeffForRCFreq3TemperatureCoeffsCount;
     for (i11 = 0; i11 != v106; ++i11)
     {
       [v133 agingCoeffForRCFreq3TemperatureCoeffAtIndex:i11];
@@ -3487,10 +3487,10 @@ LABEL_152:
     }
   }
 
-  v108 = [v133 agingCoeffForRCFreq4TemperatureCoeffsCount];
-  if (v108)
+  agingCoeffForRCFreq4TemperatureCoeffsCount = [v133 agingCoeffForRCFreq4TemperatureCoeffsCount];
+  if (agingCoeffForRCFreq4TemperatureCoeffsCount)
   {
-    v109 = v108;
+    v109 = agingCoeffForRCFreq4TemperatureCoeffsCount;
     for (i12 = 0; i12 != v109; ++i12)
     {
       [v133 agingCoeffForRCFreq4TemperatureCoeffAtIndex:i12];
@@ -3512,10 +3512,10 @@ LABEL_152:
     *&self->_has |= 0x20u;
   }
 
-  v112 = [v133 gridWRdcRatiosCount];
-  if (v112)
+  gridWRdcRatiosCount = [v133 gridWRdcRatiosCount];
+  if (gridWRdcRatiosCount)
   {
-    v113 = v112;
+    v113 = gridWRdcRatiosCount;
     for (i13 = 0; i13 != v113; ++i13)
     {
       [v133 gridWRdcRatioAtIndex:i13];
@@ -3523,10 +3523,10 @@ LABEL_152:
     }
   }
 
-  v115 = [v133 coeffSOCsCount];
-  if (v115)
+  coeffSOCsCount = [v133 coeffSOCsCount];
+  if (coeffSOCsCount)
   {
-    v116 = v115;
+    v116 = coeffSOCsCount;
     for (i14 = 0; i14 != v116; ++i14)
     {
       [v133 coeffSOCAtIndex:i14];
@@ -3534,10 +3534,10 @@ LABEL_152:
     }
   }
 
-  v118 = [v133 coeffVsCount];
-  if (v118)
+  coeffVsCount = [v133 coeffVsCount];
+  if (coeffVsCount)
   {
-    v119 = v118;
+    v119 = coeffVsCount;
     for (i15 = 0; i15 != v119; ++i15)
     {
       [v133 coeffVAtIndex:i15];
@@ -3570,10 +3570,10 @@ LABEL_152:
 
   v122 = v133;
 LABEL_201:
-  v124 = [v122 agingCoeffForRdcsCount];
-  if (v124)
+  agingCoeffForRdcsCount = [v122 agingCoeffForRdcsCount];
+  if (agingCoeffForRdcsCount)
   {
-    v125 = v124;
+    v125 = agingCoeffForRdcsCount;
     for (i16 = 0; i16 != v125; ++i16)
     {
       [v133 agingCoeffForRdcAtIndex:i16];
@@ -3581,10 +3581,10 @@ LABEL_201:
     }
   }
 
-  v127 = [v133 agingCoeffForRdcTemperatureCoeffsCount];
-  if (v127)
+  agingCoeffForRdcTemperatureCoeffsCount = [v133 agingCoeffForRdcTemperatureCoeffsCount];
+  if (agingCoeffForRdcTemperatureCoeffsCount)
   {
-    v128 = v127;
+    v128 = agingCoeffForRdcTemperatureCoeffsCount;
     for (i17 = 0; i17 != v128; ++i17)
     {
       [v133 agingCoeffForRdcTemperatureCoeffAtIndex:i17];
@@ -3592,10 +3592,10 @@ LABEL_201:
     }
   }
 
-  v130 = [v133 qmaxsCount];
-  if (v130)
+  qmaxsCount = [v133 qmaxsCount];
+  if (qmaxsCount)
   {
-    v131 = v130;
+    v131 = qmaxsCount;
     for (i18 = 0; i18 != v131; ++i18)
     {
       [v133 qmaxAtIndex:i18];

@@ -7,9 +7,9 @@
 - (NSString)storeIDString
 {
   v2 = [NSNumber numberWithLongLong:[(BLBookletMigrationInfo *)self storeID]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 @end

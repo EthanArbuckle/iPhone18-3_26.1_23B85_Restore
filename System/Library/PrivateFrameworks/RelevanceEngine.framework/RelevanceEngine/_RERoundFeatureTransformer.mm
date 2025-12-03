@@ -1,8 +1,8 @@
 @interface _RERoundFeatureTransformer
-- (BOOL)_validateWithFeatures:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_validateWithFeatures:(id)features;
+- (BOOL)isEqual:(id)equal;
 - (_RERoundFeatureTransformer)init;
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4;
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count;
 @end
 
 @implementation _RERoundFeatureTransformer
@@ -21,10 +21,10 @@
   return v3;
 }
 
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count
 {
-  v4 = *a3;
-  if (REFeatureValueTypeForTaggedPointer(*a3) == 1)
+  v4 = *values;
+  if (REFeatureValueTypeForTaggedPointer(*values) == 1)
   {
     RERetainFeatureValueTaggedPointer(v4);
     return v4;
@@ -38,24 +38,24 @@
   }
 }
 
-- (BOOL)_validateWithFeatures:(id)a3
+- (BOOL)_validateWithFeatures:(id)features
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 featureType] == 2;
+  firstObject = [features firstObject];
+  v4 = [firstObject featureType] == 2;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

@@ -1,25 +1,25 @@
 @interface HFDiskCache
-- (HFDiskCache)initWithCacheDirectoryURL:(id)a3 diskCacheDelegate:(id)a4;
+- (HFDiskCache)initWithCacheDirectoryURL:(id)l diskCacheDelegate:(id)delegate;
 - (HFDiskCacheDelegate)diskCacheDelegate;
 - (void)_createCacheEntriesFromFilesOnDisk;
-- (void)cache:(id)a3 didEvictObject:(id)a4 forKey:(id)a5 cost:(unint64_t)a6;
+- (void)cache:(id)cache didEvictObject:(id)object forKey:(id)key cost:(unint64_t)cost;
 - (void)createCacheEntriesFromFilesOnDisk;
 @end
 
 @implementation HFDiskCache
 
-- (HFDiskCache)initWithCacheDirectoryURL:(id)a3 diskCacheDelegate:(id)a4
+- (HFDiskCache)initWithCacheDirectoryURL:(id)l diskCacheDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = HFDiskCache;
   v9 = [(HFCache *)&v18 initWithDelegate:self];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_directoryURL, a3);
-    objc_storeWeak(&v10->_diskCacheDelegate, v8);
+    objc_storeStrong(&v9->_directoryURL, l);
+    objc_storeWeak(&v10->_diskCacheDelegate, delegateCopy);
     objc_initWeak(&location, v10);
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
@@ -174,33 +174,33 @@ LABEL_15:
 
 - (void)createCacheEntriesFromFilesOnDisk
 {
-  v3 = [(HFCache *)self accessQueue];
-  dispatch_assert_queue_not_V2(v3);
+  accessQueue = [(HFCache *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v4 = [(HFCache *)self accessQueue];
+  accessQueue2 = [(HFCache *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HFDiskCache_createCacheEntriesFromFilesOnDisk__block_invoke;
   block[3] = &unk_277DF3D38;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(accessQueue2, block);
 }
 
 - (void)_createCacheEntriesFromFilesOnDisk
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HFCache *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(HFCache *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [(HFDiskCache *)self directoryURL];
-  [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  directoryURL = [(HFDiskCache *)self directoryURL];
+  [defaultManager createDirectoryAtURL:directoryURL withIntermediateDirectories:1 attributes:0 error:0];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [(HFDiskCache *)self directoryURL];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryURL2 = [(HFDiskCache *)self directoryURL];
   v12[0] = *MEMORY[0x277CBE838];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v9 = [v6 enumeratorAtURL:v7 includingPropertiesForKeys:v8 options:20 errorHandler:&__block_literal_global_34];
+  v9 = [defaultManager2 enumeratorAtURL:directoryURL2 includingPropertiesForKeys:v8 options:20 errorHandler:&__block_literal_global_34];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -309,16 +309,16 @@ void __49__HFDiskCache__createCacheEntriesFromFilesOnDisk__block_invoke_5(uint64
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cache:(id)a3 didEvictObject:(id)a4 forKey:(id)a5 cost:(unint64_t)a6
+- (void)cache:(id)cache didEvictObject:(id)object forKey:(id)key cost:(unint64_t)cost
 {
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HFCache *)self accessQueue];
-  dispatch_assert_queue_V2(v11);
+  objectCopy = object;
+  keyCopy = key;
+  accessQueue = [(HFCache *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v12 = objc_opt_class();
-  v13 = v9;
+  v13 = objectCopy;
   if (!v13)
   {
     goto LABEL_7;
@@ -337,17 +337,17 @@ void __49__HFDiskCache__createCacheEntriesFromFilesOnDisk__block_invoke_5(uint64
   v15 = v13;
   if (!v14)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v16 handleFailureInFunction:v17 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v12, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v17 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v12, objc_opt_class()}];
 
 LABEL_7:
     v15 = 0;
   }
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v35 = 0;
-  v19 = [v18 removeItemAtURL:v15 error:&v35];
+  v19 = [defaultManager removeItemAtURL:v15 error:&v35];
   v20 = v35;
 
   v21 = HFLogForCategory(0xDuLL);
@@ -356,13 +356,13 @@ LABEL_7:
   {
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v34 = [v15 relativePath];
+      relativePath = [v15 relativePath];
       *buf = 136315650;
       v37 = "[HFDiskCache cache:didEvictObject:forKey:cost:]";
       v38 = 2112;
       v39 = v20;
       v40 = 2112;
-      v41 = v34;
+      v41 = relativePath;
       _os_log_error_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_ERROR, "%s could not remove file at %@: %@", buf, 0x20u);
     }
 
@@ -371,24 +371,24 @@ LABEL_7:
 
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v15 relativePath];
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+    relativePath2 = [v15 relativePath];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:cost];
     *buf = 136315650;
     v37 = "[HFDiskCache cache:didEvictObject:forKey:cost:]";
     v38 = 2112;
-    v39 = v23;
+    v39 = relativePath2;
     v40 = 2112;
     v41 = v24;
     _os_log_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_DEFAULT, "%s removed file at %@; size: %@", buf, 0x20u);
   }
 
-  v25 = [(HFDiskCache *)self diskCacheDelegate];
+  diskCacheDelegate = [(HFDiskCache *)self diskCacheDelegate];
   v26 = objc_opt_respondsToSelector();
 
   if (v26)
   {
     v27 = objc_opt_class();
-    v28 = v10;
+    v28 = keyCopy;
     if (v28)
     {
       if (objc_opt_isKindOfClass())
@@ -407,16 +407,16 @@ LABEL_7:
         goto LABEL_19;
       }
 
-      v30 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v30 handleFailureInFunction:v31 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v27, objc_opt_class()}];
+      [currentHandler2 handleFailureInFunction:v31 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v27, objc_opt_class()}];
     }
 
     v22 = 0;
 LABEL_19:
 
-    v32 = [(HFDiskCache *)self diskCacheDelegate];
-    [v32 diskCache:self didEvictFileFromDisk:v15 forUniqueIdentifier:v22];
+    diskCacheDelegate2 = [(HFDiskCache *)self diskCacheDelegate];
+    [diskCacheDelegate2 diskCache:self didEvictFileFromDisk:v15 forUniqueIdentifier:v22];
 
 LABEL_22:
   }

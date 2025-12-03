@@ -1,19 +1,19 @@
 @interface SACompanionMessengerAdapter
-- (BOOL)sendMessageToWatch:(id)a3 identifier:(id *)a4;
-- (SACompanionMessengerAdapter)initWithProxy:(void *)a3 andQueue:(id)a4;
+- (BOOL)sendMessageToWatch:(id)watch identifier:(id *)identifier;
+- (SACompanionMessengerAdapter)initWithProxy:(void *)proxy andQueue:(id)queue;
 - (void)beginService;
 - (void)endService;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)updateNearbyStatusWithDevices:(id)a3;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)updateNearbyStatusWithDevices:(id)devices;
 @end
 
 @implementation SACompanionMessengerAdapter
 
-- (SACompanionMessengerAdapter)initWithProxy:(void *)a3 andQueue:(id)a4
+- (SACompanionMessengerAdapter)initWithProxy:(void *)proxy andQueue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v8 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -30,8 +30,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->queue, a4);
-    v10->cmProxy = a3;
+    objc_storeStrong(&v9->queue, queue);
+    v10->cmProxy = proxy;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10004377C;
@@ -80,12 +80,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,beginService}", v7, 0x12u);
   }
 
-  v4 = [(SACompanionMessengerAdapter *)self service];
-  [v4 addDelegate:self queue:self->queue];
+  service = [(SACompanionMessengerAdapter *)self service];
+  [service addDelegate:self queue:self->queue];
 
-  v5 = [(SACompanionMessengerAdapter *)self service];
-  v6 = [v5 devices];
-  [(SACompanionMessengerAdapter *)self updateNearbyStatusWithDevices:v6];
+  service2 = [(SACompanionMessengerAdapter *)self service];
+  devices = [service2 devices];
+  [(SACompanionMessengerAdapter *)self updateNearbyStatusWithDevices:devices];
 }
 
 - (void)endService
@@ -103,30 +103,30 @@
   [(SACompanionMessengerAdapter *)self setService:0];
 }
 
-- (void)updateNearbyStatusWithDevices:(id)a3
+- (void)updateNearbyStatusWithDevices:(id)devices
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v33 count:16];
-  if (v5)
+  devicesCopy = devices;
+  uniqueIDOverride = [devicesCopy countByEnumeratingWithState:&v19 objects:v33 count:16];
+  if (uniqueIDOverride)
   {
     v6 = *v20;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != uniqueIDOverride; i = i + 1)
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicesCopy);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
         if ([v8 isDefaultPairedDevice] && objc_msgSend(v8, "isNearby"))
         {
-          v5 = [v8 uniqueIDOverride];
+          uniqueIDOverride = [v8 uniqueIDOverride];
           if (v8)
           {
             [v8 operatingSystemVersion];
@@ -135,19 +135,19 @@
           v9 = SALogObjectGeneral;
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
-            v10 = [v8 isActive];
-            v11 = [v8 isConnected];
-            v12 = [v8 destination];
+            isActive = [v8 isActive];
+            isConnected = [v8 isConnected];
+            destination = [v8 destination];
             *buf = 68289795;
             v24 = 0;
             v25 = 2082;
             v26 = "";
             v27 = 1025;
-            v28 = v10;
+            v28 = isActive;
             v29 = 1025;
-            v30 = v11;
+            v30 = isConnected;
             v31 = 2113;
-            v32 = v12;
+            v32 = destination;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,nearbyStatusDetails, isActive:%{private}hhd, isConnected:%{private}hhd, destination:%{private, location:escape_only}@}", buf, 0x28u);
           }
 
@@ -155,8 +155,8 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v19 objects:v33 count:16];
-      if (v5)
+      uniqueIDOverride = [devicesCopy countByEnumeratingWithState:&v19 objects:v33 count:16];
+      if (uniqueIDOverride)
       {
         continue;
       }
@@ -167,46 +167,46 @@
 
 LABEL_16:
 
-  v13 = [(SACompanionMessengerAdapter *)self saPairUniqueID];
-  v14 = [v5 isEqualToString:v13];
+  saPairUniqueID = [(SACompanionMessengerAdapter *)self saPairUniqueID];
+  v14 = [uniqueIDOverride isEqualToString:saPairUniqueID];
 
   if ((v14 & 1) == 0)
   {
-    [(SACompanionMessengerAdapter *)self setSaPairUniqueID:v5];
+    [(SACompanionMessengerAdapter *)self setSaPairUniqueID:uniqueIDOverride];
     v15 = SALogObjectGeneral;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(SACompanionMessengerAdapter *)self saPairUniqueID];
+      saPairUniqueID2 = [(SACompanionMessengerAdapter *)self saPairUniqueID];
       *buf = 68289283;
       v24 = 0;
       v25 = 2082;
       v26 = "";
       v27 = 1025;
-      v28 = v16 != 0;
+      v28 = saPairUniqueID2 != 0;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,nearbyStatusChanged, is nearby:%{private}d}", buf, 0x18u);
     }
 
     cmProxy = self->cmProxy;
     if (cmProxy)
     {
-      v18 = [(SACompanionMessengerAdapter *)self saPairUniqueID];
-      cmProxy[56] = v18 != 0;
+      saPairUniqueID3 = [(SACompanionMessengerAdapter *)self saPairUniqueID];
+      cmProxy[56] = saPairUniqueID3 != 0;
     }
   }
 }
 
-- (BOOL)sendMessageToWatch:(id)a3 identifier:(id *)a4
+- (BOOL)sendMessageToWatch:(id)watch identifier:(id *)identifier
 {
-  v6 = a3;
-  v7 = [(SACompanionMessengerAdapter *)self saPairUniqueID];
+  watchCopy = watch;
+  saPairUniqueID = [(SACompanionMessengerAdapter *)self saPairUniqueID];
 
-  if (v7)
+  if (saPairUniqueID)
   {
-    *a4 = 0;
-    v8 = [(SACompanionMessengerAdapter *)self service];
+    *identifier = 0;
+    service = [(SACompanionMessengerAdapter *)self service];
     v9 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v20 = 0;
-    LODWORD(v7) = [v8 sendMessage:v6 toDestinations:v9 priority:300 options:0 identifier:a4 error:&v20];
+    LODWORD(saPairUniqueID) = [service sendMessage:watchCopy toDestinations:v9 priority:300 options:0 identifier:identifier error:&v20];
     v10 = v20;
 
     if (v10)
@@ -231,7 +231,7 @@ LABEL_5:
 
     else
     {
-      v18 = *a4;
+      v18 = *identifier;
       v19 = SALogObjectGeneral;
       if (v18)
       {
@@ -242,7 +242,7 @@ LABEL_5:
           v23 = 2082;
           v24 = "";
           v25 = 1025;
-          LODWORD(v26[0]) = v7;
+          LODWORD(v26[0]) = saPairUniqueID;
           WORD2(v26[0]) = 2113;
           *(v26 + 6) = v18;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,sendMessageToWatch, recoverable:%{private}hhd, identifier:%{private, location:escape_only}@}", buf, 0x22u);
@@ -265,7 +265,7 @@ LABEL_5:
       }
     }
 
-    LOBYTE(v7) = 0;
+    LOBYTE(saPairUniqueID) = 0;
 LABEL_7:
 
     goto LABEL_10;
@@ -279,19 +279,19 @@ LABEL_7:
     v23 = 2082;
     v24 = "";
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,sendMessageToWatch, returned early, watch is not nearby}", buf, 0x12u);
-    LOBYTE(v7) = 0;
+    LOBYTE(saPairUniqueID) = 0;
   }
 
 LABEL_10:
 
-  return v7;
+  return saPairUniqueID;
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a7;
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
   v11 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -300,18 +300,18 @@ LABEL_10:
     v13 = 2082;
     v14 = "";
     v15 = 2113;
-    v16 = v9;
+    v16 = identifierCopy;
     v17 = 1025;
-    v18 = v8;
+    v18 = successCopy;
     v19 = 2113;
-    v20 = v10;
+    v20 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,processDidSendMsgWithSuccess, identifier:%{private, location:escape_only}@, success:%{private}hhd, error:%{private, location:escape_only}@}", v12, 0x2Cu);
   }
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -322,14 +322,14 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,nearbyDevicesChanged}", v7, 0x12u);
   }
 
-  [(SACompanionMessengerAdapter *)self updateNearbyStatusWithDevices:v5];
+  [(SACompanionMessengerAdapter *)self updateNearbyStatusWithDevices:changedCopy];
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  deviceCopy = device;
+  blockCopy = block;
   v11 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -338,15 +338,15 @@ LABEL_10:
     v16 = 2082;
     v17 = "";
     v18 = 2113;
-    v19 = v9;
+    v19 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sacm,didSwitchActivePairedDevice,activePairedDevice, activePairedDevice:%{private, location:escape_only}@}", buf, 0x1Cu);
   }
 
-  v10[2](v10);
+  blockCopy[2](blockCopy);
   saPairUniqueID = self->_saPairUniqueID;
   self->_saPairUniqueID = 0;
 
-  v13 = [NSArray arrayWithObjects:v9, 0];
+  v13 = [NSArray arrayWithObjects:deviceCopy, 0];
   [(SACompanionMessengerAdapter *)self updateNearbyStatusWithDevices:v13];
 }
 

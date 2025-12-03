@@ -1,17 +1,17 @@
 @interface BSMachPortSendOnceRight
-- (BSMachPortSendOnceRight)initWithPort:(unsigned int)a3;
-- (id)initFromReceiveRight:(id)a3;
+- (BSMachPortSendOnceRight)initWithPort:(unsigned int)port;
+- (id)initFromReceiveRight:(id)right;
 @end
 
 @implementation BSMachPortSendOnceRight
 
-- (BSMachPortSendOnceRight)initWithPort:(unsigned int)a3
+- (BSMachPortSendOnceRight)initWithPort:(unsigned int)port
 {
-  v3 = *&a3;
-  if (a3 - 1 <= 0xFFFFFFFD && !BSMachPortIsType(a3, 1310720))
+  v3 = *&port;
+  if (port - 1 <= 0xFFFFFFFD && !BSMachPortIsType(port, 1310720))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:448 description:@"you must pass in a send-once (or dead) right or NULL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:448 description:@"you must pass in a send-once (or dead) right or NULL"];
   }
 
   v6 = _BSMachPortRightDescription(2u, 0, @"take", v3, 0);
@@ -20,7 +20,7 @@
   return v7;
 }
 
-- (id)initFromReceiveRight:(id)a3
+- (id)initFromReceiveRight:(id)right
 {
   v11 = 0;
   v12 = &v11;
@@ -31,10 +31,10 @@
   v10[2] = __48__BSMachPortSendOnceRight_initFromReceiveRight___block_invoke;
   v10[3] = &unk_1E72CB728;
   v10[4] = &v11;
-  [a3 accessPort:v10];
+  [right accessPort:v10];
   v5 = *(v12 + 6);
-  v6 = [a3 trace];
-  v7 = _BSMachPortRightDescription(2u, 0, @"make", v5, v6);
+  trace = [right trace];
+  v7 = _BSMachPortRightDescription(2u, 0, @"make", v5, trace);
 
   v8 = [(BSMachPortRight *)self _initWithPort:2 type:0 owner:v7 trace:?];
   _Block_object_dispose(&v11, 8);

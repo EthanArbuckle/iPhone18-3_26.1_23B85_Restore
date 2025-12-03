@@ -1,28 +1,28 @@
 @interface NLXSchemaCDMTurnInput
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMTurnInput)initWithDictionary:(id)a3;
-- (NLXSchemaCDMTurnInput)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMTurnInput)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMTurnInput)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAsrHypothesisIds:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAsrHypothesisIds:(id)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMTurnInput
 
-- (NLXSchemaCDMTurnInput)initWithDictionary:(id)a3
+- (NLXSchemaCDMTurnInput)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = NLXSchemaCDMTurnInput;
   v5 = [(NLXSchemaCDMTurnInput *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"asrHypothesisIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"asrHypothesisIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"turnContext", v20}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"turnContext", v20}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(NLXSchemaCDMTurnInput *)v5 setTurnContext:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"isTapToEdit"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isTapToEdit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,30 +87,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMTurnInput)initWithJSON:(id)a3
+- (NLXSchemaCDMTurnInput)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMTurnInput *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMTurnInput *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMTurnInput *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,10 +124,10 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_asrHypothesisIds count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -147,16 +147,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -166,34 +166,34 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"asrHypothesisIds"];
+    [dictionary setObject:array forKeyedSubscript:@"asrHypothesisIds"];
   }
 
   if (*(&self->_isTapToEdit + 1))
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[NLXSchemaCDMTurnInput isTapToEdit](self, "isTapToEdit")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isTapToEdit"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isTapToEdit"];
   }
 
   if (self->_turnContext)
   {
-    v13 = [(NLXSchemaCDMTurnInput *)self turnContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    turnContext = [(NLXSchemaCDMTurnInput *)self turnContext];
+    dictionaryRepresentation2 = [turnContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"turnContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"turnContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"turnContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"turnContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v17];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v17];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -213,28 +213,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaCDMTurnInput *)self asrHypothesisIds];
-  v6 = [v4 asrHypothesisIds];
-  if ((v5 != 0) == (v6 == 0))
+  asrHypothesisIds = [(NLXSchemaCDMTurnInput *)self asrHypothesisIds];
+  asrHypothesisIds2 = [equalCopy asrHypothesisIds];
+  if ((asrHypothesisIds != 0) == (asrHypothesisIds2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaCDMTurnInput *)self asrHypothesisIds];
-  if (v7)
+  asrHypothesisIds3 = [(NLXSchemaCDMTurnInput *)self asrHypothesisIds];
+  if (asrHypothesisIds3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMTurnInput *)self asrHypothesisIds];
-    v10 = [v4 asrHypothesisIds];
-    v11 = [v9 isEqual:v10];
+    v8 = asrHypothesisIds3;
+    asrHypothesisIds4 = [(NLXSchemaCDMTurnInput *)self asrHypothesisIds];
+    asrHypothesisIds5 = [equalCopy asrHypothesisIds];
+    v11 = [asrHypothesisIds4 isEqual:asrHypothesisIds5];
 
     if (!v11)
     {
@@ -246,22 +246,22 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMTurnInput *)self turnContext];
-  v6 = [v4 turnContext];
-  if ((v5 != 0) == (v6 == 0))
+  asrHypothesisIds = [(NLXSchemaCDMTurnInput *)self turnContext];
+  asrHypothesisIds2 = [equalCopy turnContext];
+  if ((asrHypothesisIds != 0) == (asrHypothesisIds2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(NLXSchemaCDMTurnInput *)self turnContext];
-  if (v12)
+  turnContext = [(NLXSchemaCDMTurnInput *)self turnContext];
+  if (turnContext)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMTurnInput *)self turnContext];
-    v15 = [v4 turnContext];
-    v16 = [v14 isEqual:v15];
+    v13 = turnContext;
+    turnContext2 = [(NLXSchemaCDMTurnInput *)self turnContext];
+    turnContext3 = [equalCopy turnContext];
+    v16 = [turnContext2 isEqual:turnContext3];
 
     if (!v16)
     {
@@ -273,9 +273,9 @@ LABEL_11:
   {
   }
 
-  if (*(&self->_isTapToEdit + 1) == (v4[25] & 1))
+  if (*(&self->_isTapToEdit + 1) == (equalCopy[25] & 1))
   {
-    if (!*(&self->_isTapToEdit + 1) || (isTapToEdit = self->_isTapToEdit, isTapToEdit == [v4 isTapToEdit]))
+    if (!*(&self->_isTapToEdit + 1) || (isTapToEdit = self->_isTapToEdit, isTapToEdit == [equalCopy isTapToEdit]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -289,10 +289,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -324,11 +324,11 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(NLXSchemaCDMTurnInput *)self turnContext];
+  turnContext = [(NLXSchemaCDMTurnInput *)self turnContext];
 
-  if (v10)
+  if (turnContext)
   {
-    v11 = [(NLXSchemaCDMTurnInput *)self turnContext];
+    turnContext2 = [(NLXSchemaCDMTurnInput *)self turnContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -338,39 +338,39 @@ LABEL_13:
   }
 }
 
-- (void)addAsrHypothesisIds:(id)a3
+- (void)addAsrHypothesisIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   asrHypothesisIds = self->_asrHypothesisIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!asrHypothesisIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_asrHypothesisIds;
-    self->_asrHypothesisIds = v6;
+    self->_asrHypothesisIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     asrHypothesisIds = self->_asrHypothesisIds;
   }
 
-  [(NSArray *)asrHypothesisIds addObject:v4];
+  [(NSArray *)asrHypothesisIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NLXSchemaCDMTurnInput;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMTurnInput *)self asrHypothesisIds:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLXSchemaCDMTurnInput *)self setAsrHypothesisIds:v7];
 
-  v8 = [(NLXSchemaCDMTurnInput *)self turnContext];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  turnContext = [(NLXSchemaCDMTurnInput *)self turnContext];
+  v9 = [turnContext applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaCDMTurnInput *)self deleteTurnContext];
   }

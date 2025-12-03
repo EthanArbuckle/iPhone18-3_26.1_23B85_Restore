@@ -1,40 +1,40 @@
 @interface NSPControlConnection
-- (id)initFromConnection:(id)a3;
-- (id)initFromMetadata:(id)a3;
-- (id)initFromNWConnection:(id)a3;
+- (id)initFromConnection:(id)connection;
+- (id)initFromMetadata:(id)metadata;
+- (id)initFromNWConnection:(id)connection;
 @end
 
 @implementation NSPControlConnection
 
-- (id)initFromMetadata:(id)a3
+- (id)initFromMetadata:(id)metadata
 {
   v4.receiver = self;
   v4.super_class = NSPControlConnection;
   return [(NSPControlConnection *)&v4 init];
 }
 
-- (id)initFromConnection:(id)a3
+- (id)initFromConnection:(id)connection
 {
-  v4 = [a3 metadata];
-  v5 = [(NSPControlConnection *)self initFromMetadata:v4];
+  metadata = [connection metadata];
+  v5 = [(NSPControlConnection *)self initFromMetadata:metadata];
 
   return v5;
 }
 
-- (id)initFromNWConnection:(id)a3
+- (id)initFromNWConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
     self = [(NSPControlConnection *)self initFromMetadata:0];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

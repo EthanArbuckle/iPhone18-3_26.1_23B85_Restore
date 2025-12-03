@@ -2,16 +2,16 @@
 - (NSArray)discoveredDevices;
 - (NSString)description;
 - (RPNearbyInvitationDiscovery)init;
-- (RPNearbyInvitationDiscovery)initWithCoder:(id)a3;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (RPNearbyInvitationDiscovery)initWithCoder:(id)coder;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)nearbyInvitationFoundDevice:(id)a3;
-- (void)nearbyInvitationLostDevice:(id)a3;
+- (void)nearbyInvitationFoundDevice:(id)device;
+- (void)nearbyInvitationLostDevice:(id)device;
 @end
 
 @implementation RPNearbyInvitationDiscovery
@@ -31,9 +31,9 @@
   return v3;
 }
 
-- (RPNearbyInvitationDiscovery)initWithCoder:(id)a3
+- (RPNearbyInvitationDiscovery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RPNearbyInvitationDiscovery;
   v5 = [(RPNearbyInvitationDiscovery *)&v10 init];
@@ -41,7 +41,7 @@
   if (v5)
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
-    v7 = v4;
+    v7 = coderCopy;
     if ([v7 containsValueForKey:@"_disFl"])
     {
       v6->_discoveryFlags = [v7 decodeInt64ForKey:@"_disFl"];
@@ -53,12 +53,12 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   discoveryFlags = self->_discoveryFlags;
   if (discoveryFlags)
   {
-    [a3 encodeInt64:discoveryFlags forKey:@"_disFl"];
+    [coder encodeInt64:discoveryFlags forKey:@"_disFl"];
   }
 }
 
@@ -91,25 +91,25 @@
   return v4;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__RPNearbyInvitationDiscovery_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  reactivateCopy = reactivate;
+  completionCopy = completion;
+  if (reactivateCopy)
   {
     if (gLogCategory_RPNearbyInvitationDiscovery <= 30 && (gLogCategory_RPNearbyInvitationDiscovery != -1 || _LogCategory_Initialize()))
     {
@@ -130,15 +130,15 @@ LABEL_10:
   v14[2] = __66__RPNearbyInvitationDiscovery__activateWithCompletion_reactivate___block_invoke;
   v14[3] = &unk_1E7C93500;
   v14[4] = self;
-  v16 = v4;
-  v8 = v6;
+  v16 = reactivateCopy;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__RPNearbyInvitationDiscovery__activateWithCompletion_reactivate___block_invoke_2;
   v11[3] = &unk_1E7C92F88;
-  v13 = v4;
+  v13 = reactivateCopy;
   v12 = v8;
   v10 = v8;
   [v9 nearbyInvitationActivateDiscovery:self completion:v11];
@@ -379,81 +379,81 @@ uint64_t __41__RPNearbyInvitationDiscovery_invalidate__block_invoke(uint64_t res
 
 - (NSArray)discoveredDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveredDevices = v2->_discoveredDevices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredDevices = selfCopy->_discoveredDevices;
   if (discoveredDevices)
   {
-    v4 = [(NSMutableDictionary *)discoveredDevices allValues];
+    allValues = [(NSMutableDictionary *)discoveredDevices allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
-- (void)nearbyInvitationFoundDevice:(id)a3
+- (void)nearbyInvitationFoundDevice:(id)device
 {
-  v10 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v10 identifier];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    discoveredDevices = v4->_discoveredDevices;
+    discoveredDevices = selfCopy->_discoveredDevices;
     if (!discoveredDevices)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v8 = v4->_discoveredDevices;
-      v4->_discoveredDevices = v7;
+      v8 = selfCopy->_discoveredDevices;
+      selfCopy->_discoveredDevices = v7;
 
-      discoveredDevices = v4->_discoveredDevices;
+      discoveredDevices = selfCopy->_discoveredDevices;
     }
 
-    [(NSMutableDictionary *)discoveredDevices setObject:v10 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)discoveredDevices setObject:deviceCopy forKeyedSubscript:identifier];
 
-    objc_sync_exit(v4);
-    deviceFoundHandler = v4->_deviceFoundHandler;
+    objc_sync_exit(selfCopy);
+    deviceFoundHandler = selfCopy->_deviceFoundHandler;
     if (deviceFoundHandler)
     {
-      deviceFoundHandler[2](deviceFoundHandler, v10);
+      deviceFoundHandler[2](deviceFoundHandler, deviceCopy);
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)nearbyInvitationLostDevice:(id)a3
+- (void)nearbyInvitationLostDevice:(id)device
 {
-  v7 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 identifier];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    [(NSMutableDictionary *)v4->_discoveredDevices setObject:0 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)selfCopy->_discoveredDevices setObject:0 forKeyedSubscript:identifier];
 
-    objc_sync_exit(v4);
-    deviceLostHandler = v4->_deviceLostHandler;
+    objc_sync_exit(selfCopy);
+    deviceLostHandler = selfCopy->_deviceLostHandler;
     if (deviceLostHandler)
     {
-      deviceLostHandler[2](deviceLostHandler, v7);
+      deviceLostHandler[2](deviceLostHandler, deviceCopy);
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 

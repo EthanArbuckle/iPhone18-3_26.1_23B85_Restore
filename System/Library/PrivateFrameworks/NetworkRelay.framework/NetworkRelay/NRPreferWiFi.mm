@@ -2,7 +2,7 @@
 - (NRPreferWiFi)init;
 - (void)dealloc;
 - (void)resetInner;
-- (void)updateAgentUUID:(uint64_t)a1;
+- (void)updateAgentUUID:(uint64_t)d;
 @end
 
 @implementation NRPreferWiFi
@@ -159,7 +159,7 @@ void __45__NRPreferWiFi_sharedInstanceForP2PImmediate__block_invoke()
 
 - (void)resetInner
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -181,7 +181,7 @@ void __45__NRPreferWiFi_sharedInstanceForP2PImmediate__block_invoke()
   else if (sNRCopyLogToStdErr)
   {
 LABEL_9:
-    v14 = *(a1 + 40);
+    v14 = *(self + 40);
     _NRLogWithArgs(nrCopyLogObj_sNRLogObj_76, 1, "%s%.30s:%-4d Setting prefer Wi-Fi assert count: %ld -> %ld", a4, a5, a6, a7, a8, "");
     goto LABEL_10;
   }
@@ -192,37 +192,37 @@ LABEL_9:
   }
 
 LABEL_10:
-  v9 = *(a1 + 48);
-  *(a1 + 40) = 0;
-  *(a1 + 48) = 0;
-  *(a1 + 8) = 0;
+  v9 = *(self + 48);
+  *(self + 40) = 0;
+  *(self + 48) = 0;
+  *(self + 8) = 0;
 
-  v10 = *(a1 + 56);
+  v10 = *(self + 56);
   if (v10)
   {
     dispatch_source_cancel(v10);
-    v11 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    v11 = *(self + 56);
+    *(self + 56) = 0;
   }
 
-  v12 = *(a1 + 24);
-  *(a1 + 24) = 0;
+  v12 = *(self + 24);
+  *(self + 24) = 0;
 
-  if (*(a1 + 32))
+  if (*(self + 32))
   {
     nw_path_evaluator_cancel();
-    v13 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v13 = *(self + 32);
+    *(self + 32) = 0;
   }
 }
 
-- (void)updateAgentUUID:(uint64_t)a1
+- (void)updateAgentUUID:(uint64_t)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v4 = *(d + 48);
+    *(d + 48) = 0;
 
     if (v3)
     {
@@ -234,7 +234,7 @@ LABEL_10:
         applier[1] = 3221225472;
         applier[2] = __32__NRPreferWiFi_updateAgentUUID___block_invoke;
         applier[3] = &unk_27996B058;
-        applier[4] = a1;
+        applier[4] = d;
         xpc_dictionary_apply(v16, applier);
       }
 

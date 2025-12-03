@@ -73,16 +73,16 @@ uint64_t __30__RPAppSignInService_activate__block_invoke(uint64_t result)
   v3 = objc_alloc_init(getSFServiceClass[0]());
   objc_storeStrong(&self->_bleAdvertiser, v3);
   [v3 setDeviceActionType:28];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
-  [v3 setIdentifier:v5];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v3 setIdentifier:uUIDString];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__RPAppSignInService__activate__block_invoke;
   v7[3] = &unk_1E7C92D10;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
   [v6 activateWithCompletion:v7];
 }

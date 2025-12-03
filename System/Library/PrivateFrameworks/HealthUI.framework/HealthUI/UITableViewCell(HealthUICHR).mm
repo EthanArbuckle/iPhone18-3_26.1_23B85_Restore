@@ -8,17 +8,17 @@
 {
   if (a3)
   {
-    v4 = [a1 traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v5 != 6)
+    if (userInterfaceIdiom != 6)
     {
-      v6 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-      [a1 setBackgroundColor:v6];
+      secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+      [self setBackgroundColor:secondarySystemBackgroundColor];
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

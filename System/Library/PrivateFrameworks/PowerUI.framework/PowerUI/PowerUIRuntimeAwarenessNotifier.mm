@@ -34,9 +34,9 @@
     v2->_lastSeenBatteryLevel = -1;
   }
 
-  v9 = [MEMORY[0x277D36CC8] predictor];
+  predictor = [MEMORY[0x277D36CC8] predictor];
   batteryPredictor = v2->_batteryPredictor;
-  v2->_batteryPredictor = v9;
+  v2->_batteryPredictor = predictor;
 
   v11 = [PowerUILocationSignalMonitor monitorWithDelegate:v2];
   locationMonitor = v2->_locationMonitor;
@@ -46,14 +46,14 @@
   lastChargingAdviceNotificationDate = v2->_lastChargingAdviceNotificationDate;
   v2->_lastChargingAdviceNotificationDate = v13;
 
-  v15 = [MEMORY[0x277CFE318] userContext];
+  userContext = [MEMORY[0x277CFE318] userContext];
   context = v2->_context;
-  v2->_context = v15;
+  v2->_context = userContext;
 
   v17 = MEMORY[0x277CFE360];
-  v18 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v19 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v20 = [v17 predicateForKeyPath:v18 withFormat:@"(SELF.%@.value.rawExternalConnected = %@)", v19, MEMORY[0x277CBEC28]];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  keyPathForBatteryStateDataDictionary2 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v20 = [v17 predicateForKeyPath:keyPathForBatteryStateDataDictionary withFormat:@"(SELF.%@.value.rawExternalConnected = %@)", keyPathForBatteryStateDataDictionary2, MEMORY[0x277CBEC28]];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -149,11 +149,11 @@ uint64_t __49__PowerUIRuntimeAwarenessNotifier_sharedInstance__block_invoke()
             if (![(PowerUIRuntimeAwarenessNotifier *)self shouldThrottleChargingAdviceNotification])
             {
               v6 = +[PowerUINotificationManager sharedInstance];
-              v7 = [v6 postChargingAdviceNotification];
+              postChargingAdviceNotification = [v6 postChargingAdviceNotification];
 
-              v8 = [MEMORY[0x277CBEAA8] date];
+              date = [MEMORY[0x277CBEAA8] date];
               lastChargingAdviceNotificationDate = self->_lastChargingAdviceNotificationDate;
-              self->_lastChargingAdviceNotificationDate = v8;
+              self->_lastChargingAdviceNotificationDate = date;
 
               [PowerUISmartChargeUtilities setDate:self->_lastChargingAdviceNotificationDate forPreferenceKey:@"lastChargingAdviceNotificationDate" inDomain:@"com.apple.powerui.runtimeAwareness"];
               v10 = self->_log;
@@ -179,7 +179,7 @@ uint64_t __49__PowerUIRuntimeAwarenessNotifier_sharedInstance__block_invoke()
       }
 
       v12 = +[PowerUINotificationManager sharedInstance];
-      v13 = [v12 postLowRuntimeNotification];
+      postLowRuntimeNotification = [v12 postLowRuntimeNotification];
     }
 
     self->_lastSeenBatteryLevel = v3;
@@ -193,18 +193,18 @@ uint64_t __49__PowerUIRuntimeAwarenessNotifier_sharedInstance__block_invoke()
   v33 = *MEMORY[0x277D85DE8];
   [(PowerUILocationSignalMonitor *)self->_locationMonitor requiredFullChargeDate];
   v3 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-  v4 = [MEMORY[0x277CBEAA8] distantFuture];
-  v5 = [*&v3 isEqualToDate:v4];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v5 = [*&v3 isEqualToDate:distantFuture];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v6 components:32 fromDate:v7];
-    v9 = [v8 hour];
-    if ((v9 - 21) <= 0xFFFFFFFFFFFFFFF0)
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [currentCalendar components:32 fromDate:date];
+    hour = [v8 hour];
+    if ((hour - 21) <= 0xFFFFFFFFFFFFFFF0)
     {
-      v10 = *&v9;
+      v10 = *&hour;
       log = self->_log;
       v12 = 0;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -218,12 +218,12 @@ uint64_t __49__PowerUIRuntimeAwarenessNotifier_sharedInstance__block_invoke()
       goto LABEL_19;
     }
 
-    v14 = [v6 components:28 fromDate:v7];
+    v14 = [currentCalendar components:28 fromDate:date];
     [v14 setHour:21];
     [v14 setMinute:0];
     [v14 setSecond:0];
-    v15 = [v6 dateFromComponents:v14];
-    [v15 timeIntervalSinceDate:v7];
+    v15 = [currentCalendar dateFromComponents:v14];
+    [v15 timeIntervalSinceDate:date];
     v17 = v16;
     [(_OSBatteryPredictor *)self->_batteryPredictor timeToEmpty];
     v19 = v18;
@@ -320,8 +320,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_lastChargingAdviceNotificationDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_lastChargingAdviceNotificationDate];
   v5 = v4;
 
   v6 = self->_log;

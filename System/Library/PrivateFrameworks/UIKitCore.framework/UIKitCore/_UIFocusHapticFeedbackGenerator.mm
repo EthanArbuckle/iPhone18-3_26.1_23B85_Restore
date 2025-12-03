@@ -1,51 +1,51 @@
 @interface _UIFocusHapticFeedbackGenerator
-- (_UIFocusHapticFeedbackGenerator)initWithWindowScene:(id)a3;
-- (void)performHapticFeedbackForFocusUpdateInContext:(id)a3;
+- (_UIFocusHapticFeedbackGenerator)initWithWindowScene:(id)scene;
+- (void)performHapticFeedbackForFocusUpdateInContext:(id)context;
 @end
 
 @implementation _UIFocusHapticFeedbackGenerator
 
-- (_UIFocusHapticFeedbackGenerator)initWithWindowScene:(id)a3
+- (_UIFocusHapticFeedbackGenerator)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v12.receiver = self;
   v12.super_class = _UIFocusHapticFeedbackGenerator;
   v5 = [(_UIFocusHapticFeedbackGenerator *)&v12 init];
   if (v5)
   {
-    v6 = [v4 screen];
-    v7 = [v6 _carSession];
+    screen = [sceneCopy screen];
+    _carSession = [screen _carSession];
     carSession = v5->_carSession;
-    v5->_carSession = v7;
+    v5->_carSession = _carSession;
 
-    v9 = [v4 carPlaySession];
+    carPlaySession = [sceneCopy carPlaySession];
     carSessionClient = v5->_carSessionClient;
-    v5->_carSessionClient = v9;
+    v5->_carSessionClient = carPlaySession;
   }
 
   return v5;
 }
 
-- (void)performHapticFeedbackForFocusUpdateInContext:(id)a3
+- (void)performHapticFeedbackForFocusUpdateInContext:(id)context
 {
-  v17 = a3;
-  v4 = [v17 _request];
-  v5 = [v4 inputDeviceInfo];
+  contextCopy = context;
+  _request = [contextCopy _request];
+  inputDeviceInfo = [_request inputDeviceInfo];
 
-  v6 = v17;
-  if (v5)
+  v6 = contextCopy;
+  if (inputDeviceInfo)
   {
-    v7 = [v17 _request];
-    v8 = [v7 inputDeviceInfo];
-    v9 = [v8 senderID];
+    _request2 = [contextCopy _request];
+    inputDeviceInfo2 = [_request2 inputDeviceInfo];
+    senderID = [inputDeviceInfo2 senderID];
 
-    v6 = v17;
-    if (v9)
+    v6 = contextCopy;
+    if (senderID)
     {
-      if ([(_UIFocusHapticFeedbackGenerator *)self currentSenderID]!= v9)
+      if ([(_UIFocusHapticFeedbackGenerator *)self currentSenderID]!= senderID)
       {
-        v10 = [(CARSession *)self->_carSession inputDeviceManager];
-        v11 = [v10 touchpadWithSenderID:v9];
+        inputDeviceManager = [(CARSession *)self->_carSession inputDeviceManager];
+        v11 = [inputDeviceManager touchpadWithSenderID:senderID];
 
         if ([v11 feedbackSupported])
         {
@@ -60,7 +60,7 @@
         currentTouchpad = self->_currentTouchpad;
         self->_currentTouchpad = v12;
 
-        v14 = [(_UISceneCarPlaySessionClient *)self->_carSessionClient touchpadForSenderID:v9];
+        v14 = [(_UISceneCarPlaySessionClient *)self->_carSessionClient touchpadForSenderID:senderID];
         if ([v14 feedbackSupported])
         {
           v15 = v14;
@@ -76,10 +76,10 @@
 
         if (!self->_currentCarTouchpad && !self->_currentTouchpad)
         {
-          v9 = 0;
+          senderID = 0;
         }
 
-        self->_currentSenderID = v9;
+        self->_currentSenderID = senderID;
       }
 
       if (self->_currentCarTouchpad)
@@ -92,7 +92,7 @@
         [(CARInputDeviceTouchpad *)self->_currentTouchpad performFeedbackOfType:1];
       }
 
-      v6 = v17;
+      v6 = contextCopy;
     }
   }
 }

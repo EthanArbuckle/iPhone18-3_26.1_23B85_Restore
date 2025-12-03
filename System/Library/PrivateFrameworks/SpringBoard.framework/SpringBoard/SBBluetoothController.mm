@@ -1,18 +1,18 @@
 @interface SBBluetoothController
 + (SBBluetoothController)sharedInstance;
 - (BOOL)canReportBatteryLevel;
-- (id)deviceForAudioRoute:(id)a3;
+- (id)deviceForAudioRoute:(id)route;
 - (id)firstBTDeviceToReportBatteryLevel;
 - (int)batteryLevel;
-- (void)addDeviceNotification:(id)a3;
-- (void)batteryChanged:(id)a3;
-- (void)bluetoothDeviceEndedVoiceControl:(id)a3;
-- (void)bluetoothDeviceInitiatedVoiceControl:(id)a3;
-- (void)connectionChanged:(id)a3;
+- (void)addDeviceNotification:(id)notification;
+- (void)batteryChanged:(id)changed;
+- (void)bluetoothDeviceEndedVoiceControl:(id)control;
+- (void)bluetoothDeviceInitiatedVoiceControl:(id)control;
+- (void)connectionChanged:(id)changed;
 - (void)dealloc;
-- (void)iapDeviceChanged:(id)a3;
+- (void)iapDeviceChanged:(id)changed;
 - (void)noteDevicesChanged;
-- (void)removeDeviceNotification:(id)a3;
+- (void)removeDeviceNotification:(id)notification;
 - (void)startWatchingForDevices;
 - (void)stopWatchingForDevices;
 - (void)updateBattery;
@@ -100,8 +100,8 @@ LABEL_12:
 
   else
   {
-    v5 = [(SBBluetoothController *)self firstBTDeviceToReportBatteryLevel];
-    v4 = v5 != 0;
+    firstBTDeviceToReportBatteryLevel = [(SBBluetoothController *)self firstBTDeviceToReportBatteryLevel];
+    v4 = firstBTDeviceToReportBatteryLevel != 0;
   }
 
   return v4;
@@ -112,39 +112,39 @@ LABEL_12:
   v3 = +[SBUIController sharedInstance];
   if ([v3 isHeadsetDocked])
   {
-    v4 = [v3 headsetBatteryCapacity];
+    headsetBatteryCapacity = [v3 headsetBatteryCapacity];
   }
 
   else
   {
-    v5 = [(SBBluetoothController *)self firstBTDeviceToReportBatteryLevel];
-    v6 = v5;
-    if (v5)
+    firstBTDeviceToReportBatteryLevel = [(SBBluetoothController *)self firstBTDeviceToReportBatteryLevel];
+    v6 = firstBTDeviceToReportBatteryLevel;
+    if (firstBTDeviceToReportBatteryLevel)
     {
-      v4 = [v5 batteryLevel];
+      headsetBatteryCapacity = [firstBTDeviceToReportBatteryLevel batteryLevel];
     }
 
     else
     {
-      v4 = 0;
+      headsetBatteryCapacity = 0;
     }
   }
 
-  return v4;
+  return headsetBatteryCapacity;
 }
 
 - (void)noteDevicesChanged
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:SBBluetoothBatteryAvailabilityChangedNotification object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:SBBluetoothBatteryAvailabilityChangedNotification object:0];
 }
 
 - (void)startWatchingForDevices
 {
-  v9 = [MEMORY[0x277CF3248] sharedInstance];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
   [(SBBluetoothController *)self stopWatchingForDevices];
-  v3 = [v9 pairedDevices];
-  v4 = [v3 mutableCopy];
+  pairedDevices = [mEMORY[0x277CF3248] pairedDevices];
+  v4 = [pairedDevices mutableCopy];
   devices = self->_devices;
   self->_devices = v4;
 
@@ -155,28 +155,28 @@ LABEL_12:
     self->_devices = v6;
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_iapDeviceChanged_ name:@"SBUIHeadsetDockStatusChangedNotification" object:0];
-  [v8 addObserver:self selector:sel_connectionChanged_ name:*MEMORY[0x277CF3168] object:0];
-  [v8 addObserver:self selector:sel_addDeviceNotification_ name:*MEMORY[0x277CF3190] object:0];
-  [v8 addObserver:self selector:sel_removeDeviceNotification_ name:*MEMORY[0x277CF31A0] object:0];
-  [v8 addObserver:self selector:sel_connectionChanged_ name:*MEMORY[0x277CF3170] object:0];
-  [v8 addObserver:self selector:sel_batteryChanged_ name:*MEMORY[0x277CF3180] object:0];
-  [v8 addObserver:self selector:sel_bluetoothDeviceInitiatedVoiceControl_ name:*MEMORY[0x277CF31E8] object:0];
-  [v8 addObserver:self selector:sel_bluetoothDeviceEndedVoiceControl_ name:*MEMORY[0x277CF31E0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_iapDeviceChanged_ name:@"SBUIHeadsetDockStatusChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_connectionChanged_ name:*MEMORY[0x277CF3168] object:0];
+  [defaultCenter addObserver:self selector:sel_addDeviceNotification_ name:*MEMORY[0x277CF3190] object:0];
+  [defaultCenter addObserver:self selector:sel_removeDeviceNotification_ name:*MEMORY[0x277CF31A0] object:0];
+  [defaultCenter addObserver:self selector:sel_connectionChanged_ name:*MEMORY[0x277CF3170] object:0];
+  [defaultCenter addObserver:self selector:sel_batteryChanged_ name:*MEMORY[0x277CF3180] object:0];
+  [defaultCenter addObserver:self selector:sel_bluetoothDeviceInitiatedVoiceControl_ name:*MEMORY[0x277CF31E8] object:0];
+  [defaultCenter addObserver:self selector:sel_bluetoothDeviceEndedVoiceControl_ name:*MEMORY[0x277CF31E0] object:0];
   [(SBBluetoothController *)self noteDevicesChanged];
 }
 
 - (void)stopWatchingForDevices
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   devices = self->_devices;
   self->_devices = 0;
 }
 
-- (void)iapDeviceChanged:(id)a3
+- (void)iapDeviceChanged:(id)changed
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -186,34 +186,34 @@ LABEL_12:
   [(SBBluetoothController *)self noteDevicesChanged];
 }
 
-- (void)addDeviceNotification:(id)a3
+- (void)addDeviceNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBBluetoothController addDeviceNotification:];
   }
 
-  v4 = [v5 object];
-  if (v4 && ([(NSMutableArray *)self->_devices containsObject:v4]& 1) == 0)
+  object = [notificationCopy object];
+  if (object && ([(NSMutableArray *)self->_devices containsObject:object]& 1) == 0)
   {
-    [(NSMutableArray *)self->_devices addObject:v4];
+    [(NSMutableArray *)self->_devices addObject:object];
     [(SBBluetoothController *)self noteDevicesChanged];
   }
 }
 
-- (void)removeDeviceNotification:(id)a3
+- (void)removeDeviceNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBBluetoothController removeDeviceNotification:];
   }
 
-  v4 = [v5 object];
-  if (v4)
+  object = [notificationCopy object];
+  if (object)
   {
-    [(NSMutableArray *)self->_devices removeObject:v4];
+    [(NSMutableArray *)self->_devices removeObject:object];
     [(SBBluetoothController *)self noteDevicesChanged];
   }
 }
@@ -261,16 +261,16 @@ LABEL_12:
 LABEL_11:
 }
 
-- (void)connectionChanged:(id)a3
+- (void)connectionChanged:(id)changed
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBBluetoothController connectionChanged:];
   }
 
-  v4 = [MEMORY[0x277CF3248] sharedInstance];
-  v5 = [v4 pairedDevices];
-  v6 = [v5 mutableCopy];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+  pairedDevices = [mEMORY[0x277CF3248] pairedDevices];
+  v6 = [pairedDevices mutableCopy];
   devices = self->_devices;
   self->_devices = v6;
 
@@ -283,11 +283,11 @@ LABEL_11:
 
   [(SBBluetoothController *)self noteDevicesChanged];
   [(SBBluetoothController *)self updateTetheringConnected];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:SBBluetoothConnectionChangedNotification object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:SBBluetoothConnectionChangedNotification object:0 userInfo:0];
 }
 
-- (void)batteryChanged:(id)a3
+- (void)batteryChanged:(id)changed
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -301,19 +301,19 @@ LABEL_11:
 
 - (void)updateBattery
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:SBBluetoothBatteryLevelChangedNotification object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:SBBluetoothBatteryLevelChangedNotification object:0];
 }
 
-- (id)deviceForAudioRoute:(id)a3
+- (id)deviceForAudioRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   devices = self->_devices;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__SBBluetoothController_deviceForAudioRoute___block_invoke;
   v10[3] = &unk_2783AC6B0;
-  v6 = v4;
+  v6 = routeCopy;
   v11 = v6;
   v7 = [(NSMutableArray *)devices indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -338,30 +338,30 @@ uint64_t __45__SBBluetoothController_deviceForAudioRoute___block_invoke(uint64_t
   return v4;
 }
 
-- (void)bluetoothDeviceInitiatedVoiceControl:(id)a3
+- (void)bluetoothDeviceInitiatedVoiceControl:(id)control
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  controlCopy = control;
   v4 = SBLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = controlCopy;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_INFO, "Bluetooth device voice control initiated: %@", &v7, 0xCu);
   }
 
   v5 = +[SBVoiceControlController sharedInstance];
-  v6 = [v3 object];
-  [v5 bluetoothDeviceInitiatedVoiceControl:v6];
+  object = [controlCopy object];
+  [v5 bluetoothDeviceInitiatedVoiceControl:object];
 }
 
-- (void)bluetoothDeviceEndedVoiceControl:(id)a3
+- (void)bluetoothDeviceEndedVoiceControl:(id)control
 {
-  v3 = a3;
+  controlCopy = control;
   v5 = +[SBVoiceControlController sharedInstance];
-  v4 = [v3 object];
+  object = [controlCopy object];
 
-  [v5 bluetoothDeviceEndedVoiceControl:v4];
+  [v5 bluetoothDeviceEndedVoiceControl:object];
 }
 
 - (void)iapDeviceChanged:.cold.1()

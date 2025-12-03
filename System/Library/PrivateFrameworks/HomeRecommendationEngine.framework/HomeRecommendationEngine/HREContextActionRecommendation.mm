@@ -1,23 +1,23 @@
 @interface HREContextActionRecommendation
 - (BOOL)containsMeaningfulChanges;
-- (HREContextActionRecommendation)initWithHome:(id)a3 uniqueIdentifier:(id)a4;
-- (id)copyWithActionFilter:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HREContextActionRecommendation)initWithHome:(id)home uniqueIdentifier:(id)identifier;
+- (id)copyWithActionFilter:(id)filter;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilder;
 - (id)executeActions;
-- (void)addAction:(id)a3 allowEditingExistingActions:(BOOL)a4;
-- (void)addActions:(id)a3 allowEditingExistingActions:(BOOL)a4;
-- (void)removeAction:(id)a3;
-- (void)removeActions:(id)a3;
+- (void)addAction:(id)action allowEditingExistingActions:(BOOL)actions;
+- (void)addActions:(id)actions allowEditingExistingActions:(BOOL)existingActions;
+- (void)removeAction:(id)action;
+- (void)removeActions:(id)actions;
 @end
 
 @implementation HREContextActionRecommendation
 
-- (HREContextActionRecommendation)initWithHome:(id)a3 uniqueIdentifier:(id)a4
+- (HREContextActionRecommendation)initWithHome:(id)home uniqueIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HREContextActionRecommendation;
-  v4 = [(HRERecommendation *)&v7 initWithHome:a3 uniqueIdentifier:a4];
+  v4 = [(HRERecommendation *)&v7 initWithHome:home uniqueIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEB58] set];
@@ -27,16 +27,16 @@
   return v4;
 }
 
-- (void)addAction:(id)a3 allowEditingExistingActions:(BOOL)a4
+- (void)addAction:(id)action allowEditingExistingActions:(BOOL)actions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  actionCopy = action;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(HREContextActionRecommendation *)self actions];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  actions = [(HREContextActionRecommendation *)self actions];
+  v7 = [actions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -47,18 +47,18 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(actions);
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      if ([v11 canUpdateWithActionBuilder:v5])
+      if ([v11 canUpdateWithActionBuilder:actionCopy])
       {
         break;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [actions countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -68,14 +68,14 @@ LABEL_3:
       }
     }
 
-    v12 = v11;
+    _actions = v11;
 
-    if (!v12)
+    if (!_actions)
     {
       goto LABEL_12;
     }
 
-    [v12 updateWithActionBuilder:v5];
+    [_actions updateWithActionBuilder:actionCopy];
   }
 
   else
@@ -83,42 +83,42 @@ LABEL_3:
 LABEL_9:
 
 LABEL_12:
-    v12 = [(HREContextActionRecommendation *)self _actions];
-    [v12 addObject:v5];
+    _actions = [(HREContextActionRecommendation *)self _actions];
+    [_actions addObject:actionCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addActions:(id)a3 allowEditingExistingActions:(BOOL)a4
+- (void)addActions:(id)actions allowEditingExistingActions:(BOOL)existingActions
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __73__HREContextActionRecommendation_addActions_allowEditingExistingActions___block_invoke;
   v4[3] = &unk_279776810;
   v4[4] = self;
-  v5 = a4;
-  [a3 na_each:v4];
+  existingActionsCopy = existingActions;
+  [actions na_each:v4];
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
-  v4 = a3;
-  v5 = [(HREContextActionRecommendation *)self _actions];
-  [v5 removeObject:v4];
+  actionCopy = action;
+  _actions = [(HREContextActionRecommendation *)self _actions];
+  [_actions removeObject:actionCopy];
 }
 
-- (void)removeActions:(id)a3
+- (void)removeActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(HREContextActionRecommendation *)self _actions];
-  [v5 minusSet:v4];
+  actionsCopy = actions;
+  _actions = [(HREContextActionRecommendation *)self _actions];
+  [_actions minusSet:actionsCopy];
 }
 
 - (BOOL)containsMeaningfulChanges
 {
-  v2 = [(HREContextActionRecommendation *)self actions];
-  v3 = [v2 count] != 0;
+  actions = [(HREContextActionRecommendation *)self actions];
+  v3 = [actions count] != 0;
 
   return v3;
 }
@@ -127,37 +127,37 @@ LABEL_12:
 {
   v12.receiver = self;
   v12.super_class = HREContextActionRecommendation;
-  v3 = [(HRERecommendation *)&v12 descriptionBuilder];
-  v4 = [(HREContextActionRecommendation *)self name];
-  [v3 appendString:v4 withName:@"name"];
+  descriptionBuilder = [(HRERecommendation *)&v12 descriptionBuilder];
+  name = [(HREContextActionRecommendation *)self name];
+  [descriptionBuilder appendString:name withName:@"name"];
 
-  v5 = [(HREContextActionRecommendation *)self iconDescriptor];
-  v6 = [v3 appendObject:v5 withName:@"iconDescriptor"];
+  iconDescriptor = [(HREContextActionRecommendation *)self iconDescriptor];
+  v6 = [descriptionBuilder appendObject:iconDescriptor withName:@"iconDescriptor"];
 
   v7 = MEMORY[0x277D14380];
-  v8 = [(HREContextActionRecommendation *)self _actions];
-  v9 = [v8 allObjects];
-  v10 = [v7 hre_sortActionBuilders:v9];
+  _actions = [(HREContextActionRecommendation *)self _actions];
+  allObjects = [_actions allObjects];
+  v10 = [v7 hre_sortActionBuilders:allObjects];
 
-  [v3 appendArraySection:v10 withName:@"actions" skipIfEmpty:1];
+  [descriptionBuilder appendArraySection:v10 withName:@"actions" skipIfEmpty:1];
 
-  return v3;
+  return descriptionBuilder;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = HREContextActionRecommendation;
-  v4 = [(HRERecommendation *)&v11 copyWithZone:a3];
-  v5 = [(HREContextActionRecommendation *)self name];
-  v6 = [v5 copy];
+  v4 = [(HRERecommendation *)&v11 copyWithZone:zone];
+  name = [(HREContextActionRecommendation *)self name];
+  v6 = [name copy];
   [v4 setName:v6];
 
-  v7 = [(HREContextActionRecommendation *)self iconDescriptor];
-  [v4 setIconDescriptor:v7];
+  iconDescriptor = [(HREContextActionRecommendation *)self iconDescriptor];
+  [v4 setIconDescriptor:iconDescriptor];
 
-  v8 = [(HREContextActionRecommendation *)self _actions];
-  v9 = [v8 mutableCopy];
+  _actions = [(HREContextActionRecommendation *)self _actions];
+  v9 = [_actions mutableCopy];
   [v4 set_actions:v9];
 
   return v4;
@@ -165,23 +165,23 @@ LABEL_12:
 
 - (id)executeActions
 {
-  v3 = [(HRERecommendation *)self home];
-  v4 = [v3 hf_characteristicValueManager];
+  home = [(HRERecommendation *)self home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
 
-  v5 = [(HREContextActionRecommendation *)self actions];
-  v6 = [v5 na_map:&__block_literal_global_7];
+  actions = [(HREContextActionRecommendation *)self actions];
+  v6 = [actions na_map:&__block_literal_global_7];
 
   v7 = MEMORY[0x277D2C900];
-  v8 = [v6 allObjects];
-  v9 = [v7 combineAllFutures:v8];
+  allObjects = [v6 allObjects];
+  v9 = [v7 combineAllFutures:allObjects];
 
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __48__HREContextActionRecommendation_executeActions__block_invoke_2;
   v17 = &unk_279776E38;
-  v18 = v4;
-  v19 = self;
-  v10 = v4;
+  v18 = hf_characteristicValueManager;
+  selfCopy = self;
+  v10 = hf_characteristicValueManager;
   v11 = [v9 flatMap:&v14];
   v12 = [v11 flatMap:{&__block_literal_global_25, v14, v15, v16, v17}];
 
@@ -201,12 +201,12 @@ id __48__HREContextActionRecommendation_executeActions__block_invoke_2(uint64_t 
   return v5;
 }
 
-- (id)copyWithActionFilter:(id)a3
+- (id)copyWithActionFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = [(HREContextActionRecommendation *)self copy];
-  v6 = [v5 _actions];
-  v7 = [v6 na_map:v4];
+  _actions = [v5 _actions];
+  v7 = [_actions na_map:filterCopy];
 
   v8 = [v7 mutableCopy];
   [v5 set_actions:v8];

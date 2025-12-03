@@ -1,12 +1,12 @@
 @interface AXCCAppPickerButtonWrapperView
-- (AXCCAppPickerButtonWrapperView)initWithCoder:(id)a3;
-- (void)setHelper:(id)a3;
-- (void)setOptions:(id)a3;
+- (AXCCAppPickerButtonWrapperView)initWithCoder:(id)coder;
+- (void)setHelper:(id)helper;
+- (void)setOptions:(id)options;
 @end
 
 @implementation AXCCAppPickerButtonWrapperView
 
-- (AXCCAppPickerButtonWrapperView)initWithCoder:(id)a3
+- (AXCCAppPickerButtonWrapperView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___AXCCAppPickerButtonWrapperView_model;
   type metadata accessor for AppPickerButtonModel();
@@ -18,19 +18,19 @@
   return result;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   sub_29C946768(0, &qword_2A1798C20);
   v4 = sub_29C9473C0();
-  v5 = self;
+  selfCopy = self;
   AppPickerButtonWrapperView.setOptions(_:)(v4);
 }
 
-- (void)setHelper:(id)a3
+- (void)setHelper:(id)helper
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = a3;
+  helperCopy = helper;
 
   sub_29C947210();
 }

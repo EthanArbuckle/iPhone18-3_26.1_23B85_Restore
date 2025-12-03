@@ -1,9 +1,9 @@
 @interface AACertificatePinner
 + (AACertificatePinner)sharedPinner;
-+ (BOOL)isSetupServiceHost:(id)a3;
-+ (BOOL)isValidCertificateTrust:(__SecTrust *)a3;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4;
++ (BOOL)isSetupServiceHost:(id)host;
++ (BOOL)isValidCertificateTrust:(__SecTrust *)trust;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge;
 @end
 
 @implementation AACertificatePinner
@@ -27,20 +27,20 @@ uint64_t __35__AACertificatePinner_sharedPinner__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)isSetupServiceHost:(id)a3
++ (BOOL)isSetupServiceHost:(id)host
 {
-  v3 = a3;
-  v4 = ([v3 isEqualToString:@"setup.icloud.com"] & 1) != 0 || objc_msgSend(v3, "rangeOfString:options:", @"^p(0[1-9]|[1-9][0-9]|[1-9][0-9]{2})-setup\\.icloud\\.com\\z", 1024) != 0x7FFFFFFFFFFFFFFFLL;
+  hostCopy = host;
+  v4 = ([hostCopy isEqualToString:@"setup.icloud.com"] & 1) != 0 || objc_msgSend(hostCopy, "rangeOfString:options:", @"^p(0[1-9]|[1-9][0-9]|[1-9][0-9]{2})-setup\\.icloud\\.com\\z", 1024) != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge
 {
-  v4 = a4;
-  v5 = [v4 protectionSpace];
-  v6 = [v5 authenticationMethod];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E695AB80]];
+  challengeCopy = challenge;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v7 = [authenticationMethod isEqualToString:*MEMORY[0x1E695AB80]];
 
   if ((v7 & 1) == 0)
   {
@@ -48,22 +48,22 @@ uint64_t __35__AACertificatePinner_sharedPinner__block_invoke()
   }
 
   v8 = objc_opt_class();
-  v9 = [v4 protectionSpace];
-  v10 = [v9 host];
-  LOBYTE(v8) = [v8 isSetupServiceHost:v10];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  host = [protectionSpace2 host];
+  LOBYTE(v8) = [v8 isSetupServiceHost:host];
 
   if ((v8 & 1) == 0)
   {
 LABEL_6:
-    v13 = [v4 sender];
-    [v13 performDefaultHandlingForAuthenticationChallenge:v4];
+    sender = [challengeCopy sender];
+    [sender performDefaultHandlingForAuthenticationChallenge:challengeCopy];
     goto LABEL_7;
   }
 
-  v11 = [v4 protectionSpace];
-  v12 = [v11 serverTrust];
+  protectionSpace3 = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace3 serverTrust];
 
-  if (!v12)
+  if (!serverTrust)
   {
     v15 = _AALogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -74,7 +74,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (([objc_opt_class() isValidCertificateTrust:v12] & 1) == 0)
+  if (([objc_opt_class() isValidCertificateTrust:serverTrust] & 1) == 0)
   {
     v15 = _AALogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -84,25 +84,25 @@ LABEL_6:
 
 LABEL_12:
 
-    v13 = [v4 sender];
-    [v13 cancelAuthenticationChallenge:v4];
+    sender = [challengeCopy sender];
+    [sender cancelAuthenticationChallenge:challengeCopy];
     goto LABEL_7;
   }
 
-  v13 = [v4 sender];
-  v14 = [MEMORY[0x1E695AC48] credentialForTrust:v12];
-  [v13 useCredential:v14 forAuthenticationChallenge:v4];
+  sender = [challengeCopy sender];
+  v14 = [MEMORY[0x1E695AC48] credentialForTrust:serverTrust];
+  [sender useCredential:v14 forAuthenticationChallenge:challengeCopy];
 
 LABEL_7:
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 protectionSpace];
-  v9 = [v8 authenticationMethod];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E695AB80]];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v10 = [authenticationMethod isEqualToString:*MEMORY[0x1E695AB80]];
 
   if ((v10 & 1) == 0)
   {
@@ -110,21 +110,21 @@ LABEL_7:
   }
 
   v11 = objc_opt_class();
-  v12 = [v6 protectionSpace];
-  v13 = [v12 host];
-  LOBYTE(v11) = [v11 isSetupServiceHost:v13];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  host = [protectionSpace2 host];
+  LOBYTE(v11) = [v11 isSetupServiceHost:host];
 
   if ((v11 & 1) == 0)
   {
 LABEL_6:
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_7;
   }
 
-  v14 = [v6 protectionSpace];
-  v15 = [v14 serverTrust];
+  protectionSpace3 = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace3 serverTrust];
 
-  if (!v15)
+  if (!serverTrust)
   {
     v17 = _AALogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -135,7 +135,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (([objc_opt_class() isValidCertificateTrust:v15] & 1) == 0)
+  if (([objc_opt_class() isValidCertificateTrust:serverTrust] & 1) == 0)
   {
     v17 = _AALogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -145,22 +145,22 @@ LABEL_6:
 
 LABEL_12:
 
-    v7[2](v7, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_7;
   }
 
-  v16 = [MEMORY[0x1E695AC48] credentialForTrust:v15];
-  (v7)[2](v7, 0, v16);
+  v16 = [MEMORY[0x1E695AC48] credentialForTrust:serverTrust];
+  (handlerCopy)[2](handlerCopy, 0, v16);
 
 LABEL_7:
 }
 
-+ (BOOL)isValidCertificateTrust:(__SecTrust *)a3
++ (BOOL)isValidCertificateTrust:(__SecTrust *)trust
 {
-  if (!a3)
+  if (!trust)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"AACertificatePinner.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"trustRef"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AACertificatePinner.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"trustRef"}];
   }
 
   v4 = *MEMORY[0x1E697B2B8];
@@ -170,7 +170,7 @@ LABEL_7:
   }
 
   v10 = 0;
-  if (MEMORY[0x1B8C9F960](a3, &v10))
+  if (MEMORY[0x1B8C9F960](trust, &v10))
   {
     return 0;
   }

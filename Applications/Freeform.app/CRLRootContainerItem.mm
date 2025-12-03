@@ -1,7 +1,7 @@
 @interface CRLRootContainerItem
 - (CRLCanvasInfoGeometry)geometry;
 - (id)board;
-- (void)setGeometry:(id)a3;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation CRLRootContainerItem
@@ -16,16 +16,16 @@
 - (CRLCanvasInfoGeometry)geometry
 {
   v2 = *(**(self + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 296);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
 
   sub_100979FBC();
 }

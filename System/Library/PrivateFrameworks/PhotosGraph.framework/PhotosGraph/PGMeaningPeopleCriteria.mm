@@ -1,25 +1,25 @@
 @interface PGMeaningPeopleCriteria
-+ (id)criteriaWithDictionary:(id)a3;
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4;
++ (id)criteriaWithDictionary:(id)dictionary;
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache;
 - (NSString)description;
 @end
 
 @implementation PGMeaningPeopleCriteria
 
-+ (id)criteriaWithDictionary:(id)a3
++ (id)criteriaWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"minimumNumberOfPeople"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfPeople"];
   [v5 setMinimumNumberOfPeople:{objc_msgSend(v6, "unsignedIntegerValue")}];
 
-  v7 = [v4 objectForKeyedSubscript:@"requiresPetPresence"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"requiresPetPresence"];
   [v5 setRequiresPetPresence:{objc_msgSend(v7, "BOOLValue")}];
 
-  v8 = [v4 objectForKeyedSubscript:@"requiresChildPresence"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"requiresChildPresence"];
   [v5 setRequiresChildPresence:{objc_msgSend(v8, "BOOLValue")}];
 
-  v9 = [v4 objectForKeyedSubscript:@"requiresPartnerPresence"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"requiresPartnerPresence"];
 
   [v5 setRequiresPartnerPresence:{objc_msgSend(v9, "BOOLValue")}];
 
@@ -28,21 +28,21 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"minimumNumberOfPeople: %d\n", -[PGMeaningPeopleCriteria minimumNumberOfPeople](self, "minimumNumberOfPeople")];
-  [v3 appendFormat:@"requiresPetPresence: %d\n", -[PGMeaningPeopleCriteria requiresPetPresence](self, "requiresPetPresence")];
-  [v3 appendFormat:@"requiresChildPresence: %d\n", -[PGMeaningPeopleCriteria requiresChildPresence](self, "requiresChildPresence")];
-  [v3 appendFormat:@"requiresPartnerPresence: %d\n", -[PGMeaningPeopleCriteria requiresPartnerPresence](self, "requiresPartnerPresence")];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"minimumNumberOfPeople: %d\n", -[PGMeaningPeopleCriteria minimumNumberOfPeople](self, "minimumNumberOfPeople")];
+  [string appendFormat:@"requiresPetPresence: %d\n", -[PGMeaningPeopleCriteria requiresPetPresence](self, "requiresPetPresence")];
+  [string appendFormat:@"requiresChildPresence: %d\n", -[PGMeaningPeopleCriteria requiresChildPresence](self, "requiresChildPresence")];
+  [string appendFormat:@"requiresPartnerPresence: %d\n", -[PGMeaningPeopleCriteria requiresPartnerPresence](self, "requiresPartnerPresence")];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 totalNumberOfPersons];
-  if (v8 >= [(PGMeaningPeopleCriteria *)self minimumNumberOfPeople])
+  nodeCopy = node;
+  cacheCopy = cache;
+  totalNumberOfPersons = [nodeCopy totalNumberOfPersons];
+  if (totalNumberOfPersons >= [(PGMeaningPeopleCriteria *)self minimumNumberOfPeople])
   {
     [(PGMeaningPeopleCriteria *)self requiresPetPresence];
     v17 = 0;
@@ -53,14 +53,14 @@
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = ![(PGMeaningPeopleCriteria *)self requiresChildPresence];
-    v10 = [v7 personNodes];
+    personNodes = [cacheCopy personNodes];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__PGMeaningPeopleCriteria_passesForMomentNode_momentNodeCache___block_invoke;
     v12[3] = &unk_278884D10;
     v12[4] = &v17;
     v12[5] = &v13;
-    [v10 enumerateObjectsUsingBlock:v12];
+    [personNodes enumerateObjectsUsingBlock:v12];
     if (*(v18 + 24) == 1)
     {
       v9 = *(v14 + 24);

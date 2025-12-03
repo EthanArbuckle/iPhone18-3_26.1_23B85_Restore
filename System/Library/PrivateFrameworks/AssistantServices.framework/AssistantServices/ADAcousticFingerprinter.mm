@@ -2,19 +2,19 @@
 - (ADAcousticFingerprinter)init;
 - (ADAcousticFingerprinterDelegate)delegate;
 - (id)_connection;
-- (id)_convertPCMDataForFingerprinting:(id)a3;
+- (id)_convertPCMDataForFingerprinting:(id)fingerprinting;
 - (id)_service;
-- (id)_serviceWithErrorHandler:(id)a3;
+- (id)_serviceWithErrorHandler:(id)handler;
 - (void)_cleanUpConnection;
 - (void)_configureWithCurrentASBD;
 - (void)_connectionInterrupted;
 - (void)_connectionInvalidated;
-- (void)appendPCMData:(id)a3;
+- (void)appendPCMData:(id)data;
 - (void)dealloc;
 - (void)flush;
 - (void)reset;
-- (void)setASBD:(AudioStreamBasicDescription *)a3;
-- (void)setFingerprintInterval:(double)a3;
+- (void)setASBD:(AudioStreamBasicDescription *)d;
+- (void)setFingerprintInterval:(double)interval;
 @end
 
 @implementation ADAcousticFingerprinter
@@ -48,27 +48,27 @@
   dispatch_async(queue, block);
 }
 
-- (void)appendPCMData:(id)a3
+- (void)appendPCMData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100157BF4;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)_convertPCMDataForFingerprinting:(id)a3
+- (id)_convertPCMDataForFingerprinting:(id)fingerprinting
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_fingerprinterConverter)
+  fingerprintingCopy = fingerprinting;
+  v5 = fingerprintingCopy;
+  if (fingerprintingCopy && self->_fingerprinterConverter)
   {
-    v6 = 2 * [v4 length] / self->_sourceASBD.mBytesPerPacket;
+    v6 = 2 * [fingerprintingCopy length] / self->_sourceASBD.mBytesPerPacket;
     v7 = [v5 length] / self->_sourceASBD.mBytesPerPacket;
     v8 = [[NSMutableData alloc] initWithLength:v6];
     ioOutputDataPacketSize = v7;
@@ -104,7 +104,7 @@
 
   else
   {
-    v8 = v4;
+    v8 = fingerprintingCopy;
   }
 
   return v8;
@@ -125,8 +125,8 @@
   }
 
   v5 = sub_100157E1C(self->_sourceASBD.mSampleRate);
-  v6 = [(ADAcousticFingerprinter *)self _service];
-  [v6 setSampleRate:v5];
+  _service = [(ADAcousticFingerprinter *)self _service];
+  [_service setSampleRate:v5];
 
   fingerprinterConverter = self->_fingerprinterConverter;
   if (fingerprinterConverter)
@@ -160,20 +160,20 @@
   }
 }
 
-- (void)setASBD:(AudioStreamBasicDescription *)a3
+- (void)setASBD:(AudioStreamBasicDescription *)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = *&a3->mSampleRate;
-    v4 = *&a3->mBytesPerPacket;
-    *&self->_sourceASBD.mBitsPerChannel = *&a3->mBitsPerChannel;
+    v3 = *&d->mSampleRate;
+    v4 = *&d->mBytesPerPacket;
+    *&self->_sourceASBD.mBitsPerChannel = *&d->mBitsPerChannel;
     *&self->_sourceASBD.mSampleRate = v3;
     *&self->_sourceASBD.mBytesPerPacket = v4;
     [(ADAcousticFingerprinter *)self _configureWithCurrentASBD];
   }
 }
 
-- (void)setFingerprintInterval:(double)a3
+- (void)setFingerprintInterval:(double)interval
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -181,25 +181,25 @@
   v4[2] = sub_100158624;
   v4[3] = &unk_10051D770;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   dispatch_async(queue, v4);
 }
 
-- (id)_serviceWithErrorHandler:(id)a3
+- (id)_serviceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ADAcousticFingerprinter *)self _connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(ADAcousticFingerprinter *)self _connection];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)_service
 {
-  v2 = [(ADAcousticFingerprinter *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(ADAcousticFingerprinter *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)_cleanUpConnection

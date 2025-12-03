@@ -1,6 +1,6 @@
 @interface ArticleViewerInteractor
 - (_TtC12NewsArticles23ArticleViewerInteractor)init;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
 @end
 
 @implementation ArticleViewerInteractor
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  v11 = a5;
-  if (a4)
+  changeTagsCopy = changeTags;
+  if (tags)
   {
     sub_1D7D309AC();
-    if (!v11)
+    if (!changeTagsCopy)
     {
       goto LABEL_4;
     }
@@ -26,27 +26,27 @@
     goto LABEL_3;
   }
 
-  if (a5)
+  if (changeTags)
   {
 LABEL_3:
-    v11 = sub_1D7D309AC();
+    changeTagsCopy = sub_1D7D309AC();
   }
 
 LABEL_4:
-  if (a6)
+  if (moveTags)
   {
     sub_1D7D309AC();
   }
 
-  v14 = a3;
-  v15 = a7;
-  v16 = self;
-  if (v15)
+  controllerCopy = controller;
+  removeTagsCopy = removeTags;
+  selfCopy = self;
+  if (removeTagsCopy)
   {
     sub_1D7D309AC();
   }
 
-  sub_1D7A6B9E4(v11, a8);
+  sub_1D7A6B9E4(changeTagsCopy, type);
 }
 
 @end

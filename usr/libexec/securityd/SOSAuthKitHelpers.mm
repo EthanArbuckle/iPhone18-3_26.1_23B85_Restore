@@ -1,19 +1,19 @@
 @interface SOSAuthKitHelpers
 + (BOOL)accountIsCDPCapable;
-+ (BOOL)peerinfoHasMID:(id)a3;
-+ (BOOL)updateMIDInPeerInfo:(id)a3;
++ (BOOL)peerinfoHasMID:(id)d;
++ (BOOL)updateMIDInPeerInfo:(id)info;
 + (id)machineID;
-+ (void)activeMIDs:(id)a3;
-- (BOOL)midIsValidInList:(id)a3;
-- (BOOL)serialIsValidInList:(id)a3;
-- (SOSAuthKitHelpers)initWithActiveMIDS:(id)a3;
++ (void)activeMIDs:(id)ds;
+- (BOOL)midIsValidInList:(id)list;
+- (BOOL)serialIsValidInList:(id)list;
+- (SOSAuthKitHelpers)initWithActiveMIDS:(id)s;
 @end
 
 @implementation SOSAuthKitHelpers
 
-- (BOOL)serialIsValidInList:(id)a3
+- (BOOL)serialIsValidInList:(id)list
 {
-  if (a3)
+  if (list)
   {
     return [(NSSet *)self->_serialNumbers containsObject:?];
   }
@@ -24,9 +24,9 @@
   }
 }
 
-- (BOOL)midIsValidInList:(id)a3
+- (BOOL)midIsValidInList:(id)list
 {
-  if (a3)
+  if (list)
   {
     return [(NSSet *)self->_machineIDs containsObject:?];
   }
@@ -37,9 +37,9 @@
   }
 }
 
-- (SOSAuthKitHelpers)initWithActiveMIDS:(id)a3
+- (SOSAuthKitHelpers)initWithActiveMIDS:(id)s
 {
-  v5 = a3;
+  sCopy = s;
   v32.receiver = self;
   v32.super_class = SOSAuthKitHelpers;
   v6 = [(SOSAuthKitHelpers *)&v32 init];
@@ -55,14 +55,14 @@
     serialNumbers = v6->_serialNumbers;
     v6->_serialNumbers = v11;
 
-    if (!v5)
+    if (!sCopy)
     {
 
       v26 = 0;
       goto LABEL_17;
     }
 
-    objc_storeStrong(&v6->_midList, a3);
+    objc_storeStrong(&v6->_midList, s);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -83,20 +83,20 @@
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
-          v19 = [v18 machineID];
+          machineID = [v18 machineID];
 
-          if (v19)
+          if (machineID)
           {
-            v20 = [v18 machineID];
-            [(NSSet *)v7 addObject:v20];
+            machineID2 = [v18 machineID];
+            [(NSSet *)v7 addObject:machineID2];
           }
 
-          v21 = [v18 serialNumber];
+          serialNumber = [v18 serialNumber];
 
-          if (v21)
+          if (serialNumber)
           {
-            v22 = [v18 serialNumber];
-            [(NSSet *)v8 addObject:v22];
+            serialNumber2 = [v18 serialNumber];
+            [(NSSet *)v8 addObject:serialNumber2];
           }
         }
 
@@ -239,20 +239,20 @@ LABEL_33:
   return v7;
 }
 
-+ (BOOL)updateMIDInPeerInfo:(id)a3
++ (BOOL)updateMIDInPeerInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[SOSAuthKitHelpers machineID];
   if (v4)
   {
     cf = 0;
-    sub_100228C18(v3, sMachineIDKey, v4, &cf);
+    sub_100228C18(infoCopy, sMachineIDKey, v4, &cf);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100235330;
     v9[3] = &unk_100346520;
     v10 = v4;
-    v5 = sub_10021A5E8(v3, @"Add Machine ID", &cf, v9);
+    v5 = sub_10021A5E8(infoCopy, @"Add Machine ID", &cf, v9);
     if ((v5 & 1) == 0)
     {
       v6 = sub_100006274("sosauthkit");
@@ -280,9 +280,9 @@ LABEL_33:
   return v5;
 }
 
-+ (BOOL)peerinfoHasMID:(id)a3
++ (BOOL)peerinfoHasMID:(id)d
 {
-  [a3 fullPeerInfo];
+  [d fullPeerInfo];
   if (!SOSFullPeerInfoGetPeerInfo())
   {
     return 1;
@@ -291,9 +291,9 @@ LABEL_33:
   return SOSPeerInfoV2DictionaryHasString();
 }
 
-+ (void)activeMIDs:(id)a3
++ (void)activeMIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   if (objc_opt_class() && objc_opt_class() && objc_opt_class() && AKServiceNameiCloud != 0)
   {
     v8 = sub_100235084();
@@ -304,8 +304,8 @@ LABEL_33:
       if (v9)
       {
         v7 = v9;
-        v10 = [v6 aa_altDSID];
-        [v7 setAltDSID:v10];
+        aa_altDSID = [v6 aa_altDSID];
+        [v7 setAltDSID:aa_altDSID];
 
         v11 = objc_opt_new();
         if (v11)
@@ -314,7 +314,7 @@ LABEL_33:
           v18[1] = 3221225472;
           v18[2] = sub_100235850;
           v18[3] = &unk_1003464F8;
-          v19 = v3;
+          v19 = dsCopy;
           [v11 deviceListWithContext:v7 completion:v18];
           v12 = v19;
         }
@@ -325,7 +325,7 @@ LABEL_33:
           v22 = @"can't get authController";
           v12 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
           v17 = [NSError errorWithDomain:kCFErrorDomainOSStatus code:-50 userInfo:v12];
-          (*(v3 + 2))(v3, 0, v17);
+          (*(dsCopy + 2))(dsCopy, 0, v17);
         }
 
         goto LABEL_23;
@@ -356,7 +356,7 @@ LABEL_33:
 
     v7 = [NSDictionary dictionaryWithObjects:v15 forKeys:v16 count:1];
     v11 = [NSError errorWithDomain:v14 code:-50 userInfo:v7];
-    (*(v3 + 2))(v3, 0, v11);
+    (*(dsCopy + 2))(dsCopy, 0, v11);
 LABEL_23:
 
     goto LABEL_11;
@@ -373,7 +373,7 @@ LABEL_23:
   v28 = @"AuthKit/AppleAccount not available";
   v6 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   v7 = [NSError errorWithDomain:kCFErrorDomainOSStatus code:-50 userInfo:v6];
-  (*(v3 + 2))(v3, 0, v7);
+  (*(dsCopy + 2))(dsCopy, 0, v7);
 LABEL_11:
 }
 
@@ -409,8 +409,8 @@ LABEL_11:
     v6 = v16;
     if (v5)
     {
-      v7 = [v5 machineID];
-      v8 = [v7 copy];
+      machineID = [v5 machineID];
+      v8 = [machineID copy];
 
       v9 = sub_100006274("sosauthkit");
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);

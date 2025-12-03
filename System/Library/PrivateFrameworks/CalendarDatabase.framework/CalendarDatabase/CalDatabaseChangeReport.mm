@@ -1,23 +1,23 @@
 @interface CalDatabaseChangeReport
-- (BOOL)processChangeOfRelatedRecord:(void *)a3 changeType:(unint64_t)a4 flag:(unint64_t)a5 ownerGetter:(void *)a6 uidToIndex:(__CFDictionary *)a7;
-- (CalDatabaseChangeReport)initWithAdded:(__CFArray *)a3 updated:(__CFArray *)a4 deleted:(__CFArray *)a5;
-- (CalDatabaseChangeReport)initWithCoder:(id)a3;
+- (BOOL)processChangeOfRelatedRecord:(void *)record changeType:(unint64_t)type flag:(unint64_t)flag ownerGetter:(void *)getter uidToIndex:(__CFDictionary *)index;
+- (CalDatabaseChangeReport)initWithAdded:(__CFArray *)added updated:(__CFArray *)updated deleted:(__CFArray *)deleted;
+- (CalDatabaseChangeReport)initWithCoder:(id)coder;
 - (id)initForReset;
 - (int)appendNewRecord;
-- (int)newOrExistingRecordIndexForEvent:(void *)a3 changeType:(unint64_t)a4 uidToIndex:(__CFDictionary *)a5;
-- (void)changesSavedInDatabase:(CalDatabase *)a3;
+- (int)newOrExistingRecordIndexForEvent:(void *)event changeType:(unint64_t)type uidToIndex:(__CFDictionary *)index;
+- (void)changesSavedInDatabase:(CalDatabase *)database;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateImpactedEvents:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateImpactedEvents:(id)events;
 - (void)freeRecords;
 - (void)markNeedsReset;
-- (void)preprocessAdds:(__CFArray *)a3 updates:(__CFArray *)a4 deletes:(__CFArray *)a5;
-- (void)processChanges:(__CFArray *)a3 ofType:(unint64_t)a4;
+- (void)preprocessAdds:(__CFArray *)adds updates:(__CFArray *)updates deletes:(__CFArray *)deletes;
+- (void)processChanges:(__CFArray *)changes ofType:(unint64_t)type;
 @end
 
 @implementation CalDatabaseChangeReport
 
-- (CalDatabaseChangeReport)initWithAdded:(__CFArray *)a3 updated:(__CFArray *)a4 deleted:(__CFArray *)a5
+- (CalDatabaseChangeReport)initWithAdded:(__CFArray *)added updated:(__CFArray *)updated deleted:(__CFArray *)deleted
 {
   v11.receiver = self;
   v11.super_class = CalDatabaseChangeReport;
@@ -25,7 +25,7 @@
   v9 = v8;
   if (v8)
   {
-    [(CalDatabaseChangeReport *)v8 preprocessAdds:a3 updates:a4 deletes:a5];
+    [(CalDatabaseChangeReport *)v8 preprocessAdds:added updates:updated deletes:deleted];
   }
 
   return v9;
@@ -46,9 +46,9 @@
   return result;
 }
 
-- (CalDatabaseChangeReport)initWithCoder:(id)a3
+- (CalDatabaseChangeReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = CalDatabaseChangeReport;
   v5 = [(CalDatabaseChangeReport *)&v28 init];
@@ -57,31 +57,31 @@
     goto LABEL_13;
   }
 
-  v5->_reset = [v4 decodeBoolForKey:@"reset"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"range"];
+  v5->_reset = [coderCopy decodeBoolForKey:@"reset"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"range"];
   range = v5->_range;
   v5->_range = v6;
 
-  v8 = [v4 decodeIntForKey:@"count"];
+  v8 = [coderCopy decodeIntForKey:@"count"];
   v5->_recordCount = v8;
   v5->_recordCapacity = v8;
   v5->_records = malloc_type_calloc(v8, 0x20uLL, 0x10E00400439666CuLL);
-  v26 = v4;
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"records"];
+  v26 = coderCopy;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"records"];
   v10 = [v9 length];
   v25 = v9;
-  v11 = [v9 bytes];
+  bytes = [v9 bytes];
   if (v5->_recordCount < 1)
   {
 LABEL_12:
 
-    v4 = v26;
+    coderCopy = v26;
 LABEL_13:
     v22 = v5;
     goto LABEL_20;
   }
 
-  v12 = v11;
+  v12 = bytes;
   v13 = 0;
   while (1)
   {
@@ -151,25 +151,25 @@ LABEL_18:
 LABEL_19:
 
   v22 = 0;
-  v4 = v26;
+  coderCopy = v26;
 LABEL_20:
 
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self->_reset)
   {
-    [v4 encodeBool:1 forKey:@"reset"];
+    [coderCopy encodeBool:1 forKey:@"reset"];
   }
 
   else
   {
-    [v4 encodeInt:self->_recordCount forKey:@"count"];
+    [coderCopy encodeInt:self->_recordCount forKey:@"count"];
     [v5 encodeObject:self->_range forKey:@"range"];
     recordCount = self->_recordCount;
     v7 = 24 * recordCount;
@@ -322,15 +322,15 @@ LABEL_20:
   }
 }
 
-- (void)changesSavedInDatabase:(CalDatabase *)a3
+- (void)changesSavedInDatabase:(CalDatabase *)database
 {
   if (self->_recordCount)
   {
-    v5 = _CalDatabaseCopyEventOccurrenceCache(a3);
+    v5 = _CalDatabaseCopyEventOccurrenceCache(database);
     if (v5)
     {
       v6 = v5;
-      __CalDatabaseBeginReadTransaction(a3, "read at /Library/Caches/com.apple.xbs/Sources/CalendarDatabase/CalendarDatabase/CalDatabaseChangeReport.m:181");
+      __CalDatabaseBeginReadTransaction(database, "read at /Library/Caches/com.apple.xbs/Sources/CalendarDatabase/CalendarDatabase/CalDatabaseChangeReport.m:181");
       v7 = _CalEventOccurrenceCacheCreateOccurrenceCacheRange(v6);
       range = self->_range;
       self->_range = v7;
@@ -365,7 +365,7 @@ LABEL_20:
         while (v10 < self->_recordCount);
       }
 
-      __CalDatabaseRollbackTransaction(a3, "rollback at /Library/Caches/com.apple.xbs/Sources/CalendarDatabase/CalendarDatabase/CalDatabaseChangeReport.m:195");
+      __CalDatabaseRollbackTransaction(database, "rollback at /Library/Caches/com.apple.xbs/Sources/CalendarDatabase/CalendarDatabase/CalDatabaseChangeReport.m:195");
 
       CFRelease(v6);
     }
@@ -378,7 +378,7 @@ LABEL_20:
   }
 }
 
-- (void)enumerateImpactedEvents:(id)a3
+- (void)enumerateImpactedEvents:(id)events
 {
   if (self->_recordCount >= 1)
   {
@@ -386,7 +386,7 @@ LABEL_20:
     v6 = 0;
     do
     {
-      if (((*(a3 + 2))(a3, self->_records[v5].var1, self->_records[v5].var2, self->_records[v5].var3, self->_records[v5].var4) & 1) == 0)
+      if (((*(events + 2))(events, self->_records[v5].var1, self->_records[v5].var2, self->_records[v5].var3, self->_records[v5].var4) & 1) == 0)
       {
         break;
       }
@@ -399,15 +399,15 @@ LABEL_20:
   }
 }
 
-- (void)preprocessAdds:(__CFArray *)a3 updates:(__CFArray *)a4 deletes:(__CFArray *)a5
+- (void)preprocessAdds:(__CFArray *)adds updates:(__CFArray *)updates deletes:(__CFArray *)deletes
 {
-  [(CalDatabaseChangeReport *)self processChanges:a3 ofType:0];
-  [(CalDatabaseChangeReport *)self processChanges:a4 ofType:1];
+  [(CalDatabaseChangeReport *)self processChanges:adds ofType:0];
+  [(CalDatabaseChangeReport *)self processChanges:updates ofType:1];
 
-  [(CalDatabaseChangeReport *)self processChanges:a5 ofType:2];
+  [(CalDatabaseChangeReport *)self processChanges:deletes ofType:2];
 }
 
-- (void)processChanges:(__CFArray *)a3 ofType:(unint64_t)a4
+- (void)processChanges:(__CFArray *)changes ofType:(unint64_t)type
 {
   v51 = *MEMORY[0x1E69E9840];
   Mutable = CFDictionaryCreateMutable(0, 0, 0, 0);
@@ -415,8 +415,8 @@ LABEL_20:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = a3;
-  v9 = [(__CFArray *)v8 countByEnumeratingWithState:&v42 objects:v50 count:16];
+  changesCopy = changes;
+  v9 = [(__CFArray *)changesCopy countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v9)
   {
     v11 = v9;
@@ -432,7 +432,7 @@ LABEL_20:
       {
         if (*v43 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(changesCopy);
         }
 
         v15 = *(*(&v42 + 1) + 8 * v14);
@@ -443,10 +443,10 @@ LABEL_20:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             v19 = v12;
-            v20 = a4;
-            v21 = v8;
+            typeCopy = type;
+            v21 = changesCopy;
             v22 = Mutable;
-            v23 = self;
+            selfCopy = self;
             v24 = v13;
             ID = CPRecordGetID();
             if (v15)
@@ -471,10 +471,10 @@ LABEL_20:
             v49 = IsDeleted;
             _os_log_impl(&dword_1DEBB1000, v18, OS_LOG_TYPE_ERROR, "Failed to get recordID for record with rowid [%d], deleted: %{BOOL}d", buf, 0xEu);
             v13 = v24;
-            self = v23;
+            self = selfCopy;
             Mutable = v22;
-            v8 = v21;
-            a4 = v20;
+            changesCopy = v21;
+            type = typeCopy;
             v12 = v19;
             v11 = v41;
           }
@@ -490,16 +490,16 @@ LABEL_20:
             if (v17 == 4)
             {
               v28 = _CalAlarmGetOwningCalendarItem;
-              v29 = self;
+              selfCopy3 = self;
               v30 = v15;
-              v31 = a4;
+              typeCopy3 = type;
               v32 = 4096;
               goto LABEL_38;
             }
 
             if (v17 == 6)
             {
-              if (a4 != 1)
+              if (type != 1)
               {
                 v36 = *v13;
                 if (os_log_type_enabled(*v13, OS_LOG_TYPE_INFO))
@@ -531,7 +531,7 @@ LABEL_55:
 
           else if (v17 == 1)
           {
-            if (a4 != 1)
+            if (type != 1)
             {
               v36 = *v13;
               if (os_log_type_enabled(*v13, OS_LOG_TYPE_INFO))
@@ -558,7 +558,7 @@ LABEL_55:
             }
           }
 
-          else if (v17 == 2 && [(CalDatabaseChangeReport *)self newOrExistingRecordIndexForEvent:v15 changeType:a4 uidToIndex:Mutable]< 0)
+          else if (v17 == 2 && [(CalDatabaseChangeReport *)self newOrExistingRecordIndexForEvent:v15 changeType:type uidToIndex:Mutable]< 0)
           {
             goto LABEL_57;
           }
@@ -575,12 +575,12 @@ LABEL_55:
 
 LABEL_33:
             v28 = _CalParticipantGetOwner;
-            v29 = self;
+            selfCopy3 = self;
             v30 = v15;
-            v31 = a4;
+            typeCopy3 = type;
             v32 = 2048;
 LABEL_38:
-            if (![(CalDatabaseChangeReport *)v29 processChangeOfRelatedRecord:v30 changeType:v31 flag:v32 ownerGetter:v28 uidToIndex:Mutable, v40])
+            if (![(CalDatabaseChangeReport *)selfCopy3 processChangeOfRelatedRecord:v30 changeType:typeCopy3 flag:v32 ownerGetter:v28 uidToIndex:Mutable, v40])
             {
               goto LABEL_57;
             }
@@ -588,7 +588,7 @@ LABEL_38:
             goto LABEL_39;
           }
 
-          if (a4 == 1)
+          if (type == 1)
           {
             v36 = *v13;
             if (os_log_type_enabled(*v13, OS_LOG_TYPE_INFO))
@@ -611,7 +611,7 @@ LABEL_56:
             goto LABEL_33;
           }
 
-          if (v17 == 11 && ![(CalDatabaseChangeReport *)self processChangeOfRelatedRecord:v15 changeType:a4 flag:0x2000 ownerGetter:_CalAttachmentGetOwner uidToIndex:Mutable])
+          if (v17 == 11 && ![(CalDatabaseChangeReport *)self processChangeOfRelatedRecord:v15 changeType:type flag:0x2000 ownerGetter:_CalAttachmentGetOwner uidToIndex:Mutable])
           {
             goto LABEL_57;
           }
@@ -622,7 +622,7 @@ LABEL_39:
       }
 
       while (v11 != v14);
-      v33 = [(__CFArray *)v8 countByEnumeratingWithState:&v42 objects:v50 count:16];
+      v33 = [(__CFArray *)changesCopy countByEnumeratingWithState:&v42 objects:v50 count:16];
       v11 = v33;
     }
 
@@ -634,14 +634,14 @@ LABEL_57:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)processChangeOfRelatedRecord:(void *)a3 changeType:(unint64_t)a4 flag:(unint64_t)a5 ownerGetter:(void *)a6 uidToIndex:(__CFDictionary *)a7
+- (BOOL)processChangeOfRelatedRecord:(void *)record changeType:(unint64_t)type flag:(unint64_t)flag ownerGetter:(void *)getter uidToIndex:(__CFDictionary *)index
 {
-  if (a4 != 1)
+  if (type != 1)
   {
     return 1;
   }
 
-  v10 = (a6)(a3, a2);
+  v10 = (getter)(record, a2);
   if (!v10)
   {
     return 1;
@@ -653,11 +653,11 @@ LABEL_57:
     return 1;
   }
 
-  v12 = [(CalDatabaseChangeReport *)self newOrExistingRecordIndexForEvent:v11 changeType:1 uidToIndex:a7];
+  v12 = [(CalDatabaseChangeReport *)self newOrExistingRecordIndexForEvent:v11 changeType:1 uidToIndex:index];
   if ((v12 & 0x80000000) == 0)
   {
     v13 = &self->_records[v12];
-    v13->var3 |= a5;
+    v13->var3 |= flag;
     return 1;
   }
 
@@ -673,21 +673,21 @@ LABEL_57:
   }
 }
 
-- (int)newOrExistingRecordIndexForEvent:(void *)a3 changeType:(unint64_t)a4 uidToIndex:(__CFDictionary *)a5
+- (int)newOrExistingRecordIndexForEvent:(void *)event changeType:(unint64_t)type uidToIndex:(__CFDictionary *)index
 {
   value = -1;
   ID = CPRecordGetID();
-  if (a4)
+  if (type)
   {
     v10 = ID;
     v11 = ID;
-    if (CFDictionaryGetValueIfPresent(a5, ID, &value))
+    if (CFDictionaryGetValueIfPresent(index, ID, &value))
     {
       return value;
     }
 
     value = [(CalDatabaseChangeReport *)self appendNewRecord];
-    CFDictionaryAddValue(a5, v11, value);
+    CFDictionaryAddValue(index, v11, value);
     v12 = value;
     if ((value & 0x8000000000000000) == 0)
     {
@@ -695,10 +695,10 @@ LABEL_57:
       records = self->_records;
       v14 = &records[v12];
       v14->var1 = v10;
-      v14->var2 = a4 == 2;
-      if (a4 == 1)
+      v14->var2 = type == 2;
+      if (type == 1)
       {
-        if (a3)
+        if (event)
         {
           if (CDBLockingAssertionsEnabled)
           {
@@ -919,12 +919,12 @@ LABEL_64:
 
   else
   {
-    v24 = [(CalDatabaseChangeReport *)self appendNewRecord];
-    v12 = v24;
-    value = v24;
-    if ((v24 & 0x80000000) == 0)
+    appendNewRecord = [(CalDatabaseChangeReport *)self appendNewRecord];
+    v12 = appendNewRecord;
+    value = appendNewRecord;
+    if ((appendNewRecord & 0x80000000) == 0)
     {
-      self->_records[v24].var0 = CFRetain(a3);
+      self->_records[appendNewRecord].var0 = CFRetain(event);
       records = self->_records;
       v25 = &records[v12];
       v25->var1 = 0;

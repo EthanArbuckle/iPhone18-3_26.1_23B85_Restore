@@ -1,39 +1,39 @@
 @interface HUCalendarScrubberDataSource
-- (BOOL)eventExistsForItemAtIndexPath:(id)a3;
-- (BOOL)eventExistsOnDate:(id)a3;
+- (BOOL)eventExistsForItemAtIndexPath:(id)path;
+- (BOOL)eventExistsOnDate:(id)date;
 - (HMCameraClipManager)clipManager;
 - (HUCalendarScrubberDataSource)init;
-- (HUCalendarScrubberDataSource)initWithCameraClipManager:(id)a3 datesWithClips:(id)a4;
-- (id)dateAtIndexPath:(id)a3;
-- (id)dayOfWeekForItemAtIndexPath:(id)a3;
-- (id)indexPathForDate:(id)a3;
-- (id)shortMonthNameForItemAtIndexPath:(id)a3;
-- (int64_t)dayOfMonthForItemAtIndexPath:(id)a3;
+- (HUCalendarScrubberDataSource)initWithCameraClipManager:(id)manager datesWithClips:(id)clips;
+- (id)dateAtIndexPath:(id)path;
+- (id)dayOfWeekForItemAtIndexPath:(id)path;
+- (id)indexPathForDate:(id)date;
+- (id)shortMonthNameForItemAtIndexPath:(id)path;
+- (int64_t)dayOfMonthForItemAtIndexPath:(id)path;
 - (unint64_t)totalNumberOfWeeks;
 - (void)_updateDateBoundariesIfNeeded;
-- (void)addChangeObserver:(id)a3;
-- (void)addDatesWithClips:(id)a3;
+- (void)addChangeObserver:(id)observer;
+- (void)addDatesWithClips:(id)clips;
 - (void)reloadDates;
-- (void)removeChangeObserver:(id)a3;
-- (void)updateDatesWithClips:(id)a3;
+- (void)removeChangeObserver:(id)observer;
+- (void)updateDatesWithClips:(id)clips;
 @end
 
 @implementation HUCalendarScrubberDataSource
 
-- (HUCalendarScrubberDataSource)initWithCameraClipManager:(id)a3 datesWithClips:(id)a4
+- (HUCalendarScrubberDataSource)initWithCameraClipManager:(id)manager datesWithClips:(id)clips
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  clipsCopy = clips;
   v15.receiver = self;
   v15.super_class = HUCalendarScrubberDataSource;
   v8 = [(HUCalendarScrubberDataSource *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_clipManager, v6);
-    if (v7)
+    objc_storeWeak(&v8->_clipManager, managerCopy);
+    if (clipsCopy)
     {
-      v10 = v7;
+      v10 = clipsCopy;
     }
 
     else
@@ -46,9 +46,9 @@
 
     [(HUCalendarScrubberDataSource *)v9 reloadDates];
     [(HUCalendarScrubberDataSource *)v9 _updateDateBoundariesIfNeeded];
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     changeObservers = v9->_changeObservers;
-    v9->_changeObservers = v12;
+    v9->_changeObservers = weakObjectsHashTable;
   }
 
   return v9;
@@ -56,9 +56,9 @@
 
 - (HUCalendarScrubberDataSource)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithCameraClipManager_datesWithClips_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberDataSource.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberDataSource init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberDataSource.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberDataSource init]", v5}];
 
   return 0;
 }
@@ -67,76 +67,76 @@
 {
   if (!self->_startDate)
   {
-    v3 = [(NSArray *)self->_dates firstObject];
-    v4 = [v3 hf_startOfWeek];
+    firstObject = [(NSArray *)self->_dates firstObject];
+    hf_startOfWeek = [firstObject hf_startOfWeek];
     startDate = self->_startDate;
-    self->_startDate = v4;
+    self->_startDate = hf_startOfWeek;
   }
 
   if (!self->_endDate)
   {
-    v8 = [(NSArray *)self->_dates lastObject];
-    v6 = [v8 hf_endOfWeek];
+    lastObject = [(NSArray *)self->_dates lastObject];
+    hf_endOfWeek = [lastObject hf_endOfWeek];
     endDate = self->_endDate;
-    self->_endDate = v6;
+    self->_endDate = hf_endOfWeek;
   }
 }
 
-- (BOOL)eventExistsForItemAtIndexPath:(id)a3
+- (BOOL)eventExistsForItemAtIndexPath:(id)path
 {
-  v3 = self;
-  v4 = [(HUCalendarScrubberDataSource *)self dateAtIndexPath:a3];
-  LOBYTE(v3) = [(HUCalendarScrubberDataSource *)v3 eventExistsOnDate:v4];
+  selfCopy = self;
+  v4 = [(HUCalendarScrubberDataSource *)self dateAtIndexPath:path];
+  LOBYTE(selfCopy) = [(HUCalendarScrubberDataSource *)selfCopy eventExistsOnDate:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)indexPathForDate:(id)a3
+- (id)indexPathForDate:(id)date
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [(HUCalendarScrubberDataSource *)self startDate];
-  v7 = [v4 hf_daysBetweenDates:v6 endDate:v5];
+  dateCopy = date;
+  startDate = [(HUCalendarScrubberDataSource *)self startDate];
+  v7 = [v4 hf_daysBetweenDates:startDate endDate:dateCopy];
 
   v8 = MEMORY[0x277CCAA70];
 
   return [v8 indexPathForItem:v7 % 7 inSection:?];
 }
 
-- (id)dateAtIndexPath:(id)a3
+- (id)dateAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 item];
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v7 = v6 - v5 + 8 * v5;
-  v8 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v9 = [(HUCalendarScrubberDataSource *)self startDate];
-  v10 = [v8 dateByAddingUnit:16 value:v7 toDate:v9 options:0];
+  v7 = item - section + 8 * section;
+  hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  startDate = [(HUCalendarScrubberDataSource *)self startDate];
+  v10 = [hf_sharedCalendar dateByAddingUnit:16 value:v7 toDate:startDate options:0];
 
   return v10;
 }
 
-- (BOOL)eventExistsOnDate:(id)a3
+- (BOOL)eventExistsOnDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HUCalendarScrubberDataSource *)self datesWithClips];
-  v6 = [v4 hf_startOfDay];
+  dateCopy = date;
+  datesWithClips = [(HUCalendarScrubberDataSource *)self datesWithClips];
+  hf_startOfDay = [dateCopy hf_startOfDay];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(dateCopy) = [datesWithClips containsObject:hf_startOfDay];
+  return dateCopy;
 }
 
 - (unint64_t)totalNumberOfWeeks
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HUCalendarScrubberDataSource *)self startDate];
-  if (v3 && (v4 = v3, [(HUCalendarScrubberDataSource *)self endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  startDate = [(HUCalendarScrubberDataSource *)self startDate];
+  if (startDate && (v4 = startDate, [(HUCalendarScrubberDataSource *)self endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = MEMORY[0x277CBEAA8];
-    v7 = [(HUCalendarScrubberDataSource *)self startDate];
-    v8 = [(HUCalendarScrubberDataSource *)self endDate];
-    v9 = [v6 hf_daysBetweenDates:v7 endDate:v8];
+    startDate2 = [(HUCalendarScrubberDataSource *)self startDate];
+    endDate = [(HUCalendarScrubberDataSource *)self endDate];
+    v9 = [v6 hf_daysBetweenDates:startDate2 endDate:endDate];
 
     if (v9 % 7)
     {
@@ -154,9 +154,9 @@
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(HUCalendarScrubberDataSource *)self dates];
+      dates = [(HUCalendarScrubberDataSource *)self dates];
       v13 = 134217984;
-      v14 = [v12 count];
+      v14 = [dates count];
       _os_log_debug_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEBUG, "A request to layout the calendar has been made before there are any dates (count:%lu). The calendar will remain hidden.", &v13, 0xCu);
     }
 
@@ -164,51 +164,51 @@
   }
 }
 
-- (id)dayOfWeekForItemAtIndexPath:(id)a3
+- (id)dayOfWeekForItemAtIndexPath:(id)path
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 hf_sharedCalendar];
-  v6 = [v4 item];
+  pathCopy = path;
+  hf_sharedCalendar = [v3 hf_sharedCalendar];
+  item = [pathCopy item];
 
-  v7 = v6 + [v5 firstWeekday] - 1;
-  v8 = [v5 veryShortStandaloneWeekdaySymbols];
-  v9 = [v8 objectAtIndexedSubscript:v7 % 7];
+  v7 = item + [hf_sharedCalendar firstWeekday] - 1;
+  veryShortStandaloneWeekdaySymbols = [hf_sharedCalendar veryShortStandaloneWeekdaySymbols];
+  v9 = [veryShortStandaloneWeekdaySymbols objectAtIndexedSubscript:v7 % 7];
 
   return v9;
 }
 
-- (int64_t)dayOfMonthForItemAtIndexPath:(id)a3
+- (int64_t)dayOfMonthForItemAtIndexPath:(id)path
 {
-  v3 = [(HUCalendarScrubberDataSource *)self dateAtIndexPath:a3];
-  v4 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v5 = [v4 component:16 fromDate:v3];
+  v3 = [(HUCalendarScrubberDataSource *)self dateAtIndexPath:path];
+  hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  v5 = [hf_sharedCalendar component:16 fromDate:v3];
 
   return v5;
 }
 
-- (id)shortMonthNameForItemAtIndexPath:(id)a3
+- (id)shortMonthNameForItemAtIndexPath:(id)path
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 hf_sharedCalendar];
-  v7 = [(HUCalendarScrubberDataSource *)self dateAtIndexPath:v5];
+  pathCopy = path;
+  hf_sharedCalendar = [v4 hf_sharedCalendar];
+  v7 = [(HUCalendarScrubberDataSource *)self dateAtIndexPath:pathCopy];
 
-  v8 = [v6 component:8 fromDate:v7] - 1;
-  v9 = [v6 shortStandaloneMonthSymbols];
-  v10 = [v9 objectAtIndexedSubscript:v8];
-  v11 = [v10 capitalizedString];
+  v8 = [hf_sharedCalendar component:8 fromDate:v7] - 1;
+  shortStandaloneMonthSymbols = [hf_sharedCalendar shortStandaloneMonthSymbols];
+  v10 = [shortStandaloneMonthSymbols objectAtIndexedSubscript:v8];
+  capitalizedString = [v10 capitalizedString];
 
-  return v11;
+  return capitalizedString;
 }
 
-- (void)updateDatesWithClips:(id)a3
+- (void)updateDatesWithClips:(id)clips
 {
-  v4 = a3;
-  v5 = [(HUCalendarScrubberDataSource *)self datesWithClips];
-  v6 = [v5 isEqualToSet:v4];
+  clipsCopy = clips;
+  datesWithClips = [(HUCalendarScrubberDataSource *)self datesWithClips];
+  v6 = [datesWithClips isEqualToSet:clipsCopy];
 
-  [(HUCalendarScrubberDataSource *)self setDatesWithClips:v4];
+  [(HUCalendarScrubberDataSource *)self setDatesWithClips:clipsCopy];
   if ((v6 & 1) == 0)
   {
     v7 = HFLogForCategory();
@@ -222,90 +222,90 @@
   }
 }
 
-- (void)addDatesWithClips:(id)a3
+- (void)addDatesWithClips:(id)clips
 {
-  v4 = a3;
-  v5 = [(HUCalendarScrubberDataSource *)self datesWithClips];
-  v6 = [v5 mutableCopy];
+  clipsCopy = clips;
+  datesWithClips = [(HUCalendarScrubberDataSource *)self datesWithClips];
+  v6 = [datesWithClips mutableCopy];
 
-  [v6 unionSet:v4];
+  [v6 unionSet:clipsCopy];
   [(HUCalendarScrubberDataSource *)self updateDatesWithClips:v6];
 }
 
 - (void)reloadDates
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(HUCalendarScrubberDataSource *)self datesWithClips];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_74];
+  datesWithClips = [(HUCalendarScrubberDataSource *)self datesWithClips];
+  allObjects = [datesWithClips allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_74];
   [(HUCalendarScrubberDataSource *)self setDates:v5];
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUCalendarScrubberDataSource *)self dates];
+    dates = [(HUCalendarScrubberDataSource *)self dates];
     *buf = 138412290;
-    v37 = v7;
+    v37 = dates;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "Reloading dates containing clips:%@", buf, 0xCu);
   }
 
-  v8 = [(HUCalendarScrubberDataSource *)self dates];
-  v9 = [v8 firstObject];
+  dates2 = [(HUCalendarScrubberDataSource *)self dates];
+  firstObject = [dates2 firstObject];
 
-  v10 = [(HUCalendarScrubberDataSource *)self dates];
-  v11 = [v10 lastObject];
+  dates3 = [(HUCalendarScrubberDataSource *)self dates];
+  lastObject = [dates3 lastObject];
 
   [(HUCalendarScrubberDataSource *)self _updateDateBoundariesIfNeeded];
-  v12 = [(HUCalendarScrubberDataSource *)self startDate];
-  v13 = [v12 earlierDate:v9];
-  v14 = [v13 isEqualToDate:v9];
+  startDate = [(HUCalendarScrubberDataSource *)self startDate];
+  v13 = [startDate earlierDate:firstObject];
+  v14 = [v13 isEqualToDate:firstObject];
 
   if (v14)
   {
     v15 = HFLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(HUCalendarScrubberDataSource *)self startDate];
-      v17 = [v9 hf_startOfWeek];
+      startDate2 = [(HUCalendarScrubberDataSource *)self startDate];
+      hf_startOfWeek = [firstObject hf_startOfWeek];
       *buf = 138412546;
-      v37 = v16;
+      v37 = startDate2;
       v38 = 2112;
-      v39 = v17;
+      v39 = hf_startOfWeek;
       _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Updating calendar start date from:%@ to:%@", buf, 0x16u);
     }
 
-    v18 = [v9 hf_startOfWeek];
-    [(HUCalendarScrubberDataSource *)self setStartDate:v18];
+    hf_startOfWeek2 = [firstObject hf_startOfWeek];
+    [(HUCalendarScrubberDataSource *)self setStartDate:hf_startOfWeek2];
   }
 
-  v19 = [(HUCalendarScrubberDataSource *)self endDate];
-  v20 = [v19 laterDate:v11];
-  v21 = [v20 isEqualToDate:v11];
+  endDate = [(HUCalendarScrubberDataSource *)self endDate];
+  v20 = [endDate laterDate:lastObject];
+  v21 = [v20 isEqualToDate:lastObject];
 
   if (v21)
   {
     v22 = HFLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(HUCalendarScrubberDataSource *)self endDate];
-      v24 = [v11 hf_endOfWeek];
+      endDate2 = [(HUCalendarScrubberDataSource *)self endDate];
+      hf_endOfWeek = [lastObject hf_endOfWeek];
       *buf = 138412546;
-      v37 = v23;
+      v37 = endDate2;
       v38 = 2112;
-      v39 = v24;
+      v39 = hf_endOfWeek;
       _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "Updating calendar end date from:%@ to:%@", buf, 0x16u);
     }
 
-    v25 = [v11 hf_endOfWeek];
-    [(HUCalendarScrubberDataSource *)self setEndDate:v25];
+    hf_endOfWeek2 = [lastObject hf_endOfWeek];
+    [(HUCalendarScrubberDataSource *)self setEndDate:hf_endOfWeek2];
   }
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = [(HUCalendarScrubberDataSource *)self changeObservers];
-  v27 = [v26 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  changeObservers = [(HUCalendarScrubberDataSource *)self changeObservers];
+  v27 = [changeObservers countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v27)
   {
     v28 = v27;
@@ -317,32 +317,32 @@
       {
         if (*v32 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(changeObservers);
         }
 
         [*(*(&v31 + 1) + 8 * v30++) scrubberDataSourceDidReload:self];
       }
 
       while (v28 != v30);
-      v28 = [v26 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v28 = [changeObservers countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v28);
   }
 }
 
-- (void)addChangeObserver:(id)a3
+- (void)addChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HUCalendarScrubberDataSource *)self changeObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  changeObservers = [(HUCalendarScrubberDataSource *)self changeObservers];
+  [changeObservers addObject:observerCopy];
 }
 
-- (void)removeChangeObserver:(id)a3
+- (void)removeChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HUCalendarScrubberDataSource *)self changeObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  changeObservers = [(HUCalendarScrubberDataSource *)self changeObservers];
+  [changeObservers removeObject:observerCopy];
 }
 
 - (HMCameraClipManager)clipManager

@@ -1,16 +1,16 @@
 @interface FCUIActivityControlMenuItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation FCUIActivityControlMenuItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FCUIActivityControlMenuItemView" hasInstanceVariable:@"_activationDescriptionLabel" withType:"UILabel"];
-  [v3 validateClass:@"FCUIActivityControlMenuItemView" hasInstanceVariable:@"_activationDetailsLabel" withType:"UILabel"];
-  [v3 validateClass:@"FCUIActivityControlMenuItemView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FCUIActivityControlMenuItemView" hasInstanceVariable:@"_activationDescriptionLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"FCUIActivityControlMenuItemView" hasInstanceVariable:@"_activationDetailsLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"FCUIActivityControlMenuItemView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
 }
 
 - (unint64_t)accessibilityTraits

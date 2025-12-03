@@ -1,11 +1,11 @@
 @interface ODISessionInternal
 - (NSString)description;
 - (_TtC7CoreODI18ODISessionInternal)init;
-- (_TtC7CoreODI18ODISessionInternal)initWithServiceIdentifier:(id)a3 forDSIDType:(unint64_t)a4 locationBundle:(id)a5 andLocationBundleIdentifier:(id)a6 sessionStateDelegate:(id)a7;
-- (void)getAssessment:(id)a3;
-- (void)provideFeedbackOnPartialAssessmentID:(id)a3;
-- (void)provideFeedbackOnPayloadOutcome:(unint64_t)a3 feedbackRecorded:(id)a4;
-- (void)updateWithAdditionalAttributes:(id)a3;
+- (_TtC7CoreODI18ODISessionInternal)initWithServiceIdentifier:(id)identifier forDSIDType:(unint64_t)type locationBundle:(id)bundle andLocationBundleIdentifier:(id)bundleIdentifier sessionStateDelegate:(id)delegate;
+- (void)getAssessment:(id)assessment;
+- (void)provideFeedbackOnPartialAssessmentID:(id)d;
+- (void)provideFeedbackOnPayloadOutcome:(unint64_t)outcome feedbackRecorded:(id)recorded;
+- (void)updateWithAdditionalAttributes:(id)attributes;
 - (void)validateForDeinit;
 @end
 
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (_TtC7CoreODI18ODISessionInternal)initWithServiceIdentifier:(id)a3 forDSIDType:(unint64_t)a4 locationBundle:(id)a5 andLocationBundleIdentifier:(id)a6 sessionStateDelegate:(id)a7
+- (_TtC7CoreODI18ODISessionInternal)initWithServiceIdentifier:(id)identifier forDSIDType:(unint64_t)type locationBundle:(id)bundle andLocationBundleIdentifier:(id)bundleIdentifier sessionStateDelegate:(id)delegate
 {
-  if (a6)
+  if (bundleIdentifier)
   {
     v11 = sub_24619F8BC();
     v13 = v12;
@@ -39,20 +39,20 @@
     v13 = 0;
   }
 
-  v14 = a3;
-  v15 = a5;
+  identifierCopy = identifier;
+  bundleCopy = bundle;
   swift_unknownObjectRetain();
-  return ODISessionInternal.init(serviceIdentifier:forDSIDType:locationBundle:andLocationBundleIdentifier:sessionStateDelegate:)(v14, a4, a5, v11, v13, a7);
+  return ODISessionInternal.init(serviceIdentifier:forDSIDType:locationBundle:andLocationBundleIdentifier:sessionStateDelegate:)(identifierCopy, type, bundle, v11, v13, delegate);
 }
 
-- (void)updateWithAdditionalAttributes:(id)a3
+- (void)updateWithAdditionalAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
 
-  sub_24617707C(a3);
+  sub_24617707C(attributes);
 }
 
-- (void)getAssessment:(id)a3
+- (void)getAssessment:(id)assessment
 {
   v5 = sub_24619F4DC();
   v18 = *(v5 - 8);
@@ -65,7 +65,7 @@
   v11 = *(v10 + 64);
   MEMORY[0x28223BE20](v9);
   v13 = &v18 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v14 = _Block_copy(a3);
+  v14 = _Block_copy(assessment);
   v15 = swift_allocObject();
   *(v15 + 16) = v14;
   v16 = *&self->$defaultActor[OBJC_IVAR____TtC7CoreODI18ODISessionInternal_logger + 24];
@@ -84,16 +84,16 @@
   (*(v18 + 8))(v8, v19);
 }
 
-- (void)provideFeedbackOnPayloadOutcome:(unint64_t)a3 feedbackRecorded:(id)a4
+- (void)provideFeedbackOnPayloadOutcome:(unint64_t)outcome feedbackRecorded:(id)recorded
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(recorded);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
 
-  sub_24617823C(a3, sub_24618B9B4, v6);
+  sub_24617823C(outcome, sub_24618B9B4, v6);
 }
 
-- (void)provideFeedbackOnPartialAssessmentID:(id)a3
+- (void)provideFeedbackOnPartialAssessmentID:(id)d
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE3F870, &qword_2461A0FE0);
   v5 = *(*(v4 - 8) + 64);

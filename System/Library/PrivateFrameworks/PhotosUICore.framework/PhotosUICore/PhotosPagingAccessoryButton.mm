@@ -1,13 +1,13 @@
 @interface PhotosPagingAccessoryButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PhotosPagingAccessoryButton
 
-- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithCoder:(id)a3
+- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC12PhotosUICore27PhotosPagingAccessoryButton_foregroundColor;
   *(&self->super.super.super.isa + v3) = [objc_opt_self() systemWhiteColor];
@@ -27,7 +27,7 @@
   [v3 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore27PhotosPagingAccessoryButton_button) sizeThatFits_];
   result.height = v4;
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore27PhotosPagingAccessoryButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

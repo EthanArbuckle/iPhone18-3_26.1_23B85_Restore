@@ -8,9 +8,9 @@
 - (void)currentTimeDidChange;
 - (void)dealloc;
 - (void)dstDidChange;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
 - (void)setupNextDSTTransitionTimer;
 - (void)significantTimeChange;
 - (void)startNotifications;
@@ -48,8 +48,8 @@
     v19[0] = v2->_currentTimeCharacteristic;
     v19[1] = v2->_localTimeInformationCharacteristic;
     v14 = [NSArray arrayWithObjects:v19 count:2];
-    v15 = [(ServerService *)v2 service];
-    [v15 setCharacteristics:v14];
+    service = [(ServerService *)v2 service];
+    [service setCharacteristics:v14];
 
     nextDSTTransitionTimer = v2->_nextDSTTransitionTimer;
     v2->_nextDSTTransitionTimer = 0;
@@ -87,9 +87,9 @@
   [v2 writeUint8:{objc_msgSend(v5, "hour")}];
   [v2 writeUint8:{objc_msgSend(v5, "minute")}];
   [v2 writeUint8:{objc_msgSend(v5, "second")}];
-  v6 = [v5 weekday];
-  v7 = v6 - 1;
-  if (v6 == 1)
+  weekday = [v5 weekday];
+  v7 = weekday - 1;
+  if (weekday == 1)
   {
     v7 = 7;
   }
@@ -97,16 +97,16 @@
   [v2 writeUint8:v7];
   [v2 writeUint8:{((((objc_msgSend(v5, "nanosecond") >> 1) * 0x112E0BE826D694B3uLL) >> 64) >> 17)}];
   [v2 writeUint8:2];
-  v8 = [v2 data];
+  data = [v2 data];
 
-  return v8;
+  return data;
 }
 
 - (void)updateCurrentTime
 {
-  v4 = [(CTService *)self currentTimeValue];
-  v3 = [(CTService *)self currentTimeCharacteristic];
-  [(ServerService *)self updateValue:v4 forCharacteristic:v3 onSubscribedCentrals:0];
+  currentTimeValue = [(CTService *)self currentTimeValue];
+  currentTimeCharacteristic = [(CTService *)self currentTimeCharacteristic];
+  [(ServerService *)self updateValue:currentTimeValue forCharacteristic:currentTimeCharacteristic onSubscribedCentrals:0];
 }
 
 - (id)localTimeInformationValue
@@ -114,15 +114,15 @@
   v3 = +[DataOutputStream outputStream];
   [v3 writeUint8:{-[CTService currentTimeZone](self, "currentTimeZone")}];
   [v3 writeUint8:{-[CTService currentDstOffset](self, "currentDstOffset")}];
-  v4 = [v3 data];
+  data = [v3 data];
 
-  return v4;
+  return data;
 }
 
 - (void)cancelNextDSTTransitionTimer
 {
-  v3 = [(CTService *)self nextDSTTransitionTimer];
-  [v3 invalidate];
+  nextDSTTransitionTimer = [(CTService *)self nextDSTTransitionTimer];
+  [nextDSTTransitionTimer invalidate];
 
   [(CTService *)self setNextDSTTransitionTimer:0];
 }
@@ -131,16 +131,16 @@
 {
   [(CTService *)self cancelNextDSTTransitionTimer];
   v3 = +[NSTimeZone systemTimeZone];
-  v7 = [v3 nextDaylightSavingTimeTransition];
+  nextDaylightSavingTimeTransition = [v3 nextDaylightSavingTimeTransition];
 
-  if (v7)
+  if (nextDaylightSavingTimeTransition)
   {
-    v4 = [[NSTimer alloc] initWithFireDate:v7 interval:self target:"dstDidChange" selector:0 userInfo:0 repeats:0.0];
+    v4 = [[NSTimer alloc] initWithFireDate:nextDaylightSavingTimeTransition interval:self target:"dstDidChange" selector:0 userInfo:0 repeats:0.0];
     [(CTService *)self setNextDSTTransitionTimer:v4];
 
     v5 = +[NSRunLoop mainRunLoop];
-    v6 = [(CTService *)self nextDSTTransitionTimer];
-    [v5 addTimer:v6 forMode:NSDefaultRunLoopMode];
+    nextDSTTransitionTimer = [(CTService *)self nextDSTTransitionTimer];
+    [v5 addTimer:nextDSTTransitionTimer forMode:NSDefaultRunLoopMode];
   }
 }
 
@@ -168,59 +168,59 @@
   [(CTService *)self cancelNextDSTTransitionTimer];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(CTService *)self currentTimeCharacteristic];
-  v8 = [v7 subscribedCentrals];
-  v9 = [v8 count];
+  managerCopy = manager;
+  requestCopy = request;
+  currentTimeCharacteristic = [(CTService *)self currentTimeCharacteristic];
+  subscribedCentrals = [currentTimeCharacteristic subscribedCentrals];
+  v9 = [subscribedCentrals count];
 
   if (!v9)
   {
     +[NSTimeZone resetSystemTimeZone];
   }
 
-  v10 = [v6 characteristic];
-  v11 = [(CTService *)self currentTimeCharacteristic];
+  characteristic = [requestCopy characteristic];
+  currentTimeCharacteristic2 = [(CTService *)self currentTimeCharacteristic];
 
-  if (v10 == v11)
+  if (characteristic == currentTimeCharacteristic2)
   {
-    v15 = [(CTService *)self readCurrentTime];
+    readCurrentTime = [(CTService *)self readCurrentTime];
   }
 
   else
   {
-    v12 = [v6 characteristic];
-    v13 = [(CTService *)self localTimeInformationCharacteristic];
+    characteristic2 = [requestCopy characteristic];
+    localTimeInformationCharacteristic = [(CTService *)self localTimeInformationCharacteristic];
 
-    if (v12 != v13)
+    if (characteristic2 != localTimeInformationCharacteristic)
     {
       v14 = 10;
       goto LABEL_9;
     }
 
-    v15 = [(CTService *)self readLocalTimeInformation];
+    readCurrentTime = [(CTService *)self readLocalTimeInformation];
   }
 
-  v16 = v15;
-  [v6 setValue:v15];
+  v16 = readCurrentTime;
+  [requestCopy setValue:readCurrentTime];
 
   v14 = 0;
 LABEL_9:
-  [v17 respondToRequest:v6 withResult:v14];
+  [managerCopy respondToRequest:requestCopy withResult:v14];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v6 = a5;
-  v7 = [(CTService *)self currentTimeCharacteristic];
+  characteristicCopy = characteristic;
+  currentTimeCharacteristic = [(CTService *)self currentTimeCharacteristic];
 
-  if (v7 == v6)
+  if (currentTimeCharacteristic == characteristicCopy)
   {
-    v8 = [(CTService *)self currentTimeCharacteristic];
-    v9 = [v8 subscribedCentrals];
-    v10 = [v9 count];
+    currentTimeCharacteristic2 = [(CTService *)self currentTimeCharacteristic];
+    subscribedCentrals = [currentTimeCharacteristic2 subscribedCentrals];
+    v10 = [subscribedCentrals count];
 
     if (v10 == 1)
     {
@@ -231,16 +231,16 @@ LABEL_9:
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v6 = a5;
-  v7 = [(CTService *)self currentTimeCharacteristic];
+  characteristicCopy = characteristic;
+  currentTimeCharacteristic = [(CTService *)self currentTimeCharacteristic];
 
-  if (v7 == v6)
+  if (currentTimeCharacteristic == characteristicCopy)
   {
-    v8 = [(CTService *)self currentTimeCharacteristic];
-    v9 = [v8 subscribedCentrals];
-    v10 = [v9 count];
+    currentTimeCharacteristic2 = [(CTService *)self currentTimeCharacteristic];
+    subscribedCentrals = [currentTimeCharacteristic2 subscribedCentrals];
+    v10 = [subscribedCentrals count];
 
     if (!v10)
     {
@@ -285,9 +285,9 @@ LABEL_9:
 - (char)currentTimeZone
 {
   v2 = +[NSTimeZone systemTimeZone];
-  v3 = [v2 secondsFromGMT];
+  secondsFromGMT = [v2 secondsFromGMT];
   [v2 daylightSavingTimeOffset];
-  v5 = ((v3 - v4) / 60.0 / 15.0);
+  v5 = ((secondsFromGMT - v4) / 60.0 / 15.0);
 
   return v5;
 }

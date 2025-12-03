@@ -1,22 +1,22 @@
 @interface SSSScreenshotItemProvider
 - (SSSScreenshot)screenshot;
-- (SSSScreenshotItemProvider)initWithScreenshot:(id)a3;
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (SSSScreenshotItemProvider)initWithScreenshot:(id)screenshot;
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 - (id)nameForScreenshot;
 @end
 
 @implementation SSSScreenshotItemProvider
 
-- (SSSScreenshotItemProvider)initWithScreenshot:(id)a3
+- (SSSScreenshotItemProvider)initWithScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotItemProvider *)self placeholderItemForScreenshot:v4];
+  screenshotCopy = screenshot;
+  v5 = [(SSSScreenshotItemProvider *)self placeholderItemForScreenshot:screenshotCopy];
   v8.receiver = self;
   v8.super_class = SSSScreenshotItemProvider;
   v6 = [(SSSScreenshotItemProvider *)&v8 initWithPlaceholderItem:v5];
-  [(SSSScreenshotItemProvider *)v6 setScreenshot:v4];
+  [(SSSScreenshotItemProvider *)v6 setScreenshot:screenshotCopy];
 
   return v6;
 }
@@ -26,42 +26,42 @@
   overrideName = self->_overrideName;
   if (overrideName)
   {
-    v3 = overrideName;
+    filename = overrideName;
   }
 
   else
   {
-    v4 = [(SSSScreenshotItemProvider *)self screenshot];
-    v3 = [v4 filename];
+    screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+    filename = [screenshot filename];
   }
 
-  return v3;
+  return filename;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v4 = [(SSSScreenshotItemProvider *)self screenshot];
-  v5 = [(SSSScreenshotItemProvider *)self placeholderItemForScreenshot:v4];
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  v5 = [(SSSScreenshotItemProvider *)self placeholderItemForScreenshot:screenshot];
 
   return v5;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
   v5 = [NSException exceptionWithName:NSGenericException reason:@"Subclass must override [SSSScreenshotItemProvider activityViewController:subjectForActivityType]" userInfo:0];
-  v6 = [(SSSScreenshotItemProvider *)self screenshot];
-  v7 = [v6 filename];
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  filename = [screenshot filename];
 
-  return v7;
+  return filename;
 }
 
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type
 {
   v5 = [NSException exceptionWithName:NSGenericException reason:@"Subclass must override [SSSScreenshotItemProvider activityViewController:attachmentNameForActivityType]" userInfo:0];
-  v6 = [(SSSScreenshotItemProvider *)self screenshot];
-  v7 = [v6 filename];
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  filename = [screenshot filename];
 
-  return v7;
+  return filename;
 }
 
 - (SSSScreenshot)screenshot

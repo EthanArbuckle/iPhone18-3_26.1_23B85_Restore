@@ -1,8 +1,8 @@
 @interface MCTypeInput
 - (CGPoint)point;
-- (MCTypeInput)initWithCharacters:(id)a3 point:(CGPoint)a4 nearbyKeys:(id)a5 sourceKeyboardState:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)shortDescriptionWithLeadingString:(id)a3;
+- (MCTypeInput)initWithCharacters:(id)characters point:(CGPoint)point nearbyKeys:(id)keys sourceKeyboardState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)shortDescriptionWithLeadingString:(id)string;
 @end
 
 @implementation MCTypeInput
@@ -16,30 +16,30 @@
   return result;
 }
 
-- (id)shortDescriptionWithLeadingString:(id)a3
+- (id)shortDescriptionWithLeadingString:(id)string
 {
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = [(MCTypeInput *)self characters];
+  string = [MEMORY[0x277CCAB68] string];
+  characters = [(MCTypeInput *)self characters];
   [(MCTypeInput *)self point];
   v7 = v6;
   [(MCTypeInput *)self point];
   v9 = v8;
-  v10 = [(MCTypeInput *)self nearbyKeys];
-  v11 = [v10 count];
-  v12 = [(MCKeyboardInput *)self sourceKeyboardState];
-  [v4 appendFormat:@"%@, (%.2f, %.2f), %lu, %@", v5, v7, v9, v11, v12];
+  nearbyKeys = [(MCTypeInput *)self nearbyKeys];
+  v11 = [nearbyKeys count];
+  sourceKeyboardState = [(MCKeyboardInput *)self sourceKeyboardState];
+  [string appendFormat:@"%@, (%.2f, %.2f), %lu, %@", characters, v7, v9, v11, sourceKeyboardState];
 
-  return v4;
+  return string;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = MCTypeInput;
   v5 = [(MCKeyboardInput *)&v9 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSString *)self->_characters copyWithZone:a3];
+    v6 = [(NSString *)self->_characters copyWithZone:zone];
     v7 = *(v5 + 4);
     *(v5 + 4) = v6;
 
@@ -50,20 +50,20 @@
   return v5;
 }
 
-- (MCTypeInput)initWithCharacters:(id)a3 point:(CGPoint)a4 nearbyKeys:(id)a5 sourceKeyboardState:(id)a6
+- (MCTypeInput)initWithCharacters:(id)characters point:(CGPoint)point nearbyKeys:(id)keys sourceKeyboardState:(id)state
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  v12 = a5;
+  y = point.y;
+  x = point.x;
+  charactersCopy = characters;
+  keysCopy = keys;
   v17.receiver = self;
   v17.super_class = MCTypeInput;
-  v13 = [(MCKeyboardInput *)&v17 initWithSourceKeyboardState:a6];
+  v13 = [(MCKeyboardInput *)&v17 initWithSourceKeyboardState:state];
   if (v13)
   {
-    if (v11)
+    if (charactersCopy)
     {
-      v14 = [v11 copy];
+      v14 = [charactersCopy copy];
     }
 
     else
@@ -72,15 +72,15 @@
     }
 
     objc_storeStrong(&v13->_characters, v14);
-    if (v11)
+    if (charactersCopy)
     {
     }
 
     v13->_point.x = x;
     v13->_point.y = y;
-    if (v12)
+    if (keysCopy)
     {
-      v15 = [v12 copy];
+      v15 = [keysCopy copy];
     }
 
     else
@@ -89,7 +89,7 @@
     }
 
     objc_storeStrong(&v13->_nearbyKeys, v15);
-    if (v12)
+    if (keysCopy)
     {
     }
   }

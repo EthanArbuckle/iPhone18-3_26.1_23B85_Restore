@@ -1,16 +1,16 @@
 @interface PLPartialVideoCacheCleanUpMaintenanceTask
-+ (BOOL)_shouldRemovePartialVideoAtURL:(id)a3;
-- (BOOL)runTaskWithTransaction:(id)a3;
++ (BOOL)_shouldRemovePartialVideoAtURL:(id)l;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLPartialVideoCacheCleanUpMaintenanceTask
 
-+ (BOOL)_shouldRemovePartialVideoAtURL:(id)a3
++ (BOOL)_shouldRemovePartialVideoAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v14 = 0;
   v13 = 0;
-  v4 = [v3 getResourceValue:&v14 forKey:NSURLContentAccessDateKey error:&v13];
+  v4 = [lCopy getResourceValue:&v14 forKey:NSURLContentAccessDateKey error:&v13];
   v5 = v14;
   v6 = v13;
   if (v4)
@@ -29,7 +29,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v16 = v3;
+      v16 = lCopy;
       v17 = 1024;
       v18 = v4;
       v19 = 2112;
@@ -51,12 +51,12 @@
   return v11;
 }
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v3 = [(PLMaintenanceTask *)self libraryServicesManager];
-  v4 = [v3 isSystemPhotoLibrary];
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  isSystemPhotoLibrary = [libraryServicesManager isSystemPhotoLibrary];
 
-  if (!v4)
+  if (!isSystemPhotoLibrary)
   {
     return 1;
   }
@@ -134,16 +134,16 @@ LABEL_15:
 
       if (([v17 BOOLValue] & 1) == 0 && objc_msgSend(objc_opt_class(), "_shouldRemovePartialVideoAtURL:", v15))
       {
-        v19 = [v15 pathComponents];
-        v20 = [v19 lastObject];
-        if ([v19 count] < 2)
+        pathComponents = [v15 pathComponents];
+        lastObject = [pathComponents lastObject];
+        if ([pathComponents count] < 2)
         {
           v40 = 0;
         }
 
         else
         {
-          v40 = [v19 objectAtIndex:{objc_msgSend(v19, "count") - 2}];
+          v40 = [pathComponents objectAtIndex:{objc_msgSend(pathComponents, "count") - 2}];
         }
 
         v27 = +[NSFileManager defaultManager];
@@ -158,7 +158,7 @@ LABEL_15:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
             *buf = 138543618;
-            v49 = v20;
+            v49 = lastObject;
             v50 = 2114;
             v30 = v40;
             v51 = v40;
@@ -180,7 +180,7 @@ LABEL_32:
           }
 
           *buf = 138543874;
-          v49 = v20;
+          v49 = lastObject;
           v50 = 2114;
           v30 = v40;
           v51 = v40;

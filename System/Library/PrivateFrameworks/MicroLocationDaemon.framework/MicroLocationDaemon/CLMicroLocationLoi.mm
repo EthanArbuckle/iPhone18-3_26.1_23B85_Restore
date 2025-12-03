@@ -1,22 +1,22 @@
 @interface CLMicroLocationLoi
-- (CLMicroLocationLoi)initWithIdentifier:(id)a3 andType:(int64_t)a4;
+- (CLMicroLocationLoi)initWithIdentifier:(id)identifier andType:(int64_t)type;
 @end
 
 @implementation CLMicroLocationLoi
 
-- (CLMicroLocationLoi)initWithIdentifier:(id)a3 andType:(int64_t)a4
+- (CLMicroLocationLoi)initWithIdentifier:(id)identifier andType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CLMicroLocationLoi;
   v7 = [(CLMicroLocationLoi *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     loiIdentifier = v7->_loiIdentifier;
     v7->_loiIdentifier = v8;
 
-    v7->_type = a4;
+    v7->_type = type;
   }
 
   return v7;

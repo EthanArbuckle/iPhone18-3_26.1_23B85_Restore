@@ -1,25 +1,25 @@
 @interface CellularLteIratCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCtolReselCount:(id)a3;
-- (void)addFromLteHoCount:(id)a3;
-- (void)addFromLteRedirCount:(id)a3;
-- (void)addFromLteReselCount:(id)a3;
-- (void)addWtolRedirCount:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCtolReselCount:(id)count;
+- (void)addFromLteHoCount:(id)count;
+- (void)addFromLteRedirCount:(id)count;
+- (void)addFromLteReselCount:(id)count;
+- (void)addWtolRedirCount:(id)count;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLteIratCount
 
-- (void)setHasDurationSeconds:(BOOL)a3
+- (void)setHasDurationSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -32,94 +32,94 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addFromLteHoCount:(id)a3
+- (void)addFromLteHoCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   fromLteHoCounts = self->_fromLteHoCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!fromLteHoCounts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_fromLteHoCounts;
     self->_fromLteHoCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     fromLteHoCounts = self->_fromLteHoCounts;
   }
 
-  [(NSMutableArray *)fromLteHoCounts addObject:v4];
+  [(NSMutableArray *)fromLteHoCounts addObject:countCopy];
 }
 
-- (void)addFromLteReselCount:(id)a3
+- (void)addFromLteReselCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   fromLteReselCounts = self->_fromLteReselCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!fromLteReselCounts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_fromLteReselCounts;
     self->_fromLteReselCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     fromLteReselCounts = self->_fromLteReselCounts;
   }
 
-  [(NSMutableArray *)fromLteReselCounts addObject:v4];
+  [(NSMutableArray *)fromLteReselCounts addObject:countCopy];
 }
 
-- (void)addFromLteRedirCount:(id)a3
+- (void)addFromLteRedirCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   fromLteRedirCounts = self->_fromLteRedirCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!fromLteRedirCounts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_fromLteRedirCounts;
     self->_fromLteRedirCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     fromLteRedirCounts = self->_fromLteRedirCounts;
   }
 
-  [(NSMutableArray *)fromLteRedirCounts addObject:v4];
+  [(NSMutableArray *)fromLteRedirCounts addObject:countCopy];
 }
 
-- (void)addWtolRedirCount:(id)a3
+- (void)addWtolRedirCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   wtolRedirCounts = self->_wtolRedirCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!wtolRedirCounts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_wtolRedirCounts;
     self->_wtolRedirCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     wtolRedirCounts = self->_wtolRedirCounts;
   }
 
-  [(NSMutableArray *)wtolRedirCounts addObject:v4];
+  [(NSMutableArray *)wtolRedirCounts addObject:countCopy];
 }
 
-- (void)addCtolReselCount:(id)a3
+- (void)addCtolReselCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   ctolReselCounts = self->_ctolReselCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!ctolReselCounts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_ctolReselCounts;
     self->_ctolReselCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     ctolReselCounts = self->_ctolReselCounts;
   }
 
-  [(NSMutableArray *)ctolReselCounts addObject:v4];
+  [(NSMutableArray *)ctolReselCounts addObject:countCopy];
 }
 
 - (id)description
@@ -127,8 +127,8 @@
   v7.receiver = self;
   v7.super_class = CellularLteIratCount;
   v3 = [(CellularLteIratCount *)&v7 description];
-  v4 = [(CellularLteIratCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLteIratCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -173,8 +173,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v63 objects:v71 count:16];
@@ -208,8 +208,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v59 objects:v70 count:16];
@@ -243,8 +243,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v55 + 1) + 8 * k) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation3 = [*(*(&v55 + 1) + 8 * k) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation3];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v55 objects:v69 count:16];
@@ -259,15 +259,15 @@
   wtolHoCount = self->_wtolHoCount;
   if (wtolHoCount)
   {
-    v29 = [(HoFromUtranCount *)wtolHoCount dictionaryRepresentation];
-    [v3 setObject:v29 forKey:@"wtol_ho_count"];
+    dictionaryRepresentation4 = [(HoFromUtranCount *)wtolHoCount dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"wtol_ho_count"];
   }
 
   wtolReselCount = self->_wtolReselCount;
   if (wtolReselCount)
   {
-    v31 = [(ReselFromUtranCount *)wtolReselCount dictionaryRepresentation];
-    [v3 setObject:v31 forKey:@"wtol_resel_count"];
+    dictionaryRepresentation5 = [(ReselFromUtranCount *)wtolReselCount dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"wtol_resel_count"];
   }
 
   if ([(NSMutableArray *)self->_wtolRedirCounts count])
@@ -292,8 +292,8 @@
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v51 + 1) + 8 * m) dictionaryRepresentation];
-          [v32 addObject:v38];
+          dictionaryRepresentation6 = [*(*(&v51 + 1) + 8 * m) dictionaryRepresentation];
+          [v32 addObject:dictionaryRepresentation6];
         }
 
         v35 = [(NSMutableArray *)v33 countByEnumeratingWithState:&v51 objects:v68 count:16];
@@ -327,8 +327,8 @@
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v47 + 1) + 8 * n) dictionaryRepresentation];
-          [v39 addObject:v45];
+          dictionaryRepresentation7 = [*(*(&v47 + 1) + 8 * n) dictionaryRepresentation];
+          [v39 addObject:dictionaryRepresentation7];
         }
 
         v42 = [(NSMutableArray *)v40 countByEnumeratingWithState:&v47 objects:v67 count:16];
@@ -343,9 +343,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -516,31 +516,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 80) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 80) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_durationSeconds;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 6) = self->_durationSeconds;
+    *(toCopy + 80) |= 2u;
   }
 
-  v26 = v4;
+  v26 = toCopy;
   if ([(CellularLteIratCount *)self fromLteHoCountsCount])
   {
     [v26 clearFromLteHoCounts];
-    v6 = [(CellularLteIratCount *)self fromLteHoCountsCount];
-    if (v6)
+    fromLteHoCountsCount = [(CellularLteIratCount *)self fromLteHoCountsCount];
+    if (fromLteHoCountsCount)
     {
-      v7 = v6;
+      v7 = fromLteHoCountsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularLteIratCount *)self fromLteHoCountAtIndex:i];
@@ -552,10 +552,10 @@
   if ([(CellularLteIratCount *)self fromLteReselCountsCount])
   {
     [v26 clearFromLteReselCounts];
-    v10 = [(CellularLteIratCount *)self fromLteReselCountsCount];
-    if (v10)
+    fromLteReselCountsCount = [(CellularLteIratCount *)self fromLteReselCountsCount];
+    if (fromLteReselCountsCount)
     {
-      v11 = v10;
+      v11 = fromLteReselCountsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CellularLteIratCount *)self fromLteReselCountAtIndex:j];
@@ -567,10 +567,10 @@
   if ([(CellularLteIratCount *)self fromLteRedirCountsCount])
   {
     [v26 clearFromLteRedirCounts];
-    v14 = [(CellularLteIratCount *)self fromLteRedirCountsCount];
-    if (v14)
+    fromLteRedirCountsCount = [(CellularLteIratCount *)self fromLteRedirCountsCount];
+    if (fromLteRedirCountsCount)
     {
-      v15 = v14;
+      v15 = fromLteRedirCountsCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(CellularLteIratCount *)self fromLteRedirCountAtIndex:k];
@@ -592,10 +592,10 @@
   if ([(CellularLteIratCount *)self wtolRedirCountsCount])
   {
     [v26 clearWtolRedirCounts];
-    v18 = [(CellularLteIratCount *)self wtolRedirCountsCount];
-    if (v18)
+    wtolRedirCountsCount = [(CellularLteIratCount *)self wtolRedirCountsCount];
+    if (wtolRedirCountsCount)
     {
-      v19 = v18;
+      v19 = wtolRedirCountsCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(CellularLteIratCount *)self wtolRedirCountAtIndex:m];
@@ -607,10 +607,10 @@
   if ([(CellularLteIratCount *)self ctolReselCountsCount])
   {
     [v26 clearCtolReselCounts];
-    v22 = [(CellularLteIratCount *)self ctolReselCountsCount];
-    if (v22)
+    ctolReselCountsCount = [(CellularLteIratCount *)self ctolReselCountsCount];
+    if (ctolReselCountsCount)
     {
-      v23 = v22;
+      v23 = ctolReselCountsCount;
       for (n = 0; n != v23; ++n)
       {
         v25 = [(CellularLteIratCount *)self ctolReselCountAtIndex:n];
@@ -620,9 +620,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -657,7 +657,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v59 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v59 + 1) + 8 * i) copyWithZone:zone];
         [v6 addFromLteHoCount:v13];
       }
 
@@ -686,7 +686,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v55 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v55 + 1) + 8 * j) copyWithZone:zone];
         [v6 addFromLteReselCount:v19];
       }
 
@@ -715,7 +715,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v51 + 1) + 8 * k) copyWithZone:a3];
+        v25 = [*(*(&v51 + 1) + 8 * k) copyWithZone:zone];
         [v6 addFromLteRedirCount:v25];
       }
 
@@ -725,11 +725,11 @@
     while (v22);
   }
 
-  v26 = [(HoFromUtranCount *)self->_wtolHoCount copyWithZone:a3];
+  v26 = [(HoFromUtranCount *)self->_wtolHoCount copyWithZone:zone];
   v27 = v6[7];
   v6[7] = v26;
 
-  v28 = [(ReselFromUtranCount *)self->_wtolReselCount copyWithZone:a3];
+  v28 = [(ReselFromUtranCount *)self->_wtolReselCount copyWithZone:zone];
   v29 = v6[9];
   v6[9] = v28;
 
@@ -752,7 +752,7 @@
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v47 + 1) + 8 * m) copyWithZone:a3];
+        v35 = [*(*(&v47 + 1) + 8 * m) copyWithZone:zone];
         [v6 addWtolRedirCount:v35];
       }
 
@@ -781,7 +781,7 @@
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v43 + 1) + 8 * n) copyWithZone:{a3, v43}];
+        v41 = [*(*(&v43 + 1) + 8 * n) copyWithZone:{zone, v43}];
         [v6 addCtolReselCount:v41];
       }
 
@@ -794,24 +794,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(equalCopy + 80);
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_26:
     v13 = 0;
@@ -820,25 +820,25 @@ LABEL_26:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_durationSeconds != *(v4 + 6))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_durationSeconds != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   fromLteHoCounts = self->_fromLteHoCounts;
-  if (fromLteHoCounts | *(v4 + 4) && ![(NSMutableArray *)fromLteHoCounts isEqual:?])
+  if (fromLteHoCounts | *(equalCopy + 4) && ![(NSMutableArray *)fromLteHoCounts isEqual:?])
   {
     goto LABEL_26;
   }
 
   fromLteReselCounts = self->_fromLteReselCounts;
-  if (fromLteReselCounts | *(v4 + 6))
+  if (fromLteReselCounts | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)fromLteReselCounts isEqual:?])
     {
@@ -847,7 +847,7 @@ LABEL_26:
   }
 
   fromLteRedirCounts = self->_fromLteRedirCounts;
-  if (fromLteRedirCounts | *(v4 + 5))
+  if (fromLteRedirCounts | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)fromLteRedirCounts isEqual:?])
     {
@@ -856,7 +856,7 @@ LABEL_26:
   }
 
   wtolHoCount = self->_wtolHoCount;
-  if (wtolHoCount | *(v4 + 7))
+  if (wtolHoCount | *(equalCopy + 7))
   {
     if (![(HoFromUtranCount *)wtolHoCount isEqual:?])
     {
@@ -865,7 +865,7 @@ LABEL_26:
   }
 
   wtolReselCount = self->_wtolReselCount;
-  if (wtolReselCount | *(v4 + 9))
+  if (wtolReselCount | *(equalCopy + 9))
   {
     if (![(ReselFromUtranCount *)wtolReselCount isEqual:?])
     {
@@ -874,7 +874,7 @@ LABEL_26:
   }
 
   wtolRedirCounts = self->_wtolRedirCounts;
-  if (wtolRedirCounts | *(v4 + 8))
+  if (wtolRedirCounts | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)wtolRedirCounts isEqual:?])
     {
@@ -883,7 +883,7 @@ LABEL_26:
   }
 
   ctolReselCounts = self->_ctolReselCounts;
-  if (ctolReselCounts | *(v4 + 2))
+  if (ctolReselCounts | *(equalCopy + 2))
   {
     v13 = [(NSMutableArray *)ctolReselCounts isEqual:?];
   }
@@ -931,21 +931,21 @@ LABEL_6:
   return v10 ^ [(NSMutableArray *)self->_ctolReselCounts hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 80);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 80);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 80);
+    v6 = *(fromCopy + 80);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_durationSeconds = *(v4 + 6);
+    self->_durationSeconds = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
@@ -953,7 +953,7 @@ LABEL_6:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v8)
   {

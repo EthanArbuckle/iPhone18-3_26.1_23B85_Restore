@@ -1,12 +1,12 @@
 @interface WLDPushParsing
-+ (int64_t)actionTypeForNotification:(id)a3;
++ (int64_t)actionTypeForNotification:(id)notification;
 @end
 
 @implementation WLDPushParsing
 
-+ (int64_t)actionTypeForNotification:(id)a3
++ (int64_t)actionTypeForNotification:(id)notification
 {
-  v3 = [a3 wlk_numberForKey:@"1"];
+  v3 = [notification wlk_numberForKey:@"1"];
   v4 = v3;
   if (!v3)
   {

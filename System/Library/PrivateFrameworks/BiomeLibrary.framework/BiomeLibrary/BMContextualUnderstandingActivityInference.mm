@@ -1,16 +1,16 @@
 @interface BMContextualUnderstandingActivityInference
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextualUnderstandingActivityInference)initWithInferredActivities:(id)a3;
-- (BMContextualUnderstandingActivityInference)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BOOL)isEqual:(id)a3;
+- (BMContextualUnderstandingActivityInference)initWithInferredActivities:(id)activities;
+- (BMContextualUnderstandingActivityInference)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_inferredActivitiesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextualUnderstandingActivityInference
@@ -27,25 +27,25 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
-    v7 = [v5 inferredActivities];
-    if (v6 == v7)
+    v5 = equalCopy;
+    inferredActivities = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
+    inferredActivities2 = [v5 inferredActivities];
+    if (inferredActivities == inferredActivities2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
-      v9 = [v5 inferredActivities];
-      v10 = [v8 isEqual:v9];
+      inferredActivities3 = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
+      inferredActivities4 = [v5 inferredActivities];
+      v10 = [inferredActivities3 isEqual:inferredActivities4];
     }
   }
 
@@ -60,17 +60,17 @@
 - (id)jsonDictionary
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BMContextualUnderstandingActivityInference *)self _inferredActivitiesJSONArray];
+  _inferredActivitiesJSONArray = [(BMContextualUnderstandingActivityInference *)self _inferredActivitiesJSONArray];
   v7 = @"inferredActivities";
-  v3 = v2;
-  if (!v2)
+  null = _inferredActivitiesJSONArray;
+  if (!_inferredActivitiesJSONArray)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!_inferredActivitiesJSONArray)
   {
   }
 
@@ -87,8 +87,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inferredActivities = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
+  v5 = [inferredActivities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -99,14 +99,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inferredActivities);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [inferredActivities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -117,12 +117,12 @@
   return v3;
 }
 
-- (BMContextualUnderstandingActivityInference)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMContextualUnderstandingActivityInference)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"inferredActivities"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  v6 = [dictionary objectForKeyedSubscript:@"inferredActivities"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
@@ -144,7 +144,7 @@ LABEL_6:
 
     v11 = v10;
     v12 = *v37;
-    v33 = self;
+    selfCopy = self;
 LABEL_8:
     v13 = 0;
     while (1)
@@ -164,7 +164,7 @@ LABEL_8:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        self = v33;
+        self = selfCopy;
         v19 = v34;
         if (!v34)
         {
@@ -196,7 +196,7 @@ LABEL_8:
           *v34 = v25;
         }
 
-        self = v33;
+        self = selfCopy;
 LABEL_25:
 
 LABEL_26:
@@ -208,7 +208,7 @@ LABEL_26:
       if (v11 == ++v13)
       {
         v11 = [v6 countByEnumeratingWithState:&v36 objects:v44 count:16];
-        self = v33;
+        self = selfCopy;
         if (v11)
         {
           goto LABEL_8;
@@ -224,7 +224,7 @@ LABEL_28:
       }
     }
 
-    self = v33;
+    self = selfCopy;
     v19 = v34;
     if (!v34)
     {
@@ -278,15 +278,15 @@ LABEL_29:
 {
   v3 = objc_opt_new();
   [(BMContextualUnderstandingActivityInference *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -308,7 +308,7 @@ LABEL_29:
 
         v10 = *(*(&v12 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -321,9 +321,9 @@ LABEL_29:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v24.receiver = self;
   v24.super_class = BMContextualUnderstandingActivityInference;
   v5 = [(BMEventBase *)&v24 init];
@@ -333,12 +333,12 @@ LABEL_29:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -349,18 +349,18 @@ LABEL_29:
       while (1)
       {
         LOBYTE(v25[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v25 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v25 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v25[0] & 0x7F) << v8;
@@ -377,9 +377,9 @@ LABEL_29:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -388,7 +388,7 @@ LABEL_16:
       {
         v25[0] = 0;
         v25[1] = 0;
-        if (!PBReaderPlaceMark() || (v16 = [[BMContextualUnderstandingActivityInferenceInferredActivity alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v16 = [[BMContextualUnderstandingActivityInferenceInferredActivity alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_26:
 
@@ -405,18 +405,18 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      v18 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v18 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v19 = [v6 copy];
   inferredActivities = v5->_inferredActivities;
   v5->_inferredActivities = v19;
 
-  v21 = [v4 hasError];
-  if (v21)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_27:
     v22 = 0;
@@ -434,22 +434,22 @@ LABEL_25:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
-  v5 = [v3 initWithFormat:@"BMContextualUnderstandingActivityInference with inferredActivities: %@", v4];
+  inferredActivities = [(BMContextualUnderstandingActivityInference *)self inferredActivities];
+  v5 = [v3 initWithFormat:@"BMContextualUnderstandingActivityInference with inferredActivities: %@", inferredActivities];
 
   return v5;
 }
 
-- (BMContextualUnderstandingActivityInference)initWithInferredActivities:(id)a3
+- (BMContextualUnderstandingActivityInference)initWithInferredActivities:(id)activities
 {
-  v5 = a3;
+  activitiesCopy = activities;
   v8.receiver = self;
   v8.super_class = BMContextualUnderstandingActivityInference;
   v6 = [(BMEventBase *)&v8 init];
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v6->_inferredActivities, a3);
+    objc_storeStrong(&v6->_inferredActivities, activities);
   }
 
   return v6;
@@ -476,9 +476,9 @@ id __53__BMContextualUnderstandingActivityInference_columns__block_invoke(uint64
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -486,8 +486,8 @@ id __53__BMContextualUnderstandingActivityInference_columns__block_invoke(uint64
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextualUnderstandingActivityInference alloc] initByReadFrom:v7];
     v4 = v8;

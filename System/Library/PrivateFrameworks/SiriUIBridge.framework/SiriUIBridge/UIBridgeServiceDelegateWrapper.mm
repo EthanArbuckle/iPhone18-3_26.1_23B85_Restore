@@ -1,98 +1,98 @@
 @interface UIBridgeServiceDelegateWrapper
 - (void)uiBridgeServiceDetectedSiriDirectedSpeech;
 - (void)uiBridgeServiceDetectedSpeechStart;
-- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)a3;
-- (void)uiBridgeServiceDidReceiveTasks:(id)a3;
+- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)start;
+- (void)uiBridgeServiceDidReceiveTasks:(id)tasks;
 - (void)uiBridgeServiceDidStartAttending;
-- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)a3;
-- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)a3;
-- (void)uiBridgeServiceReceivedRequestProgress:(id)a3;
+- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)id;
+- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)reason;
+- (void)uiBridgeServiceReceivedRequestProgress:(id)progress;
 - (void)uiBridgeServiceReceivedShowAssetsDownloadPrompt;
-- (void)uiBridgeServiceReceivedSiriResponse:(id)a3;
-- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)a3;
+- (void)uiBridgeServiceReceivedSiriResponse:(id)response;
+- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)result;
 - (void)uiBridgeServiceWillStartAttending;
 @end
 
 @implementation UIBridgeServiceDelegateWrapper
 
-- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)a3
+- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)reason
 {
-  v3 = self;
+  selfCopy = self;
   sub_222DF4780();
 }
 
 - (void)uiBridgeServiceWillStartAttending
 {
-  v2 = self;
+  selfCopy = self;
   sub_222E01EC0();
 }
 
 - (void)uiBridgeServiceDidStartAttending
 {
-  v2 = self;
+  selfCopy = self;
   sub_222E01F20();
 }
 
-- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)a3
+- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)id
 {
-  if (a3)
+  if (id)
   {
     sub_222E098C0();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_222E01FEC();
 }
 
 - (void)uiBridgeServiceDetectedSpeechStart
 {
-  v2 = self;
+  selfCopy = self;
   sub_222E021A8();
 }
 
-- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)a3
+- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)start
 {
-  v4 = self;
-  sub_222E02208(a3);
+  selfCopy = self;
+  sub_222E02208(start);
 }
 
 - (void)uiBridgeServiceDetectedSiriDirectedSpeech
 {
-  v2 = self;
+  selfCopy = self;
   sub_222E02370();
 }
 
-- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)a3
+- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)result
 {
-  v3 = self;
+  selfCopy = self;
   sub_222E023D0();
 }
 
 - (void)uiBridgeServiceReceivedShowAssetsDownloadPrompt
 {
-  v2 = self;
+  selfCopy = self;
   sub_222E0243C();
 }
 
-- (void)uiBridgeServiceReceivedRequestProgress:(id)a3
+- (void)uiBridgeServiceReceivedRequestProgress:(id)progress
 {
-  v4 = a3;
-  v5 = self;
+  progressCopy = progress;
+  selfCopy = self;
   sub_222E0252C();
 }
 
-- (void)uiBridgeServiceDidReceiveTasks:(id)a3
+- (void)uiBridgeServiceDidReceiveTasks:(id)tasks
 {
   sub_222E06308();
   v4 = sub_222E09920();
-  v5 = self;
+  selfCopy = self;
   sub_222E025DC(v4);
 }
 
-- (void)uiBridgeServiceReceivedSiriResponse:(id)a3
+- (void)uiBridgeServiceReceivedSiriResponse:(id)response
 {
-  v4 = a3;
-  v5 = self;
+  responseCopy = response;
+  selfCopy = self;
   sub_222E02C20();
 }
 

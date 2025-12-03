@@ -1,15 +1,15 @@
 @interface BaseNativeView
-- (_TtC7Preview14BaseNativeView)initWithFrame:(CGRect)a3;
+- (_TtC7Preview14BaseNativeView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BaseNativeView
 
-- (_TtC7Preview14BaseNativeView)initWithFrame:(CGRect)a3
+- (_TtC7Preview14BaseNativeView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -20,9 +20,9 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for BaseNativeView();
-  v8 = [(BaseNativeView *)&v10 initWithFrame:x, y, width, height];
+  height = [(BaseNativeView *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
 @end

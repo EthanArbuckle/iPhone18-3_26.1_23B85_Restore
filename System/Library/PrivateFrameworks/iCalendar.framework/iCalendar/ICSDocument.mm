@@ -1,30 +1,30 @@
 @interface ICSDocument
-- (ICSDocument)initWithCalendar:(id)a3;
-- (ICSDocument)initWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (ICSDocument)initWithData:(id)a3 encoding:(unint64_t)a4 options:(unint64_t)a5 delegate:(id)a6 error:(id *)a7;
-- (ICSDocument)initWithICSString:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)ICSCompressedDataWithOptions:(unint64_t)a3;
-- (id)ICSDataWithOptions:(unint64_t)a3;
-- (id)ICSStringWithOptions:(unint64_t)a3;
-- (void)validateParsedCalendar:(id)a3;
+- (ICSDocument)initWithCalendar:(id)calendar;
+- (ICSDocument)initWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error;
+- (ICSDocument)initWithData:(id)data encoding:(unint64_t)encoding options:(unint64_t)options delegate:(id)delegate error:(id *)error;
+- (ICSDocument)initWithICSString:(id)string options:(unint64_t)options error:(id *)error;
+- (id)ICSCompressedDataWithOptions:(unint64_t)options;
+- (id)ICSDataWithOptions:(unint64_t)options;
+- (id)ICSStringWithOptions:(unint64_t)options;
+- (void)validateParsedCalendar:(id)calendar;
 @end
 
 @implementation ICSDocument
 
-- (ICSDocument)initWithICSString:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (ICSDocument)initWithICSString:(id)string options:(unint64_t)options error:(id *)error
 {
-  v8 = [a3 dataUsingEncoding:4];
-  v9 = [(ICSDocument *)self initWithData:v8 options:a4 error:a5];
+  v8 = [string dataUsingEncoding:4];
+  v9 = [(ICSDocument *)self initWithData:v8 options:options error:error];
 
   return v9;
 }
 
-- (ICSDocument)initWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (ICSDocument)initWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:0 error:?];
+  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:0 error:?];
   if (v8)
   {
-    v9 = [(ICSDocument *)self initWithData:v8 options:a4 error:a5];
+    v9 = [(ICSDocument *)self initWithData:v8 options:options error:error];
     self = v9;
   }
 
@@ -36,19 +36,19 @@
   return v9;
 }
 
-- (ICSDocument)initWithData:(id)a3 encoding:(unint64_t)a4 options:(unint64_t)a5 delegate:(id)a6 error:(id *)a7
+- (ICSDocument)initWithData:(id)data encoding:(unint64_t)encoding options:(unint64_t)options delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  if (a4 != 4)
+  dataCopy = data;
+  delegateCopy = delegate;
+  if (encoding != 4)
   {
-    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v11 encoding:a4];
+    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:encoding];
     v14 = [v13 dataUsingEncoding:4 allowLossyConversion:1];
 
-    v11 = v14;
+    dataCopy = v14;
   }
 
-  v15 = [ICSParser entitiesFromNSData:v11 options:a5];
+  v15 = [ICSParser entitiesFromNSData:dataCopy options:options];
   if ([v15 count] && (objc_msgSend(v15, "objectAtIndex:", 0), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, (isKindOfClass & 1) != 0))
   {
     v18 = [v15 objectAtIndex:0];
@@ -61,12 +61,12 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v12 documentParsedCalendar:v18];
+    v19 = [delegateCopy documentParsedCalendar:v18];
 
     v18 = v19;
   }
 
-  if ((a5 & 0x100) == 0)
+  if ((options & 0x100) == 0)
   {
     [(ICSDocument *)self validateParsedCalendar:v18];
   }
@@ -76,20 +76,20 @@
   return v20;
 }
 
-- (void)validateParsedCalendar:(id)a3
+- (void)validateParsedCalendar:(id)calendar
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  calendarCopy = calendar;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v3 components];
+  obj = [calendarCopy components];
   v4 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
-    v23 = v3;
+    v23 = calendarCopy;
     v6 = 0;
     v7 = 0;
     v8 = 0;
@@ -116,8 +116,8 @@
             if (!v8)
             {
               v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
-              v14 = [v23 parsingErrors];
-              v15 = [v14 mutableCopy];
+              parsingErrors = [v23 parsingErrors];
+              v15 = [parsingErrors mutableCopy];
 
               v7 = v15;
             }
@@ -137,13 +137,13 @@
 
     if (!v8)
     {
-      v3 = v23;
+      calendarCopy = v23;
       goto LABEL_27;
     }
 
-    v3 = v23;
-    v16 = [v23 components];
-    v17 = [v16 mutableCopy];
+    calendarCopy = v23;
+    components = [v23 components];
+    v17 = [components mutableCopy];
 
     [v17 removeObjectsAtIndexes:v8];
     obj = v17;
@@ -187,26 +187,26 @@ LABEL_27:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (ICSDocument)initWithCalendar:(id)a3
+- (ICSDocument)initWithCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v9.receiver = self;
   v9.super_class = ICSDocument;
   v6 = [(ICSDocument *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calendar, a3);
+    objc_storeStrong(&v6->_calendar, calendar);
   }
 
   return v7;
 }
 
-- (id)ICSDataWithOptions:(unint64_t)a3
+- (id)ICSDataWithOptions:(unint64_t)options
 {
   if (self->_calendar)
   {
-    v4 = [(ICSDocument *)self ICSStringWithOptions:a3];
+    v4 = [(ICSDocument *)self ICSStringWithOptions:options];
     v5 = [v4 dataUsingEncoding:4];
     if (v5)
     {
@@ -232,12 +232,12 @@ LABEL_27:
   return v6;
 }
 
-- (id)ICSStringWithOptions:(unint64_t)a3
+- (id)ICSStringWithOptions:(unint64_t)options
 {
   if (self->_calendar)
   {
     v5 = objc_alloc_init(ICSStringWriter);
-    [(ICSComponent *)self->_calendar ICSStringWithOptions:a3 appendingToString:v5];
+    [(ICSComponent *)self->_calendar ICSStringWithOptions:options appendingToString:v5];
   }
 
   else
@@ -245,17 +245,17 @@ LABEL_27:
     v5 = 0;
   }
 
-  v6 = [(ICSStringWriter *)v5 result];
+  result = [(ICSStringWriter *)v5 result];
 
-  return v6;
+  return result;
 }
 
-- (id)ICSCompressedDataWithOptions:(unint64_t)a3
+- (id)ICSCompressedDataWithOptions:(unint64_t)options
 {
   if (self->_calendar)
   {
     v5 = objc_alloc_init(ICSZStringWriter);
-    [(ICSComponent *)self->_calendar ICSStringWithOptions:a3 appendingToString:v5];
+    [(ICSComponent *)self->_calendar ICSStringWithOptions:options appendingToString:v5];
   }
 
   else
@@ -263,9 +263,9 @@ LABEL_27:
     v5 = 0;
   }
 
-  v6 = [(ICSZStringWriter *)v5 zResult];
+  zResult = [(ICSZStringWriter *)v5 zResult];
 
-  return v6;
+  return zResult;
 }
 
 @end

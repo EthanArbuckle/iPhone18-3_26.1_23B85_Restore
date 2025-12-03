@@ -1,25 +1,25 @@
 @interface USPSchemaUSPMeasurementContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USPSchemaUSPMeasurementContext)initWithDictionary:(id)a3;
-- (USPSchemaUSPMeasurementContext)initWithJSON:(id)a3;
+- (USPSchemaUSPMeasurementContext)initWithDictionary:(id)dictionary;
+- (USPSchemaUSPMeasurementContext)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USPSchemaUSPMeasurementContext
 
-- (USPSchemaUSPMeasurementContext)initWithDictionary:(id)a3
+- (USPSchemaUSPMeasurementContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = USPSchemaUSPMeasurementContext;
   v5 = [(USPSchemaUSPMeasurementContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contextName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contextName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(USPSchemaUSPMeasurementContext *)v5 setContextName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"environment"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"environment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (USPSchemaUSPMeasurementContext)initWithJSON:(id)a3
+- (USPSchemaUSPMeasurementContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USPSchemaUSPMeasurementContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USPSchemaUSPMeasurementContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USPSchemaUSPMeasurementContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,24 +76,24 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contextName)
   {
-    v4 = [(USPSchemaUSPMeasurementContext *)self contextName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"contextName"];
+    contextName = [(USPSchemaUSPMeasurementContext *)self contextName];
+    v5 = [contextName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"contextName"];
   }
 
   if (*&self->_has)
   {
-    v6 = [(USPSchemaUSPMeasurementContext *)self environment];
+    environment = [(USPSchemaUSPMeasurementContext *)self environment];
     v7 = @"USPENVIRONMENT_UNKNOWN";
-    if (v6 == 1)
+    if (environment == 1)
     {
       v7 = @"USPENVIRONMENT_LOCAL";
     }
 
-    if (v6 == 2)
+    if (environment == 2)
     {
       v8 = @"USPENVIRONMENT_CONTINUOS_INTEGRATION";
     }
@@ -103,12 +103,12 @@
       v8 = v7;
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"environment"];
+    [dictionary setObject:v8 forKeyedSubscript:@"environment"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,18 +127,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(USPSchemaUSPMeasurementContext *)self contextName];
-  v6 = [v4 contextName];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  contextName = [(USPSchemaUSPMeasurementContext *)self contextName];
+  contextName2 = [equalCopy contextName];
+  v7 = contextName2;
+  if ((contextName != 0) == (contextName2 == 0))
   {
 
 LABEL_12:
@@ -146,13 +146,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(USPSchemaUSPMeasurementContext *)self contextName];
-  if (v8)
+  contextName3 = [(USPSchemaUSPMeasurementContext *)self contextName];
+  if (contextName3)
   {
-    v9 = v8;
-    v10 = [(USPSchemaUSPMeasurementContext *)self contextName];
-    v11 = [v4 contextName];
-    v12 = [v10 isEqual:v11];
+    v9 = contextName3;
+    contextName4 = [(USPSchemaUSPMeasurementContext *)self contextName];
+    contextName5 = [equalCopy contextName];
+    v12 = [contextName4 isEqual:contextName5];
 
     if (!v12)
     {
@@ -164,7 +164,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -172,7 +172,7 @@ LABEL_12:
   if (*&self->_has)
   {
     environment = self->_environment;
-    if (environment != [v4 environment])
+    if (environment != [equalCopy environment])
     {
       goto LABEL_12;
     }
@@ -184,12 +184,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(USPSchemaUSPMeasurementContext *)self contextName];
+  toCopy = to;
+  contextName = [(USPSchemaUSPMeasurementContext *)self contextName];
 
-  if (v4)
+  if (contextName)
   {
     PBDataWriterWriteStringField();
   }

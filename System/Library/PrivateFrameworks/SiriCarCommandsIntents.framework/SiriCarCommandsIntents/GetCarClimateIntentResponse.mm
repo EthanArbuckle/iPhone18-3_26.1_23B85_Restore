@@ -1,9 +1,9 @@
 @interface GetCarClimateIntentResponse
 - (GetCarClimateIntentResponse)init;
-- (GetCarClimateIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (GetCarClimateIntentResponse)initWithCoder:(id)a3;
+- (GetCarClimateIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (GetCarClimateIntentResponse)initWithCoder:(id)coder;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation GetCarClimateIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___GetCarClimateIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (GetCarClimateIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (GetCarClimateIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(GetCarClimateIntentResponse *)self init];
   v8 = OBJC_IVAR___GetCarClimateIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(GetCarClimateIntentResponse *)v9 setUserActivity:v6];
+  [(GetCarClimateIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,13 +43,13 @@
   return [(GetCarClimateIntentResponse *)&v3 init];
 }
 
-- (GetCarClimateIntentResponse)initWithCoder:(id)a3
+- (GetCarClimateIntentResponse)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR___GetCarClimateIntentResponse_code) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for GetCarClimateIntentResponse();
-  v4 = a3;
-  v5 = [(GetCarClimateIntentResponse *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GetCarClimateIntentResponse *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

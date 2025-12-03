@@ -1,19 +1,19 @@
 @interface NTKExtragalacticBackgroundView
-- (NTKExtragalacticBackgroundView)initWithFrame:(CGRect)a3;
+- (NTKExtragalacticBackgroundView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NTKExtragalacticBackgroundView
 
-- (NTKExtragalacticBackgroundView)initWithFrame:(CGRect)a3
+- (NTKExtragalacticBackgroundView)initWithFrame:(CGRect)frame
 {
   v35 = *MEMORY[0x277D85DE8];
   v33.receiver = self;
   v33.super_class = NTKExtragalacticBackgroundView;
-  v3 = [(NTKExtragalacticBackgroundView *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKExtragalacticBackgroundView *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
-    [(NTKExtragalacticBackgroundView *)v3 setBackgroundColor:v4];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(NTKExtragalacticBackgroundView *)v3 setBackgroundColor:blackColor];
 
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
     backgroundColors = v3->_backgroundColors;
@@ -44,28 +44,28 @@
           }
 
           v13 = *(*(&v29 + 1) + 8 * v12);
-          v14 = [v13 unsignedIntegerValue];
-          v15 = [NTKExtragalacticColors identityColorForCorner:v14];
-          [(NSMutableArray *)v3->_backgroundColors setObject:v15 atIndexedSubscript:v14];
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
+          v15 = [NTKExtragalacticColors identityColorForCorner:unsignedIntegerValue];
+          [(NSMutableArray *)v3->_backgroundColors setObject:v15 atIndexedSubscript:unsignedIntegerValue];
           [(NTKExtragalacticBackgroundView *)v3 bounds];
-          [NTKExtragalacticLayoutHelper frameForCorner:v14 screenBounds:?];
+          [NTKExtragalacticLayoutHelper frameForCorner:unsignedIntegerValue screenBounds:?];
           v17 = v16;
           v19 = v18;
           v21 = v20;
           v23 = v22;
-          v24 = [MEMORY[0x277CD9ED0] layer];
-          [v24 setFrame:{v17, v19, v21, v23}];
-          [v24 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
+          layer = [MEMORY[0x277CD9ED0] layer];
+          [layer setFrame:{v17, v19, v21, v23}];
+          [layer setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
           if (qword_27E1DC2C0 != -1)
           {
             sub_23BE55308();
           }
 
-          [v24 setActions:qword_27E1DC2B8];
-          v25 = [(NTKExtragalacticBackgroundView *)v3 layer];
-          [v25 addSublayer:v24];
+          [layer setActions:qword_27E1DC2B8];
+          layer2 = [(NTKExtragalacticBackgroundView *)v3 layer];
+          [layer2 addSublayer:layer];
 
-          [(NSMutableDictionary *)v3->_backgroundLayers setObject:v24 forKeyedSubscript:v13];
+          [(NSMutableDictionary *)v3->_backgroundLayers setObject:layer forKeyedSubscript:v13];
           ++v12;
         }
 

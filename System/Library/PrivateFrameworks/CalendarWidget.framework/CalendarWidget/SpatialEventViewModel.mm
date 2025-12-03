@@ -8,8 +8,8 @@
 - (NSString)eventIdentifier;
 - (_TtC14CalendarWidget21SpatialEventViewModel)init;
 - (double)viewMaxNaturalTextHeight;
-- (void)setStagedFrame:(CGRect)a3;
-- (void)setVisibleHeight:(double)a3;
+- (void)setStagedFrame:(CGRect)frame;
+- (void)setVisibleHeight:(double)height;
 @end
 
 @implementation SpatialEventViewModel
@@ -29,7 +29,7 @@
 
 - (NSString)eventIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E47CDCB4();
 
   v3 = sub_1E4878B9C();
@@ -51,7 +51,7 @@
   v13 = type metadata accessor for Event();
   v14 = *(v13 + 20);
   v15 = -*&v12[*(v13 + 28)];
-  v16 = self;
+  selfCopy = self;
   sub_1E48772AC();
   sub_1E47A7308();
   if (sub_1E4878ADC())
@@ -83,7 +83,7 @@
   v9 = self + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_event;
   v10 = &v9[*(type metadata accessor for Event() + 20)];
   sub_1E47A7308();
-  v11 = self;
+  selfCopy = self;
   if (sub_1E4878ADC())
   {
     v12 = v10;
@@ -113,7 +113,7 @@
   v9 = self + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_event;
   v10 = &v9[*(type metadata accessor for Event() + 24)];
   sub_1E47A7308();
-  v11 = self;
+  selfCopy = self;
   if (sub_1E4878ACC())
   {
     v12 = v10;
@@ -134,15 +134,15 @@
 
 - (double)viewMaxNaturalTextHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E47F4B30();
 
   return v3;
 }
 
-- (void)setStagedFrame:(CGRect)a3
+- (void)setStagedFrame:(CGRect)frame
 {
-  *(&self->super.isa + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_frame) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_frame) = frame;
   *(&self->super.isa + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_visibleHeightLocked) = 0;
   *(&self->super.isa + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_visibleHeight) = 0x7FEFFFFFFFFFFFFFLL;
 }
@@ -160,19 +160,19 @@
   return result;
 }
 
-- (void)setVisibleHeight:(double)a3
+- (void)setVisibleHeight:(double)height
 {
   v3 = OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_visibleHeightLocked;
   if ((*(&self->super.isa + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_visibleHeightLocked) & 1) == 0)
   {
-    *(&self->super.isa + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_visibleHeight) = a3;
+    *(&self->super.isa + OBJC_IVAR____TtC14CalendarWidget21SpatialEventViewModel_visibleHeight) = height;
     *(&self->super.isa + v3) = 1;
   }
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E47F4E00();
 
   v3 = sub_1E4878B9C();

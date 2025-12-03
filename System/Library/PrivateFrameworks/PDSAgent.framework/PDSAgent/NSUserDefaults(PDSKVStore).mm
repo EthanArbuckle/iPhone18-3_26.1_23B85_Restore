@@ -6,7 +6,7 @@
 
 - (id)numberForKey:()PDSKVStore
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

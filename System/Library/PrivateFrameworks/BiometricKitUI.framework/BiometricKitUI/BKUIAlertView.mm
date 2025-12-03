@@ -8,12 +8,12 @@
 - (id)parent;
 - (void)_hideAlertHudView;
 - (void)_init;
-- (void)_setFadeAnimation:(id)a3;
+- (void)_setFadeAnimation:(id)animation;
 - (void)isAlertHidden;
-- (void)setCancelButtonSelector:(SEL)a3;
-- (void)setOtherButtonSelector:(SEL)a3;
-- (void)show:(id)a3 title:(id)a4 message:(id)a5 cancelButtonTitle:(id)a6 cancelButtonSelector:(SEL)a7 otherButtonTitle:(id)a8 otherButtonSelector:(SEL)a9 viewController:(id)a10;
-- (void)showAlert:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6 viewController:(id)a7;
+- (void)setCancelButtonSelector:(SEL)selector;
+- (void)setOtherButtonSelector:(SEL)selector;
+- (void)show:(id)show title:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle cancelButtonSelector:(SEL)selector otherButtonTitle:(id)otherButtonTitle otherButtonSelector:(SEL)buttonSelector viewController:(id)self0;
+- (void)showAlert:(id)alert message:(id)message cancelButtonTitle:(id)title otherButtonTitle:(id)buttonTitle viewController:(id)controller;
 @end
 
 @implementation BKUIAlertView
@@ -42,30 +42,30 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)show:(id)a3 title:(id)a4 message:(id)a5 cancelButtonTitle:(id)a6 cancelButtonSelector:(SEL)a7 otherButtonTitle:(id)a8 otherButtonSelector:(SEL)a9 viewController:(id)a10
+- (void)show:(id)show title:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle cancelButtonSelector:(SEL)selector otherButtonTitle:(id)otherButtonTitle otherButtonSelector:(SEL)buttonSelector viewController:(id)self0
 {
   v48 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v37 = a6;
-  v36 = a8;
-  v19 = a10;
+  showCopy = show;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  otherButtonTitleCopy = otherButtonTitle;
+  controllerCopy = controller;
   bkui_alert_view_log = self->bkui_alert_view_log;
   if (os_log_type_enabled(bkui_alert_view_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v45 = v17;
+    v45 = titleCopy;
     v46 = 2112;
-    v47 = v18;
+    v47 = messageCopy;
     _os_log_impl(&dword_241B0A000, bkui_alert_view_log, OS_LOG_TYPE_DEFAULT, "BiometricKitUI: Show alert with title: %@, message: %@", buf, 0x16u);
   }
 
-  objc_storeWeak(&self->_parent, v16);
+  objc_storeWeak(&self->_parent, showCopy);
   WeakRetained = objc_loadWeakRetained(&self->_alertHudView);
-  v22 = [WeakRetained superview];
+  superview = [WeakRetained superview];
   v23 = objc_loadWeakRetained(&self->_alertHudView);
-  [v22 bringSubviewToFront:v23];
+  [superview bringSubviewToFront:v23];
 
   v24 = objc_loadWeakRetained(&self->_alertHudView);
   if (v24)
@@ -73,15 +73,15 @@
     if (CACurrentMediaTime() - self->_alertHudTextStartTime > self->_alertHudMinDisplayTime)
     {
       v25 = objc_loadWeakRetained(&self->_alertHudView);
-      v26 = [v25 isHidden];
+      isHidden = [v25 isHidden];
 
-      if ((v26 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__hideAlertHudView object:0];
       }
 
       v27 = objc_loadWeakRetained(&self->_alertHudText);
-      [v27 setText:v18];
+      [v27 setText:messageCopy];
 
       self->_alertHudTextStartTime = CACurrentMediaTime();
       v28 = objc_loadWeakRetained(&self->_alertHudView);
@@ -96,32 +96,32 @@
 
   else
   {
-    if (a7)
+    if (selector)
     {
-      v30 = a7;
+      selectorCopy = selector;
     }
 
     else
     {
-      v30 = 0;
+      selectorCopy = 0;
     }
 
-    self->_cancelButtonSelector = v30;
-    if (a9)
+    self->_cancelButtonSelector = selectorCopy;
+    if (buttonSelector)
     {
-      v31 = a9;
+      buttonSelectorCopy = buttonSelector;
     }
 
     else
     {
-      v31 = 0;
+      buttonSelectorCopy = 0;
     }
 
-    self->_otherButtonSelector = v31;
-    v32 = [(UIAlertController *)self->_alertController view];
-    v33 = [v32 window];
+    self->_otherButtonSelector = buttonSelectorCopy;
+    view = [(UIAlertController *)self->_alertController view];
+    window = [view window];
 
-    if (v33)
+    if (window)
     {
       alertController = self->_alertController;
       v38[0] = MEMORY[0x277D85DD0];
@@ -129,43 +129,43 @@
       v38[2] = __127__BKUIAlertView_show_title_message_cancelButtonTitle_cancelButtonSelector_otherButtonTitle_otherButtonSelector_viewController___block_invoke;
       v38[3] = &unk_278D09A88;
       v38[4] = self;
-      v39 = v17;
-      v40 = v18;
-      v41 = v37;
-      v42 = v36;
-      v43 = v19;
+      v39 = titleCopy;
+      v40 = messageCopy;
+      v41 = buttonTitleCopy;
+      v42 = otherButtonTitleCopy;
+      v43 = controllerCopy;
       [(UIAlertController *)alertController dismissViewControllerAnimated:0 completion:v38];
     }
 
     else
     {
-      [(BKUIAlertView *)self showAlert:v17 message:v18 cancelButtonTitle:v37 otherButtonTitle:v36 viewController:v19];
+      [(BKUIAlertView *)self showAlert:titleCopy message:messageCopy cancelButtonTitle:buttonTitleCopy otherButtonTitle:otherButtonTitleCopy viewController:controllerCopy];
     }
   }
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showAlert:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6 viewController:(id)a7
+- (void)showAlert:(id)alert message:(id)message cancelButtonTitle:(id)title otherButtonTitle:(id)buttonTitle viewController:(id)controller
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  alertCopy = alert;
+  messageCopy = message;
+  titleCopy = title;
+  buttonTitleCopy = buttonTitle;
+  controllerCopy = controller;
   bkui_alert_view_log = self->bkui_alert_view_log;
   if (os_log_type_enabled(bkui_alert_view_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v30 = v12;
+    v30 = alertCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = messageCopy;
     _os_log_impl(&dword_241B0A000, bkui_alert_view_log, OS_LOG_TYPE_DEFAULT, "BiometricKitUI: Show alert with title: %@, message: %@", buf, 0x16u);
   }
 
-  v26 = v12;
-  v18 = [MEMORY[0x277D75110] alertControllerWithTitle:v12 message:v13 preferredStyle:1];
+  v26 = alertCopy;
+  v18 = [MEMORY[0x277D75110] alertControllerWithTitle:alertCopy message:messageCopy preferredStyle:1];
   alertController = self->_alertController;
   self->_alertController = v18;
 
@@ -175,11 +175,11 @@
   v28[2] = __85__BKUIAlertView_showAlert_message_cancelButtonTitle_otherButtonTitle_viewController___block_invoke;
   v28[3] = &unk_278D09AB0;
   v28[4] = self;
-  v21 = v14;
-  v22 = [MEMORY[0x277D750F8] actionWithTitle:v14 style:1 handler:v28];
+  v21 = titleCopy;
+  v22 = [MEMORY[0x277D750F8] actionWithTitle:titleCopy style:1 handler:v28];
   [(UIAlertController *)v20 addAction:v22];
 
-  if (v15)
+  if (buttonTitleCopy)
   {
     v23 = self->_alertController;
     v27[0] = MEMORY[0x277D85DD0];
@@ -187,11 +187,11 @@
     v27[2] = __85__BKUIAlertView_showAlert_message_cancelButtonTitle_otherButtonTitle_viewController___block_invoke_2;
     v27[3] = &unk_278D09AB0;
     v27[4] = self;
-    v24 = [MEMORY[0x277D750F8] actionWithTitle:v15 style:0 handler:v27];
+    v24 = [MEMORY[0x277D750F8] actionWithTitle:buttonTitleCopy style:0 handler:v27];
     [(UIAlertController *)v23 addAction:v24];
   }
 
-  [v16 presentViewController:self->_alertController animated:1 completion:0];
+  [controllerCopy presentViewController:self->_alertController animated:1 completion:0];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -245,13 +245,13 @@ void __85__BKUIAlertView_showAlert_message_cancelButtonTitle_otherButtonTitle_vi
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_alertHudView);
-    v5 = [v4 isHidden];
+    isHidden = [v4 isHidden];
 
     bkui_alert_view_log = self->bkui_alert_view_log;
     if (os_log_type_enabled(bkui_alert_view_log, OS_LOG_TYPE_DEBUG))
     {
 LABEL_8:
-      [(BKUIAlertView *)v5 isAlertHidden];
+      [(BKUIAlertView *)isHidden isAlertHidden];
     }
   }
 
@@ -260,14 +260,14 @@ LABEL_8:
     alertController = self->_alertController;
     if (alertController)
     {
-      v8 = [(UIAlertController *)alertController view];
-      v9 = [v8 window];
-      v5 = v9 == 0;
+      view = [(UIAlertController *)alertController view];
+      window = [view window];
+      isHidden = window == 0;
     }
 
     else
     {
-      v5 = 1;
+      isHidden = 1;
     }
 
     bkui_alert_view_log = self->bkui_alert_view_log;
@@ -277,7 +277,7 @@ LABEL_8:
     }
   }
 
-  return v5;
+  return isHidden;
 }
 
 - (void)_hideAlertHudView
@@ -289,22 +289,22 @@ LABEL_8:
   [v4 setHidden:1];
 }
 
-- (void)_setFadeAnimation:(id)a3
+- (void)_setFadeAnimation:(id)animation
 {
   v3 = MEMORY[0x277CDA000];
-  v4 = a3;
-  v8 = [v3 animation];
+  animationCopy = animation;
+  animation = [v3 animation];
   v5 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B0]];
-  [v8 setTimingFunction:v5];
+  [animation setTimingFunction:v5];
 
-  [v8 setDuration:0.2];
-  [v8 setType:@"fade"];
-  v6 = [v4 layer];
-  [v6 removeAllAnimations];
+  [animation setDuration:0.2];
+  [animation setType:@"fade"];
+  layer = [animationCopy layer];
+  [layer removeAllAnimations];
 
-  v7 = [v4 layer];
+  layer2 = [animationCopy layer];
 
-  [v7 addAnimation:v8 forKey:*MEMORY[0x277CDA920]];
+  [layer2 addAnimation:animation forKey:*MEMORY[0x277CDA920]];
 }
 
 - (id)parent
@@ -327,19 +327,19 @@ LABEL_8:
   }
 }
 
-- (void)setCancelButtonSelector:(SEL)a3
+- (void)setCancelButtonSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_cancelButtonSelector = v3;
+  self->_cancelButtonSelector = selectorCopy;
 }
 
 - (SEL)otherButtonSelector
@@ -355,19 +355,19 @@ LABEL_8:
   }
 }
 
-- (void)setOtherButtonSelector:(SEL)a3
+- (void)setOtherButtonSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_otherButtonSelector = v3;
+  self->_otherButtonSelector = selectorCopy;
 }
 
 - (UIView)alertHudView
@@ -388,7 +388,7 @@ LABEL_8:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1 & 1;
+  v3[1] = self & 1;
   _os_log_debug_impl(&dword_241B0A000, a2, OS_LOG_TYPE_DEBUG, "BiometricKitUI: Is alert hidden: %i", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

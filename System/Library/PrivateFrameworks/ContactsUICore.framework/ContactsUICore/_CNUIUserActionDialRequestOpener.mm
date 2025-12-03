@@ -1,9 +1,9 @@
 @interface _CNUIUserActionDialRequestOpener
-+ (id)errorForUnableToCastDialRequest:(id)a3;
-+ (id)errorForUnableToOpenDialRequest:(id)a3 withUnderlyingError:(id)a4;
++ (id)errorForUnableToCastDialRequest:(id)request;
++ (id)errorForUnableToOpenDialRequest:(id)request withUnderlyingError:(id)error;
 - (_CNUIUserActionDialRequestOpener)init;
-- (_CNUIUserActionDialRequestOpener)initWithCallCenter:(id)a3;
-- (id)openDialRequest:(id)a3 withScheduler:(id)a4;
+- (_CNUIUserActionDialRequestOpener)initWithCallCenter:(id)center;
+- (id)openDialRequest:(id)request withScheduler:(id)scheduler;
 @end
 
 @implementation _CNUIUserActionDialRequestOpener
@@ -28,32 +28,32 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [v3 sharedInstance];
-  v6 = [(_CNUIUserActionDialRequestOpener *)self initWithCallCenter:v5];
+  sharedInstance = [v3 sharedInstance];
+  v6 = [(_CNUIUserActionDialRequestOpener *)self initWithCallCenter:sharedInstance];
 
   return v6;
 }
 
-- (_CNUIUserActionDialRequestOpener)initWithCallCenter:(id)a3
+- (_CNUIUserActionDialRequestOpener)initWithCallCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   v10.receiver = self;
   v10.super_class = _CNUIUserActionDialRequestOpener;
   v6 = [(_CNUIUserActionDialRequestOpener *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callCenter, a3);
+    objc_storeStrong(&v6->_callCenter, center);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)openDialRequest:(id)a3 withScheduler:(id)a4
+- (id)openDialRequest:(id)request withScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  schedulerCopy = scheduler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -73,7 +73,7 @@
   v9 = v8;
   _Block_object_dispose(&v29, 8);
   objc_opt_class();
-  v10 = v6;
+  v10 = requestCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -98,17 +98,17 @@
     v26 = v14;
     v27 = v13;
     v15 = v13;
-    [v7 performBlock:v25];
-    v16 = [v15 future];
+    [schedulerCopy performBlock:v25];
+    future = [v15 future];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __66___CNUIUserActionDialRequestOpener_openDialRequest_withScheduler___block_invoke_2;
     v22 = &unk_1E76E7B78;
-    v23 = self;
+    selfCopy = self;
     v24 = v14;
-    v17 = [v16 recover:&v19];
+    v17 = [future recover:&v19];
 
-    [v17 addFailureBlock:{&__block_literal_global_2, v19, v20, v21, v22, v23}];
+    [v17 addFailureBlock:{&__block_literal_global_2, v19, v20, v21, v22, selfCopy}];
   }
 
   else
@@ -120,23 +120,23 @@
   return v17;
 }
 
-+ (id)errorForUnableToCastDialRequest:(id)a3
++ (id)errorForUnableToCastDialRequest:(id)request
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69966B0];
-  v4 = a3;
-  v5 = [v3 descriptionBuilderWithObject:v4];
-  v6 = [v4 handle];
-  v7 = [v5 appendName:@"handle" object:v6];
+  requestCopy = request;
+  v5 = [v3 descriptionBuilderWithObject:requestCopy];
+  handle = [requestCopy handle];
+  v7 = [v5 appendName:@"handle" object:handle];
 
-  v8 = [v4 contactIdentifier];
-  v9 = [v5 appendName:@"contactIdentifier" object:v8];
+  contactIdentifier = [requestCopy contactIdentifier];
+  v9 = [v5 appendName:@"contactIdentifier" object:contactIdentifier];
 
-  v10 = [v4 isVideo];
-  v11 = [v5 appendName:@"video" BOOLValue:v10];
+  isVideo = [requestCopy isVideo];
+  v11 = [v5 appendName:@"video" BOOLValue:isVideo];
   v16 = @"dial request";
-  v12 = [v5 build];
-  v17[0] = v12;
+  build = [v5 build];
+  v17[0] = build;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
   v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsUIErrorDomain" code:206 userInfo:v13];
@@ -144,38 +144,38 @@
   return v14;
 }
 
-+ (id)errorForUnableToOpenDialRequest:(id)a3 withUnderlyingError:(id)a4
++ (id)errorForUnableToOpenDialRequest:(id)request withUnderlyingError:(id)error
 {
   v28[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69966B0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 descriptionBuilderWithObject:v7];
-  v9 = [v7 handle];
-  v10 = [v8 appendName:@"handle" object:v9];
+  errorCopy = error;
+  requestCopy = request;
+  v8 = [v5 descriptionBuilderWithObject:requestCopy];
+  handle = [requestCopy handle];
+  v10 = [v8 appendName:@"handle" object:handle];
 
-  v11 = [v7 contactIdentifier];
-  v12 = [v8 appendName:@"contactIdentifier" object:v11];
+  contactIdentifier = [requestCopy contactIdentifier];
+  v12 = [v8 appendName:@"contactIdentifier" object:contactIdentifier];
 
-  v13 = [v8 appendName:@"video" BOOLValue:{objc_msgSend(v7, "isVideo")}];
-  v14 = [v7 provider];
-  v15 = [v14 identifier];
-  v16 = [v8 appendName:@"provider.identifier" object:v15];
+  v13 = [v8 appendName:@"video" BOOLValue:{objc_msgSend(requestCopy, "isVideo")}];
+  provider = [requestCopy provider];
+  identifier = [provider identifier];
+  v16 = [v8 appendName:@"provider.identifier" object:identifier];
 
-  v17 = [v7 provider];
-  v18 = [v17 localizedName];
-  v19 = [v8 appendName:@"provider.localizedName" object:v18];
+  provider2 = [requestCopy provider];
+  localizedName = [provider2 localizedName];
+  v19 = [v8 appendName:@"provider.localizedName" object:localizedName];
 
-  v20 = [v7 provider];
+  provider3 = [requestCopy provider];
 
-  v21 = [v20 bundleIdentifier];
-  v22 = [v8 appendName:@"provider.bundleIdentifier" object:v21];
+  bundleIdentifier = [provider3 bundleIdentifier];
+  v22 = [v8 appendName:@"provider.bundleIdentifier" object:bundleIdentifier];
 
   v27[0] = @"dial request";
-  v23 = [v8 build];
+  build = [v8 build];
   v27[1] = *MEMORY[0x1E696AA08];
-  v28[0] = v23;
-  v28[1] = v6;
+  v28[0] = build;
+  v28[1] = errorCopy;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
   v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsUIErrorDomain" code:207 userInfo:v24];

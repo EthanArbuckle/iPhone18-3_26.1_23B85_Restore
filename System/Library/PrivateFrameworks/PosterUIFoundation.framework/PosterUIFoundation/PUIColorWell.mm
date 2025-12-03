@@ -6,10 +6,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(UIColorWell *)self selectedColor];
+  selectedColor = [(UIColorWell *)self selectedColor];
 
   v3 = 44.0;
-  if (!v2)
+  if (!selectedColor)
   {
     v3 = 34.0;
   }

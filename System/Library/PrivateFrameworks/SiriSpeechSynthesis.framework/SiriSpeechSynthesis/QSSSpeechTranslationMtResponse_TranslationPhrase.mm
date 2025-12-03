@@ -2,8 +2,8 @@
 - (BOOL)low_confidence;
 - (NSString)meta_info;
 - (NSString)translation_phrase;
-- (Offset<siri::speech::schema_fb::SpeechTranslationMtResponse_::TranslationPhrase>)addObjectToBuffer:(void *)a3;
-- (QSSSpeechTranslationMtResponse_TranslationPhrase)initWithFlatbuffData:(id)a3 root:(const TranslationPhrase *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::SpeechTranslationMtResponse_::TranslationPhrase>)addObjectToBuffer:(void *)buffer;
+- (QSSSpeechTranslationMtResponse_TranslationPhrase)initWithFlatbuffData:(id)data root:(const TranslationPhrase *)root verify:(BOOL)verify;
 - (float)confidence;
 - (id)flatbuffData;
 @end
@@ -26,43 +26,43 @@
   operator new();
 }
 
-- (Offset<siri::speech::schema_fb::SpeechTranslationMtResponse_::TranslationPhrase>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SpeechTranslationMtResponse_::TranslationPhrase>)addObjectToBuffer:(void *)buffer
 {
   [(QSSSpeechTranslationMtResponse_TranslationPhrase *)self confidence];
   v6 = v5;
-  v7 = [(QSSSpeechTranslationMtResponse_TranslationPhrase *)self translation_phrase];
-  v8 = v7;
-  if (!v7)
+  translation_phrase = [(QSSSpeechTranslationMtResponse_TranslationPhrase *)self translation_phrase];
+  v8 = translation_phrase;
+  if (!translation_phrase)
   {
-    v7 = &stru_2879AE8E0;
+    translation_phrase = &stru_2879AE8E0;
   }
 
-  v9 = [(__CFString *)v7 UTF8String];
-  v10 = strlen(v9);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v9, v10);
+  uTF8String = [(__CFString *)translation_phrase UTF8String];
+  v10 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v10);
 
-  v12 = [(QSSSpeechTranslationMtResponse_TranslationPhrase *)self meta_info];
-  v13 = v12;
-  if (!v12)
+  meta_info = [(QSSSpeechTranslationMtResponse_TranslationPhrase *)self meta_info];
+  v13 = meta_info;
+  if (!meta_info)
   {
-    v12 = &stru_2879AE8E0;
+    meta_info = &stru_2879AE8E0;
   }
 
-  v14 = [(__CFString *)v12 UTF8String];
-  v15 = strlen(v14);
-  LODWORD(v14) = flatbuffers::FlatBufferBuilder::CreateString(a3, v14, v15);
+  uTF8String2 = [(__CFString *)meta_info UTF8String];
+  v15 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v15);
 
-  v16 = [(QSSSpeechTranslationMtResponse_TranslationPhrase *)self low_confidence];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v17 = *(a3 + 10);
-  v18 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 4, v6);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v14);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 10, v16);
+  low_confidence = [(QSSSpeechTranslationMtResponse_TranslationPhrase *)self low_confidence];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v17 = *(buffer + 10);
+  v18 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 4, v6);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, uTF8String2);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 10, low_confidence);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v18 + v17);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v18 + v17);
 }
 
 - (BOOL)low_confidence
@@ -135,42 +135,42 @@
   return result;
 }
 
-- (QSSSpeechTranslationMtResponse_TranslationPhrase)initWithFlatbuffData:(id)a3 root:(const TranslationPhrase *)a4 verify:(BOOL)a5
+- (QSSSpeechTranslationMtResponse_TranslationPhrase)initWithFlatbuffData:(id)data root:(const TranslationPhrase *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSSpeechTranslationMtResponse_TranslationPhrase;
   v10 = [(QSSSpeechTranslationMtResponse_TranslationPhrase *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -192,9 +192,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

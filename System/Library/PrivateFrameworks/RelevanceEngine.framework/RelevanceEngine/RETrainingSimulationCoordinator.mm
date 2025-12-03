@@ -1,19 +1,19 @@
 @interface RETrainingSimulationCoordinator
-- (id)_engineWithName:(id)a3;
+- (id)_engineWithName:(id)name;
 - (id)_init;
-- (id)_unavailableEngineWithNameError:(id)a3;
-- (void)_accesssEngineWithName:(id)a3 completion:(id)a4;
-- (void)availableRelevanceEngines:(id)a3;
+- (id)_unavailableEngineWithNameError:(id)error;
+- (void)_accesssEngineWithName:(id)name completion:(id)completion;
+- (void)availableRelevanceEngines:(id)engines;
 - (void)dealloc;
-- (void)elementAction:(id)a3 didFinishTask:(BOOL)a4;
-- (void)elementAction:(id)a3 wantsViewControllerDisplayed:(id)a4;
-- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)fetchAllElementsInRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)gatherDiagnosticLogsForRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4 completion:(id)a5;
-- (void)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4 completion:(id)a5;
-- (void)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4 completion:(id)a5;
+- (void)elementAction:(id)action didFinishTask:(BOOL)task;
+- (void)elementAction:(id)action wantsViewControllerDisplayed:(id)displayed;
+- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)engine completion:(id)completion;
+- (void)fetchAllElementsInRelevanceEngine:(id)engine completion:(id)completion;
+- (void)gatherDiagnosticLogsForRelevanceEngine:(id)engine completion:(id)completion;
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description completion:(id)completion;
+- (void)relevanceEngine:(id)engine encodedObjectAtPath:(id)path completion:(id)completion;
+- (void)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options completion:(id)completion;
+- (void)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1 completion:(id)completion;
 @end
 
 @implementation RETrainingSimulationCoordinator
@@ -22,8 +22,8 @@
 {
   v11.receiver = self;
   v11.super_class = RETrainingSimulationCoordinator;
-  v2 = [(RESingleton *)&v11 _init];
-  if (v2)
+  _init = [(RESingleton *)&v11 _init];
+  if (_init)
   {
     if (_fetchedInternalBuildOnceToken_1 != -1)
     {
@@ -32,25 +32,25 @@
 
     if (_isInternalDevice_1 == 1)
     {
-      v3 = [MEMORY[0x277CBEB38] dictionary];
-      v4 = *(v2 + 2);
-      *(v2 + 2) = v3;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      v4 = *(_init + 2);
+      *(_init + 2) = dictionary;
 
-      v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-      v6 = *(v2 + 3);
-      *(v2 + 3) = v5;
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      v6 = *(_init + 3);
+      *(_init + 3) = strongToStrongObjectsMapTable;
 
       v7 = +[RETrainingSimulationServer sharedServer];
-      v8 = *(v2 + 1);
-      *(v2 + 1) = v7;
+      v8 = *(_init + 1);
+      *(_init + 1) = v7;
 
-      [*(v2 + 1) addObserver:v2];
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:v2 selector:sel__relevanceEnginesDidChange name:@"RERelevanceEngineDebuggerAvailableEnginesDidChange" object:0];
+      [*(_init + 1) addObserver:_init];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:_init selector:sel__relevanceEnginesDidChange name:@"RERelevanceEngineDebuggerAvailableEnginesDidChange" object:0];
     }
   }
 
-  return v2;
+  return _init;
 }
 
 uint64_t __40__RETrainingSimulationCoordinator__init__block_invoke()
@@ -62,36 +62,36 @@ uint64_t __40__RETrainingSimulationCoordinator__init__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"RERelevanceEngineDebuggerAvailableEnginesDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"RERelevanceEngineDebuggerAvailableEnginesDidChange" object:0];
 
   v4.receiver = self;
   v4.super_class = RETrainingSimulationCoordinator;
   [(RETrainingSimulationCoordinator *)&v4 dealloc];
 }
 
-- (id)_engineWithName:(id)a3
+- (id)_engineWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(RESingleton *)RERelevanceEngineDebugger];
-  v5 = [v4 engineWithName:v3];
+  v5 = [v4 engineWithName:nameCopy];
 
   return v5;
 }
 
-- (void)_accesssEngineWithName:(id)a3 completion:(id)a4
+- (void)_accesssEngineWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  completionCopy = completion;
+  if (completionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__RETrainingSimulationCoordinator__accesssEngineWithName_completion___block_invoke;
     block[3] = &unk_2785F99C8;
     block[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = nameCopy;
+    v10 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -119,29 +119,29 @@ void __69__RETrainingSimulationCoordinator__accesssEngineWithName_completion___b
   }
 }
 
-- (id)_unavailableEngineWithNameError:(id)a3
+- (id)_unavailableEngineWithNameError:(id)error
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"No Relevance engine with name %@ found", a3];
-  v4 = RECreateErrorWithCodeAndMessage(1, v3);
+  error = [MEMORY[0x277CCACA8] stringWithFormat:@"No Relevance engine with name %@ found", error];
+  v4 = RECreateErrorWithCodeAndMessage(1, error);
 
   return v4;
 }
 
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 mutableCopy];
+  engineCopy = engine;
+  completionCopy = completion;
+  v10 = [description mutableCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__RETrainingSimulationCoordinator_relevanceEngine_createElementFromDescription_completion___block_invoke;
   v14[3] = &unk_2785FC098;
   v15 = v10;
-  v16 = self;
-  v17 = v8;
-  v18 = v9;
-  v11 = v9;
-  v12 = v8;
+  selfCopy = self;
+  v17 = engineCopy;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = engineCopy;
   v13 = v10;
   [(RETrainingSimulationCoordinator *)self _accesssEngineWithName:v12 completion:v14];
 }
@@ -228,25 +228,25 @@ void __91__RETrainingSimulationCoordinator_relevanceEngine_createElementFromDesc
   dispatch_async(MEMORY[0x277D85CD0], v2);
 }
 
-- (void)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  engineCopy = engine;
+  commandCopy = command;
+  optionsCopy = options;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __89__RETrainingSimulationCoordinator_relevanceEngine_performCommand_withOptions_completion___block_invoke;
   v18[3] = &unk_2785FC0C0;
-  v19 = v11;
-  v20 = self;
-  v21 = v10;
-  v22 = v12;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
+  v19 = commandCopy;
+  selfCopy = self;
+  v21 = engineCopy;
+  v22 = optionsCopy;
+  v23 = completionCopy;
+  v14 = completionCopy;
+  v15 = optionsCopy;
+  v16 = engineCopy;
+  v17 = commandCopy;
   [(RETrainingSimulationCoordinator *)self _accesssEngineWithName:v16 completion:v18];
 }
 
@@ -439,19 +439,19 @@ uint64_t __89__RETrainingSimulationCoordinator_relevanceEngine_performCommand_wi
   return result;
 }
 
-- (void)availableRelevanceEngines:(id)a3
+- (void)availableRelevanceEngines:(id)engines
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  enginesCopy = engines;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v5 = +[(RESingleton *)RERelevanceEngineDebugger];
-  v6 = [v5 availableEngines];
+  availableEngines = [v5 availableEngines];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [availableEngines countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -463,39 +463,39 @@ uint64_t __89__RETrainingSimulationCoordinator_relevanceEngine_performCommand_wi
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(availableEngines);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) name];
-        [v4 addObject:v11];
+        name = [*(*(&v13 + 1) + 8 * v10) name];
+        [array addObject:name];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [availableEngines countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  v3[2](v3, v4, 0);
+  enginesCopy[2](enginesCopy, array, 0);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)a3 completion:(id)a4
+- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)engine completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__RETrainingSimulationCoordinator_fetchAllElementIdentifiersInRelevanceEngine_completion___block_invoke;
   v10[3] = &unk_2785FC0E8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = engineCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = engineCopy;
   [(RETrainingSimulationCoordinator *)self _accesssEngineWithName:v9 completion:v10];
 }
 
@@ -536,19 +536,19 @@ void __90__RETrainingSimulationCoordinator_fetchAllElementIdentifiersInRelevance
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchAllElementsInRelevanceEngine:(id)a3 completion:(id)a4
+- (void)fetchAllElementsInRelevanceEngine:(id)engine completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__RETrainingSimulationCoordinator_fetchAllElementsInRelevanceEngine_completion___block_invoke;
   v10[3] = &unk_2785FC0E8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = engineCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = engineCopy;
   [(RETrainingSimulationCoordinator *)self _accesssEngineWithName:v9 completion:v10];
 }
 
@@ -600,24 +600,24 @@ void __80__RETrainingSimulationCoordinator_fetchAllElementsInRelevanceEngine_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)gatherDiagnosticLogsForRelevanceEngine:(id)a3 completion:(id)a4
+- (void)gatherDiagnosticLogsForRelevanceEngine:(id)engine completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(RETrainingSimulationCoordinator *)self _engineWithName:a3];
+  completionCopy = completion;
+  v7 = [(RETrainingSimulationCoordinator *)self _engineWithName:engine];
   if (v7)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __85__RETrainingSimulationCoordinator_gatherDiagnosticLogsForRelevanceEngine_completion___block_invoke;
     v9[3] = &unk_2785FC110;
-    v10 = v6;
+    v10 = completionCopy;
     [v7 storeDiagnosticLogsToFile:v9];
   }
 
   else
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RETrainingSimulationCoordinatorErrorDomain" code:1 userInfo:0];
-    (*(v6 + 2))(v6, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
@@ -630,22 +630,22 @@ void __85__RETrainingSimulationCoordinator_gatherDiagnosticLogsForRelevanceEngin
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1 completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  description1Copy = description1;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__RETrainingSimulationCoordinator_relevanceEngine_runActionOfElementWithDescription1_completion___block_invoke;
   v14[3] = &unk_2785FC188;
-  v15 = v9;
-  v16 = self;
-  v17 = v8;
-  v18 = v10;
-  v11 = v8;
-  v12 = v10;
-  v13 = v9;
+  v15 = description1Copy;
+  selfCopy = self;
+  v17 = engineCopy;
+  v18 = completionCopy;
+  v11 = engineCopy;
+  v12 = completionCopy;
+  v13 = description1Copy;
   [(RETrainingSimulationCoordinator *)self _accesssEngineWithName:v11 completion:v14];
 }
 
@@ -750,19 +750,19 @@ void __97__RETrainingSimulationCoordinator_relevanceEngine_runActionOfElementWit
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine encodedObjectAtPath:(id)path completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__RETrainingSimulationCoordinator_relevanceEngine_encodedObjectAtPath_completion___block_invoke;
   v12[3] = &unk_2785FC1B0;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(RETrainingSimulationCoordinator *)self _accesssEngineWithName:a3 completion:v12];
+  v13 = pathCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = pathCopy;
+  [(RETrainingSimulationCoordinator *)self _accesssEngineWithName:engine completion:v12];
 }
 
 void __82__RETrainingSimulationCoordinator_relevanceEngine_encodedObjectAtPath_completion___block_invoke(uint64_t a1, void *a2)
@@ -834,17 +834,17 @@ uint64_t __82__RETrainingSimulationCoordinator_relevanceEngine_encodedObjectAtPa
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)elementAction:(id)a3 didFinishTask:(BOOL)a4
+- (void)elementAction:(id)action didFinishTask:(BOOL)task
 {
-  v6 = a3;
+  actionCopy = action;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RETrainingSimulationCoordinator_elementAction_didFinishTask___block_invoke;
   block[3] = &unk_2785FB3A8;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = actionCopy;
+  taskCopy = task;
+  v7 = actionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -860,10 +860,10 @@ void __63__RETrainingSimulationCoordinator_elementAction_didFinishTask___block_i
   }
 }
 
-- (void)elementAction:(id)a3 wantsViewControllerDisplayed:(id)a4
+- (void)elementAction:(id)action wantsViewControllerDisplayed:(id)displayed
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  displayedCopy = displayed;
   if (UIKitLibraryCore())
   {
     v12 = 0;
@@ -884,9 +884,9 @@ void __63__RETrainingSimulationCoordinator_elementAction_didFinishTask___block_i
 
     v8 = v7;
     _Block_object_dispose(&v12, 8);
-    v9 = [v7 keyWindow];
-    v10 = [v9 rootViewController];
-    [v10 presentViewController:v6 animated:0 completion:0];
+    keyWindow = [v7 keyWindow];
+    rootViewController = [keyWindow rootViewController];
+    [rootViewController presentViewController:displayedCopy animated:0 completion:0];
   }
 }
 

@@ -1,46 +1,46 @@
 @interface _HKCurrentWorkoutSnapshot
-- (_HKCurrentWorkoutSnapshot)initWithCoder:(id)a3;
-- (double)elapsedTimeAtDate:(id)a3;
-- (id)_initWithSessionIdentifier:(id)a3 workoutConfiguration:(id)a4 sessionServerState:(int64_t)a5 isSessionActive:(BOOL)a6 sessionType:(int64_t)a7 sessionError:(id)a8 isBuilderPaused:(BOOL)a9 applicationIdentifier:(id)a10 elapsedTime:(double)a11 snapshotDate:(id)a12 builderStartDate:(id)a13;
+- (_HKCurrentWorkoutSnapshot)initWithCoder:(id)coder;
+- (double)elapsedTimeAtDate:(id)date;
+- (id)_initWithSessionIdentifier:(id)identifier workoutConfiguration:(id)configuration sessionServerState:(int64_t)state isSessionActive:(BOOL)active sessionType:(int64_t)type sessionError:(id)error isBuilderPaused:(BOOL)paused applicationIdentifier:(id)self0 elapsedTime:(double)self1 snapshotDate:(id)self2 builderStartDate:(id)self3;
 - (id)description;
 - (int64_t)state;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKCurrentWorkoutSnapshot
 
-- (id)_initWithSessionIdentifier:(id)a3 workoutConfiguration:(id)a4 sessionServerState:(int64_t)a5 isSessionActive:(BOOL)a6 sessionType:(int64_t)a7 sessionError:(id)a8 isBuilderPaused:(BOOL)a9 applicationIdentifier:(id)a10 elapsedTime:(double)a11 snapshotDate:(id)a12 builderStartDate:(id)a13
+- (id)_initWithSessionIdentifier:(id)identifier workoutConfiguration:(id)configuration sessionServerState:(int64_t)state isSessionActive:(BOOL)active sessionType:(int64_t)type sessionError:(id)error isBuilderPaused:(BOOL)paused applicationIdentifier:(id)self0 elapsedTime:(double)self1 snapshotDate:(id)self2 builderStartDate:(id)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a8;
-  v22 = a10;
-  v35 = a12;
-  v23 = a13;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  errorCopy = error;
+  applicationIdentifierCopy = applicationIdentifier;
+  dateCopy = date;
+  startDateCopy = startDate;
   v36.receiver = self;
   v36.super_class = _HKCurrentWorkoutSnapshot;
   v24 = [(_HKCurrentWorkoutSnapshot *)&v36 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_sessionIdentifier, a3);
-    objc_storeStrong(&v25->_configuration, a4);
-    v25->_internalState = a5;
-    v25->_sessionState = HKWorkoutSessionStateFromServerState(a5);
-    v25->_isSessionActive = a6;
-    v25->_sessionType = a7;
-    v26 = [v21 copy];
+    objc_storeStrong(&v24->_sessionIdentifier, identifier);
+    objc_storeStrong(&v25->_configuration, configuration);
+    v25->_internalState = state;
+    v25->_sessionState = HKWorkoutSessionStateFromServerState(state);
+    v25->_isSessionActive = active;
+    v25->_sessionType = type;
+    v26 = [errorCopy copy];
     sessionError = v25->_sessionError;
     v25->_sessionError = v26;
 
-    v25->_isBuilderPaused = a9;
-    v28 = [v22 copy];
+    v25->_isBuilderPaused = paused;
+    v28 = [applicationIdentifierCopy copy];
     applicationIdentifier = v25->_applicationIdentifier;
     v25->_applicationIdentifier = v28;
 
-    v25->_elapsedTime = a11;
-    objc_storeStrong(&v25->_snapshotDate, a12);
-    v30 = [v23 copy];
+    v25->_elapsedTime = time;
+    objc_storeStrong(&v25->_snapshotDate, date);
+    v30 = [startDateCopy copy];
     builderStartDate = v25->_builderStartDate;
     v25->_builderStartDate = v30;
   }
@@ -65,12 +65,12 @@
   return v12;
 }
 
-- (double)elapsedTimeAtDate:(id)a3
+- (double)elapsedTimeAtDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
+  dateCopy = date;
+  v5 = dateCopy;
   elapsedTime = 0.0;
-  if (self->_elapsedTime != 0.0 && ([v4 hk_isBeforeDate:self->_snapshotDate] & 1) == 0)
+  if (self->_elapsedTime != 0.0 && ([dateCopy hk_isBeforeDate:self->_snapshotDate] & 1) == 0)
   {
     elapsedTime = self->_elapsedTime;
     if (!self->_isBuilderPaused)
@@ -97,42 +97,42 @@
   }
 }
 
-- (_HKCurrentWorkoutSnapshot)initWithCoder:(id)a3
+- (_HKCurrentWorkoutSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = _HKCurrentWorkoutSnapshot;
   v5 = [(_HKCurrentWorkoutSnapshot *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v10;
 
-    v5->_sessionState = [v4 decodeIntegerForKey:@"state"];
-    v5->_internalState = [v4 decodeIntegerForKey:@"internalState"];
-    v5->_isSessionActive = [v4 decodeBoolForKey:@"isSessionActive"];
-    v5->_sessionType = [v4 decodeIntegerForKey:@"sessionType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionError"];
+    v5->_sessionState = [coderCopy decodeIntegerForKey:@"state"];
+    v5->_internalState = [coderCopy decodeIntegerForKey:@"internalState"];
+    v5->_isSessionActive = [coderCopy decodeBoolForKey:@"isSessionActive"];
+    v5->_sessionType = [coderCopy decodeIntegerForKey:@"sessionType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionError"];
     sessionError = v5->_sessionError;
     v5->_sessionError = v12;
 
-    v5->_isBuilderPaused = [v4 decodeBoolForKey:@"isBuilderPaused"];
-    [v4 decodeDoubleForKey:@"elapsedTime"];
+    v5->_isBuilderPaused = [coderCopy decodeBoolForKey:@"isBuilderPaused"];
+    [coderCopy decodeDoubleForKey:@"elapsedTime"];
     v5->_elapsedTime = v14;
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snapshotDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snapshotDate"];
     snapshotDate = v5->_snapshotDate;
     v5->_snapshotDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     builderStartDate = v5->_builderStartDate;
     v5->_builderStartDate = v17;
   }
@@ -140,22 +140,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionIdentifier = self->_sessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
-  [v5 encodeObject:self->_configuration forKey:@"configuration"];
-  [v5 encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
-  [v5 encodeInteger:self->_sessionState forKey:@"state"];
-  [v5 encodeInteger:self->_internalState forKey:@"internalState"];
-  [v5 encodeBool:self->_isSessionActive forKey:@"isSessionActive"];
-  [v5 encodeInteger:self->_sessionType forKey:@"sessionType"];
-  [v5 encodeObject:self->_sessionError forKey:@"sessionError"];
-  [v5 encodeBool:self->_isBuilderPaused forKey:@"isBuilderPaused"];
-  [v5 encodeDouble:@"elapsedTime" forKey:self->_elapsedTime];
-  [v5 encodeObject:self->_snapshotDate forKey:@"snapshotDate"];
-  [v5 encodeObject:self->_builderStartDate forKey:@"startDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
+  [coderCopy encodeObject:self->_configuration forKey:@"configuration"];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeInteger:self->_sessionState forKey:@"state"];
+  [coderCopy encodeInteger:self->_internalState forKey:@"internalState"];
+  [coderCopy encodeBool:self->_isSessionActive forKey:@"isSessionActive"];
+  [coderCopy encodeInteger:self->_sessionType forKey:@"sessionType"];
+  [coderCopy encodeObject:self->_sessionError forKey:@"sessionError"];
+  [coderCopy encodeBool:self->_isBuilderPaused forKey:@"isBuilderPaused"];
+  [coderCopy encodeDouble:@"elapsedTime" forKey:self->_elapsedTime];
+  [coderCopy encodeObject:self->_snapshotDate forKey:@"snapshotDate"];
+  [coderCopy encodeObject:self->_builderStartDate forKey:@"startDate"];
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface TSCHChartGridDurationValue
-+ (id)durationValueWithDouble:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSCHChartGridDurationValue)initWithDouble:(double)a3;
++ (id)durationValueWithDouble:(double)double;
+- (BOOL)isEqual:(id)equal;
+- (TSCHChartGridDurationValue)initWithDouble:(double)double;
 @end
 
 @implementation TSCHChartGridDurationValue
 
-+ (id)durationValueWithDouble:(double)a3
++ (id)durationValueWithDouble:(double)double
 {
-  v4 = [a1 alloc];
-  v8 = objc_msgSend_initWithDouble_(v4, v5, a3, v6, v7);
+  v4 = [self alloc];
+  v8 = objc_msgSend_initWithDouble_(v4, v5, double, v6, v7);
 
   return v8;
 }
 
-- (TSCHChartGridDurationValue)initWithDouble:(double)a3
+- (TSCHChartGridDurationValue)initWithDouble:(double)double
 {
   v5.receiver = self;
   v5.super_class = TSCHChartGridDurationValue;
   result = [(TSCHChartGridDurationValue *)&v5 init];
   if (result)
   {
-    result->_duration = a3;
+    result->_duration = double;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUSpecificCast();
 

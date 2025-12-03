@@ -1,44 +1,44 @@
 @interface ENEntity
-- (BOOL)isEqual:(id)a3;
-- (ENEntity)initWithBundleID:(id)a3 agencyColor:(id)a4 agencyHeaderStyle:(id)a5 agencyHeaderTextColor:(id)a6 localizedAgencyName:(id)a7 localizedAgencyImageURL:(id)a8 localizedAgencyTurndownMessage:(id)a9 localizedRegionName:(id)a10 region:(id)a11;
-- (ENEntity)initWithBundleID:(id)a3 region:(id)a4;
-- (ENEntity)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ENEntity)initWithBundleID:(id)d agencyColor:(id)color agencyHeaderStyle:(id)style agencyHeaderTextColor:(id)textColor localizedAgencyName:(id)name localizedAgencyImageURL:(id)l localizedAgencyTurndownMessage:(id)message localizedRegionName:(id)self0 region:(id)self1;
+- (ENEntity)initWithBundleID:(id)d region:(id)region;
+- (ENEntity)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENEntity
 
-- (ENEntity)initWithBundleID:(id)a3 agencyColor:(id)a4 agencyHeaderStyle:(id)a5 agencyHeaderTextColor:(id)a6 localizedAgencyName:(id)a7 localizedAgencyImageURL:(id)a8 localizedAgencyTurndownMessage:(id)a9 localizedRegionName:(id)a10 region:(id)a11
+- (ENEntity)initWithBundleID:(id)d agencyColor:(id)color agencyHeaderStyle:(id)style agencyHeaderTextColor:(id)textColor localizedAgencyName:(id)name localizedAgencyImageURL:(id)l localizedAgencyTurndownMessage:(id)message localizedRegionName:(id)self0 region:(id)self1
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  v28 = a7;
-  v27 = a8;
-  v26 = a9;
-  v17 = a10;
-  v18 = a11;
+  dCopy = d;
+  colorCopy = color;
+  styleCopy = style;
+  textColorCopy = textColor;
+  nameCopy = name;
+  lCopy = l;
+  messageCopy = message;
+  regionNameCopy = regionName;
+  regionCopy = region;
   v33.receiver = self;
   v33.super_class = ENEntity;
   v19 = [(ENEntity *)&v33 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_agencyColor, a4);
-    objc_storeStrong(&v20->_agencyHeaderStyle, a5);
-    objc_storeStrong(&v20->_agencyHeaderTextColor, a6);
-    objc_storeStrong(&v20->_localizedAgencyName, a7);
-    objc_storeStrong(&v20->_localizedAgencyTurndownMessage, a9);
-    objc_storeStrong(&v20->_localizedAgencyImageURL, a8);
-    objc_storeStrong(&v20->_localizedRegionName, a10);
-    v21 = [v32 copy];
+    objc_storeStrong(&v19->_agencyColor, color);
+    objc_storeStrong(&v20->_agencyHeaderStyle, style);
+    objc_storeStrong(&v20->_agencyHeaderTextColor, textColor);
+    objc_storeStrong(&v20->_localizedAgencyName, name);
+    objc_storeStrong(&v20->_localizedAgencyTurndownMessage, message);
+    objc_storeStrong(&v20->_localizedAgencyImageURL, l);
+    objc_storeStrong(&v20->_localizedRegionName, regionName);
+    v21 = [dCopy copy];
     bundleIdentifier = v20->_bundleIdentifier;
     v20->_bundleIdentifier = v21;
 
-    v23 = [v18 copy];
+    v23 = [regionCopy copy];
     region = v20->_region;
     v20->_region = v23;
   }
@@ -46,20 +46,20 @@
   return v20;
 }
 
-- (ENEntity)initWithBundleID:(id)a3 region:(id)a4
+- (ENEntity)initWithBundleID:(id)d region:(id)region
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  regionCopy = region;
   v14.receiver = self;
   v14.super_class = ENEntity;
   v8 = [(ENEntity *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [regionCopy copy];
     region = v8->_region;
     v8->_region = v11;
   }
@@ -67,45 +67,45 @@
   return v8;
 }
 
-- (ENEntity)initWithCoder:(id)a3
+- (ENEntity)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  coderCopy = coder;
   v21[0] = objc_opt_class();
   v21[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   v6 = [v3 setWithArray:v5];
 
   v19 = v6;
-  v18 = [v4 decodeObjectOfClasses:v6 forKey:@"agc"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"agh"];
-  v8 = [v4 decodeObjectOfClasses:v6 forKey:@"aghc"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"agn"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"atn"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aIu"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bun"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rgn"];
+  v18 = [coderCopy decodeObjectOfClasses:v6 forKey:@"agc"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"agh"];
+  v8 = [coderCopy decodeObjectOfClasses:v6 forKey:@"aghc"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"agn"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"atn"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aIu"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bun"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rgn"];
 
   v15 = [(ENEntity *)self initWithBundleID:v12 agencyColor:v18 agencyHeaderStyle:v7 agencyHeaderTextColor:v8 localizedAgencyName:v9 localizedAgencyImageURL:v11 localizedAgencyTurndownMessage:v10 localizedRegionName:v14 region:v13];
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   agencyColor = self->_agencyColor;
-  v5 = a3;
-  [v5 encodeObject:agencyColor forKey:@"agc"];
-  [v5 encodeObject:self->_agencyHeaderStyle forKey:@"agh"];
-  [v5 encodeObject:self->_agencyHeaderTextColor forKey:@"aghc"];
-  [v5 encodeObject:self->_localizedAgencyName forKey:@"agn"];
-  [v5 encodeObject:self->_localizedAgencyTurndownMessage forKey:@"atn"];
-  [v5 encodeObject:self->_localizedAgencyImageURL forKey:@"aIu"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bun"];
-  [v5 encodeObject:self->_region forKey:@"reg"];
-  [v5 encodeObject:self->_localizedRegionName forKey:@"rgn"];
+  coderCopy = coder;
+  [coderCopy encodeObject:agencyColor forKey:@"agc"];
+  [coderCopy encodeObject:self->_agencyHeaderStyle forKey:@"agh"];
+  [coderCopy encodeObject:self->_agencyHeaderTextColor forKey:@"aghc"];
+  [coderCopy encodeObject:self->_localizedAgencyName forKey:@"agn"];
+  [coderCopy encodeObject:self->_localizedAgencyTurndownMessage forKey:@"atn"];
+  [coderCopy encodeObject:self->_localizedAgencyImageURL forKey:@"aIu"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bun"];
+  [coderCopy encodeObject:self->_region forKey:@"reg"];
+  [coderCopy encodeObject:self->_localizedRegionName forKey:@"rgn"];
 }
 
 - (unint64_t)hash
@@ -183,9 +183,9 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"App: %@, Region: %@ (%@), \nPHA: %@, \nMessage: %@, \n%@, \n%@, \n%@, \n%@", bundleIdentifier, region, localizedRegionName, localizedAgencyName, localizedAgencyTurndownMessage, localizedAgencyImageURL, agencyColor, agencyHeaderStyle, agencyHeaderTextColor];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -193,11 +193,11 @@
     goto LABEL_48;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   region = self->_region;
-  v7 = [v5 region];
+  region = [v5 region];
   v8 = region;
-  v9 = v7;
+  v9 = region;
   v10 = v9;
   if (v8 == v9)
   {
@@ -217,9 +217,9 @@
     }
 
     bundleIdentifier = self->_bundleIdentifier;
-    v13 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
     v14 = bundleIdentifier;
-    v15 = v13;
+    v15 = bundleIdentifier;
     v16 = v15;
     if (v14 == v15)
     {
@@ -243,8 +243,8 @@
 
 LABEL_16:
     agencyColor = self->_agencyColor;
-    v20 = [v5 agencyColor];
-    LODWORD(agencyColor) = [(NSArray *)agencyColor isEqualToArray:v20];
+    agencyColor = [v5 agencyColor];
+    LODWORD(agencyColor) = [(NSArray *)agencyColor isEqualToArray:agencyColor];
 
     if (!agencyColor)
     {
@@ -252,9 +252,9 @@ LABEL_16:
     }
 
     agencyHeaderStyle = self->_agencyHeaderStyle;
-    v22 = [v5 agencyHeaderStyle];
+    agencyHeaderStyle = [v5 agencyHeaderStyle];
     v14 = agencyHeaderStyle;
-    v23 = v22;
+    v23 = agencyHeaderStyle;
     v16 = v23;
     if (v14 == v23)
     {
@@ -274,17 +274,17 @@ LABEL_16:
 
 LABEL_32:
       agencyHeaderTextColor = self->_agencyHeaderTextColor;
-      v35 = [v5 agencyHeaderTextColor];
-      v36 = [(NSArray *)agencyHeaderTextColor isEqualToArray:v35];
+      agencyHeaderTextColor = [v5 agencyHeaderTextColor];
+      v36 = [(NSArray *)agencyHeaderTextColor isEqualToArray:agencyHeaderTextColor];
 
       v37 = [(NSString *)self->_localizedAgencyName length];
       v27 = v37 == 0 && v36;
       if (v37 && v36)
       {
         localizedAgencyName = self->_localizedAgencyName;
-        v39 = [v5 localizedAgencyName];
+        localizedAgencyName = [v5 localizedAgencyName];
         v40 = localizedAgencyName;
-        v41 = v39;
+        v41 = localizedAgencyName;
         if (v40 == v41)
         {
           v27 = 1;
@@ -313,9 +313,9 @@ LABEL_32:
         }
 
         localizedAgencyTurndownMessage = self->_localizedAgencyTurndownMessage;
-        v52 = [v5 localizedAgencyTurndownMessage];
+        localizedAgencyTurndownMessage = [v5 localizedAgencyTurndownMessage];
         v53 = localizedAgencyTurndownMessage;
-        v54 = v52;
+        v54 = localizedAgencyTurndownMessage;
         if (v53 == v54)
         {
           v27 = 1;
@@ -342,9 +342,9 @@ LABEL_25:
       if (v28 && v27)
       {
         localizedAgencyImageURL = self->_localizedAgencyImageURL;
-        v30 = [v5 localizedAgencyImageURL];
+        localizedAgencyImageURL = [v5 localizedAgencyImageURL];
         v31 = localizedAgencyImageURL;
-        v32 = v30;
+        v32 = localizedAgencyImageURL;
         v33 = v32;
         if (v31 == v32)
         {
@@ -392,9 +392,9 @@ LABEL_39:
   if (v43 && v26)
   {
     localizedRegionName = self->_localizedRegionName;
-    v46 = [v5 localizedRegionName];
+    localizedRegionName = [v5 localizedRegionName];
     v47 = localizedRegionName;
-    v48 = v46;
+    v48 = localizedRegionName;
     v49 = v48;
     if (v47 == v48)
     {

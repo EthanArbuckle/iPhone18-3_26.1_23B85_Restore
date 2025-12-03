@@ -1,34 +1,34 @@
 @interface VCPBChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChangeType:(id)a3;
-- (int)StringAsMessageType:(id)a3;
+- (int)StringAsChangeType:(id)type;
+- (int)StringAsMessageType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPBChange
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_messageType = v4[6];
-  self->_changeType = v4[2];
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  self->_messageType = fromCopy[6];
+  self->_changeType = fromCopy[2];
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(VCPBChange *)self setUniqueID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(VCPBChange *)self setMessage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -39,13 +39,13 @@
   return v3 ^ v4 ^ [(NSData *)self->_message hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_messageType == *(v4 + 6) && self->_changeType == *(v4 + 2) && ((uniqueID = self->_uniqueID, !(uniqueID | v4[4])) || -[NSString isEqual:](uniqueID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_messageType == *(equalCopy + 6) && self->_changeType == *(equalCopy + 2) && ((uniqueID = self->_uniqueID, !(uniqueID | equalCopy[4])) || -[NSString isEqual:](uniqueID, "isEqual:")))
   {
     message = self->_message;
-    if (message | v4[2])
+    if (message | equalCopy[2])
     {
       v7 = [(NSData *)message isEqual:?];
     }
@@ -64,35 +64,35 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_messageType;
   *(v5 + 8) = self->_changeType;
-  v6 = [(NSString *)self->_uniqueID copyWithZone:a3];
+  v6 = [(NSString *)self->_uniqueID copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSData *)self->_message copyWithZone:a3];
+  v8 = [(NSData *)self->_message copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 6) = self->_messageType;
-  *(a3 + 2) = self->_changeType;
+  *(to + 6) = self->_messageType;
+  *(to + 2) = self->_changeType;
   uniqueID = self->_uniqueID;
-  v5 = a3;
-  [v5 setUniqueID:uniqueID];
-  [v5 setMessage:self->_message];
+  toCopy = to;
+  [toCopy setUniqueID:uniqueID];
+  [toCopy setMessage:self->_message];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   messageType = self->_messageType;
   PBDataWriterWriteInt32Field();
   changeType = self->_changeType;
@@ -113,7 +113,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = self->_messageType - 1;
   if (v4 >= 3)
   {
@@ -125,7 +125,7 @@
     v5 = off_2788FEB40[v4];
   }
 
-  [v3 setObject:v5 forKey:@"messageType"];
+  [dictionary setObject:v5 forKey:@"messageType"];
 
   v6 = self->_changeType - 1;
   if (v6 >= 3)
@@ -138,21 +138,21 @@
     v7 = off_2788FEB58[v6];
   }
 
-  [v3 setObject:v7 forKey:@"changeType"];
+  [dictionary setObject:v7 forKey:@"changeType"];
 
   uniqueID = self->_uniqueID;
   if (uniqueID)
   {
-    [v3 setObject:uniqueID forKey:@"uniqueID"];
+    [dictionary setObject:uniqueID forKey:@"uniqueID"];
   }
 
   message = self->_message;
   if (message)
   {
-    [v3 setObject:message forKey:@"message"];
+    [dictionary setObject:message forKey:@"message"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -161,26 +161,26 @@
   v8.receiver = self;
   v8.super_class = VCPBChange;
   v4 = [(VCPBChange *)&v8 description];
-  v5 = [(VCPBChange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPBChange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsChangeType:(id)a3
+- (int)StringAsChangeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ADDED"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ADDED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UPDATED"])
+  else if ([typeCopy isEqualToString:@"UPDATED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DELETED"])
+  else if ([typeCopy isEqualToString:@"DELETED"])
   {
     v4 = 3;
   }
@@ -193,20 +193,20 @@
   return v4;
 }
 
-- (int)StringAsMessageType:(id)a3
+- (int)StringAsMessageType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"IntentDefinitionChange"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"IntentDefinitionChange"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"VoiceShortcutChange"])
+  else if ([typeCopy isEqualToString:@"VoiceShortcutChange"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WorkflowChange"])
+  else if ([typeCopy isEqualToString:@"WorkflowChange"])
   {
     v4 = 3;
   }

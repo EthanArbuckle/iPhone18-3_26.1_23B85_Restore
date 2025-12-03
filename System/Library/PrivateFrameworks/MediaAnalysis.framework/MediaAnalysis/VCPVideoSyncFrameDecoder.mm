@@ -1,34 +1,34 @@
 @interface VCPVideoSyncFrameDecoder
-+ (BOOL)isSyncFrameForCMSampleBuffer:(opaqueCMSampleBuffer *)a3;
-+ (BOOL)readBigEndianInt:(int *)a3 fromBlockBuffer:(OpaqueCMBlockBuffer *)a4 forNumBytes:(int)a5 atOffset:(unint64_t)a6;
-- (BOOL)decodeCMSampleBuffer:(opaqueCMSampleBuffer *)a3 toCMSampleBuffer:(opaqueCMSampleBuffer *)a4 error:(id *)a5;
-- (VCPVideoSyncFrameDecoder)initWithDecoderSettings:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 rotationAngle:(int)a5;
++ (BOOL)isSyncFrameForCMSampleBuffer:(opaqueCMSampleBuffer *)buffer;
++ (BOOL)readBigEndianInt:(int *)int fromBlockBuffer:(OpaqueCMBlockBuffer *)buffer forNumBytes:(int)bytes atOffset:(unint64_t)offset;
+- (BOOL)decodeCMSampleBuffer:(opaqueCMSampleBuffer *)buffer toCMSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer error:(id *)error;
+- (VCPVideoSyncFrameDecoder)initWithDecoderSettings:(id)settings formatDescription:(opaqueCMFormatDescription *)description rotationAngle:(int)angle;
 - (void)dealloc;
 @end
 
 @implementation VCPVideoSyncFrameDecoder
 
-- (VCPVideoSyncFrameDecoder)initWithDecoderSettings:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 rotationAngle:(int)a5
+- (VCPVideoSyncFrameDecoder)initWithDecoderSettings:(id)settings formatDescription:(opaqueCMFormatDescription *)description rotationAngle:(int)angle
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  settingsCopy = settings;
   v42.receiver = self;
   v42.super_class = VCPVideoSyncFrameDecoder;
   v9 = [(VCPVideoSyncFrameDecoder *)&v42 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v11 = *MEMORY[0x1E6966208];
-    v12 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6966208]];
-    [v10 setObject:v12 forKeyedSubscript:v11];
+    v12 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E6966208]];
+    [dictionary setObject:v12 forKeyedSubscript:v11];
 
     v13 = *MEMORY[0x1E69660B8];
-    v14 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69660B8]];
-    [v10 setObject:v14 forKeyedSubscript:v13];
+    v14 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E69660B8]];
+    [dictionary setObject:v14 forKeyedSubscript:v13];
 
     v15 = *MEMORY[0x1E6966130];
-    v16 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6966130]];
-    [v10 setObject:v16 forKeyedSubscript:v15];
+    v16 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E6966130]];
+    [dictionary setObject:v16 forKeyedSubscript:v15];
 
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -36,7 +36,7 @@
       *buf = 138412546;
       v44 = v17;
       v45 = 2112;
-      v46 = v10;
+      v46 = dictionary;
       v18 = v17;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] Creating VTDecompressionSession with pixelBufferAttributes %@", buf, 0x16u);
     }
@@ -59,7 +59,7 @@
       v9->_decompressionSession.value_ = 0;
     }
 
-    if (VTDecompressionSessionCreate(*MEMORY[0x1E695E480], a4, 0, v10, 0, &v9->_decompressionSession.value_))
+    if (VTDecompressionSessionCreate(*MEMORY[0x1E695E480], description, 0, dictionary, 0, &v9->_decompressionSession.value_))
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -84,8 +84,8 @@ LABEL_34:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v27, OS_SIGNPOST_INTERVAL_END, v20, "VTDecompressionSession_Create", "", buf, 2u);
     }
 
-    v9->_requiresRotation = a5 != 0;
-    if (a5)
+    v9->_requiresRotation = angle != 0;
+    if (angle)
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -93,7 +93,7 @@ LABEL_34:
         *buf = 138412546;
         v44 = v28;
         v45 = 1024;
-        LODWORD(v46) = a5;
+        LODWORD(v46) = angle;
         v29 = v28;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] Creating ma::Rotator with rotation angle %d", buf, 0x12u);
       }
@@ -126,7 +126,7 @@ LABEL_34:
       }
 
       v35 = v34;
-      ma::Rotator::Rotator(v34, a5);
+      ma::Rotator::Rotator(v34, angle);
       v9->_rotator = v35;
       v36 = VCPSignPostLog();
       v37 = v36;
@@ -158,13 +158,13 @@ LABEL_35:
   [(VCPVideoSyncFrameDecoder *)&v4 dealloc];
 }
 
-+ (BOOL)readBigEndianInt:(int *)a3 fromBlockBuffer:(OpaqueCMBlockBuffer *)a4 forNumBytes:(int)a5 atOffset:(unint64_t)a6
++ (BOOL)readBigEndianInt:(int *)int fromBlockBuffer:(OpaqueCMBlockBuffer *)buffer forNumBytes:(int)bytes atOffset:(unint64_t)offset
 {
   v25 = *MEMORY[0x1E69E9840];
   totalLengthOut = 0;
   lengthAtOffsetOut = 0;
   dataPointerOut = 0;
-  if (CMBlockBufferGetDataPointer(a4, a6, &lengthAtOffsetOut, &totalLengthOut, &dataPointerOut))
+  if (CMBlockBufferGetDataPointer(buffer, offset, &lengthAtOffsetOut, &totalLengthOut, &dataPointerOut))
   {
     if (MediaAnalysisLogLevel() < 3)
     {
@@ -188,9 +188,9 @@ LABEL_19:
 
   else
   {
-    if (lengthAtOffsetOut + a6 == totalLengthOut)
+    if (lengthAtOffsetOut + offset == totalLengthOut)
     {
-      switch(a5)
+      switch(bytes)
       {
         case 4:
           v12 = bswap32(*dataPointerOut);
@@ -214,7 +214,7 @@ LABEL_19:
             *buf = 138412546;
             v22 = v15;
             v23 = 1024;
-            v24 = a5;
+            bytesCopy = bytes;
             v16 = v15;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Invalid parameter for numBytes: %d", buf, 0x12u);
 
@@ -224,7 +224,7 @@ LABEL_19:
           return v9;
       }
 
-      *a3 = v12;
+      *int = v12;
       LOBYTE(v9) = 1;
       return v9;
     }
@@ -250,10 +250,10 @@ LABEL_19:
   return v9;
 }
 
-+ (BOOL)isSyncFrameForCMSampleBuffer:(opaqueCMSampleBuffer *)a3
++ (BOOL)isSyncFrameForCMSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   *&v44[13] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -266,7 +266,7 @@ LABEL_19:
     return 0;
   }
 
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   if (!FormatDescription)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -298,7 +298,7 @@ LABEL_19:
     return 0;
   }
 
-  DataBuffer = CMSampleBufferGetDataBuffer(a3);
+  DataBuffer = CMSampleBufferGetDataBuffer(buffer);
   if (!DataBuffer)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -378,8 +378,8 @@ LABEL_19:
           }
 
           v37 = 0;
-          v11 = [objc_opt_class() readBigEndianInt:&v37 fromBlockBuffer:blockBufferOut forNumBytes:2 atOffset:v19 + NALUnitHeaderLengthOut];
-          if ((v11 & 1) == 0)
+          nALUnitHeaderLengthOut = [objc_opt_class() readBigEndianInt:&v37 fromBlockBuffer:blockBufferOut forNumBytes:2 atOffset:v19 + NALUnitHeaderLengthOut];
+          if ((nALUnitHeaderLengthOut & 1) == 0)
           {
             goto LABEL_55;
           }
@@ -479,8 +479,8 @@ LABEL_19:
           }
 
           v37 = 0;
-          v11 = [objc_opt_class() readBigEndianInt:&v37 fromBlockBuffer:blockBufferOut forNumBytes:1 atOffset:v10 + NALUnitHeaderLengthOut];
-          if ((v11 & 1) == 0)
+          nALUnitHeaderLengthOut = [objc_opt_class() readBigEndianInt:&v37 fromBlockBuffer:blockBufferOut forNumBytes:1 atOffset:v10 + NALUnitHeaderLengthOut];
+          if ((nALUnitHeaderLengthOut & 1) == 0)
           {
             goto LABEL_55;
           }
@@ -516,25 +516,25 @@ LABEL_19:
     }
   }
 
-  v11 = 0;
+  nALUnitHeaderLengthOut = 0;
 LABEL_55:
   CF<__CVBuffer *>::~CF(&blockBufferOut);
-  return v11;
+  return nALUnitHeaderLengthOut;
 }
 
-- (BOOL)decodeCMSampleBuffer:(opaqueCMSampleBuffer *)a3 toCMSampleBuffer:(opaqueCMSampleBuffer *)a4 error:(id *)a5
+- (BOOL)decodeCMSampleBuffer:(opaqueCMSampleBuffer *)buffer toCMSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer error:(id *)error
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
-    if (a5)
+    if (error)
     {
       v19 = MEMORY[0x1E696ABC0];
       v79 = *MEMORY[0x1E696A578];
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] No CMSampleBuffer", objc_opt_class()];
       v80[0] = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&v79 count:1];
-      *a5 = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v21];
+      *error = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v21];
     }
 
     return 0;
@@ -542,14 +542,14 @@ LABEL_55:
 
   if (!self->_decompressionSession.value_)
   {
-    if (a5)
+    if (error)
     {
       v22 = MEMORY[0x1E696ABC0];
       v77 = *MEMORY[0x1E696A578];
       v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] No VTDecompressionSession", objc_opt_class()];
       v78 = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-      *a5 = [v22 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v24];
+      *error = [v22 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v24];
     }
 
     return 0;
@@ -579,7 +579,7 @@ LABEL_55:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "VTDecompressionSession_Decode", "", &buf, 2u);
   }
 
-  v14 = VTDecompressionSessionDecodeFrameWithOutputHandler(self->_decompressionSession.value_, a3, 0, 0, v9);
+  v14 = VTDecompressionSessionDecodeFrameWithOutputHandler(self->_decompressionSession.value_, buffer, 0, 0, v9);
   if (!v14)
   {
     v26 = VCPSignPostLog();
@@ -592,14 +592,14 @@ LABEL_55:
 
     if (!v58[6])
     {
-      if (a5)
+      if (error)
       {
         v38 = MEMORY[0x1E696ABC0];
         v73 = *MEMORY[0x1E696A578];
         v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] Failed to decode sync frame", objc_opt_class()];
         v74 = v39;
         v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-        *a5 = [v38 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v40];
+        *error = [v38 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v40];
       }
 
       goto LABEL_9;
@@ -609,14 +609,14 @@ LABEL_55:
     {
       if (!self->_rotator)
       {
-        if (a5)
+        if (error)
         {
           v41 = MEMORY[0x1E696ABC0];
           v71 = *MEMORY[0x1E696A578];
           v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] No ma::Rotator", objc_opt_class()];
           v72 = v42;
           v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-          *a5 = [v41 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v43];
+          *error = [v41 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v43];
         }
 
         goto LABEL_9;
@@ -645,14 +645,14 @@ LABEL_55:
       v34 = ma::Rotator::Rotate(rotator, v33, &buf);
       if (v34)
       {
-        if (a5)
+        if (error)
         {
           v35 = MEMORY[0x1E696ABC0];
           v69 = *MEMORY[0x1E696A578];
           v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] Failed to perform rotation", objc_opt_class()];
           v70 = v36;
           v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-          *a5 = [v35 errorWithDomain:*MEMORY[0x1E696A768] code:v34 userInfo:v37];
+          *error = [v35 errorWithDomain:*MEMORY[0x1E696A768] code:v34 userInfo:v37];
         }
 
         CF<__CVBuffer *>::~CF(&buf);
@@ -672,7 +672,7 @@ LABEL_55:
     }
 
     memset(&v55, 0, sizeof(v55));
-    CMSampleBufferGetPresentationTimeStamp(&v55, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v55, buffer);
     v46 = v58[6];
     v54 = v55;
     formatDescriptionOut = 0;
@@ -696,7 +696,7 @@ LABEL_48:
       buf.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
       buf.presentationTimeStamp = v54;
       buf.decodeTimeStamp = buf.duration;
-      v47 = CMSampleBufferCreateReadyWithImageBuffer(*MEMORY[0x1E695E480], v46, formatDescriptionOut, &buf, a4);
+      v47 = CMSampleBufferCreateReadyWithImageBuffer(*MEMORY[0x1E695E480], v46, formatDescriptionOut, &buf, sampleBuffer);
       if (v47 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *v64 = 0;
@@ -709,27 +709,27 @@ LABEL_48:
 
     CF<__CVBuffer *>::~CF(&formatDescriptionOut);
     v18 = v47 == 0;
-    if (a5 && v47)
+    if (error && v47)
     {
       v51 = MEMORY[0x1E696ABC0];
       v67 = *MEMORY[0x1E696A578];
       v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] Failed to perform CMSampleBuffer_CreateWithCVPixelBuffer", objc_opt_class()];
       v68 = v52;
       v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-      *a5 = [v51 errorWithDomain:*MEMORY[0x1E696A768] code:v47 userInfo:v53];
+      *error = [v51 errorWithDomain:*MEMORY[0x1E696A768] code:v47 userInfo:v53];
     }
 
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     v15 = MEMORY[0x1E696ABC0];
     v75 = *MEMORY[0x1E696A578];
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] Failed to perform VTDecompressionSessionDecodeFrameWithOutputHandler", objc_opt_class()];
     v76 = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-    *a5 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:v14 userInfo:v17];
+    *error = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:v14 userInfo:v17];
   }
 
 LABEL_9:

@@ -1,25 +1,25 @@
 @interface TNChartFormulaArgumentCollection
-+ (id)argumentCollectionFromFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5;
-+ (id)argumentCollectionFromFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5 storeBadRef:(BOOL)a6;
-+ (id)evalArgumentCollectionFromFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5;
-- (TNChartFormulaArgumentCollection)initWithArray:(id)a3;
-- (TNChartFormulaArgumentCollection)initWithFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5 storeBadRef:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)elementAtIndex:(unint64_t)a3;
++ (id)argumentCollectionFromFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine;
++ (id)argumentCollectionFromFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine storeBadRef:(BOOL)ref;
++ (id)evalArgumentCollectionFromFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine;
+- (TNChartFormulaArgumentCollection)initWithArray:(id)array;
+- (TNChartFormulaArgumentCollection)initWithFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine storeBadRef:(BOOL)ref;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)elementAtIndex:(unint64_t)index;
 - (id)elementEnumerator;
 - (id)firstElement;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)reverseElementEnumerator;
-- (id)wrappedChartFormulaWithID:(TSUCellCoord)a3 andLocale:(id)a4;
+- (id)wrappedChartFormulaWithID:(TSUCellCoord)d andLocale:(id)locale;
 - (unint64_t)components;
 @end
 
 @implementation TNChartFormulaArgumentCollection
 
-- (TNChartFormulaArgumentCollection)initWithArray:(id)a3
+- (TNChartFormulaArgumentCollection)initWithArray:(id)array
 {
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TNChartFormulaArgumentCollection initWithArray:]");
@@ -35,7 +35,7 @@
   if (v13)
   {
     v14 = objc_alloc(MEMORY[0x277CBEA60]);
-    v16 = objc_msgSend_initWithArray_(v14, v15, v5);
+    v16 = objc_msgSend_initWithArray_(v14, v15, arrayCopy);
     array = v13->_array;
     v13->_array = v16;
   }
@@ -43,18 +43,18 @@
   return v13;
 }
 
-- (TNChartFormulaArgumentCollection)initWithFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5 storeBadRef:(BOOL)a6
+- (TNChartFormulaArgumentCollection)initWithFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine storeBadRef:(BOOL)ref
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
+  refCopy = ref;
+  formulaCopy = formula;
+  engineCopy = engine;
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v10)
+  if (formulaCopy)
   {
-    v15 = objc_msgSend_const_astNodeArray(v10, v12, v13);
+    v15 = objc_msgSend_const_astNodeArray(formulaCopy, v12, v13);
     v27 = 0;
-    v28 = *a4;
-    MEMORY[0x277C90920](v30, v11, &v27);
+    v28 = *owner;
+    MEMORY[0x277C90920](v30, engineCopy, &v27);
     sub_275F1B13C(&v27, v15, v30);
     TSCEASTStreamIterator::rewrite(&v27);
     v20 = sub_275F1B140(&v27, v16, v17);
@@ -71,7 +71,7 @@
       if (objc_msgSend_isBadRef(v22, v23, v24))
       {
         v21 = v22;
-        if (!v6)
+        if (!refCopy)
         {
           continue;
         }
@@ -89,38 +89,38 @@
   return v25;
 }
 
-+ (id)argumentCollectionFromFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5
++ (id)argumentCollectionFromFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine
 {
-  v7 = a3;
-  v8 = a5;
+  formulaCopy = formula;
+  engineCopy = engine;
   v9 = [TNChartFormulaArgumentCollection alloc];
-  v11 = objc_msgSend_initWithFormula_inOwner_usingCalcEngine_storeBadRef_(v9, v10, v7, a4, v8, 0);
+  v11 = objc_msgSend_initWithFormula_inOwner_usingCalcEngine_storeBadRef_(v9, v10, formulaCopy, owner, engineCopy, 0);
 
   return v11;
 }
 
-+ (id)argumentCollectionFromFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5 storeBadRef:(BOOL)a6
++ (id)argumentCollectionFromFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine storeBadRef:(BOOL)ref
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a5;
+  refCopy = ref;
+  formulaCopy = formula;
+  engineCopy = engine;
   v11 = [TNChartFormulaArgumentCollection alloc];
-  v13 = objc_msgSend_initWithFormula_inOwner_usingCalcEngine_storeBadRef_(v11, v12, v9, a4, v10, v6);
+  v13 = objc_msgSend_initWithFormula_inOwner_usingCalcEngine_storeBadRef_(v11, v12, formulaCopy, owner, engineCopy, refCopy);
 
   return v13;
 }
 
-+ (id)evalArgumentCollectionFromFormula:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingCalcEngine:(id)a5
++ (id)evalArgumentCollectionFromFormula:(id)formula inOwner:(const TSKUIDStruct *)owner usingCalcEngine:(id)engine
 {
-  v7 = a3;
-  v8 = a5;
+  formulaCopy = formula;
+  engineCopy = engine;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v7)
+  if (formulaCopy)
   {
     v25 = 0;
-    v26 = *a4;
-    MEMORY[0x277C90920](v28, v8, &v25);
-    v11 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v10, v8, a4, 0);
+    v26 = *owner;
+    MEMORY[0x277C90920](v28, engineCopy, &v25);
+    v11 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v10, engineCopy, owner, 0);
     sub_275F1BDA8();
     TSCEASTRewriter::rewrite(&v25);
     v16 = sub_275F1C2B0(&v25, v12, v13);
@@ -151,17 +151,17 @@
   return v23;
 }
 
-- (id)wrappedChartFormulaWithID:(TSUCellCoord)a3 andLocale:(id)a4
+- (id)wrappedChartFormulaWithID:(TSUCellCoord)d andLocale:(id)locale
 {
   v76 = *MEMORY[0x277D85DE8];
-  v68 = a4;
+  localeCopy = locale;
   v5 = __C();
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v6 = self;
-  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v71, v75, 16);
+  selfCopy = self;
+  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v7, &v71, v75, 16);
   if (!v10)
   {
     v66 = 0;
@@ -179,7 +179,7 @@ LABEL_45:
     {
       if (*v72 != v12)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(selfCopy);
       }
 
       v14 = *(*(&v71 + 1) + 8 * v13);
@@ -275,7 +275,7 @@ LABEL_21:
 
           if (v38 == 7)
           {
-            v47 = objc_msgSend_asStringWithLocale_(v35, v36, v68);
+            v47 = objc_msgSend_asStringWithLocale_(v35, v36, localeCopy);
             TSCEASTStringElement::appendStringElement(v5, v47, v48);
 
             goto LABEL_39;
@@ -317,7 +317,7 @@ LABEL_22:
     }
 
     while (v10 != v13);
-    v61 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v71, v75, 16);
+    v61 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v8, &v71, v75, 16);
     v10 = v61;
   }
 
@@ -327,9 +327,9 @@ LABEL_22:
   {
     TSCEASTFunctionElement::appendFunctionElement(v5, 0xAF, v11, 0, v62);
     v63 = objc_alloc(MEMORY[0x277D80C60]);
-    v6 = objc_msgSend_initWithNodeArray_(v63, v64, v5);
+    selfCopy = objc_msgSend_initWithNodeArray_(v63, v64, v5);
     TSCEASTNodeArray::freeNodeArray();
-    v66 = objc_msgSend_chartFormulaWithFormulaObject_(TNChartFormulaWrapper, v65, v6);
+    v66 = objc_msgSend_chartFormulaWithFormulaObject_(TNChartFormulaWrapper, v65, selfCopy);
     goto LABEL_45;
   }
 
@@ -346,9 +346,9 @@ LABEL_47:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = self;
+  selfCopy = self;
   v4 = 0;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v2, v3, &v13, v17, 16);
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v3, &v13, v17, 16);
   if (v7)
   {
     v8 = *v14;
@@ -358,7 +358,7 @@ LABEL_47:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -385,7 +385,7 @@ LABEL_47:
         v4 |= isStaticValue;
       }
 
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v2, v5, &v13, v17, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v5, &v13, v17, 16);
     }
 
     while (v7);
@@ -394,10 +394,10 @@ LABEL_47:
   return v4;
 }
 
-- (id)elementAtIndex:(unint64_t)a3
+- (id)elementAtIndex:(unint64_t)index
 {
   objc_opt_class();
-  v6 = objc_msgSend_objectAtIndex_(self->_array, v5, a3);
+  v6 = objc_msgSend_objectAtIndex_(self->_array, v5, index);
   v7 = TSUDynamicCast();
 
   if (!v7)
@@ -442,18 +442,18 @@ LABEL_47:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   array = self->_array;
 
   return objc_msgSend_initWithArray_(v7, v8, array);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TNMutableChartFormulaArgumentCollection, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TNMutableChartFormulaArgumentCollection, a2, zone);
   array = self->_array;
 
   return objc_msgSend_initWithArray_(v4, v5, array);

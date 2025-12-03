@@ -1,27 +1,27 @@
 @interface TRMessage
-- (TRMessage)initWithCoder:(id)a3;
+- (TRMessage)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRMessage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   userInfo = self->_userInfo;
   if (userInfo)
   {
-    [a3 encodeObject:userInfo forKey:@"TRMessage_userInfo"];
+    [coder encodeObject:userInfo forKey:@"TRMessage_userInfo"];
   }
 }
 
-- (TRMessage)initWithCoder:(id)a3
+- (TRMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TRMessage *)self init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"TRMessage_userInfo"];
+    v6 = [coderCopy decodePropertyListForKey:@"TRMessage_userInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

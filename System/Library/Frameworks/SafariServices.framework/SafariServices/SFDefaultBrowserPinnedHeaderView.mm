@@ -1,23 +1,23 @@
 @interface SFDefaultBrowserPinnedHeaderView
 - (CGSize)intrinsicContentSize;
-- (SFDefaultBrowserPinnedHeaderView)initWithFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setLockupView:(id)a3;
-- (void)setPocketContainerInteraction:(id)a3;
+- (SFDefaultBrowserPinnedHeaderView)initWithFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setLockupView:(id)view;
+- (void)setPocketContainerInteraction:(id)interaction;
 @end
 
 @implementation SFDefaultBrowserPinnedHeaderView
 
-- (SFDefaultBrowserPinnedHeaderView)initWithFrame:(CGRect)a3
+- (SFDefaultBrowserPinnedHeaderView)initWithFrame:(CGRect)frame
 {
   v64[4] = *MEMORY[0x1E69E9840];
   v61.receiver = self;
   v61.super_class = SFDefaultBrowserPinnedHeaderView;
-  v3 = [(SFDefaultBrowserPinnedHeaderView *)&v61 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFDefaultBrowserPinnedHeaderView *)&v61 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(SFDefaultBrowserPinnedHeaderView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(SFDefaultBrowserPinnedHeaderView *)v3 setBackgroundColor:systemBackgroundColor];
 
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
@@ -26,8 +26,8 @@
 
     else
     {
-      v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [(SFDefaultBrowserPinnedHeaderView *)v3 setBackgroundColor:v5];
+      systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [(SFDefaultBrowserPinnedHeaderView *)v3 setBackgroundColor:systemBackgroundColor2];
     }
 
     [(SFDefaultBrowserPinnedHeaderView *)v3 setDirectionalLayoutMargins:11.0, 15.17, 11.0, 16.0];
@@ -48,26 +48,26 @@
       v8 = *(MEMORY[0x1E695F058] + 16);
       v9 = *(MEMORY[0x1E695F058] + 24);
       v11 = [v10 initWithFrame:{*MEMORY[0x1E695F058], v7, v8, v9}];
-      v12 = [MEMORY[0x1E69DC888] separatorColor];
-      [v11 setBackgroundColor:v12];
+      separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+      [v11 setBackgroundColor:separatorColor];
 
       [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(SFDefaultBrowserPinnedHeaderView *)v3 addSubview:v11];
       v51 = MEMORY[0x1E696ACD8];
-      v59 = [v11 leadingAnchor];
-      v57 = [(SFDefaultBrowserPinnedHeaderView *)v3 leadingAnchor];
-      v55 = [v59 constraintEqualToAnchor:v57];
+      leadingAnchor = [v11 leadingAnchor];
+      leadingAnchor2 = [(SFDefaultBrowserPinnedHeaderView *)v3 leadingAnchor];
+      v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v64[0] = v55;
-      v53 = [v11 trailingAnchor];
-      v13 = [(SFDefaultBrowserPinnedHeaderView *)v3 trailingAnchor];
-      v14 = [v53 constraintEqualToAnchor:v13];
+      trailingAnchor = [v11 trailingAnchor];
+      trailingAnchor2 = [(SFDefaultBrowserPinnedHeaderView *)v3 trailingAnchor];
+      v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v64[1] = v14;
-      v15 = [v11 bottomAnchor];
-      v16 = [(SFDefaultBrowserPinnedHeaderView *)v3 bottomAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      bottomAnchor = [v11 bottomAnchor];
+      bottomAnchor2 = [(SFDefaultBrowserPinnedHeaderView *)v3 bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v64[2] = v17;
-      v18 = [v11 heightAnchor];
-      v19 = [v18 constraintEqualToConstant:1.0];
+      heightAnchor = [v11 heightAnchor];
+      v19 = [heightAnchor constraintEqualToConstant:1.0];
       v64[3] = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
       [v51 activateConstraints:v20];
@@ -85,16 +85,16 @@
     LODWORD(v23) = 1144750080;
     [(UIButton *)v3->_selectionMarkingButton setContentHuggingPriority:0 forAxis:v23];
     [(SFDefaultBrowserPinnedHeaderView *)v3 addSubview:v3->_selectionMarkingButton];
-    v24 = [(SFDefaultBrowserPinnedHeaderView *)v3 layoutMarginsGuide];
+    layoutMarginsGuide = [(SFDefaultBrowserPinnedHeaderView *)v3 layoutMarginsGuide];
     v25 = MEMORY[0x1E696ACD8];
-    v26 = [(UIButton *)v3->_selectionMarkingButton leadingAnchor];
-    v27 = [v24 leadingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    leadingAnchor3 = [(UIButton *)v3->_selectionMarkingButton leadingAnchor];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v63[0] = v28;
-    v29 = [(UIButton *)v3->_selectionMarkingButton centerYAnchor];
-    v56 = v24;
-    v30 = [v24 centerYAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    centerYAnchor = [(UIButton *)v3->_selectionMarkingButton centerYAnchor];
+    v56 = layoutMarginsGuide;
+    centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v63[1] = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:2];
     [v25 activateConstraints:v32];
@@ -113,21 +113,21 @@
 
       [(SFDefaultBrowserPinnedHeaderView *)v3 addSubview:v3->_scrollPocketView];
       v48 = MEMORY[0x1E696ACD8];
-      v54 = [(UIView *)v3->_scrollPocketView leadingAnchor];
-      v52 = [(SFDefaultBrowserPinnedHeaderView *)v3 leadingAnchor];
-      v50 = [v54 constraintEqualToAnchor:v52];
+      leadingAnchor5 = [(UIView *)v3->_scrollPocketView leadingAnchor];
+      leadingAnchor6 = [(SFDefaultBrowserPinnedHeaderView *)v3 leadingAnchor];
+      v50 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v62[0] = v50;
-      v49 = [(UIView *)v3->_scrollPocketView trailingAnchor];
-      v37 = [(SFDefaultBrowserPinnedHeaderView *)v3 trailingAnchor];
-      v38 = [v49 constraintEqualToAnchor:v37];
+      trailingAnchor3 = [(UIView *)v3->_scrollPocketView trailingAnchor];
+      trailingAnchor4 = [(SFDefaultBrowserPinnedHeaderView *)v3 trailingAnchor];
+      v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v62[1] = v38;
-      v39 = [(UIView *)v3->_scrollPocketView topAnchor];
-      v40 = [(SFDefaultBrowserPinnedHeaderView *)v3 topAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      topAnchor = [(UIView *)v3->_scrollPocketView topAnchor];
+      topAnchor2 = [(SFDefaultBrowserPinnedHeaderView *)v3 topAnchor];
+      v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v62[2] = v41;
-      v42 = [(UIView *)v3->_scrollPocketView bottomAnchor];
-      v43 = [(SFDefaultBrowserPinnedHeaderView *)v3 bottomAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      bottomAnchor3 = [(UIView *)v3->_scrollPocketView bottomAnchor];
+      bottomAnchor4 = [(SFDefaultBrowserPinnedHeaderView *)v3 bottomAnchor];
+      v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v62[3] = v44;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:4];
       [v48 activateConstraints:v45];
@@ -139,49 +139,49 @@
   return v3;
 }
 
-- (void)setLockupView:(id)a3
+- (void)setLockupView:(id)view
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   lockupView = self->_lockupView;
-  if (lockupView != v5)
+  if (lockupView != viewCopy)
   {
     [(ASCLockupView *)lockupView removeFromSuperview];
-    objc_storeStrong(&self->_lockupView, a3);
-    if (v5)
+    objc_storeStrong(&self->_lockupView, view);
+    if (viewCopy)
     {
       [(ASCLockupView *)self->_lockupView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(ASCLockupView *)self->_lockupView setUserInteractionEnabled:0];
       [(ASCLockupView *)self->_lockupView setMaximumContentSizeCategory:*MEMORY[0x1E69DDC50]];
       [(SFDefaultBrowserPinnedHeaderView *)self addSubview:self->_lockupView];
-      v7 = [(SFDefaultBrowserPinnedHeaderView *)self layoutMarginsGuide];
+      layoutMarginsGuide = [(SFDefaultBrowserPinnedHeaderView *)self layoutMarginsGuide];
       v19 = MEMORY[0x1E696ACD8];
-      v24 = [(ASCLockupView *)self->_lockupView topAnchor];
-      v23 = [v7 topAnchor];
-      v22 = [v24 constraintEqualToAnchor:v23];
+      topAnchor = [(ASCLockupView *)self->_lockupView topAnchor];
+      topAnchor2 = [layoutMarginsGuide topAnchor];
+      v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v26[0] = v22;
-      v21 = [(ASCLockupView *)self->_lockupView bottomAnchor];
-      v20 = [v7 bottomAnchor];
-      v8 = [v21 constraintEqualToAnchor:v20];
+      bottomAnchor = [(ASCLockupView *)self->_lockupView bottomAnchor];
+      bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+      v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v26[1] = v8;
-      v9 = [(ASCLockupView *)self->_lockupView leadingAnchor];
-      v10 = [(UIButton *)self->_selectionMarkingButton trailingAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10 constant:18.0];
+      leadingAnchor = [(ASCLockupView *)self->_lockupView leadingAnchor];
+      trailingAnchor = [(UIButton *)self->_selectionMarkingButton trailingAnchor];
+      v11 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:18.0];
       v26[2] = v11;
-      v12 = [(ASCLockupView *)self->_lockupView trailingAnchor];
-      v25 = v7;
-      v13 = [v7 trailingAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      trailingAnchor2 = [(ASCLockupView *)self->_lockupView trailingAnchor];
+      v25 = layoutMarginsGuide;
+      trailingAnchor3 = [layoutMarginsGuide trailingAnchor];
+      v14 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
       v26[3] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
       [v19 activateConstraints:v15];
 
       [(SFDefaultBrowserPinnedHeaderView *)self setSemanticContentAttribute:3];
-      v16 = [(ASCLockupView *)v5 subviews];
-      v17 = [v16 firstObject];
-      v18 = [v17 effectiveUserInterfaceLayoutDirection];
+      subviews = [(ASCLockupView *)viewCopy subviews];
+      firstObject = [subviews firstObject];
+      effectiveUserInterfaceLayoutDirection = [firstObject effectiveUserInterfaceLayoutDirection];
 
-      if (v18 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         [(SFDefaultBrowserPinnedHeaderView *)self setSemanticContentAttribute:4];
       }
@@ -192,7 +192,7 @@
 - (CGSize)intrinsicContentSize
 {
   [(SFDefaultBrowserPinnedHeaderView *)self bounds];
-  v3 = [(SFDefaultBrowserPinnedHeaderView *)self traitCollection];
+  traitCollection = [(SFDefaultBrowserPinnedHeaderView *)self traitCollection];
   ASCLockupViewSizeGetEstimatedSize();
   v5 = v4;
   v7 = v6;
@@ -204,35 +204,35 @@
   return result;
 }
 
-- (void)setPocketContainerInteraction:(id)a3
+- (void)setPocketContainerInteraction:(id)interaction
 {
-  v8 = a3;
-  v5 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-  v6 = v8;
-  if (v5)
+  interactionCopy = interaction;
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  v6 = interactionCopy;
+  if (isSolariumEnabled)
   {
     pocketContainerInteraction = self->_pocketContainerInteraction;
-    if (pocketContainerInteraction != v8)
+    if (pocketContainerInteraction != interactionCopy)
     {
       if (pocketContainerInteraction)
       {
         [(SFDefaultBrowserPinnedHeaderView *)self removeInteraction:?];
       }
 
-      objc_storeStrong(&self->_pocketContainerInteraction, a3);
-      [(SFDefaultBrowserPinnedHeaderView *)self addInteraction:v8];
-      v6 = v8;
+      objc_storeStrong(&self->_pocketContainerInteraction, interaction);
+      [(SFDefaultBrowserPinnedHeaderView *)self addInteraction:interactionCopy];
+      v6 = interactionCopy;
     }
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = SFDefaultBrowserPinnedHeaderView;
   [(SFDefaultBrowserPinnedHeaderView *)&v5 setHidden:?];
-  [(_UIScrollPocketContainerInteraction *)self->_pocketContainerInteraction _setActive:!v3];
+  [(_UIScrollPocketContainerInteraction *)self->_pocketContainerInteraction _setActive:!hiddenCopy];
 }
 
 @end

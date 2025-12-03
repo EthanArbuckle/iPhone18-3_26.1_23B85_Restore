@@ -1,38 +1,38 @@
 @interface BMSiriRemembersEntitiesSiriRemembersEntity
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithIdentifier:(id)a3 type:(id)a4 fields:(id)a5 fieldsTokens:(id)a6 entityHashInfo:(id)a7;
-- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithIdentifier:(id)identifier type:(id)type fields:(id)fields fieldsTokens:(id)tokens entityHashInfo:(id)info;
+- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRemembersEntitiesSiriRemembersEntity
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
-    v14 = [v5 type];
-    v15 = v14;
-    if (v13 == v14)
+    type = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
+    type2 = [v5 type];
+    v15 = type2;
+    if (type == type2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
-      v17 = [v5 type];
-      v18 = [v16 isEqual:v17];
+      type3 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
+      type4 = [v5 type];
+      v18 = [type3 isEqual:type4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
-    v20 = [v5 fields];
-    v21 = v20;
-    if (v19 == v20)
+    fields = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
+    fields2 = [v5 fields];
+    v21 = fields2;
+    if (fields == fields2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
-      v23 = [v5 fields];
-      v24 = [v22 isEqual:v23];
+      fields3 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
+      fields4 = [v5 fields];
+      v24 = [fields3 isEqual:fields4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
-    v26 = [v5 fieldsTokens];
-    v27 = v26;
-    if (v25 == v26)
+    fieldsTokens = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
+    fieldsTokens2 = [v5 fieldsTokens];
+    v27 = fieldsTokens2;
+    if (fieldsTokens == fieldsTokens2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
-      v29 = [v5 fieldsTokens];
-      v30 = [v28 isEqual:v29];
+      fieldsTokens3 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
+      fieldsTokens4 = [v5 fieldsTokens];
+      v30 = [fieldsTokens3 isEqual:fieldsTokens4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
-    v32 = [v5 entityHashInfo];
-    if (v31 == v32)
+    entityHashInfo = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
+    entityHashInfo2 = [v5 entityHashInfo];
+    if (entityHashInfo == entityHashInfo2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
-      v34 = [v5 entityHashInfo];
-      v12 = [v33 isEqual:v34];
+      entityHashInfo3 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
+      entityHashInfo4 = [v5 entityHashInfo];
+      v12 = [entityHashInfo3 isEqual:entityHashInfo4];
     }
 
     goto LABEL_23;
@@ -127,58 +127,58 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
-  v4 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
-  v5 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
-  v6 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
-  v7 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
-  v8 = [v7 jsonDictionary];
+  identifier = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
+  type = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
+  fields = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
+  fieldsTokens = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
+  entityHashInfo = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
+  jsonDictionary = [entityHashInfo jsonDictionary];
 
   v19 = @"identifier";
-  v9 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v9;
-  v24[0] = v9;
+  v17 = null;
+  v24[0] = null;
   v20 = @"type";
-  v10 = v4;
-  if (!v4)
+  null2 = type;
+  if (!type)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[1] = v10;
+  v24[1] = null2;
   v21 = @"fields";
-  v11 = v5;
-  if (!v5)
+  null3 = fields;
+  if (!fields)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[2] = v11;
+  v24[2] = null3;
   v22 = @"fieldsTokens";
-  v12 = v6;
-  if (!v6)
+  null4 = fieldsTokens;
+  if (!fieldsTokens)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v12;
+  v24[3] = null4;
   v23 = @"entityHashInfo";
-  v13 = v8;
-  if (!v8)
+  null5 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[4] = v13;
+  v24[4] = null5;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v19 count:{5, v17}];
-  if (v8)
+  if (jsonDictionary)
   {
-    if (v6)
+    if (fieldsTokens)
     {
       goto LABEL_13;
     }
@@ -187,10 +187,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (fieldsTokens)
     {
 LABEL_13:
-      if (v5)
+      if (fields)
       {
         goto LABEL_14;
       }
@@ -199,17 +199,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (fields)
   {
 LABEL_14:
-    if (v4)
+    if (type)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (identifier)
     {
       goto LABEL_16;
     }
@@ -219,13 +219,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!type)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (identifier)
   {
     goto LABEL_16;
   }
@@ -238,29 +238,29 @@ LABEL_16:
   return v14;
 }
 
-- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v16 = 0;
           goto LABEL_46;
         }
 
-        v38 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v49 = *MEMORY[0x1E696A578];
@@ -269,7 +269,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
         v41 = 0;
         v16 = 0;
-        *v38 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_45;
       }
 
@@ -281,22 +281,22 @@ LABEL_4:
       v41 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"fields"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"fields"];
     v39 = v8;
-    v40 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v24 = 0;
           v16 = 0;
           goto LABEL_45;
         }
 
-        v25 = a4;
+        errorCopy2 = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v47 = *MEMORY[0x1E696A578];
@@ -306,11 +306,11 @@ LABEL_4:
         v28 = [v26 initWithDomain:v27 code:2 userInfo:v11];
         v24 = 0;
         v16 = 0;
-        *v25 = v28;
+        *errorCopy2 = v28;
 LABEL_44:
 
         v8 = v39;
-        self = v40;
+        self = selfCopy;
 LABEL_45:
 
         goto LABEL_46;
@@ -324,14 +324,14 @@ LABEL_45:
       v37 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"fieldsTokens"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"fieldsTokens"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -347,7 +347,7 @@ LABEL_45:
         v30 = [v35 initWithDomain:v29 code:2 userInfo:v15];
         v13 = 0;
         v16 = 0;
-        *v12 = v30;
+        *errorCopy3 = v30;
         goto LABEL_41;
       }
 
@@ -359,13 +359,13 @@ LABEL_45:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"entityHashInfo"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"entityHashInfo"];
     if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v15 = 0;
 LABEL_16:
-      v16 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)v40 initWithIdentifier:v39 type:v41 fields:v37 fieldsTokens:v13 entityHashInfo:v15];
-      v40 = v16;
+      v16 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)selfCopy initWithIdentifier:v39 type:v41 fields:v37 fieldsTokens:v13 entityHashInfo:v15];
+      selfCopy = v16;
 LABEL_41:
 
 LABEL_42:
@@ -387,10 +387,10 @@ LABEL_43:
         goto LABEL_16;
       }
 
-      if (v12)
+      if (errorCopy3)
       {
         v18 = v18;
-        *v12 = v18;
+        *errorCopy3 = v18;
       }
 
       v14 = v17;
@@ -398,7 +398,7 @@ LABEL_43:
 
     else
     {
-      if (!v12)
+      if (!errorCopy3)
       {
         v16 = 0;
         goto LABEL_42;
@@ -410,7 +410,7 @@ LABEL_43:
       v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"entityHashInfo"];
       v44 = v15;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-      *v12 = [v36 initWithDomain:v34 code:2 userInfo:v31];
+      *errorCopy3 = [v36 initWithDomain:v34 code:2 userInfo:v31];
     }
 
     v16 = 0;
@@ -424,14 +424,14 @@ LABEL_43:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_47;
   }
 
-  v19 = a4;
+  errorCopy4 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v51 = *MEMORY[0x1E696A578];
@@ -440,7 +440,7 @@ LABEL_43:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy4 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_46:
 
 LABEL_47:
@@ -452,14 +452,14 @@ LABEL_47:
 {
   v3 = objc_opt_new();
   [(BMSiriRemembersEntitiesSiriRemembersEntity *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -483,14 +483,14 @@ LABEL_47:
   if (self->_entityHashInfo)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriEntityInfo *)self->_entityHashInfo writeTo:v4];
+    [(BMSiriEntityInfo *)self->_entityHashInfo writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v24.receiver = self;
   v24.super_class = BMSiriRemembersEntitiesSiriRemembersEntity;
   v5 = [(BMEventBase *)&v24 init];
@@ -499,12 +499,12 @@ LABEL_47:
     goto LABEL_38;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_36;
       }
@@ -515,18 +515,18 @@ LABEL_47:
       while (1)
       {
         LOBYTE(v25[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v25 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v25 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v25[0] & 0x7F) << v7;
@@ -543,9 +543,9 @@ LABEL_47:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_36;
       }
@@ -582,7 +582,7 @@ LABEL_16:
         goto LABEL_37;
       }
 
-      v16 = [[BMSiriEntityInfo alloc] initByReadFrom:v4];
+      v16 = [[BMSiriEntityInfo alloc] initByReadFrom:fromCopy];
       if (!v16)
       {
         goto LABEL_37;
@@ -593,8 +593,8 @@ LABEL_16:
 
       PBReaderRecallMark();
 LABEL_32:
-      v21 = [v4 position];
-      if (v21 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_36;
       }
@@ -628,7 +628,7 @@ LABEL_34:
   }
 
 LABEL_36:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_37:
     v22 = 0;
@@ -646,34 +646,34 @@ LABEL_38:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
-  v5 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
-  v6 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
-  v7 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
-  v8 = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
-  v9 = [v3 initWithFormat:@"BMSiriRemembersEntitiesSiriRemembersEntity with identifier: %@, type: %@, fields: %@, fieldsTokens: %@, entityHashInfo: %@", v4, v5, v6, v7, v8];
+  identifier = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self identifier];
+  type = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self type];
+  fields = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fields];
+  fieldsTokens = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self fieldsTokens];
+  entityHashInfo = [(BMSiriRemembersEntitiesSiriRemembersEntity *)self entityHashInfo];
+  v9 = [v3 initWithFormat:@"BMSiriRemembersEntitiesSiriRemembersEntity with identifier: %@, type: %@, fields: %@, fieldsTokens: %@, entityHashInfo: %@", identifier, type, fields, fieldsTokens, entityHashInfo];
 
   return v9;
 }
 
-- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithIdentifier:(id)a3 type:(id)a4 fields:(id)a5 fieldsTokens:(id)a6 entityHashInfo:(id)a7
+- (BMSiriRemembersEntitiesSiriRemembersEntity)initWithIdentifier:(id)identifier type:(id)type fields:(id)fields fieldsTokens:(id)tokens entityHashInfo:(id)info
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  typeCopy = type;
+  fieldsCopy = fields;
+  tokensCopy = tokens;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = BMSiriRemembersEntitiesSiriRemembersEntity;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v17->_type, a4);
-    objc_storeStrong(&v17->_fields, a5);
-    objc_storeStrong(&v17->_fieldsTokens, a6);
-    objc_storeStrong(&v17->_entityHashInfo, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v17->_type, type);
+    objc_storeStrong(&v17->_fields, fields);
+    objc_storeStrong(&v17->_fieldsTokens, tokens);
+    objc_storeStrong(&v17->_entityHashInfo, info);
   }
 
   return v17;
@@ -733,9 +733,9 @@ id __53__BMSiriRemembersEntitiesSiriRemembersEntity_columns__block_invoke_2(uint
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -743,8 +743,8 @@ id __53__BMSiriRemembersEntitiesSiriRemembersEntity_columns__block_invoke_2(uint
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRemembersEntitiesSiriRemembersEntity alloc] initByReadFrom:v7];
     v4 = v8;

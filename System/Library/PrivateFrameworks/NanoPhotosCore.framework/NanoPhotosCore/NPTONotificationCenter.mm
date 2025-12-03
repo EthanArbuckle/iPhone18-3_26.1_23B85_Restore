@@ -1,42 +1,42 @@
 @interface NPTONotificationCenter
-- (NPTODarwinNotificationObserver)observerForName:(void *)a3 queue:(void *)a4 block:;
-- (void)initWithDevice:(void *)a1;
-- (void)postNotificationName:(uint64_t)a1;
+- (NPTODarwinNotificationObserver)observerForName:(void *)name queue:(void *)queue block:;
+- (void)initWithDevice:(void *)device;
+- (void)postNotificationName:(uint64_t)name;
 @end
 
 @implementation NPTONotificationCenter
 
-- (void)initWithDevice:(void *)a1
+- (void)initWithDevice:(void *)device
 {
   v3 = a2;
-  if (a1)
+  if (device)
   {
-    v8.receiver = a1;
+    v8.receiver = device;
     v8.super_class = NPTONotificationCenter;
-    a1 = objc_msgSendSuper2(&v8, sel_init);
-    if (a1)
+    device = objc_msgSendSuper2(&v8, sel_init);
+    if (device)
     {
-      v4 = [v3 pairingID];
-      v5 = [v4 UUIDString];
-      v6 = a1[1];
-      a1[1] = v5;
+      pairingID = [v3 pairingID];
+      uUIDString = [pairingID UUIDString];
+      v6 = device[1];
+      device[1] = uUIDString;
     }
   }
 
-  return a1;
+  return device;
 }
 
-- (NPTODarwinNotificationObserver)observerForName:(void *)a3 queue:(void *)a4 block:
+- (NPTODarwinNotificationObserver)observerForName:(void *)name queue:(void *)queue block:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  queueCopy = queue;
+  if (self)
   {
-    v9 = [a3 underlyingQueue];
-    v10 = v9;
-    if (v9)
+    underlyingQueue = [name underlyingQueue];
+    v10 = underlyingQueue;
+    if (underlyingQueue)
     {
-      v11 = v9;
+      v11 = underlyingQueue;
     }
 
     else
@@ -52,11 +52,11 @@
     v15[2] = __54__NPTONotificationCenter_observerForName_queue_block___block_invoke;
     v15[3] = &unk_27995B818;
     v16 = v7;
-    v17 = v8;
-    a1 = [(NPTODarwinNotificationObserver *)v13 initWithNotificationName:v16 queue:v12 block:v15];
+    v17 = queueCopy;
+    self = [(NPTODarwinNotificationObserver *)v13 initWithNotificationName:v16 queue:v12 block:v15];
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __54__NPTONotificationCenter_observerForName_queue_block___block_invoke(uint64_t a1)
@@ -76,16 +76,16 @@ uint64_t __54__NPTONotificationCenter_observerForName_queue_block___block_invoke
   return result;
 }
 
-- (void)postNotificationName:(uint64_t)a1
+- (void)postNotificationName:(uint64_t)name
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (name)
   {
     v4 = nanophotos_log_sync();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = *(a1 + 8);
+      v5 = *(name + 8);
       v7 = 138412546;
       v8 = v3;
       v9 = 2112;

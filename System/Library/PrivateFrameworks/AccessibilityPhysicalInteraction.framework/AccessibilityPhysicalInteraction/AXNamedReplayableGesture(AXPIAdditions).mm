@@ -16,15 +16,15 @@
 + (id)_tapGestureAtPoint:()AXPIAdditions isDoubleTap:numberOfFingers:force:
 {
   v9 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:a7 aroundPoint:?];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __96__AXNamedReplayableGesture_AXPIAdditions___tapGestureAtPoint_isDoubleTap_numberOfFingers_force___block_invoke;
   v16[3] = &unk_278BE6700;
-  v12 = v10;
+  v12 = dictionary;
   v17 = v12;
-  v13 = v11;
+  v13 = dictionary2;
   v18 = v13;
   v19 = a3;
   [v9 enumerateObjectsUsingBlock:v16];
@@ -43,16 +43,16 @@
 + (id)holdGestureAtPoint:()AXPIAdditions withDuration:numberOfFingers:
 {
   v4 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:"defaultLocationsForNumberOfFingers:aroundPoint:" aroundPoint:?];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __91__AXNamedReplayableGesture_AXPIAdditions__holdGestureAtPoint_withDuration_numberOfFingers___block_invoke;
   v14 = &unk_278BE6728;
-  v15 = v5;
-  v16 = v6;
-  v7 = v6;
-  v8 = v5;
+  v15 = dictionary;
+  v16 = dictionary2;
+  v7 = dictionary2;
+  v8 = dictionary;
   [v4 enumerateObjectsUsingBlock:&v11];
   v9 = objc_alloc_init(objc_opt_class());
   [v9 addPointsByFingerIdentifier:v8 forces:v7 atTime:{0.0, v11, v12, v13, v14}];
@@ -65,7 +65,7 @@
 {
   v10 = __sincos_stret(a4);
 
-  return [a1 flickGestureStartingAtPoint:a6 endingAtPoint:a2 numberOfFingers:{a3, a2 + v10.__cosval * 100.0, a3 + v10.__sinval * 100.0}];
+  return [self flickGestureStartingAtPoint:a6 endingAtPoint:a2 numberOfFingers:{a3, a2 + v10.__cosval * 100.0, a3 + v10.__sinval * 100.0}];
 }
 
 + (id)flickGestureStartingAtPoint:()AXPIAdditions endingAtPoint:numberOfFingers:
@@ -78,7 +78,7 @@
   v12 = NSStringFromCGPoint(v18);
   v16[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
-  v14 = [a1 lineGestureBetweenPoints:v13 duration:a7 numberOfFingers:0.1];
+  v14 = [self lineGestureBetweenPoints:v13 duration:a7 numberOfFingers:0.1];
 
   return v14;
 }
@@ -148,7 +148,7 @@
             v31 = v39 + v31;
           }
 
-          [a1 _addAllFingerPointsForPoint:a6 numberOfFingers:v16 toReplayableGesture:v28 atTime:{v30, v31}];
+          [self _addAllFingerPointsForPoint:a6 numberOfFingers:v16 toReplayableGesture:v28 atTime:{v30, v31}];
         }
       }
 
@@ -160,10 +160,10 @@
     while (v17 != v9);
   }
 
-  v32 = [v8 lastObject];
-  v33 = CGPointFromString(v32);
+  lastObject = [v8 lastObject];
+  v33 = CGPointFromString(lastObject);
 
-  [a1 _addAllFingerPointsForPoint:a6 numberOfFingers:v16 toReplayableGesture:v33.x atTime:{v33.y, a2 + a3}];
+  [self _addAllFingerPointsForPoint:a6 numberOfFingers:v16 toReplayableGesture:v33.x atTime:{v33.y, a2 + a3}];
 
   return v16;
 }
@@ -245,33 +245,33 @@
     v21 = v19;
   }
 
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32.x = a2;
   v32.y = a3;
   v23 = NSStringFromPoint(v32);
-  [v22 addObject:v23];
+  [array addObject:v23];
 
   v33.x = v17;
   v33.y = v18;
   v24 = NSStringFromPoint(v33);
-  [v22 addObject:v24];
+  [array addObject:v24];
 
   v34.x = v20;
   v34.y = v21;
   v25 = NSStringFromPoint(v34);
-  [v22 addObject:v25];
+  [array addObject:v25];
 
   v35.x = a4;
   v35.y = a5;
   v26 = NSStringFromPoint(v35);
-  [v22 addObject:v26];
+  [array addObject:v26];
 
   v36.x = a4;
   v36.y = a5;
   v27 = NSStringFromPoint(v36);
-  [v22 addObject:v27];
+  [array addObject:v27];
 
-  v28 = [a1 lineGestureBetweenPoints:v22 duration:a6];
+  v28 = [self lineGestureBetweenPoints:array duration:a6];
 
   return v28;
 }
@@ -283,7 +283,7 @@
   AXForceTouchThreshold();
   v6 = v5;
   v18 = &unk_284FC7880;
-  v7 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a1, a2}];
+  v7 = [MEMORY[0x277CCAE60] valueWithCGPoint:{self, a2}];
   v19[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
@@ -319,13 +319,13 @@
   v21 = [AXPIFingerUtilities defaultPinchLocationsAroundPoint:"defaultPinchLocationsAroundPoint:withinBounds:" withinBounds:?];
   v71.x = 0.0;
   v71.y = 0.0;
-  v22 = [v21 firstObject];
-  v23 = CGPointFromString(v22);
+  firstObject = [v21 firstObject];
+  v23 = CGPointFromString(firstObject);
 
   v70.x = 0.0;
   v70.y = 0.0;
-  v24 = [v21 lastObject];
-  v25 = CGPointFromString(v24);
+  lastObject = [v21 lastObject];
+  v25 = CGPointFromString(lastObject);
 
   if (a10 == 0.0)
   {
@@ -426,7 +426,7 @@
   v46 = NSStringFromCGPoint(v77);
   v74[1] = v46;
   v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:2];
-  [a1 _addFingerPoints:v47 toReplayableGesture:v44 atTime:0.0];
+  [self _addFingerPoints:v47 toReplayableGesture:v44 atTime:0.0];
 
   v48 = -5.0;
   if (v40 >= 0.0)
@@ -463,7 +463,7 @@
     v56 = NSStringFromCGPoint(v70);
     v73[1] = v56;
     v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:2];
-    [a1 _addFingerPoints:v57 toReplayableGesture:v44 atTime:v53 * 0.0166666667];
+    [self _addFingerPoints:v57 toReplayableGesture:v44 atTime:v53 * 0.0166666667];
 
     if (v53 == 18)
     {
@@ -475,7 +475,7 @@
         v60 = NSStringFromCGPoint(v70);
         v72[1] = v60;
         v61 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
-        [a1 _addFingerPoints:v61 toReplayableGesture:v44 atTime:i * 0.0166666667];
+        [self _addFingerPoints:v61 toReplayableGesture:v44 atTime:i * 0.0166666667];
       }
     }
 
@@ -491,14 +491,14 @@
 {
   v12 = a7;
   v13 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:a6 aroundPoint:a2, a3];
-  [a1 _addFingerPoints:v13 toReplayableGesture:v12 atTime:a4];
+  [self _addFingerPoints:v13 toReplayableGesture:v12 atTime:a4];
 }
 
 + (void)_addFingerPoints:()AXPIAdditions toReplayableGesture:atTime:
 {
   v17 = a4;
   v7 = a5;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = [v17 count];
   if (v9)
   {
@@ -510,11 +510,11 @@
       v14 = CGPointFromString(v12);
       v15 = [v13 valueWithCGPoint:{v14.x, v14.y}];
       v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
-      [v8 setObject:v15 forKeyedSubscript:v16];
+      [dictionary setObject:v15 forKeyedSubscript:v16];
     }
   }
 
-  [v7 addPointsByFingerIdentifier:v8 forces:MEMORY[0x277CBEC10] atTime:a1];
+  [v7 addPointsByFingerIdentifier:dictionary forces:MEMORY[0x277CBEC10] atTime:self];
 }
 
 @end

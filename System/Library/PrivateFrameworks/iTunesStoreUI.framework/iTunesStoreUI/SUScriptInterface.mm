@@ -1,20 +1,20 @@
 @interface SUScriptInterface
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
-+ (int64_t)purchaseAnimationStyleFromString:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
++ (int64_t)purchaseAnimationStyleFromString:(id)string;
 + (void)initialize;
 - (BOOL)arePodcastsDisabled;
 - (BOOL)canSendEmail;
-- (BOOL)checkCapabilitiesPropertyListString:(id)a3 showFailureDialog:(BOOL)a4;
+- (BOOL)checkCapabilitiesPropertyListString:(id)string showFailureDialog:(BOOL)dialog;
 - (BOOL)haveAccount;
 - (BOOL)isExplicitContentDisabled;
 - (BOOL)isRunningTest;
 - (BOOL)launchedToTest;
-- (BOOL)scriptXMLHTTPRequest:(id)a3 requiresCellularForURL:(id)a4;
-- (BOOL)scriptXMLHTTPStoreRequest:(id)a3 requiresCellularForURL:(id)a4;
-- (BOOL)shouldRestrictContentOfSystem:(id)a3 level:(id)a4;
-- (BOOL)shouldShowAddToWalletLink:(id)a3;
-- (BOOL)showConfirmWithMessage:(id)a3 title:(id)a4 okButtonTitle:(id)a5 cancelButtonTitle:(id)a6;
+- (BOOL)scriptXMLHTTPRequest:(id)request requiresCellularForURL:(id)l;
+- (BOOL)scriptXMLHTTPStoreRequest:(id)request requiresCellularForURL:(id)l;
+- (BOOL)shouldRestrictContentOfSystem:(id)system level:(id)level;
+- (BOOL)shouldShowAddToWalletLink:(id)link;
+- (BOOL)showConfirmWithMessage:(id)message title:(id)title okButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle;
 - (NSArray)deviceOffers;
 - (NSArray)installedSoftwareApplications;
 - (NSNumber)orientation;
@@ -59,11 +59,11 @@
 - (SUScriptWindow)window;
 - (SUScriptWindowContext)scriptWindowContext;
 - (WebFrame)webFrame;
-- (id)DOMElementWithElement:(id)a3;
-- (id)_cookieForURL:(id)a3;
-- (id)_copyDialogWithMessage:(id)a3 title:(id)a4 cancelButtonTitle:(id)a5 okButtonTitle:(id)a6;
+- (id)DOMElementWithElement:(id)element;
+- (id)_cookieForURL:(id)l;
+- (id)_copyDialogWithMessage:(id)message title:(id)title cancelButtonTitle:(id)buttonTitle okButtonTitle:(id)okButtonTitle;
 - (id)accountDSID;
-- (id)accountForDSID:(id)a3;
+- (id)accountForDSID:(id)d;
 - (id)accountName;
 - (id)activeAudioPlayers;
 - (id)activeNetworkType;
@@ -72,8 +72,8 @@
 - (id)currentAccount;
 - (id)currentAttestationVersion;
 - (id)diskSpaceAvailable;
-- (id)getAudioPlayerForURL:(id)a3 keyURL:(id)a4 certificateURL:(id)a5;
-- (id)getDownloadQueueWithQueueType:(id)a3;
+- (id)getAudioPlayerForURL:(id)l keyURL:(id)rL certificateURL:(id)uRL;
+- (id)getDownloadQueueWithQueueType:(id)type;
 - (id)getiTunesPass;
 - (id)globalRootObject;
 - (id)hardwareType;
@@ -84,160 +84,160 @@
 - (id)machineGUID;
 - (id)makeAMSViewController;
 - (id)makeAccount;
-- (id)makeAccountPageWithURLs:(id)a3;
+- (id)makeAccountPageWithURLs:(id)ls;
 - (id)makeActivity;
-- (id)makeActivityItemProviderWithMIMEType:(id)a3;
-- (id)makeActivityViewControllerWithProviders:(id)a3 activities:(id)a4;
-- (id)makeButtonWithSystemItemString:(id)a3 action:(id)a4;
-- (id)makeButtonWithTitle:(id)a3 action:(id)a4;
+- (id)makeActivityItemProviderWithMIMEType:(id)type;
+- (id)makeActivityViewControllerWithProviders:(id)providers activities:(id)activities;
+- (id)makeButtonWithSystemItemString:(id)string action:(id)action;
+- (id)makeButtonWithTitle:(id)title action:(id)action;
 - (id)makeCalloutView;
-- (id)makeCanvasWithWidth:(id)a3 height:(id)a4;
-- (id)makeColorWithHue:(id)a3 saturation:(id)a4 brightness:(id)a5 alpha:(id)a6;
-- (id)makeColorWithRed:(id)a3 green:(id)a4 blue:(id)a5 alpha:(id)a6;
-- (id)makeColorWithWhite:(id)a3 alpha:(id)a4;
-- (id)makeComposeReviewViewControllerWithReview:(id)a3;
+- (id)makeCanvasWithWidth:(id)width height:(id)height;
+- (id)makeColorWithHue:(id)hue saturation:(id)saturation brightness:(id)brightness alpha:(id)alpha;
+- (id)makeColorWithRed:(id)red green:(id)green blue:(id)blue alpha:(id)alpha;
+- (id)makeColorWithWhite:(id)white alpha:(id)alpha;
+- (id)makeComposeReviewViewControllerWithReview:(id)review;
 - (id)makeDateFormatter;
 - (id)makeDialog;
 - (id)makeDocumentInteractionController;
-- (id)makeDonationViewControllerWithCharityIdentifier:(id)a3;
-- (id)makeFacebookRequestWithURL:(id)a3 requestMethod:(id)a4;
-- (id)makeFacebookSessionWithAccount:(id)a3;
+- (id)makeDonationViewControllerWithCharityIdentifier:(id)identifier;
+- (id)makeFacebookRequestWithURL:(id)l requestMethod:(id)method;
+- (id)makeFacebookSessionWithAccount:(id)account;
 - (id)makeFamilySetupViewController;
 - (id)makeGiftViewController;
-- (id)makeLinearGradientWithX0:(double)a3 y0:(double)a4 x1:(double)a5 y1:(double)a6;
+- (id)makeLinearGradientWithX0:(double)x0 y0:(double)y0 x1:(double)x1 y1:(double)y1;
 - (id)makeLookupRequest;
-- (id)makeMediaPlayerItemWithProperties:(id)a3;
-- (id)makeMediaPlayerViewControllerWithMediaPlayerItem:(id)a3;
+- (id)makeMediaPlayerItemWithProperties:(id)properties;
+- (id)makeMediaPlayerViewControllerWithMediaPlayerItem:(id)item;
 - (id)makeMenuViewController;
-- (id)makeNavigationControllerWithRootViewController:(id)a3;
-- (id)makeNumberFormatterWithStyle:(id)a3;
-- (id)makePopOverWithViewController:(id)a3;
-- (id)makeRadialGradientWithX0:(double)a3 y0:(double)a4 r0:(double)a5 x1:(double)a6 y1:(double)a7 r1:(double)a8;
+- (id)makeNavigationControllerWithRootViewController:(id)controller;
+- (id)makeNumberFormatterWithStyle:(id)style;
+- (id)makePopOverWithViewController:(id)controller;
+- (id)makeRadialGradientWithX0:(double)x0 y0:(double)y0 r0:(double)r0 x1:(double)x1 y1:(double)y1 r1:(double)r1;
 - (id)makeRedeemCameraViewController;
 - (id)makeRedeemViewController;
-- (id)makeReportAProblemViewControllerWithAdamID:(id)a3;
-- (id)makeReviewWithAdamID:(id)a3;
-- (id)makeScriptActionWithType:(id)a3;
+- (id)makeReportAProblemViewControllerWithAdamID:(id)d;
+- (id)makeReviewWithAdamID:(id)d;
+- (id)makeScriptActionWithType:(id)type;
 - (id)makeSegmentedControl;
 - (id)makeSplitViewController;
-- (id)makeStorePageWithURLs:(id)a3;
+- (id)makeStorePageWithURLs:(id)ls;
 - (id)makeStoreSheetViewController;
 - (id)makeSubscriptionStatusRequest;
-- (id)makeTextFieldWithStyle:(id)a3 placeholder:(id)a4 value:(id)a5 width:(id)a6;
-- (id)makeURLRequestWithURLs:(id)a3 timeoutInterval:(id)a4;
+- (id)makeTextFieldWithStyle:(id)style placeholder:(id)placeholder value:(id)value width:(id)width;
+- (id)makeURLRequestWithURLs:(id)ls timeoutInterval:(id)interval;
 - (id)makeVolumeViewController;
 - (id)makeWindow;
 - (id)makeXMLHTTPRequest;
 - (id)makeXMLHTTPStoreRequest;
 - (id)parentViewController;
-- (id)presentPrivacySplashWithIdentifier:(id)a3;
-- (id)presentPrivacyViewControllerWithIdentifier:(id)a3;
+- (id)presentPrivacySplashWithIdentifier:(id)identifier;
+- (id)presentPrivacyViewControllerWithIdentifier:(id)identifier;
 - (id)primaryiCloudAccount;
 - (id)redeemCameraAvailable;
 - (id)requestInfo;
 - (id)screenReaderRunning;
 - (id)scriptAttributeKeys;
-- (id)shouldDisplayPrivacyLinkWithIdentifier:(id)a3;
-- (id)showPromptWithMessage:(id)a3 initialValue:(id)a4 title:(id)a5 okButtonTitle:(id)a6 cancelButtonTitle:(id)a7;
-- (id)softwareApplicationWithAdamID:(id)a3;
-- (id)softwareApplicationWithBundleID:(id)a3;
+- (id)shouldDisplayPrivacyLinkWithIdentifier:(id)identifier;
+- (id)showPromptWithMessage:(id)message initialValue:(id)value title:(id)title okButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle;
+- (id)softwareApplicationWithAdamID:(id)d;
+- (id)softwareApplicationWithBundleID:(id)d;
 - (id)subscriptionStatusCoordinator;
 - (id)systemVersion;
-- (int64_t)dialogDisplayCountForKey:(id)a3;
+- (int64_t)dialogDisplayCountForKey:(id)key;
 - (int64_t)storeSheetType;
 - (void)_cleanUpSafariViewController;
-- (void)_dismissSafariViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_finishCreditCardReaderWithOutput:(id)a3 callback:(id)a4;
-- (void)_getSoftwareApplicationWithCompletionFunction:(id)a3 lookupBlock:(id)a4;
-- (void)_globalEventNotification:(id)a3;
-- (void)_presentSafariViewControllerWithURL:(id)a3 safariIdentifier:(id)a4 animated:(BOOL)a5;
-- (void)_scriptUserInfoDidChangeNotification:(id)a3;
-- (void)acknowledgePrivacyLinkWithIdentifier:(id)a3;
-- (void)addExternalDownloads:(id)a3 options:(id)a4;
-- (void)addExternalDownloadsFromManifestURL:(id)a3;
-- (void)addPurchaseWithInfo:(id)a3 options:(id)a4;
-- (void)addiTunesPassWithCompletionFunction:(id)a3;
-- (void)approveInPerson:(id)a3 completionFunction:(id)a4;
-- (void)authenticateAppleIdWithUsername:(id)a3 password:(id)a4 callback:(id)a5;
-- (void)authenticateForAccount:(id)a3 withOptions:(id)a4;
-- (void)authorizeApplePayEnrollmentWithParameters:(id)a3 callback:(id)a4;
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4;
-- (void)composeReviewWithURL:(id)a3 itemIdentifier:(id)a4 type:(id)a5;
+- (void)_dismissSafariViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)_finishCreditCardReaderWithOutput:(id)output callback:(id)callback;
+- (void)_getSoftwareApplicationWithCompletionFunction:(id)function lookupBlock:(id)block;
+- (void)_globalEventNotification:(id)notification;
+- (void)_presentSafariViewControllerWithURL:(id)l safariIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)_scriptUserInfoDidChangeNotification:(id)notification;
+- (void)acknowledgePrivacyLinkWithIdentifier:(id)identifier;
+- (void)addExternalDownloads:(id)downloads options:(id)options;
+- (void)addExternalDownloadsFromManifestURL:(id)l;
+- (void)addPurchaseWithInfo:(id)info options:(id)options;
+- (void)addiTunesPassWithCompletionFunction:(id)function;
+- (void)approveInPerson:(id)person completionFunction:(id)function;
+- (void)authenticateAppleIdWithUsername:(id)username password:(id)password callback:(id)callback;
+- (void)authenticateForAccount:(id)account withOptions:(id)options;
+- (void)authorizeApplePayEnrollmentWithParameters:(id)parameters callback:(id)callback;
+- (void)composeEmailWithSubject:(id)subject body:(id)body;
+- (void)composeReviewWithURL:(id)l itemIdentifier:(id)identifier type:(id)type;
 - (void)dealloc;
-- (void)dismissSafariViewControllerAnimated:(BOOL)a3;
+- (void)dismissSafariViewControllerAnimated:(BOOL)animated;
 - (void)dismissSheet;
-- (void)dismissWindowsWithOptions:(id)a3;
-- (void)dispatchGlobalEventWithName:(id)a3 payload:(id)a4;
-- (void)dispatchXEvent:(id)a3;
-- (void)fetchAppleCardMetadata:(id)a3 callback:(id)a4;
-- (void)fetchWalletCardData:(id)a3;
-- (void)fetchWalletCardMetadata:(id)a3 callback:(id)a4;
-- (void)financeInterruptionResolved:(id)a3;
-- (void)finishedTest:(id)a3 extraResults:(id)a4;
-- (void)getInstalledSoftwareApplicationsWithCompletionFunction:(id)a3;
-- (void)getSoftwareApplicationWithAdamID:(id)a3 completionFunction:(id)a4;
-- (void)getSoftwareApplicationWithBundleID:(id)a3 completionFunction:(id)a4;
+- (void)dismissWindowsWithOptions:(id)options;
+- (void)dispatchGlobalEventWithName:(id)name payload:(id)payload;
+- (void)dispatchXEvent:(id)event;
+- (void)fetchAppleCardMetadata:(id)metadata callback:(id)callback;
+- (void)fetchWalletCardData:(id)data;
+- (void)fetchWalletCardMetadata:(id)metadata callback:(id)callback;
+- (void)financeInterruptionResolved:(id)resolved;
+- (void)finishedTest:(id)test extraResults:(id)results;
+- (void)getInstalledSoftwareApplicationsWithCompletionFunction:(id)function;
+- (void)getSoftwareApplicationWithAdamID:(id)d completionFunction:(id)function;
+- (void)getSoftwareApplicationWithBundleID:(id)d completionFunction:(id)function;
 - (void)goBack;
-- (void)gotoStoreURL:(id)a3 ofType:(id)a4 withAuthentication:(BOOL)a5 forceAuthentication:(BOOL)a6;
-- (void)handleDialogPropertyListString:(id)a3;
-- (void)handleProtocolPropertyListString:(id)a3;
+- (void)gotoStoreURL:(id)l ofType:(id)type withAuthentication:(BOOL)authentication forceAuthentication:(BOOL)forceAuthentication;
+- (void)handleDialogPropertyListString:(id)string;
+- (void)handleProtocolPropertyListString:(id)string;
 - (void)initAuthentication;
-- (void)openCreditCardReaderWithCompletionFunction:(id)a3;
-- (void)openFamilyCircleSetupWithClientName:(id)a3 completionFunction:(id)a4;
-- (void)openURL:(id)a3;
-- (void)paymentSetupFeatureSupported:(id)a3 callback:(id)a4;
-- (void)perfLog:(id)a3;
-- (void)performPurchaseAnimationForIdentifier:(id)a3 style:(id)a4;
-- (void)pingURL:(id)a3;
-- (void)redeemCodes:(id)a3 params:(id)a4 completion:(id)a5;
+- (void)openCreditCardReaderWithCompletionFunction:(id)function;
+- (void)openFamilyCircleSetupWithClientName:(id)name completionFunction:(id)function;
+- (void)openURL:(id)l;
+- (void)paymentSetupFeatureSupported:(id)supported callback:(id)callback;
+- (void)perfLog:(id)log;
+- (void)performPurchaseAnimationForIdentifier:(id)identifier style:(id)style;
+- (void)pingURL:(id)l;
+- (void)redeemCodes:(id)codes params:(id)params completion:(id)completion;
 - (void)redeemCodesReloadDownloadManager;
-- (void)registerNavBarButtonWithTitle:(id)a3 side:(id)a4 function:(id)a5;
-- (void)reloadFooterSection:(id)a3 withURL:(id)a4;
-- (void)removeDeviceOfferWithIdentifier:(id)a3 account:(id)a4;
-- (void)reportAProblemForIdentifier:(id)a3;
-- (void)requireCellularForResourceWithURL:(id)a3;
-- (void)safariViewController:(id)a3 didCompleteInitialLoad:(BOOL)a4;
-- (void)safariViewControllerDidFinish:(id)a3;
-- (void)selectSectionWithIdentifier:(id)a3;
-- (void)sendPostOfType:(id)a3 withOptions:(id)a4;
-- (void)setAccounts:(id)a3;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setCarrierBundlingController:(id)a3;
-- (void)setClientInterface:(id)a3;
-- (void)setCookie:(id)a3;
-- (void)setCookieDefaultURL:(id)a3;
-- (void)setCookieForDefaultURL:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setGlobalRootObject:(id)a3;
-- (void)setGsToken:(id)a3;
-- (void)setLibraryIdentifierWithType:(id)a3 value:(id)a4;
-- (void)setLoggingEnabled:(id)a3;
-- (void)setMediaLibrary:(id)a3;
-- (void)setMetricsController:(id)a3;
-- (void)setNavigationBar:(id)a3;
-- (void)setNavigationSimulator:(id)a3;
-- (void)setOrientation:(id)a3;
-- (void)setPrimaryAccount:(id)a3;
-- (void)setPrimaryLockerAccount:(id)a3;
-- (void)setReferrerURL:(id)a3;
-- (void)setReferringUserAgent:(id)a3;
-- (void)setSafariViewControllerDismissButtonStyle:(id)a3;
-- (void)setScriptWindowContext:(id)a3;
-- (void)setStoreFrontIdentifier:(id)a3;
-- (void)setSubscriptionStatusCoordinator:(id)a3;
-- (void)setTidHeaders:(id)a3;
-- (void)setTidState:(id)a3;
-- (void)setUserAgent:(id)a3;
-- (void)setWalletAvailable:(id)a3;
-- (void)setWebFrame:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)showAlertWithMessage:(id)a3 title:(id)a4 buttonTitle:(id)a5;
-- (void)showMediaPlayerWithURLString:(id)a3 orientation:(id)a4 title:(id)a5 subtitle:(id)a6 bookmarkID:(id)a7 duration:(id)a8 type:(id)a9 imageURL:(id)a10;
-- (void)showSafariViewControllerWithURLString:(id)a3 identifier:(id)a4 animated:(BOOL)a5;
+- (void)registerNavBarButtonWithTitle:(id)title side:(id)side function:(id)function;
+- (void)reloadFooterSection:(id)section withURL:(id)l;
+- (void)removeDeviceOfferWithIdentifier:(id)identifier account:(id)account;
+- (void)reportAProblemForIdentifier:(id)identifier;
+- (void)requireCellularForResourceWithURL:(id)l;
+- (void)safariViewController:(id)controller didCompleteInitialLoad:(BOOL)load;
+- (void)safariViewControllerDidFinish:(id)finish;
+- (void)selectSectionWithIdentifier:(id)identifier;
+- (void)sendPostOfType:(id)type withOptions:(id)options;
+- (void)setAccounts:(id)accounts;
+- (void)setAuthenticationContext:(id)context;
+- (void)setCarrierBundlingController:(id)controller;
+- (void)setClientInterface:(id)interface;
+- (void)setCookie:(id)cookie;
+- (void)setCookieDefaultURL:(id)l;
+- (void)setCookieForDefaultURL:(id)l;
+- (void)setDelegate:(id)delegate;
+- (void)setDevice:(id)device;
+- (void)setGlobalRootObject:(id)object;
+- (void)setGsToken:(id)token;
+- (void)setLibraryIdentifierWithType:(id)type value:(id)value;
+- (void)setLoggingEnabled:(id)enabled;
+- (void)setMediaLibrary:(id)library;
+- (void)setMetricsController:(id)controller;
+- (void)setNavigationBar:(id)bar;
+- (void)setNavigationSimulator:(id)simulator;
+- (void)setOrientation:(id)orientation;
+- (void)setPrimaryAccount:(id)account;
+- (void)setPrimaryLockerAccount:(id)account;
+- (void)setReferrerURL:(id)l;
+- (void)setReferringUserAgent:(id)agent;
+- (void)setSafariViewControllerDismissButtonStyle:(id)style;
+- (void)setScriptWindowContext:(id)context;
+- (void)setStoreFrontIdentifier:(id)identifier;
+- (void)setSubscriptionStatusCoordinator:(id)coordinator;
+- (void)setTidHeaders:(id)headers;
+- (void)setTidState:(id)state;
+- (void)setUserAgent:(id)agent;
+- (void)setWalletAvailable:(id)available;
+- (void)setWebFrame:(id)frame;
+- (void)setWindow:(id)window;
+- (void)showAlertWithMessage:(id)message title:(id)title buttonTitle:(id)buttonTitle;
+- (void)showMediaPlayerWithURLString:(id)string orientation:(id)orientation title:(id)title subtitle:(id)subtitle bookmarkID:(id)d duration:(id)duration type:(id)type imageURL:(id)self0;
+- (void)showSafariViewControllerWithURLString:(id)string identifier:(id)identifier animated:(BOOL)animated;
 - (void)signOutPrimaryAccount;
-- (void)signupInWallet:(id)a3 callback:(id)a4;
-- (void)startListeningForAuthenticationTokenWithCallback:(id)a3;
+- (void)signupInWallet:(id)wallet callback:(id)callback;
+- (void)startListeningForAuthenticationTokenWithCallback:(id)callback;
 - (void)stopListeningForAuthenticationToken;
 @end
 
@@ -266,7 +266,7 @@
   return v6;
 }
 
-- (void)setSubscriptionStatusCoordinator:(id)a3
+- (void)setSubscriptionStatusCoordinator:(id)coordinator
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"subscriptionStatusCoordinator"];
@@ -312,7 +312,7 @@ uint64_t __60__SUScriptInterface_SUScriptTestingAdditions__isRunningTest__block_
   return result;
 }
 
-- (void)finishedTest:(id)a3 extraResults:(id)a4
+- (void)finishedTest:(id)test extraResults:(id)results
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -325,12 +325,12 @@ LABEL_2:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (a4 && (isKindOfClass & 1) == 0)
+  if (results && (isKindOfClass & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a4 copyArrayOrDictionaryWithContext:{objc_msgSend(+[SUClientDispatch scriptExecutionContext](SUClientDispatch, "scriptExecutionContext"), "globalExecutionContext")}];
+      v5 = [results copyArrayOrDictionaryWithContext:{objc_msgSend(+[SUClientDispatch scriptExecutionContext](SUClientDispatch, "scriptExecutionContext"), "globalExecutionContext")}];
       goto LABEL_3;
     }
 
@@ -367,9 +367,9 @@ LABEL_3:
     scriptStoreBagLoader = v3->_scriptStoreBagLoader;
     v3->_scriptStoreBagLoader = v9;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v3 selector:sel__globalEventNotification_ name:@"SUScriptInterfaceGlobalEventNotification" object:0];
-    [v11 addObserver:v3 selector:sel__scriptUserInfoDidChangeNotification_ name:@"SUStorePageViewControllerScriptUserInfoDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__globalEventNotification_ name:@"SUScriptInterfaceGlobalEventNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel__scriptUserInfoDidChangeNotification_ name:@"SUStorePageViewControllerScriptUserInfoDidChangeNotification" object:0];
     v12 = dispatch_queue_create("com.apple.SUScriptInterface.hsaToken", 0);
     hsaTokenQueue = v3->_hsaTokenQueue;
     v3->_hsaTokenQueue = v12;
@@ -382,9 +382,9 @@ LABEL_3:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"SUScriptInterfaceGlobalEventNotification" object:0];
-  [v3 removeObserver:self name:@"SUStorePageViewControllerScriptUserInfoDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SUScriptInterfaceGlobalEventNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUStorePageViewControllerScriptUserInfoDidChangeNotification" object:0];
   [(SUScriptInterface *)self deallocAuthentication];
   [(SUScriptInterface *)self deallocCarrierBundlingController];
   [(SUScriptInterface *)self deallocMediaLibrary];
@@ -420,11 +420,11 @@ LABEL_3:
 - (OpaqueJSContext)copyJavaScriptContext
 {
   [(SUScriptObject *)self lock];
-  v3 = [(WebFrame *)self->_frame globalContext];
-  v4 = v3;
-  if (v3)
+  globalContext = [(WebFrame *)self->_frame globalContext];
+  v4 = globalContext;
+  if (globalContext)
   {
-    JSGlobalContextRetain(v3);
+    JSGlobalContextRetain(globalContext);
   }
 
   [(SUScriptObject *)self unlock];
@@ -468,13 +468,13 @@ LABEL_3:
   return v3;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   [(SUScriptObject *)self lock];
-  if (self->_authenticationContext != v6)
+  if (self->_authenticationContext != contextCopy)
   {
-    v4 = [(SSAuthenticationContext *)v6 copy];
+    v4 = [(SSAuthenticationContext *)contextCopy copy];
     authenticationContext = self->_authenticationContext;
     self->_authenticationContext = v4;
   }
@@ -482,23 +482,23 @@ LABEL_3:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setClientInterface:(id)a3
+- (void)setClientInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   [(SUScriptObject *)self lock];
-  if (self->_clientInterface != v5)
+  if (self->_clientInterface != interfaceCopy)
   {
-    objc_storeStrong(&self->_clientInterface, a3);
+    objc_storeStrong(&self->_clientInterface, interface);
   }
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v7 = a3;
+  delegateCopy = delegate;
   [(SUScriptObject *)self lock];
-  objc_storeStrong(&self->_delegate, a3);
+  objc_storeStrong(&self->_delegate, delegate);
   [self->_threadSafeDelegate setDelegate:self->_delegate];
   threadSafeDelegate = self->_threadSafeDelegate;
   if (self->_delegate)
@@ -525,31 +525,31 @@ LABEL_6:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setScriptWindowContext:(id)a3
+- (void)setScriptWindowContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   [(SUScriptObject *)self lock];
-  if (self->_scriptWindowContext != v5)
+  if (self->_scriptWindowContext != contextCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&self->_scriptWindowContext, a3);
+      objc_storeStrong(&self->_scriptWindowContext, context);
     }
   }
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setWebFrame:(id)a3
+- (void)setWebFrame:(id)frame
 {
-  v6 = a3;
+  frameCopy = frame;
   [(SUScriptObject *)self lock];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (self->_frame != v6 && (v6 == 0) | isKindOfClass & 1)
+  if (self->_frame != frameCopy && (frameCopy == 0) | isKindOfClass & 1)
   {
-    objc_storeStrong(&self->_frame, a3);
+    objc_storeStrong(&self->_frame, frame);
   }
 
   [(SUScriptObject *)self unlock];
@@ -573,41 +573,41 @@ LABEL_6:
   return v3;
 }
 
-+ (int64_t)purchaseAnimationStyleFromString:(id)a3
++ (int64_t)purchaseAnimationStyleFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && ([v3 isEqualToString:@"float"] & 1) != 0;
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && ([stringCopy isEqualToString:@"float"] & 1) != 0;
 
   return v4;
 }
 
-- (id)DOMElementWithElement:(id)a3
+- (id)DOMElementWithElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SUScriptInterface *)self delegate];
-  v6 = [v5 DOMElementForScriptInterface:self element:v4];
+  elementCopy = element;
+  delegate = [(SUScriptInterface *)self delegate];
+  v6 = [delegate DOMElementForScriptInterface:self element:elementCopy];
 
   return v6;
 }
 
 - (id)parentViewController
 {
-  v3 = [(SUScriptInterface *)self delegate];
-  v4 = [v3 parentViewControllerForScriptInterface:self];
+  delegate = [(SUScriptInterface *)self delegate];
+  v4 = [delegate parentViewControllerForScriptInterface:self];
 
   return v4;
 }
 
-- (void)acknowledgePrivacyLinkWithIdentifier:(id)a3
+- (void)acknowledgePrivacyLinkWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
   }
 
-  else if (v4)
+  else if (identifierCopy)
   {
     v6 = objc_alloc(MEMORY[0x1E69E4770]);
     v7 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
@@ -619,12 +619,12 @@ LABEL_6:
     v13 = __58__SUScriptInterface_acknowledgePrivacyLinkWithIdentifier___block_invoke;
     v14 = &unk_1E8164408;
     objc_copyWeak(&v17, &location);
-    v15 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = identifierCopy;
     v16 = v9;
     [v8 setCompletionBlock:&v11];
-    v10 = [MEMORY[0x1E69E4798] mainQueue];
-    [v10 addOperation:v8];
+    mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+    [mainQueue addOperation:v8];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -776,33 +776,33 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)addiTunesPassWithCompletionFunction:(id)a3
+- (void)addiTunesPassWithCompletionFunction:(id)function
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  functionCopy = function;
+  if (functionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
   }
 
   else
   {
-    v5 = [(SUScriptInterface *)self viewController];
-    v6 = [v5 nativeViewController];
+    viewController = [(SUScriptInterface *)self viewController];
+    nativeViewController = [viewController nativeViewController];
 
-    v7 = [[SUAddiTunesPassOperation alloc] initWithViewController:v6];
-    v8 = [(SUScriptInterface *)self authenticationContext];
-    [(SUAddiTunesPassOperation *)v7 setAuthenticationContext:v8];
+    v7 = [[SUAddiTunesPassOperation alloc] initWithViewController:nativeViewController];
+    authenticationContext = [(SUScriptInterface *)self authenticationContext];
+    [(SUAddiTunesPassOperation *)v7 setAuthenticationContext:authenticationContext];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__SUScriptInterface_addiTunesPassWithCompletionFunction___block_invoke;
     v10[3] = &unk_1E8164430;
     v13 = v7;
-    v11 = v4;
-    v12 = self;
+    v11 = functionCopy;
+    selfCopy = self;
     [(SUAddiTunesPassOperation *)v7 setCompletionBlock:v10];
-    v9 = [MEMORY[0x1E69E4798] mainQueue];
-    [v9 addOperation:v7];
+    mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+    [mainQueue addOperation:v7];
   }
 }
 
@@ -860,22 +860,22 @@ void __57__SUScriptInterface_addiTunesPassWithCompletionFunction___block_invoke_
   v6 = dispatch_time(0, 3000000000);
   if (dispatch_semaphore_wait(v5, v6))
   {
-    v7 = [MEMORY[0x1E69D4938] sharedConfig];
-    v8 = [v7 shouldLog];
-    v9 = [v7 shouldLogToDisk];
-    v10 = [v7 OSLogObject];
-    v11 = v10;
-    if (v9)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    shouldLogToDisk = [mEMORY[0x1E69D4938] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    v11 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v8 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v8 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v8)
+    if (shouldLog)
     {
       v12 = objc_opt_class();
       v27 = 138543362;
@@ -961,17 +961,17 @@ LABEL_13:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)openCreditCardReaderWithCompletionFunction:(id)a3
+- (void)openCreditCardReaderWithCompletionFunction:(id)function
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  functionCopy = function;
+  if (functionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
   }
 
   else
   {
-    v4 = v3;
+    v4 = functionCopy;
     WebThreadRunOnMainThread();
   }
 }
@@ -1012,12 +1012,12 @@ void __64__SUScriptInterface_openCreditCardReaderWithCompletionFunction___block_
   }
 }
 
-- (void)_finishCreditCardReaderWithOutput:(id)a3 callback:(id)a4
+- (void)_finishCreditCardReaderWithOutput:(id)output callback:(id)callback
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  outputCopy = output;
+  callbackCopy = callback;
+  v6 = callbackCopy;
+  v7 = outputCopy;
   WebThreadRunOnMainThread();
 }
 
@@ -1045,28 +1045,28 @@ void __64__SUScriptInterface__finishCreditCardReaderWithOutput_callback___block_
   [(SUScriptFunction *)v5 setThisObject:0];
 }
 
-- (void)openFamilyCircleSetupWithClientName:(id)a3 completionFunction:(id)a4
+- (void)openFamilyCircleSetupWithClientName:(id)name completionFunction:(id)function
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  functionCopy = function;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E69D4938] sharedConfig];
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v9;
     }
@@ -1082,7 +1082,7 @@ void __64__SUScriptInterface__finishCreditCardReaderWithOutput_callback___block_
     }
 
     v20 = 138543362;
-    v21 = v6;
+    v21 = functionCopy;
     LODWORD(v17) = 12;
     v12 = _os_log_send_and_compose_impl();
 
@@ -1090,7 +1090,7 @@ void __64__SUScriptInterface__finishCreditCardReaderWithOutput_callback___block_
     {
       v13 = MEMORY[0x1E696AEC0];
 LABEL_22:
-      v10 = [v13 stringWithCString:v12 encoding:{4, &v20, v17}];
+      oSLogObject = [v13 stringWithCString:v12 encoding:{4, &v20, v17}];
       free(v12);
       SSFileLog();
 LABEL_23:
@@ -1105,20 +1105,20 @@ LABEL_24:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E69D4938] sharedConfig];
-    v14 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog2 | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog2;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
     }
@@ -1134,7 +1134,7 @@ LABEL_24:
     }
 
     v20 = 138543362;
-    v21 = v5;
+    v21 = nameCopy;
     LODWORD(v17) = 12;
     v12 = _os_log_send_and_compose_impl();
 
@@ -1147,8 +1147,8 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v18 = v6;
-  v19 = v5;
+  v18 = functionCopy;
+  v19 = nameCopy;
   WebThreadRunOnMainThread();
 
 LABEL_25:
@@ -1323,27 +1323,27 @@ LABEL_12:
   }
 }
 
-- (void)dispatchGlobalEventWithName:(id)a3 payload:(id)a4
+- (void)dispatchGlobalEventWithName:(id)name payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v7 = 0;
+    payloadCopy = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!payloadCopy || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__SUScriptInterface_dispatchGlobalEventWithName_payload___block_invoke;
     block[3] = &unk_1E81644D0;
-    v9 = v6;
-    v10 = v7;
-    v11 = self;
+    v9 = nameCopy;
+    v10 = payloadCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -1378,17 +1378,17 @@ void __57__SUScriptInterface_dispatchGlobalEventWithName_payload___block_invoke(
   [v5 postNotificationName:@"SUScriptInterfaceGlobalEventNotification" object:*(a1 + 48) userInfo:v6];
 }
 
-- (void)dispatchXEvent:(id)a3
+- (void)dispatchXEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SUScriptInterface *)self copyJavaScriptContext];
-    if (v5)
+    copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+    if (copyJavaScriptContext)
     {
-      v6 = v5;
-      v7 = [v4 copyArrayOrDictionaryWithContext:v5];
+      v6 = copyJavaScriptContext;
+      v7 = [eventCopy copyArrayOrDictionaryWithContext:copyJavaScriptContext];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1412,50 +1412,50 @@ void __36__SUScriptInterface_dispatchXEvent___block_invoke(uint64_t a1)
   [v2 _dispatchXEvent:*(a1 + 40) withCompletionBlock:0];
 }
 
-- (void)fetchAppleCardMetadata:(id)a3 callback:(id)a4
+- (void)fetchAppleCardMetadata:(id)metadata callback:(id)callback
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  callbackCopy = callback;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    metadataCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v7 = 0;
+    callbackCopy = 0;
   }
 
   v37 = MEMORY[0x1E69E9820];
   v38 = 3221225472;
   v39 = __53__SUScriptInterface_fetchAppleCardMetadata_callback___block_invoke;
   v40 = &unk_1E8164520;
-  v8 = v7;
+  v8 = callbackCopy;
   v41 = v8;
-  v42 = self;
+  selfCopy = self;
   v9 = MEMORY[0x1C6916C70](&v37);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E69D4938] sharedConfig];
-    v21 = [v20 shouldLog];
-    if ([v20 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v22 = v21 | 2;
+      v22 = shouldLog | 2;
     }
 
     else
     {
-      v22 = v21;
+      v22 = shouldLog;
     }
 
-    v23 = [v20 OSLogObject];
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v22 &= 2u;
     }
@@ -1474,7 +1474,7 @@ void __36__SUScriptInterface_dispatchXEvent___block_invoke(uint64_t a1)
         goto LABEL_39;
       }
 
-      v23 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v45, v36, v37, v38, v39, v40}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v45, v36, v37, v38, v39, v40}];
       free(v26);
       SSFileLog();
     }
@@ -1484,24 +1484,24 @@ void __36__SUScriptInterface_dispatchXEvent___block_invoke(uint64_t a1)
 
   if ([MEMORY[0x1E69E4728] shouldUseExtendedEnrollment])
   {
-    v10 = [(objc_class *)getAMSUICardMetadataClass() appleCardIconString];
-    v11 = [MEMORY[0x1E69D4938] sharedConfig];
-    v12 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    appleCardIconString = [(objc_class *)getAMSUICardMetadataClass() appleCardIconString];
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog2 | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog2;
     }
 
-    v14 = [v11 OSLogObject];
-    v15 = v14;
-    if (v10)
+    oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+    v15 = oSLogObject2;
+    if (appleCardIconString)
     {
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v13 &= 2u;
       }
@@ -1520,7 +1520,7 @@ void __36__SUScriptInterface_dispatchXEvent___block_invoke(uint64_t a1)
 LABEL_19:
 
           v43 = @"cardArtwork";
-          v44 = v10;
+          v44 = appleCardIconString;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
           (v9)[2](v9, v19, 0);
 LABEL_47:
@@ -1536,7 +1536,7 @@ LABEL_47:
       goto LABEL_19;
     }
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v13 &= 2u;
     }
@@ -1567,20 +1567,20 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  v20 = [MEMORY[0x1E69D4938] sharedConfig];
-  v27 = [v20 shouldLog];
-  if ([v20 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog3 = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v28 = v27 | 2;
+    v28 = shouldLog3 | 2;
   }
 
   else
   {
-    v28 = v27;
+    v28 = shouldLog3;
   }
 
-  v29 = [v20 OSLogObject];
-  if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v28 &= 2u;
   }
@@ -1599,7 +1599,7 @@ LABEL_46:
 
   if (v32)
   {
-    v29 = [MEMORY[0x1E696AEC0] stringWithCString:v32 encoding:{4, &v45, v36, v37, v38, v39, v40}];
+    oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v32 encoding:{4, &v45, v36, v37, v38, v39, v40}];
     free(v32);
     SSFileLog();
 LABEL_38:
@@ -1608,8 +1608,8 @@ LABEL_38:
 LABEL_39:
 
   [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
-  v10 = ISError();
-  (v9)[2](v9, 0, v10);
+  appleCardIconString = ISError();
+  (v9)[2](v9, 0, appleCardIconString);
 LABEL_48:
 }
 
@@ -1644,17 +1644,17 @@ void __53__SUScriptInterface_fetchAppleCardMetadata_callback___block_invoke(uint
   [(SUScriptFunction *)v7 setThisObject:0];
 }
 
-- (void)fetchWalletCardData:(id)a3
+- (void)fetchWalletCardData:(id)data
 {
   from[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __41__SUScriptInterface_fetchWalletCardData___block_invoke;
   v35[3] = &unk_1E8164548;
   objc_copyWeak(&v37, &location);
-  v5 = v4;
+  v5 = dataCopy;
   v36 = v5;
   v6 = MEMORY[0x1C6916C70](v35);
   objc_opt_class();
@@ -1673,22 +1673,22 @@ void __53__SUScriptInterface_fetchAppleCardMetadata_callback___block_invoke(uint
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E69D4938] sharedConfig];
-    v12 = [v11 shouldLog];
-    v13 = [v11 shouldLogToDisk];
-    v14 = [v11 OSLogObject];
-    v15 = v14;
-    if (v13)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    shouldLogToDisk = [mEMORY[0x1E69D4938] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    v15 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v12 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v12 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v12)
+    if (shouldLog)
     {
       v16 = objc_opt_class();
       LODWORD(from[0]) = 138543362;
@@ -1712,22 +1712,22 @@ void __53__SUScriptInterface_fetchAppleCardMetadata_callback___block_invoke(uint
 
   if (([MEMORY[0x1E69E4728] shouldUseExtendedEnrollment] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E69D4938] sharedConfig];
-    v19 = [v11 shouldLog];
-    v20 = [v11 shouldLogToDisk];
-    v21 = [v11 OSLogObject];
-    v22 = v21;
-    if (v20)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938] shouldLog];
+    shouldLogToDisk2 = [mEMORY[0x1E69D4938] shouldLogToDisk];
+    oSLogObject2 = [mEMORY[0x1E69D4938] OSLogObject];
+    v22 = oSLogObject2;
+    if (shouldLogToDisk2)
     {
-      v19 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v19 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v19)
+    if (shouldLog2)
     {
       v23 = objc_opt_class();
       LODWORD(from[0]) = 138543362;
@@ -1769,8 +1769,8 @@ LABEL_24:
   v28 = @"Fetch Wallet Card Data Error";
   v29 = v6;
   [v9 setCompletionBlock:v27];
-  v10 = [MEMORY[0x1E69E4798] mainQueue];
-  [v10 addOperation:v9];
+  mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+  [mainQueue addOperation:v9];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(&v31);
@@ -2268,29 +2268,29 @@ LABEL_12:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchWalletCardMetadata:(id)a3 callback:(id)a4
+- (void)fetchWalletCardMetadata:(id)metadata callback:(id)callback
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  callbackCopy = callback;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
   {
-    v9 = [MEMORY[0x1E69D4938] sharedConfig];
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 &= 2u;
     }
@@ -2312,9 +2312,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v49, v42}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v49, v42}];
       free(v14);
-      v41 = v12;
+      v41 = oSLogObject;
       SSFileLog();
     }
 
@@ -2324,12 +2324,12 @@ LABEL_11:
 LABEL_12:
   if (![MEMORY[0x1E69E4728] shouldUseExtendedEnrollment])
   {
-    v19 = [[SUScriptFunction alloc] initWithScriptObject:v7];
+    v19 = [[SUScriptFunction alloc] initWithScriptObject:callbackCopy];
     [(SUScriptFunction *)v19 setThisObject:self];
     v18 = ISError();
     v22 = [[SUScriptError alloc] initWithError:v18];
-    v23 = [MEMORY[0x1E69E2FB0] undefined];
-    v47[0] = v23;
+    undefined = [MEMORY[0x1E69E2FB0] undefined];
+    v47[0] = undefined;
     v47[1] = v22;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
     [(SUScriptFunction *)v19 callWithArguments:v24];
@@ -2342,38 +2342,38 @@ LABEL_12:
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    metadataCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v7 = 0;
+    callbackCopy = 0;
   }
 
-  v15 = [(SUScriptInterface *)self copyJavaScriptContext];
-  v44 = v6;
-  v16 = [v6 copyArrayOrDictionaryWithContext:v15];
-  JSGlobalContextRelease(v15);
+  copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+  v44 = metadataCopy;
+  v16 = [metadataCopy copyArrayOrDictionaryWithContext:copyJavaScriptContext];
+  JSGlobalContextRelease(copyJavaScriptContext);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v25 = v16;
-    v21 = [MEMORY[0x1E69D4938] sharedConfig];
-    v26 = [v21 shouldLog];
-    if ([v21 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v27 = v26 | 2;
+      v27 = shouldLog2 | 2;
     }
 
     else
     {
-      v27 = v26;
+      v27 = shouldLog2;
     }
 
-    v28 = [v21 OSLogObject];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v29 = v27;
     }
@@ -2399,7 +2399,7 @@ LABEL_12:
         goto LABEL_34;
       }
 
-      v28 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v49, v42}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v49, v42}];
       free(v18);
       SSFileLog();
     }
@@ -2420,15 +2420,15 @@ LABEL_34:
   v18 = [v17 objectForKeyedSubscript:@"passSerialNumber"];
   v19 = [v17 objectForKeyedSubscript:@"passTypeIdentifier"];
   v20 = MEMORY[0x1E696AD98];
-  v21 = [v17 objectForKeyedSubscript:@"size"];
+  mEMORY[0x1E69D4938]2 = [v17 objectForKeyedSubscript:@"size"];
 
-  v22 = [v20 numberWithInteger:{objc_msgSend(v21, "integerValue")}];
+  v22 = [v20 numberWithInteger:{objc_msgSend(mEMORY[0x1E69D4938]2, "integerValue")}];
 LABEL_35:
 
   v32 = [(objc_class *)getAMSUICardMetadataClass() metadataForPassTypeIdentifier:v19 serialNumber:v18 cardArtworkSize:v22];
   if (isKindOfClass)
   {
-    v33 = [[SUScriptFunction alloc] initWithScriptObject:v7];
+    v33 = [[SUScriptFunction alloc] initWithScriptObject:callbackCopy];
     [(SUScriptFunction *)v33 setThisObject:self];
     v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v45[0] = MEMORY[0x1E69E9820];
@@ -2442,20 +2442,20 @@ LABEL_35:
     v48[0] = v35;
     [MEMORY[0x1E69E2FB0] undefined];
     v36 = v32;
-    v37 = v7;
+    v37 = callbackCopy;
     v39 = v38 = v16;
     v48[1] = v39;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
     [(SUScriptFunction *)v33 callWithArguments:v40];
 
     v16 = v38;
-    v7 = v37;
+    callbackCopy = v37;
     v32 = v36;
 
     [(SUScriptFunction *)v33 setThisObject:0];
   }
 
-  v6 = v44;
+  metadataCopy = v44;
 LABEL_38:
 }
 
@@ -2469,19 +2469,19 @@ void __54__SUScriptInterface_fetchWalletCardMetadata_callback___block_invoke(uin
   [*(a1 + 32) addObject:v6];
 }
 
-- (void)financeInterruptionResolved:(id)a3
+- (void)financeInterruptionResolved:(id)resolved
 {
-  v8 = a3;
+  resolvedCopy = resolved;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v8 BOOLValue];
-    v5 = [(SUScriptInterface *)self clientInterface];
-    v6 = [v5 delegate];
+    bOOLValue = [resolvedCopy BOOLValue];
+    clientInterface = [(SUScriptInterface *)self clientInterface];
+    delegate = [clientInterface delegate];
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SUScriptInterface *)self clientInterface];
-      [v6 clientInterface:v7 financeInterruptionResolved:v4];
+      clientInterface2 = [(SUScriptInterface *)self clientInterface];
+      [delegate clientInterface:clientInterface2 financeInterruptionResolved:bOOLValue];
     }
   }
 
@@ -2493,14 +2493,14 @@ void __54__SUScriptInterface_fetchWalletCardMetadata_callback___block_invoke(uin
 
 - (id)getiTunesPass
 {
-  v2 = [MEMORY[0x1E69D4890] defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = [v3 ITunesPassSerialNumber];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  iTunesPassSerialNumber = [activeAccount ITunesPassSerialNumber];
 
-  if (v4)
+  if (iTunesPassSerialNumber)
   {
     v5 = objc_alloc_init(ISWeakLinkedClassForString());
-    v6 = [v5 passWithPassTypeIdentifier:@"pass.com.apple.itunes.storecredit" serialNumber:v4];
+    v6 = [v5 passWithPassTypeIdentifier:@"pass.com.apple.itunes.storecredit" serialNumber:iTunesPassSerialNumber];
     if (v6)
     {
       v7 = [[SUScriptPassbookPass alloc] initWithPass:v6];
@@ -2520,11 +2520,11 @@ void __54__SUScriptInterface_fetchWalletCardMetadata_callback___block_invoke(uin
   return v7;
 }
 
-- (void)handleDialogPropertyListString:(id)a3
+- (void)handleDialogPropertyListString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_autoreleasePoolPush();
-  v5 = SUScriptPropertyListFromString(v3);
+  v5 = SUScriptPropertyListFromString(stringCopy);
   v6 = v5;
   if (v5)
   {
@@ -2544,10 +2544,10 @@ void __52__SUScriptInterface_handleDialogPropertyListString___block_invoke(uint6
 
 - (id)machineGUID
 {
-  v2 = [MEMORY[0x1E69E4748] sharedInstance];
-  v3 = [v2 guid];
+  mEMORY[0x1E69E4748] = [MEMORY[0x1E69E4748] sharedInstance];
+  guid = [mEMORY[0x1E69E4748] guid];
 
-  return v3;
+  return guid;
 }
 
 void __31__SUScriptInterface_openWallet__block_invoke()
@@ -2593,17 +2593,17 @@ void __31__SUScriptInterface_openWallet__block_invoke()
   }
 }
 
-- (void)paymentSetupFeatureSupported:(id)a3 callback:(id)a4
+- (void)paymentSetupFeatureSupported:(id)supported callback:(id)callback
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  supportedCopy = supported;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __59__SUScriptInterface_paymentSetupFeatureSupported_callback___block_invoke;
   v68[3] = &unk_1E8164610;
-  v8 = v7;
+  v8 = callbackCopy;
   v69 = v8;
   objc_copyWeak(&v70, &location);
   v9 = MEMORY[0x1C6916C70](v68);
@@ -2611,7 +2611,7 @@ void __31__SUScriptInterface_openWallet__block_invoke()
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    supportedCopy = 0;
   }
 
   objc_opt_class();
@@ -2624,22 +2624,22 @@ void __31__SUScriptInterface_openWallet__block_invoke()
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E69D4938] sharedConfig];
-    v17 = [v16 shouldLog];
-    v18 = [v16 shouldLogToDisk];
-    v19 = [v16 OSLogObject];
-    v20 = v19;
-    if (v18)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    shouldLogToDisk = [mEMORY[0x1E69D4938] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    v20 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v17 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v17 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v17)
+    if (shouldLog)
     {
       v21 = objc_opt_class();
       v72 = 138543362;
@@ -2663,22 +2663,22 @@ void __31__SUScriptInterface_openWallet__block_invoke()
 
   if (([MEMORY[0x1E69E4728] shouldUseUpsellEnrollment] & 1) == 0)
   {
-    v16 = [MEMORY[0x1E69D4938] sharedConfig];
-    v24 = [v16 shouldLog];
-    v25 = [v16 shouldLogToDisk];
-    v26 = [v16 OSLogObject];
-    v27 = v26;
-    if (v25)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938] shouldLog];
+    shouldLogToDisk2 = [mEMORY[0x1E69D4938] shouldLogToDisk];
+    oSLogObject2 = [mEMORY[0x1E69D4938] OSLogObject];
+    v27 = oSLogObject2;
+    if (shouldLogToDisk2)
     {
-      v24 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v24 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (!v24)
+    if (!shouldLog2)
     {
       goto LABEL_29;
     }
@@ -2708,30 +2708,30 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  v10 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v11 = [v10 ams_isActiveAccountCombined];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_isActiveAccountCombined = [ams_sharedAccountStore ams_isActiveAccountCombined];
 
-  if (v11)
+  if (ams_isActiveAccountCombined)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x1E69D4938] sharedConfig];
-      v39 = [v12 shouldLog];
-      v40 = [v12 shouldLogToDisk];
-      v41 = [v12 OSLogObject];
-      v14 = v41;
-      if (v40)
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog3 = [mEMORY[0x1E69D4938]2 shouldLog];
+      shouldLogToDisk3 = [mEMORY[0x1E69D4938]2 shouldLogToDisk];
+      oSLogObject3 = [mEMORY[0x1E69D4938]2 OSLogObject];
+      v14 = oSLogObject3;
+      if (shouldLogToDisk3)
       {
-        v39 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      if (!os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
-        v39 &= 2u;
+        shouldLog3 &= 2u;
       }
 
-      if (v39)
+      if (shouldLog3)
       {
         v42 = objc_opt_class();
         v72 = 138543362;
@@ -2753,10 +2753,10 @@ LABEL_69:
       goto LABEL_56;
     }
 
-    v12 = v6;
-    v13 = [(SUScriptInterface *)self copyJavaScriptContext];
-    v14 = [v12 copyArrayOrDictionaryWithContext:v13];
-    JSGlobalContextRelease(v13);
+    mEMORY[0x1E69D4938]2 = supportedCopy;
+    copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+    v14 = [mEMORY[0x1E69D4938]2 copyArrayOrDictionaryWithContext:copyJavaScriptContext];
+    JSGlobalContextRelease(copyJavaScriptContext);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2778,28 +2778,28 @@ LABEL_68:
         v66 = v62;
         v67 = v9;
         [v61 setCompletionBlock:v65];
-        v63 = [MEMORY[0x1E69E4798] mainQueue];
-        [v63 addOperation:v61];
+        mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+        [mainQueue addOperation:v61];
 
         goto LABEL_69;
       }
 
-      v53 = [MEMORY[0x1E69D4938] sharedConfig];
-      v54 = [v53 shouldLog];
-      v55 = [v53 shouldLogToDisk];
-      v56 = [v53 OSLogObject];
-      v57 = v56;
-      if (v55)
+      mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog4 = [mEMORY[0x1E69D4938]3 shouldLog];
+      shouldLogToDisk4 = [mEMORY[0x1E69D4938]3 shouldLogToDisk];
+      oSLogObject4 = [mEMORY[0x1E69D4938]3 OSLogObject];
+      v57 = oSLogObject4;
+      if (shouldLogToDisk4)
       {
-        v54 |= 2u;
+        shouldLog4 |= 2u;
       }
 
-      if (!os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
-        v54 &= 2u;
+        shouldLog4 &= 2u;
       }
 
-      if (v54)
+      if (shouldLog4)
       {
         v58 = objc_opt_class();
         v72 = 138543362;
@@ -2823,22 +2823,22 @@ LABEL_67:
       goto LABEL_67;
     }
 
-    v44 = [MEMORY[0x1E69D4938] sharedConfig];
-    v45 = [v44 shouldLog];
-    v46 = [v44 shouldLogToDisk];
-    v47 = [v44 OSLogObject];
-    v48 = v47;
-    if (v46)
+    mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog5 = [mEMORY[0x1E69D4938]4 shouldLog];
+    shouldLogToDisk5 = [mEMORY[0x1E69D4938]4 shouldLogToDisk];
+    oSLogObject5 = [mEMORY[0x1E69D4938]4 OSLogObject];
+    v48 = oSLogObject5;
+    if (shouldLogToDisk5)
     {
-      v45 |= 2u;
+      shouldLog5 |= 2u;
     }
 
-    if (!os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
     {
-      v45 &= 2u;
+      shouldLog5 &= 2u;
     }
 
-    if (v45)
+    if (shouldLog5)
     {
       v49 = objc_opt_class();
       v72 = 138543362;
@@ -2864,22 +2864,22 @@ LABEL_56:
     goto LABEL_55;
   }
 
-  v31 = [MEMORY[0x1E69D4938] sharedConfig];
-  v32 = [v31 shouldLog];
-  v33 = [v31 shouldLogToDisk];
-  v34 = [v31 OSLogObject];
-  v35 = v34;
-  if (v33)
+  mEMORY[0x1E69D4938]5 = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog6 = [mEMORY[0x1E69D4938]5 shouldLog];
+  shouldLogToDisk6 = [mEMORY[0x1E69D4938]5 shouldLogToDisk];
+  oSLogObject6 = [mEMORY[0x1E69D4938]5 OSLogObject];
+  v35 = oSLogObject6;
+  if (shouldLogToDisk6)
   {
-    v32 |= 2u;
+    shouldLog6 |= 2u;
   }
 
-  if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
   {
-    v32 &= 2u;
+    shouldLog6 &= 2u;
   }
 
-  if (!v32)
+  if (!shouldLog6)
   {
     goto LABEL_38;
   }
@@ -2953,22 +2953,22 @@ void __59__SUScriptInterface_paymentSetupFeatureSupported_callback___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)perfLog:(id)a3
+- (void)perfLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   Current = CFAbsoluteTimeGetCurrent();
-  NSLog(&cfstr_Js2f.isa, *&Current, v4);
+  NSLog(&cfstr_Js2f.isa, *&Current, logCopy);
 }
 
-- (void)performPurchaseAnimationForIdentifier:(id)a3 style:(id)a4
+- (void)performPurchaseAnimationForIdentifier:(id)identifier style:(id)style
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() purchaseAnimationStyleFromString:v6];
+  identifierCopy = identifier;
+  styleCopy = style;
+  v7 = [objc_opt_class() purchaseAnimationStyleFromString:styleCopy];
 
   if (!v7)
   {
-    v8 = v5;
+    v8 = identifierCopy;
     WebThreadRunOnMainThread();
   }
 }
@@ -3026,10 +3026,10 @@ void __65__SUScriptInterface_performPurchaseAnimationForIdentifier_style___block
   }
 }
 
-- (id)presentPrivacyViewControllerWithIdentifier:(id)a3
+- (id)presentPrivacyViewControllerWithIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -3040,7 +3040,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!identifierCopy)
   {
     goto LABEL_4;
   }
@@ -3050,24 +3050,24 @@ LABEL_4:
   v8 = [v6 initWithBagContext:v7];
 
   [v8 start];
-  v9 = [v8 URLBag];
-  v10 = v9;
-  if (!v9)
+  uRLBag = [v8 URLBag];
+  v10 = uRLBag;
+  if (!uRLBag)
   {
-    v21 = [MEMORY[0x1E69D4938] sharedConfig];
-    v22 = [v21 shouldLog];
-    if ([v21 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog;
     }
 
-    v24 = [v21 OSLogObject];
-    if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v23 &= 2u;
     }
@@ -3090,7 +3090,7 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v24 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v30, v27}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v30, v27}];
       free(v26);
       SSFileLog();
     }
@@ -3098,23 +3098,23 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v11 = [v9 valueForKey:@"privacyAcknowledgementUrl"];
+  v11 = [uRLBag valueForKey:@"privacyAcknowledgementUrl"];
   if (![v11 length] || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v11), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v15 = [MEMORY[0x1E69D4938] sharedConfig];
-    v16 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog2 | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog2;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v17 &= 2u;
     }
@@ -3135,7 +3135,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v30, v27}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v30, v27}];
       free(v20);
       SSFileLog();
     }
@@ -3144,7 +3144,7 @@ LABEL_22:
   }
 
   v13 = v12;
-  v28 = v3;
+  v28 = identifierCopy;
   v29 = v13;
   v14 = v13;
   WebThreadRunOnMainThread();
@@ -3203,9 +3203,9 @@ LABEL_9:
   [v9 presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)presentPrivacySplashWithIdentifier:(id)a3
+- (id)presentPrivacySplashWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -3216,13 +3216,13 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!identifierCopy)
   {
     goto LABEL_4;
   }
 
-  v7 = v3;
-  v6 = v3;
+  v7 = identifierCopy;
+  v6 = identifierCopy;
   WebThreadRunOnMainThread();
   v4 = *MEMORY[0x1E695E4D0];
 
@@ -3278,11 +3278,11 @@ LABEL_9:
   [v8 present];
 }
 
-- (void)registerNavBarButtonWithTitle:(id)a3 side:(id)a4 function:(id)a5
+- (void)registerNavBarButtonWithTitle:(id)title side:(id)side function:(id)function
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  sideCopy = side;
+  functionCopy = function;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3294,44 +3294,44 @@ LABEL_9:
       {
         v10 = objc_alloc_init(SUScriptButton);
         [(SUScriptObject *)self checkInScriptObject:v10];
-        [(SUScriptButton *)v10 setAction:v9];
-        v11 = [(WebFrame *)self->_frame windowObject];
-        [(SUScriptButton *)v10 setTarget:v11];
+        [(SUScriptButton *)v10 setAction:functionCopy];
+        windowObject = [(WebFrame *)self->_frame windowObject];
+        [(SUScriptButton *)v10 setTarget:windowObject];
 
-        [(SUScriptButton *)v10 setTitle:v14];
-        LODWORD(v11) = [v8 isEqualToString:@"left"];
-        v12 = [(SUScriptInterface *)self navigationBar];
-        v13 = v12;
-        if (v11)
+        [(SUScriptButton *)v10 setTitle:titleCopy];
+        LODWORD(windowObject) = [sideCopy isEqualToString:@"left"];
+        navigationBar = [(SUScriptInterface *)self navigationBar];
+        v13 = navigationBar;
+        if (windowObject)
         {
-          [v12 setLeftButton:v10 animated:0];
+          [navigationBar setLeftButton:v10 animated:0];
         }
 
         else
         {
-          [v12 setRightButton:v10 animated:0];
+          [navigationBar setRightButton:v10 animated:0];
         }
       }
     }
   }
 }
 
-- (void)redeemCodes:(id)a3 params:(id)a4 completion:(id)a5
+- (void)redeemCodes:(id)codes params:(id)params completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codesCopy = codes;
+  paramsCopy = params;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(SUScriptInterface *)self copyJavaScriptContext];
-      v12 = [v8 copyArrayOrDictionaryWithContext:v11];
-      v13 = [v9 copyArrayOrDictionaryWithContext:v11];
-      JSGlobalContextRelease(v11);
+      copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+      v12 = [codesCopy copyArrayOrDictionaryWithContext:copyJavaScriptContext];
+      v13 = [paramsCopy copyArrayOrDictionaryWithContext:copyJavaScriptContext];
+      JSGlobalContextRelease(copyJavaScriptContext);
       objc_opt_class();
       v45 = v12;
       if (objc_opt_isKindOfClass())
@@ -3340,20 +3340,20 @@ LABEL_9:
         goto LABEL_33;
       }
 
-      v23 = [MEMORY[0x1E69D4938] sharedConfig];
-      v24 = [v23 shouldLog];
-      if ([v23 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v25 = v24 | 2;
+        v25 = shouldLog | 2;
       }
 
       else
       {
-        v25 = v24;
+        v25 = shouldLog;
       }
 
-      v26 = [v23 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v27 = v25;
       }
@@ -3367,13 +3367,13 @@ LABEL_9:
       {
         v49 = 138543362;
         v50 = objc_opt_class();
-        v28 = v9;
+        v28 = paramsCopy;
         v29 = v50;
         LODWORD(v43) = 12;
         v42 = &v49;
         v30 = _os_log_send_and_compose_impl();
 
-        v9 = v28;
+        paramsCopy = v28;
         if (!v30)
         {
 LABEL_32:
@@ -3387,8 +3387,8 @@ LABEL_33:
             v31 = v13;
 LABEL_46:
             v40 = [objc_alloc(MEMORY[0x1E69D49B0]) initWithRedeemCodes:v14];
-            v41 = [(SUScriptInterface *)self authenticationContext];
-            [v40 setAuthenticationContext:v41];
+            authenticationContext = [(SUScriptInterface *)self authenticationContext];
+            [v40 setAuthenticationContext:authenticationContext];
 
             [v40 setHeadless:0];
             [v40 setParams:v31];
@@ -3396,28 +3396,28 @@ LABEL_46:
             v46[1] = 3221225472;
             v46[2] = __51__SUScriptInterface_redeemCodes_params_completion___block_invoke;
             v46[3] = &unk_1E8164688;
-            v47 = v10;
-            v48 = self;
+            v47 = completionCopy;
+            selfCopy = self;
             [v40 startWithRedeemResponseBlock:v46];
 
             goto LABEL_47;
           }
 
-          v44 = v9;
-          v32 = [MEMORY[0x1E69D4938] sharedConfig];
-          v33 = [v32 shouldLog];
-          if ([v32 shouldLogToDisk])
+          v44 = paramsCopy;
+          mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+          if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
           {
-            v34 = v33 | 2;
+            v34 = shouldLog2 | 2;
           }
 
           else
           {
-            v34 = v33;
+            v34 = shouldLog2;
           }
 
-          v35 = [v32 OSLogObject];
-          if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+          oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
           {
             v36 = v34;
           }
@@ -3441,11 +3441,11 @@ LABEL_46:
 LABEL_45:
 
               v31 = 0;
-              v9 = v44;
+              paramsCopy = v44;
               goto LABEL_46;
             }
 
-            v35 = [MEMORY[0x1E696AEC0] stringWithCString:v39 encoding:{4, &v49, v43}];
+            oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v39 encoding:{4, &v49, v43}];
             free(v39);
             SSFileLog();
           }
@@ -3453,29 +3453,29 @@ LABEL_45:
           goto LABEL_45;
         }
 
-        v26 = [MEMORY[0x1E696AEC0] stringWithCString:v30 encoding:{4, &v49, v43}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v30 encoding:{4, &v49, v43}];
         free(v30);
-        v42 = v26;
+        v42 = oSLogObject;
         SSFileLog();
       }
 
       goto LABEL_32;
     }
 
-    v15 = [MEMORY[0x1E69D4938] sharedConfig];
-    v19 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+    if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog3 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog3;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [mEMORY[0x1E69D4938]3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v20 &= 2u;
     }
@@ -3488,20 +3488,20 @@ LABEL_45:
 
   else
   {
-    v15 = [MEMORY[0x1E69D4938] sharedConfig];
-    v16 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog4 = [mEMORY[0x1E69D4938]3 shouldLog];
+    if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog4 | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog4;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [mEMORY[0x1E69D4938]3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v17 &= 2u;
     }
@@ -3520,7 +3520,7 @@ LABEL_45:
 
   if (v22)
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v49, v43}];
+    oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v49, v43}];
     free(v22);
     SSFileLog();
 LABEL_20:
@@ -3639,8 +3639,8 @@ LABEL_4:
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E69D48D8]);
-  v3 = [MEMORY[0x1E69D48D0] allStoreDownloadKinds];
-  [v2 setDownloadKinds:v3];
+  allStoreDownloadKinds = [MEMORY[0x1E69D48D0] allStoreDownloadKinds];
+  [v2 setDownloadKinds:allStoreDownloadKinds];
 
   v10[0] = *MEMORY[0x1E69D4AC8];
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -3660,17 +3660,17 @@ LABEL_4:
   [v8 reloadFromServer];
 }
 
-- (void)removeDeviceOfferWithIdentifier:(id)a3 account:(id)a4
+- (void)removeDeviceOfferWithIdentifier:(id)identifier account:(id)account
 {
-  v9 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 account];
-    v7 = [v6 backingAccount];
+    account = [accountCopy account];
+    backingAccount = [account backingAccount];
     v8 = objc_alloc_init(AMSBag_iTunesStoreUI);
-    [MEMORY[0x1E698C8A8] removeDeviceOfferWithIdentifier:v9 account:v7 bagContract:v8 logKey:0];
+    [MEMORY[0x1E698C8A8] removeDeviceOfferWithIdentifier:identifierCopy account:backingAccount bagContract:v8 logKey:0];
   }
 
   else
@@ -3679,7 +3679,7 @@ LABEL_4:
   }
 }
 
-- (void)reportAProblemForIdentifier:(id)a3
+- (void)reportAProblemForIdentifier:(id)identifier
 {
   if (SSGetUnsignedLongLongFromValue())
   {
@@ -3705,13 +3705,13 @@ void __49__SUScriptInterface_reportAProblemForIdentifier___block_invoke(uint64_t
   [v4 presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)requireCellularForResourceWithURL:(id)a3
+- (void)requireCellularForResourceWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v4];
+    v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3754,10 +3754,10 @@ void __55__SUScriptInterface_requireCellularForResourceWithURL___block_invoke(ui
   }
 }
 
-- (void)sendPostOfType:(id)a3 withOptions:(id)a4
+- (void)sendPostOfType:(id)type withOptions:(id)options
 {
-  v10 = a3;
-  v6 = a4;
+  typeCopy = type;
+  optionsCopy = options;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3768,17 +3768,17 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
-    if (![SUScriptOperation postOperationClassForType:v10])
+    if (![SUScriptOperation postOperationClassForType:typeCopy])
     {
-      v6 = 0;
+      optionsCopy = 0;
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x1E69E2FB0] undefined];
+    optionsCopy = [MEMORY[0x1E69E2FB0] undefined];
 LABEL_9:
-    v9 = [[SUScriptOperation alloc] initWithPostType:v10 options:v6];
+    v9 = [[SUScriptOperation alloc] initWithPostType:typeCopy options:optionsCopy];
     [(SUScriptOperationDelegate *)self->_scriptOperationDelegate enqueueOperation:v9];
 
     goto LABEL_12;
@@ -3792,7 +3792,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if ([SUScriptOperation postOperationClassForType:v10])
+  if ([SUScriptOperation postOperationClassForType:typeCopy])
   {
     goto LABEL_9;
   }
@@ -3800,24 +3800,24 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)setLibraryIdentifierWithType:(id)a3 value:(id)a4
+- (void)setLibraryIdentifierWithType:(id)type value:(id)value
 {
-  v9 = a3;
-  v5 = a4;
+  typeCopy = type;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    v5 = 0;
+    valueCopy = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 isEqualToString:@"app-genius"])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([typeCopy isEqualToString:@"app-genius"])
   {
-    if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [MEMORY[0x1E69D48B0] currentDevice];
-      [v6 setSoftwareLibraryIdentifier:v5];
+      currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
+      [currentDevice setSoftwareLibraryIdentifier:valueCopy];
 
       goto LABEL_10;
     }
@@ -3836,9 +3836,9 @@ LABEL_12:
 LABEL_10:
 }
 
-- (id)shouldDisplayPrivacyLinkWithIdentifier:(id)a3
+- (id)shouldDisplayPrivacyLinkWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -3849,12 +3849,12 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!identifierCopy)
   {
     goto LABEL_4;
   }
 
-  v6 = [MEMORY[0x1E69D4988] shouldDisplayPrivacyLinkWithIdentifier:v3];
+  v6 = [MEMORY[0x1E69D4988] shouldDisplayPrivacyLinkWithIdentifier:identifierCopy];
   v7 = MEMORY[0x1E695E4D0];
   if (!v6)
   {
@@ -3870,20 +3870,20 @@ LABEL_5:
 
 - (void)signOutPrimaryAccount
 {
-  v2 = [MEMORY[0x1E69D4890] defaultStore];
-  v4 = [v2 activeAccount];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v4)
+  if (activeAccount)
   {
-    v3 = [MEMORY[0x1E69D4890] defaultStore];
-    [v3 signOutAccount:v4];
+    defaultStore2 = [MEMORY[0x1E69D4890] defaultStore];
+    [defaultStore2 signOutAccount:activeAccount];
   }
 }
 
-- (void)startListeningForAuthenticationTokenWithCallback:(id)a3
+- (void)startListeningForAuthenticationTokenWithCallback:(id)callback
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callbackCopy = callback;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3891,20 +3891,20 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -3922,7 +3922,7 @@ LABEL_5:
 
   if (v10)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v15, v12}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v15, v12}];
     free(v10);
     SSFileLog();
 LABEL_10:
@@ -3934,7 +3934,7 @@ LABEL_10:
   block[2] = __70__SUScriptInterface_startListeningForAuthenticationTokenWithCallback___block_invoke;
   block[3] = &unk_1E81644A8;
   block[4] = self;
-  v14 = v4;
+  v14 = callbackCopy;
   dispatch_sync(hsaTokenQueue, block);
 
 LABEL_13:
@@ -4089,25 +4089,25 @@ LABEL_11:
   }
 }
 
-- (void)authorizeApplePayEnrollmentWithParameters:(id)a3 callback:(id)a4
+- (void)authorizeApplePayEnrollmentWithParameters:(id)parameters callback:(id)callback
 {
   v125 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v118[0] = MEMORY[0x1E69E9820];
   v118[1] = 3221225472;
   v118[2] = __72__SUScriptInterface_authorizeApplePayEnrollmentWithParameters_callback___block_invoke;
   v118[3] = &unk_1E8164700;
   objc_copyWeak(&v120, &location);
-  v8 = v7;
+  v8 = callbackCopy;
   v119 = v8;
   v9 = MEMORY[0x1C6916C70](v118);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    parametersCopy = 0;
   }
 
   objc_opt_class();
@@ -4126,22 +4126,22 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69D4938] sharedConfig];
-    v15 = [v14 shouldLog];
-    v16 = [v14 shouldLogToDisk];
-    v17 = [v14 OSLogObject];
-    v18 = v17;
-    if (v16)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    shouldLogToDisk = [mEMORY[0x1E69D4938] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    v18 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v15 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v15 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v15)
+    if (shouldLog)
     {
       v19 = objc_opt_class();
       *from = 138543362;
@@ -4168,10 +4168,10 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v6;
-      v11 = [(SUScriptInterface *)self copyJavaScriptContext];
-      v12 = [v10 copyArrayOrDictionaryWithContext:v11];
-      JSGlobalContextRelease(v11);
+      v10 = parametersCopy;
+      copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+      v12 = [v10 copyArrayOrDictionaryWithContext:copyJavaScriptContext];
+      JSGlobalContextRelease(copyJavaScriptContext);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -4198,22 +4198,22 @@ LABEL_11:
 
     if (v113[5])
     {
-      v32 = [MEMORY[0x1E69D4938] sharedConfig];
-      v33 = [v32 shouldLog];
-      v34 = [v32 shouldLogToDisk];
-      v35 = [v32 OSLogObject];
-      v36 = v35;
-      if (v34)
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      shouldLogToDisk2 = [mEMORY[0x1E69D4938]2 shouldLogToDisk];
+      oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+      v36 = oSLogObject2;
+      if (shouldLogToDisk2)
       {
-        v33 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      if (!os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
-        v33 &= 2u;
+        shouldLog2 &= 2u;
       }
 
-      if (v33)
+      if (shouldLog2)
       {
         v37 = objc_opt_class();
         v38 = v113[5];
@@ -4252,22 +4252,22 @@ LABEL_53:
         goto LABEL_63;
       }
 
-      v49 = [MEMORY[0x1E69D4938] sharedConfig];
-      v50 = [v49 shouldLog];
-      v51 = [v49 shouldLogToDisk];
-      v52 = [v49 OSLogObject];
-      v53 = v52;
-      if (v51)
+      mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+      shouldLogToDisk3 = [mEMORY[0x1E69D4938]3 shouldLogToDisk];
+      oSLogObject3 = [mEMORY[0x1E69D4938]3 OSLogObject];
+      v53 = oSLogObject3;
+      if (shouldLogToDisk3)
       {
-        v50 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      if (!os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
-        v50 &= 2u;
+        shouldLog3 &= 2u;
       }
 
-      if (v50)
+      if (shouldLog3)
       {
         v54 = objc_opt_class();
         *from = 138543362;
@@ -4288,22 +4288,22 @@ LABEL_63:
             goto LABEL_73;
           }
 
-          v57 = [MEMORY[0x1E69D4938] sharedConfig];
-          v58 = [v57 shouldLog];
-          v59 = [v57 shouldLogToDisk];
-          v60 = [v57 OSLogObject];
-          v61 = v60;
-          if (v59)
+          mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog4 = [mEMORY[0x1E69D4938]4 shouldLog];
+          shouldLogToDisk4 = [mEMORY[0x1E69D4938]4 shouldLogToDisk];
+          oSLogObject4 = [mEMORY[0x1E69D4938]4 OSLogObject];
+          v61 = oSLogObject4;
+          if (shouldLogToDisk4)
           {
-            v58 |= 2u;
+            shouldLog4 |= 2u;
           }
 
-          if (!os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
+          if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
           {
-            v58 &= 2u;
+            shouldLog4 &= 2u;
           }
 
-          if (v58)
+          if (shouldLog4)
           {
             v62 = objc_opt_class();
             *from = 138543362;
@@ -4324,22 +4324,22 @@ LABEL_73:
                 goto LABEL_83;
               }
 
-              v65 = [MEMORY[0x1E69D4938] sharedConfig];
-              v66 = [v65 shouldLog];
-              v67 = [v65 shouldLogToDisk];
-              v68 = [v65 OSLogObject];
-              v69 = v68;
-              if (v67)
+              mEMORY[0x1E69D4938]5 = [MEMORY[0x1E69D4938] sharedConfig];
+              shouldLog5 = [mEMORY[0x1E69D4938]5 shouldLog];
+              shouldLogToDisk5 = [mEMORY[0x1E69D4938]5 shouldLogToDisk];
+              oSLogObject5 = [mEMORY[0x1E69D4938]5 OSLogObject];
+              v69 = oSLogObject5;
+              if (shouldLogToDisk5)
               {
-                v66 |= 2u;
+                shouldLog5 |= 2u;
               }
 
-              if (!os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
+              if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
               {
-                v66 &= 2u;
+                shouldLog5 &= 2u;
               }
 
-              if (v66)
+              if (shouldLog5)
               {
                 v70 = objc_opt_class();
                 *from = 138543362;
@@ -4358,8 +4358,8 @@ LABEL_83:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v73 = [v13 objectForKeyedSubscript:@"confirmationStyle"];
-                    v93 = [v73 unsignedIntegerValue];
+                    mEMORY[0x1E69D4938]6 = [v13 objectForKeyedSubscript:@"confirmationStyle"];
+                    unsignedIntegerValue = [mEMORY[0x1E69D4938]6 unsignedIntegerValue];
 LABEL_96:
 
                     v81 = objc_alloc(MEMORY[0x1E69E4770]);
@@ -4385,11 +4385,11 @@ LABEL_96:
                     v108 = v9;
                     v86 = v94;
                     v106 = v86;
-                    v107 = self;
-                    v111[1] = v93;
+                    selfCopy = self;
+                    v111[1] = unsignedIntegerValue;
                     [v83 setCompletionBlock:v100];
-                    v87 = [MEMORY[0x1E69E4798] mainQueue];
-                    [v87 addOperation:v83];
+                    mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+                    [mainQueue addOperation:v83];
 
                     objc_destroyWeak(v111);
                     objc_destroyWeak(&v110);
@@ -4401,27 +4401,27 @@ LABEL_96:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v73 = [v13 objectForKeyedSubscript:@"confirmationStyle"];
-                    v93 = [v73 intValue];
+                    mEMORY[0x1E69D4938]6 = [v13 objectForKeyedSubscript:@"confirmationStyle"];
+                    unsignedIntegerValue = [mEMORY[0x1E69D4938]6 intValue];
                     goto LABEL_96;
                   }
 
-                  v73 = [MEMORY[0x1E69D4938] sharedConfig];
-                  v74 = [v73 shouldLog];
-                  v75 = [v73 shouldLogToDisk];
-                  v76 = [v73 OSLogObject];
-                  v77 = v76;
-                  if (v75)
+                  mEMORY[0x1E69D4938]6 = [MEMORY[0x1E69D4938] sharedConfig];
+                  shouldLog6 = [mEMORY[0x1E69D4938]6 shouldLog];
+                  shouldLogToDisk6 = [mEMORY[0x1E69D4938]6 shouldLogToDisk];
+                  oSLogObject6 = [mEMORY[0x1E69D4938]6 OSLogObject];
+                  v77 = oSLogObject6;
+                  if (shouldLogToDisk6)
                   {
-                    v74 |= 2u;
+                    shouldLog6 |= 2u;
                   }
 
-                  if (!os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
+                  if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
                   {
-                    v74 &= 2u;
+                    shouldLog6 &= 2u;
                   }
 
-                  if (v74)
+                  if (shouldLog6)
                   {
                     v78 = objc_opt_class();
                     *from = 138412290;
@@ -4433,7 +4433,7 @@ LABEL_96:
                     if (!v80)
                     {
 LABEL_95:
-                      v93 = 0;
+                      unsignedIntegerValue = 0;
                       goto LABEL_96;
                     }
 
@@ -4472,22 +4472,22 @@ LABEL_95:
       goto LABEL_62;
     }
 
-    v41 = [MEMORY[0x1E69D4938] sharedConfig];
-    v42 = [v41 shouldLog];
-    v43 = [v41 shouldLogToDisk];
-    v44 = [v41 OSLogObject];
-    v45 = v44;
-    if (v43)
+    mEMORY[0x1E69D4938]7 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog7 = [mEMORY[0x1E69D4938]7 shouldLog];
+    shouldLogToDisk7 = [mEMORY[0x1E69D4938]7 shouldLogToDisk];
+    oSLogObject7 = [mEMORY[0x1E69D4938]7 OSLogObject];
+    v45 = oSLogObject7;
+    if (shouldLogToDisk7)
     {
-      v42 |= 2u;
+      shouldLog7 |= 2u;
     }
 
-    if (!os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
     {
-      v42 &= 2u;
+      shouldLog7 &= 2u;
     }
 
-    if (v42)
+    if (shouldLog7)
     {
       v46 = objc_opt_class();
       *from = 138543362;
@@ -4513,22 +4513,22 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  v14 = [MEMORY[0x1E69D4938] sharedConfig];
-  v22 = [v14 shouldLog];
-  v23 = [v14 shouldLogToDisk];
-  v24 = [v14 OSLogObject];
-  v25 = v24;
-  if (v23)
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog8 = [mEMORY[0x1E69D4938] shouldLog];
+  shouldLogToDisk8 = [mEMORY[0x1E69D4938] shouldLogToDisk];
+  oSLogObject8 = [mEMORY[0x1E69D4938] OSLogObject];
+  v25 = oSLogObject8;
+  if (shouldLogToDisk8)
   {
-    v22 |= 2u;
+    shouldLog8 |= 2u;
   }
 
-  if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
   {
-    v22 &= 2u;
+    shouldLog8 &= 2u;
   }
 
-  if (!v22)
+  if (!shouldLog8)
   {
     goto LABEL_28;
   }
@@ -4997,24 +4997,24 @@ LABEL_12:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)dismissSafariViewControllerAnimated:(BOOL)a3
+- (void)dismissSafariViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v6;
   }
@@ -5030,13 +5030,13 @@ LABEL_12:
   }
 
   v11[0] = 67109120;
-  v11[1] = v3;
+  v11[1] = animatedCopy;
   LODWORD(v10) = 8;
   v9 = _os_log_send_and_compose_impl();
 
   if (v9)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
     free(v9);
     SSFileLog();
 LABEL_10:
@@ -5045,26 +5045,26 @@ LABEL_10:
   WebThreadRunOnMainThread();
 }
 
-- (void)showSafariViewControllerWithURLString:(id)a3 identifier:(id)a4 animated:(BOOL)a5
+- (void)showSafariViewControllerWithURLString:(id)string identifier:(id)identifier animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E69D4938] sharedConfig];
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  stringCopy = string;
+  identifierCopy = identifier;
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v11;
   }
@@ -5077,11 +5077,11 @@ LABEL_10:
   if (v13)
   {
     v25 = 138412802;
-    v26 = v7;
+    v26 = stringCopy;
     v27 = 2112;
-    v28 = v8;
+    v28 = identifierCopy;
     v29 = 1024;
-    v30 = v5;
+    v30 = animatedCopy;
     LODWORD(v22) = 28;
     v21 = &v25;
     v14 = _os_log_send_and_compose_impl();
@@ -5091,29 +5091,29 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v25, v22}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v25, v22}];
     free(v14);
-    v21 = v12;
+    v21 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_11:
-  if (!v8)
+  if (!identifierCopy)
   {
-    v15 = [MEMORY[0x1E69D4938] sharedConfig];
-    v16 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog2 | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog2;
     }
 
-    v18 = [v15 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v17;
     }
@@ -5134,7 +5134,7 @@ LABEL_11:
         goto LABEL_23;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v25, v22}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v25, v22}];
       free(v20);
       SSFileLog();
     }
@@ -5142,11 +5142,11 @@ LABEL_11:
     goto LABEL_23;
   }
 
-  v23 = v7;
-  v24 = v8;
+  v23 = stringCopy;
+  v24 = identifierCopy;
   WebThreadRunOnMainThread();
 
-  v15 = v23;
+  mEMORY[0x1E69D4938]2 = v23;
 LABEL_23:
 }
 
@@ -5195,8 +5195,8 @@ void __79__SUScriptInterface_showSafariViewControllerWithURLString_identifier_an
   if (!applicationLocalStorage)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(SUClientInterface *)self->_clientInterface clientIdentifier];
-    v6 = [v4 stringWithFormat:@"com.apple.iTunesStoreUI.script.app.%@", v5];
+    clientIdentifier = [(SUClientInterface *)self->_clientInterface clientIdentifier];
+    v6 = [v4 stringWithFormat:@"com.apple.iTunesStoreUI.script.app.%@", clientIdentifier];
 
     v7 = [[SUScriptKeyValueStore alloc] initWithDomain:v6];
     v8 = self->_applicationLocalStorage;
@@ -5261,10 +5261,10 @@ void __37__SUScriptInterface_clientIdentifier__block_invoke(uint64_t a1)
 
 - (NSString)cookie
 {
-  v3 = [(SUScriptInterface *)self webFrame];
-  v4 = [v3 dataSource];
-  v5 = [v4 request];
-  v6 = [v5 URL];
+  webFrame = [(SUScriptInterface *)self webFrame];
+  dataSource = [webFrame dataSource];
+  request = [dataSource request];
+  v6 = [request URL];
   v7 = [(SUScriptInterface *)self _cookieForURL:v6];
 
   return v7;
@@ -5273,8 +5273,8 @@ void __37__SUScriptInterface_clientIdentifier__block_invoke(uint64_t a1)
 - (NSString)cookieForDefaultURL
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(SUScriptInterface *)self cookieDefaultURL];
-  v5 = [v3 URLWithString:v4];
+  cookieDefaultURL = [(SUScriptInterface *)self cookieDefaultURL];
+  v5 = [v3 URLWithString:cookieDefaultURL];
   v6 = [(SUScriptInterface *)self _cookieForURL:v5];
 
   return v6;
@@ -5297,17 +5297,17 @@ void __37__SUScriptInterface_clientIdentifier__block_invoke(uint64_t a1)
 - (NSArray)deviceOffers
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [MEMORY[0x1E698C8A8] deviceOffers];
+  deviceOffers = [MEMORY[0x1E698C8A8] deviceOffers];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __33__SUScriptInterface_deviceOffers__block_invoke;
   v11 = &unk_1E8164818;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [deviceOffers enumerateObjectsUsingBlock:&v8];
 
-  v6 = [MEMORY[0x1E695DEC8] arrayWithArray:{v5, v8, v9, v10, v11, v12}];
+  v6 = [MEMORY[0x1E695DEC8] arrayWithArray:{v5, v8, v9, v10, v11, selfCopy}];
 
   return v6;
 }
@@ -5323,12 +5323,12 @@ void __33__SUScriptInterface_deviceOffers__block_invoke(uint64_t a1, void *a2)
 
 - (NSString)deviceSerialNumber
 {
-  v2 = [MEMORY[0x1E69D48B0] currentDevice];
-  v3 = [v2 serialNumber];
-  v4 = v3;
-  if (v3)
+  currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
+  serialNumber = [currentDevice serialNumber];
+  v4 = serialNumber;
+  if (serialNumber)
   {
-    v5 = v3;
+    v5 = serialNumber;
   }
 
   else
@@ -5343,12 +5343,12 @@ void __33__SUScriptInterface_deviceOffers__block_invoke(uint64_t a1, void *a2)
 
 - (id)globalRootObject
 {
-  v2 = [(SUScriptInterface *)self webFrame];
-  v3 = [v2 webView];
-  v4 = [v3 mainFrame];
-  v5 = [v4 windowObject];
+  webFrame = [(SUScriptInterface *)self webFrame];
+  webView = [webFrame webView];
+  mainFrame = [webView mainFrame];
+  windowObject = [mainFrame windowObject];
 
-  return v5;
+  return windowObject;
 }
 
 - (NSString)gsToken
@@ -5385,9 +5385,9 @@ void __28__SUScriptInterface_gsToken__block_invoke(uint64_t a1)
 
 - (id)isApplePayAvailable
 {
-  v2 = [MEMORY[0x1E698C8A8] isSecureElementAvailable];
+  isSecureElementAvailable = [MEMORY[0x1E698C8A8] isSecureElementAvailable];
   v3 = MEMORY[0x1E695E4D0];
-  if (!v2)
+  if (!isSecureElementAvailable)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -5428,9 +5428,9 @@ void __42__SUScriptInterface_isFinanceInterruption__block_invoke(uint64_t a1)
 
 - (id)isWalletAvailable
 {
-  v2 = [ISWeakLinkedClassForString() isPassLibraryAvailable];
+  isPassLibraryAvailable = [ISWeakLinkedClassForString() isPassLibraryAvailable];
   v3 = MEMORY[0x1E695E4D0];
-  if (!v2)
+  if (!isPassLibraryAvailable)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -5442,10 +5442,10 @@ void __42__SUScriptInterface_isFinanceInterruption__block_invoke(uint64_t a1)
 
 - (id)loggingEnabled
 {
-  v2 = [MEMORY[0x1E69D4938] sharedConfig];
-  v3 = [v2 shouldLog];
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
   v4 = MEMORY[0x1E695E4D0];
-  if (!v3)
+  if (!shouldLog)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -5466,12 +5466,12 @@ void __42__SUScriptInterface_isFinanceInterruption__block_invoke(uint64_t a1)
 - (id)makeXMLHTTPStoreRequest
 {
   v3 = [[SUScriptXMLHTTPStoreRequest alloc] initWithDelegate:self];
-  v4 = [(SUScriptInterface *)self authenticationContext];
-  [(SUScriptXMLHTTPStoreRequest *)v3 setAuthenticationContext:v4];
+  authenticationContext = [(SUScriptInterface *)self authenticationContext];
+  [(SUScriptXMLHTTPStoreRequest *)v3 setAuthenticationContext:authenticationContext];
 
-  v5 = [(SUScriptInterface *)self clientInterface];
+  clientInterface = [(SUScriptInterface *)self clientInterface];
   v6 = objc_alloc_init(SUStorePageDataProvider);
-  [(SUStorePageDataProvider *)v6 setClientInterface:v5];
+  [(SUStorePageDataProvider *)v6 setClientInterface:clientInterface];
   [(SUScriptXMLHTTPStoreRequest *)v3 setDataProvider:v6];
 
   return v3;
@@ -5479,29 +5479,29 @@ void __42__SUScriptInterface_isFinanceInterruption__block_invoke(uint64_t a1)
 
 - (SUScriptNavigationBar)navigationBar
 {
-  v2 = [(SUScriptInterface *)self viewController];
+  viewController = [(SUScriptInterface *)self viewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 navigationController];
+    navigationController = [viewController navigationController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 navigationBar];
+      navigationBar = [navigationController navigationBar];
     }
 
     else
     {
-      v4 = 0;
+      navigationBar = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    navigationBar = 0;
   }
 
-  return v4;
+  return navigationBar;
 }
 
 - (SUScriptNavigationSimulator)navigationSimulator
@@ -5510,16 +5510,16 @@ void __42__SUScriptInterface_isFinanceInterruption__block_invoke(uint64_t a1)
   if (self->_navigationSimulator)
   {
     [(SUScriptObject *)self checkInScriptObject:?];
-    v3 = self->_navigationSimulator;
+    null = self->_navigationSimulator;
   }
 
   else
   {
     [MEMORY[0x1E69E2F88] throwException:@"Failed to create a navigation simulator."];
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v3;
+  return null;
 }
 
 void __40__SUScriptInterface_navigationSimulator__block_invoke(uint64_t a1)
@@ -5552,15 +5552,15 @@ void __40__SUScriptInterface_navigationSimulator__block_invoke(uint64_t a1)
   v2 = v7[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v6, 8);
 
   return v4;
@@ -5779,28 +5779,28 @@ uint64_t __32__SUScriptInterface_requestInfo__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setCookie:(id)a3
+- (void)setCookie:(id)cookie
 {
-  v15 = a3;
+  cookieCopy = cookie;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v15, @"Set-Cookie", 0}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{cookieCopy, @"Set-Cookie", 0}];
     v5 = MEMORY[0x1E695ABF8];
-    v6 = [(SUScriptInterface *)self webFrame];
-    v7 = [v6 dataSource];
-    v8 = [v7 request];
-    v9 = [v8 URL];
+    webFrame = [(SUScriptInterface *)self webFrame];
+    dataSource = [webFrame dataSource];
+    request = [dataSource request];
+    v9 = [request URL];
     v10 = [v5 cookiesWithResponseHeaderFields:v4 forURL:v9];
 
     if ([v10 count])
     {
-      v11 = [MEMORY[0x1E69D4890] defaultStore];
-      v12 = [v11 activeAccount];
+      defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+      activeAccount = [defaultStore activeAccount];
 
-      v13 = [MEMORY[0x1E69D4A10] sharedStorage];
-      v14 = [v12 uniqueIdentifier];
-      [v13 setCookies:v10 forUserIdentifier:v14];
+      mEMORY[0x1E69D4A10] = [MEMORY[0x1E69D4A10] sharedStorage];
+      uniqueIdentifier = [activeAccount uniqueIdentifier];
+      [mEMORY[0x1E69D4A10] setCookies:v10 forUserIdentifier:uniqueIdentifier];
     }
   }
 
@@ -5810,112 +5810,112 @@ uint64_t __32__SUScriptInterface_requestInfo__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCookieDefaultURL:(id)a3
+- (void)setCookieDefaultURL:(id)l
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"cookieDefaultURL"];
   [v3 throwException:v4];
 }
 
-- (void)setCookieForDefaultURL:(id)a3
+- (void)setCookieForDefaultURL:(id)l
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"cookieForDefaultURL"];
   [v3 throwException:v4];
 }
 
-- (void)setGlobalRootObject:(id)a3
+- (void)setGlobalRootObject:(id)object
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"globalRootObject"];
   [v3 throwException:v4];
 }
 
-- (void)setGsToken:(id)a3
+- (void)setGsToken:(id)token
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"gsToken"];
   [v3 throwException:v4];
 }
 
-- (void)setLoggingEnabled:(id)a3
+- (void)setLoggingEnabled:(id)enabled
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"loggingEnabled"];
   [v3 throwException:v4];
 }
 
-- (void)setOrientation:(id)a3
+- (void)setOrientation:(id)orientation
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"orientation"];
   [v3 throwException:v4];
 }
 
-- (void)setReferrerURL:(id)a3
+- (void)setReferrerURL:(id)l
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"referrerURL"];
   [v3 throwException:v4];
 }
 
-- (void)setReferringUserAgent:(id)a3
+- (void)setReferringUserAgent:(id)agent
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"referringUserAgent"];
   [v3 throwException:v4];
 }
 
-- (void)setSafariViewControllerDismissButtonStyle:(id)a3
+- (void)setSafariViewControllerDismissButtonStyle:(id)style
 {
-  objc_storeStrong(&self->_safariDismissButtonStyle, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_safariDismissButtonStyle, style);
+  styleCopy = style;
   [(SFSafariViewController *)self->_safariViewController setDismissButtonStyle:[(NSNumber *)self->_safariDismissButtonStyle integerValue]];
 }
 
-- (void)setNavigationBar:(id)a3
+- (void)setNavigationBar:(id)bar
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"navigationBar"];
   [v3 throwException:v4];
 }
 
-- (void)setNavigationSimulator:(id)a3
+- (void)setNavigationSimulator:(id)simulator
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"navigationSimulator"];
   [v3 throwException:v4];
 }
 
-- (void)setStoreFrontIdentifier:(id)a3
+- (void)setStoreFrontIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"storeFrontID"];
   [v3 throwException:v4];
 }
 
-- (void)setTidHeaders:(id)a3
+- (void)setTidHeaders:(id)headers
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"tidHeaders"];
   [v3 throwException:v4];
 }
 
-- (void)setTidState:(id)a3
+- (void)setTidState:(id)state
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"tidState"];
   [v3 throwException:v4];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"userAgent"];
   [v3 throwException:v4];
 }
 
-- (void)setWalletAvailable:(id)a3
+- (void)setWalletAvailable:(id)available
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"walletAvailable"];
@@ -5924,8 +5924,8 @@ uint64_t __32__SUScriptInterface_requestInfo__block_invoke(uint64_t a1)
 
 - (NSString)storeFrontIdentifier
 {
-  v2 = [MEMORY[0x1E69D4890] defaultStore];
-  v3 = [v2 activeAccount];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
   v4 = SSVStoreFrontIdentifierForAccount();
 
@@ -6100,69 +6100,69 @@ void __30__SUScriptInterface_userAgent__block_invoke(uint64_t a1)
 
 - (id)accountDSID
 {
-  v2 = [MEMORY[0x1E69D4890] defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = [v3 uniqueIdentifier];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-  return v4;
+  return uniqueIdentifier;
 }
 
 - (id)accountName
 {
-  v2 = [MEMORY[0x1E69D4890] defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = [v3 accountName];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  accountName = [activeAccount accountName];
 
-  return v4;
+  return accountName;
 }
 
 - (BOOL)haveAccount
 {
-  v2 = [(SUScriptInterface *)self accountDSID];
-  v3 = v2 != 0;
+  accountDSID = [(SUScriptInterface *)self accountDSID];
+  v3 = accountDSID != 0;
 
   return v3;
 }
 
-- (BOOL)shouldRestrictContentOfSystem:(id)a3 level:(id)a4
+- (BOOL)shouldRestrictContentOfSystem:(id)system level:(id)level
 {
-  v5 = a3;
-  v6 = a4;
+  systemCopy = system;
+  levelCopy = level;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ((objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
     v7 = objc_alloc_init(SUItemContentRating);
-    -[SUItemContentRating setRank:](v7, "setRank:", [v6 intValue]);
-    [(SUItemContentRating *)v7 setRatingSystem:[SUItemContentRating ratingSystemFromString:v5]];
-    v8 = [(SUItemContentRating *)v7 isRestricted];
+    -[SUItemContentRating setRank:](v7, "setRank:", [levelCopy intValue]);
+    [(SUItemContentRating *)v7 setRatingSystem:[SUItemContentRating ratingSystemFromString:systemCopy]];
+    isRestricted = [(SUItemContentRating *)v7 isRestricted];
   }
 
   else
   {
-    v8 = 0;
+    isRestricted = 0;
   }
 
-  return v8;
+  return isRestricted;
 }
 
-- (BOOL)shouldShowAddToWalletLink:(id)a3
+- (BOOL)shouldShowAddToWalletLink:(id)link
 {
   v3 = ISWeakLinkedClassForString();
 
   return [v3 canMakePayments];
 }
 
-- (void)signupInWallet:(id)a3 callback:(id)a4
+- (void)signupInWallet:(id)wallet callback:(id)callback
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  walletCopy = wallet;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __45__SUScriptInterface_signupInWallet_callback___block_invoke;
   v64[3] = &unk_1E8164610;
-  v8 = v7;
+  v8 = callbackCopy;
   v65 = v8;
   objc_copyWeak(&v66, &location);
   v9 = MEMORY[0x1C6916C70](v64);
@@ -6170,7 +6170,7 @@ void __30__SUScriptInterface_userAgent__block_invoke(uint64_t a1)
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    walletCopy = 0;
   }
 
   objc_opt_class();
@@ -6183,22 +6183,22 @@ void __30__SUScriptInterface_userAgent__block_invoke(uint64_t a1)
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E69D4938] sharedConfig];
-    v17 = [v16 shouldLog];
-    v18 = [v16 shouldLogToDisk];
-    v19 = [v16 OSLogObject];
-    v20 = v19;
-    if (v18)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    shouldLogToDisk = [mEMORY[0x1E69D4938] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    v20 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v17 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v17 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v17)
+    if (shouldLog)
     {
       v21 = objc_opt_class();
       v68 = 138543362;
@@ -6222,30 +6222,30 @@ void __30__SUScriptInterface_userAgent__block_invoke(uint64_t a1)
 
   if ([MEMORY[0x1E69E4728] shouldUseUpsellEnrollment])
   {
-    v10 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v11 = [v10 ams_isActiveAccountCombined];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_isActiveAccountCombined = [ams_sharedAccountStore ams_isActiveAccountCombined];
 
-    if (v11)
+    if (ams_isActiveAccountCombined)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v12 = [MEMORY[0x1E69D4938] sharedConfig];
-        v39 = [v12 shouldLog];
-        v40 = [v12 shouldLogToDisk];
-        v41 = [v12 OSLogObject];
-        v14 = v41;
-        if (v40)
+        mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+        shouldLogToDisk2 = [mEMORY[0x1E69D4938]2 shouldLogToDisk];
+        oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+        v14 = oSLogObject2;
+        if (shouldLogToDisk2)
         {
-          v39 |= 2u;
+          shouldLog2 |= 2u;
         }
 
-        if (!os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
-          v39 &= 2u;
+          shouldLog2 &= 2u;
         }
 
-        if (v39)
+        if (shouldLog2)
         {
           v42 = objc_opt_class();
           v68 = 138543362;
@@ -6267,10 +6267,10 @@ void __30__SUScriptInterface_userAgent__block_invoke(uint64_t a1)
         goto LABEL_56;
       }
 
-      v12 = v6;
-      v13 = [(SUScriptInterface *)self copyJavaScriptContext];
-      v14 = [v12 copyArrayOrDictionaryWithContext:v13];
-      JSGlobalContextRelease(v13);
+      mEMORY[0x1E69D4938]2 = walletCopy;
+      copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+      v14 = [mEMORY[0x1E69D4938]2 copyArrayOrDictionaryWithContext:copyJavaScriptContext];
+      JSGlobalContextRelease(copyJavaScriptContext);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -6290,22 +6290,22 @@ LABEL_68:
           goto LABEL_69;
         }
 
-        v53 = [MEMORY[0x1E69D4938] sharedConfig];
-        v54 = [v53 shouldLog];
-        v55 = [v53 shouldLogToDisk];
-        v56 = [v53 OSLogObject];
-        v57 = v56;
-        if (v55)
+        mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+        shouldLogToDisk3 = [mEMORY[0x1E69D4938]3 shouldLogToDisk];
+        oSLogObject3 = [mEMORY[0x1E69D4938]3 OSLogObject];
+        v57 = oSLogObject3;
+        if (shouldLogToDisk3)
         {
-          v54 |= 2u;
+          shouldLog3 |= 2u;
         }
 
-        if (!os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
-          v54 &= 2u;
+          shouldLog3 &= 2u;
         }
 
-        if (v54)
+        if (shouldLog3)
         {
           v58 = objc_opt_class();
           v68 = 138543362;
@@ -6329,22 +6329,22 @@ LABEL_67:
         goto LABEL_67;
       }
 
-      v44 = [MEMORY[0x1E69D4938] sharedConfig];
-      v45 = [v44 shouldLog];
-      v46 = [v44 shouldLogToDisk];
-      v47 = [v44 OSLogObject];
-      v48 = v47;
-      if (v46)
+      mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog4 = [mEMORY[0x1E69D4938]4 shouldLog];
+      shouldLogToDisk4 = [mEMORY[0x1E69D4938]4 shouldLogToDisk];
+      oSLogObject4 = [mEMORY[0x1E69D4938]4 OSLogObject];
+      v48 = oSLogObject4;
+      if (shouldLogToDisk4)
       {
-        v45 |= 2u;
+        shouldLog4 |= 2u;
       }
 
-      if (!os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
-        v45 &= 2u;
+        shouldLog4 &= 2u;
       }
 
-      if (v45)
+      if (shouldLog4)
       {
         v49 = objc_opt_class();
         v68 = 138543362;
@@ -6370,22 +6370,22 @@ LABEL_56:
       goto LABEL_55;
     }
 
-    v31 = [MEMORY[0x1E69D4938] sharedConfig];
-    v32 = [v31 shouldLog];
-    v33 = [v31 shouldLogToDisk];
-    v34 = [v31 OSLogObject];
-    v35 = v34;
-    if (v33)
+    mEMORY[0x1E69D4938]5 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog5 = [mEMORY[0x1E69D4938]5 shouldLog];
+    shouldLogToDisk5 = [mEMORY[0x1E69D4938]5 shouldLogToDisk];
+    oSLogObject5 = [mEMORY[0x1E69D4938]5 OSLogObject];
+    v35 = oSLogObject5;
+    if (shouldLogToDisk5)
     {
-      v32 |= 2u;
+      shouldLog5 |= 2u;
     }
 
-    if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
     {
-      v32 &= 2u;
+      shouldLog5 &= 2u;
     }
 
-    if (v32)
+    if (shouldLog5)
     {
       v36 = objc_opt_class();
       v68 = 138543362;
@@ -6411,22 +6411,22 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v16 = [MEMORY[0x1E69D4938] sharedConfig];
-  v24 = [v16 shouldLog];
-  v25 = [v16 shouldLogToDisk];
-  v26 = [v16 OSLogObject];
-  v27 = v26;
-  if (v25)
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog6 = [mEMORY[0x1E69D4938] shouldLog];
+  shouldLogToDisk6 = [mEMORY[0x1E69D4938] shouldLogToDisk];
+  oSLogObject6 = [mEMORY[0x1E69D4938] OSLogObject];
+  v27 = oSLogObject6;
+  if (shouldLogToDisk6)
   {
-    v24 |= 2u;
+    shouldLog6 |= 2u;
   }
 
-  if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
   {
-    v24 &= 2u;
+    shouldLog6 &= 2u;
   }
 
-  if (!v24)
+  if (!shouldLog6)
   {
     goto LABEL_29;
   }
@@ -6526,139 +6526,139 @@ void __45__SUScriptInterface_signupInWallet_callback___block_invoke_2(uint64_t a
 
 - (id)systemVersion
 {
-  v2 = [MEMORY[0x1E69D48B0] currentDevice];
-  v3 = [v2 productVersion];
+  currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
+  productVersion = [currentDevice productVersion];
 
-  return v3;
+  return productVersion;
 }
 
-- (BOOL)checkCapabilitiesPropertyListString:(id)a3 showFailureDialog:(BOOL)a4
+- (BOOL)checkCapabilitiesPropertyListString:(id)string showFailureDialog:(BOOL)dialog
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SUScriptInterface *)self device];
-  v8 = [v7 checkCapabilitiesPropertyListString:v6 showFailureDialog:v4];
+  dialogCopy = dialog;
+  stringCopy = string;
+  device = [(SUScriptInterface *)self device];
+  v8 = [device checkCapabilitiesPropertyListString:stringCopy showFailureDialog:dialogCopy];
 
-  LOBYTE(v6) = [v8 BOOLValue];
-  return v6;
+  LOBYTE(stringCopy) = [v8 BOOLValue];
+  return stringCopy;
 }
 
 - (id)activeNetworkType
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(SUScriptInterface *)self device];
-  v4 = [v2 numberWithInteger:{objc_msgSend(v3, "activeNetworkType")}];
+  device = [(SUScriptInterface *)self device];
+  v4 = [v2 numberWithInteger:{objc_msgSend(device, "activeNetworkType")}];
 
   return v4;
 }
 
 - (BOOL)arePodcastsDisabled
 {
-  v2 = [(SUScriptInterface *)self device];
-  v3 = [v2 capabilityNamePodcasts];
-  v4 = [v2 hasCapability:v3];
-  v5 = [v4 BOOLValue];
+  device = [(SUScriptInterface *)self device];
+  capabilityNamePodcasts = [device capabilityNamePodcasts];
+  v4 = [device hasCapability:capabilityNamePodcasts];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (BOOL)canSendEmail
 {
-  v2 = [(SUScriptInterface *)self device];
-  v3 = [v2 capabilityNameEmail];
-  v4 = [v2 hasCapability:v3];
-  v5 = [v4 BOOLValue];
+  device = [(SUScriptInterface *)self device];
+  capabilityNameEmail = [device capabilityNameEmail];
+  v4 = [device hasCapability:capabilityNameEmail];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)diskSpaceAvailable
 {
-  v2 = [(SUScriptInterface *)self device];
-  v3 = [v2 diskSpaceAvailable];
+  device = [(SUScriptInterface *)self device];
+  diskSpaceAvailable = [device diskSpaceAvailable];
 
-  return v3;
+  return diskSpaceAvailable;
 }
 
 - (id)hardwareType
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(SUScriptInterface *)self device];
-  v4 = [v2 numberWithInteger:{objc_msgSend(v3, "hardwareType")}];
+  device = [(SUScriptInterface *)self device];
+  v4 = [v2 numberWithInteger:{objc_msgSend(device, "hardwareType")}];
 
   return v4;
 }
 
 - (BOOL)isExplicitContentDisabled
 {
-  v2 = [(SUScriptInterface *)self device];
-  v3 = [v2 capabilityNameExplicitMedia];
-  v4 = [v2 hasCapability:v3];
-  v5 = [v4 BOOLValue];
+  device = [(SUScriptInterface *)self device];
+  capabilityNameExplicitMedia = [device capabilityNameExplicitMedia];
+  v4 = [device hasCapability:capabilityNameExplicitMedia];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)showAlertWithMessage:(id)a3 title:(id)a4 buttonTitle:(id)a5
+- (void)showAlertWithMessage:(id)message title:(id)title buttonTitle:(id)buttonTitle
 {
-  v7 = [(SUScriptInterface *)self _copyDialogWithMessage:a3 title:a4 cancelButtonTitle:0 okButtonTitle:a5];
+  v7 = [(SUScriptInterface *)self _copyDialogWithMessage:message title:title cancelButtonTitle:0 okButtonTitle:buttonTitle];
   v6 = [[SUScriptModalDialog alloc] initWithDialog:v7];
   [(SUScriptModalDialog *)v6 setDelegate:self];
 }
 
-- (BOOL)showConfirmWithMessage:(id)a3 title:(id)a4 okButtonTitle:(id)a5 cancelButtonTitle:(id)a6
+- (BOOL)showConfirmWithMessage:(id)message title:(id)title okButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle
 {
-  if (a6)
+  if (cancelButtonTitle)
   {
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
-    v13 = [(SUScriptInterface *)self _copyDialogWithMessage:v12 title:v11 cancelButtonTitle:a6 okButtonTitle:v10];
+    messageCopy2 = buttonTitle;
+    titleCopy = title;
+    messageCopy = message;
+    v13 = [(SUScriptInterface *)self _copyDialogWithMessage:messageCopy title:titleCopy cancelButtonTitle:cancelButtonTitle okButtonTitle:messageCopy2];
   }
 
   else
   {
     v14 = MEMORY[0x1E696AAE8];
-    v15 = a5;
-    v16 = a4;
-    v10 = a3;
-    v12 = [v14 bundleForClass:objc_opt_class()];
-    v11 = [v12 localizedStringForKey:@"CANCEL" value:&stru_1F41B3660 table:0];
-    v13 = [(SUScriptInterface *)self _copyDialogWithMessage:v10 title:v16 cancelButtonTitle:v11 okButtonTitle:v15];
+    buttonTitleCopy2 = buttonTitle;
+    titleCopy2 = title;
+    messageCopy2 = message;
+    messageCopy = [v14 bundleForClass:objc_opt_class()];
+    titleCopy = [messageCopy localizedStringForKey:@"CANCEL" value:&stru_1F41B3660 table:0];
+    v13 = [(SUScriptInterface *)self _copyDialogWithMessage:messageCopy2 title:titleCopy2 cancelButtonTitle:titleCopy okButtonTitle:buttonTitleCopy2];
   }
 
   v17 = [[SUScriptModalDialog alloc] initWithDialog:v13];
   [(SUScriptModalDialog *)v17 setDelegate:self];
-  v18 = [(SUScriptModalDialog *)v17 copyResponseByRunningModal];
-  v19 = [v18 buttonIndex] == 1;
+  copyResponseByRunningModal = [(SUScriptModalDialog *)v17 copyResponseByRunningModal];
+  v19 = [copyResponseByRunningModal buttonIndex] == 1;
 
   return v19;
 }
 
-- (id)showPromptWithMessage:(id)a3 initialValue:(id)a4 title:(id)a5 okButtonTitle:(id)a6 cancelButtonTitle:(id)a7
+- (id)showPromptWithMessage:(id)message initialValue:(id)value title:(id)title okButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  messageCopy = message;
+  valueCopy = value;
+  titleCopy = title;
+  buttonTitleCopy = buttonTitle;
+  cancelButtonTitleCopy = cancelButtonTitle;
+  if (cancelButtonTitleCopy)
   {
-    v17 = [(SUScriptInterface *)self _copyDialogWithMessage:v12 title:v14 cancelButtonTitle:v16 okButtonTitle:v15];
+    v17 = [(SUScriptInterface *)self _copyDialogWithMessage:messageCopy title:titleCopy cancelButtonTitle:cancelButtonTitleCopy okButtonTitle:buttonTitleCopy];
   }
 
   else
   {
     v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"CANCEL" value:&stru_1F41B3660 table:0];
-    v17 = [(SUScriptInterface *)self _copyDialogWithMessage:v12 title:v14 cancelButtonTitle:v19 okButtonTitle:v15];
+    v17 = [(SUScriptInterface *)self _copyDialogWithMessage:messageCopy title:titleCopy cancelButtonTitle:v19 okButtonTitle:buttonTitleCopy];
   }
 
   v20 = [MEMORY[0x1E69E4760] textFieldWithTitle:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v20 setValue:v13];
+    [v20 setValue:valueCopy];
   }
 
   v21 = [MEMORY[0x1E695DEC8] arrayWithObject:v20];
@@ -6666,63 +6666,63 @@ void __45__SUScriptInterface_signupInWallet_callback___block_invoke_2(uint64_t a
 
   v22 = [[SUScriptModalDialog alloc] initWithDialog:v17];
   [(SUScriptModalDialog *)v22 setDelegate:self];
-  v23 = [(SUScriptModalDialog *)v22 copyResponseByRunningModal];
-  if ([v23 buttonIndex] == 1)
+  copyResponseByRunningModal = [(SUScriptModalDialog *)v22 copyResponseByRunningModal];
+  if ([copyResponseByRunningModal buttonIndex] == 1)
   {
-    v24 = [v23 textFieldValue];
+    textFieldValue = [copyResponseByRunningModal textFieldValue];
   }
 
   else
   {
-    v24 = 0;
+    textFieldValue = 0;
   }
 
-  return v24;
+  return textFieldValue;
 }
 
-- (void)_globalEventNotification:(id)a3
+- (void)_globalEventNotification:(id)notification
 {
-  v8 = a3;
-  v4 = [v8 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
 
-  if (v4 != self)
+  if (object != self)
   {
-    v5 = [v8 userInfo];
-    v6 = [v5 objectForKey:@"payload"];
-    v7 = [v5 objectForKey:@"name"];
+    userInfo = [notificationCopy userInfo];
+    v6 = [userInfo objectForKey:@"payload"];
+    v7 = [userInfo objectForKey:@"name"];
     [(SUScriptObject *)self dispatchEvent:v6 forName:v7];
   }
 }
 
-- (void)_scriptUserInfoDidChangeNotification:(id)a3
+- (void)_scriptUserInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v6 = [(SUScriptInterface *)self parentViewController];
-  v5 = [v4 object];
+  notificationCopy = notification;
+  parentViewController = [(SUScriptInterface *)self parentViewController];
+  object = [notificationCopy object];
 
-  LODWORD(v4) = [v6 isDescendantOfViewController:v5];
-  if (v4)
+  LODWORD(notificationCopy) = [parentViewController isDescendantOfViewController:object];
+  if (notificationCopy)
   {
     [(SUScriptObject *)self dispatchEvent:0 forName:@"userinfochange"];
   }
 }
 
-- (void)safariViewController:(id)a3 didCompleteInitialLoad:(BOOL)a4
+- (void)safariViewController:(id)controller didCompleteInitialLoad:(BOOL)load
 {
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v6;
   }
@@ -6743,29 +6743,29 @@ void __45__SUScriptInterface_signupInWallet_callback___block_invoke_2(uint64_t a
 
   if (v9)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
     free(v9);
     SSFileLog();
 LABEL_10:
   }
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v6;
   }
@@ -6786,7 +6786,7 @@ LABEL_10:
 
   if (v9)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
     free(v9);
     SSFileLog();
 LABEL_10:
@@ -6795,35 +6795,35 @@ LABEL_10:
   [(SUScriptInterface *)self _cleanUpSafariViewController];
 }
 
-- (id)_cookieForURL:(id)a3
+- (id)_cookieForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SUScriptInterface *)self authenticationContext];
-  v6 = [v5 requiredUniqueIdentifier];
+  lCopy = l;
+  authenticationContext = [(SUScriptInterface *)self authenticationContext];
+  requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
 
-  if (!v6 || ([MEMORY[0x1E69D4890] defaultStore], v7 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "requiredUniqueIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "accountWithUniqueIdentifier:scope:", v9, objc_msgSend(v10, "accountScope")), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v7, !v11))
+  if (!requiredUniqueIdentifier || ([MEMORY[0x1E69D4890] defaultStore], v7 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "requiredUniqueIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "accountWithUniqueIdentifier:scope:", v9, objc_msgSend(v10, "accountScope")), activeAccount = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v7, !activeAccount))
   {
-    v12 = [MEMORY[0x1E69D4890] defaultStore];
-    v11 = [v12 activeAccount];
+    defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+    activeAccount = [defaultStore activeAccount];
   }
 
-  v13 = [MEMORY[0x1E69D4A10] sharedStorage];
-  v14 = [v11 uniqueIdentifier];
-  v15 = [v13 cookieHeadersForURL:v4 userIdentifier:v14];
+  mEMORY[0x1E69D4A10] = [MEMORY[0x1E69D4A10] sharedStorage];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  v15 = [mEMORY[0x1E69D4A10] cookieHeadersForURL:lCopy userIdentifier:uniqueIdentifier];
 
   v16 = [v15 objectForKey:@"Cookie"];
 
   return v16;
 }
 
-- (id)_copyDialogWithMessage:(id)a3 title:(id)a4 cancelButtonTitle:(id)a5 okButtonTitle:(id)a6
+- (id)_copyDialogWithMessage:(id)message title:(id)title cancelButtonTitle:(id)buttonTitle okButtonTitle:(id)okButtonTitle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  titleCopy = title;
+  buttonTitleCopy = buttonTitle;
+  okButtonTitleCopy = okButtonTitle;
   v14 = objc_alloc_init(MEMORY[0x1E69E4750]);
-  if (v12)
+  if (buttonTitleCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6831,7 +6831,7 @@ LABEL_10:
       v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v16 = [v15 localizedStringForKey:@"CANCEL" value:&stru_1F41B3660 table:0];
 
-      v12 = v16;
+      buttonTitleCopy = v16;
     }
   }
 
@@ -6841,65 +6841,65 @@ LABEL_10:
     v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v18 = [v17 localizedStringForKey:@"OK" value:&stru_1F41B3660 table:0];
 
-    v13 = v18;
+    okButtonTitleCopy = v18;
   }
 
-  if (v11)
+  if (titleCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v19 = [(SUScriptInterface *)self webFrame];
-      v20 = [v19 dataSource];
-      v21 = [v20 request];
-      v22 = [v21 URL];
+      webFrame = [(SUScriptInterface *)self webFrame];
+      dataSource = [webFrame dataSource];
+      request = [dataSource request];
+      v22 = [request URL];
       v23 = [SUScriptModalDialog titleForURL:v22];
 
-      v11 = v23;
+      titleCopy = v23;
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [v10 stringRepresentation];
+    stringRepresentation = [messageCopy stringRepresentation];
 
-    v10 = v24;
+    messageCopy = stringRepresentation;
   }
 
-  if (v10)
+  if (messageCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v25 = [v10 description];
+      v25 = [messageCopy description];
 
-      v10 = v25;
+      messageCopy = v25;
     }
   }
 
   v26 = v14;
-  v27 = v10;
-  if (v11)
+  v27 = messageCopy;
+  if (titleCopy)
   {
-    [v14 setMessage:v10];
+    [v14 setMessage:messageCopy];
     v26 = v14;
-    v27 = v11;
+    v27 = titleCopy;
   }
 
   [v26 setTitle:v27];
   v28 = MEMORY[0x1E695DEC8];
-  if (v12)
+  if (buttonTitleCopy)
   {
-    v29 = [MEMORY[0x1E69E4758] buttonWithTitle:v12];
-    v30 = [MEMORY[0x1E69E4758] buttonWithTitle:v13];
+    v29 = [MEMORY[0x1E69E4758] buttonWithTitle:buttonTitleCopy];
+    v30 = [MEMORY[0x1E69E4758] buttonWithTitle:okButtonTitleCopy];
     v31 = [v28 arrayWithObjects:{v29, v30, 0}];
     [v14 setButtons:v31];
   }
 
   else
   {
-    v29 = [MEMORY[0x1E69E4758] buttonWithTitle:v13];
+    v29 = [MEMORY[0x1E69E4758] buttonWithTitle:okButtonTitleCopy];
     v30 = [v28 arrayWithObjects:{v29, 0}];
     [v14 setButtons:v30];
   }
@@ -6907,12 +6907,12 @@ LABEL_10:
   return v14;
 }
 
-- (void)_presentSafariViewControllerWithURL:(id)a3 safariIdentifier:(id)a4 animated:(BOOL)a5
+- (void)_presentSafariViewControllerWithURL:(id)l safariIdentifier:(id)identifier animated:(BOOL)animated
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [(SUScriptInterface *)self setSafariViewControllerIdentifier:a4];
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
+  lCopy = l;
+  [(SUScriptInterface *)self setSafariViewControllerIdentifier:identifier];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v15 = *MEMORY[0x1E69DDB50];
   v16[0] = MEMORY[0x1E695E118];
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
@@ -6921,10 +6921,10 @@ LABEL_10:
   v12[2] = __83__SUScriptInterface__presentSafariViewControllerWithURL_safariIdentifier_animated___block_invoke;
   v12[3] = &unk_1E8164890;
   v12[4] = self;
-  v13 = v8;
-  v14 = a5;
-  v11 = v8;
-  [v9 openURL:v11 options:v10 completionHandler:v12];
+  v13 = lCopy;
+  animatedCopy = animated;
+  v11 = lCopy;
+  [mEMORY[0x1E69DC668] openURL:v11 options:v10 completionHandler:v12];
 }
 
 void __83__SUScriptInterface__presentSafariViewControllerWithURL_safariIdentifier_animated___block_invoke(uint64_t a1, char a2)
@@ -6963,40 +6963,40 @@ void __83__SUScriptInterface__presentSafariViewControllerWithURL_safariIdentifie
   }
 }
 
-- (void)_dismissSafariViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissSafariViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SUScriptInterface *)self clientInterface];
-  v8 = [v7 delegate];
+  animatedCopy = animated;
+  completionCopy = completion;
+  clientInterface = [(SUScriptInterface *)self clientInterface];
+  delegate = [clientInterface delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(SUScriptInterface *)self parentViewController];
-    [v8 clientInterface:v7 dismissSafariViewControllerAnimated:v4 fromViewController:v9 completion:v6];
+    parentViewController = [(SUScriptInterface *)self parentViewController];
+    [delegate clientInterface:clientInterface dismissSafariViewControllerAnimated:animatedCopy fromViewController:parentViewController completion:completionCopy];
   }
 
   else
   {
-    v10 = [(SUScriptInterface *)self safariViewController];
+    safariViewController = [(SUScriptInterface *)self safariViewController];
 
-    if (v10)
+    if (safariViewController)
     {
-      v11 = [(SUScriptInterface *)self safariViewController];
+      safariViewController2 = [(SUScriptInterface *)self safariViewController];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __69__SUScriptInterface__dismissSafariViewControllerAnimated_completion___block_invoke;
       v12[3] = &unk_1E8164638;
       v12[4] = self;
-      v13 = v6;
-      [v11 dismissViewControllerAnimated:v4 completion:v12];
+      v13 = completionCopy;
+      [safariViewController2 dismissViewControllerAnimated:animatedCopy completion:v12];
     }
 
     else
     {
       [(SUScriptInterface *)self _cleanUpSafariViewController];
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
     }
   }
@@ -7023,28 +7023,28 @@ uint64_t __69__SUScriptInterface__dismissSafariViewControllerAnimated_completion
   [(SUScriptInterface *)self setSafariViewControllerIdentifier:0];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_2 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_2 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptInterface;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-- (BOOL)scriptXMLHTTPRequest:(id)a3 requiresCellularForURL:(id)a4
+- (BOOL)scriptXMLHTTPRequest:(id)request requiresCellularForURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   [(NSLock *)self->super._lock lock];
   requireCellularURLs = self->_requireCellularURLs;
   if (requireCellularURLs)
   {
-    v7 = [(NSMutableSet *)requireCellularURLs containsObject:v5];
+    v7 = [(NSMutableSet *)requireCellularURLs containsObject:lCopy];
   }
 
   else
@@ -7057,14 +7057,14 @@ uint64_t __69__SUScriptInterface__dismissSafariViewControllerAnimated_completion
   return v7;
 }
 
-- (BOOL)scriptXMLHTTPStoreRequest:(id)a3 requiresCellularForURL:(id)a4
+- (BOOL)scriptXMLHTTPStoreRequest:(id)request requiresCellularForURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   [(NSLock *)self->super._lock lock];
   requireCellularURLs = self->_requireCellularURLs;
   if (requireCellularURLs)
   {
-    v7 = [(NSMutableSet *)requireCellularURLs containsObject:v5];
+    v7 = [(NSMutableSet *)requireCellularURLs containsObject:lCopy];
   }
 
   else
@@ -7077,14 +7077,14 @@ uint64_t __69__SUScriptInterface__dismissSafariViewControllerAnimated_completion
   return v7;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_0, 141);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_0, 141);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptInterface;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -7094,16 +7094,16 @@ uint64_t __69__SUScriptInterface__dismissSafariViewControllerAnimated_completion
 {
   v5.receiver = self;
   v5.super_class = SUScriptInterface;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_2 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_2 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_0 = sel_accessibilityPostLayoutChange;
     *algn_1EBF39D08 = @"accessibilityPostLayoutChange";
@@ -7415,12 +7415,12 @@ uint64_t __69__SUScriptInterface__dismissSafariViewControllerAnimated_completion
   return v3;
 }
 
-- (void)getInstalledSoftwareApplicationsWithCompletionFunction:(id)a3
+- (void)getInstalledSoftwareApplicationsWithCompletionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptFunction alloc] initWithScriptObject:a3];
+    v5 = [[SUScriptFunction alloc] initWithScriptObject:function];
     [(SUScriptFunction *)v5 setThisObject:self];
     v6 = objc_alloc_init(MEMORY[0x1E69E4768]);
     v8[0] = MEMORY[0x1E69E9820];
@@ -7487,7 +7487,7 @@ void __114__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getInstalled
   [*(a1 + 40) setThisObject:0];
 }
 
-- (void)getSoftwareApplicationWithAdamID:(id)a3 completionFunction:(id)a4
+- (void)getSoftwareApplicationWithAdamID:(id)d completionFunction:(id)function
 {
   v6 = SSGetUnsignedLongLongFromValue();
   v7 = MEMORY[0x1E69E2F88];
@@ -7501,7 +7501,7 @@ void __114__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getInstalled
       v8[2] = __111__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftwareApplicationWithAdamID_completionFunction___block_invoke;
       v8[3] = &__block_descriptor_40_e28___ISSoftwareApplication_8__0l;
       v8[4] = v6;
-      [(SUScriptInterface *)self _getSoftwareApplicationWithCompletionFunction:a4 lookupBlock:v8];
+      [(SUScriptInterface *)self _getSoftwareApplicationWithCompletionFunction:function lookupBlock:v8];
       return;
     }
 
@@ -7519,7 +7519,7 @@ uint64_t __111__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
   return [v2 applicationForItemIdentifier:v3];
 }
 
-- (void)getSoftwareApplicationWithBundleID:(id)a3 completionFunction:(id)a4
+- (void)getSoftwareApplicationWithBundleID:(id)d completionFunction:(id)function
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -7533,8 +7533,8 @@ uint64_t __111__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
       v9[1] = 3221225472;
       v9[2] = __113__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftwareApplicationWithBundleID_completionFunction___block_invoke;
       v9[3] = &unk_1E8165120;
-      v9[4] = a3;
-      [(SUScriptInterface *)self _getSoftwareApplicationWithCompletionFunction:a4 lookupBlock:v9];
+      v9[4] = d;
+      [(SUScriptInterface *)self _getSoftwareApplicationWithCompletionFunction:function lookupBlock:v9];
       return;
     }
 
@@ -7552,13 +7552,13 @@ uint64_t __113__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
   return [v2 applicationForBundleIdentifier:v3];
 }
 
-- (id)softwareApplicationWithAdamID:(id)a3
+- (id)softwareApplicationWithAdamID:(id)d
 {
   v4 = SSGetUnsignedLongLongFromValue();
   if (v4)
   {
-    v5 = [MEMORY[0x1E69E47D0] loadedMap];
-    v4 = [v5 applicationForItemIdentifier:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithItemIdentifier:", v4)}];
+    loadedMap = [MEMORY[0x1E69E47D0] loadedMap];
+    v4 = [loadedMap applicationForItemIdentifier:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithItemIdentifier:", v4)}];
     if (v4)
     {
       v4 = [[SUScriptSoftwareApplication alloc] initWithApplication:v4];
@@ -7574,7 +7574,7 @@ uint64_t __113__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
   return v4;
 }
 
-- (id)softwareApplicationWithBundleID:(id)a3
+- (id)softwareApplicationWithBundleID:(id)d
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -7599,7 +7599,7 @@ uint64_t __113__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
 - (NSArray)installedSoftwareApplications
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [objc_msgSend(MEMORY[0x1E69E47D0] "loadedMap")];
   v12 = 0u;
   v13 = 0u;
@@ -7624,7 +7624,7 @@ uint64_t __113__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
         if (v9)
         {
           v10 = v9;
-          [(NSArray *)v3 addObject:v9];
+          [(NSArray *)array addObject:v9];
         }
 
         ++v8;
@@ -7637,13 +7637,13 @@ uint64_t __113__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
     while (v6);
   }
 
-  [(SUScriptObject *)self checkInScriptObjects:v3];
-  return v3;
+  [(SUScriptObject *)self checkInScriptObjects:array];
+  return array;
 }
 
-- (void)_getSoftwareApplicationWithCompletionFunction:(id)a3 lookupBlock:(id)a4
+- (void)_getSoftwareApplicationWithCompletionFunction:(id)function lookupBlock:(id)block
 {
-  v6 = [[SUScriptFunction alloc] initWithScriptObject:a3];
+  v6 = [[SUScriptFunction alloc] initWithScriptObject:function];
   [(SUScriptFunction *)v6 setThisObject:self];
   v7 = objc_alloc_init(MEMORY[0x1E69E4768]);
   v8[0] = MEMORY[0x1E69E9820];
@@ -7651,7 +7651,7 @@ uint64_t __113__SUScriptInterface_SUScriptSoftwareApplicationAdditions__getSoftw
   v8[2] = __117__SUScriptInterface_SUScriptSoftwareApplicationAdditions___getSoftwareApplicationWithCompletionFunction_lookupBlock___block_invoke;
   v8[3] = &unk_1E8165148;
   v8[5] = v6;
-  v8[6] = a4;
+  v8[6] = block;
   v8[4] = self;
   [v7 setCompletionBlock:v8];
   [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
@@ -7690,33 +7690,33 @@ LABEL_6:
   [*v4 setThisObject:0];
 }
 
-- (id)makePopOverWithViewController:(id)a3
+- (id)makePopOverWithViewController:(id)controller
 {
   v5 = objc_alloc_init(SUScriptPopOver);
   [(SUScriptObject *)self checkInScriptObject:v5];
-  [(SUScriptPopOver *)v5 setViewController:a3];
+  [(SUScriptPopOver *)v5 setViewController:controller];
 
   return v5;
 }
 
-- (id)makeTextFieldWithStyle:(id)a3 placeholder:(id)a4 value:(id)a5 width:(id)a6
+- (id)makeTextFieldWithStyle:(id)style placeholder:(id)placeholder value:(id)value width:(id)width
 {
-  v10 = [[SUScriptTextField alloc] initWithTextFieldStyle:a3];
+  v10 = [[SUScriptTextField alloc] initWithTextFieldStyle:style];
   if (v10)
   {
     [(SUScriptObject *)self checkInScriptObject:v10];
-    [(SUScriptTextField *)v10 setPlaceholder:a4];
-    [(SUScriptTextField *)v10 setValue:a5];
+    [(SUScriptTextField *)v10 setPlaceholder:placeholder];
+    [(SUScriptTextField *)v10 setValue:value];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      if (a6)
+      if (width)
       {
         if ((isKindOfClass & 1) == 0)
         {
-          [(SUScriptTextField *)v10 setWidth:a6];
+          [(SUScriptTextField *)v10 setWidth:width];
         }
       }
     }
@@ -7730,33 +7730,33 @@ LABEL_6:
   return v10;
 }
 
-- (id)makeButtonWithSystemItemString:(id)a3 action:(id)a4
+- (id)makeButtonWithSystemItemString:(id)string action:(id)action
 {
-  v6 = [[SUScriptButton alloc] initWithSystemItemString:a3];
+  v6 = [[SUScriptButton alloc] initWithSystemItemString:string];
   [(SUScriptObject *)self checkInScriptObject:v6];
-  [(SUScriptButton *)v6 setAction:a4];
+  [(SUScriptButton *)v6 setAction:action];
 
   return v6;
 }
 
-- (id)makeButtonWithTitle:(id)a3 action:(id)a4
+- (id)makeButtonWithTitle:(id)title action:(id)action
 {
   v7 = objc_alloc_init(SUScriptButton);
   [(SUScriptObject *)self checkInScriptObject:v7];
-  [(SUScriptButton *)v7 setAction:a4];
-  [(SUScriptButton *)v7 setTitle:a3];
+  [(SUScriptButton *)v7 setAction:action];
+  [(SUScriptButton *)v7 setTitle:title];
 
   return v7;
 }
 
-- (int64_t)dialogDisplayCountForKey:(id)a3
+- (int64_t)dialogDisplayCountForKey:(id)key
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x1E69E4750];
 
-    return [v4 displayCountForKey:a3];
+    return [v4 displayCountForKey:key];
   }
 
   else
@@ -7781,20 +7781,20 @@ LABEL_6:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)accountForDSID:(id)a3
+- (id)accountForDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v4 = 0;
+    dCopy = 0;
 LABEL_4:
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     goto LABEL_4;
   }
@@ -7808,37 +7808,37 @@ LABEL_4:
 
   v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:v7];
 
-  v5 = [(SUScriptAccountManager *)self->_accountManager accountForDSID:v8];
-  v4 = v8;
-  if (!v5)
+  null = [(SUScriptAccountManager *)self->_accountManager accountForDSID:v8];
+  dCopy = v8;
+  if (!null)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
 
-  return v5;
+  return null;
 }
 
-- (void)authenticateForAccount:(id)a3 withOptions:(id)a4
+- (void)authenticateForAccount:(id)account withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    accountCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v7 = 0;
+    optionsCopy = 0;
   }
 
-  if (v6)
+  if (accountCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -7850,7 +7850,7 @@ LABEL_18:
     }
   }
 
-  if (v7)
+  if (optionsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -7860,10 +7860,10 @@ LABEL_18:
     }
   }
 
-  v8 = [v6 dsID];
-  if (!v8)
+  dsID = [accountCopy dsID];
+  if (!dsID)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:0];
+    dsID = [MEMORY[0x1E696AD98] numberWithInteger:0];
   }
 
   v14 = 0;
@@ -7874,14 +7874,14 @@ LABEL_18:
   v19 = 0;
   v13 = MEMORY[0x1E69E9820];
   WebThreadRunOnMainThread();
-  v9 = [[SUScriptAuthenticationOperation alloc] initWithAccountIdentifier:v8, v13, 3221225472, __74__SUScriptInterface_SUAuthentication__authenticateForAccount_withOptions___block_invoke, &unk_1E81647C8, self, &v14];
+  v9 = [[SUScriptAuthenticationOperation alloc] initWithAccountIdentifier:dsID, v13, 3221225472, __74__SUScriptInterface_SUAuthentication__authenticateForAccount_withOptions___block_invoke, &unk_1E81647C8, self, &v14];
   v10 = v9;
   if (v15[5])
   {
     [(SUScriptAuthenticationOperation *)v9 setPresentingViewController:?];
   }
 
-  v11 = [[SUScriptOperation alloc] initWithOperation:v10 options:v7];
+  v11 = [[SUScriptOperation alloc] initWithOperation:v10 options:optionsCopy];
   [(SUScriptOperationDelegate *)self->_scriptOperationDelegate enqueueOperation:v11];
 
   _Block_object_dispose(&v14, 8);
@@ -7895,33 +7895,33 @@ uint64_t __74__SUScriptInterface_SUAuthentication__authenticateForAccount_withOp
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)authenticateAppleIdWithUsername:(id)a3 password:(id)a4 callback:(id)a5
+- (void)authenticateAppleIdWithUsername:(id)username password:(id)password callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  usernameCopy = username;
+  passwordCopy = password;
+  callbackCopy = callback;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v7 = 0;
+    usernameCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v8 = 0;
+    passwordCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v9 = 0;
+    callbackCopy = 0;
   }
 
-  if (!v7 || !v8)
+  if (!usernameCopy || !passwordCopy)
   {
     v10 = MEMORY[0x1E69E2F88];
     v11 = @"Invalid argument - username or password does not exist";
@@ -7946,7 +7946,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (v9)
+  if (callbackCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -7957,9 +7957,9 @@ LABEL_21:
     }
   }
 
-  v12 = v7;
-  v13 = v8;
-  v14 = v9;
+  v12 = usernameCopy;
+  v13 = passwordCopy;
+  v14 = callbackCopy;
   WebThreadRunOnMainThread();
 
 LABEL_22:
@@ -8035,43 +8035,43 @@ LABEL_13:
 
 - (id)currentAccount
 {
-  v3 = [(SUScriptInterface *)self authenticationContext];
-  v4 = [v3 requiredUniqueIdentifier];
+  authenticationContext = [(SUScriptInterface *)self authenticationContext];
+  requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
 
-  if (v4 && ([MEMORY[0x1E69D4890] defaultStore], v5 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "requiredUniqueIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "accountWithUniqueIdentifier:scope:", v7, objc_msgSend(v8, "accountScope")), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v9) || (objc_msgSend(MEMORY[0x1E69D4890], "defaultStore"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "activeAccount"), v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
+  if (requiredUniqueIdentifier && ([MEMORY[0x1E69D4890] defaultStore], v5 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "requiredUniqueIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), -[SUScriptInterface authenticationContext](self, "authenticationContext"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "accountWithUniqueIdentifier:scope:", v7, objc_msgSend(v8, "accountScope")), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v9) || (objc_msgSend(MEMORY[0x1E69D4890], "defaultStore"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "activeAccount"), v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
   {
-    v11 = [v9 uniqueIdentifier];
-    v12 = [(SUScriptInterface *)self accountForDSID:v11];
+    uniqueIdentifier = [v9 uniqueIdentifier];
+    null = [(SUScriptInterface *)self accountForDSID:uniqueIdentifier];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v12;
+  return null;
 }
 
 - (SUScriptAccount)primaryAccount
 {
-  v3 = [(SUScriptInterface *)self authenticationContext];
-  v4 = [v3 requiredUniqueIdentifier];
+  authenticationContext = [(SUScriptInterface *)self authenticationContext];
+  requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
 
-  if (v4)
+  if (requiredUniqueIdentifier)
   {
-    v5 = [MEMORY[0x1E69D4890] defaultStore];
-    v6 = [(SUScriptInterface *)self authenticationContext];
-    v7 = [v6 requiredUniqueIdentifier];
-    v8 = [(SUScriptInterface *)self authenticationContext];
-    v9 = [v5 accountWithUniqueIdentifier:v7 scope:{objc_msgSend(v8, "accountScope")}];
+    defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+    authenticationContext2 = [(SUScriptInterface *)self authenticationContext];
+    requiredUniqueIdentifier2 = [authenticationContext2 requiredUniqueIdentifier];
+    authenticationContext3 = [(SUScriptInterface *)self authenticationContext];
+    activeAccount = [defaultStore accountWithUniqueIdentifier:requiredUniqueIdentifier2 scope:{objc_msgSend(authenticationContext3, "accountScope")}];
 
-    if ([v9 isActive])
+    if ([activeAccount isActive])
     {
-      if (v9)
+      if (activeAccount)
       {
 LABEL_7:
-        v11 = [v9 uniqueIdentifier];
-        v12 = [(SUScriptInterface *)self accountForDSID:v11];
+        uniqueIdentifier = [activeAccount uniqueIdentifier];
+        null = [(SUScriptInterface *)self accountForDSID:uniqueIdentifier];
 
         goto LABEL_9;
       }
@@ -8082,86 +8082,86 @@ LABEL_7:
     }
   }
 
-  v10 = [MEMORY[0x1E69D4890] defaultStore];
-  v9 = [v10 activeAccount];
+  defaultStore2 = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore2 activeAccount];
 
-  if (v9)
+  if (activeAccount)
   {
     goto LABEL_7;
   }
 
-  v12 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 LABEL_9:
 
-  return v12;
+  return null;
 }
 
 - (id)primaryiCloudAccount
 {
-  v2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiCloudAccount];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
 
-  if (v3)
+  if (ams_activeiCloudAccount)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69D4888]) initWithBackingAccount:v3];
-    v5 = objc_alloc_init(SUScriptAccount);
-    [(SUScriptAccount *)v5 setAccount:v4];
+    v4 = [objc_alloc(MEMORY[0x1E69D4888]) initWithBackingAccount:ams_activeiCloudAccount];
+    null = objc_alloc_init(SUScriptAccount);
+    [(SUScriptAccount *)null setAccount:v4];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v5;
+  return null;
 }
 
 - (SUScriptAccount)primaryLockerAccount
 {
-  v3 = [MEMORY[0x1E69D4890] defaultStore];
-  v4 = [v3 activeLockerAccount];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeLockerAccount = [defaultStore activeLockerAccount];
 
-  if (v4)
+  if (activeLockerAccount)
   {
-    v5 = [v4 uniqueIdentifier];
-    v6 = [(SUScriptInterface *)self accountForDSID:v5];
+    uniqueIdentifier = [activeLockerAccount uniqueIdentifier];
+    null = [(SUScriptInterface *)self accountForDSID:uniqueIdentifier];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v6;
+  return null;
 }
 
-- (void)setAccounts:(id)a3
+- (void)setAccounts:(id)accounts
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"accounts"];
   [v3 throwException:v4];
 }
 
-- (void)setPrimaryAccount:(id)a3
+- (void)setPrimaryAccount:(id)account
 {
-  v7 = a3;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
   }
 
-  else if (v7)
+  else if (accountCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v7 account];
-      v4 = [v3 uniqueIdentifier];
+      account = [accountCopy account];
+      uniqueIdentifier = [account uniqueIdentifier];
 
-      if (v4)
+      if (uniqueIdentifier)
       {
-        v5 = [MEMORY[0x1E69D4890] defaultStore];
-        v6 = [v5 setActiveAccount:v3];
+        defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+        v6 = [defaultStore setActiveAccount:account];
       }
 
       else
@@ -8178,31 +8178,31 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  v7 = [MEMORY[0x1E69D4890] defaultStore];
-  [v7 signOutAllAccounts];
+  accountCopy = [MEMORY[0x1E69D4890] defaultStore];
+  [accountCopy signOutAllAccounts];
 LABEL_5:
 }
 
-- (void)setPrimaryLockerAccount:(id)a3
+- (void)setPrimaryLockerAccount:(id)account
 {
-  v8 = a3;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
   }
 
-  else if (v8)
+  else if (accountCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v8 account];
-      v5 = [v4 uniqueIdentifier];
+      account = [accountCopy account];
+      uniqueIdentifier = [account uniqueIdentifier];
 
-      if (v5)
+      if (uniqueIdentifier)
       {
-        v6 = [MEMORY[0x1E69D4890] defaultStore];
-        v7 = [v6 setActiveLockerAccount:v4];
+        defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+        v7 = [defaultStore setActiveLockerAccount:account];
       }
 
       else
@@ -8219,8 +8219,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v8 = [MEMORY[0x1E69D4890] defaultStore];
-  v3 = [v8 setActiveLockerAccount:0];
+  accountCopy = [MEMORY[0x1E69D4890] defaultStore];
+  v3 = [accountCopy setActiveLockerAccount:0];
 LABEL_5:
 }
 
@@ -8232,7 +8232,7 @@ LABEL_5:
   return v3;
 }
 
-- (id)getDownloadQueueWithQueueType:(id)a3
+- (id)getDownloadQueueWithQueueType:(id)type
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -8244,7 +8244,7 @@ LABEL_11:
     return 0;
   }
 
-  if (([a3 isEqualToString:@"media"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"software") & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"ebooks") & 1) == 0)
+  if (([type isEqualToString:@"media"] & 1) == 0 && (objc_msgSend(type, "isEqualToString:", @"software") & 1) == 0 && (objc_msgSend(type, "isEqualToString:", @"ebooks") & 1) == 0)
   {
     v8 = MEMORY[0x1E69E2F88];
     v9 = @"Unknown queue type";
@@ -8259,14 +8259,14 @@ LABEL_11:
     self->_downloadQueues = downloadQueues;
   }
 
-  v6 = [(NSMutableDictionary *)downloadQueues objectForKey:a3];
+  v6 = [(NSMutableDictionary *)downloadQueues objectForKey:type];
   [(SUScriptObject *)self unlock];
   if (!v6 || ![(SUScriptObject *)self scriptObjectIsCheckedIn:v6])
   {
-    v6 = [[SUScriptDownloadQueue alloc] initWithQueueType:a3 clientInterface:[(SUScriptInterface *)self clientInterface]];
+    v6 = [[SUScriptDownloadQueue alloc] initWithQueueType:type clientInterface:[(SUScriptInterface *)self clientInterface]];
     [(SUScriptObject *)self checkInScriptObject:v6];
     [(SUScriptObject *)self lock];
-    [(NSMutableDictionary *)self->_downloadQueues setObject:v6 forKey:a3];
+    [(NSMutableDictionary *)self->_downloadQueues setObject:v6 forKey:type];
     [(SUScriptObject *)self unlock];
     v7 = v6;
   }
@@ -8274,54 +8274,54 @@ LABEL_11:
   return v6;
 }
 
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4
+- (void)composeEmailWithSubject:(id)subject body:(id)body
 {
-  v5 = a3;
-  v6 = a4;
+  subjectCopy = subject;
+  bodyCopy = body;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v6 = &stru_1F41B3660;
+    bodyCopy = &stru_1F41B3660;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v5 = &stru_1F41B3660;
+    subjectCopy = &stru_1F41B3660;
   }
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__SUScriptInterface_SUNavigation__composeEmailWithSubject_body___block_invoke;
   v9[3] = &unk_1E81644A8;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = subjectCopy;
+  v11 = bodyCopy;
+  v7 = bodyCopy;
+  v8 = subjectCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
-- (void)dismissWindowsWithOptions:(id)a3
+- (void)dismissWindowsWithOptions:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69D4938];
-  v4 = a3;
-  v5 = [v3 sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  optionsCopy = options;
+  sharedConfig = [v3 sharedConfig];
+  shouldLog = [sharedConfig shouldLog];
+  if ([sharedConfig shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [sharedConfig OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -8341,19 +8341,19 @@ LABEL_11:
 
   if (v10)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, v12, v11, *v12, *&v12[16], v13}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, v12, v11, *v12, *&v12[16], v13}];
     free(v10);
     SSFileLog();
 LABEL_9:
   }
 
-  [SUScriptWindow dismissWindowsWithOptions:v4];
+  [SUScriptWindow dismissWindowsWithOptions:optionsCopy];
 }
 
-- (id)makeNavigationControllerWithRootViewController:(id)a3
+- (id)makeNavigationControllerWithRootViewController:(id)controller
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  controllerCopy = controller;
+  if (controllerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     v7 = 0;
@@ -8362,8 +8362,8 @@ LABEL_9:
   else
   {
     v5 = [SUScriptNavigationController alloc];
-    v6 = [(SUScriptInterface *)self clientInterface];
-    v7 = [(SUScriptNavigationController *)v5 initWithRootScriptViewController:v4 clientInterface:v6];
+    clientInterface = [(SUScriptInterface *)self clientInterface];
+    v7 = [(SUScriptNavigationController *)v5 initWithRootScriptViewController:controllerCopy clientInterface:clientInterface];
 
     [(SUScriptObject *)self checkInScriptObject:v7];
   }
@@ -8371,18 +8371,18 @@ LABEL_9:
   return v7;
 }
 
-- (id)makeStorePageWithURLs:(id)a3
+- (id)makeStorePageWithURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v4 = 0;
+    lsCopy = 0;
   }
 
   v9 = 0;
-  v5 = [SUScriptStorePageViewController copyURLStrings:&v9 forValue:v4];
+  v5 = [SUScriptStorePageViewController copyURLStrings:&v9 forValue:lsCopy];
   v6 = v9;
   if (v5)
   {
@@ -8399,25 +8399,25 @@ LABEL_9:
   return v7;
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69D4938];
-  v5 = a3;
-  v6 = [v4 sharedConfig];
-  v7 = [v6 shouldLog];
-  if ([v6 shouldLogToDisk])
+  lCopy = l;
+  sharedConfig = [v4 sharedConfig];
+  shouldLog = [sharedConfig shouldLog];
+  if ([sharedConfig shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [sharedConfig OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 &= 2u;
   }
@@ -8437,30 +8437,30 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v9 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, v15, v14, *v15, *&v15[16], v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, v15, v14, *v15, *&v15[16], v16}];
     free(v11);
     SSFileLog();
   }
 
 LABEL_10:
-  v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v5];
+  v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
 
   if (v12)
   {
-    v13 = [(SUScriptInterface *)self clientInterface];
-    SUOpenExternalURL(v12, v13);
+    clientInterface = [(SUScriptInterface *)self clientInterface];
+    SUOpenExternalURL(v12, clientInterface);
   }
 }
 
-- (void)reloadFooterSection:(id)a3 withURL:(id)a4
+- (void)reloadFooterSection:(id)section withURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    v6 = 0;
+    lCopy = 0;
   }
 
   objc_opt_class();
@@ -8473,7 +8473,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!lCopy)
   {
     v7 = 0;
     goto LABEL_9;
@@ -8487,9 +8487,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v6];
+  v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
 LABEL_9:
-  v11 = v5;
+  v11 = sectionCopy;
   v10 = v7;
   WebThreadRunOnMainThread();
 
@@ -8503,13 +8503,13 @@ void __63__SUScriptInterface_SUNavigation__reloadFooterSection_withURL___block_i
   [v2 reloadSectionWithIdentifier:*(a1 + 40) URL:*(a1 + 48)];
 }
 
-- (void)selectSectionWithIdentifier:(id)a3
+- (void)selectSectionWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = identifierCopy;
     WebThreadRunOnMainThread();
   }
 }
@@ -8541,20 +8541,20 @@ void __63__SUScriptInterface_SUNavigation__selectSectionWithIdentifier___block_i
   v8 = 3221225472;
   v9 = __49__SUScriptInterface_SUNavigation__viewController__block_invoke;
   v10 = &unk_1E81647C8;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __49__SUScriptInterface_SUNavigation__viewController__block_invoke, &unk_1E81647C8, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __49__SUScriptInterface_SUNavigation__viewController__block_invoke, &unk_1E81647C8, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
 
   return v5;
@@ -8572,20 +8572,20 @@ void __49__SUScriptInterface_SUNavigation__viewController__block_invoke(uint64_t
 - (void)dismissSheet
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -8605,33 +8605,33 @@ void __49__SUScriptInterface_SUNavigation__viewController__block_invoke(uint64_t
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v11, v10, *v11, *&v11[16]}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v11, v10, *v11, *&v11[16]}];
     free(v8);
     SSFileLog();
 LABEL_9:
   }
 
-  v9 = [(SUScriptInterface *)self viewController];
-  [v9 dismissModalViewControllerAnimated:1];
+  viewController = [(SUScriptInterface *)self viewController];
+  [viewController dismissModalViewControllerAnimated:1];
 }
 
 - (void)goBack
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -8651,37 +8651,37 @@ LABEL_9:
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v12, v11, *v12, *&v12[16]}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v12, v11, *v12, *&v12[16]}];
     free(v8);
     SSFileLog();
 LABEL_9:
   }
 
-  v9 = [(SUScriptInterface *)self viewController];
-  v10 = [v9 navigationController];
+  viewController = [(SUScriptInterface *)self viewController];
+  navigationController = [viewController navigationController];
 
-  [v10 popViewControllerAnimated:1];
+  [navigationController popViewControllerAnimated:1];
 }
 
-- (void)gotoStoreURL:(id)a3 ofType:(id)a4 withAuthentication:(BOOL)a5 forceAuthentication:(BOOL)a6
+- (void)gotoStoreURL:(id)l ofType:(id)type withAuthentication:(BOOL)authentication forceAuthentication:(BOOL)forceAuthentication
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E69D4938] sharedConfig];
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  lCopy = l;
+  typeCopy = type;
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 &= 2u;
   }
@@ -8696,14 +8696,14 @@ LABEL_9:
   v21 = 2082;
   v22 = "[SUScriptInterface(SUNavigation) gotoStoreURL:ofType:withAuthentication:forceAuthentication:]";
   v23 = 2114;
-  v24 = v7;
+  v24 = lCopy;
   v13 = v20;
   LODWORD(v16) = 32;
   v14 = _os_log_send_and_compose_impl();
 
   if (v14)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v19, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v19, v16}];
     free(v14);
     SSFileLog();
 LABEL_9:
@@ -8712,12 +8712,12 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!typeCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v15 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v7];
+      v15 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
       if (v15)
       {
-        v17 = v8;
+        v17 = typeCopy;
         v18 = v15;
         WebThreadRunOnMainThread();
       }
@@ -8773,26 +8773,26 @@ void __94__SUScriptInterface_SUNavigation__gotoStoreURL_ofType_withAuthenticatio
   }
 }
 
-- (void)pingURL:(id)a3
+- (void)pingURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l]) != 0)
   {
     v5 = v4;
-    v6 = [MEMORY[0x1E69D4938] sharedConfig];
-    v7 = [v6 shouldLog];
-    if ([v6 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_INFO))
     {
       v8 &= 2u;
     }
@@ -8816,8 +8816,8 @@ void __94__SUScriptInterface_SUNavigation__gotoStoreURL_ofType_withAuthenticatio
       }
     }
 
-    v12 = [MEMORY[0x1E69E4798] mainQueue];
-    [v12 addOperation:{objc_msgSend(MEMORY[0x1E69E47E0], "pingOperationWithUrl:", v5)}];
+    mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+    [mainQueue addOperation:{objc_msgSend(MEMORY[0x1E69E47E0], "pingOperationWithUrl:", v5)}];
   }
 
   else
@@ -8836,10 +8836,10 @@ void __94__SUScriptInterface_SUNavigation__gotoStoreURL_ofType_withAuthenticatio
   return v3;
 }
 
-- (void)handleProtocolPropertyListString:(id)a3
+- (void)handleProtocolPropertyListString:(id)string
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v6 = SUScriptPropertyListFromString(a3);
+  v6 = SUScriptPropertyListFromString(string);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count])
   {
@@ -8971,7 +8971,7 @@ void __75__SUScriptInterface_SUProtocolAdditions__handleProtocolPropertyListStri
   return v3;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"window"];
@@ -8982,13 +8982,13 @@ void __75__SUScriptInterface_SUProtocolAdditions__handleProtocolPropertyListStri
 - (SUScriptWindow)window
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(SUScriptInterface *)self scriptWindowContext];
-  if (!v3)
+  scriptWindowContext = [(SUScriptInterface *)self scriptWindowContext];
+  if (!scriptWindowContext)
   {
     return [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = scriptWindowContext;
   if (objc_opt_respondsToSelector())
   {
     [(SUScriptWindowContext *)v4 tag];
@@ -9097,7 +9097,7 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   return v6;
 }
 
-- (void)setCarrierBundlingController:(id)a3
+- (void)setCarrierBundlingController:(id)controller
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"carrierBundling"];
@@ -9105,10 +9105,10 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   [v3 throwException:v4];
 }
 
-- (id)makeNumberFormatterWithStyle:(id)a3
+- (id)makeNumberFormatterWithStyle:(id)style
 {
   v4 = objc_alloc_init(SUScriptNumberFormatter);
-  [(SUScriptNumberFormatter *)v4 setStyle:a3];
+  [(SUScriptNumberFormatter *)v4 setStyle:style];
 
   return v4;
 }
@@ -9129,14 +9129,14 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   return v3;
 }
 
-- (id)makeCanvasWithWidth:(id)a3 height:(id)a4
+- (id)makeCanvasWithWidth:(id)width height:(id)height
 {
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v6 = [SUScriptCanvasContext alloc];
-    [a3 floatValue];
+    [width floatValue];
     v8 = v7;
-    [a4 floatValue];
+    [height floatValue];
     v10 = [(SUScriptCanvasContext *)v6 initWithWidth:v8 height:v9];
     if (v10)
     {
@@ -9155,18 +9155,18 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   return [v12 null];
 }
 
-- (id)makeColorWithHue:(id)a3 saturation:(id)a4 brightness:(id)a5 alpha:(id)a6
+- (id)makeColorWithHue:(id)hue saturation:(id)saturation brightness:(id)brightness alpha:(id)alpha
 {
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v10 = objc_alloc_init(SUScriptColor);
-    [a3 floatValue];
+    [hue floatValue];
     v12 = v11;
-    [a4 floatValue];
+    [saturation floatValue];
     v14 = v13;
-    [a5 floatValue];
+    [brightness floatValue];
     v16 = v15;
-    [a6 floatValue];
+    [alpha floatValue];
     [(SUScriptColor *)v10 setHue:v12 saturation:v14 brightness:v16 alpha:v17];
     if (v10)
     {
@@ -9185,18 +9185,18 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   return [v19 null];
 }
 
-- (id)makeColorWithRed:(id)a3 green:(id)a4 blue:(id)a5 alpha:(id)a6
+- (id)makeColorWithRed:(id)red green:(id)green blue:(id)blue alpha:(id)alpha
 {
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v10 = objc_alloc_init(SUScriptColor);
-    [a3 floatValue];
+    [red floatValue];
     v12 = v11;
-    [a4 floatValue];
+    [green floatValue];
     v14 = v13;
-    [a5 floatValue];
+    [blue floatValue];
     v16 = v15;
-    [a6 floatValue];
+    [alpha floatValue];
     [(SUScriptColor *)v10 setRed:v12 green:v14 blue:v16 alpha:v17];
     if (v10)
     {
@@ -9215,14 +9215,14 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   return [v19 null];
 }
 
-- (id)makeColorWithWhite:(id)a3 alpha:(id)a4
+- (id)makeColorWithWhite:(id)white alpha:(id)alpha
 {
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v6 = objc_alloc_init(SUScriptColor);
-    [a3 floatValue];
+    [white floatValue];
     v8 = v7;
-    [a4 floatValue];
+    [alpha floatValue];
     [(SUScriptColor *)v6 setWhite:v8 alpha:v9];
     if (v6)
     {
@@ -9241,16 +9241,16 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   return [v11 null];
 }
 
-- (id)makeLinearGradientWithX0:(double)a3 y0:(double)a4 x1:(double)a5 y1:(double)a6
+- (id)makeLinearGradientWithX0:(double)x0 y0:(double)y0 x1:(double)x1 y1:(double)y1
 {
-  v6 = [[SUScriptGradient alloc] initLinearGradientWithX0:a3 y0:a4 x1:a5 y1:a6];
+  v6 = [[SUScriptGradient alloc] initLinearGradientWithX0:x0 y0:y0 x1:x1 y1:y1];
 
   return v6;
 }
 
-- (id)makeRadialGradientWithX0:(double)a3 y0:(double)a4 r0:(double)a5 x1:(double)a6 y1:(double)a7 r1:(double)a8
+- (id)makeRadialGradientWithX0:(double)x0 y0:(double)y0 r0:(double)r0 x1:(double)x1 y1:(double)y1 r1:(double)r1
 {
-  v8 = [[SUScriptGradient alloc] initRadialGraidentWithX0:a3 y0:a4 r0:a5 x1:a6 y1:a7 r1:a8];
+  v8 = [[SUScriptGradient alloc] initRadialGraidentWithX0:x0 y0:y0 r0:r0 x1:x1 y1:y1 r1:r1];
 
   return v8;
 }
@@ -9279,7 +9279,7 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   return v6;
 }
 
-- (void)setMediaLibrary:(id)a3
+- (void)setMediaLibrary:(id)library
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"mediaLibrary"];
@@ -9287,22 +9287,22 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   [v3 throwException:v4];
 }
 
-- (void)addExternalDownloads:(id)a3 options:(id)a4
+- (void)addExternalDownloads:(id)downloads options:(id)options
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    options = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!options || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v7 = [(SUScriptInterface *)self copyJavaScriptContext];
-    if (v7)
+    copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+    if (copyJavaScriptContext)
     {
-      v8 = v7;
-      [(SUPurchaseManager *)[(SUClientInterface *)[(SUScriptInterface *)self clientInterface] purchaseManager] addExternalDownloads:a3 withOptions:a4 inContext:v7];
+      v8 = copyJavaScriptContext;
+      [(SUPurchaseManager *)[(SUClientInterface *)[(SUScriptInterface *)self clientInterface] purchaseManager] addExternalDownloads:downloads withOptions:options inContext:copyJavaScriptContext];
 
       JSGlobalContextRelease(v8);
     }
@@ -9316,26 +9316,26 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   }
 }
 
-- (void)addExternalDownloadsFromManifestURL:(id)a3
+- (void)addExternalDownloadsFromManifestURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l]) != 0)
   {
     v5 = v4;
-    v6 = [MEMORY[0x1E69D4938] sharedConfig];
-    v7 = [v6 shouldLog];
-    if ([v6 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v8 &= 2u;
     }
@@ -9371,31 +9371,31 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   }
 }
 
-- (void)addPurchaseWithInfo:(id)a3 options:(id)a4
+- (void)addPurchaseWithInfo:(id)info options:(id)options
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    options = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!options || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v7 = [(SUScriptInterface *)self copyJavaScriptContext];
-    v8 = [(SUClientInterface *)[(SUScriptInterface *)self clientInterface] purchaseManager];
-    [(SUPurchaseManager *)v8 setAccountDSID:[(SSAuthenticationContext *)[(SUScriptInterface *)self authenticationContext] requiredUniqueIdentifier]];
-    v9 = [(SUScriptInterface *)self tidHeaders];
-    if ([(NSDictionary *)[(SUScriptDictionary *)v9 dictionary] count])
+    copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+    purchaseManager = [(SUClientInterface *)[(SUScriptInterface *)self clientInterface] purchaseManager];
+    [(SUPurchaseManager *)purchaseManager setAccountDSID:[(SSAuthenticationContext *)[(SUScriptInterface *)self authenticationContext] requiredUniqueIdentifier]];
+    tidHeaders = [(SUScriptInterface *)self tidHeaders];
+    if ([(NSDictionary *)[(SUScriptDictionary *)tidHeaders dictionary] count])
     {
-      [(SUPurchaseManager *)v8 setTidHeaders:[(SUScriptDictionary *)v9 dictionary]];
+      [(SUPurchaseManager *)purchaseManager setTidHeaders:[(SUScriptDictionary *)tidHeaders dictionary]];
     }
 
-    [(SUPurchaseManager *)v8 purchaseScriptObject:a3 withOptions:a4 inContext:v7];
-    if (v7)
+    [(SUPurchaseManager *)purchaseManager purchaseScriptObject:info withOptions:options inContext:copyJavaScriptContext];
+    if (copyJavaScriptContext)
     {
 
-      JSGlobalContextRelease(v7);
+      JSGlobalContextRelease(copyJavaScriptContext);
     }
   }
 
@@ -9407,13 +9407,13 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
   }
 }
 
-- (void)approveInPerson:(id)a3 completionFunction:(id)a4
+- (void)approveInPerson:(id)person completionFunction:(id)function
 {
   v18[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    person = 0;
   }
 
   objc_opt_class();
@@ -9427,14 +9427,14 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v7 = 0;
-    if (a4 && (isKindOfClass & 1) == 0)
+    if (function && (isKindOfClass & 1) == 0)
     {
-      v7 = [[SUScriptFunction alloc] initWithScriptObject:a4];
+      v7 = [[SUScriptFunction alloc] initWithScriptObject:function];
     }
   }
 
   [(SUScriptFunction *)v7 setThisObject:self];
-  if (a3)
+  if (person)
   {
     v9 = v7;
     v10 = ISWeakLinkedClassForString();
@@ -9443,8 +9443,8 @@ uint64_t __52__SUScriptInterface_SUScriptWindowAdditions__window__block_invoke(u
     v15[2] = __77__SUScriptInterface_SUPurchaseAdditions__approveInPerson_completionFunction___block_invoke;
     v15[3] = &unk_1E8165FD8;
     v15[4] = v7;
-    v15[5] = a3;
-    [v10 localApproveRequestWithItemIdentifier:a3 completion:v15];
+    v15[5] = person;
+    [v10 localApproveRequestWithItemIdentifier:person completion:v15];
   }
 
   else
@@ -9498,32 +9498,32 @@ void __77__SUScriptInterface_SUPurchaseAdditions__approveInPerson_completionFunc
   }
 }
 
-- (id)makeReviewWithAdamID:(id)a3
+- (id)makeReviewWithAdamID:(id)d
 {
   v3 = objc_alloc_init(SUScriptReview);
 
   return v3;
 }
 
-- (id)makeComposeReviewViewControllerWithReview:(id)a3
+- (id)makeComposeReviewViewControllerWithReview:(id)review
 {
-  v4 = [[SUScriptComposeReviewViewController alloc] initWithScriptReview:a3 clientInterface:[(SUScriptInterface *)self clientInterface]];
+  v4 = [[SUScriptComposeReviewViewController alloc] initWithScriptReview:review clientInterface:[(SUScriptInterface *)self clientInterface]];
   [(SUScriptObject *)self checkInScriptObject:v4];
 
   return v4;
 }
 
-- (void)composeReviewWithURL:(id)a3 itemIdentifier:(id)a4 type:(id)a5
+- (void)composeReviewWithURL:(id)l itemIdentifier:(id)identifier type:(id)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    l = 0;
   }
 
   v6 = objc_alloc_init(SUScriptReview);
-  [(SUScriptReview *)v6 setInfoURL:a3];
-  if (a3)
+  [(SUScriptReview *)v6 setInfoURL:l];
+  if (l)
   {
     WebThreadRunOnMainThread();
   }
@@ -9609,20 +9609,20 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   return v3;
 }
 
-- (id)makeURLRequestWithURLs:(id)a3 timeoutInterval:(id)a4
+- (id)makeURLRequestWithURLs:(id)ls timeoutInterval:(id)interval
 {
   v6 = objc_alloc_init(SUScriptURLRequest);
-  [(SUScriptURLRequest *)v6 setURLs:a3];
+  [(SUScriptURLRequest *)v6 setURLs:ls];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (a4)
+    if (interval)
     {
       if ((isKindOfClass & 1) == 0)
       {
-        [(SUScriptURLRequest *)v6 setTimeoutInterval:a4];
+        [(SUScriptURLRequest *)v6 setTimeoutInterval:interval];
       }
     }
   }
@@ -9630,14 +9630,14 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   return v6;
 }
 
-- (id)makeReportAProblemViewControllerWithAdamID:(id)a3
+- (id)makeReportAProblemViewControllerWithAdamID:(id)d
 {
   v4 = SSGetUnsignedLongLongFromValue();
   if (v4)
   {
-    v5 = [(SUScriptInterface *)self clientInterface];
+    clientInterface = [(SUScriptInterface *)self clientInterface];
     v6 = [SUScriptReportAProblemViewController alloc];
-    v4 = -[SUScriptReportAProblemViewController initWithAdamID:clientInterface:](v6, "initWithAdamID:clientInterface:", [MEMORY[0x1E696AD98] numberWithItemIdentifier:v4], v5);
+    v4 = -[SUScriptReportAProblemViewController initWithAdamID:clientInterface:](v6, "initWithAdamID:clientInterface:", [MEMORY[0x1E696AD98] numberWithItemIdentifier:v4], clientInterface);
     [(SUScriptObject *)self checkInScriptObject:v4];
   }
 
@@ -9656,7 +9656,7 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   return v2;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"device"];
@@ -9664,16 +9664,16 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   [v3 throwException:v4];
 }
 
-- (id)makeAccountPageWithURLs:(id)a3
+- (id)makeAccountPageWithURLs:(id)ls
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    ls = 0;
   }
 
   v8 = 0;
-  if ([(SUScriptStorePageViewController *)SUScriptAccountPageViewController copyURLStrings:&v8 forValue:a3])
+  if ([(SUScriptStorePageViewController *)SUScriptAccountPageViewController copyURLStrings:&v8 forValue:ls])
   {
     v5 = [SUScriptAccountPageViewController alloc];
     v6 = [(SUScriptStorePageViewController *)v5 initWithURLStrings:v8];
@@ -9713,9 +9713,9 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   return v3;
 }
 
-- (id)makeScriptActionWithType:(id)a3
+- (id)makeScriptActionWithType:(id)type
 {
-  v3 = [[SUScriptAction alloc] initWithActionType:a3];
+  v3 = [[SUScriptAction alloc] initWithActionType:type];
 
   return v3;
 }
@@ -9741,19 +9741,19 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   return result;
 }
 
-- (id)makeMediaPlayerItemWithProperties:(id)a3
+- (id)makeMediaPlayerItemWithProperties:(id)properties
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    properties = 0;
   }
 
-  v5 = [(SUScriptInterface *)self copyJavaScriptContext];
-  if (v5)
+  copyJavaScriptContext = [(SUScriptInterface *)self copyJavaScriptContext];
+  if (copyJavaScriptContext)
   {
-    v6 = v5;
-    v7 = [a3 copyArrayOrDictionaryWithContext:v5];
+    v6 = copyJavaScriptContext;
+    v7 = [properties copyArrayOrDictionaryWithContext:copyJavaScriptContext];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
@@ -9776,12 +9776,12 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   return v8;
 }
 
-- (id)makeMediaPlayerViewControllerWithMediaPlayerItem:(id)a3
+- (id)makeMediaPlayerViewControllerWithMediaPlayerItem:(id)item
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptMediaPlayerViewController alloc] initWithMediaPlayerItem:a3];
+    v5 = [[SUScriptMediaPlayerViewController alloc] initWithMediaPlayerItem:item];
     [(SUScriptObject *)self checkInScriptObject:v5];
     [(UIViewController *)[(SUScriptViewController *)v5 nativeViewController] setClientInterface:[(SUScriptObject *)v5 clientInterface]];
   }
@@ -9795,46 +9795,46 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
   return v5;
 }
 
-- (void)showMediaPlayerWithURLString:(id)a3 orientation:(id)a4 title:(id)a5 subtitle:(id)a6 bookmarkID:(id)a7 duration:(id)a8 type:(id)a9 imageURL:(id)a10
+- (void)showMediaPlayerWithURLString:(id)string orientation:(id)orientation title:(id)title subtitle:(id)subtitle bookmarkID:(id)d duration:(id)duration type:(id)type imageURL:(id)self0
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+    v16 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:string];
     if (v16)
     {
       v17 = v16;
       v18 = objc_alloc_init(SUMediaPlayerItem);
       [(SUMediaPlayerItem *)v18 setURL:v17];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [a7 length])
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [d length])
       {
-        [(SUMediaPlayerItem *)v18 setBookmarkIdentifier:a7];
+        [(SUMediaPlayerItem *)v18 setBookmarkIdentifier:d];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [a8 doubleValue];
+        [duration doubleValue];
         [(SUMediaPlayerItem *)v18 setPlayableDuration:v19 / 1000.0];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a10];
+        v20 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l];
         [(SUMediaPlayerItem *)v18 setBackgroundImageURL:v20];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(SUMediaPlayerItem *)v18 setSubtitle:a6];
+        [(SUMediaPlayerItem *)v18 setSubtitle:subtitle];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(SUMediaPlayerItem *)v18 setTitle:a5];
+        [(SUMediaPlayerItem *)v18 setTitle:title];
       }
 
       objc_opt_class();
@@ -9844,7 +9844,7 @@ uint64_t __108__SUScriptInterface_SUScriptComposeReviewViewControllerAdditions__
       }
 
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ([a4 isEqualToString:@"landscape"])
+      if (objc_opt_isKindOfClass() & 1) != 0 && ([orientation isEqualToString:@"landscape"])
       {
         v21 = 3;
       }
@@ -9931,7 +9931,7 @@ void __149__SUScriptInterface_SUMediaPlayerViewControllerAdditions__showMediaPla
   return v6;
 }
 
-- (void)setMetricsController:(id)a3
+- (void)setMetricsController:(id)controller
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"metricsController"];
@@ -9941,14 +9941,14 @@ void __149__SUScriptInterface_SUMediaPlayerViewControllerAdditions__showMediaPla
 
 - (id)activeAudioPlayers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   WebThreadRunOnMainThread();
-  if ([v3 count])
+  if ([array count])
   {
-    [(SUScriptObject *)self checkInScriptObjects:v3];
+    [(SUScriptObject *)self checkInScriptObjects:array];
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __60__SUScriptInterface_SUScriptAudioPlayer__activeAudioPlayers__block_invoke(uint64_t a1)
@@ -9991,16 +9991,16 @@ uint64_t __60__SUScriptInterface_SUScriptAudioPlayer__activeAudioPlayers__block_
   return result;
 }
 
-- (id)getAudioPlayerForURL:(id)a3 keyURL:(id)a4 certificateURL:(id)a5
+- (id)getAudioPlayerForURL:(id)l keyURL:(id)rL certificateURL:(id)uRL
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+    v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a4];
+      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:rL];
     }
 
     else
@@ -10011,7 +10011,7 @@ uint64_t __60__SUScriptInterface_SUScriptAudioPlayer__activeAudioPlayers__block_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a5];
+      v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:uRL];
     }
 
     else
@@ -10032,19 +10032,19 @@ uint64_t __60__SUScriptInterface_SUScriptAudioPlayer__activeAudioPlayers__block_
   return v11;
 }
 
-- (id)makeActivityViewControllerWithProviders:(id)a3 activities:(id)a4
+- (id)makeActivityViewControllerWithProviders:(id)providers activities:(id)activities
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    activities = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!activities || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v7 = [a4 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
-    v8 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    v7 = [activities copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    v8 = [providers copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
     v9 = [[SUScriptActivityViewController alloc] initWithScriptItemProviders:v8 applicationActivities:v7];
     [(SUScriptObject *)self checkInScriptObject:v9];
   }
@@ -10058,13 +10058,13 @@ uint64_t __60__SUScriptInterface_SUScriptAudioPlayer__activeAudioPlayers__block_
   return v9;
 }
 
-- (id)makeFacebookRequestWithURL:(id)a3 requestMethod:(id)a4
+- (id)makeFacebookRequestWithURL:(id)l requestMethod:(id)method
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
-    v8 = [[SUScriptFacebookRequest alloc] initWithURL:v7 requestMethod:a4];
+    v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l];
+    v8 = [[SUScriptFacebookRequest alloc] initWithURL:v7 requestMethod:method];
     [(SUScriptObject *)self checkInScriptObject:v8];
   }
 
@@ -10093,12 +10093,12 @@ uint64_t __60__SUScriptInterface_SUScriptAudioPlayer__activeAudioPlayers__block_
   return v3;
 }
 
-- (id)makeActivityItemProviderWithMIMEType:(id)a3
+- (id)makeActivityItemProviderWithMIMEType:(id)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptActivityItemProvider alloc] initWithMIMEType:a3];
+    v5 = [[SUScriptActivityItemProvider alloc] initWithMIMEType:type];
     [(SUScriptObject *)self checkInScriptObject:v5];
   }
 
@@ -10119,22 +10119,22 @@ uint64_t __60__SUScriptInterface_SUScriptAudioPlayer__activeAudioPlayers__block_
   return v3;
 }
 
-- (id)makeFacebookSessionWithAccount:(id)a3
+- (id)makeFacebookSessionWithAccount:(id)account
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    accountCopy = 0;
 LABEL_3:
-    v6 = [[SUScriptFacebookSession alloc] initWithAppleAccount:v5];
+    v6 = [[SUScriptFacebookSession alloc] initWithAppleAccount:accountCopy];
     [(SUScriptObject *)self checkInScriptObject:v6];
     goto LABEL_4;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  accountCopy = 0;
+  if (!account)
   {
     goto LABEL_3;
   }
@@ -10145,7 +10145,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  accountCopy = account;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -10208,8 +10208,8 @@ void __83__SUScriptInterface_SUScriptFairPlayContextAdditions__accountCreationSe
 
 - (id)makeAMSViewController
 {
-  v3 = [(SUScriptInterface *)self primaryAccount];
-  v4 = [[SUScriptAMSViewController alloc] initWithPrimaryAccount:v3];
+  primaryAccount = [(SUScriptInterface *)self primaryAccount];
+  v4 = [[SUScriptAMSViewController alloc] initWithPrimaryAccount:primaryAccount];
   [(SUScriptObject *)self checkInScriptObject:v4];
 
   return v4;
@@ -10223,7 +10223,7 @@ void __83__SUScriptInterface_SUScriptFairPlayContextAdditions__accountCreationSe
   return v3;
 }
 
-- (id)makeDonationViewControllerWithCharityIdentifier:(id)a3
+- (id)makeDonationViewControllerWithCharityIdentifier:(id)identifier
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -10231,7 +10231,7 @@ void __83__SUScriptInterface_SUScriptFairPlayContextAdditions__accountCreationSe
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
   }
 
-  v5 = [[SUScriptDonationViewController alloc] initWithCharityIdentifier:a3];
+  v5 = [[SUScriptDonationViewController alloc] initWithCharityIdentifier:identifier];
   [(SUScriptObject *)self checkInScriptObject:v5];
 
   return v5;

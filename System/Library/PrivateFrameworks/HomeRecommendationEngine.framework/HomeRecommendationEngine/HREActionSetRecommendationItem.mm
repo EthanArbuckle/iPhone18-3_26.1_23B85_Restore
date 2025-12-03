@@ -1,22 +1,22 @@
 @interface HREActionSetRecommendationItem
 - (HREActionSetRecommendation)recommendation;
 - (HREActionSetRecommendationItem)init;
-- (HREActionSetRecommendationItem)initWithRecommendationItem:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HREActionSetRecommendationItem)initWithRecommendationItem:(id)item;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HREActionSetRecommendationItem
 
-- (HREActionSetRecommendationItem)initWithRecommendationItem:(id)a3
+- (HREActionSetRecommendationItem)initWithRecommendationItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = HREActionSetRecommendationItem;
   v6 = [(HREActionSetRecommendationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recommendationItem, a3);
+    objc_storeStrong(&v6->_recommendationItem, item);
   }
 
   return v7;
@@ -24,9 +24,9 @@
 
 - (HREActionSetRecommendationItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithRecommendationItem_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HREActionSetRecommendationItem.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HREActionSetRecommendationItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HREActionSetRecommendationItem.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HREActionSetRecommendationItem init]", v5}];
 
   return 0;
 }
@@ -34,11 +34,11 @@
 - (HREActionSetRecommendation)recommendation
 {
   objc_opt_class();
-  v3 = [(HREActionSetRecommendationItem *)self recommendationItem];
-  v4 = [v3 recommendation];
+  recommendationItem = [(HREActionSetRecommendationItem *)self recommendationItem];
+  recommendation = [recommendationItem recommendation];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = recommendation;
   }
 
   else
@@ -51,18 +51,18 @@
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HREActionSetRecommendationItem *)self recommendationItem];
-  v6 = [v5 updateWithOptions:v4];
+  optionsCopy = options;
+  recommendationItem = [(HREActionSetRecommendationItem *)self recommendationItem];
+  v6 = [recommendationItem updateWithOptions:optionsCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__HREActionSetRecommendationItem__subclass_updateWithOptions___block_invoke;
   v10[3] = &unk_279776770;
   v10[4] = self;
-  v11 = v4;
-  v7 = v4;
+  v11 = optionsCopy;
+  v7 = optionsCopy;
   v8 = [v6 flatMap:v10];
 
   return v8;

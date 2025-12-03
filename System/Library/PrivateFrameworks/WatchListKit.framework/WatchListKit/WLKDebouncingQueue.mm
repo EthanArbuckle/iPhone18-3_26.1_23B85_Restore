@@ -1,6 +1,6 @@
 @interface WLKDebouncingQueue
 - (WLKDebouncingQueue)init;
-- (void)addOperationWithBlock:(id)a3;
+- (void)addOperationWithBlock:(id)block;
 @end
 
 @implementation WLKDebouncingQueue
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (void)addOperationWithBlock:(id)a3
+- (void)addOperationWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [WLKDebouncingQueue addOperationWithBlock:];
   }
 
-  v5 = v4;
-  v6 = [(WLKDebouncingQueue *)self queue];
-  [v6 cancelAllOperations];
+  v5 = blockCopy;
+  queue = [(WLKDebouncingQueue *)self queue];
+  [queue cancelAllOperations];
 
   v7 = objc_alloc_init(MEMORY[0x277CCA8C8]);
   objc_initWeak(&location, v7);
@@ -52,8 +52,8 @@
   v8 = v5;
   v11 = v8;
   [v7 addExecutionBlock:v10];
-  v9 = [(WLKDebouncingQueue *)self queue];
-  [v9 addOperation:v7];
+  queue2 = [(WLKDebouncingQueue *)self queue];
+  [queue2 addOperation:v7];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v12);

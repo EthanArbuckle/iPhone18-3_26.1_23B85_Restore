@@ -1,17 +1,17 @@
 @interface FPSearchQueryEnumerator
-- (FPSearchQueryEnumerator)initWithSearchQuery:(id)a3 mountPoint:(id)a4;
+- (FPSearchQueryEnumerator)initWithSearchQuery:(id)query mountPoint:(id)point;
 - (id)_createSearchQuery;
-- (void)_gatherItemsWithCompletionBlock:(id)a3;
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
+- (void)_gatherItemsWithCompletionBlock:(id)block;
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page;
 - (void)invalidate;
 @end
 
 @implementation FPSearchQueryEnumerator
 
-- (FPSearchQueryEnumerator)initWithSearchQuery:(id)a3 mountPoint:(id)a4
+- (FPSearchQueryEnumerator)initWithSearchQuery:(id)query mountPoint:(id)point
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  pointCopy = point;
   v14.receiver = self;
   v14.super_class = FPSearchQueryEnumerator;
   v9 = [(FPSearchQueryEnumerator *)&v14 init];
@@ -20,11 +20,11 @@
     v10 = fp_current_or_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(FPSearchQueryEnumerator *)v9 initWithSearchQuery:v8 mountPoint:v10];
+      [(FPSearchQueryEnumerator *)v9 initWithSearchQuery:pointCopy mountPoint:v10];
     }
 
-    objc_storeStrong(&v9->_fileProviderSearchQuery, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_fileProviderSearchQuery, query);
+    v11 = [pointCopy copy];
     mountPoint = v9->_mountPoint;
     v9->_mountPoint = v11;
   }
@@ -32,9 +32,9 @@
   return v9;
 }
 
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -45,8 +45,8 @@
   v8[1] = 3221225472;
   v8[2] = __68__FPSearchQueryEnumerator_enumerateItemsForObserver_startingAtPage___block_invoke;
   v8[3] = &unk_1E793EE90;
-  v9 = v5;
-  v7 = v5;
+  v9 = observerCopy;
+  v7 = observerCopy;
   [(FPSearchQueryEnumerator *)self _gatherItemsWithCompletionBlock:v8];
 }
 
@@ -98,10 +98,10 @@ void __68__FPSearchQueryEnumerator_enumerateItemsForObserver_startingAtPage___bl
   }
 }
 
-- (void)_gatherItemsWithCompletionBlock:(id)a3
+- (void)_gatherItemsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FPSearchQueryEnumerator *)self _createSearchQuery];
+  blockCopy = block;
+  _createSearchQuery = [(FPSearchQueryEnumerator *)self _createSearchQuery];
   v6 = objc_opt_new();
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x1E69E9820];
@@ -110,21 +110,21 @@ void __68__FPSearchQueryEnumerator_enumerateItemsForObserver_startingAtPage___bl
   v16[3] = &unk_1E793EEB8;
   v7 = v6;
   v17 = v7;
-  [(CSSearchQuery *)v5 setFoundItemsHandler:v16];
+  [(CSSearchQuery *)_createSearchQuery setFoundItemsHandler:v16];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__FPSearchQueryEnumerator__gatherItemsWithCompletionBlock___block_invoke_2;
   v12[3] = &unk_1E793EEE0;
   objc_copyWeak(&v15, &location);
-  v8 = v4;
+  v8 = blockCopy;
   v14 = v8;
   v9 = v7;
   v13 = v9;
-  [(CSSearchQuery *)v5 setCompletionHandler:v12];
-  [(CSSearchQuery *)v5 start];
+  [(CSSearchQuery *)_createSearchQuery setCompletionHandler:v12];
+  [(CSSearchQuery *)_createSearchQuery start];
   searchQuery = self->_searchQuery;
-  self->_searchQuery = v5;
-  v11 = v5;
+  self->_searchQuery = _createSearchQuery;
+  v11 = _createSearchQuery;
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -156,8 +156,8 @@ void __59__FPSearchQueryEnumerator__gatherItemsWithCompletionBlock___block_invok
 - (id)_createSearchQuery
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v37 = 0;
   v38 = &v37;
@@ -189,30 +189,30 @@ void __59__FPSearchQueryEnumerator__gatherItemsWithCompletionBlock___block_invok
     [v7 setMountPoints:v10];
   }
 
-  v42 = v4;
+  v42 = bundleIdentifier;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
   v12 = FPFileProviderOriginatedItemsQueryStringFragment(v11);
 
   [v9 addObject:v12];
-  v13 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery filename];
-  LOBYTE(v11) = v13 == 0;
+  filename = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery filename];
+  LOBYTE(v11) = filename == 0;
 
   if ((v11 & 1) == 0)
   {
-    v14 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery filename];
-    v15 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery keyboardLanguage];
-    v16 = FPSpotlightQueryStringForFilename(v14, v15);
+    filename2 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery filename];
+    keyboardLanguage = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery keyboardLanguage];
+    v16 = FPSpotlightQueryStringForFilename(filename2, keyboardLanguage);
 
     [v9 addObject:v16];
   }
 
-  v17 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery allowedContentTypes];
-  v18 = [v17 allObjects];
-  v19 = FPContentTypeQueryStringForFileTypes(v18, MEMORY[0x1E695E0F0]);
+  allowedContentTypes = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery allowedContentTypes];
+  allObjects = [allowedContentTypes allObjects];
+  v19 = FPContentTypeQueryStringForFileTypes(allObjects, MEMORY[0x1E695E0F0]);
 
   [v9 addObject:v19];
-  v20 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery csQueryScopes];
-  [v7 setScopes:v20];
+  csQueryScopes = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery csQueryScopes];
+  [v7 setScopes:csQueryScopes];
 
   if ([(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery trashedItemsMembership])
   {
@@ -220,13 +220,13 @@ void __59__FPSearchQueryEnumerator__gatherItemsWithCompletionBlock___block_invok
     [v9 addObject:v21];
   }
 
-  v22 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery scopeFragment];
-  v23 = v22 == 0;
+  scopeFragment = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery scopeFragment];
+  v23 = scopeFragment == 0;
 
   if (!v23)
   {
-    v24 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery scopeFragment];
-    [v9 addObject:v24];
+    scopeFragment2 = [(NSFileProviderSearchQuery *)self->_fileProviderSearchQuery scopeFragment];
+    [v9 addObject:scopeFragment2];
   }
 
   v25 = [v9 componentsJoinedByString:@" && "];

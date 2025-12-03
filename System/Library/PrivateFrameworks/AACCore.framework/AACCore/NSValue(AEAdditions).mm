@@ -8,10 +8,10 @@
 - (id)ae_dataRepresentation
 {
   sizep = 0;
-  NSGetSizeAndAlignment([a1 objCType], &sizep, 0);
+  NSGetSizeAndAlignment([self objCType], &sizep, 0);
   v2 = sizep;
   v3 = malloc_type_malloc(sizep, 0xE93EACCAuLL);
-  [a1 getValue:v3];
+  [self getValue:v3];
   v4 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v3 length:v2 freeWhenDone:1];
 
   return v4;

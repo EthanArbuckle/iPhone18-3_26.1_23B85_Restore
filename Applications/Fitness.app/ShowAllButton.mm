@@ -1,7 +1,7 @@
 @interface ShowAllButton
 - (CGSize)intrinsicContentSize;
-- (_TtC10FitnessApp13ShowAllButton)initWithCoder:(id)a3;
-- (_TtC10FitnessApp13ShowAllButton)initWithFrame:(CGRect)a3;
+- (_TtC10FitnessApp13ShowAllButton)initWithCoder:(id)coder;
+- (_TtC10FitnessApp13ShowAllButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -9,12 +9,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(ShowAllButton *)v2 titleLabel];
-  if (v3)
+  selfCopy = self;
+  titleLabel = [(ShowAllButton *)selfCopy titleLabel];
+  if (titleLabel)
   {
-    v4 = v3;
-    [v3 intrinsicContentSize];
+    v4 = titleLabel;
+    [titleLabel intrinsicContentSize];
     v6 = v5;
     v8 = v7;
   }
@@ -39,15 +39,15 @@
   v9.super_class = type metadata accessor for ShowAllButton();
   v2 = v9.receiver;
   [(ShowAllButton *)&v9 layoutSubviews];
-  v3 = [v2 titleLabel];
-  if (v3)
+  titleLabel = [v2 titleLabel];
+  if (titleLabel)
   {
-    v4 = v3;
-    v5 = [v2 titleLabel];
-    if (v5)
+    v4 = titleLabel;
+    titleLabel2 = [v2 titleLabel];
+    if (titleLabel2)
     {
-      v6 = v5;
-      [v5 frame];
+      v6 = titleLabel2;
+      [titleLabel2 frame];
       v8 = v7;
     }
 
@@ -60,23 +60,23 @@
   }
 }
 
-- (_TtC10FitnessApp13ShowAllButton)initWithFrame:(CGRect)a3
+- (_TtC10FitnessApp13ShowAllButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ShowAllButton();
   return [(ShowAllButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC10FitnessApp13ShowAllButton)initWithCoder:(id)a3
+- (_TtC10FitnessApp13ShowAllButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ShowAllButton();
-  v4 = a3;
-  v5 = [(ShowAllButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ShowAllButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

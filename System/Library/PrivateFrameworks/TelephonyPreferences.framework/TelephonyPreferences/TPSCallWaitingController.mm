@@ -1,9 +1,9 @@
 @interface TPSCallWaitingController
 - (TPSCallWaitingController)init;
-- (TPSCallWaitingController)initWithSubscriptionContext:(id)a3;
+- (TPSCallWaitingController)initWithSubscriptionContext:(id)context;
 - (TPSCallWaitingControllerDelegate)delegate;
-- (void)requestController:(id)a3 didReceiveResponse:(id)a4;
-- (void)requestStateChange:(int64_t)a3;
+- (void)requestController:(id)controller didReceiveResponse:(id)response;
+- (void)requestStateChange:(int64_t)change;
 @end
 
 @implementation TPSCallWaitingController
@@ -15,38 +15,38 @@
   return 0;
 }
 
-- (TPSCallWaitingController)initWithSubscriptionContext:(id)a3
+- (TPSCallWaitingController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = TPSCallWaitingController;
   v6 = [(TPSCallWaitingController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
+    objc_storeStrong(&v6->_subscriptionContext, context);
     v7->_state = 0;
     v8 = objc_alloc_init(TPSCallWaitingRequestController);
     requestController = v7->_requestController;
     v7->_requestController = v8;
 
     [(TPSRequestController *)v7->_requestController addDelegate:v7 queue:MEMORY[0x277D85CD0]];
-    v10 = [[TPSCallWaitingRequest alloc] initWithSubscriptionContext:v5];
+    v10 = [[TPSCallWaitingRequest alloc] initWithSubscriptionContext:contextCopy];
     [(TPSRequestController *)v7->_requestController addRequest:v10];
   }
 
   return v7;
 }
 
-- (void)requestStateChange:(int64_t)a3
+- (void)requestStateChange:(int64_t)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  if ([(TPSCallWaitingController *)self state]!= a3)
+  if ([(TPSCallWaitingController *)self state]!= change)
   {
     [(TPSCallWaitingController *)self setState:0];
     v5 = [TPSSetCallWaitingRequest alloc];
-    v6 = [(TPSCallWaitingController *)self subscriptionContext];
-    v7 = [(TPSSetCallWaitingRequest *)v5 initWithSubscriptionContext:v6 enabled:a3 == 2];
+    subscriptionContext = [(TPSCallWaitingController *)self subscriptionContext];
+    v7 = [(TPSSetCallWaitingRequest *)v5 initWithSubscriptionContext:subscriptionContext enabled:change == 2];
 
     v8 = TPSLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -56,29 +56,29 @@
       _os_log_impl(&dword_21B8E9000, v8, OS_LOG_TYPE_DEFAULT, "Sending call waiting request %@.", &v11, 0xCu);
     }
 
-    v9 = [(TPSCallWaitingController *)self requestController];
-    [v9 addRequest:v7];
+    requestController = [(TPSCallWaitingController *)self requestController];
+    [requestController addRequest:v7];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestController:(id)a3 didReceiveResponse:(id)a4
+- (void)requestController:(id)controller didReceiveResponse:(id)response
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  responseCopy = response;
   v6 = TPSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *v14 = 138412546;
     *&v14[4] = objc_opt_class();
     *&v14[12] = 2112;
-    *&v14[14] = v5;
+    *&v14[14] = responseCopy;
     v7 = *&v14[4];
     _os_log_impl(&dword_21B8E9000, v6, OS_LOG_TYPE_DEFAULT, "%@ received response %@.", v14, 0x16u);
   }
 
-  if ([v5 enabled])
+  if ([responseCopy enabled])
   {
     v8 = 2;
   }
@@ -89,14 +89,14 @@
   }
 
   [(TPSCallWaitingController *)self setState:v8, *v14, *&v14[16], v15];
-  v9 = [(TPSCallWaitingController *)self delegate];
+  delegate = [(TPSCallWaitingController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(TPSCallWaitingController *)self delegate];
-    v12 = [v5 error];
-    [v11 callWaitingController:self didChangeState:v8 error:v12];
+    delegate2 = [(TPSCallWaitingController *)self delegate];
+    error = [responseCopy error];
+    [delegate2 callWaitingController:self didChangeState:v8 error:error];
   }
 
   v13 = *MEMORY[0x277D85DE8];

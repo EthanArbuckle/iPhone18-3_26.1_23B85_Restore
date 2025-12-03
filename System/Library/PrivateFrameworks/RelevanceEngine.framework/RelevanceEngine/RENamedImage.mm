@@ -1,62 +1,62 @@
 @interface RENamedImage
-- (BOOL)isEqual:(id)a3;
-- (RENamedImage)initWithCoder:(id)a3;
-- (RENamedImage)initWithName:(id)a3 inBundle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RENamedImage)initWithCoder:(id)coder;
+- (RENamedImage)initWithName:(id)name inBundle:(id)bundle;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RENamedImage
 
-- (RENamedImage)initWithName:(id)a3 inBundle:(id)a4
+- (RENamedImage)initWithName:(id)name inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v12.receiver = self;
   v12.super_class = RENamedImage;
   v8 = [(RENamedImage *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_bundle, a4);
+    objc_storeStrong(&v8->_bundle, bundle);
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   name = self->_name;
   bundle = self->_bundle;
 
   return [v4 initWithName:name inBundle:bundle];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 name];
-    v7 = v6;
-    if (v6 == self->_name || [(NSString *)v6 isEqual:?])
+    v5 = equalCopy;
+    name = [v5 name];
+    v7 = name;
+    if (name == self->_name || [(NSString *)name isEqual:?])
     {
-      v8 = [v5 bundle];
-      v9 = v8;
-      if (v8 == self->_bundle)
+      bundle = [v5 bundle];
+      v9 = bundle;
+      if (bundle == self->_bundle)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [(NSBundle *)v8 isEqual:?];
+        v10 = [(NSBundle *)bundle isEqual:?];
       }
     }
 
@@ -74,11 +74,11 @@
   return v10;
 }
 
-- (RENamedImage)initWithCoder:(id)a3
+- (RENamedImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundle"];
 
   v7 = [MEMORY[0x277CCA8D8] bundleWithPath:v6];
   v8 = [(RENamedImage *)self initWithName:v5 inBundle:v7];
@@ -86,14 +86,14 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundle = self->_bundle;
-  v6 = a3;
-  v5 = [(NSBundle *)bundle bundlePath];
-  [v6 encodeObject:v5 forKey:@"bundle"];
+  coderCopy = coder;
+  bundlePath = [(NSBundle *)bundle bundlePath];
+  [coderCopy encodeObject:bundlePath forKey:@"bundle"];
 
-  [v6 encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
 }
 
 @end

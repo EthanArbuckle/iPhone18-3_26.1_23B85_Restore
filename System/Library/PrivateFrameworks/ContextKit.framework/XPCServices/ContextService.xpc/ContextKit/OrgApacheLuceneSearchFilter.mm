@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneSearchFilter
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader;
 @end
 
 @implementation OrgApacheLuceneSearchFilter
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   if ((atomic_load_explicit(OrgApacheLuceneSearchFilteredQuery__initialized, memory_order_acquire) & 1) == 0)
   {

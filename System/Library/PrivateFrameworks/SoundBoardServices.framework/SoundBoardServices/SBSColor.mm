@@ -1,20 +1,20 @@
 @interface SBSColor
-- (SBSColor)initWithCoder:(id)a3;
-- (SBSColor)initWithData:(id)a3;
-- (SBSColor)initWithRed:(float)a3 green:(float)a4 blue:(float)a5;
-- (void)encodeWithCoder:(id)a3;
+- (SBSColor)initWithCoder:(id)coder;
+- (SBSColor)initWithData:(id)data;
+- (SBSColor)initWithRed:(float)red green:(float)green blue:(float)blue;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSColor
 
-- (SBSColor)initWithCoder:(id)a3
+- (SBSColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"redComponent"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"redComponent"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"greenComponent"];
+  [coderCopy decodeFloatForKey:@"greenComponent"];
   v8 = v7;
-  [v4 decodeFloatForKey:@"blueComponent"];
+  [coderCopy decodeFloatForKey:@"blueComponent"];
   v10 = v9;
 
   v11 = [SBSColor alloc];
@@ -26,19 +26,19 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   redComponent = self->_redComponent;
-  v8 = a3;
+  coderCopy = coder;
   *&v5 = redComponent;
-  [v8 encodeFloat:@"redComponent" forKey:v5];
+  [coderCopy encodeFloat:@"redComponent" forKey:v5];
   *&v6 = self->_greenComponent;
-  [v8 encodeFloat:@"greenComponent" forKey:v6];
+  [coderCopy encodeFloat:@"greenComponent" forKey:v6];
   *&v7 = self->_blueComponent;
-  [v8 encodeFloat:@"blueComponent" forKey:v7];
+  [coderCopy encodeFloat:@"blueComponent" forKey:v7];
 }
 
-- (SBSColor)initWithRed:(float)a3 green:(float)a4 blue:(float)a5
+- (SBSColor)initWithRed:(float)red green:(float)green blue:(float)blue
 {
   v15.receiver = self;
   v15.super_class = SBSColor;
@@ -47,30 +47,30 @@
   {
     __asm { FMOV            V1.2S, #1.0 }
 
-    *&result->_redComponent = vbic_s8(vbsl_s8(vcgt_f32(__PAIR64__(LODWORD(a4), LODWORD(a3)), _D1), _D1, __PAIR64__(LODWORD(a4), LODWORD(a3))), vcltz_f32(__PAIR64__(LODWORD(a4), LODWORD(a3))));
-    v12 = 1.0;
-    if (a5 <= 1.0)
+    *&result->_redComponent = vbic_s8(vbsl_s8(vcgt_f32(__PAIR64__(LODWORD(green), LODWORD(red)), _D1), _D1, __PAIR64__(LODWORD(green), LODWORD(red))), vcltz_f32(__PAIR64__(LODWORD(green), LODWORD(red))));
+    blueCopy = 1.0;
+    if (blue <= 1.0)
     {
-      v12 = a5;
+      blueCopy = blue;
     }
 
-    if (a5 < 0.0)
+    if (blue < 0.0)
     {
-      v12 = 0.0;
+      blueCopy = 0.0;
     }
 
-    result->_blueComponent = v12;
+    result->_blueComponent = blueCopy;
   }
 
   return result;
 }
 
-- (SBSColor)initWithData:(id)a3
+- (SBSColor)initWithData:(id)data
 {
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
+  dataCopy = data;
   v9 = 0;
-  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v9];
+  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {

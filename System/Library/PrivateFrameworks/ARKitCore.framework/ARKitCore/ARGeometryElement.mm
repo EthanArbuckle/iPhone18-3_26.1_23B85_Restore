@@ -1,27 +1,27 @@
 @interface ARGeometryElement
-- (ARGeometryElement)initWithBuffer:(id)a3 count:(int64_t)a4 bytesPerIndex:(int64_t)a5 primitiveType:(int64_t)a6;
-- (ARGeometryElement)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARGeometryElement)initWithBuffer:(id)buffer count:(int64_t)count bytesPerIndex:(int64_t)index primitiveType:(int64_t)type;
+- (ARGeometryElement)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSInteger)indexCountPerPrimitive;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARGeometryElement
 
-- (ARGeometryElement)initWithBuffer:(id)a3 count:(int64_t)a4 bytesPerIndex:(int64_t)a5 primitiveType:(int64_t)a6
+- (ARGeometryElement)initWithBuffer:(id)buffer count:(int64_t)count bytesPerIndex:(int64_t)index primitiveType:(int64_t)type
 {
-  v11 = a3;
+  bufferCopy = buffer;
   v15.receiver = self;
   v15.super_class = ARGeometryElement;
   v12 = [(ARGeometryElement *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_buffer, a3);
-    v13->_count = a4;
-    v13->_bytesPerIndex = a5;
-    v13->_primitiveType = a6;
+    objc_storeStrong(&v12->_buffer, buffer);
+    v13->_count = count;
+    v13->_bytesPerIndex = index;
+    v13->_primitiveType = type;
   }
 
   return v13;
@@ -40,30 +40,30 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DEF0];
   buffer = self->_buffer;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 dataWithBytesNoCopy:-[MTLBuffer contents](buffer length:"contents") freeWhenDone:{self->_bytesPerIndex * self->_count * -[ARGeometryElement indexCountPerPrimitive](self, "indexCountPerPrimitive"), 0}];
-  [v6 encodeObject:v7 forKey:@"buffer"];
-  [v6 encodeInteger:self->_count forKey:@"count"];
-  [v6 encodeInteger:self->_bytesPerIndex forKey:@"bytesPerIndex"];
-  [v6 encodeInteger:self->_primitiveType forKey:@"primitiveType"];
+  [coderCopy encodeObject:v7 forKey:@"buffer"];
+  [coderCopy encodeInteger:self->_count forKey:@"count"];
+  [coderCopy encodeInteger:self->_bytesPerIndex forKey:@"bytesPerIndex"];
+  [coderCopy encodeInteger:self->_primitiveType forKey:@"primitiveType"];
 }
 
-- (ARGeometryElement)initWithCoder:(id)a3
+- (ARGeometryElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ARGeometryElement;
   v5 = [(ARGeometryElement *)&v11 init];
   if (v5)
   {
-    v5->_count = [v4 decodeIntegerForKey:@"count"];
-    v5->_bytesPerIndex = [v4 decodeIntegerForKey:@"bytesPerIndex"];
-    v5->_primitiveType = [v4 decodeIntegerForKey:@"primitiveType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buffer"];
+    v5->_count = [coderCopy decodeIntegerForKey:@"count"];
+    v5->_bytesPerIndex = [coderCopy decodeIntegerForKey:@"bytesPerIndex"];
+    v5->_primitiveType = [coderCopy decodeIntegerForKey:@"primitiveType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buffer"];
     v7 = MTLCreateSystemDefaultDevice();
     v8 = [v7 newBufferWithBytes:objc_msgSend(v6 length:"bytes") options:{v5->_bytesPerIndex * v5->_count * -[ARGeometryElement indexCountPerPrimitive](v5, "indexCountPerPrimitive"), 0}];
     buffer = v5->_buffer;
@@ -73,10 +73,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -86,18 +86,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:-[MTLBuffer contents](self->_buffer length:"contents") freeWhenDone:{self->_bytesPerIndex * self->_count * -[ARGeometryElement indexCountPerPrimitive](self, "indexCountPerPrimitive"), 0}];
       v7 = MEMORY[0x1E695DEF0];
-      v8 = [(ARGeometryElement *)v5 buffer];
-      v9 = [v7 dataWithBytesNoCopy:objc_msgSend(v8 length:"contents") freeWhenDone:{-[ARGeometryElement bytesPerIndex](v5, "bytesPerIndex") * -[ARGeometryElement count](v5, "count") * -[ARGeometryElement indexCountPerPrimitive](self, "indexCountPerPrimitive"), 0}];
+      buffer = [(ARGeometryElement *)v5 buffer];
+      v9 = [v7 dataWithBytesNoCopy:objc_msgSend(buffer length:"contents") freeWhenDone:{-[ARGeometryElement bytesPerIndex](v5, "bytesPerIndex") * -[ARGeometryElement count](v5, "count") * -[ARGeometryElement indexCountPerPrimitive](self, "indexCountPerPrimitive"), 0}];
 
       count = self->_count;
       if (count == [(ARGeometryElement *)v5 count]&& (bytesPerIndex = self->_bytesPerIndex, bytesPerIndex == [(ARGeometryElement *)v5 bytesPerIndex]))
       {
         buffer = self->_buffer;
-        v13 = [(ARGeometryElement *)v5 buffer];
-        if (buffer == v13 || [v6 isEqualToData:v9])
+        buffer2 = [(ARGeometryElement *)v5 buffer];
+        if (buffer == buffer2 || [v6 isEqualToData:v9])
         {
           primitiveType = self->_primitiveType;
           v15 = primitiveType == [(ARGeometryElement *)v5 primitiveType];

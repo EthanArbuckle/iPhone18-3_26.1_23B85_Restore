@@ -1,11 +1,11 @@
 @interface MRDNowPlayingDataSource
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedDataSource;
 - (MRDNowPlayingDataSource)init;
-- (id)observersForSelector:(SEL)a3;
-- (void)addObserver:(id)a3;
-- (void)popNowPlayingAppStack:(BOOL)a3 forReason:(int64_t)a4;
-- (void)removeObserver:(id)a3;
+- (id)observersForSelector:(SEL)selector;
+- (void)addObserver:(id)observer;
+- (void)popNowPlayingAppStack:(BOOL)stack forReason:(int64_t)reason;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MRDNowPlayingDataSource
@@ -29,73 +29,73 @@
   return [(MRDNowPlayingDataSource *)&v3 init];
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(MRDNowPlayingDataSource *)MRDMediaServerNowPlayingDataSource allocWithZone:a3];
+    return [(MRDNowPlayingDataSource *)MRDMediaServerNowPlayingDataSource allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MRDNowPlayingDataSource;
-    return objc_msgSendSuper2(&v6, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v6, "allocWithZone:", zone);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  weakObservers = v4->_weakObservers;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  weakObservers = selfCopy->_weakObservers;
   if (!weakObservers)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
-    v7 = v4->_weakObservers;
-    v4->_weakObservers = v6;
+    v7 = selfCopy->_weakObservers;
+    selfCopy->_weakObservers = v6;
 
-    weakObservers = v4->_weakObservers;
+    weakObservers = selfCopy->_weakObservers;
   }
 
-  [(NSHashTable *)weakObservers addObject:v8];
-  objc_sync_exit(v4);
+  [(NSHashTable *)weakObservers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_weakObservers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_weakObservers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)observersForSelector:(SEL)a3
+- (id)observersForSelector:(SEL)selector
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSHashTable *)v4->_weakObservers allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSHashTable *)selfCopy->_weakObservers allObjects];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000815F4;
   v8[3] = &unk_1004B8C30;
-  v8[4] = a3;
-  v6 = [v5 msv_filter:v8];
+  v8[4] = selector;
+  v6 = [allObjects msv_filter:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)popNowPlayingAppStack:(BOOL)a3 forReason:(int64_t)a4
+- (void)popNowPlayingAppStack:(BOOL)stack forReason:(int64_t)reason
 {
-  v4 = a3;
-  LOBYTE(v7) = a3;
+  stackCopy = stack;
+  LOBYTE(v7) = stack;
   MRAnalyticsSendEvent();
-  if (v4)
+  if (stackCopy)
   {
     [(MRDNowPlayingDataSource *)self _popNowPlayingAppStack:_NSConcreteStackBlock];
   }

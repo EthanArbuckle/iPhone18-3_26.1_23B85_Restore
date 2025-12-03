@@ -2,106 +2,106 @@
 + (BOOL)_supportsPassingClosureReasons;
 + (id)sharedInstance;
 - (BOOL)_isMapsInstalled;
-- (BOOL)_serviceCanAttemptConnection:(id *)a3;
+- (BOOL)_serviceCanAttemptConnection:(id *)connection;
 - (BOOL)_supportsArchivingSharingState;
 - (BOOL)_supportsMonitoringBlockList;
 - (BOOL)canAddReceivers;
 - (BOOL)entitledToReceiveTrips;
 - (BOOL)entitledToShareTrip;
-- (BOOL)isSharingWithContact:(id)a3;
+- (BOOL)isSharingWithContact:(id)contact;
 - (MSPSharedTripService)init;
 - (MSPSharedTripSharingIdentity)sharingIdentity;
 - (NSArray)receivedTrips;
 - (NSArray)receivers;
-- (id)_addSubscriptionTokenForTripID:(id)a3;
-- (id)_insertOrUpdateTrip:(id)a3;
+- (id)_addSubscriptionTokenForTripID:(id)d;
+- (id)_insertOrUpdateTrip:(id)trip;
 - (id)_receivers;
 - (id)_remoteObjectProxy;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)_serviceNameForContact:(id)a3;
-- (id)_subscriptionTokensForTripID:(id)a3 createIfNeeded:(BOOL)a4;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)_serviceNameForContact:(id)contact;
+- (id)_subscriptionTokensForTripID:(id)d createIfNeeded:(BOOL)needed;
 - (id)archivedSharingState;
-- (id)contactsFromArchivedTripSharingState:(id)a3;
-- (id)serviceNameForContact:(id)a3;
-- (unint64_t)_capabilityTypeForContact:(id)a3 serviceName:(id *)a4 isActiveReceiver:(BOOL *)a5;
-- (unint64_t)capabilityTypeForContact:(id)a3 serviceName:(id *)a4 isActiveReceiver:(BOOL *)a5;
-- (void)_addTestTripsTo:(id)a3;
+- (id)contactsFromArchivedTripSharingState:(id)state;
+- (id)serviceNameForContact:(id)contact;
+- (unint64_t)_capabilityTypeForContact:(id)contact serviceName:(id *)name isActiveReceiver:(BOOL *)receiver;
+- (unint64_t)capabilityTypeForContact:(id)contact serviceName:(id *)name isActiveReceiver:(BOOL *)receiver;
+- (void)_addTestTripsTo:(id)to;
 - (void)_checkBlockList;
 - (void)_checkEnabledState;
 - (void)_checkin;
-- (void)_checkinWithCompletion:(id)a3;
+- (void)_checkinWithCompletion:(id)completion;
 - (void)_clearBlockedTripIdentifiers;
-- (void)_fetchActiveHandlesWithCompletion:(id)a3;
-- (void)_fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)a3;
-- (void)_fetchSharedTripsWithCompletion:(id)a3;
-- (void)_fetchSharingIdentityWithCompletion:(id)a3;
-- (void)_handleCheckinWithSharingIdentity:(id)a3 activeRecipients:(id)a4 serviceNamesByHandle:(id)a5 receivedTrips:(id)a6 permissions:(unint64_t)a7;
-- (void)_networkReachabilityChanged:(id)a3;
+- (void)_fetchActiveHandlesWithCompletion:(id)completion;
+- (void)_fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)completion;
+- (void)_fetchSharedTripsWithCompletion:(id)completion;
+- (void)_fetchSharingIdentityWithCompletion:(id)completion;
+- (void)_handleCheckinWithSharingIdentity:(id)identity activeRecipients:(id)recipients serviceNamesByHandle:(id)handle receivedTrips:(id)trips permissions:(unint64_t)permissions;
+- (void)_networkReachabilityChanged:(id)changed;
 - (void)_openConnectionIfNeeded;
-- (void)_performBlockAfterInitialConnection:(id)a3;
-- (void)_performBlockAfterInitialSync:(id)a3;
-- (void)_performBlockWhenCheckinCompleted:(id)a3;
+- (void)_performBlockAfterInitialConnection:(id)connection;
+- (void)_performBlockAfterInitialSync:(id)sync;
+- (void)_performBlockWhenCheckinCompleted:(id)completed;
 - (void)_purgeExpiredBlockedTripIdentifiers;
-- (void)_purgeToken:(id)a3 forTripID:(id)a4;
-- (void)_reportUserConfirmationOfSharingIdentity:(id)a3 completion:(id)a4;
+- (void)_purgeToken:(id)token forTripID:(id)d;
+- (void)_reportUserConfirmationOfSharingIdentity:(id)identity completion:(id)completion;
 - (void)_resetCheckinIdentityAndPermissions;
 - (void)_scheduleCoalescedBlockListCheckIfNeeded;
 - (void)_startMonitoringSystemBlockListIfNeeded;
-- (void)_startSharingTripWithContacts:(id)a3 capabilityType:(unint64_t)a4 serviceName:(id)a5 completion:(id)a6;
-- (void)_startSharingTripWithMessagesGroup:(id)a3 completion:(id)a4;
-- (void)_startSharingWithContact:(id)a3 completion:(id)a4;
-- (void)_stopAllSharingWithReason:(unint64_t)a3 completion:(id)a4;
+- (void)_startSharingTripWithContacts:(id)contacts capabilityType:(unint64_t)type serviceName:(id)name completion:(id)completion;
+- (void)_startSharingTripWithMessagesGroup:(id)group completion:(id)completion;
+- (void)_startSharingWithContact:(id)contact completion:(id)completion;
+- (void)_stopAllSharingWithReason:(unint64_t)reason completion:(id)completion;
 - (void)_stopMonitoringSystemBlockList;
-- (void)_stopSharingTripWithContacts:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)_stopSharingTripWithMessagesGroup:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)_stopSharingTripWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)_stopSharingWithContact:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)_subscribeToSharedTripUpdatesWithIdentifier:(id)a3 completion:(id)a4;
-- (void)_subscriptionTokenDidInvalidate:(id)a3 forTripID:(id)a4;
+- (void)_stopSharingTripWithContacts:(id)contacts reason:(unint64_t)reason completion:(id)completion;
+- (void)_stopSharingTripWithMessagesGroup:(id)group reason:(unint64_t)reason completion:(id)completion;
+- (void)_stopSharingTripWithReason:(unint64_t)reason completion:(id)completion;
+- (void)_stopSharingWithContact:(id)contact reason:(unint64_t)reason completion:(id)completion;
+- (void)_subscribeToSharedTripUpdatesWithIdentifier:(id)identifier completion:(id)completion;
+- (void)_subscriptionTokenDidInvalidate:(id)invalidate forTripID:(id)d;
 - (void)_systemBlockListDidUpdate;
-- (void)_validateCurrentConfigurationWithCompletion:(id)a3;
-- (void)addReceivingObserver:(id)a3;
-- (void)addSendingObserver:(id)a3;
-- (void)blockSharedTrip:(id)a3;
-- (void)blockSharedTripWithIdentifier:(id)a3;
+- (void)_validateCurrentConfigurationWithCompletion:(id)completion;
+- (void)addReceivingObserver:(id)observer;
+- (void)addSendingObserver:(id)observer;
+- (void)blockSharedTrip:(id)trip;
+- (void)blockSharedTripWithIdentifier:(id)identifier;
 - (void)checkin;
-- (void)checkinWithCompletion:(id)a3;
+- (void)checkinWithCompletion:(id)completion;
 - (void)clearBlockedTripIdentifiers;
 - (void)dealloc;
-- (void)destinationDidUpdateForSharedTrip:(id)a3;
-- (void)destinationReachedDidUpdateForSharedTrip:(id)a3;
-- (void)etaDidUpdateForSharedTrip:(id)a3;
-- (void)fetchActiveHandlesWithCompletion:(id)a3;
-- (void)fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)a3;
-- (void)fetchSharedTripsWithCompletion:(id)a3;
-- (void)fetchSharingIdentityWithCompletion:(id)a3;
-- (void)performBlockAfterInitialConnection:(id)a3;
-- (void)performBlockAfterInitialSync:(id)a3;
+- (void)destinationDidUpdateForSharedTrip:(id)trip;
+- (void)destinationReachedDidUpdateForSharedTrip:(id)trip;
+- (void)etaDidUpdateForSharedTrip:(id)trip;
+- (void)fetchActiveHandlesWithCompletion:(id)completion;
+- (void)fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)completion;
+- (void)fetchSharedTripsWithCompletion:(id)completion;
+- (void)fetchSharingIdentityWithCompletion:(id)completion;
+- (void)performBlockAfterInitialConnection:(id)connection;
+- (void)performBlockAfterInitialSync:(id)sync;
 - (void)purgeExpiredBlockedTripIdentifiers;
-- (void)purgeToken:(id)a3 forTripID:(id)a4;
-- (void)removeReceivingObserver:(id)a3;
-- (void)removeSendingObserver:(id)a3;
-- (void)reportUserConfirmationOfSharingIdentity:(id)a3 completion:(id)a4;
-- (void)routeDidUpdateForSharedTrip:(id)a3;
-- (void)sharedTripContactController:(id)a3 didUpdateActiveContactsValues:(id)a4;
-- (void)sharedTripDidBecomeAvailable:(id)a3;
-- (void)sharedTripDidBecomeUnavailable:(id)a3;
-- (void)sharedTripDidClose:(id)a3;
-- (void)sharedTripDidStartSharingWithIdentifier:(id)a3;
-- (void)sharedTripDidUpdateRecipients:(id)a3 withServices:(id)a4;
-- (void)sharedTripInvalidatedWithError:(id)a3;
-- (void)sharingIdentityDidChange:(id)a3;
-- (void)startSharingTripWithContacts:(id)a3 capabilityType:(unint64_t)a4 serviceName:(id)a5 completion:(id)a6;
-- (void)startSharingTripWithMessagesGroup:(id)a3 completion:(id)a4;
-- (void)startSharingWithContact:(id)a3 completion:(id)a4;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopAllSharingWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)stopSharingTripWithContacts:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)stopSharingTripWithMessagesGroup:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)stopSharingTripWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)stopSharingWithContact:(id)a3 completion:(id)a4;
-- (void)stopSharingWithContact:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)subscribeToSharedTripUpdatesWithIdentifier:(id)a3 completion:(id)a4;
+- (void)purgeToken:(id)token forTripID:(id)d;
+- (void)removeReceivingObserver:(id)observer;
+- (void)removeSendingObserver:(id)observer;
+- (void)reportUserConfirmationOfSharingIdentity:(id)identity completion:(id)completion;
+- (void)routeDidUpdateForSharedTrip:(id)trip;
+- (void)sharedTripContactController:(id)controller didUpdateActiveContactsValues:(id)values;
+- (void)sharedTripDidBecomeAvailable:(id)available;
+- (void)sharedTripDidBecomeUnavailable:(id)unavailable;
+- (void)sharedTripDidClose:(id)close;
+- (void)sharedTripDidStartSharingWithIdentifier:(id)identifier;
+- (void)sharedTripDidUpdateRecipients:(id)recipients withServices:(id)services;
+- (void)sharedTripInvalidatedWithError:(id)error;
+- (void)sharingIdentityDidChange:(id)change;
+- (void)startSharingTripWithContacts:(id)contacts capabilityType:(unint64_t)type serviceName:(id)name completion:(id)completion;
+- (void)startSharingTripWithMessagesGroup:(id)group completion:(id)completion;
+- (void)startSharingWithContact:(id)contact completion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopAllSharingWithReason:(unint64_t)reason completion:(id)completion;
+- (void)stopSharingTripWithContacts:(id)contacts reason:(unint64_t)reason completion:(id)completion;
+- (void)stopSharingTripWithMessagesGroup:(id)group reason:(unint64_t)reason completion:(id)completion;
+- (void)stopSharingTripWithReason:(unint64_t)reason completion:(id)completion;
+- (void)stopSharingWithContact:(id)contact completion:(id)completion;
+- (void)stopSharingWithContact:(id)contact reason:(unint64_t)reason completion:(id)completion;
+- (void)subscribeToSharedTripUpdatesWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MSPSharedTripService
@@ -112,7 +112,7 @@
   block[1] = 3221225472;
   block[2] = __38__MSPSharedTripService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -185,11 +185,11 @@ uint64_t __38__MSPSharedTripService_sharedInstance__block_invoke(uint64_t a1)
     serverDisabledDefaultListener = v3->_serverDisabledDefaultListener;
     v3->_serverDisabledDefaultListener = v21;
 
-    v23 = [MEMORY[0x277D0EC00] sharedNetworkObserver];
-    v3->_networkReachable = [v23 isNetworkReachable];
+    mEMORY[0x277D0EC00] = [MEMORY[0x277D0EC00] sharedNetworkObserver];
+    v3->_networkReachable = [mEMORY[0x277D0EC00] isNetworkReachable];
 
-    v24 = [MEMORY[0x277D0EC00] sharedNetworkObserver];
-    [v24 addNetworkReachableObserver:v3 selector:sel__networkReachabilityChanged_];
+    mEMORY[0x277D0EC00]2 = [MEMORY[0x277D0EC00] sharedNetworkObserver];
+    [mEMORY[0x277D0EC00]2 addNetworkReachableObserver:v3 selector:sel__networkReachabilityChanged_];
 
     [(MSPSharedTripService *)v3 checkin];
     objc_destroyWeak(v26);
@@ -479,10 +479,10 @@ void __33__MSPSharedTripService_receivers__block_invoke(uint64_t a1)
 - (id)_receivers
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v3 = [(MSPSharedTripContactController *)self->_sharingContactController activeContactsValues];
-  v4 = [v3 array];
+  activeContactsValues = [(MSPSharedTripContactController *)self->_sharingContactController activeContactsValues];
+  array = [activeContactsValues array];
 
-  return v4;
+  return array;
 }
 
 - (BOOL)canAddReceivers
@@ -552,8 +552,8 @@ void __28__MSPSharedTripService_init__block_invoke_68(uint64_t a1)
 - (void)dealloc
 {
   [(MSPSharedTripService *)self _stopMonitoringSystemBlockList];
-  v3 = [MEMORY[0x277D0EC00] sharedNetworkObserver];
-  [v3 removeNetworkReachableObserver:self];
+  mEMORY[0x277D0EC00] = [MEMORY[0x277D0EC00] sharedNetworkObserver];
+  [mEMORY[0x277D0EC00] removeNetworkReachableObserver:self];
 
   userDisabledDefaultListener = self->_userDisabledDefaultListener;
   GEOConfigRemoveBlockListener();
@@ -579,25 +579,25 @@ void __28__MSPSharedTripService_init__block_invoke_68(uint64_t a1)
   [(MSPSharedTripService *)&v10 dealloc];
 }
 
-- (void)_handleCheckinWithSharingIdentity:(id)a3 activeRecipients:(id)a4 serviceNamesByHandle:(id)a5 receivedTrips:(id)a6 permissions:(unint64_t)a7
+- (void)_handleCheckinWithSharingIdentity:(id)identity activeRecipients:(id)recipients serviceNamesByHandle:(id)handle receivedTrips:(id)trips permissions:(unint64_t)permissions
 {
-  v19 = a3;
-  v13 = a6;
+  identityCopy = identity;
+  tripsCopy = trips;
   isolationQueue = self->_isolationQueue;
-  v15 = a5;
-  v16 = a4;
+  handleCopy = handle;
+  recipientsCopy = recipients;
   dispatch_assert_queue_V2(isolationQueue);
   self->_connectionError = 0;
   self->_connectionRetryCounter = 0;
   os_unfair_lock_lock(&self->_sharingIdentityLock);
-  objc_storeStrong(&self->_sharingIdentity, a3);
-  self->_permissions = a7;
+  objc_storeStrong(&self->_sharingIdentity, identity);
+  self->_permissions = permissions;
   os_unfair_lock_unlock(&self->_sharingIdentityLock);
-  [(MSPSharedTripContactController *)self->_sharingContactController updateActiveSharingHandles:v16 serviceNames:v15];
+  [(MSPSharedTripContactController *)self->_sharingContactController updateActiveSharingHandles:recipientsCopy serviceNames:handleCopy];
 
-  if (v13)
+  if (tripsCopy)
   {
-    v17 = [v13 mutableCopy];
+    v17 = [tripsCopy mutableCopy];
   }
 
   else
@@ -629,9 +629,9 @@ void __28__MSPSharedTripService_init__block_invoke_68(uint64_t a1)
   os_unfair_lock_unlock(&self->_sharingIdentityLock);
 }
 
-- (void)_performBlockWhenCheckinCompleted:(id)a3
+- (void)_performBlockWhenCheckinCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (self->_checkinDispatchGroup)
   {
@@ -642,7 +642,7 @@ void __28__MSPSharedTripService_init__block_invoke_68(uint64_t a1)
       _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] Registering to be notified when checkin is completed", v6, 2u);
     }
 
-    dispatch_group_notify(self->_checkinDispatchGroup, self->_isolationQueue, v4);
+    dispatch_group_notify(self->_checkinDispatchGroup, self->_isolationQueue, completedCopy);
   }
 }
 
@@ -684,9 +684,9 @@ void __28__MSPSharedTripService_init__block_invoke_68(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performBlockAfterInitialConnection:(id)a3
+- (void)performBlockAfterInitialConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -695,8 +695,8 @@ void __28__MSPSharedTripService_init__block_invoke_68(uint64_t a1)
   block[2] = __59__MSPSharedTripService_performBlockAfterInitialConnection___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -709,16 +709,16 @@ void __59__MSPSharedTripService_performBlockAfterInitialConnection___block_invok
   [WeakRetained _performBlockAfterInitialConnection:*(a1 + 32)];
 }
 
-- (void)_performBlockAfterInitialConnection:(id)a3
+- (void)_performBlockAfterInitialConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__MSPSharedTripService__performBlockAfterInitialConnection___block_invoke;
   v11[3] = &unk_279868010;
   v11[4] = self;
-  v5 = v4;
+  v5 = connectionCopy;
   v12 = v5;
   v6 = MEMORY[0x259C7AD60](v11);
   checkinDispatchGroup = self->_checkinDispatchGroup;
@@ -772,9 +772,9 @@ void __60__MSPSharedTripService__performBlockAfterInitialConnection___block_invo
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)performBlockAfterInitialSync:(id)a3
+- (void)performBlockAfterInitialSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -783,8 +783,8 @@ void __60__MSPSharedTripService__performBlockAfterInitialConnection___block_invo
   block[2] = __53__MSPSharedTripService_performBlockAfterInitialSync___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -797,9 +797,9 @@ void __53__MSPSharedTripService_performBlockAfterInitialSync___block_invoke(uint
   [WeakRetained _performBlockAfterInitialSync:*(a1 + 32)];
 }
 
-- (void)_performBlockAfterInitialSync:(id)a3
+- (void)_performBlockAfterInitialSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (_performBlockAfterInitialSync__onceToken != -1)
   {
@@ -810,8 +810,8 @@ void __53__MSPSharedTripService_performBlockAfterInitialSync___block_invoke(uint
   v6[1] = 3221225472;
   v6[2] = __54__MSPSharedTripService__performBlockAfterInitialSync___block_invoke_79;
   v6[3] = &unk_2798689B0;
-  v7 = v4;
-  v5 = v4;
+  v7 = syncCopy;
+  v5 = syncCopy;
   [(MSPSharedTripService *)self _performBlockAfterInitialConnection:v6];
 }
 
@@ -825,14 +825,14 @@ void __54__MSPSharedTripService__performBlockAfterInitialSync___block_invoke()
   }
 }
 
-- (void)_networkReachabilityChanged:(id)a3
+- (void)_networkReachabilityChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0E7E8]];
-  v6 = [v5 BOOLValue];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D0E7E8]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (self->_networkReachable != v6)
+  if (self->_networkReachable != bOOLValue)
   {
     v7 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -848,7 +848,7 @@ void __54__MSPSharedTripService__performBlockAfterInitialSync___block_invoke()
       }
 
       v9 = v8;
-      if (v6)
+      if (bOOLValue)
       {
         v10 = @"YES";
       }
@@ -866,16 +866,16 @@ void __54__MSPSharedTripService__performBlockAfterInitialSync___block_invoke()
       _os_log_impl(&dword_25813A000, v7, OS_LOG_TYPE_DEFAULT, "[Service] Network reachability changed: %{public}@ -> %{public}@, notifying sending observers", &v13, 0x16u);
     }
 
-    self->_networkReachable = v6;
+    self->_networkReachable = bOOLValue;
     [(GEOObserverHashTable *)self->_sendingObservers sharedTripServiceDidUpdateSendingAvailability:self];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)capabilityTypeForContact:(id)a3 serviceName:(id *)a4 isActiveReceiver:(BOOL *)a5
+- (unint64_t)capabilityTypeForContact:(id)contact serviceName:(id *)name isActiveReceiver:(BOOL *)receiver
 {
-  v8 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v18 = 0;
   v19 = &v18;
@@ -889,10 +889,10 @@ void __54__MSPSharedTripService__performBlockAfterInitialSync___block_invoke()
   v13[3] = &unk_2798689D8;
   v15 = &v18;
   objc_copyWeak(v16, &location);
-  v14 = v8;
-  v16[1] = a4;
-  v16[2] = a5;
-  v10 = v8;
+  v14 = contactCopy;
+  v16[1] = name;
+  v16[2] = receiver;
+  v10 = contactCopy;
   dispatch_sync(isolationQueue, v13);
   v11 = v19[3];
 
@@ -908,46 +908,46 @@ void __78__MSPSharedTripService_capabilityTypeForContact_serviceName_isActiveRec
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _capabilityTypeForContact:*(a1 + 32) serviceName:*(a1 + 56) isActiveReceiver:*(a1 + 64)];
 }
 
-- (unint64_t)_capabilityTypeForContact:(id)a3 serviceName:(id *)a4 isActiveReceiver:(BOOL *)a5
+- (unint64_t)_capabilityTypeForContact:(id)contact serviceName:(id *)name isActiveReceiver:(BOOL *)receiver
 {
-  v8 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v9 = [(MSPSharedTripContactController *)self->_sharingContactController activeCapabilityTypeForContact:v8 serviceName:a4];
+  v9 = [(MSPSharedTripContactController *)self->_sharingContactController activeCapabilityTypeForContact:contactCopy serviceName:name];
   if (v9)
   {
     v10 = v9;
-    if (a5)
+    if (receiver)
     {
-      *a5 = 1;
+      *receiver = 1;
     }
   }
 
   else
   {
     v11 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-    v10 = [v11 capabilityLevelForContact:v8];
+    v10 = [v11 capabilityLevelForContact:contactCopy];
 
     v12 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-    v13 = [v12 serviceNameForContact:v8];
+    v13 = [v12 serviceNameForContact:contactCopy];
 
-    if (a4)
+    if (name)
     {
       v14 = v13;
-      *a4 = v13;
+      *name = v13;
     }
 
-    if (a5)
+    if (receiver)
     {
-      *a5 = 0;
+      *receiver = 0;
     }
   }
 
   return v10;
 }
 
-- (id)serviceNameForContact:(id)a3
+- (id)serviceNameForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v14 = 0;
   v15 = &v14;
@@ -963,8 +963,8 @@ void __78__MSPSharedTripService_capabilityTypeForContact_serviceName_isActiveRec
   v9[3] = &unk_279867860;
   v11 = &v14;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
-  v6 = v4;
+  v10 = contactCopy;
+  v6 = contactCopy;
   dispatch_sync(isolationQueue, v9);
   v7 = v15[5];
 
@@ -984,18 +984,18 @@ void __46__MSPSharedTripService_serviceNameForContact___block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (id)_serviceNameForContact:(id)a3
+- (id)_serviceNameForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-  v5 = [v4 serviceNameForContact:v3];
+  v5 = [v4 serviceNameForContact:contactCopy];
 
   return v5;
 }
 
-- (BOOL)isSharingWithContact:(id)a3
+- (BOOL)isSharingWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v11 = 0;
   v12 = &v11;
@@ -1006,15 +1006,15 @@ void __46__MSPSharedTripService_serviceNameForContact___block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __45__MSPSharedTripService_isSharingWithContact___block_invoke;
   block[3] = &unk_279866180;
-  v9 = v4;
+  v9 = contactCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = contactCopy;
   dispatch_sync(isolationQueue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(contactCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return contactCopy;
 }
 
 uint64_t __45__MSPSharedTripService_isSharingWithContact___block_invoke(void *a1)
@@ -1024,10 +1024,10 @@ uint64_t __45__MSPSharedTripService_isSharingWithContact___block_invoke(void *a1
   return result;
 }
 
-- (void)startSharingWithContact:(id)a3 completion:(id)a4
+- (void)startSharingWithContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -1036,10 +1036,10 @@ uint64_t __45__MSPSharedTripService_isSharingWithContact___block_invoke(void *a1
   v11[2] = __59__MSPSharedTripService_startSharingWithContact_completion___block_invoke;
   v11[3] = &unk_279868A00;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contactCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = contactCopy;
   dispatch_async(isolationQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -1052,10 +1052,10 @@ void __59__MSPSharedTripService_startSharingWithContact_completion___block_invok
   [WeakRetained _startSharingWithContact:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_startSharingWithContact:(id)a3 completion:(id)a4
+- (void)_startSharingWithContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  completionCopy = completion;
   if (self->_networkReachable)
   {
     objc_initWeak(&location, self);
@@ -1063,8 +1063,8 @@ void __59__MSPSharedTripService_startSharingWithContact_completion___block_invok
     v8[1] = 3221225472;
     v8[2] = __60__MSPSharedTripService__startSharingWithContact_completion___block_invoke_82;
     v8[3] = &unk_279868AA0;
-    v9 = v6;
-    v10 = v7;
+    v9 = contactCopy;
+    v10 = completionCopy;
     objc_copyWeak(&v11, &location);
     [(MSPSharedTripService *)self _validateCurrentConfigurationWithCompletion:v8];
     objc_destroyWeak(&v11);
@@ -1078,8 +1078,8 @@ void __59__MSPSharedTripService_startSharingWithContact_completion___block_invok
     block[1] = 3221225472;
     block[2] = __60__MSPSharedTripService__startSharingWithContact_completion___block_invoke;
     block[3] = &unk_279868010;
-    v14 = v6;
-    v15 = v7;
+    v14 = contactCopy;
+    v15 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -1336,10 +1336,10 @@ void __54__MSPSharedTripService__supportsPassingClosureReasons__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSharingWithContact:(id)a3 completion:(id)a4
+- (void)stopSharingWithContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -1348,10 +1348,10 @@ void __54__MSPSharedTripService__supportsPassingClosureReasons__block_invoke()
   v11[2] = __58__MSPSharedTripService_stopSharingWithContact_completion___block_invoke;
   v11[3] = &unk_279868A00;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contactCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = contactCopy;
   dispatch_async(isolationQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -1364,10 +1364,10 @@ void __58__MSPSharedTripService_stopSharingWithContact_completion___block_invoke
   [WeakRetained _stopSharingWithContact:*(a1 + 32) reason:0 completion:*(a1 + 40)];
 }
 
-- (void)stopSharingWithContact:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)stopSharingWithContact:(id)contact reason:(unint64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   if ([objc_opt_class() _supportsPassingClosureReasons])
   {
@@ -1378,11 +1378,11 @@ void __58__MSPSharedTripService_stopSharingWithContact_completion___block_invoke
     v14[2] = __65__MSPSharedTripService_stopSharingWithContact_reason_completion___block_invoke_2;
     v14[3] = &unk_279867810;
     objc_copyWeak(v17, &location);
-    v11 = v8;
-    v17[1] = a4;
+    v11 = contactCopy;
+    v17[1] = reason;
     v15 = v11;
-    v16 = v9;
-    v12 = v9;
+    v16 = completionCopy;
+    v12 = completionCopy;
     dispatch_async(isolationQueue, v14);
 
     objc_destroyWeak(v17);
@@ -1395,8 +1395,8 @@ void __58__MSPSharedTripService_stopSharingWithContact_completion___block_invoke
     block[1] = 3221225472;
     block[2] = __65__MSPSharedTripService_stopSharingWithContact_reason_completion___block_invoke;
     block[3] = &unk_2798676D0;
-    v20 = v9;
-    v13 = v9;
+    v20 = completionCopy;
+    v13 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -1420,21 +1420,21 @@ void __65__MSPSharedTripService_stopSharingWithContact_reason_completion___block
   [WeakRetained _stopSharingWithContact:*(a1 + 32) reason:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)_stopSharingWithContact:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)_stopSharingWithContact:(id)contact reason:(unint64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__MSPSharedTripService__stopSharingWithContact_reason_completion___block_invoke;
   v12[3] = &unk_279868AC8;
-  v10 = v8;
+  v10 = contactCopy;
   v13 = v10;
-  v11 = v9;
+  v11 = completionCopy;
   v14 = v11;
   objc_copyWeak(v15, &location);
-  v15[1] = a4;
+  v15[1] = reason;
   [(MSPSharedTripService *)self _validateCurrentConfigurationWithCompletion:v12];
   objc_destroyWeak(v15);
 
@@ -1540,9 +1540,9 @@ uint64_t __66__MSPSharedTripService__stopSharingWithContact_reason_completion___
   return result;
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -1551,8 +1551,8 @@ uint64_t __66__MSPSharedTripService__stopSharingWithContact_reason_completion___
   block[2] = __53__MSPSharedTripService_stopAllSharingWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -1565,9 +1565,9 @@ void __53__MSPSharedTripService_stopAllSharingWithCompletion___block_invoke(uint
   [WeakRetained _stopAllSharingWithReason:0 completion:*(a1 + 32)];
 }
 
-- (void)stopAllSharingWithReason:(unint64_t)a3 completion:(id)a4
+- (void)stopAllSharingWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   if ([objc_opt_class() _supportsPassingClosureReasons])
   {
@@ -1578,9 +1578,9 @@ void __53__MSPSharedTripService_stopAllSharingWithCompletion___block_invoke(uint
     block[2] = __60__MSPSharedTripService_stopAllSharingWithReason_completion___block_invoke_98;
     block[3] = &unk_279865E60;
     objc_copyWeak(v12, &location);
-    v12[1] = a3;
-    v11 = v6;
-    v8 = v6;
+    v12[1] = reason;
+    v11 = completionCopy;
+    v8 = completionCopy;
     dispatch_async(isolationQueue, block);
 
     objc_destroyWeak(v12);
@@ -1593,8 +1593,8 @@ void __53__MSPSharedTripService_stopAllSharingWithCompletion___block_invoke(uint
     v14[1] = 3221225472;
     v14[2] = __60__MSPSharedTripService_stopAllSharingWithReason_completion___block_invoke;
     v14[3] = &unk_2798676D0;
-    v15 = v6;
-    v9 = v6;
+    v15 = completionCopy;
+    v9 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v14);
   }
 }
@@ -1625,18 +1625,18 @@ void __60__MSPSharedTripService_stopAllSharingWithReason_completion___block_invo
   [WeakRetained _stopAllSharingWithReason:*(a1 + 48) completion:*(a1 + 32)];
 }
 
-- (void)_stopAllSharingWithReason:(unint64_t)a3 completion:(id)a4
+- (void)_stopAllSharingWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__MSPSharedTripService__stopAllSharingWithReason_completion___block_invoke;
   v8[3] = &unk_279868AF0;
-  v7 = v6;
+  v7 = completionCopy;
   v9 = v7;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
+  v10[1] = reason;
   [(MSPSharedTripService *)self _validateCurrentConfigurationWithCompletion:v8];
   objc_destroyWeak(v10);
 
@@ -1738,23 +1738,23 @@ uint64_t __61__MSPSharedTripService__stopAllSharingWithReason_completion___block
   return result;
 }
 
-- (void)sharedTripContactController:(id)a3 didUpdateActiveContactsValues:(id)a4
+- (void)sharedTripContactController:(id)controller didUpdateActiveContactsValues:(id)values
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  valuesCopy = values;
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v10 = 136315395;
     v11 = "[MSPSharedTripService sharedTripContactController:didUpdateActiveContactsValues:]";
     v12 = 2113;
-    v13 = v5;
+    v13 = valuesCopy;
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[Service] %s %{private}@", &v10, 0x16u);
   }
 
   sendingObservers = self->_sendingObservers;
-  v8 = [v5 array];
-  [(GEOObserverHashTable *)sendingObservers sharedTripService:self didUpdateReceivers:v8];
+  array = [valuesCopy array];
+  [(GEOObserverHashTable *)sendingObservers sharedTripService:self didUpdateReceivers:array];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -1809,15 +1809,15 @@ void __52__MSPSharedTripService__supportsMonitoringBlockList__block_invoke()
     }
 
     objc_initWeak(buf, self);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v5 = *MEMORY[0x277CFB9B8];
-    v6 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__MSPSharedTripService__startMonitoringSystemBlockListIfNeeded__block_invoke;
     v9[3] = &unk_279867B08;
     objc_copyWeak(&v10, buf);
-    v7 = [v4 addObserverForName:v5 object:0 queue:v6 usingBlock:v9];
+    v7 = [defaultCenter addObserverForName:v5 object:0 queue:mainQueue usingBlock:v9];
     blockListMonitoringObserver = self->_blockListMonitoringObserver;
     self->_blockListMonitoringObserver = v7;
 
@@ -1843,8 +1843,8 @@ void __63__MSPSharedTripService__startMonitoringSystemBlockListIfNeeded__block_i
       _os_log_impl(&dword_25813A000, v3, OS_LOG_TYPE_DEFAULT, "[Service] Will stop monitoring system block list updates", v7, 2u);
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->_blockListMonitoringObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_blockListMonitoringObserver];
 
     blockListMonitoringObserver = self->_blockListMonitoringObserver;
     self->_blockListMonitoringObserver = 0;
@@ -1926,14 +1926,14 @@ void __64__MSPSharedTripService__scheduleCoalescedBlockListCheckIfNeeded__block_
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEFAULT, "[Service] Checking blocklist to see if we need to stop any sharing...", buf, 2u);
   }
 
-  v22 = self;
-  v7 = [(MSPSharedTripService *)self _receivers];
-  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  selfCopy = self;
+  _receivers = [(MSPSharedTripService *)self _receivers];
+  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(_receivers, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v7;
+  v9 = _receivers;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v10)
   {
@@ -1954,14 +1954,14 @@ void __64__MSPSharedTripService__scheduleCoalescedBlockListCheckIfNeeded__block_
           v15 = MSPGetSharedTripLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v14 handleForIDS];
+            handleForIDS = [v14 handleForIDS];
             *buf = 138477827;
-            v28 = v16;
+            v28 = handleForIDS;
             _os_log_impl(&dword_25813A000, v15, OS_LOG_TYPE_DEFAULT, "[Service] Found %{private}@ is now blocked", buf, 0xCu);
           }
 
-          v17 = [v14 handleForIDS];
-          [v8 addObject:v17];
+          handleForIDS2 = [v14 handleForIDS];
+          [v8 addObject:handleForIDS2];
         }
       }
 
@@ -1982,17 +1982,17 @@ void __64__MSPSharedTripService__scheduleCoalescedBlockListCheckIfNeeded__block_
       _os_log_impl(&dword_25813A000, v18, OS_LOG_TYPE_DEFAULT, "[Service] Found %lu handles are now blocked, will stop sharing", buf, 0xCu);
     }
 
-    v20 = [v8 allObjects];
-    [(MSPSharedTripService *)v22 _stopSharingTripWithContacts:v20 reason:0 completion:&__block_literal_global_110];
+    allObjects = [v8 allObjects];
+    [(MSPSharedTripService *)selfCopy _stopSharingTripWithContacts:allObjects reason:0 completion:&__block_literal_global_110];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blockSharedTripWithIdentifier:(id)a3
+- (void)blockSharedTripWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([MEMORY[0x277D0ED30] _msp_blockTestTripWithIdentifier:v4])
+  identifierCopy = identifier;
+  if ([MEMORY[0x277D0ED30] _msp_blockTestTripWithIdentifier:identifierCopy])
   {
     isolationQueue = self->_isolationQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -2000,13 +2000,13 @@ void __64__MSPSharedTripService__scheduleCoalescedBlockListCheckIfNeeded__block_
     v6[2] = __54__MSPSharedTripService_blockSharedTripWithIdentifier___block_invoke;
     v6[3] = &unk_279865EF8;
     v6[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     dispatch_async(isolationQueue, v6);
   }
 
   else
   {
-    [(MSPSharedTripService *)self blockSharedTrip:v4];
+    [(MSPSharedTripService *)self blockSharedTrip:identifierCopy];
   }
 }
 
@@ -2017,23 +2017,23 @@ void __54__MSPSharedTripService_blockSharedTripWithIdentifier___block_invoke(uin
   [v1 sharedTripDidBecomeUnavailable:v2];
 }
 
-- (id)_subscriptionTokensForTripID:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_subscriptionTokensForTripID:(id)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (v6)
+  if (dCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_subscriptionTokensByTripID objectForKeyedSubscript:v6];
-    if (v7)
+    weakObjectsHashTable = [(NSMutableDictionary *)self->_subscriptionTokensByTripID objectForKeyedSubscript:dCopy];
+    if (weakObjectsHashTable)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = !v4;
+      v8 = !neededCopy;
     }
 
     if (!v8)
@@ -2042,31 +2042,31 @@ void __54__MSPSharedTripService_blockSharedTripWithIdentifier___block_invoke(uin
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = dCopy;
         _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_DEBUG, "[Service] Initialising subscription tokens for trip %@", &v12, 0xCu);
       }
 
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-      [(NSMutableDictionary *)self->_subscriptionTokensByTripID setObject:v7 forKeyedSubscript:v6];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      [(NSMutableDictionary *)self->_subscriptionTokensByTripID setObject:weakObjectsHashTable forKeyedSubscript:dCopy];
     }
   }
 
   else
   {
-    v7 = 0;
+    weakObjectsHashTable = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return weakObjectsHashTable;
 }
 
-- (id)_addSubscriptionTokenForTripID:(id)a3
+- (id)_addSubscriptionTokenForTripID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (v4)
+  if (dCopy)
   {
     objc_initWeak(&location, self);
     v5 = [MSPSharedTripSubscriptionToken alloc];
@@ -2075,15 +2075,15 @@ void __54__MSPSharedTripService_blockSharedTripWithIdentifier___block_invoke(uin
     v14 = __55__MSPSharedTripService__addSubscriptionTokenForTripID___block_invoke;
     v15 = &unk_279868B18;
     objc_copyWeak(&v16, &location);
-    v6 = [(MSPSharedTripSubscriptionToken *)v5 initWithSharedTripIdentifier:v4 invalidationHandler:&v12];
-    v7 = [(MSPSharedTripService *)self _subscriptionTokensForTripID:v4 createIfNeeded:1, v12, v13, v14, v15];
+    v6 = [(MSPSharedTripSubscriptionToken *)v5 initWithSharedTripIdentifier:dCopy invalidationHandler:&v12];
+    v7 = [(MSPSharedTripService *)self _subscriptionTokensForTripID:dCopy createIfNeeded:1, v12, v13, v14, v15];
     [v7 addObject:v6];
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = [v7 count];
       *buf = 138412546;
-      v19 = v4;
+      v19 = dCopy;
       v20 = 2048;
       v21 = v9;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_INFO, "[Service] Add subscription token for trip %@ (%lu subscriptions)", buf, 0x16u);
@@ -2118,10 +2118,10 @@ void __55__MSPSharedTripService__addSubscriptionTokenForTripID___block_invoke(ui
   [WeakRetained _subscriptionTokenDidInvalidate:v6 forTripID:v5];
 }
 
-- (void)purgeToken:(id)a3 forTripID:(id)a4
+- (void)purgeToken:(id)token forTripID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  dCopy = d;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2129,26 +2129,26 @@ void __55__MSPSharedTripService__addSubscriptionTokenForTripID___block_invoke(ui
   block[2] = __45__MSPSharedTripService_purgeToken_forTripID___block_invoke;
   block[3] = &unk_279866300;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = tokenCopy;
   dispatch_sync(isolationQueue, block);
 }
 
-- (void)_subscriptionTokenDidInvalidate:(id)a3 forTripID:(id)a4
+- (void)_subscriptionTokenDidInvalidate:(id)invalidate forTripID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  invalidateCopy = invalidate;
+  dCopy = d;
   isolationQueue = self->_isolationQueue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v17 = __66__MSPSharedTripService__subscriptionTokenDidInvalidate_forTripID___block_invoke;
   v18 = &unk_279866300;
-  v19 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = invalidateCopy;
   v20 = v9;
-  v10 = v7;
+  v10 = dCopy;
   v21 = v10;
   v11 = isolationQueue;
   v12 = v16;
@@ -2167,35 +2167,35 @@ void __55__MSPSharedTripService__addSubscriptionTokenForTripID___block_invoke(ui
   }
 }
 
-- (void)_purgeToken:(id)a3 forTripID:(id)a4
+- (void)_purgeToken:(id)token forTripID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v8 = [(MSPSharedTripService *)self _subscriptionTokensForTripID:v7 createIfNeeded:0];
+  v8 = [(MSPSharedTripService *)self _subscriptionTokensForTripID:dCopy createIfNeeded:0];
   if (v8)
   {
     v9 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v15 = v6;
+      v15 = tokenCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = dCopy;
       _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_INFO, "[Service] Purging %@ for trip %@", buf, 0x16u);
     }
 
-    [v8 removeObject:v6];
+    [v8 removeObject:tokenCopy];
     if (![v8 count])
     {
-      v10 = [(MSPSharedTripService *)self _remoteObjectProxy];
+      _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __46__MSPSharedTripService__purgeToken_forTripID___block_invoke;
       v12[3] = &unk_2798683D8;
-      v13 = v7;
-      [v10 unsubscribeFromSharedTripUpdatesWithIdentifier:v13 completion:v12];
+      v13 = dCopy;
+      [_remoteObjectProxy unsubscribeFromSharedTripUpdatesWithIdentifier:v13 completion:v12];
     }
   }
 
@@ -2241,82 +2241,82 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addReceivingObserver:(id)a3
+- (void)addReceivingObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136380931;
     v8 = "[MSPSharedTripService addReceivingObserver:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] %{private}s (%@)", &v7, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_receivingObservers registerObserver:v4];
+  [(GEOObserverHashTable *)self->_receivingObservers registerObserver:observerCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeReceivingObserver:(id)a3
+- (void)removeReceivingObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136380931;
     v8 = "[MSPSharedTripService removeReceivingObserver:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] %{private}s (%@)", &v7, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_receivingObservers unregisterObserver:v4];
+  [(GEOObserverHashTable *)self->_receivingObservers unregisterObserver:observerCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSendingObserver:(id)a3
+- (void)addSendingObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136380931;
     v8 = "[MSPSharedTripService addSendingObserver:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] %{private}s (%@)", &v7, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_sendingObservers registerObserver:v4];
+  [(GEOObserverHashTable *)self->_sendingObservers registerObserver:observerCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSendingObserver:(id)a3
+- (void)removeSendingObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136380931;
     v8 = "[MSPSharedTripService removeSendingObserver:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] %{private}s (%@)", &v7, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_sendingObservers unregisterObserver:v4];
+  [(GEOObserverHashTable *)self->_sendingObservers unregisterObserver:observerCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_validateCurrentConfigurationWithCompletion:(id)a3
+- (void)_validateCurrentConfigurationWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v19 = 0;
   v5 = [(MSPSharedTripService *)self _serviceCanAttemptConnection:&v19];
@@ -2339,9 +2339,9 @@ LABEL_6:
       v9 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v7 code];
+        code = [v7 code];
         *location = 134218242;
-        *&location[4] = v10;
+        *&location[4] = code;
         v21 = 2112;
         v22 = v7;
         v11 = "[Service] Validated configuration with error code: %ld, %@";
@@ -2354,7 +2354,7 @@ LABEL_12:
 
 LABEL_13:
 
-      v4[2](v4, v7);
+      completionCopy[2](completionCopy, v7);
       goto LABEL_14;
     }
 
@@ -2384,7 +2384,7 @@ LABEL_10:
   v16[2] = __68__MSPSharedTripService__validateCurrentConfigurationWithCompletion___block_invoke;
   v16[3] = &unk_279868960;
   objc_copyWeak(&v18, location);
-  v17 = v4;
+  v17 = completionCopy;
   [(MSPSharedTripService *)self _performBlockWhenCheckinCompleted:v16];
 
   objc_destroyWeak(&v18);
@@ -2407,7 +2407,7 @@ void __68__MSPSharedTripService__validateCurrentConfigurationWithCompletion___bl
   [WeakRetained _validateCurrentConfigurationWithCompletion:*(a1 + 32)];
 }
 
-- (BOOL)_serviceCanAttemptConnection:(id *)a3
+- (BOOL)_serviceCanAttemptConnection:(id *)connection
 {
   v14[1] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_isolationQueue);
@@ -2475,10 +2475,10 @@ void __68__MSPSharedTripService__validateCurrentConfigurationWithCompletion___bl
   v9 = [v7 errorWithDomain:@"com.apple.Maps.SharedTrip" code:v8 userInfo:v6];
 
 LABEL_14:
-  if (a3)
+  if (connection)
   {
     v10 = v9;
-    *a3 = v9;
+    *connection = v9;
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2490,13 +2490,13 @@ LABEL_14:
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (!self->_confirmedMapsIsInstalled)
   {
-    v4 = [MEMORY[0x277CF0CD0] processHandle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v5 isEqualToString:*MEMORY[0x277D0EA88]];
+    processHandle = [MEMORY[0x277CF0CD0] processHandle];
+    bundleIdentifier = [processHandle bundleIdentifier];
+    v6 = [bundleIdentifier isEqualToString:*MEMORY[0x277D0EA88]];
 
     if (!v6)
     {
-      if ([v4 hasEntitlement:@"com.apple.private.coreservices.canmaplsdatabase"])
+      if ([processHandle hasEntitlement:@"com.apple.private.coreservices.canmaplsdatabase"])
       {
         objc_initWeak(location, self);
         v14[0] = MEMORY[0x277D85DD0];
@@ -2652,24 +2652,24 @@ void __44__MSPSharedTripService_archivedSharingState__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contactsFromArchivedTripSharingState:(id)a3
+- (id)contactsFromArchivedTripSharingState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[MSPSharingRestorationStorage alloc] initWithData:v3];
+    v4 = [[MSPSharingRestorationStorage alloc] initWithData:stateCopy];
     if (v4)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
-      v6 = [(MSPSharingRestorationStorage *)v4 mapsIdentifiers];
-      [v5 addObjectsFromArray:v6];
+      mapsIdentifiers = [(MSPSharingRestorationStorage *)v4 mapsIdentifiers];
+      [v5 addObjectsFromArray:mapsIdentifiers];
 
-      v7 = [(MSPSharingRestorationStorage *)v4 messagesIdentifiers];
-      [v5 addObjectsFromArray:v7];
+      messagesIdentifiers = [(MSPSharingRestorationStorage *)v4 messagesIdentifiers];
+      [v5 addObjectsFromArray:messagesIdentifiers];
 
-      v8 = [v5 array];
-      v9 = [MSPSharedTripContact contactsFromIDSHandles:v8];
+      array = [v5 array];
+      v9 = [MSPSharedTripContact contactsFromIDSHandles:array];
     }
 
     else
@@ -2722,78 +2722,78 @@ void __54__MSPSharedTripService__supportsArchivingSharingState__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addTestTripsTo:(id)a3
+- (void)_addTestTripsTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   if (GEOConfigGetBOOL())
   {
-    v3 = [MEMORY[0x277D0ED30] _msp_testTrip];
+    _msp_testTrip = [MEMORY[0x277D0ED30] _msp_testTrip];
     v4 = MEMORY[0x277D0ED30];
-    v5 = [v3 groupIdentifier];
-    LOBYTE(v4) = [v4 _msp_isTestTripBlockedWithIdentifier:v5];
+    groupIdentifier = [_msp_testTrip groupIdentifier];
+    LOBYTE(v4) = [v4 _msp_isTestTripBlockedWithIdentifier:groupIdentifier];
 
     if ((v4 & 1) == 0)
     {
-      [v18 addObject:v3];
+      [toCopy addObject:_msp_testTrip];
     }
   }
 
   if (GEOConfigGetBOOL())
   {
-    v6 = [MEMORY[0x277D0ED30] _msp_testTripWithMultipleStops];
+    _msp_testTripWithMultipleStops = [MEMORY[0x277D0ED30] _msp_testTripWithMultipleStops];
     v7 = MEMORY[0x277D0ED30];
-    v8 = [v6 groupIdentifier];
-    LOBYTE(v7) = [v7 _msp_isTestTripBlockedWithIdentifier:v8];
+    groupIdentifier2 = [_msp_testTripWithMultipleStops groupIdentifier];
+    LOBYTE(v7) = [v7 _msp_isTestTripBlockedWithIdentifier:groupIdentifier2];
 
     if ((v7 & 1) == 0)
     {
-      [v18 addObject:v6];
+      [toCopy addObject:_msp_testTripWithMultipleStops];
     }
   }
 
   if (GEOConfigGetBOOL())
   {
-    v9 = [MEMORY[0x277D0ED30] _msp_testTripWithMultipleStopsMiddleOfTrip];
+    _msp_testTripWithMultipleStopsMiddleOfTrip = [MEMORY[0x277D0ED30] _msp_testTripWithMultipleStopsMiddleOfTrip];
     v10 = MEMORY[0x277D0ED30];
-    v11 = [v9 groupIdentifier];
-    LOBYTE(v10) = [v10 _msp_isTestTripBlockedWithIdentifier:v11];
+    groupIdentifier3 = [_msp_testTripWithMultipleStopsMiddleOfTrip groupIdentifier];
+    LOBYTE(v10) = [v10 _msp_isTestTripBlockedWithIdentifier:groupIdentifier3];
 
     if ((v10 & 1) == 0)
     {
-      [v18 addObject:v9];
+      [toCopy addObject:_msp_testTripWithMultipleStopsMiddleOfTrip];
     }
   }
 
   if (GEOConfigGetBOOL())
   {
-    v12 = [MEMORY[0x277D0ED30] _msp_testTripSky];
+    _msp_testTripSky = [MEMORY[0x277D0ED30] _msp_testTripSky];
     v13 = MEMORY[0x277D0ED30];
-    v14 = [v12 groupIdentifier];
-    LOBYTE(v13) = [v13 _msp_isTestTripBlockedWithIdentifier:v14];
+    groupIdentifier4 = [_msp_testTripSky groupIdentifier];
+    LOBYTE(v13) = [v13 _msp_isTestTripBlockedWithIdentifier:groupIdentifier4];
 
     if ((v13 & 1) == 0)
     {
-      [v18 addObject:v12];
+      [toCopy addObject:_msp_testTripSky];
     }
   }
 
   if (GEOConfigGetBOOL())
   {
-    v15 = [MEMORY[0x277D0ED30] _msp_testTripClosedTripInPast];
+    _msp_testTripClosedTripInPast = [MEMORY[0x277D0ED30] _msp_testTripClosedTripInPast];
     v16 = MEMORY[0x277D0ED30];
-    v17 = [v15 groupIdentifier];
-    LOBYTE(v16) = [v16 _msp_isTestTripBlockedWithIdentifier:v17];
+    groupIdentifier5 = [_msp_testTripClosedTripInPast groupIdentifier];
+    LOBYTE(v16) = [v16 _msp_isTestTripBlockedWithIdentifier:groupIdentifier5];
 
     if ((v16 & 1) == 0)
     {
-      [v18 addObject:v15];
+      [toCopy addObject:_msp_testTripClosedTripInPast];
     }
   }
 }
 
-- (void)checkinWithCompletion:(id)a3
+- (void)checkinWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -2802,8 +2802,8 @@ void __54__MSPSharedTripService__supportsArchivingSharingState__block_invoke()
   block[2] = __46__MSPSharedTripService_checkinWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -2816,9 +2816,9 @@ void __46__MSPSharedTripService_checkinWithCompletion___block_invoke(uint64_t a1
   [WeakRetained _checkinWithCompletion:*(a1 + 32)];
 }
 
-- (void)_checkinWithCompletion:(id)a3
+- (void)_checkinWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v5))
   {
@@ -2827,13 +2827,13 @@ void __46__MSPSharedTripService_checkinWithCompletion___block_invoke(uint64_t a1
   }
 
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v6 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v6 checkinWithCompletion:v4];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy checkinWithCompletion:completionCopy];
 }
 
-- (void)fetchSharingIdentityWithCompletion:(id)a3
+- (void)fetchSharingIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -2842,8 +2842,8 @@ void __46__MSPSharedTripService_checkinWithCompletion___block_invoke(uint64_t a1
   block[2] = __59__MSPSharedTripService_fetchSharingIdentityWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -2856,9 +2856,9 @@ void __59__MSPSharedTripService_fetchSharingIdentityWithCompletion___block_invok
   [WeakRetained _fetchSharingIdentityWithCompletion:*(a1 + 32)];
 }
 
-- (void)_fetchSharingIdentityWithCompletion:(id)a3
+- (void)_fetchSharingIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v5))
   {
@@ -2867,15 +2867,15 @@ void __59__MSPSharedTripService_fetchSharingIdentityWithCompletion___block_invok
   }
 
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v6 = [(MSPSharedTripService *)self _remoteObjectProxy];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__MSPSharedTripService__fetchSharingIdentityWithCompletion___block_invoke;
   v8[3] = &unk_279868B68;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchSharingIdentityWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_remoteObjectProxy fetchSharingIdentityWithCompletion:v8];
 }
 
 void __60__MSPSharedTripService__fetchSharingIdentityWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2893,9 +2893,9 @@ void __60__MSPSharedTripService__fetchSharingIdentityWithCompletion___block_invo
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)a3
+- (void)fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -2904,8 +2904,8 @@ void __60__MSPSharedTripService__fetchSharingIdentityWithCompletion___block_invo
   block[2] = __85__MSPSharedTripService_fetchRequiresUserConfirmationOfSharingIdentityWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -2918,9 +2918,9 @@ void __85__MSPSharedTripService_fetchRequiresUserConfirmationOfSharingIdentityWi
   [WeakRetained _fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:*(a1 + 32)];
 }
 
-- (void)_fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)a3
+- (void)_fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v5))
   {
@@ -2929,14 +2929,14 @@ void __85__MSPSharedTripService_fetchRequiresUserConfirmationOfSharingIdentityWi
   }
 
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v6 = [(MSPSharedTripService *)self _remoteObjectProxy];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __86__MSPSharedTripService__fetchRequiresUserConfirmationOfSharingIdentityWithCompletion___block_invoke;
   v8[3] = &unk_279868BB8;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_remoteObjectProxy fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:v8];
 }
 
 void __86__MSPSharedTripService__fetchRequiresUserConfirmationOfSharingIdentityWithCompletion___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -2957,10 +2957,10 @@ void __86__MSPSharedTripService__fetchRequiresUserConfirmationOfSharingIdentityW
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
-- (void)reportUserConfirmationOfSharingIdentity:(id)a3 completion:(id)a4
+- (void)reportUserConfirmationOfSharingIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -2969,10 +2969,10 @@ void __86__MSPSharedTripService__fetchRequiresUserConfirmationOfSharingIdentityW
   v11[2] = __75__MSPSharedTripService_reportUserConfirmationOfSharingIdentity_completion___block_invoke;
   v11[3] = &unk_279868A00;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identityCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identityCopy;
   dispatch_async(isolationQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -2985,10 +2985,10 @@ void __75__MSPSharedTripService_reportUserConfirmationOfSharingIdentity_completi
   [WeakRetained _reportUserConfirmationOfSharingIdentity:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_reportUserConfirmationOfSharingIdentity:(id)a3 completion:(id)a4
+- (void)_reportUserConfirmationOfSharingIdentity:(id)identity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identityCopy = identity;
   v8 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v8))
   {
@@ -2997,14 +2997,14 @@ void __75__MSPSharedTripService_reportUserConfirmationOfSharingIdentity_completi
   }
 
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v9 = [(MSPSharedTripService *)self _remoteObjectProxy];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__MSPSharedTripService__reportUserConfirmationOfSharingIdentity_completion___block_invoke;
   v11[3] = &unk_279867770;
-  v12 = v6;
-  v10 = v6;
-  [v9 reportUserConfirmationOfSharingIdentity:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_remoteObjectProxy reportUserConfirmationOfSharingIdentity:identityCopy completion:v11];
 }
 
 void __76__MSPSharedTripService__reportUserConfirmationOfSharingIdentity_completion___block_invoke(uint64_t a1, void *a2)
@@ -3021,11 +3021,11 @@ void __76__MSPSharedTripService__reportUserConfirmationOfSharingIdentity_complet
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)startSharingTripWithContacts:(id)a3 capabilityType:(unint64_t)a4 serviceName:(id)a5 completion:(id)a6
+- (void)startSharingTripWithContacts:(id)contacts capabilityType:(unint64_t)type serviceName:(id)name completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contactsCopy = contacts;
+  nameCopy = name;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3034,13 +3034,13 @@ void __76__MSPSharedTripService__reportUserConfirmationOfSharingIdentity_complet
   v17[2] = __91__MSPSharedTripService_startSharingTripWithContacts_capabilityType_serviceName_completion___block_invoke;
   v17[3] = &unk_2798677E8;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v21[1] = a4;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = contactsCopy;
+  v19 = nameCopy;
+  v21[1] = type;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = nameCopy;
+  v16 = contactsCopy;
   dispatch_async(isolationQueue, v17);
 
   objc_destroyWeak(v21);
@@ -3053,12 +3053,12 @@ void __91__MSPSharedTripService_startSharingTripWithContacts_capabilityType_serv
   [WeakRetained _startSharingTripWithContacts:*(a1 + 32) capabilityType:*(a1 + 64) serviceName:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_startSharingTripWithContacts:(id)a3 capabilityType:(unint64_t)a4 serviceName:(id)a5 completion:(id)a6
+- (void)_startSharingTripWithContacts:(id)contacts capabilityType:(unint64_t)type serviceName:(id)name completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  contactsCopy = contacts;
+  completionCopy = completion;
+  nameCopy = name;
   v13 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v13))
   {
@@ -3070,33 +3070,33 @@ void __91__MSPSharedTripService_startSharingTripWithContacts_capabilityType_serv
   v14 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 > 4)
+    if (type > 4)
     {
       v15 = @"Unknown";
     }
 
     else
     {
-      v15 = off_279868CA0[a4];
+      v15 = off_279868CA0[type];
     }
 
     v18 = 138412546;
-    v19 = v10;
+    v19 = contactsCopy;
     v20 = 2114;
     v21 = v15;
     _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_DEFAULT, "[Service] Start sharing trip with contacts: %@ via %{public}@", &v18, 0x16u);
   }
 
-  v16 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v16 startSharingTripWithContacts:v10 capabilityType:a4 serviceName:v12 completion:v11];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy startSharingTripWithContacts:contactsCopy capabilityType:type serviceName:nameCopy completion:completionCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSharingTripWithMessagesGroup:(id)a3 completion:(id)a4
+- (void)startSharingTripWithMessagesGroup:(id)group completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3105,10 +3105,10 @@ void __91__MSPSharedTripService_startSharingTripWithContacts_capabilityType_serv
   v11[2] = __69__MSPSharedTripService_startSharingTripWithMessagesGroup_completion___block_invoke;
   v11[3] = &unk_279868A00;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = groupCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = groupCopy;
   dispatch_async(isolationQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -3121,11 +3121,11 @@ void __69__MSPSharedTripService_startSharingTripWithMessagesGroup_completion___b
   [WeakRetained _startSharingTripWithMessagesGroup:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_startSharingTripWithMessagesGroup:(id)a3 completion:(id)a4
+- (void)_startSharingTripWithMessagesGroup:(id)group completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  completionCopy = completion;
   v8 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v8))
   {
@@ -3138,20 +3138,20 @@ void __69__MSPSharedTripService_startSharingTripWithMessagesGroup_completion___b
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = groupCopy;
     _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_DEFAULT, "[Service] Start sharing trip with group: %@", &v12, 0xCu);
   }
 
-  v10 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v10 startSharingTripWithMessagesGroup:v6 completion:v7];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy startSharingTripWithMessagesGroup:groupCopy completion:completionCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSharingTripWithContacts:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)stopSharingTripWithContacts:(id)contacts reason:(unint64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactsCopy = contacts;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3160,11 +3160,11 @@ void __69__MSPSharedTripService_startSharingTripWithMessagesGroup_completion___b
   block[2] = __70__MSPSharedTripService_stopSharingTripWithContacts_reason_completion___block_invoke;
   block[3] = &unk_279867810;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16[1] = reason;
+  v14 = contactsCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = contactsCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(v16);
@@ -3177,11 +3177,11 @@ void __70__MSPSharedTripService_stopSharingTripWithContacts_reason_completion___
   [WeakRetained _stopSharingTripWithContacts:*(a1 + 32) reason:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)_stopSharingTripWithContacts:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)_stopSharingTripWithContacts:(id)contacts reason:(unint64_t)reason completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  contactsCopy = contacts;
+  completionCopy = completion;
   v10 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v10))
   {
@@ -3194,20 +3194,20 @@ void __70__MSPSharedTripService_stopSharingTripWithContacts_reason_completion___
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v8;
+    v15 = contactsCopy;
     _os_log_impl(&dword_25813A000, v11, OS_LOG_TYPE_DEFAULT, "[Service] Stop sharing trip with Maps/Messages contacts: %@", &v14, 0xCu);
   }
 
-  v12 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v12 stopSharingTripWithContacts:v8 reason:a4 completion:v9];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy stopSharingTripWithContacts:contactsCopy reason:reason completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSharingTripWithMessagesGroup:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)stopSharingTripWithMessagesGroup:(id)group reason:(unint64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  groupCopy = group;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3216,11 +3216,11 @@ void __70__MSPSharedTripService_stopSharingTripWithContacts_reason_completion___
   block[2] = __75__MSPSharedTripService_stopSharingTripWithMessagesGroup_reason_completion___block_invoke;
   block[3] = &unk_279867810;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16[1] = reason;
+  v14 = groupCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = groupCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(v16);
@@ -3233,11 +3233,11 @@ void __75__MSPSharedTripService_stopSharingTripWithMessagesGroup_reason_completi
   [WeakRetained _stopSharingTripWithMessagesGroup:*(a1 + 32) reason:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)_stopSharingTripWithMessagesGroup:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)_stopSharingTripWithMessagesGroup:(id)group reason:(unint64_t)reason completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  groupCopy = group;
+  completionCopy = completion;
   v10 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v10))
   {
@@ -3250,19 +3250,19 @@ void __75__MSPSharedTripService_stopSharingTripWithMessagesGroup_reason_completi
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v8;
+    v15 = groupCopy;
     _os_log_impl(&dword_25813A000, v11, OS_LOG_TYPE_DEFAULT, "[Service] Stop sharing trip with group: %@", &v14, 0xCu);
   }
 
-  v12 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v12 stopSharingTripWithMessagesGroup:v8 reason:a4 completion:v9];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy stopSharingTripWithMessagesGroup:groupCopy reason:reason completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSharingTripWithReason:(unint64_t)a3 completion:(id)a4
+- (void)stopSharingTripWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3271,9 +3271,9 @@ void __75__MSPSharedTripService_stopSharingTripWithMessagesGroup_reason_completi
   v9[2] = __61__MSPSharedTripService_stopSharingTripWithReason_completion___block_invoke;
   v9[3] = &unk_279865E60;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
-  v10 = v6;
-  v8 = v6;
+  v11[1] = reason;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(isolationQueue, v9);
 
   objc_destroyWeak(v11);
@@ -3286,9 +3286,9 @@ void __61__MSPSharedTripService_stopSharingTripWithReason_completion___block_inv
   [WeakRetained _stopSharingTripWithReason:*(a1 + 48) completion:*(a1 + 32)];
 }
 
-- (void)_stopSharingTripWithReason:(unint64_t)a3 completion:(id)a4
+- (void)_stopSharingTripWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v7))
   {
@@ -3304,13 +3304,13 @@ void __61__MSPSharedTripService_stopSharingTripWithReason_completion___block_inv
     _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[Service] Stop sharing trip", v10, 2u);
   }
 
-  v9 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v9 stopSharingTripWithReason:a3 completion:v6];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy stopSharingTripWithReason:reason completion:completionCopy];
 }
 
-- (void)fetchActiveHandlesWithCompletion:(id)a3
+- (void)fetchActiveHandlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3319,8 +3319,8 @@ void __61__MSPSharedTripService_stopSharingTripWithReason_completion___block_inv
   block[2] = __57__MSPSharedTripService_fetchActiveHandlesWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -3333,9 +3333,9 @@ void __57__MSPSharedTripService_fetchActiveHandlesWithCompletion___block_invoke(
   [WeakRetained _fetchActiveHandlesWithCompletion:*(a1 + 32)];
 }
 
-- (void)_fetchActiveHandlesWithCompletion:(id)a3
+- (void)_fetchActiveHandlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v5))
   {
@@ -3351,15 +3351,15 @@ void __57__MSPSharedTripService_fetchActiveHandlesWithCompletion___block_invoke(
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEFAULT, "[Service] Fetch active handles", buf, 2u);
   }
 
-  v7 = [(MSPSharedTripService *)self _remoteObjectProxy];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__MSPSharedTripService__fetchActiveHandlesWithCompletion___block_invoke;
   v9[3] = &unk_279868BE0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 fetchActiveHandlesWithCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [_remoteObjectProxy fetchActiveHandlesWithCompletion:v9];
 }
 
 void __58__MSPSharedTripService__fetchActiveHandlesWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3391,9 +3391,9 @@ void __58__MSPSharedTripService__fetchActiveHandlesWithCompletion___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSharedTripsWithCompletion:(id)a3
+- (void)fetchSharedTripsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3402,8 +3402,8 @@ void __58__MSPSharedTripService__fetchActiveHandlesWithCompletion___block_invoke
   block[2] = __55__MSPSharedTripService_fetchSharedTripsWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -3416,9 +3416,9 @@ void __55__MSPSharedTripService_fetchSharedTripsWithCompletion___block_invoke(ui
   [WeakRetained _fetchSharedTripsWithCompletion:*(a1 + 32)];
 }
 
-- (void)_fetchSharedTripsWithCompletion:(id)a3
+- (void)_fetchSharedTripsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3434,15 +3434,15 @@ void __55__MSPSharedTripService_fetchSharedTripsWithCompletion___block_invoke(ui
     _os_signpost_emit_with_name_impl(&dword_25813A000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "_fetchSharedTripsOnQueue", &unk_2581CCE6D, buf, 2u);
   }
 
-  v7 = [(MSPSharedTripService *)self _remoteObjectProxy];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__MSPSharedTripService__fetchSharedTripsWithCompletion___block_invoke;
   v9[3] = &unk_279868C08;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 fetchSharedTripsWithCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [_remoteObjectProxy fetchSharedTripsWithCompletion:v9];
 }
 
 void __56__MSPSharedTripService__fetchSharedTripsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -3471,10 +3471,10 @@ void __56__MSPSharedTripService__fetchSharedTripsWithCompletion___block_invoke(u
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)subscribeToSharedTripUpdatesWithIdentifier:(id)a3 completion:(id)a4
+- (void)subscribeToSharedTripUpdatesWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3483,10 +3483,10 @@ void __56__MSPSharedTripService__fetchSharedTripsWithCompletion___block_invoke(u
   v11[2] = __78__MSPSharedTripService_subscribeToSharedTripUpdatesWithIdentifier_completion___block_invoke;
   v11[3] = &unk_279868A00;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(isolationQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -3499,17 +3499,17 @@ void __78__MSPSharedTripService_subscribeToSharedTripUpdatesWithIdentifier_compl
   [WeakRetained _subscribeToSharedTripUpdatesWithIdentifier:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_subscribeToSharedTripUpdatesWithIdentifier:(id)a3 completion:(id)a4
+- (void)_subscribeToSharedTripUpdatesWithIdentifier:(id)identifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v8 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[Service] Request to subscribe to trip: %@", &buf, 0xCu);
   }
 
@@ -3530,7 +3530,7 @@ void __78__MSPSharedTripService_subscribeToSharedTripUpdatesWithIdentifier_compl
   v19[1] = 3221225472;
   v19[2] = __79__MSPSharedTripService__subscribeToSharedTripUpdatesWithIdentifier_completion___block_invoke;
   v19[3] = &unk_279868C30;
-  v10 = v7;
+  v10 = completionCopy;
   v20 = v10;
   p_buf = &buf;
   v11 = MEMORY[0x259C7AD60](v19);
@@ -3541,7 +3541,7 @@ void __78__MSPSharedTripService_subscribeToSharedTripUpdatesWithIdentifier_compl
   v12 = v11;
   v17 = v12;
   v15[4] = self;
-  v13 = v6;
+  v13 = identifierCopy;
   v16 = v13;
   v18 = &buf;
   [(MSPSharedTripService *)self _validateCurrentConfigurationWithCompletion:v15];
@@ -3665,9 +3665,9 @@ void __79__MSPSharedTripService__subscribeToSharedTripUpdatesWithIdentifier_comp
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blockSharedTrip:(id)a3
+- (void)blockSharedTrip:(id)trip
 {
-  v4 = a3;
+  tripCopy = trip;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -3676,8 +3676,8 @@ void __79__MSPSharedTripService__subscribeToSharedTripUpdatesWithIdentifier_comp
   block[2] = __40__MSPSharedTripService_blockSharedTrip___block_invoke;
   block[3] = &unk_279865F48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = tripCopy;
+  v6 = tripCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -3728,8 +3728,8 @@ void __51__MSPSharedTripService_clearBlockedTripIdentifiers__block_invoke(uint64
     _os_signpost_emit_with_name_impl(&dword_25813A000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "_clearBlockedTripIdentifiers", &unk_2581CCE6D, v6, 2u);
   }
 
-  v5 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v5 clearBlockedTripIdentifiers];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy clearBlockedTripIdentifiers];
 }
 
 - (void)purgeExpiredBlockedTripIdentifiers
@@ -3770,15 +3770,15 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_signpost_emit_with_name_impl(&dword_25813A000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "_purgeExpiredBlockedTripIdentifiers", &unk_2581CCE6D, v6, 2u);
   }
 
-  v5 = [(MSPSharedTripService *)self _remoteObjectProxy];
-  [v5 purgeExpiredBlockedTripIdentifiers];
+  _remoteObjectProxy = [(MSPSharedTripService *)self _remoteObjectProxy];
+  [_remoteObjectProxy purgeExpiredBlockedTripIdentifiers];
 }
 
-- (void)sharedTripDidBecomeAvailable:(id)a3
+- (void)sharedTripDidBecomeAvailable:(id)available
 {
   v11 = *MEMORY[0x277D85DE8];
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  availableCopy = available;
   dispatch_assert_queue_V2(isolationQueue);
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -3788,17 +3788,17 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v9, 0xCu);
   }
 
-  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:v5];
+  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:availableCopy];
 
   [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didReceiveSharedTrip:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)destinationDidUpdateForSharedTrip:(id)a3
+- (void)destinationDidUpdateForSharedTrip:(id)trip
 {
   v11 = *MEMORY[0x277D85DE8];
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  tripCopy = trip;
   dispatch_assert_queue_V2(isolationQueue);
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -3808,17 +3808,17 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v9, 0xCu);
   }
 
-  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:v5];
+  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:tripCopy];
 
   [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didUpdateDestinationForSharedTrip:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)destinationReachedDidUpdateForSharedTrip:(id)a3
+- (void)destinationReachedDidUpdateForSharedTrip:(id)trip
 {
   v11 = *MEMORY[0x277D85DE8];
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  tripCopy = trip;
   dispatch_assert_queue_V2(isolationQueue);
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -3828,17 +3828,17 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v9, 0xCu);
   }
 
-  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:v5];
+  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:tripCopy];
 
   [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didUpdateReachedDestinationForSharedTrip:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)etaDidUpdateForSharedTrip:(id)a3
+- (void)etaDidUpdateForSharedTrip:(id)trip
 {
   v11 = *MEMORY[0x277D85DE8];
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  tripCopy = trip;
   dispatch_assert_queue_V2(isolationQueue);
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -3848,17 +3848,17 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v9, 0xCu);
   }
 
-  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:v5];
+  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:tripCopy];
 
   [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didUpdateETAForSharedTrip:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)routeDidUpdateForSharedTrip:(id)a3
+- (void)routeDidUpdateForSharedTrip:(id)trip
 {
   v11 = *MEMORY[0x277D85DE8];
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  tripCopy = trip;
   dispatch_assert_queue_V2(isolationQueue);
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -3868,16 +3868,16 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v9, 0xCu);
   }
 
-  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:v5];
+  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:tripCopy];
 
   [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didUpdateRouteForSharedTrip:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharedTripDidBecomeUnavailable:(id)a3
+- (void)sharedTripDidBecomeUnavailable:(id)unavailable
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unavailableCopy = unavailable;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3887,7 +3887,7 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v11, 0xCu);
   }
 
-  if (!v4)
+  if (!unavailableCopy)
   {
     v6 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -3898,22 +3898,22 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
   }
 
   receivedTrips = self->_receivedTrips;
-  v8 = [v4 equalityTest];
-  v9 = [(NSMutableArray *)receivedTrips indexOfObjectPassingTest:v8];
+  equalityTest = [unavailableCopy equalityTest];
+  v9 = [(NSMutableArray *)receivedTrips indexOfObjectPassingTest:equalityTest];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_receivedTrips removeObjectAtIndex:v9];
-    [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didRemoveSharedTrip:v4];
+    [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didRemoveSharedTrip:unavailableCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharedTripDidClose:(id)a3
+- (void)sharedTripDidClose:(id)close
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  closeCopy = close;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3923,7 +3923,7 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v9, 0xCu);
   }
 
-  if (!v4)
+  if (!closeCopy)
   {
     v6 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -3933,15 +3933,15 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     }
   }
 
-  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:v4];
+  v7 = [(MSPSharedTripService *)self _insertOrUpdateTrip:closeCopy];
 
   [(GEOObserverHashTable *)self->_receivingObservers sharedTripService:self didUpdateClosedTrip:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_insertOrUpdateTrip:(id)a3
+- (id)_insertOrUpdateTrip:(id)trip
 {
-  v4 = a3;
+  tripCopy = trip;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = MSPGetSharedTripLog();
   if (os_signpost_enabled(v5))
@@ -3951,31 +3951,31 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
   }
 
   receivedTrips = self->_receivedTrips;
-  v7 = [v4 equalityTest];
-  v8 = [(NSMutableArray *)receivedTrips indexOfObjectPassingTest:v7];
+  equalityTest = [tripCopy equalityTest];
+  v8 = [(NSMutableArray *)receivedTrips indexOfObjectPassingTest:equalityTest];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v4)
+    if (tripCopy)
     {
-      [(NSMutableArray *)self->_receivedTrips insertObject:v4 atIndex:0];
+      [(NSMutableArray *)self->_receivedTrips insertObject:tripCopy atIndex:0];
     }
 
-    v9 = v4;
+    v9 = tripCopy;
   }
 
   else
   {
     v9 = [(NSMutableArray *)self->_receivedTrips objectAtIndex:v8];
-    [v9 merge:v4];
+    [v9 merge:tripCopy];
     if ([v9 hasClosed] && (objc_msgSend(v9, "closed") & 1) != 0 || objc_msgSend(v9, "hasArrived") && objc_msgSend(v9, "arrived"))
     {
       if ([v9 hasEtaInfo])
       {
-        v10 = [v9 finalETAInfo];
-        v11 = [v10 hasEtaTimestamp];
+        finalETAInfo = [v9 finalETAInfo];
+        hasEtaTimestamp = [finalETAInfo hasEtaTimestamp];
 
-        if (v11)
+        if (hasEtaTimestamp)
         {
           v12 = MSPGetSharedTripLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -3993,10 +3993,10 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
   return v9;
 }
 
-- (void)sharedTripDidStartSharingWithIdentifier:(id)a3
+- (void)sharedTripDidStartSharingWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4005,7 +4005,7 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEBUG, "[Service] %{private}s", &v9, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [identifierCopy copy];
   sharingGroupIdentifier = self->_sharingGroupIdentifier;
   self->_sharingGroupIdentifier = v6;
 
@@ -4013,29 +4013,29 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharedTripDidUpdateRecipients:(id)a3 withServices:(id)a4
+- (void)sharedTripDidUpdateRecipients:(id)recipients withServices:(id)services
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recipientsCopy = recipients;
+  servicesCopy = services;
   v8 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 136315395;
     v11 = "[MSPSharedTripService sharedTripDidUpdateRecipients:withServices:]";
     v12 = 2113;
-    v13 = v6;
+    v13 = recipientsCopy;
     _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_INFO, "[Service] %s: %{private}@", &v10, 0x16u);
   }
 
-  [(MSPSharedTripContactController *)self->_sharingContactController updateActiveSharingHandles:v6 serviceNames:v7];
+  [(MSPSharedTripContactController *)self->_sharingContactController updateActiveSharingHandles:recipientsCopy serviceNames:servicesCopy];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharedTripInvalidatedWithError:(id)a3
+- (void)sharedTripInvalidatedWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4049,15 +4049,15 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
   self->_sharingGroupIdentifier = 0;
 
   [(MSPSharedTripContactController *)self->_sharingContactController reset];
-  [(GEOObserverHashTable *)self->_sendingObservers sharedTripService:self sharingDidInvalidateWithError:v4];
+  [(GEOObserverHashTable *)self->_sendingObservers sharedTripService:self sharingDidInvalidateWithError:errorCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharingIdentityDidChange:(id)a3
+- (void)sharingIdentityDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4067,21 +4067,21 @@ void __58__MSPSharedTripService_purgeExpiredBlockedTripIdentifiers__block_invoke
   }
 
   sharingIdentity = self->_sharingIdentity;
-  self->_sharingIdentity = v4;
-  v7 = v4;
+  self->_sharingIdentity = changeCopy;
+  v7 = changeCopy;
 
   [(GEOObserverHashTable *)self->_sendingObservers sharedTripService:self didUpdateSharingIdentity:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(isolationQueue);
   [(MSPSharedTripService *)self _openConnectionIfNeeded];
-  v6 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v5];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  v7 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }

@@ -2,13 +2,13 @@
 - (id)getGridX;
 - (id)getGridY;
 - (int)compute2DGridTemps;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm0624042662bdd34b4bbbfc0f7da95deb
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
   v4 = dword_1000AB84C;
   v5 = dword_1000AB850;

@@ -1,15 +1,15 @@
 @interface BKOrientationManager
 - (BKOrientationManager)init;
-- (id)_initWithDeviceOrientationManager:(id)a3;
-- (void)_queue_postUpdatedRawAccelerometerDeviceOrientation:(int64_t)a3;
+- (id)_initWithDeviceOrientationManager:(id)manager;
+- (void)_queue_postUpdatedRawAccelerometerDeviceOrientation:(int64_t)orientation;
 - (void)dealloc;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
-- (void)serviceDidDisappear:(id)a3;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
+- (void)serviceDidDisappear:(id)disappear;
 @end
 
 @implementation BKOrientationManager
 
-- (void)_queue_postUpdatedRawAccelerometerDeviceOrientation:(int64_t)a3
+- (void)_queue_postUpdatedRawAccelerometerDeviceOrientation:(int64_t)orientation
 {
   notifyQueue = self->_notifyQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -17,18 +17,18 @@
   v4[2] = sub_100090148;
   v4[3] = &unk_1000FCF78;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = orientation;
   dispatch_async(notifyQueue, v4);
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
   queue = self->_queue;
-  v5 = a3;
+  disappearCopy = disappear;
   dispatch_assert_queue_V2(queue);
   queue_HIDService = self->_queue_HIDService;
   p_queue_HIDService = &self->_queue_HIDService;
-  LODWORD(queue) = [v5 isEqual:queue_HIDService];
+  LODWORD(queue) = [disappearCopy isEqual:queue_HIDService];
 
   if (queue)
   {
@@ -37,18 +37,18 @@
   }
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
-  v10 = a4;
+  matchCopy = match;
   queue = self->_queue;
-  v7 = a3;
+  matcherCopy = matcher;
   dispatch_assert_queue_V2(queue);
   queue_HIDServiceMatcher = self->_queue_HIDServiceMatcher;
 
-  if (queue_HIDServiceMatcher == v7)
+  if (queue_HIDServiceMatcher == matcherCopy)
   {
-    v9 = [v10 firstObject];
-    objc_storeStrong(&self->_queue_HIDService, v9);
+    firstObject = [matchCopy firstObject];
+    objc_storeStrong(&self->_queue_HIDService, firstObject);
   }
 }
 
@@ -64,9 +64,9 @@
   [(BKOrientationManager *)&v4 dealloc];
 }
 
-- (id)_initWithDeviceOrientationManager:(id)a3
+- (id)_initWithDeviceOrientationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v25.receiver = self;
   v25.super_class = BKOrientationManager;
   v6 = [(BKOrientationManager *)&v25 init];
@@ -106,7 +106,7 @@
 
     sub_1000905C8(v6, 0.0);
     sub_100090724(v6, 0.0);
-    objc_storeStrong(v6 + 15, a3);
+    objc_storeStrong(v6 + 15, manager);
     sub_1000908E4(v6);
     v19 = +[BKSDefaults localDefaults];
     v6[104] = [v19 ignoreAccelerometerAndOrientationEvents];

@@ -2,19 +2,19 @@
 - (CarMapNudgerizer)init;
 - (CarMapNudgerizerDelegate)delegate;
 - (MKMapView)mapView;
-- (double)_userDefaultsDoubleForKey:(id)a3 defaultValue:(double)a4;
-- (double)holdMagnitudeForDirection:(int64_t)a3;
-- (double)impulseMagnitudeForDirection:(int64_t)a3;
-- (id)_behaviorForDirection:(int64_t)a3;
-- (int64_t)_eventDirectionForButtonType:(int64_t)a3;
+- (double)_userDefaultsDoubleForKey:(id)key defaultValue:(double)value;
+- (double)holdMagnitudeForDirection:(int64_t)direction;
+- (double)impulseMagnitudeForDirection:(int64_t)direction;
+- (id)_behaviorForDirection:(int64_t)direction;
+- (int64_t)_eventDirectionForButtonType:(int64_t)type;
 - (void)_addPanRecognizers;
 - (void)_beginAnimatingIfNeeded;
 - (void)_beginImpulseDown;
-- (void)_beginImpulseInDirection:(int64_t)a3 withMagnitude:(double)a4;
+- (void)_beginImpulseInDirection:(int64_t)direction withMagnitude:(double)magnitude;
 - (void)_beginImpulseLeft;
 - (void)_beginImpulseRight;
 - (void)_beginImpulseUp;
-- (void)_clearGesture:(id)a3;
+- (void)_clearGesture:(id)gesture;
 - (void)_clearGestureRecognizersInFlight;
 - (void)_clearGesturesAndAnimations;
 - (void)_configureAnimator;
@@ -29,13 +29,13 @@
 - (void)_momentaryImpulseRight;
 - (void)_momentaryImpulseUp;
 - (void)_removePanRecognizers;
-- (void)_setImpulseInDirection:(int64_t)a3 magnitude:(double)a4;
-- (void)beginImpulseInDirection:(int64_t)a3;
-- (void)endImpluseInDirection:(int64_t)a3;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)momentaryImpulseInDirection:(int64_t)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_setImpulseInDirection:(int64_t)direction magnitude:(double)magnitude;
+- (void)beginImpulseInDirection:(int64_t)direction;
+- (void)endImpluseInDirection:(int64_t)direction;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
+- (void)momentaryImpulseInDirection:(int64_t)direction;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation CarMapNudgerizer
@@ -105,58 +105,58 @@
   return WeakRetained;
 }
 
-- (double)_userDefaultsDoubleForKey:(id)a3 defaultValue:(double)a4
+- (double)_userDefaultsDoubleForKey:(id)key defaultValue:(double)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = +[NSUserDefaults standardUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   if (v7)
   {
     v8 = +[NSUserDefaults standardUserDefaults];
-    [v8 doubleForKey:v5];
-    a4 = v9;
+    [v8 doubleForKey:keyCopy];
+    value = v9;
   }
 
-  return a4;
+  return value;
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v7 = a3;
-  v4 = [v7 allowedPressTypes];
-  v5 = [v4 firstObject];
-  v6 = -[CarMapNudgerizer _eventDirectionForButtonType:](self, "_eventDirectionForButtonType:", [v5 integerValue]);
+  pressCopy = press;
+  allowedPressTypes = [pressCopy allowedPressTypes];
+  firstObject = [allowedPressTypes firstObject];
+  v6 = -[CarMapNudgerizer _eventDirectionForButtonType:](self, "_eventDirectionForButtonType:", [firstObject integerValue]);
 
-  if ([v7 state] == 1)
+  if ([pressCopy state] == 1)
   {
     [(CarMapNudgerizer *)self beginImpulseInDirection:v6];
   }
 
-  else if ([v7 state] == 3 || objc_msgSend(v7, "state") == 4)
+  else if ([pressCopy state] == 3 || objc_msgSend(pressCopy, "state") == 4)
   {
     [(CarMapNudgerizer *)self endImpluseInDirection:v6];
   }
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v7 = a3;
-  if ([v7 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v4 = [v7 allowedPressTypes];
-    v5 = [v4 firstObject];
-    v6 = -[CarMapNudgerizer _eventDirectionForButtonType:](self, "_eventDirectionForButtonType:", [v5 integerValue]);
+    allowedPressTypes = [tapCopy allowedPressTypes];
+    firstObject = [allowedPressTypes firstObject];
+    v6 = -[CarMapNudgerizer _eventDirectionForButtonType:](self, "_eventDirectionForButtonType:", [firstObject integerValue]);
 
     [(CarMapNudgerizer *)self momentaryImpulseInDirection:v6];
   }
 }
 
-- (int64_t)_eventDirectionForButtonType:(int64_t)a3
+- (int64_t)_eventDirectionForButtonType:(int64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -190,19 +190,19 @@
   [(CarMapNudgerizer *)self _clearGesture:downLongPressRecognizer];
 }
 
-- (void)_clearGesture:(id)a3
+- (void)_clearGesture:(id)gesture
 {
-  v4 = a3;
-  v3 = [v4 isEnabled];
-  [v4 setEnabled:0];
-  [v4 setEnabled:v3];
+  gestureCopy = gesture;
+  isEnabled = [gestureCopy isEnabled];
+  [gestureCopy setEnabled:0];
+  [gestureCopy setEnabled:isEnabled];
 }
 
 - (void)_addPanRecognizers
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 window];
-  objc_storeWeak(&self->_gestureRecognizerView, v4);
+  window = [v3 window];
+  objc_storeWeak(&self->_gestureRecognizerView, window);
 
   v5 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"handleLongPress:"];
   leftLongPressRecognizer = self->_leftLongPressRecognizer;
@@ -285,12 +285,12 @@
   [v32 addGestureRecognizer:self->_downLongPressRecognizer];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(CarMapNudgerizer *)self _addPanRecognizers];
     }
@@ -302,107 +302,107 @@
   }
 }
 
-- (void)momentaryImpulseInDirection:(int64_t)a3
+- (void)momentaryImpulseInDirection:(int64_t)direction
 {
-  if (a3 > 2)
+  if (direction > 2)
   {
-    if (a3 == 4)
+    if (direction == 4)
     {
       [(CarMapNudgerizer *)self _momentaryImpulseRight];
     }
 
-    else if (a3 == 3)
+    else if (direction == 3)
     {
       [(CarMapNudgerizer *)self _momentaryImpulseLeft];
     }
   }
 
-  else if (a3 == 1)
+  else if (direction == 1)
   {
     [(CarMapNudgerizer *)self _momentaryImpulseUp];
   }
 
-  else if (a3 == 2)
+  else if (direction == 2)
   {
     [(CarMapNudgerizer *)self _momentaryImpulseDown];
   }
 }
 
-- (void)endImpluseInDirection:(int64_t)a3
+- (void)endImpluseInDirection:(int64_t)direction
 {
-  if (a3 > 2)
+  if (direction > 2)
   {
-    if (a3 == 4)
+    if (direction == 4)
     {
       [(CarMapNudgerizer *)self _endImpulseRight];
     }
 
-    else if (a3 == 3)
+    else if (direction == 3)
     {
       [(CarMapNudgerizer *)self _endImpulseLeft];
     }
   }
 
-  else if (a3 == 1)
+  else if (direction == 1)
   {
     [(CarMapNudgerizer *)self _endImpulseUp];
   }
 
-  else if (a3 == 2)
+  else if (direction == 2)
   {
     [(CarMapNudgerizer *)self _endImpulseDown];
   }
 }
 
-- (void)beginImpulseInDirection:(int64_t)a3
+- (void)beginImpulseInDirection:(int64_t)direction
 {
-  if (a3 > 2)
+  if (direction > 2)
   {
-    if (a3 == 4)
+    if (direction == 4)
     {
       [(CarMapNudgerizer *)self _beginImpulseRight];
     }
 
-    else if (a3 == 3)
+    else if (direction == 3)
     {
       [(CarMapNudgerizer *)self _beginImpulseLeft];
     }
   }
 
-  else if (a3 == 1)
+  else if (direction == 1)
   {
     [(CarMapNudgerizer *)self _beginImpulseUp];
   }
 
-  else if (a3 == 2)
+  else if (direction == 2)
   {
     [(CarMapNudgerizer *)self _beginImpulseDown];
   }
 }
 
-- (void)_setImpulseInDirection:(int64_t)a3 magnitude:(double)a4
+- (void)_setImpulseInDirection:(int64_t)direction magnitude:(double)magnitude
 {
   [(CarMapNudgerizer *)self _beginAnimatingIfNeeded];
-  v7 = [(CarMapNudgerizer *)self _behaviorForDirection:a3];
-  [v7 setMagnitude:a4];
+  v7 = [(CarMapNudgerizer *)self _behaviorForDirection:direction];
+  [v7 setMagnitude:magnitude];
 }
 
-- (id)_behaviorForDirection:(int64_t)a3
+- (id)_behaviorForDirection:(int64_t)direction
 {
-  if ((a3 - 1) > 3)
+  if ((direction - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.isa + qword_101215010[a3 - 1]);
+    v4 = *(&self->super.isa + qword_101215010[direction - 1]);
   }
 
   return v4;
 }
 
-- (void)_beginImpulseInDirection:(int64_t)a3 withMagnitude:(double)a4
+- (void)_beginImpulseInDirection:(int64_t)direction withMagnitude:(double)magnitude
 {
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
   if (!WeakRetained || ((v8 = WeakRetained, v9 = objc_loadWeakRetained(&self->_mapView), [v9 bounds], v11 = v10, v13 = v12, height = CGSizeZero.height, v9, v8, v11 == CGSizeZero.width) ? (v15 = v13 == height) : (v15 = 0), v15))
@@ -453,9 +453,9 @@ LABEL_22:
   }
 
   v16 = objc_loadWeakRetained(&self->_mapView);
-  v17 = [v16 userTrackingMode];
+  userTrackingMode = [v16 userTrackingMode];
 
-  if (v17)
+  if (userTrackingMode)
   {
     v18 = objc_loadWeakRetained(&self->_mapView);
     [v18 _setUserTrackingMode:0 animated:0 fromTrackingButton:0];
@@ -468,33 +468,33 @@ LABEL_22:
   {
     v21 = objc_loadWeakRetained(&self->_delegate);
     v22 = objc_loadWeakRetained(&self->_mapView);
-    [v21 nudgerizer:self didGestureMapView:v22 inDirection:a3];
+    [v21 nudgerizer:self didGestureMapView:v22 inDirection:direction];
   }
 
-  [(CarMapNudgerizer *)self _setImpulseInDirection:a3 magnitude:a4];
+  [(CarMapNudgerizer *)self _setImpulseInDirection:direction magnitude:magnitude];
 }
 
-- (double)impulseMagnitudeForDirection:(int64_t)a3
+- (double)impulseMagnitudeForDirection:(int64_t)direction
 {
   [(CarMapNudgerizer *)self panningMetrics];
   v5 = v22;
   v6 = +[NSDate date];
-  v7 = [(CarMapNudgerizer *)self lastImpulseDate];
+  lastImpulseDate = [(CarMapNudgerizer *)self lastImpulseDate];
   [(CarMapNudgerizer *)self panningMetrics];
-  v8 = [v7 dateByAddingTimeInterval:v21];
+  v8 = [lastImpulseDate dateByAddingTimeInterval:v21];
   v9 = [v8 compare:v6];
 
-  if ([(CarMapNudgerizer *)self lastImpulseDirection]== a3 && v9 == 1)
+  if ([(CarMapNudgerizer *)self lastImpulseDirection]== direction && v9 == 1)
   {
-    v10 = [(CarMapNudgerizer *)self impulseCount];
+    impulseCount = [(CarMapNudgerizer *)self impulseCount];
     [(CarMapNudgerizer *)self panningMetrics];
     [(CarMapNudgerizer *)self panningMetrics];
-    v5 = fmin(v22 + v20 * v10, v19);
+    v5 = fmin(v22 + v20 * impulseCount, v19);
   }
 
   else
   {
-    [(CarMapNudgerizer *)self setLastImpulseDirection:a3];
+    [(CarMapNudgerizer *)self setLastImpulseDirection:direction];
     [(CarMapNudgerizer *)self setImpulseCount:0];
   }
 
@@ -502,7 +502,7 @@ LABEL_22:
   [(CarMapNudgerizer *)self setImpulseCount:[(CarMapNudgerizer *)self impulseCount]+ 1];
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
   [WeakRetained bounds];
-  if ((a3 - 1) > 1)
+  if ((direction - 1) > 1)
   {
     Width = CGRectGetWidth(*&v12);
   }
@@ -517,7 +517,7 @@ LABEL_22:
   return v17 * v5;
 }
 
-- (double)holdMagnitudeForDirection:(int64_t)a3
+- (double)holdMagnitudeForDirection:(int64_t)direction
 {
   [(CarMapNudgerizer *)self panningMetrics];
   WeakRetained = objc_loadWeakRetained(&self->_mapView);

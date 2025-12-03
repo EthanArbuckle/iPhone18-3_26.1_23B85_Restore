@@ -1,59 +1,59 @@
 @interface CallControlsViewController
-- (_TtC15ConversationKit26CallControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit26CallControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CallControlsViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   CallControlsViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CallControlsViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  CallControlsViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  CallControlsViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  CallControlsViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  CallControlsViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  CallControlsViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  CallControlsViewController.viewWillDisappear(_:)(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CallControlsViewController.viewDidLayoutSubviews()();
 }
 
-- (_TtC15ConversationKit26CallControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit26CallControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CallControlsViewController.init(nibName:bundle:)();
 }
 

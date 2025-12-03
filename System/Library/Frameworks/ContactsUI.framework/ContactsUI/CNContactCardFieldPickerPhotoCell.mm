@@ -1,10 +1,10 @@
 @interface CNContactCardFieldPickerPhotoCell
 - (CNAvatarView)avatarView;
 - (CNContactCardFieldPickerPhotoCell)init;
-- (void)prepareCellWithContact:(id)a3;
+- (void)prepareCellWithContact:(id)contact;
 - (void)prepareForReuse;
 - (void)setConfiguration;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation CNContactCardFieldPickerPhotoCell
@@ -14,8 +14,8 @@
   v4.receiver = self;
   v4.super_class = CNContactCardFieldPickerPhotoCell;
   [(CNContactCardFieldPickerPhotoCell *)&v4 prepareForReuse];
-  v3 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  [v3 removeFromSuperview];
+  avatarView = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  [avatarView removeFromSuperview];
 
   [(CNContactCardFieldPickerPhotoCell *)self setAvatarView:0];
 }
@@ -30,8 +30,8 @@
     v6 = self->_avatarView;
     self->_avatarView = v5;
 
-    v7 = [(CNContactCardFieldPickerPhotoCell *)self contentView];
-    [v7 addSubview:self->_avatarView];
+    contentView = [(CNContactCardFieldPickerPhotoCell *)self contentView];
+    [contentView addSubview:self->_avatarView];
 
     avatarView = self->_avatarView;
   }
@@ -39,45 +39,45 @@
   return avatarView;
 }
 
-- (void)prepareCellWithContact:(id)a3
+- (void)prepareCellWithContact:(id)contact
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v21 = [(CNContactCardFieldPickerPhotoCell *)self defaultContentConfiguration];
-  v4 = [(CNContactCardFieldPickerPhotoCell *)self contentView];
-  v33[0] = v31;
+  contactCopy = contact;
+  defaultContentConfiguration = [(CNContactCardFieldPickerPhotoCell *)self defaultContentConfiguration];
+  contentView = [(CNContactCardFieldPickerPhotoCell *)self contentView];
+  v33[0] = contactCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-  v6 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  [v6 setContacts:v5];
+  avatarView = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  [avatarView setContacts:v5];
 
-  v7 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  avatarView2 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  [avatarView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  v28 = [v30 topAnchor];
-  v29 = [v4 layoutMarginsGuide];
-  v27 = [v29 topAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  avatarView3 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  topAnchor = [avatarView3 topAnchor];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[0] = v26;
-  v25 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  [v25 bottomAnchor];
-  v23 = v22 = v4;
-  v24 = [v4 layoutMarginsGuide];
-  v20 = [v24 bottomAnchor];
-  v19 = [v23 constraintEqualToAnchor:v20];
+  avatarView4 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  [avatarView4 bottomAnchor];
+  v23 = v22 = contentView;
+  layoutMarginsGuide2 = [contentView layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide2 bottomAnchor];
+  v19 = [v23 constraintEqualToAnchor:bottomAnchor];
   v32[1] = v19;
-  v18 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  v8 = [v18 widthAnchor];
-  v9 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  v10 = [v9 heightAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  avatarView5 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  widthAnchor = [avatarView5 widthAnchor];
+  avatarView6 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  heightAnchor = [avatarView6 heightAnchor];
+  v11 = [widthAnchor constraintEqualToAnchor:heightAnchor];
   v32[2] = v11;
-  v12 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v4 imageLayoutGuide];
-  v15 = [v14 trailingAnchor];
-  [v21 imageToTextPadding];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:?];
+  avatarView7 = [(CNContactCardFieldPickerPhotoCell *)self avatarView];
+  leadingAnchor = [avatarView7 leadingAnchor];
+  imageLayoutGuide = [contentView imageLayoutGuide];
+  trailingAnchor = [imageLayoutGuide trailingAnchor];
+  [defaultContentConfiguration imageToTextPadding];
+  v16 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:?];
   v32[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
 
@@ -86,7 +86,7 @@
 
 - (void)setConfiguration
 {
-  v5 = [(CNContactCardFieldPickerPhotoCell *)self defaultContentConfiguration];
+  defaultContentConfiguration = [(CNContactCardFieldPickerPhotoCell *)self defaultContentConfiguration];
   if ([(CNContactCardFieldPickerPhotoCell *)self isSelected])
   {
     v3 = @"checkmark.circle.fill";
@@ -98,16 +98,16 @@
   }
 
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:v3];
-  [v5 setImage:v4];
+  [defaultContentConfiguration setImage:v4];
 
-  [(CNContactCardFieldPickerPhotoCell *)self setContentConfiguration:v5];
+  [(CNContactCardFieldPickerPhotoCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = CNContactCardFieldPickerPhotoCell;
-  [(CNContactCardFieldPickerPhotoCell *)&v5 setSelected:a3 animated:a4];
+  [(CNContactCardFieldPickerPhotoCell *)&v5 setSelected:selected animated:animated];
   [(CNContactCardFieldPickerPhotoCell *)self setConfiguration];
 }
 

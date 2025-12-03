@@ -1,46 +1,46 @@
 @interface RTAccount
-- (RTAccount)initWithACAccount:(id)a3 underageAccount:(BOOL)a4;
+- (RTAccount)initWithACAccount:(id)account underageAccount:(BOOL)underageAccount;
 - (id)appleIDs;
 - (id)description;
 @end
 
 @implementation RTAccount
 
-- (RTAccount)initWithACAccount:(id)a3 underageAccount:(BOOL)a4
+- (RTAccount)initWithACAccount:(id)account underageAccount:(BOOL)underageAccount
 {
-  v4 = a4;
-  v6 = a3;
+  underageAccountCopy = underageAccount;
+  accountCopy = account;
   v17.receiver = self;
   v17.super_class = RTAccount;
   v7 = [(RTAccount *)&v17 init];
   if (v7)
   {
-    v8 = [v6 aa_personID];
-    [(RTAccount *)v7 setDsid:v8];
+    aa_personID = [accountCopy aa_personID];
+    [(RTAccount *)v7 setDsid:aa_personID];
 
-    v9 = [v6 aa_firstName];
-    [(RTAccount *)v7 setFirstName:v9];
+    aa_firstName = [accountCopy aa_firstName];
+    [(RTAccount *)v7 setFirstName:aa_firstName];
 
-    v10 = [v6 aa_lastName];
-    [(RTAccount *)v7 setLastName:v10];
+    aa_lastName = [accountCopy aa_lastName];
+    [(RTAccount *)v7 setLastName:aa_lastName];
 
-    -[RTAccount setPrimaryEmailVerified:](v7, "setPrimaryEmailVerified:", [v6 aa_isPrimaryEmailVerified]);
-    v11 = [v6 username];
-    [(RTAccount *)v7 setAppleID:v11];
+    -[RTAccount setPrimaryEmailVerified:](v7, "setPrimaryEmailVerified:", [accountCopy aa_isPrimaryEmailVerified]);
+    username = [accountCopy username];
+    [(RTAccount *)v7 setAppleID:username];
 
-    v12 = [v6 aa_altDSID];
-    [(RTAccount *)v7 setAltDSID:v12];
+    aa_altDSID = [accountCopy aa_altDSID];
+    [(RTAccount *)v7 setAltDSID:aa_altDSID];
 
-    v13 = [v6 aa_primaryEmail];
-    [(RTAccount *)v7 setPrimaryEmail:v13];
+    aa_primaryEmail = [accountCopy aa_primaryEmail];
+    [(RTAccount *)v7 setPrimaryEmail:aa_primaryEmail];
 
-    v14 = [v6 appleID];
-    [(RTAccount *)v7 setAppleIDAlias:v14];
+    appleID = [accountCopy appleID];
+    [(RTAccount *)v7 setAppleIDAlias:appleID];
 
-    v15 = [v6 aa_appleIDAliases];
-    [(RTAccount *)v7 setAppleIDAliases:v15];
+    aa_appleIDAliases = [accountCopy aa_appleIDAliases];
+    [(RTAccount *)v7 setAppleIDAliases:aa_appleIDAliases];
 
-    [(RTAccount *)v7 setUnderageAccount:v4];
+    [(RTAccount *)v7 setUnderageAccount:underageAccountCopy];
   }
 
   return v7;
@@ -49,43 +49,43 @@
 - (id)appleIDs
 {
   v3 = objc_opt_new();
-  v4 = [(RTAccount *)self dsid];
+  dsid = [(RTAccount *)self dsid];
 
-  if (v4)
+  if (dsid)
   {
-    v5 = [(RTAccount *)self dsid];
-    [v3 addObject:v5];
+    dsid2 = [(RTAccount *)self dsid];
+    [v3 addObject:dsid2];
   }
 
-  v6 = [(RTAccount *)self appleID];
+  appleID = [(RTAccount *)self appleID];
 
-  if (v6)
+  if (appleID)
   {
-    v7 = [(RTAccount *)self appleID];
-    [v3 addObject:v7];
+    appleID2 = [(RTAccount *)self appleID];
+    [v3 addObject:appleID2];
   }
 
   if ([(RTAccount *)self primaryEmailVerified])
   {
-    v8 = [(RTAccount *)self primaryEmail];
+    primaryEmail = [(RTAccount *)self primaryEmail];
 
-    if (v8)
+    if (primaryEmail)
     {
-      v9 = [(RTAccount *)self primaryEmail];
-      [v3 addObject:v9];
+      primaryEmail2 = [(RTAccount *)self primaryEmail];
+      [v3 addObject:primaryEmail2];
     }
   }
 
-  v10 = [(RTAccount *)self appleIDAlias];
+  appleIDAlias = [(RTAccount *)self appleIDAlias];
 
-  if (v10)
+  if (appleIDAlias)
   {
-    v11 = [(RTAccount *)self appleIDAlias];
-    [v3 addObject:v11];
+    appleIDAlias2 = [(RTAccount *)self appleIDAlias];
+    [v3 addObject:appleIDAlias2];
   }
 
-  v12 = [(RTAccount *)self appleIDAliases];
-  [v3 addObjectsFromArray:v12];
+  appleIDAliases = [(RTAccount *)self appleIDAliases];
+  [v3 addObjectsFromArray:appleIDAliases];
 
   return v3;
 }

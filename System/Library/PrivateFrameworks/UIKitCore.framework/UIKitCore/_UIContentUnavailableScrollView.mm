@@ -1,18 +1,18 @@
 @interface _UIContentUnavailableScrollView
 - (BOOL)_hasReparentedPanGesture;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (_UIContentUnavailableScrollView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (_UIContentUnavailableScrollView)initWithFrame:(CGRect)frame;
 - (id)_parentScrollView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _UIContentUnavailableScrollView
 
-- (_UIContentUnavailableScrollView)initWithFrame:(CGRect)a3
+- (_UIContentUnavailableScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIContentUnavailableScrollView;
-  v3 = [(UIScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,19 +26,19 @@
 
 - (BOOL)_hasReparentedPanGesture
 {
-  v2 = self;
-  v3 = [(UIScrollView *)self panGestureRecognizer];
-  v4 = [v3 view];
-  LOBYTE(v2) = v4 != v2;
+  selfCopy = self;
+  panGestureRecognizer = [(UIScrollView *)self panGestureRecognizer];
+  view = [panGestureRecognizer view];
+  LOBYTE(selfCopy) = view != selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UIContentUnavailableScrollView;
-  v5 = [(UIScrollView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIScrollView *)&v8 hitTest:event withEvent:test.x, test.y];
   if ([(_UIContentUnavailableScrollView *)self _hasReparentedPanGesture]&& v5 == self)
   {
     v6 = 0;
@@ -52,23 +52,23 @@
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
   if (![(_UIContentUnavailableScrollView *)self _hasReparentedPanGesture])
   {
     return 0;
   }
 
-  v7 = [(UIScrollView *)self panGestureRecognizer];
+  panGestureRecognizer = [(UIScrollView *)self panGestureRecognizer];
 
-  if (v7 != a3 || ![a4 _isGestureType:9])
+  if (panGestureRecognizer != recognizer || ![gestureRecognizer _isGestureType:9])
   {
     return 0;
   }
 
-  v8 = [a4 view];
-  v9 = [a3 view];
-  v10 = [v8 isDescendantOfView:v9];
+  view = [gestureRecognizer view];
+  view2 = [recognizer view];
+  v10 = [view isDescendantOfView:view2];
 
   return v10;
 }
@@ -77,17 +77,17 @@
 {
   if ([(_UIContentUnavailableScrollView *)self _hasReparentedPanGesture])
   {
-    v3 = 0;
+    _parentScrollView = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _UIContentUnavailableScrollView;
-    v3 = [(UIScrollView *)&v5 _parentScrollView];
+    _parentScrollView = [(UIScrollView *)&v5 _parentScrollView];
   }
 
-  return v3;
+  return _parentScrollView;
 }
 
 @end

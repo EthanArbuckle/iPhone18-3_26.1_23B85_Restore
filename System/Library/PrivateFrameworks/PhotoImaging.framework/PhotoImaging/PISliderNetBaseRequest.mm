@@ -1,16 +1,16 @@
 @interface PISliderNetBaseRequest
-- (PISliderNetBaseRequest)initWithComposition:(id)a3 sliderNetModel:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PISliderNetBaseRequest)initWithComposition:(id)composition sliderNetModel:(id)model;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_commonInit;
 @end
 
 @implementation PISliderNetBaseRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PISliderNetBaseRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -32,19 +32,19 @@
   scalePolicy = self->_scalePolicy;
   self->_scalePolicy = v3;
 
-  v5 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+  sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
   colorSpace = self->_colorSpace;
-  self->_colorSpace = v5;
+  self->_colorSpace = sRGBColorSpace;
 }
 
-- (PISliderNetBaseRequest)initWithComposition:(id)a3 sliderNetModel:(id)a4
+- (PISliderNetBaseRequest)initWithComposition:(id)composition sliderNetModel:(id)model
 {
-  v6 = a4;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = PISliderNetBaseRequest;
-  v7 = [(NURenderRequest *)&v10 initWithComposition:a3];
+  v7 = [(NURenderRequest *)&v10 initWithComposition:composition];
   sliderNetModel = v7->_sliderNetModel;
-  v7->_sliderNetModel = v6;
+  v7->_sliderNetModel = modelCopy;
 
   return v7;
 }

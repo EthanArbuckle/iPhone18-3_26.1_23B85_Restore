@@ -1,23 +1,23 @@
 @interface CLLocation
-+ (CLLocation)locationWithCPLLocationDictionary:(id)a3;
++ (CLLocation)locationWithCPLLocationDictionary:(id)dictionary;
 - (id)cplLocationDictionary;
 @end
 
 @implementation CLLocation
 
-+ (CLLocation)locationWithCPLLocationDictionary:(id)a3
++ (CLLocation)locationWithCPLLocationDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = a3;
-    v4 = [v3 cpl_validObjectForKey:@"lat" class:objc_opt_class()];
-    v5 = [v3 cpl_validObjectForKey:@"lon" class:objc_opt_class()];
-    v6 = [v3 cpl_validObjectForKey:@"alt" class:objc_opt_class()];
-    v7 = [v3 cpl_validObjectForKey:@"horzAcc" class:objc_opt_class()];
-    v8 = [v3 cpl_validObjectForKey:@"vertAcc" class:objc_opt_class()];
-    v9 = [v3 cpl_validObjectForKey:@"timestamp" class:objc_opt_class()];
-    v10 = [v3 cpl_validObjectForKey:@"course" class:objc_opt_class()];
-    v11 = [v3 cpl_validObjectForKey:@"speed" class:objc_opt_class()];
+    dictionaryCopy = dictionary;
+    v4 = [dictionaryCopy cpl_validObjectForKey:@"lat" class:objc_opt_class()];
+    v5 = [dictionaryCopy cpl_validObjectForKey:@"lon" class:objc_opt_class()];
+    v6 = [dictionaryCopy cpl_validObjectForKey:@"alt" class:objc_opt_class()];
+    v7 = [dictionaryCopy cpl_validObjectForKey:@"horzAcc" class:objc_opt_class()];
+    v8 = [dictionaryCopy cpl_validObjectForKey:@"vertAcc" class:objc_opt_class()];
+    v9 = [dictionaryCopy cpl_validObjectForKey:@"timestamp" class:objc_opt_class()];
+    v10 = [dictionaryCopy cpl_validObjectForKey:@"course" class:objc_opt_class()];
+    v11 = [dictionaryCopy cpl_validObjectForKey:@"speed" class:objc_opt_class()];
 
     v12 = 0;
     if (v4 && v5)
@@ -71,8 +71,8 @@
   v8 = [NSNumber numberWithDouble:?];
   v15[4] = v8;
   v14[5] = @"timestamp";
-  v9 = [(CLLocation *)self timestamp];
-  v15[5] = v9;
+  timestamp = [(CLLocation *)self timestamp];
+  v15[5] = timestamp;
   v14[6] = @"course";
   [(CLLocation *)self course];
   v10 = [NSNumber numberWithDouble:?];

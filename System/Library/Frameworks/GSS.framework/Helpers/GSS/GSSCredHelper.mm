@@ -1,26 +1,26 @@
 @interface GSSCredHelper
-+ (void)do_Acquire:(id)a3 request:(id)a4 reply:(id)a5;
-+ (void)do_Refresh:(id)a3 request:(id)a4 reply:(id)a5;
++ (void)do_Acquire:(id)acquire request:(id)request reply:(id)reply;
++ (void)do_Refresh:(id)refresh request:(id)request reply:(id)reply;
 @end
 
 @implementation GSSCredHelper
 
-+ (void)do_Acquire:(id)a3 request:(id)a4 reply:(id)a5
++ (void)do_Acquire:(id)acquire request:(id)request reply:(id)reply
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, acquire);
   v87 = 0;
-  objc_storeStrong(&v87, a4);
+  objc_storeStrong(&v87, request);
   xdict = 0;
-  objc_storeStrong(&xdict, a5);
+  objc_storeStrong(&xdict, reply);
   oslog = sub_100018AD4();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [location[0] bundleIdentifier];
-    sub_100003F54(v111, v30);
+    bundleIdentifier = [location[0] bundleIdentifier];
+    sub_100003F54(v111, bundleIdentifier);
     _os_log_debug_impl(&_mh_execute_header, oslog, type, "do_Acquire %@", v111, 0xCu);
   }
 
@@ -142,8 +142,8 @@
             v49 = OS_LOG_TYPE_ERROR;
             if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
             {
-              v14 = [location[0] session];
-              sub_1000173F8(v100, v14, inited);
+              session = [location[0] session];
+              sub_1000173F8(v100, session, inited);
               _os_log_error_impl(&_mh_execute_header, v50, v49, "unable to find cache %u, %d", v100, 0xEu);
             }
 
@@ -159,8 +159,8 @@
               v47 = OS_LOG_TYPE_ERROR;
               if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
               {
-                v15 = [location[0] session];
-                sub_1000173F8(v99, v15, inited);
+                session2 = [location[0] session];
+                sub_1000173F8(v99, session2, inited);
                 _os_log_error_impl(&_mh_execute_header, v48, v47, "unable to retrieve principal %u, %d", v99, 0xEu);
               }
 
@@ -185,8 +185,8 @@
                   v45 = OS_LOG_TYPE_ERROR;
                   if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
                   {
-                    v16 = [location[0] session];
-                    sub_1000173F8(v98, v16, inited);
+                    session3 = [location[0] session];
+                    sub_1000173F8(v98, session3, inited);
                     _os_log_error_impl(&_mh_execute_header, v46, v45, "unable to init cred context %u, %d", v98, 0xEu);
                   }
 
@@ -206,8 +206,8 @@
                     v43 = OS_LOG_TYPE_ERROR;
                     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
                     {
-                      v18 = [location[0] session];
-                      sub_1000173F8(v97, v18, inited);
+                      session4 = [location[0] session];
+                      sub_1000173F8(v97, session4, inited);
                       _os_log_error_impl(&_mh_execute_header, v44, v43, "unable to set password %u, %d", v97, 0xEu);
                     }
 
@@ -360,22 +360,22 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)do_Refresh:(id)a3 request:(id)a4 reply:(id)a5
++ (void)do_Refresh:(id)refresh request:(id)request reply:(id)reply
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, refresh);
   v130 = 0;
-  objc_storeStrong(&v130, a4);
+  objc_storeStrong(&v130, request);
   xdict = 0;
-  objc_storeStrong(&xdict, a5);
+  objc_storeStrong(&xdict, reply);
   oslog = sub_100018AD4();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    v44 = [location[0] bundleIdentifier];
-    sub_100003F54(v159, v44);
+    bundleIdentifier = [location[0] bundleIdentifier];
+    sub_100003F54(v159, bundleIdentifier);
     _os_log_debug_impl(&_mh_execute_header, oslog, type, "do_Refresh %@", v159, 0xCu);
   }
 
@@ -762,8 +762,8 @@
                             v51 = OS_LOG_TYPE_ERROR;
                             if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
                             {
-                              v16 = [location[0] session];
-                              sub_1000173F8(v138, v16, inited);
+                              session = [location[0] session];
+                              sub_1000173F8(v138, session, inited);
                               _os_log_error_impl(&_mh_execute_header, v52, v51, "unable to save cred in cache: %u, %d", v138, 0xEu);
                             }
 

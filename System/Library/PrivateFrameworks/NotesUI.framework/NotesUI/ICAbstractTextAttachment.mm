@@ -1,11 +1,11 @@
 @interface ICAbstractTextAttachment
-+ (id)textAttachmentWithBaseAttachment:(id)a3;
++ (id)textAttachmentWithBaseAttachment:(id)attachment;
 - (BOOL)containsFindableText;
 - (BOOL)supportsMultiplePresentationSizes;
-- (Class)attachmentViewClassForTextContainer:(id)a3;
-- (ICAbstractTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (Class)attachmentViewClassForTextContainer:(id)container;
+- (ICAbstractTextAttachment)initWithData:(id)data ofType:(id)type;
 - (NSString)viewIdentifier;
-- (id)newlyCreatedViewForManualRendering:(BOOL)a3 textContainer:(id)a4;
+- (id)newlyCreatedViewForManualRendering:(BOOL)rendering textContainer:(id)container;
 @end
 
 @implementation ICAbstractTextAttachment
@@ -18,15 +18,15 @@
   v11 = __Block_byref_object_copy__44;
   v12 = __Block_byref_object_dispose__44;
   v13 = 0;
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__ICAbstractTextAttachment_viewIdentifier__block_invoke;
   v7[3] = &unk_1E8468FA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -45,15 +45,15 @@ void __42__ICAbstractTextAttachment_viewIdentifier__block_invoke(uint64_t a1)
 
 - (BOOL)supportsMultiplePresentationSizes
 {
-  v2 = [(ICAbstractTextAttachment *)self supportedPresentationSizes];
-  v3 = [v2 count] > 1;
+  supportedPresentationSizes = [(ICAbstractTextAttachment *)self supportedPresentationSizes];
+  v3 = [supportedPresentationSizes count] > 1;
 
   return v3;
 }
 
-+ (id)textAttachmentWithBaseAttachment:(id)a3
++ (id)textAttachmentWithBaseAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v4 = ICDynamicCast();
   if (v4)
@@ -79,11 +79,11 @@ void __42__ICAbstractTextAttachment_viewIdentifier__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (ICAbstractTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (ICAbstractTextAttachment)initWithData:(id)data ofType:(id)type
 {
   v5.receiver = self;
   v5.super_class = ICAbstractTextAttachment;
-  result = [(ICAbstractTextAttachment *)&v5 initWithData:a3 ofType:a4];
+  result = [(ICAbstractTextAttachment *)&v5 initWithData:data ofType:type];
   if (result)
   {
     result->_foregroundAlpha = 1.0;
@@ -92,7 +92,7 @@ void __42__ICAbstractTextAttachment_viewIdentifier__block_invoke(uint64_t a1)
   return result;
 }
 
-- (Class)attachmentViewClassForTextContainer:(id)a3
+- (Class)attachmentViewClassForTextContainer:(id)container
 {
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -105,14 +105,14 @@ void __42__ICAbstractTextAttachment_viewIdentifier__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)newlyCreatedViewForManualRendering:(BOOL)a3 textContainer:(id)a4
+- (id)newlyCreatedViewForManualRendering:(BOOL)rendering textContainer:(id)container
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(ICAbstractTextAttachment *)self attachmentViewClassForTextContainer:v6];
+  renderingCopy = rendering;
+  containerCopy = container;
+  v7 = [(ICAbstractTextAttachment *)self attachmentViewClassForTextContainer:containerCopy];
   if ([(objc_class *)v7 conformsToProtocol:&unk_1F4FD4420])
   {
-    v8 = [[v7 alloc] initWithTextAttachment:self textContainer:v6 forManualRendering:v4];
+    v8 = [[v7 alloc] initWithTextAttachment:self textContainer:containerCopy forManualRendering:renderingCopy];
 LABEL_5:
     v9 = v8;
     goto LABEL_7;
@@ -133,9 +133,9 @@ LABEL_7:
 
 - (BOOL)containsFindableText
 {
-  v2 = [(ICAbstractTextAttachment *)self attachmentViewControllerClass];
+  attachmentViewControllerClass = [(ICAbstractTextAttachment *)self attachmentViewControllerClass];
 
-  return [(objc_class *)v2 conformsToProtocol:&unk_1F5091B60];
+  return [(objc_class *)attachmentViewControllerClass conformsToProtocol:&unk_1F5091B60];
 }
 
 - (void)attachmentViewClassForTextContainer:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

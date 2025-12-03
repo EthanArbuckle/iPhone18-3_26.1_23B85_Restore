@@ -1,17 +1,17 @@
 @interface SwipeOptionsController
 - (BOOL)_shouldReverseLayoutDirection;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_baseSwipeValues;
-- (id)_diagramSpecifierWithSwipeDirection:(unint64_t)a3;
+- (id)_diagramSpecifierWithSwipeDirection:(unint64_t)direction;
 - (id)_rightSwipeValues;
-- (id)_titlesForSwipeValues:(id)a3;
-- (id)leftSwipeAction:(id)a3;
-- (id)rightSwipeAction:(id)a3;
+- (id)_titlesForSwipeValues:(id)values;
+- (id)leftSwipeAction:(id)action;
+- (id)rightSwipeAction:(id)action;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_configureSwipeDiagramInCell:(id)a3 atIndexPath:(id)a4;
-- (void)_removeImageViewsFromCell:(id)a3;
-- (void)setRightSwipeAction:(id)a3 withSpecifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_configureSwipeDiagramInCell:(id)cell atIndexPath:(id)path;
+- (void)_removeImageViewsFromCell:(id)cell;
+- (void)setRightSwipeAction:(id)action withSpecifier:(id)specifier;
 @end
 
 @implementation SwipeOptionsController
@@ -27,10 +27,10 @@
   return v2;
 }
 
-- (id)_diagramSpecifierWithSwipeDirection:(unint64_t)a3
+- (id)_diagramSpecifierWithSwipeDirection:(unint64_t)direction
 {
   v4 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:direction];
   [v4 setProperty:v5 forKey:@"kSwipeDirection"];
 
   return v4;
@@ -42,10 +42,10 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(SwipeOptionsController *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(SwipeOptionsController *)self _shouldReverseLayoutDirection];
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = v6;
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       [v6 localizedStringForKey:@"SWIPE_RIGHT" value:&stru_3D2B0 table:@"Preferences"];
     }
@@ -58,7 +58,7 @@
     v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:"setLeftSwipeAction:withSpecifier:" get:"leftSwipeAction:" detail:objc_opt_class() cell:2 edit:0];
 
     [v9 setProperty:&off_3F9C0 forKey:@"kSwipeDirection"];
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       v10 = 2;
     }
@@ -71,13 +71,13 @@
     v11 = [NSNumber numberWithUnsignedInteger:v10];
     [v9 setProperty:v11 forKey:@"kLocalizedSwipeDirection"];
 
-    v12 = [(SwipeOptionsController *)self _leftSwipeValues];
-    v13 = [(SwipeOptionsController *)self _leftSwipeValues];
-    v14 = [(SwipeOptionsController *)self _titlesForSwipeValues:v13];
-    [v9 setValues:v12 titles:v14];
+    _leftSwipeValues = [(SwipeOptionsController *)self _leftSwipeValues];
+    _leftSwipeValues2 = [(SwipeOptionsController *)self _leftSwipeValues];
+    v14 = [(SwipeOptionsController *)self _titlesForSwipeValues:_leftSwipeValues2];
+    [v9 setValues:_leftSwipeValues titles:v14];
 
     v15 = [NSBundle bundleForClass:objc_opt_class()];
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       [v15 localizedStringForKey:@"SWIPE_LEFT" value:&stru_3D2B0 table:@"Preferences"];
     }
@@ -90,7 +90,7 @@
     v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:"setRightSwipeAction:withSpecifier:" get:"rightSwipeAction:" detail:objc_opt_class() cell:2 edit:0];
 
     [v17 setProperty:&off_3F9D8 forKey:@"kSwipeDirection"];
-    if (v5)
+    if (_shouldReverseLayoutDirection)
     {
       v18 = 1;
     }
@@ -103,10 +103,10 @@
     v19 = [NSNumber numberWithUnsignedInteger:v18];
     [v17 setProperty:v19 forKey:@"kLocalizedSwipeDirection"];
 
-    v20 = [(SwipeOptionsController *)self _rightSwipeValues];
-    v21 = [(SwipeOptionsController *)self _rightSwipeValues];
-    v22 = [(SwipeOptionsController *)self _titlesForSwipeValues:v21];
-    [v17 setValues:v20 titles:v22];
+    _rightSwipeValues = [(SwipeOptionsController *)self _rightSwipeValues];
+    _rightSwipeValues2 = [(SwipeOptionsController *)self _rightSwipeValues];
+    v22 = [(SwipeOptionsController *)self _titlesForSwipeValues:_rightSwipeValues2];
+    [v17 setValues:_rightSwipeValues titles:v22];
 
     v23 = [PSSpecifier groupSpecifierWithID:0];
     v30[0] = v23;
@@ -128,15 +128,15 @@
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row])
   {
     v11.receiver = self;
     v11.super_class = SwipeOptionsController;
-    [(SwipeOptionsController *)&v11 tableView:v6 heightForRowAtIndexPath:v7];
+    [(SwipeOptionsController *)&v11 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v9 = v8;
   }
 
@@ -148,38 +148,38 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = SwipeOptionsController;
-  v7 = [(SwipeOptionsController *)&v9 tableView:a3 cellForRowAtIndexPath:v6];
-  if ([v6 row])
+  v7 = [(SwipeOptionsController *)&v9 tableView:view cellForRowAtIndexPath:pathCopy];
+  if ([pathCopy row])
   {
     [(SwipeOptionsController *)self _removeImageViewsFromCell:v7];
   }
 
   else
   {
-    [(SwipeOptionsController *)self _configureSwipeDiagramInCell:v7 atIndexPath:v6];
+    [(SwipeOptionsController *)self _configureSwipeDiagramInCell:v7 atIndexPath:pathCopy];
   }
 
   return v7;
 }
 
-- (void)_configureSwipeDiagramInCell:(id)a3 atIndexPath:(id)a4
+- (void)_configureSwipeDiagramInCell:(id)cell atIndexPath:(id)path
 {
-  v29 = a3;
-  v4 = [v29 contentView];
-  v5 = [v4 subviews];
-  [v5 makeObjectsPerformSelector:"removeFromSuperview"];
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
+  subviews = [contentView subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
-  v6 = [v29 specifier];
-  v7 = [v6 propertyForKey:@"kSwipeDirection"];
-  v8 = [v7 integerValue];
+  specifier = [cellCopy specifier];
+  v7 = [specifier propertyForKey:@"kSwipeDirection"];
+  integerValue = [v7 integerValue];
 
   v9 = @"left";
-  if (v8 == &dword_0 + 2)
+  if (integerValue == &dword_0 + 2)
   {
     v9 = @"right";
   }
@@ -189,53 +189,53 @@
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [UIImage imageNamed:v27 inBundle:v11];
   v13 = [v12 imageWithRenderingMode:2];
-  v28 = [v13 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v13 imageFlippedForRightToLeftLayoutDirection];
 
-  v14 = [[UIImageView alloc] initWithImage:v28];
+  v14 = [[UIImageView alloc] initWithImage:imageFlippedForRightToLeftLayoutDirection];
   [v14 setAutoresizingMask:18];
   [v14 setContentMode:4];
-  v15 = [v29 contentView];
-  [v15 bounds];
+  contentView2 = [cellCopy contentView];
+  [contentView2 bounds];
   [v14 setFrame:?];
 
   [v14 setTag:5];
   v16 = [UIColor colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
   [v14 setTintColor:v16];
 
-  v17 = [v29 contentView];
-  [v17 addSubview:v14];
+  contentView3 = [cellCopy contentView];
+  [contentView3 addSubview:v14];
 
   v18 = [NSString stringWithFormat:@"swipe-%@-blue-part.png", v10];
   v19 = [NSBundle bundleForClass:objc_opt_class()];
   v20 = [UIImage imageNamed:v18 inBundle:v19];
   v21 = [v20 imageWithRenderingMode:2];
-  v22 = [v21 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection2 = [v21 imageFlippedForRightToLeftLayoutDirection];
 
-  v23 = [[UIImageView alloc] initWithImage:v22];
+  v23 = [[UIImageView alloc] initWithImage:imageFlippedForRightToLeftLayoutDirection2];
   [v23 setAutoresizingMask:18];
   [v23 setContentMode:4];
-  v24 = [v29 contentView];
-  [v24 bounds];
+  contentView4 = [cellCopy contentView];
+  [contentView4 bounds];
   [v23 setFrame:?];
 
   v25 = +[UIColor mailInteractiveColor];
   [v23 setTintColor:v25];
 
   [v23 setTag:5];
-  v26 = [v29 contentView];
-  [v26 addSubview:v23];
+  contentView5 = [cellCopy contentView];
+  [contentView5 addSubview:v23];
 }
 
-- (void)_removeImageViewsFromCell:(id)a3
+- (void)_removeImageViewsFromCell:(id)cell
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 contentView];
-  v4 = [v3 subviews];
+  contentView = [cell contentView];
+  subviews = [contentView subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -246,7 +246,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -260,14 +260,14 @@
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)leftSwipeAction:(id)a3
+- (id)leftSwipeAction:(id)action
 {
   v3 = sub_1EA74(@"RightEdgeSwipeAction");
   v4 = v3;
@@ -286,7 +286,7 @@
   return v5;
 }
 
-- (id)rightSwipeAction:(id)a3
+- (id)rightSwipeAction:(id)action
 {
   v3 = sub_1EA74(@"LeftEdgeSwipeAction");
   v4 = v3;
@@ -305,10 +305,10 @@
   return v5;
 }
 
-- (void)setRightSwipeAction:(id)a3 withSpecifier:(id)a4
+- (void)setRightSwipeAction:(id)action withSpecifier:(id)specifier
 {
-  v5 = a3;
-  sub_1EB10(@"LeftEdgeSwipeAction", v5);
+  actionCopy = action;
+  sub_1EB10(@"LeftEdgeSwipeAction", actionCopy);
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
   [v4 notifyMobileMailSwipeRightActionChanged];
 }
@@ -327,21 +327,21 @@
 
 - (id)_rightSwipeValues
 {
-  v2 = [(SwipeOptionsController *)self _baseSwipeValues];
-  [v2 addObject:@"SwipeActionAlternateDestructiveAction"];
+  _baseSwipeValues = [(SwipeOptionsController *)self _baseSwipeValues];
+  [_baseSwipeValues addObject:@"SwipeActionAlternateDestructiveAction"];
 
-  return v2;
+  return _baseSwipeValues;
 }
 
-- (id)_titlesForSwipeValues:(id)a3
+- (id)_titlesForSwipeValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = valuesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

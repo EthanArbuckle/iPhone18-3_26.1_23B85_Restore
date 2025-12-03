@@ -1,16 +1,16 @@
 @interface _EFConnectableObservable
-- (_EFConnectableObservable)initWithObservable:(id)a3 subject:(id)a4;
+- (_EFConnectableObservable)initWithObservable:(id)observable subject:(id)subject;
 - (id)connect;
-- (id)subscribe:(id)a3;
+- (id)subscribe:(id)subscribe;
 - (void)_disconnect;
 @end
 
 @implementation _EFConnectableObservable
 
-- (_EFConnectableObservable)initWithObservable:(id)a3 subject:(id)a4
+- (_EFConnectableObservable)initWithObservable:(id)observable subject:(id)subject
 {
-  v7 = a3;
-  v8 = a4;
+  observableCopy = observable;
+  subjectCopy = subject;
   v13.receiver = self;
   v13.super_class = _EFConnectableObservable;
   v9 = [(_EFConnectableObservable *)&v13 init];
@@ -20,16 +20,16 @@
     lock = v9->_lock;
     v9->_lock = v10;
 
-    objc_storeStrong(&v9->_observable, a3);
-    objc_storeStrong(&v9->_subject, a4);
+    objc_storeStrong(&v9->_observable, observable);
+    objc_storeStrong(&v9->_subject, subject);
   }
 
   return v9;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v3 = [(EFObservable *)self->_subject subscribe:a3];
+  v3 = [(EFObservable *)self->_subject subscribe:subscribe];
 
   return v3;
 }

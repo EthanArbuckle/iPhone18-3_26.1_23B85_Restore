@@ -1,14 +1,14 @@
 @interface HomeContext
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3;
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3;
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation;
 - (ChromeViewController)chromeViewController;
 - (_TtC4Maps11HomeContext)init;
 - (id)desiredCards;
 - (id)personalizedItemSources;
-- (void)containeeViewControllerDidDismissExternally:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
+- (void)containeeViewControllerDidDismissExternally:(id)externally;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
 @end
 
 @implementation HomeContext
@@ -25,7 +25,7 @@
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000E2320();
 
   sub_1000E2690();
@@ -34,48 +34,48 @@
   return v3.super.isa;
 }
 
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000E26EC(v4);
+  annotationCopy = annotation;
+  selfCopy = self;
+  sub_1000E26EC(annotationCopy);
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000E28BC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1000E28BC(itemCopy);
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1000E2A48(a3);
+  selfCopy = self;
+  sub_1000E2A48(annotation);
   swift_unknownObjectRelease();
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker
 {
-  v4 = a3;
-  v5 = self;
-  VisitedPlacesLibraryContext.chromeDidSelectClusteredFeatureAnnotationsMarker(_:)(v4);
+  markerCopy = marker;
+  selfCopy = self;
+  VisitedPlacesLibraryContext.chromeDidSelectClusteredFeatureAnnotationsMarker(_:)(markerCopy);
 
   return 1;
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -84,7 +84,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_1000E2E7C();
@@ -92,9 +92,9 @@
   sub_1000DB2F4(v7);
 }
 
-- (void)containeeViewControllerDidDismissExternally:(id)a3
+- (void)containeeViewControllerDidDismissExternally:(id)externally
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000E2E7C();
 }
 

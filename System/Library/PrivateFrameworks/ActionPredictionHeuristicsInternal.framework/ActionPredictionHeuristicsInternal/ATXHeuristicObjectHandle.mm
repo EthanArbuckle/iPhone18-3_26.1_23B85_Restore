@@ -1,29 +1,29 @@
 @interface ATXHeuristicObjectHandle
-- (ATXHeuristicObjectHandle)initWithCoder:(id)a3;
-- (ATXHeuristicObjectHandle)initWithDevice:(id)a3 wrapping:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ATXHeuristicObjectHandle)initWithCoder:(id)coder;
+- (ATXHeuristicObjectHandle)initWithDevice:(id)device wrapping:(id)wrapping;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHeuristicObjectHandle
 
-- (ATXHeuristicObjectHandle)initWithDevice:(id)a3 wrapping:(id)a4
+- (ATXHeuristicObjectHandle)initWithDevice:(id)device wrapping:(id)wrapping
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  wrappingCopy = wrapping;
   v18.receiver = self;
   v18.super_class = ATXHeuristicObjectHandle;
   v8 = [(ATXHeuristicObjectHandle *)&v18 init];
   if (v8)
   {
-    v9 = v6;
+    v9 = deviceCopy;
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v9];
     pthread_mutex_lock(&deviceHandlesLock);
     v11 = deviceHandles;
     if (!deviceHandles)
     {
-      v12 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
       v13 = deviceHandles;
-      deviceHandles = v12;
+      deviceHandles = strongToWeakObjectsMapTable;
 
       v11 = deviceHandles;
     }
@@ -34,37 +34,37 @@
     deviceHandle = v8->_deviceHandle;
     v8->_deviceHandle = v10;
 
-    v15 = [v9 _wrap:v7];
+    v15 = [v9 _wrap:wrappingCopy];
     objHandle = v8->_objHandle;
     v8->_objHandle = v15;
 
-    objc_storeStrong(&v8->_obj, a4);
+    objc_storeStrong(&v8->_obj, wrapping);
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceHandle = self->_deviceHandle;
-  v5 = a3;
-  [v5 encodeObject:deviceHandle forKey:@"deviceHandle"];
-  [v5 encodeObject:self->_objHandle forKey:@"objHandle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceHandle forKey:@"deviceHandle"];
+  [coderCopy encodeObject:self->_objHandle forKey:@"objHandle"];
 }
 
-- (ATXHeuristicObjectHandle)initWithCoder:(id)a3
+- (ATXHeuristicObjectHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ATXHeuristicObjectHandle;
   v5 = [(ATXHeuristicObjectHandle *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceHandle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceHandle"];
     deviceHandle = v5->_deviceHandle;
     v5->_deviceHandle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objHandle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objHandle"];
     objHandle = v5->_objHandle;
     v5->_objHandle = v8;
 

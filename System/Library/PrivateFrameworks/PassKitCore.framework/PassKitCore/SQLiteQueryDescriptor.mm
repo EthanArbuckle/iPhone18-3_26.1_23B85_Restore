@@ -1,28 +1,28 @@
 @interface SQLiteQueryDescriptor
-- (id)_newSelectSQLWithProperties:(id)a3 columns:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_newSelectSQLWithProperties:(id)properties columns:(id)columns;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SQLiteQueryDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_entityClass;
   v5[2] = self->_limitCount;
-  v6 = [(NSArray *)self->_orderingDirections copyWithZone:a3];
+  v6 = [(NSArray *)self->_orderingDirections copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSArray *)self->_orderingProperties copyWithZone:a3];
+  v8 = [(NSArray *)self->_orderingProperties copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSArray *)self->_groupingProperties copyWithZone:a3];
+  v10 = [(NSArray *)self->_groupingProperties copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(SQLitePredicate *)self->_predicate copyWithZone:a3];
+  v12 = [(SQLitePredicate *)self->_predicate copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
@@ -30,10 +30,10 @@
   return v5;
 }
 
-- (id)_newSelectSQLWithProperties:(id)a3 columns:(id)a4
+- (id)_newSelectSQLWithProperties:(id)properties columns:(id)columns
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  columnsCopy = columns;
   v8 = [[NSMutableString alloc] initWithString:@"SELECT "];
   v9 = v8;
   if (self->_returnsDistinctEntities)
@@ -41,12 +41,12 @@
     [v8 appendString:@"DISTINCT "];
   }
 
-  v44 = v7;
-  v10 = [v7 componentsJoinedByString:{@", "}];
+  v44 = columnsCopy;
+  v10 = [columnsCopy componentsJoinedByString:{@", "}];
   [v9 appendString:v10];
 
-  v11 = [(objc_class *)self->_entityClass databaseTable];
-  [v9 appendFormat:@" FROM %@", v11];
+  databaseTable = [(objc_class *)self->_entityClass databaseTable];
+  [v9 appendFormat:@" FROM %@", databaseTable];
 
   v12 = objc_alloc_init(NSMutableSet);
   v13 = [(SQLitePredicate *)self->_predicate SQLJoinClausesForEntityClass:self->_entityClass];
@@ -60,7 +60,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v14 = v6;
+  v14 = propertiesCopy;
   v15 = [v14 countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v15)
   {

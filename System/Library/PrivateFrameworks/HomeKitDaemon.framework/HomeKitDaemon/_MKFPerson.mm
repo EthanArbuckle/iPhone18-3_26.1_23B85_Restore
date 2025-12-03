@@ -1,7 +1,7 @@
 @interface _MKFPerson
 - (MKFPersonDatabaseID)databaseID;
 - (id)createHMPerson;
-- (void)updateWithHMPerson:(id)a3;
+- (void)updateWithHMPerson:(id)person;
 @end
 
 @implementation _MKFPerson
@@ -26,9 +26,9 @@
   objc_exception_throw(v7);
 }
 
-- (void)updateWithHMPerson:(id)a3
+- (void)updateWithHMPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

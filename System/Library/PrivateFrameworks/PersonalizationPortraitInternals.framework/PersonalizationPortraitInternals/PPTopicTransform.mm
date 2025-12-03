@@ -1,19 +1,19 @@
 @interface PPTopicTransform
-- (PPTopicTransform)initWithPath:(id)a3 mappingId:(id)a4;
-- (id)QIDWeightsWithMappedTopicIdentifier:(id)a3;
-- (id)payloadForTopic:(unsigned int)a3;
-- (void)_applyScaling:(unsigned int)a3 vectorLength:(int)a4 scalingType:(float)a5 scalingFactor:;
-- (void)_enumerateSparseColumnAtIndex:(void *)a3 block:;
-- (void)addBias:(float *)a3;
-- (void)applyFeatureNormalization:(float *)a3 vectorLength:(int)a4;
-- (void)applyFeatureSmoothing:(float *)a3 vectorLength:(int)a4;
-- (void)applyOutputActivation:(float *)a3;
-- (void)applyOutputAttenuation:(float *)a3 nonzeroCounts:(unsigned __int16 *)a4;
+- (PPTopicTransform)initWithPath:(id)path mappingId:(id)id;
+- (id)QIDWeightsWithMappedTopicIdentifier:(id)identifier;
+- (id)payloadForTopic:(unsigned int)topic;
+- (void)_applyScaling:(unsigned int)scaling vectorLength:(int)length scalingType:(float)type scalingFactor:;
+- (void)_enumerateSparseColumnAtIndex:(void *)index block:;
+- (void)addBias:(float *)bias;
+- (void)applyFeatureNormalization:(float *)normalization vectorLength:(int)length;
+- (void)applyFeatureSmoothing:(float *)smoothing vectorLength:(int)length;
+- (void)applyOutputActivation:(float *)activation;
+- (void)applyOutputAttenuation:(float *)attenuation nonzeroCounts:(unsigned __int16 *)counts;
 @end
 
 @implementation PPTopicTransform
 
-- (void)applyOutputAttenuation:(float *)a3 nonzeroCounts:(unsigned __int16 *)a4
+- (void)applyOutputAttenuation:(float *)attenuation nonzeroCounts:(unsigned __int16 *)counts
 {
   if (self->_attenuationFactor != 0.0 && [(PPTopicTransform *)self outputTopicCount])
   {
@@ -22,11 +22,11 @@
     do
     {
       v9 = objc_autoreleasePoolPush();
-      if (a4[v7])
+      if (counts[v7])
       {
-        v10 = pow(a4[v7], 1.0 / self->_attenuationFactor);
-        *&v10 = v10 / (v10 + 1.0) * a3[v7];
-        a3[v7] = *&v10;
+        v10 = pow(counts[v7], 1.0 / self->_attenuationFactor);
+        *&v10 = v10 / (v10 + 1.0) * attenuation[v7];
+        attenuation[v7] = *&v10;
       }
 
       objc_autoreleasePoolPop(v9);
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)applyOutputActivation:(float *)a3
+- (void)applyOutputActivation:(float *)activation
 {
-  v3 = a3;
+  activationCopy = activation;
   activationType = self->_activationType;
   if (activationType > 3)
   {
@@ -69,7 +69,7 @@ LABEL_10:
     topicCount = self->_header.topicCount;
     if (topicCount)
     {
-      v7 = v3;
+      v7 = activationCopy;
       v8 = topicCount;
       do
       {
@@ -81,7 +81,7 @@ LABEL_10:
       while (v8);
 LABEL_21:
       v15 = topicCount;
-      v16 = v3;
+      v16 = activationCopy;
       do
       {
         v17 = expf(-*v16);
@@ -94,7 +94,7 @@ LABEL_21:
 
 LABEL_23:
     v18 = topicCount;
-    vvexpf(v3, v3, &v18);
+    vvexpf(activationCopy, activationCopy, &v18);
     cblas_sasum_NEWLAPACK();
     cblas_sscal_NEWLAPACK();
     return;
@@ -108,9 +108,9 @@ LABEL_23:
       {
         do
         {
-          v11 = expf(-*v3);
+          v11 = expf(-*activationCopy);
           v12 = 1.0 / (v11 + 1.0) + -0.5 + 1.0 / (v11 + 1.0) + -0.5;
-          *v3++ = v12;
+          *activationCopy++ = v12;
           --v10;
         }
 
@@ -124,8 +124,8 @@ LABEL_23:
       {
         do
         {
-          v14 = 1.0 / (expf(-*v3) + 1.0);
-          *v3++ = v14;
+          v14 = 1.0 / (expf(-*activationCopy) + 1.0);
+          *activationCopy++ = v14;
           --v13;
         }
 
@@ -135,20 +135,20 @@ LABEL_23:
       break;
     case 3u:
       v19 = self->_header.topicCount;
-      vvexpf(a3, a3, &v19);
+      vvexpf(activation, activation, &v19);
       goto LABEL_10;
     default:
       return;
   }
 }
 
-- (void)applyFeatureNormalization:(float *)a3 vectorLength:(int)a4
+- (void)applyFeatureNormalization:(float *)normalization vectorLength:(int)length
 {
   featureNormalizationType = self->_featureNormalizationType;
   switch(featureNormalizationType)
   {
     case 3:
-      fabsf(a3[cblas_icamax_NEWLAPACK()]);
+      fabsf(normalization[cblas_icamax_NEWLAPACK()]);
       break;
     case 2:
       cblas_snrm2_NEWLAPACK();
@@ -163,52 +163,52 @@ LABEL_23:
   cblas_sscal_NEWLAPACK();
 }
 
-- (void)_applyScaling:(unsigned int)a3 vectorLength:(int)a4 scalingType:(float)a5 scalingFactor:
+- (void)_applyScaling:(unsigned int)scaling vectorLength:(int)length scalingType:(float)type scalingFactor:
 {
-  v10 = a3;
-  if (a1)
+  scalingCopy = scaling;
+  if (self)
   {
     v7 = a2;
-    if (a4 > 2)
+    if (length > 2)
     {
-      if (a4 == 3)
+      if (length == 3)
       {
-        vvlog1pf(a2, a2, &v10);
+        vvlog1pf(a2, a2, &scalingCopy);
       }
 
-      else if (a4 == 4)
+      else if (length == 4)
       {
         fabsf(a2[cblas_icamax_NEWLAPACK()]);
         cblas_sscal_NEWLAPACK();
-        if (a3)
+        if (scaling)
         {
-          v9 = a3;
+          scalingCopy2 = scaling;
           do
           {
-            *v7 = *v7 + a5;
+            *v7 = *v7 + type;
             ++v7;
-            --v9;
+            --scalingCopy2;
           }
 
-          while (v9);
+          while (scalingCopy2);
         }
       }
     }
 
-    else if (a4 == 1)
+    else if (length == 1)
     {
-      if (a5 != 1.0)
+      if (type != 1.0)
       {
 
         cblas_sscal_NEWLAPACK();
       }
     }
 
-    else if (a4 == 2)
+    else if (length == 2)
     {
-      vvlogf(a2, a2, &v10);
-      v8 = v10;
-      if (v10)
+      vvlogf(a2, a2, &scalingCopy);
+      v8 = scalingCopy;
+      if (scalingCopy)
       {
         do
         {
@@ -223,23 +223,23 @@ LABEL_23:
   }
 }
 
-- (void)applyFeatureSmoothing:(float *)a3 vectorLength:(int)a4
+- (void)applyFeatureSmoothing:(float *)smoothing vectorLength:(int)length
 {
-  if (self->_featureSmoothingType == 1 && self->_featureSmoothingFactor != 0.0 && a4 != 0)
+  if (self->_featureSmoothingType == 1 && self->_featureSmoothingFactor != 0.0 && length != 0)
   {
-    v5 = a4;
+    lengthCopy = length;
     do
     {
-      *a3 = self->_featureSmoothingFactor + *a3;
-      ++a3;
-      --v5;
+      *smoothing = self->_featureSmoothingFactor + *smoothing;
+      ++smoothing;
+      --lengthCopy;
     }
 
-    while (v5);
+    while (lengthCopy);
   }
 }
 
-- (void)addBias:(float *)a3
+- (void)addBias:(float *)bias
 {
   topicCount = self->_header.topicCount;
   if (topicCount)
@@ -248,8 +248,8 @@ LABEL_23:
     do
     {
       v5 = *bias++;
-      *a3 = v5 + *a3;
-      ++a3;
+      *bias = v5 + *bias;
+      ++bias;
       --topicCount;
     }
 
@@ -257,18 +257,18 @@ LABEL_23:
   }
 }
 
-- (id)QIDWeightsWithMappedTopicIdentifier:(id)a3
+- (id)QIDWeightsWithMappedTopicIdentifier:(id)identifier
 {
   *&v36[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = indexForPayload(v4, self->_payloads, self->_header.topicCount, self->_header.payloadLen);
+  identifierCopy = identifier;
+  v5 = indexForPayload(identifierCopy, self->_payloads, self->_header.topicCount, self->_header.payloadLen);
   if (v5 == -1)
   {
     v24 = pp_topics_log_handle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *v36 = v4;
+      *v36 = identifierCopy;
       _os_log_error_impl(&dword_23224A000, v24, OS_LOG_TYPE_ERROR, "Mapped topic ID (%@) not found in this mapping.", buf, 0xCu);
     }
 
@@ -282,7 +282,7 @@ LABEL_23:
     v30[1] = 3221225472;
     v31 = __56__PPTopicTransform_QIDWeightsWithMappedTopicIdentifier___block_invoke;
     v32 = &unk_278973DA0;
-    v33 = self;
+    selfCopy = self;
     v7 = v6;
     v34 = v7;
     v8 = v30;
@@ -381,19 +381,19 @@ float __60__PPTopicTransform_addWeightedTopicScoreToBuffer_qid_score___block_inv
   return result;
 }
 
-- (void)_enumerateSparseColumnAtIndex:(void *)a3 block:
+- (void)_enumerateSparseColumnAtIndex:(void *)index block:
 {
-  v21 = a3;
-  if (a1)
+  indexCopy = index;
+  if (self)
   {
-    v5 = *(a1 + 20);
-    v6 = *(a1 + 24);
+    v5 = *(self + 20);
+    v6 = *(self + 24);
     v7 = v5 * a2;
-    v8 = *(a1 + 48);
+    v8 = *(self + 48);
     v9 = v8 + 4 * v6;
     if (v6)
     {
-      v10 = *(a1 + 48);
+      v10 = *(self + 48);
       do
       {
         v11 = v6 >> 1;
@@ -417,14 +417,14 @@ float __60__PPTopicTransform_addWeightedTopicScoreToBuffer_qid_score___block_inv
 
     else
     {
-      v10 = *(a1 + 48);
+      v10 = *(self + 48);
     }
 
     if (v10 < v9)
     {
       v15 = 0;
       v16 = v7 + v5;
-      v17 = v10 + *(a1 + 56) - v8;
+      v17 = v10 + *(self + 56) - v8;
       v18 = 1;
       v19 = v10;
       do
@@ -435,7 +435,7 @@ float __60__PPTopicTransform_addWeightedTopicScoreToBuffer_qid_score___block_inv
           break;
         }
 
-        v21[2](v21, v20 - v7, *&v17[4 * v15]);
+        indexCopy[2](indexCopy, v20 - v7, *&v17[4 * v15]);
         v15 = v18;
         v19 = &v10[v18++];
       }
@@ -454,17 +454,17 @@ float __91__PPTopicTransform_addWeightedTopicScoreToBuffer_countNonZeroComponent
   return result;
 }
 
-- (id)payloadForTopic:(unsigned int)a3
+- (id)payloadForTopic:(unsigned int)topic
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_header.topicCount <= a3)
+  if (self->_header.topicCount <= topic)
   {
     v8 = pp_topics_log_handle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = self->_header.topicCount - 1;
       v12[0] = 67109376;
-      v12[1] = a3;
+      v12[1] = topic;
       v13 = 1024;
       v14 = v11;
       _os_log_error_impl(&dword_23224A000, v8, OS_LOG_TYPE_ERROR, "Topic index %u too big (max: %u)", v12, 0xEu);
@@ -475,7 +475,7 @@ float __91__PPTopicTransform_addWeightedTopicScoreToBuffer_countNonZeroComponent
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&self->_payloads[self->_header.payloadLen * a3] length:self->_header.payloadLen encoding:1];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&self->_payloads[self->_header.payloadLen * topic] length:self->_header.payloadLen encoding:1];
     v6 = objc_autoreleasePoolPush();
     v7 = _PASTrimTrailingWhitespace();
     objc_autoreleasePoolPop(v6);
@@ -486,11 +486,11 @@ float __91__PPTopicTransform_addWeightedTopicScoreToBuffer_countNonZeroComponent
   return v7;
 }
 
-- (PPTopicTransform)initWithPath:(id)a3 mappingId:(id)a4
+- (PPTopicTransform)initWithPath:(id)path mappingId:(id)id
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  idCopy = id;
   v63.receiver = self;
   v63.super_class = PPTopicTransform;
   v8 = [(PPTopicTransform *)&v63 init];
@@ -500,7 +500,7 @@ float __91__PPTopicTransform_addWeightedTopicScoreToBuffer_countNonZeroComponent
   }
 
   v62 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v6 options:1 error:&v62];
+  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:pathCopy options:1 error:&v62];
   v10 = v62;
   data = v8->_data;
   v8->_data = v9;
@@ -514,7 +514,7 @@ float __91__PPTopicTransform_addWeightedTopicScoreToBuffer_countNonZeroComponent
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v65 = v6;
+        v65 = pathCopy;
         v14 = "Topic transform truncated: %@";
         v15 = v13;
         v16 = 12;
@@ -537,17 +537,17 @@ LABEL_53:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v65 = v6;
+        v65 = pathCopy;
         _os_log_error_impl(&dword_23224A000, v13, OS_LOG_TYPE_ERROR, "Topic transform truncated: %@", buf, 0xCu);
       }
 
       goto LABEL_7;
     }
 
-    v22 = [(NSData *)v8->_data bytes];
+    bytes = [(NSData *)v8->_data bytes];
     v23 = v8->_header.qidCount;
-    v24 = v22 + 16 + 4 * v8->_header.topicCount;
-    v8->_bias = (v22 + 16);
+    v24 = bytes + 16 + 4 * v8->_header.topicCount;
+    v8->_bias = (bytes + 16);
     v8->_qids = v24;
     v25 = v24 + 4 * v23;
     v26 = v8->_header.nonzeroCount;
@@ -555,70 +555,70 @@ LABEL_53:
     v8->_matrixIndices = v25;
     v8->_matrixElts = v27;
     v8->_payloads = &v27[v26];
-    if (v7)
+    if (idCopy)
     {
       v28 = +[PPConfiguration sharedInstance];
-      v29 = [v28 hyperparametersForMappingId:v7];
+      v29 = [v28 hyperparametersForMappingId:idCopy];
       v30 = [v29 objectForKeyedSubscript:@"FeatureSmoothingType"];
       if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v31 = [v30 intValue];
+        intValue = [v30 intValue];
       }
 
       else
       {
-        v31 = 0;
+        intValue = 0;
       }
 
-      v8->_featureSmoothingType = v31;
+      v8->_featureSmoothingType = intValue;
       v32 = [v29 objectForKeyedSubscript:@"FeatureScalingType"];
       if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v33 = [v32 intValue];
+        intValue2 = [v32 intValue];
       }
 
       else
       {
-        v33 = 0;
+        intValue2 = 0;
       }
 
-      v8->_featureScalingType = v33;
+      v8->_featureScalingType = intValue2;
       v34 = [v29 objectForKeyedSubscript:@"FeatureNormalizationType"];
       if (v34 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v35 = [v34 intValue];
+        intValue3 = [v34 intValue];
       }
 
       else
       {
-        v35 = 0;
+        intValue3 = 0;
       }
 
-      v8->_featureNormalizationType = v35;
+      v8->_featureNormalizationType = intValue3;
       v36 = [v29 objectForKeyedSubscript:@"OutputScalingType"];
       if (v36 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v37 = [v36 intValue];
+        intValue4 = [v36 intValue];
       }
 
       else
       {
-        v37 = 0;
+        intValue4 = 0;
       }
 
-      v8->_outputScalingType = v37;
+      v8->_outputScalingType = intValue4;
       v38 = [v29 objectForKeyedSubscript:@"ActivationType"];
       if (v38 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v39 = [v38 intValue];
+        intValue5 = [v38 intValue];
       }
 
       else
       {
-        v39 = 0;
+        intValue5 = 0;
       }
 
-      v8->_activationType = v39;
+      v8->_activationType = intValue5;
       v40 = [v29 objectForKeyedSubscript:@"FeatureSmoothingFactor"];
       v41 = 0.0;
       if (v40)
@@ -700,7 +700,7 @@ LABEL_50:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v65 = v6;
+    v65 = pathCopy;
     v66 = 2112;
     v67 = v10;
     v14 = "Could not load topic transform %@: %@";

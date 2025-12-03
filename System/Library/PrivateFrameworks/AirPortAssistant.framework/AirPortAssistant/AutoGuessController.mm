@@ -1,46 +1,46 @@
 @interface AutoGuessController
-+ (BOOL)isRestoreAnOptionForTheRecommendations:(id)a3;
-+ (BOOL)shouldShowPasswordUIForRecommendation:(id)a3;
-+ (id)fullAutoGuessDictionaryFromCompletionDict:(id)a3;
-+ (id)primaryRecommendationDictionaryFromCompletionDict:(id)a3;
-+ (id)recommendationStringFromCompletionDict:(id)a3;
-+ (id)recommendationToActionChoice:(id)a3;
-+ (id)restoreOfferFromCompletionDict:(id)a3;
-+ (id)restoreRecommendationDictionaryFromCompletionDict:(id)a3;
-+ (id)shortProductNameForUnconfiguredDeviceFromAutoGuessResults:(id)a3;
-+ (id)shortProductNameFromBaseStationDictionary:(id)a3;
-+ (id)sourceBaseStationFromRecommendation:(id)a3;
-+ (id)sourceNetworkFromRecommendation:(id)a3;
-+ (id)unconfiguredBaseStationCanBeConfiguredFromCompletionDict:(id)a3;
-+ (id)unconfiguredBaseStationFromGuessCompleteDict:(id)a3;
-+ (id)unconfiguredBaseStationFromRecommendation:(id)a3;
++ (BOOL)isRestoreAnOptionForTheRecommendations:(id)recommendations;
++ (BOOL)shouldShowPasswordUIForRecommendation:(id)recommendation;
++ (id)fullAutoGuessDictionaryFromCompletionDict:(id)dict;
++ (id)primaryRecommendationDictionaryFromCompletionDict:(id)dict;
++ (id)recommendationStringFromCompletionDict:(id)dict;
++ (id)recommendationToActionChoice:(id)choice;
++ (id)restoreOfferFromCompletionDict:(id)dict;
++ (id)restoreRecommendationDictionaryFromCompletionDict:(id)dict;
++ (id)shortProductNameForUnconfiguredDeviceFromAutoGuessResults:(id)results;
++ (id)shortProductNameFromBaseStationDictionary:(id)dictionary;
++ (id)sourceBaseStationFromRecommendation:(id)recommendation;
++ (id)sourceNetworkFromRecommendation:(id)recommendation;
++ (id)unconfiguredBaseStationCanBeConfiguredFromCompletionDict:(id)dict;
++ (id)unconfiguredBaseStationFromGuessCompleteDict:(id)dict;
++ (id)unconfiguredBaseStationFromRecommendation:(id)recommendation;
 - (AutoGuessController)init;
-- (BOOL)okToSwitchToShortBonjourTimeout:(id)a3;
-- (id)createCompletionDictFromAutoGuessResults:(id)a3;
+- (BOOL)okToSwitchToShortBonjourTimeout:(id)timeout;
+- (id)createCompletionDictFromAutoGuessResults:(id)results;
 - (id)targetInfo;
 - (int)bonjourBrowseStatus;
 - (int)cancelAutoGuess;
-- (int)runAutoGuessWithWifiScanInfos:(id)a3;
-- (int)startAutoGuessForUnconfiguredMACAddress:(id)a3 withWifiScanInfos:(id)a4;
+- (int)runAutoGuessWithWifiScanInfos:(id)infos;
+- (int)startAutoGuessForUnconfiguredMACAddress:(id)address withWifiScanInfos:(id)infos;
 - (int)startBonjourBrowser;
 - (int)startWiFiScanner;
 - (int)wifiScanStatus;
 - (void)autoGuessEngineComplete;
-- (void)bonjourTXTRemoved:(id)a3;
-- (void)bonjourTXTUpdated:(id)a3;
-- (void)browseReadyTimerCallback:(id)a3;
+- (void)bonjourTXTRemoved:(id)removed;
+- (void)bonjourTXTUpdated:(id)updated;
+- (void)browseReadyTimerCallback:(id)callback;
 - (void)cancelBonjourBrowser;
 - (void)cancelWiFiScanner;
 - (void)dealloc;
-- (void)runAutoGuessThread:(id)a3;
-- (void)setBonjourBrowseStatus:(int)a3;
-- (void)setWiFiScanStatus:(int)a3;
+- (void)runAutoGuessThread:(id)thread;
+- (void)setBonjourBrowseStatus:(int)status;
+- (void)setWiFiScanStatus:(int)status;
 - (void)startAutoGuessIfReady;
 - (void)stopBonjourBrowser;
 - (void)stopWiFiScanner;
-- (void)uiAssetsUpdated:(id)a3;
-- (void)updateTargetInfo:(BOOL)a3;
-- (void)wirelessScanDone:(id)a3;
+- (void)uiAssetsUpdated:(id)updated;
+- (void)updateTargetInfo:(BOOL)info;
+- (void)wirelessScanDone:(id)done;
 @end
 
 @implementation AutoGuessController
@@ -106,9 +106,9 @@
   return 0;
 }
 
-- (int)runAutoGuessWithWifiScanInfos:(id)a3
+- (int)runAutoGuessWithWifiScanInfos:(id)infos
 {
-  if (!objc_msgSend_targetMACAddress(self, a2, a3) && !objc_msgSend_targetScanRecord(self, v5, v6) && !objc_msgSend_targetBrowseRecord(self, v5, v6))
+  if (!objc_msgSend_targetMACAddress(self, a2, infos) && !objc_msgSend_targetScanRecord(self, v5, v6) && !objc_msgSend_targetBrowseRecord(self, v5, v6))
   {
     return -6705;
   }
@@ -116,9 +116,9 @@
   self->_updatedTargetInfo = 0;
   v7 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v5, v6);
   objc_msgSend_addObserver_selector_name_object_(v7, v8, self, sel_uiAssetsUpdated_, @"com.apple.airport.airportutility.DataCache.UIAssets.Refresh.Notification", 0);
-  if (a3)
+  if (infos)
   {
-    v13 = objc_msgSend_count(a3, v9, v10) ? a3 : 0;
+    v13 = objc_msgSend_count(infos, v9, v10) ? infos : 0;
     if (!objc_msgSend_targetScanRecord(self, v11, v12))
     {
       if (v13)
@@ -198,23 +198,23 @@
   return sub_23EBE967C(guessContext, v12, v13, v14, v15, v16, v17, v18);
 }
 
-- (int)startAutoGuessForUnconfiguredMACAddress:(id)a3 withWifiScanInfos:(id)a4
+- (int)startAutoGuessForUnconfiguredMACAddress:(id)address withWifiScanInfos:(id)infos
 {
   if (dword_27E380EB8 <= 100 && (dword_27E380EB8 != -1 || sub_23EB74AC8(&dword_27E380EB8, 0x64u)))
   {
-    objc_msgSend_count(a4, a2, a3);
-    sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) startAutoGuessForUnconfiguredMACAddress:withWifiScanInfos:]", 100, "macAddress: %@ [scanInfos count]: %d\n", v7, v8, v9, v10, a3);
+    objc_msgSend_count(infos, a2, address);
+    sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) startAutoGuessForUnconfiguredMACAddress:withWifiScanInfos:]", 100, "macAddress: %@ [scanInfos count]: %d\n", v7, v8, v9, v10, address);
   }
 
-  if (!a3 || !objc_msgSend_length(a3, a2, a3))
+  if (!address || !objc_msgSend_length(address, a2, address))
   {
     return -6705;
   }
 
   objc_msgSend_removeAllObjects(self->_browsedBases, v11, v12);
-  if (a4)
+  if (infos)
   {
-    objc_msgSend_set_wifiScanInfos_(self, v13, a4);
+    objc_msgSend_set_wifiScanInfos_(self, v13, infos);
   }
 
   if (objc_msgSend_targetScanRecord(self, v13, v14) && (v17 = objc_msgSend_targetScanRecord(self, v15, v16), objc_msgSend_scanInfoIsSTAOnly_(WiFiUtils, v18, v17)))
@@ -279,7 +279,7 @@
 
   self->_autoJoinState = 0;
 
-  v14 = self;
+  selfCopy = self;
 }
 
 - (id)targetInfo
@@ -359,17 +359,17 @@ LABEL_11:
   return 0;
 }
 
-- (void)updateTargetInfo:(BOOL)a3
+- (void)updateTargetInfo:(BOOL)info
 {
-  v7 = a3;
+  infoCopy = info;
   if (dword_27E380EB8 <= 100 && (dword_27E380EB8 != -1 || sub_23EB74AC8(&dword_27E380EB8, 0x64u)))
   {
-    sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) updateTargetInfo:]", 100, "inForceUpdate: %d _updatedTargetInfo: %d\n", v3, v4, v5, v6, v7);
+    sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) updateTargetInfo:]", 100, "inForceUpdate: %d _updatedTargetInfo: %d\n", v3, v4, v5, v6, infoCopy);
   }
 
-  if (!self->_updatedTargetInfo || v7)
+  if (!self->_updatedTargetInfo || infoCopy)
   {
-    v10 = objc_msgSend_targetInfo(self, a2, a3);
+    v10 = objc_msgSend_targetInfo(self, a2, info);
     if (v10)
     {
       v11 = v10;
@@ -385,9 +385,9 @@ LABEL_11:
   }
 }
 
-- (void)uiAssetsUpdated:(id)a3
+- (void)uiAssetsUpdated:(id)updated
 {
-  v4 = objc_msgSend_userInfo(a3, a2, a3);
+  v4 = objc_msgSend_userInfo(updated, a2, updated);
   if (v4)
   {
     v6 = objc_msgSend_objectForKey_(v4, v5, @"productID");
@@ -411,21 +411,21 @@ LABEL_11:
   }
 }
 
-- (BOOL)okToSwitchToShortBonjourTimeout:(id)a3
+- (BOOL)okToSwitchToShortBonjourTimeout:(id)timeout
 {
   LOBYTE(onShortTimer) = self->_onShortTimer;
   if (!onShortTimer)
   {
-    v6 = objc_msgSend_sharedInstance(WiFiUtils, a2, a3);
+    v6 = objc_msgSend_sharedInstance(WiFiUtils, a2, timeout);
     if (objc_msgSend_airPortIsOn(v6, v7, v8))
     {
-      onShortTimer = sub_23EB6A530(a3, v9, v10, v11, v12, v13, v14, v15);
+      onShortTimer = sub_23EB6A530(timeout, v9, v10, v11, v12, v13, v14, v15);
       self->_onShortTimer = onShortTimer;
       if (dword_27E380EB8 <= 100)
       {
         if (dword_27E380EB8 != -1 || (v17 = sub_23EB74AC8(&dword_27E380EB8, 0x64u), onShortTimer = self->_onShortTimer, v17))
         {
-          objc_msgSend_objectForKey_(a3, v16, @"raMA");
+          objc_msgSend_objectForKey_(timeout, v16, @"raMA");
           sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) okToSwitchToShortBonjourTimeout:]", 100, "_onShortTimer: %d inBaseStation: %@\n", v18, v19, v20, v21, onShortTimer);
           LOBYTE(onShortTimer) = self->_onShortTimer;
         }
@@ -442,10 +442,10 @@ LABEL_11:
   return onShortTimer;
 }
 
-- (void)setWiFiScanStatus:(int)a3
+- (void)setWiFiScanStatus:(int)status
 {
   objc_sync_enter(self);
-  self->_wifiScanStatus = a3;
+  self->_wifiScanStatus = status;
 
   objc_sync_exit(self);
 }
@@ -458,10 +458,10 @@ LABEL_11:
   return wifiScanStatus;
 }
 
-- (void)setBonjourBrowseStatus:(int)a3
+- (void)setBonjourBrowseStatus:(int)status
 {
   objc_sync_enter(self);
-  self->_bonjourBrowseStatus = a3;
+  self->_bonjourBrowseStatus = status;
 
   objc_sync_exit(self);
 }
@@ -572,14 +572,14 @@ LABEL_11:
   objc_msgSend_setBonjourBrowseStatus_(self, v17, 0);
 }
 
-- (void)wirelessScanDone:(id)a3
+- (void)wirelessScanDone:(id)done
 {
   if (dword_27E380EB8 <= 100 && (dword_27E380EB8 != -1 || sub_23EB74AC8(&dword_27E380EB8, 0x64u)))
   {
     sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) wirelessScanDone:]", 100, "\n", v3, v4, v5, v6, v23);
   }
 
-  objc_msgSend_stopWiFiScanner(self, a2, a3);
+  objc_msgSend_stopWiFiScanner(self, a2, done);
   v10 = objc_msgSend_sharedInstance(WiFiUtils, v8, v9);
   v13 = objc_msgSend_unmergedScanInfoArray(v10, v11, v12);
   objc_msgSend_set_wifiScanInfos_(self, v14, v13);
@@ -624,14 +624,14 @@ LABEL_11:
   objc_msgSend_setWiFiScanStatus_(self, v10, 2);
 }
 
-- (void)browseReadyTimerCallback:(id)a3
+- (void)browseReadyTimerCallback:(id)callback
 {
   if (dword_27E380EB8 <= 100 && (dword_27E380EB8 != -1 || sub_23EB74AC8(&dword_27E380EB8, 0x64u)))
   {
     sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) browseReadyTimerCallback:]", 100, "\n", v3, v4, v5, v6, v24);
   }
 
-  objc_msgSend_invalidate(self->_browseReadyTimer, a2, a3);
+  objc_msgSend_invalidate(self->_browseReadyTimer, a2, callback);
   objc_msgSend_set_browseReadyTimer_(self, v8, 0);
   if (objc_msgSend_bonjourBrowseStatus(self, v9, v10) != 3)
   {
@@ -658,9 +658,9 @@ LABEL_11:
   }
 }
 
-- (void)bonjourTXTUpdated:(id)a3
+- (void)bonjourTXTUpdated:(id)updated
 {
-  v4 = objc_msgSend_userInfo(a3, a2, a3);
+  v4 = objc_msgSend_userInfo(updated, a2, updated);
   v6 = objc_msgSend_objectForKey_(v4, v5, @"name");
   if (v4)
   {
@@ -690,9 +690,9 @@ LABEL_11:
   }
 }
 
-- (void)bonjourTXTRemoved:(id)a3
+- (void)bonjourTXTRemoved:(id)removed
 {
-  v4 = objc_msgSend_userInfo(a3, a2, a3);
+  v4 = objc_msgSend_userInfo(removed, a2, removed);
   v6 = objc_msgSend_objectForKey_(v4, v5, @"name");
   if (v4)
   {
@@ -712,14 +712,14 @@ LABEL_11:
   }
 }
 
-- (void)runAutoGuessThread:(id)a3
+- (void)runAutoGuessThread:(id)thread
 {
   v58 = objc_alloc_init(MEMORY[0x277CCA8B0]);
   if ((objc_msgSend_isCancelled(self->_autoGuessThread, v5, v6) & 1) == 0)
   {
     if (dword_27E380EB8 <= 100 && (dword_27E380EB8 != -1 || sub_23EB74AC8(&dword_27E380EB8, 0x64u)))
     {
-      sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) runAutoGuessThread:]", 100, "unconfiguredMACAddress: %@\n", v9, v10, v11, v12, a3);
+      sub_23EB75374(&dword_27E380EB8, "[AutoGuessController(EngineControllerPrivate) runAutoGuessThread:]", 100, "unconfiguredMACAddress: %@\n", v9, v10, v11, v12, thread);
     }
 
     v13 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v7, v8);
@@ -743,7 +743,7 @@ LABEL_11:
       objc_msgSend_setObject_forKey_(v13, v34, v33, @"BSAutoGuessContext_HostBrowsedBaseStations");
     }
 
-    if (a3)
+    if (thread)
     {
       if (objc_msgSend_targetBrowseRecord(self, v34, v35))
       {
@@ -792,7 +792,7 @@ LABEL_11:
             objc_msgSend_setAutoJoinState_(v16, v56, 0);
           }
 
-          v57 = self;
+          selfCopy = self;
         }
       }
     }
@@ -801,14 +801,14 @@ LABEL_11:
   self->_autoGuessThread = 0;
 }
 
-+ (id)recommendationToActionChoice:(id)a3
++ (id)recommendationToActionChoice:(id)choice
 {
-  if (!a3)
+  if (!choice)
   {
     return 0;
   }
 
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"BSAutoGuess_Recommendation");
+  v3 = objc_msgSend_objectForKey_(choice, a2, @"BSAutoGuess_Recommendation");
   if (!v3)
   {
     return 0;
@@ -819,12 +819,12 @@ LABEL_11:
   return sub_23EB6CD3C(v3, v4);
 }
 
-+ (BOOL)isRestoreAnOptionForTheRecommendations:(id)a3
++ (BOOL)isRestoreAnOptionForTheRecommendations:(id)recommendations
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (recommendations)
   {
-    v3 = objc_msgSend_valueForKey_(a3, a2, @"BSAutoGuessComplete_Suggestions");
+    v3 = objc_msgSend_valueForKey_(recommendations, a2, @"BSAutoGuessComplete_Suggestions");
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -871,33 +871,33 @@ LABEL_11:
   return v5;
 }
 
-+ (id)shortProductNameFromBaseStationDictionary:(id)a3
++ (id)shortProductNameFromBaseStationDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v4 = objc_msgSend_objectForKey_(a3, a2, @"syAP");
+  v4 = objc_msgSend_objectForKey_(dictionary, a2, @"syAP");
   if (!v4)
   {
     return 0;
   }
 
   v7 = objc_msgSend_integerValue(v4, v5, v6);
-  v15 = sub_23EB6A294(a3, v8, v9, v10, v11, v12, v13, v14);
+  v15 = sub_23EB6A294(dictionary, v8, v9, v10, v11, v12, v13, v14);
 
   return sub_23EB6CEE0(v7, v15, 0);
 }
 
-+ (id)shortProductNameForUnconfiguredDeviceFromAutoGuessResults:(id)a3
++ (id)shortProductNameForUnconfiguredDeviceFromAutoGuessResults:(id)results
 {
-  if (!a3)
+  if (!results)
   {
     return 0;
   }
 
-  v4 = objc_msgSend_valueForKey_(a3, a2, @"BSAutoGuessComplete_Suggestions");
+  v4 = objc_msgSend_valueForKey_(results, a2, @"BSAutoGuessComplete_Suggestions");
   if (!v4)
   {
     return 0;
@@ -920,7 +920,7 @@ LABEL_11:
   if (v12)
   {
 
-    return MEMORY[0x2821F9670](a1, sel_shortProductNameFromBaseStationDictionary_, v12);
+    return MEMORY[0x2821F9670](self, sel_shortProductNameFromBaseStationDictionary_, v12);
   }
 
   v14 = objc_msgSend_valueForKey_(v11, v13, @"BSAutoGuess_UnconfiguredNetwork");
@@ -936,11 +936,11 @@ LABEL_11:
   return sub_23EB6CEE0(v17, v19, 0);
 }
 
-+ (id)sourceBaseStationFromRecommendation:(id)a3
++ (id)sourceBaseStationFromRecommendation:(id)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
-    return objc_msgSend_objectForKey_(a3, a2, @"BSAutoGuess_SourceBase");
+    return objc_msgSend_objectForKey_(recommendation, a2, @"BSAutoGuess_SourceBase");
   }
 
   else
@@ -949,11 +949,11 @@ LABEL_11:
   }
 }
 
-+ (id)sourceNetworkFromRecommendation:(id)a3
++ (id)sourceNetworkFromRecommendation:(id)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
-    return objc_msgSend_objectForKey_(a3, a2, @"BSAutoGuess_SourceNetwork");
+    return objc_msgSend_objectForKey_(recommendation, a2, @"BSAutoGuess_SourceNetwork");
   }
 
   else
@@ -962,9 +962,9 @@ LABEL_11:
   }
 }
 
-+ (id)unconfiguredBaseStationFromGuessCompleteDict:(id)a3
++ (id)unconfiguredBaseStationFromGuessCompleteDict:(id)dict
 {
-  result = objc_msgSend_valueForKey_(a3, a2, @"primaryRecommendationDict");
+  result = objc_msgSend_valueForKey_(dict, a2, @"primaryRecommendationDict");
   if (result)
   {
     v5 = result;
@@ -979,11 +979,11 @@ LABEL_11:
   return result;
 }
 
-+ (id)unconfiguredBaseStationFromRecommendation:(id)a3
++ (id)unconfiguredBaseStationFromRecommendation:(id)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
-    return objc_msgSend_objectForKey_(a3, a2, @"BSAutoGuess_UnconfiguredBase");
+    return objc_msgSend_objectForKey_(recommendation, a2, @"BSAutoGuess_UnconfiguredBase");
   }
 
   else
@@ -992,9 +992,9 @@ LABEL_11:
   }
 }
 
-+ (BOOL)shouldShowPasswordUIForRecommendation:(id)a3
++ (BOOL)shouldShowPasswordUIForRecommendation:(id)recommendation
 {
-  if ((objc_msgSend_isEqualToString_(a3, a2, @"BSSetupRecommend_OfferCreate") & 1) != 0 || (isEqualToString = objc_msgSend_isEqualToString_(a3, v4, @"BSSetupRecommend_OfferJoinNetwork")) != 0)
+  if ((objc_msgSend_isEqualToString_(recommendation, a2, @"BSSetupRecommend_OfferCreate") & 1) != 0 || (isEqualToString = objc_msgSend_isEqualToString_(recommendation, v4, @"BSSetupRecommend_OfferJoinNetwork")) != 0)
   {
     LOBYTE(isEqualToString) = 1;
   }
@@ -1002,23 +1002,23 @@ LABEL_11:
   return isEqualToString;
 }
 
-+ (id)restoreOfferFromCompletionDict:(id)a3
++ (id)restoreOfferFromCompletionDict:(id)dict
 {
-  if (!a3)
+  if (!dict)
   {
     return 0;
   }
 
-  v3 = objc_msgSend_restoreRecommendationDictionaryFromCompletionDict_(AutoGuessController, a2, a3);
+  v3 = objc_msgSend_restoreRecommendationDictionaryFromCompletionDict_(AutoGuessController, a2, dict);
 
   return objc_msgSend_objectForKey_(v3, v4, @"BSAutoGuess_Recommendation");
 }
 
-+ (id)recommendationStringFromCompletionDict:(id)a3
++ (id)recommendationStringFromCompletionDict:(id)dict
 {
-  if (a3)
+  if (dict)
   {
-    return objc_msgSend_valueForKey_(a3, a2, @"recommendationText");
+    return objc_msgSend_valueForKey_(dict, a2, @"recommendationText");
   }
 
   else
@@ -1027,11 +1027,11 @@ LABEL_11:
   }
 }
 
-+ (id)unconfiguredBaseStationCanBeConfiguredFromCompletionDict:(id)a3
++ (id)unconfiguredBaseStationCanBeConfiguredFromCompletionDict:(id)dict
 {
-  if (a3)
+  if (dict)
   {
-    return objc_msgSend_valueForKey_(a3, a2, @"baseStationCanBeConfigured");
+    return objc_msgSend_valueForKey_(dict, a2, @"baseStationCanBeConfigured");
   }
 
   else
@@ -1040,11 +1040,11 @@ LABEL_11:
   }
 }
 
-+ (id)primaryRecommendationDictionaryFromCompletionDict:(id)a3
++ (id)primaryRecommendationDictionaryFromCompletionDict:(id)dict
 {
-  if (a3)
+  if (dict)
   {
-    return objc_msgSend_valueForKey_(a3, a2, @"primaryRecommendationDict");
+    return objc_msgSend_valueForKey_(dict, a2, @"primaryRecommendationDict");
   }
 
   else
@@ -1053,11 +1053,11 @@ LABEL_11:
   }
 }
 
-+ (id)restoreRecommendationDictionaryFromCompletionDict:(id)a3
++ (id)restoreRecommendationDictionaryFromCompletionDict:(id)dict
 {
-  if (a3)
+  if (dict)
   {
-    return objc_msgSend_valueForKey_(a3, a2, @"restoreRecommendationDict");
+    return objc_msgSend_valueForKey_(dict, a2, @"restoreRecommendationDict");
   }
 
   else
@@ -1066,11 +1066,11 @@ LABEL_11:
   }
 }
 
-+ (id)fullAutoGuessDictionaryFromCompletionDict:(id)a3
++ (id)fullAutoGuessDictionaryFromCompletionDict:(id)dict
 {
-  if (a3)
+  if (dict)
   {
-    return objc_msgSend_valueForKey_(a3, a2, @"fullGuessResults");
+    return objc_msgSend_valueForKey_(dict, a2, @"fullGuessResults");
   }
 
   else
@@ -1079,13 +1079,13 @@ LABEL_11:
   }
 }
 
-- (id)createCompletionDictFromAutoGuessResults:(id)a3
+- (id)createCompletionDictFromAutoGuessResults:(id)results
 {
   v147 = *MEMORY[0x277D85DE8];
   v145 = 0;
-  v140 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3);
-  v137 = a3;
-  sub_23EB6FF14(a3, &v145, "%ks:int", v4, v5, v6, v7, v8, "BSAutoGuessComplete_ErrorResult");
+  v140 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, results);
+  resultsCopy = results;
+  sub_23EB6FF14(results, &v145, "%ks:int", v4, v5, v6, v7, v8, "BSAutoGuessComplete_ErrorResult");
   if (v10)
   {
     return v140;
@@ -1115,7 +1115,7 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  obj = objc_msgSend_objectForKey_(a3, v9, @"BSAutoGuessComplete_Suggestions");
+  obj = objc_msgSend_objectForKey_(results, v9, @"BSAutoGuessComplete_Suggestions");
   if (!obj)
   {
     return v140;
@@ -1166,7 +1166,7 @@ LABEL_8:
         v43 = objc_msgSend_scanInfoDeviceKind_(WiFiUtils, v54, v34);
         if ((v43 - 3) > 1)
         {
-          v44 = objc_msgSend_shortProductNameForUnconfiguredDeviceFromAutoGuessResults_(AutoGuessController, v55, v137);
+          v44 = objc_msgSend_shortProductNameForUnconfiguredDeviceFromAutoGuessResults_(AutoGuessController, v55, resultsCopy);
         }
 
         else
@@ -1393,7 +1393,7 @@ LABEL_14:
   }
 
 LABEL_78:
-  objc_msgSend_setValue_forKey_(v140, v16, v137, @"fullGuessResults");
+  objc_msgSend_setValue_forKey_(v140, v16, resultsCopy, @"fullGuessResults");
   objc_msgSend_setValue_forKey_(v140, v123, v14, @"recommendationText");
   v125 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v124, v133 & 1);
   objc_msgSend_setValue_forKey_(v140, v126, v125, @"baseStationCanBeConfigured");

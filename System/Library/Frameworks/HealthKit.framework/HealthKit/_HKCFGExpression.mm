@@ -1,12 +1,12 @@
 @interface _HKCFGExpression
 - (id)_label;
 - (unint64_t)_minimumLength;
-- (void)_tryNodesWithContext:(id)a3 solutionTest:(id)a4;
+- (void)_tryNodesWithContext:(id)context solutionTest:(id)test;
 @end
 
 @implementation _HKCFGExpression
 
-- (void)_tryNodesWithContext:(id)a3 solutionTest:(id)a4
+- (void)_tryNodesWithContext:(id)context solutionTest:(id)test
 {
   OUTLINED_FUNCTION_0_0();
   objc_opt_class();

@@ -1,38 +1,38 @@
 @interface CAMViewfinderStillImageCaptureTestHarness
 - (BOOL)executeAction;
 - (BOOL)shouldAttemptAction;
-- (CAMViewfinderStillImageCaptureTestHarness)initWithTestName:(id)a3 maxStillImageCount:(unint64_t)a4 expectedNumberOfCapturesPerRequest:(unint64_t)a5 viewfinderViewController:(id)a6 performingWarmupCapture:(BOOL)a7 forCaptureMode:(int64_t)a8 delayBetweenCaptures:(double)a9 capturesOnTouchDown:(BOOL)a10;
+- (CAMViewfinderStillImageCaptureTestHarness)initWithTestName:(id)name maxStillImageCount:(unint64_t)count expectedNumberOfCapturesPerRequest:(unint64_t)request viewfinderViewController:(id)controller performingWarmupCapture:(BOOL)capture forCaptureMode:(int64_t)mode delayBetweenCaptures:(double)captures capturesOnTouchDown:(BOOL)self0;
 - (void)cancelTesting;
-- (void)failedTestWithReason:(id)a3;
+- (void)failedTestWithReason:(id)reason;
 - (void)startTesting;
 - (void)stopTesting;
-- (void)viewfinderViewController:(id)a3 didReceiveStillImageRequestDidCompleteCapture:(id)a4 error:(id)a5;
-- (void)viewfinderViewController:(id)a3 didReceiveStillImageRequestDidCompleteStillImageCapture:(id)a4 withResponse:(id)a5 error:(id)a6;
-- (void)viewfinderViewController:(id)a3 didUpdateImageWellWithRequest:(id)a4 response:(id)a5 error:(id)a6;
-- (void)viewfinderViewController:(id)a3 willCaptureStillImageForRequest:(id)a4;
+- (void)viewfinderViewController:(id)controller didReceiveStillImageRequestDidCompleteCapture:(id)capture error:(id)error;
+- (void)viewfinderViewController:(id)controller didReceiveStillImageRequestDidCompleteStillImageCapture:(id)capture withResponse:(id)response error:(id)error;
+- (void)viewfinderViewController:(id)controller didUpdateImageWellWithRequest:(id)request response:(id)response error:(id)error;
+- (void)viewfinderViewController:(id)controller willCaptureStillImageForRequest:(id)request;
 @end
 
 @implementation CAMViewfinderStillImageCaptureTestHarness
 
-- (CAMViewfinderStillImageCaptureTestHarness)initWithTestName:(id)a3 maxStillImageCount:(unint64_t)a4 expectedNumberOfCapturesPerRequest:(unint64_t)a5 viewfinderViewController:(id)a6 performingWarmupCapture:(BOOL)a7 forCaptureMode:(int64_t)a8 delayBetweenCaptures:(double)a9 capturesOnTouchDown:(BOOL)a10
+- (CAMViewfinderStillImageCaptureTestHarness)initWithTestName:(id)name maxStillImageCount:(unint64_t)count expectedNumberOfCapturesPerRequest:(unint64_t)request viewfinderViewController:(id)controller performingWarmupCapture:(BOOL)capture forCaptureMode:(int64_t)mode delayBetweenCaptures:(double)captures capturesOnTouchDown:(BOOL)self0
 {
-  v17 = a6;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = CAMViewfinderStillImageCaptureTestHarness;
-  v18 = [(CAMPerformanceTestHarness *)&v22 initWithTestName:a3];
+  v18 = [(CAMPerformanceTestHarness *)&v22 initWithTestName:name];
   if (v18)
   {
     v19 = objc_alloc_init(MEMORY[0x1E696AB50]);
     requestIDs = v18->__requestIDs;
     v18->__requestIDs = v19;
 
-    v18->__performWarmupCapture = a7;
-    v18->__maxStillImageCount = a4;
-    v18->__waitingOnWarmupCapture = a7;
-    v18->__expectedNumberOfResponsesPerRequest = a5;
-    v18->__delayBetweenCaptures = a9;
-    objc_storeStrong(&v18->__viewfinderViewController, a6);
-    v18->__capturesOnTouchDown = a10;
+    v18->__performWarmupCapture = capture;
+    v18->__maxStillImageCount = count;
+    v18->__waitingOnWarmupCapture = capture;
+    v18->__expectedNumberOfResponsesPerRequest = request;
+    v18->__delayBetweenCaptures = captures;
+    objc_storeStrong(&v18->__viewfinderViewController, controller);
+    v18->__capturesOnTouchDown = down;
   }
 
   return v18;
@@ -49,10 +49,10 @@
     }
   }
 
-  v4 = [(CAMViewfinderStillImageCaptureTestHarness *)self testIntervalometer];
+  testIntervalometer = [(CAMViewfinderStillImageCaptureTestHarness *)self testIntervalometer];
   if ([(CAMViewfinderStillImageCaptureTestHarness *)self _performWarmupCapture])
   {
-    [v4 manuallyGenerateRequest];
+    [testIntervalometer manuallyGenerateRequest];
   }
 
   else
@@ -60,7 +60,7 @@
     v5.receiver = self;
     v5.super_class = CAMViewfinderStillImageCaptureTestHarness;
     [(CAMPerformanceTestHarness *)&v5 startTesting];
-    [v4 startGeneratingRequests];
+    [testIntervalometer startGeneratingRequests];
   }
 }
 
@@ -72,8 +72,8 @@
     self->_testIntervalometer = 0;
   }
 
-  v4 = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
-  v5 = [v4 count];
+  _requestIDs = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
+  v5 = [_requestIDs count];
 
   if (v5)
   {
@@ -100,40 +100,40 @@
   [(CAMPerformanceTestHarness *)&v5 stopTesting];
 }
 
-- (void)failedTestWithReason:(id)a3
+- (void)failedTestWithReason:(id)reason
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = v4;
+    v8 = reasonCopy;
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   v6.receiver = self;
   v6.super_class = CAMViewfinderStillImageCaptureTestHarness;
-  [(CAMPerformanceTestHarness *)&v6 failedTestWithReason:v4];
+  [(CAMPerformanceTestHarness *)&v6 failedTestWithReason:reasonCopy];
 }
 
-- (void)viewfinderViewController:(id)a3 didReceiveStillImageRequestDidCompleteStillImageCapture:(id)a4 withResponse:(id)a5 error:(id)a6
+- (void)viewfinderViewController:(id)controller didReceiveStillImageRequestDidCompleteStillImageCapture:(id)capture withResponse:(id)response error:(id)error
 {
-  v13 = a6;
-  v8 = [a4 persistenceUUID];
-  if (v13)
+  errorCopy = error;
+  persistenceUUID = [capture persistenceUUID];
+  if (errorCopy)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Capture failed with error: %@", v13];
-    [(CAMViewfinderStillImageCaptureTestHarness *)self failedTestWithReason:v9];
+    errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Capture failed with error: %@", errorCopy];
+    [(CAMViewfinderStillImageCaptureTestHarness *)self failedTestWithReason:errorCopy];
   }
 
-  v10 = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
-  [v10 removeObject:v8];
+  _requestIDs = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
+  [_requestIDs removeObject:persistenceUUID];
 
   if ([(CAMViewfinderStillImageCaptureTestHarness *)self _performWarmupCapture])
   {
-    v11 = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
-    v12 = [v11 countForObject:v8];
+    _requestIDs2 = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
+    v12 = [_requestIDs2 countForObject:persistenceUUID];
 
     if (!v12)
     {
@@ -144,17 +144,17 @@
   }
 }
 
-- (void)viewfinderViewController:(id)a3 didReceiveStillImageRequestDidCompleteCapture:(id)a4 error:(id)a5
+- (void)viewfinderViewController:(id)controller didReceiveStillImageRequestDidCompleteCapture:(id)capture error:(id)error
 {
-  v6 = a4;
+  captureCopy = capture;
   v7 = dispatch_time(0, 1000000000);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __122__CAMViewfinderStillImageCaptureTestHarness_viewfinderViewController_didReceiveStillImageRequestDidCompleteCapture_error___block_invoke;
   v9[3] = &unk_1E76F7960;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = captureCopy;
+  selfCopy = self;
+  v8 = captureCopy;
   dispatch_after(v7, MEMORY[0x1E69E96A0], v9);
 }
 
@@ -197,27 +197,27 @@ void __122__CAMViewfinderStillImageCaptureTestHarness_viewfinderViewController_d
   }
 }
 
-- (void)viewfinderViewController:(id)a3 willCaptureStillImageForRequest:(id)a4
+- (void)viewfinderViewController:(id)controller willCaptureStillImageForRequest:(id)request
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [a4 persistenceUUID];
+  persistenceUUID = [request persistenceUUID];
   [(CAMViewfinderStillImageCaptureTestHarness *)self set_generatedRequestsCount:[(CAMViewfinderStillImageCaptureTestHarness *)self _generatedRequestsCount]+ 1];
   v6 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543874;
-    v11 = v5;
+    v11 = persistenceUUID;
     v12 = 2048;
-    v13 = [(CAMViewfinderStillImageCaptureTestHarness *)self _generatedRequestsCount];
+    _generatedRequestsCount = [(CAMViewfinderStillImageCaptureTestHarness *)self _generatedRequestsCount];
     v14 = 2048;
-    v15 = [(CAMViewfinderStillImageCaptureTestHarness *)self _maxStillImageCount];
+    _maxStillImageCount = [(CAMViewfinderStillImageCaptureTestHarness *)self _maxStillImageCount];
     _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "CAMViewfinderStillImageCaptureTestHarness willCaptureStillImageForRequest, persistenceUUID:%{public}@, generatedRequestsCount:%ld, _maxStillImageCount:%ld", &v10, 0x20u);
   }
 
-  v7 = [(CAMViewfinderStillImageCaptureTestHarness *)self _generatedRequestsCount];
-  if (v7 == [(CAMViewfinderStillImageCaptureTestHarness *)self _maxStillImageCount])
+  _generatedRequestsCount2 = [(CAMViewfinderStillImageCaptureTestHarness *)self _generatedRequestsCount];
+  if (_generatedRequestsCount2 == [(CAMViewfinderStillImageCaptureTestHarness *)self _maxStillImageCount])
   {
-    [(CAMViewfinderStillImageCaptureTestHarness *)self set_finalRequestPersistenceUUID:v5];
+    [(CAMViewfinderStillImageCaptureTestHarness *)self set_finalRequestPersistenceUUID:persistenceUUID];
   }
 
   if ([(CAMViewfinderStillImageCaptureTestHarness *)self _expectedNumberOfResponsesPerRequest])
@@ -225,8 +225,8 @@ void __122__CAMViewfinderStillImageCaptureTestHarness_viewfinderViewController_d
     v8 = 0;
     do
     {
-      v9 = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
-      [v9 addObject:v5];
+      _requestIDs = [(CAMViewfinderStillImageCaptureTestHarness *)self _requestIDs];
+      [_requestIDs addObject:persistenceUUID];
 
       ++v8;
     }
@@ -235,31 +235,31 @@ void __122__CAMViewfinderStillImageCaptureTestHarness_viewfinderViewController_d
   }
 }
 
-- (void)viewfinderViewController:(id)a3 didUpdateImageWellWithRequest:(id)a4 response:(id)a5 error:(id)a6
+- (void)viewfinderViewController:(id)controller didUpdateImageWellWithRequest:(id)request response:(id)response error:(id)error
 {
-  v9 = [(CAMViewfinderStillImageCaptureTestHarness *)self testIntervalometer:a3];
-  v7 = [v9 successfullActionCount];
-  if (v7 == [(CAMViewfinderStillImageCaptureTestHarness *)self _maxStillImageCount])
+  didUpdateFinalThumbnailHandler2 = [(CAMViewfinderStillImageCaptureTestHarness *)self testIntervalometer:controller];
+  successfullActionCount = [didUpdateFinalThumbnailHandler2 successfullActionCount];
+  if (successfullActionCount == [(CAMViewfinderStillImageCaptureTestHarness *)self _maxStillImageCount])
   {
-    v8 = [(CAMViewfinderStillImageCaptureTestHarness *)self didUpdateFinalThumbnailHandler];
+    didUpdateFinalThumbnailHandler = [(CAMViewfinderStillImageCaptureTestHarness *)self didUpdateFinalThumbnailHandler];
 
-    if (!v8)
+    if (!didUpdateFinalThumbnailHandler)
     {
       return;
     }
 
-    v9 = [(CAMViewfinderStillImageCaptureTestHarness *)self didUpdateFinalThumbnailHandler];
-    v9[2]();
+    didUpdateFinalThumbnailHandler2 = [(CAMViewfinderStillImageCaptureTestHarness *)self didUpdateFinalThumbnailHandler];
+    didUpdateFinalThumbnailHandler2[2]();
   }
 }
 
 - (BOOL)shouldAttemptAction
 {
-  v3 = [(CAMViewfinderStillImageCaptureTestHarness *)self _viewfinderViewController];
-  v4 = [v3 isCapturingPhoto];
+  _viewfinderViewController = [(CAMViewfinderStillImageCaptureTestHarness *)self _viewfinderViewController];
+  isCapturingPhoto = [_viewfinderViewController isCapturingPhoto];
 
   result = [(CAMViewfinderStillImageCaptureTestHarness *)self _allowOverlappingCaptures];
-  if (!result && (v4 & 1) == 0)
+  if (!result && (isCapturingPhoto & 1) == 0)
   {
     [(CAMViewfinderStillImageCaptureTestHarness *)self _lastCaptureCompletionTime];
     if (v6 == 0.0)
@@ -282,17 +282,17 @@ void __122__CAMViewfinderStillImageCaptureTestHarness_viewfinderViewController_d
 
 - (BOOL)executeAction
 {
-  v3 = [(CAMViewfinderStillImageCaptureTestHarness *)self isStillDuringVideo];
-  v4 = [(CAMViewfinderStillImageCaptureTestHarness *)self _viewfinderViewController];
-  v5 = v4;
-  if (v3)
+  isStillDuringVideo = [(CAMViewfinderStillImageCaptureTestHarness *)self isStillDuringVideo];
+  _viewfinderViewController = [(CAMViewfinderStillImageCaptureTestHarness *)self _viewfinderViewController];
+  v5 = _viewfinderViewController;
+  if (isStillDuringVideo)
   {
-    v6 = [v4 takeStillDuringVideoWithTouchUpDelay:0.1];
+    v6 = [_viewfinderViewController takeStillDuringVideoWithTouchUpDelay:0.1];
   }
 
   else
   {
-    v6 = [v4 pressShutterButtonWithTouchUpDelay:0.1];
+    v6 = [_viewfinderViewController pressShutterButtonWithTouchUpDelay:0.1];
   }
 
   v7 = v6;

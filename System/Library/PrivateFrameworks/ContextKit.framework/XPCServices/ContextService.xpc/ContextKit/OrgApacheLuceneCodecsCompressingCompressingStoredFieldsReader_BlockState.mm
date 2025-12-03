@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_BlockState
-- (id)documentWithInt:(int)a3;
+- (id)documentWithInt:(int)int;
 - (void)__javaClone;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_BlockState
 
-- (id)documentWithInt:(int)a3
+- (id)documentWithInt:(int)int
 {
   if (![(OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_BlockState *)self containsWithInt:?])
   {
@@ -20,11 +20,11 @@
     goto LABEL_29;
   }
 
-  v6 = (a3 - self->docBase_);
+  v6 = (int - self->docBase_);
   size = offsets->super.size_;
   if ((v6 & 0x80000000) != 0 || v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 - self->docBase_));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int - self->docBase_));
   }
 
   v8 = self->offsets_;

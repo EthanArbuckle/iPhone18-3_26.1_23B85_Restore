@@ -1,29 +1,29 @@
 @interface HMMTRSystemCommissionerPerControllerStorage
 + (id)logCategory;
-- (BOOL)controller:(id)a3 removeValueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6;
-- (BOOL)controller:(id)a3 storeValue:(id)a4 forKey:(id)a5 securityLevel:(unint64_t)a6 sharingType:(unint64_t)a7;
-- (HMMTRSystemCommissionerPerControllerStorage)initWithQueue:(id)a3;
+- (BOOL)controller:(id)controller removeValueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type;
+- (BOOL)controller:(id)controller storeValue:(id)value forKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type;
+- (HMMTRSystemCommissionerPerControllerStorage)initWithQueue:(id)queue;
 - (id)attributeDescriptions;
-- (id)controller:(id)a3 valueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6;
+- (id)controller:(id)controller valueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type;
 @end
 
 @implementation HMMTRSystemCommissionerPerControllerStorage
 
 - (id)attributeDescriptions
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [v2 copy];
+  array = [MEMORY[0x277CBEB18] array];
+  v3 = [array copy];
 
   return v3;
 }
 
-- (id)controller:(id)a3 valueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6
+- (id)controller:(id)controller valueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMMTRSystemCommissionerPerControllerStorage *)self privateDataSource];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  controllerCopy = controller;
+  keyCopy = key;
+  privateDataSource = [(HMMTRSystemCommissionerPerControllerStorage *)self privateDataSource];
+  v11 = [privateDataSource objectForKeyedSubscript:keyCopy];
 
   if (v11)
   {
@@ -36,7 +36,7 @@
     if (!v14)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -44,7 +44,7 @@
         *buf = 138543874;
         v24 = v19;
         v25 = 2112;
-        v26 = v9;
+        v26 = keyCopy;
         v27 = 2112;
         v28 = v15;
         _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to unarchive value for key %@ with error %@", buf, 0x20u);
@@ -58,25 +58,25 @@
   return 0;
 }
 
-- (BOOL)controller:(id)a3 storeValue:(id)a4 forKey:(id)a5 securityLevel:(unint64_t)a6 sharingType:(unint64_t)a7
+- (BOOL)controller:(id)controller storeValue:(id)value forKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  controllerCopy = controller;
+  valueCopy = value;
+  keyCopy = key;
   v22 = 0;
-  v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v22];
+  v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:&v22];
   v14 = v22;
   if (v13)
   {
-    v15 = [(HMMTRSystemCommissionerPerControllerStorage *)self privateDataSource];
-    [v15 setObject:v13 forKeyedSubscript:v12];
+    privateDataSource = [(HMMTRSystemCommissionerPerControllerStorage *)self privateDataSource];
+    [privateDataSource setObject:v13 forKeyedSubscript:keyCopy];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -84,7 +84,7 @@
       *buf = 138543874;
       v24 = v19;
       v25 = 2112;
-      v26 = v12;
+      v26 = keyCopy;
       v27 = 2112;
       v28 = v14;
       _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to archive requested value for key %@ with error %@", buf, 0x20u);
@@ -97,25 +97,25 @@
   return v13 != 0;
 }
 
-- (BOOL)controller:(id)a3 removeValueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6
+- (BOOL)controller:(id)controller removeValueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
-  v7 = a4;
-  v8 = [(HMMTRSystemCommissionerPerControllerStorage *)self privateDataSource];
-  [v8 removeObjectForKey:v7];
+  keyCopy = key;
+  privateDataSource = [(HMMTRSystemCommissionerPerControllerStorage *)self privateDataSource];
+  [privateDataSource removeObjectForKey:keyCopy];
 
   return 1;
 }
 
-- (HMMTRSystemCommissionerPerControllerStorage)initWithQueue:(id)a3
+- (HMMTRSystemCommissionerPerControllerStorage)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = HMMTRSystemCommissionerPerControllerStorage;
   v6 = [(HMMTRSystemCommissionerPerControllerStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

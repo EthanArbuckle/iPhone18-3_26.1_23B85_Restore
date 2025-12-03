@@ -1,23 +1,23 @@
 @interface CSDSIMFocusCallFilter
-- (BOOL)shouldAllowCallsFromSIM:(id)a3;
-- (BOOL)shouldAllowIncomingCall:(id)a3 from:(id)a4;
-- (CSDSIMFocusCallFilter)initWithQueue:(id)a3;
-- (id)readSimFocusDataWithError:(id *)a3;
+- (BOOL)shouldAllowCallsFromSIM:(id)m;
+- (BOOL)shouldAllowIncomingCall:(id)call from:(id)from;
+- (CSDSIMFocusCallFilter)initWithQueue:(id)queue;
+- (id)readSimFocusDataWithError:(id *)error;
 - (id)simAccountsFromKeychain;
 @end
 
 @implementation CSDSIMFocusCallFilter
 
-- (CSDSIMFocusCallFilter)initWithQueue:(id)a3
+- (CSDSIMFocusCallFilter)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = CSDSIMFocusCallFilter;
   v6 = [(CSDSIMFocusCallFilter *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = +[CSDFocusStateManager sharedManager];
     focusStateManager = v7->_focusStateManager;
     v7->_focusStateManager = v8;
@@ -30,39 +30,39 @@
   return v7;
 }
 
-- (BOOL)shouldAllowIncomingCall:(id)a3 from:(id)a4
+- (BOOL)shouldAllowIncomingCall:(id)call from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 remoteHandle];
-  v9 = [v8 value];
+  callCopy = call;
+  fromCopy = from;
+  remoteHandle = [callCopy remoteHandle];
+  value = [remoteHandle value];
 
-  if ([v7 isTelephonyProvider] && (objc_msgSend(v9, "destinationIdIsPhoneNumber") & 1) != 0)
+  if ([fromCopy isTelephonyProvider] && (objc_msgSend(value, "destinationIdIsPhoneNumber") & 1) != 0)
   {
-    v10 = [v7 bundleIdentifier];
-    if (v10)
+    bundleIdentifier = [fromCopy bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v11 = [v7 bundleIdentifier];
+      bundleIdentifier2 = [fromCopy bundleIdentifier];
     }
 
     else
     {
-      v11 = TUBundleIdentifierPhoneApplication;
+      bundleIdentifier2 = TUBundleIdentifierPhoneApplication;
     }
 
-    v12 = v11;
+    v12 = bundleIdentifier2;
 
     v14 = objc_alloc_init(DNDMutableClientEventDetails);
     [v14 setBundleIdentifier:v12];
     [v14 setType:1];
     v15 = objc_alloc_init(DNDMutableContactHandle);
     [v15 setType:2];
-    [v15 setValue:v9];
+    [v15 setValue:value];
     v38 = v15;
     [v14 setSender:v15];
-    v16 = [(CSDSIMFocusCallFilter *)self behaviorResolutionService];
+    behaviorResolutionService = [(CSDSIMFocusCallFilter *)self behaviorResolutionService];
     v39 = 0;
-    v17 = [v16 resolveBehaviorForEventDetails:v14 error:&v39];
+    v17 = [behaviorResolutionService resolveBehaviorForEventDetails:v14 error:&v39];
     v18 = v39;
 
     v19 = sub_100004778();
@@ -78,7 +78,7 @@
     if (v17)
     {
       v20 = [v17 interruptionSuppression] == 0;
-      v21 = [v17 resolutionReason];
+      resolutionReason = [v17 resolutionReason];
     }
 
     else
@@ -91,7 +91,7 @@
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[WARN] Error encountered resolving behavior via DND. Defaulting isDestinationIDAllowedThroughDoNotDisturb to YES. error=%@", buf, 0xCu);
       }
 
-      v21 = 0;
+      resolutionReason = 0;
       v20 = 0;
     }
 
@@ -108,7 +108,7 @@
 
     if (v20)
     {
-      if (v21 - 5) < 0xE && ((0x216Du >> (v21 - 5)))
+      if (resolutionReason - 5) < 0xE && ((0x216Du >> (resolutionReason - 5)))
       {
         LOBYTE(v13) = 1;
 LABEL_38:
@@ -116,9 +116,9 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      v25 = [(CSDSIMFocusCallFilter *)self simAccountsFromKeychain];
-      v26 = v25;
-      if (!v25 || ![v25 count])
+      simAccountsFromKeychain = [(CSDSIMFocusCallFilter *)self simAccountsFromKeychain];
+      v26 = simAccountsFromKeychain;
+      if (!simAccountsFromKeychain || ![simAccountsFromKeychain count])
       {
         v34 = sub_100004778();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -136,12 +136,12 @@ LABEL_38:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v41 = v9;
+      *v41 = value;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "simFocus: Check if (%@) is in denied contact list", buf, 0xCu);
     }
 
-    v28 = [(CSDSIMFocusCallFilter *)self focusStateManager];
-    v29 = [v28 contactInDeniedContactsList:v9];
+    focusStateManager = [(CSDSIMFocusCallFilter *)self focusStateManager];
+    v29 = [focusStateManager contactInDeniedContactsList:value];
 
     v26 = sub_100004778();
     v30 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
@@ -165,10 +165,10 @@ LABEL_38:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "simFocus: Check if focus based sim allows the call", buf, 2u);
       }
 
-      v31 = [v6 account];
-      v32 = [v31 handle];
-      v33 = [v32 value];
-      v13 = [(CSDSIMFocusCallFilter *)self shouldAllowCallsFromSIM:v33];
+      account = [callCopy account];
+      handle = [account handle];
+      value2 = [handle value];
+      v13 = [(CSDSIMFocusCallFilter *)self shouldAllowCallsFromSIM:value2];
 
       v26 = sub_100004778();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -189,9 +189,9 @@ LABEL_37:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    *v41 = [v7 isTelephonyProvider];
+    *v41 = [fromCopy isTelephonyProvider];
     *&v41[4] = 2112;
-    *&v41[6] = v9;
+    *&v41[6] = value;
     v42 = 1024;
     v43 = 1;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "simFocus: allow call for isTelephonyProvider=%d, destinationID=%@, shouldAllowCall=%d", buf, 0x18u);
@@ -202,12 +202,12 @@ LABEL_39:
   return v13;
 }
 
-- (BOOL)shouldAllowCallsFromSIM:(id)a3
+- (BOOL)shouldAllowCallsFromSIM:(id)m
 {
-  v4 = a3;
-  v5 = [(CSDSIMFocusCallFilter *)self simAccountsFromKeychain];
-  v6 = v5;
-  if (v5 && [v5 count])
+  mCopy = m;
+  simAccountsFromKeychain = [(CSDSIMFocusCallFilter *)self simAccountsFromKeychain];
+  v6 = simAccountsFromKeychain;
+  if (simAccountsFromKeychain && [simAccountsFromKeychain count])
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -240,25 +240,25 @@ LABEL_39:
           v13 = sub_100004778();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v12 phNumber];
+            phNumber = [v12 phNumber];
             *buf = 138412546;
-            v25 = v14;
+            v25 = phNumber;
             v26 = 2112;
-            v27 = v4;
+            v27 = mCopy;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "simFocus: simAccount.phNumber: %@, myPhoneNumber: %@", buf, 0x16u);
           }
 
-          v15 = [v12 phNumber];
-          v16 = [v4 isEqualToString:v15];
+          phNumber2 = [v12 phNumber];
+          v16 = [mCopy isEqualToString:phNumber2];
 
           if (v16 && [v12 focusAllowCalls])
           {
             v9 = sub_100004778();
             if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
             {
-              v17 = [v12 phNumber];
+              phNumber3 = [v12 phNumber];
               *buf = 138412290;
-              v25 = v17;
+              v25 = phNumber3;
               _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "simFocus: Found a match for sim number: %@", buf, 0xCu);
             }
 
@@ -357,7 +357,7 @@ LABEL_14:
   return v8;
 }
 
-- (id)readSimFocusDataWithError:(id *)a3
+- (id)readSimFocusDataWithError:(id *)error
 {
   v11[0] = kSecClass;
   v11[1] = kSecAttrAccessible;
@@ -374,9 +374,9 @@ LABEL_14:
   v5 = SecItemCopyMatching(v4, &result);
   if (v5)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v5 userInfo:0];
+      *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:v5 userInfo:0];
     }
 
     v6 = sub_100004778();

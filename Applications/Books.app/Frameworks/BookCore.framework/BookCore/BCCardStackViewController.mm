@@ -1,78 +1,78 @@
 @interface BCCardStackViewController
 + (BOOL)_alwaysUseSlideAnimation;
 + (id)_pendingCardStackViewControllers;
-+ (void)appendCardsWithData:(id)a3 fromViewController:(id)a4 identifier:(id)a5 completion:(id)a6;
-+ (void)pushCardsWithDataSource:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5 fromViewController:(id)a6 completion:(id)a7;
-- (BCCardStackViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (BOOL)bc_analyticsVisibilityOfChild:(id)a3;
-- (BOOL)isTopCardSetViewController:(id)a3;
-- (BOOL)scrollCardForFeedOptionsVisible:(id)a3;
++ (void)appendCardsWithData:(id)data fromViewController:(id)controller identifier:(id)identifier completion:(id)completion;
++ (void)pushCardsWithDataSource:(id)source focusedIndex:(unint64_t)index animated:(BOOL)animated fromViewController:(id)controller completion:(id)completion;
+- (BCCardStackViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (BOOL)bc_analyticsVisibilityOfChild:(id)child;
+- (BOOL)isTopCardSetViewController:(id)controller;
+- (BOOL)scrollCardForFeedOptionsVisible:(id)visible;
 - (CGRect)initialFrame;
 - (CGSize)lastLayoutStackSize;
-- (Class)cardNavigationControllerForCardSet:(id)a3;
+- (Class)cardNavigationControllerForCardSet:(id)set;
 - (NSSet)messagesAlreadyDisplayed;
 - (UIEdgeInsets)contentInset;
 - (UIEdgeInsets)safeAreaInsetsFromWindowCorners;
-- (id)_navigationControllerForViewController:(id)a3;
-- (id)_popCardFrontAnimatorForCardSet:(id)a3 cardSetViewControllerToUnfade:(id)a4 duration:(double)a5;
-- (id)_pushCardBackAnimatorForCardSet:(id)a3 cardSetViewControllerToFade:(id)a4 duration:(double)a5;
-- (id)_pushCardsWithDataSource:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5 presentingViewController:(id)a6;
-- (id)animationControllerForDismissedController:(id)a3;
+- (id)_navigationControllerForViewController:(id)controller;
+- (id)_popCardFrontAnimatorForCardSet:(id)set cardSetViewControllerToUnfade:(id)unfade duration:(double)duration;
+- (id)_pushCardBackAnimatorForCardSet:(id)set cardSetViewControllerToFade:(id)fade duration:(double)duration;
+- (id)_pushCardsWithDataSource:(id)source focusedIndex:(unint64_t)index animated:(BOOL)animated presentingViewController:(id)controller;
+- (id)animationControllerForDismissedController:(id)controller;
 - (id)childViewControllerForStatusBarStyle;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
-- (id)contentViewControllerForCardSet:(id)a3 index:(unint64_t)a4 cardContentScrollManager:(id)a5;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
+- (id)contentViewControllerForCardSet:(id)set index:(unint64_t)index cardContentScrollManager:(id)manager;
 - (id)effectiveAnalyticsTrackerForTopCard;
 - (id)im_visibleChildViewControllers;
 - (id)keyCommands;
 - (id)topCardSetViewController;
-- (int64_t)_animationTypeForDismissingCardSetViewController:(id)a3 distanceToCoverSource:(double *)a4;
+- (int64_t)_animationTypeForDismissingCardSetViewController:(id)controller distanceToCoverSource:(double *)source;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)_indexOfChildViewControllerToSuspendOrResume;
-- (unint64_t)cardCountForCardSet:(id)a3;
+- (unint64_t)cardCountForCardSet:(id)set;
 - (unint64_t)cardStackDepth;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_addAdornmentViewsToParentView:(id)a3;
-- (void)_applyCardSetViewController:(id)a3 withTransform:(unint64_t)a4;
+- (void)_addAdornmentViewsToParentView:(id)view;
+- (void)_applyCardSetViewController:(id)controller withTransform:(unint64_t)transform;
 - (void)_invalidateConfiguration;
 - (void)_layoutAdornmentViews;
-- (void)_layoutStackByChangingMode:(BOOL)a3 newViewSize:(CGSize)a4;
-- (void)_layoutUnderlyingCardSetViewController:(id)a3 animated:(BOOL)a4;
-- (void)_popCardsAnimated:(BOOL)a3 popAll:(BOOL)a4 animationType:(int64_t)a5 prefersCrossfade:(BOOL)a6 velocity:(double)a7 reason:(int64_t)a8 completion:(id)a9;
+- (void)_layoutStackByChangingMode:(BOOL)mode newViewSize:(CGSize)size;
+- (void)_layoutUnderlyingCardSetViewController:(id)controller animated:(BOOL)animated;
+- (void)_popCardsAnimated:(BOOL)animated popAll:(BOOL)all animationType:(int64_t)type prefersCrossfade:(BOOL)crossfade velocity:(double)velocity reason:(int64_t)reason completion:(id)completion;
 - (void)_resumeAndRebuildChildViewControllerAsNeeded;
-- (void)_scaleBackCardSetViewController:(id)a3 shiftUp:(BOOL)a4 cumulative:(BOOL)a5;
+- (void)_scaleBackCardSetViewController:(id)controller shiftUp:(BOOL)up cumulative:(BOOL)cumulative;
 - (void)_suspendAndTeardownChildViewControllerAsNeeded;
 - (void)_updateStatusBarBackgroundOpacity;
-- (void)_updateStatusBarBackgroundOpacityForCardSetViewController:(id)a3;
-- (void)cardSetViewController:(id)a3 animatorForExpanding:(id)a4;
-- (void)cardSetViewController:(id)a3 animatorForInteractiveDismiss:(id)a4;
-- (void)cardSetViewController:(id)a3 animatorForUnexpanding:(id)a4;
-- (void)cardSetViewController:(id)a3 didCommitDismissWithVelocity:(double)a4 interactiveAnimator:(id)a5;
-- (void)cardSetViewController:(id)a3 prepareForNavigationTransitionWithContext:(id)a4;
+- (void)_updateStatusBarBackgroundOpacityForCardSetViewController:(id)controller;
+- (void)cardSetViewController:(id)controller animatorForExpanding:(id)expanding;
+- (void)cardSetViewController:(id)controller animatorForInteractiveDismiss:(id)dismiss;
+- (void)cardSetViewController:(id)controller animatorForUnexpanding:(id)unexpanding;
+- (void)cardSetViewController:(id)controller didCommitDismissWithVelocity:(double)velocity interactiveAnimator:(id)animator;
+- (void)cardSetViewController:(id)controller prepareForNavigationTransitionWithContext:(id)context;
 - (void)didReceiveMemoryWarning;
 - (void)lockChildForStatusBarStyle;
-- (void)notifyAllCardsAboutMessageDisplayed:(id)a3 from:(id)a4;
-- (void)popCardsAnimated:(BOOL)a3 reason:(int64_t)a4;
-- (void)presentingViewControllerSafeAreaInsetsDidChange:(id)a3;
-- (void)pushCardsWithDataSource:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setToolbarHeight:(double)a3;
-- (void)viewController:(id)a3 didDisplayMessageWithId:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)notifyAllCardsAboutMessageDisplayed:(id)displayed from:(id)from;
+- (void)popCardsAnimated:(BOOL)animated reason:(int64_t)reason;
+- (void)presentingViewControllerSafeAreaInsetsDidChange:(id)change;
+- (void)pushCardsWithDataSource:(id)source focusedIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setToolbarHeight:(double)height;
+- (void)viewController:(id)controller didDisplayMessageWithId:(id)id;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillAppearFromTabChange;
 - (void)viewWillDisappearFromTabChange;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BCCardStackViewController
 
-- (BCCardStackViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BCCardStackViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v18.receiver = self;
   v18.super_class = BCCardStackViewController;
-  v4 = [(BCCardStackViewController *)&v18 initWithNibName:a3 bundle:a4];
+  v4 = [(BCCardStackViewController *)&v18 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -110,22 +110,22 @@
   v25.super_class = BCCardStackViewController;
   [(BCCardStackViewController *)&v25 viewDidLoad];
   v3 = [BCCardStackBarBackgroundContainingView alloc];
-  v4 = [(BCCardStackViewController *)self statusBarBackgroundController];
-  v5 = [(BCCardStackBarBackgroundContainingView *)v3 initWithStatusBarBackgroundController:v4];
+  statusBarBackgroundController = [(BCCardStackViewController *)self statusBarBackgroundController];
+  v5 = [(BCCardStackBarBackgroundContainingView *)v3 initWithStatusBarBackgroundController:statusBarBackgroundController];
 
   [(BCCardStackViewController *)self initialFrame];
   [(BCCardStackBarBackgroundContainingView *)v5 setFrame:?];
-  v6 = [(BCCardStackViewController *)self view];
-  -[BCCardStackBarBackgroundContainingView setAutoresizingMask:](v5, "setAutoresizingMask:", [v6 autoresizingMask]);
+  view = [(BCCardStackViewController *)self view];
+  -[BCCardStackBarBackgroundContainingView setAutoresizingMask:](v5, "setAutoresizingMask:", [view autoresizingMask]);
 
   [(BCCardStackViewController *)self setView:v5];
   v7 = +[UIColor clearColor];
-  v8 = [(BCCardStackViewController *)self view];
-  [v8 setBackgroundColor:v7];
+  view2 = [(BCCardStackViewController *)self view];
+  [view2 setBackgroundColor:v7];
 
   v9 = [UIView alloc];
-  v10 = [(BCCardStackViewController *)self view];
-  [v10 bounds];
+  view3 = [(BCCardStackViewController *)self view];
+  [view3 bounds];
   v11 = [v9 initWithFrame:{0.0, 0.0}];
   safeAreaCornerInsetsCapturingView = self->_safeAreaCornerInsetsCapturingView;
   self->_safeAreaCornerInsetsCapturingView = v11;
@@ -133,12 +133,12 @@
   [(UIView *)self->_safeAreaCornerInsetsCapturingView setAutoresizingMask:2];
   [(UIView *)self->_safeAreaCornerInsetsCapturingView _setSafeAreaCornerAdaptation:3];
   [(UIView *)self->_safeAreaCornerInsetsCapturingView setHidden:1];
-  v13 = [(BCCardStackViewController *)self view];
-  [v13 addSubview:self->_safeAreaCornerInsetsCapturingView];
+  view4 = [(BCCardStackViewController *)self view];
+  [view4 addSubview:self->_safeAreaCornerInsetsCapturingView];
 
   v14 = [UIScrollView alloc];
-  v15 = [(BCCardStackViewController *)self view];
-  [v15 bounds];
+  view5 = [(BCCardStackViewController *)self view];
+  [view5 bounds];
   v16 = [v14 initWithFrame:?];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v16;
@@ -150,38 +150,38 @@
   v18 = [UIColor colorWithWhite:0.0 alpha:0.7];
   [(UIScrollView *)self->_backgroundView setBackgroundColor:v18];
 
-  v19 = [(BCCardStackViewController *)self view];
-  [v19 bounds];
+  view6 = [(BCCardStackViewController *)self view];
+  [view6 bounds];
   v21 = v20;
   v23 = v22;
 
   [(UIScrollView *)self->_backgroundView setContentSize:v21, v23 + 100.0];
   [(UIScrollView *)self->_backgroundView setContentOffset:0.0, 100.0];
   [(UIScrollView *)self->_backgroundView setDelegate:self];
-  v24 = [(BCCardStackViewController *)self view];
-  [(BCCardStackViewController *)self _addAdornmentViewsToParentView:v24];
+  view7 = [(BCCardStackViewController *)self view];
+  [(BCCardStackViewController *)self _addAdornmentViewsToParentView:view7];
 
   [(BCCardStackViewController *)self setModalPresentationCapturesStatusBarAppearance:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BCCardStackViewController;
-  [(BCCardStackViewController *)&v4 viewWillAppear:a3];
+  [(BCCardStackViewController *)&v4 viewWillAppear:appear];
   [(BCCardStackViewController *)self _updateStatusBarBackgroundOpacity];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = BCCardStackViewController;
-  [(BCCardStackViewController *)&v8 viewDidAppear:a3];
+  [(BCCardStackViewController *)&v8 viewDidAppear:appear];
   v4 = UIAccessibilityLayoutChangedNotification;
-  v5 = [(BCCardStackViewController *)self topCardSetViewController];
-  v6 = [v5 currentCardViewController];
-  v7 = [v6 auxiliaryNavigationBarView];
-  UIAccessibilityPostNotification(v4, v7);
+  topCardSetViewController = [(BCCardStackViewController *)self topCardSetViewController];
+  currentCardViewController = [topCardSetViewController currentCardViewController];
+  auxiliaryNavigationBarView = [currentCardViewController auxiliaryNavigationBarView];
+  UIAccessibilityPostNotification(v4, auxiliaryNavigationBarView);
 }
 
 - (UIEdgeInsets)safeAreaInsetsFromWindowCorners
@@ -201,8 +201,8 @@
     return 1;
   }
 
-  v3 = [(BCCardStackViewController *)self configuration];
-  v4 = [v3 cardsCanExpand] ^ 1;
+  configuration = [(BCCardStackViewController *)self configuration];
+  v4 = [configuration cardsCanExpand] ^ 1;
 
   return v4;
 }
@@ -222,34 +222,34 @@
 
 - (void)lockChildForStatusBarStyle
 {
-  v3 = [(BCCardStackViewController *)self childViewControllerForStatusBarStyle];
-  [(BCCardStackViewController *)self setLockedChildForStatusBarStyle:v3];
+  childViewControllerForStatusBarStyle = [(BCCardStackViewController *)self childViewControllerForStatusBarStyle];
+  [(BCCardStackViewController *)self setLockedChildForStatusBarStyle:childViewControllerForStatusBarStyle];
 }
 
 - (id)childViewControllerForStatusBarStyle
 {
   if ([(BCCardStackViewController *)self ignoreChildStatusBarStyle])
   {
-    v3 = 0;
+    lockedChildForStatusBarStyle2 = 0;
   }
 
   else
   {
-    v4 = [(BCCardStackViewController *)self lockedChildForStatusBarStyle];
+    lockedChildForStatusBarStyle = [(BCCardStackViewController *)self lockedChildForStatusBarStyle];
 
-    if (v4)
+    if (lockedChildForStatusBarStyle)
     {
-      v3 = [(BCCardStackViewController *)self lockedChildForStatusBarStyle];
+      lockedChildForStatusBarStyle2 = [(BCCardStackViewController *)self lockedChildForStatusBarStyle];
     }
 
     else
     {
-      v5 = [(BCCardStackViewController *)self childViewControllers];
-      v6 = [v5 lastObject];
+      childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+      lastObject = [childViewControllers lastObject];
 
-      if ([v6 expanded])
+      if ([lastObject expanded])
       {
-        v7 = v6;
+        v7 = lastObject;
       }
 
       else
@@ -257,51 +257,51 @@
         v7 = 0;
       }
 
-      v3 = v7;
+      lockedChildForStatusBarStyle2 = v7;
     }
   }
 
-  return v3;
+  return lockedChildForStatusBarStyle2;
 }
 
 - (void)_invalidateConfiguration
 {
-  v3 = [(BCCardStackViewController *)self configuration];
-  v4 = [v3 cardsCanExpand];
+  configuration = [(BCCardStackViewController *)self configuration];
+  cardsCanExpand = [configuration cardsCanExpand];
 
-  v5 = [(BCCardStackViewController *)self configuration];
-  [v5 invalidate];
+  configuration2 = [(BCCardStackViewController *)self configuration];
+  [configuration2 invalidate];
 
-  v6 = [(BCCardStackViewController *)self configuration];
-  v7 = [v6 cardsCanExpand];
+  configuration3 = [(BCCardStackViewController *)self configuration];
+  cardsCanExpand2 = [configuration3 cardsCanExpand];
 
-  v10 = [(BCCardStackViewController *)self view];
-  [v10 bounds];
-  [(BCCardStackViewController *)self _layoutStackByChangingMode:v4 ^ v7 newViewSize:v8, v9];
+  view = [(BCCardStackViewController *)self view];
+  [view bounds];
+  [(BCCardStackViewController *)self _layoutStackByChangingMode:cardsCanExpand ^ cardsCanExpand2 newViewSize:v8, v9];
 }
 
 - (void)viewWillAppearFromTabChange
 {
   [(BCCardStackViewController *)self _invalidateConfiguration];
-  v3 = [(BCCardStackViewController *)self childViewControllers];
-  v5 = [v3 lastObject];
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  [v5 resumeAndRebuildForReason:@"card stack: card set will appear from tab change"];
+  [lastObject resumeAndRebuildForReason:@"card stack: card set will appear from tab change"];
   [(BCCardStackViewController *)self _updateStatusBarBackgroundOpacity];
-  v4 = [(BCCardStackViewController *)self statusBarBackgroundController];
-  [v4 updateParentViewOfCardStackBackgroundViewWithParentViewController:self];
+  statusBarBackgroundController = [(BCCardStackViewController *)self statusBarBackgroundController];
+  [statusBarBackgroundController updateParentViewOfCardStackBackgroundViewWithParentViewController:self];
 }
 
 - (void)viewWillDisappearFromTabChange
 {
-  v2 = [(BCCardStackViewController *)self statusBarBackgroundController];
-  [v2 setOpacity:0.0];
+  statusBarBackgroundController = [(BCCardStackViewController *)self statusBarBackgroundController];
+  [statusBarBackgroundController setOpacity:0.0];
 }
 
-- (void)presentingViewControllerSafeAreaInsetsDidChange:(id)a3
+- (void)presentingViewControllerSafeAreaInsetsDidChange:(id)change
 {
-  v4 = [a3 view];
-  [v4 safeAreaInsets];
+  view = [change view];
+  [view safeAreaInsets];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -318,8 +318,8 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(BCCardStackViewController *)self view];
-  [v3 bounds];
+  view = [(BCCardStackViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -327,16 +327,16 @@
   {
     self->_lastLayoutStackSize.width = v5;
     self->_lastLayoutStackSize.height = v7;
-    v9 = [(BCCardStackViewController *)self configuration];
-    v10 = [v9 cardsCanExpand];
+    configuration = [(BCCardStackViewController *)self configuration];
+    cardsCanExpand = [configuration cardsCanExpand];
 
-    v11 = [(BCCardStackViewController *)self configuration];
-    [v11 invalidate];
+    configuration2 = [(BCCardStackViewController *)self configuration];
+    [configuration2 invalidate];
 
-    v12 = [(BCCardStackViewController *)self configuration];
-    v13 = [v12 cardsCanExpand];
+    configuration3 = [(BCCardStackViewController *)self configuration];
+    cardsCanExpand2 = [configuration3 cardsCanExpand];
 
-    [(BCCardStackViewController *)self _layoutStackByChangingMode:v10 ^ v13 newViewSize:v5, v7];
+    [(BCCardStackViewController *)self _layoutStackByChangingMode:cardsCanExpand ^ cardsCanExpand2 newViewSize:v5, v7];
   }
 
   v14.receiver = self;
@@ -344,18 +344,18 @@
   [(BCCardStackViewController *)&v14 viewWillLayoutSubviews];
 }
 
-- (BOOL)scrollCardForFeedOptionsVisible:(id)a3
+- (BOOL)scrollCardForFeedOptionsVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(BCCardStackViewController *)self childViewControllers];
-  v6 = [v5 lastObject];
+  visibleCopy = visible;
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (v6)
+  if (lastObject)
   {
-    v7 = [(BCCardStackViewController *)self dataSourceMap];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+    v8 = [dataSourceMap objectForKeyedSubscript:lastObject];
 
-    v9 = [v8 cardIndexForFeedOptions:v4];
+    v9 = [v8 cardIndexForFeedOptions:visibleCopy];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0;
@@ -364,35 +364,35 @@
     else
     {
       v11 = v9;
-      v12 = [v6 focusedIndex];
-      v13 = [(BCCardStackViewController *)self configuration];
-      if ([v13 cardsCanExpand])
+      focusedIndex = [lastObject focusedIndex];
+      configuration = [(BCCardStackViewController *)self configuration];
+      if ([configuration cardsCanExpand])
       {
-        v14 = [v6 currentCardViewController];
-        v15 = [v14 itemPushedOnCard];
+        currentCardViewController = [lastObject currentCardViewController];
+        itemPushedOnCard = [currentCardViewController itemPushedOnCard];
       }
 
       else
       {
-        v15 = 0;
+        itemPushedOnCard = 0;
       }
 
-      v16 = [(BCCardStackViewController *)self configuration];
-      v17 = 0;
-      if ([v16 cardsCanExpand] && v11 != v12)
+      configuration2 = [(BCCardStackViewController *)self configuration];
+      expanded = 0;
+      if ([configuration2 cardsCanExpand] && v11 != focusedIndex)
       {
-        v18 = [v6 currentCardViewController];
-        v17 = [v18 expanded];
+        currentCardViewController2 = [lastObject currentCardViewController];
+        expanded = [currentCardViewController2 expanded];
       }
 
-      v19 = [v6 itemPushedOnCardAtIndex:v11];
+      v19 = [lastObject itemPushedOnCardAtIndex:v11];
       v10 = 0;
-      if (((v15 | v17) & 1) == 0 && (v19 & 1) == 0 && v11 >= (v12 - 1) && v11 <= (v12 + 1))
+      if (((itemPushedOnCard | expanded) & 1) == 0 && (v19 & 1) == 0 && v11 >= (focusedIndex - 1) && v11 <= (focusedIndex + 1))
       {
-        [v6 clearSavedContentOffsetsForCardAtIndex:v11];
+        [lastObject clearSavedContentOffsetsForCardAtIndex:v11];
         v10 = 1;
-        [v6 setFocusedIndex:v11 animated:1];
-        [v6 scrollToTopCardAtIndex:v11 animated:1];
+        [lastObject setFocusedIndex:v11 animated:1];
+        [lastObject scrollToTopCardAtIndex:v11 animated:1];
       }
     }
   }
@@ -405,22 +405,22 @@
   return v10;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v17.receiver = self;
   v17.super_class = BCCardStackViewController;
-  v7 = a4;
-  [(BCCardStackViewController *)&v17 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BCCardStackViewController *)&v17 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = BCCardModelLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v22.width = width;
     v22.height = height;
     v9 = NSStringFromCGSize(v22);
-    v10 = [(BCCardStackViewController *)self view];
-    [v10 size];
+    view = [(BCCardStackViewController *)self view];
+    [view size];
     v11 = NSStringFromCGSize(v23);
     *buf = 138412546;
     v19 = v9;
@@ -429,8 +429,8 @@
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "BCCardStack viewWillTransitionToSize: %@ from: %@", buf, 0x16u);
   }
 
-  v12 = [(BCCardStackViewController *)self configuration];
-  v13 = [v12 cardsCanExpand];
+  configuration = [(BCCardStackViewController *)self configuration];
+  cardsCanExpand = [configuration cardsCanExpand];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -439,34 +439,34 @@
   *&v15[5] = width;
   *&v15[6] = height;
   v15[4] = self;
-  v16 = v13;
-  [v7 animateAlongsideTransition:v15 completion:&stru_2C8D10];
+  v16 = cardsCanExpand;
+  [coordinatorCopy animateAlongsideTransition:v15 completion:&stru_2C8D10];
 
-  v14 = [(BCCardStackViewController *)self configuration];
-  [v14 invalidate];
+  configuration2 = [(BCCardStackViewController *)self configuration];
+  [configuration2 invalidate];
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  if ((a3 & 4) != 0)
+  if ((edge & 4) != 0)
   {
-    v5 = [(BCCardStackViewController *)self topCardSetViewController];
-    v6 = [v5 currentCardViewController];
+    topCardSetViewController = [(BCCardStackViewController *)self topCardSetViewController];
+    currentCardViewController = [topCardSetViewController currentCardViewController];
 
-    v7 = [v6 cardNavigationController];
-    v8 = [v7 viewControllers];
-    v9 = [v8 count];
+    cardNavigationController = [currentCardViewController cardNavigationController];
+    viewControllers = [cardNavigationController viewControllers];
+    v9 = [viewControllers count];
 
     if (v9 < 2)
     {
-      v4 = [v6 scrollView];
+      scrollView = [currentCardViewController scrollView];
     }
 
     else
     {
-      v10 = [v6 cardNavigationController];
-      v11 = [v10 topViewController];
-      v4 = [v11 contentScrollViewForEdge:a3];
+      cardNavigationController2 = [currentCardViewController cardNavigationController];
+      topViewController = [cardNavigationController2 topViewController];
+      scrollView = [topViewController contentScrollViewForEdge:edge];
     }
   }
 
@@ -474,45 +474,45 @@
   {
     v13.receiver = self;
     v13.super_class = BCCardStackViewController;
-    v4 = [(BCCardStackViewController *)&v13 contentScrollViewForEdge:a3];
+    scrollView = [(BCCardStackViewController *)&v13 contentScrollViewForEdge:edge];
   }
 
-  return v4;
+  return scrollView;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  left = a3.left;
-  top = a3.top;
+  left = inset.left;
+  top = inset.top;
   v5 = self->_contentInset.left;
   right = self->_contentInset.right;
-  if (v5 != a3.left || self->_contentInset.top != a3.top || right != a3.right || self->_contentInset.bottom != a3.bottom)
+  if (v5 != inset.left || self->_contentInset.top != inset.top || right != inset.right || self->_contentInset.bottom != inset.bottom)
   {
-    v10 = a3.right;
-    bottom = a3.bottom;
-    self->_contentInset = a3;
+    v10 = inset.right;
+    bottom = inset.bottom;
+    self->_contentInset = inset;
     v13 = BCCardModelLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v22 = 138412290;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "contentInset updated on BCCardStackViewController: %@", &v22, 0xCu);
     }
 
-    v14 = [(BCCardStackViewController *)self topCardSetViewController];
-    [v14 setContentInset:{top, left, bottom, v10}];
+    topCardSetViewController = [(BCCardStackViewController *)self topCardSetViewController];
+    [topCardSetViewController setContentInset:{top, left, bottom, v10}];
 
     if (left != v5 || v10 != right)
     {
-      v16 = [(BCCardStackViewController *)self childViewControllers];
-      v17 = [v16 count];
+      childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+      v17 = [childViewControllers count];
 
       if (v17 >= 2)
       {
         objc_opt_class();
-        v18 = [(BCCardStackViewController *)self childViewControllers];
-        v19 = [(BCCardStackViewController *)self childViewControllers];
-        v20 = [v18 objectAtIndexedSubscript:{objc_msgSend(v19, "count") - 2}];
+        childViewControllers2 = [(BCCardStackViewController *)self childViewControllers];
+        childViewControllers3 = [(BCCardStackViewController *)self childViewControllers];
+        v20 = [childViewControllers2 objectAtIndexedSubscript:{objc_msgSend(childViewControllers3, "count") - 2}];
         v21 = BUDynamicCast();
         [v21 setContentInset:{top, left, bottom, v10}];
       }
@@ -520,27 +520,27 @@
   }
 }
 
-- (void)setToolbarHeight:(double)a3
+- (void)setToolbarHeight:(double)height
 {
-  if (self->_toolbarHeight != a3)
+  if (self->_toolbarHeight != height)
   {
-    self->_toolbarHeight = a3;
-    v5 = [(BCCardStackViewController *)self presentedViewController];
-    [v5 additionalSafeAreaInsets];
+    self->_toolbarHeight = height;
+    presentedViewController = [(BCCardStackViewController *)self presentedViewController];
+    [presentedViewController additionalSafeAreaInsets];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(BCCardStackViewController *)self presentedViewController];
-    [v12 setAdditionalSafeAreaInsets:{a3, v7, v9, v11}];
+    presentedViewController2 = [(BCCardStackViewController *)self presentedViewController];
+    [presentedViewController2 setAdditionalSafeAreaInsets:{height, v7, v9, v11}];
 
-    v13 = [(BCCardStackViewController *)self configuration];
-    [v13 setToolbarHeight:a3];
+    configuration = [(BCCardStackViewController *)self configuration];
+    [configuration setToolbarHeight:height];
 
     if (![(BCCardStackViewController *)self transitionInProgress])
     {
-      v16 = [(BCCardStackViewController *)self view];
-      [v16 bounds];
+      view = [(BCCardStackViewController *)self view];
+      [view bounds];
       [(BCCardStackViewController *)self _layoutStackByChangingMode:1 newViewSize:v14, v15];
     }
   }
@@ -548,8 +548,8 @@
 
 - (unint64_t)cardStackDepth
 {
-  v2 = [(BCCardStackViewController *)self dataSourceMap];
-  v3 = [v2 count];
+  dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+  v3 = [dataSourceMap count];
 
   return v3;
 }
@@ -566,21 +566,21 @@
   return v3;
 }
 
-+ (void)pushCardsWithDataSource:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5 fromViewController:(id)a6 completion:(id)a7
++ (void)pushCardsWithDataSource:(id)source focusedIndex:(unint64_t)index animated:(BOOL)animated fromViewController:(id)controller completion:(id)completion
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = a7;
-  v13 = [a6 bc_effectiveCardPresentingViewController];
-  v14 = [v13 presentingViewController];
+  animatedCopy = animated;
+  sourceCopy = source;
+  completionCopy = completion;
+  bc_effectiveCardPresentingViewController = [controller bc_effectiveCardPresentingViewController];
+  presentingViewController = [bc_effectiveCardPresentingViewController presentingViewController];
 
-  if (v14)
+  if (presentingViewController)
   {
-    v15 = [v13 presentingViewController];
-    v16 = [v15 presentedViewController];
-    v17 = [v16 modalPresentationStyle];
+    presentingViewController2 = [bc_effectiveCardPresentingViewController presentingViewController];
+    presentedViewController = [presentingViewController2 presentedViewController];
+    modalPresentationStyle = [presentedViewController modalPresentationStyle];
 
-    v18 = (v17 - 3) < 0xFFFFFFFFFFFFFFFELL;
+    v18 = (modalPresentationStyle - 3) < 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
@@ -588,21 +588,21 @@
     v18 = 1;
   }
 
-  v19 = [v13 view];
-  v20 = [v19 window];
-  v21 = [v20 firstResponder];
-  [v21 resignFirstResponder];
+  view = [bc_effectiveCardPresentingViewController view];
+  window = [view window];
+  firstResponder = [window firstResponder];
+  [firstResponder resignFirstResponder];
 
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
   v59 = sub_2E2E0;
   v60 = sub_2E2F0;
-  v61 = [v13 cardStackViewController];
+  cardStackViewController = [bc_effectiveCardPresentingViewController cardStackViewController];
   v22 = v57[5];
   if (!v22)
   {
-    v23 = [v13 bc_firstVisibleChildViewControllerOfClass:objc_opt_class() includePresented:1];
+    v23 = [bc_effectiveCardPresentingViewController bc_firstVisibleChildViewControllerOfClass:objc_opt_class() includePresented:1];
     v24 = v57[5];
     v57[5] = v23;
 
@@ -616,7 +616,7 @@
 
   else
   {
-    v25 = v13;
+    v25 = bc_effectiveCardPresentingViewController;
   }
 
   [v25 bc_dismissIfSafeAnimated:0];
@@ -632,7 +632,7 @@
         _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "Failed to push cards - the existing BCCardStackViewController has a transition in progress", v44, 2u);
       }
 
-      v28 = objc_retainBlock(v12);
+      v28 = objc_retainBlock(completionCopy);
       v29 = v28;
       if (v28)
       {
@@ -642,13 +642,13 @@
       goto LABEL_34;
     }
 
-    if ([v11 numberOfCards:v57[5]] == &dword_0 + 1)
+    if ([sourceCopy numberOfCards:v57[5]] == &dword_0 + 1)
     {
       objc_opt_class();
-      v35 = [v11 representedObjectForCardAtIndex:0];
+      v35 = [sourceCopy representedObjectForCardAtIndex:0];
       v36 = BUDynamicCast();
 
-      if ([v11 alwaysPresentNewCardSetForFeedOptions:v36])
+      if ([sourceCopy alwaysPresentNewCardSetForFeedOptions:v36])
       {
       }
 
@@ -663,9 +663,9 @@
       }
     }
 
-    [v57[5] pushCardsWithDataSource:v11 focusedIndex:a4 animated:v9];
+    [v57[5] pushCardsWithDataSource:sourceCopy focusedIndex:index animated:animatedCopy];
 LABEL_29:
-    v43 = objc_retainBlock(v12);
+    v43 = objc_retainBlock(completionCopy);
     v29 = v43;
     if (v43)
     {
@@ -676,7 +676,7 @@ LABEL_29:
   }
 
   v29 = +[BCCardStackViewController _pendingCardStackViewControllers];
-  v30 = [v29 objectForKeyedSubscript:v13];
+  v30 = [v29 objectForKeyedSubscript:bc_effectiveCardPresentingViewController];
   v31 = v57[5];
   v57[5] = v30;
 
@@ -689,7 +689,7 @@ LABEL_29:
       _os_log_impl(&dword_0, v32, OS_LOG_TYPE_INFO, "Failed to push cards - a pending BCCardStackViewController exists", v44, 2u);
     }
 
-    v33 = objc_retainBlock(v12);
+    v33 = objc_retainBlock(completionCopy);
     v34 = v33;
     if (v33)
     {
@@ -704,20 +704,20 @@ LABEL_29:
     v47[2] = sub_2E2F8;
     v47[3] = &unk_2C8DA8;
     v52 = &v56;
-    v37 = v13;
+    v37 = bc_effectiveCardPresentingViewController;
     v48 = v37;
     v54 = v18;
-    v49 = v11;
-    v53 = a4;
-    v55 = v9;
+    v49 = sourceCopy;
+    indexCopy = index;
+    v55 = animatedCopy;
     v50 = v29;
-    v51 = v12;
+    v51 = completionCopy;
     v38 = objc_retainBlock(v47);
     if (isPhone())
     {
       objc_opt_class();
-      v39 = [v37 bc_windowForViewController];
-      v40 = [v39 windowScene];
+      bc_windowForViewController = [v37 bc_windowForViewController];
+      windowScene = [bc_windowForViewController windowScene];
       v41 = BUDynamicCast();
 
       if (v41)
@@ -743,44 +743,44 @@ LABEL_34:
   _Block_object_dispose(&v56, 8);
 }
 
-- (void)pushCardsWithDataSource:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)pushCardsWithDataSource:(id)source focusedIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(BCCardStackViewController *)self presentingViewController];
-  v10 = [(BCCardStackViewController *)self _pushCardsWithDataSource:v8 focusedIndex:a4 animated:v5 presentingViewController:v9];
+  animatedCopy = animated;
+  sourceCopy = source;
+  presentingViewController = [(BCCardStackViewController *)self presentingViewController];
+  v10 = [(BCCardStackViewController *)self _pushCardsWithDataSource:sourceCopy focusedIndex:index animated:animatedCopy presentingViewController:presentingViewController];
 
   [v10 waitUntilReadyThenAnimate];
 }
 
-+ (void)appendCardsWithData:(id)a3 fromViewController:(id)a4 identifier:(id)a5 completion:(id)a6
++ (void)appendCardsWithData:(id)data fromViewController:(id)controller identifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a4 bc_effectiveCardPresentingViewController];
-  v13 = [v12 cardStackViewController];
-  if (!v13)
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  bc_effectiveCardPresentingViewController = [controller bc_effectiveCardPresentingViewController];
+  cardStackViewController = [bc_effectiveCardPresentingViewController cardStackViewController];
+  if (!cardStackViewController)
   {
-    v13 = [v12 bc_firstVisibleChildViewControllerOfClass:objc_opt_class() includePresented:1];
+    cardStackViewController = [bc_effectiveCardPresentingViewController bc_firstVisibleChildViewControllerOfClass:objc_opt_class() includePresented:1];
   }
 
-  v14 = [v13 childViewControllers];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  childViewControllers = [cardStackViewController childViewControllers];
+  v15 = [childViewControllers objectAtIndexedSubscript:0];
 
-  v16 = [v13 dataSourceMap];
-  v17 = [v16 objectForKeyedSubscript:v15];
+  dataSourceMap = [cardStackViewController dataSourceMap];
+  v17 = [dataSourceMap objectForKeyedSubscript:v15];
 
-  v18 = [v17 identifier];
-  if (([v10 length] || objc_msgSend(v18, "length")) && (objc_msgSend(v18, "isEqualToString:", v10) & 1) == 0)
+  identifier = [v17 identifier];
+  if (([identifierCopy length] || objc_msgSend(identifier, "length")) && (objc_msgSend(identifier, "isEqualToString:", identifierCopy) & 1) == 0)
   {
   }
 
-  else if (v13)
+  else if (cardStackViewController)
   {
-    [v17 appendNewDataToExistingDataSource:v9 cardStackViewController:v13];
+    [v17 appendNewDataToExistingDataSource:dataCopy cardStackViewController:cardStackViewController];
     [v15 updateWithAppendedCards];
-    v19 = objc_retainBlock(v11);
+    v19 = objc_retainBlock(completionCopy);
     v20 = v19;
     if (v19)
     {
@@ -796,8 +796,8 @@ LABEL_34:
     sub_1E5A98();
   }
 
-  v22 = objc_retainBlock(v11);
-  v13 = v22;
+  v22 = objc_retainBlock(completionCopy);
+  cardStackViewController = v22;
   if (v22)
   {
     (*(v22 + 2))(v22);
@@ -806,23 +806,23 @@ LABEL_34:
 LABEL_15:
 }
 
-- (void)popCardsAnimated:(BOOL)a3 reason:(int64_t)a4
+- (void)popCardsAnimated:(BOOL)animated reason:(int64_t)reason
 {
-  v5 = a3;
-  v7 = [(BCCardStackViewController *)self childViewControllers];
-  v8 = [v7 lastObject];
-  v9 = [(BCCardStackViewController *)self _animationTypeForDismissingCardSetViewController:v8 distanceToCoverSource:0];
+  animatedCopy = animated;
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
+  v9 = [(BCCardStackViewController *)self _animationTypeForDismissingCardSetViewController:lastObject distanceToCoverSource:0];
 
-  [(BCCardStackViewController *)self _popCardsAnimated:v5 popAll:0 animationType:v9 prefersCrossfade:0 velocity:a4 reason:0 completion:0.0];
+  [(BCCardStackViewController *)self _popCardsAnimated:animatedCopy popAll:0 animationType:v9 prefersCrossfade:0 velocity:reason reason:0 completion:0.0];
 }
 
-- (void)_popCardsAnimated:(BOOL)a3 popAll:(BOOL)a4 animationType:(int64_t)a5 prefersCrossfade:(BOOL)a6 velocity:(double)a7 reason:(int64_t)a8 completion:(id)a9
+- (void)_popCardsAnimated:(BOOL)animated popAll:(BOOL)all animationType:(int64_t)type prefersCrossfade:(BOOL)crossfade velocity:(double)velocity reason:(int64_t)reason completion:(id)completion
 {
-  v11 = a6;
-  v13 = a4;
-  v14 = a3;
-  v16 = a9;
-  v17 = v16;
+  crossfadeCopy = crossfade;
+  allCopy = all;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v17 = completionCopy;
   if (self->_transitionInProgress)
   {
     v18 = BCCardModelLog();
@@ -834,45 +834,45 @@ LABEL_15:
 
   else
   {
-    v124 = v16;
-    v19 = [(BCCardStackViewController *)self dataSourceMap];
-    v20 = [v19 count];
+    v124 = completionCopy;
+    dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+    v20 = [dataSourceMap count];
 
     if (v20)
     {
       [(BCCardStackViewController *)self _resumeAndRebuildChildViewControllerAsNeeded];
       self->_transitionInProgress = 1;
-      v21 = [(BCCardStackViewController *)self childViewControllers];
-      v22 = [v21 count] == &dword_0 + 1 || v13;
+      childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+      v22 = [childViewControllers count] == &dword_0 + 1 || allCopy;
       v125 = v22;
 
-      v117 = v13;
-      if (v13)
+      v117 = allCopy;
+      if (allCopy)
       {
-        v23 = 2;
+        typeCopy = 2;
       }
 
       else
       {
-        v23 = a5;
+        typeCopy = type;
       }
 
-      v24 = [(BCCardStackViewController *)self childViewControllers];
-      v25 = [v24 lastObject];
+      childViewControllers2 = [(BCCardStackViewController *)self childViewControllers];
+      lastObject = [childViewControllers2 lastObject];
 
-      v26 = [(BCCardStackViewController *)self childViewControllers];
-      v115 = v14;
-      v120 = v23;
-      if ([v26 count] < 2)
+      childViewControllers3 = [(BCCardStackViewController *)self childViewControllers];
+      v115 = animatedCopy;
+      v120 = typeCopy;
+      if ([childViewControllers3 count] < 2)
       {
         v29 = 0;
       }
 
       else
       {
-        v27 = [(BCCardStackViewController *)self childViewControllers];
-        v28 = [(BCCardStackViewController *)self childViewControllers];
-        v29 = [v27 objectAtIndexedSubscript:{objc_msgSend(v28, "count") - 2}];
+        childViewControllers4 = [(BCCardStackViewController *)self childViewControllers];
+        childViewControllers5 = [(BCCardStackViewController *)self childViewControllers];
+        v29 = [childViewControllers4 objectAtIndexedSubscript:{objc_msgSend(childViewControllers5, "count") - 2}];
       }
 
       if (v125)
@@ -887,50 +887,50 @@ LABEL_15:
 
       v31 = v30;
       [v31 setLastNavigationType:0];
-      v32 = [(BCCardStackViewController *)self presentingViewController];
-      v33 = [BCCardStackCoverSourceController coverHostFromPresentingViewController:v32 previousCardSetViewController:v31];
+      presentingViewController = [(BCCardStackViewController *)self presentingViewController];
+      v33 = [BCCardStackCoverSourceController coverHostFromPresentingViewController:presentingViewController previousCardSetViewController:v31];
 
       objc_opt_class();
-      v34 = [(BCCardStackViewController *)self presentingViewController];
+      presentingViewController2 = [(BCCardStackViewController *)self presentingViewController];
       v113 = BUDynamicCast();
 
-      v112 = a8;
+      reasonCopy = reason;
       if (v125)
       {
-        v35 = [(BCCardStackViewController *)self childViewControllers];
-        v36 = [v35 objectAtIndexedSubscript:0];
+        childViewControllers6 = [(BCCardStackViewController *)self childViewControllers];
+        v36 = [childViewControllers6 objectAtIndexedSubscript:0];
       }
 
       else
       {
-        v36 = v25;
+        v36 = lastObject;
       }
 
-      v37 = [(BCCardStackViewController *)self dataSourceMap];
-      v38 = [v37 objectForKeyedSubscript:v36];
+      dataSourceMap2 = [(BCCardStackViewController *)self dataSourceMap];
+      v38 = [dataSourceMap2 objectForKeyedSubscript:v36];
 
       v111 = v36;
-      v39 = [v36 focusedIndex];
-      [v25 prepareForDismiss];
-      [v25 willMoveToParentViewController:0];
+      focusedIndex = [v36 focusedIndex];
+      [lastObject prepareForDismiss];
+      [lastObject willMoveToParentViewController:0];
       v123 = v29;
       if ((v125 & 1) == 0)
       {
-        v40 = [(BCCardStackViewController *)self childViewControllers];
-        v41 = [v40 count];
+        childViewControllers7 = [(BCCardStackViewController *)self childViewControllers];
+        v41 = [childViewControllers7 count];
 
         if (v41 >= 3)
         {
-          v42 = [(BCCardStackViewController *)self childViewControllers];
-          v43 = [(BCCardStackViewController *)self childViewControllers];
-          v44 = [v42 objectAtIndexedSubscript:{objc_msgSend(v43, "count") - 3}];
+          childViewControllers8 = [(BCCardStackViewController *)self childViewControllers];
+          childViewControllers9 = [(BCCardStackViewController *)self childViewControllers];
+          v44 = [childViewControllers8 objectAtIndexedSubscript:{objc_msgSend(childViewControllers9, "count") - 3}];
 
           v166[0] = _NSConcreteStackBlock;
           v166[1] = 3221225472;
           v166[2] = sub_2F92C;
           v166[3] = &unk_2C7BE8;
           v167 = v44;
-          v168 = self;
+          selfCopy = self;
           v45 = v44;
           v29 = v123;
           v46 = v45;
@@ -938,7 +938,7 @@ LABEL_15:
         }
       }
 
-      v47 = [[BCCardStackCoverSourceController alloc] initWithCardStackViewController:self isDismiss:1 cardSetViewController:v25 focusedIndex:v39 coverHost:v33 dataSource:v38];
+      v47 = [[BCCardStackCoverSourceController alloc] initWithCardStackViewController:self isDismiss:1 cardSetViewController:lastObject focusedIndex:focusedIndex coverHost:v33 dataSource:v38];
       [(BCCardStackCoverSourceController *)v47 setIsDismissingCardStack:v125];
       [(BCCardStackCoverSourceController *)v47 setPreferSlideForDismiss:v120 == 2];
       if (v31)
@@ -967,7 +967,7 @@ LABEL_15:
       v162[1] = 3221225472;
       v162[2] = sub_2F98C;
       v162[3] = &unk_2C8DD0;
-      v165 = v39;
+      v165 = focusedIndex;
       v110 = v38;
       v163 = v110;
       v122 = v33;
@@ -994,49 +994,49 @@ LABEL_15:
       }
 
       v53 = [BCCardStackTransitionAnimator alloc];
-      v54 = [(BCCardStackViewController *)self configuration];
-      v55 = -[BCCardStackTransitionAnimator initWithType:allowsCardExpansion:](v53, "initWithType:allowsCardExpansion:", v52, [v54 cardsCanExpand]);
+      configuration = [(BCCardStackViewController *)self configuration];
+      v55 = -[BCCardStackTransitionAnimator initWithType:allowsCardExpansion:](v53, "initWithType:allowsCardExpansion:", v52, [configuration cardsCanExpand]);
 
-      [(BCCardStackTransitionAnimator *)v55 setPrefersCrossfade:v11];
-      [(BCCardStackTransitionAnimator *)v55 setVelocityForPop:a7];
+      [(BCCardStackTransitionAnimator *)v55 setPrefersCrossfade:crossfadeCopy];
+      [(BCCardStackTransitionAnimator *)v55 setVelocityForPop:velocity];
       if (v52 == 3)
       {
-        v56 = [(BCCardStackCoverSourceController *)v50 rangeRequiringCards];
-        [v25 beginTransitionUpdateModeForCardsAtRange:{v56, v57}];
+        rangeRequiringCards = [(BCCardStackCoverSourceController *)v50 rangeRequiringCards];
+        [lastObject beginTransitionUpdateModeForCardsAtRange:{rangeRequiringCards, v57}];
         [(BCCardStackCoverSourceController *)v50 performSecondHalfOfProcessing];
-        v58 = [(BCCardStackCoverSourceController *)v50 coverMoveItems];
-        [(BCCardStackTransitionAnimator *)v55 setCoverMoveItems:v58];
+        coverMoveItems = [(BCCardStackCoverSourceController *)v50 coverMoveItems];
+        [(BCCardStackTransitionAnimator *)v55 setCoverMoveItems:coverMoveItems];
 
-        v59 = [(BCCardStackCoverSourceController *)v50 cardMoveItems];
-        [(BCCardStackTransitionAnimator *)v55 setCardMoveItems:v59];
+        cardMoveItems = [(BCCardStackCoverSourceController *)v50 cardMoveItems];
+        [(BCCardStackTransitionAnimator *)v55 setCardMoveItems:cardMoveItems];
       }
 
       else
       {
         [(BCCardStackCoverSourceController *)v50 performSecondHalfOfProcessing];
-        v59 = [(BCCardStackCoverSourceController *)v50 cardSlideItems];
-        [(BCCardStackTransitionAnimator *)v55 setCardSlideItems:v59];
+        cardMoveItems = [(BCCardStackCoverSourceController *)v50 cardSlideItems];
+        [(BCCardStackTransitionAnimator *)v55 setCardSlideItems:cardMoveItems];
       }
 
-      v60 = [(BCCardStackCoverSourceController *)v50 coverFadeItems];
-      [(BCCardStackTransitionAnimator *)v55 setCoverFadeItems:v60];
+      coverFadeItems = [(BCCardStackCoverSourceController *)v50 coverFadeItems];
+      [(BCCardStackTransitionAnimator *)v55 setCoverFadeItems:coverFadeItems];
 
-      v61 = [v25 visibleCardRange];
+      visibleCardRange = [lastObject visibleCardRange];
       v63 = v62;
       v64 = [NSMutableArray arrayWithCapacity:v62];
-      if (v61 < &v61[v63])
+      if (visibleCardRange < &visibleCardRange[v63])
       {
         do
         {
-          v65 = [v25 cardViewControllerAtIndex:v61];
-          v66 = [v65 transitioningCardContent];
+          v65 = [lastObject cardViewControllerAtIndex:visibleCardRange];
+          transitioningCardContent = [v65 transitioningCardContent];
 
-          if (v66)
+          if (transitioningCardContent)
           {
-            [v64 addObject:v66];
+            [v64 addObject:transitioningCardContent];
           }
 
-          ++v61;
+          ++visibleCardRange;
           --v63;
         }
 
@@ -1059,14 +1059,14 @@ LABEL_15:
       v69 = v68;
       v153 = v69;
       v119 = objc_retainBlock(v152);
-      v70 = [[BCCardStackTransitionContext alloc] initWithFromViewController:v25 toViewController:v31 push:0];
+      v70 = [[BCCardStackTransitionContext alloc] initWithFromViewController:lastObject toViewController:v31 push:0];
       [(BCCardStackTransitionContext *)v70 setAnimated:v115];
       [(BCCardStackTransitionContext *)v70 setInteractive:0];
-      v71 = [(BCCardStackViewController *)self backgroundView];
-      [(BCCardStackTransitionContext *)v70 setBackgroundView:v71];
+      backgroundView = [(BCCardStackViewController *)self backgroundView];
+      [(BCCardStackTransitionContext *)v70 setBackgroundView:backgroundView];
 
-      v72 = [v122 containerViewForHostingCoversDuringAnimation];
-      [(BCCardStackTransitionContext *)v70 setInnerContainerView:v72];
+      containerViewForHostingCoversDuringAnimation = [v122 containerViewForHostingCoversDuringAnimation];
+      [(BCCardStackTransitionContext *)v70 setInnerContainerView:containerViewForHostingCoversDuringAnimation];
 
       objc_initWeak(&location, self);
       v140[0] = _NSConcreteStackBlock;
@@ -1078,11 +1078,11 @@ LABEL_15:
       v141 = v109;
       v116 = v69;
       v142 = v116;
-      v18 = v25;
+      v18 = lastObject;
       v143 = v18;
       v73 = v31;
       v144 = v73;
-      v145 = self;
+      selfCopy2 = self;
       v114 = v113;
       v146 = v114;
       v74 = v55;
@@ -1100,13 +1100,13 @@ LABEL_15:
       v138 = v76;
       [(BCCardStackTransitionAnimator *)v74 addAnimations:v137];
       v118 = v75;
-      v77 = [(BCCardStackViewController *)self configuration];
-      LOBYTE(v75) = [v77 cardsCanExpand] | v125;
+      configuration2 = [(BCCardStackViewController *)self configuration];
+      LOBYTE(v75) = [configuration2 cardsCanExpand] | v125;
 
       if ((v75 & 1) == 0)
       {
-        v78 = [(BCCardStackViewController *)self childViewControllers];
-        v79 = [v78 count];
+        childViewControllers10 = [(BCCardStackViewController *)self childViewControllers];
+        v79 = [childViewControllers10 count];
 
         if (v79 < 3)
         {
@@ -1115,24 +1115,24 @@ LABEL_15:
 
         else
         {
-          v80 = [(BCCardStackViewController *)self childViewControllers];
-          v81 = [(BCCardStackViewController *)self childViewControllers];
-          v82 = [v80 objectAtIndexedSubscript:{objc_msgSend(v81, "count") - 3}];
+          childViewControllers11 = [(BCCardStackViewController *)self childViewControllers];
+          childViewControllers12 = [(BCCardStackViewController *)self childViewControllers];
+          v82 = [childViewControllers11 objectAtIndexedSubscript:{objc_msgSend(childViewControllers12, "count") - 3}];
 
-          v83 = [v76 view];
-          v84 = [v83 superview];
-          v85 = [v82 view];
-          v86 = [v76 view];
-          [v84 insertSubview:v85 belowSubview:v86];
+          view = [v76 view];
+          superview = [view superview];
+          view2 = [v82 view];
+          view3 = [v76 view];
+          [superview insertSubview:view2 belowSubview:view3];
 
-          v87 = [v82 view];
-          [v87 setHidden:0];
+          view4 = [v82 view];
+          [view4 setHidden:0];
 
-          v88 = [v76 view];
-          v89 = v88;
-          if (v88)
+          view5 = [v76 view];
+          v89 = view5;
+          if (view5)
           {
-            [v88 transform];
+            [view5 transform];
           }
 
           else
@@ -1142,18 +1142,18 @@ LABEL_15:
             v134 = 0u;
           }
 
-          v90 = [v82 view];
+          view6 = [v82 view];
           v157 = v134;
           v158 = v135;
           v159 = v136;
-          [v90 setTransform:&v157];
+          [view6 setTransform:&v157];
 
-          v91 = [v76 view];
-          [v91 center];
+          view7 = [v76 view];
+          [view7 center];
           v93 = v92;
           v95 = v94;
-          v96 = [v82 view];
-          [v96 setCenter:{v93, v95}];
+          view8 = [v82 view];
+          [view8 setCenter:{v93, v95}];
 
           [(BCCardStackViewController *)self _applyCardSetViewController:v82 withTransform:1];
         }
@@ -1176,41 +1176,41 @@ LABEL_15:
       v98 = v129[3] = &unk_2C8E98;
       v130 = v98;
       [(BCCardStackTransitionAnimator *)v74 addAnimations:v129];
-      v99 = [(BCCardStackViewController *)self dataSourceMap];
-      [v99 setObject:0 forKeyedSubscript:v18];
+      dataSourceMap3 = [(BCCardStackViewController *)self dataSourceMap];
+      [dataSourceMap3 setObject:0 forKeyedSubscript:v18];
 
       [v18 setDataSource:0];
       [v18 setDelegate:0];
-      v100 = [v18 currentCardViewController];
-      v101 = [v100 topContentViewController];
+      currentCardViewController = [v18 currentCardViewController];
+      topContentViewController = [currentCardViewController topContentViewController];
       v102 = BUProtocolCast();
 
       if (v123)
       {
-        v103 = [v123 currentCardViewController];
-        v104 = [v103 topContentViewController];
+        currentCardViewController2 = [v123 currentCardViewController];
+        topContentViewController2 = [currentCardViewController2 topContentViewController];
       }
 
       else
       {
-        v104 = [(BCCardStackViewController *)self presentingViewController];
+        topContentViewController2 = [(BCCardStackViewController *)self presentingViewController];
       }
 
-      [v102 cardStackViewController:self parentCardWillDismissWithReason:v112 targetViewController:v104];
+      [v102 cardStackViewController:self parentCardWillDismissWithReason:reasonCopy targetViewController:topContentViewController2];
       v105 = v123;
       v106 = [[BCCardStackTransitionAnimatorWrapper alloc] initWithAnimator:v74 context:v70 waitUntilReadyBlock:v121 setupBeforeAnimationBlock:v119];
       v107 = v106;
       if (v125)
       {
         [(BCCardStackViewController *)self setPendingWrapper:v106];
-        v108 = [(BCCardStackViewController *)self pendingWrapper];
+        pendingWrapper = [(BCCardStackViewController *)self pendingWrapper];
         v126[0] = _NSConcreteStackBlock;
         v126[1] = 3221225472;
         v126[2] = sub_30020;
         v126[3] = &unk_2C8118;
         objc_copyWeak(&v128, &location);
         v127 = v118;
-        [v108 waitUntilReady:v126];
+        [pendingWrapper waitUntilReady:v126];
 
         objc_destroyWeak(&v128);
         v105 = v123;
@@ -1239,80 +1239,80 @@ LABEL_15:
   }
 }
 
-- (void)_layoutStackByChangingMode:(BOOL)a3 newViewSize:(CGSize)a4
+- (void)_layoutStackByChangingMode:(BOOL)mode newViewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  v8 = [(BCCardStackViewController *)self childViewControllers];
-  v9 = [v8 count];
+  height = size.height;
+  width = size.width;
+  modeCopy = mode;
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  v9 = [childViewControllers count];
 
-  v10 = [(BCCardStackViewController *)self childViewControllers];
+  childViewControllers2 = [(BCCardStackViewController *)self childViewControllers];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_30634;
   v45[3] = &unk_2C8EE0;
   *&v45[4] = width;
   *&v45[5] = height;
-  v46 = v6;
-  [v10 enumerateObjectsWithOptions:2 usingBlock:v45];
+  v46 = modeCopy;
+  [childViewControllers2 enumerateObjectsWithOptions:2 usingBlock:v45];
 
-  v11 = [(BCCardStackViewController *)self childViewControllers];
-  v12 = [v11 count];
+  childViewControllers3 = [(BCCardStackViewController *)self childViewControllers];
+  v12 = [childViewControllers3 count];
 
   if (v12 >= 2)
   {
-    v13 = [(BCCardStackViewController *)self configuration];
-    v14 = [v13 cardsCanExpand];
+    configuration = [(BCCardStackViewController *)self configuration];
+    cardsCanExpand = [configuration cardsCanExpand];
 
-    if (v14)
+    if (cardsCanExpand)
     {
-      if (!v6)
+      if (!modeCopy)
       {
         goto LABEL_14;
       }
 
-      v15 = [(BCCardStackViewController *)self childViewControllers];
+      childViewControllers4 = [(BCCardStackViewController *)self childViewControllers];
       v16 = v9 - 2;
-      v17 = [v15 objectAtIndexedSubscript:v9 - 2];
+      v17 = [childViewControllers4 objectAtIndexedSubscript:v9 - 2];
 
       [v17 setCovered:0 animated:0 duration:0.0];
-      v18 = [v17 view];
-      v19 = [v18 superview];
+      view = [v17 view];
+      superview = [view superview];
 
       if (v16)
       {
         for (i = 0; i != v16; ++i)
         {
-          v21 = [(BCCardStackViewController *)self childViewControllers];
-          v22 = [v21 objectAtIndexedSubscript:i];
+          childViewControllers5 = [(BCCardStackViewController *)self childViewControllers];
+          v22 = [childViewControllers5 objectAtIndexedSubscript:i];
 
           [v22 setCovered:0 animated:0 duration:0.0];
-          v23 = [v22 view];
-          [v23 setAlpha:1.0];
+          view2 = [v22 view];
+          [view2 setAlpha:1.0];
 
-          v24 = [v22 view];
-          [v24 setHidden:0];
+          view3 = [v22 view];
+          [view3 setHidden:0];
 
-          v25 = [v22 view];
-          v26 = [v17 view];
-          [v19 insertSubview:v25 belowSubview:v26];
+          view4 = [v22 view];
+          view5 = [v17 view];
+          [superview insertSubview:view4 belowSubview:view5];
         }
       }
     }
 
     else
     {
-      v27 = [(BCCardStackViewController *)self childViewControllers];
+      childViewControllers6 = [(BCCardStackViewController *)self childViewControllers];
       v28 = v9 - 2;
-      v17 = [v27 objectAtIndexedSubscript:v9 - 2];
+      v17 = [childViewControllers6 objectAtIndexedSubscript:v9 - 2];
 
       [(BCCardStackViewController *)self _applyCardSetViewController:v17 withTransform:1];
       [v17 setCovered:1 animated:0 duration:0.0];
-      if (v6)
+      if (modeCopy)
       {
-        v29 = [(BCCardStackViewController *)self childViewControllers];
-        v30 = [v29 count];
+        childViewControllers7 = [(BCCardStackViewController *)self childViewControllers];
+        v30 = [childViewControllers7 count];
 
         if (v30 >= 3)
         {
@@ -1320,15 +1320,15 @@ LABEL_15:
           {
             for (j = 0; j != v28; ++j)
             {
-              v32 = [(BCCardStackViewController *)self childViewControllers];
-              v33 = [v32 objectAtIndexedSubscript:j];
+              childViewControllers8 = [(BCCardStackViewController *)self childViewControllers];
+              v33 = [childViewControllers8 objectAtIndexedSubscript:j];
 
               [v33 setCovered:1 animated:0 duration:0.0];
-              v34 = [v33 view];
-              [v34 setAlpha:0.0];
+              view6 = [v33 view];
+              [view6 setAlpha:0.0];
 
-              v35 = [v33 view];
-              [v35 removeFromSuperview];
+              view7 = [v33 view];
+              [view7 removeFromSuperview];
             }
           }
         }
@@ -1338,32 +1338,32 @@ LABEL_15:
 
 LABEL_14:
   objc_opt_class();
-  v36 = [(BCCardStackViewController *)self childViewControllers];
-  v37 = [v36 lastObject];
+  childViewControllers9 = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers9 lastObject];
   v38 = BUDynamicCast();
 
-  if (v6)
+  if (modeCopy)
   {
-    v39 = [(BCCardStackViewController *)self configuration];
+    configuration2 = [(BCCardStackViewController *)self configuration];
     v40 = 0.0;
-    if ([v39 cardsCanExpand])
+    if ([configuration2 cardsCanExpand])
     {
-      v41 = [v38 expanded];
+      expanded = [v38 expanded];
 
-      if (!v41)
+      if (!expanded)
       {
 LABEL_19:
-        v44 = [(BCCardStackViewController *)self statusBarBackgroundController];
-        [v44 setOpacity:v40];
+        statusBarBackgroundController = [(BCCardStackViewController *)self statusBarBackgroundController];
+        [statusBarBackgroundController setOpacity:v40];
 
         [(BCCardStackViewController *)self setNeedsStatusBarAppearanceUpdate];
         [(BCCardStackViewController *)self _layoutAdornmentViews];
         goto LABEL_20;
       }
 
-      v39 = [v38 currentCardViewController];
-      v42 = [v39 currentState];
-      [v42 cardViewControllerStatusBarBackgroundOpacity:v39];
+      configuration2 = [v38 currentCardViewController];
+      currentState = [configuration2 currentState];
+      [currentState cardViewControllerStatusBarBackgroundOpacity:configuration2];
       v40 = v43;
     }
 
@@ -1375,125 +1375,125 @@ LABEL_20:
 
 - (void)_layoutAdornmentViews
 {
-  v3 = [(BCCardStackViewController *)self backgroundView];
-  [v3 removeFromSuperview];
+  backgroundView = [(BCCardStackViewController *)self backgroundView];
+  [backgroundView removeFromSuperview];
 
-  v4 = [(BCCardStackViewController *)self configuration];
-  v5 = [v4 cardsCanExpand];
+  configuration = [(BCCardStackViewController *)self configuration];
+  cardsCanExpand = [configuration cardsCanExpand];
 
-  if ((v5 & 1) == 0)
+  if ((cardsCanExpand & 1) == 0)
   {
-    v25 = [(BCCardStackViewController *)self view];
-    v26 = [(BCCardStackViewController *)self backgroundView];
-    [v25 insertSubview:v26 atIndex:0];
+    view = [(BCCardStackViewController *)self view];
+    backgroundView2 = [(BCCardStackViewController *)self backgroundView];
+    [view insertSubview:backgroundView2 atIndex:0];
 
-    v8 = [(BCCardStackViewController *)self backgroundView];
-    v24 = [v8 leftAnchor];
-    v40 = [(BCCardStackViewController *)self view];
-    v39 = [v40 leftAnchor];
-    v38 = [v24 constraintEqualToAnchor:?];
+    backgroundView3 = [(BCCardStackViewController *)self backgroundView];
+    leftAnchor = [backgroundView3 leftAnchor];
+    view2 = [(BCCardStackViewController *)self view];
+    leftAnchor2 = [view2 leftAnchor];
+    v38 = [leftAnchor constraintEqualToAnchor:?];
     v42[0] = v38;
-    v37 = [(BCCardStackViewController *)self backgroundView];
-    v27 = [v37 rightAnchor];
-    v35 = [(BCCardStackViewController *)self view];
-    [v35 rightAnchor];
-    v34 = v36 = v27;
-    v33 = [v27 constraintEqualToAnchor:?];
+    backgroundView4 = [(BCCardStackViewController *)self backgroundView];
+    rightAnchor = [backgroundView4 rightAnchor];
+    view3 = [(BCCardStackViewController *)self view];
+    [view3 rightAnchor];
+    view7 = backgroundView9 = rightAnchor;
+    v33 = [rightAnchor constraintEqualToAnchor:?];
     v42[1] = v33;
-    v32 = [(BCCardStackViewController *)self backgroundView];
-    v28 = [v32 topAnchor];
-    v30 = [(BCCardStackViewController *)self view];
-    v14 = [v30 topAnchor];
-    v31 = v28;
-    v15 = [v28 constraintEqualToAnchor:v14];
-    v42[2] = v15;
-    v16 = [(BCCardStackViewController *)self backgroundView];
-    v17 = [v16 bottomAnchor];
-    v18 = [(BCCardStackViewController *)self view];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
-    v42[3] = v20;
+    backgroundView5 = [(BCCardStackViewController *)self backgroundView];
+    topAnchor = [backgroundView5 topAnchor];
+    view4 = [(BCCardStackViewController *)self view];
+    topAnchor2 = [view4 topAnchor];
+    backgroundView10 = topAnchor;
+    v14TopAnchor = [topAnchor constraintEqualToAnchor:topAnchor2];
+    v42[2] = v14TopAnchor;
+    backgroundView6 = [(BCCardStackViewController *)self backgroundView];
+    bottomAnchor = [backgroundView6 bottomAnchor];
+    view5 = [(BCCardStackViewController *)self view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v19BottomAnchor = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    v42[3] = v19BottomAnchor;
     v21 = [NSArray arrayWithObjects:v42 count:4];
     [NSLayoutConstraint activateConstraints:v21];
     goto LABEL_5;
   }
 
-  v6 = [(BCCardStackViewController *)self childViewControllers];
-  v7 = [v6 lastObject];
-  v8 = [v7 view];
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
+  backgroundView3 = [lastObject view];
 
-  if (v8)
+  if (backgroundView3)
   {
-    v9 = [(BCCardStackViewController *)self view];
-    v10 = [(BCCardStackViewController *)self backgroundView];
-    [v9 insertSubview:v10 belowSubview:v8];
+    view6 = [(BCCardStackViewController *)self view];
+    backgroundView7 = [(BCCardStackViewController *)self backgroundView];
+    [view6 insertSubview:backgroundView7 belowSubview:backgroundView3];
 
-    v29 = [(BCCardStackViewController *)self backgroundView];
-    v11 = [v29 leftAnchor];
-    v39 = [(BCCardStackViewController *)self view];
-    [v39 leftAnchor];
-    v38 = v40 = v11;
-    v37 = [v11 constraintEqualToAnchor:?];
-    v41[0] = v37;
-    v36 = [(BCCardStackViewController *)self backgroundView];
-    v12 = [v36 rightAnchor];
-    v34 = [(BCCardStackViewController *)self view];
-    [v34 rightAnchor];
-    v33 = v35 = v12;
-    v32 = [v12 constraintEqualToAnchor:?];
-    v41[1] = v32;
-    v31 = [(BCCardStackViewController *)self backgroundView];
-    v13 = [v31 topAnchor];
-    v14 = [(BCCardStackViewController *)self view];
-    v15 = [v14 topAnchor];
-    v30 = v13;
-    v16 = [v13 constraintEqualToAnchor:v15];
-    v41[2] = v16;
-    v17 = [(BCCardStackViewController *)self backgroundView];
-    v18 = [v17 bottomAnchor];
-    v19 = [(BCCardStackViewController *)self view];
-    v20 = [v19 bottomAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    backgroundView8 = [(BCCardStackViewController *)self backgroundView];
+    leftAnchor3 = [backgroundView8 leftAnchor];
+    leftAnchor2 = [(BCCardStackViewController *)self view];
+    [leftAnchor2 leftAnchor];
+    v38 = view2 = leftAnchor3;
+    backgroundView4 = [leftAnchor3 constraintEqualToAnchor:?];
+    v41[0] = backgroundView4;
+    backgroundView9 = [(BCCardStackViewController *)self backgroundView];
+    rightAnchor2 = [backgroundView9 rightAnchor];
+    view7 = [(BCCardStackViewController *)self view];
+    [view7 rightAnchor];
+    v33 = view3 = rightAnchor2;
+    backgroundView5 = [rightAnchor2 constraintEqualToAnchor:?];
+    v41[1] = backgroundView5;
+    backgroundView10 = [(BCCardStackViewController *)self backgroundView];
+    topAnchor3 = [backgroundView10 topAnchor];
+    topAnchor2 = [(BCCardStackViewController *)self view];
+    v14TopAnchor = [topAnchor2 topAnchor];
+    view4 = topAnchor3;
+    backgroundView6 = [topAnchor3 constraintEqualToAnchor:v14TopAnchor];
+    v41[2] = backgroundView6;
+    bottomAnchor = [(BCCardStackViewController *)self backgroundView];
+    view5 = [bottomAnchor bottomAnchor];
+    bottomAnchor2 = [(BCCardStackViewController *)self view];
+    v19BottomAnchor = [bottomAnchor2 bottomAnchor];
+    v21 = [view5 constraintEqualToAnchor:v19BottomAnchor];
     v41[3] = v21;
     [NSArray arrayWithObjects:v41 count:4];
-    v23 = v22 = v8;
+    v23 = v22 = backgroundView3;
     [NSLayoutConstraint activateConstraints:v23];
 
-    v8 = v22;
-    v24 = v29;
+    backgroundView3 = v22;
+    leftAnchor = backgroundView8;
 LABEL_5:
   }
 }
 
-- (void)_addAdornmentViewsToParentView:(id)a3
+- (void)_addAdornmentViewsToParentView:(id)view
 {
-  v4 = a3;
-  v5 = [(BCCardStackViewController *)self backgroundView];
-  [v5 removeFromSuperview];
+  viewCopy = view;
+  backgroundView = [(BCCardStackViewController *)self backgroundView];
+  [backgroundView removeFromSuperview];
 
-  v6 = [(BCCardStackViewController *)self backgroundView];
-  [v4 insertSubview:v6 atIndex:0];
+  backgroundView2 = [(BCCardStackViewController *)self backgroundView];
+  [viewCopy insertSubview:backgroundView2 atIndex:0];
 
-  v23 = [(BCCardStackViewController *)self backgroundView];
-  v22 = [v23 leftAnchor];
-  v21 = [v4 leftAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  backgroundView3 = [(BCCardStackViewController *)self backgroundView];
+  leftAnchor = [backgroundView3 leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v24[0] = v20;
-  v19 = [(BCCardStackViewController *)self backgroundView];
-  v18 = [v19 rightAnchor];
-  v17 = [v4 rightAnchor];
-  v7 = [v18 constraintEqualToAnchor:v17];
+  backgroundView4 = [(BCCardStackViewController *)self backgroundView];
+  rightAnchor = [backgroundView4 rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
+  v7 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v24[1] = v7;
-  v8 = [(BCCardStackViewController *)self backgroundView];
-  v9 = [v8 topAnchor];
-  v10 = [v4 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  backgroundView5 = [(BCCardStackViewController *)self backgroundView];
+  topAnchor = [backgroundView5 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[2] = v11;
-  v12 = [(BCCardStackViewController *)self backgroundView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v4 bottomAnchor];
+  backgroundView6 = [(BCCardStackViewController *)self backgroundView];
+  bottomAnchor = [backgroundView6 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v15;
   v16 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v16];
@@ -1507,26 +1507,26 @@ LABEL_5:
   return v3;
 }
 
-- (void)_scaleBackCardSetViewController:(id)a3 shiftUp:(BOOL)a4 cumulative:(BOOL)a5
+- (void)_scaleBackCardSetViewController:(id)controller shiftUp:(BOOL)up cumulative:(BOOL)cumulative
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 view];
-  [v8 center];
+  cumulativeCopy = cumulative;
+  upCopy = up;
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view center];
   v10 = v9;
 
   v11 = *&CGAffineTransformIdentity.c;
   *&v19.a = *&CGAffineTransformIdentity.a;
   *&v19.c = v11;
   *&v19.tx = *&CGAffineTransformIdentity.tx;
-  if (v5)
+  if (cumulativeCopy)
   {
-    v12 = [v7 view];
-    v13 = v12;
-    if (v12)
+    view2 = [controllerCopy view];
+    v13 = view2;
+    if (view2)
     {
-      [v12 transform];
+      [view2 transform];
     }
 
     else
@@ -1546,7 +1546,7 @@ LABEL_5:
   CGAffineTransformScale(&v18, &v17, 0.95, 0.95);
   v19 = v18;
   v14 = -9.0;
-  if (v6)
+  if (upCopy)
   {
     v14 = 9.0;
   }
@@ -1555,16 +1555,16 @@ LABEL_5:
   CGAffineTransformTranslate(&v18, &v17, 0.0, v14 + v10);
   v19 = v18;
   v16 = v18;
-  v15 = [v7 view];
+  view3 = [controllerCopy view];
   v18 = v16;
-  [v15 setTransform:&v18];
+  [view3 setTransform:&v18];
 }
 
-- (id)_pushCardsWithDataSource:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5 presentingViewController:(id)a6
+- (id)_pushCardsWithDataSource:(id)source focusedIndex:(unint64_t)index animated:(BOOL)animated presentingViewController:(id)controller
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
+  animatedCopy = animated;
+  sourceCopy = source;
+  controllerCopy = controller;
   if (self->_transitionInProgress)
   {
     v11 = BCCardModelLog();
@@ -1579,77 +1579,77 @@ LABEL_5:
 
   [(BCCardStackViewController *)self lockChildForStatusBarStyle];
   self->_transitionInProgress = 1;
-  v13 = [BCStatusBarBackgroundController backgroundControllerForViewController:v10];
+  v13 = [BCStatusBarBackgroundController backgroundControllerForViewController:controllerCopy];
   [(BCCardStackViewController *)self setStatusBarBackgroundController:v13];
 
   if ([(BCCardStackViewController *)self presentingViewControllerIsFullScreen])
   {
-    [v10 view];
+    [controllerCopy view];
   }
 
   else
   {
-    [v10 bc_windowForViewController];
+    [controllerCopy bc_windowForViewController];
   }
   v14 = ;
   [v14 bounds];
   [(BCCardStackViewController *)self setInitialFrame:?];
 
-  [v10 additionalSafeAreaInsets];
+  [controllerCopy additionalSafeAreaInsets];
   [(BCCardStackViewController *)self setToolbarHeight:?];
-  v15 = [(BCCardStackViewController *)self childViewControllers];
-  v16 = [v15 lastObject];
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (v16)
+  if (lastObject)
   {
-    v17 = [(BCCardStackViewController *)self view];
-    v18 = [v17 window];
-    [v18 setUserInteractionEnabled:0];
+    view = [(BCCardStackViewController *)self view];
+    window = [view window];
+    [window setUserInteractionEnabled:0];
   }
 
-  v19 = [v16 configuration];
-  if ([v19 cardsCanExpand])
+  configuration = [lastObject configuration];
+  if ([configuration cardsCanExpand])
   {
-    v20 = [v16 currentCardViewController];
-    v21 = [v20 currentState];
+    currentCardViewController = [lastObject currentCardViewController];
+    currentState = [currentCardViewController currentState];
     v22 = +[BCCardSetState expandedState];
 
-    if (v21 == v22)
+    if (currentState == v22)
     {
       goto LABEL_14;
     }
 
-    v19 = [v16 currentCardViewController];
-    [v19 goExpanded];
+    configuration = [lastObject currentCardViewController];
+    [configuration goExpanded];
   }
 
 LABEL_14:
-  [v16 bc_analyticsVisibilitySubtreeWillDisappear];
+  [lastObject bc_analyticsVisibilitySubtreeWillDisappear];
   v23 = objc_alloc_init(BCCardSetViewController);
   [(BCCardSetViewController *)v23 setDataSource:self];
   [(BCCardSetViewController *)v23 setDelegate:self];
-  v24 = [(BCCardStackViewController *)self dataSourceMap];
-  [v24 setObject:v9 forKeyedSubscript:v23];
+  dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+  [dataSourceMap setObject:sourceCopy forKeyedSubscript:v23];
 
-  v25 = [(BCCardStackViewController *)self view];
-  [v25 bounds];
+  view2 = [(BCCardStackViewController *)self view];
+  [view2 bounds];
   [(BCCardSetViewController *)v23 setInitialFrame:?];
 
-  v26 = [(BCCardStackViewController *)self configuration];
-  [(BCCardSetViewController *)v23 setConfiguration:v26];
+  configuration2 = [(BCCardStackViewController *)self configuration];
+  [(BCCardSetViewController *)v23 setConfiguration:configuration2];
 
   [(BCCardStackViewController *)self contentInset];
   [(BCCardSetViewController *)v23 setContentInset:?];
-  v27 = [(BCCardStackViewController *)self configuration];
-  if ([v27 cardsCanExpand])
+  configuration3 = [(BCCardStackViewController *)self configuration];
+  if ([configuration3 cardsCanExpand])
   {
     v96 = 0;
   }
 
   else
   {
-    v28 = [(BCCardStackViewController *)self childViewControllers];
-    v29 = [v28 count];
+    childViewControllers2 = [(BCCardStackViewController *)self childViewControllers];
+    v29 = [childViewControllers2 count];
 
     if (v29 < 2)
     {
@@ -1657,30 +1657,30 @@ LABEL_14:
       goto LABEL_20;
     }
 
-    v27 = [(BCCardStackViewController *)self childViewControllers];
-    v30 = [(BCCardStackViewController *)self childViewControllers];
-    v96 = [v27 objectAtIndexedSubscript:{objc_msgSend(v30, "count") - 2}];
+    configuration3 = [(BCCardStackViewController *)self childViewControllers];
+    childViewControllers3 = [(BCCardStackViewController *)self childViewControllers];
+    v96 = [configuration3 objectAtIndexedSubscript:{objc_msgSend(childViewControllers3, "count") - 2}];
   }
 
 LABEL_20:
-  v92 = v16 == 0;
+  v92 = lastObject == 0;
   [(BCCardStackViewController *)self addChildViewController:v23];
-  v31 = [(BCCardStackViewController *)self statusBarBackgroundController];
-  [(BCCardSetViewController *)v23 setStatusBarBackgroundController:v31];
+  statusBarBackgroundController = [(BCCardStackViewController *)self statusBarBackgroundController];
+  [(BCCardSetViewController *)v23 setStatusBarBackgroundController:statusBarBackgroundController];
 
-  v32 = [(BCCardStackViewController *)self view];
-  [v32 bounds];
+  view3 = [(BCCardStackViewController *)self view];
+  [view3 bounds];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [(BCCardSetViewController *)v23 view];
-  [v41 setFrame:{v34, v36, v38, v40}];
+  view4 = [(BCCardSetViewController *)v23 view];
+  [view4 setFrame:{v34, v36, v38, v40}];
 
-  [(BCCardSetViewController *)v23 setFocusedIndex:a4];
-  if ((v16 || -[BCCardStackViewController presentingViewControllerIsFullScreen](self, "presentingViewControllerIsFullScreen") || [v10 bc_alwaysUseCoverTransitionForCardPresenting]) && (objc_msgSend(objc_opt_class(), "_alwaysUseSlideAnimation") & 1) == 0)
+  [(BCCardSetViewController *)v23 setFocusedIndex:index];
+  if ((lastObject || -[BCCardStackViewController presentingViewControllerIsFullScreen](self, "presentingViewControllerIsFullScreen") || [controllerCopy bc_alwaysUseCoverTransitionForCardPresenting]) && (objc_msgSend(objc_opt_class(), "_alwaysUseSlideAnimation") & 1) == 0)
   {
-    v44 = [BCCardStackCoverSourceController coverHostFromPresentingViewController:v10 previousCardSetViewController:v16];
+    v44 = [BCCardStackCoverSourceController coverHostFromPresentingViewController:controllerCopy previousCardSetViewController:lastObject];
     if (v44)
     {
       v140[0] = _NSConcreteStackBlock;
@@ -1691,81 +1691,81 @@ LABEL_20:
       v141 = v45;
       [UIView performWithoutAnimation:v140];
       [(BCCardSetViewController *)v45 setLastNavigationType:1];
-      v43 = [[BCCardStackCoverSourceController alloc] initWithCardStackViewController:self isDismiss:0 cardSetViewController:v45 focusedIndex:a4 coverHost:v44 dataSource:v9];
+      v43 = [[BCCardStackCoverSourceController alloc] initWithCardStackViewController:self isDismiss:0 cardSetViewController:v45 focusedIndex:index coverHost:v44 dataSource:sourceCopy];
       [(BCCardStackCoverSourceController *)v43 performFirstHalfOfProcessing];
-      v42 = [(BCCardStackCoverSourceController *)v43 canUseCoverTransition];
-      v98 = [v44 containerViewForHostingCoversDuringAnimation];
+      canUseCoverTransition = [(BCCardStackCoverSourceController *)v43 canUseCoverTransition];
+      containerViewForHostingCoversDuringAnimation = [v44 containerViewForHostingCoversDuringAnimation];
     }
 
     else
     {
-      v98 = 0;
-      v42 = 0;
+      containerViewForHostingCoversDuringAnimation = 0;
+      canUseCoverTransition = 0;
       v43 = 0;
     }
   }
 
   else
   {
-    v98 = 0;
-    v42 = 0;
+    containerViewForHostingCoversDuringAnimation = 0;
+    canUseCoverTransition = 0;
     v43 = 0;
   }
 
-  v93 = v9;
-  v46 = v42;
-  v47 = v42;
+  v93 = sourceCopy;
+  v46 = canUseCoverTransition;
+  v47 = canUseCoverTransition;
   v48 = [BCCardStackTransitionAnimator alloc];
-  v49 = [(BCCardStackViewController *)self configuration];
-  v94 = -[BCCardStackTransitionAnimator initWithType:allowsCardExpansion:](v48, "initWithType:allowsCardExpansion:", v47, [v49 cardsCanExpand]);
+  configuration4 = [(BCCardStackViewController *)self configuration];
+  v94 = -[BCCardStackTransitionAnimator initWithType:allowsCardExpansion:](v48, "initWithType:allowsCardExpansion:", v47, [configuration4 cardsCanExpand]);
 
   v101 = objc_opt_new();
-  v97 = v10;
+  v97 = controllerCopy;
   v95 = v46;
   if (v46)
   {
-    v91 = v16;
+    v91 = lastObject;
     v50 = objc_opt_new();
     v99 = objc_opt_new();
     v51 = dispatch_group_create();
     v90 = v43;
-    v52 = [(BCCardStackCoverSourceController *)v43 rangeRequiringCards];
-    [(BCCardSetViewController *)v23 beginTransitionUpdateModeForCardsAtRange:v52, v53];
+    rangeRequiringCards = [(BCCardStackCoverSourceController *)v43 rangeRequiringCards];
+    [(BCCardSetViewController *)v23 beginTransitionUpdateModeForCardsAtRange:rangeRequiringCards, v53];
     [(BCCardSetViewController *)v23 didBecomeTopCardSet];
-    v54 = [(BCCardSetViewController *)v23 visibleCardRange];
+    visibleCardRange = [(BCCardSetViewController *)v23 visibleCardRange];
     v56 = v55;
     v57 = [NSMutableArray arrayWithCapacity:v55];
-    if (v54 < &v54[v56])
+    if (visibleCardRange < &visibleCardRange[v56])
     {
       do
       {
-        v58 = [(BCCardSetViewController *)v23 cardViewControllerAtIndex:v54];
-        v59 = [v58 transitioningCardContent];
+        v58 = [(BCCardSetViewController *)v23 cardViewControllerAtIndex:visibleCardRange];
+        transitioningCardContent = [v58 transitioningCardContent];
 
-        if (v59)
+        if (transitioningCardContent)
         {
-          [v57 addObject:v59];
+          [v57 addObject:transitioningCardContent];
           dispatch_group_enter(v51);
           v138[0] = _NSConcreteStackBlock;
           v138[1] = 3221225472;
           v138[2] = sub_31DB0;
           v138[3] = &unk_2C7D40;
           v139 = v51;
-          v60 = [v59 cardStackTransitionSuspendUpdatesAssertionUntilContentExceedsHeightWithCompletion:v138];
+          v60 = [transitioningCardContent cardStackTransitionSuspendUpdatesAssertionUntilContentExceedsHeightWithCompletion:v138];
           [v50 addObject:v60];
 
-          v61 = [v59 cardStackTransitionSuspendLayoutAssertion];
-          [v101 addObject:v61];
+          cardStackTransitionSuspendLayoutAssertion = [transitioningCardContent cardStackTransitionSuspendLayoutAssertion];
+          [v101 addObject:cardStackTransitionSuspendLayoutAssertion];
 
-          if (a4 != v54)
+          if (index != visibleCardRange)
           {
-            [v99 addObject:v59];
-            v62 = [v59 cardStackTransitionSuspendUpdatesAssertion];
-            [v50 addObject:v62];
+            [v99 addObject:transitioningCardContent];
+            cardStackTransitionSuspendUpdatesAssertion = [transitioningCardContent cardStackTransitionSuspendUpdatesAssertion];
+            [v50 addObject:cardStackTransitionSuspendUpdatesAssertion];
           }
         }
 
-        ++v54;
+        ++visibleCardRange;
         --v56;
       }
 
@@ -1793,7 +1793,7 @@ LABEL_20:
 
     v67 = BCCardStackSignpost();
     v68 = v67;
-    v7 = v7;
+    animatedCopy = animatedCopy;
     v69 = v94;
     if (v66 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v67))
     {
@@ -1810,7 +1810,7 @@ LABEL_20:
     v127 = v70;
     v134 = v92;
     v128 = v97;
-    v129 = self;
+    selfCopy = self;
     v130 = v23;
     v133 = v66;
     v43 = v90;
@@ -1825,7 +1825,7 @@ LABEL_20:
     v125 = v71;
     v72 = objc_retainBlock(v124);
 
-    v16 = v91;
+    lastObject = v91;
   }
 
   else
@@ -1837,13 +1837,13 @@ LABEL_20:
   }
 
   v100 = v72;
-  v73 = [[BCCardStackTransitionContext alloc] initWithFromViewController:v16 toViewController:v23 push:1];
-  [(BCCardStackTransitionContext *)v73 setAnimated:v7];
+  v73 = [[BCCardStackTransitionContext alloc] initWithFromViewController:lastObject toViewController:v23 push:1];
+  [(BCCardStackTransitionContext *)v73 setAnimated:animatedCopy];
   [(BCCardStackTransitionContext *)v73 setInteractive:0];
-  v74 = [(BCCardStackViewController *)self backgroundView];
-  [(BCCardStackTransitionContext *)v73 setBackgroundView:v74];
+  backgroundView = [(BCCardStackViewController *)self backgroundView];
+  [(BCCardStackTransitionContext *)v73 setBackgroundView:backgroundView];
 
-  [(BCCardStackTransitionContext *)v73 setInnerContainerView:v98];
+  [(BCCardStackTransitionContext *)v73 setInnerContainerView:containerViewForHostingCoversDuringAnimation];
   objc_initWeak(buf, self);
   v113[0] = _NSConcreteStackBlock;
   v113[1] = 3221225472;
@@ -1860,10 +1860,10 @@ LABEL_20:
   v78 = v23;
   v117 = v78;
   v79 = v69;
-  v80 = v16;
+  v80 = lastObject;
   v81 = v79;
   v118 = v79;
-  v119 = self;
+  selfCopy2 = self;
   v82 = v80;
   v83 = v80;
   v120 = v83;
@@ -1876,11 +1876,11 @@ LABEL_20:
   v11 = v83;
   v111 = v11;
   [(BCCardStackTransitionAnimator *)v81 addAnimations:v110];
-  v84 = [(BCCardStackViewController *)self configuration];
-  v85 = [v84 cardsCanExpand];
+  configuration5 = [(BCCardStackViewController *)self configuration];
+  cardsCanExpand = [configuration5 cardsCanExpand];
   if (v82)
   {
-    v86 = v85;
+    v86 = cardsCanExpand;
   }
 
   else
@@ -1915,17 +1915,17 @@ LABEL_20:
   objc_destroyWeak(&v121);
 
   objc_destroyWeak(buf);
-  v9 = v93;
-  v10 = v97;
+  sourceCopy = v93;
+  controllerCopy = v97;
 LABEL_49:
 
   return v12;
 }
 
-- (id)_pushCardBackAnimatorForCardSet:(id)a3 cardSetViewControllerToFade:(id)a4 duration:(double)a5
+- (id)_pushCardBackAnimatorForCardSet:(id)set cardSetViewControllerToFade:(id)fade duration:(double)duration
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  fadeCopy = fade;
   v9 = [[UICubicTimingParameters alloc] initWithControlPoint1:0.33 controlPoint2:{0.0, 0.2, 1.0}];
   v10 = [[UIViewPropertyAnimator alloc] initWithDuration:v9 timingParameters:0.28];
   v16[0] = _NSConcreteStackBlock;
@@ -1933,9 +1933,9 @@ LABEL_49:
   v16[2] = sub_32DC8;
   v16[3] = &unk_2C89F8;
   v16[4] = self;
-  v11 = v7;
+  v11 = setCopy;
   v17 = v11;
-  v12 = v8;
+  v12 = fadeCopy;
   v18 = v12;
   [v10 addAnimations:v16];
   if (v12)
@@ -1951,24 +1951,24 @@ LABEL_49:
   return v10;
 }
 
-- (void)_applyCardSetViewController:(id)a3 withTransform:(unint64_t)a4
+- (void)_applyCardSetViewController:(id)controller withTransform:(unint64_t)transform
 {
-  v5 = a3;
-  v6 = [v5 view];
-  [v6 center];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view center];
   v8 = v7;
 
   v9 = *&CGAffineTransformIdentity.c;
   *&v22.a = *&CGAffineTransformIdentity.a;
   *&v22.c = v9;
   *&v22.tx = *&CGAffineTransformIdentity.tx;
-  if (a4 == 1)
+  if (transform == 1)
   {
-    v12 = [v5 view];
-    v13 = v12;
-    if (v12)
+    view2 = [controllerCopy view];
+    v13 = view2;
+    if (view2)
     {
-      [v12 transform];
+      [view2 transform];
     }
 
     else
@@ -1981,7 +1981,7 @@ LABEL_49:
     goto LABEL_12;
   }
 
-  if (a4 != 2)
+  if (transform != 2)
   {
     CGAffineTransformMakeTranslation(&v22, 0.0, -v8);
 LABEL_12:
@@ -1995,11 +1995,11 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = [v5 view];
-  v11 = v10;
-  if (v10)
+  view3 = [controllerCopy view];
+  v11 = view3;
+  if (view3)
   {
-    [v10 transform];
+    [view3 transform];
   }
 
   else
@@ -2023,50 +2023,50 @@ LABEL_13:
   CGAffineTransformTranslate(&v21, &v20, 0.0, v8 + v17);
   v22 = v21;
   v19 = v21;
-  v18 = [v5 view];
+  view4 = [controllerCopy view];
   v21 = v19;
-  [v18 setTransform:&v21];
+  [view4 setTransform:&v21];
 }
 
-- (void)_layoutUnderlyingCardSetViewController:(id)a3 animated:(BOOL)a4
+- (void)_layoutUnderlyingCardSetViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(BCCardStackViewController *)self _applyCardSetViewController:v6 withTransform:0];
-  [v6 setCovered:1 animated:v4 duration:0.28];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [(BCCardStackViewController *)self _applyCardSetViewController:controllerCopy withTransform:0];
+  [controllerCopy setCovered:1 animated:animatedCopy duration:0.28];
 }
 
-- (id)_popCardFrontAnimatorForCardSet:(id)a3 cardSetViewControllerToUnfade:(id)a4 duration:(double)a5
+- (id)_popCardFrontAnimatorForCardSet:(id)set cardSetViewControllerToUnfade:(id)unfade duration:(double)duration
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  unfadeCopy = unfade;
   v9 = [[UICubicTimingParameters alloc] initWithControlPoint1:0.33 controlPoint2:{0.0, 0.2, 1.0}];
   v10 = [[UIViewPropertyAnimator alloc] initWithDuration:v9 timingParameters:0.28];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_33244;
   v14[3] = &unk_2C89F8;
-  v15 = v7;
-  v16 = v8;
-  v17 = self;
-  v11 = v8;
-  v12 = v7;
+  v15 = setCopy;
+  v16 = unfadeCopy;
+  selfCopy = self;
+  v11 = unfadeCopy;
+  v12 = setCopy;
   [v10 addAnimations:v14];
 
   return v10;
 }
 
-- (id)_navigationControllerForViewController:(id)a3
+- (id)_navigationControllerForViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v9 = [(BCCardStackViewController *)self presentingViewController];
+    presentingViewController = [(BCCardStackViewController *)self presentingViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v11 = [(BCCardStackViewController *)self presentingViewController];
-    v6 = v11;
+    presentingViewController2 = [(BCCardStackViewController *)self presentingViewController];
+    v6 = presentingViewController2;
     if (isKindOfClass)
     {
       goto LABEL_9;
@@ -2080,27 +2080,27 @@ LABEL_13:
   v6 = v5;
   if (!v5)
   {
-    v11 = v4;
+    presentingViewController2 = controllerCopy;
 LABEL_7:
-    v8 = [v11 navigationController];
+    navigationController = [presentingViewController2 navigationController];
     goto LABEL_8;
   }
 
-  v7 = [v5 expandedCardViewController];
-  v8 = [v7 cardNavigationController];
+  expandedCardViewController = [v5 expandedCardViewController];
+  navigationController = [expandedCardViewController cardNavigationController];
 
 LABEL_8:
-  v6 = v8;
+  v6 = navigationController;
 LABEL_9:
 
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = [(BCCardStackViewController *)self pendingWrapper];
+  pendingWrapper = [(BCCardStackViewController *)self pendingWrapper];
 
-  if (!v4)
+  if (!pendingWrapper)
   {
     v5 = BCCardModelLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2109,38 +2109,38 @@ LABEL_9:
     }
   }
 
-  v6 = [(BCCardStackViewController *)self pendingWrapper];
+  pendingWrapper2 = [(BCCardStackViewController *)self pendingWrapper];
 
-  return v6;
+  return pendingWrapper2;
 }
 
-- (unint64_t)cardCountForCardSet:(id)a3
+- (unint64_t)cardCountForCardSet:(id)set
 {
-  v4 = a3;
-  v5 = [(BCCardStackViewController *)self dataSourceMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  setCopy = set;
+  dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+  v6 = [dataSourceMap objectForKeyedSubscript:setCopy];
 
   v7 = [v6 numberOfCards:self];
   return v7;
 }
 
-- (BOOL)isTopCardSetViewController:(id)a3
+- (BOOL)isTopCardSetViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BCCardStackViewController *)self childViewControllers];
-  v6 = [v5 lastObject];
+  controllerCopy = controller;
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v6 == v4;
+  return lastObject == controllerCopy;
 }
 
-- (id)contentViewControllerForCardSet:(id)a3 index:(unint64_t)a4 cardContentScrollManager:(id)a5
+- (id)contentViewControllerForCardSet:(id)set index:(unint64_t)index cardContentScrollManager:(id)manager
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BCCardStackViewController *)self dataSourceMap];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  managerCopy = manager;
+  setCopy = set;
+  dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+  v11 = [dataSourceMap objectForKeyedSubscript:setCopy];
 
-  v12 = [v11 contentViewControllerForCardAtIndex:a4 cardContentScrollManager:v8];
+  v12 = [v11 contentViewControllerForCardAtIndex:index cardContentScrollManager:managerCopy];
 
   objc_opt_class();
   v13 = BUClassAndProtocolCast();
@@ -2148,30 +2148,30 @@ LABEL_9:
   return v13;
 }
 
-- (Class)cardNavigationControllerForCardSet:(id)a3
+- (Class)cardNavigationControllerForCardSet:(id)set
 {
-  v4 = a3;
-  v5 = [(BCCardStackViewController *)self dataSourceMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  setCopy = set;
+  dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+  v6 = [dataSourceMap objectForKeyedSubscript:setCopy];
 
   v7 = [v6 cardNavigationControllerClass:self];
 
   return v7;
 }
 
-- (void)cardSetViewController:(id)a3 prepareForNavigationTransitionWithContext:(id)a4
+- (void)cardSetViewController:(id)controller prepareForNavigationTransitionWithContext:(id)context
 {
-  v5 = [a4 containerView];
-  [(BCCardStackViewController *)self _addAdornmentViewsToParentView:v5];
+  containerView = [context containerView];
+  [(BCCardStackViewController *)self _addAdornmentViewsToParentView:containerView];
 
   self->_transitionInProgress = 1;
 }
 
-- (void)cardSetViewController:(id)a3 animatorForExpanding:(id)a4
+- (void)cardSetViewController:(id)controller animatorForExpanding:(id)expanding
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 duration];
+  controllerCopy = controller;
+  expandingCopy = expanding;
+  [expandingCopy duration];
   v9 = v8;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -2180,16 +2180,16 @@ LABEL_9:
   v10[3] = &unk_2C9048;
   v11[1] = v9;
   objc_copyWeak(v11, &location);
-  [v7 addAnimations:v10];
+  [expandingCopy addAnimations:v10];
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
 }
 
-- (void)cardSetViewController:(id)a3 animatorForUnexpanding:(id)a4
+- (void)cardSetViewController:(id)controller animatorForUnexpanding:(id)unexpanding
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 duration];
+  controllerCopy = controller;
+  unexpandingCopy = unexpanding;
+  [unexpandingCopy duration];
   v9 = v8;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
@@ -2198,48 +2198,48 @@ LABEL_9:
   v12[3] = &unk_2C9048;
   v13[1] = v9;
   objc_copyWeak(v13, &location);
-  [v7 addAnimations:v12];
+  [unexpandingCopy addAnimations:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_33DA8;
   v10[3] = &unk_2C90B0;
   objc_copyWeak(&v11, &location);
   v10[4] = self;
-  [v7 addCompletion:v10];
+  [unexpandingCopy addCompletion:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)cardSetViewController:(id)a3 animatorForInteractiveDismiss:(id)a4
+- (void)cardSetViewController:(id)controller animatorForInteractiveDismiss:(id)dismiss
 {
   v11 = NAN;
-  v6 = a4;
-  [v6 setFinalAnimationType:{-[BCCardStackViewController _animationTypeForDismissingCardSetViewController:distanceToCoverSource:](self, "_animationTypeForDismissingCardSetViewController:distanceToCoverSource:", a3, &v11)}];
-  [v6 setDistanceToCoverSource:v11];
-  v7 = [(BCCardStackViewController *)self backgroundView];
-  [v6 setBackgroundView:v7];
+  dismissCopy = dismiss;
+  [dismissCopy setFinalAnimationType:{-[BCCardStackViewController _animationTypeForDismissingCardSetViewController:distanceToCoverSource:](self, "_animationTypeForDismissingCardSetViewController:distanceToCoverSource:", controller, &v11)}];
+  [dismissCopy setDistanceToCoverSource:v11];
+  backgroundView = [(BCCardStackViewController *)self backgroundView];
+  [dismissCopy setBackgroundView:backgroundView];
 
-  v8 = [(BCCardStackViewController *)self childViewControllers];
-  v9 = [v8 count] > 1;
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  v9 = [childViewControllers count] > 1;
 
-  v10 = [(BCCardStackViewController *)self configuration];
-  [v6 setShouldRetainBackgroundAndTitleState:{v9 & ~objc_msgSend(v10, "cardsCanExpand")}];
+  configuration = [(BCCardStackViewController *)self configuration];
+  [dismissCopy setShouldRetainBackgroundAndTitleState:{v9 & ~objc_msgSend(configuration, "cardsCanExpand")}];
 }
 
-- (int64_t)_animationTypeForDismissingCardSetViewController:(id)a3 distanceToCoverSource:(double *)a4
+- (int64_t)_animationTypeForDismissingCardSetViewController:(id)controller distanceToCoverSource:(double *)source
 {
-  v6 = a3;
-  v7 = [(BCCardStackViewController *)self childViewControllers];
-  if ([v7 count] <= 1)
+  controllerCopy = controller;
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  if ([childViewControllers count] <= 1)
   {
   }
 
   else
   {
-    v8 = [(BCCardStackViewController *)self childViewControllers];
-    v9 = [(BCCardStackViewController *)self childViewControllers];
-    v10 = [v8 objectAtIndexedSubscript:{objc_msgSend(v9, "count") - 2}];
+    childViewControllers2 = [(BCCardStackViewController *)self childViewControllers];
+    childViewControllers3 = [(BCCardStackViewController *)self childViewControllers];
+    v10 = [childViewControllers2 objectAtIndexedSubscript:{objc_msgSend(childViewControllers3, "count") - 2}];
 
     if (v10)
     {
@@ -2249,10 +2249,10 @@ LABEL_9:
 
   if (![(BCCardStackViewController *)self presentingViewControllerIsFullScreen])
   {
-    v11 = [(BCCardStackViewController *)self presentingViewController];
-    v12 = [v11 bc_alwaysUseCoverTransitionForCardPresenting];
+    presentingViewController = [(BCCardStackViewController *)self presentingViewController];
+    bc_alwaysUseCoverTransitionForCardPresenting = [presentingViewController bc_alwaysUseCoverTransitionForCardPresenting];
 
-    if (!v12)
+    if (!bc_alwaysUseCoverTransitionForCardPresenting)
     {
       v21 = 2;
       goto LABEL_12;
@@ -2261,16 +2261,16 @@ LABEL_9:
 
   v10 = 0;
 LABEL_8:
-  v13 = [(BCCardStackViewController *)self presentingViewController];
-  v14 = [BCCardStackCoverSourceController coverHostFromPresentingViewController:v13 previousCardSetViewController:v10];
+  presentingViewController2 = [(BCCardStackViewController *)self presentingViewController];
+  v14 = [BCCardStackCoverSourceController coverHostFromPresentingViewController:presentingViewController2 previousCardSetViewController:v10];
 
-  v15 = [v6 currentCardViewController];
-  v16 = [v15 view];
-  v17 = [v16 superview];
+  currentCardViewController = [controllerCopy currentCardViewController];
+  view = [currentCardViewController view];
+  superview = [view superview];
 
-  v18 = [(BCCardStackViewController *)self dataSourceMap];
-  v19 = [v18 objectForKeyedSubscript:v6];
-  v20 = [BCCardStackCoverSourceController canUseCoverTransitionForDismissingCardSetViewController:v6 dataSource:v19 coverHost:v14 coverYOffset:a4 inCoordinatesOfView:v17];
+  dataSourceMap = [(BCCardStackViewController *)self dataSourceMap];
+  v19 = [dataSourceMap objectForKeyedSubscript:controllerCopy];
+  v20 = [BCCardStackCoverSourceController canUseCoverTransitionForDismissingCardSetViewController:controllerCopy dataSource:v19 coverHost:v14 coverYOffset:source inCoordinatesOfView:superview];
 
   if ([objc_opt_class() _alwaysUseSlideAnimation] & 1 | ((v20 & 1) == 0))
   {
@@ -2286,39 +2286,39 @@ LABEL_12:
   return v21;
 }
 
-- (void)cardSetViewController:(id)a3 didCommitDismissWithVelocity:(double)a4 interactiveAnimator:(id)a5
+- (void)cardSetViewController:(id)controller didCommitDismissWithVelocity:(double)velocity interactiveAnimator:(id)animator
 {
-  v7 = [a5 finalAnimationType];
+  finalAnimationType = [animator finalAnimationType];
 
-  [(BCCardStackViewController *)self _popCardsAnimated:1 popAll:0 animationType:v7 prefersCrossfade:0 velocity:2 reason:0 completion:a4];
+  [(BCCardStackViewController *)self _popCardsAnimated:1 popAll:0 animationType:finalAnimationType prefersCrossfade:0 velocity:2 reason:0 completion:velocity];
 }
 
 - (id)topCardSetViewController
 {
-  v2 = [(BCCardStackViewController *)self childViewControllers];
-  v3 = [v2 lastObject];
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)effectiveAnalyticsTrackerForTopCard
 {
-  v2 = [(BCCardStackViewController *)self topCardSetViewController];
-  v3 = [v2 currentCardViewController];
-  v4 = [v3 topContentViewController];
-  v5 = [v4 ba_effectiveAnalyticsTracker];
+  topCardSetViewController = [(BCCardStackViewController *)self topCardSetViewController];
+  currentCardViewController = [topCardSetViewController currentCardViewController];
+  topContentViewController = [currentCardViewController topContentViewController];
+  ba_effectiveAnalyticsTracker = [topContentViewController ba_effectiveAnalyticsTracker];
 
-  return v5;
+  return ba_effectiveAnalyticsTracker;
 }
 
 - (id)im_visibleChildViewControllers
 {
-  v2 = [(BCCardStackViewController *)self childViewControllers];
-  v3 = [v2 lastObject];
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (v3)
+  if (lastObject)
   {
-    v6 = v3;
+    v6 = lastObject;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -2330,38 +2330,38 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)bc_analyticsVisibilityOfChild:(id)a3
+- (BOOL)bc_analyticsVisibilityOfChild:(id)child
 {
-  v4 = a3;
-  v5 = [(BCCardStackViewController *)self childViewControllers];
-  v6 = [v5 lastObject];
+  childCopy = child;
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v6 == v4;
+  return lastObject == childCopy;
 }
 
 - (void)_updateStatusBarBackgroundOpacity
 {
-  v3 = [(BCCardStackViewController *)self topCardSetViewController];
-  [(BCCardStackViewController *)self _updateStatusBarBackgroundOpacityForCardSetViewController:v3];
+  topCardSetViewController = [(BCCardStackViewController *)self topCardSetViewController];
+  [(BCCardStackViewController *)self _updateStatusBarBackgroundOpacityForCardSetViewController:topCardSetViewController];
 }
 
-- (void)_updateStatusBarBackgroundOpacityForCardSetViewController:(id)a3
+- (void)_updateStatusBarBackgroundOpacityForCardSetViewController:(id)controller
 {
-  v14 = a3;
+  controllerCopy = controller;
   v4 = _os_feature_enabled_impl();
-  if (v14 && (v4 & 1) == 0)
+  if (controllerCopy && (v4 & 1) == 0)
   {
-    v5 = [v14 currentCardViewController];
-    v6 = [v5 cardNavigationController];
-    v7 = [v6 isNavigationBarHidden];
+    currentCardViewController = [controllerCopy currentCardViewController];
+    cardNavigationController = [currentCardViewController cardNavigationController];
+    isNavigationBarHidden = [cardNavigationController isNavigationBarHidden];
 
-    v8 = [v14 currentCardViewController];
-    v9 = [v8 currentState];
+    currentCardViewController2 = [controllerCopy currentCardViewController];
+    currentState = [currentCardViewController2 currentState];
     v10 = +[BCCardSetState expandedState];
 
-    if (v9 == v10)
+    if (currentState == v10)
     {
-      v11 = v7;
+      v11 = isNavigationBarHidden;
     }
 
     else
@@ -2370,8 +2370,8 @@ LABEL_12:
     }
 
     v12 = v11;
-    v13 = [(BCCardStackViewController *)self statusBarBackgroundController];
-    [v13 setOpacity:v12];
+    statusBarBackgroundController = [(BCCardStackViewController *)self statusBarBackgroundController];
+    [statusBarBackgroundController setOpacity:v12];
   }
 
   _objc_release_x1(v4);
@@ -2379,8 +2379,8 @@ LABEL_12:
 
 - (unint64_t)_indexOfChildViewControllerToSuspendOrResume
 {
-  v2 = [(BCCardStackViewController *)self childViewControllers];
-  v3 = [v2 count];
+  childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+  v3 = [childViewControllers count];
   if (v3 <= 2)
   {
     v4 = 0x7FFFFFFFFFFFFFFFLL;
@@ -2396,13 +2396,13 @@ LABEL_12:
 
 - (void)_suspendAndTeardownChildViewControllerAsNeeded
 {
-  v3 = [(BCCardStackViewController *)self _indexOfChildViewControllerToSuspendOrResume];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  _indexOfChildViewControllerToSuspendOrResume = [(BCCardStackViewController *)self _indexOfChildViewControllerToSuspendOrResume];
+  if (_indexOfChildViewControllerToSuspendOrResume != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = v3;
+    v4 = _indexOfChildViewControllerToSuspendOrResume;
     objc_opt_class();
-    v5 = [(BCCardStackViewController *)self childViewControllers];
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+    v6 = [childViewControllers objectAtIndexedSubscript:v4];
     v7 = BUDynamicCast();
 
     [v7 suspendAndTeardownForReason:@"card stack: card set not displayed"];
@@ -2411,13 +2411,13 @@ LABEL_12:
 
 - (void)_resumeAndRebuildChildViewControllerAsNeeded
 {
-  v3 = [(BCCardStackViewController *)self _indexOfChildViewControllerToSuspendOrResume];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  _indexOfChildViewControllerToSuspendOrResume = [(BCCardStackViewController *)self _indexOfChildViewControllerToSuspendOrResume];
+  if (_indexOfChildViewControllerToSuspendOrResume != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = v3;
+    v4 = _indexOfChildViewControllerToSuspendOrResume;
     objc_opt_class();
-    v5 = [(BCCardStackViewController *)self childViewControllers];
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    childViewControllers = [(BCCardStackViewController *)self childViewControllers];
+    v6 = [childViewControllers objectAtIndexedSubscript:v4];
     v7 = BUDynamicCast();
 
     [v7 resumeAndRebuildForReason:@"card stack: card set will display"];
@@ -2485,26 +2485,26 @@ LABEL_12:
   return v4;
 }
 
-- (void)viewController:(id)a3 didDisplayMessageWithId:(id)a4
+- (void)viewController:(id)controller didDisplayMessageWithId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCCardStackViewController *)self messagesAlreadyDisplayed];
-  if (!v8)
+  idCopy = id;
+  controllerCopy = controller;
+  messagesAlreadyDisplayed = [(BCCardStackViewController *)self messagesAlreadyDisplayed];
+  if (!messagesAlreadyDisplayed)
   {
-    v8 = objc_alloc_init(NSSet);
+    messagesAlreadyDisplayed = objc_alloc_init(NSSet);
   }
 
-  v9 = [v8 setByAddingObject:v6];
+  v9 = [messagesAlreadyDisplayed setByAddingObject:idCopy];
 
   [(BCCardStackViewController *)self setMessagesAlreadyDisplayed:v9];
-  [(BCCardStackViewController *)self notifyAllCardsAboutMessageDisplayed:v6 from:v7];
+  [(BCCardStackViewController *)self notifyAllCardsAboutMessageDisplayed:idCopy from:controllerCopy];
 }
 
-- (void)notifyAllCardsAboutMessageDisplayed:(id)a3 from:(id)a4
+- (void)notifyAllCardsAboutMessageDisplayed:(id)displayed from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  displayedCopy = displayed;
+  fromCopy = from;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -2531,8 +2531,8 @@ LABEL_12:
         v14[1] = 3221225472;
         v14[2] = sub_3DA0C;
         v14[3] = &unk_2C95C8;
-        v15 = v7;
-        v16 = v6;
+        v15 = fromCopy;
+        v16 = displayedCopy;
         [v12 enumerateAllCardsUsingBlock:v14];
 
         ++v11;

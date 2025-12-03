@@ -1,6 +1,6 @@
 @interface BKMediaLibraryAsset
-+ (id)newAssetFromRepresentativeMediaItem:(id)a3 withDataSourceIdentifier:(id)a4;
-- (BKMediaLibraryAsset)initWithRepresentativeMediaItem:(id)a3 assetID:(id)a4 dataSourceIdentifier:(id)a5;
++ (id)newAssetFromRepresentativeMediaItem:(id)item withDataSourceIdentifier:(id)identifier;
+- (BKMediaLibraryAsset)initWithRepresentativeMediaItem:(id)item assetID:(id)d dataSourceIdentifier:(id)identifier;
 - (BOOL)hasBeenPlayed;
 - (MPMediaItemCollection)collection;
 - (NSDate)expectedDate;
@@ -23,7 +23,7 @@
 - (NSString)storeRedownloadParameters;
 - (NSString)title;
 - (NSURL)url;
-- (double)clampedBookmarkTime:(double)a3 duration:(double)a4;
+- (double)clampedBookmarkTime:(double)time duration:(double)duration;
 - (id)localAndCloudCollection;
 - (int64_t)fileSize;
 - (int64_t)rating;
@@ -32,14 +32,14 @@
 
 @implementation BKMediaLibraryAsset
 
-+ (id)newAssetFromRepresentativeMediaItem:(id)a3 withDataSourceIdentifier:(id)a4
++ (id)newAssetFromRepresentativeMediaItem:(id)item withDataSourceIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bk_assetID];
-  if ([v7 length])
+  itemCopy = item;
+  identifierCopy = identifier;
+  bk_assetID = [itemCopy bk_assetID];
+  if ([bk_assetID length])
   {
-    v8 = [[BKMediaLibraryAsset alloc] initWithRepresentativeMediaItem:v5 assetID:v7 dataSourceIdentifier:v6];
+    v8 = [[BKMediaLibraryAsset alloc] initWithRepresentativeMediaItem:itemCopy assetID:bk_assetID dataSourceIdentifier:identifierCopy];
   }
 
   else
@@ -50,39 +50,39 @@
   return v8;
 }
 
-- (BKMediaLibraryAsset)initWithRepresentativeMediaItem:(id)a3 assetID:(id)a4 dataSourceIdentifier:(id)a5
+- (BKMediaLibraryAsset)initWithRepresentativeMediaItem:(id)item assetID:(id)d dataSourceIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  dCopy = d;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = BKMediaLibraryAsset;
   v12 = [(BKMediaLibraryAsset *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_representativeItem, a3);
-    objc_storeStrong(&v13->_assetID, a4);
-    objc_storeStrong(&v13->_dataSourceIdentifier, a5);
-    v14 = [(MPMediaItem *)v13->_representativeItem releaseDate];
+    objc_storeStrong(&v12->_representativeItem, item);
+    objc_storeStrong(&v13->_assetID, d);
+    objc_storeStrong(&v13->_dataSourceIdentifier, identifier);
+    releaseDate = [(MPMediaItem *)v13->_representativeItem releaseDate];
     dataSourceInsertionDate = v13->_dataSourceInsertionDate;
-    v13->_dataSourceInsertionDate = v14;
+    v13->_dataSourceInsertionDate = releaseDate;
 
-    v16 = [(MPMediaItem *)v13->_representativeItem bk_isJaliscoAsset];
-    v13->_cloudAsset = v16;
-    if ((v16 & 1) == 0)
+    bk_isJaliscoAsset = [(MPMediaItem *)v13->_representativeItem bk_isJaliscoAsset];
+    v13->_cloudAsset = bk_isJaliscoAsset;
+    if ((bk_isJaliscoAsset & 1) == 0)
     {
-      v17 = [v9 bk_storePlaylistID];
-      if (v17)
+      bk_storePlaylistID = [itemCopy bk_storePlaylistID];
+      if (bk_storePlaylistID)
       {
         v18 = objc_alloc_init(BLMetadataStore);
-        v19 = [v17 longLongValue];
+        longLongValue = [bk_storePlaylistID longLongValue];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100122AE4;
         v21[3] = &unk_100A07EE0;
         v22 = v13;
-        [v18 racGUIDForStoreID:v19 result:v21];
+        [v18 racGUIDForStoreID:longLongValue result:v21];
       }
     }
   }
@@ -94,8 +94,8 @@
 {
   v3 = +[MPMediaQuery bk_audiobooksQuery];
   objc_opt_class();
-  v4 = [(BKMediaLibraryAsset *)self representativeItem];
-  v5 = [v4 valueForProperty:MPMediaItemPropertyAlbumPersistentID];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v5 = [representativeItem valueForProperty:MPMediaItemPropertyAlbumPersistentID];
   v6 = BUDynamicCast();
 
   if (v6)
@@ -116,24 +116,24 @@
     v9 = ;
     [v3 addFilterPredicate:v9];
 
-    v10 = [v3 collections];
-    v8 = [v10 firstObject];
+    collections = [v3 collections];
+    firstObject = [collections firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
 - (id)localAndCloudCollection
 {
   v3 = +[MPMediaQuery bk_audiobooksQuery];
   objc_opt_class();
-  v4 = [(BKMediaLibraryAsset *)self representativeItem];
-  v5 = [v4 valueForProperty:MPMediaItemPropertyAlbumPersistentID];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v5 = [representativeItem valueForProperty:MPMediaItemPropertyAlbumPersistentID];
   v6 = BUDynamicCast();
 
   if (v6)
@@ -142,62 +142,62 @@
     v7 = [MPMediaPropertyPredicate predicateWithValue:v6 forProperty:MPMediaItemPropertyAlbumPersistentID];
     [v3 addFilterPredicate:v7];
 
-    v8 = [v3 collections];
-    v9 = [v8 firstObject];
+    collections = [v3 collections];
+    firstObject = [collections firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (double)clampedBookmarkTime:(double)a3 duration:(double)a4
+- (double)clampedBookmarkTime:(double)time duration:(double)duration
 {
-  if (a3 <= a4)
+  if (time <= duration)
   {
-    if (a3 < 0.0)
+    if (time < 0.0)
     {
       return 0.0;
     }
 
     else
     {
-      return a3;
+      return time;
     }
   }
 
   else
   {
-    v5 = a4;
+    durationCopy = duration;
     v7 = BKLibraryDataSourceMediaLibraryLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(BKMediaLibraryAsset *)self title];
-      v10 = [(BKMediaLibraryAsset *)self author];
+      title = [(BKMediaLibraryAsset *)self title];
+      author = [(BKMediaLibraryAsset *)self author];
       v11 = 134218754;
-      v12 = a3;
+      timeCopy = time;
       v13 = 2112;
-      v14 = v9;
+      v14 = title;
       v15 = 2112;
-      v16 = v10;
+      v16 = author;
       v17 = 2048;
-      v18 = v5;
+      v18 = durationCopy;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "bookmark time %lf for asset %@ by %@ is greater than duration %lf", &v11, 0x2Au);
     }
   }
 
-  return v5;
+  return durationCopy;
 }
 
 - (NSNumber)localReadPercent
 {
-  v3 = [(BKMediaLibraryAsset *)self collection];
-  [v3 bk_localBookmarkTime];
+  collection = [(BKMediaLibraryAsset *)self collection];
+  [collection bk_localBookmarkTime];
   v5 = v4;
-  [v3 bk_localDuration];
+  [collection bk_localDuration];
   v7 = v6;
   [(BKMediaLibraryAsset *)self clampedBookmarkTime:v5 duration:v6];
   if (v7 <= 0.0)
@@ -215,10 +215,10 @@
 
 - (NSNumber)cloudReadPercent
 {
-  v3 = [(BKMediaLibraryAsset *)self collection];
-  [v3 bk_cloudBookmarkTime];
+  collection = [(BKMediaLibraryAsset *)self collection];
+  [collection bk_cloudBookmarkTime];
   v5 = v4;
-  [v3 bk_cloudDuration];
+  [collection bk_cloudDuration];
   v7 = v6;
   [(BKMediaLibraryAsset *)self clampedBookmarkTime:v5 duration:v6];
   if (v7 <= 0.0)
@@ -236,82 +236,82 @@
 
 - (NSNumber)readPercent
 {
-  v2 = [(BKMediaLibraryAsset *)self localAndCloudCollection];
-  v3 = [v2 bk_mostRecentListeningProgress];
+  localAndCloudCollection = [(BKMediaLibraryAsset *)self localAndCloudCollection];
+  bk_mostRecentListeningProgress = [localAndCloudCollection bk_mostRecentListeningProgress];
 
-  return v3;
+  return bk_mostRecentListeningProgress;
 }
 
 - (BOOL)hasBeenPlayed
 {
-  v3 = [(BKMediaLibraryAsset *)self collection];
+  collection = [(BKMediaLibraryAsset *)self collection];
   if ([(BKMediaLibraryAsset *)self isCloudAsset])
   {
-    v4 = [v3 bk_cloudHasBeenPlayed];
+    bk_cloudHasBeenPlayed = [collection bk_cloudHasBeenPlayed];
   }
 
   else
   {
-    v4 = [v3 bk_localHasBeenPlayed];
+    bk_cloudHasBeenPlayed = [collection bk_localHasBeenPlayed];
   }
 
-  v5 = v4;
+  v5 = bk_cloudHasBeenPlayed;
 
   return v5;
 }
 
 - (NSString)accountID
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyStoreAccountID];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyStoreAccountID];
 
   if ([v3 longLongValue])
   {
-    v4 = [v3 stringValue];
+    stringValue = [v3 stringValue];
   }
 
   else
   {
-    v4 = 0;
+    stringValue = 0;
   }
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)storeID
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 bk_storeID];
-  v4 = [v3 stringValue];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  bk_storeID = [representativeItem bk_storeID];
+  stringValue = [bk_storeID stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)storeRedownloadParameters
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 bk_storeRedownloadParameters];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  bk_storeRedownloadParameters = [representativeItem bk_storeRedownloadParameters];
 
-  return v3;
+  return bk_storeRedownloadParameters;
 }
 
 - (NSString)author
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 effectiveAlbumArtist];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  effectiveAlbumArtist = [representativeItem effectiveAlbumArtist];
 
-  return v3;
+  return effectiveAlbumArtist;
 }
 
 - (NSString)sortAuthor
 {
-  v3 = [(BKMediaLibraryAsset *)self representativeItem];
-  v4 = [v3 valueForProperty:MPMediaItemPropertySortAlbumArtist];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v4 = [representativeItem valueForProperty:MPMediaItemPropertySortAlbumArtist];
 
   if (![v4 length])
   {
-    v5 = [(BKMediaLibraryAsset *)self representativeItem];
-    v6 = [v5 valueForProperty:MPMediaItemPropertySortArtist];
+    representativeItem2 = [(BKMediaLibraryAsset *)self representativeItem];
+    v6 = [representativeItem2 valueForProperty:MPMediaItemPropertySortArtist];
 
     v4 = v6;
   }
@@ -321,16 +321,16 @@
 
 - (NSString)title
 {
-  v3 = [(BKMediaLibraryAsset *)self representativeItem];
-  v4 = [v3 valueForProperty:MPMediaItemPropertyAlbumTitle];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v4 = [representativeItem valueForProperty:MPMediaItemPropertyAlbumTitle];
 
-  v5 = [(BKMediaLibraryAsset *)self representativeItem];
-  v6 = [v5 valueForProperty:MPMediaItemPropertyPurchaseHistoryID];
+  representativeItem2 = [(BKMediaLibraryAsset *)self representativeItem];
+  v6 = [representativeItem2 valueForProperty:MPMediaItemPropertyPurchaseHistoryID];
 
   if (![v4 length] && objc_msgSend(v6, "longLongValue"))
   {
-    v7 = [(BKMediaLibraryAsset *)self representativeItem];
-    v8 = [v7 valueForProperty:MPMediaItemPropertyTitle];
+    representativeItem3 = [(BKMediaLibraryAsset *)self representativeItem];
+    v8 = [representativeItem3 valueForProperty:MPMediaItemPropertyTitle];
 
     v4 = v8;
   }
@@ -340,22 +340,22 @@
 
 - (NSString)sortTitle
 {
-  v3 = [(BKMediaLibraryAsset *)self representativeItem];
-  v4 = [v3 valueForProperty:MPMediaItemPropertySortAlbumTitle];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v4 = [representativeItem valueForProperty:MPMediaItemPropertySortAlbumTitle];
 
   if (![v4 length])
   {
-    v5 = [(BKMediaLibraryAsset *)self representativeItem];
-    v6 = [v5 valueForProperty:MPMediaItemPropertySortTitle];
+    representativeItem2 = [(BKMediaLibraryAsset *)self representativeItem];
+    v6 = [representativeItem2 valueForProperty:MPMediaItemPropertySortTitle];
 
     v4 = v6;
   }
 
   if (![v4 length])
   {
-    v7 = [(BKMediaLibraryAsset *)self title];
+    title = [(BKMediaLibraryAsset *)self title];
 
-    v4 = v7;
+    v4 = title;
   }
 
   return v4;
@@ -363,27 +363,27 @@
 
 - (NSURL)url
 {
-  v3 = [(BKMediaLibraryAsset *)self title];
-  v4 = [MPMediaItem bk_audioBookAssetURLWithAlbumTitle:v3 isCloudItem:[(BKMediaLibraryAsset *)self isCloudAsset]];
+  title = [(BKMediaLibraryAsset *)self title];
+  v4 = [MPMediaItem bk_audioBookAssetURLWithAlbumTitle:title isCloudItem:[(BKMediaLibraryAsset *)self isCloudAsset]];
 
   return v4;
 }
 
 - (NSString)genre
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyGenre];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyGenre];
 
   return v3;
 }
 
 - (int64_t)fileSize
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyFileSize];
-  v4 = [v3 longLongValue];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyFileSize];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 - (signed)state
@@ -401,16 +401,16 @@
 
 - (NSNumber)isExplicit
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyIsExplicit];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyIsExplicit];
 
   return v3;
 }
 
 - (NSDate)releaseDate
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyReleaseDate];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyReleaseDate];
 
   objc_opt_class();
   v4 = BUDynamicCast();
@@ -420,8 +420,8 @@
 
 - (NSDate)purchaseDate
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyStoreDatePurchased];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyStoreDatePurchased];
 
   objc_opt_class();
   v4 = BUDynamicCast();
@@ -431,40 +431,40 @@
 
 - (NSDate)expectedDate
 {
-  v3 = [(BKMediaLibraryAsset *)self representativeItem];
-  v4 = [v3 isPreorder];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  isPreorder = [representativeItem isPreorder];
 
-  if (v4)
+  if (isPreorder)
   {
-    v5 = [(BKMediaLibraryAsset *)self releaseDate];
+    releaseDate = [(BKMediaLibraryAsset *)self releaseDate];
   }
 
   else
   {
-    v5 = 0;
+    releaseDate = 0;
   }
 
-  return v5;
+  return releaseDate;
 }
 
 - (int64_t)rating
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyRating];
-  v4 = [v3 longLongValue];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyRating];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 - (NSString)bookDescription
 {
-  v3 = [(BKMediaLibraryAsset *)self representativeItem];
-  v4 = [v3 valueForProperty:MPMediaItemPropertyShortDescriptionInfo];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v4 = [representativeItem valueForProperty:MPMediaItemPropertyShortDescriptionInfo];
 
   if (![v4 length])
   {
-    v5 = [(BKMediaLibraryAsset *)self representativeItem];
-    v6 = [v5 valueForProperty:MPMediaItemPropertyDescriptionInfo];
+    representativeItem2 = [(BKMediaLibraryAsset *)self representativeItem];
+    v6 = [representativeItem2 valueForProperty:MPMediaItemPropertyDescriptionInfo];
 
     v4 = v6;
   }
@@ -474,20 +474,20 @@
 
 - (NSString)comments
 {
-  v2 = [(BKMediaLibraryAsset *)self representativeItem];
-  v3 = [v2 valueForProperty:MPMediaItemPropertyComments];
+  representativeItem = [(BKMediaLibraryAsset *)self representativeItem];
+  v3 = [representativeItem valueForProperty:MPMediaItemPropertyComments];
 
   return v3;
 }
 
 - (NSDictionary)options
 {
-  v3 = [(BKMediaLibraryAsset *)self storeID];
-  if (v3)
+  storeID = [(BKMediaLibraryAsset *)self storeID];
+  if (storeID)
   {
     v7 = @"storeID";
-    v4 = [(BKMediaLibraryAsset *)self storeID];
-    v8 = v4;
+    storeID2 = [(BKMediaLibraryAsset *)self storeID];
+    v8 = storeID2;
     v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   }
 
@@ -513,12 +513,12 @@
     v5 = @"N";
   }
 
-  v6 = [(BKMediaLibraryAsset *)self storeID];
-  v7 = [(BKMediaLibraryAsset *)self assetID];
-  v8 = [(BKMediaLibraryAsset *)self title];
-  v9 = [(BKMediaLibraryAsset *)self author];
-  v10 = [(BKMediaLibraryAsset *)self storeRedownloadParameters];
-  v11 = [NSString stringWithFormat:@"<%@(%p) isCloud=%@ storeID=%@ assetID=%@ title=%@ author=%@ storeRedownloadParameters=%@>", v4, self, v5, v6, v7, v8, v9, v10];
+  storeID = [(BKMediaLibraryAsset *)self storeID];
+  assetID = [(BKMediaLibraryAsset *)self assetID];
+  title = [(BKMediaLibraryAsset *)self title];
+  author = [(BKMediaLibraryAsset *)self author];
+  storeRedownloadParameters = [(BKMediaLibraryAsset *)self storeRedownloadParameters];
+  v11 = [NSString stringWithFormat:@"<%@(%p) isCloud=%@ storeID=%@ assetID=%@ title=%@ author=%@ storeRedownloadParameters=%@>", v4, self, v5, storeID, assetID, title, author, storeRedownloadParameters];
 
   return v11;
 }

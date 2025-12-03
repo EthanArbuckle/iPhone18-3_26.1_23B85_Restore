@@ -1,44 +1,44 @@
 @interface TSDAudioRep
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)hitPlayPauseButtonWithPoint:(CGPoint)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)hitPlayPauseButtonWithPoint:(CGPoint)point;
 - (BOOL)p_isEditingAnimations;
 - (BOOL)p_isPlaying;
 - (BOOL)shouldShowSelectionHighlight;
 - (CGRect)boundsForStandardKnobs;
-- (TSDAudioRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDAudioRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (TSDMovieInfo)movieInfo;
 - (float)volume;
-- (id)hitRepChrome:(CGPoint)a3;
+- (id)hitRepChrome:(CGPoint)chrome;
 - (void)becameNotSelected;
 - (void)becameSelected;
 - (void)dealloc;
 - (void)didEndZooming;
 - (void)dynamicVolumeChangeDidBegin;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_setupPlayerControllerIfNecessary;
 - (void)p_teardownPlayerController;
-- (void)p_updateButtonForPlaying:(BOOL)a3 pressed:(BOOL)a4;
+- (void)p_updateButtonForPlaying:(BOOL)playing pressed:(BOOL)pressed;
 - (void)p_updateEndTime;
 - (void)p_updateRepeatMode;
 - (void)p_updateStartTime;
 - (void)p_updateVolume;
-- (void)playerController:(id)a3 playbackDidFailWithError:(id)a4;
-- (void)processChangedProperty:(int)a3;
-- (void)updateLayerGeometryFromLayout:(id)a3;
-- (void)updatePlayButtonForPoint:(CGPoint)a3;
+- (void)playerController:(id)controller playbackDidFailWithError:(id)error;
+- (void)processChangedProperty:(int)property;
+- (void)updateLayerGeometryFromLayout:(id)layout;
+- (void)updatePlayButtonForPoint:(CGPoint)point;
 - (void)willBeRemoved;
 - (void)willBeginReadMode;
 - (void)willBeginZooming;
-- (void)willUpdateLayer:(id)a3;
+- (void)willUpdateLayer:(id)layer;
 @end
 
 @implementation TSDAudioRep
 
-- (TSDAudioRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDAudioRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = TSDAudioRep;
-  v4 = [(TSDRep *)&v7 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v7 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4 && ![(TSDAudioRep *)v4 movieInfo])
   {
@@ -64,35 +64,35 @@
   [(TSDMediaRep *)&v3 dealloc];
 }
 
-- (void)willUpdateLayer:(id)a3
+- (void)willUpdateLayer:(id)layer
 {
   if ([(TSDAudioRep *)self p_shouldShowPlayPauseLayers])
   {
     if (!self->mPlayerController)
     {
-      v5 = [MEMORY[0x277CD9ED0] layer];
-      self->mPlayerController = v5;
-      [(TSKAVPlayerController *)v5 setBounds:TSDRectWithSize()];
-      [a3 contentsScale];
+      layer = [MEMORY[0x277CD9ED0] layer];
+      self->mPlayerController = layer;
+      [(TSKAVPlayerController *)layer setBounds:TSDRectWithSize()];
+      [layer contentsScale];
       [(TSKAVPlayerController *)self->mPlayerController setContentsScale:?];
-      [a3 addSublayer:self->mPlayerController];
+      [layer addSublayer:self->mPlayerController];
     }
 
     if (!self->mPlayPauseButtonLayer)
     {
-      v6 = [MEMORY[0x277CD9ED0] layer];
-      self->mPlayPauseButtonLayer = v6;
-      [(CALayer *)v6 setBounds:TSDRectWithSize()];
-      [a3 position];
+      layer2 = [MEMORY[0x277CD9ED0] layer];
+      self->mPlayPauseButtonLayer = layer2;
+      [(CALayer *)layer2 setBounds:TSDRectWithSize()];
+      [layer position];
       [(CALayer *)self->mPlayPauseButtonLayer setPosition:?];
-      [a3 contentsScale];
+      [layer contentsScale];
       [(CALayer *)self->mPlayPauseButtonLayer setContentsScale:?];
-      [a3 addSublayer:self->mPlayPauseButtonLayer];
+      [layer addSublayer:self->mPlayPauseButtonLayer];
     }
 
-    v7 = [(TSDAudioRep *)self p_isPlaying];
+    p_isPlaying = [(TSDAudioRep *)self p_isPlaying];
 
-    [(TSDAudioRep *)self p_updateButtonForPlaying:v7 pressed:0];
+    [(TSDAudioRep *)self p_updateButtonForPlaying:p_isPlaying pressed:0];
   }
 }
 
@@ -128,18 +128,18 @@
 {
   if ([(TSDAudioRep *)self p_isPlaying])
   {
-    v3 = [(TSDAudioRep *)self playerController];
+    playerController = [(TSDAudioRep *)self playerController];
 
-    [(TSKAVPlayerController *)v3 setPlaying:0];
+    [(TSKAVPlayerController *)playerController setPlaying:0];
   }
 }
 
-- (BOOL)hitPlayPauseButtonWithPoint:(CGPoint)a3
+- (BOOL)hitPlayPauseButtonWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSDAudioRep *)self p_shouldShowPlayPauseLayers];
-  if (v6)
+  y = point.y;
+  x = point.x;
+  p_shouldShowPlayPauseLayers = [(TSDAudioRep *)self p_shouldShowPlayPauseLayers];
+  if (p_shouldShowPlayPauseLayers)
   {
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] convertUnscaledToBoundsPoint:x, y];
     -[TSKAVPlayerController convertPoint:fromLayer:](self->mPlayerController, "convertPoint:fromLayer:", [-[TSDCanvasLayerHosting canvasView](-[TSDInteractiveCanvasController layerHost](-[TSDRep interactiveCanvasController](self "interactiveCanvasController")], v7, v8);
@@ -149,37 +149,37 @@
     v17 = v10;
     v18 = v12;
 
-    LOBYTE(v6) = CGRectContainsPoint(*&v13, *&v17);
+    LOBYTE(p_shouldShowPlayPauseLayers) = CGRectContainsPoint(*&v13, *&v17);
   }
 
-  return v6;
+  return p_shouldShowPlayPauseLayers;
 }
 
-- (void)updatePlayButtonForPoint:(CGPoint)a3
+- (void)updatePlayButtonForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(TSDAudioRep *)self p_shouldShowPlayPauseLayers])
   {
     v6 = [(TSDAudioRep *)self hitPlayPauseButtonWithPoint:x, y];
-    v7 = [(TSDAudioRep *)self p_isPlaying];
+    p_isPlaying = [(TSDAudioRep *)self p_isPlaying];
 
-    [(TSDAudioRep *)self p_updateButtonForPlaying:v7 pressed:v6];
+    [(TSDAudioRep *)self p_updateButtonForPlaying:p_isPlaying pressed:v6];
   }
 }
 
-- (id)hitRepChrome:(CGPoint)a3
+- (id)hitRepChrome:(CGPoint)chrome
 {
-  y = a3.y;
-  x = a3.x;
+  y = chrome.y;
+  x = chrome.x;
   v19.receiver = self;
   v19.super_class = TSDAudioRep;
   v6 = [(TSDRep *)&v19 hitRepChrome:?];
   if ([(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive])
   {
-    v7 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
     [*&self->mDynamicVolume hudFrame];
-    [(TSDInteractiveCanvasController *)v7 convertBoundsToUnscaledRect:?];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledRect:?];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -211,22 +211,22 @@
   return LOBYTE(height);
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = TSDAudioRep;
   [(TSDMediaRep *)&v5 processChangedProperty:?];
   if (*&self->super.mLastPictureFrameLayerRect.size.height)
   {
-    if (a3 <= 534)
+    if (property <= 534)
     {
-      if (a3 == 532)
+      if (property == 532)
       {
         [(TSDAudioRep *)self p_teardownPlayerController];
         [(TSDAudioRep *)self p_setupPlayerControllerIfNecessary];
       }
 
-      else if (a3 == 534)
+      else if (property == 534)
       {
         [(TSDAudioRep *)self p_updateStartTime];
       }
@@ -234,7 +234,7 @@
 
     else
     {
-      switch(a3)
+      switch(property)
       {
         case 535:
           [(TSDAudioRep *)self p_updateEndTime];
@@ -284,29 +284,29 @@
 
 - (BOOL)shouldShowSelectionHighlight
 {
-  v3 = [(TSDRep *)self isLocked];
-  if (v3)
+  isLocked = [(TSDRep *)self isLocked];
+  if (isLocked)
   {
     v5.receiver = self;
     v5.super_class = TSDAudioRep;
-    LOBYTE(v3) = [(TSDStyledRep *)&v5 shouldShowSelectionHighlight];
+    LOBYTE(isLocked) = [(TSDStyledRep *)&v5 shouldShowSelectionHighlight];
   }
 
-  return v3;
+  return isLocked;
 }
 
 - (BOOL)p_isEditingAnimations
 {
-  v2 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(TSDInteractiveCanvasController *)v2 isEditingAnimations];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController isEditingAnimations];
 }
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   [(TSDRep *)self layerFrameInScaledCanvasRelativeToParent];
   v9 = TSDCenterOfRect(v5, v6, v7, v8);
@@ -317,31 +317,31 @@
   v21 = v20;
   v22 = TSDCenterOfRect(v15, v16, v18, v20);
   v24 = v23;
-  [a3 position];
+  [layout position];
   if (v26 != v22 || v25 != v24)
   {
-    [a3 setPosition:{v22, v24}];
+    [layout setPosition:{v22, v24}];
   }
 
-  [a3 bounds];
+  [layout bounds];
   v33.origin.x = v15;
   v33.origin.y = v17;
   v33.size.width = v19;
   v33.size.height = v21;
   if (!CGRectEqualToRect(v32, v33))
   {
-    [a3 setBounds:{v15, v17, v19, v21}];
+    [layout setBounds:{v15, v17, v19, v21}];
   }
 
   if ([(TSDAudioRep *)self p_shouldShowPlayPauseLayers])
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    [a3 position];
+    [layout position];
     v29 = v28 + 31.0;
-    [a3 position];
+    [layout position];
     [(TSKAVPlayerController *)self->mPlayerController setPosition:v29];
-    [a3 position];
+    [layout position];
     [(CALayer *)self->mPlayPauseButtonLayer setPosition:?];
     v30 = MEMORY[0x277CD9FF0];
 
@@ -396,8 +396,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(TSDRep *)self allLayers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allLayers = [(TSDRep *)self allLayers];
+  v6 = [allLayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -408,7 +408,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allLayers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -416,7 +416,7 @@
         [v10 addAnimation:v3 forKey:@"fade out"];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allLayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -436,8 +436,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(TSDRep *)self allLayers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allLayers = [(TSDRep *)self allLayers];
+  v6 = [allLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v8 = v6;
@@ -448,7 +448,7 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allLayers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
@@ -457,7 +457,7 @@
         [v11 addAnimation:v3 forKey:@"fade in"];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -466,10 +466,10 @@
   [(TSDRep *)self invalidateKnobPositions];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TSDAudioRep *)self boundsForStandardKnobs];
   v9 = x;
   v10 = y;
@@ -477,37 +477,37 @@
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (void)p_updateButtonForPlaying:(BOOL)a3 pressed:(BOOL)a4
+- (void)p_updateButtonForPlaying:(BOOL)playing pressed:(BOOL)pressed
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(TSDAudioRep *)self p_isEditingAnimations]&& [(TSDRep *)self isSelected]&& v5)
+  pressedCopy = pressed;
+  playingCopy = playing;
+  if ([(TSDAudioRep *)self p_isEditingAnimations]&& [(TSDRep *)self isSelected]&& playingCopy)
   {
     v7 = @"sf_canvas_audio_animation_pause-N";
     v8 = @"sf_canvas_audio_animation_pause-P";
     goto LABEL_15;
   }
 
-  if ([(TSDAudioRep *)self p_isEditingAnimations]&& [(TSDRep *)self isSelected]&& !v5)
+  if ([(TSDAudioRep *)self p_isEditingAnimations]&& [(TSDRep *)self isSelected]&& !playingCopy)
   {
     v7 = @"sf_canvas_audio_animation_play-N";
     v8 = @"sf_canvas_audio_animation_play-P";
     goto LABEL_15;
   }
 
-  if ([(TSDRep *)self isSelected]&& v5)
+  if ([(TSDRep *)self isSelected]&& playingCopy)
   {
     v7 = @"sf_canvas_audio_selected_pause-N";
     v8 = @"sf_canvas_audio_selected_pause-P";
     goto LABEL_15;
   }
 
-  if ([(TSDRep *)self isSelected]&& !v5)
+  if ([(TSDRep *)self isSelected]&& !playingCopy)
   {
     v7 = @"sf_canvas_audio_selected_play-N";
     v8 = @"sf_canvas_audio_selected_play-P";
 LABEL_15:
-    if (v4)
+    if (pressedCopy)
     {
       v9 = v8;
     }
@@ -521,18 +521,18 @@ LABEL_15:
   }
 
   v11 = @"sf_canvas_audio_play-N";
-  if (v4)
+  if (pressedCopy)
   {
     v11 = @"sf_canvas_audio_play-P";
   }
 
   v12 = @"sf_canvas_audio_pause-P";
-  if (!v4)
+  if (!pressedCopy)
   {
     v12 = @"sf_canvas_audio_pause-N";
   }
 
-  if (v5)
+  if (playingCopy)
   {
     v9 = v12;
   }
@@ -558,9 +558,9 @@ LABEL_18:
     return *&self->mAudioImageLayer;
   }
 
-  v5 = [(TSDAudioRep *)self movieInfo];
+  movieInfo = [(TSDAudioRep *)self movieInfo];
 
-  [(TSDMovieInfo *)v5 volume];
+  [(TSDMovieInfo *)movieInfo volume];
   return result;
 }
 
@@ -612,27 +612,27 @@ LABEL_18:
   }
 }
 
-- (void)playerController:(id)a3 playbackDidFailWithError:(id)a4
+- (void)playerController:(id)controller playbackDidFailWithError:(id)error
 {
-  v5 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v5 presentError:a4 completionHandler:0];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController presentError:error completionHandler:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (TSDAudioRepPlayerControllerPlayingObserverContext == a6)
+  if (TSDAudioRepPlayerControllerPlayingObserverContext == context)
   {
-    if ([(TSKAVPlayerController *)[(TSDAudioRep *)self playerController:a3] isPlaying]&& ![(TSDRep *)self isSelected])
+    if ([(TSKAVPlayerController *)[(TSDAudioRep *)self playerController:path] isPlaying]&& ![(TSDRep *)self isSelected])
     {
       [(TSDCanvasEditor *)[(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] canvasEditor] setSelectionToRep:self];
     }
 
     if ([(TSDAudioRep *)self p_shouldShowPlayPauseLayers])
     {
-      v7 = [(TSKAVPlayerController *)[(TSDAudioRep *)self playerController] isPlaying];
+      isPlaying = [(TSKAVPlayerController *)[(TSDAudioRep *)self playerController] isPlaying];
 
-      [(TSDAudioRep *)self p_updateButtonForPlaying:v7 pressed:0];
+      [(TSDAudioRep *)self p_updateButtonForPlaying:isPlaying pressed:0];
     }
   }
 
@@ -640,7 +640,7 @@ LABEL_18:
   {
     v8.receiver = self;
     v8.super_class = TSDAudioRep;
-    [(TSDAudioRep *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TSDAudioRep *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

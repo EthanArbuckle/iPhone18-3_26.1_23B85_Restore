@@ -2,7 +2,7 @@
 - (VMPlayerController)playerController;
 - (VMPlayerControlsView)playerControlsView;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation VMPlayerViewController
@@ -12,33 +12,33 @@
   v10.receiver = self;
   v10.super_class = VMPlayerViewController;
   [(VMPlayerViewController *)&v10 viewDidLoad];
-  v3 = [(VMPlayerViewController *)self view];
+  view = [(VMPlayerViewController *)self view];
   v4 = +[UIColor whiteColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(VMPlayerViewController *)self playerController];
-  [v5 setDelegate:self];
-  v6 = [(VMPlayerViewController *)self playerControlsView];
-  [v6 setDelegate:self];
-  [v6 setEnabled:0];
-  [v5 duration];
+  playerController = [(VMPlayerViewController *)self playerController];
+  [playerController setDelegate:self];
+  playerControlsView = [(VMPlayerViewController *)self playerControlsView];
+  [playerControlsView setDelegate:self];
+  [playerControlsView setEnabled:0];
+  [playerController duration];
   v8 = v7;
-  v9 = [v6 timelineSlider];
-  [v9 setDuration:v8];
+  timelineSlider = [playerControlsView timelineSlider];
+  [timelineSlider setDuration:v8];
 
-  if ([v5 status] == 1)
+  if ([playerController status] == 1)
   {
-    [v6 setEnabled:1];
+    [playerControlsView setEnabled:1];
   }
 
-  [v3 addSubview:v6];
+  [view addSubview:playerControlsView];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = VMPlayerViewController;
-  [(VMPlayerViewController *)&v4 viewWillDisappear:a3];
+  [(VMPlayerViewController *)&v4 viewWillDisappear:disappear];
   [(VMViewController *)self stop];
 }
 

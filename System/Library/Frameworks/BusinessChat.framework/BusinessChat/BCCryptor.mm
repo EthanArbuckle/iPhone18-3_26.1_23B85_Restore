@@ -1,25 +1,25 @@
 @interface BCCryptor
-+ (void)encryptData:(id)a3 key:(id)a4 completion:(id)a5;
++ (void)encryptData:(id)data key:(id)key completion:(id)completion;
 @end
 
 @implementation BCCryptor
 
-+ (void)encryptData:(id)a3 key:(id)a4 completion:(id)a5
++ (void)encryptData:(id)data key:(id)key completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length])
+  dataCopy = data;
+  keyCopy = key;
+  completionCopy = completion;
+  if ([keyCopy length])
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v8 options:1];
+    v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:keyCopy options:1];
     if (v10)
     {
       v11 = LogCategory_Daemon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = keyCopy;
         _os_log_impl(&dword_236EA0000, v11, OS_LOG_TYPE_DEFAULT, "BCCryptor: encrypt data for key %@", &buf, 0xCu);
       }
 
@@ -27,8 +27,8 @@
       v30 = 3221225472;
       v31 = __40__BCCryptor_encryptData_key_completion___block_invoke;
       v32 = &unk_278A0E8C8;
-      v34 = v9;
-      v33 = v7;
+      v34 = completionCopy;
+      v33 = dataCopy;
       v12 = &v29;
       v13 = v10;
       objc_opt_self();
@@ -78,7 +78,7 @@
       v37 = @"Key is not UTF8";
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
       v24 = [v22 initWithDomain:@"com.apple.icloud.messages.business.cryptor" code:1 userInfo:v23];
-      (*(v9 + 2))(v9, 0, v24);
+      (*(completionCopy + 2))(completionCopy, 0, v24);
     }
   }
 
@@ -90,7 +90,7 @@
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v10 = [v20 initWithDomain:@"com.apple.icloud.messages.business.cryptor" code:0 userInfo:v21];
 
-    (*(v9 + 2))(v9, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 
   v28 = *MEMORY[0x277D85DE8];

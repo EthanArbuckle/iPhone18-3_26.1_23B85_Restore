@@ -2,9 +2,9 @@
 - (NSArray)_descriptionConstituents;
 - (NSString)description;
 - (SBUISystemApertureAssertion)init;
-- (void)addInvalidationBlock:(id)a3;
+- (void)addInvalidationBlock:(id)block;
 - (void)dealloc;
-- (void)invalidateWithReason:(id)a3;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation SBUISystemApertureAssertion
@@ -104,59 +104,59 @@
   return v3;
 }
 
-- (void)addInvalidationBlock:(id)a3
+- (void)addInvalidationBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v10 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    invalidationBlocks = v5->_invalidationBlocks;
+    v10 = blockCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    invalidationBlocks = selfCopy->_invalidationBlocks;
     if (!invalidationBlocks)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-      v8 = v5->_invalidationBlocks;
-      v5->_invalidationBlocks = v7;
+      v8 = selfCopy->_invalidationBlocks;
+      selfCopy->_invalidationBlocks = v7;
 
-      invalidationBlocks = v5->_invalidationBlocks;
+      invalidationBlocks = selfCopy->_invalidationBlocks;
     }
 
     v9 = MEMORY[0x1AC58E960](v10);
     [(NSMutableOrderedSet *)invalidationBlocks addObject:v9];
 
-    objc_sync_exit(v5);
-    v4 = v10;
+    objc_sync_exit(selfCopy);
+    blockCopy = v10;
   }
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 length])
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
     [(SBUISystemApertureAssertion *)a2 invalidateWithReason:?];
   }
 
   if ([(SBUISystemApertureAssertion *)self isValid])
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v6->_valid = 0;
-    v7 = [v5 copy];
-    invalidationReason = v6->_invalidationReason;
-    v6->_invalidationReason = v7;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_valid = 0;
+    v7 = [reasonCopy copy];
+    invalidationReason = selfCopy->_invalidationReason;
+    selfCopy->_invalidationReason = v7;
 
     v9 = SBLogSystemApertureHosting();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = v6;
+      selfCopy2 = selfCopy;
       _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_DEFAULT, "Assertion did invalidate: %{public}@", buf, 0xCu);
     }
 
-    v10 = v6;
+    v10 = selfCopy;
     objc_sync_enter(v10);
     v16 = 0u;
     v17 = 0u;
@@ -201,7 +201,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A9A79000, v10, OS_LOG_TYPE_DEFAULT, "Attempt to invalidate invalid assertion: %{public}@", buf, 0xCu);
     }
   }
@@ -211,11 +211,11 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(SBUISystemApertureAssertion *)self isValid];
+  isValid = [(SBUISystemApertureAssertion *)self isValid];
   v5 = NSStringFromBOOL();
   [v3 setObject:v5 forKey:@"isValid"];
 
-  if (!v4)
+  if (!isValid)
   {
     invalidationReason = self->_invalidationReason;
     if (invalidationReason)

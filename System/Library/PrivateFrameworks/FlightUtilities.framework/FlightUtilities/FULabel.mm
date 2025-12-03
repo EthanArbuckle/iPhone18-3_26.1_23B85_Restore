@@ -1,22 +1,22 @@
 @interface FULabel
 - (NSLayoutConstraint)associatedLabelConstraint;
 - (void)awakeFromNib;
-- (void)performTap:(id)a3;
-- (void)setAssociatedScalingLabel:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setText:(id)a3;
-- (void)setUppercase:(BOOL)a3 usingCurrentLocale:(BOOL)a4;
-- (void)updateWidthConstraintWithRatio:(double)a3;
+- (void)performTap:(id)tap;
+- (void)setAssociatedScalingLabel:(id)label;
+- (void)setAttributedText:(id)text;
+- (void)setText:(id)text;
+- (void)setUppercase:(BOOL)uppercase usingCurrentLocale:(BOOL)locale;
+- (void)updateWidthConstraintWithRatio:(double)ratio;
 @end
 
 @implementation FULabel
 
-- (void)setUppercase:(BOOL)a3 usingCurrentLocale:(BOOL)a4
+- (void)setUppercase:(BOOL)uppercase usingCurrentLocale:(BOOL)locale
 {
-  if (self->_uppercase != a3 || self->_useCurrentLocale != a4)
+  if (self->_uppercase != uppercase || self->_useCurrentLocale != locale)
   {
-    self->_uppercase = a3;
-    self->_useCurrentLocale = a4;
+    self->_uppercase = uppercase;
+    self->_useCurrentLocale = locale;
     if (self->_stringValue)
     {
       [(FULabel *)self setText:?];
@@ -40,23 +40,23 @@
   [(FULabel *)self addGestureRecognizer:v3];
 }
 
-- (void)performTap:(id)a3
+- (void)performTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    v4 = [(FULabel *)self onTap];
+    onTap = [(FULabel *)self onTap];
 
-    if (v4)
+    if (onTap)
     {
-      v5 = [(FULabel *)self onTap];
-      v5[2]();
+      onTap2 = [(FULabel *)self onTap];
+      onTap2[2]();
     }
   }
 }
 
-- (void)setAssociatedScalingLabel:(id)a3
+- (void)setAssociatedScalingLabel:(id)label
 {
-  obj = a3;
+  obj = label;
   WeakRetained = objc_loadWeakRetained(&self->_associatedScalingLabel);
 
   if (WeakRetained != obj)
@@ -67,25 +67,25 @@
   }
 }
 
-- (void)updateWidthConstraintWithRatio:(double)a3
+- (void)updateWidthConstraintWithRatio:(double)ratio
 {
   WeakRetained = objc_loadWeakRetained(&self->_associatedScalingLabel);
-  v5 = [WeakRetained associatedLabelConstraint];
-  [v5 setActive:0];
+  associatedLabelConstraint = [WeakRetained associatedLabelConstraint];
+  [associatedLabelConstraint setActive:0];
 
   [WeakRetained setAssociatedLabelConstraint:0];
-  v6 = [(FULabel *)self associatedLabelConstraint];
-  [v6 setActive:0];
+  associatedLabelConstraint2 = [(FULabel *)self associatedLabelConstraint];
+  [associatedLabelConstraint2 setActive:0];
 
-  v7 = [WeakRetained text];
-  if ([v7 length])
+  text = [WeakRetained text];
+  if ([text length])
   {
-    v8 = [(FULabel *)self text];
-    v9 = [v8 length];
+    text2 = [(FULabel *)self text];
+    v9 = [text2 length];
 
     if (v9)
     {
-      v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:7 relatedBy:0 toItem:WeakRetained attribute:7 multiplier:a3 constant:0.0];
+      v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:7 relatedBy:0 toItem:WeakRetained attribute:7 multiplier:ratio constant:0.0];
       [v10 setActive:1];
       [(FULabel *)self setAssociatedLabelConstraint:v10];
 
@@ -101,13 +101,13 @@
 LABEL_6:
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    v6 = v4;
+    v6 = textCopy;
   }
 
   else
@@ -116,9 +116,9 @@ LABEL_6:
   }
 
   objc_storeStrong(&self->_stringValue, v6);
-  v7 = [(FULabel *)self uppercase];
+  uppercase = [(FULabel *)self uppercase];
   stringValue = self->_stringValue;
-  if (v7)
+  if (uppercase)
   {
     v9 = [(NSString *)stringValue FU_uppercaseStringUsingCurrentLocale:[(FULabel *)self useCurrentLocale]];
   }
@@ -130,17 +130,17 @@ LABEL_6:
 
   v10 = v9;
   WeakRetained = objc_loadWeakRetained(&self->_associatedScalingLabel);
-  v12 = [(FULabel *)WeakRetained text];
+  text = [(FULabel *)WeakRetained text];
 
-  if (v12)
+  if (text)
   {
-    v13 = [(FULabel *)self _defaultAttributes];
-    [(NSString *)v10 sizeWithAttributes:v13];
+    _defaultAttributes = [(FULabel *)self _defaultAttributes];
+    [(NSString *)v10 sizeWithAttributes:_defaultAttributes];
     v15 = v14;
 
-    v16 = [(FULabel *)WeakRetained text];
-    v17 = [(FULabel *)self _defaultAttributes];
-    [v16 sizeWithAttributes:v17];
+    text2 = [(FULabel *)WeakRetained text];
+    _defaultAttributes2 = [(FULabel *)self _defaultAttributes];
+    [text2 sizeWithAttributes:_defaultAttributes2];
     v19 = v18;
 
     if (v19 <= 0.0 || v15 <= 0.0)
@@ -153,11 +153,11 @@ LABEL_6:
       v21 = v15 / v19;
     }
 
-    v22 = [(FULabel *)WeakRetained associatedLabelConstraint];
+    associatedLabelConstraint = [(FULabel *)WeakRetained associatedLabelConstraint];
 
-    if (!v22)
+    if (!associatedLabelConstraint)
     {
-      v24 = self;
+      selfCopy = self;
       v23 = v21;
       goto LABEL_19;
     }
@@ -170,31 +170,31 @@ LABEL_6:
     v23 = 0.0;
   }
 
-  v24 = WeakRetained;
+  selfCopy = WeakRetained;
 LABEL_19:
-  [(FULabel *)v24 updateWidthConstraintWithRatio:v23];
+  [(FULabel *)selfCopy updateWidthConstraintWithRatio:v23];
   v25.receiver = self;
   v25.super_class = FULabel;
   [(TLKLabel *)&v25 setText:v10];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (!textCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:&stru_285EA8C70];
   }
 
   objc_storeStrong(&self->_attributedStringValue, v5);
-  if (!v4)
+  if (!textCopy)
   {
   }
 
-  v6 = [(FULabel *)self uppercase];
+  uppercase = [(FULabel *)self uppercase];
   attributedStringValue = self->_attributedStringValue;
-  if (v6)
+  if (uppercase)
   {
     v8 = [(NSAttributedString *)attributedStringValue FU_uppercaseAttributedStringCurrentLocale:[(FULabel *)self useCurrentLocale]];
   }
@@ -209,18 +209,18 @@ LABEL_19:
   v25.super_class = FULabel;
   [(TLKLabel *)&v25 setAttributedText:v8];
   WeakRetained = objc_loadWeakRetained(&self->_associatedScalingLabel);
-  v11 = [(FULabel *)WeakRetained text];
+  text = [(FULabel *)WeakRetained text];
 
-  if (v11)
+  if (text)
   {
-    v12 = [(NSAttributedString *)v9 string];
-    v13 = [(FULabel *)self _defaultAttributes];
-    [v12 sizeWithAttributes:v13];
+    string = [(NSAttributedString *)v9 string];
+    _defaultAttributes = [(FULabel *)self _defaultAttributes];
+    [string sizeWithAttributes:_defaultAttributes];
     v15 = v14;
 
-    v16 = [(FULabel *)WeakRetained text];
-    v17 = [(FULabel *)self _defaultAttributes];
-    [v16 sizeWithAttributes:v17];
+    text2 = [(FULabel *)WeakRetained text];
+    _defaultAttributes2 = [(FULabel *)self _defaultAttributes];
+    [text2 sizeWithAttributes:_defaultAttributes2];
     v19 = v18;
 
     if (v19 <= 0.0 || v15 <= 0.0)
@@ -233,11 +233,11 @@ LABEL_19:
       v21 = v15 / v19;
     }
 
-    v22 = [(FULabel *)WeakRetained associatedLabelConstraint];
+    associatedLabelConstraint = [(FULabel *)WeakRetained associatedLabelConstraint];
 
-    if (!v22)
+    if (!associatedLabelConstraint)
     {
-      v24 = self;
+      selfCopy = self;
       v23 = v21;
       goto LABEL_20;
     }
@@ -250,9 +250,9 @@ LABEL_19:
     v23 = 0.0;
   }
 
-  v24 = WeakRetained;
+  selfCopy = WeakRetained;
 LABEL_20:
-  [(FULabel *)v24 updateWidthConstraintWithRatio:v23];
+  [(FULabel *)selfCopy updateWidthConstraintWithRatio:v23];
 }
 
 - (NSLayoutConstraint)associatedLabelConstraint

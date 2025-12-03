@@ -1,38 +1,38 @@
 @interface NLWorkoutTargetZone
-+ (id)defaultTargetZoneForTypeKey:(id)a3;
-+ (id)mapTargetZoneTypeEnumToString:(int64_t)a3;
-+ (id)metadataForTargetZone:(id)a3;
-+ (id)restoreFromDictionary:(id)a3;
-+ (id)restoreFromDictionary:(id)a3 activityType:(id)a4;
-+ (id)serializeTargetZone:(id)a3;
-+ (id)targetZoneForActivityType:(id)a3 targetZoneActivityTypeKey:(id)a4;
-+ (id)targetZonesFromMetadata:(id)a3;
-+ (int64_t)mapTargetZoneTypeStringToEnum:(id)a3;
-+ (int64_t)targetZoneMasterTypeForTargetZoneType:(int64_t)a3;
-+ (void)saveTargetZone:(id)a3 forActivityType:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (NLWorkoutTargetZone)initWithType:(int64_t)a3 min:(double)a4 max:(double)a5 currentValue:(double)a6;
++ (id)defaultTargetZoneForTypeKey:(id)key;
++ (id)mapTargetZoneTypeEnumToString:(int64_t)string;
++ (id)metadataForTargetZone:(id)zone;
++ (id)restoreFromDictionary:(id)dictionary;
++ (id)restoreFromDictionary:(id)dictionary activityType:(id)type;
++ (id)serializeTargetZone:(id)zone;
++ (id)targetZoneForActivityType:(id)type targetZoneActivityTypeKey:(id)key;
++ (id)targetZonesFromMetadata:(id)metadata;
++ (int64_t)mapTargetZoneTypeStringToEnum:(id)enum;
++ (int64_t)targetZoneMasterTypeForTargetZoneType:(int64_t)type;
++ (void)saveTargetZone:(id)zone forActivityType:(id)type;
+- (BOOL)isEqual:(id)equal;
+- (NLWorkoutTargetZone)initWithType:(int64_t)type min:(double)min max:(double)max currentValue:(double)value;
 - (id)description;
-- (unint64_t)stateForDistanceUnit:(id)a3;
-- (unint64_t)stateForPaceZoneWithDistanceUnit:(id)a3;
+- (unint64_t)stateForDistanceUnit:(id)unit;
+- (unint64_t)stateForPaceZoneWithDistanceUnit:(id)unit;
 - (unint64_t)stateForStandardZone;
 @end
 
 @implementation NLWorkoutTargetZone
 
-- (NLWorkoutTargetZone)initWithType:(int64_t)a3 min:(double)a4 max:(double)a5 currentValue:(double)a6
+- (NLWorkoutTargetZone)initWithType:(int64_t)type min:(double)min max:(double)max currentValue:(double)value
 {
   v12.receiver = self;
   v12.super_class = NLWorkoutTargetZone;
   result = [(NLWorkoutTargetZone *)&v12 init];
   if (result)
   {
-    result->_type = a3;
-    result->_min = a4;
-    result->_max = a5;
-    result->_currentValue = a6;
-    v11 = a4 > 0.0 || a5 > 0.0;
-    if (!a3)
+    result->_type = type;
+    result->_min = min;
+    result->_max = max;
+    result->_currentValue = value;
+    v11 = min > 0.0 || max > 0.0;
+    if (!type)
     {
       v11 = 0;
     }
@@ -67,50 +67,50 @@
   return v11;
 }
 
-- (unint64_t)stateForDistanceUnit:(id)a3
+- (unint64_t)stateForDistanceUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(NLWorkoutTargetZone *)self type];
-  if ((v5 - 4) >= 4)
+  unitCopy = unit;
+  type = [(NLWorkoutTargetZone *)self type];
+  if ((type - 4) >= 4)
   {
-    if ((v5 - 1) > 2)
+    if ((type - 1) > 2)
     {
       v7 = 0;
       goto LABEL_6;
     }
 
-    v6 = [(NLWorkoutTargetZone *)self stateForPaceZoneWithDistanceUnit:v4];
+    stateForStandardZone = [(NLWorkoutTargetZone *)self stateForPaceZoneWithDistanceUnit:unitCopy];
   }
 
   else
   {
-    v6 = [(NLWorkoutTargetZone *)self stateForStandardZone];
+    stateForStandardZone = [(NLWorkoutTargetZone *)self stateForStandardZone];
   }
 
-  v7 = v6;
+  v7 = stateForStandardZone;
 LABEL_6:
 
   return v7;
 }
 
-- (unint64_t)stateForPaceZoneWithDistanceUnit:(id)a3
+- (unint64_t)stateForPaceZoneWithDistanceUnit:(id)unit
 {
   v4 = MEMORY[0x1E696C348];
   v5 = MEMORY[0x1E696C510];
-  v6 = a3;
-  v7 = [v5 meterUnit];
+  unitCopy = unit;
+  meterUnit = [v5 meterUnit];
   [(NLWorkoutTargetZone *)self currentValue];
-  v8 = [v4 quantityWithUnit:v7 doubleValue:?];
+  v8 = [v4 quantityWithUnit:meterUnit doubleValue:?];
 
   v9 = MEMORY[0x1E696C348];
-  v10 = [MEMORY[0x1E696C510] meterUnit];
+  meterUnit2 = [MEMORY[0x1E696C510] meterUnit];
   [(NLWorkoutTargetZone *)self min];
-  v11 = [v9 quantityWithUnit:v10 doubleValue:?];
+  v11 = [v9 quantityWithUnit:meterUnit2 doubleValue:?];
 
   v12 = MEMORY[0x1E696C348];
-  v13 = [MEMORY[0x1E696C510] meterUnit];
+  meterUnit3 = [MEMORY[0x1E696C510] meterUnit];
   [(NLWorkoutTargetZone *)self max];
-  v14 = [v12 quantityWithUnit:v13 doubleValue:?];
+  v14 = [v12 quantityWithUnit:meterUnit3 doubleValue:?];
 
   FIUIPace();
   v16 = v15;
@@ -176,10 +176,10 @@ LABEL_6:
   }
 }
 
-+ (id)defaultTargetZoneForTypeKey:(id)a3
++ (id)defaultTargetZoneForTypeKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PaceTargetZonesByActivityType"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"PaceTargetZonesByActivityType"])
   {
     v4 = 2;
 LABEL_7:
@@ -187,13 +187,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:@"CadenceTargetZonesByActivityType"])
+  if ([keyCopy isEqualToString:@"CadenceTargetZonesByActivityType"])
   {
     v4 = 5;
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"PowerTargetZonesByActivityType"])
+  if ([keyCopy isEqualToString:@"PowerTargetZonesByActivityType"])
   {
     v4 = 7;
     goto LABEL_7;
@@ -205,15 +205,15 @@ LABEL_8:
   return v5;
 }
 
-+ (id)targetZoneForActivityType:(id)a3 targetZoneActivityTypeKey:(id)a4
++ (id)targetZoneForActivityType:(id)type targetZoneActivityTypeKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v9 = [v8 objectForKey:v7];
+  typeCopy = type;
+  keyCopy = key;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v9 = [standardUserDefaults objectForKey:keyCopy];
 
-  if (v9 && ([a1 restoreFromDictionary:v9 activityType:v6], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v9 && ([self restoreFromDictionary:v9 activityType:typeCopy], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
     if ([v10 enabled])
@@ -231,39 +231,39 @@ LABEL_8:
 
   else
   {
-    v11 = [NLWorkoutTargetZone defaultTargetZoneForTypeKey:v7];
+    v11 = [NLWorkoutTargetZone defaultTargetZoneForTypeKey:keyCopy];
   }
 
   return v11;
 }
 
-+ (id)restoreFromDictionary:(id)a3 activityType:(id)a4
++ (id)restoreFromDictionary:(id)dictionary activityType:(id)type
 {
-  v5 = a3;
-  v6 = [a4 uniqueIdentifier];
-  v7 = [v5 objectForKey:v6];
+  dictionaryCopy = dictionary;
+  uniqueIdentifier = [type uniqueIdentifier];
+  v7 = [dictionaryCopy objectForKey:uniqueIdentifier];
 
   v8 = [NLWorkoutTargetZone restoreFromDictionary:v7];
 
   return v8;
 }
 
-+ (id)restoreFromDictionary:(id)a3
++ (id)restoreFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"type"];
-    v6 = [a1 mapTargetZoneTypeStringToEnum:v5];
-    v7 = [v4 objectForKey:@"minimum"];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy objectForKey:@"type"];
+    v6 = [self mapTargetZoneTypeStringToEnum:v5];
+    v7 = [dictionaryCopy objectForKey:@"minimum"];
     [v7 doubleValue];
     v9 = v8;
 
-    v10 = [v4 objectForKey:@"maximum"];
+    v10 = [dictionaryCopy objectForKey:@"maximum"];
     [v10 doubleValue];
     v12 = v11;
 
-    v13 = [v4 objectForKey:@"enabled"];
+    v13 = [dictionaryCopy objectForKey:@"enabled"];
 
     v14 = [v13 isEqualToString:@"true"];
     if (v9 != v12 && v9 == 0.0)
@@ -288,164 +288,164 @@ LABEL_8:
   return v17;
 }
 
-+ (id)serializeTargetZone:(id)a3
++ (id)serializeTargetZone:(id)zone
 {
-  if (a3)
+  if (zone)
   {
     v3 = MEMORY[0x1E695DF90];
-    v4 = a3;
-    v5 = [v3 dictionary];
-    v6 = +[NLWorkoutTargetZone mapTargetZoneTypeEnumToString:](NLWorkoutTargetZone, "mapTargetZoneTypeEnumToString:", [v4 type]);
-    v7 = [v4 enabled];
+    zoneCopy = zone;
+    dictionary = [v3 dictionary];
+    v6 = +[NLWorkoutTargetZone mapTargetZoneTypeEnumToString:](NLWorkoutTargetZone, "mapTargetZoneTypeEnumToString:", [zoneCopy type]);
+    enabled = [zoneCopy enabled];
     v8 = @"false";
-    if (v7)
+    if (enabled)
     {
       v8 = @"true";
     }
 
     v9 = v8;
-    [v5 setObject:v6 forKey:@"type"];
+    [dictionary setObject:v6 forKey:@"type"];
     v10 = MEMORY[0x1E696AD98];
-    [v4 min];
+    [zoneCopy min];
     v11 = [v10 numberWithDouble:?];
-    [v5 setObject:v11 forKey:@"minimum"];
+    [dictionary setObject:v11 forKey:@"minimum"];
 
     v12 = MEMORY[0x1E696AD98];
-    [v4 max];
+    [zoneCopy max];
     v14 = v13;
 
     v15 = [v12 numberWithDouble:v14];
-    [v5 setObject:v15 forKey:@"maximum"];
+    [dictionary setObject:v15 forKey:@"maximum"];
 
-    [v5 setObject:v9 forKey:@"enabled"];
+    [dictionary setObject:v9 forKey:@"enabled"];
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
-  v16 = [v5 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
-+ (void)saveTargetZone:(id)a3 forActivityType:(id)a4
++ (void)saveTargetZone:(id)zone forActivityType:(id)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  zoneCopy = zone;
+  typeCopy = type;
   _HKInitializeLogging();
   v7 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v5;
+    v17 = zoneCopy;
     _os_log_impl(&dword_1E5D0F000, v7, OS_LOG_TYPE_DEFAULT, "[targetzones] Saving target zone values to defaults. zone:%@", &v16, 0xCu);
   }
 
-  v8 = [v5 type];
-  if ((v8 - 1) <= 6)
+  type = [zoneCopy type];
+  if ((type - 1) <= 6)
   {
-    v9 = *off_1E878CD58[v8 - 1];
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v11 = [v10 objectForKey:v9];
-    v12 = [v11 mutableCopy];
+    v9 = *off_1E878CD58[type - 1];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v11 = [standardUserDefaults objectForKey:v9];
+    dictionary = [v11 mutableCopy];
 
-    if (!v12)
+    if (!dictionary)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v13 = [NLWorkoutTargetZone serializeTargetZone:v5];
-    v14 = [v6 uniqueIdentifier];
-    [v12 setObject:v13 forKey:v14];
+    v13 = [NLWorkoutTargetZone serializeTargetZone:zoneCopy];
+    uniqueIdentifier = [typeCopy uniqueIdentifier];
+    [dictionary setObject:v13 forKey:uniqueIdentifier];
 
-    v15 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v15 setObject:v12 forKey:v9];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setObject:dictionary forKey:v9];
 
     [MEMORY[0x1E695E000] fu_backupStandardUserDefaultsKey:v9];
   }
 }
 
-+ (int64_t)mapTargetZoneTypeStringToEnum:(id)a3
++ (int64_t)mapTargetZoneTypeStringToEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"rolling_pace"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"rolling_pace"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"average_pace"])
+  else if ([enumCopy isEqualToString:@"average_pace"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"instantaneous_pace"])
+  else if ([enumCopy isEqualToString:@"instantaneous_pace"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"instantaneous_cadence"])
+  else if ([enumCopy isEqualToString:@"instantaneous_cadence"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"average_cadence"])
+  else if ([enumCopy isEqualToString:@"average_cadence"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"instantaneous_power"])
+  else if ([enumCopy isEqualToString:@"instantaneous_power"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"average_power"])
+  else if ([enumCopy isEqualToString:@"average_power"])
   {
     v4 = 7;
   }
 
   else
   {
-    [v3 isEqualToString:@"none"];
+    [enumCopy isEqualToString:@"none"];
     v4 = 0;
   }
 
   return v4;
 }
 
-+ (id)mapTargetZoneTypeEnumToString:(int64_t)a3
++ (id)mapTargetZoneTypeEnumToString:(int64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return &stru_1F5F88F90;
   }
 
   else
   {
-    return off_1E878CD90[a3];
+    return off_1E878CD90[string];
   }
 }
 
-+ (int64_t)targetZoneMasterTypeForTargetZoneType:(int64_t)a3
++ (int64_t)targetZoneMasterTypeForTargetZoneType:(int64_t)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_1E5DB2090[a3 - 1];
+    return qword_1E5DB2090[type - 1];
   }
 }
 
-+ (id)targetZonesFromMetadata:(id)a3
++ (id)targetZonesFromMetadata:(id)metadata
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v23 = [MEMORY[0x1E695DF70] array];
+  metadataCopy = metadata;
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -464,18 +464,18 @@ LABEL_8:
           objc_enumerationMutation(&unk_1F5F9B2B0);
         }
 
-        v8 = [*(*(&v24 + 1) + 8 * i) intValue];
-        if (v8 > 3)
+        intValue = [*(*(&v24 + 1) + 8 * i) intValue];
+        if (intValue > 3)
         {
           v9 = 0;
         }
 
         else
         {
-          v9 = off_1E878CDD0[v8];
+          v9 = off_1E878CDD0[intValue];
         }
 
-        v10 = [v3 objectForKeyedSubscript:v9];
+        v10 = [metadataCopy objectForKeyedSubscript:v9];
         v11 = v10;
         if (v10)
         {
@@ -496,7 +496,7 @@ LABEL_8:
             if (v20)
             {
               v21 = v20;
-              [v23 addObject:v20];
+              [array addObject:v20];
             }
           }
         }
@@ -508,14 +508,14 @@ LABEL_8:
     while (v5);
   }
 
-  return v23;
+  return array;
 }
 
-+ (id)metadataForTargetZone:(id)a3
++ (id)metadataForTargetZone:(id)zone
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = +[NLWorkoutTargetZone targetZoneMasterTypeForTargetZoneType:](NLWorkoutTargetZone, "targetZoneMasterTypeForTargetZoneType:", [v3 type]);
+  zoneCopy = zone;
+  v4 = +[NLWorkoutTargetZone targetZoneMasterTypeForTargetZoneType:](NLWorkoutTargetZone, "targetZoneMasterTypeForTargetZoneType:", [zoneCopy type]);
   if (v4 > 3)
   {
     v5 = 0;
@@ -529,18 +529,18 @@ LABEL_8:
   v17 = v5;
   v15[0] = @"_HKPrivateWorkoutTargetZoneMin";
   v6 = MEMORY[0x1E696AD98];
-  [v3 min];
+  [zoneCopy min];
   v7 = [v6 numberWithDouble:?];
   v16[0] = v7;
   v15[1] = @"_HKPrivateWorkoutTargetZoneMax";
   v8 = MEMORY[0x1E696AD98];
-  [v3 max];
+  [zoneCopy max];
   v9 = [v8 numberWithDouble:?];
   v16[1] = v9;
   v15[2] = @"_HKPrivateWorkoutTargetZoneType";
-  v10 = [v3 type];
+  type = [zoneCopy type];
 
-  v11 = [NLWorkoutTargetZone mapTargetZoneTypeEnumToString:v10];
+  v11 = [NLWorkoutTargetZone mapTargetZoneTypeEnumToString:type];
   v16[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v18[0] = v12;
@@ -549,10 +549,10 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -562,7 +562,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(NLWorkoutTargetZone *)v5 type]&& (min = self->_min, [(NLWorkoutTargetZone *)v5 min], min == v8) && (max = self->_max, [(NLWorkoutTargetZone *)v5 max], max == v10))
       {

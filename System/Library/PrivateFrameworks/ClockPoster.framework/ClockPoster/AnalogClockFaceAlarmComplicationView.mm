@@ -1,16 +1,16 @@
 @interface AnalogClockFaceAlarmComplicationView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)tintColor;
-- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithCoder:(id)a3;
-- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithFrame:(CGRect)a3;
+- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithCoder:(id)coder;
+- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation AnalogClockFaceAlarmComplicationView
 
-- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithFrame:(CGRect)a3
+- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster36AnalogClockFaceAlarmComplicationView_stack) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster36AnalogClockFaceAlarmComplicationView_icon) = 0;
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithCoder:(id)a3
+- (_TtC11ClockPoster36AnalogClockFaceAlarmComplicationView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster36AnalogClockFaceAlarmComplicationView_stack) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster36AnalogClockFaceAlarmComplicationView_icon) = 0;
@@ -34,24 +34,24 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AnalogClockFaceAlarmComplicationView();
-  v2 = [(AnalogClockFaceAlarmComplicationView *)&v4 tintColor];
+  tintColor = [(AnalogClockFaceAlarmComplicationView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for AnalogClockFaceAlarmComplicationView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(AnalogClockFaceAlarmComplicationView *)&v6 setTintColor:v4];
+  [(AnalogClockFaceAlarmComplicationView *)&v6 setTintColor:colorCopy];
   sub_1E498B674();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E498B8DC();
 }
 
@@ -63,11 +63,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1E498BB80(width, height);
   v7 = v6;
   v9 = v8;

@@ -7,13 +7,13 @@
 - (id)gatherAttachments
 {
   v2 = objc_opt_new();
-  v3 = [v2 getFileList];
+  getFileList = [v2 getFileList];
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = getFileList;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {

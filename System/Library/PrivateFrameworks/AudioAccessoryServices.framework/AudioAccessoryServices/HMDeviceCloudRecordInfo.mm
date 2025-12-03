@@ -1,21 +1,21 @@
 @interface HMDeviceCloudRecordInfo
-- (HMDeviceCloudRecordInfo)initWithBluetoothAddress:(id)a3;
-- (HMDeviceCloudRecordInfo)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HMDeviceCloudRecordInfo)initWithBluetoothAddress:(id)address;
+- (HMDeviceCloudRecordInfo)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDeviceCloudRecordInfo
 
-- (HMDeviceCloudRecordInfo)initWithBluetoothAddress:(id)a3
+- (HMDeviceCloudRecordInfo)initWithBluetoothAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = [(HMDeviceCloudRecordInfo *)self init];
   if (v5)
   {
-    v6 = [v4 uppercaseString];
+    uppercaseString = [addressCopy uppercaseString];
     bluetoothAddress = v5->_bluetoothAddress;
-    v5->_bluetoothAddress = v6;
+    v5->_bluetoothAddress = uppercaseString;
 
     v8 = v5;
   }
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v56 = [objc_opt_class() description];
   NSAppendPrintF_safe();
@@ -301,7 +301,7 @@
     v5 = v53;
   }
 
-  if (a3 < 21)
+  if (level < 21)
   {
     NSAppendPrintF_safe();
     v54 = v5;
@@ -312,13 +312,13 @@
   return v5;
 }
 
-- (HMDeviceCloudRecordInfo)initWithCoder:(id)a3
+- (HMDeviceCloudRecordInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDeviceCloudRecordInfo *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -406,196 +406,196 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   bluetoothAddress = self->_bluetoothAddress;
-  v25 = v4;
+  v25 = coderCopy;
   if (bluetoothAddress)
   {
-    [v4 encodeObject:bluetoothAddress forKey:@"btAd"];
-    v4 = v25;
+    [coderCopy encodeObject:bluetoothAddress forKey:@"btAd"];
+    coderCopy = v25;
   }
 
   if (self->_haRegionStatus)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   if (self->_haRegionStatusV2)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   if (self->_hpPPERegionStatus)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   if (self->_hpRegionStatus)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   if (self->_mediaAssistEnabled)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   if (self->_pmeMediaEnabled)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   if (self->_pmeVoiceEnabled)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   if (self->_swipeGainEnabled)
   {
     [v25 encodeInteger:? forKey:?];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   bottomMicFaultCountLeft = self->_bottomMicFaultCountLeft;
   if (bottomMicFaultCountLeft)
   {
     [v25 encodeObject:bottomMicFaultCountLeft forKey:@"bmfl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   bottomMicFaultCountRight = self->_bottomMicFaultCountRight;
   if (bottomMicFaultCountRight)
   {
     [v25 encodeObject:bottomMicFaultCountRight forKey:@"bmfr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   diagnosticMeasurementsCount = self->_diagnosticMeasurementsCount;
   if (diagnosticMeasurementsCount)
   {
     [v25 encodeObject:diagnosticMeasurementsCount forKey:@"dimc"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   freqAccuracyFaultCountLeft = self->_freqAccuracyFaultCountLeft;
   if (freqAccuracyFaultCountLeft)
   {
     [v25 encodeObject:freqAccuracyFaultCountLeft forKey:@"fafl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   freqAccuracyFaultCountRight = self->_freqAccuracyFaultCountRight;
   if (freqAccuracyFaultCountRight)
   {
     [v25 encodeObject:freqAccuracyFaultCountRight forKey:@"fafr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   frontVentFaultCountLeft = self->_frontVentFaultCountLeft;
   if (frontVentFaultCountLeft)
   {
     [v25 encodeObject:frontVentFaultCountLeft forKey:@"fvfl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   frontVentFaultCountRight = self->_frontVentFaultCountRight;
   if (frontVentFaultCountRight)
   {
     [v25 encodeObject:frontVentFaultCountRight forKey:@"fvfr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   innerMicFaultCountLeft = self->_innerMicFaultCountLeft;
   if (innerMicFaultCountLeft)
   {
     [v25 encodeObject:innerMicFaultCountLeft forKey:@"imfl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   innerMicFaultCountRight = self->_innerMicFaultCountRight;
   if (innerMicFaultCountRight)
   {
     [v25 encodeObject:innerMicFaultCountRight forKey:@"imfr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   latestDiagnosticTimestampLeft = self->_latestDiagnosticTimestampLeft;
   if (latestDiagnosticTimestampLeft)
   {
     [v25 encodeObject:latestDiagnosticTimestampLeft forKey:@"ldtl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   latestDiagnosticTimestampRight = self->_latestDiagnosticTimestampRight;
   if (latestDiagnosticTimestampRight)
   {
     [v25 encodeObject:latestDiagnosticTimestampRight forKey:@"ldtr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   rearVentFaultCountLeft = self->_rearVentFaultCountLeft;
   if (rearVentFaultCountLeft)
   {
     [v25 encodeObject:rearVentFaultCountLeft forKey:@"rvfl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   rearVentFaultCountRight = self->_rearVentFaultCountRight;
   if (rearVentFaultCountRight)
   {
     [v25 encodeObject:rearVentFaultCountRight forKey:@"rvfr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   speakerFaultCountLeft = self->_speakerFaultCountLeft;
   if (speakerFaultCountLeft)
   {
     [v25 encodeObject:speakerFaultCountLeft forKey:@"sfcl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   speakerFaultCountRight = self->_speakerFaultCountRight;
   if (speakerFaultCountRight)
   {
     [v25 encodeObject:speakerFaultCountRight forKey:@"sfcr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   topMicFaultCountLeft = self->_topMicFaultCountLeft;
   if (topMicFaultCountLeft)
   {
     [v25 encodeObject:topMicFaultCountLeft forKey:@"tmfl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   topMicFaultCountRight = self->_topMicFaultCountRight;
   if (topMicFaultCountRight)
   {
     [v25 encodeObject:topMicFaultCountRight forKey:@"tmfr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   totalHarmonicDistortionFaultCountLeft = self->_totalHarmonicDistortionFaultCountLeft;
   if (totalHarmonicDistortionFaultCountLeft)
   {
     [v25 encodeObject:totalHarmonicDistortionFaultCountLeft forKey:@"thdl"];
-    v4 = v25;
+    coderCopy = v25;
   }
 
   totalHarmonicDistortionFaultCountRight = self->_totalHarmonicDistortionFaultCountRight;
   if (totalHarmonicDistortionFaultCountRight)
   {
     [v25 encodeObject:totalHarmonicDistortionFaultCountRight forKey:@"thdr"];
-    v4 = v25;
+    coderCopy = v25;
   }
 }
 

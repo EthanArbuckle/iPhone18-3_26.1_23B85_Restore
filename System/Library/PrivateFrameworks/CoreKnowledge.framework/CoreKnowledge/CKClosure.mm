@@ -1,14 +1,14 @@
 @interface CKClosure
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKClosure
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C86C0598(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C86C0598(coderCopy);
 }
 
 @end

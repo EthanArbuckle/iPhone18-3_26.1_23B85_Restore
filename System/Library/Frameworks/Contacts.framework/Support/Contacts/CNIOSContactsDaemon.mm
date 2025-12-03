@@ -10,7 +10,7 @@
 
 + (void)enterSandbox
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CNIOSContactsDaemon;
   objc_msgSendSuper2(&v2, "enterSandbox");
   +[CNIOSDaemonSandboxer enterSandbox];
@@ -25,8 +25,8 @@
   v16 = sub_100001ED4;
   v11.receiver = self;
   v11.super_class = CNIOSContactsDaemon;
-  v2 = [(CNContactsDaemon *)&v11 XPCListenerPairs];
-  v17 = [NSMutableArray arrayWithArray:v2];
+  xPCListenerPairs = [(CNContactsDaemon *)&v11 XPCListenerPairs];
+  v17 = [NSMutableArray arrayWithArray:xPCListenerPairs];
 
   v18[0] = CNDataMapperServiceName;
   v3 = objc_opt_new();
@@ -60,8 +60,8 @@
   v3 = [NSMutableArray alloc];
   v18.receiver = self;
   v18.super_class = CNIOSContactsDaemon;
-  v4 = [(CNContactsDaemon *)&v18 notifydListeners];
-  v5 = [v3 initWithArray:v4];
+  notifydListeners = [(CNContactsDaemon *)&v18 notifydListeners];
+  v5 = [v3 initWithArray:notifydListeners];
 
   v6 = +[IndexService sharedInstance];
   [v5 addObject:v6];
@@ -70,8 +70,8 @@
   [v5 addObject:v7];
 
   v8 = +[CNEnvironment currentEnvironment];
-  v9 = [v8 featureFlags];
-  v10 = [v9 isFeatureEnabled:24];
+  featureFlags = [v8 featureFlags];
+  v10 = [featureFlags isFeatureEnabled:24];
 
   if (v10)
   {
@@ -80,8 +80,8 @@
   }
 
   v12 = +[CNEnvironment currentEnvironment];
-  v13 = [v12 featureFlags];
-  v14 = [v13 isFeatureEnabled:3];
+  featureFlags2 = [v12 featureFlags];
+  v14 = [featureFlags2 isFeatureEnabled:3];
 
   if (v14)
   {
@@ -100,15 +100,15 @@
   v3 = [NSMutableArray alloc];
   v12.receiver = self;
   v12.super_class = CNIOSContactsDaemon;
-  v4 = [(CNContactsDaemon *)&v12 applicationUnregisteredListeners];
-  v5 = [v3 initWithArray:v4];
+  applicationUnregisteredListeners = [(CNContactsDaemon *)&v12 applicationUnregisteredListeners];
+  v5 = [v3 initWithArray:applicationUnregisteredListeners];
 
   v6 = +[ContactProviderService sharedInstance];
   [v5 addObject:v6];
 
   v7 = +[CNEnvironment currentEnvironment];
-  v8 = [v7 featureFlags];
-  v9 = [v8 isFeatureEnabled:24];
+  featureFlags = [v7 featureFlags];
+  v9 = [featureFlags isFeatureEnabled:24];
 
   if (v9)
   {
@@ -129,8 +129,8 @@
 
   v7.receiver = self;
   v7.super_class = CNIOSContactsDaemon;
-  v4 = [(CNContactsDaemon *)&v7 XPCActivities];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  xPCActivities = [(CNContactsDaemon *)&v7 XPCActivities];
+  v5 = [NSMutableArray arrayWithArray:xPCActivities];
 
   [v5 addObject:objc_opt_class()];
   [v5 addObject:objc_opt_class()];

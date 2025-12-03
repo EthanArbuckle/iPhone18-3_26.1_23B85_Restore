@@ -1,22 +1,22 @@
 @interface WBSCloudTab
-+ (id)_dictionaryWithParameters:(id)a3;
-- (BOOL)hasSameUUIDAndURLAsTab:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_dictionaryWithParameters:(id)parameters;
+- (BOOL)hasSameUUIDAndURLAsTab:(id)tab;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
 - (NSDictionary)dictionaryRepresentationForUserActivityUserInfo;
 - (NSString)description;
-- (WBSCloudTab)initWithDictionary:(id)a3;
-- (WBSCloudTab)initWithDictionaryFromUserActivityUserInfo:(id)a3;
-- (WBSCloudTab)initWithParameters:(id)a3;
-- (WBSCloudTab)initWithURL:(id)a3 uuid:(id)a4 title:(id)a5 isShowingReader:(BOOL)a6 readerScrollPosition:(id)a7 isPinned:(BOOL)a8;
-- (WBSCloudTab)initWithURL:(id)a3 uuid:(id)a4 title:(id)a5 isShowingReader:(BOOL)a6 readerScrollPosition:(id)a7 sceneID:(id)a8;
+- (WBSCloudTab)initWithDictionary:(id)dictionary;
+- (WBSCloudTab)initWithDictionaryFromUserActivityUserInfo:(id)info;
+- (WBSCloudTab)initWithParameters:(id)parameters;
+- (WBSCloudTab)initWithURL:(id)l uuid:(id)uuid title:(id)title isShowingReader:(BOOL)reader readerScrollPosition:(id)position isPinned:(BOOL)pinned;
+- (WBSCloudTab)initWithURL:(id)l uuid:(id)uuid title:(id)title isShowingReader:(BOOL)reader readerScrollPosition:(id)position sceneID:(id)d;
 @end
 
 @implementation WBSCloudTab
 
-- (WBSCloudTab)initWithDictionary:(id)a3
+- (WBSCloudTab)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,19 +26,19 @@
     if (self)
     {
       v5 = MEMORY[0x1E695DFF8];
-      v6 = [v4 safari_stringForKey:@"URL"];
+      v6 = [dictionaryCopy safari_stringForKey:@"URL"];
       v7 = [v5 safari_URLWithUserTypedString:v6];
-      v8 = [v7 safari_originalDataAsString];
+      safari_originalDataAsString = [v7 safari_originalDataAsString];
 
-      if (([v8 length] - 8193) < 0xFFFFFFFFFFFFE000 || (objc_msgSend(MEMORY[0x1E695DFF8], "safari_URLWithDataAsString:", v8), v9 = objc_claimAutoreleasedReturnValue(), url = self->_url, self->_url = v9, url, !self->_url))
+      if (([safari_originalDataAsString length] - 8193) < 0xFFFFFFFFFFFFE000 || (objc_msgSend(MEMORY[0x1E695DFF8], "safari_URLWithDataAsString:", safari_originalDataAsString), v9 = objc_claimAutoreleasedReturnValue(), url = self->_url, self->_url = v9, url, !self->_url))
       {
-        v14 = 0;
+        selfCopy = 0;
 LABEL_15:
 
         goto LABEL_16;
       }
 
-      v11 = [v4 safari_stringForKey:@"Title"];
+      v11 = [dictionaryCopy safari_stringForKey:@"Title"];
       v12 = [v11 length];
       if (v12 < 0x81)
       {
@@ -46,7 +46,7 @@ LABEL_15:
         {
 LABEL_12:
           objc_storeStrong(&self->_title, v11);
-          v15 = [v4 safari_stringForKey:@"UUID"];
+          v15 = [dictionaryCopy safari_stringForKey:@"UUID"];
           if (v15)
           {
             v16 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v15];
@@ -54,22 +54,22 @@ LABEL_12:
             self->_uuid = v16;
           }
 
-          v18 = [v4 safari_stringForKey:@"OwningSceneID"];
+          v18 = [dictionaryCopy safari_stringForKey:@"OwningSceneID"];
           v19 = [v18 copy];
           sceneID = self->_sceneID;
           self->_sceneID = v19;
 
-          self->_showingReader = [v4 safari_BOOLForKey:@"IsShowingReader"];
-          v21 = [v4 safari_dictionaryForKey:@"ReaderScrollPosition"];
+          self->_showingReader = [dictionaryCopy safari_BOOLForKey:@"IsShowingReader"];
+          v21 = [dictionaryCopy safari_dictionaryForKey:@"ReaderScrollPosition"];
           readerScrollPositionDictionary = self->_readerScrollPositionDictionary;
           self->_readerScrollPositionDictionary = v21;
 
-          self->_pinned = [v4 safari_BOOLForKey:@"IsPinned"];
-          v23 = [v4 safari_numberForKey:@"DateLastViewed"];
+          self->_pinned = [dictionaryCopy safari_BOOLForKey:@"IsPinned"];
+          v23 = [dictionaryCopy safari_numberForKey:@"DateLastViewed"];
           [v23 doubleValue];
           self->_lastViewedTime = v24;
 
-          v14 = self;
+          selfCopy = self;
           goto LABEL_15;
         }
 
@@ -86,89 +86,89 @@ LABEL_12:
     }
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v14;
+  return selfCopy;
 }
 
-- (WBSCloudTab)initWithDictionaryFromUserActivityUserInfo:(id)a3
+- (WBSCloudTab)initWithDictionaryFromUserActivityUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 safari_dictionaryForKey:@"com.apple.Safari.CloudTab"];
+    v5 = [infoCopy safari_dictionaryForKey:@"com.apple.Safari.CloudTab"];
     self = [(WBSCloudTab *)self initWithDictionary:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (WBSCloudTab)initWithURL:(id)a3 uuid:(id)a4 title:(id)a5 isShowingReader:(BOOL)a6 readerScrollPosition:(id)a7 sceneID:(id)a8
+- (WBSCloudTab)initWithURL:(id)l uuid:(id)uuid title:(id)title isShowingReader:(BOOL)reader readerScrollPosition:(id)position sceneID:(id)d
 {
-  v9 = a6;
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [[WBSCloudTabParameters alloc] initWithURL:v18];
+  readerCopy = reader;
+  dCopy = d;
+  positionCopy = position;
+  titleCopy = title;
+  uuidCopy = uuid;
+  lCopy = l;
+  v19 = [[WBSCloudTabParameters alloc] initWithURL:lCopy];
 
-  [(WBSCloudTabParameters *)v19 setUuid:v17];
-  [(WBSCloudTabParameters *)v19 setTitle:v16];
+  [(WBSCloudTabParameters *)v19 setUuid:uuidCopy];
+  [(WBSCloudTabParameters *)v19 setTitle:titleCopy];
 
-  [(WBSCloudTabParameters *)v19 setShowingReader:v9];
-  [(WBSCloudTabParameters *)v19 setReaderScrollPosition:v15];
+  [(WBSCloudTabParameters *)v19 setShowingReader:readerCopy];
+  [(WBSCloudTabParameters *)v19 setReaderScrollPosition:positionCopy];
 
-  [(WBSCloudTabParameters *)v19 setSceneID:v14];
+  [(WBSCloudTabParameters *)v19 setSceneID:dCopy];
   v20 = [(WBSCloudTab *)self initWithParameters:v19];
 
   return v20;
 }
 
-- (WBSCloudTab)initWithURL:(id)a3 uuid:(id)a4 title:(id)a5 isShowingReader:(BOOL)a6 readerScrollPosition:(id)a7 isPinned:(BOOL)a8
+- (WBSCloudTab)initWithURL:(id)l uuid:(id)uuid title:(id)title isShowingReader:(BOOL)reader readerScrollPosition:(id)position isPinned:(BOOL)pinned
 {
-  v8 = a8;
-  v9 = a6;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[WBSCloudTabParameters alloc] initWithURL:v17];
+  pinnedCopy = pinned;
+  readerCopy = reader;
+  positionCopy = position;
+  titleCopy = title;
+  uuidCopy = uuid;
+  lCopy = l;
+  v18 = [[WBSCloudTabParameters alloc] initWithURL:lCopy];
 
-  [(WBSCloudTabParameters *)v18 setUuid:v16];
-  [(WBSCloudTabParameters *)v18 setTitle:v15];
+  [(WBSCloudTabParameters *)v18 setUuid:uuidCopy];
+  [(WBSCloudTabParameters *)v18 setTitle:titleCopy];
 
-  [(WBSCloudTabParameters *)v18 setShowingReader:v9];
-  [(WBSCloudTabParameters *)v18 setReaderScrollPosition:v14];
+  [(WBSCloudTabParameters *)v18 setShowingReader:readerCopy];
+  [(WBSCloudTabParameters *)v18 setReaderScrollPosition:positionCopy];
 
-  [(WBSCloudTabParameters *)v18 setPinned:v8];
+  [(WBSCloudTabParameters *)v18 setPinned:pinnedCopy];
   v19 = [(WBSCloudTab *)self initWithParameters:v18];
 
   return v19;
 }
 
-- (WBSCloudTab)initWithParameters:(id)a3
+- (WBSCloudTab)initWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _dictionaryWithParameters:v4];
+  parametersCopy = parameters;
+  v5 = [objc_opt_class() _dictionaryWithParameters:parametersCopy];
 
   v6 = [(WBSCloudTab *)self initWithDictionary:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -178,9 +178,9 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WBSCloudTab *)self dictionaryRepresentation];
-      v6 = [(WBSCloudTab *)v4 dictionaryRepresentation];
-      v7 = [v5 isEqualToDictionary:v6];
+      dictionaryRepresentation = [(WBSCloudTab *)self dictionaryRepresentation];
+      dictionaryRepresentation2 = [(WBSCloudTab *)equalCopy dictionaryRepresentation];
+      v7 = [dictionaryRepresentation isEqualToDictionary:dictionaryRepresentation2];
     }
 
     else
@@ -192,16 +192,16 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)hasSameUUIDAndURLAsTab:(id)a3
+- (BOOL)hasSameUUIDAndURLAsTab:(id)tab
 {
-  v4 = a3;
-  v5 = [v4 uuidString];
-  v6 = [(WBSCloudTab *)self uuidString];
-  v7 = [v5 isEqualToString:v6];
+  tabCopy = tab;
+  uuidString = [tabCopy uuidString];
+  uuidString2 = [(WBSCloudTab *)self uuidString];
+  v7 = [uuidString isEqualToString:uuidString2];
 
   if (v7)
   {
-    v8 = [v4 url];
+    v8 = [tabCopy url];
     v9 = [v8 isEqual:self->_url];
   }
 
@@ -231,8 +231,8 @@ LABEL_16:
 - (NSDictionary)dictionaryRepresentationForUserActivityUserInfo
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(WBSCloudTab *)self dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  dictionaryRepresentation = [(WBSCloudTab *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation mutableCopy];
 
   if (v3)
   {
@@ -260,24 +260,24 @@ LABEL_16:
   v5 = NSStringFromClass(v4);
   title = self->_title;
   url = self->_url;
-  v8 = [(NSUUID *)self->_uuid UUIDString];
-  v9 = [v3 stringWithFormat:@"<%@: %p title = %@; url = %@; uuid = %@; showingReader = %d; readerScrollPositionDictionary = %@; isPinned = %d; sceneID = %@>", v5, self, title, url, v8, self->_showingReader, self->_readerScrollPositionDictionary, self->_pinned, self->_sceneID];;
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v9 = [v3 stringWithFormat:@"<%@: %p title = %@; url = %@; uuid = %@; showingReader = %d; readerScrollPositionDictionary = %@; isPinned = %d; sceneID = %@>", v5, self, title, url, uUIDString, self->_showingReader, self->_readerScrollPositionDictionary, self->_pinned, self->_sceneID];;
 
   return v9;
 }
 
-+ (id)_dictionaryWithParameters:(id)a3
++ (id)_dictionaryWithParameters:(id)parameters
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 url];
-  v5 = [v3 uuid];
-  v6 = [v3 title];
-  v7 = [v3 isShowingReader];
-  v8 = [v3 readerScrollPosition];
-  v9 = [v3 isPinned];
-  v10 = [v3 sceneID];
-  [v3 lastViewedTime];
+  parametersCopy = parameters;
+  v4 = [parametersCopy url];
+  uuid = [parametersCopy uuid];
+  title = [parametersCopy title];
+  isShowingReader = [parametersCopy isShowingReader];
+  readerScrollPosition = [parametersCopy readerScrollPosition];
+  isPinned = [parametersCopy isPinned];
+  sceneID = [parametersCopy sceneID];
+  [parametersCopy lastViewedTime];
   v12 = v11;
 
   if ([v4 safari_isURLTooLongToDisplay])
@@ -287,36 +287,36 @@ LABEL_16:
 
   else
   {
-    v14 = [v4 safari_userVisibleString];
-    v15 = v14;
-    if (v14)
+    safari_userVisibleString = [v4 safari_userVisibleString];
+    v15 = safari_userVisibleString;
+    if (safari_userVisibleString)
     {
-      if (!v6)
+      if (!title)
       {
-        v6 = &stru_1F3A5E418;
+        title = &stru_1F3A5E418;
       }
 
       v20[0] = @"URL";
       v20[1] = @"Title";
-      v21[0] = v14;
-      v21[1] = v6;
+      v21[0] = safari_userVisibleString;
+      v21[1] = title;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
       v13 = [v16 mutableCopy];
 
-      if (v5)
+      if (uuid)
       {
-        v17 = [v5 UUIDString];
-        [v13 setObject:v17 forKeyedSubscript:@"UUID"];
+        uUIDString = [uuid UUIDString];
+        [v13 setObject:uUIDString forKeyedSubscript:@"UUID"];
       }
 
-      if (v9)
+      if (isPinned)
       {
         [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"IsPinned"];
       }
 
-      if (v10)
+      if (sceneID)
       {
-        [v13 setObject:v10 forKeyedSubscript:@"OwningSceneID"];
+        [v13 setObject:sceneID forKeyedSubscript:@"OwningSceneID"];
       }
 
       if (v12 != 0.0)
@@ -325,12 +325,12 @@ LABEL_16:
         [v13 setObject:v18 forKeyedSubscript:@"DateLastViewed"];
       }
 
-      if (v7)
+      if (isShowingReader)
       {
         [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"IsShowingReader"];
-        if ([v8 count])
+        if ([readerScrollPosition count])
         {
-          [v13 setObject:v8 forKeyedSubscript:@"ReaderScrollPosition"];
+          [v13 setObject:readerScrollPosition forKeyedSubscript:@"ReaderScrollPosition"];
         }
       }
     }

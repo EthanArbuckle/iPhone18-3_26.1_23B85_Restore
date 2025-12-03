@@ -1,40 +1,40 @@
 @interface AMSURLRequestDecoration
-+ (BOOL)_shouldSendGUIDForRequest:(id)a3 patterns:(id)a4 schemes:(id)a5;
-+ (id)_addGUIDParameterToRequest:(id)a3 fromPromise:(id)a4 shouldPreserveEncoding:(BOOL)a5;
-+ (id)addAbsintheHeadersToRequest:(id)a3 buyParams:(id)a4 bag:(id)a5 shouldUseRemoteSigningIfAvailable:(BOOL)a6;
-+ (id)addAnisetteHeadersToRequest:(id)a3 account:(id)a4 type:(int64_t)a5 bag:(id)a6;
-+ (id)addFPDIHeadersToRequest:(id)a3 buyParams:(id)a4 bag:(id)a5 retryCount:(int64_t)a6 fairPlayDeviceIdentity:(id)a7 fpdiNetworkProvider:(id)a8;
-+ (id)addGUIDParameterToRequest:(id)a3 bag:(id)a4 preservingQueryEncoding:(BOOL)a5;
-+ (id)addMescalHeaderToRequest:(id)a3 type:(int64_t)a4 bag:(id)a5 logKey:(id)a6;
-+ (id)addStoreFrontHeaderToRequest:(id)a3 forAccount:(id)a4 mediaType:(id)a5 bag:(id)a6;
-+ (id)addTreatmentHeadersToRequest:(id)a3 forTreatmentNamespace:(id)a4;
++ (BOOL)_shouldSendGUIDForRequest:(id)request patterns:(id)patterns schemes:(id)schemes;
++ (id)_addGUIDParameterToRequest:(id)request fromPromise:(id)promise shouldPreserveEncoding:(BOOL)encoding;
++ (id)addAbsintheHeadersToRequest:(id)request buyParams:(id)params bag:(id)bag shouldUseRemoteSigningIfAvailable:(BOOL)available;
++ (id)addAnisetteHeadersToRequest:(id)request account:(id)account type:(int64_t)type bag:(id)bag;
++ (id)addFPDIHeadersToRequest:(id)request buyParams:(id)params bag:(id)bag retryCount:(int64_t)count fairPlayDeviceIdentity:(id)identity fpdiNetworkProvider:(id)provider;
++ (id)addGUIDParameterToRequest:(id)request bag:(id)bag preservingQueryEncoding:(BOOL)encoding;
++ (id)addMescalHeaderToRequest:(id)request type:(int64_t)type bag:(id)bag logKey:(id)key;
++ (id)addStoreFrontHeaderToRequest:(id)request forAccount:(id)account mediaType:(id)type bag:(id)bag;
++ (id)addTreatmentHeadersToRequest:(id)request forTreatmentNamespace:(id)namespace;
 @end
 
 @implementation AMSURLRequestDecoration
 
-+ (id)addMescalHeaderToRequest:(id)a3 type:(int64_t)a4 bag:(id)a5 logKey:(id)a6
++ (id)addMescalHeaderToRequest:(id)request type:(int64_t)type bag:(id)bag logKey:(id)key
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = AMSSetLogKey(v12);
-  if ([v10 ams_requestIsBagLoad])
+  requestCopy = request;
+  bagCopy = bag;
+  keyCopy = key;
+  v13 = AMSSetLogKey(keyCopy);
+  if ([requestCopy ams_requestIsBagLoad])
   {
     v14 = +[AMSBinaryPromise promiseWithSuccess];
   }
 
   else
   {
-    v15 = [AMSMescal signaturePromiseFromRequest:v10 type:a4 bag:v11];
+    v15 = [AMSMescal signaturePromiseFromRequest:requestCopy type:type bag:bagCopy];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __68__AMSURLRequestDecoration_addMescalHeaderToRequest_type_bag_logKey___block_invoke;
     v21 = &unk_1E73BD200;
-    v22 = v12;
-    v23 = a1;
+    v22 = keyCopy;
+    selfCopy = self;
     v16 = [v15 continueWithBlock:&v18];
 
-    v14 = [v10 ams_addHeadersFromPromise:{v16, v18, v19, v20, v21}];
+    v14 = [requestCopy ams_addHeadersFromPromise:{v16, v18, v19, v20, v21}];
   }
 
   return v14;
@@ -147,15 +147,15 @@ LABEL_20:
   return v19;
 }
 
-+ (id)addAbsintheHeadersToRequest:(id)a3 buyParams:(id)a4 bag:(id)a5 shouldUseRemoteSigningIfAvailable:(BOOL)a6
++ (id)addAbsintheHeadersToRequest:(id)request buyParams:(id)params bag:(id)bag shouldUseRemoteSigningIfAvailable:(BOOL)available
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  availableCopy = available;
+  requestCopy = request;
+  paramsCopy = params;
+  bagCopy = bag;
   if (+[AMSDefaults enableRemoteSecuritySigning])
   {
-    v13 = !v6;
+    v13 = !availableCopy;
   }
 
   else
@@ -165,21 +165,21 @@ LABEL_20:
 
   if (v13)
   {
-    if ([v10 ams_requestIsBagLoad])
+    if ([requestCopy ams_requestIsBagLoad])
     {
       v16 = +[AMSBinaryPromise promiseWithSuccess];
       goto LABEL_10;
     }
 
-    v14 = [AMSAbsinthe headersForRequest:v10 buyParams:v11 bag:v12];
-    v16 = [v10 ams_addHeadersFromPromise:v14];
+    v14 = [AMSAbsinthe headersForRequest:requestCopy buyParams:paramsCopy bag:bagCopy];
+    v16 = [requestCopy ams_addHeadersFromPromise:v14];
   }
 
   else
   {
     v14 = +[AMSSigningSecurityService sharedService];
-    v15 = [v14 headersForRequest:v10 buyParams:v11 bag:v12];
-    v16 = [v10 ams_addHeadersFromPromise:v15];
+    v15 = [v14 headersForRequest:requestCopy buyParams:paramsCopy bag:bagCopy];
+    v16 = [requestCopy ams_addHeadersFromPromise:v15];
   }
 
 LABEL_10:
@@ -189,7 +189,7 @@ LABEL_10:
   v20[2] = __103__AMSURLRequestDecoration_addAbsintheHeadersToRequest_buyParams_bag_shouldUseRemoteSigningIfAvailable___block_invoke;
   v20[3] = &unk_1E73BBA10;
   v21 = v17;
-  v22 = a1;
+  selfCopy = self;
   v18 = v17;
   [v16 addErrorBlock:v20];
 
@@ -231,15 +231,15 @@ void __103__AMSURLRequestDecoration_addAbsintheHeadersToRequest_buyParams_bag_sh
   }
 }
 
-+ (id)addFPDIHeadersToRequest:(id)a3 buyParams:(id)a4 bag:(id)a5 retryCount:(int64_t)a6 fairPlayDeviceIdentity:(id)a7 fpdiNetworkProvider:(id)a8
++ (id)addFPDIHeadersToRequest:(id)request buyParams:(id)params bag:(id)bag retryCount:(int64_t)count fairPlayDeviceIdentity:(id)identity fpdiNetworkProvider:(id)provider
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v14 ams_requestIsBagLoad];
-  if (!v16 || v19)
+  requestCopy = request;
+  paramsCopy = params;
+  bagCopy = bag;
+  identityCopy = identity;
+  providerCopy = provider;
+  ams_requestIsBagLoad = [requestCopy ams_requestIsBagLoad];
+  if (!bagCopy || ams_requestIsBagLoad)
   {
     v25 = +[AMSBinaryPromise promiseWithSuccess];
   }
@@ -247,19 +247,19 @@ void __103__AMSURLRequestDecoration_addAbsintheHeadersToRequest_buyParams_bag_sh
   else
   {
     v20 = objc_alloc_init(AMSMutableBinaryPromise);
-    v21 = [[AMSSendableBag alloc] initWithWrappedBag:v16];
-    v22 = [v15 dictionaryForFPDI];
+    v21 = [[AMSSendableBag alloc] initWithWrappedBag:bagCopy];
+    dictionaryForFPDI = [paramsCopy dictionaryForFPDI];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __119__AMSURLRequestDecoration_addFPDIHeadersToRequest_buyParams_bag_retryCount_fairPlayDeviceIdentity_fpdiNetworkProvider___block_invoke;
     v27[3] = &unk_1E73BD250;
-    v31 = a6;
-    v28 = v14;
+    countCopy = count;
+    v28 = requestCopy;
     v23 = v20;
     v29 = v23;
-    v30 = v16;
-    v32 = a1;
-    [v17 headersFor:v28 bag:v21 buyParams:v22 networkProvider:v18 completionHandler:v27];
+    v30 = bagCopy;
+    selfCopy = self;
+    [identityCopy headersFor:v28 bag:v21 buyParams:dictionaryForFPDI networkProvider:providerCopy completionHandler:v27];
 
     v24 = v30;
     v25 = v23;
@@ -377,32 +377,32 @@ void __119__AMSURLRequestDecoration_addFPDIHeadersToRequest_buyParams_bag_retryC
   v4[2](v4, 1, 0);
 }
 
-+ (id)addAnisetteHeadersToRequest:(id)a3 account:(id)a4 type:(int64_t)a5 bag:(id)a6
++ (id)addAnisetteHeadersToRequest:(id)request account:(id)account type:(int64_t)type bag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v10 ams_isEphemeralAccount];
-  if (a5 != 2 && v12 || [v9 ams_requestIsBagLoad])
+  requestCopy = request;
+  accountCopy = account;
+  bagCopy = bag;
+  ams_isEphemeralAccount = [accountCopy ams_isEphemeralAccount];
+  if (type != 2 && ams_isEphemeralAccount || [requestCopy ams_requestIsBagLoad])
   {
     v13 = +[AMSBinaryPromise promiseWithSuccess];
   }
 
   else
   {
-    v14 = [AMSAnisette headersForRequest:v9 account:v10 type:a5 bag:v11];
-    v13 = [v9 ams_addHeadersFromPromise:v14];
+    v14 = [AMSAnisette headersForRequest:requestCopy account:accountCopy type:type bag:bagCopy];
+    v13 = [requestCopy ams_addHeadersFromPromise:v14];
   }
 
   return v13;
 }
 
-+ (id)addTreatmentHeadersToRequest:(id)a3 forTreatmentNamespace:(id)a4
++ (id)addTreatmentHeadersToRequest:(id)request forTreatmentNamespace:(id)namespace
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  namespaceCopy = namespace;
+  if (namespaceCopy)
   {
     v8 = AMSLogKey();
     v9 = +[AMSLogConfig sharedConfig];
@@ -411,8 +411,8 @@ void __119__AMSURLRequestDecoration_addFPDIHeadersToRequest_buyParams_bag_retryC
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v11 = MEMORY[0x1E696AEC0];
       v12 = objc_opt_class();
@@ -429,21 +429,21 @@ void __119__AMSURLRequestDecoration_addFPDIHeadersToRequest_buyParams_bag_retryC
       *buf = 138543618;
       v40 = v20;
       v41 = 2114;
-      v42 = v7;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@Fetching treatment area identifiers (namespace: %{public}@)", buf, 0x16u);
+      v42 = namespaceCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Fetching treatment area identifiers (namespace: %{public}@)", buf, 0x16u);
     }
 
     v21 = +[AMSTreatmentStore defaultTreatmentStore];
-    v22 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+    v22 = [MEMORY[0x1E695DFD8] setWithObject:namespaceCopy];
     v23 = [v21 areasForNamespaces:v22];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __78__AMSURLRequestDecoration_addTreatmentHeadersToRequest_forTreatmentNamespace___block_invoke;
     v34[3] = &unk_1E73B2EC8;
-    v35 = v7;
+    v35 = namespaceCopy;
     v24 = v8;
     v37 = v21;
-    v38 = a1;
+    selfCopy = self;
     v36 = v24;
     v25 = v21;
     v26 = [v23 continueWithBlock:v34];
@@ -453,10 +453,10 @@ void __119__AMSURLRequestDecoration_addFPDIHeadersToRequest_buyParams_bag_retryC
     v31[2] = __78__AMSURLRequestDecoration_addTreatmentHeadersToRequest_forTreatmentNamespace___block_invoke_5;
     v31[3] = &unk_1E73BBA10;
     v32 = v24;
-    v33 = a1;
+    selfCopy2 = self;
     v27 = v24;
     [v26 addErrorBlock:v31];
-    v28 = [v6 ams_addHeadersFromPromise:v26];
+    v28 = [requestCopy ams_addHeadersFromPromise:v26];
   }
 
   else
@@ -467,8 +467,8 @@ void __119__AMSURLRequestDecoration_addFPDIHeadersToRequest_buyParams_bag_retryC
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -476,22 +476,22 @@ void __119__AMSURLRequestDecoration_addFPDIHeadersToRequest_buyParams_bag_retryC
       v18 = v17;
       if (v15)
       {
-        a1 = AMSLogKey();
-        [v16 stringWithFormat:@"%@: [%@] ", v18, a1];
+        self = AMSLogKey();
+        [v16 stringWithFormat:@"%@: [%@] ", v18, self];
       }
 
       else
       {
         [v16 stringWithFormat:@"%@: ", v17];
       }
-      v19 = ;
+      selfCopy3 = ;
       *buf = 138543362;
-      v40 = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@No treatment namespace was provided. Skipping header creation.", buf, 0xCu);
+      v40 = selfCopy3;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@No treatment namespace was provided. Skipping header creation.", buf, 0xCu);
       if (v15)
       {
 
-        v19 = a1;
+        selfCopy3 = self;
       }
     }
 
@@ -767,38 +767,38 @@ void __78__AMSURLRequestDecoration_addTreatmentHeadersToRequest_forTreatmentName
   }
 }
 
-+ (id)addGUIDParameterToRequest:(id)a3 bag:(id)a4 preservingQueryEncoding:(BOOL)a5
++ (id)addGUIDParameterToRequest:(id)request bag:(id)bag preservingQueryEncoding:(BOOL)encoding
 {
-  v5 = a5;
+  encodingCopy = encoding;
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  requestCopy = request;
+  bagCopy = bag;
+  if (bagCopy)
   {
     v10 = +[AMSDevice deviceGUID];
     if (v10)
     {
-      v29 = [v9 arrayForKey:@"guid-urls/regex"];
-      v28 = [v29 valuePromise];
-      v34[0] = v28;
-      v11 = [v9 arrayForKey:@"guid-urls/schemes"];
-      v12 = [v11 valuePromise];
-      v34[1] = v12;
+      v29 = [bagCopy arrayForKey:@"guid-urls/regex"];
+      valuePromise = [v29 valuePromise];
+      v34[0] = valuePromise;
+      v11 = [bagCopy arrayForKey:@"guid-urls/schemes"];
+      valuePromise2 = [v11 valuePromise];
+      v34[1] = valuePromise2;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
-      v13 = v27 = v5;
+      v13 = v27 = encodingCopy;
       v14 = [AMSPromise promiseWithAll:v13];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __81__AMSURLRequestDecoration_addGUIDParameterToRequest_bag_preservingQueryEncoding___block_invoke;
       v30[3] = &unk_1E73BB760;
-      v33 = a1;
-      v15 = v8;
+      selfCopy = self;
+      v15 = requestCopy;
       v31 = v15;
       v10 = v10;
       v32 = v10;
       v16 = [v14 continueWithBlock:v30];
 
-      v17 = [a1 _addGUIDParameterToRequest:v15 fromPromise:v16 shouldPreserveEncoding:v27];
+      v17 = [self _addGUIDParameterToRequest:v15 fromPromise:v16 shouldPreserveEncoding:v27];
     }
 
     else
@@ -809,15 +809,15 @@ void __78__AMSURLRequestDecoration_addTreatmentHeadersToRequest_forTreatmentName
 
   else
   {
-    v18 = v8;
+    v18 = requestCopy;
     v19 = +[AMSLogConfig sharedConfig];
     if (!v19)
     {
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v21 = AMSLogKey();
       v22 = MEMORY[0x1E696AEC0];
@@ -825,28 +825,28 @@ void __78__AMSURLRequestDecoration_addTreatmentHeadersToRequest_forTreatmentName
       v24 = v23;
       if (v21)
       {
-        a1 = AMSLogKey();
-        [v22 stringWithFormat:@"%@: [%@] ", v24, a1];
+        self = AMSLogKey();
+        [v22 stringWithFormat:@"%@: [%@] ", v24, self];
       }
 
       else
       {
         [v22 stringWithFormat:@"%@: ", v23];
       }
-      v25 = ;
+      selfCopy2 = ;
       *buf = 138543362;
-      v36 = v25;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@Skipping GUID parameter addition as bag was not provided.", buf, 0xCu);
+      v36 = selfCopy2;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Skipping GUID parameter addition as bag was not provided.", buf, 0xCu);
       if (v21)
       {
 
-        v25 = a1;
+        selfCopy2 = self;
       }
     }
 
     v10 = AMSError(2, @"Failed to add GUID parameter", @"Bag was not provided", 0);
     v17 = [AMSBinaryPromise promiseWithError:v10];
-    v8 = v18;
+    requestCopy = v18;
   }
 
   return v17;
@@ -890,29 +890,29 @@ id __81__AMSURLRequestDecoration_addGUIDParameterToRequest_bag_preservingQueryEn
   return v9;
 }
 
-+ (id)addStoreFrontHeaderToRequest:(id)a3 forAccount:(id)a4 mediaType:(id)a5 bag:(id)a6
++ (id)addStoreFrontHeaderToRequest:(id)request forAccount:(id)account mediaType:(id)type bag:(id)bag
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  requestCopy = request;
+  bagCopy = bag;
+  typeCopy = type;
+  accountCopy = account;
   v14 = objc_alloc_init(AMSMutablePromise);
-  v15 = [(AMSPromise *)v14 completionHandlerAdapter];
-  [AMSStorefrontHeaderValueCreation storefrontHeaderValueForAccount:v13 bag:v11 mediaType:v12 allowFailedSuffixFetch:1 completionHandler:v15];
+  completionHandlerAdapter = [(AMSPromise *)v14 completionHandlerAdapter];
+  [AMSStorefrontHeaderValueCreation storefrontHeaderValueForAccount:accountCopy bag:bagCopy mediaType:typeCopy allowFailedSuffixFetch:1 completionHandler:completionHandlerAdapter];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __81__AMSURLRequestDecoration_addStoreFrontHeaderToRequest_forAccount_mediaType_bag___block_invoke;
   v23[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v23[4] = a1;
+  v23[4] = self;
   [(AMSPromise *)v14 addErrorBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __81__AMSURLRequestDecoration_addStoreFrontHeaderToRequest_forAccount_mediaType_bag___block_invoke_64;
   v20[3] = &unk_1E73B32C8;
-  v21 = v10;
-  v22 = a1;
-  v16 = v10;
+  v21 = requestCopy;
+  selfCopy = self;
+  v16 = requestCopy;
   v17 = [(AMSMutablePromise *)v14 thenWithBlock:v20];
   v18 = [v16 ams_addHeadersFromPromise:v17];
 
@@ -1017,33 +1017,33 @@ id __81__AMSURLRequestDecoration_addStoreFrontHeaderToRequest_forAccount_mediaTy
   return v15;
 }
 
-+ (BOOL)_shouldSendGUIDForRequest:(id)a3 patterns:(id)a4 schemes:(id)a5
++ (BOOL)_shouldSendGUIDForRequest:(id)request patterns:(id)patterns schemes:(id)schemes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  patternsCopy = patterns;
+  schemesCopy = schemes;
   if (+[AMSDefaults alwaysSendGUID])
   {
     LOBYTE(v10) = 1;
   }
 
-  else if ([v8 count])
+  else if ([patternsCopy count])
   {
-    v11 = [v7 URL];
-    v12 = [v11 scheme];
-    LODWORD(v10) = [v9 containsObject:v12];
+    v11 = [requestCopy URL];
+    scheme = [v11 scheme];
+    LODWORD(v10) = [schemesCopy containsObject:scheme];
 
     if (v10)
     {
-      v13 = [v7 URL];
-      v14 = [v13 absoluteString];
+      v13 = [requestCopy URL];
+      absoluteString = [v13 absoluteString];
 
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v15 = v8;
+      v15 = patternsCopy;
       v10 = [v15 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
@@ -1057,7 +1057,7 @@ id __81__AMSURLRequestDecoration_addStoreFrontHeaderToRequest_forAccount_mediaTy
               objc_enumerationMutation(v15);
             }
 
-            if ([v14 rangeOfString:*(*(&v19 + 1) + 8 * i) options:{1024, v19}] != 0x7FFFFFFFFFFFFFFFLL)
+            if ([absoluteString rangeOfString:*(*(&v19 + 1) + 8 * i) options:{1024, v19}] != 0x7FFFFFFFFFFFFFFFLL)
             {
               LOBYTE(v10) = 1;
               goto LABEL_16;
@@ -1086,20 +1086,20 @@ LABEL_16:
   return v10;
 }
 
-+ (id)_addGUIDParameterToRequest:(id)a3 fromPromise:(id)a4 shouldPreserveEncoding:(BOOL)a5
++ (id)_addGUIDParameterToRequest:(id)request fromPromise:(id)promise shouldPreserveEncoding:(BOOL)encoding
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  promiseCopy = promise;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__AMSURLRequestDecoration__addGUIDParameterToRequest_fromPromise_shouldPreserveEncoding___block_invoke;
   v14[3] = &unk_1E73BD308;
-  v16 = v8;
-  v17 = a1;
-  v15 = v9;
-  v18 = a5;
-  v10 = v8;
-  v11 = v9;
+  v16 = requestCopy;
+  selfCopy = self;
+  v15 = promiseCopy;
+  encodingCopy = encoding;
+  v10 = requestCopy;
+  v11 = promiseCopy;
   v12 = [v10 ams_modifyRequestWithBlock:v14];
 
   return v12;

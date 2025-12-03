@@ -1,15 +1,15 @@
 @interface _OSBatteryDrainPredictor
-+ (id)behaviorDescription:(int64_t)a3;
++ (id)behaviorDescription:(int64_t)description;
 + (id)predictor;
 - (BOOL)highBatteryDrainComparedtoHourlyAggregate;
 - (_OSBatteryDrainPredictor)init;
-- (id)drainPerDayFromDate:(id)a3 forNumberOfDays:(int)a4;
+- (id)drainPerDayFromDate:(id)date forNumberOfDays:(int)days;
 - (id)firstBatteryLevelDate;
 - (id)lastBatteryLevelDate;
 - (int64_t)historicalClassification;
 - (int64_t)lastBatteryLevelValue;
-- (void)logCompletion:(id)a3;
-- (void)recordIntelligentLPMThreshold:(int64_t)a3 threshold:(int64_t)a4;
+- (void)logCompletion:(id)completion;
+- (void)recordIntelligentLPMThreshold:(int64_t)threshold threshold:(int64_t)a4;
 @end
 
 @implementation _OSBatteryDrainPredictor
@@ -36,26 +36,26 @@
   return v2;
 }
 
-+ (id)behaviorDescription:(int64_t)a3
++ (id)behaviorDescription:(int64_t)description
 {
-  if ((a3 - 1) > 2)
+  if ((description - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2799C1CE8[a3 - 1];
+    return off_2799C1CE8[description - 1];
   }
 }
 
 - (int64_t)historicalClassification
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v4 = [MEMORY[0x277CBEAA8] now];
-  v5 = [v3 components:28 fromDate:v4];
-  v6 = [v3 dateFromComponents:v5];
+  v5 = [currentCalendar components:28 fromDate:v4];
+  v6 = [currentCalendar dateFromComponents:v5];
 
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v6 sinceDate:-604800.0];
   v8 = [(_OSBatteryDrainPredictor *)self drainPerDayFromDate:v7 forNumberOfDays:7];
@@ -67,12 +67,12 @@
     _os_log_impl(&dword_25D171000, log, OS_LOG_TYPE_DEFAULT, "Drain per day: %@", buf, 0xCu);
   }
 
-  v10 = [v8 allValues];
+  allValues = [v8 allValues];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v11 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -84,7 +84,7 @@
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v22 + 1) + 8 * i) intValue] > 90)
@@ -93,7 +93,7 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v12);
@@ -138,17 +138,17 @@
   return v19;
 }
 
-- (void)logCompletion:(id)a3
+- (void)logCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [v4 state];
+  completionCopy = completion;
+  state = [completionCopy state];
   log = self->_log;
   v7 = os_log_type_enabled(log, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (state)
   {
     if (v7)
     {
-      [(_OSBatteryDrainPredictor *)log logCompletion:v4];
+      [(_OSBatteryDrainPredictor *)log logCompletion:completionCopy];
     }
   }
 
@@ -158,23 +158,23 @@
   }
 }
 
-- (id)drainPerDayFromDate:(id)a3 forNumberOfDays:(int)a4
+- (id)drainPerDayFromDate:(id)date forNumberOfDays:(int)days
 {
   v43 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v36 = self;
+  dateCopy = date;
+  selfCopy = self;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     [(_OSBatteryDrainPredictor *)log drainPerDayFromDate:v6 forNumberOfDays:v7, v8, v9, v10, v11, v12];
   }
 
-  v32 = [MEMORY[0x277CBEA80] currentCalendar];
-  v13 = [v32 components:28 fromDate:v31];
-  v34 = [v32 dateFromComponents:v13];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v13 = [currentCalendar components:28 fromDate:dateCopy];
+  v34 = [currentCalendar dateFromComponents:v13];
 
   v33 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (a4 >= 1)
+  if (days >= 1)
   {
     v15 = 0;
     *&v14 = 138412546;
@@ -183,7 +183,7 @@
     {
       v16 = [v34 dateByAddingTimeInterval:{v15 * 86400.0, v30}];
       v17 = [v16 dateByAddingTimeInterval:86399.0];
-      v18 = v36->_log;
+      v18 = selfCopy->_log;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = v30;
@@ -201,16 +201,16 @@
       v42 = objc_alloc_init(_dayDrainInfo);
       v19 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v16 endDate:v17 maxEvents:0 lastN:0 reversed:0];
       v20 = BiomeLibrary();
-      v21 = [v20 Device];
-      v22 = [v21 Power];
-      v23 = [v22 BatteryLevel];
-      v24 = [v23 publisherWithOptions:v19];
+      device = [v20 Device];
+      power = [device Power];
+      batteryLevel = [power BatteryLevel];
+      v24 = [batteryLevel publisherWithOptions:v19];
       v25 = [v24 filterWithIsIncluded:&__block_literal_global_8];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __64___OSBatteryDrainPredictor_drainPerDayFromDate_forNumberOfDays___block_invoke_2;
       v38[3] = &unk_2799C1A30;
-      v38[4] = v36;
+      v38[4] = selfCopy;
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __64___OSBatteryDrainPredictor_drainPerDayFromDate_forNumberOfDays___block_invoke_3;
@@ -225,7 +225,7 @@
       ++v15;
     }
 
-    while (a4 != v15);
+    while (days != v15);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -242,10 +242,10 @@
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
   v3 = BiomeLibrary();
-  v4 = [v3 Device];
-  v5 = [v4 Power];
-  v6 = [v5 BatteryLevel];
-  v7 = [v6 publisher];
+  device = [v3 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  publisher = [batteryLevel publisher];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48___OSBatteryDrainPredictor_lastBatteryLevelDate__block_invoke;
@@ -256,7 +256,7 @@
   v11[2] = __48___OSBatteryDrainPredictor_lastBatteryLevelDate__block_invoke_58;
   v11[3] = &unk_2799C1A80;
   v11[4] = &v13;
-  v8 = [v7 sinkWithCompletion:v12 receiveInput:v11];
+  v8 = [publisher sinkWithCompletion:v12 receiveInput:v11];
 
   v9 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -274,10 +274,10 @@
   v20 = 0;
   v3 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:0 maxEvents:5 lastN:0 reversed:0];
   v4 = BiomeLibrary();
-  v5 = [v4 Device];
-  v6 = [v5 Power];
-  v7 = [v6 BatteryLevel];
-  v8 = [v7 publisherWithOptions:v3];
+  device = [v4 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  v8 = [batteryLevel publisherWithOptions:v3];
   v9 = [v8 filterWithIsIncluded:&__block_literal_global_60];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -304,10 +304,10 @@
   v15 = 0x2020000000;
   v16 = -1;
   v3 = BiomeLibrary();
-  v4 = [v3 Device];
-  v5 = [v4 Power];
-  v6 = [v5 BatteryLevel];
-  v7 = [v6 publisher];
+  device = [v3 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  publisher = [batteryLevel publisher];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49___OSBatteryDrainPredictor_lastBatteryLevelValue__block_invoke;
@@ -318,7 +318,7 @@
   v11[2] = __49___OSBatteryDrainPredictor_lastBatteryLevelValue__block_invoke_62;
   v11[3] = &unk_2799C1A80;
   v11[4] = &v13;
-  v8 = [v7 sinkWithCompletion:v12 receiveInput:v11];
+  v8 = [publisher sinkWithCompletion:v12 receiveInput:v11];
 
   v9 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -339,8 +339,8 @@
   }
 
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [(_OSBatteryDrainPredictor *)self firstBatteryLevelDate];
-  [v3 timeIntervalSinceDate:v4];
+  firstBatteryLevelDate = [(_OSBatteryDrainPredictor *)self firstBatteryLevelDate];
+  [v3 timeIntervalSinceDate:firstBatteryLevelDate];
   v6 = v5 / 86400.0;
 
   if (v6 >= 28.0)
@@ -349,21 +349,21 @@
     v28 = 0;
     v18 = [v7 typicalBatteryLevelWithReferenceDays:0 aggregatedOverTimeWidth:60 withError:&v28];
     v19 = v28;
-    v20 = [(_OSBatteryDrainPredictor *)self lastBatteryLevelValue];
-    v21 = [(_OSBatteryDrainPredictor *)self lastBatteryLevelDate];
-    v22 = v21;
-    if (v20 == -1 || !v21 || v19)
+    lastBatteryLevelValue = [(_OSBatteryDrainPredictor *)self lastBatteryLevelValue];
+    lastBatteryLevelDate = [(_OSBatteryDrainPredictor *)self lastBatteryLevelDate];
+    v22 = lastBatteryLevelDate;
+    if (lastBatteryLevelValue == -1 || !lastBatteryLevelDate || v19)
     {
-      v23 = [(_OSBatteryDrainPredictor *)self log];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      currentCalendar = [(_OSBatteryDrainPredictor *)self log];
+      if (os_log_type_enabled(currentCalendar, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
         v30 = v19;
         v31 = 2048;
-        v32 = v20;
+        v32 = lastBatteryLevelValue;
         v33 = 2112;
         v34 = v22;
-        _os_log_error_impl(&dword_25D171000, v23, OS_LOG_TYPE_ERROR, "highBatteryDrainComparedtoHourlyAggregate failed error: %@ lastValue: %ld lastDate: %@", buf, 0x20u);
+        _os_log_error_impl(&dword_25D171000, currentCalendar, OS_LOG_TYPE_ERROR, "highBatteryDrainComparedtoHourlyAggregate failed error: %@ lastValue: %ld lastDate: %@", buf, 0x20u);
       }
 
       v15 = 0;
@@ -371,17 +371,17 @@
 
     else
     {
-      v23 = [MEMORY[0x277CBEA80] currentCalendar];
-      v24 = [v23 components:96 fromDate:v22];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v24 = [currentCalendar components:96 fromDate:v22];
       v25 = [v18 objectAtIndexedSubscript:{objc_msgSend(v24, "hour")}];
-      v26 = [v25 intValue] - v20;
+      v26 = [v25 intValue] - lastBatteryLevelValue;
 
-      [(_OSBatteryDrainPredictor *)self recordIntelligentLPMThreshold:v20 threshold:v26];
+      [(_OSBatteryDrainPredictor *)self recordIntelligentLPMThreshold:lastBatteryLevelValue threshold:v26];
       v27 = [(_OSBatteryDrainPredictor *)self log];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v30 = v20;
+        v30 = lastBatteryLevelValue;
         v31 = 2048;
         v32 = v26;
         v33 = 2112;
@@ -409,7 +409,7 @@ LABEL_4:
   return v15;
 }
 
-- (void)recordIntelligentLPMThreshold:(int64_t)a3 threshold:(int64_t)a4
+- (void)recordIntelligentLPMThreshold:(int64_t)threshold threshold:(int64_t)a4
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D85DD0];

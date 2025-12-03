@@ -1,15 +1,15 @@
 @interface _DPDediscoPayloadUploader
-- (_DPDediscoPayloadUploader)initWithBaseURL:(id)a3 useOHTTP:(BOOL)a4;
-- (id)buildHTTPHeadersWithPayload:(id)a3 withEncoder:(id)a4 withError:(id *)a5;
-- (id)uploadPayload:(id)a3 withEncoder:(id)a4;
-- (id)uploadWithHTTPBody:(id)a3 withHTTPHeaders:(id)a4 withFullURL:(id)a5;
+- (_DPDediscoPayloadUploader)initWithBaseURL:(id)l useOHTTP:(BOOL)p;
+- (id)buildHTTPHeadersWithPayload:(id)payload withEncoder:(id)encoder withError:(id *)error;
+- (id)uploadPayload:(id)payload withEncoder:(id)encoder;
+- (id)uploadWithHTTPBody:(id)body withHTTPHeaders:(id)headers withFullURL:(id)l;
 @end
 
 @implementation _DPDediscoPayloadUploader
 
-- (_DPDediscoPayloadUploader)initWithBaseURL:(id)a3 useOHTTP:(BOOL)a4
+- (_DPDediscoPayloadUploader)initWithBaseURL:(id)l useOHTTP:(BOOL)p
 {
-  v7 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = _DPDediscoPayloadUploader;
   v8 = [(_DPDediscoPayloadUploader *)&v14 init];
@@ -20,9 +20,9 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if ([v7 length])
+  if ([lCopy length])
   {
-    objc_storeStrong(&v8->_baseURL, a3);
+    objc_storeStrong(&v8->_baseURL, l);
     if ([(NSString *)v8->_baseURL hasSuffix:@"/"])
     {
       v9 = [(NSString *)v8->_baseURL substringToIndex:[(NSString *)v8->_baseURL length]- 1];
@@ -30,7 +30,7 @@ LABEL_6:
       v8->_baseURL = v9;
     }
 
-    v8->_useOHTTP = a4;
+    v8->_useOHTTP = p;
     goto LABEL_6;
   }
 
@@ -46,24 +46,24 @@ LABEL_10:
   return v11;
 }
 
-- (id)uploadWithHTTPBody:(id)a3 withHTTPHeaders:(id)a4 withFullURL:(id)a5
+- (id)uploadWithHTTPBody:(id)body withHTTPHeaders:(id)headers withFullURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  bodyCopy = body;
+  headersCopy = headers;
+  lCopy = l;
+  if (bodyCopy)
   {
     v11 = +[_DPLog service];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      *&buf[4] = [v8 length];
+      *&buf[4] = [bodyCopy length];
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = lCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Upload via HTTP body size: %lu - uploading to %@", buf, 0x16u);
     }
 
-    v12 = [(_DPDediscoPayloadUploader *)self createUploadClientWithURL:v10 withHeaders:v9 uploadWithOHTTP:[(_DPDediscoPayloadUploader *)self useOHTTP]];
+    v12 = [(_DPDediscoPayloadUploader *)self createUploadClientWithURL:lCopy withHeaders:headersCopy uploadWithOHTTP:[(_DPDediscoPayloadUploader *)self useOHTTP]];
     if (v12)
     {
       v13 = +[NSProcessInfo processInfo];
@@ -82,12 +82,12 @@ LABEL_10:
       v30 = buf;
       v14 = dispatch_semaphore_create(0);
       v29 = v14;
-      [v12 uploadData:v8 withHeaders:v9 onCompletion:v28];
+      [v12 uploadData:bodyCopy withHeaders:headersCopy onCompletion:v28];
       v15 = dispatch_time(0, 5000000000);
       if (dispatch_semaphore_wait(v14, v15))
       {
-        v16 = [NSString stringWithFormat:@"Timeout uploading: %@", v10];
-        v17 = [_DPDediscoError errorWithCode:200 description:v16];
+        lCopy = [NSString stringWithFormat:@"Timeout uploading: %@", lCopy];
+        v17 = [_DPDediscoError errorWithCode:200 description:lCopy];
 
         v18 = +[_DPLog service];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -105,7 +105,7 @@ LABEL_10:
           v18 = +[_DPLog service];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            sub_10004FDB0(v10, &buf[8]);
+            sub_10004FDB0(lCopy, &buf[8]);
           }
         }
 
@@ -115,7 +115,7 @@ LABEL_10:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             *v31 = 138412290;
-            v32 = v10;
+            v32 = lCopy;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Successfully uploaded DAP report to %@", v31, 0xCu);
           }
 
@@ -146,8 +146,8 @@ LABEL_10:
 
   else
   {
-    v19 = [NSString stringWithFormat:@"Nothing to upload: serialized report is empty: %@", v10];
-    v20 = [_DPDediscoError errorWithCode:201 description:v19];
+    lCopy2 = [NSString stringWithFormat:@"Nothing to upload: serialized report is empty: %@", lCopy];
+    v20 = [_DPDediscoError errorWithCode:201 description:lCopy2];
 
     v21 = +[_DPLog service];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -161,24 +161,24 @@ LABEL_10:
   return v22;
 }
 
-- (id)uploadPayload:(id)a3 withEncoder:(id)a4
+- (id)uploadPayload:(id)payload withEncoder:(id)encoder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getReport];
-  v9 = [v6 getCollectionId];
-  if (v8)
+  payloadCopy = payload;
+  encoderCopy = encoder;
+  getReport = [payloadCopy getReport];
+  getCollectionId = [payloadCopy getCollectionId];
+  if (getReport)
   {
     v10 = +[_DPLog service];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v25 = v9;
+      v25 = getCollectionId;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Bypassing SGX for collectionID %@ - Sending DAP report only", buf, 0xCu);
     }
 
     v23 = 0;
-    v11 = [(_DPDediscoPayloadUploader *)self buildHTTPHeadersWithPayload:v6 withEncoder:v7 withError:&v23];
+    v11 = [(_DPDediscoPayloadUploader *)self buildHTTPHeadersWithPayload:payloadCopy withEncoder:encoderCopy withError:&v23];
     v12 = v23;
     if (v12)
     {
@@ -189,7 +189,7 @@ LABEL_10:
     else
     {
       v22 = 0;
-      v16 = [v7 taskIDWithError:&v22];
+      v16 = [encoderCopy taskIDWithError:&v22];
       v17 = v22;
       v13 = v17;
       if (v17)
@@ -199,18 +199,18 @@ LABEL_10:
 
       else
       {
-        v21 = [(_DPDediscoPayloadUploader *)self baseURL];
+        baseURL = [(_DPDediscoPayloadUploader *)self baseURL];
         v18 = [_DPDediscoUtils toBase64URLEncoded:v16];
-        v19 = [NSString stringWithFormat:@"%@/tasks/%@/reports", v21, v18];
+        v19 = [NSString stringWithFormat:@"%@/tasks/%@/reports", baseURL, v18];
 
-        v14 = [(_DPDediscoPayloadUploader *)self uploadWithHTTPBody:v8 withHTTPHeaders:v11 withFullURL:v19];
+        v14 = [(_DPDediscoPayloadUploader *)self uploadWithHTTPBody:getReport withHTTPHeaders:v11 withFullURL:v19];
       }
     }
   }
 
   else
   {
-    v13 = [NSString stringWithFormat:@"Failed to send V1 payloads collectionID %@ - http upload is forbidden", v9];
+    v13 = [NSString stringWithFormat:@"Failed to send V1 payloads collectionID %@ - http upload is forbidden", getCollectionId];
     v15 = +[_DPLog service];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -223,22 +223,22 @@ LABEL_10:
   return v14;
 }
 
-- (id)buildHTTPHeadersWithPayload:(id)a3 withEncoder:(id)a4 withError:(id *)a5
+- (id)buildHTTPHeadersWithPayload:(id)payload withEncoder:(id)encoder withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 encodedReportAuthExtensionDataWithError:a5];
-  if (a5 && *a5)
+  payloadCopy = payload;
+  encoderCopy = encoder;
+  v9 = [encoderCopy encodedReportAuthExtensionDataWithError:error];
+  if (error && *error)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v8 encodedTaskProvExtensionDataWithError:a5];
+    v11 = [encoderCopy encodedTaskProvExtensionDataWithError:error];
     if (v11)
     {
-      v12 = [v8 dapVersion];
+      dapVersion = [encoderCopy dapVersion];
       v13 = +[_DPDeviceInfo isInternalBuild];
       v14 = @"0";
       if (v13)
@@ -246,10 +246,10 @@ LABEL_10:
         v14 = @"1";
       }
 
-      v15 = [NSString stringWithFormat:@"application/dap-reportversion=%@;build-type=%@", v12, v14];;
+      v15 = [NSString stringWithFormat:@"application/dap-reportversion=%@;build-type=%@", dapVersion, v14];;
 
-      v16 = [v7 getCollectionId];
-      v23[0] = v16;
+      getCollectionId = [payloadCopy getCollectionId];
+      v23[0] = getCollectionId;
       v23[1] = v15;
       v17 = [NSArray arrayWithObjects:v23 count:2];
       v10 = [NSMutableDictionary dictionaryWithObjects:v17 forKeys:&off_100075AF0];

@@ -1,30 +1,30 @@
 @interface CNiOSABContactIdentifiersPredicate
-- (CNiOSABContactIdentifiersPredicate)initWithIdentifiers:(id)a3 ignoreUnifiedIdentifiers:(BOOL)a4;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5;
+- (CNiOSABContactIdentifiersPredicate)initWithIdentifiers:(id)identifiers ignoreUnifiedIdentifiers:(BOOL)unifiedIdentifiers;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation CNiOSABContactIdentifiersPredicate
 
-- (CNiOSABContactIdentifiersPredicate)initWithIdentifiers:(id)a3 ignoreUnifiedIdentifiers:(BOOL)a4
+- (CNiOSABContactIdentifiersPredicate)initWithIdentifiers:(id)identifiers ignoreUnifiedIdentifiers:(BOOL)unifiedIdentifiers
 {
   v9.receiver = self;
   v9.super_class = CNiOSABContactIdentifiersPredicate;
-  v5 = [(CNContactsWithIdentifiersPredicate *)&v9 initWithIdentifiers:a3];
+  v5 = [(CNContactsWithIdentifiersPredicate *)&v9 initWithIdentifiers:identifiers];
   v6 = v5;
   if (v5)
   {
-    v5->_ignoreUnifiedIdentifiers = a4;
+    v5->_ignoreUnifiedIdentifiers = unifiedIdentifiers;
     v7 = v5;
   }
 
   return v6;
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
-  v9 = [(CNContactsWithIdentifiersPredicate *)self identifiers];
-  v10 = [v9 count];
+  identifiers = [(CNContactsWithIdentifiersPredicate *)self identifiers];
+  v10 = [identifiers count];
 
   if (v10)
   {
@@ -35,10 +35,10 @@
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     [CNErrorFactory errorWithCode:400 userInfo:0];
-    *a7 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -49,9 +49,9 @@
   return v13;
 }
 
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error
 {
-  v7 = [(CNContactsWithIdentifiersPredicate *)self identifiers:a3];
+  v7 = [(CNContactsWithIdentifiersPredicate *)self identifiers:book];
   v8 = [v7 count];
 
   if (v8)
@@ -60,8 +60,8 @@
     if ([v9 count])
     {
       v10 = MEMORY[0x1E698A130];
-      v11 = [v9 allObjects];
-      v12 = [v10 predicateForContactsWithUUIDs:v11 ignoreUnifiedIdentifiers:{-[CNiOSABContactIdentifiersPredicate ignoreUnifiedIdentifiers](self, "ignoreUnifiedIdentifiers")}];
+      allObjects = [v9 allObjects];
+      v12 = [v10 predicateForContactsWithUUIDs:allObjects ignoreUnifiedIdentifiers:{-[CNiOSABContactIdentifiersPredicate ignoreUnifiedIdentifiers](self, "ignoreUnifiedIdentifiers")}];
     }
 
     else
@@ -72,7 +72,7 @@
 
   else
   {
-    CNSetError(a5, 400, 0);
+    CNSetError(error, 400, 0);
     v12 = 0;
   }
 

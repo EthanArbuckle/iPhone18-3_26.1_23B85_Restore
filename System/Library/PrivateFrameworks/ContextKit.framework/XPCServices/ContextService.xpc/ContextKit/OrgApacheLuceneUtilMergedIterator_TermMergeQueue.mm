@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneUtilMergedIterator_TermMergeQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneUtilMergedIterator_TermMergeQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v5 = *(a3 + 2)) == 0 || !a4)
+  if (!id || (v5 = *(id + 2)) == 0 || !withId)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = [v5 compareToWithId:*(a4 + 2)];
+  v7 = [v5 compareToWithId:*(withId + 2)];
   if (v7)
   {
     return v7 >> 31;
@@ -19,7 +19,7 @@
 
   else
   {
-    LOBYTE(v8) = *(a3 + 6) < *(a4 + 6);
+    LOBYTE(v8) = *(id + 6) < *(withId + 6);
   }
 
   return v8;

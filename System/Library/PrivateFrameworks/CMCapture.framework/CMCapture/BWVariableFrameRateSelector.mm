@@ -1,34 +1,34 @@
 @interface BWVariableFrameRateSelector
-- (BWVariableFrameRateSelector)initWithPortTypes:(id)a3 forParameters:(id)a4 frameRateSwitchBasedOnMotionDisabled:(BOOL)a5 teleAutoVideoFrameRateAllows24FPS:(BOOL)a6;
-- (char)_loadDefaultsWithPortTypes:(void *)a3 forParameters:(uint64_t)a4 frameRateSwitchBasedOnMotionDisabled:(uint64_t)a5 teleAutoVideoFrameRateAllows24FPS:(uint64_t)a6;
+- (BWVariableFrameRateSelector)initWithPortTypes:(id)types forParameters:(id)parameters frameRateSwitchBasedOnMotionDisabled:(BOOL)disabled teleAutoVideoFrameRateAllows24FPS:(BOOL)s;
+- (char)_loadDefaultsWithPortTypes:(void *)types forParameters:(uint64_t)parameters frameRateSwitchBasedOnMotionDisabled:(uint64_t)disabled teleAutoVideoFrameRateAllows24FPS:(uint64_t)s;
 - (char)_updateMotionDataFromSampleBuffer:(char *)result;
-- (double)_frameRateForFrameStatistics:(float *)a1 portType:(void *)a2;
-- (float)getAEMaxGainForPortType:(id)a3 suggestedFrameRate:(double)a4;
-- (uint64_t)_getSceneStabilityFromSampleBuffer:(char *)a1 currentFrameRate:(const void *)a2 portType:(uint64_t)a3;
-- (uint64_t)_switchBackTo60AsFlickerFrequencyIsDetected:(uint64_t)a1;
-- (uint64_t)_updateAEMaxGainDictionary:(uint64_t)result withAEMaxGain:(void *)a2 forPortType:(void *)a3;
-- (uint64_t)_updateSuggestedFrameRateFromFrameStatistics:(uint64_t)result sampleBuffer:(void *)a2 currentFrameRate:(CMAttachmentBearerRef)target aeMaxGain:(float)a4;
-- (uint64_t)_updatemotionThreshold:(uint64_t)a3 forPortType:;
+- (double)_frameRateForFrameStatistics:(float *)statistics portType:(void *)type;
+- (float)getAEMaxGainForPortType:(id)type suggestedFrameRate:(double)rate;
+- (uint64_t)_getSceneStabilityFromSampleBuffer:(char *)buffer currentFrameRate:(const void *)rate portType:(uint64_t)type;
+- (uint64_t)_switchBackTo60AsFlickerFrequencyIsDetected:(uint64_t)detected;
+- (uint64_t)_updateAEMaxGainDictionary:(uint64_t)result withAEMaxGain:(void *)gain forPortType:(void *)type;
+- (uint64_t)_updateSuggestedFrameRateFromFrameStatistics:(uint64_t)result sampleBuffer:(void *)buffer currentFrameRate:(CMAttachmentBearerRef)target aeMaxGain:(float)gain;
+- (uint64_t)_updatemotionThreshold:(uint64_t)threshold forPortType:;
 - (uint64_t)_waterSceneDetected;
-- (void)_updateSmartSceneFromSampleBuffer:(uint64_t)a1 currentFrameRate:(CMAttachmentBearerRef)target portType:(uint64_t)a3;
-- (void)addAttachmentsToSamplebuffer:(opaqueCMSampleBuffer *)a3;
+- (void)_updateSmartSceneFromSampleBuffer:(uint64_t)buffer currentFrameRate:(CMAttachmentBearerRef)target portType:(uint64_t)type;
+- (void)addAttachmentsToSamplebuffer:(opaqueCMSampleBuffer *)samplebuffer;
 - (void)dealloc;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatistics:(id)a4 currentFrameRate:(float)a5 aeMaxGain:(float)a6 zoomInProgress:(BOOL)a7 mostRecentInferenceResult:(id)a8;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatistics:(id)statistics currentFrameRate:(float)rate aeMaxGain:(float)gain zoomInProgress:(BOOL)progress mostRecentInferenceResult:(id)result;
 @end
 
 @implementation BWVariableFrameRateSelector
 
-- (BWVariableFrameRateSelector)initWithPortTypes:(id)a3 forParameters:(id)a4 frameRateSwitchBasedOnMotionDisabled:(BOOL)a5 teleAutoVideoFrameRateAllows24FPS:(BOOL)a6
+- (BWVariableFrameRateSelector)initWithPortTypes:(id)types forParameters:(id)parameters frameRateSwitchBasedOnMotionDisabled:(BOOL)disabled teleAutoVideoFrameRateAllows24FPS:(BOOL)s
 {
-  v6 = a6;
-  v7 = a5;
+  sCopy = s;
+  disabledCopy = disabled;
   v16.receiver = self;
   v16.super_class = BWVariableFrameRateSelector;
   v10 = [(BWVariableFrameRateSelector *)&v16 init];
   v14 = v10;
   if (v10)
   {
-    [(BWVariableFrameRateSelector *)v10 _loadDefaultsWithPortTypes:a3 forParameters:a4 frameRateSwitchBasedOnMotionDisabled:v7 teleAutoVideoFrameRateAllows24FPS:v6, v11, v12, v13];
+    [(BWVariableFrameRateSelector *)v10 _loadDefaultsWithPortTypes:types forParameters:parameters frameRateSwitchBasedOnMotionDisabled:disabledCopy teleAutoVideoFrameRateAllows24FPS:sCopy, v11, v12, v13];
   }
 
   return v14;
@@ -41,57 +41,57 @@
   [(BWVariableFrameRateSelector *)&v3 dealloc];
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatistics:(id)a4 currentFrameRate:(float)a5 aeMaxGain:(float)a6 zoomInProgress:(BOOL)a7 mostRecentInferenceResult:(id)a8
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatistics:(id)statistics currentFrameRate:(float)rate aeMaxGain:(float)gain zoomInProgress:(BOOL)progress mostRecentInferenceResult:(id)result
 {
-  v9 = a7;
+  progressCopy = progress;
   os_unfair_lock_lock(&self->_smartCameraLock);
 
-  self->_mostRecentInferenceResult = a8;
+  self->_mostRecentInferenceResult = result;
   os_unfair_lock_unlock(&self->_smartCameraLock);
   os_unfair_lock_lock(&self->_variableFrameRateInfoLock);
-  BWSmartCameraSceneUpdateWithConfidence(&self->_zoomRequest, v9);
+  BWSmartCameraSceneUpdateWithConfidence(&self->_zoomRequest, progressCopy);
   confident = self->_zoomRequest.confident;
   self->_zoomInProgress = confident;
   if (!confident)
   {
-    [BWVariableFrameRateSelector _updateSuggestedFrameRateFromFrameStatistics:a4 sampleBuffer:a3 currentFrameRate:a5 aeMaxGain:?];
+    [BWVariableFrameRateSelector _updateSuggestedFrameRateFromFrameStatistics:statistics sampleBuffer:buffer currentFrameRate:rate aeMaxGain:?];
   }
 
   os_unfair_lock_unlock(&self->_variableFrameRateInfoLock);
 }
 
-- (void)addAttachmentsToSamplebuffer:(opaqueCMSampleBuffer *)a3
+- (void)addAttachmentsToSamplebuffer:(opaqueCMSampleBuffer *)samplebuffer
 {
   os_unfair_lock_lock(&self->_variableFrameRateInfoLock);
-  v5 = CMGetAttachment(a3, *off_1E798A3C8, 0);
-  v6 = CMGetAttachment(a3, @"VariableFrameRateInfo", 0);
-  if (!v6)
+  v5 = CMGetAttachment(samplebuffer, *off_1E798A3C8, 0);
+  dictionary = CMGetAttachment(samplebuffer, @"VariableFrameRateInfo", 0);
+  if (!dictionary)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    CMSetAttachment(a3, @"VariableFrameRateInfo", self->_variableFrameRateInfo, 1u);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    CMSetAttachment(samplebuffer, @"VariableFrameRateInfo", self->_variableFrameRateInfo, 1u);
   }
 
-  [v6 addEntriesFromDictionary:self->_variableFrameRateInfo];
+  [dictionary addEntriesFromDictionary:self->_variableFrameRateInfo];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_frameRateConversionStatus), *off_1E798D490}];
 
   os_unfair_lock_unlock(&self->_variableFrameRateInfoLock);
 }
 
-- (float)getAEMaxGainForPortType:(id)a3 suggestedFrameRate:(double)a4
+- (float)getAEMaxGainForPortType:(id)type suggestedFrameRate:(double)rate
 {
-  v5 = [(NSMutableDictionary *)self->_vfrAEMaxGainsByPortType objectForKeyedSubscript:a3];
-  v6 = [v5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%d", a4)}];
+  v5 = [(NSMutableDictionary *)self->_vfrAEMaxGainsByPortType objectForKeyedSubscript:type];
+  v6 = [v5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%d", rate)}];
 
   [v6 floatValue];
   return result;
 }
 
-- (char)_loadDefaultsWithPortTypes:(void *)a3 forParameters:(uint64_t)a4 frameRateSwitchBasedOnMotionDisabled:(uint64_t)a5 teleAutoVideoFrameRateAllows24FPS:(uint64_t)a6
+- (char)_loadDefaultsWithPortTypes:(void *)types forParameters:(uint64_t)parameters frameRateSwitchBasedOnMotionDisabled:(uint64_t)disabled teleAutoVideoFrameRateAllows24FPS:(uint64_t)s
 {
   if (result)
   {
-    v8 = a5;
-    v9 = a4;
+    disabledCopy = disabled;
+    parametersCopy = parameters;
     v12 = result;
     *(result + 12) = 0x3C88CE7000000000;
     *(result + 6) = 1014672602;
@@ -121,7 +121,7 @@
       *(v12 + 40) = result;
     }
 
-    v13 = OUTLINED_FUNCTION_10_0(result, a2, a3, a4, a5, a6, a7, a8, v52, __SPAIR64__(v8, v9), v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v83, v85, 0);
+    v13 = OUTLINED_FUNCTION_10_0(result, a2, types, parameters, disabled, s, a7, a8, v52, __SPAIR64__(disabledCopy, parametersCopy), v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v83, v85, 0);
     if (v13)
     {
       v14 = v13;
@@ -136,7 +136,7 @@
           }
 
           v17 = *(8 * i);
-          v18 = [a3 objectForKeyedSubscript:v17];
+          v18 = [types objectForKeyedSubscript:v17];
           v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
           if (v18)
           {
@@ -179,7 +179,7 @@
   return result;
 }
 
-- (uint64_t)_updateSuggestedFrameRateFromFrameStatistics:(uint64_t)result sampleBuffer:(void *)a2 currentFrameRate:(CMAttachmentBearerRef)target aeMaxGain:(float)a4
+- (uint64_t)_updateSuggestedFrameRateFromFrameStatistics:(uint64_t)result sampleBuffer:(void *)buffer currentFrameRate:(CMAttachmentBearerRef)target aeMaxGain:(float)gain
 {
   if (!result)
   {
@@ -191,17 +191,17 @@
   v9 = CMGetAttachment(target, *off_1E798A3C8, 0);
   v10 = [v9 objectForKeyedSubscript:*off_1E798C0E0];
   v11 = CMGetAttachment(target, v8, 0);
-  [a2 integrationTime];
+  [buffer integrationTime];
   v13 = v12;
-  [a2 gain];
+  [buffer gain];
   v15 = v13 * v14;
   v16 = [BWVariableFrameRateSelector _getSceneStabilityFromSampleBuffer:v7 currentFrameRate:target portType:v10];
-  BWSmartCameraSceneUpdateWithConfidence(v7 + 224, [a2 aeLimitsReached]);
+  BWSmartCameraSceneUpdateWithConfidence(v7 + 224, [buffer aeLimitsReached]);
   v17 = *(v7 + 225);
-  v18 = [(BWVariableFrameRateSelector *)v7 _waterSceneDetected];
+  _waterSceneDetected = [(BWVariableFrameRateSelector *)v7 _waterSceneDetected];
   v63 = [v9 objectForKeyedSubscript:*off_1E798B528];
-  v65 = a2;
-  v19 = [BWVariableFrameRateSelector _frameRateForFrameStatistics:v7 portType:a2];
+  bufferCopy = buffer;
+  v19 = [BWVariableFrameRateSelector _frameRateForFrameStatistics:v7 portType:buffer];
   v20 = *&v19;
   v21 = *(v7 + 12);
   v22 = *&v19 == 60.0 && v21 == 0;
@@ -209,7 +209,7 @@
   v24 = [v10 isEqualToString:{*off_1E798A0D8, v63}];
   *(v7 + 532) = v16;
   *(v7 + 533) = v17;
-  *(v7 + 534) = v18;
+  *(v7 + 534) = _waterSceneDetected;
   if (v23)
   {
     v25 = 2;
@@ -241,17 +241,17 @@
     {
       if (v24)
       {
-        if (a4 == 30.0 && (*(v7 + 474) & 1) != 0 && v27 > 0x18)
+        if (gain == 30.0 && (*(v7 + 474) & 1) != 0 && v27 > 0x18)
         {
           goto LABEL_31;
         }
       }
 
-      else if (a4 == 30.0 && v27 >= 0x19)
+      else if (gain == 30.0 && v27 >= 0x19)
       {
 LABEL_31:
-        [v65 integrationTime];
-        [v65 gain];
+        [bufferCopy integrationTime];
+        [bufferCopy gain];
         OUTLINED_FUNCTION_1_71(v32);
         v34 = OUTLINED_FUNCTION_2_63();
         v35 = v29 && v33 == 6;
@@ -259,7 +259,7 @@ LABEL_31:
         {
           v30 = 0;
           *(v7 + 492) = 6;
-          *(v7 + 500) = a4;
+          *(v7 + 500) = gain;
           v28 = 1103101952;
           goto LABEL_53;
         }
@@ -278,9 +278,9 @@ LABEL_31:
         goto LABEL_76;
       }
 
-      [v65 integrationTime];
+      [bufferCopy integrationTime];
       v46 = v45;
-      [v65 gain];
+      [bufferCopy gain];
       if (*(v7 + 536) > 29)
       {
         goto LABEL_97;
@@ -295,7 +295,7 @@ LABEL_31:
       v43 = *(v7 + 492);
     }
 
-    v50 = v20 == a4 && v43 == 4;
+    v50 = v20 == gain && v43 == 4;
     if (v50 && *(v7 + 8) == v20)
     {
       goto LABEL_97;
@@ -304,22 +304,22 @@ LABEL_31:
 LABEL_76:
     v30 = 0;
     *(v7 + 492) = 4;
-    *(v7 + 500) = a4;
+    *(v7 + 500) = gain;
 LABEL_77:
     *(v7 + 504) = v20;
     *(v7 + 8) = v20;
     goto LABEL_98;
   }
 
-  if (v18)
+  if (_waterSceneDetected)
   {
     v28 = 1114636288;
-    v29 = a4 == 60.0 && *(v7 + 492) == 8;
+    v29 = gain == 60.0 && *(v7 + 492) == 8;
     if (!v29 || (OUTLINED_FUNCTION_3_57(), !v29))
     {
       v30 = 0;
       *(v7 + 492) = 8;
-      *(v7 + 500) = a4;
+      *(v7 + 500) = gain;
 LABEL_53:
       *(v7 + 504) = v28;
       goto LABEL_54;
@@ -329,7 +329,7 @@ LABEL_53:
   }
 
   v36 = v16 ^ 1;
-  if (a4 != 60.0)
+  if (gain != 60.0)
   {
     v36 = 1;
   }
@@ -338,15 +338,15 @@ LABEL_53:
   {
     if (v17)
     {
-      [v65 integrationTime];
-      [v65 gain];
+      [bufferCopy integrationTime];
+      [bufferCopy gain];
       OUTLINED_FUNCTION_1_71(v37);
-      v39 = a4 == 30.0 && v38 == 3;
+      v39 = gain == 30.0 && v38 == 3;
       if (!v39 || *(v7 + 8) != 30.0)
       {
         v30 = 0;
         *(v7 + 492) = 3;
-        *(v7 + 500) = a4;
+        *(v7 + 500) = gain;
         v28 = 1106247680;
         goto LABEL_53;
       }
@@ -364,7 +364,7 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    if (a4 != 30.0 || v40 > 0x3B)
+    if (gain != 30.0 || v40 > 0x3B)
     {
       v30 = 2 * (v40 > 0x3B);
       goto LABEL_98;
@@ -385,7 +385,7 @@ LABEL_53:
       }
     }
 
-    [v65 integrationTime];
+    [bufferCopy integrationTime];
     if (v53 <= *(v7 + 24))
     {
 LABEL_84:
@@ -402,7 +402,7 @@ LABEL_84:
       }
 
       v58 = v57;
-      [v65 gain];
+      [bufferCopy gain];
       if (v58 * 0.97 <= v59)
       {
         goto LABEL_97;
@@ -439,12 +439,12 @@ LABEL_54:
   v30 = 1;
 LABEL_98:
   v60 = *(v7 + 8);
-  if (v60 == 0.0 && (v60 != a4 || *(v7 + 492)))
+  if (v60 == 0.0 && (v60 != gain || *(v7 + 492)))
   {
     *(v7 + 492) = 0;
-    *(v7 + 500) = a4;
-    *(v7 + 504) = a4;
-    *(v7 + 8) = a4;
+    *(v7 + 500) = gain;
+    *(v7 + 504) = gain;
+    *(v7 + 8) = gain;
   }
 
   if (*(v7 + 473) == 1)
@@ -458,22 +458,22 @@ LABEL_98:
   return [v62 setObject:v61 forKeyedSubscript:0x1F21AA0F0];
 }
 
-- (uint64_t)_updatemotionThreshold:(uint64_t)a3 forPortType:
+- (uint64_t)_updatemotionThreshold:(uint64_t)threshold forPortType:
 {
   if (result)
   {
     v5 = result;
-    [*(result + 392) setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", a2), a3}];
+    [*(result + 392) setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", a2), threshold}];
     v6 = [MEMORY[0x1E696AD98] numberWithInt:a2];
     v7 = *(v5 + 400);
 
-    return [v7 setObject:v6 forKeyedSubscript:a3];
+    return [v7 setObject:v6 forKeyedSubscript:threshold];
   }
 
   return result;
 }
 
-- (uint64_t)_updateAEMaxGainDictionary:(uint64_t)result withAEMaxGain:(void *)a2 forPortType:(void *)a3
+- (uint64_t)_updateAEMaxGainDictionary:(uint64_t)result withAEMaxGain:(void *)gain forPortType:(void *)type
 {
   if (result)
   {
@@ -497,8 +497,8 @@ LABEL_98:
           }
 
           v8 = *(*(&v10 + 1) + 8 * v7);
-          [objc_msgSend(a3 objectForKeyedSubscript:{v8), "floatValue"}];
-          [a2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:"), v8}];
+          [objc_msgSend(type objectForKeyedSubscript:{v8), "floatValue"}];
+          [gain setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:"), v8}];
           ++v7;
         }
 
@@ -523,9 +523,9 @@ LABEL_98:
     if (result)
     {
       v3 = result;
-      v4 = [result bytes];
+      bytes = [result bytes];
       result = [v3 length];
-      v5 = *(v4 + 4);
+      v5 = *(bytes + 4);
       if (result == (40 * v5 + 8))
       {
         if (v5 >= 1)
@@ -533,7 +533,7 @@ LABEL_98:
           v6 = 0;
           v7 = *(v2 + 408);
           v8 = *(v2 + 424);
-          v9 = (v4 + 28);
+          v9 = (bytes + 28);
           v10 = vdupq_n_s64(0x3E10000000000000uLL);
           do
           {
@@ -581,9 +581,9 @@ LABEL_98:
   return result;
 }
 
-- (uint64_t)_switchBackTo60AsFlickerFrequencyIsDetected:(uint64_t)a1
+- (uint64_t)_switchBackTo60AsFlickerFrequencyIsDetected:(uint64_t)detected
 {
-  if (a1)
+  if (detected)
   {
     v4 = 0.0;
     if ([objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B980), "intValue"}] - 1 <= 1)
@@ -603,8 +603,8 @@ LABEL_98:
       }
     }
 
-    BWSmartCameraSceneUpdateWithConfidence(a1 + 304, v4);
-    v12 = *(a1 + 305);
+    BWSmartCameraSceneUpdateWithConfidence(detected + 304, v4);
+    v12 = *(detected + 305);
   }
 
   else
@@ -615,22 +615,22 @@ LABEL_98:
   return v12 & 1;
 }
 
-- (double)_frameRateForFrameStatistics:(float *)a1 portType:(void *)a2
+- (double)_frameRateForFrameStatistics:(float *)statistics portType:(void *)type
 {
-  if (!a1)
+  if (!statistics)
   {
     return 0.0;
   }
 
-  [a1 getAEMaxGainForPortType:60.0 suggestedFrameRate:?];
+  [statistics getAEMaxGainForPortType:60.0 suggestedFrameRate:?];
   v5 = v4;
-  [a2 integrationTime];
-  if (v6 <= a1[4] * 0.97 || ([a2 integrationTime], v7 >= a1[4] * 1.03))
+  [type integrationTime];
+  if (v6 <= statistics[4] * 0.97 || ([type integrationTime], v7 >= statistics[4] * 1.03))
   {
-    [a2 integrationTime];
+    [type integrationTime];
     v10 = result;
     LODWORD(result) = 30.0;
-    if (v10 <= a1[4])
+    if (v10 <= statistics[4])
     {
       LODWORD(result) = 1114636288;
     }
@@ -638,7 +638,7 @@ LABEL_98:
 
   else
   {
-    [a2 gain];
+    [type gain];
     v8 = *&result < v5;
     LODWORD(result) = 1114636288;
     if (!v8)
@@ -650,11 +650,11 @@ LABEL_98:
   return result;
 }
 
-- (void)_updateSmartSceneFromSampleBuffer:(uint64_t)a1 currentFrameRate:(CMAttachmentBearerRef)target portType:(uint64_t)a3
+- (void)_updateSmartSceneFromSampleBuffer:(uint64_t)buffer currentFrameRate:(CMAttachmentBearerRef)target portType:(uint64_t)type
 {
-  if (a1)
+  if (buffer)
   {
-    *(a1 + 388) = [objc_msgSend(CMGetAttachment(target *off_1E798A3C8];
+    *(buffer + 388) = [objc_msgSend(CMGetAttachment(target *off_1E798A3C8];
     *&v5 = OUTLINED_FUNCTION_2_63();
     v6 = 400;
     if (!(v7 ^ v8 | v30))
@@ -662,7 +662,7 @@ LABEL_98:
       v6 = 392;
     }
 
-    if (*(a1 + 388) >= [objc_msgSend(*(a1 + v6) objectForKeyedSubscript:{a3, v5), "intValue"}])
+    if (*(buffer + 388) >= [objc_msgSend(*(buffer + v6) objectForKeyedSubscript:{type, v5), "intValue"}])
     {
       v9 = 0.0;
     }
@@ -672,10 +672,10 @@ LABEL_98:
       v9 = 1.0;
     }
 
-    v10 = *(a1 + 440);
-    v11 = *(a1 + 448);
-    v12 = *(a1 + 456);
-    v13 = *(a1 + 464);
+    v10 = *(buffer + 440);
+    v11 = *(buffer + 448);
+    v12 = *(buffer + 456);
+    v13 = *(buffer + 464);
     v15 = atan2(v12 * v13 + v10 * v11 + v12 * v13 + v10 * v11, (v12 * v12 + v11 * v11) * -2.0 + 1.0);
     *v16.i64 = v10 * v12 - v13 * v11 + v10 * v12 - v13 * v11;
     if (fabs(*v16.i64) >= 1.0)
@@ -693,8 +693,8 @@ LABEL_98:
 
     v32 = v17;
     v19 = atan2(v11 * v12 + v10 * v13 + v11 * v12 + v10 * v13, (v13 * v13 + v12 * v12) * -2.0 + 1.0);
-    BWSmartCameraSceneUpdateWithConfidence(a1 + 64, v9);
-    BWSmartCameraSceneUpdateWithConfidence(a1 + 104, v9);
+    BWSmartCameraSceneUpdateWithConfidence(buffer + 64, v9);
+    BWSmartCameraSceneUpdateWithConfidence(buffer + 104, v9);
     v20 = fabs(v15);
     v21 = fabs(v32);
     v22 = fabs(v19);
@@ -711,19 +711,19 @@ LABEL_98:
       }
 
       v26 = 1.0 - v25;
-      BWSmartCameraSceneUpdateWithConfidence(a1 + 144, v26);
+      BWSmartCameraSceneUpdateWithConfidence(buffer + 144, v26);
       v20 = v21;
       if (v21 > v22)
       {
 LABEL_21:
         v27 = 1.0 - v20;
-        BWSmartCameraSceneUpdateWithConfidence(a1 + 184, v27);
+        BWSmartCameraSceneUpdateWithConfidence(buffer + 184, v27);
         OUTLINED_FUNCTION_2_63();
         if (v7 ^ v8 | v30)
         {
           if ((v28 & 1) == 0)
           {
-            if ((*(a1 + 57) & 1) == 0)
+            if ((*(buffer + 57) & 1) == 0)
             {
               return;
             }
@@ -732,13 +732,13 @@ LABEL_21:
             goto LABEL_36;
           }
 
-          if (*(a1 + 145))
+          if (*(buffer + 145))
           {
             v29 = 65;
             goto LABEL_36;
           }
 
-          v30 = *(a1 + 57) == 0;
+          v30 = *(buffer + 57) == 0;
           v29 = 65;
           v31 = 145;
         }
@@ -747,7 +747,7 @@ LABEL_21:
         {
           if ((v28 & 1) == 0)
           {
-            if ((*(a1 + 57) & 1) == 0)
+            if ((*(buffer + 57) & 1) == 0)
             {
               return;
             }
@@ -756,15 +756,15 @@ LABEL_21:
             goto LABEL_36;
           }
 
-          if (*(a1 + 185))
+          if (*(buffer + 185))
           {
             v29 = 105;
 LABEL_36:
-            *(a1 + 56) = *(a1 + v29);
+            *(buffer + 56) = *(buffer + v29);
             return;
           }
 
-          v30 = *(a1 + 57) == 0;
+          v30 = *(buffer + 57) == 0;
           v29 = 105;
           v31 = 185;
         }
@@ -791,7 +791,7 @@ LABEL_36:
       }
 
       v24 = 1.0 - v23;
-      BWSmartCameraSceneUpdateWithConfidence(a1 + 144, v24);
+      BWSmartCameraSceneUpdateWithConfidence(buffer + 144, v24);
       if (v20 > v22)
       {
         goto LABEL_21;
@@ -803,13 +803,13 @@ LABEL_36:
   }
 }
 
-- (uint64_t)_getSceneStabilityFromSampleBuffer:(char *)a1 currentFrameRate:(const void *)a2 portType:(uint64_t)a3
+- (uint64_t)_getSceneStabilityFromSampleBuffer:(char *)buffer currentFrameRate:(const void *)rate portType:(uint64_t)type
 {
-  if (a1)
+  if (buffer)
   {
-    [(BWVariableFrameRateSelector *)a1 _updateMotionDataFromSampleBuffer:a2];
-    [BWVariableFrameRateSelector _updateSmartSceneFromSampleBuffer:a1 currentFrameRate:a2 portType:a3];
-    v6 = a1[56];
+    [(BWVariableFrameRateSelector *)buffer _updateMotionDataFromSampleBuffer:rate];
+    [BWVariableFrameRateSelector _updateSmartSceneFromSampleBuffer:buffer currentFrameRate:rate portType:type];
+    v6 = buffer[56];
   }
 
   else
@@ -822,16 +822,16 @@ LABEL_36:
 
 - (uint64_t)_waterSceneDetected
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 488));
-    v2 = *(a1 + 480);
-    os_unfair_lock_unlock((a1 + 488));
+    os_unfair_lock_lock((self + 488));
+    v2 = *(self + 480);
+    os_unfair_lock_unlock((self + 488));
     if ([v2 isValid])
     {
       [objc_msgSend(objc_msgSend(v2 "inferences")];
-      BWSmartCameraSceneUpdateWithConfidence(a1 + 344, v3);
-      v4 = *(a1 + 345);
+      BWSmartCameraSceneUpdateWithConfidence(self + 344, v3);
+      v4 = *(self + 345);
     }
 
     else

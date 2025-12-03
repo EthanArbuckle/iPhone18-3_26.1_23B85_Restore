@@ -1,12 +1,12 @@
 @interface HDConceptStoreTaskServer
 + (id)requiredEntitlements;
-- (void)conceptIndexManagerDidChangeExecutionState:(unint64_t)a3;
+- (void)conceptIndexManagerDidChangeExecutionState:(unint64_t)state;
 - (void)connectionInvalidated;
-- (void)remote_currentIndexingState:(id)a3;
-- (void)remote_queryConceptByIdentifier:(id)a3 loadRelationships:(BOOL)a4 completion:(id)a5;
-- (void)remote_queryCountOfConceptsAssociatedToUserRecordsWithCompletion:(id)a3;
-- (void)remote_queryRelationshipsForNodeWithID:(id)a3 completion:(id)a4;
-- (void)remote_startObservingConceptIndexManagerWithCompletion:(id)a3;
+- (void)remote_currentIndexingState:(id)state;
+- (void)remote_queryConceptByIdentifier:(id)identifier loadRelationships:(BOOL)relationships completion:(id)completion;
+- (void)remote_queryCountOfConceptsAssociatedToUserRecordsWithCompletion:(id)completion;
+- (void)remote_queryRelationshipsForNodeWithID:(id)d completion:(id)completion;
+- (void)remote_startObservingConceptIndexManagerWithCompletion:(id)completion;
 @end
 
 @implementation HDConceptStoreTaskServer
@@ -23,81 +23,81 @@
 
 - (void)connectionInvalidated
 {
-  v4 = [(HDStandardTaskServer *)self profile];
-  v3 = [v4 conceptIndexManager];
-  [v3 removeObserver:self];
+  profile = [(HDStandardTaskServer *)self profile];
+  conceptIndexManager = [profile conceptIndexManager];
+  [conceptIndexManager removeObserver:self];
 }
 
-- (void)remote_startObservingConceptIndexManagerWithCompletion:(id)a3
+- (void)remote_startObservingConceptIndexManagerWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(HDStandardTaskServer *)self profile];
-  v5 = [v4 conceptIndexManager];
-  [v5 addObserver:self];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  conceptIndexManager = [profile conceptIndexManager];
+  [conceptIndexManager addObserver:self];
 
-  v6[2](v6, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)remote_currentIndexingState:(id)a3
+- (void)remote_currentIndexingState:(id)state
 {
-  v7 = a3;
-  v4 = [(HDStandardTaskServer *)self profile];
-  v5 = [v4 conceptIndexManager];
+  stateCopy = state;
+  profile = [(HDStandardTaskServer *)self profile];
+  conceptIndexManager = [profile conceptIndexManager];
 
-  if (v5)
+  if (conceptIndexManager)
   {
-    v6 = [v5 currentExecutionState];
+    currentExecutionState = [conceptIndexManager currentExecutionState];
   }
 
   else
   {
-    v6 = 0;
+    currentExecutionState = 0;
   }
 
-  v7[2](v7, v6);
+  stateCopy[2](stateCopy, currentExecutionState);
 }
 
-- (void)remote_queryConceptByIdentifier:(id)a3 loadRelationships:(BOOL)a4 completion:(id)a5
+- (void)remote_queryConceptByIdentifier:(id)identifier loadRelationships:(BOOL)relationships completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HDStandardTaskServer *)self profile];
-  v11 = [v10 internalContentDatabaseManager];
+  relationshipsCopy = relationships;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  profile = [(HDStandardTaskServer *)self profile];
+  internalContentDatabaseManager = [profile internalContentDatabaseManager];
 
   v14 = 0;
-  v12 = [v11 conceptForIdentifier:v9 options:v7 error:&v14];
+  v12 = [internalContentDatabaseManager conceptForIdentifier:identifierCopy options:relationshipsCopy error:&v14];
 
   v13 = v14;
-  v8[2](v8, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 }
 
-- (void)remote_queryRelationshipsForNodeWithID:(id)a3 completion:(id)a4
+- (void)remote_queryRelationshipsForNodeWithID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 internalContentDatabaseManager];
+  completionCopy = completion;
+  dCopy = d;
+  profile = [(HDStandardTaskServer *)self profile];
+  internalContentDatabaseManager = [profile internalContentDatabaseManager];
 
   v12 = 0;
-  v10 = [v9 relationshipsForConceptWithIdentifier:v7 error:&v12];
+  v10 = [internalContentDatabaseManager relationshipsForConceptWithIdentifier:dCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
-- (void)remote_queryCountOfConceptsAssociatedToUserRecordsWithCompletion:(id)a3
+- (void)remote_queryCountOfConceptsAssociatedToUserRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
   v8 = 0;
-  v6 = [HDConceptIndexEntity numberOfIndexedConceptsWithProfile:v5 error:&v8];
+  v6 = [HDConceptIndexEntity numberOfIndexedConceptsWithProfile:profile error:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  completionCopy[2](completionCopy, v6, v7);
 }
 
-- (void)conceptIndexManagerDidChangeExecutionState:(unint64_t)a3
+- (void)conceptIndexManagerDidChangeExecutionState:(unint64_t)state
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -105,7 +105,7 @@
   v5[3] = &unk_2786138D0;
   v5[4] = self;
   v4 = [(HDStandardTaskServer *)self remoteObjectProxyWithErrorHandler:v5];
-  [v4 clientRemote_conceptIndexManagerDidChangeState:a3];
+  [v4 clientRemote_conceptIndexManagerDidChangeState:state];
 }
 
 void __71__HDConceptStoreTaskServer_conceptIndexManagerDidChangeExecutionState___block_invoke(uint64_t a1, void *a2)

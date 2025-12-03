@@ -1,42 +1,42 @@
 @interface CKBackBarButtonItem
-+ (id)unreadBadgeButtonImageWithString:(id)a3;
-- (CKBackBarButtonItem)initWithTitle:(id)a3;
-- (CKBackBarButtonItem)initWithUnreadCount:(int64_t)a3;
++ (id)unreadBadgeButtonImageWithString:(id)string;
+- (CKBackBarButtonItem)initWithTitle:(id)title;
+- (CKBackBarButtonItem)initWithUnreadCount:(int64_t)count;
 @end
 
 @implementation CKBackBarButtonItem
 
-- (CKBackBarButtonItem)initWithUnreadCount:(int64_t)a3
+- (CKBackBarButtonItem)initWithUnreadCount:(int64_t)count
 {
   v10.receiver = self;
   v10.super_class = CKBackBarButtonItem;
   v4 = [(CKBackBarButtonItem *)&v10 initWithTitle:0 style:0 target:0 action:0];
   v5 = v4;
-  if (a3 >= 1 && v4)
+  if (count >= 1 && v4)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v7 = [v6 __ck_localizedString];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:count];
+    __ck_localizedString = [v6 __ck_localizedString];
 
-    v8 = [CKBackBarButtonItem unreadBadgeButtonImageWithString:v7];
+    v8 = [CKBackBarButtonItem unreadBadgeButtonImageWithString:__ck_localizedString];
     [(CKBackBarButtonItem *)v5 setImage:v8];
   }
 
   return v5;
 }
 
-- (CKBackBarButtonItem)initWithTitle:(id)a3
+- (CKBackBarButtonItem)initWithTitle:(id)title
 {
   v4.receiver = self;
   v4.super_class = CKBackBarButtonItem;
-  return [(CKBackBarButtonItem *)&v4 initWithTitle:a3 style:0 target:0 action:0];
+  return [(CKBackBarButtonItem *)&v4 initWithTitle:title style:0 target:0 action:0];
 }
 
-+ (id)unreadBadgeButtonImageWithString:(id)a3
++ (id)unreadBadgeButtonImageWithString:(id)string
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  stringCopy = string;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = v6;
   v8 = _drawingAttributes();
@@ -68,8 +68,8 @@
   v38.height = v9;
   UIGraphicsBeginImageContextWithOptions(v38, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v22 = [MEMORY[0x1E69DC888] systemBlueColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v22 CGColor]);
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  CGContextSetFillColorWithColor(CurrentContext, [systemBlueColor CGColor]);
 
   v23 = CGPathCreateWithContinuousRoundedRect();
   CGContextAddPath(CurrentContext, v23);
@@ -87,9 +87,9 @@
   CGContextSetBlendMode(CurrentContext, kCGBlendModeNormal);
   v33 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v34 = [v33 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v33 _imageThatSuppressesAccessibilityHairlineThickening];
 
-  v35 = [v34 imageWithRenderingMode:2];
+  v35 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithRenderingMode:2];
 
   return v35;
 }

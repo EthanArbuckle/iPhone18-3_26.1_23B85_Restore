@@ -1,9 +1,9 @@
 @interface ADPCEDisparityColorPipeline
-- (ADPCEDisparityColorPipeline)initWithParameters:(id)a3 inputSource:(unint64_t)a4 metalDevice:(id)a5;
-- (float)disparityScaleForLayout:(unint64_t)a3;
-- (int64_t)adjustForEngine:(unint64_t)a3;
-- (int64_t)encodeDisparityPostprocessingToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5;
-- (int64_t)encodeDisparityPreprocessingToCommandBuffer:(id)a3 input:(id)a4 normalizationMultiplier:(float)a5 normalizationOffset:(float)a6 invalidValue:(unsigned __int16)a7 rotation:(int64_t)a8 output:(id)a9;
+- (ADPCEDisparityColorPipeline)initWithParameters:(id)parameters inputSource:(unint64_t)source metalDevice:(id)device;
+- (float)disparityScaleForLayout:(unint64_t)layout;
+- (int64_t)adjustForEngine:(unint64_t)engine;
+- (int64_t)encodeDisparityPostprocessingToCommandBuffer:(id)buffer input:(id)input output:(id)output;
+- (int64_t)encodeDisparityPreprocessingToCommandBuffer:(id)buffer input:(id)input normalizationMultiplier:(float)multiplier normalizationOffset:(float)offset invalidValue:(unsigned __int16)value rotation:(int64_t)rotation output:(id)output;
 - (int64_t)rebuildMetalPreprocessingKernels;
 @end
 
@@ -21,9 +21,9 @@
   v7 = v63;
   if (v6)
   {
-    v8 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityInput];
-    v9 = [v8 imageDescriptor];
-    if ([v9 pixelFormat] == 1751411059)
+    disparityInput = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityInput];
+    imageDescriptor = [disparityInput imageDescriptor];
+    if ([imageDescriptor pixelFormat] == 1751411059)
     {
       v10 = 16;
     }
@@ -320,13 +320,13 @@ LABEL_46:
   return v19;
 }
 
-- (float)disparityScaleForLayout:(unint64_t)a3
+- (float)disparityScaleForLayout:(unint64_t)layout
 {
   if ([(ADPCEDisparityColorPipelineParameters *)self->_pipelineParameters trainingWidth])
   {
-    v5 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc colorInput];
-    v6 = [v5 imageDescriptor];
-    [v6 sizeForLayout:a3];
+    colorInput = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc colorInput];
+    imageDescriptor = [colorInput imageDescriptor];
+    [imageDescriptor sizeForLayout:layout];
     v8 = v7 / [(ADPCEDisparityColorPipelineParameters *)self->_pipelineParameters trainingWidth];
   }
 
@@ -339,36 +339,36 @@ LABEL_46:
   return v8 * v9;
 }
 
-- (int64_t)encodeDisparityPostprocessingToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5
+- (int64_t)encodeDisparityPostprocessingToCommandBuffer:(id)buffer input:(id)input output:(id)output
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  inputCopy = input;
+  outputCopy = output;
   kdebug_trace();
-  v11 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityOutput];
-  v12 = [v11 imageDescriptor];
-  v13 = [v12 pixelFormat];
+  disparityOutput = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityOutput];
+  imageDescriptor = [disparityOutput imageDescriptor];
+  pixelFormat = [imageDescriptor pixelFormat];
 
-  if (v13 == 1751411059)
+  if (pixelFormat == 1751411059)
   {
-    if ([v9 pixelFormat] != 25)
+    if ([inputCopy pixelFormat] != 25)
     {
       goto LABEL_3;
     }
   }
 
-  else if ([v9 pixelFormat] != 55)
+  else if ([inputCopy pixelFormat] != 55)
   {
 LABEL_3:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v14 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityOutput];
-      v15 = [v14 imageDescriptor];
-      PixelBufferUtils::pixelFormatAsString([v15 pixelFormat], &__p);
+      disparityOutput2 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityOutput];
+      imageDescriptor2 = [disparityOutput2 imageDescriptor];
+      PixelBufferUtils::pixelFormatAsString([imageDescriptor2 pixelFormat], &__p);
       v16 = SHIBYTE(v30);
       v17 = __p;
-      v18 = [v9 pixelFormat];
+      pixelFormat2 = [inputCopy pixelFormat];
       p_p = &__p;
       if (v16 < 0)
       {
@@ -378,7 +378,7 @@ LABEL_3:
       *buf = 136446466;
       v33 = p_p;
       v34 = 1024;
-      v35 = v18;
+      v35 = pixelFormat2;
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Expected output pixelbuffer format (%{public}s) does not match provided texture format (%d)", buf, 0x12u);
       if (SHIBYTE(v30) < 0)
       {
@@ -391,15 +391,15 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v20 = [v9 pixelFormat];
-  if (v20 != [v10 pixelFormat])
+  pixelFormat3 = [inputCopy pixelFormat];
+  if (pixelFormat3 != [outputCopy pixelFormat])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       LODWORD(__p) = 67109376;
-      HIDWORD(__p) = [v9 pixelFormat];
+      HIDWORD(__p) = [inputCopy pixelFormat];
       v28 = 1024;
-      v29 = [v10 pixelFormat];
+      pixelFormat4 = [outputCopy pixelFormat];
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Input texture format (%d) does not match output texture format (%d)", &__p, 0xEu);
     }
 
@@ -408,17 +408,17 @@ LABEL_15:
 
   [(ADPCEDisparityColorPipelineParameters *)self->_pipelineParameters outputDisparityBias];
   v30 = v21;
-  -[ADPCEDisparityColorPipeline disparityScaleForLayout:](self, "disparityScaleForLayout:", [MEMORY[0x277CED0C0] layoutForSize:{objc_msgSend(v10, "width"), objc_msgSend(v10, "height")}]);
+  -[ADPCEDisparityColorPipeline disparityScaleForLayout:](self, "disparityScaleForLayout:", [MEMORY[0x277CED0C0] layoutForSize:{objc_msgSend(outputCopy, "width"), objc_msgSend(outputCopy, "height")}]);
   v31 = v22;
-  v23 = [v8 computeCommandEncoder];
-  v24 = v23;
-  if (v23)
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  v24 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v23 setComputePipelineState:self->_postprocessPipeline];
-    [v24 setTexture:v9 atIndex:0];
-    [v24 setTexture:v10 atIndex:1];
+    [computeCommandEncoder setComputePipelineState:self->_postprocessPipeline];
+    [v24 setTexture:inputCopy atIndex:0];
+    [v24 setTexture:outputCopy atIndex:1];
     [v24 setBytes:&__p length:28 atIndex:0];
-    +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", v24, self->_postprocessPipeline, [v10 width], objc_msgSend(v10, "height"));
+    +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", v24, self->_postprocessPipeline, [outputCopy width], objc_msgSend(outputCopy, "height"));
     [v24 endEncoding];
     v25 = 0;
   }
@@ -440,30 +440,30 @@ LABEL_20:
   return v25;
 }
 
-- (int64_t)encodeDisparityPreprocessingToCommandBuffer:(id)a3 input:(id)a4 normalizationMultiplier:(float)a5 normalizationOffset:(float)a6 invalidValue:(unsigned __int16)a7 rotation:(int64_t)a8 output:(id)a9
+- (int64_t)encodeDisparityPreprocessingToCommandBuffer:(id)buffer input:(id)input normalizationMultiplier:(float)multiplier normalizationOffset:(float)offset invalidValue:(unsigned __int16)value rotation:(int64_t)rotation output:(id)output
 {
   v54 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v16 = a4;
-  v17 = a9;
+  bufferCopy = buffer;
+  inputCopy = input;
+  outputCopy = output;
   LODWORD(v44) = 335681660;
   kdebug_trace();
-  v18 = [v16 pixelFormat];
-  if ([v16 pixelFormat] == 25)
+  pixelFormat = [inputCopy pixelFormat];
+  if ([inputCopy pixelFormat] == 25)
   {
     v19 = 1;
   }
 
   else
   {
-    v24 = [v16 pixelFormat];
-    v19 = v24 == 55;
-    if (v18 != 23 && v24 != 55)
+    pixelFormat2 = [inputCopy pixelFormat];
+    v19 = pixelFormat2 == 55;
+    if (pixelFormat != 23 && pixelFormat2 != 55)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        *&buf[4] = [v16 pixelFormat];
+        *&buf[4] = [inputCopy pixelFormat];
         _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unsupported input texture format %d", buf, 8u);
       }
 
@@ -472,29 +472,29 @@ LABEL_20:
     }
   }
 
-  v20 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityInput:v43];
-  v21 = [v20 imageDescriptor];
-  v22 = [v21 pixelFormat];
+  v20 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityInput:bufferCopy];
+  imageDescriptor = [v20 imageDescriptor];
+  pixelFormat3 = [imageDescriptor pixelFormat];
 
-  if (v22 == 1751411059)
+  if (pixelFormat3 == 1751411059)
   {
-    if ([v17 pixelFormat] != 25)
+    if ([outputCopy pixelFormat] != 25)
     {
       goto LABEL_5;
     }
   }
 
-  else if ([v17 pixelFormat] != 55)
+  else if ([outputCopy pixelFormat] != 55)
   {
 LABEL_5:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v37 = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityInput];
-      v38 = [v37 imageDescriptor];
-      PixelBufferUtils::pixelFormatAsString([v38 pixelFormat], buf);
+      disparityInput = [(ADEspressoPCEDisparityColorInferenceDescriptor *)self->_inferenceDesc disparityInput];
+      imageDescriptor2 = [disparityInput imageDescriptor];
+      PixelBufferUtils::pixelFormatAsString([imageDescriptor2 pixelFormat], buf);
       v39 = SHIBYTE(v48);
       v40 = *buf;
-      v41 = [v17 pixelFormat];
+      pixelFormat4 = [outputCopy pixelFormat];
       v42 = buf;
       if (v39 < 0)
       {
@@ -504,7 +504,7 @@ LABEL_5:
       *v50 = 136446466;
       v51 = v42;
       v52 = 1024;
-      v53 = v41;
+      v53 = pixelFormat4;
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Expected output pixelbuffer format (%{public}s) does not match provided texture format (%d)", v50, 0x12u);
       if (SHIBYTE(v48) < 0)
       {
@@ -519,15 +519,15 @@ LABEL_6:
 
   if (v19)
   {
-    v25 = [v16 pixelFormat];
-    if (v25 != [v17 pixelFormat])
+    pixelFormat5 = [inputCopy pixelFormat];
+    if (pixelFormat5 != [outputCopy pixelFormat])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 67109376;
-        *&buf[4] = [v16 pixelFormat];
+        *&buf[4] = [inputCopy pixelFormat];
         LOWORD(v46) = 1024;
-        *(&v46 + 2) = [v17 pixelFormat];
+        *(&v46 + 2) = [outputCopy pixelFormat];
         _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Input texture format (%d) does not match output texture format (%d)", buf, 0xEu);
       }
 
@@ -536,19 +536,19 @@ LABEL_6:
   }
 
   v26 = 1;
-  v27 = a8;
-  if (a8 == 1)
+  rotationCopy = rotation;
+  if (rotation == 1)
   {
-    v27 = 3;
+    rotationCopy = 3;
   }
 
-  if (a8 != 3)
+  if (rotation != 3)
   {
-    v26 = v27;
+    v26 = rotationCopy;
   }
 
   preprocessPipelineForRawPCE = self->_preprocessPipelineForRawPCE;
-  if (v18 != 23)
+  if (pixelFormat != 23)
   {
     preprocessPipelineForRawPCE = self->_preprocessPipelineForFloatPCE;
   }
@@ -558,22 +558,22 @@ LABEL_6:
   LODWORD(v46) = v30;
   [(ADPCEDisparityColorPipelineParameters *)self->_pipelineParameters maxDisparity];
   HIDWORD(v46) = v31;
-  *buf = a5;
-  *&buf[4] = a6;
-  v47 = a7;
+  *buf = multiplier;
+  *&buf[4] = offset;
+  valueCopy = value;
   [(ADPCEDisparityColorPipelineParameters *)self->_pipelineParameters pceBias];
   v48 = v32;
-  -[ADPCEDisparityColorPipeline disparityScaleForLayout:](self, "disparityScaleForLayout:", [MEMORY[0x277CED0C0] layoutForSize:{objc_msgSend(v17, "width"), objc_msgSend(v17, "height")}]);
+  -[ADPCEDisparityColorPipeline disparityScaleForLayout:](self, "disparityScaleForLayout:", [MEMORY[0x277CED0C0] layoutForSize:{objc_msgSend(outputCopy, "width"), objc_msgSend(outputCopy, "height")}]);
   v49 = v33;
-  v34 = [v43 computeCommandEncoder];
-  v35 = v34;
-  if (v34)
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  v35 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v34 setComputePipelineState:v29];
-    [v35 setTexture:v16 atIndex:0];
-    [v35 setTexture:v17 atIndex:1];
+    [computeCommandEncoder setComputePipelineState:v29];
+    [v35 setTexture:inputCopy atIndex:0];
+    [v35 setTexture:outputCopy atIndex:1];
     [v35 setBytes:buf length:28 atIndex:0];
-    +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", v35, v29, [v17 width], objc_msgSend(v17, "height"));
+    +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", v35, v29, [outputCopy width], objc_msgSend(outputCopy, "height"));
     [v35 endEncoding];
     v23 = 0;
   }
@@ -595,11 +595,11 @@ LABEL_27:
   return v23;
 }
 
-- (ADPCEDisparityColorPipeline)initWithParameters:(id)a3 inputSource:(unint64_t)a4 metalDevice:(id)a5
+- (ADPCEDisparityColorPipeline)initWithParameters:(id)parameters inputSource:(unint64_t)source metalDevice:(id)device
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  parametersCopy = parameters;
+  deviceCopy = device;
   v34 = 335686912;
   v35 = 0u;
   v36 = 0u;
@@ -609,7 +609,7 @@ LABEL_27:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v38) = a4;
+      LODWORD(v38) = source;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Initializing ADPCEDisparityColorPipeline for input source #%d", buf, 8u);
     }
   }
@@ -617,7 +617,7 @@ LABEL_27:
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    LODWORD(v38) = a4;
+    LODWORD(v38) = source;
     _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Initializing ADPCEDisparityColorPipeline for input source #%d", buf, 8u);
   }
 
@@ -630,18 +630,18 @@ LABEL_27:
     goto LABEL_53;
   }
 
-  if (!v8)
+  if (!parametersCopy)
   {
-    v8 = objc_opt_new();
+    parametersCopy = objc_opt_new();
   }
 
-  objc_storeStrong(&v10->_pipelineParameters, v8);
-  if (a4 > 3)
+  objc_storeStrong(&v10->_pipelineParameters, parametersCopy);
+  if (source > 3)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      LODWORD(v38) = a4;
+      LODWORD(v38) = source;
       v15 = MEMORY[0x277D86220];
       v16 = "Unsupported input source: %d";
       v17 = 8;
@@ -653,7 +653,7 @@ LABEL_52:
     goto LABEL_54;
   }
 
-  v12 = [ADNetworkProvider providerForNetwork:*(&off_278CA1400 + a4)];
+  v12 = [ADNetworkProvider providerForNetwork:*(&off_278CA1400 + source)];
   networkProvider = v10->_networkProvider;
   v10->_networkProvider = v12;
 
@@ -735,16 +735,16 @@ LABEL_52:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
-      v22 = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
+      trainingWidth = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
+      trainingWidth2 = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
       v23 = "";
-      if (!v22)
+      if (!trainingWidth2)
       {
         v23 = " (no scaling)";
       }
 
       *buf = 134218242;
-      v38 = *&v21;
+      v38 = *&trainingWidth;
       v39 = 2080;
       v40 = v23;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Init with reference training width value: %ld%s", buf, 0x16u);
@@ -753,16 +753,16 @@ LABEL_52:
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v29 = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
-    v30 = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
+    trainingWidth3 = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
+    trainingWidth4 = [(ADPCEDisparityColorPipelineParameters *)v10->_pipelineParameters trainingWidth];
     v31 = "";
-    if (!v30)
+    if (!trainingWidth4)
     {
       v31 = " (no scaling)";
     }
 
     *buf = 134218242;
-    v38 = *&v29;
+    v38 = *&trainingWidth3;
     v39 = 2080;
     v40 = v31;
     _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Init with reference training width value: %ld%s", buf, 0x16u);
@@ -777,7 +777,7 @@ LABEL_52:
       *buf = 134217984;
       v38 = v24;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Init with disparityScaleForModelZoom value: %f", buf, 0xCu);
-      if (v9)
+      if (deviceCopy)
       {
         goto LABEL_50;
       }
@@ -791,7 +791,7 @@ LABEL_52:
   if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
 LABEL_43:
-    if (v9)
+    if (deviceCopy)
     {
       goto LABEL_50;
     }
@@ -803,7 +803,7 @@ LABEL_43:
   *buf = 134217984;
   v38 = v32;
   _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Init with disparityScaleForModelZoom value: %f", buf, 0xCu);
-  if (v9)
+  if (deviceCopy)
   {
     goto LABEL_50;
   }
@@ -824,11 +824,11 @@ LABEL_44:
     _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Metal device not provided, using default device", buf, 2u);
   }
 
-  v9 = MTLCreateSystemDefaultDevice();
-  if (v9)
+  deviceCopy = MTLCreateSystemDefaultDevice();
+  if (deviceCopy)
   {
 LABEL_50:
-    objc_storeStrong(&v10->_metalDevice, v9);
+    objc_storeStrong(&v10->_metalDevice, deviceCopy);
     if ([(ADPCEDisparityColorPipeline *)v10 adjustForEngine:3])
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -857,7 +857,7 @@ LABEL_53:
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot create default metal device", buf, 2u);
   }
 
-  v9 = 0;
+  deviceCopy = 0;
   v25 = 0;
 LABEL_54:
   kdebug_trace();
@@ -865,9 +865,9 @@ LABEL_54:
   return v25;
 }
 
-- (int64_t)adjustForEngine:(unint64_t)a3
+- (int64_t)adjustForEngine:(unint64_t)engine
 {
-  v4 = a3 - 3;
+  v4 = engine - 3;
   v5 = [ADEspressoPCEDisparityColorInferenceDescriptor alloc];
   if (v4 >= 2)
   {

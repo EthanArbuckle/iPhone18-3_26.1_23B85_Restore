@@ -1,9 +1,9 @@
 @interface LACCredentialSignpostEvent
 + (LACCredentialSignpostEvent)sharedInstance;
-- (id)extractableCredentialFailedReadAttemptWithAge:(id)a3 signingID:(id)a4;
-- (id)extractableCredentialFailedWriteAttemptWithSigningID:(id)a3;
-- (id)extractableCredentialReadAttemptWithAge:(id)a3 accessAllowed:(BOOL)a4;
-- (id)extractableCredentialWriteAttemptWithAccessAllowed:(BOOL)a3;
+- (id)extractableCredentialFailedReadAttemptWithAge:(id)age signingID:(id)d;
+- (id)extractableCredentialFailedWriteAttemptWithSigningID:(id)d;
+- (id)extractableCredentialReadAttemptWithAge:(id)age accessAllowed:(BOOL)allowed;
+- (id)extractableCredentialWriteAttemptWithAccessAllowed:(BOOL)allowed;
 @end
 
 @implementation LACCredentialSignpostEvent
@@ -27,16 +27,16 @@ uint64_t __44__LACCredentialSignpostEvent_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)extractableCredentialReadAttemptWithAge:(id)a3 accessAllowed:(BOOL)a4
+- (id)extractableCredentialReadAttemptWithAge:(id)age accessAllowed:(BOOL)allowed
 {
-  v5 = a3;
+  ageCopy = age;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__LACCredentialSignpostEvent_extractableCredentialReadAttemptWithAge_accessAllowed___block_invoke;
   v9[3] = &unk_1E7A956B8;
-  v10 = v5;
-  v11 = a4;
-  v6 = v5;
+  v10 = ageCopy;
+  allowedCopy = allowed;
+  v6 = ageCopy;
   v7 = __84__LACCredentialSignpostEvent_extractableCredentialReadAttemptWithAge_accessAllowed___block_invoke(v9);
 
   return v7;
@@ -74,18 +74,18 @@ void __84__LACCredentialSignpostEvent_extractableCredentialReadAttemptWithAge_ac
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)extractableCredentialFailedReadAttemptWithAge:(id)a3 signingID:(id)a4
+- (id)extractableCredentialFailedReadAttemptWithAge:(id)age signingID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  ageCopy = age;
+  dCopy = d;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__LACCredentialSignpostEvent_extractableCredentialFailedReadAttemptWithAge_signingID___block_invoke;
   v11[3] = &unk_1E7A95708;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = ageCopy;
+  v13 = dCopy;
+  v7 = dCopy;
+  v8 = ageCopy;
   v9 = __86__LACCredentialSignpostEvent_extractableCredentialFailedReadAttemptWithAge_signingID___block_invoke(v11);
 
   return v9;
@@ -123,13 +123,13 @@ void __86__LACCredentialSignpostEvent_extractableCredentialFailedReadAttemptWith
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)extractableCredentialWriteAttemptWithAccessAllowed:(BOOL)a3
+- (id)extractableCredentialWriteAttemptWithAccessAllowed:(BOOL)allowed
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __81__LACCredentialSignpostEvent_extractableCredentialWriteAttemptWithAccessAllowed___block_invoke;
   v5[3] = &__block_descriptor_33_e23___LACSignpostEvent_8__0l;
-  v6 = a3;
+  allowedCopy = allowed;
   v3 = __81__LACCredentialSignpostEvent_extractableCredentialWriteAttemptWithAccessAllowed___block_invoke(v5);
 
   return v3;
@@ -163,15 +163,15 @@ void __81__LACCredentialSignpostEvent_extractableCredentialWriteAttemptWithAcces
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)extractableCredentialFailedWriteAttemptWithSigningID:(id)a3
+- (id)extractableCredentialFailedWriteAttemptWithSigningID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__LACCredentialSignpostEvent_extractableCredentialFailedWriteAttemptWithSigningID___block_invoke;
   v7[3] = &unk_1E7A95770;
-  v8 = v3;
-  v4 = v3;
+  v8 = dCopy;
+  v4 = dCopy;
   v5 = __83__LACCredentialSignpostEvent_extractableCredentialFailedWriteAttemptWithSigningID___block_invoke(v7);
 
   return v5;

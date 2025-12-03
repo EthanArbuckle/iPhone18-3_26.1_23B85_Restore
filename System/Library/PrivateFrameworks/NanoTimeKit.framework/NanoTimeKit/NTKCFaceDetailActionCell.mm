@@ -1,10 +1,10 @@
 @interface NTKCFaceDetailActionCell
-- (NTKCFaceDetailActionCell)initWithAction:(int64_t)a3;
+- (NTKCFaceDetailActionCell)initWithAction:(int64_t)action;
 @end
 
 @implementation NTKCFaceDetailActionCell
 
-- (NTKCFaceDetailActionCell)initWithAction:(int64_t)a3
+- (NTKCFaceDetailActionCell)initWithAction:(int64_t)action
 {
   v14.receiver = self;
   v14.super_class = NTKCFaceDetailActionCell;
@@ -13,10 +13,10 @@
   if (v4)
   {
     [(NTKCFaceDetailActionCell *)v4 setSelectionStyle:3];
-    v6 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [(NTKCFaceDetailActionCell *)v5 setBackgroundColor:v6];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [(NTKCFaceDetailActionCell *)v5 setBackgroundColor:secondarySystemBackgroundColor];
 
-    if (a3 == 1)
+    if (action == 1)
     {
       v8 = NTKCCustomizationLocalizedString(@"ACTION_REMOVE", @"Remove", v7);
       v9 = NTKCRemoveColor();
@@ -24,7 +24,7 @@
 
     else
     {
-      if (a3)
+      if (action)
       {
         v8 = 0;
         v10 = 0;
@@ -37,11 +37,11 @@
 
     v10 = v9;
 LABEL_8:
-    v11 = [(NTKCFaceDetailActionCell *)v5 textLabel];
-    [v11 setText:v8];
+    textLabel = [(NTKCFaceDetailActionCell *)v5 textLabel];
+    [textLabel setText:v8];
 
-    v12 = [(NTKCFaceDetailActionCell *)v5 textLabel];
-    [v12 setTextColor:v10];
+    textLabel2 = [(NTKCFaceDetailActionCell *)v5 textLabel];
+    [textLabel2 setTextColor:v10];
   }
 
   return v5;

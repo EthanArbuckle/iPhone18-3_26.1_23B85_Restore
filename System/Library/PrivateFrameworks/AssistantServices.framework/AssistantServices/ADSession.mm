@@ -1,59 +1,59 @@
 @interface ADSession
-+ (Class)sessionClassForType:(int)a3;
-+ (int)_adSessionTypeFromString:(id)a3;
++ (Class)sessionClassForType:(int)type;
++ (int)_adSessionTypeFromString:(id)string;
 - (ADSessionDelegate)delegate;
-- (BOOL)_commandRequiresServerConnection:(id)a3;
-- (BOOL)_commandRequiresSync:(id)a3;
+- (BOOL)_commandRequiresServerConnection:(id)connection;
+- (BOOL)_commandRequiresSync:(id)sync;
 - (BOOL)_waitingForAssistantData;
 - (id)_adSessionTypeString;
 - (id)_pendingCommands;
 - (id)_saSNConnectionType;
 - (id)dequeueResultObjects;
-- (id)initOnQueue:(id)a3 withAccount:(id)a4;
-- (id)initOnQueue:(id)a3 withAccount:(id)a4 languageCode:(id)a5 connectionMode:(id)a6 sharedUserIdentifier:(id)a7 loggingSharedUserIdentifier:(id)a8 instanceContext:(id)a9;
-- (void)_addLimboId:(id)a3;
-- (void)_addPendingCommand:(id)a3;
-- (void)_cancelSynchronously:(BOOL)a3;
+- (id)initOnQueue:(id)queue withAccount:(id)account;
+- (id)initOnQueue:(id)queue withAccount:(id)account languageCode:(id)code connectionMode:(id)mode sharedUserIdentifier:(id)identifier loggingSharedUserIdentifier:(id)userIdentifier instanceContext:(id)context;
+- (void)_addLimboId:(id)id;
+- (void)_addPendingCommand:(id)command;
+- (void)_cancelSynchronously:(BOOL)synchronously;
 - (void)_clearLimbo;
-- (void)_informDelegateCannotHandleRequest:(id)a3 error:(id)a4;
-- (void)_informDelegateOfError:(id)a3;
-- (void)_informDelegateWillRetryOnError:(id)a3;
-- (void)_passObjectToDelegate:(id)a3;
-- (void)_pendDormantCommand:(id)a3;
+- (void)_informDelegateCannotHandleRequest:(id)request error:(id)error;
+- (void)_informDelegateOfError:(id)error;
+- (void)_informDelegateWillRetryOnError:(id)error;
+- (void)_passObjectToDelegate:(id)delegate;
+- (void)_pendDormantCommand:(id)command;
 - (void)_removeRequestForAssistantData;
 - (void)_requestForAssistantData;
 - (void)_resetSessionRequiresServerConnection;
 - (void)_resetSessionRequiresSync;
-- (void)_saGetAssistantData:(id)a3;
-- (void)_sendAssistantDataAndPendingCommandsIfNeeded:(id)a3;
-- (void)_sendAssistantDataChangedSinceAnchor:(id)a3 refId:(id)a4;
-- (void)_sendCommandFailedWithRefId:(id)a3;
+- (void)_saGetAssistantData:(id)data;
+- (void)_sendAssistantDataAndPendingCommandsIfNeeded:(id)needed;
+- (void)_sendAssistantDataChangedSinceAnchor:(id)anchor refId:(id)id;
+- (void)_sendCommandFailedWithRefId:(id)id;
 - (void)_sendDestroyAssistant;
-- (void)_sendLimboCommand:(id)a3;
+- (void)_sendLimboCommand:(id)command;
 - (void)_sendPendingCommands;
 - (void)_sendPendingDormantCommands;
-- (void)_sendServerCommand:(id)a3;
-- (void)_sendServerCommands:(id)a3;
-- (void)_setAssistantDataAnchorIfNeeded:(id)a3;
-- (void)_setDormantWithStyle:(int64_t)a3;
-- (void)_setSNCurrentConnectionType:(id)a3;
+- (void)_sendServerCommand:(id)command;
+- (void)_sendServerCommands:(id)commands;
+- (void)_setAssistantDataAnchorIfNeeded:(id)needed;
+- (void)_setDormantWithStyle:(int64_t)style;
+- (void)_setSNCurrentConnectionType:(id)type;
 - (void)_setSessionOpened;
-- (void)assistantDataManager:(id)a3 didUpdateAssistantData:(id)a4;
+- (void)assistantDataManager:(id)manager didUpdateAssistantData:(id)data;
 - (void)beginUpdatingAssistantData;
-- (void)cancelSessionRequest:(id)a3;
+- (void)cancelSessionRequest:(id)request;
 - (void)dealloc;
 - (void)eagerlyFetchAssistantData;
-- (void)getSNConnectionMetrics:(id)a3;
-- (void)handleCommand:(id)a3;
-- (void)preheatAndMakeQuiet:(BOOL)a3;
+- (void)getSNConnectionMetrics:(id)metrics;
+- (void)handleCommand:(id)command;
+- (void)preheatAndMakeQuiet:(BOOL)quiet;
 - (void)prepareForRetry;
-- (void)queueResultObjects:(id)a3;
+- (void)queueResultObjects:(id)objects;
 - (void)refreshValidationData;
 - (void)resetConnection;
-- (void)sendCommand:(id)a3 opportunistically:(BOOL)a4;
-- (void)sendCommands:(id)a3 opportunistically:(BOOL)a4;
-- (void)setDormant:(BOOL)a3;
-- (void)setOrUpdateUsefulnessScore:(id)a3;
+- (void)sendCommand:(id)command opportunistically:(BOOL)opportunistically;
+- (void)sendCommands:(id)commands opportunistically:(BOOL)opportunistically;
+- (void)setDormant:(BOOL)dormant;
+- (void)setOrUpdateUsefulnessScore:(id)score;
 @end
 
 @implementation ADSession
@@ -165,16 +165,16 @@
       {
         if (state == 8)
         {
-          v4 = 0;
+          lastAssistantDataAnchor = 0;
         }
 
         else
         {
-          v4 = [(ADAccount *)self->_account lastAssistantDataAnchor];
+          lastAssistantDataAnchor = [(ADAccount *)self->_account lastAssistantDataAnchor];
         }
 
-        v5 = v4;
-        [(ADSession *)self _sendAssistantDataChangedSinceAnchor:v4 refId:0];
+        v5 = lastAssistantDataAnchor;
+        [(ADSession *)self _sendAssistantDataChangedSinceAnchor:lastAssistantDataAnchor refId:0];
       }
     }
   }
@@ -220,21 +220,21 @@
 {
   currentSNConnectionType = self->_currentSNConnectionType;
   v3 = SAConnectionTypeUnknownValue;
-  v4 = [currentSNConnectionType technology];
-  if (v4 <= 2008)
+  technology = [currentSNConnectionType technology];
+  if (technology <= 2008)
   {
-    if (v4 > 2001)
+    if (technology > 2001)
     {
-      if ((v4 - 2004) >= 5)
+      if ((technology - 2004) >= 5)
       {
-        if (v4 == 2002)
+        if (technology == 2002)
         {
           v5 = &SAConnectionTypeCDMA1xValue;
         }
 
         else
         {
-          if (v4 != 2003)
+          if (technology != 2003)
           {
             goto LABEL_34;
           }
@@ -248,15 +248,15 @@
 
     else
     {
-      if (v4 == 1000)
+      if (technology == 1000)
       {
         v5 = &SAConnectionTypeWifiValue;
         goto LABEL_33;
       }
 
-      if (v4 != 2000)
+      if (technology != 2000)
       {
-        if (v4 != 2001)
+        if (technology != 2001)
         {
           goto LABEL_34;
         }
@@ -270,18 +270,18 @@
     goto LABEL_33;
   }
 
-  if (v4 <= 2013)
+  if (technology <= 2013)
   {
-    if ((v4 - 2009) >= 3)
+    if ((technology - 2009) >= 3)
     {
-      if (v4 == 2012)
+      if (technology == 2012)
       {
         v5 = &SAConnectionTypeeHRPDValue;
       }
 
       else
       {
-        if (v4 != 2013)
+        if (technology != 2013)
         {
           goto LABEL_34;
         }
@@ -298,21 +298,21 @@
     goto LABEL_33;
   }
 
-  if (v4 > 3002)
+  if (technology > 3002)
   {
-    if (v4 == 3003)
+    if (technology == 3003)
     {
       v5 = &SAConnectionTypePOPValue;
       goto LABEL_33;
     }
 
-    if (v4 == 3005)
+    if (technology == 3005)
     {
       v5 = &SAConnectionTypeLocalValue;
       goto LABEL_33;
     }
 
-    if (v4 != 3006)
+    if (technology != 3006)
     {
       goto LABEL_34;
     }
@@ -320,15 +320,15 @@
 
   else
   {
-    if (v4 == 2014)
+    if (technology == 2014)
     {
       v5 = &SAConnectionTypeNRValue;
       goto LABEL_33;
     }
 
-    if (v4 != 3000)
+    if (technology != 3000)
     {
-      if (v4 != 3001)
+      if (technology != 3001)
       {
         goto LABEL_34;
       }
@@ -380,8 +380,8 @@ LABEL_34:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) aceId];
-        [(ADSession *)self _addLimboId:v10];
+        aceId = [*(*(&v11 + 1) + 8 * v9) aceId];
+        [(ADSession *)self _addLimboId:aceId];
 
         v9 = v9 + 1;
       }
@@ -394,12 +394,12 @@ LABEL_34:
   }
 }
 
-- (void)setOrUpdateUsefulnessScore:(id)a3
+- (void)setOrUpdateUsefulnessScore:(id)score
 {
-  v4 = [a3 integerValue];
-  if (v4 >= self->_resultUsefulnessScore)
+  integerValue = [score integerValue];
+  if (integerValue >= self->_resultUsefulnessScore)
   {
-    self->_resultUsefulnessScore = v4;
+    self->_resultUsefulnessScore = integerValue;
     self->_hasUsefulnessScore = 1;
   }
 }
@@ -424,11 +424,11 @@ LABEL_34:
   return v3;
 }
 
-- (void)queueResultObjects:(id)a3
+- (void)queueResultObjects:(id)objects
 {
-  v4 = a3;
-  v5 = v4;
-  v8 = v4;
+  objectsCopy = objects;
+  v5 = objectsCopy;
+  v8 = objectsCopy;
   if (!self->_resultObjectsQueue)
   {
     v6 = objc_alloc_init(NSMutableArray);
@@ -440,41 +440,41 @@ LABEL_34:
 
   if (v5)
   {
-    v4 = [(NSMutableArray *)self->_resultObjectsQueue addObject:v8];
+    objectsCopy = [(NSMutableArray *)self->_resultObjectsQueue addObject:v8];
     v5 = v8;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(objectsCopy, v5);
 }
 
-- (void)_setSNCurrentConnectionType:(id)a3
+- (void)_setSNCurrentConnectionType:(id)type
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  typeCopy = type;
+  v6 = typeCopy;
+  if (typeCopy)
   {
-    v4 = [[SNConnectionType alloc] initWithTechnology:{objc_msgSend(v4, "technology")}];
+    typeCopy = [[SNConnectionType alloc] initWithTechnology:{objc_msgSend(typeCopy, "technology")}];
   }
 
   currentSNConnectionType = self->_currentSNConnectionType;
-  self->_currentSNConnectionType = v4;
+  self->_currentSNConnectionType = typeCopy;
 }
 
-- (void)_cancelSynchronously:(BOOL)a3
+- (void)_cancelSynchronously:(BOOL)synchronously
 {
-  v3 = a3;
+  synchronouslyCopy = synchronously;
   [(ADSession *)self _clearSendBuffer];
   [(ADSession *)self _clearLimbo];
   [(ADSession *)self _removeRequestForAssistantData];
   currentSNConnectionType = self->_currentSNConnectionType;
   self->_currentSNConnectionType = 0;
 
-  [(ADSession *)self _resetServerConnectionSynchronously:v3 completion:0];
+  [(ADSession *)self _resetServerConnectionSynchronously:synchronouslyCopy completion:0];
 }
 
-- (void)setDormant:(BOOL)a3
+- (void)setDormant:(BOOL)dormant
 {
-  if (a3)
+  if (dormant)
   {
     v3 = 2;
   }
@@ -494,9 +494,9 @@ LABEL_34:
   [(ADSession *)self _startConnection];
 }
 
-- (void)cancelSessionRequest:(id)a3
+- (void)cancelSessionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -506,11 +506,11 @@ LABEL_34:
   }
 
   v6 = objc_alloc_init(SACancelRequest);
-  [v6 setRefId:v4];
+  [v6 setRefId:requestCopy];
   [(ADSession *)self _sendServerCommand:v6];
   v7 = objc_alloc_init(SARollbackRequest);
-  [v7 setRefId:v4];
-  [v7 setRequestId:v4];
+  [v7 setRefId:requestCopy];
+  [v7 setRequestId:requestCopy];
   [v7 setReason:SARollbackReasonSIRIMINI_ARBITRATIONValue];
   [(ADSession *)self _sendServerCommand:v7];
 }
@@ -536,45 +536,45 @@ LABEL_34:
   }
 }
 
-- (void)getSNConnectionMetrics:(id)a3
+- (void)getSNConnectionMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(metrics + 2))(metrics, 0);
   }
 }
 
-- (void)handleCommand:(id)a3
+- (void)handleCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100247990;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = commandCopy;
+  v6 = commandCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)sendCommands:(id)a3 opportunistically:(BOOL)a4
+- (void)sendCommands:(id)commands opportunistically:(BOOL)opportunistically
 {
-  v4 = a4;
-  v6 = a3;
+  opportunisticallyCopy = opportunistically;
+  commandsCopy = commands;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v19 = "[ADSession sendCommands:opportunistically:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = commandsCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Sending commands: %@", buf, 0x16u);
   }
 
   if (self->_state == 11 && ![(ADSession *)self _waitingForAssistantData])
   {
-    [(ADSession *)self _sendServerCommands:v6];
+    [(ADSession *)self _sendServerCommands:commandsCopy];
   }
 
   else
@@ -583,7 +583,7 @@ LABEL_34:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v6;
+    v8 = commandsCopy;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -599,7 +599,7 @@ LABEL_34:
             objc_enumerationMutation(v8);
           }
 
-          [(ADSession *)self sendCommand:*(*(&v13 + 1) + 8 * v12) opportunistically:v4, v13];
+          [(ADSession *)self sendCommand:*(*(&v13 + 1) + 8 * v12) opportunistically:opportunisticallyCopy, v13];
           v12 = v12 + 1;
         }
 
@@ -612,20 +612,20 @@ LABEL_34:
   }
 }
 
-- (void)sendCommand:(id)a3 opportunistically:(BOOL)a4
+- (void)sendCommand:(id)command opportunistically:(BOOL)opportunistically
 {
-  v6 = a3;
+  commandCopy = command;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
     v23 = 136315394;
     v24 = "[ADSession sendCommand:opportunistically:]";
     v25 = 2112;
-    v26 = v6;
+    v26 = commandCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %@", &v23, 0x16u);
   }
 
-  if (v6)
+  if (commandCopy)
   {
     if (self->_dormant)
     {
@@ -633,16 +633,16 @@ LABEL_34:
       if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
       {
         v9 = v8;
-        v10 = [(ADSession *)self sessionType];
+        sessionType = [(ADSession *)self sessionType];
         v23 = 136315394;
         v24 = "[ADSession sendCommand:opportunistically:]";
         v25 = 1024;
-        LODWORD(v26) = v10;
+        LODWORD(v26) = sessionType;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Pending command because session is dormant for %d", &v23, 0x12u);
       }
 
-      [(ADSession *)self _pendDormantCommand:v6];
-      if (!a4)
+      [(ADSession *)self _pendDormantCommand:commandCopy];
+      if (!opportunistically)
       {
         v11 = AFSiriLogContextSession;
         if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -658,7 +658,7 @@ LABEL_34:
       goto LABEL_44;
     }
 
-    if ([(ADSession *)self _commandRequiresServerConnection:v6])
+    if ([(ADSession *)self _commandRequiresServerConnection:commandCopy])
     {
       v12 = AFSiriLogContextSession;
       if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -671,7 +671,7 @@ LABEL_34:
       self->_sessionRequiresServerConnection = 1;
     }
 
-    v13 = [(ADSession *)self _commandRequiresSync:v6];
+    v13 = [(ADSession *)self _commandRequiresSync:commandCopy];
     v14 = AFSiriLogContextSession;
     if (v13)
     {
@@ -696,7 +696,7 @@ LABEL_34:
       _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s _sessionRequiresServerConnection: %d", &v23, 0x12u);
     }
 
-    if (self->_state < 11 || [v6 siriCore_bufferingAllowedDuringActiveSession])
+    if (self->_state < 11 || [commandCopy siriCore_bufferingAllowedDuringActiveSession])
     {
       sendBuffer = self->_sendBuffer;
       if (!sendBuffer)
@@ -708,7 +708,7 @@ LABEL_34:
         sendBuffer = self->_sendBuffer;
       }
 
-      [(NSMutableArray *)sendBuffer addObject:v6];
+      [(NSMutableArray *)sendBuffer addObject:commandCopy];
     }
 
     v18 = AFSiriLogContextSession;
@@ -727,12 +727,12 @@ LABEL_34:
     {
       if (![(ADSession *)self _waitingForAssistantData])
       {
-        [(ADSession *)self _sendServerCommand:v6];
+        [(ADSession *)self _sendServerCommand:commandCopy];
         goto LABEL_44;
       }
 
 LABEL_43:
-      [(ADSession *)self _addPendingCommand:v6];
+      [(ADSession *)self _addPendingCommand:commandCopy];
       goto LABEL_44;
     }
 
@@ -761,14 +761,14 @@ LABEL_43:
         if (v19 == 7)
         {
 LABEL_40:
-          [(ADSession *)self _addPendingCommand:v6];
+          [(ADSession *)self _addPendingCommand:commandCopy];
           [(ADSession *)self _startSession];
           goto LABEL_44;
         }
       }
 
-      [(ADSession *)self _addPendingCommand:v6];
-      if (!a4)
+      [(ADSession *)self _addPendingCommand:commandCopy];
+      if (!opportunistically)
       {
         [(ADSession *)self _startConnection];
       }
@@ -789,7 +789,7 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s NOT _waitingForAssistantData, sending limbo command", &v23, 0xCu);
       }
 
-      [(ADSession *)self _sendLimboCommand:v6];
+      [(ADSession *)self _sendLimboCommand:commandCopy];
     }
   }
 
@@ -823,14 +823,14 @@ LABEL_44:
   [v3 requestAssistantDataUpdateHighPriority:0];
 }
 
-- (void)preheatAndMakeQuiet:(BOOL)a3
+- (void)preheatAndMakeQuiet:(BOOL)quiet
 {
-  v3 = a3;
+  quietCopy = quiet;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [NSNumber numberWithBool:v3];
+    v7 = [NSNumber numberWithBool:quietCopy];
     v11 = 136315394;
     v12 = "[ADSession preheatAndMakeQuiet:]";
     v13 = 2112;
@@ -842,60 +842,60 @@ LABEL_44:
   if (!state)
   {
     [(ADSession *)self _startConnection];
-    if (!v3)
+    if (!quietCopy)
     {
       return;
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 1;
     goto LABEL_9;
   }
 
-  if (self->_dormant && !v3)
+  if (self->_dormant && !quietCopy)
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
 LABEL_9:
-    [(ADSession *)v9 _setDormantWithStyle:v10];
+    [(ADSession *)selfCopy2 _setDormantWithStyle:v10];
     return;
   }
 
-  if (state >= 11 && !v3)
+  if (state >= 11 && !quietCopy)
   {
     [(ADSession *)self _probeSessionIfIdle];
   }
 }
 
-- (void)_setDormantWithStyle:(int64_t)a3
+- (void)_setDormantWithStyle:(int64_t)style
 {
-  v3 = a3 != 0;
+  v3 = style != 0;
   if (self->_dormant != v3)
   {
     v6 = AFSiriLogContextSession;
     if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
     {
       v7 = v6;
-      v8 = [(ADSession *)self sessionType];
+      sessionType = [(ADSession *)self sessionType];
       v9 = @"active";
       *&v10[4] = "[ADSession _setDormantWithStyle:]";
       *v10 = 136315650;
-      if (a3)
+      if (style)
       {
         v9 = @"dormant";
       }
 
       *&v10[12] = 1024;
-      *&v10[14] = v8;
+      *&v10[14] = sessionType;
       v11 = 2112;
       v12 = v9;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Setting dormant state for session %d to %@", v10, 0x1Cu);
     }
 
     self->_dormant = v3;
-    if (a3)
+    if (style)
     {
-      if (a3 == 2)
+      if (style == 2)
       {
         [(ADSession *)self _forceFastDormancy];
       }
@@ -919,7 +919,7 @@ LABEL_9:
     v7 = 136315394;
     v8 = "[ADSession _sendPendingDormantCommands]";
     v9 = 1024;
-    v10 = [(ADSession *)self sessionType];
+    sessionType = [(ADSession *)self sessionType];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Sending pending dormant commands now that the session is no longer dormant for session %d", &v7, 0x12u);
   }
 
@@ -930,28 +930,28 @@ LABEL_9:
   [(ADSession *)self sendCommands:v6 opportunistically:0];
 }
 
-- (void)_pendDormantCommand:(id)a3
+- (void)_pendDormantCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   dormantQueue = self->_dormantQueue;
-  v8 = v4;
+  v8 = commandCopy;
   if (!dormantQueue)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_dormantQueue;
     self->_dormantQueue = v6;
 
-    v4 = v8;
+    commandCopy = v8;
     dormantQueue = self->_dormantQueue;
   }
 
-  [(NSMutableArray *)dormantQueue addObject:v4];
+  [(NSMutableArray *)dormantQueue addObject:commandCopy];
 }
 
-- (void)_saGetAssistantData:(id)a3
+- (void)_saGetAssistantData:(id)data
 {
-  v4 = [a3 aceId];
-  obj = [v4 copy];
+  aceId = [data aceId];
+  obj = [aceId copy];
 
   if (self->_cachedAssistantData)
   {
@@ -964,13 +964,13 @@ LABEL_9:
   }
 }
 
-- (void)_setAssistantDataAnchorIfNeeded:(id)a3
+- (void)_setAssistantDataAnchorIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(ADSession *)self _waitingForAssistantData];
+  neededCopy = needed;
+  _waitingForAssistantData = [(ADSession *)self _waitingForAssistantData];
   v6 = AFSiriLogContextSession;
   v7 = os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (_waitingForAssistantData)
   {
     if (v7)
     {
@@ -992,12 +992,12 @@ LABEL_9:
     [(ADSession *)self _clearLimbo];
   }
 
-  v8 = [v4 dataAnchor];
-  v9 = [(ADSession *)self _account];
-  v10 = v9;
+  dataAnchor = [neededCopy dataAnchor];
+  _account = [(ADSession *)self _account];
+  v10 = _account;
   if (self->_pendingAssistantDataAnchor)
   {
-    [v9 setLastAssistantDataAnchor:?];
+    [_account setLastAssistantDataAnchor:?];
     [v10 save];
     pendingAssistantDataAnchor = self->_pendingAssistantDataAnchor;
     self->_pendingAssistantDataAnchor = 0;
@@ -1005,32 +1005,32 @@ LABEL_9:
 
   else
   {
-    v12 = [v9 lastAssistantDataAnchor];
-    if ([v8 isEqualToString:v12])
+    lastAssistantDataAnchor = [_account lastAssistantDataAnchor];
+    if ([dataAnchor isEqualToString:lastAssistantDataAnchor])
     {
     }
 
     else
     {
-      v13 = [(ADSession *)self _shouldSendAssistantData];
+      _shouldSendAssistantData = [(ADSession *)self _shouldSendAssistantData];
 
-      if (v13 && self->_cachedAssistantData)
+      if (_shouldSendAssistantData && self->_cachedAssistantData)
       {
-        [(ADSession *)self _sendAssistantDataChangedSinceAnchor:v8 refId:0];
+        [(ADSession *)self _sendAssistantDataChangedSinceAnchor:dataAnchor refId:0];
       }
     }
 
-    [v10 setLastAssistantDataAnchor:v8];
+    [v10 setLastAssistantDataAnchor:dataAnchor];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v15 = [v4 requestSync];
-  [WeakRetained assistantSession:self didLoadAssistantSyncRequested:{objc_msgSend(v15, "BOOLValue")}];
+  requestSync = [neededCopy requestSync];
+  [WeakRetained assistantSession:self didLoadAssistantSyncRequested:{objc_msgSend(requestSync, "BOOLValue")}];
 }
 
-- (void)assistantDataManager:(id)a3 didUpdateAssistantData:(id)a4
+- (void)assistantDataManager:(id)manager didUpdateAssistantData:(id)data
 {
-  v5 = [a4 copy];
+  v5 = [data copy];
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -1042,10 +1042,10 @@ LABEL_9:
   dispatch_async(queue, v8);
 }
 
-- (void)_sendAssistantDataChangedSinceAnchor:(id)a3 refId:(id)a4
+- (void)_sendAssistantDataChangedSinceAnchor:(id)anchor refId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  idCopy = id;
   v8 = self->_languageCode;
   if ((AFPreferencesLanguageIsSupported() & 1) == 0)
   {
@@ -1060,35 +1060,35 @@ LABEL_9:
     }
   }
 
-  v10 = [(ADSession *)self _cachedAssistantData];
-  v11 = [v10 anchor];
+  _cachedAssistantData = [(ADSession *)self _cachedAssistantData];
+  anchor = [_cachedAssistantData anchor];
   v12 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
     v18 = 136315650;
     v19 = "[ADSession _sendAssistantDataChangedSinceAnchor:refId:]";
     v20 = 2112;
-    v21 = v11;
+    v21 = anchor;
     v22 = 2112;
-    v23 = v6;
+    v23 = anchorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s generated setAssistantData anchor %@ (previous anchor %@)", &v18, 0x20u);
   }
 
-  v13 = [v6 isEqualToString:v11];
-  if (v7 || (v13 & 1) == 0)
+  v13 = [anchorCopy isEqualToString:anchor];
+  if (idCopy || (v13 & 1) == 0)
   {
-    [v10 setRefId:v7];
-    [(ADSession *)self _sendServerCommand:v10];
+    [_cachedAssistantData setRefId:idCopy];
+    [(ADSession *)self _sendServerCommand:_cachedAssistantData];
     if (self->_state == 11)
     {
       v15 = self->_account;
-      [(ADAccount *)v15 setLastAssistantDataAnchor:v11];
+      [(ADAccount *)v15 setLastAssistantDataAnchor:anchor];
       [(ADAccount *)v15 save];
     }
 
     else
     {
-      v16 = [(NSString *)v11 copy];
+      v16 = [(NSString *)anchor copy];
       pendingAssistantDataAnchor = self->_pendingAssistantDataAnchor;
       self->_pendingAssistantDataAnchor = v16;
     }
@@ -1102,7 +1102,7 @@ LABEL_9:
       v18 = 136315394;
       v19 = "[ADSession _sendAssistantDataChangedSinceAnchor:refId:]";
       v20 = 2112;
-      v21 = v10;
+      v21 = _cachedAssistantData;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Assistant Data matches, not sending %@", &v18, 0x16u);
     }
   }
@@ -1118,16 +1118,16 @@ LABEL_9:
   self->_state = 10;
 }
 
-- (void)_sendCommandFailedWithRefId:(id)a3
+- (void)_sendCommandFailedWithRefId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc_init(SACommandFailed);
-  [v5 setRefId:v4];
+  [v5 setRefId:idCopy];
 
   [(ADSession *)self _sendServerCommand:v5];
 }
 
-- (void)_sendServerCommands:(id)a3
+- (void)_sendServerCommands:(id)commands
 {
   v3 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR))
@@ -1138,7 +1138,7 @@ LABEL_9:
   }
 }
 
-- (void)_sendServerCommand:(id)a3
+- (void)_sendServerCommand:(id)command
 {
   v3 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR))
@@ -1149,38 +1149,38 @@ LABEL_9:
   }
 }
 
-- (void)_informDelegateCannotHandleRequest:(id)a3 error:(id)a4
+- (void)_informDelegateCannotHandleRequest:(id)request error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained assistantSession:self cannotHandleRequest:v7 error:v6];
+  [WeakRetained assistantSession:self cannotHandleRequest:requestCopy error:errorCopy];
 }
 
-- (void)_informDelegateWillRetryOnError:(id)a3
+- (void)_informDelegateWillRetryOnError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained assistantSession:self willRetryOnError:v4];
+  [WeakRetained assistantSession:self willRetryOnError:errorCopy];
 }
 
-- (void)_informDelegateOfError:(id)a3
+- (void)_informDelegateOfError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained assistantSession:self receivedError:v4 isRetryableError:0];
+  [WeakRetained assistantSession:self receivedError:errorCopy isRetryableError:0];
 }
 
-- (void)_passObjectToDelegate:(id)a3
+- (void)_passObjectToDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained assistantSession:self receivedCommand:v4];
+  [WeakRetained assistantSession:self receivedCommand:delegateCopy];
 }
 
-- (BOOL)_commandRequiresSync:(id)a3
+- (BOOL)_commandRequiresSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -1191,7 +1191,7 @@ LABEL_9:
       v7 = 136315394;
       v8 = "[ADSession _commandRequiresSync:]";
       v9 = 2112;
-      v10 = v3;
+      v10 = syncCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", &v7, 0x16u);
     }
   }
@@ -1199,9 +1199,9 @@ LABEL_9:
   return isKindOfClass & 1;
 }
 
-- (BOOL)_commandRequiresServerConnection:(id)a3
+- (BOOL)_commandRequiresServerConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -1212,7 +1212,7 @@ LABEL_9:
       v7 = 136315394;
       v8 = "[ADSession _commandRequiresServerConnection:]";
       v9 = 2112;
-      v10 = v3;
+      v10 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s %@", &v7, 0x16u);
     }
   }
@@ -1225,9 +1225,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)_sendLimboCommand:(id)a3
+- (void)_sendLimboCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -1236,20 +1236,20 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", &v7, 0xCu);
   }
 
-  [(ADSession *)self _sendServerCommand:v4];
-  v6 = [v4 aceId];
-  [(ADSession *)self _addLimboId:v6];
+  [(ADSession *)self _sendServerCommand:commandCopy];
+  aceId = [commandCopy aceId];
+  [(ADSession *)self _addLimboId:aceId];
 
-  [(ADSession *)self _addPendingCommand:v4];
+  [(ADSession *)self _addPendingCommand:commandCopy];
 }
 
-- (void)_sendAssistantDataAndPendingCommandsIfNeeded:(id)a3
+- (void)_sendAssistantDataAndPendingCommandsIfNeeded:(id)needed
 {
-  v5 = a3;
-  v4 = [(ADSession *)self _shouldSendAssistantData];
-  if (v5 && v4 && self->_cachedAssistantData)
+  neededCopy = needed;
+  _shouldSendAssistantData = [(ADSession *)self _shouldSendAssistantData];
+  if (neededCopy && _shouldSendAssistantData && self->_cachedAssistantData)
   {
-    [(ADSession *)self _sendAssistantDataChangedSinceAnchor:v5 refId:0];
+    [(ADSession *)self _sendAssistantDataChangedSinceAnchor:neededCopy refId:0];
   }
 
   if (![(ADSession *)self _waitingForAssistantData])
@@ -1258,9 +1258,9 @@ LABEL_9:
   }
 }
 
-- (void)_addPendingCommand:(id)a3
+- (void)_addPendingCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
   {
@@ -1269,50 +1269,50 @@ LABEL_9:
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s ", &v7, 0xCu);
   }
 
-  if (([v4 siriCore_isProvisional] & 1) == 0)
+  if (([commandCopy siriCore_isProvisional] & 1) == 0)
   {
-    v6 = [(ADSession *)self _pendingCommands];
-    [v6 addObject:v4];
+    _pendingCommands = [(ADSession *)self _pendingCommands];
+    [_pendingCommands addObject:commandCopy];
   }
 }
 
-- (void)_addLimboId:(id)a3
+- (void)_addLimboId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   limboIds = self->_limboIds;
-  v8 = v4;
+  v8 = idCopy;
   if (!limboIds)
   {
     v6 = objc_alloc_init(NSMutableSet);
     v7 = self->_limboIds;
     self->_limboIds = v6;
 
-    v4 = v8;
+    idCopy = v8;
     limboIds = self->_limboIds;
   }
 
-  [(NSMutableSet *)limboIds addObject:v4];
+  [(NSMutableSet *)limboIds addObject:idCopy];
 }
 
-- (id)initOnQueue:(id)a3 withAccount:(id)a4 languageCode:(id)a5 connectionMode:(id)a6 sharedUserIdentifier:(id)a7 loggingSharedUserIdentifier:(id)a8 instanceContext:(id)a9
+- (id)initOnQueue:(id)queue withAccount:(id)account languageCode:(id)code connectionMode:(id)mode sharedUserIdentifier:(id)identifier loggingSharedUserIdentifier:(id)userIdentifier instanceContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = ADSession;
-  return [(ADSession *)&v10 init:a3];
+  return [(ADSession *)&v10 init:queue];
 }
 
-- (id)initOnQueue:(id)a3 withAccount:(id)a4
+- (id)initOnQueue:(id)queue withAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = ADSession;
   v9 = [(ADSession *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(p_isa + 2, account);
     [p_isa _resetSessionRequiresServerConnection];
     [p_isa _resetSessionRequiresSync];
   }
@@ -1320,15 +1320,15 @@ LABEL_9:
   return p_isa;
 }
 
-+ (int)_adSessionTypeFromString:(id)a3
++ (int)_adSessionTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"remoteLimited"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"remoteLimited"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"local"])
+  else if ([stringCopy isEqualToString:@"local"])
   {
     v4 = 2;
   }
@@ -1341,9 +1341,9 @@ LABEL_9:
   return v4;
 }
 
-+ (Class)sessionClassForType:(int)a3
++ (Class)sessionClassForType:(int)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v4 = 0;
   }

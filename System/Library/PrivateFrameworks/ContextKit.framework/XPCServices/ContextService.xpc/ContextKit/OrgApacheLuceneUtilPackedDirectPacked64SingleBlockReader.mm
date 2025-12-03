@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilPackedDirectPacked64SingleBlockReader
-- (int64_t)getWithInt:(int)a3;
+- (int64_t)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPackedDirectPacked64SingleBlockReader
 
-- (int64_t)getWithInt:(int)a3
+- (int64_t)getWithInt:(int)int
 {
   in = self->in_;
   if (!in)
@@ -13,8 +13,8 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreIndexInput *)in seekWithLong:self->startPointer_ + 8 * (a3 / self->valuesPerBlock_)];
-  return ([(OrgApacheLuceneStoreDataInput *)self->in_ readLong]>> (self->bitsPerValue_ * (a3 % self->valuesPerBlock_))) & self->mask_;
+  [(OrgApacheLuceneStoreIndexInput *)in seekWithLong:self->startPointer_ + 8 * (int / self->valuesPerBlock_)];
+  return ([(OrgApacheLuceneStoreDataInput *)self->in_ readLong]>> (self->bitsPerValue_ * (int % self->valuesPerBlock_))) & self->mask_;
 }
 
 - (void)dealloc

@@ -1,22 +1,22 @@
 @interface DNDXPCEventObserver
-+ (void)_registerEventHandler:(id)a3 forStream:(const char *)a4;
-+ (void)_subscribeToStream:(const char *)a3 clientIdentifier:(const char *)a4;
-+ (void)setFocusConfigurationStreamEventHandler:(id)a3;
++ (void)_registerEventHandler:(id)handler forStream:(const char *)stream;
++ (void)_subscribeToStream:(const char *)stream clientIdentifier:(const char *)identifier;
++ (void)setFocusConfigurationStreamEventHandler:(id)handler;
 @end
 
 @implementation DNDXPCEventObserver
 
-+ (void)setFocusConfigurationStreamEventHandler:(id)a3
++ (void)setFocusConfigurationStreamEventHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   atomic_exchange(_hasRegisteredFocusConfigurationHandler, 1u);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__DNDXPCEventObserver_setFocusConfigurationStreamEventHandler___block_invoke;
   v6[3] = &unk_27843A970;
-  v7 = v3;
+  v7 = handlerCopy;
   v4 = DNDFocusConfigurationEventStream;
-  v5 = v3;
+  v5 = handlerCopy;
   [DNDXPCEventObserver _registerEventHandler:v6 forStream:v4];
 }
 
@@ -28,18 +28,18 @@ uint64_t __63__DNDXPCEventObserver_setFocusConfigurationStreamEventHandler___blo
   return v3();
 }
 
-+ (void)_registerEventHandler:(id)a3 forStream:(const char *)a4
++ (void)_registerEventHandler:(id)handler forStream:(const char *)stream
 {
-  v5 = a3;
+  handlerCopy = handler;
   Serial = BSDispatchQueueCreateSerial();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__DNDXPCEventObserver__registerEventHandler_forStream___block_invoke;
   v8[3] = &unk_27843A998;
-  v9 = v5;
-  v10 = a4;
-  v7 = v5;
-  xpc_set_event_stream_handler(a4, Serial, v8);
+  v9 = handlerCopy;
+  streamCopy = stream;
+  v7 = handlerCopy;
+  xpc_set_event_stream_handler(stream, Serial, v8);
 }
 
 void __55__DNDXPCEventObserver__registerEventHandler_forStream___block_invoke(uint64_t a1, void *a2)
@@ -84,7 +84,7 @@ void __55__DNDXPCEventObserver__registerEventHandler_forStream___block_invoke(ui
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_subscribeToStream:(const char *)a3 clientIdentifier:(const char *)a4
++ (void)_subscribeToStream:(const char *)stream clientIdentifier:(const char *)identifier
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_set_event();

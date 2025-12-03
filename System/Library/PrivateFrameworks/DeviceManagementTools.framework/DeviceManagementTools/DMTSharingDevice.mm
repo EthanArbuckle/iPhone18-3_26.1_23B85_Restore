@@ -1,38 +1,38 @@
 @interface DMTSharingDevice
-+ (BOOL)deviceIsPairedAccordingToFlags:(unsigned int)a3;
-- (DMTSharingDevice)initWithDevice:(id)a3;
++ (BOOL)deviceIsPairedAccordingToFlags:(unsigned int)flags;
+- (DMTSharingDevice)initWithDevice:(id)device;
 @end
 
 @implementation DMTSharingDevice
 
-- (DMTSharingDevice)initWithDevice:(id)a3
+- (DMTSharingDevice)initWithDevice:(id)device
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  v7 = [v5 model];
-  v8 = [v5 bleDevice];
-  v9 = [v8 rssi];
-  v10 = +[DMTSharingDevice deviceIsPairedAccordingToFlags:](DMTSharingDevice, "deviceIsPairedAccordingToFlags:", [v5 deviceFlags]);
-  v11 = +[DMTSharingDevice devicePairingStateFromSFPairState:](DMTSharingDevice, "devicePairingStateFromSFPairState:", [v5 systemPairState]);
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  model = [deviceCopy model];
+  bleDevice = [deviceCopy bleDevice];
+  rssi = [bleDevice rssi];
+  v10 = +[DMTSharingDevice deviceIsPairedAccordingToFlags:](DMTSharingDevice, "deviceIsPairedAccordingToFlags:", [deviceCopy deviceFlags]);
+  v11 = +[DMTSharingDevice devicePairingStateFromSFPairState:](DMTSharingDevice, "devicePairingStateFromSFPairState:", [deviceCopy systemPairState]);
   v12 = [MEMORY[0x277CBEAA8] now];
   v15.receiver = self;
   v15.super_class = DMTSharingDevice;
-  v13 = [(CATSharingDevice *)&v15 initWithIdentifier:v6 modelIdentifier:v7 RSSI:v9 paired:v10 pairingState:v11 detectionTime:v12];
+  v13 = [(CATSharingDevice *)&v15 initWithIdentifier:identifier modelIdentifier:model RSSI:rssi paired:v10 pairingState:v11 detectionTime:v12];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_sharingDevice, a3);
+    objc_storeStrong(&v13->_sharingDevice, device);
   }
 
   return v13;
 }
 
-+ (BOOL)deviceIsPairedAccordingToFlags:(unsigned int)a3
++ (BOOL)deviceIsPairedAccordingToFlags:(unsigned int)flags
 {
   v4 = _DMTLogGeneral_7();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [DMTSharingDevice deviceIsPairedAccordingToFlags:a3];
+    [DMTSharingDevice deviceIsPairedAccordingToFlags:flags];
   }
 
   v5 = _DMTLogGeneral_7();
@@ -119,7 +119,7 @@
     +[DMTSharingDevice deviceIsPairedAccordingToFlags:];
   }
 
-  return (a3 >> 10) & 1;
+  return (flags >> 10) & 1;
 }
 
 + (void)deviceIsPairedAccordingToFlags:(int)a1 .cold.1(int a1)

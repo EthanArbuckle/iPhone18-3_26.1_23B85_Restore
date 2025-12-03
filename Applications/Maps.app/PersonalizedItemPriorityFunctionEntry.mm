@@ -1,27 +1,27 @@
 @interface PersonalizedItemPriorityFunctionEntry
-+ (id)defaultEntryWithPriority:(int64_t)a3;
-+ (id)entryWithPriority:(int64_t)a3 matchBlock:(id)a4;
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4;
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4 matchBlock:(id)a5;
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4 sourceSubtype:(int64_t)a5;
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4 sourceSubtype:(int64_t)a5 matchBlock:(id)a6;
-- (BOOL)matches:(id)a3;
-- (PersonalizedItemPriorityFunctionEntry)initWithPriority:(int64_t)a3 matchesAnySourceType:(BOOL)a4 sourceType:(int64_t)a5 matchesAnySourceSubtype:(BOOL)a6 sourceSubtype:(int64_t)a7 matchBlock:(id)a8;
++ (id)defaultEntryWithPriority:(int64_t)priority;
++ (id)entryWithPriority:(int64_t)priority matchBlock:(id)block;
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type;
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type matchBlock:(id)block;
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type sourceSubtype:(int64_t)subtype;
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type sourceSubtype:(int64_t)subtype matchBlock:(id)block;
+- (BOOL)matches:(id)matches;
+- (PersonalizedItemPriorityFunctionEntry)initWithPriority:(int64_t)priority matchesAnySourceType:(BOOL)type sourceType:(int64_t)sourceType matchesAnySourceSubtype:(BOOL)subtype sourceSubtype:(int64_t)sourceSubtype matchBlock:(id)block;
 @end
 
 @implementation PersonalizedItemPriorityFunctionEntry
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
-  if ((-[PersonalizedItemPriorityFunctionEntry matchesAnySourceType](self, "matchesAnySourceType") || (v5 = [v4 sourceType], v5 == -[PersonalizedItemPriorityFunctionEntry sourceType](self, "sourceType"))) && (-[PersonalizedItemPriorityFunctionEntry matchesAnySourceSubtype](self, "matchesAnySourceSubtype") || (v6 = objc_msgSend(v4, "sourceSubtype"), v6 == -[PersonalizedItemPriorityFunctionEntry sourceSubtype](self, "sourceSubtype"))))
+  matchesCopy = matches;
+  if ((-[PersonalizedItemPriorityFunctionEntry matchesAnySourceType](self, "matchesAnySourceType") || (v5 = [matchesCopy sourceType], v5 == -[PersonalizedItemPriorityFunctionEntry sourceType](self, "sourceType"))) && (-[PersonalizedItemPriorityFunctionEntry matchesAnySourceSubtype](self, "matchesAnySourceSubtype") || (v6 = objc_msgSend(matchesCopy, "sourceSubtype"), v6 == -[PersonalizedItemPriorityFunctionEntry sourceSubtype](self, "sourceSubtype"))))
   {
-    v7 = [(PersonalizedItemPriorityFunctionEntry *)self matchBlock];
-    if (v7)
+    matchBlock = [(PersonalizedItemPriorityFunctionEntry *)self matchBlock];
+    if (matchBlock)
     {
-      v8 = v7;
-      v9 = [(PersonalizedItemPriorityFunctionEntry *)self matchBlock];
-      v10 = (v9)[2](v9, v4);
+      v8 = matchBlock;
+      matchBlock2 = [(PersonalizedItemPriorityFunctionEntry *)self matchBlock];
+      v10 = (matchBlock2)[2](matchBlock2, matchesCopy);
     }
 
     else
@@ -38,21 +38,21 @@
   return v10 & 1;
 }
 
-- (PersonalizedItemPriorityFunctionEntry)initWithPriority:(int64_t)a3 matchesAnySourceType:(BOOL)a4 sourceType:(int64_t)a5 matchesAnySourceSubtype:(BOOL)a6 sourceSubtype:(int64_t)a7 matchBlock:(id)a8
+- (PersonalizedItemPriorityFunctionEntry)initWithPriority:(int64_t)priority matchesAnySourceType:(BOOL)type sourceType:(int64_t)sourceType matchesAnySourceSubtype:(BOOL)subtype sourceSubtype:(int64_t)sourceSubtype matchBlock:(id)block
 {
-  v14 = a8;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = PersonalizedItemPriorityFunctionEntry;
   v15 = [(PersonalizedItemPriorityFunctionEntry *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    v15->_priority = a3;
-    v15->_matchesAnySourceType = a4;
-    v15->_matchesAnySourceSubtype = a6;
-    v15->_sourceType = a5;
-    v15->_sourceSubtype = a7;
-    v17 = objc_retainBlock(v14);
+    v15->_priority = priority;
+    v15->_matchesAnySourceType = type;
+    v15->_matchesAnySourceSubtype = subtype;
+    v15->_sourceType = sourceType;
+    v15->_sourceSubtype = sourceSubtype;
+    v17 = objc_retainBlock(blockCopy);
     matchBlock = v16->_matchBlock;
     v16->_matchBlock = v17;
   }
@@ -60,47 +60,47 @@
   return v16;
 }
 
-+ (id)defaultEntryWithPriority:(int64_t)a3
++ (id)defaultEntryWithPriority:(int64_t)priority
 {
-  v3 = [[a1 alloc] initWithPriority:a3 matchesAnySourceType:1 sourceType:0 matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:0];
+  v3 = [[self alloc] initWithPriority:priority matchesAnySourceType:1 sourceType:0 matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:0];
 
   return v3;
 }
 
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type
 {
-  v4 = [[a1 alloc] initWithPriority:a3 matchesAnySourceType:0 sourceType:a4 matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:0];
+  v4 = [[self alloc] initWithPriority:priority matchesAnySourceType:0 sourceType:type matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:0];
 
   return v4;
 }
 
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4 sourceSubtype:(int64_t)a5
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type sourceSubtype:(int64_t)subtype
 {
-  v5 = [[a1 alloc] initWithPriority:a3 matchesAnySourceType:0 sourceType:a4 matchesAnySourceSubtype:0 sourceSubtype:a5 matchBlock:0];
+  v5 = [[self alloc] initWithPriority:priority matchesAnySourceType:0 sourceType:type matchesAnySourceSubtype:0 sourceSubtype:subtype matchBlock:0];
 
   return v5;
 }
 
-+ (id)entryWithPriority:(int64_t)a3 matchBlock:(id)a4
++ (id)entryWithPriority:(int64_t)priority matchBlock:(id)block
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithPriority:a3 matchesAnySourceType:1 sourceType:0 matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:v6];
+  blockCopy = block;
+  v7 = [[self alloc] initWithPriority:priority matchesAnySourceType:1 sourceType:0 matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:blockCopy];
 
   return v7;
 }
 
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4 matchBlock:(id)a5
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type matchBlock:(id)block
 {
-  v8 = a5;
-  v9 = [[a1 alloc] initWithPriority:a3 matchesAnySourceType:0 sourceType:a4 matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:v8];
+  blockCopy = block;
+  v9 = [[self alloc] initWithPriority:priority matchesAnySourceType:0 sourceType:type matchesAnySourceSubtype:1 sourceSubtype:0 matchBlock:blockCopy];
 
   return v9;
 }
 
-+ (id)entryWithPriority:(int64_t)a3 sourceType:(int64_t)a4 sourceSubtype:(int64_t)a5 matchBlock:(id)a6
++ (id)entryWithPriority:(int64_t)priority sourceType:(int64_t)type sourceSubtype:(int64_t)subtype matchBlock:(id)block
 {
-  v10 = a6;
-  v11 = [[a1 alloc] initWithPriority:a3 matchesAnySourceType:0 sourceType:a4 matchesAnySourceSubtype:0 sourceSubtype:a5 matchBlock:v10];
+  blockCopy = block;
+  v11 = [[self alloc] initWithPriority:priority matchesAnySourceType:0 sourceType:type matchesAnySourceSubtype:0 sourceSubtype:subtype matchBlock:blockCopy];
 
   return v11;
 }

@@ -1,13 +1,13 @@
 @interface EMMailboxObjectID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EMMailboxObjectID)init;
-- (EMMailboxObjectID)initWithCoder:(id)a3;
-- (EMMailboxObjectID)initWithURL:(id)a3;
+- (EMMailboxObjectID)initWithCoder:(id)coder;
+- (EMMailboxObjectID)initWithURL:(id)l;
 - (NSString)accountIdentifier;
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMailboxObjectID
@@ -32,26 +32,26 @@
 
 - (EMMailboxObjectID)init
 {
-  v3 = [MEMORY[0x1E696AEC0] ef_UUID];
+  ef_UUID = [MEMORY[0x1E696AEC0] ef_UUID];
   v11.receiver = self;
   v11.super_class = EMMailboxObjectID;
-  v4 = [(EMObjectID *)&v11 initAsEphemeralID:1 representedObjectID:v3];
+  v4 = [(EMObjectID *)&v11 initAsEphemeralID:1 representedObjectID:ef_UUID];
 
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v5 setScheme:@"ephemeral"];
-    v6 = [v4 representedObjectID];
-    [v5 setHost:v6];
+    representedObjectID = [v4 representedObjectID];
+    [v5 setHost:representedObjectID];
 
     v7 = [v5 URL];
     v8 = v4[5];
     v4[5] = v7;
   }
 
-  v9 = [v4 cachedSelf];
+  cachedSelf = [v4 cachedSelf];
 
-  return v9;
+  return cachedSelf;
 }
 
 - (NSString)ef_publicDescription
@@ -74,23 +74,23 @@
 - (NSString)accountIdentifier
 {
   v2 = [(EMMailboxObjectID *)self url];
-  v3 = [v2 host];
+  host = [v2 host];
 
-  return v3;
+  return host;
 }
 
-- (EMMailboxObjectID)initWithURL:(id)a3
+- (EMMailboxObjectID)initWithURL:(id)l
 {
-  v5 = a3;
-  v6 = [v5 scheme];
-  v7 = [v6 isEqualToString:@"ephemeral"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v7 = [scheme isEqualToString:@"ephemeral"];
 
   if (v7)
   {
-    v8 = [v5 host];
+    host = [lCopy host];
     v13.receiver = self;
     v13.super_class = EMMailboxObjectID;
-    v9 = [(EMObjectID *)&v13 initAsEphemeralID:1 representedObjectID:v8];
+    v9 = [(EMObjectID *)&v13 initAsEphemeralID:1 representedObjectID:host];
 
     if (!v9)
     {
@@ -106,19 +106,19 @@
   if (v9)
   {
 LABEL_5:
-    objc_storeStrong(v9 + 5, a3);
+    objc_storeStrong(v9 + 5, l);
   }
 
 LABEL_6:
-  v10 = [v9 cachedSelf];
+  cachedSelf = [v9 cachedSelf];
 
-  return v10;
+  return cachedSelf;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -128,7 +128,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(EMObjectID *)self isEphemeral])
       {
         v10.receiver = self;
@@ -153,12 +153,12 @@ LABEL_6:
   return v6;
 }
 
-- (EMMailboxObjectID)initWithCoder:(id)a3
+- (EMMailboxObjectID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v9 = self;
-  v4 = self;
-  v5 = v8;
+  coderCopy = coder;
+  selfCopy = self;
+  selfCopy2 = self;
+  v5 = coderCopy;
   v6 = EFDecodeCacheableInstance();
 
   return v6;
@@ -182,10 +182,10 @@ id __35__EMMailboxObjectID_initWithCoder___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 

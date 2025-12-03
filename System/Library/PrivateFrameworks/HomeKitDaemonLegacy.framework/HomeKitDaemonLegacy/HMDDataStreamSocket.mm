@@ -1,18 +1,18 @@
 @interface HMDDataStreamSocket
 - (BOOL)isClosed;
-- (BOOL)writeData:(id)a3 error:(id *)a4;
-- (HMDDataStreamSocket)initWithStreamProtocol:(id)a3 applicationProtocolName:(id)a4 workQueue:(id)a5;
+- (BOOL)writeData:(id)data error:(id *)error;
+- (HMDDataStreamSocket)initWithStreamProtocol:(id)protocol applicationProtocolName:(id)name workQueue:(id)queue;
 - (HMDDataStreamSocketDelegate)delegate;
 - (HMDDataStreamStreamProtocol)streamProtocol;
 - (id)readData;
 - (unint64_t)trafficClass;
-- (void)_writeData:(id)a3 completion:(id)a4;
+- (void)_writeData:(id)data completion:(id)completion;
 - (void)closeInitiated;
-- (void)closeWithError:(id)a3;
-- (void)handleIncomingData:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setTrafficClass:(unint64_t)a3;
-- (void)writeData:(id)a3 completion:(id)a4;
+- (void)closeWithError:(id)error;
+- (void)handleIncomingData:(id)data;
+- (void)setDelegate:(id)delegate;
+- (void)setTrafficClass:(unint64_t)class;
+- (void)writeData:(id)data completion:(id)completion;
 @end
 
 @implementation HMDDataStreamSocket
@@ -32,19 +32,19 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)handleIncomingData:(id)a3
+- (void)handleIncomingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_pendingReads hmf_enqueue:v4];
+  [(NSMutableArray *)self->_pendingReads hmf_enqueue:dataCopy];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(HMDDataStreamSocket *)self workQueue];
+  workQueue = [(HMDDataStreamSocket *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__HMDDataStreamSocket_handleIncomingData___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 }
 
 void __42__HMDDataStreamSocket_handleIncomingData___block_invoke(uint64_t a1)
@@ -53,9 +53,9 @@ void __42__HMDDataStreamSocket_handleIncomingData___block_invoke(uint64_t a1)
   [v2 socketDidReceiveData:*(a1 + 32)];
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
   if (self->_closed)
   {
@@ -67,14 +67,14 @@ void __42__HMDDataStreamSocket_handleIncomingData___block_invoke(uint64_t a1)
   {
     *&self->_closing = 256;
     os_unfair_lock_unlock(&self->_lock);
-    v5 = [(HMDDataStreamSocket *)self workQueue];
+    workQueue = [(HMDDataStreamSocket *)self workQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __38__HMDDataStreamSocket_closeWithError___block_invoke;
     v6[3] = &unk_2797359B0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = errorCopy;
+    dispatch_async(workQueue, v6);
   }
 }
 
@@ -100,27 +100,27 @@ void __38__HMDDataStreamSocket_closeWithError___block_invoke(uint64_t a1)
 - (id)readData
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableArray *)self->_pendingReads hmf_maybeDequeue];
+  hmf_maybeDequeue = [(NSMutableArray *)self->_pendingReads hmf_maybeDequeue];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return hmf_maybeDequeue;
 }
 
-- (void)_writeData:(id)a3 completion:(id)a4
+- (void)_writeData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDDataStreamSocket *)self workQueue];
+  dataCopy = data;
+  completionCopy = completion;
+  workQueue = [(HMDDataStreamSocket *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMDDataStreamSocket__writeData_completion___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __45__HMDDataStreamSocket__writeData_completion___block_invoke(uint64_t a1)
@@ -129,59 +129,59 @@ void __45__HMDDataStreamSocket__writeData_completion___block_invoke(uint64_t a1)
   [v2 sendData:*(a1 + 40) socket:*(a1 + 32) completion:*(a1 + 48)];
 }
 
-- (void)writeData:(id)a3 completion:(id)a4
+- (void)writeData:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(HMDDataStreamSocket *)self isClosed])
   {
     v7 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1061];
-    v6[2](v6, v7);
+    completionCopy[2](completionCopy, v7);
   }
 
   else
   {
-    [(HMDDataStreamSocket *)self _writeData:v8 completion:v6];
+    [(HMDDataStreamSocket *)self _writeData:dataCopy completion:completionCopy];
   }
 }
 
-- (BOOL)writeData:(id)a3 error:(id *)a4
+- (BOOL)writeData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDDataStreamSocket *)self isClosed];
-  if (v7)
+  dataCopy = data;
+  isClosed = [(HMDDataStreamSocket *)self isClosed];
+  if (isClosed)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1061];
+      *error = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1061];
     }
   }
 
   else
   {
-    [(HMDDataStreamSocket *)self _writeData:v6 completion:0];
+    [(HMDDataStreamSocket *)self _writeData:dataCopy completion:0];
   }
 
-  return !v7;
+  return !isClosed;
 }
 
-- (void)setTrafficClass:(unint64_t)a3
+- (void)setTrafficClass:(unint64_t)class
 {
   os_unfair_lock_lock_with_options();
   trafficClass = self->_trafficClass;
-  self->_trafficClass = a3;
+  self->_trafficClass = class;
   os_unfair_lock_unlock(&self->_lock);
-  if (trafficClass != a3)
+  if (trafficClass != class)
   {
-    v6 = [(HMDDataStreamSocket *)self workQueue];
+    workQueue = [(HMDDataStreamSocket *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__HMDDataStreamSocket_setTrafficClass___block_invoke;
     block[3] = &unk_279728228;
     block[4] = self;
     block[5] = trafficClass;
-    block[6] = a3;
-    dispatch_async(v6, block);
+    block[6] = class;
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -228,11 +228,11 @@ void __39__HMDDataStreamSocket_setTrafficClass___block_invoke(uint64_t a1)
   return closed;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -246,25 +246,25 @@ void __39__HMDDataStreamSocket_setTrafficClass___block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (HMDDataStreamSocket)initWithStreamProtocol:(id)a3 applicationProtocolName:(id)a4 workQueue:(id)a5
+- (HMDDataStreamSocket)initWithStreamProtocol:(id)protocol applicationProtocolName:(id)name workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  protocolCopy = protocol;
+  nameCopy = name;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = HMDDataStreamSocket;
   v11 = [(HMDDataStreamSocket *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_streamProtocol, v8);
-    objc_storeStrong(&v12->_applicationProtocolName, a4);
-    objc_storeStrong(&v12->_workQueue, a5);
+    objc_storeWeak(&v11->_streamProtocol, protocolCopy);
+    objc_storeStrong(&v12->_applicationProtocolName, name);
+    objc_storeStrong(&v12->_workQueue, queue);
     *&v12->_closing = 0;
     v12->_trafficClass = 0;
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingReads = v12->_pendingReads;
-    v12->_pendingReads = v13;
+    v12->_pendingReads = array;
   }
 
   return v12;

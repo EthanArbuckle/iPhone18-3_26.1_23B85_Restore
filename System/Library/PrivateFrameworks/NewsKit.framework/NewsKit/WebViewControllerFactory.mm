@@ -1,11 +1,11 @@
 @interface WebViewControllerFactory
 - (_TtC7NewsKit24WebViewControllerFactory)init;
-- (id)createViewControllerForURL:(id)a3;
+- (id)createViewControllerForURL:(id)l;
 @end
 
 @implementation WebViewControllerFactory
 
-- (id)createViewControllerForURL:(id)a3
+- (id)createViewControllerForURL:(id)l
 {
   v3 = sub_25BEF8098();
   v4 = *(v3 - 8);

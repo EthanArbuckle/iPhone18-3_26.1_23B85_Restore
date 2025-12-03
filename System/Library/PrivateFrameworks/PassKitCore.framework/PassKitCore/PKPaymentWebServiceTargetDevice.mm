@@ -1,99 +1,99 @@
 @interface PKPaymentWebServiceTargetDevice
 + (id)localTargetDevice;
 - (BOOL)claimSecureElementForCurrentUser;
-- (BOOL)paymentWebService:(id)a3 canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a4;
-- (BOOL)paymentWebServiceSupportsAccounts:(id)a3;
-- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)a3;
+- (BOOL)paymentWebService:(id)service canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier;
+- (BOOL)paymentWebServiceSupportsAccounts:(id)accounts;
+- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)registration;
 - (BOOL)secureElementIsAvailable;
 - (PKPaymentWebServiceTargetDevice)init;
 - (id)appleAccountInformation;
 - (id)deviceIDSIdentifier;
-- (id)identityPassesOfTypes:(id)a3;
-- (id)passesOfCardType:(int64_t)a3;
-- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)a3;
-- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)a3;
-- (id)trustedDeviceEnrollmentInfoForWebService:(id)a3;
-- (id)upgradeRequestForPass:(id)a3;
+- (id)identityPassesOfTypes:(id)types;
+- (id)passesOfCardType:(int64_t)type;
+- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)service;
+- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)service;
+- (id)trustedDeviceEnrollmentInfoForWebService:(id)service;
+- (id)upgradeRequestForPass:(id)pass;
 - (unint64_t)secureElementOwnershipStateForCurrentUser;
-- (void)_addPass:(id)a3 properties:(id)a4 completion:(id)a5;
-- (void)_cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3;
-- (void)_canAddSecureElementPassWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_paymentHardwareStatusWithType:(unint64_t)a3 completion:(id)a4;
-- (void)_paymentWebService:(id)a3 pass:(id)a4 withExpressConfig:(id)a5 hasDisqualifyingConflicts:(id)a6;
-- (void)_performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5;
-- (void)_updateMetadataOnPassWithIdentifier:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)_validateCommonPreconditionsWithCompletion:(id)a3;
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountsWithCompletion:(id)a3;
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4;
-- (void)applePayTrustKeyForIdentifier:(id)a3 completion:(id)a4;
-- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3;
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)a3 activationCode:(id)a4 analyticsUpdateConfig:(id)a5 completion:(id)a6;
-- (void)carKeyAccountAttestationRequestForCredential:(id)a3 completion:(id)a4;
-- (void)carKeyDecryptData:(id)a3 credential:(id)a4 ephemeralPublicKey:(id)a5 completion:(id)a6;
-- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)a3 completion:(id)a4;
-- (void)carKeyGetPretrackShareDataForShare:(id)a3 completion:(id)a4;
-- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyHandleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyPreWarmForManufacturer:(id)a3 completion:(id)a4;
-- (void)carKeyRejectInvitation:(id)a3 completion:(id)a4;
-- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeySetAccountAttestation:(id)a3 forCredential:(id)a4 completion:(id)a5;
-- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)a3 invitationIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyStartShareAcceptanceFlow:(id)a3 transportIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyUpdateTrackingAttestation:(id)a3 forCredential:(id)a4 encryptedContainer:(id)a5 completion:(id)a6;
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3;
-- (void)createApplePayTrustKeyWithRequest:(id)a3 completion:(id)a4;
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7;
+- (void)_addPass:(id)pass properties:(id)properties completion:(id)completion;
+- (void)_cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion;
+- (void)_canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_paymentHardwareStatusWithType:(unint64_t)type completion:(id)completion;
+- (void)_paymentWebService:(id)service pass:(id)pass withExpressConfig:(id)config hasDisqualifyingConflicts:(id)conflicts;
+- (void)_performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l completion:(id)completion;
+- (void)_updateMetadataOnPassWithIdentifier:(id)identifier credential:(id)credential completion:(id)completion;
+- (void)_validateCommonPreconditionsWithCompletion:(id)completion;
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountsWithCompletion:(id)completion;
+- (void)activeFPANCardsWithOptions:(unint64_t)options completion:(id)completion;
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion;
+- (void)applePayTrustKeyForIdentifier:(id)identifier completion:(id)completion;
+- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion;
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)identifier activationCode:(id)code analyticsUpdateConfig:(id)config completion:(id)completion;
+- (void)carKeyAccountAttestationRequestForCredential:(id)credential completion:(id)completion;
+- (void)carKeyDecryptData:(id)data credential:(id)credential ephemeralPublicKey:(id)key completion:(id)completion;
+- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeyGetPretrackShareDataForShare:(id)share completion:(id)completion;
+- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion;
+- (void)carKeyHandleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeyPreWarmForManufacturer:(id)manufacturer completion:(id)completion;
+- (void)carKeyRejectInvitation:(id)invitation completion:(id)completion;
+- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)identifier activationCode:(id)code completion:(id)completion;
+- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion;
+- (void)carKeySetAccountAttestation:(id)attestation forCredential:(id)credential completion:(id)completion;
+- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)container invitationIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeyStartShareAcceptanceFlow:(id)flow transportIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeyUpdateTrackingAttestation:(id)attestation forCredential:(id)credential encryptedContainer:(id)container completion:(id)completion;
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion;
+- (void)createApplePayTrustKeyWithRequest:(id)request completion:(id)completion;
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion;
 - (void)dealloc;
-- (void)deleteApplePayTrustKeyWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4;
-- (void)deleteInvitation:(id)a3 completion:(id)a4;
-- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)a3;
+- (void)deleteApplePayTrustKeyWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion;
+- (void)deleteInvitation:(id)invitation completion:(id)completion;
+- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)completion;
 - (void)endRequiringUpgradedPasscodeIfNecessary;
-- (void)featureApplicationsForProvisioningWithCompletion:(id)a3;
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 credential:(id *)a5 error:(id *)a6;
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 descriptor:(id *)a4 credential:(id *)a5 error:(id *)a6;
-- (void)generateIdentityProvisioningAttestationsWithISOCredential:(id)a3 pairingID:(id)a4 completion:(id)a5;
-- (void)insertFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)noteForegroundVerificationObserverActive:(BOOL)a3;
+- (void)featureApplicationsForProvisioningWithCompletion:(id)completion;
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d credential:(id *)credential error:(id *)error;
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n descriptor:(id *)descriptor credential:(id *)credential error:(id *)error;
+- (void)generateIdentityProvisioningAttestationsWithISOCredential:(id)credential pairingID:(id)d completion:(id)completion;
+- (void)insertFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)noteForegroundVerificationObserverActive:(BOOL)active;
 - (void)notePasscodeUpgradeFlowDidEnd;
-- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)a3;
+- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)completion;
 - (void)noteProvisioningDidBegin;
 - (void)noteProvisioningDidEnd;
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 configurationDataWithCompletionHandler:(id)a4;
-- (void)paymentWebService:(id)a3 deleteApplicationWithAID:(id)a4;
-- (void)paymentWebService:(id)a3 deviceMetadataWithFields:(unint64_t)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 didRegisterWithRegionMap:(id)a4 primaryRegionTopic:(id)a5;
-- (void)paymentWebService:(id)a3 generateTransactionKeyWithParameters:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 handlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 matchingInvitationOnDevice:(id)a4 withTimeout:(unint64_t)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 provisioningDataIncludingDeviceMetadata:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 queueConnectionToTrustedServiceManagerForPushTopic:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 registrationDataWithAuthToken:(id)a4 completionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 registrationDataWithCompletionHandler:(id)a4;
-- (void)paymentWebService:(id)a3 removePass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 requestPassUpgrade:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 setNewAuthRandom:(id)a4;
-- (void)paymentWebService:(id)a3 setNewAuthRandomIfNecessaryReturningPairingState:(id)a4;
-- (void)paymentWebService:(id)a3 signData:(id)a4 signatureEntanglementMode:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)paymentWebService:(id)a3 subcredentialInvitationsWithCompletion:(id)a4;
-- (void)paymentWebService:(id)a3 updateAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 updateMetadataOnPass:(id)a4 withCredential:(id)a5 completion:(id)a6;
-- (void)plansForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)renewAppleAccountWithCompletionHandler:(id)a3;
-- (void)requestBackgroundRegistrationForCredential:(id)a3 withCompletion:(id)a4;
-- (void)saveProvisioningSupportData:(id)a3 forPassUniqueIdentifier:(id)a4 completion:(id)a5;
-- (void)serviceProviderDataForSecureElementPass:(id)a3 encrypted:(BOOL)a4 completion:(id)a5;
-- (void)signatureForAuthToken:(id)a3 webService:(id)a4 completion:(id)a5;
-- (void)startRequiringUpgradedPasscodeWithCompletion:(id)a3;
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4;
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3;
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service configurationDataWithCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service deleteApplicationWithAID:(id)d;
+- (void)paymentWebService:(id)service deviceMetadataWithFields:(unint64_t)fields completion:(id)completion;
+- (void)paymentWebService:(id)service didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic;
+- (void)paymentWebService:(id)service generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion;
+- (void)paymentWebService:(id)service handlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service matchingInvitationOnDevice:(id)device withTimeout:(unint64_t)timeout completion:(id)completion;
+- (void)paymentWebService:(id)service provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion;
+- (void)paymentWebService:(id)service registrationDataWithAuthToken:(id)token completionHandler:(id)handler;
+- (void)paymentWebService:(id)service registrationDataWithCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service removePass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service requestPassUpgrade:(id)upgrade pass:(id)pass completion:(id)completion;
+- (void)paymentWebService:(id)service setNewAuthRandom:(id)random;
+- (void)paymentWebService:(id)service setNewAuthRandomIfNecessaryReturningPairingState:(id)state;
+- (void)paymentWebService:(id)service signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service subcredentialInvitationsWithCompletion:(id)completion;
+- (void)paymentWebService:(id)service updateAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentWebService:(id)service updateMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion;
+- (void)plansForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)renewAppleAccountWithCompletionHandler:(id)handler;
+- (void)requestBackgroundRegistrationForCredential:(id)credential withCompletion:(id)completion;
+- (void)saveProvisioningSupportData:(id)data forPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)serviceProviderDataForSecureElementPass:(id)pass encrypted:(BOOL)encrypted completion:(id)completion;
+- (void)signatureForAuthToken:(id)token webService:(id)service completion:(id)completion;
+- (void)startRequiringUpgradedPasscodeWithCompletion:(id)completion;
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion;
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion;
 @end
 
 @implementation PKPaymentWebServiceTargetDevice
@@ -139,9 +139,9 @@ void __52__PKPaymentWebServiceTargetDevice_localTargetDevice__block_invoke()
 - (id)appleAccountInformation
 {
   v2 = +[PKAppleAccountManager sharedInstance];
-  v3 = [v2 appleAccountInformation];
+  appleAccountInformation = [v2 appleAccountInformation];
 
-  return v3;
+  return appleAccountInformation;
 }
 
 - (void)dealloc
@@ -166,10 +166,10 @@ void __52__PKPaymentWebServiceTargetDevice_localTargetDevice__block_invoke()
   if (!self->_provisioningAssertionActive)
   {
     self->_provisioningAssertionActive = 1;
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 processName];
-    v6 = [v4 processIdentifier];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", v5, v6];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    processIdentifier = [processInfo processIdentifier];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", processName, processIdentifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__PKPaymentWebServiceTargetDevice_noteProvisioningDidBegin__block_invoke;
@@ -234,17 +234,17 @@ void __59__PKPaymentWebServiceTargetDevice_noteProvisioningDidBegin__block_invok
   return v2;
 }
 
-- (void)noteForegroundVerificationObserverActive:(BOOL)a3
+- (void)noteForegroundVerificationObserverActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     if (!self->_verificationAssertionActive)
     {
       self->_verificationAssertionActive = 1;
-      v4 = [MEMORY[0x1E696AE30] processInfo];
-      v5 = [v4 processName];
-      v6 = [v4 processIdentifier];
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", v5, v6];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      processIdentifier = [processInfo processIdentifier];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", processName, processIdentifier];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __76__PKPaymentWebServiceTargetDevice_noteForegroundVerificationObserverActive___block_invoke;
@@ -294,18 +294,18 @@ void __76__PKPaymentWebServiceTargetDevice_noteForegroundVerificationObserverAct
   *(v1 + 40) = 0;
 }
 
-- (void)paymentWebService:(id)a3 queueConnectionToTrustedServiceManagerForPushTopic:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 _paymentDevice];
-  v11 = [v10 hasRegistrationRegionMap];
+  serviceCopy = service;
+  topicCopy = topic;
+  completionCopy = completion;
+  _paymentDevice = [serviceCopy _paymentDevice];
+  hasRegistrationRegionMap = [_paymentDevice hasRegistrationRegionMap];
 
   v12 = PKLogFacilityTypeGetObject(7uLL);
   v13 = v12;
-  if ((v11 & 1) == 0)
+  if ((hasRegistrationRegionMap & 1) == 0)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -314,32 +314,32 @@ void __76__PKPaymentWebServiceTargetDevice_noteForegroundVerificationObserverAct
     }
 
     AnalyticsSendEvent();
-    v14 = [v7 context];
-    v15 = [v14 TSMURLStringByPushTopic];
+    context = [serviceCopy context];
+    tSMURLStringByPushTopic = [context TSMURLStringByPushTopic];
 
-    v16 = [v7 context];
-    v17 = [v16 primaryRegion];
-    v18 = [v17 trustedServiceManagerPushTopic];
+    context2 = [serviceCopy context];
+    primaryRegion = [context2 primaryRegion];
+    trustedServiceManagerPushTopic = [primaryRegion trustedServiceManagerPushTopic];
 
-    v19 = [v7 _paymentDevice];
-    [v19 setRegistrationRegionMap:v15 primaryRegionTopic:v18];
+    _paymentDevice2 = [serviceCopy _paymentDevice];
+    [_paymentDevice2 setRegistrationRegionMap:tSMURLStringByPushTopic primaryRegionTopic:trustedServiceManagerPushTopic];
   }
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v8;
+    v25 = topicCopy;
     _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Queueing TSM connection on local SE for %@", buf, 0xCu);
   }
 
-  v20 = [v7 _paymentDevice];
+  _paymentDevice3 = [serviceCopy _paymentDevice];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __119__PKPaymentWebServiceTargetDevice_paymentWebService_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke;
   v22[3] = &unk_1E79C4E50;
-  v23 = v9;
-  v21 = v9;
-  [v20 queueConnectionToTrustedServiceManagerForPushTopic:v8 withCompletion:v22];
+  v23 = completionCopy;
+  v21 = completionCopy;
+  [_paymentDevice3 queueConnectionToTrustedServiceManagerForPushTopic:topicCopy withCompletion:v22];
 }
 
 uint64_t __119__PKPaymentWebServiceTargetDevice_paymentWebService_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke(uint64_t a1)
@@ -353,23 +353,23 @@ uint64_t __119__PKPaymentWebServiceTargetDevice_paymentWebService_queueConnectio
   return result;
 }
 
-- (void)serviceProviderDataForSecureElementPass:(id)a3 encrypted:(BOOL)a4 completion:(id)a5
+- (void)serviceProviderDataForSecureElementPass:(id)pass encrypted:(BOOL)encrypted completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  encryptedCopy = encrypted;
+  passCopy = pass;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = +[PKPassLibrary sharedInstance];
-    if (v6)
+    if (encryptedCopy)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __96__PKPaymentWebServiceTargetDevice_serviceProviderDataForSecureElementPass_encrypted_completion___block_invoke;
       v13[3] = &unk_1E79C5688;
       v10 = &v14;
-      v14 = v8;
-      [v9 encryptedServiceProviderDataForSecureElementPass:v7 completion:v13];
+      v14 = completionCopy;
+      [v9 encryptedServiceProviderDataForSecureElementPass:passCopy completion:v13];
     }
 
     else
@@ -379,8 +379,8 @@ uint64_t __119__PKPaymentWebServiceTargetDevice_paymentWebService_queueConnectio
       v11[2] = __96__PKPaymentWebServiceTargetDevice_serviceProviderDataForSecureElementPass_encrypted_completion___block_invoke_50;
       v11[3] = &unk_1E79C5240;
       v10 = &v12;
-      v12 = v8;
-      [v9 serviceProviderDataForSecureElementPass:v7 completion:v11];
+      v12 = completionCopy;
+      [v9 serviceProviderDataForSecureElementPass:passCopy completion:v11];
     }
   }
 }
@@ -441,16 +441,16 @@ void __96__PKPaymentWebServiceTargetDevice_serviceProviderDataForSecureElementPa
   }
 }
 
-- (void)paymentWebService:(id)a3 configurationDataWithCompletionHandler:(id)a4
+- (void)paymentWebService:(id)service configurationDataWithCompletionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [a3 _paymentDevice];
-    v7 = [v6 configurationData];
+    _paymentDevice = [service _paymentDevice];
+    configurationData = [_paymentDevice configurationData];
 
-    if (v7)
+    if (configurationData)
     {
       v8 = 0;
     }
@@ -464,88 +464,88 @@ void __96__PKPaymentWebServiceTargetDevice_serviceProviderDataForSecureElementPa
       v8 = [v9 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v10];
     }
 
-    v5[2](v5, v7, v8);
+    handlerCopy[2](handlerCopy, configurationData, v8);
   }
 }
 
-- (void)paymentWebService:(id)a3 registrationDataWithCompletionHandler:(id)a4
+- (void)paymentWebService:(id)service registrationDataWithCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebServiceTargetDevice *)self appleAccountInformation];
-  v10 = [v8 authorizationHeader];
+  handlerCopy = handler;
+  serviceCopy = service;
+  appleAccountInformation = [(PKPaymentWebServiceTargetDevice *)self appleAccountInformation];
+  authorizationHeader = [appleAccountInformation authorizationHeader];
 
-  v9 = [v7 _paymentDevice];
+  _paymentDevice = [serviceCopy _paymentDevice];
 
-  [v9 registrationDataWithAuthToken:v10 completionHandler:v6];
+  [_paymentDevice registrationDataWithAuthToken:authorizationHeader completionHandler:handlerCopy];
 }
 
-- (void)paymentWebService:(id)a3 registrationDataWithAuthToken:(id)a4 completionHandler:(id)a5
+- (void)paymentWebService:(id)service registrationDataWithAuthToken:(id)token completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 _paymentDevice];
-  [v9 registrationDataWithAuthToken:v8 completionHandler:v7];
+  handlerCopy = handler;
+  tokenCopy = token;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice registrationDataWithAuthToken:tokenCopy completionHandler:handlerCopy];
 }
 
-- (void)paymentWebService:(id)a3 signData:(id)a4 signatureEntanglementMode:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)paymentWebService:(id)service signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = [a3 _paymentDevice];
-  [v11 signData:v10 signatureEntanglementMode:a5 withCompletionHandler:v9];
+  handlerCopy = handler;
+  dataCopy = data;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice signData:dataCopy signatureEntanglementMode:mode withCompletionHandler:handlerCopy];
 }
 
-- (void)paymentWebService:(id)a3 provisioningDataIncludingDeviceMetadata:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [a3 _paymentDevice];
-  [v8 provisioningDataIncludingDeviceMetadata:v5 withCompletionHandler:v7];
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice provisioningDataIncludingDeviceMetadata:metadataCopy withCompletionHandler:handlerCopy];
 }
 
-- (id)trustedDeviceEnrollmentInfoForWebService:(id)a3
+- (id)trustedDeviceEnrollmentInfoForWebService:(id)service
 {
-  v3 = [a3 _paymentDevice];
-  v4 = [v3 trustedDeviceEnrollmentInfo];
+  _paymentDevice = [service _paymentDevice];
+  trustedDeviceEnrollmentInfo = [_paymentDevice trustedDeviceEnrollmentInfo];
 
-  return v4;
+  return trustedDeviceEnrollmentInfo;
 }
 
-- (void)signatureForAuthToken:(id)a3 webService:(id)a4 completion:(id)a5
+- (void)signatureForAuthToken:(id)token webService:(id)service completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 _paymentDevice];
-  [v9 signatureForAuthToken:v8 completion:v7];
+  completionCopy = completion;
+  tokenCopy = token;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice signatureForAuthToken:tokenCopy completion:completionCopy];
 }
 
-- (void)paymentWebService:(id)a3 didRegisterWithRegionMap:(id)a4 primaryRegionTopic:(id)a5
+- (void)paymentWebService:(id)service didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 _paymentDevice];
-  [v9 setRegistrationRegionMap:v8 primaryRegionTopic:v7];
+  topicCopy = topic;
+  mapCopy = map;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice setRegistrationRegionMap:mapCopy primaryRegionTopic:topicCopy];
 }
 
-- (void)paymentWebService:(id)a3 deleteApplicationWithAID:(id)a4
+- (void)paymentWebService:(id)service deleteApplicationWithAID:(id)d
 {
-  v5 = a4;
-  v6 = [a3 _paymentDevice];
-  [v6 deleteApplicationWithAID:v5];
+  dCopy = d;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice deleteApplicationWithAID:dCopy];
 }
 
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   paymentService = self->_paymentService;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__PKPaymentWebServiceTargetDevice_addPendingProvisionings_completion___block_invoke;
   v9[3] = &unk_1E79C4450;
-  v10 = v6;
-  v8 = v6;
-  [(PKPaymentService *)paymentService addPendingProvisionings:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(PKPaymentService *)paymentService addPendingProvisionings:provisionings completion:v9];
 }
 
 uint64_t __70__PKPaymentWebServiceTargetDevice_addPendingProvisionings_completion___block_invoke(uint64_t a1)
@@ -559,22 +559,22 @@ uint64_t __70__PKPaymentWebServiceTargetDevice_addPendingProvisionings_completio
   return result;
 }
 
-- (void)renewAppleAccountWithCompletionHandler:(id)a3
+- (void)renewAppleAccountWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[PKAppleAccountManager sharedInstance];
-  [v4 renewAppleAccountWithCompletionHandler:v3];
+  [v4 renewAppleAccountWithCompletionHandler:handlerCopy];
 }
 
-- (void)paymentWebService:(id)a3 setNewAuthRandomIfNecessaryReturningPairingState:(id)a4
+- (void)paymentWebService:(id)service setNewAuthRandomIfNecessaryReturningPairingState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __102__PKPaymentWebServiceTargetDevice_paymentWebService_setNewAuthRandomIfNecessaryReturningPairingState___block_invoke;
   v7[3] = &unk_1E79C5090;
-  v8 = v5;
-  v6 = v5;
+  v8 = stateCopy;
+  v6 = stateCopy;
   [(PKPaymentWebServiceTargetDevice *)self _initializeSecureElementIfNecessaryWithCompletion:v7];
 }
 
@@ -589,15 +589,15 @@ uint64_t __102__PKPaymentWebServiceTargetDevice_paymentWebService_setNewAuthRand
   return result;
 }
 
-- (void)paymentWebService:(id)a3 setNewAuthRandom:(id)a4
+- (void)paymentWebService:(id)service setNewAuthRandom:(id)random
 {
-  v5 = a4;
+  randomCopy = random;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PKPaymentWebServiceTargetDevice_paymentWebService_setNewAuthRandom___block_invoke;
   v7[3] = &unk_1E79C5268;
-  v8 = v5;
-  v6 = v5;
+  v8 = randomCopy;
+  v6 = randomCopy;
   [(PKPaymentWebServiceTargetDevice *)self _initializeSecureElement:v7];
 }
 
@@ -612,13 +612,13 @@ uint64_t __70__PKPaymentWebServiceTargetDevice_paymentWebService_setNewAuthRando
   return result;
 }
 
-- (BOOL)paymentWebService:(id)a3 canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a4
+- (BOOL)paymentWebService:(id)service canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   IsAvailable = PKSecureElementIsAvailable();
   v7 = IsAvailable != 0;
-  if (v5 && IsAvailable)
+  if (identifierCopy && IsAvailable)
   {
     v19 = 0u;
     v20 = 0u;
@@ -641,8 +641,8 @@ uint64_t __70__PKPaymentWebServiceTargetDevice_paymentWebService_setNewAuthRando
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 primaryAccountIdentifier];
-          v15 = [v14 isEqualToString:v5];
+          primaryAccountIdentifier = [v13 primaryAccountIdentifier];
+          v15 = [primaryAccountIdentifier isEqualToString:identifierCopy];
 
           if (v15 && [v13 activationState] < 4)
           {
@@ -669,10 +669,10 @@ LABEL_14:
   return v7;
 }
 
-- (void)_validateCommonPreconditionsWithCompletion:(id)a3
+- (void)_validateCommonPreconditionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v10 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -701,9 +701,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v5 = [(PKPaymentWebServiceTargetDevice *)self appleAccountInformation];
-  v6 = [v5 aaAlternateDSID];
-  v7 = PKIsBeneficiaryAccountWithAltDsid(v6);
+  appleAccountInformation = [(PKPaymentWebServiceTargetDevice *)self appleAccountInformation];
+  aaAlternateDSID = [appleAccountInformation aaAlternateDSID];
+  v7 = PKIsBeneficiaryAccountWithAltDsid(aaAlternateDSID);
 
   if (v7)
   {
@@ -718,14 +718,14 @@ LABEL_9:
     v9 = 0;
 LABEL_14:
     v10 = PKDisplayableErrorForCommonType(v9, 0);
-    v4[2](v4, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
     goto LABEL_15;
   }
 
   passLibrary = self->_passLibrary;
   if (!passLibrary || [(PKPassLibrary *)passLibrary canAddPassOfType:1])
   {
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_16;
   }
 
@@ -740,23 +740,23 @@ LABEL_14:
   }
 
   v10 = PKDisplayableErrorForCommonType(v12, 0);
-  v4[2](v4, 0, v10);
+  completionCopy[2](completionCopy, 0, v10);
 LABEL_15:
 
 LABEL_16:
 }
 
-- (void)_paymentHardwareStatusWithType:(unint64_t)a3 completion:(id)a4
+- (void)_paymentHardwareStatusWithType:(unint64_t)type completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_alloc_init(PKInAppPaymentService);
-  [(PKInAppPaymentService *)v6 paymentHardwareStatusWithType:a3 completion:v5];
+  [(PKInAppPaymentService *)v6 paymentHardwareStatusWithType:type completion:completionCopy];
 }
 
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  passCopy = pass;
+  handlerCopy = handler;
   v9 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -768,9 +768,9 @@ LABEL_16:
   v11[1] = 3221225472;
   v11[2] = __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E79C4E78;
-  v12 = v8;
-  v10 = v8;
-  [(PKPaymentWebServiceTargetDevice *)self _addPass:v7 properties:0 completion:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(PKPaymentWebServiceTargetDevice *)self _addPass:passCopy properties:0 completion:v11];
 }
 
 void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -792,19 +792,19 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
   }
 }
 
-- (void)paymentWebService:(id)a3 handlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service handlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 uniqueID];
+  serviceCopy = service;
+  passCopy = pass;
+  handlerCopy = handler;
+  uniqueID = [passCopy uniqueID];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __102__PKPaymentWebServiceTargetDevice_paymentWebService_handlePotentialExpressPass_withCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E79C4A40;
   aBlock[4] = self;
-  v11 = v9;
+  v11 = handlerCopy;
   v56 = v11;
   v12 = _Block_copy(aBlock);
   if ([(PKPaymentWebServiceTargetDevice *)self secureElementSupportsExpressMode])
@@ -818,14 +818,14 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
     v13 = v12;
     v54 = v13;
     v14 = _Block_copy(v52);
-    v15 = [[PKExpressPassInformation alloc] initForPaymentPass:v8 withTechologyTest:&__block_literal_global_83];
+    v15 = [[PKExpressPassInformation alloc] initForPaymentPass:passCopy withTechologyTest:&__block_literal_global_83];
     if (v15)
     {
       v16 = v13;
       v17 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 uniqueID];
+        [passCopy uniqueID];
         v19 = v18 = v15;
         *buf = 138412290;
         v58 = v19;
@@ -835,24 +835,24 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
       }
 
       v20 = v15;
-      v21 = [[PKExpressPassConfiguration alloc] initWithPassInformation:v15 forSecureElementPass:v8];
+      v21 = [[PKExpressPassConfiguration alloc] initWithPassInformation:v15 forSecureElementPass:passCopy];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __102__PKPaymentWebServiceTargetDevice_paymentWebService_handlePotentialExpressPass_withCompletionHandler___block_invoke_86;
       v47[3] = &unk_1E79C5350;
       v50 = v14;
-      v48 = v8;
+      v48 = passCopy;
       v49 = v21;
       v51 = v16;
       v22 = v21;
-      [(PKPaymentWebServiceTargetDevice *)self _paymentWebService:v37 pass:v48 withExpressConfig:v22 hasDisqualifyingConflicts:v47];
+      [(PKPaymentWebServiceTargetDevice *)self _paymentWebService:serviceCopy pass:v48 withExpressConfig:v22 hasDisqualifyingConflicts:v47];
     }
 
     else
     {
       v36 = v14;
-      v24 = [v8 devicePrimaryContactlessPaymentApplication];
-      v25 = [v24 paymentNetworkIdentifier] - 1;
+      devicePrimaryContactlessPaymentApplication = [passCopy devicePrimaryContactlessPaymentApplication];
+      v25 = [devicePrimaryContactlessPaymentApplication paymentNetworkIdentifier] - 1;
 
       if (v25 > 0x62)
       {
@@ -860,7 +860,7 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v58 = v10;
+          v58 = uniqueID;
           _os_log_impl(&dword_1AD337000, v33, OS_LOG_TYPE_DEFAULT, "Pass %@ doesn't support express", buf, 0xCu);
         }
 
@@ -870,25 +870,25 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
 
       else
       {
-        v26 = [(PKPaymentWebServiceTargetDevice *)self upgradeRequestForPass:v8];
+        v26 = [(PKPaymentWebServiceTargetDevice *)self upgradeRequestForPass:passCopy];
         v27 = PKLogFacilityTypeGetObject(7uLL);
         v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
         if (v26)
         {
           if (v28)
           {
-            v29 = [v8 uniqueID];
+            uniqueID2 = [passCopy uniqueID];
             *buf = 138412290;
-            v58 = v29;
+            v58 = uniqueID2;
             _os_log_impl(&dword_1AD337000, v27, OS_LOG_TYPE_DEFAULT, "Pass %@ has upgrade request", buf, 0xCu);
           }
 
-          v30 = [[PKExpressPassInformation alloc] initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:v26 paymentPass:v8 withTechologyTest:&__block_literal_global_83];
+          v30 = [[PKExpressPassInformation alloc] initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:v26 paymentPass:passCopy withTechologyTest:&__block_literal_global_83];
           v14 = v36;
           if (v30)
           {
             v31 = [PKExpressPassConfiguration alloc];
-            [v8 devicePaymentApplications];
+            [passCopy devicePaymentApplications];
             v32 = v35 = v30;
             v34 = [(PKExpressPassConfiguration *)v31 initWithPassInformation:v35 forPaymentApplications:v32];
 
@@ -896,13 +896,13 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
             v38[1] = 3221225472;
             v38[2] = __102__PKPaymentWebServiceTargetDevice_paymentWebService_handlePotentialExpressPass_withCompletionHandler___block_invoke_87;
             v38[3] = &unk_1E79C53A0;
-            v39 = v8;
-            v40 = self;
-            v41 = v37;
+            v39 = passCopy;
+            selfCopy = self;
+            v41 = serviceCopy;
             v42 = v26;
             v44 = &__block_literal_global_83;
             v45 = v36;
-            v43 = v10;
+            v43 = uniqueID;
             v46 = v13;
             v30 = v35;
             [(PKPaymentWebServiceTargetDevice *)self _paymentWebService:v41 pass:v39 withExpressConfig:v34 hasDisqualifyingConflicts:v38];
@@ -913,7 +913,7 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v58 = v10;
+              v58 = uniqueID;
               _os_log_impl(&dword_1AD337000, v27, OS_LOG_TYPE_DEFAULT, "Invalid upgrade request on pass %@, could not create test express info", buf, 0xCu);
             }
 
@@ -926,7 +926,7 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
           if (v28)
           {
             *buf = 138412290;
-            v58 = v10;
+            v58 = uniqueID;
             _os_log_impl(&dword_1AD337000, v27, OS_LOG_TYPE_DEFAULT, "Pass %@ can't be upgraded to express", buf, 0xCu);
           }
 
@@ -944,7 +944,7 @@ void __90__PKPaymentWebServiceTargetDevice_paymentWebService_addPaymentPass_with
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v58 = v10;
+      v58 = uniqueID;
       _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "Skipping potential express enablement of %@ as SE does not support express", buf, 0xCu);
     }
 
@@ -1189,48 +1189,48 @@ void __102__PKPaymentWebServiceTargetDevice_paymentWebService_handlePotentialExp
   }
 }
 
-- (id)passesOfCardType:(int64_t)a3
+- (id)passesOfCardType:(int64_t)type
 {
   v4 = +[PKPassLibrary sharedInstance];
-  v5 = [v4 passesOfCardType:a3];
+  v5 = [v4 passesOfCardType:type];
 
   return v5;
 }
 
-- (id)identityPassesOfTypes:(id)a3
+- (id)identityPassesOfTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = +[PKPassLibrary sharedInstance];
-  v5 = [v4 identityPassesOfTypes:v3];
+  v5 = [v4 identityPassesOfTypes:typesCopy];
 
   return v5;
 }
 
-- (void)_paymentWebService:(id)a3 pass:(id)a4 withExpressConfig:(id)a5 hasDisqualifyingConflicts:(id)a6
+- (void)_paymentWebService:(id)service pass:(id)pass withExpressConfig:(id)config hasDisqualifyingConflicts:(id)conflicts
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  passCopy = pass;
+  configCopy = config;
+  conflictsCopy = conflicts;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__PKPaymentWebServiceTargetDevice__paymentWebService_pass_withExpressConfig_hasDisqualifyingConflicts___block_invoke;
   aBlock[3] = &unk_1E79C5268;
-  v26 = v13;
-  v14 = v13;
+  v26 = conflictsCopy;
+  v14 = conflictsCopy;
   v15 = _Block_copy(aBlock);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __103__PKPaymentWebServiceTargetDevice__paymentWebService_pass_withExpressConfig_hasDisqualifyingConflicts___block_invoke_2;
   v20[3] = &unk_1E79C53F0;
-  v23 = v11;
+  v23 = passCopy;
   v24 = v15;
   v20[4] = self;
-  v21 = v10;
-  v22 = v12;
-  v16 = v11;
-  v17 = v12;
-  v18 = v10;
+  v21 = serviceCopy;
+  v22 = configCopy;
+  v16 = passCopy;
+  v17 = configCopy;
+  v18 = serviceCopy;
   v19 = v15;
   [(PKPaymentWebServiceTargetDevice *)self _conflictingExpressPassIdentifiersForPassConfiguration:v17 withCompletion:v20];
 }
@@ -1463,17 +1463,17 @@ LABEL_25:
 LABEL_28:
 }
 
-- (void)paymentWebService:(id)a3 removePass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service removePass:(id)pass withCompletionHandler:(id)handler
 {
-  v9 = a5;
-  v7 = [a4 uniqueID];
-  [(PKPaymentWebServiceTargetDevice *)self _removePassWithUniqueID:v7 diagnosticReason:@"Target device remove requested"];
+  handlerCopy = handler;
+  uniqueID = [pass uniqueID];
+  [(PKPaymentWebServiceTargetDevice *)self _removePassWithUniqueID:uniqueID diagnosticReason:@"Target device remove requested"];
 
-  v8 = v9;
-  if (v9)
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 1, 0);
-    v8 = v9;
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
+    v8 = handlerCopy;
   }
 }
 
@@ -1485,11 +1485,11 @@ LABEL_28:
   return v3;
 }
 
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
@@ -1512,21 +1512,21 @@ LABEL_28:
   return IsAvailable;
 }
 
-- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)a3
+- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)registration
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  registrationCopy = registration;
   if (!PKIsManagedAppleID() && PKCurrentPassbookState() <= 1)
   {
     v5 = PKPeerPaymentServiceOverrideURL();
 
     if (v5)
     {
-      v6 = PKLogFacilityTypeGetObject(0xCuLL);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      context = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v16[0]) = 0;
-        _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Payment web service supports peer payments due to service override URL", v16, 2u);
+        _os_log_impl(&dword_1AD337000, context, OS_LOG_TYPE_DEFAULT, "Payment web service supports peer payments due to service override URL", v16, 2u);
       }
 
       v7 = 1;
@@ -1535,29 +1535,29 @@ LABEL_13:
       goto LABEL_9;
     }
 
-    if (([v4 needsRegistration] & 1) == 0)
+    if (([registrationCopy needsRegistration] & 1) == 0)
     {
-      v6 = [v4 context];
-      v9 = [v6 peerPaymentServiceURL];
+      context = [registrationCopy context];
+      peerPaymentServiceURL = [context peerPaymentServiceURL];
 
-      v10 = [v6 hasPeerPaymentAccount];
-      v11 = [v4 context];
-      v12 = [v11 configuration];
-      v13 = [(PKPaymentWebServiceTargetDevice *)self deviceRegion];
-      v14 = [v12 peerPaymentEnabledForRegion:v13];
+      hasPeerPaymentAccount = [context hasPeerPaymentAccount];
+      context2 = [registrationCopy context];
+      configuration = [context2 configuration];
+      deviceRegion = [(PKPaymentWebServiceTargetDevice *)self deviceRegion];
+      v14 = [configuration peerPaymentEnabledForRegion:deviceRegion];
 
-      v7 = (v10 | v14) & (v9 != 0);
+      v7 = (hasPeerPaymentAccount | v14) & (peerPaymentServiceURL != 0);
       v15 = PKLogFacilityTypeGetObject(0xCuLL);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16[0] = 67109888;
-        v16[1] = (v10 | v14) & (v9 != 0);
+        v16[1] = (hasPeerPaymentAccount | v14) & (peerPaymentServiceURL != 0);
         v17 = 1024;
-        v18 = v10;
+        v18 = hasPeerPaymentAccount;
         v19 = 1024;
         v20 = v14 & 1;
         v21 = 1024;
-        v22 = v9 != 0;
+        v22 = peerPaymentServiceURL != 0;
         _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Payment web service supports peer payments = %d, hasAccount: %d, regionEnabled: %d, hasURL: %d", v16, 0x1Au);
       }
 
@@ -1571,13 +1571,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)a3
+- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)service
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 context];
-  v5 = [v4 configuration];
-  v6 = [(PKPaymentWebServiceTargetDevice *)self deviceRegion];
-  v7 = [v5 applyServiceEnabledForRegion:v6];
+  context = [service context];
+  configuration = [context configuration];
+  deviceRegion = [(PKPaymentWebServiceTargetDevice *)self deviceRegion];
+  v7 = [configuration applyServiceEnabledForRegion:deviceRegion];
   v8 = PKLogFacilityTypeGetObject(0xEuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1588,7 +1588,7 @@ LABEL_9:
 
   if (v7)
   {
-    v9 = [v4 applyServiceFeaturesForRegionMeetingEnablementThreshold:v6];
+    v9 = [context applyServiceFeaturesForRegionMeetingEnablementThreshold:deviceRegion];
     v10 = PKDeviceSupportedFeatureIdentifiers();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -1598,8 +1598,8 @@ LABEL_9:
     }
 
     v11 = MEMORY[0x1E695DFA8];
-    v12 = [v9 allKeys];
-    v13 = [v11 setWithArray:v12];
+    allKeys = [v9 allKeys];
+    v13 = [v11 setWithArray:allKeys];
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -1627,7 +1627,7 @@ LABEL_9:
   return v14;
 }
 
-- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)a3
+- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)service
 {
   v8 = *MEMORY[0x1E69E9840];
   v3 = PKDeviceSupportedFeatureIdentifiers();
@@ -1642,33 +1642,33 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)paymentWebServiceSupportsAccounts:(id)a3
+- (BOOL)paymentWebServiceSupportsAccounts:(id)accounts
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 needsRegistration])
+  accountsCopy = accounts;
+  if ([accountsCopy needsRegistration])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 context];
-    v7 = [v6 primaryRegion];
-    v8 = [v7 hasAccounts];
+    context = [accountsCopy context];
+    primaryRegion = [context primaryRegion];
+    hasAccounts = [primaryRegion hasAccounts];
 
-    v9 = [v6 configuration];
-    v10 = [(PKPaymentWebServiceTargetDevice *)self deviceRegion];
-    v11 = [v9 accountServiceEnabledForRegion:v10];
+    configuration = [context configuration];
+    deviceRegion = [(PKPaymentWebServiceTargetDevice *)self deviceRegion];
+    v11 = [configuration accountServiceEnabledForRegion:deviceRegion];
 
-    v5 = v8 | v11;
+    v5 = hasAccounts | v11;
     v12 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14[0] = 67109632;
       v14[1] = v5 & 1;
       v15 = 1024;
-      v16 = v8;
+      v16 = hasAccounts;
       v17 = 1024;
       v18 = v11 & 1;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Payment web service supports accounts = %d, hasAccount: %d, regionEnabled: %d", v14, 0x14u);
@@ -1678,10 +1678,10 @@ LABEL_9:
   return v5 & 1;
 }
 
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = +[PKAccountService sharedInstance];
     v6[0] = MEMORY[0x1E69E9820];
@@ -1689,7 +1689,7 @@ LABEL_9:
     v6[2] = __80__PKPaymentWebServiceTargetDevice_updatedAccountsForProvisioningWithCompletion___block_invoke;
     v6[3] = &unk_1E79C4BD0;
     v7 = v4;
-    v8 = v3;
+    v8 = completionCopy;
     v5 = v4;
     [v5 updateAccountsWithCompletion:v6];
   }
@@ -1706,85 +1706,85 @@ void __80__PKPaymentWebServiceTargetDevice_updatedAccountsForProvisioningWithCom
   [v1 accountsForProvisioningWithCompletion:v2];
 }
 
-- (void)accountsWithCompletion:(id)a3
+- (void)accountsWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = +[PKAccountService sharedInstance];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __58__PKPaymentWebServiceTargetDevice_accountsWithCompletion___block_invoke;
     v5[3] = &unk_1E79C5440;
-    v6 = v3;
+    v6 = completionCopy;
     [v4 accountsWithCompletion:v5];
   }
 }
 
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
-    v6 = a3;
+    completionCopy = completion;
+    identifierCopy = identifier;
     v7 = +[PKAccountService sharedInstance];
-    [v7 accountWithIdentifier:v6 completion:v5];
+    [v7 accountWithIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
-    v6 = a3;
+    completionCopy = completion;
+    accountCopy = account;
     v7 = +[PKAccountService sharedInstance];
-    [v7 triggerCloudStoreZoneCreationForAccount:v6 withCompletion:v5];
+    [v7 triggerCloudStoreZoneCreationForAccount:accountCopy withCompletion:completionCopy];
   }
 }
 
-- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3
+- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __90__PKPaymentWebServiceTargetDevice_cachedFeatureApplicationsForProvisioningWithCompletion___block_invoke;
     v6[3] = &unk_1E79C5468;
-    v7 = v4;
+    v7 = completionCopy;
     [(PKPaymentWebServiceTargetDevice *)self _cachedFeatureApplicationsForProvisioningWithCompletion:v6];
   }
 }
 
-- (void)featureApplicationsForProvisioningWithCompletion:(id)a3
+- (void)featureApplicationsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __84__PKPaymentWebServiceTargetDevice_featureApplicationsForProvisioningWithCompletion___block_invoke;
     v6[3] = &unk_1E79C5440;
-    v7 = v4;
+    v7 = completionCopy;
     [(PKPaymentWebServiceTargetDevice *)self _featureApplicationsForProvisioningWithCompletion:v6];
   }
 }
 
-- (void)applePayTrustKeyForIdentifier:(id)a3 completion:(id)a4
+- (void)applePayTrustKeyForIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __76__PKPaymentWebServiceTargetDevice_applePayTrustKeyForIdentifier_completion___block_invoke;
     v8[3] = &unk_1E79C5490;
-    v9 = v5;
-    v10 = v6;
+    v9 = identifierCopy;
+    v10 = completionCopy;
     v7 = [PKPaymentSession startApplePayTrustSessionWithCompletion:v8];
   }
 }
@@ -1816,18 +1816,18 @@ void __76__PKPaymentWebServiceTargetDevice_applePayTrustKeyForIdentifier_complet
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)createApplePayTrustKeyWithRequest:(id)a3 completion:(id)a4
+- (void)createApplePayTrustKeyWithRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PKPaymentWebServiceTargetDevice_createApplePayTrustKeyWithRequest_completion___block_invoke;
   v10[3] = &unk_1E79C5490;
-  v11 = v5;
-  v12 = v6;
-  v7 = v6;
-  v8 = v5;
+  v11 = requestCopy;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  v8 = requestCopy;
   v9 = [PKPaymentSession startApplePayTrustSessionWithCompletion:v10];
 }
 
@@ -1868,18 +1868,18 @@ void __80__PKPaymentWebServiceTargetDevice_createApplePayTrustKeyWithRequest_com
   }
 }
 
-- (void)deleteApplePayTrustKeyWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteApplePayTrustKeyWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__PKPaymentWebServiceTargetDevice_deleteApplePayTrustKeyWithIdentifier_completion___block_invoke;
   v10[3] = &unk_1E79C5490;
-  v11 = v5;
-  v12 = v6;
-  v7 = v6;
-  v8 = v5;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  v8 = identifierCopy;
   v9 = [PKPaymentSession startApplePayTrustSessionWithCompletion:v10];
 }
 
@@ -1914,33 +1914,33 @@ void __83__PKPaymentWebServiceTargetDevice_deleteApplePayTrustKeyWithIdentifier_
   }
 }
 
-- (void)paymentWebService:(id)a3 deviceMetadataWithFields:(unint64_t)a4 completion:(id)a5
+- (void)paymentWebService:(id)service deviceMetadataWithFields:(unint64_t)fields completion:(id)completion
 {
-  v7 = a5;
-  v8 = [a3 _paymentDevice];
-  [v8 paymentDeviceMetadataFields:a4 completion:v7];
+  completionCopy = completion;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice paymentDeviceMetadataFields:fields completion:completionCopy];
 }
 
-- (void)paymentWebService:(id)a3 updateAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service updateAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = +[PKAccountService sharedInstance];
-  [v8 updateAccountWithIdentifier:v7 extended:0 completion:v6];
+  [v8 updateAccountWithIdentifier:identifierCopy extended:0 completion:completionCopy];
 }
 
-- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)a3
+- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (!self->_activePasscodeUpgradeFlowAssertionActive)
   {
     self->_activePasscodeUpgradeFlowAssertionActive = 1;
-    v7 = [MEMORY[0x1E696AE30] processInfo];
-    v8 = [v7 processName];
-    v9 = [v7 processIdentifier];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", v8, v9];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    processIdentifier = [processInfo processIdentifier];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", processName, processIdentifier];
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -1956,14 +1956,14 @@ void __83__PKPaymentWebServiceTargetDevice_deleteApplePayTrustKeyWithIdentifier_
     goto LABEL_5;
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v6 = MEMORY[0x1E696ABC0];
     v15 = *MEMORY[0x1E696A278];
     v16[0] = @"PasscodeUpgradeFlowActive assertion already exists.";
-    v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    v8 = [v6 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v7];
-    (v5)[2](v5, 0, v8);
+    processInfo = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
+    processName = [v6 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:processInfo];
+    (v5)[2](v5, 0, processName);
 LABEL_5:
   }
 }
@@ -2030,33 +2030,33 @@ void __82__PKPaymentWebServiceTargetDevice_notePasscodeUpgradeFlowWillBeginWithC
   self->_activePasscodeUpgradeFlowAssertionActive = 0;
 }
 
-- (void)plansForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)plansForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
-    [(PKPaymentService *)self->_paymentService plansForPaymentPassWithUniqueIdentifier:v7 completion:v6];
+    [(PKPaymentService *)self->_paymentService plansForPaymentPassWithUniqueIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
-- (void)startRequiringUpgradedPasscodeWithCompletion:(id)a3
+- (void)startRequiringUpgradedPasscodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_requiringUpgradedPasscodeAssertionActive)
   {
     self->_requiringUpgradedPasscodeAssertionActive = 1;
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v5 processName];
-    v7 = [v5 processIdentifier];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", v6, v7];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    processIdentifier = [processInfo processIdentifier];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%ld", processName, processIdentifier];
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __80__PKPaymentWebServiceTargetDevice_startRequiringUpgradedPasscodeWithCompletion___block_invoke;
     v9[3] = &unk_1E79C54E0;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = completionCopy;
     [PKAssertion acquireAssertionOfType:6 withReason:v8 completion:v9];
 
     objc_destroyWeak(&v11);
@@ -2130,18 +2130,18 @@ void __80__PKPaymentWebServiceTargetDevice_startRequiringUpgradedPasscodeWithCom
   self->_requiringUpgradedPasscodeAssertionActive = 0;
 }
 
-- (void)paymentWebService:(id)a3 updateMetadataOnPass:(id)a4 withCredential:(id)a5 completion:(id)a6
+- (void)paymentWebService:(id)service updateMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [a4 uniqueID];
+  completionCopy = completion;
+  credentialCopy = credential;
+  uniqueID = [pass uniqueID];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__PKPaymentWebServiceTargetDevice_paymentWebService_updateMetadataOnPass_withCredential_completion___block_invoke;
   v13[3] = &unk_1E79C4E78;
-  v14 = v9;
-  v12 = v9;
-  [(PKPaymentWebServiceTargetDevice *)self _updateMetadataOnPassWithIdentifier:v11 credential:v10 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(PKPaymentWebServiceTargetDevice *)self _updateMetadataOnPassWithIdentifier:uniqueID credential:credentialCopy completion:v13];
 }
 
 uint64_t __100__PKPaymentWebServiceTargetDevice_paymentWebService_updateMetadataOnPass_withCredential_completion___block_invoke(uint64_t a1)
@@ -2155,363 +2155,363 @@ uint64_t __100__PKPaymentWebServiceTargetDevice_paymentWebService_updateMetadata
   return result;
 }
 
-- (void)requestBackgroundRegistrationForCredential:(id)a3 withCompletion:(id)a4
+- (void)requestBackgroundRegistrationForCredential:(id)credential withCompletion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(0x17uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = credentialCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Requesting to background register credential: %@", &v10, 0xCu);
   }
 
-  v9 = [v6 identifier];
-  [(PKPaymentWebServiceTargetDevice *)self _requestBackgroundRegistrationForCredentialWithIdentifier:v9 completion:v7];
+  identifier = [credentialCopy identifier];
+  [(PKPaymentWebServiceTargetDevice *)self _requestBackgroundRegistrationForCredentialWithIdentifier:identifier completion:completionCopy];
 }
 
-- (void)paymentWebService:(id)a3 subcredentialInvitationsWithCompletion:(id)a4
+- (void)paymentWebService:(id)service subcredentialInvitationsWithCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)paymentWebService:(id)a3 matchingInvitationOnDevice:(id)a4 withTimeout:(unint64_t)a5 completion:(id)a6
+- (void)paymentWebService:(id)service matchingInvitationOnDevice:(id)device withTimeout:(unint64_t)timeout completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    (*(a6 + 2))(a6, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)deleteInvitation:(id)a3 completion:(id)a4
+- (void)deleteInvitation:(id)invitation completion:(id)completion
 {
-  v7 = a4;
-  [(PKPaymentService *)self->_paymentService deleteSharingMessage:a3];
-  v6 = v7;
-  if (v7)
+  completionCopy = completion;
+  [(PKPaymentService *)self->_paymentService deleteSharingMessage:invitation];
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 1);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy, 1);
+    v6 = completionCopy;
   }
 }
 
-- (void)carKeyStartShareAcceptanceFlow:(id)a3 transportIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyStartShareAcceptanceFlow:(id)flow transportIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  flowCopy = flow;
   v10 = objc_alloc_init(PKDAManager);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__PKPaymentWebServiceTargetDevice_carKeyStartShareAcceptanceFlow_transportIdentifier_completion___block_invoke;
   v13[3] = &unk_1E79C4860;
   v14 = v10;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v7;
-  [(PKDAManager *)v11 startShareAcceptanceFlowWithInvitation:v9 fromMailboxIdentifier:v8 completion:v13];
+  v12 = completionCopy;
+  [(PKDAManager *)v11 startShareAcceptanceFlowWithInvitation:flowCopy fromMailboxIdentifier:identifierCopy completion:v13];
 }
 
-- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  transportIdentifierCopy = transportIdentifier;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(PKDAManager);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __118__PKPaymentWebServiceTargetDevice_carKeyRoutingInformationForInvitationWithIdentifier_transportIdentifier_completion___block_invoke;
   v13[3] = &unk_1E79C5508;
   v14 = v10;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v7;
-  [(PKDAManager *)v11 routingInformationForInvitationWithIdentifier:v9 fromMailboxIdentifier:v8 completionHandler:v13];
+  v12 = completionCopy;
+  [(PKDAManager *)v11 routingInformationForInvitationWithIdentifier:identifierCopy fromMailboxIdentifier:transportIdentifierCopy completionHandler:v13];
 }
 
-- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  transportIdentifierCopy = transportIdentifier;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(PKDAManager);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __131__PKPaymentWebServiceTargetDevice_carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier_transportIdentifier_completion___block_invoke;
   v13[3] = &unk_1E79C5530;
   v14 = v10;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v7;
-  [(PKDAManager *)v11 getProductPlanIdentifierRequestForInvitationWithIdentifier:v9 fromMailboxIdentifier:v8 completion:v13];
+  v12 = completionCopy;
+  [(PKDAManager *)v11 getProductPlanIdentifierRequestForInvitationWithIdentifier:identifierCopy fromMailboxIdentifier:transportIdentifierCopy completion:v13];
 }
 
-- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)a3 invitationIdentifier:(id)a4 completion:(id)a5
+- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)container invitationIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  containerCopy = container;
   v10 = objc_alloc_init(PKDAManager);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __116__PKPaymentWebServiceTargetDevice_carKeySetEncryptedProductPlanIdentifierContainer_invitationIdentifier_completion___block_invoke;
   v13[3] = &unk_1E79C4860;
   v14 = v10;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v7;
-  [(PKDAManager *)v11 setEncryptedProductPlanIdentifierContainer:v9 forInvitationIdentifier:v8 completion:v13];
+  v12 = completionCopy;
+  [(PKDAManager *)v11 setEncryptedProductPlanIdentifierContainer:containerCopy forInvitationIdentifier:identifierCopy completion:v13];
 }
 
-- (void)carKeyAccountAttestationRequestForCredential:(id)a3 completion:(id)a4
+- (void)carKeyAccountAttestationRequestForCredential:(id)credential completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
   v7 = objc_alloc_init(PKDAManager);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __91__PKPaymentWebServiceTargetDevice_carKeyAccountAttestationRequestForCredential_completion___block_invoke;
   v10[3] = &unk_1E79C5558;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
-  [(PKDAManager *)v8 accountAttestionRequestForCredential:v6 withCompletion:v10];
+  v9 = completionCopy;
+  [(PKDAManager *)v8 accountAttestionRequestForCredential:credentialCopy withCompletion:v10];
 }
 
-- (void)carKeyGetPretrackShareDataForShare:(id)a3 completion:(id)a4
+- (void)carKeyGetPretrackShareDataForShare:(id)share completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  shareCopy = share;
   v7 = objc_alloc_init(PKDAManager);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__PKPaymentWebServiceTargetDevice_carKeyGetPretrackShareDataForShare_completion___block_invoke;
   v10[3] = &unk_1E79C5530;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
-  [(PKDAManager *)v8 getPretrackShareDataForShare:v6 withCompletion:v10];
+  v9 = completionCopy;
+  [(PKDAManager *)v8 getPretrackShareDataForShare:shareCopy withCompletion:v10];
 }
 
-- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)a3 completion:(id)a4
+- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(PKDAManager);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __101__PKPaymentWebServiceTargetDevice_carKeyGetPretrackRequestForKeyWithInvitationIdentifier_completion___block_invoke;
   v10[3] = &unk_1E79C5530;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
-  [(PKDAManager *)v8 getPretrackRequestForKeyWithIdentifier:v6 withCompletion:v10];
+  v9 = completionCopy;
+  [(PKDAManager *)v8 getPretrackRequestForKeyWithIdentifier:identifierCopy withCompletion:v10];
 }
 
-- (void)carKeySetAccountAttestation:(id)a3 forCredential:(id)a4 completion:(id)a5
+- (void)carKeySetAccountAttestation:(id)attestation forCredential:(id)credential completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
+  attestationCopy = attestation;
   v10 = objc_alloc_init(PKDAManager);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__PKPaymentWebServiceTargetDevice_carKeySetAccountAttestation_forCredential_completion___block_invoke;
   v13[3] = &unk_1E79C4860;
   v14 = v10;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v7;
-  [(PKDAManager *)v11 setAccountAttestation:v9 forUpgradeCredential:v8 withCompletion:v13];
+  v12 = completionCopy;
+  [(PKDAManager *)v11 setAccountAttestation:attestationCopy forUpgradeCredential:credentialCopy withCompletion:v13];
 }
 
-- (void)carKeyUpdateTrackingAttestation:(id)a3 forCredential:(id)a4 encryptedContainer:(id)a5 completion:(id)a6
+- (void)carKeyUpdateTrackingAttestation:(id)attestation forCredential:(id)credential encryptedContainer:(id)container completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  containerCopy = container;
+  credentialCopy = credential;
+  attestationCopy = attestation;
   v13 = objc_alloc_init(PKDAManager);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __111__PKPaymentWebServiceTargetDevice_carKeyUpdateTrackingAttestation_forCredential_encryptedContainer_completion___block_invoke;
   v16[3] = &unk_1E79C4888;
   v17 = v13;
-  v18 = v9;
+  v18 = completionCopy;
   v14 = v13;
-  v15 = v9;
-  [(PKDAManager *)v14 updateTrackingAttestation:v12 forCredential:v11 encryptedContainer:v10 completion:v16];
+  v15 = completionCopy;
+  [(PKDAManager *)v14 updateTrackingAttestation:attestationCopy forCredential:credentialCopy encryptedContainer:containerCopy completion:v16];
 }
 
-- (void)carKeyPreWarmForManufacturer:(id)a3 completion:(id)a4
+- (void)carKeyPreWarmForManufacturer:(id)manufacturer completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  manufacturerCopy = manufacturer;
   v7 = objc_alloc_init(PKDAManager);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__PKPaymentWebServiceTargetDevice_carKeyPreWarmForManufacturer_completion___block_invoke;
   v10[3] = &unk_1E79C4860;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
-  [(PKDAManager *)v8 preWarmForManufacturer:v6 completion:v10];
+  v9 = completionCopy;
+  [(PKDAManager *)v8 preWarmForManufacturer:manufacturerCopy completion:v10];
 }
 
-- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)a3 activationCode:(id)a4 analyticsUpdateConfig:(id)a5 completion:(id)a6
+- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)identifier activationCode:(id)code analyticsUpdateConfig:(id)config completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  configCopy = config;
+  codeCopy = code;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(PKDAManager);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __130__PKPaymentWebServiceTargetDevice_carKeyAcceptInvitationWithInvitationIdentifier_activationCode_analyticsUpdateConfig_completion___block_invoke;
   v16[3] = &unk_1E79C5580;
   v17 = v13;
-  v18 = v9;
+  v18 = completionCopy;
   v14 = v13;
-  v15 = v9;
-  [(PKDAManager *)v14 acceptInvitationWithIdentifier:v12 activationCode:v11 analyticsUpdateConfig:v10 completion:v16];
+  v15 = completionCopy;
+  [(PKDAManager *)v14 acceptInvitationWithIdentifier:identifierCopy activationCode:codeCopy analyticsUpdateConfig:configCopy completion:v16];
 }
 
-- (void)carKeyRejectInvitation:(id)a3 completion:(id)a4
+- (void)carKeyRejectInvitation:(id)invitation completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  invitationCopy = invitation;
   v7 = objc_alloc_init(PKDAManager);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__PKPaymentWebServiceTargetDevice_carKeyRejectInvitation_completion___block_invoke;
   v10[3] = &unk_1E79C55A8;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
-  [(PKDAManager *)v8 rejectInvitation:v6 completion:v10];
+  v9 = completionCopy;
+  [(PKDAManager *)v8 rejectInvitation:invitationCopy completion:v10];
 }
 
-- (void)carKeyHandleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyHandleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  messageCopy = message;
   v10 = objc_alloc_init(PKDAManager);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __99__PKPaymentWebServiceTargetDevice_carKeyHandleRecipientMessage_forInvitationIdentifier_completion___block_invoke;
   v13[3] = &unk_1E79C5580;
   v14 = v10;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v7;
-  [(PKDAManager *)v11 handleRecipientMessage:v9 forInvitationIdentifier:v8 completion:v13];
+  v12 = completionCopy;
+  [(PKDAManager *)v11 handleRecipientMessage:messageCopy forInvitationIdentifier:identifierCopy completion:v13];
 }
 
-- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)identifier activationCode:(id)code completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  codeCopy = code;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(PKDAManager);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __111__PKPaymentWebServiceTargetDevice_carKeyRetryActivationCodeWithInvitationIdentifier_activationCode_completion___block_invoke;
   v13[3] = &unk_1E79C5580;
   v14 = v10;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v7;
-  [(PKDAManager *)v11 retryActivationCode:v8 forInvitationIdentifier:v9 completion:v13];
+  v12 = completionCopy;
+  [(PKDAManager *)v11 retryActivationCode:codeCopy forInvitationIdentifier:identifierCopy completion:v13];
 }
 
-- (void)carKeyDecryptData:(id)a3 credential:(id)a4 ephemeralPublicKey:(id)a5 completion:(id)a6
+- (void)carKeyDecryptData:(id)data credential:(id)credential ephemeralPublicKey:(id)key completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  keyCopy = key;
+  credentialCopy = credential;
+  dataCopy = data;
   v14 = objc_alloc_init(PKDAManager);
-  v13 = [(PKDAManager *)v14 decryptData:v12 withCredential:v11 ephemeralPublicKey:v10];
+  v13 = [(PKDAManager *)v14 decryptData:dataCopy withCredential:credentialCopy ephemeralPublicKey:keyCopy];
 
-  v9[2](v9, v13, 0);
+  completionCopy[2](completionCopy, v13, 0);
 }
 
-- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)a3
+- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v4 = PKRadioTechnologyForConfigurationTechnology(3);
-  (*(a3 + 2))(v5, v4);
+  (*(completion + 2))(completionCopy, v4);
 }
 
-- (void)paymentWebService:(id)a3 generateTransactionKeyWithParameters:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 _paymentDevice];
-  [v9 generateTransactionKeyWithParameters:v8 withCompletion:v7];
+  completionCopy = completion;
+  parametersCopy = parameters;
+  _paymentDevice = [service _paymentDevice];
+  [_paymentDevice generateTransactionKeyWithParameters:parametersCopy withCompletion:completionCopy];
 }
 
-- (void)saveProvisioningSupportData:(id)a3 forPassUniqueIdentifier:(id)a4 completion:(id)a5
+- (void)saveProvisioningSupportData:(id)data forPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v11)
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (dataCopy)
   {
-    [(PKPaymentService *)self->_paymentService saveProvisioningSupportData:v11 forPassUniqueIdentifier:v8 completion:v9];
+    [(PKPaymentService *)self->_paymentService saveProvisioningSupportData:dataCopy forPassUniqueIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)paymentWebService:(id)a3 requestPassUpgrade:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)paymentWebService:(id)service requestPassUpgrade:(id)upgrade pass:(id)pass completion:(id)completion
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  serviceCopy = service;
+  upgradeCopy = upgrade;
+  passCopy = pass;
+  completionCopy = completion;
+  if (completionCopy)
   {
     passUpgradeController = self->_passUpgradeController;
     if (!passUpgradeController)
     {
-      v14 = [[PKPassUpgradeController alloc] initWithWebService:v16];
+      v14 = [[PKPassUpgradeController alloc] initWithWebService:serviceCopy];
       v15 = self->_passUpgradeController;
       self->_passUpgradeController = v14;
 
       passUpgradeController = self->_passUpgradeController;
     }
 
-    [(PKPassUpgradeControllerBase *)passUpgradeController requestPassUpgrade:v10 pass:v11 diagnosticReason:@"User upgrade" completion:v12];
+    [(PKPassUpgradeControllerBase *)passUpgradeController requestPassUpgrade:upgradeCopy pass:passCopy diagnosticReason:@"User upgrade" completion:completionCopy];
   }
 }
 
-- (void)_addPass:(id)a3 properties:(id)a4 completion:(id)a5
+- (void)_addPass:(id)pass properties:(id)properties completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  passCopy = pass;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (passCopy)
   {
-    v12 = [[PKPassIngestionPayload alloc] initWithPass:v8];
-    [(PKPassIngestionPayload *)v12 setProperties:v9];
+    v12 = [[PKPassIngestionPayload alloc] initWithPass:passCopy];
+    [(PKPassIngestionPayload *)v12 setProperties:propertiesCopy];
     passLibrary = self->_passLibrary;
     v18[0] = v12;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -2520,14 +2520,14 @@ uint64_t __100__PKPaymentWebServiceTargetDevice_paymentWebService_updateMetadata
     v15[2] = __66__PKPaymentWebServiceTargetDevice__addPass_properties_completion___block_invoke;
     v15[3] = &unk_1E79C55D0;
     v15[4] = self;
-    v16 = v8;
+    v16 = passCopy;
     v17 = v11;
     [(PKPassLibrary *)passLibrary addPassesWithIngestionPayloads:v14 withCompletionHandler:v15];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -2580,9 +2580,9 @@ LABEL_6:
   }
 }
 
-- (id)upgradeRequestForPass:(id)a3
+- (id)upgradeRequestForPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   v5 = [PKPaymentDefaultDataProvider alloc];
   paymentService = self->_paymentService;
   v7 = +[PKSecureElement sharedSecureElement];
@@ -2590,21 +2590,21 @@ LABEL_6:
 
   v9 = [[PKPassLibraryDefaultDataProvider alloc] initWithPassLibrary:self->_passLibrary];
   v10 = [[PKExpressPassController alloc] initWithPaymentDataProvider:v8 passLibraryDataProvider:v9 isForWatch:0];
-  v11 = [(PKExpressPassController *)v10 expressModeUpgradeRequestForPass:v4];
+  v11 = [(PKExpressPassController *)v10 expressModeUpgradeRequestForPass:passCopy];
 
   return v11;
 }
 
-- (void)_cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3
+- (void)_cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   paymentService = self->_paymentService;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__PKPaymentWebServiceTargetDevice__cachedFeatureApplicationsForProvisioningWithCompletion___block_invoke;
   v7[3] = &unk_1E79C5468;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(PKPaymentService *)paymentService featureApplicationsWithCompletion:v7];
 }
 
@@ -2620,21 +2620,21 @@ void __91__PKPaymentWebServiceTargetDevice__cachedFeatureApplicationsForProvisio
   }
 }
 
-- (void)_updateMetadataOnPassWithIdentifier:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)_updateMetadataOnPassWithIdentifier:(id)identifier credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   paymentService = self->_paymentService;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__PKPaymentWebServiceTargetDevice__updateMetadataOnPassWithIdentifier_credential_completion___block_invoke;
   v13[3] = &unk_1E79C5618;
-  v14 = v8;
-  v15 = v9;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
-  [(PKPaymentService *)paymentService updateMetadataOnPassWithIdentifier:v11 credential:a4 completion:v13];
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  [(PKPaymentService *)paymentService updateMetadataOnPassWithIdentifier:v11 credential:credential completion:v13];
 }
 
 void __93__PKPaymentWebServiceTargetDevice__updateMetadataOnPassWithIdentifier_credential_completion___block_invoke(void *a1, char a2)
@@ -2656,37 +2656,37 @@ void __93__PKPaymentWebServiceTargetDevice__updateMetadataOnPassWithIdentifier_c
   }
 }
 
-- (void)_canAddSecureElementPassWithConfiguration:(id)a3 completion:(id)a4
+- (void)_canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    [(PKPassLibrary *)self->_passLibrary canAddSecureElementPassWithConfiguration:a3 completion:?];
+    [(PKPassLibrary *)self->_passLibrary canAddSecureElementPassWithConfiguration:configuration completion:?];
   }
 }
 
-- (void)_performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5
+- (void)_performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  lCopy = l;
+  reasonCopy = reason;
   v10 = +[PKDeviceRegistrationService sharedInstance];
-  [v10 performDeviceRegistrationReturningContextForReason:v9 brokerURL:v8 actionType:1 completion:v7];
+  [v10 performDeviceRegistrationReturningContextForReason:reasonCopy brokerURL:lCopy actionType:1 completion:completionCopy];
 }
 
-- (void)generateIdentityProvisioningAttestationsWithISOCredential:(id)a3 pairingID:(id)a4 completion:(id)a5
+- (void)generateIdentityProvisioningAttestationsWithISOCredential:(id)credential pairingID:(id)d completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E6997DE0];
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  credentialCopy = credential;
   v11 = objc_alloc_init(v8);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __114__PKPaymentWebServiceTargetDevice_generateIdentityProvisioningAttestationsWithISOCredential_pairingID_completion___block_invoke;
   v13[3] = &unk_1E79C5660;
-  v14 = v7;
-  v12 = v7;
-  [v11 generateIdentityProvisioningAttestationsWithCredential:v10 pairingID:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [v11 generateIdentityProvisioningAttestationsWithCredential:credentialCopy pairingID:dCopy completion:v13];
 }
 
 void __114__PKPaymentWebServiceTargetDevice_generateIdentityProvisioningAttestationsWithISOCredential_pairingID_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2746,51 +2746,51 @@ PKIdentityProvisioningTransactionKey *__114__PKPaymentWebServiceTargetDevice_gen
   return v6;
 }
 
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
+  descriptorCopy = descriptor;
   v11 = [[PKAutoFillCardManager alloc] initWithPaymentService:self->_paymentService];
-  [(PKAutoFillCardManager *)v11 canSaveFPANCardWithDescriptor:v10 credential:v9 completion:v8];
+  [(PKAutoFillCardManager *)v11 canSaveFPANCardWithDescriptor:descriptorCopy credential:credentialCopy completion:completionCopy];
 }
 
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)activeFPANCardsWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8 = [[PKAutoFillCardManager alloc] initWithPaymentService:self->_paymentService];
   v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:&unk_1F23B3BF0];
-  [(PKAutoFillCardManager *)v8 activeFPANCardsWithOptions:a3 allowedCardTypes:v7 completion:v6];
+  [(PKAutoFillCardManager *)v8 activeFPANCardsWithOptions:options allowedCardTypes:v7 completion:completionCopy];
 }
 
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  completionCopy = completion;
+  hostCopy = host;
+  authorizationCopy = authorization;
+  cardCopy = card;
   v16 = [[PKAutoFillCardManager alloc] initWithPaymentService:self->_paymentService];
-  [(PKAutoFillCardManager *)v16 credentialForFPANCard:v15 authorization:v14 options:a5 merchantHost:v13 completion:v12];
+  [(PKAutoFillCardManager *)v16 credentialForFPANCard:cardCopy authorization:authorizationCopy options:options merchantHost:hostCopy completion:completionCopy];
 }
 
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
+  descriptorCopy = descriptor;
   v11 = [[PKAutoFillCardManager alloc] initWithPaymentService:self->_paymentService];
-  [(PKAutoFillCardManager *)v11 updateFPANCardWithDescriptor:v10 credential:v9 completion:v8];
+  [(PKAutoFillCardManager *)v11 updateFPANCardWithDescriptor:descriptorCopy credential:credentialCopy completion:completionCopy];
 }
 
-- (void)insertFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)insertFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PKPaymentService *)self->_paymentService insertFPANCardWithDescriptor:v8 credential:v9 completion:v10];
+    [(PKPaymentService *)self->_paymentService insertFPANCardWithDescriptor:descriptorCopy credential:credentialCopy completion:completionCopy];
   }
 
   else
@@ -2803,31 +2803,31 @@ PKIdentityProvisioningTransactionKey *__114__PKPaymentWebServiceTargetDevice_gen
     }
 
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    v10[2](v10, v12);
+    completionCopy[2](completionCopy, v12);
   }
 }
 
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  descriptorCopy = descriptor;
   v8 = [[PKAutoFillCardManager alloc] initWithPaymentService:self->_paymentService];
-  [(PKAutoFillCardManager *)v8 deleteFPANCardWithDescriptor:v7 completion:v6];
+  [(PKAutoFillCardManager *)v8 deleteFPANCardWithDescriptor:descriptorCopy completion:completionCopy];
 }
 
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 credential:(id *)a5 error:(id *)a6
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d credential:(id *)credential error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   v12 = [[PKAutoFillCardManager alloc] initWithPaymentService:self->_paymentService];
-  [(PKAutoFillCardManager *)v12 fpanCredentialForPrimaryAccountIdentifier:v11 passUniqueID:v10 credential:a5 error:a6];
+  [(PKAutoFillCardManager *)v12 fpanCredentialForPrimaryAccountIdentifier:identifierCopy passUniqueID:dCopy credential:credential error:error];
 }
 
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 descriptor:(id *)a4 credential:(id *)a5 error:(id *)a6
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n descriptor:(id *)descriptor credential:(id *)credential error:(id *)error
 {
-  v10 = a3;
+  nCopy = n;
   v11 = [[PKAutoFillCardManager alloc] initWithPaymentService:self->_paymentService];
-  [(PKAutoFillCardManager *)v11 fpanDescriptorAndCredentialForFPAN:v10 descriptor:a4 credential:a5 error:a6];
+  [(PKAutoFillCardManager *)v11 fpanDescriptorAndCredentialForFPAN:nCopy descriptor:descriptor credential:credential error:error];
 }
 
 @end

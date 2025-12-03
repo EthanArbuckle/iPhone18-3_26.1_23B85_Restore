@@ -1,12 +1,12 @@
 @interface ADPreferences
 + (id)sharedPreferences;
-- (ADPreferences)initWithInstanceContext:(id)a3;
-- (BOOL)_validatePhsManifestData:(id)a3;
+- (ADPreferences)initWithInstanceContext:(id)context;
+- (BOOL)_validatePhsManifestData:(id)data;
 - (BOOL)allowExplicitContent;
 - (BOOL)deviceWasRedirectedToProduction;
-- (BOOL)getAudioSessionActiveDelay:(double *)a3;
-- (BOOL)getMaximumOutputVolume:(float *)a3;
-- (BOOL)getMinimumOutputVolume:(float *)a3;
+- (BOOL)getAudioSessionActiveDelay:(double *)delay;
+- (BOOL)getMaximumOutputVolume:(float *)volume;
+- (BOOL)getMinimumOutputVolume:(float *)volume;
 - (BOOL)hasSetUpMultiUserSharedRecordZoneSubscription;
 - (BOOL)homeAutomationServerFlowBypassed;
 - (BOOL)ignoreLocationWiFiStatus;
@@ -20,34 +20,34 @@
 - (BOOL)voiceTriggerNeedsDataSync;
 - (double)myriadDeviceVTEndTimeDistanceThreshold;
 - (double)serverTimeoutInterval;
-- (id)_cachedKeychainStringForKey:(id)a3;
+- (id)_cachedKeychainStringForKey:(id)key;
 - (id)_keychainCache;
-- (id)_keychainStringForKey:(id)a3;
+- (id)_keychainStringForKey:(id)key;
 - (id)accountIdentifiers;
-- (id)accountInfoForIdentifier:(id)a3;
+- (id)accountInfoForIdentifier:(id)identifier;
 - (id)accountStatusServerChangeToken;
 - (id)cloudKitSharedDatabaseChangeToken;
 - (id)companionIdentifier;
 - (id)deviceOwner;
-- (id)experimentIdentifierForConfigurationIdentifier:(id)a3;
-- (id)getExperimentStateForConfigurationIdentifier:(id)a3;
+- (id)experimentIdentifierForConfigurationIdentifier:(id)identifier;
+- (id)getExperimentStateForConfigurationIdentifier:(id)identifier;
 - (id)internalAuthAppleConnectServiceTicket;
 - (id)internalAuthSessionToken;
 - (id)keyValueServerChangeToken;
-- (id)languageCodeWithFallback:(BOOL)a3;
+- (id)languageCodeWithFallback:(BOOL)fallback;
 - (id)lastCompanionRemoteDataFetchDate;
 - (id)lastKnownProxyStreamId;
 - (id)loggingSharedUserIdentifier;
 - (id)multiUserHomeUUIDsForDeletion;
 - (id)multiUserPrimaryUser;
 - (id)multiUserSharedDataServerChangeToken;
-- (id)multiUserSharedDataServerChangeTokenForOwner:(id)a3;
+- (id)multiUserSharedDataServerChangeTokenForOwner:(id)owner;
 - (id)multiUserSharedUsers;
-- (id)outputVoiceWithFallback:(BOOL)a3;
+- (id)outputVoiceWithFallback:(BOOL)fallback;
 - (id)overrideAudioSessionActiveDelay;
-- (id)phsAssetManifest:(BOOL)a3;
+- (id)phsAssetManifest:(BOOL)manifest;
 - (id)productTypePrefix;
-- (id)redirectForServerURLString:(id)a3;
+- (id)redirectForServerURLString:(id)string;
 - (id)serverAudioSessionActivationDelay;
 - (id)serverAudioSessionActivationDelayAboveMediaPlaybackVolumeThreshold;
 - (id)serverMediaPlaybackVolumeThresholdForAudioSessionActivationDelay;
@@ -57,49 +57,49 @@
 - (unint64_t)lastKnownAnalyticsStoreState;
 - (unint64_t)siriAnalyticsIdentifiersConsistencyTimerIntervalMillisec;
 - (unint64_t)siriAnalyticsIdentifiersConsistencyTimerStartDelayMillisec;
-- (void)_cacheAndSetKeychainString:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)dumpAssistantStateChunk:(id)a3;
-- (void)removeMultiUserHomeUUID:(id)a3;
-- (void)setAccountInfo:(id)a3 forIdentifier:(id)a4;
-- (void)setAllowExplicitContent:(BOOL)a3;
-- (void)setCompanionIdentifier:(id)a3;
-- (void)setDeviceWasRedirectedToProduction:(BOOL)a3;
-- (void)setExperimentIdentifier:(id)a3 forConfigurationIdentifier:(id)a4;
-- (void)setExperimentState:(id)a3 forConfigurationIdentifier:(id)a4;
-- (void)setHasATVInHome:(BOOL)a3;
-- (void)setHasATVOrHomePodInHome:(BOOL)a3;
-- (void)setHasHomePodInHome:(BOOL)a3;
-- (void)setHasPairedWatches:(BOOL)a3;
-- (void)setHasSetUpAccountStatusRecordZoneSubscription:(BOOL)a3;
-- (void)setHasSetUpKeyValueRecordZoneSubscription:(BOOL)a3;
-- (void)setHasSetUpVoiceTriggerRecordZoneSubscription:(BOOL)a3;
-- (void)setHasSetupMultiUserSharedRecordZoneSubscription:(BOOL)a3;
-- (void)setHomeAutomationServerFlowBypassed:(BOOL)a3;
-- (void)setIsMediaEntitySyncDisabledSyncConfig:(BOOL)a3;
-- (void)setIsMultiUserSyncerMeDevice:(BOOL)a3;
-- (void)setIsSiriFullUODSupported:(BOOL)a3;
-- (void)setIsSyncDisabledForFullUoDDevices:(BOOL)a3;
-- (void)setIsSyncNeededForWatch:(BOOL)a3;
-- (void)setIsUsingDefaultLanguageSettings:(BOOL)a3;
-- (void)setLanguageCode:(id)a3;
-- (void)setLastKnownAnalyticsStoreState:(unint64_t)a3;
-- (void)setLocationAuthorizationHasBeenUpdated:(BOOL)a3;
-- (void)setMirroredMultiUserSharedDataNeedsSync:(BOOL)a3;
-- (void)setMultiUserHomeUUIDsForDeletion:(id)a3;
-- (void)setMultiUserIsOnboardingDevice:(BOOL)a3;
-- (void)setMultiUserSharedDataNeedsSync:(BOOL)a3;
-- (void)setMultiUserSharedDataServerChangeToken:(id)a3 forOwnerName:(id)a4;
-- (void)setMultiUserVoiceIdentification:(BOOL)a3;
-- (void)setMyriadDeviceVTEndTimeDistanceThreshold:(double)a3;
-- (void)setOutputVoice:(id)a3;
-- (void)setRedirect:(id)a3 forServerURLString:(id)a4;
-- (void)setSharedUserIdentifier:(id)a3 loggingSharedUserIdentifier:(id)a4;
-- (void)setShouldDisableServerFallbackDomain:(BOOL)a3;
-- (void)setShouldDisableServerFallbackNL:(BOOL)a3;
-- (void)setSingleUserCompanionACEHost:(id)a3;
-- (void)setSingleUserMeCard:(id)a3;
-- (void)setSiriDataSharingOptInStatus:(int64_t)a3 propagateToHomeAccessories:(BOOL)a4 source:(int64_t)a5 reason:(id)a6 completion:(id)a7;
-- (void)setVoiceTriggerNeedsDataSync:(BOOL)a3;
+- (void)_cacheAndSetKeychainString:(id)string forKey:(id)key completion:(id)completion;
+- (void)dumpAssistantStateChunk:(id)chunk;
+- (void)removeMultiUserHomeUUID:(id)d;
+- (void)setAccountInfo:(id)info forIdentifier:(id)identifier;
+- (void)setAllowExplicitContent:(BOOL)content;
+- (void)setCompanionIdentifier:(id)identifier;
+- (void)setDeviceWasRedirectedToProduction:(BOOL)production;
+- (void)setExperimentIdentifier:(id)identifier forConfigurationIdentifier:(id)configurationIdentifier;
+- (void)setExperimentState:(id)state forConfigurationIdentifier:(id)identifier;
+- (void)setHasATVInHome:(BOOL)home;
+- (void)setHasATVOrHomePodInHome:(BOOL)home;
+- (void)setHasHomePodInHome:(BOOL)home;
+- (void)setHasPairedWatches:(BOOL)watches;
+- (void)setHasSetUpAccountStatusRecordZoneSubscription:(BOOL)subscription;
+- (void)setHasSetUpKeyValueRecordZoneSubscription:(BOOL)subscription;
+- (void)setHasSetUpVoiceTriggerRecordZoneSubscription:(BOOL)subscription;
+- (void)setHasSetupMultiUserSharedRecordZoneSubscription:(BOOL)subscription;
+- (void)setHomeAutomationServerFlowBypassed:(BOOL)bypassed;
+- (void)setIsMediaEntitySyncDisabledSyncConfig:(BOOL)config;
+- (void)setIsMultiUserSyncerMeDevice:(BOOL)device;
+- (void)setIsSiriFullUODSupported:(BOOL)supported;
+- (void)setIsSyncDisabledForFullUoDDevices:(BOOL)devices;
+- (void)setIsSyncNeededForWatch:(BOOL)watch;
+- (void)setIsUsingDefaultLanguageSettings:(BOOL)settings;
+- (void)setLanguageCode:(id)code;
+- (void)setLastKnownAnalyticsStoreState:(unint64_t)state;
+- (void)setLocationAuthorizationHasBeenUpdated:(BOOL)updated;
+- (void)setMirroredMultiUserSharedDataNeedsSync:(BOOL)sync;
+- (void)setMultiUserHomeUUIDsForDeletion:(id)deletion;
+- (void)setMultiUserIsOnboardingDevice:(BOOL)device;
+- (void)setMultiUserSharedDataNeedsSync:(BOOL)sync;
+- (void)setMultiUserSharedDataServerChangeToken:(id)token forOwnerName:(id)name;
+- (void)setMultiUserVoiceIdentification:(BOOL)identification;
+- (void)setMyriadDeviceVTEndTimeDistanceThreshold:(double)threshold;
+- (void)setOutputVoice:(id)voice;
+- (void)setRedirect:(id)redirect forServerURLString:(id)string;
+- (void)setSharedUserIdentifier:(id)identifier loggingSharedUserIdentifier:(id)userIdentifier;
+- (void)setShouldDisableServerFallbackDomain:(BOOL)domain;
+- (void)setShouldDisableServerFallbackNL:(BOOL)l;
+- (void)setSingleUserCompanionACEHost:(id)host;
+- (void)setSingleUserMeCard:(id)card;
+- (void)setSiriDataSharingOptInStatus:(int64_t)status propagateToHomeAccessories:(BOOL)accessories source:(int64_t)source reason:(id)reason completion:(id)completion;
+- (void)setVoiceTriggerNeedsDataSync:(BOOL)sync;
 - (void)synchronize;
 @end
 
@@ -139,9 +139,9 @@
 - (id)accountIdentifiers
 {
   v2 = _AFPreferencesValueForKeyWithContext();
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)_keychainCache
@@ -188,15 +188,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)serverOverride
@@ -280,10 +280,10 @@
   {
     v2 = AFDeviceSupportsDisablingServerFallbackWhenMissingAsset();
     v3 = +[ADPreferences sharedPreferences];
-    v4 = [v3 siriDataSharingOptInStatus];
+    siriDataSharingOptInStatus = [v3 siriDataSharingOptInStatus];
 
     v5 = +[AFPreferences sharedPreferences];
-    v6 = [v5 longLivedIdentifierUploadingEnabled];
+    longLivedIdentifierUploadingEnabled = [v5 longLivedIdentifierUploadingEnabled];
 
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -297,17 +297,17 @@
       v18 = 2112;
       v19 = v9;
       v20 = 1024;
-      v21 = v6;
+      v21 = longLivedIdentifierUploadingEnabled;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s isDevSupportDisableServerFallbackForMissingAsset: %d, sharingStatus: %@, islongLivedIdUploadEnabled: %d", &v14, 0x22u);
     }
 
     v10 = v2 ^ 1;
-    if (v4 == 1)
+    if (siriDataSharingOptInStatus == 1)
     {
       v10 = 1;
     }
 
-    v11 = v10 | v6;
+    v11 = v10 | longLivedIdentifierUploadingEnabled;
   }
 
   else
@@ -326,15 +326,15 @@
   return v11 & 1;
 }
 
-- (void)dumpAssistantStateChunk:(id)a3
+- (void)dumpAssistantStateChunk:(id)chunk
 {
-  v4 = a3;
+  chunkCopy = chunk;
   v18 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(ADPreferences *)self languageCode];
-  v6 = v5;
-  if (v5)
+  languageCode = [(ADPreferences *)self languageCode];
+  v6 = languageCode;
+  if (languageCode)
   {
-    v7 = v5;
+    v7 = languageCode;
   }
 
   else
@@ -344,11 +344,11 @@
 
   [v18 setObject:v7 forKeyedSubscript:@"languageCode"];
 
-  v8 = [(ADPreferences *)self sharedUserIdentifier];
-  v9 = v8;
-  if (v8)
+  sharedUserIdentifier = [(ADPreferences *)self sharedUserIdentifier];
+  v9 = sharedUserIdentifier;
+  if (sharedUserIdentifier)
   {
-    v10 = v8;
+    v10 = sharedUserIdentifier;
   }
 
   else
@@ -393,11 +393,11 @@
 
   [v18 setObject:v14 forKeyedSubscript:@"cloudSyncEnabled"];
 
-  v15 = [(ADPreferences *)self outputVoice];
-  if (v15)
+  outputVoice = [(ADPreferences *)self outputVoice];
+  if (outputVoice)
   {
-    v16 = [(ADPreferences *)self outputVoice];
-    v17 = [v16 description];
+    outputVoice2 = [(ADPreferences *)self outputVoice];
+    v17 = [outputVoice2 description];
     [v18 setObject:v17 forKeyedSubscript:@"outputVoice"];
   }
 
@@ -406,7 +406,7 @@
     [v18 setObject:@"nil" forKeyedSubscript:@"outputVoice"];
   }
 
-  v4[2](v4, v18);
+  chunkCopy[2](chunkCopy, v18);
 }
 
 - (unint64_t)siriAnalyticsIdentifiersConsistencyTimerIntervalMillisec
@@ -415,15 +415,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedLongValue];
+    unsignedLongValue = [v2 unsignedLongValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedLongValue = 0;
   }
 
-  return v3;
+  return unsignedLongValue;
 }
 
 - (unint64_t)siriAnalyticsIdentifiersConsistencyTimerStartDelayMillisec
@@ -432,80 +432,80 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedLongValue];
+    unsignedLongValue = [v2 unsignedLongValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedLongValue = 0;
   }
 
-  return v3;
+  return unsignedLongValue;
 }
 
-- (void)setShouldDisableServerFallbackDomain:(BOOL)a3
+- (void)setShouldDisableServerFallbackDomain:(BOOL)domain
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:domain];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setShouldDisableServerFallbackNL:(BOOL)a3
+- (void)setShouldDisableServerFallbackNL:(BOOL)l
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:l];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setIsSiriFullUODSupported:(BOOL)a3
+- (void)setIsSiriFullUODSupported:(BOOL)supported
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:supported];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setIsSyncDisabledForFullUoDDevices:(BOOL)a3
+- (void)setIsSyncDisabledForFullUoDDevices:(BOOL)devices
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:devices];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setIsMediaEntitySyncDisabledSyncConfig:(BOOL)a3
+- (void)setIsMediaEntitySyncDisabledSyncConfig:(BOOL)config
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:config];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setHasHomePodInHome:(BOOL)a3
+- (void)setHasHomePodInHome:(BOOL)home
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:home];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setHasATVInHome:(BOOL)a3
+- (void)setHasATVInHome:(BOOL)home
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:home];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setHasATVOrHomePodInHome:(BOOL)a3
+- (void)setHasATVOrHomePodInHome:(BOOL)home
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:home];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setIsSyncNeededForWatch:(BOOL)a3
+- (void)setIsSyncNeededForWatch:(BOOL)watch
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:watch];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setHasPairedWatches:(BOOL)a3
+- (void)setHasPairedWatches:(BOOL)watches
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:watches];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setHomeAutomationServerFlowBypassed:(BOOL)a3
+- (void)setHomeAutomationServerFlowBypassed:(BOOL)bypassed
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:bypassed];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
@@ -515,20 +515,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setLocationAuthorizationHasBeenUpdated:(BOOL)a3
+- (void)setLocationAuthorizationHasBeenUpdated:(BOOL)updated
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:updated];
   _AFBackedUpPreferencesSetValueForKey();
 
   AFBackedUpPreferencesSynchronize();
@@ -540,15 +540,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)myriadDeviceVTEndTimeDistanceThreshold
@@ -560,52 +560,52 @@
   return v4;
 }
 
-- (void)setMyriadDeviceVTEndTimeDistanceThreshold:(double)a3
+- (void)setMyriadDeviceVTEndTimeDistanceThreshold:(double)threshold
 {
   v4 = +[AFPreferences sharedPreferences];
-  [v4 setMyriadDeviceVTEndTimeDistanceThreshold:a3];
+  [v4 setMyriadDeviceVTEndTimeDistanceThreshold:threshold];
 }
 
-- (void)setSingleUserCompanionACEHost:(id)a3
+- (void)setSingleUserCompanionACEHost:(id)host
 {
-  if (a3)
+  if (host)
   {
     _AFPreferencesSetValueForKeyWithContext();
   }
 }
 
-- (void)setSingleUserMeCard:(id)a3
+- (void)setSingleUserMeCard:(id)card
 {
-  if (a3)
+  if (card)
   {
     _AFPreferencesSetValueForKeyWithContext();
   }
 }
 
-- (void)_cacheAndSetKeychainString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)_cacheAndSetKeychainString:(id)string forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  keyCopy = key;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100278CD8;
   v15[3] = &unk_10051E0D8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = keyCopy;
+  v17 = stringCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = stringCopy;
+  v14 = keyCopy;
   dispatch_async(queue, v15);
 }
 
-- (id)_keychainStringForKey:(id)a3
+- (id)_keychainStringForKey:(id)key
 {
   queue = self->_queue;
-  v4 = a3;
+  keyCopy = key;
   dispatch_assert_queue_V2(queue);
   v5 = AFKeychainValueForAccountAndKey();
 
@@ -622,12 +622,12 @@
   return v6;
 }
 
-- (id)_cachedKeychainStringForKey:(id)a3
+- (id)_cachedKeychainStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(ADPreferences *)self _keychainCache];
-  v6 = [v5 objectForKey:v4];
+  _keychainCache = [(ADPreferences *)self _keychainCache];
+  v6 = [_keychainCache objectForKey:keyCopy];
   v7 = +[NSNull null];
 
   if (v6 != v7)
@@ -639,16 +639,16 @@
       goto LABEL_8;
     }
 
-    v9 = [(ADPreferences *)self _keychainStringForKey:v4];
+    v9 = [(ADPreferences *)self _keychainStringForKey:keyCopy];
     if (v9)
     {
       v8 = v9;
-      [v5 setValue:v9 forKey:v4];
+      [_keychainCache setValue:v9 forKey:keyCopy];
       goto LABEL_8;
     }
 
     v10 = +[NSNull null];
-    [v5 setValue:v10 forKey:v4];
+    [_keychainCache setValue:v10 forKey:keyCopy];
   }
 
   v8 = 0;
@@ -657,18 +657,18 @@ LABEL_8:
   return v8;
 }
 
-- (void)setAllowExplicitContent:(BOOL)a3
+- (void)setAllowExplicitContent:(BOOL)content
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:content];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
 - (BOOL)allowExplicitContent
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 allowExplicitContent];
+  allowExplicitContent = [v2 allowExplicitContent];
 
-  return v3;
+  return allowExplicitContent;
 }
 
 - (id)serverAudioSessionActivationDelayAboveMediaPlaybackVolumeThreshold
@@ -747,18 +747,18 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)getAudioSessionActiveDelay:(double *)a3
+- (BOOL)getAudioSessionActiveDelay:(double *)delay
 {
-  if (a3)
+  if (delay)
   {
-    *a3 = 0.0;
+    *delay = 0.0;
     v4 = _AFPreferencesValueForKeyWithContext();
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
       [v4 doubleValue];
-      *a3 = v6;
+      *delay = v6;
     }
   }
 
@@ -770,18 +770,18 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (BOOL)getMinimumOutputVolume:(float *)a3
+- (BOOL)getMinimumOutputVolume:(float *)volume
 {
-  if (a3)
+  if (volume)
   {
-    *a3 = 0.0;
+    *volume = 0.0;
     v4 = _AFPreferencesValueForKeyWithContext();
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
       [v4 floatValue];
-      *a3 = v6;
+      *volume = v6;
     }
   }
 
@@ -793,18 +793,18 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (BOOL)getMaximumOutputVolume:(float *)a3
+- (BOOL)getMaximumOutputVolume:(float *)volume
 {
-  if (a3)
+  if (volume)
   {
-    *a3 = 0.0;
+    *volume = 0.0;
     v4 = _AFPreferencesValueForKeyWithContext();
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
       [v4 floatValue];
-      *a3 = v6;
+      *volume = v6;
     }
   }
 
@@ -816,9 +816,9 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (void)setLastKnownAnalyticsStoreState:(unint64_t)a3
+- (void)setLastKnownAnalyticsStoreState:(unint64_t)state
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:state];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
@@ -828,73 +828,73 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)proxyConnectionDisabled
 {
   v2 = _AFPreferencesValueForKeyWithContext();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setExperimentState:(id)a3 forConfigurationIdentifier:(id)a4
+- (void)setExperimentState:(id)state forConfigurationIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [@"Experiment State" stringByAppendingString:a4];
+  stateCopy = state;
+  v6 = [@"Experiment State" stringByAppendingString:identifier];
   _AFPreferencesSetValueForKey();
 }
 
-- (id)getExperimentStateForConfigurationIdentifier:(id)a3
+- (id)getExperimentStateForConfigurationIdentifier:(id)identifier
 {
-  v3 = [@"Experiment State" stringByAppendingString:a3];
+  v3 = [@"Experiment State" stringByAppendingString:identifier];
   v4 = _AFPreferencesValueForKey();
 
   return v4;
 }
 
-- (void)setExperimentIdentifier:(id)a3 forConfigurationIdentifier:(id)a4
+- (void)setExperimentIdentifier:(id)identifier forConfigurationIdentifier:(id)configurationIdentifier
 {
-  v5 = a3;
-  v6 = [@"Experiment Identifier" stringByAppendingString:a4];
+  identifierCopy = identifier;
+  v6 = [@"Experiment Identifier" stringByAppendingString:configurationIdentifier];
   _AFPreferencesSetValueForKey();
 }
 
-- (id)experimentIdentifierForConfigurationIdentifier:(id)a3
+- (id)experimentIdentifierForConfigurationIdentifier:(id)identifier
 {
-  v3 = [@"Experiment Identifier" stringByAppendingString:a3];
+  v3 = [@"Experiment Identifier" stringByAppendingString:identifier];
   v4 = _AFPreferencesValueForKey();
 
   return v4;
 }
 
-- (void)setSiriDataSharingOptInStatus:(int64_t)a3 propagateToHomeAccessories:(BOOL)a4 source:(int64_t)a5 reason:(id)a6 completion:(id)a7
+- (void)setSiriDataSharingOptInStatus:(int64_t)status propagateToHomeAccessories:(BOOL)accessories source:(int64_t)source reason:(id)reason completion:(id)completion
 {
-  v9 = a4;
-  v12 = a6;
-  v13 = a7;
+  accessoriesCopy = accessories;
+  reasonCopy = reason;
+  completionCopy = completion;
   v14 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v16 = 136316163;
     v17 = "[ADPreferences setSiriDataSharingOptInStatus:propagateToHomeAccessories:source:reason:completion:]";
     v18 = 2049;
-    v19 = a3;
+    statusCopy = status;
     v20 = 2048;
-    v21 = a5;
+    sourceCopy = source;
     v22 = 2113;
-    v23 = v12;
+    v23 = reasonCopy;
     v24 = 1024;
-    v25 = v9;
+    v25 = accessoriesCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Setting Siri Data Sharing OptIn status=%{private}ld from source=%ld with reason=%{private}@, and propagating to home accessories=%d", &v16, 0x30u);
   }
 
@@ -902,9 +902,9 @@ LABEL_8:
   v15 = +[NSNotificationCenter defaultCenter];
   [v15 postNotificationName:@"ADPreferencesSiriDataSharingOptInStatusDidChangeNotification" object:self];
   [v15 postNotificationName:@"ADSharedDataDidChangeNotification" object:0];
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -927,16 +927,16 @@ LABEL_8:
   return v3;
 }
 
-- (void)setCompanionIdentifier:(id)a3
+- (void)setCompanionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100279A30;
   v5[3] = &unk_10051B5F0;
   objc_copyWeak(&v6, &location);
-  [(ADPreferences *)self _cacheAndSetKeychainString:v4 forKey:@"Companion Identifier" completion:v5];
+  [(ADPreferences *)self _cacheAndSetKeychainString:identifierCopy forKey:@"Companion Identifier" completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -963,18 +963,18 @@ LABEL_8:
   return v3;
 }
 
-- (void)setSharedUserIdentifier:(id)a3 loggingSharedUserIdentifier:(id)a4
+- (void)setSharedUserIdentifier:(id)identifier loggingSharedUserIdentifier:(id)userIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  userIdentifierCopy = userIdentifier;
   objc_initWeak(&location, self);
-  [(ADPreferences *)self _cacheAndSetKeychainString:v6 forKey:@"User Identifier" completion:0];
+  [(ADPreferences *)self _cacheAndSetKeychainString:identifierCopy forKey:@"User Identifier" completion:0];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100279CF4;
   v8[3] = &unk_10051B5F0;
   objc_copyWeak(&v9, &location);
-  [(ADPreferences *)self _cacheAndSetKeychainString:v7 forKey:@"Logging User Identifier" completion:v8];
+  [(ADPreferences *)self _cacheAndSetKeychainString:userIdentifierCopy forKey:@"Logging User Identifier" completion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -1020,12 +1020,12 @@ LABEL_8:
   return v3;
 }
 
-- (void)removeMultiUserHomeUUID:(id)a3
+- (void)removeMultiUserHomeUUID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = v3;
+    v6 = dCopy;
     v4 = _AFPreferencesValueForKeyWithContext();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1039,15 +1039,15 @@ LABEL_8:
       }
     }
 
-    v3 = v6;
+    dCopy = v6;
   }
 }
 
-- (void)setMultiUserHomeUUIDsForDeletion:(id)a3
+- (void)setMultiUserHomeUUIDsForDeletion:(id)deletion
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3 && [v3 count])
+  deletionCopy = deletion;
+  v7 = deletionCopy;
+  if (deletionCopy && [deletionCopy count])
   {
     v4 = _AFPreferencesValueForKeyWithContext();
     objc_opt_class();
@@ -1084,20 +1084,20 @@ LABEL_8:
   }
 }
 
-- (void)setIsMultiUserSyncerMeDevice:(BOOL)a3
+- (void)setIsMultiUserSyncerMeDevice:(BOOL)device
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:device];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setMultiUserIsOnboardingDevice:(BOOL)a3
+- (void)setMultiUserIsOnboardingDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v5 = [NSNumber numberWithBool:?];
   _AFPreferencesSetValueForKeyWithContext();
 
   objc_initWeak(&location, self);
-  if (v3)
+  if (deviceCopy)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     v7 = objc_loadWeakRetained(&location);
@@ -1164,18 +1164,18 @@ LABEL_8:
   return v3;
 }
 
-- (void)setHasSetupMultiUserSharedRecordZoneSubscription:(BOOL)a3
+- (void)setHasSetupMultiUserSharedRecordZoneSubscription:(BOOL)subscription
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:subscription];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
 - (BOOL)hasSetUpMultiUserSharedRecordZoneSubscription
 {
   v2 = _AFPreferencesValueForKeyWithContext();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)multiUserSharedDataServerChangeToken
@@ -1197,15 +1197,15 @@ LABEL_8:
   return v3;
 }
 
-- (void)setDeviceWasRedirectedToProduction:(BOOL)a3
+- (void)setDeviceWasRedirectedToProduction:(BOOL)production
 {
-  v3 = a3;
+  productionCopy = production;
   v4 = _AFPreferencesValueForKeyWithContext();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5 != v3)
+  if (bOOLValue != productionCopy)
   {
-    v6 = [NSNumber numberWithBool:v3];
+    v6 = [NSNumber numberWithBool:productionCopy];
     _AFPreferencesSetValueForKeyWithContext();
 
     AFInternalPreferencesSynchronize();
@@ -1215,17 +1215,17 @@ LABEL_8:
 - (BOOL)deviceWasRedirectedToProduction
 {
   v2 = _AFPreferencesValueForKeyWithContext();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setMultiUserVoiceIdentification:(BOOL)a3
+- (void)setMultiUserVoiceIdentification:(BOOL)identification
 {
-  v3 = a3;
+  identificationCopy = identification;
   v5 = _AFBackedUpPreferencesValueForKey();
   v6 = v5;
-  if (!v5 || [v5 BOOLValue] != v3)
+  if (!v5 || [v5 BOOLValue] != identificationCopy)
   {
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1233,11 +1233,11 @@ LABEL_8:
       v10 = 136315394;
       v11 = "[ADPreferences setMultiUserVoiceIdentification:]";
       v12 = 1024;
-      v13 = v3;
+      v13 = identificationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s voiceIdentification is %d", &v10, 0x12u);
     }
 
-    v8 = [NSNumber numberWithBool:v3];
+    v8 = [NSNumber numberWithBool:identificationCopy];
     _AFBackedUpPreferencesSetValueForKey();
 
     AFBackedUpPreferencesSynchronize();
@@ -1252,23 +1252,23 @@ LABEL_8:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setMultiUserSharedDataServerChangeToken:(id)a3 forOwnerName:(id)a4
+- (void)setMultiUserSharedDataServerChangeToken:(id)token forOwnerName:(id)name
 {
-  if (a3 && a4)
+  if (token && name)
   {
-    v5 = a4;
-    v6 = a3;
+    nameCopy = name;
+    tokenCopy = token;
     v7 = _AFPreferencesValueForKeyWithContext();
     v8 = [v7 mutableCopy];
     v9 = v8;
@@ -1284,18 +1284,18 @@ LABEL_8:
 
     v11 = v10;
 
-    [v11 setObject:v6 forKey:v5];
+    [v11 setObject:tokenCopy forKey:nameCopy];
     _AFPreferencesSetValueForKeyWithContext();
   }
 }
 
-- (id)multiUserSharedDataServerChangeTokenForOwner:(id)a3
+- (id)multiUserSharedDataServerChangeTokenForOwner:(id)owner
 {
-  if (a3)
+  if (owner)
   {
-    v3 = a3;
+    ownerCopy = owner;
     v4 = _AFPreferencesValueForKeyWithContext();
-    v5 = [v4 objectForKey:v3];
+    v5 = [v4 objectForKey:ownerCopy];
   }
 
   else
@@ -1306,9 +1306,9 @@ LABEL_8:
   return v5;
 }
 
-- (void)setMirroredMultiUserSharedDataNeedsSync:(BOOL)a3
+- (void)setMirroredMultiUserSharedDataNeedsSync:(BOOL)sync
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:sync];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
@@ -1318,20 +1318,20 @@ LABEL_8:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setMultiUserSharedDataNeedsSync:(BOOL)a3
+- (void)setMultiUserSharedDataNeedsSync:(BOOL)sync
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:sync];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
@@ -1341,20 +1341,20 @@ LABEL_8:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setHasSetUpVoiceTriggerRecordZoneSubscription:(BOOL)a3
+- (void)setHasSetUpVoiceTriggerRecordZoneSubscription:(BOOL)subscription
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:subscription];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
@@ -1377,9 +1377,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)setVoiceTriggerNeedsDataSync:(BOOL)a3
+- (void)setVoiceTriggerNeedsDataSync:(BOOL)sync
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:sync];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
@@ -1389,20 +1389,20 @@ LABEL_8:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_validatePhsManifestData:(id)a3
+- (BOOL)_validatePhsManifestData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1411,7 +1411,7 @@ LABEL_8:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = v3;
+    v4 = dataCopy;
     v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v5)
     {
@@ -1509,7 +1509,7 @@ LABEL_25:
   return v15;
 }
 
-- (id)phsAssetManifest:(BOOL)a3
+- (id)phsAssetManifest:(BOOL)manifest
 {
   v4 = _AFPreferencesValueForKeyWithContext();
   if ([(ADPreferences *)self _validatePhsManifestData:v4])
@@ -1549,15 +1549,15 @@ LABEL_25:
   return v3;
 }
 
-- (void)setHasSetUpAccountStatusRecordZoneSubscription:(BOOL)a3
+- (void)setHasSetUpAccountStatusRecordZoneSubscription:(BOOL)subscription
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:subscription];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
-- (void)setHasSetUpKeyValueRecordZoneSubscription:(BOOL)a3
+- (void)setHasSetUpKeyValueRecordZoneSubscription:(BOOL)subscription
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:subscription];
   _AFPreferencesSetValueForKeyWithContext();
 }
 
@@ -1618,12 +1618,12 @@ LABEL_25:
   return v3;
 }
 
-- (void)setRedirect:(id)a3 forServerURLString:(id)a4
+- (void)setRedirect:(id)redirect forServerURLString:(id)string
 {
-  if (a4)
+  if (string)
   {
-    v5 = a4;
-    v6 = a3;
+    stringCopy = string;
+    redirectCopy = redirect;
     v11 = _AFPreferencesValueForKeyWithContext();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1637,7 +1637,7 @@ LABEL_25:
     }
 
     v8 = v7;
-    [v7 setObject:v6 forKey:v5];
+    [v7 setObject:redirectCopy forKey:stringCopy];
 
     if ([v8 count])
     {
@@ -1655,11 +1655,11 @@ LABEL_25:
   }
 }
 
-- (id)redirectForServerURLString:(id)a3
+- (id)redirectForServerURLString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = _AFPreferencesValueForKeyWithContext();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1674,7 +1674,7 @@ LABEL_25:
 
     v6 = v5;
 
-    v7 = [v6 objectForKey:v3];
+    v7 = [v6 objectForKey:stringCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1704,20 +1704,20 @@ LABEL_25:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setIsUsingDefaultLanguageSettings:(BOOL)a3
+- (void)setIsUsingDefaultLanguageSettings:(BOOL)settings
 {
-  if (a3)
+  if (settings)
   {
     v3 = [NSNumber numberWithBool:1];
     _AFPreferencesSetValueForKeyWithContext();
@@ -1730,7 +1730,7 @@ LABEL_25:
   }
 }
 
-- (void)setOutputVoice:(id)a3
+- (void)setOutputVoice:(id)voice
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1738,7 +1738,7 @@ LABEL_25:
   block[2] = sub_10027B980;
   block[3] = &unk_10051DFE8;
   block[4] = self;
-  v5 = a3;
+  voiceCopy = voice;
   dispatch_async(queue, block);
   _AFPreferencesSetOutputVoiceWithContext();
 
@@ -1746,16 +1746,16 @@ LABEL_25:
   [v6 postNotificationName:@"ADPreferencesOutputVoiceDidChangeNotification" object:self];
 }
 
-- (id)outputVoiceWithFallback:(BOOL)a3
+- (id)outputVoiceWithFallback:(BOOL)fallback
 {
-  v3 = a3;
+  fallbackCopy = fallback;
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 _outputVoiceWithFallback:v3];
+  v5 = [v4 _outputVoiceWithFallback:fallbackCopy];
 
   return v5;
 }
 
-- (void)setLanguageCode:(id)a3
+- (void)setLanguageCode:(id)code
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1763,7 +1763,7 @@ LABEL_25:
   block[2] = sub_10027BAC4;
   block[3] = &unk_10051DFE8;
   block[4] = self;
-  v5 = a3;
+  codeCopy = code;
   dispatch_async(queue, block);
   _AFPreferencesSetLanguageCodeWithContext();
 
@@ -1772,11 +1772,11 @@ LABEL_25:
   [v6 postNotificationName:@"ADPreferencesLanguageCodeDidChangeNotification" object:self];
 }
 
-- (id)languageCodeWithFallback:(BOOL)a3
+- (id)languageCodeWithFallback:(BOOL)fallback
 {
-  v3 = a3;
+  fallbackCopy = fallback;
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 _languageCodeWithFallback:v3];
+  v5 = [v4 _languageCodeWithFallback:fallbackCopy];
 
   return v5;
 }
@@ -1799,11 +1799,11 @@ LABEL_25:
   return v5;
 }
 
-- (void)setAccountInfo:(id)a3 forIdentifier:(id)a4
+- (void)setAccountInfo:(id)info forIdentifier:(id)identifier
 {
-  v11 = a3;
-  v5 = a4;
-  if (v5)
+  infoCopy = info;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v6 = _AFPreferencesValueForKeyWithContext();
     v7 = [v6 mutableCopy];
@@ -1820,32 +1820,32 @@ LABEL_25:
 
     v10 = v9;
 
-    if (v11)
+    if (infoCopy)
     {
-      [v10 setObject:v11 forKey:v5];
+      [v10 setObject:infoCopy forKey:identifierCopy];
     }
 
     else
     {
-      [v10 removeObjectForKey:v5];
+      [v10 removeObjectForKey:identifierCopy];
     }
 
     _AFPreferencesSetValueForKeyWithContext();
   }
 }
 
-- (id)accountInfoForIdentifier:(id)a3
+- (id)accountInfoForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _AFPreferencesValueForKeyWithContext();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (ADPreferences)initWithInstanceContext:(id)a3
+- (ADPreferences)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = ADPreferences;
   v5 = [(ADPreferences *)&v12 init];
@@ -1857,9 +1857,9 @@ LABEL_25:
     queue = v5->_queue;
     v5->_queue = v7;
 
-    if (v4)
+    if (contextCopy)
     {
-      v9 = v4;
+      v9 = contextCopy;
     }
 
     else

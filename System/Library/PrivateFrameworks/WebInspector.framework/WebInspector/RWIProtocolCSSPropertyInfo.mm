@@ -4,40 +4,40 @@
 - (NSArray)longhands;
 - (NSArray)values;
 - (NSString)name;
-- (RWIProtocolCSSPropertyInfo)initWithName:(id)a3;
-- (void)setAliases:(id)a3;
-- (void)setLonghands:(id)a3;
-- (void)setName:(id)a3;
-- (void)setValues:(id)a3;
+- (RWIProtocolCSSPropertyInfo)initWithName:(id)name;
+- (void)setAliases:(id)aliases;
+- (void)setLonghands:(id)longhands;
+- (void)setName:(id)name;
+- (void)setValues:(id)values;
 @end
 
 @implementation RWIProtocolCSSPropertyInfo
 
-- (RWIProtocolCSSPropertyInfo)initWithName:(id)a3
+- (RWIProtocolCSSPropertyInfo)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = RWIProtocolCSSPropertyInfo;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!nameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"name"}];
     }
 
-    [(RWIProtocolCSSPropertyInfo *)v5 setName:v4];
+    [(RWIProtocolCSSPropertyInfo *)v5 setName:nameCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSPropertyInfo;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -49,9 +49,9 @@
   return v2;
 }
 
-- (void)setAliases:(id)a3
+- (void)setAliases:(id)aliases
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(aliases, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolCSSPropertyInfo;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"aliases"];
@@ -81,9 +81,9 @@
   return v2;
 }
 
-- (void)setLonghands:(id)a3
+- (void)setLonghands:(id)longhands
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(longhands, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolCSSPropertyInfo;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"longhands"];
@@ -113,9 +113,9 @@
   return v2;
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(values, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolCSSPropertyInfo;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"values"];

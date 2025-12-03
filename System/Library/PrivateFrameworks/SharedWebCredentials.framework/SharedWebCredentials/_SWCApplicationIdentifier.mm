@@ -1,56 +1,56 @@
 @interface _SWCApplicationIdentifier
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToApplicationIdentifierIgnoringPrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToApplicationIdentifierIgnoringPrefix:(id)prefix;
 - (NSString)rawValue;
-- (_SWCApplicationIdentifier)initWithCoder:(id)a3;
-- (_SWCApplicationIdentifier)initWithString:(id)a3;
+- (_SWCApplicationIdentifier)initWithCoder:(id)coder;
+- (_SWCApplicationIdentifier)initWithString:(id)string;
 - (id)UUIDRepresentation;
 - (id)debugDescription;
-- (id)initForBundleRecord:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initForBundleRecord:(id)record;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWCApplicationIdentifier
 
-- (_SWCApplicationIdentifier)initWithString:(id)a3
+- (_SWCApplicationIdentifier)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v19.receiver = self;
   v19.super_class = _SWCApplicationIdentifier;
   v5 = [(_SWCApplicationIdentifier *)&v19 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    if ([v4 rangeOfString:@"."] == 10)
+    if ([stringCopy rangeOfString:@"."] == 10)
     {
       v8 = v7;
-      v9 = [v4 substringToIndex:10];
-      v10 = [v9 uppercaseString];
+      v9 = [stringCopy substringToIndex:10];
+      uppercaseString = [v9 uppercaseString];
       prefix = v5->_prefix;
-      v5->_prefix = v10;
+      v5->_prefix = uppercaseString;
 
-      v12 = [v4 substringFromIndex:v8 + 10];
+      v12 = [stringCopy substringFromIndex:v8 + 10];
     }
 
     else
     {
-      v12 = [v4 copy];
+      v12 = [stringCopy copy];
     }
 
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v12;
 
-    v14 = [objc_opt_class() isCaseSensitive];
+    isCaseSensitive = [objc_opt_class() isCaseSensitive];
     v15 = v5->_bundleIdentifier;
-    if (v14)
+    if (isCaseSensitive)
     {
       v5->_hash = [(NSString *)v15 hash];
     }
 
     else
     {
-      v16 = [(NSString *)v15 lowercaseString];
-      v5->_hash = [v16 hash];
+      lowercaseString = [(NSString *)v15 lowercaseString];
+      v5->_hash = [lowercaseString hash];
     }
 
     v17 = v5->_prefix;
@@ -80,13 +80,13 @@
   return v2;
 }
 
-- (BOOL)isEqualToApplicationIdentifierIgnoringPrefix:(id)a3
+- (BOOL)isEqualToApplicationIdentifierIgnoringPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [objc_opt_class() isCaseSensitive];
+  prefixCopy = prefix;
+  isCaseSensitive = [objc_opt_class() isCaseSensitive];
   bundleIdentifier = self->_bundleIdentifier;
-  v7 = v4[3];
-  if (v5)
+  v7 = prefixCopy[3];
+  if (isCaseSensitive)
   {
     v8 = [(NSString *)bundleIdentifier isEqual:v7];
   }
@@ -102,13 +102,13 @@
 - (id)UUIDRepresentation
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(_SWCApplicationIdentifier *)self rawValue];
-  v5 = [v4 dataUsingEncoding:4];
+  rawValue = [(_SWCApplicationIdentifier *)self rawValue];
+  v5 = [rawValue dataUsingEncoding:4];
 
   if (!v5)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"SWCApplicationIdentifier.mm" lineNumber:120 description:@"Failed to get the UTF-8 representation of an application identifier."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCApplicationIdentifier.mm" lineNumber:120 description:@"Failed to get the UTF-8 representation of an application identifier."];
   }
 
   memset(v10, 0, sizeof(v10));
@@ -120,10 +120,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -133,7 +133,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       prefix = self->_prefix;
       v7 = (prefix == v5->_prefix || [(NSString *)prefix isEqual:?]) && [(_SWCApplicationIdentifier *)self isEqualToApplicationIdentifierIgnoringPrefix:v5];
     }
@@ -157,35 +157,35 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(_SWCApplicationIdentifier *)self rawValue];
-  [v5 encodeObject:v4 forKey:@"rawValue"];
+  coderCopy = coder;
+  rawValue = [(_SWCApplicationIdentifier *)self rawValue];
+  [coderCopy encodeObject:rawValue forKey:@"rawValue"];
 }
 
-- (_SWCApplicationIdentifier)initWithCoder:(id)a3
+- (_SWCApplicationIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"rawValue"];
+  coderCopy = coder;
+  v5 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"rawValue"];
   v6 = [(_SWCApplicationIdentifier *)self initWithString:v5];
 
   return v6;
 }
 
-- (id)initForBundleRecord:(id)a3
+- (id)initForBundleRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  if (v5 || (objc_opt_respondsToSelector() & 1) != 0 && [v4 isSystemPlaceholder] && (objc_msgSend(v4, "bundleIdentifier"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  recordCopy = record;
+  applicationIdentifier = [recordCopy applicationIdentifier];
+  if (applicationIdentifier || (objc_opt_respondsToSelector() & 1) != 0 && [recordCopy isSystemPlaceholder] && (objc_msgSend(recordCopy, "bundleIdentifier"), (applicationIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [(_SWCApplicationIdentifier *)self initWithString:v5];
+    v6 = [(_SWCApplicationIdentifier *)self initWithString:applicationIdentifier];
   }
 
   else
   {
 
-    v5 = 0;
+    applicationIdentifier = 0;
     v6 = 0;
   }
 

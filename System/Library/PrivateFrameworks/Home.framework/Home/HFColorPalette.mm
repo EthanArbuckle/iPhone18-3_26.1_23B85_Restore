@@ -1,19 +1,19 @@
 @interface HFColorPalette
 + (HFColorPaletteColor)warmWhiteColor;
-+ (id)_defaultColorsOfType:(unint64_t)a3;
++ (id)_defaultColorsOfType:(unint64_t)type;
 + (id)_defaultRGBColors;
 + (id)_defaultTemperatureColors;
-+ (id)defaultColorPaletteOfType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultColorPaletteOfType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (HFColorPalette)init;
-- (HFColorPalette)initWithColors:(id)a3 type:(unint64_t)a4;
-- (HFColorPalette)initWithDawnColorPickerFavorites:(id)a3 type:(unint64_t)a4;
-- (HFColorPalette)initWithSerializedRepresentation:(id)a3 type:(unint64_t)a4;
+- (HFColorPalette)initWithColors:(id)colors type:(unint64_t)type;
+- (HFColorPalette)initWithDawnColorPickerFavorites:(id)favorites type:(unint64_t)type;
+- (HFColorPalette)initWithSerializedRepresentation:(id)representation type:(unint64_t)type;
 - (NSArray)colors;
-- (id)colorPaletteByAdjustingForColorProfile:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)colorPaletteByAdjustingForColorProfile:(id)profile;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (id)serializedRepresentation;
 - (unint64_t)hash;
 @end
@@ -45,7 +45,7 @@
   v4[1] = 3221225472;
   v4[2] = __35__HFColorPalette__defaultRGBColors__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __35__HFColorPalette__defaultRGBColors__block_invoke(v4);
 
   return v2;
@@ -144,62 +144,62 @@ HFColorPaletteColor *__43__HFColorPalette__defaultTemperatureColors__block_invok
   return v9;
 }
 
-+ (id)_defaultColorsOfType:(unint64_t)a3
++ (id)_defaultColorsOfType:(unint64_t)type
 {
-  v4 = 0;
-  if (a3 > 1)
+  _defaultRGBColors = 0;
+  if (type > 1)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       goto LABEL_8;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_9;
     }
 
 LABEL_7:
-    v4 = [a1 _defaultRGBColors];
+    _defaultRGBColors = [self _defaultRGBColors];
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!type)
   {
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
 LABEL_8:
-    v4 = [a1 _defaultTemperatureColors];
+    _defaultRGBColors = [self _defaultTemperatureColors];
   }
 
 LABEL_9:
 
-  return v4;
+  return _defaultRGBColors;
 }
 
-+ (id)defaultColorPaletteOfType:(unint64_t)a3
++ (id)defaultColorPaletteOfType:(unint64_t)type
 {
-  v5 = [a1 alloc];
-  v6 = [a1 _defaultColorsOfType:a3];
-  v7 = [v5 initWithColors:v6 type:a3];
+  v5 = [self alloc];
+  v6 = [self _defaultColorsOfType:type];
+  v7 = [v5 initWithColors:v6 type:type];
 
   return v7;
 }
 
-- (HFColorPalette)initWithColors:(id)a3 type:(unint64_t)a4
+- (HFColorPalette)initWithColors:(id)colors type:(unint64_t)type
 {
-  v7 = a3;
+  colorsCopy = colors;
   v11.receiver = self;
   v11.super_class = HFColorPalette;
   v8 = [(HFColorPalette *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_paletteType = a4;
-    objc_storeStrong(&v8->_rawColors, a3);
+    v8->_paletteType = type;
+    objc_storeStrong(&v8->_rawColors, colors);
   }
 
   return v9;
@@ -207,46 +207,46 @@ LABEL_9:
 
 - (HFColorPalette)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithColors_type_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFColorPalette.m" lineNumber:102 description:{@"%s is unavailable; use %@ instead", "-[HFColorPalette init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFColorPalette.m" lineNumber:102 description:{@"%s is unavailable; use %@ instead", "-[HFColorPalette init]", v5}];
 
   return 0;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  v4 = [(HFColorPalette *)self colors];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  colors = [(HFColorPalette *)self colors];
+  v5 = [colors objectAtIndexedSubscript:subscript];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFColorPalette alloc];
-  v5 = [(HFColorPalette *)self rawColors];
-  v6 = [(HFColorPalette *)v4 initWithColors:v5 type:[(HFColorPalette *)self paletteType]];
+  rawColors = [(HFColorPalette *)self rawColors];
+  v6 = [(HFColorPalette *)v4 initWithColors:rawColors type:[(HFColorPalette *)self paletteType]];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HFMutableColorPalette alloc];
-  v5 = [(HFColorPalette *)self rawColors];
-  v6 = [(HFColorPalette *)v4 initWithColors:v5 type:[(HFColorPalette *)self paletteType]];
+  rawColors = [(HFColorPalette *)self rawColors];
+  v6 = [(HFColorPalette *)v4 initWithColors:rawColors type:[(HFColorPalette *)self paletteType]];
 
   return v6;
 }
 
-- (HFColorPalette)initWithSerializedRepresentation:(id)a3 type:(unint64_t)a4
+- (HFColorPalette)initWithSerializedRepresentation:(id)representation type:(unint64_t)type
 {
-  v6 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [objc_opt_class() _defaultColorsOfType:a4];
+    v7 = [objc_opt_class() _defaultColorsOfType:type];
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x2020000000;
@@ -258,20 +258,20 @@ LABEL_9:
     v14 = v15;
     v8 = v7;
     v13 = v8;
-    v9 = [v6 na_map:v12];
-    self = [(HFColorPalette *)self initWithColors:v9 type:a4];
+    v9 = [representationCopy na_map:v12];
+    self = [(HFColorPalette *)self initWithColors:v9 type:type];
 
     _Block_object_dispose(v15, 8);
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    NSLog(&cfstr_InvalidReprese.isa, v6);
-    v10 = 0;
+    NSLog(&cfstr_InvalidReprese.isa, representationCopy);
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 HFColorPaletteColor *__56__HFColorPalette_initWithSerializedRepresentation_type___block_invoke(uint64_t a1, void *a2)
@@ -320,13 +320,13 @@ LABEL_7:
 
 - (id)serializedRepresentation
 {
-  v3 = [(HFColorPalette *)self rawColors];
+  rawColors = [(HFColorPalette *)self rawColors];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__HFColorPalette_serializedRepresentation__block_invoke;
   v6[3] = &unk_277DFDC98;
   v6[4] = self;
-  v4 = [v3 na_map:v6];
+  v4 = [rawColors na_map:v6];
 
   return v4;
 }
@@ -340,47 +340,47 @@ id __42__HFColorPalette_serializedRepresentation__block_invoke(uint64_t a1, void
   return v4;
 }
 
-- (HFColorPalette)initWithDawnColorPickerFavorites:(id)a3 type:(unint64_t)a4
+- (HFColorPalette)initWithDawnColorPickerFavorites:(id)favorites type:(unint64_t)type
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  favoritesCopy = favorites;
+  if (favoritesCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v45 = HFLogForCategory(0);
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v74 = v6;
+      v74 = favoritesCopy;
       _os_log_error_impl(&dword_20D9BF000, v45, OS_LOG_TYPE_ERROR, "Invalid color picker favorites %@", buf, 0xCu);
     }
 
-    v53 = 0;
+    selfCopy2 = 0;
   }
 
   else
   {
-    v57 = self;
-    v56 = [objc_opt_class() _defaultColorsOfType:a4];
-    v7 = [MEMORY[0x277CBEB18] array];
-    v59 = a4;
+    selfCopy = self;
+    v56 = [objc_opt_class() _defaultColorsOfType:type];
+    array = [MEMORY[0x277CBEB18] array];
+    typeCopy = type;
     v8 = 0x277DEF000uLL;
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((type & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v9 = [[HFColorPaletteColor alloc] initWithNaturalLightColor];
-      [v7 addObject:v9];
+      initWithNaturalLightColor = [[HFColorPaletteColor alloc] initWithNaturalLightColor];
+      [array addObject:initWithNaturalLightColor];
     }
 
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v58 = v6;
-    v10 = v6;
+    v58 = favoritesCopy;
+    v10 = favoritesCopy;
     v11 = [v10 countByEnumeratingWithState:&v67 objects:v72 count:16];
     if (v11)
     {
       v12 = v11;
-      v13 = v59 & 0xFFFFFFFFFFFFFFFDLL;
+      v13 = typeCopy & 0xFFFFFFFFFFFFFFFDLL;
       v62 = *v68;
       v60 = v10;
 LABEL_7:
@@ -393,7 +393,7 @@ LABEL_7:
         }
 
         v15 = *(*(&v67 + 1) + 8 * v14);
-        if ([v7 count] > 5)
+        if ([array count] > 5)
         {
           goto LABEL_30;
         }
@@ -460,11 +460,11 @@ LABEL_7:
 
           if (v18)
           {
-            [v7 addObject:v18];
+            [array addObject:v18];
           }
 
           v8 = 0x277DEF000;
-          v13 = v59 & 0xFFFFFFFFFFFFFFFDLL;
+          v13 = typeCopy & 0xFFFFFFFFFFFFFFFDLL;
           v10 = v60;
           goto LABEL_27;
         }
@@ -487,7 +487,7 @@ LABEL_28:
       [v16 floatValue];
       v18 = [(HFTemperatureColor *)v17 initWithTemperatureInMired:?];
       v19 = [objc_alloc(*(v8 + 2264)) initWithColorPrimitive:v18];
-      [v7 addObject:v19];
+      [array addObject:v19];
 LABEL_27:
 
       goto LABEL_28;
@@ -496,9 +496,9 @@ LABEL_27:
 LABEL_30:
 
     v45 = v56;
-    if ([v7 count] <= 5)
+    if ([array count] <= 5)
     {
-      v46 = [v7 count];
+      v46 = [array count];
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
@@ -524,7 +524,7 @@ LABEL_33:
             break;
           }
 
-          [v7 addObject:*(*(&v63 + 1) + 8 * v52++)];
+          [array addObject:*(*(&v63 + 1) + 8 * v52++)];
           if (v49 == v52)
           {
             v49 = [v47 countByEnumeratingWithState:&v63 objects:v71 count:16];
@@ -540,45 +540,45 @@ LABEL_33:
       }
     }
 
-    self = [(HFColorPalette *)v57 initWithColors:v7 type:v59];
+    self = [(HFColorPalette *)selfCopy initWithColors:array type:typeCopy];
 
-    v53 = self;
-    v6 = v58;
+    selfCopy2 = self;
+    favoritesCopy = v58;
   }
 
   v54 = *MEMORY[0x277D85DE8];
-  return v53;
+  return selfCopy2;
 }
 
 - (NSArray)colors
 {
-  v3 = [(HFColorPalette *)self rawColors];
+  rawColors = [(HFColorPalette *)self rawColors];
   if ([(HFColorPalette *)self _isNaturalLightPalette])
   {
-    v4 = [v3 mutableCopy];
-    v5 = [[HFColorPaletteColor alloc] initWithNaturalLightColor];
-    [v4 replaceObjectAtIndex:0 withObject:v5];
+    v4 = [rawColors mutableCopy];
+    initWithNaturalLightColor = [[HFColorPaletteColor alloc] initWithNaturalLightColor];
+    [v4 replaceObjectAtIndex:0 withObject:initWithNaturalLightColor];
   }
 
   else
   {
-    v4 = [v3 copy];
+    v4 = [rawColors copy];
   }
 
   return v4;
 }
 
-- (id)colorPaletteByAdjustingForColorProfile:(id)a3
+- (id)colorPaletteByAdjustingForColorProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HFColorPalette *)self colors];
+  profileCopy = profile;
+  colors = [(HFColorPalette *)self colors];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__HFColorPalette_colorPaletteByAdjustingForColorProfile___block_invoke;
   v10[3] = &unk_277DFDCC0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 na_map:v10];
+  v11 = profileCopy;
+  v6 = profileCopy;
+  v7 = [colors na_map:v10];
 
   v8 = [objc_alloc(objc_opt_class()) initWithColors:v7 type:{-[HFColorPalette paletteType](self, "paletteType")}];
 
@@ -587,16 +587,16 @@ LABEL_33:
 
 - (unint64_t)hash
 {
-  v2 = [(HFColorPalette *)self colors];
-  v3 = [v2 hash];
+  colors = [(HFColorPalette *)self colors];
+  v3 = [colors hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -606,9 +606,9 @@ LABEL_33:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HFColorPalette *)self colors];
-      v6 = [(HFColorPalette *)v4 colors];
-      v7 = [v5 isEqualToArray:v6];
+      colors = [(HFColorPalette *)self colors];
+      colors2 = [(HFColorPalette *)equalCopy colors];
+      v7 = [colors isEqualToArray:colors2];
     }
 
     else

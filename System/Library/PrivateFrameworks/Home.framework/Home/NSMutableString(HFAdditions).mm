@@ -7,9 +7,9 @@
 
 - (uint64_t)hf_appendLine:()HFAdditions
 {
-  [a1 appendString:?];
+  [self appendString:?];
 
-  return [a1 appendString:@"\n"];
+  return [self appendString:@"\n"];
 }
 
 - (uint64_t)hf_appendLineWithFormat:()HFAdditions
@@ -18,8 +18,8 @@
   v11 = a3;
   v12 = [[v10 alloc] initWithFormat:v11 arguments:&a9];
 
-  [a1 appendString:v12];
-  return [a1 appendString:@"\n"];
+  [self appendString:v12];
+  return [self appendString:@"\n"];
 }
 
 @end

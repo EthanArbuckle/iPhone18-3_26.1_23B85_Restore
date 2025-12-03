@@ -7,32 +7,32 @@
 - (void)didChangeAutoPlayVideoSetting;
 - (void)handleMediaServicesReset;
 - (void)layoutSubviews;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)updateAudioSessionCategoryWithIsAudioOn:(BOOL)a3;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)updateAudioSessionCategoryWithIsAudioOn:(BOOL)on;
 @end
 
 @implementation VideoView
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VideoView.backgroundColor.getter();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  VideoView.backgroundColor.setter(a3);
+  colorCopy = color;
+  selfCopy = self;
+  VideoView.backgroundColor.setter(color);
 }
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   VideoView.frame.getter();
   v4 = v3;
   v6 = v5;
@@ -50,41 +50,41 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   VideoView.frame.setter();
 }
 
 - (void)didChangeAutoPlayVideoSetting
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA18E6D4();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   VideoView.layoutSubviews()();
 }
 
-- (void)updateAudioSessionCategoryWithIsAudioOn:(BOOL)a3
+- (void)updateAudioSessionCategoryWithIsAudioOn:(BOOL)on
 {
-  v3 = self;
+  selfCopy = self;
   sub_1CA18F8A8();
 }
 
 - (void)handleMediaServicesReset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA190E68();
 }
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   VideoView.playerViewController(_:willBeginFullScreenPresentationWithAnimationCoordinator:)();
 
   swift_unknownObjectRelease();
@@ -106,7 +106,7 @@
 
 - (BOOL)accessibilityIsPlaying
 {
-  v2 = self;
+  selfCopy = self;
   v3 = j___s27AppleMediaServicesUIDynamic9VideoViewC9isPlayingSbvg();
 
   return v3 & 1;

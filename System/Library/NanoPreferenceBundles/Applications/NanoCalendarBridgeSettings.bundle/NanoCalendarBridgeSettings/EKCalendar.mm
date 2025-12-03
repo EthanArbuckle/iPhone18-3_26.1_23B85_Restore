@@ -12,17 +12,17 @@
   }
 
   v3 = byte_15518;
-  v4 = [(EKCalendar *)self objectID];
-  v5 = [(EKCalendar *)self title];
-  v6 = v5;
+  objectID = [(EKCalendar *)self objectID];
+  title = [(EKCalendar *)self title];
+  v6 = title;
   if (v3 == 1)
   {
-    [NSString stringWithFormat:@"Cal objectID=%@; title=%@; type=%li; allowsMod=%d", v4, v5, [(EKCalendar *)self type], [(EKCalendar *)self allowsContentModifications]];
+    [NSString stringWithFormat:@"Cal objectID=%@; title=%@; type=%li; allowsMod=%d", objectID, title, [(EKCalendar *)self type], [(EKCalendar *)self allowsContentModifications]];
   }
 
   else
   {
-    +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Cal objectID=%@; titleLen=%lu; type=%li; allowsMod=%d", v4, [v5 length], -[EKCalendar type](self, "type"), -[EKCalendar allowsContentModifications](self, "allowsContentModifications"));
+    +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Cal objectID=%@; titleLen=%lu; type=%li; allowsMod=%d", objectID, [title length], -[EKCalendar type](self, "type"), -[EKCalendar allowsContentModifications](self, "allowsContentModifications"));
   }
   v7 = ;
 

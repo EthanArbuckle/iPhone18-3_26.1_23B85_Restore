@@ -1,20 +1,20 @@
 @interface AssistantVoiceFeedbackController
 - (id)specifiers;
 - (void)_updateSpecifiersFromPreferences;
-- (void)preferencesDidChange:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)preferencesDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistantVoiceFeedbackController
 
-- (void)preferencesDidChange:(id)a3
+- (void)preferencesDidChange:(id)change
 {
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 nanoUseDeviceSpeakerForTTS];
+  nanoUseDeviceSpeakerForTTS = [v4 nanoUseDeviceSpeakerForTTS];
 
-  if (v5 != self->_voiceFeedbackPref)
+  if (nanoUseDeviceSpeakerForTTS != self->_voiceFeedbackPref)
   {
-    self->_voiceFeedbackPref = v5;
+    self->_voiceFeedbackPref = nanoUseDeviceSpeakerForTTS;
 
     [(AssistantVoiceFeedbackController *)self reloadSpecifiers];
   }
@@ -65,23 +65,23 @@
   [v7 setProperty:v8 forKey:PSRadioGroupCheckedSpecifierKey];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AssistantVoiceFeedbackController;
-  v6 = a4;
-  [(AssistantVoiceFeedbackController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AssistantVoiceFeedbackController *)self indexForIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  [(AssistantVoiceFeedbackController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AssistantVoiceFeedbackController *)self indexForIndexPath:pathCopy, v12.receiver, v12.super_class];
 
   v8 = [(AssistantVoiceFeedbackController *)self specifierAtIndex:v7];
-  v9 = [v8 identifier];
+  identifier = [v8 identifier];
 
-  if ([v9 isEqualToString:@"VOICE_FEEDBACK_ALWAYS_ON_ID"])
+  if ([identifier isEqualToString:@"VOICE_FEEDBACK_ALWAYS_ON_ID"])
   {
     v10 = 2;
   }
 
-  else if ([v9 isEqualToString:@"VOICE_FEEDBACK_CONTROL_WITH_SILENT_MODE_ID"])
+  else if ([identifier isEqualToString:@"VOICE_FEEDBACK_CONTROL_WITH_SILENT_MODE_ID"])
   {
     v10 = 1;
   }

@@ -1,66 +1,66 @@
 @interface DASearchQuery
-+ (id)searchQueryWithSearchString:(id)a3 consumer:(id)a4;
-- (DASearchQuery)initWithDictionaryRepresentation:(id)a3 consumer:(id)a4;
-- (DASearchQuery)initWithSearchString:(id)a3 consumer:(id)a4;
-- (DASearchQuery)initWithSearchString:(id)a3 predicate:(id)a4 consumer:(id)a5;
++ (id)searchQueryWithSearchString:(id)string consumer:(id)consumer;
+- (DASearchQuery)initWithDictionaryRepresentation:(id)representation consumer:(id)consumer;
+- (DASearchQuery)initWithSearchString:(id)string consumer:(id)consumer;
+- (DASearchQuery)initWithSearchString:(id)string predicate:(id)predicate consumer:(id)consumer;
 - (DASearchQueryConsumer)consumer;
 - (_NSRange)range;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)sendFinishedToConsumerWithError:(id)a3;
-- (void)sendResultsToConsumer:(id)a3;
+- (void)sendFinishedToConsumerWithError:(id)error;
+- (void)sendResultsToConsumer:(id)consumer;
 @end
 
 @implementation DASearchQuery
 
-+ (id)searchQueryWithSearchString:(id)a3 consumer:(id)a4
++ (id)searchQueryWithSearchString:(id)string consumer:(id)consumer
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DASearchQuery alloc] initWithSearchString:v6 consumer:v5];
+  consumerCopy = consumer;
+  stringCopy = string;
+  v7 = [[DASearchQuery alloc] initWithSearchString:stringCopy consumer:consumerCopy];
 
   return v7;
 }
 
-- (DASearchQuery)initWithSearchString:(id)a3 consumer:(id)a4
+- (DASearchQuery)initWithSearchString:(id)string consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  consumerCopy = consumer;
   v11.receiver = self;
   v11.super_class = DASearchQuery;
   v8 = [(DASearchQuery *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(DASearchQuery *)v8 setSearchString:v6];
+    [(DASearchQuery *)v8 setSearchString:stringCopy];
     [(DASearchQuery *)v9 setState:0];
     [(DASearchQuery *)v9 setRange:0, 25];
     [(DASearchQuery *)v9 setTimeLimit:0];
     [(DASearchQuery *)v9 setSearchID:&stru_2854C3900];
-    [(DASearchQuery *)v9 setConsumer:v7];
+    [(DASearchQuery *)v9 setConsumer:consumerCopy];
   }
 
   return v9;
 }
 
-- (DASearchQuery)initWithSearchString:(id)a3 predicate:(id)a4 consumer:(id)a5
+- (DASearchQuery)initWithSearchString:(id)string predicate:(id)predicate consumer:(id)consumer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  predicateCopy = predicate;
+  consumerCopy = consumer;
   v14.receiver = self;
   v14.super_class = DASearchQuery;
   v11 = [(DASearchQuery *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(DASearchQuery *)v11 setSearchString:v8];
-    [(DASearchQuery *)v12 setSearchPredicate:v9];
+    [(DASearchQuery *)v11 setSearchString:stringCopy];
+    [(DASearchQuery *)v12 setSearchPredicate:predicateCopy];
     [(DASearchQuery *)v12 setState:0];
     [(DASearchQuery *)v12 setRange:0, 25];
     [(DASearchQuery *)v12 setTimeLimit:0];
     [(DASearchQuery *)v12 setSearchID:&stru_2854C3900];
-    [(DASearchQuery *)v12 setConsumer:v10];
+    [(DASearchQuery *)v12 setConsumer:consumerCopy];
   }
 
   return v12;
@@ -74,73 +74,73 @@
   v5 = MEMORY[0x277CCACA8];
   if (v4)
   {
-    v6 = [(DASearchQuery *)self searchString];
-    v7 = [(DASearchQuery *)self range];
+    searchString = [(DASearchQuery *)self searchString];
+    range = [(DASearchQuery *)self range];
     [(DASearchQuery *)self range];
-    v9 = [v5 stringWithFormat:@"<DASearchQuery %p>: %@ range: {%ld, %ld}, timeLimit: %d", self, v6, v7, v8, -[DASearchQuery timeLimit](self, "timeLimit")];
+    v9 = [v5 stringWithFormat:@"<DASearchQuery %p>: %@ range: {%ld, %ld}, timeLimit: %d", self, searchString, range, v8, -[DASearchQuery timeLimit](self, "timeLimit")];
   }
 
   else
   {
-    v10 = [(DASearchQuery *)self range];
+    range2 = [(DASearchQuery *)self range];
     [(DASearchQuery *)self range];
-    v9 = [v5 stringWithFormat:@"<DASearchQuery %p>: range: {%ld, %ld}, timeLimit: %d", self, v10, v11, -[DASearchQuery timeLimit](self, "timeLimit")];
+    v9 = [v5 stringWithFormat:@"<DASearchQuery %p>: range: {%ld, %ld}, timeLimit: %d", self, range2, v11, -[DASearchQuery timeLimit](self, "timeLimit")];
   }
 
   return v9;
 }
 
-- (DASearchQuery)initWithDictionaryRepresentation:(id)a3 consumer:(id)a4
+- (DASearchQuery)initWithDictionaryRepresentation:(id)representation consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  consumerCopy = consumer;
   v15.receiver = self;
   v15.super_class = DASearchQuery;
   v8 = [(DASearchQuery *)&v15 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"SearchString"];
+    v9 = [representationCopy objectForKeyedSubscript:@"SearchString"];
     [(DASearchQuery *)v8 setSearchString:v9];
 
-    v10 = [v6 objectForKeyedSubscript:@"RangeLoc"];
-    v11 = [v10 unsignedIntValue];
-    v12 = [v6 objectForKeyedSubscript:@"RangeLength"];
-    -[DASearchQuery setRange:](v8, "setRange:", v11, [v12 unsignedIntValue]);
+    v10 = [representationCopy objectForKeyedSubscript:@"RangeLoc"];
+    unsignedIntValue = [v10 unsignedIntValue];
+    v12 = [representationCopy objectForKeyedSubscript:@"RangeLength"];
+    -[DASearchQuery setRange:](v8, "setRange:", unsignedIntValue, [v12 unsignedIntValue]);
 
-    v13 = [v6 objectForKeyedSubscript:@"TimeLimit"];
+    v13 = [representationCopy objectForKeyedSubscript:@"TimeLimit"];
     -[DASearchQuery setTimeLimit:](v8, "setTimeLimit:", [v13 intValue]);
 
-    [(DASearchQuery *)v8 setConsumer:v7];
+    [(DASearchQuery *)v8 setConsumer:consumerCopy];
   }
 
   return v8;
 }
 
-- (void)sendResultsToConsumer:(id)a3
+- (void)sendResultsToConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   if ([(DASearchQuery *)self state]!= 2)
   {
-    v4 = [(DASearchQuery *)self consumer];
-    [v4 searchQuery:self returnedResults:v5];
+    consumer = [(DASearchQuery *)self consumer];
+    [consumer searchQuery:self returnedResults:consumerCopy];
   }
 }
 
-- (void)sendFinishedToConsumerWithError:(id)a3
+- (void)sendFinishedToConsumerWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if ([(DASearchQuery *)self state]!= 2)
   {
-    v4 = [(DASearchQuery *)self consumer];
-    [v4 searchQuery:self finishedWithError:v5];
+    consumer = [(DASearchQuery *)self consumer];
+    [consumer searchQuery:self finishedWithError:errorCopy];
   }
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(DASearchQuery *)self searchString];
-  [v3 setObject:v4 forKeyedSubscript:@"SearchString"];
+  searchString = [(DASearchQuery *)self searchString];
+  [v3 setObject:searchString forKeyedSubscript:@"SearchString"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DASearchQuery range](self, "range")}];
   [v3 setObject:v5 forKeyedSubscript:@"RangeLoc"];

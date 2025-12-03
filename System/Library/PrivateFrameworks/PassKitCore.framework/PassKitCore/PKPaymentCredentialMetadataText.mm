@@ -1,14 +1,14 @@
 @interface PKPaymentCredentialMetadataText
-- (PKPaymentCredentialMetadataText)initWithConfiguration:(id)a3;
+- (PKPaymentCredentialMetadataText)initWithConfiguration:(id)configuration;
 @end
 
 @implementation PKPaymentCredentialMetadataText
 
-- (PKPaymentCredentialMetadataText)initWithConfiguration:(id)a3
+- (PKPaymentCredentialMetadataText)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = PKPaymentCredentialMetadataText;
-  return [(PKPaymentCredentialMetadata *)&v4 initWithConfiguration:a3];
+  return [(PKPaymentCredentialMetadata *)&v4 initWithConfiguration:configuration];
 }
 
 @end

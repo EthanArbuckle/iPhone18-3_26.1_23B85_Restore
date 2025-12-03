@@ -1,6 +1,6 @@
 @interface AKPotrace
-+ (CGPath)newCGPathFromPotracePath:(potrace_path_s *)a3;
-- (AKPotrace)initWithCGImage:(CGImage *)a3 flipped:(BOOL)a4 whiteIsInside:(BOOL)a5;
++ (CGPath)newCGPathFromPotracePath:(potrace_path_s *)path;
+- (AKPotrace)initWithCGImage:(CGImage *)image flipped:(BOOL)flipped whiteIsInside:(BOOL)inside;
 - (CGPath)CGPath;
 - (void)_clearPathIfNecessary;
 - (void)_generatePath;
@@ -9,10 +9,10 @@
 
 @implementation AKPotrace
 
-- (AKPotrace)initWithCGImage:(CGImage *)a3 flipped:(BOOL)a4 whiteIsInside:(BOOL)a5
+- (AKPotrace)initWithCGImage:(CGImage *)image flipped:(BOOL)flipped whiteIsInside:(BOOL)inside
 {
-  v5 = a5;
-  v6 = a4;
+  insideCopy = inside;
+  flippedCopy = flipped;
   v45.receiver = self;
   v45.super_class = AKPotrace;
   v8 = [(AKPotrace *)&v45 init];
@@ -25,7 +25,7 @@
   v8->_potraceParameters = v9;
   v10 = malloc_type_malloc(0x18uLL, 0x1010040B3F21DC8uLL);
   v8->_potraceBitmap = v10;
-  if (!v10 || (v8->_potraceBitmap->var0 = CGImageGetWidth(a3), Height = CGImageGetHeight(a3), potraceBitmap = v8->_potraceBitmap, v13 = (potraceBitmap->var0 + 63) >> 6, potraceBitmap->var1 = Height, potraceBitmap->var2 = v13, potraceBitmap->var3 = 0, v14 = v8->_potraceBitmap, var1 = v14->var1, var2 = v14->var2, (((var2 * var1) >> 64) & 1) != 0) || (v8->_potraceBitmap->var3 = malloc_type_calloc(var2 * var1, 8uLL, 0x142E2631uLL), v17 = v8->_potraceBitmap, !v17->var3) || (var0 = v17->var0, v19 = v17->var1, (((v19 * var0) >> 64) & 1) != 0))
+  if (!v10 || (v8->_potraceBitmap->var0 = CGImageGetWidth(image), Height = CGImageGetHeight(image), potraceBitmap = v8->_potraceBitmap, v13 = (potraceBitmap->var0 + 63) >> 6, potraceBitmap->var1 = Height, potraceBitmap->var2 = v13, potraceBitmap->var3 = 0, v14 = v8->_potraceBitmap, var1 = v14->var1, var2 = v14->var2, (((var2 * var1) >> 64) & 1) != 0) || (v8->_potraceBitmap->var3 = malloc_type_calloc(var2 * var1, 8uLL, 0x142E2631uLL), v17 = v8->_potraceBitmap, !v17->var3) || (var0 = v17->var0, v19 = v17->var1, (((v19 * var0) >> 64) & 1) != 0))
   {
     v25 = 0;
     DeviceGray = 0;
@@ -60,18 +60,18 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (v6)
+  if (flippedCopy)
   {
     CGContextTranslateCTM(v24, 0.0, v8->_potraceBitmap->var1);
     CGContextScaleCTM(v25, 1.0, -1.0);
   }
 
-  Width = CGImageGetWidth(a3);
-  v46.size.height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  v46.size.height = CGImageGetHeight(image);
   v46.origin.x = 0.0;
   v46.origin.y = 0.0;
   v46.size.width = Width;
-  CGContextDrawImage(v25, v46, a3);
+  CGContextDrawImage(v25, v46, image);
   v27 = v8->_potraceBitmap;
   v28 = v27->var1;
   if (v28 < 1)
@@ -102,7 +102,7 @@ LABEL_31:
       while (1)
       {
         v39 = v36[v38];
-        if (v5)
+        if (insideCopy)
         {
           if ((v39 & 0x80) == 0)
           {
@@ -262,16 +262,16 @@ LABEL_32:
   self->_cachedPath = v5;
 }
 
-+ (CGPath)newCGPathFromPotracePath:(potrace_path_s *)a3
++ (CGPath)newCGPathFromPotracePath:(potrace_path_s *)path
 {
   Mutable = CGPathCreateMutable();
   if (Mutable)
   {
-    for (; a3; a3 = a3->var3)
+    for (; path; path = path->var3)
     {
-      var0 = a3->var2.var0;
-      var1 = a3->var2.var1;
-      var2 = a3->var2.var2;
+      var0 = path->var2.var0;
+      var1 = path->var2.var1;
+      var2 = path->var2.var2;
       CGPathMoveToPoint(Mutable, 0, *(var2 + 6 * var0 - 2), *(var2 + 6 * var0 - 1));
       if (var0 >= 1)
       {

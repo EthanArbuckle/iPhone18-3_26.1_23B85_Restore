@@ -8,7 +8,7 @@
 - (id)_intents_encodeWithJSONEncoder:()INJSONSerialization codableDescription:
 {
   v4 = a3;
-  v5 = INUserActivitySerializeToData(a1);
+  v5 = INUserActivitySerializeToData(self);
   v6 = [v4 encodeObject:v5];
 
   return v6;

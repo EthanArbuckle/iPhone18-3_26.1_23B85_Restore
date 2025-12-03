@@ -1,22 +1,22 @@
 @interface CAMSemanticStyleMaskedBadge
-- (CAMSemanticStyleMaskedBadge)initWithFrame:(CGRect)a3;
+- (CAMSemanticStyleMaskedBadge)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_handleBadgeUpdateLockoutTimerFired:(id)a3;
-- (void)_requestTextUpdateDelayIfNeeded:(BOOL)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_handleBadgeUpdateLockoutTimerFired:(id)fired;
+- (void)_requestTextUpdateDelayIfNeeded:(BOOL)needed;
 - (void)layoutSubviews;
-- (void)setBadgeLeftInset:(double)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setSemanticStyle:(id)a3 delayIfNeeded:(BOOL)a4;
+- (void)setBadgeLeftInset:(double)inset;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setSemanticStyle:(id)style delayIfNeeded:(BOOL)needed;
 @end
 
 @implementation CAMSemanticStyleMaskedBadge
 
-- (CAMSemanticStyleMaskedBadge)initWithFrame:(CGRect)a3
+- (CAMSemanticStyleMaskedBadge)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CAMSemanticStyleMaskedBadge;
-  v3 = [(CAMSemanticStyleMaskedBadge *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSemanticStyleMaskedBadge *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,8 +39,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CAMSemanticStyleMaskedBadge *)self badgeView];
-  [v2 intrinsicContentSize];
+  badgeView = [(CAMSemanticStyleMaskedBadge *)self badgeView];
+  [badgeView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -51,12 +51,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CAMSemanticStyleMaskedBadge *)self badgeView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  badgeView = [(CAMSemanticStyleMaskedBadge *)self badgeView];
+  [badgeView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -69,13 +69,13 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(CAMSemanticStyleMaskedBadge *)self badgeView];
-  [v3 intrinsicContentSize];
+  badgeView = [(CAMSemanticStyleMaskedBadge *)self badgeView];
+  [badgeView intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CAMSemanticStyleMaskedBadge *)self orientation];
-  if ((v8 - 3) >= 2)
+  orientation = [(CAMSemanticStyleMaskedBadge *)self orientation];
+  if ((orientation - 3) >= 2)
   {
     v9 = v7;
   }
@@ -85,7 +85,7 @@
     v9 = v5;
   }
 
-  if ((v8 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     v5 = v7;
   }
@@ -107,76 +107,76 @@
   CAMApplyAnimationSensitiveGeometryToView(v12, v11);
 }
 
-- (void)setSemanticStyle:(id)a3 delayIfNeeded:(BOOL)a4
+- (void)setSemanticStyle:(id)style delayIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v7 = a3;
-  if (([v7 isEqual:self->_semanticStyle] & 1) == 0)
+  neededCopy = needed;
+  styleCopy = style;
+  if (([styleCopy isEqual:self->_semanticStyle] & 1) == 0)
   {
-    objc_storeStrong(&self->_semanticStyle, a3);
-    [(CAMSemanticStyleMaskedBadge *)self _requestTextUpdateDelayIfNeeded:v4];
+    objc_storeStrong(&self->_semanticStyle, style);
+    [(CAMSemanticStyleMaskedBadge *)self _requestTextUpdateDelayIfNeeded:neededCopy];
   }
 }
 
-- (void)setBadgeLeftInset:(double)a3
+- (void)setBadgeLeftInset:(double)inset
 {
-  if (self->_badgeLeftInset != a3)
+  if (self->_badgeLeftInset != inset)
   {
-    self->_badgeLeftInset = a3;
+    self->_badgeLeftInset = inset;
     [(CAMSemanticStyleMaskedBadge *)self setNeedsLayout];
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(CAMSemanticStyleMaskedBadge *)self setNeedsLayout];
   }
 }
 
-- (void)_requestTextUpdateDelayIfNeeded:(BOOL)a3
+- (void)_requestTextUpdateDelayIfNeeded:(BOOL)needed
 {
-  v14 = [(CAMSemanticStyleMaskedBadge *)self semanticStyle];
-  v5 = [v14 displayName];
-  v6 = [v5 cam_uppercaseStringWithPreferredLocale];
+  semanticStyle = [(CAMSemanticStyleMaskedBadge *)self semanticStyle];
+  displayName = [semanticStyle displayName];
+  cam_uppercaseStringWithPreferredLocale = [displayName cam_uppercaseStringWithPreferredLocale];
 
-  v7 = [(CAMSemanticStyleMaskedBadge *)self _cachedText];
-  if (([v6 isEqualToString:v7] & 1) == 0)
+  _cachedText = [(CAMSemanticStyleMaskedBadge *)self _cachedText];
+  if (([cam_uppercaseStringWithPreferredLocale isEqualToString:_cachedText] & 1) == 0)
   {
-    [(CAMSemanticStyleMaskedBadge *)self set_cachedText:v6];
-    v8 = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
+    [(CAMSemanticStyleMaskedBadge *)self set_cachedText:cam_uppercaseStringWithPreferredLocale];
+    _badgeUpdateLockoutTimer = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
 
-    if (!v8 || !a3)
+    if (!_badgeUpdateLockoutTimer || !needed)
     {
-      v9 = [(CAMSemanticStyleMaskedBadge *)self badgeView];
-      [v9 _setText:v6];
+      badgeView = [(CAMSemanticStyleMaskedBadge *)self badgeView];
+      [badgeView _setText:cam_uppercaseStringWithPreferredLocale];
 
-      v10 = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
-      [v10 invalidate];
+      _badgeUpdateLockoutTimer2 = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
+      [_badgeUpdateLockoutTimer2 invalidate];
 
       v11 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel__handleBadgeUpdateLockoutTimerFired_ selector:0 userInfo:0 repeats:0.3];
       [(CAMSemanticStyleMaskedBadge *)self set_badgeUpdateLockoutTimer:v11];
 
-      v12 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      v13 = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
-      [v12 addTimer:v13 forMode:*MEMORY[0x1E695DA28]];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      _badgeUpdateLockoutTimer3 = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
+      [currentRunLoop addTimer:_badgeUpdateLockoutTimer3 forMode:*MEMORY[0x1E695DA28]];
     }
 
     [(CAMSemanticStyleMaskedBadge *)self setNeedsLayout];
   }
 }
 
-- (void)_handleBadgeUpdateLockoutTimerFired:(id)a3
+- (void)_handleBadgeUpdateLockoutTimerFired:(id)fired
 {
-  v4 = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
-  [v4 invalidate];
+  _badgeUpdateLockoutTimer = [(CAMSemanticStyleMaskedBadge *)self _badgeUpdateLockoutTimer];
+  [_badgeUpdateLockoutTimer invalidate];
 
   [(CAMSemanticStyleMaskedBadge *)self set_badgeUpdateLockoutTimer:0];
-  v6 = [(CAMSemanticStyleMaskedBadge *)self _cachedText];
-  v5 = [(CAMSemanticStyleMaskedBadge *)self badgeView];
-  [v5 _setText:v6];
+  _cachedText = [(CAMSemanticStyleMaskedBadge *)self _cachedText];
+  badgeView = [(CAMSemanticStyleMaskedBadge *)self badgeView];
+  [badgeView _setText:_cachedText];
 }
 
 @end

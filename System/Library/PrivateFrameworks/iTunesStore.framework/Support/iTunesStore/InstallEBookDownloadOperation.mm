@@ -1,14 +1,14 @@
 @interface InstallEBookDownloadOperation
 + (id)sharedBookContainerCachesPath;
 + (id)sharedBookContainerPath;
-- (BOOL)_installMediaAsset:(id)a3 assetInstalledPath:(id *)a4 fileName:(id *)a5 drmPath:(id *)a6 error:(id *)a7;
+- (BOOL)_installMediaAsset:(id)asset assetInstalledPath:(id *)path fileName:(id *)name drmPath:(id *)drmPath error:(id *)error;
 - (id)_bookManifest;
 - (id)_existingManifestEntry;
-- (id)_newManifestEntry:(BOOL)a3 withFileName:(id)a4;
+- (id)_newManifestEntry:(BOOL)entry withFileName:(id)name;
 - (id)_storeFrontIdentifier;
 - (id)_syncedBooksPath;
-- (void)_addPurchaseManifestItem:(BOOL)a3;
-- (void)_removeDuplicateEntry:(id)a3;
+- (void)_addPurchaseManifestItem:(BOOL)item;
+- (void)_removeDuplicateEntry:(id)entry;
 - (void)run;
 @end
 
@@ -18,22 +18,22 @@
 {
   v3 = objc_alloc_init(FinishDownloadResponse);
   [(FinishDownloadResponse *)v3 setResult:4];
-  v4 = [(FinishDownloadStepOperation *)self download];
-  -[FinishDownloadResponse setDownloadIdentifier:](v3, "setDownloadIdentifier:", [v4 databaseID]);
-  v145 = -[DownloadHandle initWithTransactionIdentifier:downloadIdentifier:]([DownloadHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:", [v4 transactionID], objc_msgSend(v4, "databaseID"));
+  download = [(FinishDownloadStepOperation *)self download];
+  -[FinishDownloadResponse setDownloadIdentifier:](v3, "setDownloadIdentifier:", [download databaseID]);
+  v145 = -[DownloadHandle initWithTransactionIdentifier:downloadIdentifier:]([DownloadHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:", [download transactionID], objc_msgSend(download, "databaseID"));
   [(FinishDownloadResponse *)v3 setDownloadHandle:?];
-  v5 = [v4 mediaAsset];
-  -[FinishDownloadResponse setMediaAssetIdentifier:](v3, "setMediaAssetIdentifier:", [v5 databaseID]);
+  mediaAsset = [download mediaAsset];
+  -[FinishDownloadResponse setMediaAssetIdentifier:](v3, "setMediaAssetIdentifier:", [mediaAsset databaseID]);
   v6 = +[ApplicationWorkspace defaultWorkspace];
-  v7 = [v6 isMultiUser];
-  if (v7)
+  isMultiUser = [v6 isMultiUser];
+  if (isMultiUser)
   {
-    LOBYTE(v7) = [v4 isSharedDownload];
+    LOBYTE(isMultiUser) = [download isSharedDownload];
   }
 
-  self->_isSharedDownload = v7;
+  self->_isSharedDownload = isMultiUser;
 
-  v140 = v5;
+  v140 = mediaAsset;
   v8 = &CFDictionaryGetValue_ptr;
   v141 = v3;
   if (!self->_isSharedDownload)
@@ -44,19 +44,19 @@
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v20 = v18;
     }
@@ -73,7 +73,7 @@
       v154 = 138412546;
       v155 = v21;
       v156 = 2048;
-      v157 = [(DownloadHandle *)v145 downloadID];
+      downloadID = [(DownloadHandle *)v145 downloadID];
       LODWORD(v129) = 22;
       v128 = &v154;
       v23 = _os_log_send_and_compose_impl();
@@ -86,9 +86,9 @@ LABEL_18:
         goto LABEL_64;
       }
 
-      v19 = [NSString stringWithCString:v23 encoding:4, &v154, v129];
+      oSLogObject = [NSString stringWithCString:v23 encoding:4, &v154, v129];
       free(v23);
-      v128 = v19;
+      v128 = oSLogObject;
       SSFileLog();
     }
 
@@ -96,18 +96,18 @@ LABEL_18:
   }
 
   v9 = +[EBookManifest sharedPurchasedBookManifest];
-  v137 = [v4 storeMetadata];
-  v10 = [v137 valueForMetadataKey:SSDownloadMetadataKeyPublicationVersion];
-  v11 = [(FinishDownloadStepOperation *)self download];
-  v12 = [v11 storeItemIdentifier];
+  storeMetadata = [download storeMetadata];
+  v10 = [storeMetadata valueForMetadataKey:SSDownloadMetadataKeyPublicationVersion];
+  download2 = [(FinishDownloadStepOperation *)self download];
+  storeItemIdentifier = [download2 storeItemIdentifier];
 
-  v13 = [(FinishDownloadStepOperation *)self download];
-  v14 = [v13 downloadPermalink];
+  download3 = [(FinishDownloadStepOperation *)self download];
+  downloadPermalink = [download3 downloadPermalink];
 
   v135 = v10;
-  if ([v4 isStoreDownload])
+  if ([download isStoreDownload])
   {
-    v15 = [v9 bookPathForAdamID:v12 withPublicationVersion:v10];
+    v15 = [v9 bookPathForAdamID:storeItemIdentifier withPublicationVersion:v10];
 LABEL_21:
     v25 = *(&self->_isSharedDownload + 5);
     *(&self->_isSharedDownload + 5) = v15;
@@ -115,9 +115,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v14 length])
+  if ([downloadPermalink length])
   {
-    v15 = [v9 bookPathPermalink:v14];
+    v15 = [v9 bookPathPermalink:downloadPermalink];
     goto LABEL_21;
   }
 
@@ -126,10 +126,10 @@ LABEL_22:
   v143 = v9;
   if (v133)
   {
-    v26 = [(InstallEBookDownloadOperation *)self _bookManifest];
-    v27 = [v26 manifestPath];
-    v28 = [v27 stringByDeletingLastPathComponent];
-    v142 = [v28 stringByAppendingPathComponent:*(&self->_isSharedDownload + 5)];
+    _bookManifest = [(InstallEBookDownloadOperation *)self _bookManifest];
+    manifestPath = [_bookManifest manifestPath];
+    stringByDeletingLastPathComponent = [manifestPath stringByDeletingLastPathComponent];
+    v142 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:*(&self->_isSharedDownload + 5)];
 
     v29 = +[SSLogConfig sharedDaemonConfig];
     if (!v29)
@@ -137,19 +137,19 @@ LABEL_22:
       v29 = +[SSLogConfig sharedConfig];
     }
 
-    v30 = [v29 shouldLog];
+    shouldLog2 = [v29 shouldLog];
     if ([v29 shouldLogToDisk])
     {
-      v31 = v30 | 2;
+      v31 = shouldLog2 | 2;
     }
 
     else
     {
-      v31 = v30;
+      v31 = shouldLog2;
     }
 
-    v32 = [v29 OSLogObject];
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v29 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v33 = v31;
     }
@@ -162,25 +162,25 @@ LABEL_22:
     if (v33)
     {
       v34 = objc_opt_class();
-      v35 = v14;
-      v36 = v12;
+      v35 = downloadPermalink;
+      v36 = storeItemIdentifier;
       v37 = v34;
       v154 = 138412546;
       v155 = v34;
       v156 = 2048;
-      v157 = [(DownloadHandle *)v145 downloadID];
+      downloadID = [(DownloadHandle *)v145 downloadID];
       LODWORD(v129) = 22;
       v128 = &v154;
       v38 = _os_log_send_and_compose_impl();
 
-      v12 = v36;
-      v14 = v35;
+      storeItemIdentifier = v36;
+      downloadPermalink = v35;
 
       if (v38)
       {
-        v39 = [NSString stringWithCString:v38 encoding:4, &v154, v129];
+        v129 = [NSString stringWithCString:v38 encoding:4, &v154, v129];
         free(v38);
-        v128 = v39;
+        v128 = v129;
         SSFileLog();
       }
     }
@@ -192,25 +192,25 @@ LABEL_22:
 
   else
   {
-    v26 = +[SSLogConfig sharedDaemonConfig];
-    if (!v26)
+    _bookManifest = +[SSLogConfig sharedDaemonConfig];
+    if (!_bookManifest)
     {
-      v26 = +[SSLogConfig sharedConfig];
+      _bookManifest = +[SSLogConfig sharedConfig];
     }
 
-    v40 = [v26 shouldLog];
-    if ([v26 shouldLogToDisk])
+    shouldLog3 = [_bookManifest shouldLog];
+    if ([_bookManifest shouldLogToDisk])
     {
-      v41 = v40 | 2;
+      v41 = shouldLog3 | 2;
     }
 
     else
     {
-      v41 = v40;
+      v41 = shouldLog3;
     }
 
-    v42 = [v26 OSLogObject];
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [_bookManifest OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v43 = v41;
     }
@@ -222,27 +222,27 @@ LABEL_22:
 
     if (v43)
     {
-      v131 = v12;
+      v131 = storeItemIdentifier;
       v44 = objc_opt_class();
       v45 = v44;
       v154 = 138412546;
       v155 = v44;
       v156 = 2048;
-      v157 = [(DownloadHandle *)v145 downloadID];
+      downloadID = [(DownloadHandle *)v145 downloadID];
       LODWORD(v129) = 22;
       v128 = &v154;
       v46 = _os_log_send_and_compose_impl();
 
       if (v46)
       {
-        v47 = [NSString stringWithCString:v46 encoding:4, &v154, v129];
+        v1292 = [NSString stringWithCString:v46 encoding:4, &v154, v129];
         free(v46);
-        v128 = v47;
+        v128 = v1292;
         SSFileLog();
       }
 
       v142 = 0;
-      v12 = v131;
+      storeItemIdentifier = v131;
     }
 
     else
@@ -258,19 +258,19 @@ LABEL_22:
     v48 = +[SSLogConfig sharedConfig];
   }
 
-  v49 = [v48 shouldLog];
+  shouldLog4 = [v48 shouldLog];
   if ([v48 shouldLogToDisk])
   {
-    v50 = v49 | 2;
+    v50 = shouldLog4 | 2;
   }
 
   else
   {
-    v50 = v49;
+    v50 = shouldLog4;
   }
 
-  v51 = [v48 OSLogObject];
-  if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
+  oSLogObject4 = [v48 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
   {
     v52 = v50;
   }
@@ -287,27 +287,27 @@ LABEL_22:
   }
 
   v53 = objc_opt_class();
-  v54 = v14;
-  v55 = v12;
+  v54 = downloadPermalink;
+  v55 = storeItemIdentifier;
   v56 = v53;
   v57 = +[InstallEBookDownloadOperation sharedBookContainerPath];
   v154 = 138412546;
   v155 = v53;
   v156 = 2112;
-  v157 = v57;
+  downloadID = v57;
   LODWORD(v129) = 22;
   v128 = &v154;
   v58 = _os_log_send_and_compose_impl();
 
-  v12 = v55;
-  v14 = v54;
+  storeItemIdentifier = v55;
+  downloadPermalink = v54;
 
   v59 = v135;
   if (v58)
   {
-    v51 = [NSString stringWithCString:v58 encoding:4, &v154, v129];
+    oSLogObject4 = [NSString stringWithCString:v58 encoding:4, &v154, v129];
     free(v58);
-    v128 = v51;
+    v128 = oSLogObject4;
     SSFileLog();
 LABEL_60:
   }
@@ -318,12 +318,12 @@ LABEL_60:
     v60 = 0;
     v136 = 0;
     v61 = 1;
-    v5 = v140;
+    mediaAsset = v140;
     v8 = &CFDictionaryGetValue_ptr;
     goto LABEL_82;
   }
 
-  v5 = v140;
+  mediaAsset = v140;
   v8 = &CFDictionaryGetValue_ptr;
   v24 = v142;
 LABEL_64:
@@ -331,21 +331,21 @@ LABEL_64:
   v151 = v24;
   v152 = 0;
   v150 = 0;
-  v62 = [(InstallEBookDownloadOperation *)self _installMediaAsset:v5 assetInstalledPath:&v153 fileName:&v152 drmPath:&v151 error:&v150, v128];
+  v128 = [(InstallEBookDownloadOperation *)self _installMediaAsset:mediaAsset assetInstalledPath:&v153 fileName:&v152 drmPath:&v151 error:&v150, v128];
   v60 = v153;
   v144 = v152;
   v63 = v151;
 
   v64 = v150;
   v65 = v64;
-  if (v62)
+  if (v128)
   {
     v136 = v64;
     v142 = v63;
     v66 = objc_alloc_init(NSFileManager);
     LOBYTE(v154) = 0;
     [v66 fileExistsAtPath:v60 isDirectory:&v154];
-    v67 = [v4 secondaryAssetForType:SSDownloadAssetTypeArtwork];
+    v67 = [download secondaryAssetForType:SSDownloadAssetTypeArtwork];
     if (v67 && [(FinishDownloadStepOperation *)self downloadAsset:v67 error:0])
     {
       if (v154 == 1)
@@ -355,12 +355,12 @@ LABEL_64:
 
       else
       {
-        v70 = [v67 destinationFileName];
-        v71 = [v70 pathExtension];
+        destinationFileName = [v67 destinationFileName];
+        pathExtension = [destinationFileName pathExtension];
 
         [v60 stringByDeletingPathExtension];
         v73 = v72 = v60;
-        v68 = [v73 stringByAppendingPathExtension:v71];
+        v68 = [v73 stringByAppendingPathExtension:pathExtension];
 
         v60 = v72;
       }
@@ -370,13 +370,13 @@ LABEL_64:
       v74 = v149;
     }
 
-    v75 = [(InstallEBookDownloadOperation *)self _bookManifest];
+    _bookManifest2 = [(InstallEBookDownloadOperation *)self _bookManifest];
     v76 = +[EBookManifest purchasedBookManifest];
 
-    if (v75 == v76)
+    if (_bookManifest2 == v76)
     {
-      v77 = [v4 newITunesMetadataDictionary];
-      if (v77)
+      newITunesMetadataDictionary = [download newITunesMetadataDictionary];
+      if (newITunesMetadataDictionary)
       {
         if (v154 == 1)
         {
@@ -392,17 +392,17 @@ LABEL_64:
           v60 = v79;
         }
 
-        [(FinishDownloadStepOperation *)self writeBinaryPropertyList:v77 toPath:v78 error:0];
+        [(FinishDownloadStepOperation *)self writeBinaryPropertyList:newITunesMetadataDictionary toPath:v78 error:0];
       }
     }
 
     v61 = 0;
 LABEL_82:
-    v81 = [v4 storeMetadata];
-    v82 = [v81 epubRightsData];
+    storeMetadata2 = [download storeMetadata];
+    epubRightsData = [storeMetadata2 epubRightsData];
 
     v138 = v60;
-    if (![v82 length])
+    if (![epubRightsData length])
     {
       goto LABEL_112;
     }
@@ -410,25 +410,25 @@ LABEL_82:
     v132 = v61;
     v83 = [v142 stringByAppendingPathComponent:@"META-INF"];
     v134 = [v83 stringByAppendingPathComponent:@"sinf.xml"];
-    v84 = [v8[412] sharedDaemonConfig];
-    if (!v84)
+    sharedDaemonConfig = [v8[412] sharedDaemonConfig];
+    if (!sharedDaemonConfig)
     {
-      v84 = [v8[412] sharedConfig];
+      sharedDaemonConfig = [v8[412] sharedConfig];
     }
 
-    v85 = [v84 shouldLog];
-    if ([v84 shouldLogToDisk])
+    shouldLog5 = [sharedDaemonConfig shouldLog];
+    if ([sharedDaemonConfig shouldLogToDisk])
     {
-      v86 = v85 | 2;
+      v86 = shouldLog5 | 2;
     }
 
     else
     {
-      v86 = v85;
+      v86 = shouldLog5;
     }
 
-    v87 = [v84 OSLogObject];
-    if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
+    oSLogObject5 = [sharedDaemonConfig OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_INFO))
     {
       v88 = v86;
     }
@@ -442,11 +442,11 @@ LABEL_82:
     {
       v89 = objc_opt_class();
       v90 = v89;
-      v91 = [v4 databaseID];
+      databaseID = [download databaseID];
       v154 = 138412802;
       v155 = v89;
       v156 = 2048;
-      v157 = v91;
+      downloadID = databaseID;
       v158 = 2112;
       v159 = v83;
       LODWORD(v129) = 32;
@@ -459,9 +459,9 @@ LABEL_82:
         goto LABEL_95;
       }
 
-      v87 = [NSString stringWithCString:v92 encoding:4, &v154, v129];
+      oSLogObject5 = [NSString stringWithCString:v92 encoding:4, &v154, v129];
       free(v92);
-      v128 = v87;
+      v128 = oSLogObject5;
       SSFileLog();
     }
 
@@ -472,7 +472,7 @@ LABEL_95:
     if ((v146 & 1) != 0 || (v148 = 0, [v93 createDirectoryAtPath:v83 withIntermediateDirectories:1 attributes:0 error:&v148], (v94 = v148) == 0))
     {
       v147 = 0;
-      [v82 writeToFile:v134 options:1 error:{&v147, v128}];
+      [epubRightsData writeToFile:v134 options:1 error:{&v147, v128}];
       v94 = v147;
       v60 = v138;
       if (!v94)
@@ -482,25 +482,25 @@ LABEL_95:
     }
 
     v95 = v94;
-    v96 = [v8[412] sharedDaemonConfig];
-    if (!v96)
+    sharedDaemonConfig2 = [v8[412] sharedDaemonConfig];
+    if (!sharedDaemonConfig2)
     {
-      v96 = +[SSLogConfig sharedConfig];
+      sharedDaemonConfig2 = +[SSLogConfig sharedConfig];
     }
 
-    v97 = [v96 shouldLog];
-    if ([v96 shouldLogToDisk])
+    shouldLog6 = [sharedDaemonConfig2 shouldLog];
+    if ([sharedDaemonConfig2 shouldLogToDisk])
     {
-      v98 = v97 | 2;
+      v98 = shouldLog6 | 2;
     }
 
     else
     {
-      v98 = v97;
+      v98 = shouldLog6;
     }
 
-    v99 = [v96 OSLogObject];
-    if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
+    oSLogObject6 = [sharedDaemonConfig2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
     {
       v100 = v98;
     }
@@ -510,20 +510,20 @@ LABEL_95:
       v100 = v98 & 2;
     }
 
-    v130 = self;
+    selfCopy = self;
     if (v100)
     {
       v101 = v83;
-      v102 = v82;
+      v102 = epubRightsData;
       v103 = objc_opt_class();
       v104 = v103;
-      v105 = [v4 databaseID];
+      databaseID2 = [download databaseID];
       v154 = 138413058;
       v155 = v103;
-      v82 = v102;
+      epubRightsData = v102;
       v83 = v101;
       v156 = 2048;
-      v157 = v105;
+      downloadID = databaseID2;
       v158 = 2112;
       v159 = v101;
       v160 = 2112;
@@ -538,10 +538,10 @@ LABEL_110:
 
         v8 = &CFDictionaryGetValue_ptr;
         v60 = v138;
-        self = v130;
+        self = selfCopy;
 LABEL_111:
 
-        v5 = v140;
+        mediaAsset = v140;
         v61 = v132;
 LABEL_112:
         if (v61 & 1 | !self->_isSharedDownload)
@@ -556,7 +556,7 @@ LABEL_143:
           goto LABEL_144;
         }
 
-        v139 = v82;
+        v139 = epubRightsData;
         v146 = 1;
         v107 = [@"Library" stringByAppendingPathComponent:v144];
         v108 = [@"Library" stringByAppendingPathComponent:@"Caches"];
@@ -566,31 +566,31 @@ LABEL_143:
         [v110 UTF8String];
         [v107 UTF8String];
         v111 = container_stage_shared_system_content();
-        v112 = [v8[412] sharedDaemonConfig];
-        v113 = v112;
+        sharedDaemonConfig3 = [v8[412] sharedDaemonConfig];
+        sharedConfig = sharedDaemonConfig3;
         if (v111)
         {
-          v114 = v5;
-          if (!v112)
+          v114 = mediaAsset;
+          if (!sharedDaemonConfig3)
           {
-            v113 = +[SSLogConfig sharedConfig];
+            sharedConfig = +[SSLogConfig sharedConfig];
           }
 
-          v115 = [v113 shouldLog];
-          if ([v113 shouldLogToDisk])
+          shouldLog7 = [sharedConfig shouldLog];
+          if ([sharedConfig shouldLogToDisk])
           {
-            v115 |= 2u;
+            shouldLog7 |= 2u;
           }
 
-          v116 = [v113 OSLogObject];
-          if (os_log_type_enabled(v116, OS_LOG_TYPE_INFO))
+          oSLogObject7 = [sharedConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_INFO))
           {
-            v117 = v115;
+            v117 = shouldLog7;
           }
 
           else
           {
-            v117 = v115 & 2;
+            v117 = shouldLog7 & 2;
           }
 
           if (v117)
@@ -599,7 +599,7 @@ LABEL_143:
             v154 = 138412546;
             v155 = v118;
             v156 = 2080;
-            v157 = v111;
+            downloadID = v111;
             v119 = v118;
             LODWORD(v129) = 22;
             v128 = &v154;
@@ -611,7 +611,7 @@ LABEL_126:
 
               v60 = [[NSString alloc] initWithCString:v111 encoding:4];
               free(v111);
-              v5 = v114;
+              mediaAsset = v114;
               v65 = v136;
 LABEL_140:
               v69 = v141;
@@ -621,39 +621,39 @@ LABEL_140:
               }
 
               v63 = v142;
-              v82 = v139;
+              epubRightsData = v139;
               goto LABEL_143;
             }
 
-            v116 = [NSString stringWithCString:v120 encoding:4, &v154, v129];
+            oSLogObject7 = [NSString stringWithCString:v120 encoding:4, &v154, v129];
             free(v120);
-            v128 = v116;
+            v128 = oSLogObject7;
             SSFileLog();
           }
 
           goto LABEL_126;
         }
 
-        if (!v112)
+        if (!sharedDaemonConfig3)
         {
-          v113 = [v8[412] sharedConfig];
+          sharedConfig = [v8[412] sharedConfig];
         }
 
-        v121 = [v113 shouldLog];
-        if ([v113 shouldLogToDisk])
+        shouldLog8 = [sharedConfig shouldLog];
+        if ([sharedConfig shouldLogToDisk])
         {
-          v121 |= 2u;
+          shouldLog8 |= 2u;
         }
 
-        v122 = [v113 OSLogObject];
-        if (os_log_type_enabled(v122, OS_LOG_TYPE_INFO))
+        oSLogObject8 = [sharedConfig OSLogObject];
+        if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_INFO))
         {
-          v123 = v121;
+          v123 = shouldLog8;
         }
 
         else
         {
-          v123 = v121 & 2;
+          v123 = shouldLog8 & 2;
         }
 
         if (v123)
@@ -662,7 +662,7 @@ LABEL_140:
           v154 = 138412546;
           v155 = v124;
           v156 = 2048;
-          v157 = v146;
+          downloadID = v146;
           v125 = v124;
           LODWORD(v129) = 22;
           v128 = &v154;
@@ -679,9 +679,9 @@ LABEL_139:
             goto LABEL_140;
           }
 
-          v122 = [NSString stringWithCString:v126 encoding:4, &v154, v129];
+          oSLogObject8 = [NSString stringWithCString:v126 encoding:4, &v154, v129];
           free(v126);
-          v128 = v122;
+          v128 = oSLogObject8;
           SSFileLog();
         }
 
@@ -693,9 +693,9 @@ LABEL_139:
         goto LABEL_139;
       }
 
-      v99 = [NSString stringWithCString:v106 encoding:4, &v154, v129];
+      oSLogObject6 = [NSString stringWithCString:v106 encoding:4, &v154, v129];
       free(v106);
-      v128 = v99;
+      v128 = oSLogObject6;
       SSFileLog();
     }
 
@@ -722,19 +722,19 @@ LABEL_144:
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v6;
     }
@@ -764,7 +764,7 @@ LABEL_14:
         goto LABEL_28;
       }
 
-      v7 = [NSString stringWithCString:v9 encoding:4, &v21, v20];
+      oSLogObject = [NSString stringWithCString:v9 encoding:4, &v21, v20];
       free(v9);
       SSFileLog();
     }
@@ -777,19 +777,19 @@ LABEL_14:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v4 shouldLog];
+  shouldLog2 = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog2 | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog2;
   }
 
-  v16 = [v4 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v15;
   }
@@ -811,7 +811,7 @@ LABEL_14:
 
   if (v18)
   {
-    v16 = [NSString stringWithCString:v18 encoding:4, &v21, v20];
+    oSLogObject2 = [NSString stringWithCString:v18 encoding:4, &v21, v20];
     free(v18);
     SSFileLog();
 LABEL_26:
@@ -836,19 +836,19 @@ LABEL_28:
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v6;
     }
@@ -876,7 +876,7 @@ LABEL_14:
         goto LABEL_28;
       }
 
-      v7 = [NSString stringWithCString:v9 encoding:4, &v19, v18];
+      oSLogObject = [NSString stringWithCString:v9 encoding:4, &v19, v18];
       free(v9);
       SSFileLog();
     }
@@ -889,19 +889,19 @@ LABEL_14:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v12 = [v4 shouldLog];
+  shouldLog2 = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog2 | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog2;
   }
 
-  v14 = [v4 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v13;
   }
@@ -923,7 +923,7 @@ LABEL_14:
 
   if (v16)
   {
-    v14 = [NSString stringWithCString:v16 encoding:4, &v19, v18];
+    oSLogObject2 = [NSString stringWithCString:v16 encoding:4, &v19, v18];
     free(v16);
     SSFileLog();
 LABEL_26:
@@ -935,11 +935,11 @@ LABEL_28:
   return v11;
 }
 
-- (void)_addPurchaseManifestItem:(BOOL)a3
+- (void)_addPurchaseManifestItem:(BOOL)item
 {
-  v3 = a3;
-  v5 = [(InstallEBookDownloadOperation *)self _bookManifest];
-  v6 = [(FinishDownloadStepOperation *)self download];
+  itemCopy = item;
+  _bookManifest = [(InstallEBookDownloadOperation *)self _bookManifest];
+  download = [(FinishDownloadStepOperation *)self download];
   isSharedDownload = self->_isSharedDownload;
   v8 = +[SSLogConfig sharedDaemonConfig];
   v9 = v8;
@@ -950,32 +950,32 @@ LABEL_28:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v18 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v19 = [v9 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v20 = v18;
+      v20 = shouldLog;
     }
 
     else
     {
-      v20 = v18 & 2;
+      v20 = shouldLog & 2;
     }
 
     if (v20)
     {
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [v5 manifestPath];
+      manifestPath = [_bookManifest manifestPath];
       v45 = 138412546;
       v46 = v21;
       v47 = 2112;
-      v48 = v23;
+      v48 = manifestPath;
       LODWORD(v43) = 22;
       v42 = &v45;
       v24 = _os_log_send_and_compose_impl();
@@ -993,29 +993,29 @@ LABEL_28:
     {
     }
 
-    v39 = [v6 mediaAsset];
-    v26 = [v39 destinationFileName];
+    mediaAsset = [download mediaAsset];
+    destinationFileName = [mediaAsset destinationFileName];
 
-    v38 = [v5 manifestEntriesWithProperty:@"Path" equalToValue:v26 limitCount:1];
+    v38 = [_bookManifest manifestEntriesWithProperty:@"Path" equalToValue:destinationFileName limitCount:1];
     if ([v38 count])
     {
       goto LABEL_47;
     }
 
-    v40 = [(InstallEBookDownloadOperation *)self _existingManifestEntry];
-    v37 = v40;
-    if (v40)
+    _existingManifestEntry = [(InstallEBookDownloadOperation *)self _existingManifestEntry];
+    v37 = _existingManifestEntry;
+    if (_existingManifestEntry)
     {
-      [v40 setObject:v26 forKey:@"Path"];
+      [_existingManifestEntry setObject:destinationFileName forKey:@"Path"];
     }
 
     else
     {
       v41 = [(InstallEBookDownloadOperation *)self _newManifestEntry:0];
-      [v5 addManifestEntry:v41];
+      [_bookManifest addManifestEntry:v41];
     }
 
-    v27 = v5;
+    v27 = _bookManifest;
 LABEL_46:
     [v27 synchronizeData];
 
@@ -1028,20 +1028,20 @@ LABEL_47:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v44 = v6;
-  v10 = [v9 shouldLog];
+  v44 = download;
+  shouldLog2 = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog2 | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog2;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v9 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v11 &= 2u;
   }
@@ -1050,11 +1050,11 @@ LABEL_47:
   {
     v13 = objc_opt_class();
     v14 = v13;
-    v15 = [v5 manifestPath];
+    manifestPath2 = [_bookManifest manifestPath];
     v45 = 138412546;
     v46 = v13;
     v47 = 2112;
-    v48 = v15;
+    v48 = manifestPath2;
     LODWORD(v43) = 22;
     v42 = &v45;
     v16 = _os_log_send_and_compose_impl();
@@ -1064,15 +1064,15 @@ LABEL_47:
       goto LABEL_13;
     }
 
-    v12 = [NSString stringWithCString:v16 encoding:4, &v45, v43];
+    oSLogObject2 = [NSString stringWithCString:v16 encoding:4, &v45, v43];
     free(v16);
-    v42 = v12;
+    v42 = oSLogObject2;
     SSFileLog();
   }
 
 LABEL_13:
-  [(InstallEBookDownloadOperation *)self _removeDuplicateEntry:v5];
-  if (v3)
+  [(InstallEBookDownloadOperation *)self _removeDuplicateEntry:_bookManifest];
+  if (itemCopy)
   {
     v17 = *(&self->_isSharedDownload + 5);
   }
@@ -1082,11 +1082,11 @@ LABEL_13:
     v17 = 0;
   }
 
-  v6 = v44;
-  v26 = [(InstallEBookDownloadOperation *)self _newManifestEntry:v17, v42];
-  [v5 addManifestEntry:v26];
-  [v5 synchronizeData];
-  if (!v3)
+  download = v44;
+  destinationFileName = [(InstallEBookDownloadOperation *)self _newManifestEntry:v17, v42];
+  [_bookManifest addManifestEntry:destinationFileName];
+  [_bookManifest synchronizeData];
+  if (!itemCopy)
   {
     v27 = +[EBookManifest sharedPurchasedBookManifest];
     v28 = +[SSLogConfig sharedDaemonConfig];
@@ -1095,19 +1095,19 @@ LABEL_13:
       v28 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v28 shouldLog];
+    shouldLog3 = [v28 shouldLog];
     if ([v28 shouldLogToDisk])
     {
-      v30 = v29 | 2;
+      v30 = shouldLog3 | 2;
     }
 
     else
     {
-      v30 = v29;
+      v30 = shouldLog3;
     }
 
-    v31 = [v28 OSLogObject];
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v28 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v32 = v30;
     }
@@ -1121,12 +1121,12 @@ LABEL_13:
     {
       v33 = objc_opt_class();
       v34 = v33;
-      v35 = [v27 manifestPath];
+      manifestPath3 = [v27 manifestPath];
       v45 = 138412546;
       v46 = v33;
-      v6 = v44;
+      download = v44;
       v47 = 2112;
-      v48 = v35;
+      v48 = manifestPath3;
       LODWORD(v43) = 22;
       v42 = &v45;
       v36 = _os_log_send_and_compose_impl();
@@ -1142,9 +1142,9 @@ LABEL_39:
         goto LABEL_46;
       }
 
-      v31 = [NSString stringWithCString:v36 encoding:4, &v45, v43];
+      oSLogObject3 = [NSString stringWithCString:v36 encoding:4, &v45, v43];
       free(v36);
-      v42 = v31;
+      v42 = oSLogObject3;
       SSFileLog();
     }
 
@@ -1158,18 +1158,18 @@ LABEL_48:
 {
   v3 = +[EBookManifest purchasedBookManifest];
   v4 = +[EBookManifest syncedBookManifest];
-  v5 = [(FinishDownloadStepOperation *)self download];
-  v6 = [v5 libraryItemIdentifier];
-  if (v6)
+  download = [(FinishDownloadStepOperation *)self download];
+  libraryItemIdentifier = [download libraryItemIdentifier];
+  if (libraryItemIdentifier)
   {
-    v7 = [v4 manifestEntriesWithProperty:@"Persistent ID" equalToValue:v6 limitCount:1];
+    v7 = [v4 manifestEntriesWithProperty:@"Persistent ID" equalToValue:libraryItemIdentifier limitCount:1];
     if ([v7 count] == 1)
     {
       v8 = v4;
       goto LABEL_6;
     }
 
-    v9 = [v3 manifestEntriesWithProperty:@"Persistent ID" equalToValue:v6 limitCount:1];
+    v9 = [v3 manifestEntriesWithProperty:@"Persistent ID" equalToValue:libraryItemIdentifier limitCount:1];
 
     if ([v9 count] == 1)
     {
@@ -1188,13 +1188,13 @@ LABEL_6:
   }
 
 LABEL_9:
-  v11 = [v5 mediaAsset];
-  v12 = [v11 localPath];
+  mediaAsset = [download mediaAsset];
+  localPath = [mediaAsset localPath];
 
-  v13 = [(InstallEBookDownloadOperation *)self _syncedBooksPath];
-  LODWORD(v11) = [v12 hasPrefix:v13];
+  _syncedBooksPath = [(InstallEBookDownloadOperation *)self _syncedBooksPath];
+  LODWORD(mediaAsset) = [localPath hasPrefix:_syncedBooksPath];
 
-  if (v11)
+  if (mediaAsset)
   {
     v14 = v4;
   }
@@ -1214,17 +1214,17 @@ LABEL_13:
 
 - (id)_existingManifestEntry
 {
-  v2 = [(FinishDownloadStepOperation *)self download];
-  v3 = [v2 libraryItemIdentifier];
+  download = [(FinishDownloadStepOperation *)self download];
+  libraryItemIdentifier = [download libraryItemIdentifier];
 
-  if (!v3)
+  if (!libraryItemIdentifier)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
   v4 = +[EBookManifest syncedBookManifest];
-  v5 = [v4 manifestEntriesWithProperty:@"Persistent ID" equalToValue:v3 limitCount:1];
+  v5 = [v4 manifestEntriesWithProperty:@"Persistent ID" equalToValue:libraryItemIdentifier limitCount:1];
 
   if ([v5 count] == 1)
   {
@@ -1234,7 +1234,7 @@ LABEL_13:
   else
   {
     v8 = +[EBookManifest purchasedBookManifest];
-    v6 = [v8 manifestEntriesWithProperty:@"Persistent ID" equalToValue:v3 limitCount:1];
+    v6 = [v8 manifestEntriesWithProperty:@"Persistent ID" equalToValue:libraryItemIdentifier limitCount:1];
 
     if ([v6 count] != 1)
     {
@@ -1253,17 +1253,17 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)_installMediaAsset:(id)a3 assetInstalledPath:(id *)a4 fileName:(id *)a5 drmPath:(id *)a6 error:(id *)a7
+- (BOOL)_installMediaAsset:(id)asset assetInstalledPath:(id *)path fileName:(id *)name drmPath:(id *)drmPath error:(id *)error
 {
-  v9 = a3;
+  assetCopy = asset;
   v10 = objc_alloc_init(NSFileManager);
-  v11 = [v9 localPath];
-  v12 = [v9 sourceURLString];
+  localPath = [assetCopy localPath];
+  sourceURLString = [assetCopy sourceURLString];
   v142 = 0;
-  v133 = v12;
-  if (([v10 fileExistsAtPath:v11] & 1) == 0 && v12)
+  v133 = sourceURLString;
+  if (([v10 fileExistsAtPath:localPath] & 1) == 0 && sourceURLString)
   {
-    v13 = [[NSURL alloc] initWithString:v12];
+    v13 = [[NSURL alloc] initWithString:sourceURLString];
     if (![v13 isFileURL])
     {
 LABEL_17:
@@ -1271,11 +1271,11 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v131 = v9;
+    v131 = assetCopy;
     v129 = v10;
-    v14 = [v13 path];
-    v141 = v11;
-    [(FinishDownloadStepOperation *)self moveFile:v14 toPath:&v141 installBehavior:0 error:0];
+    path = [v13 path];
+    v141 = localPath;
+    [(FinishDownloadStepOperation *)self moveFile:path toPath:&v141 installBehavior:0 error:0];
     v15 = v141;
 
     v16 = +[SSLogConfig sharedDaemonConfig];
@@ -1284,19 +1284,19 @@ LABEL_17:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v20 = v18;
     }
@@ -1308,15 +1308,15 @@ LABEL_17:
 
     if (v20)
     {
-      v21 = a5;
+      nameCopy = name;
       v22 = objc_opt_class();
       v23 = v22;
-      v24 = [v13 path];
+      path2 = [v13 path];
       v143 = 138412802;
       v144 = v22;
-      a5 = v21;
+      name = nameCopy;
       v145 = 2112;
-      v146 = v24;
+      v146 = path2;
       v147 = 2112;
       v148 = v15;
       LODWORD(v118) = 32;
@@ -1324,18 +1324,18 @@ LABEL_17:
       v25 = _os_log_send_and_compose_impl();
 
       v10 = v129;
-      v9 = v131;
+      assetCopy = v131;
       if (!v25)
       {
 LABEL_16:
 
-        v11 = v15;
+        localPath = v15;
         goto LABEL_17;
       }
 
-      v19 = [NSString stringWithCString:v25 encoding:4, &v143, v118];
+      oSLogObject = [NSString stringWithCString:v25 encoding:4, &v143, v118];
       free(v25);
-      v116 = v19;
+      v116 = oSLogObject;
       SSFileLog();
     }
 
@@ -1343,7 +1343,7 @@ LABEL_16:
   }
 
 LABEL_18:
-  if (([v10 fileExistsAtPath:v11 isDirectory:{&v142, v116}] & 1) == 0)
+  if (([v10 fileExistsAtPath:localPath isDirectory:{&v142, v116}] & 1) == 0)
   {
     v39 = +[SSLogConfig sharedDaemonConfig];
     if (!v39)
@@ -1351,21 +1351,21 @@ LABEL_18:
       v39 = +[SSLogConfig sharedConfig];
     }
 
-    v40 = [v39 shouldLog];
+    shouldLog2 = [v39 shouldLog];
     if ([v39 shouldLogToDisk])
     {
-      v40 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v41 = [v39 OSLogObject];
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v39 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = v40;
+      v42 = shouldLog2;
     }
 
     else
     {
-      v42 = v40 & 2;
+      v42 = shouldLog2 & 2;
     }
 
     if (v42)
@@ -1374,35 +1374,35 @@ LABEL_18:
       v143 = 138412546;
       v144 = v43;
       v145 = 2112;
-      v146 = v11;
+      v146 = localPath;
       v44 = v43;
       LODWORD(v118) = 22;
       v45 = _os_log_send_and_compose_impl();
 
-      v46 = a7;
+      errorCopy3 = error;
       if (!v45)
       {
         goto LABEL_73;
       }
 
-      v41 = [NSString stringWithCString:v45 encoding:4, &v143, v118];
+      oSLogObject2 = [NSString stringWithCString:v45 encoding:4, &v143, v118];
       free(v45);
       SSFileLog();
     }
 
     else
     {
-      v46 = a7;
+      errorCopy3 = error;
     }
 
 LABEL_73:
     v75 = SSError();
-    v29 = 0;
+    destinationFileName = 0;
     v65 = 0;
     v38 = 0;
     LOBYTE(v73) = 0;
     v76 = v133;
-    if (!v46)
+    if (!errorCopy3)
     {
       goto LABEL_153;
     }
@@ -1410,48 +1410,48 @@ LABEL_73:
     goto LABEL_151;
   }
 
-  v125 = a5;
-  v26 = [(InstallEBookDownloadOperation *)self _bookManifest];
-  v27 = [v26 manifestPath];
-  v28 = [v27 stringByDeletingLastPathComponent];
+  nameCopy2 = name;
+  _bookManifest = [(InstallEBookDownloadOperation *)self _bookManifest];
+  manifestPath = [_bookManifest manifestPath];
+  stringByDeletingLastPathComponent = [manifestPath stringByDeletingLastPathComponent];
 
-  v29 = [v9 destinationFileName];
+  destinationFileName = [assetCopy destinationFileName];
   v30 = +[EBookManifest syncedBookManifest];
 
-  v126 = v26;
-  if (v26 == v30)
+  v126 = _bookManifest;
+  if (_bookManifest == v30)
   {
-    v31 = [v29 pathExtension];
-    v32 = [v11 lastPathComponent];
+    pathExtension = [destinationFileName pathExtension];
+    lastPathComponent = [localPath lastPathComponent];
 
-    if ([v31 length])
+    if ([pathExtension length])
     {
-      v33 = [v32 pathExtension];
-      v34 = [v33 length];
+      pathExtension2 = [lastPathComponent pathExtension];
+      v34 = [pathExtension2 length];
 
       if (!v34)
       {
-        v35 = [v32 stringByAppendingPathExtension:v31];
+        v35 = [lastPathComponent stringByAppendingPathExtension:pathExtension];
 
-        v32 = v35;
+        lastPathComponent = v35;
       }
     }
 
-    v29 = v32;
+    destinationFileName = lastPathComponent;
   }
 
-  v36 = [v28 stringByAppendingPathComponent:v29];
+  v36 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:destinationFileName];
   if (self->_isSharedDownload)
   {
     v37 = +[InstallEBookDownloadOperation sharedBookContainerCachesPath];
-    v38 = [v37 stringByAppendingPathComponent:v29];
+    v38 = [v37 stringByAppendingPathComponent:destinationFileName];
 
-    v28 = v37;
+    stringByDeletingLastPathComponent = v37;
   }
 
   else
   {
-    v38 = [v28 stringByAppendingPathComponent:v29];
+    v38 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:destinationFileName];
   }
 
   v132 = v36;
@@ -1462,21 +1462,21 @@ LABEL_73:
     v47 = +[SSLogConfig sharedConfig];
   }
 
-  v48 = [v47 shouldLog];
+  shouldLog3 = [v47 shouldLog];
   if ([v47 shouldLogToDisk])
   {
-    v48 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  v49 = [v47 OSLogObject];
-  if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
+  oSLogObject3 = [v47 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
   {
-    v50 = v48;
+    v50 = shouldLog3;
   }
 
   else
   {
-    v50 = v48 & 2;
+    v50 = shouldLog3 & 2;
   }
 
   if (v50)
@@ -1496,16 +1496,16 @@ LABEL_73:
       goto LABEL_48;
     }
 
-    v49 = [NSString stringWithCString:v53 encoding:4, &v143, v118];
+    oSLogObject3 = [NSString stringWithCString:v53 encoding:4, &v143, v118];
     free(v53);
-    v117 = v49;
+    v117 = oSLogObject3;
     SSFileLog();
   }
 
 LABEL_48:
   if (v142 == 1)
   {
-    v54 = [v11 isEqualToString:v38];
+    v54 = [localPath isEqualToString:v38];
     v55 = +[SSLogConfig sharedDaemonConfig];
     v56 = v55;
     if (v54)
@@ -1515,21 +1515,21 @@ LABEL_48:
         v56 = +[SSLogConfig sharedConfig];
       }
 
-      v57 = [v56 shouldLog];
+      shouldLog4 = [v56 shouldLog];
       if ([v56 shouldLogToDisk])
       {
-        v57 |= 2u;
+        shouldLog4 |= 2u;
       }
 
-      v58 = [v56 OSLogObject];
-      if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
+      oSLogObject4 = [v56 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
       {
-        v59 = v57;
+        v59 = shouldLog4;
       }
 
       else
       {
-        v59 = v57 & 2;
+        v59 = shouldLog4 & 2;
       }
 
       if (v59)
@@ -1554,7 +1554,7 @@ LABEL_102:
           goto LABEL_136;
         }
 
-        v58 = [NSString stringWithCString:v62 encoding:4, &v143, v118];
+        oSLogObject4 = [NSString stringWithCString:v62 encoding:4, &v143, v118];
         free(v62);
         SSFileLog();
       }
@@ -1567,21 +1567,21 @@ LABEL_102:
       v56 = +[SSLogConfig sharedConfig];
     }
 
-    v77 = [v56 shouldLog];
+    shouldLog5 = [v56 shouldLog];
     if ([v56 shouldLogToDisk])
     {
-      v77 |= 2u;
+      shouldLog5 |= 2u;
     }
 
-    v78 = [v56 OSLogObject];
-    if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
+    oSLogObject5 = [v56 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_INFO))
     {
-      v79 = v77;
+      v79 = shouldLog5;
     }
 
     else
     {
-      v79 = v77 & 2;
+      v79 = shouldLog5 & 2;
     }
 
     if (v79)
@@ -1590,7 +1590,7 @@ LABEL_102:
       v143 = 138412802;
       v144 = v80;
       v145 = 2112;
-      v146 = v11;
+      v146 = localPath;
       v147 = 2112;
       v148 = v38;
       v81 = v80;
@@ -1603,7 +1603,7 @@ LABEL_101:
 
         v140 = v38;
         v139 = 0;
-        v73 = [(FinishDownloadStepOperation *)self moveFile:v11 toPath:&v140 installBehavior:0 error:&v139];
+        v73 = [(FinishDownloadStepOperation *)self moveFile:localPath toPath:&v140 installBehavior:0 error:&v139];
         v91 = v140;
 
         v75 = v139;
@@ -1611,7 +1611,7 @@ LABEL_101:
         goto LABEL_102;
       }
 
-      v78 = [NSString stringWithCString:v82 encoding:4, &v143, v118];
+      oSLogObject5 = [NSString stringWithCString:v82 encoding:4, &v143, v118];
       free(v82);
       SSFileLog();
     }
@@ -1621,7 +1621,7 @@ LABEL_101:
 
   v137 = 0;
   v138 = 0;
-  v63 = [(FinishDownloadStepOperation *)self unzipAsset:v9 unzippedPath:&v138 error:&v137];
+  v63 = [(FinishDownloadStepOperation *)self unzipAsset:assetCopy unzippedPath:&v138 error:&v137];
   v64 = v138;
   v122 = v137;
   v123 = v64;
@@ -1639,21 +1639,21 @@ LABEL_101:
       v67 = +[SSLogConfig sharedConfig];
     }
 
-    v68 = [v67 shouldLog];
+    shouldLog6 = [v67 shouldLog];
     if ([v67 shouldLogToDisk])
     {
-      v68 |= 2u;
+      shouldLog6 |= 2u;
     }
 
-    v69 = [v67 OSLogObject];
-    if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
+    oSLogObject6 = [v67 OSLogObject];
+    if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_INFO))
     {
-      v70 = v68;
+      v70 = shouldLog6;
     }
 
     else
     {
-      v70 = v68 & 2;
+      v70 = shouldLog6 & 2;
     }
 
     if (v70)
@@ -1675,7 +1675,7 @@ LABEL_101:
         goto LABEL_118;
       }
 
-      v69 = [NSString stringWithCString:v74 encoding:4, &v143, v118];
+      oSLogObject6 = [NSString stringWithCString:v74 encoding:4, &v143, v118];
       free(v74);
       SSFileLog();
     }
@@ -1690,10 +1690,10 @@ LABEL_118:
   }
 
   [v10 removeItemAtPath:v64 error:0];
-  v121 = [v38 pathExtension];
-  if (([v121 isEqualToString:@"epub"] & 1) == 0 && !objc_msgSend(v121, "isEqualToString:", @"ibooks"))
+  pathExtension3 = [v38 pathExtension];
+  if (([pathExtension3 isEqualToString:@"epub"] & 1) == 0 && !objc_msgSend(pathExtension3, "isEqualToString:", @"ibooks"))
   {
-    v93 = [v11 isEqualToString:v38];
+    v93 = [localPath isEqualToString:v38];
     v94 = +[SSLogConfig sharedDaemonConfig];
     v95 = v94;
     if (v93)
@@ -1703,22 +1703,22 @@ LABEL_118:
         v95 = +[SSLogConfig sharedConfig];
       }
 
-      v96 = [v95 shouldLog];
+      shouldLog7 = [v95 shouldLog];
       if ([v95 shouldLogToDisk])
       {
-        v96 |= 2u;
+        shouldLog7 |= 2u;
       }
 
       v119 = v95;
-      v97 = [v95 OSLogObject];
-      if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
+      oSLogObject7 = [v95 OSLogObject];
+      if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_INFO))
       {
-        v98 = v96;
+        v98 = shouldLog7;
       }
 
       else
       {
-        v98 = v96 & 2;
+        v98 = shouldLog7 & 2;
       }
 
       if (v98)
@@ -1744,7 +1744,7 @@ LABEL_133:
           goto LABEL_134;
         }
 
-        v97 = [NSString stringWithCString:v101 encoding:4, &v143, v118];
+        oSLogObject7 = [NSString stringWithCString:v101 encoding:4, &v143, v118];
         free(v101);
         SSFileLog();
       }
@@ -1757,22 +1757,22 @@ LABEL_133:
       v95 = +[SSLogConfig sharedConfig];
     }
 
-    v102 = [v95 shouldLog];
+    shouldLog8 = [v95 shouldLog];
     if ([v95 shouldLogToDisk])
     {
-      v102 |= 2u;
+      shouldLog8 |= 2u;
     }
 
     v120 = v95;
-    v103 = [v95 OSLogObject];
-    if (os_log_type_enabled(v103, OS_LOG_TYPE_INFO))
+    oSLogObject8 = [v95 OSLogObject];
+    if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_INFO))
     {
-      v104 = v102;
+      v104 = shouldLog8;
     }
 
     else
     {
-      v104 = v102 & 2;
+      v104 = shouldLog8 & 2;
     }
 
     if (v104)
@@ -1781,7 +1781,7 @@ LABEL_133:
       v143 = 138412802;
       v144 = v105;
       v145 = 2112;
-      v146 = v11;
+      v146 = localPath;
       v147 = 2112;
       v148 = v38;
       v106 = v105;
@@ -1794,14 +1794,14 @@ LABEL_132:
 
         v134 = 0;
         v135 = v38;
-        v73 = [(FinishDownloadStepOperation *)self moveFile:v11 toPath:&v135 installBehavior:0 error:&v134];
+        v73 = [(FinishDownloadStepOperation *)self moveFile:localPath toPath:&v135 installBehavior:0 error:&v134];
         v66 = v135;
 
         v75 = v134;
         goto LABEL_133;
       }
 
-      v103 = [NSString stringWithCString:v107 encoding:4, &v143, v118];
+      oSLogObject8 = [NSString stringWithCString:v107 encoding:4, &v143, v118];
       free(v107);
       SSFileLog();
     }
@@ -1815,21 +1815,21 @@ LABEL_132:
     v83 = +[SSLogConfig sharedConfig];
   }
 
-  v84 = [v83 shouldLog];
+  shouldLog9 = [v83 shouldLog];
   if ([v83 shouldLogToDisk])
   {
-    v84 |= 2u;
+    shouldLog9 |= 2u;
   }
 
-  v85 = [v83 OSLogObject];
-  if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
+  oSLogObject9 = [v83 OSLogObject];
+  if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_DEFAULT))
   {
-    v86 = v84;
+    v86 = shouldLog9;
   }
 
   else
   {
-    v86 = v84 & 2;
+    v86 = shouldLog9 & 2;
   }
 
   if (!v86)
@@ -1842,7 +1842,7 @@ LABEL_132:
   v143 = 138412802;
   v144 = v87;
   v145 = 2112;
-  v146 = v11;
+  v146 = localPath;
   v147 = 2112;
   v88 = v122;
   v148 = v122;
@@ -1852,7 +1852,7 @@ LABEL_132:
 
   if (v90)
   {
-    v85 = [NSString stringWithCString:v90 encoding:4, &v143, v118];
+    oSLogObject9 = [NSString stringWithCString:v90 encoding:4, &v143, v118];
     free(v90);
     SSFileLog();
 LABEL_104:
@@ -1864,7 +1864,7 @@ LABEL_104:
   v66 = v38;
   v65 = v132;
 LABEL_134:
-  v67 = v121;
+  v67 = pathExtension3;
 LABEL_135:
 
   v38 = v66;
@@ -1873,15 +1873,15 @@ LABEL_135:
 LABEL_136:
     if (v73)
     {
-      v108 = [v9 fileAttributes];
-      if ([v108 count])
+      fileAttributes = [assetCopy fileAttributes];
+      if ([fileAttributes count])
       {
-        [v10 setAttributes:v108 ofItemAtPath:v38 error:0];
+        [v10 setAttributes:fileAttributes ofItemAtPath:v38 error:0];
       }
     }
   }
 
-  if (a6)
+  if (drmPath)
   {
     v109 = !v73;
   }
@@ -1895,13 +1895,13 @@ LABEL_136:
   if ((v109 & 1) == 0)
   {
     v110 = v38;
-    *a4 = v38;
+    *path = v38;
     v111 = v132;
-    *a6 = v132;
+    *drmPath = v132;
     v65 = v132;
   }
 
-  if (v29)
+  if (destinationFileName)
   {
     v112 = !v73;
   }
@@ -1913,14 +1913,14 @@ LABEL_136:
 
   if ((v112 & 1) == 0)
   {
-    v113 = v29;
-    *v125 = v29;
+    v113 = destinationFileName;
+    *nameCopy2 = destinationFileName;
     LOBYTE(v73) = 1;
     goto LABEL_153;
   }
 
-  v46 = a7;
-  if (!a7)
+  errorCopy3 = error;
+  if (!error)
   {
     goto LABEL_153;
   }
@@ -1929,7 +1929,7 @@ LABEL_151:
   if (!v73)
   {
     v114 = v75;
-    *v46 = v75;
+    *errorCopy3 = v75;
   }
 
 LABEL_153:
@@ -1937,130 +1937,130 @@ LABEL_153:
   return v73;
 }
 
-- (id)_newManifestEntry:(BOOL)a3 withFileName:(id)a4
+- (id)_newManifestEntry:(BOOL)entry withFileName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = objc_alloc_init(NSMutableDictionary);
-  v8 = [(FinishDownloadStepOperation *)self download];
-  if ([v6 length])
+  download = [(FinishDownloadStepOperation *)self download];
+  if ([nameCopy length])
   {
-    [v7 setObject:v6 forKey:@"Path"];
+    [v7 setObject:nameCopy forKey:@"Path"];
   }
 
   else
   {
-    v9 = [v8 mediaAsset];
-    v10 = [v9 destinationFileName];
-    [v7 setObject:v10 forKey:@"Path"];
+    mediaAsset = [download mediaAsset];
+    destinationFileName = [mediaAsset destinationFileName];
+    [v7 setObject:destinationFileName forKey:@"Path"];
   }
 
-  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isSampleDownload]);
+  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [download isSampleDownload]);
   [v7 setObject:v11 forKey:@"isSample"];
 
-  v12 = [v8 collectionName];
-  if (v12)
+  collectionName = [download collectionName];
+  if (collectionName)
   {
-    [v7 setObject:v12 forKey:@"Album"];
+    [v7 setObject:collectionName forKey:@"Album"];
   }
 
-  v13 = [v8 artistName];
+  artistName = [download artistName];
 
-  if (v13)
+  if (artistName)
   {
-    [v7 setObject:v13 forKey:@"Artist"];
+    [v7 setObject:artistName forKey:@"Artist"];
   }
 
-  v14 = [v8 artworkTemplateName];
+  artworkTemplateName = [download artworkTemplateName];
 
-  if (v14)
+  if (artworkTemplateName)
   {
-    [v7 setObject:v14 forKey:@"artwork-template-name"];
+    [v7 setObject:artworkTemplateName forKey:@"artwork-template-name"];
   }
 
-  v15 = [v8 genreName];
+  genreName = [download genreName];
 
-  if (v15)
+  if (genreName)
   {
-    [v7 setObject:v15 forKey:@"Genre"];
+    [v7 setObject:genreName forKey:@"Genre"];
   }
 
-  v16 = [v8 libraryItemIdentifier];
+  libraryItemIdentifier = [download libraryItemIdentifier];
 
-  if (v16)
+  if (libraryItemIdentifier)
   {
-    [v7 setObject:v16 forKey:@"Persistent ID"];
+    [v7 setObject:libraryItemIdentifier forKey:@"Persistent ID"];
   }
 
-  if (!a3)
+  if (!entry)
   {
-    v17 = [v8 storeAccountIdentifier];
-    if (v17)
+    storeAccountIdentifier = [download storeAccountIdentifier];
+    if (storeAccountIdentifier)
     {
-      [v7 setObject:v17 forKey:@"DSID"];
+      [v7 setObject:storeAccountIdentifier forKey:@"DSID"];
     }
 
-    v18 = [v8 storeAccountName];
-    v19 = [v18 length];
-    if (v17 && !v19)
+    storeAccountName = [download storeAccountName];
+    v19 = [storeAccountName length];
+    if (storeAccountIdentifier && !v19)
     {
       v20 = +[SSAccountStore defaultStore];
-      v21 = [v20 accountWithUniqueIdentifier:v16];
-      if (!v21)
+      activeAccount = [v20 accountWithUniqueIdentifier:libraryItemIdentifier];
+      if (!activeAccount)
       {
-        v21 = [v20 activeAccount];
+        activeAccount = [v20 activeAccount];
       }
 
-      v22 = [v21 accountName];
+      accountName = [activeAccount accountName];
 
-      v18 = v22;
+      storeAccountName = accountName;
     }
 
-    if (v18)
+    if (storeAccountName)
     {
-      [v7 setObject:v18 forKey:@"AppleID"];
+      [v7 setObject:storeAccountName forKey:@"AppleID"];
     }
 
     if (self->_isSharedDownload)
     {
       v23 = +[ApplicationWorkspace defaultWorkspace];
-      v24 = [v23 isMultiUser];
+      isMultiUser = [v23 isMultiUser];
 
-      if (v24)
+      if (isMultiUser)
       {
         [v7 setObject:&__kCFBooleanTrue forKey:@"usesSharedAsset"];
       }
     }
   }
 
-  v25 = [v8 downloadPermalink];
+  downloadPermalink = [download downloadPermalink];
 
-  if (v25)
+  if (downloadPermalink)
   {
-    [v7 setObject:v25 forKey:@"iTunesU Permlink"];
+    [v7 setObject:downloadPermalink forKey:@"iTunesU Permlink"];
   }
 
-  v26 = [(InstallEBookDownloadOperation *)self _storeFrontIdentifier];
+  _storeFrontIdentifier = [(InstallEBookDownloadOperation *)self _storeFrontIdentifier];
 
-  if (v26)
+  if (_storeFrontIdentifier)
   {
-    [v7 setObject:v26 forKey:@"Storefront ID"];
+    [v7 setObject:_storeFrontIdentifier forKey:@"Storefront ID"];
   }
 
-  v27 = [v8 storeXID];
+  storeXID = [download storeXID];
 
-  if (v27)
+  if (storeXID)
   {
-    [v7 setObject:v27 forKey:@"XID"];
+    [v7 setObject:storeXID forKey:@"XID"];
   }
 
-  v28 = [v8 title];
+  title = [download title];
 
-  if (v28)
+  if (title)
   {
-    [v7 setObject:v28 forKey:@"Name"];
+    [v7 setObject:title forKey:@"Name"];
   }
 
-  v29 = [v8 storeItemIdentifier];
+  storeItemIdentifier = [download storeItemIdentifier];
   v30 = SSGetItemIdentifierFromValue();
 
   if (v30)
@@ -2069,106 +2069,106 @@ LABEL_153:
     [v7 setObject:v31 forKey:@"s"];
   }
 
-  v32 = [v8 storeCollectionIdentifier];
+  storeCollectionIdentifier = [download storeCollectionIdentifier];
   v33 = SSGetItemIdentifierFromValue();
 
-  if (v28)
+  if (title)
   {
     v34 = [NSNumber numberWithUnsignedLongLong:v33];
     [v7 setObject:v34 forKey:@"PlaylistID"];
   }
 
-  v35 = [v8 storeMetadata];
-  v36 = [v35 copyright];
+  storeMetadata = [download storeMetadata];
+  copyright = [storeMetadata copyright];
 
-  if (v36)
+  if (copyright)
   {
-    [v7 setObject:v36 forKey:@"Copyright"];
+    [v7 setObject:copyright forKey:@"Copyright"];
   }
 
-  if ([v35 isExplicitContent])
+  if ([storeMetadata isExplicitContent])
   {
     v37 = [NSNumber numberWithBool:1];
     [v7 setObject:v37 forKey:@"isExplicit"];
   }
 
-  v38 = [v35 valueForMetadataKey:SSDownloadMetadataKeyHumanReadablePublicationVersion];
+  v38 = [storeMetadata valueForMetadataKey:SSDownloadMetadataKeyHumanReadablePublicationVersion];
 
   if (v38)
   {
     [v7 setObject:v38 forKey:@"Human Readable Publication Version"];
   }
 
-  v39 = [v35 valueForMetadataKey:SSDownloadMetadataKeyLanguages];
+  v39 = [storeMetadata valueForMetadataKey:SSDownloadMetadataKeyLanguages];
 
   if (v39)
   {
     [v7 setObject:v39 forKey:@"Languages"];
   }
 
-  v40 = [v35 valueForMetadataKey:SSDownloadMetadataKeyPageProgression];
+  v40 = [storeMetadata valueForMetadataKey:SSDownloadMetadataKeyPageProgression];
 
   if (v40)
   {
     [v7 setObject:v40 forKey:@"PageProgression"];
   }
 
-  v41 = [v35 pageProgressionDirection];
+  pageProgressionDirection = [storeMetadata pageProgressionDirection];
 
-  if (v41)
+  if (pageProgressionDirection)
   {
-    [v7 setObject:v41 forKey:@"Page Progression Direction"];
+    [v7 setObject:pageProgressionDirection forKey:@"Page Progression Direction"];
   }
 
-  v42 = [v35 valueForMetadataKey:SSDownloadMetadataKeyPublicationVersion];
+  v42 = [storeMetadata valueForMetadataKey:SSDownloadMetadataKeyPublicationVersion];
 
   if (v42)
   {
     [v7 setObject:v42 forKey:@"Publication Version"];
   }
 
-  v43 = [v35 releaseDateString];
+  releaseDateString = [storeMetadata releaseDateString];
 
-  if (v43)
+  if (releaseDateString)
   {
-    [v7 setObject:v43 forKey:@"Release Date"];
+    [v7 setObject:releaseDateString forKey:@"Release Date"];
   }
 
-  v44 = [v35 sortArtistName];
+  sortArtistName = [storeMetadata sortArtistName];
 
-  if (v44)
+  if (sortArtistName)
   {
-    [v7 setObject:v44 forKey:@"Sort Artist"];
+    [v7 setObject:sortArtistName forKey:@"Sort Artist"];
   }
 
-  v45 = [v35 sortCollectionName];
+  sortCollectionName = [storeMetadata sortCollectionName];
 
-  if (v45)
+  if (sortCollectionName)
   {
-    [v7 setObject:v45 forKey:@"Sort Album"];
+    [v7 setObject:sortCollectionName forKey:@"Sort Album"];
   }
 
-  v46 = [v35 sortTitle];
+  sortTitle = [storeMetadata sortTitle];
 
-  if (v46)
+  if (sortTitle)
   {
-    [v7 setObject:v46 forKey:@"Sort Name"];
+    [v7 setObject:sortTitle forKey:@"Sort Name"];
   }
 
-  v47 = [v35 primaryAssetDictionary];
+  primaryAssetDictionary = [storeMetadata primaryAssetDictionary];
 
-  if (!v47)
+  if (!primaryAssetDictionary)
   {
-    v48 = [v35 valueForMetadataKey:SSDownloadMetadataKeyAssetInfo];
+    v48 = [storeMetadata valueForMetadataKey:SSDownloadMetadataKeyAssetInfo];
     if (!v48)
     {
       goto LABEL_68;
     }
 
-    v47 = v48;
+    primaryAssetDictionary = v48;
   }
 
-  v49 = [v47 objectForKey:SSDownloadMetadataKeyAssetFlavor];
+  v49 = [primaryAssetDictionary objectForKey:SSDownloadMetadataKeyAssetFlavor];
   if (v49)
   {
     [v7 setObject:v49 forKey:@"Flavor"];
@@ -2178,41 +2178,41 @@ LABEL_68:
   return v7;
 }
 
-- (void)_removeDuplicateEntry:(id)a3
+- (void)_removeDuplicateEntry:(id)entry
 {
-  v14 = a3;
-  v4 = [(FinishDownloadStepOperation *)self download];
-  v5 = [v4 storeItemIdentifier];
+  entryCopy = entry;
+  download = [(FinishDownloadStepOperation *)self download];
+  storeItemIdentifier = [download storeItemIdentifier];
 
-  if (v5)
+  if (storeItemIdentifier)
   {
-    v6 = [v14 manifestEntriesWithProperty:@"s" equalToValue:v5 limitCount:1];
+    v6 = [entryCopy manifestEntriesWithProperty:@"s" equalToValue:storeItemIdentifier limitCount:1];
     if ([v6 count] == 1)
     {
-      [v14 removeManifestEntryWithStoreItemID:v5];
+      [entryCopy removeManifestEntryWithStoreItemID:storeItemIdentifier];
     }
   }
 
   else
   {
-    v7 = [(FinishDownloadStepOperation *)self download];
-    v8 = [v7 downloadPermalink];
-    v9 = [v8 length];
+    download2 = [(FinishDownloadStepOperation *)self download];
+    downloadPermalink = [download2 downloadPermalink];
+    v9 = [downloadPermalink length];
 
     if (!v9)
     {
       goto LABEL_8;
     }
 
-    v10 = [(FinishDownloadStepOperation *)self download];
-    v11 = [v10 downloadPermalink];
-    v6 = [v14 manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:v11 limitCount:1];
+    download3 = [(FinishDownloadStepOperation *)self download];
+    downloadPermalink2 = [download3 downloadPermalink];
+    v6 = [entryCopy manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:downloadPermalink2 limitCount:1];
 
     if ([v6 count] == 1)
     {
-      v12 = [(FinishDownloadStepOperation *)self download];
-      v13 = [v12 downloadPermalink];
-      [v14 removeManifestEntryWithDownloadPermalink:v13];
+      download4 = [(FinishDownloadStepOperation *)self download];
+      downloadPermalink3 = [download4 downloadPermalink];
+      [entryCopy removeManifestEntryWithDownloadPermalink:downloadPermalink3];
     }
   }
 
@@ -2221,20 +2221,20 @@ LABEL_8:
 
 - (id)_storeFrontIdentifier
 {
-  v2 = [(FinishDownloadStepOperation *)self download];
-  v3 = [v2 storeFrontIdentifier];
-  if (!v3)
+  download = [(FinishDownloadStepOperation *)self download];
+  storeFrontIdentifier = [download storeFrontIdentifier];
+  if (!storeFrontIdentifier)
   {
-    v4 = [v2 storeAccountIdentifier];
-    if (v4)
+    storeAccountIdentifier = [download storeAccountIdentifier];
+    if (storeAccountIdentifier)
     {
       v5 = +[SSAccountStore defaultStore];
-      v6 = [v5 accountWithUniqueIdentifier:v4];
+      v6 = [v5 accountWithUniqueIdentifier:storeAccountIdentifier];
 
       if (v6)
       {
-        v3 = [v6 storeFrontIdentifier];
-        if (v3)
+        storeFrontIdentifier = [v6 storeFrontIdentifier];
+        if (storeFrontIdentifier)
         {
           goto LABEL_8;
         }
@@ -2247,12 +2247,12 @@ LABEL_8:
     }
 
     v7 = +[SSDevice currentDevice];
-    v3 = [v7 storeFrontIdentifier];
+    storeFrontIdentifier = [v7 storeFrontIdentifier];
 
 LABEL_8:
   }
 
-  return v3;
+  return storeFrontIdentifier;
 }
 
 - (id)_syncedBooksPath

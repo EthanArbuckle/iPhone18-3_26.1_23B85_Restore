@@ -1,15 +1,15 @@
 @interface ICSearchTextCheckingResult
-- (ICSearchTextCheckingResult)initWithRange:(_NSRange)a3 csEvaluatorMatchString:(id)a4;
+- (ICSearchTextCheckingResult)initWithRange:(_NSRange)range csEvaluatorMatchString:(id)string;
 - (_NSRange)ic_range;
 @end
 
 @implementation ICSearchTextCheckingResult
 
-- (ICSearchTextCheckingResult)initWithRange:(_NSRange)a3 csEvaluatorMatchString:(id)a4
+- (ICSearchTextCheckingResult)initWithRange:(_NSRange)range csEvaluatorMatchString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = ICSearchTextCheckingResult;
   v9 = [(ICSearchTextCheckingResult *)&v12 init];
@@ -18,7 +18,7 @@
   {
     v9->_ic_range.location = location;
     v9->_ic_range.length = length;
-    objc_storeStrong(&v9->_csEvaluatorMatchString, a4);
+    objc_storeStrong(&v9->_csEvaluatorMatchString, string);
   }
 
   return v10;

@@ -1,38 +1,38 @@
 @interface DNDScheduleSettings
-- (BOOL)isEqual:(id)a3;
-- (DNDScheduleSettings)initWithCoder:(id)a3;
-- (DNDScheduleSettings)initWithScheduleEnabledSetting:(unint64_t)a3 timePeriod:(id)a4 bedtimeBehaviorEnabledSetting:(unint64_t)a5;
-- (id)_initWithSettings:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDScheduleSettings)initWithCoder:(id)coder;
+- (DNDScheduleSettings)initWithScheduleEnabledSetting:(unint64_t)setting timePeriod:(id)period bedtimeBehaviorEnabledSetting:(unint64_t)enabledSetting;
+- (id)_initWithSettings:(id)settings;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDScheduleSettings
 
-- (id)_initWithSettings:(id)a3
+- (id)_initWithSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 scheduleEnabledSetting];
-  v6 = [v4 timePeriod];
-  v7 = [v4 bedtimeBehaviorEnabledSetting];
+  settingsCopy = settings;
+  scheduleEnabledSetting = [settingsCopy scheduleEnabledSetting];
+  timePeriod = [settingsCopy timePeriod];
+  bedtimeBehaviorEnabledSetting = [settingsCopy bedtimeBehaviorEnabledSetting];
 
-  v8 = [(DNDScheduleSettings *)self initWithScheduleEnabledSetting:v5 timePeriod:v6 bedtimeBehaviorEnabledSetting:v7];
+  v8 = [(DNDScheduleSettings *)self initWithScheduleEnabledSetting:scheduleEnabledSetting timePeriod:timePeriod bedtimeBehaviorEnabledSetting:bedtimeBehaviorEnabledSetting];
   return v8;
 }
 
-- (DNDScheduleSettings)initWithScheduleEnabledSetting:(unint64_t)a3 timePeriod:(id)a4 bedtimeBehaviorEnabledSetting:(unint64_t)a5
+- (DNDScheduleSettings)initWithScheduleEnabledSetting:(unint64_t)setting timePeriod:(id)period bedtimeBehaviorEnabledSetting:(unint64_t)enabledSetting
 {
-  v8 = a4;
+  periodCopy = period;
   v16.receiver = self;
   v16.super_class = DNDScheduleSettings;
   v9 = [(DNDScheduleSettings *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    v9->_scheduleEnabledSetting = a3;
-    v11 = [v8 copy];
+    v9->_scheduleEnabledSetting = setting;
+    v11 = [periodCopy copy];
     v12 = v11;
     if (v11)
     {
@@ -47,7 +47,7 @@
     timePeriod = v10->_timePeriod;
     v10->_timePeriod = v13;
 
-    v10->_bedtimeBehaviorEnabledSetting = a5;
+    v10->_bedtimeBehaviorEnabledSetting = enabledSetting;
   }
 
   return v10;
@@ -55,18 +55,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDScheduleSettings *)self scheduleEnabledSetting];
-  v4 = [(DNDScheduleSettings *)self timePeriod];
-  v5 = [v4 hash];
-  v6 = v3 ^ [(DNDScheduleSettings *)self bedtimeBehaviorEnabledSetting];
+  scheduleEnabledSetting = [(DNDScheduleSettings *)self scheduleEnabledSetting];
+  timePeriod = [(DNDScheduleSettings *)self timePeriod];
+  v5 = [timePeriod hash];
+  v6 = scheduleEnabledSetting ^ [(DNDScheduleSettings *)self bedtimeBehaviorEnabledSetting];
 
   return v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -76,9 +76,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [(DNDScheduleSettings *)self scheduleEnabledSetting];
-      if (v10 != [(DNDScheduleSettings *)v9 scheduleEnabledSetting])
+      v9 = equalCopy;
+      scheduleEnabledSetting = [(DNDScheduleSettings *)self scheduleEnabledSetting];
+      if (scheduleEnabledSetting != [(DNDScheduleSettings *)v9 scheduleEnabledSetting])
       {
         v15 = 0;
 LABEL_18:
@@ -86,29 +86,29 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v11 = [(DNDScheduleSettings *)self timePeriod];
-      v12 = [(DNDScheduleSettings *)v9 timePeriod];
-      if (v11 != v12)
+      timePeriod = [(DNDScheduleSettings *)self timePeriod];
+      timePeriod2 = [(DNDScheduleSettings *)v9 timePeriod];
+      if (timePeriod != timePeriod2)
       {
-        v13 = [(DNDScheduleSettings *)self timePeriod];
-        if (!v13)
+        timePeriod3 = [(DNDScheduleSettings *)self timePeriod];
+        if (!timePeriod3)
         {
           v15 = 0;
           goto LABEL_17;
         }
 
-        v3 = v13;
-        v14 = [(DNDScheduleSettings *)v9 timePeriod];
-        if (!v14)
+        v3 = timePeriod3;
+        timePeriod4 = [(DNDScheduleSettings *)v9 timePeriod];
+        if (!timePeriod4)
         {
           v15 = 0;
           goto LABEL_16;
         }
 
-        v4 = v14;
-        v5 = [(DNDScheduleSettings *)self timePeriod];
-        v6 = [(DNDScheduleSettings *)v9 timePeriod];
-        if (![v5 isEqual:v6])
+        v4 = timePeriod4;
+        timePeriod5 = [(DNDScheduleSettings *)self timePeriod];
+        timePeriod6 = [(DNDScheduleSettings *)v9 timePeriod];
+        if (![timePeriod5 isEqual:timePeriod6])
         {
           v15 = 0;
 LABEL_13:
@@ -118,9 +118,9 @@ LABEL_16:
         }
       }
 
-      v16 = [(DNDScheduleSettings *)self bedtimeBehaviorEnabledSetting];
-      v15 = v16 == [(DNDScheduleSettings *)v9 bedtimeBehaviorEnabledSetting];
-      if (v11 != v12)
+      bedtimeBehaviorEnabledSetting = [(DNDScheduleSettings *)self bedtimeBehaviorEnabledSetting];
+      v15 = bedtimeBehaviorEnabledSetting == [(DNDScheduleSettings *)v9 bedtimeBehaviorEnabledSetting];
+      if (timePeriod != timePeriod2)
       {
         goto LABEL_13;
       }
@@ -142,39 +142,39 @@ LABEL_19:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = DNDEnabledSettingToString([(DNDScheduleSettings *)self scheduleEnabledSetting]);
-  v5 = [(DNDScheduleSettings *)self timePeriod];
+  timePeriod = [(DNDScheduleSettings *)self timePeriod];
   v6 = DNDEnabledSettingToString([(DNDScheduleSettings *)self bedtimeBehaviorEnabledSetting]);
-  v7 = [v3 stringWithFormat:@"<schedule: enabled: %@ period: %@; bedtime: %@>", v4, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<schedule: enabled: %@ period: %@; bedtime: %@>", v4, timePeriod, v6];;
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDMutableScheduleSettings alloc];
 
   return [(DNDScheduleSettings *)v4 _initWithSettings:self];
 }
 
-- (DNDScheduleSettings)initWithCoder:(id)a3
+- (DNDScheduleSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"scheduleEnabledSetting"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timePeriod"];
-  v7 = [v4 decodeIntegerForKey:@"bedtimeBehaviorEnabledSetting"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"scheduleEnabledSetting"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timePeriod"];
+  v7 = [coderCopy decodeIntegerForKey:@"bedtimeBehaviorEnabledSetting"];
 
   v8 = [(DNDScheduleSettings *)self initWithScheduleEnabledSetting:v5 timePeriod:v6 bedtimeBehaviorEnabledSetting:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[DNDScheduleSettings scheduleEnabledSetting](self forKey:{"scheduleEnabledSetting"), @"scheduleEnabledSetting"}];
-  v4 = [(DNDScheduleSettings *)self timePeriod];
-  [v5 encodeObject:v4 forKey:@"timePeriod"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DNDScheduleSettings scheduleEnabledSetting](self forKey:{"scheduleEnabledSetting"), @"scheduleEnabledSetting"}];
+  timePeriod = [(DNDScheduleSettings *)self timePeriod];
+  [coderCopy encodeObject:timePeriod forKey:@"timePeriod"];
 
-  [v5 encodeInteger:-[DNDScheduleSettings bedtimeBehaviorEnabledSetting](self forKey:{"bedtimeBehaviorEnabledSetting"), @"bedtimeBehaviorEnabledSetting"}];
+  [coderCopy encodeInteger:-[DNDScheduleSettings bedtimeBehaviorEnabledSetting](self forKey:{"bedtimeBehaviorEnabledSetting"), @"bedtimeBehaviorEnabledSetting"}];
 }
 
 @end

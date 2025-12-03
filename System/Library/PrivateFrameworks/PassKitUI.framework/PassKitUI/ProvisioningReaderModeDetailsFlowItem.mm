@@ -1,6 +1,6 @@
 @interface ProvisioningReaderModeDetailsFlowItem
 - (_TtC9PassKitUI37ProvisioningReaderModeDetailsFlowItem)init;
-- (void)readerModeViewController:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (void)readerModeViewController:(id)controller didFinishWithSuccess:(BOOL)success;
 @end
 
 @implementation ProvisioningReaderModeDetailsFlowItem
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)readerModeViewController:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)readerModeViewController:(id)controller didFinishWithSuccess:(BOOL)success
 {
-  v7 = a3;
-  v8 = self;
-  sub_1BD12EBA4(a3, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1BD12EBA4(controller, success);
 }
 
 @end

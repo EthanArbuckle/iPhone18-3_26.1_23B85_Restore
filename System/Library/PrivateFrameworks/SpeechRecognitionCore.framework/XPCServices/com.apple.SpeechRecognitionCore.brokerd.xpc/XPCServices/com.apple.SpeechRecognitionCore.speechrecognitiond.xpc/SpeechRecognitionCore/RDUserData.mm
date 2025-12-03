@@ -1,25 +1,25 @@
 @interface RDUserData
-+ (void)fetchUserDataWithLanguage:(id)a3 keepGoing:(id)a4 completion:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (RDUserData)initWithCoder:(id)a3;
-- (id)_initWithLanguage:(id)a3;
++ (void)fetchUserDataWithLanguage:(id)language keepGoing:(id)going completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (RDUserData)initWithCoder:(id)coder;
+- (id)_initWithLanguage:(id)language;
 - (id)debugDescription;
 - (id)description;
-- (void)_fetchContactsWithKeepGoing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_fetchContactsWithKeepGoing:(id)going;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RDUserData
 
-- (id)_initWithLanguage:(id)a3
+- (id)_initWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v10.receiver = self;
   v10.super_class = RDUserData;
   v5 = [(RDUserData *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [languageCopy copy];
     language = v5->_language;
     v5->_language = v6;
 
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (void)_fetchContactsWithKeepGoing:(id)a3
+- (void)_fetchContactsWithKeepGoing:(id)going
 {
-  v4 = a3;
+  goingCopy = going;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -50,13 +50,13 @@
   v58[3] = CNContactNicknameKey;
   v7 = [NSArray arrayWithObjects:v58 count:4];
   v8 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v7];
-  v26 = self;
+  selfCopy = self;
   v45 = 0;
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_10003A698;
   v40[3] = &unk_1000FF188;
-  v9 = v4;
+  v9 = goingCopy;
   v42 = v9;
   v43 = &v46;
   v10 = v5;
@@ -134,8 +134,8 @@ LABEL_7:
   }
 
   v24 = [v13 copy];
-  contactsWords = v26->_contactsWords;
-  v26->_contactsWords = v24;
+  contactsWords = selfCopy->_contactsWords;
+  selfCopy->_contactsWords = v24;
 
   _Block_object_dispose(&v32, 8);
   _Block_object_dispose(&v36, 8);
@@ -144,16 +144,16 @@ LABEL_7:
   _Block_object_dispose(&v50, 8);
 }
 
-+ (void)fetchUserDataWithLanguage:(id)a3 keepGoing:(id)a4 completion:(id)a5
++ (void)fetchUserDataWithLanguage:(id)language keepGoing:(id)going completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v34 = a5;
-  v9 = [[RDUserData alloc] _initWithLanguage:v7];
+  languageCopy = language;
+  goingCopy = going;
+  completionCopy = completion;
+  v9 = [[RDUserData alloc] _initWithLanguage:languageCopy];
   v10 = dispatch_group_create();
   v11 = objc_opt_class();
-  v12 = [NSString stringWithFormat:@"%s.%@", class_getName(v11), v7];
-  v13 = dispatch_queue_create([v12 UTF8String], 0);
+  languageCopy = [NSString stringWithFormat:@"%s.%@", class_getName(v11), languageCopy];
+  v13 = dispatch_queue_create([languageCopy UTF8String], 0);
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -161,7 +161,7 @@ LABEL_7:
   v39[3] = &unk_1000FF218;
   v14 = v9;
   v40 = v14;
-  v15 = v8;
+  v15 = goingCopy;
   v41 = v15;
   v16 = v10;
   v17 = v13;
@@ -209,7 +209,7 @@ LABEL_7:
     [v21 systemUptime];
     v23 = v22;
 
-    v33 = v7;
+    v33 = languageCopy;
     v24 = dispatch_time(0, 15000000000);
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
@@ -239,7 +239,7 @@ LABEL_7:
     v29 = v25;
     dispatch_async(v27, &buf);
 
-    v7 = v33;
+    languageCopy = v33;
     _Block_object_dispose(v47, 8);
     v19 = v50;
   }
@@ -249,19 +249,19 @@ LABEL_7:
   v35[1] = 3221225472;
   v35[2] = sub_10003B258;
   v35[3] = &unk_1000FF240;
-  v37 = v34;
+  v37 = completionCopy;
   v38 = v15;
   v36 = v14;
   v30 = v14;
   v31 = v15;
-  v32 = v34;
+  v32 = completionCopy;
   dispatch_group_notify(v16, v17, v35);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -271,7 +271,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       language = self->_language;
       if (language == v5->_language || [(NSString *)language isEqual:?])
       {
@@ -322,18 +322,18 @@ LABEL_7:
   return v4;
 }
 
-- (RDUserData)initWithCoder:(id)a3
+- (RDUserData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RDUserData *)self init];
   if (v5)
   {
-    v20 = v4;
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_language"];
+    v20 = coderCopy;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_language"];
     language = v5->_language;
     v5->_language = v6;
 
-    v18 = v4;
+    v18 = coderCopy;
     v19 = [v18 decodePropertyListForKey:@"_contactsWords"];
     objc_opt_class();
     v8 = v19;
@@ -408,18 +408,18 @@ LABEL_15:
     contactsWords = v5->_contactsWords;
     v5->_contactsWords = v15;
 
-    v4 = v20;
+    coderCopy = v20;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   language = self->_language;
-  v5 = a3;
-  [v5 encodeObject:language forKey:@"_language"];
-  [v5 encodeObject:self->_contactsWords forKey:@"_contactsWords"];
+  coderCopy = coder;
+  [coderCopy encodeObject:language forKey:@"_language"];
+  [coderCopy encodeObject:self->_contactsWords forKey:@"_contactsWords"];
 }
 
 @end

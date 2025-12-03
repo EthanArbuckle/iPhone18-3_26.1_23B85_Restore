@@ -2,29 +2,29 @@
 - (BOOL)isSufficientDataAvailable;
 - (MLModel)durationModel;
 - (MLModel)engageModel;
-- (OSChargingTwoStagePredictor)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5;
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7;
-- (double)adjustedChargingDecision:(unint64_t)a3 withPluginDate:(id)a4 withPluginBatteryLevel:(double)a5 forDate:(id)a6 forStatus:(BOOL)a7;
-- (double)getHourBinID:(id)a3 forHourBin:(unint64_t)a4;
-- (double)loadAdjustedHoursForModel:(id)a3;
+- (OSChargingTwoStagePredictor)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager;
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log;
+- (double)adjustedChargingDecision:(unint64_t)decision withPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate forStatus:(BOOL)status;
+- (double)getHourBinID:(id)d forHourBin:(unint64_t)bin;
+- (double)loadAdjustedHoursForModel:(id)model;
 - (double)loadMinInputChargeDuration;
-- (double)loadThresholdForModel:(id)a3;
-- (id)arrayWithShape:(id)a3 values:(id)a4 type:(int64_t)a5;
-- (id)compileModel:(id)a3;
-- (id)convertInputFeaturesToNeuralFeatures:(id)a3;
+- (double)loadThresholdForModel:(id)model;
+- (id)arrayWithShape:(id)shape values:(id)values type:(int64_t)type;
+- (id)compileModel:(id)model;
+- (id)convertInputFeaturesToNeuralFeatures:(id)features;
 - (id)durationModelBoltID;
 - (id)engagementModelBoltID;
-- (id)getInputFeaturesWithPluginDate:(id)a3 withPluginBatteryLevel:(double)a4 forDate:(id)a5 withLog:(id)a6;
-- (id)loadModelWithModelNameString:(id)a3;
-- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)a3;
-- (id)timeStringFromDate:(id)a3;
+- (id)getInputFeaturesWithPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate withLog:(id)log;
+- (id)loadModelWithModelNameString:(id)string;
+- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)level;
+- (id)timeStringFromDate:(id)date;
 - (void)deleteCompiledModels;
 - (void)deleteUpdatedModels;
-- (void)loadDurationModelFromURL:(id)a3;
-- (void)loadEngagementModelFromURL:(id)a3;
+- (void)loadDurationModelFromURL:(id)l;
+- (void)loadEngagementModelFromURL:(id)l;
 - (void)loadTrial;
 - (void)resetSavedDeadline;
-- (void)setPluginDate:(id)a3;
+- (void)setPluginDate:(id)date;
 @end
 
 @implementation OSChargingTwoStagePredictor
@@ -196,14 +196,14 @@ LABEL_27:
   {
     v36 = self->_engageModel;
     log = v35;
-    v48 = [(MLModel *)v36 modelDescription];
-    v47 = [v48 metadata];
-    [v47 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+    modelDescription = [(MLModel *)v36 modelDescription];
+    metadata = [modelDescription metadata];
+    [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
     v37 = v49 = v21;
     v38 = [v37 objectForKeyedSubscript:@"model_version"];
-    v39 = [(MLModel *)self->_engageModel modelDescription];
-    v40 = [v39 metadata];
-    v41 = [v40 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+    modelDescription2 = [(MLModel *)self->_engageModel modelDescription];
+    metadata2 = [modelDescription2 metadata];
+    v41 = [metadata2 objectForKeyedSubscript:MLModelCreatorDefinedKey];
     v42 = [v41 objectForKeyedSubscript:@"bolt_id"];
     v43 = [NSNumber numberWithDouble:self->_threshold];
     *buf = 138413058;
@@ -294,9 +294,9 @@ LABEL_15:
     {
       v24 = self->_durationModel;
       v25 = v23;
-      v26 = [(MLModel *)v24 modelDescription];
+      modelDescription = [(MLModel *)v24 modelDescription];
       *buf = 138412290;
-      v57 = v26;
+      v57 = modelDescription;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "duration model description: %@", buf, 0xCu);
     }
 
@@ -397,14 +397,14 @@ LABEL_29:
   {
     v40 = self->_durationModel;
     log = v39;
-    v52 = [(MLModel *)v40 modelDescription];
-    v51 = [v52 metadata];
-    [v51 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+    modelDescription2 = [(MLModel *)v40 modelDescription];
+    metadata = [modelDescription2 metadata];
+    [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
     v41 = v53 = v21;
     v42 = [v41 objectForKeyedSubscript:@"model_version"];
-    v43 = [(MLModel *)self->_durationModel modelDescription];
-    v44 = [v43 metadata];
-    v45 = [v44 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+    modelDescription3 = [(MLModel *)self->_durationModel modelDescription];
+    metadata2 = [modelDescription3 metadata];
+    v45 = [metadata2 objectForKeyedSubscript:MLModelCreatorDefinedKey];
     v46 = [v45 objectForKeyedSubscript:@"bolt_id"];
     v47 = [NSNumber numberWithDouble:self->_adjustedDuration];
     *buf = 138413058;
@@ -427,25 +427,25 @@ LABEL_38:
   return v48;
 }
 
-- (id)timeStringFromDate:(id)a3
+- (id)timeStringFromDate:(id)date
 {
   v3 = qword_1000B6A80;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     sub_10005E0FC();
   }
 
-  v5 = [qword_1000B6A88 stringFromDate:v4];
+  v5 = [qword_1000B6A88 stringFromDate:dateCopy];
 
   return v5;
 }
 
-- (OSChargingTwoStagePredictor)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5
+- (OSChargingTwoStagePredictor)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  domainCopy = domain;
+  storeCopy = store;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = OSChargingTwoStagePredictor;
   v12 = [(OSChargingTwoStagePredictor *)&v26 init];
@@ -461,8 +461,8 @@ LABEL_38:
     statusLog = v13->_statusLog;
     v13->_statusLog = v16;
 
-    objc_storeStrong(&v13->_defaultsDomain, a3);
-    objc_storeStrong(&v13->_context, a4);
+    objc_storeStrong(&v13->_defaultsDomain, domain);
+    objc_storeStrong(&v13->_context, store);
     v18 = [OSIntelligenceUtilities dateForPreferenceKey:@"twoStageModelOutput" inDomain:v13->_defaultsDomain];
     deadline = v13->_deadline;
     v13->_deadline = v18;
@@ -475,7 +475,7 @@ LABEL_38:
     [v22 doubleValue];
     v13->_lastDurationResult = v23;
 
-    objc_storeStrong(&v13->_trialManager, a5);
+    objc_storeStrong(&v13->_trialManager, manager);
     [(OSChargingTwoStagePredictor *)v13 loadMinInputChargeDuration];
     v13->_minInputChargeDuration = v24;
     v13->_threshold = 1.0;
@@ -504,16 +504,16 @@ LABEL_38:
   [(OSChargingTwoStagePredictor *)self resetSavedDeadline];
 }
 
-- (double)loadThresholdForModel:(id)a3
+- (double)loadThresholdForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   [(OSIntelligenceTrialManager *)self->_trialManager loadTrialThreshold];
   v6 = v5;
   if (v5 <= 0.0)
   {
-    v7 = [v4 modelDescription];
-    v8 = [v7 metadata];
-    v9 = [v8 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+    modelDescription = [modelCopy modelDescription];
+    metadata = [modelDescription metadata];
+    v9 = [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
     v10 = [v9 objectForKeyedSubscript:@"threshold"];
     [v10 doubleValue];
     v6 = v11;
@@ -530,16 +530,16 @@ LABEL_38:
   return v6;
 }
 
-- (double)loadAdjustedHoursForModel:(id)a3
+- (double)loadAdjustedHoursForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   [(OSIntelligenceTrialManager *)self->_trialManager loadTrialAdjustedHours];
   v6 = v5;
   if (v5 <= 0.0)
   {
-    v7 = [v4 modelDescription];
-    v8 = [v7 metadata];
-    v9 = [v8 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+    modelDescription = [modelCopy modelDescription];
+    metadata = [modelDescription metadata];
+    v9 = [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
     v10 = [v9 objectForKeyedSubscript:@"leeway"];
     [v10 doubleValue];
     v6 = v11;
@@ -575,21 +575,21 @@ LABEL_38:
   return v4;
 }
 
-- (id)arrayWithShape:(id)a3 values:(id)a4 type:(int64_t)a5
+- (id)arrayWithShape:(id)shape values:(id)values type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  shapeCopy = shape;
+  valuesCopy = values;
+  v10 = valuesCopy;
+  if (valuesCopy)
   {
-    if (!v8)
+    if (!shapeCopy)
     {
-      v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 count]);
+      v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [valuesCopy count]);
       v18 = v11;
-      v8 = [NSArray arrayWithObjects:&v18 count:1];
+      shapeCopy = [NSArray arrayWithObjects:&v18 count:1];
     }
 
-    v12 = [[MLMultiArray alloc] initWithShape:v8 dataType:a5 error:0];
+    v12 = [[MLMultiArray alloc] initWithShape:shapeCopy dataType:type error:0];
     if (v12 && [v10 count])
     {
       v13 = 0;
@@ -622,10 +622,10 @@ LABEL_38:
 
 - (id)engagementModelBoltID
 {
-  v3 = [(OSChargingTwoStagePredictor *)self engageModel];
-  v4 = [v3 modelDescription];
-  v5 = [v4 metadata];
-  v6 = [v5 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+  engageModel = [(OSChargingTwoStagePredictor *)self engageModel];
+  modelDescription = [engageModel modelDescription];
+  metadata = [modelDescription metadata];
+  v6 = [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
   v7 = [v6 objectForKeyedSubscript:@"model_version"];
 
   log = self->_log;
@@ -651,10 +651,10 @@ LABEL_38:
 
 - (id)durationModelBoltID
 {
-  v3 = [(OSChargingTwoStagePredictor *)self durationModel];
-  v4 = [v3 modelDescription];
-  v5 = [v4 metadata];
-  v6 = [v5 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+  durationModel = [(OSChargingTwoStagePredictor *)self durationModel];
+  modelDescription = [durationModel modelDescription];
+  metadata = [modelDescription metadata];
+  v6 = [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
   v7 = [v6 objectForKeyedSubscript:@"model_version"];
 
   log = self->_log;
@@ -678,12 +678,12 @@ LABEL_38:
   return v9;
 }
 
-- (void)setPluginDate:(id)a3
+- (void)setPluginDate:(id)date
 {
-  v5 = a3;
-  [OSIntelligenceUtilities batteryLevelAtDate:v5];
+  dateCopy = date;
+  [OSIntelligenceUtilities batteryLevelAtDate:dateCopy];
   self->_pluginBatteryLevel = v6;
-  objc_storeStrong(&self->_pluginDate, a3);
+  objc_storeStrong(&self->_pluginDate, date);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -699,13 +699,13 @@ LABEL_38:
   }
 }
 
-- (double)getHourBinID:(id)a3 forHourBin:(unint64_t)a4
+- (double)getHourBinID:(id)d forHourBin:(unint64_t)bin
 {
-  v5 = a3;
+  dCopy = d;
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 components:32 fromDate:v5];
+  v7 = [v6 components:32 fromDate:dCopy];
 
-  v8 = [v7 hour] / a4;
+  v8 = [v7 hour] / bin;
   return v8;
 }
 
@@ -731,9 +731,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [v4 firstObject];
-  v8 = [v7 startDate];
-  [v3 timeIntervalSinceDate:v8];
+  firstObject = [v4 firstObject];
+  startDate = [firstObject startDate];
+  [v3 timeIntervalSinceDate:startDate];
   v10 = v9;
 
   if (v10 <= 1209600.0)
@@ -742,9 +742,9 @@ LABEL_8:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v4 firstObject];
-      v15 = [v14 startDate];
-      [v3 timeIntervalSinceDate:v15];
+      firstObject2 = [v4 firstObject];
+      startDate2 = [firstObject2 startDate];
+      [v3 timeIntervalSinceDate:startDate2];
       v18 = 134217984;
       v19 = v16 / 86400.0;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Not enough days of history: %f", &v18, 0xCu);
@@ -759,7 +759,7 @@ LABEL_9:
   return v11;
 }
 
-- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)a3
+- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)level
 {
   if (self->_deadline)
   {
@@ -778,7 +778,7 @@ LABEL_9:
     pluginDate = self->_pluginDate;
     pluginBatteryLevel = self->_pluginBatteryLevel;
     v9 = +[NSDate date];
-    [(OSChargingTwoStagePredictor *)self adjustedChargingDecision:a3 withPluginDate:pluginDate withPluginBatteryLevel:v9 forDate:0 forStatus:pluginBatteryLevel];
+    [(OSChargingTwoStagePredictor *)self adjustedChargingDecision:level withPluginDate:pluginDate withPluginBatteryLevel:v9 forDate:0 forStatus:pluginBatteryLevel];
     v11 = v10;
 
     v12 = [NSDate dateWithTimeIntervalSinceNow:v11];
@@ -793,18 +793,18 @@ LABEL_9:
   return v14;
 }
 
-- (double)adjustedChargingDecision:(unint64_t)a3 withPluginDate:(id)a4 withPluginBatteryLevel:(double)a5 forDate:(id)a6 forStatus:(BOOL)a7
+- (double)adjustedChargingDecision:(unint64_t)decision withPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate forStatus:(BOOL)status
 {
-  v7 = a7;
-  v12 = a6;
+  statusCopy = status;
+  forDateCopy = forDate;
   v13 = 88;
-  if (v7)
+  if (statusCopy)
   {
     v13 = 96;
   }
 
   v14 = *(&self->super.isa + v13);
-  [(OSChargingTwoStagePredictor *)self chargingDecision:a3 withPluginDate:a4 withPluginBatteryLevel:v12 forDate:v14 withLog:a5];
+  [(OSChargingTwoStagePredictor *)self chargingDecision:decision withPluginDate:date withPluginBatteryLevel:forDateCopy forDate:v14 withLog:level];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
@@ -823,7 +823,7 @@ LABEL_9:
 
     else
     {
-      v17 = [v12 dateByAddingTimeInterval:v15 * 3600.0];
+      v17 = [forDateCopy dateByAddingTimeInterval:v15 * 3600.0];
     }
 
     adjustedDuration = self->_adjustedDuration;
@@ -839,7 +839,7 @@ LABEL_9:
     }
   }
 
-  if (!v7)
+  if (!statusCopy)
   {
     self->_lastDurationResult = v15;
     v19 = [NSNumber numberWithDouble:v15];
@@ -849,20 +849,20 @@ LABEL_9:
   return v15 * 3600.0;
 }
 
-- (id)getInputFeaturesWithPluginDate:(id)a3 withPluginBatteryLevel:(double)a4 forDate:(id)a5 withLog:(id)a6
+- (id)getInputFeaturesWithPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate withLog:(id)log
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  dateCopy = date;
+  logCopy = log;
+  forDateCopy = forDate;
   v13 = +[NSCalendar currentCalendar];
-  v14 = [v13 components:32 fromDate:v12];
+  v14 = [v13 components:32 fromDate:forDateCopy];
 
-  v15 = [v14 hour];
-  [v10 timeIntervalSinceDate:v12];
+  hour = [v14 hour];
+  [dateCopy timeIntervalSinceDate:forDateCopy];
   v17 = v16;
 
-  v18 = [OSIntelligenceUtilities pluginEventsBefore:v10 withMinimumDuration:self->_minInputChargeDuration withMinimumPlugoutBatteryLevel:80.0];
-  v19 = v11;
+  v18 = [OSIntelligenceUtilities pluginEventsBefore:dateCopy withMinimumDuration:self->_minInputChargeDuration withMinimumPlugoutBatteryLevel:80.0];
+  v19 = logCopy;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v18 count]);
@@ -871,26 +871,26 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Found %@ events for featurization", &v23, 0xCu);
   }
 
-  v21 = [(OSChargingTwoStagePredictor *)self getInputFeatures:v18 events:a4 pluginBatteryLevel:v10 timeFromPlugin:v19 pluginDate:v15 withLog:-v17];
+  v21 = [(OSChargingTwoStagePredictor *)self getInputFeatures:v18 events:level pluginBatteryLevel:dateCopy timeFromPlugin:v19 pluginDate:hour withLog:-v17];
 
   return v21;
 }
 
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log
 {
-  v13 = a5;
-  v14 = a7;
+  levelCopy = level;
+  logCopy = log;
   v15 = a8;
   v16 = os_transaction_create();
-  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:v13 withPluginBatteryLevel:v14 forDate:v15 withLog:a6];
+  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:levelCopy withPluginBatteryLevel:logCopy forDate:v15 withLog:forDate];
   *&retstr->var0 = 0;
   *&retstr->var1 = vdupq_n_s64(0xC0F869F000000000);
-  v18 = [(OSChargingTwoStagePredictor *)self engageModel];
-  v19 = [v18 modelDescription];
-  v20 = [v19 isUpdatable];
+  engageModel = [(OSChargingTwoStagePredictor *)self engageModel];
+  modelDescription = [engageModel modelDescription];
+  isUpdatable = [modelDescription isUpdatable];
 
   v94 = v17;
-  if (v20)
+  if (isUpdatable)
   {
     v21 = [(OSChargingTwoStagePredictor *)self convertInputFeaturesToNeuralFeatures:v17];
     if (!v21)
@@ -899,13 +899,13 @@ LABEL_9:
     }
 
     v22 = v21;
-    v84 = self;
+    selfCopy = self;
     v86 = v16;
-    v90 = v14;
-    v92 = v13;
-    v23 = [(OSChargingTwoStagePredictor *)self engageModel];
+    v90 = logCopy;
+    v92 = levelCopy;
+    engageModel2 = [(OSChargingTwoStagePredictor *)self engageModel];
     v83 = v22;
-    v24 = [v23 predictionFromFeatures:v22 error:0];
+    v24 = [engageModel2 predictionFromFeatures:v22 error:0];
 
     v88 = v15;
     v25 = v15;
@@ -923,8 +923,8 @@ LABEL_9:
     v99 = 0u;
     v100 = 0u;
     v27 = v24;
-    v28 = [v24 featureNames];
-    v29 = [v28 countByEnumeratingWithState:&v99 objects:v108 count:16];
+    featureNames = [v24 featureNames];
+    v29 = [featureNames countByEnumeratingWithState:&v99 objects:v108 count:16];
     if (v29)
     {
       v30 = v29;
@@ -935,7 +935,7 @@ LABEL_9:
         {
           if (*v100 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(featureNames);
           }
 
           v33 = *(*(&v99 + 1) + 8 * i);
@@ -952,63 +952,63 @@ LABEL_9:
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v99 objects:v108 count:16];
+        v30 = [featureNames countByEnumeratingWithState:&v99 objects:v108 count:16];
       }
 
       while (v30);
     }
 
-    v36 = v27;
+    dictionaryValue2 = v27;
     v37 = [v27 featureValueForName:@"Identity"];
-    v38 = [v37 dictionaryValue];
+    dictionaryValue = [v37 dictionaryValue];
 
     v39 = v25;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      [v38 description];
+      [dictionaryValue description];
       v40 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412290;
       v105 = v40;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Neural engagement model raw output %@", buf, 0xCu);
 
-      v36 = v27;
+      dictionaryValue2 = v27;
     }
 
-    v41 = [v38 objectForKeyedSubscript:@"1"];
+    v41 = [dictionaryValue objectForKeyedSubscript:@"1"];
     [v41 doubleValue];
     v43 = v42;
 
-    v13 = v92;
+    levelCopy = v92;
     v15 = v88;
-    v14 = v90;
-    self = v84;
+    logCopy = v90;
+    self = selfCopy;
     v16 = v86;
     v44 = v83;
   }
 
   else
   {
-    v45 = [(OSChargingTwoStagePredictor *)self engageModel];
-    v44 = [v45 predictionFromFeatures:v17 error:0];
+    engageModel3 = [(OSChargingTwoStagePredictor *)self engageModel];
+    v44 = [engageModel3 predictionFromFeatures:v17 error:0];
 
     v46 = [v44 featureValueForName:@"classProbability"];
-    v36 = [v46 dictionaryValue];
+    dictionaryValue2 = [v46 dictionaryValue];
 
     v47 = v15;
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      [v36 description];
-      v48 = v36;
+      [dictionaryValue2 description];
+      v48 = dictionaryValue2;
       v49 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412290;
       v105 = v49;
       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Engagement model raw output %@", buf, 0xCu);
 
-      v36 = v48;
+      dictionaryValue2 = v48;
     }
 
-    v38 = [v36 objectForKeyedSubscript:&off_10009B700];
-    [v38 doubleValue];
+    dictionaryValue = [dictionaryValue2 objectForKeyedSubscript:&off_10009B700];
+    [dictionaryValue doubleValue];
     v43 = v50;
   }
 
@@ -1054,21 +1054,21 @@ LABEL_9:
   }
 
   retstr->var0 = v55;
-  v57 = [(OSChargingTwoStagePredictor *)self durationModel];
-  v58 = [v57 modelDescription];
-  v59 = [v58 isUpdatable];
+  durationModel = [(OSChargingTwoStagePredictor *)self durationModel];
+  modelDescription2 = [durationModel modelDescription];
+  isUpdatable2 = [modelDescription2 isUpdatable];
 
-  if (v59)
+  if (isUpdatable2)
   {
     v60 = [(OSChargingTwoStagePredictor *)self convertInputFeaturesToNeuralFeatures:v94];
     if (v60)
     {
       v61 = v60;
       v87 = v16;
-      v91 = v14;
-      v93 = v13;
-      v62 = [(OSChargingTwoStagePredictor *)self durationModel];
-      v63 = [v62 predictionFromFeatures:v61 error:0];
+      v91 = logCopy;
+      v93 = levelCopy;
+      durationModel2 = [(OSChargingTwoStagePredictor *)self durationModel];
+      v63 = [durationModel2 predictionFromFeatures:v61 error:0];
 
       v89 = v15;
       v64 = v15;
@@ -1087,8 +1087,8 @@ LABEL_9:
       v98 = 0u;
       v95 = 0u;
       v96 = 0u;
-      v66 = [v63 featureNames];
-      v67 = [v66 countByEnumeratingWithState:&v95 objects:v103 count:16];
+      featureNames2 = [v63 featureNames];
+      v67 = [featureNames2 countByEnumeratingWithState:&v95 objects:v103 count:16];
       if (v67)
       {
         v68 = v67;
@@ -1099,7 +1099,7 @@ LABEL_9:
           {
             if (*v96 != v69)
             {
-              objc_enumerationMutation(v66);
+              objc_enumerationMutation(featureNames2);
             }
 
             v71 = *(*(&v95 + 1) + 8 * j);
@@ -1116,22 +1116,22 @@ LABEL_9:
             }
           }
 
-          v68 = [v66 countByEnumeratingWithState:&v95 objects:v103 count:16];
+          v68 = [featureNames2 countByEnumeratingWithState:&v95 objects:v103 count:16];
         }
 
         while (v68);
       }
 
       v74 = [v63 featureValueForName:@"Identity"];
-      v75 = [v74 multiArrayValue];
+      multiArrayValue = [v74 multiArrayValue];
 
-      v76 = [v75 objectAtIndexedSubscript:0];
+      v76 = [multiArrayValue objectAtIndexedSubscript:0];
       [v76 doubleValue];
       v78 = v77;
 
-      v13 = v93;
+      levelCopy = v93;
       v15 = v89;
-      v14 = v91;
+      logCopy = v91;
       v79 = v85;
       v16 = v87;
       v17 = v94;
@@ -1143,8 +1143,8 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v80 = [(OSChargingTwoStagePredictor *)self durationModel];
-  v79 = [v80 predictionFromFeatures:v94 error:0];
+  durationModel3 = [(OSChargingTwoStagePredictor *)self durationModel];
+  v79 = [durationModel3 predictionFromFeatures:v94 error:0];
 
   v63 = [v79 featureValueForName:@"duration_pred"];
   [v63 doubleValue];
@@ -1164,9 +1164,9 @@ LABEL_47:
   return result;
 }
 
-- (id)convertInputFeaturesToNeuralFeatures:(id)a3
+- (id)convertInputFeaturesToNeuralFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -1175,8 +1175,8 @@ LABEL_47:
   }
 
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v4 dictionary];
-  v8 = [(OSChargingTwoStagePredictor *)self getMultiArrayForFeatureDict:v7];
+  dictionary = [featuresCopy dictionary];
+  v8 = [(OSChargingTwoStagePredictor *)self getMultiArrayForFeatureDict:dictionary];
 
   [v6 setObject:v8 forKeyedSubscript:@"layer1_input"];
   v13 = 0;
@@ -1269,9 +1269,9 @@ LABEL_47:
   v4 = [NSArray arrayWithObjects:v27 count:2];
   v5 = [NSURL fileURLWithPathComponents:v4];
 
-  v6 = [v5 path];
+  path = [v5 path];
   v21 = 0;
-  v7 = [v3 removeItemAtPath:v6 error:&v21];
+  v7 = [v3 removeItemAtPath:path error:&v21];
   v8 = v21;
 
   if ((v7 & 1) == 0)
@@ -1280,9 +1280,9 @@ LABEL_47:
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v10 = log;
-      v11 = [v5 path];
+      path2 = [v5 path];
       *buf = 138412546;
-      v24 = v11;
+      v24 = path2;
       v25 = 2112;
       v26 = v8;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Failed to clean up path: %@ -- %@", buf, 0x16u);
@@ -1294,9 +1294,9 @@ LABEL_47:
   v12 = [NSArray arrayWithObjects:v22 count:2];
   v13 = [NSURL fileURLWithPathComponents:v12];
 
-  v14 = [v13 path];
+  path3 = [v13 path];
   v20 = v8;
-  v15 = [v3 removeItemAtPath:v14 error:&v20];
+  v15 = [v3 removeItemAtPath:path3 error:&v20];
   v16 = v20;
 
   if ((v15 & 1) == 0)
@@ -1305,9 +1305,9 @@ LABEL_47:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v13 path];
+      path4 = [v13 path];
       *buf = 138412546;
-      v24 = v19;
+      v24 = path4;
       v25 = 2112;
       v26 = v16;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Failed to clean up path: %@ -- %@", buf, 0x16u);
@@ -1315,11 +1315,11 @@ LABEL_47:
   }
 }
 
-- (id)compileModel:(id)a3
+- (id)compileModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 URLForResource:v4 withExtension:@"ml"];
+  v6 = [v5 URLForResource:modelCopy withExtension:@"ml"];
 
   v21 = 0;
   [v6 checkResourceIsReachableAndReturnError:&v21];
@@ -1391,20 +1391,20 @@ LABEL_19:
   return v10;
 }
 
-- (void)loadEngagementModelFromURL:(id)a3
+- (void)loadEngagementModelFromURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_loadModelLock);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = lCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Reload engagement model: %@", buf, 0xCu);
   }
 
   v11 = 0;
-  v7 = [MLModel modelWithContentsOfURL:v5 error:&v11];
+  v7 = [MLModel modelWithContentsOfURL:lCopy error:&v11];
   v8 = v11;
   engageModel = self->_engageModel;
   self->_engageModel = v7;
@@ -1419,7 +1419,7 @@ LABEL_19:
 
   else
   {
-    objc_storeStrong(&self->_compiledClassifier, a3);
+    objc_storeStrong(&self->_compiledClassifier, l);
     [(OSChargingTwoStagePredictor *)self loadThresholdForModel:self->_engageModel];
     self->_threshold = v10;
   }
@@ -1427,20 +1427,20 @@ LABEL_19:
   os_unfair_lock_unlock(&self->_loadModelLock);
 }
 
-- (void)loadDurationModelFromURL:(id)a3
+- (void)loadDurationModelFromURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_loadModelLock);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = lCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Reload duration model: %@", buf, 0xCu);
   }
 
   v11 = 0;
-  v7 = [MLModel modelWithContentsOfURL:v5 error:&v11];
+  v7 = [MLModel modelWithContentsOfURL:lCopy error:&v11];
   v8 = v11;
   durationModel = self->_durationModel;
   self->_durationModel = v7;
@@ -1455,7 +1455,7 @@ LABEL_19:
 
   else
   {
-    objc_storeStrong(&self->_compiledRegressor, a3);
+    objc_storeStrong(&self->_compiledRegressor, l);
     [(OSChargingTwoStagePredictor *)self loadAdjustedHoursForModel:self->_durationModel];
     self->_adjustedDuration = v10;
   }
@@ -1463,19 +1463,19 @@ LABEL_19:
   os_unfair_lock_unlock(&self->_loadModelLock);
 }
 
-- (id)loadModelWithModelNameString:(id)a3
+- (id)loadModelWithModelNameString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_lock(&self->_loadModelLock);
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 pathForResource:v4 ofType:@"mlmodelc"];
+  v6 = [v5 pathForResource:stringCopy ofType:@"mlmodelc"];
   v7 = [NSURL fileURLWithPath:v6];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v4;
+    v14 = stringCopy;
     v15 = 2112;
     v16 = v7;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Loading model %@ from disk at path %@", buf, 0x16u);

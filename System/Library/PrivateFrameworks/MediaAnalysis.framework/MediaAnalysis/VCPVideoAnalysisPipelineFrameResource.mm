@@ -1,13 +1,13 @@
 @interface VCPVideoAnalysisPipelineFrameResource
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)predictedTimeRange;
-- (VCPVideoAnalysisPipelineFrameResource)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (VCPVideoAnalysisPipelineFrameResource)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
-- (void)setPredictedTimeRange:(id *)a3;
+- (void)setPredictedTimeRange:(id *)range;
 @end
 
 @implementation VCPVideoAnalysisPipelineFrameResource
 
-- (VCPVideoAnalysisPipelineFrameResource)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (VCPVideoAnalysisPipelineFrameResource)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v15.receiver = self;
   v15.super_class = VCPVideoAnalysisPipelineFrameResource;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 1) = a3;
+    *(v4 + 1) = buffer;
     v6 = MEMORY[0x1E6960C98];
     v7 = *(MEMORY[0x1E6960C98] + 16);
     *(v4 + 56) = *MEMORY[0x1E6960C98];
@@ -64,11 +64,11 @@
   return self;
 }
 
-- (void)setPredictedTimeRange:(id *)a3
+- (void)setPredictedTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_predictedTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_predictedTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_predictedTimeRange.start.epoch = v4;
   *&self->_predictedTimeRange.start.value = v3;
 }

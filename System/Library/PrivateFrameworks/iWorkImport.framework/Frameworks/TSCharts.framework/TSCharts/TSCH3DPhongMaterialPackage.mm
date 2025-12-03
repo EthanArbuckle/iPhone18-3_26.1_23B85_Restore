@@ -1,21 +1,21 @@
 @interface TSCH3DPhongMaterialPackage
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 + (id)package;
 - (BOOL)hasCompleteData;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DPhongMaterialPackage)init;
-- (TSCH3DPhongMaterialPackage)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCH3DPhongMaterialPackage)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)materialEnumerator;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCH3DPhongMaterialPackage
 
 + (id)package
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -51,30 +51,30 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37.receiver = self;
   v37.super_class = TSCH3DPhongMaterialPackage;
   v6 = [(TSCH3DMaterialPackage *)&v37 copyWithZone:?];
   if (v6)
   {
-    v10 = objc_msgSend_copyWithZone_(self->_emissive, v5, v7, v8, v9, a3);
+    v10 = objc_msgSend_copyWithZone_(self->_emissive, v5, v7, v8, v9, zone);
     v11 = v6[1];
     v6[1] = v10;
 
-    v16 = objc_msgSend_copyWithZone_(self->_diffuse, v12, v13, v14, v15, a3);
+    v16 = objc_msgSend_copyWithZone_(self->_diffuse, v12, v13, v14, v15, zone);
     v17 = v6[2];
     v6[2] = v16;
 
-    v22 = objc_msgSend_copyWithZone_(self->_modulate, v18, v19, v20, v21, a3);
+    v22 = objc_msgSend_copyWithZone_(self->_modulate, v18, v19, v20, v21, zone);
     v23 = v6[3];
     v6[3] = v22;
 
-    v28 = objc_msgSend_copyWithZone_(self->_specular, v24, v25, v26, v27, a3);
+    v28 = objc_msgSend_copyWithZone_(self->_specular, v24, v25, v26, v27, zone);
     v29 = v6[4];
     v6[4] = v28;
 
-    v34 = objc_msgSend_copyWithZone_(self->_shininess, v30, v31, v32, v33, a3);
+    v34 = objc_msgSend_copyWithZone_(self->_shininess, v30, v31, v32, v33, zone);
     v35 = v6[5];
     v6[5] = v34;
   }
@@ -82,10 +82,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -201,7 +201,7 @@
 
     v182.receiver = self;
     v182.super_class = TSCH3DPhongMaterialPackage;
-    if ([(TSCH3DMaterialPackage *)&v182 isEqual:v4]&& objc_msgSend_isEqual_(self->_emissive, v160, v161, v162, v163, v6[1]) && objc_msgSend_isEqual_(self->_diffuse, v164, v165, v166, v167, v6[2]) && objc_msgSend_isEqual_(self->_modulate, v168, v169, v170, v171, v6[3]) && objc_msgSend_isEqual_(self->_specular, v172, v173, v174, v175, v6[4]))
+    if ([(TSCH3DMaterialPackage *)&v182 isEqual:equalCopy]&& objc_msgSend_isEqual_(self->_emissive, v160, v161, v162, v163, v6[1]) && objc_msgSend_isEqual_(self->_diffuse, v164, v165, v166, v167, v6[2]) && objc_msgSend_isEqual_(self->_modulate, v168, v169, v170, v171, v6[3]) && objc_msgSend_isEqual_(self->_specular, v172, v173, v174, v175, v6[4]))
     {
       isEqual = objc_msgSend_isEqual_(self->_shininess, v176, v177, v178, v179, v6[5]);
     }
@@ -266,34 +266,34 @@ LABEL_29:
   return v10;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DPhongMaterialPackage alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DPhongMaterialPackage)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DPhongMaterialPackage)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v44.receiver = self;
   v44.super_class = TSCH3DPhongMaterialPackage;
   v7 = [(TSCH3DMaterialPackage *)&v44 init];
   if (v7)
   {
-    if (*(a3 + 16))
+    if (*(archive + 16))
     {
       v9 = [TSCH3DEmissiveMaterial alloc];
-      if (*(a3 + 3))
+      if (*(archive + 3))
       {
-        v8 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, v11, v12, v13, *(a3 + 3), v6);
+        v8 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, v11, v12, v13, *(archive + 3), unarchiverCopy);
       }
 
       else
       {
-        v8 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, v11, v12, v13, &unk_2812F1318, v6);
+        v8 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, v11, v12, v13, &unk_2812F1318, unarchiverCopy);
       }
     }
 
@@ -305,17 +305,17 @@ LABEL_29:
     emissive = v7->_emissive;
     v7->_emissive = v8;
 
-    if ((*(a3 + 16) & 2) != 0)
+    if ((*(archive + 16) & 2) != 0)
     {
       v16 = [TSCH3DDiffuseMaterial alloc];
-      if (*(a3 + 4))
+      if (*(archive + 4))
       {
-        v15 = objc_msgSend_initWithArchive_unarchiver_(v16, v17, v18, v19, v20, *(a3 + 4), v6);
+        v15 = objc_msgSend_initWithArchive_unarchiver_(v16, v17, v18, v19, v20, *(archive + 4), unarchiverCopy);
       }
 
       else
       {
-        v15 = objc_msgSend_initWithArchive_unarchiver_(v16, v17, v18, v19, v20, &unk_2812F1350, v6);
+        v15 = objc_msgSend_initWithArchive_unarchiver_(v16, v17, v18, v19, v20, &unk_2812F1350, unarchiverCopy);
       }
     }
 
@@ -327,17 +327,17 @@ LABEL_29:
     diffuse = v7->_diffuse;
     v7->_diffuse = v15;
 
-    if ((*(a3 + 16) & 4) != 0)
+    if ((*(archive + 16) & 4) != 0)
     {
       v23 = [TSCH3DModulateMaterial alloc];
-      if (*(a3 + 5))
+      if (*(archive + 5))
       {
-        v22 = objc_msgSend_initWithArchive_unarchiver_(v23, v24, v25, v26, v27, *(a3 + 5), v6);
+        v22 = objc_msgSend_initWithArchive_unarchiver_(v23, v24, v25, v26, v27, *(archive + 5), unarchiverCopy);
       }
 
       else
       {
-        v22 = objc_msgSend_initWithArchive_unarchiver_(v23, v24, v25, v26, v27, &unk_2812F1388, v6);
+        v22 = objc_msgSend_initWithArchive_unarchiver_(v23, v24, v25, v26, v27, &unk_2812F1388, unarchiverCopy);
       }
     }
 
@@ -349,17 +349,17 @@ LABEL_29:
     modulate = v7->_modulate;
     v7->_modulate = v22;
 
-    if ((*(a3 + 16) & 8) != 0)
+    if ((*(archive + 16) & 8) != 0)
     {
       v30 = [TSCH3DSpecularMaterial alloc];
-      if (*(a3 + 6))
+      if (*(archive + 6))
       {
-        v29 = objc_msgSend_initWithArchive_unarchiver_(v30, v31, v32, v33, v34, *(a3 + 6), v6);
+        v29 = objc_msgSend_initWithArchive_unarchiver_(v30, v31, v32, v33, v34, *(archive + 6), unarchiverCopy);
       }
 
       else
       {
-        v29 = objc_msgSend_initWithArchive_unarchiver_(v30, v31, v32, v33, v34, &unk_2812F13C0, v6);
+        v29 = objc_msgSend_initWithArchive_unarchiver_(v30, v31, v32, v33, v34, &unk_2812F13C0, unarchiverCopy);
       }
     }
 
@@ -371,17 +371,17 @@ LABEL_29:
     specular = v7->_specular;
     v7->_specular = v29;
 
-    if ((*(a3 + 16) & 0x10) != 0)
+    if ((*(archive + 16) & 0x10) != 0)
     {
       v37 = [TSCH3DShininessMaterial alloc];
-      if (*(a3 + 7))
+      if (*(archive + 7))
       {
-        v36 = objc_msgSend_initWithArchive_unarchiver_(v37, v38, v39, v40, v41, *(a3 + 7), v6);
+        v36 = objc_msgSend_initWithArchive_unarchiver_(v37, v38, v39, v40, v41, *(archive + 7), unarchiverCopy);
       }
 
       else
       {
-        v36 = objc_msgSend_initWithArchive_unarchiver_(v37, v38, v39, v40, v41, &unk_2812F13F8, v6);
+        v36 = objc_msgSend_initWithArchive_unarchiver_(v37, v38, v39, v40, v41, &unk_2812F13F8, unarchiverCopy);
       }
     }
 
@@ -397,88 +397,88 @@ LABEL_29:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v7 = a4;
+  archiverCopy = archiver;
   emissive = self->_emissive;
-  *(a3 + 4) |= 1u;
-  v12 = *(a3 + 3);
-  v42 = v7;
+  *(archive + 4) |= 1u;
+  v12 = *(archive + 3);
+  v42 = archiverCopy;
   if (!v12)
   {
-    v13 = *(a3 + 1);
+    v13 = *(archive + 1);
     if (v13)
     {
       v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v12 = sub_2764477A0(v13);
-    *(a3 + 3) = v12;
-    v7 = v42;
+    *(archive + 3) = v12;
+    archiverCopy = v42;
   }
 
-  objc_msgSend_saveToArchive_archiver_(emissive, v6, v8, v9, v10, v12, v7);
+  objc_msgSend_saveToArchive_archiver_(emissive, v6, v8, v9, v10, v12, archiverCopy);
   diffuse = self->_diffuse;
-  *(a3 + 4) |= 2u;
-  v19 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v19 = *(archive + 4);
   if (!v19)
   {
-    v20 = *(a3 + 1);
+    v20 = *(archive + 1);
     if (v20)
     {
       v20 = *(v20 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v19 = sub_27644782C(v20);
-    *(a3 + 4) = v19;
+    *(archive + 4) = v19;
   }
 
   objc_msgSend_saveToArchive_archiver_(diffuse, v14, v15, v16, v17, v19, v42);
   modulate = self->_modulate;
-  *(a3 + 4) |= 4u;
-  v26 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v26 = *(archive + 5);
   if (!v26)
   {
-    v27 = *(a3 + 1);
+    v27 = *(archive + 1);
     if (v27)
     {
       v27 = *(v27 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v26 = sub_2764478B8(v27);
-    *(a3 + 5) = v26;
+    *(archive + 5) = v26;
   }
 
   objc_msgSend_saveToArchive_archiver_(modulate, v21, v22, v23, v24, v26, v42);
   specular = self->_specular;
-  *(a3 + 4) |= 8u;
-  v33 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v33 = *(archive + 6);
   if (!v33)
   {
-    v34 = *(a3 + 1);
+    v34 = *(archive + 1);
     if (v34)
     {
       v34 = *(v34 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v33 = sub_276447944(v34);
-    *(a3 + 6) = v33;
+    *(archive + 6) = v33;
   }
 
   objc_msgSend_saveToArchive_archiver_(specular, v28, v29, v30, v31, v33, v42);
   shininess = self->_shininess;
-  *(a3 + 4) |= 0x10u;
-  v40 = *(a3 + 7);
+  *(archive + 4) |= 0x10u;
+  v40 = *(archive + 7);
   if (!v40)
   {
-    v41 = *(a3 + 1);
+    v41 = *(archive + 1);
     if (v41)
     {
       v41 = *(v41 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v40 = sub_2764479D0(v41);
-    *(a3 + 7) = v40;
+    *(archive + 7) = v40;
   }
 
   objc_msgSend_saveToArchive_archiver_(shininess, v35, v36, v37, v38, v40, v42);

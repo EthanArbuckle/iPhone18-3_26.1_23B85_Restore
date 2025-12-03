@@ -4,9 +4,9 @@
 - (PCSDeviceManager)init;
 - (PCSDeviceManagerDelegate)delegate;
 - (id)currentActivePairedDevice;
-- (id)deviceForIDSIdentifier:(id)a3;
-- (id)deviceForPairingID:(id)a3;
-- (void)updatedIDSDevices:(id)a3;
+- (id)deviceForIDSIdentifier:(id)identifier;
+- (id)deviceForPairingID:(id)d;
+- (void)updatedIDSDevices:(id)devices;
 @end
 
 @implementation PCSDeviceManager
@@ -50,14 +50,14 @@
   v13 = sub_10000E780;
   v14 = sub_10000E790;
   v15 = 0;
-  v3 = [(PCSDeviceManager *)self internalQueue];
+  internalQueue = [(PCSDeviceManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000E798;
   block[3] = &unk_100038C30;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 
   v4 = v11[5];
   if (!v4)
@@ -78,25 +78,25 @@
   return v6;
 }
 
-- (id)deviceForIDSIdentifier:(id)a3
+- (id)deviceForIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_10000E780;
   v18 = sub_10000E790;
   v19 = 0;
-  v5 = [(PCSDeviceManager *)self internalQueue];
+  internalQueue = [(PCSDeviceManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000E9BC;
   block[3] = &unk_100038E60;
   v13 = &v14;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v12 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalQueue, block);
 
   v7 = v15[5];
   if (!v7)
@@ -119,25 +119,25 @@
   return v9;
 }
 
-- (id)deviceForPairingID:(id)a3
+- (id)deviceForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_10000E780;
   v18 = sub_10000E790;
   v19 = 0;
-  v5 = [(PCSDeviceManager *)self internalQueue];
+  internalQueue = [(PCSDeviceManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EBFC;
   block[3] = &unk_100039108;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v12 = v6;
   v13 = &v14;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalQueue, block);
 
   v7 = v15[5];
   if (!v7)
@@ -168,14 +168,14 @@
   v10 = sub_10000E780;
   v11 = sub_10000E790;
   v12 = 0;
-  v3 = [(PCSDeviceManager *)self internalQueue];
+  internalQueue = [(PCSDeviceManager *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000EE60;
   v6[3] = &unk_100038C30;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -183,18 +183,18 @@
   return v4;
 }
 
-- (void)updatedIDSDevices:(id)a3
+- (void)updatedIDSDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(PCSDeviceManager *)self internalQueue];
+  devicesCopy = devices;
+  internalQueue = [(PCSDeviceManager *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000EF7C;
   v7[3] = &unk_100038CA8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = devicesCopy;
+  selfCopy = self;
+  v6 = devicesCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 - (PCSDeviceManagerDelegate)delegate

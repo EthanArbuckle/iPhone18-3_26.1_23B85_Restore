@@ -1,31 +1,31 @@
 @interface NSXPCInterface
 + (NSXPCInterface)interfaceWithProtocol:(Protocol *)protocol;
-+ (id)signatureForBlock:(id)a3;
-- (BOOL)_hasProxiesInArgumentsOfSelector:(SEL)a3;
-- (BOOL)_hasProxiesInReplyBlockArgumentsOfSelector:(SEL)a3;
-- (BOOL)_selectorIsAllowed:(SEL)a3 isReply:(BOOL)a4 methodSignature:(id *)a5 allowedClasses:(id *)a6;
++ (id)signatureForBlock:(id)block;
+- (BOOL)_hasProxiesInArgumentsOfSelector:(SEL)selector;
+- (BOOL)_hasProxiesInReplyBlockArgumentsOfSelector:(SEL)selector;
+- (BOOL)_selectorIsAllowed:(SEL)allowed isReply:(BOOL)reply methodSignature:(id *)signature allowedClasses:(id *)classes;
 - (Class)_customSubclass;
-- (Class)_returnClassForSelector:(SEL)a3;
-- (Class)classForSelector:(SEL)a3 argumentIndex:(unint64_t)a4 ofReply:(BOOL)a5;
+- (Class)_returnClassForSelector:(SEL)selector;
+- (Class)classForSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply;
 - (NSSet)classesForSelector:(SEL)sel argumentIndex:(NSUInteger)arg ofReply:(BOOL)ofReply;
 - (NSXPCInterface)init;
 - (NSXPCInterface)interfaceForSelector:(SEL)sel argumentIndex:(NSUInteger)arg ofReply:(BOOL)ofReply;
-- (id)_generateAndCacheMethodSignatureForRemoteSelector:(SEL)a3;
-- (id)_interfaceForArgument:(unint64_t)a3 ofSelector:(SEL)a4 reply:(BOOL)a5;
-- (id)_methodSignatureForRemoteSelector:(SEL)a3;
-- (id)_methodSignatureForReplyBlockOfSelector:(SEL)a3;
+- (id)_generateAndCacheMethodSignatureForRemoteSelector:(SEL)selector;
+- (id)_interfaceForArgument:(unint64_t)argument ofSelector:(SEL)selector reply:(BOOL)reply;
+- (id)_methodSignatureForRemoteSelector:(SEL)selector;
+- (id)_methodSignatureForReplyBlockOfSelector:(SEL)selector;
 - (id)debugDescription;
-- (id)replyBlockSignatureForSelector:(SEL)a3;
-- (unint64_t)_respondsToRemoteSelector:(SEL)a3;
+- (id)replyBlockSignatureForSelector:(SEL)selector;
+- (unint64_t)_respondsToRemoteSelector:(SEL)selector;
 - (unint64_t)version;
-- (unint64_t)versionForSelector:(SEL)a3;
-- (void)_locked_methodInfoForSelector:(int)a3 createIfNecessary:;
+- (unint64_t)versionForSelector:(SEL)selector;
+- (void)_locked_methodInfoForSelector:(int)selector createIfNecessary:;
 - (void)dealloc;
-- (void)setClass:(Class)a3 forSelector:(SEL)a4 argumentIndex:(unint64_t)a5 ofReply:(BOOL)a6;
+- (void)setClass:(Class)class forSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply;
 - (void)setClasses:(NSSet *)classes forSelector:(SEL)sel argumentIndex:(NSUInteger)arg ofReply:(BOOL)ofReply;
 - (void)setInterface:(NSXPCInterface *)ifc forSelector:(SEL)sel argumentIndex:(NSUInteger)arg ofReply:(BOOL)ofReply;
 - (void)setProtocol:(Protocol *)protocol;
-- (void)setVersion:(unint64_t)a3 forSelector:(SEL)a4;
+- (void)setVersion:(unint64_t)version forSelector:(SEL)selector;
 - (void)setXPCType:(xpc_type_t)type forSelector:(SEL)sel argumentIndex:(NSUInteger)arg ofReply:(BOOL)ofReply;
 - (xpc_type_t)XPCTypeForSelector:(SEL)sel argumentIndex:(NSUInteger)arg ofReply:(BOOL)ofReply;
 @end
@@ -124,14 +124,14 @@
   return v7;
 }
 
-+ (id)signatureForBlock:(id)a3
++ (id)signatureForBlock:(id)block
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v4 = _Block_signature(a3);
+  v4 = _Block_signature(block);
 
   return [NSString stringWithUTF8String:v4];
 }
@@ -197,18 +197,18 @@
   }
 }
 
-- (void)_locked_methodInfoForSelector:(int)a3 createIfNecessary:
+- (void)_locked_methodInfoForSelector:(int)selector createIfNecessary:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  Mutable = *(a1 + 32);
+  Mutable = *(self + 32);
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 0, &kNSXPCSelKeyCallbacks, 0);
-    *(a1 + 32) = Mutable;
+    *(self + 32) = Mutable;
   }
 
   Value = CFDictionaryGetValue(Mutable, key);
@@ -219,13 +219,13 @@
 
   else
   {
-    v8 = a3 == 0;
+    v8 = selector == 0;
   }
 
   if (!v8)
   {
     MethodTypeEncoding = _protocol_getMethodTypeEncoding();
-    v10 = *(a1 + 8);
+    v10 = *(self + 8);
     v11 = key;
     if (MethodTypeEncoding)
     {
@@ -235,13 +235,13 @@
     else
     {
       MethodTypeEncoding = _protocol_getMethodTypeEncoding();
-      v10 = *(a1 + 8);
+      v10 = *(self + 8);
       v11 = key;
       if (!MethodTypeEncoding)
       {
-        if (protocol_getMethodDescription(v10, key, 1, 1).name || protocol_getMethodDescription(*(a1 + 8), key, 0, 1).name)
+        if (protocol_getMethodDescription(v10, key, 1, 1).name || protocol_getMethodDescription(*(self + 8), key, 0, 1).name)
         {
-          Name = protocol_getName(*(a1 + 8));
+          Name = protocol_getName(*(self + 8));
           v18 = [NSString stringWithFormat:@"NSXPCInterface: Unable to get extended method signature from Protocol data (%s / %s). Use of clang is required for NSXPCInterface.", Name, sel_getName(key)];
           goto LABEL_21;
         }
@@ -266,13 +266,13 @@
         Value[4] = 0;
         *(Value + 10) = -1;
         *(Value + 22) = 0;
-        CFDictionarySetValue(*(a1 + 32), key, Value);
-        v15 = protocol_getName(*(a1 + 8));
+        CFDictionarySetValue(*(self + 32), key, Value);
+        v15 = protocol_getName(*(self + 8));
         setProtocolMetadataWithSignature(key, v15, v14, Value, 0);
         return Value;
       }
 
-      v17 = protocol_getName(*(a1 + 8));
+      v17 = protocol_getName(*(self + 8));
       v18 = [NSString stringWithFormat:@"NSXPCInterface: Unable to get method signature from Protocol data (%s / %s)", v17, sel_getName(key)];
 LABEL_21:
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v18 userInfo:0]);
@@ -888,22 +888,22 @@ LABEL_17:
   return result;
 }
 
-- (void)setClass:(Class)a3 forSelector:(SEL)a4 argumentIndex:(unint64_t)a5 ofReply:(BOOL)a6
+- (void)setClass:(Class)class forSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply
 {
-  v6 = a6;
-  v10 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  replyCopy = reply;
+  v10 = [MEMORY[0x1E695DFD8] setWithObject:class];
 
-  [(NSXPCInterface *)self setClasses:v10 forSelector:a4 argumentIndex:a5 ofReply:v6];
+  [(NSXPCInterface *)self setClasses:v10 forSelector:selector argumentIndex:index ofReply:replyCopy];
 }
 
-- (Class)classForSelector:(SEL)a3 argumentIndex:(unint64_t)a4 ofReply:(BOOL)a5
+- (Class)classForSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply
 {
-  v5 = [(NSXPCInterface *)self classesForSelector:a3 argumentIndex:a4 ofReply:a5];
+  v5 = [(NSXPCInterface *)self classesForSelector:selector argumentIndex:index ofReply:reply];
 
   return [(NSSet *)v5 anyObject];
 }
 
-- (id)replyBlockSignatureForSelector:(SEL)a3
+- (id)replyBlockSignatureForSelector:(SEL)selector
 {
   protocol = self->_protocol;
   if (!protocol)
@@ -913,17 +913,17 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!selector)
   {
     v16 = _NSMethodExceptionProem(self, a2);
     v13 = @"%@: Selector argument must be non-NULL.";
     goto LABEL_12;
   }
 
-  if (!selectorInProtocol(a3, protocol))
+  if (!selectorInProtocol(selector, protocol))
   {
     v14 = _NSMethodExceptionProem(self, a2);
-    Name = sel_getName(a3);
+    Name = sel_getName(selector);
     v18 = protocol_getName(protocol);
     v16 = v14;
     v13 = @"%@: Selector '%s' is not in protocol '%s', or is not an instance method.";
@@ -933,29 +933,29 @@ LABEL_12:
   }
 
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v7 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:1];
+  v7 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:1];
   v8 = v7;
   if (v7)
   {
-    v9 = [*v7 _typeString];
+    _typeString = [*v7 _typeString];
     if ((v8[5] & 0x80000000) != 0)
     {
       v10 = _NSMethodExceptionProem(self, a2);
-      v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Selector %s has no reply block.", v10, sel_getName(a3)), 0}];
+      v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Selector %s has no reply block.", v10, sel_getName(selector)), 0}];
       objc_exception_throw(v11);
     }
   }
 
   else
   {
-    v9 = 0;
+    _typeString = 0;
   }
 
   os_unfair_lock_unlock(&self->_knownSelectorsLock);
-  return v9;
+  return _typeString;
 }
 
-- (void)setVersion:(unint64_t)a3 forSelector:(SEL)a4
+- (void)setVersion:(unint64_t)version forSelector:(SEL)selector
 {
   protocol = self->_protocol;
   if (!protocol)
@@ -964,32 +964,32 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!selector)
   {
     v10 = [NSString stringWithFormat:@"%@: Selector argument must be non-NULL.", _NSMethodExceptionProem(self, a2), v13, v14];
     goto LABEL_12;
   }
 
-  if (!selectorInProtocol(a4, protocol))
+  if (!selectorInProtocol(selector, protocol))
   {
     v11 = _NSMethodExceptionProem(self, a2);
-    Name = sel_getName(a4);
+    Name = sel_getName(selector);
     v10 = [NSString stringWithFormat:@"%@: Selector '%s' is not in protocol '%s', or is not an instance method.", v11, Name, protocol_getName(protocol)];
 LABEL_12:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
   }
 
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v9 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a4 createIfNecessary:1];
+  v9 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:1];
   if (v9)
   {
-    v9[3] = a3;
+    v9[3] = version;
   }
 
   os_unfair_lock_unlock(&self->_knownSelectorsLock);
 }
 
-- (unint64_t)versionForSelector:(SEL)a3
+- (unint64_t)versionForSelector:(SEL)selector
 {
   protocol = self->_protocol;
   if (!protocol)
@@ -999,17 +999,17 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!selector)
   {
     v13 = _NSMethodExceptionProem(self, a2);
     v10 = @"%@: Selector argument must be non-NULL.";
     goto LABEL_11;
   }
 
-  if (!selectorInProtocol(a3, protocol))
+  if (!selectorInProtocol(selector, protocol))
   {
     v11 = _NSMethodExceptionProem(self, a2);
-    Name = sel_getName(a3);
+    Name = sel_getName(selector);
     v15 = protocol_getName(protocol);
     v13 = v11;
     v10 = @"%@: Selector '%s' is not in protocol '%s', or is not an instance method.";
@@ -1019,7 +1019,7 @@ LABEL_11:
   }
 
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v7 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:0];
+  v7 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:0];
   if (v7)
   {
     v8 = v7[3];
@@ -1049,10 +1049,10 @@ LABEL_11:
   return v5[0];
 }
 
-- (unint64_t)_respondsToRemoteSelector:(SEL)a3
+- (unint64_t)_respondsToRemoteSelector:(SEL)selector
 {
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:1];
+  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:1];
   if (v5)
   {
     v6 = v5[3];
@@ -1071,9 +1071,9 @@ LABEL_11:
   return 1;
 }
 
-- (id)_generateAndCacheMethodSignatureForRemoteSelector:(SEL)a3
+- (id)_generateAndCacheMethodSignatureForRemoteSelector:(SEL)selector
 {
-  v5 = methodSignatureForSelectorInProtocol(a3, self->_protocol);
+  v5 = methodSignatureForSelectorInProtocol(selector, self->_protocol);
   if (!v5)
   {
     return 0;
@@ -1088,7 +1088,7 @@ LABEL_11:
     self->_knownSelectors = knownSelectors;
   }
 
-  Value = CFDictionaryGetValue(knownSelectors, a3);
+  Value = CFDictionaryGetValue(knownSelectors, selector);
   if (!Value)
   {
     Mutable = self->_knownSelectors;
@@ -1098,7 +1098,7 @@ LABEL_11:
       self->_knownSelectors = Mutable;
     }
 
-    CFDictionarySetValue(Mutable, a3, v6);
+    CFDictionarySetValue(Mutable, selector, v6);
     Value = v6;
   }
 
@@ -1106,7 +1106,7 @@ LABEL_11:
   return Value;
 }
 
-- (id)_methodSignatureForRemoteSelector:(SEL)a3
+- (id)_methodSignatureForRemoteSelector:(SEL)selector
 {
   if (!self->_protocol)
   {
@@ -1114,7 +1114,7 @@ LABEL_11:
     objc_exception_throw(v8);
   }
 
-  if (!a3)
+  if (!selector)
   {
     return 0;
   }
@@ -1127,17 +1127,17 @@ LABEL_11:
     self->_knownSelectors = knownSelectors;
   }
 
-  Value = CFDictionaryGetValue(knownSelectors, a3);
+  Value = CFDictionaryGetValue(knownSelectors, selector);
   os_unfair_lock_unlock(&self->_knownSelectorsLock);
   if (Value)
   {
     return Value;
   }
 
-  return [(NSXPCInterface *)self _generateAndCacheMethodSignatureForRemoteSelector:a3];
+  return [(NSXPCInterface *)self _generateAndCacheMethodSignatureForRemoteSelector:selector];
 }
 
-- (id)_methodSignatureForReplyBlockOfSelector:(SEL)a3
+- (id)_methodSignatureForReplyBlockOfSelector:(SEL)selector
 {
   if (!self->_protocol)
   {
@@ -1145,7 +1145,7 @@ LABEL_11:
   }
 
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:1];
+  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:1];
   if (v5)
   {
     v6 = *v5;
@@ -1160,7 +1160,7 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_hasProxiesInArgumentsOfSelector:(SEL)a3
+- (BOOL)_hasProxiesInArgumentsOfSelector:(SEL)selector
 {
   if (!self->_protocol)
   {
@@ -1169,7 +1169,7 @@ LABEL_11:
   }
 
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:1];
+  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:1];
   if (v5)
   {
     v6 = *(v5 + 44);
@@ -1184,7 +1184,7 @@ LABEL_11:
   return v6 & 1;
 }
 
-- (BOOL)_hasProxiesInReplyBlockArgumentsOfSelector:(SEL)a3
+- (BOOL)_hasProxiesInReplyBlockArgumentsOfSelector:(SEL)selector
 {
   if (!self->_protocol)
   {
@@ -1193,7 +1193,7 @@ LABEL_11:
   }
 
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:1];
+  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:1];
   if (v5)
   {
     v6 = *(v5 + 45);
@@ -1208,15 +1208,15 @@ LABEL_11:
   return v6 & 1;
 }
 
-- (id)_interfaceForArgument:(unint64_t)a3 ofSelector:(SEL)a4 reply:(BOOL)a5
+- (id)_interfaceForArgument:(unint64_t)argument ofSelector:(SEL)selector reply:(BOOL)reply
 {
-  v5 = a5;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v9 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a4 createIfNecessary:0];
+  v9 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:0];
   if (v9)
   {
     v10 = 2;
-    if (v5)
+    if (replyCopy)
     {
       v10 = 1;
     }
@@ -1229,14 +1229,14 @@ LABEL_11:
     v11 = 0;
   }
 
-  if ([v11 count] <= a3)
+  if ([v11 count] <= argument)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v11 objectAtIndex:a3];
+    v12 = [v11 objectAtIndex:argument];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v12 = 0;
@@ -1247,10 +1247,10 @@ LABEL_11:
   return v12;
 }
 
-- (Class)_returnClassForSelector:(SEL)a3
+- (Class)_returnClassForSelector:(SEL)selector
 {
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:1];
+  v5 = [(NSXPCInterface *)self _locked_methodInfoForSelector:selector createIfNecessary:1];
   if (v5)
   {
     v6 = v5[4];
@@ -1265,15 +1265,15 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_selectorIsAllowed:(SEL)a3 isReply:(BOOL)a4 methodSignature:(id *)a5 allowedClasses:(id *)a6
+- (BOOL)_selectorIsAllowed:(SEL)allowed isReply:(BOOL)reply methodSignature:(id *)signature allowedClasses:(id *)classes
 {
-  v8 = a4;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_knownSelectorsLock);
-  v11 = [(NSXPCInterface *)self _locked_methodInfoForSelector:a3 createIfNecessary:1];
+  v11 = [(NSXPCInterface *)self _locked_methodInfoForSelector:allowed createIfNecessary:1];
   v12 = v11;
   if (v11)
   {
-    if (v8)
+    if (replyCopy)
     {
       v13 = *v11;
       v14 = 1;
@@ -1288,18 +1288,18 @@ LABEL_11:
         self->_knownSelectors = knownSelectors;
       }
 
-      v13 = CFDictionaryGetValue(knownSelectors, a3);
+      v13 = CFDictionaryGetValue(knownSelectors, allowed);
       v14 = 2;
     }
 
-    *a6 = [v12[v14] copy];
+    *classes = [v12[v14] copy];
     os_unfair_lock_unlock(&self->_knownSelectorsLock);
     if (!v13)
     {
-      v13 = [(NSXPCInterface *)self _generateAndCacheMethodSignatureForRemoteSelector:a3];
+      v13 = [(NSXPCInterface *)self _generateAndCacheMethodSignatureForRemoteSelector:allowed];
     }
 
-    *a5 = v13;
+    *signature = v13;
   }
 
   else

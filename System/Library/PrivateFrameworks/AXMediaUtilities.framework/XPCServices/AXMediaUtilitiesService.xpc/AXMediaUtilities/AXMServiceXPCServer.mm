@@ -1,11 +1,11 @@
 @interface AXMServiceXPCServer
 - (AXMServiceXPCServer)init;
 - (AXMServiceXPCServerDelegate)delegate;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_destroyXPCConnection:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_destroyXPCConnection:(id)connection;
 - (void)prewarmVisionEngineService;
 - (void)run;
-- (void)visionEngine:(id)a3 evaluateSource:(id)a4 context:(id)a5 options:(int64_t)a6 result:(id)a7;
+- (void)visionEngine:(id)engine evaluateSource:(id)source context:(id)context options:(int64_t)options result:(id)result;
 @end
 
 @implementation AXMServiceXPCServer
@@ -33,19 +33,19 @@
   [v3 resume];
 }
 
-- (void)_destroyXPCConnection:(id)a3
+- (void)_destroyXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = AXMediaLogService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will destroy connection to client: %@", buf, 0xCu);
   }
 
-  v7 = v4;
-  v6 = v4;
+  v7 = connectionCopy;
+  v6 = connectionCopy;
   AX_PERFORM_WITH_LOCK();
   [v6 invalidate];
 }
@@ -72,18 +72,18 @@ void __49__AXMServiceXPCServer_prewarmVisionEngineService__block_invoke(uint64_t
   [v1 prewarmVisionEngineService];
 }
 
-- (void)visionEngine:(id)a3 evaluateSource:(id)a4 context:(id)a5 options:(int64_t)a6 result:(id)a7
+- (void)visionEngine:(id)engine evaluateSource:(id)source context:(id)context options:(int64_t)options result:(id)result
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  engineCopy = engine;
+  sourceCopy = source;
+  contextCopy = context;
+  resultCopy = result;
   v16 = AXMediaLogService();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = +[NSXPCConnection currentConnection];
     *buf = 134217984;
-    v29 = [v17 processIdentifier];
+    processIdentifier = [v17 processIdentifier];
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Received evaluate source request from: %ld", buf, 0xCu);
   }
 
@@ -92,15 +92,15 @@ void __49__AXMServiceXPCServer_prewarmVisionEngineService__block_invoke(uint64_t
   v22[2] = __74__AXMServiceXPCServer_visionEngine_evaluateSource_context_options_result___block_invoke;
   v22[3] = &unk_100008308;
   v22[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = a6;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v23 = engineCopy;
+  v24 = sourceCopy;
+  v25 = contextCopy;
+  v26 = resultCopy;
+  optionsCopy = options;
+  v18 = resultCopy;
+  v19 = contextCopy;
+  v20 = sourceCopy;
+  v21 = engineCopy;
   dispatch_async(&_dispatch_main_q, v22);
 }
 
@@ -110,16 +110,16 @@ void __74__AXMServiceXPCServer_visionEngine_evaluateSource_context_options_resul
   [v2 visionEngine:*(a1 + 40) evaluateSource:*(a1 + 48) context:*(a1 + 56) options:*(a1 + 72) result:*(a1 + 64)];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v21 = 0u;
   v22 = 0u;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   HasEntitlement = AXMAuditTokenTaskHasEntitlement();

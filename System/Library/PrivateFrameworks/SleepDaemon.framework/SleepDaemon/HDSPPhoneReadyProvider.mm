@@ -1,27 +1,27 @@
 @interface HDSPPhoneReadyProvider
 - (BOOL)isSystemReady;
 - (HDSPEnvironment)environment;
-- (HDSPPhoneReadyProvider)initWithEnvironment:(id)a3;
+- (HDSPPhoneReadyProvider)initWithEnvironment:(id)environment;
 - (HDSPSystemReadyDelegate)delegate;
 - (void)springboardDidStart;
 @end
 
 @implementation HDSPPhoneReadyProvider
 
-- (HDSPPhoneReadyProvider)initWithEnvironment:(id)a3
+- (HDSPPhoneReadyProvider)initWithEnvironment:(id)environment
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = HDSPPhoneReadyProvider;
   v5 = [(HDSPPhoneReadyProvider *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = [HDSPSpringboardMonitor alloc];
-    v8 = [v4 defaultCallbackScheduler];
-    v9 = [(HDSPSpringboardMonitor *)v7 initWithCallbackScheduler:v8 isAppleWatch:0];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v9 = [(HDSPSpringboardMonitor *)v7 initWithCallbackScheduler:defaultCallbackScheduler isAppleWatch:0];
     springboardMonitor = v6->_springboardMonitor;
     v6->_springboardMonitor = v9;
 
@@ -48,8 +48,8 @@
 - (BOOL)isSystemReady
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSpringboardMonitor *)self->_springboardMonitor isSpringboardStarted];
-  if (v3)
+  isSpringboardStarted = [(HDSPSpringboardMonitor *)self->_springboardMonitor isSpringboardStarted];
+  if (isSpringboardStarted)
   {
     v4 = HKSPLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -67,7 +67,7 @@
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isSpringboardStarted;
 }
 
 - (void)springboardDidStart

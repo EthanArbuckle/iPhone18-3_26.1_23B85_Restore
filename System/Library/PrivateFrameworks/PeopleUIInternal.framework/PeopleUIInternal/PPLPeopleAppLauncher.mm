@@ -2,7 +2,7 @@
 + (id)sharedLauncher;
 - (PPLPeopleAppLauncher)init;
 - (PPLPeopleAppLauncherDelegate)delegate;
-- (void)launchPeopleAppIfNeededWithForegroundPriority:(BOOL)a3;
+- (void)launchPeopleAppIfNeededWithForegroundPriority:(BOOL)priority;
 @end
 
 @implementation PPLPeopleAppLauncher
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __38__PPLPeopleAppLauncher_sharedLauncher__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedLauncher_onceToken != -1)
   {
     dispatch_once(&sharedLauncher_onceToken, block);
@@ -48,26 +48,26 @@ uint64_t __38__PPLPeopleAppLauncher_sharedLauncher__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)launchPeopleAppIfNeededWithForegroundPriority:(BOOL)a3
+- (void)launchPeopleAppIfNeededWithForegroundPriority:(BOOL)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__PPLPeopleAppLauncher_launchPeopleAppIfNeededWithForegroundPriority___block_invoke;
   v8[3] = &unk_279A0DCD0;
   v8[4] = self;
-  v9 = a3;
+  priorityCopy2 = priority;
   v5 = MEMORY[0x25F8AFCD0](v8, a2);
-  v6 = [(PPLPeopleAppLauncher *)self queue];
-  v7 = v6;
-  if (v3)
+  queue = [(PPLPeopleAppLauncher *)self queue];
+  v7 = queue;
+  if (priorityCopy)
   {
-    dispatch_sync(v6, v5);
+    dispatch_sync(queue, v5);
   }
 
   else
   {
-    dispatch_async(v6, v5);
+    dispatch_async(queue, v5);
   }
 }
 

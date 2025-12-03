@@ -1,7 +1,7 @@
 @interface NTKExplorerDialView
-- (NTKExplorerDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
+- (NTKExplorerDialView)initWithFrame:(CGRect)frame forDevice:(id)device;
 - (id)_hourNumeralHideAnimation;
-- (id)_instantaneousAnimationForKeyPath:(id)a3 value:(id)a4;
+- (id)_instantaneousAnimationForKeyPath:(id)path value:(id)value;
 - (id)_minuteClusterExpandAnimation;
 - (id)_minuteTickBreakAnimation;
 - (id)_minuteTickShowAnimation;
@@ -10,37 +10,37 @@
 - (id)_secondTickBrightenAnimation;
 - (id)_secondTickDimAnimation;
 - (void)_addOrRemoveChildLayers;
-- (void)_applyDensity:(unint64_t)a3;
-- (void)applyTransitionFraction:(double)a3 fromDensity:(unint64_t)a4 toDensity:(unint64_t)a5;
+- (void)_applyDensity:(unint64_t)density;
+- (void)applyTransitionFraction:(double)fraction fromDensity:(unint64_t)density toDensity:(unint64_t)toDensity;
 - (void)cleanupAfterEditing;
-- (void)setDensity:(unint64_t)a3;
+- (void)setDensity:(unint64_t)density;
 @end
 
 @implementation NTKExplorerDialView
 
-- (NTKExplorerDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKExplorerDialView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v145.receiver = self;
   v145.super_class = NTKExplorerDialView;
-  v11 = [(NTKExplorerDialView *)&v145 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKExplorerDialView *)&v145 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    v128 = v10;
-    objc_storeStrong(&v11->_device, a4);
+    v128 = deviceCopy;
+    objc_storeStrong(&height->_device, device);
     v13 = +[UIColor blackColor];
     [(NTKExplorerDialView *)v12 setBackgroundColor:v13];
 
     v138 = 0u;
     memset(v137, 0, sizeof(v137));
     sub_78B4(v12->_device, v137);
-    v14 = [(NTKExplorerDialView *)v12 layer];
-    [v14 bounds];
+    layer = [(NTKExplorerDialView *)v12 layer];
+    [layer bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -67,7 +67,7 @@
 
     v30 = *v137;
     [(CALayer *)v12->_ringLayer setBorderWidth:*v137];
-    [v14 addSublayer:v12->_ringLayer];
+    [layer addSublayer:v12->_ringLayer];
     v31 = objc_opt_new();
     hourReplicatorLayer = v12->_hourReplicatorLayer;
     v12->_hourReplicatorLayer = v31;
@@ -79,7 +79,7 @@
     v33 = v12->_hourReplicatorLayer;
     CATransform3DMakeRotation(&v136, 0.523598776, 0.0, 0.0, 1.0);
     [(CAReplicatorLayer *)v33 setInstanceTransform:&v136];
-    [v14 addSublayer:v12->_hourReplicatorLayer];
+    [layer addSublayer:v12->_hourReplicatorLayer];
     v34 = objc_opt_new();
     v133 = v12;
     hourTickLayer = v12->_hourTickLayer;
@@ -108,7 +108,7 @@
     CATransform3DMakeRotation(&v136, 0.523598776, 0.0, 0.0, 1.0);
     [(CAReplicatorLayer *)v41 setInstanceTransform:&v136];
     [(CAReplicatorLayer *)v12->_minuteReplicatorLayer setInstanceDelay:5.0];
-    [v14 addSublayer:v12->_minuteReplicatorLayer];
+    [layer addSublayer:v12->_minuteReplicatorLayer];
     v42 = objc_opt_new();
     minuteCollectionLayer = v12->_minuteCollectionLayer;
     v12->_minuteCollectionLayer = v42;
@@ -158,7 +158,7 @@
     v134 = v24;
     [(CAReplicatorLayer *)v12->_subdialReplicatorLayer setPosition:v23, v24];
     [(CAReplicatorLayer *)v12->_subdialReplicatorLayer setActions:v25];
-    [v14 addSublayer:v12->_subdialReplicatorLayer];
+    [layer addSublayer:v12->_subdialReplicatorLayer];
     v57 = objc_opt_new();
     secondTickLayer = v12->_secondTickLayer;
     v12->_secondTickLayer = v57;
@@ -181,7 +181,7 @@
     v66 = v25;
     CATransform3DMakeRotation(&v136, 0.523598776, 0.0, 0.0, 1.0);
     v67 = v65;
-    v68 = v14;
+    v68 = layer;
     [(CAReplicatorLayer *)v67 setInstanceTransform:&v136];
     v132 = [NSMutableArray arrayWithCapacity:3];
     v69 = 0;
@@ -234,23 +234,23 @@
         }
       }
 
-      v92 = [v91[101] layer];
-      [v92 setString:v79];
+      layer2 = [v91[101] layer];
+      [layer2 setString:v79];
       v93 = _numeralsGreyColor();
-      [v92 setForegroundColor:{objc_msgSend(v93, "CGColor")}];
+      [layer2 setForegroundColor:{objc_msgSend(v93, "CGColor")}];
 
       [v84 ascender];
       v95 = v94;
       [v84 capHeight];
-      [v92 setBounds:{0.0, v95 - v96 + -1.0, v87, ceil(v90)}];
-      [v92 setFont:v84];
-      [v92 setFontSize:v70];
-      [v92 setAnchorPoint:{0.5, 0.5}];
-      [v92 setPosition:{v135 + v80, v134 + v81}];
-      [v92 setActions:v66];
-      [v92 setContentsScale:2.0];
-      [v68 addSublayer:v92];
-      [v132 addObject:v92];
+      [layer2 setBounds:{0.0, v95 - v96 + -1.0, v87, ceil(v90)}];
+      [layer2 setFont:v84];
+      [layer2 setFontSize:v70];
+      [layer2 setAnchorPoint:{0.5, 0.5}];
+      [layer2 setPosition:{v135 + v80, v134 + v81}];
+      [layer2 setActions:v66];
+      [layer2 setContentsScale:2.0];
+      [v68 addSublayer:layer2];
+      [v132 addObject:layer2];
 
       ++v69;
       v75 += 2;
@@ -324,17 +324,17 @@
     v133->_currentDensityTransition = 0x7FFFFFFFFFFFFFFFLL;
     v133->_density = 0x7FFFFFFFFFFFFFFFLL;
 
-    v10 = v128;
+    deviceCopy = v128;
   }
 
   return v12;
 }
 
-- (void)setDensity:(unint64_t)a3
+- (void)setDensity:(unint64_t)density
 {
-  if (self->_density != a3)
+  if (self->_density != density)
   {
-    self->_density = a3;
+    self->_density = density;
     self->_currentDensityTransition = 0x7FFFFFFFFFFFFFFFLL;
     [(NTKExplorerDialView *)self _applyDensity:self->_density];
   }
@@ -347,17 +347,17 @@
   [(NTKExplorerDialView *)self _addOrRemoveChildLayers];
 }
 
-- (void)_applyDensity:(unint64_t)a3
+- (void)_applyDensity:(unint64_t)density
 {
   [(NTKExplorerDialView *)self _addOrRemoveChildLayers];
-  v5 = [(NTKExplorerDialView *)self layer];
+  layer = [(NTKExplorerDialView *)self layer];
   LODWORD(v6) = 1.0;
-  [v5 setSpeed:v6];
-  [v5 setTimeOffset:0.0];
+  [layer setSpeed:v6];
+  [layer setTimeOffset:0.0];
   [(CALayer *)self->_secondTickLayer removeAllAnimations];
   [(CAReplicatorLayer *)self->_minuteCollectionLayer removeAllAnimations];
   [(CALayer *)self->_minuteTickLayer removeAllAnimations];
-  if (a3 == 2)
+  if (density == 2)
   {
     v7 = 1.0;
   }
@@ -375,7 +375,7 @@
   *&v19[4] = v7;
   [(NSArray *)hourNumerals enumerateObjectsUsingBlock:v19];
   minuteNumerals = self->_minuteNumerals;
-  if (a3 == 3)
+  if (density == 3)
   {
     v10 = 1.0;
   }
@@ -390,7 +390,7 @@
   v18[2] = sub_588C;
   v18[3] = &unk_10438;
   *&v18[4] = v10;
-  if (a3 == 3)
+  if (density == 3)
   {
     v11 = 4;
   }
@@ -402,18 +402,18 @@
 
   [(NSArray *)minuteNumerals enumerateObjectsUsingBlock:v18];
   secondTickLayer = self->_secondTickLayer;
-  v13 = _secondTickColor(a3);
+  v13 = _secondTickColor(density);
   -[CALayer setBackgroundColor:](secondTickLayer, "setBackgroundColor:", [v13 CGColor]);
 
   hourTickLayer = self->_hourTickLayer;
-  v15 = _hourTickColor(a3);
+  v15 = _hourTickColor(density);
   -[CALayer setBackgroundColor:](hourTickLayer, "setBackgroundColor:", [v15 CGColor]);
 
-  [(CAReplicatorLayer *)self->_minuteCollectionLayer setTransform:v17, _minuteClusterTransform(a3, v17).n128_f64[0]];
-  [(CAReplicatorLayer *)self->_minuteCollectionLayer setInstanceTransform:v17, _minuteInstanceTransform(a3, v17).n128_f64[0]];
+  [(CAReplicatorLayer *)self->_minuteCollectionLayer setTransform:v17, _minuteClusterTransform(density, v17).n128_f64[0]];
+  [(CAReplicatorLayer *)self->_minuteCollectionLayer setInstanceTransform:v17, _minuteInstanceTransform(density, v17).n128_f64[0]];
   [(CAReplicatorLayer *)self->_minuteCollectionLayer setInstanceCount:v11];
   v16 = 0.0;
-  if (a3)
+  if (density)
   {
     *&v16 = 1.0;
   }
@@ -421,91 +421,91 @@
   [(CAReplicatorLayer *)self->_minuteCollectionLayer setOpacity:v16];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromDensity:(unint64_t)a4 toDensity:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromDensity:(unint64_t)density toDensity:(unint64_t)toDensity
 {
   currentDensityTransition = self->_currentDensityTransition;
-  if (a4 != a5)
+  if (density != toDensity)
   {
-    if (currentDensityTransition != a4)
+    if (currentDensityTransition != density)
     {
-      self->_currentDensityTransition = a4;
-      [(NTKExplorerDialView *)self _applyDensity:a4];
+      self->_currentDensityTransition = density;
+      [(NTKExplorerDialView *)self _applyDensity:density];
       v9 = self->_currentDensityTransition;
       switch(v9)
       {
         case 2uLL:
           [(CAReplicatorLayer *)self->_subdialReplicatorLayer setInstanceDelay:3.0];
-          v10 = [(NTKExplorerDialView *)self _secondTickDimAnimation];
-          [(CALayer *)self->_secondTickLayer addAnimation:v10 forKey:@"secondTickDim"];
-          v14 = [(NTKExplorerDialView *)self _hourNumeralHideAnimation];
+          _secondTickDimAnimation = [(NTKExplorerDialView *)self _secondTickDimAnimation];
+          [(CALayer *)self->_secondTickLayer addAnimation:_secondTickDimAnimation forKey:@"secondTickDim"];
+          _hourNumeralHideAnimation = [(NTKExplorerDialView *)self _hourNumeralHideAnimation];
           hourNumerals = self->_hourNumerals;
           v25[0] = _NSConcreteStackBlock;
           v25[1] = 3221225472;
           v25[2] = sub_5F54;
           v25[3] = &unk_10460;
-          v26 = v14;
-          v16 = v14;
+          v26 = _hourNumeralHideAnimation;
+          v16 = _hourNumeralHideAnimation;
           [(NSArray *)hourNumerals enumerateObjectsUsingBlock:v25];
-          v17 = [(NTKExplorerDialView *)self _numeralShowAnimation];
+          _numeralShowAnimation = [(NTKExplorerDialView *)self _numeralShowAnimation];
           minuteNumerals = self->_minuteNumerals;
           v23[0] = _NSConcreteStackBlock;
           v23[1] = 3221225472;
           v23[2] = sub_5FD0;
           v23[3] = &unk_10460;
-          v24 = v17;
-          v19 = v17;
+          v24 = _numeralShowAnimation;
+          v19 = _numeralShowAnimation;
           [(NSArray *)minuteNumerals enumerateObjectsUsingBlock:v23];
-          v20 = [(NTKExplorerDialView *)self _minuteClusterExpandAnimation];
-          [(CAReplicatorLayer *)self->_minuteCollectionLayer addAnimation:v20 forKey:@"minuteClusterExpand"];
-          v21 = [(NTKExplorerDialView *)self _minuteTickShrinkAndGrow];
-          [(CALayer *)self->_minuteTickLayer addAnimation:v21 forKey:@"minuteScale"];
+          _minuteClusterExpandAnimation = [(NTKExplorerDialView *)self _minuteClusterExpandAnimation];
+          [(CAReplicatorLayer *)self->_minuteCollectionLayer addAnimation:_minuteClusterExpandAnimation forKey:@"minuteClusterExpand"];
+          _minuteTickShrinkAndGrow = [(NTKExplorerDialView *)self _minuteTickShrinkAndGrow];
+          [(CALayer *)self->_minuteTickLayer addAnimation:_minuteTickShrinkAndGrow forKey:@"minuteScale"];
 
           goto LABEL_13;
         case 1uLL:
           [(CAReplicatorLayer *)self->_subdialReplicatorLayer setInstanceDelay:1.0];
-          v10 = [(NTKExplorerDialView *)self _secondTickBrightenAnimation];
-          [(CALayer *)self->_secondTickLayer addAnimation:v10 forKey:@"secondTickBrighten"];
-          v11 = [(NTKExplorerDialView *)self _numeralShowAnimation];
+          _secondTickDimAnimation = [(NTKExplorerDialView *)self _secondTickBrightenAnimation];
+          [(CALayer *)self->_secondTickLayer addAnimation:_secondTickDimAnimation forKey:@"secondTickBrighten"];
+          _numeralShowAnimation2 = [(NTKExplorerDialView *)self _numeralShowAnimation];
           v12 = self->_hourNumerals;
           v27[0] = _NSConcreteStackBlock;
           v27[1] = 3221225472;
           v27[2] = sub_5ED8;
           v27[3] = &unk_10460;
-          v28 = v11;
-          v13 = v11;
+          v28 = _numeralShowAnimation2;
+          v13 = _numeralShowAnimation2;
           [(NSArray *)v12 enumerateObjectsUsingBlock:v27];
 
           goto LABEL_13;
         case 0uLL:
-          v10 = [(NTKExplorerDialView *)self _minuteTickShowAnimation];
-          [(CAReplicatorLayer *)self->_minuteCollectionLayer addAnimation:v10 forKey:@"minuteTickShow"];
+          _secondTickDimAnimation = [(NTKExplorerDialView *)self _minuteTickShowAnimation];
+          [(CAReplicatorLayer *)self->_minuteCollectionLayer addAnimation:_secondTickDimAnimation forKey:@"minuteTickShow"];
 LABEL_13:
 
           break;
       }
     }
 
-    v22 = [(NTKExplorerDialView *)self layer];
-    [v22 setSpeed:0.0];
-    [v22 setTimeOffset:dbl_CCB0[a4] * a3];
+    layer = [(NTKExplorerDialView *)self layer];
+    [layer setSpeed:0.0];
+    [layer setTimeOffset:dbl_CCB0[density] * fraction];
 
     return;
   }
 
-  if (currentDensityTransition != a4)
+  if (currentDensityTransition != density)
   {
-    self->_currentDensityTransition = a4;
+    self->_currentDensityTransition = density;
 
-    [(NTKExplorerDialView *)self _applyDensity:a3];
+    [(NTKExplorerDialView *)self _applyDensity:fraction];
   }
 }
 
-- (id)_instantaneousAnimationForKeyPath:(id)a3 value:(id)a4
+- (id)_instantaneousAnimationForKeyPath:(id)path value:(id)value
 {
-  v4 = a4;
+  valueCopy = value;
   v5 = [CABasicAnimation animationWithKeyPath:@"instanceDelay"];
-  [v5 setFromValue:v4];
-  [v5 setToValue:v4];
+  [v5 setFromValue:valueCopy];
+  [v5 setToValue:valueCopy];
 
   [v5 setBeginTime:0.00000011920929];
   [v5 setDuration:0.00001];
@@ -528,7 +528,7 @@ LABEL_13:
     v4 = density - 1;
     if (density - 1 > 2)
     {
-      v6 = [(NTKExplorerDialView *)self layer];
+      layer = [(NTKExplorerDialView *)self layer];
       [(CAReplicatorLayer *)self->_minuteReplicatorLayer removeFromSuperlayer];
       v4 = 0;
       LOBYTE(v3) = 0;
@@ -538,18 +538,18 @@ LABEL_13:
     v3 = 4u >> (v4 & 7);
   }
 
-  v6 = [(NTKExplorerDialView *)self layer];
-  v7 = [(CAReplicatorLayer *)self->_minuteReplicatorLayer superlayer];
+  layer = [(NTKExplorerDialView *)self layer];
+  superlayer = [(CAReplicatorLayer *)self->_minuteReplicatorLayer superlayer];
 
-  if (!v7)
+  if (!superlayer)
   {
-    [v6 insertSublayer:self->_minuteReplicatorLayer above:self->_ringLayer];
+    [layer insertSublayer:self->_minuteReplicatorLayer above:self->_ringLayer];
   }
 
 LABEL_8:
-  v8 = [(NSArray *)self->_hourNumerals firstObject];
-  v9 = [v8 superlayer];
-  v10 = v9 != 0;
+  firstObject = [(NSArray *)self->_hourNumerals firstObject];
+  superlayer2 = [firstObject superlayer];
+  v10 = superlayer2 != 0;
 
   hourNumerals = self->_hourNumerals;
   v23[0] = _NSConcreteStackBlock;
@@ -558,13 +558,13 @@ LABEL_8:
   v23[3] = &unk_10488;
   v26 = v4 & 1;
   v27 = v10;
-  v12 = v6;
+  v12 = layer;
   v24 = v12;
-  v25 = self;
+  selfCopy = self;
   [(NSArray *)hourNumerals enumerateObjectsUsingBlock:v23];
-  v13 = [(NSArray *)self->_minuteNumerals firstObject];
-  v14 = [v13 superlayer];
-  v15 = v14 != 0;
+  firstObject2 = [(NSArray *)self->_minuteNumerals firstObject];
+  superlayer3 = [firstObject2 superlayer];
+  v15 = superlayer3 != 0;
 
   minuteNumerals = self->_minuteNumerals;
   v18[0] = _NSConcreteStackBlock;
@@ -574,7 +574,7 @@ LABEL_8:
   v21 = v3 & 1;
   v22 = v15;
   v19 = v12;
-  v20 = self;
+  selfCopy2 = self;
   v17 = v12;
   [(NSArray *)minuteNumerals enumerateObjectsUsingBlock:v18];
 }

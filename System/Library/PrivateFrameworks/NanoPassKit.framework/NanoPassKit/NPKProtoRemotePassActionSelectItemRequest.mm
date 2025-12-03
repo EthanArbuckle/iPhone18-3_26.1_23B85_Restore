@@ -1,12 +1,12 @@
 @interface NPKProtoRemotePassActionSelectItemRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRemotePassActionSelectItemRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRemotePassActionSelectItemRequest;
   v4 = [(NPKProtoRemotePassActionSelectItemRequest *)&v8 description];
-  v5 = [(NPKProtoRemotePassActionSelectItemRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRemotePassActionSelectItemRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestUniqueID = self->_requestUniqueID;
   if (requestUniqueID)
   {
-    [v3 setObject:requestUniqueID forKey:@"requestUniqueID"];
+    [dictionary setObject:requestUniqueID forKey:@"requestUniqueID"];
   }
 
   planIdentifier = self->_planIdentifier;
@@ -90,15 +90,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_requestUniqueID)
   {
     [NPKProtoRemotePassActionSelectItemRequest writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_planIdentifier)
   {
@@ -154,120 +154,120 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setRequestUniqueID:self->_requestUniqueID];
+  toCopy = to;
+  [toCopy setRequestUniqueID:self->_requestUniqueID];
   if (self->_planIdentifier)
   {
-    [v5 setPlanIdentifier:?];
+    [toCopy setPlanIdentifier:?];
   }
 
   if (self->_planLabel)
   {
-    [v5 setPlanLabel:?];
+    [toCopy setPlanLabel:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_planDetailLabel)
   {
-    [v5 setPlanDetailLabel:?];
-    v4 = v5;
+    [toCopy setPlanDetailLabel:?];
+    v4 = toCopy;
   }
 
   if (self->_startDateData)
   {
-    [v5 setStartDateData:?];
-    v4 = v5;
+    [toCopy setStartDateData:?];
+    v4 = toCopy;
   }
 
   if (self->_expiryDateData)
   {
-    [v5 setExpiryDateData:?];
-    v4 = v5;
+    [toCopy setExpiryDateData:?];
+    v4 = toCopy;
   }
 
   if (self->_paymentPassActionData)
   {
-    [v5 setPaymentPassActionData:?];
-    v4 = v5;
+    [toCopy setPaymentPassActionData:?];
+    v4 = toCopy;
   }
 
   if (self->_deviceIdentifier)
   {
-    [v5 setDeviceIdentifier:?];
-    v4 = v5;
+    [toCopy setDeviceIdentifier:?];
+    v4 = toCopy;
   }
 
   if (self->_passTypeIdentifier)
   {
-    [v5 setPassTypeIdentifier:?];
-    v4 = v5;
+    [toCopy setPassTypeIdentifier:?];
+    v4 = toCopy;
   }
 
   if (self->_passSerialNumber)
   {
-    [v5 setPassSerialNumber:?];
-    v4 = v5;
+    [toCopy setPassSerialNumber:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestUniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestUniqueID copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
-  v8 = [(NSString *)self->_planIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_planIdentifier copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(NSString *)self->_planLabel copyWithZone:a3];
+  v10 = [(NSString *)self->_planLabel copyWithZone:zone];
   v11 = v5[8];
   v5[8] = v10;
 
-  v12 = [(NSString *)self->_planDetailLabel copyWithZone:a3];
+  v12 = [(NSString *)self->_planDetailLabel copyWithZone:zone];
   v13 = v5[6];
   v5[6] = v12;
 
-  v14 = [(NSData *)self->_startDateData copyWithZone:a3];
+  v14 = [(NSData *)self->_startDateData copyWithZone:zone];
   v15 = v5[10];
   v5[10] = v14;
 
-  v16 = [(NSData *)self->_expiryDateData copyWithZone:a3];
+  v16 = [(NSData *)self->_expiryDateData copyWithZone:zone];
   v17 = v5[2];
   v5[2] = v16;
 
-  v18 = [(NSData *)self->_paymentPassActionData copyWithZone:a3];
+  v18 = [(NSData *)self->_paymentPassActionData copyWithZone:zone];
   v19 = v5[5];
   v5[5] = v18;
 
-  v20 = [(NSString *)self->_deviceIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_deviceIdentifier copyWithZone:zone];
   v21 = v5[1];
   v5[1] = v20;
 
-  v22 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v22 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v23 = v5[4];
   v5[4] = v22;
 
-  v24 = [(NSString *)self->_passSerialNumber copyWithZone:a3];
+  v24 = [(NSString *)self->_passSerialNumber copyWithZone:zone];
   v25 = v5[3];
   v5[3] = v24;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   requestUniqueID = self->_requestUniqueID;
-  if (requestUniqueID | v4[9])
+  if (requestUniqueID | equalCopy[9])
   {
     if (![(NSString *)requestUniqueID isEqual:?])
     {
@@ -276,15 +276,15 @@
   }
 
   planIdentifier = self->_planIdentifier;
-  if (planIdentifier | v4[7] && ![(NSString *)planIdentifier isEqual:?])
+  if (planIdentifier | equalCopy[7] && ![(NSString *)planIdentifier isEqual:?])
   {
     goto LABEL_22;
   }
 
-  if (((planLabel = self->_planLabel, !(planLabel | v4[8])) || [(NSString *)planLabel isEqual:?]) && ((planDetailLabel = self->_planDetailLabel, !(planDetailLabel | v4[6])) || [(NSString *)planDetailLabel isEqual:?]) && ((startDateData = self->_startDateData, !(startDateData | v4[10])) || [(NSData *)startDateData isEqual:?]) && ((expiryDateData = self->_expiryDateData, !(expiryDateData | v4[2])) || [(NSData *)expiryDateData isEqual:?]) && ((paymentPassActionData = self->_paymentPassActionData, !(paymentPassActionData | v4[5])) || [(NSData *)paymentPassActionData isEqual:?]) && ((deviceIdentifier = self->_deviceIdentifier, !(deviceIdentifier | v4[1])) || [(NSString *)deviceIdentifier isEqual:?]) && ((passTypeIdentifier = self->_passTypeIdentifier, !(passTypeIdentifier | v4[4])) || [(NSString *)passTypeIdentifier isEqual:?]))
+  if (((planLabel = self->_planLabel, !(planLabel | equalCopy[8])) || [(NSString *)planLabel isEqual:?]) && ((planDetailLabel = self->_planDetailLabel, !(planDetailLabel | equalCopy[6])) || [(NSString *)planDetailLabel isEqual:?]) && ((startDateData = self->_startDateData, !(startDateData | equalCopy[10])) || [(NSData *)startDateData isEqual:?]) && ((expiryDateData = self->_expiryDateData, !(expiryDateData | equalCopy[2])) || [(NSData *)expiryDateData isEqual:?]) && ((paymentPassActionData = self->_paymentPassActionData, !(paymentPassActionData | equalCopy[5])) || [(NSData *)paymentPassActionData isEqual:?]) && ((deviceIdentifier = self->_deviceIdentifier, !(deviceIdentifier | equalCopy[1])) || [(NSString *)deviceIdentifier isEqual:?]) && ((passTypeIdentifier = self->_passTypeIdentifier, !(passTypeIdentifier | equalCopy[4])) || [(NSString *)passTypeIdentifier isEqual:?]))
   {
     passSerialNumber = self->_passSerialNumber;
-    if (passSerialNumber | v4[3])
+    if (passSerialNumber | equalCopy[3])
     {
       v15 = [(NSString *)passSerialNumber isEqual:?];
     }
@@ -318,55 +318,55 @@ LABEL_22:
   return v9 ^ v11 ^ [(NSString *)self->_passSerialNumber hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[9])
+  fromCopy = from;
+  if (fromCopy[9])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setRequestUniqueID:?];
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setPlanIdentifier:?];
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setPlanLabel:?];
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setPlanDetailLabel:?];
   }
 
-  if (v4[10])
+  if (fromCopy[10])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setStartDateData:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setExpiryDateData:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setPaymentPassActionData:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setDeviceIdentifier:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setPassTypeIdentifier:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoRemotePassActionSelectItemRequest *)self setPassSerialNumber:?];
   }

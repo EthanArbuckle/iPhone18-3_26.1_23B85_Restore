@@ -1,5 +1,5 @@
 @interface NSOperationQueue
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (NSOperationQueue)currentQueue;
 + (NSOperationQueue)mainQueue;
 - (NSArray)operations;
@@ -10,18 +10,18 @@
 - (NSString)name;
 - (dispatch_queue_t)underlyingQueue;
 - (id)__graphDescription;
-- (void)_fc_addUncancellableOperationForReactorID:(id)a3 block:(id)a4;
-- (void)_fc_addUncancellableOperationWithBlock:(id)a3;
+- (void)_fc_addUncancellableOperationForReactorID:(id)d block:(id)block;
+- (void)_fc_addUncancellableOperationWithBlock:(id)block;
 - (void)addBarrierBlock:(void *)barrier;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)addOperationWithBlock:(void *)block;
 - (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait;
 - (void)cancelAllOperations;
 - (void)dealloc;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
 - (void)setMaxConcurrentOperationCount:(NSInteger)maxConcurrentOperationCount;
 - (void)setName:(NSString *)name;
-- (void)setOvercommitsOperations:(BOOL)a3;
+- (void)setOvercommitsOperations:(BOOL)operations;
 - (void)setQualityOfService:(NSQualityOfService)qualityOfService;
 - (void)setSuspended:(BOOL)suspended;
 - (void)setUnderlyingQueue:(dispatch_queue_t)underlyingQueue;
@@ -119,21 +119,21 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v2 = self;
+  selfCopy = self;
   dispatch_queue = self->_iqp.__dispatch_queue;
   if (dispatch_queue)
   {
     dispatch_release(dispatch_queue);
   }
 
-  v2->_iqp.__dispatch_queue = 0;
-  if (v2->_iqp.__backingQueue)
+  selfCopy->_iqp.__dispatch_queue = 0;
+  if (selfCopy->_iqp.__backingQueue)
   {
     dispatch_queue_set_label_nocopy();
-    dispatch_release(v2->_iqp.__backingQueue);
+    dispatch_release(selfCopy->_iqp.__backingQueue);
   }
 
-  progress = v2->_iqp._progress;
+  progress = selfCopy->_iqp._progress;
   if (!progress)
   {
     goto LABEL_10;
@@ -142,19 +142,19 @@ LABEL_10:
   os_unfair_lock_lock(&progress->_queueLock);
   progress->_queue = 0;
   os_unfair_lock_unlock(&progress->_queueLock);
-  v5 = v2->_iqp._progress;
+  v5 = selfCopy->_iqp._progress;
 LABEL_8:
 
-  v6.receiver = v2;
+  v6.receiver = selfCopy;
   v6.super_class = NSOperationQueue;
   [(NSOperationQueue *)&v6 dealloc];
 }
 
 - (NSArray)operations
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  __NSOperationQueueGetOperations(self, v3, 0);
-  return v3;
+  array = [MEMORY[0x1E695DF70] array];
+  __NSOperationQueueGetOperations(self, array, 0);
+  return array;
 }
 
 - (void)cancelAllOperations
@@ -162,13 +162,13 @@ LABEL_8:
   v13 = *MEMORY[0x1E69E9840];
   if (!self->_iqp.__mainQ)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    __NSOperationQueueGetOperations(self, v3, 1);
+    array = [MEMORY[0x1E695DF70] array];
+    __NSOperationQueueGetOperations(self, array, 1);
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+    v4 = [array countByEnumeratingWithState:&v9 objects:v8 count:16];
     if (v4)
     {
       v5 = v4;
@@ -180,14 +180,14 @@ LABEL_8:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(array);
           }
 
           __NSOPERATIONQUEUE_IS_CANCELLING_AN_OPERATION__(*(*(&v9 + 1) + 8 * v7++));
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+        v5 = [array countByEnumeratingWithState:&v9 objects:v8 count:16];
       }
 
       while (v5);
@@ -198,7 +198,7 @@ LABEL_8:
 - (void)waitUntilAllOperationsAreFinished
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = self;
+  selfCopy = self;
   for (i = objc_opt_new(); ; [i removeAllObjects])
   {
     __NSOperationQueueGetOperations(self, i, 1);
@@ -265,17 +265,17 @@ LABEL_8:
   return v4;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"operations"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"operationCount") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"suspended") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"operationCount") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"name") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"qualityOfService"))
+  if ([key isEqualToString:@"operations"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"operationCount") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"suspended") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"operationCount") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"name") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"qualityOfService"))
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___NSOperationQueue;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
 - (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait
@@ -416,9 +416,9 @@ LABEL_5:
   }
 }
 
-- (void)setOvercommitsOperations:(BOOL)a3
+- (void)setOvercommitsOperations:(BOOL)operations
 {
-  if (!self->_iqp.__mainQ && (atomic_exchange(&self->_iqp.__overcommit, a3) & 1) != a3)
+  if (!self->_iqp.__mainQ && (atomic_exchange(&self->_iqp.__overcommit, operations) & 1) != operations)
   {
     backingQueue = self->_iqp.__backingQueue;
     self->_iqp.__backingQueue = 0;
@@ -550,8 +550,8 @@ void __28__NSOperationQueue_setName___block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSOperationQueue *)self operations];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  operations = [(NSOperationQueue *)self operations];
+  v5 = [(NSArray *)operations countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -563,7 +563,7 @@ void __28__NSOperationQueue_setName___block_invoke(uint64_t a1)
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
         [v3 appendString:{objc_msgSend(*(*(&v11 + 1) + 8 * v8), "__graphDescription:", 0)}];
@@ -572,7 +572,7 @@ void __28__NSOperationQueue_setName___block_invoke(uint64_t a1)
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [(NSArray *)operations countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
@@ -584,12 +584,12 @@ void __28__NSOperationQueue_setName___block_invoke(uint64_t a1)
 - (NSString)description
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(NSOperationQueue *)self name];
-  if (v3)
+  name = [(NSOperationQueue *)self name];
+  if (name)
   {
     v6.receiver = self;
     v6.super_class = NSOperationQueue;
-    return [NSString stringWithFormat:@"%@{name = '%@'}", [(NSOperationQueue *)&v6 description], v3];
+    return [NSString stringWithFormat:@"%@{name = '%@'}", [(NSOperationQueue *)&v6 description], name];
   }
 
   else
@@ -600,10 +600,10 @@ void __28__NSOperationQueue_setName___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([a4 isEqualToString:@"operations"])
+  if ([path isEqualToString:@"operations"])
   {
     if (atomic_fetch_add(&self->_iqp.__operationsObserverCount, 1u) == 255)
     {
@@ -613,7 +613,7 @@ void __28__NSOperationQueue_setName___block_invoke(uint64_t a1)
     }
   }
 
-  else if (([a4 isEqualToString:@"operationCount"] & 1) != 0 && atomic_fetch_add(&self->_iqp.__operationCountObserverCount, 1u) == 255)
+  else if (([path isEqualToString:@"operationCount"] & 1) != 0 && atomic_fetch_add(&self->_iqp.__operationCountObserverCount, 1u) == 255)
   {
     atomic_store(0xFFu, &self->_iqp.__operationCountObserverCount);
     v11 = @"operationCount";
@@ -624,23 +624,23 @@ LABEL_8:
 
   v13.receiver = self;
   v13.super_class = NSOperationQueue;
-  [(NSOperationQueue *)&v13 addObserver:a3 forKeyPath:a4 options:a5 context:a6];
+  [(NSOperationQueue *)&v13 addObserver:observer forKeyPath:path options:options context:context];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSOperationQueue;
-  [(NSOperationQueue *)&v7 removeObserver:a3 forKeyPath:?];
-  if ([a4 isEqualToString:@"operations"])
+  [(NSOperationQueue *)&v7 removeObserver:observer forKeyPath:?];
+  if ([path isEqualToString:@"operations"])
   {
     v6 = 503;
   }
 
   else
   {
-    if (![a4 isEqualToString:@"operationCount"])
+    if (![path isEqualToString:@"operationCount"])
     {
       return;
     }
@@ -651,22 +651,22 @@ LABEL_8:
   atomic_fetch_add(self + v6, 0xFFu);
 }
 
-- (void)_fc_addUncancellableOperationWithBlock:(id)a3
+- (void)_fc_addUncancellableOperationWithBlock:(id)block
 {
-  v4 = [(NSBlockOperation *)_NSFCUncancellableBlockOperation blockOperationWithBlock:a3];
+  v4 = [(NSBlockOperation *)_NSFCUncancellableBlockOperation blockOperationWithBlock:block];
 
   [(NSOperationQueue *)self addOperation:v4];
 }
 
-- (void)_fc_addUncancellableOperationForReactorID:(id)a3 block:(id)a4
+- (void)_fc_addUncancellableOperationForReactorID:(id)d block:(id)block
 {
   v4[6] = *MEMORY[0x1E69E9840];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __95__NSOperationQueue_NSFileCoordinationSupport___fc_addUncancellableOperationForReactorID_block___block_invoke;
   v4[3] = &unk_1E69F5678;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = d;
+  v4[5] = block;
   [(NSOperationQueue *)self addOperation:[(NSBlockOperation *)_NSFCUncancellableBlockOperation blockOperationWithBlock:v4]];
 }
 

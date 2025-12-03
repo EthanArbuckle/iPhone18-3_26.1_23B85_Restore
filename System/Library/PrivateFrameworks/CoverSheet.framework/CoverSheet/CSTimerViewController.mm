@@ -1,18 +1,18 @@
 @interface CSTimerViewController
 - (BOOL)isEndDateValid;
-- (CSTimerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CSTimerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CSTimerViewControllerDelegate)delegate;
 - (NSString)timerText;
-- (void)_nextTimerChanged:(id)a3;
+- (void)_nextTimerChanged:(id)changed;
 - (void)_startTimer;
-- (void)_stopTimerNotifyingDelegate:(BOOL)a3;
+- (void)_stopTimerNotifyingDelegate:(BOOL)delegate;
 - (void)_updateNextTimer;
 - (void)_updateTimerFired;
 - (void)_updateTimerLabelView;
 - (void)dealloc;
 - (void)loadView;
-- (void)setEnabled:(BOOL)a3;
-- (void)setEndDate:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setEndDate:(id)date;
 @end
 
 @implementation CSTimerViewController
@@ -34,8 +34,8 @@
     updateTimer = self->_updateTimer;
     self->_updateTimer = v4;
 
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v6 addTimer:self->_updateTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->_updateTimer forMode:*MEMORY[0x277CBE738]];
 
     v7 = SBLogDashBoard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -78,19 +78,19 @@
   return endDate;
 }
 
-- (CSTimerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CSTimerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = CSTimerViewController;
-  v4 = [(CSCoverSheetViewControllerBase *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(CSCoverSheetViewControllerBase *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D29740]);
     timerManager = v4->_timerManager;
     v4->_timerManager = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v4 selector:sel__nextTimerChanged_ name:*MEMORY[0x277D29680] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__nextTimerChanged_ name:*MEMORY[0x277D29680] object:0];
 
     [(CSTimerViewController *)v4 _updateNextTimer];
   }
@@ -100,8 +100,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CSTimerViewController *)self _stopTimer];
   v4.receiver = self;
@@ -115,12 +115,12 @@
   [(CSTimerViewController *)self setView:v3];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (a3)
+    self->_enabled = enabled;
+    if (enabled)
     {
       [(CSTimerViewController *)self _startTimer];
     }
@@ -132,15 +132,15 @@
   }
 }
 
-- (void)setEndDate:(id)a3
+- (void)setEndDate:(id)date
 {
-  v5 = a3;
-  if (self->_endDate != v5)
+  dateCopy = date;
+  if (self->_endDate != dateCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_endDate, a3);
-    v6 = [(CSTimerViewController *)self timerView];
-    [v6 setEndDate:v7];
+    v7 = dateCopy;
+    objc_storeStrong(&self->_endDate, date);
+    timerView = [(CSTimerViewController *)self timerView];
+    [timerView setEndDate:v7];
 
     if (v7)
     {
@@ -152,21 +152,21 @@
       [(CSTimerViewController *)self _stopTimer];
     }
 
-    v5 = v7;
+    dateCopy = v7;
   }
 }
 
 - (NSString)timerText
 {
-  v2 = [(CSTimerViewController *)self timerView];
-  v3 = [v2 timerText];
+  timerView = [(CSTimerViewController *)self timerView];
+  timerText = [timerView timerText];
 
-  return v3;
+  return timerText;
 }
 
-- (void)_stopTimerNotifyingDelegate:(BOOL)a3
+- (void)_stopTimerNotifyingDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v12 = *MEMORY[0x277D85DE8];
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -184,10 +184,10 @@
     v8 = self->_updateTimer;
     self->_updateTimer = 0;
 
-    if (v3)
+    if (delegateCopy)
     {
-      v9 = [(CSTimerViewController *)self delegate];
-      [v9 timerControllerDidStopTimer:self];
+      delegate = [(CSTimerViewController *)self delegate];
+      [delegate timerControllerDidStopTimer:self];
     }
 
     [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
@@ -218,22 +218,22 @@
 
 - (void)_updateTimerLabelView
 {
-  v3 = [(CSTimerViewController *)self timerView];
-  [v3 updateTimerLabel];
+  timerView = [(CSTimerViewController *)self timerView];
+  [timerView updateTimerLabel];
 
-  v4 = [(CSTimerViewController *)self timerView];
-  [v4 sizeToFit];
+  timerView2 = [(CSTimerViewController *)self timerView];
+  [timerView2 sizeToFit];
 }
 
-- (void)_nextTimerChanged:(id)a3
+- (void)_nextTimerChanged:(id)changed
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = changedCopy;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Received next timer changed notification: %{public}@", &v6, 0xCu);
   }
 
@@ -242,13 +242,13 @@
 
 - (void)_updateNextTimer
 {
-  v3 = [(MTTimerManager *)self->_timerManager nextTimer];
+  nextTimer = [(MTTimerManager *)self->_timerManager nextTimer];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__CSTimerViewController__updateNextTimer__block_invoke;
   v5[3] = &unk_27838D640;
   v5[4] = self;
-  v4 = [v3 addCompletionBlock:v5];
+  v4 = [nextTimer addCompletionBlock:v5];
 }
 
 void __41__CSTimerViewController__updateNextTimer__block_invoke(uint64_t a1, void *a2)

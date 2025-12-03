@@ -1,11 +1,11 @@
 @interface OSASubmissionPolicy
 - (OSASubmissionPolicy)init;
-- (OSASubmissionPolicy)initWithTemplate:(id)a3 options:(id)a4;
+- (OSASubmissionPolicy)initWithTemplate:(id)template options:(id)options;
 - (id)_loadPreviousResults;
-- (id)buildSubmissionTemplateForConfig:(id)a3;
-- (id)shouldSubmitRouting:(id)a3;
+- (id)buildSubmissionTemplateForConfig:(id)config;
+- (id)shouldSubmitRouting:(id)routing;
 - (void)persist;
-- (void)registerRouting:(id)a3 result:(BOOL)a4;
+- (void)registerRouting:(id)routing result:(BOOL)result;
 @end
 
 @implementation OSASubmissionPolicy
@@ -19,9 +19,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(OSASubmissionPolicy *)v2 _loadPreviousResults];
+    _loadPreviousResults = [(OSASubmissionPolicy *)v2 _loadPreviousResults];
     results = v3->_results;
-    v3->_results = v4;
+    v3->_results = _loadPreviousResults;
 
     if (!v3->_results)
     {
@@ -38,8 +38,8 @@
     scanOptions = v3->_scanOptions;
     v3->_scanOptions = v10;
 
-    v12 = [MEMORY[0x277D36B80] sharedInstance];
-    v13 = [v12 submissionParam:@"templates"];
+    mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+    v13 = [mEMORY[0x277D36B80] submissionParam:@"templates"];
     v14 = [v13 objectForKeyedSubscript:@"default"];
     default_template = v3->_default_template;
     v3->_default_template = v14;
@@ -67,9 +67,9 @@
           v21 = *(*(&v29 + 1) + 8 * i);
           v22 = [v21 objectForKeyedSubscript:@"policy"];
           v23 = [v22 objectForKeyedSubscript:@"allow-optout"];
-          v24 = [v23 BOOLValue];
+          bOOLValue = [v23 BOOLValue];
 
-          if (v24)
+          if (bOOLValue)
           {
             v25 = v3->_allowOptOutByRouting;
             v26 = [v21 objectForKeyedSubscript:@"routing"];
@@ -88,32 +88,32 @@
   return v3;
 }
 
-- (OSASubmissionPolicy)initWithTemplate:(id)a3 options:(id)a4
+- (OSASubmissionPolicy)initWithTemplate:(id)template options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  optionsCopy = options;
   v8 = [(OSASubmissionPolicy *)self init];
   v9 = v8;
-  if (v6 && v8)
+  if (templateCopy && v8)
   {
-    if (([v6 isEqualToString:@"default"] & 1) == 0)
+    if (([templateCopy isEqualToString:@"default"] & 1) == 0)
     {
-      v10 = [MEMORY[0x277D36B80] sharedInstance];
-      v11 = [v10 submissionParam:@"templates"];
-      v12 = [v11 objectForKeyedSubscript:v6];
+      mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+      v11 = [mEMORY[0x277D36B80] submissionParam:@"templates"];
+      v12 = [v11 objectForKeyedSubscript:templateCopy];
       primary_template = v9->_primary_template;
       v9->_primary_template = v12;
     }
 
-    v14 = [v7 objectForKeyedSubscript:@"logs"];
+    v14 = [optionsCopy objectForKeyedSubscript:@"logs"];
     specific_files = v9->_specific_files;
     v9->_specific_files = v14;
 
-    v16 = [v7 objectForKeyedSubscript:@"submission_info"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"submission_info"];
     identifier = v9->_identifier;
     v9->_identifier = v16;
 
-    v18 = [v7 objectForKeyedSubscript:@"prefaces"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"prefaces"];
     prefaces = v9->_prefaces;
     v9->_prefaces = v18;
   }
@@ -124,9 +124,9 @@
 - (id)_loadPreviousResults
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [MEMORY[0x277D36B80] sharedInstance];
-  v4 = [v3 pathDiagnostics];
-  v5 = [v4 stringByAppendingPathComponent:@"com.apple.osanalytics.submissionStatus.plist"];
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  pathDiagnostics = [mEMORY[0x277D36B80] pathDiagnostics];
+  v5 = [pathDiagnostics stringByAppendingPathComponent:@"com.apple.osanalytics.submissionStatus.plist"];
   v6 = [v2 dictionaryWithContentsOfFile:v5];
   v7 = [v6 mutableCopy];
 
@@ -136,7 +136,7 @@
 - (void)persist
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *(*a1 + 40);
+  v1 = *(*self + 40);
   v3 = 138412290;
   v4 = v1;
   _os_log_error_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error persisting submission results: %@", &v3, 0xCu);
@@ -153,13 +153,13 @@ void __30__OSASubmissionPolicy_persist__block_invoke(uint64_t a1, uint64_t a2)
   objc_storeStrong((v5 + 40), obj);
 }
 
-- (id)shouldSubmitRouting:(id)a3
+- (id)shouldSubmitRouting:(id)routing
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 isEqualToString:@"ca1-ohttp"];
-  v5 = [MEMORY[0x277D36B80] sharedInstance];
-  if ([v5 optInApple])
+  routingCopy = routing;
+  [routingCopy isEqualToString:@"ca1-ohttp"];
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  if ([mEMORY[0x277D36B80] optInApple])
   {
 
 LABEL_4:
@@ -167,7 +167,7 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v6 = [(NSMutableSet *)self->_allowOptOutByRouting containsObject:v4];
+  v6 = [(NSMutableSet *)self->_allowOptOutByRouting containsObject:routingCopy];
 
   if (v6)
   {
@@ -177,7 +177,7 @@ LABEL_4:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = routingCopy;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ignoring %{public}@ during Opt-OUT", &v11, 0xCu);
   }
 
@@ -194,15 +194,15 @@ LABEL_8:
   return v7;
 }
 
-- (id)buildSubmissionTemplateForConfig:(id)a3
+- (id)buildSubmissionTemplateForConfig:(id)config
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v31 = [MEMORY[0x277D36B88] getAvailableTaskingRoutings];
+  configCopy = config;
+  getAvailableTaskingRoutings = [MEMORY[0x277D36B88] getAvailableTaskingRoutings];
   self->_hasTasking = 0;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v30 = v4;
-  v6 = [v4 isProxy];
+  array = [MEMORY[0x277CBEB18] array];
+  v30 = configCopy;
+  v6 = [configCopy isProxy];
   v7 = 16;
   if (v6)
   {
@@ -218,7 +218,7 @@ LABEL_8:
   v38 = 0u;
   v9 = v8;
   v10 = [(NSArray *)v9 countByEnumeratingWithState:&v35 objects:v47 count:16];
-  v32 = v5;
+  v32 = array;
   if (v10)
   {
     v11 = v10;
@@ -244,7 +244,7 @@ LABEL_8:
 
         else
         {
-          if ([v31 containsObject:v15])
+          if ([getAvailableTaskingRoutings containsObject:v15])
           {
             self->_hasTasking = 1;
           }
@@ -268,7 +268,7 @@ LABEL_8:
 
           v22 = [(NSDictionary *)self->_prefaces objectForKeyedSubscript:v15];
 
-          v5 = v32;
+          array = v32;
           v18 = v33;
           if (v22)
           {
@@ -280,7 +280,7 @@ LABEL_8:
         }
 
         [v18 addObject:v15];
-        [v5 addObject:v16];
+        [array addObject:v16];
       }
 
       v11 = [(NSArray *)v9 countByEnumeratingWithState:&v35 objects:v47 count:16];
@@ -329,15 +329,15 @@ LABEL_8:
   return v32;
 }
 
-- (void)registerRouting:(id)a3 result:(BOOL)a4
+- (void)registerRouting:(id)routing result:(BOOL)result
 {
-  v4 = a4;
-  v13 = a3;
-  v6 = [(NSMutableSet *)self->_allowOptOutByRouting containsObject:v13];
+  resultCopy = result;
+  routingCopy = routing;
+  v6 = [(NSMutableSet *)self->_allowOptOutByRouting containsObject:routingCopy];
   v7 = @"default";
   if (v6)
   {
-    v7 = v13;
+    v7 = routingCopy;
   }
 
   v8 = v7;
@@ -345,7 +345,7 @@ LABEL_8:
   if (v9)
   {
     v10 = v9;
-    if (v4)
+    if (resultCopy)
     {
       [v9 removeObjectForKey:@"attempt"];
     }
@@ -357,8 +357,8 @@ LABEL_8:
     [(NSMutableDictionary *)self->_results setObject:v10 forKeyedSubscript:v8];
   }
 
-  v11 = [MEMORY[0x277CBEAA8] date];
-  if (v4)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (resultCopy)
   {
     v12 = @"success";
   }
@@ -368,7 +368,7 @@ LABEL_8:
     v12 = @"attempt";
   }
 
-  [v10 setObject:v11 forKeyedSubscript:v12];
+  [v10 setObject:date forKeyedSubscript:v12];
 }
 
 @end

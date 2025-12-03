@@ -1,43 +1,43 @@
 @interface WFRemoteExecutionIncomingRunRequestSession
 - (void)finish;
-- (void)finishWithError:(id)a3;
-- (void)handleIncomingFileForRemoteExecutionWithURL:(id)a3 withIdentifier:(id)a4 metadata:(id)a5 destinations:(id)a6 options:(id)a7;
-- (void)handleIncomingProtobuf:(id)a3 destinations:(id)a4 options:(id)a5;
+- (void)finishWithError:(id)error;
+- (void)handleIncomingFileForRemoteExecutionWithURL:(id)l withIdentifier:(id)identifier metadata:(id)metadata destinations:(id)destinations options:(id)options;
+- (void)handleIncomingProtobuf:(id)protobuf destinations:(id)destinations options:(id)options;
 - (void)handleTimeout;
-- (void)handleUnsupportedVersionForRequestData:(id)a3 error:(id)a4 destinations:(id)a5 options:(id)a6;
-- (void)sendResponse:(id)a3 toDestinations:(id)a4 options:(id)a5;
+- (void)handleUnsupportedVersionForRequestData:(id)data error:(id)error destinations:(id)destinations options:(id)options;
+- (void)sendResponse:(id)response toDestinations:(id)destinations options:(id)options;
 @end
 
 @implementation WFRemoteExecutionIncomingRunRequestSession
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v13 = a3;
+  errorCopy = error;
   [(WFRemoteExecutionIncomingRunRequestSession *)self finish];
-  v4 = [(WFRemoteExecutionIncomingRunRequestSession *)self lastKnownDestinations];
-  if (v4)
+  lastKnownDestinations = [(WFRemoteExecutionIncomingRunRequestSession *)self lastKnownDestinations];
+  if (lastKnownDestinations)
   {
-    v5 = v4;
-    v6 = [(WFRemoteExecutionSession *)self request];
+    v5 = lastKnownDestinations;
+    request = [(WFRemoteExecutionSession *)self request];
 
-    if (v6)
+    if (request)
     {
       v7 = [WFRemoteExecutionRunRequestResponse alloc];
-      v8 = [(WFRemoteExecutionSession *)self request];
-      v9 = [v8 identifier];
-      v10 = [(WFRemoteExecutionRunRequestResponse *)v7 initWithRunRequestIdentifier:v9 variables:0 output:0 error:v13];
+      request2 = [(WFRemoteExecutionSession *)self request];
+      identifier = [request2 identifier];
+      v10 = [(WFRemoteExecutionRunRequestResponse *)v7 initWithRunRequestIdentifier:identifier variables:0 output:0 error:errorCopy];
 
-      v11 = [(WFRemoteExecutionIncomingRunRequestSession *)self lastKnownDestinations];
-      v12 = [(WFRemoteExecutionIncomingRunRequestSession *)self lastKnownOptions];
-      [(WFRemoteExecutionIncomingRunRequestSession *)self sendResponse:v10 toDestinations:v11 options:v12];
+      lastKnownDestinations2 = [(WFRemoteExecutionIncomingRunRequestSession *)self lastKnownDestinations];
+      lastKnownOptions = [(WFRemoteExecutionIncomingRunRequestSession *)self lastKnownOptions];
+      [(WFRemoteExecutionIncomingRunRequestSession *)self sendResponse:v10 toDestinations:lastKnownDestinations2 options:lastKnownOptions];
     }
   }
 }
 
 - (void)finish
 {
-  v3 = [(WFRemoteExecutionIncomingRunRequestSession *)self controller];
-  [v3 stop];
+  controller = [(WFRemoteExecutionIncomingRunRequestSession *)self controller];
+  [controller stop];
 
   [(WFRemoteExecutionIncomingRunRequestSession *)self setController:0];
   v4.receiver = self;
@@ -52,60 +52,60 @@
   [(WFRemoteExecutionIncomingRunRequestSession *)self finish];
 }
 
-- (void)handleIncomingFileForRemoteExecutionWithURL:(id)a3 withIdentifier:(id)a4 metadata:(id)a5 destinations:(id)a6 options:(id)a7
+- (void)handleIncomingFileForRemoteExecutionWithURL:(id)l withIdentifier:(id)identifier metadata:(id)metadata destinations:(id)destinations options:(id)options
 {
-  v22 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = a5;
-  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownDestinations:v13];
-  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownOptions:v14];
-  v16 = [v15 objectForKey:@"version"];
+  lCopy = l;
+  identifierCopy = identifier;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  metadataCopy = metadata;
+  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownDestinations:destinationsCopy];
+  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownOptions:optionsCopy];
+  v16 = [metadataCopy objectForKey:@"version"];
 
   if (+[WFRemoteExecutionOutgoingFileSession supportsVersion:](WFRemoteExecutionOutgoingFileSession, "supportsVersion:", [v16 integerValue]))
   {
-    v17 = [(WFRemoteExecutionIncomingRunRequestSession *)self controller];
-    [(WFRemoteExecutionRunRequestResponse *)v17 handleIncomingFileForRemoteExecutionWithURL:v22 withIdentifier:v12];
+    controller = [(WFRemoteExecutionIncomingRunRequestSession *)self controller];
+    [(WFRemoteExecutionRunRequestResponse *)controller handleIncomingFileForRemoteExecutionWithURL:lCopy withIdentifier:identifierCopy];
   }
 
   else
   {
     [(WFRemoteExecutionSession *)self setState:2];
     v18 = [WFRemoteExecutionRunRequestResponse alloc];
-    v19 = [(WFRemoteExecutionSession *)self request];
-    v20 = [v19 identifier];
+    request = [(WFRemoteExecutionSession *)self request];
+    identifier = [request identifier];
     v21 = +[(WFRemoteExecutionRequest *)WFRemoteExecutionRunRequestResponse];
-    v17 = [(WFRemoteExecutionRunRequestResponse *)v18 initWithRunRequestIdentifier:v20 variables:0 output:0 error:v21];
+    controller = [(WFRemoteExecutionRunRequestResponse *)v18 initWithRunRequestIdentifier:identifier variables:0 output:0 error:v21];
 
-    [(WFRemoteExecutionIncomingRunRequestSession *)self sendResponse:v17 toDestinations:v13 options:v14];
+    [(WFRemoteExecutionIncomingRunRequestSession *)self sendResponse:controller toDestinations:destinationsCopy options:optionsCopy];
   }
 }
 
-- (void)sendResponse:(id)a3 toDestinations:(id)a4 options:(id)a5
+- (void)sendResponse:(id)response toDestinations:(id)destinations options:(id)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   [(WFRemoteExecutionSession *)self setState:201];
   v11 = objc_alloc_init(MEMORY[0x1E69C65C0]);
   v30 = 0;
-  v12 = [v8 writeTo:v11 error:&v30];
+  v12 = [responseCopy writeTo:v11 error:&v30];
   v13 = v30;
   if (v12)
   {
     v14 = objc_alloc(MEMORY[0x1E69A5388]);
-    v15 = [v11 immutableData];
-    v16 = [v14 initWithProtobufData:v15 type:2 isResponse:0];
+    immutableData = [v11 immutableData];
+    v16 = [v14 initWithProtobufData:immutableData type:2 isResponse:0];
 
     [(WFRemoteExecutionSession *)self restartTimeout];
-    v17 = [(WFRemoteExecutionSession *)self service];
+    service = [(WFRemoteExecutionSession *)self service];
     v28 = 0;
     v29 = 0;
-    v18 = v9;
-    v27 = v10;
-    v19 = [v17 sendProtobuf:v16 toDestinations:v9 priority:300 options:v10 identifier:&v29 error:&v28];
+    v18 = destinationsCopy;
+    v27 = optionsCopy;
+    v19 = [service sendProtobuf:v16 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v29 error:&v28];
     v20 = v29;
     v21 = v28;
 
@@ -123,7 +123,7 @@
         *buf = 136315650;
         v32 = "[WFRemoteExecutionIncomingRunRequestSession sendResponse:toDestinations:options:]";
         v33 = 2114;
-        v34 = self;
+        selfCopy = self;
         v35 = 2114;
         v36 = v21;
         _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_ERROR, "%s %{public}@ failed to send with error: %{public}@", buf, 0x20u);
@@ -132,11 +132,11 @@
       v22 = 1;
     }
 
-    v9 = v18;
+    destinationsCopy = v18;
     [(WFRemoteExecutionSession *)self setState:v22];
     [(WFRemoteExecutionIncomingRunRequestSession *)self finish];
 
-    v10 = v27;
+    optionsCopy = v27;
   }
 
   else
@@ -144,11 +144,11 @@
     v23 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      v24 = [v8 identifier];
+      identifier = [responseCopy identifier];
       *buf = 136315650;
       v32 = "[WFRemoteExecutionIncomingRunRequestSession sendResponse:toDestinations:options:]";
       v33 = 2114;
-      v34 = v24;
+      selfCopy = identifier;
       v35 = 2114;
       v36 = v13;
       _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_FAULT, "%s <%{public}@> failed to write protobuf with error: %{public}@", buf, 0x20u);
@@ -161,16 +161,16 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleUnsupportedVersionForRequestData:(id)a3 error:(id)a4 destinations:(id)a5 options:(id)a6
+- (void)handleUnsupportedVersionForRequestData:(id)data error:(id)error destinations:(id)destinations options:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3)
+  errorCopy = error;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  if (data)
   {
     v18 = 0;
-    v13 = [WFRemoteExecutionRequest identifierFromData:a3 error:&v18];
+    v13 = [WFRemoteExecutionRequest identifierFromData:data error:&v18];
     v14 = v18;
     v15 = getWFRemoteExecutionLogObject();
     v16 = v15;
@@ -185,8 +185,8 @@
         _os_log_impl(&dword_1CA256000, &v16->super.super, OS_LOG_TYPE_DEFAULT, "%s Sending unsupported version error back for request with identifier %{public}@", buf, 0x16u);
       }
 
-      v16 = [[WFRemoteExecutionRunRequestResponse alloc] initWithRunRequestIdentifier:v13 variables:0 output:0 error:v10];
-      [(WFRemoteExecutionIncomingRunRequestSession *)self sendResponse:v16 toDestinations:v11 options:v12];
+      v16 = [[WFRemoteExecutionRunRequestResponse alloc] initWithRunRequestIdentifier:v13 variables:0 output:0 error:errorCopy];
+      [(WFRemoteExecutionIncomingRunRequestSession *)self sendResponse:v16 toDestinations:destinationsCopy options:optionsCopy];
     }
 
     else if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -202,20 +202,20 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIncomingProtobuf:(id)a3 destinations:(id)a4 options:(id)a5
+- (void)handleIncomingProtobuf:(id)protobuf destinations:(id)destinations options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownDestinations:v9];
-  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownOptions:v10];
+  protobufCopy = protobuf;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownDestinations:destinationsCopy];
+  [(WFRemoteExecutionIncomingRunRequestSession *)self setLastKnownOptions:optionsCopy];
   [(WFRemoteExecutionSession *)self restartTimeout];
   [(WFRemoteExecutionSession *)self setState:200];
   v11 = [WFRemoteExecutionRunRequest alloc];
-  v12 = [v8 data];
+  data = [protobufCopy data];
   v25 = 0;
-  v13 = [(WFRemoteExecutionRunRequest *)v11 initWithData:v12 error:&v25];
+  v13 = [(WFRemoteExecutionRunRequest *)v11 initWithData:data error:&v25];
   v14 = v25;
 
   if (v13)
@@ -223,9 +223,9 @@
     [(WFRemoteExecutionSession *)self setRequest:v13];
     v15 = [objc_alloc(MEMORY[0x1E69E0C20]) initWithEnvironment:4 runningContext:0 presentationMode:0];
     [v15 setDelegate:self];
-    v16 = [v8 data];
+    data2 = [protobufCopy data];
     v24 = 0;
-    [v15 runActionWithRunRequestData:v16 error:&v24];
+    [v15 runActionWithRunRequestData:data2 error:&v24];
     v17 = v24;
 
     objc_storeStrong(&self->_controller, v15);
@@ -261,8 +261,8 @@
       }
 
       [(WFRemoteExecutionSession *)self setState:2];
-      v22 = [v8 data];
-      [(WFRemoteExecutionIncomingRunRequestSession *)self handleUnsupportedVersionForRequestData:v22 error:v14 destinations:v9 options:v10];
+      data3 = [protobufCopy data];
+      [(WFRemoteExecutionIncomingRunRequestSession *)self handleUnsupportedVersionForRequestData:data3 error:v14 destinations:destinationsCopy options:optionsCopy];
     }
 
     else

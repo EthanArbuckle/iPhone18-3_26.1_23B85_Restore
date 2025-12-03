@@ -1,6 +1,6 @@
 @interface TSCHChartValueAxisLayoutItem
 - (CGRect)protected_layoutSpaceRectForAllLabels;
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (void)buildSubTree;
 - (void)p_layoutLabelsNow;
 @end
@@ -176,12 +176,12 @@ LABEL_11:
   objc_msgSend_setLayoutSize_(v37, v35, v29, v31, v36);
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v6 = [TSCHChartValueAxisRenderer alloc];
-  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, repCopy, self);
 
   objc_msgSend_addObject_(v5, v12, v13, v14, v15, v11);
 

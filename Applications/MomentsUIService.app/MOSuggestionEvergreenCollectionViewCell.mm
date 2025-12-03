@@ -1,12 +1,12 @@
 @interface MOSuggestionEvergreenCollectionViewCell
-- (_TtC16MomentsUIService39MOSuggestionEvergreenCollectionViewCell)initWithCoder:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC16MomentsUIService39MOSuggestionEvergreenCollectionViewCell)initWithCoder:(id)coder;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)prepareForReuse;
 @end
 
 @implementation MOSuggestionEvergreenCollectionViewCell
 
-- (_TtC16MomentsUIService39MOSuggestionEvergreenCollectionViewCell)initWithCoder:(id)a3
+- (_TtC16MomentsUIService39MOSuggestionEvergreenCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MomentsUIService39MOSuggestionEvergreenCollectionViewCell_assetView;
   type metadata accessor for MOSuggestionSheetAssetView();
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = MOSuggestionEvergreenCollectionViewCell.hitTest(_:with:)(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = MOSuggestionEvergreenCollectionViewCell.hitTest(_:with:)(event, x, y);
 
   return v10;
 }

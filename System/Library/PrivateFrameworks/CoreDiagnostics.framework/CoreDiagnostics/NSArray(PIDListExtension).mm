@@ -6,7 +6,7 @@
 
 - (id)sortedPids
 {
-  v1 = [a1 sortedArrayUsingSelector:sel_compare_];
+  v1 = [self sortedArrayUsingSelector:sel_compare_];
   v2 = [v1 componentsJoinedByString:{@", "}];
 
   return v2;

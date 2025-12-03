@@ -1,27 +1,27 @@
 @interface Bag
 - (AMSBagProtocol)amsBag;
-- (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value;
 - (Bag)init;
 - (RecentBag)asRecentBag;
 - (UpToDateBag)asUpToDateBag;
-- (double)doubleForKey:(id)a3 defaultValue:(double)a4;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)arrayOfIntegersForKey:(id)a3;
-- (id)arrayOfStringsForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3 defaultValue:(int64_t)a4;
+- (double)doubleForKey:(id)key defaultValue:(double)value;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)arrayOfIntegersForKey:(id)key;
+- (id)arrayOfStringsForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key defaultValue:(int64_t)value;
 @end
 
 @implementation Bag
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
   sub_100005B60((&self->super.isa + OBJC_IVAR___Bag_bag), *&self->bag[OBJC_IVAR___Bag_bag + 16]);
-  v5 = a3;
-  v6 = self;
+  keyCopy = key;
+  selfCopy = self;
   v7 = sub_1000D06CC();
   if (v7 == 2)
   {
@@ -36,16 +36,16 @@
   return v8;
 }
 
-- (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value
 {
   sub_100005B60((&self->super.isa + OBJC_IVAR___Bag_bag), *&self->bag[OBJC_IVAR___Bag_bag + 16]);
-  v7 = a3;
-  v8 = self;
+  keyCopy = key;
+  selfCopy = self;
   v9 = sub_1000D06CC();
 
   if (v9 == 2)
   {
-    return a4;
+    return value;
   }
 
   else
@@ -54,15 +54,15 @@
   }
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
   v5 = (&self->super.isa + OBJC_IVAR___Bag_bag);
   v6 = v5[3];
   v7 = v5[4];
   sub_100005B60(v5, v6);
-  v8 = a3;
-  v9 = self;
-  v10 = sub_1000D0A3C(v8, v6, v7, &dispatch thunk of Bag.subscript.getter);
+  keyCopy = key;
+  selfCopy = self;
+  v10 = sub_1000D0A3C(keyCopy, v6, v7, &dispatch thunk of Bag.subscript.getter);
   if (v11)
   {
     v12 = 0;
@@ -76,35 +76,35 @@
   return v12;
 }
 
-- (double)doubleForKey:(id)a3 defaultValue:(double)a4
+- (double)doubleForKey:(id)key defaultValue:(double)value
 {
   v7 = (&self->super.isa + OBJC_IVAR___Bag_bag);
   v8 = v7[3];
   v9 = v7[4];
   sub_100005B60(v7, v8);
-  v10 = a3;
-  v11 = self;
-  v12 = COERCE_DOUBLE(sub_1000D0A3C(v10, v8, v9, &dispatch thunk of Bag.subscript.getter));
+  keyCopy = key;
+  selfCopy = self;
+  v12 = COERCE_DOUBLE(sub_1000D0A3C(keyCopy, v8, v9, &dispatch thunk of Bag.subscript.getter));
   LOBYTE(v8) = v13;
 
   result = v12;
   if (v8)
   {
-    return a4;
+    return value;
   }
 
   return result;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
   v5 = (&self->super.isa + OBJC_IVAR___Bag_bag);
   v6 = v5[3];
   v7 = v5[4];
   sub_100005B60(v5, v6);
-  v8 = a3;
-  v9 = self;
-  v10 = sub_1000D0A3C(v8, v6, v7, &dispatch thunk of Bag.subscript.getter);
+  keyCopy = key;
+  selfCopy = self;
+  v10 = sub_1000D0A3C(keyCopy, v6, v7, &dispatch thunk of Bag.subscript.getter);
   if (v11)
   {
     v12 = 0;
@@ -118,20 +118,20 @@
   return v12;
 }
 
-- (int64_t)integerForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)integerForKey:(id)key defaultValue:(int64_t)value
 {
   v7 = (&self->super.isa + OBJC_IVAR___Bag_bag);
   v8 = v7[3];
   v9 = v7[4];
   sub_100005B60(v7, v8);
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1000D0A3C(v10, v8, v9, &dispatch thunk of Bag.subscript.getter);
+  keyCopy = key;
+  selfCopy = self;
+  v12 = sub_1000D0A3C(keyCopy, v8, v9, &dispatch thunk of Bag.subscript.getter);
   LOBYTE(v8) = v13;
 
   if (v8)
   {
-    return a4;
+    return value;
   }
 
   else
@@ -140,11 +140,11 @@
   }
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
   sub_100005B60((&self->super.isa + OBJC_IVAR___Bag_bag), *&self->bag[OBJC_IVAR___Bag_bag + 16]);
-  v5 = a3;
-  v6 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_1000C4F1C();
   v8 = v7;
 
@@ -161,14 +161,14 @@
   return v9;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
   v5 = sub_100085D40(&qword_10059CE90);
   __chkstk_darwin(v5 - 8);
   v7 = &v17 - v6;
   sub_100005B60((&self->super.isa + OBJC_IVAR___Bag_bag), *&self->bag[OBJC_IVAR___Bag_bag + 16]);
-  v8 = a3;
-  v9 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_1000D0CE8();
 
   v10 = type metadata accessor for URL();
@@ -186,10 +186,10 @@
   return v13;
 }
 
-- (id)arrayOfStringsForKey:(id)a3
+- (id)arrayOfStringsForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
+  keyCopy = key;
+  selfCopy = self;
   v6 = sub_1000D0EC0();
 
   if (v6)
@@ -205,10 +205,10 @@
   return v7.super.isa;
 }
 
-- (id)arrayOfIntegersForKey:(id)a3
+- (id)arrayOfIntegersForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
+  keyCopy = key;
+  selfCopy = self;
   v6 = sub_1000D11B0();
 
   if (v6)
@@ -231,7 +231,7 @@
   v4 = v3[3];
   v5 = v3[4];
   sub_100005B60(v3, v4);
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1000D1AA8(v4, v5, 0, type metadata accessor for ASDAMSBag, sub_1000D5448);
 
   return v7;
@@ -239,7 +239,7 @@
 
 - (RecentBag)asRecentBag
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000D1544();
 
   return v3;
@@ -247,7 +247,7 @@
 
 - (UpToDateBag)asUpToDateBag
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000D1738();
 
   return v3;

@@ -1,32 +1,32 @@
 @interface DatabaseEpisodePropertySource
 + (id)computedPropertiesToFetch;
 + (id)propertiesToFetch;
-+ (void)fetchSourceForEpisodeUuids:(id)a3 completion:(id)a4;
-- (DatabaseEpisodePropertySource)initWithFetchedPropertyValues:(id)a3;
++ (void)fetchSourceForEpisodeUuids:(id)uuids completion:(id)completion;
+- (DatabaseEpisodePropertySource)initWithFetchedPropertyValues:(id)values;
 - (id)localizedDateString;
 - (id)localizedDurationAndPodcastTitleString;
 - (id)localizedDurationString;
 - (id)openEpisodeDetailInAppURL;
 - (id)openPodcastDetailInAppURL;
-- (void)initiatePlaybackWithCompletion:(id)a3;
+- (void)initiatePlaybackWithCompletion:(id)completion;
 @end
 
 @implementation DatabaseEpisodePropertySource
 
-+ (void)fetchSourceForEpisodeUuids:(id)a3 completion:(id)a4
++ (void)fetchSourceForEpisodeUuids:(id)uuids completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (!v7 || !v8)
+  uuidsCopy = uuids;
+  completionCopy = completion;
+  v8 = [uuidsCopy count];
+  if (!completionCopy || !v8)
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_7;
   }
 
@@ -40,9 +40,9 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_1000037C8;
   block[3] = &unk_10002C8B8;
-  v11 = v6;
-  v13 = a1;
-  v12 = v7;
+  v11 = uuidsCopy;
+  selfCopy = self;
+  v12 = completionCopy;
   dispatch_async(v9, block);
 
 LABEL_7:
@@ -51,11 +51,11 @@ LABEL_7:
 + (id)computedPropertiesToFetch
 {
   v3 = +[NSMutableSet set];
-  v4 = [a1 computedPropertyKeyForBestTitle];
-  [v3 addObject:v4];
+  computedPropertyKeyForBestTitle = [self computedPropertyKeyForBestTitle];
+  [v3 addObject:computedPropertyKeyForBestTitle];
 
-  v5 = [a1 computedPropertyKeyForBestSummary];
-  [v3 addObject:v5];
+  computedPropertyKeyForBestSummary = [self computedPropertyKeyForBestSummary];
+  [v3 addObject:computedPropertyKeyForBestSummary];
 
   return v3;
 }
@@ -80,63 +80,63 @@ LABEL_7:
   v8 = [NSArray arrayWithObjects:v12 count:3];
   [v3 addObjectsFromArray:v8];
 
-  v9 = [a1 sortProperties];
-  [v3 addObjectsFromArray:v9];
+  sortProperties = [self sortProperties];
+  [v3 addObjectsFromArray:sortProperties];
 
   v10 = [NSSet setWithArray:v3];
 
   return v10;
 }
 
-- (DatabaseEpisodePropertySource)initWithFetchedPropertyValues:(id)a3
+- (DatabaseEpisodePropertySource)initWithFetchedPropertyValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v25.receiver = self;
   v25.super_class = DatabaseEpisodePropertySource;
   v5 = [(DatabaseEpisodePropertySource *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:kEpisodeUuid];
+    v6 = [valuesCopy objectForKeyedSubscript:kEpisodeUuid];
     [(DatabaseEpisodePropertySource *)v5 setEpisodeUuid:v6];
 
-    v7 = [objc_opt_class() computedPropertyKeyForBestTitle];
-    v8 = [v4 objectForKeyedSubscript:v7];
+    computedPropertyKeyForBestTitle = [objc_opt_class() computedPropertyKeyForBestTitle];
+    v8 = [valuesCopy objectForKeyedSubscript:computedPropertyKeyForBestTitle];
     [(DatabaseEpisodePropertySource *)v5 setBestTitle:v8];
 
-    v9 = [objc_opt_class() computedPropertyKeyForBestSummary];
-    v10 = [v4 objectForKeyedSubscript:v9];
+    computedPropertyKeyForBestSummary = [objc_opt_class() computedPropertyKeyForBestSummary];
+    v10 = [valuesCopy objectForKeyedSubscript:computedPropertyKeyForBestSummary];
     [(DatabaseEpisodePropertySource *)v5 setBestSummary:v10];
 
-    v11 = [v4 objectForKeyedSubscript:kEpisodeStoreTrackId];
+    v11 = [valuesCopy objectForKeyedSubscript:kEpisodeStoreTrackId];
     -[DatabaseEpisodePropertySource setStoreTrackId:](v5, "setStoreTrackId:", [v11 longLongValue]);
 
     v12 = [MTEpisode propertyPathForPodcastProperty:kPodcastUuid];
-    v13 = [v4 objectForKeyedSubscript:v12];
+    v13 = [valuesCopy objectForKeyedSubscript:v12];
     [(DatabaseEpisodePropertySource *)v5 setPodcastUuid:v13];
 
     v14 = [MTEpisode propertyPathForPodcastProperty:kPodcastTitle];
-    v15 = [v4 objectForKeyedSubscript:v14];
+    v15 = [valuesCopy objectForKeyedSubscript:v14];
     [(DatabaseEpisodePropertySource *)v5 setPodcastTitle:v15];
 
     v16 = [MTEpisode propertyPathForPodcastProperty:kPodcastStoreCollectionId];
-    v17 = [v4 objectForKeyedSubscript:v16];
+    v17 = [valuesCopy objectForKeyedSubscript:v16];
     -[DatabaseEpisodePropertySource setStoreCollectionId:](v5, "setStoreCollectionId:", [v17 longLongValue]);
 
-    v18 = [v4 objectForKeyedSubscript:kEpisodePubDate];
+    v18 = [valuesCopy objectForKeyedSubscript:kEpisodePubDate];
     [(DatabaseEpisodePropertySource *)v5 setPubDate:v18];
 
-    v19 = [v4 objectForKeyedSubscript:kEpisodeDuration];
+    v19 = [valuesCopy objectForKeyedSubscript:kEpisodeDuration];
     [v19 doubleValue];
     [(DatabaseEpisodePropertySource *)v5 setDuration:?];
 
-    v20 = [v4 objectForKeyedSubscript:kEpisodeByteSize];
+    v20 = [valuesCopy objectForKeyedSubscript:kEpisodeByteSize];
     -[DatabaseEpisodePropertySource setByteSize:](v5, "setByteSize:", [v20 longLongValue]);
 
-    v21 = [v4 objectForKeyedSubscript:kEpisodeVideo];
+    v21 = [valuesCopy objectForKeyedSubscript:kEpisodeVideo];
     -[DatabaseEpisodePropertySource setIsVideo:](v5, "setIsVideo:", [v21 BOOLValue]);
 
-    v22 = [objc_opt_class() sortProperties];
-    v23 = [v4 mt_subdictionaryWithKeys:v22];
+    sortProperties = [objc_opt_class() sortProperties];
+    v23 = [valuesCopy mt_subdictionaryWithKeys:sortProperties];
     [(BaseEpisodePropertySource *)v5 setSortPropertyValues:v23];
   }
 
@@ -145,8 +145,8 @@ LABEL_7:
 
 - (id)localizedDateString
 {
-  v3 = [(DatabaseEpisodePropertySource *)self pubDate];
-  v4 = [(BaseEpisodePropertySource *)self _localizedDateStringForDate:v3];
+  pubDate = [(DatabaseEpisodePropertySource *)self pubDate];
+  v4 = [(BaseEpisodePropertySource *)self _localizedDateStringForDate:pubDate];
 
   return v4;
 }
@@ -162,42 +162,42 @@ LABEL_7:
 {
   [(DatabaseEpisodePropertySource *)self duration];
   v4 = v3;
-  v5 = [(DatabaseEpisodePropertySource *)self podcastTitle];
-  v6 = [(BaseEpisodePropertySource *)self _localizedStringForDuration:v5 podcastTitle:v4];
+  podcastTitle = [(DatabaseEpisodePropertySource *)self podcastTitle];
+  v6 = [(BaseEpisodePropertySource *)self _localizedStringForDuration:podcastTitle podcastTitle:v4];
 
   return v6;
 }
 
 - (id)openPodcastDetailInAppURL
 {
-  v3 = [(DatabaseEpisodePropertySource *)self podcastUuid];
-  v4 = [(BaseEpisodePropertySource *)self _openPodcastDetailInAppURLForPodcastUuid:v3 podcastStoreCollectionId:[(DatabaseEpisodePropertySource *)self storeCollectionId]];
+  podcastUuid = [(DatabaseEpisodePropertySource *)self podcastUuid];
+  v4 = [(BaseEpisodePropertySource *)self _openPodcastDetailInAppURLForPodcastUuid:podcastUuid podcastStoreCollectionId:[(DatabaseEpisodePropertySource *)self storeCollectionId]];
 
   return v4;
 }
 
 - (id)openEpisodeDetailInAppURL
 {
-  v3 = [(DatabaseEpisodePropertySource *)self episodeUuid];
-  v4 = [(BaseEpisodePropertySource *)self _openEpisodeDetailInAppURLForEpisodeUuid:v3 episodeStoreTrackId:[(DatabaseEpisodePropertySource *)self storeTrackId] podcastStoreCollectionId:[(DatabaseEpisodePropertySource *)self storeCollectionId]];
+  episodeUuid = [(DatabaseEpisodePropertySource *)self episodeUuid];
+  v4 = [(BaseEpisodePropertySource *)self _openEpisodeDetailInAppURLForEpisodeUuid:episodeUuid episodeStoreTrackId:[(DatabaseEpisodePropertySource *)self storeTrackId] podcastStoreCollectionId:[(DatabaseEpisodePropertySource *)self storeCollectionId]];
 
   return v4;
 }
 
-- (void)initiatePlaybackWithCompletion:(id)a3
+- (void)initiatePlaybackWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DatabaseEpisodePropertySource *)self episodeUuid];
-  v6 = [(DatabaseEpisodePropertySource *)self storeTrackId];
-  v7 = [(DatabaseEpisodePropertySource *)self podcastUuid];
-  v8 = [(DatabaseEpisodePropertySource *)self storeCollectionId];
+  completionCopy = completion;
+  episodeUuid = [(DatabaseEpisodePropertySource *)self episodeUuid];
+  storeTrackId = [(DatabaseEpisodePropertySource *)self storeTrackId];
+  podcastUuid = [(DatabaseEpisodePropertySource *)self podcastUuid];
+  storeCollectionId = [(DatabaseEpisodePropertySource *)self storeCollectionId];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100004564;
   v10[3] = &unk_10002C818;
-  v11 = v4;
-  v9 = v4;
-  [(BaseEpisodePropertySource *)self _initiatePlaybackWithDefaultBehaviorForEpisodeUUid:v5 episodeStoreTrackId:v6 podcastUuid:v7 podcastStoreCollectionId:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(BaseEpisodePropertySource *)self _initiatePlaybackWithDefaultBehaviorForEpisodeUUid:episodeUuid episodeStoreTrackId:storeTrackId podcastUuid:podcastUuid podcastStoreCollectionId:storeCollectionId completion:v10];
 }
 
 @end

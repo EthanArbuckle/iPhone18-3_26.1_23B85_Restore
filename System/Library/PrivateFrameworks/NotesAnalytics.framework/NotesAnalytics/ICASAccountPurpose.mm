@@ -1,34 +1,34 @@
 @interface ICASAccountPurpose
-- (ICASAccountPurpose)initWithAccountPurpose:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASAccountPurpose)initWithAccountPurpose:(int64_t)purpose;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASAccountPurpose
 
-- (ICASAccountPurpose)initWithAccountPurpose:(int64_t)a3
+- (ICASAccountPurpose)initWithAccountPurpose:(int64_t)purpose
 {
   v5.receiver = self;
   v5.super_class = ICASAccountPurpose;
   result = [(ICASAccountPurpose *)&v5 init];
   if (result)
   {
-    result->_accountPurpose = a3;
+    result->_accountPurpose = purpose;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASAccountPurpose *)self accountPurpose];
-  if ((v3 - 1) > 2)
+  accountPurpose = [(ICASAccountPurpose *)self accountPurpose];
+  if ((accountPurpose - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF110[v3 - 1];
+    return off_2799AF110[accountPurpose - 1];
   }
 }
 

@@ -15,7 +15,7 @@
     *buf = 136446466;
     v9 = "tcp_listener_dispose";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_181A37000, v3, OS_LOG_TYPE_DEBUG, "%{public}s %p", buf, 0x16u);
   }
 

@@ -1,14 +1,14 @@
 @interface FRNet
-+ (void)downloadMobileAssetWithCompletionHandler:(id)a3;
-- (BOOL)getColorConsistentOutputRGBVia:(__CVBuffer *)a3 bicubicRGB:(__CVBuffer *)a4 laplacianMask:(__CVBuffer *)a5 attachment:(__CFDictionary *)a6 destinationFrame:(__CVBuffer *)a7;
-- (BOOL)upscaleFrame:(__CVBuffer *)a3 previousLowResFrame:(__CVBuffer *)a4 previousHiResFrame:(__CVBuffer *)a5 opticalFlow:(__CVBuffer *)a6 destinationHiResFrame:(__CVBuffer *)a7;
-- (FRNet)initWithUsage:(int64_t)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5 scaleFactor:(unint64_t)a6 useMPS:(BOOL)a7 outputSize:(CGSize)a8;
-- (__CVBuffer)convertToYUV:(__CVBuffer *)a3 attachment:(__CFDictionary *)a4;
++ (void)downloadMobileAssetWithCompletionHandler:(id)handler;
+- (BOOL)getColorConsistentOutputRGBVia:(__CVBuffer *)via bicubicRGB:(__CVBuffer *)b laplacianMask:(__CVBuffer *)mask attachment:(__CFDictionary *)attachment destinationFrame:(__CVBuffer *)frame;
+- (BOOL)upscaleFrame:(__CVBuffer *)frame previousLowResFrame:(__CVBuffer *)resFrame previousHiResFrame:(__CVBuffer *)hiResFrame opticalFlow:(__CVBuffer *)flow destinationHiResFrame:(__CVBuffer *)destinationHiResFrame;
+- (FRNet)initWithUsage:(int64_t)usage inputWidth:(unint64_t)width inputHeight:(unint64_t)height scaleFactor:(unint64_t)factor useMPS:(BOOL)s outputSize:(CGSize)size;
+- (__CVBuffer)convertToYUV:(__CVBuffer *)v attachment:(__CFDictionary *)attachment;
 - (int64_t)allocateTemporalBuffers;
-- (void)VSRGetInputFrameSizeForUsage:(int64_t)a3 width:(unint64_t *)a4 height:(unint64_t *)a5;
-- (void)convertToRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withRGBFormat:(unsigned int)a5 rotate:(BOOL)a6;
+- (void)VSRGetInputFrameSizeForUsage:(int64_t)usage width:(unint64_t *)width height:(unint64_t *)height;
+- (void)convertToRGB:(__CVBuffer *)b to:(__CVBuffer *)to withRGBFormat:(unsigned int)format rotate:(BOOL)rotate;
 - (void)dealloc;
-- (void)getPixelBufferAttributes:(unsigned int)a3 bitDepth:(int64_t *)a4 isYUV:(BOOL *)a5 isFullRange:(BOOL *)a6 isYUV422:(BOOL *)a7;
+- (void)getPixelBufferAttributes:(unsigned int)attributes bitDepth:(int64_t *)depth isYUV:(BOOL *)v isFullRange:(BOOL *)range isYUV422:(BOOL *)v422;
 - (void)releaseTemporalBuffers;
 @end
 
@@ -69,23 +69,23 @@
   [(FRNet *)&v5 dealloc];
 }
 
-+ (void)downloadMobileAssetWithCompletionHandler:(id)a3
++ (void)downloadMobileAssetWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__FRNet_downloadMobileAssetWithCompletionHandler___block_invoke;
   v5[3] = &unk_278F53658;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [VEMobileAsset downloadMobileAssetType:@"com.apple.MobileAsset.VideoEffect" assetSpecifier:@"com.apple.videoeffect.VSR" forClientName:@"FRNet" completionHandler:v5];
 }
 
-- (void)convertToRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withRGBFormat:(unsigned int)a5 rotate:(BOOL)a6
+- (void)convertToRGB:(__CVBuffer *)b to:(__CVBuffer *)to withRGBFormat:(unsigned int)format rotate:(BOOL)rotate
 {
-  if (a5 == 846624121)
+  if (format == 846624121)
   {
-    if (VTPixelTransferSessionTransferImage(self->_vtTransferSession, a3, a4) && (global_logLevel & 0x10) != 0)
+    if (VTPixelTransferSessionTransferImage(self->_vtTransferSession, b, to) && (global_logLevel & 0x10) != 0)
     {
       v9 = global_logger;
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
@@ -97,11 +97,11 @@
 
   else
   {
-    v10 = a6;
-    v11 = CMCopyDictionaryOfAttachments(0, a3, 1u);
-    CMSetAttachments(a4, v11, 1u);
+    rotateCopy = rotate;
+    v11 = CMCopyDictionaryOfAttachments(0, b, 1u);
+    CMSetAttachments(to, v11, 1u);
     CFRelease(v11);
-    if (v10)
+    if (rotateCopy)
     {
       v12 = 2;
     }
@@ -113,11 +113,11 @@
 
     scaler = self->_scaler;
 
-    [(VEScaler *)scaler downScaleFrameSource:a3 destination:a4 rotate:v12 waitForCompletion:0];
+    [(VEScaler *)scaler downScaleFrameSource:b destination:to rotate:v12 waitForCompletion:0];
   }
 }
 
-- (__CVBuffer)convertToYUV:(__CVBuffer *)a3 attachment:(__CFDictionary *)a4
+- (__CVBuffer)convertToYUV:(__CVBuffer *)v attachment:(__CFDictionary *)attachment
 {
   bitDepth = self->_bitDepth;
   if (bitDepth == 10)
@@ -176,11 +176,11 @@
     }
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(v);
+  Height = CVPixelBufferGetHeight(v);
   PixelBuffer = createPixelBuffer(Width, Height, v8, 0);
   removeCMAttachment = self->_removeCMAttachment;
-  v16 = [(__CFDictionary *)a4 valueForKey:*MEMORY[0x277CC4C00]];
+  v16 = [(__CFDictionary *)attachment valueForKey:*MEMORY[0x277CC4C00]];
   v17 = v16;
   if (!v16)
   {
@@ -192,7 +192,7 @@
 
 LABEL_23:
     v19 = 1;
-    CMSetAttachments(PixelBuffer, a4, 1u);
+    CMSetAttachments(PixelBuffer, attachment, 1u);
     goto LABEL_24;
   }
 
@@ -204,7 +204,7 @@ LABEL_23:
   }
 
 LABEL_24:
-  if (VTPixelTransferSessionTransferImage(self->_vtTransferSession, a3, PixelBuffer))
+  if (VTPixelTransferSessionTransferImage(self->_vtTransferSession, v, PixelBuffer))
   {
     if ((global_logLevel & 0x10) != 0)
     {
@@ -225,7 +225,7 @@ LABEL_24:
   if ((v19 & 1) == 0)
   {
 LABEL_28:
-    CMSetAttachments(PixelBuffer, a4, 1u);
+    CMSetAttachments(PixelBuffer, attachment, 1u);
   }
 
 LABEL_29:
@@ -233,16 +233,16 @@ LABEL_29:
   return PixelBuffer;
 }
 
-- (BOOL)getColorConsistentOutputRGBVia:(__CVBuffer *)a3 bicubicRGB:(__CVBuffer *)a4 laplacianMask:(__CVBuffer *)a5 attachment:(__CFDictionary *)a6 destinationFrame:(__CVBuffer *)a7
+- (BOOL)getColorConsistentOutputRGBVia:(__CVBuffer *)via bicubicRGB:(__CVBuffer *)b laplacianMask:(__CVBuffer *)mask attachment:(__CFDictionary *)attachment destinationFrame:(__CVBuffer *)frame
 {
-  v12 = [(FRNet *)self convertToYUV:a3 attachment:a6];
-  v13 = [(FRNet *)self convertToYUV:a4 attachment:a6];
+  v12 = [(FRNet *)self convertToYUV:via attachment:attachment];
+  v13 = [(FRNet *)self convertToYUV:b attachment:attachment];
   PixelFormatType = CVPixelBufferGetPixelFormatType(v12);
   Width = CVPixelBufferGetWidth(v12);
   Height = CVPixelBufferGetHeight(v12);
   PixelBuffer = createPixelBuffer(Width, Height, PixelFormatType, 0);
-  CMSetAttachments(PixelBuffer, a6, 1u);
-  v18 = [(OFNormalization *)self->_normalization postprocessSRFrame:v12 bicubicYUV:v13 laplacianMask:a5 outputYUV:PixelBuffer];
+  CMSetAttachments(PixelBuffer, attachment, 1u);
+  v18 = [(OFNormalization *)self->_normalization postprocessSRFrame:v12 bicubicYUV:v13 laplacianMask:mask outputYUV:PixelBuffer];
   v19 = createPixelBuffer(Width, Height, self->_rgbaPixelFormat, 0);
   [(FRNet *)self convertToRGB:PixelBuffer to:v19 withRGBFormat:self->_rgbaPixelFormat rotate:0];
   removeCMAttachment = self->_removeCMAttachment;
@@ -257,8 +257,8 @@ LABEL_29:
     }
 
 LABEL_6:
-    [(VEScaler *)self->_scaler upScaleAndCropFrameSource:v19 destination:a7 upscale:0 rotate:self->_inputIsPortrait waitForCompletion:1];
-    CMSetAttachments(a7, self->_attachmentDictOfInput, 1u);
+    [(VEScaler *)self->_scaler upScaleAndCropFrameSource:v19 destination:frame upscale:0 rotate:self->_inputIsPortrait waitForCompletion:1];
+    CMSetAttachments(frame, self->_attachmentDictOfInput, 1u);
     goto LABEL_7;
   }
 
@@ -268,8 +268,8 @@ LABEL_6:
   }
 
 LABEL_4:
-  CMSetAttachments(a7, self->_attachmentDictOfInput, 1u);
-  [(VEScaler *)self->_scaler upScaleAndCropFrameSource:v19 destination:a7 upscale:0 rotate:self->_inputIsPortrait waitForCompletion:1];
+  CMSetAttachments(frame, self->_attachmentDictOfInput, 1u);
+  [(VEScaler *)self->_scaler upScaleAndCropFrameSource:v19 destination:frame upscale:0 rotate:self->_inputIsPortrait waitForCompletion:1];
 LABEL_7:
   CVPixelBufferRelease(v12);
   CVPixelBufferRelease(v13);
@@ -279,18 +279,18 @@ LABEL_7:
   return v18;
 }
 
-- (void)VSRGetInputFrameSizeForUsage:(int64_t)a3 width:(unint64_t *)a4 height:(unint64_t *)a5
+- (void)VSRGetInputFrameSizeForUsage:(int64_t)usage width:(unint64_t *)width height:(unint64_t *)height
 {
-  getInputFrameSizeForUsage(a3, a4, a5);
-  *a4 = (*a4 + 15) & 0xFFFFFFFFFFFFFFF0;
-  *a5 = (*a5 + 15) & 0xFFFFFFFFFFFFFFF0;
+  getInputFrameSizeForUsage(usage, width, height);
+  *width = (*width + 15) & 0xFFFFFFFFFFFFFFF0;
+  *height = (*height + 15) & 0xFFFFFFFFFFFFFFF0;
 }
 
-- (void)getPixelBufferAttributes:(unsigned int)a3 bitDepth:(int64_t *)a4 isYUV:(BOOL *)a5 isFullRange:(BOOL *)a6 isYUV422:(BOOL *)a7
+- (void)getPixelBufferAttributes:(unsigned int)attributes bitDepth:(int64_t *)depth isYUV:(BOOL *)v isFullRange:(BOOL *)range isYUV422:(BOOL *)v422
 {
-  v24 = CVPixelFormatDescriptionCreateWithPixelFormatType(*MEMORY[0x277CBECE8], a3);
+  v24 = CVPixelFormatDescriptionCreateWithPixelFormatType(*MEMORY[0x277CBECE8], attributes);
   v11 = [(__CFDictionary *)v24 objectForKeyedSubscript:*MEMORY[0x277CC4F48]];
-  *a5 = [v11 BOOLValue];
+  *v = [v11 BOOLValue];
 
   v12 = [(__CFDictionary *)v24 objectForKeyedSubscript:*MEMORY[0x277CC4F70]];
   v13 = [v12 count];
@@ -300,36 +300,36 @@ LABEL_7:
     v14 = [(__CFDictionary *)v24 objectForKeyedSubscript:@"Planes"];
     v15 = [v14 objectAtIndexedSubscript:1];
     v16 = [v15 objectForKeyedSubscript:@"HorizontalSubsampling"];
-    v17 = [v16 intValue];
+    intValue = [v16 intValue];
 
     v18 = [v15 objectForKeyedSubscript:@"VerticalSubsampling"];
-    v19 = [v18 intValue];
+    intValue2 = [v18 intValue];
 
-    v20 = v19 < 2;
+    v20 = intValue2 < 2;
   }
 
   else
   {
     v21 = [(__CFDictionary *)v24 objectForKeyedSubscript:@"HorizontalSubsampling"];
-    v17 = [v21 intValue];
+    intValue = [v21 intValue];
 
     v20 = 1;
   }
 
-  *a7 = v17 == 2 && v20;
+  *v422 = intValue == 2 && v20;
   v22 = [(__CFDictionary *)v24 objectForKeyedSubscript:*MEMORY[0x277CC4ED8]];
-  *a4 = [v22 intValue];
+  *depth = [v22 intValue];
 
   v23 = [(__CFDictionary *)v24 objectForKeyedSubscript:*MEMORY[0x277CC4EF8]];
-  *a6 = [v23 isEqualToString:*MEMORY[0x277CC4F00]];
+  *range = [v23 isEqualToString:*MEMORY[0x277CC4F00]];
 }
 
-- (FRNet)initWithUsage:(int64_t)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5 scaleFactor:(unint64_t)a6 useMPS:(BOOL)a7 outputSize:(CGSize)a8
+- (FRNet)initWithUsage:(int64_t)usage inputWidth:(unint64_t)width inputHeight:(unint64_t)height scaleFactor:(unint64_t)factor useMPS:(BOOL)s outputSize:(CGSize)size
 {
-  v8 = a7;
-  height = a8.height;
-  width = a8.width;
-  v14 = a3;
+  sCopy = s;
+  height = size.height;
+  width = size.width;
+  usageCopy = usage;
   v59 = *MEMORY[0x277D85DE8];
   v54.receiver = self;
   v54.super_class = FRNet;
@@ -340,11 +340,11 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  v15->_usage = v14 & 0xFFF;
-  v15->_inputWidth = a4;
-  v15->_inputHeight = a5;
-  v15->_inputIsPortrait = a5 > a4;
-  v15->_scaleFactor = a6;
+  v15->_usage = usageCopy & 0xFFF;
+  v15->_inputWidth = width;
+  v15->_inputHeight = height;
+  v15->_inputIsPortrait = height > width;
+  v15->_scaleFactor = factor;
   v15->_errorMaskThreshold = 0.05;
   v15->_useLaplacianMask = 0;
   [FRNet VSRGetInputFrameSizeForUsage:v15 width:"VSRGetInputFrameSizeForUsage:width:height:" height:?];
@@ -370,13 +370,13 @@ LABEL_7:
     }
 
     v23 = v22;
-    v24 = [v22 absoluteString];
-    v25 = [v24 stringByAppendingPathComponent:@"vsrnet_4x.mlmodelc/model.mil"];
+    absoluteString = [v22 absoluteString];
+    v25 = [absoluteString stringByAppendingPathComponent:@"vsrnet_4x.mlmodelc/model.mil"];
     modelPath = v16->_modelPath;
     v16->_modelPath = v25;
 
-    v27 = [MEMORY[0x277CCAA00] defaultManager];
-    v28 = [v27 fileExistsAtPath:v16->_modelPath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v28 = [defaultManager fileExistsAtPath:v16->_modelPath];
 
     if ((v28 & 1) == 0)
     {
@@ -393,7 +393,7 @@ LABEL_7:
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v56 = v29;
+        usageCopy2 = v29;
         _os_log_impl(&dword_24874B000, v30, OS_LOG_TYPE_INFO, "MobileAssetStatus is not ready! VSRSuperResolutionConfigurationMobileAssetStatus: %ld", buf, 0xCu);
       }
 
@@ -419,8 +419,8 @@ LABEL_7:
     v35 = v16->_modelPath;
     v16->_modelPath = v34;
 
-    v36 = [MEMORY[0x277CCAA00] defaultManager];
-    v37 = [v36 fileExistsAtPath:v16->_modelPath];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v37 = [defaultManager2 fileExistsAtPath:v16->_modelPath];
 
     if (!v37)
     {
@@ -447,9 +447,9 @@ LABEL_25:
     {
       usage = v16->_usage;
       *buf = 134218240;
-      v56 = usage;
+      usageCopy2 = usage;
       v57 = 1024;
-      v58 = v8;
+      v58 = sCopy;
       _os_log_impl(&dword_24874B000, v50, OS_LOG_TYPE_INFO, "[FRNet] usage: %ld, useMPS: %d", buf, 0x12u);
     }
   }
@@ -555,42 +555,42 @@ LABEL_26:
   }
 }
 
-- (BOOL)upscaleFrame:(__CVBuffer *)a3 previousLowResFrame:(__CVBuffer *)a4 previousHiResFrame:(__CVBuffer *)a5 opticalFlow:(__CVBuffer *)a6 destinationHiResFrame:(__CVBuffer *)a7
+- (BOOL)upscaleFrame:(__CVBuffer *)frame previousLowResFrame:(__CVBuffer *)resFrame previousHiResFrame:(__CVBuffer *)hiResFrame opticalFlow:(__CVBuffer *)flow destinationHiResFrame:(__CVBuffer *)destinationHiResFrame
 {
   OUTLINED_FUNCTION_0_0();
-  self->_attachmentDictOfInput = CMCopyDictionaryOfAttachments(0, a3, 1u);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  self->_attachmentDictOfInput = CMCopyDictionaryOfAttachments(0, frame, 1u);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(frame);
   self->_inputPixelFormat = PixelFormatType;
   [(FRNet *)self getPixelBufferAttributes:PixelFormatType bitDepth:&self->_bitDepth isYUV:&self->_isYUV isFullRange:&self->_fullRange isYUV422:&self->_isYUV422];
-  self->_outputPixelFormat = CVPixelBufferGetPixelFormatType(a3);
-  [OUTLINED_FUNCTION_2_12() convertToRGB:a3 to:? withRGBFormat:? rotate:?];
+  self->_outputPixelFormat = CVPixelBufferGetPixelFormatType(frame);
+  [OUTLINED_FUNCTION_2_12() convertToRGB:frame to:? withRGBFormat:? rotate:?];
   self->_attachmentRGBDict = CMCopyDictionaryOfAttachments(0, self->_currentLRRGB, 1u);
-  if (a4)
+  if (resFrame)
   {
     if (self->_inputIsPortrait)
     {
-      Height = CVPixelBufferGetHeight(a4);
+      Height = CVPixelBufferGetHeight(resFrame);
     }
 
     else
     {
-      Height = CVPixelBufferGetWidth(a4);
+      Height = CVPixelBufferGetWidth(resFrame);
     }
 
     v16 = Height;
     if (self->_inputIsPortrait)
     {
-      Width = CVPixelBufferGetWidth(a4);
+      Width = CVPixelBufferGetWidth(resFrame);
     }
 
     else
     {
-      Width = CVPixelBufferGetHeight(a4);
+      Width = CVPixelBufferGetHeight(resFrame);
     }
 
     PixelBuffer = createPixelBuffer(v16, Width, self->_rgbaPixelFormat, 0);
-    [OUTLINED_FUNCTION_2_12() convertToRGB:a4 to:PixelBuffer withRGBFormat:? rotate:?];
-    if (!a5)
+    [OUTLINED_FUNCTION_2_12() convertToRGB:resFrame to:PixelBuffer withRGBFormat:? rotate:?];
+    if (!hiResFrame)
     {
       goto LABEL_20;
     }
@@ -599,7 +599,7 @@ LABEL_26:
   else
   {
     PixelBuffer = 0;
-    if (!a5)
+    if (!hiResFrame)
     {
       goto LABEL_20;
     }
@@ -609,23 +609,23 @@ LABEL_26:
   {
     if (self->_inputIsPortrait)
     {
-      v18 = CVPixelBufferGetHeight(a5);
+      v18 = CVPixelBufferGetHeight(hiResFrame);
     }
 
     else
     {
-      v18 = CVPixelBufferGetWidth(a5);
+      v18 = CVPixelBufferGetWidth(hiResFrame);
     }
 
     v19 = v18;
     if (self->_inputIsPortrait)
     {
-      v20 = CVPixelBufferGetWidth(a5);
+      v20 = CVPixelBufferGetWidth(hiResFrame);
     }
 
     else
     {
-      v20 = CVPixelBufferGetHeight(a5);
+      v20 = CVPixelBufferGetHeight(hiResFrame);
     }
 
     v21 = createPixelBuffer(v19, v20, self->_rgbaPixelFormat, 0);
@@ -635,10 +635,10 @@ LABEL_26:
     self->_previousHRRGBTexture = v22;
   }
 
-  [OUTLINED_FUNCTION_2_12() convertToRGB:a5 to:? withRGBFormat:? rotate:?];
+  [OUTLINED_FUNCTION_2_12() convertToRGB:hiResFrame to:? withRGBFormat:? rotate:?];
 LABEL_20:
   self->_currentLRYUV = [(FRNet *)self convertToYUV:self->_currentLRRGB attachment:self->_attachmentDictOfInput];
-  if (a4)
+  if (resFrame)
   {
     self->_previousLRYUV = [(FRNet *)self convertToYUV:PixelBuffer attachment:self->_attachmentDictOfInput];
   }
@@ -648,7 +648,7 @@ LABEL_20:
   if (v24)
   {
     v25 = 248;
-    if (!a4)
+    if (!resFrame)
     {
       v25 = 184;
     }
@@ -666,7 +666,7 @@ LABEL_20:
       v33 = 0;
       getInputFrameSizeForUsage(self->_usage, &v33, &v32);
       *&v26 = getFlowDownscaleRatio(v33, v32, 1);
-      v24 = [(Upsampler *)self->_upsampler upscaleFlow:a6 upscaleRatio:self->_opticalFlow destination:v26];
+      v24 = [(Upsampler *)self->_upsampler upscaleFlow:flow upscaleRatio:self->_opticalFlow destination:v26];
       if (v24)
       {
         OUTLINED_FUNCTION_0_0();
@@ -720,7 +720,7 @@ LABEL_33:
           OUTLINED_FUNCTION_0_0();
           OUTLINED_FUNCTION_0_0();
           v30 = 272;
-          if (!a5)
+          if (!hiResFrame)
           {
             v30 = 328;
           }
@@ -735,7 +735,7 @@ LABEL_33:
             {
               OUTLINED_FUNCTION_0_0();
               OUTLINED_FUNCTION_0_0();
-              v24 = [(FRNet *)self getColorConsistentOutputRGBVia:self->_srNetHROutput bicubicRGB:self->_bicubicRGB laplacianMask:self->_laplacianMask attachment:self->_attachmentDictOfInput destinationFrame:a7];
+              v24 = [(FRNet *)self getColorConsistentOutputRGBVia:self->_srNetHROutput bicubicRGB:self->_bicubicRGB laplacianMask:self->_laplacianMask attachment:self->_attachmentDictOfInput destinationFrame:destinationHiResFrame];
               if (v24)
               {
                 CVPixelBufferRelease(self->_currentLRYUV);

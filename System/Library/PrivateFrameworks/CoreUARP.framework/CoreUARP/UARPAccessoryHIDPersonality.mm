@@ -1,43 +1,43 @@
 @interface UARPAccessoryHIDPersonality
-- (BOOL)isEqual:(id)a3;
-- (UARPAccessoryHIDPersonality)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4;
+- (BOOL)isEqual:(id)equal;
+- (UARPAccessoryHIDPersonality)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD;
 @end
 
 @implementation UARPAccessoryHIDPersonality
 
-- (UARPAccessoryHIDPersonality)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4
+- (UARPAccessoryHIDPersonality)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD
 {
   v7.receiver = self;
   v7.super_class = UARPAccessoryHIDPersonality;
   result = [(UARPAccessoryHIDPersonality *)&v7 init];
   if (result)
   {
-    result->_vendorID = a3;
-    result->_productID = a4;
+    result->_vendorID = d;
+    result->_productID = iD;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(UARPAccessoryHIDPersonality *)self vendorID];
-      if (v6 == [(UARPAccessoryHIDPersonality *)v5 vendorID])
+      v5 = equalCopy;
+      vendorID = [(UARPAccessoryHIDPersonality *)self vendorID];
+      if (vendorID == [(UARPAccessoryHIDPersonality *)v5 vendorID])
       {
-        v7 = [(UARPAccessoryHIDPersonality *)self productID];
-        v8 = v7 == [(UARPAccessoryHIDPersonality *)v5 productID];
+        productID = [(UARPAccessoryHIDPersonality *)self productID];
+        v8 = productID == [(UARPAccessoryHIDPersonality *)v5 productID];
       }
 
       else

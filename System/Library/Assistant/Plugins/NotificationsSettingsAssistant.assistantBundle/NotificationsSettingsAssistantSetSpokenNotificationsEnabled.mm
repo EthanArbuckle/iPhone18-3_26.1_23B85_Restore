@@ -1,13 +1,13 @@
 @interface NotificationsSettingsAssistantSetSpokenNotificationsEnabled
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation NotificationsSettingsAssistantSetSpokenNotificationsEnabled
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  helperCopy = helper;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -35,47 +35,47 @@
     v10 = 1;
   }
 
-  v11 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self timeToReEnable];
+  timeToReEnable = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self timeToReEnable];
 
-  if (v11)
+  if (timeToReEnable)
   {
-    v12 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
+    appBundleId = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
 
     +[AFPreferences sharedPreferences];
-    if (v12)
+    if (appBundleId)
       v13 = {;
-      v14 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
-      v15 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self timeToReEnable];
-      [v13 setSpokenNotificationTemporarilyDisabledForApp:v14 until:v15];
+      appBundleId2 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
+      timeToReEnable2 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self timeToReEnable];
+      [v13 setSpokenNotificationTemporarilyDisabledForApp:appBundleId2 until:timeToReEnable2];
     }
 
     else
       v13 = {;
-      v14 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self timeToReEnable];
-      [v13 setSpokenNotificationTemporarilyDisabledUntil:v14];
+      appBundleId2 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self timeToReEnable];
+      [v13 setSpokenNotificationTemporarilyDisabledUntil:appBundleId2];
     }
 
     v22 = objc_alloc_init(SACommandSucceeded);
     v23 = v34[5];
     v34[5] = v22;
 
-    v18 = [v34[5] dictionary];
-    v6[2](v6, v18);
+    dictionary = [v34[5] dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
   else
   {
-    v16 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
+    appBundleId3 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
 
-    if (v16)
+    if (appBundleId3)
     {
-      v17 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
-      v18 = [v8 sectionInfoForSectionID:v17];
+      appBundleId4 = [(NotificationsSettingsAssistantSetSpokenNotificationsEnabled *)self appBundleId];
+      dictionary = [v8 sectionInfoForSectionID:appBundleId4];
 
-      if (v18)
+      if (dictionary)
       {
-        v19 = [v18 sectionID];
-        if ([v18 announceSetting] == v9)
+        sectionID = [dictionary sectionID];
+        if ([dictionary announceSetting] == v9)
         {
           v20 = [SACommandFailed alloc];
           v21 = [v20 initWithErrorCode:SASettingValueUnchangedErrorCode];
@@ -83,8 +83,8 @@
 
         else
         {
-          [v18 setAnnounceSetting:v9];
-          [v8 setSectionInfo:v18 forSectionID:v19];
+          [dictionary setAnnounceSetting:v9];
+          [v8 setSectionInfo:dictionary forSectionID:sectionID];
           v21 = objc_alloc_init(SACommandSucceeded);
         }
 
@@ -95,12 +95,12 @@
       else
       {
         v24 = objc_alloc_init(SACommandFailed);
-        v19 = v34[5];
+        sectionID = v34[5];
         v34[5] = v24;
       }
 
-      v26 = [v34[5] dictionary];
-      v6[2](v6, v26);
+      dictionary2 = [v34[5] dictionary];
+      completionCopy[2](completionCopy, dictionary2);
     }
 
     else
@@ -112,11 +112,11 @@
       v31 = &v33;
       v32 = v10;
       v28 = v8;
-      v29 = self;
-      v30 = v6;
+      selfCopy = self;
+      v30 = completionCopy;
       [v28 getEffectiveGlobalSpokenNotificationSettingWithCompletion:v27];
 
-      v18 = v28;
+      dictionary = v28;
     }
   }
 

@@ -1,9 +1,9 @@
 @interface PhysicalInterfaceSampler
-+ (id)sharedInstanceForInterfaceType:(int64_t)a3;
-- (BOOL)updateAssesmentHelper:(double)a3;
++ (id)sharedInstanceForInterfaceType:(int64_t)type;
+- (BOOL)updateAssesmentHelper:(double)helper;
 - (PhysicalInterfaceSampler)init;
 - (double)lastInterfaceTrafficTimestamp;
-- (int)setConfiguration:(id)a3;
+- (int)setConfiguration:(id)configuration;
 - (void)ensureNonZeroPhysicalInterfaceThroughputParameters;
 - (void)restoreDefaults;
 - (void)updateAssesments;
@@ -42,15 +42,15 @@
   }
 }
 
-+ (id)sharedInstanceForInterfaceType:(int64_t)a3
++ (id)sharedInstanceForInterfaceType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __59__PhysicalInterfaceSampler_sharedInstanceForInterfaceType___block_invoke_2;
     v6[3] = &__block_descriptor_40_e5_v8__0l;
-    v6[4] = a1;
+    v6[4] = self;
     if (sharedInstanceForInterfaceType__wifiPred != -1)
     {
       dispatch_once(&sharedInstanceForInterfaceType__wifiPred, v6);
@@ -60,13 +60,13 @@
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__PhysicalInterfaceSampler_sharedInstanceForInterfaceType___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedInstanceForInterfaceType__cellPred != -1)
     {
       dispatch_once(&sharedInstanceForInterfaceType__cellPred, block);
@@ -129,17 +129,17 @@ uint64_t __59__PhysicalInterfaceSampler_sharedInstanceForInterfaceType___block_i
   return v2;
 }
 
-- (BOOL)updateAssesmentHelper:(double)a3
+- (BOOL)updateAssesmentHelper:(double)helper
 {
   v57 = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableArray *)self->_interfaceSamples count];
   if (v5)
   {
     v6 = v5;
-    v7 = [(NSMutableArray *)self->_interfaceSamples lastObject];
-    [v7 startTimeIntervalSinceReferenceDate];
+    lastObject = [(NSMutableArray *)self->_interfaceSamples lastObject];
+    [lastObject startTimeIntervalSinceReferenceDate];
     v9 = v8;
-    [v7 elapsedTime];
+    [lastObject elapsedTime];
     v11 = v10;
     [(NSMutableArray *)self->_interfaceSamples reverseObjectEnumerator];
     v42 = 0u;
@@ -167,7 +167,7 @@ LABEL_4:
 
         v20 = *(*(&v42 + 1) + 8 * v18);
         [v20 startTimeIntervalSinceReferenceDate];
-        if (v16 - v21 >= a3)
+        if (v16 - v21 >= helper)
         {
           break;
         }
@@ -200,7 +200,7 @@ LABEL_4:
         v50 = 2048;
         v51 = v16 - v26;
         v52 = 2048;
-        v53 = a3;
+        helperCopy = helper;
         v54 = 2048;
         v55 = -v19;
         _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEBUG, "Found a PhysicalInterfaceSample that went back long enough: %.4f to %.4f (delta %.4f >= %.4f) at index %lu", buf, 0x34u);
@@ -333,29 +333,29 @@ LABEL_7:
   [(PhysicalInterfaceSampler *)self ensureNonZeroPhysicalInterfaceThroughputParameters];
 }
 
-- (int)setConfiguration:(id)a3
+- (int)setConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = configurationCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "PhysicalInterfaceSampler handle new configuration parameters %{public}@", &v9, 0xCu);
   }
 
-  [v4 extractKey:@"MinRxTputHighInterfaceUse" toDouble:&self->_minPhysicalInterfaceRxUsageForSustainedHighThroughput defaultTo:self->_defaultMinPhysicalInterfaceRxUsageForSustainedHighThroughput];
-  [v4 extractKey:@"MinInitialRxTputHighInterfaceUse" toDouble:&self->_minInitialInterfaceRxUsageForSustainedHighThroughput defaultTo:self->_defaultMinInitialInterfaceRxUsageForSustainedHighThroughput];
-  [v4 extractKey:@"MinTxTputHighInterfaceUse" toDouble:&self->_minPhysicalInterfaceTxUsageForSustainedHighThroughput defaultTo:self->_defaultMinPhysicalInterfaceTxUsageForSustainedHighThroughput];
-  [v4 extractKey:@"MinInitialTxTputHighInterfaceUse" toDouble:&self->_minInitialInterfaceTxUsageForSustainedHighThroughput defaultTo:self->_defaultMinInitialInterfaceTxUsageForSustainedHighThroughput];
+  [configurationCopy extractKey:@"MinRxTputHighInterfaceUse" toDouble:&self->_minPhysicalInterfaceRxUsageForSustainedHighThroughput defaultTo:self->_defaultMinPhysicalInterfaceRxUsageForSustainedHighThroughput];
+  [configurationCopy extractKey:@"MinInitialRxTputHighInterfaceUse" toDouble:&self->_minInitialInterfaceRxUsageForSustainedHighThroughput defaultTo:self->_defaultMinInitialInterfaceRxUsageForSustainedHighThroughput];
+  [configurationCopy extractKey:@"MinTxTputHighInterfaceUse" toDouble:&self->_minPhysicalInterfaceTxUsageForSustainedHighThroughput defaultTo:self->_defaultMinPhysicalInterfaceTxUsageForSustainedHighThroughput];
+  [configurationCopy extractKey:@"MinInitialTxTputHighInterfaceUse" toDouble:&self->_minInitialInterfaceTxUsageForSustainedHighThroughput defaultTo:self->_defaultMinInitialInterfaceTxUsageForSustainedHighThroughput];
   if ((self->_ifType - 1) <= 1)
   {
-    [v4 extractKey:@"MinDisplayOffHighInterfaceUseDuration" toDouble:&self->_minConservativePhysicalInterfaceDurationForSustainedHighThroughput defaultTo:4.6];
-    [v4 extractKey:@"MinDisplayOnHighInterfaceUseDuration" toDouble:&self->_minResponsivePhysicalInterfaceDurationForSustainedHighThroughput defaultTo:2.2];
+    [configurationCopy extractKey:@"MinDisplayOffHighInterfaceUseDuration" toDouble:&self->_minConservativePhysicalInterfaceDurationForSustainedHighThroughput defaultTo:4.6];
+    [configurationCopy extractKey:@"MinDisplayOnHighInterfaceUseDuration" toDouble:&self->_minResponsivePhysicalInterfaceDurationForSustainedHighThroughput defaultTo:2.2];
   }
 
-  v6 = [v4 objectForKey:@"restoreDefaults"];
+  v6 = [configurationCopy objectForKey:@"restoreDefaults"];
   if (v6)
   {
     [(PhysicalInterfaceSampler *)self restoreDefaults];

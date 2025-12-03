@@ -1,22 +1,22 @@
 @interface SASRequestTrigger
-- (SASRequestTrigger)initWithRequestOptions:(id)a3 updateHandle:(id *)a4;
-- (void)_updateState:(int64_t)a3;
-- (void)addTriggerTarget:(id)a3 action:(SEL)a4;
+- (SASRequestTrigger)initWithRequestOptions:(id)options updateHandle:(id *)handle;
+- (void)_updateState:(int64_t)state;
+- (void)addTriggerTarget:(id)target action:(SEL)action;
 @end
 
 @implementation SASRequestTrigger
 
-- (SASRequestTrigger)initWithRequestOptions:(id)a3 updateHandle:(id *)a4
+- (SASRequestTrigger)initWithRequestOptions:(id)options updateHandle:(id *)handle
 {
-  v6 = a3;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = SASRequestTrigger;
   v7 = [(SASRequestTrigger *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    v7->_state = a4 != 0;
-    v9 = [v6 copy];
+    v7->_state = handle != 0;
+    v9 = [optionsCopy copy];
     options = v8->_options;
     v8->_options = v9;
 
@@ -25,7 +25,7 @@
       [(SASRequestOptions *)v8->_options setUseAutomaticEndpointing:0];
     }
 
-    if (a4)
+    if (handle)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -33,18 +33,18 @@
       v14[3] = &unk_1E82F4730;
       v15 = v8;
       v11 = [v14 copy];
-      v12 = *a4;
-      *a4 = v11;
+      v12 = *handle;
+      *handle = v11;
     }
   }
 
   return v8;
 }
 
-- (void)_updateState:(int64_t)a3
+- (void)_updateState:(int64_t)state
 {
   v18 = *MEMORY[0x1E69E9840];
-  self->_state = a3;
+  self->_state = state;
   v4 = [(NSMapTable *)self->_observers copy];
   v13 = 0u;
   v14 = 0u;
@@ -79,22 +79,22 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTriggerTarget:(id)a3 action:(SEL)a4
+- (void)addTriggerTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   observers = self->_observers;
-  key = v6;
+  key = targetCopy;
   if (!observers)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:5 valueOptions:2 capacity:1];
     v9 = self->_observers;
     self->_observers = v8;
 
-    v6 = key;
+    targetCopy = key;
     observers = self->_observers;
   }
 
-  NSMapInsert(observers, v6, a4);
+  NSMapInsert(observers, targetCopy, action);
 }
 
 @end

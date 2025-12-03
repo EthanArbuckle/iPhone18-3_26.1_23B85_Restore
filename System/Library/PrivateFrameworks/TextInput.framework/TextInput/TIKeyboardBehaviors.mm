@@ -1,7 +1,7 @@
 @interface TIKeyboardBehaviors
-- (BOOL)isEqual:(id)a3;
-- (TIKeyboardBehaviors)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TIKeyboardBehaviors)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -14,21 +14,21 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4 = objc_opt_class();
 
   return [(TIKeyboardBehaviors *)self isMemberOfClass:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
 
-- (TIKeyboardBehaviors)initWithCoder:(id)a3
+- (TIKeyboardBehaviors)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = TIKeyboardBehaviors;

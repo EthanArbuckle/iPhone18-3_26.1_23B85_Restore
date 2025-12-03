@@ -1,15 +1,15 @@
 @interface TSTMergeChangeDistributor
-- (void)didMergeRange:(TSUModelCellRect)a3;
-- (void)didUnmergeRange:(TSUModelCellRect)a3;
+- (void)didMergeRange:(TSUModelCellRect)range;
+- (void)didUnmergeRange:(TSUModelCellRect)range;
 @end
 
 @implementation TSTMergeChangeDistributor
 
-- (void)didMergeRange:(TSUModelCellRect)a3
+- (void)didMergeRange:(TSUModelCellRect)range
 {
-  size = a3.var0.size;
-  origin = a3.var0.origin;
-  if (objc_msgSend_hasReceivers(self, a2, *&a3.var0.origin, *&a3.var0.size, v3))
+  size = range.var0.size;
+  origin = range.var0.origin;
+  if (objc_msgSend_hasReceivers(self, a2, *&range.var0.origin, *&range.var0.size, v3))
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -21,11 +21,11 @@
   }
 }
 
-- (void)didUnmergeRange:(TSUModelCellRect)a3
+- (void)didUnmergeRange:(TSUModelCellRect)range
 {
-  size = a3.var0.size;
-  origin = a3.var0.origin;
-  if (objc_msgSend_hasReceivers(self, a2, *&a3.var0.origin, *&a3.var0.size, v3))
+  size = range.var0.size;
+  origin = range.var0.origin;
+  if (objc_msgSend_hasReceivers(self, a2, *&range.var0.origin, *&range.var0.size, v3))
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;

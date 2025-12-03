@@ -1,11 +1,11 @@
 @interface CABrightnessRamper
-- (CABrightnessRamper)initWithDisplay:(id)a3;
-- (void)rampCallback:(id)a3;
+- (CABrightnessRamper)initWithDisplay:(id)display;
+- (void)rampCallback:(id)callback;
 @end
 
 @implementation CABrightnessRamper
 
-- (void)rampCallback:(id)a3
+- (void)rampCallback:(id)callback
 {
   v134 = *MEMORY[0x1E69E9840];
   [(CABrightnessRamper *)self sdrNitsBegin];
@@ -47,19 +47,19 @@
   [(CAWindowServerRamper *)self beginTime];
   if (v27 <= 0.0)
   {
-    [a3 targetTimestamp];
+    [callback targetTimestamp];
     [(CAWindowServerRamper *)self setBeginTime:?];
   }
 
   v113 = 0;
-  [a3 targetTimestamp];
+  [callback targetTimestamp];
   v29 = v28;
   [(CAWindowServerRamper *)self beginTime];
   v31 = v29 - v30;
   [(CAWindowServerRamper *)self duration];
-  if (v31 / v32 > 1.0 || ([a3 targetTimestamp], v34 = v33, -[CAWindowServerRamper beginTime](self, "beginTime"), v36 = v34 - v35, -[CAWindowServerRamper duration](self, "duration"), v38 = 0.0, v36 / v37 >= 0.0))
+  if (v31 / v32 > 1.0 || ([callback targetTimestamp], v34 = v33, -[CAWindowServerRamper beginTime](self, "beginTime"), v36 = v34 - v35, -[CAWindowServerRamper duration](self, "duration"), v38 = 0.0, v36 / v37 >= 0.0))
   {
-    [a3 targetTimestamp];
+    [callback targetTimestamp];
     v40 = v39;
     [(CAWindowServerRamper *)self beginTime];
     v42 = v40 - v41;
@@ -67,7 +67,7 @@
     v38 = 1.0;
     if (v42 / v43 <= 1.0)
     {
-      [a3 targetTimestamp];
+      [callback targetTimestamp];
       v45 = v44;
       [(CAWindowServerRamper *)self beginTime];
       v47 = v45 - v46;
@@ -135,72 +135,72 @@
 
   if (COERCE_UNSIGNED_INT64(fabs(v93 * v103)) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v65 = [(CAWindowServerRamper *)self display];
+    display = [(CAWindowServerRamper *)self display];
     *&v66 = v93 * v103;
-    [(CAWindowServerDisplay *)v65 setSDRBrightness:v66];
+    [(CAWindowServerDisplay *)display setSDRBrightness:v66];
   }
 
   if (COERCE_UNSIGNED_INT64(fabs(v92 * v9)) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v67 = [(CAWindowServerRamper *)self display];
+    display2 = [(CAWindowServerRamper *)self display];
     HIDWORD(v68) = HIDWORD(v111);
     *&v68 = v111;
-    [(CAWindowServerDisplay *)v67 setHeadroom:v68];
+    [(CAWindowServerDisplay *)display2 setHeadroom:v68];
   }
 
   if ((*&v58 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v69 = [(CAWindowServerRamper *)self display];
+    display3 = [(CAWindowServerRamper *)self display];
     *&v70 = v58;
-    [(CAWindowServerDisplay *)v69 setBrightnessLimit:v70];
+    [(CAWindowServerDisplay *)display3 setBrightnessLimit:v70];
   }
 
   if (COERCE_UNSIGNED_INT64(fabs(v15 + v104 * (v99 - v15))) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v71 = [(CAWindowServerRamper *)self display];
+    display4 = [(CAWindowServerRamper *)self display];
     HIDWORD(v72) = HIDWORD(v109);
     *&v72 = v109;
-    [(CAWindowServerDisplay *)v71 setContrastEnhancer:v72];
+    [(CAWindowServerDisplay *)display4 setContrastEnhancer:v72];
   }
 
   if ((*&v59 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v73 = [(CAWindowServerRamper *)self display];
+    display5 = [(CAWindowServerRamper *)self display];
     *&v74 = v59;
-    [(CAWindowServerDisplay *)v73 setLowAmbientAdaptation:v74];
+    [(CAWindowServerDisplay *)display5 setLowAmbientAdaptation:v74];
   }
 
   if ((*&v60 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v75 = [(CAWindowServerRamper *)self display];
+    display6 = [(CAWindowServerRamper *)self display];
     *&v76 = v60;
-    [(CAWindowServerDisplay *)v75 setHighAmbientAdaptation:v76];
+    [(CAWindowServerDisplay *)display6 setHighAmbientAdaptation:v76];
   }
 
   if ((*&v61 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v77 = [(CAWindowServerRamper *)self display];
+    display7 = [(CAWindowServerRamper *)self display];
     *&v78 = v61;
-    [(CAWindowServerDisplay *)v77 setContrastPreservation:v78];
+    [(CAWindowServerDisplay *)display7 setContrastPreservation:v78];
   }
 
   if ((*&v62 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v79 = [(CAWindowServerRamper *)self display];
+    display8 = [(CAWindowServerRamper *)self display];
     *&v80 = v62;
-    [(CAWindowServerDisplay *)v79 setIndicatorBrightness:v80];
+    [(CAWindowServerDisplay *)display8 setIndicatorBrightness:v80];
   }
 
   if ((*&v64 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v81 = [(CAWindowServerRamper *)self display];
+    display9 = [(CAWindowServerRamper *)self display];
     *&v82 = v64;
-    [(CAWindowServerDisplay *)v81 setIndicatorBrightnessLimit:v82];
+    [(CAWindowServerDisplay *)display9 setIndicatorBrightnessLimit:v82];
   }
 
   v83 = mach_absolute_time();
   v84 = CATimeWithHostTime(v83);
-  v85 = [(CAWindowServerRamper *)self display];
+  display10 = [(CAWindowServerRamper *)self display];
   v112[0] = MEMORY[0x1E69E9820];
   v112[1] = 3221225472;
   v112[2] = __35__CABrightnessRamper_rampCallback___block_invoke;
@@ -211,7 +211,7 @@
   *&v112[7] = v58;
   *&v112[8] = v15 + v104 * (v99 - v15);
   *&v112[9] = v84;
-  if (![(CAWindowServerDisplay *)v85 commitBrightness:&v113 withBlock:v112])
+  if (![(CAWindowServerDisplay *)display10 commitBrightness:&v113 withBlock:v112])
   {
     if (x_log_get_windowserver(void)::once != -1)
     {
@@ -235,7 +235,7 @@
 
   if (v104 == 1.0)
   {
-    [a3 invalidate];
+    [callback invalidate];
     Current = CFRunLoopGetCurrent();
     CFRunLoopStop(Current);
     if (x_log_get_windowserver(void)::once != -1)
@@ -290,12 +290,12 @@ void __35__CABrightnessRamper_rampCallback___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (CABrightnessRamper)initWithDisplay:(id)a3
+- (CABrightnessRamper)initWithDisplay:(id)display
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = CABrightnessRamper;
-  v3 = [(CAWindowServerRamper *)&v6 initWithDisplay:a3];
+  v3 = [(CAWindowServerRamper *)&v6 initWithDisplay:display];
   v4 = v3;
   if (v3)
   {

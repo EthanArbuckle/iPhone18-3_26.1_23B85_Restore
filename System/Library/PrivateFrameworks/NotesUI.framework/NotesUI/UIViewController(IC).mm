@@ -27,19 +27,19 @@
 
 - (id)ic_safeAreaLayoutGuide
 {
-  v1 = [a1 view];
-  v2 = [v1 safeAreaLayoutGuide];
+  view = [self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
 
-  return v2;
+  return safeAreaLayoutGuide;
 }
 
 - (BOOL)ic_isViewVisible
 {
-  v2 = [a1 viewIfLoaded];
-  v3 = [v2 window];
-  if (v3)
+  viewIfLoaded = [self viewIfLoaded];
+  window = [viewIfLoaded window];
+  if (window)
   {
-    v4 = [a1 _appearState] != 3;
+    v4 = [self _appearState] != 3;
   }
 
   else
@@ -52,8 +52,8 @@
 
 - (double)ic_safeAreaDistanceFromTop
 {
-  v1 = [a1 ic_safeAreaLayoutGuide];
-  [v1 layoutFrame];
+  ic_safeAreaLayoutGuide = [self ic_safeAreaLayoutGuide];
+  [ic_safeAreaLayoutGuide layoutFrame];
   v3 = v2;
   v5 = v4;
   v7 = v6;
@@ -69,15 +69,15 @@
 
 - (double)ic_safeAreaDistanceFromBottom
 {
-  v2 = [a1 ic_safeAreaLayoutGuide];
-  [v2 layoutFrame];
+  ic_safeAreaLayoutGuide = [self ic_safeAreaLayoutGuide];
+  [ic_safeAreaLayoutGuide layoutFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
-  v11 = [a1 view];
-  [v11 bounds];
+  view = [self view];
+  [view bounds];
   MaxY = CGRectGetMaxY(v15);
   v16.origin.x = v4;
   v16.origin.y = v6;
@@ -90,18 +90,18 @@
 
 - (uint64_t)ic_behavior
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 ic_behavior];
+  traitCollection = [self traitCollection];
+  ic_behavior = [traitCollection ic_behavior];
 
-  return v2;
+  return ic_behavior;
 }
 
 - (id)ic_windowScene
 {
-  v1 = [a1 view];
-  v2 = [v1 ic_windowScene];
+  view = [self view];
+  ic_windowScene = [view ic_windowScene];
 
-  return v2;
+  return ic_windowScene;
 }
 
 - (id)ic_viewControllerManager
@@ -117,39 +117,39 @@
   v1 = v7[5];
   if (v1)
   {
-    v2 = [v1 ic_viewControllerManager];
+    ic_viewControllerManager = [v1 ic_viewControllerManager];
   }
 
   else
   {
-    v2 = 0;
+    ic_viewControllerManager = 0;
   }
 
   _Block_object_dispose(&v6, 8);
 
-  return v2;
+  return ic_viewControllerManager;
 }
 
 - (uint64_t)ic_isRTL
 {
-  v1 = [a1 view];
-  v2 = [v1 ic_isRTL];
+  view = [self view];
+  ic_isRTL = [view ic_isRTL];
 
-  return v2;
+  return ic_isRTL;
 }
 
 + (void)ic_enableUIViewAnimations:()IC forBlock:
 {
   v7 = a4;
-  v5 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
-  if (v5 == a3)
+  areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+  if (areAnimationsEnabled == a3)
   {
     v7[2]();
   }
 
   else
   {
-    v6 = v5;
+    v6 = areAnimationsEnabled;
     [MEMORY[0x1E69DD250] setAnimationsEnabled:a3];
     v7[2]();
     [MEMORY[0x1E69DD250] setAnimationsEnabled:v6];
@@ -159,33 +159,33 @@
 + (void)ic_performNotesActivity:()IC
 {
   v7 = a3;
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v4 objectForKey:@"ICIsPerformingNotesActivity"];
-  v6 = [v5 BOOLValue];
+  v5 = [threadDictionary objectForKey:@"ICIsPerformingNotesActivity"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7[2]();
   }
 
   else
   {
-    [v4 setObject:MEMORY[0x1E695E118] forKey:@"ICIsPerformingNotesActivity"];
+    [threadDictionary setObject:MEMORY[0x1E695E118] forKey:@"ICIsPerformingNotesActivity"];
     v7[2]();
-    [v4 removeObjectForKey:@"ICIsPerformingNotesActivity"];
+    [threadDictionary removeObjectForKey:@"ICIsPerformingNotesActivity"];
   }
 }
 
 + (uint64_t)ic_isPerformingNotesActivity
 {
-  v0 = [MEMORY[0x1E696AF00] currentThread];
-  v1 = [v0 threadDictionary];
-  v2 = [v1 objectForKey:@"ICIsPerformingNotesActivity"];
-  v3 = [v2 BOOLValue];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v2 = [threadDictionary objectForKey:@"ICIsPerformingNotesActivity"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)ic_showViewController:()IC animated:sender:
@@ -197,7 +197,7 @@
   v13[1] = 3221225472;
   v13[2] = __62__UIViewController_IC__ic_showViewController_animated_sender___block_invoke;
   v13[3] = &unk_1E8468D98;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v8;
   v15 = v9;
   v11 = v9;
@@ -231,39 +231,39 @@
   v17 = [v15 actionWithTitle:v16 style:0 handler:v9];
 
   [v14 addAction:v17];
-  [a1 presentViewController:v14 animated:1 completion:0];
+  [self presentViewController:v14 animated:1 completion:0];
 }
 
 - (id)ic_topViewController
 {
-  v1 = a1;
-  v2 = [v1 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [selfCopy presentedViewController];
 
-  if (v2)
+  if (presentedViewController)
   {
     do
     {
-      v3 = [v1 presentedViewController];
+      presentedViewController2 = [selfCopy presentedViewController];
 
-      v4 = [v3 presentedViewController];
+      v3PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v1 = v3;
+      selfCopy = presentedViewController2;
     }
 
-    while (v4);
+    while (v3PresentedViewController);
   }
 
   else
   {
-    v3 = v1;
+    presentedViewController2 = selfCopy;
   }
 
-  return v3;
+  return presentedViewController2;
 }
 
 - (id)ic_embedInNavigationControllerForModalPresentation
 {
-  v1 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:a1];
+  v1 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self];
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
     v2 = 1;
@@ -281,50 +281,50 @@
 
 - (id)ic_rootNavigationController
 {
-  v1 = [a1 navigationController];
-  v2 = [v1 navigationController];
+  navigationController = [self navigationController];
+  v1NavigationController = [navigationController navigationController];
 
-  if (v2)
+  if (v1NavigationController)
   {
     do
     {
-      v3 = [v1 navigationController];
+      v1NavigationController2 = [navigationController navigationController];
 
-      v4 = [v3 navigationController];
+      v3NavigationController = [v1NavigationController2 navigationController];
 
-      v1 = v3;
+      navigationController = v1NavigationController2;
     }
 
-    while (v4);
+    while (v3NavigationController);
   }
 
   else
   {
-    v3 = v1;
+    v1NavigationController2 = navigationController;
   }
 
-  return v3;
+  return v1NavigationController2;
 }
 
 - (id)ic_window
 {
-  v1 = [a1 view];
-  v2 = [v1 ic_window];
+  view = [self view];
+  ic_window = [view ic_window];
 
-  return v2;
+  return ic_window;
 }
 
 - (BOOL)ic_isBeingRevealedFromPoppingViewController
 {
-  v2 = [a1 navigationController];
-  v3 = [v2 transitionCoordinator];
+  navigationController = [self navigationController];
+  transitionCoordinator = [navigationController transitionCoordinator];
 
-  v4 = [v3 viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v4 = [transitionCoordinator viewControllerForKey:*MEMORY[0x1E69DE768]];
   if (v4)
   {
-    v5 = [a1 navigationController];
-    v6 = [v5 viewControllers];
-    v7 = [v6 containsObject:v4];
+    navigationController2 = [self navigationController];
+    viewControllers = [navigationController2 viewControllers];
+    v7 = [viewControllers containsObject:v4];
   }
 
   else
@@ -332,10 +332,10 @@
     v7 = 1;
   }
 
-  v8 = [a1 navigationController];
-  v9 = [v8 topViewController];
+  navigationController3 = [self navigationController];
+  topViewController = [navigationController3 topViewController];
 
-  v10 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -344,28 +344,28 @@
 
   else
   {
-    v12 = [a1 presentedViewController];
-    if ([v12 modalPresentationStyle] == 7)
+    presentedViewController2 = [self presentedViewController];
+    if ([presentedViewController2 modalPresentationStyle] == 7)
     {
       v11 = 1;
     }
 
     else
     {
-      v13 = [a1 presentedViewController];
-      v11 = [v13 modalPresentationStyle] == 1;
+      presentedViewController3 = [self presentedViewController];
+      v11 = [presentedViewController3 modalPresentationStyle] == 1;
     }
   }
 
-  if ((v9 != a1) | v7 & 1)
+  if ((topViewController != self) | v7 & 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v15 = [a1 presentedViewController];
-    v14 = v15 == 0 || v11;
+    presentedViewController4 = [self presentedViewController];
+    v14 = presentedViewController4 == 0 || v11;
   }
 
   return v14;
@@ -375,28 +375,28 @@
 {
   v8 = a5;
   isKindOfClass = objc_opt_isKindOfClass();
-  v10 = [a1 childViewControllers];
+  childViewControllers = [self childViewControllers];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__UIViewController_IC__ic_dismissViewControllerOfClass_animated_completion___block_invoke;
   v12[3] = &__block_descriptor_40_e33_B32__0__UIViewController_8Q16_B24lu32l8;
   v12[4] = a3;
-  v11 = [v10 ic_containsObjectPassingTest:v12];
+  v11 = [childViewControllers ic_containsObjectPassingTest:v12];
 
   if ((isKindOfClass & 1) != 0 || v11)
   {
-    [a1 dismissViewControllerAnimated:a4 completion:v8];
+    [self dismissViewControllerAnimated:a4 completion:v8];
   }
 }
 
 - (void)ic_dismissPresentedViewControllerAnimated:()IC completion:
 {
   v7 = a4;
-  v6 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    [a1 dismissViewControllerAnimated:a3 completion:v7];
+    [self dismissViewControllerAnimated:a3 completion:v7];
   }
 
   else
@@ -413,29 +413,29 @@
   v12[1] = 3221225472;
   v12[2] = __96__UIViewController_IC__ic_replacePresentedViewControllerWithViewController_animated_completion___block_invoke;
   v12[3] = &unk_1E8469DC0;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = v8;
   v15 = a4;
   v14 = v9;
   v10 = v9;
   v11 = v8;
-  [a1 ic_dismissPresentedViewControllerAnimated:a4 completion:v12];
+  [self ic_dismissPresentedViewControllerAnimated:a4 completion:v12];
 }
 
 - (void)ic_performBlockAfterActiveTransition:()IC
 {
   v4 = a3;
-  v5 = [a1 transitionCoordinator];
+  transitionCoordinator = [self transitionCoordinator];
 
-  if (v5)
+  if (transitionCoordinator)
   {
-    v6 = [a1 transitionCoordinator];
+    transitionCoordinator2 = [self transitionCoordinator];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__UIViewController_IC__ic_performBlockAfterActiveTransition___block_invoke;
     v7[3] = &unk_1E8469DE8;
     v8 = v4;
-    [v6 animateAlongsideTransition:0 completion:v7];
+    [transitionCoordinator2 animateAlongsideTransition:0 completion:v7];
   }
 
   else

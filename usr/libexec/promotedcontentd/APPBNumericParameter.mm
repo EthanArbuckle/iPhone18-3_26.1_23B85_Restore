@@ -1,12 +1,12 @@
 @interface APPBNumericParameter
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBNumericParameter
@@ -28,8 +28,8 @@
   v7.receiver = self;
   v7.super_class = APPBNumericParameter;
   v3 = [(APPBNumericParameter *)&v7 description];
-  v4 = [(APPBNumericParameter *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBNumericParameter *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -50,31 +50,31 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_key)
   {
     sub_100394548();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   key = self->_key;
-  v5 = a3;
-  [v5 setKey:key];
-  v5[4] = self->_value;
+  toCopy = to;
+  [toCopy setKey:key];
+  toCopy[4] = self->_value;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -82,25 +82,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | *(v4 + 1))) || -[NSString isEqual:](key, "isEqual:")) && self->_value == *(v4 + 4);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | *(equalCopy + 1))) || -[NSString isEqual:](key, "isEqual:")) && self->_value == *(equalCopy + 4);
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(APPBNumericParameter *)self setKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_value = v4[4];
+  self->_value = fromCopy[4];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface FCNetworkActivity
-- (FCNetworkActivity)initWithLabel:(unsigned int)a3;
+- (FCNetworkActivity)initWithLabel:(unsigned int)label;
 - (NSUUID)token;
-- (void)completeActivityWithSuccess:(BOOL)a3;
+- (void)completeActivityWithSuccess:(BOOL)success;
 @end
 
 @implementation FCNetworkActivity
 
-- (FCNetworkActivity)initWithLabel:(unsigned int)a3
+- (FCNetworkActivity)initWithLabel:(unsigned int)label
 {
   v9.receiver = self;
   v9.super_class = FCNetworkActivity;
@@ -15,7 +15,7 @@
   if (v4)
   {
     v4->_domain = 54;
-    v4->_label = a3;
+    v4->_label = label;
     v6 = nw_activity_create();
     activity = v5->_activity;
     v5->_activity = v6;
@@ -24,10 +24,10 @@
   return v5;
 }
 
-- (void)completeActivityWithSuccess:(BOOL)a3
+- (void)completeActivityWithSuccess:(BOOL)success
 {
   activity = self->_activity;
-  if (a3)
+  if (success)
   {
     v4 = 2;
   }

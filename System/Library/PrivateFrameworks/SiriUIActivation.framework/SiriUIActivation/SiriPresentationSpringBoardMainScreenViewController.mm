@@ -1,31 +1,31 @@
 @interface SiriPresentationSpringBoardMainScreenViewController
 - (BOOL)showAppsBehindSiri;
 - (SiriPresentationSpringBoardMainScreenViewController)init;
-- (SiriPresentationSpringBoardMainScreenViewController)initWithIdentifier:(int64_t)a3 hostedPresentationFrame:(CGRect)a4;
+- (SiriPresentationSpringBoardMainScreenViewController)initWithIdentifier:(int64_t)identifier hostedPresentationFrame:(CGRect)frame;
 - (void)cancelPreheat;
 - (void)loadView;
-- (void)preheatWithOptions:(id)a3;
-- (void)presentationRequestedWithPresentationOptions:(id)a3 requestOptions:(id)a4;
-- (void)requestPasscodeUnlockWithCompletion:(id)a3;
+- (void)preheatWithOptions:(id)options;
+- (void)presentationRequestedWithPresentationOptions:(id)options requestOptions:(id)requestOptions;
+- (void)requestPasscodeUnlockWithCompletion:(id)completion;
 - (void)resetGestureBehaviors;
-- (void)setDockFrame:(CGRect)a3;
-- (void)setFluidDismissalState:(id)a3;
-- (void)setInputType:(int64_t)a3;
-- (void)setShareHomeGesture:(BOOL)a3;
-- (void)setShouldDismissForSwipesOutsideContent:(BOOL)a3;
-- (void)setShouldDismissForTapOutsideContent:(BOOL)a3;
-- (void)setShouldDismissForTapsOutsideContent:(BOOL)a3;
-- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)a3;
-- (void)setSystemApertureFrames:(id)a3;
+- (void)setDockFrame:(CGRect)frame;
+- (void)setFluidDismissalState:(id)state;
+- (void)setInputType:(int64_t)type;
+- (void)setShareHomeGesture:(BOOL)gesture;
+- (void)setShouldDismissForSwipesOutsideContent:(BOOL)content;
+- (void)setShouldDismissForTapOutsideContent:(BOOL)content;
+- (void)setShouldDismissForTapsOutsideContent:(BOOL)content;
+- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)board;
+- (void)setSystemApertureFrames:(id)frames;
 @end
 
 @implementation SiriPresentationSpringBoardMainScreenViewController
 
-- (SiriPresentationSpringBoardMainScreenViewController)initWithIdentifier:(int64_t)a3 hostedPresentationFrame:(CGRect)a4
+- (SiriPresentationSpringBoardMainScreenViewController)initWithIdentifier:(int64_t)identifier hostedPresentationFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SiriPresentationSpringBoardMainScreenViewController;
-  v4 = [(SiriPresentationViewController *)&v7 initWithIdentifier:a3 hostedPresentationFrame:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
+  v4 = [(SiriPresentationViewController *)&v7 initWithIdentifier:identifier hostedPresentationFrame:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
   v5 = v4;
   if (v4)
   {
@@ -57,7 +57,7 @@
 - (void)resetGestureBehaviors
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_2(&dword_21FEE5000, a1, a3, "%s #dismissal Resetting gesture behaviors", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_2(&dword_21FEE5000, self, a3, "%s #dismissal Resetting gesture behaviors", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -69,23 +69,23 @@
   [(SiriPresentationSpringBoardMainScreenViewController *)self setView:v4];
 }
 
-- (void)requestPasscodeUnlockWithCompletion:(id)a3
+- (void)requestPasscodeUnlockWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SiriPresentationViewController *)self siriViewController];
-  if (v5)
+  completionCopy = completion;
+  siriViewController = [(SiriPresentationViewController *)self siriViewController];
+  if (siriViewController)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __91__SiriPresentationSpringBoardMainScreenViewController_requestPasscodeUnlockWithCompletion___block_invoke;
     v6[3] = &unk_278430148;
-    v7 = v4;
-    [v5 handlePasscodeUnlockWithClient:0 withCompletion:v6];
+    v7 = completionCopy;
+    [siriViewController handlePasscodeUnlockWithClient:0 withCompletion:v6];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 2);
+    (*(completionCopy + 2))(completionCopy, 2);
   }
 }
 
@@ -120,10 +120,10 @@ uint64_t __91__SiriPresentationSpringBoardMainScreenViewController_requestPassco
   return result;
 }
 
-- (void)setFluidDismissalState:(id)a3
+- (void)setFluidDismissalState:(id)state
 {
-  v4 = a3;
-  v3 = v4;
+  stateCopy = state;
+  v3 = stateCopy;
   SiriUIInvokeOnMainQueue();
 }
 
@@ -140,11 +140,11 @@ void __94__SiriPresentationSpringBoardMainScreenViewController_noteFluidDismissa
   [v2 noteFluidDismissalCompletedWithSuccess:*(a1 + 40)];
 }
 
-- (void)setShouldDismissForTapOutsideContent:(BOOL)a3
+- (void)setShouldDismissForTapOutsideContent:(BOOL)content
 {
   objc_initWeak(&location, self);
   objc_copyWeak(&v4, &location);
-  v5 = a3;
+  contentCopy = content;
   SiriUIInvokeOnMainQueue();
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -172,11 +172,11 @@ void __92__SiriPresentationSpringBoardMainScreenViewController_setShouldDismissF
   }
 }
 
-- (void)setShouldDismissForTapsOutsideContent:(BOOL)a3
+- (void)setShouldDismissForTapsOutsideContent:(BOOL)content
 {
   objc_initWeak(&location, self);
   objc_copyWeak(&v4, &location);
-  v5 = a3;
+  contentCopy = content;
   SiriUIInvokeOnMainQueue();
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -204,11 +204,11 @@ void __93__SiriPresentationSpringBoardMainScreenViewController_setShouldDismissF
   }
 }
 
-- (void)setShouldDismissForSwipesOutsideContent:(BOOL)a3
+- (void)setShouldDismissForSwipesOutsideContent:(BOOL)content
 {
   objc_initWeak(&location, self);
   objc_copyWeak(&v4, &location);
-  v5 = a3;
+  contentCopy = content;
   SiriUIInvokeOnMainQueue();
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -236,11 +236,11 @@ void __95__SiriPresentationSpringBoardMainScreenViewController_setShouldDismissF
   }
 }
 
-- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)a3
+- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)board
 {
   objc_initWeak(&location, self);
   objc_copyWeak(&v4, &location);
-  v5 = a3;
+  boardCopy = board;
   SiriUIInvokeOnMainQueue();
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -268,13 +268,13 @@ void __96__SiriPresentationSpringBoardMainScreenViewController_setShouldPassTouc
   }
 }
 
-- (void)setShareHomeGesture:(BOOL)a3
+- (void)setShareHomeGesture:(BOOL)gesture
 {
   if ((SiriUIDeviceIsPad() & 1) != 0 || [MEMORY[0x277CEF4D0] saeAvailable])
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v5, &location);
-    v6 = a3;
+    gestureCopy = gesture;
     SiriUIInvokeOnMainQueue();
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -323,11 +323,11 @@ void __75__SiriPresentationSpringBoardMainScreenViewController_setShareHomeGestu
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInputType:(int64_t)a3
+- (void)setInputType:(int64_t)type
 {
   objc_initWeak(&location, self);
   objc_copyWeak(v4, &location);
-  v4[1] = a3;
+  v4[1] = type;
   SiriUIInvokeOnMainQueue();
   objc_destroyWeak(v4);
   objc_destroyWeak(&location);
@@ -365,18 +365,18 @@ uint64_t __68__SiriPresentationSpringBoardMainScreenViewController_setInputType_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setDockFrame:(CGRect)a3
+- (void)setDockFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = [(SiriPresentationViewController *)self siriViewController];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  siriViewController = [(SiriPresentationViewController *)self siriViewController];
   if ([(SiriPresentationSpringBoardMainScreenViewController *)self showAppsBehindSiri])
   {
-    v8 = [(SiriPresentationSpringBoardMainScreenViewController *)self view];
-    v9 = [v18 view];
-    [v8 convertRect:v9 toView:{x, y, width, height}];
+    view = [(SiriPresentationSpringBoardMainScreenViewController *)self view];
+    view2 = [siriViewController view];
+    [view convertRect:view2 toView:{x, y, width, height}];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -391,13 +391,13 @@ uint64_t __68__SiriPresentationSpringBoardMainScreenViewController_setInputType_
     v17 = *(MEMORY[0x277CBF3A0] + 24);
   }
 
-  [v18 setDockFrame:{v11, v13, v15, v17}];
+  [siriViewController setDockFrame:{v11, v13, v15, v17}];
 }
 
-- (void)setSystemApertureFrames:(id)a3
+- (void)setSystemApertureFrames:(id)frames
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  framesCopy = frames;
   if ([(SiriPresentationViewController *)self presentationState]== 2 || [(SiriPresentationViewController *)self presentationState]== 1 || [(SiriPresentationViewController *)self presentationState]== 4)
   {
     v5 = *MEMORY[0x277CEF098];
@@ -408,17 +408,17 @@ uint64_t __68__SiriPresentationSpringBoardMainScreenViewController_setInputType_
       _os_log_impl(&dword_21FEE5000, v5, OS_LOG_TYPE_DEFAULT, "%s #compact: received system aperture frames", &v17, 0xCu);
     }
 
-    if ([v4 count])
+    if ([framesCopy count])
     {
-      v6 = [v4 firstObject];
-      [v6 CGRectValue];
+      firstObject = [framesCopy firstObject];
+      [firstObject CGRectValue];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      v15 = [(SiriPresentationViewController *)self siriViewController];
-      [v15 setSystemApertureFrame:{v8, v10, v12, v14}];
+      siriViewController = [(SiriPresentationViewController *)self siriViewController];
+      [siriViewController setSystemApertureFrame:{v8, v10, v12, v14}];
     }
   }
 
@@ -427,21 +427,21 @@ uint64_t __68__SiriPresentationSpringBoardMainScreenViewController_setInputType_
 
 - (BOOL)showAppsBehindSiri
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 alwaysObscureBackgroundContentWhenActive];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  alwaysObscureBackgroundContentWhenActive = [mEMORY[0x277CEF368] alwaysObscureBackgroundContentWhenActive];
 
-  return v3 ^ 1;
+  return alwaysObscureBackgroundContentWhenActive ^ 1;
 }
 
-- (void)preheatWithOptions:(id)a3
+- (void)preheatWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 preheatRequest];
-  v6 = [v5 requestSource];
+  optionsCopy = options;
+  preheatRequest = [optionsCopy preheatRequest];
+  requestSource = [preheatRequest requestSource];
 
-  if (v6 == 48)
+  if (requestSource == 48)
   {
-    if (SiriUIDeviceIsPad() & 1) == 0 && ([v4 lockState])
+    if (SiriUIDeviceIsPad() & 1) == 0 && ([optionsCopy lockState])
     {
       v15 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
@@ -466,7 +466,7 @@ uint64_t __68__SiriPresentationSpringBoardMainScreenViewController_setInputType_
   {
     v23.receiver = self;
     v23.super_class = SiriPresentationSpringBoardMainScreenViewController;
-    [(SiriPresentationViewController *)&v23 preheatWithOptions:v4];
+    [(SiriPresentationViewController *)&v23 preheatWithOptions:optionsCopy];
   }
 }
 
@@ -482,7 +482,7 @@ void __74__SiriPresentationSpringBoardMainScreenViewController_preheatWithOption
 - (void)cancelPreheat
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_2(&dword_21FEE5000, a1, a3, "%s #activation #quickTypeGate cancelPrewarmForFirstTapOfQuickTypeToSiriGesture began", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_2(&dword_21FEE5000, self, a3, "%s #activation #quickTypeGate cancelPrewarmForFirstTapOfQuickTypeToSiriGesture began", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -495,23 +495,23 @@ void __68__SiriPresentationSpringBoardMainScreenViewController_cancelPreheat__bl
   }
 }
 
-- (void)presentationRequestedWithPresentationOptions:(id)a3 requestOptions:(id)a4
+- (void)presentationRequestedWithPresentationOptions:(id)options requestOptions:(id)requestOptions
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ((SiriUIDeviceIsPad() & 1) != 0 || [v7 requestSource] != 48)
+  optionsCopy = options;
+  requestOptionsCopy = requestOptions;
+  if ((SiriUIDeviceIsPad() & 1) != 0 || [requestOptionsCopy requestSource] != 48)
   {
 LABEL_6:
     v21.receiver = self;
     v21.super_class = SiriPresentationSpringBoardMainScreenViewController;
-    [(SiriPresentationViewController *)&v21 presentationRequestedWithPresentationOptions:v6 requestOptions:v7];
+    [(SiriPresentationViewController *)&v21 presentationRequestedWithPresentationOptions:optionsCopy requestOptions:requestOptionsCopy];
     goto LABEL_7;
   }
 
-  v8 = [v7 currentLockState];
+  currentLockState = [requestOptionsCopy currentLockState];
   v9 = *MEMORY[0x277CEF098];
-  if ((v8 & 1) == 0)
+  if ((currentLockState & 1) == 0)
   {
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
     {
@@ -539,9 +539,9 @@ LABEL_6:
   v26[1] = started;
   v26[2] = *&Current;
   objc_copyWeak(v26, buf);
-  v23 = v6;
-  v24 = v7;
-  v25 = self;
+  v23 = optionsCopy;
+  v24 = requestOptionsCopy;
+  selfCopy = self;
   [(SiriQuickTypeGestureActivationManager *)quickTypeGestureActivationManager canActivateWithCompletionHandler:v22];
 
   objc_destroyWeak(v26);

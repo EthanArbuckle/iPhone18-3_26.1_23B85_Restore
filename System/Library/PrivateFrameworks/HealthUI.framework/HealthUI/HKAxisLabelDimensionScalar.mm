@@ -1,27 +1,27 @@
 @interface HKAxisLabelDimensionScalar
-+ (int64_t)_fractionDigitsForStep:(double)a3;
-- (double)niceStepSizeLargerThan:(double)a3;
-- (double)ticksPerStepSize:(double)a3;
-- (id)formatterForLabelStepSize:(double)a3;
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
++ (int64_t)_fractionDigitsForStep:(double)step;
+- (double)niceStepSizeLargerThan:(double)than;
+- (double)ticksPerStepSize:(double)size;
+- (id)formatterForLabelStepSize:(double)size;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation HKAxisLabelDimensionScalar
 
-- (double)niceStepSizeLargerThan:(double)a3
+- (double)niceStepSizeLargerThan:(double)than
 {
-  if (a3 == 0.0)
+  if (than == 0.0)
   {
     v4 = 0.0;
   }
 
   else
   {
-    v4 = floor(log10(fabs(a3)));
+    v4 = floor(log10(fabs(than)));
   }
 
   v5 = __exp10(v4);
-  v6 = a3 / v5;
+  v6 = than / v5;
   v7 = 5.0;
   if (v6 >= 5.0)
   {
@@ -45,19 +45,19 @@
   return v7 * v5;
 }
 
-- (double)ticksPerStepSize:(double)a3
+- (double)ticksPerStepSize:(double)size
 {
-  if (a3 == 0.0)
+  if (size == 0.0)
   {
     v4 = 0.0;
   }
 
   else
   {
-    v4 = floor(log10(fabs(a3)));
+    v4 = floor(log10(fabs(size)));
   }
 
-  v5 = a3 / __exp10(v4);
+  v5 = size / __exp10(v4);
   result = 5.0;
   if (fabs(v5 + -5.0) >= 0.00000001 && fabs(v5 + -2.5) > 0.00000001)
   {
@@ -67,9 +67,9 @@
   return result;
 }
 
-- (id)formatterForLabelStepSize:(double)a3
+- (id)formatterForLabelStepSize:(double)size
 {
-  v3 = [HKAxisLabelDimensionScalar _fractionDigitsForStep:a3];
+  v3 = [HKAxisLabelDimensionScalar _fractionDigitsForStep:size];
   v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v4 setNumberStyle:1];
   [v4 setUsesGroupingSeparator:1];
@@ -79,14 +79,14 @@
   return v4;
 }
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  v5 = a4;
-  v6 = [v5 stringFromNumber:a3];
-  v7 = [v5 stringFromNumber:&unk_1F4384980];
+  sizeCopy = size;
+  v6 = [sizeCopy stringFromNumber:location];
+  v7 = [sizeCopy stringFromNumber:&unk_1F4384980];
   if ([v6 isEqualToString:v7])
   {
-    v8 = [v5 stringFromNumber:&unk_1F4384990];
+    v8 = [sizeCopy stringFromNumber:&unk_1F4384990];
 
     v6 = v8;
   }
@@ -94,14 +94,14 @@
   return v6;
 }
 
-+ (int64_t)_fractionDigitsForStep:(double)a3
++ (int64_t)_fractionDigitsForStep:(double)step
 {
-  if (a3 == 0.0)
+  if (step == 0.0)
   {
     return 0;
   }
 
-  v5 = fabs(a3);
+  v5 = fabs(step);
   if (v5 >= 1.0)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696ADA0]);
@@ -111,7 +111,7 @@
     {
       [v8 setMinimumFractionDigits:v3];
       [v8 setMaximumFractionDigits:v3];
-      v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithDouble:step];
       v10 = [v8 stringFromNumber:v9];
 
       v11 = [v8 numberFromString:v10];
@@ -122,7 +122,7 @@
       }
 
       [v11 doubleValue];
-      if (vabdd_f64(a3, v13) < 1.0e-10)
+      if (vabdd_f64(step, v13) < 1.0e-10)
       {
         break;
       }
@@ -141,7 +141,7 @@ LABEL_11:
   else
   {
     v7 = floor(log10(v5));
-    return [a1 _fractionDigitsForStep:v5 / __exp10(v7)] + rint(-v7);
+    return [self _fractionDigitsForStep:v5 / __exp10(v7)] + rint(-v7);
   }
 
   return v3;

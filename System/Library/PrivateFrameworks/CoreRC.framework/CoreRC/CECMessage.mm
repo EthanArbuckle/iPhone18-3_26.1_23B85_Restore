@@ -1,87 +1,87 @@
 @interface CECMessage
-+ (id)abortFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)activeSourceFrom:(unsigned __int8)a3 physicalAddress:(unsigned __int16)a4;
-+ (id)cecVersion:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)deckControlWithMode:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)deckStatusWithInfo:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)deviceVendorID:(unsigned int)a3 from:(unsigned __int8)a4;
-+ (id)featureAbort:(unsigned __int8)a3 reason:(unsigned __int8)a4 from:(unsigned __int8)a5 to:(unsigned __int8)a6;
-+ (id)getCECVersionFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)getMenuLanguageFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)giveAudioStatusFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)giveDeckStatusWithRequest:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)giveDevicePowerStatusFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)giveDeviceVendorIDFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)giveOSDNameFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)givePhysicalAddressFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)giveSystemAudioModeStatusFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)imageViewOnFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)inactiveSourceFrom:(unsigned __int8)a3 to:(unsigned __int8)a4 physicalAddress:(unsigned __int16)a5;
-+ (id)initiateARCFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)menuStatus:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)messageWithFrame:(CECFrame *)a3;
-+ (id)playWithMode:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)pollFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)reportAudioStatusWithVolume:(unint64_t)a3 mute:(BOOL)a4 from:(unsigned __int8)a5 to:(unsigned __int8)a6;
-+ (id)reportFeaturesWith:(unsigned __int8)a3 deviceTypes:(unsigned __int8)a4 rcProfile:(id)a5 deviceFeatures:(unsigned __int8)a6 from:(unsigned __int8)a7;
-+ (id)reportPhysicalAddress:(unsigned __int16)a3 deviceType:(unsigned __int8)a4 from:(unsigned __int8)a5;
-+ (id)reportPowerStatus:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)reportShortAudioDescriptor:(char *)a3 length:(unsigned __int8)a4 from:(unsigned __int8)a5 to:(unsigned __int8)a6;
-+ (id)requestActiveSourceFrom:(unsigned __int8)a3;
-+ (id)routingChangeFrom:(unsigned __int8)a3 originalAddress:(unsigned __int16)a4 newAddress:(unsigned __int16)a5;
-+ (id)routingInformationFrom:(unsigned __int8)a3 physicalAddress:(unsigned __int16)a4;
-+ (id)setAudioVolumeLevel:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)setMenuLanguage:(CECLanguage)a3 from:(unsigned __int8)a4;
-+ (id)setOSDName:(CECOSDName)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)setStreamPathFrom:(unsigned __int8)a3 physicalAddress:(unsigned __int16)a4;
-+ (id)setSystemAudioMode:(BOOL)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)standbyFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)systemAudioModeRequestWithPhysicalAddress:(unsigned __int16)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)systemAudioModeStatus:(unint64_t)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)terminateARCFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)textViewOnFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-+ (id)userControlPressed:(CECUserControl)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5;
-+ (id)userControlReleasedFrom:(unsigned __int8)a3 to:(unsigned __int8)a4;
-- (BOOL)parseActiveSourcePhysicalAddress:(unsigned __int16 *)a3;
-- (BOOL)parseCECVersion:(unsigned __int8 *)a3;
-- (BOOL)parseDeckControlMode:(unint64_t *)a3;
-- (BOOL)parseDeckStatusInfo:(unint64_t *)a3;
-- (BOOL)parseDeviceVendorID:(unsigned int *)a3;
-- (BOOL)parseFeatureAbortOpcode:(char *)a3 reason:(unsigned __int8 *)a4;
-- (BOOL)parseGiveDeckStatusRequest:(unsigned __int8 *)a3;
-- (BOOL)parseInactiveSourcePhysicalAddress:(unsigned __int16 *)a3;
-- (BOOL)parseMenuRequest:(unsigned __int8 *)a3;
-- (BOOL)parsePlayMode:(unint64_t *)a3;
-- (BOOL)parseReportAudioStatus:(unint64_t *)a3 muteStatus:(BOOL *)a4;
-- (BOOL)parseReportFeatures:(unsigned __int8 *)a3 deviceTypes:(char *)a4 rcProfile:(id *)a5 features:(char *)a6;
-- (BOOL)parseReportPhysicalAddress:(unsigned __int16 *)a3 deviceType:(unint64_t *)a4;
-- (BOOL)parseReportPowerStatus:(unint64_t *)a3;
-- (BOOL)parseRoutingChangeOriginalAddress:(unsigned __int16 *)a3 newAddress:(unsigned __int16 *)a4;
-- (BOOL)parseRoutingInformationPhysicalAddress:(unsigned __int16 *)a3;
-- (BOOL)parseSetMenuLanguage:(CECLanguage *)a3;
-- (BOOL)parseSetOSDName:(id *)a3;
-- (BOOL)parseSetStreamPathPhysicalAddress:(unsigned __int16 *)a3;
-- (BOOL)parseSystemAudioModeStatus:(unint64_t *)a3;
-- (BOOL)parseUserControlPressed:(CECUserControl *)a3;
++ (id)abortFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)activeSourceFrom:(unsigned __int8)from physicalAddress:(unsigned __int16)address;
++ (id)cecVersion:(unsigned __int8)version from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)deckControlWithMode:(unsigned __int8)mode from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)deckStatusWithInfo:(unsigned __int8)info from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)deviceVendorID:(unsigned int)d from:(unsigned __int8)from;
++ (id)featureAbort:(unsigned __int8)abort reason:(unsigned __int8)reason from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)getCECVersionFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)getMenuLanguageFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)giveAudioStatusFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)giveDeckStatusWithRequest:(unsigned __int8)request from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)giveDevicePowerStatusFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)giveDeviceVendorIDFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)giveOSDNameFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)givePhysicalAddressFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)giveSystemAudioModeStatusFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)imageViewOnFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)inactiveSourceFrom:(unsigned __int8)from to:(unsigned __int8)to physicalAddress:(unsigned __int16)address;
++ (id)initiateARCFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)menuStatus:(unsigned __int8)status from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)messageWithFrame:(CECFrame *)frame;
++ (id)playWithMode:(unsigned __int8)mode from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)pollFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)reportAudioStatusWithVolume:(unint64_t)volume mute:(BOOL)mute from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)reportFeaturesWith:(unsigned __int8)with deviceTypes:(unsigned __int8)types rcProfile:(id)profile deviceFeatures:(unsigned __int8)features from:(unsigned __int8)from;
++ (id)reportPhysicalAddress:(unsigned __int16)address deviceType:(unsigned __int8)type from:(unsigned __int8)from;
++ (id)reportPowerStatus:(unsigned __int8)status from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)reportShortAudioDescriptor:(char *)descriptor length:(unsigned __int8)length from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)requestActiveSourceFrom:(unsigned __int8)from;
++ (id)routingChangeFrom:(unsigned __int8)from originalAddress:(unsigned __int16)address newAddress:(unsigned __int16)newAddress;
++ (id)routingInformationFrom:(unsigned __int8)from physicalAddress:(unsigned __int16)address;
++ (id)setAudioVolumeLevel:(unsigned __int8)level from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)setMenuLanguage:(CECLanguage)language from:(unsigned __int8)from;
++ (id)setOSDName:(CECOSDName)name from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)setStreamPathFrom:(unsigned __int8)from physicalAddress:(unsigned __int16)address;
++ (id)setSystemAudioMode:(BOOL)mode from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)standbyFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)systemAudioModeRequestWithPhysicalAddress:(unsigned __int16)address from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)systemAudioModeStatus:(unint64_t)status from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)terminateARCFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)textViewOnFrom:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)userControlPressed:(CECUserControl)pressed from:(unsigned __int8)from to:(unsigned __int8)to;
++ (id)userControlReleasedFrom:(unsigned __int8)from to:(unsigned __int8)to;
+- (BOOL)parseActiveSourcePhysicalAddress:(unsigned __int16 *)address;
+- (BOOL)parseCECVersion:(unsigned __int8 *)version;
+- (BOOL)parseDeckControlMode:(unint64_t *)mode;
+- (BOOL)parseDeckStatusInfo:(unint64_t *)info;
+- (BOOL)parseDeviceVendorID:(unsigned int *)d;
+- (BOOL)parseFeatureAbortOpcode:(char *)opcode reason:(unsigned __int8 *)reason;
+- (BOOL)parseGiveDeckStatusRequest:(unsigned __int8 *)request;
+- (BOOL)parseInactiveSourcePhysicalAddress:(unsigned __int16 *)address;
+- (BOOL)parseMenuRequest:(unsigned __int8 *)request;
+- (BOOL)parsePlayMode:(unint64_t *)mode;
+- (BOOL)parseReportAudioStatus:(unint64_t *)status muteStatus:(BOOL *)muteStatus;
+- (BOOL)parseReportFeatures:(unsigned __int8 *)features deviceTypes:(char *)types rcProfile:(id *)profile features:(char *)a6;
+- (BOOL)parseReportPhysicalAddress:(unsigned __int16 *)address deviceType:(unint64_t *)type;
+- (BOOL)parseReportPowerStatus:(unint64_t *)status;
+- (BOOL)parseRoutingChangeOriginalAddress:(unsigned __int16 *)address newAddress:(unsigned __int16 *)newAddress;
+- (BOOL)parseRoutingInformationPhysicalAddress:(unsigned __int16 *)address;
+- (BOOL)parseSetMenuLanguage:(CECLanguage *)language;
+- (BOOL)parseSetOSDName:(id *)name;
+- (BOOL)parseSetStreamPathPhysicalAddress:(unsigned __int16 *)address;
+- (BOOL)parseSystemAudioModeStatus:(unint64_t *)status;
+- (BOOL)parseUserControlPressed:(CECUserControl *)pressed;
 - (BOOL)shouldBeIgnored;
-- (CECMessage)initWithCoder:(id)a3;
-- (CECMessage)initWithFrame:(CECFrame *)a3;
-- (const)_operandsWithLength:(unsigned __int8)a3;
+- (CECMessage)initWithCoder:(id)coder;
+- (CECMessage)initWithFrame:(CECFrame *)frame;
+- (const)_operandsWithLength:(unsigned __int8)length;
 - (id)debugDescription;
 - (id)description;
 - (int)messageType;
 - (unsigned)_operandsLength;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CECMessage
 
-- (CECMessage)initWithFrame:(CECFrame *)a3
+- (CECMessage)initWithFrame:(CECFrame *)frame
 {
   result = [(CECMessage *)self init];
   if (result)
   {
-    if ((*(a3 + 16) & 0x1Fu) - 17 < 0xFFFFFFF0)
+    if ((*(frame + 16) & 0x1Fu) - 17 < 0xFFFFFFF0)
     {
 
       return 0;
@@ -89,8 +89,8 @@
 
     else
     {
-      v5 = *a3->blocks;
-      *(&result->_frame + 4) = *(a3 + 4);
+      v5 = *frame->blocks;
+      *(&result->_frame + 4) = *(frame + 4);
       *result->_frame.blocks = v5;
     }
   }
@@ -98,27 +98,27 @@
   return result;
 }
 
-- (CECMessage)initWithCoder:(id)a3
+- (CECMessage)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CECMessage;
   v4 = [(CECMessage *)&v7 init];
   if (v4)
   {
-    v5 = [a3 decodeIntForKey:@"length"];
+    v5 = [coder decodeIntForKey:@"length"];
     *(&v4->_frame + 16) = *(&v4->_frame + 16) & 0xE0 | v5 & 0x1F;
-    [a3 decodeArrayOfObjCType:"C" count:v5 & 0x1F at:&v4->_frame];
+    [coder decodeArrayOfObjCType:"C" count:v5 & 0x1F at:&v4->_frame];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:*(&self->_frame + 16) & 0x1F forKey:@"length"];
+  [coder encodeInt:*(&self->_frame + 16) & 0x1F forKey:@"length"];
   v5 = *(&self->_frame + 16) & 0x1F;
 
-  [a3 encodeArrayOfObjCType:"C" count:v5 at:&self->_frame];
+  [coder encodeArrayOfObjCType:"C" count:v5 at:&self->_frame];
 }
 
 - (id)debugDescription
@@ -157,9 +157,9 @@
   }
 }
 
-- (const)_operandsWithLength:(unsigned __int8)a3
+- (const)_operandsWithLength:(unsigned __int8)length
 {
-  if (a3 + 2 <= (*(&self->_frame + 16) & 0x1Fu))
+  if (length + 2 <= (*(&self->_frame + 16) & 0x1Fu))
   {
     return &self->_frame.blocks[2];
   }
@@ -172,86 +172,86 @@
 
 - (BOOL)shouldBeIgnored
 {
-  v3 = [(CECMessage *)self messageType];
-  v4 = [(CECMessage *)self destination];
-  v5 = [(CECMessage *)self initiator];
-  if (v4 == 15)
+  messageType = [(CECMessage *)self messageType];
+  destination = [(CECMessage *)self destination];
+  initiator = [(CECMessage *)self initiator];
+  if (destination == 15)
   {
-    if (v3 <= 113)
+    if (messageType <= 113)
     {
-      if (v3 != 50 && v3 != 54)
+      if (messageType != 50 && messageType != 54)
       {
         goto LABEL_25;
       }
     }
 
-    else if (((v3 - 114) > 0x34 || ((1 << (v3 - 114)) & 0x104000433DC001) == 0) && v3 != 248)
+    else if (((messageType - 114) > 0x34 || ((1 << (messageType - 114)) & 0x104000433DC001) == 0) && messageType != 248)
     {
       goto LABEL_25;
     }
   }
 
-  else if (v3 > 130)
+  else if (messageType > 130)
   {
-    if (((v3 - 131) > 0x22 || ((1 << (v3 + 125)) & 0x7FCD1FFC1) == 0) && ((v3 - 192) > 0x3F || ((1 << (v3 + 64)) & 0x800000000000003FLL) == 0))
+    if (((messageType - 131) > 0x22 || ((1 << (messageType + 125)) & 0x7FCD1FFC1) == 0) && ((messageType - 192) > 0x3F || ((1 << (messageType + 64)) & 0x800000000000003FLL) == 0))
     {
       goto LABEL_25;
     }
   }
 
-  else if (((v3 + 1) > 0x37 || ((1 << (v3 + 1)) & 0xF0000018015FE3) == 0) && ((v3 - 65) > 0x3D || ((1 << (v3 - 65)) & 0x320780480000007FLL) == 0))
+  else if (((messageType + 1) > 0x37 || ((1 << (messageType + 1)) & 0xF0000018015FE3) == 0) && ((messageType - 65) > 0x3D || ((1 << (messageType - 65)) & 0x320780480000007FLL) == 0))
   {
     goto LABEL_25;
   }
 
-  if (v5 != 15)
+  if (initiator != 15)
   {
-    if (v3 == 50)
+    if (messageType == 50)
     {
-      if (!v5)
+      if (!initiator)
       {
-        return v5;
+        return initiator;
       }
     }
 
-    else if (v3 != 255 || v4 != 15)
+    else if (messageType != 255 || destination != 15)
     {
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(initiator) = 0;
+      return initiator;
     }
 
     goto LABEL_25;
   }
 
-  LOBYTE(v5) = 0;
-  if (((v3 - 128) > 0x11 || ((1 << (v3 + 0x80)) & 0x2103F) == 0) && v3 != 54 && v3 != 248)
+  LOBYTE(initiator) = 0;
+  if (((messageType - 128) > 0x11 || ((1 << (messageType + 0x80)) & 0x2103F) == 0) && messageType != 54 && messageType != 248)
   {
 LABEL_25:
-    LOBYTE(v5) = 1;
+    LOBYTE(initiator) = 1;
   }
 
-  return v5;
+  return initiator;
 }
 
-+ (id)messageWithFrame:(CECFrame *)a3
++ (id)messageWithFrame:(CECFrame *)frame
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = [CECMessage alloc];
-  v7 = *a3;
+  v7 = *frame;
   result = [(CECMessage *)v4 initWithFrame:&v7];
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (id)activeSourceFrom:(unsigned __int8)a3 physicalAddress:(unsigned __int16)a4
++ (id)activeSourceFrom:(unsigned __int8)from physicalAddress:(unsigned __int16)address
 {
   v12 = *MEMORY[0x277D85DE8];
   v11 = 0;
   v10 = 0;
-  v6[0] = (16 * a3) | 0xF;
+  v6[0] = (16 * from) | 0xF;
   v6[1] = -126;
-  v6[2] = HIBYTE(a4);
-  v6[3] = a4;
+  v6[2] = HIBYTE(address);
+  v6[3] = address;
   v7 = 0;
   v8 = 0;
   v9 = 4;
@@ -260,12 +260,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)imageViewOnFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)imageViewOnFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = 4;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -274,12 +274,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)textViewOnFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)textViewOnFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = 13;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -288,15 +288,15 @@ LABEL_25:
   return result;
 }
 
-+ (id)inactiveSourceFrom:(unsigned __int8)a3 to:(unsigned __int8)a4 physicalAddress:(unsigned __int16)a5
++ (id)inactiveSourceFrom:(unsigned __int8)from to:(unsigned __int8)to physicalAddress:(unsigned __int16)address
 {
   v13 = *MEMORY[0x277D85DE8];
   v12 = 0;
   v11 = 0;
-  v7[0] = a4 | (16 * a3);
+  v7[0] = to | (16 * from);
   v7[1] = -99;
-  v7[2] = HIBYTE(a5);
-  v7[3] = a5;
+  v7[2] = HIBYTE(address);
+  v7[3] = address;
   v8 = 0;
   v9 = 0;
   v10 = 4;
@@ -305,12 +305,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)requestActiveSourceFrom:(unsigned __int8)a3
++ (id)requestActiveSourceFrom:(unsigned __int8)from
 {
   v8 = *MEMORY[0x277D85DE8];
   v7 = 0;
   v6 = 0;
-  v5[0] = (16 * a3) | 0xF;
+  v5[0] = (16 * from) | 0xF;
   v5[1] = -123;
   memset(&v5[2], 0, 14);
   v5[16] = 2;
@@ -319,17 +319,17 @@ LABEL_25:
   return result;
 }
 
-+ (id)routingChangeFrom:(unsigned __int8)a3 originalAddress:(unsigned __int16)a4 newAddress:(unsigned __int16)a5
++ (id)routingChangeFrom:(unsigned __int8)from originalAddress:(unsigned __int16)address newAddress:(unsigned __int16)newAddress
 {
   v13 = *MEMORY[0x277D85DE8];
   v12 = 0;
   v11 = 0;
-  v7[0] = (16 * a3) | 0xF;
+  v7[0] = (16 * from) | 0xF;
   v7[1] = 0x80;
-  v7[2] = HIBYTE(a4);
-  v7[3] = a4;
-  v7[4] = HIBYTE(a5);
-  v7[5] = a5;
+  v7[2] = HIBYTE(address);
+  v7[3] = address;
+  v7[4] = HIBYTE(newAddress);
+  v7[5] = newAddress;
   v8 = 0;
   v9 = 0;
   v10 = 6;
@@ -338,15 +338,15 @@ LABEL_25:
   return result;
 }
 
-+ (id)routingInformationFrom:(unsigned __int8)a3 physicalAddress:(unsigned __int16)a4
++ (id)routingInformationFrom:(unsigned __int8)from physicalAddress:(unsigned __int16)address
 {
   v12 = *MEMORY[0x277D85DE8];
   v11 = 0;
   v10 = 0;
-  v6[0] = (16 * a3) | 0xF;
+  v6[0] = (16 * from) | 0xF;
   v6[1] = -127;
-  v6[2] = HIBYTE(a4);
-  v6[3] = a4;
+  v6[2] = HIBYTE(address);
+  v6[3] = address;
   v7 = 0;
   v8 = 0;
   v9 = 4;
@@ -355,15 +355,15 @@ LABEL_25:
   return result;
 }
 
-+ (id)setStreamPathFrom:(unsigned __int8)a3 physicalAddress:(unsigned __int16)a4
++ (id)setStreamPathFrom:(unsigned __int8)from physicalAddress:(unsigned __int16)address
 {
   v12 = *MEMORY[0x277D85DE8];
   v11 = 0;
   v10 = 0;
-  v6[0] = (16 * a3) | 0xF;
+  v6[0] = (16 * from) | 0xF;
   v6[1] = -122;
-  v6[2] = HIBYTE(a4);
-  v6[3] = a4;
+  v6[2] = HIBYTE(address);
+  v6[3] = address;
   v7 = 0;
   v8 = 0;
   v9 = 4;
@@ -372,12 +372,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)standbyFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)standbyFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v14 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v12 = 0;
-  v6 = a4 | (16 * a3);
+  v6 = to | (16 * from);
   strcpy(v7, "6");
   v7[2] = 0;
   v8 = 0;
@@ -389,14 +389,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)cecVersion:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)cecVersion:(unsigned __int8)version from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = -98;
-  v7[2] = a3;
+  v7[2] = version;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -404,12 +404,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)getCECVersionFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)getCECVersionFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -97;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -418,12 +418,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)givePhysicalAddressFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)givePhysicalAddressFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -125;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -432,12 +432,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)getMenuLanguageFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)getMenuLanguageFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -111;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -446,10 +446,10 @@ LABEL_25:
   return result;
 }
 
-+ (id)pollFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)pollFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   memset(&v6[1], 0, 15);
   v6[16] = 1;
   v7 = 0;
@@ -459,16 +459,16 @@ LABEL_25:
   return result;
 }
 
-+ (id)reportPhysicalAddress:(unsigned __int16)a3 deviceType:(unsigned __int8)a4 from:(unsigned __int8)a5
++ (id)reportPhysicalAddress:(unsigned __int16)address deviceType:(unsigned __int8)type from:(unsigned __int8)from
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = (16 * a5) | 0xF;
+  v7[0] = (16 * from) | 0xF;
   v7[1] = -124;
-  v7[2] = HIBYTE(a3);
-  v7[3] = a3;
-  v7[4] = a4;
+  v7[2] = HIBYTE(address);
+  v7[3] = address;
+  v7[4] = type;
   memset(&v7[5], 0, 11);
   v7[16] = 5;
   result = [CECMessage messageWithFrame:v7];
@@ -476,14 +476,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)setMenuLanguage:(CECLanguage)a3 from:(unsigned __int8)a4
++ (id)setMenuLanguage:(CECLanguage)language from:(unsigned __int8)from
 {
   v11 = *MEMORY[0x277D85DE8];
   v10 = 0;
   v9 = 0;
-  v6[0] = (16 * a4) | 0xF;
+  v6[0] = (16 * from) | 0xF;
   v6[1] = 50;
-  v7 = a3;
+  languageCopy = language;
   memset(v8, 0, 11);
   v8[11] = 5;
   result = [CECMessage messageWithFrame:v6];
@@ -491,17 +491,17 @@ LABEL_25:
   return result;
 }
 
-+ (id)reportFeaturesWith:(unsigned __int8)a3 deviceTypes:(unsigned __int8)a4 rcProfile:(id)a5 deviceFeatures:(unsigned __int8)a6 from:(unsigned __int8)a7
++ (id)reportFeaturesWith:(unsigned __int8)with deviceTypes:(unsigned __int8)types rcProfile:(id)profile deviceFeatures:(unsigned __int8)features from:(unsigned __int8)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v14 = 0;
   v13 = 0;
-  v9[0] = (16 * a7) | 0xF;
+  v9[0] = (16 * from) | 0xF;
   v9[1] = -90;
-  v9[2] = a3;
-  v9[3] = a4;
-  v9[4] = (a5.var0 << 6) | a5.var1.var0;
-  v9[5] = a6;
+  v9[2] = with;
+  v9[3] = types;
+  v9[4] = (profile.var0 << 6) | profile.var1.var0;
+  v9[5] = features;
   v10 = 0;
   v11 = 0;
   v12 = 6;
@@ -510,14 +510,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)deckControlWithMode:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)deckControlWithMode:(unsigned __int8)mode from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = 66;
-  v7[2] = a3;
+  v7[2] = mode;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -525,14 +525,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)deckStatusWithInfo:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)deckStatusWithInfo:(unsigned __int8)info from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = 27;
-  v7[2] = a3;
+  v7[2] = info;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -540,14 +540,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)giveDeckStatusWithRequest:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)giveDeckStatusWithRequest:(unsigned __int8)request from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = 26;
-  v7[2] = a3;
+  v7[2] = request;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -555,14 +555,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)playWithMode:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)playWithMode:(unsigned __int8)mode from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = 65;
-  v7[2] = a3;
+  v7[2] = mode;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -570,16 +570,16 @@ LABEL_25:
   return result;
 }
 
-+ (id)deviceVendorID:(unsigned int)a3 from:(unsigned __int8)a4
++ (id)deviceVendorID:(unsigned int)d from:(unsigned __int8)from
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = (16 * a4) | 0xF;
+  v6[0] = (16 * from) | 0xF;
   v6[1] = -121;
-  v6[2] = BYTE2(a3);
-  v6[3] = BYTE1(a3);
-  v6[4] = a3;
+  v6[2] = BYTE2(d);
+  v6[3] = BYTE1(d);
+  v6[4] = d;
   memset(&v6[5], 0, 11);
   v6[16] = 5;
   result = [CECMessage messageWithFrame:v6];
@@ -587,12 +587,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)giveDeviceVendorIDFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)giveDeviceVendorIDFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -116;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -601,12 +601,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)giveOSDNameFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)giveOSDNameFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v14 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v12 = 0;
-  v6 = a4 | (16 * a3);
+  v6 = to | (16 * from);
   strcpy(v7, "F");
   v7[2] = 0;
   v8 = 0;
@@ -618,17 +618,17 @@ LABEL_25:
   return result;
 }
 
-+ (id)setOSDName:(CECOSDName)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)setOSDName:(CECOSDName)name from:(unsigned __int8)from to:(unsigned __int8)to
 {
-  length = a3.length;
+  length = name.length;
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  LOBYTE(v10) = a5 | (16 * a4);
+  nameCopy = name;
+  LOBYTE(v10) = to | (16 * from);
   *(&v10 + 1) = 16199;
   *(&v10 + 3) = 0;
   *(&v10 + 1) = 0;
   v11 = 3;
-  if (a3.length)
+  if (name.length)
   {
     __memcpy_chk();
     LOBYTE(v11) = v11 & 0xE0 | (length + 2) & 0x1F;
@@ -641,14 +641,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)menuStatus:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)menuStatus:(unsigned __int8)status from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = -114;
-  v7[2] = a3;
+  v7[2] = status;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -656,15 +656,15 @@ LABEL_25:
   return result;
 }
 
-+ (id)userControlPressed:(CECUserControl)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)userControlPressed:(CECUserControl)pressed from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  playMode = a3.operand.playMode;
-  if (a3.command <= 0x66u)
+  playMode = pressed.operand.playMode;
+  if (pressed.command <= 0x66u)
   {
-    if (a3.command == 96)
+    if (pressed.command == 96)
     {
-      v11 = a3.operand.playMode;
+      v11 = pressed.operand.playMode;
     }
 
     else
@@ -672,7 +672,7 @@ LABEL_25:
       v11 = 0;
     }
 
-    if (a3.command == 96)
+    if (pressed.command == 96)
     {
       v12 = 4;
     }
@@ -682,9 +682,9 @@ LABEL_25:
       v12 = 3;
     }
 
-    if (a3.command == 87)
+    if (pressed.command == 87)
     {
-      v13 = a3.operand.playMode;
+      v13 = pressed.operand.playMode;
     }
 
     else
@@ -692,7 +692,7 @@ LABEL_25:
       v13 = v11;
     }
 
-    if (a3.command == 87)
+    if (pressed.command == 87)
     {
       v14 = 4;
     }
@@ -702,14 +702,14 @@ LABEL_25:
       v14 = v12;
     }
 
-    v15 = a3.command == 86;
+    v15 = pressed.command == 86;
   }
 
   else
   {
-    if (a3.command <= 0x68u)
+    if (pressed.command <= 0x68u)
     {
-      if (a3.command == 104)
+      if (pressed.command == 104)
       {
         v6 = 4;
       }
@@ -720,10 +720,10 @@ LABEL_25:
         v6 = 3;
       }
 
-      if (a3.command == 103)
+      if (pressed.command == 103)
       {
-        playMode = (*&a3 >> 46) & 3 | (4 * a3.operand.playMode);
-        v7 = *&a3 >> 38;
+        playMode = (*&pressed >> 46) & 3 | (4 * pressed.operand.playMode);
+        v7 = *&pressed >> 38;
       }
 
       else
@@ -731,9 +731,9 @@ LABEL_25:
         v7 = 0;
       }
 
-      if (a3.command == 103)
+      if (pressed.command == 103)
       {
-        v8 = *(&a3.operand.broadcastType + 3);
+        v8 = *(&pressed.operand.broadcastType + 3);
       }
 
       else
@@ -741,9 +741,9 @@ LABEL_25:
         v8 = 0;
       }
 
-      if (a3.command == 103)
+      if (pressed.command == 103)
       {
-        v9 = *(&a3.operand.playMode + 2);
+        v9 = *(&pressed.operand.playMode + 2);
       }
 
       else
@@ -751,7 +751,7 @@ LABEL_25:
         v9 = 0;
       }
 
-      if (a3.command == 103)
+      if (pressed.command == 103)
       {
         v10 = 7;
       }
@@ -764,9 +764,9 @@ LABEL_25:
       goto LABEL_43;
     }
 
-    if (a3.command == 106)
+    if (pressed.command == 106)
     {
-      v13 = a3.operand.playMode;
+      v13 = pressed.operand.playMode;
     }
 
     else
@@ -774,7 +774,7 @@ LABEL_25:
       v13 = 0;
     }
 
-    if (a3.command == 106)
+    if (pressed.command == 106)
     {
       v14 = 4;
     }
@@ -784,7 +784,7 @@ LABEL_25:
       v14 = 3;
     }
 
-    v15 = a3.command == 105;
+    v15 = pressed.command == 105;
   }
 
   if (!v15)
@@ -806,9 +806,9 @@ LABEL_25:
   }
 
 LABEL_43:
-  v18[0] = a5 | (16 * a4);
+  v18[0] = to | (16 * from);
   v18[1] = 68;
-  v18[2] = a3.command;
+  v18[2] = pressed.command;
   v18[3] = playMode;
   v18[4] = v7;
   v18[5] = v8;
@@ -823,12 +823,12 @@ LABEL_43:
   return result;
 }
 
-+ (id)userControlReleasedFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)userControlReleasedFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v14 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v12 = 0;
-  v6 = a4 | (16 * a3);
+  v6 = to | (16 * from);
   strcpy(v7, "E");
   v7[2] = 0;
   v8 = 0;
@@ -840,12 +840,12 @@ LABEL_43:
   return result;
 }
 
-+ (id)giveDevicePowerStatusFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)giveDevicePowerStatusFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -113;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -854,14 +854,14 @@ LABEL_43:
   return result;
 }
 
-+ (id)reportPowerStatus:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)reportPowerStatus:(unsigned __int8)status from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = -112;
-  v7[2] = a3;
+  v7[2] = status;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -869,15 +869,15 @@ LABEL_43:
   return result;
 }
 
-+ (id)featureAbort:(unsigned __int8)a3 reason:(unsigned __int8)a4 from:(unsigned __int8)a5 to:(unsigned __int8)a6
++ (id)featureAbort:(unsigned __int8)abort reason:(unsigned __int8)reason from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v14 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v12 = 0;
-  v8[0] = a6 | (16 * a5);
+  v8[0] = to | (16 * from);
   v8[1] = 0;
-  v8[2] = a3;
-  v8[3] = a4;
+  v8[2] = abort;
+  v8[3] = reason;
   v9 = 0;
   v10 = 0;
   v11 = 4;
@@ -886,12 +886,12 @@ LABEL_43:
   return result;
 }
 
-+ (id)abortFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)abortFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -1;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -900,12 +900,12 @@ LABEL_43:
   return result;
 }
 
-+ (id)giveAudioStatusFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)giveAudioStatusFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v14 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v12 = 0;
-  v6 = a4 | (16 * a3);
+  v6 = to | (16 * from);
   strcpy(v7, "q");
   v7[2] = 0;
   v8 = 0;
@@ -917,12 +917,12 @@ LABEL_43:
   return result;
 }
 
-+ (id)giveSystemAudioModeStatusFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)giveSystemAudioModeStatusFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v14 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v12 = 0;
-  v6 = a4 | (16 * a3);
+  v6 = to | (16 * from);
   strcpy(v7, "}");
   v7[2] = 0;
   v8 = 0;
@@ -934,14 +934,14 @@ LABEL_43:
   return result;
 }
 
-+ (id)setSystemAudioMode:(BOOL)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)setSystemAudioMode:(BOOL)mode from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = 114;
-  v7[2] = a3;
+  v7[2] = mode;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -949,14 +949,14 @@ LABEL_43:
   return result;
 }
 
-+ (id)systemAudioModeRequestWithPhysicalAddress:(unsigned __int16)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)systemAudioModeRequestWithPhysicalAddress:(unsigned __int16)address from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v12 = *MEMORY[0x277D85DE8];
   v11 = 0;
   v10 = 0;
-  LOBYTE(v8[0]) = a5 | (16 * a4);
+  LOBYTE(v8[0]) = to | (16 * from);
   BYTE1(v8[0]) = 112;
-  if (a3 == 0xFFFF)
+  if (address == 0xFFFF)
   {
     memset(v8 + 2, 0, 14);
     v5 = 2;
@@ -964,8 +964,8 @@ LABEL_43:
 
   else
   {
-    BYTE2(v8[0]) = HIBYTE(a3);
-    HIBYTE(v8[0]) = a3;
+    BYTE2(v8[0]) = HIBYTE(address);
+    HIBYTE(v8[0]) = address;
     *&v8[1] = 0;
     v8[3] = 0;
     v5 = 4;
@@ -977,14 +977,14 @@ LABEL_43:
   return result;
 }
 
-+ (id)systemAudioModeStatus:(unint64_t)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)systemAudioModeStatus:(unint64_t)status from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = 126;
-  v7[2] = a3 == 2;
+  v7[2] = status == 2;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -992,14 +992,14 @@ LABEL_43:
   return result;
 }
 
-+ (id)reportAudioStatusWithVolume:(unint64_t)a3 mute:(BOOL)a4 from:(unsigned __int8)a5 to:(unsigned __int8)a6
++ (id)reportAudioStatusWithVolume:(unint64_t)volume mute:(BOOL)mute from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v12 = *MEMORY[0x277D85DE8];
   v11 = 0;
   v10 = 0;
-  v9[0] = a6 | (16 * a5);
+  v9[0] = to | (16 * from);
   v9[1] = 122;
-  if (a4)
+  if (mute)
   {
     v6 = 0x80;
   }
@@ -1009,7 +1009,7 @@ LABEL_43:
     v6 = 0;
   }
 
-  v9[2] = v6 | (a3 - 101 * ((((a3 - ((a3 * 0x446F86562D9FAEE5uLL) >> 64)) >> 1) + ((a3 * 0x446F86562D9FAEE5uLL) >> 64)) >> 6));
+  v9[2] = v6 | (volume - 101 * ((((volume - ((volume * 0x446F86562D9FAEE5uLL) >> 64)) >> 1) + ((volume * 0x446F86562D9FAEE5uLL) >> 64)) >> 6));
   memset(&v9[3], 0, 13);
   v9[16] = 3;
   result = [CECMessage messageWithFrame:v9];
@@ -1017,13 +1017,13 @@ LABEL_43:
   return result;
 }
 
-+ (id)reportShortAudioDescriptor:(char *)a3 length:(unsigned __int8)a4 from:(unsigned __int8)a5 to:(unsigned __int8)a6
++ (id)reportShortAudioDescriptor:(char *)descriptor length:(unsigned __int8)length from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v12 = *MEMORY[0x277D85DE8];
-  LOBYTE(v10) = a6 | (16 * a5);
+  LOBYTE(v10) = to | (16 * from);
   BYTE1(v10) = -93;
   memset(&v10 + 2, 0, 14);
-  v11 = (a4 + 2) & 0x1F;
+  v11 = (length + 2) & 0x1F;
   __memcpy_chk();
   v8 = v10;
   v9 = v11;
@@ -1032,14 +1032,14 @@ LABEL_43:
   return result;
 }
 
-+ (id)setAudioVolumeLevel:(unsigned __int8)a3 from:(unsigned __int8)a4 to:(unsigned __int8)a5
++ (id)setAudioVolumeLevel:(unsigned __int8)level from:(unsigned __int8)from to:(unsigned __int8)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v8 = 0;
-  v7[0] = a5 | (16 * a4);
+  v7[0] = to | (16 * from);
   v7[1] = 115;
-  v7[2] = a3;
+  v7[2] = level;
   memset(&v7[3], 0, 13);
   v7[16] = 3;
   result = [CECMessage messageWithFrame:v7];
@@ -1047,12 +1047,12 @@ LABEL_43:
   return result;
 }
 
-+ (id)initiateARCFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)initiateARCFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -64;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -1061,12 +1061,12 @@ LABEL_43:
   return result;
 }
 
-+ (id)terminateARCFrom:(unsigned __int8)a3 to:(unsigned __int8)a4
++ (id)terminateARCFrom:(unsigned __int8)from to:(unsigned __int8)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v7 = 0;
-  v6[0] = a4 | (16 * a3);
+  v6[0] = to | (16 * from);
   v6[1] = -59;
   memset(&v6[2], 0, 14);
   v6[16] = 2;
@@ -1090,10 +1090,10 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v6 = [(CECMessage *)self messageType];
-    v7 = CECMessageTypeString(v6);
+    messageType = [(CECMessage *)self messageType];
+    v7 = CECMessageTypeString(messageType);
     v8 = v7;
-    switch(v6)
+    switch(messageType)
     {
       case 128:
         v9 = [(CECMessage *)self _operandsWithLength:4];
@@ -1167,13 +1167,13 @@ LABEL_18:
         v17 = kCECPowerStatusStringUnknown;
         goto LABEL_26;
       default:
-        if (v6)
+        if (messageType)
         {
-          if (v6 != 50 && v6 != 71)
+          if (messageType != 50 && messageType != 71)
           {
-            if (v6 != 158)
+            if (messageType != 158)
             {
-              if (v6 == 157)
+              if (messageType == 157)
               {
 LABEL_11:
                 v11 = [(CECMessage *)self _operandsWithLength:2];
@@ -1194,7 +1194,7 @@ LABEL_14:
               if (v7 == "Unknown")
               {
                 v8 = __str;
-                snprintf(__str, 0x20uLL, "<<? 0x%02X>>", v6);
+                snprintf(__str, 0x20uLL, "<<? 0x%02X>>", messageType);
               }
 
               goto LABEL_28;
@@ -1210,25 +1210,25 @@ LABEL_26:
               if (v16 == *v17)
               {
                 v29 = v15;
-                v31 = [(CECMessage *)self _operandsLength];
+                _operandsLength = [(CECMessage *)self _operandsLength];
                 goto LABEL_33;
               }
 
-              v6 = v16;
+              messageType = v16;
               if (!v16)
               {
 LABEL_28:
-                v6 = [(CECMessage *)self _operandsWithLength:0];
-                v29 = v6;
-                v31 = [(CECMessage *)self _operandsLength];
+                messageType = [(CECMessage *)self _operandsWithLength:0];
+                v29 = messageType;
+                _operandsLength = [(CECMessage *)self _operandsLength];
 LABEL_33:
                 OUTLINED_FUNCTION_5_3();
-                sxprintf(v23, 0x50uLL, v5, 0, v24, v29, v31);
+                sxprintf(v23, 0x50uLL, v5, 0, v24, v29, _operandsLength);
               }
 
 LABEL_34:
               v25 = CECAddressString([(CECMessage *)self initiator], 1);
-              [v3 appendFormat:@"%s -> %s: %s %s", v25, CECAddressString(-[CECMessage destination](self, "destination"), 0), v8, v6];
+              [v3 appendFormat:@"%s -> %s: %s %s", v25, CECAddressString(-[CECMessage destination](self, "destination"), 0), v8, messageType];
               goto LABEL_35;
             }
 
@@ -1238,8 +1238,8 @@ LABEL_37:
             goto LABEL_35;
           }
 
-          v6 = [(CECMessage *)self _operandsLength];
-          v28 = v6;
+          messageType = [(CECMessage *)self _operandsLength];
+          v28 = messageType;
           v30 = [(CECMessage *)self _operandsWithLength:0];
         }
 
@@ -1251,9 +1251,9 @@ LABEL_37:
             goto LABEL_37;
           }
 
-          v6 = v20;
+          messageType = v20;
           v28 = CECMessageTypeString(*v20);
-          v30 = CECAbortReasonString(*(v6 + 1));
+          v30 = CECAbortReasonString(*(messageType + 1));
         }
 
         OUTLINED_FUNCTION_5_3();
@@ -1268,7 +1268,7 @@ LABEL_36:
   return result;
 }
 
-- (BOOL)parseActiveSourcePhysicalAddress:(unsigned __int16 *)a3
+- (BOOL)parseActiveSourcePhysicalAddress:(unsigned __int16 *)address
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] != 130)
@@ -1296,7 +1296,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseInactiveSourcePhysicalAddress:(unsigned __int16 *)a3
+- (BOOL)parseInactiveSourcePhysicalAddress:(unsigned __int16 *)address
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] != 157)
@@ -1324,7 +1324,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseRoutingChangeOriginalAddress:(unsigned __int16 *)a3 newAddress:(unsigned __int16 *)a4
+- (BOOL)parseRoutingChangeOriginalAddress:(unsigned __int16 *)address newAddress:(unsigned __int16 *)newAddress
 {
   if ([(CECMessage *)self messageType]!= 128)
   {
@@ -1342,20 +1342,20 @@ LABEL_36:
     return 0;
   }
 
-  if (a3)
+  if (address)
   {
-    *a3 = bswap32(*&self->_frame.blocks[2]) >> 16;
+    *address = bswap32(*&self->_frame.blocks[2]) >> 16;
   }
 
-  if (a4)
+  if (newAddress)
   {
-    *a4 = v7;
+    *newAddress = v7;
   }
 
   return 1;
 }
 
-- (BOOL)parseRoutingInformationPhysicalAddress:(unsigned __int16 *)a3
+- (BOOL)parseRoutingInformationPhysicalAddress:(unsigned __int16 *)address
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] != 129)
@@ -1383,7 +1383,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseSetStreamPathPhysicalAddress:(unsigned __int16 *)a3
+- (BOOL)parseSetStreamPathPhysicalAddress:(unsigned __int16 *)address
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] != 134)
@@ -1411,7 +1411,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseCECVersion:(unsigned __int8 *)a3
+- (BOOL)parseCECVersion:(unsigned __int8 *)version
 {
   OUTLINED_FUNCTION_18();
   if ([v5 messageType] != 158)
@@ -1433,7 +1433,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseReportPhysicalAddress:(unsigned __int16 *)a3 deviceType:(unint64_t *)a4
+- (BOOL)parseReportPhysicalAddress:(unsigned __int16 *)address deviceType:(unint64_t *)type
 {
   if ([(CECMessage *)self messageType]!= 132 || (*(&self->_frame + 16) & 0x1Fu) < 5 || (v7 = __rev16(*&self->_frame.blocks[2]), v7 == 0xFFFF))
   {
@@ -1446,12 +1446,12 @@ LABEL_36:
     v8 = CoreCECDeviceTypeForCECDeviceType(&v18, self->_frame.blocks[4]);
     if (v8)
     {
-      if (a3)
+      if (address)
       {
-        *a3 = v7;
+        *address = v7;
       }
 
-      if (a4)
+      if (type)
       {
         OUTLINED_FUNCTION_6_0(v8, v9, v10, v11, v12, v13, v14, v15, v17, v18);
       }
@@ -1463,7 +1463,7 @@ LABEL_36:
   return v8;
 }
 
-- (BOOL)parseSetMenuLanguage:(CECLanguage *)a3
+- (BOOL)parseSetMenuLanguage:(CECLanguage *)language
 {
   OUTLINED_FUNCTION_18();
   if ([v5 messageType] != 50 || (*(v4 + 24) & 0x1Fu) < 5)
@@ -1481,7 +1481,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseDeckControlMode:(unint64_t *)a3
+- (BOOL)parseDeckControlMode:(unint64_t *)mode
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] == 66 && (OUTLINED_FUNCTION_0_8(), v5))
@@ -1507,7 +1507,7 @@ LABEL_36:
   return v8;
 }
 
-- (BOOL)parseDeckStatusInfo:(unint64_t *)a3
+- (BOOL)parseDeckStatusInfo:(unint64_t *)info
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] == 27 && (OUTLINED_FUNCTION_0_8(), v5))
@@ -1533,7 +1533,7 @@ LABEL_36:
   return v8;
 }
 
-- (BOOL)parseGiveDeckStatusRequest:(unsigned __int8 *)a3
+- (BOOL)parseGiveDeckStatusRequest:(unsigned __int8 *)request
 {
   OUTLINED_FUNCTION_18();
   if ([v5 messageType] != 26)
@@ -1555,7 +1555,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parsePlayMode:(unint64_t *)a3
+- (BOOL)parsePlayMode:(unint64_t *)mode
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] == 65 && (OUTLINED_FUNCTION_0_8(), v5))
@@ -1581,7 +1581,7 @@ LABEL_36:
   return v8;
 }
 
-- (BOOL)parseDeviceVendorID:(unsigned int *)a3
+- (BOOL)parseDeviceVendorID:(unsigned int *)d
 {
   OUTLINED_FUNCTION_18();
   if ([v5 messageType] != 135 || (v4[24] & 0x1Fu) < 5)
@@ -1597,7 +1597,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseReportAudioStatus:(unint64_t *)a3 muteStatus:(BOOL *)a4
+- (BOOL)parseReportAudioStatus:(unint64_t *)status muteStatus:(BOOL *)muteStatus
 {
   if ([(CECMessage *)self messageType]!= 122)
   {
@@ -1610,20 +1610,20 @@ LABEL_36:
     return 0;
   }
 
-  if (a3)
+  if (status)
   {
-    *a3 = self->_frame.blocks[2] & 0x7F;
+    *status = self->_frame.blocks[2] & 0x7F;
   }
 
-  if (a4)
+  if (muteStatus)
   {
-    *a4 = self->_frame.blocks[2] >> 7;
+    *muteStatus = self->_frame.blocks[2] >> 7;
   }
 
   return 1;
 }
 
-- (BOOL)parseSetOSDName:(id *)a3
+- (BOOL)parseSetOSDName:(id *)name
 {
   OUTLINED_FUNCTION_18();
   v12 = *MEMORY[0x277D85DE8];
@@ -1653,7 +1653,7 @@ LABEL_36:
   return v7;
 }
 
-- (BOOL)parseMenuRequest:(unsigned __int8 *)a3
+- (BOOL)parseMenuRequest:(unsigned __int8 *)request
 {
   OUTLINED_FUNCTION_18();
   if ([v5 messageType] != 141)
@@ -1675,7 +1675,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)parseUserControlPressed:(CECUserControl *)a3
+- (BOOL)parseUserControlPressed:(CECUserControl *)pressed
 {
   OUTLINED_FUNCTION_18();
   if ([v5 messageType] != 68)
@@ -1751,7 +1751,7 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)parseReportPowerStatus:(unint64_t *)a3
+- (BOOL)parseReportPowerStatus:(unint64_t *)status
 {
   OUTLINED_FUNCTION_18();
   if ([v4 messageType] == 144 && (OUTLINED_FUNCTION_0_8(), v5))
@@ -1777,7 +1777,7 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)parseSystemAudioModeStatus:(unint64_t *)a3
+- (BOOL)parseSystemAudioModeStatus:(unint64_t *)status
 {
   OUTLINED_FUNCTION_18();
   if (([v5 messageType] == 126 || objc_msgSend(v4, "messageType") == 114) && (OUTLINED_FUNCTION_0_8(), v6))
@@ -1803,7 +1803,7 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)parseFeatureAbortOpcode:(char *)a3 reason:(unsigned __int8 *)a4
+- (BOOL)parseFeatureAbortOpcode:(char *)opcode reason:(unsigned __int8 *)reason
 {
   if ([(CECMessage *)self messageType])
   {
@@ -1816,27 +1816,27 @@ LABEL_6:
     return 0;
   }
 
-  if (a3)
+  if (opcode)
   {
-    *a3 = self->_frame.blocks[2];
+    *opcode = self->_frame.blocks[2];
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = self->_frame.blocks[3];
+    *reason = self->_frame.blocks[3];
   }
 
   return 1;
 }
 
-- (BOOL)parseReportFeatures:(unsigned __int8 *)a3 deviceTypes:(char *)a4 rcProfile:(id *)a5 features:(char *)a6
+- (BOOL)parseReportFeatures:(unsigned __int8 *)features deviceTypes:(char *)types rcProfile:(id *)profile features:(char *)a6
 {
   if ([(CECMessage *)self messageType]== 166 && (*(&self->_frame + 16) & 0x1Eu) >= 6)
   {
-    *a3 = self->_frame.blocks[2];
-    *a4 = self->_frame.blocks[3];
+    *features = self->_frame.blocks[2];
+    *types = self->_frame.blocks[3];
     v11 = ((self->_frame.blocks[4] >> 6) & 1) == 0;
-    a5->var0 = (self->_frame.blocks[4] & 0x40) != 0;
+    profile->var0 = (self->_frame.blocks[4] & 0x40) != 0;
     if (v11)
     {
       v12 = 15;
@@ -1847,7 +1847,7 @@ LABEL_6:
       v12 = 63;
     }
 
-    a5->var1.var0 = self->_frame.blocks[4] & v12;
+    profile->var1.var0 = self->_frame.blocks[4] & v12;
     v13 = *(&self->_frame + 16) & 0x1F;
     if (v13 < 5)
     {

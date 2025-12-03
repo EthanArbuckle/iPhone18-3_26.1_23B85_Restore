@@ -1,14 +1,14 @@
 @interface ARFaceTrackingTechnique
 + (BOOL)isSupported;
-- (ARFaceTrackingTechnique)initWithMaximumNumberOfTrackedFaces:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)processData:(id)a3;
+- (ARFaceTrackingTechnique)initWithMaximumNumberOfTrackedFaces:(int64_t)faces;
+- (BOOL)isEqual:(id)equal;
+- (id)processData:(id)data;
 - (id)resultDataClasses;
 @end
 
 @implementation ARFaceTrackingTechnique
 
-- (ARFaceTrackingTechnique)initWithMaximumNumberOfTrackedFaces:(int64_t)a3
+- (ARFaceTrackingTechnique)initWithMaximumNumberOfTrackedFaces:(int64_t)faces
 {
   v9.receiver = self;
   v9.super_class = ARFaceTrackingTechnique;
@@ -17,7 +17,7 @@
   if (v4)
   {
     v4->_isFaceTracked = 0;
-    v4->_maximumNumberOfTrackedFaces = a3;
+    v4->_maximumNumberOfTrackedFaces = faces;
     v6 = objc_opt_new();
     singleUserAnchorIdentifier = v5->_singleUserAnchorIdentifier;
     v5->_singleUserAnchorIdentifier = v6;
@@ -61,10 +61,10 @@ uint64_t __38__ARFaceTrackingTechnique_isSupported__block_invoke()
   return [v2 setWithObject:v3];
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -73,13 +73,13 @@ uint64_t __38__ARFaceTrackingTechnique_isSupported__block_invoke()
 
   v33.receiver = self;
   v33.super_class = ARFaceTrackingTechnique;
-  v5 = [(ARImageBasedTechnique *)&v33 processData:v4];
-  v6 = v4;
+  v5 = [(ARImageBasedTechnique *)&v33 processData:dataCopy];
+  v6 = dataCopy;
   v29 = objc_opt_new();
-  v7 = [v6 faceData];
-  v8 = [v7 faceMeshPayload];
+  faceData = [v6 faceData];
+  faceMeshPayload = [faceData faceMeshPayload];
   v9 = MEMORY[0x1E698C0C0];
-  if (!v8)
+  if (!faceMeshPayload)
   {
 
 LABEL_6:
@@ -88,9 +88,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v6 faceData];
-  v11 = [v10 faceMeshPayload];
-  v12 = [v11 objectForKeyedSubscript:*v9];
+  faceData2 = [v6 faceData];
+  faceMeshPayload2 = [faceData2 faceMeshPayload];
+  v12 = [faceMeshPayload2 objectForKeyedSubscript:*v9];
   v13 = [v12 count] == 0;
 
   if (v13)
@@ -99,18 +99,18 @@ LABEL_6:
   }
 
 LABEL_7:
-  v14 = [v6 faceData];
-  v15 = [v14 isMirrored];
-  v16 = [v6 isMirrored];
+  faceData3 = [v6 faceData];
+  isMirrored = [faceData3 isMirrored];
+  isMirrored2 = [v6 isMirrored];
 
-  v17 = [v6 faceData];
-  v18 = [v17 faceMeshPayload];
-  v19 = [v18 objectForKeyedSubscript:*v9];
+  faceData4 = [v6 faceData];
+  faceMeshPayload3 = [faceData4 faceMeshPayload];
+  v19 = [faceMeshPayload3 objectForKeyedSubscript:*v9];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __39__ARFaceTrackingTechnique_processData___block_invoke;
   v30[3] = &unk_1E817C378;
-  v20 = v15 ^ v16;
+  v20 = isMirrored ^ isMirrored2;
   v30[4] = self;
   v32 = v20;
   v21 = v29;
@@ -119,13 +119,13 @@ LABEL_7:
 
   if ([(ARFaceTrackingTechnique *)self maximumNumberOfTrackedFaces]== 1)
   {
-    v22 = [v21 firstObject];
-    if (v22)
+    firstObject = [v21 firstObject];
+    if (firstObject)
     {
       [v21 removeAllObjects];
       v23 = [ARFaceTrackingData alloc];
-      v24 = [v22 trackingData];
-      v25 = [(ARFaceTrackingData *)v23 initWithTrackingData:v24 transformToMirrored:v20 anchorIdentifier:self->_singleUserAnchorIdentifier];
+      trackingData = [firstObject trackingData];
+      v25 = [(ARFaceTrackingData *)v23 initWithTrackingData:trackingData transformToMirrored:v20 anchorIdentifier:self->_singleUserAnchorIdentifier];
 
       [v21 addObject:v25];
     }
@@ -140,7 +140,7 @@ LABEL_7:
 
 LABEL_12:
 
-  return v4;
+  return dataCopy;
 }
 
 void __39__ARFaceTrackingTechnique_processData___block_invoke(uint64_t a1, void *a2, uint64_t a3, BOOL *a4)
@@ -258,16 +258,16 @@ LABEL_5:
 LABEL_16:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = ARFaceTrackingTechnique;
-  if ([(ARTechnique *)&v9 isEqual:v4])
+  if ([(ARTechnique *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARFaceTrackingTechnique *)self maximumNumberOfTrackedFaces];
-    v7 = v6 == [v5 maximumNumberOfTrackedFaces];
+    v5 = equalCopy;
+    maximumNumberOfTrackedFaces = [(ARFaceTrackingTechnique *)self maximumNumberOfTrackedFaces];
+    v7 = maximumNumberOfTrackedFaces == [v5 maximumNumberOfTrackedFaces];
   }
 
   else

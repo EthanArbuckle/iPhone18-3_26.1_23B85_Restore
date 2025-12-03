@@ -1,32 +1,32 @@
 @interface PRXActionCustomColors
-+ (PRXActionCustomColors)initWithBackgroundColor:(id)a3 textColor:(id)a4;
-- (PRXActionCustomColors)initWithBackgroundColor:(id)a3 textColor:(id)a4;
++ (PRXActionCustomColors)initWithBackgroundColor:(id)color textColor:(id)textColor;
+- (PRXActionCustomColors)initWithBackgroundColor:(id)color textColor:(id)textColor;
 @end
 
 @implementation PRXActionCustomColors
 
-- (PRXActionCustomColors)initWithBackgroundColor:(id)a3 textColor:(id)a4
+- (PRXActionCustomColors)initWithBackgroundColor:(id)color textColor:(id)textColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  textColorCopy = textColor;
   v13.receiver = self;
   v13.super_class = PRXActionCustomColors;
   v8 = [(PRXActionCustomColors *)&v13 init];
   backgroundColor = v8->_backgroundColor;
-  v8->_backgroundColor = v6;
-  v10 = v6;
+  v8->_backgroundColor = colorCopy;
+  v10 = colorCopy;
 
   textColor = v8->_textColor;
-  v8->_textColor = v7;
+  v8->_textColor = textColorCopy;
 
   return v8;
 }
 
-+ (PRXActionCustomColors)initWithBackgroundColor:(id)a3 textColor:(id)a4
++ (PRXActionCustomColors)initWithBackgroundColor:(id)color textColor:(id)textColor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithBackgroundColor:v7 textColor:v6];
+  textColorCopy = textColor;
+  colorCopy = color;
+  v8 = [[self alloc] initWithBackgroundColor:colorCopy textColor:textColorCopy];
 
   return v8;
 }

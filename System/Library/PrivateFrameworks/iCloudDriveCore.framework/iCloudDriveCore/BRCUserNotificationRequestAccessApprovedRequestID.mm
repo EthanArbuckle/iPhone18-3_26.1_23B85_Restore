@@ -1,8 +1,8 @@
 @interface BRCUserNotificationRequestAccessApprovedRequestID
-+ (id)decodeWithRequestIDString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)decodeWithRequestIDString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (id)encode;
-- (void)performOnActionWithNotificationResponse:(id)a3 sessionContext:(id)a4 completionHandler:(id)a5;
+- (void)performOnActionWithNotificationResponse:(id)response sessionContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation BRCUserNotificationRequestAccessApprovedRequestID
@@ -11,21 +11,21 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = +[BRCUserNotificationRequestAccessApprovedRequestID requestTypeName];
-  v5 = [(BRCUserNotificationRequestAccess *)self recordName];
-  v6 = [(BRCUserNotificationRequestAccess *)self zoneName];
-  v7 = [(BRCUserNotificationRequestAccess *)self ownerName];
-  v8 = [(BRCUserNotificationRequestAccess *)self userRecordName];
-  v9 = [(BRCUserNotificationRequestAccess *)self accountID];
-  v10 = [v3 stringWithFormat:@"%@/%@/%@/%@/%@/%@", v4, v5, v6, v7, v8, v9];
+  recordName = [(BRCUserNotificationRequestAccess *)self recordName];
+  zoneName = [(BRCUserNotificationRequestAccess *)self zoneName];
+  ownerName = [(BRCUserNotificationRequestAccess *)self ownerName];
+  userRecordName = [(BRCUserNotificationRequestAccess *)self userRecordName];
+  accountID = [(BRCUserNotificationRequestAccess *)self accountID];
+  v10 = [v3 stringWithFormat:@"%@/%@/%@/%@/%@/%@", v4, recordName, zoneName, ownerName, userRecordName, accountID];
 
   return v10;
 }
 
-+ (id)decodeWithRequestIDString:(id)a3
++ (id)decodeWithRequestIDString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = [a3 componentsSeparatedByString:@"/"];
+    v3 = [string componentsSeparatedByString:@"/"];
     if ([v3 count] == 6 && (+[BRCUserNotificationRequestAccessApprovedRequestID requestTypeName](BRCUserNotificationRequestAccessApprovedRequestID, "requestTypeName"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqualToString:", v5), v5, v4, v6))
     {
       v7 = [BRCUserNotificationRequestAccessApprovedRequestID alloc];
@@ -51,10 +51,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -64,9 +64,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BRCUserNotificationRequestAccessApprovedRequestID *)self encode];
-      v6 = [(BRCUserNotificationRequestAccessApprovedRequestID *)v4 encode];
-      v7 = [v5 isEqualToString:v6];
+      encode = [(BRCUserNotificationRequestAccessApprovedRequestID *)self encode];
+      encode2 = [(BRCUserNotificationRequestAccessApprovedRequestID *)equalCopy encode];
+      v7 = [encode isEqualToString:encode2];
     }
 
     else
@@ -78,38 +78,38 @@
   return v7;
 }
 
-- (void)performOnActionWithNotificationResponse:(id)a3 sessionContext:(id)a4 completionHandler:(id)a5
+- (void)performOnActionWithNotificationResponse:(id)response sessionContext:(id)context completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v9 = objc_alloc(MEMORY[0x277CBC5F8]);
-  v10 = [(BRCUserNotificationRequestAccess *)self zoneName];
-  v11 = [(BRCUserNotificationRequestAccess *)self ownerName];
-  v12 = [v9 initWithZoneName:v10 ownerName:v11];
+  zoneName = [(BRCUserNotificationRequestAccess *)self zoneName];
+  ownerName = [(BRCUserNotificationRequestAccess *)self ownerName];
+  v12 = [v9 initWithZoneName:zoneName ownerName:ownerName];
 
   v13 = [objc_alloc(MEMORY[0x277CFAE60]) initWithRecordZoneID:v12];
   v14 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v15 = [(BRCUserNotificationRequestAccess *)self recordName];
-  v16 = [v14 initWithRecordName:v15 zoneID:v12];
+  recordName = [(BRCUserNotificationRequestAccess *)self recordName];
+  v16 = [v14 initWithRecordName:recordName zoneID:v12];
 
   if (v12 && v16)
   {
-    v17 = [v7 zoneAppRetriever];
-    v18 = [v17 clientZoneByMangledID:v13];
+    zoneAppRetriever = [contextCopy zoneAppRetriever];
+    v18 = [zoneAppRetriever clientZoneByMangledID:v13];
 
     if (v18)
     {
-      v19 = [v18 dbFacade];
-      v20 = [v19 serialQueue];
+      dbFacade = [v18 dbFacade];
+      serialQueue = [dbFacade serialQueue];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __126__BRCUserNotificationRequestAccessApprovedRequestID_performOnActionWithNotificationResponse_sessionContext_completionHandler___block_invoke;
       v25[3] = &unk_278500CE0;
       v26 = v18;
       v27 = v16;
-      v28 = self;
-      v29 = v8;
-      dispatch_async(v20, v25);
+      selfCopy = self;
+      v29 = handlerCopy;
+      dispatch_async(serialQueue, v25);
     }
 
     else
@@ -121,7 +121,7 @@
         [BRCUserNotificationRequestAccessRequestID performOnActionWithNotificationResponse:sessionContext:completionHandler:];
       }
 
-      v8[2](v8);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -134,7 +134,7 @@
       [BRCUserNotificationRequestAccessRequestID performOnActionWithNotificationResponse:sessionContext:completionHandler:];
     }
 
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 

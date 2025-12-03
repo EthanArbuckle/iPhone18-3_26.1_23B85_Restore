@@ -1,41 +1,41 @@
 @interface LRSchemaLRPreprocessorInfo
-- (BOOL)isEqual:(id)a3;
-- (LRSchemaLRPreprocessorInfo)initWithDictionary:(id)a3;
-- (LRSchemaLRPreprocessorInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LRSchemaLRPreprocessorInfo)initWithDictionary:(id)dictionary;
+- (LRSchemaLRPreprocessorInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBootSessionUUIDChanged:(BOOL)a3;
-- (void)setHasPreProcessorTriggerReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBootSessionUUIDChanged:(BOOL)changed;
+- (void)setHasPreProcessorTriggerReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LRSchemaLRPreprocessorInfo
 
-- (LRSchemaLRPreprocessorInfo)initWithDictionary:(id)a3
+- (LRSchemaLRPreprocessorInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = LRSchemaLRPreprocessorInfo;
   v5 = [(LRSchemaLRPreprocessorInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"preProcessorTriggerTimeNanosecondsSinceBoot"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"preProcessorTriggerTimeNanosecondsSinceBoot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRPreprocessorInfo setPreProcessorTriggerTimeNanosecondsSinceBoot:](v5, "setPreProcessorTriggerTimeNanosecondsSinceBoot:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"bootSessionUUIDChanged"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"bootSessionUUIDChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRPreprocessorInfo setBootSessionUUIDChanged:](v5, "setBootSessionUUIDChanged:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"preProcessorTriggerReason"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"preProcessorTriggerReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (LRSchemaLRPreprocessorInfo)initWithJSON:(id)a3
+- (LRSchemaLRPreprocessorInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LRSchemaLRPreprocessorInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LRSchemaLRPreprocessorInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LRSchemaLRPreprocessorInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[LRSchemaLRPreprocessorInfo bootSessionUUIDChanged](self, "bootSessionUUIDChanged")}];
-    [v3 setObject:v7 forKeyedSubscript:@"bootSessionUUIDChanged"];
+    [dictionary setObject:v7 forKeyedSubscript:@"bootSessionUUIDChanged"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -120,7 +120,7 @@ LABEL_3:
     v9 = off_1E78D8C90[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"preProcessorTriggerReason"];
+  [dictionary setObject:v9 forKeyedSubscript:@"preProcessorTriggerReason"];
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
@@ -128,12 +128,12 @@ LABEL_3:
 
 LABEL_4:
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[LRSchemaLRPreprocessorInfo preProcessorTriggerTimeNanosecondsSinceBoot](self, "preProcessorTriggerTimeNanosecondsSinceBoot")}];
-  [v3 setObject:v5 forKeyedSubscript:@"preProcessorTriggerTimeNanosecondsSinceBoot"];
+  [dictionary setObject:v5 forKeyedSubscript:@"preProcessorTriggerTimeNanosecondsSinceBoot"];
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,16 +176,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -194,13 +194,13 @@ LABEL_4:
   if (*&has)
   {
     preProcessorTriggerTimeNanosecondsSinceBoot = self->_preProcessorTriggerTimeNanosecondsSinceBoot;
-    if (preProcessorTriggerTimeNanosecondsSinceBoot != [v4 preProcessorTriggerTimeNanosecondsSinceBoot])
+    if (preProcessorTriggerTimeNanosecondsSinceBoot != [equalCopy preProcessorTriggerTimeNanosecondsSinceBoot])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -212,10 +212,10 @@ LABEL_4:
   if (v8)
   {
     bootSessionUUIDChanged = self->_bootSessionUUIDChanged;
-    if (bootSessionUUIDChanged == [v4 bootSessionUUIDChanged])
+    if (bootSessionUUIDChanged == [equalCopy bootSessionUUIDChanged])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_10;
     }
 
@@ -234,7 +234,7 @@ LABEL_10:
   if (v10)
   {
     preProcessorTriggerReason = self->_preProcessorTriggerReason;
-    if (preProcessorTriggerReason != [v4 preProcessorTriggerReason])
+    if (preProcessorTriggerReason != [equalCopy preProcessorTriggerReason])
     {
       goto LABEL_14;
     }
@@ -246,15 +246,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -274,20 +274,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasPreProcessorTriggerReason:(BOOL)a3
+- (void)setHasPreProcessorTriggerReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -300,9 +300,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBootSessionUUIDChanged:(BOOL)a3
+- (void)setHasBootSessionUUIDChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 2;
   }

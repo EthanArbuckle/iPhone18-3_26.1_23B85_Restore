@@ -1,8 +1,8 @@
 @interface TUIElementComponentRender
 + (id)attributesToIgnoreWhenResolving;
 + (id)containerAttributes;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)instantiateNode:(id)a3 withObject:(id)a4 context:(id)a5;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)instantiateNode:(id)node withObject:(id)object context:(id)context;
 @end
 
 @implementation TUIElementComponentRender
@@ -31,20 +31,20 @@
   return v3;
 }
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  [v8 setNameReference:{objc_msgSend(a5, "nameReferenceForAttribute:node:", 137, var0)}];
+  var0 = node.var0;
+  objectCopy = object;
+  [objectCopy setNameReference:{objc_msgSend(attributes, "nameReferenceForAttribute:node:", 137, var0)}];
 }
 
-+ (void)instantiateNode:(id)a3 withObject:(id)a4 context:(id)a5
++ (void)instantiateNode:(id)node withObject:(id)object context:(id)context
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [v10 nameReference];
+  objectCopy = object;
+  contextCopy = context;
+  nameReference = [objectCopy nameReference];
   v9 = objc_autoreleasePoolPush();
-  [v7 instantiateRender:v8 withChildrenOfNode:a3.var0];
+  [contextCopy instantiateRender:nameReference withChildrenOfNode:node.var0];
   objc_autoreleasePoolPop(v9);
 }
 

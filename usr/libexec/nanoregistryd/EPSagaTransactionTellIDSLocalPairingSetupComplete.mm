@@ -1,9 +1,9 @@
 @interface EPSagaTransactionTellIDSLocalPairingSetupComplete
 - (EPTransactionDelegate)delegate;
 - (id)registry;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 - (void)cancel;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)markCompleted;
 @end
 
@@ -17,25 +17,25 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  objc_storeStrong(&self->_serviceRegistry, a4);
-  v7 = a4;
+  entryCopy = entry;
+  objc_storeStrong(&self->_serviceRegistry, registry);
+  registryCopy = registry;
   routingSlipEntry = self->_routingSlipEntry;
-  self->_routingSlipEntry = v6;
-  v9 = v6;
+  self->_routingSlipEntry = entryCopy;
+  v9 = entryCopy;
 
   v10 = [(EPRoutingSlipEntry *)v9 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v11 = [(EPSagaTransactionTellIDSLocalPairingSetupComplete *)self registry];
+  registry = [(EPSagaTransactionTellIDSLocalPairingSetupComplete *)self registry];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B8060;
   v13[3] = &unk_1001757C0;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v12 = v10;
-  [v11 grabRegistryWithReadBlockAsync:v13];
+  [registry grabRegistryWithReadBlockAsync:v13];
 }
 
 - (void)markCompleted
@@ -56,8 +56,8 @@
     }
   }
 
-  v8 = [(EPSagaTransactionTellIDSLocalPairingSetupComplete *)self delegate];
-  [v8 transactionDidComplete:self];
+  delegate = [(EPSagaTransactionTellIDSLocalPairingSetupComplete *)self delegate];
+  [delegate transactionDidComplete:self];
 }
 
 - (void)cancel
@@ -81,9 +81,9 @@
   [(EPSagaTransactionTellIDSLocalPairingSetupComplete *)self markCompleted];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -97,15 +97,15 @@
       v11 = 138412546;
       v12 = v9;
       v13 = 2112;
-      v14 = v4;
+      v14 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@] Canceled with error : %@", &v11, 0x16u);
     }
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    v10 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
-    [v10 addObject:v4];
+    errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+    [errors addObject:errorCopy];
   }
 
   [(EPSagaTransactionTellIDSLocalPairingSetupComplete *)self markCompleted];

@@ -11,22 +11,22 @@
 - (void)_setupConstraintsForPauseCard;
 - (void)_setupConstraintsForPlatterView;
 - (void)_setupConstraintsForTurnCard;
-- (void)_transitionFromViews:(id)a3 inView:(id)a4 horizontalSlideAnimation:(BOOL)a5;
+- (void)_transitionFromViews:(id)views inView:(id)view horizontalSlideAnimation:(BOOL)animation;
 - (void)_updateClientSafeArea;
-- (void)_updateClientSafeAreaWithInsets:(UIEdgeInsets)a3;
-- (void)navigator:(id)a3 didEndTrip:(BOOL)a4;
-- (void)navigator:(id)a3 pausedTripForReason:(unint64_t)a4 description:(id)a5 usingColor:(id)a6;
-- (void)setCARScreenInfo:(id)a3 isRightHandDrive:(BOOL)a4 supportsVehicleData:(BOOL)a5;
-- (void)setLayout:(id)a3;
-- (void)setLayoutOverride:(unint64_t)a3;
-- (void)setSafeAreaDelegate:(id)a3;
-- (void)setShowETA:(BOOL)a3;
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4;
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4;
-- (void)updateTripEstimates:(id)a3;
-- (void)viewController:(id)a3 didUpdateSafeAreaInsets:(UIEdgeInsets)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_updateClientSafeAreaWithInsets:(UIEdgeInsets)insets;
+- (void)navigator:(id)navigator didEndTrip:(BOOL)trip;
+- (void)navigator:(id)navigator pausedTripForReason:(unint64_t)reason description:(id)description usingColor:(id)color;
+- (void)setCARScreenInfo:(id)info isRightHandDrive:(BOOL)drive supportsVehicleData:(BOOL)data;
+- (void)setLayout:(id)layout;
+- (void)setLayoutOverride:(unint64_t)override;
+- (void)setSafeAreaDelegate:(id)delegate;
+- (void)setShowETA:(BOOL)a;
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles;
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver;
+- (void)updateTripEstimates:(id)estimates;
+- (void)viewController:(id)controller didUpdateSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -79,59 +79,59 @@
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSInstrumentClusterCardViewController;
   [(CPSInstrumentClusterCardViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = CPSInstrumentClusterCardViewController;
-  [(CPSInstrumentClusterCardViewController *)&v3 viewDidAppear:a3];
-  v6->_shouldUpdateContent = 1;
-  [(CPSInstrumentClusterCardViewController *)v6 _evaluateLayout];
-  [(CPSInstrumentClusterCardViewController *)v6 _updateClientSafeArea];
+  [(CPSInstrumentClusterCardViewController *)&v3 viewDidAppear:appear];
+  selfCopy->_shouldUpdateContent = 1;
+  [(CPSInstrumentClusterCardViewController *)selfCopy _evaluateLayout];
+  [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  disappearCopy = disappear;
   v3.receiver = self;
   v3.super_class = CPSInstrumentClusterCardViewController;
-  [(CPSInstrumentClusterCardViewController *)&v3 viewDidDisappear:a3];
-  [(CPSInstrumentClusterCardViewController *)v6 _updateClientSafeAreaWithInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-  v6->_shouldUpdateContent = 0;
+  [(CPSInstrumentClusterCardViewController *)&v3 viewDidDisappear:disappear];
+  [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeAreaWithInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
+  selfCopy->_shouldUpdateContent = 0;
 }
 
 - (void)viewDidLayoutSubviews
 {
   v32 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
   v27.receiver = self;
   v27.super_class = CPSInstrumentClusterCardViewController;
   [(CPSInstrumentClusterCardViewController *)&v27 viewDidLayoutSubviews];
   v25 = 0;
   v17 = 0;
-  if ([(CPSInstrumentClusterCardViewController *)v29 layoutOverride])
+  if ([(CPSInstrumentClusterCardViewController *)selfCopy layoutOverride])
   {
-    v26 = [(CPSInstrumentClusterCardViewController *)v29 layout];
+    layout = [(CPSInstrumentClusterCardViewController *)selfCopy layout];
     v25 = 1;
-    v16 = [(CPSInstrumentClusterCardLayout *)v26 layoutForCard];
-    v17 = v16 != [(CPSInstrumentClusterCardViewController *)v29 layoutOverride];
+    layoutForCard = [(CPSInstrumentClusterCardLayout *)layout layoutForCard];
+    v17 = layoutForCard != [(CPSInstrumentClusterCardViewController *)selfCopy layoutOverride];
   }
 
   if (v25)
   {
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](layout);
   }
 
   if (v17)
@@ -140,22 +140,22 @@
     v23 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_1_8_64(v31, v29);
+      __os_log_helper_16_2_1_8_64(v31, selfCopy);
       _os_log_impl(&dword_242FE8000, location, v23, "%@: layout override changed on viewDidLayoutSubviews. Reevaluating Layout.", v31, 0xCu);
     }
 
     objc_storeStrong(&location, 0);
-    v15 = [[CPSInstrumentClusterCardLayout alloc] initWithLayout:[(CPSInstrumentClusterCardViewController *)v29 layoutOverride]];
-    [(CPSInstrumentClusterCardViewController *)v29 setLayout:?];
+    v15 = [[CPSInstrumentClusterCardLayout alloc] initWithLayout:[(CPSInstrumentClusterCardViewController *)selfCopy layoutOverride]];
+    [(CPSInstrumentClusterCardViewController *)selfCopy setLayout:?];
     MEMORY[0x277D82BD8](v15);
   }
 
   else
   {
-    p_lastKnownSafeArea = &v29->_lastKnownSafeArea;
-    v11 = [(CPSInstrumentClusterCardViewController *)v29 view];
-    v12 = [v11 safeAreaLayoutGuide];
-    [v12 layoutFrame];
+    p_lastKnownSafeArea = &selfCopy->_lastKnownSafeArea;
+    view = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v22.origin.x = v2;
     v22.origin.y = v3;
     v22.size.width = v4;
@@ -165,10 +165,10 @@
     LOBYTE(v14) = 1;
     if (CGRectEqualToRect(v33, v22))
     {
-      p_lastKnownViewArea = &v29->_lastKnownViewArea;
-      v20 = [(CPSInstrumentClusterCardViewController *)v29 view];
+      p_lastKnownViewArea = &selfCopy->_lastKnownViewArea;
+      view2 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
       v19 = 1;
-      [v20 frame];
+      [view2 frame];
       rect2.origin.x = v6;
       rect2.origin.y = v7;
       rect2.size.width = v8;
@@ -178,69 +178,69 @@
 
     if (v19)
     {
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](view2);
     }
 
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+    MEMORY[0x277D82BD8](view);
     if (v14)
     {
       oslog = CarPlaySupportGeneralLogging();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_2_1_8_64(v30, v29);
+        __os_log_helper_16_2_1_8_64(v30, selfCopy);
         _os_log_impl(&dword_242FE8000, oslog, OS_LOG_TYPE_INFO, "%@: view area or safe area changed on viewDidLayoutSubviews. Reevaluating Layout.", v30, 0xCu);
       }
 
       objc_storeStrong(&oslog, 0);
-      [(CPSInstrumentClusterCardViewController *)v29 _evaluateLayout];
+      [(CPSInstrumentClusterCardViewController *)selfCopy _evaluateLayout];
     }
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
   v39 = *MEMORY[0x277D85DE8];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = v37;
-  v24 = [(CPSInstrumentClusterCardViewController *)v37 view];
-  v23 = [v24 safeAreaLayoutGuide];
-  [v23 layoutFrame];
+  objc_storeStrong(location, layout);
+  v22 = selfCopy;
+  view = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v34.x = v3;
   v34.y = v4;
   v35.width = v5;
   v35.height = v6;
   v22->_lastKnownSafeArea.origin = v34;
   v22->_lastKnownSafeArea.size = v35;
-  MEMORY[0x277D82BD8](v23);
-  *&v7 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-  v25 = v37;
-  v26 = [(CPSInstrumentClusterCardViewController *)v37 view];
-  [v26 frame];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  *&v7 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  v25 = selfCopy;
+  view2 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  [view2 frame];
   v32.x = v8;
   v32.y = v9;
   v33.width = v10;
   v33.height = v11;
   v25->_lastKnownViewArea.origin = v32;
   v25->_lastKnownViewArea.size = v33;
-  MEMORY[0x277D82BD8](v26);
-  objc_storeStrong(&v37->_layout, location[0]);
+  MEMORY[0x277D82BD8](view2);
+  objc_storeStrong(&selfCopy->_layout, location[0]);
   v31 = CarPlaySupportGeneralLogging();
   v30 = 1;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
     log = v31;
     type = v30;
-    v16 = v37;
+    v16 = selfCopy;
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(location[0], "layoutForCard")}];
-    v29[0] = v37->_lastKnownViewArea.origin;
-    v29[1] = v37->_lastKnownViewArea.size;
+    v29[0] = selfCopy->_lastKnownViewArea.origin;
+    v29[1] = selfCopy->_lastKnownViewArea.size;
     v20 = [MEMORY[0x277CCAE60] valueWithBytes:v29 objCType:?];
-    v28[0] = v37->_lastKnownSafeArea.origin;
-    v28[1] = v37->_lastKnownSafeArea.size;
+    v28[0] = selfCopy->_lastKnownSafeArea.origin;
+    v28[1] = selfCopy->_lastKnownSafeArea.size;
     v19 = [MEMORY[0x277CCAE60] valueWithBytes:v28 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     __os_log_helper_16_2_4_8_64_8_64_8_64_8_64(v38, v16, v21, v20, v19);
     _os_log_impl(&dword_242FE8000, log, type, "%@: Setting Layout: %@ with viewArea: %@ safeArea: %@", v38, 0x2Au);
@@ -250,53 +250,53 @@
   }
 
   objc_storeStrong(&v31, 0);
-  [(CPSInstrumentClusterCardViewController *)v37 _setupConstraintsForPlatterView];
-  [(CPSInstrumentClusterCardViewController *)v37 _setupConstraintsForETACard];
-  v15 = [(CPSInstrumentClusterCardViewController *)v37 currentManeuversCardView];
-  *&v12 = MEMORY[0x277D82BD8](v15).n128_u64[0];
-  if (v15)
+  [(CPSInstrumentClusterCardViewController *)selfCopy _setupConstraintsForPlatterView];
+  [(CPSInstrumentClusterCardViewController *)selfCopy _setupConstraintsForETACard];
+  currentManeuversCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
+  *&v12 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+  if (currentManeuversCardView)
   {
-    v14 = [(CPSInstrumentClusterCardViewController *)v37 currentManeuversCardView];
-    v13 = [(CPSManeuversCardView *)v14 maneuvers];
-    v27 = [(NSArray *)v13 copy];
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    objc_storeStrong(&v37->_currentManeuversCardView, 0);
-    [(CPSInstrumentClusterCardViewController *)v37 showManeuvers:v27 usingDisplayStyles:MEMORY[0x277CBEBF8]];
+    currentManeuversCardView2 = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
+    maneuvers = [(CPSManeuversCardView *)currentManeuversCardView2 maneuvers];
+    v27 = [(NSArray *)maneuvers copy];
+    MEMORY[0x277D82BD8](maneuvers);
+    MEMORY[0x277D82BD8](currentManeuversCardView2);
+    objc_storeStrong(&selfCopy->_currentManeuversCardView, 0);
+    [(CPSInstrumentClusterCardViewController *)selfCopy showManeuvers:v27 usingDisplayStyles:MEMORY[0x277CBEBF8]];
     objc_storeStrong(&v27, 0);
   }
 
-  [(CPSInstrumentClusterCardViewController *)v37 _setupConstraintsForPauseCard];
-  [(CPSInstrumentClusterCardViewController *)v37 _updateClientSafeArea];
+  [(CPSInstrumentClusterCardViewController *)selfCopy _setupConstraintsForPauseCard];
+  [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
   objc_storeStrong(location, 0);
 }
 
-- (void)setCARScreenInfo:(id)a3 isRightHandDrive:(BOOL)a4 supportsVehicleData:(BOOL)a5
+- (void)setCARScreenInfo:(id)info isRightHandDrive:(BOOL)drive supportsVehicleData:(BOOL)data
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v8->_carScreenInfo, location[0]);
-  v8->_isRightHandDrive = a4;
-  v8->_supportsVehicleData = a5;
-  [(CPSInstrumentClusterCardViewController *)v8 _evaluateLayout];
+  objc_storeStrong(location, info);
+  objc_storeStrong(&selfCopy->_carScreenInfo, location[0]);
+  selfCopy->_isRightHandDrive = drive;
+  selfCopy->_supportsVehicleData = data;
+  [(CPSInstrumentClusterCardViewController *)selfCopy _evaluateLayout];
   objc_storeStrong(location, 0);
 }
 
-- (void)setSafeAreaDelegate:(id)a3
+- (void)setSafeAreaDelegate:(id)delegate
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v6->_safeAreaDelegate);
+  objc_storeStrong(location, delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_safeAreaDelegate);
   v3 = location[0];
   MEMORY[0x277D82BD8](WeakRetained);
   if (WeakRetained != v3)
   {
-    objc_storeWeak(&v6->_safeAreaDelegate, location[0]);
-    [(CPSInstrumentClusterCardViewController *)v6 _updateClientSafeArea];
+    objc_storeWeak(&selfCopy->_safeAreaDelegate, location[0]);
+    [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
   }
 
   objc_storeStrong(location, 0);
@@ -305,67 +305,67 @@
 - (void)_evaluateLayout
 {
   v81 = *MEMORY[0x277D85DE8];
-  v78 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = CarPlaySupportGeneralLogging();
   v76 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_1_8_64(v80, v78);
+    __os_log_helper_16_2_1_8_64(v80, selfCopy);
     _os_log_impl(&dword_242FE8000, location[0], v76, "%@: Evaluating Layout", v80, 0xCu);
   }
 
   objc_storeStrong(location, 0);
-  if ([(CPSInstrumentClusterCardViewController *)v78 supportsVehicleData])
+  if ([(CPSInstrumentClusterCardViewController *)selfCopy supportsVehicleData])
   {
     v75 = CarPlaySupportGeneralLogging();
     v74 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_1_8_64(v79, v78);
+      __os_log_helper_16_2_1_8_64(v79, selfCopy);
       _os_log_impl(&dword_242FE8000, v75, v74, "%@: Supports vehicle data", v79, 0xCu);
     }
 
     objc_storeStrong(&v75, 0);
-    v34 = [(CPSInstrumentClusterCardViewController *)v78 view];
-    [v34 frame];
+    view = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    [view frame];
     v70 = v2;
     v71 = v3;
     v72 = v4;
     v73 = v5;
-    MEMORY[0x277D82BD8](v34);
-    v36 = [(CPSInstrumentClusterCardViewController *)v78 view];
-    v35 = [v36 safeAreaLayoutGuide];
-    [v35 layoutFrame];
+    MEMORY[0x277D82BD8](view);
+    view2 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v66 = v6;
     v67 = v7;
     v68 = v8;
     v69 = v9;
-    MEMORY[0x277D82BD8](v35);
-    *&v10 = MEMORY[0x277D82BD8](v36).n128_u64[0];
-    v40 = [(CPSInstrumentClusterCardViewController *)v78 view];
-    v39 = [v40 window];
-    v38 = [v39 screen];
-    v37 = [v38 displayConfiguration];
-    [v37 pointScale];
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+    *&v10 = MEMORY[0x277D82BD8](view2).n128_u64[0];
+    view3 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    window = [view3 window];
+    screen = [window screen];
+    displayConfiguration = [screen displayConfiguration];
+    [displayConfiguration pointScale];
     v41 = v11;
-    MEMORY[0x277D82BD8](v37);
-    MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
-    MEMORY[0x277D82BD8](v40);
+    MEMORY[0x277D82BD8](displayConfiguration);
+    MEMORY[0x277D82BD8](screen);
+    MEMORY[0x277D82BD8](window);
+    MEMORY[0x277D82BD8](view3);
     v65 = v41;
-    v44 = [(CPSInstrumentClusterCardViewController *)v78 carScreenInfo];
-    [(CARScreenInfo *)v44 physicalSize];
+    carScreenInfo = [(CPSInstrumentClusterCardViewController *)selfCopy carScreenInfo];
+    [(CARScreenInfo *)carScreenInfo physicalSize];
     v62 = v12;
     v63 = v13;
     v43 = v12;
-    v42 = [(CPSInstrumentClusterCardViewController *)v78 carScreenInfo];
-    [(CARScreenInfo *)v42 pixelSize];
+    carScreenInfo2 = [(CPSInstrumentClusterCardViewController *)selfCopy carScreenInfo];
+    [(CARScreenInfo *)carScreenInfo2 pixelSize];
     v60 = v14;
     v61 = v15;
     v45 = v43 / v14;
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v44);
+    MEMORY[0x277D82BD8](carScreenInfo2);
+    MEMORY[0x277D82BD8](carScreenInfo);
     v64 = v45;
     CGSizeMake_13();
     v58 = v16;
@@ -389,18 +389,18 @@
     *&v49 = v28;
     *(&v49 + 1) = v29;
     v30 = [CPSInstrumentClusterCardLayout alloc];
-    v47 = [(CPSInstrumentClusterCardLayout *)v30 initWithSafeAreaFrame:v78->_isRightHandDrive viewAreaFrame:v50 displayFrame:v51 physicalPixelWidth:v48 isRightHandDrive:v49, v48, v49, *&v45];
-    [(CPSInstrumentClusterCardViewController *)v78 setLayout:v47];
+    v47 = [(CPSInstrumentClusterCardLayout *)v30 initWithSafeAreaFrame:selfCopy->_isRightHandDrive viewAreaFrame:v50 displayFrame:v51 physicalPixelWidth:v48 isRightHandDrive:v49, v48, v49, *&v45];
+    [(CPSInstrumentClusterCardViewController *)selfCopy setLayout:v47];
     objc_storeStrong(&v47, 0);
   }
 
   else
   {
     v32 = [CPSInstrumentClusterCardLayout alloc];
-    v33 = [(CPSInstrumentClusterCardViewController *)v78 carScreenInfo];
-    v46 = [(CPSInstrumentClusterCardLayout *)v32 initWithCarScreenInfo:v33 isRightHandDrive:[(CPSInstrumentClusterCardViewController *)v78 isRightHandDrive]];
-    *&v31 = MEMORY[0x277D82BD8](v33).n128_u64[0];
-    [(CPSInstrumentClusterCardViewController *)v78 setLayout:v46, v31];
+    carScreenInfo3 = [(CPSInstrumentClusterCardViewController *)selfCopy carScreenInfo];
+    v46 = [(CPSInstrumentClusterCardLayout *)v32 initWithCarScreenInfo:carScreenInfo3 isRightHandDrive:[(CPSInstrumentClusterCardViewController *)selfCopy isRightHandDrive]];
+    *&v31 = MEMORY[0x277D82BD8](carScreenInfo3).n128_u64[0];
+    [(CPSInstrumentClusterCardViewController *)selfCopy setLayout:v46, v31];
     objc_storeStrong(&v46, 0);
   }
 }
@@ -409,42 +409,42 @@
 {
   if (self->_shouldUpdateContent)
   {
-    v12 = [(CPSInstrumentClusterCardViewController *)self currentPausedCardView];
+    currentPausedCardView = [(CPSInstrumentClusterCardViewController *)self currentPausedCardView];
     v18 = 0;
     v16 = 0;
     v14 = 0;
     LOBYTE(v13) = 1;
-    if (!v12)
+    if (!currentPausedCardView)
     {
-      v19 = [(CPSInstrumentClusterCardViewController *)self currentManeuversCardView];
+      currentManeuversCardView = [(CPSInstrumentClusterCardViewController *)self currentManeuversCardView];
       v18 = 1;
       LOBYTE(v13) = 1;
-      if (!v19)
+      if (!currentManeuversCardView)
       {
-        v17 = [(CPSInstrumentClusterCardViewController *)self estimatesViewController];
+        estimatesViewController = [(CPSInstrumentClusterCardViewController *)self estimatesViewController];
         v16 = 1;
-        v15 = [(CPSDashboardEstimatesViewController *)v17 contentView];
+        contentView = [(CPSDashboardEstimatesViewController *)estimatesViewController contentView];
         v14 = 1;
-        v13 = ![(UIView *)v15 isHidden];
+        v13 = ![(UIView *)contentView isHidden];
       }
     }
 
     if (v14)
     {
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](contentView);
     }
 
     if (v16)
     {
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](estimatesViewController);
     }
 
     if (v18)
     {
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](currentManeuversCardView);
     }
 
-    *&v2 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+    *&v2 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
     if (v13)
     {
       [(CPSInstrumentClusterCardViewController *)self _layoutGuideForClient];
@@ -453,29 +453,29 @@
 
     else
     {
-      v11 = [(CPSInstrumentClusterCardViewController *)self view];
-      [v11 safeAreaInsets];
+      view = [(CPSInstrumentClusterCardViewController *)self view];
+      [view safeAreaInsets];
       [(CPSInstrumentClusterCardViewController *)self _updateClientSafeAreaWithInsets:v7, v8, v9, v10];
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](view);
     }
   }
 }
 
 - (UIEdgeInsets)_layoutGuideForClient
 {
-  v10 = [(CPSInstrumentClusterCardViewController *)self platterViewController];
-  v9 = [(UIViewController *)v10 view];
-  [(UIView *)v9 layoutIfNeeded];
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  v12 = [(CPSInstrumentClusterCardViewController *)self view];
-  v11 = [v12 safeAreaLayoutGuide];
-  [v11 layoutFrame];
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  v13 = [(CPSInstrumentClusterCardViewController *)self view];
-  [v13 safeAreaInsets];
-  MEMORY[0x277D82BD8](v13);
+  platterViewController = [(CPSInstrumentClusterCardViewController *)self platterViewController];
+  view = [(UIViewController *)platterViewController view];
+  [(UIView *)view layoutIfNeeded];
+  MEMORY[0x277D82BD8](view);
+  MEMORY[0x277D82BD8](platterViewController);
+  view2 = [(CPSInstrumentClusterCardViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  MEMORY[0x277D82BD8](view2);
+  view3 = [(CPSInstrumentClusterCardViewController *)self view];
+  [view3 safeAreaInsets];
+  MEMORY[0x277D82BD8](view3);
   if (self->_showETA && [(CPSInstrumentClusterCardLayout *)self->_layout layoutForCard]!= 1)
   {
     [(CPSInstrumentClusterCardViewController *)self isMapContentOnly];
@@ -488,18 +488,18 @@
 
   else if ([(CPSInstrumentClusterCardLayout *)self->_layout layoutForCard]== 2)
   {
-    v8 = [(CPSInstrumentClusterCardViewController *)self platterViewController];
-    v7 = [(UIViewController *)v8 view];
-    [(UIView *)v7 bounds];
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    platterViewController2 = [(CPSInstrumentClusterCardViewController *)self platterViewController];
+    view4 = [(UIViewController *)platterViewController2 view];
+    [(UIView *)view4 bounds];
+    MEMORY[0x277D82BD8](view4);
+    MEMORY[0x277D82BD8](platterViewController2);
   }
 
   else if ([(CPSInstrumentClusterCardLayout *)self->_layout layoutForCard]== 3)
   {
-    v6 = [(UIViewController *)self->_platterViewController view];
-    [(UIView *)v6 bounds];
-    MEMORY[0x277D82BD8](v6);
+    view5 = [(UIViewController *)self->_platterViewController view];
+    [(UIView *)view5 bounds];
+    MEMORY[0x277D82BD8](view5);
   }
 
   UIEdgeInsetsMake_4();
@@ -510,14 +510,14 @@
   return result;
 }
 
-- (void)_updateClientSafeAreaWithInsets:(UIEdgeInsets)a3
+- (void)_updateClientSafeAreaWithInsets:(UIEdgeInsets)insets
 {
   if (self->_shouldUpdateContent)
   {
     [(CPSInstrumentClusterCardViewController *)self currentClientInsets];
-    if (!UIEdgeInsetsEqualToEdgeInsets_0(a3.top, a3.left, a3.bottom, a3.right, v3, v4, v5, v6))
+    if (!UIEdgeInsetsEqualToEdgeInsets_0(insets.top, insets.left, insets.bottom, insets.right, v3, v4, v5, v6))
     {
-      [(CPSInstrumentClusterCardViewController *)self setCurrentClientInsets:a3.top, a3.left, a3.bottom, a3.right];
+      [(CPSInstrumentClusterCardViewController *)self setCurrentClientInsets:insets.top, insets.left, insets.bottom, insets.right];
       WeakRetained = objc_loadWeakRetained(&self->_safeAreaDelegate);
       [(CPSInstrumentClusterCardViewController *)self currentClientInsets];
       [WeakRetained viewController:self didUpdateSafeAreaInsets:{v7, v8, v9, v10}];
@@ -529,42 +529,42 @@
 - (void)_setupConstraintsForPlatterView
 {
   v134 = *MEMORY[0x277D85DE8];
-  v106 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = CarPlaySupportGeneralLogging();
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_INFO))
   {
-    v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPSInstrumentClusterCardLayout layoutForCard](v106->_layout, "layoutForCard")}];
-    __os_log_helper_16_2_2_8_64_8_64(v133, v106, v81);
+    v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPSInstrumentClusterCardLayout layoutForCard](selfCopy->_layout, "layoutForCard")}];
+    __os_log_helper_16_2_2_8_64_8_64(v133, selfCopy, v81);
     _os_log_impl(&dword_242FE8000, oslog[0], type, "%@ Setting constraints for platter view with layout: %@", v133, 0x16u);
     MEMORY[0x277D82BD8](v81);
   }
 
   objc_storeStrong(oslog, 0);
   v103 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v77 = [(CPSInstrumentClusterCardViewController *)v106 view];
-  v76 = [v77 safeAreaLayoutGuide];
-  [v76 layoutFrame];
+  view = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v100[1] = v2;
   v100[2] = v3;
   v101 = v4;
   v102 = v5;
-  MEMORY[0x277D82BD8](v76);
-  *&v6 = MEMORY[0x277D82BD8](v77).n128_u64[0];
-  [(UIViewController *)v106->_platterViewController setView:v103, v6];
-  [(UIViewController *)v106->_platterViewController willMoveToParentViewController:v106];
-  [(CPSInstrumentClusterCardViewController *)v106 addChildViewController:v106->_platterViewController];
-  v79 = [(CPSInstrumentClusterCardViewController *)v106 view];
-  v78 = [(UIViewController *)v106->_platterViewController view];
-  [v79 addSubview:?];
-  MEMORY[0x277D82BD8](v78);
-  *&v7 = MEMORY[0x277D82BD8](v79).n128_u64[0];
-  [(UIViewController *)v106->_platterViewController didMoveToParentViewController:v106, v7];
-  v80 = [(UIViewController *)v106->_platterViewController view];
-  [(UIView *)v80 setClipsToBounds:0];
-  *&v8 = MEMORY[0x277D82BD8](v80).n128_u64[0];
-  v100[0] = [(UIViewController *)v106->_platterViewController view];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  *&v6 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  [(UIViewController *)selfCopy->_platterViewController setView:v103, v6];
+  [(UIViewController *)selfCopy->_platterViewController willMoveToParentViewController:selfCopy];
+  [(CPSInstrumentClusterCardViewController *)selfCopy addChildViewController:selfCopy->_platterViewController];
+  view2 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  view3 = [(UIViewController *)selfCopy->_platterViewController view];
+  [view2 addSubview:?];
+  MEMORY[0x277D82BD8](view3);
+  *&v7 = MEMORY[0x277D82BD8](view2).n128_u64[0];
+  [(UIViewController *)selfCopy->_platterViewController didMoveToParentViewController:selfCopy, v7];
+  view4 = [(UIViewController *)selfCopy->_platterViewController view];
+  [(UIView *)view4 setClipsToBounds:0];
+  *&v8 = MEMORY[0x277D82BD8](view4).n128_u64[0];
+  v100[0] = [(UIViewController *)selfCopy->_platterViewController view];
   [v100[0] setTranslatesAutoresizingMaskIntoConstraints:0];
   if (v101 >= 165.0)
   {
@@ -588,24 +588,24 @@
   }
 
   v98 = *&v74;
-  v72 = [(CPSInstrumentClusterCardViewController *)v106 view];
-  v71 = [v72 safeAreaLayoutGuide];
-  [v71 layoutFrame];
+  view5 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+  [safeAreaLayoutGuide2 layoutFrame];
   v94 = v9;
   v95 = v10;
   v96 = v11;
   v97 = v12;
-  MEMORY[0x277D82BD8](v71);
-  MEMORY[0x277D82BD8](v72);
-  v73 = [(CPSInstrumentClusterCardViewController *)v106 view];
-  [v73 frame];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  MEMORY[0x277D82BD8](view5);
+  view6 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  [view6 frame];
   v90 = v13;
   v91 = v14;
   v92 = v15;
   v93 = v16;
-  MEMORY[0x277D82BD8](v73);
+  MEMORY[0x277D82BD8](view6);
   v89 = v101 * 0.4;
-  if ([(CPSInstrumentClusterCardLayout *)v106->_layout layoutForCard]== 1 && v106->_layout)
+  if ([(CPSInstrumentClusterCardLayout *)selfCopy->_layout layoutForCard]== 1 && selfCopy->_layout)
   {
     if (v101 >= 300.0)
     {
@@ -641,34 +641,34 @@
     }
 
     v58 = MEMORY[0x277CCAAD0];
-    v69 = [v100[0] centerXAnchor];
-    v68 = [(CPSInstrumentClusterCardViewController *)v106 view];
-    v67 = [v68 safeAreaLayoutGuide];
-    v66 = [v67 centerXAnchor];
-    v65 = [v69 constraintEqualToAnchor:?];
+    centerXAnchor = [v100[0] centerXAnchor];
+    view7 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    safeAreaLayoutGuide3 = [view7 safeAreaLayoutGuide];
+    centerXAnchor2 = [safeAreaLayoutGuide3 centerXAnchor];
+    v65 = [centerXAnchor constraintEqualToAnchor:?];
     v132[0] = v65;
-    v64 = [v100[0] centerYAnchor];
-    v63 = [(CPSInstrumentClusterCardViewController *)v106 view];
-    v62 = [v63 safeAreaLayoutGuide];
-    v61 = [v62 centerYAnchor];
-    v60 = [v64 constraintEqualToAnchor:?];
+    centerYAnchor = [v100[0] centerYAnchor];
+    view8 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    safeAreaLayoutGuide4 = [view8 safeAreaLayoutGuide];
+    centerYAnchor2 = [safeAreaLayoutGuide4 centerYAnchor];
+    v60 = [centerYAnchor constraintEqualToAnchor:?];
     v132[1] = v60;
     v59 = [MEMORY[0x277CBEA60] arrayWithObjects:v132 count:2];
     [v58 activateConstraints:?];
     MEMORY[0x277D82BD8](v59);
     MEMORY[0x277D82BD8](v60);
-    MEMORY[0x277D82BD8](v61);
-    MEMORY[0x277D82BD8](v62);
-    MEMORY[0x277D82BD8](v63);
-    MEMORY[0x277D82BD8](v64);
+    MEMORY[0x277D82BD8](centerYAnchor2);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+    MEMORY[0x277D82BD8](view8);
+    MEMORY[0x277D82BD8](centerYAnchor);
     MEMORY[0x277D82BD8](v65);
-    MEMORY[0x277D82BD8](v66);
-    MEMORY[0x277D82BD8](v67);
-    MEMORY[0x277D82BD8](v68);
-    MEMORY[0x277D82BD8](v69);
+    MEMORY[0x277D82BD8](centerXAnchor2);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+    MEMORY[0x277D82BD8](view7);
+    MEMORY[0x277D82BD8](centerXAnchor);
   }
 
-  else if ([(CPSInstrumentClusterCardLayout *)v106->_layout layoutForCard]== 2)
+  else if ([(CPSInstrumentClusterCardLayout *)selfCopy->_layout layoutForCard]== 2)
   {
     v88 = 0.0;
     v121 = v94;
@@ -687,23 +687,23 @@
     }
 
     v51 = MEMORY[0x277CCAAD0];
-    v57 = [v100[0] leftAnchor];
-    v56 = [(CPSInstrumentClusterCardViewController *)v106 view];
-    v55 = [v56 safeAreaLayoutGuide];
-    v54 = [v55 leftAnchor];
-    v53 = [v57 constraintEqualToAnchor:v88 constant:?];
+    leftAnchor = [v100[0] leftAnchor];
+    view9 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    safeAreaLayoutGuide5 = [view9 safeAreaLayoutGuide];
+    leftAnchor2 = [safeAreaLayoutGuide5 leftAnchor];
+    v53 = [leftAnchor constraintEqualToAnchor:v88 constant:?];
     v131 = v53;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:&v131 count:1];
     [v51 activateConstraints:?];
     MEMORY[0x277D82BD8](v52);
     MEMORY[0x277D82BD8](v53);
-    MEMORY[0x277D82BD8](v54);
-    MEMORY[0x277D82BD8](v55);
-    MEMORY[0x277D82BD8](v56);
-    MEMORY[0x277D82BD8](v57);
+    MEMORY[0x277D82BD8](leftAnchor2);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide5);
+    MEMORY[0x277D82BD8](view9);
+    MEMORY[0x277D82BD8](leftAnchor);
   }
 
-  else if ([(CPSInstrumentClusterCardLayout *)v106->_layout layoutForCard]== 3)
+  else if ([(CPSInstrumentClusterCardLayout *)selfCopy->_layout layoutForCard]== 3)
   {
     v87 = 0.0;
     v118 = v94;
@@ -728,30 +728,30 @@
     }
 
     v44 = MEMORY[0x277CCAAD0];
-    v50 = [v100[0] rightAnchor];
-    v49 = [(CPSInstrumentClusterCardViewController *)v106 view];
-    v48 = [v49 safeAreaLayoutGuide];
-    v47 = [v48 rightAnchor];
-    v46 = [v50 constraintEqualToAnchor:v87 constant:?];
+    rightAnchor = [v100[0] rightAnchor];
+    view10 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    safeAreaLayoutGuide6 = [view10 safeAreaLayoutGuide];
+    rightAnchor2 = [safeAreaLayoutGuide6 rightAnchor];
+    v46 = [rightAnchor constraintEqualToAnchor:v87 constant:?];
     v130 = v46;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:&v130 count:1];
     [v44 activateConstraints:?];
     MEMORY[0x277D82BD8](v45);
     MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    MEMORY[0x277D82BD8](v48);
-    MEMORY[0x277D82BD8](v49);
-    MEMORY[0x277D82BD8](v50);
+    MEMORY[0x277D82BD8](rightAnchor2);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide6);
+    MEMORY[0x277D82BD8](view10);
+    MEMORY[0x277D82BD8](rightAnchor);
   }
 
-  else if (![(CPSInstrumentClusterCardLayout *)v106->_layout layoutForCard])
+  else if (![(CPSInstrumentClusterCardLayout *)selfCopy->_layout layoutForCard])
   {
     v86 = CarPlaySupportGeneralLogging();
     v85 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
     {
-      v42 = v106;
-      v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPSInstrumentClusterCardLayout layoutForCard](v106->_layout, "layoutForCard")}];
+      v42 = selfCopy;
+      v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPSInstrumentClusterCardLayout layoutForCard](selfCopy->_layout, "layoutForCard")}];
       __os_log_helper_16_2_2_8_64_8_64(v129, v42, v43);
       _os_log_error_impl(&dword_242FE8000, v86, v85, "%@ Setting constraints for ETA Card with layout: %@", v129, 0x16u);
       MEMORY[0x277D82BD8](v43);
@@ -782,9 +782,9 @@
   }
 
   v84[1] = *&v41;
-  v39 = [v100[0] widthAnchor];
-  v84[0] = [v39 constraintEqualToConstant:v41];
-  MEMORY[0x277D82BD8](v39);
+  widthAnchor = [v100[0] widthAnchor];
+  v84[0] = [widthAnchor constraintEqualToConstant:v41];
+  MEMORY[0x277D82BD8](widthAnchor);
   v83 = 0.0;
   v112 = v95;
   v111 = v95;
@@ -819,31 +819,31 @@
 
   v27 = MEMORY[0x277CCAAD0];
   v128[0] = v84[0];
-  v38 = [v100[0] bottomAnchor];
-  v37 = [(CPSInstrumentClusterCardViewController *)v106 view];
-  v36 = [v37 safeAreaLayoutGuide];
-  v35 = [v36 bottomAnchor];
-  v34 = [v38 constraintEqualToAnchor:v82 constant:?];
+  bottomAnchor = [v100[0] bottomAnchor];
+  view11 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  safeAreaLayoutGuide7 = [view11 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide7 bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:v82 constant:?];
   v128[1] = v34;
-  v33 = [v100[0] topAnchor];
-  v32 = [(CPSInstrumentClusterCardViewController *)v106 view];
-  v31 = [v32 safeAreaLayoutGuide];
-  v30 = [v31 topAnchor];
-  v29 = [v33 constraintEqualToAnchor:v83 constant:?];
+  topAnchor = [v100[0] topAnchor];
+  view12 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+  safeAreaLayoutGuide8 = [view12 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide8 topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:v83 constant:?];
   v128[2] = v29;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v128 count:3];
   [v27 activateConstraints:?];
   MEMORY[0x277D82BD8](v28);
   MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
-  MEMORY[0x277D82BD8](v33);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide8);
+  MEMORY[0x277D82BD8](view12);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v34);
-  MEMORY[0x277D82BD8](v35);
-  MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide7);
+  MEMORY[0x277D82BD8](view11);
+  MEMORY[0x277D82BD8](bottomAnchor);
   objc_storeStrong(v84, 0);
   objc_storeStrong(v100, 0);
   objc_storeStrong(&v103, 0);
@@ -852,152 +852,152 @@
 - (void)_setupConstraintsForETACard
 {
   v29 = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = CarPlaySupportGeneralLogging();
   v24 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_INFO))
   {
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPSInstrumentClusterCardLayout layoutForCard](v26->_layout, "layoutForCard")}];
-    __os_log_helper_16_2_2_8_64_8_64(v28, v26, v22);
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPSInstrumentClusterCardLayout layoutForCard](selfCopy->_layout, "layoutForCard")}];
+    __os_log_helper_16_2_2_8_64_8_64(v28, selfCopy, v22);
     _os_log_impl(&dword_242FE8000, location[0], v24, "%@ Setting constraints for ETA Card with layout: %@", v28, 0x16u);
     MEMORY[0x277D82BD8](v22);
   }
 
   objc_storeStrong(location, 0);
-  [(CPSClusterEstimatesViewController *)v26->_estimatesViewController willMoveToParentViewController:v26->_platterViewController];
-  [(UIViewController *)v26->_platterViewController addChildViewController:v26->_estimatesViewController];
-  v4 = [(UIViewController *)v26->_platterViewController view];
-  v3 = [(CPSClusterEstimatesViewController *)v26->_estimatesViewController view];
-  [(UIView *)v4 addSubview:?];
-  MEMORY[0x277D82BD8](v3);
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  [(CPSClusterEstimatesViewController *)v26->_estimatesViewController didMoveToParentViewController:v26->_platterViewController, v2];
-  v23 = [(CPSClusterEstimatesViewController *)v26->_estimatesViewController view];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(CPSClusterEstimatesViewController *)selfCopy->_estimatesViewController willMoveToParentViewController:selfCopy->_platterViewController];
+  [(UIViewController *)selfCopy->_platterViewController addChildViewController:selfCopy->_estimatesViewController];
+  view = [(UIViewController *)selfCopy->_platterViewController view];
+  view2 = [(CPSClusterEstimatesViewController *)selfCopy->_estimatesViewController view];
+  [(UIView *)view addSubview:?];
+  MEMORY[0x277D82BD8](view2);
+  *&v2 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  [(CPSClusterEstimatesViewController *)selfCopy->_estimatesViewController didMoveToParentViewController:selfCopy->_platterViewController, v2];
+  view3 = [(CPSClusterEstimatesViewController *)selfCopy->_estimatesViewController view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = MEMORY[0x277CCAAD0];
-  v21 = [v23 leftAnchor];
-  v20 = [(CPSInstrumentClusterCardViewController *)v26 platterViewController];
-  v19 = [(UIViewController *)v20 view];
-  v18 = [(UIView *)v19 leftAnchor];
-  v17 = [v21 constraintEqualToAnchor:?];
+  leftAnchor = [view3 leftAnchor];
+  platterViewController = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+  view4 = [(UIViewController *)platterViewController view];
+  leftAnchor2 = [(UIView *)view4 leftAnchor];
+  v17 = [leftAnchor constraintEqualToAnchor:?];
   v27[0] = v17;
-  v16 = [v23 rightAnchor];
-  v15 = [(CPSInstrumentClusterCardViewController *)v26 platterViewController];
-  v14 = [(UIViewController *)v15 view];
-  v13 = [(UIView *)v14 rightAnchor];
-  v12 = [v16 constraintEqualToAnchor:?];
+  rightAnchor = [view3 rightAnchor];
+  platterViewController2 = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+  view5 = [(UIViewController *)platterViewController2 view];
+  rightAnchor2 = [(UIView *)view5 rightAnchor];
+  v12 = [rightAnchor constraintEqualToAnchor:?];
   v27[1] = v12;
-  v11 = [v23 bottomAnchor];
-  v10 = [(CPSInstrumentClusterCardViewController *)v26 platterViewController];
-  v9 = [(UIViewController *)v10 view];
-  v8 = [(UIView *)v9 bottomAnchor];
-  v7 = [v11 constraintEqualToAnchor:?];
+  bottomAnchor = [view3 bottomAnchor];
+  platterViewController3 = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+  view6 = [(UIViewController *)platterViewController3 view];
+  bottomAnchor2 = [(UIView *)view6 bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:?];
   v27[2] = v7;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
   [v5 activateConstraints:?];
   MEMORY[0x277D82BD8](v6);
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](view6);
+  MEMORY[0x277D82BD8](platterViewController3);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](view5);
+  MEMORY[0x277D82BD8](platterViewController2);
+  MEMORY[0x277D82BD8](rightAnchor);
   MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  objc_storeStrong(&v23, 0);
+  MEMORY[0x277D82BD8](leftAnchor2);
+  MEMORY[0x277D82BD8](view4);
+  MEMORY[0x277D82BD8](platterViewController);
+  MEMORY[0x277D82BD8](leftAnchor);
+  objc_storeStrong(&view3, 0);
 }
 
 - (void)_setupConstraintsForTurnCard
 {
   v39[3] = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
-  if (self->_currentManeuversCardView && v36->_shouldUpdateContent && !v36->_isMapContentOnly)
+  if (self->_currentManeuversCardView && selfCopy->_shouldUpdateContent && !selfCopy->_isMapContentOnly)
   {
-    location[0] = MEMORY[0x277D82BE0](v36->_currentManeuversCardView);
-    v17 = [(UIViewController *)v36->_platterViewController view];
-    [(UIView *)v17 addSubview:v36->_currentManeuversCardView];
-    *&v2 = MEMORY[0x277D82BD8](v17).n128_u64[0];
+    location[0] = MEMORY[0x277D82BE0](selfCopy->_currentManeuversCardView);
+    view = [(UIViewController *)selfCopy->_platterViewController view];
+    [(UIView *)view addSubview:selfCopy->_currentManeuversCardView];
+    *&v2 = MEMORY[0x277D82BD8](view).n128_u64[0];
     v18 = MEMORY[0x277CCAAD0];
-    v34 = [location[0] leftAnchor];
-    v33 = [(CPSInstrumentClusterCardViewController *)v36 platterViewController];
-    v32 = [(UIViewController *)v33 view];
-    v31 = [(UIView *)v32 leftAnchor];
-    v30 = [v34 constraintEqualToAnchor:?];
+    leftAnchor = [location[0] leftAnchor];
+    platterViewController = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view2 = [(UIViewController *)platterViewController view];
+    leftAnchor2 = [(UIView *)view2 leftAnchor];
+    v30 = [leftAnchor constraintEqualToAnchor:?];
     v39[0] = v30;
-    v29 = [location[0] topAnchor];
-    v28 = [(CPSInstrumentClusterCardViewController *)v36 platterViewController];
-    v27 = [(UIViewController *)v28 view];
-    v26 = [(UIView *)v27 topAnchor];
-    v25 = [v29 constraintEqualToAnchor:?];
+    topAnchor = [location[0] topAnchor];
+    platterViewController2 = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view3 = [(UIViewController *)platterViewController2 view];
+    topAnchor2 = [(UIView *)view3 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:?];
     v39[1] = v25;
-    v24 = [location[0] widthAnchor];
-    v23 = [(CPSInstrumentClusterCardViewController *)v36 platterViewController];
-    v22 = [(UIViewController *)v23 view];
-    v21 = [(UIView *)v22 widthAnchor];
-    v20 = [v24 constraintEqualToAnchor:?];
+    widthAnchor = [location[0] widthAnchor];
+    platterViewController3 = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view4 = [(UIViewController *)platterViewController3 view];
+    widthAnchor2 = [(UIView *)view4 widthAnchor];
+    v20 = [widthAnchor constraintEqualToAnchor:?];
     v39[2] = v20;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:3];
     [v18 activateConstraints:?];
     MEMORY[0x277D82BD8](v19);
     MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](widthAnchor2);
+    MEMORY[0x277D82BD8](view4);
+    MEMORY[0x277D82BD8](platterViewController3);
+    MEMORY[0x277D82BD8](widthAnchor);
     MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    MEMORY[0x277D82BD8](v28);
-    MEMORY[0x277D82BD8](v29);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](view3);
+    MEMORY[0x277D82BD8](platterViewController2);
+    MEMORY[0x277D82BD8](topAnchor);
     MEMORY[0x277D82BD8](v30);
-    MEMORY[0x277D82BD8](v31);
-    MEMORY[0x277D82BD8](v32);
-    MEMORY[0x277D82BD8](v33);
-    if ([(CPSInstrumentClusterCardLayout *)v36->_layout layoutForCard]== 1)
+    MEMORY[0x277D82BD8](leftAnchor2);
+    MEMORY[0x277D82BD8](view2);
+    MEMORY[0x277D82BD8](platterViewController);
+    if ([(CPSInstrumentClusterCardLayout *)selfCopy->_layout layoutForCard]== 1)
     {
       v10 = MEMORY[0x277CCAAD0];
-      v16 = [location[0] heightAnchor];
-      v15 = [(CPSInstrumentClusterCardViewController *)v36 view];
-      v14 = [v15 safeAreaLayoutGuide];
-      v13 = [v14 heightAnchor];
-      v12 = [v16 constraintEqualToAnchor:0.41 multiplier:?];
+      heightAnchor = [location[0] heightAnchor];
+      view5 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+      safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+      heightAnchor2 = [safeAreaLayoutGuide heightAnchor];
+      v12 = [heightAnchor constraintEqualToAnchor:0.41 multiplier:?];
       v38 = v12;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
       [v10 activateConstraints:?];
       MEMORY[0x277D82BD8](v11);
       MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
-      MEMORY[0x277D82BD8](v14);
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](heightAnchor2);
+      MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+      MEMORY[0x277D82BD8](view5);
+      MEMORY[0x277D82BD8](heightAnchor);
     }
 
     else
     {
       v3 = MEMORY[0x277CCAAD0];
-      v9 = [location[0] heightAnchor];
-      v8 = [(CPSInstrumentClusterCardViewController *)v36 view];
-      v7 = [v8 safeAreaLayoutGuide];
-      v6 = [v7 heightAnchor];
-      v5 = [v9 constraintEqualToAnchor:-42.0 constant:?];
+      heightAnchor3 = [location[0] heightAnchor];
+      view6 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+      safeAreaLayoutGuide2 = [view6 safeAreaLayoutGuide];
+      heightAnchor4 = [safeAreaLayoutGuide2 heightAnchor];
+      v5 = [heightAnchor3 constraintEqualToAnchor:-42.0 constant:?];
       v37 = v5;
       v4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
       [v3 activateConstraints:?];
       MEMORY[0x277D82BD8](v4);
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
-      MEMORY[0x277D82BD8](v7);
-      MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](heightAnchor4);
+      MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+      MEMORY[0x277D82BD8](view6);
+      MEMORY[0x277D82BD8](heightAnchor3);
     }
 
     objc_storeStrong(location, 0);
@@ -1007,100 +1007,100 @@
 - (void)_setupConstraintsForPauseCard
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   v26[1] = a2;
-  if (self->_currentPausedCardView && v27->_shouldUpdateContent && !v27->_isMapContentOnly)
+  if (self->_currentPausedCardView && selfCopy->_shouldUpdateContent && !selfCopy->_isMapContentOnly)
   {
-    v26[0] = MEMORY[0x277D82BE0](v27->_currentPausedCardView);
-    v3 = [(UIViewController *)v27->_platterViewController view];
-    [(UIView *)v3 addSubview:v27->_currentPausedCardView];
-    *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
+    v26[0] = MEMORY[0x277D82BE0](selfCopy->_currentPausedCardView);
+    view = [(UIViewController *)selfCopy->_platterViewController view];
+    [(UIView *)view addSubview:selfCopy->_currentPausedCardView];
+    *&v2 = MEMORY[0x277D82BD8](view).n128_u64[0];
     v4 = MEMORY[0x277CCAAD0];
-    v25 = [v26[0] leftAnchor];
-    v24 = [(CPSInstrumentClusterCardViewController *)v27 platterViewController];
-    v23 = [(UIViewController *)v24 view];
-    v22 = [(UIView *)v23 leftAnchor];
-    v21 = [v25 constraintEqualToAnchor:?];
+    leftAnchor = [v26[0] leftAnchor];
+    platterViewController = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view2 = [(UIViewController *)platterViewController view];
+    leftAnchor2 = [(UIView *)view2 leftAnchor];
+    v21 = [leftAnchor constraintEqualToAnchor:?];
     v28[0] = v21;
-    v20 = [v26[0] topAnchor];
-    v19 = [(CPSInstrumentClusterCardViewController *)v27 platterViewController];
-    v18 = [(UIViewController *)v19 view];
-    v17 = [(UIView *)v18 topAnchor];
-    v16 = [v20 constraintEqualToAnchor:?];
+    topAnchor = [v26[0] topAnchor];
+    platterViewController2 = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view3 = [(UIViewController *)platterViewController2 view];
+    topAnchor2 = [(UIView *)view3 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:?];
     v28[1] = v16;
-    v15 = [v26[0] widthAnchor];
-    v14 = [(CPSInstrumentClusterCardViewController *)v27 platterViewController];
-    v13 = [(UIViewController *)v14 view];
-    v12 = [(UIView *)v13 widthAnchor];
-    v11 = [v15 constraintEqualToAnchor:?];
+    widthAnchor = [v26[0] widthAnchor];
+    platterViewController3 = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view4 = [(UIViewController *)platterViewController3 view];
+    widthAnchor2 = [(UIView *)view4 widthAnchor];
+    v11 = [widthAnchor constraintEqualToAnchor:?];
     v28[2] = v11;
-    v10 = [v26[0] heightAnchor];
-    v9 = [(CPSInstrumentClusterCardViewController *)v27 view];
-    v8 = [v9 safeAreaLayoutGuide];
-    v7 = [v8 heightAnchor];
-    v6 = [v10 constraintEqualToAnchor:0.41 multiplier:?];
+    heightAnchor = [v26[0] heightAnchor];
+    view5 = [(CPSInstrumentClusterCardViewController *)selfCopy view];
+    safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+    heightAnchor2 = [safeAreaLayoutGuide heightAnchor];
+    v6 = [heightAnchor constraintEqualToAnchor:0.41 multiplier:?];
     v28[3] = v6;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
     [v4 activateConstraints:?];
     MEMORY[0x277D82BD8](v5);
     MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](heightAnchor2);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+    MEMORY[0x277D82BD8](view5);
+    MEMORY[0x277D82BD8](heightAnchor);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](widthAnchor2);
+    MEMORY[0x277D82BD8](view4);
+    MEMORY[0x277D82BD8](platterViewController3);
+    MEMORY[0x277D82BD8](widthAnchor);
     MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](view3);
+    MEMORY[0x277D82BD8](platterViewController2);
+    MEMORY[0x277D82BD8](topAnchor);
     MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
+    MEMORY[0x277D82BD8](leftAnchor2);
+    MEMORY[0x277D82BD8](view2);
+    MEMORY[0x277D82BD8](platterViewController);
+    MEMORY[0x277D82BD8](leftAnchor);
     objc_storeStrong(v26, 0);
   }
 }
 
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, maneuvers);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
-  if (([(CPSInstrumentClusterCardViewController *)v35 isViewLoaded]& 1) != 0 && !v35->_isMapContentOnly)
+  objc_storeStrong(&v33, styles);
+  if (([(CPSInstrumentClusterCardViewController *)selfCopy isViewLoaded]& 1) != 0 && !selfCopy->_isMapContentOnly)
   {
-    v22 = [(CPSInstrumentClusterCardViewController *)v35 currentManeuversCardView];
+    currentManeuversCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
     v29 = 0;
     v27 = 0;
     v23 = 0;
-    if (v22)
+    if (currentManeuversCardView)
     {
-      v30 = [(CPSInstrumentClusterCardViewController *)v35 currentManeuversCardView];
+      currentManeuversCardView2 = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
       v29 = 1;
-      v28 = [(CPSManeuversCardView *)v30 maneuvers];
+      maneuvers = [(CPSManeuversCardView *)currentManeuversCardView2 maneuvers];
       v27 = 1;
       v23 = BSEqualObjects();
     }
 
     if (v27)
     {
-      MEMORY[0x277D82BD8](v28);
+      MEMORY[0x277D82BD8](maneuvers);
     }
 
     if (v29)
     {
-      MEMORY[0x277D82BD8](v30);
+      MEMORY[0x277D82BD8](currentManeuversCardView2);
     }
 
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](currentManeuversCardView);
     v31 = v23 & 1;
     if (v23)
     {
@@ -1111,26 +1111,26 @@
     {
       v26 = 0;
       v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v21 = [(CPSInstrumentClusterCardViewController *)v35 currentManeuversCardView];
-      v4 = MEMORY[0x277D82BD8](v21).n128_u64[0];
-      if (v21)
+      currentManeuversCardView3 = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
+      v4 = MEMORY[0x277D82BD8](currentManeuversCardView3).n128_u64[0];
+      if (currentManeuversCardView3)
       {
-        v20 = [(CPSInstrumentClusterCardViewController *)v35 currentManeuversCardView];
+        currentManeuversCardView4 = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
         [v25 addObject:?];
-        v4 = MEMORY[0x277D82BD8](v20).n128_u64[0];
+        v4 = MEMORY[0x277D82BD8](currentManeuversCardView4).n128_u64[0];
       }
 
-      v19 = [(CPSInstrumentClusterCardViewController *)v35 currentPausedCardView];
-      v5 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-      if (v19)
+      currentPausedCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentPausedCardView];
+      v5 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
+      if (currentPausedCardView)
       {
-        v18 = [(CPSInstrumentClusterCardViewController *)v35 currentPausedCardView];
+        currentPausedCardView2 = [(CPSInstrumentClusterCardViewController *)selfCopy currentPausedCardView];
         [v25 addObject:?];
-        v5 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+        v5 = MEMORY[0x277D82BD8](currentPausedCardView2).n128_u64[0];
       }
 
-      [(CPSInstrumentClusterCardViewController *)v35 setCurrentManeuversCardView:*&v5];
-      [(CPSInstrumentClusterCardViewController *)v35 setCurrentPausedCardView:0];
+      [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentManeuversCardView:*&v5];
+      [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentPausedCardView:0];
       if ([location[0] count])
       {
         v6 = [CPSClusterManeuversCardView alloc];
@@ -1140,32 +1140,32 @@
         [(CPSManeuversCardView *)v7 setUsesCustomBackgroundColor:1, MEMORY[0x277D82BD8](v8).n128_f64[0]];
         if ([(CPSManeuversCardView *)v26 usesCustomBackgroundColor])
         {
-          v16 = [location[0] firstObject];
-          v17 = [v16 cardBackgroundColor];
-          MEMORY[0x277D82BD8](v17);
-          *&v9 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-          if (v17)
+          firstObject = [location[0] firstObject];
+          cardBackgroundColor = [firstObject cardBackgroundColor];
+          MEMORY[0x277D82BD8](cardBackgroundColor);
+          *&v9 = MEMORY[0x277D82BD8](firstObject).n128_u64[0];
+          if (cardBackgroundColor)
           {
-            v12 = [location[0] firstObject];
-            v11 = [v12 cardBackgroundColor];
+            firstObject2 = [location[0] firstObject];
+            cardBackgroundColor2 = [firstObject2 cardBackgroundColor];
             [(UIView *)v26 overrideUserInterfaceStyleBasedOnBackgroundColor:?];
-            MEMORY[0x277D82BD8](v11);
-            *&v10 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-            v15 = [location[0] firstObject];
-            v14 = [v15 cardBackgroundColor];
-            v13 = [(CPSManeuversCardView *)v26 contentView];
-            [(UIView *)v13 setBackgroundColor:v14];
-            MEMORY[0x277D82BD8](v13);
-            MEMORY[0x277D82BD8](v14);
-            MEMORY[0x277D82BD8](v15);
+            MEMORY[0x277D82BD8](cardBackgroundColor2);
+            *&v10 = MEMORY[0x277D82BD8](firstObject2).n128_u64[0];
+            firstObject3 = [location[0] firstObject];
+            cardBackgroundColor3 = [firstObject3 cardBackgroundColor];
+            contentView = [(CPSManeuversCardView *)v26 contentView];
+            [(UIView *)contentView setBackgroundColor:cardBackgroundColor3];
+            MEMORY[0x277D82BD8](contentView);
+            MEMORY[0x277D82BD8](cardBackgroundColor3);
+            MEMORY[0x277D82BD8](firstObject3);
           }
         }
 
-        [(CPSInstrumentClusterCardViewController *)v35 setCurrentManeuversCardView:v26];
-        [(CPSInstrumentClusterCardViewController *)v35 _setupConstraintsForTurnCard];
+        [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentManeuversCardView:v26];
+        [(CPSInstrumentClusterCardViewController *)selfCopy _setupConstraintsForTurnCard];
       }
 
-      [(CPSInstrumentClusterCardViewController *)v35 _transitionFromViews:v25 inView:v26 horizontalSlideAnimation:0];
+      [(CPSInstrumentClusterCardViewController *)selfCopy _transitionFromViews:v25 inView:v26 horizontalSlideAnimation:0];
       objc_storeStrong(&v25, 0);
       objc_storeStrong(&v26, 0);
       v32 = 0;
@@ -1181,63 +1181,63 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(CPSInstrumentClusterCardViewController *)v10 currentManeuversCardView];
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v7)
+  objc_storeStrong(&v8, maneuver);
+  currentManeuversCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
+  *&v4 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+  if (currentManeuversCardView)
   {
-    v5 = [(CPSInstrumentClusterCardViewController *)v10 currentManeuversCardView];
-    [(CPSManeuversCardView *)v5 updateEstimates:location[0] forManeuver:v8];
-    MEMORY[0x277D82BD8](v5);
+    currentManeuversCardView2 = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
+    [(CPSManeuversCardView *)currentManeuversCardView2 updateEstimates:location[0] forManeuver:v8];
+    MEMORY[0x277D82BD8](currentManeuversCardView2);
   }
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)navigator:(id)a3 pausedTripForReason:(unint64_t)a4 description:(id)a5 usingColor:(id)a6
+- (void)navigator:(id)navigator pausedTripForReason:(unint64_t)reason description:(id)description usingColor:(id)color
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = a4;
+  objc_storeStrong(location, navigator);
+  reasonCopy = reason;
   v29 = 0;
-  objc_storeStrong(&v29, a5);
+  objc_storeStrong(&v29, description);
   v28 = 0;
-  objc_storeStrong(&v28, a6);
-  if (([(CPSInstrumentClusterCardViewController *)v32 isViewLoaded]& 1) != 0 && !v32->_isMapContentOnly)
+  objc_storeStrong(&v28, color);
+  if (([(CPSInstrumentClusterCardViewController *)selfCopy isViewLoaded]& 1) != 0 && !selfCopy->_isMapContentOnly)
   {
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v20 = [(CPSInstrumentClusterCardViewController *)v32 currentManeuversCardView];
-    v6 = MEMORY[0x277D82BD8](v20).n128_u64[0];
-    if (v20)
+    currentManeuversCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
+    v6 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+    if (currentManeuversCardView)
     {
-      v19 = [(CPSInstrumentClusterCardViewController *)v32 currentManeuversCardView];
+      currentManeuversCardView2 = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
       [v26 addObject:?];
-      v6 = MEMORY[0x277D82BD8](v19).n128_u64[0];
+      v6 = MEMORY[0x277D82BD8](currentManeuversCardView2).n128_u64[0];
     }
 
-    v18 = [(CPSInstrumentClusterCardViewController *)v32 currentPausedCardView];
-    v7 = MEMORY[0x277D82BD8](v18).n128_u64[0];
-    if (v18)
+    currentPausedCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentPausedCardView];
+    v7 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
+    if (currentPausedCardView)
     {
-      v17 = [(CPSInstrumentClusterCardViewController *)v32 currentPausedCardView];
+      currentPausedCardView2 = [(CPSInstrumentClusterCardViewController *)selfCopy currentPausedCardView];
       [v26 addObject:?];
-      v7 = MEMORY[0x277D82BD8](v17).n128_u64[0];
+      v7 = MEMORY[0x277D82BD8](currentPausedCardView2).n128_u64[0];
     }
 
-    [(CPSInstrumentClusterCardViewController *)v32 setCurrentManeuversCardView:*&v7];
-    [(CPSInstrumentClusterCardViewController *)v32 setCurrentPausedCardView:0];
+    [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentManeuversCardView:*&v7];
+    [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentPausedCardView:0];
     v14 = [CPSClusterPausedCardView alloc];
-    v15 = v30;
+    v15 = reasonCopy;
     v16 = v29;
     v24 = 0;
     if (v28)
@@ -1247,25 +1247,25 @@
 
     else
     {
-      v25 = [MEMORY[0x277D75348] tableBackgroundColor];
+      tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
       v24 = 1;
-      v13 = v25;
+      v13 = tableBackgroundColor;
     }
 
     v12 = [(CPSPausedCardView *)v14 initWithReason:v15 title:v16 backgroundColor:v13];
-    [(CPSInstrumentClusterCardViewController *)v32 setCurrentPausedCardView:?];
+    [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentPausedCardView:?];
     v8 = MEMORY[0x277D82BD8](v12).n128_u64[0];
     if (v24)
     {
-      v8 = MEMORY[0x277D82BD8](v25).n128_u64[0];
+      v8 = MEMORY[0x277D82BD8](tableBackgroundColor).n128_u64[0];
     }
 
-    [(CPSInstrumentClusterCardViewController *)v32 _setupConstraintsForPauseCard];
-    v10 = v32;
+    [(CPSInstrumentClusterCardViewController *)selfCopy _setupConstraintsForPauseCard];
+    v10 = selfCopy;
     v9 = v26;
-    v11 = [(CPSInstrumentClusterCardViewController *)v32 currentPausedCardView];
+    currentPausedCardView3 = [(CPSInstrumentClusterCardViewController *)selfCopy currentPausedCardView];
     [CPSInstrumentClusterCardViewController _transitionFromViews:v10 inView:"_transitionFromViews:inView:horizontalSlideAnimation:" horizontalSlideAnimation:v9];
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](currentPausedCardView3);
     objc_storeStrong(&v26, 0);
     v27 = 0;
   }
@@ -1280,68 +1280,68 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updateTripEstimates:(id)a3
+- (void)updateTripEstimates:(id)estimates
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSInstrumentClusterCardViewController *)v4 _updateClientSafeArea];
+  objc_storeStrong(location, estimates);
+  [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
   if (objc_opt_respondsToSelector())
   {
-    [(CPSDashboardEstimatesViewController *)v4->_estimatesViewController updateTripEstimates:location[0]];
+    [(CPSDashboardEstimatesViewController *)selfCopy->_estimatesViewController updateTripEstimates:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)navigator:(id)a3 didEndTrip:(BOOL)a4
+- (void)navigator:(id)navigator didEndTrip:(BOOL)trip
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSDashboardEstimatesViewController *)v10->_estimatesViewController navigator:location[0] didEndTrip:a4];
-  v7 = [(CPSInstrumentClusterCardViewController *)v10 currentManeuversCardView];
-  [(CPSClusterManeuversCardView *)v7 removeFromSuperview];
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v8 = [(CPSInstrumentClusterCardViewController *)v10 currentPausedCardView];
-  [(CPSClusterPausedCardView *)v8 removeFromSuperview];
-  *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  [(CPSInstrumentClusterCardViewController *)v10 setCurrentManeuversCardView:0, v5];
-  [(CPSInstrumentClusterCardViewController *)v10 setCurrentPausedCardView:0];
-  [(CPSInstrumentClusterCardViewController *)v10 _updateClientSafeArea];
+  objc_storeStrong(location, navigator);
+  [(CPSDashboardEstimatesViewController *)selfCopy->_estimatesViewController navigator:location[0] didEndTrip:trip];
+  currentManeuversCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
+  [(CPSClusterManeuversCardView *)currentManeuversCardView removeFromSuperview];
+  *&v4 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+  currentPausedCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentPausedCardView];
+  [(CPSClusterPausedCardView *)currentPausedCardView removeFromSuperview];
+  *&v5 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
+  [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentManeuversCardView:0, v5];
+  [(CPSInstrumentClusterCardViewController *)selfCopy setCurrentPausedCardView:0];
+  [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
   objc_storeStrong(location, 0);
 }
 
-- (void)setShowETA:(BOOL)a3
+- (void)setShowETA:(BOOL)a
 {
   v30 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  aCopy = a;
   v23 = 0;
   v21 = 0;
   v19 = 0;
   v17 = 0;
-  if (a3)
+  if (a)
   {
     v16 = 1;
-    if (!v28->_isMapContentOnly)
+    if (!selfCopy->_isMapContentOnly)
     {
-      v24 = [(CPSInstrumentClusterCardViewController *)v28 layout];
+      layout = [(CPSInstrumentClusterCardViewController *)selfCopy layout];
       v23 = 1;
       v16 = 1;
-      if (![(CPSInstrumentClusterCardLayout *)v24 showETAWithTurnCard])
+      if (![(CPSInstrumentClusterCardLayout *)layout showETAWithTurnCard])
       {
         v15 = 0;
-        if ([(CPSInstrumentClusterCardViewController *)v28 layoutOverride])
+        if ([(CPSInstrumentClusterCardViewController *)selfCopy layoutOverride])
         {
-          v22 = [(CPSInstrumentClusterCardViewController *)v28 view];
+          view = [(CPSInstrumentClusterCardViewController *)selfCopy view];
           v21 = 1;
-          v20 = [v22 safeAreaLayoutGuide];
+          safeAreaLayoutGuide = [view safeAreaLayoutGuide];
           v19 = 1;
-          [v20 layoutFrame];
+          [safeAreaLayoutGuide layoutFrame];
           oslog[1] = v3;
           oslog[2] = v4;
           oslog[3] = v5;
@@ -1358,75 +1358,75 @@
 
   if (v19)
   {
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide);
   }
 
   if (v21)
   {
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](view);
   }
 
   if (v23)
   {
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](layout);
   }
 
   v25 = v17;
   oslog[0] = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_INFO))
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithBool:v26];
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:v28->_isMapContentOnly];
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:aCopy];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:selfCopy->_isMapContentOnly];
     v9 = MEMORY[0x277CCABB0];
-    v12 = [(CPSInstrumentClusterCardViewController *)v28 layout];
-    v11 = [v9 numberWithBool:{-[CPSInstrumentClusterCardLayout showETAWithTurnCard](v12, "showETAWithTurnCard")}];
+    layout2 = [(CPSInstrumentClusterCardViewController *)selfCopy layout];
+    v11 = [v9 numberWithBool:{-[CPSInstrumentClusterCardLayout showETAWithTurnCard](layout2, "showETAWithTurnCard")}];
     v10 = [MEMORY[0x277CCABB0] numberWithBool:v25 & 1];
-    __os_log_helper_16_2_5_8_64_8_64_8_64_8_64_8_64(v29, v28, v14, v13, v11, v10);
+    __os_log_helper_16_2_5_8_64_8_64_8_64_8_64_8_64(v29, selfCopy, v14, v13, v11, v10);
     _os_log_impl(&dword_242FE8000, oslog[0], OS_LOG_TYPE_INFO, "%@: showETA %@, mapOnly: %@, layout specified show ETA: %@, shouldShowETA: %@", v29, 0x34u);
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](layout2);
     MEMORY[0x277D82BD8](v13);
     MEMORY[0x277D82BD8](v14);
   }
 
   objc_storeStrong(oslog, 0);
-  v28->_showETA = v25 & 1;
-  v8 = [(CPSClusterEstimatesViewController *)v28->_estimatesViewController view];
-  [v8 setHidden:(v25 ^ 1) & 1];
-  *&v7 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  [(CPSInstrumentClusterCardViewController *)v28 _updateClientSafeArea];
+  selfCopy->_showETA = v25 & 1;
+  view2 = [(CPSClusterEstimatesViewController *)selfCopy->_estimatesViewController view];
+  [view2 setHidden:(v25 ^ 1) & 1];
+  *&v7 = MEMORY[0x277D82BD8](view2).n128_u64[0];
+  [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
 }
 
-- (void)_transitionFromViews:(id)a3 inView:(id)a4 horizontalSlideAnimation:(BOOL)a5
+- (void)_transitionFromViews:(id)views inView:(id)view horizontalSlideAnimation:(BOOL)animation
 {
-  v81 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, views);
   v79 = 0;
-  objc_storeStrong(&v79, a4);
-  v78 = a5;
-  if ([location[0] count] && v81->_shouldUpdateContent)
+  objc_storeStrong(&v79, view);
+  animationCopy = animation;
+  if ([location[0] count] && selfCopy->_shouldUpdateContent)
   {
     v77 = v79 == 0;
-    v25 = [(CPSInstrumentClusterCardViewController *)v81 platterViewController];
-    v76 = [(UIViewController *)v25 view];
-    MEMORY[0x277D82BD8](v25);
+    platterViewController = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view = [(UIViewController *)platterViewController view];
+    MEMORY[0x277D82BD8](platterViewController);
     v26 = location[0];
     v67 = MEMORY[0x277D85DD0];
     v68 = -1073741824;
     v69 = 0;
     v70 = __95__CPSInstrumentClusterCardViewController__transitionFromViews_inView_horizontalSlideAnimation___block_invoke;
     v71 = &unk_278D94040;
-    v72 = MEMORY[0x277D82BE0](v76);
+    v72 = MEMORY[0x277D82BE0](view);
     v74 = v77;
-    v75 = v78;
-    v73 = MEMORY[0x277D82BE0](v81);
+    v75 = animationCopy;
+    v73 = MEMORY[0x277D82BE0](selfCopy);
     [v26 enumerateObjectsUsingBlock:&v67];
-    if (v79 && v78)
+    if (v79 && animationCopy)
     {
-      [v76 layoutIfNeeded];
+      [view layoutIfNeeded];
       [v79 frame];
       *&v65 = v5;
       *(&v65 + 1) = v6;
@@ -1453,7 +1453,7 @@
       v51 = 0;
       v52 = __95__CPSInstrumentClusterCardViewController__transitionFromViews_inView_horizontalSlideAnimation___block_invoke_5;
       v53 = &unk_278D91398;
-      v54 = MEMORY[0x277D82BE0](v81);
+      v54 = MEMORY[0x277D82BE0](selfCopy);
       [v24 animateWithDuration:0 delay:&v55 options:&v49 animations:0.4 completion:0.0];
       objc_storeStrong(&v54, 0);
       objc_storeStrong(&v60, 0);
@@ -1461,16 +1461,16 @@
 
     objc_storeStrong(&v73, 0);
     objc_storeStrong(&v72, 0);
-    objc_storeStrong(&v76, 0);
+    objc_storeStrong(&view, 0);
   }
 
-  else if (v79 && v81->_shouldUpdateContent)
+  else if (v79 && selfCopy->_shouldUpdateContent)
   {
-    v22 = [(CPSInstrumentClusterCardViewController *)v81 platterViewController];
-    v21 = [(UIViewController *)v22 view];
-    [(UIView *)v21 layoutIfNeeded];
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    platterViewController2 = [(CPSInstrumentClusterCardViewController *)selfCopy platterViewController];
+    view2 = [(UIViewController *)platterViewController2 view];
+    [(UIView *)view2 layoutIfNeeded];
+    MEMORY[0x277D82BD8](view2);
+    MEMORY[0x277D82BD8](platterViewController2);
     [v79 frame];
     *&v47 = v13;
     *(&v47 + 1) = v14;
@@ -1496,7 +1496,7 @@
     v31 = 0;
     v32 = __95__CPSInstrumentClusterCardViewController__transitionFromViews_inView_horizontalSlideAnimation___block_invoke_7;
     v33 = &unk_278D91398;
-    v34 = MEMORY[0x277D82BE0](v81);
+    v34 = MEMORY[0x277D82BE0](selfCopy);
     [v23 animateWithDuration:&v35 animations:&v29 completion:0.35];
     objc_storeStrong(&v34, 0);
     objc_storeStrong(&v40, 0);
@@ -1572,51 +1572,51 @@ void __95__CPSInstrumentClusterCardViewController__transitionFromViews_inView_ho
   objc_storeStrong(location, 0);
 }
 
-- (void)setLayoutOverride:(unint64_t)a3
+- (void)setLayoutOverride:(unint64_t)override
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  self->_layoutOverride = a3;
-  v10 = [(CPSInstrumentClusterCardViewController *)v17 layout];
-  v11 = [(CPSInstrumentClusterCardLayout *)v10 layoutForCard];
-  *&v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (v11 != v15)
+  overrideCopy = override;
+  self->_layoutOverride = override;
+  layout = [(CPSInstrumentClusterCardViewController *)selfCopy layout];
+  layoutForCard = [(CPSInstrumentClusterCardLayout *)layout layoutForCard];
+  *&v3 = MEMORY[0x277D82BD8](layout).n128_u64[0];
+  if (layoutForCard != overrideCopy)
   {
-    if (v15)
+    if (overrideCopy)
     {
-      v8 = [(CPSInstrumentClusterCardViewController *)v17 layout];
+      layout2 = [(CPSInstrumentClusterCardViewController *)selfCopy layout];
       shouldUpdateContent = 0;
-      if (v8)
+      if (layout2)
       {
-        shouldUpdateContent = v17->_shouldUpdateContent;
+        shouldUpdateContent = selfCopy->_shouldUpdateContent;
       }
 
-      *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+      *&v4 = MEMORY[0x277D82BD8](layout2).n128_u64[0];
       if (shouldUpdateContent)
       {
-        location = [(CPSInstrumentClusterCardViewController *)v17 layout];
-        [location setLayoutForCard:v15];
-        [(CPSInstrumentClusterCardViewController *)v17 setLayout:location];
-        v6 = [(CPSInstrumentClusterCardViewController *)v17 currentPausedCardView];
+        location = [(CPSInstrumentClusterCardViewController *)selfCopy layout];
+        [location setLayoutForCard:overrideCopy];
+        [(CPSInstrumentClusterCardViewController *)selfCopy setLayout:location];
+        currentPausedCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentPausedCardView];
         v12 = 0;
         v7 = 1;
-        if (!v6)
+        if (!currentPausedCardView)
         {
-          v13 = [(CPSInstrumentClusterCardViewController *)v17 currentManeuversCardView];
+          currentManeuversCardView = [(CPSInstrumentClusterCardViewController *)selfCopy currentManeuversCardView];
           v12 = 1;
-          v7 = v13 != 0;
+          v7 = currentManeuversCardView != 0;
         }
 
         if (v12)
         {
-          MEMORY[0x277D82BD8](v13);
+          MEMORY[0x277D82BD8](currentManeuversCardView);
         }
 
-        *&v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+        *&v5 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
         if (v7)
         {
-          [(CPSInstrumentClusterCardViewController *)v17 _updateClientSafeArea];
+          [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
         }
 
         objc_storeStrong(&location, 0);
@@ -1625,24 +1625,24 @@ void __95__CPSInstrumentClusterCardViewController__transitionFromViews_inView_ho
 
     else
     {
-      [(CPSInstrumentClusterCardViewController *)v17 _evaluateLayout];
+      [(CPSInstrumentClusterCardViewController *)selfCopy _evaluateLayout];
     }
   }
 }
 
-- (void)viewController:(id)a3 didUpdateSafeAreaInsets:(UIEdgeInsets)a4
+- (void)viewController:(id)controller didUpdateSafeAreaInsets:(UIEdgeInsets)insets
 {
-  v9 = a4;
-  v8 = self;
+  insetsCopy = insets;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v6 = location[0];
-  v5 = [(CPSInstrumentClusterCardViewController *)v8 estimatesViewController];
-  *&v4 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  if (v6 == v5)
+  estimatesViewController = [(CPSInstrumentClusterCardViewController *)selfCopy estimatesViewController];
+  *&v4 = MEMORY[0x277D82BD8](estimatesViewController).n128_u64[0];
+  if (v6 == estimatesViewController)
   {
-    [(CPSInstrumentClusterCardViewController *)v8 _updateClientSafeArea];
+    [(CPSInstrumentClusterCardViewController *)selfCopy _updateClientSafeArea];
   }
 
   objc_storeStrong(location, 0);

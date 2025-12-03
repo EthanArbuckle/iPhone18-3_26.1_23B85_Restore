@@ -1,6 +1,6 @@
 @interface NBURLCanonicalizer
 - (NBURLCanonicalizer)init;
-- (id)canonicalizedURLForURL:(id)a3;
+- (id)canonicalizedURLForURL:(id)l;
 @end
 
 @implementation NBURLCanonicalizer
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (id)canonicalizedURLForURL:(id)a3
+- (id)canonicalizedURLForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(NBURLCanonicalizer *)self canonicalizer];
-  v6 = [v5 canonicalizedURLForURL:v4];
+  lCopy = l;
+  canonicalizer = [(NBURLCanonicalizer *)self canonicalizer];
+  v6 = [canonicalizer canonicalizedURLForURL:lCopy];
 
   return v6;
 }

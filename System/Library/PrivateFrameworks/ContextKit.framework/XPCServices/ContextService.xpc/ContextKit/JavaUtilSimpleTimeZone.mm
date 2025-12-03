@@ -1,26 +1,26 @@
 @interface JavaUtilSimpleTimeZone
-- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)a3;
-- (BOOL)inDaylightTimeWithJavaUtilDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLeapYearWithInt:(int)a3;
-- (JavaUtilSimpleTimeZone)initWithInt:(int)a3 withNSString:(id)a4;
+- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)zone;
+- (BOOL)inDaylightTimeWithJavaUtilDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLeapYearWithInt:(int)int;
+- (JavaUtilSimpleTimeZone)initWithInt:(int)int withNSString:(id)string;
 - (id)clone;
 - (id)description;
 - (int)getDSTSavings;
-- (int)getOffsetWithLong:(int64_t)a3;
-- (int)mod7WithInt:(int)a3;
+- (int)getOffsetWithLong:(int64_t)long;
+- (int)mod7WithInt:(int)int;
 - (unint64_t)hash;
-- (void)setDSTSavingsWithInt:(int)a3;
+- (void)setDSTSavingsWithInt:(int)int;
 @end
 
 @implementation JavaUtilSimpleTimeZone
 
-- (JavaUtilSimpleTimeZone)initWithInt:(int)a3 withNSString:(id)a4
+- (JavaUtilSimpleTimeZone)initWithInt:(int)int withNSString:(id)string
 {
   JavaUtilTimeZone_init(self, a2);
   self->dstSavings_ = 3600000;
-  [(JavaUtilTimeZone *)self setIDWithNSString:a4];
-  self->rawOffset_ = a3;
+  [(JavaUtilTimeZone *)self setIDWithNSString:string];
+  self->rawOffset_ = int;
   return self;
 }
 
@@ -28,17 +28,17 @@
 {
   v4.receiver = self;
   v4.super_class = JavaUtilSimpleTimeZone;
-  v2 = [(JavaUtilTimeZone *)&v4 clone];
+  clone = [(JavaUtilTimeZone *)&v4 clone];
   objc_opt_class();
-  if (v2 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v2;
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -47,7 +47,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     [(JavaUtilTimeZone *)self getID];
     goto LABEL_26;
@@ -58,20 +58,20 @@
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaUtilTimeZone *)self getID];
-  if (!v5)
+  getID = [(JavaUtilTimeZone *)self getID];
+  if (!getID)
   {
 LABEL_26:
     JreThrowNullPointerException();
   }
 
-  v6 = [v5 isEqual:{objc_msgSend(a3, "getID")}];
+  v6 = [getID isEqual:{objc_msgSend(equal, "getID")}];
   if (!v6)
   {
     return v6;
   }
 
-  if (self->rawOffset_ != *(a3 + 6) || self->useDaylight_ != *(a3 + 72))
+  if (self->rawOffset_ != *(equal + 6) || self->useDaylight_ != *(equal + 72))
   {
     goto LABEL_21;
   }
@@ -82,14 +82,14 @@ LABEL_26:
     return v6;
   }
 
-  if (self->startYear_ != *(a3 + 7) || self->startMonth_ != *(a3 + 8) || self->startDay_ != *(a3 + 9) || self->startMode_ != *(a3 + 16) || self->startDayOfWeek_ != *(a3 + 10) || self->startTime_ != *(a3 + 11) || self->endMonth_ != *(a3 + 12) || self->endDay_ != *(a3 + 13) || self->endDayOfWeek_ != *(a3 + 14) || self->endTime_ != *(a3 + 15) || self->endMode_ != *(a3 + 17))
+  if (self->startYear_ != *(equal + 7) || self->startMonth_ != *(equal + 8) || self->startDay_ != *(equal + 9) || self->startMode_ != *(equal + 16) || self->startDayOfWeek_ != *(equal + 10) || self->startTime_ != *(equal + 11) || self->endMonth_ != *(equal + 12) || self->endDay_ != *(equal + 13) || self->endDayOfWeek_ != *(equal + 14) || self->endTime_ != *(equal + 15) || self->endMode_ != *(equal + 17))
   {
 LABEL_21:
     LOBYTE(v6) = 0;
     return v6;
   }
 
-  LOBYTE(v6) = self->dstSavings_ == *(a3 + 19);
+  LOBYTE(v6) = self->dstSavings_ == *(equal + 19);
   return v6;
 }
 
@@ -106,13 +106,13 @@ LABEL_21:
   }
 }
 
-- (int)getOffsetWithLong:(int64_t)a3
+- (int)getOffsetWithLong:(int64_t)long
 {
-  v5 = [(JavaUtilSimpleTimeZone *)self useDaylightTime];
+  useDaylightTime = [(JavaUtilSimpleTimeZone *)self useDaylightTime];
   rawOffset = self->rawOffset_;
-  if (v5)
+  if (useDaylightTime)
   {
-    v7 = JavaUtilGrego_timeToFieldsWithLong_withIntArray_(rawOffset + a3, 0);
+    v7 = JavaUtilGrego_timeToFieldsWithLong_withIntArray_(rawOffset + long, 0);
     if (!v7)
     {
       JreThrowNullPointerException();
@@ -162,13 +162,13 @@ LABEL_21:
 - (unint64_t)hash
 {
   objc_sync_enter(self);
-  v3 = [(JavaUtilTimeZone *)self getID];
-  if (!v3)
+  getID = [(JavaUtilTimeZone *)self getID];
+  if (!getID)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = self->rawOffset_ + [v3 hash];
+  v4 = self->rawOffset_ + [getID hash];
   if (self->useDaylight_)
   {
     v4 += self->startYear_ + self->startMonth_ + self->startDay_ + self->startDayOfWeek_ + self->startTime_ + self->startMode_ + self->endMonth_ + self->endDay_ + self->endDayOfWeek_ + self->endTime_ + self->endMode_ + self->dstSavings_;
@@ -179,7 +179,7 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)a3
+- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)zone
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -188,7 +188,7 @@ LABEL_21:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!zone)
   {
     JreThrowNullPointerException();
   }
@@ -199,13 +199,13 @@ LABEL_21:
   }
 
   useDaylight = self->useDaylight_;
-  if (useDaylight != *(a3 + 72))
+  if (useDaylight != *(zone + 72))
   {
     return 0;
   }
 
   rawOffset = self->rawOffset_;
-  v7 = *(a3 + 6);
+  v7 = *(zone + 6);
   v8 = useDaylight ^ 1;
   if (rawOffset == v7)
   {
@@ -219,9 +219,9 @@ LABEL_21:
 
   if ((v8 & 1) == 0 && rawOffset == v7)
   {
-    if (self->dstSavings_ == *(a3 + 19) && self->startYear_ == *(a3 + 7) && self->startMonth_ == *(a3 + 8) && self->startDay_ == *(a3 + 9) && self->startMode_ == *(a3 + 16) && self->startDayOfWeek_ == *(a3 + 10) && self->startTime_ == *(a3 + 11) && self->endMonth_ == *(a3 + 12) && self->endDay_ == *(a3 + 13) && self->endDayOfWeek_ == *(a3 + 14) && self->endTime_ == *(a3 + 15))
+    if (self->dstSavings_ == *(zone + 19) && self->startYear_ == *(zone + 7) && self->startMonth_ == *(zone + 8) && self->startDay_ == *(zone + 9) && self->startMode_ == *(zone + 16) && self->startDayOfWeek_ == *(zone + 10) && self->startTime_ == *(zone + 11) && self->endMonth_ == *(zone + 12) && self->endDay_ == *(zone + 13) && self->endDayOfWeek_ == *(zone + 14) && self->endTime_ == *(zone + 15))
     {
-      return self->endMode_ == *(a3 + 17);
+      return self->endMode_ == *(zone + 17);
     }
 
     return 0;
@@ -230,36 +230,36 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)inDaylightTimeWithJavaUtilDate:(id)a3
+- (BOOL)inDaylightTimeWithJavaUtilDate:(id)date
 {
-  v5 = [(JavaUtilSimpleTimeZone *)self useDaylightTime];
-  if (v5)
+  useDaylightTime = [(JavaUtilSimpleTimeZone *)self useDaylightTime];
+  if (useDaylightTime)
   {
-    if (!a3)
+    if (!date)
     {
       JreThrowNullPointerException();
     }
 
-    v6 = -[JavaUtilSimpleTimeZone getOffsetWithLong:](self, "getOffsetWithLong:", [a3 getTime]);
-    LOBYTE(v5) = v6 != [(JavaUtilSimpleTimeZone *)self getRawOffset];
+    v6 = -[JavaUtilSimpleTimeZone getOffsetWithLong:](self, "getOffsetWithLong:", [date getTime]);
+    LOBYTE(useDaylightTime) = v6 != [(JavaUtilSimpleTimeZone *)self getRawOffset];
   }
 
-  return v5;
+  return useDaylightTime;
 }
 
-- (BOOL)isLeapYearWithInt:(int)a3
+- (BOOL)isLeapYearWithInt:(int)int
 {
-  result = (a3 & 3) == 0 && a3 < 1583;
-  if (a3 >= 1583)
+  result = (int & 3) == 0 && int < 1583;
+  if (int >= 1583)
   {
-    HIDWORD(v5) = -1030792151 * a3;
-    LODWORD(v5) = -1030792151 * a3;
+    HIDWORD(v5) = -1030792151 * int;
+    LODWORD(v5) = -1030792151 * int;
     v4 = v5 >> 2;
-    HIDWORD(v5) = -1030792151 * a3;
-    LODWORD(v5) = -1030792151 * a3;
+    HIDWORD(v5) = -1030792151 * int;
+    LODWORD(v5) = -1030792151 * int;
     v6 = (v5 >> 4) < 0xA3D70B;
     v7 = v4 > 0x28F5C28 || v6;
-    if ((a3 & 3) == 0)
+    if ((int & 3) == 0)
     {
       return v7;
     }
@@ -268,28 +268,28 @@ LABEL_21:
   return result;
 }
 
-- (int)mod7WithInt:(int)a3
+- (int)mod7WithInt:(int)int
 {
-  if (((a3 % 7) & a3) < 0 != v3)
+  if (((int % 7) & int) < 0 != v3)
   {
-    return a3 % 7 + 7;
+    return int % 7 + 7;
   }
 
   else
   {
-    return a3 % 7;
+    return int % 7;
   }
 }
 
-- (void)setDSTSavingsWithInt:(int)a3
+- (void)setDSTSavingsWithInt:(int)int
 {
-  if (a3 < 1)
+  if (int < 1)
   {
     v3 = new_JavaLangIllegalArgumentException_init();
     objc_exception_throw(v3);
   }
 
-  self->dstSavings_ = a3;
+  self->dstSavings_ = int;
 }
 
 - (id)description

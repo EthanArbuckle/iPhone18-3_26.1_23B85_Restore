@@ -1,64 +1,64 @@
 @interface SBInCallPresentationManager
-- (BOOL)_hasPendingDismissalOfSceneHandleWithPersistenceIdentifier:(id)a3;
-- (BOOL)_isManagingSceneOrSceneHandleWithPersistenceIdentifier:(id)a3;
-- (BOOL)canHandleOpenApplicationRequestForApplication:(id)a3;
-- (BOOL)disablesSystemVolumeHUDForCategory:(id)a3;
+- (BOOL)_hasPendingDismissalOfSceneHandleWithPersistenceIdentifier:(id)identifier;
+- (BOOL)_isManagingSceneOrSceneHandleWithPersistenceIdentifier:(id)identifier;
+- (BOOL)canHandleOpenApplicationRequestForApplication:(id)application;
+- (BOOL)disablesSystemVolumeHUDForCategory:(id)category;
 - (BOOL)disallowsLockHardwareButtonDoublePress;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)hasFullscreenActiveCallInSwitcher;
-- (BOOL)hasOverrideAppSceneEntityForLaunchingApplication:(id)a3;
-- (BOOL)inCallClientPresentationSession:(id)a3 canRestoreToPreviousEntity:(id)a4;
-- (BOOL)inCallClientPresentationSessionAmbientPresentationActive:(id)a3;
+- (BOOL)hasOverrideAppSceneEntityForLaunchingApplication:(id)application;
+- (BOOL)inCallClientPresentationSession:(id)session canRestoreToPreviousEntity:(id)entity;
+- (BOOL)inCallClientPresentationSessionAmbientPresentationActive:(id)active;
 - (BOOL)isHostingAnApp;
-- (BOOL)isSceneHandleCloseableInSwitcher:(id)a3;
-- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)a3 wakingDisplay:(BOOL)a4;
+- (BOOL)isSceneHandleCloseableInSwitcher:(id)switcher;
+- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)source wakingDisplay:(BOOL)display;
 - (BOOL)supportsHandlingDeviceLock;
 - (SBHideSharePlayContentFromSharedScreenController)hideSharePlayContentFromSharedScreenController;
-- (SBInCallPresentationManager)initWithWindowSceneManager:(id)a3 applicationController:(id)a4 bannerManager:(id)a5;
+- (SBInCallPresentationManager)initWithWindowSceneManager:(id)manager applicationController:(id)controller bannerManager:(id)bannerManager;
 - (SBInCallPresentationManagerDelegate)delegate;
 - (SBInCallPresentationSession)_lastPresentationSession;
-- (UIEdgeInsets)inCallClientPresentationSessionResolvedPIPDodgingInsets:(id)a3;
+- (UIEdgeInsets)inCallClientPresentationSessionResolvedPIPDodgingInsets:(id)insets;
 - (id)_hostedPresentationSessions;
-- (id)_newClientPresentationSessionWithSceneHandle:(id)a3;
-- (id)_sessionForSceneWithIdentifier:(id)a3;
+- (id)_newClientPresentationSessionWithSceneHandle:(id)handle;
+- (id)_sessionForSceneWithIdentifier:(id)identifier;
 - (id)hostedAppSceneHandle;
 - (id)hostedAppSceneHandles;
-- (id)inCallClientPresentationSession:(id)a3 acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)a4;
-- (id)overrideAppSceneEntityForLaunchingApplication:(id)a3;
+- (id)inCallClientPresentationSession:(id)session acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)reason;
+- (id)overrideAppSceneEntityForLaunchingApplication:(id)application;
 - (id)scenesForBacklightSession;
-- (id)sessionForSceneIdentifier:(id)a3;
-- (int64_t)inCallClientPresentationSessionInterfaceOrientationForBannerPresentation:(id)a3;
-- (int64_t)inCallClientPresentationSessionInterfaceOrientationForTransientOverlayPresentation:(id)a3;
-- (void)_actionButtonPressed:(id)a3;
-- (void)_applicationDidExit:(id)a3;
+- (id)sessionForSceneIdentifier:(id)identifier;
+- (int64_t)inCallClientPresentationSessionInterfaceOrientationForBannerPresentation:(id)presentation;
+- (int64_t)inCallClientPresentationSessionInterfaceOrientationForTransientOverlayPresentation:(id)presentation;
+- (void)_actionButtonPressed:(id)pressed;
+- (void)_applicationDidExit:(id)exit;
 - (void)_dismissAllPresentations;
-- (void)_dismissAllPresentationsForApplication:(id)a3;
-- (void)_dismissClientWithIdentifier:(id)a3 animated:(BOOL)a4 analyticsSource:(id)a5 reason:(id)a6 completion:(id)a7;
+- (void)_dismissAllPresentationsForApplication:(id)application;
+- (void)_dismissClientWithIdentifier:(id)identifier animated:(BOOL)animated analyticsSource:(id)source reason:(id)reason completion:(id)completion;
 - (void)_evaluateNonModalSuppressionAssertions;
-- (void)_runZombieChecksForScene:(id)a3;
-- (void)_runZombieChecksForSceneHandle:(id)a3;
-- (void)ensureSwitcherInclusionForRestoringFromPIPForSceneWithPersistenceIdentifier:(id)a3 completion:(id)a4;
-- (void)handleAccessoryAttachWithCompletion:(id)a3;
-- (void)handleDeviceLockFromSource:(int)a3;
-- (void)handleOpenApplicationRequest:(id)a3 clientWorkspace:(id)a4 actions:(id)a5 origin:(id)a6 options:(id)a7 withResult:(id)a8;
-- (void)handlePresentationForActivityContinuationIdentifier:(id)a3;
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3;
-- (void)inCallClientPresentationSession:(id)a3 handleDestroySceneActionWithReason:(int64_t)a4 analyticsSource:(id)a5 completion:(id)a6;
-- (void)inCallClientPresentationSessionInvalidateBacklightEnvironment:(id)a3;
-- (void)inCallClientPresentationSessionSceneWasDestroyed:(id)a3;
-- (void)inCallPresentationRequestServer:(id)a3 clientWithIdentifier:(id)a4 requestsPresentationWithConfiguration:(id)a5 completion:(id)a6;
-- (void)reactivateInCallForReason:(int64_t)a3;
-- (void)sceneManager:(id)a3 willMoveScene:(id)a4 toSceneManager:(id)a5;
+- (void)_runZombieChecksForScene:(id)scene;
+- (void)_runZombieChecksForSceneHandle:(id)handle;
+- (void)ensureSwitcherInclusionForRestoringFromPIPForSceneWithPersistenceIdentifier:(id)identifier completion:(id)completion;
+- (void)handleAccessoryAttachWithCompletion:(id)completion;
+- (void)handleDeviceLockFromSource:(int)source;
+- (void)handleOpenApplicationRequest:(id)request clientWorkspace:(id)workspace actions:(id)actions origin:(id)origin options:(id)options withResult:(id)result;
+- (void)handlePresentationForActivityContinuationIdentifier:(id)identifier;
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation;
+- (void)inCallClientPresentationSession:(id)session handleDestroySceneActionWithReason:(int64_t)reason analyticsSource:(id)source completion:(id)completion;
+- (void)inCallClientPresentationSessionInvalidateBacklightEnvironment:(id)environment;
+- (void)inCallClientPresentationSessionSceneWasDestroyed:(id)destroyed;
+- (void)inCallPresentationRequestServer:(id)server clientWithIdentifier:(id)identifier requestsPresentationWithConfiguration:(id)configuration completion:(id)completion;
+- (void)reactivateInCallForReason:(int64_t)reason;
+- (void)sceneManager:(id)manager willMoveScene:(id)scene toSceneManager:(id)sceneManager;
 @end
 
 @implementation SBInCallPresentationManager
 
 - (id)_hostedPresentationSessions
 {
-  v3 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
-  if (v3)
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  if (allValues)
   {
-    v4 = v3;
+    v4 = allValues;
   }
 
   else
@@ -75,7 +75,7 @@
 
   else
   {
-    v7 = v3;
+    v7 = allValues;
   }
 
   v8 = v7;
@@ -85,8 +85,8 @@
 
 - (BOOL)isHostingAnApp
 {
-  v2 = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
-  v3 = [v2 bs_containsObjectPassingTest:&__block_literal_global_193];
+  _hostedPresentationSessions = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
+  v3 = [_hostedPresentationSessions bs_containsObjectPassingTest:&__block_literal_global_193];
 
   return v3;
 }
@@ -99,8 +99,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -111,20 +111,20 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 sceneHandle];
-        v11 = [v10 sceneIfExists];
+        sceneHandle = [v9 sceneHandle];
+        sceneIfExists = [sceneHandle sceneIfExists];
 
-        if (v11 && [v9 isShowingOnEmbeddedDisplay])
+        if (sceneIfExists && [v9 isShowingOnEmbeddedDisplay])
         {
-          [v3 addObject:v11];
+          [v3 addObject:sceneIfExists];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -133,19 +133,19 @@
   return v3;
 }
 
-- (SBInCallPresentationManager)initWithWindowSceneManager:(id)a3 applicationController:(id)a4 bannerManager:(id)a5
+- (SBInCallPresentationManager)initWithWindowSceneManager:(id)manager applicationController:(id)controller bannerManager:(id)bannerManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  controllerCopy = controller;
+  bannerManagerCopy = bannerManager;
   v33.receiver = self;
   v33.super_class = SBInCallPresentationManager;
   v12 = [(SBInCallPresentationManager *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_windowSceneManager, a3);
-    objc_storeStrong(&v13->_applicationController, a4);
+    objc_storeStrong(&v12->_windowSceneManager, manager);
+    objc_storeStrong(&v13->_applicationController, controller);
     v14 = objc_alloc_init(SBInCallPresentationRequestServer);
     presentationRequestServer = v13->_presentationRequestServer;
     v13->_presentationRequestServer = v14;
@@ -158,24 +158,24 @@
 
     v18 = v13->_inCallBannerAuthority;
     v19 = +[SBInCallBannerPresentableViewController requesterIdentifier];
-    [v11 registerAuthority:v18 forRequesterIdentifier:v19];
+    [bannerManagerCopy registerAuthority:v18 forRequesterIdentifier:v19];
 
     v20 = objc_alloc_init(SBExpanseBannerAuthority);
     expanseBannerAuthority = v13->_expanseBannerAuthority;
     v13->_expanseBannerAuthority = v20;
 
-    [v11 registerAuthority:v13->_expanseBannerAuthority forRequesterIdentifier:@"com.apple.ConversationKit"];
+    [bannerManagerCopy registerAuthority:v13->_expanseBannerAuthority forRequesterIdentifier:@"com.apple.ConversationKit"];
     v22 = [MEMORY[0x277D0AC98] storeForApplication:@"com.apple.InCallService"];
     [v22 removeAllSceneDataStores];
 
-    v23 = [MEMORY[0x277D0AAD8] sharedInstance];
-    [v23 addObserver:v13];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    [mEMORY[0x277D0AAD8] addObserver:v13];
 
-    v24 = [SBApp backlightEnvironmentSessionProvider];
-    [v24 registerBacklightEnvironmentSceneProvider:v13];
+    backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+    [backlightEnvironmentSessionProvider registerBacklightEnvironmentSceneProvider:v13];
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v13 selector:sel__actionButtonPressed_ name:*MEMORY[0x277D679D8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__actionButtonPressed_ name:*MEMORY[0x277D679D8] object:0];
 
     objc_initWeak(&location, v13);
     v26 = MEMORY[0x277CF0BD0];
@@ -204,13 +204,13 @@ void __94__SBInCallPresentationManager_initWithWindowSceneManager_applicationCon
 - (void)_evaluateNonModalSuppressionAssertions
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(SBInCallPresentationManager *)self _shouldSuppressNonModalCalls];
+  _shouldSuppressNonModalCalls = [(SBInCallPresentationManager *)self _shouldSuppressNonModalCalls];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -222,26 +222,26 @@ void __94__SBInCallPresentationManager_initWithWindowSceneManager_applicationCon
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setNonModalPresentationsSuppressed:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setNonModalPresentationsSuppressed:_shouldSuppressNonModalCalls];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)inCallClientPresentationSession:(id)a3 handleDestroySceneActionWithReason:(int64_t)a4 analyticsSource:(id)a5 completion:(id)a6
+- (void)inCallClientPresentationSession:(id)session handleDestroySceneActionWithReason:(int64_t)reason analyticsSource:(id)source completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  sessionCopy = session;
+  sourceCopy = source;
+  completionCopy = completion;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -253,7 +253,7 @@ void __94__SBInCallPresentationManager_initWithWindowSceneManager_applicationCon
   v23 = 3221225472;
   v24 = __125__SBInCallPresentationManager_inCallClientPresentationSession_handleDestroySceneActionWithReason_analyticsSource_completion___block_invoke;
   v25 = &unk_2783B7CD0;
-  v13 = v9;
+  v13 = sessionCopy;
   v26 = v13;
   v27 = &v28;
   [(NSMutableDictionary *)clientIdentifierToPresentationSession enumerateKeysAndObjectsUsingBlock:&v22];
@@ -262,19 +262,19 @@ void __94__SBInCallPresentationManager_initWithWindowSceneManager_applicationCon
     v14 = SBLogInCallPresentation();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v13 sceneHandle];
-      v16 = [v15 sceneIdentifier];
+      sceneHandle = [v13 sceneHandle];
+      sceneIdentifier = [sceneHandle sceneIdentifier];
       v17 = SBSUIInCallWindowSceneSessionDestructionReasonDescription();
       *buf = 138543874;
-      v35 = v16;
+      v35 = sceneIdentifier;
       v36 = 2114;
       v37 = v17;
       v38 = 2114;
-      v39 = v10;
+      v39 = sourceCopy;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Dismissing client with scene identifier %{public}@ from destroy scene action request with reason %{public}@, analyticsSource: %{public}@", buf, 0x20u);
     }
 
-    [(SBInCallPresentationManager *)self _dismissClientWithIdentifier:v29[5] animated:1 analyticsSource:v10 reason:@"client request" completion:v11];
+    [(SBInCallPresentationManager *)self _dismissClientWithIdentifier:v29[5] animated:1 analyticsSource:sourceCopy reason:@"client request" completion:completionCopy];
   }
 
   else
@@ -282,19 +282,19 @@ void __94__SBInCallPresentationManager_initWithWindowSceneManager_applicationCon
     v18 = SBLogInCallPresentation();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v13 sceneHandle];
-      v20 = [v19 sceneIdentifier];
+      sceneHandle2 = [v13 sceneHandle];
+      sceneIdentifier2 = [sceneHandle2 sceneIdentifier];
       v21 = SBSUIInCallWindowSceneSessionDestructionReasonDescription();
       *buf = 138543618;
-      v35 = v20;
+      v35 = sceneIdentifier2;
       v36 = 2114;
       v37 = v21;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "Failed to find client identifier for scene identifier %{public}@ to handle destroy scene action with reason %{public}@", buf, 0x16u);
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -313,10 +313,10 @@ void __125__SBInCallPresentationManager_inCallClientPresentationSession_handleDe
   }
 }
 
-- (void)inCallClientPresentationSessionSceneWasDestroyed:(id)a3
+- (void)inCallClientPresentationSessionSceneWasDestroyed:(id)destroyed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  destroyedCopy = destroyed;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -328,7 +328,7 @@ void __125__SBInCallPresentationManager_inCallClientPresentationSession_handleDe
   v14 = 3221225472;
   v15 = __80__SBInCallPresentationManager_inCallClientPresentationSessionSceneWasDestroyed___block_invoke;
   v16 = &unk_2783B7CD0;
-  v6 = v4;
+  v6 = destroyedCopy;
   v17 = v6;
   v18 = &v19;
   [(NSMutableDictionary *)clientIdentifierToPresentationSession enumerateKeysAndObjectsUsingBlock:&v13];
@@ -337,10 +337,10 @@ void __125__SBInCallPresentationManager_inCallClientPresentationSession_handleDe
     v7 = SBLogInCallPresentation();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 sceneHandle];
-      v9 = [v8 sceneIdentifier];
+      sceneHandle = [v6 sceneHandle];
+      sceneIdentifier = [sceneHandle sceneIdentifier];
       *buf = 138543362;
-      v26 = v9;
+      v26 = sceneIdentifier;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Dismissing client with scene identifier %{public}@ due to scene destruction", buf, 0xCu);
     }
 
@@ -352,10 +352,10 @@ void __125__SBInCallPresentationManager_inCallClientPresentationSession_handleDe
     v10 = SBLogInCallPresentation();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 sceneHandle];
-      v12 = [v11 sceneIdentifier];
+      sceneHandle2 = [v6 sceneHandle];
+      sceneIdentifier2 = [sceneHandle2 sceneIdentifier];
       *buf = 138543362;
-      v26 = v12;
+      v26 = sceneIdentifier2;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Already removed client identifier %{public}@ from set of presentation sessions which means we think we already have handled inCallClientPresentationSessionSceneWasDestroyed and can safely do nothing.", buf, 0xCu);
     }
   }
@@ -375,60 +375,60 @@ void __80__SBInCallPresentationManager_inCallClientPresentationSessionSceneWasDe
   }
 }
 
-- (void)inCallClientPresentationSessionInvalidateBacklightEnvironment:(id)a3
+- (void)inCallClientPresentationSessionInvalidateBacklightEnvironment:(id)environment
 {
-  v4 = [SBApp backlightEnvironmentSessionProvider];
-  [v4 invalidateBacklightScenesForProvider:self];
+  backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+  [backlightEnvironmentSessionProvider invalidateBacklightScenesForProvider:self];
 }
 
-- (int64_t)inCallClientPresentationSessionInterfaceOrientationForBannerPresentation:(id)a3
+- (int64_t)inCallClientPresentationSessionInterfaceOrientationForBannerPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 windowScene];
+  windowScene = [presentationCopy windowScene];
 
-  v7 = [WeakRetained inCallPresentationManager:self interfaceOrientationForBannerPresentationInWindowScene:v6];
+  v7 = [WeakRetained inCallPresentationManager:self interfaceOrientationForBannerPresentationInWindowScene:windowScene];
   return v7;
 }
 
-- (int64_t)inCallClientPresentationSessionInterfaceOrientationForTransientOverlayPresentation:(id)a3
+- (int64_t)inCallClientPresentationSessionInterfaceOrientationForTransientOverlayPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 windowScene];
+  windowScene = [presentationCopy windowScene];
 
-  v7 = [WeakRetained inCallPresentationManager:self interfaceOrientationForTransientOverlayPresentationInWindowScene:v6];
+  v7 = [WeakRetained inCallPresentationManager:self interfaceOrientationForTransientOverlayPresentationInWindowScene:windowScene];
   return v7;
 }
 
-- (id)inCallClientPresentationSession:(id)a3 acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)a4
+- (id)inCallClientPresentationSession:(id)session acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)reason
 {
-  v5 = a4;
-  v6 = [(SBInCallPresentationManager *)self hideSharePlayContentFromSharedScreenController];
-  v7 = [v6 acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:v5];
+  reasonCopy = reason;
+  hideSharePlayContentFromSharedScreenController = [(SBInCallPresentationManager *)self hideSharePlayContentFromSharedScreenController];
+  v7 = [hideSharePlayContentFromSharedScreenController acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:reasonCopy];
 
   return v7;
 }
 
-- (BOOL)inCallClientPresentationSession:(id)a3 canRestoreToPreviousEntity:(id)a4
+- (BOOL)inCallClientPresentationSession:(id)session canRestoreToPreviousEntity:(id)entity
 {
-  v6 = a4;
-  v7 = [a3 sceneHandle];
-  v8 = [v6 deviceApplicationSceneEntity];
+  entityCopy = entity;
+  sceneHandle = [session sceneHandle];
+  deviceApplicationSceneEntity = [entityCopy deviceApplicationSceneEntity];
 
-  v9 = [v8 sceneHandle];
+  sceneHandle2 = [deviceApplicationSceneEntity sceneHandle];
 
-  v10 = [v9 application];
-  v11 = [v7 application];
-  if (([v10 isEqual:v11] & 1) == 0)
+  application = [sceneHandle2 application];
+  application2 = [sceneHandle application];
+  if (([application isEqual:application2] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v12 = [v9 persistenceIdentifier];
-  v13 = [v7 persistenceIdentifier];
-  v14 = [v12 isEqualToString:v13];
+  persistenceIdentifier = [sceneHandle2 persistenceIdentifier];
+  persistenceIdentifier2 = [sceneHandle persistenceIdentifier];
+  v14 = [persistenceIdentifier isEqualToString:persistenceIdentifier2];
 
   if (v14)
   {
@@ -437,13 +437,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v15 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__SBInCallPresentationManager_inCallClientPresentationSession_canRestoreToPreviousEntity___block_invoke;
   v18[3] = &unk_2783B7CF8;
-  v19 = v9;
-  v16 = [v15 bs_containsObjectPassingTest:v18];
+  v19 = sceneHandle2;
+  v16 = [allValues bs_containsObjectPassingTest:v18];
 
 LABEL_6:
   return v16;
@@ -466,32 +466,32 @@ uint64_t __90__SBInCallPresentationManager_inCallClientPresentationSession_canRe
   return v5;
 }
 
-- (BOOL)inCallClientPresentationSessionAmbientPresentationActive:(id)a3
+- (BOOL)inCallClientPresentationSessionAmbientPresentationActive:(id)active
 {
-  v3 = [(SBInCallPresentationManager *)self windowSceneManager];
-  v4 = [v3 activeDisplayWindowScene];
-  v5 = [v4 ambientPresentationController];
-  v6 = [v5 isPresented];
+  windowSceneManager = [(SBInCallPresentationManager *)self windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+  ambientPresentationController = [activeDisplayWindowScene ambientPresentationController];
+  isPresented = [ambientPresentationController isPresented];
 
-  return v6;
+  return isPresented;
 }
 
-- (void)inCallPresentationRequestServer:(id)a3 clientWithIdentifier:(id)a4 requestsPresentationWithConfiguration:(id)a5 completion:(id)a6
+- (void)inCallPresentationRequestServer:(id)server clientWithIdentifier:(id)identifier requestsPresentationWithConfiguration:(id)configuration completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 sceneBundleIdentifier];
-  v13 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:v12];
-  v19 = v9;
-  v20 = v10;
-  v21 = v12;
-  v22 = v11;
-  v14 = v12;
-  v15 = v10;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  sceneBundleIdentifier = [configurationCopy sceneBundleIdentifier];
+  v13 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:sceneBundleIdentifier];
+  v19 = identifierCopy;
+  v20 = configurationCopy;
+  v21 = sceneBundleIdentifier;
+  v22 = completionCopy;
+  v14 = sceneBundleIdentifier;
+  v15 = configurationCopy;
   v16 = v13;
-  v17 = v11;
-  v18 = v9;
+  v17 = completionCopy;
+  v18 = identifierCopy;
   BSDispatchMain();
 }
 
@@ -826,7 +826,7 @@ void __133__SBInCallPresentationManager_inCallPresentationRequestServer_clientWi
   }
 }
 
-- (UIEdgeInsets)inCallClientPresentationSessionResolvedPIPDodgingInsets:(id)a3
+- (UIEdgeInsets)inCallClientPresentationSessionResolvedPIPDodgingInsets:(id)insets
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D768C8];
@@ -837,7 +837,7 @@ void __133__SBInCallPresentationManager_inCallPresentationRequestServer_clientWi
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues:a3];
+  v7 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues:insets];
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -882,31 +882,31 @@ void __133__SBInCallPresentationManager_inCallPresentationRequestServer_clientWi
 
 - (id)hostedAppSceneHandle
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBInCallPresentationManager.m" lineNumber:362 description:{@"%@ should never be called", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBInCallPresentationManager.m" lineNumber:362 description:{@"%@ should never be called", v5}];
 
   return 0;
 }
 
 - (id)hostedAppSceneHandles
 {
-  v2 = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
-  v3 = [v2 bs_compactMap:&__block_literal_global_57_1];
-  v4 = [v3 bs_flatten];
+  _hostedPresentationSessions = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
+  v3 = [_hostedPresentationSessions bs_compactMap:&__block_literal_global_57_1];
+  bs_flatten = [v3 bs_flatten];
 
-  return v4;
+  return bs_flatten;
 }
 
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _hostedPresentationSessions = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
+  v5 = [_hostedPresentationSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -918,51 +918,51 @@ void __133__SBInCallPresentationManager_inCallPresentationRequestServer_clientWi
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_hostedPresentationSessions);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) hostedAppWillRotateToInterfaceOrientation:a3];
+        [*(*(&v9 + 1) + 8 * v8++) hostedAppWillRotateToInterfaceOrientation:orientation];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_hostedPresentationSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)sceneManager:(id)a3 willMoveScene:(id)a4 toSceneManager:(id)a5
+- (void)sceneManager:(id)manager willMoveScene:(id)scene toSceneManager:(id)sceneManager
 {
-  v9 = a5;
-  v7 = [a4 identifier];
-  v8 = [(SBInCallPresentationManager *)self sessionForSceneIdentifier:v7];
+  sceneManagerCopy = sceneManager;
+  identifier = [scene identifier];
+  v8 = [(SBInCallPresentationManager *)self sessionForSceneIdentifier:identifier];
 
-  if (v8 && ([(NSMutableSet *)self->_observedSceneManagers containsObject:v9]& 1) == 0)
+  if (v8 && ([(NSMutableSet *)self->_observedSceneManagers containsObject:sceneManagerCopy]& 1) == 0)
   {
-    [v9 addObserver:self];
-    [(NSMutableSet *)self->_observedSceneManagers addObject:v9];
+    [sceneManagerCopy addObserver:self];
+    [(NSMutableSet *)self->_observedSceneManagers addObject:sceneManagerCopy];
   }
 }
 
-- (BOOL)hasOverrideAppSceneEntityForLaunchingApplication:(id)a3
+- (BOOL)hasOverrideAppSceneEntityForLaunchingApplication:(id)application
 {
-  v3 = [(SBInCallPresentationManager *)self overrideAppSceneEntityForLaunchingApplication:a3];
+  v3 = [(SBInCallPresentationManager *)self overrideAppSceneEntityForLaunchingApplication:application];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)overrideAppSceneEntityForLaunchingApplication:(id)a3
+- (id)overrideAppSceneEntityForLaunchingApplication:(id)application
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationCopy = application;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -973,10 +973,10 @@ void __133__SBInCallPresentationManager_inCallPresentationRequestServer_clientWi
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) overrideAppSceneEntityForLaunchingApplication:v4];
+        v10 = [*(*(&v13 + 1) + 8 * i) overrideAppSceneEntityForLaunchingApplication:applicationCopy];
         if (v10)
         {
           v11 = v10;
@@ -984,7 +984,7 @@ void __133__SBInCallPresentationManager_inCallPresentationRequestServer_clientWi
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -1000,16 +1000,16 @@ LABEL_11:
   return v11;
 }
 
-- (id)sessionForSceneIdentifier:(id)a3
+- (id)sessionForSceneIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -1019,13 +1019,13 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 sceneHandle];
-        v11 = [v10 sceneIdentifier];
-        v12 = [v11 isEqual:v4];
+        sceneHandle = [v9 sceneHandle];
+        sceneIdentifier = [sceneHandle sceneIdentifier];
+        v12 = [sceneIdentifier isEqual:identifierCopy];
 
         if (v12)
         {
@@ -1034,7 +1034,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1056,8 +1056,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1067,7 +1067,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) supportsHandlingDeviceLock])
@@ -1077,7 +1077,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1099,8 +1099,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1110,7 +1110,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) disallowsLockHardwareButtonDoublePress])
@@ -1120,7 +1120,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1135,17 +1135,17 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)a3 wakingDisplay:(BOOL)a4
+- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)source wakingDisplay:(BOOL)display
 {
-  v4 = a4;
-  v5 = *&a3;
+  displayCopy = display;
+  v5 = *&source;
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1156,17 +1156,17 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) supportsBecomingVisibleWhenUnlockingFromSource:v5 wakingDisplay:v4])
+        if ([*(*(&v13 + 1) + 8 * i) supportsBecomingVisibleWhenUnlockingFromSource:v5 wakingDisplay:displayCopy])
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -1182,16 +1182,16 @@ LABEL_11:
   return v11;
 }
 
-- (void)handleAccessoryAttachWithCompletion:(id)a3
+- (void)handleAccessoryAttachWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1203,10 +1203,10 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v9) handleAccessoryAttachWithCompletion:v4])
+        if ([*(*(&v10 + 1) + 8 * v9) handleAccessoryAttachWithCompletion:completionCopy])
         {
 
           goto LABEL_11;
@@ -1216,7 +1216,7 @@ LABEL_11:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v7)
       {
         continue;
@@ -1226,30 +1226,30 @@ LABEL_11:
     }
   }
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_11:
 }
 
-- (void)handlePresentationForActivityContinuationIdentifier:(id)a3
+- (void)handlePresentationForActivityContinuationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([objc_opt_class() isSpecializedAPISupported])
   {
-    v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-    [v3 activateInCallUIWithActivityContinuationIdentifier:v4];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+    [mEMORY[0x277D6EDF8] activateInCallUIWithActivityContinuationIdentifier:identifierCopy];
   }
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
+  pressCopy = press;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1260,17 +1260,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) handleHeadsetButtonPress:v3])
+        if ([*(*(&v11 + 1) + 8 * i) handleHeadsetButtonPress:pressCopy])
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -1286,7 +1286,7 @@ LABEL_11:
   return v9;
 }
 
-- (void)handleDeviceLockFromSource:(int)a3
+- (void)handleDeviceLockFromSource:(int)source
 {
   v39 = *MEMORY[0x277D85DE8];
   v3 = SBLogInCallPresentation();
@@ -1300,9 +1300,9 @@ LABEL_11:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectEnumerator];
   v5 = 0;
-  v6 = [v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
     v7 = *v34;
@@ -1312,7 +1312,7 @@ LABEL_11:
       {
         if (*v34 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v33 + 1) + 8 * i);
@@ -1327,7 +1327,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v6);
@@ -1367,8 +1367,8 @@ LABEL_11:
           v21 = v14;
           v24 = buf;
           v22 = WeakRetained;
-          v23 = self;
-          [v14 handleDeviceLockFromSource:a3 completion:v19];
+          selfCopy = self;
+          [v14 handleDeviceLockFromSource:source completion:v19];
         }
 
         v11 = [obj countByEnumeratingWithState:&v25 objects:v37 count:16];
@@ -1419,20 +1419,20 @@ uint64_t __58__SBInCallPresentationManager_handleDeviceLockFromSource___block_in
   return result;
 }
 
-- (void)reactivateInCallForReason:(int64_t)a3
+- (void)reactivateInCallForReason:(int64_t)reason
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = SBLogInCallPresentation();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 2)
+    if ((reason - 1) > 2)
     {
       v5 = @".invalid";
     }
 
     else
     {
-      v5 = off_2783B7E20[a3 - 1];
+      v5 = off_2783B7E20[reason - 1];
     }
 
     v8 = 138543362;
@@ -1443,53 +1443,53 @@ uint64_t __58__SBInCallPresentationManager_handleDeviceLockFromSource___block_in
   if (!+[SBInCallPresentationManager isSpecializedAPISupported])
   {
     v6 = +[SBWorkspace mainWorkspace];
-    v7 = [v6 inCallTransientOverlayManager];
-    [v7 presentTransientOverlay];
+    inCallTransientOverlayManager = [v6 inCallTransientOverlayManager];
+    [inCallTransientOverlayManager presentTransientOverlay];
   }
 }
 
-- (BOOL)canHandleOpenApplicationRequestForApplication:(id)a3
+- (BOOL)canHandleOpenApplicationRequestForApplication:(id)application
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  if ([v4 isEqualToString:@"com.apple.InCallService"])
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.InCallService"])
   {
-    v5 = [v3 processState];
-    v6 = [v5 isRunning];
+    processState = [applicationCopy processState];
+    isRunning = [processState isRunning];
   }
 
   else
   {
-    v6 = 0;
+    isRunning = 0;
   }
 
-  return v6;
+  return isRunning;
 }
 
-- (void)handleOpenApplicationRequest:(id)a3 clientWorkspace:(id)a4 actions:(id)a5 origin:(id)a6 options:(id)a7 withResult:(id)a8
+- (void)handleOpenApplicationRequest:(id)request clientWorkspace:(id)workspace actions:(id)actions origin:(id)origin options:(id)options withResult:(id)result
 {
   v64 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v13 = a4;
-  v14 = a5;
-  v53 = a6;
-  v15 = a7;
-  v16 = a8;
+  requestCopy = request;
+  workspaceCopy = workspace;
+  actionsCopy = actions;
+  originCopy = origin;
+  optionsCopy = options;
+  resultCopy = result;
   v17 = SBLogInCallPresentation();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v63 = v53;
+    v63 = originCopy;
     _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "Handling open application request from origin %{public}@", buf, 0xCu);
   }
 
-  v18 = [v14 mutableCopy];
-  v19 = [v15 objectForKey:*MEMORY[0x277D0AC28]];
+  v18 = [actionsCopy mutableCopy];
+  v19 = [optionsCopy objectForKey:*MEMORY[0x277D0AC28]];
   v20 = [v19 isEqualToString:*MEMORY[0x277D67088]];
 
-  v50 = v15;
-  v51 = v13;
-  v49 = v16;
+  v50 = optionsCopy;
+  v51 = workspaceCopy;
+  v49 = resultCopy;
   if (v20)
   {
     if (!v18)
@@ -1499,7 +1499,7 @@ uint64_t __58__SBInCallPresentationManager_handleDeviceLockFromSource___block_in
 
     v21 = objc_alloc(MEMORY[0x277D757D0]);
     v22 = [MEMORY[0x277CBEBC0] URLWithString:@"facetime://?showInCallUI=1"];
-    v23 = [v21 initWithURL:v22 workspaceOriginatingProcess:v53];
+    v23 = [v21 initWithURL:v22 workspaceOriginatingProcess:originCopy];
 
     [v18 addObject:v23];
   }
@@ -1508,7 +1508,7 @@ uint64_t __58__SBInCallPresentationManager_handleDeviceLockFromSource___block_in
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v24 = v14;
+  v24 = actionsCopy;
   v25 = [v24 countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v25)
   {
@@ -1528,16 +1528,16 @@ uint64_t __58__SBInCallPresentationManager_handleDeviceLockFromSource___block_in
         {
           v30 = objc_alloc(MEMORY[0x277D757D0]);
           v31 = [v29 url];
-          v32 = [v29 workspaceOriginatingProcess];
-          v33 = v32;
-          if (v32)
+          workspaceOriginatingProcess = [v29 workspaceOriginatingProcess];
+          v33 = workspaceOriginatingProcess;
+          if (workspaceOriginatingProcess)
           {
-            v34 = v32;
+            v34 = workspaceOriginatingProcess;
           }
 
           else
           {
-            v34 = v53;
+            v34 = originCopy;
           }
 
           v35 = [v30 initWithURL:v31 workspaceOriginatingProcess:v34];
@@ -1553,22 +1553,22 @@ uint64_t __58__SBInCallPresentationManager_handleDeviceLockFromSource___block_in
     while (v26);
   }
 
-  v36 = [v52 processState];
-  v37 = [v36 pid];
+  processState = [requestCopy processState];
+  v37 = [processState pid];
 
   if (v37 != -1)
   {
     v48 = [MEMORY[0x277D47008] targetWithPid:v37];
     v38 = [MEMORY[0x277D46D78] attributeWithCompletionPolicy:1];
     v60[0] = v38;
-    v39 = [MEMORY[0x277D46DF0] grantWithUserInteractivity];
-    v60[1] = v39;
-    v40 = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
-    v60[2] = v40;
+    grantWithUserInteractivity = [MEMORY[0x277D46DF0] grantWithUserInteractivity];
+    v60[1] = grantWithUserInteractivity;
+    grantWithForegroundPriority = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
+    v60[2] = grantWithForegroundPriority;
     v41 = [MEMORY[0x277D46FC0] grantWithResistance:40];
     v60[3] = v41;
-    v42 = [MEMORY[0x277D46E30] grant];
-    v60[4] = v42;
+    grant = [MEMORY[0x277D46E30] grant];
+    v60[4] = grant;
     v43 = [MEMORY[0x277D46FD0] withReason:9];
     v60[5] = v43;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:6];
@@ -1589,17 +1589,17 @@ uint64_t __58__SBInCallPresentationManager_handleDeviceLockFromSource___block_in
   v49[2](v49, 0);
 }
 
-- (void)ensureSwitcherInclusionForRestoringFromPIPForSceneWithPersistenceIdentifier:(id)a3 completion:(id)a4
+- (void)ensureSwitcherInclusionForRestoringFromPIPForSceneWithPersistenceIdentifier:(id)identifier completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  v8 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1610,15 +1610,15 @@ LABEL_3:
     {
       if (*v26 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allValues);
       }
 
       v12 = *(*(&v25 + 1) + 8 * v11);
-      v13 = [v12 sceneHandle];
-      v14 = [v13 sceneIfExists];
-      v15 = [v14 settings];
+      sceneHandle = [v12 sceneHandle];
+      sceneIfExists = [sceneHandle sceneIfExists];
+      settings = [sceneIfExists settings];
       v16 = objc_opt_class();
-      v17 = v15;
+      v17 = settings;
       if (v16)
       {
         v18 = (objc_opt_isKindOfClass() & 1) != 0 ? v17 : 0;
@@ -1631,8 +1631,8 @@ LABEL_3:
 
       v19 = v18;
 
-      v20 = [v19 persistenceIdentifier];
-      v21 = [v20 isEqualToString:v6];
+      persistenceIdentifier = [v19 persistenceIdentifier];
+      v21 = [persistenceIdentifier isEqualToString:identifierCopy];
 
       if (v21)
       {
@@ -1641,7 +1641,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1658,8 +1658,8 @@ LABEL_3:
       goto LABEL_17;
     }
 
-    v23 = v24;
-    [v22 ensureInclusionInSwitcherForRestoreFromPIPWithCompletion:v24];
+    v23 = completionCopy;
+    [v22 ensureInclusionInSwitcherForRestoreFromPIPWithCompletion:completionCopy];
   }
 
   else
@@ -1667,8 +1667,8 @@ LABEL_3:
 LABEL_14:
 
 LABEL_17:
-    v23 = v24;
-    (*(v24 + 2))(v24, 0);
+    v23 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1679,8 +1679,8 @@ LABEL_17:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _hostedPresentationSessions = [(SBInCallPresentationManager *)self _hostedPresentationSessions];
+  v3 = [_hostedPresentationSessions countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1690,7 +1690,7 @@ LABEL_17:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_hostedPresentationSessions);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isFullscreenCallInSwitcher])
@@ -1700,7 +1700,7 @@ LABEL_17:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_hostedPresentationSessions countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1730,32 +1730,32 @@ LABEL_11:
   return lazy_hideSharePlayContentFromSharedScreenController;
 }
 
-- (BOOL)disablesSystemVolumeHUDForCategory:(id)a3
+- (BOOL)disablesSystemVolumeHUDForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  categoryCopy = category;
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__SBInCallPresentationManager_disablesSystemVolumeHUDForCategory___block_invoke;
   v9[3] = &unk_2783B7CF8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_containsObjectPassingTest:v9];
+  v10 = categoryCopy;
+  v6 = categoryCopy;
+  v7 = [allValues bs_containsObjectPassingTest:v9];
 
   return v7;
 }
 
-- (BOOL)isSceneHandleCloseableInSwitcher:(id)a3
+- (BOOL)isSceneHandleCloseableInSwitcher:(id)switcher
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  switcherCopy = switcher;
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__SBInCallPresentationManager_isSceneHandleCloseableInSwitcher___block_invoke;
   v9[3] = &unk_2783B7CF8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_containsObjectPassingTest:v9];
+  v10 = switcherCopy;
+  v6 = switcherCopy;
+  v7 = [allValues bs_containsObjectPassingTest:v9];
 
   return v7 ^ 1;
 }
@@ -1777,9 +1777,9 @@ uint64_t __64__SBInCallPresentationManager_isSceneHandleCloseableInSwitcher___bl
   return v5;
 }
 
-- (void)_dismissAllPresentationsForApplication:(id)a3
+- (void)_dismissAllPresentationsForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1789,16 +1789,16 @@ uint64_t __64__SBInCallPresentationManager_isSceneHandleCloseableInSwitcher___bl
   v10[1] = 3221225472;
   v10[2] = __70__SBInCallPresentationManager__dismissAllPresentationsForApplication___block_invoke;
   v10[3] = &unk_2783B7DB0;
-  v6 = v4;
-  v12 = self;
+  v6 = applicationCopy;
+  selfCopy = self;
   v13 = &v14;
   v11 = v6;
   [v5 enumerateKeysAndObjectsUsingBlock:v10];
   if ((v15[3] & 1) == 0)
   {
     v7 = MEMORY[0x277D0AC98];
-    v8 = [v6 bundleIdentifier];
-    v9 = [v7 storeForApplication:v8];
+    bundleIdentifier = [v6 bundleIdentifier];
+    v9 = [v7 storeForApplication:bundleIdentifier];
     [v9 removeAllSceneDataStores];
   }
 
@@ -1827,8 +1827,8 @@ void __70__SBInCallPresentationManager__dismissAllPresentationsForApplication___
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [v3 keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1841,14 +1841,14 @@ void __70__SBInCallPresentationManager__dismissAllPresentationsForApplication___
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [(SBInCallPresentationManager *)self _dismissClientWithIdentifier:*(*(&v10 + 1) + 8 * v9++) animated:1 analyticsSource:v8 reason:@"_dismissAllPresentations" completion:0];
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1857,15 +1857,15 @@ void __70__SBInCallPresentationManager__dismissAllPresentationsForApplication___
 
 - (SBInCallPresentationSession)_lastPresentationSession
 {
-  v2 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
-  v3 = [v2 lastObject];
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  lastObject = [allValues lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)_sessionForSceneWithIdentifier:(id)a3
+- (id)_sessionForSceneWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1878,7 +1878,7 @@ void __70__SBInCallPresentationManager__dismissAllPresentationsForApplication___
   v9[2] = __62__SBInCallPresentationManager__sessionForSceneWithIdentifier___block_invoke;
   v9[3] = &unk_2783B7DD8;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   [(NSMutableDictionary *)clientIdentifierToPresentationSession enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[5];
@@ -1914,14 +1914,14 @@ void __62__SBInCallPresentationManager__sessionForSceneWithIdentifier___block_in
   }
 }
 
-- (void)_actionButtonPressed:(id)a3
+- (void)_actionButtonPressed:(id)pressed
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues:a3];
+  v3 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues:pressed];
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -1948,17 +1948,17 @@ void __62__SBInCallPresentationManager__sessionForSceneWithIdentifier___block_in
   }
 }
 
-- (void)_dismissClientWithIdentifier:(id)a3 animated:(BOOL)a4 analyticsSource:(id)a5 reason:(id)a6 completion:(id)a7
+- (void)_dismissClientWithIdentifier:(id)identifier animated:(BOOL)animated analyticsSource:(id)source reason:(id)reason completion:(id)completion
 {
-  v10 = a4;
+  animatedCopy = animated;
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectForKey:v12];
-  v17 = [v16 sceneHandle];
-  v18 = [v17 sceneIdentifier];
+  identifierCopy = identifier;
+  sourceCopy = source;
+  reasonCopy = reason;
+  completionCopy = completion;
+  v16 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession objectForKey:identifierCopy];
+  sceneHandle = [v16 sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
 
   if (v16 && ([(NSMutableArray *)self->_pendingInvalidationSessions containsObject:v16]& 1) == 0)
   {
@@ -1979,7 +1979,7 @@ void __62__SBInCallPresentationManager__sessionForSceneWithIdentifier___block_in
       *buf = 138543618;
       v30 = v16;
       v31 = 2114;
-      v32 = v14;
+      v32 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "starting to destroy %{public}@ with reason %{public}@", buf, 0x16u);
     }
 
@@ -1988,16 +1988,16 @@ void __62__SBInCallPresentationManager__sessionForSceneWithIdentifier___block_in
     v23[2] = __103__SBInCallPresentationManager__dismissClientWithIdentifier_animated_analyticsSource_reason_completion___block_invoke;
     v23[3] = &unk_2783B7E00;
     v24 = v16;
-    v25 = self;
-    v26 = v12;
-    v27 = v18;
-    v28 = v15;
-    [v24 dismissAndFinalizeSceneDestructionAnimated:v10 analyticsSource:v13 completion:v23];
+    selfCopy = self;
+    v26 = identifierCopy;
+    v27 = sceneIdentifier;
+    v28 = completionCopy;
+    [v24 dismissAndFinalizeSceneDestructionAnimated:animatedCopy analyticsSource:sourceCopy completion:v23];
   }
 
-  else if (v15)
+  else if (completionCopy)
   {
-    (*(v15 + 2))(v15, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -2067,32 +2067,32 @@ LABEL_14:
   return result;
 }
 
-- (id)_newClientPresentationSessionWithSceneHandle:(id)a3
+- (id)_newClientPresentationSessionWithSceneHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained inCallPresentationManager:self createPresentationSessionWithSceneHandle:v4];
+  v6 = [WeakRetained inCallPresentationManager:self createPresentationSessionWithSceneHandle:handleCopy];
 
   return v6;
 }
 
-- (void)_applicationDidExit:(id)a3
+- (void)_applicationDidExit:(id)exit
 {
-  v4 = [a3 object];
-  [(SBInCallPresentationManager *)self _dismissAllPresentationsForApplication:v4];
+  object = [exit object];
+  [(SBInCallPresentationManager *)self _dismissAllPresentationsForApplication:object];
 }
 
-- (void)_runZombieChecksForScene:(id)a3
+- (void)_runZombieChecksForScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 settings];
-  v6 = [v5 displayConfiguration];
-  v10 = [v6 identity];
+  sceneCopy = scene;
+  settings = [sceneCopy settings];
+  displayConfiguration = [settings displayConfiguration];
+  identity = [displayConfiguration identity];
 
   v7 = +[SBSceneManagerCoordinator sharedInstance];
-  v8 = [v7 sceneManagerForDisplayIdentity:v10];
+  v8 = [v7 sceneManagerForDisplayIdentity:identity];
 
-  v9 = [v8 existingSceneHandleForScene:v4];
+  v9 = [v8 existingSceneHandleForScene:sceneCopy];
 
   if (v9)
   {
@@ -2100,24 +2100,24 @@ LABEL_14:
   }
 }
 
-- (void)_runZombieChecksForSceneHandle:(id)a3
+- (void)_runZombieChecksForSceneHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 application];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.InCallService"];
+  handleCopy = handle;
+  application = [handleCopy application];
+  bundleIdentifier = [application bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
   if (v7)
   {
-    v8 = [v4 sceneIfExists];
+    sceneIfExists = [handleCopy sceneIfExists];
 
-    if (v8)
+    if (sceneIfExists)
     {
-      v9 = [v4 persistenceIdentifier];
-      v10 = [(SBInCallPresentationManager *)self _hasPendingDismissalOfSceneHandleWithPersistenceIdentifier:v9];
+      persistenceIdentifier = [handleCopy persistenceIdentifier];
+      v10 = [(SBInCallPresentationManager *)self _hasPendingDismissalOfSceneHandleWithPersistenceIdentifier:persistenceIdentifier];
 
-      v11 = [v4 persistenceIdentifier];
-      if (v11 && !v10 && ![(SBInCallPresentationManager *)self _isManagingSceneOrSceneHandleWithPersistenceIdentifier:v11])
+      persistenceIdentifier2 = [handleCopy persistenceIdentifier];
+      if (persistenceIdentifier2 && !v10 && ![(SBInCallPresentationManager *)self _isManagingSceneOrSceneHandleWithPersistenceIdentifier:persistenceIdentifier2])
       {
         v12 = SBLogInCallPresentation();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2129,17 +2129,17 @@ LABEL_14:
   }
 }
 
-- (BOOL)_isManagingSceneOrSceneHandleWithPersistenceIdentifier:(id)a3
+- (BOOL)_isManagingSceneOrSceneHandleWithPersistenceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
+  identifierCopy = identifier;
+  allValues = [(NSMutableDictionary *)self->_clientIdentifierToPresentationSession allValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__SBInCallPresentationManager__isManagingSceneOrSceneHandleWithPersistenceIdentifier___block_invoke;
   v9[3] = &unk_2783B7CF8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_containsObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allValues bs_containsObjectPassingTest:v9];
 
   return v7;
 }
@@ -2153,16 +2153,16 @@ uint64_t __86__SBInCallPresentationManager__isManagingSceneOrSceneHandleWithPers
   return v5;
 }
 
-- (BOOL)_hasPendingDismissalOfSceneHandleWithPersistenceIdentifier:(id)a3
+- (BOOL)_hasPendingDismissalOfSceneHandleWithPersistenceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   pendingInvalidationSessions = self->_pendingInvalidationSessions;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__SBInCallPresentationManager__hasPendingDismissalOfSceneHandleWithPersistenceIdentifier___block_invoke;
   v8[3] = &unk_2783B7CF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   LOBYTE(pendingInvalidationSessions) = [(NSMutableArray *)pendingInvalidationSessions bs_containsObjectPassingTest:v8];
 
   return pendingInvalidationSessions;

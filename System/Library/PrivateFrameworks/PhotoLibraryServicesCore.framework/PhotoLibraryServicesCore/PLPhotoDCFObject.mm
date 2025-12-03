@@ -1,17 +1,17 @@
 @interface PLPhotoDCFObject
-+ (id)validDCFNameForName:(id)a3 requiredLength:(int)a4 nameLength:(int)a5 number:(int *)a6 numberRange:(_NSRange)a7 suffix:(id)a8;
-- (PLPhotoDCFObject)initWithName:(id)a3 number:(int)a4;
-- (int64_t)compare:(id)a3;
++ (id)validDCFNameForName:(id)name requiredLength:(int)length nameLength:(int)nameLength number:(int *)number numberRange:(_NSRange)range suffix:(id)suffix;
+- (PLPhotoDCFObject)initWithName:(id)name number:(int)number;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation PLPhotoDCFObject
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = [a3 number];
+  number = [compare number];
   number = self->_number;
-  v6 = v4 < number;
-  v7 = v4 > number;
+  v6 = number < number;
+  v7 = number > number;
   if (v6)
   {
     return -1;
@@ -23,37 +23,37 @@
   }
 }
 
-- (PLPhotoDCFObject)initWithName:(id)a3 number:(int)a4
+- (PLPhotoDCFObject)initWithName:(id)name number:(int)number
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = PLPhotoDCFObject;
   v8 = [(PLPhotoDCFObject *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_number = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_number = number;
   }
 
   return v9;
 }
 
-+ (id)validDCFNameForName:(id)a3 requiredLength:(int)a4 nameLength:(int)a5 number:(int *)a6 numberRange:(_NSRange)a7 suffix:(id)a8
++ (id)validDCFNameForName:(id)name requiredLength:(int)length nameLength:(int)nameLength number:(int *)number numberRange:(_NSRange)range suffix:(id)suffix
 {
-  length = a7.length;
-  location = a7.location;
+  length = range.length;
+  location = range.location;
   v85 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a8;
-  v14 = [v12 length];
-  v15 = v12;
+  nameCopy = name;
+  suffixCopy = suffix;
+  v14 = [nameCopy length];
+  v15 = nameCopy;
   MEMORY[0x1EEE9AC00]();
   v16 = &v65 - ((length + 16) & 0xFFFFFFFFFFFFFFF0);
-  if (v14 != a4)
+  if (v14 != length)
   {
     v19 = 0;
-    v20 = v15;
+    uppercaseString = v15;
     goto LABEL_86;
   }
 
@@ -79,11 +79,11 @@
     CStringPtr = CFStringGetCStringPtr(v15, 0x600u);
   }
 
-  v70 = length;
-  v66 = a6;
+  lengthCopy = length;
+  numberCopy = number;
   v67 = &v65;
   v68 = v15;
-  v69 = v13;
+  v69 = suffixCopy;
   v83 = 0;
   v84 = 0;
   v81 = CStringPtr;
@@ -194,7 +194,7 @@ LABEL_31:
 
   else
   {
-    v43 = v70;
+    v43 = lengthCopy;
   }
 
   v44 = 8;
@@ -216,7 +216,7 @@ LABEL_31:
   if (!v34 || v43 >= v45)
   {
     v15 = v68;
-    v20 = v68;
+    uppercaseString = v68;
     goto LABEL_75;
   }
 
@@ -303,24 +303,24 @@ LABEL_52:
   }
 
   while (v43 < v45);
-  v20 = v15;
+  uppercaseString = v15;
   if ((v34 & v46) == 1)
   {
-    v20 = [(__CFString *)v15 uppercaseString];
+    uppercaseString = [(__CFString *)v15 uppercaseString];
 
     v34 = 1;
   }
 
 LABEL_75:
-  v13 = v69;
-  v59 = v66;
-  if (v66 && v34)
+  suffixCopy = v69;
+  v59 = numberCopy;
+  if (numberCopy && v34)
   {
-    v16[v70] = 0;
+    v16[lengthCopy] = 0;
     *v59 = atoi(v16);
   }
 
-  if (v13)
+  if (suffixCopy)
   {
     v60 = v34;
   }
@@ -332,8 +332,8 @@ LABEL_75:
 
   if (v60)
   {
-    v61 = [v20 uppercaseString];
-    v62 = [v61 hasSuffix:v13];
+    v20UppercaseString = [uppercaseString uppercaseString];
+    v62 = [v20UppercaseString hasSuffix:suffixCopy];
 
     if (!v62)
     {
@@ -341,7 +341,7 @@ LABEL_75:
     }
 
 LABEL_85:
-    v19 = v20;
+    v19 = uppercaseString;
   }
 
   else

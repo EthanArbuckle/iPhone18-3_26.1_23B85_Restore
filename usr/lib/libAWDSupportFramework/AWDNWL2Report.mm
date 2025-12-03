@@ -1,40 +1,40 @@
 @interface AWDNWL2Report
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCellularBand:(id)a3;
-- (int)StringAsCellularPowerCostDownload:(id)a3;
-- (int)StringAsCellularPowerCostUpload:(id)a3;
-- (int)StringAsCellularRadioTechnology:(id)a3;
-- (int)StringAsWifiRadioTechnology:(id)a3;
+- (int)StringAsCellularBand:(id)band;
+- (int)StringAsCellularPowerCostDownload:(id)download;
+- (int)StringAsCellularPowerCostUpload:(id)upload;
+- (int)StringAsCellularRadioTechnology:(id)technology;
+- (int)StringAsWifiRadioTechnology:(id)technology;
 - (int)cellularBand;
 - (int)cellularPowerCostDownload;
 - (int)cellularPowerCostUpload;
 - (int)cellularRadioTechnology;
 - (int)wifiRadioTechnology;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellularBandInfo:(BOOL)a3;
-- (void)setHasCellularBandwidth:(BOOL)a3;
-- (void)setHasCellularBars:(BOOL)a3;
-- (void)setHasCellularKnownGood:(BOOL)a3;
-- (void)setHasCellularLqm:(BOOL)a3;
-- (void)setHasCellularMcc:(BOOL)a3;
-- (void)setHasCellularMnc:(BOOL)a3;
-- (void)setHasCellularPid:(BOOL)a3;
-- (void)setHasCellularPowerCostDownload:(BOOL)a3;
-- (void)setHasCellularPowerCostUpload:(BOOL)a3;
-- (void)setHasCellularRadioTechnology:(BOOL)a3;
-- (void)setHasCellularTac:(BOOL)a3;
-- (void)setHasCellularUarfcn:(BOOL)a3;
-- (void)setHasWifiKnownGood:(BOOL)a3;
-- (void)setHasWifiLqm:(BOOL)a3;
-- (void)setHasWifiRadioTechnology:(BOOL)a3;
-- (void)setHasWifiRssi:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellularBandInfo:(BOOL)info;
+- (void)setHasCellularBandwidth:(BOOL)bandwidth;
+- (void)setHasCellularBars:(BOOL)bars;
+- (void)setHasCellularKnownGood:(BOOL)good;
+- (void)setHasCellularLqm:(BOOL)lqm;
+- (void)setHasCellularMcc:(BOOL)mcc;
+- (void)setHasCellularMnc:(BOOL)mnc;
+- (void)setHasCellularPid:(BOOL)pid;
+- (void)setHasCellularPowerCostDownload:(BOOL)download;
+- (void)setHasCellularPowerCostUpload:(BOOL)upload;
+- (void)setHasCellularRadioTechnology:(BOOL)technology;
+- (void)setHasCellularTac:(BOOL)tac;
+- (void)setHasCellularUarfcn:(BOOL)uarfcn;
+- (void)setHasWifiKnownGood:(BOOL)good;
+- (void)setHasWifiLqm:(BOOL)lqm;
+- (void)setHasWifiRadioTechnology:(BOOL)technology;
+- (void)setHasWifiRssi:(BOOL)rssi;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNWL2Report
@@ -47,9 +47,9 @@
   [(AWDNWL2Report *)&v3 dealloc];
 }
 
-- (void)setHasCellularLqm:(BOOL)a3
+- (void)setHasCellularLqm:(BOOL)lqm
 {
-  if (a3)
+  if (lqm)
   {
     v3 = 16;
   }
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)setHasCellularPowerCostDownload:(BOOL)a3
+- (void)setHasCellularPowerCostDownload:(BOOL)download
 {
-  if (a3)
+  if (download)
   {
     v3 = 256;
   }
@@ -90,29 +90,29 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (int)StringAsCellularPowerCostDownload:(id)a3
+- (int)StringAsCellularPowerCostDownload:(id)download
 {
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_UNKNOWN"])
+  if ([download isEqualToString:@"NW_L2_POWER_COST_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_LOW"])
+  if ([download isEqualToString:@"NW_L2_POWER_COST_LOW"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_MEDIUM"])
+  if ([download isEqualToString:@"NW_L2_POWER_COST_MEDIUM"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_HIGH"])
+  if ([download isEqualToString:@"NW_L2_POWER_COST_HIGH"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_NOTSET"])
+  if ([download isEqualToString:@"NW_L2_POWER_COST_NOTSET"])
   {
     return 255;
   }
@@ -133,9 +133,9 @@
   }
 }
 
-- (void)setHasCellularPowerCostUpload:(BOOL)a3
+- (void)setHasCellularPowerCostUpload:(BOOL)upload
 {
-  if (a3)
+  if (upload)
   {
     v3 = 512;
   }
@@ -148,29 +148,29 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsCellularPowerCostUpload:(id)a3
+- (int)StringAsCellularPowerCostUpload:(id)upload
 {
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_UNKNOWN"])
+  if ([upload isEqualToString:@"NW_L2_POWER_COST_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_LOW"])
+  if ([upload isEqualToString:@"NW_L2_POWER_COST_LOW"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_MEDIUM"])
+  if ([upload isEqualToString:@"NW_L2_POWER_COST_MEDIUM"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_HIGH"])
+  if ([upload isEqualToString:@"NW_L2_POWER_COST_HIGH"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_POWER_COST_NOTSET"])
+  if ([upload isEqualToString:@"NW_L2_POWER_COST_NOTSET"])
   {
     return 255;
   }
@@ -178,9 +178,9 @@
   return 0;
 }
 
-- (void)setHasCellularKnownGood:(BOOL)a3
+- (void)setHasCellularKnownGood:(BOOL)good
 {
-  if (a3)
+  if (good)
   {
     v3 = 0x10000;
   }
@@ -206,9 +206,9 @@
   }
 }
 
-- (void)setHasCellularRadioTechnology:(BOOL)a3
+- (void)setHasCellularRadioTechnology:(BOOL)technology
 {
-  if (a3)
+  if (technology)
   {
     v3 = 1024;
   }
@@ -221,104 +221,104 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (int)StringAsCellularRadioTechnology:(id)a3
+- (int)StringAsCellularRadioTechnology:(id)technology
 {
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_UNKNOWN"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLOTHERS"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLOTHERS"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLLTE"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLLTE"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLGSM"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLGSM"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUTRAN"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUTRAN"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMA1X"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMA1X"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAEVDO"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAEVDO"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAHYBRID"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAHYBRID"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLTDSCDMA"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLTDSCDMA"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUMTS"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUMTS"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_DUAL"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_DUAL"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_BEYOND"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_BEYOND"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11A"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11A"])
   {
     return 128;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11B"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11B"])
   {
     return 129;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11G"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11G"])
   {
     return 130;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11N"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11N"])
   {
     return 131;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOA"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOA"])
   {
     return 132;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOG"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOG"])
   {
     return 133;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AC"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AC"])
   {
     return 134;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AX"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AX"])
   {
     return 135;
   }
@@ -326,9 +326,9 @@
   return 0;
 }
 
-- (void)setHasWifiLqm:(BOOL)a3
+- (void)setHasWifiLqm:(BOOL)lqm
 {
-  if (a3)
+  if (lqm)
   {
     v3 = 0x2000;
   }
@@ -341,9 +341,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasWifiRssi:(BOOL)a3
+- (void)setHasWifiRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 0x8000;
   }
@@ -356,9 +356,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasWifiKnownGood:(BOOL)a3
+- (void)setHasWifiKnownGood:(BOOL)good
 {
-  if (a3)
+  if (good)
   {
     v3 = 0x20000;
   }
@@ -384,9 +384,9 @@
   }
 }
 
-- (void)setHasWifiRadioTechnology:(BOOL)a3
+- (void)setHasWifiRadioTechnology:(BOOL)technology
 {
-  if (a3)
+  if (technology)
   {
     v3 = 0x4000;
   }
@@ -399,104 +399,104 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (int)StringAsWifiRadioTechnology:(id)a3
+- (int)StringAsWifiRadioTechnology:(id)technology
 {
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_UNKNOWN"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLOTHERS"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLOTHERS"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLLTE"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLLTE"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLGSM"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLGSM"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUTRAN"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUTRAN"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMA1X"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMA1X"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAEVDO"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAEVDO"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAHYBRID"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAHYBRID"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLTDSCDMA"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLTDSCDMA"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUMTS"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUMTS"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_DUAL"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_DUAL"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_BEYOND"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_BEYOND"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11A"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11A"])
   {
     return 128;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11B"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11B"])
   {
     return 129;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11G"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11G"])
   {
     return 130;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11N"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11N"])
   {
     return 131;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOA"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOA"])
   {
     return 132;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOG"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOG"])
   {
     return 133;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AC"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AC"])
   {
     return 134;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AX"])
+  if ([technology isEqualToString:@"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AX"])
   {
     return 135;
   }
@@ -504,9 +504,9 @@
   return 0;
 }
 
-- (void)setHasCellularMnc:(BOOL)a3
+- (void)setHasCellularMnc:(BOOL)mnc
 {
-  if (a3)
+  if (mnc)
   {
     v3 = 64;
   }
@@ -519,9 +519,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasCellularMcc:(BOOL)a3
+- (void)setHasCellularMcc:(BOOL)mcc
 {
-  if (a3)
+  if (mcc)
   {
     v3 = 32;
   }
@@ -534,9 +534,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasCellularUarfcn:(BOOL)a3
+- (void)setHasCellularUarfcn:(BOOL)uarfcn
 {
-  if (a3)
+  if (uarfcn)
   {
     v3 = 4096;
   }
@@ -549,9 +549,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasCellularPid:(BOOL)a3
+- (void)setHasCellularPid:(BOOL)pid
 {
-  if (a3)
+  if (pid)
   {
     v3 = 128;
   }
@@ -564,9 +564,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasCellularBandInfo:(BOOL)a3
+- (void)setHasCellularBandInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 2;
   }
@@ -579,9 +579,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasCellularBandwidth:(BOOL)a3
+- (void)setHasCellularBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 4;
   }
@@ -594,9 +594,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasCellularTac:(BOOL)a3
+- (void)setHasCellularTac:(BOOL)tac
 {
-  if (a3)
+  if (tac)
   {
     v3 = 2048;
   }
@@ -609,9 +609,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasCellularBars:(BOOL)a3
+- (void)setHasCellularBars:(BOOL)bars
 {
-  if (a3)
+  if (bars)
   {
     v3 = 8;
   }
@@ -637,19 +637,19 @@
   }
 }
 
-- (int)StringAsCellularBand:(id)a3
+- (int)StringAsCellularBand:(id)band
 {
-  if ([a3 isEqualToString:@"NW_L2_BAND_UNKNOWN"])
+  if ([band isEqualToString:@"NW_L2_BAND_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_BAND_LESS"])
+  if ([band isEqualToString:@"NW_L2_BAND_LESS"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_L2_BAND_MORE"])
+  if ([band isEqualToString:@"NW_L2_BAND_MORE"])
   {
     return 2;
   }
@@ -666,11 +666,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularLqm), @"cellular_lqm"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularLqm), @"cellular_lqm"}];
     has = self->_has;
     if ((*&has & 0x100) == 0)
     {
@@ -723,7 +723,7 @@ LABEL_3:
 
   v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"(unknown: %i)", self->_cellularPowerCostDownload];
 LABEL_44:
-  [v3 setObject:v8 forKey:@"cellular_power_cost_download"];
+  [dictionary setObject:v8 forKey:@"cellular_power_cost_download"];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -771,7 +771,7 @@ LABEL_45:
 
   v13 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"(unknown: %i)", self->_cellularPowerCostUpload];
 LABEL_57:
-  [v3 setObject:v13 forKey:@"cellular_power_cost_upload"];
+  [dictionary setObject:v13 forKey:@"cellular_power_cost_upload"];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -785,7 +785,7 @@ LABEL_5:
   }
 
 LABEL_58:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_cellularKnownGood), @"cellular_known_good"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_cellularKnownGood), @"cellular_known_good"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -940,7 +940,7 @@ LABEL_101:
   }
 
 LABEL_102:
-  [v3 setObject:v15 forKey:@"cellular_radio_technology"];
+  [dictionary setObject:v15 forKey:@"cellular_radio_technology"];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -954,7 +954,7 @@ LABEL_7:
   }
 
 LABEL_103:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_wifiLqm), @"wifi_lqm"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_wifiLqm), @"wifi_lqm"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -968,7 +968,7 @@ LABEL_8:
   }
 
 LABEL_104:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_wifiRssi), @"wifi_rssi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_wifiRssi), @"wifi_rssi"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -982,7 +982,7 @@ LABEL_9:
   }
 
 LABEL_105:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wifiKnownGood), @"wifi_known_good"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wifiKnownGood), @"wifi_known_good"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1137,7 +1137,7 @@ LABEL_148:
   }
 
 LABEL_149:
-  [v3 setObject:v17 forKey:@"wifi_radio_technology"];
+  [dictionary setObject:v17 forKey:@"wifi_radio_technology"];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1151,7 +1151,7 @@ LABEL_11:
   }
 
 LABEL_150:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularMnc), @"cellular_mnc"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularMnc), @"cellular_mnc"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1165,7 +1165,7 @@ LABEL_12:
   }
 
 LABEL_151:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularMcc), @"cellular_mcc"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularMcc), @"cellular_mcc"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1179,7 +1179,7 @@ LABEL_13:
   }
 
 LABEL_152:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularUarfcn), @"cellular_uarfcn"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularUarfcn), @"cellular_uarfcn"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1193,24 +1193,24 @@ LABEL_14:
   }
 
 LABEL_153:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularPid), @"cellular_pid"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularPid), @"cellular_pid"}];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularBandInfo), @"cellular_band_info"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularBandInfo), @"cellular_band_info"}];
   }
 
 LABEL_16:
   cellularCellType = self->_cellularCellType;
   if (cellularCellType)
   {
-    [v3 setObject:cellularCellType forKey:@"cellular_cell_type"];
+    [dictionary setObject:cellularCellType forKey:@"cellular_cell_type"];
   }
 
   v6 = self->_has;
   if ((*&v6 & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularBandwidth), @"cellular_bandwidth"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularBandwidth), @"cellular_bandwidth"}];
     v6 = self->_has;
     if ((*&v6 & 0x800) == 0)
     {
@@ -1221,10 +1221,10 @@ LABEL_20:
       }
 
 LABEL_31:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularBars), @"cellular_bars"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularBars), @"cellular_bars"}];
       if ((*&self->_has & 1) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_32;
@@ -1236,7 +1236,7 @@ LABEL_31:
     goto LABEL_20;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularTac), @"cellular_tac"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellularTac), @"cellular_tac"}];
   v6 = self->_has;
   if ((*&v6 & 8) != 0)
   {
@@ -1246,7 +1246,7 @@ LABEL_31:
 LABEL_21:
   if ((*&v6 & 1) == 0)
   {
-    return v3;
+    return dictionary;
   }
 
 LABEL_32:
@@ -1261,11 +1261,11 @@ LABEL_32:
     v10 = off_29EE329F0[cellularBand];
   }
 
-  [v3 setObject:v10 forKey:@"cellular_band"];
-  return v3;
+  [dictionary setObject:v10 forKey:@"cellular_band"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x10) != 0)
@@ -1521,13 +1521,13 @@ LABEL_40:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
-    *(a3 + 8) = self->_cellularLqm;
-    *(a3 + 21) |= 0x10u;
+    *(to + 8) = self->_cellularLqm;
+    *(to + 21) |= 0x10u;
     has = self->_has;
     if ((*&has & 0x100) == 0)
     {
@@ -1546,8 +1546,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 12) = self->_cellularPowerCostDownload;
-  *(a3 + 21) |= 0x100u;
+  *(to + 12) = self->_cellularPowerCostDownload;
+  *(to + 21) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1561,8 +1561,8 @@ LABEL_4:
   }
 
 LABEL_26:
-  *(a3 + 13) = self->_cellularPowerCostUpload;
-  *(a3 + 21) |= 0x200u;
+  *(to + 13) = self->_cellularPowerCostUpload;
+  *(to + 21) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1576,8 +1576,8 @@ LABEL_5:
   }
 
 LABEL_27:
-  *(a3 + 80) = self->_cellularKnownGood;
-  *(a3 + 21) |= 0x10000u;
+  *(to + 80) = self->_cellularKnownGood;
+  *(to + 21) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1591,8 +1591,8 @@ LABEL_6:
   }
 
 LABEL_28:
-  *(a3 + 14) = self->_cellularRadioTechnology;
-  *(a3 + 21) |= 0x400u;
+  *(to + 14) = self->_cellularRadioTechnology;
+  *(to + 21) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1606,8 +1606,8 @@ LABEL_7:
   }
 
 LABEL_29:
-  *(a3 + 17) = self->_wifiLqm;
-  *(a3 + 21) |= 0x2000u;
+  *(to + 17) = self->_wifiLqm;
+  *(to + 21) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1621,8 +1621,8 @@ LABEL_8:
   }
 
 LABEL_30:
-  *(a3 + 19) = self->_wifiRssi;
-  *(a3 + 21) |= 0x8000u;
+  *(to + 19) = self->_wifiRssi;
+  *(to + 21) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1636,8 +1636,8 @@ LABEL_9:
   }
 
 LABEL_31:
-  *(a3 + 81) = self->_wifiKnownGood;
-  *(a3 + 21) |= 0x20000u;
+  *(to + 81) = self->_wifiKnownGood;
+  *(to + 21) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1651,8 +1651,8 @@ LABEL_10:
   }
 
 LABEL_32:
-  *(a3 + 18) = self->_wifiRadioTechnology;
-  *(a3 + 21) |= 0x4000u;
+  *(to + 18) = self->_wifiRadioTechnology;
+  *(to + 21) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1666,8 +1666,8 @@ LABEL_11:
   }
 
 LABEL_33:
-  *(a3 + 10) = self->_cellularMnc;
-  *(a3 + 21) |= 0x40u;
+  *(to + 10) = self->_cellularMnc;
+  *(to + 21) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1681,8 +1681,8 @@ LABEL_12:
   }
 
 LABEL_34:
-  *(a3 + 9) = self->_cellularMcc;
-  *(a3 + 21) |= 0x20u;
+  *(to + 9) = self->_cellularMcc;
+  *(to + 21) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1696,8 +1696,8 @@ LABEL_13:
   }
 
 LABEL_35:
-  *(a3 + 16) = self->_cellularUarfcn;
-  *(a3 + 21) |= 0x1000u;
+  *(to + 16) = self->_cellularUarfcn;
+  *(to + 21) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1711,26 +1711,26 @@ LABEL_14:
   }
 
 LABEL_36:
-  *(a3 + 11) = self->_cellularPid;
-  *(a3 + 21) |= 0x80u;
+  *(to + 11) = self->_cellularPid;
+  *(to + 21) |= 0x80u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_15:
-    *(a3 + 3) = self->_cellularBandInfo;
-    *(a3 + 21) |= 2u;
+    *(to + 3) = self->_cellularBandInfo;
+    *(to + 21) |= 2u;
   }
 
 LABEL_16:
   if (self->_cellularCellType)
   {
-    [a3 setCellularCellType:?];
+    [to setCellularCellType:?];
   }
 
   v6 = self->_has;
   if ((*&v6 & 4) != 0)
   {
-    *(a3 + 4) = self->_cellularBandwidth;
-    *(a3 + 21) |= 4u;
+    *(to + 4) = self->_cellularBandwidth;
+    *(to + 21) |= 4u;
     v6 = self->_has;
     if ((*&v6 & 0x800) == 0)
     {
@@ -1749,8 +1749,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  *(a3 + 15) = self->_cellularTac;
-  *(a3 + 21) |= 0x800u;
+  *(to + 15) = self->_cellularTac;
+  *(to + 21) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 8) == 0)
   {
@@ -1764,21 +1764,21 @@ LABEL_21:
   }
 
 LABEL_40:
-  *(a3 + 5) = self->_cellularBars;
-  *(a3 + 21) |= 8u;
+  *(to + 5) = self->_cellularBars;
+  *(to + 21) |= 8u;
   if ((*&self->_has & 1) == 0)
   {
     return;
   }
 
 LABEL_22:
-  *(a3 + 2) = self->_cellularBand;
-  *(a3 + 21) |= 1u;
+  *(to + 2) = self->_cellularBand;
+  *(to + 21) |= 1u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x10) != 0)
@@ -1979,7 +1979,7 @@ LABEL_15:
 
 LABEL_16:
 
-  *(v6 + 24) = [(NSString *)self->_cellularCellType copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_cellularCellType copyWithZone:zone];
   v8 = self->_has;
   if ((*&v8 & 4) != 0)
   {
@@ -2030,19 +2030,19 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 21);
+  v7 = *(equal + 21);
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_cellularLqm != *(a3 + 8))
+    if ((v7 & 0x10) == 0 || self->_cellularLqm != *(equal + 8))
     {
       goto LABEL_100;
     }
@@ -2055,7 +2055,7 @@ LABEL_20:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_cellularPowerCostDownload != *(a3 + 12))
+    if ((v7 & 0x100) == 0 || self->_cellularPowerCostDownload != *(equal + 12))
     {
       goto LABEL_100;
     }
@@ -2068,7 +2068,7 @@ LABEL_20:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_cellularPowerCostUpload != *(a3 + 13))
+    if ((v7 & 0x200) == 0 || self->_cellularPowerCostUpload != *(equal + 13))
     {
       goto LABEL_100;
     }
@@ -2086,16 +2086,16 @@ LABEL_20:
       goto LABEL_100;
     }
 
-    v8 = *(a3 + 80);
+    v8 = *(equal + 80);
     if (self->_cellularKnownGood)
     {
-      if ((*(a3 + 80) & 1) == 0)
+      if ((*(equal + 80) & 1) == 0)
       {
         goto LABEL_100;
       }
     }
 
-    else if (*(a3 + 80))
+    else if (*(equal + 80))
     {
       goto LABEL_100;
     }
@@ -2108,7 +2108,7 @@ LABEL_20:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_cellularRadioTechnology != *(a3 + 14))
+    if ((v7 & 0x400) == 0 || self->_cellularRadioTechnology != *(equal + 14))
     {
       goto LABEL_100;
     }
@@ -2121,7 +2121,7 @@ LABEL_20:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_wifiLqm != *(a3 + 17))
+    if ((v7 & 0x2000) == 0 || self->_wifiLqm != *(equal + 17))
     {
       goto LABEL_100;
     }
@@ -2134,7 +2134,7 @@ LABEL_20:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_wifiRssi != *(a3 + 19))
+    if ((v7 & 0x8000) == 0 || self->_wifiRssi != *(equal + 19))
     {
       goto LABEL_100;
     }
@@ -2149,16 +2149,16 @@ LABEL_20:
   {
     if ((v7 & 0x20000) != 0)
     {
-      v9 = *(a3 + 81);
+      v9 = *(equal + 81);
       if (self->_wifiKnownGood)
       {
-        if ((*(a3 + 81) & 1) == 0)
+        if ((*(equal + 81) & 1) == 0)
         {
           goto LABEL_100;
         }
       }
 
-      else if (*(a3 + 81))
+      else if (*(equal + 81))
       {
         goto LABEL_100;
       }
@@ -2179,7 +2179,7 @@ LABEL_100:
 LABEL_42:
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_wifiRadioTechnology != *(a3 + 18))
+    if ((v7 & 0x4000) == 0 || self->_wifiRadioTechnology != *(equal + 18))
     {
       goto LABEL_100;
     }
@@ -2192,7 +2192,7 @@ LABEL_42:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_cellularMnc != *(a3 + 10))
+    if ((v7 & 0x40) == 0 || self->_cellularMnc != *(equal + 10))
     {
       goto LABEL_100;
     }
@@ -2205,7 +2205,7 @@ LABEL_42:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_cellularMcc != *(a3 + 9))
+    if ((v7 & 0x20) == 0 || self->_cellularMcc != *(equal + 9))
     {
       goto LABEL_100;
     }
@@ -2218,7 +2218,7 @@ LABEL_42:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_cellularUarfcn != *(a3 + 16))
+    if ((v7 & 0x1000) == 0 || self->_cellularUarfcn != *(equal + 16))
     {
       goto LABEL_100;
     }
@@ -2231,7 +2231,7 @@ LABEL_42:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_cellularPid != *(a3 + 11))
+    if ((v7 & 0x80) == 0 || self->_cellularPid != *(equal + 11))
     {
       goto LABEL_100;
     }
@@ -2244,7 +2244,7 @@ LABEL_42:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_cellularBandInfo != *(a3 + 3))
+    if ((v7 & 2) == 0 || self->_cellularBandInfo != *(equal + 3))
     {
       goto LABEL_100;
     }
@@ -2256,7 +2256,7 @@ LABEL_42:
   }
 
   cellularCellType = self->_cellularCellType;
-  if (cellularCellType | *(a3 + 3))
+  if (cellularCellType | *(equal + 3))
   {
     v5 = [(NSString *)cellularCellType isEqual:?];
     if (!v5)
@@ -2267,10 +2267,10 @@ LABEL_42:
     has = self->_has;
   }
 
-  v11 = *(a3 + 21);
+  v11 = *(equal + 21);
   if ((*&has & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_cellularBandwidth != *(a3 + 4))
+    if ((v11 & 4) == 0 || self->_cellularBandwidth != *(equal + 4))
     {
       goto LABEL_100;
     }
@@ -2283,7 +2283,7 @@ LABEL_42:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v11 & 0x800) == 0 || self->_cellularTac != *(a3 + 15))
+    if ((v11 & 0x800) == 0 || self->_cellularTac != *(equal + 15))
     {
       goto LABEL_100;
     }
@@ -2296,7 +2296,7 @@ LABEL_42:
 
   if ((*&has & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_cellularBars != *(a3 + 5))
+    if ((v11 & 8) == 0 || self->_cellularBars != *(equal + 5))
     {
       goto LABEL_100;
     }
@@ -2307,10 +2307,10 @@ LABEL_42:
     goto LABEL_100;
   }
 
-  LOBYTE(v5) = (*(a3 + 21) & 1) == 0;
+  LOBYTE(v5) = (*(equal + 21) & 1) == 0;
   if (*&has)
   {
-    if ((v11 & 1) == 0 || self->_cellularBand != *(a3 + 2))
+    if ((v11 & 1) == 0 || self->_cellularBand != *(equal + 2))
     {
       goto LABEL_100;
     }
@@ -2568,14 +2568,14 @@ LABEL_34:
   return v23 ^ v24 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v14 ^ v15 ^ v16 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x10) != 0)
   {
-    self->_cellularLqm = *(a3 + 8);
+    self->_cellularLqm = *(from + 8);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 21);
+    v5 = *(from + 21);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -2593,9 +2593,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_cellularPowerCostDownload = *(a3 + 12);
+  self->_cellularPowerCostDownload = *(from + 12);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x200) == 0)
   {
 LABEL_4:
@@ -2608,9 +2608,9 @@ LABEL_4:
   }
 
 LABEL_26:
-  self->_cellularPowerCostUpload = *(a3 + 13);
+  self->_cellularPowerCostUpload = *(from + 13);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_5:
@@ -2623,9 +2623,9 @@ LABEL_5:
   }
 
 LABEL_27:
-  self->_cellularKnownGood = *(a3 + 80);
+  self->_cellularKnownGood = *(from + 80);
   *&self->_has |= 0x10000u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x400) == 0)
   {
 LABEL_6:
@@ -2638,9 +2638,9 @@ LABEL_6:
   }
 
 LABEL_28:
-  self->_cellularRadioTechnology = *(a3 + 14);
+  self->_cellularRadioTechnology = *(from + 14);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_7:
@@ -2653,9 +2653,9 @@ LABEL_7:
   }
 
 LABEL_29:
-  self->_wifiLqm = *(a3 + 17);
+  self->_wifiLqm = *(from + 17);
   *&self->_has |= 0x2000u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_8:
@@ -2668,9 +2668,9 @@ LABEL_8:
   }
 
 LABEL_30:
-  self->_wifiRssi = *(a3 + 19);
+  self->_wifiRssi = *(from + 19);
   *&self->_has |= 0x8000u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_9:
@@ -2683,9 +2683,9 @@ LABEL_9:
   }
 
 LABEL_31:
-  self->_wifiKnownGood = *(a3 + 81);
+  self->_wifiKnownGood = *(from + 81);
   *&self->_has |= 0x20000u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_10:
@@ -2698,9 +2698,9 @@ LABEL_10:
   }
 
 LABEL_32:
-  self->_wifiRadioTechnology = *(a3 + 18);
+  self->_wifiRadioTechnology = *(from + 18);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x40) == 0)
   {
 LABEL_11:
@@ -2713,9 +2713,9 @@ LABEL_11:
   }
 
 LABEL_33:
-  self->_cellularMnc = *(a3 + 10);
+  self->_cellularMnc = *(from + 10);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x20) == 0)
   {
 LABEL_12:
@@ -2728,9 +2728,9 @@ LABEL_12:
   }
 
 LABEL_34:
-  self->_cellularMcc = *(a3 + 9);
+  self->_cellularMcc = *(from + 9);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_13:
@@ -2743,9 +2743,9 @@ LABEL_13:
   }
 
 LABEL_35:
-  self->_cellularUarfcn = *(a3 + 16);
+  self->_cellularUarfcn = *(from + 16);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 21);
+  v5 = *(from + 21);
   if ((v5 & 0x80) == 0)
   {
 LABEL_14:
@@ -2758,27 +2758,27 @@ LABEL_14:
   }
 
 LABEL_36:
-  self->_cellularPid = *(a3 + 11);
+  self->_cellularPid = *(from + 11);
   *&self->_has |= 0x80u;
-  if ((*(a3 + 21) & 2) != 0)
+  if ((*(from + 21) & 2) != 0)
   {
 LABEL_15:
-    self->_cellularBandInfo = *(a3 + 3);
+    self->_cellularBandInfo = *(from + 3);
     *&self->_has |= 2u;
   }
 
 LABEL_16:
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDNWL2Report *)self setCellularCellType:?];
   }
 
-  v6 = *(a3 + 21);
+  v6 = *(from + 21);
   if ((v6 & 4) != 0)
   {
-    self->_cellularBandwidth = *(a3 + 4);
+    self->_cellularBandwidth = *(from + 4);
     *&self->_has |= 4u;
-    v6 = *(a3 + 21);
+    v6 = *(from + 21);
     if ((v6 & 0x800) == 0)
     {
 LABEL_20:
@@ -2796,9 +2796,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  self->_cellularTac = *(a3 + 15);
+  self->_cellularTac = *(from + 15);
   *&self->_has |= 0x800u;
-  v6 = *(a3 + 21);
+  v6 = *(from + 21);
   if ((v6 & 8) == 0)
   {
 LABEL_21:
@@ -2811,15 +2811,15 @@ LABEL_21:
   }
 
 LABEL_40:
-  self->_cellularBars = *(a3 + 5);
+  self->_cellularBars = *(from + 5);
   *&self->_has |= 8u;
-  if ((*(a3 + 21) & 1) == 0)
+  if ((*(from + 21) & 1) == 0)
   {
     return;
   }
 
 LABEL_22:
-  self->_cellularBand = *(a3 + 2);
+  self->_cellularBand = *(from + 2);
   *&self->_has |= 1u;
 }
 

@@ -1,22 +1,22 @@
 @interface UIView
-- (void)applyClearGlassBackgroundWithTintColor:(id)a3;
-- (void)applySmallClearGlassBackgroundWithTintColor:(id)a3;
+- (void)applyClearGlassBackgroundWithTintColor:(id)color;
+- (void)applySmallClearGlassBackgroundWithTintColor:(id)color;
 @end
 
 @implementation UIView
 
-- (void)applyClearGlassBackgroundWithTintColor:(id)a3
+- (void)applyClearGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applyClearGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applyClearGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
-- (void)applySmallClearGlassBackgroundWithTintColor:(id)a3
+- (void)applySmallClearGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applySmallClearGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applySmallClearGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface PLAssetsdPhotoKitClient
-+ (BOOL)sendChangesRequest:(id)a3 usingProxyFactory:(id)a4 error:(id *)a5;
-+ (void)sendChangesRequest:(id)a3 usingProxyFactory:(id)a4 reply:(id)a5;
-- (BOOL)cancelReservedCloudIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)a3 error:(id *)a4;
-- (BOOL)forceSyndicationIngestSyncToDate:(id)a3 error:(id *)a4;
-- (BOOL)processUniversalSearchJITForAssetUUID:(id)a3 processingTypes:(unint64_t)a4 error:(id *)a5;
-- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)a3 assetUUIDs:(id)a4 resetOptions:(unint64_t)a5 error:(id *)a6;
-- (BOOL)sendChangesRequest:(id)a3 error:(id *)a4;
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 withCompletionHandler:(id)a5;
-- (id)analyzeLibraryForFeature:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (id)forceSyndicationIngestAsyncToDate:(id)a3 withCompletionHandler:(id)a4;
-- (id)getUUIDsForAssetObjectIDs:(id)a3 filterPredicate:(id)a4 context:(id)a5 error:(id *)a6;
-- (id)ingestItemWithCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 purgeUrgency:(int64_t)a5 error:(id *)a6;
-- (id)photoLibraryIdentifierWithError:(id *)a3;
-- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 processingTypes:(unint64_t)a5 error:(id *)a6;
-- (id)reserveCloudIdentifiersWithEntityName:(id)a3 count:(unint64_t)a4 error:(id *)a5;
-- (id)reservedCloudIdentifiersWithEntityName:(id)a3 error:(id *)a4;
-- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 error:(id *)a4;
-- (void)sendChangesRequest:(id)a3 reply:(id)a4;
++ (BOOL)sendChangesRequest:(id)request usingProxyFactory:(id)factory error:(id *)error;
++ (void)sendChangesRequest:(id)request usingProxyFactory:(id)factory reply:(id)reply;
+- (BOOL)cancelReservedCloudIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)name error:(id *)error;
+- (BOOL)forceSyndicationIngestSyncToDate:(id)date error:(id *)error;
+- (BOOL)processUniversalSearchJITForAssetUUID:(id)d processingTypes:(unint64_t)types error:(id *)error;
+- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)d assetUUIDs:(id)ds resetOptions:(unint64_t)options error:(id *)error;
+- (BOOL)sendChangesRequest:(id)request error:(id *)error;
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature withCompletionHandler:(id)handler;
+- (id)analyzeLibraryForFeature:(unint64_t)feature withCompletionHandler:(id)handler;
+- (id)forceSyndicationIngestAsyncToDate:(id)date withCompletionHandler:(id)handler;
+- (id)getUUIDsForAssetObjectIDs:(id)ds filterPredicate:(id)predicate context:(id)context error:(id *)error;
+- (id)ingestItemWithCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d purgeUrgency:(int64_t)urgency error:(id *)error;
+- (id)photoLibraryIdentifierWithError:(id *)error;
+- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types error:(id *)error;
+- (id)reserveCloudIdentifiersWithEntityName:(id)name count:(unint64_t)count error:(id *)error;
+- (id)reservedCloudIdentifiersWithEntityName:(id)name error:(id *)error;
+- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers error:(id *)error;
+- (void)sendChangesRequest:(id)request reply:(id)reply;
 @end
 
 @implementation PLAssetsdPhotoKitClient
 
-- (id)photoLibraryIdentifierWithError:(id *)a3
+- (id)photoLibraryIdentifierWithError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   v27 = 0u;
@@ -51,13 +51,13 @@
   v23 = __Block_byref_object_copy__992;
   v24 = __Block_byref_object_dispose__993;
   v25 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __59__PLAssetsdPhotoKitClient_photoLibraryIdentifierWithError___block_invoke;
   v19[3] = &unk_1E7932770;
   v19[4] = &v20;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __59__PLAssetsdPhotoKitClient_photoLibraryIdentifierWithError___block_invoke_39;
@@ -68,10 +68,10 @@
 
   v10 = *(*(&buf + 1) + 40);
   v11 = v21[5];
-  if (!v10 && a3)
+  if (!v10 && error)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = *(*(&buf + 1) + 40);
@@ -139,10 +139,10 @@ void __59__PLAssetsdPhotoKitClient_photoLibraryIdentifierWithError___block_invok
   }
 }
 
-- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)a3 assetUUIDs:(id)a4 resetOptions:(unint64_t)a5 error:(id *)a6
+- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)d assetUUIDs:(id)ds resetOptions:(unint64_t)options error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  dsCopy = ds;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -167,13 +167,13 @@ void __59__PLAssetsdPhotoKitClient_photoLibraryIdentifierWithError___block_invok
   v36 = __Block_byref_object_copy__992;
   v37 = __Block_byref_object_dispose__993;
   v38 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __92__PLAssetsdPhotoKitClient_resetStateForMediaProcessingTaskID_assetUUIDs_resetOptions_error___block_invoke;
   v26[3] = &unk_1E7932770;
   v26[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v26];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v26];
 
   if (v15)
   {
@@ -183,13 +183,13 @@ void __59__PLAssetsdPhotoKitClient_photoLibraryIdentifierWithError___block_invok
     v25[3] = &unk_1E7932E48;
     v25[4] = &v27;
     v25[5] = &buf;
-    v16 = [v15 resetStateForMediaProcessingTaskID:a3 assetUUIDs:v10 resetOptions:a5 reply:v25];
+    v16 = [v15 resetStateForMediaProcessingTaskID:d assetUUIDs:dsCopy resetOptions:options reply:v25];
     v17 = *(v28 + 24);
     v18 = *(*(&buf + 1) + 40);
-    if ((v17 & 1) == 0 && a6)
+    if ((v17 & 1) == 0 && error)
     {
       v18 = v18;
-      *a6 = v18;
+      *error = v18;
     }
 
     v19 = *(v28 + 24);
@@ -198,9 +198,9 @@ void __59__PLAssetsdPhotoKitClient_photoLibraryIdentifierWithError___block_invok
   else
   {
     v19 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
   }
 
@@ -259,10 +259,10 @@ void __92__PLAssetsdPhotoKitClient_resetStateForMediaProcessingTaskID_assetUUIDs
   }
 }
 
-- (id)analyzeLibraryForFeature:(unint64_t)a3 withCompletionHandler:(id)a4
+- (id)analyzeLibraryForFeature:(unint64_t)feature withCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
@@ -283,20 +283,20 @@ void __92__PLAssetsdPhotoKitClient_resetStateForMediaProcessingTaskID_assetUUIDs
   v27 = __Block_byref_object_copy__992;
   v28 = __Block_byref_object_dispose__993;
   v29 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __74__PLAssetsdPhotoKitClient_analyzeLibraryForFeature_withCompletionHandler___block_invoke;
   v21[3] = &unk_1E7932770;
   v21[4] = &buf;
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v21];
+  v11 = [proxyFactory remoteObjectProxyWithErrorHandler:v21];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __74__PLAssetsdPhotoKitClient_analyzeLibraryForFeature_withCompletionHandler___block_invoke_37;
   v19[3] = &unk_1E7932DA8;
-  v12 = v6;
+  v12 = handlerCopy;
   v20 = v12;
-  v13 = [v11 analyzeLibraryForFeature:a3 reply:v19];
+  v13 = [v11 analyzeLibraryForFeature:feature reply:v19];
 
   _Block_object_dispose(&buf, 8);
   if (v22 == 1)
@@ -360,11 +360,11 @@ void __74__PLAssetsdPhotoKitClient_analyzeLibraryForFeature_withCompletionHandle
   (*(v2 + 16))(v2);
 }
 
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 withCompletionHandler:(id)a5
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -385,20 +385,20 @@ void __74__PLAssetsdPhotoKitClient_analyzeLibraryForFeature_withCompletionHandle
   v30 = __Block_byref_object_copy__992;
   v31 = __Block_byref_object_dispose__993;
   v32 = 0;
-  v13 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __74__PLAssetsdPhotoKitClient_analyzeAssets_forFeature_withCompletionHandler___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v14 = [v13 remoteObjectProxyWithErrorHandler:v24];
+  v14 = [proxyFactory remoteObjectProxyWithErrorHandler:v24];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74__PLAssetsdPhotoKitClient_analyzeAssets_forFeature_withCompletionHandler___block_invoke_36;
   v22[3] = &unk_1E7932DA8;
-  v15 = v9;
+  v15 = handlerCopy;
   v23 = v15;
-  v16 = [v14 analyzeAssets:v8 forFeature:a4 reply:v22];
+  v16 = [v14 analyzeAssets:assetsCopy forFeature:feature reply:v22];
 
   _Block_object_dispose(&buf, 8);
   if (v25 == 1)
@@ -462,11 +462,11 @@ void __74__PLAssetsdPhotoKitClient_analyzeAssets_forFeature_withCompletionHandle
   (*(v2 + 16))(v2);
 }
 
-- (id)forceSyndicationIngestAsyncToDate:(id)a3 withCompletionHandler:(id)a4
+- (id)forceSyndicationIngestAsyncToDate:(id)date withCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -481,21 +481,21 @@ void __74__PLAssetsdPhotoKitClient_analyzeAssets_forFeature_withCompletionHandle
     os_activity_scope_enter(v9, (&v26 + 8));
   }
 
-  v11 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __83__PLAssetsdPhotoKitClient_forceSyndicationIngestAsyncToDate_withCompletionHandler___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v12 = v7;
+  v12 = handlerCopy;
   v24 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v23];
+  v13 = [proxyFactory remoteObjectProxyWithErrorHandler:v23];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __83__PLAssetsdPhotoKitClient_forceSyndicationIngestAsyncToDate_withCompletionHandler___block_invoke_35;
   v21[3] = &unk_1E7932DA8;
   v14 = v12;
   v22 = v14;
-  v15 = [v13 forceSyndicationIngestAsyncToDate:v6 reply:v21];
+  v15 = [v13 forceSyndicationIngestAsyncToDate:dateCopy reply:v21];
 
   if (v25 == 1)
   {
@@ -564,10 +564,10 @@ void __83__PLAssetsdPhotoKitClient_forceSyndicationIngestAsyncToDate_withComplet
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)forceSyndicationIngestSyncToDate:(id)a3 error:(id *)a4
+- (BOOL)forceSyndicationIngestSyncToDate:(id)date error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
@@ -588,26 +588,26 @@ void __83__PLAssetsdPhotoKitClient_forceSyndicationIngestAsyncToDate_withComplet
   v27 = __Block_byref_object_copy__992;
   v28 = __Block_byref_object_dispose__993;
   v29 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __66__PLAssetsdPhotoKitClient_forceSyndicationIngestSyncToDate_error___block_invoke;
   v21[3] = &unk_1E7932770;
   v21[4] = &buf;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v21];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __66__PLAssetsdPhotoKitClient_forceSyndicationIngestSyncToDate_error___block_invoke_33;
   v20[3] = &unk_1E7932770;
   v20[4] = &buf;
-  v12 = [v11 forceSyndicationIngestAsyncToDate:v6 reply:v20];
+  v12 = [v11 forceSyndicationIngestAsyncToDate:dateCopy reply:v20];
 
   v13 = *(*(&buf + 1) + 40);
   v14 = v13;
-  if (v13 && a4)
+  if (v13 && error)
   {
     v14 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   _Block_object_dispose(&buf, 8);
@@ -672,11 +672,11 @@ void __66__PLAssetsdPhotoKitClient_forceSyndicationIngestSyncToDate_error___bloc
   *(v5 + 40) = v3;
 }
 
-- (id)ingestItemWithCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 purgeUrgency:(int64_t)a5 error:(id *)a6
+- (id)ingestItemWithCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d purgeUrgency:(int64_t)urgency error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
@@ -703,28 +703,28 @@ void __66__PLAssetsdPhotoKitClient_forceSyndicationIngestSyncToDate_error___bloc
   v34 = __Block_byref_object_copy__992;
   v35 = __Block_byref_object_dispose__993;
   v36 = 0;
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __99__PLAssetsdPhotoKitClient_ingestItemWithCoreSpotlightUniqueIdentifier_bundleID_purgeUrgency_error___block_invoke;
   v30[3] = &unk_1E7932770;
   v30[4] = &v31;
-  v16 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v30];
+  v16 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v30];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __99__PLAssetsdPhotoKitClient_ingestItemWithCoreSpotlightUniqueIdentifier_bundleID_purgeUrgency_error___block_invoke_32;
   v25[3] = &unk_1E792FAA0;
-  v17 = v11;
+  v17 = dCopy;
   v26 = v17;
-  v18 = v10;
+  v18 = identifierCopy;
   v27 = v18;
   v28 = &v31;
   p_buf = &buf;
-  [v16 ingestItemWithCoreSpotlightUniqueIdentifier:v18 bundleID:v17 purgeUrgency:a5 reply:v25];
+  [v16 ingestItemWithCoreSpotlightUniqueIdentifier:v18 bundleID:v17 purgeUrgency:urgency reply:v25];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v32[5];
+    *error = v32[5];
   }
 
   v19 = *(*(&buf + 1) + 40);
@@ -802,10 +802,10 @@ void __99__PLAssetsdPhotoKitClient_ingestItemWithCoreSpotlightUniqueIdentifier_b
   *(v10 + 40) = v5;
 }
 
-- (BOOL)processUniversalSearchJITForAssetUUID:(id)a3 processingTypes:(unint64_t)a4 error:(id *)a5
+- (BOOL)processUniversalSearchJITForAssetUUID:(id)d processingTypes:(unint64_t)types error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dCopy = d;
   v27 = 0u;
   *sel = 0u;
   v26 = 0u;
@@ -826,28 +826,28 @@ void __99__PLAssetsdPhotoKitClient_ingestItemWithCoreSpotlightUniqueIdentifier_b
   v31 = __Block_byref_object_copy__992;
   v32 = __Block_byref_object_dispose__993;
   v33 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __87__PLAssetsdPhotoKitClient_processUniversalSearchJITForAssetUUID_processingTypes_error___block_invoke;
   v25[3] = &unk_1E7932770;
   v25[4] = &buf;
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v25];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v25];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __87__PLAssetsdPhotoKitClient_processUniversalSearchJITForAssetUUID_processingTypes_error___block_invoke_31;
   v22[3] = &unk_1E7932608;
-  v14 = v8;
+  v14 = dCopy;
   v23 = v14;
   p_buf = &buf;
-  [v13 processUniversalSearchJITForAssetUUID:v14 processingTypes:a4 reply:v22];
+  [v13 processUniversalSearchJITForAssetUUID:v14 processingTypes:types reply:v22];
 
   v15 = *(*(&buf + 1) + 40);
   v16 = v15;
-  if (v15 && a5)
+  if (v15 && error)
   {
     v16 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
   _Block_object_dispose(&buf, 8);
@@ -915,11 +915,11 @@ void __87__PLAssetsdPhotoKitClient_processUniversalSearchJITForAssetUUID_process
   *(v6 + 40) = v3;
 }
 
-- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 processingTypes:(unint64_t)a5 error:(id *)a6
+- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v40 = 0u;
   v41 = 0u;
   v39 = 0u;
@@ -946,31 +946,31 @@ void __87__PLAssetsdPhotoKitClient_processUniversalSearchJITForAssetUUID_process
   v36 = __Block_byref_object_copy__992;
   v37 = __Block_byref_object_dispose__993;
   v38 = 0;
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __116__PLAssetsdPhotoKitClient_processUniversalSearchJITForCoreSpotlightUniqueIdentifier_bundleID_processingTypes_error___block_invoke;
   v32[3] = &unk_1E7932770;
   v32[4] = &v33;
-  v16 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v32];
+  v16 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v32];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __116__PLAssetsdPhotoKitClient_processUniversalSearchJITForCoreSpotlightUniqueIdentifier_bundleID_processingTypes_error___block_invoke_29;
   v27[3] = &unk_1E792FAA0;
   p_buf = &buf;
-  v17 = v11;
+  v17 = dCopy;
   v28 = v17;
-  v18 = v10;
+  v18 = identifierCopy;
   v29 = v18;
   v31 = &v33;
-  [v16 processUniversalSearchJITForCoreSpotlightUniqueIdentifier:v18 bundleID:v17 processingTypes:a5 reply:v27];
+  [v16 processUniversalSearchJITForCoreSpotlightUniqueIdentifier:v18 bundleID:v17 processingTypes:types reply:v27];
 
   v19 = *(*(&buf + 1) + 40);
   v20 = v34[5];
-  if (!v19 && a6)
+  if (!v19 && error)
   {
     v20 = v20;
-    *a6 = v20;
+    *error = v20;
   }
 
   v21 = *(*(&buf + 1) + 40);
@@ -1044,12 +1044,12 @@ void __116__PLAssetsdPhotoKitClient_processUniversalSearchJITForCoreSpotlightUni
   }
 }
 
-- (id)getUUIDsForAssetObjectIDs:(id)a3 filterPredicate:(id)a4 context:(id)a5 error:(id *)a6
+- (id)getUUIDsForAssetObjectIDs:(id)ds filterPredicate:(id)predicate context:(id)context error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dsCopy = ds;
+  predicateCopy = predicate;
+  contextCopy = context;
   v47 = 0u;
   *sel = 0u;
   v46 = 0u;
@@ -1076,12 +1076,12 @@ void __116__PLAssetsdPhotoKitClient_processUniversalSearchJITForCoreSpotlightUni
   v43 = __Block_byref_object_copy__992;
   v44 = __Block_byref_object_dispose__993;
   v45 = 0;
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v17 = v10;
+  v17 = dsCopy;
   v18 = [v17 countByEnumeratingWithState:&v36 objects:v49 count:16];
   if (v18)
   {
@@ -1095,8 +1095,8 @@ void __116__PLAssetsdPhotoKitClient_processUniversalSearchJITForCoreSpotlightUni
           objc_enumerationMutation(v17);
         }
 
-        v21 = [*(*(&v36 + 1) + 8 * i) URIRepresentation];
-        [v16 addObject:v21];
+        uRIRepresentation = [*(*(&v36 + 1) + 8 * i) URIRepresentation];
+        [array addObject:uRIRepresentation];
       }
 
       v18 = [v17 countByEnumeratingWithState:&v36 objects:v49 count:16];
@@ -1105,26 +1105,26 @@ void __116__PLAssetsdPhotoKitClient_processUniversalSearchJITForCoreSpotlightUni
     while (v18);
   }
 
-  v22 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __83__PLAssetsdPhotoKitClient_getUUIDsForAssetObjectIDs_filterPredicate_context_error___block_invoke;
   v35[3] = &unk_1E7932770;
   v35[4] = &buf;
-  v23 = [v22 synchronousRemoteObjectProxyWithErrorHandler:v35];
+  v23 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v35];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __83__PLAssetsdPhotoKitClient_getUUIDsForAssetObjectIDs_filterPredicate_context_error___block_invoke_25;
   v31[3] = &unk_1E792FA78;
   p_buf = &buf;
-  v24 = v12;
+  v24 = contextCopy;
   v32 = v24;
   v34 = &v40;
-  [v23 getUUIDsForAssetObjectURIs:v16 filterPredicate:v11 reply:v31];
+  [v23 getUUIDsForAssetObjectURIs:array filterPredicate:predicateCopy reply:v31];
 
-  if (a6)
+  if (error)
   {
-    *a6 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   v25 = v41[5];
@@ -1224,10 +1224,10 @@ void __83__PLAssetsdPhotoKitClient_getUUIDsForAssetObjectIDs_filterPredicate_con
   }
 }
 
-- (BOOL)cancelReservedCloudIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)cancelReservedCloudIdentifiers:(id)identifiers error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v32 = 0u;
   *sel = 0u;
   v31 = 0u;
@@ -1252,20 +1252,20 @@ void __83__PLAssetsdPhotoKitClient_getUUIDsForAssetObjectIDs_filterPredicate_con
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __64__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiers_error___block_invoke;
   v23[3] = &unk_1E792FA28;
-  v11 = v10;
+  v11 = array;
   v24 = v11;
   p_buf = &buf;
   v26 = &v27;
-  [v6 enumerateObjectsUsingBlock:v23];
+  [identifiersCopy enumerateObjectsUsingBlock:v23];
   if (*(v28 + 24) != 1)
   {
     v14 = *(*(&buf + 1) + 40);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -1273,13 +1273,13 @@ void __83__PLAssetsdPhotoKitClient_getUUIDsForAssetObjectIDs_filterPredicate_con
     goto LABEL_8;
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __64__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiers_error___block_invoke_2;
   v22[3] = &unk_1E7932770;
   v22[4] = &buf;
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v22];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v22];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __64__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiers_error___block_invoke_24;
@@ -1288,13 +1288,13 @@ void __83__PLAssetsdPhotoKitClient_getUUIDsForAssetObjectIDs_filterPredicate_con
   v21[5] = &buf;
   [v13 cancelReservedCloudIdentifiers:v11 reply:v21];
 
-  LOBYTE(v12) = *(v28 + 24);
+  LOBYTE(proxyFactory) = *(v28 + 24);
   v14 = *(*(&buf + 1) + 40);
-  if ((v12 & 1) == 0 && a4)
+  if ((proxyFactory & 1) == 0 && error)
   {
 LABEL_8:
     v14 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
 LABEL_9:
@@ -1386,10 +1386,10 @@ void __64__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiers_error___block_
   }
 }
 
-- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)a3 error:(id *)a4
+- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)name error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
@@ -1414,27 +1414,27 @@ void __64__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiers_error___block_
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __78__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiersWithEntityName_error___block_invoke;
   v21[3] = &unk_1E7932770;
   v21[4] = &buf;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v21];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __78__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiersWithEntityName_error___block_invoke_20;
   v20[3] = &unk_1E7932E48;
   v20[4] = &v22;
   v20[5] = &buf;
-  [v11 cancelReservedCloudIdentifiersWithEntityName:v6 reply:v20];
+  [v11 cancelReservedCloudIdentifiersWithEntityName:nameCopy reply:v20];
 
   v12 = *(v23 + 24);
   v13 = *(*(&buf + 1) + 40);
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v13 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = *(v23 + 24);
@@ -1501,10 +1501,10 @@ void __78__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiersWithEntityName_
   }
 }
 
-- (id)reservedCloudIdentifiersWithEntityName:(id)a3 error:(id *)a4
+- (id)reservedCloudIdentifiersWithEntityName:(id)name error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -1531,27 +1531,27 @@ void __78__PLAssetsdPhotoKitClient_cancelReservedCloudIdentifiersWithEntityName_
   v25 = __Block_byref_object_copy__992;
   v26 = __Block_byref_object_dispose__993;
   v27 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __72__PLAssetsdPhotoKitClient_reservedCloudIdentifiersWithEntityName_error___block_invoke;
   v21[3] = &unk_1E7932770;
   v21[4] = &buf;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v21];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __72__PLAssetsdPhotoKitClient_reservedCloudIdentifiersWithEntityName_error___block_invoke_18;
   v20[3] = &unk_1E7931E38;
   v20[4] = &buf;
   v20[5] = &v22;
-  [v11 reservedCloudIdentifiersWithEntityName:v6 reply:v20];
+  [v11 reservedCloudIdentifiersWithEntityName:nameCopy reply:v20];
 
   v12 = v23[5];
   v13 = *(*(&buf + 1) + 40);
-  if (!v12 && a4)
+  if (!v12 && error)
   {
     v13 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = v23[5];
@@ -1644,10 +1644,10 @@ void __72__PLAssetsdPhotoKitClient_reservedCloudIdentifiersWithEntityName_error_
   [v2 addObject:v3];
 }
 
-- (id)reserveCloudIdentifiersWithEntityName:(id)a3 count:(unint64_t)a4 error:(id *)a5
+- (id)reserveCloudIdentifiersWithEntityName:(id)name count:(unint64_t)count error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  nameCopy = name;
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
@@ -1674,27 +1674,27 @@ void __72__PLAssetsdPhotoKitClient_reservedCloudIdentifiersWithEntityName_error_
   v27 = __Block_byref_object_copy__992;
   v28 = __Block_byref_object_dispose__993;
   v29 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __77__PLAssetsdPhotoKitClient_reserveCloudIdentifiersWithEntityName_count_error___block_invoke;
   v23[3] = &unk_1E7932770;
   v23[4] = &buf;
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v23];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v23];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __77__PLAssetsdPhotoKitClient_reserveCloudIdentifiersWithEntityName_count_error___block_invoke_12;
   v22[3] = &unk_1E7931E38;
   v22[4] = &buf;
   v22[5] = &v24;
-  [v13 reserveCloudIdentifiersWithEntityName:v8 count:a4 reply:v22];
+  [v13 reserveCloudIdentifiersWithEntityName:nameCopy count:count reply:v22];
 
   v14 = v25[5];
   v15 = *(*(&buf + 1) + 40);
-  if (!v14 && a5)
+  if (!v14 && error)
   {
     v15 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   v16 = v25[5];
@@ -1787,10 +1787,10 @@ void __77__PLAssetsdPhotoKitClient_reserveCloudIdentifiersWithEntityName_count_e
   [v2 addObject:v3];
 }
 
-- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 error:(id *)a4
+- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
@@ -1817,24 +1817,24 @@ void __77__PLAssetsdPhotoKitClient_reserveCloudIdentifiersWithEntityName_count_e
   v23 = __Block_byref_object_copy__992;
   v24 = __Block_byref_object_dispose__993;
   v25 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __76__PLAssetsdPhotoKitClient_resolveLocalIdentifiersForCloudIdentifiers_error___block_invoke;
   v19[3] = &unk_1E7932770;
   v19[4] = &buf;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __76__PLAssetsdPhotoKitClient_resolveLocalIdentifiersForCloudIdentifiers_error___block_invoke_10;
   v18[3] = &unk_1E7930BB0;
   v18[4] = &buf;
   v18[5] = &v20;
-  [v11 resolveLocalIdentifiersForCloudIdentifiers:v6 reply:v18];
+  [v11 resolveLocalIdentifiersForCloudIdentifiers:identifiersCopy reply:v18];
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   v12 = v21[5];
@@ -1909,28 +1909,28 @@ void __76__PLAssetsdPhotoKitClient_resolveLocalIdentifiersForCloudIdentifiers_er
   objc_storeStrong((*(*(a1 + v9) + 8) + 40), a3);
 }
 
-- (BOOL)sendChangesRequest:(id)a3 error:(id *)a4
+- (BOOL)sendChangesRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLAssetsdBaseClient *)self proxyFactory];
-  LOBYTE(a4) = [PLAssetsdPhotoKitClient sendChangesRequest:v6 usingProxyFactory:v7 error:a4];
+  requestCopy = request;
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  LOBYTE(error) = [PLAssetsdPhotoKitClient sendChangesRequest:requestCopy usingProxyFactory:proxyFactory error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)sendChangesRequest:(id)a3 reply:(id)a4
+- (void)sendChangesRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
-  [PLAssetsdPhotoKitClient sendChangesRequest:v7 usingProxyFactory:v8 reply:v6];
+  replyCopy = reply;
+  requestCopy = request;
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  [PLAssetsdPhotoKitClient sendChangesRequest:requestCopy usingProxyFactory:proxyFactory reply:replyCopy];
 }
 
-+ (BOOL)sendChangesRequest:(id)a3 usingProxyFactory:(id)a4 error:(id *)a5
++ (BOOL)sendChangesRequest:(id)request usingProxyFactory:(id)factory error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  factoryCopy = factory;
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
@@ -1945,7 +1945,7 @@ void __76__PLAssetsdPhotoKitClient_resolveLocalIdentifiersForCloudIdentifiers_er
     os_activity_scope_enter(v10, (&v31 + 8));
   }
 
-  v12 = [v8 queue];
+  queue = [factoryCopy queue];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1960,28 +1960,28 @@ void __76__PLAssetsdPhotoKitClient_resolveLocalIdentifiersForCloudIdentifiers_er
   v22[1] = 3221225472;
   v22[2] = __70__PLAssetsdPhotoKitClient_sendChangesRequest_usingProxyFactory_error___block_invoke;
   v22[3] = &unk_1E7932E20;
-  v13 = v8;
+  v13 = factoryCopy;
   v23 = v13;
   v24 = &v26;
   p_buf = &buf;
   v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v22];
-  [PLAssetsdPhotoKitClient setInTransactionProxy:1 queue:v12];
+  [PLAssetsdPhotoKitClient setInTransactionProxy:1 queue:queue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __70__PLAssetsdPhotoKitClient_sendChangesRequest_usingProxyFactory_error___block_invoke_9;
   v21[3] = &unk_1E7932E48;
   v21[4] = &v26;
   v21[5] = &buf;
-  [v14 applyChangesRequest:v7 reply:v21];
-  [PLAssetsdPhotoKitClient setInTransactionProxy:0 queue:v12];
+  [v14 applyChangesRequest:requestCopy reply:v21];
+  [PLAssetsdPhotoKitClient setInTransactionProxy:0 queue:queue];
   if (v27[3])
   {
     v15 = 1;
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
     v15 = *(v27 + 24);
   }
 
@@ -2039,12 +2039,12 @@ void __70__PLAssetsdPhotoKitClient_sendChangesRequest_usingProxyFactory_error___
   *(v7 + 40) = v3;
 }
 
-+ (void)sendChangesRequest:(id)a3 usingProxyFactory:(id)a4 reply:(id)a5
++ (void)sendChangesRequest:(id)request usingProxyFactory:(id)factory reply:(id)reply
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  factoryCopy = factory;
+  replyCopy = reply;
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
@@ -2059,12 +2059,12 @@ void __70__PLAssetsdPhotoKitClient_sendChangesRequest_usingProxyFactory_error___
     os_activity_scope_enter(v12, (&v34 + 8));
   }
 
-  v14 = [v9 queue];
+  queue = [factoryCopy queue];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __70__PLAssetsdPhotoKitClient_sendChangesRequest_usingProxyFactory_reply___block_invoke;
   v31[3] = &unk_1E7932DA8;
-  v32 = v10;
+  v32 = replyCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3254779904;
   v22[2] = __70__PLAssetsdPhotoKitClient_sendChangesRequest_usingProxyFactory_reply___block_invoke_3;
@@ -2074,13 +2074,13 @@ void __70__PLAssetsdPhotoKitClient_sendChangesRequest_usingProxyFactory_error___
   v28 = v34;
   v29 = v35;
   v30 = a2;
-  v15 = v14;
+  v15 = queue;
   v23 = v15;
-  v16 = v8;
+  v16 = requestCopy;
   v24 = v16;
   v17 = v32;
   v25 = v17;
-  [v9 remoteObjectProxyWithErrorHandler:v31 handler:v22];
+  [factoryCopy remoteObjectProxyWithErrorHandler:v31 handler:v22];
 
   if (v33 == 1)
   {

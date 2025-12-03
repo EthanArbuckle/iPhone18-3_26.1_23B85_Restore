@@ -9,18 +9,18 @@
 
 - (id)itk_dictionaryByAddingEntriesFromNonNilDictionary:()ITK
 {
-  v4 = a1;
+  selfCopy = self;
   if (a3)
   {
     v5 = a3;
-    v6 = [v4 mutableCopy];
+    v6 = [selfCopy mutableCopy];
     [v6 addEntriesFromDictionary:v5];
     v7 = [v5 copy];
 
-    v4 = v7;
+    selfCopy = v7;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)itk_prettyDescriptionWithTabLevel:()ITK
@@ -57,7 +57,7 @@
   v20 = v9;
   v21 = a3;
   v11 = v9;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v15];
+  [self enumerateKeysAndObjectsUsingBlock:&v15];
   [v10 appendFormat:@"%@}", v8, v15, v16, v17, v18];
   v12 = v20;
   v13 = v10;
@@ -69,7 +69,7 @@
 {
   if (a3)
   {
-    v4 = [a1 objectForKeyedSubscript:?];
+    v4 = [self objectForKeyedSubscript:?];
   }
 
   else
@@ -82,10 +82,10 @@
 
 - (id)itk_md5
 {
-  v1 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a1 requiringSecureCoding:0 error:0];
-  v2 = [v1 itk_md5];
+  v1 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:0 error:0];
+  itk_md5 = [v1 itk_md5];
 
-  return v2;
+  return itk_md5;
 }
 
 @end

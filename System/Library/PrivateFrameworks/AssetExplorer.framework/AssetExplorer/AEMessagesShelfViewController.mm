@@ -1,44 +1,44 @@
 @interface AEMessagesShelfViewController
-- (AEMessagesShelfViewController)initWithPackageTransport:(id)a3 options:(unint64_t)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)layout:(id)a3 itemAtIndexPathIsAnimatedImage:(PXSimpleIndexPath *)a4;
-- (BOOL)layout:(id)a3 itemAtIndexPathIsLoop:(PXSimpleIndexPath *)a4;
-- (BOOL)layout:(id)a3 itemAtIndexPathIsSpatial:(PXSimpleIndexPath *)a4;
-- (BOOL)layout:(id)a3 itemAtIndexPathIsVideo:(PXSimpleIndexPath *)a4;
-- (BOOL)layoutShouldShowVideoDuration:(id)a3;
+- (AEMessagesShelfViewController)initWithPackageTransport:(id)transport options:(unint64_t)options;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)layout:(id)layout itemAtIndexPathIsAnimatedImage:(PXSimpleIndexPath *)image;
+- (BOOL)layout:(id)layout itemAtIndexPathIsLoop:(PXSimpleIndexPath *)loop;
+- (BOOL)layout:(id)layout itemAtIndexPathIsSpatial:(PXSimpleIndexPath *)spatial;
+- (BOOL)layout:(id)layout itemAtIndexPathIsVideo:(PXSimpleIndexPath *)video;
+- (BOOL)layoutShouldShowVideoDuration:(id)duration;
 - (BOOL)shouldPresentReviewController;
-- (CGPoint)tilingController:(id)a3 initialVisibleOriginForLayout:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGPoint)tilingController:(id)controller initialVisibleOriginForLayout:(id)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKPluginEntryViewControllerDelegate)entryViewDelegate;
 - (PUAssetExplorerAnalytics)assetExplorerAnalytics;
 - (UIColor)_roundedCornerOverlayFillColor;
-- (double)layout:(id)a3 aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)a4;
-- (double)layout:(id)a3 itemAtIndexPathDuration:(PXSimpleIndexPath *)a4;
+- (double)layout:(id)layout aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)path;
+- (double)layout:(id)layout itemAtIndexPathDuration:(PXSimpleIndexPath *)duration;
 - (id)_currentAssetsDataSource;
-- (id)_traverseHierarchyForFillColorStartingWithView:(id)a3;
-- (id)assetsScene:(id)a3 layoutForDataSource:(id)a4;
-- (id)assetsScene:(id)a3 transitionAnimationCoordinatorForChange:(id)a4;
-- (id)contentAssetReferenceAtPoint:(CGPoint)a3;
-- (id)framesOfVisibleContentViewInCoordinateSpace:(id)a3;
-- (int64_t)layout:(id)a3 generationStateForItemAtIndexPath:(PXSimpleIndexPath *)a4;
-- (int64_t)layout:(id)a3 irisToggleStateForItemAtIndexPath:(PXSimpleIndexPath *)a4;
-- (void)_didTapGenerationButton:(id)a3;
-- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)a3 suppressLivePhoto:(BOOL)a4 mediaOrigin:(int64_t)a5;
-- (void)_presentReviewForAssetReference:(id)a3;
-- (void)_presentReviewViewController:(id)a3;
-- (void)_removeFromShelf:(id)a3;
-- (void)_toggleIris:(id)a3;
+- (id)_traverseHierarchyForFillColorStartingWithView:(id)view;
+- (id)assetsScene:(id)scene layoutForDataSource:(id)source;
+- (id)assetsScene:(id)scene transitionAnimationCoordinatorForChange:(id)change;
+- (id)contentAssetReferenceAtPoint:(CGPoint)point;
+- (id)framesOfVisibleContentViewInCoordinateSpace:(id)space;
+- (int64_t)layout:(id)layout generationStateForItemAtIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)layout:(id)layout irisToggleStateForItemAtIndexPath:(PXSimpleIndexPath *)path;
+- (void)_didTapGenerationButton:(id)button;
+- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)asset suppressLivePhoto:(BOOL)photo mediaOrigin:(int64_t)origin;
+- (void)_presentReviewForAssetReference:(id)reference;
+- (void)_presentReviewViewController:(id)controller;
+- (void)_removeFromShelf:(id)shelf;
+- (void)_toggleIris:(id)iris;
 - (void)_transportStagingStateDidChange;
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7;
-- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)a3;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d;
+- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)cancel;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 - (void)dealloc;
-- (void)handleTap:(id)a3;
-- (void)imageEditionViewControllerDidFinishEditing:(id)a3 error:(id)a4;
+- (void)handleTap:(id)tap;
+- (void)imageEditionViewControllerDidFinishEditing:(id)editing error:(id)error;
 - (void)loadView;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)scrollViewControllerDidScroll:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)scrollViewControllerDidScroll:(id)scroll;
 - (void)viewDidLoad;
 @end
 
@@ -51,38 +51,38 @@
   return WeakRetained;
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  v7 = [(AEMessagesShelfViewController *)self assetExplorerAnalytics];
+  assetExplorerAnalytics = [(AEMessagesShelfViewController *)self assetExplorerAnalytics];
   v4 = *MEMORY[0x277D3D0C0];
-  v5 = [(AEMessagesShelfViewController *)self _dataSource];
-  v6 = [v5 orderedIdentifiers];
-  [v7 sendEvent:v4 view:1 source:1 currentAssetCount:{objc_msgSend(v6, "count")}];
+  _dataSource = [(AEMessagesShelfViewController *)self _dataSource];
+  orderedIdentifiers = [_dataSource orderedIdentifiers];
+  [assetExplorerAnalytics sendEvent:v4 view:1 source:1 currentAssetCount:{objc_msgSend(orderedIdentifiers, "count")}];
 }
 
 - (id)_currentAssetsDataSource
 {
-  v2 = [(AEMessagesShelfViewController *)self _sceneController];
-  v3 = [v2 dataSourceManager];
-  v4 = [v3 dataSource];
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  dataSourceManager = [_sceneController dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  return v4;
+  return dataSource;
 }
 
-- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)a3 suppressLivePhoto:(BOOL)a4 mediaOrigin:(int64_t)a5
+- (void)_immediatelyGenerateAndStagePackageFromReviewAsset:(id)asset suppressLivePhoto:(BOOL)photo mediaOrigin:(int64_t)origin
 {
-  v8 = a3;
-  v9 = [(AEMessagesShelfViewController *)self _packageTransport];
+  assetCopy = asset;
+  _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
   v10 = objc_alloc_init(AECameraAssetPackageGenerator);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFromReviewAsset_suppressLivePhoto_mediaOrigin___block_invoke;
   v12[3] = &unk_278CC73F0;
-  v15 = a4;
-  v13 = v9;
-  v14 = a5;
-  v11 = v9;
-  [(AECameraAssetPackageGenerator *)v10 generatePackageFromReviewAsset:v8 withCompletionHandler:v12];
+  photoCopy = photo;
+  v13 = _packageTransport;
+  originCopy = origin;
+  v11 = _packageTransport;
+  [(AECameraAssetPackageGenerator *)v10 generatePackageFromReviewAsset:assetCopy withCompletionHandler:v12];
 }
 
 void __114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFromReviewAsset_suppressLivePhoto_mediaOrigin___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -133,20 +133,20 @@ void *__114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFr
   return result;
 }
 
-- (id)_traverseHierarchyForFillColorStartingWithView:(id)a3
+- (id)_traverseHierarchyForFillColorStartingWithView:(id)view
 {
-  v3 = a3;
-  v4 = v3;
+  viewCopy = view;
+  superview = viewCopy;
   do
   {
-    v5 = v4;
-    v6 = [v4 backgroundColor];
-    v4 = [v4 superview];
+    v5 = superview;
+    backgroundColor = [superview backgroundColor];
+    superview = [superview superview];
   }
 
-  while (!v6 && v4);
+  while (!backgroundColor && superview);
 
-  return v6;
+  return backgroundColor;
 }
 
 - (UIColor)_roundedCornerOverlayFillColor
@@ -154,17 +154,17 @@ void *__114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFr
   roundedCornerOverlayFillColor = self->__roundedCornerOverlayFillColor;
   if (!roundedCornerOverlayFillColor)
   {
-    v4 = [(AEMessagesShelfViewController *)self view];
-    v5 = [v4 superview];
+    view = [(AEMessagesShelfViewController *)self view];
+    superview = [view superview];
 
-    v6 = [(AEMessagesShelfViewController *)self _traverseHierarchyForFillColorStartingWithView:v5];
-    if (!v6)
+    systemBackgroundColor = [(AEMessagesShelfViewController *)self _traverseHierarchyForFillColorStartingWithView:superview];
+    if (!systemBackgroundColor)
     {
-      v6 = [MEMORY[0x277D75348] systemBackgroundColor];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
     }
 
     v7 = self->__roundedCornerOverlayFillColor;
-    self->__roundedCornerOverlayFillColor = v6;
+    self->__roundedCornerOverlayFillColor = systemBackgroundColor;
 
     roundedCornerOverlayFillColor = self->__roundedCornerOverlayFillColor;
   }
@@ -172,56 +172,56 @@ void *__114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFr
   return roundedCornerOverlayFillColor;
 }
 
-- (void)imageEditionViewControllerDidFinishEditing:(id)a3 error:(id)a4
+- (void)imageEditionViewControllerDidFinishEditing:(id)editing error:(id)error
 {
-  v12 = a3;
-  v5 = [v12 generatedAssets];
-  v6 = [v5 firstObject];
+  editingCopy = editing;
+  generatedAssets = [editingCopy generatedAssets];
+  firstObject = [generatedAssets firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = [(AEMessagesShelfViewController *)self _packageTransport];
-    v8 = [(AEMessagesShelfViewController *)self editingGeneratedPackageIdentifier];
-    [v7 unstagePackageWithIdentifier:v8];
+    _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+    editingGeneratedPackageIdentifier = [(AEMessagesShelfViewController *)self editingGeneratedPackageIdentifier];
+    [_packageTransport unstagePackageWithIdentifier:editingGeneratedPackageIdentifier];
 
     v9 = objc_alloc_init(AEGenerativePlaygroundAssetPackageGenerator);
-    v10 = [(AEGenerativePlaygroundAssetPackageGenerator *)v9 generatePackageFromGenerativePlaygroundAsset:v6];
-    v11 = [(AEMessagesShelfViewController *)self _packageTransport];
-    [v11 stagePackage:v10];
+    v10 = [(AEGenerativePlaygroundAssetPackageGenerator *)v9 generatePackageFromGenerativePlaygroundAsset:firstObject];
+    _packageTransport2 = [(AEMessagesShelfViewController *)self _packageTransport];
+    [_packageTransport2 stagePackage:v10];
   }
 
-  [v12 dismissViewControllerAnimated:1 completion:0];
+  [editingCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d
 {
   v61 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v11 = a5;
-  v12 = a6;
-  v48 = self;
-  v49 = a7;
-  v13 = [(AEMessagesShelfViewController *)self _packageTransport];
-  v45 = [v13 orderedStagedIdentifiers];
+  controllerCopy = controller;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  selfCopy = self;
+  dCopy = d;
+  _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+  orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
   v44 = [MEMORY[0x277CBEB98] setWithArray:?];
   v14 = [v44 mutableCopy];
-  v46 = v11;
-  [v14 minusSet:v11];
+  v46 = dsCopy;
+  [v14 minusSet:dsCopy];
   if ([v14 count])
   {
-    v15 = [v14 allObjects];
-    [v13 unstagePackagesWithIdentifiers:v15];
+    allObjects = [v14 allObjects];
+    [_packageTransport unstagePackagesWithIdentifiers:allObjects];
   }
 
   v43 = v14;
-  if ([v49 count])
+  if ([dCopy count])
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v16 = [v49 allKeys];
-    v17 = [v16 countByEnumeratingWithState:&v55 objects:v60 count:16];
+    allKeys = [dCopy allKeys];
+    v17 = [allKeys countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v17)
     {
       v18 = v17;
@@ -232,34 +232,34 @@ void *__114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFr
         {
           if (*v56 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allKeys);
           }
 
           v21 = *(*(&v55 + 1) + 8 * i);
-          v22 = [v13 stagedPackageForIdentifier:v21];
-          v23 = [v22 mediaOrigin];
-          v24 = [v12 containsObject:v21];
-          v25 = [v49 objectForKeyedSubscript:v21];
-          [(AEMessagesShelfViewController *)v48 _immediatelyGenerateAndStagePackageFromReviewAsset:v25 suppressLivePhoto:v24 mediaOrigin:v23];
+          v22 = [_packageTransport stagedPackageForIdentifier:v21];
+          mediaOrigin = [v22 mediaOrigin];
+          v24 = [iDsCopy containsObject:v21];
+          v25 = [dCopy objectForKeyedSubscript:v21];
+          [(AEMessagesShelfViewController *)selfCopy _immediatelyGenerateAndStagePackageFromReviewAsset:v25 suppressLivePhoto:v24 mediaOrigin:mediaOrigin];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        v18 = [allKeys countByEnumeratingWithState:&v55 objects:v60 count:16];
       }
 
       while (v18);
     }
   }
 
-  v26 = [v13 packagesWithLivePhotoContent];
-  if ([v26 count])
+  packagesWithLivePhotoContent = [_packageTransport packagesWithLivePhotoContent];
+  if ([packagesWithLivePhotoContent count])
   {
     v27 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v42 = v26;
-    v28 = v26;
+    v42 = packagesWithLivePhotoContent;
+    v28 = packagesWithLivePhotoContent;
     v29 = [v28 countByEnumeratingWithState:&v51 objects:v59 count:16];
     if (!v29)
     {
@@ -278,12 +278,12 @@ void *__114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFr
         }
 
         v33 = *(*(&v51 + 1) + 8 * j);
-        v34 = [v33 identifier];
-        v35 = [v12 containsObject:v34];
-        v36 = [v33 containsSuppressedLivePhoto];
+        identifier = [v33 identifier];
+        v35 = [iDsCopy containsObject:identifier];
+        containsSuppressedLivePhoto = [v33 containsSuppressedLivePhoto];
         if (v35)
         {
-          if ((v36 & 1) == 0)
+          if ((containsSuppressedLivePhoto & 1) == 0)
           {
             v37 = [v33 mutableCopy];
             [v37 beginSupressingLivePhoto];
@@ -294,7 +294,7 @@ void *__114__AEMessagesShelfViewController__immediatelyGenerateAndStagePackageFr
           }
         }
 
-        else if (v36)
+        else if (containsSuppressedLivePhoto)
         {
           v37 = [v33 mutableCopy];
           [v37 endSuppressingLivePhoto];
@@ -307,8 +307,8 @@ LABEL_24:
 
         if ([v27 count])
         {
-          v38 = [v27 allObjects];
-          [v13 stagePackages:v38];
+          allObjects2 = [v27 allObjects];
+          [_packageTransport stagePackages:allObjects2];
         }
       }
 
@@ -317,7 +317,7 @@ LABEL_24:
       {
 LABEL_29:
 
-        v26 = v42;
+        packagesWithLivePhotoContent = v42;
         break;
       }
     }
@@ -330,7 +330,7 @@ LABEL_29:
     _os_log_impl(&dword_2411DE000, v39, OS_LOG_TYPE_DEFAULT, "Finished review; will dismiss.", buf, 2u);
   }
 
-  [(AEMessagesShelfViewController *)v48 _dismissPresentedReviewController:v47 animated:1];
+  [(AEMessagesShelfViewController *)selfCopy _dismissPresentedReviewController:controllerCopy animated:1];
   v40 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
@@ -341,9 +341,9 @@ LABEL_29:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)a3
+- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -351,7 +351,7 @@ LABEL_29:
     _os_log_impl(&dword_2411DE000, v5, OS_LOG_TYPE_DEFAULT, "Cancelled review; will dismiss.", buf, 2u);
   }
 
-  [(AEMessagesShelfViewController *)self _dismissPresentedReviewController:v4 animated:1];
+  [(AEMessagesShelfViewController *)self _dismissPresentedReviewController:cancelCopy animated:1];
   v6 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -360,33 +360,33 @@ LABEL_29:
   }
 }
 
-- (id)contentAssetReferenceAtPoint:(CGPoint)a3
+- (id)contentAssetReferenceAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AEMessagesShelfViewController *)self _scrollViewController];
-  v7 = [v6 scrollView];
+  y = point.y;
+  x = point.x;
+  _scrollViewController = [(AEMessagesShelfViewController *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
-  v8 = [(AEMessagesShelfViewController *)self _scrollViewController];
-  v9 = [v8 contentCoordinateSpace];
+  _scrollViewController2 = [(AEMessagesShelfViewController *)self _scrollViewController];
+  contentCoordinateSpace = [_scrollViewController2 contentCoordinateSpace];
 
-  v10 = [(AEMessagesShelfViewController *)self _tilingController];
-  [v9 convertPoint:v7 fromCoordinateSpace:{x, y}];
+  _tilingController = [(AEMessagesShelfViewController *)self _tilingController];
+  [contentCoordinateSpace convertPoint:scrollView fromCoordinateSpace:{x, y}];
   v27 = 0;
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
-  if (v10 && (v11 = *MEMORY[0x277D3CF88], v12 = *(MEMORY[0x277D3CF88] + 8), v13 = *(MEMORY[0x277D3CF88] + 16), v14 = *(MEMORY[0x277D3CF88] + 24), [v10 hitTestTileAtPoint:&__block_literal_global_521 padding:? passingTest:?], v22))
+  if (_tilingController && (v11 = *MEMORY[0x277D3CF88], v12 = *(MEMORY[0x277D3CF88] + 8), v13 = *(MEMORY[0x277D3CF88] + 16), v14 = *(MEMORY[0x277D3CF88] + 24), [_tilingController hitTestTileAtPoint:&__block_literal_global_521 padding:? passingTest:?], v22))
   {
     v19 = v24;
     v20 = v23;
-    v15 = [v10 currentLayout];
-    v16 = [v15 dataSource];
+    currentLayout = [_tilingController currentLayout];
+    dataSource = [currentLayout dataSource];
     v21[0] = v20;
     v21[1] = v19;
-    v17 = [v16 assetReferenceAtItemIndexPath:v21];
+    v17 = [dataSource assetReferenceAtItemIndexPath:v21];
   }
 
   else
@@ -397,37 +397,37 @@ LABEL_29:
   return v17;
 }
 
-- (void)_presentReviewForAssetReference:(id)a3
+- (void)_presentReviewForAssetReference:(id)reference
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AEMessagesShelfViewController *)self _internalReviewDataSourceManager];
-  v6 = [v5 didFailToOpenPhotoLibrary];
+  referenceCopy = reference;
+  _internalReviewDataSourceManager = [(AEMessagesShelfViewController *)self _internalReviewDataSourceManager];
+  didFailToOpenPhotoLibrary = [_internalReviewDataSourceManager didFailToOpenPhotoLibrary];
 
-  if ((v6 & 1) == 0)
+  if ((didFailToOpenPhotoLibrary & 1) == 0)
   {
-    v7 = [(AEMessagesShelfViewController *)self _currentAssetsDataSource];
-    v25 = [(AEMessagesShelfViewController *)self _internalReviewMediaProvider];
+    _currentAssetsDataSource = [(AEMessagesShelfViewController *)self _currentAssetsDataSource];
+    _internalReviewMediaProvider = [(AEMessagesShelfViewController *)self _internalReviewMediaProvider];
     v33 = 0u;
     v34 = 0u;
-    if (v7)
+    if (_currentAssetsDataSource)
     {
-      [v7 indexPathForAssetReference:v4];
+      [_currentAssetsDataSource indexPathForAssetReference:referenceCopy];
     }
 
-    v26 = v7;
+    v26 = _currentAssetsDataSource;
     v31 = v33;
     v32 = v34;
     v24 = PXIndexPathFromSimpleIndexPath();
-    v8 = [(AEMessagesShelfViewController *)self _packageTransport];
-    v9 = [v8 orderedStagedIdentifiers];
-    v23 = [MEMORY[0x277CBEB98] setWithArray:v9];
+    _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+    orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
+    v23 = [MEMORY[0x277CBEB98] setWithArray:orderedStagedIdentifiers];
     v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = v9;
+    v11 = orderedStagedIdentifiers;
     v12 = [v11 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v12)
     {
@@ -443,7 +443,7 @@ LABEL_29:
           }
 
           v16 = *(*(&v27 + 1) + 8 * i);
-          v17 = [v8 stagedPackageForIdentifier:v16];
+          v17 = [_packageTransport stagedPackageForIdentifier:v16];
           if ([v17 containsSuppressedLivePhoto])
           {
             [v10 addObject:v16];
@@ -456,10 +456,10 @@ LABEL_29:
       while (v13);
     }
 
-    v18 = [(AEMessagesShelfViewController *)self _dataSource];
-    v19 = [objc_alloc(MEMORY[0x277D3D058]) initWithReviewDataSource:v18];
+    _dataSource = [(AEMessagesShelfViewController *)self _dataSource];
+    v19 = [objc_alloc(MEMORY[0x277D3D058]) initWithReviewDataSource:_dataSource];
     LOBYTE(v22) = 0;
-    v20 = [objc_alloc(MEMORY[0x277D3D020]) initWithDataSourceManager:v19 mediaProvider:v25 reviewAssetProvider:0 initialIndexPath:v24 initialSelectedAssetUUIDs:v23 initialDisabledLivePhotoAssetUUIDs:v10 selectionCountLimit:0 sourceType:1 lowMemoryMode:v22 options:32];
+    v20 = [objc_alloc(MEMORY[0x277D3D020]) initWithDataSourceManager:v19 mediaProvider:_internalReviewMediaProvider reviewAssetProvider:0 initialIndexPath:v24 initialSelectedAssetUUIDs:v23 initialDisabledLivePhotoAssetUUIDs:v10 selectionCountLimit:0 sourceType:1 lowMemoryMode:v22 options:32];
     [v20 setDelegate:self];
     [v20 setModalPresentationStyle:0];
     [(AEMessagesShelfViewController *)self _presentReviewViewController:v20];
@@ -470,21 +470,21 @@ LABEL_29:
 
 - (BOOL)shouldPresentReviewController
 {
-  v2 = [(AEMessagesShelfViewController *)self _packageTransport];
-  v3 = [v2 shouldHideReviewController];
+  _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+  shouldHideReviewController = [_packageTransport shouldHideReviewController];
 
-  return v3 ^ 1;
+  return shouldHideReviewController ^ 1;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v7 = a3;
-  if ([v7 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v4 = [(AEMessagesShelfViewController *)self _scrollViewController];
-    v5 = [v4 scrollView];
+    _scrollViewController = [(AEMessagesShelfViewController *)self _scrollViewController];
+    scrollView = [_scrollViewController scrollView];
 
-    [v7 locationInView:v5];
+    [tapCopy locationInView:scrollView];
     v6 = [(AEMessagesShelfViewController *)self contentAssetReferenceAtPoint:?];
     if (v6 && [(AEMessagesShelfViewController *)self shouldPresentReviewController])
     {
@@ -493,88 +493,88 @@ LABEL_29:
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(AEMessagesShelfViewController *)self _scrollViewController];
-  v6 = [v5 scrollView];
+  beginCopy = begin;
+  _scrollViewController = [(AEMessagesShelfViewController *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
-  v7 = [(AEMessagesShelfViewController *)self _scrollViewController];
-  v8 = [v7 contentCoordinateSpace];
+  _scrollViewController2 = [(AEMessagesShelfViewController *)self _scrollViewController];
+  contentCoordinateSpace = [_scrollViewController2 contentCoordinateSpace];
 
-  v9 = [(AEMessagesShelfViewController *)self _tilingController];
-  [v4 locationInView:v6];
+  _tilingController = [(AEMessagesShelfViewController *)self _tilingController];
+  [beginCopy locationInView:scrollView];
   v11 = v10;
   v13 = v12;
 
-  [v8 convertPoint:v6 fromCoordinateSpace:{v11, v13}];
-  if (v9)
+  [contentCoordinateSpace convertPoint:scrollView fromCoordinateSpace:{v11, v13}];
+  if (_tilingController)
   {
     v14 = *MEMORY[0x277D3CF88];
     v15 = *(MEMORY[0x277D3CF88] + 8);
     v16 = *(MEMORY[0x277D3CF88] + 16);
     v17 = *(MEMORY[0x277D3CF88] + 24);
-    [v9 hitTestTileAtPoint:&__block_literal_global_517 padding:? passingTest:?];
+    [_tilingController hitTestTileAtPoint:&__block_literal_global_517 padding:? passingTest:?];
   }
 
   return 0;
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  v7 = [(AEMessagesShelfViewController *)self _sceneController];
-  v8 = *&a4->var1[5];
-  v18 = *&a4->var1[3];
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  v8 = *&identifier->var1[5];
+  v18 = *&identifier->var1[3];
   v19 = v8;
-  v20 = *&a4->var1[7];
-  v21 = a4->var1[9];
-  v9 = *&a4->var1[1];
-  v16 = *&a4->var0;
+  v20 = *&identifier->var1[7];
+  v21 = identifier->var1[9];
+  v9 = *&identifier->var1[1];
+  v16 = *&identifier->var0;
   v17 = v9;
-  if ([v7 providesTileForIdentifier:&v16])
+  if ([_sceneController providesTileForIdentifier:&v16])
   {
-    v10 = *&a4->var1[5];
-    v18 = *&a4->var1[3];
+    v10 = *&identifier->var1[5];
+    v18 = *&identifier->var1[3];
     v19 = v10;
-    v20 = *&a4->var1[7];
-    v21 = a4->var1[9];
-    v11 = *&a4->var1[1];
-    v16 = *&a4->var0;
+    v20 = *&identifier->var1[7];
+    v21 = identifier->var1[9];
+    v11 = *&identifier->var1[1];
+    v16 = *&identifier->var0;
     v17 = v11;
-    [v7 checkInTile:a3 withIdentifier:&v16];
+    [_sceneController checkInTile:tile withIdentifier:&v16];
   }
 
   else
   {
-    v12 = a3;
-    v13 = [v12 view];
-    [v13 removeFromSuperview];
+    tileCopy = tile;
+    view = [tileCopy view];
+    [view removeFromSuperview];
 
-    v14 = [v7 viewTileReusePool];
-    [v14 checkInReusableObject:v12];
-    v15 = [(AEMessagesShelfViewController *)self _tilesInUse];
-    [v15 removeObject:v12];
+    viewTileReusePool = [_sceneController viewTileReusePool];
+    [viewTileReusePool checkInReusableObject:tileCopy];
+    _tilesInUse = [(AEMessagesShelfViewController *)self _tilesInUse];
+    [_tilesInUse removeObject:tileCopy];
   }
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v6 = a4;
-  v7 = [(AEMessagesShelfViewController *)self _sceneController];
-  v8 = *&a3->var1[5];
-  v26 = *&a3->var1[3];
+  layoutCopy = layout;
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  v8 = *&identifier->var1[5];
+  v26 = *&identifier->var1[3];
   v27 = v8;
-  v28 = *&a3->var1[7];
-  v29 = a3->var1[9];
-  v9 = *&a3->var1[1];
-  v24 = *&a3->var0;
+  v28 = *&identifier->var1[7];
+  v29 = identifier->var1[9];
+  v9 = *&identifier->var1[1];
+  v24 = *&identifier->var0;
   v25 = v9;
-  if (![v7 providesTileForIdentifier:&v24])
+  if (![_sceneController providesTileForIdentifier:&v24])
   {
-    v13 = [v7 viewTileReusePool];
-    v14 = v13;
-    v15 = a3->var1[0];
-    v16 = a3->var1[4];
+    viewTileReusePool = [_sceneController viewTileReusePool];
+    v14 = viewTileReusePool;
+    v15 = identifier->var1[0];
+    v16 = identifier->var1[4];
     if (v15 > 1295210291)
     {
       switch(v15)
@@ -667,7 +667,7 @@ LABEL_29:
           v18 = 1215219281;
           break;
         case 1277777777:
-          v17 = [v13 checkOutReusableObjectWithReuseIdentifier:1277777777];
+          v17 = [viewTileReusePool checkOutReusableObjectWithReuseIdentifier:1277777777];
           v12 = v17;
           if (v16 == 2)
           {
@@ -686,12 +686,12 @@ LABEL_25:
               }
 
 LABEL_38:
-              v20 = [(AEMessagesShelfViewController *)self _tilesInUse];
-              [v20 addObject:v12];
+              _tilesInUse = [(AEMessagesShelfViewController *)self _tilesInUse];
+              [_tilesInUse addObject:v12];
 
-              v21 = [(AEMessagesShelfViewController *)self _scrollViewController];
-              v22 = [v12 view];
-              [v21 ae_ensureSubview:v22];
+              _scrollViewController = [(AEMessagesShelfViewController *)self _scrollViewController];
+              view = [v12 view];
+              [_scrollViewController ae_ensureSubview:view];
 
               goto LABEL_39;
             }
@@ -707,39 +707,39 @@ LABEL_41:
       }
     }
 
-    v12 = [v13 checkOutReusableObjectWithReuseIdentifier:v18];
+    v12 = [viewTileReusePool checkOutReusableObjectWithReuseIdentifier:v18];
     goto LABEL_38;
   }
 
-  v10 = *&a3->var1[5];
-  v26 = *&a3->var1[3];
+  v10 = *&identifier->var1[5];
+  v26 = *&identifier->var1[3];
   v27 = v10;
-  v28 = *&a3->var1[7];
-  v29 = a3->var1[9];
-  v11 = *&a3->var1[1];
-  v24 = *&a3->var0;
+  v28 = *&identifier->var1[7];
+  v29 = identifier->var1[9];
+  v11 = *&identifier->var1[1];
+  v24 = *&identifier->var0;
   v25 = v11;
-  v12 = [v7 checkOutTileForIdentifier:&v24 layout:v6];
+  v12 = [_sceneController checkOutTileForIdentifier:&v24 layout:layoutCopy];
 LABEL_39:
 
   return v12;
 }
 
-- (void)_didTapGenerationButton:(id)a3
+- (void)_didTapGenerationButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v32 = 0;
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
-  v5 = [(AEMessagesShelfViewController *)self _sceneController];
-  v6 = [v5 tilingController];
-  v7 = v6;
-  if (v6)
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  tilingController = [_sceneController tilingController];
+  v7 = tilingController;
+  if (tilingController)
   {
-    [v6 tileIdentifierForTile:v4];
+    [tilingController tileIdentifierForTile:buttonCopy];
   }
 
   else
@@ -754,21 +754,21 @@ LABEL_39:
 
   if ((v27 - 6) >= 0xFFFFFFFFFFFFFFFDLL && v28 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(AEMessagesShelfViewController *)self _packageTransport];
-    v9 = [v8 orderedStagedIdentifiers];
-    v10 = [v9 objectAtIndex:v29];
-    v11 = [v8 stagedPackageForIdentifier:v10];
-    v12 = [v11 generationRecipeData];
-    v13 = [v11 identifier];
-    [(AEMessagesShelfViewController *)self setEditingGeneratedPackageIdentifier:v13];
+    _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+    orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
+    v10 = [orderedStagedIdentifiers objectAtIndex:v29];
+    v11 = [_packageTransport stagedPackageForIdentifier:v10];
+    generationRecipeData = [v11 generationRecipeData];
+    identifier = [v11 identifier];
+    [(AEMessagesShelfViewController *)self setEditingGeneratedPackageIdentifier:identifier];
 
     v14 = [objc_alloc(MEMORY[0x277CD3788]) initWithStyle:0];
     [v14 setDelegate:self];
     if ([v11 containsGenerationRecipeData])
     {
       v15 = objc_alloc(MEMORY[0x277CD3790]);
-      v25 = v12;
-      v16 = [v15 initWithEncodedRecipe:v12 prompt:0 contextElements:MEMORY[0x277CBEBF8]];
+      v25 = generationRecipeData;
+      v16 = [v15 initWithEncodedRecipe:generationRecipeData prompt:0 contextElements:MEMORY[0x277CBEBF8]];
       [v14 setRecipe:v16];
     }
 
@@ -776,49 +776,49 @@ LABEL_39:
     {
       if (![v11 containsGenerationSourceImage])
       {
-        v21 = PLAssetExplorerGetLog();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        assetExplorerAnalytics = PLAssetExplorerGetLog();
+        if (os_log_type_enabled(assetExplorerAnalytics, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_impl(&dword_2411DE000, v21, OS_LOG_TYPE_ERROR, "No recipe nor source image, unable to present generative playground controller.", buf, 2u);
+          _os_log_impl(&dword_2411DE000, assetExplorerAnalytics, OS_LOG_TYPE_ERROR, "No recipe nor source image, unable to present generative playground controller.", buf, 2u);
         }
 
         goto LABEL_11;
       }
 
-      v25 = v12;
+      v25 = generationRecipeData;
       v17 = objc_alloc(MEMORY[0x277CBEA90]);
-      v18 = [v11 sourceImageURL];
-      v16 = [v17 initWithContentsOfURL:v18];
+      sourceImageURL = [v11 sourceImageURL];
+      v16 = [v17 initWithContentsOfURL:sourceImageURL];
 
       v19 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v16];
       [v14 setSourceImage:v19];
     }
 
-    v20 = [(AEMessagesShelfViewController *)self entryViewDelegate];
-    [v20 presentViewController:v14 animated:1 completion:0];
+    entryViewDelegate = [(AEMessagesShelfViewController *)self entryViewDelegate];
+    [entryViewDelegate presentViewController:v14 animated:1 completion:0];
 
-    v21 = [(AEMessagesShelfViewController *)self assetExplorerAnalytics];
+    assetExplorerAnalytics = [(AEMessagesShelfViewController *)self assetExplorerAnalytics];
     v22 = *MEMORY[0x277D3D0B0];
-    v23 = [(AEMessagesShelfViewController *)self _dataSource];
-    v24 = [v23 orderedIdentifiers];
-    -[NSObject sendEvent:view:source:currentAssetCount:](v21, "sendEvent:view:source:currentAssetCount:", v22, 1, 1, [v24 count]);
+    _dataSource = [(AEMessagesShelfViewController *)self _dataSource];
+    orderedIdentifiers = [_dataSource orderedIdentifiers];
+    -[NSObject sendEvent:view:source:currentAssetCount:](assetExplorerAnalytics, "sendEvent:view:source:currentAssetCount:", v22, 1, 1, [orderedIdentifiers count]);
 
-    v12 = v25;
+    generationRecipeData = v25;
 LABEL_11:
   }
 }
 
-- (void)_toggleIris:(id)a3
+- (void)_toggleIris:(id)iris
 {
-  v4 = a3;
+  irisCopy = iris;
   v17 = 0u;
-  v5 = [(AEMessagesShelfViewController *)self _sceneController];
-  v6 = [v5 tilingController];
-  v7 = v6;
-  if (v6)
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  tilingController = [_sceneController tilingController];
+  v7 = tilingController;
+  if (tilingController)
   {
-    [v6 tileIdentifierForTile:v4];
+    [tilingController tileIdentifierForTile:irisCopy];
   }
 
   else
@@ -828,10 +828,10 @@ LABEL_11:
 
   if ((v17 - 6) >= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = [(AEMessagesShelfViewController *)self _packageTransport];
-    v9 = [v8 orderedStagedIdentifiers];
-    v10 = [v9 objectAtIndex:0];
-    v11 = [v8 stagedPackageForIdentifier:v10];
+    _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+    orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
+    v10 = [orderedStagedIdentifiers objectAtIndex:0];
+    v11 = [_packageTransport stagedPackageForIdentifier:v10];
     v12 = [v11 mutableCopy];
     if ([v11 containsSuppressedLivePhoto])
     {
@@ -843,33 +843,33 @@ LABEL_11:
       [v12 beginSupressingLivePhoto];
     }
 
-    [v8 stagePackage:{v12, v17}];
-    v13 = [(AEMessagesShelfViewController *)self assetExplorerAnalytics];
+    [_packageTransport stagePackage:{v12, v17}];
+    assetExplorerAnalytics = [(AEMessagesShelfViewController *)self assetExplorerAnalytics];
     v14 = *MEMORY[0x277D3D0C8];
-    v15 = [(AEMessagesShelfViewController *)self _dataSource];
-    v16 = [v15 orderedIdentifiers];
-    [v13 sendEvent:v14 view:1 source:1 currentAssetCount:{objc_msgSend(v16, "count")}];
+    _dataSource = [(AEMessagesShelfViewController *)self _dataSource];
+    orderedIdentifiers = [_dataSource orderedIdentifiers];
+    [assetExplorerAnalytics sendEvent:v14 view:1 source:1 currentAssetCount:{objc_msgSend(orderedIdentifiers, "count")}];
   }
 }
 
-- (void)_removeFromShelf:(id)a3
+- (void)_removeFromShelf:(id)shelf
 {
-  v4 = a3;
-  v5 = [(AEMessagesShelfViewController *)self _sceneController];
-  v6 = [v5 tilingController];
-  v7 = v6;
-  if (v6)
+  shelfCopy = shelf;
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  tilingController = [_sceneController tilingController];
+  v7 = tilingController;
+  if (tilingController)
   {
-    [v6 tileIdentifierForTile:v4];
+    [tilingController tileIdentifierForTile:shelfCopy];
   }
 }
 
-- (id)assetsScene:(id)a3 transitionAnimationCoordinatorForChange:(id)a4
+- (id)assetsScene:(id)scene transitionAnimationCoordinatorForChange:(id)change
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 tilingController];
-  v8 = [v6 tilingController:v7 transitionAnimationCoordinatorForChange:v5];
+  changeCopy = change;
+  sceneCopy = scene;
+  tilingController = [sceneCopy tilingController];
+  v8 = [sceneCopy tilingController:tilingController transitionAnimationCoordinatorForChange:changeCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -883,39 +883,39 @@ LABEL_11:
   return v9;
 }
 
-- (id)assetsScene:(id)a3 layoutForDataSource:(id)a4
+- (id)assetsScene:(id)scene layoutForDataSource:(id)source
 {
-  v5 = a4;
-  v6 = [(PXAssetsTilingLayout *)[AEMessagesShelfLayout alloc] initWithDataSource:v5];
+  sourceCopy = source;
+  v6 = [(PXAssetsTilingLayout *)[AEMessagesShelfLayout alloc] initWithDataSource:sourceCopy];
 
   [(AEMessagesShelfLayout *)v6 setDelegate:self];
 
   return v6;
 }
 
-- (id)framesOfVisibleContentViewInCoordinateSpace:(id)a3
+- (id)framesOfVisibleContentViewInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(AEMessagesShelfViewController *)self _scrollViewController];
-  v6 = [v5 contentCoordinateSpace];
-  [v5 visibleRect];
+  spaceCopy = space;
+  _scrollViewController = [(AEMessagesShelfViewController *)self _scrollViewController];
+  contentCoordinateSpace = [_scrollViewController contentCoordinateSpace];
+  [_scrollViewController visibleRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(AEMessagesShelfViewController *)self _tilingController];
+  _tilingController = [(AEMessagesShelfViewController *)self _tilingController];
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateSpace___block_invoke;
   v22[3] = &unk_278CC71E0;
-  v23 = v6;
-  v24 = v4;
+  v23 = contentCoordinateSpace;
+  v24 = spaceCopy;
   v25 = v16;
   v17 = v16;
-  v18 = v4;
-  v19 = v6;
-  [v15 enumerateTilesInRect:0 withOptions:v22 usingBlock:{v8, v10, v12, v14}];
+  v18 = spaceCopy;
+  v19 = contentCoordinateSpace;
+  [_tilingController enumerateTilesInRect:0 withOptions:v22 usingBlock:{v8, v10, v12, v14}];
   v20 = [v17 copy];
 
   return v20;
@@ -935,11 +935,11 @@ void __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateS
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [MEMORY[0x277CF97E0] sharedBehaviors];
-  [v4 entryViewMaxPluginShelfHeight];
+  width = fits.width;
+  mEMORY[0x277CF97E0] = [MEMORY[0x277CF97E0] sharedBehaviors];
+  [mEMORY[0x277CF97E0] entryViewMaxPluginShelfHeight];
   v6 = v5;
 
   v7 = width;
@@ -949,124 +949,124 @@ void __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateS
   return result;
 }
 
-- (BOOL)layoutShouldShowVideoDuration:(id)a3
+- (BOOL)layoutShouldShowVideoDuration:(id)duration
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  return (v4 - 1) < 2;
+  return (statusBarOrientation - 1) < 2;
 }
 
-- (double)layout:(id)a3 itemAtIndexPathDuration:(PXSimpleIndexPath *)a4
+- (double)layout:(id)layout itemAtIndexPathDuration:(PXSimpleIndexPath *)duration
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v11[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&duration->item;
+  v11[0] = *&duration->dataSourceIdentifier;
   v11[1] = v6;
-  v7 = [v5 assetAtItemIndexPath:v11];
+  v7 = [dataSource assetAtItemIndexPath:v11];
   [v7 duration];
   v9 = v8;
 
   return v9;
 }
 
-- (BOOL)layout:(id)a3 itemAtIndexPathIsSpatial:(PXSimpleIndexPath *)a4
+- (BOOL)layout:(id)layout itemAtIndexPathIsSpatial:(PXSimpleIndexPath *)spatial
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v10[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&spatial->item;
+  v10[0] = *&spatial->dataSourceIdentifier;
   v10[1] = v6;
-  v7 = [v5 assetAtItemIndexPath:v10];
+  v7 = [dataSource assetAtItemIndexPath:v10];
   v8 = ([v7 mediaSubtypes] >> 10) & 1;
 
   return v8;
 }
 
-- (BOOL)layout:(id)a3 itemAtIndexPathIsAnimatedImage:(PXSimpleIndexPath *)a4
+- (BOOL)layout:(id)layout itemAtIndexPathIsAnimatedImage:(PXSimpleIndexPath *)image
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v10[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&image->item;
+  v10[0] = *&image->dataSourceIdentifier;
   v10[1] = v6;
-  v7 = [v5 assetAtItemIndexPath:v10];
+  v7 = [dataSource assetAtItemIndexPath:v10];
   v8 = [v7 playbackStyle] == 2;
 
   return v8;
 }
 
-- (BOOL)layout:(id)a3 itemAtIndexPathIsLoop:(PXSimpleIndexPath *)a4
+- (BOOL)layout:(id)layout itemAtIndexPathIsLoop:(PXSimpleIndexPath *)loop
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v10[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&loop->item;
+  v10[0] = *&loop->dataSourceIdentifier;
   v10[1] = v6;
-  v7 = [v5 assetAtItemIndexPath:v10];
+  v7 = [dataSource assetAtItemIndexPath:v10];
   v8 = [v7 playbackStyle] == 5;
 
   return v8;
 }
 
-- (BOOL)layout:(id)a3 itemAtIndexPathIsVideo:(PXSimpleIndexPath *)a4
+- (BOOL)layout:(id)layout itemAtIndexPathIsVideo:(PXSimpleIndexPath *)video
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v10[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&video->item;
+  v10[0] = *&video->dataSourceIdentifier;
   v10[1] = v6;
-  v7 = [v5 assetAtItemIndexPath:v10];
+  v7 = [dataSource assetAtItemIndexPath:v10];
   v8 = [v7 playbackStyle] == 4;
 
   return v8;
 }
 
-- (int64_t)layout:(id)a3 generationStateForItemAtIndexPath:(PXSimpleIndexPath *)a4
+- (int64_t)layout:(id)layout generationStateForItemAtIndexPath:(PXSimpleIndexPath *)path
 {
   if (!_os_feature_enabled_impl() || ![MEMORY[0x277CD3788] isAvailable])
   {
     return 0;
   }
 
-  v6 = [(AEMessagesShelfViewController *)self _packageTransport];
-  v7 = [v6 orderedStagedIdentifiers];
-  item = a4->item;
-  if (item >= [v7 count])
+  _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+  orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
+  item = path->item;
+  if (item >= [orderedStagedIdentifiers count])
   {
     v13 = 0;
   }
 
   else
   {
-    v9 = [v7 objectAtIndex:a4->item];
-    v10 = [v6 stagedPackageForIdentifier:v9];
-    v11 = [v10 containsGenerationRecipeData];
-    v12 = [v10 containsGenerationSourceImage];
-    if (v11)
+    v9 = [orderedStagedIdentifiers objectAtIndex:path->item];
+    v10 = [_packageTransport stagedPackageForIdentifier:v9];
+    containsGenerationRecipeData = [v10 containsGenerationRecipeData];
+    containsGenerationSourceImage = [v10 containsGenerationSourceImage];
+    if (containsGenerationRecipeData)
     {
       v13 = 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = containsGenerationSourceImage;
     }
   }
 
   return v13;
 }
 
-- (int64_t)layout:(id)a3 irisToggleStateForItemAtIndexPath:(PXSimpleIndexPath *)a4
+- (int64_t)layout:(id)layout irisToggleStateForItemAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [(AEMessagesShelfViewController *)self _packageTransport];
-  v6 = [v5 orderedStagedIdentifiers];
-  item = a4->item;
-  if (item >= [v6 count])
+  _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+  orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
+  item = path->item;
+  if (item >= [orderedStagedIdentifiers count])
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = [v6 objectAtIndex:a4->item];
-    v9 = [v5 stagedPackageForIdentifier:v8];
+    v8 = [orderedStagedIdentifiers objectAtIndex:path->item];
+    v9 = [_packageTransport stagedPackageForIdentifier:v8];
     if ([v9 containsLivePhotoContent])
     {
       if ([v9 containsSuppressedLivePhoto])
@@ -1089,39 +1089,39 @@ void __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateS
   return v10;
 }
 
-- (double)layout:(id)a3 aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)a4
+- (double)layout:(id)layout aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v12[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&path->item;
+  v12[0] = *&path->dataSourceIdentifier;
   v12[1] = v6;
-  v7 = [v5 assetReferenceAtItemIndexPath:v12];
-  v8 = [v7 asset];
-  [v8 aspectRatio];
+  v7 = [dataSource assetReferenceAtItemIndexPath:v12];
+  asset = [v7 asset];
+  [asset aspectRatio];
   v10 = v9;
 
   return v10;
 }
 
-- (CGPoint)tilingController:(id)a3 initialVisibleOriginForLayout:(id)a4
+- (CGPoint)tilingController:(id)controller initialVisibleOriginForLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEMessagesShelfViewController *)self _sceneController];
-  v9 = [(AEMessagesShelfViewController *)self _indexToScrollTo];
-  if (v9 < 0)
+  controllerCopy = controller;
+  layoutCopy = layout;
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  _indexToScrollTo = [(AEMessagesShelfViewController *)self _indexToScrollTo];
+  if (_indexToScrollTo < 0)
   {
-    [v8 tilingController:v6 initialVisibleOriginForLayout:v7];
+    [_sceneController tilingController:controllerCopy initialVisibleOriginForLayout:layoutCopy];
     v16 = v17;
     v15 = v18;
   }
 
   else
   {
-    v10 = v9;
-    v11 = v7;
-    v12 = [v11 dataSource];
-    v13 = [v12 identifier];
+    v10 = _indexToScrollTo;
+    v11 = layoutCopy;
+    dataSource = [v11 dataSource];
+    identifier = [dataSource identifier];
     memset(v25, 0, sizeof(v25));
     v14 = *MEMORY[0x277D3CC58];
     v24 = 0;
@@ -1129,7 +1129,7 @@ void __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateS
     v22 = 0u;
     v21[0] = 5;
     v21[1] = v14;
-    v21[2] = v13;
+    v21[2] = identifier;
     v21[3] = 0;
     v21[4] = v10;
     v21[5] = 0x7FFFFFFFFFFFFFFFLL;
@@ -1155,9 +1155,9 @@ void __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateS
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && AEMessagesShelfViewControllerTransportPackageTransportObserverContext == a5)
+  if ((change & 1) != 0 && AEMessagesShelfViewControllerTransportPackageTransportObserverContext == context)
   {
     [(AEMessagesShelfViewController *)self _transportStagingStateDidChange];
   }
@@ -1165,12 +1165,12 @@ void __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateS
 
 - (void)_transportStagingStateDidChange
 {
-  v3 = [(AEMessagesShelfViewController *)self _packageTransport];
-  v4 = [v3 orderedStagedIdentifiers];
-  v5 = [(AEMessagesShelfViewController *)self _dataSource];
-  v6 = [v5 orderedIdentifiers];
-  v7 = [MEMORY[0x277CBEB70] orderedSetWithArray:v4];
-  v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:v6];
+  _packageTransport = [(AEMessagesShelfViewController *)self _packageTransport];
+  orderedStagedIdentifiers = [_packageTransport orderedStagedIdentifiers];
+  _dataSource = [(AEMessagesShelfViewController *)self _dataSource];
+  orderedIdentifiers = [_dataSource orderedIdentifiers];
+  v7 = [MEMORY[0x277CBEB70] orderedSetWithArray:orderedStagedIdentifiers];
+  v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:orderedIdentifiers];
   v9 = [v8 mutableCopy];
   [v9 minusOrderedSet:v7];
   v10 = [v7 mutableCopy];
@@ -1182,21 +1182,21 @@ void __77__AEMessagesShelfViewController_framesOfVisibleContentViewInCoordinateS
   v22 = __64__AEMessagesShelfViewController__transportStagingStateDidChange__block_invoke;
   v23 = &unk_278CC71B8;
   v24 = v9;
-  v12 = v5;
+  v12 = _dataSource;
   v25 = v12;
   v26 = v10;
-  v27 = v3;
+  v27 = _packageTransport;
   v28 = v11;
-  v13 = v4;
+  v13 = orderedStagedIdentifiers;
   v29 = v13;
   v19 = v11;
-  v18 = v3;
+  v18 = _packageTransport;
   v14 = v10;
   v15 = v9;
   [v12 performChanges:&v20];
-  v16 = [v12 orderedIdentifiers];
-  v17 = [v16 count];
-  if (v17 > [v6 count])
+  orderedIdentifiers2 = [v12 orderedIdentifiers];
+  v17 = [orderedIdentifiers2 count];
+  if (v17 > [orderedIdentifiers count])
   {
     -[AEMessagesShelfViewController _setIndexToScrollTo:](self, "_setIndexToScrollTo:", [v13 count] - 1);
   }
@@ -1314,36 +1314,36 @@ void __64__AEMessagesShelfViewController__transportStagingStateDidChange__block_
   v14.receiver = self;
   v14.super_class = AEMessagesShelfViewController;
   [(AEMessagesShelfViewController *)&v14 viewDidLoad];
-  v3 = [(AEMessagesShelfViewController *)self _sceneController];
-  v4 = [v3 viewTileReusePool];
-  [AEDecorativeTileSource registerCommonDecorativeTilesToReusePool:v4];
+  _sceneController = [(AEMessagesShelfViewController *)self _sceneController];
+  viewTileReusePool = [_sceneController viewTileReusePool];
+  [AEDecorativeTileSource registerCommonDecorativeTilesToReusePool:viewTileReusePool];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__AEMessagesShelfViewController_viewDidLoad__block_invoke;
   v11[3] = &unk_278CC7190;
   objc_copyWeak(&v12, &location);
-  [v4 registerReusableObjectForReuseIdentifier:1313817680 creationHandler:v11];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:1313817680 creationHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_2;
   v9[3] = &unk_278CC7190;
   objc_copyWeak(&v10, &location);
-  [v4 registerReusableObjectForReuseIdentifier:1295210292 creationHandler:v9];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:1295210292 creationHandler:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_3;
   v7[3] = &unk_278CC7190;
   objc_copyWeak(&v8, &location);
-  [v4 registerReusableObjectForReuseIdentifier:1295210293 creationHandler:v7];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:1295210293 creationHandler:v7];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_4;
   v5[3] = &unk_278CC7190;
   objc_copyWeak(&v6, &location);
-  [v4 registerReusableObjectForReuseIdentifier:1277777777 creationHandler:v5];
-  [v4 registerReusableObjectForReuseIdentifier:1500001338 creationHandler:&__block_literal_global];
-  [v4 registerReusableObjectForReuseIdentifier:1215219281 creationHandler:&__block_literal_global_498];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:1277777777 creationHandler:v5];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:1500001338 creationHandler:&__block_literal_global];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:1215219281 creationHandler:&__block_literal_global_498];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -1417,25 +1417,25 @@ id __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_5()
 
 - (void)loadView
 {
-  v3 = [(AEMessagesShelfViewController *)self _scrollViewController];
-  v6 = [v3 scrollView];
+  _scrollViewController = [(AEMessagesShelfViewController *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [scrollView setBackgroundColor:clearColor];
 
-  [v6 setShowsVerticalScrollIndicator:0];
-  [v6 setShowsHorizontalScrollIndicator:0];
-  [v6 setUserInteractionEnabled:1];
-  [(AEMessagesShelfViewController *)self setView:v6];
+  [scrollView setShowsVerticalScrollIndicator:0];
+  [scrollView setShowsHorizontalScrollIndicator:0];
+  [scrollView setUserInteractionEnabled:1];
+  [(AEMessagesShelfViewController *)self setView:scrollView];
   v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTap_];
   [v5 setDelegate:self];
-  [v6 addGestureRecognizer:v5];
+  [scrollView addGestureRecognizer:v5];
 }
 
-- (void)_presentReviewViewController:(id)a3
+- (void)_presentReviewViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AEMessagesShelfViewController *)self entryViewDelegate];
+  controllerCopy = controller;
+  entryViewDelegate = [(AEMessagesShelfViewController *)self entryViewDelegate];
   v6 = objc_opt_respondsToSelector();
   v7 = PLAssetExplorerGetLog();
   presentedReviewController = v7;
@@ -1447,7 +1447,7 @@ id __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_5()
       _os_log_impl(&dword_2411DE000, presentedReviewController, OS_LOG_TYPE_DEFAULT, "Will present review controller.", buf, 2u);
     }
 
-    [v5 presentViewController:v4 animated:1 completion:0];
+    [entryViewDelegate presentViewController:controllerCopy animated:1 completion:0];
     v9 = PLAssetExplorerGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -1455,7 +1455,7 @@ id __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_5()
       _os_log_impl(&dword_2411DE000, v9, OS_LOG_TYPE_DEFAULT, "Did present review controller.", v12, 2u);
     }
 
-    v10 = v4;
+    v10 = controllerCopy;
     presentedReviewController = self->_presentedReviewController;
     self->_presentedReviewController = v10;
   }
@@ -1490,17 +1490,17 @@ id __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_5()
   [(AEMessagesShelfViewController *)&v3 dealloc];
 }
 
-- (AEMessagesShelfViewController)initWithPackageTransport:(id)a3 options:(unint64_t)a4
+- (AEMessagesShelfViewController)initWithPackageTransport:(id)transport options:(unint64_t)options
 {
-  v7 = a3;
+  transportCopy = transport;
   v35.receiver = self;
   v35.super_class = AEMessagesShelfViewController;
   v8 = [(AEMessagesShelfViewController *)&v35 init];
   v9 = v8;
   if (v8)
   {
-    v8->__options = a4;
-    objc_storeStrong(&v8->__packageTransport, a3);
+    v8->__options = options;
+    objc_storeStrong(&v8->__packageTransport, transport);
     [(AEPackageTransport *)v9->__packageTransport registerChangeObserver:v9 context:AEMessagesShelfViewControllerTransportPackageTransportObserverContext];
     v10 = objc_alloc_init(MEMORY[0x277D3D068]);
     dataSource = v9->__dataSource;
@@ -1520,8 +1520,8 @@ id __44__AEMessagesShelfViewController_viewDidLoad__block_invoke_5()
     v9->__wrappedDataSourceManager = v17;
 
     [(AEWrappedDataSourceManager *)v9->__wrappedDataSourceManager attachDataSourceManager:v9->__internalReviewDataSourceManager];
-    v19 = [(PXSectionedDataSourceManager *)v9->__wrappedDataSourceManager dataSource];
-    v20 = [(PXAssetsTilingLayout *)[AEMessagesShelfLayout alloc] initWithDataSource:v19];
+    dataSource = [(PXSectionedDataSourceManager *)v9->__wrappedDataSourceManager dataSource];
+    v20 = [(PXAssetsTilingLayout *)[AEMessagesShelfLayout alloc] initWithDataSource:dataSource];
     v21 = objc_alloc(MEMORY[0x277D3CE20]);
     v22 = [v21 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v22 registerObserver:v9];

@@ -1,17 +1,17 @@
 @interface MSSuggestion
 - (BOOL)hasArtwork;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INPlayMediaIntent)intent;
 - (MSUnifiedMediaIntent)unifiedIntent;
 - (NSSet)editorialTags;
 - (NSString)bundleID;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int)contentType;
 - (int64_t)hash;
-- (void)artworkWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBundleID:(id)a3;
-- (void)setIntent:(id)a3;
+- (void)artworkWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBundleID:(id)d;
+- (void)setIntent:(id)intent;
 @end
 
 @implementation MSSuggestion
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
   v4 = sub_22CA20E20();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_22C9DB234(v4, v6);
 }
 
@@ -39,11 +39,11 @@
   return v2;
 }
 
-- (void)setIntent:(id)a3
+- (void)setIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  sub_22C9DB2EC(v4);
+  intentCopy = intent;
+  selfCopy = self;
+  sub_22C9DB2EC(intentCopy);
 }
 
 - (MSUnifiedMediaIntent)unifiedIntent
@@ -55,7 +55,7 @@
 
 - (int)contentType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MSSuggestion.contentType.getter();
 
   return v3;
@@ -71,15 +71,15 @@
 
 - (BOOL)hasArtwork
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MSSuggestion.hasArtwork.getter();
 
   return v3 & 1;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   MSSuggestion.copy(with:)(v6);
 
   sub_22C9D05CC(v6, v6[3]);
@@ -88,18 +88,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MSSuggestion.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MSSuggestion.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_22CA21130();
     swift_unknownObjectRelease();
@@ -108,7 +108,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = MSSuggestion.isEqual(_:)(v8);
@@ -119,18 +119,18 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MSSuggestion.hash.getter();
 
   return v3;
 }
 
-- (void)artworkWithCompletion:(id)a3
+- (void)artworkWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   MSSuggestion.artwork(completion:)(sub_22C9DE140, v5);
 }
 

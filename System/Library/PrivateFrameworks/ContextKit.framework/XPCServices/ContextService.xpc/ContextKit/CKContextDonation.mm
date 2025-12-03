@@ -29,8 +29,8 @@ LABEL_3:
         objc_enumerationMutation(v2);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) title];
-      if ([v7 length])
+      title = [*(*(&v9 + 1) + 8 * v6) title];
+      if ([title length])
       {
         break;
       }
@@ -51,10 +51,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v7 = 0;
+    title = 0;
   }
 
-  return v7;
+  return title;
 }
 
 - (NSString)internal_bestDebugUrlString
@@ -78,8 +78,8 @@ LABEL_3:
         objc_enumerationMutation(v2);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) debugUrlString];
-      if ([v7 length])
+      debugUrlString = [*(*(&v9 + 1) + 8 * v6) debugUrlString];
+      if ([debugUrlString length])
       {
         break;
       }
@@ -100,10 +100,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v7 = 0;
+    debugUrlString = 0;
   }
 
-  return v7;
+  return debugUrlString;
 }
 
 - (NSString)internal_bestRawHTML
@@ -127,8 +127,8 @@ LABEL_3:
         objc_enumerationMutation(v2);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) rawHTML];
-      if ([v7 length])
+      rawHTML = [*(*(&v9 + 1) + 8 * v6) rawHTML];
+      if ([rawHTML length])
       {
         break;
       }
@@ -149,44 +149,44 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v7 = 0;
+    rawHTML = 0;
   }
 
-  return v7;
+  return rawHTML;
 }
 
 - (IOSurface)internal_bestLeadImage
 {
-  v2 = [(CKContextDonation *)self items];
+  items = [(CKContextDonation *)self items];
   memset(v5, 0, sizeof(v5));
-  if ([v2 countByEnumeratingWithState:v5 objects:v6 count:16])
+  if ([items countByEnumeratingWithState:v5 objects:v6 count:16])
   {
-    v3 = [**(&v5[0] + 1) leadImage];
+    leadImage = [**(&v5[0] + 1) leadImage];
   }
 
   else
   {
-    v3 = 0;
+    leadImage = 0;
   }
 
-  return v3;
+  return leadImage;
 }
 
 - (IOSurface)internal_bestSnapshot
 {
-  v2 = [(CKContextDonation *)self items];
+  items = [(CKContextDonation *)self items];
   memset(v5, 0, sizeof(v5));
-  if ([v2 countByEnumeratingWithState:v5 objects:v6 count:16])
+  if ([items countByEnumeratingWithState:v5 objects:v6 count:16])
   {
-    v3 = [**(&v5[0] + 1) snapshot];
+    snapshot = [**(&v5[0] + 1) snapshot];
   }
 
   else
   {
-    v3 = 0;
+    snapshot = 0;
   }
 
-  return v3;
+  return snapshot;
 }
 
 @end

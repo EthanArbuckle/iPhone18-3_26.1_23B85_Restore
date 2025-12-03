@@ -1,12 +1,12 @@
 @interface UIIndexBarAccessoryView
-+ (void)makeIndexBarView:(id *)a3 scrollAccessoryContainerView:(id *)a4 forTraits:(id)a5;
-- (BOOL)_selectEntry:(id)a3 atIndex:(int64_t)a4;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
++ (void)makeIndexBarView:(id *)view scrollAccessoryContainerView:(id *)containerView forTraits:(id)traits;
+- (BOOL)_selectEntry:(id)entry atIndex:(int64_t)index;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)overlay;
 - (UIScrollView)scrollView;
-- (id)displayEntryNearestToContentOffset:(CGPoint)a3;
+- (id)displayEntryNearestToContentOffset:(CGPoint)offset;
 - (void)_horizontalSizeClassDidChange;
-- (void)setEntries:(id)a3;
+- (void)setEntries:(id)entries;
 - (void)update;
 @end
 
@@ -14,20 +14,20 @@
 
 - (void)update
 {
-  v61 = [(UIIndexBarView *)self visualStyle];
+  visualStyle = [(UIIndexBarView *)self visualStyle];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIIndexBarView *)self delegate];
+    delegate = [(UIIndexBarView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(UIIndexBarView *)self entries];
-      v5 = [v4 count];
+      entries = [(UIIndexBarView *)self entries];
+      v5 = [entries count];
 
       if (v5)
       {
-        v6 = [(UIIndexBarAccessoryView *)self edge];
-        v7 = v6 != 2;
-        v8 = v6 != 4;
+        edge = [(UIIndexBarAccessoryView *)self edge];
+        v7 = edge != 2;
+        v8 = edge != 4;
         WeakRetained = objc_loadWeakRetained(&self->_scrollView);
         [WeakRetained _minimumContentOffset];
         v11 = v10;
@@ -75,8 +75,8 @@
           {
             if (v30 <= 1.0)
             {
-              v31 = [(UIIndexBarView *)self entries];
-              v32 = [v31 count] - 1;
+              entries2 = [(UIIndexBarView *)self entries];
+              v32 = [entries2 count] - 1;
 
               if (v32 < 2)
               {
@@ -93,10 +93,10 @@
                 v36 = INFINITY;
                 do
                 {
-                  v37 = [(UIIndexBarView *)self delegate];
-                  v38 = [(UIIndexBarView *)self entries];
-                  v39 = [v38 objectAtIndexedSubscript:v34];
-                  [v37 indexBarAccessoryView:self contentOffsetForEntry:v39 atIndex:v34];
+                  delegate2 = [(UIIndexBarView *)self delegate];
+                  entries3 = [(UIIndexBarView *)self entries];
+                  v39 = [entries3 objectAtIndexedSubscript:v34];
+                  [delegate2 indexBarAccessoryView:self contentOffsetForEntry:v39 atIndex:v34];
                   v41 = v40;
                   v43 = v42;
 
@@ -150,10 +150,10 @@
               {
                 if (v35 == 0.0)
                 {
-                  v47 = [(UIIndexBarView *)self delegate];
-                  v48 = [(UIIndexBarView *)self entries];
-                  v49 = [v48 objectAtIndexedSubscript:v33];
-                  [v47 indexBarAccessoryView:self contentOffsetForEntry:v49 atIndex:v33];
+                  delegate3 = [(UIIndexBarView *)self delegate];
+                  entries4 = [(UIIndexBarView *)self entries];
+                  v49 = [entries4 objectAtIndexedSubscript:v33];
+                  [delegate3 indexBarAccessoryView:self contentOffsetForEntry:v49 atIndex:v33];
                   v51 = v50;
                   v53 = v52;
 
@@ -170,10 +170,10 @@
 
                 if (v36 == INFINITY)
                 {
-                  v54 = [(UIIndexBarView *)self delegate];
-                  v55 = [(UIIndexBarView *)self entries];
-                  v56 = [v55 objectAtIndexedSubscript:v32];
-                  [v54 indexBarAccessoryView:self contentOffsetForEntry:v56 atIndex:v32];
+                  delegate4 = [(UIIndexBarView *)self delegate];
+                  entries5 = [(UIIndexBarView *)self entries];
+                  v56 = [entries5 objectAtIndexedSubscript:v32];
+                  [delegate4 indexBarAccessoryView:self contentOffsetForEntry:v56 atIndex:v32];
                   v58 = v57;
                   v60 = v59;
 
@@ -221,10 +221,10 @@
 
 - (BOOL)overlay
 {
-  v2 = [(UIIndexBarView *)self visualStyle];
-  v3 = [v2 overlay];
+  visualStyle = [(UIIndexBarView *)self visualStyle];
+  overlay = [visualStyle overlay];
 
-  return v3;
+  return overlay;
 }
 
 - (UIScrollView)scrollView
@@ -234,27 +234,27 @@
   return WeakRetained;
 }
 
-+ (void)makeIndexBarView:(id *)a3 scrollAccessoryContainerView:(id *)a4 forTraits:(id)a5
++ (void)makeIndexBarView:(id *)view scrollAccessoryContainerView:(id *)containerView forTraits:(id)traits
 {
-  v9 = a5;
-  if (!a3)
+  traitsCopy = traits;
+  if (!view)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"UIIndexBarAccessoryView.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"indexBarView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIIndexBarAccessoryView.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"indexBarView != nil"}];
 
-    if (a4)
+    if (containerView)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"UIIndexBarAccessoryView.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"containerView != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIIndexBarAccessoryView.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"containerView != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!containerView)
   {
     goto LABEL_8;
   }
@@ -262,7 +262,7 @@ LABEL_8:
 LABEL_3:
   v17 = 0;
   v18 = 0;
-  [a1 makeIndexBarView:&v18 containerView:&v17 forTraits:v9];
+  [self makeIndexBarView:&v18 containerView:&v17 forTraits:traitsCopy];
   v10 = v18;
   v11 = v17;
   if (v10 != v11 && (objc_opt_respondsToSelector() & 1) == 0)
@@ -273,15 +273,15 @@ LABEL_3:
   }
 
   v13 = v10;
-  *a3 = v10;
+  *view = v10;
   v14 = v11;
-  *a4 = v11;
+  *containerView = v11;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"contents"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"contents"])
   {
     v5 = 0;
   }
@@ -290,33 +290,33 @@ LABEL_3:
   {
     v7.receiver = self;
     v7.super_class = UIIndexBarAccessoryView;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)setEntries:(id)a3
+- (void)setEntries:(id)entries
 {
   v5.receiver = self;
   v5.super_class = UIIndexBarAccessoryView;
-  [(UIIndexBarView *)&v5 setEntries:a3];
-  v4 = [(UIIndexBarAccessoryView *)self scrollView];
-  [v4 _updateAccessories];
+  [(UIIndexBarView *)&v5 setEntries:entries];
+  scrollView = [(UIIndexBarAccessoryView *)self scrollView];
+  [scrollView _updateAccessories];
 }
 
-- (BOOL)_selectEntry:(id)a3 atIndex:(int64_t)a4
+- (BOOL)_selectEntry:(id)entry atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(UIIndexBarView *)self delegate];
-  if (!v7)
+  entryCopy = entry;
+  delegate = [(UIIndexBarView *)self delegate];
+  if (!delegate)
   {
     goto LABEL_9;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 indexBarView:self didSelectEntry:v6 atIndex:a4];
+    v8 = [delegate indexBarView:self didSelectEntry:entryCopy atIndex:index];
     goto LABEL_10;
   }
 
@@ -327,17 +327,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [(UIIndexBarAccessoryView *)self scrollView];
-  v10 = [(UIIndexBarView *)self delegate];
-  [v10 indexBarAccessoryView:self contentOffsetForEntry:v6 atIndex:a4];
+  scrollView = [(UIIndexBarAccessoryView *)self scrollView];
+  delegate2 = [(UIIndexBarView *)self delegate];
+  [delegate2 indexBarAccessoryView:self contentOffsetForEntry:entryCopy atIndex:index];
   v12 = v11;
   v14 = v13;
 
-  [v9 contentOffset];
+  [scrollView contentOffset];
   v16 = v15;
   v18 = v17;
-  [v9 setContentOffset:0 animated:{v12, v14}];
-  [v9 contentOffset];
+  [scrollView setContentOffset:0 animated:{v12, v14}];
+  [scrollView contentOffset];
   v21 = vabdd_f64(v19, v16) >= 0.00000011920929;
   v8 = vabdd_f64(v20, v18) >= 0.00000011920929 || v21;
 
@@ -345,22 +345,22 @@ LABEL_10:
   return v8;
 }
 
-- (id)displayEntryNearestToContentOffset:(CGPoint)a3
+- (id)displayEntryNearestToContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__242;
   v16 = __Block_byref_object_dispose__242;
   v17 = 0;
-  v6 = [(UIIndexBarView *)self delegate];
+  delegate = [(UIIndexBarView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UIIndexBarView *)self displayEntries];
+    displayEntries = [(UIIndexBarView *)self displayEntries];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__UIIndexBarAccessoryView_displayEntryNearestToContentOffset___block_invoke;
@@ -369,7 +369,7 @@ LABEL_10:
     *&v11[7] = y;
     v11[4] = self;
     v11[5] = &v12;
-    [v8 enumerateObjectsUsingBlock:v11];
+    [displayEntries enumerateObjectsUsingBlock:v11];
   }
 
   v9 = v13[5];
@@ -406,8 +406,8 @@ void __62__UIIndexBarAccessoryView_displayEntryNearestToContentOffset___block_in
   v4.receiver = self;
   v4.super_class = UIIndexBarAccessoryView;
   [(UIIndexBarView *)&v4 _horizontalSizeClassDidChange];
-  v3 = [(UIIndexBarAccessoryView *)self scrollView];
-  [v3 _updateAccessories];
+  scrollView = [(UIIndexBarAccessoryView *)self scrollView];
+  [scrollView _updateAccessories];
 }
 
 @end

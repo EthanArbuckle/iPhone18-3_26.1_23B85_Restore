@@ -1,17 +1,17 @@
 @interface TSCHChartGridValue
-+ (id)NSDateConvertedFromGridValue:(id)a3;
-+ (id)NSDateFromGridValue:(id)a3;
-+ (id)instanceWithArchive:(const void *)a3;
-+ (void)saveGridValue:(id)a3 toArchive:(void *)a4;
-- (TSCHChartGridValue)initWithArchive:(const void *)a3;
++ (id)NSDateConvertedFromGridValue:(id)value;
++ (id)NSDateFromGridValue:(id)value;
++ (id)instanceWithArchive:(const void *)archive;
++ (void)saveGridValue:(id)value toArchive:(void *)archive;
+- (TSCHChartGridValue)initWithArchive:(const void *)archive;
 @end
 
 @implementation TSCHChartGridValue
 
-+ (id)NSDateFromGridValue:(id)a3
++ (id)NSDateFromGridValue:(id)value
 {
-  v3 = a3;
-  if (objc_msgSend_chartGridValueType(v3, v4, v5, v6, v7) == 2)
+  valueCopy = value;
+  if (objc_msgSend_chartGridValueType(valueCopy, v4, v5, v6, v7) == 2)
   {
     objc_opt_class();
     v12 = TSUCheckedDynamicCast();
@@ -31,25 +31,25 @@
   return v12;
 }
 
-+ (id)NSDateConvertedFromGridValue:(id)a3
++ (id)NSDateConvertedFromGridValue:(id)value
 {
-  objc_msgSend_doubleValue(a3, a2, v3, v4, v5);
+  objc_msgSend_doubleValue(value, a2, v3, v4, v5);
 
   return objc_msgSend_dateValueWithDouble_(TSCHChartGridValue, v6, v7, v8, v9);
 }
 
-+ (id)instanceWithArchive:(const void *)a3
++ (id)instanceWithArchive:(const void *)archive
 {
   v8 = objc_msgSend_null(MEMORY[0x277CBEB68], a2, v3, v4, v5);
-  v11 = *(a3 + 4);
+  v11 = *(archive + 4);
   if (v11)
   {
-    v12 = objc_msgSend_numberValueWithDouble_(TSCHChartGridValue, v7, *(a3 + 3), v9, v10);
+    v12 = objc_msgSend_numberValueWithDouble_(TSCHChartGridValue, v7, *(archive + 3), v9, v10);
   }
 
   else if ((v11 & 8) != 0)
   {
-    v12 = objc_msgSend_dateValueWithDouble_(TSCHChartGridValue, v7, *(a3 + 6), v9, v10);
+    v12 = objc_msgSend_dateValueWithDouble_(TSCHChartGridValue, v7, *(archive + 6), v9, v10);
   }
 
   else
@@ -59,7 +59,7 @@
       goto LABEL_8;
     }
 
-    v12 = objc_msgSend_durationValueWithDouble_(TSCHChartGridValue, v7, *(a3 + 5), v9, v10);
+    v12 = objc_msgSend_durationValueWithDouble_(TSCHChartGridValue, v7, *(archive + 5), v9, v10);
   }
 
   v13 = v12;
@@ -70,31 +70,31 @@ LABEL_8:
   return v8;
 }
 
-- (TSCHChartGridValue)initWithArchive:(const void *)a3
+- (TSCHChartGridValue)initWithArchive:(const void *)archive
 {
-  v7 = objc_msgSend_instanceWithArchive_(TSCHChartGridValue, a2, v3, v4, v5, a3);
+  v7 = objc_msgSend_instanceWithArchive_(TSCHChartGridValue, a2, v3, v4, v5, archive);
 
   return v7;
 }
 
-+ (void)saveGridValue:(id)a3 toArchive:(void *)a4
++ (void)saveGridValue:(id)value toArchive:(void *)archive
 {
-  v17 = a3;
-  v9 = objc_msgSend_chartGridValueType(v17, v5, v6, v7, v8);
+  valueCopy = value;
+  v9 = objc_msgSend_chartGridValueType(valueCopy, v5, v6, v7, v8);
   switch(v9)
   {
     case 1:
-      objc_msgSend_doubleValue(v17, v10, v11, v12, v13);
+      objc_msgSend_doubleValue(valueCopy, v10, v11, v12, v13);
       v15 = 1;
       v16 = 24;
       break;
     case 2:
-      objc_msgSend_doubleValue(v17, v10, v11, v12, v13);
+      objc_msgSend_doubleValue(valueCopy, v10, v11, v12, v13);
       v15 = 8;
       v16 = 48;
       break;
     case 3:
-      objc_msgSend_doubleValue(v17, v10, v11, v12, v13);
+      objc_msgSend_doubleValue(valueCopy, v10, v11, v12, v13);
       v15 = 4;
       v16 = 40;
       break;
@@ -102,8 +102,8 @@ LABEL_8:
       goto LABEL_8;
   }
 
-  *(a4 + 4) |= v15;
-  *(a4 + v16) = v14;
+  *(archive + 4) |= v15;
+  *(archive + v16) = v14;
 LABEL_8:
 }
 

@@ -1,55 +1,55 @@
 @interface QLGeneratorFetcher
-- (QLGeneratorFetcher)initWithURL:(id)a3 contentType:(id)a4;
-- (void)_callCompletionBlockIfNecessary:(id)a3 withReply:(id)a4 error:(id)a5;
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6;
+- (QLGeneratorFetcher)initWithURL:(id)l contentType:(id)type;
+- (void)_callCompletionBlockIfNecessary:(id)necessary withReply:(id)reply error:(id)error;
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation QLGeneratorFetcher
 
-- (QLGeneratorFetcher)initWithURL:(id)a3 contentType:(id)a4
+- (QLGeneratorFetcher)initWithURL:(id)l contentType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = QLGeneratorFetcher;
   v9 = [(QLItemFetcher *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_contentType, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_contentType, type);
   }
 
   return v10;
 }
 
-- (void)_callCompletionBlockIfNecessary:(id)a3 withReply:(id)a4 error:(id)a5
+- (void)_callCompletionBlockIfNecessary:(id)necessary withReply:(id)reply error:(id)error
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (![(QLGeneratorFetcher *)v10 fetchCompleted])
+  necessaryCopy = necessary;
+  replyCopy = reply;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(QLGeneratorFetcher *)selfCopy fetchCompleted])
   {
-    v11[2](v11, v8, v9);
-    [(QLGeneratorFetcher *)v10 setFetchCompleted:1];
+    necessaryCopy[2](necessaryCopy, replyCopy, errorCopy);
+    [(QLGeneratorFetcher *)selfCopy setFetchCompleted:1];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277D43E98] sharedManager];
-  v15 = [(QLGeneratorFetcher *)self contentType];
+  classesCopy = classes;
+  queueCopy = queue;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  mEMORY[0x277D43E98] = [MEMORY[0x277D43E98] sharedManager];
+  contentType = [(QLGeneratorFetcher *)self contentType];
   LOBYTE(v21) = 0;
-  v16 = [v14 qlExtensionForContentType:v15 allowExtensionsForParentTypes:1 applicationBundleIdentifier:0 extensionPath:0 extensionType:0 generationType:1 shouldUseRestrictedExtension:v21];
+  v16 = [mEMORY[0x277D43E98] qlExtensionForContentType:contentType allowExtensionsForParentTypes:1 applicationBundleIdentifier:0 extensionPath:0 extensionType:0 generationType:1 shouldUseRestrictedExtension:v21];
 
   if (v16)
   {
@@ -59,7 +59,7 @@
     v22[2] = __95__QLGeneratorFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke;
     v22[3] = &unk_279AE1110;
     objc_copyWeak(&v25, &location);
-    v24 = v13;
+    v24 = completionBlockCopy;
     v23 = v16;
     [v23 extensionContextWithCompletionHandler:v22];
 
@@ -75,7 +75,7 @@
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v19 = [v17 initWithDomain:*MEMORY[0x277D43EF0] code:4 userInfo:v18];
 
-    [(QLGeneratorFetcher *)self _callCompletionBlockIfNecessary:v13 withReply:0 error:v19];
+    [(QLGeneratorFetcher *)self _callCompletionBlockIfNecessary:completionBlockCopy withReply:0 error:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];

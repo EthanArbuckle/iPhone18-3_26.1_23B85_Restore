@@ -1,17 +1,17 @@
 @interface PXViewCountAnalyticsDestination
-- (void)processEvent:(id)a3;
+- (void)processEvent:(id)event;
 @end
 
 @implementation PXViewCountAnalyticsDestination
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
-  v5 = a3;
-  v6 = [v5 name];
-  if ([v6 isEqualToString:@"com.apple.photos.CPAnalytics.incrementAssetViewCount"])
+  eventCopy = event;
+  name = [eventCopy name];
+  if ([name isEqualToString:@"com.apple.photos.CPAnalytics.incrementAssetViewCount"])
   {
-    v7 = [v5 propertyForKey:*MEMORY[0x1E6991E18]];
-    v8 = [v7 photoLibrary];
+    v7 = [eventCopy propertyForKey:*MEMORY[0x1E6991E18]];
+    photoLibrary = [v7 photoLibrary];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __48__PXViewCountAnalyticsDestination_processEvent___block_invoke;
@@ -28,15 +28,15 @@
     v11 = v26;
     v12 = v25;
 LABEL_5:
-    [v8 performChanges:v11 completionHandler:{v12, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23}];
+    [photoLibrary performChanges:v11 completionHandler:{v12, v14, v15, v16, v17, selfCopy, v19, v20, v21, v22, v23}];
 
     goto LABEL_6;
   }
 
-  if ([v6 isEqualToString:@"com.apple.photos.CPAnalytics.incrementMemoryViewCount"])
+  if ([name isEqualToString:@"com.apple.photos.CPAnalytics.incrementMemoryViewCount"])
   {
-    v13 = [v5 propertyForKey:*MEMORY[0x1E6991E08]];
-    v8 = [v13 photoLibrary];
+    v13 = [eventCopy propertyForKey:*MEMORY[0x1E6991E08]];
+    photoLibrary = [v13 photoLibrary];
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __48__PXViewCountAnalyticsDestination_processEvent___block_invoke_189;
@@ -47,7 +47,7 @@ LABEL_5:
     v15 = 3221225472;
     v16 = __48__PXViewCountAnalyticsDestination_processEvent___block_invoke_2_192;
     v17 = &unk_1E7741CE0;
-    v18 = self;
+    selfCopy = self;
     v19 = a2;
     v10 = v13;
     v11 = &v20;

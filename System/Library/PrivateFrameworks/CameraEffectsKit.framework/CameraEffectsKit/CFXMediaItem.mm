@@ -1,14 +1,14 @@
 @interface CFXMediaItem
 - (CFXMediaItem)init;
-- (CFXMediaItem)initWithCameraMode:(int64_t)a3 clip:(id)a4 assetMediaURL:(id)a5 assetMetadataURL:(id)a6 cameraPosition:(int64_t)a7;
-- (CFXMediaItem)initWithType:(int64_t)a3 originalAssetURL:(id)a4 adjustmentsData:(id)a5;
+- (CFXMediaItem)initWithCameraMode:(int64_t)mode clip:(id)clip assetMediaURL:(id)l assetMetadataURL:(id)rL cameraPosition:(int64_t)position;
+- (CFXMediaItem)initWithType:(int64_t)type originalAssetURL:(id)l adjustmentsData:(id)data;
 - (NSData)adjustmentsData;
 - (void)CFX_updateCameraPositionForPhotoType;
 - (void)adjustmentsData;
-- (void)createClipForMediaType:(int64_t)a3 assetURL:(id)a4 cameraMode:(int64_t)a5 effectStack:(id)a6;
-- (void)setAdjustmentsData:(id)a3;
-- (void)setOriginalAssetURL:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)createClipForMediaType:(int64_t)type assetURL:(id)l cameraMode:(int64_t)mode effectStack:(id)stack;
+- (void)setAdjustmentsData:(id)data;
+- (void)setOriginalAssetURL:(id)l;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation CFXMediaItem
@@ -28,42 +28,42 @@
   return result;
 }
 
-- (CFXMediaItem)initWithCameraMode:(int64_t)a3 clip:(id)a4 assetMediaURL:(id)a5 assetMetadataURL:(id)a6 cameraPosition:(int64_t)a7
+- (CFXMediaItem)initWithCameraMode:(int64_t)mode clip:(id)clip assetMediaURL:(id)l assetMetadataURL:(id)rL cameraPosition:(int64_t)position
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  clipCopy = clip;
+  lCopy = l;
+  rLCopy = rL;
   v19.receiver = self;
   v19.super_class = CFXMediaItem;
   v16 = [(CFXMediaItem *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_cameraMode = a3;
-    objc_storeStrong(&v16->_clip, a4);
-    v17->_type = [v13 isVideo];
-    objc_storeStrong(&v17->_originalAssetURL, a5);
-    objc_storeStrong(&v17->_metadataURL, a6);
-    v17->_cameraPosition = a7;
+    v16->_cameraMode = mode;
+    objc_storeStrong(&v16->_clip, clip);
+    v17->_type = [clipCopy isVideo];
+    objc_storeStrong(&v17->_originalAssetURL, l);
+    objc_storeStrong(&v17->_metadataURL, rL);
+    v17->_cameraPosition = position;
   }
 
   return v17;
 }
 
-- (CFXMediaItem)initWithType:(int64_t)a3 originalAssetURL:(id)a4 adjustmentsData:(id)a5
+- (CFXMediaItem)initWithType:(int64_t)type originalAssetURL:(id)l adjustmentsData:(id)data
 {
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = CFXMediaItem;
   v11 = [(CFXMediaItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_originalAssetURL, a4);
-    [(CFXMediaItem *)v12 setAdjustmentsData:v10];
-    if (!(v12->_cameraPosition | a3))
+    v11->_type = type;
+    objc_storeStrong(&v11->_originalAssetURL, l);
+    [(CFXMediaItem *)v12 setAdjustmentsData:dataCopy];
+    if (!(v12->_cameraPosition | type))
     {
       [(CFXMediaItem *)v12 CFX_updateCameraPositionForPhotoType];
     }
@@ -74,13 +74,13 @@
 
 - (NSData)adjustmentsData
 {
-  v3 = [(CFXMediaItem *)self cameraMode];
-  v4 = [(CFXMediaItem *)self clip];
-  v5 = [v4 effectStack];
+  cameraMode = [(CFXMediaItem *)self cameraMode];
+  clip = [(CFXMediaItem *)self clip];
+  effectStack = [clip effectStack];
 
   v6 = [CFXMediaItemAdjustmentsData alloc];
-  v7 = [(CFXMediaItem *)self metadataURL];
-  v8 = [(CFXMediaItemAdjustmentsData *)v6 initWithCameraMode:v3 metadataURL:v7 cameraPosition:[(CFXMediaItem *)self cameraPosition] effectStack:v5];
+  metadataURL = [(CFXMediaItem *)self metadataURL];
+  v8 = [(CFXMediaItemAdjustmentsData *)v6 initWithCameraMode:cameraMode metadataURL:metadataURL cameraPosition:[(CFXMediaItem *)self cameraPosition] effectStack:effectStack];
 
   v13 = 0;
   v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v13];
@@ -97,73 +97,73 @@
   return v9;
 }
 
-- (void)setAdjustmentsData:(id)a3
+- (void)setAdjustmentsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(CFXMediaItem *)self setAdjustmentsDataWasSet:1];
-  if (v4)
+  if (dataCopy)
   {
     v5 = MEMORY[0x277CCAAC8];
     v6 = +[CFXMediaItemAdjustmentsData secureCodingClassWhitelist];
     v14 = 0;
-    v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v14];
+    v7 = [v5 unarchivedObjectOfClasses:v6 fromData:dataCopy error:&v14];
     v8 = v14;
 
     self->_cameraMode = [v7 cameraMode];
-    v9 = [v7 metadataURL];
+    metadataURL = [v7 metadataURL];
     metadataURL = self->_metadataURL;
-    self->_metadataURL = v9;
+    self->_metadataURL = metadataURL;
 
     self->_cameraPosition = [v7 cameraPosition];
-    v11 = [v7 effectStack];
+    effectStack = [v7 effectStack];
   }
 
   else
   {
-    v11 = 0;
+    effectStack = 0;
   }
 
-  v12 = [(CFXMediaItem *)self type];
-  v13 = [(CFXMediaItem *)self originalAssetURL];
-  [(CFXMediaItem *)self createClipForMediaType:v12 assetURL:v13 cameraMode:[(CFXMediaItem *)self cameraMode] effectStack:v11];
+  type = [(CFXMediaItem *)self type];
+  originalAssetURL = [(CFXMediaItem *)self originalAssetURL];
+  [(CFXMediaItem *)self createClipForMediaType:type assetURL:originalAssetURL cameraMode:[(CFXMediaItem *)self cameraMode] effectStack:effectStack];
 }
 
-- (void)setOriginalAssetURL:(id)a3
+- (void)setOriginalAssetURL:(id)l
 {
-  objc_storeStrong(&self->_originalAssetURL, a3);
-  v5 = a3;
-  v6 = [(CFXMediaItem *)self type];
-  v7 = [(CFXMediaItem *)self cameraMode];
-  v9 = [(CFXMediaItem *)self clip];
-  v8 = [v9 effectStack];
-  [(CFXMediaItem *)self createClipForMediaType:v6 assetURL:v5 cameraMode:v7 effectStack:v8];
+  objc_storeStrong(&self->_originalAssetURL, l);
+  lCopy = l;
+  type = [(CFXMediaItem *)self type];
+  cameraMode = [(CFXMediaItem *)self cameraMode];
+  clip = [(CFXMediaItem *)self clip];
+  effectStack = [clip effectStack];
+  [(CFXMediaItem *)self createClipForMediaType:type assetURL:lCopy cameraMode:cameraMode effectStack:effectStack];
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  self->_type = a3;
-  v8 = [(CFXMediaItem *)self originalAssetURL];
-  v5 = [(CFXMediaItem *)self cameraMode];
-  v6 = [(CFXMediaItem *)self clip];
-  v7 = [v6 effectStack];
-  [(CFXMediaItem *)self createClipForMediaType:a3 assetURL:v8 cameraMode:v5 effectStack:v7];
+  self->_type = type;
+  originalAssetURL = [(CFXMediaItem *)self originalAssetURL];
+  cameraMode = [(CFXMediaItem *)self cameraMode];
+  clip = [(CFXMediaItem *)self clip];
+  effectStack = [clip effectStack];
+  [(CFXMediaItem *)self createClipForMediaType:type assetURL:originalAssetURL cameraMode:cameraMode effectStack:effectStack];
 }
 
-- (void)createClipForMediaType:(int64_t)a3 assetURL:(id)a4 cameraMode:(int64_t)a5 effectStack:(id)a6
+- (void)createClipForMediaType:(int64_t)type assetURL:(id)l cameraMode:(int64_t)mode effectStack:(id)stack
 {
-  v10 = a4;
-  v11 = a6;
-  if (v10 | self->_clip)
+  lCopy = l;
+  stackCopy = stack;
+  if (lCopy | self->_clip)
   {
-    if (![(CFXMediaItem *)self initializedWithoutSettingAllProperties]|| a3 != 2 && v10 && [(CFXMediaItem *)self adjustmentsDataWasSet])
+    if (![(CFXMediaItem *)self initializedWithoutSettingAllProperties]|| type != 2 && lCopy && [(CFXMediaItem *)self adjustmentsDataWasSet])
     {
-      v12 = JFXMaximumVideoDimensionForCameraMode(a5);
+      v12 = JFXMaximumVideoDimensionForCameraMode(mode);
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __71__CFXMediaItem_createClipForMediaType_assetURL_cameraMode_effectStack___block_invoke;
       v15[3] = &unk_278D7B5C0;
       v15[4] = self;
-      [CFXClip createClipWithLocalURL:v10 effectStack:v11 isVideo:a3 == 1 maximumImageDimension:v12 completionHandler:v15];
+      [CFXClip createClipWithLocalURL:lCopy effectStack:stackCopy isVideo:type == 1 maximumImageDimension:v12 completionHandler:v15];
       if (!self->_cameraPosition && !self->_type)
       {
         [(CFXMediaItem *)self CFX_updateCameraPositionForPhotoType];
@@ -177,7 +177,7 @@
     clip = self->_clip;
     self->_clip = v13;
 
-    [(CFXClip *)self->_clip addEffectStack:v11];
+    [(CFXClip *)self->_clip addEffectStack:stackCopy];
   }
 }
 
@@ -214,7 +214,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_242A3B000, a2, OS_LOG_TYPE_DEBUG, "Error encoding adjustments data: %{public}@", &v2, 0xCu);
 }
 

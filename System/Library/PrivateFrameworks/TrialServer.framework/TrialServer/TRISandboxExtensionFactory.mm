@@ -1,23 +1,23 @@
 @interface TRISandboxExtensionFactory
-+ (id)extensionTokenForPath:(id)a3 extensionClass:(unsigned __int8)a4;
++ (id)extensionTokenForPath:(id)path extensionClass:(unsigned __int8)class;
 @end
 
 @implementation TRISandboxExtensionFactory
 
-+ (id)extensionTokenForPath:(id)a3 extensionClass:(unsigned __int8)a4
++ (id)extensionTokenForPath:(id)path extensionClass:(unsigned __int8)class
 {
-  v4 = a4;
+  classCopy = class;
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v4 == 1)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (classCopy == 1)
   {
     v7 = MEMORY[0x277D861C0];
   }
 
   else
   {
-    if (v4)
+    if (classCopy)
     {
       goto LABEL_6;
     }
@@ -27,7 +27,7 @@
 
   v8 = *v7;
 LABEL_6:
-  [v5 fileSystemRepresentation];
+  [pathCopy fileSystemRepresentation];
   v9 = *MEMORY[0x277D861E8];
   v10 = sandbox_extension_issue_file();
   if (!v10)
@@ -72,7 +72,7 @@ LABEL_16:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 67109378;
-    *v23 = v4;
+    *v23 = classCopy;
     *&v23[4] = 2080;
     *&v23[6] = [v6 fileSystemRepresentation];
     _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEFAULT, "issuing sandbox extension (of type: %d) for path %s", &v22, 0x12u);

@@ -1,57 +1,57 @@
 @interface HMMTRMutableVendorMetadataVendor
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addProduct:(id)a3;
-- (void)copyVendorDetailsFromVendor:(id)a3;
-- (void)removeProductWithID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addProduct:(id)product;
+- (void)copyVendorDetailsFromVendor:(id)vendor;
+- (void)removeProductWithID:(id)d;
 @end
 
 @implementation HMMTRMutableVendorMetadataVendor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMTRVendorMetadataVendor allocWithZone:a3];
-  v5 = [(HMMTRVendorMetadataVendor *)self identifier];
-  v6 = [(HMMTRVendorMetadataVendor *)v4 initWithIdentifier:v5];
+  v4 = [HMMTRVendorMetadataVendor allocWithZone:zone];
+  identifier = [(HMMTRVendorMetadataVendor *)self identifier];
+  v6 = [(HMMTRVendorMetadataVendor *)v4 initWithIdentifier:identifier];
 
-  v7 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-  [(HMMTRVendorMetadataVendor *)v6 setProductsByProductID:v7];
+  productsByProductID = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+  [(HMMTRVendorMetadataVendor *)v6 setProductsByProductID:productsByProductID];
 
-  v8 = [(HMMTRVendorMetadataVendor *)self name];
-  [(HMMTRVendorMetadataVendor *)v6 setName:v8];
+  name = [(HMMTRVendorMetadataVendor *)self name];
+  [(HMMTRVendorMetadataVendor *)v6 setName:name];
 
   [(HMMTRVendorMetadataVendor *)v6 setInvalid:[(HMMTRVendorMetadataVendor *)self invalid]];
   return v6;
 }
 
-- (void)copyVendorDetailsFromVendor:(id)a3
+- (void)copyVendorDetailsFromVendor:(id)vendor
 {
-  v4 = a3;
-  v5 = [v4 name];
-  [(HMMTRVendorMetadataVendor *)self setName:v5];
+  vendorCopy = vendor;
+  name = [vendorCopy name];
+  [(HMMTRVendorMetadataVendor *)self setName:name];
 
-  v6 = [v4 invalid];
+  invalid = [vendorCopy invalid];
 
-  [(HMMTRVendorMetadataVendor *)self setInvalid:v6];
+  [(HMMTRVendorMetadataVendor *)self setInvalid:invalid];
 }
 
-- (void)removeProductWithID:(id)a3
+- (void)removeProductWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-  v6 = [v5 mutableCopy];
+  dCopy = d;
+  productsByProductID = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+  v6 = [productsByProductID mutableCopy];
 
-  [v6 setObject:0 forKeyedSubscript:v4];
+  [v6 setObject:0 forKeyedSubscript:dCopy];
   [(HMMTRVendorMetadataVendor *)self setProductsByProductID:v6];
 }
 
-- (void)addProduct:(id)a3
+- (void)addProduct:(id)product
 {
-  v4 = a3;
-  v5 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-  v7 = [v5 mutableCopy];
+  productCopy = product;
+  productsByProductID = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+  v7 = [productsByProductID mutableCopy];
 
-  v6 = [v4 identifier];
-  [v7 setObject:v4 forKeyedSubscript:v6];
+  identifier = [productCopy identifier];
+  [v7 setObject:productCopy forKeyedSubscript:identifier];
 
   [(HMMTRVendorMetadataVendor *)self setProductsByProductID:v7];
 }

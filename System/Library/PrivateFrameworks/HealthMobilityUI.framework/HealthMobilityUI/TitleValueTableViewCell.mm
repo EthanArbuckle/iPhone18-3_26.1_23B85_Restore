@@ -1,14 +1,14 @@
 @interface TitleValueTableViewCell
-- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithCoder:(id)a3;
-- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithCoder:(id)coder;
+- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)tintColorDidChange;
 @end
 
 @implementation TitleValueTableViewCell
 
-- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_2519AEE38();
     v5 = self + OBJC_IVAR____TtC16HealthMobilityUI23TitleValueTableViewCell_item;
@@ -34,7 +34,7 @@
   return v8;
 }
 
-- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithCoder:(id)a3
+- (_TtC16HealthMobilityUI23TitleValueTableViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC16HealthMobilityUI23TitleValueTableViewCell_item;
   *v3 = 0u;

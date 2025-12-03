@@ -1,42 +1,42 @@
 @interface SBTransientUIInteractionManager
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (SBSystemGestureManager)systemGestureManager;
-- (SBTransientUIInteractionManager)initWithSystemGestureManager:(id)a3;
+- (SBTransientUIInteractionManager)initWithSystemGestureManager:(id)manager;
 - (UIWindow)window;
-- (id)viewForSystemGestureRecognizer:(id)a3;
-- (void)_screenWasIndirectPannedToDismiss:(id)a3;
-- (void)_screenWasTappedToUnhide:(id)a3;
-- (void)registerParticipantForIndirectPanToDismiss:(id)a3;
-- (void)registerParticipantForTapToDismiss:(id)a3;
-- (void)registerParticipantForTapToUnhide:(id)a3;
-- (void)unregisterParticipantForIndirectPanToDismiss:(id)a3;
-- (void)unregisterParticipantForTapToDismiss:(id)a3;
-- (void)unregisterParticipantForTapToUnhide:(id)a3;
+- (id)viewForSystemGestureRecognizer:(id)recognizer;
+- (void)_screenWasIndirectPannedToDismiss:(id)dismiss;
+- (void)_screenWasTappedToUnhide:(id)unhide;
+- (void)registerParticipantForIndirectPanToDismiss:(id)dismiss;
+- (void)registerParticipantForTapToDismiss:(id)dismiss;
+- (void)registerParticipantForTapToUnhide:(id)unhide;
+- (void)unregisterParticipantForIndirectPanToDismiss:(id)dismiss;
+- (void)unregisterParticipantForTapToDismiss:(id)dismiss;
+- (void)unregisterParticipantForTapToUnhide:(id)unhide;
 @end
 
 @implementation SBTransientUIInteractionManager
 
-- (SBTransientUIInteractionManager)initWithSystemGestureManager:(id)a3
+- (SBTransientUIInteractionManager)initWithSystemGestureManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = SBTransientUIInteractionManager;
   v5 = [(SBTransientUIInteractionManager *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_systemGestureManager, v4);
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v5->_systemGestureManager, managerCopy);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     tapToDismissParticipants = v6->_tapToDismissParticipants;
-    v6->_tapToDismissParticipants = v7;
+    v6->_tapToDismissParticipants = weakObjectsHashTable;
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     tapToUnhideParticipants = v6->_tapToUnhideParticipants;
-    v6->_tapToUnhideParticipants = v9;
+    v6->_tapToUnhideParticipants = weakObjectsHashTable2;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     indirectPanToParticipants = v6->_indirectPanToParticipants;
-    v6->_indirectPanToParticipants = v11;
+    v6->_indirectPanToParticipants = weakObjectsHashTable3;
 
     dismissGestureRecognizer = v6->_dismissGestureRecognizer;
     v6->_dismissGestureRecognizer = 0;
@@ -57,16 +57,16 @@
 - (UIWindow)window
 {
   WeakRetained = objc_loadWeakRetained(&self->_systemGestureManager);
-  v3 = [WeakRetained windowForSystemGestures];
+  windowForSystemGestures = [WeakRetained windowForSystemGestures];
 
-  return v3;
+  return windowForSystemGestures;
 }
 
-- (void)_screenWasTappedToUnhide:(id)a3
+- (void)_screenWasTappedToUnhide:(id)unhide
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_unhideTapRecognizer == v4)
+  unhideCopy = unhide;
+  if (self->_unhideTapRecognizer == unhideCopy)
   {
     v12 = 0u;
     v13 = 0u;
@@ -88,7 +88,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) transientUI:self wasTappedToUnhideFromGestureRecognizer:v4];
+          [*(*(&v10 + 1) + 8 * v9++) transientUI:self wasTappedToUnhideFromGestureRecognizer:unhideCopy];
         }
 
         while (v7 != v9);
@@ -100,12 +100,12 @@
   }
 }
 
-- (void)_screenWasIndirectPannedToDismiss:(id)a3
+- (void)_screenWasIndirectPannedToDismiss:(id)dismiss
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_indirectPanRecognizer == v4 && [(UIPanGestureRecognizer *)v4 state]== 1)
+  dismissCopy = dismiss;
+  v5 = dismissCopy;
+  if (self->_indirectPanRecognizer == dismissCopy && [(UIPanGestureRecognizer *)dismissCopy state]== 1)
   {
     v13 = 0u;
     v14 = 0u;
@@ -139,12 +139,12 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_dismissGestureRecognizer == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->_dismissGestureRecognizer == recognizerCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -166,7 +166,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v8 |= [*(*(&v15 + 1) + 8 * i) transientUIHandledTouch:v7 withSystemGestureRecognizer:v6];
+          v8 |= [*(*(&v15 + 1) + 8 * i) transientUIHandledTouch:touchCopy withSystemGestureRecognizer:recognizerCopy];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -183,26 +183,26 @@
 
   else
   {
-    LOBYTE(v8) = self->_unhideTapRecognizer == v6 || self->_unhideDoubleTapRecognizer == v6;
+    LOBYTE(v8) = self->_unhideTapRecognizer == recognizerCopy || self->_unhideDoubleTapRecognizer == recognizerCopy;
   }
 
   return v8 & 1;
 }
 
-- (id)viewForSystemGestureRecognizer:(id)a3
+- (id)viewForSystemGestureRecognizer:(id)recognizer
 {
   WeakRetained = objc_loadWeakRetained(&self->_systemGestureManager);
-  v4 = [WeakRetained windowForSystemGestures];
+  windowForSystemGestures = [WeakRetained windowForSystemGestures];
 
-  return v4;
+  return windowForSystemGestures;
 }
 
-- (void)registerParticipantForTapToDismiss:(id)a3
+- (void)registerParticipantForTapToDismiss:(id)dismiss
 {
-  v7 = a3;
+  dismissCopy = dismiss;
   if (![(NSHashTable *)self->_tapToDismissParticipants containsObject:?])
   {
-    [(NSHashTable *)self->_tapToDismissParticipants addObject:v7];
+    [(NSHashTable *)self->_tapToDismissParticipants addObject:dismissCopy];
   }
 
   if ([(NSHashTable *)self->_tapToDismissParticipants count]&& !self->_dismissGestureRecognizer)
@@ -219,12 +219,12 @@
   }
 }
 
-- (void)unregisterParticipantForTapToDismiss:(id)a3
+- (void)unregisterParticipantForTapToDismiss:(id)dismiss
 {
-  v6 = a3;
+  dismissCopy = dismiss;
   if ([(NSHashTable *)self->_tapToDismissParticipants containsObject:?])
   {
-    [(NSHashTable *)self->_tapToDismissParticipants removeObject:v6];
+    [(NSHashTable *)self->_tapToDismissParticipants removeObject:dismissCopy];
   }
 
   if (![(NSHashTable *)self->_tapToDismissParticipants count]&& self->_dismissGestureRecognizer)
@@ -237,12 +237,12 @@
   }
 }
 
-- (void)registerParticipantForTapToUnhide:(id)a3
+- (void)registerParticipantForTapToUnhide:(id)unhide
 {
-  v9 = a3;
+  unhideCopy = unhide;
   if (![(NSHashTable *)self->_tapToUnhideParticipants containsObject:?])
   {
-    [(NSHashTable *)self->_tapToUnhideParticipants addObject:v9];
+    [(NSHashTable *)self->_tapToUnhideParticipants addObject:unhideCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_systemGestureManager);
@@ -284,12 +284,12 @@
   }
 }
 
-- (void)unregisterParticipantForTapToUnhide:(id)a3
+- (void)unregisterParticipantForTapToUnhide:(id)unhide
 {
-  v7 = a3;
+  unhideCopy = unhide;
   if ([(NSHashTable *)self->_tapToUnhideParticipants containsObject:?])
   {
-    [(NSHashTable *)self->_tapToUnhideParticipants removeObject:v7];
+    [(NSHashTable *)self->_tapToUnhideParticipants removeObject:unhideCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_systemGestureManager);
@@ -305,12 +305,12 @@
   }
 }
 
-- (void)registerParticipantForIndirectPanToDismiss:(id)a3
+- (void)registerParticipantForIndirectPanToDismiss:(id)dismiss
 {
-  v7 = a3;
+  dismissCopy = dismiss;
   if (![(NSHashTable *)self->_indirectPanToParticipants containsObject:?])
   {
-    [(NSHashTable *)self->_indirectPanToParticipants addObject:v7];
+    [(NSHashTable *)self->_indirectPanToParticipants addObject:dismissCopy];
   }
 
   if ([(NSHashTable *)self->_indirectPanToParticipants count]&& !self->_indirectPanRecognizer)
@@ -328,12 +328,12 @@
   }
 }
 
-- (void)unregisterParticipantForIndirectPanToDismiss:(id)a3
+- (void)unregisterParticipantForIndirectPanToDismiss:(id)dismiss
 {
-  v6 = a3;
+  dismissCopy = dismiss;
   if ([(NSHashTable *)self->_indirectPanToParticipants containsObject:?])
   {
-    [(NSHashTable *)self->_indirectPanToParticipants removeObject:v6];
+    [(NSHashTable *)self->_indirectPanToParticipants removeObject:dismissCopy];
   }
 
   if (![(NSHashTable *)self->_indirectPanToParticipants count]&& self->_indirectPanRecognizer)

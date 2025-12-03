@@ -1,28 +1,28 @@
 @interface EQKitMathMLUnaryNode
-- (EQKitMathMLUnaryNode)initWithChild:(id)a3;
-- (EQKitMathMLUnaryNode)initWithChildren:(id)a3;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (EQKitMathMLUnaryNode)initWithChild:(id)child;
+- (EQKitMathMLUnaryNode)initWithChildren:(id)children;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLUnaryNode
 
-- (EQKitMathMLUnaryNode)initWithChild:(id)a3
+- (EQKitMathMLUnaryNode)initWithChild:(id)child
 {
   v9.receiver = self;
   v9.super_class = EQKitMathMLUnaryNode;
   v4 = [(EQKitMathMLUnaryNode *)&v9 init];
   if (v4)
   {
-    v5 = a3;
-    v4->mChild = v5;
-    objc_msgSend_setParent_(v5, v6, v4, v7);
+    childCopy = child;
+    v4->mChild = childCopy;
+    objc_msgSend_setParent_(childCopy, v6, v4, v7);
   }
 
   return v4;
 }
 
-- (EQKitMathMLUnaryNode)initWithChildren:(id)a3
+- (EQKitMathMLUnaryNode)initWithChildren:(id)children
 {
   v9.receiver = self;
   v9.super_class = EQKitMathMLUnaryNode;
@@ -30,15 +30,15 @@
   if (v4)
   {
     v5 = [EQKitMathMLMRow alloc];
-    v4->mChild = objc_msgSend_initWithChildren_(v5, v6, a3, v7);
+    v4->mChild = objc_msgSend_initWithChildren_(v5, v6, children, v7);
   }
 
   return v4;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v7 = objc_msgSend_parseChildrenAsNodeFromXMLNode_(a4, a2, a3, a4);
+  v7 = objc_msgSend_parseChildrenAsNodeFromXMLNode_(parser, a2, node, parser);
   if (v7)
   {
 
@@ -47,7 +47,7 @@
 
   else
   {
-    objc_msgSend_reportError_withNode_(a4, v8, 5, a3);
+    objc_msgSend_reportError_withNode_(parser, v8, 5, node);
 
     return 0;
   }

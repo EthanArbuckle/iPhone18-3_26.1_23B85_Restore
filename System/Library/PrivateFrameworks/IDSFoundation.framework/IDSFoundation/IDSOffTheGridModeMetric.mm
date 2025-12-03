@@ -1,5 +1,5 @@
 @interface IDSOffTheGridModeMetric
-- (IDSOffTheGridModeMetric)initWithPreviousMode:(id)a3 currentMode:(id)a4 previousPublishStatus:(id)a5 currentPublishStatus:(id)a6 previousStewieConnectionState:(BOOL)a7 currentStewieConnectionState:(BOOL)a8 previousNetworkConnectionState:(BOOL)a9 currentNetworkConnectionState:(BOOL)a10 duration:(id)a11;
+- (IDSOffTheGridModeMetric)initWithPreviousMode:(id)mode currentMode:(id)currentMode previousPublishStatus:(id)status currentPublishStatus:(id)publishStatus previousStewieConnectionState:(BOOL)state currentStewieConnectionState:(BOOL)connectionState previousNetworkConnectionState:(BOOL)networkConnectionState currentNetworkConnectionState:(BOOL)self0 duration:(id)self1;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -66,28 +66,28 @@
   return v4;
 }
 
-- (IDSOffTheGridModeMetric)initWithPreviousMode:(id)a3 currentMode:(id)a4 previousPublishStatus:(id)a5 currentPublishStatus:(id)a6 previousStewieConnectionState:(BOOL)a7 currentStewieConnectionState:(BOOL)a8 previousNetworkConnectionState:(BOOL)a9 currentNetworkConnectionState:(BOOL)a10 duration:(id)a11
+- (IDSOffTheGridModeMetric)initWithPreviousMode:(id)mode currentMode:(id)currentMode previousPublishStatus:(id)status currentPublishStatus:(id)publishStatus previousStewieConnectionState:(BOOL)state currentStewieConnectionState:(BOOL)connectionState previousNetworkConnectionState:(BOOL)networkConnectionState currentNetworkConnectionState:(BOOL)self0 duration:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v25 = a5;
-  v24 = a6;
-  v19 = a11;
+  modeCopy = mode;
+  currentModeCopy = currentMode;
+  statusCopy = status;
+  publishStatusCopy = publishStatus;
+  durationCopy = duration;
   v26.receiver = self;
   v26.super_class = IDSOffTheGridModeMetric;
   v20 = [(IDSOffTheGridModeMetric *)&v26 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_previousMode, a3);
-    objc_storeStrong(&v21->_currentMode, a4);
-    objc_storeStrong(&v21->_previousPublishStatus, a5);
-    objc_storeStrong(&v21->_currentPublishStatus, a6);
-    v21->_previousStewieConnectionState = a7;
-    v21->_currentStewieConnectionState = a8;
-    v21->_previousNetworkConnectionState = a9;
-    v21->_currentNetworkConnectionState = a10;
-    objc_storeStrong(&v21->_duration, a11);
+    objc_storeStrong(&v20->_previousMode, mode);
+    objc_storeStrong(&v21->_currentMode, currentMode);
+    objc_storeStrong(&v21->_previousPublishStatus, status);
+    objc_storeStrong(&v21->_currentPublishStatus, publishStatus);
+    v21->_previousStewieConnectionState = state;
+    v21->_currentStewieConnectionState = connectionState;
+    v21->_previousNetworkConnectionState = networkConnectionState;
+    v21->_currentNetworkConnectionState = currentNetworkConnectionState;
+    objc_storeStrong(&v21->_duration, duration);
   }
 
   return v21;

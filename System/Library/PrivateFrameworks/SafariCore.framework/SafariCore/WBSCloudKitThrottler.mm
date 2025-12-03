@@ -1,39 +1,39 @@
 @interface WBSCloudKitThrottler
-+ (BOOL)policyStringRepresentsValidPolicy:(id)a3;
-+ (id)_distributionBucketsFromConfiguration:(id)a3;
-- (BOOL)_loadDistributionConfiguration:(id)a3;
-- (BOOL)permitsOperationWithPriority:(int64_t)a3;
-- (WBSCloudKitThrottler)initWithPolicyString:(id)a3;
++ (BOOL)policyStringRepresentsValidPolicy:(id)policy;
++ (id)_distributionBucketsFromConfiguration:(id)configuration;
+- (BOOL)_loadDistributionConfiguration:(id)configuration;
+- (BOOL)permitsOperationWithPriority:(int64_t)priority;
+- (WBSCloudKitThrottler)initWithPolicyString:(id)string;
 - (WBSCloudKitThrottlerDataStore)dataStore;
-- (double)_minimumTimeBetweenOperationsForOperations:(id)a3;
+- (double)_minimumTimeBetweenOperationsForOperations:(id)operations;
 - (double)_timeIntervalUntilNextPermittedOperationAttemptWithNormalPriority;
-- (double)_timeIntervalUntilOperationShouldBePruned:(id)a3;
+- (double)_timeIntervalUntilOperationShouldBePruned:(id)pruned;
 - (id)_dateOfNextPermittedOperationAttemptWithNormalPriority;
-- (id)dateOfNextPermittedOperationWithPriority:(int64_t)a3;
+- (id)dateOfNextPermittedOperationWithPriority:(int64_t)priority;
 - (id)description;
-- (void)_addOperationAtDate:(id)a3;
+- (void)_addOperationAtDate:(id)date;
 - (void)_loadRecordOfPastOperations;
 - (void)_pruneExpiredOrInvalidOperations;
 - (void)_saveRecordOfPastOperations;
-- (void)operationWithPriority:(int64_t)a3 didCompleteWithResult:(int64_t)a4;
+- (void)operationWithPriority:(int64_t)priority didCompleteWithResult:(int64_t)result;
 - (void)reloadRecordOfPastOperations;
-- (void)setDataStore:(id)a3;
+- (void)setDataStore:(id)store;
 @end
 
 @implementation WBSCloudKitThrottler
 
-+ (BOOL)policyStringRepresentsValidPolicy:(id)a3
++ (BOOL)policyStringRepresentsValidPolicy:(id)policy
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _distributionBucketsFromConfiguration:v3];
+  policyCopy = policy;
+  v4 = [objc_opt_class() _distributionBucketsFromConfiguration:policyCopy];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (WBSCloudKitThrottler)initWithPolicyString:(id)a3
+- (WBSCloudKitThrottler)initWithPolicyString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = WBSCloudKitThrottler;
   v5 = [(WBSCloudKitThrottler *)&v10 init];
@@ -43,16 +43,16 @@
     pastOperationsWithinMonitoredPeriod = v5->_pastOperationsWithinMonitoredPeriod;
     v5->_pastOperationsWithinMonitoredPeriod = v6;
 
-    [(WBSCloudKitThrottler *)v5 setPolicyString:v4];
+    [(WBSCloudKitThrottler *)v5 setPolicyString:stringCopy];
     v8 = v5;
   }
 
   return v5;
 }
 
-- (void)setDataStore:(id)a3
+- (void)setDataStore:(id)store
 {
-  obj = a3;
+  obj = store;
   WeakRetained = objc_loadWeakRetained(&self->_dataStore);
 
   if (WeakRetained != obj)
@@ -62,22 +62,22 @@
   }
 }
 
-- (BOOL)permitsOperationWithPriority:(int64_t)a3
+- (BOOL)permitsOperationWithPriority:(int64_t)priority
 {
-  v4 = self;
+  selfCopy = self;
   [(WBSCloudKitThrottler *)self _pruneExpiredOrInvalidOperations];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(WBSCloudKitThrottler *)v4 dateOfNextPermittedOperationWithPriority:a3];
-  LOBYTE(v4) = [v5 compare:v6] != -1;
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [(WBSCloudKitThrottler *)selfCopy dateOfNextPermittedOperationWithPriority:priority];
+  LOBYTE(selfCopy) = [date compare:v6] != -1;
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)dateOfNextPermittedOperationWithPriority:(int64_t)a3
+- (id)dateOfNextPermittedOperationWithPriority:(int64_t)priority
 {
-  if ((a3 - 1) >= 2)
+  if ((priority - 1) >= 2)
   {
-    if (!a3)
+    if (!priority)
     {
       self = [(WBSCloudKitThrottler *)self _dateOfNextPermittedOperationAttemptWithNormalPriority];
     }
@@ -91,18 +91,18 @@
   return self;
 }
 
-- (void)operationWithPriority:(int64_t)a3 didCompleteWithResult:(int64_t)a4
+- (void)operationWithPriority:(int64_t)priority didCompleteWithResult:(int64_t)result
 {
-  v5 = a4 != 2 && a4 != 4;
-  if (a3 != 2 && !v5)
+  v5 = result != 2 && result != 4;
+  if (priority != 2 && !v5)
   {
-    if (a3 == 1 && [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod count])
+    if (priority == 1 && [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod count])
     {
       [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod removeLastObject];
     }
 
-    v7 = [MEMORY[0x1E695DF00] date];
-    [(WBSCloudKitThrottler *)self _addOperationAtDate:v7];
+    date = [MEMORY[0x1E695DF00] date];
+    [(WBSCloudKitThrottler *)self _addOperationAtDate:date];
 
     [(WBSCloudKitThrottler *)self _saveRecordOfPastOperations];
   }
@@ -116,25 +116,25 @@
   throttlingDistribution = self->_throttlingDistribution;
   numberOfSecondsToMonitor = self->_numberOfSecondsToMonitor;
   maximumNumberOfOperationWithinMonitoredPeriod = self->_maximumNumberOfOperationWithinMonitoredPeriod;
-  v9 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   [(WBSCloudKitThrottler *)self _currentMinimumTimeIntervalBetweenOperations];
   v11 = v10;
-  v12 = [(WBSCloudKitThrottler *)self _dateOfNextPermittedOperationAttemptWithNormalPriority];
-  v13 = [v3 stringWithFormat:@"<%@: %p throttlingDistribution = %@; numberOfSecondsToMonitor = %lf; maximumNumberOfOperationWithinMonitoredPeriod = %lu>; now = %@; currentMinimumTimeIntervalBetweenOperations = %f; dateOfNextPermittedOperationAttemptWithNormalPriority = %@; pastOperationsWithinMonitoredPeriod = %@", v5, self, throttlingDistribution, *&numberOfSecondsToMonitor, maximumNumberOfOperationWithinMonitoredPeriod, v9, v11, v12, self->_pastOperationsWithinMonitoredPeriod];;
+  _dateOfNextPermittedOperationAttemptWithNormalPriority = [(WBSCloudKitThrottler *)self _dateOfNextPermittedOperationAttemptWithNormalPriority];
+  v13 = [v3 stringWithFormat:@"<%@: %p throttlingDistribution = %@; numberOfSecondsToMonitor = %lf; maximumNumberOfOperationWithinMonitoredPeriod = %lu>; now = %@; currentMinimumTimeIntervalBetweenOperations = %f; dateOfNextPermittedOperationAttemptWithNormalPriority = %@; pastOperationsWithinMonitoredPeriod = %@", v5, self, throttlingDistribution, *&numberOfSecondsToMonitor, maximumNumberOfOperationWithinMonitoredPeriod, date, v11, _dateOfNextPermittedOperationAttemptWithNormalPriority, self->_pastOperationsWithinMonitoredPeriod];;
 
   return v13;
 }
 
-+ (id)_distributionBucketsFromConfiguration:(id)a3
++ (id)_distributionBucketsFromConfiguration:(id)configuration
 {
   v31 = *MEMORY[0x1E69E9840];
-  v23 = a3;
+  configurationCopy = configuration;
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v23 componentsSeparatedByString:@" | "];
+  v4 = [configurationCopy componentsSeparatedByString:@" | "];
   v5 = [v4 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v5)
   {
@@ -172,21 +172,21 @@ LABEL_18:
         }
 
         v12 = [v8 objectAtIndexedSubscript:0];
-        v13 = [v12 integerValue];
+        integerValue = [v12 integerValue];
 
         v14 = [v8 objectAtIndexedSubscript:1];
-        v15 = [v14 integerValue];
+        integerValue2 = [v14 integerValue];
 
-        if (v13 < 1 || v15 <= 0)
+        if (integerValue < 1 || integerValue2 <= 0)
         {
           goto LABEL_18;
         }
 
         v28[0] = @"numberOfOperations";
-        v16 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
+        v16 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
         v28[1] = @"minimumTimeIntervalBetweenOperations";
         v29[0] = v16;
-        v17 = [MEMORY[0x1E696AD98] numberWithDouble:v15 * 60.0];
+        v17 = [MEMORY[0x1E696AD98] numberWithDouble:integerValue2 * 60.0];
         v29[1] = v17;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
         [v3 addObject:v18];
@@ -220,12 +220,12 @@ LABEL_19:
   return v20;
 }
 
-- (BOOL)_loadDistributionConfiguration:(id)a3
+- (BOOL)_loadDistributionConfiguration:(id)configuration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v22 = self;
-  v4 = [objc_opt_class() _distributionBucketsFromConfiguration:v21];
+  configurationCopy = configuration;
+  selfCopy = self;
+  v4 = [objc_opt_class() _distributionBucketsFromConfiguration:configurationCopy];
   if (v4)
   {
     v25 = 0u;
@@ -251,14 +251,14 @@ LABEL_19:
 
           v11 = *(*(&v23 + 1) + 8 * i);
           v12 = [v11 objectForKeyedSubscript:@"numberOfOperations"];
-          v13 = [v12 unsignedIntegerValue];
+          unsignedIntegerValue = [v12 unsignedIntegerValue];
 
           v14 = [v11 objectForKeyedSubscript:@"minimumTimeIntervalBetweenOperations"];
           [v14 doubleValue];
           v16 = v15;
 
-          v6 += v13;
-          v9 = v9 + v16 * v13;
+          v6 += unsignedIntegerValue;
+          v9 = v9 + v16 * unsignedIntegerValue;
         }
 
         v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -272,9 +272,9 @@ LABEL_19:
       v9 = 0.0;
     }
 
-    objc_storeStrong(&v22->_throttlingDistribution, obj);
-    v22->_numberOfSecondsToMonitor = v9;
-    v22->_maximumNumberOfOperationWithinMonitoredPeriod = v6;
+    objc_storeStrong(&selfCopy->_throttlingDistribution, obj);
+    selfCopy->_numberOfSecondsToMonitor = v9;
+    selfCopy->_maximumNumberOfOperationWithinMonitoredPeriod = v6;
     v4 = obj;
   }
 
@@ -286,11 +286,11 @@ LABEL_19:
 
 - (id)_dateOfNextPermittedOperationAttemptWithNormalPriority
 {
-  v3 = [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod firstObject];
+  if (firstObject)
   {
     [(WBSCloudKitThrottler *)self _timeIntervalUntilNextPermittedOperationAttemptWithNormalPriority];
-    [v3 dateByAddingTimeInterval:?];
+    [firstObject dateByAddingTimeInterval:?];
   }
 
   else
@@ -308,8 +308,8 @@ LABEL_19:
   {
     [(WBSCloudKitThrottler *)self _minimumTimeBetweenOperationsForOperations:i];
     v5 = v4;
-    v6 = [(NSMutableArray *)i lastObject];
-    [(WBSCloudKitThrottler *)self _timeIntervalUntilOperationShouldBePruned:v6];
+    lastObject = [(NSMutableArray *)i lastObject];
+    [(WBSCloudKitThrottler *)self _timeIntervalUntilOperationShouldBePruned:lastObject];
     v8 = v7;
 
     if (v5 <= v8)
@@ -329,21 +329,21 @@ LABEL_19:
   return v5;
 }
 
-- (double)_timeIntervalUntilOperationShouldBePruned:(id)a3
+- (double)_timeIntervalUntilOperationShouldBePruned:(id)pruned
 {
-  v4 = a3;
+  prunedCopy = pruned;
   numberOfSecondsToMonitor = self->_numberOfSecondsToMonitor;
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSinceDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  [prunedCopy timeIntervalSinceDate:date];
   v8 = numberOfSecondsToMonitor - v7;
 
   return v8;
 }
 
-- (double)_minimumTimeBetweenOperationsForOperations:(id)a3
+- (double)_minimumTimeBetweenOperationsForOperations:(id)operations
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 count];
+  v4 = [operations count];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -365,9 +365,9 @@ LABEL_19:
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:{@"numberOfOperations", v18}];
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-        v7 += v12;
+        v7 += unsignedIntegerValue;
         if (v4 < v7)
         {
           v14 = [v10 objectForKeyedSubscript:@"minimumTimeIntervalBetweenOperations"];
@@ -402,7 +402,7 @@ LABEL_11:
   {
     v4 = v3;
     v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-self->_numberOfSecondsToMonitor];
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     pastOperationsWithinMonitoredPeriod = self->_pastOperationsWithinMonitoredPeriod;
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
@@ -410,7 +410,7 @@ LABEL_11:
     v14 = &unk_1E7CF1A78;
     v8 = v5;
     v15 = v8;
-    v9 = v6;
+    v9 = date;
     v16 = v9;
     v10 = [(NSMutableArray *)pastOperationsWithinMonitoredPeriod indexesOfObjectsPassingTest:&v11];
     [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod removeObjectsAtIndexes:v10, v11, v12, v13, v14];
@@ -431,14 +431,14 @@ BOOL __56__WBSCloudKitThrottler__pruneExpiredOrInvalidOperations__block_invoke(u
   return v7;
 }
 
-- (void)_addOperationAtDate:(id)a3
+- (void)_addOperationAtDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   while (1)
   {
-    v4 = [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod firstObject];
-    v5 = v4;
-    if (!v4 || [v4 compare:v6] == -1)
+    firstObject = [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod firstObject];
+    v5 = firstObject;
+    if (!firstObject || [firstObject compare:dateCopy] == -1)
     {
       break;
     }
@@ -446,7 +446,7 @@ BOOL __56__WBSCloudKitThrottler__pruneExpiredOrInvalidOperations__block_invoke(u
     [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod removeObjectAtIndex:0];
   }
 
-  [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod insertObject:v6 atIndex:0];
+  [(NSMutableArray *)self->_pastOperationsWithinMonitoredPeriod insertObject:dateCopy atIndex:0];
 }
 
 - (void)_loadRecordOfPastOperations
@@ -469,8 +469,8 @@ BOOL __56__WBSCloudKitThrottler__pruneExpiredOrInvalidOperations__block_invoke(u
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v8 = [v5 reverseObjectEnumerator];
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         v10 = *v15;
@@ -481,7 +481,7 @@ BOOL __56__WBSCloudKitThrottler__pruneExpiredOrInvalidOperations__block_invoke(u
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v12 = *(*(&v14 + 1) + 8 * v11);
@@ -495,7 +495,7 @@ BOOL __56__WBSCloudKitThrottler__pruneExpiredOrInvalidOperations__block_invoke(u
           }
 
           while (v9 != v11);
-          v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v9);

@@ -1,7 +1,7 @@
 @interface CKObjCType
-+ (id)typeForEncoding:(const char *)a3;
-+ (id)typeForValue:(id)a3;
-- (CKObjCType)initWithCode:(int64_t)a3;
++ (id)typeForEncoding:(const char *)encoding;
++ (id)typeForValue:(id)value;
+- (CKObjCType)initWithCode:(int64_t)code;
 - (NSString)encoding;
 - (NSString)name;
 - (id)description;
@@ -99,16 +99,16 @@
   }
 }
 
-+ (id)typeForEncoding:(const char *)a3
++ (id)typeForEncoding:(const char *)encoding
 {
-  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, a3);
+  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, encoding);
   v7 = v4;
-  v8 = *a3;
+  v8 = *encoding;
   if (v8 > 0x5A)
   {
-    if (*a3 > 0x68u)
+    if (*encoding > 0x68u)
     {
-      if (*a3 > 0x72u)
+      if (*encoding > 0x72u)
       {
         switch(v8)
         {
@@ -147,7 +147,7 @@
       }
     }
 
-    else if (*a3 > 0x62u)
+    else if (*encoding > 0x62u)
     {
       switch(v8)
       {
@@ -191,9 +191,9 @@ LABEL_57:
     goto LABEL_63;
   }
 
-  if (*a3 > 0x41u)
+  if (*encoding > 0x41u)
   {
-    if (*a3 > 0x4Bu)
+    if (*encoding > 0x4Bu)
     {
       switch(v8)
       {
@@ -234,7 +234,7 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  if (*a3 <= 0x29u)
+  if (*encoding <= 0x29u)
   {
     if (v8 == 35)
     {
@@ -306,21 +306,21 @@ LABEL_64:
   return v26;
 }
 
-+ (id)typeForValue:(id)a3
++ (id)typeForValue:(id)value
 {
-  v4 = objc_msgSend_objCType(a3, a2, a3);
+  v4 = objc_msgSend_objCType(value, a2, value);
 
   return objc_msgSend_typeForEncoding_(CKObjCType, v3, v4);
 }
 
-- (CKObjCType)initWithCode:(int64_t)a3
+- (CKObjCType)initWithCode:(int64_t)code
 {
   v5.receiver = self;
   v5.super_class = CKObjCType;
   result = [(CKObjCType *)&v5 init];
   if (result)
   {
-    result->_code = a3;
+    result->_code = code;
   }
 
   return result;

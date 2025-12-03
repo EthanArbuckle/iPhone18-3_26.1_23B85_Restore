@@ -1,18 +1,18 @@
 @interface NSURLResponse
 - (id)metadata;
-- (id)responseValueForHeader:(id)a3;
+- (id)responseValueForHeader:(id)header;
 @end
 
 @implementation NSURLResponse
 
 - (id)metadata
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = [(NSURLResponse *)v2 allHeaderFields];
-    v5 = [v4 mutableCopy];
+    allHeaderFields = [(NSURLResponse *)selfCopy allHeaderFields];
+    v5 = [allHeaderFields mutableCopy];
 
     if (!v5)
     {
@@ -34,11 +34,11 @@
   return v5;
 }
 
-- (id)responseValueForHeader:(id)a3
+- (id)responseValueForHeader:(id)header
 {
   if (self)
   {
-    self = [(NSURLResponse *)self valueForHTTPHeaderField:a3];
+    self = [(NSURLResponse *)self valueForHTTPHeaderField:header];
     v3 = vars8;
   }
 

@@ -1,18 +1,18 @@
 @interface CKCDPError
-- (BOOL)isEqual:(id)a3;
-- (id)codeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)codeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCode:(id)a3;
+- (int)StringAsCode:(id)code;
 - (int)code;
 - (unint64_t)hash;
-- (void)addAuxiliaryUserInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCode:(BOOL)a3;
-- (void)setHasTargetPartition:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAuxiliaryUserInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCode:(BOOL)code;
+- (void)setHasTargetPartition:(BOOL)partition;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPError
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasCode:(BOOL)a3
+- (void)setHasCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -45,40 +45,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)codeAsString:(int)a3
+- (id)codeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C798[a3 - 1];
+    v4 = off_27854C798[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsCode:(id)a3
+- (int)StringAsCode:(id)code
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"FUNCTION_TIMEOUT"))
+  codeCopy = code;
+  if (objc_msgSend_isEqualToString_(codeCopy, v4, @"FUNCTION_TIMEOUT"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"FUNCTION_ERROR"))
+  else if (objc_msgSend_isEqualToString_(codeCopy, v5, @"FUNCTION_ERROR"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"INTERNAL_ERROR"))
+  else if (objc_msgSend_isEqualToString_(codeCopy, v7, @"INTERNAL_ERROR"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"INVALID_PARTITION"))
+  else if (objc_msgSend_isEqualToString_(codeCopy, v8, @"INVALID_PARTITION"))
   {
     v6 = 4;
   }
@@ -91,27 +91,27 @@
   return v6;
 }
 
-- (void)addAuxiliaryUserInfo:(id)a3
+- (void)addAuxiliaryUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   auxiliaryUserInfos = self->_auxiliaryUserInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!auxiliaryUserInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_auxiliaryUserInfos;
     self->_auxiliaryUserInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     auxiliaryUserInfos = self->_auxiliaryUserInfos;
   }
 
-  objc_msgSend_addObject_(auxiliaryUserInfos, v4, v4);
+  objc_msgSend_addObject_(auxiliaryUserInfos, infoCopy, infoCopy);
 }
 
-- (void)setHasTargetPartition:(BOOL)a3
+- (void)setHasTargetPartition:(BOOL)partition
 {
-  if (a3)
+  if (partition)
   {
     v3 = 4;
   }
@@ -222,10 +222,10 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     code = self->_code;
@@ -289,34 +289,34 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[8] = self->_code;
-    *(v4 + 52) |= 2u;
+    toCopy[8] = self->_code;
+    *(toCopy + 52) |= 2u;
   }
 
   message = self->_message;
-  v18 = v4;
+  v18 = toCopy;
   if (message)
   {
-    objc_msgSend_setMessage_(v4, v5, message);
-    v4 = v18;
+    objc_msgSend_setMessage_(toCopy, v5, message);
+    toCopy = v18;
   }
 
   auxiliaryDomain = self->_auxiliaryDomain;
   if (auxiliaryDomain)
   {
     objc_msgSend_setAuxiliaryDomain_(v18, v5, auxiliaryDomain);
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (*&self->_has)
   {
-    v4[2] = self->_auxiliaryCode;
-    *(v4 + 52) |= 1u;
+    toCopy[2] = self->_auxiliaryCode;
+    *(toCopy + 52) |= 1u;
   }
 
   if (objc_msgSend_auxiliaryUserInfosCount(self, v5, auxiliaryDomain))
@@ -341,11 +341,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if ((*&self->_has & 2) != 0)
@@ -354,11 +354,11 @@
     *(v10 + 52) |= 2u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_message, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_message, v11, zone);
   v14 = *(v12 + 40);
   *(v12 + 40) = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_auxiliaryDomain, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_auxiliaryDomain, v15, zone);
   v17 = *(v12 + 16);
   *(v12 + 16) = v16;
 
@@ -387,7 +387,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v25 = objc_msgSend_copyWithZone_(*(*(&v29 + 1) + 8 * i), v21, a3, v29);
+        v25 = objc_msgSend_copyWithZone_(*(*(&v29 + 1) + 8 * i), v21, zone, v29);
         objc_msgSend_addAuxiliaryUserInfo_(v12, v26, v25);
       }
 
@@ -407,38 +407,38 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_23;
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_code != *(v4 + 8))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_code != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   message = self->_message;
-  v10 = v4[5];
+  v10 = equalCopy[5];
   if (message | v10 && !objc_msgSend_isEqual_(message, v7, v10))
   {
     goto LABEL_23;
   }
 
   auxiliaryDomain = self->_auxiliaryDomain;
-  v12 = v4[2];
+  v12 = equalCopy[2];
   if (auxiliaryDomain | v12)
   {
     if (!objc_msgSend_isEqual_(auxiliaryDomain, v7, v12))
@@ -448,22 +448,22 @@
   }
 
   has = self->_has;
-  v14 = *(v4 + 52);
+  v14 = *(equalCopy + 52);
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_auxiliaryCode != *(v4 + 2))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_auxiliaryCode != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_23;
   }
 
   auxiliaryUserInfos = self->_auxiliaryUserInfos;
-  v16 = v4[3];
+  v16 = equalCopy[3];
   if (auxiliaryUserInfos | v16)
   {
     if (!objc_msgSend_isEqual_(auxiliaryUserInfos, v7, v16))
@@ -474,13 +474,13 @@ LABEL_23:
     }
 
     has = self->_has;
-    v14 = *(v4 + 52);
+    v14 = *(equalCopy + 52);
   }
 
   v17 = (v14 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_targetPartition != *(v4 + 12))
+    if ((v14 & 4) == 0 || self->_targetPartition != *(equalCopy + 12))
     {
       goto LABEL_23;
     }
@@ -531,18 +531,18 @@ LABEL_24:
   return v5 ^ v4 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = v4;
-  if ((*(v4 + 52) & 2) != 0)
+  fromCopy = from;
+  v6 = fromCopy;
+  if ((*(fromCopy + 52) & 2) != 0)
   {
-    self->_code = *(v4 + 8);
+    self->_code = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (v7)
   {
     objc_msgSend_setMessage_(self, v5, v7);

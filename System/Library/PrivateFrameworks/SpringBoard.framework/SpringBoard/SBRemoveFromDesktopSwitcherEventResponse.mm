@@ -1,24 +1,24 @@
 @interface SBRemoveFromDesktopSwitcherEventResponse
-- (SBRemoveFromDesktopSwitcherEventResponse)initWithDisplayItems:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBRemoveFromDesktopSwitcherEventResponse)initWithDisplayItems:(id)items;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBRemoveFromDesktopSwitcherEventResponse
 
-- (SBRemoveFromDesktopSwitcherEventResponse)initWithDisplayItems:(id)a3
+- (SBRemoveFromDesktopSwitcherEventResponse)initWithDisplayItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = SBRemoveFromDesktopSwitcherEventResponse;
   v6 = [(SBChainableModifierEventResponse *)&v10 init];
   if (v6)
   {
-    if (![v5 count])
+    if (![itemsCopy count])
     {
       [(SBRemoveFromDesktopSwitcherEventResponse *)a2 initWithDisplayItems:v6];
     }
 
-    v7 = [v5 copy];
+    v7 = [itemsCopy copy];
     displayItems = v6->_displayItems;
     v6->_displayItems = v7;
   }
@@ -26,11 +26,11 @@
   return v6;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBRemoveFromDesktopSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_displayItems withName:@"displayItems"];
 
   return v4;

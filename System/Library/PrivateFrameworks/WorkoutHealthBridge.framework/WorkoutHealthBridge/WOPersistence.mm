@@ -1,144 +1,144 @@
 @interface WOPersistence
-+ (id)persistenceFromProto:(id)a3;
++ (id)persistenceFromProto:(id)proto;
 + (id)zeroObjectModificationDate;
-- (WOPersistence)initWithCoder:(id)a3;
-- (WOPersistence)initWithData:(id)a3;
-- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 objectState:(unint64_t)a7 objectModificationDate:(id)a8 syncIdentity:(id)a9;
-- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 persistedProtoData:(id)a7 objectState:(unint64_t)a8 objectModificationDate:(id)a9 syncIdentity:(id)a10;
+- (WOPersistence)initWithCoder:(id)coder;
+- (WOPersistence)initWithData:(id)data;
+- (WOPersistence)initWithVersion:(int64_t)version type:(unint64_t)type uuid:(id)uuid persistedData:(id)data objectState:(unint64_t)state objectModificationDate:(id)date syncIdentity:(id)identity;
+- (WOPersistence)initWithVersion:(int64_t)version type:(unint64_t)type uuid:(id)uuid persistedData:(id)data persistedProtoData:(id)protoData objectState:(unint64_t)state objectModificationDate:(id)date syncIdentity:(id)self0;
 - (id)data;
 - (id)protobuf;
 - (int64_t)encodedByteCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WOPersistence
 
-- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 objectState:(unint64_t)a7 objectModificationDate:(id)a8 syncIdentity:(id)a9
+- (WOPersistence)initWithVersion:(int64_t)version type:(unint64_t)type uuid:(id)uuid persistedData:(id)data objectState:(unint64_t)state objectModificationDate:(id)date syncIdentity:(id)identity
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  v20 = a4;
+  versionCopy = version;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, uuid);
   v18 = 0;
-  objc_storeStrong(&v18, a6);
-  v17 = a7;
+  objc_storeStrong(&v18, data);
+  stateCopy = state;
   v16 = 0;
-  objc_storeStrong(&v16, a8);
+  objc_storeStrong(&v16, date);
   v15 = 0;
-  objc_storeStrong(&v15, a9);
-  v9 = v23;
-  v23 = 0;
-  v23 = [(WOPersistence *)v9 initWithVersion:v21 type:v20 uuid:location persistedData:v18 persistedProtoData:0 objectState:v17 objectModificationDate:v16 syncIdentity:v15];
-  v14 = MEMORY[0x277D82BE0](v23);
+  objc_storeStrong(&v15, identity);
+  v9 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(WOPersistence *)v9 initWithVersion:versionCopy type:typeCopy uuid:location persistedData:v18 persistedProtoData:0 objectState:stateCopy objectModificationDate:v16 syncIdentity:v15];
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v14;
 }
 
-- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 persistedProtoData:(id)a7 objectState:(unint64_t)a8 objectModificationDate:(id)a9 syncIdentity:(id)a10
+- (WOPersistence)initWithVersion:(int64_t)version type:(unint64_t)type uuid:(id)uuid persistedData:(id)data persistedProtoData:(id)protoData objectState:(unint64_t)state objectModificationDate:(id)date syncIdentity:(id)self0
 {
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
-  v27 = a4;
+  versionCopy = version;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, uuid);
   v25 = 0;
-  objc_storeStrong(&v25, a6);
+  objc_storeStrong(&v25, data);
   v24 = 0;
-  objc_storeStrong(&v24, a7);
-  v23 = a8;
+  objc_storeStrong(&v24, protoData);
+  stateCopy = state;
   v22 = 0;
-  objc_storeStrong(&v22, a9);
+  objc_storeStrong(&v22, date);
   v21 = 0;
-  objc_storeStrong(&v21, a10);
-  v10 = v30;
-  v30 = 0;
+  objc_storeStrong(&v21, identity);
+  v10 = selfCopy;
+  selfCopy = 0;
   v20.receiver = v10;
   v20.super_class = WOPersistence;
-  v30 = [(WOPersistence *)&v20 init];
-  objc_storeStrong(&v30, v30);
-  if (v30)
+  selfCopy = [(WOPersistence *)&v20 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(WOPersistence *)v30 setVersion:v28];
-    [(WOPersistence *)v30 setType:v27];
-    [(WOPersistence *)v30 setUuid:location];
-    [(WOPersistence *)v30 setPersistedData:v25];
-    [(WOPersistence *)v30 setPersistedProtoData:v24];
-    [(WOPersistence *)v30 setObjectState:v23];
-    [(WOPersistence *)v30 setObjectModificationDate:v22];
-    [(WOPersistence *)v30 setSyncIdentity:v21];
+    [(WOPersistence *)selfCopy setVersion:versionCopy];
+    [(WOPersistence *)selfCopy setType:typeCopy];
+    [(WOPersistence *)selfCopy setUuid:location];
+    [(WOPersistence *)selfCopy setPersistedData:v25];
+    [(WOPersistence *)selfCopy setPersistedProtoData:v24];
+    [(WOPersistence *)selfCopy setObjectState:stateCopy];
+    [(WOPersistence *)selfCopy setObjectModificationDate:v22];
+    [(WOPersistence *)selfCopy setSyncIdentity:v21];
     v13 = objc_opt_new();
-    [(WOPersistence *)v30 setKeyedNumbers:?];
+    [(WOPersistence *)selfCopy setKeyedNumbers:?];
     MEMORY[0x277D82BD8](v13);
     v14 = objc_opt_new();
-    [(WOPersistence *)v30 setKeyedStrings:?];
+    [(WOPersistence *)selfCopy setKeyedStrings:?];
     MEMORY[0x277D82BD8](v14);
     v15 = objc_opt_new();
-    [(WOPersistence *)v30 setKeyedDatas:?];
+    [(WOPersistence *)selfCopy setKeyedDatas:?];
     MEMORY[0x277D82BD8](v15);
     v16 = objc_opt_new();
-    [(WOPersistence *)v30 setKeyedDatas:?];
+    [(WOPersistence *)selfCopy setKeyedDatas:?];
     MEMORY[0x277D82BD8](v16);
   }
 
-  v12 = MEMORY[0x277D82BE0](v30);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeInteger:v4->_version forKey:@"version"];
-  [location[0] encodeInteger:v4->_type forKey:@"type"];
-  [location[0] encodeObject:v4->_uuid forKey:@"uuid"];
-  [location[0] encodeObject:v4->_keyedNumbers forKey:@"numbers"];
-  [location[0] encodeObject:v4->_keyedStrings forKey:@"strings"];
-  [location[0] encodeObject:v4->_keyedDates forKey:@"dates"];
-  [location[0] encodeObject:v4->_persistedData forKey:@"data"];
-  [location[0] encodeObject:v4->_keyedDatas forKey:@"keyedDatas"];
-  [location[0] encodeObject:v4->_persistedProtoData forKey:@"proto_data"];
-  [location[0] encodeInteger:v4->_objectState forKey:@"objectState"];
-  [location[0] encodeObject:v4->_objectModificationDate forKey:@"objectModificationDate"];
-  [location[0] encodeObject:v4->_syncIdentity forKey:@"syncIdentity"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeInteger:selfCopy->_version forKey:@"version"];
+  [location[0] encodeInteger:selfCopy->_type forKey:@"type"];
+  [location[0] encodeObject:selfCopy->_uuid forKey:@"uuid"];
+  [location[0] encodeObject:selfCopy->_keyedNumbers forKey:@"numbers"];
+  [location[0] encodeObject:selfCopy->_keyedStrings forKey:@"strings"];
+  [location[0] encodeObject:selfCopy->_keyedDates forKey:@"dates"];
+  [location[0] encodeObject:selfCopy->_persistedData forKey:@"data"];
+  [location[0] encodeObject:selfCopy->_keyedDatas forKey:@"keyedDatas"];
+  [location[0] encodeObject:selfCopy->_persistedProtoData forKey:@"proto_data"];
+  [location[0] encodeInteger:selfCopy->_objectState forKey:@"objectState"];
+  [location[0] encodeObject:selfCopy->_objectModificationDate forKey:@"objectModificationDate"];
+  [location[0] encodeObject:selfCopy->_syncIdentity forKey:@"syncIdentity"];
   objc_storeStrong(location, 0);
 }
 
-- (WOPersistence)initWithCoder:(id)a3
+- (WOPersistence)initWithCoder:(id)coder
 {
   v41[3] = *MEMORY[0x277D85DE8];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v37;
-  v37 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v35.receiver = v3;
   v35.super_class = WOPersistence;
-  v37 = [(WOPersistence *)&v35 init];
-  objc_storeStrong(&v37, v37);
-  if (v37)
+  selfCopy = [(WOPersistence *)&v35 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeIntegerForKey:@"version"];
-    [(WOPersistence *)v37 setVersion:v4];
+    [(WOPersistence *)selfCopy setVersion:v4];
     v5 = [location[0] decodeIntegerForKey:@"type"];
-    [(WOPersistence *)v37 setType:v5];
+    [(WOPersistence *)selfCopy setType:v5];
     v14 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-    [(WOPersistence *)v37 setUuid:?];
+    [(WOPersistence *)selfCopy setUuid:?];
     MEMORY[0x277D82BD8](v14);
     v16 = location[0];
     v15 = MEMORY[0x277CBEB98];
@@ -148,7 +148,7 @@
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:?];
     v18 = [v15 setWithArray:?];
     v17 = [v16 decodeObjectOfClasses:? forKey:?];
-    [(WOPersistence *)v37 setKeyedNumbers:?];
+    [(WOPersistence *)selfCopy setKeyedNumbers:?];
     MEMORY[0x277D82BD8](v17);
     MEMORY[0x277D82BD8](v18);
     MEMORY[0x277D82BD8](v19);
@@ -159,7 +159,7 @@
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
     v23 = [v20 setWithArray:?];
     v22 = [v21 decodeObjectOfClasses:? forKey:?];
-    [(WOPersistence *)v37 setKeyedStrings:?];
+    [(WOPersistence *)selfCopy setKeyedStrings:?];
     MEMORY[0x277D82BD8](v22);
     MEMORY[0x277D82BD8](v23);
     MEMORY[0x277D82BD8](v24);
@@ -171,7 +171,7 @@
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:3];
     v28 = [v25 setWithArray:?];
     v27 = [v26 decodeObjectOfClasses:? forKey:?];
-    [(WOPersistence *)v37 setKeyedDates:?];
+    [(WOPersistence *)selfCopy setKeyedDates:?];
     MEMORY[0x277D82BD8](v27);
     MEMORY[0x277D82BD8](v28);
     MEMORY[0x277D82BD8](v29);
@@ -183,72 +183,72 @@
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
     v33 = [v30 setWithArray:?];
     v32 = [v31 decodeObjectOfClasses:? forKey:?];
-    [(WOPersistence *)v37 setKeyedDatas:?];
+    [(WOPersistence *)selfCopy setKeyedDatas:?];
     MEMORY[0x277D82BD8](v32);
     MEMORY[0x277D82BD8](v33);
     MEMORY[0x277D82BD8](v34);
     if ([location[0] containsValueForKey:@"proto_data"])
     {
       v13 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"proto_data"];
-      [(WOPersistence *)v37 setPersistedProtoData:?];
+      [(WOPersistence *)selfCopy setPersistedProtoData:?];
       MEMORY[0x277D82BD8](v13);
     }
 
     else
     {
-      [(WOPersistence *)v37 setPersistedProtoData:0];
+      [(WOPersistence *)selfCopy setPersistedProtoData:0];
     }
 
     v12 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"data"];
-    [(WOPersistence *)v37 setPersistedData:?];
+    [(WOPersistence *)selfCopy setPersistedData:?];
     MEMORY[0x277D82BD8](v12);
     if ([location[0] containsValueForKey:@"objectState"])
     {
       v6 = [location[0] decodeIntegerForKey:@"objectState"];
-      [(WOPersistence *)v37 setObjectState:v6];
+      [(WOPersistence *)selfCopy setObjectState:v6];
     }
 
     else
     {
-      [(WOPersistence *)v37 setObjectState:0];
+      [(WOPersistence *)selfCopy setObjectState:0];
     }
 
     if ([location[0] containsValueForKey:@"objectModificationDate"])
     {
       v11 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"objectModificationDate"];
-      [(WOPersistence *)v37 setObjectModificationDate:?];
+      [(WOPersistence *)selfCopy setObjectModificationDate:?];
       MEMORY[0x277D82BD8](v11);
     }
 
     else
     {
       v10 = +[WOPersistence zeroObjectModificationDate];
-      [(WOPersistence *)v37 setObjectModificationDate:?];
+      [(WOPersistence *)selfCopy setObjectModificationDate:?];
       MEMORY[0x277D82BD8](v10);
     }
 
     if ([location[0] containsValueForKey:@"syncIdentity"])
     {
       v9 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"syncIdentity"];
-      [(WOPersistence *)v37 setSyncIdentity:?];
+      [(WOPersistence *)selfCopy setSyncIdentity:?];
       MEMORY[0x277D82BD8](v9);
     }
   }
 
-  v8 = MEMORY[0x277D82BE0](v37);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (WOPersistence)initWithData:(id)a3
+- (WOPersistence)initWithData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v11 = 0;
   v6 = MEMORY[0x277CCAAC8];
   v3 = objc_opt_class();
@@ -273,7 +273,7 @@
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v5;
 }
@@ -297,7 +297,7 @@
   v7 = v4;
   if (v4)
   {
-    v9 = MEMORY[0x277D82BE0](v7);
+    data = MEMORY[0x277D82BE0](v7);
   }
 
   else
@@ -311,13 +311,13 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v9 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(v8, 0);
   *MEMORY[0x277D85DE8];
-  v2 = v9;
+  v2 = data;
 
   return v2;
 }
@@ -335,22 +335,22 @@
 - (id)protobuf
 {
   v58 = *MEMORY[0x277D85DE8];
-  v53 = self;
+  selfCopy = self;
   v52[1] = a2;
   v52[0] = objc_opt_new();
   context = objc_autoreleasePoolPush();
-  [v52[0] setVersion:v53->_version];
-  [v52[0] setType:v53->_type];
-  v32 = [(NSUUID *)v53->_uuid hk_dataForUUIDBytes];
+  [v52[0] setVersion:selfCopy->_version];
+  [v52[0] setType:selfCopy->_type];
+  hk_dataForUUIDBytes = [(NSUUID *)selfCopy->_uuid hk_dataForUUIDBytes];
   [v52[0] setUuid:?];
-  MEMORY[0x277D82BD8](v32);
-  [v52[0] setPersistedProtoData:v53->_persistedProtoData];
-  [v52[0] setPersistedData:v53->_persistedData];
-  [v52[0] setObjectState:v53->_objectState];
-  [(NSDate *)v53->_objectModificationDate timeIntervalSinceReferenceDate];
+  MEMORY[0x277D82BD8](hk_dataForUUIDBytes);
+  [v52[0] setPersistedProtoData:selfCopy->_persistedProtoData];
+  [v52[0] setPersistedData:selfCopy->_persistedData];
+  [v52[0] setObjectState:selfCopy->_objectState];
+  [(NSDate *)selfCopy->_objectModificationDate timeIntervalSinceReferenceDate];
   [v52[0] setObjectModificationTimeSinceReferenceDate:?];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v53->_keyedNumbers);
+  obj = MEMORY[0x277D82BE0](selfCopy->_keyedNumbers);
   v34 = [obj countByEnumeratingWithState:__b objects:v57 count:16];
   if (v34)
   {
@@ -366,7 +366,7 @@
       }
 
       v51 = *(__b[1] + 8 * v29);
-      v49 = [(NSDictionary *)v53->_keyedNumbers objectForKeyedSubscript:v51];
+      v49 = [(NSDictionary *)selfCopy->_keyedNumbers objectForKeyedSubscript:v51];
       v48 = objc_opt_new();
       [v48 setKey:v51];
       [v49 doubleValue];
@@ -389,7 +389,7 @@
 
   MEMORY[0x277D82BD8](obj);
   memset(v46, 0, sizeof(v46));
-  v25 = MEMORY[0x277D82BE0](v53->_keyedStrings);
+  v25 = MEMORY[0x277D82BE0](selfCopy->_keyedStrings);
   v26 = [v25 countByEnumeratingWithState:v46 objects:v56 count:16];
   if (v26)
   {
@@ -405,7 +405,7 @@
       }
 
       v47 = *(v46[1] + 8 * v23);
-      v45 = [(NSDictionary *)v53->_keyedStrings objectForKeyedSubscript:v47];
+      v45 = [(NSDictionary *)selfCopy->_keyedStrings objectForKeyedSubscript:v47];
       v44 = objc_opt_new();
       [v44 setKey:v47];
       [v44 setString:v45];
@@ -427,7 +427,7 @@
 
   MEMORY[0x277D82BD8](v25);
   memset(v42, 0, sizeof(v42));
-  v19 = MEMORY[0x277D82BE0](v53->_keyedDates);
+  v19 = MEMORY[0x277D82BE0](selfCopy->_keyedDates);
   v20 = [v19 countByEnumeratingWithState:v42 objects:v55 count:16];
   if (v20)
   {
@@ -443,7 +443,7 @@
       }
 
       v43 = *(v42[1] + 8 * v17);
-      v41 = [(NSDictionary *)v53->_keyedDates objectForKeyedSubscript:v43];
+      v41 = [(NSDictionary *)selfCopy->_keyedDates objectForKeyedSubscript:v43];
       v40 = objc_opt_new();
       [v40 setKey:v43];
       [v41 timeIntervalSinceReferenceDate];
@@ -466,7 +466,7 @@
 
   MEMORY[0x277D82BD8](v19);
   memset(v38, 0, sizeof(v38));
-  v13 = MEMORY[0x277D82BE0](v53->_keyedDatas);
+  v13 = MEMORY[0x277D82BE0](selfCopy->_keyedDatas);
   v14 = [v13 countByEnumeratingWithState:v38 objects:v54 count:16];
   if (v14)
   {
@@ -482,7 +482,7 @@
       }
 
       v39 = *(v38[1] + 8 * v11);
-      v37 = [(NSDictionary *)v53->_keyedDatas objectForKeyedSubscript:v39];
+      v37 = [(NSDictionary *)selfCopy->_keyedDatas objectForKeyedSubscript:v39];
       v36 = objc_opt_new();
       [v36 setKey:v39];
       [v36 setOurData:v37];
@@ -503,22 +503,22 @@
   }
 
   MEMORY[0x277D82BD8](v13);
-  if (v53->_syncIdentity)
+  if (selfCopy->_syncIdentity)
   {
     v35 = objc_opt_new();
-    v5 = [(WOSyncIdentity *)v53->_syncIdentity databaseIdentifier];
-    v4 = [(NSUUID *)v5 hk_dataForUUIDBytes];
+    databaseIdentifier = [(WOSyncIdentity *)selfCopy->_syncIdentity databaseIdentifier];
+    hk_dataForUUIDBytes2 = [(NSUUID *)databaseIdentifier hk_dataForUUIDBytes];
     [v35 setDatabaseIdentifier:?];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    v7 = [(WOSyncIdentity *)v53->_syncIdentity hardwareIdentifier];
-    v6 = [(NSUUID *)v7 hk_dataForUUIDBytes];
+    MEMORY[0x277D82BD8](hk_dataForUUIDBytes2);
+    MEMORY[0x277D82BD8](databaseIdentifier);
+    hardwareIdentifier = [(WOSyncIdentity *)selfCopy->_syncIdentity hardwareIdentifier];
+    hk_dataForUUIDBytes3 = [(NSUUID *)hardwareIdentifier hk_dataForUUIDBytes];
     [v35 setHardwareIdentifier:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    v8 = [(WOSyncIdentity *)v53->_syncIdentity instanceDiscriminator];
+    MEMORY[0x277D82BD8](hk_dataForUUIDBytes3);
+    MEMORY[0x277D82BD8](hardwareIdentifier);
+    instanceDiscriminator = [(WOSyncIdentity *)selfCopy->_syncIdentity instanceDiscriminator];
     [v35 setInstanceDiscriminator:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](instanceDiscriminator);
     [v52[0] setSyncIdentity:v35];
     objc_storeStrong(&v35, 0);
   }
@@ -531,53 +531,53 @@
   return v3;
 }
 
-+ (id)persistenceFromProto:(id)a3
++ (id)persistenceFromProto:(id)proto
 {
   v84 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, proto);
   v59 = [WOPersistence alloc];
-  v56 = [location[0] version];
-  v57 = [location[0] type];
+  version = [location[0] version];
+  type = [location[0] type];
   v54 = MEMORY[0x277CCAD78];
-  v64 = [location[0] uuid];
+  uuid = [location[0] uuid];
   v63 = [v54 hk_UUIDWithData:?];
-  v62 = [location[0] persistedData];
-  v61 = [location[0] persistedProtoData];
-  v58 = [location[0] objectState];
+  persistedData = [location[0] persistedData];
+  persistedProtoData = [location[0] persistedProtoData];
+  objectState = [location[0] objectState];
   v55 = MEMORY[0x277CBEAA8];
   [location[0] objectModificationTimeSinceReferenceDate];
   v60 = [v55 dateWithTimeIntervalSinceReferenceDate:?];
-  v78 = [(WOPersistence *)v59 initWithVersion:v56 type:v57 uuid:v63 persistedData:v62 persistedProtoData:v61 objectState:v58 objectModificationDate:v60 syncIdentity:0];
+  v78 = [(WOPersistence *)v59 initWithVersion:version type:type uuid:v63 persistedData:persistedData persistedProtoData:persistedProtoData objectState:objectState objectModificationDate:v60 syncIdentity:0];
   MEMORY[0x277D82BD8](v60);
-  MEMORY[0x277D82BD8](v61);
-  MEMORY[0x277D82BD8](v62);
+  MEMORY[0x277D82BD8](persistedProtoData);
+  MEMORY[0x277D82BD8](persistedData);
   MEMORY[0x277D82BD8](v63);
-  MEMORY[0x277D82BD8](v64);
+  MEMORY[0x277D82BD8](uuid);
   if ([location[0] hasSyncIdentity])
   {
     v45 = [WOSyncIdentity alloc];
     v43 = MEMORY[0x277CCAD78];
-    v53 = [location[0] syncIdentity];
-    v52 = [v53 hardwareIdentifier];
+    syncIdentity = [location[0] syncIdentity];
+    hardwareIdentifier = [syncIdentity hardwareIdentifier];
     v51 = [v43 hk_UUIDWithData:?];
     v44 = MEMORY[0x277CCAD78];
-    v50 = [location[0] syncIdentity];
-    v49 = [v50 databaseIdentifier];
+    syncIdentity2 = [location[0] syncIdentity];
+    databaseIdentifier = [syncIdentity2 databaseIdentifier];
     v48 = [v44 hk_UUIDWithData:?];
-    v47 = [location[0] syncIdentity];
-    v46 = [v47 instanceDiscriminator];
+    syncIdentity3 = [location[0] syncIdentity];
+    instanceDiscriminator = [syncIdentity3 instanceDiscriminator];
     v77 = [(WOSyncIdentity *)v45 initWithHardwareIdentifier:v51 databaseIdentifier:v48 instanceDiscriminator:?];
-    MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
+    MEMORY[0x277D82BD8](instanceDiscriminator);
+    MEMORY[0x277D82BD8](syncIdentity3);
     MEMORY[0x277D82BD8](v48);
-    MEMORY[0x277D82BD8](v49);
-    MEMORY[0x277D82BD8](v50);
+    MEMORY[0x277D82BD8](databaseIdentifier);
+    MEMORY[0x277D82BD8](syncIdentity2);
     MEMORY[0x277D82BD8](v51);
-    MEMORY[0x277D82BD8](v52);
-    MEMORY[0x277D82BD8](v53);
+    MEMORY[0x277D82BD8](hardwareIdentifier);
+    MEMORY[0x277D82BD8](syncIdentity);
     [(WOPersistence *)v78 setSyncIdentity:v77];
     objc_storeStrong(&v77, 0);
   }
@@ -626,8 +626,8 @@
   objc_storeStrong(&v76, 0);
   v73 = objc_opt_new();
   memset(v71, 0, sizeof(v71));
-  v31 = [location[0] keyedStrings];
-  v32 = [v31 countByEnumeratingWithState:v71 objects:v82 count:16];
+  keyedStrings = [location[0] keyedStrings];
+  v32 = [keyedStrings countByEnumeratingWithState:v71 objects:v82 count:16];
   if (v32)
   {
     v28 = *v71[2];
@@ -638,21 +638,21 @@
       v27 = v29;
       if (*v71[2] != v28)
       {
-        objc_enumerationMutation(v31);
+        objc_enumerationMutation(keyedStrings);
       }
 
       v72 = *(v71[1] + 8 * v29);
-      v26 = [v72 string];
+      string = [v72 string];
       v24 = v73;
       v25 = [v72 key];
-      [v24 setObject:v26 forKeyedSubscript:?];
+      [v24 setObject:string forKeyedSubscript:?];
       MEMORY[0x277D82BD8](v25);
-      MEMORY[0x277D82BD8](v26);
+      MEMORY[0x277D82BD8](string);
       ++v29;
       if (v27 + 1 >= v30)
       {
         v29 = 0;
-        v30 = [v31 countByEnumeratingWithState:v71 objects:v82 count:16];
+        v30 = [keyedStrings countByEnumeratingWithState:v71 objects:v82 count:16];
         if (!v30)
         {
           break;
@@ -661,13 +661,13 @@
     }
   }
 
-  MEMORY[0x277D82BD8](v31);
+  MEMORY[0x277D82BD8](keyedStrings);
   [(WOPersistence *)v78 setKeyedStrings:v73];
   objc_storeStrong(&v73, 0);
   v70 = objc_opt_new();
   memset(v68, 0, sizeof(v68));
-  v22 = [location[0] keyedDatas];
-  v23 = [v22 countByEnumeratingWithState:v68 objects:v81 count:16];
+  keyedDatas = [location[0] keyedDatas];
+  v23 = [keyedDatas countByEnumeratingWithState:v68 objects:v81 count:16];
   if (v23)
   {
     v19 = *v68[2];
@@ -678,21 +678,21 @@
       v18 = v20;
       if (*v68[2] != v19)
       {
-        objc_enumerationMutation(v22);
+        objc_enumerationMutation(keyedDatas);
       }
 
       v69 = *(v68[1] + 8 * v20);
-      v17 = [v69 ourData];
+      ourData = [v69 ourData];
       v15 = v70;
       v16 = [v69 key];
-      [v15 setObject:v17 forKeyedSubscript:?];
+      [v15 setObject:ourData forKeyedSubscript:?];
       MEMORY[0x277D82BD8](v16);
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](ourData);
       ++v20;
       if (v18 + 1 >= v21)
       {
         v20 = 0;
-        v21 = [v22 countByEnumeratingWithState:v68 objects:v81 count:16];
+        v21 = [keyedDatas countByEnumeratingWithState:v68 objects:v81 count:16];
         if (!v21)
         {
           break;
@@ -701,13 +701,13 @@
     }
   }
 
-  MEMORY[0x277D82BD8](v22);
+  MEMORY[0x277D82BD8](keyedDatas);
   [(WOPersistence *)v78 setKeyedDatas:v70];
   objc_storeStrong(&v70, 0);
   v67 = objc_opt_new();
   memset(v65, 0, sizeof(v65));
-  v13 = [location[0] keyedDates];
-  v14 = [v13 countByEnumeratingWithState:v65 objects:v80 count:16];
+  keyedDates = [location[0] keyedDates];
+  v14 = [keyedDates countByEnumeratingWithState:v65 objects:v80 count:16];
   if (v14)
   {
     v10 = *v65[2];
@@ -718,7 +718,7 @@
       v9 = v11;
       if (*v65[2] != v10)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(keyedDates);
       }
 
       v66 = *(v65[1] + 8 * v11);
@@ -734,7 +734,7 @@
       if (v9 + 1 >= v12)
       {
         v11 = 0;
-        v12 = [v13 countByEnumeratingWithState:v65 objects:v80 count:16];
+        v12 = [keyedDates countByEnumeratingWithState:v65 objects:v80 count:16];
         if (!v12)
         {
           break;
@@ -743,7 +743,7 @@
     }
   }
 
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](keyedDates);
   [(WOPersistence *)v78 setKeyedDates:v67];
   objc_storeStrong(&v67, 0);
   v4 = MEMORY[0x277D82BE0](v78);

@@ -1,19 +1,19 @@
 @interface CWFChannel
-+ (CWFChannel)channelWithNumber:(unint64_t)a3 band:(unsigned int)a4 width:(int)a5;
++ (CWFChannel)channelWithNumber:(unint64_t)number band:(unsigned int)band width:(int)width;
 - (BOOL)is6GHzPSC;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChannel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChannel:(id)channel;
 - (BOOL)overlapsWithUWB;
-- (CWFChannel)initWithCoder:(id)a3;
-- (CWFChannel)initWithExternalForm:(id)a3;
+- (CWFChannel)initWithCoder:(id)coder;
+- (CWFChannel)initWithExternalForm:(id)form;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)externalForm;
 - (int)width;
 - (unsigned)band;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFChannel
@@ -107,53 +107,53 @@
 
 - (BOOL)overlapsWithUWB
 {
-  v3 = [(CWFChannel *)self is6GHz];
-  if (v3)
+  is6GHz = [(CWFChannel *)self is6GHz];
+  if (is6GHz)
   {
-    LOBYTE(v3) = [(CWFChannel *)self channel]> 0x5E || [(CWFChannel *)self channel]< 0xEA;
+    LOBYTE(is6GHz) = [(CWFChannel *)self channel]> 0x5E || [(CWFChannel *)self channel]< 0xEA;
   }
 
-  return v3;
+  return is6GHz;
 }
 
-+ (CWFChannel)channelWithNumber:(unint64_t)a3 band:(unsigned int)a4 width:(int)a5
++ (CWFChannel)channelWithNumber:(unint64_t)number band:(unsigned int)band width:(int)width
 {
   v8 = objc_alloc_init(CWFChannel);
-  [(CWFChannel *)v8 setChannel:a3];
-  if (a4 - 1 > 2)
+  [(CWFChannel *)v8 setChannel:number];
+  if (band - 1 > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = dword_1E0D81964[a4 - 1];
+    v9 = dword_1E0D81964[band - 1];
   }
 
   v10 = v9 | 0x400;
   v11 = v9 | 0x800;
-  if (a5 != 160)
+  if (width != 160)
   {
     v11 = v9;
   }
 
-  if (a5 != 80)
+  if (width != 80)
   {
     v10 = v11;
   }
 
   v12 = v9 | 2;
-  if (a5 == 40)
+  if (width == 40)
   {
     v9 |= 4u;
   }
 
-  if (a5 == 20)
+  if (width == 20)
   {
     v9 = v12;
   }
 
-  if (a5 <= 79)
+  if (width <= 79)
   {
     v13 = v9;
   }
@@ -168,9 +168,9 @@
   return v8;
 }
 
-- (CWFChannel)initWithExternalForm:(id)a3
+- (CWFChannel)initWithExternalForm:(id)form
 {
-  v4 = a3;
+  formCopy = form;
   v5 = [(CWFChannel *)self init];
   if (!v5)
   {
@@ -182,8 +182,8 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"ChannelNumber"];
-  v7 = [v4 objectForKeyedSubscript:@"ChannelFlags"];
+  v6 = [formCopy objectForKeyedSubscript:@"ChannelNumber"];
+  v7 = [formCopy objectForKeyedSubscript:@"ChannelFlags"];
   v8 = v7;
   if (v6)
   {
@@ -232,14 +232,14 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqualToChannel:(id)a3
+- (BOOL)isEqualToChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   channel = self->_channel;
-  if (channel == [v4 channel])
+  if (channel == [channelCopy channel])
   {
     flags = self->_flags;
-    v7 = flags == [v4 flags];
+    v7 = flags == [channelCopy flags];
   }
 
   else
@@ -250,24 +250,24 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFChannel *)self isEqualToChannel:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFChannel *)self isEqualToChannel:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFChannel allocWithZone:?]];
   [(CWFChannel *)v4 setChannel:self->_channel];
@@ -275,29 +275,29 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   channel = self->_channel;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:channel];
-  [v7 encodeObject:v6 forKey:@"_channel"];
+  [coderCopy encodeObject:v6 forKey:@"_channel"];
 
-  [v7 encodeInt:self->_flags forKey:@"_flags"];
+  [coderCopy encodeInt:self->_flags forKey:@"_flags"];
 }
 
-- (CWFChannel)initWithCoder:(id)a3
+- (CWFChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CWFChannel;
   v5 = [(CWFChannel *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
     v5->_channel = [v6 unsignedIntegerValue];
 
-    v5->_flags = [v4 decodeIntForKey:@"_flags"];
+    v5->_flags = [coderCopy decodeIntForKey:@"_flags"];
   }
 
   return v5;
@@ -305,41 +305,41 @@ LABEL_7:
 
 - (id)JSONCompatibleKeyValueMap
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFChannel channel](self, "channel")}];
-  [v3 setObject:v4 forKeyedSubscript:@"channel"];
+  [dictionary setObject:v4 forKeyedSubscript:@"channel"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CWFChannel flags](self, "flags")}];
-  [v3 setObject:v5 forKeyedSubscript:@"flags"];
+  [dictionary setObject:v5 forKeyedSubscript:@"flags"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFChannel isDFS](self, "isDFS")}];
-  [v3 setObject:v6 forKeyedSubscript:@"dfs"];
+  [dictionary setObject:v6 forKeyedSubscript:@"dfs"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFChannel extAbove](self, "extAbove")}];
-  [v3 setObject:v7 forKeyedSubscript:@"ext_above"];
+  [dictionary setObject:v7 forKeyedSubscript:@"ext_above"];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (([(CWFChannel *)self flags]& 2) != 0)
   {
-    [v8 addObject:&unk_1F5BBD540];
+    [array addObject:&unk_1F5BBD540];
   }
 
   if (([(CWFChannel *)self flags]& 4) != 0)
   {
-    [v8 addObject:&unk_1F5BBD558];
+    [array addObject:&unk_1F5BBD558];
   }
 
   if (([(CWFChannel *)self flags]& 0x400) != 0)
   {
-    [v8 addObject:&unk_1F5BBD570];
+    [array addObject:&unk_1F5BBD570];
   }
 
   if (([(CWFChannel *)self flags]& 0x800) != 0)
   {
-    [v8 addObject:&unk_1F5BBD588];
+    [array addObject:&unk_1F5BBD588];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"widths"];
+  [dictionary setObject:array forKeyedSubscript:@"widths"];
   if (([(CWFChannel *)self flags]& 0x2000) != 0)
   {
     v9 = &unk_1F5BBD5A0;
@@ -360,9 +360,9 @@ LABEL_7:
     v9 = &unk_1F5BBD5D0;
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"band"];
+  [dictionary setObject:v9 forKeyedSubscript:@"band"];
 LABEL_16:
-  v10 = sub_1E0BCEC64(v3, 0, 1u);
+  v10 = sub_1E0BCEC64(dictionary, 0, 1u);
   if (v10)
   {
     v11 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v10];

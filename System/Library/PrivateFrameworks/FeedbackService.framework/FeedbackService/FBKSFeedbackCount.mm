@@ -1,28 +1,28 @@
 @interface FBKSFeedbackCount
-+ (void)fetchCountsForFormWithIdentifier:(id)a3 completion:(id)a4;
-- (FBKSFeedbackCount)initWithCampaign:(id)a3 campaignErrors:(id)a4 feedbackSubmitted:(id)a5 declineCount:(int64_t)a6;
-- (FBKSFeedbackCount)initWithSwiftObject:(id)a3;
++ (void)fetchCountsForFormWithIdentifier:(id)identifier completion:(id)completion;
+- (FBKSFeedbackCount)initWithCampaign:(id)campaign campaignErrors:(id)errors feedbackSubmitted:(id)submitted declineCount:(int64_t)count;
+- (FBKSFeedbackCount)initWithSwiftObject:(id)object;
 - (id)debugDescription;
 - (id)description;
 @end
 
 @implementation FBKSFeedbackCount
 
-- (FBKSFeedbackCount)initWithCampaign:(id)a3 campaignErrors:(id)a4 feedbackSubmitted:(id)a5 declineCount:(int64_t)a6
+- (FBKSFeedbackCount)initWithCampaign:(id)campaign campaignErrors:(id)errors feedbackSubmitted:(id)submitted declineCount:(int64_t)count
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  campaignCopy = campaign;
+  errorsCopy = errors;
+  submittedCopy = submitted;
   v17.receiver = self;
   v17.super_class = FBKSFeedbackCount;
   v14 = [(FBKSFeedbackCount *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_currentCampaign, a3);
-    objc_storeStrong(&v15->_errors, a4);
-    objc_storeStrong(&v15->_feedbackFiled, a5);
-    v15->_declineCount = a6;
+    objc_storeStrong(&v14->_currentCampaign, campaign);
+    objc_storeStrong(&v15->_errors, errors);
+    objc_storeStrong(&v15->_feedbackFiled, submitted);
+    v15->_declineCount = count;
   }
 
   return v15;
@@ -30,30 +30,30 @@
 
 - (id)debugDescription
 {
-  v2 = [(FBKSFeedbackCount *)self swiftObject];
-  v3 = [v2 debugDescription];
+  swiftObject = [(FBKSFeedbackCount *)self swiftObject];
+  v3 = [swiftObject debugDescription];
 
   return v3;
 }
 
-- (FBKSFeedbackCount)initWithSwiftObject:(id)a3
+- (FBKSFeedbackCount)initWithSwiftObject:(id)object
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectCopy = object;
   v4 = [FBKSCampaign alloc];
-  v5 = [v3 currentCampaign];
-  v6 = [(FBKSCampaign *)v4 initWithSwiftObject:v5];
+  currentCampaign = [objectCopy currentCampaign];
+  v6 = [(FBKSCampaign *)v4 initWithSwiftObject:currentCampaign];
 
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [v3 feedbackFiled];
-  v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  feedbackFiled = [objectCopy feedbackFiled];
+  v9 = [v7 initWithCapacity:{objc_msgSend(feedbackFiled, "count")}];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = [v3 feedbackFiled];
-  v11 = [v10 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  feedbackFiled2 = [objectCopy feedbackFiled];
+  v11 = [feedbackFiled2 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v11)
   {
     v12 = v11;
@@ -65,7 +65,7 @@
       {
         if (*v35 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(feedbackFiled2);
         }
 
         v15 = [[FBKSFeedback alloc] initWithSwiftObject:*(*(&v34 + 1) + 8 * v14)];
@@ -78,22 +78,22 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v12 = [feedbackFiled2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v12);
   }
 
   v16 = objc_alloc(MEMORY[0x1E695DF70]);
-  v17 = [v3 errors];
-  v18 = [v16 initWithCapacity:{objc_msgSend(v17, "count")}];
+  errors = [objectCopy errors];
+  v18 = [v16 initWithCapacity:{objc_msgSend(errors, "count")}];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = [v3 errors];
-  v20 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  errors2 = [objectCopy errors];
+  v20 = [errors2 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v20)
   {
     v21 = v20;
@@ -105,7 +105,7 @@
       {
         if (*v31 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(errors2);
         }
 
         v24 = [[FBKSCampaignError alloc] initWithSwiftObject:*(*(&v30 + 1) + 8 * v23)];
@@ -118,33 +118,33 @@
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v21 = [errors2 countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v21);
   }
 
-  v25 = -[FBKSFeedbackCount initWithCampaign:campaignErrors:feedbackSubmitted:declineCount:](self, "initWithCampaign:campaignErrors:feedbackSubmitted:declineCount:", v6, v18, v9, [v3 declineCount]);
+  v25 = -[FBKSFeedbackCount initWithCampaign:campaignErrors:feedbackSubmitted:declineCount:](self, "initWithCampaign:campaignErrors:feedbackSubmitted:declineCount:", v6, v18, v9, [objectCopy declineCount]);
   v26 = v25;
   if (v25)
   {
-    [(FBKSFeedbackCount *)v25 setSwiftObject:v3];
+    [(FBKSFeedbackCount *)v25 setSwiftObject:objectCopy];
   }
 
   v27 = *MEMORY[0x1E69E9840];
   return v26;
 }
 
-+ (void)fetchCountsForFormWithIdentifier:(id)a3 completion:(id)a4
++ (void)fetchCountsForFormWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__FBKSFeedbackCount_fetchCountsForFormWithIdentifier_completion___block_invoke;
   v7[3] = &unk_1E7A8FEC0;
-  v8 = v5;
-  v6 = v5;
-  [FBKSFeedbackCount_FrameworkPrivateName fetchCountsForFormWithIdentifier:a3 completion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [FBKSFeedbackCount_FrameworkPrivateName fetchCountsForFormWithIdentifier:identifier completion:v7];
 }
 
 void __65__FBKSFeedbackCount_fetchCountsForFormWithIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -177,8 +177,8 @@ void __65__FBKSFeedbackCount_fetchCountsForFormWithIdentifier_completion___block
 
 - (id)description
 {
-  v2 = [(FBKSFeedbackCount *)self swiftObject];
-  v3 = [v2 description];
+  swiftObject = [(FBKSFeedbackCount *)self swiftObject];
+  v3 = [swiftObject description];
 
   return v3;
 }

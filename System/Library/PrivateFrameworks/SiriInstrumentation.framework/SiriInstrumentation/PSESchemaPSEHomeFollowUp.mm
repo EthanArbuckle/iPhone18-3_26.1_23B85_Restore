@@ -1,44 +1,44 @@
 @interface PSESchemaPSEHomeFollowUp
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSEHomeFollowUp)initWithDictionary:(id)a3;
-- (PSESchemaPSEHomeFollowUp)initWithJSON:(id)a3;
+- (PSESchemaPSEHomeFollowUp)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEHomeFollowUp)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFollowUpDayOfWeek:(BOOL)a3;
-- (void)setHasFollowUpDurationSinceSiriRequestInSeconds:(BOOL)a3;
-- (void)setHasFollowUpHourOfDay:(BOOL)a3;
-- (void)setHasFollowUpSource:(BOOL)a3;
-- (void)setHasIsFollowUpInSameContainerAsSiriRequest:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFollowUpDayOfWeek:(BOOL)week;
+- (void)setHasFollowUpDurationSinceSiriRequestInSeconds:(BOOL)seconds;
+- (void)setHasFollowUpHourOfDay:(BOOL)day;
+- (void)setHasFollowUpSource:(BOOL)source;
+- (void)setHasIsFollowUpInSameContainerAsSiriRequest:(BOOL)request;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEHomeFollowUp
 
-- (PSESchemaPSEHomeFollowUp)initWithDictionary:(id)a3
+- (PSESchemaPSEHomeFollowUp)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PSESchemaPSEHomeFollowUp;
   v5 = [(PSESchemaPSEHomeFollowUp *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"followUpType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"followUpType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEHomeFollowUp setFollowUpType:](v5, "setFollowUpType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"followUpSource"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"followUpSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEHomeFollowUp setFollowUpSource:](v5, "setFollowUpSource:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"followUpAccessoryType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"followUpAccessoryType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,28 +46,28 @@
       [(PSESchemaPSEHomeFollowUp *)v5 setFollowUpAccessoryType:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isFollowUpInSameContainerAsSiriRequest"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isFollowUpInSameContainerAsSiriRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEHomeFollowUp setIsFollowUpInSameContainerAsSiriRequest:](v5, "setIsFollowUpInSameContainerAsSiriRequest:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"followUpDayOfWeek"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"followUpDayOfWeek"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEHomeFollowUp setFollowUpDayOfWeek:](v5, "setFollowUpDayOfWeek:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"followUpHourOfDay"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"followUpHourOfDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEHomeFollowUp setFollowUpHourOfDay:](v5, "setFollowUpHourOfDay:", [v12 unsignedIntValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"followUpDurationSinceSiriRequestInSeconds"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"followUpDurationSinceSiriRequestInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,30 +80,30 @@
   return v5;
 }
 
-- (PSESchemaPSEHomeFollowUp)initWithJSON:(id)a3
+- (PSESchemaPSEHomeFollowUp)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEHomeFollowUp *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEHomeFollowUp *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEHomeFollowUp *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,19 +116,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_followUpAccessoryType)
   {
-    v4 = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"followUpAccessoryType"];
+    followUpAccessoryType = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
+    v5 = [followUpAccessoryType copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"followUpAccessoryType"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PSESchemaPSEHomeFollowUp followUpDayOfWeek](self, "followUpDayOfWeek")}];
-    [v3 setObject:v9 forKeyedSubscript:@"followUpDayOfWeek"];
+    [dictionary setObject:v9 forKeyedSubscript:@"followUpDayOfWeek"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -149,7 +149,7 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PSESchemaPSEHomeFollowUp followUpDurationSinceSiriRequestInSeconds](self, "followUpDurationSinceSiriRequestInSeconds")}];
-  [v3 setObject:v10 forKeyedSubscript:@"followUpDurationSinceSiriRequestInSeconds"];
+  [dictionary setObject:v10 forKeyedSubscript:@"followUpDurationSinceSiriRequestInSeconds"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -165,7 +165,7 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PSESchemaPSEHomeFollowUp followUpHourOfDay](self, "followUpHourOfDay")}];
-  [v3 setObject:v11 forKeyedSubscript:@"followUpHourOfDay"];
+  [dictionary setObject:v11 forKeyedSubscript:@"followUpHourOfDay"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -191,7 +191,7 @@ LABEL_16:
     v13 = off_1E78E1430[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"followUpSource"];
+  [dictionary setObject:v13 forKeyedSubscript:@"followUpSource"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -216,7 +216,7 @@ LABEL_20:
     v15 = off_1E78E1450[v14];
   }
 
-  [v3 setObject:v15 forKeyedSubscript:@"followUpType"];
+  [dictionary setObject:v15 forKeyedSubscript:@"followUpType"];
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_10;
@@ -224,12 +224,12 @@ LABEL_20:
 
 LABEL_9:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEHomeFollowUp isFollowUpInSameContainerAsSiriRequest](self, "isFollowUpInSameContainerAsSiriRequest")}];
-  [v3 setObject:v7 forKeyedSubscript:@"isFollowUpInSameContainerAsSiriRequest"];
+  [dictionary setObject:v7 forKeyedSubscript:@"isFollowUpInSameContainerAsSiriRequest"];
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -309,16 +309,16 @@ LABEL_10:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_31;
@@ -327,13 +327,13 @@ LABEL_10:
   if (*&has)
   {
     followUpType = self->_followUpType;
-    if (followUpType != [v4 followUpType])
+    if (followUpType != [equalCopy followUpType])
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -345,28 +345,28 @@ LABEL_10:
   if (v8)
   {
     followUpSource = self->_followUpSource;
-    if (followUpSource != [v4 followUpSource])
+    if (followUpSource != [equalCopy followUpSource])
     {
       goto LABEL_31;
     }
   }
 
-  v10 = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
-  v11 = [v4 followUpAccessoryType];
-  v12 = v11;
-  if ((v10 != 0) == (v11 == 0))
+  followUpAccessoryType = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
+  followUpAccessoryType2 = [equalCopy followUpAccessoryType];
+  v12 = followUpAccessoryType2;
+  if ((followUpAccessoryType != 0) == (followUpAccessoryType2 == 0))
   {
 
     goto LABEL_31;
   }
 
-  v13 = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
-  if (v13)
+  followUpAccessoryType3 = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
+  if (followUpAccessoryType3)
   {
-    v14 = v13;
-    v15 = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
-    v16 = [v4 followUpAccessoryType];
-    v17 = [v15 isEqual:v16];
+    v14 = followUpAccessoryType3;
+    followUpAccessoryType4 = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
+    followUpAccessoryType5 = [equalCopy followUpAccessoryType];
+    v17 = [followUpAccessoryType4 isEqual:followUpAccessoryType5];
 
     if (!v17)
     {
@@ -380,7 +380,7 @@ LABEL_10:
 
   v18 = self->_has;
   v19 = (*&v18 >> 2) & 1;
-  v20 = v4[40];
+  v20 = equalCopy[40];
   if (v19 != ((v20 >> 2) & 1))
   {
 LABEL_31:
@@ -391,13 +391,13 @@ LABEL_31:
   if (v19)
   {
     isFollowUpInSameContainerAsSiriRequest = self->_isFollowUpInSameContainerAsSiriRequest;
-    if (isFollowUpInSameContainerAsSiriRequest != [v4 isFollowUpInSameContainerAsSiriRequest])
+    if (isFollowUpInSameContainerAsSiriRequest != [equalCopy isFollowUpInSameContainerAsSiriRequest])
     {
       goto LABEL_31;
     }
 
     v18 = self->_has;
-    v20 = v4[40];
+    v20 = equalCopy[40];
   }
 
   v22 = (*&v18 >> 3) & 1;
@@ -409,13 +409,13 @@ LABEL_31:
   if (v22)
   {
     followUpDayOfWeek = self->_followUpDayOfWeek;
-    if (followUpDayOfWeek != [v4 followUpDayOfWeek])
+    if (followUpDayOfWeek != [equalCopy followUpDayOfWeek])
     {
       goto LABEL_31;
     }
 
     v18 = self->_has;
-    v20 = v4[40];
+    v20 = equalCopy[40];
   }
 
   v24 = (*&v18 >> 4) & 1;
@@ -427,10 +427,10 @@ LABEL_31:
   if (v24)
   {
     followUpHourOfDay = self->_followUpHourOfDay;
-    if (followUpHourOfDay == [v4 followUpHourOfDay])
+    if (followUpHourOfDay == [equalCopy followUpHourOfDay])
     {
       v18 = self->_has;
-      v20 = v4[40];
+      v20 = equalCopy[40];
       goto LABEL_27;
     }
 
@@ -447,7 +447,7 @@ LABEL_27:
   if (v26)
   {
     followUpDurationSinceSiriRequestInSeconds = self->_followUpDurationSinceSiriRequestInSeconds;
-    if (followUpDurationSinceSiriRequestInSeconds != [v4 followUpDurationSinceSiriRequestInSeconds])
+    if (followUpDurationSinceSiriRequestInSeconds != [equalCopy followUpDurationSinceSiriRequestInSeconds])
     {
       goto LABEL_31;
     }
@@ -459,9 +459,9 @@ LABEL_32:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -474,9 +474,9 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
+  followUpAccessoryType = [(PSESchemaPSEHomeFollowUp *)self followUpAccessoryType];
 
-  if (v5)
+  if (followUpAccessoryType)
   {
     PBDataWriterWriteStringField();
   }
@@ -527,9 +527,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasFollowUpDurationSinceSiriRequestInSeconds:(BOOL)a3
+- (void)setHasFollowUpDurationSinceSiriRequestInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 32;
   }
@@ -542,9 +542,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasFollowUpHourOfDay:(BOOL)a3
+- (void)setHasFollowUpHourOfDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 16;
   }
@@ -557,9 +557,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasFollowUpDayOfWeek:(BOOL)a3
+- (void)setHasFollowUpDayOfWeek:(BOOL)week
 {
-  if (a3)
+  if (week)
   {
     v3 = 8;
   }
@@ -572,9 +572,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsFollowUpInSameContainerAsSiriRequest:(BOOL)a3
+- (void)setHasIsFollowUpInSameContainerAsSiriRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -587,9 +587,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFollowUpSource:(BOOL)a3
+- (void)setHasFollowUpSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }

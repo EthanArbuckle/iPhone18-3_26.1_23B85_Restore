@@ -1,12 +1,12 @@
 @interface TIKeyboardBehaviors_Autocorrect
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Autocorrect
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  if ([a3 hasCandidates])
+  if ([state hasCandidates])
   {
     v3 = [TIKeyboardKeyBehaviors behaviorForSpaceKey:7 forReturnKey:9];
   }

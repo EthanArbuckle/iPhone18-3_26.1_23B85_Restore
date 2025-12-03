@@ -1,61 +1,61 @@
 @interface BKPictureBookViewGeometry
-+ (CGSize)imageSizeForSize:(CGSize)a3;
-+ (id)geometryWithContentSize:(CGSize)a3 configuration:(id)a4 drawsSpine:(BOOL)a5 containerBounds:(CGRect)a6;
-+ (id)geometryWithContentSize:(CGSize)a3 configuration:(id)a4 drawsSpine:(BOOL)a5 ignoresPadding:(BOOL)a6 containerBounds:(CGRect)a7;
-- (BKPictureBookViewGeometry)initWithContentSize:(CGSize)a3 configuration:(id)a4 drawsSpine:(BOOL)a5 ignoresPadding:(BOOL)a6 containerBounds:(CGRect)a7;
++ (CGSize)imageSizeForSize:(CGSize)size;
++ (id)geometryWithContentSize:(CGSize)size configuration:(id)configuration drawsSpine:(BOOL)spine containerBounds:(CGRect)bounds;
++ (id)geometryWithContentSize:(CGSize)size configuration:(id)configuration drawsSpine:(BOOL)spine ignoresPadding:(BOOL)padding containerBounds:(CGRect)bounds;
+- (BKPictureBookViewGeometry)initWithContentSize:(CGSize)size configuration:(id)configuration drawsSpine:(BOOL)spine ignoresPadding:(BOOL)padding containerBounds:(CGRect)bounds;
 - (CGRect)containerBounds;
 - (CGSize)contentSize;
-- (CGSize)imageSizeForSpread:(BOOL)a3 landscape:(BOOL)a4;
+- (CGSize)imageSizeForSpread:(BOOL)spread landscape:(BOOL)landscape;
 - (CGSize)maximumSize;
-- (CGSize)sizeForSpread:(BOOL)a3 landscape:(BOOL)a4;
-- (double)scaleForSize:(CGSize)a3;
-- (double)scaleForSpread:(BOOL)a3 landscape:(BOOL)a4;
+- (CGSize)sizeForSpread:(BOOL)spread landscape:(BOOL)landscape;
+- (double)scaleForSize:(CGSize)size;
+- (double)scaleForSpread:(BOOL)spread landscape:(BOOL)landscape;
 - (id)imageSizes;
 - (id)sizes;
 @end
 
 @implementation BKPictureBookViewGeometry
 
-+ (id)geometryWithContentSize:(CGSize)a3 configuration:(id)a4 drawsSpine:(BOOL)a5 ignoresPadding:(BOOL)a6 containerBounds:(CGRect)a7
++ (id)geometryWithContentSize:(CGSize)size configuration:(id)configuration drawsSpine:(BOOL)spine ignoresPadding:(BOOL)padding containerBounds:(CGRect)bounds
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3.height;
-  v14 = a3.width;
-  v16 = a4;
-  v17 = [[a1 alloc] initWithContentSize:v16 configuration:v12 drawsSpine:v11 ignoresPadding:v14 containerBounds:{v13, x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  paddingCopy = padding;
+  spineCopy = spine;
+  v13 = size.height;
+  v14 = size.width;
+  configurationCopy = configuration;
+  v17 = [[self alloc] initWithContentSize:configurationCopy configuration:spineCopy drawsSpine:paddingCopy ignoresPadding:v14 containerBounds:{v13, x, y, width, height}];
 
   return v17;
 }
 
-+ (id)geometryWithContentSize:(CGSize)a3 configuration:(id)a4 drawsSpine:(BOOL)a5 containerBounds:(CGRect)a6
++ (id)geometryWithContentSize:(CGSize)size configuration:(id)configuration drawsSpine:(BOOL)spine containerBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
-  v11 = a3.height;
-  v12 = a3.width;
-  v14 = a4;
-  v15 = [[a1 alloc] initWithContentSize:v14 configuration:v10 drawsSpine:0 ignoresPadding:v12 containerBounds:{v11, x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  spineCopy = spine;
+  v11 = size.height;
+  v12 = size.width;
+  configurationCopy = configuration;
+  v15 = [[self alloc] initWithContentSize:configurationCopy configuration:spineCopy drawsSpine:0 ignoresPadding:v12 containerBounds:{v11, x, y, width, height}];
 
   return v15;
 }
 
-- (BKPictureBookViewGeometry)initWithContentSize:(CGSize)a3 configuration:(id)a4 drawsSpine:(BOOL)a5 ignoresPadding:(BOOL)a6 containerBounds:(CGRect)a7
+- (BKPictureBookViewGeometry)initWithContentSize:(CGSize)size configuration:(id)configuration drawsSpine:(BOOL)spine ignoresPadding:(BOOL)padding containerBounds:(CGRect)bounds
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v14 = a3.height;
-  v15 = a3.width;
-  v17 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v14 = size.height;
+  v15 = size.width;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = BKPictureBookViewGeometry;
   v18 = [(BKPictureBookViewGeometry *)&v21 init];
@@ -64,9 +64,9 @@
   {
     v18->_contentSize.width = v15;
     v18->_contentSize.height = v14;
-    v18->_drawsSpine = a5;
-    objc_storeStrong(&v18->_configuration, a4);
-    v19->_ignoresPadding = a6;
+    v18->_drawsSpine = spine;
+    objc_storeStrong(&v18->_configuration, configuration);
+    v19->_ignoresPadding = padding;
     v19->_containerBounds.origin.x = x;
     v19->_containerBounds.origin.y = y;
     v19->_containerBounds.size.width = width;
@@ -76,10 +76,10 @@
   return v19;
 }
 
-- (CGSize)sizeForSpread:(BOOL)a3 landscape:(BOOL)a4
+- (CGSize)sizeForSpread:(BOOL)spread landscape:(BOOL)landscape
 {
-  v4 = a4;
-  v5 = a3;
+  landscapeCopy = landscape;
+  spreadCopy = spread;
   [(BKPictureBookViewGeometry *)self contentSize];
   if (v7 <= 0.0 || ([(BKPictureBookViewGeometry *)self contentSize], v8 <= 0.0))
   {
@@ -93,7 +93,7 @@
     v10 = v9;
     [(BKPictureBookViewGeometry *)self contentSize];
     v12 = v10 / v11;
-    [(BKPictureBookViewGeometry *)self scaleForSpread:v5 landscape:v4];
+    [(BKPictureBookViewGeometry *)self scaleForSpread:spreadCopy landscape:landscapeCopy];
     [(BKPictureBookViewGeometry *)self contentSize];
     CGSizeScale();
     v14 = floor(v13);
@@ -112,9 +112,9 @@
   return result;
 }
 
-- (double)scaleForSpread:(BOOL)a3 landscape:(BOOL)a4
+- (double)scaleForSpread:(BOOL)spread landscape:(BOOL)landscape
 {
-  [(BKPictureBookViewGeometry *)self contentSize:a3];
+  [(BKPictureBookViewGeometry *)self contentSize:spread];
   if (v6 <= 0.0)
   {
     return 1.0;
@@ -129,10 +129,10 @@
   [(BKPictureBookViewGeometry *)self contentSize];
   [(BKPictureBookViewGeometry *)self contentSize];
   IMActionSafeRectForRect();
-  if (!a3 && !self->_ignoresPadding)
+  if (!spread && !self->_ignoresPadding)
   {
-    v9 = [(BKPictureBookViewGeometry *)self configuration];
-    [v9 singlePagePadding];
+    configuration = [(BKPictureBookViewGeometry *)self configuration];
+    [configuration singlePagePadding];
   }
 
   CGSizeScaleThatFitsInCGSize();
@@ -166,10 +166,10 @@
   return result;
 }
 
-- (double)scaleForSize:(CGSize)a3
+- (double)scaleForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(BKPictureBookViewGeometry *)self sizeForSpread:0 landscape:1];
   v8 = width == v7 && height == v6;
   if (v8 || (([(BKPictureBookViewGeometry *)self sizeForSpread:0 landscape:1], width == v10) ? (v11 = height == v9) : (v11 = 0), v11 || (([(BKPictureBookViewGeometry *)self sizeForSpread:0 landscape:1], width == v13) ? (v14 = height == v12) : (v14 = 0), v14 || ([(BKPictureBookViewGeometry *)self sizeForSpread:0 landscape:1], width == v16) && height == v15)))
@@ -333,9 +333,9 @@
   return v3;
 }
 
-- (CGSize)imageSizeForSpread:(BOOL)a3 landscape:(BOOL)a4
+- (CGSize)imageSizeForSpread:(BOOL)spread landscape:(BOOL)landscape
 {
-  [(BKPictureBookViewGeometry *)self sizeForSpread:a3 landscape:a4];
+  [(BKPictureBookViewGeometry *)self sizeForSpread:spread landscape:landscape];
   v5 = v4;
   v7 = v6;
   v8 = objc_opt_class();
@@ -346,10 +346,10 @@
   return result;
 }
 
-+ (CGSize)imageSizeForSize:(CGSize)a3
++ (CGSize)imageSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = +[UIScreen mainScreen];
   [v5 scale];
   v7 = v6;

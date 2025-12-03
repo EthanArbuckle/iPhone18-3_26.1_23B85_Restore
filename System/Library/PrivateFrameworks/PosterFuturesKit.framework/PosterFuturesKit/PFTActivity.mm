@@ -1,11 +1,11 @@
 @interface PFTActivity
-+ (id)activityWrapping:(id)a3;
++ (id)activityWrapping:(id)wrapping;
 - (PFTActivity)init;
-- (PFTActivity)initWithActivity:(id)a3;
+- (PFTActivity)initWithActivity:(id)activity;
 - (id)track;
-- (void)apply:(id)a3;
+- (void)apply:(id)apply;
 - (void)invalidate;
-- (void)performActivity:(id)a3;
+- (void)performActivity:(id)activity;
 @end
 
 @implementation PFTActivity
@@ -13,26 +13,26 @@
 - (id)track
 {
   v3 = [[_PFTActivitySentinel alloc] initWithActivity:self];
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_weakSentinels addObject:v3];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_weakSentinels addObject:v3];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (id)activityWrapping:(id)a3
++ (id)activityWrapping:(id)wrapping
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithActivity:v4];
+  wrappingCopy = wrapping;
+  v5 = [[self alloc] initWithActivity:wrappingCopy];
 
   return v5;
 }
 
-- (PFTActivity)initWithActivity:(id)a3
+- (PFTActivity)initWithActivity:(id)activity
 {
-  v5 = a3;
-  if (v5)
+  activityCopy = activity;
+  if (activityCopy)
   {
     v12.receiver = self;
     v12.super_class = PFTActivity;
@@ -40,22 +40,22 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_wrappedActivity, a3);
-      v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      objc_storeStrong(&v6->_wrappedActivity, activity);
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       weakSentinels = v7->_weakSentinels;
-      v7->_weakSentinels = v8;
+      v7->_weakSentinels = weakObjectsHashTable;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (PFTActivity)init
@@ -65,31 +65,31 @@
   return 0;
 }
 
-- (void)performActivity:(id)a3
+- (void)performActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    v4 = a3;
-    v5 = [(PFTActivity *)self track];
-    v4[2](v4, v5);
+    activityCopy = activity;
+    track = [(PFTActivity *)self track];
+    activityCopy[2](activityCopy, track);
   }
 }
 
-- (void)apply:(id)a3
+- (void)apply:(id)apply
 {
-  v4 = a3;
-  v5 = [(PFTActivity *)self track];
-  v4[2](v4);
+  applyCopy = apply;
+  track = [(PFTActivity *)self track];
+  applyCopy[2](applyCopy);
 
-  [v5 invalidate];
+  [track invalidate];
 }
 
 - (void)invalidate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_weakSentinels copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSHashTable *)selfCopy->_weakSentinels copy];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
@@ -119,8 +119,8 @@
     while (v5);
   }
 
-  [(NSHashTable *)v2->_weakSentinels removeAllObjects];
-  objc_sync_exit(v2);
+  [(NSHashTable *)selfCopy->_weakSentinels removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }

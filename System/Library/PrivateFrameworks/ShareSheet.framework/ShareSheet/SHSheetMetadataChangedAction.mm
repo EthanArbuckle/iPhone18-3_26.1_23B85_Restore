@@ -1,17 +1,17 @@
 @interface SHSheetMetadataChangedAction
 - (LPLinkMetadata)metadata;
 - (NSData)serializedMetadata;
-- (SHSheetMetadataChangedAction)initWithSerializedMetadata:(id)a3;
+- (SHSheetMetadataChangedAction)initWithSerializedMetadata:(id)metadata;
 @end
 
 @implementation SHSheetMetadataChangedAction
 
-- (SHSheetMetadataChangedAction)initWithSerializedMetadata:(id)a3
+- (SHSheetMetadataChangedAction)initWithSerializedMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E698E700];
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = objc_alloc_init(v4);
-  [v6 setObject:v5 forSetting:0];
+  [v6 setObject:metadataCopy forSetting:0];
 
   v7 = [(SHSheetMetadataChangedAction *)self initWithInfo:v6 responder:0];
   return v7;
@@ -19,8 +19,8 @@
 
 - (NSData)serializedMetadata
 {
-  v2 = [(SHSheetMetadataChangedAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(SHSheetMetadataChangedAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }
@@ -45,8 +45,8 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [(SHSheetMetadataChangedAction *)self serializedMetadata];
-  v6 = [v3 metadataWithDataRepresentationForLocalUseOnly:v5];
+  serializedMetadata = [(SHSheetMetadataChangedAction *)self serializedMetadata];
+  v6 = [v3 metadataWithDataRepresentationForLocalUseOnly:serializedMetadata];
 
   return v6;
 }

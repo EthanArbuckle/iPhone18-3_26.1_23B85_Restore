@@ -1,34 +1,34 @@
 @interface _DASSystemBudgetManager
-+ (id)identifierWithActivity:(id)a3;
-+ (id)involvedProcessesForActivity:(id)a3 withIdentifier:(id)a4;
++ (id)identifierWithActivity:(id)activity;
++ (id)involvedProcessesForActivity:(id)activity withIdentifier:(id)identifier;
 + (id)sharedInstance;
 - (_DASSystemBudgetManager)init;
-- (double)balanceForBudgetWithName:(id)a3;
-- (double)capacityForBudgetWithName:(id)a3;
+- (double)balanceForBudgetWithName:(id)name;
+- (double)capacityForBudgetWithName:(id)name;
 - (id)allBudgets;
-- (id)budgetKeyPathForBudgetName:(id)a3;
+- (id)budgetKeyPathForBudgetName:(id)name;
 - (id)customBANetworkingBudget;
-- (id)dataBudgetForActivity:(id)a3;
+- (id)dataBudgetForActivity:(id)activity;
 - (id)defaultSystemCellularBudget;
 - (id)defaultSystemEnergyBudget;
-- (id)getMissingBudgetsWithExistingBudgets:(id)a3;
+- (id)getMissingBudgetsWithExistingBudgets:(id)budgets;
 - (id)remoteWidgetBudget;
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4;
+- (void)decrementBy:(double)by forBudgetWithName:(id)name;
 - (void)instantiateConfiguredBudgets;
-- (void)onBudgetChange:(id)a3;
-- (void)postNotificationWithBudget:(id)a3;
-- (void)reportActivityNoLongerRunning:(id)a3;
-- (void)reportActivityNoLongerRunningWithParameters:(id)a3;
-- (void)reportActivityRunning:(id)a3;
-- (void)reportActivityRunningWithParameters:(id)a3;
-- (void)reportMetricsForNetworkUsage:(double)a3 forDataBudget:(id)a4 totalUsage:(double)a5 usageInCell:(double)a6 usageInInexpensive:(double)a7 forActivity:(id)a8;
-- (void)reportUpdateForActivity:(id)a3 withDataConsumed:(id)a4;
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4;
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4;
-- (void)startTrackingActivity:(id)a3;
-- (void)stopTrackingActivity:(id)a3;
+- (void)onBudgetChange:(id)change;
+- (void)postNotificationWithBudget:(id)budget;
+- (void)reportActivityNoLongerRunning:(id)running;
+- (void)reportActivityNoLongerRunningWithParameters:(id)parameters;
+- (void)reportActivityRunning:(id)running;
+- (void)reportActivityRunningWithParameters:(id)parameters;
+- (void)reportMetricsForNetworkUsage:(double)usage forDataBudget:(id)budget totalUsage:(double)totalUsage usageInCell:(double)cell usageInInexpensive:(double)inexpensive forActivity:(id)activity;
+- (void)reportUpdateForActivity:(id)activity withDataConsumed:(id)consumed;
+- (void)setBalance:(double)balance forBudgetWithName:(id)name;
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name;
+- (void)startTrackingActivity:(id)activity;
+- (void)stopTrackingActivity:(id)activity;
 - (void)unlocked_instantiateConfiguredBudgets;
-- (void)updateContextStore:(id)a3;
+- (void)updateContextStore:(id)store;
 @end
 
 @implementation _DASSystemBudgetManager
@@ -85,14 +85,14 @@
     v30 = v17;
     v19 = v17;
     [v18 enumerateKeysAndObjectsUsingBlock:v29];
-    v20 = [v16[3] allValues];
-    v21 = [_DASBudgetModulator modulatorForBudgetTypes:@"System" withBudgets:v20 persistence:v2->_sharedMemoryPersistence withQueue:v2->_queue];
+    allValues = [v16[3] allValues];
+    v21 = [_DASBudgetModulator modulatorForBudgetTypes:@"System" withBudgets:allValues persistence:v2->_sharedMemoryPersistence withQueue:v2->_queue];
     v22 = v16[4];
     v16[4] = v21;
 
     [(_DASNetworkUsageTracker *)v2->_networkUsageTracker setModulator:v16[4]];
-    v23 = [v16[3] allValues];
-    [v16 updateContextStore:v23];
+    allValues2 = [v16[3] allValues];
+    [v16 updateContextStore:allValues2];
 
     out_token = 0;
     v24 = dispatch_get_global_queue(-32768, 0);
@@ -113,7 +113,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003E9EC;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AFE0 != -1)
   {
     dispatch_once(&qword_10020AFE0, block);
@@ -134,7 +134,7 @@
   v7 = 3221225472;
   v8 = sub_10003EB60;
   v9 = &unk_1001B5708;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   if (qword_10020AFF0 != -1)
   {
@@ -160,7 +160,7 @@
   v7 = 3221225472;
   v8 = sub_10003ECD0;
   v9 = &unk_1001B5708;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   if (qword_10020AFF8 != -1)
   {
@@ -192,16 +192,16 @@
   return v3;
 }
 
-- (id)dataBudgetForActivity:(id)a3
+- (id)dataBudgetForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 clientDataBudgetName];
+  activityCopy = activity;
+  clientDataBudgetName = [activityCopy clientDataBudgetName];
 
   budgets = self->_budgets;
-  if (v5)
+  if (clientDataBudgetName)
   {
-    v7 = [v4 clientDataBudgetName];
-    v8 = [(NSDictionary *)budgets objectForKeyedSubscript:v7];
+    clientDataBudgetName2 = [activityCopy clientDataBudgetName];
+    v8 = [(NSDictionary *)budgets objectForKeyedSubscript:clientDataBudgetName2];
   }
 
   else
@@ -226,8 +226,8 @@
 - (void)unlocked_instantiateConfiguredBudgets
 {
   sharedMemoryPersistence = self->_sharedMemoryPersistence;
-  v4 = [(_DASSystemBudgetManager *)self requiredBudgetNames];
-  v5 = [(_DASBudgetPersisting *)sharedMemoryPersistence loadBudgetsWithExpectedNames:v4];
+  requiredBudgetNames = [(_DASSystemBudgetManager *)self requiredBudgetNames];
+  v5 = [(_DASBudgetPersisting *)sharedMemoryPersistence loadBudgetsWithExpectedNames:requiredBudgetNames];
 
   v6 = objc_alloc_init(NSMutableArray);
   [(NSDictionary *)v6 addObjectsFromArray:v5];
@@ -286,8 +286,8 @@ LABEL_7:
         }
 
         v20 = *(*(&v26 + 1) + 8 * i);
-        v21 = [v20 name];
-        [v14 setObject:v20 forKeyedSubscript:v21];
+        name = [v20 name];
+        [v14 setObject:v20 forKeyedSubscript:name];
       }
 
       v17 = [(NSDictionary *)v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -310,17 +310,17 @@ LABEL_7:
   }
 }
 
-- (id)getMissingBudgetsWithExistingBudgets:(id)a3
+- (id)getMissingBudgetsWithExistingBudgets:(id)budgets
 {
-  v4 = a3;
+  budgetsCopy = budgets;
   context = objc_autoreleasePoolPush();
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(_DASSystemBudgetManager *)self requiredBudgetNames];
+  requiredBudgetNames = [(_DASSystemBudgetManager *)self requiredBudgetNames];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = budgetsCopy;
   v7 = [obj countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v7)
   {
@@ -336,12 +336,12 @@ LABEL_7:
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 name];
+        name = [v11 name];
 
-        if (v12)
+        if (name)
         {
-          v13 = [v11 name];
-          [v6 removeObject:v13];
+          name2 = [v11 name];
+          [requiredBudgetNames removeObject:name2];
         }
 
         else
@@ -365,7 +365,7 @@ LABEL_7:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = v6;
+  v15 = requiredBudgetNames;
   v16 = [v15 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (!v16)
   {
@@ -388,17 +388,17 @@ LABEL_7:
       v21 = *(*(&v28 + 1) + 8 * j);
       if ([v21 isEqualToString:@"com.apple.dasd.systemEnergy"])
       {
-        v22 = [(_DASSystemBudgetManager *)self defaultSystemEnergyBudget];
+        defaultSystemEnergyBudget = [(_DASSystemBudgetManager *)self defaultSystemEnergyBudget];
       }
 
       else if ([v21 isEqualToString:@"com.apple.dasd.systemCellular"])
       {
-        v22 = [(_DASSystemBudgetManager *)self defaultSystemCellularBudget];
+        defaultSystemEnergyBudget = [(_DASSystemBudgetManager *)self defaultSystemCellularBudget];
       }
 
       else if ([v21 isEqualToString:@"com.apple.dasd.baCellular"])
       {
-        v22 = [(_DASSystemBudgetManager *)self customBANetworkingBudget];
+        defaultSystemEnergyBudget = [(_DASSystemBudgetManager *)self customBANetworkingBudget];
       }
 
       else
@@ -408,10 +408,10 @@ LABEL_7:
           goto LABEL_26;
         }
 
-        v22 = [(_DASSystemBudgetManager *)self remoteWidgetBudget];
+        defaultSystemEnergyBudget = [(_DASSystemBudgetManager *)self remoteWidgetBudget];
       }
 
-      v23 = v22;
+      v23 = defaultSystemEnergyBudget;
 
       v18 = v23;
 LABEL_26:
@@ -436,11 +436,11 @@ LABEL_32:
   return v5;
 }
 
-- (id)budgetKeyPathForBudgetName:(id)a3
+- (id)budgetKeyPathForBudgetName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = @"com.apple.dasd.baCellular";
-  if ([v3 isEqualToString:@"com.apple.dasd.baCellular"] || (v4 = @"com.apple.dasd.remoteWidget", objc_msgSend(v3, "isEqualToString:", @"com.apple.dasd.remoteWidget")))
+  if ([nameCopy isEqualToString:@"com.apple.dasd.baCellular"] || (v4 = @"com.apple.dasd.remoteWidget", objc_msgSend(nameCopy, "isEqualToString:", @"com.apple.dasd.remoteWidget")))
   {
     v5 = [NSString stringWithFormat:@"/system/budget/%@", v4];
     v6 = [_CDContextualKeyPath keyPathWithKey:v5];
@@ -454,13 +454,13 @@ LABEL_32:
   return v6;
 }
 
-- (void)postNotificationWithBudget:(id)a3
+- (void)postNotificationWithBudget:(id)budget
 {
-  v20 = a3;
-  [v20 balance];
+  budgetCopy = budget;
+  [budgetCopy balance];
   v4 = v3;
-  v5 = [v20 name];
-  v6 = [v5 isEqualToString:@"com.apple.dasd.systemEnergy"];
+  name = [budgetCopy name];
+  v6 = [name isEqualToString:@"com.apple.dasd.systemEnergy"];
 
   if (v6)
   {
@@ -471,7 +471,7 @@ LABEL_32:
     }
 
     v8 = [NSString stringWithFormat:@"Energy Budget is %@", v7];
-    [v20 balance];
+    [budgetCopy balance];
     v10 = [NSString stringWithFormat:@"Exact budget value is %.0lf", v9];
     v11 = +[_DASNotificationManager sharedManager];
     v12 = v11;
@@ -482,8 +482,8 @@ LABEL_32:
 
   else
   {
-    v16 = [v20 name];
-    v17 = [v16 isEqualToString:@"com.apple.dasd.systemCellular"];
+    name2 = [budgetCopy name];
+    v17 = [name2 isEqualToString:@"com.apple.dasd.systemCellular"];
 
     if (!v17)
     {
@@ -497,7 +497,7 @@ LABEL_32:
     }
 
     v8 = [NSString stringWithFormat:@"Data Budget is %@", v18];
-    [v20 balance];
+    [budgetCopy balance];
     v10 = [NSString stringWithFormat:@"Exact budget value is %.1lfMB", v19 * 0.000000953674316];
     v11 = +[_DASNotificationManager sharedManager];
     v12 = v11;
@@ -511,26 +511,26 @@ LABEL_32:
 LABEL_10:
 }
 
-- (void)onBudgetChange:(id)a3
+- (void)onBudgetChange:(id)change
 {
-  v4 = a3;
-  [v4 balance];
+  changeCopy = change;
+  [changeCopy balance];
   v6 = [NSNumber numberWithInt:v5 > 0.0];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = log;
-    v9 = [v4 name];
+    name = [changeCopy name];
     v20 = 138412546;
-    v21 = v9;
+    v21 = name;
     v22 = 2114;
     v23 = v6;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating budget status for %@ to %{public}@", &v20, 0x16u);
   }
 
   v10 = +[_CDClientContext userContext];
-  v11 = [v4 name];
-  v12 = [v11 isEqualToString:@"com.apple.dasd.systemEnergy"];
+  name2 = [changeCopy name];
+  v12 = [name2 isEqualToString:@"com.apple.dasd.systemEnergy"];
 
   if (v12)
   {
@@ -542,8 +542,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [v4 name];
-  v15 = [v14 isEqualToString:@"com.apple.dasd.systemCellular"];
+  name3 = [changeCopy name];
+  v15 = [name3 isEqualToString:@"com.apple.dasd.systemCellular"];
 
   if (v15)
   {
@@ -551,8 +551,8 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v19 = [v4 name];
-  v16 = [(_DASSystemBudgetManager *)self budgetKeyPathForBudgetName:v19];
+  name4 = [changeCopy name];
+  v16 = [(_DASSystemBudgetManager *)self budgetKeyPathForBudgetName:name4];
 
   if (v16)
   {
@@ -566,18 +566,18 @@ LABEL_9:
 
   if (v18)
   {
-    [(_DASSystemBudgetManager *)self postNotificationWithBudget:v4];
+    [(_DASSystemBudgetManager *)self postNotificationWithBudget:changeCopy];
   }
 }
 
-- (void)updateContextStore:(id)a3
+- (void)updateContextStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [storeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -589,7 +589,7 @@ LABEL_9:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(storeCopy);
         }
 
         [(_DASSystemBudgetManager *)self onBudgetChange:*(*(&v9 + 1) + 8 * v8)];
@@ -597,78 +597,78 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [storeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (id)involvedProcessesForActivity:(id)a3 withIdentifier:(id)a4
++ (id)involvedProcessesForActivity:(id)activity withIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  activityCopy = activity;
   v7 = +[NSMutableSet set];
-  v8 = [v6 relatedApplications];
-  v9 = [v6 involvedProcesses];
+  relatedApplications = [activityCopy relatedApplications];
+  involvedProcesses = [activityCopy involvedProcesses];
 
-  if ([v9 count])
+  if ([involvedProcesses count])
   {
-    [v7 addObjectsFromArray:v9];
+    [v7 addObjectsFromArray:involvedProcesses];
   }
 
-  if ([v8 count])
+  if ([relatedApplications count])
   {
-    [v7 addObjectsFromArray:v8];
+    [v7 addObjectsFromArray:relatedApplications];
   }
 
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 addObject:v5];
+    [v7 addObject:identifierCopy];
   }
 
   return v7;
 }
 
-+ (id)identifierWithActivity:(id)a3
++ (id)identifierWithActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 clientName];
-  if ([v4 isEqualToString:_DASClientNameXPCActivity])
+  activityCopy = activity;
+  clientName = [activityCopy clientName];
+  if ([clientName isEqualToString:_DASClientNameXPCActivity])
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 clientName];
-  if (([v5 isEqualToString:_DASClientNameBGST] & 1) != 0 || objc_msgSend(v3, "delayedStart"))
+  clientName2 = [activityCopy clientName];
+  if (([clientName2 isEqualToString:_DASClientNameBGST] & 1) != 0 || objc_msgSend(activityCopy, "delayedStart"))
   {
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v10 = [v3 userInfo];
-  v11 = [v10 objectForKeyedSubscript:kNWEndpointKey];
+  userInfo = [activityCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:kNWEndpointKey];
 
   if (v11)
   {
-    v7 = @"nsurlsessiond";
+    bundleId2 = @"nsurlsessiond";
     goto LABEL_18;
   }
 
 LABEL_6:
-  v6 = [v3 bundleId];
+  bundleId = [activityCopy bundleId];
 
-  if (v6)
+  if (bundleId)
   {
-    v7 = [v3 bundleId];
+    bundleId2 = [activityCopy bundleId];
     goto LABEL_18;
   }
 
-  if ([v3 pid])
+  if ([activityCopy pid])
   {
-    v7 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [v3 pid]);
-    if (v7)
+    bundleId2 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [activityCopy pid]);
+    if (bundleId2)
     {
       goto LABEL_18;
     }
@@ -676,20 +676,20 @@ LABEL_6:
     v8 = [_DASDaemonLogger logForCategory:@"systemBudgetManager"];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10011DF3C(v3);
+      sub_10011DF3C(activityCopy);
     }
   }
 
   v9 = [_DASDaemonLogger logForCategory:@"systemBudgetManager"];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    sub_10011DFF8(v3);
+    sub_10011DFF8(activityCopy);
   }
 
-  v7 = 0;
+  bundleId2 = 0;
 LABEL_18:
 
-  return v7;
+  return bundleId2;
 }
 
 - (id)allBudgets
@@ -708,89 +708,89 @@ LABEL_18:
   return v6;
 }
 
-- (double)balanceForBudgetWithName:(id)a3
+- (double)balanceForBudgetWithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:name];
   [v3 balance];
   v5 = v4;
 
   return v5;
 }
 
-- (double)capacityForBudgetWithName:(id)a3
+- (double)capacityForBudgetWithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:name];
   [v3 capacity];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4
+- (void)setBalance:(double)balance forBudgetWithName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    balanceCopy = balance;
     v12 = 2112;
-    v13 = v6;
+    v13 = nameCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Set Balance: %.2lf for %@", &v10, 0x16u);
   }
 
-  v8 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:v6];
+  v8 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:nameCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 setBalance:a3];
+    [v8 setBalance:balance];
     [(_DASSystemBudgetManager *)self updateBudget:v9];
   }
 }
 
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4
+- (void)decrementBy:(double)by forBudgetWithName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    byCopy = by;
     v12 = 2112;
-    v13 = v6;
+    v13 = nameCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Decrement budget by: %.2lf for %@", &v10, 0x16u);
   }
 
-  v8 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:v6];
+  v8 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:nameCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 decrementBy:a3];
+    [v8 decrementBy:by];
     [(_DASSystemBudgetManager *)self updateBudget:v9];
   }
 }
 
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name
 {
-  v6 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:a4];
+  v6 = [(NSDictionary *)self->_budgets objectForKeyedSubscript:name];
   if (v6)
   {
     v7 = v6;
-    [v6 setCapacity:a3];
+    [v6 setCapacity:capacity];
     [(_DASSystemBudgetManager *)self updateBudget:v7];
     v6 = v7;
   }
 }
 
-- (void)stopTrackingActivity:(id)a3
+- (void)stopTrackingActivity:(id)activity
 {
-  v4 = a3;
-  [(_DASEnergyUsageTracker *)self->_energyUsageTracker stopTrackingActivity:v4];
-  [(_DASNetworkUsageTracker *)self->_networkUsageTracker stopTrackingActivity:v4];
+  activityCopy = activity;
+  [(_DASEnergyUsageTracker *)self->_energyUsageTracker stopTrackingActivity:activityCopy];
+  [(_DASNetworkUsageTracker *)self->_networkUsageTracker stopTrackingActivity:activityCopy];
   if (v5 > 0.0)
   {
     v6 = v5;
-    v7 = [(_DASSystemBudgetManager *)self dataBudgetForActivity:v4];
+    v7 = [(_DASSystemBudgetManager *)self dataBudgetForActivity:activityCopy];
     [v7 decrementBy:v6];
     [(_DASBudgetPersisting *)self->_sharedMemoryPersistence updateBudget:v7];
     v8 = [_DASDaemonLogger logForCategory:@"networkbudgeting"];
@@ -799,29 +799,29 @@ LABEL_18:
       v15 = 134218498;
       v16 = v6;
       v17 = 2112;
-      v18 = v4;
+      v18 = activityCopy;
       v19 = 2114;
       v20 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Decremented data budget by %f for activity %@, data budget is now %{public}@", &v15, 0x20u);
     }
   }
 
-  if ([v4 targetDevice] == 3)
+  if ([activityCopy targetDevice] == 3)
   {
-    v9 = [v4 startDate];
-    if (v9)
+    startDate = [activityCopy startDate];
+    if (startDate)
     {
-      v10 = v9;
-      v11 = [v4 widgetID];
-      if (!v11)
+      v10 = startDate;
+      widgetID = [activityCopy widgetID];
+      if (!widgetID)
       {
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v12 = v11;
-      v13 = [(NSMutableSet *)self->_remoteActivities containsObject:v4];
+      v12 = widgetID;
+      v13 = [(NSMutableSet *)self->_remoteActivities containsObject:activityCopy];
 
       if (v13)
       {
@@ -832,13 +832,13 @@ LABEL_12:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138412546;
-          v16 = *&v4;
+          v16 = *&activityCopy;
           v17 = 2114;
           v18 = v10;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Decremented remote widget budget for activity %@, remote budget is now %{public}@", &v15, 0x16u);
         }
 
-        [(NSMutableSet *)self->_remoteActivities removeObject:v4];
+        [(NSMutableSet *)self->_remoteActivities removeObject:activityCopy];
         goto LABEL_12;
       }
     }
@@ -847,26 +847,26 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)reportActivityNoLongerRunning:(id)a3
+- (void)reportActivityNoLongerRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100040588;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = runningCopy;
+  v6 = runningCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)startTrackingActivity:(id)a3
+- (void)startTrackingActivity:(id)activity
 {
-  v7 = a3;
-  [(_DASEnergyUsageTracker *)self->_energyUsageTracker startTrackingActivity:v7];
-  [(_DASNetworkUsageTracker *)self->_networkUsageTracker startTrackingActivity:v7];
-  if ([v7 targetDevice] == 3)
+  activityCopy = activity;
+  [(_DASEnergyUsageTracker *)self->_energyUsageTracker startTrackingActivity:activityCopy];
+  [(_DASNetworkUsageTracker *)self->_networkUsageTracker startTrackingActivity:activityCopy];
+  if ([activityCopy targetDevice] == 3)
   {
     remoteActivities = self->_remoteActivities;
     if (!remoteActivities)
@@ -878,75 +878,75 @@ LABEL_13:
       remoteActivities = self->_remoteActivities;
     }
 
-    [(NSMutableSet *)remoteActivities addObject:v7];
+    [(NSMutableSet *)remoteActivities addObject:activityCopy];
   }
 }
 
-- (void)reportActivityRunning:(id)a3
+- (void)reportActivityRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000406C8;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = runningCopy;
+  v6 = runningCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)reportActivityRunningWithParameters:(id)a3
+- (void)reportActivityRunningWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004076C;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = parametersCopy;
+  v6 = parametersCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)reportActivityNoLongerRunningWithParameters:(id)a3
+- (void)reportActivityNoLongerRunningWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100040810;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = parametersCopy;
+  v6 = parametersCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)reportUpdateForActivity:(id)a3 withDataConsumed:(id)a4
+- (void)reportUpdateForActivity:(id)activity withDataConsumed:(id)consumed
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  consumedCopy = consumed;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000408E4;
   block[3] = &unk_1001B56B8;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = consumedCopy;
+  selfCopy = self;
+  v14 = activityCopy;
+  v9 = activityCopy;
+  v10 = consumedCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)reportMetricsForNetworkUsage:(double)a3 forDataBudget:(id)a4 totalUsage:(double)a5 usageInCell:(double)a6 usageInInexpensive:(double)a7 forActivity:(id)a8
+- (void)reportMetricsForNetworkUsage:(double)usage forDataBudget:(id)budget totalUsage:(double)totalUsage usageInCell:(double)cell usageInInexpensive:(double)inexpensive forActivity:(id)activity
 {
-  v11 = a4;
-  v12 = a8;
-  v9 = v12;
-  v10 = v11;
+  budgetCopy = budget;
+  activityCopy = activity;
+  v9 = activityCopy;
+  v10 = budgetCopy;
   AnalyticsSendEventLazy();
 }
 

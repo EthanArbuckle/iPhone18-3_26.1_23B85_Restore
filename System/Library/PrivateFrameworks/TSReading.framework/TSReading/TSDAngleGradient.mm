@@ -1,52 +1,52 @@
 @interface TSDAngleGradient
-- (BOOL)isEqual:(id)a3;
-- (CGAffineTransform)p_shadingTransformForBounds:(SEL)a3;
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (TSDAngleGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5 angle:(double)a6;
-- (TSDAngleGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5 angle:(double)a6;
-- (double)p_bestGradientLengthForRect:(CGRect)a3 atAngle:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGAffineTransform)p_shadingTransformForBounds:(SEL)bounds;
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds;
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds;
+- (TSDAngleGradient)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity angle:(double)angle;
+- (TSDAngleGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type angle:(double)angle;
+- (double)p_bestGradientLengthForRect:(CGRect)rect atAngle:(double)angle;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5;
-- (void)setLastColor:(id)a3;
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle;
+- (void)setLastColor:(id)color;
 @end
 
 @implementation TSDAngleGradient
 
-- (void)setLastColor:(id)a3
+- (void)setLastColor:(id)color
 {
   v5 = [(NSArray *)[(TSDGradient *)self gradientStops] count]- 1;
 
-  [(TSDAngleGradient *)self setColorOfStopAtIndex:v5 toColor:a3];
+  [(TSDAngleGradient *)self setColorOfStopAtIndex:v5 toColor:color];
 }
 
-- (TSDAngleGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5 angle:(double)a6
+- (TSDAngleGradient)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity angle:(double)angle
 {
   v8.receiver = self;
   v8.super_class = TSDAngleGradient;
-  result = [(TSDGradient *)&v8 initWithGradientStops:a3 type:a4 opacity:a5];
+  result = [(TSDGradient *)&v8 initWithGradientStops:stops type:type opacity:opacity];
   if (result)
   {
-    result->mAngle = a6;
+    result->mAngle = angle;
   }
 
   return result;
 }
 
-- (TSDAngleGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5 angle:(double)a6
+- (TSDAngleGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type angle:(double)angle
 {
   v8.receiver = self;
   v8.super_class = TSDAngleGradient;
-  result = [(TSDGradient *)&v8 initWithStartColor:a3 endColor:a4 type:a5];
+  result = [(TSDGradient *)&v8 initWithStartColor:color endColor:endColor type:type];
   if (result)
   {
-    result->mAngle = a6;
+    result->mAngle = angle;
   }
 
   return result;
@@ -55,9 +55,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TSDGradient *)self gradientType];
+  gradientType = [(TSDGradient *)self gradientType];
   [(TSDGradient *)self opacity];
-  return [v3 stringWithFormat:@"TSDAngleGradient<%p>: type=%lu opacity=%f angle=%f \n\tstops=%@", self, v4, v5, *&self->mAngle, -[TSDGradient gradientStops](self, "gradientStops")];
+  return [v3 stringWithFormat:@"TSDAngleGradient<%p>: type=%lu opacity=%f angle=%f \n\tstops=%@", self, gradientType, v5, *&self->mAngle, -[TSDGradient gradientStops](self, "gradientStops")];
 }
 
 - (unint64_t)hash
@@ -68,9 +68,9 @@
   return TSUHashWithSeed();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -86,7 +86,7 @@
       v8 = v7;
       v11.receiver = self;
       v11.super_class = TSDAngleGradient;
-      LODWORD(v7) = [(TSDGradient *)&v11 isEqual:a3];
+      LODWORD(v7) = [(TSDGradient *)&v11 isEqual:equal];
       if (v7)
       {
         [v8 gradientAngle];
@@ -98,26 +98,26 @@
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableAngleGradient allocWithZone:a3];
-  v5 = [(TSDGradient *)self gradientStops];
-  v6 = [(TSDGradient *)self gradientType];
+  v4 = [TSDMutableAngleGradient allocWithZone:zone];
+  gradientStops = [(TSDGradient *)self gradientStops];
+  gradientType = [(TSDGradient *)self gradientType];
   [(TSDGradient *)self opacity];
   v8 = v7;
   [(TSDAngleGradient *)self gradientAngle];
-  v10 = [(TSDAngleGradient *)v4 initWithGradientStops:v5 type:v6 opacity:v8 angle:v9];
+  v10 = [(TSDAngleGradient *)v4 initWithGradientStops:gradientStops type:gradientType opacity:v8 angle:v9];
   [(TSDGradient *)v10 setIsAdvancedGradient:self->super.mIsAdvancedGradient];
   return v10;
 }
 
-- (double)p_bestGradientLengthForRect:(CGRect)a3 atAngle:(double)a4
+- (double)p_bestGradientLengthForRect:(CGRect)rect atAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3) * 0.5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect) * 0.5;
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
@@ -137,7 +137,7 @@
   *&v21.tx = *(MEMORY[0x277CBF2C0] + 32);
   CGAffineTransformTranslate(&v22, &v21, v8, v9);
   v20 = v22;
-  CGAffineTransformRotate(&v21, &v20, -a4);
+  CGAffineTransformRotate(&v21, &v20, -angle);
   v22 = v21;
   v20 = v21;
   CGAffineTransformTranslate(&v21, &v20, -v8, -v9);
@@ -174,9 +174,9 @@
   return TSDDistance(v12, v13, v8, v9);
 }
 
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [a3 bounds];
+  [path bounds];
   if (self)
   {
     [(TSDAngleGradient *)self p_shadingTransformForBounds:?];
@@ -199,9 +199,9 @@
   return result;
 }
 
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [a3 bounds];
+  [path bounds];
   if (self)
   {
     [(TSDAngleGradient *)self p_shadingTransformForBounds:?];
@@ -224,19 +224,19 @@
   return result;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(TSDGradient *)self shadingRef];
-  CGContextSaveGState(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shadingRef = [(TSDGradient *)self shadingRef];
+  CGContextSaveGState(context);
   v28.origin.x = x;
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  CGContextClipToRect(a4, v28);
+  CGContextClipToRect(context, v28);
   if ([(TSDGradient *)self gradientType])
   {
     if (self)
@@ -249,18 +249,18 @@
       memset(&v25, 0, sizeof(v25));
     }
 
-    CGContextConcatCTM(a4, &v25);
+    CGContextConcatCTM(context, &v25);
   }
 
   else
   {
-    [(TSDAngleGradient *)self p_bestGradientLengthForRect:x atAngle:y, width, height, -a5];
+    [(TSDAngleGradient *)self p_bestGradientLengthForRect:x atAngle:y, width, height, -angle];
     v14 = v13;
     *&v25.a = 0uLL;
     v26 = 0.0;
     v27 = 0.0;
-    TSDOriginRotate(&v26, v13, -a5);
-    TSDOriginRotate(&v25.a, v14, 3.14159265 - a5);
+    TSDOriginRotate(&v26, v13, -angle);
+    TSDOriginRotate(&v25.a, v14, 3.14159265 - angle);
     v15 = TSDCenterOfRect(x, y, width, height);
     v17 = v16;
     v18 = TSDAddPoints(v15, v16, v26);
@@ -272,45 +272,45 @@
     v25.a = v21;
     v25.b = v22;
     v24 = TSDDistance(v21, v22, v18, v20);
-    CGContextTranslateCTM(a4, v21, v23);
-    CGContextRotateCTM(a4, -a5);
-    CGContextScaleCTM(a4, v24 / 100.0, v24 / 100.0);
+    CGContextTranslateCTM(context, v21, v23);
+    CGContextRotateCTM(context, -angle);
+    CGContextScaleCTM(context, v24 / 100.0, v24 / 100.0);
   }
 
-  [(TSDGradient *)self p_setAlpha:a4, *&v25.a, *&v25.c, *&v25.tx];
-  CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-  CGContextDrawShading(a4, v12);
-  CGContextRestoreGState(a4);
+  [(TSDGradient *)self p_setAlpha:context, *&v25.a, *&v25.c, *&v25.tx];
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  CGContextDrawShading(context, shadingRef);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  CGContextSaveGState(a5);
-  CGContextAddPath(a5, a3);
-  CGContextClip(a5);
-  if ((a6 || TSDCGContextIsPDFContext(a5)) && [(TSDGradient *)self hasAlpha]|| TSDCGContextIsPrintContext(a5))
+  CGContextSaveGState(context);
+  CGContextAddPath(context, path);
+  CGContextClip(context);
+  if ((f || TSDCGContextIsPDFContext(context)) && [(TSDGradient *)self hasAlpha]|| TSDCGContextIsPrintContext(context))
   {
     v10 = *(MEMORY[0x277CBF3A0] + 16);
     v12 = *MEMORY[0x277CBF3A0];
     v13 = v10;
-    v11 = [(TSDGradient *)self p_beginBitmapWrapperContextInContext:a5 returningIntegralBounds:&v12];
+    v11 = [(TSDGradient *)self p_beginBitmapWrapperContextInContext:context returningIntegralBounds:&v12];
     if (v11)
     {
-      [(TSDAngleGradient *)self p_paintPath:a3 inContext:v11];
+      [(TSDAngleGradient *)self p_paintPath:path inContext:v11];
     }
 
-    [(TSDGradient *)self p_endBitmapWrapperContext:v11 inContext:a5 withIntegralBounds:v12, v13];
+    [(TSDGradient *)self p_endBitmapWrapperContext:v11 inContext:context withIntegralBounds:v12, v13];
   }
 
   else
   {
-    [(TSDAngleGradient *)self p_paintPath:a3 inContext:a5];
+    [(TSDAngleGradient *)self p_paintPath:path inContext:context];
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-- (CGAffineTransform)p_shadingTransformForBounds:(SEL)a3
+- (CGAffineTransform)p_shadingTransformForBounds:(SEL)bounds
 {
   v66 = CGRectInset(a4, -1.0, -1.0);
   x = v66.origin.x;
@@ -475,10 +475,10 @@
   return result;
 }
 
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context
 {
   memset(&v8, 0, sizeof(v8));
-  PathBoundingBox = CGPathGetPathBoundingBox(a3);
+  PathBoundingBox = CGPathGetPathBoundingBox(path);
   if (self)
   {
     [(TSDAngleGradient *)self p_shadingTransformForBounds:PathBoundingBox.origin.x, PathBoundingBox.origin.y, PathBoundingBox.size.width, PathBoundingBox.size.height];
@@ -490,24 +490,24 @@
   }
 
   v7 = v8;
-  CGContextConcatCTM(a4, &v7);
-  CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-  v6 = [(TSDGradient *)self shadingRef];
-  CGShadingRetain(v6);
-  [(TSDGradient *)self p_setAlpha:a4];
-  CGContextDrawShading(a4, v6);
-  CGShadingRelease(v6);
+  CGContextConcatCTM(context, &v7);
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  shadingRef = [(TSDGradient *)self shadingRef];
+  CGShadingRetain(shadingRef);
+  [(TSDGradient *)self p_setAlpha:context];
+  CGContextDrawShading(context, shadingRef);
+  CGShadingRelease(shadingRef);
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__TSDAngleGradient_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __41__TSDAngleGradient_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -547,16 +547,16 @@ uint64_t __41__TSDAngleGradient_mixingTypeWithObject___block_invoke(uint64_t a1)
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__TSDAngleGradient_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDAngleGradient *__53__TSDAngleGradient_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)

@@ -1,35 +1,35 @@
 @interface COSManualPairingViewController
 - (BOOL)updateDiscoveredDevices;
-- (COSManualPairingViewController)initWithStyle:(int64_t)a3;
+- (COSManualPairingViewController)initWithStyle:(int64_t)style;
 - (Class)headerClass;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)cellNameForRow:(int64_t)a3;
-- (id)didSelectRowAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)cellNameForRow:(int64_t)row;
+- (id)didSelectRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_reloadDataForUI;
 - (void)beginDiscovery;
-- (void)controllerCancelled:(id)a3;
+- (void)controllerCancelled:(id)cancelled;
 - (void)endDiscovery;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSManualPairingViewController
 
-- (COSManualPairingViewController)initWithStyle:(int64_t)a3
+- (COSManualPairingViewController)initWithStyle:(int64_t)style
 {
   v24.receiver = self;
   v24.super_class = COSManualPairingViewController;
-  v3 = [(COSManualPairingViewController *)&v24 initWithStyle:a3];
+  v3 = [(COSManualPairingViewController *)&v24 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
-    v5 = [(COSManualPairingViewController *)v3 tableView];
-    [v5 setDelegate:v4];
+    tableView = [(COSManualPairingViewController *)v3 tableView];
+    [tableView setDelegate:v4];
 
-    v6 = [(COSManualPairingViewController *)v4 tableView];
-    [v6 setDataSource:v4];
+    tableView2 = [(COSManualPairingViewController *)v4 tableView];
+    [tableView2 setDataSource:v4];
 
     v7 = objc_alloc_init(NSMutableArray);
     displayedDeviceNames = v4->_displayedDeviceNames;
@@ -44,33 +44,33 @@
     v13 = [v12 localizedStringForKey:@"CANCEL" value:&stru_10026E598 table:@"Localizable"];
     v14 = [v11 initWithTitle:v13 style:0 target:v4 action:"controllerCancelled:"];
 
-    v15 = [(COSManualPairingViewController *)v4 navigationItem];
-    [v15 setRightBarButtonItem:v14];
+    navigationItem = [(COSManualPairingViewController *)v4 navigationItem];
+    [navigationItem setRightBarButtonItem:v14];
 
-    v16 = [(COSManualPairingViewController *)v4 tableView];
-    [v16 registerClass:objc_opt_class() forCellReuseIdentifier:@"SecurePairingCellID"];
+    tableView3 = [(COSManualPairingViewController *)v4 tableView];
+    [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"SecurePairingCellID"];
 
-    v17 = [(COSManualPairingViewController *)v4 tableView];
+    tableView4 = [(COSManualPairingViewController *)v4 tableView];
     v18 = BPSSeparatorColor();
-    [v17 setSeparatorColor:v18];
+    [tableView4 setSeparatorColor:v18];
 
-    v19 = [(COSManualPairingViewController *)v4 view];
+    view = [(COSManualPairingViewController *)v4 view];
     v20 = +[UIColor clearColor];
-    [v19 setBackgroundColor:v20];
+    [view setBackgroundColor:v20];
 
-    v21 = [(COSManualPairingViewController *)v4 view];
+    view2 = [(COSManualPairingViewController *)v4 view];
     v22 = BPSSetupTintColor();
-    [v21 setTintColor:v22];
+    [view2 setTintColor:v22];
   }
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = COSManualPairingViewController;
-  [(COSManualPairingViewController *)&v6 viewWillAppear:a3];
+  [(COSManualPairingViewController *)&v6 viewWillAppear:appear];
   [(COSManualPairingViewController *)self beginDiscovery];
   if (!self->_tableUpdateTimer)
   {
@@ -80,11 +80,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = COSManualPairingViewController;
-  [(COSManualPairingViewController *)&v5 viewWillDisappear:a3];
+  [(COSManualPairingViewController *)&v5 viewWillDisappear:disappear];
   [(NSTimer *)self->_tableUpdateTimer invalidate];
   tableUpdateTimer = self->_tableUpdateTimer;
   self->_tableUpdateTimer = 0;
@@ -96,30 +96,30 @@
 {
   if ([(COSManualPairingViewController *)self updateDiscoveredDevices])
   {
-    v3 = [(COSManualPairingViewController *)self tableView];
-    [v3 reloadData];
+    tableView = [(COSManualPairingViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)controllerCancelled:(id)a3
+- (void)controllerCancelled:(id)cancelled
 {
-  v5 = a3;
-  v4 = [(COSManualPairingViewController *)self navigationController];
+  cancelledCopy = cancelled;
+  navigationController = [(COSManualPairingViewController *)self navigationController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 controllerCancelled:v5];
+    [navigationController controllerCancelled:cancelledCopy];
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [(COSManualPairingViewController *)self view];
-  [v6 bounds];
+  viewCopy = view;
+  view = [(COSManualPairingViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v16);
-  [v5 _sectionContentInset];
+  [viewCopy _sectionContentInset];
   v9 = v8;
-  [v5 _sectionContentInset];
+  [viewCopy _sectionContentInset];
   v11 = v10;
 
   [(COSManualPairingHeader *)self->_headerView sizeThatFits:Width - (v9 + v11), 0.0];
@@ -128,25 +128,25 @@
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  [a3 deselectRowAtIndexPath:? animated:?];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:? animated:?];
   if ([(NSMutableArray *)self->_displayedDeviceNames count])
   {
-    v6 = [(COSManualPairingViewController *)self navigationController];
-    v7 = [(COSManualPairingViewController *)self didSelectRowAtIndexPath:v8];
-    [v6 pushViewController:v7 animated:1];
+    navigationController = [(COSManualPairingViewController *)self navigationController];
+    v7 = [(COSManualPairingViewController *)self didSelectRowAtIndexPath:pathCopy];
+    [navigationController pushViewController:v7 animated:1];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SecurePairingCellID"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SecurePairingCellID"];
   if ([(NSMutableArray *)self->_displayedDeviceNames count])
   {
-    v8 = -[COSManualPairingViewController cellNameForRow:](self, "cellNameForRow:", [v6 row]);
+    v8 = -[COSManualPairingViewController cellNameForRow:](self, "cellNameForRow:", [pathCopy row]);
     v9 = 1;
   }
 
@@ -157,19 +157,19 @@
   }
 
   [v7 setAccessoryType:v9];
-  v10 = [v7 textLabel];
-  [v10 setText:v8];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v8];
 
-  v11 = [v7 textLabel];
+  textLabel2 = [v7 textLabel];
   v12 = BPSTextColor();
-  [v11 setTextColor:v12];
+  [textLabel2 setTextColor:v12];
 
   v13 = BPSForegroundColor();
   [v7 setBackgroundColor:v13];
 
-  v14 = [v7 accessoryView];
+  accessoryView = [v7 accessoryView];
   v15 = BPSAccessoryColor();
-  [v14 setTintColor:v15];
+  [accessoryView setTintColor:v15];
 
   v16 = objc_alloc_init(UIView);
   v17 = BPSCellHightlightColor();
@@ -228,7 +228,7 @@
   }
 }
 
-- (id)cellNameForRow:(int64_t)a3
+- (id)cellNameForRow:(int64_t)row
 {
   v3 = pbb_bridge_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -241,7 +241,7 @@
   return &stru_10026E598;
 }
 
-- (id)didSelectRowAtIndexPath:(id)a3
+- (id)didSelectRowAtIndexPath:(id)path
 {
   v3 = pbb_bridge_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

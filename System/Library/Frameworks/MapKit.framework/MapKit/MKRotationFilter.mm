@@ -1,12 +1,12 @@
 @interface MKRotationFilter
 - (BOOL)hasAdditionalSnappingAngle;
 - (MKRotationFilter)init;
-- (MKRotationFilter)initWithMapLayer:(id)a3;
+- (MKRotationFilter)initWithMapLayer:(id)layer;
 - (MKRotationFilterDelegate)delegate;
-- (void)snapToNorthAnimated:(BOOL)a3 forceTrueNorth:(BOOL)a4;
-- (void)startRotatingWithFocusPoint:(CGPoint)a3 withSnapping:(BOOL)a4;
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3;
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4;
+- (void)snapToNorthAnimated:(BOOL)animated forceTrueNorth:(BOOL)north;
+- (void)startRotatingWithFocusPoint:(CGPoint)point withSnapping:(BOOL)snapping;
+- (void)stopRotatingWithFocusPoint:(CGPoint)point;
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value;
 - (void)updateSnappedToNorth;
 @end
 
@@ -115,11 +115,11 @@
   }
 }
 
-- (void)snapToNorthAnimated:(BOOL)a3 forceTrueNorth:(BOOL)a4
+- (void)snapToNorthAnimated:(BOOL)animated forceTrueNorth:(BOOL)north
 {
-  v5 = a3;
+  animatedCopy = animated;
   additionalSnappingAngle = 0.0;
-  if ([(MKRotationFilter *)self hasAdditionalSnappingAngle]&& !a4)
+  if ([(MKRotationFilter *)self hasAdditionalSnappingAngle]&& !north)
   {
     WeakRetained = objc_loadWeakRetained(&self->_mapLayer);
     [WeakRetained yaw];
@@ -185,28 +185,28 @@
   }
 
   v19 = objc_loadWeakRetained(&self->_mapLayer);
-  [v19 setYaw:v5 animated:additionalSnappingAngle];
+  [v19 setYaw:animatedCopy animated:additionalSnappingAngle];
 }
 
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3
+- (void)stopRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_mapLayer);
   [WeakRetained stopRotatingWithFocusPoint:{x, y}];
 }
 
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4 * 57.2957795;
+  y = point.y;
+  x = point.x;
+  v7 = value * 57.2957795;
   if (!self->_snappingEnabled)
   {
     goto LABEL_36;
   }
 
-  v8 = self->_gestureStartAngle + a4 * -57.2957795;
+  v8 = self->_gestureStartAngle + value * -57.2957795;
   v9 = fmod(v8, 360.0);
   if (v8 >= 0.0)
   {
@@ -340,12 +340,12 @@ LABEL_36:
   [v24 updateRotationWithFocusPoint:x newValue:{y, v7 * 0.0174532925}];
 }
 
-- (void)startRotatingWithFocusPoint:(CGPoint)a3 withSnapping:(BOOL)a4
+- (void)startRotatingWithFocusPoint:(CGPoint)point withSnapping:(BOOL)snapping
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v13 = [v8 objectForKey:@"RotationFilterSnappingThreshold"];
+  y = point.y;
+  x = point.x;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v13 = [standardUserDefaults objectForKey:@"RotationFilterSnappingThreshold"];
 
   if (v13)
   {
@@ -360,21 +360,21 @@ LABEL_36:
   [v11 yaw];
   self->_gestureStartAngle = v12;
 
-  self->_snappingEnabled = a4;
+  self->_snappingEnabled = snapping;
   [(MKRotationFilter *)self updateSnappedToNorth];
   self->_snappedAtStart = self->_snappedToNorth;
 }
 
-- (MKRotationFilter)initWithMapLayer:(id)a3
+- (MKRotationFilter)initWithMapLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v8.receiver = self;
   v8.super_class = MKRotationFilter;
   v5 = [(MKRotationFilter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mapLayer, v4);
+    objc_storeWeak(&v5->_mapLayer, layerCopy);
   }
 
   return v6;

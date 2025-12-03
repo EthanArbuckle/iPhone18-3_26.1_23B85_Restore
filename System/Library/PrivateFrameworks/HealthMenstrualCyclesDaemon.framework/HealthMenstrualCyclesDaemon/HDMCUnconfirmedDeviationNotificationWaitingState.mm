@@ -1,47 +1,47 @@
 @interface HDMCUnconfirmedDeviationNotificationWaitingState
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3;
-- (id)computeNewStateFromMaxEnd:(int64_t)a3 dismissalDayIndex:(id)a4 scheduledFireDayIndex:(int64_t)a5;
++ (id)notificationStateFromDictionaryRepresentation:(id)representation;
+- (id)computeNewStateFromMaxEnd:(int64_t)end dismissalDayIndex:(id)index scheduledFireDayIndex:(int64_t)dayIndex;
 @end
 
 @implementation HDMCUnconfirmedDeviationNotificationWaitingState
 
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3
++ (id)notificationStateFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 objectForKeyedSubscript:@"FireDayIndex"];
+  representationCopy = representation;
+  v5 = [self alloc];
+  v6 = [representationCopy objectForKeyedSubscript:@"FireDayIndex"];
 
   v7 = [v5 initWithFireDayIndex:v6];
 
   return v7;
 }
 
-- (id)computeNewStateFromMaxEnd:(int64_t)a3 dismissalDayIndex:(id)a4 scheduledFireDayIndex:(int64_t)a5
+- (id)computeNewStateFromMaxEnd:(int64_t)end dismissalDayIndex:(id)index scheduledFireDayIndex:(int64_t)dayIndex
 {
-  v8 = a4;
-  v9 = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)self fireDayIndex];
-  v10 = v9;
-  if (v8)
+  indexCopy = index;
+  fireDayIndex = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)self fireDayIndex];
+  v10 = fireDayIndex;
+  if (indexCopy)
   {
 
     if (!v10)
     {
-      v10 = v8;
+      v10 = indexCopy;
       goto LABEL_10;
     }
 
-    v11 = [v8 intValue];
-    v12 = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)self fireDayIndex];
-    v13 = [v12 intValue];
+    intValue = [indexCopy intValue];
+    fireDayIndex2 = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)self fireDayIndex];
+    intValue2 = [fireDayIndex2 intValue];
 
-    if (v11 <= v13)
+    if (intValue <= intValue2)
     {
-      v14 = v13;
+      v14 = intValue2;
     }
 
     else
     {
-      v14 = v11;
+      v14 = intValue;
     }
 
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:v14 + 180];
@@ -50,24 +50,24 @@
   if (!v10)
   {
     v15 = [HDMCUnconfirmedDeviationNotificationScheduledState alloc];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-    v16 = [(HDMCUnconfirmedDeviationNotificationScheduledState *)v15 initWithFireDayIndex:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:dayIndex];
+    selfCopy = [(HDMCUnconfirmedDeviationNotificationScheduledState *)v15 initWithFireDayIndex:v10];
     goto LABEL_13;
   }
 
 LABEL_10:
-  if ([v10 integerValue] < a3)
+  if ([v10 integerValue] < end)
   {
     v17 = [HDMCUnconfirmedDeviationNotificationScheduledState alloc];
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:dayIndex];
     v19 = [(HDMCUnconfirmedDeviationNotificationScheduledState *)v17 initWithFireDayIndex:v18];
 
     goto LABEL_14;
   }
 
-  v16 = self;
+  selfCopy = self;
 LABEL_13:
-  v19 = v16;
+  v19 = selfCopy;
 LABEL_14:
 
   return v19;

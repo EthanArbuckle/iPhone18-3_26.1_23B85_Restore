@@ -1,51 +1,51 @@
 @interface NRPBMutableDeviceCollection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addDevices:(id)a3;
-- (void)addPairingIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDevices:(id)devices;
+- (void)addPairingIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBMutableDeviceCollection
 
-- (void)addPairingIDs:(id)a3
+- (void)addPairingIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   pairingIDs = self->_pairingIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!pairingIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_pairingIDs;
     self->_pairingIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     pairingIDs = self->_pairingIDs;
   }
 
-  [(NSMutableArray *)pairingIDs addObject:v4];
+  [(NSMutableArray *)pairingIDs addObject:dsCopy];
 }
 
-- (void)addDevices:(id)a3
+- (void)addDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   devices = self->_devices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!devices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_devices;
     self->_devices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     devices = self->_devices;
   }
 
-  [(NSMutableArray *)devices addObject:v4];
+  [(NSMutableArray *)devices addObject:devicesCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v8.receiver = self;
   v8.super_class = NRPBMutableDeviceCollection;
   v4 = [(NRPBMutableDeviceCollection *)&v8 description];
-  v5 = [(NRPBMutableDeviceCollection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBMutableDeviceCollection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -63,12 +63,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   pairingIDs = self->_pairingIDs;
   if (pairingIDs)
   {
-    [v3 setObject:pairingIDs forKey:@"pairingIDs"];
+    [dictionary setObject:pairingIDs forKey:@"pairingIDs"];
   }
 
   if ([(NSMutableArray *)self->_devices count])
@@ -93,8 +93,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -111,10 +111,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -182,44 +182,44 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(NRPBMutableDeviceCollection *)self pairingIDsCount])
   {
-    [v12 clearPairingIDs];
-    v4 = [(NRPBMutableDeviceCollection *)self pairingIDsCount];
-    if (v4)
+    [toCopy clearPairingIDs];
+    pairingIDsCount = [(NRPBMutableDeviceCollection *)self pairingIDsCount];
+    if (pairingIDsCount)
     {
-      v5 = v4;
+      v5 = pairingIDsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NRPBMutableDeviceCollection *)self pairingIDsAtIndex:i];
-        [v12 addPairingIDs:v7];
+        [toCopy addPairingIDs:v7];
       }
     }
   }
 
   if ([(NRPBMutableDeviceCollection *)self devicesCount])
   {
-    [v12 clearDevices];
-    v8 = [(NRPBMutableDeviceCollection *)self devicesCount];
-    if (v8)
+    [toCopy clearDevices];
+    devicesCount = [(NRPBMutableDeviceCollection *)self devicesCount];
+    if (devicesCount)
     {
-      v9 = v8;
+      v9 = devicesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NRPBMutableDeviceCollection *)self devicesAtIndex:j];
-        [v12 addDevices:v11];
+        [toCopy addDevices:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -240,7 +240,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addPairingIDs:v11];
 
         ++v10;
@@ -273,7 +273,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addDevices:v17];
 
         ++v16;
@@ -290,13 +290,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((pairingIDs = self->_pairingIDs, !(pairingIDs | v4[2])) || -[NSMutableArray isEqual:](pairingIDs, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((pairingIDs = self->_pairingIDs, !(pairingIDs | equalCopy[2])) || -[NSMutableArray isEqual:](pairingIDs, "isEqual:")))
   {
     devices = self->_devices;
-    if (devices | v4[1])
+    if (devices | equalCopy[1])
     {
       v7 = [(NSMutableArray *)devices isEqual:?];
     }
@@ -315,15 +315,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -353,7 +353,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

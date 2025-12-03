@@ -1,8 +1,8 @@
 @interface NSURLFileTypeMappings
 + (id)sharedMappings;
-- (id)MIMETypeForExtension:(id)a3;
-- (id)extensionsForMIMEType:(id)a3;
-- (id)preferredExtensionForMIMEType:(id)a3;
+- (id)MIMETypeForExtension:(id)extension;
+- (id)extensionsForMIMEType:(id)type;
+- (id)preferredExtensionForMIMEType:(id)type;
 @end
 
 @implementation NSURLFileTypeMappings
@@ -24,13 +24,13 @@ NSURLFileTypeMappings *__39__NSURLFileTypeMappings_sharedMappings__block_invoke(
   return result;
 }
 
-- (id)MIMETypeForExtension:(id)a3
+- (id)MIMETypeForExtension:(id)extension
 {
-  v4 = [a3 lowercaseString];
-  result = [&unk_1EEF5A4F8 objectForKey:v4];
-  if (!result && self && v4)
+  lowercaseString = [extension lowercaseString];
+  result = [&unk_1EEF5A4F8 objectForKey:lowercaseString];
+  if (!result && self && lowercaseString)
   {
-    v6 = [(objc_class *)UTTypeClass() typeWithFilenameExtension:v4];
+    v6 = [(objc_class *)UTTypeClass() typeWithFilenameExtension:lowercaseString];
 
     return [v6 preferredMIMEType];
   }
@@ -38,13 +38,13 @@ NSURLFileTypeMappings *__39__NSURLFileTypeMappings_sharedMappings__block_invoke(
   return result;
 }
 
-- (id)preferredExtensionForMIMEType:(id)a3
+- (id)preferredExtensionForMIMEType:(id)type
 {
-  v4 = [a3 lowercaseString];
-  result = [objc_msgSend(&unk_1EEF5A520 objectForKey:{v4), "objectAtIndex:", 0}];
-  if (!result && self && v4)
+  lowercaseString = [type lowercaseString];
+  result = [objc_msgSend(&unk_1EEF5A520 objectForKey:{lowercaseString), "objectAtIndex:", 0}];
+  if (!result && self && lowercaseString)
   {
-    v6 = [(objc_class *)UTTypeClass() typeWithMIMEType:v4];
+    v6 = [(objc_class *)UTTypeClass() typeWithMIMEType:lowercaseString];
 
     return [v6 preferredFilenameExtension];
   }
@@ -52,14 +52,14 @@ NSURLFileTypeMappings *__39__NSURLFileTypeMappings_sharedMappings__block_invoke(
   return result;
 }
 
-- (id)extensionsForMIMEType:(id)a3
+- (id)extensionsForMIMEType:(id)type
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 lowercaseString];
-  result = [&unk_1EEF5A548 objectForKey:v4];
-  if (!result && self && v4)
+  lowercaseString = [type lowercaseString];
+  result = [&unk_1EEF5A548 objectForKey:lowercaseString];
+  if (!result && self && lowercaseString)
   {
-    result = [-[objc_class typeWithMIMEType:](UTTypeClass() typeWithMIMEType:{v4), "preferredFilenameExtension"}];
+    result = [-[objc_class typeWithMIMEType:](UTTypeClass() typeWithMIMEType:{lowercaseString), "preferredFilenameExtension"}];
     if (result)
     {
       v6[0] = result;

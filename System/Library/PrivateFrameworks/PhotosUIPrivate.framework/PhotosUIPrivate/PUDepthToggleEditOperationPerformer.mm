@@ -3,20 +3,20 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)originalStillImageTime;
 - (BOOL)_shouldEnableDepth;
 - (PHAsset)asset;
-- (void)_completeWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_handleLoadResult:(id)a3 imageValues:(id)a4;
-- (void)_performEditOperation:(id)a3 completionHandler:(id)a4;
-- (void)_resourceLoadedWithResult:(id)a3 editOperationType:(id)a4;
-- (void)performAction:(id)a3;
-- (void)setOriginalStillImageTime:(id *)a3;
+- (void)_completeWithSuccess:(BOOL)success error:(id)error;
+- (void)_handleLoadResult:(id)result imageValues:(id)values;
+- (void)_performEditOperation:(id)operation completionHandler:(id)handler;
+- (void)_resourceLoadedWithResult:(id)result editOperationType:(id)type;
+- (void)performAction:(id)action;
+- (void)setOriginalStillImageTime:(id *)time;
 @end
 
 @implementation PUDepthToggleEditOperationPerformer
 
-- (void)setOriginalStillImageTime:(id *)a3
+- (void)setOriginalStillImageTime:(id *)time
 {
-  var3 = a3->var3;
-  *(&self->_liveIsEnabled + 4) = *&a3->var0;
+  var3 = time->var3;
+  *(&self->_liveIsEnabled + 4) = *&time->var0;
   *&self->_originalStillImageTime.flags = var3;
 }
 
@@ -27,16 +27,16 @@
   return self;
 }
 
-- (void)_resourceLoadedWithResult:(id)a3 editOperationType:(id)a4
+- (void)_resourceLoadedWithResult:(id)result editOperationType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  typeCopy = type;
   v8 = objc_alloc_init(MEMORY[0x1E69C4330]);
-  v9 = [v6 editSource];
-  [v8 setEditSource:v9];
+  editSource = [resultCopy editSource];
+  [v8 setEditSource:editSource];
 
-  v10 = [v6 compositionController];
-  v11 = [v10 copy];
+  compositionController = [resultCopy compositionController];
+  v11 = [compositionController copy];
 
   [v11 removeAdjustmentWithKey:*MEMORY[0x1E69BE030]];
   [v11 removeAdjustmentWithKey:*MEMORY[0x1E69BE180]];
@@ -47,7 +47,7 @@
   v14[2] = __83__PUDepthToggleEditOperationPerformer__resourceLoadedWithResult_editOperationType___block_invoke;
   v14[3] = &unk_1E7B7F820;
   objc_copyWeak(&v17, &location);
-  v12 = v6;
+  v12 = resultCopy;
   v15 = v12;
   v13 = v8;
   v16 = v13;
@@ -75,51 +75,51 @@ void __83__PUDepthToggleEditOperationPerformer__resourceLoadedWithResult_editOpe
 
 - (BOOL)_shouldEnableDepth
 {
-  v2 = [(PXAssetEditOperationPerformer *)self editOperationType];
+  editOperationType = [(PXAssetEditOperationPerformer *)self editOperationType];
   IsEnableDepth = PXAssetEditOperationTypeIsEnableDepth();
 
   return IsEnableDepth;
 }
 
-- (void)_handleLoadResult:(id)a3 imageValues:(id)a4
+- (void)_handleLoadResult:(id)result imageValues:(id)values
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v34 = a4;
-  v37 = [v34 portraitValuesWithAccuracy:0];
+  resultCopy = result;
+  valuesCopy = values;
+  v37 = [valuesCopy portraitValuesWithAccuracy:0];
   v36 = [v37 objectForKeyedSubscript:*MEMORY[0x1E69BDFF8]];
   if (v36)
   {
-    v7 = [v6 compositionController];
-    v8 = [v7 copy];
+    compositionController = [resultCopy compositionController];
+    v8 = [compositionController copy];
 
-    v9 = [v8 depthAdjustmentController];
-    v35 = [v9 depthInfo];
+    depthAdjustmentController = [v8 depthAdjustmentController];
+    depthInfo = [depthAdjustmentController depthInfo];
 
-    v10 = [v35 objectForKeyedSubscript:@"focusRect"];
+    v10 = [depthInfo objectForKeyedSubscript:@"focusRect"];
 
     if (!v10)
     {
-      v11 = [v8 adjustmentConstants];
-      v12 = [v11 PIDepthAdjustmentKey];
+      adjustmentConstants = [v8 adjustmentConstants];
+      pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __69__PUDepthToggleEditOperationPerformer__handleLoadResult_imageValues___block_invoke;
       v47[3] = &unk_1E7B7A5C8;
       v48 = v36;
       v49 = v37;
-      v50 = v35;
-      [v8 modifyAdjustmentWithKey:v12 modificationBlock:v47];
+      v50 = depthInfo;
+      [v8 modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:v47];
     }
 
-    v13 = [(PUDepthToggleEditOperationPerformer *)self asset];
-    v14 = [objc_alloc(MEMORY[0x1E69C4298]) initWithAsset:v13 compositionController:v8];
-    v15 = [v6 contentEditingInput];
-    v16 = [v15 livePhoto];
+    asset = [(PUDepthToggleEditOperationPerformer *)self asset];
+    v14 = [objc_alloc(MEMORY[0x1E69C4298]) initWithAsset:asset compositionController:v8];
+    contentEditingInput = [resultCopy contentEditingInput];
+    livePhoto = [contentEditingInput livePhoto];
 
-    if (v6)
+    if (resultCopy)
     {
-      [v6 videoComplementOriginalStillImageTime];
+      [resultCopy videoComplementOriginalStillImageTime];
     }
 
     else
@@ -132,9 +132,9 @@ void __83__PUDepthToggleEditOperationPerformer__resourceLoadedWithResult_editOpe
     v44 = v46;
     [(PUDepthToggleEditOperationPerformer *)self setOriginalStillImageTime:location];
     -[PUDepthToggleEditOperationPerformer setLiveIsEnabled:](self, "setLiveIsEnabled:", [v14 isVideoEnabled]);
-    if (v16)
+    if (livePhoto)
     {
-      v33 = [objc_alloc(MEMORY[0x1E69C42A0]) initWithAsset:v13 delegate:self hasDepth:1 hasLive:1];
+      v33 = [objc_alloc(MEMORY[0x1E69C42A0]) initWithAsset:asset delegate:self hasDepth:1 hasLive:1];
     }
 
     else
@@ -143,17 +143,17 @@ void __83__PUDepthToggleEditOperationPerformer__resourceLoadedWithResult_editOpe
     }
 
     [PUPhotoEditEffectsSupport updateCompositionController:v8 withDepthEnabled:[(PUDepthToggleEditOperationPerformer *)self _shouldEnableDepth] livePortraitBehaviorController:v33];
-    if ((-[PUDepthToggleEditOperationPerformer liveIsEnabled](self, "liveIsEnabled") || v16 == 0) && !-[PUDepthToggleEditOperationPerformer _shouldEnableDepth](self, "_shouldEnableDepth") && (v42 = 0, [MEMORY[0x1E69C4300] compositionControllerForContentEditingInput:v15 asShot:1 error:&v42], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((-[PUDepthToggleEditOperationPerformer liveIsEnabled](self, "liveIsEnabled") || livePhoto == 0) && !-[PUDepthToggleEditOperationPerformer _shouldEnableDepth](self, "_shouldEnableDepth") && (v42 = 0, [MEMORY[0x1E69C4300] compositionControllerForContentEditingInput:contentEditingInput asShot:1 error:&v42], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v31 = v16 != 0;
+      v31 = livePhoto != 0;
       v20 = objc_alloc(MEMORY[0x1E69C0718]);
-      v21 = [v15 fullSizeImageURL];
-      v32 = [v20 initWithMediaURL:v21 timeZoneLookup:0];
+      fullSizeImageURL = [contentEditingInput fullSizeImageURL];
+      v32 = [v20 initWithMediaURL:fullSizeImageURL timeZoneLookup:0];
 
       v22 = [MEMORY[0x1E69C4320] repairedAsShotCompositionController:v19 forCurrentCompositionController:v8 isLivePhoto:v31 metadata:v32];
 
-      v23 = [v22 composition];
-      v24 = [v8 isEqual:v23 visualChangesOnly:1];
+      composition = [v22 composition];
+      v24 = [v8 isEqual:composition visualChangesOnly:1];
 
       objc_initWeak(location, self);
       if (v24)
@@ -165,7 +165,7 @@ void __83__PUDepthToggleEditOperationPerformer__resourceLoadedWithResult_editOpe
         v40[2] = __69__PUDepthToggleEditOperationPerformer__handleLoadResult_imageValues___block_invoke_2;
         v40[3] = &unk_1E7B7A460;
         objc_copyWeak(&v41, location);
-        [v25 revertEditsForAsset:v13 mediaDestination:mediaDestination currentCompositionController:v8 completionHandler:v40];
+        [v25 revertEditsForAsset:asset mediaDestination:mediaDestination currentCompositionController:v8 completionHandler:v40];
         objc_destroyWeak(&v41);
 LABEL_18:
         objc_destroyWeak(location);
@@ -179,16 +179,16 @@ LABEL_18:
       objc_initWeak(location, self);
     }
 
-    v27 = [MEMORY[0x1E69C4300] contentEditingOutputForContentEditingInput:v15 compositionController:v8 asset:v13 async:0 onlyChangingOriginalChoice:0];
+    v27 = [MEMORY[0x1E69C4300] contentEditingOutputForContentEditingInput:contentEditingInput compositionController:v8 asset:asset async:0 onlyChangingOriginalChoice:0];
     v28 = self->_mediaDestination;
-    v29 = [v6 retrievedVersion];
-    v30 = [v14 editingVisibility];
+    retrievedVersion = [resultCopy retrievedVersion];
+    editingVisibility = [v14 editingVisibility];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __69__PUDepthToggleEditOperationPerformer__handleLoadResult_imageValues___block_invoke_3;
     v38[3] = &unk_1E7B7A488;
     objc_copyWeak(&v39, location);
-    [(PEPhotoKitMediaDestination *)v28 saveInternalEditsForAsset:v13 usingCompositionController:v8 contentEditingOutput:v27 version:v29 livePhotoState:v30 completionHandler:v38];
+    [(PEPhotoKitMediaDestination *)v28 saveInternalEditsForAsset:asset usingCompositionController:v8 contentEditingOutput:v27 version:retrievedVersion livePhotoState:editingVisibility completionHandler:v38];
     objc_destroyWeak(&v39);
 
     goto LABEL_18;
@@ -238,10 +238,10 @@ void __69__PUDepthToggleEditOperationPerformer__handleLoadResult_imageValues___b
   [WeakRetained _completeWithSuccess:v4 == 0 error:v4];
 }
 
-- (void)_completeWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_completeWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v4 = v5;
+  errorCopy = error;
+  v4 = errorCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -279,11 +279,11 @@ void __66__PUDepthToggleEditOperationPerformer__completeWithSuccess_error___bloc
   }
 }
 
-- (void)_performEditOperation:(id)a3 completionHandler:(id)a4
+- (void)_performEditOperation:(id)operation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 copy];
+  operationCopy = operation;
+  handlerCopy = handler;
+  v8 = [handlerCopy copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v8;
 
@@ -292,16 +292,16 @@ void __66__PUDepthToggleEditOperationPerformer__completeWithSuccess_error___bloc
   self->_mediaDestination = v10;
 
   objc_initWeak(&location, self);
-  v12 = [objc_opt_class() _sharedResourceManager];
-  v13 = [(PUDepthToggleEditOperationPerformer *)self asset];
+  _sharedResourceManager = [objc_opt_class() _sharedResourceManager];
+  asset = [(PUDepthToggleEditOperationPerformer *)self asset];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__PUDepthToggleEditOperationPerformer__performEditOperation_completionHandler___block_invoke_2;
   v15[3] = &unk_1E7B7A438;
   objc_copyWeak(&v17, &location);
-  v14 = v6;
+  v14 = operationCopy;
   v16 = v14;
-  [v12 loadResourceForAsset:v13 requireLocalResources:0 forceRunAsUnadjustedAsset:0 progressHandler:&__block_literal_global_343 resultHandler:v15];
+  [_sharedResourceManager loadResourceForAsset:asset requireLocalResources:0 forceRunAsUnadjustedAsset:0 progressHandler:&__block_literal_global_343 resultHandler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -324,25 +324,25 @@ void __79__PUDepthToggleEditOperationPerformer__performEditOperation_completionH
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(PUDepthToggleEditOperationPerformer *)self _shouldEnableDepth];
   v5 = PXAssetEditOperationTypeForDepthToggle();
   sourceEditOperationType = self->_sourceEditOperationType;
   self->_sourceEditOperationType = v5;
 
-  v7 = [(PXAssetEditOperationPerformer *)self editOperationType];
-  [(PUDepthToggleEditOperationPerformer *)self _performEditOperation:v7 completionHandler:v4];
+  editOperationType = [(PXAssetEditOperationPerformer *)self editOperationType];
+  [(PUDepthToggleEditOperationPerformer *)self _performEditOperation:editOperationType completionHandler:actionCopy];
 }
 
 - (PHAsset)asset
 {
   v4.receiver = self;
   v4.super_class = PUDepthToggleEditOperationPerformer;
-  v2 = [(PXAssetEditOperationPerformer *)&v4 asset];
+  asset = [(PXAssetEditOperationPerformer *)&v4 asset];
 
-  return v2;
+  return asset;
 }
 
 + (id)_sharedResourceManager

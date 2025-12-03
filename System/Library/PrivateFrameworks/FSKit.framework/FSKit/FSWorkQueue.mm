@@ -1,26 +1,26 @@
 @interface FSWorkQueue
-- (id)initQueueWithDomain:(id)a3 concurrency:(int)a4;
-- (void)enqueue:(id)a3;
+- (id)initQueueWithDomain:(id)domain concurrency:(int)concurrency;
+- (void)enqueue:(id)enqueue;
 - (void)initQueues;
 @end
 
 @implementation FSWorkQueue
 
-- (id)initQueueWithDomain:(id)a3 concurrency:(int)a4
+- (id)initQueueWithDomain:(id)domain concurrency:(int)concurrency
 {
-  v7 = a3;
+  domainCopy = domain;
   v12.receiver = self;
   v12.super_class = FSWorkQueue;
   v8 = [(FSWorkQueue *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queues = v8->_queues;
-    v8->_queues = v9;
+    v8->_queues = array;
 
     v8->_index = 0;
-    v8->_concurrency = a4;
-    objc_storeStrong(&v8->_domain, a3);
+    v8->_concurrency = concurrency;
+    objc_storeStrong(&v8->_domain, domain);
     v8->_didInitQueues = 0;
   }
 
@@ -51,8 +51,8 @@
         }
       }
 
-      v7 = [(FSWorkQueue *)self queues];
-      [v7 addObject:v5];
+      queues = [(FSWorkQueue *)self queues];
+      [queues addObject:v5];
 
       v3 = (v3 + 1);
     }
@@ -64,25 +64,25 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  block = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v4->_didInitQueues)
+  block = enqueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_didInitQueues)
   {
-    [(FSWorkQueue *)v4 initQueues];
+    [(FSWorkQueue *)selfCopy initQueues];
   }
 
-  v5 = [(FSWorkQueue *)v4 queues];
-  v6 = [v5 objectAtIndex:{-[FSWorkQueue index](v4, "index")}];
+  queues = [(FSWorkQueue *)selfCopy queues];
+  v6 = [queues objectAtIndex:{-[FSWorkQueue index](selfCopy, "index")}];
 
   dispatch_async(v6, block);
-  v7 = [(FSWorkQueue *)v4 index];
-  v8 = [(FSWorkQueue *)v4 queues];
-  -[FSWorkQueue setIndex:](v4, "setIndex:", ((v7 + 1) % [v8 count]));
+  index = [(FSWorkQueue *)selfCopy index];
+  queues2 = [(FSWorkQueue *)selfCopy queues];
+  -[FSWorkQueue setIndex:](selfCopy, "setIndex:", ((index + 1) % [queues2 count]));
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

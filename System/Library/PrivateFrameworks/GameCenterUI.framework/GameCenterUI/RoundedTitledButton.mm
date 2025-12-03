@@ -1,21 +1,21 @@
 @interface RoundedTitledButton
 - (BOOL)isEnabled;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (double)_cornerRadius;
-- (void)_setCornerRadius:(double)a3;
-- (void)didTapButton:(id)a3;
+- (void)_setCornerRadius:(double)radius;
+- (void)didTapButton:(id)button;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation RoundedTitledButton
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_24E2B8128(width, height);
   v8 = v7;
 
@@ -26,49 +26,49 @@
   return result;
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_24E2B82D4();
 }
 
 - (double)_cornerRadius
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2B83E0();
   v4 = v3;
 
   return v4;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_24E2B8058(a3);
+  selfCopy = self;
+  sub_24E2B8058(radius);
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E2B80A4();
 
   return v3 & 1;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_24E2B80DC(a3);
+  selfCopy = self;
+  sub_24E2B80DC(enabled);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
+  height = fitting.height;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = sub_24E2B8694(a4, width, height);
+  selfCopy = self;
+  v9 = sub_24E2B8694(in, width, height);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -87,7 +87,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2B8804();
 }
 

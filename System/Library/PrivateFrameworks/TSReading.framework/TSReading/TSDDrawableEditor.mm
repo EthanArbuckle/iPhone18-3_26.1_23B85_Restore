@@ -3,31 +3,31 @@
 - (NSSet)selectedObjectsSupportingResize;
 - (NSSet)selectedObjectsSupportingShrinkTextToFit;
 - (NSSet)selectedObjectsSupportingTextInset;
-- (TSDDrawableEditor)initWithInteractiveCanvasController:(id)a3;
+- (TSDDrawableEditor)initWithInteractiveCanvasController:(id)controller;
 - (TSDDrawableInfo)firstInfo;
 - (TSDDrawableInfo)info;
 - (id)documentRoot;
-- (id)infosOfClass:(Class)a3;
+- (id)infosOfClass:(Class)class;
 - (id)selectedLayoutsSupportingFlipping;
 - (id)selectedLayoutsSupportingInspectorPositioning;
 - (id)selectedLayoutsSupportingRotation;
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)beginChangingStrokeWidth:(id)a3;
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)beginChangingStrokeWidth:(id)width;
 - (void)dealloc;
-- (void)didChangeStrokeWidth:(id)a3;
-- (void)endChangingStrokeWidth:(id)a3;
+- (void)didChangeStrokeWidth:(id)width;
+- (void)endChangingStrokeWidth:(id)width;
 @end
 
 @implementation TSDDrawableEditor
 
-- (TSDDrawableEditor)initWithInteractiveCanvasController:(id)a3
+- (TSDDrawableEditor)initWithInteractiveCanvasController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = TSDDrawableEditor;
   result = [(TSDDrawableEditor *)&v5 init];
   if (result)
   {
-    result->mICC = a3;
+    result->mICC = controller;
   }
 
   return result;
@@ -44,9 +44,9 @@
 {
   if ([(NSSet *)self->mInfos count]>= 2)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableEditor info]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableEditor.m"), 87, @"You need to change your code to expect an array of infos from the TSDDrawableEditor so that multiple selection is supported."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableEditor.m"), 87, @"You need to change your code to expect an array of infos from the TSDDrawableEditor so that multiple selection is supported."}];
   }
 
   mInfos = self->mInfos;
@@ -54,14 +54,14 @@
   return [(NSSet *)mInfos anyObject];
 }
 
-- (id)infosOfClass:(Class)a3
+- (id)infosOfClass:(Class)class
 {
   mInfos = self->mInfos;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__TSDDrawableEditor_infosOfClass___block_invoke;
   v5[3] = &unk_279D483A8;
-  v5[4] = a3;
+  v5[4] = class;
   return [(NSSet *)mInfos objectsPassingTest:v5];
 }
 
@@ -112,16 +112,16 @@ LABEL_3:
 
 - (NSSet)layouts
 {
-  v3 = [(TSDInteractiveCanvasController *)[(TSDDrawableEditor *)self interactiveCanvasController] layoutController];
-  v4 = [(TSDDrawableEditor *)self infos];
+  layoutController = [(TSDInteractiveCanvasController *)[(TSDDrawableEditor *)self interactiveCanvasController] layoutController];
+  infos = [(TSDDrawableEditor *)self infos];
 
-  return [(TSDLayoutController *)v3 layoutsForInfos:v4];
+  return [(TSDLayoutController *)layoutController layoutsForInfos:infos];
 }
 
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (sel_addOrShowComment_ == a3)
+  if (sel_addOrShowComment_ == action)
   {
     if ([(TSDDrawableEditor *)self canAddOrShowComment])
     {
@@ -134,7 +134,7 @@ LABEL_3:
     }
   }
 
-  else if (sel_flipHorizontally_ == a3 || sel_flipVertically_ == a3)
+  else if (sel_flipHorizontally_ == action || sel_flipVertically_ == action)
   {
     if ([(NSSet *)[(TSDDrawableEditor *)self infos] count]&& (v15 = 0u, v16 = 0u, v13 = 0u, v14 = 0u, v6 = [(TSDDrawableEditor *)self layouts], (v7 = [(NSSet *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16]) != 0))
     {
@@ -183,23 +183,23 @@ LABEL_3:
 
 - (id)documentRoot
 {
-  v2 = [(TSDDrawableEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDDrawableEditor *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v2 documentRoot];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController documentRoot];
 }
 
 - (NSSet)selectedObjectsSupportingResize
 {
-  v2 = [(TSDDrawableEditor *)self layouts];
+  layouts = [(TSDDrawableEditor *)self layouts];
 
-  return [(NSSet *)v2 objectsPassingTest:&__block_literal_global_33];
+  return [(NSSet *)layouts objectsPassingTest:&__block_literal_global_33];
 }
 
 - (NSSet)selectedObjectsSupportingTextInset
 {
-  v2 = [(TSDDrawableEditor *)self infos];
+  infos = [(TSDDrawableEditor *)self infos];
 
-  return [(NSSet *)v2 objectsPassingTest:&__block_literal_global_19];
+  return [(NSSet *)infos objectsPassingTest:&__block_literal_global_19];
 }
 
 void *__55__TSDDrawableEditor_selectedObjectsSupportingTextInset__block_invoke()
@@ -217,9 +217,9 @@ void *__55__TSDDrawableEditor_selectedObjectsSupportingTextInset__block_invoke()
 
 - (NSSet)selectedObjectsSupportingShrinkTextToFit
 {
-  v2 = [(TSDDrawableEditor *)self infos];
+  infos = [(TSDDrawableEditor *)self infos];
 
-  return [(NSSet *)v2 objectsPassingTest:&__block_literal_global_22];
+  return [(NSSet *)infos objectsPassingTest:&__block_literal_global_22];
 }
 
 void *__61__TSDDrawableEditor_selectedObjectsSupportingShrinkTextToFit__block_invoke()
@@ -237,26 +237,26 @@ void *__61__TSDDrawableEditor_selectedObjectsSupportingShrinkTextToFit__block_in
 
 - (id)selectedLayoutsSupportingRotation
 {
-  v2 = [(TSDDrawableEditor *)self layouts];
+  layouts = [(TSDDrawableEditor *)self layouts];
 
-  return [(NSSet *)v2 objectsPassingTest:&__block_literal_global_28];
+  return [(NSSet *)layouts objectsPassingTest:&__block_literal_global_28];
 }
 
 - (id)selectedLayoutsSupportingFlipping
 {
-  v2 = [(TSDDrawableEditor *)self layouts];
+  layouts = [(TSDDrawableEditor *)self layouts];
 
-  return [(NSSet *)v2 objectsPassingTest:&__block_literal_global_30];
+  return [(NSSet *)layouts objectsPassingTest:&__block_literal_global_30];
 }
 
 - (id)selectedLayoutsSupportingInspectorPositioning
 {
-  v2 = [(TSDDrawableEditor *)self layouts];
+  layouts = [(TSDDrawableEditor *)self layouts];
 
-  return [(NSSet *)v2 objectsPassingTest:&__block_literal_global_32];
+  return [(NSSet *)layouts objectsPassingTest:&__block_literal_global_32];
 }
 
-- (void)beginChangingStrokeWidth:(id)a3
+- (void)beginChangingStrokeWidth:(id)width
 {
   v14 = *MEMORY[0x277D85DE8];
   [(TSDInteractiveCanvasController *)self->mICC beginDynamicOperation];
@@ -289,13 +289,13 @@ void *__61__TSDDrawableEditor_selectedObjectsSupportingShrinkTextToFit__block_in
   }
 }
 
-- (void)didChangeStrokeWidth:(id)a3
+- (void)didChangeStrokeWidth:(id)width
 {
   v28 = *MEMORY[0x277D85DE8];
-  [a3 floatValue];
+  [width floatValue];
   [(TSDDrawableEditor *)self strokeWidthForNormalizedWidth:v5];
   v7 = v6;
-  [a3 floatValue];
+  [width floatValue];
   [(TSDDrawableEditor *)self pictureFrameAssetScaleForNormalizedWidth:v8];
   v10 = v9;
   v23 = 0u;
@@ -323,9 +323,9 @@ void *__61__TSDDrawableEditor_selectedObjectsSupportingShrinkTextToFit__block_in
         {
           v18 = [v17 performSelector:sel_stroke];
           v19 = [(TSDInteractiveCanvasController *)self->mICC layoutForInfo:v17];
-          v20 = [v18 isFrame];
+          isFrame = [v18 isFrame];
           v21 = v7;
-          if (v20)
+          if (isFrame)
           {
             [v18 minimumAssetScale];
             *&v22 = v22;
@@ -343,7 +343,7 @@ void *__61__TSDDrawableEditor_selectedObjectsSupportingShrinkTextToFit__block_in
   }
 }
 
-- (void)endChangingStrokeWidth:(id)a3
+- (void)endChangingStrokeWidth:(id)width
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;

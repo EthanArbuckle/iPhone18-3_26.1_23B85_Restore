@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100040280;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195DDA8 != -1)
   {
     dispatch_once(&qword_10195DDA8, block);
@@ -26,15 +26,15 @@
 - (BOOL)deviceSupportsDragAndDrop
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 - (BOOL)canStartNewDrag
 {
-  v2 = [(MapsDragAndDropManager *)self dragSession];
-  v3 = v2 == 0;
+  dragSession = [(MapsDragAndDropManager *)self dragSession];
+  v3 = dragSession == 0;
 
   return v3;
 }

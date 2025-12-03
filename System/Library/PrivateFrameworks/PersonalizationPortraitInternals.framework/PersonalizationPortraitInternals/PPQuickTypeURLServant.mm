@@ -1,15 +1,15 @@
 @interface PPQuickTypeURLServant
 - (PPQuickTypeURLServant)init;
-- (PPQuickTypeURLServant)initWithConversationManager:(id)a3;
-- (id)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 explanationSet:(id)a5;
-- (void)registerFeedback:(id)a3;
+- (PPQuickTypeURLServant)initWithConversationManager:(id)manager;
+- (id)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit explanationSet:(id)set;
+- (void)registerFeedback:(id)feedback;
 @end
 
 @implementation PPQuickTypeURLServant
 
-- (void)registerFeedback:(id)a3
+- (void)registerFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v5 = pp_quicktype_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,9 +22,9 @@
   v8[1] = 3221225472;
   v8[2] = __42__PPQuickTypeURLServant_registerFeedback___block_invoke;
   v8[3] = &unk_278974700;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = feedbackCopy;
+  selfCopy = self;
+  v7 = feedbackCopy;
   [(_PASLock *)dataLock runWithLockAcquired:v8];
 }
 
@@ -159,12 +159,12 @@ void __42__PPQuickTypeURLServant_registerFeedback___block_invoke_31(uint64_t a1,
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 explanationSet:(id)a5
+- (id)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit explanationSet:(id)set
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 type] != 5)
+  queryCopy = query;
+  setCopy = set;
+  if ([queryCopy type] != 5)
   {
     goto LABEL_12;
   }
@@ -176,7 +176,7 @@ void __42__PPQuickTypeURLServant_registerFeedback___block_invoke_31(uint64_t a1,
     _os_log_impl(&dword_23224A000, v9, OS_LOG_TYPE_INFO, "PPQuickTypeURLServant: quickTypeItemsWithQuery", &buf, 2u);
   }
 
-  if ([v7 subtype] == 13)
+  if ([queryCopy subtype] == 13)
   {
     v10 = +[PPSettings sharedInstance];
     v11 = *MEMORY[0x277D3A610];
@@ -193,7 +193,7 @@ void __42__PPQuickTypeURLServant_registerFeedback___block_invoke_31(uint64_t a1,
         _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEFAULT, "PPQuickTypeURLServant: queried for %@ URL.", &buf, 0xCu);
       }
 
-      v13 = [PPQuickTypeFormatter formatterWithQuery:v7];
+      v13 = [PPQuickTypeFormatter formatterWithQuery:queryCopy];
       v15 = dispatch_semaphore_create(0);
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -219,17 +219,17 @@ void __42__PPQuickTypeURLServant_registerFeedback___block_invoke_31(uint64_t a1,
       }
 
       v19 = [*(*(&buf + 1) + 40) URL];
-      v20 = [v19 absoluteString];
+      absoluteString = [v19 absoluteString];
 
-      if ([v20 length])
+      if ([absoluteString length])
       {
         v21 = objc_alloc(MEMORY[0x277CCACA8]);
-        v22 = [v13 inviteLinkLabel];
-        v23 = [v21 initWithFormat:@"🔗 %@", v22];
+        inviteLinkLabel = [v13 inviteLinkLabel];
+        v23 = [v21 initWithFormat:@"🔗 %@", inviteLinkLabel];
 
         BYTE2(v31) = 10;
         LOWORD(v31) = 1024;
-        v24 = [objc_alloc(MEMORY[0x277D3A478]) initWithLabel:&stru_284759D38 value:v20 name:v23 date:0 fields:0x2000000 originatingBundleID:0 originatingWebsiteURL:1.0 predictionAge:0 shouldAggregate:0 flags:v31 score:0 source:? sourceIdentifier:?];
+        v24 = [objc_alloc(MEMORY[0x277D3A478]) initWithLabel:&stru_284759D38 value:absoluteString name:v23 date:0 fields:0x2000000 originatingBundleID:0 originatingWebsiteURL:1.0 predictionAge:0 shouldAggregate:0 flags:v31 score:0 source:? sourceIdentifier:?];
         dataLock = self->_dataLock;
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
@@ -238,7 +238,7 @@ void __42__PPQuickTypeURLServant_registerFeedback___block_invoke_31(uint64_t a1,
         v35 = &buf;
         v26 = v24;
         v33 = v26;
-        v34 = v7;
+        v34 = queryCopy;
         [(_PASLock *)dataLock runWithLockAcquired:v32];
         v39 = v26;
         v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
@@ -329,16 +329,16 @@ void __70__PPQuickTypeURLServant_quickTypeItemsWithQuery_limit_explanationSet___
   return v4;
 }
 
-- (PPQuickTypeURLServant)initWithConversationManager:(id)a3
+- (PPQuickTypeURLServant)initWithConversationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PPQuickTypeURLServant;
   v6 = [(PPQuickTypeURLServant *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conversationManager, a3);
+    objc_storeStrong(&v6->_conversationManager, manager);
     v8 = objc_alloc(MEMORY[0x277D425F8]);
     v9 = objc_opt_new();
     v10 = [v8 initWithGuardedData:v9];

@@ -9,12 +9,12 @@
 - (void)_refreshForegroundAppInfo;
 - (void)_refreshPerAppCategoryName;
 - (void)_resetAllPerAppCategoryNames;
-- (void)_setPerAppCategoryName:(id)a3;
-- (void)_updateSavedAppID:(id)a3 categoryName:(id)a4;
+- (void)_setPerAppCategoryName:(id)name;
+- (void)_updateSavedAppID:(id)d categoryName:(id)name;
 - (void)refreshAppInfo;
 - (void)refreshCategoryName;
-- (void)setCategoryName:(id)a3;
-- (void)setState:(int)a3;
+- (void)setCategoryName:(id)name;
+- (void)setState:(int)state;
 @end
 
 @implementation AXCCTextSizeHelper
@@ -50,28 +50,28 @@
   return v4;
 }
 
-- (void)setCategoryName:(id)a3
+- (void)setCategoryName:(id)name
 {
-  v5 = a3;
-  v6 = v5;
+  nameCopy = name;
+  v6 = nameCopy;
   if (self->_state == 3)
   {
     _AXSSetPreferredContentSizeCategoryName();
-    objc_storeStrong(&self->_categoryName, a3);
+    objc_storeStrong(&self->_categoryName, name);
   }
 
   else
   {
-    [(AXCCTextSizeHelper *)self _setPerAppCategoryName:v5];
+    [(AXCCTextSizeHelper *)self _setPerAppCategoryName:nameCopy];
   }
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  if ([(AXCCTextSizeHelper *)self isPerAppAvailable]&& self->_state != a3)
+  if ([(AXCCTextSizeHelper *)self isPerAppAvailable]&& self->_state != state)
   {
-    self->_state = a3;
-    if (a3 == 3)
+    self->_state = state;
+    if (state == 3)
     {
       [(AXCCTextSizeHelper *)self _resetAllPerAppCategoryNames];
     }
@@ -155,8 +155,8 @@
 
 - (NSString)appName
 {
-  v2 = [(AXCCTextSizeHelper *)self _selectedAppSafely];
-  v3 = [v2 objectForKey:@"name"];
+  _selectedAppSafely = [(AXCCTextSizeHelper *)self _selectedAppSafely];
+  v3 = [_selectedAppSafely objectForKey:@"name"];
 
   return v3;
 }
@@ -272,11 +272,11 @@ LABEL_11:
         }
 
         v6 = *(*(&v30 + 1) + 8 * i);
-        v7 = [v6 bundleIdentifier];
-        if (v7 && [v6 isForeground])
+        bundleIdentifier = [v6 bundleIdentifier];
+        if (bundleIdentifier && [v6 isForeground])
         {
-          v8 = [v6 bundleIdentifier];
-          v9 = [(AXCCTextSizeHelper *)self _isHiddenBundleIdentifier:v8];
+          bundleIdentifier2 = [v6 bundleIdentifier];
+          v9 = [(AXCCTextSizeHelper *)self _isHiddenBundleIdentifier:bundleIdentifier2];
 
           if (v9)
           {
@@ -284,30 +284,30 @@ LABEL_11:
           }
 
           v10 = objc_alloc(MEMORY[0x29EDB93F8]);
-          v11 = [v6 bundleIdentifier];
+          bundleIdentifier3 = [v6 bundleIdentifier];
           v29 = 0;
-          v12 = [v10 initWithBundleIdentifier:v11 allowPlaceholder:0 error:&v29];
-          v7 = v29;
+          v12 = [v10 initWithBundleIdentifier:bundleIdentifier3 allowPlaceholder:0 error:&v29];
+          bundleIdentifier = v29;
 
-          v13 = [v12 localizedName];
-          v14 = v13 == 0;
+          localizedName = [v12 localizedName];
+          v14 = localizedName == 0;
 
           if (v14)
           {
             v19 = AXLogCommon();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              sub_29C947078(v41, v7, (v41 + 4), v19);
+              sub_29C947078(v41, bundleIdentifier, (v41 + 4), v19);
             }
           }
 
           else
           {
             v15 = objc_alloc(MEMORY[0x29EDB8E00]);
-            v16 = [v6 bundleIdentifier];
-            v39[0] = v16;
-            v17 = [v12 localizedName];
-            v39[1] = v17;
+            bundleIdentifier4 = [v6 bundleIdentifier];
+            v39[0] = bundleIdentifier4;
+            localizedName2 = [v12 localizedName];
+            v39[1] = localizedName2;
             v18 = [MEMORY[0x29EDB8D80] arrayWithObjects:v39 count:2];
             v19 = [v15 initWithObjects:v18 forKeys:&unk_2A23E30D0];
 
@@ -334,8 +334,8 @@ LABEL_11:
     [(NSMutableArray *)self->_apps addObject:v23];
   }
 
-  v24 = [MEMORY[0x29EDC7A58] currentDevice];
-  if ([v24 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
@@ -430,25 +430,25 @@ LABEL_11:
   return v3;
 }
 
-- (void)_setPerAppCategoryName:(id)a3
+- (void)_setPerAppCategoryName:(id)name
 {
-  v7 = a3;
-  v4 = [(AXCCTextSizeHelper *)self _selectedAppSafely];
-  v5 = [v4 objectForKey:@"appID"];
+  nameCopy = name;
+  _selectedAppSafely = [(AXCCTextSizeHelper *)self _selectedAppSafely];
+  v5 = [_selectedAppSafely objectForKey:@"appID"];
   _AXSSetPreferredContentSizeCategoryNameApp();
-  if (v7)
+  if (nameCopy)
   {
-    [v4 setValue:v7 forKey:@"categoryName"];
+    [_selectedAppSafely setValue:nameCopy forKey:@"categoryName"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"categoryName"];
+    [_selectedAppSafely removeObjectForKey:@"categoryName"];
   }
 
-  [(AXCCTextSizeHelper *)self _updateSavedAppID:v5 categoryName:v7];
-  v6 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  [v6 aggregatePerAppSettingsStatistics];
+  [(AXCCTextSizeHelper *)self _updateSavedAppID:v5 categoryName:nameCopy];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  [mEMORY[0x29EDBDFA0] aggregatePerAppSettingsStatistics];
 }
 
 - (void)_resetAllPerAppCategoryNames
@@ -486,26 +486,26 @@ LABEL_11:
     while (v5);
   }
 
-  v10 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  [v10 aggregatePerAppSettingsStatistics];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  [mEMORY[0x29EDBDFA0] aggregatePerAppSettingsStatistics];
 }
 
-- (void)_updateSavedAppID:(id)a3 categoryName:(id)a4
+- (void)_updateSavedAppID:(id)d categoryName:(id)name
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  dCopy = d;
+  nameCopy = name;
+  if (dCopy)
   {
-    v6 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    v7 = v6;
-    if (v5)
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    v7 = mEMORY[0x29EDBDFA0];
+    if (nameCopy)
     {
-      [v6 addCustomizedAppID:v8];
+      [mEMORY[0x29EDBDFA0] addCustomizedAppID:dCopy];
     }
 
     else
     {
-      [v6 removeCustomizedAppID:v8];
+      [mEMORY[0x29EDBDFA0] removeCustomizedAppID:dCopy];
     }
   }
 }

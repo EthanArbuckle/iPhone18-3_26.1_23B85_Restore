@@ -1,13 +1,13 @@
 @interface HomePodWiFiTableCell
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation HomePodWiFiTableCell
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v6 = self;
-  sub_100098028(a3, a4);
+  selfCopy = self;
+  sub_100098028(selected, animated);
 }
 
 @end

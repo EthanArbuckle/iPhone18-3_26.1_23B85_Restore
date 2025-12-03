@@ -1,61 +1,61 @@
 @interface SCSharingReminderKVStoreValue
-+ (id)defaultForKey:(int64_t)a3;
++ (id)defaultForKey:(int64_t)key;
 - (BOOL)BOOLValue;
-- (BOOL)isEqual:(id)a3;
-- (SCSharingReminderKVStoreValue)initWithBoolValue:(BOOL)a3;
-- (SCSharingReminderKVStoreValue)initWithCoder:(id)a3;
-- (SCSharingReminderKVStoreValue)initWithData:(id)a3;
-- (SCSharingReminderKVStoreValue)initWithIntegerValue:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCSharingReminderKVStoreValue)initWithBoolValue:(BOOL)value;
+- (SCSharingReminderKVStoreValue)initWithCoder:(id)coder;
+- (SCSharingReminderKVStoreValue)initWithData:(id)data;
+- (SCSharingReminderKVStoreValue)initWithIntegerValue:(int64_t)value;
 - (id)description;
 - (int64_t)integerValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCSharingReminderKVStoreValue
 
-+ (id)defaultForKey:(int64_t)a3
++ (id)defaultForKey:(int64_t)key
 {
-  if (a3 > 3)
+  if (key > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:qword_262564018[a3]];
+    v4 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:qword_262564018[key]];
   }
 
   return v4;
 }
 
-- (SCSharingReminderKVStoreValue)initWithData:(id)a3
+- (SCSharingReminderKVStoreValue)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = SCSharingReminderKVStoreValue;
   v6 = [(SCSharingReminderKVStoreValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
 }
 
-- (SCSharingReminderKVStoreValue)initWithIntegerValue:(int64_t)a3
+- (SCSharingReminderKVStoreValue)initWithIntegerValue:(int64_t)value
 {
-  v7 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v7 length:8];
+  valueCopy = value;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&valueCopy length:8];
   v5 = [(SCSharingReminderKVStoreValue *)self initWithData:v4];
 
   return v5;
 }
 
-- (SCSharingReminderKVStoreValue)initWithBoolValue:(BOOL)a3
+- (SCSharingReminderKVStoreValue)initWithBoolValue:(BOOL)value
 {
-  v7 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v7 length:1];
+  valueCopy = value;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&valueCopy length:1];
   v5 = [(SCSharingReminderKVStoreValue *)self initWithData:v4];
 
   return v5;
@@ -63,8 +63,8 @@
 
 - (int64_t)integerValue
 {
-  v3 = [(SCSharingReminderKVStoreValue *)self data];
-  if (![v3 length])
+  data = [(SCSharingReminderKVStoreValue *)self data];
+  if (![data length])
   {
     v6 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_6:
@@ -72,13 +72,13 @@ LABEL_6:
     return v6;
   }
 
-  v4 = [(SCSharingReminderKVStoreValue *)self data];
-  v5 = [v4 length];
+  data2 = [(SCSharingReminderKVStoreValue *)self data];
+  v5 = [data2 length];
 
   if (v5 <= 8)
   {
-    v3 = [(SCSharingReminderKVStoreValue *)self data];
-    v6 = *[v3 bytes];
+    data = [(SCSharingReminderKVStoreValue *)self data];
+    v6 = *[data bytes];
     goto LABEL_6;
   }
 
@@ -98,54 +98,54 @@ LABEL_6:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(SCSharingReminderKVStoreValue *)self data];
-  v5 = [(SCSharingReminderKVStoreValue *)self classKey];
-  [v4 encodeObject:v6 forKey:v5];
+  coderCopy = coder;
+  data = [(SCSharingReminderKVStoreValue *)self data];
+  classKey = [(SCSharingReminderKVStoreValue *)self classKey];
+  [coderCopy encodeObject:data forKey:classKey];
 }
 
-- (SCSharingReminderKVStoreValue)initWithCoder:(id)a3
+- (SCSharingReminderKVStoreValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [(SCSharingReminderKVStoreValue *)self classKey];
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  classKey = [(SCSharingReminderKVStoreValue *)self classKey];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:classKey];
 
   if (v7)
   {
     self = [(SCSharingReminderKVStoreValue *)self initWithData:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SCSharingReminderKVStoreValue *)self data];
-    v7 = [v5 data];
-    if (v6 == v7)
+    v5 = equalCopy;
+    data = [(SCSharingReminderKVStoreValue *)self data];
+    data2 = [v5 data];
+    if (data == data2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(SCSharingReminderKVStoreValue *)self data];
-      v9 = [v5 data];
-      v10 = [v8 isEqual:v9];
+      data3 = [(SCSharingReminderKVStoreValue *)self data];
+      data4 = [v5 data];
+      v10 = [data3 isEqual:data4];
     }
   }
 
@@ -160,15 +160,15 @@ LABEL_6:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCSharingReminderKVStoreValue *)self integerValue];
-  v5 = [(SCSharingReminderKVStoreValue *)self BOOLValue];
+  integerValue = [(SCSharingReminderKVStoreValue *)self integerValue];
+  bOOLValue = [(SCSharingReminderKVStoreValue *)self BOOLValue];
   v6 = "No";
-  if (v5)
+  if (bOOLValue)
   {
     v6 = "Yes";
   }
 
-  return [v3 stringWithFormat:@"SCSharingReminderKVStoreValue int: {%ld} BOOL: %s", v4, v6];
+  return [v3 stringWithFormat:@"SCSharingReminderKVStoreValue int: {%ld} BOOL: %s", integerValue, v6];
 }
 
 @end

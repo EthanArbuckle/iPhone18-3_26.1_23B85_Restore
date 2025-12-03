@@ -1,20 +1,20 @@
 @interface SearchHomeUserGuidesLayoutProvider
 - (_TtC4Maps34SearchHomeUserGuidesLayoutProvider)init;
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
 - (id)cellReuseIdentifier;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 - (id)shareHandler;
-- (void)setIsDeletable:(id)a3;
-- (void)setIsShareable:(id)a3;
-- (void)setShareHandler:(id)a3;
+- (void)setIsDeletable:(id)deletable;
+- (void)setIsShareable:(id)shareable;
+- (void)setShareHandler:(id)handler;
 @end
 
 @implementation SearchHomeUserGuidesLayoutProvider
 
-- (void)setIsDeletable:(id)a3
+- (void)setIsDeletable:(id)deletable
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(deletable);
   if (v4)
   {
     v5 = v4;
@@ -32,7 +32,7 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps34SearchHomeUserGuidesLayoutProvider_isDeletable);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
@@ -58,9 +58,9 @@
   return v3;
 }
 
-- (void)setShareHandler:(id)a3
+- (void)setShareHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -78,13 +78,13 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps34SearchHomeUserGuidesLayoutProvider_shareHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
-- (void)setIsShareable:(id)a3
+- (void)setIsShareable:(id)shareable
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(shareable);
   if (v4)
   {
     v5 = v4;
@@ -102,7 +102,7 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps34SearchHomeUserGuidesLayoutProvider_isShareable);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
@@ -137,8 +137,8 @@
 
 - (id)cellReuseIdentifier
 {
-  v2 = self;
-  v3 = [(SearchHomeUserGuidesLayoutProvider *)v2 description];
+  selfCopy = self;
+  v3 = [(SearchHomeUserGuidesLayoutProvider *)selfCopy description];
   if (v3)
   {
     v4 = v3;
@@ -153,19 +153,19 @@
   return v4;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v15[-((v9 + 15) & 0xFFFFFFFFFFFFFFF0)];
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a4;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v12 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v13 = sub_1001D0FCC(v10, v11, v15);
+  v13 = sub_1001D0FCC(v10, viewCopy, v15);
 
   sub_10004E3D0(v15);
   (*(v8 + 8))(v10, v7);
@@ -173,9 +173,9 @@
   return v13;
 }
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v12 = _Block_copy(a6);
+  v12 = _Block_copy(block);
   if (v12)
   {
     v13 = swift_allocObject();
@@ -189,9 +189,9 @@
   }
 
   swift_unknownObjectRetain();
-  v14 = a8;
-  v15 = self;
-  v16 = sub_1001D1448(a3, v12, v13, a4);
+  themeCopy = theme;
+  selfCopy = self;
+  v16 = sub_1001D1448(environment, v12, v13, height);
   sub_1000588AC(v12);
   swift_unknownObjectRelease();
 

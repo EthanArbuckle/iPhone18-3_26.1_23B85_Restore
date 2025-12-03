@@ -1,56 +1,56 @@
 @interface FPUIActionExtensionContext
 - (id)_remoteContext;
 - (void)cancelRequestWithError:(NSError *)error;
-- (void)completeRequestWithUserInfo:(id)a3;
-- (void)didEncounterError:(id)a3 completionHandler:(id)a4;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
+- (void)completeRequestWithUserInfo:(id)info;
+- (void)didEncounterError:(id)error completionHandler:(id)handler;
+- (void)openURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation FPUIActionExtensionContext
 
-- (void)completeRequestWithUserInfo:(id)a3
+- (void)completeRequestWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FPUIActionExtensionContext *)self _remoteContext];
-  [v5 _completeRequestWithUserInfo:v4 error:0];
+  infoCopy = info;
+  _remoteContext = [(FPUIActionExtensionContext *)self _remoteContext];
+  [_remoteContext _completeRequestWithUserInfo:infoCopy error:0];
 }
 
 - (void)cancelRequestWithError:(NSError *)error
 {
   v4 = error;
   [(FPUIActionExtensionContext *)self setSetupError:v4];
-  v5 = [(FPUIActionExtensionContext *)self _remoteContext];
-  v6 = [(NSError *)v4 fp_strippedError];
-  [v5 _completeRequestWithUserInfo:0 error:v6];
+  _remoteContext = [(FPUIActionExtensionContext *)self _remoteContext];
+  fp_strippedError = [(NSError *)v4 fp_strippedError];
+  [_remoteContext _completeRequestWithUserInfo:0 error:fp_strippedError];
 
   v7.receiver = self;
   v7.super_class = FPUIActionExtensionContext;
   [(FPUIActionExtensionContext *)&v7 cancelRequestWithError:v4];
 }
 
-- (void)didEncounterError:(id)a3 completionHandler:(id)a4
+- (void)didEncounterError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  [(FPUIActionExtensionContext *)self setSetupError:v7];
-  v9 = [(FPUIActionExtensionContext *)self _remoteContext];
-  v8 = [v7 fp_strippedError];
+  handlerCopy = handler;
+  errorCopy = error;
+  [(FPUIActionExtensionContext *)self setSetupError:errorCopy];
+  _remoteContext = [(FPUIActionExtensionContext *)self _remoteContext];
+  fp_strippedError = [errorCopy fp_strippedError];
 
-  [v9 _didEncounterError:v8 completionHandler:v6];
+  [_remoteContext _didEncounterError:fp_strippedError completionHandler:handlerCopy];
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPUIActionExtensionContext *)self _remoteContext];
+  handlerCopy = handler;
+  lCopy = l;
+  _remoteContext = [(FPUIActionExtensionContext *)self _remoteContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__FPUIActionExtensionContext_openURL_completionHandler___block_invoke;
   v10[3] = &unk_278A516A0;
-  v11 = v6;
-  v9 = v6;
-  [v8 _openExtensionURL:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [_remoteContext _openExtensionURL:lCopy completionHandler:v10];
 }
 
 void __56__FPUIActionExtensionContext_openURL_completionHandler___block_invoke(uint64_t a1, char a2)
@@ -77,8 +77,8 @@ uint64_t __56__FPUIActionExtensionContext_openURL_completionHandler___block_invo
 
 - (id)_remoteContext
 {
-  v2 = [(FPUIActionExtensionContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+  _auxiliaryConnection = [(FPUIActionExtensionContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
 
   return v3;
 }

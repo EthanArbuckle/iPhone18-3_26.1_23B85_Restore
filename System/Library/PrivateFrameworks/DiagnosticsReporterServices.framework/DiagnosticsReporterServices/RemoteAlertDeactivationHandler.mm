@@ -1,25 +1,25 @@
 @interface RemoteAlertDeactivationHandler
 - (_TtC27DiagnosticsReporterServices30RemoteAlertDeactivationHandler)init;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
 - (void)remoteAlertHandleDidActivate:;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RemoteAlertDeactivationHandler
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_21DD878E0(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_21DD878E0(deactivateCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_21DD87AC0(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_21DD87AC0(handleCopy, error);
 }
 
 - (_TtC27DiagnosticsReporterServices30RemoteAlertDeactivationHandler)init

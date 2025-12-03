@@ -1,6 +1,6 @@
 @interface MTRUserLabelClusterLabelStruct
 - (MTRUserLabelClusterLabelStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUserLabelClusterLabelStruct);
-  v5 = [(MTRUserLabelClusterLabelStruct *)self label];
-  [(MTRUserLabelClusterLabelStruct *)v4 setLabel:v5];
+  label = [(MTRUserLabelClusterLabelStruct *)self label];
+  [(MTRUserLabelClusterLabelStruct *)v4 setLabel:label];
 
-  v6 = [(MTRUserLabelClusterLabelStruct *)self value];
-  [(MTRUserLabelClusterLabelStruct *)v4 setValue:v6];
+  value = [(MTRUserLabelClusterLabelStruct *)self value];
+  [(MTRUserLabelClusterLabelStruct *)v4 setValue:value];
 
   return v4;
 }

@@ -1,22 +1,22 @@
 @interface CUIVectorGlyphLayer
-+ (BOOL)_classesContainRenderModeClass:(id)a3;
-+ (BOOL)_indexFromStyleSuffix:(id)a3 integer:(unint64_t *)a4;
-+ (CGColor)_fillColorFromStyle:(CGSVGAttributeMap *)a3;
-+ (CGColor)_strokeColorFromStyle:(CGSVGAttributeMap *)a3;
-+ (double)_strokeWidthForNode:(CGSVGNode *)a3;
-+ (double)_strokeWidthFromStyle:(CGSVGAttributeMap *)a3;
-+ (id)_colorNameForRenderingStyle:(id)a3;
-+ (id)_createLayerWithLayerTreeNode:(CGSVGNode *)a3 layerName:(id)a4 index:(unint64_t)a5 subpaths:(id)a6 delegate:(id)a7;
-+ (id)_createPathFromStyle:(CGSVGAttributeMap *)a3 subpaths:(id)a4;
-+ (id)_createShapeLayerWithLayerTreeNode:(CGSVGNode *)a3 layerName:(id)a4 index:(unint64_t)a5 shapes:(id)a6 delegate:(id)a7;
-+ (id)_createSimpleLayerWithLayerTreeNode:(CGSVGNode *)a3 layerName:(id)a4 index:(unint64_t)a5 subpaths:(id)a6 delegate:(id)a7;
-+ (id)_createTreeWithLayerTreeNode:(CGSVGNode *)a3 modePrefix:(id)a4 layerName:(id)a5 index:(unint64_t)a6 subpaths:(id)a7 delegate:(id)a8;
++ (BOOL)_classesContainRenderModeClass:(id)class;
++ (BOOL)_indexFromStyleSuffix:(id)suffix integer:(unint64_t *)integer;
++ (CGColor)_fillColorFromStyle:(CGSVGAttributeMap *)style;
++ (CGColor)_strokeColorFromStyle:(CGSVGAttributeMap *)style;
++ (double)_strokeWidthForNode:(CGSVGNode *)node;
++ (double)_strokeWidthFromStyle:(CGSVGAttributeMap *)style;
++ (id)_colorNameForRenderingStyle:(id)style;
++ (id)_createLayerWithLayerTreeNode:(CGSVGNode *)node layerName:(id)name index:(unint64_t)index subpaths:(id)subpaths delegate:(id)delegate;
++ (id)_createPathFromStyle:(CGSVGAttributeMap *)style subpaths:(id)subpaths;
++ (id)_createShapeLayerWithLayerTreeNode:(CGSVGNode *)node layerName:(id)name index:(unint64_t)index shapes:(id)shapes delegate:(id)delegate;
++ (id)_createSimpleLayerWithLayerTreeNode:(CGSVGNode *)node layerName:(id)name index:(unint64_t)index subpaths:(id)subpaths delegate:(id)delegate;
++ (id)_createTreeWithLayerTreeNode:(CGSVGNode *)node modePrefix:(id)prefix layerName:(id)name index:(unint64_t)index subpaths:(id)subpaths delegate:(id)delegate;
 + (id)_layerHierarchyStyleNames;
-+ (id)_suffixForNamedStyleWithPrefix:(id)a3 styles:(id)a4;
-+ (id)createLayerGroupWithLayerNames:(id)a3 delegate:(id)a4;
-+ (id)createLayerGroupWithLayerTree:(CGSVGNode *)a3 layerNames:(id)a4 shapes:(id)a5 delegate:(id)a6;
-+ (int)_lineCapFromStyle:(CGSVGAttributeMap *)a3;
-+ (int)_lineJoinFromStyle:(CGSVGAttributeMap *)a3;
++ (id)_suffixForNamedStyleWithPrefix:(id)prefix styles:(id)styles;
++ (id)createLayerGroupWithLayerNames:(id)names delegate:(id)delegate;
++ (id)createLayerGroupWithLayerTree:(CGSVGNode *)tree layerNames:(id)names shapes:(id)shapes delegate:(id)delegate;
++ (int)_lineCapFromStyle:(CGSVGAttributeMap *)style;
++ (int)_lineJoinFromStyle:(CGSVGAttributeMap *)style;
 + (unsigned)_alwaysBreathesAtom;
 + (unsigned)_alwaysPulsesAtom;
 + (unsigned)_alwaysRotatesAtom;
@@ -35,43 +35,43 @@
 - (BOOL)_anyLayerAlwaysRotates;
 - (BOOL)anyLayerNeedsWideGamutColor;
 - (BOOL)participatesInVariableDraw;
-- (CGColor)_colorForVariableThreshold:(double)a3 variableMinValue:(double)a4 variableMaxValue:(double)a5 onFillColor:(CGColor *)a6 offFillColor:(CGColor *)a7;
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 onFillColor:(CGColor *)a7 offFillColor:(CGColor *)a8;
-- (CGImage)createSublayerMaskUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 maskColor:(CGColor *)a5;
-- (CGPath)_visibleCompoundShape:(CGAffineTransform *)a3;
+- (CGColor)_colorForVariableThreshold:(double)threshold variableMinValue:(double)value variableMaxValue:(double)maxValue onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor;
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor;
+- (CGImage)createSublayerMaskUsingScaleFactor:(double)factor targetSize:(CGSize)size maskColor:(CGColor *)color;
+- (CGPath)_visibleCompoundShape:(CGAffineTransform *)shape;
 - (CGPath)copyClipShape;
-- (CGPath)copyClipShapeWithStartProgress:(double)a3 endProgress:(double)a4;
+- (CGPath)copyClipShapeWithStartProgress:(double)progress endProgress:(double)endProgress;
 - (CGPath)shape;
-- (CGPath)shapeAtScale:(double)a3;
-- (id)__initGroupWithName:(id)a3 index:(unint64_t)a4 sublayers:(id)a5 attributes:(CGSVGAttributeMap *)a6 style:(CGSVGAttributeMap *)a7 passthrough:(BOOL)a8 delegate:(id)a9;
-- (id)_initWithName:(id)a3 index:(unint64_t)a4 shape:(id)a5 strokeWidth:(double)a6 attributes:(CGSVGAttributeMap *)a7 style:(CGSVGAttributeMap *)a8 delegate:(id)a9;
-- (id)debugDescriptionWithIndentLevel:(unint64_t)a3;
+- (CGPath)shapeAtScale:(double)scale;
+- (id)__initGroupWithName:(id)name index:(unint64_t)index sublayers:(id)sublayers attributes:(CGSVGAttributeMap *)attributes style:(CGSVGAttributeMap *)style passthrough:(BOOL)passthrough delegate:(id)delegate;
+- (id)_initWithName:(id)name index:(unint64_t)index shape:(id)shape strokeWidth:(double)width attributes:(CGSVGAttributeMap *)attributes style:(CGSVGAttributeMap *)style delegate:(id)delegate;
+- (id)debugDescriptionWithIndentLevel:(unint64_t)level;
 - (id)path;
-- (id)pathAtScale:(double)a3;
-- (void)_readCSSAttributes:(CGSVGAttributeMap *)a3 styleAttributes:(CGSVGAttributeMap *)a4;
-- (void)_setAllLayersAlwaysPulse:(BOOL)a3;
-- (void)_setAllLayersAlwaysRotate:(BOOL)a3;
+- (id)pathAtScale:(double)scale;
+- (void)_readCSSAttributes:(CGSVGAttributeMap *)attributes styleAttributes:(CGSVGAttributeMap *)styleAttributes;
+- (void)_setAllLayersAlwaysPulse:(BOOL)pulse;
+- (void)_setAllLayersAlwaysRotate:(BOOL)rotate;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 onFillColor:(CGColor *)a8 offFillColor:(CGColor *)a9;
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor;
 @end
 
 @implementation CUIVectorGlyphLayer
 
 - (CGPath)copyClipShape
 {
-  v3 = [(CUIVectorGlyphLayer *)self referenceShape];
-  if (v3)
+  referenceShape = [(CUIVectorGlyphLayer *)self referenceShape];
+  if (referenceShape)
   {
-    v4 = v3;
+    v4 = referenceShape;
     [(CUIVectorGlyphLayer *)self strokeWidth];
     if (v5 > 0.0 && [(CUIVectorGlyphLayer *)self isEraserLayer])
     {
       [(CUIVectorGlyphLayer *)self strokeWidth];
       v7 = v6;
-      v8 = [(CUIVectorGlyphLayer *)self lineCap];
-      v9 = [(CUIVectorGlyphLayer *)self lineJoin];
+      lineCap = [(CUIVectorGlyphLayer *)self lineCap];
+      lineJoin = [(CUIVectorGlyphLayer *)self lineJoin];
 
-      return CGPathCreateCopyByStrokingPath(v4, 0, v7, v8, v9, 0.0);
+      return CGPathCreateCopyByStrokingPath(v4, 0, v7, lineCap, lineJoin, 0.0);
     }
 
     else
@@ -114,20 +114,20 @@
       v17 = *(*(&v24 + 1) + 8 * i);
       if (![v17 isEraserLayer] || (objc_msgSend(v17, "opacity"), v18 >= 2.22044605e-16))
       {
-        v22 = [v17 copyClipShape];
-        if (!v22)
+        copyClipShape = [v17 copyClipShape];
+        if (!copyClipShape)
         {
           continue;
         }
 
-        v20 = v22;
+        v20 = copyClipShape;
         if (clipPathFromSublayers)
         {
-          CopyByUnioningPath = CGPathCreateCopyByUnioningPath(clipPathFromSublayers, v22, 0);
+          CopyByUnioningPath = CGPathCreateCopyByUnioningPath(clipPathFromSublayers, copyClipShape, 0);
           goto LABEL_25;
         }
 
-        clipPathFromSublayers = MEMORY[0x193AC5C10](v22);
+        clipPathFromSublayers = MEMORY[0x193AC5C10](copyClipShape);
 LABEL_27:
         CGPathRelease(v20);
         continue;
@@ -135,11 +135,11 @@ LABEL_27:
 
       if (clipPathFromSublayers)
       {
-        v19 = [v17 copyClipShape];
-        if (v19)
+        copyClipShape2 = [v17 copyClipShape];
+        if (copyClipShape2)
         {
-          v20 = v19;
-          CopyByUnioningPath = CGPathCreateCopyBySubtractingPath(clipPathFromSublayers, v19, 0);
+          v20 = copyClipShape2;
+          CopyByUnioningPath = CGPathCreateCopyBySubtractingPath(clipPathFromSublayers, copyClipShape2, 0);
           if (!CopyByUnioningPath)
           {
             goto LABEL_27;
@@ -327,13 +327,13 @@ uint64_t __37__CUIVectorGlyphLayer__layerTagsAtom__block_invoke()
 
 - (BOOL)participatesInVariableDraw
 {
-  v3 = [(CUIVectorGlyphPath *)[(CUIVectorGlyphLayer *)self referencePath] encodedClipStrokeKeyframes];
-  if (v3)
+  encodedClipStrokeKeyframes = [(CUIVectorGlyphPath *)[(CUIVectorGlyphLayer *)self referencePath] encodedClipStrokeKeyframes];
+  if (encodedClipStrokeKeyframes)
   {
-    LOBYTE(v3) = self->_variableDrawOffset != INFINITY && (variableDrawLength = self->_variableDrawLength, variableDrawLength != INFINITY) && variableDrawLength > 2.22044605e-16;
+    LOBYTE(encodedClipStrokeKeyframes) = self->_variableDrawOffset != INFINITY && (variableDrawLength = self->_variableDrawLength, variableDrawLength != INFINITY) && variableDrawLength > 2.22044605e-16;
   }
 
-  return v3;
+  return encodedClipStrokeKeyframes;
 }
 
 + (unsigned)_variableDrawAtom
@@ -426,9 +426,9 @@ void *__48__CUIVectorGlyphLayer__layerHierarchyStyleNames__block_invoke()
   [(CUIVectorGlyphLayer *)&v6 dealloc];
 }
 
-+ (double)_strokeWidthForNode:(CGSVGNode *)a3
++ (double)_strokeWidthForNode:(CGSVGNode *)node
 {
-  if (a3 && CGSVGNodeGetAttributeMap() && CGSVGAttributeMapGetAttribute())
+  if (node && CGSVGNodeGetAttributeMap() && CGSVGAttributeMapGetAttribute())
   {
     CGSVGAttributeGetFloat();
   }
@@ -470,19 +470,19 @@ uint64_t __52__CUIVectorGlyphLayer__subpathClipStrokeIndicesAtom__block_invoke()
   return result;
 }
 
-+ (BOOL)_classesContainRenderModeClass:(id)a3
++ (BOOL)_classesContainRenderModeClass:(id)class
 {
-  if ([a3 containsString:@"monochrome-"] & 1) != 0 || (objc_msgSend(a3, "containsString:", @"monochrome-"))
+  if ([class containsString:@"monochrome-"] & 1) != 0 || (objc_msgSend(class, "containsString:", @"monochrome-"))
   {
     return 1;
   }
 
-  return [a3 containsString:@"hierarchical-"];
+  return [class containsString:@"hierarchical-"];
 }
 
-+ (id)_suffixForNamedStyleWithPrefix:(id)a3 styles:(id)a4
++ (id)_suffixForNamedStyleWithPrefix:(id)prefix styles:(id)styles
 {
-  v5 = [a4 componentsSeparatedByString:@" "];
+  v5 = [styles componentsSeparatedByString:@" "];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -503,9 +503,9 @@ uint64_t __52__CUIVectorGlyphLayer__subpathClipStrokeIndicesAtom__block_invoke()
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        if ([v10 hasPrefix:a3])
+        if ([v10 hasPrefix:prefix])
         {
-          v11 = [v10 rangeOfString:a3];
+          v11 = [v10 rangeOfString:prefix];
           return [v10 stringByReplacingCharactersInRange:v11 withString:{v12, &stru_1F00D74D0}];
         }
 
@@ -527,20 +527,20 @@ uint64_t __52__CUIVectorGlyphLayer__subpathClipStrokeIndicesAtom__block_invoke()
   return result;
 }
 
-+ (BOOL)_indexFromStyleSuffix:(id)a3 integer:(unint64_t *)a4
++ (BOOL)_indexFromStyleSuffix:(id)suffix integer:(unint64_t *)integer
 {
-  if (a3 && a4)
+  if (suffix && integer)
   {
-    v5 = a3;
-    v6 = [a3 rangeOfString:@":"];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL || v7 == 1 && (v5 = [v5 substringToIndex:v6]) != 0)
+    suffixCopy = suffix;
+    v6 = [suffix rangeOfString:@":"];
+    if (v6 == 0x7FFFFFFFFFFFFFFFLL || v7 == 1 && (suffixCopy = [suffixCopy substringToIndex:v6]) != 0)
     {
       v9 = 0;
       if ([[NSScanner scannerWithString:?], "scanInteger:", &v9])
       {
         if ((v9 & 0x8000000000000000) == 0)
         {
-          *a4 = v9;
+          *integer = v9;
           return 1;
         }
       }
@@ -549,20 +549,20 @@ uint64_t __52__CUIVectorGlyphLayer__subpathClipStrokeIndicesAtom__block_invoke()
     goto LABEL_10;
   }
 
-  if (a4)
+  if (integer)
   {
 LABEL_10:
     result = 0;
-    *a4 = 0;
+    *integer = 0;
     return result;
   }
 
   return 0;
 }
 
-+ (id)_createPathFromStyle:(CGSVGAttributeMap *)a3 subpaths:(id)a4
++ (id)_createPathFromStyle:(CGSVGAttributeMap *)style subpaths:(id)subpaths
 {
-  [a1 _subpathIndicesAtom];
+  [self _subpathIndicesAtom];
   result = CGSVGAttributeMapGetAttribute();
   if (result)
   {
@@ -570,7 +570,7 @@ LABEL_10:
     v8 = [v7 stringByReplacingOccurrencesOfString:@"" withString:&stru_1F00D74D0];
 
     v9 = [v8 componentsSeparatedByString:@" "];
-    [a1 _subpathClipStrokeIndicesAtom];
+    [self _subpathClipStrokeIndicesAtom];
     if (CGSVGAttributeMapGetAttribute())
     {
       v10 = CGSVGAttributeCopyString();
@@ -584,15 +584,15 @@ LABEL_10:
       v12 = 0;
     }
 
-    return [CUIVectorGlyphPath createFromSubpaths:a4 indices:v9 clipStrokeIndices:v12];
+    return [CUIVectorGlyphPath createFromSubpaths:subpaths indices:v9 clipStrokeIndices:v12];
   }
 
   return result;
 }
 
-+ (id)_createTreeWithLayerTreeNode:(CGSVGNode *)a3 modePrefix:(id)a4 layerName:(id)a5 index:(unint64_t)a6 subpaths:(id)a7 delegate:(id)a8
++ (id)_createTreeWithLayerTreeNode:(CGSVGNode *)node modePrefix:(id)prefix layerName:(id)name index:(unint64_t)index subpaths:(id)subpaths delegate:(id)delegate
 {
-  if (!a3)
+  if (!node)
   {
     return 0;
   }
@@ -618,15 +618,15 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      v17 = [a1 _suffixForNamedStyleWithPrefix:a4 styles:v14];
+      v17 = [self _suffixForNamedStyleWithPrefix:prefix styles:v14];
       if (v17)
       {
         v18 = v17;
         v31 = 0;
-        if ([a1 _indexFromStyleSuffix:v17 integer:&v31])
+        if ([self _indexFromStyleSuffix:v17 integer:&v31])
         {
-          v19 = [NSString stringWithFormat:@"%@%@", a4, v18];
-          v20 = [a1 _createLayerWithLayerTreeNode:ChildAtIndex layerName:v19 index:v31 subpaths:a7 delegate:a8];
+          v19 = [NSString stringWithFormat:@"%@%@", prefix, v18];
+          v20 = [self _createLayerWithLayerTreeNode:ChildAtIndex layerName:v19 index:v31 subpaths:subpaths delegate:delegate];
           [v29 addObject:v20];
         }
       }
@@ -640,19 +640,19 @@ LABEL_15:
 
     v14 = 0;
 LABEL_10:
-    v21 = [a1 _suffixForNamedStyleWithPrefix:@"group-" styles:v14];
+    v21 = [self _suffixForNamedStyleWithPrefix:@"group-" styles:v14];
     v31 = 0;
-    if ([a1 _indexFromStyleSuffix:v21 integer:&v31])
+    if ([self _indexFromStyleSuffix:v21 integer:&v31])
     {
       v22 = [NSString stringWithFormat:@"%@%@", @"group-", v21];
-      v23 = [a1 _createTreeWithLayerTreeNode:ChildAtIndex modePrefix:a4 layerName:v22 index:v31 subpaths:a7 delegate:a8];
+      v23 = [self _createTreeWithLayerTreeNode:ChildAtIndex modePrefix:prefix layerName:v22 index:v31 subpaths:subpaths delegate:delegate];
       [v29 addObject:v23];
     }
 
     else
     {
       v24 = [NSString stringWithFormat:@"%@0", @"anonymousGroup-"];
-      v23 = [a1 _createTreeWithLayerTreeNode:ChildAtIndex modePrefix:a4 layerName:v24 index:v31 subpaths:a7 delegate:a8];
+      v23 = [self _createTreeWithLayerTreeNode:ChildAtIndex modePrefix:prefix layerName:v24 index:v31 subpaths:subpaths delegate:delegate];
       if ([v23 sublayers])
       {
         [v29 addObjectsFromArray:{objc_msgSend(v23, "sublayers")}];
@@ -663,38 +663,38 @@ LABEL_10:
   }
 
 LABEL_16:
-  v25 = [[a1 alloc] __initTreeWithName:a5 index:a6 sublayers:v29 attributes:0 style:objc_msgSend(a8 delegate:{"styleForLayerName:", a5), a8}];
+  v25 = [[self alloc] __initTreeWithName:name index:index sublayers:v29 attributes:0 style:objc_msgSend(delegate delegate:{"styleForLayerName:", name), delegate}];
 
   return v25;
 }
 
-+ (id)_createLayerWithLayerTreeNode:(CGSVGNode *)a3 layerName:(id)a4 index:(unint64_t)a5 subpaths:(id)a6 delegate:(id)a7
++ (id)_createLayerWithLayerTreeNode:(CGSVGNode *)node layerName:(id)name index:(unint64_t)index subpaths:(id)subpaths delegate:(id)delegate
 {
   if (CGSVGNodeGetChildCount())
   {
 
-    return [a1 _createShapeLayerWithLayerTreeNode:a3 layerName:a4 index:a5 shapes:a6 delegate:a7];
+    return [self _createShapeLayerWithLayerTreeNode:node layerName:name index:index shapes:subpaths delegate:delegate];
   }
 
   else
   {
 
-    return [a1 _createSimpleLayerWithLayerTreeNode:a3 layerName:a4 index:a5 subpaths:a6 delegate:a7];
+    return [self _createSimpleLayerWithLayerTreeNode:node layerName:name index:index subpaths:subpaths delegate:delegate];
   }
 }
 
-+ (id)_createSimpleLayerWithLayerTreeNode:(CGSVGNode *)a3 layerName:(id)a4 index:(unint64_t)a5 subpaths:(id)a6 delegate:(id)a7
++ (id)_createSimpleLayerWithLayerTreeNode:(CGSVGNode *)node layerName:(id)name index:(unint64_t)index subpaths:(id)subpaths delegate:(id)delegate
 {
-  if (!a3)
+  if (!node)
   {
     return 0;
   }
 
   AttributeMap = CGSVGNodeGetAttributeMap();
-  v14 = [a7 styleForLayerName:a4];
-  v15 = [a1 _createPathFromStyle:v14 subpaths:a6];
-  [a1 _strokeWidthForNode:a3];
-  v17 = [[a1 alloc] _initWithName:a4 index:a5 shape:v15 strokeWidth:AttributeMap attributes:v14 style:a7 delegate:v16];
+  v14 = [delegate styleForLayerName:name];
+  v15 = [self _createPathFromStyle:v14 subpaths:subpaths];
+  [self _strokeWidthForNode:node];
+  v17 = [[self alloc] _initWithName:name index:index shape:v15 strokeWidth:AttributeMap attributes:v14 style:delegate delegate:v16];
   if (v15)
   {
   }
@@ -702,9 +702,9 @@ LABEL_16:
   return v17;
 }
 
-+ (id)_createShapeLayerWithLayerTreeNode:(CGSVGNode *)a3 layerName:(id)a4 index:(unint64_t)a5 shapes:(id)a6 delegate:(id)a7
++ (id)_createShapeLayerWithLayerTreeNode:(CGSVGNode *)node layerName:(id)name index:(unint64_t)index shapes:(id)shapes delegate:(id)delegate
 {
-  if (!a3)
+  if (!node)
   {
     return 0;
   }
@@ -715,7 +715,7 @@ LABEL_16:
   if (ChildCount)
   {
     v12 = 0;
-    v27 = a6;
+    shapesCopy = shapes;
     do
     {
       ChildAtIndex = CGSVGNodeGetChildAtIndex();
@@ -724,27 +724,27 @@ LABEL_16:
         v14 = CGSVGAttributeCopyString();
         if ([v14 hasPrefix:@"shapeGroupLayer-"])
         {
-          v15 = [a7 styleForLayerName:v14];
+          v15 = [delegate styleForLayerName:v14];
           v16 = v14;
           if (v15)
           {
             if (CGSVGNodeGetChildCount())
             {
-              v17 = [a1 _createShapeLayerWithLayerTreeNode:ChildAtIndex layerName:v14 index:v12 shapes:a6 delegate:a7];
+              v17 = [self _createShapeLayerWithLayerTreeNode:ChildAtIndex layerName:v14 index:v12 shapes:shapes delegate:delegate];
               [v11 addObject:v17];
             }
 
             else
             {
-              v19 = [a1 _createPathFromStyle:v15 subpaths:a6];
+              v19 = [self _createPathFromStyle:v15 subpaths:shapes];
               if (v19)
               {
-                [a1 _strokeWidthForNode:ChildAtIndex];
-                v21 = [[a1 alloc] _initWithName:v14 index:v12 shape:v19 strokeWidth:AttributeMap attributes:v15 style:a7 delegate:v20];
+                [self _strokeWidthForNode:ChildAtIndex];
+                v21 = [[self alloc] _initWithName:v14 index:v12 shape:v19 strokeWidth:AttributeMap attributes:v15 style:delegate delegate:v20];
                 [v11 addObject:v21];
               }
 
-              a6 = v27;
+              shapes = shapesCopy;
             }
           }
         }
@@ -761,19 +761,19 @@ LABEL_16:
     while (ChildCount != v12);
   }
 
-  v22 = [[a1 alloc] _initWithName:a4 index:a5 sublayers:v11 attributes:0 style:objc_msgSend(a7 delegate:{"styleForLayerName:", a4, AttributeMap), a7}];
+  v22 = [[self alloc] _initWithName:name index:index sublayers:v11 attributes:0 style:objc_msgSend(delegate delegate:{"styleForLayerName:", name, AttributeMap), delegate}];
 
   return v22;
 }
 
-+ (id)createLayerGroupWithLayerTree:(CGSVGNode *)a3 layerNames:(id)a4 shapes:(id)a5 delegate:(id)a6
++ (id)createLayerGroupWithLayerTree:(CGSVGNode *)tree layerNames:(id)names shapes:(id)shapes delegate:(id)delegate
 {
-  if (!a3)
+  if (!tree)
   {
     return 0;
   }
 
-  v7 = [a4 count];
+  v7 = [names count];
   v26 = [[NSMutableArray alloc] initWithCapacity:v7];
   ChildCount = CGSVGNodeGetChildCount();
   if (v7)
@@ -781,7 +781,7 @@ LABEL_16:
     v9 = ChildCount;
     for (i = 0; i != v7; ++i)
     {
-      v11 = [a4 objectAtIndex:i];
+      v11 = [names objectAtIndex:i];
       if (v9)
       {
         v12 = v11;
@@ -811,17 +811,17 @@ LABEL_16:
 
         if (CGSVGNodeGetChildCount())
         {
-          v17 = [a1 _createShapeLayerWithLayerTreeNode:ChildAtIndex layerName:v12 index:i shapes:a5 delegate:a6];
+          v17 = [self _createShapeLayerWithLayerTreeNode:ChildAtIndex layerName:v12 index:i shapes:shapes delegate:delegate];
           [v26 addObject:v17];
         }
 
         else
         {
           AttributeMap = CGSVGNodeGetAttributeMap();
-          v18 = [a6 styleForLayerName:v12];
-          v19 = [a1 _createPathFromStyle:v18 subpaths:a5];
-          [a6 strokeWidthForLayerNamed:v12];
-          v21 = [[a1 alloc] _initWithName:v12 index:i shape:v19 strokeWidth:AttributeMap attributes:v18 style:a6 delegate:v20];
+          v18 = [delegate styleForLayerName:v12];
+          v19 = [self _createPathFromStyle:v18 subpaths:shapes];
+          [delegate strokeWidthForLayerNamed:v12];
+          v21 = [[self alloc] _initWithName:v12 index:i shape:v19 strokeWidth:AttributeMap attributes:v18 style:delegate delegate:v20];
           [v26 addObject:v21];
 
           if (v19)
@@ -835,44 +835,44 @@ LABEL_15:
     }
   }
 
-  v22 = [[a1 alloc] _initWithName:@"root" index:0 sublayers:v26 attributes:0 style:0 delegate:a6];
+  v22 = [[self alloc] _initWithName:@"root" index:0 sublayers:v26 attributes:0 style:0 delegate:delegate];
 
   return v22;
 }
 
-+ (id)createLayerGroupWithLayerNames:(id)a3 delegate:(id)a4
++ (id)createLayerGroupWithLayerNames:(id)names delegate:(id)delegate
 {
-  if (!a3)
+  if (!names)
   {
     return 0;
   }
 
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(a3, "count")}];
-  v8 = [a3 count];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(names, "count")}];
+  v8 = [names count];
   if (v8)
   {
     v9 = v8;
     for (i = 0; i != v9; ++i)
     {
-      v11 = [a3 objectAtIndex:i];
-      v12 = [a4 styleForLayerName:v11];
-      v13 = [a4 attributesForLayerNamed:v11];
-      v14 = [a4 pathForLayerNamed:v11];
-      [a4 strokeWidthForLayerNamed:v11];
-      v16 = [[a1 alloc] _initWithName:v11 index:i shape:v14 strokeWidth:v13 attributes:v12 style:a4 delegate:v15];
+      v11 = [names objectAtIndex:i];
+      v12 = [delegate styleForLayerName:v11];
+      v13 = [delegate attributesForLayerNamed:v11];
+      v14 = [delegate pathForLayerNamed:v11];
+      [delegate strokeWidthForLayerNamed:v11];
+      v16 = [[self alloc] _initWithName:v11 index:i shape:v14 strokeWidth:v13 attributes:v12 style:delegate delegate:v15];
       [v7 addObject:v16];
     }
   }
 
-  v17 = [[a1 alloc] _initWithName:@"root" index:0 sublayers:v7 attributes:0 style:0 delegate:a4];
+  v17 = [[self alloc] _initWithName:@"root" index:0 sublayers:v7 attributes:0 style:0 delegate:delegate];
 
   return v17;
 }
 
-- (void)_readCSSAttributes:(CGSVGAttributeMap *)a3 styleAttributes:(CGSVGAttributeMap *)a4
+- (void)_readCSSAttributes:(CGSVGAttributeMap *)attributes styleAttributes:(CGSVGAttributeMap *)styleAttributes
 {
   [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] templateVersion];
-  if (a4)
+  if (styleAttributes)
   {
     v8 = v7;
     if (CGSVGAttributeMapGetAttribute())
@@ -986,9 +986,9 @@ LABEL_15:
         if (CGSVGAttributeMapGetAttribute() && CGSVGAttributeGetAtom())
         {
           v24 = CGSVGAtomCopyString();
-          v25 = [v24 BOOLValue];
+          bOOLValue = [v24 BOOLValue];
 
-          v13 = v25;
+          v13 = bOOLValue;
         }
 
         else
@@ -1057,8 +1057,8 @@ LABEL_15:
         if (objc_opt_respondsToSelector())
         {
           v38 = CGSVGAttributeCopyString();
-          v39 = [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] unsafeDrawAttachmentData];
-          v10 = [[CUIVectorGlyphLayerDrawAttachmentStore alloc] initFromSVGString:v38 attachmentData:v39];
+          unsafeDrawAttachmentData = [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] unsafeDrawAttachmentData];
+          v10 = [[CUIVectorGlyphLayerDrawAttachmentStore alloc] initFromSVGString:v38 attachmentData:unsafeDrawAttachmentData];
         }
 
         else
@@ -1075,7 +1075,7 @@ LABEL_15:
           _CUILog(4, "CoreUI: Symbol SVG contains an unexpected gradient type: %@", v42, v43, v44, v45, v46, v47, v41);
         }
 
-        LOBYTE(a4) = 0;
+        LOBYTE(styleAttributes) = 0;
         v12 = 1;
       }
 
@@ -1087,25 +1087,25 @@ LABEL_15:
           if (CGSVGAttributeGetAtom())
           {
             v48 = CGSVGAtomCopyString();
-            LOBYTE(a4) = [v48 BOOLValue];
+            LOBYTE(styleAttributes) = [v48 BOOLValue];
           }
 
           else
           {
-            LOBYTE(a4) = 0;
+            LOBYTE(styleAttributes) = 0;
           }
         }
 
         else
         {
-          LOBYTE(a4) = 0;
+          LOBYTE(styleAttributes) = 0;
         }
 
         v12 = 0;
       }
 
       v15 = v50;
-      if (a3)
+      if (attributes)
       {
         goto LABEL_46;
       }
@@ -1114,10 +1114,10 @@ LABEL_15:
     else
     {
       v10 = 0;
-      LOBYTE(a4) = 0;
+      LOBYTE(styleAttributes) = 0;
       v12 = 0;
       v15 = vdupq_n_s64(0x7FF0000000000000uLL);
-      if (a3)
+      if (attributes)
       {
         goto LABEL_46;
       }
@@ -1138,15 +1138,15 @@ LABEL_68:
   v14 = 0;
   v15 = vdupq_n_s64(0x7FF0000000000000uLL);
   v9 = 1.0;
-  if (!a3)
+  if (!attributes)
   {
     goto LABEL_68;
   }
 
 LABEL_46:
   v49 = v15;
-  v29 = [objc_opt_class() _lineCapFromStyle:a3];
-  v30 = [objc_opt_class() _lineJoinFromStyle:a3];
+  v29 = [objc_opt_class() _lineCapFromStyle:attributes];
+  v30 = [objc_opt_class() _lineJoinFromStyle:attributes];
   v15 = v49;
 LABEL_69:
   self->_lineCap = v29;
@@ -1160,51 +1160,51 @@ LABEL_69:
   self->_alwaysBreathes = v51;
   *&self->_variableDrawOffset = v15;
   self->_gradientType = v12;
-  self->_gradientAlignsToLayer = a4;
+  self->_gradientAlignsToLayer = styleAttributes;
   self->_drawAttachments = v10;
   self->_tags = v11;
 }
 
-- (id)_initWithName:(id)a3 index:(unint64_t)a4 shape:(id)a5 strokeWidth:(double)a6 attributes:(CGSVGAttributeMap *)a7 style:(CGSVGAttributeMap *)a8 delegate:(id)a9
+- (id)_initWithName:(id)name index:(unint64_t)index shape:(id)shape strokeWidth:(double)width attributes:(CGSVGAttributeMap *)attributes style:(CGSVGAttributeMap *)style delegate:(id)delegate
 {
   v18.receiver = self;
   v18.super_class = CUIVectorGlyphLayer;
   v16 = [(CUIVectorGlyphLayer *)&v18 init];
   if (v16)
   {
-    *(v16 + 5) = [a3 copy];
-    *(v16 + 6) = a4;
-    objc_storeWeak(v16 + 17, a9);
+    *(v16 + 5) = [name copy];
+    *(v16 + 6) = index;
+    objc_storeWeak(v16 + 17, delegate);
     *(v16 + 29) = 257;
-    if (a5)
+    if (shape)
     {
-      *(v16 + 16) = [a5 copy];
+      *(v16 + 16) = [shape copy];
     }
 
-    [v16 _readCSSAttributes:a7 styleAttributes:a8];
-    *(v16 + 14) = a6;
+    [v16 _readCSSAttributes:attributes styleAttributes:style];
+    *(v16 + 14) = width;
   }
 
   return v16;
 }
 
-- (id)__initGroupWithName:(id)a3 index:(unint64_t)a4 sublayers:(id)a5 attributes:(CGSVGAttributeMap *)a6 style:(CGSVGAttributeMap *)a7 passthrough:(BOOL)a8 delegate:(id)a9
+- (id)__initGroupWithName:(id)name index:(unint64_t)index sublayers:(id)sublayers attributes:(CGSVGAttributeMap *)attributes style:(CGSVGAttributeMap *)style passthrough:(BOOL)passthrough delegate:(id)delegate
 {
   v39.receiver = self;
   v39.super_class = CUIVectorGlyphLayer;
   v15 = [(CUIVectorGlyphLayer *)&v39 init];
   if (v15)
   {
-    v15->_name = [a3 copy];
-    v15->_index = a4;
-    objc_storeWeak(&v15->_delegate, a9);
-    v15->_isPassthrough = a8;
+    v15->_name = [name copy];
+    v15->_index = index;
+    objc_storeWeak(&v15->_delegate, delegate);
+    v15->_isPassthrough = passthrough;
     v15->_supportsVariableDraw = 1;
-    v15->_sublayers = a5;
-    [(CUIVectorGlyphLayer *)v15 _readCSSAttributes:a6 styleAttributes:a7];
-    if ([a3 isEqualToString:@"root"])
+    v15->_sublayers = sublayers;
+    [(CUIVectorGlyphLayer *)v15 _readCSSAttributes:attributes styleAttributes:style];
+    if ([name isEqualToString:@"root"])
     {
-      if (![a5 count])
+      if (![sublayers count])
       {
         goto LABEL_29;
       }
@@ -1213,7 +1213,7 @@ LABEL_69:
       v17 = 0;
       do
       {
-        v18 = [a5 objectAtIndexedSubscript:v17];
+        v18 = [sublayers objectAtIndexedSubscript:v17];
         if ([v18 participatesInVariableDraw])
         {
           if ([v18 drawAttachments])
@@ -1269,7 +1269,7 @@ LABEL_69:
 LABEL_18:
         if ([v18 drawAttachments])
         {
-          v29 = [a5 count];
+          v29 = [sublayers count];
           v30 = [objc_msgSend(v18 "drawAttachments")];
           if (v30)
           {
@@ -1279,7 +1279,7 @@ LABEL_18:
             {
               v33 = *([objc_msgSend(v18 "drawAttachments")] + v32);
               v34 = *(v33 + 12);
-              if (v29 > v34 && (([objc_msgSend(a5 objectAtIndexedSubscript:{*(v33 + 12)), "participatesInVariableDraw"}] & 1) != 0 || v17 < v34))
+              if (v29 > v34 && (([objc_msgSend(sublayers objectAtIndexedSubscript:{*(v33 + 12)), "participatesInVariableDraw"}] & 1) != 0 || v17 < v34))
               {
                 break;
               }
@@ -1298,7 +1298,7 @@ LABEL_27:
         ++v17;
       }
 
-      while (v17 < [a5 count]);
+      while (v17 < [sublayers count]);
       if ((v16 & 1) == 0)
       {
 LABEL_29:
@@ -1312,13 +1312,13 @@ LABEL_29:
   return v15;
 }
 
-- (id)debugDescriptionWithIndentLevel:(unint64_t)a3
+- (id)debugDescriptionWithIndentLevel:(unint64_t)level
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(CUIVectorGlyphLayer *)self name];
-  v8 = [(CUIVectorGlyphLayer *)self index];
-  v9 = [(CUIVectorGlyphLayer *)self referenceShape];
+  name = [(CUIVectorGlyphLayer *)self name];
+  index = [(CUIVectorGlyphLayer *)self index];
+  referenceShape = [(CUIVectorGlyphLayer *)self referenceShape];
   [(CUIVectorGlyphLayer *)self opacity];
   v11 = v10;
   if ([(CUIVectorGlyphLayer *)self isEraserLayer])
@@ -1343,15 +1343,15 @@ LABEL_29:
     v14 = [NSNumber numberWithDouble:?];
   }
 
-  v15 = [(CUIVectorGlyphLayer *)self motionGroup];
-  v16 = [(CUIVectorGlyphLayer *)self alwaysPulses];
+  motionGroup = [(CUIVectorGlyphLayer *)self motionGroup];
+  alwaysPulses = [(CUIVectorGlyphLayer *)self alwaysPulses];
   v17 = @"YES";
-  if (!v16)
+  if (!alwaysPulses)
   {
     v17 = @"NO";
   }
 
-  v18 = [NSString stringWithFormat:@"<%@: %p, %@, layerIndex=%lu, shape=%p, opacity=%.2f, eraser=%@, value=%@, motionGroup=%lu, alwaysPulses=%@", v6, self, v7, v8, v9, v11, v12, v14, v15, v17];
+  v18 = [NSString stringWithFormat:@"<%@: %p, %@, layerIndex=%lu, shape=%p, opacity=%.2f, eraser=%@, value=%@, motionGroup=%lu, alwaysPulses=%@", v6, self, name, index, referenceShape, v11, v12, v14, motionGroup, v17];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1371,18 +1371,18 @@ LABEL_29:
           objc_enumerationMutation(sublayers);
         }
 
-        v24 = [*(*(&v28 + 1) + 8 * i) debugDescriptionWithIndentLevel:a3 + 1];
-        if (a3)
+        v24 = [*(*(&v28 + 1) + 8 * i) debugDescriptionWithIndentLevel:level + 1];
+        if (level)
         {
-          v25 = a3;
+          levelCopy = level;
           v26 = @"\n";
           do
           {
             v26 = [(__CFString *)v26 stringByAppendingString:@"\t"];
-            --v25;
+            --levelCopy;
           }
 
-          while (v25);
+          while (levelCopy);
         }
 
         else
@@ -1417,18 +1417,18 @@ LABEL_29:
   return [(CUIVectorGlyphLayer *)self shapeAtScale:v3];
 }
 
-- (CGPath)shapeAtScale:(double)a3
+- (CGPath)shapeAtScale:(double)scale
 {
-  v3 = [(CUIVectorGlyphLayer *)self pathAtScale:a3];
+  v3 = [(CUIVectorGlyphLayer *)self pathAtScale:scale];
   if (!v3)
   {
     return 0;
   }
 
-  v4 = [v3 path];
-  CGPathRetain(v4);
-  CFAutorelease(v4);
-  return v4;
+  path = [v3 path];
+  CGPathRetain(path);
+  CFAutorelease(path);
+  return path;
 }
 
 - (id)path
@@ -1446,7 +1446,7 @@ LABEL_29:
   return [(CUIVectorGlyphLayer *)self pathAtScale:v3];
 }
 
-- (id)pathAtScale:(double)a3
+- (id)pathAtScale:(double)scale
 {
   if (!self->_referencePath || !objc_loadWeak(&self->_delegate))
   {
@@ -1454,7 +1454,7 @@ LABEL_29:
   }
 
   [objc_loadWeak(&self->_delegate) _requestedPointSizeRatio];
-  v6 = v5 * a3;
+  v6 = v5 * scale;
   if (fabs(v6 + -1.0) >= 2.22044605e-16)
   {
     memset(&v13, 0, sizeof(v13));
@@ -1474,29 +1474,29 @@ LABEL_29:
   return v8;
 }
 
-- (CGPath)_visibleCompoundShape:(CGAffineTransform *)a3
+- (CGPath)_visibleCompoundShape:(CGAffineTransform *)shape
 {
-  v5 = [(CUIVectorGlyphLayer *)self shape];
-  if (v5)
+  shape = [(CUIVectorGlyphLayer *)self shape];
+  if (shape)
   {
-    if (a3)
+    if (shape)
     {
 
       JUMPOUT(0x193AC5C50);
     }
 
-    return CGPathRetain(v5);
+    return CGPathRetain(shape);
   }
 
   else
   {
-    v6 = [(CUIVectorGlyphLayer *)self isPassthrough];
+    isPassthrough = [(CUIVectorGlyphLayer *)self isPassthrough];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(CUIVectorGlyphLayer *)self sublayers];
-    v8 = [(NSArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    sublayers = [(CUIVectorGlyphLayer *)self sublayers];
+    v8 = [(NSArray *)sublayers countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (!v8)
     {
       return 0;
@@ -1511,21 +1511,21 @@ LABEL_29:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sublayers);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         if ([v13 isEraserLayer])
         {
           [v13 opacity];
-          v15 = v14 > 2.22044605e-16 ? 1 : v6;
+          v15 = v14 > 2.22044605e-16 ? 1 : isPassthrough;
           if (v15 != 1)
           {
             continue;
           }
         }
 
-        v16 = [v13 _visibleCompoundShape:a3];
+        v16 = [v13 _visibleCompoundShape:shape];
         if (v16)
         {
           v17 = v16;
@@ -1539,7 +1539,7 @@ LABEL_29:
         }
       }
 
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [(NSArray *)sublayers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
@@ -1601,12 +1601,12 @@ LABEL_6:
   return v2;
 }
 
-- (void)_setAllLayersAlwaysPulse:(BOOL)a3
+- (void)_setAllLayersAlwaysPulse:(BOOL)pulse
 {
   if (self->_opacity != 0.0)
   {
-    v3 = a3;
-    self->_alwaysPulses = a3;
+    pulseCopy = pulse;
+    self->_alwaysPulses = pulse;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -1626,7 +1626,7 @@ LABEL_6:
             objc_enumerationMutation(sublayers);
           }
 
-          [*(*(&v9 + 1) + 8 * i) _setAllLayersAlwaysPulse:v3];
+          [*(*(&v9 + 1) + 8 * i) _setAllLayersAlwaysPulse:pulseCopy];
         }
 
         v6 = [(NSArray *)sublayers countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -1691,10 +1691,10 @@ LABEL_6:
   return v2;
 }
 
-- (void)_setAllLayersAlwaysRotate:(BOOL)a3
+- (void)_setAllLayersAlwaysRotate:(BOOL)rotate
 {
-  v3 = a3;
-  self->_alwaysRotates = a3;
+  rotateCopy = rotate;
+  self->_alwaysRotates = rotate;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -1714,7 +1714,7 @@ LABEL_6:
           objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v9 + 1) + 8 * i) _setAllLayersAlwaysRotate:v3];
+        [*(*(&v9 + 1) + 8 * i) _setAllLayersAlwaysRotate:rotateCopy];
       }
 
       v6 = [(NSArray *)sublayers countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -1780,66 +1780,66 @@ LABEL_6:
   return v4;
 }
 
-- (CGColor)_colorForVariableThreshold:(double)a3 variableMinValue:(double)a4 variableMaxValue:(double)a5 onFillColor:(CGColor *)a6 offFillColor:(CGColor *)a7
+- (CGColor)_colorForVariableThreshold:(double)threshold variableMinValue:(double)value variableMaxValue:(double)maxValue onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor
 {
-  if (a3 == INFINITY || a6 == 0)
+  if (threshold == INFINITY || color == 0)
   {
-    return a6;
+    return color;
   }
 
-  CopyWithAlpha = a7;
-  v10 = a3 <= a5;
-  if (a3 <= 0.0)
+  CopyWithAlpha = fillColor;
+  v10 = threshold <= maxValue;
+  if (threshold <= 0.0)
   {
-    v10 = a3 < a5;
+    v10 = threshold < maxValue;
   }
 
-  if (a5 == INFINITY)
+  if (maxValue == INFINITY)
   {
     v10 = 1;
   }
 
-  v11 = a3 >= a4 || a4 == INFINITY;
+  v11 = threshold >= value || value == INFINITY;
   if (v11 && v10)
   {
-    return a6;
+    return color;
   }
 
-  if (!a7)
+  if (!fillColor)
   {
-    Alpha = CGColorGetAlpha(a6);
-    CopyWithAlpha = CGColorCreateCopyWithAlpha(a6, Alpha * 0.3);
+    Alpha = CGColorGetAlpha(color);
+    CopyWithAlpha = CGColorCreateCopyWithAlpha(color, Alpha * 0.3);
     CFAutorelease(CopyWithAlpha);
   }
 
   return CopyWithAlpha;
 }
 
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 onFillColor:(CGColor *)a8 offFillColor:(CGColor *)a9
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   [objc_loadWeak(&self->_delegate) referenceCanvasSize];
   v19 = v18;
   v21 = v20;
-  v22 = [objc_loadWeak(&self->_delegate) resolvedVariableMode];
+  resolvedVariableMode = [objc_loadWeak(&self->_delegate) resolvedVariableMode];
   v23 = [objc_loadWeak(&self->_delegate) resolvedFillStyle] == 2 && -[CUIVectorGlyphLayer gradientType](self, "gradientType") == 0;
-  if (v22)
+  if (resolvedVariableMode)
   {
-    v24 = a6;
+    valueCopy = value;
   }
 
   else
   {
-    a7 = INFINITY;
-    v24 = INFINITY;
+    maxValue = INFINITY;
+    valueCopy = INFINITY;
   }
 
-  CGContextSaveGState(a3);
-  v25 = [(CUIVectorGlyphLayer *)self isEraserLayer];
+  CGContextSaveGState(context);
+  isEraserLayer = [(CUIVectorGlyphLayer *)self isEraserLayer];
   [(CUIVectorGlyphLayer *)self opacity];
   v27 = v26;
-  if (v25)
+  if (isEraserLayer)
   {
     v28 = kCGBlendModeCopy;
   }
@@ -1849,27 +1849,27 @@ LABEL_6:
     v28 = kCGBlendModeNormal;
   }
 
-  SRGBClear = a8;
+  SRGBClear = color;
   if (v26 < 1.0)
   {
-    Alpha = CGColorGetAlpha(a8);
-    CopyWithAlpha = CGColorCreateCopyWithAlpha(a8, v27 * Alpha);
+    Alpha = CGColorGetAlpha(color);
+    CopyWithAlpha = CGColorCreateCopyWithAlpha(color, v27 * Alpha);
     SRGBClear = CFAutorelease(CopyWithAlpha);
   }
 
-  v32 = v24 == INFINITY && a7 == INFINITY;
+  v32 = valueCopy == INFINITY && maxValue == INFINITY;
   endPoint_8 = v21;
   if (v32)
   {
-    v35 = 0;
+    participatesInVariableDraw = 0;
     goto LABEL_32;
   }
 
   [(CUIVectorGlyphLayer *)self valueThreshold];
   v34 = v33;
-  if (v22 == 1)
+  if (resolvedVariableMode == 1)
   {
-    v35 = 0;
+    participatesInVariableDraw = 0;
     v36 = v33 != INFINITY;
     if (v33 != INFINITY)
     {
@@ -1879,16 +1879,16 @@ LABEL_6:
 
   else
   {
-    v35 = [(CUIVectorGlyphLayer *)self participatesInVariableDraw];
+    participatesInVariableDraw = [(CUIVectorGlyphLayer *)self participatesInVariableDraw];
     v36 = 0;
   }
 
-  if (v35)
+  if (participatesInVariableDraw)
   {
 LABEL_22:
-    if (!a9)
+    if (!fillColor)
     {
-      v37 = v25 ^ 1;
+      v37 = isEraserLayer ^ 1;
       if (v27 >= 2.22044605e-16)
       {
         v37 = 1;
@@ -1897,36 +1897,36 @@ LABEL_22:
       if (v37)
       {
         v38 = CGColorGetAlpha(SRGBClear);
-        a9 = CGColorCreateCopyWithAlpha(SRGBClear, v38 * 0.3);
+        fillColor = CGColorCreateCopyWithAlpha(SRGBClear, v38 * 0.3);
       }
 
       else
       {
         SRGBClear = _CUIColorGetSRGBClear();
-        a9 = CGColorCreateCopyWithAlpha(SRGBClear, 0.7);
+        fillColor = CGColorCreateCopyWithAlpha(SRGBClear, 0.7);
         v28 = kCGBlendModeDestinationIn;
       }
 
-      CFAutorelease(a9);
+      CFAutorelease(fillColor);
     }
 
     if (v36)
     {
-      SRGBClear = [(CUIVectorGlyphLayer *)self _colorForVariableThreshold:SRGBClear variableMinValue:a9 variableMaxValue:v34 onFillColor:v24 offFillColor:a7];
+      SRGBClear = [(CUIVectorGlyphLayer *)self _colorForVariableThreshold:SRGBClear variableMinValue:fillColor variableMaxValue:v34 onFillColor:valueCopy offFillColor:maxValue];
     }
   }
 
   v21 = endPoint_8;
 LABEL_32:
-  v39 = [(CUIVectorGlyphLayer *)self copyClipShape];
-  if (v39)
+  copyClipShape = [(CUIVectorGlyphLayer *)self copyClipShape];
+  if (copyClipShape)
   {
-    v40 = v39;
-    CGContextScaleCTM(a3, width * a4 / v19, height * a4 / v21);
-    CGContextScaleCTM(a3, 1.0, -1.0);
+    v40 = copyClipShape;
+    CGContextScaleCTM(context, width * factor / v19, height * factor / v21);
+    CGContextScaleCTM(context, 1.0, -1.0);
     MidX = 0.0;
-    CGContextTranslateCTM(a3, 0.0, -v21);
-    CGContextSetBlendMode(a3, v28);
+    CGContextTranslateCTM(context, 0.0, -v21);
+    CGContextSetBlendMode(context, v28);
     if (v23)
     {
       if ([(CUIVectorGlyphLayer *)self gradientAlignsToLayer])
@@ -1959,7 +1959,7 @@ LABEL_32:
       v81.size.width = v19;
       v81.size.height = v21;
       MinY = CGRectGetMinY(v81);
-      if (v35)
+      if (participatesInVariableDraw)
       {
         v45 = MaxY;
         endPoint = MidX;
@@ -1968,42 +1968,42 @@ LABEL_32:
 
       v69 = SRGBClear;
       v63 = [CUINamedVectorGlyph _createAxialGradientWithColors:[NSArray arrayWithObjects:&v69 count:1] useSCurve:0 height:endPoint_8];
-      CGContextAddPath(a3, v40);
-      CGContextClip(a3);
+      CGContextAddPath(context, v40);
+      CGContextClip(context);
       v73.x = MidX;
       v73.y = MaxY;
       v76.x = MidX;
       v76.y = MinY;
-      CGContextDrawLinearGradient(a3, v63, v73, v76, 3u);
+      CGContextDrawLinearGradient(context, v63, v73, v76, 3u);
       CGGradientRelease(v63);
     }
 
     else
     {
-      if (v35)
+      if (participatesInVariableDraw)
       {
         MinY = CGPointZero.y;
         endPoint = CGPointZero.x;
         v45 = 0.0;
 LABEL_42:
-        if (v24 == INFINITY)
+        if (valueCopy == INFINITY)
         {
           v47 = 0.0;
         }
 
         else
         {
-          v47 = v24;
+          v47 = valueCopy;
         }
 
-        if (a7 == INFINITY)
+        if (maxValue == INFINITY)
         {
-          v48 = 1.0;
+          maxValueCopy = 1.0;
         }
 
         else
         {
-          v48 = a7;
+          maxValueCopy = maxValue;
         }
 
         [(CUIVectorGlyphLayer *)self variableDrawOffset];
@@ -2011,39 +2011,39 @@ LABEL_42:
         [(CUIVectorGlyphLayer *)self variableDrawLength];
         v52 = v51;
         [(CUIVectorGlyphLayer *)self variableDrawOffset];
-        v54 = v48 - v53;
+        v54 = maxValueCopy - v53;
         [(CUIVectorGlyphLayer *)self variableDrawLength];
         v56 = v55;
-        if ((v25 & 1) == 0)
+        if ((isEraserLayer & 1) == 0)
         {
-          CGContextBeginTransparencyLayer(a3, 0);
-          CGContextSetBlendMode(a3, kCGBlendModeCopy);
+          CGContextBeginTransparencyLayer(context, 0);
+          CGContextSetBlendMode(context, kCGBlendModeCopy);
         }
 
         v57 = v50 / v52;
         v58 = v54 / v56;
         if (v23)
         {
-          v71 = a9;
+          fillColorCopy = fillColor;
           v59 = endPoint_8;
-          v60 = [CUINamedVectorGlyph _createAxialGradientWithColors:[NSArray arrayWithObjects:&v71 count:1] useSCurve:0 height:endPoint_8];
-          CGContextAddPath(a3, v40);
-          CGContextClip(a3);
+          v60 = [CUINamedVectorGlyph _createAxialGradientWithColors:[NSArray arrayWithObjects:&fillColorCopy count:1] useSCurve:0 height:endPoint_8];
+          CGContextAddPath(context, v40);
+          CGContextClip(context);
           v72.x = MidX;
           v72.y = v45;
           v75.x = endPointa;
           v75.y = MinY;
-          CGContextDrawLinearGradient(a3, v60, v72, v75, 3u);
+          CGContextDrawLinearGradient(context, v60, v72, v75, 3u);
           CGGradientRelease(v60);
         }
 
         else
         {
-          CGContextSetFillColorWithColor(a3, a9);
-          CGContextAddPath(a3, v40);
-          CGContextFillPath(a3);
-          CGContextAddPath(a3, v40);
-          CGContextClip(a3);
+          CGContextSetFillColorWithColor(context, fillColor);
+          CGContextAddPath(context, v40);
+          CGContextFillPath(context);
+          CGContextAddPath(context, v40);
+          CGContextClip(context);
           v59 = endPoint_8;
         }
 
@@ -2056,51 +2056,51 @@ LABEL_42:
             {
               v70 = SRGBClear;
               v65 = [CUINamedVectorGlyph _createAxialGradientWithColors:[NSArray arrayWithObjects:&v70 count:1] useSCurve:0 height:v59];
-              CGContextAddPath(a3, v64);
-              CGContextClip(a3);
+              CGContextAddPath(context, v64);
+              CGContextClip(context);
               v74.x = MidX;
               v74.y = v45;
               v77.x = endPointa;
               v77.y = MinY;
-              CGContextDrawLinearGradient(a3, v65, v74, v77, 3u);
+              CGContextDrawLinearGradient(context, v65, v74, v77, 3u);
               CGGradientRelease(v65);
             }
 
             else
             {
-              CGContextSetFillColorWithColor(a3, SRGBClear);
-              CGContextAddPath(a3, v64);
-              CGContextFillPath(a3);
+              CGContextSetFillColorWithColor(context, SRGBClear);
+              CGContextAddPath(context, v64);
+              CGContextFillPath(context);
             }
           }
 
           CGPathRelease(v64);
         }
 
-        if ((v25 & 1) == 0)
+        if ((isEraserLayer & 1) == 0)
         {
-          CGContextEndTransparencyLayer(a3);
+          CGContextEndTransparencyLayer(context);
         }
 
         goto LABEL_65;
       }
 
-      CGContextSetFillColorWithColor(a3, SRGBClear);
-      CGContextSetStrokeColorWithColor(a3, SRGBClear);
-      CGContextAddPath(a3, v40);
+      CGContextSetFillColorWithColor(context, SRGBClear);
+      CGContextSetStrokeColorWithColor(context, SRGBClear);
+      CGContextAddPath(context, v40);
       [(CUIVectorGlyphLayer *)self strokeWidth];
       if (v61 <= 0.0)
       {
-        CGContextFillPath(a3);
+        CGContextFillPath(context);
       }
 
       else
       {
         v62 = v61;
-        CGContextSetLineCap(a3, [(CUIVectorGlyphLayer *)self lineCap]);
-        CGContextSetLineJoin(a3, [(CUIVectorGlyphLayer *)self lineJoin]);
-        CGContextSetLineWidth(a3, v62);
-        CGContextStrokePath(a3);
+        CGContextSetLineCap(context, [(CUIVectorGlyphLayer *)self lineCap]);
+        CGContextSetLineJoin(context, [(CUIVectorGlyphLayer *)self lineJoin]);
+        CGContextSetLineWidth(context, v62);
+        CGContextStrokePath(context);
       }
     }
 
@@ -2109,25 +2109,25 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  [objc_loadWeak(&self->_delegate) _legacy_drawMonochromeLayerNamed:-[CUIVectorGlyphLayer name](self inContext:"name") scaleFactor:a3 targetSize:a8 onFillColor:a9 offFillColor:{a4, width, height}];
+  [objc_loadWeak(&self->_delegate) _legacy_drawMonochromeLayerNamed:-[CUIVectorGlyphLayer name](self inContext:"name") scaleFactor:context targetSize:color onFillColor:fillColor offFillColor:{factor, width, height}];
 LABEL_66:
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 onFillColor:(CGColor *)a7 offFillColor:(CGColor *)a8
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor
 {
-  height = a4.height;
-  width = a4.width;
-  v16 = a4.width * a3;
-  v17 = a4.height * a3;
+  height = size.height;
+  width = size.width;
+  v16 = size.width * factor;
+  v17 = size.height * factor;
   SRGB = _CUIColorSpaceGetSRGB();
   v21 = CUICGBitmapContextCreate(vcvtpd_u64_f64(v16), vcvtpd_u64_f64(v17), 8uLL, 0, SRGB, 8193, v19, v20);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = [(CUIVectorGlyphLayer *)self sublayers];
-  v23 = [(NSArray *)v22 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  sublayers = [(CUIVectorGlyphLayer *)self sublayers];
+  v23 = [(NSArray *)sublayers countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v23)
   {
     v24 = v23;
@@ -2139,15 +2139,15 @@ LABEL_66:
       {
         if (*v30 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v29 + 1) + 8 * v26) drawInContext:v21 scaleFactor:a7 targetSize:a8 variableMinValue:a3 variableMaxValue:width onFillColor:height offFillColor:{a5, a6}];
+        [*(*(&v29 + 1) + 8 * v26) drawInContext:v21 scaleFactor:color targetSize:fillColor variableMinValue:factor variableMaxValue:width onFillColor:height offFillColor:{value, maxValue}];
         v26 = v26 + 1;
       }
 
       while (v24 != v26);
-      v24 = [(NSArray *)v22 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v24 = [(NSArray *)sublayers countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v24);
@@ -2158,14 +2158,14 @@ LABEL_66:
   return Image;
 }
 
-- (CGImage)createSublayerMaskUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 maskColor:(CGColor *)a5
+- (CGImage)createSublayerMaskUsingScaleFactor:(double)factor targetSize:(CGSize)size maskColor:(CGColor *)color
 {
-  SRGBBlack = a5;
-  height = a4.height;
-  width = a4.width;
-  v10 = a4.width * a3;
-  v11 = a4.height * a3;
-  if (!a5)
+  SRGBBlack = color;
+  height = size.height;
+  width = size.width;
+  v10 = size.width * factor;
+  v11 = size.height * factor;
+  if (!color)
   {
     SRGBBlack = _CUIColorGetSRGBBlack();
   }
@@ -2176,8 +2176,8 @@ LABEL_66:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = [(CUIVectorGlyphLayer *)self sublayers];
-  v17 = [(NSArray *)v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  sublayers = [(CUIVectorGlyphLayer *)self sublayers];
+  v17 = [(NSArray *)sublayers countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2189,15 +2189,15 @@ LABEL_66:
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v23 + 1) + 8 * v20) drawInContext:v15 scaleFactor:SRGBBlack targetSize:0 variableMinValue:a3 variableMaxValue:width onFillColor:height offFillColor:{INFINITY, INFINITY}];
+        [*(*(&v23 + 1) + 8 * v20) drawInContext:v15 scaleFactor:SRGBBlack targetSize:0 variableMinValue:factor variableMaxValue:width onFillColor:height offFillColor:{INFINITY, INFINITY}];
         v20 = v20 + 1;
       }
 
       while (v18 != v20);
-      v18 = [(NSArray *)v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v18 = [(NSArray *)sublayers countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v18);
@@ -2208,45 +2208,45 @@ LABEL_66:
   return Image;
 }
 
-- (CGPath)copyClipShapeWithStartProgress:(double)a3 endProgress:(double)a4
+- (CGPath)copyClipShapeWithStartProgress:(double)progress endProgress:(double)endProgress
 {
-  if (a4 == INFINITY)
+  if (endProgress == INFINITY)
   {
-    v5 = 1.0;
+    endProgressCopy = 1.0;
   }
 
   else
   {
-    v5 = a4;
+    endProgressCopy = endProgress;
   }
 
-  v7 = (a3 == INFINITY || (*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0) && v5 == 1.0;
+  v7 = (progress == INFINITY || (*&progress & 0x7FFFFFFFFFFFFFFFLL) == 0) && endProgressCopy == 1.0;
   if (!v7 && (v8 = [(CUIVectorGlyphLayer *)self referencePath]) != 0 && (v9 = v8, [(CUIVectorGlyphPath *)v8 encodedClipStrokeKeyframes]))
   {
     [(CUIVectorGlyphLayer *)self strokeWidth];
     if (v10 > 0.0 && [(CUIVectorGlyphLayer *)self isEraserLayer])
     {
-      v11 = [(CUIVectorGlyphPath *)v9 path];
+      path = [(CUIVectorGlyphPath *)v9 path];
       [(CUIVectorGlyphLayer *)self strokeWidth];
       v13 = v12;
-      v14 = [(CUIVectorGlyphLayer *)self lineCap];
-      v15 = [(CUIVectorGlyphLayer *)self lineJoin];
+      lineCap = [(CUIVectorGlyphLayer *)self lineCap];
+      lineJoin = [(CUIVectorGlyphLayer *)self lineJoin];
 
-      return CGPathCreateCopyByStrokingPath(v11, 0, v13, v14, v15, 0.0);
+      return CGPathCreateCopyByStrokingPath(path, 0, v13, lineCap, lineJoin, 0.0);
     }
 
     else
     {
       v17 = [(NSData *)[(CUIVectorGlyphPath *)v9 encodedClipStrokeKeyframes] containsCompoundKeyframesAtIndex:0];
-      v18 = [(CUIVectorGlyphPath *)v9 clipStrokeKeyframes];
-      v19 = v18;
+      clipStrokeKeyframes = [(CUIVectorGlyphPath *)v9 clipStrokeKeyframes];
+      v19 = clipStrokeKeyframes;
       if (v17)
       {
-        v20 = [(NSData *)v18 mutableCopy];
+        v20 = [(NSData *)clipStrokeKeyframes mutableCopy];
         v27 = [v20 length] >> 4;
         v21 = CGPathCreateJoinedStrokePath(-[CUIVectorGlyphPath path](v9, "path"), [v20 bytes], &v27, 1, 0);
-        v22 = [v20 bytes];
-        ClippedStrokePath = CGPathCreateClippedStrokePath(v21, v22, v27, 1, 0, v5);
+        bytes = [v20 bytes];
+        ClippedStrokePath = CGPathCreateClippedStrokePath(v21, bytes, v27, 1, 0, endProgressCopy);
         CGPathRelease(v21);
 
         return ClippedStrokePath;
@@ -2254,11 +2254,11 @@ LABEL_66:
 
       else
       {
-        v24 = [(NSData *)v18 length]>> 4;
-        v25 = [(CUIVectorGlyphPath *)v9 path];
-        v26 = [(NSData *)v19 bytes];
+        v24 = [(NSData *)clipStrokeKeyframes length]>> 4;
+        path2 = [(CUIVectorGlyphPath *)v9 path];
+        bytes2 = [(NSData *)v19 bytes];
 
-        return CGPathCreateClippedStrokePath(v25, v26, v24, 1, 0, v5);
+        return CGPathCreateClippedStrokePath(path2, bytes2, v24, 1, 0, endProgressCopy);
       }
     }
   }
@@ -2270,9 +2270,9 @@ LABEL_66:
   }
 }
 
-+ (CGColor)_fillColorFromStyle:(CGSVGAttributeMap *)a3
++ (CGColor)_fillColorFromStyle:(CGSVGAttributeMap *)style
 {
-  if (!a3 || !CGSVGAttributeMapGetAttribute())
+  if (!style || !CGSVGAttributeMapGetAttribute())
   {
     return 0;
   }
@@ -2292,9 +2292,9 @@ LABEL_66:
   return v3;
 }
 
-+ (CGColor)_strokeColorFromStyle:(CGSVGAttributeMap *)a3
++ (CGColor)_strokeColorFromStyle:(CGSVGAttributeMap *)style
 {
-  if (!a3 || !CGSVGAttributeMapGetAttribute())
+  if (!style || !CGSVGAttributeMapGetAttribute())
   {
     return 0;
   }
@@ -2314,9 +2314,9 @@ LABEL_66:
   return v3;
 }
 
-+ (double)_strokeWidthFromStyle:(CGSVGAttributeMap *)a3
++ (double)_strokeWidthFromStyle:(CGSVGAttributeMap *)style
 {
-  if (a3 && CGSVGAttributeMapGetAttribute())
+  if (style && CGSVGAttributeMapGetAttribute())
   {
     CGSVGAttributeGetFloat();
   }
@@ -2324,9 +2324,9 @@ LABEL_66:
   return 0.0;
 }
 
-+ (int)_lineCapFromStyle:(CGSVGAttributeMap *)a3
++ (int)_lineCapFromStyle:(CGSVGAttributeMap *)style
 {
-  if (a3 && CGSVGAttributeMapGetAttribute())
+  if (style && CGSVGAttributeMapGetAttribute())
   {
     CGSVGAttributeGetAtom();
   }
@@ -2334,9 +2334,9 @@ LABEL_66:
   return 1;
 }
 
-+ (int)_lineJoinFromStyle:(CGSVGAttributeMap *)a3
++ (int)_lineJoinFromStyle:(CGSVGAttributeMap *)style
 {
-  if (a3)
+  if (style)
   {
     Attribute = CGSVGAttributeMapGetAttribute();
     if (Attribute)
@@ -2361,21 +2361,21 @@ LABEL_66:
   return Attribute;
 }
 
-+ (id)_colorNameForRenderingStyle:(id)a3
++ (id)_colorNameForRenderingStyle:(id)style
 {
-  v4 = [a3 rangeOfString:@":"];
+  v4 = [style rangeOfString:@":"];
   if (v5 != 1)
   {
     return &stru_1F00D74D0;
   }
 
   v6 = v4 + 1;
-  if (v4 + 1 >= [a3 length] - 1)
+  if (v4 + 1 >= [style length] - 1)
   {
     return &stru_1F00D74D0;
   }
 
-  return [a3 substringFromIndex:v6];
+  return [style substringFromIndex:v6];
 }
 
 @end

@@ -23,8 +23,8 @@
 
 + (id)rc_newObjectModel
 {
-  v1 = [a1 rc_currentObjectModel];
-  if (!v1)
+  rc_currentObjectModel = [self rc_currentObjectModel];
+  if (!rc_currentObjectModel)
   {
     v2 = OSLogForCategory(@"Default");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_FAULT))
@@ -33,7 +33,7 @@
     }
   }
 
-  return v1;
+  return rc_currentObjectModel;
 }
 
 + (id)rc_currentObjectModel
@@ -44,95 +44,95 @@
   v4 = [objc_alloc(MEMORY[0x277CBE450]) initWithContentsOfURL:v3];
   v5 = [v4 mutableCopy];
 
-  [a1 updateAudioFutureAttribute:v5];
-  [a1 updateAllowsCloudEncryptionAttributes:v5];
+  [self updateAudioFutureAttribute:v5];
+  [self updateAllowsCloudEncryptionAttributes:v5];
 
   return v5;
 }
 
 + (id)rc_v14ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos14.mom"];
-  [a1 updateAudioFutureAttribute:v2];
-  [a1 updateAllowsCloudEncryptionAttributes:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos14.mom"];
+  [self updateAudioFutureAttribute:v2];
+  [self updateAllowsCloudEncryptionAttributes:v2];
 
   return v2;
 }
 
 + (id)rc_v13ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos13.mom"];
-  [a1 updateAudioFutureAttribute:v2];
-  [a1 updateAllowsCloudEncryptionAttributes:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos13.mom"];
+  [self updateAudioFutureAttribute:v2];
+  [self updateAllowsCloudEncryptionAttributes:v2];
 
   return v2;
 }
 
 + (id)rc_v12ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos12.mom"];
-  [a1 updateAudioFutureAttribute:v2];
-  [a1 updateAllowsCloudEncryptionAttributes:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos12.mom"];
+  [self updateAudioFutureAttribute:v2];
+  [self updateAllowsCloudEncryptionAttributes:v2];
 
   return v2;
 }
 
 + (id)rc_v11ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos11.mom"];
-  [a1 updateAudioFutureAttribute:v2];
-  [a1 updateAllowsCloudEncryptionAttributes:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos11.mom"];
+  [self updateAudioFutureAttribute:v2];
+  [self updateAllowsCloudEncryptionAttributes:v2];
 
   return v2;
 }
 
 + (id)rc_v10ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos10.mom"];
-  [a1 updateAudioFutureAttribute:v2];
-  [a1 updateAllowsCloudEncryptionAttributes:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos10.mom"];
+  [self updateAudioFutureAttribute:v2];
+  [self updateAllowsCloudEncryptionAttributes:v2];
 
   return v2;
 }
 
 + (id)rc_v9ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos9.mom"];
-  [a1 updateAudioFutureAttribute:v2];
-  [a1 updateAllowsCloudEncryptionAttributes:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos9.mom"];
+  [self updateAudioFutureAttribute:v2];
+  [self updateAllowsCloudEncryptionAttributes:v2];
 
   return v2;
 }
 
 + (id)rc_v8ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos8.mom"];
-  [a1 updateAudioFutureAttribute:v2];
-  [a1 updateAllowsCloudEncryptionAttributes:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos8.mom"];
+  [self updateAudioFutureAttribute:v2];
+  [self updateAllowsCloudEncryptionAttributes:v2];
 
   return v2;
 }
 
 + (id)rc_v7bObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos7b.mom"];
-  [a1 updateAudioFutureAttribute:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos7b.mom"];
+  [self updateAudioFutureAttribute:v2];
 
   return v2;
 }
 
 + (id)rc_v7ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos7.mom"];
-  [a1 updateAudioFutureAttribute:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos7.mom"];
+  [self updateAudioFutureAttribute:v2];
 
   return v2;
 }
 
 + (id)rc_v6ObjectModel
 {
-  v2 = [a1 mutableModelForModelFileName:@"VoiceMemos6.mom"];
-  [a1 updateAudioFutureAttribute:v2];
+  v2 = [self mutableModelForModelFileName:@"VoiceMemos6.mom"];
+  [self updateAudioFutureAttribute:v2];
 
   return v2;
 }
@@ -142,17 +142,17 @@
   v12 = a3;
   if ([MEMORY[0x277CBE358] instancesRespondToSelector:sel_isFileBackedFuture])
   {
-    v3 = [v12 entitiesByName];
-    v4 = [v3 objectForKeyedSubscript:@"CloudRecording"];
-    v5 = [v4 attributesByName];
-    v6 = [v5 objectForKeyedSubscript:@"audioFuture"];
+    entitiesByName = [v12 entitiesByName];
+    v4 = [entitiesByName objectForKeyedSubscript:@"CloudRecording"];
+    attributesByName = [v4 attributesByName];
+    v6 = [attributesByName objectForKeyedSubscript:@"audioFuture"];
 
     if (([v6 isFileBackedFuture] & 1) == 0)
     {
-      v7 = [v12 entitiesByName];
-      v8 = [v7 objectForKeyedSubscript:@"CloudRecording"];
-      v9 = [v8 attributesByName];
-      v10 = [v9 objectForKeyedSubscript:@"audioFuture"];
+      entitiesByName2 = [v12 entitiesByName];
+      v8 = [entitiesByName2 objectForKeyedSubscript:@"CloudRecording"];
+      attributesByName2 = [v8 attributesByName];
+      v10 = [attributesByName2 objectForKeyedSubscript:@"audioFuture"];
 
       [v10 setIsFileBackedFuture:1];
     }
@@ -193,10 +193,10 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [v3 entitiesByName];
-        v11 = [v10 objectForKey:@"CloudRecording"];
-        v12 = [v11 attributesByName];
-        v13 = [v12 objectForKey:v9];
+        entitiesByName = [v3 entitiesByName];
+        v11 = [entitiesByName objectForKey:@"CloudRecording"];
+        attributesByName = [v11 attributesByName];
+        v13 = [attributesByName objectForKey:v9];
         [v13 setAllowsCloudEncryption:1];
 
         ++v8;
@@ -216,14 +216,14 @@
 {
   v41 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 modelCandidatesForCloudRecordings];
+  modelCandidatesForCloudRecordings = [self modelCandidatesForCloudRecordings];
   v29 = v4;
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBE2F0]];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v5;
+  obj = modelCandidatesForCloudRecordings;
   v7 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v7)
   {
@@ -240,13 +240,13 @@
         }
 
         v10 = *(*(&v35 + 1) + 8 * i);
-        v11 = [v10 entityVersionHashesByName];
-        v12 = [v11 objectForKeyedSubscript:@"CloudRecording"];
+        entityVersionHashesByName = [v10 entityVersionHashesByName];
+        v12 = [entityVersionHashesByName objectForKeyedSubscript:@"CloudRecording"];
         v13 = [v6 objectForKeyedSubscript:@"CloudRecording"];
         v14 = [v12 isEqual:v13];
 
         v15 = [v6 objectForKeyedSubscript:@"Folder"];
-        v16 = [v11 objectForKeyedSubscript:@"Folder"];
+        v16 = [entityVersionHashesByName objectForKeyedSubscript:@"Folder"];
         if (v15 == v16)
         {
           v17 = 1;
@@ -343,26 +343,26 @@ LABEL_25:
 + (id)modelCandidatesForCloudRecordings
 {
   v15[10] = *MEMORY[0x277D85DE8];
-  v14 = [a1 rc_v14ObjectModel];
-  v15[0] = v14;
-  v2 = [a1 rc_v13ObjectModel];
-  v15[1] = v2;
-  v3 = [a1 rc_v12ObjectModel];
-  v15[2] = v3;
-  v4 = [a1 rc_v11ObjectModel];
-  v15[3] = v4;
-  v5 = [a1 rc_v10ObjectModel];
-  v15[4] = v5;
-  v6 = [a1 rc_v9ObjectModel];
-  v15[5] = v6;
-  v7 = [a1 rc_v8ObjectModel];
-  v15[6] = v7;
-  v8 = [a1 rc_v7bObjectModel];
-  v15[7] = v8;
-  v9 = [a1 rc_v7ObjectModel];
-  v15[8] = v9;
-  v10 = [a1 rc_v6ObjectModel];
-  v15[9] = v10;
+  rc_v14ObjectModel = [self rc_v14ObjectModel];
+  v15[0] = rc_v14ObjectModel;
+  rc_v13ObjectModel = [self rc_v13ObjectModel];
+  v15[1] = rc_v13ObjectModel;
+  rc_v12ObjectModel = [self rc_v12ObjectModel];
+  v15[2] = rc_v12ObjectModel;
+  rc_v11ObjectModel = [self rc_v11ObjectModel];
+  v15[3] = rc_v11ObjectModel;
+  rc_v10ObjectModel = [self rc_v10ObjectModel];
+  v15[4] = rc_v10ObjectModel;
+  rc_v9ObjectModel = [self rc_v9ObjectModel];
+  v15[5] = rc_v9ObjectModel;
+  rc_v8ObjectModel = [self rc_v8ObjectModel];
+  v15[6] = rc_v8ObjectModel;
+  rc_v7bObjectModel = [self rc_v7bObjectModel];
+  v15[7] = rc_v7bObjectModel;
+  rc_v7ObjectModel = [self rc_v7ObjectModel];
+  v15[8] = rc_v7ObjectModel;
+  rc_v6ObjectModel = [self rc_v6ObjectModel];
+  v15[9] = rc_v6ObjectModel;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:10];
 
   v12 = *MEMORY[0x277D85DE8];

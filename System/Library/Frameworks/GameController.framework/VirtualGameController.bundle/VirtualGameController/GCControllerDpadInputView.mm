@@ -1,25 +1,25 @@
 @interface GCControllerDpadInputView
-- (GCControllerDpadInputView)initWithCoder:(id)a3;
-- (GCControllerDpadInputView)initWithFrame:(CGRect)a3;
-- (id)createDpadButton:(CGPoint)a3 backingMask:(id)a4 fillMask:(id)a5;
+- (GCControllerDpadInputView)initWithCoder:(id)coder;
+- (GCControllerDpadInputView)initWithFrame:(CGRect)frame;
+- (id)createDpadButton:(CGPoint)button backingMask:(id)mask fillMask:(id)fillMask;
 - (uint64_t)valueChangedHandler;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initButtons;
-- (void)processTouch:(id)a3;
-- (void)setThumbstickPos:(CGPoint)a3 center:(CGPoint)a4;
-- (void)setValueChangedHandler:(void *)a1;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)processTouch:(id)touch;
+- (void)setThumbstickPos:(CGPoint)pos center:(CGPoint)center;
+- (void)setValueChangedHandler:(void *)handler;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation GCControllerDpadInputView
 
-- (GCControllerDpadInputView)initWithFrame:(CGRect)a3
+- (GCControllerDpadInputView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GCControllerDpadInputView;
-  v3 = [(GCControllerDpadInputView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GCControllerDpadInputView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,31 +30,31 @@
   return v4;
 }
 
-- (GCControllerDpadInputView)initWithCoder:(id)a3
+- (GCControllerDpadInputView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = GCControllerDpadInputView;
-  v5 = [(GCControllerDpadInputView *)&v17 initWithCoder:v4];
+  v5 = [(GCControllerDpadInputView *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_touchArea"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_touchArea"];
     touchArea = v5->_touchArea;
     v5->_touchArea = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_up"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_up"];
     up = v5->_up;
     v5->_up = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_down"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_down"];
     down = v5->_down;
     v5->_down = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_left"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_left"];
     left = v5->_left;
     v5->_left = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_right"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_right"];
     right = v5->_right;
     v5->_right = v14;
 
@@ -64,32 +64,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GCControllerDpadInputView;
-  v4 = a3;
-  [(GCControllerDpadInputView *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_touchArea forKey:{@"_touchArea", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_up forKey:@"_up"];
-  [v4 encodeObject:self->_down forKey:@"_down"];
-  [v4 encodeObject:self->_left forKey:@"_left"];
-  [v4 encodeObject:self->_right forKey:@"_right"];
+  coderCopy = coder;
+  [(GCControllerDpadInputView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_touchArea forKey:{@"_touchArea", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_up forKey:@"_up"];
+  [coderCopy encodeObject:self->_down forKey:@"_down"];
+  [coderCopy encodeObject:self->_left forKey:@"_left"];
+  [coderCopy encodeObject:self->_right forKey:@"_right"];
 }
 
-- (id)createDpadButton:(CGPoint)a3 backingMask:(id)a4 fillMask:(id)a5
+- (id)createDpadButton:(CGPoint)button backingMask:(id)mask fillMask:(id)fillMask
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  v9 = a4;
+  y = button.y;
+  x = button.x;
+  fillMaskCopy = fillMask;
+  maskCopy = mask;
   v10 = GCVirtualControllerBlurEffectView();
-  v11 = [[UIImageView alloc] initWithImage:v9];
+  v11 = [[UIImageView alloc] initWithImage:maskCopy];
   [v10 setMaskView:v11];
 
-  [v9 size];
+  [maskCopy size];
   v13 = v12;
-  [v9 size];
+  [maskCopy size];
   v15 = v14;
 
   [v10 setFrame:{x, y, v13, v15}];
@@ -105,15 +105,15 @@
   v21 = GCVirtualControllerVibrancyOverlayBackgroundColor();
   [v20 setBackgroundColor:v21];
 
-  v22 = [[UIImageView alloc] initWithImage:v8];
+  v22 = [[UIImageView alloc] initWithImage:fillMaskCopy];
   [v20 setMaskView:v22];
 
   [v10 frame];
   v24 = v23 * 0.5;
   [v10 frame];
   [v20 setCenter:{v24, v25 * 0.5}];
-  v26 = [v16 contentView];
-  [v26 addSubview:v20];
+  contentView = [v16 contentView];
+  [contentView addSubview:v20];
 
   v27 = GCVirtualControllerAdditiveVibrancyEffectView();
   [v10 frame];
@@ -128,21 +128,21 @@
   v32 = GCVirtualControllerVibrancyOverlayBackgroundColor();
   [v31 setBackgroundColor:v32];
 
-  v33 = [[UIImageView alloc] initWithImage:v8];
+  v33 = [[UIImageView alloc] initWithImage:fillMaskCopy];
   [v31 setMaskView:v33];
 
   [v10 frame];
   v35 = v34 * 0.5;
   [v10 frame];
   [v31 setCenter:{v35, v36 * 0.5}];
-  v37 = [v27 contentView];
-  [v37 addSubview:v31];
+  contentView2 = [v27 contentView];
+  [contentView2 addSubview:v31];
 
-  v38 = [v10 contentView];
-  [v38 addSubview:v16];
+  contentView3 = [v10 contentView];
+  [contentView3 addSubview:v16];
 
-  v39 = [v10 contentView];
-  [v39 addSubview:v27];
+  contentView4 = [v10 contentView];
+  [contentView4 addSubview:v27];
 
   return v10;
 }
@@ -151,25 +151,25 @@
 {
   v57 = VirtualControllerBundle();
   v3 = [UIImage imageNamed:@"dpad_backing_mask" inBundle:v57 withConfiguration:0];
-  v4 = [v3 CGImage];
+  cGImage = [v3 CGImage];
   [v3 scale];
-  v5 = [UIImage imageWithCGImage:v4 scale:1 orientation:?];
-  v6 = [v3 CGImage];
+  v5 = [UIImage imageWithCGImage:cGImage scale:1 orientation:?];
+  cGImage2 = [v3 CGImage];
   [v3 scale];
-  v7 = [UIImage imageWithCGImage:v6 scale:2 orientation:?];
-  v8 = [v3 CGImage];
+  v7 = [UIImage imageWithCGImage:cGImage2 scale:2 orientation:?];
+  cGImage3 = [v3 CGImage];
   [v3 scale];
-  v9 = [UIImage imageWithCGImage:v8 scale:3 orientation:?];
+  v9 = [UIImage imageWithCGImage:cGImage3 scale:3 orientation:?];
   v10 = [UIImage imageNamed:@"dpad_fill_mask" inBundle:v57 withConfiguration:0];
-  v11 = [v10 CGImage];
+  cGImage4 = [v10 CGImage];
   [v10 scale];
-  v12 = [UIImage imageWithCGImage:v11 scale:1 orientation:?];
-  v13 = [v10 CGImage];
+  v12 = [UIImage imageWithCGImage:cGImage4 scale:1 orientation:?];
+  cGImage5 = [v10 CGImage];
   [v10 scale];
-  v14 = [UIImage imageWithCGImage:v13 scale:2 orientation:?];
-  v15 = [v10 CGImage];
+  v14 = [UIImage imageWithCGImage:cGImage5 scale:2 orientation:?];
+  cGImage6 = [v10 CGImage];
   [v10 scale];
-  v16 = [UIImage imageWithCGImage:v15 scale:3 orientation:?];
+  v16 = [UIImage imageWithCGImage:cGImage6 scale:3 orientation:?];
   [v3 size];
   v18 = v17 + 11.0 + v17 + 11.0;
   [(GCControllerDpadInputView *)self frame];
@@ -228,17 +228,17 @@
   [(GCControllerDpadInputView *)self addSubview:self->_right];
 }
 
-- (void)processTouch:(id)a3
+- (void)processTouch:(id)touch
 {
-  [a3 locationInView:self->_touchArea];
+  [touch locationInView:self->_touchArea];
   v5 = v4;
   v7 = v6;
   touchArea = self->_touchArea;
   [(UIView *)touchArea center];
   v10 = v9;
   v12 = v11;
-  v13 = [(UIView *)self->_touchArea superview];
-  [(UIView *)touchArea convertPoint:v13 fromView:v10, v12];
+  superview = [(UIView *)self->_touchArea superview];
+  [(UIView *)touchArea convertPoint:superview fromView:v10, v12];
   v37 = v14;
   v16 = v15;
 
@@ -294,55 +294,55 @@
   [(GCControllerDpadInputView *)self setThumbstickPos:v33 + v18 * 0.5 center:v36 + v20 * 0.5, v37, v16];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v8 = a3;
-  if ([v8 count] == &dword_0 + 1)
+  beganCopy = began;
+  if ([beganCopy count] == &dword_0 + 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
 
     if (!WeakRetained)
     {
-      v6 = [v8 anyObject];
-      objc_storeWeak(&self->_currentTouch, v6);
+      anyObject = [beganCopy anyObject];
+      objc_storeWeak(&self->_currentTouch, anyObject);
       v7 = +[GCControllerViewFeedback sharedInstance];
       [v7 buttonDown];
 
-      [(GCControllerDpadInputView *)self processTouch:v6];
+      [(GCControllerDpadInputView *)self processTouch:anyObject];
     }
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v9 = a3;
-  v5 = [v9 count] == &dword_0 + 1;
-  v6 = v9;
+  movedCopy = moved;
+  v5 = [movedCopy count] == &dword_0 + 1;
+  v6 = movedCopy;
   if (v5)
   {
-    v7 = [v9 anyObject];
+    anyObject = [movedCopy anyObject];
     WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
 
-    if (WeakRetained == v7)
+    if (WeakRetained == anyObject)
     {
-      [(GCControllerDpadInputView *)self processTouch:v7];
+      [(GCControllerDpadInputView *)self processTouch:anyObject];
     }
 
-    v6 = v9;
+    v6 = movedCopy;
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v20 = a3;
-  v5 = [v20 count] == &dword_0 + 1;
-  v6 = v20;
+  endedCopy = ended;
+  v5 = [endedCopy count] == &dword_0 + 1;
+  v6 = endedCopy;
   if (v5)
   {
-    v7 = [v20 anyObject];
+    anyObject = [endedCopy anyObject];
     WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
 
-    if (WeakRetained == v7)
+    if (WeakRetained == anyObject)
     {
       objc_storeWeak(&self->_currentTouch, 0);
       v9 = +[GCControllerViewFeedback sharedInstance];
@@ -352,23 +352,23 @@
       [(UIView *)touchArea center];
       v12 = v11;
       v14 = v13;
-      v15 = [(UIView *)self->_touchArea superview];
-      [(UIView *)touchArea convertPoint:v15 fromView:v12, v14];
+      superview = [(UIView *)self->_touchArea superview];
+      [(UIView *)touchArea convertPoint:superview fromView:v12, v14];
       v17 = v16;
       v19 = v18;
 
       [(GCControllerDpadInputView *)self setThumbstickPos:v17 center:v19, v17, v19];
     }
 
-    v6 = v20;
+    v6 = endedCopy;
   }
 }
 
-- (void)setThumbstickPos:(CGPoint)a3 center:(CGPoint)a4
+- (void)setThumbstickPos:(CGPoint)pos center:(CGPoint)center
 {
-  y = a4.y;
-  v5 = a3.y;
-  v26 = a3.x - a4.x;
+  y = center.y;
+  v5 = pos.y;
+  v26 = pos.x - center.x;
   [(UIView *)self->_touchArea frame];
   v24 = v7;
   [(UIView *)self->_touchArea frame];
@@ -412,11 +412,11 @@
   return result;
 }
 
-- (void)setValueChangedHandler:(void *)a1
+- (void)setValueChangedHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 56);
+    objc_setProperty_nonatomic_copy(handler, newValue, newValue, 56);
   }
 }
 

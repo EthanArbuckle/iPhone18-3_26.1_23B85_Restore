@@ -1,19 +1,19 @@
 @interface AMDJSGetSegments
-+ (id)getAppSegments:(id)a3 error:(id *)a4;
++ (id)getAppSegments:(id)segments error:(id *)error;
 @end
 
 @implementation AMDJSGetSegments
 
-+ (id)getAppSegments:(id)a3 error:(id *)a4
++ (id)getAppSegments:(id)segments error:(id *)error
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
-  v15 = [AMDWorkflow getCurrentWorkflowForDomain:[AMDDomains getCodeForDomain:@"apps"] andTreatmentId:0 andUseCaseId:0x2852AAC08 error:a4];
-  if (*a4)
+  objc_storeStrong(location, segments);
+  errorCopy = error;
+  v15 = [AMDWorkflow getCurrentWorkflowForDomain:[AMDDomains getCodeForDomain:@"apps"] andTreatmentId:0 andUseCaseId:0x2852AAC08 error:error];
+  if (*error)
   {
     v18 = 0;
     v14 = 1;
@@ -21,9 +21,9 @@
 
   else if (v15)
   {
-    v13 = [v15 first];
-    v12 = [AMDAppSegment getSegmentsInfoForTreatment:v13 error:v16];
-    if (*v16)
+    first = [v15 first];
+    v12 = [AMDAppSegment getSegmentsInfoForTreatment:first error:errorCopy];
+    if (*errorCopy)
     {
       v18 = 0;
       v14 = 1;
@@ -31,21 +31,21 @@
 
     else
     {
-      v11 = [v12 first];
-      v10 = [v12 second];
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+      first2 = [v12 first];
+      second = [v12 second];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(first2, "count")}];
       [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
       MEMORY[0x277D82BD8](v6);
       v23[0] = @"segmentDataType";
       v24[0] = &unk_2852BA638;
       v23[1] = @"segmentData";
-      v24[1] = v11;
+      v24[1] = first2;
       v23[2] = @"metadata";
       v21 = @"metrics";
       v19[0] = @"algoId";
-      v20[0] = v10;
+      v20[0] = second;
       v19[1] = @"treatmentId";
-      v20[1] = v13;
+      v20[1] = first;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
       v22 = v8;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
@@ -54,12 +54,12 @@
       MEMORY[0x277D82BD8](v7);
       MEMORY[0x277D82BD8](v8);
       v14 = 1;
-      objc_storeStrong(&v10, 0);
-      objc_storeStrong(&v11, 0);
+      objc_storeStrong(&second, 0);
+      objc_storeStrong(&first2, 0);
     }
 
     objc_storeStrong(&v12, 0);
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&first, 0);
   }
 
   else

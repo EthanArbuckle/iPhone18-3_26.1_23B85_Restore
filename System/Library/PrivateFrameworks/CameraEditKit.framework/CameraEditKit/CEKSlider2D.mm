@@ -1,38 +1,38 @@
 @interface CEKSlider2D
-+ (id)backgroundImageWithImage:(id)a3;
-- (CEKSlider2D)initWithFrame:(CGRect)a3;
-- (CGPoint)_normalizedViewValueForValue:(CGPoint)a3;
-- (CGPoint)_valueForNormalizedViewValue:(CGPoint)a3;
++ (id)backgroundImageWithImage:(id)image;
+- (CEKSlider2D)initWithFrame:(CGRect)frame;
+- (CGPoint)_normalizedViewValueForValue:(CGPoint)value;
+- (CGPoint)_valueForNormalizedViewValue:(CGPoint)value;
 - (CGPoint)defaultValue;
 - (CGPoint)value;
 - (id)_blurFilter;
-- (id)_createGridImageWithSize:(CGSize)a3;
+- (id)_createGridImageWithSize:(CGSize)size;
 - (void)_createGradientsViewIfNecessary;
 - (void)_destroyGradientsViewIfNecessary;
-- (void)_handlePressGesture:(id)a3;
+- (void)_handlePressGesture:(id)gesture;
 - (void)_performFeedback;
 - (void)_prepareFeedback;
-- (void)_setActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setValue:(CGPoint)a3 shouldNotify:(BOOL)a4 animated:(BOOL)a5;
-- (void)_startScalingWithScale:(double)a3 duration:(double)a4 repeatCount:(float)a5 timingFunction:(id)a6;
-- (void)_stopScalingWithDuration:(double)a3;
+- (void)_setActive:(BOOL)active animated:(BOOL)animated;
+- (void)_setValue:(CGPoint)value shouldNotify:(BOOL)notify animated:(BOOL)animated;
+- (void)_startScalingWithScale:(double)scale duration:(double)duration repeatCount:(float)count timingFunction:(id)function;
+- (void)_stopScalingWithDuration:(double)duration;
 - (void)_updateGradientViews;
 - (void)layoutSubviews;
-- (void)setBackgroundAsSnapshotOfView:(id)a3;
-- (void)setBackgroundFromExistingSlider2D:(id)a3;
-- (void)setBackgroundImage:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDefaultValue:(CGPoint)a3;
-- (void)setPulsingValueIndicator:(BOOL)a3;
+- (void)setBackgroundAsSnapshotOfView:(id)view;
+- (void)setBackgroundFromExistingSlider2D:(id)d;
+- (void)setBackgroundImage:(id)image;
+- (void)setCornerRadius:(double)radius;
+- (void)setDefaultValue:(CGPoint)value;
+- (void)setPulsingValueIndicator:(BOOL)indicator;
 @end
 
 @implementation CEKSlider2D
 
-- (CEKSlider2D)initWithFrame:(CGRect)a3
+- (CEKSlider2D)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = CEKSlider2D;
-  v3 = [(CEKSlider2D *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKSlider2D *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:0];
@@ -52,8 +52,8 @@
     valueIndicator = v3->__valueIndicator;
     v3->__valueIndicator = v9;
 
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v3->__valueIndicator setBackgroundColor:v11];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v3->__valueIndicator setBackgroundColor:whiteColor];
 
     [(CEKSlider2D *)v3 addSubview:v3->__valueIndicator];
     v12 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v3 action:sel__handlePressGesture_];
@@ -63,11 +63,11 @@
     [(UILongPressGestureRecognizer *)v3->__pressGestureRecognizer setMinimumPressDuration:0.0];
     [(CEKSlider2D *)v3 addGestureRecognizer:v3->__pressGestureRecognizer];
     v3->_cornerRadius = 22.0;
-    v14 = [(CEKSlider2D *)v3 layer];
-    [v14 setCornerRadius:22.0];
+    layer = [(CEKSlider2D *)v3 layer];
+    [layer setCornerRadius:22.0];
 
-    v15 = [(CEKSlider2D *)v3 layer];
-    [v15 setMasksToBounds:1];
+    layer2 = [(CEKSlider2D *)v3 layer];
+    [layer2 setMasksToBounds:1];
 
     v3->_snapTouchesToDefaultValue = 1;
     if (CEKHapticsAllowed())
@@ -83,13 +83,13 @@
   return v3;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v5 = a3;
-  if (self->_backgroundImage != v5)
+  imageCopy = image;
+  if (self->_backgroundImage != imageCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_backgroundImage, a3);
+    v9 = imageCopy;
+    objc_storeStrong(&self->_backgroundImage, image);
     if (!self->__backgroundImageView)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:0];
@@ -99,17 +99,17 @@
       [(CEKSlider2D *)self insertSubview:self->__backgroundImageView atIndex:0];
     }
 
-    v8 = [(CEKSlider2D *)self _backgroundImageView];
-    [v8 setImage:v9];
+    _backgroundImageView = [(CEKSlider2D *)self _backgroundImageView];
+    [_backgroundImageView setImage:v9];
 
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setBackgroundAsSnapshotOfView:(id)a3
+- (void)setBackgroundAsSnapshotOfView:(id)view
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->__backgroundSnapshotView1 removeFromSuperview];
   [(UIView *)self->__backgroundSnapshotView2 removeFromSuperview];
   backgroundSnapshotView1 = self->__backgroundSnapshotView1;
@@ -118,7 +118,7 @@
   backgroundSnapshotView2 = self->__backgroundSnapshotView2;
   self->__backgroundSnapshotView2 = 0;
 
-  if (v4)
+  if (viewCopy)
   {
     if (!self->__backgroundSnapshotContainerView)
     {
@@ -127,26 +127,26 @@
       backgroundSnapshotContainerView = self->__backgroundSnapshotContainerView;
       self->__backgroundSnapshotContainerView = v8;
 
-      v10 = [(CEKSlider2D *)self _blurFilter];
-      v19[0] = v10;
+      _blurFilter = [(CEKSlider2D *)self _blurFilter];
+      v19[0] = _blurFilter;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-      v12 = [(UIView *)self->__backgroundSnapshotContainerView layer];
-      [v12 setFilters:v11];
+      layer = [(UIView *)self->__backgroundSnapshotContainerView layer];
+      [layer setFilters:v11];
 
       [(CEKSlider2D *)self insertSubview:self->__backgroundSnapshotContainerView atIndex:0];
     }
 
-    v13 = [v4 snapshotViewAfterScreenUpdates:0];
+    v13 = [viewCopy snapshotViewAfterScreenUpdates:0];
     v14 = self->__backgroundSnapshotView1;
     self->__backgroundSnapshotView1 = v13;
 
-    v15 = [v4 snapshotViewAfterScreenUpdates:0];
+    v15 = [viewCopy snapshotViewAfterScreenUpdates:0];
     v16 = self->__backgroundSnapshotView2;
     self->__backgroundSnapshotView2 = v15;
 
     v17 = *MEMORY[0x1E6979D18];
-    v18 = [(UIView *)self->__backgroundSnapshotView2 layer];
-    [v18 setCompositingFilter:v17];
+    layer2 = [(UIView *)self->__backgroundSnapshotView2 layer];
+    [layer2 setCompositingFilter:v17];
 
     [(UIView *)self->__backgroundSnapshotContainerView addSubview:self->__backgroundSnapshotView1];
     [(UIView *)self->__backgroundSnapshotContainerView addSubview:self->__backgroundSnapshotView2];
@@ -156,14 +156,14 @@
   [(CEKSlider2D *)self _updateGradientViews];
 }
 
-- (void)setBackgroundFromExistingSlider2D:(id)a3
+- (void)setBackgroundFromExistingSlider2D:(id)d
 {
   backgroundSnapshotContainerView = self->__backgroundSnapshotContainerView;
-  v5 = a3;
+  dCopy = d;
   [(UIView *)backgroundSnapshotContainerView removeFromSuperview];
-  v6 = [v5 _backgroundSnapshotContainerView];
+  _backgroundSnapshotContainerView = [dCopy _backgroundSnapshotContainerView];
 
-  v7 = [v6 snapshotViewAfterScreenUpdates:0];
+  v7 = [_backgroundSnapshotContainerView snapshotViewAfterScreenUpdates:0];
   v8 = self->__backgroundSnapshotContainerView;
   self->__backgroundSnapshotContainerView = v7;
 
@@ -209,22 +209,22 @@
     v5 = objc_alloc_init(MEMORY[0x1E6979380]);
     v6 = [MEMORY[0x1E69DC888] colorWithRed:0.87 green:0.87 blue:0.87 alpha:1.0];
     v30[0] = [v6 CGColor];
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    v8 = [v7 colorWithAlphaComponent:0.05];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v8 = [whiteColor colorWithAlphaComponent:0.05];
     v30[1] = [v8 CGColor];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
     [v5 setColors:v9];
 
     [v5 setStartPoint:{0.13, 0.76}];
     [v5 setEndPoint:{0.88, 0.11}];
-    v10 = [(UIView *)v4 layer];
-    [v10 insertSublayer:v5 atIndex:0];
+    layer = [(UIView *)v4 layer];
+    [layer insertSublayer:v5 atIndex:0];
 
     v11 = objc_alloc_init(MEMORY[0x1E6979380]);
     v12 = [MEMORY[0x1E69DC888] colorWithRed:0.87 green:0.87 blue:0.87 alpha:1.0];
     v29[0] = [v12 CGColor];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    v14 = [v13 colorWithAlphaComponent:0.0];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    v14 = [whiteColor2 colorWithAlphaComponent:0.0];
     v29[1] = [v14 CGColor];
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
     [v11 setColors:v15];
@@ -233,8 +233,8 @@
     [v11 setOpacity:v16];
     [v11 setStartPoint:{0.0, 0.0}];
     [v11 setEndPoint:{0.45, 0.33}];
-    v17 = [(UIView *)v4 layer];
-    [v17 insertSublayer:v11 atIndex:1];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 insertSublayer:v11 atIndex:1];
 
     v18 = objc_alloc_init(MEMORY[0x1E6979380]);
     v19 = [MEMORY[0x1E69DC888] colorWithRed:0.07 green:0.07 blue:0.11 alpha:1.0];
@@ -249,16 +249,16 @@
     [v18 setStartPoint:{0.5, 1.0}];
     [v18 setEndPoint:{0.5, -0.1}];
     [v18 setCompositingFilter:*MEMORY[0x1E6979C78]];
-    v23 = [(UIView *)v4 layer];
-    [v23 insertSublayer:v18 atIndex:2];
+    layer3 = [(UIView *)v4 layer];
+    [layer3 insertSublayer:v18 atIndex:2];
 
     gradientsView = self->__gradientsView;
     self->__gradientsView = v4;
     v25 = v4;
 
     v26 = self->__gradientsView;
-    v27 = [(CEKSlider2D *)self _gridView];
-    [(CEKSlider2D *)self insertSubview:v26 belowSubview:v27];
+    _gridView = [(CEKSlider2D *)self _gridView];
+    [(CEKSlider2D *)self insertSubview:v26 belowSubview:_gridView];
   }
 }
 
@@ -269,19 +269,19 @@
   self->__gradientsView = 0;
 }
 
-- (void)_setValue:(CGPoint)a3 shouldNotify:(BOOL)a4 animated:(BOOL)a5
+- (void)_setValue:(CGPoint)value shouldNotify:(BOOL)notify animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  y = a3.y;
-  v9 = CEKClamp(a3.x, -1.0, 1.0);
+  animatedCopy = animated;
+  notifyCopy = notify;
+  y = value.y;
+  v9 = CEKClamp(value.x, -1.0, 1.0);
   v10 = CEKClamp(y, -1.0, 1.0);
   if (self->_value.x != v9 || self->_value.y != v10)
   {
     self->_value.x = v9;
     self->_value.y = v10;
     [(CEKSlider2D *)self setNeedsLayout];
-    if (v5)
+    if (animatedCopy)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -291,17 +291,17 @@
       [MEMORY[0x1E69DD250] animateWithDuration:131074 delay:v12 options:0 animations:0.25 completion:0.0];
     }
 
-    if (v6)
+    if (notifyCopy)
     {
       [(CEKSlider2D *)self sendActionsForControlEvents:4096];
     }
   }
 }
 
-- (void)setDefaultValue:(CGPoint)a3
+- (void)setDefaultValue:(CGPoint)value
 {
-  y = a3.y;
-  v5 = CEKClamp(a3.x, -1.0, 1.0);
+  y = value.y;
+  v5 = CEKClamp(value.x, -1.0, 1.0);
   v6 = CEKClamp(y, -1.0, 1.0);
   if (self->_defaultValue.x != v5 || self->_defaultValue.y != v6)
   {
@@ -312,28 +312,28 @@
   }
 }
 
-- (void)_setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)_setActive:(BOOL)active animated:(BOOL)animated
 {
-  if (self->__active != a3)
+  if (self->__active != active)
   {
-    v4 = a4;
-    self->__active = a3;
-    v6 = [(CEKSlider2D *)self _valueIndicator];
+    animatedCopy = animated;
+    self->__active = active;
+    _valueIndicator = [(CEKSlider2D *)self _valueIndicator];
     if (self->__active)
     {
-      v7 = [MEMORY[0x1E69DC888] whiteColor];
-      v8 = [v7 CGColor];
-      v9 = [v6 layer];
-      [v9 setShadowColor:v8];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      cGColor = [whiteColor CGColor];
+      layer = [_valueIndicator layer];
+      [layer setShadowColor:cGColor];
 
-      v10 = [v6 layer];
-      [v10 setShadowRadius:6.0];
+      layer2 = [_valueIndicator layer];
+      [layer2 setShadowRadius:6.0];
     }
 
-    v11 = [v6 layer];
-    [v11 setShadowOffset:{0.0, 0.0}];
+    layer3 = [_valueIndicator layer];
+    [layer3 setShadowOffset:{0.0, 0.0}];
 
-    if (v4)
+    if (animatedCopy)
     {
       v12 = [MEMORY[0x1E6979318] animationWithKeyPath:@"shadowOpacity"];
       [v12 setDuration:0.2];
@@ -360,8 +360,8 @@
 
       [v12 setToValue:v14];
       [v12 setRemovedOnCompletion:1];
-      v15 = [v6 layer];
-      [v15 addAnimation:v12 forKey:@"shadowOpacity"];
+      layer4 = [_valueIndicator layer];
+      [layer4 addAnimation:v12 forKey:@"shadowOpacity"];
 
       if (self->__active)
       {
@@ -373,9 +373,9 @@
         v16 = 0.0;
       }
 
-      v17 = [v6 layer];
+      layer5 = [_valueIndicator layer];
       *&v18 = v16;
-      [v17 setShadowOpacity:v18];
+      [layer5 setShadowOpacity:v18];
 
       [(CEKSlider2D *)self setNeedsLayout];
       v22[0] = MEMORY[0x1E69E9820];
@@ -398,22 +398,22 @@
         v19 = 0.0;
       }
 
-      v20 = [v6 layer];
+      layer6 = [_valueIndicator layer];
       *&v21 = v19;
-      [v20 setShadowOpacity:v21];
+      [layer6 setShadowOpacity:v21];
 
       [(CEKSlider2D *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
-    v4 = [(CEKSlider2D *)self layer];
-    [v4 setCornerRadius:a3];
+    self->_cornerRadius = radius;
+    layer = [(CEKSlider2D *)self layer];
+    [layer setCornerRadius:radius];
   }
 }
 
@@ -428,35 +428,35 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CEKSlider2D *)self _backgroundImageView];
+  _backgroundImageView = [(CEKSlider2D *)self _backgroundImageView];
 
-  if (v11)
+  if (_backgroundImageView)
   {
-    v12 = [(CEKSlider2D *)self _backgroundImageView];
-    [v12 setFrame:{v4, v6, v8, v10}];
+    _backgroundImageView2 = [(CEKSlider2D *)self _backgroundImageView];
+    [_backgroundImageView2 setFrame:{v4, v6, v8, v10}];
   }
 
-  v13 = [(CEKSlider2D *)self _backgroundSnapshotContainerView];
-  [v13 setFrame:{v4, v6, v8, v10}];
+  _backgroundSnapshotContainerView = [(CEKSlider2D *)self _backgroundSnapshotContainerView];
+  [_backgroundSnapshotContainerView setFrame:{v4, v6, v8, v10}];
 
-  v14 = [(CEKSlider2D *)self _backgroundSnapshotView1];
-  [v14 setFrame:{v4, v6, v8, v10}];
+  _backgroundSnapshotView1 = [(CEKSlider2D *)self _backgroundSnapshotView1];
+  [_backgroundSnapshotView1 setFrame:{v4, v6, v8, v10}];
 
-  v15 = [(CEKSlider2D *)self _backgroundSnapshotView2];
-  [v15 setFrame:{v4, v6, v8, v10}];
+  _backgroundSnapshotView2 = [(CEKSlider2D *)self _backgroundSnapshotView2];
+  [_backgroundSnapshotView2 setFrame:{v4, v6, v8, v10}];
 
-  v16 = [(CEKSlider2D *)self _gradientsView];
-  [v16 setFrame:{v4, v6, v8, v10}];
+  _gradientsView = [(CEKSlider2D *)self _gradientsView];
+  [_gradientsView setFrame:{v4, v6, v8, v10}];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v17 = [(CEKSlider2D *)self _gradientsView];
-  v18 = [v17 layer];
-  v19 = [v18 sublayers];
+  _gradientsView2 = [(CEKSlider2D *)self _gradientsView];
+  layer = [_gradientsView2 layer];
+  sublayers = [layer sublayers];
 
-  v20 = [v19 countByEnumeratingWithState:&v47 objects:v52 count:16];
+  v20 = [sublayers countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v20)
   {
     v21 = v20;
@@ -468,35 +468,35 @@
       {
         if (*v48 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(sublayers);
         }
 
         [*(*(&v47 + 1) + 8 * v23++) setFrame:{v4, v6, v8, v10}];
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v47 objects:v52 count:16];
+      v21 = [sublayers countByEnumeratingWithState:&v47 objects:v52 count:16];
     }
 
     while (v21);
   }
 
-  v24 = [(CEKSlider2D *)self _gridView];
-  [v24 setFrame:{v4, v6, v8, v10}];
+  _gridView = [(CEKSlider2D *)self _gridView];
+  [_gridView setFrame:{v4, v6, v8, v10}];
 
-  v25 = [(CEKSlider2D *)self _gridView];
-  v26 = [v25 image];
+  _gridView2 = [(CEKSlider2D *)self _gridView];
+  image = [_gridView2 image];
 
-  [v26 size];
+  [image size];
   if (v28 != v8 || v27 != v10)
   {
     v29 = [(CEKSlider2D *)self _createGridImageWithSize:v8, v10];
-    v30 = [(CEKSlider2D *)self _gridView];
-    [v30 setImage:v29];
+    _gridView3 = [(CEKSlider2D *)self _gridView];
+    [_gridView3 setImage:v29];
   }
 
-  v31 = [(CEKSlider2D *)self _valueIndicator];
-  v32 = [(CEKSlider2D *)self _defaultValueIndicator];
+  _valueIndicator = [(CEKSlider2D *)self _valueIndicator];
+  _defaultValueIndicator = [(CEKSlider2D *)self _defaultValueIndicator];
   [(CEKSlider2D *)self value];
   [(CEKSlider2D *)self _normalizedViewValueForValue:?];
   v34 = v33;
@@ -518,33 +518,33 @@
     v42 = v8 * 0.085;
   }
 
-  [v31 setBounds:CEKRectWithSize()];
-  v43 = [v31 layer];
-  [v43 setCornerRadius:v42 * 0.5];
+  [_valueIndicator setBounds:CEKRectWithSize()];
+  layer2 = [_valueIndicator layer];
+  [layer2 setCornerRadius:v42 * 0.5];
 
-  v44 = [v32 layer];
-  [v44 setCornerRadius:v41 * 0.5 * 0.5];
+  layer3 = [_defaultValueIndicator layer];
+  [layer3 setCornerRadius:v41 * 0.5 * 0.5];
 
-  [v32 setBounds:CEKRectWithSize()];
-  [v31 bounds];
-  v45 = [(CEKSlider2D *)self traitCollection];
-  [v45 displayScale];
+  [_defaultValueIndicator setBounds:CEKRectWithSize()];
+  [_valueIndicator bounds];
+  traitCollection = [(CEKSlider2D *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale();
   UIRectGetCenter();
-  [v31 setCenter:?];
+  [_valueIndicator setCenter:?];
 
-  [v32 bounds];
-  v46 = [(CEKSlider2D *)self traitCollection];
-  [v46 displayScale];
+  [_defaultValueIndicator bounds];
+  traitCollection2 = [(CEKSlider2D *)self traitCollection];
+  [traitCollection2 displayScale];
   UIRectCenteredAboutPointScale();
   UIRectGetCenter();
-  [v32 setCenter:?];
+  [_defaultValueIndicator setCenter:?];
 }
 
-- (CGPoint)_normalizedViewValueForValue:(CGPoint)a3
+- (CGPoint)_normalizedViewValueForValue:(CGPoint)value
 {
-  y = a3.y;
-  v4 = CEKProgress(a3.x, -1.0, 1.0);
+  y = value.y;
+  v4 = CEKProgress(value.x, -1.0, 1.0);
   v5 = 1.0 - CEKProgress(y, -1.0, 1.0);
   v6 = v4 * 0.833333333 + 0.0833333333;
   v7 = v5 * 0.833333333 + 0.0833333333;
@@ -553,10 +553,10 @@
   return result;
 }
 
-- (CGPoint)_valueForNormalizedViewValue:(CGPoint)a3
+- (CGPoint)_valueForNormalizedViewValue:(CGPoint)value
 {
-  v3 = 1.0 - (a3.y + -0.0833333333) / 0.833333333;
-  v4 = CEKInterpolate(-1.0, 1.0, (a3.x + -0.0833333333) / 0.833333333);
+  v3 = 1.0 - (value.y + -0.0833333333) / 0.833333333;
+  v4 = CEKInterpolate(-1.0, 1.0, (value.x + -0.0833333333) / 0.833333333);
   v5 = CEKInterpolate(-1.0, 1.0, v3);
   v6 = v4;
   result.y = v5;
@@ -564,19 +564,19 @@
   return result;
 }
 
-- (void)_handlePressGesture:(id)a3
+- (void)_handlePressGesture:(id)gesture
 {
-  v30 = a3;
-  v4 = [v30 state];
-  if ((v4 - 3) < 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) < 3)
   {
     [(CEKSlider2D *)self _setActive:0 animated:1];
     goto LABEL_13;
   }
 
-  if (v4 != 2)
+  if (state != 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_13;
     }
@@ -585,7 +585,7 @@
     [(CEKSlider2D *)self _prepareFeedback];
   }
 
-  [v30 locationInView:self];
+  [gestureCopy locationInView:self];
   v6 = v5;
   v8 = v7;
   [(CEKSlider2D *)self bounds];
@@ -620,19 +620,19 @@
 LABEL_13:
 }
 
-- (id)_createGridImageWithSize:(CGSize)a3
+- (id)_createGridImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width == *MEMORY[0x1E695F060] && a3.height == *(MEMORY[0x1E695F060] + 8))
+  height = size.height;
+  width = size.width;
+  if (size.width == *MEMORY[0x1E695F060] && size.height == *(MEMORY[0x1E695F060] + 8))
   {
     v12 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCA80] preferredFormat];
-    v7 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v6 format:{width, height}];
+    preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+    v7 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{width, height}];
     v8 = CEKRectWithSize();
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -733,12 +733,12 @@ void __40__CEKSlider2D__createGridImageWithSize___block_invoke(double *a1, void 
   CGColorSpaceRelease(v14);
 }
 
-+ (id)backgroundImageWithImage:(id)a3
++ (id)backgroundImageWithImage:(id)image
 {
   v3 = MEMORY[0x1E695F620];
-  v4 = a3;
+  imageCopy = image;
   v5 = [v3 contextWithOptions:0];
-  v6 = [objc_alloc(MEMORY[0x1E695F658]) initWithImage:v4];
+  v6 = [objc_alloc(MEMORY[0x1E695F658]) initWithImage:imageCopy];
 
   v7 = [MEMORY[0x1E695F648] filterWithName:@"CIColorControls"];
   [v7 setValue:v6 forKey:@"inputImage"];
@@ -757,12 +757,12 @@ void __40__CEKSlider2D__createGridImageWithSize___block_invoke(double *a1, void 
   return v12;
 }
 
-- (void)setPulsingValueIndicator:(BOOL)a3
+- (void)setPulsingValueIndicator:(BOOL)indicator
 {
-  if (self->_pulsingValueIndicator != a3)
+  if (self->_pulsingValueIndicator != indicator)
   {
-    self->_pulsingValueIndicator = a3;
-    if (a3)
+    self->_pulsingValueIndicator = indicator;
+    if (indicator)
     {
       LODWORD(v3) = 2139095040;
       [(CEKSlider2D *)self _startScalingWithScale:0 duration:2.0 repeatCount:0.75 timingFunction:v3];
@@ -775,31 +775,31 @@ void __40__CEKSlider2D__createGridImageWithSize___block_invoke(double *a1, void 
   }
 }
 
-- (void)_startScalingWithScale:(double)a3 duration:(double)a4 repeatCount:(float)a5 timingFunction:(id)a6
+- (void)_startScalingWithScale:(double)scale duration:(double)duration repeatCount:(float)count timingFunction:(id)function
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  if (!v10)
+  functionCopy = function;
+  if (!functionCopy)
   {
-    v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB0]];
+    functionCopy = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB0]];
   }
 
   v11 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.scale"];
-  [v11 setTimingFunction:v10];
-  [v11 setDuration:a4];
+  [v11 setTimingFunction:functionCopy];
+  [v11 setDuration:duration];
   v22[0] = &unk_1F2FDFCA0;
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v22[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   [v11 setValues:v13];
 
-  *&v14 = a5;
+  *&v14 = count;
   [v11 setRepeatCount:v14];
   [v11 setAutoreverses:1];
-  v15 = [(CEKSlider2D *)self _valueIndicator];
-  v16 = [v15 layer];
+  _valueIndicator = [(CEKSlider2D *)self _valueIndicator];
+  layer = [_valueIndicator layer];
 
-  [v16 addAnimation:v11 forKey:@"pulsingTransform"];
+  [layer addAnimation:v11 forKey:@"pulsingTransform"];
   v17 = *(MEMORY[0x1E69792E8] + 80);
   v21[4] = *(MEMORY[0x1E69792E8] + 64);
   v21[5] = v17;
@@ -812,27 +812,27 @@ void __40__CEKSlider2D__createGridImageWithSize___block_invoke(double *a1, void 
   v20 = *(MEMORY[0x1E69792E8] + 48);
   v21[2] = *(MEMORY[0x1E69792E8] + 32);
   v21[3] = v20;
-  [v16 setTransform:v21];
+  [layer setTransform:v21];
 }
 
-- (void)_stopScalingWithDuration:(double)a3
+- (void)_stopScalingWithDuration:(double)duration
 {
-  v4 = [(CEKSlider2D *)self _valueIndicator];
-  v5 = [v4 layer];
+  _valueIndicator = [(CEKSlider2D *)self _valueIndicator];
+  layer = [_valueIndicator layer];
 
   v6 = MEMORY[0x1E69792E8];
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
-    v7 = [v5 presentationLayer];
-    v8 = v7;
-    if (v7)
+    presentationLayer = [layer presentationLayer];
+    v8 = presentationLayer;
+    if (presentationLayer)
     {
-      v9 = v7;
+      v9 = presentationLayer;
     }
 
     else
     {
-      v9 = v5;
+      v9 = layer;
     }
 
     v10 = v9;
@@ -851,7 +851,7 @@ void __40__CEKSlider2D__createGridImageWithSize___block_invoke(double *a1, void 
     }
 
     v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
-    [v11 setDuration:a3];
+    [v11 setDuration:duration];
     v12 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
     [v11 setTimingFunction:v12];
 
@@ -881,10 +881,10 @@ void __40__CEKSlider2D__createGridImageWithSize___block_invoke(double *a1, void 
     v18 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v23];
     [v11 setToValue:v18];
 
-    [v5 addAnimation:v11 forKey:@"stopScalingAnimation"];
+    [layer addAnimation:v11 forKey:@"stopScalingAnimation"];
   }
 
-  [v5 removeAnimationForKey:@"pulsingTransform"];
+  [layer removeAnimationForKey:@"pulsingTransform"];
   v19 = v6[5];
   v35 = v6[4];
   v36 = v19;
@@ -897,7 +897,7 @@ void __40__CEKSlider2D__createGridImageWithSize___block_invoke(double *a1, void 
   v22 = v6[3];
   v33 = v6[2];
   v34 = v22;
-  [v5 setTransform:&v31];
+  [layer setTransform:&v31];
 }
 
 - (void)_prepareFeedback

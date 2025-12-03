@@ -1,13 +1,13 @@
 @interface W5WiFiPreferredNetwork
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPreferredNetwork:(id)a3;
-- (W5WiFiPreferredNetwork)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPreferredNetwork:(id)network;
+- (W5WiFiPreferredNetwork)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5WiFiPreferredNetwork
@@ -90,37 +90,37 @@
   return v10;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5WiFiPreferredNetwork;
-  if (-[W5WiFiPreferredNetwork conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5WiFiPreferredNetwork conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToPreferredNetwork:(id)a3
+- (BOOL)isEqualToPreferredNetwork:(id)network
 {
-  v4 = [(W5WiFiPreferredNetwork *)self identifier];
-  v5 = [a3 identifier];
+  identifier = [(W5WiFiPreferredNetwork *)self identifier];
+  identifier2 = [network identifier];
 
-  return [(NSString *)v4 isEqualToString:v5];
+  return [(NSString *)identifier isEqualToString:identifier2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -131,17 +131,17 @@
     return 0;
   }
 
-  return [(W5WiFiPreferredNetwork *)self isEqualToPreferredNetwork:a3];
+  return [(W5WiFiPreferredNetwork *)self isEqualToPreferredNetwork:equal];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(W5WiFiPreferredNetwork *)self identifier];
+  identifier = [(W5WiFiPreferredNetwork *)self identifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)identifier hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5WiFiPreferredNetwork allocWithZone:?]];
   [(W5WiFiPreferredNetwork *)v4 setIdentifier:self->_identifier];
@@ -158,41 +158,41 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_identifier forKey:@"_identifier"];
-  [a3 encodeObject:self->_ssid forKey:@"_ssid"];
-  [a3 encodeObject:self->_ssidString forKey:@"_ssidString"];
-  [a3 encodeInteger:self->_security forKey:@"_security"];
-  [a3 encodeBool:self->_isEnabled forKey:@"_isEnabled"];
-  [a3 encodeBool:self->_isHidden forKey:@"_isHidden"];
-  [a3 encodeBool:self->_isCaptive forKey:@"_isCaptive"];
-  [a3 encodeBool:self->_isPasspoint forKey:@"_isPasspoint"];
-  [a3 encodeBool:self->_isMultiAP forKey:@"_isMultiAP"];
-  [a3 encodeObject:self->_domainName forKey:@"_domainName"];
+  [coder encodeObject:self->_identifier forKey:@"_identifier"];
+  [coder encodeObject:self->_ssid forKey:@"_ssid"];
+  [coder encodeObject:self->_ssidString forKey:@"_ssidString"];
+  [coder encodeInteger:self->_security forKey:@"_security"];
+  [coder encodeBool:self->_isEnabled forKey:@"_isEnabled"];
+  [coder encodeBool:self->_isHidden forKey:@"_isHidden"];
+  [coder encodeBool:self->_isCaptive forKey:@"_isCaptive"];
+  [coder encodeBool:self->_isPasspoint forKey:@"_isPasspoint"];
+  [coder encodeBool:self->_isMultiAP forKey:@"_isMultiAP"];
+  [coder encodeObject:self->_domainName forKey:@"_domainName"];
   lastJoinedTimestamp = self->_lastJoinedTimestamp;
 
-  [a3 encodeObject:lastJoinedTimestamp forKey:@"_lastJoinedTimestamp"];
+  [coder encodeObject:lastJoinedTimestamp forKey:@"_lastJoinedTimestamp"];
 }
 
-- (W5WiFiPreferredNetwork)initWithCoder:(id)a3
+- (W5WiFiPreferredNetwork)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = W5WiFiPreferredNetwork;
   v4 = [(W5WiFiPreferredNetwork *)&v6 init];
   if (v4)
   {
-    v4->_identifier = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_identifier", "copy"}];
-    v4->_ssid = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_ssid", "copy"}];
-    v4->_ssidString = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_ssidString", "copy"}];
-    v4->_security = [a3 decodeIntegerForKey:@"_security"];
-    v4->_isEnabled = [a3 decodeBoolForKey:@"_isEnabled"];
-    v4->_isHidden = [a3 decodeBoolForKey:@"_isHidden"];
-    v4->_isCaptive = [a3 decodeBoolForKey:@"_isCaptive"];
-    v4->_isPasspoint = [a3 decodeBoolForKey:@"_isPasspoint"];
-    v4->_isMultiAP = [a3 decodeBoolForKey:@"_isMultiAP"];
-    v4->_domainName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_domainName", "copy"}];
-    v4->_lastJoinedTimestamp = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_lastJoinedTimestamp", "copy"}];
+    v4->_identifier = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_identifier", "copy"}];
+    v4->_ssid = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_ssid", "copy"}];
+    v4->_ssidString = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_ssidString", "copy"}];
+    v4->_security = [coder decodeIntegerForKey:@"_security"];
+    v4->_isEnabled = [coder decodeBoolForKey:@"_isEnabled"];
+    v4->_isHidden = [coder decodeBoolForKey:@"_isHidden"];
+    v4->_isCaptive = [coder decodeBoolForKey:@"_isCaptive"];
+    v4->_isPasspoint = [coder decodeBoolForKey:@"_isPasspoint"];
+    v4->_isMultiAP = [coder decodeBoolForKey:@"_isMultiAP"];
+    v4->_domainName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_domainName", "copy"}];
+    v4->_lastJoinedTimestamp = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_lastJoinedTimestamp", "copy"}];
   }
 
   return v4;

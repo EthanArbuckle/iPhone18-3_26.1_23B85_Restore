@@ -1,6 +1,6 @@
 @interface MainWindowControlHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (MainWindowControlHeaderViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (MainWindowControlHeaderViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySetupBadgedButtonsLabelsValues;
 - (void)updateToolbarItems;
@@ -8,16 +8,16 @@
 
 @implementation MainWindowControlHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_calendarBarButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_newEventBarButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_inboxBarButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_badgedCalendarBarButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_badgedInboxBarButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_inboxCount" withType:"Q"];
-  [v3 validateClass:@"MainWindowControlHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_calendarBarButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_newEventBarButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_inboxBarButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_badgedCalendarBarButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_badgedInboxBarButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"MainWindowControlHeaderView" hasInstanceVariable:@"_inboxCount" withType:"Q"];
+  [validationsCopy validateClass:@"MainWindowControlHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -40,11 +40,11 @@
   [(MainWindowControlHeaderViewAccessibility *)self _accessibilitySetupBadgedButtonsLabelsValues];
 }
 
-- (MainWindowControlHeaderViewAccessibility)initWithFrame:(CGRect)a3
+- (MainWindowControlHeaderViewAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MainWindowControlHeaderViewAccessibility;
-  v3 = [(MainWindowControlHeaderViewAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MainWindowControlHeaderViewAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,30 +1,30 @@
 @interface CNiOSABContactWithNamePredicate
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation CNiOSABContactWithNamePredicate
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v10 = *MEMORY[0x1E6996568];
-  v11 = [(CNContactWithNamePredicate *)self name:a3];
+  v11 = [(CNContactWithNamePredicate *)self name:book];
   LODWORD(v10) = (*(v10 + 16))(v10, v11);
 
   if (v10)
   {
-    if (!a7)
+    if (!error)
     {
       return 0;
     }
 
     [CNErrorFactory errorWithCode:400 userInfo:0];
-    *a7 = v12 = 0;
+    *error = v12 = 0;
     return v12;
   }
 
-  v13 = [(CNContactWithNamePredicate *)self name];
-  v12 = ABAddressBookCopyPeopleWithName(a3, v13);
+  name = [(CNContactWithNamePredicate *)self name];
+  v12 = ABAddressBookCopyPeopleWithName(book, name);
 
   if (v12)
   {
@@ -36,15 +36,15 @@
   return CFArrayCreate(0, 0, 0, v14);
 }
 
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error
 {
   v8 = *MEMORY[0x1E6996568];
-  v9 = [(CNContactWithNamePredicate *)self name:a3];
+  v9 = [(CNContactWithNamePredicate *)self name:book];
   LODWORD(v8) = (*(v8 + 16))(v8, v9);
 
   if (v8)
   {
-    CNSetError(a5, 400, 0);
+    CNSetError(error, 400, 0);
     v10 = 0;
   }
 
@@ -55,15 +55,15 @@
       WordTokenizer = ABAddressBookGetWordTokenizer();
       SearchCollator = ABAddressBookGetSearchCollator();
       v13 = MEMORY[0x1E698A130];
-      v14 = [(CNContactWithNamePredicate *)self name];
-      [v13 predicateForContactsMatchingText:v14 tokenizer:WordTokenizer collator:SearchCollator matchNameFieldsOnly:1];
+      name = [(CNContactWithNamePredicate *)self name];
+      [v13 predicateForContactsMatchingText:name tokenizer:WordTokenizer collator:SearchCollator matchNameFieldsOnly:1];
     }
 
     else
     {
       v15 = MEMORY[0x1E698A130];
-      v14 = [(CNContactWithNamePredicate *)self name];
-      [v15 predicateForContactsMatchingName:v14 addressBook:a3];
+      name = [(CNContactWithNamePredicate *)self name];
+      [v15 predicateForContactsMatchingName:name addressBook:book];
     }
     v10 = ;
   }

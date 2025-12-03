@@ -1,10 +1,10 @@
 @interface FedStatsInvalidDataType
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4;
++ (id)createFromDict:(id)dict possibleError:(id *)error;
 - (FedStatsInvalidDataType)init;
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4;
-- (id)decodeFromOneHotVector:(id)a3 possibleError:(id *)a4;
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4;
-- (id)encodeToOneHotVector:(id)a3 possibleError:(id *)a4;
+- (id)decodeFromIndex:(id)index possibleError:(id *)error;
+- (id)decodeFromOneHotVector:(id)vector possibleError:(id *)error;
+- (id)encodeToIndex:(id)index possibleError:(id *)error;
+- (id)encodeToOneHotVector:(id)vector possibleError:(id *)error;
 @end
 
 @implementation FedStatsInvalidDataType
@@ -16,53 +16,53 @@
   return [(FedStatsInvalidDataType *)&v3 init];
 }
 
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4
++ (id)createFromDict:(id)dict possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
+    *error = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
 
   return v6;
 }
 
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4
+- (id)encodeToIndex:(id)index possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
+    *error = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
   }
 
   return 0;
 }
 
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4
+- (id)decodeFromIndex:(id)index possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
+    *error = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
   }
 
   return 0;
 }
 
-- (id)encodeToOneHotVector:(id)a3 possibleError:(id *)a4
+- (id)encodeToOneHotVector:(id)vector possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
+    *error = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
   }
 
   return 0;
 }
 
-- (id)decodeFromOneHotVector:(id)a3 possibleError:(id *)a4
+- (id)decodeFromOneHotVector:(id)vector possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
+    *error = [FedStatsError errorWithCode:900 description:@"This is only a placeholder class for invalid types."];
   }
 
   return 0;

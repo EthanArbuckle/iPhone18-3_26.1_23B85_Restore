@@ -1,21 +1,21 @@
 @interface PKExpressPassCredentialEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCredentialEntry:(id)a3;
-- (PKExpressPassCredentialEntry)initWithCoder:(id)a3;
-- (PKExpressPassCredentialEntry)initWithSelectionCriteria:(id)a3 readerIdentifier:(id)a4 associatedReaders:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCredentialEntry:(id)entry;
+- (PKExpressPassCredentialEntry)initWithCoder:(id)coder;
+- (PKExpressPassCredentialEntry)initWithSelectionCriteria:(id)criteria readerIdentifier:(id)identifier associatedReaders:(id)readers;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExpressPassCredentialEntry
 
-- (PKExpressPassCredentialEntry)initWithSelectionCriteria:(id)a3 readerIdentifier:(id)a4 associatedReaders:(id)a5
+- (PKExpressPassCredentialEntry)initWithSelectionCriteria:(id)criteria readerIdentifier:(id)identifier associatedReaders:(id)readers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  criteriaCopy = criteria;
+  identifierCopy = identifier;
+  readersCopy = readers;
+  if (criteriaCopy)
   {
     v16.receiver = self;
     v16.super_class = PKExpressPassCredentialEntry;
@@ -23,78 +23,78 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_selectionCriteria, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v12->_selectionCriteria, criteria);
+      objc_storeStrong(p_isa + 2, identifier);
+      objc_storeStrong(p_isa + 3, readers);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (PKExpressPassCredentialEntry)initWithCoder:(id)a3
+- (PKExpressPassCredentialEntry)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"selectionCriteria"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"selectionCriteria"];
 
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
   v11 = objc_alloc(MEMORY[0x1E695DFD8]);
   v12 = objc_opt_class();
   v13 = [v11 initWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v5 decodeObjectOfClasses:v13 forKey:@"associatedReaders"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"associatedReaders"];
 
   v15 = [(PKExpressPassCredentialEntry *)self initWithSelectionCriteria:v9 readerIdentifier:v10 associatedReaders:v14];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   selectionCriteria = self->_selectionCriteria;
-  v5 = a3;
-  [v5 encodeObject:selectionCriteria forKey:@"selectionCriteria"];
-  [v5 encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
-  [v5 encodeObject:self->_associatedReaders forKey:@"associatedReaders"];
+  coderCopy = coder;
+  [coderCopy encodeObject:selectionCriteria forKey:@"selectionCriteria"];
+  [coderCopy encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
+  [coderCopy encodeObject:self->_associatedReaders forKey:@"associatedReaders"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExpressPassCredentialEntry *)self isEqualToCredentialEntry:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExpressPassCredentialEntry *)self isEqualToCredentialEntry:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCredentialEntry:(id)a3
+- (BOOL)isEqualToCredentialEntry:(id)entry
 {
-  v4 = a3;
-  if (!v4)
+  entryCopy = entry;
+  if (!entryCopy)
   {
     goto LABEL_17;
   }
 
   selectionCriteria = self->_selectionCriteria;
-  v6 = v4[1];
+  v6 = entryCopy[1];
   if (selectionCriteria)
   {
     v7 = v6 == 0;
@@ -119,7 +119,7 @@
   }
 
   readerIdentifier = self->_readerIdentifier;
-  v9 = v4[2];
+  v9 = entryCopy[2];
   if (!readerIdentifier || !v9)
   {
     if (readerIdentifier == v9)
@@ -139,7 +139,7 @@ LABEL_17:
 
 LABEL_13:
   associatedReaders = self->_associatedReaders;
-  v11 = v4[3];
+  v11 = entryCopy[3];
   if (associatedReaders && v11)
   {
     v12 = [(NSSet *)associatedReaders isEqual:?];
@@ -166,8 +166,8 @@ LABEL_18:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(NSData *)self->_readerIdentifier hexEncoding];
-  v5 = [v3 initWithFormat:@"<PKExpressPassCredentialEntry: %p; Reader Identifier: %@; Criteria: %@, Associated Readers: %@>", self, v4, self->_selectionCriteria, self->_associatedReaders];
+  hexEncoding = [(NSData *)self->_readerIdentifier hexEncoding];
+  v5 = [v3 initWithFormat:@"<PKExpressPassCredentialEntry: %p; Reader Identifier: %@; Criteria: %@, Associated Readers: %@>", self, hexEncoding, self->_selectionCriteria, self->_associatedReaders];
 
   return v5;
 }

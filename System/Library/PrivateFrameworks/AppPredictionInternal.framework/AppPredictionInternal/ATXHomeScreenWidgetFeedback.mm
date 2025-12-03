@@ -1,11 +1,11 @@
 @interface ATXHomeScreenWidgetFeedback
 - (ATXHomeScreenWidgetFeedback)init;
-- (ATXHomeScreenWidgetFeedback)initWithWidgetFeedbackHistogram:(id)a3;
-- (double)eventCountForWidgetBundleId:(id)a3 type:(unint64_t)a4;
-- (double)pseudoTapEngagementRateForWidgetBundleId:(id)a3;
-- (double)tapEngagementRateForWidgetBundleId:(id)a3;
-- (id)categoryStringForFeedbackType:(unint64_t)a3;
-- (void)addEventForWidgetBundleId:(id)a3 type:(unint64_t)a4 weight:(float)a5;
+- (ATXHomeScreenWidgetFeedback)initWithWidgetFeedbackHistogram:(id)histogram;
+- (double)eventCountForWidgetBundleId:(id)id type:(unint64_t)type;
+- (double)pseudoTapEngagementRateForWidgetBundleId:(id)id;
+- (double)tapEngagementRateForWidgetBundleId:(id)id;
+- (id)categoryStringForFeedbackType:(unint64_t)type;
+- (void)addEventForWidgetBundleId:(id)id type:(unint64_t)type weight:(float)weight;
 @end
 
 @implementation ATXHomeScreenWidgetFeedback
@@ -19,34 +19,34 @@
   return v5;
 }
 
-- (ATXHomeScreenWidgetFeedback)initWithWidgetFeedbackHistogram:(id)a3
+- (ATXHomeScreenWidgetFeedback)initWithWidgetFeedbackHistogram:(id)histogram
 {
-  v5 = a3;
+  histogramCopy = histogram;
   v9.receiver = self;
   v9.super_class = ATXHomeScreenWidgetFeedback;
   v6 = [(ATXHomeScreenWidgetFeedback *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_histogram, a3);
+    objc_storeStrong(&v6->_histogram, histogram);
   }
 
   return v7;
 }
 
-- (id)categoryStringForFeedbackType:(unint64_t)a3
+- (id)categoryStringForFeedbackType:(unint64_t)type
 {
   result = @"TimesTapped";
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 6)
+    if (type > 6)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         return @"TimesDismissed";
       }
 
-      else if (a3 == 8)
+      else if (type == 8)
       {
         v9 = __atxlog_handle_default();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -61,12 +61,12 @@
     else
     {
       v8 = @"TimesSystemUpdate";
-      if (a3 != 6)
+      if (type != 6)
       {
         v8 = @"TimesTapped";
       }
 
-      if (a3 == 5)
+      if (type == 5)
       {
         return @"TimesSystemFallBack";
       }
@@ -82,29 +82,29 @@
   {
     v4 = @"UserInitiatedRotations";
     v5 = @"TimesSuggestedBySystem";
-    if (a3 != 4)
+    if (type != 4)
     {
       v5 = @"TimesTapped";
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       v4 = v5;
     }
 
     v6 = @"TimesPseudoTapped";
     v7 = @"TimesDisplayed";
-    if (a3 != 2)
+    if (type != 2)
     {
       v7 = @"TimesTapped";
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       v6 = v7;
     }
 
-    if (a3 <= 2)
+    if (type <= 2)
     {
       return v6;
     }
@@ -118,52 +118,52 @@
   return result;
 }
 
-- (void)addEventForWidgetBundleId:(id)a3 type:(unint64_t)a4 weight:(float)a5
+- (void)addEventForWidgetBundleId:(id)id type:(unint64_t)type weight:(float)weight
 {
   histogram = self->_histogram;
   v9 = MEMORY[0x277CBEAA8];
-  v10 = a3;
+  idCopy = id;
   v13 = [v9 now];
-  v11 = [(ATXHomeScreenWidgetFeedback *)self categoryStringForFeedbackType:a4];
-  *&v12 = a5;
-  [(_ATXAppLaunchCategoricalHistogram *)histogram addLaunchWithBundleId:v10 date:v13 category:v11 weight:v12];
+  v11 = [(ATXHomeScreenWidgetFeedback *)self categoryStringForFeedbackType:type];
+  *&v12 = weight;
+  [(_ATXAppLaunchCategoricalHistogram *)histogram addLaunchWithBundleId:idCopy date:v13 category:v11 weight:v12];
 }
 
-- (double)eventCountForWidgetBundleId:(id)a3 type:(unint64_t)a4
+- (double)eventCountForWidgetBundleId:(id)id type:(unint64_t)type
 {
   histogram = self->_histogram;
-  v7 = a3;
-  v8 = [(ATXHomeScreenWidgetFeedback *)self categoryStringForFeedbackType:a4];
-  [(_ATXAppLaunchCategoricalHistogram *)histogram totalLaunchesForBundleId:v7 category:v8];
+  idCopy = id;
+  v8 = [(ATXHomeScreenWidgetFeedback *)self categoryStringForFeedbackType:type];
+  [(_ATXAppLaunchCategoricalHistogram *)histogram totalLaunchesForBundleId:idCopy category:v8];
   v10 = v9;
 
   return v10;
 }
 
-- (double)tapEngagementRateForWidgetBundleId:(id)a3
+- (double)tapEngagementRateForWidgetBundleId:(id)id
 {
-  v4 = a3;
-  [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:v4 type:2];
+  idCopy = id;
+  [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:idCopy type:2];
   v6 = 0.0;
   if (v5 != 0.0)
   {
     v7 = v5;
-    [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:v4 type:0];
+    [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:idCopy type:0];
     v6 = v8 / v7;
   }
 
   return v6;
 }
 
-- (double)pseudoTapEngagementRateForWidgetBundleId:(id)a3
+- (double)pseudoTapEngagementRateForWidgetBundleId:(id)id
 {
-  v4 = a3;
-  [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:v4 type:2];
+  idCopy = id;
+  [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:idCopy type:2];
   v6 = 0.0;
   if (v5 != 0.0)
   {
     v7 = v5;
-    [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:v4 type:1];
+    [(ATXHomeScreenWidgetFeedback *)self eventCountForWidgetBundleId:idCopy type:1];
     v6 = v8 / v7;
   }
 

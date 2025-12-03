@@ -1,5 +1,5 @@
 @interface IPConfigurationHelperDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IPConfigurationHelperDelegate)init;
 @end
 
@@ -18,10 +18,10 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.IPConfigurationHelper.PvD"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.IPConfigurationHelper.PvD"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_9:
@@ -49,12 +49,12 @@ LABEL_9:
   }
 
   v6 = objc_opt_new();
-  [v4 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
 
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___IPHPvDInfoRequestProtocol];
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v4 resume];
+  [connectionCopy resume];
   v8 = 1;
 LABEL_10:
 

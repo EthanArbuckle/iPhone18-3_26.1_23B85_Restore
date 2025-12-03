@@ -1,70 +1,70 @@
 @interface TransitLineDisambiguationViewController
 - (BOOL)hasStatusMessageToShow;
 - (BOOL)isLoading;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (id)titleForSection:(int64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (id)titleForSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_determineShieldsFromLines;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewTapped:(id)a3;
-- (void)setLines:(id)a3;
-- (void)setStatusMessage:(id)a3;
-- (void)setTitleMessage:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewTapped:(id)tapped;
+- (void)setLines:(id)lines;
+- (void)setStatusMessage:(id)message;
+- (void)setTitleMessage:(id)message;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation TransitLineDisambiguationViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [v6 row];
-  v8 = [v6 section];
-  v9 = [(TransitLineDisambiguationViewController *)self linesBySystem];
-  v10 = [v9 objectAtIndexedSubscript:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
+  section = [pathCopy section];
+  linesBySystem = [(TransitLineDisambiguationViewController *)self linesBySystem];
+  v10 = [linesBySystem objectAtIndexedSubscript:section];
 
   if (v7 >= [v10 count])
   {
-    v17 = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
+    lineSelectionBlock = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
 
-    if (!v17)
+    if (!lineSelectionBlock)
     {
       goto LABEL_7;
     }
 
-    v11 = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
-    v11[2](v11, 0);
+    lineSelectionBlock2 = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
+    lineSelectionBlock2[2](lineSelectionBlock2, 0);
   }
 
   else
   {
-    [v18 deselectRowAtIndexPath:v6 animated:1];
-    v11 = [v10 objectAtIndexedSubscript:v7];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    lineSelectionBlock2 = [v10 objectAtIndexedSubscript:v7];
     v12 = +[MKMapService sharedService];
-    v13 = [(TransitLineDisambiguationViewController *)self currentUITargetForAnalytics];
-    v14 = +[GEOPlaceActionDetails actionDetailsWithMapItem:timestamp:resultIndex:targetID:](GEOPlaceActionDetails, "actionDetailsWithMapItem:timestamp:resultIndex:targetID:", 0, v7, [v11 muid], 0.0);
-    [v12 captureUserAction:1032 onTarget:v13 eventValue:0 placeActionDetails:v14];
+    currentUITargetForAnalytics = [(TransitLineDisambiguationViewController *)self currentUITargetForAnalytics];
+    v14 = +[GEOPlaceActionDetails actionDetailsWithMapItem:timestamp:resultIndex:targetID:](GEOPlaceActionDetails, "actionDetailsWithMapItem:timestamp:resultIndex:targetID:", 0, v7, [lineSelectionBlock2 muid], 0.0);
+    [v12 captureUserAction:1032 onTarget:currentUITargetForAnalytics eventValue:0 placeActionDetails:v14];
 
-    v15 = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
+    lineSelectionBlock3 = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
 
-    if (v15)
+    if (lineSelectionBlock3)
     {
-      v16 = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
-      v16[2](v16, v11);
+      lineSelectionBlock4 = [(TransitLineDisambiguationViewController *)self lineSelectionBlock];
+      lineSelectionBlock4[2](lineSelectionBlock4, lineSelectionBlock2);
     }
   }
 
 LABEL_7:
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(TransitLineDisambiguationViewController *)self hasStatusMessageToShow]|| [(TransitLineDisambiguationViewController *)self isLoading])
   {
     v6 = 0;
@@ -72,19 +72,19 @@ LABEL_7:
 
   else
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (sub_10000FA08(self) != 5)
   {
@@ -103,23 +103,23 @@ LABEL_7:
 
   if ([(TransitLineDisambiguationViewController *)self hasStatusMessageToShow])
   {
-    v11 = [(TransitLineDisambiguationViewController *)self statusMessage];
-    [v10 setLabelText:v11];
+    statusMessage = [(TransitLineDisambiguationViewController *)self statusMessage];
+    [v10 setLabelText:statusMessage];
 
     goto LABEL_7;
   }
 
-  v12 = [v6 row];
-  v13 = [v6 section];
-  v14 = [(TransitLineDisambiguationViewController *)self linesBySystem];
-  v15 = [v14 objectAtIndexedSubscript:v13];
+  v12 = [pathCopy row];
+  section = [pathCopy section];
+  linesBySystem = [(TransitLineDisambiguationViewController *)self linesBySystem];
+  v15 = [linesBySystem objectAtIndexedSubscript:section];
 
   if (v12 < [v15 count])
   {
     v16 = [v15 objectAtIndexedSubscript:v12];
-    v17 = [(TransitLineDisambiguationViewController *)self shieldsByLine];
+    shieldsByLine = [(TransitLineDisambiguationViewController *)self shieldsByLine];
     v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v16 muid]);
-    v19 = [v17 objectForKeyedSubscript:v18];
+    v19 = [shieldsByLine objectForKeyedSubscript:v18];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -134,21 +134,21 @@ LABEL_7:
 
     [v10 setShieldImage:v20];
     v21 = v16;
-    v22 = [v21 name];
-    v23 = [v22 length];
+    name = [v21 name];
+    v23 = [name length];
 
     if (v23)
     {
-      v24 = [v21 name];
+      name2 = [v21 name];
     }
 
     else
     {
-      v25 = [v21 system];
-      v24 = [v25 name];
+      system = [v21 system];
+      name2 = [system name];
     }
 
-    [v10 setLabelText:v24];
+    [v10 setLabelText:name2];
     [v10 setMaxWidth:self->_maxWidthOfShields];
   }
 
@@ -157,76 +157,76 @@ LABEL_17:
   return v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  cellCopy = cell;
   if (![(TransitLineDisambiguationViewController *)self isLoading])
   {
-    [v6 hideSpinner];
+    [cellCopy hideSpinner];
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (sub_10000FA08(self) != 5)
   {
     return 1;
   }
 
-  v4 = [(TransitLineDisambiguationViewController *)self linesBySystem];
-  if ([v4 count] < 1)
+  linesBySystem = [(TransitLineDisambiguationViewController *)self linesBySystem];
+  if ([linesBySystem count] < 1)
   {
     v6 = 1;
   }
 
   else
   {
-    v5 = [(TransitLineDisambiguationViewController *)self linesBySystem];
-    v6 = [v5 count];
+    linesBySystem2 = [(TransitLineDisambiguationViewController *)self linesBySystem];
+    v6 = [linesBySystem2 count];
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(TransitLineDisambiguationViewController *)self hasStatusMessageToShow]|| [(TransitLineDisambiguationViewController *)self isLoading])
   {
     return 1;
   }
 
-  v7 = [(TransitLineDisambiguationViewController *)self linesBySystem];
-  v8 = [v7 objectAtIndexedSubscript:a4];
+  linesBySystem = [(TransitLineDisambiguationViewController *)self linesBySystem];
+  v8 = [linesBySystem objectAtIndexedSubscript:section];
 
   v9 = [v8 count];
   return v9;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
   if ([(TransitLineDisambiguationViewController *)self isLoading])
   {
-    v5 = [(TransitLineDisambiguationViewController *)self titleMessage];
+    titleMessage = [(TransitLineDisambiguationViewController *)self titleMessage];
   }
 
   else
   {
-    v6 = [(TransitLineDisambiguationViewController *)self linesBySystem];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    linesBySystem = [(TransitLineDisambiguationViewController *)self linesBySystem];
+    v7 = [linesBySystem objectAtIndexedSubscript:section];
 
-    v8 = [v7 firstObject];
-    v9 = [v8 system];
-    v10 = [v9 name];
+    firstObject = [v7 firstObject];
+    system = [firstObject system];
+    name = [system name];
 
     v11 = [v7 count];
-    v12 = [v10 length];
+    v12 = [name length];
     v13 = +[NSBundle mainBundle];
     v14 = v13;
     if (v12)
     {
       v15 = [v13 localizedStringForKey:@"number_of_disambiguation_lines_with_system_name" value:@"localized string not found" table:0];
 
-      [NSString localizedStringWithFormat:v15, v11, v10];
+      [NSString localizedStringWithFormat:v15, v11, name];
     }
 
     else
@@ -235,19 +235,19 @@ LABEL_17:
 
       [NSString localizedStringWithFormat:v15, v11, v17];
     }
-    v5 = ;
+    titleMessage = ;
   }
 
-  return v5;
+  return titleMessage;
 }
 
 - (BOOL)hasStatusMessageToShow
 {
-  v3 = [(TransitLineDisambiguationViewController *)self statusMessage];
-  if ([v3 length])
+  statusMessage = [(TransitLineDisambiguationViewController *)self statusMessage];
+  if ([statusMessage length])
   {
-    v4 = [(TransitLineDisambiguationViewController *)self allLines];
-    v5 = [v4 count] == 0;
+    allLines = [(TransitLineDisambiguationViewController *)self allLines];
+    v5 = [allLines count] == 0;
   }
 
   else
@@ -260,36 +260,36 @@ LABEL_17:
 
 - (BOOL)isLoading
 {
-  v3 = [(TransitLineDisambiguationViewController *)self statusMessage];
-  if ([v3 length])
+  statusMessage = [(TransitLineDisambiguationViewController *)self statusMessage];
+  if ([statusMessage length])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(TransitLineDisambiguationViewController *)self allLines];
-    v4 = [v5 count] == 0;
+    allLines = [(TransitLineDisambiguationViewController *)self allLines];
+    v4 = [allLines count] == 0;
   }
 
   return v4;
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:4 onTarget:-[TransitLineDisambiguationViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
   v6.receiver = self;
   v6.super_class = TransitLineDisambiguationViewController;
-  [(ContaineeViewController *)&v6 handleDismissAction:v4];
+  [(ContaineeViewController *)&v6 handleDismissAction:actionCopy];
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 wantsExpandLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsExpandLayout];
 }
 
 - (void)_determineShieldsFromLines
@@ -309,22 +309,22 @@ LABEL_17:
     v4 = 7;
   }
 
-  v5 = [(TransitLineDisambiguationViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 screen];
-  v8 = v7;
-  if (!v7)
+  view = [(TransitLineDisambiguationViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  v8 = screen;
+  if (!screen)
   {
     v8 = +[UIScreen mainScreen];
   }
 
   [v8 scale];
   v10 = v9;
-  if (!v7)
+  if (!screen)
   {
   }
 
-  v11 = [(TransitLineDisambiguationViewController *)self allLines];
+  allLines = [(TransitLineDisambiguationViewController *)self allLines];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100CDEA8C;
@@ -334,9 +334,9 @@ LABEL_17:
   v12 = v3;
   v21 = v12;
   v22 = &v25;
-  [v11 enumerateObjectsUsingBlock:v20];
+  [allLines enumerateObjectsUsingBlock:v20];
 
-  v13 = [(TransitLineDisambiguationViewController *)self allLines];
+  allLines2 = [(TransitLineDisambiguationViewController *)self allLines];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100CDEBAC;
@@ -345,7 +345,7 @@ LABEL_17:
   v17 = v14;
   v18 = &v25;
   v19 = v10;
-  [v13 enumerateObjectsUsingBlock:v16];
+  [allLines2 enumerateObjectsUsingBlock:v16];
 
   *&self->_maxWidthOfShields = v26[3];
   v15 = [v14 copy];
@@ -354,12 +354,12 @@ LABEL_17:
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)setLines:(id)a3
+- (void)setLines:(id)lines
 {
-  v4 = a3;
-  if (![(NSArray *)self->_allLines isEqualToArray:v4])
+  linesCopy = lines;
+  if (![(NSArray *)self->_allLines isEqualToArray:linesCopy])
   {
-    v5 = [v4 copy];
+    v5 = [linesCopy copy];
     allLines = self->_allLines;
     self->_allLines = v5;
 
@@ -370,8 +370,8 @@ LABEL_17:
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v23 = v4;
-      v8 = v4;
+      v23 = linesCopy;
+      v8 = linesCopy;
       v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v9)
       {
@@ -387,14 +387,14 @@ LABEL_17:
             }
 
             v13 = *(*(&v29 + 1) + 8 * i);
-            v14 = [v13 system];
-            v15 = [v14 name];
+            system = [v13 system];
+            name = [system name];
 
-            v16 = [v7 objectForKeyedSubscript:v15];
+            v16 = [v7 objectForKeyedSubscript:name];
             if (!v16)
             {
               v16 = +[NSMutableArray array];
-              [v7 setObject:v16 forKeyedSubscript:v15];
+              [v7 setObject:v16 forKeyedSubscript:name];
             }
 
             [v16 addObject:v13];
@@ -417,7 +417,7 @@ LABEL_17:
       linesBySystem = self->_linesBySystem;
       self->_linesBySystem = v18;
 
-      v4 = v23;
+      linesCopy = v23;
     }
 
     else
@@ -443,19 +443,19 @@ LABEL_17:
 
 LABEL_18:
     [(TransitLineDisambiguationViewController *)self _determineShieldsFromLines:v23];
-    v21 = [(TransitLineDisambiguationViewController *)self tableView];
-    [v21 reloadData];
+    tableView = [(TransitLineDisambiguationViewController *)self tableView];
+    [tableView reloadData];
 
-    v22 = [(TransitLineDisambiguationViewController *)self tableView];
-    [v22 layoutIfNeeded];
+    tableView2 = [(TransitLineDisambiguationViewController *)self tableView];
+    [tableView2 layoutIfNeeded];
   }
 }
 
-- (void)setStatusMessage:(id)a3
+- (void)setStatusMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = self->_statusMessage;
-  v7 = v5;
+  v7 = messageCopy;
   if (v7 | v6)
   {
     v10 = v7;
@@ -464,24 +464,24 @@ LABEL_18:
     v7 = v10;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_statusMessage, a3);
-      v9 = [(TransitLineDisambiguationViewController *)self tableView];
-      [v9 reloadData];
+      objc_storeStrong(&self->_statusMessage, message);
+      tableView = [(TransitLineDisambiguationViewController *)self tableView];
+      [tableView reloadData];
 
       v7 = v10;
     }
   }
 }
 
-- (void)setTitleMessage:(id)a3
+- (void)setTitleMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  messageCopy = message;
+  v5 = [messageCopy copy];
   titleMessage = self->_titleMessage;
   self->_titleMessage = v5;
 
-  v7 = [(TransitLineDisambiguationViewController *)self titleHeaderView];
-  [v7 setTitle:v4];
+  titleHeaderView = [(TransitLineDisambiguationViewController *)self titleHeaderView];
+  [titleHeaderView setTitle:messageCopy];
 }
 
 - (void)viewDidLoad
@@ -506,137 +506,137 @@ LABEL_18:
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v9 = [(ContainerHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [(ContainerHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
     titleHeaderView = self->_titleHeaderView;
-    self->_titleHeaderView = v9;
+    self->_titleHeaderView = height;
 
     [(ContainerHeaderView *)self->_titleHeaderView setDelegate:self];
     [(ContainerHeaderView *)self->_titleHeaderView setPreservesSuperviewLayoutMargins:1];
     [(ContainerHeaderView *)self->_titleHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(TransitLineDisambiguationViewController *)self view];
-    [v11 addSubview:self->_titleHeaderView];
+    view = [(TransitLineDisambiguationViewController *)self view];
+    [view addSubview:self->_titleHeaderView];
 
-    v67 = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
-    v69 = [(TransitLineDisambiguationViewController *)self view];
-    v65 = [v69 trailingAnchor];
-    v63 = [v67 constraintEqualToAnchor:v65];
+    trailingAnchor = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
+    view2 = [(TransitLineDisambiguationViewController *)self view];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v63 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v75[0] = v63;
-    v61 = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
-    v12 = [(TransitLineDisambiguationViewController *)self view];
-    v13 = [v12 topAnchor];
-    v14 = [v61 constraintEqualToAnchor:v13];
+    topAnchor = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
+    view3 = [(TransitLineDisambiguationViewController *)self view];
+    topAnchor2 = [view3 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v75[1] = v14;
-    v15 = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
-    v16 = [(TransitLineDisambiguationViewController *)self view];
-    v17 = [v16 leadingAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
+    leadingAnchor = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
+    view4 = [(TransitLineDisambiguationViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v75[2] = v18;
     v19 = [NSArray arrayWithObjects:v75 count:3];
     [v3 addObjectsFromArray:v19];
   }
 
-  v20 = [[MapsThemeTableView alloc] initWithFrame:sub_10000FA08(self) == 5 style:x, y, width, height];
-  [(TransitLineDisambiguationViewController *)self setTableView:v20];
+  height2 = [[MapsThemeTableView alloc] initWithFrame:sub_10000FA08(self) == 5 style:x, y, width, height];
+  [(TransitLineDisambiguationViewController *)self setTableView:height2];
 
-  v21 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v22 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v22 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 
-  v23 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v23 setSectionHeaderHeight:UITableViewAutomaticDimension];
+  tableView3 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView3 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
-  v24 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v24 _setAutomaticContentOffsetAdjustmentEnabled:0];
+  tableView4 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView4 _setAutomaticContentOffsetAdjustmentEnabled:0];
 
   v25 = [[UIView alloc] initWithFrame:{x, y, width, height}];
-  v26 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v26 setTableFooterView:v25];
+  tableView5 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView5 setTableFooterView:v25];
 
-  v27 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v27 setDelegate:self];
+  tableView6 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView6 setDelegate:self];
 
-  v28 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v28 setDataSource:self];
+  tableView7 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView7 setDataSource:self];
 
-  v29 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v29 setSeparatorInset:{0.0, 16.0, 0.0, 16.0}];
+  tableView8 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView8 setSeparatorInset:{0.0, 16.0, 0.0, 16.0}];
 
-  v30 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v30 setEstimatedRowHeight:79.0];
+  tableView9 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView9 setEstimatedRowHeight:79.0];
 
   v31 = +[UIColor clearColor];
-  v32 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v32 setBackgroundColor:v31];
+  tableView10 = [(TransitLineDisambiguationViewController *)self tableView];
+  [tableView10 setBackgroundColor:v31];
 
-  v33 = [(TransitLineDisambiguationViewController *)self tableView];
+  tableView11 = [(TransitLineDisambiguationViewController *)self tableView];
   v34 = objc_opt_class();
   v35 = objc_opt_class();
   v36 = NSStringFromClass(v35);
-  [v33 registerClass:v34 forCellReuseIdentifier:v36];
+  [tableView11 registerClass:v34 forCellReuseIdentifier:v36];
 
-  v37 = [(TransitLineDisambiguationViewController *)self tableView];
+  tableView12 = [(TransitLineDisambiguationViewController *)self tableView];
   v38 = objc_opt_class();
   v39 = +[TransitLineDisambiguationSectionHeaderView identifier];
-  [v37 registerClass:v38 forHeaderFooterViewReuseIdentifier:v39];
+  [tableView12 registerClass:v38 forHeaderFooterViewReuseIdentifier:v39];
 
-  v40 = [(TransitLineDisambiguationViewController *)self view];
-  v41 = [(TransitLineDisambiguationViewController *)self tableView];
-  [v40 addSubview:v41];
+  view5 = [(TransitLineDisambiguationViewController *)self view];
+  tableView13 = [(TransitLineDisambiguationViewController *)self tableView];
+  [view5 addSubview:tableView13];
 
   v42 = sub_10000FA08(self);
-  v43 = [(MapsThemeTableView *)self->_tableView trailingAnchor];
-  v70 = [(TransitLineDisambiguationViewController *)self view];
-  v68 = [v70 trailingAnchor];
-  v44 = [v43 constraintEqualToAnchor:?];
+  trailingAnchor3 = [(MapsThemeTableView *)self->_tableView trailingAnchor];
+  view6 = [(TransitLineDisambiguationViewController *)self view];
+  trailingAnchor4 = [view6 trailingAnchor];
+  v44 = [trailingAnchor3 constraintEqualToAnchor:?];
   v66 = v44;
   if (v42 == 5)
   {
     v74[0] = v44;
-    v58 = [(MapsThemeTableView *)self->_tableView topAnchor];
-    v64 = [(TransitLineDisambiguationViewController *)self view];
-    v62 = [v64 topAnchor];
-    v60 = [v58 constraintEqualToAnchor:?];
+    topAnchor3 = [(MapsThemeTableView *)self->_tableView topAnchor];
+    view7 = [(TransitLineDisambiguationViewController *)self view];
+    topAnchor4 = [view7 topAnchor];
+    v60 = [topAnchor3 constraintEqualToAnchor:?];
     v74[1] = v60;
-    v45 = [(MapsThemeTableView *)self->_tableView leadingAnchor];
-    v46 = [(TransitLineDisambiguationViewController *)self view];
-    v47 = [v46 leadingAnchor];
-    v59 = v45;
-    v48 = [v45 constraintEqualToAnchor:v47];
-    v74[2] = v48;
-    v49 = [(MapsThemeTableView *)self->_tableView bottomAnchor];
-    v50 = [(TransitLineDisambiguationViewController *)self view];
-    v51 = [v50 bottomAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
+    leadingAnchor3 = [(MapsThemeTableView *)self->_tableView leadingAnchor];
+    view8 = [(TransitLineDisambiguationViewController *)self view];
+    leadingAnchor4 = [view8 leadingAnchor];
+    view10 = leadingAnchor3;
+    bottomAnchor3 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    v74[2] = bottomAnchor3;
+    bottomAnchor = [(MapsThemeTableView *)self->_tableView bottomAnchor];
+    view9 = [(TransitLineDisambiguationViewController *)self view];
+    bottomAnchor2 = [view9 bottomAnchor];
+    v52 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v74[3] = v52;
     [NSArray arrayWithObjects:v74 count:4];
-    v54 = v53 = v43;
+    v54 = v53 = trailingAnchor3;
     v55 = v71;
     [v71 addObjectsFromArray:v54];
 
-    v43 = v53;
-    v56 = v58;
+    trailingAnchor3 = v53;
+    topAnchor5 = topAnchor3;
   }
 
   else
   {
     v73[0] = v44;
-    v56 = [(MapsThemeTableView *)self->_tableView topAnchor];
-    v64 = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
-    v62 = [v56 constraintEqualToAnchor:?];
-    v73[1] = v62;
-    v57 = [(MapsThemeTableView *)self->_tableView leadingAnchor];
-    v59 = [(TransitLineDisambiguationViewController *)self view];
-    v46 = [v59 leadingAnchor];
-    v60 = v57;
-    v47 = [v57 constraintEqualToAnchor:v46];
-    v73[2] = v47;
-    v48 = [(MapsThemeTableView *)self->_tableView bottomAnchor];
-    v49 = [(TransitLineDisambiguationViewController *)self view];
-    v50 = [v49 bottomAnchor];
-    v51 = [v48 constraintEqualToAnchor:v50];
-    v73[3] = v51;
+    topAnchor5 = [(MapsThemeTableView *)self->_tableView topAnchor];
+    view7 = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
+    topAnchor4 = [topAnchor5 constraintEqualToAnchor:?];
+    v73[1] = topAnchor4;
+    leadingAnchor5 = [(MapsThemeTableView *)self->_tableView leadingAnchor];
+    view10 = [(TransitLineDisambiguationViewController *)self view];
+    view8 = [view10 leadingAnchor];
+    v60 = leadingAnchor5;
+    leadingAnchor4 = [leadingAnchor5 constraintEqualToAnchor:view8];
+    v73[2] = leadingAnchor4;
+    bottomAnchor3 = [(MapsThemeTableView *)self->_tableView bottomAnchor];
+    bottomAnchor = [(TransitLineDisambiguationViewController *)self view];
+    view9 = [bottomAnchor bottomAnchor];
+    bottomAnchor2 = [bottomAnchor3 constraintEqualToAnchor:view9];
+    v73[3] = bottomAnchor2;
     v52 = [NSArray arrayWithObjects:v73 count:4];
     v55 = v71;
     [v71 addObjectsFromArray:v52];

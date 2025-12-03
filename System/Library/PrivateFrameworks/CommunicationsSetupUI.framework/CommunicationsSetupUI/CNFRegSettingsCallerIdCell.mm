@@ -1,14 +1,14 @@
 @interface CNFRegSettingsCallerIdCell
-- (CNFRegSettingsCallerIdCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CNFRegSettingsCallerIdCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation CNFRegSettingsCallerIdCell
 
-- (CNFRegSettingsCallerIdCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CNFRegSettingsCallerIdCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = CNFRegSettingsCallerIdCell;
-  v5 = [(PSTableCell *)&v8 initWithStyle:0 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v8 initWithStyle:0 reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {

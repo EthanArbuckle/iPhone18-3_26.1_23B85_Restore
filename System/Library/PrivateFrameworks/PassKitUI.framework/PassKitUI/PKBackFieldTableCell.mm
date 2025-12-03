@@ -1,32 +1,32 @@
 @interface PKBackFieldTableCell
 - (BOOL)containsURL;
 - (CGRect)_textBounds;
-- (CGSize)_computeSizeWithBounds:(CGRect)a3 shouldLayOut:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKBackFieldTableCell)initWithBridgeStyle:(BOOL)a3 reuseIdentifier:(id)a4;
-- (id)_allURLsFromAttributedString:(id)a3;
+- (CGSize)_computeSizeWithBounds:(CGRect)bounds shouldLayOut:(BOOL)out;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKBackFieldTableCell)initWithBridgeStyle:(BOOL)style reuseIdentifier:(id)identifier;
+- (id)_allURLsFromAttributedString:(id)string;
 - (id)_linkColor;
 - (id)_linkTextAttributes;
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)_setUpTitleTextViewAttributes;
 - (void)_setUpValueTextViewAttributes;
 - (void)layoutSubviews;
 - (void)openFirstURL;
-- (void)setField:(id)a3;
-- (void)setShowLinks:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setField:(id)field;
+- (void)setShowLinks:(BOOL)links;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKBackFieldTableCell
 
-- (PKBackFieldTableCell)initWithBridgeStyle:(BOOL)a3 reuseIdentifier:(id)a4
+- (PKBackFieldTableCell)initWithBridgeStyle:(BOOL)style reuseIdentifier:(id)identifier
 {
-  v5 = [(PKBackFieldTableCell *)self initWithStyle:0 reuseIdentifier:a4];
+  v5 = [(PKBackFieldTableCell *)self initWithStyle:0 reuseIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
-    v5->_useBridgeStyle = a3;
+    v5->_useBridgeStyle = style;
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
     v9 = *(MEMORY[0x1E695F058] + 16);
@@ -35,8 +35,8 @@
     titleTextView = v6->_titleTextView;
     v6->_titleTextView = v11;
 
-    v13 = [(UITextView *)v6->_titleTextView textContainer];
-    [v13 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v6->_titleTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     v14 = *MEMORY[0x1E69DDCE0];
     v15 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -44,20 +44,20 @@
     v17 = *(MEMORY[0x1E69DDCE0] + 24);
     [(UITextView *)v6->_titleTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], v15, v16, v17];
     [(UITextView *)v6->_titleTextView setDelegate:v6];
-    v18 = [(PKBackFieldTableCell *)v6 contentView];
-    [v18 addSubview:v6->_titleTextView];
+    contentView = [(PKBackFieldTableCell *)v6 contentView];
+    [contentView addSubview:v6->_titleTextView];
 
     v19 = [MEMORY[0x1E69DD168] pkui_plainNonInteractiveTextViewWithFrame:{v7, v8, v9, v10}];
     valueTextView = v6->_valueTextView;
     v6->_valueTextView = v19;
 
-    v21 = [(UITextView *)v6->_valueTextView textContainer];
-    [v21 setLineFragmentPadding:0.0];
+    textContainer2 = [(UITextView *)v6->_valueTextView textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
 
     [(UITextView *)v6->_valueTextView setTextContainerInset:v14, v15, v16, v17];
     [(UITextView *)v6->_valueTextView setDelegate:v6];
-    v22 = [(PKBackFieldTableCell *)v6 contentView];
-    [v22 addSubview:v6->_valueTextView];
+    contentView2 = [(PKBackFieldTableCell *)v6 contentView];
+    [contentView2 addSubview:v6->_valueTextView];
   }
 
   return v6;
@@ -65,16 +65,16 @@
 
 - (BOOL)containsURL
 {
-  v3 = [(PKPassField *)self->_field link];
-  if (v3)
+  link = [(PKPassField *)self->_field link];
+  if (link)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UITextView *)self->_valueTextView attributedText];
-    v6 = [(PKBackFieldTableCell *)self _allURLsFromAttributedString:v5];
+    attributedText = [(UITextView *)self->_valueTextView attributedText];
+    v6 = [(PKBackFieldTableCell *)self _allURLsFromAttributedString:attributedText];
     v4 = [v6 count] != 0;
   }
 
@@ -84,8 +84,8 @@
 - (void)_setUpTitleTextViewAttributes
 {
   v7 = self->_titleTextView;
-  v3 = [(PKPassField *)self->_field label];
-  [(UITextView *)v7 setText:v3];
+  label = [(PKPassField *)self->_field label];
+  [(UITextView *)v7 setText:label];
 
   if ([(PKPassField *)self->_field cellStyle]== 3)
   {
@@ -121,11 +121,11 @@
 
   else
   {
-    v4 = [(UITextView *)v3 webView];
-    [v4 setDataDetectorTypes:0];
-    [v4 setAllowsDataDetectorsSheet:0];
-    [v4 setAllowsImageSheet:0];
-    [v4 setAllowsLinkSheet:0];
+    webView = [(UITextView *)v3 webView];
+    [webView setDataDetectorTypes:0];
+    [webView setAllowsDataDetectorsSheet:0];
+    [webView setAllowsImageSheet:0];
+    [webView setAllowsLinkSheet:0];
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -144,12 +144,12 @@
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  v8 = [(PKPassField *)self->_field link];
-  v9 = [(PKPassField *)self->_field value];
-  v10 = v9;
-  if (v8 && [v9 length])
+  link = [(PKPassField *)self->_field link];
+  value = [(PKPassField *)self->_field value];
+  v10 = value;
+  if (link && [value length])
   {
-    [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69DB670]];
+    [v5 setObject:link forKeyedSubscript:*MEMORY[0x1E69DB670]];
     v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v10 attributes:v5];
   }
 
@@ -162,39 +162,39 @@
   [(UITextView *)v14 setAttributedText:v11];
 
   [(UITextView *)v14 setTextAlignment:4];
-  v13 = [(PKBackFieldTableCell *)self _linkTextAttributes];
-  [(UITextView *)v14 setLinkTextAttributes:v13];
+  _linkTextAttributes = [(PKBackFieldTableCell *)self _linkTextAttributes];
+  [(UITextView *)v14 setLinkTextAttributes:_linkTextAttributes];
 
   [(UITextView *)v14 setSelectable:self->_showLinks];
   [(UITextView *)v14 setUserInteractionEnabled:self->_showLinks];
 }
 
-- (void)setShowLinks:(BOOL)a3
+- (void)setShowLinks:(BOOL)links
 {
-  if (self->_showLinks != a3)
+  if (self->_showLinks != links)
   {
-    self->_showLinks = a3;
+    self->_showLinks = links;
     [(PKBackFieldTableCell *)self _setUpValueTextViewAttributes];
 
     [(PKBackFieldTableCell *)self setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PKBackFieldTableCell;
-  [(PKBackFieldTableCell *)&v4 traitCollectionDidChange:a3];
+  [(PKBackFieldTableCell *)&v4 traitCollectionDidChange:change];
   self->_cachedWidth = 0.0;
 }
 
-- (void)setField:(id)a3
+- (void)setField:(id)field
 {
-  v5 = a3;
-  if (self->_field != v5)
+  fieldCopy = field;
+  if (self->_field != fieldCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_field, a3);
+    v7 = fieldCopy;
+    objc_storeStrong(&self->_field, field);
     self->_cachedWidth = 0.0;
     [(PKBackFieldTableCell *)self _setUpTitleTextViewAttributes];
     [(PKBackFieldTableCell *)self _setUpValueTextViewAttributes];
@@ -202,14 +202,14 @@
     PKAccessibilityIDCellSet(self, v6);
 
     [(PKBackFieldTableCell *)self setNeedsLayout];
-    v5 = v7;
+    fieldCopy = v7;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKBackFieldTableCell *)self _textBounds];
   if (self->_cachedWidth == v6)
   {
@@ -238,27 +238,27 @@
   [(PKBackFieldTableCell *)self _computeSizeWithBounds:1 shouldLayOut:?];
 }
 
-- (CGSize)_computeSizeWithBounds:(CGRect)a3 shouldLayOut:(BOOL)a4
+- (CGSize)_computeSizeWithBounds:(CGRect)bounds shouldLayOut:(BOOL)out
 {
-  v4 = a4;
-  width = a3.size.width;
-  [(PKBackFieldTableCell *)self _textBounds:a3.origin.x];
+  outCopy = out;
+  width = bounds.size.width;
+  [(PKBackFieldTableCell *)self _textBounds:bounds.origin.x];
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UITextView *)self->_titleTextView text];
-  if ([v12 length])
+  text = [(UITextView *)self->_titleTextView text];
+  if ([text length])
   {
-    v13 = [(UITextView *)self->_titleTextView text];
-    v14 = v13;
-    if (v13 == @" ")
+    text2 = [(UITextView *)self->_titleTextView text];
+    v14 = text2;
+    if (text2 == @" ")
     {
       v15 = 0;
     }
 
-    else if (v13)
+    else if (text2)
     {
-      v15 = [(__CFString *)v13 isEqualToString:@" "]^ 1;
+      v15 = [(__CFString *)text2 isEqualToString:@" "]^ 1;
     }
 
     else
@@ -272,8 +272,8 @@
     v15 = 0;
   }
 
-  v16 = [(UITextView *)self->_valueTextView text];
-  v17 = [v16 length];
+  text3 = [(UITextView *)self->_valueTextView text];
+  v17 = [text3 length];
 
   if (v15)
   {
@@ -304,8 +304,8 @@ LABEL_11:
   v25 = *(MEMORY[0x1E695F060] + 8);
 LABEL_14:
   [(PKBackFieldTableCell *)self _shouldReverseLayoutDirection];
-  v26 = [(PKPassField *)self->_field cellStyle];
-  if (v26 >= 3)
+  cellStyle = [(PKPassField *)self->_field cellStyle];
+  if (cellStyle >= 3)
   {
     v34 = v25;
     v35 = v7;
@@ -317,7 +317,7 @@ LABEL_14:
     v33 = 0.0;
     v31 = 0.0;
     MaxY = 0.0;
-    if (v26 == 3)
+    if (cellStyle == 3)
     {
       v7 = v35;
       if (v17)
@@ -377,7 +377,7 @@ LABEL_14:
       self->_computedHeight = fmax(v38, v28 + 7.0 + v21 + 7.0);
       v29 = v11;
       v32 = v21;
-      if (v4)
+      if (outCopy)
       {
         goto LABEL_24;
       }
@@ -403,7 +403,7 @@ LABEL_14:
       v31 = v7;
       v32 = v21;
       v33 = v11;
-      if (!v4)
+      if (!outCopy)
       {
         goto LABEL_25;
       }
@@ -428,7 +428,7 @@ LABEL_14:
     v28 = v47;
   }
 
-  if (v4)
+  if (outCopy)
   {
 LABEL_24:
     [(UITextView *)self->_titleTextView setFrame:v31, MaxY, v33, v32];
@@ -457,8 +457,8 @@ LABEL_25:
     v5 = v4;
   }
 
-  v6 = [(PKBackFieldTableCell *)self contentView];
-  [v6 bounds];
+  contentView = [(PKBackFieldTableCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
   v10 = v5 + v9;
   v12 = v11 + 0.0;
@@ -482,12 +482,12 @@ LABEL_25:
     if ([(PKBackFieldTableCell *)self containsURL])
     {
       v3 = MEMORY[0x1E695DFF8];
-      v4 = [(PKPassField *)self->_field link];
-      v5 = [v3 URLWithString:v4];
+      link = [(PKPassField *)self->_field link];
+      v5 = [v3 URLWithString:link];
 
-      v6 = [(UITextView *)self->_valueTextView attributedText];
-      v7 = [(PKBackFieldTableCell *)self _allURLsFromAttributedString:v6];
-      v8 = [v7 firstObject];
+      attributedText = [(UITextView *)self->_valueTextView attributedText];
+      v7 = [(PKBackFieldTableCell *)self _allURLsFromAttributedString:attributedText];
+      firstObject = [v7 firstObject];
 
       PKOpenURL();
     }
@@ -550,20 +550,20 @@ void __36__PKBackFieldTableCell_openFirstURL__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (id)_allURLsFromAttributedString:(id)a3
+- (id)_allURLsFromAttributedString:(id)string
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   v6 = *MEMORY[0x1E69DB670];
-  v7 = [v4 length];
+  v7 = [stringCopy length];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__PKBackFieldTableCell__allURLsFromAttributedString___block_invoke;
   v11[3] = &unk_1E80161E0;
   v12 = v5;
   v8 = v5;
-  [v4 enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v11}];
+  [stringCopy enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v11}];
 
   v9 = [v8 copy];
 
@@ -613,19 +613,19 @@ void __53__PKBackFieldTableCell__allURLsFromAttributedString___block_invoke(uint
 {
   v6[2] = *MEMORY[0x1E69E9840];
   v5[0] = *MEMORY[0x1E69DB650];
-  v2 = [(PKBackFieldTableCell *)self _linkColor];
+  _linkColor = [(PKBackFieldTableCell *)self _linkColor];
   v5[1] = *MEMORY[0x1E69DB758];
-  v6[0] = v2;
+  v6[0] = _linkColor;
   v6[1] = &unk_1F3CC70E8;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:2];
 
   return v3;
 }
 
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu
 {
-  v6 = a5;
-  v7 = [a4 link];
+  menuCopy = menu;
+  link = [item link];
   v8 = PKIsURLHttpScheme();
 
   if (v8)
@@ -635,25 +635,25 @@ void __53__PKBackFieldTableCell__allURLsFromAttributedString___block_invoke(uint
 
   else
   {
-    v9 = [MEMORY[0x1E69DD118] configurationWithMenu:v6];
+    v9 = [MEMORY[0x1E69DD118] configurationWithMenu:menuCopy];
   }
 
   return v9;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v6 = a5;
-  v7 = [a4 link];
-  v8 = v7;
-  if (!v7)
+  actionCopy = action;
+  link = [item link];
+  v8 = link;
+  if (!link)
   {
-    v14 = v6;
+    v14 = actionCopy;
     goto LABEL_12;
   }
 
-  v9 = [v7 absoluteString];
-  v10 = [v9 hasPrefix:@"com.apple.Home-private://userLockSettings/"];
+  absoluteString = [link absoluteString];
+  v10 = [absoluteString hasPrefix:@"com.apple.Home-private://userLockSettings/"];
 
   if (v10)
   {
@@ -677,11 +677,11 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v16 = [v8 scheme];
-  v13 = v16;
-  if (v16 != @"x-apple-data-detectors")
+  scheme = [v8 scheme];
+  v13 = scheme;
+  if (scheme != @"x-apple-data-detectors")
   {
-    if (!v16 || (v17 = [(__CFString *)v16 isEqualToString:@"x-apple-data-detectors"], v13, !v17))
+    if (!scheme || (v17 = [(__CFString *)scheme isEqualToString:@"x-apple-data-detectors"], v13, !v17))
     {
       v18 = MEMORY[0x1E69DC628];
       v20[0] = MEMORY[0x1E69E9820];
@@ -695,7 +695,7 @@ LABEL_10:
     }
   }
 
-  v14 = v6;
+  v14 = actionCopy;
 LABEL_11:
 
 LABEL_12:

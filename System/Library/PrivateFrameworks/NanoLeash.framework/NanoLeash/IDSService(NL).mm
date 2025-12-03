@@ -7,8 +7,8 @@
 
 - (id)nl_mineTinkerDevices
 {
-  v2 = [a1 linkedDevicesWithRelationship:1];
-  v3 = [a1 linkedDevicesWithRelationship:2];
+  v2 = [self linkedDevicesWithRelationship:1];
+  v3 = [self linkedDevicesWithRelationship:2];
   if (v2 | v3)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count") + objc_msgSend(v2, "count")}];
@@ -39,8 +39,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v1 = [a1 nl_mineTinkerDevices];
-  v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  nl_mineTinkerDevices = [self nl_mineTinkerDevices];
+  v2 = [nl_mineTinkerDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = *v8;
@@ -50,7 +50,7 @@
       {
         if (*v8 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(nl_mineTinkerDevices);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isDefaultPairedDevice])
@@ -60,7 +60,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v2 = [nl_mineTinkerDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v2)
       {
         continue;

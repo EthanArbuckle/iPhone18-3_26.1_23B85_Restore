@@ -1,39 +1,39 @@
 @interface STRegionRatingsFetcher
-- (id)_getRatingSystemTypeFrom:(id)a3;
-- (void)loadRegionRatingsDataForStorefront:(id)a3 includeUnrated:(BOOL)a4 completionHandler:(id)a5;
+- (id)_getRatingSystemTypeFrom:(id)from;
+- (void)loadRegionRatingsDataForStorefront:(id)storefront includeUnrated:(BOOL)unrated completionHandler:(id)handler;
 @end
 
 @implementation STRegionRatingsFetcher
 
-- (void)loadRegionRatingsDataForStorefront:(id)a3 includeUnrated:(BOOL)a4 completionHandler:(id)a5
+- (void)loadRegionRatingsDataForStorefront:(id)storefront includeUnrated:(BOOL)unrated completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  unratedCopy = unrated;
+  storefrontCopy = storefront;
+  handlerCopy = handler;
   v10 = +[AMSRatingsProviderTask createBagForSubProfile];
-  v11 = [v8 lowercaseString];
-  if (([v11 isEqualToString:v8] & 1) == 0)
+  lowercaseString = [storefrontCopy lowercaseString];
+  if (([lowercaseString isEqualToString:storefrontCopy] & 1) == 0)
   {
     v12 = +[STLog screentime];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v8;
+      v24 = storefrontCopy;
       v25 = 2112;
-      v26 = v11;
+      v26 = lowercaseString;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "STRegionRatingsFetcher received storefront with uppercase characters: %@; using lowercase for AMS API: %@", buf, 0x16u);
     }
   }
 
   v13 = [AMSRatingsProviderTask alloc];
-  if (v6)
+  if (unratedCopy)
   {
-    v14 = [v13 initForAllMediaWithUnratedRatingsForStoreFront:v11 clientIdentifier:@"com.apple.ScreenTimeSettingsUI" useCase:1 bag:v10];
+    v14 = [v13 initForAllMediaWithUnratedRatingsForStoreFront:lowercaseString clientIdentifier:@"com.apple.ScreenTimeSettingsUI" useCase:1 bag:v10];
   }
 
   else
   {
-    v14 = [v13 initForAllMediaWithStoreFront:v11 clientIdentifier:@"com.apple.ScreenTimeSettingsUI" useCase:1 bag:v10];
+    v14 = [v13 initForAllMediaWithStoreFront:lowercaseString clientIdentifier:@"com.apple.ScreenTimeSettingsUI" useCase:1 bag:v10];
   }
 
   v15 = v14;
@@ -42,24 +42,24 @@
     [v15 setRegionalRatingSystem:1];
   }
 
-  v16 = [v15 performTask];
-  v17 = [v16 promiseWithTimeout:20.0];
+  performTask = [v15 performTask];
+  v17 = [performTask promiseWithTimeout:20.0];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10009EE4C;
   v20[3] = &unk_1001A6400;
-  v21 = v8;
-  v22 = v9;
+  v21 = storefrontCopy;
+  v22 = handlerCopy;
   v20[4] = self;
-  v18 = v8;
-  v19 = v9;
+  v18 = storefrontCopy;
+  v19 = handlerCopy;
   [v17 addFinishBlock:v20];
 }
 
-- (id)_getRatingSystemTypeFrom:(id)a3
+- (id)_getRatingSystemTypeFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   if (qword_1001E3968[0] != -1)
   {
     sub_1001218C8();
@@ -69,7 +69,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = fromCopy;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {

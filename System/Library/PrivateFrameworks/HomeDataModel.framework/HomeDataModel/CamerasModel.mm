@@ -1,13 +1,13 @@
 @interface CamerasModel
 - (_TtC13HomeDataModel12CamerasModel)init;
-- (void)accessoryDidUpdateName:(id)a3;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)homeManagerDidUpdatePrimaryHome:(id)a3;
+- (void)accessoryDidUpdateName:(id)name;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)homeManagerDidUpdatePrimaryHome:(id)home;
 @end
 
 @implementation CamerasModel
@@ -27,64 +27,64 @@
   return [(CamerasModel *)&v8 init];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  CamerasModel.homeManagerDidUpdateHomes(_:)(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  CamerasModel.homeManagerDidUpdateHomes(_:)(homesCopy);
 }
 
-- (void)homeManagerDidUpdatePrimaryHome:(id)a3
+- (void)homeManagerDidUpdatePrimaryHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  CamerasModel.homeManagerDidUpdatePrimaryHome(_:)(v4);
+  homeCopy = home;
+  selfCopy = self;
+  CamerasModel.homeManagerDidUpdatePrimaryHome(_:)(homeCopy);
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D17E9F28(v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D17E9F28(homeCopy);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D17EA1F4(v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D17EA1F4(homeCopy);
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CamerasModel.home(_:didAdd:)(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  CamerasModel.home(_:didAdd:)(homeCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CamerasModel.home(_:didRemove:)(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  CamerasModel.home(_:didRemove:)(homeCopy, accessoryCopy);
 }
 
-- (void)accessoryDidUpdateName:(id)a3
+- (void)accessoryDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  CamerasModel.accessoryDidUpdateName(_:)(v4);
+  nameCopy = name;
+  selfCopy = self;
+  CamerasModel.accessoryDidUpdateName(_:)(nameCopy);
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
-  v4 = a3;
-  v5 = self;
-  CamerasModel.accessoryDidUpdateReachability(_:)(v4);
+  reachabilityCopy = reachability;
+  selfCopy = self;
+  CamerasModel.accessoryDidUpdateReachability(_:)(reachabilityCopy);
 }
 
 @end

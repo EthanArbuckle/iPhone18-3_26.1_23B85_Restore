@@ -1,29 +1,29 @@
 @interface UARPConsent
-- (UARPConsent)initWithAccessoryName:(id)a3 appleModelNumber:(id)a4 assetVersion:(id)a5;
-- (UARPConsent)initWithAccessoryName:(id)a3 assetVersion:(id)a4;
-- (UARPConsent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UARPConsent)initWithAccessoryName:(id)name appleModelNumber:(id)number assetVersion:(id)version;
+- (UARPConsent)initWithAccessoryName:(id)name assetVersion:(id)version;
+- (UARPConsent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)dumpWithTabDepth:(unint64_t)a3 dumpString:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)dumpWithTabDepth:(unint64_t)depth dumpString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPConsent
 
-- (UARPConsent)initWithAccessoryName:(id)a3 assetVersion:(id)a4
+- (UARPConsent)initWithAccessoryName:(id)name assetVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  versionCopy = version;
   v16.receiver = self;
   v16.super_class = UARPConsent;
   v8 = [(UARPConsent *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     accessoryName = v8->_accessoryName;
     v8->_accessoryName = v9;
 
-    v11 = [v7 copy];
+    v11 = [versionCopy copy];
     assetVersion = v8->_assetVersion;
     v8->_assetVersion = v11;
 
@@ -36,25 +36,25 @@
   return v8;
 }
 
-- (UARPConsent)initWithAccessoryName:(id)a3 appleModelNumber:(id)a4 assetVersion:(id)a5
+- (UARPConsent)initWithAccessoryName:(id)name appleModelNumber:(id)number assetVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  numberCopy = number;
+  versionCopy = version;
   v21.receiver = self;
   v21.super_class = UARPConsent;
   v11 = [(UARPConsent *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     accessoryName = v11->_accessoryName;
     v11->_accessoryName = v12;
 
-    v14 = [v10 copy];
+    v14 = [versionCopy copy];
     assetVersion = v11->_assetVersion;
     v11->_assetVersion = v14;
 
-    v16 = [v9 copy];
+    v16 = [numberCopy copy];
     appleModelNumber = v11->_appleModelNumber;
     v11->_appleModelNumber = v16;
 
@@ -67,7 +67,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UARPConsent alloc] initWithAccessoryName:self->_accessoryName appleModelNumber:self->_appleModelNumber assetVersion:self->_assetVersion];
   v4->_isDownloadable = self->_isDownloadable;
@@ -99,62 +99,62 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessoryName = self->_accessoryName;
-  v5 = a3;
-  [v5 encodeObject:accessoryName forKey:@"accessoryName"];
-  [v5 encodeObject:self->_appleModelNumber forKey:@"appleModelNumber"];
-  [v5 encodeObject:self->_assetVersion forKey:@"asetVersion"];
-  [v5 encodeBool:self->_isDownloadable forKey:@"isDownloadable"];
-  [v5 encodeBool:self->_isRecommended forKey:@"isRecommended"];
-  [v5 encodeObject:self->_warning forKey:@"warning"];
-  [v5 encodeObject:self->_downloadSize forKey:@"downloadSize"];
-  [v5 encodeObject:self->_consentDescription forKey:@"consentDescription"];
-  [v5 encodeBool:self->_needsPostLogoutMode forKey:@"needsPostLogoutMode"];
-  [v5 encodeObject:self->_installerProgressDescription forKey:@"installerProgressDescription"];
-  [v5 encodeObject:self->_installerProgressPhase forKey:@"installerProgressPhase"];
-  [v5 encodeObject:self->_installerProgressError forKey:@"installerProgressError"];
-  [v5 encodeObject:self->_assetBuildVersion forKey:@"assetBuildVersion"];
-  [v5 encodeObject:self->_installerOverallProgress forKey:@"installerOverallProgress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accessoryName forKey:@"accessoryName"];
+  [coderCopy encodeObject:self->_appleModelNumber forKey:@"appleModelNumber"];
+  [coderCopy encodeObject:self->_assetVersion forKey:@"asetVersion"];
+  [coderCopy encodeBool:self->_isDownloadable forKey:@"isDownloadable"];
+  [coderCopy encodeBool:self->_isRecommended forKey:@"isRecommended"];
+  [coderCopy encodeObject:self->_warning forKey:@"warning"];
+  [coderCopy encodeObject:self->_downloadSize forKey:@"downloadSize"];
+  [coderCopy encodeObject:self->_consentDescription forKey:@"consentDescription"];
+  [coderCopy encodeBool:self->_needsPostLogoutMode forKey:@"needsPostLogoutMode"];
+  [coderCopy encodeObject:self->_installerProgressDescription forKey:@"installerProgressDescription"];
+  [coderCopy encodeObject:self->_installerProgressPhase forKey:@"installerProgressPhase"];
+  [coderCopy encodeObject:self->_installerProgressError forKey:@"installerProgressError"];
+  [coderCopy encodeObject:self->_assetBuildVersion forKey:@"assetBuildVersion"];
+  [coderCopy encodeObject:self->_installerOverallProgress forKey:@"installerOverallProgress"];
 }
 
-- (UARPConsent)initWithCoder:(id)a3
+- (UARPConsent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleModelNumber"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asetVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleModelNumber"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asetVersion"];
   v8 = [(UARPConsent *)self initWithAccessoryName:v5 appleModelNumber:v6 assetVersion:v7];
-  v8->_isDownloadable = [v4 decodeBoolForKey:@"isDownloadable"];
-  v8->_isRecommended = [v4 decodeBoolForKey:@"isRecommended"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"warning"];
+  v8->_isDownloadable = [coderCopy decodeBoolForKey:@"isDownloadable"];
+  v8->_isRecommended = [coderCopy decodeBoolForKey:@"isRecommended"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"warning"];
   warning = v8->_warning;
   v8->_warning = v9;
 
-  v8->_downloadSize = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadSize"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"consentDescription"];
+  v8->_downloadSize = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadSize"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"consentDescription"];
   consentDescription = v8->_consentDescription;
   v8->_consentDescription = v11;
 
-  v8->_needsPostLogoutMode = [v4 decodeBoolForKey:@"needsPostLogoutMode"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installerProgressDescription"];
+  v8->_needsPostLogoutMode = [coderCopy decodeBoolForKey:@"needsPostLogoutMode"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installerProgressDescription"];
   installerProgressDescription = v8->_installerProgressDescription;
   v8->_installerProgressDescription = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installerProgressPhase"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installerProgressPhase"];
   installerProgressPhase = v8->_installerProgressPhase;
   v8->_installerProgressPhase = v15;
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installerProgressError"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installerProgressError"];
   installerProgressError = v8->_installerProgressError;
   v8->_installerProgressError = v17;
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetBuildVersion"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetBuildVersion"];
   assetBuildVersion = v8->_assetBuildVersion;
   v8->_assetBuildVersion = v19;
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installerOverallProgress"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installerOverallProgress"];
 
   installerOverallProgress = v8->_installerOverallProgress;
   v8->_installerOverallProgress = v21;
@@ -162,63 +162,63 @@
   return v8;
 }
 
-- (void)dumpWithTabDepth:(unint64_t)a3 dumpString:(id)a4
+- (void)dumpWithTabDepth:(unint64_t)depth dumpString:(id)string
 {
-  v8 = a4;
-  [v8 appendWithTabDepth:a3 format:{@"%@\n", self->_accessoryName}];
+  stringCopy = string;
+  [stringCopy appendWithTabDepth:depth format:{@"%@\n", self->_accessoryName}];
   if (self->_appleModelNumber)
   {
-    [v8 appendWithTabDepth:a3 format:{@"%@\n", self->_appleModelNumber}];
+    [stringCopy appendWithTabDepth:depth format:{@"%@\n", self->_appleModelNumber}];
   }
 
-  [v8 appendWithTabDepth:a3 format:{@"%@\n", self->_assetVersion}];
+  [stringCopy appendWithTabDepth:depth format:{@"%@\n", self->_assetVersion}];
   if (self->_assetBuildVersion)
   {
-    [v8 appendWithTabDepth:a3 format:{@"%@\n", self->_assetBuildVersion}];
+    [stringCopy appendWithTabDepth:depth format:{@"%@\n", self->_assetBuildVersion}];
   }
 
   if (self->_consentDescription)
   {
-    [v8 appendWithTabDepth:a3 + 1 format:{@"Consent Description: %@\n", self->_consentDescription}];
+    [stringCopy appendWithTabDepth:depth + 1 format:{@"Consent Description: %@\n", self->_consentDescription}];
   }
 
-  v6 = v8;
+  v6 = stringCopy;
   if (self->_warning)
   {
-    [v8 appendWithTabDepth:a3 + 1 format:{@"Warning: %@\n", self->_warning}];
-    v6 = v8;
+    [stringCopy appendWithTabDepth:depth + 1 format:{@"Warning: %@\n", self->_warning}];
+    v6 = stringCopy;
   }
 
   if (self->_downloadSize)
   {
-    [v8 appendWithTabDepth:a3 + 1 format:{@"Download Size: %@\n", self->_downloadSize}];
-    v6 = v8;
+    [stringCopy appendWithTabDepth:depth + 1 format:{@"Download Size: %@\n", self->_downloadSize}];
+    v6 = stringCopy;
   }
 
-  [v6 appendWithTabDepth:a3 + 1 format:{@"Is Downloadable: %d\n", self->_isDownloadable}];
-  [v8 appendWithTabDepth:a3 + 1 format:{@"Is Recommended: %d\n", self->_isRecommended}];
-  [v8 appendWithTabDepth:a3 + 1 format:{@"Needs Post Logout Mode: %d\n", self->_needsPostLogoutMode}];
+  [v6 appendWithTabDepth:depth + 1 format:{@"Is Downloadable: %d\n", self->_isDownloadable}];
+  [stringCopy appendWithTabDepth:depth + 1 format:{@"Is Recommended: %d\n", self->_isRecommended}];
+  [stringCopy appendWithTabDepth:depth + 1 format:{@"Needs Post Logout Mode: %d\n", self->_needsPostLogoutMode}];
   if (self->_installerProgressDescription)
   {
-    [v8 appendWithTabDepth:a3 + 1 format:{@"Installer Progress Description: %@\n", self->_installerProgressDescription}];
+    [stringCopy appendWithTabDepth:depth + 1 format:{@"Installer Progress Description: %@\n", self->_installerProgressDescription}];
   }
 
   if (self->_installerProgressPhase)
   {
-    [v8 appendWithTabDepth:a3 + 1 format:{@"Installer Progress Phase: %@\n", self->_installerProgressPhase}];
+    [stringCopy appendWithTabDepth:depth + 1 format:{@"Installer Progress Phase: %@\n", self->_installerProgressPhase}];
   }
 
-  v7 = v8;
+  v7 = stringCopy;
   if (self->_installerOverallProgress)
   {
-    [v8 appendWithTabDepth:a3 + 1 format:{@"Installer Overall Progress: %@\n", self->_installerOverallProgress}];
-    v7 = v8;
+    [stringCopy appendWithTabDepth:depth + 1 format:{@"Installer Overall Progress: %@\n", self->_installerOverallProgress}];
+    v7 = stringCopy;
   }
 
   if (self->_installerProgressError)
   {
-    [v8 appendWithTabDepth:a3 + 1 format:{@"Installer Progress Error: %@\n", self->_installerProgressError}];
-    v7 = v8;
+    [stringCopy appendWithTabDepth:depth + 1 format:{@"Installer Progress Error: %@\n", self->_installerProgressError}];
+    v7 = stringCopy;
   }
 }
 

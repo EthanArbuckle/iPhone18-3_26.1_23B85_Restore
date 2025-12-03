@@ -1,17 +1,17 @@
 @interface TTRIRemindersListRouter.ActivityItemSource
 - (_TtCC9Reminders23TTRIRemindersListRouterP33_6FFDCD23D13881F9EFBB4406934282BE18ActivityItemSource)init;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation TTRIRemindersListRouter.ActivityItemSource
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
+  itemCopy = item;
+  selfCopy = self;
   sub_1001371B8(v8);
 
   sub_10000C36C(v8, v8[3]);
@@ -21,12 +21,12 @@
   return v6;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001373D8(a4, v16);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  sub_1001373D8(type, v16);
 
   v9 = v17;
   if (v17)
@@ -49,11 +49,11 @@
   return v14;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
   sub_100139C58();
 
   v9 = String._bridgeToObjectiveC()();
@@ -61,7 +61,7 @@
   return v9;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
   v6 = type metadata accessor for TTRIRemindersListRouterShareSheetItem(0);
   __chkstk_darwin(v6);

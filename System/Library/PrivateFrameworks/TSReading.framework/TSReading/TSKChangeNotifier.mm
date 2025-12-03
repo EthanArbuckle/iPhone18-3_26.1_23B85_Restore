@@ -1,14 +1,14 @@
 @interface TSKChangeNotifier
-- (BOOL)p_pendingAddOrRemoveOfObserver:(id)a3 forChangeSource:(id)a4;
+- (BOOL)p_pendingAddOrRemoveOfObserver:(id)observer forChangeSource:(id)source;
 - (TSKChangeNotifier)init;
-- (id)p_findCountedObserverForObserver:(id)a3 inArray:(id)a4;
-- (void)asyncProcessChanges:(id)a3;
+- (id)p_findCountedObserverForObserver:(id)observer inArray:(id)array;
+- (void)asyncProcessChanges:(id)changes;
 - (void)dealloc;
-- (void)p_addObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5;
-- (void)p_queueObserverListChange:(id)a3;
-- (void)p_removeObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5;
+- (void)p_addObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class;
+- (void)p_queueObserverListChange:(id)change;
+- (void)p_removeObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class;
 - (void)p_updateObserverList;
-- (void)syncProcessChanges:(id)a3;
+- (void)syncProcessChanges:(id)changes;
 @end
 
 @implementation TSKChangeNotifier
@@ -55,14 +55,14 @@
   [(TSKChangeNotifier *)&v6 dealloc];
 }
 
-- (id)p_findCountedObserverForObserver:(id)a3 inArray:(id)a4
+- (id)p_findCountedObserverForObserver:(id)observer inArray:(id)array
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -76,18 +76,18 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(array);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([v10 observer] == a3)
+    if ([v10 observer] == observer)
     {
       return v10;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -98,7 +98,7 @@ LABEL_3:
   }
 }
 
-- (BOOL)p_pendingAddOrRemoveOfObserver:(id)a3 forChangeSource:(id)a4
+- (BOOL)p_pendingAddOrRemoveOfObserver:(id)observer forChangeSource:(id)source
 {
   v19 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -121,7 +121,7 @@ LABEL_3:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (*(v11 + 16) == a3 && *(v11 + 24) == a4)
+        if (*(v11 + 16) == observer && *(v11 + 24) == source)
         {
           v12 = 1;
           goto LABEL_12;
@@ -144,14 +144,14 @@ LABEL_12:
   return v12;
 }
 
-- (void)p_queueObserverListChange:(id)a3
+- (void)p_queueObserverListChange:(id)change
 {
   objc_sync_enter(self);
   Count = CFArrayGetCount(self->mQueuedObserverListChanges);
   if (Count < 1)
   {
 LABEL_7:
-    CFArrayAppendValue(self->mQueuedObserverListChanges, a3);
+    CFArrayAppendValue(self->mQueuedObserverListChanges, change);
   }
 
   else
@@ -160,7 +160,7 @@ LABEL_7:
     while (1)
     {
       ValueAtIndex = CFArrayGetValueAtIndex(self->mQueuedObserverListChanges, v6);
-      if (ValueAtIndex[2] == *(a3 + 2) && ValueAtIndex[3] == *(a3 + 3) && *(ValueAtIndex + 2) != *(a3 + 2))
+      if (ValueAtIndex[2] == *(change + 2) && ValueAtIndex[3] == *(change + 3) && *(ValueAtIndex + 2) != *(change + 2))
       {
         break;
       }
@@ -177,32 +177,32 @@ LABEL_7:
   objc_sync_exit(self);
 }
 
-- (void)p_addObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5
+- (void)p_addObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class
 {
-  v5 = a5;
+  classCopy = class;
   objc_sync_enter(self);
   if (self->mProcessingChanges)
   {
-    [(TSKChangeNotifier *)self p_queueObserverListChange:[TSKQueuedObserverSet queuedObserverSetWithChangeType:0 observer:a3 changeSource:a4 isClass:v5]];
+    [(TSKChangeNotifier *)self p_queueObserverListChange:[TSKQueuedObserverSet queuedObserverSetWithChangeType:0 observer:observer changeSource:source isClass:classCopy]];
   }
 
   else
   {
     v9 = 8;
-    if (v5)
+    if (classCopy)
     {
       v9 = 16;
     }
 
     v10 = *(&self->super.isa + v9);
-    Value = CFDictionaryGetValue(v10, a4);
+    Value = CFDictionaryGetValue(v10, source);
     if (!Value)
     {
       Value = objc_alloc_init(MEMORY[0x277CBEB18]);
-      CFDictionarySetValue(v10, a4, Value);
+      CFDictionarySetValue(v10, source, Value);
     }
 
-    v12 = [(TSKChangeNotifier *)self p_findCountedObserverForObserver:a3 inArray:Value];
+    v12 = [(TSKChangeNotifier *)self p_findCountedObserverForObserver:observer inArray:Value];
     if (v12)
     {
       [v12 incrementCount];
@@ -210,7 +210,7 @@ LABEL_7:
 
     else
     {
-      v13 = [[TSKCountedObserver alloc] initWithObserver:a3];
+      v13 = [[TSKCountedObserver alloc] initWithObserver:observer];
       [Value addObject:v13];
     }
   }
@@ -218,28 +218,28 @@ LABEL_7:
   objc_sync_exit(self);
 }
 
-- (void)p_removeObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5
+- (void)p_removeObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class
 {
-  v5 = a5;
+  classCopy = class;
   objc_sync_enter(self);
   if (self->mProcessingChanges)
   {
-    [(TSKChangeNotifier *)self p_queueObserverListChange:[TSKQueuedObserverSet queuedObserverSetWithChangeType:1 observer:a3 changeSource:a4 isClass:v5]];
+    [(TSKChangeNotifier *)self p_queueObserverListChange:[TSKQueuedObserverSet queuedObserverSetWithChangeType:1 observer:observer changeSource:source isClass:classCopy]];
   }
 
   else
   {
     v9 = 8;
-    if (v5)
+    if (classCopy)
     {
       v9 = 16;
     }
 
     v10 = *(&self->super.isa + v9);
-    Value = CFDictionaryGetValue(v10, a4);
+    Value = CFDictionaryGetValue(v10, source);
     if (Value)
     {
-      v12 = [(TSKChangeNotifier *)self p_findCountedObserverForObserver:a3 inArray:Value];
+      v12 = [(TSKChangeNotifier *)self p_findCountedObserverForObserver:observer inArray:Value];
       v13 = v12;
       if (v12 && ![v12 decrementCount])
       {
@@ -248,7 +248,7 @@ LABEL_7:
 
       if (![Value count])
       {
-        CFDictionaryRemoveValue(v10, a4);
+        CFDictionaryRemoveValue(v10, source);
       }
     }
   }
@@ -307,10 +307,10 @@ LABEL_7:
   objc_sync_exit(self);
 }
 
-- (void)syncProcessChanges:(id)a3
+- (void)syncProcessChanges:(id)changes
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(a3 "changesArray")];
+  v4 = [objc_msgSend(changes "changesArray")];
   objc_sync_enter(self);
   ++self->mProcessingChanges;
   v41 = 0u;
@@ -335,12 +335,12 @@ LABEL_7:
 
         v25 = v6;
         v7 = *(*(&v41 + 1) + 8 * v6);
-        v8 = [v7 changeSource];
+        changeSource = [v7 changeSource];
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        Value = CFDictionaryGetValue(self->mChangeSourceObservers, v8);
+        Value = CFDictionaryGetValue(self->mChangeSourceObservers, changeSource);
         v10 = [Value countByEnumeratingWithState:&v37 objects:v47 count:16];
         if (v10)
         {
@@ -354,10 +354,10 @@ LABEL_7:
                 objc_enumerationMutation(Value);
               }
 
-              v13 = [*(*(&v37 + 1) + 8 * i) observer];
-              if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:v13 forChangeSource:v8]&& (objc_opt_respondsToSelector() & 1) != 0)
+              observer = [*(*(&v37 + 1) + 8 * i) observer];
+              if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:observer forChangeSource:changeSource]&& (objc_opt_respondsToSelector() & 1) != 0)
               {
-                [v13 syncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), v8}];
+                [observer syncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), changeSource}];
               }
             }
 
@@ -408,10 +408,10 @@ LABEL_7:
                         objc_enumerationMutation(v17);
                       }
 
-                      v21 = [*(*(&v29 + 1) + 8 * j) observer];
-                      if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:v21 forChangeSource:v8]&& (objc_opt_respondsToSelector() & 1) != 0)
+                      observer2 = [*(*(&v29 + 1) + 8 * j) observer];
+                      if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:observer2 forChangeSource:changeSource]&& (objc_opt_respondsToSelector() & 1) != 0)
                       {
-                        [v21 syncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), v8}];
+                        [observer2 syncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), changeSource}];
                       }
                     }
 
@@ -447,18 +447,18 @@ LABEL_7:
   objc_sync_exit(self);
 }
 
-- (void)asyncProcessChanges:(id)a3
+- (void)asyncProcessChanges:(id)changes
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = [a3 changesArray];
+  changesArray = [changes changesArray];
   objc_sync_enter(self);
   ++self->mProcessingChanges;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v41 objects:v48 count:16];
+  obj = changesArray;
+  v5 = [changesArray countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v5)
   {
     v24 = *v42;
@@ -475,12 +475,12 @@ LABEL_7:
 
         v25 = v6;
         v7 = *(*(&v41 + 1) + 8 * v6);
-        v8 = [v7 changeSource];
+        changeSource = [v7 changeSource];
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        Value = CFDictionaryGetValue(self->mChangeSourceObservers, v8);
+        Value = CFDictionaryGetValue(self->mChangeSourceObservers, changeSource);
         v10 = [Value countByEnumeratingWithState:&v37 objects:v47 count:16];
         if (v10)
         {
@@ -494,10 +494,10 @@ LABEL_7:
                 objc_enumerationMutation(Value);
               }
 
-              v13 = [*(*(&v37 + 1) + 8 * i) observer];
-              if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:v13 forChangeSource:v8]&& (objc_opt_respondsToSelector() & 1) != 0)
+              observer = [*(*(&v37 + 1) + 8 * i) observer];
+              if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:observer forChangeSource:changeSource]&& (objc_opt_respondsToSelector() & 1) != 0)
               {
-                [v13 asyncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), v8}];
+                [observer asyncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), changeSource}];
               }
             }
 
@@ -548,10 +548,10 @@ LABEL_7:
                         objc_enumerationMutation(v17);
                       }
 
-                      v21 = [*(*(&v29 + 1) + 8 * j) observer];
-                      if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:v21 forChangeSource:v8]&& (objc_opt_respondsToSelector() & 1) != 0)
+                      observer2 = [*(*(&v29 + 1) + 8 * j) observer];
+                      if (![(TSKChangeNotifier *)self p_pendingAddOrRemoveOfObserver:observer2 forChangeSource:changeSource]&& (objc_opt_respondsToSelector() & 1) != 0)
                       {
-                        [v21 asyncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), v8}];
+                        [observer2 asyncProcessChanges:objc_msgSend(v7 forChangeSource:{"changes"), changeSource}];
                       }
                     }
 

@@ -1,19 +1,19 @@
 @interface TCFileTextWriterProvider
 - (BOOL)setUp;
-- (TCFileTextWriterProvider)initWithFilePath:(id)a3;
+- (TCFileTextWriterProvider)initWithFilePath:(id)path;
 @end
 
 @implementation TCFileTextWriterProvider
 
-- (TCFileTextWriterProvider)initWithFilePath:(id)a3
+- (TCFileTextWriterProvider)initWithFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = TCFileTextWriterProvider;
   v5 = [(TCFileTextWriterProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     filePath = v5->_filePath;
     v5->_filePath = v6;
   }

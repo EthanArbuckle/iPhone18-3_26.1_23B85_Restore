@@ -1,11 +1,11 @@
 @interface REMNSPersistentHistoryChange
-+ (id)shortStringForChangeType:(int64_t)a3;
-+ (id)stringForChangeType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)shortStringForChangeType:(int64_t)type;
++ (id)stringForChangeType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (REMChangeTransaction)internal_ChangeTransaction;
-- (REMNSPersistentHistoryChange)initWithCoder:(id)a3;
-- (REMNSPersistentHistoryChange)initWithPersistentHistoryChange:(id)a3;
-- (REMNSPersistentHistoryChange)initWithStorage:(id)a3;
+- (REMNSPersistentHistoryChange)initWithCoder:(id)coder;
+- (REMNSPersistentHistoryChange)initWithPersistentHistoryChange:(id)change;
+- (REMNSPersistentHistoryChange)initWithStorage:(id)storage;
 - (id)changedObjectID;
 - (id)copyForCoalescing;
 - (id)description;
@@ -14,16 +14,16 @@
 - (int64_t)changeID;
 - (int64_t)changeType;
 - (void)changedObjectID;
-- (void)encodeWithCoder:(id)a3;
-- (void)resolveObjectIDWithUUID:(id)a3 entityName:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)resolveObjectIDWithUUID:(id)d entityName:(id)name;
 @end
 
 @implementation REMNSPersistentHistoryChange
 
-- (REMNSPersistentHistoryChange)initWithStorage:(id)a3
+- (REMNSPersistentHistoryChange)initWithStorage:(id)storage
 {
-  v5 = a3;
-  if (v5)
+  storageCopy = storage;
+  if (storageCopy)
   {
     v10.receiver = self;
     v10.super_class = REMNSPersistentHistoryChange;
@@ -31,108 +31,108 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_storage, a3);
+      objc_storeStrong(&v6->_storage, storage);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (REMNSPersistentHistoryChange)initWithPersistentHistoryChange:(id)a3
+- (REMNSPersistentHistoryChange)initWithPersistentHistoryChange:(id)change
 {
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
     v5 = objc_alloc_init(_REMNSPersistentHistoryChangeStorage);
-    -[_REMNSPersistentHistoryChangeStorage setChangeID:](v5, "setChangeID:", [v4 changeID]);
-    -[_REMNSPersistentHistoryChangeStorage setChangeType:](v5, "setChangeType:", [v4 changeType]);
-    v6 = [v4 updatedProperties];
-    v7 = [v6 valueForKey:@"name"];
+    -[_REMNSPersistentHistoryChangeStorage setChangeID:](v5, "setChangeID:", [changeCopy changeID]);
+    -[_REMNSPersistentHistoryChangeStorage setChangeType:](v5, "setChangeType:", [changeCopy changeType]);
+    updatedProperties = [changeCopy updatedProperties];
+    v7 = [updatedProperties valueForKey:@"name"];
     [(_REMNSPersistentHistoryChangeStorage *)v5 setUpdatedProperties:v7];
 
     v8 = [REMNSPersistentHistoryChangeTombstone alloc];
-    v9 = [v4 tombstone];
-    v10 = [(REMNSPersistentHistoryChangeTombstone *)v8 initWithDictionary:v9];
+    tombstone = [changeCopy tombstone];
+    v10 = [(REMNSPersistentHistoryChangeTombstone *)v8 initWithDictionary:tombstone];
     [(_REMNSPersistentHistoryChangeStorage *)v5 setTombstone:v10];
 
     [(_REMNSPersistentHistoryChangeStorage *)v5 setChangedObjectIDStorage:0];
     v11 = [(REMNSPersistentHistoryChange *)self initWithStorage:v5];
     if (v11)
     {
-      v12 = [v4 changedObjectID];
+      changedObjectID = [changeCopy changedObjectID];
       persistentHistoryChangeObjectID = v11->_persistentHistoryChangeObjectID;
-      v11->_persistentHistoryChangeObjectID = v12;
+      v11->_persistentHistoryChangeObjectID = changedObjectID;
     }
 
     self = v11;
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)resolveObjectIDWithUUID:(id)a3 entityName:(id)a4
+- (void)resolveObjectIDWithUUID:(id)d entityName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[_REMChangedObjectIDStorage alloc] initWithUUID:v7 entityName:v6];
+  nameCopy = name;
+  dCopy = d;
+  v9 = [[_REMChangedObjectIDStorage alloc] initWithUUID:dCopy entityName:nameCopy];
 
-  v8 = [(REMNSPersistentHistoryChange *)self storage];
-  [v8 setChangedObjectIDStorage:v9];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  [storage setChangedObjectIDStorage:v9];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(REMNSPersistentHistoryChange *)self changeID];
+  changeID = [(REMNSPersistentHistoryChange *)self changeID];
   v5 = [REMNSPersistentHistoryChange shortStringForChangeType:[(REMNSPersistentHistoryChange *)self changeType]];
-  v6 = [(REMNSPersistentHistoryChange *)self persistentHistoryChangeObjectID];
-  v7 = [(REMNSPersistentHistoryChange *)self storage];
-  v8 = [v7 changedObjectIDStorage];
-  v9 = [v3 stringWithFormat:@"<REMNSPersistentHistoryChange - changeID(%lld) changeType(%@) mocID(%@) remID(%@)>", v4, v5, v6, v8];
+  persistentHistoryChangeObjectID = [(REMNSPersistentHistoryChange *)self persistentHistoryChangeObjectID];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  changedObjectIDStorage = [storage changedObjectIDStorage];
+  v9 = [v3 stringWithFormat:@"<REMNSPersistentHistoryChange - changeID(%lld) changeType(%@) mocID(%@) remID(%@)>", changeID, v5, persistentHistoryChangeObjectID, changedObjectIDStorage];
 
   return v9;
 }
 
 - (int64_t)changeID
 {
-  v2 = [(REMNSPersistentHistoryChange *)self storage];
-  v3 = [v2 changeID];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  changeID = [storage changeID];
 
-  return v3;
+  return changeID;
 }
 
 - (id)changedObjectID
 {
-  v3 = [(REMNSPersistentHistoryChange *)self cachedChangedREMObjectID];
+  cachedChangedREMObjectID = [(REMNSPersistentHistoryChange *)self cachedChangedREMObjectID];
 
-  if (v3)
+  if (cachedChangedREMObjectID)
   {
-    v4 = [(REMNSPersistentHistoryChange *)self cachedChangedREMObjectID];
+    cachedChangedREMObjectID2 = [(REMNSPersistentHistoryChange *)self cachedChangedREMObjectID];
     goto LABEL_13;
   }
 
-  v5 = [(REMNSPersistentHistoryChange *)self storage];
-  v6 = [v5 changedObjectIDStorage];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  changedObjectIDStorage = [storage changedObjectIDStorage];
 
-  if (!v6)
+  if (!changedObjectIDStorage)
   {
-    v7 = +[REMLog changeTracking];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    entityName = +[REMLog changeTracking];
+    if (os_log_type_enabled(entityName, OS_LOG_TYPE_ERROR))
     {
       [REMNSPersistentHistoryChange changedObjectID];
     }
@@ -140,8 +140,8 @@
     goto LABEL_11;
   }
 
-  v7 = [v6 entityName];
-  if (!v7)
+  entityName = [changedObjectIDStorage entityName];
+  if (!entityName)
   {
     v10 = +[REMLog changeTracking];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -150,51 +150,51 @@
     }
 
 LABEL_11:
-    v4 = 0;
+    cachedChangedREMObjectID2 = 0;
     goto LABEL_12;
   }
 
-  v8 = [v6 uuid];
-  v9 = [v6 entityName];
-  v4 = [REMObjectID objectIDWithUUID:v8 entityName:v9];
+  uuid = [changedObjectIDStorage uuid];
+  entityName2 = [changedObjectIDStorage entityName];
+  cachedChangedREMObjectID2 = [REMObjectID objectIDWithUUID:uuid entityName:entityName2];
 
-  [(REMNSPersistentHistoryChange *)self setCachedChangedREMObjectID:v4];
+  [(REMNSPersistentHistoryChange *)self setCachedChangedREMObjectID:cachedChangedREMObjectID2];
 LABEL_12:
 
 LABEL_13:
 
-  return v4;
+  return cachedChangedREMObjectID2;
 }
 
 - (int64_t)changeType
 {
-  v2 = [(REMNSPersistentHistoryChange *)self storage];
-  v3 = [v2 changeType];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  changeType = [storage changeType];
 
-  return v3;
+  return changeType;
 }
 
 - (id)tombstone
 {
-  v2 = [(REMNSPersistentHistoryChange *)self storage];
-  v3 = [v2 tombstone];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  tombstone = [storage tombstone];
 
-  return v3;
+  return tombstone;
 }
 
-+ (id)shortStringForChangeType:(int64_t)a3
++ (id)shortStringForChangeType:(int64_t)type
 {
-  v3 = [a1 stringForChangeType:a3];
+  v3 = [self stringForChangeType:type];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"REMChangeType" withString:&stru_1F0D67F00];
 
   return v4;
 }
 
-+ (id)stringForChangeType:(int64_t)a3
++ (id)stringForChangeType:(int64_t)type
 {
-  if (a3 < 3)
+  if (type < 3)
   {
-    return off_1E7508A38[a3];
+    return off_1E7508A38[type];
   }
 
   v4 = +[REMLog changeTracking];
@@ -209,12 +209,12 @@ LABEL_13:
 - (id)updatedProperties
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(REMNSPersistentHistoryChange *)self storage];
-  v4 = [v3 updatedProperties];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  updatedProperties = [storage updatedProperties];
 
-  if (v4)
+  if (updatedProperties)
   {
-    [MEMORY[0x1E695DFA8] setWithSet:v4];
+    [MEMORY[0x1E695DFA8] setWithSet:updatedProperties];
   }
 
   else
@@ -228,8 +228,8 @@ LABEL_13:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(REMNSPersistentHistoryChange *)self coalescedChanges];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    coalescedChanges = [(REMNSPersistentHistoryChange *)self coalescedChanges];
+    v7 = [coalescedChanges countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -240,17 +240,17 @@ LABEL_13:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(coalescedChanges);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) updatedProperties];
-          if (v11)
+          updatedProperties2 = [*(*(&v14 + 1) + 8 * i) updatedProperties];
+          if (updatedProperties2)
           {
-            [v5 unionSet:v11];
+            [v5 unionSet:updatedProperties2];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [coalescedChanges countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -265,26 +265,26 @@ LABEL_13:
 - (id)copyForCoalescing
 {
   v3 = [REMNSPersistentHistoryChange alloc];
-  v4 = [(REMNSPersistentHistoryChange *)self storage];
-  v5 = [(REMNSPersistentHistoryChange *)v3 initWithStorage:v4];
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  v5 = [(REMNSPersistentHistoryChange *)v3 initWithStorage:storage];
 
-  v6 = [(REMNSPersistentHistoryChange *)self internal_ChangeTransaction];
-  [(REMNSPersistentHistoryChange *)v5 setInternal_ChangeTransaction:v6];
+  internal_ChangeTransaction = [(REMNSPersistentHistoryChange *)self internal_ChangeTransaction];
+  [(REMNSPersistentHistoryChange *)v5 setInternal_ChangeTransaction:internal_ChangeTransaction];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMNSPersistentHistoryChange *)self storage];
-  [v4 encodeObject:v5 forKey:@"storage"];
+  coderCopy = coder;
+  storage = [(REMNSPersistentHistoryChange *)self storage];
+  [coderCopy encodeObject:storage forKey:@"storage"];
 }
 
-- (REMNSPersistentHistoryChange)initWithCoder:(id)a3
+- (REMNSPersistentHistoryChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storage"];
 
   v6 = [(REMNSPersistentHistoryChange *)self initWithStorage:v5];
   return v6;
@@ -297,33 +297,33 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMNSPersistentHistoryChange *)self storage];
-      v8 = [(REMNSPersistentHistoryChange *)v6 storage];
-      if (v7 == v8)
+      storage = [(REMNSPersistentHistoryChange *)self storage];
+      storage2 = [(REMNSPersistentHistoryChange *)v6 storage];
+      if (storage == storage2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMNSPersistentHistoryChange *)self storage];
-        v10 = [(REMNSPersistentHistoryChange *)v6 storage];
-        v11 = [v9 isEqual:v10];
+        storage3 = [(REMNSPersistentHistoryChange *)self storage];
+        storage4 = [(REMNSPersistentHistoryChange *)v6 storage];
+        v11 = [storage3 isEqual:storage4];
       }
     }
 

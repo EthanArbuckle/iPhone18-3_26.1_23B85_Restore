@@ -1,21 +1,21 @@
 @interface HMMigrationBoost
-- (HMMigrationBoost)initWithMessageTarget:(id)a3 notificationCenter:(id)a4 messageDispatcher:(id)a5 queue:(id)a6;
-- (void)_handleDaemonInterruptedNotification:(id)a3;
+- (HMMigrationBoost)initWithMessageTarget:(id)target notificationCenter:(id)center messageDispatcher:(id)dispatcher queue:(id)queue;
+- (void)_handleDaemonInterruptedNotification:(id)notification;
 - (void)startBoost;
 - (void)stopBoost;
 @end
 
 @implementation HMMigrationBoost
 
-- (void)_handleDaemonInterruptedNotification:(id)a3
+- (void)_handleDaemonInterruptedNotification:(id)notification
 {
-  v4 = [(HMMigrationBoost *)self queue];
+  queue = [(HMMigrationBoost *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__HMMigrationBoost__handleDaemonInterruptedNotification___block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __57__HMMigrationBoost__handleDaemonInterruptedNotification___block_invoke(uint64_t a1)
@@ -81,7 +81,7 @@ void __57__HMMigrationBoost__handleDaemonInterruptedNotification___block_invoke_
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -92,8 +92,8 @@ void __57__HMMigrationBoost__handleDaemonInterruptedNotification___block_invoke_
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMigrationBoost *)v4 notificationCenter];
-  [v7 removeObserver:v4];
+  notificationCenter = [(HMMigrationBoost *)selfCopy notificationCenter];
+  [notificationCenter removeObserver:selfCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -102,7 +102,7 @@ void __57__HMMigrationBoost__handleDaemonInterruptedNotification___block_invoke_
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -113,28 +113,28 @@ void __57__HMMigrationBoost__handleDaemonInterruptedNotification___block_invoke_
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMigrationBoost *)v4 notificationCenter];
-  [v7 addObserver:v4 selector:sel__handleDaemonInterruptedNotification_ name:@"HMDaemonDisconnectedNotification" object:0];
+  notificationCenter = [(HMMigrationBoost *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel__handleDaemonInterruptedNotification_ name:@"HMDaemonDisconnectedNotification" object:0];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (HMMigrationBoost)initWithMessageTarget:(id)a3 notificationCenter:(id)a4 messageDispatcher:(id)a5 queue:(id)a6
+- (HMMigrationBoost)initWithMessageTarget:(id)target notificationCenter:(id)center messageDispatcher:(id)dispatcher queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  targetCopy = target;
+  centerCopy = center;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HMMigrationBoost;
   v15 = [(HMMigrationBoost *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_messageTarget, a3);
-    objc_storeStrong(&v16->_notificationCenter, a4);
-    objc_storeStrong(&v16->_messageDispatcher, a5);
-    objc_storeStrong(&v16->_queue, a6);
+    objc_storeStrong(&v15->_messageTarget, target);
+    objc_storeStrong(&v16->_notificationCenter, center);
+    objc_storeStrong(&v16->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v16->_queue, queue);
   }
 
   return v16;

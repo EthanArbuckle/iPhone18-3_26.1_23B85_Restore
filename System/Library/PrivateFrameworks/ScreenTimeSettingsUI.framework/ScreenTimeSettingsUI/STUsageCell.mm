@@ -1,31 +1,31 @@
 @interface STUsageCell
-- (STUsageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STUsageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)value;
-- (void)_didFetchAppInfoOrIcon:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
+- (void)_didFetchAppInfoOrIcon:(id)icon;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
 @end
 
 @implementation STUsageCell
 
-- (STUsageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STUsageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v93[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  specifierCopy = specifier;
   v91.receiver = self;
   v91.super_class = STUsageCell;
-  v9 = [(STTableCell *)&v91 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(STTableCell *)&v91 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(STUsageCell *)v9 contentView];
+    contentView = [(STUsageCell *)v9 contentView];
     v88 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill"];
     v12 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v88];
     trustWarningImageView = v10->_trustWarningImageView;
     v10->_trustWarningImageView = v12;
 
-    v14 = [MEMORY[0x277D75348] systemYellowColor];
-    [(UIImageView *)v10->_trustWarningImageView setTintColor:v14];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [(UIImageView *)v10->_trustWarningImageView setTintColor:systemYellowColor];
 
     [(UIImageView *)v10->_trustWarningImageView setHidden:1];
     v15 = objc_opt_new();
@@ -45,7 +45,7 @@
 
     [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v21 setSpacing:1.17549435e-38];
-    [v11 addSubview:v21];
+    [contentView addSubview:v21];
     v22 = objc_opt_new();
     usageLabel = v10->_usageLabel;
     v10->_usageLabel = v22;
@@ -54,10 +54,10 @@
     v24 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
     [(UILabel *)v10->_usageLabel setFont:v24];
 
-    v25 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UILabel *)v10->_usageLabel setTextColor:v25];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UILabel *)v10->_usageLabel setTextColor:tertiaryLabelColor];
 
-    [v11 addSubview:v10->_usageLabel];
+    [contentView addSubview:v10->_usageLabel];
     v26 = [[STCandyBarView alloc] initWithVibrancy:0];
     usageBarView = v10->_usageBarView;
     v10->_usageBarView = v26;
@@ -65,8 +65,8 @@
     [(STCandyBarView *)v10->_usageBarView setTranslatesAutoresizingMaskIntoConstraints:0];
     v28 = objc_opt_new();
     [v28 setTotalUsage:&unk_28769D610];
-    v89 = v8;
-    v29 = [v8 objectForKeyedSubscript:@"STUsageBarColorKey"];
+    v89 = specifierCopy;
+    v29 = [specifierCopy objectForKeyedSubscript:@"STUsageBarColorKey"];
     if (v29)
     {
       [v28 setColor:v29];
@@ -74,8 +74,8 @@
 
     else
     {
-      v30 = [MEMORY[0x277D75348] systemGray4Color];
-      [v28 setColor:v30];
+      systemGray4Color = [MEMORY[0x277D75348] systemGray4Color];
+      [v28 setColor:systemGray4Color];
     }
 
     v87 = v28;
@@ -83,114 +83,114 @@
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v92 count:1];
     [(STCandyBarView *)v10->_usageBarView setUsageItems:v31];
 
-    [v11 addSubview:v10->_usageBarView];
-    v90 = [(STTableCell *)v10 contentLayoutGuide];
+    [contentView addSubview:v10->_usageBarView];
+    contentLayoutGuide = [(STTableCell *)v10 contentLayoutGuide];
     v32 = objc_opt_new();
-    v33 = [v11 bottomAnchor];
-    v34 = [(STCandyBarView *)v10->_usageBarView bottomAnchor];
-    v35 = [v33 constraintGreaterThanOrEqualToAnchor:v34 constant:7.0];
+    bottomAnchor = [contentView bottomAnchor];
+    bottomAnchor2 = [(STCandyBarView *)v10->_usageBarView bottomAnchor];
+    v35 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:7.0];
     [v32 addObject:v35];
 
-    v36 = [v11 bottomAnchor];
-    v37 = [(UILabel *)v10->_usageLabel bottomAnchor];
-    v38 = [v36 constraintGreaterThanOrEqualToAnchor:v37 constant:7.0];
+    bottomAnchor3 = [contentView bottomAnchor];
+    bottomAnchor4 = [(UILabel *)v10->_usageLabel bottomAnchor];
+    v38 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4 constant:7.0];
     [v32 addObject:v38];
 
-    v39 = [v11 heightAnchor];
-    v40 = [v39 constraintEqualToConstant:52.0];
+    heightAnchor = [contentView heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:52.0];
     [v32 addObject:v40];
 
-    v41 = [v21 topAnchor];
-    v42 = [v11 topAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:7.0];
+    topAnchor = [v21 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:7.0];
     [v32 addObject:v43];
 
-    v44 = [v21 bottomAnchor];
-    v45 = [(STCandyBarView *)v10->_usageBarView topAnchor];
-    v46 = [v44 constraintLessThanOrEqualToAnchor:v45];
+    bottomAnchor5 = [v21 bottomAnchor];
+    topAnchor3 = [(STCandyBarView *)v10->_usageBarView topAnchor];
+    v46 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:topAnchor3];
     [v32 addObject:v46];
 
-    v47 = [v21 bottomAnchor];
-    v48 = [(UILabel *)v10->_usageLabel topAnchor];
-    v49 = [v47 constraintLessThanOrEqualToAnchor:v48];
+    bottomAnchor6 = [v21 bottomAnchor];
+    topAnchor4 = [(UILabel *)v10->_usageLabel topAnchor];
+    v49 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:topAnchor4];
     [v32 addObject:v49];
 
-    v50 = [(STCandyBarView *)v10->_usageBarView leadingAnchor];
-    v51 = [v21 leadingAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    leadingAnchor = [(STCandyBarView *)v10->_usageBarView leadingAnchor];
+    leadingAnchor2 = [v21 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v32 addObject:v52];
 
-    v53 = [(STCandyBarView *)v10->_usageBarView heightAnchor];
-    v54 = [v53 constraintEqualToConstant:5.0];
+    heightAnchor2 = [(STCandyBarView *)v10->_usageBarView heightAnchor];
+    v54 = [heightAnchor2 constraintEqualToConstant:5.0];
     [v32 addObject:v54];
 
-    v55 = [(STCandyBarView *)v10->_usageBarView widthAnchor];
-    v56 = [v55 constraintGreaterThanOrEqualToConstant:5.0];
+    widthAnchor = [(STCandyBarView *)v10->_usageBarView widthAnchor];
+    v56 = [widthAnchor constraintGreaterThanOrEqualToConstant:5.0];
     [v32 addObject:v56];
 
-    v57 = [(STCandyBarView *)v10->_usageBarView bottomAnchor];
-    v58 = [v11 bottomAnchor];
-    v59 = [v57 constraintLessThanOrEqualToAnchor:v58];
+    bottomAnchor7 = [(STCandyBarView *)v10->_usageBarView bottomAnchor];
+    bottomAnchor8 = [contentView bottomAnchor];
+    v59 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8];
     [v32 addObject:v59];
 
-    v60 = [(STCandyBarView *)v10->_usageBarView widthAnchor];
-    v61 = [v60 constraintEqualToConstant:5.0];
+    widthAnchor2 = [(STCandyBarView *)v10->_usageBarView widthAnchor];
+    v61 = [widthAnchor2 constraintEqualToConstant:5.0];
     usageBarWidthConstraint = v10->_usageBarWidthConstraint;
     v10->_usageBarWidthConstraint = v61;
 
     LODWORD(v63) = 1132068864;
     [(NSLayoutConstraint *)v10->_usageBarWidthConstraint setPriority:v63];
     [v32 addObject:v10->_usageBarWidthConstraint];
-    v64 = [(STCandyBarView *)v10->_usageBarView centerYAnchor];
-    v65 = [v11 centerYAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65 constant:12.0];
+    centerYAnchor = [(STCandyBarView *)v10->_usageBarView centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v66 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:12.0];
 
     LODWORD(v67) = 1144750080;
     [v66 setPriority:v67];
     [v32 addObject:v66];
-    v68 = [(UILabel *)v10->_usageLabel centerYAnchor];
-    v69 = [(STCandyBarView *)v10->_usageBarView centerYAnchor];
-    v70 = [v68 constraintEqualToAnchor:v69];
+    centerYAnchor3 = [(UILabel *)v10->_usageLabel centerYAnchor];
+    centerYAnchor4 = [(STCandyBarView *)v10->_usageBarView centerYAnchor];
+    v70 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v32 addObject:v70];
 
-    v71 = [(UILabel *)v10->_usageLabel leadingAnchor];
-    v72 = [(STCandyBarView *)v10->_usageBarView trailingAnchor];
-    v73 = [v71 constraintEqualToAnchor:v72 constant:6.0];
+    leadingAnchor3 = [(UILabel *)v10->_usageLabel leadingAnchor];
+    trailingAnchor = [(STCandyBarView *)v10->_usageBarView trailingAnchor];
+    v73 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:6.0];
     [v32 addObject:v73];
 
-    v74 = [(UILabel *)v10->_usageLabel trailingAnchor];
-    v75 = [v11 trailingAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    trailingAnchor2 = [(UILabel *)v10->_usageLabel trailingAnchor];
+    trailingAnchor3 = [contentView trailingAnchor];
+    v76 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
 
     LODWORD(v77) = 1132068864;
     [v76 setPriority:v77];
     [v32 addObject:v76];
-    v78 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    LODWORD(v73) = UIContentSizeCategoryIsAccessibilityCategory(v78);
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    LODWORD(v73) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v79 = [v21 leadingAnchor];
+    leadingAnchor4 = [v21 leadingAnchor];
     if (v73)
     {
-      v80 = [(PSTableCell *)v10 iconImageView];
-      v81 = [v80 trailingAnchor];
-      v82 = [v79 constraintEqualToSystemSpacingAfterAnchor:v81 multiplier:2.0];
+      iconImageView = [(PSTableCell *)v10 iconImageView];
+      trailingAnchor4 = [iconImageView trailingAnchor];
+      v82 = [leadingAnchor4 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:2.0];
       [v32 addObject:v82];
     }
 
     else
     {
-      v80 = [v90 leadingAnchor];
-      v81 = [v79 constraintEqualToAnchor:v80];
-      [v32 addObject:v81];
+      iconImageView = [contentLayoutGuide leadingAnchor];
+      trailingAnchor4 = [leadingAnchor4 constraintEqualToAnchor:iconImageView];
+      [v32 addObject:trailingAnchor4];
     }
 
-    v83 = [(UIImageView *)v10->_trustWarningImageView widthAnchor];
-    v84 = [(UIImageView *)v10->_trustWarningImageView heightAnchor];
-    v85 = [v83 constraintEqualToAnchor:v84 multiplier:1.0];
+    widthAnchor3 = [(UIImageView *)v10->_trustWarningImageView widthAnchor];
+    heightAnchor3 = [(UIImageView *)v10->_trustWarningImageView heightAnchor];
+    v85 = [widthAnchor3 constraintEqualToAnchor:heightAnchor3 multiplier:1.0];
     [v32 addObject:v85];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v32];
-    v8 = v89;
+    specifierCopy = v89;
   }
 
   return v10;
@@ -200,15 +200,15 @@
 {
   v4.receiver = self;
   v4.super_class = STUsageCell;
-  v2 = [(PSTableCell *)&v4 value];
+  value = [(PSTableCell *)&v4 value];
 
-  return v2;
+  return value;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (v5)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -223,41 +223,41 @@
     }
   }
 
-  v6 = [(STUsageCell *)self value];
+  value = [(STUsageCell *)self value];
   v26.receiver = self;
   v26.super_class = STUsageCell;
-  [(PSTableCell *)&v26 setValue:v5];
-  v7 = [v6 itemType];
+  [(PSTableCell *)&v26 setValue:valueCopy];
+  itemType = [value itemType];
   v8 = MEMORY[0x277D4BC98];
-  if (v7 == 4)
+  if (itemType == 4)
   {
-    v9 = *MEMORY[0x277D4BC98];
+    budgetItemIdentifier = *MEMORY[0x277D4BC98];
   }
 
   else
   {
-    v9 = [v6 budgetItemIdentifier];
+    budgetItemIdentifier = [value budgetItemIdentifier];
   }
 
-  v10 = v9;
-  v11 = [v5 itemType];
-  if (v11 == 4)
+  v10 = budgetItemIdentifier;
+  itemType2 = [valueCopy itemType];
+  if (itemType2 == 4)
   {
-    v12 = *v8;
+    budgetItemIdentifier2 = *v8;
   }
 
   else
   {
-    v12 = [v5 budgetItemIdentifier];
+    budgetItemIdentifier2 = [valueCopy budgetItemIdentifier];
   }
 
-  v13 = v12;
-  if (v12 != v10)
+  v13 = budgetItemIdentifier2;
+  if (budgetItemIdentifier2 != v10)
   {
-    v14 = [MEMORY[0x277D4BD98] sharedCache];
-    v15 = [MEMORY[0x277D4B8C0] sharedCache];
+    mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+    mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
     v16 = 1;
-    if (v7 <= 6 && ((1 << v7) & 0x74) != 0)
+    if (itemType <= 6 && ((1 << itemType) & 0x74) != 0)
     {
       if ([v13 isEqualToString:v10])
       {
@@ -266,31 +266,31 @@
 
       else
       {
-        [v14 removeObserver:self bundleIdentifier:v10];
-        if (v7 != 4)
+        [mEMORY[0x277D4BD98] removeObserver:self bundleIdentifier:v10];
+        if (itemType != 4)
         {
-          [v15 removeObserver:self bundleIdentifier:v10];
+          [mEMORY[0x277D4B8C0] removeObserver:self bundleIdentifier:v10];
         }
 
         v16 = 1;
       }
     }
 
-    if (v11 <= 6 && ((1 << v11) & 0x74) != 0)
+    if (itemType2 <= 6 && ((1 << itemType2) & 0x74) != 0)
     {
       if (v16)
       {
-        [v14 addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:v13];
-        if (v11 != 4)
+        [mEMORY[0x277D4BD98] addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:v13];
+        if (itemType2 != 4)
         {
-          [v15 addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:v13];
+          [mEMORY[0x277D4B8C0] addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:v13];
         }
       }
     }
   }
 
-  v17 = [v5 maxUsage];
-  [v17 doubleValue];
+  maxUsage = [valueCopy maxUsage];
+  [maxUsage doubleValue];
   v19 = v18;
 
   if (v19 < 1.0)
@@ -298,8 +298,8 @@
     v19 = 1.0;
   }
 
-  v20 = [v5 totalUsage];
-  [v20 doubleValue];
+  totalUsage = [valueCopy totalUsage];
+  [totalUsage doubleValue];
   v22 = v21 / v19 * 198.0;
 
   if (v22 < 5.0)
@@ -307,54 +307,54 @@
     v22 = 5.0;
   }
 
-  v23 = [(STUsageCell *)self usageBarWidthConstraint];
-  [v23 setConstant:v22];
+  usageBarWidthConstraint = [(STUsageCell *)self usageBarWidthConstraint];
+  [usageBarWidthConstraint setConstant:v22];
 
-  v24 = [v5 usageTrusted];
-  v25 = [(STUsageCell *)self trustWarningImageView];
-  [v25 setHidden:v24];
+  usageTrusted = [valueCopy usageTrusted];
+  trustWarningImageView = [(STUsageCell *)self trustWarningImageView];
+  [trustWarningImageView setHidden:usageTrusted];
 
 LABEL_30:
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = STUsageCell;
-  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:a3];
-  v4 = [(STUsageCell *)self value];
-  v5 = [v4 budgetItemIdentifier];
-  if (v5)
+  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:specifier];
+  value = [(STUsageCell *)self value];
+  budgetItemIdentifier = [value budgetItemIdentifier];
+  if (budgetItemIdentifier)
   {
-    v6 = [v4 displayName];
-    v7 = [v4 image];
+    displayName = [value displayName];
+    image = [value image];
   }
 
   else
   {
-    v6 = 0;
-    v7 = 0;
+    displayName = 0;
+    image = 0;
   }
 
-  v8 = [(STUsageCell *)self itemNameLabel];
-  [v8 setText:v6];
+  itemNameLabel = [(STUsageCell *)self itemNameLabel];
+  [itemNameLabel setText:displayName];
 
-  [(PSTableCell *)self setIcon:v7];
+  [(PSTableCell *)self setIcon:image];
   [(STUsageCell *)self setNeedsLayout];
 }
 
-- (void)_didFetchAppInfoOrIcon:(id)a3
+- (void)_didFetchAppInfoOrIcon:(id)icon
 {
-  v4 = [(PSTableCell *)self specifier];
-  v5 = v4;
-  if (v4)
+  specifier = [(PSTableCell *)self specifier];
+  v5 = specifier;
+  if (specifier)
   {
-    v6 = v4;
-    v4 = [(STUsageCell *)self refreshCellContentsWithSpecifier:v4];
+    v6 = specifier;
+    specifier = [(STUsageCell *)self refreshCellContentsWithSpecifier:specifier];
     v5 = v6;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](specifier, v5);
 }
 
 - (void)setValue:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

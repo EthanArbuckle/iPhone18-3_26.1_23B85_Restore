@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = __57__PXInlineVideoStabilizationSettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken_67713 != -1)
   {
     dispatch_once(&transientProperties_onceToken_67713, block);
@@ -112,10 +112,10 @@ void __52__PXInlineVideoStabilizationSettings_sharedInstance__block_invoke()
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:8];
   v12 = [v2 sectionWithRows:v11 title:@"Settings"];
 
-  v13 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v14 = MEMORY[0x1E69C6638];
   v21[0] = v12;
-  v21[1] = v13;
+  v21[1] = px_restoreDefaultsSection;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v16 = [v14 moduleWithTitle:@"Inline Stabilization" contents:v15];
 

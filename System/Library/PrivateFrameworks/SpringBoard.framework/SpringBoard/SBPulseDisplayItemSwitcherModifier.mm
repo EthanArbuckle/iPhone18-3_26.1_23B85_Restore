@@ -1,45 +1,45 @@
 @interface SBPulseDisplayItemSwitcherModifier
-- (SBPulseDisplayItemSwitcherModifier)initWithDisplayItem:(id)a3;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSwitcherShortcutActionEvent:(id)a3;
-- (id)handleTapAppLayoutHeaderEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (SBPulseDisplayItemSwitcherModifier)initWithDisplayItem:(id)item;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSwitcherShortcutActionEvent:(id)event;
+- (id)handleTapAppLayoutHeaderEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
 - (id)topMostLayoutElements;
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5;
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners;
 @end
 
 @implementation SBPulseDisplayItemSwitcherModifier
 
-- (SBPulseDisplayItemSwitcherModifier)initWithDisplayItem:(id)a3
+- (SBPulseDisplayItemSwitcherModifier)initWithDisplayItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SBPulseDisplayItemSwitcherModifier;
   v6 = [(SBSwitcherModifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayItem, a3);
-    objc_storeStrong(&v7->_displayItemToPulse, a3);
+    objc_storeStrong(&v6->_displayItem, item);
+    objc_storeStrong(&v7->_displayItemToPulse, item);
   }
 
   return v7;
 }
 
-- (id)handleTapAppLayoutHeaderEvent:(id)a3
+- (id)handleTapAppLayoutHeaderEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = SBPulseDisplayItemSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v14 handleTapAppLayoutHeaderEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v14 handleTapAppLayoutHeaderEvent:event];
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:3];
   v6 = SBAppendSwitcherModifierResponse(v5, v4);
 
-  v7 = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
-  v8 = [v7 animationSettings];
-  [v8 pulseSecondStageDelay];
+  switcherSettings = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings pulseSecondStageDelay];
   v10 = v9;
 
   v11 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"SBPulseDisplayItemSwitcherModifierTimerReasonFirstStage" reason:v10];
@@ -48,17 +48,17 @@
   return v12;
 }
 
-- (id)handleSwitcherShortcutActionEvent:(id)a3
+- (id)handleSwitcherShortcutActionEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = SBPulseDisplayItemSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v14 handleSwitcherShortcutActionEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v14 handleSwitcherShortcutActionEvent:event];
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:12 updateMode:3];
   v6 = SBAppendSwitcherModifierResponse(v5, v4);
 
-  v7 = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
-  v8 = [v7 animationSettings];
-  [v8 pulseSecondStageDelay];
+  switcherSettings = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings pulseSecondStageDelay];
   v10 = v9;
 
   v11 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"SBPulseDisplayItemSwitcherModifierTimerReasonFirstStage" reason:v10];
@@ -67,14 +67,14 @@
   return v12;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v21.receiver = self;
   v21.super_class = SBPulseDisplayItemSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v21 handleTimerEvent:v4];
-  v6 = [v4 reason];
-  v7 = [v6 isEqualToString:@"SBPulseDisplayItemSwitcherModifierTimerReasonFirstStage"];
+  v5 = [(SBSwitcherModifier *)&v21 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
+  v7 = [reason isEqualToString:@"SBPulseDisplayItemSwitcherModifierTimerReasonFirstStage"];
 
   if (v7)
   {
@@ -84,10 +84,10 @@
     v9 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:12 updateMode:3];
     v10 = SBAppendSwitcherModifierResponse(v9, v5);
 
-    v11 = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
-    v12 = [v11 animationSettings];
-    v13 = [v12 pulseScaleSettings];
-    [v13 settlingDuration];
+    switcherSettings = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    pulseScaleSettings = [animationSettings pulseScaleSettings];
+    [pulseScaleSettings settlingDuration];
     v15 = v14;
 
     v16 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"SBPulseDisplayItemSwitcherModifierTimerReasonSecondStage" reason:v15];
@@ -96,8 +96,8 @@
 
   else
   {
-    v17 = [v4 reason];
-    v18 = [v17 isEqualToString:@"SBPulseDisplayItemSwitcherModifierTimerReasonSecondStage"];
+    reason2 = [eventCopy reason];
+    v18 = [reason2 isEqualToString:@"SBPulseDisplayItemSwitcherModifierTimerReasonSecondStage"];
 
     if (!v18)
     {
@@ -116,40 +116,40 @@ LABEL_6:
   return v5;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v15.receiver = self;
   v15.super_class = SBPulseDisplayItemSwitcherModifier;
-  v6 = a4;
-  [(SBPulseDisplayItemSwitcherModifier *)&v15 scaleForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBPulseDisplayItemSwitcherModifier *)&v15 scaleForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  v9 = [v6 itemForLayoutRole:{a3, v15.receiver, v15.super_class}];
+  v9 = [layoutCopy itemForLayoutRole:{role, v15.receiver, v15.super_class}];
 
   v10 = [(SBDisplayItem *)v9 isEqualToItem:?];
   if (v10)
   {
-    v11 = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
-    v12 = [v11 animationSettings];
-    [v12 pulseScale];
+    switcherSettings = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings pulseScale];
     v8 = v8 * v13;
   }
 
   return v8;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
-  v12 = [(SBPulseDisplayItemSwitcherModifier *)self windowManagementContext];
-  v13 = [v12 isFlexibleWindowingEnabled];
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
+  windowManagementContext = [(SBPulseDisplayItemSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v13)
+  if (isFlexibleWindowingEnabled)
   {
-    [(SBPulseDisplayItemSwitcherModifier *)&v38 cornerRadiiForLayoutRole:a3 inAppLayout:v11 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight, v37.receiver, v37.super_class, self, SBPulseDisplayItemSwitcherModifier];
+    [(SBPulseDisplayItemSwitcherModifier *)&v38 cornerRadiiForLayoutRole:role inAppLayout:layoutCopy withCornerRadii:topLeft, bottomLeft, bottomRight, topRight, v37.receiver, v37.super_class, self, SBPulseDisplayItemSwitcherModifier];
 LABEL_12:
     v21 = v14;
     v22 = v15;
@@ -158,12 +158,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v18 = [v11 itemForLayoutRole:a3];
-  if (-[SBDisplayItem isEqualToItem:](v18, self->_displayItem) && [v11 configuration] == 1)
+  v18 = [layoutCopy itemForLayoutRole:role];
+  if (-[SBDisplayItem isEqualToItem:](v18, self->_displayItem) && [layoutCopy configuration] == 1)
   {
-    v19 = [v11 environment];
+    environment = [layoutCopy environment];
 
-    if (v19 != 2)
+    if (environment != 2)
     {
       [(SBPulseDisplayItemSwitcherModifier *)self displayCornerRadius];
       SBRectCornerRadiiForRadius();
@@ -175,26 +175,26 @@ LABEL_12:
   {
   }
 
-  v20 = [v11 itemForLayoutRole:a3];
-  if (!-[SBDisplayItem isEqualToItem:](v20, self->_displayItem) || [v11 environment] == 2)
+  v20 = [layoutCopy itemForLayoutRole:role];
+  if (!-[SBDisplayItem isEqualToItem:](v20, self->_displayItem) || [layoutCopy environment] == 2)
   {
 
 LABEL_11:
-    [(SBPulseDisplayItemSwitcherModifier *)&v37 cornerRadiiForLayoutRole:a3 inAppLayout:v11 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight, self, SBPulseDisplayItemSwitcherModifier, v38.receiver, v38.super_class];
+    [(SBPulseDisplayItemSwitcherModifier *)&v37 cornerRadiiForLayoutRole:role inAppLayout:layoutCopy withCornerRadii:topLeft, bottomLeft, bottomRight, topRight, self, SBPulseDisplayItemSwitcherModifier, v38.receiver, v38.super_class];
     goto LABEL_12;
   }
 
-  v29 = [v11 configuration];
+  configuration = [layoutCopy configuration];
 
-  if (!v29)
+  if (!configuration)
   {
     goto LABEL_11;
   }
 
-  v30 = [(SBPulseDisplayItemSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBPulseDisplayItemSwitcherModifier *)self isRTLEnabled];
   [(SBPulseDisplayItemSwitcherModifier *)self splitViewInnerCornerRadius];
   v23 = v31;
-  if (a3 == 1 && !v30 || ((a3 == 2) & v30) == 1)
+  if (role == 1 && !isRTLEnabled || ((role == 2) & isRTLEnabled) == 1)
   {
     [(SBPulseDisplayItemSwitcherModifier *)self displayCornerRadius];
     v21 = v32;
@@ -227,24 +227,24 @@ LABEL_13:
   return result;
 }
 
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners
 {
-  v8 = a4;
-  v9 = [v8 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v9 = [layoutCopy itemForLayoutRole:role];
   if (![(SBDisplayItem *)v9 isEqualToItem:?])
   {
 
     goto LABEL_5;
   }
 
-  v10 = [v8 environment];
+  environment = [layoutCopy environment];
 
-  if (v10 == 2)
+  if (environment == 2)
   {
 LABEL_5:
     v13.receiver = self;
     v13.super_class = SBPulseDisplayItemSwitcherModifier;
-    v11 = [(SBPulseDisplayItemSwitcherModifier *)&v13 maskedCornersForLayoutRole:a3 inAppLayout:v8 withMaskedCorners:a5];
+    v11 = [(SBPulseDisplayItemSwitcherModifier *)&v13 maskedCornersForLayoutRole:role inAppLayout:layoutCopy withMaskedCorners:corners];
     goto LABEL_6;
   }
 
@@ -254,29 +254,29 @@ LABEL_6:
   return v11;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v11.receiver = self;
   v11.super_class = SBPulseDisplayItemSwitcherModifier;
-  v5 = [(SBPulseDisplayItemSwitcherModifier *)&v11 animationAttributesForLayoutElement:v4];
+  v5 = [(SBPulseDisplayItemSwitcherModifier *)&v11 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
-  if (![v4 switcherLayoutElementType] && objc_msgSend(v4, "containsItem:", self->_displayItemToPulse))
+  if (![elementCopy switcherLayoutElementType] && objc_msgSend(elementCopy, "containsItem:", self->_displayItemToPulse))
   {
-    v7 = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
-    v8 = [v7 animationSettings];
-    v9 = [v8 pulseScaleSettings];
-    [v6 setLayoutSettings:v9];
+    switcherSettings = [(SBPulseDisplayItemSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    pulseScaleSettings = [animationSettings pulseScaleSettings];
+    [v6 setLayoutSettings:pulseScaleSettings];
   }
 
   return v6;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 containsItem:self->_displayItemToPulse])
+  layoutCopy = layout;
+  if ([layoutCopy containsItem:self->_displayItemToPulse])
   {
     v5 = SBSwitcherAsyncRenderingAttributesMake(0, 0);
   }
@@ -285,7 +285,7 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = SBPulseDisplayItemSwitcherModifier;
-    v5 = [(SBPulseDisplayItemSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:v4];
+    v5 = [(SBPulseDisplayItemSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:layoutCopy];
   }
 
   v6 = v5;
@@ -295,33 +295,33 @@ LABEL_6:
 
 - (id)topMostLayoutElements
 {
-  v3 = [(SBPulseDisplayItemSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBPulseDisplayItemSwitcherModifier *)self appLayouts];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__SBPulseDisplayItemSwitcherModifier_topMostLayoutElements__block_invoke;
   v12[3] = &unk_2783A8CB8;
   v12[4] = self;
-  v4 = [v3 bs_firstObjectPassingTest:v12];
+  v4 = [appLayouts bs_firstObjectPassingTest:v12];
 
-  v5 = [(SBPulseDisplayItemSwitcherModifier *)self appLayoutOnStage];
-  v6 = [v5 isOrContainsAppLayout:v4];
+  appLayoutOnStage = [(SBPulseDisplayItemSwitcherModifier *)self appLayoutOnStage];
+  v6 = [appLayoutOnStage isOrContainsAppLayout:v4];
 
   if (v6)
   {
     v11.receiver = self;
     v11.super_class = SBPulseDisplayItemSwitcherModifier;
-    v7 = [(SBPulseDisplayItemSwitcherModifier *)&v11 topMostLayoutElements];
-    v8 = [v7 sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
+    topMostLayoutElements = [(SBPulseDisplayItemSwitcherModifier *)&v11 topMostLayoutElements];
+    topMostLayoutElements2 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBPulseDisplayItemSwitcherModifier;
-    v8 = [(SBPulseDisplayItemSwitcherModifier *)&v10 topMostLayoutElements];
+    topMostLayoutElements2 = [(SBPulseDisplayItemSwitcherModifier *)&v10 topMostLayoutElements];
   }
 
-  return v8;
+  return topMostLayoutElements2;
 }
 
 @end

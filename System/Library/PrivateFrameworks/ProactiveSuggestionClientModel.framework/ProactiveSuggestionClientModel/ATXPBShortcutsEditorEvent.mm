@@ -1,21 +1,21 @@
 @interface ATXPBShortcutsEditorEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSuggestionUUIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestionUUIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBShortcutsEditorEvent
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSuggestionUUIDs:(id)a3
+- (void)addSuggestionUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   suggestionUUIDs = self->_suggestionUUIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!suggestionUUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_suggestionUUIDs;
     self->_suggestionUUIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     suggestionUUIDs = self->_suggestionUUIDs;
   }
 
-  [(NSMutableArray *)suggestionUUIDs addObject:v4];
+  [(NSMutableArray *)suggestionUUIDs addObject:dsCopy];
 }
 
 - (id)description
@@ -52,20 +52,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBShortcutsEditorEvent;
   v4 = [(ATXPBShortcutsEditorEvent *)&v8 description];
-  v5 = [(ATXPBShortcutsEditorEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBShortcutsEditorEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_date];
-    [v3 setObject:v5 forKey:@"date"];
+    [dictionary setObject:v5 forKey:@"date"];
 
     has = self->_has;
   }
@@ -73,35 +73,35 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_eventType];
-    [v3 setObject:v6 forKey:@"eventType"];
+    [dictionary setObject:v6 forKey:@"eventType"];
   }
 
   blendingCacheId = self->_blendingCacheId;
   if (blendingCacheId)
   {
-    [v3 setObject:blendingCacheId forKey:@"blendingCacheId"];
+    [dictionary setObject:blendingCacheId forKey:@"blendingCacheId"];
   }
 
   suggestionUUIDs = self->_suggestionUUIDs;
   if (suggestionUUIDs)
   {
-    [v3 setObject:suggestionUUIDs forKey:@"suggestionUUIDs"];
+    [dictionary setObject:suggestionUUIDs forKey:@"suggestionUUIDs"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v10 = [(ATXPBShortcutsEditorEventMetadata *)metadata dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"metadata"];
+    dictionaryRepresentation = [(ATXPBShortcutsEditorEventMetadata *)metadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -158,36 +158,36 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = *&self->_date;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = *&self->_date;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = self->_eventType;
-    *(v4 + 48) |= 2u;
+    toCopy[2] = self->_eventType;
+    *(toCopy + 48) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_blendingCacheId)
   {
-    [v4 setBlendingCacheId:?];
+    [toCopy setBlendingCacheId:?];
   }
 
   if ([(ATXPBShortcutsEditorEvent *)self suggestionUUIDsCount])
   {
     [v10 clearSuggestionUUIDs];
-    v6 = [(ATXPBShortcutsEditorEvent *)self suggestionUUIDsCount];
-    if (v6)
+    suggestionUUIDsCount = [(ATXPBShortcutsEditorEvent *)self suggestionUUIDsCount];
+    if (suggestionUUIDsCount)
     {
-      v7 = v6;
+      v7 = suggestionUUIDsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ATXPBShortcutsEditorEvent *)self suggestionUUIDsAtIndex:i];
@@ -202,10 +202,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -221,7 +221,7 @@
     *(v5 + 48) |= 2u;
   }
 
-  v8 = [(NSString *)self->_blendingCacheId copyWithZone:a3];
+  v8 = [(NSString *)self->_blendingCacheId copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -244,7 +244,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v15 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addSuggestionUUIDs:v15];
       }
 
@@ -254,7 +254,7 @@
     while (v12);
   }
 
-  v16 = [(ATXPBShortcutsEditorEventMetadata *)self->_metadata copyWithZone:a3];
+  v16 = [(ATXPBShortcutsEditorEventMetadata *)self->_metadata copyWithZone:zone];
   v17 = v6[4];
   v6[4] = v16;
 
@@ -262,24 +262,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_18:
     v9 = 0;
@@ -288,25 +288,25 @@ LABEL_18:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_eventType != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_eventType != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   blendingCacheId = self->_blendingCacheId;
-  if (blendingCacheId | *(v4 + 3) && ![(NSString *)blendingCacheId isEqual:?])
+  if (blendingCacheId | *(equalCopy + 3) && ![(NSString *)blendingCacheId isEqual:?])
   {
     goto LABEL_18;
   }
 
   suggestionUUIDs = self->_suggestionUUIDs;
-  if (suggestionUUIDs | *(v4 + 5))
+  if (suggestionUUIDs | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)suggestionUUIDs isEqual:?])
     {
@@ -315,7 +315,7 @@ LABEL_18:
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 4))
+  if (metadata | *(equalCopy + 4))
   {
     v9 = [(ATXPBShortcutsEditorEventMetadata *)metadata isEqual:?];
   }
@@ -380,26 +380,26 @@ LABEL_19:
   return v10 ^ v11 ^ [(ATXPBShortcutsEditorEventMetadata *)self->_metadata hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 48);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 48);
   if (v6)
   {
-    self->_date = *(v4 + 1);
+    self->_date = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_eventType = *(v4 + 2);
+    self->_eventType = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXPBShortcutsEditorEvent *)self setBlendingCacheId:?];
   }

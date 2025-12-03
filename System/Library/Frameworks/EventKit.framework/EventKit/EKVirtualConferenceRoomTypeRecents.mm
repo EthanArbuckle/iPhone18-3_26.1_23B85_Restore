@@ -1,44 +1,44 @@
 @interface EKVirtualConferenceRoomTypeRecents
-+ (id)_extensionBundleIdentifierFromIdentifier:(id)a3;
-+ (id)_identifierFromRoomType:(id)a3;
-+ (id)roomTypesOrderedByMRU:(id)a3 forSource:(id)a4;
-+ (void)_updateSavedMRUDictWithRoomTypes:(id)a3 source:(id)a4;
++ (id)_extensionBundleIdentifierFromIdentifier:(id)identifier;
++ (id)_identifierFromRoomType:(id)type;
++ (id)roomTypesOrderedByMRU:(id)u forSource:(id)source;
++ (void)_updateSavedMRUDictWithRoomTypes:(id)types source:(id)source;
 + (void)cleanup;
-+ (void)selectRoomType:(id)a3 forSource:(id)a4;
++ (void)selectRoomType:(id)type forSource:(id)source;
 @end
 
 @implementation EKVirtualConferenceRoomTypeRecents
 
-+ (id)roomTypesOrderedByMRU:(id)a3 forSource:(id)a4
++ (id)roomTypesOrderedByMRU:(id)u forSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 sourceIdentifier];
-  if (v8)
+  uCopy = u;
+  sourceCopy = source;
+  sourceIdentifier = [sourceCopy sourceIdentifier];
+  if (sourceIdentifier)
   {
-    [a1 _updateSavedMRUDictWithRoomTypes:v6 source:v7];
+    [self _updateSavedMRUDictWithRoomTypes:uCopy source:sourceCopy];
     v9 = +[EKPreferences shared];
-    v10 = [v9 conferenceRoomTypeIdentifiersByMRU];
+    conferenceRoomTypeIdentifiersByMRU = [v9 conferenceRoomTypeIdentifiersByMRU];
 
-    v11 = [v7 sourceIdentifier];
-    v12 = [v10 objectForKey:v11];
+    sourceIdentifier2 = [sourceCopy sourceIdentifier];
+    v12 = [conferenceRoomTypeIdentifiersByMRU objectForKey:sourceIdentifier2];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSource___block_invoke;
     v22[3] = &unk_1E77FE198;
     v23 = v12;
-    v24 = a1;
+    selfCopy = self;
     v13 = v12;
-    v14 = [v6 sortedArrayUsingComparator:v22];
+    v14 = [uCopy sortedArrayUsingComparator:v22];
   }
 
   else
   {
-    v10 = +[EKLogSubsystem defaultCategory];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    conferenceRoomTypeIdentifiersByMRU = +[EKLogSubsystem defaultCategory];
+    if (os_log_type_enabled(conferenceRoomTypeIdentifiersByMRU, OS_LOG_TYPE_ERROR))
     {
-      [(EKVirtualConferenceRoomTypeRecents *)v7 roomTypesOrderedByMRU:v10 forSource:v15, v16, v17, v18, v19, v20];
+      [(EKVirtualConferenceRoomTypeRecents *)sourceCopy roomTypesOrderedByMRU:conferenceRoomTypeIdentifiersByMRU forSource:v15, v16, v17, v18, v19, v20];
     }
 
     v14 = 0;
@@ -69,28 +69,28 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
   return v11;
 }
 
-+ (void)selectRoomType:(id)a3 forSource:(id)a4
++ (void)selectRoomType:(id)type forSource:(id)source
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 sourceIdentifier];
-  if (v8)
+  typeCopy = type;
+  sourceCopy = source;
+  sourceIdentifier = [sourceCopy sourceIdentifier];
+  if (sourceIdentifier)
   {
-    v24[0] = v6;
+    v24[0] = typeCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-    [a1 _updateSavedMRUDictWithRoomTypes:v9 source:v7];
+    [self _updateSavedMRUDictWithRoomTypes:v9 source:sourceCopy];
 
-    v10 = [a1 _identifierFromRoomType:v6];
+    v10 = [self _identifierFromRoomType:typeCopy];
     v11 = +[EKPreferences shared];
-    v12 = [v11 conferenceRoomTypeIdentifiersByMRU];
+    conferenceRoomTypeIdentifiersByMRU = [v11 conferenceRoomTypeIdentifiersByMRU];
 
-    v13 = [v12 objectForKey:v8];
+    v13 = [conferenceRoomTypeIdentifiersByMRU objectForKey:sourceIdentifier];
     v14 = [v13 mutableCopy];
     [v14 removeObject:v10];
     [v14 insertObject:v10 atIndex:0];
-    v15 = [v12 mutableCopy];
-    [v15 setObject:v14 forKey:v8];
+    v15 = [conferenceRoomTypeIdentifiersByMRU mutableCopy];
+    [v15 setObject:v14 forKey:sourceIdentifier];
     v16 = +[EKPreferences shared];
     [v16 setConferenceRoomTypeIdentifiersByMRU:v15];
   }
@@ -100,48 +100,48 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
     v10 = +[EKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(EKVirtualConferenceRoomTypeRecents *)v7 selectRoomType:v10 forSource:v17, v18, v19, v20, v21, v22];
+      [(EKVirtualConferenceRoomTypeRecents *)sourceCopy selectRoomType:v10 forSource:v17, v18, v19, v20, v21, v22];
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_updateSavedMRUDictWithRoomTypes:(id)a3 source:(id)a4
++ (void)_updateSavedMRUDictWithRoomTypes:(id)types source:(id)source
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 sourceIdentifier];
-  if (v8)
+  typesCopy = types;
+  sourceCopy = source;
+  sourceIdentifier = [sourceCopy sourceIdentifier];
+  if (sourceIdentifier)
   {
-    v31 = v7;
+    v31 = sourceCopy;
     v9 = +[EKPreferences shared];
-    v10 = [v9 conferenceRoomTypeIdentifiersByMRU];
+    conferenceRoomTypeIdentifiersByMRU = [v9 conferenceRoomTypeIdentifiersByMRU];
 
-    v30 = v10;
-    v11 = [v10 mutableCopy];
-    if (!v11)
+    v30 = conferenceRoomTypeIdentifiersByMRU;
+    dictionary = [conferenceRoomTypeIdentifiersByMRU mutableCopy];
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v12 = [v11 objectForKey:v8];
+    v12 = [dictionary objectForKey:sourceIdentifier];
     v13 = [v12 mutableCopy];
 
     if (!v13)
     {
-      v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+      v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(typesCopy, "count")}];
     }
 
-    [v11 setObject:v13 forKey:v8];
-    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    [dictionary setObject:v13 forKey:sourceIdentifier];
+    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(typesCopy, "count")}];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v32 = v6;
-    v15 = v6;
+    v32 = typesCopy;
+    v15 = typesCopy;
     v16 = [v15 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v16)
     {
@@ -156,7 +156,7 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
             objc_enumerationMutation(v15);
           }
 
-          v20 = [a1 _identifierFromRoomType:*(*(&v33 + 1) + 8 * i)];
+          v20 = [self _identifierFromRoomType:*(*(&v33 + 1) + 8 * i)];
           if (([v13 containsObject:v20] & 1) == 0)
           {
             [v14 addObject:v20];
@@ -171,10 +171,10 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
 
     [v13 addObjectsFromArray:v14];
     v21 = +[EKPreferences shared];
-    [v21 setConferenceRoomTypeIdentifiersByMRU:v11];
+    [v21 setConferenceRoomTypeIdentifiersByMRU:dictionary];
 
-    v7 = v31;
-    v6 = v32;
+    sourceCopy = v31;
+    typesCopy = v32;
     v22 = v30;
   }
 
@@ -183,7 +183,7 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
     v22 = +[EKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      [(EKVirtualConferenceRoomTypeRecents *)v7 _updateSavedMRUDictWithRoomTypes:v22 source:v23, v24, v25, v26, v27, v28];
+      [(EKVirtualConferenceRoomTypeRecents *)sourceCopy _updateSavedMRUDictWithRoomTypes:v22 source:v23, v24, v25, v26, v27, v28];
     }
   }
 
@@ -194,15 +194,15 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
 {
   v68 = *MEMORY[0x1E69E9840];
   v2 = +[EKPreferences shared];
-  v3 = [v2 conferenceRoomTypeIdentifiersByMRU];
+  conferenceRoomTypeIdentifiersByMRU = [v2 conferenceRoomTypeIdentifiersByMRU];
 
-  v4 = [v3 mutableCopy];
+  v4 = [conferenceRoomTypeIdentifiersByMRU mutableCopy];
   v5 = objc_alloc_init(EKEventStore);
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v6 = v3;
+  v6 = conferenceRoomTypeIdentifiersByMRU;
   v7 = [v6 countByEnumeratingWithState:&v60 objects:v67 count:16];
   if (v7)
   {
@@ -281,7 +281,7 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
               }
 
               v24 = *(*(&v52 + 1) + 8 * j);
-              v25 = [a1 _extensionBundleIdentifierFromIdentifier:v24];
+              v25 = [self _extensionBundleIdentifierFromIdentifier:v24];
               if ([v14 containsObject:v25])
               {
                 [v18 removeObject:v24];
@@ -368,22 +368,22 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
   v38 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_identifierFromRoomType:(id)a3
++ (id)_identifierFromRoomType:(id)type
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [v4 identifier];
+  typeCopy = type;
+  extensionBundleIdentifier = [typeCopy extensionBundleIdentifier];
+  identifier = [typeCopy identifier];
 
-  v7 = [v3 stringWithFormat:@"%@%@%@", v5, @"/", v6];
+  v7 = [v3 stringWithFormat:@"%@%@%@", extensionBundleIdentifier, @"/", identifier];
 
   return v7;
 }
 
-+ (id)_extensionBundleIdentifierFromIdentifier:(id)a3
++ (id)_extensionBundleIdentifierFromIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"/"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@"/"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -391,7 +391,7 @@ uint64_t __70__EKVirtualConferenceRoomTypeRecents_roomTypesOrderedByMRU_forSourc
 
   else
   {
-    v5 = [v3 substringWithRange:{0, v4}];
+    v5 = [identifierCopy substringWithRange:{0, v4}];
   }
 
   return v5;

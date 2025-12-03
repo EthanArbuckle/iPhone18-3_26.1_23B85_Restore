@@ -1,23 +1,23 @@
 @interface RouteStepListDataSource
 - (NSArray)items;
 - (NSMutableIndexSet)excludedStepIndices;
-- (RouteStepListDataSource)initWithTraitCollection:(id)a3 options:(unint64_t)a4 metrics:(id)a5 context:(int64_t)a6;
+- (RouteStepListDataSource)initWithTraitCollection:(id)collection options:(unint64_t)options metrics:(id)metrics context:(int64_t)context;
 - (RouteStepListDataSourceDelegate)delegate;
 - (id)firstStepManeuverItem;
 - (id)lastStepManeuverItem;
 - (unint64_t)_firstDisplayedStepIndex;
 - (unint64_t)_highlightedStepIndex;
-- (unint64_t)itemIndexForStepIndex:(unint64_t)a3;
-- (void)_appendItem:(id)a3 toArray:(id)a4;
+- (unint64_t)itemIndexForStepIndex:(unint64_t)index;
+- (void)_appendItem:(id)item toArray:(id)array;
 - (void)_calculateItems;
 - (void)_localeDidChange;
-- (void)setActiveStepIndex:(unint64_t)a3;
-- (void)setAllowedStepIndices:(id)a3;
-- (void)setCurrentLocale:(id)a3;
-- (void)setMissedStepIndex:(unint64_t)a3;
-- (void)setRoute:(id)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)setVehicle:(id)a3;
+- (void)setActiveStepIndex:(unint64_t)index;
+- (void)setAllowedStepIndices:(id)indices;
+- (void)setCurrentLocale:(id)locale;
+- (void)setMissedStepIndex:(unint64_t)index;
+- (void)setRoute:(id)route;
+- (void)setTraitCollection:(id)collection;
+- (void)setVehicle:(id)vehicle;
 @end
 
 @implementation RouteStepListDataSource
@@ -62,110 +62,110 @@
   [(RouteStepListDataSource *)self setCurrentLocale:v3];
 }
 
-- (void)_appendItem:(id)a3 toArray:(id)a4
+- (void)_appendItem:(id)item toArray:(id)array
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(RouteStepListDataSource *)self traitCollection];
-  [v11 setTraitCollection:v7];
+  itemCopy = item;
+  arrayCopy = array;
+  traitCollection = [(RouteStepListDataSource *)self traitCollection];
+  [itemCopy setTraitCollection:traitCollection];
 
-  v8 = [(RouteStepListDataSource *)self delegate];
+  delegate = [(RouteStepListDataSource *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(RouteStepListDataSource *)self delegate];
-    [v10 customizeItem:v11 forDataSource:self];
+    delegate2 = [(RouteStepListDataSource *)self delegate];
+    [delegate2 customizeItem:itemCopy forDataSource:self];
   }
 
-  [v6 addObject:v11];
+  [arrayCopy addObject:itemCopy];
 }
 
 - (void)_calculateItems
 {
   v3 = objc_opt_new();
-  v4 = [(RouteStepListDataSource *)self metrics];
-  v71 = [(RouteStepListDataSource *)self activeStepIndex];
-  v5 = [(RouteStepListDataSource *)self traitCollection];
-  [v5 displayScale];
+  metrics = [(RouteStepListDataSource *)self metrics];
+  activeStepIndex = [(RouteStepListDataSource *)self activeStepIndex];
+  traitCollection = [(RouteStepListDataSource *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
 
   v73 = self->_route;
   if ([(GEOComposedRoute *)v73 isEVRoute])
   {
-    v68 = [(RouteStepListDataSource *)self vehicle];
+    vehicle = [(RouteStepListDataSource *)self vehicle];
   }
 
   else
   {
-    v68 = 0;
+    vehicle = 0;
   }
 
-  v8 = [(RouteStepListDataSource *)self route];
-  v9 = [v8 _maps_directionsWaypoints];
+  route = [(RouteStepListDataSource *)self route];
+  _maps_directionsWaypoints = [route _maps_directionsWaypoints];
 
   v10 = sub_100035E6C();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [(GEOComposedRoute *)v73 name];
-    v12 = [(GEOComposedRoute *)v73 uniqueRouteID];
+    name = [(GEOComposedRoute *)v73 name];
+    uniqueRouteID = [(GEOComposedRoute *)v73 uniqueRouteID];
     *buf = 138412802;
-    v75 = v11;
+    v75 = name;
     v76 = 2112;
-    v77 = v12;
+    v77 = uniqueRouteID;
     v78 = 2048;
-    v79 = [(GEOComposedRoute *)v73 stepsCount];
+    stepsCount = [(GEOComposedRoute *)v73 stepsCount];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Calculating items for route %@ (%@) with steps %lu", buf, 0x20u);
   }
 
   if (([(RouteStepListDataSource *)self options]& 1) != 0)
   {
-    v13 = [(RouteStepListDataSource *)self route];
-    v14 = [v13 origin];
+    route2 = [(RouteStepListDataSource *)self route];
+    origin = [route2 origin];
 
-    if (v14)
+    if (origin)
     {
       v15 = [RouteStepWaypointItem alloc];
-      v16 = [v9 firstObject];
-      v17 = [(RouteStepListDataSource *)self delegate];
-      v18 = -[RouteStepWaypointItem initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:](v15, "initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:", v16, 0, 0, v68, v73, [v17 cellClassForItemType:0], v7, v71 == 0, v4, self->_context);
+      firstObject = [_maps_directionsWaypoints firstObject];
+      delegate = [(RouteStepListDataSource *)self delegate];
+      v18 = -[RouteStepWaypointItem initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:](v15, "initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:", firstObject, 0, 0, vehicle, v73, [delegate cellClassForItemType:0], v7, activeStepIndex == 0, metrics, self->_context);
 
       [(RouteStepListDataSource *)self _appendItem:v18 toArray:v3];
     }
   }
 
-  v66 = v9;
-  v70 = [(RouteStepListDataSource *)self _highlightedStepIndex];
-  v19 = [(GEOComposedRoute *)v73 steps];
-  v20 = [v19 count];
+  v66 = _maps_directionsWaypoints;
+  _highlightedStepIndex = [(RouteStepListDataSource *)self _highlightedStepIndex];
+  steps = [(GEOComposedRoute *)v73 steps];
+  v20 = [steps count];
 
-  v69 = v4;
+  v69 = metrics;
   if (v20)
   {
     v21 = 0;
     v67 = v3;
     do
     {
-      v22 = [(GEOComposedRoute *)v73 steps];
-      v23 = [v22 objectAtIndexedSubscript:v21];
+      steps2 = [(GEOComposedRoute *)v73 steps];
+      v23 = [steps2 objectAtIndexedSubscript:v21];
 
       if (v21 || (-[RouteStepListDataSource options](self, "options") & 8) != 0 || [v23 maneuverType] != 17 || (objc_msgSend(v23, "geoStep"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "instructionSet"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "hasDrivingWalkingListInstruction"), v25, v24, (v26 & 1) != 0))
       {
         if (v21 - 1 >= v20)
         {
-          v28 = 0;
+          excludedStepIndices2 = 0;
         }
 
         else
         {
-          v27 = [(GEOComposedRoute *)v73 steps];
-          v28 = [v27 objectAtIndexedSubscript:v21 - 1];
+          steps3 = [(GEOComposedRoute *)v73 steps];
+          excludedStepIndices2 = [steps3 objectAtIndexedSubscript:v21 - 1];
         }
 
-        if ((([v28 isEVChargerStep] & 1) != 0 || (-[RouteStepListDataSource options](self, "options") & 0x40) != 0) && objc_msgSend(v23, "maneuverType") == 85 || (objc_msgSend(v23, "geoStep"), v29 = objc_claimAutoreleasedReturnValue(), v29, !v29) || (-[RouteStepListDataSource allowedStepIndices](self, "allowedStepIndices"), (v30 = objc_claimAutoreleasedReturnValue()) != 0) && (v31 = v30, -[RouteStepListDataSource allowedStepIndices](self, "allowedStepIndices"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "containsIndex:", v21), v32, v31, (v33 & 1) == 0))
+        if ((([excludedStepIndices2 isEVChargerStep] & 1) != 0 || (-[RouteStepListDataSource options](self, "options") & 0x40) != 0) && objc_msgSend(v23, "maneuverType") == 85 || (objc_msgSend(v23, "geoStep"), v29 = objc_claimAutoreleasedReturnValue(), v29, !v29) || (-[RouteStepListDataSource allowedStepIndices](self, "allowedStepIndices"), (v30 = objc_claimAutoreleasedReturnValue()) != 0) && (v31 = v30, -[RouteStepListDataSource allowedStepIndices](self, "allowedStepIndices"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "containsIndex:", v21), v32, v31, (v33 & 1) == 0))
         {
-          v44 = [(RouteStepListDataSource *)self excludedStepIndices];
-          [(RouteStepManeuverItem *)v44 addIndex:v21];
+          excludedStepIndices = [(RouteStepListDataSource *)self excludedStepIndices];
+          [(RouteStepManeuverItem *)excludedStepIndices addIndex:v21];
         }
 
         else
@@ -173,22 +173,22 @@
           if (([(RouteStepListDataSource *)self options]& 2) != 0)
           {
             v72 = sub_100F5C4B8(v23, v73);
-            v34 = [(GEOComposedRoute *)v73 legs];
-            v35 = [v34 objectAtIndexedSubscript:{-[GEOComposedRoute legIndexForStepIndex:](v73, "legIndexForStepIndex:", objc_msgSend(v23, "stepIndex"))}];
+            legs = [(GEOComposedRoute *)v73 legs];
+            v35 = [legs objectAtIndexedSubscript:{-[GEOComposedRoute legIndexForStepIndex:](v73, "legIndexForStepIndex:", objc_msgSend(v23, "stepIndex"))}];
 
-            v36 = [v35 destination];
-            v37 = [v36 chargingInfo];
+            destination = [v35 destination];
+            chargingInfo = [destination chargingInfo];
 
-            v38 = [v35 destinationListSecondaryInstructions];
-            v39 = [v38 count];
+            destinationListSecondaryInstructions = [v35 destinationListSecondaryInstructions];
+            v39 = [destinationListSecondaryInstructions count];
 
-            if (v72 && (v39 || !v37))
+            if (v72 && (v39 || !chargingInfo))
             {
               v45 = [RouteStepWaypointItem alloc];
-              v65 = [(RouteStepListDataSource *)self delegate];
-              v46 = -[RouteStepWaypointItem initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:](v45, "initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:", v72, 1, v23, v68, v73, [v65 cellClassForItemType:0], v7, 1, v69, self->_context);
+              delegate2 = [(RouteStepListDataSource *)self delegate];
+              v46 = -[RouteStepWaypointItem initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:](v45, "initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:", v72, 1, v23, vehicle, v73, [delegate2 cellClassForItemType:0], v7, 1, v69, self->_context);
 
-              v4 = v69;
+              metrics = v69;
               v3 = v67;
               [(RouteStepListDataSource *)self _appendItem:v46 toArray:v67];
 
@@ -196,33 +196,33 @@
             }
 
             v3 = v67;
-            v4 = v69;
+            metrics = v69;
           }
 
-          if (v70 == v21)
+          if (_highlightedStepIndex == v21)
           {
             v40 = 2;
           }
 
           else
           {
-            v40 = v21 >= v71;
+            v40 = v21 >= activeStepIndex;
           }
 
           v41 = [RouteStepManeuverItem alloc];
-          v42 = [(RouteStepListDataSource *)self delegate];
-          v43 = [v42 cellClassForItemType:1];
+          delegate3 = [(RouteStepListDataSource *)self delegate];
+          v43 = [delegate3 cellClassForItemType:1];
           LOBYTE(v64) = v21 == self->_missedStepIndex;
-          v44 = [(RouteStepManeuverItem *)v41 initWithRouteStep:v23 cellClass:v43 state:v40 metrics:v4 context:self->_context route:v73 scale:v7 isMissedStep:v64];
+          excludedStepIndices = [(RouteStepManeuverItem *)v41 initWithRouteStep:v23 cellClass:v43 state:v40 metrics:metrics context:self->_context route:v73 scale:v7 isMissedStep:v64];
 
-          [(RouteStepListDataSource *)self _appendItem:v44 toArray:v3];
+          [(RouteStepListDataSource *)self _appendItem:excludedStepIndices toArray:v3];
         }
       }
 
       else
       {
-        v28 = [(RouteStepListDataSource *)self excludedStepIndices];
-        [v28 addIndex:0];
+        excludedStepIndices2 = [(RouteStepListDataSource *)self excludedStepIndices];
+        [excludedStepIndices2 addIndex:0];
       }
 
 LABEL_35:
@@ -235,30 +235,30 @@ LABEL_35:
 
   if (([(RouteStepListDataSource *)self options]& 4) != 0)
   {
-    v47 = [(RouteStepListDataSource *)self route];
-    v48 = [v47 destination];
+    route3 = [(RouteStepListDataSource *)self route];
+    destination2 = [route3 destination];
 
-    if (v48)
+    if (destination2)
     {
       v49 = [RouteStepWaypointItem alloc];
-      v50 = [v66 lastObject];
-      v51 = [(RouteStepListDataSource *)self route];
-      v52 = [v51 steps];
-      v53 = [v52 lastObject];
-      v54 = [(RouteStepListDataSource *)self delegate];
-      v55 = -[RouteStepWaypointItem initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:](v49, "initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:", v50, 2, v53, v68, v73, [v54 cellClassForItemType:0], v7, 1, v69, self->_context);
+      lastObject = [v66 lastObject];
+      route4 = [(RouteStepListDataSource *)self route];
+      steps4 = [route4 steps];
+      lastObject2 = [steps4 lastObject];
+      delegate4 = [(RouteStepListDataSource *)self delegate];
+      v55 = -[RouteStepWaypointItem initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:](v49, "initWithWaypoint:waypointType:arrivalStep:vehicle:route:cellClass:state:metrics:context:scale:", lastObject, 2, lastObject2, vehicle, v73, [delegate4 cellClassForItemType:0], v7, 1, v69, self->_context);
 
-      v4 = v69;
+      metrics = v69;
       [(RouteStepListDataSource *)self _appendItem:v55 toArray:v3];
     }
   }
 
   if (([(RouteStepListDataSource *)self options]& 0x20) != 0)
   {
-    v56 = [(RouteStepListDataSource *)self route];
-    v57 = [v56 isMultipointRoute];
+    route5 = [(RouteStepListDataSource *)self route];
+    isMultipointRoute = [route5 isMultipointRoute];
 
-    if (v57)
+    if (isMultipointRoute)
     {
       v58 = 0;
     }
@@ -274,8 +274,8 @@ LABEL_35:
     }
 
     v59 = [RouteStepFooterItem alloc];
-    v60 = [(RouteStepListDataSource *)self delegate];
-    v61 = -[RouteStepFooterItem initWithCommandSet:cellClass:state:metrics:context:route:scale:](v59, "initWithCommandSet:cellClass:state:metrics:context:route:scale:", v58, [v60 cellClassForItemType:2], 1, v4, self->_context, v73, v7);
+    delegate5 = [(RouteStepListDataSource *)self delegate];
+    v61 = -[RouteStepFooterItem initWithCommandSet:cellClass:state:metrics:context:route:scale:](v59, "initWithCommandSet:cellClass:state:metrics:context:route:scale:", v58, [delegate5 cellClassForItemType:2], 1, metrics, self->_context, v73, v7);
 
     [(RouteStepListDataSource *)self _appendItem:v61 toArray:v3];
   }
@@ -300,10 +300,10 @@ LABEL_35:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(RouteStepListDataSource *)self items];
-  v3 = [v2 reverseObjectEnumerator];
+  items = [(RouteStepListDataSource *)self items];
+  reverseObjectEnumerator = [items reverseObjectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -313,7 +313,7 @@ LABEL_35:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -325,7 +325,7 @@ LABEL_35:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -346,8 +346,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(RouteStepListDataSource *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  items = [(RouteStepListDataSource *)self items];
+  v3 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -357,7 +357,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -369,7 +369,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -384,20 +384,20 @@ LABEL_11:
   return v3;
 }
 
-- (RouteStepListDataSource)initWithTraitCollection:(id)a3 options:(unint64_t)a4 metrics:(id)a5 context:(int64_t)a6
+- (RouteStepListDataSource)initWithTraitCollection:(id)collection options:(unint64_t)options metrics:(id)metrics context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a5;
+  collectionCopy = collection;
+  metricsCopy = metrics;
   v19.receiver = self;
   v19.super_class = RouteStepListDataSource;
   v13 = [(RouteStepListDataSource *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_traitCollection, a3);
-    v14->_options = a4;
-    objc_storeStrong(&v14->_metrics, a5);
-    v14->_context = a6;
+    objc_storeStrong(&v13->_traitCollection, collection);
+    v14->_options = options;
+    objc_storeStrong(&v14->_metrics, metrics);
+    v14->_context = context;
     v14->_missedStepIndex = 0x7FFFFFFFFFFFFFFFLL;
     v15 = +[NSLocale currentLocale];
     currentLocale = v14->_currentLocale;
@@ -410,23 +410,23 @@ LABEL_11:
   return v14;
 }
 
-- (unint64_t)itemIndexForStepIndex:(unint64_t)a3
+- (unint64_t)itemIndexForStepIndex:(unint64_t)index
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(RouteStepListDataSource *)self excludedStepIndices];
-    v7 = [v6 containsIndex:0];
+    excludedStepIndices = [(RouteStepListDataSource *)self excludedStepIndices];
+    v7 = [excludedStepIndices containsIndex:0];
 
-    if (a3 || (v7 & 1) == 0)
+    if (index || (v7 & 1) == 0)
     {
       v8 = v7;
-      v9 = [(RouteStepListDataSource *)self excludedStepIndices];
-      v10 = [v9 countOfIndexesInRange:{v7, a3 - v7}];
+      excludedStepIndices2 = [(RouteStepListDataSource *)self excludedStepIndices];
+      v10 = [excludedStepIndices2 countOfIndexesInRange:{v7, index - v7}];
 
-      v3 = a3 - v10;
-      v11 = [(RouteStepListDataSource *)self items];
-      v12 = [v11 count];
+      v3 = index - v10;
+      items = [(RouteStepListDataSource *)self items];
+      v12 = [items count];
 
       if (v3 >= v12)
       {
@@ -435,7 +435,7 @@ LABEL_11:
         block[2] = sub_100744D54;
         block[3] = &unk_10164E3F8;
         block[6] = v12;
-        block[7] = a3;
+        block[7] = index;
         block[8] = v8;
         block[4] = self;
         block[5] = v3;
@@ -465,10 +465,10 @@ LABEL_11:
   return v3;
 }
 
-- (void)setCurrentLocale:(id)a3
+- (void)setCurrentLocale:(id)locale
 {
-  v15 = a3;
-  v5 = [v15 objectForKey:NSLocaleMeasurementSystem];
+  localeCopy = locale;
+  v5 = [localeCopy objectForKey:NSLocaleMeasurementSystem];
   p_currentLocale = &self->_currentLocale;
   v7 = [(NSLocale *)self->_currentLocale objectForKey:NSLocaleMeasurementSystem];
   v8 = v5;
@@ -478,7 +478,7 @@ LABEL_11:
     v12 = v9;
     v13 = [v8 isEqual:v9];
 
-    objc_storeStrong(&self->_currentLocale, a3);
+    objc_storeStrong(&self->_currentLocale, locale);
     if (v13)
     {
       goto LABEL_6;
@@ -487,60 +487,60 @@ LABEL_11:
     items = self->_items;
     self->_items = 0;
 
-    v11 = [(RouteStepListDataSource *)self delegate];
-    [v11 reloadDataSource:self];
+    delegate = [(RouteStepListDataSource *)self delegate];
+    [delegate reloadDataSource:self];
   }
 
   else
   {
-    v10 = v15;
-    v11 = *p_currentLocale;
+    v10 = localeCopy;
+    delegate = *p_currentLocale;
     *p_currentLocale = v10;
   }
 
 LABEL_6:
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = self->_traitCollection;
-  v7 = v5;
+  collectionCopy = collection;
+  delegate = self->_traitCollection;
+  v7 = collectionCopy;
   v19 = v7;
-  if (v6 == v7)
+  if (delegate == v7)
   {
 
     goto LABEL_11;
   }
 
-  v8 = [(UITraitCollection *)v6 userInterfaceStyle];
-  if (v8 != [(UITraitCollection *)v19 userInterfaceStyle]|| ([(UITraitCollection *)v6 displayScale], v10 = v9, [(UITraitCollection *)v19 displayScale], v10 != v11) || ([(UITraitCollection *)v6 preferredContentSizeCategory], v12 = objc_claimAutoreleasedReturnValue(), [(UITraitCollection *)v19 preferredContentSizeCategory], v13 = objc_claimAutoreleasedReturnValue(), v14 = sub_10008FB5C(v12, v13), v13, v12, v14) || (v15 = [(UITraitCollection *)v6 horizontalSizeClass], v15 != [(UITraitCollection *)v19 horizontalSizeClass]))
+  userInterfaceStyle = [(UITraitCollection *)delegate userInterfaceStyle];
+  if (userInterfaceStyle != [(UITraitCollection *)v19 userInterfaceStyle]|| ([(UITraitCollection *)delegate displayScale], v10 = v9, [(UITraitCollection *)v19 displayScale], v10 != v11) || ([(UITraitCollection *)delegate preferredContentSizeCategory], v12 = objc_claimAutoreleasedReturnValue(), [(UITraitCollection *)v19 preferredContentSizeCategory], v13 = objc_claimAutoreleasedReturnValue(), v14 = sub_10008FB5C(v12, v13), v13, v12, v14) || (v15 = [(UITraitCollection *)delegate horizontalSizeClass], v15 != [(UITraitCollection *)v19 horizontalSizeClass]))
   {
 
     goto LABEL_9;
   }
 
-  v16 = [(UITraitCollection *)v6 verticalSizeClass];
-  v17 = [(UITraitCollection *)v19 verticalSizeClass];
+  verticalSizeClass = [(UITraitCollection *)delegate verticalSizeClass];
+  verticalSizeClass2 = [(UITraitCollection *)v19 verticalSizeClass];
 
-  if (v16 != v17)
+  if (verticalSizeClass != verticalSizeClass2)
   {
 LABEL_9:
-    objc_storeStrong(&self->_traitCollection, a3);
+    objc_storeStrong(&self->_traitCollection, collection);
     items = self->_items;
     self->_items = 0;
 
-    v6 = [(RouteStepListDataSource *)self delegate];
-    [(UITraitCollection *)v6 reloadUIForDataSource:self];
+    delegate = [(RouteStepListDataSource *)self delegate];
+    [(UITraitCollection *)delegate reloadUIForDataSource:self];
 LABEL_11:
   }
 }
 
-- (void)setAllowedStepIndices:(id)a3
+- (void)setAllowedStepIndices:(id)indices
 {
-  v5 = a3;
+  indicesCopy = indices;
   v6 = self->_allowedStepIndices;
-  v7 = v5;
+  v7 = indicesCopy;
   if (v7 | v6)
   {
     v11 = v7;
@@ -549,24 +549,24 @@ LABEL_11:
     v7 = v11;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_allowedStepIndices, a3);
+      objc_storeStrong(&self->_allowedStepIndices, indices);
       items = self->_items;
       self->_items = 0;
 
-      v10 = [(RouteStepListDataSource *)self delegate];
-      [v10 reloadDataSource:self];
+      delegate = [(RouteStepListDataSource *)self delegate];
+      [delegate reloadDataSource:self];
 
       v7 = v11;
     }
   }
 }
 
-- (void)setVehicle:(id)a3
+- (void)setVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   p_vehicle = &self->_vehicle;
   v7 = self->_vehicle;
-  v8 = v5;
+  v8 = vehicleCopy;
   if (v8 | v7)
   {
     v17 = v8;
@@ -575,13 +575,13 @@ LABEL_11:
     v8 = v17;
     if ((v9 & 1) == 0)
     {
-      v10 = [(VGVehicle *)*p_vehicle displayName];
-      v11 = [v17 displayName];
-      if ([v10 isEqualToString:v11])
+      displayName = [(VGVehicle *)*p_vehicle displayName];
+      displayName2 = [v17 displayName];
+      if ([displayName isEqualToString:displayName2])
       {
-        v12 = [(VGVehicle *)*p_vehicle currentVehicleState];
-        v13 = [v17 currentVehicleState];
-        v14 = [v12 isSignificantlyDifferentFromVehicleState:v13];
+        currentVehicleState = [(VGVehicle *)*p_vehicle currentVehicleState];
+        currentVehicleState2 = [v17 currentVehicleState];
+        v14 = [currentVehicleState isSignificantlyDifferentFromVehicleState:currentVehicleState2];
 
         v8 = v17;
         if (!v14)
@@ -594,12 +594,12 @@ LABEL_11:
       {
       }
 
-      objc_storeStrong(&self->_vehicle, a3);
+      objc_storeStrong(&self->_vehicle, vehicle);
       items = self->_items;
       self->_items = 0;
 
-      v16 = [(RouteStepListDataSource *)self delegate];
-      [v16 reloadDataSource:self];
+      delegate = [(RouteStepListDataSource *)self delegate];
+      [delegate reloadDataSource:self];
 
       v8 = v17;
     }
@@ -608,30 +608,30 @@ LABEL_11:
 LABEL_8:
 }
 
-- (void)setMissedStepIndex:(unint64_t)a3
+- (void)setMissedStepIndex:(unint64_t)index
 {
-  if (self->_missedStepIndex != a3)
+  if (self->_missedStepIndex != index)
   {
-    self->_missedStepIndex = a3;
+    self->_missedStepIndex = index;
     items = self->_items;
     self->_items = 0;
 
-    v6 = [(RouteStepListDataSource *)self delegate];
-    [v6 reloadDataSource:self];
+    delegate = [(RouteStepListDataSource *)self delegate];
+    [delegate reloadDataSource:self];
   }
 }
 
-- (void)setActiveStepIndex:(unint64_t)a3
+- (void)setActiveStepIndex:(unint64_t)index
 {
   activeStepIndex = self->_activeStepIndex;
-  if (activeStepIndex == a3)
+  if (activeStepIndex == index)
   {
     return;
   }
 
-  self->_activeStepIndex = a3;
-  v6 = [(RouteStepListDataSource *)self items];
-  v7 = [v6 count];
+  self->_activeStepIndex = index;
+  items = [(RouteStepListDataSource *)self items];
+  v7 = [items count];
 
   if (!v7)
   {
@@ -639,38 +639,38 @@ LABEL_8:
   }
 
   v18 = objc_opt_new();
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && activeStepIndex != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL && activeStepIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(RouteStepListDataSource *)self items];
-    if ([v8 count] <= a3)
+    items2 = [(RouteStepListDataSource *)self items];
+    if ([items2 count] <= index)
     {
     }
 
     else
     {
-      v9 = [(RouteStepListDataSource *)self items];
-      v10 = [v9 count];
+      items3 = [(RouteStepListDataSource *)self items];
+      v10 = [items3 count];
 
       if (activeStepIndex < v10)
       {
-        if (activeStepIndex >= a3)
+        if (activeStepIndex >= index)
         {
-          v11 = a3;
+          indexCopy = index;
         }
 
         else
         {
-          v11 = activeStepIndex;
+          indexCopy = activeStepIndex;
         }
 
-        if (activeStepIndex <= a3)
+        if (activeStepIndex <= index)
         {
-          v12 = a3;
+          indexCopy2 = index;
         }
 
         else
         {
-          v12 = activeStepIndex;
+          indexCopy2 = activeStepIndex;
         }
 
         goto LABEL_16;
@@ -678,69 +678,69 @@ LABEL_8:
     }
   }
 
-  v11 = 0;
-  v12 = [(NSArray *)self->_items count]- 1;
+  indexCopy = 0;
+  indexCopy2 = [(NSArray *)self->_items count]- 1;
   do
   {
 LABEL_16:
-    if (a3 == v11)
+    if (index == indexCopy)
     {
       v13 = 2;
     }
 
     else
     {
-      v13 = v11 >= a3;
+      v13 = indexCopy >= index;
     }
 
-    v14 = [(RouteStepListDataSource *)self items];
-    v15 = [v14 objectAtIndexedSubscript:v11];
+    items4 = [(RouteStepListDataSource *)self items];
+    v15 = [items4 objectAtIndexedSubscript:indexCopy];
 
     [v15 setState:v13];
-    [v18 addIndex:v11];
+    [v18 addIndex:indexCopy];
 
-    ++v11;
+    ++indexCopy;
   }
 
-  while (v11 <= v12);
-  v16 = [(RouteStepListDataSource *)self delegate];
+  while (indexCopy <= indexCopy2);
+  delegate = [(RouteStepListDataSource *)self delegate];
   v17 = [v18 copy];
-  [v16 reloadStepIndices:v17 forDataSource:self];
+  [delegate reloadStepIndices:v17 forDataSource:self];
 }
 
 - (unint64_t)_highlightedStepIndex
 {
-  v3 = [(RouteStepListDataSource *)self _firstDisplayedStepIndex];
-  v4 = [(RouteStepListDataSource *)self route];
-  v5 = [v4 steps];
-  v6 = [v5 count];
+  _firstDisplayedStepIndex = [(RouteStepListDataSource *)self _firstDisplayedStepIndex];
+  route = [(RouteStepListDataSource *)self route];
+  steps = [route steps];
+  v6 = [steps count];
 
-  if (v3 >= v6)
+  if (_firstDisplayedStepIndex >= v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v7 = 0;
-  while (v3 + v7 != [(RouteStepListDataSource *)self activeStepIndex])
+  while (_firstDisplayedStepIndex + v7 != [(RouteStepListDataSource *)self activeStepIndex])
   {
-    if ([(RouteStepListDataSource *)self activeStepIndex]< v3 + v7 && !v7)
+    if ([(RouteStepListDataSource *)self activeStepIndex]< _firstDisplayedStepIndex + v7 && !v7)
     {
-      return v3;
+      return _firstDisplayedStepIndex;
     }
 
-    v8 = [(RouteStepListDataSource *)self route];
-    v9 = [v8 steps];
-    v10 = [v9 count];
+    route2 = [(RouteStepListDataSource *)self route];
+    steps2 = [route2 steps];
+    v10 = [steps2 count];
 
     ++v7;
-    if (v3 + v7 >= v10)
+    if (_firstDisplayedStepIndex + v7 >= v10)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  v3 += v7;
-  return v3;
+  _firstDisplayedStepIndex += v7;
+  return _firstDisplayedStepIndex;
 }
 
 - (unint64_t)_firstDisplayedStepIndex
@@ -750,15 +750,15 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(RouteStepListDataSource *)self route];
-  v4 = [v3 steps];
-  v5 = [v4 firstObject];
+  route = [(RouteStepListDataSource *)self route];
+  steps = [route steps];
+  firstObject = [steps firstObject];
 
-  if ([v5 maneuverType] == 17)
+  if ([firstObject maneuverType] == 17)
   {
-    v6 = [v5 geoStep];
-    v7 = [v6 instructionSet];
-    v8 = [v7 hasDrivingWalkingListInstruction] ^ 1;
+    geoStep = [firstObject geoStep];
+    instructionSet = [geoStep instructionSet];
+    v8 = [instructionSet hasDrivingWalkingListInstruction] ^ 1;
   }
 
   else
@@ -769,24 +769,24 @@ LABEL_16:
   return v8;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
     v6 = sub_100035E6C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(GEOComposedRoute *)self->_route uniqueRouteID];
-      v8 = [(GEOComposedRoute *)v5 uniqueRouteID];
+      uniqueRouteID = [(GEOComposedRoute *)self->_route uniqueRouteID];
+      uniqueRouteID2 = [(GEOComposedRoute *)routeCopy uniqueRouteID];
       v13 = 138412546;
-      v14 = v7;
+      v14 = uniqueRouteID;
       v15 = 2112;
-      v16 = v8;
+      v16 = uniqueRouteID2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Changing data source's route from %@ to %@", &v13, 0x16u);
     }
 
-    objc_storeStrong(&self->_route, a3);
+    objc_storeStrong(&self->_route, route);
     self->_activeStepIndex = 0;
     excludedStepIndices = self->_excludedStepIndices;
     self->_excludedStepIndices = 0;
@@ -798,8 +798,8 @@ LABEL_16:
     items = self->_items;
     self->_items = 0;
 
-    v12 = [(RouteStepListDataSource *)self delegate];
-    [v12 reloadDataSource:self];
+    delegate = [(RouteStepListDataSource *)self delegate];
+    [delegate reloadDataSource:self];
   }
 }
 

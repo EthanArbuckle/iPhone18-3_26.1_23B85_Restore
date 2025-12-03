@@ -1,20 +1,20 @@
 @interface RoutePlanningServerEnvrionmentChangeRouteRefreshTask
 - (RoutePlanningServerEnvrionmentChangeRouteRefreshTask)init;
 - (void)dealloc;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup;
 @end
 
 @implementation RoutePlanningServerEnvrionmentChangeRouteRefreshTask
 
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 environment];
-  v10 = [v8 environment];
-  v11 = v9;
-  v12 = v10;
+  groupCopy = group;
+  tileGroupCopy = tileGroup;
+  environment = [groupCopy environment];
+  environment2 = [tileGroupCopy environment];
+  v11 = environment;
+  v12 = environment2;
   if (v11 | v12)
   {
     v13 = v12;
@@ -25,43 +25,43 @@
       v15 = sub_100624C3C();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v8 environment];
-        v17 = [v7 environment];
+        environment3 = [tileGroupCopy environment];
+        environment4 = [groupCopy environment];
         v21 = 134349571;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2113;
-        v24 = v16;
+        v24 = environment3;
         v25 = 2113;
-        v26 = v17;
+        v26 = environment4;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Environment changed %{private}@ -> %{private}@", &v21, 0x20u);
       }
 
-      v18 = [(RoutePlanningServerEnvrionmentChangeRouteRefreshTask *)self routePlanningSession];
+      routePlanningSession = [(RoutePlanningServerEnvrionmentChangeRouteRefreshTask *)self routePlanningSession];
 
-      if (v18)
+      if (routePlanningSession)
       {
         v19 = sub_100624C3C();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           v21 = 134349056;
-          v22 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[%{public}p] Requesting new routes", &v21, 0xCu);
         }
 
-        v20 = [(RoutePlanningServerEnvrionmentChangeRouteRefreshTask *)self routePlanningSession];
-        [v20 requestUpdatedRouteWithRefreshedOrigin:0];
+        routePlanningSession2 = [(RoutePlanningServerEnvrionmentChangeRouteRefreshTask *)self routePlanningSession];
+        [routePlanningSession2 requestUpdatedRouteWithRefreshedOrigin:0];
       }
     }
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = toSessionCopy;
   }
 
   else
@@ -79,7 +79,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 

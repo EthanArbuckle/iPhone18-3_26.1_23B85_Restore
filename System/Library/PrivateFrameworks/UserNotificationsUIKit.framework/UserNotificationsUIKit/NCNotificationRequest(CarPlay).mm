@@ -9,83 +9,83 @@
 
 - (id)carPlayTitle
 {
-  v2 = [a1 content];
-  v3 = [v2 title];
+  content = [self content];
+  title = [content title];
 
-  if (![v3 length])
+  if (![title length])
   {
-    v4 = [a1 content];
-    v5 = [v4 customHeader];
-    v6 = v5;
-    if (v5)
+    content2 = [self content];
+    customHeader = [content2 customHeader];
+    v6 = customHeader;
+    if (customHeader)
     {
-      v7 = v5;
+      defaultHeader = customHeader;
     }
 
     else
     {
-      v8 = [a1 content];
-      v7 = [v8 defaultHeader];
+      content3 = [self content];
+      defaultHeader = [content3 defaultHeader];
 
-      v3 = v8;
+      title = content3;
     }
 
-    v3 = v7;
+    title = defaultHeader;
   }
 
-  return v3;
+  return title;
 }
 
 - (id)carPlaySubTitle
 {
-  v2 = [a1 content];
-  v3 = [v2 subtitle];
+  content = [self content];
+  subtitle = [content subtitle];
 
-  if (![v3 length])
+  if (![subtitle length])
   {
-    v4 = [a1 content];
-    v5 = [v4 title];
-    v6 = [v5 length];
+    content2 = [self content];
+    title = [content2 title];
+    v6 = [title length];
 
     if (v6)
     {
-      v7 = [a1 content];
-      v8 = [v7 customHeader];
-      v9 = v8;
-      if (v8)
+      content3 = [self content];
+      customHeader = [content3 customHeader];
+      v9 = customHeader;
+      if (customHeader)
       {
-        v10 = v8;
+        defaultHeader = customHeader;
       }
 
       else
       {
-        v11 = [a1 content];
-        v10 = [v11 defaultHeader];
+        content4 = [self content];
+        defaultHeader = [content4 defaultHeader];
 
-        v3 = v11;
+        subtitle = content4;
       }
 
-      v3 = v10;
+      subtitle = defaultHeader;
     }
   }
 
-  return v3;
+  return subtitle;
 }
 
 - (id)carPlayMessage
 {
-  v1 = [a1 carPlayAttributedMessage];
-  v2 = [v1 string];
+  carPlayAttributedMessage = [self carPlayAttributedMessage];
+  string = [carPlayAttributedMessage string];
 
-  return v2;
+  return string;
 }
 
 - (id)carPlayAttributedMessage
 {
-  v1 = [a1 content];
-  v2 = [v1 attributedMessage];
+  content = [self content];
+  attributedMessage = [content attributedMessage];
 
-  return v2;
+  return attributedMessage;
 }
 
 @end

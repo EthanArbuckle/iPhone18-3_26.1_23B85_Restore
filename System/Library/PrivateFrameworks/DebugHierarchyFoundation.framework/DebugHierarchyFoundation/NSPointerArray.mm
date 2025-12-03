@@ -1,32 +1,32 @@
 @interface NSPointerArray
-- (unint64_t)dbg_indexOfObjectIdenticalTo:(id)a3;
-- (void)dbg_removeObject:(id)a3;
+- (unint64_t)dbg_indexOfObjectIdenticalTo:(id)to;
+- (void)dbg_removeObject:(id)object;
 @end
 
 @implementation NSPointerArray
 
-- (void)dbg_removeObject:(id)a3
+- (void)dbg_removeObject:(id)object
 {
-  v6 = a3;
+  objectCopy = object;
   v4 = [(NSPointerArray *)self dbg_indexOfObjectIdenticalTo:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSPointerArray *)self dbg_indexOfObjectIdenticalTo:v6])
+    for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSPointerArray *)self dbg_indexOfObjectIdenticalTo:objectCopy])
     {
       [(NSPointerArray *)self removePointerAtIndex:i];
     }
   }
 }
 
-- (unint64_t)dbg_indexOfObjectIdenticalTo:(id)a3
+- (unint64_t)dbg_indexOfObjectIdenticalTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = self;
-  v6 = [(NSPointerArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v6 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -40,10 +40,10 @@ LABEL_3:
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(selfCopy);
       }
 
-      if (*(*(&v13 + 1) + 8 * v10) == v4)
+      if (*(*(&v13 + 1) + 8 * v10) == toCopy)
       {
         break;
       }
@@ -51,7 +51,7 @@ LABEL_3:
       ++v11;
       if (v7 == ++v10)
       {
-        v7 = [(NSPointerArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;

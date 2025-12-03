@@ -2,9 +2,9 @@
 - (NPKRemoteButtonListener)init;
 - (NPKRemoteButtonListenerDelegate)delegate;
 - (void)dealloc;
-- (void)doublePressDelegationAssertion:(id)a3 didReceiveTerminalAuthenticationRequestForPassWithUniqueID:(id)a4;
-- (void)doublePressDelegationAssertionDidReceiveDelegatedDoublePressEvent:(id)a3 authIntentSource:(unint64_t)a4;
-- (void)setEnabled:(BOOL)a3;
+- (void)doublePressDelegationAssertion:(id)assertion didReceiveTerminalAuthenticationRequestForPassWithUniqueID:(id)d;
+- (void)doublePressDelegationAssertionDidReceiveDelegatedDoublePressEvent:(id)event authIntentSource:(unint64_t)source;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation NPKRemoteButtonListener
@@ -34,13 +34,13 @@
   [(NPKRemoteButtonListener *)&v3 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     v5 = pk_General_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -50,7 +50,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = @"disable";
-        if (v3)
+        if (enabledCopy)
         {
           v8 = @"enable";
         }
@@ -61,7 +61,7 @@
       }
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       v9 = [[NPKDoublePressDelegationAssertion alloc] initWithQueue:self->_internalQueue];
       delegationAssertion = self->_delegationAssertion;
@@ -82,25 +82,25 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)doublePressDelegationAssertionDidReceiveDelegatedDoublePressEvent:(id)a3 authIntentSource:(unint64_t)a4
+- (void)doublePressDelegationAssertionDidReceiveDelegatedDoublePressEvent:(id)event authIntentSource:(unint64_t)source
 {
-  v6 = [(NPKButtonListener *)self handlerQueue];
-  dispatch_assert_queue_V2(v6);
+  handlerQueue = [(NPKButtonListener *)self handlerQueue];
+  dispatch_assert_queue_V2(handlerQueue);
 
-  v7 = [(NPKButtonListener *)self _handlerQueue_buttonHandler];
-  if (v7)
+  _handlerQueue_buttonHandler = [(NPKButtonListener *)self _handlerQueue_buttonHandler];
+  if (_handlerQueue_buttonHandler)
   {
-    v8 = v7;
-    v7[2](v7, a4);
-    v7 = v8;
+    v8 = _handlerQueue_buttonHandler;
+    _handlerQueue_buttonHandler[2](_handlerQueue_buttonHandler, source);
+    _handlerQueue_buttonHandler = v8;
   }
 }
 
-- (void)doublePressDelegationAssertion:(id)a3 didReceiveTerminalAuthenticationRequestForPassWithUniqueID:(id)a4
+- (void)doublePressDelegationAssertion:(id)assertion didReceiveTerminalAuthenticationRequestForPassWithUniqueID:(id)d
 {
-  v5 = a4;
-  v6 = [(NPKRemoteButtonListener *)self delegate];
-  [v6 remoteButtonListener:self didReceiveTerminalAuthenticationRequestForPassWithUniqueID:v5];
+  dCopy = d;
+  delegate = [(NPKRemoteButtonListener *)self delegate];
+  [delegate remoteButtonListener:self didReceiveTerminalAuthenticationRequestForPassWithUniqueID:dCopy];
 }
 
 - (NPKRemoteButtonListenerDelegate)delegate

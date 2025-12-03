@@ -1,14 +1,14 @@
 @interface CarRouteGeniusVehicleBatteryMonitor
-- (CarRouteGeniusVehicleBatteryMonitor)initWithRouteGeniusService:(id)a3 virtualGarageService:(id)a4 callbackQueue:(id)a5;
+- (CarRouteGeniusVehicleBatteryMonitor)initWithRouteGeniusService:(id)service virtualGarageService:(id)garageService callbackQueue:(id)queue;
 - (CarRouteGeniusVehicleBatteryMonitorDelegate)delegate;
 - (void)_checkBattery;
 - (void)_setNeedsCheckBattery;
 - (void)_updateState;
-- (void)didUpdateRouteGenius:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setCurrentRouteAttributes:(id)a3;
-- (void)setCurrentVehicleState:(id)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)didUpdateRouteGenius:(id)genius;
+- (void)setActive:(BOOL)active;
+- (void)setCurrentRouteAttributes:(id)attributes;
+- (void)setCurrentVehicleState:(id)state;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation CarRouteGeniusVehicleBatteryMonitor
@@ -20,14 +20,14 @@
   return WeakRetained;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = sub_100FCD9E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = updateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "virtualGarageDidUpdate: %@", buf, 0xCu);
   }
 
@@ -37,19 +37,19 @@
   v8[2] = sub_100FCDA34;
   v8[3] = &unk_101661A90;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = updateCopy;
+  v7 = updateCopy;
   dispatch_async(workQueue, v8);
 }
 
-- (void)didUpdateRouteGenius:(id)a3
+- (void)didUpdateRouteGenius:(id)genius
 {
-  v4 = a3;
+  geniusCopy = genius;
   v5 = sub_100FCD9E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = geniusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "didUpdateRouteGenius: %@", buf, 0xCu);
   }
 
@@ -59,8 +59,8 @@
   v8[2] = sub_100FCDC00;
   v8[3] = &unk_101661A90;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = geniusCopy;
+  v7 = geniusCopy;
   dispatch_async(workQueue, v8);
 }
 
@@ -72,22 +72,22 @@
     currentRouteAttributes = self->_currentRouteAttributes;
     if (currentRouteAttributes)
     {
-      v4 = [(GEORouteAttributes *)currentRouteAttributes automobileOptions];
-      v5 = [v4 vehicleSpecifications];
-      v6 = [v5 evInfo];
+      automobileOptions = [(GEORouteAttributes *)currentRouteAttributes automobileOptions];
+      vehicleSpecifications = [automobileOptions vehicleSpecifications];
+      evInfo = [vehicleSpecifications evInfo];
 
-      if (self->_currentVehicleState | v6)
+      if (self->_currentVehicleState | evInfo)
       {
-        v12 = [v6 minBatteryCharge];
-        v13 = [v6 maxBatteryCharge];
-        v14 = [v6 currentBatteryCharge];
+        minBatteryCharge = [evInfo minBatteryCharge];
+        maxBatteryCharge = [evInfo maxBatteryCharge];
+        currentBatteryCharge = [evInfo currentBatteryCharge];
         v15 = 0.0;
         v16 = 0.0;
-        v17 = v13 - v12;
-        if (v13 != v12)
+        v17 = maxBatteryCharge - minBatteryCharge;
+        if (maxBatteryCharge != minBatteryCharge)
         {
-          v18 = fmin(fmax((v14 - v12) / v17, 0.0), 1.0);
-          if ((v14 - v12) <= v17)
+          v18 = fmin(fmax((currentBatteryCharge - minBatteryCharge) / v17, 0.0), 1.0);
+          if ((currentBatteryCharge - minBatteryCharge) <= v17)
           {
             v16 = v18;
           }
@@ -98,20 +98,20 @@
           }
         }
 
-        v19 = [(VGVehicleState *)self->_currentVehicleState minBatteryCapacity];
+        minBatteryCapacity = [(VGVehicleState *)self->_currentVehicleState minBatteryCapacity];
         v37 = +[NSUnitEnergy kilowattHours];
-        v38 = v19;
-        v36 = [v19 measurementByConvertingToUnit:?];
+        v38 = minBatteryCapacity;
+        v36 = [minBatteryCapacity measurementByConvertingToUnit:?];
         [v36 doubleValue];
         v21 = (v20 * 1000.0);
-        v22 = [(VGVehicleState *)self->_currentVehicleState maxBatteryCapacity];
+        maxBatteryCapacity = [(VGVehicleState *)self->_currentVehicleState maxBatteryCapacity];
         v23 = +[NSUnitEnergy kilowattHours];
-        v24 = [v22 measurementByConvertingToUnit:v23];
+        v24 = [maxBatteryCapacity measurementByConvertingToUnit:v23];
         [v24 doubleValue];
         v26 = (v25 * 1000.0);
-        v27 = [(VGVehicleState *)self->_currentVehicleState currentBatteryCapacity];
+        currentBatteryCapacity = [(VGVehicleState *)self->_currentVehicleState currentBatteryCapacity];
         v28 = +[NSUnitEnergy kilowattHours];
-        v29 = [v27 measurementByConvertingToUnit:v28];
+        v29 = [currentBatteryCapacity measurementByConvertingToUnit:v28];
         [v29 doubleValue];
         v31 = v26 - v21;
         if (v26 != v21)
@@ -211,11 +211,11 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (void)setCurrentRouteAttributes:(id)a3
+- (void)setCurrentRouteAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   currentRouteAttributes = self->_currentRouteAttributes;
-  v7 = v5;
+  v7 = attributesCopy;
   v8 = currentRouteAttributes;
   if (v7 | v8)
   {
@@ -235,17 +235,17 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "setCurrentRouteAttributes: from: %@ to: %@", &v13, 0x16u);
       }
 
-      objc_storeStrong(&self->_currentRouteAttributes, a3);
+      objc_storeStrong(&self->_currentRouteAttributes, attributes);
       [(CarRouteGeniusVehicleBatteryMonitor *)self _setNeedsCheckBattery];
     }
   }
 }
 
-- (void)setCurrentVehicleState:(id)a3
+- (void)setCurrentVehicleState:(id)state
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 | self->_currentVehicleState && [v5 isSignificantlyDifferentFromVehicleState:?])
+  stateCopy = state;
+  v6 = stateCopy;
+  if (stateCopy | self->_currentVehicleState && [stateCopy isSignificantlyDifferentFromVehicleState:?])
   {
     v7 = sub_100FCD9E0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -258,18 +258,18 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "setCurrentVehicleState: from: %@ to: %@", &v9, 0x16u);
     }
 
-    objc_storeStrong(&self->_currentVehicleState, a3);
+    objc_storeStrong(&self->_currentVehicleState, state);
     [(CarRouteGeniusVehicleBatteryMonitor *)self _setNeedsCheckBattery];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     routeGeniusService = self->_routeGeniusService;
-    if (a3)
+    if (active)
     {
       [(CarRouteGeniusService *)routeGeniusService registerObserver:self];
       [(VGVirtualGarageService *)self->_garageService registerObserver:self];
@@ -285,11 +285,11 @@ LABEL_17:
   }
 }
 
-- (CarRouteGeniusVehicleBatteryMonitor)initWithRouteGeniusService:(id)a3 virtualGarageService:(id)a4 callbackQueue:(id)a5
+- (CarRouteGeniusVehicleBatteryMonitor)initWithRouteGeniusService:(id)service virtualGarageService:(id)garageService callbackQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serviceCopy = service;
+  garageServiceCopy = garageService;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = CarRouteGeniusVehicleBatteryMonitor;
   v12 = [(CarRouteGeniusVehicleBatteryMonitor *)&v17 init];
@@ -300,9 +300,9 @@ LABEL_17:
     workQueue = v12->_workQueue;
     v12->_workQueue = v14;
 
-    objc_storeStrong(&v12->_callbackQueue, a5);
-    objc_storeStrong(&v12->_routeGeniusService, a3);
-    objc_storeStrong(&v12->_garageService, a4);
+    objc_storeStrong(&v12->_callbackQueue, queue);
+    objc_storeStrong(&v12->_routeGeniusService, service);
+    objc_storeStrong(&v12->_garageService, garageService);
   }
 
   return v12;

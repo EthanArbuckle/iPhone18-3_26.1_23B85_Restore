@@ -1,11 +1,11 @@
 @interface BWPersonSegmentationFilteringNode
-- (BWPersonSegmentationFilteringNode)initWithGPUPriority:(int)a3 frameRateUpsamplingEnabled:(BOOL)a4 metalCommandQueue:(id)a5;
+- (BWPersonSegmentationFilteringNode)initWithGPUPriority:(int)priority frameRateUpsamplingEnabled:(BOOL)enabled metalCommandQueue:(id)queue;
 - (uint64_t)_loadAndConfigureSegmentationMaskFilter;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWPersonSegmentationFilteringNode
@@ -35,11 +35,11 @@
       if (v5)
       {
         v6 = v5;
-        v7 = [MEMORY[0x1E6991778] metalDevice];
-        if (v7)
+        metalDevice = [MEMORY[0x1E6991778] metalDevice];
+        if (metalDevice)
         {
           v8 = *(v1 + 168);
-          if (v8 || (v8 = [v7 newCommandQueue]) != 0)
+          if (v8 || (v8 = [metalDevice newCommandQueue]) != 0)
           {
             v9 = *(v1 + 128);
             if (v9)
@@ -96,7 +96,7 @@ LABEL_14:
   [(BWNode *)&v3 prepareForCurrentConfigurationToBecomeLive];
 }
 
-- (BWPersonSegmentationFilteringNode)initWithGPUPriority:(int)a3 frameRateUpsamplingEnabled:(BOOL)a4 metalCommandQueue:(id)a5
+- (BWPersonSegmentationFilteringNode)initWithGPUPriority:(int)priority frameRateUpsamplingEnabled:(BOOL)enabled metalCommandQueue:(id)queue
 {
   v19.receiver = self;
   v19.super_class = BWPersonSegmentationFilteringNode;
@@ -104,9 +104,9 @@ LABEL_14:
   v9 = v8;
   if (v8)
   {
-    v8->_gpuPriority = a3;
-    v8->_frameRateUpsamplingEnabled = a4;
-    v8->_commandQueue = a5;
+    v8->_gpuPriority = priority;
+    v8->_frameRateUpsamplingEnabled = enabled;
+    v8->_commandQueue = queue;
     v10 = objc_alloc_init(BWVideoFormatRequirements);
     v11 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v9];
     [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v11 primaryMediaConfiguration] setFormatRequirements:v10];
@@ -168,52 +168,52 @@ LABEL_14:
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output setFormat:a3];
+    [(BWNodeOutput *)output setFormat:format];
   }
 
-  else if ([a5 isEqualToString:0x1F21AABF0])
+  else if ([key isEqualToString:0x1F21AABF0])
   {
-    v10 = [(BWNodeOutput *)self->super._output mediaConfigurationForAttachedMediaKey:a5];
+    v10 = [(BWNodeOutput *)self->super._output mediaConfigurationForAttachedMediaKey:key];
     v11 = objc_alloc_init(BWVideoFormatRequirements);
-    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
+    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
     -[BWVideoFormatRequirements setSupportedPixelFormats:](v11, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1]);
-    v12 = [a3 width];
-    v13 = [a3 height];
+    width = [format width];
+    height = [format height];
     if (self->_alignsMaskWithPrimaryCaptureRect)
     {
-      v14 = [(BWVideoFormat *)[(BWNodeOutputMediaProperties *)[(BWNodeOutput *)self->super._output primaryMediaProperties] resolvedVideoFormat] width];
-      v15 = [(BWVideoFormat *)[(BWNodeOutputMediaProperties *)[(BWNodeOutput *)self->super._output primaryMediaProperties] resolvedVideoFormat] height];
+      width2 = [(BWVideoFormat *)[(BWNodeOutputMediaProperties *)[(BWNodeOutput *)self->super._output primaryMediaProperties] resolvedVideoFormat] width];
+      height2 = [(BWVideoFormat *)[(BWNodeOutputMediaProperties *)[(BWNodeOutput *)self->super._output primaryMediaProperties] resolvedVideoFormat] height];
       inputOrientationRelativeToSensor = self->_inputOrientationRelativeToSensor;
       if (inputOrientationRelativeToSensor == 270)
       {
-        v17 = v15;
+        v17 = height2;
       }
 
       else
       {
-        v17 = v14;
+        v17 = width2;
       }
 
       if (inputOrientationRelativeToSensor == 270)
       {
-        v18 = v14;
+        v18 = width2;
       }
 
       else
       {
-        v18 = v15;
+        v18 = height2;
       }
 
       v19 = inputOrientationRelativeToSensor == 90;
       if (inputOrientationRelativeToSensor == 90)
       {
-        v20 = v15;
+        v20 = height2;
       }
 
       else
@@ -223,7 +223,7 @@ LABEL_14:
 
       if (v19)
       {
-        v21 = v14;
+        v21 = width2;
       }
 
       else
@@ -231,35 +231,35 @@ LABEL_14:
         v21 = v18;
       }
 
-      v12 = vcvtas_u32_f32((v13 * v20) / v21);
+      width = vcvtas_u32_f32((height * v20) / v21);
     }
 
-    [(BWVideoFormatRequirements *)v11 setWidth:v12];
-    [(BWVideoFormatRequirements *)v11 setHeight:v13];
+    [(BWVideoFormatRequirements *)v11 setWidth:width];
+    [(BWVideoFormatRequirements *)v11 setHeight:height];
     [v10 setFormatRequirements:v11];
   }
 
-  else if (([a5 isEqualToString:0x1F219EA90] & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F219EA70) & 1) == 0)
+  else if (([key isEqualToString:0x1F219EA90] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F219EA70) & 1) == 0)
   {
     v22.receiver = self;
     v22.super_class = BWPersonSegmentationFilteringNode;
-    [(BWNode *)&v22 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+    [(BWNode *)&v22 didSelectFormat:format forInput:input forAttachedMediaKey:key];
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  IsMarkerBuffer = BWSampleBufferIsMarkerBuffer(a3);
+  IsMarkerBuffer = BWSampleBufferIsMarkerBuffer(buffer);
   v7 = MEMORY[0x1E695FF58];
   if (IsMarkerBuffer)
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
     goto LABEL_80;
   }
 
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    CMSampleBufferGetPresentationTimeStamp(&v48, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v48, buffer);
     time.origin = *&v48.value;
     *&time.size.width = v48.epoch;
     CMTimeGetSeconds(&time);
@@ -268,7 +268,7 @@ LABEL_14:
 
   [(FigSemanticStyleFilteringV1 *)self->_segmentationMaskFilter finishProcessing];
   v46 = 0x1F219EA70;
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F219EA70);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F219EA70);
   if (AttachedMedia)
   {
     ImageBuffer = CMSampleBufferGetImageBuffer(AttachedMedia);
@@ -279,9 +279,9 @@ LABEL_14:
     ImageBuffer = 0;
   }
 
-  v10 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AABF0);
+  v10 = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AABF0);
   v45 = 0x1F219EA90;
-  v11 = BWSampleBufferGetAttachedMedia(a3, 0x1F219EA90);
+  v11 = BWSampleBufferGetAttachedMedia(buffer, 0x1F219EA90);
   if (v11)
   {
     v12 = CMSampleBufferGetImageBuffer(v11);
@@ -298,7 +298,7 @@ LABEL_14:
     v10 = CMSampleBufferGetImageBuffer(v10);
   }
 
-  AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(a3, 105);
+  AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(buffer, 105);
   v14 = [objc_msgSend(AttachedInferenceResult "preventionReason")];
   v15 = [objc_msgSend(AttachedInferenceResult "preventionReason")];
   if (AttachedInferenceResult)
@@ -325,7 +325,7 @@ LABEL_14:
     goto LABEL_85;
   }
 
-  v18 = CFRetain(a3);
+  v18 = CFRetain(buffer);
   if (!v18)
   {
     [BWPersonSegmentationFilteringNode renderSampleBuffer:forInput:];
@@ -333,7 +333,7 @@ LABEL_85:
     v19 = 0;
     v7 = MEMORY[0x1E695FF58];
 LABEL_76:
-    CMSampleBufferGetPresentationTimeStamp(&time, a3);
+    CMSampleBufferGetPresentationTimeStamp(&time, buffer);
     [(BWNodeOutput *)self->super._output emitDroppedSample:[BWDroppedSample newDroppedSampleWithReason:0x1F219BF90 pts:&time]];
     if (!v18)
     {
@@ -361,14 +361,14 @@ LABEL_76:
             time.size = _Q0;
             if (self->_alignsMaskWithPrimaryCaptureRect)
             {
-              v32 = CMGetAttachment(a3, *off_1E798A430, 0);
+              v32 = CMGetAttachment(buffer, *off_1E798A430, 0);
               if (v32)
               {
                 CGRectMakeWithDictionaryRepresentation(v32, &time);
               }
             }
 
-            [(FigSemanticStyleFilteringV1 *)self->_segmentationMaskFilter setInputImagePixelBuffer:CMSampleBufferGetImageBuffer(a3)];
+            [(FigSemanticStyleFilteringV1 *)self->_segmentationMaskFilter setInputImagePixelBuffer:CMSampleBufferGetImageBuffer(buffer)];
             if ([(FigSemanticStyleFilteringV1 *)self->_segmentationMaskFilter inputImagePixelBuffer])
             {
               [(FigSemanticStyleFilteringV1 *)self->_segmentationMaskFilter setInputMaskPixelBuffer:0];
@@ -565,7 +565,7 @@ LABEL_91:
   time.size = _Q0;
   if (self->_alignsMaskWithPrimaryCaptureRect)
   {
-    v25 = CMGetAttachment(a3, *off_1E798A430, 0);
+    v25 = CMGetAttachment(buffer, *off_1E798A430, 0);
     if (v25)
     {
       CGRectMakeWithDictionaryRepresentation(v25, &time);
@@ -666,7 +666,7 @@ LABEL_80:
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   [(FigSemanticStyleFilteringV1 *)self->_segmentationMaskFilter purgeResources];
 
@@ -680,7 +680,7 @@ LABEL_80:
 
   v6.receiver = self;
   v6.super_class = BWPersonSegmentationFilteringNode;
-  [(BWNode *)&v6 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v6 didReachEndOfDataForInput:input];
 }
 
 - (uint64_t)renderSampleBuffer:forInput:.cold.1()

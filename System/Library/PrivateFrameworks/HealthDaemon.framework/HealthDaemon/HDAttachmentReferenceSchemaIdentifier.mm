@@ -1,27 +1,27 @@
 @interface HDAttachmentReferenceSchemaIdentifier
 + (id)tombstoneSchemaIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (HDAttachmentReferenceSchemaIdentifier)initWithSchemaIdentifier:(id)a3 schemaVersion:(int64_t)a4 objectIdentifier:(id)a5 attachmentIdentifier:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HDAttachmentReferenceSchemaIdentifier)initWithSchemaIdentifier:(id)identifier schemaVersion:(int64_t)version objectIdentifier:(id)objectIdentifier attachmentIdentifier:(id)attachmentIdentifier;
 - (unint64_t)hash;
 @end
 
 @implementation HDAttachmentReferenceSchemaIdentifier
 
-- (HDAttachmentReferenceSchemaIdentifier)initWithSchemaIdentifier:(id)a3 schemaVersion:(int64_t)a4 objectIdentifier:(id)a5 attachmentIdentifier:(id)a6
+- (HDAttachmentReferenceSchemaIdentifier)initWithSchemaIdentifier:(id)identifier schemaVersion:(int64_t)version objectIdentifier:(id)objectIdentifier attachmentIdentifier:(id)attachmentIdentifier
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  objectIdentifierCopy = objectIdentifier;
+  attachmentIdentifierCopy = attachmentIdentifier;
   v17.receiver = self;
   v17.super_class = HDAttachmentReferenceSchemaIdentifier;
   v14 = [(HDAttachmentReferenceSchemaIdentifier *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_schemaIdentifier, a3);
-    v15->_schemaVersion = a4;
-    objc_storeStrong(&v15->_objectIdentifier, a5);
-    objc_storeStrong(&v15->_attachmentIdentifier, a6);
+    objc_storeStrong(&v14->_schemaIdentifier, identifier);
+    v15->_schemaVersion = version;
+    objc_storeStrong(&v15->_objectIdentifier, objectIdentifier);
+    objc_storeStrong(&v15->_attachmentIdentifier, attachmentIdentifier);
   }
 
   return v15;
@@ -36,16 +36,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     schemaIdentifier = self->_schemaIdentifier;
-    v8 = [v6 schemaIdentifier];
-    if (schemaIdentifier == v8)
+    schemaIdentifier = [v6 schemaIdentifier];
+    if (schemaIdentifier == schemaIdentifier)
     {
       schemaVersion = self->_schemaVersion;
       if (schemaVersion == [v6 schemaVersion])
@@ -56,13 +56,13 @@
 
     else
     {
-      v9 = [v6 schemaIdentifier];
-      if (v9)
+      schemaIdentifier2 = [v6 schemaIdentifier];
+      if (schemaIdentifier2)
       {
-        v3 = v9;
+        v3 = schemaIdentifier2;
         v10 = self->_schemaIdentifier;
-        v11 = [v6 schemaIdentifier];
-        if ((-[NSString isEqual:](v10, "isEqual:", v11) & 1) == 0 || (v12 = self->_schemaVersion, v12 != [v6 schemaVersion]))
+        schemaIdentifier3 = [v6 schemaIdentifier];
+        if ((-[NSString isEqual:](v10, "isEqual:", schemaIdentifier3) & 1) == 0 || (v12 = self->_schemaVersion, v12 != [v6 schemaVersion]))
         {
           v13 = 0;
 LABEL_23:
@@ -70,14 +70,14 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v32 = v11;
+        v32 = schemaIdentifier3;
 LABEL_9:
         objectIdentifier = self->_objectIdentifier;
-        v16 = [v6 objectIdentifier];
-        if (objectIdentifier != v16)
+        objectIdentifier = [v6 objectIdentifier];
+        if (objectIdentifier != objectIdentifier)
         {
-          v17 = [v6 objectIdentifier];
-          if (!v17)
+          objectIdentifier2 = [v6 objectIdentifier];
+          if (!objectIdentifier2)
           {
             v13 = 0;
 LABEL_21:
@@ -85,18 +85,18 @@ LABEL_21:
             goto LABEL_22;
           }
 
-          v18 = v17;
+          v18 = objectIdentifier2;
           v19 = self->_objectIdentifier;
-          v20 = [v6 objectIdentifier];
+          objectIdentifier3 = [v6 objectIdentifier];
           v21 = v19;
-          v22 = v20;
-          if (([(NSString *)v21 isEqual:v20]& 1) == 0)
+          v22 = objectIdentifier3;
+          if (([(NSString *)v21 isEqual:objectIdentifier3]& 1) == 0)
           {
 
             v13 = 0;
 LABEL_22:
-            v11 = v32;
-            if (schemaIdentifier != v8)
+            schemaIdentifier3 = v32;
+            if (schemaIdentifier != schemaIdentifier)
             {
               goto LABEL_23;
             }
@@ -111,21 +111,21 @@ LABEL_24:
         }
 
         attachmentIdentifier = self->_attachmentIdentifier;
-        v24 = [v6 attachmentIdentifier];
-        v13 = attachmentIdentifier == v24;
+        attachmentIdentifier = [v6 attachmentIdentifier];
+        v13 = attachmentIdentifier == attachmentIdentifier;
         if (!v13)
         {
-          v25 = [v6 attachmentIdentifier];
-          if (v25)
+          attachmentIdentifier2 = [v6 attachmentIdentifier];
+          if (attachmentIdentifier2)
           {
             v26 = self->_attachmentIdentifier;
-            v29 = v25;
-            v27 = [v6 attachmentIdentifier];
-            v13 = [(NSUUID *)v26 isEqual:v27];
+            v29 = attachmentIdentifier2;
+            attachmentIdentifier3 = [v6 attachmentIdentifier];
+            v13 = [(NSUUID *)v26 isEqual:attachmentIdentifier3];
           }
         }
 
-        if (objectIdentifier != v16)
+        if (objectIdentifier != objectIdentifier)
         {
         }
 

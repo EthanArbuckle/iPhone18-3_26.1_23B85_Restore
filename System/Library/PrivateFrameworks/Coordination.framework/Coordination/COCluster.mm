@@ -1,36 +1,36 @@
 @interface COCluster
 + (COCluster)activityGroupCluster;
-+ (COCluster)clusterWithConfiguration:(id)a3;
++ (COCluster)clusterWithConfiguration:(id)configuration;
 + (COCluster)dynamicGroupCluster;
 + (COCluster)homeCluster;
 + (COCluster)pairCluster;
 + (id)_allowedClusterClasses;
-+ (id)_clusterForCluster:(id)a3;
-+ (id)_createTemplateFromConfiguration:(id)a3;
-+ (id)_homeClusterForHomeKitHomeIdentifier:(id)a3;
-+ (id)clusterNameWithHomeKitHome:(id)a3;
-+ (id)homeClusterForHomeKitHome:(id)a3;
-+ (id)inferClusterLabelFromCluster:(id)a3;
-- (BOOL)_isEqualToCluster:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (COCluster)initWithCoder:(id)a3;
-- (id)_initWithConfiguration:(id)a3 format:(id)a4 label:(id)a5;
++ (id)_clusterForCluster:(id)cluster;
++ (id)_createTemplateFromConfiguration:(id)configuration;
++ (id)_homeClusterForHomeKitHomeIdentifier:(id)identifier;
++ (id)clusterNameWithHomeKitHome:(id)home;
++ (id)homeClusterForHomeKitHome:(id)home;
++ (id)inferClusterLabelFromCluster:(id)cluster;
+- (BOOL)_isEqualToCluster:(id)cluster;
+- (BOOL)isEqual:(id)equal;
+- (COCluster)initWithCoder:(id)coder;
+- (id)_initWithConfiguration:(id)configuration format:(id)format label:(id)label;
 - (id)description;
 - (unint64_t)hash;
 - (void)_invokeUpdateHandler;
 - (void)_updateIdentifier;
-- (void)_withLock:(id)a3;
-- (void)activate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)activate:(id)activate;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COCluster
 
-- (id)_initWithConfiguration:(id)a3 format:(id)a4 label:(id)a5
+- (id)_initWithConfiguration:(id)configuration format:(id)format label:(id)label
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  formatCopy = format;
+  labelCopy = label;
   v19.receiver = self;
   v19.super_class = COCluster;
   v12 = [(COCluster *)&v19 init];
@@ -38,12 +38,12 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_configuration, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_configuration, configuration);
+    v14 = [formatCopy copy];
     format = v13->_format;
     v13->_format = v14;
 
-    v16 = [v11 copy];
+    v16 = [labelCopy copy];
     label = v13->_label;
     v13->_label = v16;
   }
@@ -51,13 +51,13 @@
   return v13;
 }
 
-+ (COCluster)clusterWithConfiguration:(id)a3
++ (COCluster)clusterWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [a1 _createTemplateFromConfiguration:v4];
-  v6 = [a1 alloc];
-  v7 = [v4 prefix];
-  v8 = [v6 _initWithConfiguration:v4 format:v5 label:v7];
+  configurationCopy = configuration;
+  v5 = [self _createTemplateFromConfiguration:configurationCopy];
+  v6 = [self alloc];
+  prefix = [configurationCopy prefix];
+  v8 = [v6 _initWithConfiguration:configurationCopy format:v5 label:prefix];
 
   return v8;
 }
@@ -68,7 +68,7 @@
   block[1] = 3221225472;
   block[2] = __24__COCluster_homeCluster__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (homeCluster_onceToken != -1)
   {
     dispatch_once(&homeCluster_onceToken, block);
@@ -94,7 +94,7 @@ void __24__COCluster_homeCluster__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __24__COCluster_pairCluster__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pairCluster_onceToken != -1)
   {
     dispatch_once(&pairCluster_onceToken, block);
@@ -120,7 +120,7 @@ void __24__COCluster_pairCluster__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__COCluster_activityGroupCluster__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (activityGroupCluster_onceToken != -1)
   {
     dispatch_once(&activityGroupCluster_onceToken, block);
@@ -147,7 +147,7 @@ void __33__COCluster_activityGroupCluster__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__COCluster_dynamicGroupCluster__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (dynamicGroupCluster_onceToken != -1)
   {
     dispatch_once(&dynamicGroupCluster_onceToken, block);
@@ -167,32 +167,32 @@ void __32__COCluster_dynamicGroupCluster__block_invoke(uint64_t a1)
   dynamicGroupCluster_cluster = v3;
 }
 
-+ (id)_homeClusterForHomeKitHomeIdentifier:(id)a3
++ (id)_homeClusterForHomeKitHomeIdentifier:(id)identifier
 {
-  v4 = [_COClusterRealmHome realmWithHomeKitHomeIdentifier:a3];
+  v4 = [_COClusterRealmHome realmWithHomeKitHomeIdentifier:identifier];
   v5 = [COClusterConfiguration configurationWithDomain:@"COClusterHome" requiredServices:15 options:1 realm:v4];
-  v6 = [[a1 alloc] _initWithConfiguration:v5 format:@"com.apple.%@-home-mesh" label:@"COClusterHome"];
+  v6 = [[self alloc] _initWithConfiguration:v5 format:@"com.apple.%@-home-mesh" label:@"COClusterHome"];
 
   return v6;
 }
 
-+ (id)homeClusterForHomeKitHome:(id)a3
++ (id)homeClusterForHomeKitHome:(id)home
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [a1 homeClusterForHomeKitHomeUniqueIdentifier:v4];
+  uniqueIdentifier = [home uniqueIdentifier];
+  v5 = [self homeClusterForHomeKitHomeUniqueIdentifier:uniqueIdentifier];
 
   return v5;
 }
 
-- (COCluster)initWithCoder:(id)a3
+- (COCluster)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"version"] == 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"version"] == 1)
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"format"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
-    if (v5)
+    selfCopy = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"format"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    if (selfCopy)
     {
       v8 = v6 == 0;
     }
@@ -210,31 +210,31 @@ void __32__COCluster_dynamicGroupCluster__block_invoke(uint64_t a1)
 
     else
     {
-      v12 = [(COCluster *)self _initWithConfiguration:v5 format:v6 label:v7];
+      v12 = [(COCluster *)self _initWithConfiguration:selfCopy format:v6 label:v7];
     }
   }
 
   else
   {
     v12 = 0;
-    v5 = self;
+    selfCopy = self;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"version"];
-  v5 = [(COCluster *)self configuration];
-  [v4 encodeObject:v5 forKey:@"configuration"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"version"];
+  configuration = [(COCluster *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 
-  v6 = [(COCluster *)self format];
-  [v4 encodeObject:v6 forKey:@"format"];
+  format = [(COCluster *)self format];
+  [coderCopy encodeObject:format forKey:@"format"];
 
-  v7 = [(COCluster *)self label];
-  [v4 encodeObject:v7 forKey:@"label"];
+  label = [(COCluster *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 }
 
 - (id)description
@@ -242,32 +242,32 @@ void __32__COCluster_dynamicGroupCluster__block_invoke(uint64_t a1)
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COCluster *)self identifier];
-  v7 = [(COCluster *)self label];
-  v8 = [(COCluster *)self configuration];
-  v9 = [v3 stringWithFormat:@"<%@: %p, i(%@), l(%@), c(%@)>", v5, self, v6, v7, v8];
+  identifier = [(COCluster *)self identifier];
+  label = [(COCluster *)self label];
+  configuration = [(COCluster *)self configuration];
+  v9 = [v3 stringWithFormat:@"<%@: %p, i(%@), l(%@), c(%@)>", v5, self, identifier, label, configuration];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(COCluster *)self configuration];
-  v3 = [v2 hash];
+  configuration = [(COCluster *)self configuration];
+  v3 = [configuration hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -290,20 +290,20 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_isEqualToCluster:(id)a3
+- (BOOL)_isEqualToCluster:(id)cluster
 {
-  v4 = a3;
-  v5 = [(COCluster *)self configuration];
-  v6 = [v4 configuration];
-  if ([v5 isEqual:v6])
+  clusterCopy = cluster;
+  configuration = [(COCluster *)self configuration];
+  configuration2 = [clusterCopy configuration];
+  if ([configuration isEqual:configuration2])
   {
-    v7 = [(COCluster *)self format];
-    v8 = [v4 format];
-    if ([v7 isEqual:v8])
+    format = [(COCluster *)self format];
+    format2 = [clusterCopy format];
+    if ([format isEqual:format2])
     {
-      v9 = [(COCluster *)self label];
-      v10 = [v4 label];
-      v11 = [v9 isEqual:v10];
+      label = [(COCluster *)self label];
+      label2 = [clusterCopy label];
+      v11 = [label isEqual:label2];
     }
 
     else
@@ -320,22 +320,22 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_createTemplateFromConfiguration:(id)a3
++ (id)_createTemplateFromConfiguration:(id)configuration
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 realm];
+  configurationCopy = configuration;
+  realm = [configurationCopy realm];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v6 = @"%@";
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [v3 prefix];
-    v13[0] = v7;
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lX", objc_msgSend(v3, "requiredServices")];
+    prefix = [configurationCopy prefix];
+    v13[0] = prefix;
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lX", objc_msgSend(configurationCopy, "requiredServices")];
     v13[1] = v8;
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lX", objc_msgSend(v3, "options")];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lX", objc_msgSend(configurationCopy, "options")];
     v13[2] = v9;
     v13[3] = @"%@";
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:4];
@@ -434,9 +434,9 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   if (+[COFeatureStatus isCOClusterEnabled])
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -444,17 +444,17 @@ LABEL_11:
     v10[2] = __22__COCluster_activate___block_invoke;
     v10[3] = &unk_278E121C0;
     v10[4] = self;
-    v11 = v4;
+    v11 = activateCopy;
     [(COCluster *)self _withLock:v10];
     objc_initWeak(&location, self);
-    v5 = [(COCluster *)self configuration];
-    v6 = [v5 realm];
+    configuration = [(COCluster *)self configuration];
+    realm = [configuration realm];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __22__COCluster_activate___block_invoke_53;
     v7[3] = &unk_278E12588;
     objc_copyWeak(&v8, &location);
-    [v6 activate:v7];
+    [realm activate:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -551,19 +551,19 @@ void __33__COCluster__invokeUpdateHandler__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-+ (id)_clusterForCluster:(id)a3
++ (id)_clusterForCluster:(id)cluster
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clusterCopy = cluster;
   if (!+[COFeatureStatus isCOClusterEnabled])
   {
     objc_opt_class();
@@ -575,13 +575,13 @@ void __33__COCluster__invokeUpdateHandler__block_invoke(uint64_t a1)
       goto LABEL_23;
     }
 
-    v6 = v4;
+    homeCluster2 = clusterCopy;
     goto LABEL_22;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = clusterCopy;
     if (v5)
     {
       goto LABEL_23;
@@ -593,20 +593,20 @@ void __33__COCluster__invokeUpdateHandler__block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
+    v7 = clusterCopy;
     if ([@"COClusterHome" isEqual:v7])
     {
-      v8 = [a1 homeCluster];
+      homeCluster = [self homeCluster];
     }
 
     else if ([@"COClusterPair" isEqualToString:v7])
     {
-      v8 = [a1 pairCluster];
+      homeCluster = [self pairCluster];
     }
 
     else if ([@"COClusterActivityGroup" isEqualToString:v7])
     {
-      v8 = [a1 activityGroupCluster];
+      homeCluster = [self activityGroupCluster];
     }
 
     else
@@ -628,12 +628,12 @@ void __33__COCluster__invokeUpdateHandler__block_invoke(uint64_t a1)
             v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v21];
             v20 = [_COClusterRealmHome realmWithHomeKitHomeIdentifier:v17];
             v18 = [COClusterConfiguration configurationWithDomain:@"COClusterHome" requiredServices:15 options:1 realm:?];
-            v5 = [[a1 alloc] _initWithConfiguration:v18 format:@"com.apple.%@-home-mesh" label:@"COClusterHome"];
+            v5 = [[self alloc] _initWithConfiguration:v18 format:@"com.apple.%@-home-mesh" label:@"COClusterHome"];
             v19 = COLogForCategory(7);
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218498;
-              v24 = a1;
+              selfCopy = self;
               v25 = 2112;
               v26 = v17;
               v27 = 2112;
@@ -652,10 +652,10 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v8 = [a1 dynamicGroupCluster];
+      homeCluster = [self dynamicGroupCluster];
     }
 
-    v5 = v8;
+    v5 = homeCluster;
     goto LABEL_18;
   }
 
@@ -663,12 +663,12 @@ LABEL_19:
   v9 = COLogForCategory(7);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [(COCluster *)v4 _clusterForCluster:v9];
+    [(COCluster *)clusterCopy _clusterForCluster:v9];
   }
 
-  v6 = [a1 homeCluster];
+  homeCluster2 = [self homeCluster];
 LABEL_22:
-  v5 = v6;
+  v5 = homeCluster2;
 LABEL_23:
 
   v10 = *MEMORY[0x277D85DE8];
@@ -704,13 +704,13 @@ uint64_t __35__COCluster__allowedClusterClasses__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)inferClusterLabelFromCluster:(id)a3
++ (id)inferClusterLabelFromCluster:(id)cluster
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 == @"COClusterDynamicGroup" || v3 == @"COClusterActivityGroup" || v3 == @"COClusterHome" || v3 == @"COClusterPair")
+  clusterCopy = cluster;
+  v4 = clusterCopy;
+  if (clusterCopy == @"COClusterDynamicGroup" || clusterCopy == @"COClusterActivityGroup" || clusterCopy == @"COClusterHome" || clusterCopy == @"COClusterPair")
   {
-    v9 = v3;
+    v9 = clusterCopy;
     goto LABEL_30;
   }
 
@@ -727,8 +727,8 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v11 = [v10 firstObject];
-    v12 = [v11 rangeAtIndex:1];
+    firstObject = [v10 firstObject];
+    v12 = [firstObject rangeAtIndex:1];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_16;
@@ -746,9 +746,9 @@ LABEL_28:
       {
 
 LABEL_16:
-        if ([v11 rangeAtIndex:2] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([firstObject rangeAtIndex:2] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if ([v11 rangeAtIndex:3] == 0x7FFFFFFFFFFFFFFFLL)
+          if ([firstObject rangeAtIndex:3] == 0x7FFFFFFFFFFFFFFFLL)
           {
             v9 = v4;
           }
@@ -782,12 +782,12 @@ LABEL_30:
   return v9;
 }
 
-+ (id)clusterNameWithHomeKitHome:(id)a3
++ (id)clusterNameWithHomeKitHome:(id)home
 {
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@-home-mesh", v4];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@-home-mesh", uUIDString];
 
   return v5;
 }

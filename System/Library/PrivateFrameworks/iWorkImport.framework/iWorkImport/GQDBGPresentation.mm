@@ -1,13 +1,13 @@
 @interface GQDBGPresentation
-+ (id)parseNumberOutOfBasename:(id)a3 returningNumber:(int *)a4;
++ (id)parseNumberOutOfBasename:(id)basename returningNumber:(int *)number;
 + (void)initialize;
 - (CGSize)slideSize;
 - (GQDBGPresentation)init;
-- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)a3 processorBundle:(__CFBundle *)a4;
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileUrl:(__CFURL *)a5;
-- (id)colorForMissingAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4;
+- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)path processorBundle:(__CFBundle *)bundle;
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileUrl:(__CFURL *)url;
+- (id)colorForMissingAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle;
 - (void)dealloc;
-- (void)initializeAppBundleResourcesUrl:(__CFURL *)a3;
+- (void)initializeAppBundleResourcesUrl:(__CFURL *)url;
 - (void)loadAppBundleResourceToColorMap;
 @end
 
@@ -15,7 +15,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
     [GQDClassNameMap registerClass:objc_opt_class() forName:"title-placeholder" inRootType:v2];
@@ -98,24 +98,24 @@
       [(__CFDictionary *)Mutable addEntriesFromDictionary:v10];
     }
 
-    v11 = [(__CFDictionary *)Mutable keyEnumerator];
-    v12 = [v11 nextObject];
-    if (v12)
+    keyEnumerator = [(__CFDictionary *)Mutable keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v13 = v12;
+      nextObject2 = nextObject;
       do
       {
-        v14 = [(__CFDictionary *)Mutable objectForKey:v13];
+        v14 = [(__CFDictionary *)Mutable objectForKey:nextObject2];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          CFDictionarySetValue(self->super.mAppBundleResourceToColorMap, v13, +[GQDColor colorWithCalibratedRed:green:blue:](GQDColor, "colorWithCalibratedRed:green:blue:", ([objc_msgSend(v14 objectAtIndex:{0), "intValue"}] / 255.0), (objc_msgSend(objc_msgSend(v14, "objectAtIndex:", 1), "intValue") / 255.0), (objc_msgSend(objc_msgSend(v14, "objectAtIndex:", 2), "intValue") / 255.0)));
+          CFDictionarySetValue(self->super.mAppBundleResourceToColorMap, nextObject2, +[GQDColor colorWithCalibratedRed:green:blue:](GQDColor, "colorWithCalibratedRed:green:blue:", ([objc_msgSend(v14 objectAtIndex:{0), "intValue"}] / 255.0), (objc_msgSend(objc_msgSend(v14, "objectAtIndex:", 1), "intValue") / 255.0), (objc_msgSend(objc_msgSend(v14, "objectAtIndex:", 2), "intValue") / 255.0)));
         }
 
-        v13 = [v11 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
       }
 
-      while (v13);
+      while (nextObject2);
     }
 
     CFRelease(Mutable);
@@ -124,21 +124,21 @@
   }
 }
 
-+ (id)parseNumberOutOfBasename:(id)a3 returningNumber:(int *)a4
++ (id)parseNumberOutOfBasename:(id)basename returningNumber:(int *)number
 {
-  v4 = a3;
-  if (a3)
+  basenameCopy = basename;
+  if (basename)
   {
-    v6 = [a3 length];
+    v6 = [basename length];
     if ((v6 - 1) >= 1)
     {
-      v7 = [v4 characterAtIndex:?];
+      v7 = [basenameCopy characterAtIndex:?];
       if (v7 <= 0xFF && (_DefaultRuneLocale.__runetype[v7] & 0x400) != 0)
       {
         v8 = v6 - 2;
         while (1)
         {
-          v9 = [v4 characterAtIndex:v8];
+          v9 = [basenameCopy characterAtIndex:v8];
           if (v9 > 0xFF || (_DefaultRuneLocale.__runetype[v9] & 0x400) == 0)
           {
             break;
@@ -146,25 +146,25 @@
 
           if (v8-- <= 0)
           {
-            return v4;
+            return basenameCopy;
           }
         }
 
         if (v8)
         {
-          if ([v4 characterAtIndex:v8] == 45)
+          if ([basenameCopy characterAtIndex:v8] == 45)
           {
-            v11 = [v4 substringToIndex:v8];
-            v12 = [objc_msgSend(v4 substringFromIndex:{(v8 + 1)), "intValue"}];
+            v11 = [basenameCopy substringToIndex:v8];
+            v12 = [objc_msgSend(basenameCopy substringFromIndex:{(v8 + 1)), "intValue"}];
             if (v11)
             {
               v13 = v12;
               v14 = [v11 length];
-              if (a4)
+              if (number)
               {
                 if (v14 && (v13 - 1) <= 0x7FFFFFFD)
                 {
-                  *a4 = v13;
+                  *number = v13;
                   return v11;
                 }
               }
@@ -175,10 +175,10 @@
     }
   }
 
-  return v4;
+  return basenameCopy;
 }
 
-- (id)colorForMissingAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4
+- (id)colorForMissingAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle
 {
   if (!self->super.mAppBundleColorMapLoaded)
   {
@@ -190,20 +190,20 @@
     return 0;
   }
 
-  v7 = [(GQDBGPresentation *)self createUpgradedAppBundleResourcePath:a3 processorBundle:a4];
+  v7 = [(GQDBGPresentation *)self createUpgradedAppBundleResourcePath:resource processorBundle:bundle];
   Value = CFDictionaryGetValue(self->super.mAppBundleResourceToColorMap, v7);
   if (!Value)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [(__CFString *)v7 pathExtension];
-    v11 = v7;
-    if (v10)
+    pathExtension = [(__CFString *)v7 pathExtension];
+    stringByDeletingPathExtension = v7;
+    if (pathExtension)
     {
-      v11 = [(__CFString *)v7 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [(__CFString *)v7 stringByDeletingPathExtension];
     }
 
     v20 = 0;
-    v12 = [objc_opt_class() parseNumberOutOfBasename:v11 returningNumber:&v20];
+    v12 = [objc_opt_class() parseNumberOutOfBasename:stringByDeletingPathExtension returningNumber:&v20];
     v13 = v12;
     if (v20 < 1)
     {
@@ -211,9 +211,9 @@
     }
 
     v14 = v12;
-    if (v10)
+    if (pathExtension)
     {
-      v14 = [v12 stringByAppendingPathExtension:v10];
+      v14 = [v12 stringByAppendingPathExtension:pathExtension];
     }
 
     Value = CFDictionaryGetValue(self->super.mAppBundleResourceToColorMap, v14);
@@ -232,9 +232,9 @@ LABEL_11:
         {
           v16 = [NSString stringWithFormat:@"%@-%d", v13, v15];
           v17 = v16;
-          if (v10)
+          if (pathExtension)
           {
-            v17 = [(NSString *)v16 stringByAppendingPathExtension:v10];
+            v17 = [(NSString *)v16 stringByAppendingPathExtension:pathExtension];
           }
 
           Value = CFDictionaryGetValue(self->super.mAppBundleResourceToColorMap, v17);
@@ -262,9 +262,9 @@ LABEL_11:
   return Value;
 }
 
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileUrl:(__CFURL *)a5
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileUrl:(__CFURL *)url
 {
-  v8 = [(GQDRoot *)self appBundleResourcesUrl:a5];
+  v8 = [(GQDRoot *)self appBundleResourcesUrl:url];
   if (!v8)
   {
     return v8;
@@ -277,8 +277,8 @@ LABEL_11:
 
   if (self->super.mAppBundleVersion >= 8)
   {
-    a3 = [(GQDBGPresentation *)self createUpgradedAppBundleResourcePath:a3 processorBundle:a4];
-    if (a3)
+    resource = [(GQDBGPresentation *)self createUpgradedAppBundleResourcePath:resource processorBundle:bundle];
+    if (resource)
     {
       goto LABEL_5;
     }
@@ -286,14 +286,14 @@ LABEL_11:
     return 0;
   }
 
-  CFRetain(a3);
-  if (!a3)
+  CFRetain(resource);
+  if (!resource)
   {
     return 0;
   }
 
 LABEL_5:
-  if (self->super.mAppBundleVersion >= 8 && CFStringHasPrefix(a3, @"Charts/"))
+  if (self->super.mAppBundleVersion >= 8 && CFStringHasPrefix(resource, @"Charts/"))
   {
     v8 = 0;
   }
@@ -301,17 +301,17 @@ LABEL_5:
   else
   {
     v9 = CFURLCreateCopyAppendingPathComponent(0, v8, @"Themes", 1u);
-    v10 = CFURLCreateCopyAppendingPathComponent(0, v9, a3, 0);
+    v10 = CFURLCreateCopyAppendingPathComponent(0, v9, resource, 0);
     CFRelease(v9);
     v8 = CFURLCopyAbsoluteURL(v10);
     CFRelease(v10);
   }
 
-  CFRelease(a3);
+  CFRelease(resource);
   return v8;
 }
 
-- (void)initializeAppBundleResourcesUrl:(__CFURL *)a3
+- (void)initializeAppBundleResourcesUrl:(__CFURL *)url
 {
   if (!self->super.mAppBundleResourcesUrlInitialized)
   {
@@ -321,7 +321,7 @@ LABEL_5:
   self->super.mAppBundleResourcesUrlInitialized = 1;
 }
 
-- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)a3 processorBundle:(__CFBundle *)a4
+- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)path processorBundle:(__CFBundle *)bundle
 {
   v7 = [(GQDRoot *)self appBundleResourcesUrl:0];
   if (!self->super.mIsOldAssetNameMapInitialized)
@@ -333,7 +333,7 @@ LABEL_5:
 
     else
     {
-      v8 = CFBundleCopyResourceURL(a4, @"KeyOldAssetNameMap", @"plist", 0);
+      v8 = CFBundleCopyResourceURL(bundle, @"KeyOldAssetNameMap", @"plist", 0);
     }
 
     v9 = v8;
@@ -351,7 +351,7 @@ LABEL_5:
     return 0;
   }
 
-  v10 = CFRetain(a3);
+  v10 = CFRetain(path);
   v11 = 101;
   while (1)
   {

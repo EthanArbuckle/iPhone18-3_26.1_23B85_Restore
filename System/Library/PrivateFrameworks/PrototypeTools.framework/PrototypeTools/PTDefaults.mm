@@ -1,21 +1,21 @@
 @interface PTDefaults
 + (id)sharedInstance;
-- (BOOL)_eventShowsUI:(int64_t)a3;
-- (BOOL)activeTestRecipeEatsEvent:(int64_t)a3;
-- (BOOL)displayedShowsUIValueForEvent:(int64_t)a3;
-- (BOOL)prototypingServerWantsEvent:(int64_t)a3;
+- (BOOL)_eventShowsUI:(int64_t)i;
+- (BOOL)activeTestRecipeEatsEvent:(int64_t)event;
+- (BOOL)displayedShowsUIValueForEvent:(int64_t)event;
+- (BOOL)prototypingServerWantsEvent:(int64_t)event;
 - (BOOL)testRecipeIsActive;
 - (id)_eventDefaults;
 - (id)_testRecipeDefaults;
 - (id)activeTestRecipeDescription;
 - (id)activeTestRecipeEventDescription;
 - (id)activeTestRecipeIdentifier;
-- (id)observeEventDefaultsOnQueue:(id)a3 withBlock:(id)a4;
-- (id)observeShowUISwitchDefaultsOnQueue:(id)a3 withBlock:(id)a4;
-- (id)observeTestRecipeDefaultsOnQueue:(id)a3 withBlock:(id)a4;
+- (id)observeEventDefaultsOnQueue:(id)queue withBlock:(id)block;
+- (id)observeShowUISwitchDefaultsOnQueue:(id)queue withBlock:(id)block;
+- (id)observeTestRecipeDefaultsOnQueue:(id)queue withBlock:(id)block;
 - (void)_bindAndRegisterDefaults;
 - (void)deactivateTestRecipe;
-- (void)setShowsUI:(BOOL)a3 forEvent:(int64_t)a4;
+- (void)setShowsUI:(BOOL)i forEvent:(int64_t)event;
 @end
 
 @implementation PTDefaults
@@ -115,49 +115,49 @@ uint64_t __28__PTDefaults_sharedInstance__block_invoke()
   return v10;
 }
 
-- (BOOL)displayedShowsUIValueForEvent:(int64_t)a3
+- (BOOL)displayedShowsUIValueForEvent:(int64_t)event
 {
   v5 = [(PTDefaults *)self _eventShowsUI:?];
   if (v5)
   {
-    LOBYTE(v5) = ![(PTDefaults *)self activeTestRecipeEatsEvent:a3];
+    LOBYTE(v5) = ![(PTDefaults *)self activeTestRecipeEatsEvent:event];
   }
 
   return v5;
 }
 
-- (void)setShowsUI:(BOOL)a3 forEvent:(int64_t)a4
+- (void)setShowsUI:(BOOL)i forEvent:(int64_t)event
 {
-  if (a4 > 2)
+  if (event > 2)
   {
-    if (a4 == 3)
+    if (event == 3)
     {
-      [(PTDefaults *)self setRingerSwitchShowsUI:a3];
+      [(PTDefaults *)self setRingerSwitchShowsUI:i];
     }
 
-    else if (a4 == 4)
+    else if (event == 4)
     {
-      [(PTDefaults *)self setRingerButtonShowsUI:a3];
+      [(PTDefaults *)self setRingerButtonShowsUI:i];
     }
   }
 
-  else if (a4 == 1)
+  else if (event == 1)
   {
-    [(PTDefaults *)self setVolumeUpShowsUI:a3];
+    [(PTDefaults *)self setVolumeUpShowsUI:i];
   }
 
-  else if (a4 == 2)
+  else if (event == 2)
   {
-    [(PTDefaults *)self setVolumeDownShowsUI:a3];
+    [(PTDefaults *)self setVolumeDownShowsUI:i];
   }
 }
 
-- (id)observeShowUISwitchDefaultsOnQueue:(id)a3 withBlock:(id)a4
+- (id)observeShowUISwitchDefaultsOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PTDefaults *)self _eventDefaults];
-  v9 = [(BSAbstractDefaultDomain *)self observeDefaults:v8 onQueue:v7 withBlock:v6];
+  blockCopy = block;
+  queueCopy = queue;
+  _eventDefaults = [(PTDefaults *)self _eventDefaults];
+  v9 = [(BSAbstractDefaultDomain *)self observeDefaults:_eventDefaults onQueue:queueCopy withBlock:blockCopy];
 
   return v9;
 }
@@ -169,8 +169,8 @@ uint64_t __28__PTDefaults_sharedInstance__block_invoke()
     return 0;
   }
 
-  v3 = [(PTDefaults *)self testRecipeIdentifier];
-  v4 = v3 != 0;
+  testRecipeIdentifier = [(PTDefaults *)self testRecipeIdentifier];
+  v4 = testRecipeIdentifier != 0;
 
   return v4;
 }
@@ -179,42 +179,42 @@ uint64_t __28__PTDefaults_sharedInstance__block_invoke()
 {
   if ([(PTDefaults *)self testRecipeIsActive])
   {
-    v3 = [(PTDefaults *)self testRecipeIdentifier];
+    testRecipeIdentifier = [(PTDefaults *)self testRecipeIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    testRecipeIdentifier = 0;
   }
 
-  return v3;
+  return testRecipeIdentifier;
 }
 
 - (id)activeTestRecipeDescription
 {
   if ([(PTDefaults *)self testRecipeIsActive])
   {
-    v3 = [(PTDefaults *)self testRecipeDescription];
+    testRecipeDescription = [(PTDefaults *)self testRecipeDescription];
   }
 
   else
   {
-    v3 = 0;
+    testRecipeDescription = 0;
   }
 
-  return v3;
+  return testRecipeDescription;
 }
 
-- (BOOL)activeTestRecipeEatsEvent:(int64_t)a3
+- (BOOL)activeTestRecipeEatsEvent:(int64_t)event
 {
   if (![(PTDefaults *)self testRecipeIsActive])
   {
     return 0;
   }
 
-  if (a3 > 2)
+  if (event > 2)
   {
-    if (a3 == 3)
+    if (event == 3)
     {
 
       return [(PTDefaults *)self testRecipeEatsRingerSwitch];
@@ -222,7 +222,7 @@ uint64_t __28__PTDefaults_sharedInstance__block_invoke()
 
     else
     {
-      if (a3 != 4)
+      if (event != 4)
       {
         return 0;
       }
@@ -233,9 +233,9 @@ uint64_t __28__PTDefaults_sharedInstance__block_invoke()
 
   else
   {
-    if (a3 != 1)
+    if (event != 1)
     {
-      if (a3 == 2)
+      if (event == 2)
       {
 
         return [(PTDefaults *)self testRecipeEatsVolumeDown];
@@ -250,14 +250,14 @@ uint64_t __28__PTDefaults_sharedInstance__block_invoke()
 
 - (id)activeTestRecipeEventDescription
 {
-  v3 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PTDefaults_activeTestRecipeEventDescription__block_invoke;
   v7[3] = &unk_27835EEC8;
   v7[4] = self;
-  v8 = v3;
-  v4 = v3;
+  v8 = indexSet;
+  v4 = indexSet;
   PTPrototypingEnumerateHardwareEventsWithBlock(v7);
   v5 = PTPrototypingEventsDescription(v4);
 
@@ -288,46 +288,46 @@ uint64_t __46__PTDefaults_activeTestRecipeEventDescription__block_invoke(uint64_
   [(PTDefaults *)self setTestRecipeEatsRingerButton:0];
 }
 
-- (id)observeTestRecipeDefaultsOnQueue:(id)a3 withBlock:(id)a4
+- (id)observeTestRecipeDefaultsOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PTDefaults *)self _testRecipeDefaults];
-  v9 = [(BSAbstractDefaultDomain *)self observeDefaults:v8 onQueue:v7 withBlock:v6];
+  blockCopy = block;
+  queueCopy = queue;
+  _testRecipeDefaults = [(PTDefaults *)self _testRecipeDefaults];
+  v9 = [(BSAbstractDefaultDomain *)self observeDefaults:_testRecipeDefaults onQueue:queueCopy withBlock:blockCopy];
 
   return v9;
 }
 
-- (BOOL)prototypingServerWantsEvent:(int64_t)a3
+- (BOOL)prototypingServerWantsEvent:(int64_t)event
 {
   if ([(PTDefaults *)self _eventShowsUI:?])
   {
     return 1;
   }
 
-  return [(PTDefaults *)self activeTestRecipeEatsEvent:a3];
+  return [(PTDefaults *)self activeTestRecipeEatsEvent:event];
 }
 
-- (id)observeEventDefaultsOnQueue:(id)a3 withBlock:(id)a4
+- (id)observeEventDefaultsOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PTDefaults *)self _eventDefaults];
-  v9 = [(BSAbstractDefaultDomain *)self observeDefaults:v8 onQueue:v7 withBlock:v6];
+  blockCopy = block;
+  queueCopy = queue;
+  _eventDefaults = [(PTDefaults *)self _eventDefaults];
+  v9 = [(BSAbstractDefaultDomain *)self observeDefaults:_eventDefaults onQueue:queueCopy withBlock:blockCopy];
 
   return v9;
 }
 
-- (BOOL)_eventShowsUI:(int64_t)a3
+- (BOOL)_eventShowsUI:(int64_t)i
 {
   if (![(PTDefaults *)self activePrototypingEnabled])
   {
     return 0;
   }
 
-  if (a3 > 2)
+  if (i > 2)
   {
-    if (a3 == 3)
+    if (i == 3)
     {
 
       return [(PTDefaults *)self ringerSwitchShowsUI];
@@ -335,7 +335,7 @@ uint64_t __46__PTDefaults_activeTestRecipeEventDescription__block_invoke(uint64_
 
     else
     {
-      if (a3 != 4)
+      if (i != 4)
       {
         return 0;
       }
@@ -346,9 +346,9 @@ uint64_t __46__PTDefaults_activeTestRecipeEventDescription__block_invoke(uint64_
 
   else
   {
-    if (a3 != 1)
+    if (i != 1)
     {
-      if (a3 == 2)
+      if (i == 2)
       {
 
         return [(PTDefaults *)self volumeDownShowsUI];

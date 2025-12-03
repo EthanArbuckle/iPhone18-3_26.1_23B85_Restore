@@ -7,27 +7,27 @@
 - (int)_runRestoreOriginalWiFi;
 - (int)_runSaveOriginalWiFi;
 - (void)_cleanup;
-- (void)_progress:(unsigned int)a3 info:(id)a4;
+- (void)_progress:(unsigned int)_progress info:(id)info;
 - (void)_run;
 - (void)_runEasyConfigPreConfigStart;
-- (void)_runEasyConfigProgress:(int)a3 info:(id)a4;
-- (void)_runFinishRestored:(int)a3;
-- (void)_runJoinSoftAPFinished:(int)a3;
+- (void)_runEasyConfigProgress:(int)progress info:(id)info;
+- (void)_runFinishRestored:(int)restored;
+- (void)_runJoinSoftAPFinished:(int)finished;
 - (void)_runJoinSoftAPStart;
-- (void)_runRestoreOriginalWiFiFinished:(int)a3;
+- (void)_runRestoreOriginalWiFiFinished:(int)finished;
 - (void)_runRestoreOriginalWiFiStart;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
-- (void)trySetupCode:(id)a3;
+- (void)setLabel:(id)label;
+- (void)trySetupCode:(id)code;
 @end
 
 @implementation CUWACSession
 
-- (void)_runFinishRestored:(int)a3
+- (void)_runFinishRestored:(int)restored
 {
-  v3 = *&a3;
+  v3 = *&restored;
   v23[1] = *MEMORY[0x1E69E9840];
   originalWiFiInfo = self->_originalWiFiInfo;
   self->_originalWiFiInfo = 0;
@@ -88,7 +88,7 @@ LABEL_9:
     originalWiFiInfo = self->_originalWiFiInfo;
     if (!originalWiFiInfo)
     {
-      v7 = self;
+      selfCopy2 = self;
       v6 = 0;
       goto LABEL_6;
     }
@@ -104,9 +104,9 @@ LABEL_9:
     if (v5)
     {
       v6 = v5;
-      v7 = self;
+      selfCopy2 = self;
 LABEL_6:
-      [(CUWACSession *)v7 _runFinishRestored:v6];
+      [(CUWACSession *)selfCopy2 _runFinishRestored:v6];
     }
   }
 
@@ -195,9 +195,9 @@ LABEL_14:
   return self->_easyConfigPostConfigState;
 }
 
-- (void)_runRestoreOriginalWiFiFinished:(int)a3
+- (void)_runRestoreOriginalWiFiFinished:(int)finished
 {
-  v3 = *&a3;
+  v3 = *&finished;
   v23[1] = *MEMORY[0x1E69E9840];
   originalWiFiInfo = self->_originalWiFiInfo;
   self->_originalWiFiInfo = 0;
@@ -392,26 +392,26 @@ LABEL_18:
   return self->_restoreOriginalWiFiState;
 }
 
-- (void)_runEasyConfigProgress:(int)a3 info:(id)a4
+- (void)_runEasyConfigProgress:(int)progress info:(id)info
 {
-  v4 = *&a3;
+  v4 = *&progress;
   v29[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  infoCopy = info;
   if (v4 <= 39)
   {
     if (v4 > 19)
     {
       if (v4 == 20)
       {
-        v11 = self;
+        selfCopy7 = self;
         v12 = 90;
         goto LABEL_25;
       }
 
       if (v4 == 30)
       {
-        [(CUWACSession *)self _progress:100 info:v10];
-        v11 = self;
+        [(CUWACSession *)self _progress:100 info:infoCopy];
+        selfCopy7 = self;
         v12 = 110;
         goto LABEL_25;
       }
@@ -423,7 +423,7 @@ LABEL_18:
     {
       if (v4 == 10)
       {
-        v11 = self;
+        selfCopy7 = self;
         v12 = 70;
         goto LABEL_25;
       }
@@ -433,7 +433,7 @@ LABEL_18:
 
     EasyConfigKey_ReasonError = getEasyConfigKey_ReasonError();
     TypeID = CFErrorGetTypeID();
-    v19 = CFDictionaryGetTypedValue(v10, EasyConfigKey_ReasonError, TypeID, 0);
+    v19 = CFDictionaryGetTypedValue(infoCopy, EasyConfigKey_ReasonError, TypeID, 0);
     ucat = self->_ucat;
     if (ucat->var0 <= 30)
     {
@@ -495,7 +495,7 @@ LABEL_38:
   {
     if (v4 == 40)
     {
-      [(CUWACSession *)self _progress:120 info:v10];
+      [(CUWACSession *)self _progress:120 info:infoCopy];
       if (self->_easyConfigPreConfigState == 1)
       {
         self->_easyConfigPreConfigState = 4;
@@ -507,7 +507,7 @@ LABEL_38:
 
     if (v4 == 50)
     {
-      v11 = self;
+      selfCopy7 = self;
       v12 = 150;
       goto LABEL_25;
     }
@@ -518,19 +518,19 @@ LABEL_38:
     switch(v4)
     {
       case '<':
-        [(CUWACSession *)self _progress:170 info:v10];
-        v11 = self;
+        [(CUWACSession *)self _progress:170 info:infoCopy];
+        selfCopy7 = self;
         v12 = 180;
         goto LABEL_25;
       case 'F':
-        v11 = self;
+        selfCopy7 = self;
         v12 = 190;
         goto LABEL_25;
       case 'd':
-        v11 = self;
+        selfCopy7 = self;
         v12 = 200;
 LABEL_25:
-        [(CUWACSession *)v11 _progress:v12 info:v10];
+        [(CUWACSession *)selfCopy7 _progress:v12 info:infoCopy];
         goto LABEL_26;
     }
   }
@@ -560,19 +560,19 @@ LABEL_26:
   v48[1] = *MEMORY[0x1E69E9840];
   [(CUWACSession *)self _progress:60 info:0];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(CUWiFiDevice *)self->_wacDevice deviceIEDeviceID];
-  if (v8)
+  deviceIEDeviceID = [(CUWiFiDevice *)self->_wacDevice deviceIEDeviceID];
+  if (deviceIEDeviceID)
   {
     v9 = getEasyConfigKey_DeviceID();
-    [v3 setObject:v8 forKeyedSubscript:v9];
+    [v3 setObject:deviceIEDeviceID forKeyedSubscript:v9];
 
-    v10 = [(CUWiFiDevice *)self->_wacDevice deviceIEFlags];
-    v11 = vdupq_n_s32(v10);
+    deviceIEFlags = [(CUWiFiDevice *)self->_wacDevice deviceIEFlags];
+    v11 = vdupq_n_s32(deviceIEFlags);
     v12 = vshlq_u32(v11, xmmword_191FF9580);
     v12.i32[2] = vshlq_u32(v11, xmmword_191FF9590).i32[2];
     v13 = vandq_s8(v12, xmmword_191FF95A0);
     *v13.i8 = vorr_s8(*v13.i8, *&vextq_s8(v13, v13, 8uLL));
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v13.i32[0] | v13.i32[1] | (v10 >> 31)];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v13.i32[0] | v13.i32[1] | (deviceIEFlags >> 31)];
     v15 = getEasyConfigKey_Flags();
     [v3 setObject:v14 forKeyedSubscript:v15];
 
@@ -613,11 +613,11 @@ LABEL_9:
 
 LABEL_11:
       TypeID = CFStringGetTypeID();
-      v8 = CFDictionaryGetTypedValue(v17, @"ssid", TypeID, 0);
+      deviceIEDeviceID = CFDictionaryGetTypedValue(v17, @"ssid", TypeID, 0);
 
-      if (v8)
+      if (deviceIEDeviceID)
       {
-        [v18 setObject:v8 forKeyedSubscript:@"wifiSSID"];
+        [v18 setObject:deviceIEDeviceID forKeyedSubscript:@"wifiSSID"];
       }
 
       else
@@ -768,13 +768,13 @@ LABEL_20:
   return self->_easyConfigPreConfigState;
 }
 
-- (void)_runJoinSoftAPFinished:(int)a3
+- (void)_runJoinSoftAPFinished:(int)finished
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  self->_easyConfigPreConfigMetrics.wifiJoinSWAPError = a3;
-  if (a3)
+  self->_easyConfigPreConfigMetrics.wifiJoinSWAPError = finished;
+  if (finished)
   {
-    v8 = *&a3;
+    v8 = *&finished;
     ucat = self->_ucat;
     if (ucat->var0 <= 60)
     {
@@ -827,8 +827,8 @@ LABEL_9:
 {
   v34[1] = *MEMORY[0x1E69E9840];
   [(CUWACSession *)self _progress:40 info:0];
-  v7 = [(CUWiFiDevice *)self->_wacDevice rawScanResult];
-  if (!v7)
+  rawScanResult = [(CUWiFiDevice *)self->_wacDevice rawScanResult];
+  if (!rawScanResult)
   {
     ucat = self->_ucat;
     if (ucat->var0 <= 90)
@@ -852,7 +852,7 @@ LABEL_15:
   }
 
   self->_easyConfigPreConfigMetrics.rssiOfSWAP = [(CUWiFiDevice *)self->_wacDevice rssi];
-  Value = CFDictionaryGetValue(v7, @"SNR");
+  Value = CFDictionaryGetValue(rawScanResult, @"SNR");
   if (Value)
   {
     v30 = 0;
@@ -860,7 +860,7 @@ LABEL_15:
   }
 
   self->_easyConfigPreConfigMetrics.snrOfSWAP = Value;
-  v9 = CFDictionaryGetValue(v7, @"CHANNEL");
+  v9 = CFDictionaryGetValue(rawScanResult, @"CHANNEL");
   if (v9)
   {
     v30 = 0;
@@ -874,7 +874,7 @@ LABEL_15:
   v29[2] = __35__CUWACSession__runJoinSoftAPStart__block_invoke;
   v29[3] = &unk_1E73A4228;
   v29[4] = self;
-  v11 = WiFiJoinNetwork_b(v7, dispatchQueue, v29);
+  v11 = WiFiJoinNetwork_b(rawScanResult, dispatchQueue, v29);
   if (v11)
   {
     v17 = v11;
@@ -1053,24 +1053,24 @@ LABEL_13:
   }
 }
 
-- (void)trySetupCode:(id)a3
+- (void)trySetupCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__CUWACSession_trySetupCode___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = codeCopy;
+  v6 = codeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_progress:(unsigned int)a3 info:(id)a4
+- (void)_progress:(unsigned int)_progress info:(id)info
 {
-  v4 = *&a3;
-  v14 = a4;
+  v4 = *&_progress;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
@@ -1229,7 +1229,7 @@ LABEL_56:
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
-    progressHandler[2](progressHandler, v4, v14);
+    progressHandler[2](progressHandler, v4, infoCopy);
   }
 
   if (v4 == 20)
@@ -1331,13 +1331,13 @@ LABEL_5:
   return [v12 _run];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA8B8;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

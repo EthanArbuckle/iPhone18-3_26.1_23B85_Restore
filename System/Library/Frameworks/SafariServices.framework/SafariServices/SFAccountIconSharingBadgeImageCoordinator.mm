@@ -1,27 +1,27 @@
 @interface SFAccountIconSharingBadgeImageCoordinator
-- (SFAccountIconSharingBadgeImageCoordinator)initWithIconImageView:(id)a3 iconDiameter:(double)a4 parentView:(id)a5;
+- (SFAccountIconSharingBadgeImageCoordinator)initWithIconImageView:(id)view iconDiameter:(double)diameter parentView:(id)parentView;
 - (id)_badgeImage;
 - (void)_createBadgeImageViewIfNecessary;
 - (void)_layOutBadgeImageViewIfNecessary;
 - (void)reset;
-- (void)setShowsBadge:(BOOL)a3;
+- (void)setShowsBadge:(BOOL)badge;
 @end
 
 @implementation SFAccountIconSharingBadgeImageCoordinator
 
-- (SFAccountIconSharingBadgeImageCoordinator)initWithIconImageView:(id)a3 iconDiameter:(double)a4 parentView:(id)a5
+- (SFAccountIconSharingBadgeImageCoordinator)initWithIconImageView:(id)view iconDiameter:(double)diameter parentView:(id)parentView
 {
-  v9 = a3;
-  v10 = a5;
+  viewCopy = view;
+  parentViewCopy = parentView;
   v17.receiver = self;
   v17.super_class = SFAccountIconSharingBadgeImageCoordinator;
   v11 = [(SFAccountIconSharingBadgeImageCoordinator *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_iconImageView, a3);
-    objc_storeStrong(&v12->_parentView, a5);
-    v13 = dbl_1D47DF880[a4 > 40.0] * a4;
+    objc_storeStrong(&v11->_iconImageView, view);
+    objc_storeStrong(&v12->_parentView, parentView);
+    v13 = dbl_1D47DF880[diameter > 40.0] * diameter;
     v12->_badgeDiameter = ceilf(v13) + -2.0;
     v14 = +[SFAccountIconSharingBadgeImageProvider sharedProvider];
     [v14 addCoordinatorAsSubscriber:v12];
@@ -32,18 +32,18 @@
   return v12;
 }
 
-- (void)setShowsBadge:(BOOL)a3
+- (void)setShowsBadge:(BOOL)badge
 {
-  v3 = a3;
-  self->_showsBadge = a3;
+  badgeCopy = badge;
+  self->_showsBadge = badge;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__SFAccountIconSharingBadgeImageCoordinator_setShowsBadge___block_invoke;
   v5[3] = &unk_1E848F810;
   v5[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v5];
-  [(UIImageView *)self->_badgeImageView setHidden:!v3];
-  [(UIView *)self->_badgeMaskView setHidden:!v3];
+  [(UIImageView *)self->_badgeImageView setHidden:!badgeCopy];
+  [(UIView *)self->_badgeMaskView setHidden:!badgeCopy];
 }
 
 uint64_t __59__SFAccountIconSharingBadgeImageCoordinator_setShowsBadge___block_invoke(uint64_t a1)
@@ -62,19 +62,19 @@ uint64_t __59__SFAccountIconSharingBadgeImageCoordinator_setShowsBadge___block_i
     badgeMaskView = self->_badgeMaskView;
     self->_badgeMaskView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)self->_badgeMaskView setBackgroundColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)self->_badgeMaskView setBackgroundColor:whiteColor];
 
     [(SFAccountIconSharingBadgeImageCoordinator *)self _badgeMaskDiameter];
     [(UIView *)self->_badgeMaskView _setCornerRadius:v7 * 0.5];
     v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-    v9 = [(UIView *)self->_badgeMaskView layer];
-    [v9 setCompositingFilter:v8];
+    layer = [(UIView *)self->_badgeMaskView layer];
+    [layer setCompositingFilter:v8];
 
     [(UIView *)self->_parentView addSubview:self->_badgeMaskView];
     v10 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v11 = [(SFAccountIconSharingBadgeImageCoordinator *)self _badgeImage];
-    v12 = [v10 initWithImage:v11];
+    _badgeImage = [(SFAccountIconSharingBadgeImageCoordinator *)self _badgeImage];
+    v12 = [v10 initWithImage:_badgeImage];
     badgeImageView = self->_badgeImageView;
     self->_badgeImageView = v12;
 

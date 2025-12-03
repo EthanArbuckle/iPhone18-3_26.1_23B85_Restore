@@ -1,11 +1,11 @@
 @interface SBDashBoardModalHomeAffordanceController
-- (BOOL)registerHomeGestureParticipant:(id)a3;
+- (BOOL)registerHomeGestureParticipant:(id)participant;
 - (SBDashBoardModalHomeAffordanceController)init;
-- (double)additionalEdgeSpacingForHomeGrabberView:(id)a3;
-- (void)setHomeGestureRecognizer:(id)a3;
+- (double)additionalEdgeSpacingForHomeGrabberView:(id)view;
+- (void)setHomeGestureRecognizer:(id)recognizer;
 - (void)unregisterHomeGestureParticipant;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBDashBoardModalHomeAffordanceController
@@ -17,23 +17,23 @@
   v2 = [(SBDashBoardModalHomeAffordanceController *)&v6 init];
   if (v2)
   {
-    v3 = [SBApp windowSceneManager];
-    v4 = [v3 embeddedDisplayWindowScene];
-    objc_storeWeak(&v2->_windowScene, v4);
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+    objc_storeWeak(&v2->_windowScene, embeddedDisplayWindowScene);
   }
 
   return v2;
 }
 
-- (BOOL)registerHomeGestureParticipant:(id)a3
+- (BOOL)registerHomeGestureParticipant:(id)participant
 {
   zStackParticipant = self->_zStackParticipant;
   if (!zStackParticipant)
   {
-    v5 = a3;
+    participantCopy = participant;
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v7 = [WeakRetained zStackResolver];
-    v8 = [v7 acquireParticipantWithIdentifier:10 delegate:self];
+    zStackResolver = [WeakRetained zStackResolver];
+    v8 = [zStackResolver acquireParticipantWithIdentifier:10 delegate:self];
     v9 = self->_zStackParticipant;
     self->_zStackParticipant = v8;
 
@@ -42,11 +42,11 @@
     [(SBHomeGrabberView *)v10 setAutoHides:1];
     [(SBHomeGrabberView *)v10 setHomeAffordanceInteractionEnabled:[(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture]];
     objc_storeWeak(&self->_homeGrabberView, v10);
-    [v5 addGrabberView:v10];
-    objc_storeWeak(&self->_homeGestureParticipant, v5);
-    LOBYTE(v7) = objc_opt_respondsToSelector();
+    [participantCopy addGrabberView:v10];
+    objc_storeWeak(&self->_homeGestureParticipant, participantCopy);
+    LOBYTE(zStackResolver) = objc_opt_respondsToSelector();
 
-    if (v7)
+    if (zStackResolver)
     {
       [(SBDashBoardModalHomeAffordanceController *)self setNeedsUpdateZStackPreferencesWithReason:@"Initial"];
     }
@@ -66,64 +66,64 @@
   }
 }
 
-- (void)setHomeGestureRecognizer:(id)a3
+- (void)setHomeGestureRecognizer:(id)recognizer
 {
-  v11 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained systemGestureManager];
+  systemGestureManager = [WeakRetained systemGestureManager];
 
   homeGestureRecognizer = self->_homeGestureRecognizer;
   p_homeGestureRecognizer = &self->_homeGestureRecognizer;
   v7 = homeGestureRecognizer;
-  if (v11)
+  if (recognizerCopy)
   {
     if (!v7)
     {
-      objc_storeStrong(p_homeGestureRecognizer, a3);
-      [v6 addGestureRecognizer:*p_homeGestureRecognizer withType:96];
+      objc_storeStrong(p_homeGestureRecognizer, recognizer);
+      [systemGestureManager addGestureRecognizer:*p_homeGestureRecognizer withType:96];
     }
   }
 
   else
   {
-    [v6 removeGestureRecognizer:v7];
+    [systemGestureManager removeGestureRecognizer:v7];
     v10 = *p_homeGestureRecognizer;
     *p_homeGestureRecognizer = 0;
   }
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureParticipant);
-  [WeakRetained homeGestureParticipantOwningHomeGestureDidChange:{objc_msgSend(v4, "ownsHomeGesture")}];
+  [WeakRetained homeGestureParticipantOwningHomeGestureDidChange:{objc_msgSend(changeCopy, "ownsHomeGesture")}];
 
   v7 = objc_loadWeakRetained(&self->_homeGrabberView);
-  v6 = [v4 ownsHomeGesture];
+  ownsHomeGesture = [changeCopy ownsHomeGesture];
 
-  [v7 setHomeAffordanceInteractionEnabled:v6];
+  [v7 setHomeAffordanceInteractionEnabled:ownsHomeGesture];
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v8 = a3;
-  v6 = a4;
-  [v6 setActivationPolicyForParticipantsBelow:2];
+  participantCopy = participant;
+  preferencesCopy = preferences;
+  [preferencesCopy setActivationPolicyForParticipantsBelow:2];
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureParticipant);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained homeGestureParticipantUpdateZStackPreferences:v6 forZStackParticipant:v8];
+    [WeakRetained homeGestureParticipantUpdateZStackPreferences:preferencesCopy forZStackParticipant:participantCopy];
   }
 }
 
-- (double)additionalEdgeSpacingForHomeGrabberView:(id)a3
+- (double)additionalEdgeSpacingForHomeGrabberView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureParticipant);
   v6 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained additionalEdgeSpacingForGrabberView:v4];
+    [WeakRetained additionalEdgeSpacingForGrabberView:viewCopy];
     v6 = v7;
   }
 

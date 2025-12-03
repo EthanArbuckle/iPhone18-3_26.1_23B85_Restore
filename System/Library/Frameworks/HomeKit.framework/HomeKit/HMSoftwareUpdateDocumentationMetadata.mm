@@ -1,43 +1,43 @@
 @interface HMSoftwareUpdateDocumentationMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMSoftwareUpdateDocumentationMetadata)init;
-- (HMSoftwareUpdateDocumentationMetadata)initWithCoder:(id)a3;
-- (HMSoftwareUpdateDocumentationMetadata)initWithURL:(id)a3 digest:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HMSoftwareUpdateDocumentationMetadata)initWithCoder:(id)coder;
+- (HMSoftwareUpdateDocumentationMetadata)initWithURL:(id)l digest:(id)digest;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMSoftwareUpdateDocumentationMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMSoftwareUpdateDocumentationMetadata *)self URL];
-  [v4 encodeObject:v5 forKey:@"HM.url"];
+  [coderCopy encodeObject:v5 forKey:@"HM.url"];
 
-  v6 = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
-  [v4 encodeObject:v6 forKey:@"HM.digest"];
+  digest = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
+  [coderCopy encodeObject:digest forKey:@"HM.digest"];
 }
 
-- (HMSoftwareUpdateDocumentationMetadata)initWithCoder:(id)a3
+- (HMSoftwareUpdateDocumentationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.digest"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.digest"];
 
   v7 = [(HMSoftwareUpdateDocumentationMetadata *)self initWithURL:v5 digest:v6];
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   v6 = [(HMSoftwareUpdateDocumentationMetadata *)self URL];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
-  v9 = [v8 copyWithZone:a3];
+  v7 = [v6 copyWithZone:zone];
+  digest = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
+  v9 = [digest copyWithZone:zone];
   v10 = [v5 initWithURL:v7 digest:v9];
 
   return v10;
@@ -48,17 +48,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(HMSoftwareUpdateDocumentationMetadata *)self URL];
-  v6 = [v5 path];
-  v7 = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
-  v8 = [v3 stringWithFormat:@"<%@, URL = %@, Digest = %@>", v4, v6, v7];
+  path = [v5 path];
+  digest = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
+  v8 = [v3 stringWithFormat:@"<%@, URL = %@, Digest = %@>", v4, path, digest];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -68,7 +68,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -83,16 +83,16 @@
     }
 
     v7 = [(HMSoftwareUpdateDocumentationMetadata *)self URL];
-    v8 = [v7 absoluteURL];
+    absoluteURL = [v7 absoluteURL];
     v9 = [(HMSoftwareUpdateDocumentationMetadata *)v6 URL];
-    v10 = [v9 absoluteURL];
-    v11 = [v8 isEqual:v10];
+    absoluteURL2 = [v9 absoluteURL];
+    v11 = [absoluteURL isEqual:absoluteURL2];
 
     if (v11)
     {
-      v12 = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
-      v13 = [(HMSoftwareUpdateDocumentationMetadata *)v6 digest];
-      v14 = [v12 isEqual:v13];
+      digest = [(HMSoftwareUpdateDocumentationMetadata *)self digest];
+      digest2 = [(HMSoftwareUpdateDocumentationMetadata *)v6 digest];
+      v14 = [digest isEqual:digest2];
     }
 
     else
@@ -113,26 +113,26 @@ LABEL_8:
   return v3;
 }
 
-- (HMSoftwareUpdateDocumentationMetadata)initWithURL:(id)a3 digest:(id)a4
+- (HMSoftwareUpdateDocumentationMetadata)initWithURL:(id)l digest:(id)digest
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  digestCopy = digest;
   v18.receiver = self;
   v18.super_class = HMSoftwareUpdateDocumentationMetadata;
   v8 = [(HMSoftwareUpdateDocumentationMetadata *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     URL = v8->_URL;
     v8->_URL = v9;
 
-    v11 = [v7 copy];
+    v11 = [digestCopy copy];
     digest = v8->_digest;
     v8->_digest = v11;
 
     v13 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v14 = [v7 value];
-    v15 = [v13 initWithUUIDBytes:{objc_msgSend(v14, "bytes")}];
+    value = [digestCopy value];
+    v15 = [v13 initWithUUIDBytes:{objc_msgSend(value, "bytes")}];
     metadataDigestUUID = v8->_metadataDigestUUID;
     v8->_metadataDigestUUID = v15;
   }

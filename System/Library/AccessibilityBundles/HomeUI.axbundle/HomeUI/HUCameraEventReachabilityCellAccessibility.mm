@@ -7,20 +7,20 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(HUCameraEventReachabilityCellAccessibility *)self _axReachabilityEvent];
-  v4 = [MEMORY[0x29EDB8DB0] date];
-  v5 = [v3 startEvent];
+  _axReachabilityEvent = [(HUCameraEventReachabilityCellAccessibility *)self _axReachabilityEvent];
+  date = [MEMORY[0x29EDB8DB0] date];
+  startEvent = [_axReachabilityEvent startEvent];
   v6 = MEMORY[0x29EDC5360];
-  v7 = [v5 dateOfOccurrence];
-  v8 = [v6 attributedShortTimeStringFromDate:v7];
-  v9 = [v8 string];
+  dateOfOccurrence = [startEvent dateOfOccurrence];
+  v8 = [v6 attributedShortTimeStringFromDate:dateOfOccurrence];
+  string = [v8 string];
 
   v10 = MEMORY[0x29EDC5360];
-  v11 = [v5 dateOfOccurrence];
-  v12 = [v10 localizerKeyDayNameFromDate:v11];
+  dateOfOccurrence2 = [startEvent dateOfOccurrence];
+  v12 = [v10 localizerKeyDayNameFromDate:dateOfOccurrence2];
 
-  v13 = [v5 dateOfOccurrence];
-  [v4 timeIntervalSinceDate:v13];
+  dateOfOccurrence3 = [startEvent dateOfOccurrence];
+  [date timeIntervalSinceDate:dateOfOccurrence3];
   v15 = v14;
 
   if (v15 > 604800.0)
@@ -33,10 +33,10 @@
   v17 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"HUCameraEventRecordingCellAccessibilityLabelSignificantEventTimeOn%@Format", v12];
   v18 = MEMORY[0x29EDBA0F8];
   v19 = accessibilityHomeUILocalizedString(v17);
-  v20 = [v18 stringWithFormat:v19, v9];
+  v20 = [v18 stringWithFormat:v19, string];
 
-  v21 = [(HUCameraEventReachabilityCellAccessibility *)self _axReachabilityEvent];
-  [v21 duration];
+  _axReachabilityEvent2 = [(HUCameraEventReachabilityCellAccessibility *)self _axReachabilityEvent];
+  [_axReachabilityEvent2 duration];
   v22 = AXDurationStringForDuration();
 
   v23 = accessibilityHomeUILocalizedString(@"camera.clip.offline.event");

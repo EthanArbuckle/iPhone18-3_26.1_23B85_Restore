@@ -1,7 +1,7 @@
 @interface NSData
-+ (id)MZStringByMD5HashingString:(id)a3;
-+ (id)MZStringFromDigestData:(id)a3;
-- (id)_MZDataByDeflatingWithCompression:(unint64_t)a3;
++ (id)MZStringByMD5HashingString:(id)string;
++ (id)MZStringFromDigestData:(id)data;
+- (id)_MZDataByDeflatingWithCompression:(unint64_t)compression;
 - (id)_MZDataByInflating;
 @end
 
@@ -9,18 +9,18 @@
 
 - (id)_MZDataByInflating
 {
-  v2 = self;
-  if ([(NSData *)v2 length]>> 32)
+  selfCopy = self;
+  if ([(NSData *)selfCopy length]>> 32)
   {
-    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)v2 length]/ 1000000000.0);
+    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)selfCopy length]/ 1000000000.0);
 LABEL_3:
     v3 = 0;
     goto LABEL_11;
   }
 
   memset(&strm.avail_in, 0, 104);
-  strm.avail_in = [(NSData *)v2 length];
-  strm.next_in = [(NSData *)v2 bytes];
+  strm.avail_in = [(NSData *)selfCopy length];
+  strm.next_in = [(NSData *)selfCopy bytes];
   v3 = 0;
   if (!inflateInit2_(&strm, -15, "1.2.12", 112))
   {
@@ -58,24 +58,24 @@ LABEL_11:
   return v3;
 }
 
-- (id)_MZDataByDeflatingWithCompression:(unint64_t)a3
+- (id)_MZDataByDeflatingWithCompression:(unint64_t)compression
 {
-  v4 = self;
-  if ([(NSData *)v4 length]>= 0xFFFFFFFF)
+  selfCopy = self;
+  if ([(NSData *)selfCopy length]>= 0xFFFFFFFF)
   {
-    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)v4 length]/ 1000000000.0);
+    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)selfCopy length]/ 1000000000.0);
     v5 = 0;
     goto LABEL_23;
   }
 
-  v6 = [(NSData *)v4 bytes];
-  v7 = [(NSData *)v4 length];
+  bytes = [(NSData *)selfCopy bytes];
+  v7 = [(NSData *)selfCopy length];
   v8 = [[NSMutableData alloc] initWithCapacity:(v7 >> 1) + 1];
   v5 = 0;
-  if (v6 && v7)
+  if (bytes && v7)
   {
     memset(&strm, 0, sizeof(strm));
-    if (a3 == 1)
+    if (compression == 1)
     {
       v9 = 1;
     }
@@ -86,7 +86,7 @@ LABEL_11:
     }
 
     strm.avail_out = 0x4000;
-    if (a3 == 2)
+    if (compression == 2)
     {
       v10 = 9;
     }
@@ -105,7 +105,7 @@ LABEL_11:
     else
     {
       strm.avail_in = v7;
-      strm.next_in = v6;
+      strm.next_in = bytes;
       do
       {
         if (!strm.avail_out)
@@ -168,11 +168,11 @@ LABEL_23:
   return v5;
 }
 
-+ (id)MZStringFromDigestData:(id)a3
++ (id)MZStringFromDigestData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 bytes];
+  dataCopy = data;
+  v4 = [dataCopy length];
+  bytes = [dataCopy bytes];
   v6 = [NSMutableString stringWithCapacity:2 * v4];
   if (v4)
   {
@@ -180,7 +180,7 @@ LABEL_23:
     v8 = 1;
     do
     {
-      [v6 appendFormat:@"%02x", v5[v7]];
+      [v6 appendFormat:@"%02x", bytes[v7]];
       v7 = v8;
     }
 
@@ -190,21 +190,21 @@ LABEL_23:
   return v6;
 }
 
-+ (id)MZStringByMD5HashingString:(id)a3
++ (id)MZStringByMD5HashingString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   if ([v4 length])
   {
     memset(&v12, 0, sizeof(v12));
     if (CC_MD5_Init(&v12))
     {
-      v5 = [v4 bytes];
+      bytes = [v4 bytes];
       v6 = 0;
       while (1)
       {
         v7 = [v4 length];
         v8 = &v7[-v6] >= 0xFFFF ? 0xFFFFLL : &v7[-v6];
-        if (!CC_MD5_Update(&v12, &v5[v6], v8))
+        if (!CC_MD5_Update(&v12, &bytes[v6], v8))
         {
           break;
         }
@@ -218,7 +218,7 @@ LABEL_23:
           }
 
           v9 = [NSData dataWithBytes:md length:16];
-          v10 = [a1 MZStringFromDigestData:v9];
+          v10 = [self MZStringFromDigestData:v9];
 
           goto LABEL_12;
         }

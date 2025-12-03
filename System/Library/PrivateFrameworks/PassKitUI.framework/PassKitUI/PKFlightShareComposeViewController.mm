@@ -1,29 +1,29 @@
 @interface PKFlightShareComposeViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
-- (PKFlightShareComposeViewController)initWithInvitation:(id)a3 delegate:(id)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
+- (PKFlightShareComposeViewController)initWithInvitation:(id)invitation delegate:(id)delegate;
 - (void)_addRemoteViewControllerToView;
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4;
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler;
 - (void)_setupRemoteView;
 - (void)dealloc;
-- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)a3;
+- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)result;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKFlightShareComposeViewController
 
-- (PKFlightShareComposeViewController)initWithInvitation:(id)a3 delegate:(id)a4
+- (PKFlightShareComposeViewController)initWithInvitation:(id)invitation delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  invitationCopy = invitation;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKFlightShareComposeViewController;
   v9 = [(PKFlightShareComposeViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_invitation, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_invitation, invitation);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     [(PKFlightShareComposeViewController *)v10 _setupRemoteView];
   }
 
@@ -35,7 +35,7 @@
   remoteVCRequest = self->_remoteVCRequest;
   if (remoteVCRequest)
   {
-    v4 = [(_UIAsyncInvocation *)remoteVCRequest invoke];
+    invoke = [(_UIAsyncInvocation *)remoteVCRequest invoke];
     v5 = self->_remoteVCRequest;
     self->_remoteVCRequest = 0;
   }
@@ -131,28 +131,28 @@ void __54__PKFlightShareComposeViewController__setupRemoteView__block_invoke_2(u
   }
 }
 
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_remoteVC, c);
   [(PKRemoteFlightShareComposeViewController *)self->_remoteVC setDelegate:self];
   remoteVC = self->_remoteVC;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __69__PKFlightShareComposeViewController__setRemoteVC_completionHandler___block_invoke;
   v22[3] = &unk_1E8012C28;
-  v10 = v8;
+  v10 = handlerCopy;
   v23 = v10;
   v11 = [(_UIRemoteViewController *)remoteVC serviceViewControllerProxyWithErrorHandler:v22];
   if (v11)
   {
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v13 = [v12 fixedCoordinateSpace];
-    [v13 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v15 = v14;
     v17 = v16;
-    [v12 scale];
+    [mainScreen scale];
     [v11 setDisplayPropertiesWithScreenSize:v15 scale:{v17, v18}];
 
     invitation = self->_invitation;
@@ -193,18 +193,18 @@ void __69__PKFlightShareComposeViewController__setRemoteVC_completionHandler___b
 - (void)_addRemoteViewControllerToView
 {
   [(PKFlightShareComposeViewController *)self addChildViewController:self->_remoteVC];
-  v4 = [(PKRemoteFlightShareComposeViewController *)self->_remoteVC view];
-  v3 = [(PKFlightShareComposeViewController *)self view];
-  [v3 addSubview:v4];
-  [v3 setNeedsLayout];
-  [v3 layoutIfNeeded];
+  view = [(PKRemoteFlightShareComposeViewController *)self->_remoteVC view];
+  view2 = [(PKFlightShareComposeViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKFlightShareComposeViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -221,9 +221,9 @@ void __69__PKFlightShareComposeViewController__setRemoteVC_completionHandler___b
   v5.receiver = self;
   v5.super_class = PKFlightShareComposeViewController;
   [(PKFlightShareComposeViewController *)&v5 loadView];
-  v3 = [(PKFlightShareComposeViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKFlightShareComposeViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -231,27 +231,27 @@ void __69__PKFlightShareComposeViewController__setRemoteVC_completionHandler___b
   v5.receiver = self;
   v5.super_class = PKFlightShareComposeViewController;
   [(PKFlightShareComposeViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKFlightShareComposeViewController *)self view];
-  v4 = [(PKRemoteFlightShareComposeViewController *)self->_remoteVC view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PKFlightShareComposeViewController *)self view];
+  view2 = [(PKRemoteFlightShareComposeViewController *)self->_remoteVC view];
+  [view bounds];
+  [view2 setFrame:?];
 }
 
-- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)a3
+- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
-    v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 flightShareComposeViewControllerDidFinishWithResult:v3];
+    presentingViewController = objc_loadWeakRetained(&self->_delegate);
+    [presentingViewController flightShareComposeViewControllerDidFinishWithResult:resultCopy];
   }
 
   else
   {
-    v6 = [(PKFlightShareComposeViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:0 completion:0];
+    presentingViewController = [(PKFlightShareComposeViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:0 completion:0];
   }
 }
 

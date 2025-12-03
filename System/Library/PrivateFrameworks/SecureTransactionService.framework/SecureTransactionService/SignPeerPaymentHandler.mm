@@ -1,54 +1,54 @@
 @interface SignPeerPaymentHandler
 - (STSSigningSession)parent;
-- (SignPeerPaymentHandler)initWithParent:(id)a3;
-- (id)signPeerPayment:(id)a3 authorization:(id)a4 error:(id *)a5;
-- (id)startNFSessionWithCompletion:(id)a3;
+- (SignPeerPaymentHandler)initWithParent:(id)parent;
+- (id)signPeerPayment:(id)payment authorization:(id)authorization error:(id *)error;
+- (id)startNFSessionWithCompletion:(id)completion;
 @end
 
 @implementation SignPeerPaymentHandler
 
-- (SignPeerPaymentHandler)initWithParent:(id)a3
+- (SignPeerPaymentHandler)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v8.receiver = self;
   v8.super_class = SignPeerPaymentHandler;
   v5 = [(SignPeerPaymentHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
   }
 
   return v6;
 }
 
-- (id)startNFSessionWithCompletion:(id)a3
+- (id)startNFSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(STSHandler *)self nfHardwareManager];
+  completionCopy = completion;
+  nfHardwareManager = [(STSHandler *)self nfHardwareManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_26537D43C;
   v9[3] = &unk_279B93BE0;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 startPeerPaymentSession:v9];
+  v10 = completionCopy;
+  v6 = completionCopy;
+  v7 = [nfHardwareManager startPeerPaymentSession:v9];
 
   return v7;
 }
 
-- (id)signPeerPayment:(id)a3 authorization:(id)a4 error:(id *)a5
+- (id)signPeerPayment:(id)payment authorization:(id)authorization error:(id *)error
 {
   v61[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(STSHandler *)self activeSTSCredential];
+  paymentCopy = payment;
+  authorizationCopy = authorization;
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
 
-  if (!v11)
+  if (!activeSTSCredential)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignPeerPaymentHandler signPeerPayment:authorization:error:]", 57, self, @"Credential does not exist!", v12, v13, v50);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -75,22 +75,22 @@ LABEL_15:
     v46 = v28;
     v47 = 9;
 LABEL_16:
-    *a5 = [v45 errorWithDomain:v46 code:v47 userInfo:v44];
+    *error = [v45 errorWithDomain:v46 code:v47 userInfo:v44];
 
     goto LABEL_17;
   }
 
-  v14 = [(STSHandler *)self activeSTSCredential];
-  v15 = [v14 identifier];
-  v16 = [v15 isEqualToString:0x2876E5030];
+  activeSTSCredential2 = [(STSHandler *)self activeSTSCredential];
+  identifier = [activeSTSCredential2 identifier];
+  v16 = [identifier isEqualToString:0x2876E5030];
 
   if ((v16 & 1) == 0)
   {
-    v39 = [(STSHandler *)self activeSTSCredential];
-    v40 = [v39 identifier];
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignPeerPaymentHandler signPeerPayment:authorization:error:]", 65, self, @"AID is not supported by Peer Payment handler - %@", v41, v42, v40);
+    activeSTSCredential3 = [(STSHandler *)self activeSTSCredential];
+    identifier2 = [activeSTSCredential3 identifier];
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignPeerPaymentHandler signPeerPayment:authorization:error:]", 65, self, @"AID is not supported by Peer Payment handler - %@", v41, v42, identifier2);
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -118,7 +118,7 @@ LABEL_16:
   if (!self->_nfPeerPaymentSession)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignPeerPaymentHandler signPeerPayment:authorization:error:]", 74, self, @"NF session does not exist!", v17, v18, v50);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -143,29 +143,29 @@ LABEL_16:
   }
 
   v19 = "is";
-  if (!v10)
+  if (!authorizationCopy)
   {
     v19 = "is not";
   }
 
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[SignPeerPaymentHandler signPeerPayment:authorization:error:]", 81, self, @"Authorization %s available", v17, v18, v19);
-  v20 = [(STSHandler *)self activeSTSCredential];
-  v21 = [v20 identifier];
-  v22 = [v9 toNFPeerPaymentRequest:v21];
+  activeSTSCredential4 = [(STSHandler *)self activeSTSCredential];
+  identifier3 = [activeSTSCredential4 identifier];
+  v22 = [paymentCopy toNFPeerPaymentRequest:identifier3];
 
   nfPeerPaymentSession = self->_nfPeerPaymentSession;
   v53 = 0;
-  v24 = [(NFPeerPaymentSession *)nfPeerPaymentSession performPeerPayment:v10 request:v22 error:&v53];
+  v24 = [(NFPeerPaymentSession *)nfPeerPaymentSession performPeerPayment:authorizationCopy request:v22 error:&v53];
   v25 = v53;
   v28 = v25;
   if (!v25)
   {
-    a5 = [[STSPeerPaymentResponse alloc] initFromNFPeerPaymentResponse:v24];
+    error = [[STSPeerPaymentResponse alloc] initFromNFPeerPaymentResponse:v24];
     goto LABEL_18;
   }
 
   sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignPeerPaymentHandler signPeerPayment:authorization:error:]", 89, self, @"start transaction failed = %@", v26, v27, v25);
-  if (a5)
+  if (error)
   {
     v29 = MEMORY[0x277CCA9B8];
     v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -184,10 +184,10 @@ LABEL_16:
     v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 91];
     v55[4] = v32;
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:5];
-    *a5 = [v29 errorWithDomain:v51 code:10 userInfo:v33];
+    *error = [v29 errorWithDomain:v51 code:10 userInfo:v33];
 
 LABEL_17:
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_18:
@@ -195,7 +195,7 @@ LABEL_18:
 LABEL_19:
   v48 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
 - (STSSigningSession)parent

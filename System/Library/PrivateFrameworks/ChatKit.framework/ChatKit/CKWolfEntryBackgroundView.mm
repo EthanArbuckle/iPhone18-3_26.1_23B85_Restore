@@ -22,8 +22,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKWolfEntryBackgroundView *)self blurView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  blurView = [(CKWolfEntryBackgroundView *)self blurView];
+  [blurView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface CUIKAlarmDescriptionGenerator
-+ (id)descriptionForAbsoluteDate:(id)a3 longVersion:(BOOL)a4;
-+ (id)descriptionForRelativeOffset:(double)a3 isAllDay:(BOOL)a4 isRelativeToTravelStart:(BOOL)a5 isDefault:(BOOL)a6;
++ (id)descriptionForAbsoluteDate:(id)date longVersion:(BOOL)version;
++ (id)descriptionForRelativeOffset:(double)offset isAllDay:(BOOL)day isRelativeToTravelStart:(BOOL)start isDefault:(BOOL)default;
 @end
 
 @implementation CUIKAlarmDescriptionGenerator
 
-+ (id)descriptionForAbsoluteDate:(id)a3 longVersion:(BOOL)a4
++ (id)descriptionForAbsoluteDate:(id)date longVersion:(BOOL)version
 {
-  if (a4)
+  if (version)
   {
-    CUIKLongStringForDateAndTime(a3);
+    CUIKLongStringForDateAndTime(date);
   }
 
   else
   {
-    CUIKStringForDateAndTime(a3);
+    CUIKStringForDateAndTime(date);
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)descriptionForRelativeOffset:(double)a3 isAllDay:(BOOL)a4 isRelativeToTravelStart:(BOOL)a5 isDefault:(BOOL)a6
++ (id)descriptionForRelativeOffset:(double)offset isAllDay:(BOOL)day isRelativeToTravelStart:(BOOL)start isDefault:(BOOL)default
 {
-  v6 = a6;
-  v7 = a5;
-  if (a4)
+  defaultCopy = default;
+  startCopy = start;
+  if (day)
   {
     v9 = CalTimeZoneCopyCFTimeZone();
     GregorianDate = CalDateTimeGetGregorianDate();
@@ -33,13 +33,13 @@
     MEMORY[0x1CCAA8570](GregorianDate);
     v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
     CFRelease(v9);
-    v13 = a3 > 0.0;
-    if (a3 >= 86400.0)
+    v13 = offset > 0.0;
+    if (offset >= 86400.0)
     {
       v13 = 0;
     }
 
-    if (a3 == 0.0 || v13)
+    if (offset == 0.0 || v13)
     {
       v27 = CUIKBundle();
       v15 = [v27 localizedStringForKey:@"On day of event (%@)" value:&stru_1F4AA8958 table:0];
@@ -49,7 +49,7 @@
       v21 = [v28 localizedStringWithFormat:v15, v16];
     }
 
-    else if (a3 == -572400.0)
+    else if (offset == -572400.0)
     {
       v14 = MEMORY[0x1E696AEC0];
       v15 = CUIKBundle();
@@ -65,20 +65,20 @@
     {
       v29 = CUIKBundle();
       v30 = v29;
-      if (a3 >= 0.0 || a3 < -21600.0)
+      if (offset >= 0.0 || offset < -21600.0)
       {
-        if (a3 >= 0.0)
+        if (offset >= 0.0)
         {
           v15 = [v29 localizedStringForKey:@"%@ after" value:&stru_1F4AA8958 table:0];
 
-          v35 = floor(a3 / 86400.0);
+          v35 = floor(offset / 86400.0);
         }
 
         else
         {
           v15 = [v29 localizedStringForKey:@"%@ before" value:&stru_1F4AA8958 table:0];
 
-          v35 = ceil(fabs(a3) / 86400.0);
+          v35 = ceil(fabs(offset) / 86400.0);
         }
 
         v36 = v35;
@@ -98,7 +98,7 @@
       else
       {
         v31 = [v29 localizedStringForKey:@"At time of event" value:&stru_1F4AA8958 table:0];
-        v15 = CUIKDurationStringForTimeInterval(1, v31, 0, v7, 1, a3);
+        v15 = CUIKDurationStringForTimeInterval(1, v31, 0, startCopy, 1, offset);
 
         v16 = CUIKStringForGMTTime(v12, 0);
         v32 = MEMORY[0x1E696AEC0];
@@ -109,7 +109,7 @@
     }
   }
 
-  else if (a3 == -604800.0)
+  else if (offset == -604800.0)
   {
     v22 = MEMORY[0x1E696AEC0];
     v12 = CUIKBundle();
@@ -125,10 +125,10 @@
   {
     v12 = CUIKBundle();
     v15 = [v12 localizedStringForKey:@"At time of event" value:&stru_1F4AA8958 table:0];
-    v21 = CUIKDurationStringForTimeInterval(1, v15, 0, v7, 1, a3);
+    v21 = CUIKDurationStringForTimeInterval(1, v15, 0, startCopy, 1, offset);
   }
 
-  if (v6)
+  if (defaultCopy)
   {
     v43 = MEMORY[0x1E696AEC0];
     v44 = CUIKBundle();

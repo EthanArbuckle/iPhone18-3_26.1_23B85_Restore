@@ -1,82 +1,82 @@
 @interface MIUIMedicalIDNavigationBarView
-- (MIUIMedicalIDNavigationBarView)initWithCoder:(id)a3;
-- (MIUIMedicalIDNavigationBarView)initWithFrame:(CGRect)a3;
-- (MIUIMedicalIDNavigationBarView)initWithHealthStore:(id)a3 medicalIDData:(id)a4 showDateUpdated:(BOOL)a5 locale:(id)a6;
-- (void)setContainerView:(id)a3;
-- (void)setDateUpdatedLabel:(id)a3;
-- (void)setImageView:(id)a3;
-- (void)setStackView:(id)a3;
-- (void)setTextLabel:(id)a3;
-- (void)setTitleFont:(id)a3;
+- (MIUIMedicalIDNavigationBarView)initWithCoder:(id)coder;
+- (MIUIMedicalIDNavigationBarView)initWithFrame:(CGRect)frame;
+- (MIUIMedicalIDNavigationBarView)initWithHealthStore:(id)store medicalIDData:(id)data showDateUpdated:(BOOL)updated locale:(id)locale;
+- (void)setContainerView:(id)view;
+- (void)setDateUpdatedLabel:(id)label;
+- (void)setImageView:(id)view;
+- (void)setStackView:(id)view;
+- (void)setTextLabel:(id)label;
+- (void)setTitleFont:(id)font;
 @end
 
 @implementation MIUIMedicalIDNavigationBarView
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_containerView);
-  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_containerView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_containerView) = view;
+  viewCopy = view;
 }
 
-- (void)setStackView:(id)a3
+- (void)setStackView:(id)view
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_stackView);
-  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_stackView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_stackView) = view;
+  viewCopy = view;
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_imageView);
-  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_imageView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_imageView) = view;
+  viewCopy = view;
 }
 
-- (void)setTextLabel:(id)a3
+- (void)setTextLabel:(id)label
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_textLabel);
-  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_textLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_textLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_titleFont);
-  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_titleFont) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_titleFont) = font;
+  fontCopy = font;
 }
 
-- (void)setDateUpdatedLabel:(id)a3
+- (void)setDateUpdatedLabel:(id)label
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_dateUpdatedLabel);
-  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_dateUpdatedLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MIUIMedicalIDNavigationBarView_dateUpdatedLabel) = label;
+  labelCopy = label;
 }
 
-- (MIUIMedicalIDNavigationBarView)initWithHealthStore:(id)a3 medicalIDData:(id)a4 showDateUpdated:(BOOL)a5 locale:(id)a6
+- (MIUIMedicalIDNavigationBarView)initWithHealthStore:(id)store medicalIDData:(id)data showDateUpdated:(BOOL)updated locale:(id)locale
 {
-  v6 = a5;
+  updatedCopy = updated;
   v9 = sub_2588BBAC8();
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2588BBAA8();
-  v13 = a3;
-  v14 = a4;
-  v15 = sub_25887AF30(v13, a4, v6, v12);
+  storeCopy = store;
+  dataCopy = data;
+  v15 = sub_25887AF30(storeCopy, data, updatedCopy, v12);
 
   return v15;
 }
 
-- (MIUIMedicalIDNavigationBarView)initWithCoder:(id)a3
+- (MIUIMedicalIDNavigationBarView)initWithCoder:(id)coder
 {
   result = sub_2588BDED8();
   __break(1u);
   return result;
 }
 
-- (MIUIMedicalIDNavigationBarView)initWithFrame:(CGRect)a3
+- (MIUIMedicalIDNavigationBarView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

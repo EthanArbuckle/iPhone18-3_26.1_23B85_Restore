@@ -15,24 +15,24 @@
 - (BOOL)supportsCalloutAttributes;
 - (CGAffineTransform)computeLayoutTransform;
 - (CGPoint)centerForConnecting;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)headLineEndPoint;
 - (CGPoint)headPoint;
 - (CGPoint)tailLineEndPoint;
 - (CGPoint)tailPoint;
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameInRoot;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform;
 - (CGRect)frameForPartitioning;
 - (CGRect)p_cachedClippedPathStroked;
 - (CGRect)p_cachedPathBounds;
 - (CGRect)p_cachedPathBoundsWithoutStroke;
-- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)a3;
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3;
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3 strokeDrawOptions:(unint64_t)a4;
+- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)rotation;
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform;
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform strokeDrawOptions:(unint64_t)options;
 - (CGSize)minimumSize;
 - (CRLBezierPath)clippedPathForLineEnds;
 - (CRLBezierPath)maskPath;
@@ -42,57 +42,57 @@
 - (CRLLineEnd)strokeTailLineEnd;
 - (CRLPKStrokePathCompactData)pencilKitStrokePathCompactData;
 - (CRLPathSource)pathSource;
-- (CRLShapeLayout)initWithInfo:(id)a3;
+- (CRLShapeLayout)initWithInfo:(id)info;
 - (CRLSmartPathSource)smartPathSource;
 - (NSArray)pencilKitStrokes;
 - (NSArray)pencilKitStrokesInParentInfoSpace;
 - (_TtC8Freeform12CRLShapeItem)shapeInfo;
-- (double)adjustedCalloutTailPositionXWithValue:(double)a3;
-- (double)lineEndScale:(BOOL)a3;
+- (double)adjustedCalloutTailPositionXWithValue:(double)value;
+- (double)lineEndScale:(BOOL)scale;
 - (id)captureDynamicInfoGeometryToBeginDynamicOperation;
-- (id)commandForSettingArrowHead:(double)a3;
-- (id)commandForSettingArrowIndent:(double)a3;
-- (id)commandForSettingCalloutCornerRadius:(double)a3;
-- (id)commandForSettingCalloutTailPositionX:(double)a3;
-- (id)commandForSettingCalloutTailPositionY:(double)a3;
-- (id)commandForSettingCalloutTailSize:(double)a3;
-- (id)commandForSettingCornerRadius:(double)a3;
-- (id)commandForSettingNumberOfSides:(double)a3;
-- (id)commandForSettingStarPoints:(double)a3;
-- (id)commandForSettingStarRadius:(double)a3;
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3;
+- (id)commandForSettingArrowHead:(double)head;
+- (id)commandForSettingArrowIndent:(double)indent;
+- (id)commandForSettingCalloutCornerRadius:(double)radius;
+- (id)commandForSettingCalloutTailPositionX:(double)x;
+- (id)commandForSettingCalloutTailPositionY:(double)y;
+- (id)commandForSettingCalloutTailSize:(double)size;
+- (id)commandForSettingCornerRadius:(double)radius;
+- (id)commandForSettingNumberOfSides:(double)sides;
+- (id)commandForSettingStarPoints:(double)points;
+- (id)commandForSettingStarRadius:(double)radius;
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform;
 - (id)computeLayoutGeometry;
 - (id)computeWrapPath;
-- (id)computeWrapPathClosed:(BOOL)a3;
+- (id)computeWrapPathClosed:(BOOL)closed;
 - (id)dependentLayoutsForDrag;
 - (id)editablePathSource;
 - (id)layoutGeometryFromInfo;
 - (id)p_cachedPath;
 - (id)p_createClippedPath;
-- (id)p_unitePath:(id)a3 withLineEndForHead:(BOOL)a4 stroke:(id)a5;
+- (id)p_unitePath:(id)path withLineEndForHead:(BOOL)head stroke:(id)stroke;
 - (id)stroke;
 - (unint64_t)numberOfControlKnobs;
-- (void)aliasPathForScale:(double)a3 adjustedStroke:(id *)a4 adjustedPath:(id *)a5 startDelta:(CGPoint *)a6 endDelta:(CGPoint *)a7;
-- (void)aliasPathForScale:(double)a3 originalStroke:(id)a4 adjustedStroke:(id *)a5 adjustedPath:(id *)a6 startDelta:(CGPoint *)a7 endDelta:(CGPoint *)a8;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
-- (void)beginFreeTransformWithTracker:(id)a3;
+- (void)aliasPathForScale:(double)scale adjustedStroke:(id *)stroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta;
+- (void)aliasPathForScale:(double)scale originalStroke:(id)stroke adjustedStroke:(id *)adjustedStroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
+- (void)beginFreeTransformWithTracker:(id)tracker;
 - (void)beginResize;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)dynamicMovePathKnobDidBegin;
 - (void)dynamicMovePathKnobDidEnd;
 - (void)dynamicPencilKitStrokePathCompactDataRenderScaleDidBegin;
 - (void)dynamicPencilKitStrokePathCompactDataRenderScaleDidEnd;
 - (void)dynamicStrokeWidthChangeDidBegin;
 - (void)dynamicStrokeWidthChangeDidEnd;
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3;
+- (void)dynamicStrokeWidthUpdateToValue:(double)value;
 - (void)dynamicallyMakeShapeInvisible;
-- (void)dynamicallyMovedPathKnobTo:(CGPoint)a3 withTracker:(id)a4;
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4;
-- (void)dynamicallyMovingLineSegmentWithTracker:(id)a3;
-- (void)dynamicallySetBezierPathSource:(id)a3 atUnscaledOrigin:(CGPoint)a4;
-- (void)dynamicallySetBezierPathSource:(id)a3 atUnscaledOrigin:(CGPoint)a4 withPatternOffsetsBySubpath:(id)a5;
-- (void)dynamicallySetPencilKitStrokePathCompactDataRenderScaleX:(double)a3 y:(double)a4;
+- (void)dynamicallyMovedPathKnobTo:(CGPoint)to withTracker:(id)tracker;
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker;
+- (void)dynamicallyMovingLineSegmentWithTracker:(id)tracker;
+- (void)dynamicallySetBezierPathSource:(id)source atUnscaledOrigin:(CGPoint)origin;
+- (void)dynamicallySetBezierPathSource:(id)source atUnscaledOrigin:(CGPoint)origin withPatternOffsetsBySubpath:(id)subpath;
+- (void)dynamicallySetPencilKitStrokePathCompactDataRenderScaleX:(double)x y:(double)y;
 - (void)endDynamicOperation;
 - (void)endFreeTransform;
 - (void)endResize;
@@ -100,49 +100,49 @@
 - (void)invalidateFrame;
 - (void)invalidatePath;
 - (void)invalidatePathBounds;
-- (void)offsetGeometryBy:(CGPoint)a3;
-- (void)p_applyResizeTransform:(CGAffineTransform *)a3 transformInParentSpace:(CGAffineTransform *)a4 preservingAspectRatio:(BOOL)a5 layoutSize:(CGSize)a6 geometryForLayout:(id)a7 hasHorizontalFlip:(BOOL)a8 hasVerticalFlip:(BOOL)a9;
+- (void)offsetGeometryBy:(CGPoint)by;
+- (void)p_applyResizeTransform:(CGAffineTransform *)transform transformInParentSpace:(CGAffineTransform *)space preservingAspectRatio:(BOOL)ratio layoutSize:(CGSize)size geometryForLayout:(id)layout hasHorizontalFlip:(BOOL)flip hasVerticalFlip:(BOOL)verticalFlip;
 - (void)p_beginResizeOrFreeTransform;
 - (void)p_endResizeOrFreeTransform;
 - (void)p_invalidateClippedPath;
-- (void)p_performBlockOkayToSetGeometry:(id)a3;
+- (void)p_performBlockOkayToSetGeometry:(id)geometry;
 - (void)p_updateResizeInfoGeometryFromDynamicPathSource;
 - (void)p_validateHeadAndTail;
 - (void)p_validateHeadLineEnd;
 - (void)p_validateTailLineEnd;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setDynamicGeometry:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeRotationFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setDynamicGeometry:(id)geometry;
+- (void)setGeometry:(id)geometry;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeRotationFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)validate;
 @end
 
 @implementation CRLShapeLayout
 
-- (CRLShapeLayout)initWithInfo:(id)a3
+- (CRLShapeLayout)initWithInfo:(id)info
 {
   v13.receiver = self;
   v13.super_class = CRLShapeLayout;
-  v3 = [(CRLCanvasLayout *)&v13 initWithInfo:a3];
+  v3 = [(CRLCanvasLayout *)&v13 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CRLShapeLayout *)v3 shapeInfo];
-    if (v5)
+    shapeInfo = [(CRLShapeLayout *)v3 shapeInfo];
+    if (shapeInfo)
     {
-      v6 = v5;
+      v6 = shapeInfo;
       BYTE3(v4->super.mDynamicOpacity) = -1;
       *(&v4->mClippedPathRotatedTransform.c + 3) = *&CGAffineTransformIdentity.tx;
       v7 = *&CGAffineTransformIdentity.c;
       *(&v4->mCachedClippedPathRotatedStroked.originalCachedRect.size.height + 3) = *&CGAffineTransformIdentity.a;
       *(&v4->mClippedPathRotatedTransform.a + 3) = v7;
-      v8 = [(CRLShapeLayout *)v5 isFreehandDrawingShape];
+      isFreehandDrawingShape = [(CRLShapeLayout *)shapeInfo isFreehandDrawingShape];
       v9 = off_10182F970;
-      if (!v8)
+      if (!isFreehandDrawingShape)
       {
         v9 = off_10182F968;
       }
@@ -202,24 +202,24 @@
 {
   if (*(&self->mCachedPathSource + 3))
   {
-    v2 = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:*(&self->mCachedPathSource + 3)];
+    layoutGeometryFromInfo = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:*(&self->mCachedPathSource + 3)];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = CRLShapeLayout;
-    v2 = [(CRLBoardItemLayout *)&v4 layoutGeometryFromInfo];
+    layoutGeometryFromInfo = [(CRLBoardItemLayout *)&v4 layoutGeometryFromInfo];
   }
 
-  return v2;
+  return layoutGeometryFromInfo;
 }
 
 - (id)computeLayoutGeometry
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100014370(v3, parent);
 
   if (v5)
   {
@@ -236,15 +236,15 @@
 
   if (v7 == *(&self->mIsDynamicallyInvisible + 3) && v9 == *(&self->mHelper + 3))
   {
-    v12 = [(CRLShapeLayout *)self pathSource];
+    pathSource = [(CRLShapeLayout *)self pathSource];
   }
 
   else
   {
     *(&self->mIsDynamicallyInvisible + 3) = v7;
     *(&self->mHelper + 3) = v9;
-    v11 = [(CRLShapeLayout *)self shapeInfo];
-    v12 = [v11 pathSource];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    pathSource = [shapeInfo pathSource];
   }
 
   if (v7 >= 1.79769313e308 && v9 >= 1.79769313e308)
@@ -253,23 +253,23 @@
     goto LABEL_22;
   }
 
-  v14 = [v12 copy];
-  v15 = [(CRLShapeLayout *)self layoutInfoGeometry];
-  [v15 center];
+  v14 = [pathSource copy];
+  layoutInfoGeometry = [(CRLShapeLayout *)self layoutInfoGeometry];
+  [layoutInfoGeometry center];
   v17 = v16;
   v19 = v18;
-  v20 = [(CRLShapeLayout *)self layoutInfoGeometry];
-  [v20 position];
+  layoutInfoGeometry2 = [(CRLShapeLayout *)self layoutInfoGeometry];
+  [layoutInfoGeometry2 position];
   v22 = v21;
 
   v44 = 0u;
   v45 = 0u;
   v43 = 0u;
-  v23 = [(CRLShapeLayout *)self layoutInfoGeometry];
-  if (v23)
+  layoutInfoGeometry3 = [(CRLShapeLayout *)self layoutInfoGeometry];
+  if (layoutInfoGeometry3)
   {
     v24 = sub_10011F31C(v17, v19, v22);
-    [v23 transformBasedOnPoint:CGPointZero.x centeredAtPoint:{CGPointZero.y, v24, v25}];
+    [layoutInfoGeometry3 transformBasedOnPoint:CGPointZero.x centeredAtPoint:{CGPointZero.y, v24, v25}];
   }
 
   else
@@ -286,7 +286,7 @@
   v27 = v26;
   if (v26 == 1.0)
   {
-    if (v12 != *(&self->mHeadCutT + 3))
+    if (pathSource != *(&self->mHeadCutT + 3))
     {
       v13 = 0;
       goto LABEL_21;
@@ -307,8 +307,8 @@ LABEL_22:
   *(&self->mHeadCutT + 3) = v13;
   v31 = v13;
 
-  v32 = [(CRLShapeLayout *)self pathSource];
-  if (v32 == v12)
+  pathSource2 = [(CRLShapeLayout *)self pathSource];
+  if (pathSource2 == pathSource)
   {
 
     if ((v31 == 0) != (v30 != 0))
@@ -344,11 +344,11 @@ LABEL_26:
 - (CGAffineTransform)computeLayoutTransform
 {
   memset(&v11, 0, sizeof(v11));
-  v5 = [(CRLShapeLayout *)self layoutInfoGeometry];
-  v6 = v5;
-  if (v5)
+  layoutInfoGeometry = [(CRLShapeLayout *)self layoutInfoGeometry];
+  v6 = layoutInfoGeometry;
+  if (layoutInfoGeometry)
   {
-    [v5 transform];
+    [layoutInfoGeometry transform];
   }
 
   else
@@ -371,19 +371,19 @@ LABEL_26:
     return 1;
   }
 
-  v4 = [(CRLShapeLayout *)self pathSource];
-  v5 = [v4 bezierPath];
-  v3 = [v5 elementCount] < 8;
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  bezierPath = [pathSource bezierPath];
+  v3 = [bezierPath elementCount] < 8;
 
   return v3;
 }
 
 - (BOOL)canAspectRatioLockBeChangedByUser
 {
-  v3 = [(CRLShapeLayout *)self shapeInfo];
-  v4 = [v3 isFreehandDrawingShape];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  isFreehandDrawingShape = [shapeInfo isFreehandDrawingShape];
 
-  if (v4)
+  if (isFreehandDrawingShape)
   {
     return 0;
   }
@@ -393,16 +393,16 @@ LABEL_26:
   return [(CRLCanvasLayout *)&v6 canAspectRatioLockBeChangedByUser];
 }
 
-- (void)p_performBlockOkayToSetGeometry:(id)a3
+- (void)p_performBlockOkayToSetGeometry:(id)geometry
 {
   ++*(&self->mLastParentLimitedSize.width + 3);
-  (*(a3 + 2))(a3, a2);
+  (*(geometry + 2))(geometry, a2);
   --*(&self->mLastParentLimitedSize.width + 3);
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   if (*(&self->mLastParentLimitedSize.width + 3) <= 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -434,22 +434,22 @@ LABEL_26:
 
   if (*(&self->mCachedAlignmentFrame.originalCachedRect.size.width + 3))
   {
-    v8 = [(CRLCanvasAbstractLayout *)self geometry];
-    v9 = v8;
-    if (v8)
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    v9 = geometry;
+    if (geometry)
     {
-      if ([v8 isEqual:v4])
+      if ([geometry isEqual:geometryCopy])
       {
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      if (([v9 differsInMoreThanTranslationFrom:v4] & 1) == 0)
+      if (([v9 differsInMoreThanTranslationFrom:geometryCopy] & 1) == 0)
       {
-        if (v4)
+        if (geometryCopy)
         {
-          [v4 transform];
+          [geometryCopy transform];
           v11 = *&v29.a;
           v12 = *&v29.c;
           v13 = *&v29.tx;
@@ -485,9 +485,9 @@ LABEL_28:
           *&t1.c = v20;
           *&t1.tx = *(&self->mCachedAlignmentFrameInRootTransformInRoot.c + 3);
           CGAffineTransformConcat(&v29, &t1, &t2);
-          if (v4)
+          if (geometryCopy)
           {
-            [v4 transform];
+            [geometryCopy transform];
           }
 
           else
@@ -524,7 +524,7 @@ LABEL_28:
 LABEL_29:
   v25.receiver = self;
   v25.super_class = CRLShapeLayout;
-  [(CRLBoardItemLayout *)&v25 setGeometry:v4];
+  [(CRLBoardItemLayout *)&v25 setGeometry:geometryCopy];
 }
 
 - (CGRect)alignmentFrame
@@ -556,12 +556,12 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v5;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v6 = *&CGAffineTransformIdentity.c;
   *&t2.a = *&CGAffineTransformIdentity.a;
   *&t2.c = v6;
@@ -570,10 +570,10 @@ LABEL_29:
   {
     v14.receiver = self;
     v14.super_class = CRLShapeLayout;
-    v7 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v7 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v7;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(CRLStyledLayout *)&v14 baseFrameForFrameForCullingWithAdditionalTransform:&t1];
   }
 
@@ -581,10 +581,10 @@ LABEL_29:
   {
     memset(&t1, 0, sizeof(t1));
     [(CRLCanvasAbstractLayout *)self transform];
-    v12 = *&a3->c;
-    *&v13.a = *&a3->a;
+    v12 = *&transform->c;
+    *&v13.a = *&transform->a;
     *&v13.c = v12;
-    *&v13.tx = *&a3->tx;
+    *&v13.tx = *&transform->tx;
     CGAffineTransformConcat(&t1, &t2, &v13);
     t2 = t1;
     [(CRLShapeLayout *)self shapeFrameWithTransform:&t2];
@@ -599,9 +599,9 @@ LABEL_29:
 
 - (CGRect)alignmentFrameInRoot
 {
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
 
-  if (v3)
+  if (parent)
   {
     v4 = (&self->mCachedAlignmentFrame.originalCachedRect.size.height + 3);
     if (!*(&self->mCachedAlignmentFrameInRoot.originalCachedRect.size.width + 3) || ([(CRLCanvasAbstractLayout *)self transformInRoot], v5 = *(&self->mCachedAlignmentFrameInRootTransformInRoot.a + 3), *&v15.a = *(&self->mCachedAlignmentFrameInRoot.originalCachedRect.size.height + 3), *&v15.c = v5, *&v15.tx = *(&self->mCachedAlignmentFrameInRootTransformInRoot.c + 3), !CGAffineTransformEqualToTransform(&v15, &t2)))
@@ -638,14 +638,14 @@ LABEL_29:
   return result;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v7.receiver = self;
   v7.super_class = CRLShapeLayout;
   [(CRLCanvasLayout *)&v7 processChangedProperty:?];
-  if (a3 > 22)
+  if (property > 22)
   {
-    if (a3 == 23)
+    if (property == 23)
     {
       [(CRLShapeLayout *)self invalidatePathBounds];
       [(CRLShapeLayout *)self p_invalidateHead];
@@ -653,7 +653,7 @@ LABEL_29:
 
     else
     {
-      if (a3 != 24)
+      if (property != 24)
       {
         return;
       }
@@ -665,9 +665,9 @@ LABEL_29:
     goto LABEL_12;
   }
 
-  if (a3 != 16)
+  if (property != 16)
   {
-    if (a3 != 21)
+    if (property != 21)
     {
       return;
     }
@@ -699,8 +699,8 @@ LABEL_12:
 
 - (CGRect)boundsForStandardKnobs
 {
-  v3 = [(CRLShapeLayout *)self pathSource];
-  [v3 naturalSize];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  [pathSource naturalSize];
   v4 = sub_10011ECB4();
   v6 = v5;
   v8 = v7;
@@ -717,15 +717,15 @@ LABEL_12:
   return CGRectOffset(*&v15, v12, v14);
 }
 
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform
 {
   v6.receiver = self;
   v6.super_class = CRLShapeLayout;
-  v4 = *&a4->c;
-  v5[0] = *&a4->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a4->tx;
-  [(CRLStyledLayout *)&v6 frameForCullingWithBaseFrame:v5 additionalTransform:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5[2] = *&transform->tx;
+  [(CRLStyledLayout *)&v6 frameForCullingWithBaseFrame:v5 additionalTransform:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   return CGRectInset(v7, -1.0, -1.0);
 }
 
@@ -738,16 +738,16 @@ LABEL_12:
 
 - (id)dependentLayoutsForDrag
 {
-  v2 = [(CRLCanvasLayout *)self dependentLayouts];
-  v3 = [v2 crl_arrayOfObjectsPassingTest:&stru_101867D38];
+  dependentLayouts = [(CRLCanvasLayout *)self dependentLayouts];
+  v3 = [dependentLayouts crl_arrayOfObjectsPassingTest:&stru_101867D38];
 
   return v3;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v13.receiver = self;
   v13.super_class = CRLShapeLayout;
   [(CRLBoardItemLayout *)&v13 dragBy:?];
@@ -796,9 +796,9 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(CRLCanvasLayout *)self info];
-  v4 = [v3 geometry];
-  [v4 size];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
+  [geometry size];
   if (v5 == 0.0)
   {
     v6 = 1;
@@ -806,9 +806,9 @@ LABEL_12:
 
   else
   {
-    v7 = [(CRLCanvasLayout *)self info];
-    v8 = [v7 geometry];
-    [v8 size];
+    info2 = [(CRLCanvasLayout *)self info];
+    geometry2 = [info2 geometry];
+    [geometry2 size];
     v6 = v9 == 0.0;
   }
 
@@ -820,16 +820,16 @@ LABEL_12:
   v2 = *(&self->mInitialPencilKitStrokePathCompactData + 3);
   if (v2)
   {
-    v3 = v2;
+    stroke = v2;
   }
 
   else
   {
-    v4 = [(CRLShapeLayout *)self shapeInfo];
-    v3 = [v4 stroke];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    stroke = [shapeInfo stroke];
   }
 
-  return v3;
+  return stroke;
 }
 
 - (void)dynamicStrokeWidthChangeDidBegin
@@ -863,14 +863,14 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:363 isFatal:0 description:"expected nil value for '%{public}s'", "mDynamicStroke"];
   }
 
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [v6 stroke];
-  v8 = [v7 mutableCopy];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  stroke = [shapeInfo stroke];
+  v8 = [stroke mutableCopy];
   v9 = *(&self->mInitialPencilKitStrokePathCompactData + 3);
   *(&self->mInitialPencilKitStrokePathCompactData + 3) = v8;
 }
 
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3
+- (void)dynamicStrokeWidthUpdateToValue:(double)value
 {
   v5 = *(&self->mInitialPencilKitStrokePathCompactData + 3);
   if (!v5)
@@ -904,15 +904,15 @@ LABEL_12:
     v5 = *(&self->mInitialPencilKitStrokePathCompactData + 3);
   }
 
-  [v5 setWidth:a3];
+  [v5 setWidth:value];
   [(CRLShapeLayout *)self processChangedProperty:16];
   if ([(CRLCanvasLayout *)self layoutState]!= 4 && [(CRLCanvasLayout *)self layoutState]!= 5)
   {
-    v9 = [(CRLCanvasLayout *)self layoutController];
-    v10 = [v9 canvas];
-    v11 = [v10 canvasController];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
+    canvasController = [canvas canvasController];
 
-    v12 = [v11 repForLayout:self];
+    v12 = [canvasController repForLayout:self];
     [v12 processChangedProperty:16];
   }
 }
@@ -926,8 +926,8 @@ LABEL_12:
 - (_TtC8Freeform12CRLShapeItem)shapeInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
@@ -937,16 +937,16 @@ LABEL_12:
   v2 = *(&self->mCachedEditableBezierPathSource + 3);
   if (v2 || (v2 = *(&self->mHeadCutT + 3)) != 0)
   {
-    v3 = v2;
+    pathSource = v2;
   }
 
   else
   {
-    v5 = [(CRLShapeLayout *)self shapeInfo];
-    v3 = [v5 pathSource];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    pathSource = [shapeInfo pathSource];
   }
 
-  return v3;
+  return pathSource;
 }
 
 - (CRLBezierPath)maskPath
@@ -955,20 +955,20 @@ LABEL_12:
   if (!v2)
   {
     v5 = objc_opt_class();
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v3 = sub_100014370(v5, v6);
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    v3 = sub_100014370(v5, shapeInfo);
 
     if (v3)
     {
-      v7 = [v3 maskPath];
+      maskPath = [v3 maskPath];
 LABEL_7:
 
-      v3 = v7;
+      v3 = maskPath;
       goto LABEL_8;
     }
 
 LABEL_6:
-    v7 = 0;
+    maskPath = 0;
     goto LABEL_7;
   }
 
@@ -986,21 +986,21 @@ LABEL_8:
 - (NSArray)pencilKitStrokes
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeLayout *)self shapeInfo];
-  v5 = sub_100013F00(v3, v4);
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v5 = sub_100013F00(v3, shapeInfo);
 
   if (*(&self->mCachedEditableBezierPathSource + 3) || *(&self->mInitialPencilKitStrokePathCompactData + 3) || *(&self->mDynamicInfoGeometry + 3) || *(&self->mDynamicPathSource + 3))
   {
     v6 = objc_opt_class();
-    v7 = [(CRLShapeLayout *)self stroke];
-    v8 = sub_100013F00(v6, v7);
+    stroke = [(CRLShapeLayout *)self stroke];
+    v8 = sub_100013F00(v6, stroke);
 
     if (v8)
     {
-      v9 = [(CRLShapeLayout *)self path];
-      v10 = [(CRLShapeLayout *)self pencilKitStrokePathCompactData];
-      v11 = [(CRLShapeLayout *)self maskPath];
-      v12 = +[CRLPKStrokeConverter pencilKitStrokesFromPath:inkStroke:strokePathCompactData:maskPath:snappedShapeType:](CRLPKStrokeConverter, "pencilKitStrokesFromPath:inkStroke:strokePathCompactData:maskPath:snappedShapeType:", v9, v8, v10, v11, [v5 snappedShapeType]);
+      path = [(CRLShapeLayout *)self path];
+      pencilKitStrokePathCompactData = [(CRLShapeLayout *)self pencilKitStrokePathCompactData];
+      maskPath = [(CRLShapeLayout *)self maskPath];
+      pencilKitStrokes = +[CRLPKStrokeConverter pencilKitStrokesFromPath:inkStroke:strokePathCompactData:maskPath:snappedShapeType:](CRLPKStrokeConverter, "pencilKitStrokesFromPath:inkStroke:strokePathCompactData:maskPath:snappedShapeType:", path, v8, pencilKitStrokePathCompactData, maskPath, [v5 snappedShapeType]);
     }
 
     else
@@ -1031,16 +1031,16 @@ LABEL_8:
       v15 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLShapeLayout.m"];
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:443 isFatal:0 description:"invalid nil value for '%{public}s'", "inkStroke"];
 
-      v12 = 0;
+      pencilKitStrokes = 0;
     }
   }
 
   else
   {
-    v12 = [v5 pencilKitStrokes];
+    pencilKitStrokes = [v5 pencilKitStrokes];
   }
 
-  return v12;
+  return pencilKitStrokes;
 }
 
 - (NSArray)pencilKitStrokesInParentInfoSpace
@@ -1050,11 +1050,11 @@ LABEL_8:
     v16 = 0u;
     v17 = 0u;
     v15 = 0u;
-    v3 = [(CRLShapeLayout *)self layoutInfoGeometry];
-    v4 = v3;
-    if (v3)
+    layoutInfoGeometry = [(CRLShapeLayout *)self layoutInfoGeometry];
+    v4 = layoutInfoGeometry;
+    if (layoutInfoGeometry)
     {
-      [v3 transform];
+      [layoutInfoGeometry transform];
     }
 
     else
@@ -1064,7 +1064,7 @@ LABEL_8:
       v15 = 0u;
     }
 
-    v5 = [(CRLShapeLayout *)self pencilKitStrokes];
+    pencilKitStrokes = [(CRLShapeLayout *)self pencilKitStrokes];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1004B5A8C;
@@ -1072,19 +1072,19 @@ LABEL_8:
     v12 = v15;
     v13 = v16;
     v14 = v17;
-    v6 = [v5 crl_arrayByTransformingWithBlock:v11];
+    pencilKitStrokesInParentSpace = [pencilKitStrokes crl_arrayByTransformingWithBlock:v11];
   }
 
   else
   {
     v9 = objc_opt_class();
-    v10 = [(CRLShapeLayout *)self shapeInfo];
-    v5 = sub_100013F00(v9, v10);
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    pencilKitStrokes = sub_100013F00(v9, shapeInfo);
 
-    v6 = [v5 pencilKitStrokesInParentSpace];
+    pencilKitStrokesInParentSpace = [pencilKitStrokes pencilKitStrokesInParentSpace];
   }
 
-  v7 = v6;
+  v7 = pencilKitStrokesInParentSpace;
 
   return v7;
 }
@@ -1094,29 +1094,29 @@ LABEL_8:
   v2 = *(&self->mDynamicInfoGeometry + 3);
   if (v2)
   {
-    v3 = v2;
+    pencilKitStrokePathCompactData = v2;
   }
 
   else
   {
     v5 = objc_opt_class();
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v7 = sub_100013F00(v5, v6);
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    v7 = sub_100013F00(v5, shapeInfo);
 
-    v3 = [v7 pencilKitStrokePathCompactData];
+    pencilKitStrokePathCompactData = [v7 pencilKitStrokePathCompactData];
   }
 
-  return v3;
+  return pencilKitStrokePathCompactData;
 }
 
 - (id)editablePathSource
 {
-  v3 = [(CRLShapeLayout *)self pathSource];
-  v4 = [(CRLShapeLayout *)self shapeInfo];
-  v5 = [v4 pathSource];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  pathSource2 = [shapeInfo pathSource];
 
   v6 = objc_opt_class();
-  v7 = sub_100014370(v6, v3);
+  v7 = sub_100014370(v6, pathSource);
   if (v7)
   {
     v8 = v7;
@@ -1129,13 +1129,13 @@ LABEL_8:
 
   else
   {
-    if (v5 != *(&self->mOriginalShrunkenPathSource + 3))
+    if (pathSource2 != *(&self->mOriginalShrunkenPathSource + 3))
     {
-      v11 = [CRLEditableBezierPathSource editableBezierPathSourceWithPathSource:v3];
+      v11 = [CRLEditableBezierPathSource editableBezierPathSourceWithPathSource:pathSource];
       v12 = *(&self->mShrunkenPathSource + 3);
       *(&self->mShrunkenPathSource + 3) = v11;
 
-      objc_storeStrong((&self->mOriginalShrunkenPathSource + 3), v3);
+      objc_storeStrong((&self->mOriginalShrunkenPathSource + 3), pathSource);
     }
 
     v8 = *(&self->mShrunkenPathSource + 3);
@@ -1146,8 +1146,8 @@ LABEL_8:
 
 - (CRLSmartPathSource)smartPathSource
 {
-  v2 = [(CRLShapeLayout *)self pathSource];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  v9 = sub_1003035DC(pathSource, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
 
   return v9;
 }
@@ -1157,16 +1157,16 @@ LABEL_8:
   v2 = *(&self->mCachedPathSource + 3);
   if (v2)
   {
-    v3 = v2;
+    geometry = v2;
   }
 
   else
   {
-    v4 = [(CRLCanvasLayout *)self info];
-    v3 = [v4 geometry];
+    info = [(CRLCanvasLayout *)self info];
+    geometry = [info geometry];
   }
 
-  return v3;
+  return geometry;
 }
 
 - (CGPoint)headPoint
@@ -1214,11 +1214,11 @@ LABEL_8:
   [(CRLShapeLayout *)self tailLineEndPoint];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
-  v8 = v7;
-  if (v7)
+  geometryInRoot = [(CRLCanvasAbstractLayout *)self geometryInRoot];
+  v8 = geometryInRoot;
+  if (geometryInRoot)
   {
-    [v7 transform];
+    [geometryInRoot transform];
     v10 = v28.f64[1];
     v9 = v28.f64[0];
     v12 = v29.f64[1];
@@ -1240,11 +1240,11 @@ LABEL_8:
   [(CRLShapeLayout *)self headLineEndPoint];
   v25 = v16;
   v26 = v15;
-  v17 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
-  v18 = v17;
-  if (v17)
+  geometryInRoot2 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
+  v18 = geometryInRoot2;
+  if (geometryInRoot2)
   {
-    [v17 transform];
+    [geometryInRoot2 transform];
     v19 = v28;
     v20 = v29;
     v21 = v30;
@@ -1268,9 +1268,9 @@ LABEL_8:
   return v22 < 0.0;
 }
 
-- (double)lineEndScale:(BOOL)a3
+- (double)lineEndScale:(BOOL)scale
 {
-  if (a3)
+  if (scale)
   {
     [(CRLShapeLayout *)self strokeHeadLineEnd];
   }
@@ -1280,8 +1280,8 @@ LABEL_8:
     [(CRLShapeLayout *)self strokeTailLineEnd];
   }
   v4 = ;
-  v5 = [(CRLShapeLayout *)self stroke];
-  [v5 width];
+  stroke = [(CRLShapeLayout *)self stroke];
+  [stroke width];
   [v4 scaleForStrokeWidth:?];
   v7 = v6;
 
@@ -1292,9 +1292,9 @@ LABEL_8:
 {
   if (SBYTE3(self->super.mDynamicOpacity) < 0)
   {
-    v3 = [(CRLShapeLayout *)self p_createClippedPath];
+    p_createClippedPath = [(CRLShapeLayout *)self p_createClippedPath];
     v4 = *(&self->mCachedPathBoundsWithoutStrokeStruct.originalCachedRect.size.height + 3);
-    *(&self->mCachedPathBoundsWithoutStrokeStruct.originalCachedRect.size.height + 3) = v3;
+    *(&self->mCachedPathBoundsWithoutStrokeStruct.originalCachedRect.size.height + 3) = p_createClippedPath;
 
     BYTE3(self->super.mDynamicOpacity) &= ~0x80u;
   }
@@ -1304,12 +1304,12 @@ LABEL_8:
   return v5;
 }
 
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v8[0] = *&a3->a;
+  v3 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v3;
-  v8[2] = *&a3->tx;
+  v8[2] = *&transform->tx;
   [(CRLShapeLayout *)self shapeFrameWithTransform:v8 strokeDrawOptions:7];
   result.size.height = v7;
   result.size.width = v6;
@@ -1318,41 +1318,41 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3 strokeDrawOptions:(unint64_t)a4
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform strokeDrawOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   [(CRLShapeLayout *)self pathBounds];
-  v9 = *&a3->c;
-  *&v34.a = *&a3->a;
+  v9 = *&transform->c;
+  *&v34.a = *&transform->a;
   *&v34.c = v9;
-  *&v34.tx = *&a3->tx;
+  *&v34.tx = *&transform->tx;
   CGAffineTransformTranslate(&v35, &v34, -v7, -v8);
   v10 = *&v35.c;
-  *&a3->a = *&v35.a;
-  *&a3->c = v10;
-  *&a3->tx = *&v35.tx;
-  if (v4)
+  *&transform->a = *&v35.a;
+  *&transform->c = v10;
+  *&transform->tx = *&v35.tx;
+  if (optionsCopy)
   {
-    v15 = *&a3->c;
-    *&v35.a = *&a3->a;
+    v15 = *&transform->c;
+    *&v35.a = *&transform->a;
     *&v35.c = v15;
-    *&v35.tx = *&a3->tx;
+    *&v35.tx = *&transform->tx;
     if (sub_10013A268(&v35.a))
     {
       [(CRLShapeLayout *)self p_cachedClippedPathStroked];
-      v16 = *&a3->c;
-      *&v35.a = *&a3->a;
+      v16 = *&transform->c;
+      *&v35.a = *&transform->a;
       *&v35.c = v16;
-      *&v35.tx = *&a3->tx;
+      *&v35.tx = *&transform->tx;
       v37 = CGRectApplyAffineTransform(v36, &v35);
     }
 
     else
     {
-      v17 = *&a3->c;
-      *&v35.a = *&a3->a;
+      v17 = *&transform->c;
+      *&v35.a = *&transform->a;
       *&v35.c = v17;
-      *&v35.tx = *&a3->tx;
+      *&v35.tx = *&transform->tx;
       [(CRLShapeLayout *)self p_updatedCachedClipRectIfNeededForRotation:&v35];
     }
 
@@ -1372,13 +1372,13 @@ LABEL_8:
 
   if ([(CRLShapeLayout *)self pathIsOpen])
   {
-    if ((v4 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v18 = *(&self->mDynamicStrokeOffsetArray + 3);
-      v19 = *&a3->c;
-      *&v35.a = *&a3->a;
+      v19 = *&transform->c;
+      *&v35.a = *&transform->a;
       *&v35.c = v19;
-      *&v35.tx = *&a3->tx;
+      *&v35.tx = *&transform->tx;
       [v18 boundsOfLineEndForHead:1 transform:&v35];
       v43.origin.x = v20;
       v43.origin.y = v21;
@@ -1395,13 +1395,13 @@ LABEL_8:
       height = v39.size.height;
     }
 
-    if ((v4 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
       v24 = *(&self->mDynamicStrokeOffsetArray + 3);
-      v25 = *&a3->c;
-      *&v35.a = *&a3->a;
+      v25 = *&transform->c;
+      *&v35.a = *&transform->a;
       *&v35.c = v25;
-      *&v35.tx = *&a3->tx;
+      *&v35.tx = *&transform->tx;
       [v24 boundsOfLineEndForHead:0 transform:&v35];
       v44.origin.x = v26;
       v44.origin.y = v27;
@@ -1432,24 +1432,24 @@ LABEL_8:
 
 - (BOOL)isInvisibleAutosizingShape
 {
-  v3 = [(CRLCanvasLayout *)self info];
-  v4 = [v3 geometry];
-  v5 = [v4 widthValid];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
+  widthValid = [geometry widthValid];
 
-  v6 = [(CRLCanvasLayout *)self info];
-  v7 = [v6 geometry];
-  v8 = [v7 heightValid];
+  info2 = [(CRLCanvasLayout *)self info];
+  geometry2 = [info2 geometry];
+  heightValid = [geometry2 heightValid];
 
-  if (v5 && (v8 & 1) != 0)
+  if (widthValid && (heightValid & 1) != 0)
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v10 = [(CRLCanvasLayout *)self layoutController];
-    v11 = [v10 canvas];
-    v9 = [v11 shouldShowInstructionalTextForLayout:self] ^ 1;
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
+    v9 = [canvas shouldShowInstructionalTextForLayout:self] ^ 1;
   }
 
   return v9;
@@ -1464,9 +1464,9 @@ LABEL_8:
   v6 = v5;
   if ([(CRLShapeLayout *)self isInvisibleAutosizingShape])
   {
-    v7 = [(CRLCanvasLayout *)self info];
-    v8 = [v7 geometry];
-    [v8 center];
+    info = [(CRLCanvasLayout *)self info];
+    geometry = [info geometry];
+    [geometry center];
     v4 = v9;
     v6 = v10;
   }
@@ -1478,9 +1478,9 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
-  [*(&self->mDynamicStrokeOffsetArray + 3) aliasedAlignmentFrameForScale:a3];
+  [*(&self->mDynamicStrokeOffsetArray + 3) aliasedAlignmentFrameForScale:scale];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1488,38 +1488,38 @@ LABEL_8:
   return result;
 }
 
-- (void)aliasPathForScale:(double)a3 adjustedStroke:(id *)a4 adjustedPath:(id *)a5 startDelta:(CGPoint *)a6 endDelta:(CGPoint *)a7
+- (void)aliasPathForScale:(double)scale adjustedStroke:(id *)stroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta
 {
-  v13 = [(CRLShapeLayout *)self stroke];
-  [(CRLShapeLayout *)self aliasPathForScale:v13 originalStroke:a4 adjustedStroke:a5 adjustedPath:a6 startDelta:a7 endDelta:a3];
+  stroke = [(CRLShapeLayout *)self stroke];
+  [(CRLShapeLayout *)self aliasPathForScale:stroke originalStroke:stroke adjustedStroke:path adjustedPath:delta startDelta:endDelta endDelta:scale];
 }
 
-- (void)aliasPathForScale:(double)a3 originalStroke:(id)a4 adjustedStroke:(id *)a5 adjustedPath:(id *)a6 startDelta:(CGPoint *)a7 endDelta:(CGPoint *)a8
+- (void)aliasPathForScale:(double)scale originalStroke:(id)stroke adjustedStroke:(id *)adjustedStroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta
 {
-  v15 = a4;
-  v16 = [(CRLShapeLayout *)self shapeInfo];
-  v85 = a5;
+  strokeCopy = stroke;
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  adjustedStrokeCopy = adjustedStroke;
   if (![(CRLShapeLayout *)self pathIsOpen])
   {
 LABEL_19:
-    v27 = [(CRLShapeLayout *)self path];
+    path = [(CRLShapeLayout *)self path];
     goto LABEL_22;
   }
 
-  v17 = [v16 headLineEnd];
-  if (v17)
+  headLineEnd = [shapeInfo headLineEnd];
+  if (headLineEnd)
   {
-    v10 = [v16 headLineEnd];
+    headLineEnd2 = [shapeInfo headLineEnd];
     v8 = +[NSNull null];
-    if ([v10 isEqual:v8])
+    if ([headLineEnd2 isEqual:v8])
     {
       v81 = 0;
     }
 
     else
     {
-      v9 = [v16 headLineEnd];
-      if (([v9 isNone] & 1) == 0)
+      headLineEnd3 = [shapeInfo headLineEnd];
+      if (([headLineEnd3 isNone] & 1) == 0)
       {
 
         goto LABEL_21;
@@ -1534,14 +1534,14 @@ LABEL_19:
     v81 = 0;
   }
 
-  v18 = [v16 tailLineEnd];
-  v78 = v9;
-  if (v18)
+  tailLineEnd = [shapeInfo tailLineEnd];
+  v78 = headLineEnd3;
+  if (tailLineEnd)
   {
-    v19 = v18;
-    v83 = a6;
-    [v16 tailLineEnd];
-    v21 = v20 = v16;
+    v19 = tailLineEnd;
+    pathCopy = path;
+    [shapeInfo tailLineEnd];
+    v21 = v20 = shapeInfo;
     v22 = +[NSNull null];
     if ([v21 isEqual:v22])
     {
@@ -1553,18 +1553,18 @@ LABEL_19:
     {
       [v20 tailLineEnd];
       v77 = v8;
-      v24 = v10;
-      v26 = v25 = v15;
+      v24 = headLineEnd2;
+      v26 = v25 = strokeCopy;
       v23 = [v26 isNone] ^ 1;
 
-      v15 = v25;
-      v10 = v24;
+      strokeCopy = v25;
+      headLineEnd2 = v24;
       v8 = v77;
     }
 
-    v16 = v20;
-    a6 = v83;
-    a5 = v85;
+    shapeInfo = v20;
+    path = pathCopy;
+    adjustedStroke = adjustedStrokeCopy;
     if (v81)
     {
       goto LABEL_15;
@@ -1580,7 +1580,7 @@ LABEL_15:
     }
   }
 
-  if (v17)
+  if (headLineEnd)
   {
   }
 
@@ -1590,118 +1590,118 @@ LABEL_15:
   }
 
 LABEL_21:
-  v27 = [(CRLShapeLayout *)self clippedPathForLineEnds];
+  path = [(CRLShapeLayout *)self clippedPathForLineEnds];
 LABEL_22:
-  v28 = v27;
+  v28 = path;
   memset(&v91, 0, sizeof(v91));
   [(CRLCanvasAbstractLayout *)self transformInRoot];
-  v29 = [(CRLCanvasLayout *)self layoutController];
-  v30 = [v29 canvas];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
 
-  if ([v30 isPrinting])
+  if ([canvas isPrinting])
   {
-    v31 = 1;
+    isDrawingIntoPDF = 1;
   }
 
   else
   {
-    v31 = [v30 isDrawingIntoPDF];
+    isDrawingIntoPDF = [canvas isDrawingIntoPDF];
   }
 
-  v33 = a8;
-  v32 = a7;
-  if (a5)
+  endDeltaCopy3 = endDelta;
+  deltaCopy4 = delta;
+  if (adjustedStroke)
   {
-    v34 = v15;
-    *a5 = v15;
+    v34 = strokeCopy;
+    *adjustedStroke = strokeCopy;
   }
 
-  if (a6)
+  if (path)
   {
-    *a6 = [v28 copy];
+    *path = [v28 copy];
   }
 
-  if (a7)
+  if (delta)
   {
-    *a7 = CGPointZero;
+    *delta = CGPointZero;
   }
 
-  if (a8)
+  if (endDelta)
   {
-    *a8 = CGPointZero;
+    *endDelta = CGPointZero;
   }
 
   if (v28)
   {
     v92 = v91;
-    if (!(v31 & 1 | !sub_100139B5C(&v92.a)))
+    if (!(isDrawingIntoPDF & 1 | !sub_100139B5C(&v92.a)))
     {
       [(CRLShapeLayout *)self pathBounds];
       v36 = v35;
       v38 = v37;
-      if (![v15 shouldRender] || objc_msgSend(v15, "shouldAntialiasDefeat"))
+      if (![strokeCopy shouldRender] || objc_msgSend(strokeCopy, "shouldAntialiasDefeat"))
       {
-        v82 = [v15 mutableCopy];
+        v82 = [strokeCopy mutableCopy];
         v39 = 0.0;
         if ([v82 shouldRender])
         {
-          [v15 width];
-          v41 = v40 * a3;
+          [strokeCopy width];
+          v41 = v40 * scale;
           v39 = 1.0;
           if (v41 > 1.0)
           {
             v42 = sub_1004C31F4(v41);
-            [v82 setWidth:v42 / a3];
+            [v82 setWidth:v42 / scale];
             v39 = v42;
           }
 
-          [v15 width];
+          [strokeCopy width];
           [v82 setActualWidth:?];
         }
 
-        v84 = a6;
-        if (a7)
+        pathCopy2 = path;
+        if (delta)
         {
-          if (a8)
+          if (endDelta)
           {
 LABEL_62:
             v49 = [v28 copy];
             [v28 elementAtIndex:0 associatedPoints:&v92];
-            if (v32)
+            if (deltaCopy4)
             {
-              *v32 = *&v92.a;
+              *deltaCopy4 = *&v92.a;
             }
 
-            if (v33)
+            if (endDeltaCopy3)
             {
               [v28 currentPoint];
-              v33->x = v50;
-              v33->y = v51;
+              endDeltaCopy3->x = v50;
+              endDeltaCopy3->y = v51;
             }
 
             v89 = v91;
             CGAffineTransformTranslate(&v90, &v89, -v36, -v38);
             v91 = v90;
             [v49 transformUsingAffineTransform:&v90];
-            v52 = [(CRLShapeLayout *)self pathSource];
+            pathSource = [(CRLShapeLayout *)self pathSource];
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) != 0 && [v52 isCurveContinuous])
+            if ((objc_opt_isKindOfClass() & 1) != 0 && [pathSource isCurveContinuous])
             {
-              v87 = [v52 copy];
+              v87 = [pathSource copy];
               [v49 bounds];
               v55 = [CRLBezierPath bezierPathWithRect:?];
-              *&v56 = a3;
+              *&v56 = scale;
               *&v57 = v39;
               [v55 aliasedPathWithViewScale:v56 effectiveStrokeWidth:v57];
-              v59 = v58 = v16;
+              v59 = v58 = shapeInfo;
               [v59 bounds];
               v61 = v60;
               v63 = v62;
               v65 = v64;
               v67 = v66;
 
-              v16 = v58;
-              v32 = a7;
+              shapeInfo = v58;
+              deltaCopy4 = delta;
               v89 = v91;
               CGAffineTransformInvert(&v90, &v89);
               v93.origin.x = v61;
@@ -1710,52 +1710,52 @@ LABEL_62:
               v93.size.height = v67;
               v94 = CGRectApplyAffineTransform(v93, &v90);
               [v87 scaleToNaturalSize:{v94.size.width, v94.size.height}];
-              v68 = [v87 bezierPathWithoutFlips];
+              bezierPathWithoutFlips = [v87 bezierPathWithoutFlips];
 
               v90 = v91;
-              [v68 transformUsingAffineTransform:&v90];
-              [v68 bounds];
+              [bezierPathWithoutFlips transformUsingAffineTransform:&v90];
+              [bezierPathWithoutFlips bounds];
               v70 = v61 - v69;
-              [v68 bounds];
+              [bezierPathWithoutFlips bounds];
               CGAffineTransformMakeTranslation(&v90, v70, v63 - v71);
-              [v68 transformUsingAffineTransform:&v90];
+              [bezierPathWithoutFlips transformUsingAffineTransform:&v90];
               v49 = v87;
             }
 
             else
             {
-              *&v53 = a3;
+              *&v53 = scale;
               *&v54 = v39;
-              v68 = [v49 aliasedPathWithViewScale:v53 effectiveStrokeWidth:v54];
+              bezierPathWithoutFlips = [v49 aliasedPathWithViewScale:v53 effectiveStrokeWidth:v54];
             }
 
             v89 = v91;
             CGAffineTransformInvert(&v90, &v89);
-            [v68 transformUsingAffineTransform:&v90];
+            [bezierPathWithoutFlips transformUsingAffineTransform:&v90];
             *&v90.a = CGPointZero;
-            [v68 elementAtIndex:0 associatedPoints:&v90];
-            if (v32)
+            [bezierPathWithoutFlips elementAtIndex:0 associatedPoints:&v90];
+            if (deltaCopy4)
             {
-              v32->x = sub_10011F31C(v90.a, v90.b, v32->x);
-              v32->y = v72;
+              deltaCopy4->x = sub_10011F31C(v90.a, v90.b, deltaCopy4->x);
+              deltaCopy4->y = v72;
             }
 
-            if (v33)
+            if (endDeltaCopy3)
             {
-              [v68 currentPoint];
-              v33->x = sub_10011F31C(v73, v74, v33->x);
-              v33->y = v75;
+              [bezierPathWithoutFlips currentPoint];
+              endDeltaCopy3->x = sub_10011F31C(v73, v74, endDeltaCopy3->x);
+              endDeltaCopy3->y = v75;
             }
 
-            if (v85)
+            if (adjustedStrokeCopy)
             {
-              *v85 = v82;
+              *adjustedStrokeCopy = v82;
             }
 
-            if (v84)
+            if (pathCopy2)
             {
-              v76 = v68;
-              *v84 = v68;
+              v76 = bezierPathWithoutFlips;
+              *pathCopy2 = bezierPathWithoutFlips;
             }
 
             goto LABEL_79;
@@ -1764,7 +1764,7 @@ LABEL_62:
 
         else
         {
-          v79 = v16;
+          v79 = shapeInfo;
           +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
           {
@@ -1781,7 +1781,7 @@ LABEL_62:
             sub_1013815B0();
           }
 
-          v33 = a8;
+          endDeltaCopy3 = endDelta;
           v43 = off_1019EDA68;
           if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
           {
@@ -1792,15 +1792,15 @@ LABEL_62:
           v45 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLShapeLayout.m"];
           [CRLAssertionHandler handleFailureInFunction:v44 file:v45 lineNumber:727 isFatal:0 description:"invalid nil value for '%{public}s'", "startDelta"];
 
-          v16 = v79;
-          v32 = a7;
-          if (a8)
+          shapeInfo = v79;
+          deltaCopy4 = delta;
+          if (endDelta)
           {
             goto LABEL_62;
           }
         }
 
-        v80 = v16;
+        v80 = shapeInfo;
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
         {
@@ -1817,7 +1817,7 @@ LABEL_62:
           sub_101381694();
         }
 
-        v33 = a8;
+        endDeltaCopy3 = endDelta;
         v46 = off_1019EDA68;
         if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
         {
@@ -1828,8 +1828,8 @@ LABEL_62:
         v48 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLShapeLayout.m"];
         [CRLAssertionHandler handleFailureInFunction:v47 file:v48 lineNumber:728 isFatal:0 description:"invalid nil value for '%{public}s'", "endDelta"];
 
-        v16 = v80;
-        v32 = a7;
+        shapeInfo = v80;
+        deltaCopy4 = delta;
         goto LABEL_62;
       }
     }
@@ -1843,16 +1843,16 @@ LABEL_79:
   v2 = *(&self->mInitialStroke + 3);
   if (v2)
   {
-    v3 = v2;
+    fill = v2;
   }
 
   else
   {
-    v4 = [(CRLShapeLayout *)self shapeInfo];
-    v3 = [v4 fill];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    fill = [shapeInfo fill];
   }
 
-  return v3;
+  return fill;
 }
 
 - (BOOL)canBeIntersected
@@ -1862,12 +1862,12 @@ LABEL_79:
     return 0;
   }
 
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CRLCanvasAbstractLayout *)self parent];
-    v3 = [v5 allowIntersectionOfChildLayout:self];
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    v3 = [parent2 allowIntersectionOfChildLayout:self];
   }
 
   else
@@ -1881,8 +1881,8 @@ LABEL_79:
 - (BOOL)supportsCalloutAttributes
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeLayout *)self pathSource];
-  v5 = sub_100014370(v3, v4);
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  v5 = sub_100014370(v3, pathSource);
   LOBYTE(v3) = v5 != 0;
 
   return v3;
@@ -1901,8 +1901,8 @@ LABEL_79:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(CRLShapeLayout *)self dependentLayoutsForDrag];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+    dependentLayoutsForDrag = [(CRLShapeLayout *)self dependentLayoutsForDrag];
+    v4 = [dependentLayoutsForDrag countByEnumeratingWithState:&v8 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1914,7 +1914,7 @@ LABEL_79:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(dependentLayoutsForDrag);
           }
 
           [*(*(&v8 + 1) + 8 * v7) invalidateFrame];
@@ -1922,7 +1922,7 @@ LABEL_79:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+        v5 = [dependentLayoutsForDrag countByEnumeratingWithState:&v8 objects:v13 count:16];
       }
 
       while (v5);
@@ -1963,17 +1963,17 @@ LABEL_79:
 - (BOOL)i_isInsideResizingFreehandDrawing
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100014370(v3, parent);
 
   v6 = objc_opt_class();
-  v7 = [v5 info];
-  v8 = sub_100014370(v6, v7);
+  info = [v5 info];
+  v8 = sub_100014370(v6, info);
 
   if (v5 && ([v5 layoutState] == 4 || objc_msgSend(v5, "layoutState") == 5))
   {
-    v9 = [(CRLCanvasLayout *)self info];
-    v10 = [v8 isNonGroupedChild:v9] ^ 1;
+    info2 = [(CRLCanvasLayout *)self info];
+    v10 = [v8 isNonGroupedChild:info2] ^ 1;
   }
 
   else
@@ -1993,11 +1993,11 @@ LABEL_79:
 
   else
   {
-    v4 = [(CRLShapeLayout *)self stroke];
-    if (v4)
+    stroke = [(CRLShapeLayout *)self stroke];
+    if (stroke)
     {
-      v5 = [(CRLShapeLayout *)self stroke];
-      v3 = [v5 shouldRender] ^ 1;
+      stroke2 = [(CRLShapeLayout *)self stroke];
+      v3 = [stroke2 shouldRender] ^ 1;
     }
 
     else
@@ -2017,11 +2017,11 @@ LABEL_79:
   [(CRLShapeLayout *)self p_beginResizeOrFreeTransform];
 }
 
-- (void)beginFreeTransformWithTracker:(id)a3
+- (void)beginFreeTransformWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLShapeLayout;
-  [(CRLCanvasLayout *)&v4 beginFreeTransformWithTracker:a3];
+  [(CRLCanvasLayout *)&v4 beginFreeTransformWithTracker:tracker];
   [(CRLShapeLayout *)self p_beginResizeOrFreeTransform];
 }
 
@@ -2074,11 +2074,11 @@ LABEL_79:
   *(&self->mCachedClippedPathRotatedStroked.originalCachedRect.origin.y + 3) = v22;
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
   v79.receiver = self;
   v79.super_class = CRLShapeLayout;
-  [(CRLBoardItemLayout *)&v79 beginDynamicOperationWithRealTimeCommands:a3];
+  [(CRLBoardItemLayout *)&v79 beginDynamicOperationWithRealTimeCommands:commands];
   if (*(&self->mDynamicMaskPath + 3))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -2409,9 +2409,9 @@ LABEL_79:
     [CRLAssertionHandler handleFailureInFunction:v46 file:v47 lineNumber:939 isFatal:0 description:"expected nil value for '%{public}s'", "mDynamicPencilKitStrokePathCompactData"];
   }
 
-  v48 = [(CRLShapeLayout *)self shapeInfo];
-  v49 = [(CRLCanvasLayout *)self pureGeometry];
-  v50 = [v48 pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  pathSource = [shapeInfo pathSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2430,20 +2430,20 @@ LABEL_79:
   *(&self->mCachedEditableBezierPathSource + 3) = v53;
 
   v55 = *(&self->mCachedEditableBezierPathSource + 3);
-  [v49 size];
+  [pureGeometry size];
   [v55 scaleToNaturalSize:?];
-  v56 = [(CRLShapeLayout *)self maskPath];
-  v57 = [v56 copy];
+  maskPath = [(CRLShapeLayout *)self maskPath];
+  v57 = [maskPath copy];
   v58 = *(&self->mDynamicPathSource + 3);
   *(&self->mDynamicPathSource + 3) = v57;
 
-  v59 = [(CRLShapeLayout *)self pathSource];
-  v60 = [v59 copy];
+  pathSource2 = [(CRLShapeLayout *)self pathSource];
+  v60 = [pathSource2 copy];
   v61 = *(&self->mDynamicMaskPath + 3);
   *(&self->mDynamicMaskPath + 3) = v60;
 
-  v62 = [(CRLShapeLayout *)self maskPath];
-  v63 = [v62 copy];
+  maskPath2 = [(CRLShapeLayout *)self maskPath];
+  v63 = [maskPath2 copy];
   v64 = *(&self->mInitialPathSource + 3);
   *(&self->mInitialPathSource + 3) = v63;
 
@@ -2452,14 +2452,14 @@ LABEL_79:
     goto LABEL_115;
   }
 
-  v66 = [v48 geometry];
-  if (([v66 widthValid] & 1) == 0)
+  geometry = [shapeInfo geometry];
+  if (([geometry widthValid] & 1) == 0)
   {
 
 LABEL_120:
-    if (v48)
+    if (shapeInfo)
     {
-      [v48 computeFullTransform];
+      [shapeInfo computeFullTransform];
     }
 
     else
@@ -2467,38 +2467,38 @@ LABEL_120:
       memset(v78, 0, sizeof(v78));
     }
 
-    v65 = [CRLCanvasInfoGeometry geometryFromFullTransform:v78];
+    geometry3 = [CRLCanvasInfoGeometry geometryFromFullTransform:v78];
     goto LABEL_124;
   }
 
-  v67 = [v48 geometry];
-  v68 = [v67 heightValid];
+  geometry2 = [shapeInfo geometry];
+  heightValid = [geometry2 heightValid];
 
-  if ((v68 & 1) == 0)
+  if ((heightValid & 1) == 0)
   {
     goto LABEL_120;
   }
 
 LABEL_115:
-  v65 = [v48 geometry];
+  geometry3 = [shapeInfo geometry];
 LABEL_124:
   v69 = *(&self->mDynamicPencilKitStrokePathCompactData + 3);
-  *(&self->mDynamicPencilKitStrokePathCompactData + 3) = v65;
+  *(&self->mDynamicPencilKitStrokePathCompactData + 3) = geometry3;
 
-  v70 = [(CRLShapeLayout *)self captureDynamicInfoGeometryToBeginDynamicOperation];
+  captureDynamicInfoGeometryToBeginDynamicOperation = [(CRLShapeLayout *)self captureDynamicInfoGeometryToBeginDynamicOperation];
   v71 = *(&self->mCachedPathSource + 3);
-  *(&self->mCachedPathSource + 3) = v70;
+  *(&self->mCachedPathSource + 3) = captureDynamicInfoGeometryToBeginDynamicOperation;
 
-  v72 = [(CRLShapeLayout *)self stroke];
-  v73 = [v72 copy];
+  stroke = [(CRLShapeLayout *)self stroke];
+  v73 = [stroke copy];
   v74 = *(&self->mInitialMaskPath + 3);
   *(&self->mInitialMaskPath + 3) = v73;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v75 = [(CRLShapeLayout *)self pencilKitStrokePathCompactData];
-    v76 = [v75 copy];
+    pencilKitStrokePathCompactData = [(CRLShapeLayout *)self pencilKitStrokePathCompactData];
+    v76 = [pencilKitStrokePathCompactData copy];
     v77 = *(&self->mInitialInfoGeometry + 3);
     *(&self->mInitialInfoGeometry + 3) = v76;
   }
@@ -2535,11 +2535,11 @@ LABEL_124:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:973 isFatal:0 description:"invalid nil value for '%{public}s'", "mInitialInfoGeometry"];
   }
 
-  v6 = [(CRLCanvasLayout *)self pureGeometry];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
   v7 = [CRLCanvasInfoGeometry alloc];
-  if (v6)
+  if (pureGeometry)
   {
-    [v6 fullTransform];
+    [pureGeometry fullTransform];
   }
 
   else
@@ -2705,11 +2705,11 @@ LABEL_124:
 
 - (CGSize)minimumSize
 {
-  v3 = [(CRLShapeLayout *)self shapeInfo];
-  v4 = [v3 containingGroup];
-  v5 = [v4 isFreehandDrawing];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  containingGroup = [shapeInfo containingGroup];
+  isFreehandDrawing = [containingGroup isFreehandDrawing];
 
-  if (v5)
+  if (isFreehandDrawing)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -2717,14 +2717,14 @@ LABEL_124:
 
   else
   {
-    v8 = [(CRLShapeLayout *)self shapeInfo];
-    v9 = [v8 pathSource];
-    v10 = [v9 bezierPath];
-    v11 = [v10 isLineSegment];
+    shapeInfo2 = [(CRLShapeLayout *)self shapeInfo];
+    pathSource = [shapeInfo2 pathSource];
+    bezierPath = [pathSource bezierPath];
+    isLineSegment = [bezierPath isLineSegment];
 
     width = 0.001;
     height = 0.0;
-    if (!v11)
+    if (!isLineSegment)
     {
       height = 0.001;
     }
@@ -2737,8 +2737,8 @@ LABEL_124:
 
 - (BOOL)p_canResizeViaTransform
 {
-  v3 = [(CRLShapeLayout *)self shapeInfo];
-  v4 = [v3 pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  pathSource = [shapeInfo pathSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2747,39 +2747,39 @@ LABEL_124:
 
   else
   {
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v7 = [v6 pathSource];
+    shapeInfo2 = [(CRLShapeLayout *)self shapeInfo];
+    pathSource2 = [shapeInfo2 pathSource];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  v8 = [(CRLCanvasLayout *)self info];
-  v9 = [v8 geometry];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
 
-  LOBYTE(v8) = [v9 widthValid];
-  LOBYTE(v8) = isKindOfClass & [v9 heightValid] & v8;
+  LOBYTE(info) = [geometry widthValid];
+  LOBYTE(info) = isKindOfClass & [geometry heightValid] & info;
 
-  return v8 & 1;
+  return info & 1;
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v20.receiver = self;
   v20.super_class = CRLShapeLayout;
-  [(CRLBoardItemLayout *)&v20 takeSizeFromTracker:v4];
+  [(CRLBoardItemLayout *)&v20 takeSizeFromTracker:trackerCopy];
   if ([(CRLCanvasLayout *)self isInTopLevelContainerForEditing])
   {
-    if (v4)
+    if (trackerCopy)
     {
-      [v4 flippedIfNecessaryTransformForLayout:self];
+      [trackerCopy flippedIfNecessaryTransformForLayout:self];
       goto LABEL_7;
     }
   }
 
-  else if (v4)
+  else if (trackerCopy)
   {
-    [v4 transformForLayout:self];
+    [trackerCopy transformForLayout:self];
     goto LABEL_7;
   }
 
@@ -2790,9 +2790,9 @@ LABEL_7:
   v17 = v14;
   v18 = v15;
   v19 = v16;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 resizeTransform];
+    [trackerCopy resizeTransform];
   }
 
   else
@@ -2802,27 +2802,27 @@ LABEL_7:
     v14 = 0u;
   }
 
-  v5 = [v4 currentlyPreservingAspectRatio];
-  [v4 currentSizeForLayout:self];
+  currentlyPreservingAspectRatio = [trackerCopy currentlyPreservingAspectRatio];
+  [trackerCopy currentSizeForLayout:self];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 currentGeometryForLayout:self];
-  v11 = [v4 hasHorizontalFlip];
-  v12 = [v4 hasVerticalFlip];
+  v10 = [trackerCopy currentGeometryForLayout:self];
+  hasHorizontalFlip = [trackerCopy hasHorizontalFlip];
+  hasVerticalFlip = [trackerCopy hasVerticalFlip];
   v13[0] = v17;
   v13[1] = v18;
   v13[2] = v19;
-  [(CRLShapeLayout *)self p_applyResizeTransform:&v14 transformInParentSpace:v13 preservingAspectRatio:v5 layoutSize:v10 geometryForLayout:v11 hasHorizontalFlip:v12 hasVerticalFlip:v7, v9];
+  [(CRLShapeLayout *)self p_applyResizeTransform:&v14 transformInParentSpace:v13 preservingAspectRatio:currentlyPreservingAspectRatio layoutSize:v10 geometryForLayout:hasHorizontalFlip hasHorizontalFlip:hasVerticalFlip hasVerticalFlip:v7, v9];
 }
 
-- (void)p_applyResizeTransform:(CGAffineTransform *)a3 transformInParentSpace:(CGAffineTransform *)a4 preservingAspectRatio:(BOOL)a5 layoutSize:(CGSize)a6 geometryForLayout:(id)a7 hasHorizontalFlip:(BOOL)a8 hasVerticalFlip:(BOOL)a9
+- (void)p_applyResizeTransform:(CGAffineTransform *)transform transformInParentSpace:(CGAffineTransform *)space preservingAspectRatio:(BOOL)ratio layoutSize:(CGSize)size geometryForLayout:(id)layout hasHorizontalFlip:(BOOL)flip hasVerticalFlip:(BOOL)verticalFlip
 {
-  v9 = a9;
-  v10 = a8;
-  height = a6.height;
-  width = a6.width;
-  v123 = a5;
-  v124 = a7;
+  verticalFlipCopy = verticalFlip;
+  flipCopy = flip;
+  height = size.height;
+  width = size.width;
+  ratioCopy = ratio;
+  layoutCopy = layout;
   if ([(CRLCanvasLayout *)self layoutState]== 1 || ![(CRLCanvasLayout *)self layoutState])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -2911,11 +2911,11 @@ LABEL_7:
   }
 
   memset(&v131, 0, sizeof(v131));
-  v24 = [(CRLCanvasLayout *)self originalPureGeometry];
-  v25 = v24;
-  if (v24)
+  originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+  v25 = originalPureGeometry;
+  if (originalPureGeometry)
   {
-    [v24 transform];
+    [originalPureGeometry transform];
   }
 
   else
@@ -2923,22 +2923,22 @@ LABEL_7:
     memset(&v130, 0, sizeof(v130));
   }
 
-  v26 = *&a4->c;
-  *&v129.a = *&a4->a;
+  v26 = *&space->c;
+  *&v129.a = *&space->a;
   *&v129.c = v26;
-  *&v129.tx = *&a4->tx;
+  *&v129.tx = *&space->tx;
   sub_100139E2C(&v129, &v130, &v131);
 
   v130 = v131;
   v27 = sub_100139A14(&v130.a);
   memset(&v130, 0, sizeof(v130));
   CGAffineTransformMakeScale(&v130, v27, v28);
-  v29 = [(CRLShapeLayout *)self p_canResizeViaTransform];
+  p_canResizeViaTransform = [(CRLShapeLayout *)self p_canResizeViaTransform];
   v30 = *(&self->mDynamicMaskPath + 3);
-  if (v29 && !v123)
+  if (p_canResizeViaTransform && !ratioCopy)
   {
-    v31 = [v30 bezierPath];
-    v32 = [v31 copy];
+    bezierPath = [v30 bezierPath];
+    v32 = [bezierPath copy];
 
     v129 = v131;
     [v32 transformUsingAffineTransform:&v129];
@@ -3011,11 +3011,11 @@ LABEL_7:
 LABEL_55:
 
     v58 = [CRLCanvasInfoGeometry alloc];
-    v59 = [(CRLCanvasLayout *)self originalPureGeometry];
-    v60 = v59;
-    if (v59)
+    originalPureGeometry2 = [(CRLCanvasLayout *)self originalPureGeometry];
+    v60 = originalPureGeometry2;
+    if (originalPureGeometry2)
     {
-      [v59 fullTransform];
+      [originalPureGeometry2 fullTransform];
     }
 
     else
@@ -3032,13 +3032,13 @@ LABEL_55:
 
   v48 = [v30 copy];
   [v48 scaleToNaturalSize:{width, height}];
-  v49 = [v124 copy];
+  v49 = [layoutCopy copy];
   if ([(CRLCanvasLayout *)self isInTopLevelContainerForEditing])
   {
-    v50 = [*(&self->mDynamicMaskPath + 3) hasHorizontalFlip];
-    v51 = [*(&self->mDynamicMaskPath + 3) hasVerticalFlip];
-    [v48 setHasHorizontalFlip:v50 ^ v10];
-    [v48 setHasVerticalFlip:v51 ^ v9];
+    hasHorizontalFlip = [*(&self->mDynamicMaskPath + 3) hasHorizontalFlip];
+    hasVerticalFlip = [*(&self->mDynamicMaskPath + 3) hasVerticalFlip];
+    [v48 setHasHorizontalFlip:hasHorizontalFlip ^ flipCopy];
+    [v48 setHasVerticalFlip:hasVerticalFlip ^ verticalFlipCopy];
   }
 
 LABEL_59:
@@ -3071,10 +3071,10 @@ LABEL_59:
   objc_storeStrong((&self->mDynamicPathSource + 3), v62);
   if (*(&self->mInitialMaskPath + 3) && [(CRLShapeLayout *)self i_isInsideResizingFreehandDrawing])
   {
-    v69 = *&a3->c;
-    *&v129.a = *&a3->a;
+    v69 = *&transform->c;
+    *&v129.a = *&transform->a;
     *&v129.c = v69;
-    *&v129.tx = *&a3->tx;
+    *&v129.tx = *&transform->tx;
     v70 = sub_100139A14(&v129.a);
     v72 = v71;
     v73 = v70;
@@ -3124,17 +3124,17 @@ LABEL_59:
       *(&self->mCachedPathBoundsWithoutStrokeStruct.originalCachedRect.size.width + 3) = 1;
     }
 
-    if ([(CRLShapeLayout *)self p_dynamicallyUpdatingStrokedFramesDuringResize]&& v123)
+    if ([(CRLShapeLayout *)self p_dynamicallyUpdatingStrokedFramesDuringResize]&& ratioCopy)
     {
-      v91 = [(CRLShapeLayout *)self stroke];
-      if (v91 && (v92 = v91, -[CRLShapeLayout stroke](self, "stroke"), v93 = objc_claimAutoreleasedReturnValue(), v94 = [v93 shouldRender], v93, v92, (v94 & 1) != 0))
+      stroke = [(CRLShapeLayout *)self stroke];
+      if (stroke && (v92 = stroke, -[CRLShapeLayout stroke](self, "stroke"), v93 = objc_claimAutoreleasedReturnValue(), v94 = [v93 shouldRender], v93, v92, (v94 & 1) != 0))
       {
         v95 = *&CGAffineTransformIdentity.c;
         *&v129.a = *&CGAffineTransformIdentity.a;
         *&v129.c = v95;
         *&v129.tx = *&CGAffineTransformIdentity.tx;
-        v96 = self;
-        v97 = v96;
+        selfCopy = self;
+        v97 = selfCopy;
         do
         {
           if (![v97 isBeingManipulated])
@@ -3142,11 +3142,11 @@ LABEL_59:
             break;
           }
 
-          v98 = [v97 originalPureGeometry];
-          v99 = v98;
-          if (v98)
+          originalPureGeometry3 = [v97 originalPureGeometry];
+          v99 = originalPureGeometry3;
+          if (originalPureGeometry3)
           {
-            [v98 transform];
+            [originalPureGeometry3 transform];
           }
 
           else
@@ -3158,18 +3158,18 @@ LABEL_59:
           CGAffineTransformConcat(&v129, &t1, &t2);
 
           v100 = objc_opt_class();
-          v101 = [v97 parent];
-          v102 = sub_100014370(v100, v101);
+          parent = [v97 parent];
+          v102 = sub_100014370(v100, parent);
 
           v97 = v102;
         }
 
         while (v102);
-        v103 = [CRLBezierPath bezierPathWithRect:*(&v96->mCachedPathBoundsStruct.cachedRect.size.width + 3), *(&v96->mCachedPathBoundsStruct.cachedRect.size.height + 3), *(&v96->mCachedPathBoundsStruct.originalCachedRect.origin.x + 3), *(&v96->mCachedPathBoundsStruct.originalCachedRect.origin.y + 3)];
-        v104 = *&a3->c;
-        *&t1.a = *&a3->a;
+        v103 = [CRLBezierPath bezierPathWithRect:*(&selfCopy->mCachedPathBoundsStruct.cachedRect.size.width + 3), *(&selfCopy->mCachedPathBoundsStruct.cachedRect.size.height + 3), *(&selfCopy->mCachedPathBoundsStruct.originalCachedRect.origin.x + 3), *(&selfCopy->mCachedPathBoundsStruct.originalCachedRect.origin.y + 3)];
+        v104 = *&transform->c;
+        *&t1.a = *&transform->a;
         *&t1.c = v104;
-        *&t1.tx = *&a3->tx;
+        *&t1.tx = *&transform->tx;
         memset(&t2, 0, sizeof(t2));
         v126 = v129;
         sub_100139E2C(&t1, &v126, &t2);
@@ -3180,10 +3180,10 @@ LABEL_59:
         v108 = v107;
         v110 = v109;
         v112 = v111;
-        v113 = *&a3->c;
-        *&v126.a = *&a3->a;
+        v113 = *&transform->c;
+        *&v126.a = *&transform->a;
         *&v126.c = v113;
-        *&v126.tx = *&a3->tx;
+        *&v126.tx = *&transform->tx;
         v125 = v129;
         sub_100139E2C(&v126, &v125, &t1);
         v114 = sub_10011F31C(v106, v108, vaddq_f64(*&t1.tx, vmlaq_n_f64(vmulq_n_f64(*&t1.c, CGPointZero.y), *&t1.a, CGPointZero.x)).f64[0]);
@@ -3205,10 +3205,10 @@ LABEL_59:
       *(&self->mCachedPathBoundsStruct.cachedRect.origin.y + 3) = v112;
       *(&self->mCachedPathBoundsStruct.originalCachedRect.size.width + 3) = 1;
       v132 = *(&self->mCachedAlignmentFrame.cachedRect.size.width + 3);
-      v120 = *&a4->c;
-      *&v129.a = *&a4->a;
+      v120 = *&space->c;
+      *&v129.a = *&space->a;
       *&v129.c = v120;
-      *&v129.tx = *&a4->tx;
+      *&v129.tx = *&space->tx;
       *(&self->mClippedPathRotatedTransform.tx + 3) = CGRectApplyAffineTransform(v132, &v129);
       *(&self->mCachedAlignmentFrame.originalCachedRect.size.width + 3) = 1;
       v121 = &self->mCachedPathBoundsWithoutStrokeStruct.isValid + 3;
@@ -3281,10 +3281,10 @@ LABEL_59:
   [(CRLShapeLayout *)self invalidateFrame];
 }
 
-- (void)dynamicallyMovingLineSegmentWithTracker:(id)a3
+- (void)dynamicallyMovingLineSegmentWithTracker:(id)tracker
 {
-  v4 = [a3 currentGeometry];
-  v5 = [v4 copy];
+  currentGeometry = [tracker currentGeometry];
+  v5 = [currentGeometry copy];
 
   v6 = *(&self->mCachedPathSource + 3);
   *(&self->mCachedPathSource + 3) = v5;
@@ -3298,13 +3298,13 @@ LABEL_59:
   [(CRLShapeLayout *)self invalidateFrame];
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLCanvasLayout *)self layoutController];
-  v7 = [v6 canvas];
-  if (![v7 isCanvasInteractive])
+  y = by.y;
+  x = by.x;
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  if (![canvas isCanvasInteractive])
   {
 
 LABEL_6:
@@ -3319,49 +3319,49 @@ LABEL_6:
     return;
   }
 
-  v8 = [(CRLShapeLayout *)self isBeingManipulated];
+  isBeingManipulated = [(CRLShapeLayout *)self isBeingManipulated];
 
-  if (!v8)
+  if (!isBeingManipulated)
   {
     goto LABEL_6;
   }
 
-  v9 = [(CRLCanvasLayout *)self layoutController];
-  v10 = [v9 canvas];
-  v11 = [v10 canvasController];
+  layoutController2 = [(CRLCanvasLayout *)self layoutController];
+  canvas2 = [layoutController2 canvas];
+  canvasController = [canvas2 canvasController];
 
-  v12 = [v11 tmCoordinator];
-  v13 = [v12 controllingTM];
-  v14 = [v13 tracker];
+  tmCoordinator = [canvasController tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
+  tracker = [controllingTM tracker];
 
   objc_opt_class();
-  LOBYTE(v12) = objc_opt_isKindOfClass();
+  LOBYTE(tmCoordinator) = objc_opt_isKindOfClass();
 
-  if ((v12 & 1) == 0)
+  if ((tmCoordinator & 1) == 0)
   {
     goto LABEL_6;
   }
 }
 
-- (void)setDynamicGeometry:(id)a3
+- (void)setDynamicGeometry:(id)geometry
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1004BA9D0;
   v5[3] = &unk_10183AE28;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  geometryCopy = geometry;
+  selfCopy = self;
+  v4 = geometryCopy;
   [(CRLShapeLayout *)self p_performBlockOkayToSetGeometry:v5];
 }
 
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker
 {
-  y = a3.y;
-  x = a3.x;
+  y = to.y;
+  x = to.x;
   v8 = *(&self->mCachedEditableBezierPathSource + 3);
-  v9 = [a4 knob];
-  v10 = [v9 tag];
+  knob = [tracker knob];
+  v10 = [knob tag];
   [(CRLShapeLayout *)self boundsForStandardKnobs];
   [v8 setControlKnobPosition:v10 toPoint:{sub_10011F31C(x, y, v11)}];
 
@@ -3374,17 +3374,17 @@ LABEL_6:
 {
   if (([*(&self->mCachedEditableBezierPathSource + 3) isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
-    v3 = [(CRLShapeLayout *)self editablePathSource];
+    editablePathSource = [(CRLShapeLayout *)self editablePathSource];
     v4 = *(&self->mCachedEditableBezierPathSource + 3);
-    *(&self->mCachedEditableBezierPathSource + 3) = v3;
+    *(&self->mCachedEditableBezierPathSource + 3) = editablePathSource;
   }
 
   [*(&self->mCachedEditableBezierPathSource + 3) setLockedFlipTransform:1];
-  v5 = [(CRLCanvasLayout *)self pureGeometry];
-  v6 = v5;
-  if (v5)
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  v6 = pureGeometry;
+  if (pureGeometry)
   {
-    [v5 fullTransform];
+    [pureGeometry fullTransform];
   }
 
   else
@@ -3397,9 +3397,9 @@ LABEL_6:
   *(&self->mCachedPathSource + 3) = v7;
 }
 
-- (void)dynamicallyMovedPathKnobTo:(CGPoint)a3 withTracker:(id)a4
+- (void)dynamicallyMovedPathKnobTo:(CGPoint)to withTracker:(id)tracker
 {
-  [(CRLShapeLayout *)self p_updateResizeInfoGeometryFromDynamicPathSource:a4];
+  [(CRLShapeLayout *)self p_updateResizeInfoGeometryFromDynamicPathSource:tracker];
   [(CRLShapeLayout *)self invalidatePath];
 
   [(CRLShapeLayout *)self invalidateFrame];
@@ -3445,8 +3445,8 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:1404 isFatal:0 description:"expected nil value for '%{public}s'", "mDynamicPencilKitStrokePathCompactData"];
   }
 
-  v6 = [(CRLShapeLayout *)self pencilKitStrokePathCompactData];
-  v7 = [v6 copy];
+  pencilKitStrokePathCompactData = [(CRLShapeLayout *)self pencilKitStrokePathCompactData];
+  v7 = [pencilKitStrokePathCompactData copy];
   v8 = *(&self->mDynamicInfoGeometry + 3);
   *(&self->mDynamicInfoGeometry + 3) = v7;
 
@@ -3480,9 +3480,9 @@ LABEL_6:
   }
 }
 
-- (void)dynamicallySetPencilKitStrokePathCompactDataRenderScaleX:(double)a3 y:(double)a4
+- (void)dynamicallySetPencilKitStrokePathCompactDataRenderScaleX:(double)x y:(double)y
 {
-  v5 = a3;
+  xCopy = x;
   v7 = *(&self->mDynamicInfoGeometry + 3);
   if (!v7)
   {
@@ -3515,9 +3515,9 @@ LABEL_6:
     v7 = *(&self->mDynamicInfoGeometry + 3);
   }
 
-  *&a3 = v5;
-  [v7 setRenderScaleX:a3];
-  *&v11 = a4;
+  *&x = xCopy;
+  [v7 setRenderScaleX:x];
+  *&v11 = y;
   [*(&self->mDynamicInfoGeometry + 3) setRenderScaleY:v11];
 }
 
@@ -3527,18 +3527,18 @@ LABEL_6:
   *(&self->mDynamicInfoGeometry + 3) = 0;
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v15.receiver = self;
   v15.super_class = CRLShapeLayout;
-  [(CRLBoardItemLayout *)&v15 takeRotationFromTracker:v4];
-  v5 = [(CRLCanvasLayout *)self info];
-  v6 = [v5 geometry];
+  [(CRLBoardItemLayout *)&v15 takeRotationFromTracker:trackerCopy];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
 
   if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
   {
-    v7 = [v6 copy];
+    v7 = [geometry copy];
   }
 
   else
@@ -3546,9 +3546,9 @@ LABEL_6:
     v13 = 0u;
     v14 = 0u;
     v12 = 0u;
-    if (v4)
+    if (trackerCopy)
     {
-      [v4 rotateTransform];
+      [trackerCopy rotateTransform];
     }
 
     else
@@ -3562,7 +3562,7 @@ LABEL_6:
     v9 = v12;
     v10 = v13;
     v11 = v14;
-    v7 = [v6 geometryByAppendingTransform:&v9];
+    v7 = [geometry geometryByAppendingTransform:&v9];
   }
 
   v8 = *(&self->mCachedPathSource + 3);
@@ -3571,43 +3571,43 @@ LABEL_6:
   [(CRLCanvasLayout *)self invalidatePosition];
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v20.receiver = self;
   v20.super_class = CRLShapeLayout;
-  [(CRLBoardItemLayout *)&v20 takeFreeTransformFromTracker:v4];
-  if ([v4 hasEverResized])
+  [(CRLBoardItemLayout *)&v20 takeFreeTransformFromTracker:trackerCopy];
+  if ([trackerCopy hasEverResized])
   {
     v18 = 0u;
     v19 = 0u;
     v17 = 0u;
-    if (v4)
+    if (trackerCopy)
     {
-      [v4 resizeTransformForLayout:self];
+      [trackerCopy resizeTransformForLayout:self];
     }
 
-    [v4 currentSizeForLayout:self];
+    [trackerCopy currentSizeForLayout:self];
     v6 = v5;
     v8 = v7;
-    v9 = [v4 currentGeometryForLayout:self];
+    geometry = [trackerCopy currentGeometryForLayout:self];
     v14 = v17;
     v15 = v18;
     v16 = v19;
     v13[0] = v17;
     v13[1] = v18;
     v13[2] = v19;
-    [(CRLShapeLayout *)self p_applyResizeTransform:&v14 transformInParentSpace:v13 preservingAspectRatio:1 layoutSize:v9 geometryForLayout:0 hasHorizontalFlip:0 hasVerticalFlip:v6, v8];
+    [(CRLShapeLayout *)self p_applyResizeTransform:&v14 transformInParentSpace:v13 preservingAspectRatio:1 layoutSize:geometry geometryForLayout:0 hasHorizontalFlip:0 hasVerticalFlip:v6, v8];
   }
 
   else
   {
-    v10 = [(CRLCanvasLayout *)self info];
-    v9 = [v10 geometry];
+    info = [(CRLCanvasLayout *)self info];
+    geometry = [info geometry];
 
     if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
     {
-      v11 = [v4 currentGeometryForLayout:self];
+      v11 = [trackerCopy currentGeometryForLayout:self];
     }
 
     else
@@ -3615,9 +3615,9 @@ LABEL_6:
       v18 = 0u;
       v19 = 0u;
       v17 = 0u;
-      if (v4)
+      if (trackerCopy)
       {
-        [v4 freeTransformForLayout:self];
+        [trackerCopy freeTransformForLayout:self];
       }
 
       else
@@ -3631,7 +3631,7 @@ LABEL_6:
       v14 = v17;
       v15 = v18;
       v16 = v19;
-      v11 = [v9 geometryByAppendingTransform:&v14];
+      v11 = [geometry geometryByAppendingTransform:&v14];
     }
 
     v12 = *(&self->mCachedPathSource + 3);
@@ -3655,14 +3655,14 @@ LABEL_6:
 
 - (CRLLineEnd)strokeHeadLineEnd
 {
-  v3 = [(CRLShapeLayout *)self shapeInfo];
-  v4 = [v3 headLineEnd];
-  if (v4)
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  headLineEnd = [shapeInfo headLineEnd];
+  if (headLineEnd)
   {
-    v5 = [(CRLShapeLayout *)self stroke];
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v7 = [v6 headLineEnd];
-    v8 = [v5 strokeLineEnd:v7];
+    stroke = [(CRLShapeLayout *)self stroke];
+    shapeInfo2 = [(CRLShapeLayout *)self shapeInfo];
+    headLineEnd2 = [shapeInfo2 headLineEnd];
+    v8 = [stroke strokeLineEnd:headLineEnd2];
   }
 
   else
@@ -3675,14 +3675,14 @@ LABEL_6:
 
 - (CRLLineEnd)strokeTailLineEnd
 {
-  v3 = [(CRLShapeLayout *)self shapeInfo];
-  v4 = [v3 tailLineEnd];
-  if (v4)
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  tailLineEnd = [shapeInfo tailLineEnd];
+  if (tailLineEnd)
   {
-    v5 = [(CRLShapeLayout *)self stroke];
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v7 = [v6 tailLineEnd];
-    v8 = [v5 strokeLineEnd:v7];
+    stroke = [(CRLShapeLayout *)self stroke];
+    shapeInfo2 = [(CRLShapeLayout *)self shapeInfo];
+    tailLineEnd2 = [shapeInfo2 tailLineEnd];
+    v8 = [stroke strokeLineEnd:tailLineEnd2];
   }
 
   else
@@ -3695,32 +3695,32 @@ LABEL_6:
 
 - (unint64_t)numberOfControlKnobs
 {
-  v2 = [(CRLShapeLayout *)self pathSource];
+  pathSource = [(CRLShapeLayout *)self pathSource];
   v3 = objc_opt_class();
-  v9 = sub_1003038E0(v2, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v9 = sub_1003038E0(pathSource, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
 
-  v10 = [v9 numberOfControlKnobs];
-  return v10;
+  numberOfControlKnobs = [v9 numberOfControlKnobs];
+  return numberOfControlKnobs;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(CRLShapeLayout *)self pathSource];
+  y = point.y;
+  x = point.x;
+  pathSource = [(CRLShapeLayout *)self pathSource];
   v8 = objc_opt_class();
-  v14 = sub_1003038E0(v7, v8, 1, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v14 = sub_1003038E0(pathSource, v8, 1, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLSmartPathSource);
 
-  [v14 setControlKnobPosition:a3 toPoint:{x, y}];
+  [v14 setControlKnobPosition:position toPoint:{x, y}];
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v4 = [(CRLShapeLayout *)self pathSource];
+  pathSource = [(CRLShapeLayout *)self pathSource];
   v5 = objc_opt_class();
-  v11 = sub_1003038E0(v4, v5, 1, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v11 = sub_1003038E0(pathSource, v5, 1, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLSmartPathSource);
 
-  [v11 getControlKnobPosition:a3];
+  [v11 getControlKnobPosition:position];
   v13 = v12;
   v15 = v14;
 
@@ -3731,11 +3731,11 @@ LABEL_6:
   return result;
 }
 
-- (void)dynamicallySetBezierPathSource:(id)a3 atUnscaledOrigin:(CGPoint)a4
+- (void)dynamicallySetBezierPathSource:(id)source atUnscaledOrigin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = origin.y;
+  x = origin.x;
+  sourceCopy = source;
   if (*(&self->mDynamicStroke + 3))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -3765,13 +3765,13 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1511 isFatal:0 description:"expected nil value for '%{public}s'", "mDynamicStrokeOffsetArray"];
   }
 
-  [(CRLShapeLayout *)self dynamicallySetBezierPathSource:v7 atUnscaledOrigin:0 withPatternOffsetsBySubpath:x, y];
+  [(CRLShapeLayout *)self dynamicallySetBezierPathSource:sourceCopy atUnscaledOrigin:0 withPatternOffsetsBySubpath:x, y];
 }
 
-- (void)dynamicallySetBezierPathSource:(id)a3 atUnscaledOrigin:(CGPoint)a4 withPatternOffsetsBySubpath:(id)a5
+- (void)dynamicallySetBezierPathSource:(id)source atUnscaledOrigin:(CGPoint)origin withPatternOffsetsBySubpath:(id)subpath
 {
-  v8 = a3;
-  v9 = a5;
+  sourceCopy = source;
+  subpathCopy = subpath;
   if (!*(&self->mCachedEditableBezierPathSource + 3))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -3801,11 +3801,11 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:1518 isFatal:0 description:"invalid nil value for '%{public}s'", "mDynamicPathSource"];
   }
 
-  objc_storeStrong((&self->mCachedEditableBezierPathSource + 3), a3);
-  objc_storeStrong((&self->mLastParentLimitedSize.height + 3), a5);
-  v13 = [*(&self->mCachedEditableBezierPathSource + 3) bezierPath];
-  v14 = [v13 bounds];
-  SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v14, v15);
+  objc_storeStrong((&self->mCachedEditableBezierPathSource + 3), source);
+  objc_storeStrong((&self->mLastParentLimitedSize.height + 3), subpath);
+  bezierPath = [*(&self->mCachedEditableBezierPathSource + 3) bezierPath];
+  bounds = [bezierPath bounds];
+  SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(bounds, v15);
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -3813,9 +3813,9 @@ LABEL_6:
 
   v24 = [[CRLCanvasInfoGeometry alloc] initWithPosition:v17 size:v19, fmax(v21, 1.0), fmax(v23, 1.0)];
   v25 = [CRLCanvasInfoGeometry alloc];
-  v26 = [(CRLCanvasAbstractLayout *)self parent];
-  v27 = [v26 geometryInRoot];
-  v28 = [(CRLCanvasInfoGeometry *)v25 initWithLayoutGeometry:v27];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  geometryInRoot = [parent geometryInRoot];
+  v28 = [(CRLCanvasInfoGeometry *)v25 initWithLayoutGeometry:geometryInRoot];
   v29 = [(CRLCanvasInfoGeometry *)v24 geometryRelativeToGeometry:v28];
 
   if ([v29 isEqual:*(&self->mCachedPathSource + 3)])
@@ -3843,19 +3843,19 @@ LABEL_6:
 - (void)dynamicallyMakeShapeInvisible
 {
   BYTE3(self->mDynamicFill) = 1;
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  v6 = [v3 canvas];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
 
-  v4 = v6;
-  if (v6)
+  v4 = canvas;
+  if (canvas)
   {
-    v5 = [v6 repForLayout:self];
+    v5 = [canvas repForLayout:self];
     if (v5)
     {
-      [v6 invalidateContentLayersForRep:v5];
+      [canvas invalidateContentLayersForRep:v5];
     }
 
-    v4 = v6;
+    v4 = canvas;
   }
 }
 
@@ -3865,9 +3865,9 @@ LABEL_6:
   v8.super_class = CRLShapeLayout;
   [(CRLBoardItemLayout *)&v8 invalidateExteriorWrap];
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self layoutController];
-  v5 = [v4 canvas];
-  v6 = [v5 repForLayout:self];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  v6 = [canvas repForLayout:self];
   v7 = sub_100013F00(v3, v6);
 
   [v7 invalidateExteriorWrap];
@@ -3875,11 +3875,11 @@ LABEL_6:
 
 - (id)computeWrapPath
 {
-  v3 = [(CRLShapeLayout *)self fill];
-  v4 = v3;
-  if (v3)
+  fill = [(CRLShapeLayout *)self fill];
+  v4 = fill;
+  if (fill)
   {
-    v5 = [v3 isClear] ^ 1;
+    v5 = [fill isClear] ^ 1;
   }
 
   else
@@ -3892,26 +3892,26 @@ LABEL_6:
   return v6;
 }
 
-- (id)computeWrapPathClosed:(BOOL)a3
+- (id)computeWrapPathClosed:(BOOL)closed
 {
-  v5 = [(CRLShapeLayout *)self path];
-  v6 = [(CRLShapeLayout *)self stroke];
-  v7 = v6;
-  if (v6 && [v6 shouldRender])
+  path = [(CRLShapeLayout *)self path];
+  stroke = [(CRLShapeLayout *)self stroke];
+  v7 = stroke;
+  if (stroke && [stroke shouldRender])
   {
-    v8 = [(CRLShapeLayout *)self path];
-    v9 = [v8 copy];
+    path2 = [(CRLShapeLayout *)self path];
+    v9 = [path2 copy];
 
     [v9 takeAttributesFromStroke:v7];
-    v5 = [v9 strokedCopy];
-    if (a3 || [v9 isEffectivelyClosed])
+    path = [v9 strokedCopy];
+    if (closed || [v9 isEffectivelyClosed])
     {
-      v10 = [v9 uniteWithBezierPath:v5];
+      v10 = [v9 uniteWithBezierPath:path];
     }
 
     else
     {
-      v10 = v5;
+      v10 = path;
     }
 
     v11 = v10;
@@ -3926,7 +3926,7 @@ LABEL_6:
 
   else
   {
-    v11 = [v5 copy];
+    v11 = [path copy];
   }
 
   [(CRLShapeLayout *)self pathBounds];
@@ -3941,45 +3941,45 @@ LABEL_6:
   return v11;
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
+  documentCopy = document;
   v13.receiver = self;
   v13.super_class = CRLShapeLayout;
-  v7 = *&a4->c;
-  v10 = *&a4->a;
+  v7 = *&transform->c;
+  v10 = *&transform->a;
   v11 = v7;
-  v12 = *&a4->tx;
-  v8 = a3;
-  [(CRLCanvasLayout *)&v13 transferLayoutGeometryToInfo:v8 withAdditionalTransform:&v10 assertIfInDocument:v5];
+  v12 = *&transform->tx;
+  infoCopy = info;
+  [(CRLCanvasLayout *)&v13 transferLayoutGeometryToInfo:infoCopy withAdditionalTransform:&v10 assertIfInDocument:documentCopy];
   v9 = [(CRLShapeLayout *)self pathSource:v10];
-  [v8 setPathSource:v9];
+  [infoCopy setPathSource:v9];
 }
 
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform
 {
   v23.receiver = self;
   v23.super_class = CRLShapeLayout;
-  v4 = *&a3->c;
-  v22[0] = *&a3->a;
+  v4 = *&transform->c;
+  v22[0] = *&transform->a;
   v22[1] = v4;
-  v22[2] = *&a3->tx;
+  v22[2] = *&transform->tx;
   v5 = [(CRLCanvasLayout *)&v23 commandToClampModelToLayoutSizeWithAdditionalTransform:v22];
   v6 = objc_alloc_init(_TtC8Freeform15CRLCommandGroup);
   [(CRLCommandGroup *)v6 addCommandIfNotNil:v5];
-  v7 = [(CRLShapeLayout *)self shapeInfo];
-  v8 = [(CRLShapeLayout *)self pathSource];
-  [v8 naturalSize];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  [pathSource naturalSize];
   v10 = v9;
   v12 = v11;
-  v13 = [v7 pathSource];
-  [v13 naturalSize];
+  pathSource2 = [shapeInfo pathSource];
+  [pathSource2 naturalSize];
   v15 = v14;
   v17 = v16;
 
   if (v10 != v15 || v12 != v17)
   {
-    v18 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:v7 pathSource:v8];
+    v18 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:shapeInfo pathSource:pathSource];
     [(CRLCommandGroup *)v6 addCommand:v18];
   }
 
@@ -4012,10 +4012,10 @@ LABEL_6:
 {
   if (BYTE3(self->super.mDynamicOpacity))
   {
-    v3 = [(CRLShapeLayout *)self pathSource];
-    v4 = [v3 bezierPath];
+    pathSource = [(CRLShapeLayout *)self pathSource];
+    bezierPath = [pathSource bezierPath];
     v5 = *(&self->super._suppressesShadowsAndReflections + 3);
-    *(&self->super._suppressesShadowsAndReflections + 3) = v4;
+    *(&self->super._suppressesShadowsAndReflections + 3) = bezierPath;
 
     BYTE3(self->super.mDynamicOpacity) &= ~1u;
   }
@@ -4095,14 +4095,14 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)a3
+- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)rotation
 {
-  v5 = *&a3->c;
-  v29 = *&a3->a;
+  v5 = *&rotation->c;
+  v29 = *&rotation->a;
   v30 = v5;
   v6 = &self->mCachedClippedPathRotatedStroked.originalCachedRect.size.height + 3;
-  v7 = *&a3->c;
-  v25 = *&a3->a;
+  v7 = *&rotation->c;
+  v25 = *&rotation->a;
   v26 = v7;
   v27 = 0;
   v28 = 0;
@@ -4156,7 +4156,7 @@ LABEL_6:
   }
 
 LABEL_11:
-  v20 = sub_10011F334(v11, v12, a3->tx);
+  v20 = sub_10011F334(v11, v12, rotation->tx);
   v22 = v13;
   v23 = v14;
   result.size.height = v23;
@@ -4179,8 +4179,8 @@ LABEL_11:
 
   else
   {
-    v7 = [(CRLShapeLayout *)self path];
-    [v7 bounds];
+    path = [(CRLShapeLayout *)self path];
+    [path bounds];
     v3 = v8;
     v4 = v9;
     v5 = v10;
@@ -4208,8 +4208,8 @@ LABEL_11:
 {
   if ((BYTE3(self->super.mDynamicOpacity) & 2) != 0)
   {
-    v3 = [(CRLShapeLayout *)self path];
-    *(&self->mShapeInvalidFlags + 3) = [v3 isOpen];
+    path = [(CRLShapeLayout *)self path];
+    *(&self->mShapeInvalidFlags + 3) = [path isOpen];
 
     BYTE3(self->super.mDynamicOpacity) &= ~2u;
   }
@@ -4221,8 +4221,8 @@ LABEL_11:
 {
   if ((BYTE3(self->super.mDynamicOpacity) & 4) != 0)
   {
-    v3 = [(CRLShapeLayout *)self path];
-    *(&self->mShapeInvalidFlags + 4) = [v3 isLineSegment];
+    path = [(CRLShapeLayout *)self path];
+    *(&self->mShapeInvalidFlags + 4) = [path isLineSegment];
 
     BYTE3(self->super.mDynamicOpacity) &= ~4u;
   }
@@ -4234,8 +4234,8 @@ LABEL_11:
 {
   if ((BYTE3(self->super.mDynamicOpacity) & 8) != 0)
   {
-    v3 = [(CRLShapeLayout *)self path];
-    *(&self->mShapeInvalidFlags + 5) = [v3 hasAtLeastTwoVisuallyDistinctSubregions];
+    path = [(CRLShapeLayout *)self path];
+    *(&self->mShapeInvalidFlags + 5) = [path hasAtLeastTwoVisuallyDistinctSubregions];
 
     BYTE3(self->super.mDynamicOpacity) &= ~8u;
   }
@@ -4257,8 +4257,8 @@ LABEL_11:
   if ((BYTE3(self->super.mDynamicOpacity) & 0x10) != 0)
   {
     BYTE3(self->super.mDynamicOpacity) &= ~0x10u;
-    v4 = [(CRLShapeLayout *)self path];
-    [v4 getStartPoint:&self->mHeadPoint.x + 3 andEndPoint:&self->mCachedAlignmentFrameInRootTransformInRoot.tx + 3];
+    path = [(CRLShapeLayout *)self path];
+    [path getStartPoint:&self->mHeadPoint.x + 3 andEndPoint:&self->mCachedAlignmentFrameInRootTransformInRoot.tx + 3];
   }
 }
 
@@ -4269,13 +4269,13 @@ LABEL_11:
   {
     BYTE3(self->super.mDynamicOpacity) &= ~0x20u;
     memset(v9, 0, 24);
-    v3 = [(CRLShapeLayout *)self path];
-    v4 = [(CRLShapeLayout *)self shapeInfo];
-    v5 = [v4 headLineEnd];
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v7 = [v6 tailLineEnd];
-    v8 = [(CRLShapeLayout *)self stroke];
-    [CRLBezierPath lineEndPositioningOnPath:v3 atHead:1 headPoint:v5 tailPoint:v7 headLineEnd:v8 tailLineEnd:*(&self->mCachedAlignmentFrameInRootTransformInRoot.tx + 3) stroke:*(&self->mCachedAlignmentFrameInRootTransformInRoot.ty + 3), *(&self->mHeadPoint.x + 3), *(&self->mHeadPoint.y + 3)];
+    path = [(CRLShapeLayout *)self path];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    headLineEnd = [shapeInfo headLineEnd];
+    shapeInfo2 = [(CRLShapeLayout *)self shapeInfo];
+    tailLineEnd = [shapeInfo2 tailLineEnd];
+    stroke = [(CRLShapeLayout *)self stroke];
+    [CRLBezierPath lineEndPositioningOnPath:path atHead:1 headPoint:headLineEnd tailPoint:tailLineEnd headLineEnd:stroke tailLineEnd:*(&self->mCachedAlignmentFrameInRootTransformInRoot.tx + 3) stroke:*(&self->mCachedAlignmentFrameInRootTransformInRoot.ty + 3), *(&self->mHeadPoint.x + 3), *(&self->mHeadPoint.y + 3)];
 
     *(&self->mTailLineEndPoint.x + 3) = 0.0;
     *(&self->mTailPoint + 3) = *(v9 + 8);
@@ -4291,13 +4291,13 @@ LABEL_11:
   {
     BYTE3(self->super.mDynamicOpacity) &= ~0x40u;
     memset(v9, 0, 24);
-    v3 = [(CRLShapeLayout *)self path];
-    v4 = [(CRLShapeLayout *)self shapeInfo];
-    v5 = [v4 headLineEnd];
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v7 = [v6 tailLineEnd];
-    v8 = [(CRLShapeLayout *)self stroke];
-    [CRLBezierPath lineEndPositioningOnPath:v3 atHead:0 headPoint:v5 tailPoint:v7 headLineEnd:v8 tailLineEnd:*(&self->mCachedAlignmentFrameInRootTransformInRoot.tx + 3) stroke:*(&self->mCachedAlignmentFrameInRootTransformInRoot.ty + 3), *(&self->mHeadPoint.x + 3), *(&self->mHeadPoint.y + 3)];
+    path = [(CRLShapeLayout *)self path];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    headLineEnd = [shapeInfo headLineEnd];
+    shapeInfo2 = [(CRLShapeLayout *)self shapeInfo];
+    tailLineEnd = [shapeInfo2 tailLineEnd];
+    stroke = [(CRLShapeLayout *)self stroke];
+    [CRLBezierPath lineEndPositioningOnPath:path atHead:0 headPoint:headLineEnd tailPoint:tailLineEnd headLineEnd:stroke tailLineEnd:*(&self->mCachedAlignmentFrameInRootTransformInRoot.tx + 3) stroke:*(&self->mCachedAlignmentFrameInRootTransformInRoot.ty + 3), *(&self->mHeadPoint.x + 3), *(&self->mHeadPoint.y + 3)];
 
     *(&self->mTailLineEndPoint.y + 3) = 0.0;
     *(&self->mHeadLineEndPoint + 3) = *(v9 + 8);
@@ -4317,13 +4317,13 @@ LABEL_11:
   return v13;
 }
 
-- (id)p_unitePath:(id)a3 withLineEndForHead:(BOOL)a4 stroke:(id)a5
+- (id)p_unitePath:(id)path withLineEndForHead:(BOOL)head stroke:(id)stroke
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
-  if (v6)
+  headCopy = head;
+  pathCopy = path;
+  strokeCopy = stroke;
+  v10 = pathCopy;
+  if (headCopy)
   {
     [(CRLShapeLayout *)self strokeHeadLineEnd];
   }
@@ -4340,7 +4340,7 @@ LABEL_11:
     v13 = v10;
     if (([v11 isNone] & 1) == 0)
     {
-      if (v6)
+      if (headCopy)
       {
         [(CRLShapeLayout *)self headLineEndPoint];
         v15 = v14;
@@ -4357,8 +4357,8 @@ LABEL_11:
       }
 
       v21 = v18;
-      [(CRLShapeLayout *)self lineEndScale:v6];
-      v23 = [v9 pathForLineEnd:v12 wrapPath:1 atPoint:v15 atAngle:v17 withScale:{v21, v22}];
+      [(CRLShapeLayout *)self lineEndScale:headCopy];
+      v23 = [strokeCopy pathForLineEnd:v12 wrapPath:1 atPoint:v15 atAngle:v17 withScale:{v21, v22}];
       v13 = [v10 uniteWithBezierPath:v23];
     }
   }
@@ -4369,8 +4369,8 @@ LABEL_11:
 - (void)p_updateResizeInfoGeometryFromDynamicPathSource
 {
   v14 = *(&self->mCachedEditableBezierPathSource + 3);
-  v3 = [v14 bezierPath];
-  [v3 bounds];
+  bezierPath = [v14 bezierPath];
+  [bezierPath bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -4383,108 +4383,108 @@ LABEL_11:
   [v14 alignToOrigin];
 }
 
-- (id)commandForSettingCornerRadius:(double)a3
+- (id)commandForSettingCornerRadius:(double)radius
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingCornerRadius:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingCornerRadius:pathSource withPathSource:shapeInfo shapeItem:radius];
 
   return v7;
 }
 
-- (id)commandForSettingNumberOfSides:(double)a3
+- (id)commandForSettingNumberOfSides:(double)sides
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingNumberOfSides:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingNumberOfSides:pathSource withPathSource:shapeInfo shapeItem:sides];
 
   return v7;
 }
 
-- (id)commandForSettingStarPoints:(double)a3
+- (id)commandForSettingStarPoints:(double)points
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingStarPoints:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingStarPoints:pathSource withPathSource:shapeInfo shapeItem:points];
 
   return v7;
 }
 
-- (id)commandForSettingStarRadius:(double)a3
+- (id)commandForSettingStarRadius:(double)radius
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingStarRadius:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingStarRadius:pathSource withPathSource:shapeInfo shapeItem:radius];
 
   return v7;
 }
 
-- (id)commandForSettingArrowHead:(double)a3
+- (id)commandForSettingArrowHead:(double)head
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingArrowHead:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingArrowHead:pathSource withPathSource:shapeInfo shapeItem:head];
 
   return v7;
 }
 
-- (id)commandForSettingArrowIndent:(double)a3
+- (id)commandForSettingArrowIndent:(double)indent
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingArrowIndent:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingArrowIndent:pathSource withPathSource:shapeInfo shapeItem:indent];
 
   return v7;
 }
 
-- (id)commandForSettingCalloutCornerRadius:(double)a3
+- (id)commandForSettingCalloutCornerRadius:(double)radius
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingCalloutCornerRadius:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingCalloutCornerRadius:pathSource withPathSource:shapeInfo shapeItem:radius];
 
   return v7;
 }
 
-- (id)commandForSettingCalloutTailSize:(double)a3
+- (id)commandForSettingCalloutTailSize:(double)size
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingCalloutTailSize:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingCalloutTailSize:pathSource withPathSource:shapeInfo shapeItem:size];
 
   return v7;
 }
 
-- (double)adjustedCalloutTailPositionXWithValue:(double)a3
+- (double)adjustedCalloutTailPositionXWithValue:(double)value
 {
-  v5 = [(CRLCanvasLayout *)self layoutController];
-  v6 = [v5 canvas];
-  v7 = [v6 isAnchoredAtRight];
-  v8 = [(CRLCanvasLayout *)self inspectorGeometry];
-  [CRLPathSourceCommandHelper adjustedCalloutTailPositionXWithValue:v7 isAnchoredAtRight:v8 layoutGeometry:a3];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
+  inspectorGeometry = [(CRLCanvasLayout *)self inspectorGeometry];
+  [CRLPathSourceCommandHelper adjustedCalloutTailPositionXWithValue:isAnchoredAtRight isAnchoredAtRight:inspectorGeometry layoutGeometry:value];
   v10 = v9;
 
   return v10;
 }
 
-- (id)commandForSettingCalloutTailPositionX:(double)a3
+- (id)commandForSettingCalloutTailPositionX:(double)x
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [(CRLCanvasLayout *)self layoutController];
-  v8 = [v7 canvas];
-  v9 = [v8 isAnchoredAtRight];
-  v10 = [(CRLCanvasLayout *)self inspectorGeometry];
-  v11 = [CRLPathSourceCommandHelper commandForSettingCalloutTailPositionX:v5 withPathSource:v6 shapeItem:v9 isAnchoredAtRight:v10 layoutGeometry:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
+  inspectorGeometry = [(CRLCanvasLayout *)self inspectorGeometry];
+  v11 = [CRLPathSourceCommandHelper commandForSettingCalloutTailPositionX:pathSource withPathSource:shapeInfo shapeItem:isAnchoredAtRight isAnchoredAtRight:inspectorGeometry layoutGeometry:x];
 
   return v11;
 }
 
-- (id)commandForSettingCalloutTailPositionY:(double)a3
+- (id)commandForSettingCalloutTailPositionY:(double)y
 {
-  v5 = [(CRLShapeLayout *)self pathSource];
-  v6 = [(CRLShapeLayout *)self shapeInfo];
-  v7 = [CRLPathSourceCommandHelper commandForSettingCalloutTailPositionY:v5 withPathSource:v6 shapeItem:a3];
+  pathSource = [(CRLShapeLayout *)self pathSource];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  v7 = [CRLPathSourceCommandHelper commandForSettingCalloutTailPositionY:pathSource withPathSource:shapeInfo shapeItem:y];
 
   return v7;
 }

@@ -1,8 +1,8 @@
 @interface SSLookupItemArtwork
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6 forColorKind:(id)a7;
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha forColorKind:(id)kind;
 - (NSURL)URL;
-- (SSLookupItemArtwork)initWithLookupDictionary:(id)a3;
-- (id)URLWithHeight:(int64_t)a3 width:(int64_t)a4 cropStyle:(id)a5 format:(id)a6;
+- (SSLookupItemArtwork)initWithLookupDictionary:(id)dictionary;
+- (id)URLWithHeight:(int64_t)height width:(int64_t)width cropStyle:(id)style format:(id)format;
 - (int64_t)height;
 - (int64_t)width;
 - (void)dealloc;
@@ -10,14 +10,14 @@
 
 @implementation SSLookupItemArtwork
 
-- (SSLookupItemArtwork)initWithLookupDictionary:(id)a3
+- (SSLookupItemArtwork)initWithLookupDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SSLookupItemArtwork;
   v4 = [(SSLookupItemArtwork *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [a3 copy];
+    v4->_dictionary = [dictionary copy];
   }
 
   return v4;
@@ -30,16 +30,16 @@
   [(SSLookupItemArtwork *)&v3 dealloc];
 }
 
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6 forColorKind:(id)a7
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha forColorKind:(id)kind
 {
-  v11 = [(NSDictionary *)self->_dictionary objectForKey:a7];
+  v11 = [(NSDictionary *)self->_dictionary objectForKey:kind];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
   {
     v16 = 0uLL;
     v17 = 0.0;
-    if (!a3)
+    if (!red)
     {
       goto LABEL_6;
     }
@@ -53,26 +53,26 @@
   v15.i64[1] = v14.u32[1];
   v16 = vdivq_f64(vcvtq_f64_u64(v15), vdupq_n_s64(0x406FE00000000000uLL));
   v17 = v13 / 255.0;
-  if (a3)
+  if (red)
   {
 LABEL_5:
-    *a3 = v16.f64[1];
+    *red = v16.f64[1];
   }
 
 LABEL_6:
-  if (a4)
+  if (green)
   {
-    *a4 = v16.f64[0];
+    *green = v16.f64[0];
   }
 
-  if (a5)
+  if (blue)
   {
-    *a5 = v17;
+    *blue = v17;
   }
 
-  if (a6)
+  if (alpha)
   {
-    *a6 = 1.0;
+    *alpha = 1.0;
   }
 
   return isKindOfClass & 1;
@@ -103,7 +103,7 @@ LABEL_6:
   return [v3 URLWithString:v2];
 }
 
-- (id)URLWithHeight:(int64_t)a3 width:(int64_t)a4 cropStyle:(id)a5 format:(id)a6
+- (id)URLWithHeight:(int64_t)height width:(int64_t)width cropStyle:(id)style format:(id)format
 {
   v21[12] = *MEMORY[0x1E69E9840];
   v11 = [(NSDictionary *)self->_dictionary objectForKey:@"url"];
@@ -116,14 +116,14 @@ LABEL_6:
   v12 = 0;
   v13 = 0;
   v21[0] = @"{h}";
-  v21[1] = a3;
+  v21[1] = height;
   v21[2] = 0;
   v21[3] = @"{w}";
-  v21[4] = a4;
-  v21[8] = a6;
+  v21[4] = width;
+  v21[8] = format;
   v21[9] = @"{c}";
   v21[10] = 0;
-  v21[11] = a5;
+  v21[11] = style;
   v21[5] = 0;
   v21[6] = @"{f}";
   v21[7] = 0;

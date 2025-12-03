@@ -1,72 +1,72 @@
 @interface RMAssetResolverController
-+ (void)_fetchAssetDeclarationWithAssetIdentifier:(id)a3 configurationIdentifier:(id)a4 subscriberStore:(id)a5 scope:(int64_t)a6 completionHandler:(id)a7;
-+ (void)_fetchSubscriberStoreIfNeededWithSubscriberStore:(id)a3 configurationIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
-+ (void)_resolveDataAsset:(id)a3 assetIdentifier:(id)a4 store:(id)a5 downloadURL:(id)a6 completionHandler:(id)a7;
-+ (void)_resolveKeychainAsset:(id)a3 assetIdentifier:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6;
-+ (void)_resolveKeychainAsset:(id)a3 assetIdentifier:(id)a4 configurationKey:(id)a5 store:(id)a6 accessGroup:(id)a7 completionHandler:(id)a8;
-+ (void)_resolveKeychainAssets:(id)a3 assetIdentifiers:(id)a4 accessGroup:(id)a5 persistentRefs:(id)a6 completionHandler:(id)a7;
-+ (void)_resolveKeychainAssetsWithAssetIdentifiers:(id)a3 configurationIdentifier:(id)a4 accessGroup:(id)a5 subscriberStore:(id)a6 persistentRefs:(id)a7 completionHandler:(id)a8;
-+ (void)extractUserIdentityAsset:(id)a3 assetIdentifier:(id)a4 completionHandler:(id)a5;
-+ (void)resolveDataAsset:(id)a3 assetIdentifier:(id)a4 downloadURL:(id)a5 completionHandler:(id)a6;
-+ (void)resolveDataAssetWithAssetIdentifier:(id)a3 configurationIdentifier:(id)a4 downloadURL:(id)a5 subscriberStore:(id)a6 scope:(int64_t)a7 completionHandler:(id)a8;
-+ (void)resolveKeychainAsset:(id)a3 assetIdentifier:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6;
-+ (void)resolveKeychainAssetWithAssetIdentifier:(id)a3 configurationIdentifier:(id)a4 accessGroup:(id)a5 subscriberStore:(id)a6 scope:(int64_t)a7 completionHandler:(id)a8;
-+ (void)resolveKeychainAssets:(id)a3 assetIdentifiers:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6;
-+ (void)resolveKeychainAssetsWithAssetIdentifiers:(id)a3 configurationIdentifier:(id)a4 accessGroup:(id)a5 subscriberStore:(id)a6 scope:(int64_t)a7 completionHandler:(id)a8;
-+ (void)resolveKeychainPasswordAsset:(id)a3 assetIdentifier:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6;
-+ (void)resolveUserNameAndPasswordAsset:(id)a3 assetIdentifier:(id)a4 completionHandler:(id)a5;
++ (void)_fetchAssetDeclarationWithAssetIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler;
++ (void)_fetchSubscriberStoreIfNeededWithSubscriberStore:(id)store configurationIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
++ (void)_resolveDataAsset:(id)asset assetIdentifier:(id)identifier store:(id)store downloadURL:(id)l completionHandler:(id)handler;
++ (void)_resolveKeychainAsset:(id)asset assetIdentifier:(id)identifier accessGroup:(id)group completionHandler:(id)handler;
++ (void)_resolveKeychainAsset:(id)asset assetIdentifier:(id)identifier configurationKey:(id)key store:(id)store accessGroup:(id)group completionHandler:(id)handler;
++ (void)_resolveKeychainAssets:(id)assets assetIdentifiers:(id)identifiers accessGroup:(id)group persistentRefs:(id)refs completionHandler:(id)handler;
++ (void)_resolveKeychainAssetsWithAssetIdentifiers:(id)identifiers configurationIdentifier:(id)identifier accessGroup:(id)group subscriberStore:(id)store persistentRefs:(id)refs completionHandler:(id)handler;
++ (void)extractUserIdentityAsset:(id)asset assetIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)resolveDataAsset:(id)asset assetIdentifier:(id)identifier downloadURL:(id)l completionHandler:(id)handler;
++ (void)resolveDataAssetWithAssetIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier downloadURL:(id)l subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler;
++ (void)resolveKeychainAsset:(id)asset assetIdentifier:(id)identifier accessGroup:(id)group completionHandler:(id)handler;
++ (void)resolveKeychainAssetWithAssetIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier accessGroup:(id)group subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler;
++ (void)resolveKeychainAssets:(id)assets assetIdentifiers:(id)identifiers accessGroup:(id)group completionHandler:(id)handler;
++ (void)resolveKeychainAssetsWithAssetIdentifiers:(id)identifiers configurationIdentifier:(id)identifier accessGroup:(id)group subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler;
++ (void)resolveKeychainPasswordAsset:(id)asset assetIdentifier:(id)identifier accessGroup:(id)group completionHandler:(id)handler;
++ (void)resolveUserNameAndPasswordAsset:(id)asset assetIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation RMAssetResolverController
 
-+ (void)resolveUserNameAndPasswordAsset:(id)a3 assetIdentifier:(id)a4 completionHandler:(id)a5
++ (void)resolveUserNameAndPasswordAsset:(id)asset assetIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  assetCopy = asset;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v10 = [v7 store];
-    v11 = [v7 assetWithIdentifier:v8];
+    store = [assetCopy store];
+    v11 = [assetCopy assetWithIdentifier:identifierCopy];
     if (v11)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [[RMStoreUnresolvedAsset alloc] initWithAsset:v11 queryParameters:0 useCache:0];
-        v13 = [v7 store];
+        createInternalError = [[RMStoreUnresolvedAsset alloc] initWithAsset:v11 queryParameters:0 useCache:0];
+        store2 = [assetCopy store];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __95__RMAssetResolverController_resolveUserNameAndPasswordAsset_assetIdentifier_completionHandler___block_invoke_2;
         v21[3] = &unk_279B051F8;
         v22 = v11;
-        v23 = v10;
-        v24 = v9;
-        [v13 resolveAsset:v12 completionHandler:v21];
+        v23 = store;
+        v24 = handlerCopy;
+        [store2 resolveAsset:createInternalError completionHandler:v21];
 
         v14 = v22;
       }
 
       else
       {
-        v17 = [MEMORY[0x277D45F58] assetResolverController];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+        if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_ERROR))
         {
           +[RMAssetResolverController resolveUserNameAndPasswordAsset:assetIdentifier:completionHandler:];
         }
 
         v18 = MEMORY[0x277D45F40];
-        v19 = [v11 declarationType];
-        v20 = [v18 createAssetTypeInvalidError:v19];
+        declarationType = [v11 declarationType];
+        v20 = [v18 createAssetTypeInvalidError:declarationType];
 
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __95__RMAssetResolverController_resolveUserNameAndPasswordAsset_assetIdentifier_completionHandler___block_invoke;
         v25[3] = &unk_279B051D0;
         v26 = v20;
-        v27 = v9;
-        v12 = v20;
-        [v10 assetEncounteredInternalError:v11 error:v12 completionHandler:v25];
+        v27 = handlerCopy;
+        createInternalError = v20;
+        [store assetEncounteredInternalError:v11 error:createInternalError completionHandler:v25];
 
         v14 = v27;
       }
@@ -74,26 +74,26 @@
 
     else
     {
-      v16 = [MEMORY[0x277D45F58] assetResolverController];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      assetResolverController2 = [MEMORY[0x277D45F58] assetResolverController];
+      if (os_log_type_enabled(assetResolverController2, OS_LOG_TYPE_ERROR))
       {
         +[RMAssetResolverController resolveUserNameAndPasswordAsset:assetIdentifier:completionHandler:];
       }
 
-      v12 = [MEMORY[0x277D45F40] createInternalError];
-      (*(v9 + 2))(v9, 0, v12);
+      createInternalError = [MEMORY[0x277D45F40] createInternalError];
+      (*(handlerCopy + 2))(handlerCopy, 0, createInternalError);
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    assetResolverController3 = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController3, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveUserNameAndPasswordAsset:assetIdentifier:completionHandler:];
     }
 
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -173,24 +173,24 @@ void __95__RMAssetResolverController_resolveUserNameAndPasswordAsset_assetIdenti
   }
 }
 
-+ (void)extractUserIdentityAsset:(id)a3 assetIdentifier:(id)a4 completionHandler:(id)a5
++ (void)extractUserIdentityAsset:(id)asset assetIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  assetCopy = asset;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v10 = [v7 store];
-    v11 = [v7 assetWithIdentifier:v8];
+    store = [assetCopy store];
+    v11 = [assetCopy assetWithIdentifier:identifierCopy];
     if (v11)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v13 = [MEMORY[0x277D45F58] assetResolverController];
-      v14 = v13;
+      assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+      v14 = assetResolverController;
       if (isKindOfClass)
       {
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_DEBUG))
         {
           +[RMAssetResolverController extractUserIdentityAsset:assetIdentifier:completionHandler:];
         }
@@ -199,70 +199,70 @@ void __95__RMAssetResolverController_resolveUserNameAndPasswordAsset_assetIdenti
         v21[1] = 3221225472;
         v21[2] = __88__RMAssetResolverController_extractUserIdentityAsset_assetIdentifier_completionHandler___block_invoke_14;
         v21[3] = &unk_279B051D0;
-        v23 = v9;
+        v23 = handlerCopy;
         v22 = v11;
-        [v10 assetSuccessfullyResolved:v22 completionHandler:v21];
+        [store assetSuccessfullyResolved:v22 completionHandler:v21];
 
-        v15 = v23;
+        createInternalError = v23;
       }
 
       else
       {
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_ERROR))
         {
           +[RMAssetResolverController resolveUserNameAndPasswordAsset:assetIdentifier:completionHandler:];
         }
 
         v18 = MEMORY[0x277D45F40];
-        v19 = [v11 declarationType];
-        v20 = [v18 createAssetTypeInvalidError:v19];
+        declarationType = [v11 declarationType];
+        v20 = [v18 createAssetTypeInvalidError:declarationType];
 
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __88__RMAssetResolverController_extractUserIdentityAsset_assetIdentifier_completionHandler___block_invoke;
         v24[3] = &unk_279B051D0;
         v25 = v20;
-        v26 = v9;
-        v15 = v20;
-        [v10 assetEncounteredInternalError:v11 error:v15 completionHandler:v24];
+        v26 = handlerCopy;
+        createInternalError = v20;
+        [store assetEncounteredInternalError:v11 error:createInternalError completionHandler:v24];
       }
     }
 
     else
     {
-      v17 = [MEMORY[0x277D45F58] assetResolverController];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      assetResolverController2 = [MEMORY[0x277D45F58] assetResolverController];
+      if (os_log_type_enabled(assetResolverController2, OS_LOG_TYPE_ERROR))
       {
         +[RMAssetResolverController resolveUserNameAndPasswordAsset:assetIdentifier:completionHandler:];
       }
 
-      v15 = [MEMORY[0x277D45F40] createInternalError];
-      (*(v9 + 2))(v9, 0, v15);
+      createInternalError = [MEMORY[0x277D45F40] createInternalError];
+      (*(handlerCopy + 2))(handlerCopy, 0, createInternalError);
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    assetResolverController3 = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController3, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveUserNameAndPasswordAsset:assetIdentifier:completionHandler:];
     }
 
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-+ (void)resolveKeychainAsset:(id)a3 assetIdentifier:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6
++ (void)resolveKeychainAsset:(id)asset assetIdentifier:(id)identifier accessGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __96__RMAssetResolverController_resolveKeychainAsset_assetIdentifier_accessGroup_completionHandler___block_invoke;
   v12[3] = &unk_279B05220;
-  v13 = v10;
-  v11 = v10;
-  [a1 _resolveKeychainAsset:a3 assetIdentifier:a4 accessGroup:a5 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [self _resolveKeychainAsset:asset assetIdentifier:identifier accessGroup:group completionHandler:v12];
 }
 
 void __96__RMAssetResolverController_resolveKeychainAsset_assetIdentifier_accessGroup_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -273,66 +273,66 @@ void __96__RMAssetResolverController_resolveKeychainAsset_assetIdentifier_access
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)resolveKeychainAssets:(id)a3 assetIdentifiers:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6
++ (void)resolveKeychainAssets:(id)assets assetIdentifiers:(id)identifiers accessGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
+  groupCopy = group;
+  if (identifiersCopy)
   {
     v13 = MEMORY[0x277CBEB18];
-    v14 = a6;
-    v15 = [v13 arrayWithCapacity:{objc_msgSend(v11, "count")}];
-    v16 = [v11 objectEnumerator];
-    [a1 _resolveKeychainAssets:v10 assetIdentifiers:v16 accessGroup:v12 persistentRefs:v15 completionHandler:v14];
+    handlerCopy = handler;
+    v15 = [v13 arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+    objectEnumerator = [identifiersCopy objectEnumerator];
+    [self _resolveKeychainAssets:assetsCopy assetIdentifiers:objectEnumerator accessGroup:groupCopy persistentRefs:v15 completionHandler:handlerCopy];
   }
 
   else
   {
     v17 = MEMORY[0x277D45F58];
-    v18 = a6;
-    v19 = [v17 assetResolverController];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    handlerCopy2 = handler;
+    assetResolverController = [v17 assetResolverController];
+    if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveKeychainAssets:assetIdentifiers:accessGroup:completionHandler:];
     }
 
-    (*(v18 + 2))(v18, 0, 0);
+    (*(handlerCopy2 + 2))(handlerCopy2, 0, 0);
   }
 }
 
-+ (void)resolveKeychainAssetWithAssetIdentifier:(id)a3 configurationIdentifier:(id)a4 accessGroup:(id)a5 subscriberStore:(id)a6 scope:(int64_t)a7 completionHandler:(id)a8
++ (void)resolveKeychainAssetWithAssetIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier accessGroup:(id)group subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (v14)
+  identifierCopy = identifier;
+  configurationIdentifierCopy = configurationIdentifier;
+  groupCopy = group;
+  storeCopy = store;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v19 = [RMStoreDeclarationKey newDeclarationKey:v15];
+    v19 = [RMStoreDeclarationKey newDeclarationKey:configurationIdentifierCopy];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __145__RMAssetResolverController_resolveKeychainAssetWithAssetIdentifier_configurationIdentifier_accessGroup_subscriberStore_scope_completionHandler___block_invoke;
     v22[3] = &unk_279B05248;
-    v26 = v18;
-    v27 = a1;
-    v23 = v14;
+    v26 = handlerCopy;
+    selfCopy = self;
+    v23 = identifierCopy;
     v24 = v19;
-    v25 = v16;
+    v25 = groupCopy;
     v20 = v19;
-    [a1 _fetchAssetDeclarationWithAssetIdentifier:v23 configurationIdentifier:v15 subscriberStore:v17 scope:a7 completionHandler:v22];
+    [self _fetchAssetDeclarationWithAssetIdentifier:v23 configurationIdentifier:configurationIdentifierCopy subscriberStore:storeCopy scope:scope completionHandler:v22];
   }
 
   else
   {
-    v21 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+    assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveKeychainAssetWithAssetIdentifier:configurationIdentifier:accessGroup:subscriberStore:scope:completionHandler:];
     }
 
-    (*(v18 + 2))(v18, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -370,36 +370,36 @@ void __145__RMAssetResolverController_resolveKeychainAssetWithAssetIdentifier_co
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)resolveKeychainAssetsWithAssetIdentifiers:(id)a3 configurationIdentifier:(id)a4 accessGroup:(id)a5 subscriberStore:(id)a6 scope:(int64_t)a7 completionHandler:(id)a8
++ (void)resolveKeychainAssetsWithAssetIdentifiers:(id)identifiers configurationIdentifier:(id)identifier accessGroup:(id)group subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (v14 && [v14 count])
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  groupCopy = group;
+  storeCopy = store;
+  handlerCopy = handler;
+  if (identifiersCopy && [identifiersCopy count])
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __147__RMAssetResolverController_resolveKeychainAssetsWithAssetIdentifiers_configurationIdentifier_accessGroup_subscriberStore_scope_completionHandler___block_invoke;
     v20[3] = &unk_279B05270;
-    v24 = v18;
-    v25 = a1;
-    v21 = v14;
-    v22 = v15;
-    v23 = v16;
-    [a1 _fetchSubscriberStoreIfNeededWithSubscriberStore:v17 configurationIdentifier:v22 scope:a7 completionHandler:v20];
+    v24 = handlerCopy;
+    selfCopy = self;
+    v21 = identifiersCopy;
+    v22 = identifierCopy;
+    v23 = groupCopy;
+    [self _fetchSubscriberStoreIfNeededWithSubscriberStore:storeCopy configurationIdentifier:v22 scope:scope completionHandler:v20];
   }
 
   else
   {
-    v19 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveKeychainAssetsWithAssetIdentifiers:configurationIdentifier:accessGroup:subscriberStore:scope:completionHandler:];
     }
 
-    (*(v18 + 2))(v18, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -422,16 +422,16 @@ void __147__RMAssetResolverController_resolveKeychainAssetsWithAssetIdentifiers_
   }
 }
 
-+ (void)resolveKeychainPasswordAsset:(id)a3 assetIdentifier:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6
++ (void)resolveKeychainPasswordAsset:(id)asset assetIdentifier:(id)identifier accessGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __104__RMAssetResolverController_resolveKeychainPasswordAsset_assetIdentifier_accessGroup_completionHandler___block_invoke;
   v12[3] = &unk_279B05220;
-  v13 = v10;
-  v11 = v10;
-  [a1 _resolveKeychainAsset:a3 assetIdentifier:a4 accessGroup:a5 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [self _resolveKeychainAsset:asset assetIdentifier:identifier accessGroup:group completionHandler:v12];
 }
 
 void __104__RMAssetResolverController_resolveKeychainPasswordAsset_assetIdentifier_accessGroup_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -445,69 +445,69 @@ void __104__RMAssetResolverController_resolveKeychainPasswordAsset_assetIdentifi
   (*(v4 + 16))(v4, v8, v7, v5);
 }
 
-+ (void)resolveDataAsset:(id)a3 assetIdentifier:(id)a4 downloadURL:(id)a5 completionHandler:(id)a6
++ (void)resolveDataAsset:(id)asset assetIdentifier:(id)identifier downloadURL:(id)l completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  assetCopy = asset;
+  identifierCopy = identifier;
+  lCopy = l;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v14 = [v10 store];
-    v15 = [v10 assetWithIdentifier:v11];
+    store = [assetCopy store];
+    v15 = [assetCopy assetWithIdentifier:identifierCopy];
     if (v15)
     {
-      [a1 _resolveDataAsset:v15 assetIdentifier:v11 store:v14 downloadURL:v12 completionHandler:v13];
+      [self _resolveDataAsset:v15 assetIdentifier:identifierCopy store:store downloadURL:lCopy completionHandler:handlerCopy];
     }
 
     else
     {
-      v17 = [MEMORY[0x277D45F58] assetResolverController];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+      if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_ERROR))
       {
         +[RMAssetResolverController resolveUserNameAndPasswordAsset:assetIdentifier:completionHandler:];
       }
 
-      v18 = [MEMORY[0x277D45F40] createInternalError];
-      v13[2](v13, 0, v18);
+      createInternalError = [MEMORY[0x277D45F40] createInternalError];
+      handlerCopy[2](handlerCopy, 0, createInternalError);
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    assetResolverController2 = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController2, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveDataAsset:assetIdentifier:downloadURL:completionHandler:];
     }
 
-    v13[2](v13, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-+ (void)resolveDataAssetWithAssetIdentifier:(id)a3 configurationIdentifier:(id)a4 downloadURL:(id)a5 subscriberStore:(id)a6 scope:(int64_t)a7 completionHandler:(id)a8
++ (void)resolveDataAssetWithAssetIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier downloadURL:(id)l subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
-  v17 = v16;
-  if (v14)
+  identifierCopy = identifier;
+  lCopy = l;
+  handlerCopy = handler;
+  v17 = handlerCopy;
+  if (identifierCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __141__RMAssetResolverController_resolveDataAssetWithAssetIdentifier_configurationIdentifier_downloadURL_subscriberStore_scope_completionHandler___block_invoke;
     v19[3] = &unk_279B05298;
-    v22 = v16;
-    v23 = a1;
-    v20 = v14;
-    v21 = v15;
-    [a1 _fetchAssetDeclarationWithAssetIdentifier:v20 configurationIdentifier:a4 subscriberStore:a6 scope:a7 completionHandler:v19];
+    v22 = handlerCopy;
+    selfCopy = self;
+    v20 = identifierCopy;
+    v21 = lCopy;
+    [self _fetchAssetDeclarationWithAssetIdentifier:v20 configurationIdentifier:configurationIdentifier subscriberStore:store scope:scope completionHandler:v19];
   }
 
   else
   {
-    v18 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveDataAsset:assetIdentifier:downloadURL:completionHandler:];
     }
@@ -529,32 +529,32 @@ uint64_t __141__RMAssetResolverController_resolveDataAssetWithAssetIdentifier_co
   }
 }
 
-+ (void)_resolveKeychainAssets:(id)a3 assetIdentifiers:(id)a4 accessGroup:(id)a5 persistentRefs:(id)a6 completionHandler:(id)a7
++ (void)_resolveKeychainAssets:(id)assets assetIdentifiers:(id)identifiers accessGroup:(id)group persistentRefs:(id)refs completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 nextObject];
-  if (v17)
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
+  groupCopy = group;
+  refsCopy = refs;
+  handlerCopy = handler;
+  nextObject = [identifiersCopy nextObject];
+  if (nextObject)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __114__RMAssetResolverController__resolveKeychainAssets_assetIdentifiers_accessGroup_persistentRefs_completionHandler___block_invoke;
     v18[3] = &unk_279B052C0;
-    v23 = v16;
-    v19 = v15;
-    v24 = a1;
-    v20 = v12;
-    v21 = v13;
-    v22 = v14;
-    [a1 _resolveKeychainAsset:v20 assetIdentifier:v17 accessGroup:v22 completionHandler:v18];
+    v23 = handlerCopy;
+    v19 = refsCopy;
+    selfCopy = self;
+    v20 = assetsCopy;
+    v21 = identifiersCopy;
+    v22 = groupCopy;
+    [self _resolveKeychainAsset:v20 assetIdentifier:nextObject accessGroup:v22 completionHandler:v18];
   }
 
   else
   {
-    (*(v16 + 2))(v16, v15, 0);
+    (*(handlerCopy + 2))(handlerCopy, refsCopy, 0);
   }
 }
 
@@ -585,35 +585,35 @@ uint64_t __114__RMAssetResolverController__resolveKeychainAssets_assetIdentifier
   }
 }
 
-+ (void)_resolveKeychainAssetsWithAssetIdentifiers:(id)a3 configurationIdentifier:(id)a4 accessGroup:(id)a5 subscriberStore:(id)a6 persistentRefs:(id)a7 completionHandler:(id)a8
++ (void)_resolveKeychainAssetsWithAssetIdentifiers:(id)identifiers configurationIdentifier:(id)identifier accessGroup:(id)group subscriberStore:(id)store persistentRefs:(id)refs completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v14 nextObject];
-  if (v20)
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  groupCopy = group;
+  storeCopy = store;
+  refsCopy = refs;
+  handlerCopy = handler;
+  nextObject = [identifiersCopy nextObject];
+  if (nextObject)
   {
-    v21 = [v17 scope];
+    scope = [storeCopy scope];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __157__RMAssetResolverController__resolveKeychainAssetsWithAssetIdentifiers_configurationIdentifier_accessGroup_subscriberStore_persistentRefs_completionHandler___block_invoke;
     v22[3] = &unk_279B052E8;
-    v28 = v19;
-    v23 = v18;
-    v29 = a1;
-    v24 = v14;
-    v25 = v15;
-    v26 = v16;
-    v27 = v17;
-    [a1 resolveKeychainAssetWithAssetIdentifier:v20 configurationIdentifier:v25 accessGroup:v26 subscriberStore:v27 scope:v21 completionHandler:v22];
+    v28 = handlerCopy;
+    v23 = refsCopy;
+    selfCopy = self;
+    v24 = identifiersCopy;
+    v25 = identifierCopy;
+    v26 = groupCopy;
+    v27 = storeCopy;
+    [self resolveKeychainAssetWithAssetIdentifier:nextObject configurationIdentifier:v25 accessGroup:v26 subscriberStore:v27 scope:scope completionHandler:v22];
   }
 
   else
   {
-    (*(v19 + 2))(v19, v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, refsCopy, 0);
   }
 }
 
@@ -629,60 +629,60 @@ void __157__RMAssetResolverController__resolveKeychainAssetsWithAssetIdentifiers
   [*(a1 + 80) _resolveKeychainAssetsWithAssetIdentifiers:*(a1 + 40) configurationIdentifier:*(a1 + 48) accessGroup:*(a1 + 56) subscriberStore:*(a1 + 64) persistentRefs:*(a1 + 32) completionHandler:*(a1 + 72)];
 }
 
-+ (void)_resolveKeychainAsset:(id)a3 assetIdentifier:(id)a4 accessGroup:(id)a5 completionHandler:(id)a6
++ (void)_resolveKeychainAsset:(id)asset assetIdentifier:(id)identifier accessGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  assetCopy = asset;
+  identifierCopy = identifier;
+  groupCopy = group;
+  if (identifierCopy)
   {
-    v13 = a6;
-    v14 = [v10 assetWithIdentifier:v11];
-    v15 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"RMAssetResolverController" reference:v10];
-    v16 = [v10 store];
-    [a1 _resolveKeychainAsset:v14 assetIdentifier:v11 configurationKey:v15 store:v16 accessGroup:v12 completionHandler:v13];
+    handlerCopy = handler;
+    v14 = [assetCopy assetWithIdentifier:identifierCopy];
+    v15 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"RMAssetResolverController" reference:assetCopy];
+    store = [assetCopy store];
+    [self _resolveKeychainAsset:v14 assetIdentifier:identifierCopy configurationKey:v15 store:store accessGroup:groupCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v17 = MEMORY[0x277D45F58];
-    v18 = a6;
-    v19 = [v17 assetResolverController];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    handlerCopy2 = handler;
+    assetResolverController = [v17 assetResolverController];
+    if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_DEBUG))
     {
       +[RMAssetResolverController resolveKeychainAssetWithAssetIdentifier:configurationIdentifier:accessGroup:subscriberStore:scope:completionHandler:];
     }
 
-    (*(v18 + 2))(v18, 0, 0);
+    (*(handlerCopy2 + 2))(handlerCopy2, 0, 0);
   }
 }
 
-+ (void)_resolveKeychainAsset:(id)a3 assetIdentifier:(id)a4 configurationKey:(id)a5 store:(id)a6 accessGroup:(id)a7 completionHandler:(id)a8
++ (void)_resolveKeychainAsset:(id)asset assetIdentifier:(id)identifier configurationKey:(id)key store:(id)store accessGroup:(id)group completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v13)
+  assetCopy = asset;
+  identifierCopy = identifier;
+  keyCopy = key;
+  storeCopy = store;
+  groupCopy = group;
+  handlerCopy = handler;
+  if (assetCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v19 = v17;
-      if ([v19 length])
+      createInternalError = groupCopy;
+      if ([createInternalError length])
       {
 LABEL_14:
-        v22 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"RMAssetResolverController" store:v16 declaration:v13];
-        v23 = [[RMStoreUnresolvedKeychainAsset alloc] initWithAsset:v13 assetKey:v22 configurationKey:v15 group:v19 defaultAccessibility:0];
+        v22 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"RMAssetResolverController" store:storeCopy declaration:assetCopy];
+        v23 = [[RMStoreUnresolvedKeychainAsset alloc] initWithAsset:assetCopy assetKey:v22 configurationKey:keyCopy group:createInternalError defaultAccessibility:0];
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __120__RMAssetResolverController__resolveKeychainAsset_assetIdentifier_configurationKey_store_accessGroup_completionHandler___block_invoke_2;
         v29[3] = &unk_279B051F8;
-        v30 = v13;
-        v31 = v16;
-        v32 = v18;
+        v30 = assetCopy;
+        v31 = storeCopy;
+        v32 = handlerCopy;
         [v31 resolveAsset:v23 completionHandler:v29];
 
         goto LABEL_18;
@@ -715,40 +715,40 @@ LABEL_14:
       v21 = *v20;
 LABEL_13:
 
-      v19 = v21;
+      createInternalError = v21;
       goto LABEL_14;
     }
 
-    v25 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_ERROR))
     {
       +[RMAssetResolverController _resolveKeychainAsset:assetIdentifier:configurationKey:store:accessGroup:completionHandler:];
     }
 
     v26 = MEMORY[0x277D45F40];
-    v27 = [v13 declarationType];
-    v28 = [v26 createAssetTypeInvalidError:v27];
+    declarationType = [assetCopy declarationType];
+    v28 = [v26 createAssetTypeInvalidError:declarationType];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __120__RMAssetResolverController__resolveKeychainAsset_assetIdentifier_configurationKey_store_accessGroup_completionHandler___block_invoke;
     v33[3] = &unk_279B051D0;
     v34 = v28;
-    v35 = v18;
-    v19 = v28;
-    [v16 assetEncounteredInternalError:v13 error:v19 completionHandler:v33];
+    v35 = handlerCopy;
+    createInternalError = v28;
+    [storeCopy assetEncounteredInternalError:assetCopy error:createInternalError completionHandler:v33];
   }
 
   else
   {
-    v24 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    assetResolverController2 = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController2, OS_LOG_TYPE_ERROR))
     {
       +[RMAssetResolverController _resolveKeychainAsset:assetIdentifier:configurationKey:store:accessGroup:completionHandler:];
     }
 
-    v19 = [MEMORY[0x277D45F40] createInternalError];
-    (*(v18 + 2))(v18, 0, v19);
+    createInternalError = [MEMORY[0x277D45F40] createInternalError];
+    (*(handlerCopy + 2))(handlerCopy, 0, createInternalError);
   }
 
 LABEL_18:
@@ -801,42 +801,42 @@ void __120__RMAssetResolverController__resolveKeychainAsset_assetIdentifier_conf
   }
 }
 
-+ (void)_resolveDataAsset:(id)a3 assetIdentifier:(id)a4 store:(id)a5 downloadURL:(id)a6 completionHandler:(id)a7
++ (void)_resolveDataAsset:(id)asset assetIdentifier:(id)identifier store:(id)store downloadURL:(id)l completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  assetCopy = asset;
+  identifierCopy = identifier;
+  storeCopy = store;
+  lCopy = l;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [[RMStoreUnresolvedAsset alloc] initWithAsset:v11 queryParameters:0 downloadURL:v14 useCache:1];
+    v16 = [[RMStoreUnresolvedAsset alloc] initWithAsset:assetCopy queryParameters:0 downloadURL:lCopy useCache:1];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __99__RMAssetResolverController__resolveDataAsset_assetIdentifier_store_downloadURL_completionHandler___block_invoke_2;
     v25[3] = &unk_279B051F8;
     v17 = &v26;
-    v26 = v11;
+    v26 = assetCopy;
     v18 = &v27;
-    v19 = v13;
+    v19 = storeCopy;
     v27 = v19;
-    v28 = v15;
-    v20 = v15;
+    v28 = handlerCopy;
+    v20 = handlerCopy;
     [v19 resolveAsset:v16 completionHandler:v25];
   }
 
   else
   {
-    v21 = [MEMORY[0x277D45F58] assetResolverController];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    assetResolverController = [MEMORY[0x277D45F58] assetResolverController];
+    if (os_log_type_enabled(assetResolverController, OS_LOG_TYPE_ERROR))
     {
       +[RMAssetResolverController _resolveKeychainAsset:assetIdentifier:configurationKey:store:accessGroup:completionHandler:];
     }
 
     v22 = MEMORY[0x277D45F40];
-    v23 = [v11 declarationType];
-    v24 = [v22 createAssetTypeInvalidError:v23];
+    declarationType = [assetCopy declarationType];
+    v24 = [v22 createAssetTypeInvalidError:declarationType];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -845,10 +845,10 @@ void __120__RMAssetResolverController__resolveKeychainAsset_assetIdentifier_conf
     v17 = &v31;
     v18 = &v30;
     v30 = v24;
-    v31 = v15;
+    v31 = handlerCopy;
     v20 = v24;
-    v16 = v15;
-    [v13 assetEncounteredInternalError:v11 error:v20 completionHandler:v29];
+    v16 = handlerCopy;
+    [storeCopy assetEncounteredInternalError:assetCopy error:v20 completionHandler:v29];
   }
 }
 
@@ -895,19 +895,19 @@ void __99__RMAssetResolverController__resolveDataAsset_assetIdentifier_store_dow
   }
 }
 
-+ (void)_fetchAssetDeclarationWithAssetIdentifier:(id)a3 configurationIdentifier:(id)a4 subscriberStore:(id)a5 scope:(int64_t)a6 completionHandler:(id)a7
++ (void)_fetchAssetDeclarationWithAssetIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier subscriberStore:(id)store scope:(int64_t)scope completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __135__RMAssetResolverController__fetchAssetDeclarationWithAssetIdentifier_configurationIdentifier_subscriberStore_scope_completionHandler___block_invoke;
   v16[3] = &unk_279B05360;
-  v17 = v12;
-  v18 = v13;
-  v14 = v12;
-  v15 = v13;
-  [a1 _fetchSubscriberStoreIfNeededWithSubscriberStore:a5 configurationIdentifier:a4 scope:a6 completionHandler:v16];
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  [self _fetchSubscriberStoreIfNeededWithSubscriberStore:store configurationIdentifier:configurationIdentifier scope:scope completionHandler:v16];
 }
 
 void __135__RMAssetResolverController__fetchAssetDeclarationWithAssetIdentifier_configurationIdentifier_subscriberStore_scope_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -931,16 +931,16 @@ void __135__RMAssetResolverController__fetchAssetDeclarationWithAssetIdentifier_
   }
 }
 
-+ (void)_fetchSubscriberStoreIfNeededWithSubscriberStore:(id)a3 configurationIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
++ (void)_fetchSubscriberStoreIfNeededWithSubscriberStore:(id)store configurationIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  if (a3)
+  if (store)
   {
-    (*(a6 + 2))(a6, a3, 0);
+    (*(handler + 2))(handler, store, 0);
   }
 
   else
   {
-    [RMSubscriberStore storeForStoreDeclarationKeyString:a4 scope:a5 completionHandler:a6];
+    [RMSubscriberStore storeForStoreDeclarationKeyString:identifier scope:scope completionHandler:handler];
   }
 }
 

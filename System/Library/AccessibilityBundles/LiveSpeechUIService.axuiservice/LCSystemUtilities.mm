@@ -1,7 +1,7 @@
 @interface LCSystemUtilities
 + (BOOL)liveCaptionsSupported;
 + (void)registerLiveCaptionsPID;
-- (void)idleSleepTimerDisabled:(BOOL)a3;
+- (void)idleSleepTimerDisabled:(BOOL)disabled;
 @end
 
 @implementation LCSystemUtilities
@@ -52,14 +52,14 @@
 
   v3 = v2;
   _Block_object_dispose(&v6, 8);
-  v4 = [v2 server];
-  [v4 registerLiveCaptionsPID:getpid()];
+  server = [v2 server];
+  [server registerLiveCaptionsPID:getpid()];
 }
 
-- (void)idleSleepTimerDisabled:(BOOL)a3
+- (void)idleSleepTimerDisabled:(BOOL)disabled
 {
   disableIdleTimerAssertion = self->_disableIdleTimerAssertion;
-  if (a3)
+  if (disabled)
   {
     if (disableIdleTimerAssertion)
     {
@@ -84,8 +84,8 @@
 
     v6 = v5;
     _Block_object_dispose(&v14, 8);
-    v7 = [v5 sharedInstance];
-    v8 = [v7 acquireAssertionToDisableIdleTimerWithReason:@"LiveCaptions"];
+    sharedInstance = [v5 sharedInstance];
+    v8 = [sharedInstance acquireAssertionToDisableIdleTimerWithReason:@"LiveCaptions"];
     v9 = self->_disableIdleTimerAssertion;
     self->_disableIdleTimerAssertion = v8;
 

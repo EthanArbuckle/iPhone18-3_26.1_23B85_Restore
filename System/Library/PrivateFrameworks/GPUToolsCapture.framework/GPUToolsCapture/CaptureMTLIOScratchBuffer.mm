@@ -1,6 +1,6 @@
 @interface CaptureMTLIOScratchBuffer
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLIOScratchBuffer)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4 captureBuffer:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLIOScratchBuffer)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context captureBuffer:(id)buffer;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
@@ -35,10 +35,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLIOScratchBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLIOScratchBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -57,13 +57,13 @@
   [(CaptureMTLIOScratchBuffer *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLIOScratchBuffer *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLIOScratchBuffer *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -118,19 +118,19 @@
   }
 }
 
-- (CaptureMTLIOScratchBuffer)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4 captureBuffer:(id)a5
+- (CaptureMTLIOScratchBuffer)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context captureBuffer:(id)buffer
 {
-  v8 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = CaptureMTLIOScratchBuffer;
   v9 = [(CaptureMTLIOScratchBuffer *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v10->_traceContext = a4;
-    v11 = DEVICEOBJECT(v8);
-    v10->_traceStream = GTTraceContext_openStream(a4, v11, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    v10->_traceContext = context;
+    v11 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(context, v11, v10);
   }
 
   return v10;

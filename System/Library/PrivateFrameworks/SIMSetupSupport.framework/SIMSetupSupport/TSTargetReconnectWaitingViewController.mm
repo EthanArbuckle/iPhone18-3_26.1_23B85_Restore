@@ -1,7 +1,7 @@
 @interface TSTargetReconnectWaitingViewController
 - (TSSIMSetupFlowDelegate)delegate;
 - (TSTargetReconnectWaitingViewController)init;
-- (void)_skipButtonTapped:(id)a3;
+- (void)_skipButtonTapped:(id)tapped;
 - (void)submitAutoReconnectionDetails;
 - (void)viewDidLoad;
 @end
@@ -26,9 +26,9 @@
   v11.receiver = self;
   v11.super_class = TSTargetReconnectWaitingViewController;
   [(TSOBWelcomeController *)&v11 viewDidLoad];
-  v3 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   skipButton = self->_skipButton;
-  self->_skipButton = v3;
+  self->_skipButton = linkButton;
 
   [(OBLinkTrayButton *)self->_skipButton setRole:2];
   v5 = self->_skipButton;
@@ -37,19 +37,19 @@
   [(OBLinkTrayButton *)v5 setTitle:v7 forState:0];
 
   [(OBLinkTrayButton *)self->_skipButton addTarget:self action:sel__skipButtonTapped_ forControlEvents:64];
-  v8 = [(TSTargetReconnectWaitingViewController *)self buttonTray];
-  [v8 addButton:self->_skipButton];
+  buttonTray = [(TSTargetReconnectWaitingViewController *)self buttonTray];
+  [buttonTray addButton:self->_skipButton];
 
-  v9 = [(TSTargetReconnectWaitingViewController *)self buttonTray];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonTray2 = [(TSTargetReconnectWaitingViewController *)self buttonTray];
+  [buttonTray2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(OBBaseWelcomeController *)self navigationItem];
-  [v10 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   self->_waitingStartTime = CFAbsoluteTimeGetCurrent();
 }
 
-- (void)_skipButtonTapped:(id)a3
+- (void)_skipButtonTapped:(id)tapped
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _TSLogDomain();
@@ -61,8 +61,8 @@
   }
 
   [(TSTargetReconnectWaitingViewController *)self submitAutoReconnectionDetails];
-  v5 = [(TSTargetReconnectWaitingViewController *)self delegate];
-  [v5 viewControllerDidComplete:self];
+  delegate = [(TSTargetReconnectWaitingViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }

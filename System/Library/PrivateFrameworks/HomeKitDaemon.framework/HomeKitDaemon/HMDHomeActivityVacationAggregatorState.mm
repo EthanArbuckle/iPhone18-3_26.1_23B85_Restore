@@ -1,18 +1,18 @@
 @interface HMDHomeActivityVacationAggregatorState
-- (BOOL)isEqual:(id)a3;
-- (HMDHomeActivityVacationAggregatorState)initWithType:(unint64_t)a3 changedReason:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDHomeActivityVacationAggregatorState)initWithType:(unint64_t)type changedReason:(unint64_t)reason;
 - (id)attributeDescriptions;
 @end
 
 @implementation HMDHomeActivityVacationAggregatorState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -23,8 +23,8 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDHomeActivityVacationAggregatorState *)self type];
-    v8 = v7 == [v6 type];
+    type = [(HMDHomeActivityVacationAggregatorState *)self type];
+    v8 = type == [v6 type];
   }
 
   else
@@ -53,17 +53,17 @@
   return v9;
 }
 
-- (HMDHomeActivityVacationAggregatorState)initWithType:(unint64_t)a3 changedReason:(unint64_t)a4
+- (HMDHomeActivityVacationAggregatorState)initWithType:(unint64_t)type changedReason:(unint64_t)reason
 {
-  if (a4)
+  if (reason)
   {
     v9.receiver = self;
     v9.super_class = HMDHomeActivityVacationAggregatorState;
     result = [(HMDHomeActivityVacationAggregatorState *)&v9 init];
     if (result)
     {
-      result->_type = a3;
-      result->_changedReason = a4;
+      result->_type = type;
+      result->_changedReason = reason;
     }
   }
 

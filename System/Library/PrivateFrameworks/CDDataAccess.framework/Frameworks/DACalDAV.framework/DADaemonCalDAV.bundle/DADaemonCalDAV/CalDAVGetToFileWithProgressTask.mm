@@ -1,21 +1,21 @@
 @interface CalDAVGetToFileWithProgressTask
 - (MobileCalDAVAttachmentDownloader)downloader;
 - (id)additionalHeaderValues;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
+- (void)connection:(id)connection didReceiveData:(id)data;
 @end
 
 @implementation CalDAVGetToFileWithProgressTask
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
+  dataCopy = data;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_downloader);
-  [WeakRetained _didShowProgressDownloadedByteCount:{-[CalDAVGetToFileWithProgressTask totalBytesReceived](self, "totalBytesReceived") + objc_msgSend(v6, "length")}];
+  [WeakRetained _didShowProgressDownloadedByteCount:{-[CalDAVGetToFileWithProgressTask totalBytesReceived](self, "totalBytesReceived") + objc_msgSend(dataCopy, "length")}];
 
   v9.receiver = self;
   v9.super_class = CalDAVGetToFileWithProgressTask;
-  [(CalDAVGetToFileWithProgressTask *)&v9 connection:v7 didReceiveData:v6];
+  [(CalDAVGetToFileWithProgressTask *)&v9 connection:connectionCopy didReceiveData:dataCopy];
 }
 
 - (id)additionalHeaderValues
@@ -23,15 +23,15 @@
   v3 = objc_opt_new();
   v8.receiver = self;
   v8.super_class = CalDAVGetToFileWithProgressTask;
-  v4 = [(CalDAVGetToFileWithProgressTask *)&v8 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CalDAVGetToFileWithProgressTask *)&v8 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
-  v5 = [(CalDAVGetToFileWithProgressTask *)self previousETag];
+  previousETag = [(CalDAVGetToFileWithProgressTask *)self previousETag];
 
-  if (v5)
+  if (previousETag)
   {
-    v6 = [(CalDAVGetToFileWithProgressTask *)self previousETag];
-    [v3 setObject:v6 forKeyedSubscript:CoreDAVHTTPHeader_IfNoneMatch];
+    previousETag2 = [(CalDAVGetToFileWithProgressTask *)self previousETag];
+    [v3 setObject:previousETag2 forKeyedSubscript:CoreDAVHTTPHeader_IfNoneMatch];
   }
 
   return v3;

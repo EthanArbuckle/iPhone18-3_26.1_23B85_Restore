@@ -1,11 +1,11 @@
 @interface SUUIComposeTextFieldListView
-- (SUUIComposeTextFieldListView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (SUUIComposeTextFieldListView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (SUUIComposeTextFieldListViewDelegate)delegate;
 - (UIResponder)initialFirstResponder;
 - (double)height;
-- (id)textForFieldAtIndex:(unint64_t)a3;
+- (id)textForFieldAtIndex:(unint64_t)index;
 - (void)_updateValidity;
-- (void)composeTextFieldValidityChanged:(id)a3;
+- (void)composeTextFieldValidityChanged:(id)changed;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reloadData;
@@ -13,14 +13,14 @@
 
 @implementation SUUIComposeTextFieldListView
 
-- (SUUIComposeTextFieldListView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (SUUIComposeTextFieldListView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = SUUIComposeTextFieldListView;
-  result = [(SUUIComposeTextFieldListView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SUUIComposeTextFieldListView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
-    result->_style = a4;
+    result->_style = style;
   }
 
   return result;
@@ -41,8 +41,8 @@
     return 0.0;
   }
 
-  v3 = [(NSMutableArray *)self->_fields lastObject];
-  [v3 frame];
+  lastObject = [(NSMutableArray *)self->_fields lastObject];
+  [lastObject frame];
   MaxY = CGRectGetMaxY(v6);
 
   return MaxY;
@@ -56,13 +56,13 @@
   v12 = 0u;
   v13 = 0u;
   v2 = self->_fields;
-  v3 = [(NSMutableArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  textField = [(NSMutableArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (textField)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != textField; i = i + 1)
       {
         if (*v11 != v4)
         {
@@ -70,18 +70,18 @@
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 text];
-        v8 = [v7 length];
+        text = [v6 text];
+        v8 = [text length];
 
         if (!v8)
         {
-          v3 = [v6 textField];
+          textField = [v6 textField];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSMutableArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      textField = [(NSMutableArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (textField)
       {
         continue;
       }
@@ -92,7 +92,7 @@
 
 LABEL_11:
 
-  return v3;
+  return textField;
 }
 
 - (void)layoutSubviews
@@ -143,8 +143,8 @@ LABEL_11:
     self->_fields = v4;
   }
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -206,23 +206,23 @@ LABEL_11:
   [(SUUIComposeTextFieldListView *)self setNeedsLayout];
 }
 
-- (id)textForFieldAtIndex:(unint64_t)a3
+- (id)textForFieldAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_fields count]<= a3)
+  if ([(NSMutableArray *)self->_fields count]<= index)
   {
-    v6 = 0;
+    text = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_fields objectAtIndex:a3];
-    v6 = [v5 text];
+    v5 = [(NSMutableArray *)self->_fields objectAtIndex:index];
+    text = [v5 text];
   }
 
-  return v6;
+  return text;
 }
 
-- (void)composeTextFieldValidityChanged:(id)a3
+- (void)composeTextFieldValidityChanged:(id)changed
 {
   isValid = self->_isValid;
   [(SUUIComposeTextFieldListView *)self _updateValidity];
@@ -258,18 +258,18 @@ LABEL_11:
     do
     {
       v6 = [(NSMutableArray *)self->_fields objectAtIndex:v5 - 1];
-      v7 = [v6 configuration];
-      if ([v7 isRequired])
+      configuration = [v6 configuration];
+      if ([configuration isRequired])
       {
-        v8 = [v6 isValid];
+        isValid = [v6 isValid];
       }
 
       else
       {
-        v8 = 1;
+        isValid = 1;
       }
 
-      if (!v8)
+      if (!isValid)
       {
         break;
       }
@@ -280,10 +280,10 @@ LABEL_11:
 
   else
   {
-    LOBYTE(v8) = 1;
+    LOBYTE(isValid) = 1;
   }
 
-  self->_isValid = v8;
+  self->_isValid = isValid;
 }
 
 - (SUUIComposeTextFieldListViewDelegate)delegate

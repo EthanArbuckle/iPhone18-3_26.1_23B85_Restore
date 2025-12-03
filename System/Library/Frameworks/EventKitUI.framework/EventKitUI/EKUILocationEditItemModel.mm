@@ -2,30 +2,30 @@
 - (BOOL)displaysPlaceholder;
 - (BOOL)hasMapLocation;
 - (BOOL)hasVirtualConference;
-- (BOOL)rowModelRepresentsConferenceRoom:(id)a3 onEvent:(id)a4;
-- (BOOL)shouldDisplayRowModelWithConferenceCell:(id)a3 event:(id)a4;
+- (BOOL)rowModelRepresentsConferenceRoom:(id)room onEvent:(id)event;
+- (BOOL)shouldDisplayRowModelWithConferenceCell:(id)cell event:(id)event;
 - (EKUILocationEditItemModel)init;
 - (EKUILocationRowModel)mapLocationRowModel;
 - (EKUILocationRowModel)virtualConferenceRowModel;
 - (NSString)placeholderCellText;
-- (id)_conferenceRoomNameForLocation:(id)a3;
-- (id)_participantForConferenceRoomName:(id)a3 event:(id)a4;
-- (id)_rowModelForCell:(id)a3;
+- (id)_conferenceRoomNameForLocation:(id)location;
+- (id)_participantForConferenceRoomName:(id)name event:(id)event;
+- (id)_rowModelForCell:(id)cell;
 - (int64_t)indexOfPredictedLocation;
-- (void)_deleteVirtualConferenceOnEvent:(id)a3 forRowModel:(id)a4;
-- (void)_removeConferenceAttendeeOnEvent:(id)a3 forRowModel:(id)a4;
-- (void)_updateConferenceDataOnEvent:(id)a3 forNewLocation:(id)a4;
-- (void)_updateLocationsOnEvent:(id)a3;
-- (void)rebuild:(id)a3;
-- (void)refreshConferenceRoomCell:(id)a3 event:(id)a4;
-- (void)removeConferenceRoomAttendeeIfNeeded:(id)a3 event:(id)a4;
-- (void)removeRowModel:(id)a3 event:(id)a4;
-- (void)removeRowModelAtIndex:(unint64_t)a3 event:(id)a4;
+- (void)_deleteVirtualConferenceOnEvent:(id)event forRowModel:(id)model;
+- (void)_removeConferenceAttendeeOnEvent:(id)event forRowModel:(id)model;
+- (void)_updateConferenceDataOnEvent:(id)event forNewLocation:(id)location;
+- (void)_updateLocationsOnEvent:(id)event;
+- (void)rebuild:(id)rebuild;
+- (void)refreshConferenceRoomCell:(id)cell event:(id)event;
+- (void)removeConferenceRoomAttendeeIfNeeded:(id)needed event:(id)event;
+- (void)removeRowModel:(id)model event:(id)event;
+- (void)removeRowModelAtIndex:(unint64_t)index event:(id)event;
 - (void)reset;
-- (void)updateAvailabilityInformation:(id)a3;
-- (void)updateRowModel:(id)a3 withConferenceRoom:(id)a4 editItem:(id)a5;
-- (void)updateRowModel:(id)a3 withMapLocation:(id)a4 event:(id)a5;
-- (void)updateRowModel:(id)a3 withVirtualConference:(id)a4 event:(id)a5;
+- (void)updateAvailabilityInformation:(id)information;
+- (void)updateRowModel:(id)model withConferenceRoom:(id)room editItem:(id)item;
+- (void)updateRowModel:(id)model withMapLocation:(id)location event:(id)event;
+- (void)updateRowModel:(id)model withVirtualConference:(id)conference event:(id)event;
 @end
 
 @implementation EKUILocationEditItemModel
@@ -37,13 +37,13 @@
   v2 = [(EKUILocationEditItemModel *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     conferenceRoomInfos = v2->_conferenceRoomInfos;
-    v2->_conferenceRoomInfos = v3;
+    v2->_conferenceRoomInfos = dictionary;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     rowModels = v2->_rowModels;
-    v2->_rowModels = v5;
+    v2->_rowModels = array;
   }
 
   return v2;
@@ -64,19 +64,19 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
   [v3 cancel];
 }
 
-- (void)rebuild:(id)a3
+- (void)rebuild:(id)rebuild
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rebuildCopy = rebuild;
   [(EKUILocationEditItemModel *)self reset];
-  v51 = v4;
-  [v4 event];
+  v51 = rebuildCopy;
+  [rebuildCopy event];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v52 = v67 = 0u;
-  v5 = [v52 attendees];
-  v6 = [v5 countByEnumeratingWithState:&v64 objects:v69 count:16];
+  attendees = [v52 attendees];
+  v6 = [attendees countByEnumeratingWithState:&v64 objects:v69 count:16];
   if (v6)
   {
     v7 = v6;
@@ -87,7 +87,7 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
       {
         if (*v65 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attendees);
         }
 
         v10 = *(*(&v64 + 1) + 8 * i);
@@ -95,32 +95,32 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
         {
           v11 = objc_alloc_init(EKUIConferenceRoomInfo);
           conferenceRoomInfos = self->_conferenceRoomInfos;
-          v13 = [v10 name];
-          [(NSMutableDictionary *)conferenceRoomInfos setObject:v11 forKey:v13];
+          name = [v10 name];
+          [(NSMutableDictionary *)conferenceRoomInfos setObject:v11 forKey:name];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v64 objects:v69 count:16];
+      v7 = [attendees countByEnumeratingWithState:&v64 objects:v69 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] array];
-  v16 = [v52 structuredLocation];
-  v17 = [v52 preferredLocationWithoutPrediction];
-  v18 = [v17 title];
-  v19 = [v18 componentsSeparatedByString:@" "];;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  structuredLocation = [v52 structuredLocation];
+  preferredLocationWithoutPrediction = [v52 preferredLocationWithoutPrediction];
+  title = [preferredLocationWithoutPrediction title];
+  v19 = [title componentsSeparatedByString:@" "];;
 
-  v20 = v14;
+  v20 = array;
   v63 = 0u;
   v61 = 0u;
   v62 = 0u;
   v60 = 0u;
   obj = v19;
   v21 = [obj countByEnumeratingWithState:&v60 objects:v68 count:16];
-  v53 = v14;
+  v53 = array;
   if (v21)
   {
     v22 = v21;
@@ -139,14 +139,14 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
         if (v26)
         {
           v27 = [[EKUILocationRowModel alloc] initWithConferenceRoom:v25];
-          [v15 addObject:v27];
+          [array2 addObject:v27];
 
           [v20 addObject:v26];
         }
 
-        else if (v16)
+        else if (structuredLocation)
         {
-          if ([v16 isPrediction])
+          if ([structuredLocation isPrediction])
           {
             rowModels = self->_rowModels;
             v29 = [[EKUILocationRowModel alloc] initWithSuggestedLocation:v25];
@@ -155,7 +155,7 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
 
           else
           {
-            v30 = [v16 copy];
+            v30 = [structuredLocation copy];
             [v30 setTitle:v25];
             v31 = self->_rowModels;
             v32 = [[EKUILocationRowModel alloc] initWithStructuredLocation:v30];
@@ -172,9 +172,9 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
     while (v22);
   }
 
-  v33 = [(NSMutableDictionary *)self->_conferenceRoomInfos allValues];
+  allValues = [(NSMutableDictionary *)self->_conferenceRoomInfos allValues];
   v34 = [v20 count];
-  if (v34 != [v33 count])
+  if (v34 != [allValues count])
   {
     v35 = self->_conferenceRoomInfos;
     v57[0] = MEMORY[0x1E69E9820];
@@ -182,26 +182,26 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
     v57[2] = __37__EKUILocationEditItemModel_rebuild___block_invoke;
     v57[3] = &unk_1E843FC60;
     v58 = v20;
-    v59 = v15;
+    v59 = array2;
     [(NSMutableDictionary *)v35 enumerateKeysAndObjectsUsingBlock:v57];
   }
 
-  v36 = [v52 preferredLocation];
-  if ([v36 isStructured] && !obj)
+  preferredLocation = [v52 preferredLocation];
+  if ([preferredLocation isStructured] && !obj)
   {
-    v37 = [v36 isPrediction];
+    isPrediction = [preferredLocation isPrediction];
     v38 = self->_rowModels;
     v39 = [EKUILocationRowModel alloc];
-    if (v37)
+    if (isPrediction)
     {
-      v40 = [v36 title];
-      v41 = [(EKUILocationRowModel *)v39 initWithSuggestedLocation:v40];
+      title2 = [preferredLocation title];
+      v41 = [(EKUILocationRowModel *)v39 initWithSuggestedLocation:title2];
     }
 
     else
     {
-      v40 = [v36 copy];
-      v41 = [(EKUILocationRowModel *)v39 initWithStructuredLocation:v40];
+      title2 = [preferredLocation copy];
+      v41 = [(EKUILocationRowModel *)v39 initWithStructuredLocation:title2];
     }
 
     v42 = v41;
@@ -210,19 +210,19 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
     v20 = v53;
   }
 
-  v43 = [v52 virtualConference];
-  v44 = v43;
-  if (v43)
+  virtualConference = [v52 virtualConference];
+  v44 = virtualConference;
+  if (virtualConference)
   {
     v45 = MEMORY[0x1E696AE18];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __37__EKUILocationEditItemModel_rebuild___block_invoke_2;
     v55[3] = &unk_1E843FC88;
-    v46 = v43;
+    v46 = virtualConference;
     v56 = v46;
     v47 = [v45 predicateWithBlock:v55];
-    [v15 filterUsingPredicate:v47];
+    [array2 filterUsingPredicate:v47];
 
     v48 = [EKUILocationRowModel alloc];
     v49 = v46;
@@ -231,7 +231,7 @@ void __34__EKUILocationEditItemModel_reset__block_invoke(uint64_t a1, uint64_t a
     [(NSMutableArray *)self->_rowModels addObject:v50];
   }
 
-  [(NSMutableArray *)self->_rowModels addObjectsFromArray:v15];
+  [(NSMutableArray *)self->_rowModels addObjectsFromArray:array2];
   [(EKUILocationEditItemModel *)self reorderRowModels];
   [(EKUILocationEditItemModel *)self updateAvailabilityInformation:v51];
 }
@@ -262,8 +262,8 @@ uint64_t __37__EKUILocationEditItemModel_rebuild___block_invoke_2(uint64_t a1, v
 
 - (BOOL)hasVirtualConference
 {
-  v2 = [(EKUILocationEditItemModel *)self virtualConferenceRowModel];
-  v3 = v2 != 0;
+  virtualConferenceRowModel = [(EKUILocationEditItemModel *)self virtualConferenceRowModel];
+  v3 = virtualConferenceRowModel != 0;
 
   return v3;
 }
@@ -314,8 +314,8 @@ LABEL_11:
 
 - (BOOL)hasMapLocation
 {
-  v2 = [(EKUILocationEditItemModel *)self mapLocationRowModel];
-  v3 = v2 != 0;
+  mapLocationRowModel = [(EKUILocationEditItemModel *)self mapLocationRowModel];
+  v3 = mapLocationRowModel != 0;
 
   return v3;
 }
@@ -366,12 +366,12 @@ LABEL_11:
 
 - (BOOL)displaysPlaceholder
 {
-  v3 = [(EKUILocationEditItemModel *)self hasVirtualConference];
+  hasVirtualConference = [(EKUILocationEditItemModel *)self hasVirtualConference];
   v4 = [(NSMutableArray *)self->_rowModels count];
   result = v4 == 0;
   if (v4)
   {
-    if (!v3)
+    if (!hasVirtualConference)
     {
       return ![(EKUILocationEditItemModel *)self hasMapLocation];
     }
@@ -396,76 +396,76 @@ LABEL_11:
   return v3;
 }
 
-- (void)_updateConferenceDataOnEvent:(id)a3 forNewLocation:(id)a4
+- (void)_updateConferenceDataOnEvent:(id)event forNewLocation:(id)location
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:a4];
+  eventCopy = event;
+  v7 = [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:location];
   v8 = [(NSMutableDictionary *)self->_conferenceRoomInfos objectForKey:v7];
 
   if (!v8)
   {
-    [v6 setClientLocation:0];
-    v9 = [v6 travelStartLocation];
+    [eventCopy setClientLocation:0];
+    travelStartLocation = [eventCopy travelStartLocation];
 
-    if (v9)
+    if (travelStartLocation)
     {
       v10 = kEKUILogEventEditorHandle;
       if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
       {
         v11 = 138412290;
-        v12 = v6;
+        v12 = eventCopy;
         _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_DEBUG, "Clearing start location and travel time on event: [%@]", &v11, 0xCu);
       }
 
-      [v6 setTravelStartLocation:0];
-      [v6 setTravelTime:0.0];
+      [eventCopy setTravelStartLocation:0];
+      [eventCopy setTravelTime:0.0];
     }
   }
 }
 
-- (void)_removeConferenceAttendeeOnEvent:(id)a3 forRowModel:(id)a4
+- (void)_removeConferenceAttendeeOnEvent:(id)event forRowModel:(id)model
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 location];
+  eventCopy = event;
+  modelCopy = model;
+  location = [modelCopy location];
 
-  if (v7)
+  if (location)
   {
-    v8 = [v6 location];
+    location2 = [modelCopy location];
 
-    [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:v8];
+    [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:location2];
   }
 
   else
   {
-    v8 = [v6 conference];
+    location2 = [modelCopy conference];
 
-    [v8 serializationBlockTitle];
+    [location2 serializationBlockTitle];
   }
   v9 = ;
 
-  v10 = [(EKUILocationEditItemModel *)self _participantForConferenceRoomName:v9 event:v11];
+  v10 = [(EKUILocationEditItemModel *)self _participantForConferenceRoomName:v9 event:eventCopy];
   if (v10)
   {
-    [v11 removeAttendee:v10];
+    [eventCopy removeAttendee:v10];
     [(NSMutableDictionary *)self->_conferenceRoomInfos removeObjectForKey:v9];
   }
 }
 
-- (void)_deleteVirtualConferenceOnEvent:(id)a3 forRowModel:(id)a4
+- (void)_deleteVirtualConferenceOnEvent:(id)event forRowModel:(id)model
 {
-  v5 = a3;
-  if ([a4 locationType] == 2)
+  eventCopy = event;
+  if ([model locationType] == 2)
   {
-    [v5 setVirtualConference:0];
+    [eventCopy setVirtualConference:0];
   }
 }
 
-- (void)_updateLocationsOnEvent:(id)a3
+- (void)_updateLocationsOnEvent:(id)event
 {
   v34 = *MEMORY[0x1E69E9840];
-  v26 = a3;
+  eventCopy = event;
   v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableArray count](self->_rowModels, "count")}];
   v29 = 0u;
   v30 = 0u;
@@ -494,47 +494,47 @@ LABEL_11:
       }
 
       v10 = *(*(&v29 + 1) + 8 * i);
-      v11 = [v10 locationType];
-      if (v11 > 1)
+      locationType = [v10 locationType];
+      if (locationType > 1)
       {
-        if (v11 != 2)
+        if (locationType != 2)
         {
           continue;
         }
 
-        if ([(EKUILocationEditItemModel *)self rowModelRepresentsConferenceRoom:v10 onEvent:v26])
+        if ([(EKUILocationEditItemModel *)self rowModelRepresentsConferenceRoom:v10 onEvent:eventCopy])
         {
-          v22 = [v10 conference];
-          v23 = [v22 serializationBlockTitle];
-          [v28 addObject:v23];
+          conference = [v10 conference];
+          serializationBlockTitle = [conference serializationBlockTitle];
+          [v28 addObject:serializationBlockTitle];
         }
 
         [v10 conference];
-        v7 = v20 = v7;
+        v7 = location4 = v7;
         goto LABEL_15;
       }
 
-      v12 = [v10 location];
-      v13 = [v12 title];
+      location = [v10 location];
+      title = [location title];
 
-      if (v13)
+      if (title)
       {
-        v14 = [v10 location];
-        v15 = [v14 title];
-        [v28 addObject:v15];
+        location2 = [v10 location];
+        title2 = [location2 title];
+        [v28 addObject:title2];
       }
 
       conferenceRoomInfos = self->_conferenceRoomInfos;
-      v17 = [v10 location];
-      v18 = [v17 title];
-      v19 = [(NSMutableDictionary *)conferenceRoomInfos objectForKey:v18];
+      location3 = [v10 location];
+      title3 = [location3 title];
+      v19 = [(NSMutableDictionary *)conferenceRoomInfos objectForKey:title3];
 
       if (!v19)
       {
-        v20 = [v10 location];
-        v21 = [v20 duplicate];
+        location4 = [v10 location];
+        duplicate = [location4 duplicate];
 
-        v27 = v21;
+        v27 = duplicate;
 LABEL_15:
 
         continue;
@@ -563,37 +563,37 @@ LABEL_20:
   }
 
   [v25 setTitle:v24];
-  [v26 setStructuredLocation:v25];
-  [v26 setVirtualConference:v7];
+  [eventCopy setStructuredLocation:v25];
+  [eventCopy setVirtualConference:v7];
   if (v7)
   {
     [EKUIDiscoverabilityUtilities sendDiscoverabilitySignalForConference:v7];
   }
 }
 
-- (void)removeRowModel:(id)a3 event:(id)a4
+- (void)removeRowModel:(id)model event:(id)event
 {
-  v7 = a4;
-  v6 = [(NSMutableArray *)self->_rowModels indexOfObject:a3];
+  eventCopy = event;
+  v6 = [(NSMutableArray *)self->_rowModels indexOfObject:model];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(EKUILocationEditItemModel *)self removeRowModelAtIndex:v6 event:v7];
+    [(EKUILocationEditItemModel *)self removeRowModelAtIndex:v6 event:eventCopy];
   }
 }
 
-- (void)removeRowModelAtIndex:(unint64_t)a3 event:(id)a4
+- (void)removeRowModelAtIndex:(unint64_t)index event:(id)event
 {
-  v7 = a4;
-  v6 = [(NSMutableArray *)self->_rowModels objectAtIndex:a3];
-  [(EKUILocationEditItemModel *)self _removeConferenceAttendeeOnEvent:v7 forRowModel:v6];
+  eventCopy = event;
+  v6 = [(NSMutableArray *)self->_rowModels objectAtIndex:index];
+  [(EKUILocationEditItemModel *)self _removeConferenceAttendeeOnEvent:eventCopy forRowModel:v6];
   if ([v6 locationType] == 1)
   {
-    [(EKUILocationEditItemModel *)self _updateConferenceDataOnEvent:v7 forNewLocation:0];
+    [(EKUILocationEditItemModel *)self _updateConferenceDataOnEvent:eventCopy forNewLocation:0];
   }
 
-  [(EKUILocationEditItemModel *)self _deleteVirtualConferenceOnEvent:v7 forRowModel:v6];
-  [(NSMutableArray *)self->_rowModels removeObjectAtIndex:a3];
-  [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:v7];
+  [(EKUILocationEditItemModel *)self _deleteVirtualConferenceOnEvent:eventCopy forRowModel:v6];
+  [(NSMutableArray *)self->_rowModels removeObjectAtIndex:index];
+  [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:eventCopy];
 }
 
 - (int64_t)indexOfPredictedLocation
@@ -607,9 +607,9 @@ LABEL_20:
   while (1)
   {
     v4 = [(NSMutableArray *)self->_rowModels objectAtIndex:v3];
-    v5 = [v4 locationType];
+    locationType = [v4 locationType];
 
-    if (v5 == 3)
+    if (locationType == 3)
     {
       break;
     }
@@ -623,9 +623,9 @@ LABEL_20:
   return v3;
 }
 
-- (id)_rowModelForCell:(id)a3
+- (id)_rowModelForCell:(id)cell
 {
-  v4 = [a3 tag];
+  v4 = [cell tag];
   if (v4 >= [(NSMutableArray *)self->_rowModels count])
   {
     v5 = 0;
@@ -639,82 +639,82 @@ LABEL_20:
   return v5;
 }
 
-- (void)updateRowModel:(id)a3 withMapLocation:(id)a4 event:(id)a5
+- (void)updateRowModel:(id)model withMapLocation:(id)location event:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  locationCopy = location;
+  eventCopy = event;
   v11 = kEKUILogEventEditorHandle;
   if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412546;
-    v15 = v8;
+    v15 = modelCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = locationCopy;
     _os_log_impl(&dword_1D3400000, v11, OS_LOG_TYPE_DEBUG, "Updating old row model [%@] with new map location: [%@]", &v14, 0x16u);
   }
 
-  if (v8 || !v9)
+  if (modelCopy || !locationCopy)
   {
-    if (v8 && v9)
+    if (modelCopy && locationCopy)
     {
-      [(EKUILocationEditItemModel *)self removeConferenceRoomAttendeeIfNeeded:v8 event:v10];
-      [v8 setLocationType:1];
-      [v8 setLocation:v9];
-      [v8 setConference:0];
-      [v8 setCell:0];
+      [(EKUILocationEditItemModel *)self removeConferenceRoomAttendeeIfNeeded:modelCopy event:eventCopy];
+      [modelCopy setLocationType:1];
+      [modelCopy setLocation:locationCopy];
+      [modelCopy setConference:0];
+      [modelCopy setCell:0];
     }
   }
 
   else
   {
-    v12 = [[EKUILocationRowModel alloc] initWithStructuredLocation:v9];
+    v12 = [[EKUILocationRowModel alloc] initWithStructuredLocation:locationCopy];
     [(NSMutableArray *)self->_rowModels addObject:v12];
   }
 
-  v13 = [(EKUILocationEditItemModel *)self indexOfPredictedLocation];
-  if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+  indexOfPredictedLocation = [(EKUILocationEditItemModel *)self indexOfPredictedLocation];
+  if (indexOfPredictedLocation != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(EKUILocationEditItemModel *)self removeRowModelAtIndex:v13 event:v10];
+    [(EKUILocationEditItemModel *)self removeRowModelAtIndex:indexOfPredictedLocation event:eventCopy];
   }
 
-  [(EKUILocationEditItemModel *)self _updateConferenceDataOnEvent:v10 forNewLocation:v9];
-  [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:v10];
+  [(EKUILocationEditItemModel *)self _updateConferenceDataOnEvent:eventCopy forNewLocation:locationCopy];
+  [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:eventCopy];
   CalAnalyticsSendEvent();
 }
 
-- (void)updateRowModel:(id)a3 withVirtualConference:(id)a4 event:(id)a5
+- (void)updateRowModel:(id)model withVirtualConference:(id)conference event:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  conferenceCopy = conference;
+  eventCopy = event;
   v11 = kEKUILogEventEditorHandle;
   if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412546;
-    v15 = v8;
+    v15 = modelCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = conferenceCopy;
     _os_log_impl(&dword_1D3400000, v11, OS_LOG_TYPE_DEBUG, "Updating old row model [%@] with new virtual conference: [%@]", &v14, 0x16u);
   }
 
-  if (v8)
+  if (modelCopy)
   {
-    [(EKUILocationEditItemModel *)self removeConferenceRoomAttendeeIfNeeded:v8 event:v10];
-    [v8 setLocationType:2];
-    [v8 setConference:v9];
-    [v8 setLocation:0];
-    [v8 setCell:0];
+    [(EKUILocationEditItemModel *)self removeConferenceRoomAttendeeIfNeeded:modelCopy event:eventCopy];
+    [modelCopy setLocationType:2];
+    [modelCopy setConference:conferenceCopy];
+    [modelCopy setLocation:0];
+    [modelCopy setCell:0];
   }
 
   else
   {
     v12 = [EKUILocationRowModel alloc];
-    if (v9)
+    if (conferenceCopy)
     {
-      v13 = [(EKUILocationRowModel *)v12 initWithVirtualConference:v9];
+      v13 = [(EKUILocationRowModel *)v12 initWithVirtualConference:conferenceCopy];
     }
 
     else
@@ -722,44 +722,44 @@ LABEL_20:
       v13 = [(EKUILocationRowModel *)v12 initWithPendingConference:0];
     }
 
-    v8 = v13;
+    modelCopy = v13;
     [(NSMutableArray *)self->_rowModels addObject:v13];
   }
 
-  [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:v10];
+  [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:eventCopy];
 }
 
-- (void)updateRowModel:(id)a3 withConferenceRoom:(id)a4 editItem:(id)a5
+- (void)updateRowModel:(id)model withConferenceRoom:(id)room editItem:(id)item
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  roomCopy = room;
+  itemCopy = item;
   v11 = kEKUILogEventEditorHandle;
   if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v28 = v8;
+    v28 = modelCopy;
     v29 = 2112;
-    v30 = v9;
+    v30 = roomCopy;
     _os_log_impl(&dword_1D3400000, v11, OS_LOG_TYPE_DEBUG, "Updating old row model [%@] with new conference room: [%@]", buf, 0x16u);
   }
 
   CalAnalyticsSendEvent();
-  v12 = [v9 location];
-  v13 = [v12 preferredAddress];
+  location = [roomCopy location];
+  preferredAddress = [location preferredAddress];
 
-  v14 = [v10 event];
-  if (v13)
+  event = [itemCopy event];
+  if (preferredAddress)
   {
-    v26 = v10;
-    v15 = [v9 location];
-    v16 = [v15 displayName];
+    v26 = itemCopy;
+    location2 = [roomCopy location];
+    displayName = [location2 displayName];
 
-    v25 = [MEMORY[0x1E695DFF8] URLWithString:v13];
-    v17 = [MEMORY[0x1E6966968] attendeeWithName:v16 url:?];
+    v25 = [MEMORY[0x1E695DFF8] URLWithString:preferredAddress];
+    v17 = [MEMORY[0x1E6966968] attendeeWithName:displayName url:?];
     [v17 setParticipantType:2];
-    [v14 addAttendee:v17];
+    [event addAttendee:v17];
     v18 = kEKUILogEventEditorHandle;
     if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -769,37 +769,37 @@ LABEL_20:
     }
 
     v19 = objc_alloc_init(EKUIConferenceRoomInfo);
-    [(NSMutableDictionary *)self->_conferenceRoomInfos setObject:v19 forKey:v16];
-    if (v8)
+    [(NSMutableDictionary *)self->_conferenceRoomInfos setObject:v19 forKey:displayName];
+    if (modelCopy)
     {
-      [(EKUILocationEditItemModel *)self removeConferenceRoomAttendeeIfNeeded:v8 event:v14];
-      [v8 setLocationType:0];
-      v20 = [MEMORY[0x1E6966B08] locationWithTitle:v16];
-      [v8 setLocation:v20];
+      [(EKUILocationEditItemModel *)self removeConferenceRoomAttendeeIfNeeded:modelCopy event:event];
+      [modelCopy setLocationType:0];
+      v20 = [MEMORY[0x1E6966B08] locationWithTitle:displayName];
+      [modelCopy setLocation:v20];
 
-      [v8 setConference:0];
-      [v8 setCell:0];
-      v21 = [v8 location];
+      [modelCopy setConference:0];
+      [modelCopy setCell:0];
+      location3 = [modelCopy location];
     }
 
     else
     {
-      v23 = [[EKUILocationRowModel alloc] initWithConferenceRoom:v16];
+      v23 = [[EKUILocationRowModel alloc] initWithConferenceRoom:displayName];
       [(NSMutableArray *)self->_rowModels addObject:v23];
-      v21 = [(EKUILocationRowModel *)v23 location];
+      location3 = [(EKUILocationRowModel *)v23 location];
     }
 
-    [(EKUILocationEditItemModel *)self _updateConferenceDataOnEvent:v14 forNewLocation:v21];
-    [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:v14];
+    [(EKUILocationEditItemModel *)self _updateConferenceDataOnEvent:event forNewLocation:location3];
+    [(EKUILocationEditItemModel *)self _updateLocationsOnEvent:event];
     v24 = kEKUILogEventEditorHandle;
     if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v28 = v16;
+      v28 = displayName;
       _os_log_impl(&dword_1D3400000, v24, OS_LOG_TYPE_DEBUG, "Set structured location based on the new conference room.  Location: [%@]", buf, 0xCu);
     }
 
-    v10 = v26;
+    itemCopy = v26;
   }
 
   else
@@ -808,12 +808,12 @@ LABEL_20:
     if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v28 = v9;
+      v28 = roomCopy;
       _os_log_impl(&dword_1D3400000, v22, OS_LOG_TYPE_ERROR, "Could not find conference room's preferred address.  Will not update location.  Conference room: [%@]", buf, 0xCu);
     }
   }
 
-  [(EKUILocationEditItemModel *)self updateAvailabilityInformation:v10];
+  [(EKUILocationEditItemModel *)self updateAvailabilityInformation:itemCopy];
 }
 
 uint64_t __45__EKUILocationEditItemModel_reorderRowModels__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -857,17 +857,17 @@ uint64_t __45__EKUILocationEditItemModel_reorderRowModels__block_invoke(uint64_t
   return v12;
 }
 
-- (void)updateAvailabilityInformation:(id)a3
+- (void)updateAvailabilityInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   conferenceRoomInfos = self->_conferenceRoomInfos;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__EKUILocationEditItemModel_updateAvailabilityInformation___block_invoke;
   v7[3] = &unk_1E843FC60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = informationCopy;
+  v6 = informationCopy;
   [(NSMutableDictionary *)conferenceRoomInfos enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1124,23 +1124,23 @@ void __59__EKUILocationEditItemModel_updateAvailabilityInformation___block_invok
   }
 }
 
-- (id)_conferenceRoomNameForLocation:(id)a3
+- (id)_conferenceRoomNameForLocation:(id)location
 {
   v3 = MEMORY[0x1E6992FD8];
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 address];
+  locationCopy = location;
+  title = [locationCopy title];
+  address = [locationCopy address];
 
-  v7 = [v3 fullDisplayStringWithTitle:v5 address:v6];
+  v7 = [v3 fullDisplayStringWithTitle:title address:address];
 
   return v7;
 }
 
-- (id)_participantForConferenceRoomName:(id)a3 event:(id)a4
+- (id)_participantForConferenceRoomName:(id)name event:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 attendees];
+  nameCopy = name;
+  eventCopy = event;
+  attendees = [eventCopy attendees];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1151,10 +1151,10 @@ void __59__EKUILocationEditItemModel_updateAvailabilityInformation___block_invok
   v11[1] = 3221225472;
   v11[2] = __69__EKUILocationEditItemModel__participantForConferenceRoomName_event___block_invoke;
   v11[3] = &unk_1E843FD20;
-  v8 = v5;
+  v8 = nameCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [attendees enumerateObjectsUsingBlock:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -1178,102 +1178,102 @@ void __69__EKUILocationEditItemModel__participantForConferenceRoomName_event___b
   }
 }
 
-- (void)refreshConferenceRoomCell:(id)a3 event:(id)a4
+- (void)refreshConferenceRoomCell:(id)cell event:(id)event
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(EKUILocationEditItemModel *)self _rowModelForCell:v20];
+  cellCopy = cell;
+  eventCopy = event;
+  v7 = [(EKUILocationEditItemModel *)self _rowModelForCell:cellCopy];
   v8 = v7;
   if (v7 && ![v7 locationType])
   {
-    v19 = [v8 location];
-    v9 = [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:v19];
+    location = [v8 location];
+    v9 = [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:location];
     v10 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"\n"];
     v11 = [v9 stringByTrimmingCharactersInSet:v10];
 
-    v12 = [(EKUILocationEditItemModel *)self conferenceRoomInfos];
-    v13 = [v12 objectForKey:v9];
+    conferenceRoomInfos = [(EKUILocationEditItemModel *)self conferenceRoomInfos];
+    v13 = [conferenceRoomInfos objectForKey:v9];
 
-    v14 = [v13 availabilityRequest];
-    v15 = v14 != 0;
+    availabilityRequest = [v13 availabilityRequest];
+    v15 = availabilityRequest != 0;
 
-    v16 = [v6 calendar];
-    v17 = [v16 source];
-    v18 = [v17 constraints];
-    [v20 updateWithName:v11 sourceSupportsAvailability:objc_msgSend(v18 availabilityRequestInProgress:"supportsAvailabilityRequests") availabilityType:{v15, objc_msgSend(v13, "availabilityType")}];
+    calendar = [eventCopy calendar];
+    source = [calendar source];
+    constraints = [source constraints];
+    [cellCopy updateWithName:v11 sourceSupportsAvailability:objc_msgSend(constraints availabilityRequestInProgress:"supportsAvailabilityRequests") availabilityType:{v15, objc_msgSend(v13, "availabilityType")}];
   }
 }
 
-- (BOOL)shouldDisplayRowModelWithConferenceCell:(id)a3 event:(id)a4
+- (BOOL)shouldDisplayRowModelWithConferenceCell:(id)cell event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 locationType])
+  cellCopy = cell;
+  eventCopy = event;
+  if ([cellCopy locationType])
   {
-    v8 = 0;
+    supportsAvailabilityRequests = 0;
   }
 
   else
   {
-    v9 = [v6 location];
-    v10 = [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:v9];
+    location = [cellCopy location];
+    v10 = [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:location];
 
     v11 = [(NSMutableDictionary *)self->_conferenceRoomInfos objectForKey:v10];
-    v12 = [(EKUILocationEditItemModel *)self _participantForConferenceRoomName:v10 event:v7];
+    v12 = [(EKUILocationEditItemModel *)self _participantForConferenceRoomName:v10 event:eventCopy];
     v13 = v12;
-    v8 = 0;
+    supportsAvailabilityRequests = 0;
     if (v11 && v12)
     {
       if (EKUIAttendeeUtils_AttendeeHasResponded(v12))
       {
-        v8 = 0;
+        supportsAvailabilityRequests = 0;
       }
 
       else
       {
-        v14 = [v7 calendar];
-        v15 = [v14 source];
-        v16 = [v15 constraints];
-        v8 = [v16 supportsAvailabilityRequests];
+        calendar = [eventCopy calendar];
+        source = [calendar source];
+        constraints = [source constraints];
+        supportsAvailabilityRequests = [constraints supportsAvailabilityRequests];
       }
     }
   }
 
-  return v8;
+  return supportsAvailabilityRequests;
 }
 
-- (void)removeConferenceRoomAttendeeIfNeeded:(id)a3 event:(id)a4
+- (void)removeConferenceRoomAttendeeIfNeeded:(id)needed event:(id)event
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(EKUILocationEditItemModel *)self rowModelRepresentsConferenceRoom:v7 onEvent:v6])
+  neededCopy = needed;
+  eventCopy = event;
+  if ([(EKUILocationEditItemModel *)self rowModelRepresentsConferenceRoom:neededCopy onEvent:eventCopy])
   {
-    [(EKUILocationEditItemModel *)self _removeConferenceAttendeeOnEvent:v6 forRowModel:v7];
+    [(EKUILocationEditItemModel *)self _removeConferenceAttendeeOnEvent:eventCopy forRowModel:neededCopy];
   }
 }
 
-- (BOOL)rowModelRepresentsConferenceRoom:(id)a3 onEvent:(id)a4
+- (BOOL)rowModelRepresentsConferenceRoom:(id)room onEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 locationType])
+  roomCopy = room;
+  eventCopy = event;
+  if ([roomCopy locationType])
   {
-    v8 = [v6 location];
+    location = [roomCopy location];
 
-    if (v8)
+    if (location)
     {
-      v9 = [v6 location];
-      [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:v9];
+      location2 = [roomCopy location];
+      [(EKUILocationEditItemModel *)self _conferenceRoomNameForLocation:location2];
     }
 
     else
     {
-      v9 = [v6 conference];
-      [v9 serializationBlockTitle];
+      location2 = [roomCopy conference];
+      [location2 serializationBlockTitle];
     }
     v11 = ;
 
-    v12 = [(EKUILocationEditItemModel *)self _participantForConferenceRoomName:v11 event:v7];
+    v12 = [(EKUILocationEditItemModel *)self _participantForConferenceRoomName:v11 event:eventCopy];
     v10 = v12 != 0;
   }
 

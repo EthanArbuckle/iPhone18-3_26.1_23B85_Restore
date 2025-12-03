@@ -1,21 +1,21 @@
 @interface IPLocalStateUpdateStreamSink
-- (IPLocalStateUpdateStreamSink)initWithUpdateStream:(id)a3;
+- (IPLocalStateUpdateStreamSink)initWithUpdateStream:(id)stream;
 - (void)resume;
-- (void)sendUpdateMessage:(id)a3;
+- (void)sendUpdateMessage:(id)message;
 @end
 
 @implementation IPLocalStateUpdateStreamSink
 
-- (IPLocalStateUpdateStreamSink)initWithUpdateStream:(id)a3
+- (IPLocalStateUpdateStreamSink)initWithUpdateStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v10.receiver = self;
   v10.super_class = IPLocalStateUpdateStreamSink;
   v5 = [(IPLocalStateUpdateStreamSink *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakStream, v4);
+    objc_storeWeak(&v5->_weakStream, streamCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     queuedUpdateMessages = v6->_queuedUpdateMessages;
     v6->_queuedUpdateMessages = v7;
@@ -82,16 +82,16 @@ void __38__IPLocalStateUpdateStreamSink_resume__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendUpdateMessage:(id)a3
+- (void)sendUpdateMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__IPLocalStateUpdateStreamSink_sendUpdateMessage___block_invoke;
   v6[3] = &unk_2797B1E00;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = messageCopy;
+  v5 = messageCopy;
   IPDoWithLock(&self->_resumptionLock, v6);
 }
 

@@ -1,25 +1,25 @@
 @interface SDUnlockSetupSessionCreated
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFailureReasons:(BOOL)a3;
-- (void)setHasLtkSyncing:(BOOL)a3;
-- (void)setHasSessionID:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)setHasWatchNewLTKSyncStatus:(BOOL)a3;
-- (void)setHasWatchOldLTKSyncStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFailureReasons:(BOOL)reasons;
+- (void)setHasLtkSyncing:(BOOL)syncing;
+- (void)setHasSessionID:(BOOL)d;
+- (void)setHasVersion:(BOOL)version;
+- (void)setHasWatchNewLTKSyncStatus:(BOOL)status;
+- (void)setHasWatchOldLTKSyncStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDUnlockSetupSessionCreated
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSessionID:(BOOL)a3
+- (void)setHasSessionID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFailureReasons:(BOOL)a3
+- (void)setHasFailureReasons:(BOOL)reasons
 {
-  if (a3)
+  if (reasons)
   {
     v3 = 2;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLtkSyncing:(BOOL)a3
+- (void)setHasLtkSyncing:(BOOL)syncing
 {
-  if (a3)
+  if (syncing)
   {
     v3 = 64;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasWatchOldLTKSyncStatus:(BOOL)a3
+- (void)setHasWatchOldLTKSyncStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 32;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasWatchNewLTKSyncStatus:(BOOL)a3
+- (void)setHasWatchNewLTKSyncStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -112,8 +112,8 @@
   v7.receiver = self;
   v7.super_class = SDUnlockSetupSessionCreated;
   v3 = [(SDUnlockSetupSessionCreated *)&v7 description];
-  v4 = [(SDUnlockSetupSessionCreated *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDUnlockSetupSessionCreated *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -224,16 +224,16 @@ LABEL_15:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v14 = v4;
+  v14 = toCopy;
   if ((has & 8) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v14;
+    toCopy = v14;
     has = self->_has;
   }
 
@@ -241,19 +241,19 @@ LABEL_15:
   {
     sessionID = self->_sessionID;
     PBDataWriterWriteUint32Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_token)
   {
     PBDataWriterWriteDataField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_longTermKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   v8 = self->_has;
@@ -261,7 +261,7 @@ LABEL_15:
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteUint32Field();
-    v4 = v14;
+    toCopy = v14;
     v8 = self->_has;
     if ((v8 & 2) == 0)
     {
@@ -282,7 +282,7 @@ LABEL_11:
 
   failureReasons = self->_failureReasons;
   PBDataWriterWriteUint32Field();
-  v4 = v14;
+  toCopy = v14;
   v8 = self->_has;
   if ((v8 & 0x40) == 0)
   {
@@ -298,7 +298,7 @@ LABEL_12:
 LABEL_22:
   ltkSyncing = self->_ltkSyncing;
   PBDataWriterWriteBOOLField();
-  v4 = v14;
+  toCopy = v14;
   v8 = self->_has;
   if ((v8 & 0x20) == 0)
   {
@@ -314,58 +314,58 @@ LABEL_13:
 LABEL_23:
   watchOldLTKSyncStatus = self->_watchOldLTKSyncStatus;
   PBDataWriterWriteInt32Field();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
     watchNewLTKSyncStatus = self->_watchNewLTKSyncStatus;
     PBDataWriterWriteInt32Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_15:
   if (self->_ltkHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v14;
+    toCopy = v14;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[12] = self->_version;
-    *(v4 + 64) |= 8u;
+    toCopy[12] = self->_version;
+    *(toCopy + 64) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[8] = self->_sessionID;
-    *(v4 + 64) |= 4u;
+    toCopy[8] = self->_sessionID;
+    *(toCopy + 64) |= 4u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_token)
   {
-    [v4 setToken:?];
-    v4 = v7;
+    [toCopy setToken:?];
+    toCopy = v7;
   }
 
   if (self->_longTermKey)
   {
     [v7 setLongTermKey:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[2] = self->_errorCode;
-    *(v4 + 64) |= 1u;
+    toCopy[2] = self->_errorCode;
+    *(toCopy + 64) |= 1u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -384,8 +384,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v4[3] = self->_failureReasons;
-  *(v4 + 64) |= 2u;
+  toCopy[3] = self->_failureReasons;
+  *(toCopy + 64) |= 2u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -399,8 +399,8 @@ LABEL_12:
   }
 
 LABEL_22:
-  *(v4 + 60) = self->_ltkSyncing;
-  *(v4 + 64) |= 0x40u;
+  *(toCopy + 60) = self->_ltkSyncing;
+  *(toCopy + 64) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -414,26 +414,26 @@ LABEL_13:
   }
 
 LABEL_23:
-  v4[14] = self->_watchOldLTKSyncStatus;
-  *(v4 + 64) |= 0x20u;
+  toCopy[14] = self->_watchOldLTKSyncStatus;
+  *(toCopy + 64) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
-    v4[13] = self->_watchNewLTKSyncStatus;
-    *(v4 + 64) |= 0x10u;
+    toCopy[13] = self->_watchNewLTKSyncStatus;
+    *(toCopy + 64) |= 0x10u;
   }
 
 LABEL_15:
   if (self->_ltkHash)
   {
     [v7 setLtkHash:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -449,11 +449,11 @@ LABEL_15:
     *(v5 + 64) |= 4u;
   }
 
-  v8 = [(NSData *)self->_token copyWithZone:a3];
+  v8 = [(NSData *)self->_token copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
-  v10 = [(NSData *)self->_longTermKey copyWithZone:a3];
+  v10 = [(NSData *)self->_longTermKey copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
@@ -520,56 +520,56 @@ LABEL_10:
   }
 
 LABEL_11:
-  v13 = [(NSData *)self->_ltkHash copyWithZone:a3];
+  v13 = [(NSData *)self->_ltkHash copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_version != *(v4 + 12))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_version != *(equalCopy + 12))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_sessionID != *(v4 + 8))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_sessionID != *(equalCopy + 8))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_46;
   }
 
   token = self->_token;
-  if (token | *(v4 + 5) && ![(NSData *)token isEqual:?])
+  if (token | *(equalCopy + 5) && ![(NSData *)token isEqual:?])
   {
     goto LABEL_46;
   }
 
   longTermKey = self->_longTermKey;
-  if (longTermKey | *(v4 + 2))
+  if (longTermKey | *(equalCopy + 2))
   {
     if (![(NSData *)longTermKey isEqual:?])
     {
@@ -577,36 +577,36 @@ LABEL_11:
     }
   }
 
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_errorCode != *(v4 + 2))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_errorCode != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_failureReasons != *(v4 + 3))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_failureReasons != *(equalCopy + 3))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((*(v4 + 64) & 0x40) == 0)
+    if ((*(equalCopy + 64) & 0x40) == 0)
     {
       goto LABEL_28;
     }
@@ -616,21 +616,21 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if ((*(v4 + 64) & 0x40) == 0)
+  if ((*(equalCopy + 64) & 0x40) == 0)
   {
     goto LABEL_46;
   }
 
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if (self->_ltkSyncing)
   {
-    if ((*(v4 + 60) & 1) == 0)
+    if ((*(equalCopy + 60) & 1) == 0)
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_46;
   }
@@ -638,32 +638,32 @@ LABEL_46:
 LABEL_28:
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) == 0 || self->_watchOldLTKSyncStatus != *(v4 + 14))
+    if ((*(equalCopy + 64) & 0x20) == 0 || self->_watchOldLTKSyncStatus != *(equalCopy + 14))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 64) & 0x20) != 0)
+  else if ((*(equalCopy + 64) & 0x20) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_watchNewLTKSyncStatus != *(v4 + 13))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_watchNewLTKSyncStatus != *(equalCopy + 13))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
     goto LABEL_46;
   }
 
   ltkHash = self->_ltkHash;
-  if (ltkHash | *(v4 + 3))
+  if (ltkHash | *(equalCopy + 3))
   {
     v11 = [(NSData *)ltkHash isEqual:?];
   }
@@ -770,42 +770,42 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSData *)self->_ltkHash hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 64);
+  fromCopy = from;
+  v5 = *(fromCopy + 64);
   if ((v5 & 8) != 0)
   {
-    self->_version = *(v4 + 12);
+    self->_version = *(fromCopy + 12);
     *&self->_has |= 8u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_sessionID = *(v4 + 8);
+    self->_sessionID = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
-  v7 = v4;
-  if (*(v4 + 5))
+  v7 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(SDUnlockSetupSessionCreated *)self setToken:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDUnlockSetupSessionCreated *)self setLongTermKey:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(fromCopy + 64);
   if (v6)
   {
-    self->_errorCode = *(v4 + 2);
+    self->_errorCode = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v6 = *(v4 + 64);
+    v6 = *(fromCopy + 64);
     if ((v6 & 2) == 0)
     {
 LABEL_11:
@@ -818,14 +818,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 64) & 2) == 0)
+  else if ((*(fromCopy + 64) & 2) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_failureReasons = *(v4 + 3);
+  self->_failureReasons = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v6 = *(v4 + 64);
+  v6 = *(fromCopy + 64);
   if ((v6 & 0x40) == 0)
   {
 LABEL_12:
@@ -838,9 +838,9 @@ LABEL_12:
   }
 
 LABEL_22:
-  self->_ltkSyncing = *(v4 + 60);
+  self->_ltkSyncing = *(fromCopy + 60);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 64);
+  v6 = *(fromCopy + 64);
   if ((v6 & 0x20) == 0)
   {
 LABEL_13:
@@ -853,20 +853,20 @@ LABEL_13:
   }
 
 LABEL_23:
-  self->_watchOldLTKSyncStatus = *(v4 + 14);
+  self->_watchOldLTKSyncStatus = *(fromCopy + 14);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 64) & 0x10) != 0)
+  if ((*(fromCopy + 64) & 0x10) != 0)
   {
 LABEL_14:
-    self->_watchNewLTKSyncStatus = *(v4 + 13);
+    self->_watchNewLTKSyncStatus = *(fromCopy + 13);
     *&self->_has |= 0x10u;
   }
 
 LABEL_15:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SDUnlockSetupSessionCreated *)self setLtkHash:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

@@ -1,26 +1,26 @@
 @interface __NSTextSelectionLineFragmentInfo
 - (BOOL)isMonotonicDirection;
-- (BOOL)location:(id)a3 isLeading:(BOOL *)a4 trailing:(BOOL *)a5 inTextRanges:(id)a6;
-- (__NSTextSelectionLineFragmentInfo)initWithTextSelectionNavigation:(id)a3 range:(id)a4;
-- (const)caretPositionAtIndex:(int64_t)a3;
-- (const)caretPositionClosestToLocation:(id)a3 visualDirection:(int64_t)a4 matchLocation:(BOOL *)a5;
-- (const)caretPositionClosestToOffset:(double)a3;
+- (BOOL)location:(id)location isLeading:(BOOL *)leading trailing:(BOOL *)trailing inTextRanges:(id)ranges;
+- (__NSTextSelectionLineFragmentInfo)initWithTextSelectionNavigation:(id)navigation range:(id)range;
+- (const)caretPositionAtIndex:(int64_t)index;
+- (const)caretPositionClosestToLocation:(id)location visualDirection:(int64_t)direction matchLocation:(BOOL *)matchLocation;
+- (const)caretPositionClosestToOffset:(double)offset;
 - (const)logicalFirstCaret;
 - (const)logicalLastCaret;
-- (double)offsetForLocation:(id)a3;
-- (id)_findNextCaretLocationForLocation:(id)a3;
-- (id)_locationForEdgeCaretAtIndex:(unint64_t)a3 leftEdge:(BOOL)a4;
+- (double)offsetForLocation:(id)location;
+- (id)_findNextCaretLocationForLocation:(id)location;
+- (id)_locationForEdgeCaretAtIndex:(unint64_t)index leftEdge:(BOOL)edge;
 - (id)_secondaryLocationTable;
 - (id)_sortedLocations;
 - (id)description;
-- (id)rangesBetweenStartingOffset:(double)a3 endOffset:(double)a4 logicallyContinuous:(BOOL)a5;
-- (id)textRangeOfCharacterAtOffset:(double)a3 fractionOfDistanceThroughGlyph:(double *)a4;
+- (id)rangesBetweenStartingOffset:(double)offset endOffset:(double)endOffset logicallyContinuous:(BOOL)continuous;
+- (id)textRangeOfCharacterAtOffset:(double)offset fractionOfDistanceThroughGlyph:(double *)glyph;
 - (int64_t)_baseWritingDirection;
-- (int64_t)_sortedLocationIndexForLocation:(id)a3;
-- (int64_t)caretIndexForEdgeLocationInTextRanges:(id)a3 leftEdge:(BOOL)a4;
-- (int64_t)caretIndexForLocation:(id)a3 inTextRanges:(id)a4 secondaryCaretIndex:(int64_t *)a5;
-- (int64_t)caretIndexForPrimaryLocation:(id)a3;
-- (int64_t)caretIndexForSecondaryLocation:(id)a3;
+- (int64_t)_sortedLocationIndexForLocation:(id)location;
+- (int64_t)caretIndexForEdgeLocationInTextRanges:(id)ranges leftEdge:(BOOL)edge;
+- (int64_t)caretIndexForLocation:(id)location inTextRanges:(id)ranges secondaryCaretIndex:(int64_t *)index;
+- (int64_t)caretIndexForPrimaryLocation:(id)location;
+- (int64_t)caretIndexForSecondaryLocation:(id)location;
 - (void)_cache;
 - (void)_computeVisualDirection;
 - (void)_fetchCaretOffsets;
@@ -57,7 +57,7 @@
   v23[3] = 0x7FFFFFFFFFFFFFFFLL;
   v3 = objc_alloc_init(MEMORY[0x1E696AC70]);
   v4 = [(__NSTextSelectionLineFragmentInfo *)self _baseWritingDirection]== 1;
-  v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3052000000;
@@ -75,8 +75,8 @@
     self->_carets = NSZoneCalloc(0, self->_offset, 0x20uLL);
   }
 
-  v6 = [(NSTextSelectionNavigation *)self->_navigation textSelectionDataSource];
-  v7 = [(NSTextRange *)self->_textRange location];
+  textSelectionDataSource = [(NSTextSelectionNavigation *)self->_navigation textSelectionDataSource];
+  location = [(NSTextRange *)self->_textRange location];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55____NSTextSelectionLineFragmentInfo__fetchCaretOffsets__block_invoke;
@@ -86,16 +86,16 @@
   v10 = v4;
   v9[8] = v23;
   v9[9] = &v17;
-  v9[6] = v5;
+  v9[6] = strongToStrongObjectsMapTable;
   v9[7] = &v24;
   v9[10] = &v11;
-  [v6 enumerateCaretOffsetsInLineFragmentAtLocation:v7 usingBlock:v9];
+  [textSelectionDataSource enumerateCaretOffsetsInLineFragmentAtLocation:location usingBlock:v9];
   v8 = v25[3];
   self->_numberOfCarets = v8;
   if (v8)
   {
 
-    self->_primaryLocationTable = v5;
+    self->_primaryLocationTable = strongToStrongObjectsMapTable;
     self->_secondaryLocationTable = v18[5];
 
     self->_otherLocations = v12[5];
@@ -251,13 +251,13 @@
                         v56[4] = v54;
                         _UIFoundationAssert(self, v27, v28, v56);
                         -[NSMapTable setObject:forKey:](self->_primaryLocationTable, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v54], v25->var1);
-                        v29 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
-                        [v29 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v54), v25->var2}];
+                        _secondaryLocationTable = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
+                        [_secondaryLocationTable setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v54), v25->var2}];
                       }
                     }
 
-                    v30 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
-                    [v30 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", v17), v23}];
+                    _secondaryLocationTable2 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
+                    [_secondaryLocationTable2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", v17), v23}];
                   }
                 }
               }
@@ -304,8 +304,8 @@ LABEL_36:
           }
 
           -[NSMapTable setObject:forKey:](self->_primaryLocationTable, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v8], v32->var1);
-          v50 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
-          [v50 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v8), v32->var2}];
+          _secondaryLocationTable3 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
+          [_secondaryLocationTable3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v8), v32->var2}];
           v31 = self->_carets;
         }
 
@@ -315,8 +315,8 @@ LABEL_36:
           v51->var2 = v51->var1;
           v51->var1 = [(NSTextRange *)self->_textRange endLocation];
           -[NSMapTable setObject:forKey:](self->_primaryLocationTable, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v7], v51->var1);
-          v52 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
-          [v52 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v7), v51->var2}];
+          _secondaryLocationTable4 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
+          [_secondaryLocationTable4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v7), v51->var2}];
         }
 
         return;
@@ -330,9 +330,9 @@ LABEL_36:
       if (v35->var4 == v36->var4)
       {
         v35->var1 = [(NSTextRange *)self->_textRange location];
-        v37 = [(NSTextRange *)self->_textRange endLocation];
-        v35->var2 = v37;
-        v36->var1 = v37;
+        endLocation = [(NSTextRange *)self->_textRange endLocation];
+        v35->var2 = endLocation;
+        v36->var1 = endLocation;
         v36->var2 = v35->var1;
         self->_lastCaretPrefersSecondaryLocation = 1;
         v38 = objc_opt_class();
@@ -345,13 +345,13 @@ LABEL_36:
         v55[4] = v8;
         _UIFoundationAssert(self, v39, v40, v55);
         -[NSMapTable setObject:forKey:](self->_primaryLocationTable, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v8], v35->var1);
-        v41 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
-        [v41 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v8), v35->var2}];
+        _secondaryLocationTable5 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
+        [_secondaryLocationTable5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v8), v35->var2}];
         -[NSMapTable setObject:forKey:](self->_primaryLocationTable, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v7], v36->var1);
-        v42 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
+        _secondaryLocationTable6 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
         v43 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
         var2 = v36->var2;
-        v45 = v42;
+        v45 = _secondaryLocationTable6;
       }
 
       else
@@ -371,10 +371,10 @@ LABEL_36:
         v35->var1 = [(NSTextRange *)self->_textRange location];
         v35->var2 = self->_carets[v46 + 1].var1;
         -[NSMapTable setObject:forKey:](self->_primaryLocationTable, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v8], v35->var1);
-        v48 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
+        _secondaryLocationTable7 = [(__NSTextSelectionLineFragmentInfo *)self _secondaryLocationTable];
         v43 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
         var2 = v35->var2;
-        v45 = v48;
+        v45 = _secondaryLocationTable7;
       }
 
       [v45 setObject:v43 forKey:var2];
@@ -465,8 +465,8 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"<%p %@", self, objc_opt_class()];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"<%p %@", self, objc_opt_class()];
   if (self->_carets)
   {
     if (self->_numberOfCarets)
@@ -475,22 +475,22 @@ LABEL_8:
       v5 = 0;
       do
       {
-        [v3 appendFormat:@" %@", objc_msgSend(self->_carets[v4].var1, "description")];
+        [string appendFormat:@" %@", objc_msgSend(self->_carets[v4].var1, "description")];
         carets = self->_carets;
         var2 = carets[v4].var2;
         if (var2)
         {
-          [v3 appendFormat:@"/%@", objc_msgSend(var2, "description")];
+          [string appendFormat:@"/%@", objc_msgSend(var2, "description")];
           carets = self->_carets;
         }
 
         if (!carets[v4].var3)
         {
-          [v3 appendString:@"t"];
+          [string appendString:@"t"];
           carets = self->_carets;
         }
 
-        [v3 appendFormat:@"@%g", *&carets[v4].var0];
+        [string appendFormat:@"@%g", *&carets[v4].var0];
         ++v5;
         ++v4;
       }
@@ -501,11 +501,11 @@ LABEL_8:
 
   else
   {
-    [v3 appendFormat:@" uncached"];
+    [string appendFormat:@" uncached"];
   }
 
-  [v3 appendString:@">"];
-  return v3;
+  [string appendString:@">"];
+  return string;
 }
 
 - (id)_sortedLocations
@@ -523,30 +523,30 @@ LABEL_8:
   return sortedLocations;
 }
 
-- (int64_t)_sortedLocationIndexForLocation:(id)a3
+- (int64_t)_sortedLocationIndexForLocation:(id)location
 {
-  v4 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
-  v5 = [v4 count];
+  _sortedLocations = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
+  v5 = [_sortedLocations count];
 
-  return [v4 indexOfObject:a3 inSortedRange:0 options:v5 usingComparator:{1024, &__block_literal_global_3}];
+  return [_sortedLocations indexOfObject:location inSortedRange:0 options:v5 usingComparator:{1024, &__block_literal_global_3}];
 }
 
-- (id)_findNextCaretLocationForLocation:(id)a3
+- (id)_findNextCaretLocationForLocation:(id)location
 {
-  v5 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
-  v6 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocationIndexForLocation:a3];
+  _sortedLocations = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
+  v6 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocationIndexForLocation:location];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v7 = v6 + 1;
-  if (v6 + 1 >= [v5 count])
+  if (v6 + 1 >= [_sortedLocations count])
   {
     return 0;
   }
 
-  return [v5 objectAtIndexedSubscript:v7];
+  return [_sortedLocations objectAtIndexedSubscript:v7];
 }
 
 - (id)_secondaryLocationTable
@@ -561,20 +561,20 @@ LABEL_8:
   return result;
 }
 
-- (__NSTextSelectionLineFragmentInfo)initWithTextSelectionNavigation:(id)a3 range:(id)a4
+- (__NSTextSelectionLineFragmentInfo)initWithTextSelectionNavigation:(id)navigation range:(id)range
 {
   v9.receiver = self;
   v9.super_class = __NSTextSelectionLineFragmentInfo;
   v6 = [(__NSTextSelectionLineFragmentInfo *)&v9 init];
   if (v6)
   {
-    v7 = [objc_msgSend(a3 "textSelectionDataSource")];
+    v7 = [objc_msgSend(navigation "textSelectionDataSource")];
     v6->_offset = v7;
     if (v7 < 0x7FFFFFFFFFFFFFFFLL)
     {
       v6->_offset = v7 + 1;
-      v6->_navigation = a3;
-      v6->_textRange = a4;
+      v6->_navigation = navigation;
+      v6->_textRange = range;
       v6->_visualDirection = -1;
       v6->_baseDirection = -1;
     }
@@ -589,7 +589,7 @@ LABEL_8:
   return v6;
 }
 
-- (id)textRangeOfCharacterAtOffset:(double)a3 fractionOfDistanceThroughGlyph:(double *)a4
+- (id)textRangeOfCharacterAtOffset:(double)offset fractionOfDistanceThroughGlyph:(double *)glyph
 {
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
   numberOfCarets = self->_numberOfCarets;
@@ -600,7 +600,7 @@ LABEL_8:
 
   carets = self->_carets;
   var0 = carets->var0;
-  if (carets->var0 >= a3)
+  if (carets->var0 >= offset)
   {
     var1 = carets->var1;
     v15 = var1;
@@ -609,7 +609,7 @@ LABEL_8:
       v15 = carets[1].var1;
     }
 
-    if (!a4)
+    if (!glyph)
     {
       goto LABEL_20;
     }
@@ -621,7 +621,7 @@ LABEL_8:
   {
     v10 = &carets[numberOfCarets];
     var0 = v10[-1].var0;
-    if (var0 > a3)
+    if (var0 > offset)
     {
       v11 = numberOfCarets - 1;
       if (!v11)
@@ -633,7 +633,7 @@ LABEL_8:
       while (1)
       {
         var0 = v12->var0;
-        if (v12->var0 > a3)
+        if (v12->var0 > offset)
         {
           break;
         }
@@ -666,13 +666,13 @@ LABEL_8:
 
       v15 = v12->var1;
       var1 = v22->var1;
-      if (!a4)
+      if (!glyph)
       {
         goto LABEL_20;
       }
 
-      var0 = (a3 - *p_var0) / (var0 - *p_var0);
-      *a4 = var0;
+      var0 = (offset - *p_var0) / (var0 - *p_var0);
+      *glyph = var0;
       if (!v21)
       {
         goto LABEL_20;
@@ -689,7 +689,7 @@ LABEL_8:
       var1 = v10[-2].var1;
     }
 
-    if (!a4)
+    if (!glyph)
     {
       goto LABEL_20;
     }
@@ -699,7 +699,7 @@ LABEL_8:
 
   var0 = !var3;
 LABEL_19:
-  *a4 = var0;
+  *glyph = var0;
 LABEL_20:
   v17 = [v15 compare:{var1, var0}];
   if (v17 == -1)
@@ -722,7 +722,7 @@ LABEL_20:
   return v19;
 }
 
-- (const)caretPositionClosestToOffset:(double)a3
+- (const)caretPositionClosestToOffset:(double)offset
 {
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
   carets = self->_carets;
@@ -737,7 +737,7 @@ LABEL_20:
     return 0;
   }
 
-  if (carets->var0 >= a3)
+  if (carets->var0 >= offset)
   {
     return self->_carets;
   }
@@ -745,7 +745,7 @@ LABEL_20:
   v7 = &carets[numberOfCarets];
   var0 = v7[-1].var0;
   v8 = v7 - 1;
-  if (var0 <= a3)
+  if (var0 <= offset)
   {
     return v8;
   }
@@ -758,18 +758,18 @@ LABEL_20:
   do
   {
     result = &carets[(v8 - carets) >> 6];
-    if (result->var0 == a3)
+    if (result->var0 == offset)
     {
       break;
     }
 
-    if (result->var0 <= a3)
+    if (result->var0 <= offset)
     {
       carets = &result[1];
       v11 = result[1].var0;
-      if (v11 > a3)
+      if (v11 > offset)
       {
-        if (a3 - result->var0 > (v11 - result->var0) * 0.5)
+        if (offset - result->var0 > (v11 - result->var0) * 0.5)
         {
           ++result;
         }
@@ -790,19 +790,19 @@ LABEL_20:
 
 - (const)logicalFirstCaret
 {
-  v3 = [(NSTextRange *)[(__NSTextSelectionLineFragmentInfo *)self textRange] location];
+  location = [(NSTextRange *)[(__NSTextSelectionLineFragmentInfo *)self textRange] location];
 
-  return [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToLocation:v3 visualDirection:1 matchLocation:0];
+  return [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToLocation:location visualDirection:1 matchLocation:0];
 }
 
 - (const)logicalLastCaret
 {
-  v3 = [(NSTextRange *)[(__NSTextSelectionLineFragmentInfo *)self textRange] endLocation];
+  endLocation = [(NSTextRange *)[(__NSTextSelectionLineFragmentInfo *)self textRange] endLocation];
 
-  return [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToLocation:v3 visualDirection:0 matchLocation:0];
+  return [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToLocation:endLocation visualDirection:0 matchLocation:0];
 }
 
-- (const)caretPositionClosestToLocation:(id)a3 visualDirection:(int64_t)a4 matchLocation:(BOOL *)a5
+- (const)caretPositionClosestToLocation:(id)location visualDirection:(int64_t)direction matchLocation:(BOOL *)matchLocation
 {
   if (!-[NSTextRange containsLocation:](self->_textRange, "containsLocation:") && ![-[NSTextRange endLocation](self->_textRange "endLocation")])
   {
@@ -810,7 +810,7 @@ LABEL_20:
   }
 
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
-  v9 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForPrimaryLocation:a3];
+  v9 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForPrimaryLocation:location];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_27;
@@ -819,8 +819,8 @@ LABEL_20:
   visualDirection = self->_visualDirection;
   if (visualDirection == 2)
   {
-    v11 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
-    v12 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocationIndexForLocation:a3];
+    _sortedLocations = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
+    v12 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocationIndexForLocation:location];
     v13 = v12 - 1;
     if ((v12 - 1) > 0x7FFFFFFFFFFFFFFDLL)
     {
@@ -830,9 +830,9 @@ LABEL_20:
     else
     {
       v14 = v12;
-      if ((a4 != 2) != ([(__NSTextSelectionLineFragmentInfo *)self _baseWritingDirection]== 0))
+      if ((direction != 2) != ([(__NSTextSelectionLineFragmentInfo *)self _baseWritingDirection]== 0))
       {
-        if (v14 + 1 >= [v11 count])
+        if (v14 + 1 >= [_sortedLocations count])
         {
           v15 = v14;
         }
@@ -845,7 +845,7 @@ LABEL_20:
         v13 = v15 - 1;
       }
 
-      v9 = -[__NSTextSelectionLineFragmentInfo caretIndexForPrimaryLocation:](self, "caretIndexForPrimaryLocation:", [v11 objectAtIndexedSubscript:v13]);
+      v9 = -[__NSTextSelectionLineFragmentInfo caretIndexForPrimaryLocation:](self, "caretIndexForPrimaryLocation:", [_sortedLocations objectAtIndexedSubscript:v13]);
     }
 
     goto LABEL_27;
@@ -858,9 +858,9 @@ LABEL_20:
 LABEL_27:
     v26 = [(__NSTextSelectionLineFragmentInfo *)self caretPositionAtIndex:v9];
     v16 = v26;
-    if (a5 && v26 && [v26->var2 isEqual:a3])
+    if (matchLocation && v26 && [v26->var2 isEqual:location])
     {
-      *a5 = 0;
+      *matchLocation = 0;
     }
 
     return v16;
@@ -889,8 +889,8 @@ LABEL_27:
   while (v20 <= v22)
   {
     v24 = &v20[(v22 - v20) >> 6];
-    v25 = [a3 compare:v24->var1];
-    if (v25 != -1 && [v24[v23].var1 compare:a3] != -1)
+    v25 = [location compare:v24->var1];
+    if (v25 != -1 && [v24[v23].var1 compare:location] != -1)
     {
       if (visualDirection == 1)
       {
@@ -926,7 +926,7 @@ LABEL_27:
     }
   }
 
-  if (a4 == 3)
+  if (direction == 3)
   {
     return v20;
   }
@@ -937,31 +937,31 @@ LABEL_27:
   }
 }
 
-- (const)caretPositionAtIndex:(int64_t)a3
+- (const)caretPositionAtIndex:(int64_t)index
 {
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
-  if (a3 < 0 || self->_numberOfCarets <= a3)
+  if (index < 0 || self->_numberOfCarets <= index)
   {
     return 0;
   }
 
   else
   {
-    return &self->_carets[a3];
+    return &self->_carets[index];
   }
 }
 
-- (double)offsetForLocation:(id)a3
+- (double)offsetForLocation:(id)location
 {
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
-  if (self->_lastCaretPrefersSecondaryLocation && [(NSTextRange *)self->_textRange endLocation]== a3)
+  if (self->_lastCaretPrefersSecondaryLocation && [(NSTextRange *)self->_textRange endLocation]== location)
   {
-    v5 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForSecondaryLocation:a3];
+    v5 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForSecondaryLocation:location];
   }
 
   else
   {
-    v5 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForPrimaryLocation:a3];
+    v5 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForPrimaryLocation:location];
   }
 
   v6 = -1.0;
@@ -977,32 +977,32 @@ LABEL_27:
   return v6;
 }
 
-- (id)rangesBetweenStartingOffset:(double)a3 endOffset:(double)a4 logicallyContinuous:(BOOL)a5
+- (id)rangesBetweenStartingOffset:(double)offset endOffset:(double)endOffset logicallyContinuous:(BOOL)continuous
 {
-  v5 = a5;
+  continuousCopy = continuous;
   v41[1] = *MEMORY[0x1E69E9840];
-  if (a3 >= a4)
+  if (offset >= endOffset)
   {
-    v7 = a4;
+    offsetCopy = endOffset;
   }
 
   else
   {
-    v7 = a3;
+    offsetCopy = offset;
   }
 
-  if (a3 >= a4)
+  if (offset >= endOffset)
   {
-    v8 = a3;
+    endOffsetCopy2 = offset;
   }
 
   else
   {
-    v8 = a4;
+    endOffsetCopy2 = endOffset;
   }
 
-  v9 = [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToOffset:v7];
-  v10 = [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToOffset:v8];
+  v9 = [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToOffset:offsetCopy];
+  v10 = [(__NSTextSelectionLineFragmentInfo *)self caretPositionClosestToOffset:endOffsetCopy2];
   if (v9)
   {
     v11 = v10 == 0;
@@ -1019,7 +1019,7 @@ LABEL_27:
   }
 
   v13 = v10;
-  if (v5)
+  if (continuousCopy)
   {
     var1 = v9->var1;
     v15 = v10->var1;
@@ -1060,18 +1060,18 @@ LABEL_27:
     v40 = v18;
     v19 = &v40;
 LABEL_24:
-    v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
+    array = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
 
-    return v12;
+    return array;
   }
 
-  v22 = [(__NSTextSelectionLineFragmentInfo *)self _baseWritingDirection];
-  v12 = [MEMORY[0x1E695DF70] array];
+  _baseWritingDirection = [(__NSTextSelectionLineFragmentInfo *)self _baseWritingDirection];
+  array = [MEMORY[0x1E695DF70] array];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v36 = __95____NSTextSelectionLineFragmentInfo_rangesBetweenStartingOffset_endOffset_logicallyContinuous___block_invoke;
   v37 = &unk_1E7265C30;
-  v38 = v12;
+  v38 = array;
   if (v9 > v13)
   {
     goto LABEL_53;
@@ -1079,7 +1079,7 @@ LABEL_24:
 
   v23 = 0;
   var2 = 0;
-  v25 = v22 == 1;
+  v25 = _baseWritingDirection == 1;
   do
   {
     v26 = var2;
@@ -1126,8 +1126,8 @@ LABEL_24:
         }
       }
 
-      v30 = [(__NSTextSelectionLineFragmentInfo *)self logicalLastCaret];
-      if (v9 == v30)
+      logicalLastCaret = [(__NSTextSelectionLineFragmentInfo *)self logicalLastCaret];
+      if (v9 == logicalLastCaret)
       {
         v23 = v27;
       }
@@ -1137,7 +1137,7 @@ LABEL_24:
         v23 = var2;
       }
 
-      if (v9 == v30)
+      if (v9 == logicalLastCaret)
       {
         var2 = v26;
       }
@@ -1169,24 +1169,24 @@ LABEL_47:
 
   if (!v31)
   {
-    v32 = [v12 count] == 0;
+    v32 = [array count] == 0;
     v36(v35, var2, v23, v32);
   }
 
 LABEL_53:
-  if ([v12 count] >= 2)
+  if ([array count] >= 2)
   {
-    [v12 sortUsingComparator:&__block_literal_global_251];
-    if ([v12 count] != 1)
+    [array sortUsingComparator:&__block_literal_global_251];
+    if ([array count] != 1)
     {
       v33 = 0;
       do
       {
-        if ([objc_msgSend(objc_msgSend(v12 objectAtIndexedSubscript:{v33), "endLocation"), "isEqual:", objc_msgSend(objc_msgSend(v12, "objectAtIndexedSubscript:", v33 + 1), "location")}])
+        if ([objc_msgSend(objc_msgSend(array objectAtIndexedSubscript:{v33), "endLocation"), "isEqual:", objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", v33 + 1), "location")}])
         {
-          v34 = -[NSTextRange initWithLocation:endLocation:]([NSTextRange alloc], "initWithLocation:endLocation:", [objc_msgSend(v12 objectAtIndexedSubscript:{v33), "location"}], objc_msgSend(objc_msgSend(v12, "objectAtIndexedSubscript:", v33 + 1), "endLocation"));
-          [v12 setObject:v34 atIndexedSubscript:v33];
-          [v12 removeObjectAtIndex:v33 + 1];
+          v34 = -[NSTextRange initWithLocation:endLocation:]([NSTextRange alloc], "initWithLocation:endLocation:", [objc_msgSend(array objectAtIndexedSubscript:{v33), "location"}], objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", v33 + 1), "endLocation"));
+          [array setObject:v34 atIndexedSubscript:v33];
+          [array removeObjectAtIndex:v33 + 1];
         }
 
         else
@@ -1195,11 +1195,11 @@ LABEL_53:
         }
       }
 
-      while (v33 < [v12 count] - 1);
+      while (v33 < [array count] - 1);
     }
   }
 
-  return v12;
+  return array;
 }
 
 - (BOOL)isMonotonicDirection
@@ -1216,10 +1216,10 @@ LABEL_53:
   }
 }
 
-- (int64_t)caretIndexForPrimaryLocation:(id)a3
+- (int64_t)caretIndexForPrimaryLocation:(id)location
 {
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
-  v5 = [(NSMapTable *)self->_primaryLocationTable objectForKey:a3];
+  v5 = [(NSMapTable *)self->_primaryLocationTable objectForKey:location];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -1228,7 +1228,7 @@ LABEL_53:
   return [v5 integerValue];
 }
 
-- (int64_t)caretIndexForSecondaryLocation:(id)a3
+- (int64_t)caretIndexForSecondaryLocation:(id)location
 {
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
   secondaryLocationTable = self->_secondaryLocationTable;
@@ -1237,7 +1237,7 @@ LABEL_53:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(NSMapTable *)secondaryLocationTable objectForKey:a3];
+  v6 = [(NSMapTable *)secondaryLocationTable objectForKey:location];
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -1246,14 +1246,14 @@ LABEL_53:
   return [v6 integerValue];
 }
 
-- (BOOL)location:(id)a3 isLeading:(BOOL *)a4 trailing:(BOOL *)a5 inTextRanges:(id)a6
+- (BOOL)location:(id)location isLeading:(BOOL *)leading trailing:(BOOL *)trailing inTextRanges:(id)ranges
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [a6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [ranges countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1264,7 +1264,7 @@ LABEL_3:
     {
       if (*v20 != v12)
       {
-        objc_enumerationMutation(a6);
+        objc_enumerationMutation(ranges);
       }
 
       v14 = *(*(&v19 + 1) + 8 * v13);
@@ -1275,17 +1275,17 @@ LABEL_3:
       }
 
       v16 = v15;
-      v17 = [a3 compare:{objc_msgSend(v14, "endLocation")}];
+      v17 = [location compare:{objc_msgSend(v14, "endLocation")}];
       if (v17 != 1)
       {
-        *a4 = v17 == -1;
-        *a5 = v16 == -1;
+        *leading = v17 == -1;
+        *trailing = v16 == -1;
         return 1;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [a6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [ranges countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -1297,25 +1297,25 @@ LABEL_3:
   }
 
   result = 0;
-  *a5 = 0;
-  *a4 = 0;
+  *trailing = 0;
+  *leading = 0;
   return result;
 }
 
-- (int64_t)caretIndexForLocation:(id)a3 inTextRanges:(id)a4 secondaryCaretIndex:(int64_t *)a5
+- (int64_t)caretIndexForLocation:(id)location inTextRanges:(id)ranges secondaryCaretIndex:(int64_t *)index
 {
   v19 = 0;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([(__NSTextSelectionLineFragmentInfo *)self location:a3 isLeading:&v19 + 1 trailing:&v19 inTextRanges:a4])
+  if ([(__NSTextSelectionLineFragmentInfo *)self location:location isLeading:&v19 + 1 trailing:&v19 inTextRanges:ranges])
   {
-    v9 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForPrimaryLocation:a3];
+    v9 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForPrimaryLocation:location];
     v10 = v9;
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_3:
       v11 = 0;
 LABEL_13:
-      v13 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForSecondaryLocation:a3];
+      v13 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForSecondaryLocation:location];
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v14 = &self->_carets[v13];
@@ -1338,7 +1338,7 @@ LABEL_20:
               v15 = 0;
             }
 
-            if (!a5)
+            if (!index)
             {
               goto LABEL_28;
             }
@@ -1349,7 +1349,7 @@ LABEL_20:
       }
 
       v15 = 0;
-      if (!a5)
+      if (!index)
       {
 LABEL_28:
         if (v11)
@@ -1371,7 +1371,7 @@ LABEL_25:
         v17 = v13;
       }
 
-      *a5 = v17;
+      *index = v17;
       goto LABEL_28;
     }
 
@@ -1408,13 +1408,13 @@ LABEL_11:
   return v8;
 }
 
-- (id)_locationForEdgeCaretAtIndex:(unint64_t)a3 leftEdge:(BOOL)a4
+- (id)_locationForEdgeCaretAtIndex:(unint64_t)index leftEdge:(BOOL)edge
 {
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
-  v7 = &self->_carets[a3];
+  v7 = &self->_carets[index];
   if (v7->var2)
   {
-    if ((([(__NSTextSelectionLineFragmentInfo *)self _baseWritingDirection]== 0) ^ a4 ^ v7->var3))
+    if ((([(__NSTextSelectionLineFragmentInfo *)self _baseWritingDirection]== 0) ^ edge ^ v7->var3))
     {
       p_var1 = &v7->var1;
     }
@@ -1433,17 +1433,17 @@ LABEL_11:
   return *p_var1;
 }
 
-- (int64_t)caretIndexForEdgeLocationInTextRanges:(id)a3 leftEdge:(BOOL)a4
+- (int64_t)caretIndexForEdgeLocationInTextRanges:(id)ranges leftEdge:(BOOL)edge
 {
-  v4 = a4;
+  edgeCopy = edge;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0x7FFFFFFFFFFFFFFFLL;
   [(__NSTextSelectionLineFragmentInfo *)self _cache];
-  if ([objc_msgSend(a3 "firstObject")])
+  if ([objc_msgSend(ranges "firstObject")])
   {
-    v7 = -[__NSTextSelectionLineFragmentInfo caretIndexForLocation:inTextRanges:secondaryCaretIndex:](self, "caretIndexForLocation:inTextRanges:secondaryCaretIndex:", [objc_msgSend(a3 "firstObject")], a3, 0);
+    v7 = -[__NSTextSelectionLineFragmentInfo caretIndexForLocation:inTextRanges:secondaryCaretIndex:](self, "caretIndexForLocation:inTextRanges:secondaryCaretIndex:", [objc_msgSend(ranges "firstObject")], ranges, 0);
 LABEL_13:
     v13 = v7;
     v23[3] = v7;
@@ -1452,8 +1452,8 @@ LABEL_13:
 
   if (self->_visualDirection == 2)
   {
-    v8 = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
-    v9 = -[__NSTextSelectionLineFragmentInfo _sortedLocationIndexForLocation:](self, "_sortedLocationIndexForLocation:", [objc_msgSend(a3 "firstObject")]);
+    _sortedLocations = [(__NSTextSelectionLineFragmentInfo *)self _sortedLocations];
+    v9 = -[__NSTextSelectionLineFragmentInfo _sortedLocationIndexForLocation:](self, "_sortedLocationIndexForLocation:", [objc_msgSend(ranges "firstObject")]);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v23[3] = 0x7FFFFFFFFFFFFFFFLL;
@@ -1462,20 +1462,20 @@ LABEL_13:
       v18 = __84____NSTextSelectionLineFragmentInfo_caretIndexForEdgeLocationInTextRanges_leftEdge___block_invoke;
       v19 = &unk_1E7265C58;
       v20 = &v22;
-      v21 = v4;
-      v10 = [v8 count];
+      v21 = edgeCopy;
+      v10 = [_sortedLocations count];
       if (v9 < v10)
       {
         do
         {
-          v11 = [v8 objectAtIndexedSubscript:v9];
-          if ([objc_msgSend(objc_msgSend(a3 "lastObject")] == -1)
+          v11 = [_sortedLocations objectAtIndexedSubscript:v9];
+          if ([objc_msgSend(objc_msgSend(ranges "lastObject")] == -1)
           {
             break;
           }
 
           v16 = 0x7FFFFFFFFFFFFFFFLL;
-          v12 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForLocation:v11 inTextRanges:a3 secondaryCaretIndex:&v16];
+          v12 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForLocation:v11 inTextRanges:ranges secondaryCaretIndex:&v16];
           v18(v17, v12);
           v18(v17, v16);
           ++v9;
@@ -1489,17 +1489,17 @@ LABEL_13:
   v13 = v23[3];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ((self->_visualDirection != 0) == v4)
+    if ((self->_visualDirection != 0) == edgeCopy)
     {
-      v14 = [objc_msgSend(a3 "lastObject")];
+      v14 = [objc_msgSend(ranges "lastObject")];
     }
 
     else
     {
-      v14 = [objc_msgSend(a3 "firstObject")];
+      v14 = [objc_msgSend(ranges "firstObject")];
     }
 
-    v7 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForLocation:v14 inTextRanges:a3 secondaryCaretIndex:0];
+    v7 = [(__NSTextSelectionLineFragmentInfo *)self caretIndexForLocation:v14 inTextRanges:ranges secondaryCaretIndex:0];
     goto LABEL_13;
   }
 

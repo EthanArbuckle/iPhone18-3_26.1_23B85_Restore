@@ -1,25 +1,25 @@
 @interface AudioSystemController
-- (void)performAnalysisOnAVResult:(id)a3 fromOutput:(id)a4 withSourceSignalData:(id)a5 intoDKResult:(id)a6 error:(id)a7;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)performAnalysisOnAVResult:(id)result fromOutput:(id)output withSourceSignalData:(id)data intoDKResult:(id)kResult error:(id)error;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)testFinishedSuccessfully;
-- (void)testSequence:(id)a3 completionSemaphore:(id)a4;
+- (void)testSequence:(id)sequence completionSemaphore:(id)semaphore;
 @end
 
 @implementation AudioSystemController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   v5.receiver = self;
   v5.super_class = AudioSystemController;
-  [(AudioSystemCommon *)&v5 setupWithInputs:a3 responder:a4];
+  [(AudioSystemCommon *)&v5 setupWithInputs:inputs responder:responder];
   [(AudioSystemController *)self setExclavesStatus:0];
 }
 
-- (void)testSequence:(id)a3 completionSemaphore:(id)a4
+- (void)testSequence:(id)sequence completionSemaphore:(id)semaphore
 {
   v7.receiver = self;
   v7.super_class = AudioSystemController;
-  [(AudioSystemCommon *)&v7 testSequence:a3 completionSemaphore:a4];
+  [(AudioSystemCommon *)&v7 testSequence:sequence completionSemaphore:semaphore];
   v5 = dispatch_time(0, 500000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -29,31 +29,31 @@
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)performAnalysisOnAVResult:(id)a3 fromOutput:(id)a4 withSourceSignalData:(id)a5 intoDKResult:(id)a6 error:(id)a7
+- (void)performAnalysisOnAVResult:(id)result fromOutput:(id)output withSourceSignalData:(id)data intoDKResult:(id)kResult error:(id)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  resultCopy = result;
+  dataCopy = data;
+  kResultCopy = kResult;
+  errorCopy = error;
   v15 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v11;
+    v27 = resultCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Calculating peak dB values for result %@", buf, 0xCu);
   }
 
-  v16 = [(AudioSystemCommon *)self inputs];
-  v17 = [v16 isUsingDBValuesFromSystem];
+  inputs = [(AudioSystemCommon *)self inputs];
+  isUsingDBValuesFromSystem = [inputs isUsingDBValuesFromSystem];
 
-  if (!v17)
+  if (!isUsingDBValuesFromSystem)
   {
-    v19 = [v11 data];
-    v23 = v14;
-    v18 = [AudioCrossCorrelation calculatePeakDBValueWithSourceSignalData:v12 resultSignalData:v19 error:&v23];
+    data = [resultCopy data];
+    v23 = errorCopy;
+    v18 = [AudioCrossCorrelation calculatePeakDBValueWithSourceSignalData:dataCopy resultSignalData:data error:&v23];
     v20 = v23;
 
-    v14 = v20;
+    errorCopy = v20;
     if (v18)
     {
       goto LABEL_5;
@@ -69,7 +69,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v11 correlationValue];
+  [resultCopy correlationValue];
   v18 = [NSNumber numberWithDouble:?];
   if (!v18)
   {
@@ -77,34 +77,34 @@ LABEL_7:
   }
 
 LABEL_5:
-  [v13 setDbValue:v18];
+  [kResultCopy setDbValue:v18];
 LABEL_8:
 }
 
 - (void)testFinishedSuccessfully
 {
-  v3 = [(AudioSystemController *)self exclavesStatus];
-  v4 = [(AudioSystemController *)self result];
-  v5 = [v4 statusCode];
-  v6 = [DAExclavesSupport testResultOverrideForExclavesStatus:v3 originalResult:v5];
-  v7 = [(AudioSystemController *)self result];
-  [v7 setStatusCode:v6];
+  exclavesStatus = [(AudioSystemController *)self exclavesStatus];
+  result = [(AudioSystemController *)self result];
+  statusCode = [result statusCode];
+  v6 = [DAExclavesSupport testResultOverrideForExclavesStatus:exclavesStatus originalResult:statusCode];
+  result2 = [(AudioSystemController *)self result];
+  [result2 setStatusCode:v6];
 
-  v8 = [(AudioSystemController *)self exclavesStatus];
+  exclavesStatus2 = [(AudioSystemController *)self exclavesStatus];
 
-  if (v8)
+  if (exclavesStatus2)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
-    v10 = [(AudioSystemController *)self result];
-    v11 = [v10 data];
-    [v9 addEntriesFromDictionary:v11];
+    result3 = [(AudioSystemController *)self result];
+    data = [result3 data];
+    [v9 addEntriesFromDictionary:data];
 
-    v12 = [(AudioSystemController *)self exclavesStatus];
-    [v9 addEntriesFromDictionary:v12];
+    exclavesStatus3 = [(AudioSystemController *)self exclavesStatus];
+    [v9 addEntriesFromDictionary:exclavesStatus3];
 
     v13 = [v9 copy];
-    v14 = [(AudioSystemController *)self result];
-    [v14 setData:v13];
+    result4 = [(AudioSystemController *)self result];
+    [result4 setData:v13];
   }
 
   [(AudioSystemController *)self setFinished:1];

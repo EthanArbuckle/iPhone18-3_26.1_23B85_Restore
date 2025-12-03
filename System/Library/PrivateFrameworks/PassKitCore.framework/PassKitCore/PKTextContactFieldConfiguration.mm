@@ -1,16 +1,16 @@
 @interface PKTextContactFieldConfiguration
-- (PKTextContactFieldConfiguration)initWithCoder:(id)a3;
-- (PKTextContactFieldConfiguration)initWithDictionary:(id)a3;
+- (PKTextContactFieldConfiguration)initWithCoder:(id)coder;
+- (PKTextContactFieldConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTextContactFieldConfiguration
 
-- (PKTextContactFieldConfiguration)initWithDictionary:(id)a3
+- (PKTextContactFieldConfiguration)initWithDictionary:(id)dictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = PKTextContactFieldConfiguration;
   v5 = [(PKContactFieldConfiguration *)&v34 initWithType:1];
@@ -19,20 +19,20 @@
     goto LABEL_53;
   }
 
-  v5->_minLength = [v4 PKIntegerForKey:@"minLength"];
-  v5->_maxLength = [v4 PKIntegerForKey:@"maxLength"];
-  v5->_numeric = [v4 PKBoolForKey:@"numeric"];
-  v6 = [v4 PKStringForKey:@"displayFormat"];
+  v5->_minLength = [dictionaryCopy PKIntegerForKey:@"minLength"];
+  v5->_maxLength = [dictionaryCopy PKIntegerForKey:@"maxLength"];
+  v5->_numeric = [dictionaryCopy PKBoolForKey:@"numeric"];
+  v6 = [dictionaryCopy PKStringForKey:@"displayFormat"];
   displayFormat = v5->_displayFormat;
   v5->_displayFormat = v6;
 
-  v8 = [v4 PKStringForKey:@"displayFormatPlaceholder"];
+  v8 = [dictionaryCopy PKStringForKey:@"displayFormatPlaceholder"];
   displayFormatPlaceholder = v5->_displayFormatPlaceholder;
   v5->_displayFormatPlaceholder = v8;
 
-  v5->_keepPaddingCharactersForSubmission = [v4 PKBoolForKey:@"keepPaddingCharactersForSubmission"];
-  v5->_isValidCharacterSet = [v4 PKBoolForKey:@"isValidCharacterSet"];
-  v10 = [v4 PKArrayForKey:@"characterSetDescriptions"];
+  v5->_keepPaddingCharactersForSubmission = [dictionaryCopy PKBoolForKey:@"keepPaddingCharactersForSubmission"];
+  v5->_isValidCharacterSet = [dictionaryCopy PKBoolForKey:@"isValidCharacterSet"];
+  v10 = [dictionaryCopy PKArrayForKey:@"characterSetDescriptions"];
   v11 = v10;
   if (v10)
   {
@@ -63,72 +63,72 @@
             v19 = *(*(&v35 + 1) + 8 * i);
             if ([v19 isEqualToString:@"alphanumericCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"capitalizedLetterCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] capitalizedLetterCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] capitalizedLetterCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"controlCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] controlCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"decimalDigitCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"decomposableCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] decomposableCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] decomposableCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"illegalCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] illegalCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] illegalCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"letterCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] letterCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"lowercaseLetterCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] lowercaseLetterCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] lowercaseLetterCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"newlineCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"nonBaseCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"punctuationCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"symbolCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] symbolCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] symbolCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"uppercaseLetterCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
             }
 
             else if ([v19 isEqualToString:@"whitespaceAndNewlineCharacterSet"])
             {
-              v20 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
             }
 
             else
@@ -141,10 +141,10 @@ LABEL_45:
                 goto LABEL_46;
               }
 
-              v20 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+              alphanumericCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
             }
 
-            v21 = v20;
+            v21 = alphanumericCharacterSet;
 
             if (!v21)
             {
@@ -194,7 +194,7 @@ LABEL_46:
     }
   }
 
-  v24 = [v4 PKStringForKey:@"validRegex"];
+  v24 = [dictionaryCopy PKStringForKey:@"validRegex"];
   if (v24)
   {
     v33 = 0;
@@ -276,51 +276,51 @@ LABEL_61:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKTextContactFieldConfiguration;
-  v4 = a3;
-  [(PKContactFieldConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_minLength forKey:{@"minLength", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_maxLength forKey:@"maxLength"];
-  [v4 encodeBool:self->_numeric forKey:@"numeric"];
-  [v4 encodeObject:self->_displayFormat forKey:@"displayFormat"];
-  [v4 encodeObject:self->_displayFormatPlaceholder forKey:@"displayFormatPlaceholder"];
-  [v4 encodeBool:self->_keepPaddingCharactersForSubmission forKey:@"keepPaddingCharactersForSubmission"];
-  [v4 encodeObject:self->_characterSet forKey:@"characterSet"];
-  [v4 encodeBool:self->_isValidCharacterSet forKey:@"isValidCharacterSet"];
-  [v4 encodeObject:self->_validRegex forKey:@"validRegex"];
+  coderCopy = coder;
+  [(PKContactFieldConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_minLength forKey:{@"minLength", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_maxLength forKey:@"maxLength"];
+  [coderCopy encodeBool:self->_numeric forKey:@"numeric"];
+  [coderCopy encodeObject:self->_displayFormat forKey:@"displayFormat"];
+  [coderCopy encodeObject:self->_displayFormatPlaceholder forKey:@"displayFormatPlaceholder"];
+  [coderCopy encodeBool:self->_keepPaddingCharactersForSubmission forKey:@"keepPaddingCharactersForSubmission"];
+  [coderCopy encodeObject:self->_characterSet forKey:@"characterSet"];
+  [coderCopy encodeBool:self->_isValidCharacterSet forKey:@"isValidCharacterSet"];
+  [coderCopy encodeObject:self->_validRegex forKey:@"validRegex"];
 }
 
-- (PKTextContactFieldConfiguration)initWithCoder:(id)a3
+- (PKTextContactFieldConfiguration)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKTextContactFieldConfiguration;
-  v5 = [(PKContactFieldConfiguration *)&v21 initWithCoder:v4];
+  v5 = [(PKContactFieldConfiguration *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_minLength = [v4 decodeIntegerForKey:@"minLength"];
-    v5->_maxLength = [v4 decodeIntegerForKey:@"maxLength"];
-    v5->_numeric = [v4 decodeBoolForKey:@"numeric"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayFormat"];
+    v5->_minLength = [coderCopy decodeIntegerForKey:@"minLength"];
+    v5->_maxLength = [coderCopy decodeIntegerForKey:@"maxLength"];
+    v5->_numeric = [coderCopy decodeBoolForKey:@"numeric"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayFormat"];
     displayFormat = v5->_displayFormat;
     v5->_displayFormat = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayFormatPlaceholder"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayFormatPlaceholder"];
     displayFormatPlaceholder = v5->_displayFormatPlaceholder;
     v5->_displayFormatPlaceholder = v8;
 
-    v5->_keepPaddingCharactersForSubmission = [v4 decodeBoolForKey:@"keepPaddingCharactersForSubmission"];
-    v5->_isValidCharacterSet = [v4 decodeBoolForKey:@"isValidCharacterSet"];
+    v5->_keepPaddingCharactersForSubmission = [coderCopy decodeBoolForKey:@"keepPaddingCharactersForSubmission"];
+    v5->_isValidCharacterSet = [coderCopy decodeBoolForKey:@"isValidCharacterSet"];
     v10 = objc_alloc(MEMORY[0x1E695DFD8]);
     v23[0] = objc_opt_class();
     v23[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v12 = [v10 initWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"characterSet"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"characterSet"];
     characterSet = v5->_characterSet;
     v5->_characterSet = v13;
 
@@ -329,7 +329,7 @@ LABEL_61:
     v22[1] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     v17 = [v15 initWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"validRegex"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"validRegex"];
     validRegex = v5->_validRegex;
     v5->_validRegex = v18;
   }

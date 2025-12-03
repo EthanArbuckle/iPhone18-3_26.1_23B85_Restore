@@ -1,6 +1,6 @@
 @interface _FCActivity
-- (BOOL)_updateMode:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_updateMode:(id)mode;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlaceholder;
 - (NSArray)activityLifetimeDescriptions;
 - (NSDate)activityCreationDate;
@@ -14,103 +14,103 @@
 - (NSURL)activitySettingsURL;
 - (NSURL)activitySetupURL;
 - (NSUUID)activityUniqueIdentifier;
-- (_FCActivity)initWithMode:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_FCActivity)initWithMode:(id)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)activitySemanticType;
 - (unint64_t)hash;
-- (void)_setActivityCreationDate:(id)a3;
-- (void)_setActivityLifetimeDescriptions:(id)a3;
-- (void)_setActivityLifetimesAlternativeDescription:(id)a3;
+- (void)_setActivityCreationDate:(id)date;
+- (void)_setActivityLifetimeDescriptions:(id)descriptions;
+- (void)_setActivityLifetimesAlternativeDescription:(id)description;
 @end
 
 @implementation _FCActivity
 
-- (_FCActivity)initWithMode:(id)a3
+- (_FCActivity)initWithMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v8.receiver = self;
   v8.super_class = _FCActivity;
   v5 = [(_FCActivity *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_FCActivity *)v5 _setDndMode:v4];
+    [(_FCActivity *)v5 _setDndMode:modeCopy];
   }
 
   return v6;
 }
 
-- (void)_setActivityCreationDate:(id)a3
+- (void)_setActivityCreationDate:(id)date
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  activityCreationDate = v4->_activityCreationDate;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activityCreationDate = selfCopy->_activityCreationDate;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v6 = [v8 copy];
-    v7 = v4->_activityCreationDate;
-    v4->_activityCreationDate = v6;
+    v6 = [dateCopy copy];
+    v7 = selfCopy->_activityCreationDate;
+    selfCopy->_activityCreationDate = v6;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setActivityLifetimeDescriptions:(id)a3
+- (void)_setActivityLifetimeDescriptions:(id)descriptions
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  p_activityLifetimeDescriptions = &v4->_activityLifetimeDescriptions;
-  activityLifetimeDescriptions = v4->_activityLifetimeDescriptions;
+  descriptionsCopy = descriptions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_activityLifetimeDescriptions = &selfCopy->_activityLifetimeDescriptions;
+  activityLifetimeDescriptions = selfCopy->_activityLifetimeDescriptions;
   if ((BSEqualArrays() & 1) == 0)
   {
-    if (v10)
+    if (descriptionsCopy)
     {
-      v7 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v10 copyItems:1];
-      v8 = v4->_activityLifetimeDescriptions;
-      v4->_activityLifetimeDescriptions = v7;
+      v7 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:descriptionsCopy copyItems:1];
+      v8 = selfCopy->_activityLifetimeDescriptions;
+      selfCopy->_activityLifetimeDescriptions = v7;
 
-      p_activityLifetimeDescriptions = &v4->_activityLifetimesAlternativeDescription;
+      p_activityLifetimeDescriptions = &selfCopy->_activityLifetimesAlternativeDescription;
     }
 
     v9 = *p_activityLifetimeDescriptions;
     *p_activityLifetimeDescriptions = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setActivityLifetimesAlternativeDescription:(id)a3
+- (void)_setActivityLifetimesAlternativeDescription:(id)description
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  activityLifetimesAlternativeDescription = v4->_activityLifetimesAlternativeDescription;
+  descriptionCopy = description;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activityLifetimesAlternativeDescription = selfCopy->_activityLifetimesAlternativeDescription;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v6 = [v9 copy];
-    v7 = v4->_activityLifetimesAlternativeDescription;
-    v4->_activityLifetimesAlternativeDescription = v6;
+    v6 = [descriptionCopy copy];
+    v7 = selfCopy->_activityLifetimesAlternativeDescription;
+    selfCopy->_activityLifetimesAlternativeDescription = v6;
 
-    if (v4->_activityLifetimesAlternativeDescription)
+    if (selfCopy->_activityLifetimesAlternativeDescription)
     {
-      activityLifetimeDescriptions = v4->_activityLifetimeDescriptions;
-      v4->_activityLifetimeDescriptions = 0;
+      activityLifetimeDescriptions = selfCopy->_activityLifetimeDescriptions;
+      selfCopy->_activityLifetimeDescriptions = 0;
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)_updateMode:(id)a3
+- (BOOL)_updateMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(_FCActivity *)self _dndMode];
+  modeCopy = mode;
+  _dndMode = [(_FCActivity *)self _dndMode];
   v6 = BSEqualObjects();
   if ((v6 & 1) == 0)
   {
-    [(_FCActivity *)self _setDndMode:v4];
+    [(_FCActivity *)self _setDndMode:modeCopy];
   }
 
   return v6 ^ 1;
@@ -118,82 +118,82 @@
 
 - (NSString)activityIdentifier
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 modeIdentifier];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  modeIdentifier = [_dndMode modeIdentifier];
 
-  return v3;
+  return modeIdentifier;
 }
 
 - (NSUUID)activityUniqueIdentifier
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 identifier];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  identifier = [_dndMode identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)activityDisplayName
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 name];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  name = [_dndMode name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)activitySymbolImageName
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 symbolImageName];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  symbolImageName = [_dndMode symbolImageName];
 
-  return v3;
+  return symbolImageName;
 }
 
 - (NSString)activityColorName
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 tintColorName];
-  v4 = v3;
-  if (v3)
+  _dndMode = [(_FCActivity *)self _dndMode];
+  tintColorName = [_dndMode tintColorName];
+  v4 = tintColorName;
+  if (tintColorName)
   {
-    v5 = v3;
+    defaultTintColorName = tintColorName;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D05930] defaultTintColorName];
+    defaultTintColorName = [MEMORY[0x277D05930] defaultTintColorName];
   }
 
-  v6 = v5;
+  v6 = defaultTintColorName;
 
   return v6;
 }
 
 - (int64_t)activitySemanticType
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 semanticType];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  semanticType = [_dndMode semanticType];
 
-  return v3;
+  return semanticType;
 }
 
 - (NSDate)activityCreationDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activityCreationDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activityCreationDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)activityDetailText
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 semanticType];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  semanticType = [_dndMode semanticType];
 
-  if (v3 <= 9 && ((0x233u >> v3) & 1) != 0)
+  if (semanticType <= 9 && ((0x233u >> semanticType) & 1) != 0)
   {
-    v4 = off_279013E68[v3];
+    v4 = off_279013E68[semanticType];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:v4 value:&stru_285EB06A0 table:@"Focus"];
   }
@@ -208,50 +208,50 @@
 
 - (NSURL)activitySettingsURL
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 settingsURL];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  settingsURL = [_dndMode settingsURL];
 
-  return v3;
+  return settingsURL;
 }
 
 - (NSURL)activitySetupURL
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 setupURL];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  setupURL = [_dndMode setupURL];
 
-  return v3;
+  return setupURL;
 }
 
 - (BOOL)isPlaceholder
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 isPlaceholder];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  isPlaceholder = [_dndMode isPlaceholder];
 
-  return v3;
+  return isPlaceholder;
 }
 
 - (NSArray)activityLifetimeDescriptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activityLifetimeDescriptions;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activityLifetimeDescriptions;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(_FCActivity *)self _dndMode];
-  v3 = [v2 hash];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  v3 = [_dndMode hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -261,9 +261,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_FCActivity *)self _dndMode];
-      v7 = [(_FCActivity *)v5 _dndMode];
+      v5 = equalCopy;
+      _dndMode = [(_FCActivity *)self _dndMode];
+      _dndMode2 = [(_FCActivity *)v5 _dndMode];
 
       v8 = BSEqualObjects();
     }
@@ -281,10 +281,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(_FCActivity *)self activityIdentifier];
-  v6 = [(_FCActivity *)self activityUniqueIdentifier];
-  v7 = [(_FCActivity *)self activityDisplayName];
-  v8 = [v3 stringWithFormat:@"<%@: %p activityIdentifier: %@; activityUniqueIdentifier: %@; activityDisplayName: %@>", v4, self, v5, v6, v7];;
+  activityIdentifier = [(_FCActivity *)self activityIdentifier];
+  activityUniqueIdentifier = [(_FCActivity *)self activityUniqueIdentifier];
+  activityDisplayName = [(_FCActivity *)self activityDisplayName];
+  v8 = [v3 stringWithFormat:@"<%@: %p activityIdentifier: %@; activityUniqueIdentifier: %@; activityDisplayName: %@>", v4, self, activityIdentifier, activityUniqueIdentifier, activityDisplayName];;
 
   return v8;
 }
@@ -296,42 +296,42 @@
 
   v5 = [v4 rangeOfString:@">" options:4];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(_FCActivity *)self activitySymbolImageName];
-  v8 = [(_FCActivity *)self activityColorName];
+  activitySymbolImageName = [(_FCActivity *)self activitySymbolImageName];
+  activityColorName = [(_FCActivity *)self activityColorName];
   [(_FCActivity *)self isPlaceholder];
   v9 = NSStringFromBOOL();
-  v10 = [(_FCActivity *)self activityLifetimeDescriptions];
-  v11 = [v10 count];
+  activityLifetimeDescriptions = [(_FCActivity *)self activityLifetimeDescriptions];
+  v11 = [activityLifetimeDescriptions count];
   v12 = MEMORY[0x277CCACA8];
   if (v11)
   {
-    v13 = [(_FCActivity *)self activityLifetimeDescriptions];
-    [v12 stringWithFormat:@"activityLifetimeDescriptions: %@", v13];
+    activityLifetimeDescriptions2 = [(_FCActivity *)self activityLifetimeDescriptions];
+    [v12 stringWithFormat:@"activityLifetimeDescriptions: %@", activityLifetimeDescriptions2];
   }
 
   else
   {
-    v13 = [(_FCActivity *)self activityLifetimesAlternativeDescription];
-    [v12 stringWithFormat:@"activityLifetimesAlternativeDescription: %@", v13];
+    activityLifetimeDescriptions2 = [(_FCActivity *)self activityLifetimesAlternativeDescription];
+    [v12 stringWithFormat:@"activityLifetimesAlternativeDescription: %@", activityLifetimeDescriptions2];
   }
   v14 = ;
-  v15 = [v6 stringWithFormat:@" activitySymbolImageName: %@; activityColorName: %@; isPlaceholder: %@; %@", v7, v8, v9, v14];;
+  v15 = [v6 stringWithFormat:@" activitySymbolImageName: %@; activityColorName: %@; isPlaceholder: %@; %@", activitySymbolImageName, activityColorName, v9, v14];;
   [v4 insertString:v15 atIndex:v5];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(_FCActivity *)self _dndMode];
-  v6 = [v4 initWithMode:v5];
+  _dndMode = [(_FCActivity *)self _dndMode];
+  v6 = [v4 initWithMode:_dndMode];
 
-  v7 = [(_FCActivity *)self activityLifetimeDescriptions];
-  [v6 _setActivityLifetimeDescriptions:v7];
+  activityLifetimeDescriptions = [(_FCActivity *)self activityLifetimeDescriptions];
+  [v6 _setActivityLifetimeDescriptions:activityLifetimeDescriptions];
 
-  v8 = [(_FCActivity *)self activityLifetimesAlternativeDescription];
-  [v6 _setActivityLifetimesAlternativeDescription:v8];
+  activityLifetimesAlternativeDescription = [(_FCActivity *)self activityLifetimesAlternativeDescription];
+  [v6 _setActivityLifetimesAlternativeDescription:activityLifetimesAlternativeDescription];
 
   return v6;
 }

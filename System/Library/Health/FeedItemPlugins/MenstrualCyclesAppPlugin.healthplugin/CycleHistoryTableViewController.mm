@@ -1,39 +1,39 @@
 @interface CycleHistoryTableViewController
-- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
 - (void)pushFilterView;
 - (void)respondToContentSizeChanges;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CycleHistoryTableViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E10ABB8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(CycleHistoryTableViewController *)&v5 viewWillAppear:v3];
+  [(CycleHistoryTableViewController *)&v5 viewWillAppear:appearCopy];
   *&v4[OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController_presentedPDFProvider] = 0;
 }
 
 - (void)respondToContentSizeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E10A2F4();
 }
 
@@ -48,18 +48,18 @@
 
 - (void)pushFilterView
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E10C8BC();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v5 = sub_29E2BCFB4();
   v6 = *(v5 - 8);
   MEMORY[0x2A1C7C4A8](v5);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_29E10C9CC(v8);
 
   (*(v6 + 8))(v8, v5);
@@ -67,59 +67,59 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E10CF10(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E10CF10(viewCopy, section);
   v9 = v8;
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  sub_29E10D418(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E10D418(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_29E10EB78(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_29E10EB78(section);
 
   return v8;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithStyle:(int64_t)a3
+- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin31CycleHistoryTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29E10ED18(v7);
+  providerCopy = provider;
+  analysisCopy = analysis;
+  selfCopy = self;
+  sub_29E10ED18(analysisCopy);
 }
 
 @end

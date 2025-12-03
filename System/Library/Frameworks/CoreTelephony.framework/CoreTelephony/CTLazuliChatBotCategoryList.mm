@@ -1,9 +1,9 @@
 @interface CTLazuliChatBotCategoryList
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotCategoryList:(id)a3;
-- (CTLazuliChatBotCategoryList)initWithCoder:(id)a3;
-- (CTLazuliChatBotCategoryList)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotCategoryList:(id)list;
+- (CTLazuliChatBotCategoryList)initWithCoder:(id)coder;
+- (CTLazuliChatBotCategoryList)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -12,63 +12,63 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotCategoryList *)self categoryList];
-  [v3 appendFormat:@", categoryList = %@", v4];
+  categoryList = [(CTLazuliChatBotCategoryList *)self categoryList];
+  [v3 appendFormat:@", categoryList = %@", categoryList];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotCategoryList:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotCategoryList:(id)list
 {
-  v4 = a3;
-  v5 = [(CTLazuliChatBotCategoryList *)self categoryList];
-  v6 = [v4 categoryList];
-  if (v5 == v6)
+  listCopy = list;
+  categoryList = [(CTLazuliChatBotCategoryList *)self categoryList];
+  categoryList2 = [listCopy categoryList];
+  if (categoryList == categoryList2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(CTLazuliChatBotCategoryList *)self categoryList];
-    v8 = [v4 categoryList];
-    v9 = [v7 isEqualToArray:v8];
+    categoryList3 = [(CTLazuliChatBotCategoryList *)self categoryList];
+    categoryList4 = [listCopy categoryList];
+    v9 = [categoryList3 isEqualToArray:categoryList4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCategoryList *)self isEqualToCTLazuliChatBotCategoryList:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCategoryList *)self isEqualToCTLazuliChatBotCategoryList:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotCategoryList allocWithZone:?];
-  v6 = [(NSArray *)self->_categoryList copyWithZone:a3];
+  v6 = [(NSArray *)self->_categoryList copyWithZone:zone];
   [(CTLazuliChatBotCategoryList *)v5 setCategoryList:v6];
 
   return v5;
 }
 
-- (CTLazuliChatBotCategoryList)initWithCoder:(id)a3
+- (CTLazuliChatBotCategoryList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CTLazuliChatBotCategoryList;
   v5 = [(CTLazuliChatBotCategoryList *)&v12 init];
@@ -77,7 +77,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kCategoryListKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kCategoryListKey"];
     categoryList = v5->_categoryList;
     v5->_categoryList = v9;
   }
@@ -85,7 +85,7 @@
   return v5;
 }
 
-- (CTLazuliChatBotCategoryList)initWithReflection:(const void *)a3
+- (CTLazuliChatBotCategoryList)initWithReflection:(const void *)reflection
 {
   v13.receiver = self;
   v13.super_class = CTLazuliChatBotCategoryList;
@@ -93,9 +93,9 @@
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = *a3;
-    v7 = *(a3 + 1);
-    if (*a3 != v7)
+    v6 = *reflection;
+    v7 = *(reflection + 1);
+    if (*reflection != v7)
     {
       do
       {

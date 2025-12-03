@@ -1,16 +1,16 @@
 @interface PGMemoryTriggerLastWeekend
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerLastWeekend
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -26,36 +26,36 @@
 
   else
   {
-    v11 = [v7 localDate];
-    if ([MEMORY[0x277D276A8] isWeekendDate:v11])
+    localDate = [contextCopy localDate];
+    if ([MEMORY[0x277D276A8] isWeekendDate:localDate])
     {
-      v12 = [v11 dateByAddingTimeInterval:-86400.0];
+      v12 = [localDate dateByAddingTimeInterval:-86400.0];
 
-      v11 = v12;
+      localDate = v12;
     }
 
     v31 = 0;
     v32 = 0.0;
-    [MEMORY[0x277D276A8] nextWeekendLocalStartDate:&v31 interval:&v32 options:4 afterDate:v11];
+    [MEMORY[0x277D276A8] nextWeekendLocalStartDate:&v31 interval:&v32 options:4 afterDate:localDate];
     v13 = v32;
     v14 = v31;
     v15 = [v14 dateByAddingTimeInterval:v13];
     v27 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v14 endDate:v15];
     v26 = [PGGraphMomentNodeCollection momentNodesForLocalDateInterval:"momentNodesForLocalDateInterval:inGraph:" inGraph:?];
-    v16 = [v26 memoryNodes];
-    v28 = v8;
-    v17 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:1 inGraph:v8];
-    v18 = [v16 collectionByIntersecting:v17];
+    memoryNodes = [v26 memoryNodes];
+    v28 = graphCopy;
+    v17 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:1 inGraph:graphCopy];
+    v18 = [memoryNodes collectionByIntersecting:v17];
     v29 = 0;
     v30 = 0;
     [MEMORY[0x277D276A8] nextWeekendLocalStartDate:&v29 interval:&v30 options:0 afterDate:v15];
     v19 = v29;
     v20 = objc_opt_class();
-    v25 = v7;
-    v21 = [v7 timeZone];
-    v22 = [v20 validityIntervalForLocalStartDate:v15 localEndDate:v19 timeZone:v21];
+    v25 = contextCopy;
+    timeZone = [contextCopy timeZone];
+    v22 = [v20 validityIntervalForLocalStartDate:v15 localEndDate:v19 timeZone:timeZone];
 
-    if ([v9 isCancelledWithProgress:1.0])
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -74,9 +74,9 @@
       v10 = [objc_opt_class() memoryTriggerResultsForMemoryNodes:v18 withValidityInterval:v22];
     }
 
-    v7 = v25;
+    contextCopy = v25;
 
-    v8 = v28;
+    graphCopy = v28;
   }
 
   v23 = *MEMORY[0x277D85DE8];

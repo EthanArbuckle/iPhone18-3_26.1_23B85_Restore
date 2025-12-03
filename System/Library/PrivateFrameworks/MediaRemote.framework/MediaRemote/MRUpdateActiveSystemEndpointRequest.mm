@@ -1,66 +1,66 @@
 @interface MRUpdateActiveSystemEndpointRequest
-- (MRUpdateActiveSystemEndpointRequest)initWithOutputDeviceUID:(id)a3 type:(int64_t)a4 reason:(id)a5;
-- (MRUpdateActiveSystemEndpointRequest)initWithProtobuf:(id)a3;
+- (MRUpdateActiveSystemEndpointRequest)initWithOutputDeviceUID:(id)d type:(int64_t)type reason:(id)reason;
+- (MRUpdateActiveSystemEndpointRequest)initWithProtobuf:(id)protobuf;
 - (_MRUpdateActiveSystemEndpointRequestProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)perform:(id)a3 completion:(id)a4;
+- (void)perform:(id)perform completion:(id)completion;
 @end
 
 @implementation MRUpdateActiveSystemEndpointRequest
 
-- (MRUpdateActiveSystemEndpointRequest)initWithOutputDeviceUID:(id)a3 type:(int64_t)a4 reason:(id)a5
+- (MRUpdateActiveSystemEndpointRequest)initWithOutputDeviceUID:(id)d type:(int64_t)type reason:(id)reason
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  reasonCopy = reason;
   v16.receiver = self;
   v16.super_class = MRUpdateActiveSystemEndpointRequest;
   v10 = [(MRUpdateActiveSystemEndpointRequest *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     outputDeviceUID = v10->_outputDeviceUID;
     v10->_outputDeviceUID = v11;
 
-    v13 = [v9 copy];
+    v13 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v13;
 
-    v10->_type = a4;
+    v10->_type = type;
   }
 
   return v10;
 }
 
-- (MRUpdateActiveSystemEndpointRequest)initWithProtobuf:(id)a3
+- (MRUpdateActiveSystemEndpointRequest)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v17.receiver = self;
   v17.super_class = MRUpdateActiveSystemEndpointRequest;
   v5 = [(MRUpdateActiveSystemEndpointRequest *)&v17 init];
   if (v5)
   {
-    v6 = [v4 previousOutputDeviceUID];
-    v7 = [v6 copy];
+    previousOutputDeviceUID = [protobufCopy previousOutputDeviceUID];
+    v7 = [previousOutputDeviceUID copy];
     previousOutputDeviceUID = v5->_previousOutputDeviceUID;
     v5->_previousOutputDeviceUID = v7;
 
-    v9 = [v4 outputDeviceUID];
-    v10 = [v9 copy];
+    outputDeviceUID = [protobufCopy outputDeviceUID];
+    v10 = [outputDeviceUID copy];
     outputDeviceUID = v5->_outputDeviceUID;
     v5->_outputDeviceUID = v10;
 
-    v5->_changeType = [v4 changeType];
-    v12 = [v4 reason];
-    v13 = [v12 copy];
+    v5->_changeType = [protobufCopy changeType];
+    reason = [protobufCopy reason];
+    v13 = [reason copy];
     reason = v5->_reason;
     v5->_reason = v13;
 
-    v5->_pairedDeviceSync = [v4 pairedDeviceSync];
-    v5->_type = [v4 type];
-    [v4 disableDuration];
+    v5->_pairedDeviceSync = [protobufCopy pairedDeviceSync];
+    v5->_type = [protobufCopy type];
+    [protobufCopy disableDuration];
     v5->_disableDuration = v15;
-    v5->_demoteWhenSyncingToCompanion = [v4 demoteWhenSyncingToCompanion];
+    v5->_demoteWhenSyncingToCompanion = [protobufCopy demoteWhenSyncingToCompanion];
   }
 
   return v5;
@@ -69,15 +69,15 @@
 - (_MRUpdateActiveSystemEndpointRequestProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRUpdateActiveSystemEndpointRequestProtobuf);
-  v4 = [(MRUpdateActiveSystemEndpointRequest *)self previousOutputDeviceUID];
-  [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setPreviousOutputDeviceUID:v4];
+  previousOutputDeviceUID = [(MRUpdateActiveSystemEndpointRequest *)self previousOutputDeviceUID];
+  [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setPreviousOutputDeviceUID:previousOutputDeviceUID];
 
-  v5 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
-  [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setOutputDeviceUID:v5];
+  outputDeviceUID = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
+  [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setOutputDeviceUID:outputDeviceUID];
 
   [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setChangeType:[(MRUpdateActiveSystemEndpointRequest *)self changeType]];
-  v6 = [(MRUpdateActiveSystemEndpointRequest *)self reason];
-  [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setReason:v6];
+  reason = [(MRUpdateActiveSystemEndpointRequest *)self reason];
+  [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setReason:reason];
 
   [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setPairedDeviceSync:[(MRUpdateActiveSystemEndpointRequest *)self isPairedDeviceSync]];
   [(_MRUpdateActiveSystemEndpointRequestProtobuf *)v3 setType:[(MRUpdateActiveSystemEndpointRequest *)self type]];
@@ -90,23 +90,23 @@
 
 - (id)description
 {
-  v3 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
+  outputDeviceUID = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
   v4 = @"Update";
-  if (!v3)
+  if (!outputDeviceUID)
   {
     v4 = @"Clear";
   }
 
   v5 = v4;
 
-  v6 = [(MRUpdateActiveSystemEndpointRequest *)self changeType];
+  changeType = [(MRUpdateActiveSystemEndpointRequest *)self changeType];
   v7 = @"Deferrable";
-  if (v6 != 1)
+  if (changeType != 1)
   {
     v7 = 0;
   }
 
-  if (v6)
+  if (changeType)
   {
     v8 = v7;
   }
@@ -119,9 +119,9 @@
   v9 = [(__CFString *)v8 copy];
   active = MRMediaRemoteActiveEndpointTypeCopyDescription([(MRUpdateActiveSystemEndpointRequest *)self type]);
   v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v12 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
-  v13 = [(MRUpdateActiveSystemEndpointRequest *)self clientBundleIdentifier];
-  v14 = [(MRUpdateActiveSystemEndpointRequest *)self reason];
+  outputDeviceUID2 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
+  clientBundleIdentifier = [(MRUpdateActiveSystemEndpointRequest *)self clientBundleIdentifier];
+  reason = [(MRUpdateActiveSystemEndpointRequest *)self reason];
   if ([(MRUpdateActiveSystemEndpointRequest *)self demoteWhenSyncingToCompanion])
   {
     v15 = @"YES";
@@ -133,29 +133,29 @@
   }
 
   [(MRUpdateActiveSystemEndpointRequest *)self disableDuration];
-  v17 = [v11 initWithFormat:@"outputDevice = <%@>, client = <%@>, reason = <%@>, operation = <%@>, changeType = <%@>, type = <%@>, demote = <%@> disableDuration = <%lf>", v12, v13, v14, v5, v9, active, v15, v16];
+  v17 = [v11 initWithFormat:@"outputDevice = <%@>, client = <%@>, reason = <%@>, operation = <%@>, changeType = <%@>, type = <%@>, demote = <%@> disableDuration = <%lf>", outputDeviceUID2, clientBundleIdentifier, reason, v5, v9, active, v15, v16];
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(MRUpdateActiveSystemEndpointRequest *)self previousOutputDeviceUID];
-  v7 = [v6 copyWithZone:a3];
+  previousOutputDeviceUID = [(MRUpdateActiveSystemEndpointRequest *)self previousOutputDeviceUID];
+  v7 = [previousOutputDeviceUID copyWithZone:zone];
   [v5 setPreviousOutputDeviceUID:v7];
 
-  v8 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
-  v9 = [v8 copyWithZone:a3];
+  outputDeviceUID = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
+  v9 = [outputDeviceUID copyWithZone:zone];
   [v5 setOutputDeviceUID:v9];
 
   [v5 setChangeType:{-[MRUpdateActiveSystemEndpointRequest changeType](self, "changeType")}];
-  v10 = [(MRUpdateActiveSystemEndpointRequest *)self reason];
-  v11 = [v10 copyWithZone:a3];
+  reason = [(MRUpdateActiveSystemEndpointRequest *)self reason];
+  v11 = [reason copyWithZone:zone];
   [v5 setReason:v11];
 
-  v12 = [(MRUpdateActiveSystemEndpointRequest *)self clientBundleIdentifier];
-  v13 = [v12 copyWithZone:a3];
+  clientBundleIdentifier = [(MRUpdateActiveSystemEndpointRequest *)self clientBundleIdentifier];
+  v13 = [clientBundleIdentifier copyWithZone:zone];
   [v5 setClientBundleIdentifier:v13];
 
   [v5 setPairedDeviceSync:{-[MRUpdateActiveSystemEndpointRequest isPairedDeviceSync](self, "isPairedDeviceSync")}];
@@ -167,20 +167,20 @@
   return v5;
 }
 
-- (void)perform:(id)a3 completion:(id)a4
+- (void)perform:(id)perform completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E695DF00];
-  v8 = a3;
-  v9 = [v7 date];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
+  performCopy = perform;
+  date = [v7 date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v12 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
+  outputDeviceUID = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
-  if (v14)
+  outputDeviceUID2 = [(MRUpdateActiveSystemEndpointRequest *)self outputDeviceUID];
+  if (outputDeviceUID2)
   {
     v15 = @"Update";
   }
@@ -191,21 +191,21 @@
   }
 
   active = MRMediaRemoteActiveEndpointTypeCopyDescription([(MRUpdateActiveSystemEndpointRequest *)self type]);
-  v17 = [v13 initWithFormat:@"%@%@ActiveEndpoint", v15, active];
+  active = [v13 initWithFormat:@"%@%@ActiveEndpoint", v15, active];
 
-  v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v17, v11];
+  v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", active, uUIDString];
   v19 = v18;
-  if (v12)
+  if (outputDeviceUID)
   {
-    [v18 appendFormat:@" for %@", v12];
+    [v18 appendFormat:@" for %@", outputDeviceUID];
   }
 
-  v20 = [(MRUpdateActiveSystemEndpointRequest *)self reason];
+  reason = [(MRUpdateActiveSystemEndpointRequest *)self reason];
 
-  if (v20)
+  if (reason)
   {
-    v21 = [(MRUpdateActiveSystemEndpointRequest *)self reason];
-    [v19 appendFormat:@" because %@", v21];
+    reason2 = [(MRUpdateActiveSystemEndpointRequest *)self reason];
+    [v19 appendFormat:@" because %@", reason2];
   }
 
   v22 = _MRLogForCategory(0xAuLL);
@@ -216,13 +216,13 @@
     _os_log_impl(&dword_1A2860000, v22, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v23 = [(MRUpdateActiveSystemEndpointRequest *)self clientBundleIdentifier];
+  clientBundleIdentifier = [(MRUpdateActiveSystemEndpointRequest *)self clientBundleIdentifier];
 
-  if (!v23)
+  if (!clientBundleIdentifier)
   {
-    v24 = [MEMORY[0x1E696AAE8] mainBundle];
-    v25 = [v24 bundleIdentifier];
-    [(MRUpdateActiveSystemEndpointRequest *)self setClientBundleIdentifier:v25];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [(MRUpdateActiveSystemEndpointRequest *)self setClientBundleIdentifier:bundleIdentifier];
   }
 
   v26 = [[MRUpdateActiveSystemEndpointMessage alloc] initWithRequest:self];
@@ -231,17 +231,17 @@
   v34[1] = 3221225472;
   v34[2] = __58__MRUpdateActiveSystemEndpointRequest_perform_completion___block_invoke;
   v34[3] = &unk_1E76A1BC0;
-  v35 = v12;
-  v36 = v17;
-  v37 = v11;
-  v38 = v9;
-  v39 = v6;
-  v28 = v6;
-  v29 = v9;
-  v30 = v11;
-  v31 = v17;
-  v32 = v12;
-  MRMediaRemoteServiceUpdateActiveSystemEndpointUID(v27, v26, v8, v34);
+  v35 = outputDeviceUID;
+  v36 = active;
+  v37 = uUIDString;
+  v38 = date;
+  v39 = completionCopy;
+  v28 = completionCopy;
+  v29 = date;
+  v30 = uUIDString;
+  v31 = active;
+  v32 = outputDeviceUID;
+  MRMediaRemoteServiceUpdateActiveSystemEndpointUID(v27, v26, performCopy, v34);
 
   v33 = *MEMORY[0x1E69E9840];
 }

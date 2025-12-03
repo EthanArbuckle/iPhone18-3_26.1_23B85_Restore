@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneUtilAttributeFactory_$1
-- (OrgApacheLuceneUtilAttributeFactory_$1)initWithOrgLukhnosPortmobileInvokeMethodHandle:(id)a3 withOrgApacheLuceneUtilAttributeFactory:(id)a4 withIOSClass:(id)a5;
+- (OrgApacheLuceneUtilAttributeFactory_$1)initWithOrgLukhnosPortmobileInvokeMethodHandle:(id)handle withOrgApacheLuceneUtilAttributeFactory:(id)factory withIOSClass:(id)class;
 - (id)createInstance;
 - (void)dealloc;
 @end
@@ -14,21 +14,21 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(OrgLukhnosPortmobileInvokeMethodHandle *)v2 invokeExact];
+  invokeExact = [(OrgLukhnosPortmobileInvokeMethodHandle *)v2 invokeExact];
   objc_opt_class();
-  if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (invokeExact && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v3;
+  return invokeExact;
 }
 
-- (OrgApacheLuceneUtilAttributeFactory_$1)initWithOrgLukhnosPortmobileInvokeMethodHandle:(id)a3 withOrgApacheLuceneUtilAttributeFactory:(id)a4 withIOSClass:(id)a5
+- (OrgApacheLuceneUtilAttributeFactory_$1)initWithOrgLukhnosPortmobileInvokeMethodHandle:(id)handle withOrgApacheLuceneUtilAttributeFactory:(id)factory withIOSClass:(id)class
 {
-  JreStrongAssign(&self->val$constr_, a3);
-  JreStrongAssign(&self->super.delegate_, a4);
-  JreStrongAssign(&self->super.clazz_, a5);
+  JreStrongAssign(&self->val$constr_, handle);
+  JreStrongAssign(&self->super.delegate_, factory);
+  JreStrongAssign(&self->super.clazz_, class);
   return self;
 }
 

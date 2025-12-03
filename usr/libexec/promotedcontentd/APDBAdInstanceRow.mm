@@ -1,7 +1,7 @@
 @interface APDBAdInstanceRow
 - (BOOL)updateNotNilColumns;
-- (id)initImpressionId:(id)a3 accountToken:(id)a4 table:(id)a5;
-- (id)initImpressionId:(id)a3 campaign:(id)a4 adGroup:(id)a5 ad:(id)a6 creative:(id)a7 bundleId:(id)a8 searchTermId:(id)a9 adamId:(id)a10 adType:(id)a11 adFormatType:(id)a12 containerType:(id)a13 relay:(id)a14 adMetadata:(id)a15 propertiesJSON:(id)a16 brand:(id)a17 advertiserCategory:(id)a18 accountToken:(id)a19 table:(id)a20;
+- (id)initImpressionId:(id)id accountToken:(id)token table:(id)table;
+- (id)initImpressionId:(id)id campaign:(id)campaign adGroup:(id)group ad:(id)ad creative:(id)creative bundleId:(id)bundleId searchTermId:(id)termId adamId:(id)self0 adType:(id)self1 adFormatType:(id)self2 containerType:(id)self3 relay:(id)self4 adMetadata:(id)self5 propertiesJSON:(id)self6 brand:(id)self7 advertiserCategory:(id)self8 accountToken:(id)self9 table:(id)table;
 - (id)readOnlyColumns;
 @end
 
@@ -12,72 +12,72 @@
   v3 = [NSSet setWithObjects:@"relay", @"allEvents", @"impressionEvents", @"interactedEvents", 0];
   v7.receiver = self;
   v7.super_class = APDBAdInstanceRow;
-  v4 = [(APDBAdInstanceRow *)&v7 readOnlyColumns];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  readOnlyColumns = [(APDBAdInstanceRow *)&v7 readOnlyColumns];
+  v5 = [v3 setByAddingObjectsFromSet:readOnlyColumns];
 
   return v5;
 }
 
-- (id)initImpressionId:(id)a3 campaign:(id)a4 adGroup:(id)a5 ad:(id)a6 creative:(id)a7 bundleId:(id)a8 searchTermId:(id)a9 adamId:(id)a10 adType:(id)a11 adFormatType:(id)a12 containerType:(id)a13 relay:(id)a14 adMetadata:(id)a15 propertiesJSON:(id)a16 brand:(id)a17 advertiserCategory:(id)a18 accountToken:(id)a19 table:(id)a20
+- (id)initImpressionId:(id)id campaign:(id)campaign adGroup:(id)group ad:(id)ad creative:(id)creative bundleId:(id)bundleId searchTermId:(id)termId adamId:(id)self0 adType:(id)self1 adFormatType:(id)self2 containerType:(id)self3 relay:(id)self4 adMetadata:(id)self5 propertiesJSON:(id)self6 brand:(id)self7 advertiserCategory:(id)self8 accountToken:(id)self9 table:(id)table
 {
-  v25 = a3;
-  v26 = a4;
-  v46 = a5;
-  v45 = a6;
-  v44 = a7;
-  v43 = a8;
-  v42 = a9;
-  v41 = a10;
-  v40 = a11;
-  v27 = v26;
-  v39 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = a15;
-  v31 = a16;
-  v32 = a17;
-  v33 = a18;
-  v34 = a19;
+  idCopy = id;
+  campaignCopy = campaign;
+  groupCopy = group;
+  adCopy = ad;
+  creativeCopy = creative;
+  bundleIdCopy = bundleId;
+  termIdCopy = termId;
+  adamIdCopy = adamId;
+  typeCopy = type;
+  v27 = campaignCopy;
+  formatTypeCopy = formatType;
+  containerTypeCopy = containerType;
+  relayCopy = relay;
+  metadataCopy = metadata;
+  nCopy = n;
+  brandCopy = brand;
+  categoryCopy = category;
+  tokenCopy = token;
   v47.receiver = self;
   v47.super_class = APDBAdInstanceRow;
-  v35 = [(APDBAdInstanceRow *)&v47 initAsNewObjectWithTable:a20];
+  v35 = [(APDBAdInstanceRow *)&v47 initAsNewObjectWithTable:table];
   v36 = v35;
   if (v35)
   {
-    [v35 setValue:v25 forColumnName:@"impressionId"];
+    [v35 setValue:idCopy forColumnName:@"impressionId"];
     [v36 setValue:v27 forColumnName:@"campaign"];
-    [v36 setValue:v46 forColumnName:@"adGroup"];
-    [v36 setValue:v45 forColumnName:@"ad"];
-    [v36 setValue:v44 forColumnName:@"creative"];
-    [v36 setValue:v43 forColumnName:@"bundleId"];
-    [v36 setValue:v42 forColumnName:@"searchTermId"];
-    [v36 setValue:v41 forColumnName:@"adamId"];
-    [v36 setValue:v40 forColumnName:@"adType"];
-    [v36 setValue:v39 forColumnName:@"adFormatType"];
-    [v36 setValue:v28 forColumnName:@"containerType"];
-    [v36 setRelay:v29];
-    [v36 setValue:v30 forColumnName:@"adMetadata"];
-    [v36 setValue:v31 forColumnName:@"propertiesJSON"];
-    [v36 setValue:v32 forColumnName:@"brand"];
-    [v36 setValue:v33 forColumnName:@"advertiserCategory"];
-    [v36 setValue:v34 forColumnName:@"accountToken"];
+    [v36 setValue:groupCopy forColumnName:@"adGroup"];
+    [v36 setValue:adCopy forColumnName:@"ad"];
+    [v36 setValue:creativeCopy forColumnName:@"creative"];
+    [v36 setValue:bundleIdCopy forColumnName:@"bundleId"];
+    [v36 setValue:termIdCopy forColumnName:@"searchTermId"];
+    [v36 setValue:adamIdCopy forColumnName:@"adamId"];
+    [v36 setValue:typeCopy forColumnName:@"adType"];
+    [v36 setValue:formatTypeCopy forColumnName:@"adFormatType"];
+    [v36 setValue:containerTypeCopy forColumnName:@"containerType"];
+    [v36 setRelay:relayCopy];
+    [v36 setValue:metadataCopy forColumnName:@"adMetadata"];
+    [v36 setValue:nCopy forColumnName:@"propertiesJSON"];
+    [v36 setValue:brandCopy forColumnName:@"brand"];
+    [v36 setValue:categoryCopy forColumnName:@"advertiserCategory"];
+    [v36 setValue:tokenCopy forColumnName:@"accountToken"];
   }
 
   return v36;
 }
 
-- (id)initImpressionId:(id)a3 accountToken:(id)a4 table:(id)a5
+- (id)initImpressionId:(id)id accountToken:(id)token table:(id)table
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  tokenCopy = token;
   v13.receiver = self;
   v13.super_class = APDBAdInstanceRow;
-  v10 = [(APDBAdInstanceRow *)&v13 initWithTable:a5];
+  v10 = [(APDBAdInstanceRow *)&v13 initWithTable:table];
   v11 = v10;
   if (v10)
   {
-    [(APDBAdInstanceRow *)v10 setValue:v8 forColumnName:@"impressionId"];
-    [(APDBAdInstanceRow *)v11 setValue:v9 forColumnName:@"accountToken"];
+    [(APDBAdInstanceRow *)v10 setValue:idCopy forColumnName:@"impressionId"];
+    [(APDBAdInstanceRow *)v11 setValue:tokenCopy forColumnName:@"accountToken"];
   }
 
   return v11;
@@ -85,14 +85,14 @@
 
 - (BOOL)updateNotNilColumns
 {
-  v3 = [(APDBAdInstanceRow *)self manager];
-  v4 = v3;
-  if (v3)
+  manager = [(APDBAdInstanceRow *)self manager];
+  v4 = manager;
+  if (manager)
   {
-    v35 = self;
-    v36 = v3;
-    v5 = [(APDBAdInstanceRow *)self columns];
-    v6 = [v5 allValues];
+    selfCopy = self;
+    v36 = manager;
+    columns = [(APDBAdInstanceRow *)self columns];
+    allValues = [columns allValues];
 
     v38 = objc_alloc_init(NSMutableArray);
     v37 = objc_alloc_init(NSMutableArray);
@@ -100,7 +100,7 @@
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v7 = v6;
+    v7 = allValues;
     v8 = [v7 countByEnumeratingWithState:&v40 objects:v44 count:16];
     v39 = v7;
     if (v8)
@@ -118,8 +118,8 @@
           }
 
           v13 = *(*(&v40 + 1) + 8 * i);
-          v14 = [v13 name];
-          v15 = [v14 isEqualToString:@"impressionId"];
+          name = [v13 name];
+          v15 = [name isEqualToString:@"impressionId"];
 
           if (v15)
           {
@@ -128,25 +128,25 @@
             v10 = v16;
           }
 
-          v17 = [v13 value];
-          if (v17)
+          value = [v13 value];
+          if (value)
           {
-            v18 = v17;
-            v19 = [v13 name];
-            if ([v19 isEqualToString:@"rowid"])
+            v18 = value;
+            name2 = [v13 name];
+            if ([name2 isEqualToString:@"rowid"])
             {
             }
 
             else
             {
-              v20 = [v13 name];
-              v21 = [v20 isEqualToString:@"accountToken"];
+              name3 = [v13 name];
+              v21 = [name3 isEqualToString:@"accountToken"];
 
               v7 = v39;
               if ((v21 & 1) == 0)
               {
-                v22 = [v13 name];
-                v23 = [NSString stringWithFormat:@"%@=?", v22];
+                name4 = [v13 name];
+                v23 = [NSString stringWithFormat:@"%@=?", name4];
                 [v38 addObject:v23];
 
                 [v37 addObject:v13];
@@ -166,16 +166,16 @@
       v10 = 0;
     }
 
-    v26 = [v10 value];
+    value2 = [v10 value];
 
-    if (v26)
+    if (value2)
     {
       v27 = v37;
       [v37 addObject:v10];
-      v28 = [(APDBAdInstanceRow *)v35 tableName];
+      tableName = [(APDBAdInstanceRow *)selfCopy tableName];
       v29 = v38;
       v30 = [v38 componentsJoinedByString:{@", "}];
-      v31 = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE impressionId=?", v28, v30];
+      v31 = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE impressionId=?", tableName, v30];
 
       v7 = v39;
       v4 = v36;

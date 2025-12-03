@@ -1,54 +1,54 @@
 @interface CSDMessagingConversationParticipant
-+ (id)participantWithCSDConversationJoinContext:(id)a3;
-+ (id)participantWithCSDConversationParticipant:(id)a3;
-+ (id)participantWithTUConversationParticipant:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)participantWithCSDConversationJoinContext:(id)context;
++ (id)participantWithCSDConversationParticipant:(id)participant;
++ (id)participantWithTUConversationParticipant:(id)participant;
+- (BOOL)isEqual:(id)equal;
 - (CSDConversationParticipant)csdConversationParticipant;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAvMode:(id)a3;
-- (int)StringAsPresentationMode:(id)a3;
+- (int)StringAsAvMode:(id)mode;
+- (int)StringAsPresentationMode:(id)mode;
 - (int)avMode;
 - (int)presentationMode;
 - (unint64_t)hash;
 - (unint64_t)resolvedPresentationMode;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvMode:(BOOL)a3;
-- (void)setHasGuestModeEnabled:(BOOL)a3;
-- (void)setHasIsGFTDowngradeToOneToOneAvailable:(BOOL)a3;
-- (void)setHasIsGondolaCallingAvailable:(BOOL)a3;
-- (void)setHasIsLightweight:(BOOL)a3;
-- (void)setHasIsMomentsAvailable:(BOOL)a3;
-- (void)setHasIsNearbySharePlay:(BOOL)a3;
-- (void)setHasIsPersonaAvailable:(BOOL)a3;
-- (void)setHasIsPhotosSharePlayAvailable:(BOOL)a3;
-- (void)setHasIsScreenSharingAvailable:(BOOL)a3;
-- (void)setHasIsSpatialPersonaEnabled:(BOOL)a3;
-- (void)setHasIsTranslationAvailable:(BOOL)a3;
-- (void)setHasIsUPlusNDowngradeAvailable:(BOOL)a3;
-- (void)setHasIsUPlusOneAVLessAvailable:(BOOL)a3;
-- (void)setHasIsUPlusOneScreenSharingAvailable:(BOOL)a3;
-- (void)setHasIsUPlusOneVisionToVisionAvailable:(BOOL)a3;
-- (void)setHasNearbyFeatureVersion:(BOOL)a3;
-- (void)setHasOptions:(BOOL)a3;
-- (void)setHasPresentationMode:(BOOL)a3;
-- (void)setHasSharePlayProtocolVersion:(BOOL)a3;
-- (void)setHasSpatialPersonaGenerationCounter:(BOOL)a3;
-- (void)setHasSupportsLeaveContext:(BOOL)a3;
-- (void)setHasSupportsRequestToScreenShare:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)setHasVisionCallEstablishmentVersion:(BOOL)a3;
-- (void)setHasVisionFeatureVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvMode:(BOOL)mode;
+- (void)setHasGuestModeEnabled:(BOOL)enabled;
+- (void)setHasIsGFTDowngradeToOneToOneAvailable:(BOOL)available;
+- (void)setHasIsGondolaCallingAvailable:(BOOL)available;
+- (void)setHasIsLightweight:(BOOL)lightweight;
+- (void)setHasIsMomentsAvailable:(BOOL)available;
+- (void)setHasIsNearbySharePlay:(BOOL)play;
+- (void)setHasIsPersonaAvailable:(BOOL)available;
+- (void)setHasIsPhotosSharePlayAvailable:(BOOL)available;
+- (void)setHasIsScreenSharingAvailable:(BOOL)available;
+- (void)setHasIsSpatialPersonaEnabled:(BOOL)enabled;
+- (void)setHasIsTranslationAvailable:(BOOL)available;
+- (void)setHasIsUPlusNDowngradeAvailable:(BOOL)available;
+- (void)setHasIsUPlusOneAVLessAvailable:(BOOL)available;
+- (void)setHasIsUPlusOneScreenSharingAvailable:(BOOL)available;
+- (void)setHasIsUPlusOneVisionToVisionAvailable:(BOOL)available;
+- (void)setHasNearbyFeatureVersion:(BOOL)version;
+- (void)setHasOptions:(BOOL)options;
+- (void)setHasPresentationMode:(BOOL)mode;
+- (void)setHasSharePlayProtocolVersion:(BOOL)version;
+- (void)setHasSpatialPersonaGenerationCounter:(BOOL)counter;
+- (void)setHasSupportsLeaveContext:(BOOL)context;
+- (void)setHasSupportsRequestToScreenShare:(BOOL)share;
+- (void)setHasVersion:(BOOL)version;
+- (void)setHasVisionCallEstablishmentVersion:(BOOL)version;
+- (void)setHasVisionFeatureVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationParticipant
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 128;
   }
@@ -61,9 +61,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasIsMomentsAvailable:(BOOL)a3
+- (void)setHasIsMomentsAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x4000;
   }
@@ -76,9 +76,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasIsScreenSharingAvailable:(BOOL)a3
+- (void)setHasIsScreenSharingAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x40000;
   }
@@ -91,9 +91,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasIsGondolaCallingAvailable:(BOOL)a3
+- (void)setHasIsGondolaCallingAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 4096;
   }
@@ -106,9 +106,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasIsPersonaAvailable:(BOOL)a3
+- (void)setHasIsPersonaAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x10000;
   }
@@ -121,9 +121,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasIsLightweight:(BOOL)a3
+- (void)setHasIsLightweight:(BOOL)lightweight
 {
-  if (a3)
+  if (lightweight)
   {
     v3 = 0x2000;
   }
@@ -136,9 +136,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasSharePlayProtocolVersion:(BOOL)a3
+- (void)setHasSharePlayProtocolVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 32;
   }
@@ -151,9 +151,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasOptions:(BOOL)a3
+- (void)setHasOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 8;
   }
@@ -166,9 +166,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasIsGFTDowngradeToOneToOneAvailable:(BOOL)a3
+- (void)setHasIsGFTDowngradeToOneToOneAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 2048;
   }
@@ -181,9 +181,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasGuestModeEnabled:(BOOL)a3
+- (void)setHasGuestModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -196,9 +196,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasIsUPlusNDowngradeAvailable:(BOOL)a3
+- (void)setHasIsUPlusNDowngradeAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x200000;
   }
@@ -224,9 +224,9 @@
   }
 }
 
-- (void)setHasAvMode:(BOOL)a3
+- (void)setHasAvMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -239,20 +239,20 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (int)StringAsAvMode:(id)a3
+- (int)StringAsAvMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([modeCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modeCopy isEqualToString:@"Video"])
   {
     v4 = 2;
   }
@@ -265,9 +265,9 @@
   return v4;
 }
 
-- (void)setHasSupportsLeaveContext:(BOOL)a3
+- (void)setHasSupportsLeaveContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 0x2000000;
   }
@@ -280,9 +280,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasIsUPlusOneScreenSharingAvailable:(BOOL)a3
+- (void)setHasIsUPlusOneScreenSharingAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x800000;
   }
@@ -295,9 +295,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasIsSpatialPersonaEnabled:(BOOL)a3
+- (void)setHasIsSpatialPersonaEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x80000;
   }
@@ -310,9 +310,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasIsUPlusOneAVLessAvailable:(BOOL)a3
+- (void)setHasIsUPlusOneAVLessAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x400000;
   }
@@ -325,9 +325,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasVisionFeatureVersion:(BOOL)a3
+- (void)setHasVisionFeatureVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 512;
   }
@@ -340,9 +340,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasVisionCallEstablishmentVersion:(BOOL)a3
+- (void)setHasVisionCallEstablishmentVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 256;
   }
@@ -355,9 +355,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasIsUPlusOneVisionToVisionAvailable:(BOOL)a3
+- (void)setHasIsUPlusOneVisionToVisionAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x1000000;
   }
@@ -370,9 +370,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasSupportsRequestToScreenShare:(BOOL)a3
+- (void)setHasSupportsRequestToScreenShare:(BOOL)share
 {
-  if (a3)
+  if (share)
   {
     v3 = 0x4000000;
   }
@@ -385,9 +385,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasSpatialPersonaGenerationCounter:(BOOL)a3
+- (void)setHasSpatialPersonaGenerationCounter:(BOOL)counter
 {
-  if (a3)
+  if (counter)
   {
     v3 = 64;
   }
@@ -400,9 +400,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasIsPhotosSharePlayAvailable:(BOOL)a3
+- (void)setHasIsPhotosSharePlayAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x20000;
   }
@@ -428,9 +428,9 @@
   }
 }
 
-- (void)setHasPresentationMode:(BOOL)a3
+- (void)setHasPresentationMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 16;
   }
@@ -443,20 +443,20 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (int)StringAsPresentationMode:(id)a3
+- (int)StringAsPresentationMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AVLessSharePlay"])
+  else if ([modeCopy isEqualToString:@"AVLessSharePlay"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ContinuitySession"])
+  else if ([modeCopy isEqualToString:@"ContinuitySession"])
   {
     v4 = 2;
   }
@@ -469,9 +469,9 @@
   return v4;
 }
 
-- (void)setHasIsTranslationAvailable:(BOOL)a3
+- (void)setHasIsTranslationAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x100000;
   }
@@ -484,9 +484,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasIsNearbySharePlay:(BOOL)a3
+- (void)setHasIsNearbySharePlay:(BOOL)play
 {
-  if (a3)
+  if (play)
   {
     v3 = 0x8000;
   }
@@ -499,9 +499,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasNearbyFeatureVersion:(BOOL)a3
+- (void)setHasNearbyFeatureVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -535,8 +535,8 @@
   handle = self->_handle;
   if (handle)
   {
-    v8 = [(CSDMessagingHandle *)handle dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"handle"];
+    dictionaryRepresentation = [(CSDMessagingHandle *)handle dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"handle"];
   }
 
   avcData = self->_avcData;
@@ -679,8 +679,8 @@ LABEL_19:
   association = self->_association;
   if (association)
   {
-    v13 = [(CSDMessagingConversationParticipantAssociation *)association dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"association"];
+    dictionaryRepresentation2 = [(CSDMessagingConversationParticipantAssociation *)association dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"association"];
   }
 
   v14 = self->_has;
@@ -902,8 +902,8 @@ LABEL_66:
   cluster = self->_cluster;
   if (cluster)
   {
-    v42 = [(CSDMessagingConversationParticipantCluster *)cluster dictionaryRepresentation];
-    [v3 setObject:v42 forKey:@"cluster"];
+    dictionaryRepresentation3 = [(CSDMessagingConversationParticipantCluster *)cluster dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"cluster"];
   }
 
   v43 = self->_has;
@@ -949,9 +949,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v36 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
@@ -1325,41 +1325,41 @@ LABEL_45:
 LABEL_46:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
-    v4[24] = self->_version;
-    v4[32] |= 0x80u;
+    toCopy[24] = self->_version;
+    toCopy[32] |= 0x80u;
     has = self->_has;
   }
 
   if (*&has)
   {
-    *(v4 + 1) = self->_identifier;
-    v4[32] |= 1u;
+    *(toCopy + 1) = self->_identifier;
+    toCopy[32] |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_handle)
   {
-    [v4 setHandle:?];
-    v4 = v10;
+    [toCopy setHandle:?];
+    toCopy = v10;
   }
 
   if (self->_avcData)
   {
     [v10 setAvcData:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x4000) != 0)
   {
-    *(v4 + 112) = self->_isMomentsAvailable;
-    v4[32] |= 0x4000u;
+    *(toCopy + 112) = self->_isMomentsAvailable;
+    toCopy[32] |= 0x4000u;
     v6 = self->_has;
     if ((*&v6 & 0x40000) == 0)
     {
@@ -1378,8 +1378,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 116) = self->_isScreenSharingAvailable;
-  v4[32] |= 0x40000u;
+  *(toCopy + 116) = self->_isScreenSharingAvailable;
+  toCopy[32] |= 0x40000u;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -1393,8 +1393,8 @@ LABEL_12:
   }
 
 LABEL_51:
-  *(v4 + 110) = self->_isGondolaCallingAvailable;
-  v4[32] |= 0x1000u;
+  *(toCopy + 110) = self->_isGondolaCallingAvailable;
+  toCopy[32] |= 0x1000u;
   v6 = self->_has;
   if ((*&v6 & 0x10000) == 0)
   {
@@ -1408,8 +1408,8 @@ LABEL_13:
   }
 
 LABEL_52:
-  *(v4 + 114) = self->_isPersonaAvailable;
-  v4[32] |= 0x10000u;
+  *(toCopy + 114) = self->_isPersonaAvailable;
+  toCopy[32] |= 0x10000u;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -1423,8 +1423,8 @@ LABEL_14:
   }
 
 LABEL_53:
-  *(v4 + 111) = self->_isLightweight;
-  v4[32] |= 0x2000u;
+  *(toCopy + 111) = self->_isLightweight;
+  toCopy[32] |= 0x2000u;
   v6 = self->_has;
   if ((*&v6 & 0x20) == 0)
   {
@@ -1438,8 +1438,8 @@ LABEL_15:
   }
 
 LABEL_54:
-  v4[19] = self->_sharePlayProtocolVersion;
-  v4[32] |= 0x20u;
+  toCopy[19] = self->_sharePlayProtocolVersion;
+  toCopy[32] |= 0x20u;
   v6 = self->_has;
   if ((*&v6 & 8) == 0)
   {
@@ -1453,8 +1453,8 @@ LABEL_16:
   }
 
 LABEL_55:
-  v4[15] = self->_options;
-  v4[32] |= 8u;
+  toCopy[15] = self->_options;
+  toCopy[32] |= 8u;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -1468,27 +1468,27 @@ LABEL_17:
   }
 
 LABEL_56:
-  *(v4 + 109) = self->_isGFTDowngradeToOneToOneAvailable;
-  v4[32] |= 0x800u;
+  *(toCopy + 109) = self->_isGFTDowngradeToOneToOneAvailable;
+  toCopy[32] |= 0x800u;
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_18:
-    *(v4 + 108) = self->_guestModeEnabled;
-    v4[32] |= 0x400u;
+    *(toCopy + 108) = self->_guestModeEnabled;
+    toCopy[32] |= 0x400u;
   }
 
 LABEL_19:
   if (self->_association)
   {
     [v10 setAssociation:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x200000) != 0)
   {
-    *(v4 + 119) = self->_isUPlusNDowngradeAvailable;
-    v4[32] |= 0x200000u;
+    *(toCopy + 119) = self->_isUPlusNDowngradeAvailable;
+    toCopy[32] |= 0x200000u;
     v7 = self->_has;
     if ((*&v7 & 2) == 0)
     {
@@ -1507,8 +1507,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v4[6] = self->_avMode;
-  v4[32] |= 2u;
+  toCopy[6] = self->_avMode;
+  toCopy[32] |= 2u;
   v7 = self->_has;
   if ((*&v7 & 0x2000000) == 0)
   {
@@ -1522,27 +1522,27 @@ LABEL_24:
   }
 
 LABEL_60:
-  *(v4 + 123) = self->_supportsLeaveContext;
-  v4[32] |= 0x2000000u;
+  *(toCopy + 123) = self->_supportsLeaveContext;
+  toCopy[32] |= 0x2000000u;
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_25:
-    *(v4 + 121) = self->_isUPlusOneScreenSharingAvailable;
-    v4[32] |= 0x800000u;
+    *(toCopy + 121) = self->_isUPlusOneScreenSharingAvailable;
+    toCopy[32] |= 0x800000u;
   }
 
 LABEL_26:
   if (self->_personaHandshakeData)
   {
     [v10 setPersonaHandshakeData:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x80000) != 0)
   {
-    *(v4 + 117) = self->_isSpatialPersonaEnabled;
-    v4[32] |= 0x80000u;
+    *(toCopy + 117) = self->_isSpatialPersonaEnabled;
+    toCopy[32] |= 0x80000u;
     v8 = self->_has;
     if ((*&v8 & 0x400000) == 0)
     {
@@ -1561,8 +1561,8 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  *(v4 + 120) = self->_isUPlusOneAVLessAvailable;
-  v4[32] |= 0x400000u;
+  *(toCopy + 120) = self->_isUPlusOneAVLessAvailable;
+  toCopy[32] |= 0x400000u;
   v8 = self->_has;
   if ((*&v8 & 0x200) == 0)
   {
@@ -1576,8 +1576,8 @@ LABEL_31:
   }
 
 LABEL_64:
-  v4[26] = self->_visionFeatureVersion;
-  v4[32] |= 0x200u;
+  toCopy[26] = self->_visionFeatureVersion;
+  toCopy[32] |= 0x200u;
   v8 = self->_has;
   if ((*&v8 & 0x100) == 0)
   {
@@ -1591,8 +1591,8 @@ LABEL_32:
   }
 
 LABEL_65:
-  v4[25] = self->_visionCallEstablishmentVersion;
-  v4[32] |= 0x100u;
+  toCopy[25] = self->_visionCallEstablishmentVersion;
+  toCopy[32] |= 0x100u;
   v8 = self->_has;
   if ((*&v8 & 0x1000000) == 0)
   {
@@ -1606,8 +1606,8 @@ LABEL_33:
   }
 
 LABEL_66:
-  *(v4 + 122) = self->_isUPlusOneVisionToVisionAvailable;
-  v4[32] |= 0x1000000u;
+  *(toCopy + 122) = self->_isUPlusOneVisionToVisionAvailable;
+  toCopy[32] |= 0x1000000u;
   v8 = self->_has;
   if ((*&v8 & 0x4000000) == 0)
   {
@@ -1621,8 +1621,8 @@ LABEL_34:
   }
 
 LABEL_67:
-  *(v4 + 124) = self->_supportsRequestToScreenShare;
-  v4[32] |= 0x4000000u;
+  *(toCopy + 124) = self->_supportsRequestToScreenShare;
+  toCopy[32] |= 0x4000000u;
   v8 = self->_has;
   if ((*&v8 & 0x40) == 0)
   {
@@ -1636,8 +1636,8 @@ LABEL_35:
   }
 
 LABEL_68:
-  v4[20] = self->_spatialPersonaGenerationCounter;
-  v4[32] |= 0x40u;
+  toCopy[20] = self->_spatialPersonaGenerationCounter;
+  toCopy[32] |= 0x40u;
   v8 = self->_has;
   if ((*&v8 & 0x20000) == 0)
   {
@@ -1651,33 +1651,33 @@ LABEL_36:
   }
 
 LABEL_69:
-  *(v4 + 115) = self->_isPhotosSharePlayAvailable;
-  v4[32] |= 0x20000u;
+  *(toCopy + 115) = self->_isPhotosSharePlayAvailable;
+  toCopy[32] |= 0x20000u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_37:
-    v4[18] = self->_presentationMode;
-    v4[32] |= 0x10u;
+    toCopy[18] = self->_presentationMode;
+    toCopy[32] |= 0x10u;
   }
 
 LABEL_38:
   if (self->_stableDeviceIdentifier)
   {
     [v10 setStableDeviceIdentifier:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_cluster)
   {
     [v10 setCluster:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   v9 = self->_has;
   if ((*&v9 & 0x100000) != 0)
   {
-    *(v4 + 118) = self->_isTranslationAvailable;
-    v4[32] |= 0x100000u;
+    *(toCopy + 118) = self->_isTranslationAvailable;
+    toCopy[32] |= 0x100000u;
     v9 = self->_has;
     if ((*&v9 & 0x8000) == 0)
     {
@@ -1696,21 +1696,21 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  *(v4 + 113) = self->_isNearbySharePlay;
-  v4[32] |= 0x8000u;
+  *(toCopy + 113) = self->_isNearbySharePlay;
+  toCopy[32] |= 0x8000u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_45:
-    v4[14] = self->_nearbyFeatureVersion;
-    v4[32] |= 4u;
+    toCopy[14] = self->_nearbyFeatureVersion;
+    toCopy[32] |= 4u;
   }
 
 LABEL_46:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x80) != 0)
@@ -1726,11 +1726,11 @@ LABEL_46:
     v5[32] |= 1u;
   }
 
-  v8 = [(CSDMessagingHandle *)self->_handle copyWithZone:a3];
+  v8 = [(CSDMessagingHandle *)self->_handle copyWithZone:zone];
   v9 = v6[6];
   v6[6] = v8;
 
-  v10 = [(NSData *)self->_avcData copyWithZone:a3];
+  v10 = [(NSData *)self->_avcData copyWithZone:zone];
   v11 = v6[4];
   v6[4] = v10;
 
@@ -1857,7 +1857,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v13 = [(CSDMessagingConversationParticipantAssociation *)self->_association copyWithZone:a3];
+  v13 = [(CSDMessagingConversationParticipantAssociation *)self->_association copyWithZone:zone];
   v14 = v6[2];
   v6[2] = v13;
 
@@ -1909,7 +1909,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  v16 = [(NSData *)self->_personaHandshakeData copyWithZone:a3];
+  v16 = [(NSData *)self->_personaHandshakeData copyWithZone:zone];
   v17 = v6[8];
   v6[8] = v16;
 
@@ -2036,11 +2036,11 @@ LABEL_29:
   }
 
 LABEL_30:
-  v19 = [(NSString *)self->_stableDeviceIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_stableDeviceIdentifier copyWithZone:zone];
   v20 = v6[11];
   v6[11] = v19;
 
-  v21 = [(CSDMessagingConversationParticipantCluster *)self->_cluster copyWithZone:a3];
+  v21 = [(CSDMessagingConversationParticipantCluster *)self->_cluster copyWithZone:zone];
   v22 = v6[5];
   v6[5] = v21;
 
@@ -2082,19 +2082,19 @@ LABEL_33:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_202;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_version != *(v4 + 24))
+    if ((v6 & 0x80) == 0 || self->_version != *(equalCopy + 24))
     {
       goto LABEL_202;
     }
@@ -2107,7 +2107,7 @@ LABEL_33:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_identifier != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_identifier != *(equalCopy + 1))
     {
       goto LABEL_202;
     }
@@ -2119,13 +2119,13 @@ LABEL_33:
   }
 
   handle = self->_handle;
-  if (handle | *(v4 + 6) && ![(CSDMessagingHandle *)handle isEqual:?])
+  if (handle | *(equalCopy + 6) && ![(CSDMessagingHandle *)handle isEqual:?])
   {
     goto LABEL_202;
   }
 
   avcData = self->_avcData;
-  if (avcData | *(v4 + 4))
+  if (avcData | *(equalCopy + 4))
   {
     if (![(NSData *)avcData isEqual:?])
     {
@@ -2134,7 +2134,7 @@ LABEL_33:
   }
 
   v9 = self->_has;
-  v10 = *(v4 + 32);
+  v10 = *(equalCopy + 32);
   if ((*&v9 & 0x4000) != 0)
   {
     if ((v10 & 0x4000) == 0)
@@ -2142,16 +2142,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v11 = *(v4 + 112);
+    v11 = *(equalCopy + 112);
     if (self->_isMomentsAvailable)
     {
-      if ((*(v4 + 112) & 1) == 0)
+      if ((*(equalCopy + 112) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 112))
+    else if (*(equalCopy + 112))
     {
       goto LABEL_202;
     }
@@ -2169,16 +2169,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v12 = *(v4 + 116);
+    v12 = *(equalCopy + 116);
     if (self->_isScreenSharingAvailable)
     {
-      if ((*(v4 + 116) & 1) == 0)
+      if ((*(equalCopy + 116) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 116))
+    else if (*(equalCopy + 116))
     {
       goto LABEL_202;
     }
@@ -2196,16 +2196,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v13 = *(v4 + 110);
+    v13 = *(equalCopy + 110);
     if (self->_isGondolaCallingAvailable)
     {
-      if ((*(v4 + 110) & 1) == 0)
+      if ((*(equalCopy + 110) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 110))
+    else if (*(equalCopy + 110))
     {
       goto LABEL_202;
     }
@@ -2223,16 +2223,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v14 = *(v4 + 114);
+    v14 = *(equalCopy + 114);
     if (self->_isPersonaAvailable)
     {
-      if ((*(v4 + 114) & 1) == 0)
+      if ((*(equalCopy + 114) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 114))
+    else if (*(equalCopy + 114))
     {
       goto LABEL_202;
     }
@@ -2250,16 +2250,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v15 = *(v4 + 111);
+    v15 = *(equalCopy + 111);
     if (self->_isLightweight)
     {
-      if ((*(v4 + 111) & 1) == 0)
+      if ((*(equalCopy + 111) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 111))
+    else if (*(equalCopy + 111))
     {
       goto LABEL_202;
     }
@@ -2272,7 +2272,7 @@ LABEL_33:
 
   if ((*&v9 & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_sharePlayProtocolVersion != *(v4 + 19))
+    if ((v10 & 0x20) == 0 || self->_sharePlayProtocolVersion != *(equalCopy + 19))
     {
       goto LABEL_202;
     }
@@ -2285,7 +2285,7 @@ LABEL_33:
 
   if ((*&v9 & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_options != *(v4 + 15))
+    if ((v10 & 8) == 0 || self->_options != *(equalCopy + 15))
     {
       goto LABEL_202;
     }
@@ -2303,16 +2303,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v18 = *(v4 + 109);
+    v18 = *(equalCopy + 109);
     if (self->_isGFTDowngradeToOneToOneAvailable)
     {
-      if ((*(v4 + 109) & 1) == 0)
+      if ((*(equalCopy + 109) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 109))
+    else if (*(equalCopy + 109))
     {
       goto LABEL_202;
     }
@@ -2330,16 +2330,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v19 = *(v4 + 108);
+    v19 = *(equalCopy + 108);
     if (self->_guestModeEnabled)
     {
-      if ((*(v4 + 108) & 1) == 0)
+      if ((*(equalCopy + 108) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 108))
+    else if (*(equalCopy + 108))
     {
       goto LABEL_202;
     }
@@ -2351,7 +2351,7 @@ LABEL_33:
   }
 
   association = self->_association;
-  if (association | *(v4 + 2))
+  if (association | *(equalCopy + 2))
   {
     if (![(CSDMessagingConversationParticipantAssociation *)association isEqual:?])
     {
@@ -2361,7 +2361,7 @@ LABEL_33:
     v9 = self->_has;
   }
 
-  v17 = *(v4 + 32);
+  v17 = *(equalCopy + 32);
   if ((*&v9 & 0x200000) != 0)
   {
     if ((v17 & 0x200000) == 0)
@@ -2369,16 +2369,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v20 = *(v4 + 119);
+    v20 = *(equalCopy + 119);
     if (self->_isUPlusNDowngradeAvailable)
     {
-      if ((*(v4 + 119) & 1) == 0)
+      if ((*(equalCopy + 119) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 119))
+    else if (*(equalCopy + 119))
     {
       goto LABEL_202;
     }
@@ -2391,7 +2391,7 @@ LABEL_33:
 
   if ((*&v9 & 2) != 0)
   {
-    if ((v17 & 2) == 0 || self->_avMode != *(v4 + 6))
+    if ((v17 & 2) == 0 || self->_avMode != *(equalCopy + 6))
     {
       goto LABEL_202;
     }
@@ -2409,16 +2409,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v21 = *(v4 + 123);
+    v21 = *(equalCopy + 123);
     if (self->_supportsLeaveContext)
     {
-      if ((*(v4 + 123) & 1) == 0)
+      if ((*(equalCopy + 123) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 123))
+    else if (*(equalCopy + 123))
     {
       goto LABEL_202;
     }
@@ -2436,16 +2436,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v22 = *(v4 + 121);
+    v22 = *(equalCopy + 121);
     if (self->_isUPlusOneScreenSharingAvailable)
     {
-      if ((*(v4 + 121) & 1) == 0)
+      if ((*(equalCopy + 121) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 121))
+    else if (*(equalCopy + 121))
     {
       goto LABEL_202;
     }
@@ -2457,7 +2457,7 @@ LABEL_33:
   }
 
   personaHandshakeData = self->_personaHandshakeData;
-  if (personaHandshakeData | *(v4 + 8))
+  if (personaHandshakeData | *(equalCopy + 8))
   {
     if (![(NSData *)personaHandshakeData isEqual:?])
     {
@@ -2467,7 +2467,7 @@ LABEL_33:
     v9 = self->_has;
   }
 
-  v24 = *(v4 + 32);
+  v24 = *(equalCopy + 32);
   if ((*&v9 & 0x80000) != 0)
   {
     if ((v24 & 0x80000) == 0)
@@ -2475,16 +2475,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v25 = *(v4 + 117);
+    v25 = *(equalCopy + 117);
     if (self->_isSpatialPersonaEnabled)
     {
-      if ((*(v4 + 117) & 1) == 0)
+      if ((*(equalCopy + 117) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 117))
+    else if (*(equalCopy + 117))
     {
       goto LABEL_202;
     }
@@ -2502,16 +2502,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v26 = *(v4 + 120);
+    v26 = *(equalCopy + 120);
     if (self->_isUPlusOneAVLessAvailable)
     {
-      if ((*(v4 + 120) & 1) == 0)
+      if ((*(equalCopy + 120) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 120))
+    else if (*(equalCopy + 120))
     {
       goto LABEL_202;
     }
@@ -2524,7 +2524,7 @@ LABEL_33:
 
   if ((*&v9 & 0x200) != 0)
   {
-    if ((v24 & 0x200) == 0 || self->_visionFeatureVersion != *(v4 + 26))
+    if ((v24 & 0x200) == 0 || self->_visionFeatureVersion != *(equalCopy + 26))
     {
       goto LABEL_202;
     }
@@ -2537,7 +2537,7 @@ LABEL_33:
 
   if ((*&v9 & 0x100) != 0)
   {
-    if ((v24 & 0x100) == 0 || self->_visionCallEstablishmentVersion != *(v4 + 25))
+    if ((v24 & 0x100) == 0 || self->_visionCallEstablishmentVersion != *(equalCopy + 25))
     {
       goto LABEL_202;
     }
@@ -2555,16 +2555,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v27 = *(v4 + 122);
+    v27 = *(equalCopy + 122);
     if (self->_isUPlusOneVisionToVisionAvailable)
     {
-      if ((*(v4 + 122) & 1) == 0)
+      if ((*(equalCopy + 122) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 122))
+    else if (*(equalCopy + 122))
     {
       goto LABEL_202;
     }
@@ -2582,16 +2582,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v28 = *(v4 + 124);
+    v28 = *(equalCopy + 124);
     if (self->_supportsRequestToScreenShare)
     {
-      if ((*(v4 + 124) & 1) == 0)
+      if ((*(equalCopy + 124) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 124))
+    else if (*(equalCopy + 124))
     {
       goto LABEL_202;
     }
@@ -2604,7 +2604,7 @@ LABEL_33:
 
   if ((*&v9 & 0x40) != 0)
   {
-    if ((v24 & 0x40) == 0 || self->_spatialPersonaGenerationCounter != *(v4 + 20))
+    if ((v24 & 0x40) == 0 || self->_spatialPersonaGenerationCounter != *(equalCopy + 20))
     {
       goto LABEL_202;
     }
@@ -2622,16 +2622,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v29 = *(v4 + 115);
+    v29 = *(equalCopy + 115);
     if (self->_isPhotosSharePlayAvailable)
     {
-      if ((*(v4 + 115) & 1) == 0)
+      if ((*(equalCopy + 115) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 115))
+    else if (*(equalCopy + 115))
     {
       goto LABEL_202;
     }
@@ -2644,7 +2644,7 @@ LABEL_33:
 
   if ((*&v9 & 0x10) != 0)
   {
-    if ((v24 & 0x10) == 0 || self->_presentationMode != *(v4 + 18))
+    if ((v24 & 0x10) == 0 || self->_presentationMode != *(equalCopy + 18))
     {
       goto LABEL_202;
     }
@@ -2656,13 +2656,13 @@ LABEL_33:
   }
 
   stableDeviceIdentifier = self->_stableDeviceIdentifier;
-  if (stableDeviceIdentifier | *(v4 + 11) && ![(NSString *)stableDeviceIdentifier isEqual:?])
+  if (stableDeviceIdentifier | *(equalCopy + 11) && ![(NSString *)stableDeviceIdentifier isEqual:?])
   {
     goto LABEL_202;
   }
 
   cluster = self->_cluster;
-  if (cluster | *(v4 + 5))
+  if (cluster | *(equalCopy + 5))
   {
     if (![(CSDMessagingConversationParticipantCluster *)cluster isEqual:?])
     {
@@ -2671,7 +2671,7 @@ LABEL_33:
   }
 
   v32 = self->_has;
-  v33 = *(v4 + 32);
+  v33 = *(equalCopy + 32);
   if ((*&v32 & 0x100000) != 0)
   {
     if ((v33 & 0x100000) == 0)
@@ -2679,16 +2679,16 @@ LABEL_33:
       goto LABEL_202;
     }
 
-    v34 = *(v4 + 118);
+    v34 = *(equalCopy + 118);
     if (self->_isTranslationAvailable)
     {
-      if ((*(v4 + 118) & 1) == 0)
+      if ((*(equalCopy + 118) & 1) == 0)
       {
         goto LABEL_202;
       }
     }
 
-    else if (*(v4 + 118))
+    else if (*(equalCopy + 118))
     {
       goto LABEL_202;
     }
@@ -2703,10 +2703,10 @@ LABEL_33:
   {
     if ((v33 & 0x8000) != 0)
     {
-      v35 = *(v4 + 113);
+      v35 = *(equalCopy + 113);
       if (self->_isNearbySharePlay)
       {
-        if ((*(v4 + 113) & 1) == 0)
+        if ((*(equalCopy + 113) & 1) == 0)
         {
           goto LABEL_202;
         }
@@ -2714,7 +2714,7 @@ LABEL_33:
         goto LABEL_197;
       }
 
-      if ((*(v4 + 113) & 1) == 0)
+      if ((*(equalCopy + 113) & 1) == 0)
       {
         goto LABEL_197;
       }
@@ -2733,7 +2733,7 @@ LABEL_202:
 LABEL_197:
   if ((*&v32 & 4) != 0)
   {
-    if ((v33 & 4) == 0 || self->_nearbyFeatureVersion != *(v4 + 14))
+    if ((v33 & 4) == 0 || self->_nearbyFeatureVersion != *(equalCopy + 14))
     {
       goto LABEL_202;
     }
@@ -2743,7 +2743,7 @@ LABEL_197:
 
   else
   {
-    v36 = (*(v4 + 32) & 4) == 0;
+    v36 = (*(equalCopy + 32) & 4) == 0;
   }
 
 LABEL_203:
@@ -3114,21 +3114,21 @@ LABEL_56:
   return v40 ^ v41 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x80) != 0)
   {
-    self->_version = *(v4 + 24);
+    self->_version = *(fromCopy + 24);
     *&self->_has |= 0x80u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
   }
 
   if (v6)
   {
-    self->_identifier = *(v4 + 1);
+    self->_identifier = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -3552,212 +3552,212 @@ LABEL_79:
 LABEL_80:
 }
 
-+ (id)participantWithCSDConversationJoinContext:(id)a3
++ (id)participantWithCSDConversationJoinContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(CSDMessagingConversationParticipant);
-  -[CSDMessagingConversationParticipant setIsMomentsAvailable:](v4, "setIsMomentsAvailable:", [v3 isMomentsAvailable]);
-  -[CSDMessagingConversationParticipant setIsScreenSharingAvailable:](v4, "setIsScreenSharingAvailable:", [v3 isScreenSharingAvailable]);
-  -[CSDMessagingConversationParticipant setIsGondolaCallingAvailable:](v4, "setIsGondolaCallingAvailable:", [v3 isGondolaCallingAvailable]);
-  -[CSDMessagingConversationParticipant setIsPersonaAvailable:](v4, "setIsPersonaAvailable:", [v3 isPersonaAvailable]);
-  -[CSDMessagingConversationParticipant setIsGFTDowngradeToOneToOneAvailable:](v4, "setIsGFTDowngradeToOneToOneAvailable:", [v3 isGFTDowngradeToOneToOneAvailable]);
-  -[CSDMessagingConversationParticipant setIsUPlusOneScreenSharingAvailable:](v4, "setIsUPlusOneScreenSharingAvailable:", [v3 isUPlusOneScreenSharingAvailable]);
-  -[CSDMessagingConversationParticipant setSupportsLeaveContext:](v4, "setSupportsLeaveContext:", [v3 supportsLeaveContext]);
-  -[CSDMessagingConversationParticipant setIsUPlusNDowngradeAvailable:](v4, "setIsUPlusNDowngradeAvailable:", [v3 isUPlusNDowngradeAvailable]);
-  -[CSDMessagingConversationParticipant setIsLightweight:](v4, "setIsLightweight:", [v3 isLightweight]);
-  -[CSDMessagingConversationParticipant setSharePlayProtocolVersion:](v4, "setSharePlayProtocolVersion:", [v3 sharePlayProtocolVersion]);
-  -[CSDMessagingConversationParticipant setVisionFeatureVersion:](v4, "setVisionFeatureVersion:", [v3 visionFeatureVersion]);
-  -[CSDMessagingConversationParticipant setVisionCallEstablishmentVersion:](v4, "setVisionCallEstablishmentVersion:", [v3 visionCallEstablishmentVersion]);
-  v5 = [v3 participantAssociation];
-  [(CSDMessagingConversationParticipant *)v4 setAssociation:v5];
+  -[CSDMessagingConversationParticipant setIsMomentsAvailable:](v4, "setIsMomentsAvailable:", [contextCopy isMomentsAvailable]);
+  -[CSDMessagingConversationParticipant setIsScreenSharingAvailable:](v4, "setIsScreenSharingAvailable:", [contextCopy isScreenSharingAvailable]);
+  -[CSDMessagingConversationParticipant setIsGondolaCallingAvailable:](v4, "setIsGondolaCallingAvailable:", [contextCopy isGondolaCallingAvailable]);
+  -[CSDMessagingConversationParticipant setIsPersonaAvailable:](v4, "setIsPersonaAvailable:", [contextCopy isPersonaAvailable]);
+  -[CSDMessagingConversationParticipant setIsGFTDowngradeToOneToOneAvailable:](v4, "setIsGFTDowngradeToOneToOneAvailable:", [contextCopy isGFTDowngradeToOneToOneAvailable]);
+  -[CSDMessagingConversationParticipant setIsUPlusOneScreenSharingAvailable:](v4, "setIsUPlusOneScreenSharingAvailable:", [contextCopy isUPlusOneScreenSharingAvailable]);
+  -[CSDMessagingConversationParticipant setSupportsLeaveContext:](v4, "setSupportsLeaveContext:", [contextCopy supportsLeaveContext]);
+  -[CSDMessagingConversationParticipant setIsUPlusNDowngradeAvailable:](v4, "setIsUPlusNDowngradeAvailable:", [contextCopy isUPlusNDowngradeAvailable]);
+  -[CSDMessagingConversationParticipant setIsLightweight:](v4, "setIsLightweight:", [contextCopy isLightweight]);
+  -[CSDMessagingConversationParticipant setSharePlayProtocolVersion:](v4, "setSharePlayProtocolVersion:", [contextCopy sharePlayProtocolVersion]);
+  -[CSDMessagingConversationParticipant setVisionFeatureVersion:](v4, "setVisionFeatureVersion:", [contextCopy visionFeatureVersion]);
+  -[CSDMessagingConversationParticipant setVisionCallEstablishmentVersion:](v4, "setVisionCallEstablishmentVersion:", [contextCopy visionCallEstablishmentVersion]);
+  participantAssociation = [contextCopy participantAssociation];
+  [(CSDMessagingConversationParticipant *)v4 setAssociation:participantAssociation];
 
-  -[CSDMessagingConversationParticipant setIsSpatialPersonaEnabled:](v4, "setIsSpatialPersonaEnabled:", [v3 isSpatialPersonaEnabled]);
-  -[CSDMessagingConversationParticipant setIsUPlusOneVisionToVisionAvailable:](v4, "setIsUPlusOneVisionToVisionAvailable:", [v3 isUPlusOneVisionToVisionAvailable]);
-  -[CSDMessagingConversationParticipant setIsUPlusOneAVLessAvailable:](v4, "setIsUPlusOneAVLessAvailable:", [v3 isUPlusOneAVLessAvailable]);
-  -[CSDMessagingConversationParticipant setSupportsRequestToScreenShare:](v4, "setSupportsRequestToScreenShare:", [v3 supportsRequestToScreenShare]);
-  -[CSDMessagingConversationParticipant setIsPhotosSharePlayAvailable:](v4, "setIsPhotosSharePlayAvailable:", [v3 isPhotosSharePlayAvailable]);
-  v6 = [v3 participantCluster];
-  [(CSDMessagingConversationParticipant *)v4 setCluster:v6];
+  -[CSDMessagingConversationParticipant setIsSpatialPersonaEnabled:](v4, "setIsSpatialPersonaEnabled:", [contextCopy isSpatialPersonaEnabled]);
+  -[CSDMessagingConversationParticipant setIsUPlusOneVisionToVisionAvailable:](v4, "setIsUPlusOneVisionToVisionAvailable:", [contextCopy isUPlusOneVisionToVisionAvailable]);
+  -[CSDMessagingConversationParticipant setIsUPlusOneAVLessAvailable:](v4, "setIsUPlusOneAVLessAvailable:", [contextCopy isUPlusOneAVLessAvailable]);
+  -[CSDMessagingConversationParticipant setSupportsRequestToScreenShare:](v4, "setSupportsRequestToScreenShare:", [contextCopy supportsRequestToScreenShare]);
+  -[CSDMessagingConversationParticipant setIsPhotosSharePlayAvailable:](v4, "setIsPhotosSharePlayAvailable:", [contextCopy isPhotosSharePlayAvailable]);
+  participantCluster = [contextCopy participantCluster];
+  [(CSDMessagingConversationParticipant *)v4 setCluster:participantCluster];
 
-  -[CSDMessagingConversationParticipant setIsTranslationAvailable:](v4, "setIsTranslationAvailable:", [v3 isTranslationAvailable]);
-  -[CSDMessagingConversationParticipant setIsNearbySharePlay:](v4, "setIsNearbySharePlay:", [v3 isNearbySharePlay]);
-  -[CSDMessagingConversationParticipant setNearbyFeatureVersion:](v4, "setNearbyFeatureVersion:", [v3 nearbyFeatureVersion]);
-  v7 = [v3 videoEnabled];
-  v8 = [v3 message];
-  -[CSDMessagingConversationParticipant setAvMode:](v4, "setAvMode:", [v8 avMode]);
+  -[CSDMessagingConversationParticipant setIsTranslationAvailable:](v4, "setIsTranslationAvailable:", [contextCopy isTranslationAvailable]);
+  -[CSDMessagingConversationParticipant setIsNearbySharePlay:](v4, "setIsNearbySharePlay:", [contextCopy isNearbySharePlay]);
+  -[CSDMessagingConversationParticipant setNearbyFeatureVersion:](v4, "setNearbyFeatureVersion:", [contextCopy nearbyFeatureVersion]);
+  videoEnabled = [contextCopy videoEnabled];
+  message = [contextCopy message];
+  -[CSDMessagingConversationParticipant setAvMode:](v4, "setAvMode:", [message avMode]);
 
-  v9 = [v3 message];
+  message2 = [contextCopy message];
 
-  -[CSDMessagingConversationParticipant setPresentationMode:](v4, "setPresentationMode:", [v9 resolvedPresentationMode]);
-  [(CSDMessagingConversationParticipant *)v4 setOptions:v7];
+  -[CSDMessagingConversationParticipant setPresentationMode:](v4, "setPresentationMode:", [message2 resolvedPresentationMode]);
+  [(CSDMessagingConversationParticipant *)v4 setOptions:videoEnabled];
 
   return v4;
 }
 
-+ (id)participantWithCSDConversationParticipant:(id)a3
++ (id)participantWithCSDConversationParticipant:(id)participant
 {
-  v3 = a3;
+  participantCopy = participant;
   v4 = objc_alloc_init(CSDMessagingConversationParticipant);
-  -[CSDMessagingConversationParticipant setIdentifier:](v4, "setIdentifier:", [v3 identifier]);
-  v5 = [v3 handle];
-  v6 = [CSDMessagingHandle handleWithTUHandle:v5];
+  -[CSDMessagingConversationParticipant setIdentifier:](v4, "setIdentifier:", [participantCopy identifier]);
+  handle = [participantCopy handle];
+  v6 = [CSDMessagingHandle handleWithTUHandle:handle];
   [(CSDMessagingConversationParticipant *)v4 setHandle:v6];
 
-  v7 = [v3 avcData];
-  [(CSDMessagingConversationParticipant *)v4 setAvcData:v7];
+  avcData = [participantCopy avcData];
+  [(CSDMessagingConversationParticipant *)v4 setAvcData:avcData];
 
-  v8 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsMomentsAvailable:](v4, "setIsMomentsAvailable:", [v8 isMomentsAvailable]);
+  capabilities = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsMomentsAvailable:](v4, "setIsMomentsAvailable:", [capabilities isMomentsAvailable]);
 
-  v9 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsScreenSharingAvailable:](v4, "setIsScreenSharingAvailable:", [v9 isScreenSharingAvailable]);
+  capabilities2 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsScreenSharingAvailable:](v4, "setIsScreenSharingAvailable:", [capabilities2 isScreenSharingAvailable]);
 
-  v10 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsGondolaCallingAvailable:](v4, "setIsGondolaCallingAvailable:", [v10 isGondolaCallingAvailable]);
+  capabilities3 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsGondolaCallingAvailable:](v4, "setIsGondolaCallingAvailable:", [capabilities3 isGondolaCallingAvailable]);
 
-  v11 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsPersonaAvailable:](v4, "setIsPersonaAvailable:", [v11 isPersonaAvailable]);
+  capabilities4 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsPersonaAvailable:](v4, "setIsPersonaAvailable:", [capabilities4 isPersonaAvailable]);
 
-  v12 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsGFTDowngradeToOneToOneAvailable:](v4, "setIsGFTDowngradeToOneToOneAvailable:", [v12 isGFTDowngradeToOneToOneAvailable]);
+  capabilities5 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsGFTDowngradeToOneToOneAvailable:](v4, "setIsGFTDowngradeToOneToOneAvailable:", [capabilities5 isGFTDowngradeToOneToOneAvailable]);
 
-  v13 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusOneScreenSharingAvailable:](v4, "setIsUPlusOneScreenSharingAvailable:", [v13 isUPlusOneScreenShareAvailable]);
+  capabilities6 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusOneScreenSharingAvailable:](v4, "setIsUPlusOneScreenSharingAvailable:", [capabilities6 isUPlusOneScreenShareAvailable]);
 
-  v14 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusOneAVLessAvailable:](v4, "setIsUPlusOneAVLessAvailable:", [v14 isUPlusOneAVLessAvailable]);
+  capabilities7 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusOneAVLessAvailable:](v4, "setIsUPlusOneAVLessAvailable:", [capabilities7 isUPlusOneAVLessAvailable]);
 
-  v15 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setSupportsLeaveContext:](v4, "setSupportsLeaveContext:", [v15 supportsLeaveContext]);
+  capabilities8 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setSupportsLeaveContext:](v4, "setSupportsLeaveContext:", [capabilities8 supportsLeaveContext]);
 
-  v16 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setSupportsRequestToScreenShare:](v4, "setSupportsRequestToScreenShare:", [v16 supportsRequestToScreenShare]);
+  capabilities9 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setSupportsRequestToScreenShare:](v4, "setSupportsRequestToScreenShare:", [capabilities9 supportsRequestToScreenShare]);
 
-  v17 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusNDowngradeAvailable:](v4, "setIsUPlusNDowngradeAvailable:", [v17 isUPlusNDowngradeAvailable]);
+  capabilities10 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusNDowngradeAvailable:](v4, "setIsUPlusNDowngradeAvailable:", [capabilities10 isUPlusNDowngradeAvailable]);
 
-  v18 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsTranslationAvailable:](v4, "setIsTranslationAvailable:", [v18 isTranslationAvailable]);
+  capabilities11 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsTranslationAvailable:](v4, "setIsTranslationAvailable:", [capabilities11 isTranslationAvailable]);
 
-  -[CSDMessagingConversationParticipant setIsLightweight:](v4, "setIsLightweight:", [v3 isLightweight]);
-  v19 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setSharePlayProtocolVersion:](v4, "setSharePlayProtocolVersion:", [v19 sharePlayProtocolVersion]);
+  -[CSDMessagingConversationParticipant setIsLightweight:](v4, "setIsLightweight:", [participantCopy isLightweight]);
+  capabilities12 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setSharePlayProtocolVersion:](v4, "setSharePlayProtocolVersion:", [capabilities12 sharePlayProtocolVersion]);
 
-  v20 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setVisionFeatureVersion:](v4, "setVisionFeatureVersion:", [v20 visionFeatureVersion]);
+  capabilities13 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setVisionFeatureVersion:](v4, "setVisionFeatureVersion:", [capabilities13 visionFeatureVersion]);
 
-  v21 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setVisionCallEstablishmentVersion:](v4, "setVisionCallEstablishmentVersion:", [v21 visionCallEstablishmentVersion]);
+  capabilities14 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setVisionCallEstablishmentVersion:](v4, "setVisionCallEstablishmentVersion:", [capabilities14 visionCallEstablishmentVersion]);
 
-  v22 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusOneVisionToVisionAvailable:](v4, "setIsUPlusOneVisionToVisionAvailable:", [v22 isUPlusOneVisionToVisionAvailable]);
+  capabilities15 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusOneVisionToVisionAvailable:](v4, "setIsUPlusOneVisionToVisionAvailable:", [capabilities15 isUPlusOneVisionToVisionAvailable]);
 
-  v23 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsPhotosSharePlayAvailable:](v4, "setIsPhotosSharePlayAvailable:", [v23 isPhotosSharePlayAvailable]);
+  capabilities16 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsPhotosSharePlayAvailable:](v4, "setIsPhotosSharePlayAvailable:", [capabilities16 isPhotosSharePlayAvailable]);
 
-  v24 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setNearbyFeatureVersion:](v4, "setNearbyFeatureVersion:", [v24 nearbyFeatureVersion]);
+  capabilities17 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setNearbyFeatureVersion:](v4, "setNearbyFeatureVersion:", [capabilities17 nearbyFeatureVersion]);
 
-  -[CSDMessagingConversationParticipant setGuestModeEnabled:](v4, "setGuestModeEnabled:", [v3 isGuestModeEnabled]);
-  v25 = [v3 association];
-  v26 = [CSDMessagingConversationParticipantAssociation participantAssociationWithTUConversationParticipantAssociation:v25];
+  -[CSDMessagingConversationParticipant setGuestModeEnabled:](v4, "setGuestModeEnabled:", [participantCopy isGuestModeEnabled]);
+  association = [participantCopy association];
+  v26 = [CSDMessagingConversationParticipantAssociation participantAssociationWithTUConversationParticipantAssociation:association];
   [(CSDMessagingConversationParticipant *)v4 setAssociation:v26];
 
-  -[CSDMessagingConversationParticipant setIsSpatialPersonaEnabled:](v4, "setIsSpatialPersonaEnabled:", [v3 isSpatialPersonaEnabled]);
-  -[CSDMessagingConversationParticipant setSpatialPersonaGenerationCounter:](v4, "setSpatialPersonaGenerationCounter:", [v3 spatialPersonaGenerationCounter]);
-  -[CSDMessagingConversationParticipant setPresentationMode:](v4, "setPresentationMode:", [v3 presentationMode]);
-  v27 = [v3 cluster];
-  v28 = [CSDMessagingConversationParticipantCluster participantClusterWithTUConversationParticipantCluster:v27];
+  -[CSDMessagingConversationParticipant setIsSpatialPersonaEnabled:](v4, "setIsSpatialPersonaEnabled:", [participantCopy isSpatialPersonaEnabled]);
+  -[CSDMessagingConversationParticipant setSpatialPersonaGenerationCounter:](v4, "setSpatialPersonaGenerationCounter:", [participantCopy spatialPersonaGenerationCounter]);
+  -[CSDMessagingConversationParticipant setPresentationMode:](v4, "setPresentationMode:", [participantCopy presentationMode]);
+  cluster = [participantCopy cluster];
+  v28 = [CSDMessagingConversationParticipantCluster participantClusterWithTUConversationParticipantCluster:cluster];
   [(CSDMessagingConversationParticipant *)v4 setCluster:v28];
 
-  -[CSDMessagingConversationParticipant setIsNearbySharePlay:](v4, "setIsNearbySharePlay:", [v3 isNearbySharePlay]);
-  v29 = [v3 isVideoEnabled];
-  v30 = [v3 audioVideoMode];
+  -[CSDMessagingConversationParticipant setIsNearbySharePlay:](v4, "setIsNearbySharePlay:", [participantCopy isNearbySharePlay]);
+  isVideoEnabled = [participantCopy isVideoEnabled];
+  audioVideoMode = [participantCopy audioVideoMode];
 
-  [(CSDMessagingConversationParticipant *)v4 setAvMode:v30];
-  [(CSDMessagingConversationParticipant *)v4 setOptions:v29];
+  [(CSDMessagingConversationParticipant *)v4 setAvMode:audioVideoMode];
+  [(CSDMessagingConversationParticipant *)v4 setOptions:isVideoEnabled];
 
   return v4;
 }
 
-+ (id)participantWithTUConversationParticipant:(id)a3
++ (id)participantWithTUConversationParticipant:(id)participant
 {
-  v3 = a3;
+  participantCopy = participant;
   v4 = objc_alloc_init(CSDMessagingConversationParticipant);
-  -[CSDMessagingConversationParticipant setIdentifier:](v4, "setIdentifier:", [v3 identifier]);
-  v5 = [v3 handle];
-  v6 = [CSDMessagingHandle handleWithTUHandle:v5];
+  -[CSDMessagingConversationParticipant setIdentifier:](v4, "setIdentifier:", [participantCopy identifier]);
+  handle = [participantCopy handle];
+  v6 = [CSDMessagingHandle handleWithTUHandle:handle];
   [(CSDMessagingConversationParticipant *)v4 setHandle:v6];
 
-  v7 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsMomentsAvailable:](v4, "setIsMomentsAvailable:", [v7 isMomentsAvailable]);
+  capabilities = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsMomentsAvailable:](v4, "setIsMomentsAvailable:", [capabilities isMomentsAvailable]);
 
-  v8 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsScreenSharingAvailable:](v4, "setIsScreenSharingAvailable:", [v8 isScreenSharingAvailable]);
+  capabilities2 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsScreenSharingAvailable:](v4, "setIsScreenSharingAvailable:", [capabilities2 isScreenSharingAvailable]);
 
-  v9 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsGondolaCallingAvailable:](v4, "setIsGondolaCallingAvailable:", [v9 isGondolaCallingAvailable]);
+  capabilities3 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsGondolaCallingAvailable:](v4, "setIsGondolaCallingAvailable:", [capabilities3 isGondolaCallingAvailable]);
 
-  v10 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsPersonaAvailable:](v4, "setIsPersonaAvailable:", [v10 isPersonaAvailable]);
+  capabilities4 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsPersonaAvailable:](v4, "setIsPersonaAvailable:", [capabilities4 isPersonaAvailable]);
 
-  v11 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsGFTDowngradeToOneToOneAvailable:](v4, "setIsGFTDowngradeToOneToOneAvailable:", [v11 isGFTDowngradeToOneToOneAvailable]);
+  capabilities5 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsGFTDowngradeToOneToOneAvailable:](v4, "setIsGFTDowngradeToOneToOneAvailable:", [capabilities5 isGFTDowngradeToOneToOneAvailable]);
 
-  v12 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusOneScreenSharingAvailable:](v4, "setIsUPlusOneScreenSharingAvailable:", [v12 isUPlusOneScreenShareAvailable]);
+  capabilities6 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusOneScreenSharingAvailable:](v4, "setIsUPlusOneScreenSharingAvailable:", [capabilities6 isUPlusOneScreenShareAvailable]);
 
-  v13 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusOneAVLessAvailable:](v4, "setIsUPlusOneAVLessAvailable:", [v13 isUPlusOneAVLessAvailable]);
+  capabilities7 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusOneAVLessAvailable:](v4, "setIsUPlusOneAVLessAvailable:", [capabilities7 isUPlusOneAVLessAvailable]);
 
-  v14 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setSupportsLeaveContext:](v4, "setSupportsLeaveContext:", [v14 supportsLeaveContext]);
+  capabilities8 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setSupportsLeaveContext:](v4, "setSupportsLeaveContext:", [capabilities8 supportsLeaveContext]);
 
-  v15 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setSupportsRequestToScreenShare:](v4, "setSupportsRequestToScreenShare:", [v15 supportsRequestToScreenShare]);
+  capabilities9 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setSupportsRequestToScreenShare:](v4, "setSupportsRequestToScreenShare:", [capabilities9 supportsRequestToScreenShare]);
 
-  v16 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusNDowngradeAvailable:](v4, "setIsUPlusNDowngradeAvailable:", [v16 isUPlusNDowngradeAvailable]);
+  capabilities10 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusNDowngradeAvailable:](v4, "setIsUPlusNDowngradeAvailable:", [capabilities10 isUPlusNDowngradeAvailable]);
 
-  v17 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsTranslationAvailable:](v4, "setIsTranslationAvailable:", [v17 isTranslationAvailable]);
+  capabilities11 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsTranslationAvailable:](v4, "setIsTranslationAvailable:", [capabilities11 isTranslationAvailable]);
 
-  v18 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsPhotosSharePlayAvailable:](v4, "setIsPhotosSharePlayAvailable:", [v18 isPhotosSharePlayAvailable]);
+  capabilities12 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsPhotosSharePlayAvailable:](v4, "setIsPhotosSharePlayAvailable:", [capabilities12 isPhotosSharePlayAvailable]);
 
-  -[CSDMessagingConversationParticipant setIsLightweight:](v4, "setIsLightweight:", [v3 isLightweight]);
-  v19 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setSharePlayProtocolVersion:](v4, "setSharePlayProtocolVersion:", [v19 sharePlayProtocolVersion]);
+  -[CSDMessagingConversationParticipant setIsLightweight:](v4, "setIsLightweight:", [participantCopy isLightweight]);
+  capabilities13 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setSharePlayProtocolVersion:](v4, "setSharePlayProtocolVersion:", [capabilities13 sharePlayProtocolVersion]);
 
-  v20 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setVisionFeatureVersion:](v4, "setVisionFeatureVersion:", [v20 visionFeatureVersion]);
+  capabilities14 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setVisionFeatureVersion:](v4, "setVisionFeatureVersion:", [capabilities14 visionFeatureVersion]);
 
-  v21 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setVisionCallEstablishmentVersion:](v4, "setVisionCallEstablishmentVersion:", [v21 visionCallEstablishmentVersion]);
+  capabilities15 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setVisionCallEstablishmentVersion:](v4, "setVisionCallEstablishmentVersion:", [capabilities15 visionCallEstablishmentVersion]);
 
-  v22 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setIsUPlusOneVisionToVisionAvailable:](v4, "setIsUPlusOneVisionToVisionAvailable:", [v22 isUPlusOneVisionToVisionAvailable]);
+  capabilities16 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setIsUPlusOneVisionToVisionAvailable:](v4, "setIsUPlusOneVisionToVisionAvailable:", [capabilities16 isUPlusOneVisionToVisionAvailable]);
 
-  -[CSDMessagingConversationParticipant setGuestModeEnabled:](v4, "setGuestModeEnabled:", [v3 isGuestModeEnabled]);
-  v23 = [v3 association];
-  v24 = [CSDMessagingConversationParticipantAssociation participantAssociationWithTUConversationParticipantAssociation:v23];
+  -[CSDMessagingConversationParticipant setGuestModeEnabled:](v4, "setGuestModeEnabled:", [participantCopy isGuestModeEnabled]);
+  association = [participantCopy association];
+  v24 = [CSDMessagingConversationParticipantAssociation participantAssociationWithTUConversationParticipantAssociation:association];
   [(CSDMessagingConversationParticipant *)v4 setAssociation:v24];
 
-  -[CSDMessagingConversationParticipant setIsSpatialPersonaEnabled:](v4, "setIsSpatialPersonaEnabled:", [v3 isSpatialPersonaEnabled]);
-  v25 = [v3 cluster];
-  v26 = [CSDMessagingConversationParticipantCluster participantClusterWithTUConversationParticipantCluster:v25];
+  -[CSDMessagingConversationParticipant setIsSpatialPersonaEnabled:](v4, "setIsSpatialPersonaEnabled:", [participantCopy isSpatialPersonaEnabled]);
+  cluster = [participantCopy cluster];
+  v26 = [CSDMessagingConversationParticipantCluster participantClusterWithTUConversationParticipantCluster:cluster];
   [(CSDMessagingConversationParticipant *)v4 setCluster:v26];
 
-  -[CSDMessagingConversationParticipant setIsNearbySharePlay:](v4, "setIsNearbySharePlay:", [v3 isNearbySharePlay]);
-  v27 = [v3 capabilities];
-  -[CSDMessagingConversationParticipant setNearbyFeatureVersion:](v4, "setNearbyFeatureVersion:", [v27 nearbyFeatureVersion]);
+  -[CSDMessagingConversationParticipant setIsNearbySharePlay:](v4, "setIsNearbySharePlay:", [participantCopy isNearbySharePlay]);
+  capabilities17 = [participantCopy capabilities];
+  -[CSDMessagingConversationParticipant setNearbyFeatureVersion:](v4, "setNearbyFeatureVersion:", [capabilities17 nearbyFeatureVersion]);
 
-  v28 = [v3 isVideoEnabled];
-  -[CSDMessagingConversationParticipant setAvMode:](v4, "setAvMode:", [v3 audioVideoMode]);
-  v29 = [v3 presentationMode];
+  isVideoEnabled = [participantCopy isVideoEnabled];
+  -[CSDMessagingConversationParticipant setAvMode:](v4, "setAvMode:", [participantCopy audioVideoMode]);
+  presentationMode = [participantCopy presentationMode];
 
-  [(CSDMessagingConversationParticipant *)v4 setPresentationMode:v29];
-  [(CSDMessagingConversationParticipant *)v4 setOptions:v28];
+  [(CSDMessagingConversationParticipant *)v4 setPresentationMode:presentationMode];
+  [(CSDMessagingConversationParticipant *)v4 setOptions:isVideoEnabled];
 
   return v4;
 }
@@ -3765,11 +3765,11 @@ LABEL_80:
 - (CSDConversationParticipant)csdConversationParticipant
 {
   v3 = [CSDConversationParticipant alloc];
-  v4 = [(CSDMessagingConversationParticipant *)self identifier];
-  v5 = [(CSDMessagingConversationParticipant *)self handle];
-  v6 = [v5 tuHandle];
-  v7 = [(CSDMessagingConversationParticipant *)self avcData];
-  v8 = [(CSDConversationParticipant *)v3 initWithIdentifier:v4 handle:v6 avcData:v7];
+  identifier = [(CSDMessagingConversationParticipant *)self identifier];
+  handle = [(CSDMessagingConversationParticipant *)self handle];
+  tuHandle = [handle tuHandle];
+  avcData = [(CSDMessagingConversationParticipant *)self avcData];
+  v8 = [(CSDConversationParticipant *)v3 initWithIdentifier:identifier handle:tuHandle avcData:avcData];
 
   v9 = objc_alloc_init(TUConversationParticipantCapabilities);
   [v9 setMomentsAvailable:{-[CSDMessagingConversationParticipant isMomentsAvailable](self, "isMomentsAvailable")}];
@@ -3792,34 +3792,34 @@ LABEL_80:
   [(CSDConversationParticipant *)v8 setCapabilities:v9];
   [(CSDConversationParticipant *)v8 setLightweight:[(CSDMessagingConversationParticipant *)self isLightweight]];
   [(CSDConversationParticipant *)v8 setGuestModeEnabled:[(CSDMessagingConversationParticipant *)self guestModeEnabled]];
-  v10 = [(CSDMessagingConversationParticipant *)self association];
-  v11 = [v10 tuConversationParticipantAssociation];
-  [(CSDConversationParticipant *)v8 setAssociation:v11];
+  association = [(CSDMessagingConversationParticipant *)self association];
+  tuConversationParticipantAssociation = [association tuConversationParticipantAssociation];
+  [(CSDConversationParticipant *)v8 setAssociation:tuConversationParticipantAssociation];
 
   [(CSDConversationParticipant *)v8 setSpatialPersonaEnabled:[(CSDMessagingConversationParticipant *)self isSpatialPersonaEnabled]];
   [(CSDConversationParticipant *)v8 setSpatialPersonaGenerationCounter:[(CSDMessagingConversationParticipant *)self spatialPersonaGenerationCounter]];
-  v12 = [(CSDMessagingConversationParticipant *)self cluster];
-  v13 = [v12 tuConversationParticipantCluster];
-  [(CSDConversationParticipant *)v8 setCluster:v13];
+  cluster = [(CSDMessagingConversationParticipant *)self cluster];
+  tuConversationParticipantCluster = [cluster tuConversationParticipantCluster];
+  [(CSDConversationParticipant *)v8 setCluster:tuConversationParticipantCluster];
 
   [(CSDConversationParticipant *)v8 setIsNearbySharePlay:[(CSDMessagingConversationParticipant *)self isNearbySharePlay]];
   [(CSDConversationParticipant *)v8 setVideoEnabled:[(CSDMessagingConversationParticipant *)self options]& 1 | ![(CSDMessagingConversationParticipant *)self hasOptions]];
   if ([(CSDMessagingConversationParticipant *)self hasAvMode])
   {
-    v14 = [(CSDMessagingConversationParticipant *)self avMode];
+    avMode = [(CSDMessagingConversationParticipant *)self avMode];
   }
 
   else if ([(CSDConversationParticipant *)v8 isVideoEnabled])
   {
-    v14 = 2;
+    avMode = 2;
   }
 
   else
   {
-    v14 = 1;
+    avMode = 1;
   }
 
-  [(CSDConversationParticipant *)v8 setAudioVideoMode:v14];
+  [(CSDConversationParticipant *)v8 setAudioVideoMode:avMode];
   [(CSDConversationParticipant *)v8 setPresentationMode:[(CSDMessagingConversationParticipant *)self resolvedPresentationMode]];
 
   return v8;
@@ -3832,15 +3832,15 @@ LABEL_80:
     return [(CSDMessagingConversationParticipant *)self avMode]== 0;
   }
 
-  v3 = [(CSDMessagingConversationParticipant *)self presentationMode];
-  if (v3 == 1)
+  presentationMode = [(CSDMessagingConversationParticipant *)self presentationMode];
+  if (presentationMode == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (presentationMode == 2);
   }
 }
 
@@ -3849,7 +3849,7 @@ LABEL_80:
   v8.receiver = self;
   v8.super_class = CSDMessagingConversationParticipant;
   v3 = [(CSDMessagingConversationParticipant *)&v8 description];
-  v4 = [(CSDMessagingConversationParticipant *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(CSDMessagingConversationParticipant *)self dictionaryRepresentation];
   v5 = TULoggableStringForObject();
   v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
 

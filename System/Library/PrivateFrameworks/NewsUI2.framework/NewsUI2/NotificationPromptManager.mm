@@ -1,11 +1,11 @@
 @interface NotificationPromptManager
 - (int64_t)notificationPrompt;
-- (int64_t)subscribeNotificationPromptForTagID:(id)a3;
+- (int64_t)subscribeNotificationPromptForTagID:(id)d;
 @end
 
 @implementation NotificationPromptManager
 
-- (int64_t)subscribeNotificationPromptForTagID:(id)a3
+- (int64_t)subscribeNotificationPromptForTagID:(id)d
 {
   v3 = sub_219BF5414();
   v5 = v4;

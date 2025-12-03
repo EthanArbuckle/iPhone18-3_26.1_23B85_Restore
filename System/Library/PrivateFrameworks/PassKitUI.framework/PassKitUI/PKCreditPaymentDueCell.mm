@@ -1,37 +1,37 @@
 @interface PKCreditPaymentDueCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCreditPaymentDueCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCreditPaymentDueCell)initWithFrame:(CGRect)frame;
 - (PKCreditPaymentDueCellDelegate)delegate;
-- (id)_payButtonWithCircleLayout:(BOOL)a3;
-- (void)_buttonTapped:(id)a3;
-- (void)_updateButtonImage:(id)a3;
+- (id)_payButtonWithCircleLayout:(BOOL)layout;
+- (void)_buttonTapped:(id)tapped;
+- (void)_updateButtonImage:(id)image;
 - (void)createSubviews;
 - (void)layoutSubviews;
-- (void)setButtonTitle:(id)a3;
-- (void)setDateLabelFont:(id)a3;
-- (void)setDateLabelText:(id)a3;
-- (void)setDateLabelTextColor:(id)a3;
-- (void)setDetailLabelFont:(id)a3;
-- (void)setDetailLabelText:(id)a3;
-- (void)setDetailLabelTextColor:(id)a3;
-- (void)setFallbackButtonTitle:(id)a3;
-- (void)setPayButtonFont:(id)a3;
-- (void)setPayButtonImage:(id)a3;
-- (void)setPayButtonTintColor:(id)a3;
-- (void)setPayButtonTitleColor:(id)a3;
-- (void)setPaymentDueLabelFont:(id)a3;
-- (void)setPaymentDueLabelText:(id)a3;
-- (void)setPaymentDueLabelTextColor:(id)a3;
+- (void)setButtonTitle:(id)title;
+- (void)setDateLabelFont:(id)font;
+- (void)setDateLabelText:(id)text;
+- (void)setDateLabelTextColor:(id)color;
+- (void)setDetailLabelFont:(id)font;
+- (void)setDetailLabelText:(id)text;
+- (void)setDetailLabelTextColor:(id)color;
+- (void)setFallbackButtonTitle:(id)title;
+- (void)setPayButtonFont:(id)font;
+- (void)setPayButtonImage:(id)image;
+- (void)setPayButtonTintColor:(id)color;
+- (void)setPayButtonTitleColor:(id)color;
+- (void)setPaymentDueLabelFont:(id)font;
+- (void)setPaymentDueLabelText:(id)text;
+- (void)setPaymentDueLabelTextColor:(id)color;
 @end
 
 @implementation PKCreditPaymentDueCell
 
-- (PKCreditPaymentDueCell)initWithFrame:(CGRect)a3
+- (PKCreditPaymentDueCell)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PKCreditPaymentDueCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_isCompactUI = PKUIGetMinScreenWidthType() == 0;
@@ -44,7 +44,7 @@
 
 - (void)createSubviews
 {
-  v9 = [(PKCreditPaymentDueCell *)self contentView];
+  contentView = [(PKCreditPaymentDueCell *)self contentView];
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   paymentDueLabel = self->_paymentDueLabel;
   self->_paymentDueLabel = v3;
@@ -52,7 +52,7 @@
   [(UILabel *)self->_paymentDueLabel setNumberOfLines:2];
   [(UILabel *)self->_paymentDueLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_paymentDueLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
-  [v9 addSubview:self->_paymentDueLabel];
+  [contentView addSubview:self->_paymentDueLabel];
   v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   dateLabel = self->_dateLabel;
   self->_dateLabel = v5;
@@ -60,7 +60,7 @@
   [(UILabel *)self->_dateLabel setNumberOfLines:1];
   [(UILabel *)self->_dateLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_dateLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-  [v9 addSubview:self->_dateLabel];
+  [contentView addSubview:self->_dateLabel];
   v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   detailLabel = self->_detailLabel;
   self->_detailLabel = v7;
@@ -69,8 +69,8 @@
   [(UILabel *)self->_detailLabel setLineBreakMode:4];
   [(UILabel *)self->_detailLabel setAdjustsFontSizeToFitWidth:0];
   [(UILabel *)self->_detailLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-  [v9 addSubview:self->_detailLabel];
-  [v9 setAccessibilityIdentifier:*MEMORY[0x1E69B9A48]];
+  [contentView addSubview:self->_detailLabel];
+  [contentView setAccessibilityIdentifier:*MEMORY[0x1E69B9A48]];
 }
 
 - (void)layoutSubviews
@@ -82,22 +82,22 @@
   [(PKCreditPaymentDueCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKCreditPaymentDueCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, 3.40282347e38];
+  [(PKCreditPaymentDueCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, 3.40282347e38];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v7 = 8.0;
   if (!self->_isCompactUI)
   {
@@ -262,8 +262,8 @@ LABEL_36:
 LABEL_38:
   if (self->_fallbackButtonTitle)
   {
-    v36 = [(PKContinuousButton *)self->_payButton titleLabel];
-    [v36 pkui_sizeThatFits:{v12, v13}];
+    titleLabel = [(PKContinuousButton *)self->_payButton titleLabel];
+    [titleLabel pkui_sizeThatFits:{v12, v13}];
     v38 = v37;
 
     [(PKContinuousButton *)self->_payButton contentEdgeInsets];
@@ -282,25 +282,25 @@ LABEL_38:
   return result;
 }
 
-- (void)setPaymentDueLabelText:(id)a3
+- (void)setPaymentDueLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_paymentDueLabel text];
-  v6 = v4;
+  textCopy = text;
+  text = [(UILabel *)self->_paymentDueLabel text];
+  v6 = textCopy;
   v8 = v6;
-  if (v5 == v6)
+  if (text == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !text)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqualToString:v6];
+  v7 = [text isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -312,50 +312,50 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setPaymentDueLabelFont:(id)a3
+- (void)setPaymentDueLabelFont:(id)font
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_paymentDueLabel font];
+  fontCopy = font;
+  font = [(UILabel *)self->_paymentDueLabel font];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_paymentDueLabel setFont:v6];
+    [(UILabel *)self->_paymentDueLabel setFont:fontCopy];
     [(PKCreditPaymentDueCell *)self setNeedsLayout];
   }
 }
 
-- (void)setPaymentDueLabelTextColor:(id)a3
+- (void)setPaymentDueLabelTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_paymentDueLabel textColor];
+  colorCopy = color;
+  textColor = [(UILabel *)self->_paymentDueLabel textColor];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_paymentDueLabel setTextColor:v6];
+    [(UILabel *)self->_paymentDueLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setDateLabelText:(id)a3
+- (void)setDateLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_dateLabel text];
-  v6 = v4;
+  textCopy = text;
+  text = [(UILabel *)self->_dateLabel text];
+  v6 = textCopy;
   v8 = v6;
-  if (v5 == v6)
+  if (text == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !text)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqualToString:v6];
+  v7 = [text isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -367,50 +367,50 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDateLabelFont:(id)a3
+- (void)setDateLabelFont:(id)font
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_dateLabel font];
+  fontCopy = font;
+  font = [(UILabel *)self->_dateLabel font];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_dateLabel setFont:v6];
+    [(UILabel *)self->_dateLabel setFont:fontCopy];
     [(PKCreditPaymentDueCell *)self setNeedsLayout];
   }
 }
 
-- (void)setDateLabelTextColor:(id)a3
+- (void)setDateLabelTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_dateLabel textColor];
+  colorCopy = color;
+  textColor = [(UILabel *)self->_dateLabel textColor];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_dateLabel setTextColor:v6];
+    [(UILabel *)self->_dateLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setDetailLabelText:(id)a3
+- (void)setDetailLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_detailLabel text];
-  v6 = v4;
+  textCopy = text;
+  text = [(UILabel *)self->_detailLabel text];
+  v6 = textCopy;
   v8 = v6;
-  if (v5 == v6)
+  if (text == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !text)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqualToString:v6];
+  v7 = [text isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -422,40 +422,40 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDetailLabelFont:(id)a3
+- (void)setDetailLabelFont:(id)font
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_detailLabel font];
+  fontCopy = font;
+  font = [(UILabel *)self->_detailLabel font];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_detailLabel setFont:v6];
+    [(UILabel *)self->_detailLabel setFont:fontCopy];
     [(PKCreditPaymentDueCell *)self setNeedsLayout];
   }
 }
 
-- (void)setDetailLabelTextColor:(id)a3
+- (void)setDetailLabelTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_detailLabel textColor];
+  colorCopy = color;
+  textColor = [(UILabel *)self->_detailLabel textColor];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_detailLabel setTextColor:v6];
+    [(UILabel *)self->_detailLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PKCreditPaymentDueCell *)self contentView];
-  v6 = [(PKContinuousButton *)self->_payButton titleLabel];
-  v7 = [v6 text];
+  titleCopy = title;
+  contentView = [(PKCreditPaymentDueCell *)self contentView];
+  titleLabel = [(PKContinuousButton *)self->_payButton titleLabel];
+  text = [titleLabel text];
 
-  v8 = v7;
-  v9 = v4;
+  v8 = text;
+  v9 = titleCopy;
   v24 = v9;
   if (v8 == v9)
   {
@@ -488,7 +488,7 @@ LABEL_10:
         v20 = self->_payButton;
         self->_payButton = v19;
 
-        [v5 addSubview:self->_payButton];
+        [contentView addSubview:self->_payButton];
         goto LABEL_29;
       }
 
@@ -531,7 +531,7 @@ LABEL_34:
       v22 = self->_payButton;
       self->_payButton = v21;
 
-      [v5 addSubview:self->_payButton];
+      [contentView addSubview:self->_payButton];
       if (v14)
       {
         goto LABEL_29;
@@ -549,72 +549,72 @@ LABEL_34:
 LABEL_31:
 }
 
-- (void)setFallbackButtonTitle:(id)a3
+- (void)setFallbackButtonTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_fallbackButtonTitle, a3);
+    objc_storeStrong(&self->_fallbackButtonTitle, title);
     [(PKCreditPaymentDueCell *)self setNeedsLayout];
   }
 }
 
-- (void)setPayButtonImage:(id)a3
+- (void)setPayButtonImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    [(PKCreditPaymentDueCell *)self _updateButtonImage:v4];
+    [(PKCreditPaymentDueCell *)self _updateButtonImage:imageCopy];
     [(PKCreditPaymentDueCell *)self setButtonTitle:0];
     [(PKCreditPaymentDueCell *)self setNeedsLayout];
   }
 }
 
-- (void)setPayButtonTintColor:(id)a3
+- (void)setPayButtonTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_payButtonTintColor, a3);
+    objc_storeStrong(&self->_payButtonTintColor, color);
     [(PKContinuousButton *)self->_payButton setTintColor:self->_payButtonTintColor];
   }
 }
 
-- (void)setPayButtonTitleColor:(id)a3
+- (void)setPayButtonTitleColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_payButtonTitleColor, a3);
+    objc_storeStrong(&self->_payButtonTitleColor, color);
     [(PKContinuousButton *)self->_payButton updateTitleColorWithColor:self->_payButtonTitleColor];
-    v5 = [(PKContinuousButton *)self->_payButton imageView];
-    [v5 setTintColor:self->_payButtonTitleColor];
+    imageView = [(PKContinuousButton *)self->_payButton imageView];
+    [imageView setTintColor:self->_payButtonTitleColor];
   }
 }
 
-- (void)setPayButtonFont:(id)a3
+- (void)setPayButtonFont:(id)font
 {
   payButton = self->_payButton;
-  v4 = a3;
-  v5 = [(PKContinuousButton *)payButton titleLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  titleLabel = [(PKContinuousButton *)payButton titleLabel];
+  [titleLabel setFont:fontCopy];
 }
 
-- (void)_updateButtonImage:(id)a3
+- (void)_updateButtonImage:(id)image
 {
-  objc_storeStrong(&self->_payButtonImage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_payButtonImage, image);
+  imageCopy = image;
   [(PKContinuousButton *)self->_payButton updateWithImage:self->_payButtonImage];
   [(PKContinuousButton *)self->_payButton setImageEdgeInsets:6.0, 6.0, 6.0, 6.0];
-  v6 = [(PKContinuousButton *)self->_payButton imageView];
+  imageView = [(PKContinuousButton *)self->_payButton imageView];
 
-  [v6 setContentMode:1];
+  [imageView setContentMode:1];
   [(PKCreditPaymentDueCell *)self setNeedsLayout];
 }
 
-- (id)_payButtonWithCircleLayout:(BOOL)a3
+- (id)_payButtonWithCircleLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v12 = 0;
     *v13 = 0;
@@ -638,9 +638,9 @@ LABEL_31:
   self->_usingCircleButton = v5;
   [(PKContinuousButton *)v4 setTintColor:self->_payButtonTintColor];
   [(PKContinuousButton *)v4 updateTitleColorWithColor:self->_payButtonTitleColor];
-  v6 = [(PKContinuousButton *)v4 imageView];
-  [v6 setTintColor:self->_payButtonTitleColor];
-  v7 = [(PKContinuousButton *)v4 titleLabel];
+  imageView = [(PKContinuousButton *)v4 imageView];
+  [imageView setTintColor:self->_payButtonTitleColor];
+  titleLabel = [(PKContinuousButton *)v4 titleLabel];
   if (self->_isCompactUI)
   {
     v8 = 0x8000;
@@ -652,17 +652,17 @@ LABEL_31:
   }
 
   v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC50], v8, 0);
-  [v7 setFont:v9];
+  [titleLabel setFont:v9];
 
-  v10 = [(PKContinuousButton *)v4 titleLabel];
-  [v10 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [(PKContinuousButton *)v4 titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
   [(PKContinuousButton *)v4 addTarget:self action:sel__buttonTapped_ forControlEvents:64];
 
   return v4;
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)

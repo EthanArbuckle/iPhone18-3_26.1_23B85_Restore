@@ -5,7 +5,7 @@
 + (id)configurationForWorkout;
 + (id)storeConfigurationForFocusedEvaluationMode;
 + (id)storeConfigurationForWorkout;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -15,7 +15,7 @@
 + (id)FocusedEvaluationMode
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFocusedEvaluationMode];
+  configurationForFocusedEvaluationMode = [self configurationForFocusedEvaluationMode];
   v3 = +[BMHealthFocusedEvaluationMode columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -27,7 +27,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Health.FocusedEvaluationMode" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Health.FocusedEvaluationMode" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Health.FocusedEvaluationMode" schema:v9 configuration:configurationForFocusedEvaluationMode];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -45,8 +45,8 @@
 + (id)sublibraries
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 Medications];
-  v6[0] = v2;
+  medications = [self Medications];
+  v6[0] = medications;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -56,13 +56,13 @@
 
 + (id)configurationForFocusedEvaluationMode
 {
-  v3 = [a1 storeConfigurationForFocusedEvaluationMode];
-  v4 = [a1 syncPolicyForFocusedEvaluationMode];
+  storeConfigurationForFocusedEvaluationMode = [self storeConfigurationForFocusedEvaluationMode];
+  syncPolicyForFocusedEvaluationMode = [self syncPolicyForFocusedEvaluationMode];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E1DF2352-C086-4850-85A9-0EA99D2384AE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Health.FocusedEvaluationMode" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Health.FocusedEvaluationMode" eventClass:objc_opt_class() storeConfig:storeConfigurationForFocusedEvaluationMode syncPolicy:syncPolicyForFocusedEvaluationMode legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -70,7 +70,7 @@
 + (id)Workout
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForWorkout];
+  configurationForWorkout = [self configurationForWorkout];
   v3 = +[BMHealthWorkout columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -82,7 +82,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Health.Workout" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Health.Workout" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Health.Workout" schema:v9 configuration:configurationForWorkout];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -91,13 +91,13 @@
 
 + (id)configurationForWorkout
 {
-  v3 = [a1 storeConfigurationForWorkout];
-  v4 = [a1 syncPolicyForWorkout];
+  storeConfigurationForWorkout = [self storeConfigurationForWorkout];
+  syncPolicyForWorkout = [self syncPolicyForWorkout];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"2AE0D254-82ED-4B19-920B-D78F5A9A0D73"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Health.Workout" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EC228 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Health.Workout" eventClass:objc_opt_class() storeConfig:storeConfigurationForWorkout syncPolicy:syncPolicyForWorkout legacyNames:&unk_1EF3EC228 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -110,20 +110,20 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"FocusedEvaluationMode"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"FocusedEvaluationMode"])
   {
-    v5 = [a1 FocusedEvaluationMode];
+    focusedEvaluationMode = [self FocusedEvaluationMode];
 LABEL_5:
-    v6 = v5;
+    v6 = focusedEvaluationMode;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Workout"])
+  if ([nameCopy isEqualToString:@"Workout"])
   {
-    v5 = [a1 Workout];
+    focusedEvaluationMode = [self Workout];
     goto LABEL_5;
   }
 

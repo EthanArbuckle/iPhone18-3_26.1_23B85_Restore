@@ -1,51 +1,51 @@
 @interface FCStubPurchaseManagerDelegateObserver
-- (void)purchaseFailedForInvalidPurchaseReceiptWithProductID:(id)a3 ongoingPurchaseEntry:(id)a4;
-- (void)purchaseFailedWithProductID:(id)a3 transactionState:(int64_t)a4 transactionError:(id)a5 ongoingPurchaseEntry:(id)a6;
-- (void)purchaseSuccessWithProductID:(id)a3 transaction:(id)a4 chargeCurrencyCode:(id)a5 ongoingPurchaseEntry:(id)a6;
+- (void)purchaseFailedForInvalidPurchaseReceiptWithProductID:(id)d ongoingPurchaseEntry:(id)entry;
+- (void)purchaseFailedWithProductID:(id)d transactionState:(int64_t)state transactionError:(id)error ongoingPurchaseEntry:(id)entry;
+- (void)purchaseSuccessWithProductID:(id)d transaction:(id)transaction chargeCurrencyCode:(id)code ongoingPurchaseEntry:(id)entry;
 @end
 
 @implementation FCStubPurchaseManagerDelegateObserver
 
-- (void)purchaseFailedWithProductID:(id)a3 transactionState:(int64_t)a4 transactionError:(id)a5 ongoingPurchaseEntry:(id)a6
+- (void)purchaseFailedWithProductID:(id)d transactionState:(int64_t)state transactionError:(id)error ongoingPurchaseEntry:(id)entry
 {
-  v14 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(FCStubPurchaseManagerDelegateObserver *)self failedBlock];
+  dCopy = d;
+  errorCopy = error;
+  entryCopy = entry;
+  failedBlock = [(FCStubPurchaseManagerDelegateObserver *)self failedBlock];
 
-  if (v12)
+  if (failedBlock)
   {
-    v13 = [(FCStubPurchaseManagerDelegateObserver *)self failedBlock];
-    (v13)[2](v13, v14, a4, v10, v11);
+    failedBlock2 = [(FCStubPurchaseManagerDelegateObserver *)self failedBlock];
+    (failedBlock2)[2](failedBlock2, dCopy, state, errorCopy, entryCopy);
   }
 }
 
-- (void)purchaseFailedForInvalidPurchaseReceiptWithProductID:(id)a3 ongoingPurchaseEntry:(id)a4
+- (void)purchaseFailedForInvalidPurchaseReceiptWithProductID:(id)d ongoingPurchaseEntry:(id)entry
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(FCStubPurchaseManagerDelegateObserver *)self failedWithInvalidReceiptBlock];
+  dCopy = d;
+  entryCopy = entry;
+  failedWithInvalidReceiptBlock = [(FCStubPurchaseManagerDelegateObserver *)self failedWithInvalidReceiptBlock];
 
-  if (v7)
+  if (failedWithInvalidReceiptBlock)
   {
-    v8 = [(FCStubPurchaseManagerDelegateObserver *)self failedWithInvalidReceiptBlock];
-    (v8)[2](v8, v9, v6);
+    failedWithInvalidReceiptBlock2 = [(FCStubPurchaseManagerDelegateObserver *)self failedWithInvalidReceiptBlock];
+    (failedWithInvalidReceiptBlock2)[2](failedWithInvalidReceiptBlock2, dCopy, entryCopy);
   }
 }
 
-- (void)purchaseSuccessWithProductID:(id)a3 transaction:(id)a4 chargeCurrencyCode:(id)a5 ongoingPurchaseEntry:(id)a6
+- (void)purchaseSuccessWithProductID:(id)d transaction:(id)transaction chargeCurrencyCode:(id)code ongoingPurchaseEntry:(id)entry
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(FCStubPurchaseManagerDelegateObserver *)self successBlock];
+  dCopy = d;
+  transactionCopy = transaction;
+  codeCopy = code;
+  entryCopy = entry;
+  successBlock = [(FCStubPurchaseManagerDelegateObserver *)self successBlock];
 
-  if (v13)
+  if (successBlock)
   {
-    v14 = [(FCStubPurchaseManagerDelegateObserver *)self successBlock];
-    v15 = [v10 receipt];
-    (v14)[2](v14, v16, v15, v11, v12);
+    successBlock2 = [(FCStubPurchaseManagerDelegateObserver *)self successBlock];
+    receipt = [transactionCopy receipt];
+    (successBlock2)[2](successBlock2, dCopy, receipt, codeCopy, entryCopy);
   }
 }
 

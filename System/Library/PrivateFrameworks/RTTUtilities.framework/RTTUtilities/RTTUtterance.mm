@@ -1,38 +1,38 @@
 @interface RTTUtterance
-+ (BOOL)contactPathIsMe:(id)a3;
++ (BOOL)contactPathIsMe:(id)me;
 - (BOOL)hasTimedOut;
 - (BOOL)hasTranslation;
 - (BOOL)isComplete;
-- (BOOL)isEqual:(id)a3;
-- (RTTUtterance)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTTUtterance)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetTimeout;
-- (void)updateText:(id)a3;
+- (void)updateText:(id)text;
 @end
 
 @implementation RTTUtterance
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(RTTUtterance *)self contactPath];
-  v6 = [v5 copy];
+  contactPath = [(RTTUtterance *)self contactPath];
+  v6 = [contactPath copy];
   [v4 setContactPath:v6];
 
-  v7 = [(RTTUtterance *)self text];
-  v8 = [v7 copy];
+  text = [(RTTUtterance *)self text];
+  v8 = [text copy];
   [v4 setText:v8];
 
-  v9 = [(RTTUtterance *)self translatedText];
-  v10 = [v9 copy];
+  translatedText = [(RTTUtterance *)self translatedText];
+  v10 = [translatedText copy];
   [v4 setTranslatedText:v10];
 
   [v4 setIsMe:{-[RTTUtterance isMe](self, "isMe")}];
-  v11 = [(RTTUtterance *)self lastChangeDate];
-  v12 = [v11 copy];
+  lastChangeDate = [(RTTUtterance *)self lastChangeDate];
+  v12 = [lastChangeDate copy];
   [v4 setLastChangeDate:v12];
 
   [v4 setIgnoreTimeoutTemporarily:{-[RTTUtterance ignoreTimeoutTemporarily](self, "ignoreTimeoutTemporarily")}];
@@ -40,11 +40,11 @@
   return v4;
 }
 
-+ (BOOL)contactPathIsMe:(id)a3
++ (BOOL)contactPathIsMe:(id)me
 {
-  v3 = a3;
+  meCopy = me;
   v4 = ttyLocString(@"TTYPersonMe");
-  if ([v3 isEqualToString:v4])
+  if ([meCopy isEqualToString:v4])
   {
     v5 = 1;
   }
@@ -52,51 +52,51 @@
   else
   {
     v6 = +[RTTTelephonyUtilities sharedUtilityProvider];
-    v5 = [v6 contactPathIsMe:v3];
+    v5 = [v6 contactPathIsMe:meCopy];
   }
 
   return v5;
 }
 
-- (RTTUtterance)initWithCoder:(id)a3
+- (RTTUtterance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RTTUtterance;
   v5 = [(RTTUtterance *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTTUtteranceContactKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTTUtteranceContactKey"];
     [(RTTUtterance *)v5 setContactPath:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTTUtteranceTextKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTTUtteranceTextKey"];
     [(RTTUtterance *)v5 setText:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTTUtteranceTranslatedTextKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTTUtteranceTranslatedTextKey"];
     [(RTTUtterance *)v5 setTranslatedText:v8];
 
-    v9 = [(RTTUtterance *)v5 contactPath];
-    [(RTTUtterance *)v5 setIsMe:[RTTUtterance contactPathIsMe:v9]];
+    contactPath = [(RTTUtterance *)v5 contactPath];
+    [(RTTUtterance *)v5 setIsMe:[RTTUtterance contactPathIsMe:contactPath]];
 
-    -[RTTUtterance setIsTranscription:](v5, "setIsTranscription:", [v4 decodeBoolForKey:@"RTTUtteranceIsTranscriptionKey"]);
+    -[RTTUtterance setIsTranscription:](v5, "setIsTranscription:", [coderCopy decodeBoolForKey:@"RTTUtteranceIsTranscriptionKey"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(RTTUtterance *)self contactPath];
-  [v7 encodeObject:v4 forKey:@"RTTUtteranceContactKey"];
+  coderCopy = coder;
+  contactPath = [(RTTUtterance *)self contactPath];
+  [coderCopy encodeObject:contactPath forKey:@"RTTUtteranceContactKey"];
 
-  v5 = [(RTTUtterance *)self text];
-  [v7 encodeObject:v5 forKey:@"RTTUtteranceTextKey"];
+  text = [(RTTUtterance *)self text];
+  [coderCopy encodeObject:text forKey:@"RTTUtteranceTextKey"];
 
-  v6 = [(RTTUtterance *)self translatedText];
-  [v7 encodeObject:v6 forKey:@"RTTUtteranceTranslatedTextKey"];
+  translatedText = [(RTTUtterance *)self translatedText];
+  [coderCopy encodeObject:translatedText forKey:@"RTTUtteranceTranslatedTextKey"];
 
-  [v7 encodeBool:-[RTTUtterance isTranscription](self forKey:{"isTranscription"), @"RTTUtteranceIsTranscriptionKey"}];
+  [coderCopy encodeBool:-[RTTUtterance isTranscription](self forKey:{"isTranscription"), @"RTTUtteranceIsTranscriptionKey"}];
 }
 
 - (void)dealloc
@@ -109,17 +109,17 @@
   [(RTTUtterance *)&v3 dealloc];
 }
 
-- (void)updateText:(id)a3
+- (void)updateText:(id)text
 {
-  [(RTTUtterance *)self setText:a3];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [(RTTUtterance *)self setLastChangeDate:v4];
+  [(RTTUtterance *)self setText:text];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(RTTUtterance *)self setLastChangeDate:date];
 }
 
 - (BOOL)hasTranslation
 {
-  v2 = [(RTTUtterance *)self translatedText];
-  v3 = [v2 length] != 0;
+  translatedText = [(RTTUtterance *)self translatedText];
+  v3 = [translatedText length] != 0;
 
   return v3;
 }
@@ -131,12 +131,12 @@
     return 0;
   }
 
-  v4 = [(RTTUtterance *)self lastChangeDate];
-  if (v4)
+  lastChangeDate = [(RTTUtterance *)self lastChangeDate];
+  if (lastChangeDate)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(RTTUtterance *)self lastChangeDate];
-    [v5 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastChangeDate2 = [(RTTUtterance *)self lastChangeDate];
+    [date timeIntervalSinceDate:lastChangeDate2];
     v3 = v7 > 3.0;
   }
 
@@ -150,15 +150,15 @@
 
 - (void)resetTimeout
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(RTTUtterance *)self setLastChangeDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(RTTUtterance *)self setLastChangeDate:date];
 }
 
 - (BOOL)isComplete
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v3 = [(RTTUtterance *)self text];
-  v4 = [v3 length];
+  text = [(RTTUtterance *)self text];
+  v4 = [text length];
 
   if (v4)
   {
@@ -174,9 +174,9 @@
     v17[4] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:5];
 
-    v11 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v12 = [(RTTUtterance *)self text];
-    LODWORD(v7) = [v11 characterIsMember:{objc_msgSend(v12, "characterAtIndex:", v4 - 1)}];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    text2 = [(RTTUtterance *)self text];
+    LODWORD(v7) = [whitespaceCharacterSet characterIsMember:{objc_msgSend(text2, "characterAtIndex:", v4 - 1)}];
 
     if (v7)
     {
@@ -231,21 +231,21 @@ uint64_t __26__RTTUtterance_isComplete__block_invoke(uint64_t a1, void *a2)
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(RTTUtterance *)self contactPath];
-    v8 = [v6 contactPath];
-    if (v7 == v8 || (-[RTTUtterance contactPath](self, "contactPath"), v3 = objc_claimAutoreleasedReturnValue(), [v6 contactPath], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
+    contactPath = [(RTTUtterance *)self contactPath];
+    contactPath2 = [equalCopy contactPath];
+    if (contactPath == contactPath2 || (-[RTTUtterance contactPath](self, "contactPath"), v3 = objc_claimAutoreleasedReturnValue(), [equalCopy contactPath], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
     {
-      v10 = [(RTTUtterance *)self text];
-      v11 = [v6 text];
-      v9 = [v10 isEqualToString:v11];
+      text = [(RTTUtterance *)self text];
+      text2 = [equalCopy text];
+      v9 = [text isEqualToString:text2];
 
-      if (v7 == v8)
+      if (contactPath == contactPath2)
       {
 LABEL_8:
 
@@ -273,10 +273,10 @@ LABEL_9:
   v10.receiver = self;
   v10.super_class = RTTUtterance;
   v4 = [(RTTUtterance *)&v10 description];
-  v5 = [(RTTUtterance *)self contactPath];
-  v6 = [(RTTUtterance *)self hasTimedOut];
-  v7 = [(RTTUtterance *)self text];
-  v8 = [v3 stringWithFormat:@"%@ %@ [%d]: %{sensitive}@", v4, v5, v6, v7];
+  contactPath = [(RTTUtterance *)self contactPath];
+  hasTimedOut = [(RTTUtterance *)self hasTimedOut];
+  text = [(RTTUtterance *)self text];
+  v8 = [v3 stringWithFormat:@"%@ %@ [%d]: %{sensitive}@", v4, contactPath, hasTimedOut, text];
 
   return v8;
 }

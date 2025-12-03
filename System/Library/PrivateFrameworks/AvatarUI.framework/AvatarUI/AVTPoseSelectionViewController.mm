@@ -1,7 +1,7 @@
 @interface AVTPoseSelectionViewController
-+ (id)poseConfigurationsForTypes:(unint64_t)a3 avatarRecord:(id)a4;
-- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)a3 poseConfigurations:(id)a4;
-- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)a3 poseTypes:(unint64_t)a4;
++ (id)poseConfigurationsForTypes:(unint64_t)types avatarRecord:(id)record;
+- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)record poseConfigurations:(id)configurations;
+- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)record poseTypes:(unint64_t)types;
 - (AVTPoseSelectionViewControllerDelegate)delegate;
 - (double)buttonEdgeLength;
 - (double)buttonSymbolWeight;
@@ -10,66 +10,66 @@
 - (double)discardButtonSymbolWeight;
 - (id)keyCommands;
 - (id)selectedPoseConfiguration;
-- (void)animateButtonConfiguration:(id)a3;
+- (void)animateButtonConfiguration:(id)configuration;
 - (void)clearHeaderMenu;
 - (void)configureButtonsForCapture;
 - (void)configureButtonsForReview;
 - (void)createCaptureButtonIfNeeded;
 - (void)createDiscardButtonIfNeeded;
 - (void)createMenuButtonIfNeeded;
-- (void)didFinishMenuPresentationWithCompletion:(id)a3;
-- (void)didTapCancel:(id)a3;
-- (void)didTapCaptureButton:(id)a3;
-- (void)didTapDiscardButton:(id)a3;
-- (void)notifyDelegateOfModeChange:(unint64_t)a3;
+- (void)didFinishMenuPresentationWithCompletion:(id)completion;
+- (void)didTapCancel:(id)cancel;
+- (void)didTapCaptureButton:(id)button;
+- (void)didTapDiscardButton:(id)button;
+- (void)notifyDelegateOfModeChange:(unint64_t)change;
 - (void)notifyDelegateOfSelectedPose;
-- (void)poseSelectionGridController:(id)a3 didSelectConfiguration:(id)a4;
-- (void)poseSelectionGridControllerDidSelectCameraItem:(id)a3;
+- (void)poseSelectionGridController:(id)controller didSelectConfiguration:(id)configuration;
+- (void)poseSelectionGridControllerDidSelectCameraItem:(id)item;
 - (void)prepareForMenuPresentation;
-- (void)returnPressed:(id)a3;
-- (void)setBackgroundColorOverride:(id)a3;
-- (void)setHeaderMenu:(id)a3;
-- (void)setMode:(unint64_t)a3;
-- (void)setNewAvatarRecord:(id)a3;
-- (void)updateForPoseConfiguration:(id)a3 animated:(BOOL)a4;
+- (void)returnPressed:(id)pressed;
+- (void)setBackgroundColorOverride:(id)override;
+- (void)setHeaderMenu:(id)menu;
+- (void)setMode:(unint64_t)mode;
+- (void)setNewAvatarRecord:(id)record;
+- (void)updateForPoseConfiguration:(id)configuration animated:(BOOL)animated;
 - (void)updateHeaderHeightConstraint;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AVTPoseSelectionViewController
 
-+ (id)poseConfigurationsForTypes:(unint64_t)a3 avatarRecord:(id)a4
++ (id)poseConfigurationsForTypes:(unint64_t)types avatarRecord:(id)record
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
-  if (a3 != 1)
+  recordCopy = record;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if (types != 1)
   {
     v8 = MEMORY[0x1E698E2F8];
-    if (a3 != 2)
+    if (types != 2)
     {
       goto LABEL_5;
     }
 
-    [v6 addObject:*MEMORY[0x1E698E2F8]];
+    [array addObject:*MEMORY[0x1E698E2F8]];
   }
 
   v8 = MEMORY[0x1E698E2E0];
 LABEL_5:
-  [v6 addObject:*v8];
+  [array addObject:*v8];
   if (AVTUIShowPrereleaseStickerPack_once())
   {
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(array, "count")}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v10 = v6;
+    v10 = array;
     v11 = [v10 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v11)
     {
@@ -97,7 +97,7 @@ LABEL_5:
 
   else
   {
-    v9 = v6;
+    v9 = array;
   }
 
   v30 = 0u;
@@ -120,19 +120,19 @@ LABEL_5:
         }
 
         v21 = *(*(&v28 + 1) + 8 * j);
-        v22 = [v5 isEditable];
+        isEditable = [recordCopy isEditable];
         v23 = MEMORY[0x1E698E2C0];
-        if (v22)
+        if (isEditable)
         {
-          v24 = [MEMORY[0x1E698E2C0] stickerConfigurationsForMemojiInStickerPack:v21];
-          [v7 addObjectsFromArray:v24];
+          identifier = [MEMORY[0x1E698E2C0] stickerConfigurationsForMemojiInStickerPack:v21];
+          [array2 addObjectsFromArray:identifier];
         }
 
         else
         {
-          v24 = [v5 identifier];
-          v25 = [v23 stickerConfigurationsForAnimojiNamed:v24 inStickerPack:v21];
-          [v7 addObjectsFromArray:v25];
+          identifier = [recordCopy identifier];
+          v25 = [v23 stickerConfigurationsForAnimojiNamed:identifier inStickerPack:v21];
+          [array2 addObjectsFromArray:v25];
         }
       }
 
@@ -142,32 +142,32 @@ LABEL_5:
     while (v18);
   }
 
-  v26 = [v7 copy];
+  v26 = [array2 copy];
 
   return v26;
 }
 
-- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)a3 poseTypes:(unint64_t)a4
+- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)record poseTypes:(unint64_t)types
 {
-  v6 = a3;
-  v7 = [objc_opt_class() poseConfigurationsForTypes:a4 avatarRecord:v6];
-  v8 = [(AVTPoseSelectionViewController *)self initWithSelectedRecord:v6 poseConfigurations:v7];
+  recordCopy = record;
+  v7 = [objc_opt_class() poseConfigurationsForTypes:types avatarRecord:recordCopy];
+  v8 = [(AVTPoseSelectionViewController *)self initWithSelectedRecord:recordCopy poseConfigurations:v7];
 
   return v8;
 }
 
-- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)a3 poseConfigurations:(id)a4
+- (AVTPoseSelectionViewController)initWithSelectedRecord:(id)record poseConfigurations:(id)configurations
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  configurationsCopy = configurations;
   v13.receiver = self;
   v13.super_class = AVTPoseSelectionViewController;
   v9 = [(AVTPoseSelectionViewController *)&v13 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_avatarRecord, a3);
-    objc_storeStrong(&v10->_stickerConfigurations, a4);
+    objc_storeStrong(&v9->_avatarRecord, record);
+    objc_storeStrong(&v10->_stickerConfigurations, configurations);
     headerMenu = v10->_headerMenu;
     v10->_headerMenu = 0;
   }
@@ -181,60 +181,60 @@ LABEL_5:
   v119.receiver = self;
   v119.super_class = AVTPoseSelectionViewController;
   [(AVTPoseSelectionViewController *)&v119 viewDidLoad];
-  v3 = [(AVTPoseSelectionViewController *)self navigationItem];
-  [v3 _setBackgroundHidden:1];
+  navigationItem = [(AVTPoseSelectionViewController *)self navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 
-  v4 = [(AVTPoseSelectionViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  v6 = [v5 isTranslucent];
+  navigationController = [(AVTPoseSelectionViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  isTranslucent = [navigationBar isTranslucent];
 
-  if ((v6 & 1) == 0)
+  if ((isTranslucent & 1) == 0)
   {
     [(AVTPoseSelectionViewController *)self setExtendedLayoutIncludesOpaqueBars:1];
   }
 
-  v7 = [(AVTPoseSelectionViewController *)self navigationItem];
-  [v7 setLargeTitleDisplayMode:2];
+  navigationItem2 = [(AVTPoseSelectionViewController *)self navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:2];
 
   v8 = [AVTAnimojiPoseSelectionHeaderViewController alloc];
-  v9 = [(AVTPoseSelectionViewController *)self avatarRecord];
-  v10 = [(AVTAnimojiPoseSelectionHeaderViewController *)v8 initWithRecord:v9];
+  avatarRecord = [(AVTPoseSelectionViewController *)self avatarRecord];
+  v10 = [(AVTAnimojiPoseSelectionHeaderViewController *)v8 initWithRecord:avatarRecord];
   headerViewController = self->_headerViewController;
   self->_headerViewController = v10;
 
-  v12 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(AVTPoseSelectionViewController *)self addChildViewController:self->_headerViewController];
-  v13 = [(AVTPoseSelectionViewController *)self view];
-  v14 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-  [v13 addSubview:v14];
+  view2 = [(AVTPoseSelectionViewController *)self view];
+  view3 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+  [view2 addSubview:view3];
 
   [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController didMoveToParentViewController:self];
-  v15 = [(AVTPoseSelectionViewController *)self allowsCameraCapture];
+  allowsCameraCapture = [(AVTPoseSelectionViewController *)self allowsCameraCapture];
   v16 = [AVTPoseSelectionGridViewController alloc];
-  v17 = [(AVTPoseSelectionViewController *)self avatarRecord];
-  v18 = [(AVTPoseSelectionViewController *)self stickerConfigurations];
-  v75 = v15;
-  v19 = [(AVTPoseSelectionGridViewController *)v16 initWithAvatarRecord:v17 poseConfigurations:v18 allowsCameraCapture:v15];
+  avatarRecord2 = [(AVTPoseSelectionViewController *)self avatarRecord];
+  stickerConfigurations = [(AVTPoseSelectionViewController *)self stickerConfigurations];
+  v75 = allowsCameraCapture;
+  v19 = [(AVTPoseSelectionGridViewController *)v16 initWithAvatarRecord:avatarRecord2 poseConfigurations:stickerConfigurations allowsCameraCapture:allowsCameraCapture];
   gridViewController = self->_gridViewController;
   self->_gridViewController = v19;
 
   [(AVTPoseSelectionGridViewController *)self->_gridViewController setDelegate:self];
-  v21 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
-  [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(AVTPoseSelectionViewController *)self addChildViewController:self->_gridViewController];
-  v22 = [(AVTPoseSelectionViewController *)self view];
-  v23 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
-  [v22 addSubview:v23];
+  view5 = [(AVTPoseSelectionViewController *)self view];
+  view6 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
+  [view5 addSubview:view6];
 
   [(AVTPoseSelectionGridViewController *)self->_gridViewController didMoveToParentViewController:self];
   backgroundColorOverride = self->_backgroundColorOverride;
   if (backgroundColorOverride)
   {
-    v25 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-    [v25 setBackgroundColor:backgroundColorOverride];
+    view7 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+    [view7 setBackgroundColor:backgroundColorOverride];
 
     [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController setCaptureBackgroundColor:self->_backgroundColorOverride];
     [(AVTPoseSelectionGridViewController *)self->_gridViewController setBackgroundColor:self->_backgroundColorOverride];
@@ -249,39 +249,39 @@ LABEL_5:
   [(UIView *)self->_headerDropShadowView setBackgroundColor:v29];
 
   [(UIView *)self->_headerDropShadowView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [(AVTPoseSelectionViewController *)self view];
-  [v30 addSubview:self->_headerDropShadowView];
+  view8 = [(AVTPoseSelectionViewController *)self view];
+  [view8 addSubview:self->_headerDropShadowView];
 
-  v31 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v31 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v33 = v32;
-  v34 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v34 nativeScale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 nativeScale];
   v36 = v35;
 
   if (v33 != v36)
   {
     v37 = objc_alloc(MEMORY[0x1E69DD250]);
     v38 = objc_opt_class();
-    v39 = [(AVTPoseSelectionViewController *)self view];
-    [v39 bounds];
+    view9 = [(AVTPoseSelectionViewController *)self view];
+    [view9 bounds];
     [v38 borderMaskRectForContentRect:?];
     v40 = [v37 initWithFrame:?];
     borderMaskView = self->_borderMaskView;
     self->_borderMaskView = v40;
 
-    v42 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)self->_borderMaskView setBackgroundColor:v42];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)self->_borderMaskView setBackgroundColor:whiteColor];
 
     v43 = self->_borderMaskView;
-    v44 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-    [v44 setMaskView:v43];
+    view10 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+    [view10 setMaskView:v43];
   }
 
   v45 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_didTapCancel_];
-  v46 = [(AVTPoseSelectionViewController *)self navigationItem];
+  navigationItem3 = [(AVTPoseSelectionViewController *)self navigationItem];
   v118 = v45;
-  [v46 setLeftBarButtonItem:v45];
+  [navigationItem3 setLeftBarButtonItem:v45];
 
   v47 = objc_alloc(MEMORY[0x1E69DC708]);
   v48 = AVTAvatarUIBundle();
@@ -291,13 +291,13 @@ LABEL_5:
   self->_doneButton = v50;
 
   v52 = self->_doneButton;
-  v53 = [(AVTPoseSelectionViewController *)self navigationItem];
-  [v53 setRightBarButtonItem:v52];
+  navigationItem4 = [(AVTPoseSelectionViewController *)self navigationItem];
+  [navigationItem4 setRightBarButtonItem:v52];
 
-  v54 = [(AVTPoseSelectionViewController *)self view];
-  v55 = [v54 window];
-  v56 = [v55 screen];
-  [v56 scale];
+  view11 = [(AVTPoseSelectionViewController *)self view];
+  window = [view11 window];
+  screen = [window screen];
+  [screen scale];
   v58 = v57;
 
   if (v58 <= 0.0)
@@ -311,67 +311,67 @@ LABEL_5:
   }
 
   [(AVTPoseSelectionViewController *)self updateHeaderHeightConstraint];
-  v117 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-  v115 = [v117 topAnchor];
-  v116 = [(AVTPoseSelectionViewController *)self view];
-  v114 = [v116 topAnchor];
-  v113 = [v115 constraintEqualToAnchor:v114];
+  view12 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+  topAnchor = [view12 topAnchor];
+  view13 = [(AVTPoseSelectionViewController *)self view];
+  topAnchor2 = [view13 topAnchor];
+  v113 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v120[0] = v113;
-  v112 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-  v110 = [v112 leadingAnchor];
-  v111 = [(AVTPoseSelectionViewController *)self view];
-  v109 = [v111 leadingAnchor];
-  v108 = [v110 constraintEqualToAnchor:v109];
+  view14 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+  leadingAnchor = [view14 leadingAnchor];
+  view15 = [(AVTPoseSelectionViewController *)self view];
+  leadingAnchor2 = [view15 leadingAnchor];
+  v108 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v120[1] = v108;
-  v107 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-  v105 = [v107 trailingAnchor];
-  v106 = [(AVTPoseSelectionViewController *)self view];
-  v104 = [v106 trailingAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  view16 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+  trailingAnchor = [view16 trailingAnchor];
+  view17 = [(AVTPoseSelectionViewController *)self view];
+  trailingAnchor2 = [view17 trailingAnchor];
+  v103 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v120[2] = v103;
-  v102 = [(AVTPoseSelectionViewController *)self headerHeightConstraint];
-  v120[3] = v102;
-  v100 = [(UIView *)self->_headerDropShadowView leadingAnchor];
-  v101 = [(AVTPoseSelectionViewController *)self view];
-  v99 = [v101 leadingAnchor];
-  v98 = [v100 constraintEqualToAnchor:v99];
+  headerHeightConstraint = [(AVTPoseSelectionViewController *)self headerHeightConstraint];
+  v120[3] = headerHeightConstraint;
+  leadingAnchor3 = [(UIView *)self->_headerDropShadowView leadingAnchor];
+  view18 = [(AVTPoseSelectionViewController *)self view];
+  leadingAnchor4 = [view18 leadingAnchor];
+  v98 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v120[4] = v98;
-  v96 = [(UIView *)self->_headerDropShadowView trailingAnchor];
-  v97 = [(AVTPoseSelectionViewController *)self view];
-  v95 = [v97 trailingAnchor];
-  v94 = [v96 constraintEqualToAnchor:v95];
+  trailingAnchor3 = [(UIView *)self->_headerDropShadowView trailingAnchor];
+  view19 = [(AVTPoseSelectionViewController *)self view];
+  trailingAnchor4 = [view19 trailingAnchor];
+  v94 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v120[5] = v94;
-  v92 = [(UIView *)self->_headerDropShadowView topAnchor];
-  v93 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-  v91 = [v93 bottomAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91];
+  topAnchor3 = [(UIView *)self->_headerDropShadowView topAnchor];
+  view20 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+  bottomAnchor = [view20 bottomAnchor];
+  v90 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v120[6] = v90;
-  v89 = [(UIView *)self->_headerDropShadowView heightAnchor];
-  v88 = [v89 constraintEqualToConstant:v59];
+  heightAnchor = [(UIView *)self->_headerDropShadowView heightAnchor];
+  v88 = [heightAnchor constraintEqualToConstant:v59];
   v120[7] = v88;
-  v87 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
-  v85 = [v87 topAnchor];
-  v86 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-  v84 = [v86 bottomAnchor];
-  v83 = [v85 constraintEqualToAnchor:v84];
+  view21 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
+  topAnchor4 = [view21 topAnchor];
+  view22 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+  bottomAnchor2 = [view22 bottomAnchor];
+  v83 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
   v120[8] = v83;
-  v82 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
-  v80 = [v82 leadingAnchor];
-  v81 = [(AVTPoseSelectionViewController *)self view];
-  v79 = [v81 leadingAnchor];
-  v78 = [v80 constraintEqualToAnchor:v79];
+  view23 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
+  leadingAnchor5 = [view23 leadingAnchor];
+  view24 = [(AVTPoseSelectionViewController *)self view];
+  leadingAnchor6 = [view24 leadingAnchor];
+  v78 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v120[9] = v78;
-  v77 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
-  v76 = [v77 trailingAnchor];
-  v60 = [(AVTPoseSelectionViewController *)self view];
-  v61 = [v60 trailingAnchor];
-  v62 = [v76 constraintEqualToAnchor:v61];
+  view25 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
+  trailingAnchor5 = [view25 trailingAnchor];
+  view26 = [(AVTPoseSelectionViewController *)self view];
+  trailingAnchor6 = [view26 trailingAnchor];
+  v62 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v120[10] = v62;
-  v63 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
-  v64 = [v63 bottomAnchor];
-  v65 = [(AVTPoseSelectionViewController *)self view];
-  v66 = [v65 bottomAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66];
+  view27 = [(AVTPoseSelectionGridViewController *)self->_gridViewController view];
+  bottomAnchor3 = [view27 bottomAnchor];
+  view28 = [(AVTPoseSelectionViewController *)self view];
+  bottomAnchor4 = [view28 bottomAnchor];
+  v67 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v120[11] = v67;
   v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:12];
 
@@ -379,13 +379,13 @@ LABEL_5:
   if ((AVTUIForceCameraDisclosures_once() & 1) != 0 || (IsGreenTea = AVTDeviceIsGreenTea(), !v75) || IsGreenTea)
   {
     [(AVTPoseSelectionViewController *)self setMode:0];
-    v69 = [(AVTPoseSelectionViewController *)self stickerConfigurations];
-    v70 = [v69 objectAtIndexedSubscript:0];
-    v71 = [(AVTPoseSelectionViewController *)self gridViewController];
-    [v71 setSelectedStickerConfiguration:v70];
+    stickerConfigurations2 = [(AVTPoseSelectionViewController *)self stickerConfigurations];
+    v70 = [stickerConfigurations2 objectAtIndexedSubscript:0];
+    gridViewController = [(AVTPoseSelectionViewController *)self gridViewController];
+    [gridViewController setSelectedStickerConfiguration:v70];
 
-    v72 = [(AVTPoseSelectionViewController *)self stickerConfigurations];
-    v73 = [v72 objectAtIndexedSubscript:0];
+    stickerConfigurations3 = [(AVTPoseSelectionViewController *)self stickerConfigurations];
+    v73 = [stickerConfigurations3 objectAtIndexedSubscript:0];
     [(AVTPoseSelectionViewController *)self updateForPoseConfiguration:v73 animated:0];
   }
 
@@ -396,19 +396,19 @@ LABEL_5:
   }
 }
 
-- (void)setNewAvatarRecord:(id)a3
+- (void)setNewAvatarRecord:(id)record
 {
-  v5 = a3;
-  if (self->_avatarRecord != v5)
+  recordCopy = record;
+  if (self->_avatarRecord != recordCopy)
   {
-    objc_storeStrong(&self->_avatarRecord, a3);
+    objc_storeStrong(&self->_avatarRecord, record);
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__AVTPoseSelectionViewController_setNewAvatarRecord___block_invoke;
     v7[3] = &unk_1E7F3A990;
     objc_copyWeak(&v9, &location);
-    v6 = v5;
+    v6 = recordCopy;
     v8 = v6;
     [(AVTPoseSelectionViewController *)self didFinishMenuPresentationWithCompletion:v7];
     if (self->_menuButton)
@@ -469,44 +469,44 @@ void __53__AVTPoseSelectionViewController_setNewAvatarRecord___block_invoke(uint
 
 - (id)keyCommands
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDEA0] modifierFlags:0 action:sel_didTapCancel_];
-  v4 = [v3 _nonRepeatableKeyCommand];
-  [v2 addObject:v4];
+  _nonRepeatableKeyCommand = [v3 _nonRepeatableKeyCommand];
+  [array addObject:_nonRepeatableKeyCommand];
 
   v5 = MEMORY[0x1E69DCBA0];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\r"];
   v7 = [v5 keyCommandWithInput:v6 modifierFlags:0 action:sel_returnPressed_];
 
-  v8 = [v7 _nonRepeatableKeyCommand];
-  [v2 addObject:v8];
+  _nonRepeatableKeyCommand2 = [v7 _nonRepeatableKeyCommand];
+  [array addObject:_nonRepeatableKeyCommand2];
 
-  return v2;
+  return array;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = AVTPoseSelectionViewController;
-  v7 = a4;
-  [(AVTPoseSelectionViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(AVTPoseSelectionViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__AVTPoseSelectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E7F3A9E0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)updateHeaderHeightConstraint
 {
-  v3 = [(AVTPoseSelectionViewController *)self view];
-  [v3 bounds];
+  view = [(AVTPoseSelectionViewController *)self view];
+  [view bounds];
   v5 = v4;
-  v6 = [(AVTPoseSelectionViewController *)self view];
-  [v6 bounds];
+  view2 = [(AVTPoseSelectionViewController *)self view];
+  [view2 bounds];
   v8 = v7;
 
   v9 = 336.0;
@@ -516,80 +516,80 @@ void __53__AVTPoseSelectionViewController_setNewAvatarRecord___block_invoke(uint
   }
 
   v10 = fmax(v9, 272.0);
-  v11 = [(AVTPoseSelectionViewController *)self headerHeightConstraint];
+  headerHeightConstraint = [(AVTPoseSelectionViewController *)self headerHeightConstraint];
 
-  if (v11)
+  if (headerHeightConstraint)
   {
-    v14 = [(AVTPoseSelectionViewController *)self headerHeightConstraint];
-    [v14 setConstant:v10];
+    headerHeightConstraint2 = [(AVTPoseSelectionViewController *)self headerHeightConstraint];
+    [headerHeightConstraint2 setConstant:v10];
   }
 
   else
   {
-    v14 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
-    v12 = [v14 heightAnchor];
-    v13 = [v12 constraintEqualToConstant:v10];
+    headerHeightConstraint2 = [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController view];
+    heightAnchor = [headerHeightConstraint2 heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:v10];
     [(AVTPoseSelectionViewController *)self setHeaderHeightConstraint:v13];
   }
 }
 
-- (void)setBackgroundColorOverride:(id)a3
+- (void)setBackgroundColorOverride:(id)override
 {
-  objc_storeStrong(&self->_backgroundColorOverride, a3);
-  v5 = a3;
-  v6 = [(AVTPoseSelectionViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  objc_storeStrong(&self->_backgroundColorOverride, override);
+  overrideCopy = override;
+  view = [(AVTPoseSelectionViewController *)self view];
+  [view setBackgroundColor:overrideCopy];
 
-  v7 = [(AVTPoseSelectionViewController *)self headerViewController];
-  v8 = [v7 view];
-  [v8 setBackgroundColor:v5];
+  headerViewController = [(AVTPoseSelectionViewController *)self headerViewController];
+  view2 = [headerViewController view];
+  [view2 setBackgroundColor:overrideCopy];
 
   [(AVTAnimojiPoseSelectionHeaderViewController *)self->_headerViewController setCaptureBackgroundColorOverride:self->_backgroundColorOverride];
-  v9 = [(AVTPoseSelectionViewController *)self gridViewController];
-  [v9 setBackgroundColor:v5];
+  gridViewController = [(AVTPoseSelectionViewController *)self gridViewController];
+  [gridViewController setBackgroundColor:overrideCopy];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    if (a3 != 2)
+    self->_mode = mode;
+    if (mode != 2)
     {
-      if (a3 == 1)
+      if (mode == 1)
       {
         objc_initWeak(&location, self);
-        v7 = [(AVTPoseSelectionViewController *)self headerViewController];
+        headerViewController = [(AVTPoseSelectionViewController *)self headerViewController];
         v8 = MEMORY[0x1E69E9820];
         v9 = 3221225472;
         v10 = __42__AVTPoseSelectionViewController_setMode___block_invoke;
         v11 = &unk_1E7F3AFD0;
         objc_copyWeak(&v12, &location);
-        [v7 beginFaceTrackingWithCompletionBlock:&v8];
+        [headerViewController beginFaceTrackingWithCompletionBlock:&v8];
 
         objc_destroyWeak(&v12);
         objc_destroyWeak(&location);
       }
 
-      else if (!a3)
+      else if (!mode)
       {
-        v5 = [(AVTPoseSelectionViewController *)self discardButton];
-        [v5 setHidden:1];
+        discardButton = [(AVTPoseSelectionViewController *)self discardButton];
+        [discardButton setHidden:1];
 
-        v6 = [(AVTPoseSelectionViewController *)self captureButton];
-        [v6 setHidden:1];
+        captureButton = [(AVTPoseSelectionViewController *)self captureButton];
+        [captureButton setHidden:1];
 LABEL_8:
       }
 
-      [(AVTPoseSelectionViewController *)self notifyDelegateOfModeChange:a3, v8, v9, v10, v11];
+      [(AVTPoseSelectionViewController *)self notifyDelegateOfModeChange:mode, v8, v9, v10, v11];
       return;
     }
 
     [(AVTPoseSelectionViewController *)self createCaptureButtonIfNeeded];
     [(AVTPoseSelectionViewController *)self createDiscardButtonIfNeeded];
     [(AVTPoseSelectionViewController *)self configureButtonsForReview];
-    v6 = [(AVTPoseSelectionViewController *)self headerViewController];
-    [v6 pauseFaceTracking];
+    captureButton = [(AVTPoseSelectionViewController *)self headerViewController];
+    [captureButton pauseFaceTracking];
     goto LABEL_8;
   }
 }
@@ -607,9 +607,9 @@ void __42__AVTPoseSelectionViewController_setMode___block_invoke(uint64_t a1)
 - (void)configureButtonsForReview
 {
   CGAffineTransformMakeScale(&v6, 0.75, 0.75);
-  v3 = [(AVTPoseSelectionViewController *)self discardButton];
+  discardButton = [(AVTPoseSelectionViewController *)self discardButton];
   v5 = v6;
-  [v3 setTransform:&v5];
+  [discardButton setTransform:&v5];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -643,12 +643,12 @@ void __59__AVTPoseSelectionViewController_configureButtonsForReview__block_invok
 - (void)configureButtonsForCapture
 {
   CGAffineTransformMakeScale(&v7, 0.5, 0.5);
-  v3 = [(AVTPoseSelectionViewController *)self captureButton];
+  captureButton = [(AVTPoseSelectionViewController *)self captureButton];
   v6 = v7;
-  [v3 setTransform:&v6];
+  [captureButton setTransform:&v6];
 
-  v4 = [(AVTPoseSelectionViewController *)self captureButton];
-  [v4 setHidden:0];
+  captureButton2 = [(AVTPoseSelectionViewController *)self captureButton];
+  [captureButton2 setHidden:0];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -676,13 +676,13 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
   [v5 setHidden:1];
 }
 
-- (void)animateButtonConfiguration:(id)a3
+- (void)animateButtonConfiguration:(id)configuration
 {
   v3 = MEMORY[0x1E69DCF88];
-  v4 = a3;
+  configurationCopy = configuration;
   v6 = [[v3 alloc] initWithMass:1.0 stiffness:325.0 damping:32.0 initialVelocity:{0.0, 0.0}];
   v5 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:v6 timingParameters:0.4];
-  [v5 addAnimations:v4];
+  [v5 addAnimations:configurationCopy];
 
   [v5 startAnimation];
 }
@@ -690,53 +690,53 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
 - (void)createCaptureButtonIfNeeded
 {
   v32[4] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTPoseSelectionViewController *)self captureButton];
+  captureButton = [(AVTPoseSelectionViewController *)self captureButton];
 
-  if (!v3)
+  if (!captureButton)
   {
     v4 = objc_alloc_init(AVTRecordingButton);
     [(AVTPoseSelectionViewController *)self setCaptureButton:v4];
 
-    v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v6 = [(AVTPoseSelectionViewController *)self captureButton];
-    [v6 setCenterCircleColor:v5];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    captureButton2 = [(AVTPoseSelectionViewController *)self captureButton];
+    [captureButton2 setCenterCircleColor:systemBlueColor];
 
-    v7 = [(AVTPoseSelectionViewController *)self captureButton];
-    [v7 setIgnoresLongPress:1];
+    captureButton3 = [(AVTPoseSelectionViewController *)self captureButton];
+    [captureButton3 setIgnoresLongPress:1];
 
-    v8 = [(AVTPoseSelectionViewController *)self captureButton];
-    [v8 addTarget:self action:sel_didTapCaptureButton_ forControlEvents:64];
+    captureButton4 = [(AVTPoseSelectionViewController *)self captureButton];
+    [captureButton4 addTarget:self action:sel_didTapCaptureButton_ forControlEvents:64];
 
-    v9 = [(AVTPoseSelectionViewController *)self captureButton];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    captureButton5 = [(AVTPoseSelectionViewController *)self captureButton];
+    [captureButton5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(AVTPoseSelectionViewController *)self view];
-    v11 = [(AVTPoseSelectionViewController *)self captureButton];
-    [v10 addSubview:v11];
+    view = [(AVTPoseSelectionViewController *)self view];
+    captureButton6 = [(AVTPoseSelectionViewController *)self captureButton];
+    [view addSubview:captureButton6];
 
-    v31 = [(AVTPoseSelectionViewController *)self captureButton];
-    v30 = [v31 widthAnchor];
+    captureButton7 = [(AVTPoseSelectionViewController *)self captureButton];
+    widthAnchor = [captureButton7 widthAnchor];
     [(AVTPoseSelectionViewController *)self captureButtonEdgeLength];
-    v29 = [v30 constraintEqualToConstant:?];
+    v29 = [widthAnchor constraintEqualToConstant:?];
     v32[0] = v29;
-    v28 = [(AVTPoseSelectionViewController *)self captureButton];
-    v26 = [v28 heightAnchor];
-    v27 = [(AVTPoseSelectionViewController *)self captureButton];
-    v25 = [v27 widthAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    captureButton8 = [(AVTPoseSelectionViewController *)self captureButton];
+    heightAnchor = [captureButton8 heightAnchor];
+    captureButton9 = [(AVTPoseSelectionViewController *)self captureButton];
+    widthAnchor2 = [captureButton9 widthAnchor];
+    v24 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v32[1] = v24;
-    v23 = [(AVTPoseSelectionViewController *)self captureButton];
-    v22 = [v23 bottomAnchor];
-    v12 = [(AVTPoseSelectionViewController *)self headerViewController];
-    v13 = [v12 view];
-    v14 = [v13 bottomAnchor];
-    v15 = [v22 constraintEqualToAnchor:v14 constant:-20.0];
+    captureButton10 = [(AVTPoseSelectionViewController *)self captureButton];
+    bottomAnchor = [captureButton10 bottomAnchor];
+    headerViewController = [(AVTPoseSelectionViewController *)self headerViewController];
+    view2 = [headerViewController view];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
     v32[2] = v15;
-    v16 = [(AVTPoseSelectionViewController *)self captureButton];
-    v17 = [v16 trailingAnchor];
-    v18 = [(AVTPoseSelectionViewController *)self view];
-    v19 = [v18 trailingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:-20.0];
+    captureButton11 = [(AVTPoseSelectionViewController *)self captureButton];
+    trailingAnchor = [captureButton11 trailingAnchor];
+    view3 = [(AVTPoseSelectionViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
     v32[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
 
@@ -746,87 +746,87 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
 
 - (void)createDiscardButtonIfNeeded
 {
-  v3 = [(AVTPoseSelectionViewController *)self discardButton];
+  discardButton = [(AVTPoseSelectionViewController *)self discardButton];
 
-  if (!v3)
+  if (!discardButton)
   {
     v4 = [AVTCircularButton alloc];
     v5 = [(AVTCircularButton *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(AVTPoseSelectionViewController *)self setDiscardButton:v5];
 
-    v6 = [(AVTPoseSelectionViewController *)self discardButton];
-    [v6 addTarget:self action:sel_didTapDiscardButton_ forControlEvents:64];
+    discardButton2 = [(AVTPoseSelectionViewController *)self discardButton];
+    [discardButton2 addTarget:self action:sel_didTapDiscardButton_ forControlEvents:64];
 
-    v7 = [(AVTPoseSelectionViewController *)self discardButton];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    discardButton3 = [(AVTPoseSelectionViewController *)self discardButton];
+    [discardButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v8 = MEMORY[0x1E69DCAD8];
     [(AVTPoseSelectionViewController *)self discardButtonSymbolWeight];
     v40 = [v8 configurationWithPointSize:5 weight:?];
     if (self->_usesSingleButtonCaptureReview)
     {
-      v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      v10 = [(AVTPoseSelectionViewController *)self discardButton];
-      [v10 setTintColor:v9];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      discardButton4 = [(AVTPoseSelectionViewController *)self discardButton];
+      [discardButton4 setTintColor:systemBackgroundColor];
 
-      v11 = [(AVTPoseSelectionViewController *)self discardButton];
-      [v11 setSymbolImageWithName:@"gobackward" configuration:v40];
+      discardButton5 = [(AVTPoseSelectionViewController *)self discardButton];
+      [discardButton5 setSymbolImageWithName:@"gobackward" configuration:v40];
 
-      v12 = [(AVTPoseSelectionViewController *)self discardButton];
-      v13 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [v12 setSymbolTintColor:v13];
+      discardButton6 = [(AVTPoseSelectionViewController *)self discardButton];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      [discardButton6 setSymbolTintColor:systemBlueColor];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E69DC888] redColor];
-      v15 = [(AVTPoseSelectionViewController *)self discardButton];
-      [v15 setTintColor:v14];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      discardButton7 = [(AVTPoseSelectionViewController *)self discardButton];
+      [discardButton7 setTintColor:redColor];
 
-      v12 = [(AVTPoseSelectionViewController *)self discardButton];
-      [v12 setSymbolImageWithName:@"trash.fill" configuration:v40];
+      discardButton6 = [(AVTPoseSelectionViewController *)self discardButton];
+      [discardButton6 setSymbolImageWithName:@"trash.fill" configuration:v40];
     }
 
-    v16 = [(AVTPoseSelectionViewController *)self view];
-    v17 = [(AVTPoseSelectionViewController *)self discardButton];
-    [v16 addSubview:v17];
+    view = [(AVTPoseSelectionViewController *)self view];
+    discardButton8 = [(AVTPoseSelectionViewController *)self discardButton];
+    [view addSubview:discardButton8];
 
     v38 = objc_alloc(MEMORY[0x1E695DF70]);
-    v37 = [(AVTPoseSelectionViewController *)self discardButton];
-    v36 = [v37 widthAnchor];
+    discardButton9 = [(AVTPoseSelectionViewController *)self discardButton];
+    widthAnchor = [discardButton9 widthAnchor];
     [(AVTPoseSelectionViewController *)self discardButtonEdgeLength];
-    v18 = [v36 constraintEqualToConstant:?];
-    v35 = [(AVTPoseSelectionViewController *)self discardButton];
-    v34 = [v35 heightAnchor];
-    v19 = [(AVTPoseSelectionViewController *)self discardButton];
-    v20 = [v19 widthAnchor];
-    v21 = [v34 constraintEqualToAnchor:v20];
-    v22 = [(AVTPoseSelectionViewController *)self discardButton];
-    v23 = [v22 centerYAnchor];
-    v24 = [(AVTPoseSelectionViewController *)self captureButton];
-    v25 = [v24 centerYAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    v18 = [widthAnchor constraintEqualToConstant:?];
+    discardButton10 = [(AVTPoseSelectionViewController *)self discardButton];
+    heightAnchor = [discardButton10 heightAnchor];
+    discardButton11 = [(AVTPoseSelectionViewController *)self discardButton];
+    widthAnchor2 = [discardButton11 widthAnchor];
+    v21 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
+    discardButton12 = [(AVTPoseSelectionViewController *)self discardButton];
+    centerYAnchor = [discardButton12 centerYAnchor];
+    captureButton = [(AVTPoseSelectionViewController *)self captureButton];
+    centerYAnchor2 = [captureButton centerYAnchor];
+    v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v39 = [v38 initWithObjects:{v18, v21, v26, 0}];
 
     if (self->_usesSingleButtonCaptureReview || self->_headerMenu)
     {
-      v27 = [(AVTPoseSelectionViewController *)self discardButton];
-      v28 = [v27 centerXAnchor];
-      v29 = [(AVTPoseSelectionViewController *)self captureButton];
-      v30 = [v29 centerXAnchor];
-      v31 = [v28 constraintEqualToAnchor:v30];
+      discardButton13 = [(AVTPoseSelectionViewController *)self discardButton];
+      centerXAnchor = [discardButton13 centerXAnchor];
+      captureButton2 = [(AVTPoseSelectionViewController *)self captureButton];
+      centerXAnchor2 = [captureButton2 centerXAnchor];
+      leadingAnchor = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v32 = v39;
-      [v39 addObject:v31];
+      [v39 addObject:leadingAnchor];
     }
 
     else
     {
-      v27 = [(AVTPoseSelectionViewController *)self discardButton];
-      v28 = [v27 leadingAnchor];
-      v29 = [(AVTPoseSelectionViewController *)self headerViewController];
-      v30 = [v29 view];
-      v31 = [v30 leadingAnchor];
-      v33 = [v28 constraintEqualToAnchor:v31 constant:20.0];
+      discardButton13 = [(AVTPoseSelectionViewController *)self discardButton];
+      centerXAnchor = [discardButton13 leadingAnchor];
+      captureButton2 = [(AVTPoseSelectionViewController *)self headerViewController];
+      centerXAnchor2 = [captureButton2 view];
+      leadingAnchor = [centerXAnchor2 leadingAnchor];
+      v33 = [centerXAnchor constraintEqualToAnchor:leadingAnchor constant:20.0];
       v32 = v39;
       [v39 addObject:v33];
     }
@@ -845,8 +845,8 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
     menuButton = self->_menuButton;
     self->_menuButton = v4;
 
-    v6 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-    [(AVTCircularButton *)self->_menuButton setTintColor:v6];
+    secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+    [(AVTCircularButton *)self->_menuButton setTintColor:secondarySystemFillColor];
 
     [(AVTCircularButton *)self->_menuButton setShowsMenuAsPrimaryAction:1];
     v7 = MEMORY[0x1E69DCAD8];
@@ -854,40 +854,40 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
     v37 = [v7 configurationWithPointSize:5 weight:?];
     [(AVTCircularButton *)self->_menuButton setSymbolImageWithName:@"ellipsis" configuration:v37];
     v8 = self->_menuButton;
-    v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(AVTCircularButton *)v8 setSymbolTintColor:v9];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(AVTCircularButton *)v8 setSymbolTintColor:secondaryLabelColor];
 
     [(AVTCircularButton *)self->_menuButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(AVTPoseSelectionViewController *)self view];
-    v11 = [(AVTPoseSelectionViewController *)self menuButton];
-    [v10 addSubview:v11];
+    view = [(AVTPoseSelectionViewController *)self view];
+    menuButton = [(AVTPoseSelectionViewController *)self menuButton];
+    [view addSubview:menuButton];
 
     [(AVTPoseSelectionViewController *)self buttonEdgeLength];
     v13 = v12;
     [(AVTPoseSelectionViewController *)self captureButtonEdgeLength];
     v15 = (v14 - v13) * 0.5 + 20.0;
-    v36 = [(AVTPoseSelectionViewController *)self menuButton];
-    v35 = [v36 widthAnchor];
-    v34 = [v35 constraintEqualToConstant:v13];
+    menuButton2 = [(AVTPoseSelectionViewController *)self menuButton];
+    widthAnchor = [menuButton2 widthAnchor];
+    v34 = [widthAnchor constraintEqualToConstant:v13];
     v38[0] = v34;
-    v33 = [(AVTPoseSelectionViewController *)self menuButton];
-    v31 = [v33 heightAnchor];
-    v32 = [(AVTPoseSelectionViewController *)self menuButton];
-    v30 = [v32 widthAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    menuButton3 = [(AVTPoseSelectionViewController *)self menuButton];
+    heightAnchor = [menuButton3 heightAnchor];
+    menuButton4 = [(AVTPoseSelectionViewController *)self menuButton];
+    widthAnchor2 = [menuButton4 widthAnchor];
+    v29 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v38[1] = v29;
-    v28 = [(AVTPoseSelectionViewController *)self menuButton];
-    v26 = [v28 bottomAnchor];
-    v27 = [(AVTPoseSelectionViewController *)self headerViewController];
-    v16 = [v27 view];
-    v17 = [v16 bottomAnchor];
-    v18 = [v26 constraintEqualToAnchor:v17 constant:-v15];
+    menuButton5 = [(AVTPoseSelectionViewController *)self menuButton];
+    bottomAnchor = [menuButton5 bottomAnchor];
+    headerViewController = [(AVTPoseSelectionViewController *)self headerViewController];
+    view2 = [headerViewController view];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v15];
     v38[2] = v18;
-    v19 = [(AVTPoseSelectionViewController *)self menuButton];
-    v20 = [v19 leadingAnchor];
-    v21 = [(AVTPoseSelectionViewController *)self view];
-    v22 = [v21 leadingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22 constant:20.0];
+    menuButton6 = [(AVTPoseSelectionViewController *)self menuButton];
+    leadingAnchor = [menuButton6 leadingAnchor];
+    view3 = [(AVTPoseSelectionViewController *)self view];
+    leadingAnchor2 = [view3 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v38[3] = v23;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
 
@@ -969,16 +969,16 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
   return result;
 }
 
-- (void)setHeaderMenu:(id)a3
+- (void)setHeaderMenu:(id)menu
 {
-  v5 = a3;
-  if (self->_headerMenu != v5)
+  menuCopy = menu;
+  if (self->_headerMenu != menuCopy)
   {
-    v6 = v5;
-    if (v5)
+    v6 = menuCopy;
+    if (menuCopy)
     {
       [(AVTPoseSelectionViewController *)self createMenuButtonIfNeeded];
-      objc_storeStrong(&self->_headerMenu, a3);
+      objc_storeStrong(&self->_headerMenu, menu);
       [(AVTCircularButton *)self->_menuButton setMenu:self->_headerMenu];
       [(AVTCircularButton *)self->_menuButton setHidden:[(AVTAvatarRecord *)self->_avatarRecord isEditable]^ 1];
     }
@@ -988,7 +988,7 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
       [(AVTPoseSelectionViewController *)self clearHeaderMenu];
     }
 
-    v5 = v6;
+    menuCopy = v6;
   }
 }
 
@@ -1009,21 +1009,21 @@ void __60__AVTPoseSelectionViewController_configureButtonsForCapture__block_invo
 - (void)prepareForMenuPresentation
 {
   headerViewController = self->_headerViewController;
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVTAnimojiPoseSelectionHeaderViewController *)headerViewController setCaptureBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVTAnimojiPoseSelectionHeaderViewController *)headerViewController setCaptureBackgroundColor:clearColor];
 }
 
-- (void)didFinishMenuPresentationWithCompletion:(id)a3
+- (void)didFinishMenuPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__AVTPoseSelectionViewController_didFinishMenuPresentationWithCompletion___block_invoke;
   block[3] = &unk_1E7F3B020;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -1048,7 +1048,7 @@ void __74__AVTPoseSelectionViewController_didFinishMenuPresentationWithCompletio
   }
 }
 
-- (void)didTapCaptureButton:(id)a3
+- (void)didTapCaptureButton:(id)button
 {
   [(AVTPoseSelectionViewController *)self setMode:2];
   doneButton = self->_doneButton;
@@ -1056,7 +1056,7 @@ void __74__AVTPoseSelectionViewController_didFinishMenuPresentationWithCompletio
   [(UIBarButtonItem *)doneButton setEnabled:1];
 }
 
-- (void)didTapDiscardButton:(id)a3
+- (void)didTapDiscardButton:(id)button
 {
   [(AVTPoseSelectionViewController *)self setMode:1];
   doneButton = self->_doneButton;
@@ -1064,61 +1064,61 @@ void __74__AVTPoseSelectionViewController_didFinishMenuPresentationWithCompletio
   [(UIBarButtonItem *)doneButton setEnabled:0];
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
-  v4 = [(AVTPoseSelectionViewController *)self delegate];
-  [v4 poseSelectionControllerDidCancel:self];
+  delegate = [(AVTPoseSelectionViewController *)self delegate];
+  [delegate poseSelectionControllerDidCancel:self];
 }
 
-- (void)returnPressed:(id)a3
+- (void)returnPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if ([(UIBarButtonItem *)self->_doneButton isEnabled])
   {
-    [(AVTPoseSelectionViewController *)self didTapDone:v4];
+    [(AVTPoseSelectionViewController *)self didTapDone:pressedCopy];
   }
 }
 
 - (void)notifyDelegateOfSelectedPose
 {
-  v4 = [(AVTPoseSelectionViewController *)self selectedPoseConfiguration];
-  v3 = [(AVTPoseSelectionViewController *)self delegate];
-  [v3 poseSelectionController:self didSelectPoseWithConfiguration:v4];
+  selectedPoseConfiguration = [(AVTPoseSelectionViewController *)self selectedPoseConfiguration];
+  delegate = [(AVTPoseSelectionViewController *)self delegate];
+  [delegate poseSelectionController:self didSelectPoseWithConfiguration:selectedPoseConfiguration];
 }
 
 - (id)selectedPoseConfiguration
 {
-  v3 = [(AVTPoseSelectionViewController *)self gridViewController];
-  v4 = [v3 selectedStickerConfiguration];
+  gridViewController = [(AVTPoseSelectionViewController *)self gridViewController];
+  selectedStickerConfiguration = [gridViewController selectedStickerConfiguration];
 
-  if (!v4)
+  if (!selectedStickerConfiguration)
   {
-    v5 = [(AVTPoseSelectionViewController *)self headerViewController];
-    v4 = [v5 newStickerConfigurationFromCurrentPose];
+    headerViewController = [(AVTPoseSelectionViewController *)self headerViewController];
+    selectedStickerConfiguration = [headerViewController newStickerConfigurationFromCurrentPose];
   }
 
-  return v4;
+  return selectedStickerConfiguration;
 }
 
-- (void)notifyDelegateOfModeChange:(unint64_t)a3
+- (void)notifyDelegateOfModeChange:(unint64_t)change
 {
-  v5 = [(AVTPoseSelectionViewController *)self delegate];
+  delegate = [(AVTPoseSelectionViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    if (a3 == 1)
+    if (change == 1)
     {
-      v8 = 0;
+      selectedPoseConfiguration = 0;
     }
 
     else
     {
-      v8 = [(AVTPoseSelectionViewController *)self selectedPoseConfiguration];
+      selectedPoseConfiguration = [(AVTPoseSelectionViewController *)self selectedPoseConfiguration];
     }
 
-    v7 = [(AVTPoseSelectionViewController *)self delegate];
-    [v7 poseSelectionController:self didSetMode:a3 withConfiguration:v8];
+    delegate2 = [(AVTPoseSelectionViewController *)self delegate];
+    [delegate2 poseSelectionController:self didSetMode:change withConfiguration:selectedPoseConfiguration];
   }
 }
 
@@ -1130,39 +1130,39 @@ void __74__AVTPoseSelectionViewController_didFinishMenuPresentationWithCompletio
   [(AVTPoseSelectionViewController *)self updateHeaderHeightConstraint];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AVTPoseSelectionViewController;
-  [(AVTPoseSelectionViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(AVTPoseSelectionViewController *)self headerViewController];
-  [v4 endFaceTracking];
+  [(AVTPoseSelectionViewController *)&v5 viewWillDisappear:disappear];
+  headerViewController = [(AVTPoseSelectionViewController *)self headerViewController];
+  [headerViewController endFaceTracking];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AVTPoseSelectionViewController;
-  [(AVTPoseSelectionViewController *)&v5 viewWillAppear:a3];
+  [(AVTPoseSelectionViewController *)&v5 viewWillAppear:appear];
   if ([(AVTPoseSelectionViewController *)self mode]== 1)
   {
-    v4 = [(AVTPoseSelectionViewController *)self headerViewController];
-    [v4 beginFaceTrackingWithCompletionBlock:0];
+    headerViewController = [(AVTPoseSelectionViewController *)self headerViewController];
+    [headerViewController beginFaceTrackingWithCompletionBlock:0];
   }
 }
 
-- (void)updateForPoseConfiguration:(id)a3 animated:(BOOL)a4
+- (void)updateForPoseConfiguration:(id)configuration animated:(BOOL)animated
 {
-  v6 = a3;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __70__AVTPoseSelectionViewController_updateForPoseConfiguration_animated___block_invoke;
   v11 = &unk_1E7F3B048;
   objc_copyWeak(&v13, &location);
-  v7 = v6;
+  v7 = configurationCopy;
   v12 = v7;
-  v14 = a4;
+  animatedCopy = animated;
   [(AVTPoseSelectionViewController *)self didFinishMenuPresentationWithCompletion:&v8];
   [(UIBarButtonItem *)self->_doneButton setEnabled:1, v8, v9, v10, v11];
 
@@ -1177,7 +1177,7 @@ void __70__AVTPoseSelectionViewController_updateForPoseConfiguration_animated___
   [v2 updateForStickerConfiguration:*(a1 + 32) animated:*(a1 + 48)];
 }
 
-- (void)poseSelectionGridControllerDidSelectCameraItem:(id)a3
+- (void)poseSelectionGridControllerDidSelectCameraItem:(id)item
 {
   [(AVTPoseSelectionViewController *)self setMode:1];
   doneButton = self->_doneButton;
@@ -1185,11 +1185,11 @@ void __70__AVTPoseSelectionViewController_updateForPoseConfiguration_animated___
   [(UIBarButtonItem *)doneButton setEnabled:0];
 }
 
-- (void)poseSelectionGridController:(id)a3 didSelectConfiguration:(id)a4
+- (void)poseSelectionGridController:(id)controller didSelectConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   [(AVTPoseSelectionViewController *)self setMode:0];
-  [(AVTPoseSelectionViewController *)self updateForPoseConfiguration:v5 animated:1];
+  [(AVTPoseSelectionViewController *)self updateForPoseConfiguration:configurationCopy animated:1];
 
   if ([(AVTPoseSelectionViewController *)self shouldNotifyDelegateOnSelection])
   {

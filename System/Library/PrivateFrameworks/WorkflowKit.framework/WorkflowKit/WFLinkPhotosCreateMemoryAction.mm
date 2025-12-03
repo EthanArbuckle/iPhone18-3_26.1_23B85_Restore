@@ -1,17 +1,17 @@
 @interface WFLinkPhotosCreateMemoryAction
-- (BOOL)visibleForUse:(int64_t)a3;
+- (BOOL)visibleForUse:(int64_t)use;
 - (id)requiredResources;
 @end
 
 @implementation WFLinkPhotosCreateMemoryAction
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69E0A90] currentDevice];
-  v6 = [v5 isChineseRegionDevice];
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  isChineseRegionDevice = [currentDevice isChineseRegionDevice];
 
-  if (v6)
+  if (isChineseRegionDevice)
   {
     v7 = getWFActionsLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -28,7 +28,7 @@
   {
     v10.receiver = self;
     v10.super_class = WFLinkPhotosCreateMemoryAction;
-    result = [(WFAppIntentExecutionAction *)&v10 visibleForUse:a3];
+    result = [(WFAppIntentExecutionAction *)&v10 visibleForUse:use];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -39,8 +39,8 @@
 {
   v6.receiver = self;
   v6.super_class = WFLinkPhotosCreateMemoryAction;
-  v2 = [(WFAction *)&v6 requiredResources];
-  v3 = [v2 mutableCopy];
+  requiredResources = [(WFAction *)&v6 requiredResources];
+  v3 = [requiredResources mutableCopy];
 
   v4 = objc_alloc_init(_TtC11WorkflowKit42WFPhotosMemoryCreationAvailabilityResource);
   [v3 addObject:v4];

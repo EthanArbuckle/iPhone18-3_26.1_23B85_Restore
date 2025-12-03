@@ -1,72 +1,72 @@
 @interface CATIDSServiceConnection
-+ (CATIDSServiceConnection)connectionWithMetadata:(id)a3 configuration:(id)a4 IDSPrimitives:(id)a5 messageBroadcaster:(id)a6 timerSource:(id)a7 dataMessageQueue:(id)a8 dataAggregator:(id)a9 assertion:(id)a10 workQueue:(id)a11 delegateQueue:(id)a12 destinationAddress:(id)a13 sourceAppleID:(id)a14;
-+ (CATIDSServiceConnection)connectionWithMetadata:(id)a3 configuration:(id)a4 capabilities:(id)a5 IDSPrimitives:(id)a6 messageBroadcaster:(id)a7 timerSource:(id)a8 assertion:(id)a9 workQueue:(id)a10 delegateQueue:(id)a11 destinationAddress:(id)a12 sourceAppleID:(id)a13;
++ (CATIDSServiceConnection)connectionWithMetadata:(id)metadata configuration:(id)configuration IDSPrimitives:(id)primitives messageBroadcaster:(id)broadcaster timerSource:(id)source dataMessageQueue:(id)queue dataAggregator:(id)aggregator assertion:(id)self0 workQueue:(id)self1 delegateQueue:(id)self2 destinationAddress:(id)self3 sourceAppleID:(id)self4;
++ (CATIDSServiceConnection)connectionWithMetadata:(id)metadata configuration:(id)configuration capabilities:(id)capabilities IDSPrimitives:(id)primitives messageBroadcaster:(id)broadcaster timerSource:(id)source assertion:(id)assertion workQueue:(id)self0 delegateQueue:(id)self1 destinationAddress:(id)self2 sourceAppleID:(id)self3;
 + (id)acknowledgeContent;
-+ (id)closeContentWithError:(id)a3;
++ (id)closeContentWithError:(id)error;
 + (id)keepAliveContent;
 + (id)keepAliveTimerIdentifier;
-- (CATIDSServiceConnection)initWithMetadata:(id)a3 configuration:(id)a4 IDSPrimitives:(id)a5 messageBroadcaster:(id)a6 timerSource:(id)a7 dataMessageQueue:(id)a8 dataAggregator:(id)a9 assertion:(id)a10 workQueue:(id)a11 delegateQueue:(id)a12 destinationAddress:(id)a13 sourceAppleID:(id)a14;
+- (CATIDSServiceConnection)initWithMetadata:(id)metadata configuration:(id)configuration IDSPrimitives:(id)primitives messageBroadcaster:(id)broadcaster timerSource:(id)source dataMessageQueue:(id)queue dataAggregator:(id)aggregator assertion:(id)self0 workQueue:(id)self1 delegateQueue:(id)self2 destinationAddress:(id)self3 sourceAppleID:(id)self4;
 - (CATIDSServiceConnectionDelegate)delegate;
 - (id)description;
-- (id)requestMissingDataContentWithExpectedSequenceNumber:(unint64_t)a3;
-- (id)retransmitContentForSequenceNumbers:(id)a3;
+- (id)requestMissingDataContentWithExpectedSequenceNumber:(unint64_t)number;
+- (id)retransmitContentForSequenceNumbers:(id)numbers;
 - (void)_close;
-- (void)_sendData:(id)a3 completion:(id)a4;
+- (void)_sendData:(id)data completion:(id)completion;
 - (void)close;
-- (void)connectionDataAggregator:(id)a3 aggregatedData:(id)a4 withNumber:(unint64_t)a5;
-- (void)connectionDataAggregator:(id)a3 isMissingSequenceNumbers:(id)a4;
-- (void)connectionDataAggregatorWantsToReportSequenceNumber:(id)a3;
-- (void)dataMessageQueue:(id)a3 needsToSendContents:(id)a4 shouldSkipTheLine:(BOOL)a5 completion:(id)a6;
-- (void)dataMessageQueue:(id)a3 wantsToCheckRemote:(unint64_t)a4;
-- (void)keepAliveTimerDidFire:(id)a3 fireCount:(unint64_t)a4 isFinalFire:(BOOL)a5;
-- (void)messageProcessor:(id)a3 receivedExpectedSequence:(unint64_t)a4;
-- (void)messageProcessor:(id)a3 wantsAggregation:(id)a4;
-- (void)messageProcessor:(id)a3 wantsRetransmission:(id)a4;
-- (void)messageProcessor:(id)a3 wantsToAckUpTo:(unint64_t)a4;
-- (void)messageProcessor:(id)a3 wantsToCloseWithError:(id)a4;
-- (void)messageProcessorWantsToAcknowledgeRemote:(id)a3;
-- (void)messageProcessorWantsToExtendKeepAlive:(id)a3;
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5;
-- (void)sendContent:(id)a3;
-- (void)sendData:(id)a3 completion:(id)a4;
-- (void)tearDownWithError:(id)a3 shouldReportToRemote:(BOOL)a4;
+- (void)connectionDataAggregator:(id)aggregator aggregatedData:(id)data withNumber:(unint64_t)number;
+- (void)connectionDataAggregator:(id)aggregator isMissingSequenceNumbers:(id)numbers;
+- (void)connectionDataAggregatorWantsToReportSequenceNumber:(id)number;
+- (void)dataMessageQueue:(id)queue needsToSendContents:(id)contents shouldSkipTheLine:(BOOL)line completion:(id)completion;
+- (void)dataMessageQueue:(id)queue wantsToCheckRemote:(unint64_t)remote;
+- (void)keepAliveTimerDidFire:(id)fire fireCount:(unint64_t)count isFinalFire:(BOOL)finalFire;
+- (void)messageProcessor:(id)processor receivedExpectedSequence:(unint64_t)sequence;
+- (void)messageProcessor:(id)processor wantsAggregation:(id)aggregation;
+- (void)messageProcessor:(id)processor wantsRetransmission:(id)retransmission;
+- (void)messageProcessor:(id)processor wantsToAckUpTo:(unint64_t)to;
+- (void)messageProcessor:(id)processor wantsToCloseWithError:(id)error;
+- (void)messageProcessorWantsToAcknowledgeRemote:(id)remote;
+- (void)messageProcessorWantsToExtendKeepAlive:(id)alive;
+- (void)processMessage:(id)message senderAppleID:(id)d senderAddress:(id)address;
+- (void)sendContent:(id)content;
+- (void)sendData:(id)data completion:(id)completion;
+- (void)tearDownWithError:(id)error shouldReportToRemote:(BOOL)remote;
 @end
 
 @implementation CATIDSServiceConnection
 
-- (CATIDSServiceConnection)initWithMetadata:(id)a3 configuration:(id)a4 IDSPrimitives:(id)a5 messageBroadcaster:(id)a6 timerSource:(id)a7 dataMessageQueue:(id)a8 dataAggregator:(id)a9 assertion:(id)a10 workQueue:(id)a11 delegateQueue:(id)a12 destinationAddress:(id)a13 sourceAppleID:(id)a14
+- (CATIDSServiceConnection)initWithMetadata:(id)metadata configuration:(id)configuration IDSPrimitives:(id)primitives messageBroadcaster:(id)broadcaster timerSource:(id)source dataMessageQueue:(id)queue dataAggregator:(id)aggregator assertion:(id)self0 workQueue:(id)self1 delegateQueue:(id)self2 destinationAddress:(id)self3 sourceAppleID:(id)self4
 {
-  v53 = a3;
-  v19 = a4;
-  v51 = a5;
-  v50 = a6;
-  v54 = a7;
-  v49 = a8;
-  v48 = a9;
-  v47 = a10;
-  v20 = a11;
-  v46 = a12;
-  v21 = a13;
-  v22 = v19;
-  v55 = a14;
+  metadataCopy = metadata;
+  configurationCopy = configuration;
+  primitivesCopy = primitives;
+  broadcasterCopy = broadcaster;
+  sourceCopy = source;
+  queueCopy = queue;
+  aggregatorCopy = aggregator;
+  assertionCopy = assertion;
+  workQueueCopy = workQueue;
+  delegateQueueCopy = delegateQueue;
+  addressCopy = address;
+  v22 = configurationCopy;
+  dCopy = d;
   v59.receiver = self;
   v59.super_class = CATIDSServiceConnection;
   v23 = [(CATIDSServiceConnection *)&v59 init];
   if (v23)
   {
     objc_initWeak(&location, v23);
-    objc_storeStrong(&v23->_metadata, a3);
-    objc_storeStrong(&v23->mIDSPrimitives, a5);
-    objc_storeStrong(&v23->mAssertion, a10);
-    objc_storeStrong(&v23->mMessageBroadcaster, a6);
-    objc_storeStrong(&v23->mWorkQueue, a11);
-    objc_storeStrong(&v23->mDelegateQueue, a12);
-    v24 = v21;
-    v25 = [v21 copy];
+    objc_storeStrong(&v23->_metadata, metadata);
+    objc_storeStrong(&v23->mIDSPrimitives, primitives);
+    objc_storeStrong(&v23->mAssertion, assertion);
+    objc_storeStrong(&v23->mMessageBroadcaster, broadcaster);
+    objc_storeStrong(&v23->mWorkQueue, workQueue);
+    objc_storeStrong(&v23->mDelegateQueue, delegateQueue);
+    v24 = addressCopy;
+    v25 = [addressCopy copy];
     mDestinationAddress = v23->mDestinationAddress;
     v23->mDestinationAddress = v25;
 
-    v27 = [v55 copy];
+    v27 = [dCopy copy];
     mSourceAppleID = v23->mSourceAppleID;
     v23->mSourceAppleID = v27;
 
@@ -74,31 +74,31 @@
     mSendQueue = v23->mSendQueue;
     v23->mSendQueue = v29;
 
-    [(CATOperationQueue *)v23->mSendQueue setUnderlyingQueue:v20];
+    [(CATOperationQueue *)v23->mSendQueue setUnderlyingQueue:workQueueCopy];
     v31 = objc_opt_new();
-    [v31 setUnderlyingQueue:v20];
+    [v31 setUnderlyingQueue:workQueueCopy];
     v32 = [[CATSerialOperationEnqueuer alloc] initWithTargetOperationQueue:v31];
     mControlOperationEnqueuer = v23->mControlOperationEnqueuer;
     v23->mControlOperationEnqueuer = v32;
 
-    objc_storeStrong(&v23->mDataMessageQueue, a8);
-    objc_storeStrong(&v23->mDataAggregator, a9);
-    v34 = [objc_opt_class() keepAliveTimerIdentifier];
+    objc_storeStrong(&v23->mDataMessageQueue, queue);
+    objc_storeStrong(&v23->mDataAggregator, aggregator);
+    keepAliveTimerIdentifier = [objc_opt_class() keepAliveTimerIdentifier];
     [v22 keepAliveCheckinInterval];
     v36 = v35;
-    v37 = [v22 keepAliveAttemptCount];
+    keepAliveAttemptCount = [v22 keepAliveAttemptCount];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __202__CATIDSServiceConnection_initWithMetadata_configuration_IDSPrimitives_messageBroadcaster_timerSource_dataMessageQueue_dataAggregator_assertion_workQueue_delegateQueue_destinationAddress_sourceAppleID___block_invoke;
     v56[3] = &unk_278DA7620;
     objc_copyWeak(&v57, &location);
-    v38 = [v54 scheduleRepeatTimerWithIdentifier:v34 timeInterval:v20 queue:v37 totalFires:v56 fireHandler:v36];
+    v38 = [sourceCopy scheduleRepeatTimerWithIdentifier:keepAliveTimerIdentifier timeInterval:workQueueCopy queue:keepAliveAttemptCount totalFires:v56 fireHandler:v36];
     mKeepAliveTimer = v23->mKeepAliveTimer;
     v23->mKeepAliveTimer = v38;
 
     v40 = [CATIDSServiceConnectionMessageProcessor alloc];
-    v41 = [v53 connectionIdentifier];
-    v42 = [(CATIDSServiceConnectionMessageProcessor *)v40 initWithWorkQueue:v20 connectionIdentifier:v41];
+    connectionIdentifier = [metadataCopy connectionIdentifier];
+    v42 = [(CATIDSServiceConnectionMessageProcessor *)v40 initWithWorkQueue:workQueueCopy connectionIdentifier:connectionIdentifier];
     mMessageProcessor = v23->mMessageProcessor;
     v23->mMessageProcessor = v42;
 
@@ -108,7 +108,7 @@
     objc_destroyWeak(&v57);
 
     objc_destroyWeak(&location);
-    v21 = v24;
+    addressCopy = v24;
   }
 
   return v23;
@@ -121,72 +121,72 @@ void __202__CATIDSServiceConnection_initWithMetadata_configuration_IDSPrimitives
   [WeakRetained keepAliveTimerDidFire:v7 fireCount:a3 isFinalFire:a4];
 }
 
-+ (CATIDSServiceConnection)connectionWithMetadata:(id)a3 configuration:(id)a4 IDSPrimitives:(id)a5 messageBroadcaster:(id)a6 timerSource:(id)a7 dataMessageQueue:(id)a8 dataAggregator:(id)a9 assertion:(id)a10 workQueue:(id)a11 delegateQueue:(id)a12 destinationAddress:(id)a13 sourceAppleID:(id)a14
++ (CATIDSServiceConnection)connectionWithMetadata:(id)metadata configuration:(id)configuration IDSPrimitives:(id)primitives messageBroadcaster:(id)broadcaster timerSource:(id)source dataMessageQueue:(id)queue dataAggregator:(id)aggregator assertion:(id)self0 workQueue:(id)self1 delegateQueue:(id)self2 destinationAddress:(id)self3 sourceAppleID:(id)self4
 {
-  v32 = a14;
-  v30 = a13;
-  v24 = a12;
-  v29 = a11;
-  v28 = a10;
-  v25 = a9;
-  v27 = a8;
-  v18 = a7;
-  v19 = a6;
-  v26 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [[CATIDSServiceConnection alloc] initWithMetadata:v21 configuration:v20 IDSPrimitives:v26 messageBroadcaster:v19 timerSource:v18 dataMessageQueue:v27 dataAggregator:v25 assertion:v28 workQueue:v29 delegateQueue:v24 destinationAddress:v30 sourceAppleID:v32];
+  dCopy = d;
+  addressCopy = address;
+  delegateQueueCopy = delegateQueue;
+  workQueueCopy = workQueue;
+  assertionCopy = assertion;
+  aggregatorCopy = aggregator;
+  queueCopy = queue;
+  sourceCopy = source;
+  broadcasterCopy = broadcaster;
+  primitivesCopy = primitives;
+  configurationCopy = configuration;
+  metadataCopy = metadata;
+  v22 = [[CATIDSServiceConnection alloc] initWithMetadata:metadataCopy configuration:configurationCopy IDSPrimitives:primitivesCopy messageBroadcaster:broadcasterCopy timerSource:sourceCopy dataMessageQueue:queueCopy dataAggregator:aggregatorCopy assertion:assertionCopy workQueue:workQueueCopy delegateQueue:delegateQueueCopy destinationAddress:addressCopy sourceAppleID:dCopy];
 
-  [v19 addBroadcastHandler:v22];
+  [broadcasterCopy addBroadcastHandler:v22];
 
   return v22;
 }
 
-+ (CATIDSServiceConnection)connectionWithMetadata:(id)a3 configuration:(id)a4 capabilities:(id)a5 IDSPrimitives:(id)a6 messageBroadcaster:(id)a7 timerSource:(id)a8 assertion:(id)a9 workQueue:(id)a10 delegateQueue:(id)a11 destinationAddress:(id)a12 sourceAppleID:(id)a13
++ (CATIDSServiceConnection)connectionWithMetadata:(id)metadata configuration:(id)configuration capabilities:(id)capabilities IDSPrimitives:(id)primitives messageBroadcaster:(id)broadcaster timerSource:(id)source assertion:(id)assertion workQueue:(id)self0 delegateQueue:(id)self1 destinationAddress:(id)self2 sourceAppleID:(id)self3
 {
-  v45 = a13;
-  v44 = a12;
-  v18 = a11;
-  v19 = a10;
-  v43 = a9;
-  v20 = a8;
-  v42 = a7;
-  v39 = a6;
-  v21 = a5;
-  v22 = a4;
-  v38 = a3;
-  v23 = v22;
-  v41 = -[CATConcreteIDSServiceConnectionDataChunker initWithWorkQueue:maxDataLength:]([CATConcreteIDSServiceConnectionDataChunker alloc], "initWithWorkQueue:maxDataLength:", v19, [v22 maxDataSendSize]);
+  dCopy = d;
+  addressCopy = address;
+  delegateQueueCopy = delegateQueue;
+  queueCopy = queue;
+  assertionCopy = assertion;
+  sourceCopy = source;
+  broadcasterCopy = broadcaster;
+  primitivesCopy = primitives;
+  capabilitiesCopy = capabilities;
+  configurationCopy = configuration;
+  metadataCopy = metadata;
+  v23 = configurationCopy;
+  v41 = -[CATConcreteIDSServiceConnectionDataChunker initWithWorkQueue:maxDataLength:]([CATConcreteIDSServiceConnectionDataChunker alloc], "initWithWorkQueue:maxDataLength:", queueCopy, [configurationCopy maxDataSendSize]);
   v24 = [CATConcreteIDSServiceConnectionDataMessageQueue alloc];
   v25 = v23;
   [v23 messageQueueFlushPromptInterval];
-  v26 = v19;
-  v28 = -[CATConcreteIDSServiceConnectionDataMessageQueue initWithWorkQueue:timerSource:dataChunker:flushPromptInterval:supportsRetransmit:](v24, "initWithWorkQueue:timerSource:dataChunker:flushPromptInterval:supportsRetransmit:", v19, v20, v41, [v21 supportsReliableDelivery], v27);
+  v26 = queueCopy;
+  v28 = -[CATConcreteIDSServiceConnectionDataMessageQueue initWithWorkQueue:timerSource:dataChunker:flushPromptInterval:supportsRetransmit:](v24, "initWithWorkQueue:timerSource:dataChunker:flushPromptInterval:supportsRetransmit:", queueCopy, sourceCopy, v41, [capabilitiesCopy supportsReliableDelivery], v27);
   v29 = [CATConcreteIDSServiceConnectionDataAggregator alloc];
   v30 = v25;
   v35 = v25;
   [v25 missingItemsCheckinInterval];
   v32 = v31;
-  v33 = [v21 supportsReliableDelivery];
+  supportsReliableDelivery = [capabilitiesCopy supportsReliableDelivery];
 
-  v36 = [(CATConcreteIDSServiceConnectionDataAggregator *)v29 initWithWorkQueue:v26 timerSource:v20 missingItemInterval:v33 supportsSequenceCorrection:v32];
-  v37 = [CATIDSServiceConnection connectionWithMetadata:v38 configuration:v30 IDSPrimitives:v39 messageBroadcaster:v42 timerSource:v20 dataMessageQueue:v28 dataAggregator:v36 assertion:v43 workQueue:v26 delegateQueue:v18 destinationAddress:v44 sourceAppleID:v45];
+  v36 = [(CATConcreteIDSServiceConnectionDataAggregator *)v29 initWithWorkQueue:v26 timerSource:sourceCopy missingItemInterval:supportsReliableDelivery supportsSequenceCorrection:v32];
+  v37 = [CATIDSServiceConnection connectionWithMetadata:metadataCopy configuration:v30 IDSPrimitives:primitivesCopy messageBroadcaster:broadcasterCopy timerSource:sourceCopy dataMessageQueue:v28 dataAggregator:v36 assertion:assertionCopy workQueue:v26 delegateQueue:delegateQueueCopy destinationAddress:addressCopy sourceAppleID:dCopy];
 
   return v37;
 }
 
-- (void)sendData:(id)a3 completion:(id)a4
+- (void)sendData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   mWorkQueue = self->mWorkQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __47__CATIDSServiceConnection_sendData_completion___block_invoke;
   v13[3] = &unk_278DA7648;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = dataCopy;
+  v15 = completionCopy;
   v9 = v13;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -194,8 +194,8 @@ void __202__CATIDSServiceConnection_initWithMetadata_configuration_IDSPrimitives
   block[3] = &unk_278DA7208;
   v17 = v9;
   v10 = mWorkQueue;
-  v11 = v7;
-  v12 = v6;
+  v11 = completionCopy;
+  v12 = dataCopy;
   dispatch_async(v10, block);
 }
 
@@ -217,13 +217,13 @@ void __202__CATIDSServiceConnection_initWithMetadata_configuration_IDSPrimitives
   dispatch_async(v4, block);
 }
 
-- (void)_sendData:(id)a3 completion:(id)a4
+- (void)_sendData:(id)data completion:(id)completion
 {
   mWorkQueue = self->mWorkQueue;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   CATAssertIsQueue(mWorkQueue);
-  [(CATIDSServiceConnectionDataMessageQueue *)self->mDataMessageQueue receiveData:v8 completion:v7];
+  [(CATIDSServiceConnectionDataMessageQueue *)self->mDataMessageQueue receiveData:dataCopy completion:completionCopy];
 }
 
 - (void)_close
@@ -236,10 +236,10 @@ void __202__CATIDSServiceConnection_initWithMetadata_configuration_IDSPrimitives
   }
 }
 
-- (void)connectionDataAggregator:(id)a3 aggregatedData:(id)a4 withNumber:(unint64_t)a5
+- (void)connectionDataAggregator:(id)aggregator aggregatedData:(id)data withNumber:(unint64_t)number
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  dataCopy = data;
   CATAssertIsQueue(self->mWorkQueue);
   if (![(CATIDSServiceConnection *)self isClosed])
   {
@@ -249,7 +249,7 @@ void __202__CATIDSServiceConnection_initWithMetadata_configuration_IDSPrimitives
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = a5;
+      *&buf[14] = number;
       _os_log_impl(&dword_24329F000, v8, OS_LOG_TYPE_INFO, "%{public}@ received data number %lu", buf, 0x16u);
     }
 
@@ -259,7 +259,7 @@ void __202__CATIDSServiceConnection_initWithMetadata_configuration_IDSPrimitives
     v13[2] = __78__CATIDSServiceConnection_connectionDataAggregator_aggregatedData_withNumber___block_invoke;
     v13[3] = &unk_278DA7470;
     v13[4] = self;
-    v14 = v7;
+    v14 = dataCopy;
     v10 = v13;
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
@@ -279,10 +279,10 @@ void __78__CATIDSServiceConnection_connectionDataAggregator_aggregatedData_withN
   [v2 connection:*(a1 + 32) receivedData:*(a1 + 40)];
 }
 
-- (void)connectionDataAggregator:(id)a3 isMissingSequenceNumbers:(id)a4
+- (void)connectionDataAggregator:(id)aggregator isMissingSequenceNumbers:(id)numbers
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  numbersCopy = numbers;
   CATAssertIsQueue(self->mWorkQueue);
   if (![(CATIDSServiceConnection *)self isClosed])
   {
@@ -290,27 +290,27 @@ void __78__CATIDSServiceConnection_connectionDataAggregator_aggregatedData_withN
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v5;
+      v12 = numbersCopy;
       _os_log_impl(&dword_24329F000, v6, OS_LOG_TYPE_INFO, "%{public}@ missing sequence numbers. Requesting retransmission of %{public}@", &v9, 0x16u);
     }
 
-    v7 = [(CATIDSServiceConnection *)self retransmitContentForSequenceNumbers:v5];
+    v7 = [(CATIDSServiceConnection *)self retransmitContentForSequenceNumbers:numbersCopy];
     [(CATIDSServiceConnection *)self sendContent:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionDataAggregatorWantsToReportSequenceNumber:(id)a3
+- (void)connectionDataAggregatorWantsToReportSequenceNumber:(id)number
 {
   CATAssertIsQueue(self->mWorkQueue);
-  v4 = [objc_opt_class() acknowledgeContent];
-  [(CATIDSServiceConnection *)self sendContent:v4];
+  acknowledgeContent = [objc_opt_class() acknowledgeContent];
+  [(CATIDSServiceConnection *)self sendContent:acknowledgeContent];
 }
 
-- (void)messageProcessorWantsToAcknowledgeRemote:(id)a3
+- (void)messageProcessorWantsToAcknowledgeRemote:(id)remote
 {
   v9 = *MEMORY[0x277D85DE8];
   CATAssertIsQueue(self->mWorkQueue);
@@ -318,17 +318,17 @@ void __78__CATIDSServiceConnection_connectionDataAggregator_aggregatedData_withN
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24329F000, v4, OS_LOG_TYPE_INFO, "%{public}@ sending acknowledge to remote", &v7, 0xCu);
   }
 
-  v5 = [objc_opt_class() acknowledgeContent];
-  [(CATIDSServiceConnection *)self sendContent:v5];
+  acknowledgeContent = [objc_opt_class() acknowledgeContent];
+  [(CATIDSServiceConnection *)self sendContent:acknowledgeContent];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageProcessorWantsToExtendKeepAlive:(id)a3
+- (void)messageProcessorWantsToExtendKeepAlive:(id)alive
 {
   CATAssertIsQueue(self->mWorkQueue);
   mKeepAliveTimer = self->mKeepAliveTimer;
@@ -336,23 +336,23 @@ void __78__CATIDSServiceConnection_connectionDataAggregator_aggregatedData_withN
   [(CATResettableTimer *)mKeepAliveTimer reset];
 }
 
-- (void)messageProcessor:(id)a3 wantsToCloseWithError:(id)a4
+- (void)messageProcessor:(id)processor wantsToCloseWithError:(id)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   CATAssertIsQueue(self->mWorkQueue);
   if (![(CATIDSServiceConnection *)self isClosed])
   {
     v6 = _CATLogGeneral_2();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CATIDSServiceConnection *)self messageProcessor:v5 wantsToCloseWithError:v6];
+      [(CATIDSServiceConnection *)self messageProcessor:errorCopy wantsToCloseWithError:v6];
     }
 
-    if (v5)
+    if (errorCopy)
     {
       v10 = *MEMORY[0x277CCA7E8];
-      v11[0] = v5;
+      v11[0] = errorCopy;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     }
 
@@ -368,20 +368,20 @@ void __78__CATIDSServiceConnection_connectionDataAggregator_aggregatedData_withN
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageProcessor:(id)a3 wantsAggregation:(id)a4
+- (void)messageProcessor:(id)processor wantsAggregation:(id)aggregation
 {
   mWorkQueue = self->mWorkQueue;
-  v6 = a4;
+  aggregationCopy = aggregation;
   CATAssertIsQueue(mWorkQueue);
-  [(CATIDSServiceConnectionDataAggregator *)self->mDataAggregator receiveDataContent:v6];
+  [(CATIDSServiceConnectionDataAggregator *)self->mDataAggregator receiveDataContent:aggregationCopy];
 }
 
-- (void)messageProcessor:(id)a3 wantsRetransmission:(id)a4
+- (void)messageProcessor:(id)processor wantsRetransmission:(id)retransmission
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  retransmissionCopy = retransmission;
   CATAssertIsQueue(self->mWorkQueue);
-  v6 = [v5 count];
+  v6 = [retransmissionCopy count];
   v7 = _CATLogGeneral_2();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
   if (v6)
@@ -389,9 +389,9 @@ void __78__CATIDSServiceConnection_connectionDataAggregator_aggregatedData_withN
     if (v8)
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
-      v16 = v5;
+      v16 = retransmissionCopy;
       v9 = "%{public}@ attempting to retransmit %{public}@";
       v10 = v7;
       v11 = 22;
@@ -403,18 +403,18 @@ LABEL_6:
   else if (v8)
   {
     v13 = 138543362;
-    v14 = self;
+    selfCopy2 = self;
     v9 = "%{public}@ attempting to retransmit the world";
     v10 = v7;
     v11 = 12;
     goto LABEL_6;
   }
 
-  [(CATIDSServiceConnectionDataMessageQueue *)self->mDataMessageQueue retransmitSequenceNumbers:v5];
+  [(CATIDSServiceConnectionDataMessageQueue *)self->mDataMessageQueue retransmitSequenceNumbers:retransmissionCopy];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageProcessor:(id)a3 receivedExpectedSequence:(unint64_t)a4
+- (void)messageProcessor:(id)processor receivedExpectedSequence:(unint64_t)sequence
 {
   v12 = *MEMORY[0x277D85DE8];
   CATAssertIsQueue(self->mWorkQueue);
@@ -422,54 +422,54 @@ LABEL_6:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a4;
+    sequenceCopy = sequence;
     _os_log_impl(&dword_24329F000, v6, OS_LOG_TYPE_INFO, "%{public}@ received request to compute missing sequence numbers with expected sequence number %lu", &v8, 0x16u);
   }
 
-  [(CATIDSServiceConnectionDataAggregator *)self->mDataAggregator receiveExpectedSequenceNumber:a4];
+  [(CATIDSServiceConnectionDataAggregator *)self->mDataAggregator receiveExpectedSequenceNumber:sequence];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageProcessor:(id)a3 wantsToAckUpTo:(unint64_t)a4
+- (void)messageProcessor:(id)processor wantsToAckUpTo:(unint64_t)to
 {
   CATAssertIsQueue(self->mWorkQueue);
   mDataMessageQueue = self->mDataMessageQueue;
 
-  [(CATIDSServiceConnectionDataMessageQueue *)mDataMessageQueue receiveRemoteSequenceNumber:a4];
+  [(CATIDSServiceConnectionDataMessageQueue *)mDataMessageQueue receiveRemoteSequenceNumber:to];
 }
 
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5
+- (void)processMessage:(id)message senderAppleID:(id)d senderAddress:(id)address
 {
-  v13 = a3;
-  v7 = a5;
+  messageCopy = message;
+  addressCopy = address;
   CATAssertIsQueue(self->mWorkQueue);
-  if (!-[CATIDSServiceConnection isClosed](self, "isClosed") && [v7 isEqual:self->mDestinationAddress])
+  if (!-[CATIDSServiceConnection isClosed](self, "isClosed") && [addressCopy isEqual:self->mDestinationAddress])
   {
-    v8 = [CATIDSMessagePayload instanceWithDictionary:v13];
+    v8 = [CATIDSMessagePayload instanceWithDictionary:messageCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 metadata];
-      v11 = [v10 messageType];
+      metadata = [v8 metadata];
+      messageType = [metadata messageType];
 
-      if (v11 == 102)
+      if (messageType == 102)
       {
-        v12 = [v9 message];
+        message = [v9 message];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           [CATIDSServiceConnection processMessage:senderAppleID:senderAddress:];
         }
 
-        [(CATIDSServiceConnectionMessageProcessor *)self->mMessageProcessor receiveMessage:v12];
+        [(CATIDSServiceConnectionMessageProcessor *)self->mMessageProcessor receiveMessage:message];
       }
     }
   }
 }
 
-- (void)dataMessageQueue:(id)a3 wantsToCheckRemote:(unint64_t)a4
+- (void)dataMessageQueue:(id)queue wantsToCheckRemote:(unint64_t)remote
 {
   v11 = *MEMORY[0x277D85DE8];
   CATAssertIsQueue(self->mWorkQueue);
@@ -477,38 +477,38 @@ LABEL_6:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24329F000, v6, OS_LOG_TYPE_INFO, "%{public}@ requesting remote computes missing data.", &v9, 0xCu);
   }
 
-  v7 = [(CATIDSServiceConnection *)self requestMissingDataContentWithExpectedSequenceNumber:a4];
+  v7 = [(CATIDSServiceConnection *)self requestMissingDataContentWithExpectedSequenceNumber:remote];
   [(CATIDSServiceConnection *)self sendContent:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataMessageQueue:(id)a3 needsToSendContents:(id)a4 shouldSkipTheLine:(BOOL)a5 completion:(id)a6
+- (void)dataMessageQueue:(id)queue needsToSendContents:(id)contents shouldSkipTheLine:(BOOL)line completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lineCopy = line;
+  queueCopy = queue;
+  contentsCopy = contents;
+  completionCopy = completion;
   CATAssertIsQueue(self->mWorkQueue);
   if ([(CATIDSServiceConnection *)self isClosed])
   {
     v13 = CATErrorWithCodeAndUserInfo(100, 0);
-    v12[2](v12, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
-  else if (v7)
+  else if (lineCopy)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __93__CATIDSServiceConnection_dataMessageQueue_needsToSendContents_shouldSkipTheLine_completion___block_invoke;
     v32[3] = &unk_278DA7670;
     v32[4] = self;
-    [v11 cat_forEach:v32];
-    v12[2](v12, 0);
+    [contentsCopy cat_forEach:v32];
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -518,7 +518,7 @@ LABEL_6:
     v31[2] = __93__CATIDSServiceConnection_dataMessageQueue_needsToSendContents_shouldSkipTheLine_completion___block_invoke_2;
     v31[3] = &unk_278DA7698;
     v31[4] = self;
-    v14 = [v11 cat_map:v31];
+    v14 = [contentsCopy cat_map:v31];
     v15 = objc_opt_new();
     [v15 setFireAndForget:1];
     v16 = [[CATSendSerialIDSMessagesOperation alloc] initWithIDSPrimitives:self->mIDSPrimitives workQueue:self->mWorkQueue messages:v14 destinationAddress:self->mDestinationAddress sourceAppleID:self->mSourceAppleID options:v15];
@@ -534,7 +534,7 @@ LABEL_6:
     v25 = v20;
     v21 = v18;
     v26 = v21;
-    v28 = v12;
+    v28 = completionCopy;
     v22 = v16;
     v27 = v22;
     objc_copyWeak(&v29, &location);
@@ -611,19 +611,19 @@ void __93__CATIDSServiceConnection_dataMessageQueue_needsToSendContents_shouldSk
 + (id)keepAliveTimerIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [v2 stringWithFormat:@"%@-KeepAliveTimer", v3];
 
   return v4;
 }
 
-- (void)keepAliveTimerDidFire:(id)a3 fireCount:(unint64_t)a4 isFinalFire:(BOOL)a5
+- (void)keepAliveTimerDidFire:(id)fire fireCount:(unint64_t)count isFinalFire:(BOOL)finalFire
 {
-  v5 = a5;
-  v6 = a4;
+  finalFireCopy = finalFire;
+  countCopy = count;
   v14 = *MEMORY[0x277D85DE8];
   CATAssertIsQueue(self->mWorkQueue);
-  if (v5)
+  if (finalFireCopy)
   {
     v8 = _CATLogGeneral_2();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -631,25 +631,25 @@ void __93__CATIDSServiceConnection_dataMessageQueue_needsToSendContents_shouldSk
       [CATIDSServiceConnection keepAliveTimerDidFire:v8 fireCount:? isFinalFire:?];
     }
 
-    v9 = CATErrorWithCodeAndUserInfo(600, 0);
-    [(CATIDSServiceConnection *)self tearDownWithError:v9 shouldReportToRemote:1];
+    keepAliveContent = CATErrorWithCodeAndUserInfo(600, 0);
+    [(CATIDSServiceConnection *)self tearDownWithError:keepAliveContent shouldReportToRemote:1];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (v6)
+  if (countCopy)
   {
     v10 = _CATLogGeneral_2();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 138543362;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24329F000, v10, OS_LOG_TYPE_INFO, "%{public}@ sending keepalive to remote", &v12, 0xCu);
     }
 
-    v9 = [objc_opt_class() keepAliveContent];
-    [(CATIDSServiceConnection *)self sendContent:v9];
+    keepAliveContent = [objc_opt_class() keepAliveContent];
+    [(CATIDSServiceConnection *)self sendContent:keepAliveContent];
     goto LABEL_9;
   }
 
@@ -657,18 +657,18 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendContent:(id)a3
+- (void)sendContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   CATAssertIsQueue(self->mWorkQueue);
   v5 = [CATActiveServiceConnectionIDSMessage alloc];
-  v6 = [(CATIDSServiceConnection *)self metadata];
-  v7 = [v6 connectionIdentifier];
+  metadata = [(CATIDSServiceConnection *)self metadata];
+  connectionIdentifier = [metadata connectionIdentifier];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CATIDSServiceConnectionDataAggregator receivedSequenceNumber](self->mDataAggregator, "receivedSequenceNumber")}];
-  v9 = [(CATActiveServiceConnectionIDSMessage *)v5 initWithConnectionIdentifier:v7 receivedSequenceNumber:v8 content:v4];
+  v9 = [(CATActiveServiceConnectionIDSMessage *)v5 initWithConnectionIdentifier:connectionIdentifier receivedSequenceNumber:v8 content:contentCopy];
 
   v10 = [[CATIDSMessagePayload alloc] initWithMessage:v9];
-  v11 = [(CATIDSMessagePayload *)v10 dictionaryValue];
+  dictionaryValue = [(CATIDSMessagePayload *)v10 dictionaryValue];
   if (![(CATIDSServiceConnection *)self isClosed])
   {
     objc_initWeak(&location, self);
@@ -685,7 +685,7 @@ LABEL_10:
     v17 = v12;
     v19 = v17;
     objc_copyWeak(&v21, &location);
-    v20 = v11;
+    v20 = dictionaryValue;
     [(CATIDSPrimitives *)mIDSPrimitives sendMessage:v20 toAddress:mDestinationAddress fromID:mSourceAppleID options:v13 completion:v18];
 
     objc_destroyWeak(&v21);
@@ -755,25 +755,25 @@ void __39__CATIDSServiceConnection_sendContent___block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tearDownWithError:(id)a3 shouldReportToRemote:(BOOL)a4
+- (void)tearDownWithError:(id)error shouldReportToRemote:(BOOL)remote
 {
-  v4 = a4;
-  v6 = a3;
+  remoteCopy = remote;
+  errorCopy = error;
   CATAssertIsQueue(self->mWorkQueue);
   if (![(CATIDSServiceConnection *)self isClosed])
   {
     [(CATOperationQueue *)self->mSendQueue cancelAllOperations];
     [(CATIDSSubscription *)self->mMessageSubscription cancel];
     [(CATResettableTimer *)self->mKeepAliveTimer invalidate];
-    if (v4)
+    if (remoteCopy)
     {
-      v7 = [objc_opt_class() closeContentWithError:v6];
+      v7 = [objc_opt_class() closeContentWithError:errorCopy];
       [(CATIDSServiceConnection *)self sendContent:v7];
     }
 
     [(CATCancelable *)self->mAssertion cancel];
     [(CATIDSServiceConnection *)self setClosed:1];
-    [(CATIDSServiceConnection *)self setClosedError:v6];
+    [(CATIDSServiceConnection *)self setClosedError:errorCopy];
     mDelegateQueue = self->mDelegateQueue;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -797,10 +797,10 @@ void __66__CATIDSServiceConnection_tearDownWithError_shouldReportToRemote___bloc
   [v2 connectionClosed:*(a1 + 32)];
 }
 
-+ (id)closeContentWithError:(id)a3
++ (id)closeContentWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[CATActiveIDSServiceConnectionContentClose alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [[CATActiveIDSServiceConnectionContentClose alloc] initWithError:errorCopy];
 
   return v4;
 }
@@ -819,17 +819,17 @@ void __66__CATIDSServiceConnection_tearDownWithError_shouldReportToRemote___bloc
   return v2;
 }
 
-- (id)retransmitContentForSequenceNumbers:(id)a3
+- (id)retransmitContentForSequenceNumbers:(id)numbers
 {
-  v3 = a3;
-  v4 = [[CATActiveIDSServiceConnectionContentRetransmit alloc] initWithSequenceNumbers:v3];
+  numbersCopy = numbers;
+  v4 = [[CATActiveIDSServiceConnectionContentRetransmit alloc] initWithSequenceNumbers:numbersCopy];
 
   return v4;
 }
 
-- (id)requestMissingDataContentWithExpectedSequenceNumber:(unint64_t)a3
+- (id)requestMissingDataContentWithExpectedSequenceNumber:(unint64_t)number
 {
-  v3 = [[CATActiveIDSServiceConnectionContentRequestMissingData alloc] initWithExpectedSequenceNumber:a3];
+  v3 = [[CATActiveIDSServiceConnectionContentRequestMissingData alloc] initWithExpectedSequenceNumber:number];
 
   return v3;
 }
@@ -838,7 +838,7 @@ void __66__CATIDSServiceConnection_tearDownWithError_shouldReportToRemote___bloc
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATIDSServiceConnection *)self metadata];
+  metadata = [(CATIDSServiceConnection *)self metadata];
   mDestinationAddress = self->mDestinationAddress;
   if ([(CATIDSServiceConnection *)self isClosed])
   {
@@ -850,8 +850,8 @@ void __66__CATIDSServiceConnection_tearDownWithError_shouldReportToRemote___bloc
     v7 = @"NO";
   }
 
-  v8 = [(CATIDSServiceConnection *)self closedError];
-  v9 = [v3 stringWithFormat:@"<%@: %p { metadata = %@, destinationAddress = %@, isClosed = %@, closedError = %@ }>", v4, self, v5, mDestinationAddress, v7, v8];
+  closedError = [(CATIDSServiceConnection *)self closedError];
+  v9 = [v3 stringWithFormat:@"<%@: %p { metadata = %@, destinationAddress = %@, isClosed = %@, closedError = %@ }>", v4, self, metadata, mDestinationAddress, v7, closedError];
 
   return v9;
 }

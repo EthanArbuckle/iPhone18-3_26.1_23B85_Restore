@@ -1,31 +1,31 @@
 @interface SVAVPlayerFactory
-- (SVAVPlayerFactory)initWithAudioMode:(int)a3 playerItemFactory:(id)a4;
-- (id)createPlayerWithURL:(id)a3;
+- (SVAVPlayerFactory)initWithAudioMode:(int)mode playerItemFactory:(id)factory;
+- (id)createPlayerWithURL:(id)l;
 @end
 
 @implementation SVAVPlayerFactory
 
-- (SVAVPlayerFactory)initWithAudioMode:(int)a3 playerItemFactory:(id)a4
+- (SVAVPlayerFactory)initWithAudioMode:(int)mode playerItemFactory:(id)factory
 {
-  v7 = a4;
+  factoryCopy = factory;
   v11.receiver = self;
   v11.super_class = SVAVPlayerFactory;
   v8 = [(SVAVPlayerFactory *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_audioMode = a3;
-    objc_storeStrong(&v8->_playerItemFactory, a4);
+    v8->_audioMode = mode;
+    objc_storeStrong(&v8->_playerItemFactory, factory);
   }
 
   return v9;
 }
 
-- (id)createPlayerWithURL:(id)a3
+- (id)createPlayerWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SVAVPlayerFactory *)self playerItemFactory];
-  v6 = [v5 createPlayerItemWithURL:v4];
+  lCopy = l;
+  playerItemFactory = [(SVAVPlayerFactory *)self playerItemFactory];
+  v6 = [playerItemFactory createPlayerItemWithURL:lCopy];
 
   v7 = [[SVAVPlayer alloc] initWithPlayerItem:v6 audioMode:[(SVAVPlayerFactory *)self audioMode]];
 

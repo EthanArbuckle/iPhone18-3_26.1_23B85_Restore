@@ -1,28 +1,28 @@
 @interface WFContentItemFilterEnumerationParameter
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation WFContentItemFilterEnumerationParameter
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 value];
-  v6 = [v5 isEqualToString:@"Library"];
+  stateCopy = state;
+  value = [stateCopy value];
+  v6 = [value isEqualToString:@"Library"];
 
   if (v6)
   {
-    v7 = [(objc_class *)[(WFContentItemFilterEnumerationParameter *)self contentItemClass] localizedPluralFilterDescription];
+    localizedPluralFilterDescription = [(objc_class *)[(WFContentItemFilterEnumerationParameter *)self contentItemClass] localizedPluralFilterDescription];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = WFContentItemFilterEnumerationParameter;
-    v7 = [(WFEnumerationParameter *)&v10 localizedLabelForPossibleState:v4];
+    localizedPluralFilterDescription = [(WFEnumerationParameter *)&v10 localizedLabelForPossibleState:stateCopy];
   }
 
-  v8 = v7;
+  v8 = localizedPluralFilterDescription;
 
   return v8;
 }

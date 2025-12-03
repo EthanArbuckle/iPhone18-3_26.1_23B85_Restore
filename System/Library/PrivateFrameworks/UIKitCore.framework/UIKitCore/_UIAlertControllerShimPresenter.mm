@@ -1,77 +1,77 @@
 @interface _UIAlertControllerShimPresenter
 + (BOOL)_shouldPresentActionSheetsFullscreen;
 + (id)_currentFullScreenAlertPresenters;
-+ (void)_addPresenter:(id)a3;
-+ (void)_cancelPendingTouchesIfAppropriateForWindow:(id)a3;
-+ (void)_removePresenter:(id)a3;
++ (void)_addPresenter:(id)presenter;
++ (void)_cancelPendingTouchesIfAppropriateForWindow:(id)window;
++ (void)_removePresenter:(id)presenter;
 - (UIAlertController)alertController;
 - (UIPopoverControllerDelegate)popoverDelegate;
 - (id)_popoverController;
-- (void)_createWindowIfNecessaryWithScene:(id)a3;
-- (void)_dismissAlertControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_presentAlertControllerAnimated:(BOOL)a3 hostingScene:(id)a4 completion:(id)a5;
-- (void)_presentAlertControllerFromBarButtonItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_presentAlertControllerFromRect:(CGRect)a3 inView:(id)a4 direction:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7;
+- (void)_createWindowIfNecessaryWithScene:(id)scene;
+- (void)_dismissAlertControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)_presentAlertControllerAnimated:(BOOL)animated hostingScene:(id)scene completion:(id)completion;
+- (void)_presentAlertControllerFromBarButtonItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)_presentAlertControllerFromRect:(CGRect)rect inView:(id)view direction:(unint64_t)direction animated:(BOOL)animated completion:(id)completion;
 - (void)_tearDownInPopoverViewController;
 - (void)dealloc;
-- (void)setPopoverDelegate:(id)a3;
+- (void)setPopoverDelegate:(id)delegate;
 @end
 
 @implementation _UIAlertControllerShimPresenter
 
-- (void)_presentAlertControllerAnimated:(BOOL)a3 hostingScene:(id)a4 completion:(id)a5
+- (void)_presentAlertControllerAnimated:(BOOL)animated hostingScene:(id)scene completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  [(_UIAlertControllerShimPresenter *)self _createWindowIfNecessaryWithScene:a4];
+  animatedCopy = animated;
+  completionCopy = completion;
+  [(_UIAlertControllerShimPresenter *)self _createWindowIfNecessaryWithScene:scene];
   [(UIWindow *)self->_window makeKeyWindow];
   [_UIAlertControllerShimPresenter _cancelPendingTouchesIfAppropriateForWindow:self->_window];
   [_UIAlertControllerShimPresenter _addPresenter:self];
-  v9 = [(_UIAlertControllerShimPresenter *)self alertController];
-  [v9 _setDismissedFromShim:0];
+  alertController = [(_UIAlertControllerShimPresenter *)self alertController];
+  [alertController _setDismissedFromShim:0];
 
   window = self->_window;
-  v11 = [(_UIAlertControllerShimPresenter *)self alertController];
+  alertController2 = [(_UIAlertControllerShimPresenter *)self alertController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __91___UIAlertControllerShimPresenter__presentAlertControllerAnimated_hostingScene_completion___block_invoke;
   v13[3] = &unk_1E70F3608;
-  v14 = v8;
-  v12 = v8;
-  [(_UIAlertControllerShimPresenterWindow *)window presentAlertController:v11 animated:v6 completionBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(_UIAlertControllerShimPresenterWindow *)window presentAlertController:alertController2 animated:animatedCopy completionBlock:v13];
 }
 
-- (void)_presentAlertControllerFromBarButtonItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_presentAlertControllerFromBarButtonItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 view];
-  [v9 bounds];
-  [(_UIAlertControllerShimPresenter *)self _presentAlertControllerFromRect:v9 inView:15 direction:v5 animated:v8 completion:?];
+  animatedCopy = animated;
+  completionCopy = completion;
+  view = [item view];
+  [view bounds];
+  [(_UIAlertControllerShimPresenter *)self _presentAlertControllerFromRect:view inView:15 direction:animatedCopy animated:completionCopy completion:?];
 }
 
-- (void)_presentAlertControllerFromRect:(CGRect)a3 inView:(id)a4 direction:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_presentAlertControllerFromRect:(CGRect)rect inView:(id)view direction:(unint64_t)direction animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a7;
-  v17 = [v15 window];
-  [_UIAlertControllerShimPresenter _cancelPendingTouchesIfAppropriateForWindow:v17];
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  completionCopy = completion;
+  window = [viewCopy window];
+  [_UIAlertControllerShimPresenter _cancelPendingTouchesIfAppropriateForWindow:window];
 
-  v18 = [(_UIAlertControllerShimPresenter *)self alertController];
-  [v18 _setDismissedFromShim:0];
+  alertController = [(_UIAlertControllerShimPresenter *)self alertController];
+  [alertController _setDismissedFromShim:0];
 
-  v19 = [_UIPopoverView popoverViewContainingView:v15];
-  v20 = [v19 popoverController];
-  v21 = v20;
+  v19 = [_UIPopoverView popoverViewContainingView:viewCopy];
+  popoverController = [v19 popoverController];
+  v21 = popoverController;
   if (v19)
   {
-    v22 = [v20 _managingSplitViewController];
-    v23 = v22 == 0;
+    _managingSplitViewController = [popoverController _managingSplitViewController];
+    v23 = _managingSplitViewController == 0;
   }
 
   else
@@ -81,11 +81,11 @@
 
   if (_UIAppUseModernRotationAndPresentationBehaviors())
   {
-    v24 = [v15 _viewControllerForAncestor];
-    if ([v24 _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:0])
+    _viewControllerForAncestor = [viewCopy _viewControllerForAncestor];
+    if ([_viewControllerForAncestor _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:0])
     {
-      v25 = [(_UIAlertControllerShimPresenter *)self alertController];
-      [v24 presentViewController:v25 animated:v8 completion:v16];
+      alertController2 = [(_UIAlertControllerShimPresenter *)self alertController];
+      [_viewControllerForAncestor presentViewController:alertController2 animated:animatedCopy completion:completionCopy];
 
       goto LABEL_17;
     }
@@ -93,23 +93,23 @@
 
   if (v23)
   {
-    v26 = [v19 contentView];
+    contentView = [v19 contentView];
     v27 = objc_alloc_init(UIViewController);
     inPopoverViewController = self->_inPopoverViewController;
     self->_inPopoverViewController = v27;
 
-    v29 = [(UIViewController *)self->_inPopoverViewController view];
-    [v26 bounds];
-    [v29 setFrame:?];
-    [v26 addSubview:v29];
+    view = [(UIViewController *)self->_inPopoverViewController view];
+    [contentView bounds];
+    [view setFrame:?];
+    [contentView addSubview:view];
     v30 = self->_inPopoverViewController;
-    v31 = [(_UIAlertControllerShimPresenter *)self alertController];
-    [(UIViewController *)v30 presentViewController:v31 animated:v8 completion:0];
+    alertController3 = [(_UIAlertControllerShimPresenter *)self alertController];
+    [(UIViewController *)v30 presentViewController:alertController3 animated:animatedCopy completion:0];
   }
 
   else if (+[_UIAlertControllerShimPresenter _shouldPresentActionSheetsFullscreen])
   {
-    [(_UIAlertControllerShimPresenter *)self _presentAlertControllerAnimated:v8 completion:v16];
+    [(_UIAlertControllerShimPresenter *)self _presentAlertControllerAnimated:animatedCopy completion:completionCopy];
   }
 
   else
@@ -123,22 +123,22 @@
     v44 = y;
     v45 = width;
     v46 = height;
-    v32 = v15;
+    v32 = viewCopy;
     v41 = v32;
-    v47 = a5;
-    v48 = v8;
-    v42 = v16;
+    directionCopy = direction;
+    v48 = animatedCopy;
+    v42 = completionCopy;
     v33 = _Block_copy(aBlock);
     if (_UIAppUseModernRotationAndPresentationBehaviors() && ([v32 _viewControllerForAncestor], v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "transitionCoordinator"), v35 = objc_claimAutoreleasedReturnValue(), v35, v34, v35))
     {
-      v36 = [v32 _viewControllerForAncestor];
-      v37 = [v36 transitionCoordinator];
+      _viewControllerForAncestor2 = [v32 _viewControllerForAncestor];
+      transitionCoordinator = [_viewControllerForAncestor2 transitionCoordinator];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __104___UIAlertControllerShimPresenter__presentAlertControllerFromRect_inView_direction_animated_completion___block_invoke_2;
       v38[3] = &unk_1E70F3770;
       v39 = v33;
-      [v37 animateAlongsideTransition:0 completion:v38];
+      [transitionCoordinator animateAlongsideTransition:0 completion:v38];
     }
 
     else
@@ -150,57 +150,57 @@
 LABEL_17:
 }
 
-- (void)_dismissAlertControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissAlertControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_UIAlertControllerShimPresenter *)self alertController];
-  [v7 _setDismissedFromShim:1];
+  animatedCopy = animated;
+  completionCopy = completion;
+  alertController = [(_UIAlertControllerShimPresenter *)self alertController];
+  [alertController _setDismissedFromShim:1];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78___UIAlertControllerShimPresenter__dismissAlertControllerAnimated_completion___block_invoke;
   aBlock[3] = &unk_1E70F37C0;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   v25 = v8;
   v9 = _Block_copy(aBlock);
   popoverController = self->_popoverController;
   if (popoverController)
   {
-    [(UIPopoverController *)popoverController dismissPopoverAnimated:v4];
+    [(UIPopoverController *)popoverController dismissPopoverAnimated:animatedCopy];
     v9[2](v9);
   }
 
   else
   {
-    v11 = [(_UIAlertControllerShimPresenter *)self alertController];
-    v12 = [v11 presentingViewController];
+    alertController2 = [(_UIAlertControllerShimPresenter *)self alertController];
+    presentingViewController = [alertController2 presentingViewController];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __78___UIAlertControllerShimPresenter__dismissAlertControllerAnimated_completion___block_invoke_2;
     v20[3] = &unk_1E70F3798;
     v20[4] = self;
-    v13 = v12;
+    v13 = presentingViewController;
     v21 = v13;
-    v23 = v4;
+    v23 = animatedCopy;
     v14 = v9;
     v22 = v14;
     v15 = _Block_copy(v20);
     if (v13)
     {
-      v16 = [v13 transitionCoordinator];
+      transitionCoordinator = [v13 transitionCoordinator];
 
-      if (v16)
+      if (transitionCoordinator)
       {
-        v17 = [v13 transitionCoordinator];
+        transitionCoordinator2 = [v13 transitionCoordinator];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __78___UIAlertControllerShimPresenter__dismissAlertControllerAnimated_completion___block_invoke_3;
         v18[3] = &unk_1E70F3770;
         v19 = v15;
-        [v17 animateAlongsideTransition:0 completion:v18];
+        [transitionCoordinator2 animateAlongsideTransition:0 completion:v18];
       }
 
       else
@@ -221,13 +221,13 @@ LABEL_17:
   if (!self->_popoverController)
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v5 = [UIPopoverController alloc];
-      v6 = [(_UIAlertControllerShimPresenter *)self alertController];
-      v7 = [(UIPopoverController *)v5 initWithContentViewController:v6];
+      alertController = [(_UIAlertControllerShimPresenter *)self alertController];
+      v7 = [(UIPopoverController *)v5 initWithContentViewController:alertController];
       popoverController = self->_popoverController;
       self->_popoverController = v7;
 
@@ -237,8 +237,8 @@ LABEL_17:
 
       if (!_UIAppUseModernRotationAndPresentationBehaviors())
       {
-        v11 = [(_UIAlertControllerShimPresenter *)self alertController];
-        [v11 _setCompatibilityPopoverController:self->_popoverController];
+        alertController2 = [(_UIAlertControllerShimPresenter *)self alertController];
+        [alertController2 _setCompatibilityPopoverController:self->_popoverController];
       }
     }
   }
@@ -248,14 +248,14 @@ LABEL_17:
   return v12;
 }
 
-- (void)setPopoverDelegate:(id)a3
+- (void)setPopoverDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeWeak(&self->_popoverDelegate, v5);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_popoverDelegate, delegateCopy);
   popoverController = self->_popoverController;
   if (popoverController)
   {
-    [(UIPopoverController *)popoverController setDelegate:v5];
+    [(UIPopoverController *)popoverController setDelegate:delegateCopy];
   }
 }
 
@@ -268,8 +268,8 @@ LABEL_17:
 
 - (void)_tearDownInPopoverViewController
 {
-  v3 = [(UIViewController *)self->_inPopoverViewController view];
-  [v3 removeFromSuperview];
+  view = [(UIViewController *)self->_inPopoverViewController view];
+  [view removeFromSuperview];
 
   inPopoverViewController = self->_inPopoverViewController;
   self->_inPopoverViewController = 0;
@@ -278,28 +278,28 @@ LABEL_17:
 + (BOOL)_shouldPresentActionSheetsFullscreen
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1;
 }
 
-+ (void)_cancelPendingTouchesIfAppropriateForWindow:(id)a3
++ (void)_cancelPendingTouchesIfAppropriateForWindow:(id)window
 {
-  v3 = [UIApp _touchesEventForWindow:a3];
+  v3 = [UIApp _touchesEventForWindow:window];
   v4 = UIApp;
 
   [v4 _cancelUnfinishedTouchesForEvent:v3];
 }
 
-- (void)_createWindowIfNecessaryWithScene:(id)a3
+- (void)_createWindowIfNecessaryWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if (!self->_window)
   {
-    v7 = v4;
-    if (v4)
+    v7 = sceneCopy;
+    if (sceneCopy)
     {
-      v5 = [[_UIAlertControllerShimPresenterWindow alloc] initWithWindowScene:v4];
+      v5 = [[_UIAlertControllerShimPresenterWindow alloc] initWithWindowScene:sceneCopy];
     }
 
     else
@@ -310,15 +310,15 @@ LABEL_17:
     window = self->_window;
     self->_window = v5;
 
-    v4 = v7;
+    sceneCopy = v7;
   }
 }
 
 - (void)dealloc
 {
   [(_UIAlertControllerShimPresenter *)self _tearDownInPopoverViewController];
-  v3 = [(_UIAlertControllerShimPresenter *)self alertController];
-  [v3 _setCompatibilityPopoverController:0];
+  alertController = [(_UIAlertControllerShimPresenter *)self alertController];
+  [alertController _setCompatibilityPopoverController:0];
 
   [_UIAlertControllerShimPresenter _removePresenter:self];
   v4.receiver = self;
@@ -341,10 +341,10 @@ LABEL_17:
   return v2;
 }
 
-+ (void)_addPresenter:(id)a3
++ (void)_addPresenter:(id)presenter
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  presenterCopy = presenter;
   v4 = +[_UIAlertControllerShimPresenter _currentFullScreenAlertPresenters];
   v13 = 0u;
   v14 = 0u;
@@ -365,11 +365,11 @@ LABEL_17:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 window];
-        [v10 setHidden:1];
+        window = [v9 window];
+        [window setHidden:1];
 
-        v11 = [v9 alertController];
-        [v11 setTextFieldsCanBecomeFirstResponder:0];
+        alertController = [v9 alertController];
+        [alertController setTextFieldsCanBecomeFirstResponder:0];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -378,31 +378,31 @@ LABEL_17:
     while (v6);
   }
 
-  [v4 removeObject:v3];
-  [v4 addObject:v3];
-  v12 = [v3 window];
-  [v12 setHidden:0];
+  [v4 removeObject:presenterCopy];
+  [v4 addObject:presenterCopy];
+  window2 = [presenterCopy window];
+  [window2 setHidden:0];
 }
 
-+ (void)_removePresenter:(id)a3
++ (void)_removePresenter:(id)presenter
 {
-  v9 = a3;
-  v3 = [v9 window];
-  [v3 setHidden:1];
+  presenterCopy = presenter;
+  window = [presenterCopy window];
+  [window setHidden:1];
 
   v4 = +[_UIAlertControllerShimPresenter _currentFullScreenAlertPresenters];
-  if ([v4 containsObject:v9])
+  if ([v4 containsObject:presenterCopy])
   {
-    [v4 removeObject:v9];
+    [v4 removeObject:presenterCopy];
   }
 
-  v5 = [v4 lastObject];
-  v6 = [v5 window];
-  [v6 setHidden:0];
+  lastObject = [v4 lastObject];
+  window2 = [lastObject window];
+  [window2 setHidden:0];
 
-  v7 = [v4 lastObject];
-  v8 = [v7 alertController];
-  [v8 setTextFieldsCanBecomeFirstResponder:1];
+  lastObject2 = [v4 lastObject];
+  alertController = [lastObject2 alertController];
+  [alertController setTextFieldsCanBecomeFirstResponder:1];
 }
 
 - (UIAlertController)alertController

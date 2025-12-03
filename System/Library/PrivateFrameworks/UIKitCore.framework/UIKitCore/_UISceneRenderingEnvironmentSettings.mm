@@ -1,24 +1,24 @@
 @interface _UISceneRenderingEnvironmentSettings
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation _UISceneRenderingEnvironmentSettings
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
-  v3 = a3;
-  if (([v3 matchesProperty:sel_modern_isCapturingContentForAdditionalRenderingDestination] & 1) != 0 || objc_msgSend(v3, "matchesProperty:", sel_systemDisplayIdentifier))
+  settingCopy = setting;
+  if (([settingCopy matchesProperty:sel_modern_isCapturingContentForAdditionalRenderingDestination] & 1) != 0 || objc_msgSend(settingCopy, "matchesProperty:", sel_systemDisplayIdentifier))
   {
-    [v3 setPropagating:1];
-    [v3 setNullPreserving:1];
+    [settingCopy setPropagating:1];
+    [settingCopy setNullPreserving:1];
   }
 
-  if ([v3 matchesProperty:sel_activeAppearance])
+  if ([settingCopy matchesProperty:sel_activeAppearance])
   {
-    [v3 setPropagating:1];
-    [v3 setNullPreserving:1];
-    [v3 setDefaultValue:&unk_1EFE321E8];
-    [v3 setDescriptionProvider:&__block_literal_global_442];
+    [settingCopy setPropagating:1];
+    [settingCopy setNullPreserving:1];
+    [settingCopy setDefaultValue:&unk_1EFE321E8];
+    [settingCopy setDescriptionProvider:&__block_literal_global_442];
   }
 }
 

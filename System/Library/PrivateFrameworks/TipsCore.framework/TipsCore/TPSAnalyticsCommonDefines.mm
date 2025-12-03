@@ -1,25 +1,25 @@
 @interface TPSAnalyticsCommonDefines
-+ (id)displayTypeStringForDisplayType:(unint64_t)a3;
-+ (id)experimentCampIDStringForCamp:(int64_t)a3;
-+ (id)ineligibleReasonStringForReason:(int64_t)a3;
++ (id)displayTypeStringForDisplayType:(unint64_t)type;
++ (id)experimentCampIDStringForCamp:(int64_t)camp;
++ (id)ineligibleReasonStringForReason:(int64_t)reason;
 @end
 
 @implementation TPSAnalyticsCommonDefines
 
-+ (id)displayTypeStringForDisplayType:(unint64_t)a3
++ (id)displayTypeStringForDisplayType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E8101518[a3];
+    return off_1E8101518[type];
   }
 }
 
-+ (id)ineligibleReasonStringForReason:(int64_t)a3
++ (id)ineligibleReasonStringForReason:(int64_t)reason
 {
   if (ineligibleReasonStringForReason__onceToken != -1)
   {
@@ -27,7 +27,7 @@
   }
 
   v4 = ineligibleReasonStringForReason__reasonsToStringMapping;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (!v6)
@@ -35,7 +35,7 @@
     v7 = +[TPSLogger analytics];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(TPSAnalyticsCommonDefines *)a3 ineligibleReasonStringForReason:v7];
+      [(TPSAnalyticsCommonDefines *)reason ineligibleReasonStringForReason:v7];
     }
 
     v6 = @"unspecfied";
@@ -76,15 +76,15 @@ void __61__TPSAnalyticsCommonDefines_ineligibleReasonStringForReason___block_inv
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)experimentCampIDStringForCamp:(int64_t)a3
++ (id)experimentCampIDStringForCamp:(int64_t)camp
 {
   v3 = @"unspecified";
-  if (a3 == 1)
+  if (camp == 1)
   {
     v3 = @"allContent";
   }
 
-  if (a3 == 2)
+  if (camp == 2)
   {
     return @"holdout";
   }

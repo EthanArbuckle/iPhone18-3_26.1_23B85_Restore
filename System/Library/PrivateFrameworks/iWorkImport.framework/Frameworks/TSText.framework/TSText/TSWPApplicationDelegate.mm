@@ -1,13 +1,13 @@
 @interface TSWPApplicationDelegate
-- (BOOL)isValidURLForImportedHyperlink:(id)a3 targetDocumentRoot:(id)a4 forCrossDocumentPaste:(BOOL)a5;
+- (BOOL)isValidURLForImportedHyperlink:(id)hyperlink targetDocumentRoot:(id)root forCrossDocumentPaste:(BOOL)paste;
 - (id)defaultHyperlinkURL;
 @end
 
 @implementation TSWPApplicationDelegate
 
-- (BOOL)isValidURLForImportedHyperlink:(id)a3 targetDocumentRoot:(id)a4 forCrossDocumentPaste:(BOOL)a5
+- (BOOL)isValidURLForImportedHyperlink:(id)hyperlink targetDocumentRoot:(id)root forCrossDocumentPaste:(BOOL)paste
 {
-  v7 = objc_msgSend_scheme(a3, a2, a3, a4, a5);
+  v7 = objc_msgSend_scheme(hyperlink, a2, hyperlink, root, paste);
   if (v7)
   {
     v8 = objc_msgSend_invalidURLSchemes(TSWPHyperlinkField, v5, v6);

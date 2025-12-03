@@ -2,10 +2,10 @@
 - (KeychainSyncDevicePINController)init;
 - (id)specifiers;
 - (void)dealloc;
-- (void)didFinishEnteringText:(id)a3;
-- (void)updateBlockedState:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)didFinishEnteringText:(id)text;
+- (void)updateBlockedState:(id)state;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation KeychainSyncDevicePINController
@@ -44,8 +44,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [KeychainSyncDevicePINController cancelPreviousPerformRequestsWithTarget:self];
   v4.receiver = self;
@@ -53,39 +53,39 @@
   [(PSKeychainSyncTextEntryController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_updateBlockedState_ name:*MEMORY[0x1E69DDF78] object:0];
+  appearCopy = appear;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_updateBlockedState_ name:*MEMORY[0x1E69DDF78] object:0];
 
   v6.receiver = self;
   v6.super_class = KeychainSyncDevicePINController;
-  [(PSKeychainSyncTextEntryController *)&v6 viewWillAppear:v3];
+  [(PSKeychainSyncTextEntryController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(UIKeyboard *)self->_disabledKeyboard setUserInteractionEnabled:1];
   [(KeychainSyncDevicePINController *)self setDisabledKeyboard:0];
   [KeychainSyncDevicePINController cancelPreviousPerformRequestsWithTarget:self];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
 
   v6.receiver = self;
   v6.super_class = KeychainSyncDevicePINController;
-  [(PSKeychainSyncTextEntryController *)&v6 viewWillDisappear:v3];
+  [(PSKeychainSyncTextEntryController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)updateBlockedState:(id)a3
+- (void)updateBlockedState:(id)state
 {
-  v4 = [(DevicePINController *)self->_devicePINController isBlocked];
-  v7 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  [v7 setUserInteractionEnabled:!v4];
-  if (v4)
+  isBlocked = [(DevicePINController *)self->_devicePINController isBlocked];
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  [activeKeyboard setUserInteractionEnabled:!isBlocked];
+  if (isBlocked)
   {
-    v5 = v7;
+    v5 = activeKeyboard;
   }
 
   else
@@ -94,42 +94,42 @@
   }
 
   [(KeychainSyncDevicePINController *)self setDisabledKeyboard:v5];
-  if (!v4 && self->_showingBlockedMessage)
+  if (!isBlocked && self->_showingBlockedMessage)
   {
     UIKeyboardDisableAutomaticAppearance();
     [(PSListController *)self reloadSpecifiers];
     UIKeyboardEnableAutomaticAppearance();
-    v6 = [(PSKeychainSyncTextEntryController *)self textEntryView];
-    [v6 becomeFirstResponder];
+    textEntryView = [(PSKeychainSyncTextEntryController *)self textEntryView];
+    [textEntryView becomeFirstResponder];
   }
 }
 
 - (id)specifiers
 {
-  v3 = [(KeychainSyncDevicePINController *)self navigationItem];
+  navigationItem = [(KeychainSyncDevicePINController *)self navigationItem];
   v4 = PS_LocalizedStringForKeychainSync(@"ENTER_PASSCODE");
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
   v30.receiver = self;
   v30.super_class = KeychainSyncDevicePINController;
-  v5 = [(PSKeychainSyncTextEntryController *)&v30 specifiers];
-  v6 = [(PSKeychainSyncViewController *)self headerView];
-  v7 = [(KeychainSyncDevicePINController *)self enterPasscodeTitle];
-  [v6 setDetailText:v7];
+  specifiers = [(PSKeychainSyncTextEntryController *)&v30 specifiers];
+  headerView = [(PSKeychainSyncViewController *)self headerView];
+  enterPasscodeTitle = [(KeychainSyncDevicePINController *)self enterPasscodeTitle];
+  [headerView setDetailText:enterPasscodeTitle];
 
   self->_showingBlockedMessage = 0;
-  v8 = [(DevicePINController *)self->_devicePINController isBlocked];
+  isBlocked = [(DevicePINController *)self->_devicePINController isBlocked];
   devicePINController = self->_devicePINController;
-  if (v8)
+  if (isBlocked)
   {
     [(DevicePINController *)devicePINController unblockTime];
     v11 = v10;
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v13 = (v11 - v12) / 60.0;
     *&v12 = v13;
-    LODWORD(v6) = vcvtps_s32_f32(*&v12);
-    v14 = v6 - 1;
-    if (v6 == 1)
+    LODWORD(headerView) = vcvtps_s32_f32(*&v12);
+    v14 = headerView - 1;
+    if (headerView == 1)
     {
       v15 = @"UNBLOCK_MINUTES_SINGLE";
     }
@@ -142,9 +142,9 @@
     v16 = PS_LocalizedStringForKeychainSync(v15);
     v17 = MEMORY[0x1E696AEC0];
     v18 = MEMORY[0x1E696ADA0];
-    v19 = [MEMORY[0x1E696AD98] numberWithInt:v6];
+    v19 = [MEMORY[0x1E696AD98] numberWithInt:headerView];
     v20 = [v18 localizedStringFromNumber:v19 numberStyle:1];
-    v21 = [v17 stringWithFormat:v16, v20];
+    enterPasscodeReason = [v17 stringWithFormat:v16, v20];
 
     self->_showingBlockedMessage = 1;
     v22 = (v13 - v14) * 60.0;
@@ -173,30 +173,30 @@
     v25 = MEMORY[0x1E696ADA0];
     v26 = [MEMORY[0x1E696AD98] numberWithLong:{-[DevicePINController numberOfFailedAttempts](self->_devicePINController, "numberOfFailedAttempts")}];
     v27 = [v25 localizedStringFromNumber:v26 numberStyle:1];
-    v21 = [v24 stringWithFormat:v16, v27];
+    enterPasscodeReason = [v24 stringWithFormat:v16, v27];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v21 = [(KeychainSyncDevicePINController *)self enterPasscodeReason];
+  enterPasscodeReason = [(KeychainSyncDevicePINController *)self enterPasscodeReason];
 LABEL_13:
-  v28 = [(PSKeychainSyncViewController *)self groupSpecifier];
-  [v28 setProperty:v21 forKey:@"footerText"];
+  groupSpecifier = [(PSKeychainSyncViewController *)self groupSpecifier];
+  [groupSpecifier setProperty:enterPasscodeReason forKey:@"footerText"];
 
-  return v5;
+  return specifiers;
 }
 
-- (void)didFinishEnteringText:(id)a3
+- (void)didFinishEnteringText:(id)text
 {
-  v4 = a3;
-  if ([(DevicePINController *)self->_devicePINController isBlocked]|| ![(DevicePINController *)self->_devicePINController attemptValidationWithPIN:v4])
+  textCopy = text;
+  if ([(DevicePINController *)self->_devicePINController isBlocked]|| ![(DevicePINController *)self->_devicePINController attemptValidationWithPIN:textCopy])
   {
     UIKeyboardDisableAutomaticAppearance();
     [(PSListController *)self reloadSpecifiers];
     UIKeyboardEnableAutomaticAppearance();
-    v5 = [(PSKeychainSyncTextEntryController *)self textEntryView];
-    [v5 becomeFirstResponder];
+    textEntryView = [(PSKeychainSyncTextEntryController *)self textEntryView];
+    [textEntryView becomeFirstResponder];
 
     [(KeychainSyncDevicePINController *)self updateBlockedState:0];
   }
@@ -205,7 +205,7 @@ LABEL_13:
   {
     v6.receiver = self;
     v6.super_class = KeychainSyncDevicePINController;
-    [(PSKeychainSyncTextEntryController *)&v6 didFinishEnteringText:v4];
+    [(PSKeychainSyncTextEntryController *)&v6 didFinishEnteringText:textCopy];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface MKTransitArtworkManager
 + (id)sharedInstance;
 - (BOOL)_isMemoryConstrained;
-- (MKTransitArtworkManager)initWithIconManager:(id)a3;
-- (id)_createImageWithBlockInAutoreleasePoolIfNeeded:(id)a3;
-- (id)_imageFroMVKImage:(id)a3;
-- (id)_imageWithDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 withWidthPaddingMultiple:(double)a8 fullBleedColor:(id *)a9;
-- (id)_vkImageWithShieldDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 widthPaddingMultiple:(double)a8;
-- (id)transitArtworkImageWithDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 withWidthPaddingMultiple:(double)a8;
-- (id)transitArtworkImageWithDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 withWidthPaddingMultiple:(double)a8 fullBleedColor:(id *)a9;
-- (id)transitArtworkImageWithShieldDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7;
+- (MKTransitArtworkManager)initWithIconManager:(id)manager;
+- (id)_createImageWithBlockInAutoreleasePoolIfNeeded:(id)needed;
+- (id)_imageFroMVKImage:(id)image;
+- (id)_imageWithDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode withWidthPaddingMultiple:(double)multiple fullBleedColor:(id *)color;
+- (id)_vkImageWithShieldDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode widthPaddingMultiple:(double)multiple;
+- (id)transitArtworkImageWithDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode withWidthPaddingMultiple:(double)multiple;
+- (id)transitArtworkImageWithDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode withWidthPaddingMultiple:(double)multiple fullBleedColor:(id *)color;
+- (id)transitArtworkImageWithShieldDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode;
 - (void)purge;
 @end
 
 @implementation MKTransitArtworkManager
 
-- (id)_imageFroMVKImage:(id)a3
+- (id)_imageFroMVKImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([(MKTransitArtworkManager *)self _isMemoryConstrained])
   {
-    v5 = CGImageRetain([v4 image]);
+    v5 = CGImageRetain([imageCopy image]);
     Width = CGImageGetWidth(v5);
     Height = CGImageGetHeight(v5);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -37,7 +37,7 @@
     CGContextDrawImage(v10, v18, v5);
     Image = CGBitmapContextCreateImage(v10);
     v12 = MEMORY[0x1E69DCAB8];
-    [v4 contentScale];
+    [imageCopy contentScale];
     v14 = [v12 imageWithCGImage:Image scale:0 orientation:v13];
     CGImageRelease(v5);
     CGImageRelease(Image);
@@ -47,163 +47,163 @@
 
   else
   {
-    v14 = [MEMORY[0x1E69DCAB8] _mapkit_imageFromVKImage:v4];
+    v14 = [MEMORY[0x1E69DCAB8] _mapkit_imageFromVKImage:imageCopy];
   }
 
   return v14;
 }
 
-- (id)_createImageWithBlockInAutoreleasePoolIfNeeded:(id)a3
+- (id)_createImageWithBlockInAutoreleasePoolIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(MKTransitArtworkManager *)self _isMemoryConstrained])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = v4[2](v4);
+    v6 = neededCopy[2](neededCopy);
     objc_autoreleasePoolPop(v5);
   }
 
   else
   {
-    v6 = v4[2](v4);
+    v6 = neededCopy[2](neededCopy);
   }
 
   return v6;
 }
 
-- (id)transitArtworkImageWithDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 withWidthPaddingMultiple:(double)a8 fullBleedColor:(id *)a9
+- (id)transitArtworkImageWithDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode withWidthPaddingMultiple:(double)multiple fullBleedColor:(id *)color
 {
-  v10 = [(MKTransitArtworkManager *)self _imageWithDataSource:a3 size:a4 featureType:a5 scale:a7 nightMode:a9 withWidthPaddingMultiple:a6 fullBleedColor:a8];
+  v10 = [(MKTransitArtworkManager *)self _imageWithDataSource:source size:size featureType:type scale:mode nightMode:color withWidthPaddingMultiple:scale fullBleedColor:multiple];
   v11 = [(MKTransitArtworkManager *)self _imageFroMVKImage:v10];
 
   return v11;
 }
 
-- (id)_imageWithDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 withWidthPaddingMultiple:(double)a8 fullBleedColor:(id *)a9
+- (id)_imageWithDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode withWidthPaddingMultiple:(double)multiple fullBleedColor:(id *)color
 {
-  v11 = a7;
-  v16 = a3;
-  v17 = [v16 artworkSourceType];
-  if (v17 == 2)
+  modeCopy = mode;
+  sourceCopy = source;
+  artworkSourceType = [sourceCopy artworkSourceType];
+  if (artworkSourceType == 2)
   {
-    v18 = [v16 iconDataSource];
-    v22 = [v18 iconType];
-    if (v22 == 1)
+    iconDataSource = [sourceCopy iconDataSource];
+    iconType = [iconDataSource iconType];
+    if (iconType == 1)
     {
       if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
       {
-        v37 = [v18 iconAttributeKey];
-        v38 = [v18 iconAttributeValue];
-        v34 = objc_alloc_init(MEMORY[0x1E69DF438]);
+        iconAttributeKey = [iconDataSource iconAttributeKey];
+        iconAttributeValue = [iconDataSource iconAttributeValue];
+        iconFallbackShieldDataSource2 = objc_alloc_init(MEMORY[0x1E69DF438]);
         v39 = +[MKSystemController sharedInstance];
-        [v34 setNewInterfaceEnabled:{objc_msgSend(v39, "isGlassEnabled")}];
+        [iconFallbackShieldDataSource2 setNewInterfaceEnabled:{objc_msgSend(v39, "isGlassEnabled")}];
 
-        if (v11)
+        if (modeCopy)
         {
-          v40 = [(MKTransitArtworkManager *)self iconManager];
-          [v34 setVariant:{objc_msgSend(v40, "darkVariant")}];
+          iconManager = [(MKTransitArtworkManager *)self iconManager];
+          [iconFallbackShieldDataSource2 setVariant:{objc_msgSend(iconManager, "darkVariant")}];
         }
 
-        v41 = [(MKTransitArtworkManager *)self iconManager];
-        *&v42 = a6;
-        v21 = [v41 imageForKey:v37 value:v38 contentScale:a4 sizeGroup:v34 modifiers:v42];
+        iconManager2 = [(MKTransitArtworkManager *)self iconManager];
+        *&v42 = scale;
+        iconFallbackShieldDataSource = [iconManager2 imageForKey:iconAttributeKey value:iconAttributeValue contentScale:size sizeGroup:iconFallbackShieldDataSource2 modifiers:v42];
 
         goto LABEL_22;
       }
     }
 
-    else if (!v22 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
+    else if (!iconType && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v23 = [(MKTransitArtworkManager *)self iconManager];
-      v24 = [(MKTransitArtworkManager *)self iconManager];
-      v25 = [v24 styleAttributeTransitSystemTypeKey];
-      v26 = [v18 cartoID];
-      v27 = a6;
-      *&v28 = v27;
-      v21 = [v23 imageForKey:v25 value:v26 contentScale:a4 sizeGroup:0 modifiers:v28];
+      iconManager3 = [(MKTransitArtworkManager *)self iconManager];
+      iconManager4 = [(MKTransitArtworkManager *)self iconManager];
+      styleAttributeTransitSystemTypeKey = [iconManager4 styleAttributeTransitSystemTypeKey];
+      cartoID = [iconDataSource cartoID];
+      scaleCopy = scale;
+      *&v28 = scaleCopy;
+      iconFallbackShieldDataSource = [iconManager3 imageForKey:styleAttributeTransitSystemTypeKey value:cartoID contentScale:size sizeGroup:0 modifiers:v28];
 
-      if (v21 || (-[MKTransitArtworkManager iconManager](self, "iconManager"), v29 = objc_claimAutoreleasedReturnValue(), -[MKTransitArtworkManager iconManager](self, "iconManager"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 styleAttributeTransitTypeKey], v32 = objc_msgSend(v18, "defaultTransitType"), *&v33 = a6, objc_msgSend(v29, "imageForKey:value:contentScale:sizeGroup:modifiers:", v31, v32, a4, 0, v33), v21 = objc_claimAutoreleasedReturnValue(), v30, v29, v21))
+      if (iconFallbackShieldDataSource || (-[MKTransitArtworkManager iconManager](self, "iconManager"), v29 = objc_claimAutoreleasedReturnValue(), -[MKTransitArtworkManager iconManager](self, "iconManager"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 styleAttributeTransitTypeKey], v32 = objc_msgSend(iconDataSource, "defaultTransitType"), *&v33 = scale, objc_msgSend(v29, "imageForKey:value:contentScale:sizeGroup:modifiers:", v31, v32, size, 0, v33), iconFallbackShieldDataSource = objc_claimAutoreleasedReturnValue(), v30, v29, iconFallbackShieldDataSource))
       {
 LABEL_23:
-        if (a9 && v21)
+        if (color && iconFallbackShieldDataSource)
         {
-          if ([v21 calloutFillColor])
+          if ([iconFallbackShieldDataSource calloutFillColor])
           {
-            v43 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(v21, "calloutFillColor")}];
-            *a9 = v43;
+            v43 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(iconFallbackShieldDataSource, "calloutFillColor")}];
+            *color = v43;
           }
 
           else
           {
-            *a9 = 0;
+            *color = 0;
           }
         }
 
         goto LABEL_28;
       }
 
-      v21 = [v16 iconFallbackShieldDataSource];
+      iconFallbackShieldDataSource = [sourceCopy iconFallbackShieldDataSource];
 
-      if (!v21)
+      if (!iconFallbackShieldDataSource)
       {
         goto LABEL_28;
       }
 
-      v34 = [v16 iconFallbackShieldDataSource];
-      v35 = round(a6 * a8);
+      iconFallbackShieldDataSource2 = [sourceCopy iconFallbackShieldDataSource];
+      v35 = round(scale * multiple);
       v36 = 1.0;
-      if (a8 > 1.0)
+      if (multiple > 1.0)
       {
         v36 = v35;
       }
 
-      v21 = [(MKTransitArtworkManager *)self _vkImageWithShieldDataSource:v34 size:a4 featureType:a5 scale:v11 nightMode:a6 widthPaddingMultiple:v36];
+      iconFallbackShieldDataSource = [(MKTransitArtworkManager *)self _vkImageWithShieldDataSource:iconFallbackShieldDataSource2 size:size featureType:type scale:modeCopy nightMode:scale widthPaddingMultiple:v36];
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v21 = 0;
+    iconFallbackShieldDataSource = 0;
     goto LABEL_28;
   }
 
-  if (v17 != 1)
+  if (artworkSourceType != 1)
   {
-    v21 = 0;
+    iconFallbackShieldDataSource = 0;
     goto LABEL_29;
   }
 
-  v18 = [v16 shieldDataSource];
-  v19 = round(a6 * a8);
+  iconDataSource = [sourceCopy shieldDataSource];
+  v19 = round(scale * multiple);
   v20 = 1.0;
-  if (a8 > 1.0)
+  if (multiple > 1.0)
   {
     v20 = v19;
   }
 
-  v21 = [(MKTransitArtworkManager *)self _vkImageWithShieldDataSource:v18 size:a4 featureType:a5 scale:v11 nightMode:a6 widthPaddingMultiple:v20];
+  iconFallbackShieldDataSource = [(MKTransitArtworkManager *)self _vkImageWithShieldDataSource:iconDataSource size:size featureType:type scale:modeCopy nightMode:scale widthPaddingMultiple:v20];
 LABEL_28:
 
 LABEL_29:
 
-  return v21;
+  return iconFallbackShieldDataSource;
 }
 
-- (id)transitArtworkImageWithDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 withWidthPaddingMultiple:(double)a8
+- (id)transitArtworkImageWithDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode withWidthPaddingMultiple:(double)multiple
 {
-  v14 = a3;
+  sourceCopy = source;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __119__MKTransitArtworkManager_transitArtworkImageWithDataSource_size_featureType_scale_nightMode_withWidthPaddingMultiple___block_invoke;
   v18[3] = &unk_1E76C7198;
   v18[4] = self;
-  v19 = v14;
-  v20 = a4;
-  v21 = a5;
-  v24 = a7;
-  v22 = a6;
-  v23 = a8;
-  v15 = v14;
+  v19 = sourceCopy;
+  sizeCopy = size;
+  typeCopy = type;
+  modeCopy = mode;
+  scaleCopy = scale;
+  multipleCopy = multiple;
+  v15 = sourceCopy;
   v16 = [(MKTransitArtworkManager *)self _createImageWithBlockInAutoreleasePoolIfNeeded:v18];
 
   return v16;
@@ -217,20 +217,20 @@ id __119__MKTransitArtworkManager_transitArtworkImageWithDataSource_size_feature
   return v3;
 }
 
-- (id)transitArtworkImageWithShieldDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7
+- (id)transitArtworkImageWithShieldDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode
 {
-  v12 = a3;
+  sourceCopy = source;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __100__MKTransitArtworkManager_transitArtworkImageWithShieldDataSource_size_featureType_scale_nightMode___block_invoke;
   v16[3] = &unk_1E76C7170;
   v16[4] = self;
-  v17 = v12;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v13 = v12;
+  v17 = sourceCopy;
+  sizeCopy = size;
+  typeCopy = type;
+  scaleCopy = scale;
+  modeCopy = mode;
+  v13 = sourceCopy;
   v14 = [(MKTransitArtworkManager *)self _createImageWithBlockInAutoreleasePoolIfNeeded:v16];
 
   return v14;
@@ -244,43 +244,43 @@ id __100__MKTransitArtworkManager_transitArtworkImageWithShieldDataSource_size_f
   return v3;
 }
 
-- (id)_vkImageWithShieldDataSource:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 widthPaddingMultiple:(double)a8
+- (id)_vkImageWithShieldDataSource:(id)source size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode widthPaddingMultiple:(double)multiple
 {
-  v8 = a7;
-  v12 = a3;
+  modeCopy = mode;
+  sourceCopy = source;
   v13 = objc_alloc_init(MEMORY[0x1E69DF438]);
-  v14 = [v12 shieldText];
-  [v13 setText:v14];
+  shieldText = [sourceCopy shieldText];
+  [v13 setText:shieldText];
 
-  v15 = [v12 shieldColorString];
+  shieldColorString = [sourceCopy shieldColorString];
   VKShieldColorsFromHexString();
   [v13 setTransitLineColor:?];
 
-  if (v8)
+  if (modeCopy)
   {
-    v16 = [(MKTransitArtworkManager *)self iconManager];
-    [v13 setVariant:{objc_msgSend(v16, "darkVariant")}];
+    iconManager = [(MKTransitArtworkManager *)self iconManager];
+    [v13 setVariant:{objc_msgSend(iconManager, "darkVariant")}];
   }
 
   v17 = +[MKSystemController sharedInstance];
   [v13 setNewInterfaceEnabled:{objc_msgSend(v17, "isGlassEnabled")}];
 
-  v18 = [(MKTransitArtworkManager *)self iconManager];
-  v19 = [v12 shieldType];
-  v20 = [v12 shieldText];
-  *&v21 = a6;
-  v22 = [v18 imageForDataID:v19 text:v20 contentScale:a4 sizeGroup:v13 modifiers:v21];
+  iconManager2 = [(MKTransitArtworkManager *)self iconManager];
+  shieldType = [sourceCopy shieldType];
+  shieldText2 = [sourceCopy shieldText];
+  *&v21 = scale;
+  v22 = [iconManager2 imageForDataID:shieldType text:shieldText2 contentScale:size sizeGroup:v13 modifiers:v21];
 
   return v22;
 }
 
 - (BOOL)_isMemoryConstrained
 {
-  v3 = [(MKTransitArtworkManager *)self iconManager];
-  if (v3)
+  iconManager = [(MKTransitArtworkManager *)self iconManager];
+  if (iconManager)
   {
-    v4 = [(MKTransitArtworkManager *)self iconManager];
-    v5 = [v4 isCachingAtlases] ^ 1;
+    iconManager2 = [(MKTransitArtworkManager *)self iconManager];
+    v5 = [iconManager2 isCachingAtlases] ^ 1;
   }
 
   else
@@ -293,20 +293,20 @@ id __100__MKTransitArtworkManager_transitArtworkImageWithShieldDataSource_size_f
 
 - (void)purge
 {
-  v2 = [(MKTransitArtworkManager *)self iconManager];
-  [v2 purge];
+  iconManager = [(MKTransitArtworkManager *)self iconManager];
+  [iconManager purge];
 }
 
-- (MKTransitArtworkManager)initWithIconManager:(id)a3
+- (MKTransitArtworkManager)initWithIconManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MKTransitArtworkManager;
   v6 = [(MKTransitArtworkManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconManager, a3);
+    objc_storeStrong(&v6->_iconManager, manager);
   }
 
   return v7;

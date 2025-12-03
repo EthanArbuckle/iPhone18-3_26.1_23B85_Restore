@@ -1,23 +1,23 @@
 @interface CHUISContentConfirmationAction
-- (CHUISContentConfirmationAction)initWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5;
+- (CHUISContentConfirmationAction)initWithTimeout:(double)timeout queue:(id)queue completion:(id)completion;
 @end
 
 @implementation CHUISContentConfirmationAction
 
-- (CHUISContentConfirmationAction)initWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5
+- (CHUISContentConfirmationAction)initWithTimeout:(double)timeout queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E698E5F8];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __67__CHUISContentConfirmationAction_initWithTimeout_queue_completion___block_invoke;
   v16[3] = &unk_1E8575460;
-  v11 = v9;
+  v11 = completionCopy;
   v17 = v11;
   v12 = [v10 responderWithHandler:v16];
-  [v12 setQueue:v8];
-  [v12 setTimeout:{dispatch_time(0, (a3 * 1000000000.0))}];
+  [v12 setQueue:queueCopy];
+  [v12 setTimeout:{dispatch_time(0, (timeout * 1000000000.0))}];
   v15.receiver = self;
   v15.super_class = CHUISContentConfirmationAction;
   v13 = [(CHUISContentConfirmationAction *)&v15 initWithInfo:0 responder:v12];

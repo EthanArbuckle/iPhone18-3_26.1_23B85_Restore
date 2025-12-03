@@ -1,88 +1,88 @@
 @interface _UINavigationBarNSToolbarLayout
-- (id)_initWithLayout:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithLayout:(id)layout;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation _UINavigationBarNSToolbarLayout
 
-- (id)_initWithLayout:(id)a3
+- (id)_initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v34.receiver = self;
   v34.super_class = _UINavigationBarNSToolbarLayout;
   v5 = [(_UINavigationBarNSToolbarLayout *)&v34 init];
   v6 = v5;
   if (v5)
   {
-    v5->_style = *(v4 + 2);
-    v5->_location = *(v4 + 3);
-    v7 = [*(v4 + 4) copy];
+    v5->_style = *(layoutCopy + 2);
+    v5->_location = *(layoutCopy + 3);
+    v7 = [*(layoutCopy + 4) copy];
     customizationIdentifier = v6->_customizationIdentifier;
     v6->_customizationIdentifier = v7;
 
-    v9 = [*(v4 + 5) copy];
+    v9 = [*(layoutCopy + 5) copy];
     title = v6->_title;
     v6->_title = v9;
 
-    v11 = [*(v4 + 6) copy];
+    v11 = [*(layoutCopy + 6) copy];
     subtitle = v6->_subtitle;
     v6->_subtitle = v11;
 
-    v6->_isTitleSectionHidden = *(v4 + 8);
-    v13 = [*(v4 + 7) copy];
+    v6->_isTitleSectionHidden = *(layoutCopy + 8);
+    v13 = [*(layoutCopy + 7) copy];
     representedURL = v6->_representedURL;
     v6->_representedURL = v13;
 
-    v15 = [*(v4 + 8) copy];
+    v15 = [*(layoutCopy + 8) copy];
     representedDragItemsProvider = v6->_representedDragItemsProvider;
     v6->_representedDragItemsProvider = v15;
 
-    objc_storeStrong(&v6->_bottomPalette, *(v4 + 9));
-    v17 = [*(v4 + 10) copy];
+    objc_storeStrong(&v6->_bottomPalette, *(layoutCopy + 9));
+    v17 = [*(layoutCopy + 10) copy];
     staticLeadingItemGroups = v6->_staticLeadingItemGroups;
     v6->_staticLeadingItemGroups = v17;
 
-    v19 = [*(v4 + 11) copy];
+    v19 = [*(layoutCopy + 11) copy];
     leadingGroups = v6->_leadingGroups;
     v6->_leadingGroups = v19;
 
-    v21 = [*(v4 + 12) copy];
+    v21 = [*(layoutCopy + 12) copy];
     centerGroupsCustomized = v6->_centerGroupsCustomized;
     v6->_centerGroupsCustomized = v21;
 
-    v23 = [*(v4 + 13) copy];
+    v23 = [*(layoutCopy + 13) copy];
     centerGroupsFull = v6->_centerGroupsFull;
     v6->_centerGroupsFull = v23;
 
-    v25 = [*(v4 + 14) copy];
+    v25 = [*(layoutCopy + 14) copy];
     trailingGroups = v6->_trailingGroups;
     v6->_trailingGroups = v25;
 
-    objc_storeStrong(&v6->_pinnedTrailingGroup, *(v4 + 15));
-    v27 = [*(v4 + 16) copy];
+    objc_storeStrong(&v6->_pinnedTrailingGroup, *(layoutCopy + 15));
+    v27 = [*(layoutCopy + 16) copy];
     staticTrailingItemGroups = v6->_staticTrailingItemGroups;
     v6->_staticTrailingItemGroups = v27;
 
-    v6->_showSidebarToggle = *(v4 + 9);
-    v29 = [*(v4 + 17) copy];
+    v6->_showSidebarToggle = *(layoutCopy + 9);
+    v29 = [*(layoutCopy + 17) copy];
     backButtonTitle = v6->_backButtonTitle;
     v6->_backButtonTitle = v29;
 
-    objc_storeStrong(&v6->_backButtonImage, *(v4 + 18));
-    v31 = [*(v4 + 19) copy];
+    objc_storeStrong(&v6->_backButtonImage, *(layoutCopy + 18));
+    v31 = [*(layoutCopy + 19) copy];
     backButtonHandler = v6->_backButtonHandler;
     v6->_backButtonHandler = v31;
 
-    objc_storeStrong(&v6->_centeredInlineSearchTextField, *(v4 + 21));
-    objc_storeStrong(&v6->_trailingInlineSearchTextField, *(v4 + 20));
-    v6->_isParentVCPresentingFullScreen = *(v4 + 10);
+    objc_storeStrong(&v6->_centeredInlineSearchTextField, *(layoutCopy + 21));
+    objc_storeStrong(&v6->_trailingInlineSearchTextField, *(layoutCopy + 20));
+    v6->_isParentVCPresentingFullScreen = *(layoutCopy + 10);
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 

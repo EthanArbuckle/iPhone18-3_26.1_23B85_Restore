@@ -1,16 +1,16 @@
 @interface PNTCCCollectionFetcherWrapper
-+ (id)fetchCuratedAssetsForTCCWithLimit:(int64_t)a3 seed:(id)a4 library:(id)a5;
++ (id)fetchCuratedAssetsForTCCWithLimit:(int64_t)limit seed:(id)seed library:(id)library;
 @end
 
 @implementation PNTCCCollectionFetcherWrapper
 
-+ (id)fetchCuratedAssetsForTCCWithLimit:(int64_t)a3 seed:(id)a4 library:(id)a5
++ (id)fetchCuratedAssetsForTCCWithLimit:(int64_t)limit seed:(id)seed library:(id)library
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[TCCCollectionFetcher alloc] init:v7];
+  libraryCopy = library;
+  seedCopy = seed;
+  v9 = [[TCCCollectionFetcher alloc] init:libraryCopy];
 
-  v10 = [v9 fetchAssetsForTCCWithLimit:a3 seed:v8];
+  v10 = [v9 fetchAssetsForTCCWithLimit:limit seed:seedCopy];
 
   return v10;
 }

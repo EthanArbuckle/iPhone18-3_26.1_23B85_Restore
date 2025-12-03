@@ -1,5 +1,5 @@
 @interface UIPatternCGColor
-- (UIPatternCGColor)initWithCGColor:(CGColor *)a3;
+- (UIPatternCGColor)initWithCGColor:(CGColor *)color;
 - (id)description;
 - (void)dealloc;
 @end
@@ -15,28 +15,28 @@
   [(UICGColor *)&v3 dealloc];
 }
 
-- (UIPatternCGColor)initWithCGColor:(CGColor *)a3
+- (UIPatternCGColor)initWithCGColor:(CGColor *)color
 {
-  ColorSpace = CGColorGetColorSpace(a3);
+  ColorSpace = CGColorGetColorSpace(color);
   if (CGColorSpaceGetModel(ColorSpace) != kCGColorSpaceModelPattern)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:1056 description:@"Parameter to -[UIPatternCGColor initWithCGColor:] must be a pattern color."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:1056 description:@"Parameter to -[UIPatternCGColor initWithCGColor:] must be a pattern color."];
   }
 
   v9.receiver = self;
   v9.super_class = UIPatternCGColor;
-  return [(UICGColor *)&v9 initWithCGColor:a3];
+  return [(UICGColor *)&v9 initWithCGColor:color];
 }
 
 - (id)description
 {
   Pattern = CGColorGetPattern([(UICGColor *)self CGColor]);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(UIPatternCGColor *)self colorSpaceName];
-  v6 = [v4 stringWithFormat:@"%@ %@", v5, Pattern];
+  colorSpaceName = [(UIPatternCGColor *)self colorSpaceName];
+  pattern = [v4 stringWithFormat:@"%@ %@", colorSpaceName, Pattern];
 
-  return v6;
+  return pattern;
 }
 
 @end

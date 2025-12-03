@@ -1,31 +1,31 @@
 @interface MFDARequestQueue
-- (BOOL)processRequests:(id)a3;
-- (MFDARequestQueue)initWithAccount:(id)a3 folderID:(id)a4;
-- (id)filterRequests:(id)a3;
+- (BOOL)processRequests:(id)requests;
+- (MFDARequestQueue)initWithAccount:(id)account folderID:(id)d;
+- (id)filterRequests:(id)requests;
 @end
 
 @implementation MFDARequestQueue
 
-- (MFDARequestQueue)initWithAccount:(id)a3 folderID:(id)a4
+- (MFDARequestQueue)initWithAccount:(id)account folderID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = MFDARequestQueue;
   v9 = [(MFRequestQueue *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_folderID, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_folderID, d);
   }
 
   return v10;
 }
 
-- (id)filterRequests:(id)a3
+- (id)filterRequests:(id)requests
 {
-  v3 = a3;
+  requestsCopy = requests;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -33,7 +33,7 @@
   v7[3] = &unk_1E7AA2638;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [requestsCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -53,13 +53,13 @@ void __35__MFDARequestQueue_filterRequests___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (BOOL)processRequests:(id)a3
+- (BOOL)processRequests:(id)requests
 {
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 1;
-  v4 = [(MFDARequestQueue *)self filterRequests:a3];
+  v4 = [(MFDARequestQueue *)self filterRequests:requests];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -72,7 +72,7 @@ void __35__MFDARequestQueue_filterRequests___block_invoke(uint64_t a1, void *a2)
   v17 = v19;
   v6 = v5;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v18 = &v21;
   [v4 enumerateObjectsUsingBlock:&v11];
   if ([v6 count])

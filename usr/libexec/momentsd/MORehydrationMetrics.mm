@@ -1,27 +1,27 @@
 @interface MORehydrationMetrics
 + (id)supportedMetricKeys;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (MORehydrationMetrics)initWithCategory:(unint64_t)a3 provider:(unint64_t)a4 spiSuccess:(BOOL)a5 spiError:(id)a6 failCount:(double)a7 successAfterPreFailCount:(double)a8 totalCount:(int)a9 rehydrationTrigger:(int)a10;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (MORehydrationMetrics)initWithCategory:(unint64_t)category provider:(unint64_t)provider spiSuccess:(BOOL)success spiError:(id)error failCount:(double)count successAfterPreFailCount:(double)failCount totalCount:(int)totalCount rehydrationTrigger:(int)self0;
 - (void)setValues;
 @end
 
 @implementation MORehydrationMetrics
 
-- (MORehydrationMetrics)initWithCategory:(unint64_t)a3 provider:(unint64_t)a4 spiSuccess:(BOOL)a5 spiError:(id)a6 failCount:(double)a7 successAfterPreFailCount:(double)a8 totalCount:(int)a9 rehydrationTrigger:(int)a10
+- (MORehydrationMetrics)initWithCategory:(unint64_t)category provider:(unint64_t)provider spiSuccess:(BOOL)success spiError:(id)error failCount:(double)count successAfterPreFailCount:(double)failCount totalCount:(int)totalCount rehydrationTrigger:(int)self0
 {
-  v19 = a6;
+  errorCopy = error;
   v20 = [(MORehydrationMetrics *)self initWithLoggingEnabled:1];
   v21 = v20;
   if (v20)
   {
-    v20->_category = a3;
-    v20->_provider = a4;
-    v20->_spiSuccess = a5;
-    objc_storeStrong(&v20->_spiError, a6);
-    v21->_totalCount = a9;
-    v21->_failCount = a7;
-    v21->_successAfterPreFailCount = a8;
-    if (a9 < 1)
+    v20->_category = category;
+    v20->_provider = provider;
+    v20->_spiSuccess = success;
+    objc_storeStrong(&v20->_spiError, error);
+    v21->_totalCount = totalCount;
+    v21->_failCount = count;
+    v21->_successAfterPreFailCount = failCount;
+    if (totalCount < 1)
     {
       v21->_failPercentage = 0.0;
       v22 = 0.0;
@@ -29,12 +29,12 @@
 
     else
     {
-      v21->_failPercentage = a7 / a9 * 100.0;
-      v22 = a8 / a9 * 100.0;
+      v21->_failPercentage = count / totalCount * 100.0;
+      v22 = failCount / totalCount * 100.0;
     }
 
     v21->_successAfterPreFailPercentage = v22;
-    v21->_rehydrationTrigger = a10;
+    v21->_rehydrationTrigger = trigger;
     v21->_rehydrationSuccess = v21->_failCount == 0;
     v21->_rehydrationSuccessAfterPreFail = v21->_successAfterPreFailCount != 0;
   }
@@ -44,74 +44,74 @@
 
 + (id)supportedMetricKeys
 {
-  v2 = [objc_opt_class() integerKeys];
-  v3 = [NSMutableSet setWithSet:v2];
+  integerKeys = [objc_opt_class() integerKeys];
+  v3 = [NSMutableSet setWithSet:integerKeys];
 
-  v4 = [objc_opt_class() BOOLeanKeys];
-  v5 = [v4 allObjects];
-  [v3 addObjectsFromArray:v5];
+  bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+  allObjects = [bOOLeanKeys allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
-  v6 = [objc_opt_class() bucketedKeys];
-  v7 = [v6 allObjects];
-  [v3 addObjectsFromArray:v7];
+  bucketedKeys = [objc_opt_class() bucketedKeys];
+  allObjects2 = [bucketedKeys allObjects];
+  [v3 addObjectsFromArray:allObjects2];
 
-  v8 = [objc_opt_class() stringKeys];
-  v9 = [v8 allObjects];
-  [v3 addObjectsFromArray:v9];
+  stringKeys = [objc_opt_class() stringKeys];
+  allObjects3 = [stringKeys allObjects];
+  [v3 addObjectsFromArray:allObjects3];
 
   return v3;
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   v5 = MOAnalyticsEventEventRehydration;
   [(MORehydrationMetrics *)self setValues];
   v7.receiver = self;
   v7.super_class = MORehydrationMetrics;
-  return [(MOMetric *)&v7 submitMetricsWithError:a3 forEvent:v5];
+  return [(MOMetric *)&v7 submitMetricsWithError:error forEvent:v5];
 }
 
 - (void)setValues
 {
   v3 = [NSNumber numberWithUnsignedInteger:self->_category];
-  v4 = [(MOMetric *)self metrics];
-  [v4 setObject:v3 forKeyedSubscript:@"category"];
+  metrics = [(MOMetric *)self metrics];
+  [metrics setObject:v3 forKeyedSubscript:@"category"];
 
   v5 = [NSNumber numberWithUnsignedInteger:self->_provider];
-  v6 = [(MOMetric *)self metrics];
-  [v6 setObject:v5 forKeyedSubscript:@"provider"];
+  metrics2 = [(MOMetric *)self metrics];
+  [metrics2 setObject:v5 forKeyedSubscript:@"provider"];
 
   v7 = [NSNumber numberWithInt:self->_rehydrationTrigger];
-  v8 = [(MOMetric *)self metrics];
-  [v8 setObject:v7 forKeyedSubscript:@"rehydrationTrigger"];
+  metrics3 = [(MOMetric *)self metrics];
+  [metrics3 setObject:v7 forKeyedSubscript:@"rehydrationTrigger"];
 
   v9 = [NSNumber numberWithBool:self->_spiSuccess];
-  v10 = [(MOMetric *)self metrics];
-  [v10 setObject:v9 forKeyedSubscript:@"spiSuccess"];
+  metrics4 = [(MOMetric *)self metrics];
+  [metrics4 setObject:v9 forKeyedSubscript:@"spiSuccess"];
 
   v11 = [NSNumber numberWithBool:self->_rehydrationSuccess];
-  v12 = [(MOMetric *)self metrics];
-  [v12 setObject:v11 forKeyedSubscript:@"rehydrationSuccess"];
+  metrics5 = [(MOMetric *)self metrics];
+  [metrics5 setObject:v11 forKeyedSubscript:@"rehydrationSuccess"];
 
   v13 = [NSNumber numberWithInt:self->_successAfterPreFailCount];
-  v14 = [(MOMetric *)self metrics];
-  [v14 setObject:v13 forKeyedSubscript:@"successAfterPreFailEventCount"];
+  metrics6 = [(MOMetric *)self metrics];
+  [metrics6 setObject:v13 forKeyedSubscript:@"successAfterPreFailEventCount"];
 
   v15 = [NSNumber numberWithInt:self->_totalCount];
-  v16 = [(MOMetric *)self metrics];
-  [v16 setObject:v15 forKeyedSubscript:@"totalEventCount"];
+  metrics7 = [(MOMetric *)self metrics];
+  [metrics7 setObject:v15 forKeyedSubscript:@"totalEventCount"];
 
   v17 = [NSNumber numberWithInt:self->_failCount];
-  v18 = [(MOMetric *)self metrics];
-  [v18 setObject:v17 forKeyedSubscript:@"failEventCount"];
+  metrics8 = [(MOMetric *)self metrics];
+  [metrics8 setObject:v17 forKeyedSubscript:@"failEventCount"];
 
   v19 = [NSNumber numberWithBool:self->_rehydrationSuccessAfterPreFail];
-  v20 = [(MOMetric *)self metrics];
-  [v20 setObject:v19 forKeyedSubscript:@"rehydrationSuccessAfterPreFail"];
+  metrics9 = [(MOMetric *)self metrics];
+  [metrics9 setObject:v19 forKeyedSubscript:@"rehydrationSuccessAfterPreFail"];
 
   spiError = self->_spiError;
-  v22 = [(MOMetric *)self metrics];
-  v23 = v22;
+  metrics10 = [(MOMetric *)self metrics];
+  v23 = metrics10;
   if (spiError)
   {
     v24 = spiError;
@@ -122,15 +122,15 @@
     v24 = &stru_1003416B0;
   }
 
-  [v22 setObject:v24 forKeyedSubscript:@"spiError"];
+  [metrics10 setObject:v24 forKeyedSubscript:@"spiError"];
 
   v25 = [NSNumber numberWithDouble:self->_failPercentage];
-  v26 = [(MOMetric *)self metrics];
-  [v26 setObject:v25 forKeyedSubscript:@"failPercentage"];
+  metrics11 = [(MOMetric *)self metrics];
+  [metrics11 setObject:v25 forKeyedSubscript:@"failPercentage"];
 
   v28 = [NSNumber numberWithDouble:self->_successAfterPreFailPercentage];
-  v27 = [(MOMetric *)self metrics];
-  [v27 setObject:v28 forKeyedSubscript:@"successAfterPreFailPercentage"];
+  metrics12 = [(MOMetric *)self metrics];
+  [metrics12 setObject:v28 forKeyedSubscript:@"successAfterPreFailPercentage"];
 }
 
 @end

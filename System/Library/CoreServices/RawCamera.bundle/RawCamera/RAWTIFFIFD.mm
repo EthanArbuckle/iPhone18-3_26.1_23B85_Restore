@@ -1,19 +1,19 @@
 @interface RAWTIFFIFD
-- (RAWTIFFIFD)initWithNamespace:(id)a3 reverseNamespace:(id)a4;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)dumpMemoryInfoKey:(id)a3 indent:(unint64_t)a4;
-- (void)dumpObjCInfoKey:(id)a3 value:(id)a4 indent:(unint64_t)a5;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (RAWTIFFIFD)initWithNamespace:(id)namespace reverseNamespace:(id)reverseNamespace;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)dumpMemoryInfoKey:(id)key indent:(unint64_t)indent;
+- (void)dumpObjCInfoKey:(id)key value:(id)value indent:(unint64_t)indent;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation RAWTIFFIFD
 
-- (RAWTIFFIFD)initWithNamespace:(id)a3 reverseNamespace:(id)a4
+- (RAWTIFFIFD)initWithNamespace:(id)namespace reverseNamespace:(id)reverseNamespace
 {
-  v6 = a3;
-  v7 = a4;
+  namespaceCopy = namespace;
+  reverseNamespaceCopy = reverseNamespace;
   v32.receiver = self;
   v32.super_class = RAWTIFFIFD;
   v12 = [(RAWTIFFIFD *)&v32 init];
@@ -25,28 +25,28 @@
     v21 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v17, v18, v19, v20);
     objc_msgSend_setMTagsByName_(v12, v22, v21, v23, v24);
 
-    objc_msgSend_setMNamespace_(v12, v25, v6, v26, v27);
-    objc_msgSend_setMNamespaceReverse_(v12, v28, v7, v29, v30);
+    objc_msgSend_setMNamespace_(v12, v25, namespaceCopy, v26, v27);
+    objc_msgSend_setMNamespaceReverse_(v12, v28, reverseNamespaceCopy, v29, v30);
   }
 
   return v12;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   mTagsByID = self->mTagsByID;
-  v6 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, a3, v3, v4);
+  v6 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, subscript, v3, v4);
   v10 = objc_msgSend_objectForKeyedSubscript_(mTagsByID, v7, v6, v8, v9);
 
   return v10;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  v42 = a3;
-  v9 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v6, a4, v7, v8);
+  objectCopy = object;
+  v9 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v6, subscript, v7, v8);
   v14 = objc_msgSend_mTagsByID(self, v10, v11, v12, v13);
-  objc_msgSend_setObject_forKeyedSubscript_(v14, v15, v42, v9, v16);
+  objc_msgSend_setObject_forKeyedSubscript_(v14, v15, objectCopy, v9, v16);
 
   v21 = objc_msgSend_mNamespace(self, v17, v18, v19, v20);
   v25 = objc_msgSend_objectForKeyedSubscript_(v21, v22, v9, v23, v24);
@@ -57,13 +57,13 @@
   {
     v34 = objc_msgSend_mTagsByName(self, v30, v31, v32, v33);
     v39 = objc_msgSend_lowercaseString(v29, v35, v36, v37, v38);
-    objc_msgSend_setObject_forKeyedSubscript_(v34, v40, v42, v39, v41);
+    objc_msgSend_setObject_forKeyedSubscript_(v34, v40, objectCopy, v39, v41);
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v7 = a3;
+  subscriptCopy = subscript;
   if ((atomic_load_explicit(&qword_27DE37DA0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_27DE37DA0))
   {
     qword_27DE37D98 = objc_msgSend_regularExpressionWithPattern_options_error_(MEMORY[0x277CCAC68], v4, @"([[:digit:]]+(?:%[[:digit:]]+)?\\[[[:digit:]]+\\])|([[:digit:]]+(?:%[[:digit:]]+)?)|([[:alpha:]][[:alnum:]]*(?:%[[:digit:]]+)?\\[[[:digit:]]\\])|([[:alpha:]][[:alnum:]]*(?:%[[:digit:]]+)?)", 1, 0);
@@ -82,7 +82,7 @@
     __cxa_guard_release(&qword_27DE37DC0);
   }
 
-  v8 = objc_msgSend_componentsSeparatedByString_(v7, v4, @".", v5, v6);
+  v8 = objc_msgSend_componentsSeparatedByString_(subscriptCopy, v4, @".", v5, v6);
   v13 = objc_msgSend_firstObject(v8, v9, v10, v11, v12);
   v14 = qword_27DE37D98;
   v19 = objc_msgSend_length(v13, v15, v16, v17, v18);
@@ -275,28 +275,28 @@ LABEL_32:
   return v41;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v19 = a3;
-  v6 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   v11 = objc_msgSend_mTagsByName(self, v7, v8, v9, v10);
-  v16 = objc_msgSend_lowercaseString(v6, v12, v13, v14, v15);
-  objc_msgSend_setObject_forKeyedSubscript_(v11, v17, v19, v16, v18);
+  v16 = objc_msgSend_lowercaseString(subscriptCopy, v12, v13, v14, v15);
+  objc_msgSend_setObject_forKeyedSubscript_(v11, v17, objectCopy, v16, v18);
 }
 
-- (void)dumpObjCInfoKey:(id)a3 value:(id)a4 indent:(unint64_t)a5
+- (void)dumpObjCInfoKey:(id)key value:(id)value indent:(unint64_t)indent
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = MEMORY[0x277D85DF8];
     v11 = *MEMORY[0x277D85DF8];
-    sub_2337477D0(__b, a5, 9);
+    sub_2337477D0(__b, indent, 9);
     v12 = v100;
     v13 = __b[0];
-    v14 = v8;
+    v14 = keyCopy;
     v19 = objc_msgSend_UTF8String(v14, v15, v16, v17, v18);
     v20 = __b;
     if (v12 < 0)
@@ -315,10 +315,10 @@ LABEL_32:
     v98[2] = sub_233747880;
     v98[3] = &unk_2789EE9E0;
     v98[4] = self;
-    v98[5] = a5;
-    objc_msgSend_enumerateObjectsUsingBlock_(v9, v21, v98, v22, v23);
+    v98[5] = indent;
+    objc_msgSend_enumerateObjectsUsingBlock_(valueCopy, v21, v98, v22, v23);
     v24 = *v10;
-    sub_2337477D0(__b, a5, 9);
+    sub_2337477D0(__b, indent, 9);
     if (v100 >= 0)
     {
       v25 = __b;
@@ -338,16 +338,16 @@ LABEL_32:
 
   else
   {
-    v26 = v9;
+    v26 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v27 = MEMORY[0x277D85DF8];
       v28 = *MEMORY[0x277D85DF8];
-      sub_2337477D0(__b, a5, 9);
+      sub_2337477D0(__b, indent, 9);
       v29 = v100;
       v30 = __b[0];
-      v31 = v8;
+      v31 = keyCopy;
       v36 = objc_msgSend_UTF8String(v31, v32, v33, v34, v35);
       v37 = __b;
       if (v29 < 0)
@@ -368,10 +368,10 @@ LABEL_32:
       v97[2] = sub_233747A2C;
       v97[3] = &unk_2789EEA08;
       v97[4] = self;
-      v97[5] = a5;
+      v97[5] = indent;
       objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v26, v43, v97, v44, v45);
       v46 = *v27;
-      sub_2337477D0(__b, a5, 9);
+      sub_2337477D0(__b, indent, 9);
       if (v100 >= 0)
       {
         v47 = __b;
@@ -396,7 +396,7 @@ LABEL_32:
       if (objc_opt_isKindOfClass())
       {
         v49 = *MEMORY[0x277D85DF8];
-        sub_2337477D0(__b, a5, 9);
+        sub_2337477D0(__b, indent, 9);
         if (v100 >= 0)
         {
           v50 = __b;
@@ -407,7 +407,7 @@ LABEL_32:
           v50 = __b[0];
         }
 
-        v51 = v8;
+        v51 = keyCopy;
         v56 = objc_msgSend_UTF8String(v51, v52, v53, v54, v55);
         v61 = objc_msgSend_stringValue(v48, v57, v58, v59, v60);
         v62 = v61;
@@ -428,13 +428,13 @@ LABEL_32:
         {
           v69 = *MEMORY[0x277D85DF8];
           v70 = __b;
-          sub_2337477D0(__b, a5, 9);
+          sub_2337477D0(__b, indent, 9);
           if (v100 < 0)
           {
             v70 = __b[0];
           }
 
-          v71 = v8;
+          v71 = keyCopy;
           v76 = objc_msgSend_UTF8String(v71, v72, v73, v74, v75);
           v77 = v68;
           v82 = objc_msgSend_UTF8String(v77, v78, v79, v80, v81);
@@ -453,13 +453,13 @@ LABEL_32:
           {
             v84 = *MEMORY[0x277D85DF8];
             v85 = __b;
-            sub_2337477D0(__b, a5, 9);
+            sub_2337477D0(__b, indent, 9);
             if (v100 < 0)
             {
               v85 = __b[0];
             }
 
-            v86 = v8;
+            v86 = keyCopy;
             v91 = objc_msgSend_UTF8String(v86, v87, v88, v89, v90);
             v96 = objc_msgSend_length(v83, v92, v93, v94, v95);
             fprintf(v84, "%s%s : %lu bytes\n", v85, v91, v96);
@@ -474,10 +474,10 @@ LABEL_32:
   }
 }
 
-- (void)dumpMemoryInfoKey:(id)a3 indent:(unint64_t)a4
+- (void)dumpMemoryInfoKey:(id)key indent:(unint64_t)indent
 {
   v162 = *MEMORY[0x277D85DE8];
-  v148 = a3;
+  keyCopy = key;
   v10 = objc_msgSend_mTagsByID(self, v6, v7, v8, v9);
   v15 = objc_msgSend_count(v10, v11, v12, v13, v14);
 
@@ -485,14 +485,14 @@ LABEL_32:
   {
     v20 = *MEMORY[0x277D85DF8];
     v21 = __p;
-    sub_2337477D0(__p, a4, 9);
+    sub_2337477D0(__p, indent, 9);
     if (v159 < 0)
     {
       v21 = __p[0];
     }
 
-    v22 = v148;
-    v27 = objc_msgSend_UTF8String(v148, v23, v24, v25, v26);
+    v22 = keyCopy;
+    v27 = objc_msgSend_UTF8String(keyCopy, v23, v24, v25, v26);
     v32 = objc_msgSend_mTagsByID(self, v28, v29, v30, v31);
     v37 = objc_msgSend_count(v32, v33, v34, v35, v36);
     fprintf(v20, "%s%s : TagsByID( %lu items\n", v21, v27, v37);
@@ -533,7 +533,7 @@ LABEL_32:
           if (objc_opt_isKindOfClass())
           {
             v72 = objc_msgSend_stringValue(v61, v68, v69, v70, v71);
-            objc_msgSend_dumpMemoryInfoKey_indent_(v67, v73, v72, a4 + 1, v74);
+            objc_msgSend_dumpMemoryInfoKey_indent_(v67, v73, v72, indent + 1, v74);
           }
 
           else
@@ -543,13 +543,13 @@ LABEL_32:
             {
               v72 = objc_msgSend_stringValue(v61, v75, v76, v77, v78);
               v79 = v67[2](v67);
-              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v80, v72, v79, a4 + 1);
+              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v80, v72, v79, indent + 1);
             }
 
             else
             {
               v72 = objc_msgSend_stringValue(v61, v75, v76, v77, v78);
-              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v81, v72, v67, a4 + 1);
+              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v81, v72, v67, indent + 1);
             }
           }
         }
@@ -561,7 +561,7 @@ LABEL_32:
     }
 
     v82 = *MEMORY[0x277D85DF8];
-    sub_2337477D0(__p, a4, 9);
+    sub_2337477D0(__p, indent, 9);
     if (v159 >= 0)
     {
       v83 = __p;
@@ -586,14 +586,14 @@ LABEL_32:
   {
     v90 = *MEMORY[0x277D85DF8];
     v91 = __p;
-    sub_2337477D0(__p, a4, 9);
+    sub_2337477D0(__p, indent, 9);
     if (v159 < 0)
     {
       v91 = __p[0];
     }
 
-    v92 = v148;
-    v97 = objc_msgSend_UTF8String(v148, v93, v94, v95, v96);
+    v92 = keyCopy;
+    v97 = objc_msgSend_UTF8String(keyCopy, v93, v94, v95, v96);
     v102 = objc_msgSend_mTagsByName(self, v98, v99, v100, v101);
     v107 = objc_msgSend_count(v102, v103, v104, v105, v106);
     fprintf(v90, "%s%s : TagsByName( %lu items\n", v91, v97, v107);
@@ -634,7 +634,7 @@ LABEL_32:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            objc_msgSend_dumpMemoryInfoKey_indent_(v140, v141, v130, a4 + 1, v142);
+            objc_msgSend_dumpMemoryInfoKey_indent_(v140, v141, v130, indent + 1, v142);
           }
 
           else
@@ -643,12 +643,12 @@ LABEL_32:
             if (objc_opt_isKindOfClass())
             {
               v144 = v140[2](v140);
-              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v145, v130, v144, a4 + 1);
+              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v145, v130, v144, indent + 1);
             }
 
             else
             {
-              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v143, v130, v140, a4 + 1);
+              objc_msgSend_dumpObjCInfoKey_value_indent_(self, v143, v130, v140, indent + 1);
             }
           }
         }
@@ -660,7 +660,7 @@ LABEL_32:
     }
 
     v146 = *MEMORY[0x277D85DF8];
-    sub_2337477D0(__p, a4, 9);
+    sub_2337477D0(__p, indent, 9);
     if (v159 >= 0)
     {
       v147 = __p;

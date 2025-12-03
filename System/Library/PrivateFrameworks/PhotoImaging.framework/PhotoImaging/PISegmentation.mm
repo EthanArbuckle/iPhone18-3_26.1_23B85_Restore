@@ -1,33 +1,33 @@
 @interface PISegmentation
-+ ($2753767B6D5E71768FC0A26EE39D5FB2)settlingEffectGatingStatisticsFromScores:(SEL)a3;
-+ (BOOL)tryLoadSegmentationForColdAsset:(id)a3;
-+ (CGImage)createFullExtentPreviewImageForWallpaperAtURL:(id)a3 error:(id *)a4;
-+ (id)_styleFromOptions:(id)a3 item:(id)a4;
-+ (id)segmentationLoaderForAsset:(id)a3;
-+ (unint64_t)_layerStackOptionsFromOptions:(id)a3;
-+ (unint64_t)settlingEffectGatingFailuresFromScores:(id)a3;
-+ (void)_createReadOnlyCopyOfPosterAtURL:(id)a3 exportToURL:(id)a4 options:(id)a5 completion:(id)a6;
-+ (void)_upgradeFullPosterAtURL:(id)a3 exportToURL:(id)a4 options:(id)a5 completion:(id)a6;
-+ (void)_upgradeWallpaperAtURL:(id)a3 existingEditConfiguration:(id)a4 exportToURL:(id)a5 options:(id)a6 completion:(id)a7;
-+ (void)cancelSegmentationForAsset:(id)a3;
-+ (void)computeSegmentationScoresForAsset:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)exportWallpaperForAsset:(id)a3 toURL:(id)a4 options:(id)a5 completion:(id)a6;
-+ (void)loadSegmentationDataForAsset:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)loadSegmentationItemForAsset:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)setSegmentationLoader:(id)a3 forAsset:(id)a4;
-+ (void)upgradePosterConfiguration:(id)a3 atURL:(id)a4 exportTo:(id)a5 options:(id)a6 completion:(id)a7;
-+ (void)upgradeWallpaperAtURL:(id)a3 exportToURL:(id)a4 options:(id)a5 completion:(id)a6;
++ ($2753767B6D5E71768FC0A26EE39D5FB2)settlingEffectGatingStatisticsFromScores:(SEL)scores;
++ (BOOL)tryLoadSegmentationForColdAsset:(id)asset;
++ (CGImage)createFullExtentPreviewImageForWallpaperAtURL:(id)l error:(id *)error;
++ (id)_styleFromOptions:(id)options item:(id)item;
++ (id)segmentationLoaderForAsset:(id)asset;
++ (unint64_t)_layerStackOptionsFromOptions:(id)options;
++ (unint64_t)settlingEffectGatingFailuresFromScores:(id)scores;
++ (void)_createReadOnlyCopyOfPosterAtURL:(id)l exportToURL:(id)rL options:(id)options completion:(id)completion;
++ (void)_upgradeFullPosterAtURL:(id)l exportToURL:(id)rL options:(id)options completion:(id)completion;
++ (void)_upgradeWallpaperAtURL:(id)l existingEditConfiguration:(id)configuration exportToURL:(id)rL options:(id)options completion:(id)completion;
++ (void)cancelSegmentationForAsset:(id)asset;
++ (void)computeSegmentationScoresForAsset:(id)asset options:(id)options completion:(id)completion;
++ (void)exportWallpaperForAsset:(id)asset toURL:(id)l options:(id)options completion:(id)completion;
++ (void)loadSegmentationDataForAsset:(id)asset options:(id)options completion:(id)completion;
++ (void)loadSegmentationItemForAsset:(id)asset options:(id)options completion:(id)completion;
++ (void)setSegmentationLoader:(id)loader forAsset:(id)asset;
++ (void)upgradePosterConfiguration:(id)configuration atURL:(id)l exportTo:(id)to options:(id)options completion:(id)completion;
++ (void)upgradeWallpaperAtURL:(id)l exportToURL:(id)rL options:(id)options completion:(id)completion;
 @end
 
 @implementation PISegmentation
 
-+ (void)loadSegmentationDataForAsset:(id)a3 options:(id)a4 completion:(id)a5
++ (void)loadSegmentationDataForAsset:(id)asset options:(id)options completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!assetCopy)
   {
     v20 = NUAssertLogger_27086();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -49,8 +49,8 @@
         v28 = dispatch_get_specific(*v22);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v28;
         v40 = 2114;
@@ -61,8 +61,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v39 = v27;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -71,10 +71,10 @@
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  v11 = [v8 objectForKeyedSubscript:PISegmentationOptionLayoutConfiguration];
-  v12 = [v8 objectForKeyedSubscript:PISegmentationOptionLayoutProvider];
-  v13 = [v8 objectForKeyedSubscript:PISegmentationOptionSegmentationData];
+  v10 = completionCopy;
+  v11 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionLayoutConfiguration];
+  v12 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionLayoutProvider];
+  v13 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionSegmentationData];
   if (v11)
   {
     objc_opt_class();
@@ -110,7 +110,7 @@ LABEL_15:
     }
   }
 
-  v14 = [[PISegmentationLoader alloc] initWithParallaxAsset:v7];
+  v14 = [[PISegmentationLoader alloc] initWithParallaxAsset:assetCopy];
   v15 = v14;
   if (v11)
   {
@@ -123,13 +123,13 @@ LABEL_15:
   [v15 setPerformMediaAnalysisInProcess:1];
   if (v13)
   {
-    v16 = [v13 item];
+    item = [v13 item];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __66__PISegmentation_loadSegmentationDataForAsset_options_completion___block_invoke;
     v36[3] = &unk_1E82AC8E0;
     v37 = v10;
-    [v15 refreshSegmentationItem:v16 completion:v36];
+    [v15 refreshSegmentationItem:item completion:v36];
   }
 
   else
@@ -142,7 +142,7 @@ LABEL_15:
     v35 = v10;
     [v34 loadSegmentationItemWithCompletion:v33];
 
-    v16 = v34;
+    item = v34;
   }
 
 LABEL_18:
@@ -185,13 +185,13 @@ void __66__PISegmentation_loadSegmentationDataForAsset_options_completion___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-+ (CGImage)createFullExtentPreviewImageForWallpaperAtURL:(id)a3 error:(id *)a4
++ (CGImage)createFullExtentPreviewImageForWallpaperAtURL:(id)l error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  lCopy = l;
+  if (lCopy)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -199,41 +199,41 @@ void __66__PISegmentation_loadSegmentationDataForAsset_options_completion___bloc
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"PISegmentation.m" lineNumber:844 description:{@"Invalid parameter not satisfying: %@", @"sourceURL != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PISegmentation.m" lineNumber:844 description:{@"Invalid parameter not satisfying: %@", @"sourceURL != nil"}];
 
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
   }
 
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:a1 file:@"PISegmentation.m" lineNumber:845 description:{@"Invalid parameter not satisfying: %@", @"outError != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PISegmentation.m" lineNumber:845 description:{@"Invalid parameter not satisfying: %@", @"outError != nil"}];
 
 LABEL_3:
-  v8 = [PISegmentationLoader loadCompoundLayerStackFromWallpaperURL:v7 options:2 error:a4];
+  v8 = [PISegmentationLoader loadCompoundLayerStackFromWallpaperURL:lCopy options:2 error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 portraitLayerStack];
-    v11 = [v10 backgroundBackfillLayer];
-    if (v11)
+    portraitLayerStack = [v8 portraitLayerStack];
+    backgroundBackfillLayer = [portraitLayerStack backgroundBackfillLayer];
+    if (backgroundBackfillLayer)
     {
       v12 = objc_alloc(MEMORY[0x1E695F620]);
       v13 = [v12 initWithOptions:MEMORY[0x1E695E0F8]];
-      v14 = [PISegmentationHelper imageFromImageLayer:v11];
-      v15 = [v10 foregroundBackfillLayer];
-      if (v15)
+      v14 = [PISegmentationHelper imageFromImageLayer:backgroundBackfillLayer];
+      foregroundBackfillLayer = [portraitLayerStack foregroundBackfillLayer];
+      if (foregroundBackfillLayer)
       {
-        v16 = [PISegmentationHelper imageFromImageLayer:v15];
+        v16 = [PISegmentationHelper imageFromImageLayer:foregroundBackfillLayer];
         v17 = [v16 imageByCompositingOverImage:v14];
 
         v14 = v17;
       }
 
-      v18 = [v10 layout];
-      [v18 imageSize];
+      layout = [portraitLayerStack layout];
+      [layout imageSize];
       v21 = v19;
       v22 = v20;
       if (v19 == 0.0 || v20 == 0.0 || v19 == *MEMORY[0x1E69BDDB0] && v20 == *(MEMORY[0x1E69BDDB0] + 8))
@@ -255,7 +255,7 @@ LABEL_3:
         v23 = v19 / v20;
       }
 
-      [v11 pixelSize];
+      [backgroundBackfillLayer pixelSize];
       PFSizeWithAspectRatioFittingSize();
       v26 = v25;
       v28 = v27;
@@ -266,14 +266,14 @@ LABEL_3:
       v24 = [v13 createCGImage:v29 fromRect:?];
       if (!v24)
       {
-        *a4 = [MEMORY[0x1E69B3A48] failureError:@"Failed to render image" object:v7];
+        *error = [MEMORY[0x1E69B3A48] failureError:@"Failed to render image" object:lCopy];
       }
     }
 
     else
     {
-      [MEMORY[0x1E69B3A48] missingError:@"Missing required layer in layer stack" object:v7];
-      *a4 = v24 = 0;
+      [MEMORY[0x1E69B3A48] missingError:@"Missing required layer in layer stack" object:lCopy];
+      *error = v24 = 0;
     }
   }
 
@@ -285,29 +285,29 @@ LABEL_3:
   return v24;
 }
 
-+ (void)upgradePosterConfiguration:(id)a3 atURL:(id)a4 exportTo:(id)a5 options:(id)a6 completion:(id)a7
++ (void)upgradePosterConfiguration:(id)configuration atURL:(id)l exportTo:(id)to options:(id)options completion:(id)completion
 {
   v100 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v72 = a4;
-  v70 = a5;
-  v12 = a6;
-  v61 = a7;
-  v13 = [v12 mutableCopy];
-  v74 = v11;
-  v14 = v11;
+  configurationCopy = configuration;
+  lCopy = l;
+  toCopy = to;
+  optionsCopy = options;
+  completionCopy = completion;
+  v13 = [optionsCopy mutableCopy];
+  v74 = configurationCopy;
+  v14 = configurationCopy;
   v15 = v13;
-  v16 = [v14 editConfiguration];
-  v17 = [v16 style];
+  editConfiguration = [v14 editConfiguration];
+  style = [editConfiguration style];
 
-  if (v17)
+  if (style)
   {
-    v18 = [MEMORY[0x1E69C0788] dictionaryWithStyle:v17];
+    v18 = [MEMORY[0x1E69C0788] dictionaryWithStyle:style];
     [v15 setObject:v18 forKeyedSubscript:PISegmentationOptionStyle];
   }
 
-  v19 = [MEMORY[0x1E69C0938] deviceConfiguration];
-  v20 = [v12 objectForKeyedSubscript:PISegmentationOptionLayoutConfiguration];
+  deviceConfiguration = [MEMORY[0x1E69C0938] deviceConfiguration];
+  v20 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionLayoutConfiguration];
   if (v20)
   {
     v94 = 0;
@@ -317,7 +317,7 @@ LABEL_3:
     {
       v23 = v21;
 
-      v19 = v23;
+      deviceConfiguration = v23;
     }
 
     else
@@ -341,9 +341,9 @@ LABEL_3:
 
   group = dispatch_group_create();
   v25 = [v74 copy];
-  v26 = [v74 media];
-  v68 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v26, "count")}];
-  v27 = [v12 objectForKeyedSubscript:PISegmentationOptionLayerStackOptions];
+  media = [v74 media];
+  v68 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(media, "count")}];
+  v27 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionLayerStackOptions];
   v28 = v27;
   if (v27)
   {
@@ -385,10 +385,10 @@ LABEL_3:
   }
 
   v62 = v20;
-  v64 = [v12 objectForKeyedSubscript:PISegmentationOptionAllowedLayoutStrategies];
+  v64 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionAllowedLayoutStrategies];
   if (v64)
   {
-    v32 = [v64 unsignedIntegerValue];
+    unsignedIntegerValue = [v64 unsignedIntegerValue];
     if (*MEMORY[0x1E69B3D78] != -1)
     {
       dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_309_27127);
@@ -398,19 +398,19 @@ LABEL_3:
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v97 = v32;
+      v97 = unsignedIntegerValue;
       _os_log_impl(&dword_1C7694000, v33, OS_LOG_TYPE_INFO, "Upgrading poster media: Changing allowed layout strategies to %lu", buf, 0xCu);
     }
 
-    [v25 setAllowedLayoutStrategies:v32];
+    [v25 setAllowedLayoutStrategies:unsignedIntegerValue];
   }
 
   v69 = v25;
-  v60 = v19;
-  v63 = v12;
+  v60 = deviceConfiguration;
+  v63 = optionsCopy;
   v34 = MEMORY[0x1E696AD98];
-  v35 = [v74 editConfiguration];
-  v36 = [v34 numberWithBool:{objc_msgSend(v35, "preserveLegacyHeadroom")}];
+  editConfiguration2 = [v74 editConfiguration];
+  v36 = [v34 numberWithBool:{objc_msgSend(editConfiguration2, "preserveLegacyHeadroom")}];
   v75 = v15;
   [v15 setObject:v36 forKeyedSubscript:PISegmentationOptionPreserveLegacyHeadroom];
 
@@ -418,7 +418,7 @@ LABEL_3:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v26;
+  obj = media;
   v37 = [obj countByEnumeratingWithState:&v90 objects:v95 count:16];
   if (v37)
   {
@@ -427,7 +427,7 @@ LABEL_3:
     do
     {
       v40 = 0;
-      v41 = v17;
+      v41 = style;
       do
       {
         if (*v91 != v39)
@@ -446,30 +446,30 @@ LABEL_3:
         if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
         {
           v44 = v43;
-          v45 = [v42 assetUUID];
+          assetUUID = [v42 assetUUID];
           *buf = 138543618;
-          v97 = v45;
+          v97 = assetUUID;
           v98 = 2114;
           v99 = v75;
           _os_log_impl(&dword_1C7694000, v44, OS_LOG_TYPE_INFO, "Upgrading poster media: %{public}@ with options: %{public}@", buf, 0x16u);
         }
 
-        v46 = [v42 subpath];
-        v47 = [v72 URLByAppendingPathComponent:v46];
+        subpath = [v42 subpath];
+        v47 = [lCopy URLByAppendingPathComponent:subpath];
 
-        v48 = [v42 subpath];
-        v49 = [v70 URLByAppendingPathComponent:v48];
+        subpath2 = [v42 subpath];
+        v49 = [toCopy URLByAppendingPathComponent:subpath2];
 
-        v50 = [v42 editConfiguration];
-        v17 = [v50 style];
+        editConfiguration3 = [v42 editConfiguration];
+        style = [editConfiguration3 style];
 
-        if (v17)
+        if (style)
         {
-          v51 = [MEMORY[0x1E69C0788] dictionaryWithStyle:v17];
+          v51 = [MEMORY[0x1E69C0788] dictionaryWithStyle:style];
           [v75 setObject:v51 forKeyedSubscript:PISegmentationOptionStyle];
         }
 
-        v52 = [v42 editConfiguration];
+        editConfiguration4 = [v42 editConfiguration];
         v85[0] = MEMORY[0x1E69E9820];
         v85[1] = 3221225472;
         v85[2] = __79__PISegmentation_upgradePosterConfiguration_atURL_exportTo_options_completion___block_invoke;
@@ -480,11 +480,11 @@ LABEL_3:
         v88 = v68;
         v53 = group;
         v89 = v53;
-        [a1 _upgradeWallpaperAtURL:v47 existingEditConfiguration:v52 exportToURL:v49 options:v75 completion:v85];
+        [self _upgradeWallpaperAtURL:v47 existingEditConfiguration:editConfiguration4 exportToURL:v49 options:v75 completion:v85];
 
         dispatch_group_wait(v53, 0xFFFFFFFFFFFFFFFFLL);
         ++v40;
-        v41 = v17;
+        v41 = style;
       }
 
       while (v38 != v40);
@@ -503,14 +503,14 @@ LABEL_3:
   v79 = obj;
   v80 = v69;
   v81 = v60;
-  v82 = v70;
-  v83 = v72;
-  v84 = v61;
-  v73 = v72;
-  v71 = v70;
+  v82 = toCopy;
+  v83 = lCopy;
+  v84 = completionCopy;
+  v73 = lCopy;
+  v71 = toCopy;
   v67 = v60;
   v55 = v69;
-  v56 = v61;
+  v56 = completionCopy;
   v57 = obj;
   v58 = v68;
   dispatch_group_notify(group, v54, block);
@@ -685,25 +685,25 @@ LABEL_22:
 LABEL_23:
 }
 
-+ (void)_createReadOnlyCopyOfPosterAtURL:(id)a3 exportToURL:(id)a4 options:(id)a5 completion:(id)a6
++ (void)_createReadOnlyCopyOfPosterAtURL:(id)l exportToURL:(id)rL options:(id)options completion:(id)completion
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  completionCopy = completion;
   v70 = 0;
-  v11 = [MEMORY[0x1E69C07E8] loadFromURL:v8 error:&v70];
+  v11 = [MEMORY[0x1E69C07E8] loadFromURL:lCopy error:&v70];
   v12 = v70;
   if (v11)
   {
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v9 path];
-    v15 = [v13 fileExistsAtPath:v14];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [rLCopy path];
+    v15 = [defaultManager fileExistsAtPath:path];
 
     if ((v15 & 1) == 0)
     {
       v69 = v12;
-      v16 = [v13 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v69];
+      v16 = [defaultManager createDirectoryAtURL:rLCopy withIntermediateDirectories:1 attributes:0 error:&v69];
       v17 = v69;
 
       if ((v16 & 1) == 0)
@@ -717,16 +717,16 @@ LABEL_23:
         if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
         {
           v47 = v38;
-          v48 = [v9 path];
+          path2 = [rLCopy path];
           *buf = 138543618;
-          v73 = v48;
+          v73 = path2;
           v74 = 2114;
           v75 = v17;
           _os_log_error_impl(&dword_1C7694000, v47, OS_LOG_TYPE_ERROR, "Failed to create destination: '%{public}@', error: %{public}@", buf, 0x16u);
         }
 
-        obj = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create destination" object:v9 underlyingError:v17];
-        v10[2](v10, 0);
+        obj = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create destination" object:rLCopy underlyingError:v17];
+        completionCopy[2](completionCopy, 0);
 LABEL_43:
 
         v12 = v17;
@@ -736,22 +736,22 @@ LABEL_43:
       v12 = v17;
     }
 
-    v56 = v13;
-    v57 = v10;
-    v18 = [v11 media];
-    v55 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
+    v56 = defaultManager;
+    v57 = completionCopy;
+    media = [v11 media];
+    v55 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(media, "count")}];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obj = v18;
+    obj = media;
     v19 = [obj countByEnumeratingWithState:&v65 objects:v71 count:16];
     v58 = v11;
     if (v19)
     {
       v20 = v19;
       v60 = *v66;
-      v61 = v9;
+      v61 = rLCopy;
       v21 = off_1E82A8000;
 LABEL_7:
       v22 = 0;
@@ -763,16 +763,16 @@ LABEL_7:
         }
 
         v23 = *(*(&v65 + 1) + 8 * v22);
-        v24 = [v23 subpath];
-        v25 = v8;
-        v26 = [v8 URLByAppendingPathComponent:v24];
+        subpath = [v23 subpath];
+        v25 = lCopy;
+        editConfiguration = [lCopy URLByAppendingPathComponent:subpath];
 
-        v27 = [v23 subpath];
-        v28 = [v61 URLByAppendingPathComponent:v27];
+        subpath2 = [v23 subpath];
+        v28 = [v61 URLByAppendingPathComponent:subpath2];
 
         v29 = v21[149];
         v64 = v12;
-        v30 = [(__objc2_class *)v29 loadCompoundLayerStackFromWallpaperURL:v26 options:1 error:&v64];
+        v30 = [(__objc2_class *)v29 loadCompoundLayerStackFromWallpaperURL:editConfiguration options:1 error:&v64];
         v17 = v64;
 
         if (!v30)
@@ -793,24 +793,24 @@ LABEL_7:
             dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_309_27127);
           }
 
-          v9 = v61;
+          rLCopy = v61;
           v41 = *MEMORY[0x1E69B3D80];
-          v10 = v57;
+          completionCopy = v57;
           if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
           {
             v51 = v41;
-            v52 = [v26 path];
+            path3 = [editConfiguration path];
             *buf = 138543618;
-            v73 = v52;
+            v73 = path3;
             v74 = 2114;
             v75 = v12;
             _os_log_error_impl(&dword_1C7694000, v51, OS_LOG_TYPE_ERROR, "Failed to save layer stack: '%{public}@', error: %{public}@", buf, 0x16u);
           }
 
-          v40 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to save layer stack" object:v26 underlyingError:v12];
+          v40 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to save layer stack" object:editConfiguration underlyingError:v12];
           v17 = v12;
 LABEL_36:
-          (v10[2])(v10, 0, v40);
+          (completionCopy[2])(completionCopy, 0, v40);
 
           v34 = obj;
           v35 = v55;
@@ -818,12 +818,12 @@ LABEL_36:
         }
 
         ++v22;
-        v8 = v25;
+        lCopy = v25;
         v21 = v31;
         if (v20 == v22)
         {
           v20 = [obj countByEnumeratingWithState:&v65 objects:v71 count:16];
-          v9 = v61;
+          rLCopy = v61;
           v11 = v58;
           if (v20)
           {
@@ -839,21 +839,21 @@ LABEL_36:
         dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_309_27127);
       }
 
-      v9 = v61;
+      rLCopy = v61;
       v39 = *MEMORY[0x1E69B3D80];
-      v10 = v57;
+      completionCopy = v57;
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
       {
         v49 = v39;
-        v50 = [v26 path];
+        path4 = [editConfiguration path];
         *buf = 138543618;
-        v73 = v50;
+        v73 = path4;
         v74 = 2114;
         v75 = v17;
         _os_log_error_impl(&dword_1C7694000, v49, OS_LOG_TYPE_ERROR, "Failed to load layer stack: '%{public}@', error: %{public}@", buf, 0x16u);
       }
 
-      v40 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load layer stack" object:v26 underlyingError:v17];
+      v40 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load layer stack" object:editConfiguration underlyingError:v17];
       v30 = 0;
       goto LABEL_36;
     }
@@ -864,49 +864,49 @@ LABEL_14:
     v35 = v55;
     [v34 setMedia:v55];
     v62 = v12;
-    v36 = [v34 saveToURL:v9 error:&v62];
+    v36 = [v34 saveToURL:rLCopy error:&v62];
     v17 = v62;
 
     if (v36)
     {
-      v25 = v8;
-      v26 = [v34 editConfiguration];
-      v10 = v57;
-      (v57[2])(v57, v26, 0);
+      v25 = lCopy;
+      editConfiguration = [v34 editConfiguration];
+      completionCopy = v57;
+      (v57[2])(v57, editConfiguration, 0);
     }
 
     else
     {
-      v10 = v57;
+      completionCopy = v57;
       if (*MEMORY[0x1E69B3D78] != -1)
       {
         dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_309_27127);
       }
 
-      v25 = v8;
+      v25 = lCopy;
       v42 = *MEMORY[0x1E69B3D80];
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
       {
         v53 = v42;
-        v54 = [v9 path];
+        path5 = [rLCopy path];
         *buf = 138543618;
-        v73 = v54;
+        v73 = path5;
         v74 = 2114;
         v75 = v17;
         _os_log_error_impl(&dword_1C7694000, v53, OS_LOG_TYPE_ERROR, "Failed to save poster configuration to '%{public}@', error: %{public}@", buf, 0x16u);
       }
 
       v43 = MEMORY[0x1E69B3A48];
-      v26 = [v9 path];
-      v44 = [v43 errorWithCode:1 reason:@"Failed to save poster configuration" object:v26 underlyingError:v17];
+      editConfiguration = [rLCopy path];
+      v44 = [v43 errorWithCode:1 reason:@"Failed to save poster configuration" object:editConfiguration underlyingError:v17];
       (v57[2])(v57, 0, v44);
     }
 
 LABEL_42:
 
-    v8 = v25;
+    lCopy = v25;
     v11 = v58;
-    v13 = v56;
+    defaultManager = v56;
     goto LABEL_43;
   }
 
@@ -919,28 +919,28 @@ LABEL_42:
   if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
   {
     v45 = v37;
-    v46 = [v8 path];
+    path6 = [lCopy path];
     *buf = 138543618;
-    v73 = v46;
+    v73 = path6;
     v74 = 2114;
     v75 = v12;
     _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Failed to load poster configuration from: '%{public}@', error: %{public}@", buf, 0x16u);
   }
 
-  v13 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load poster configuration from source URL" object:v8 underlyingError:v12];
-  (v10[2])(v10, 0, v13);
+  defaultManager = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load poster configuration from source URL" object:lCopy underlyingError:v12];
+  (completionCopy[2])(completionCopy, 0, defaultManager);
 LABEL_44:
 }
 
-+ (void)_upgradeFullPosterAtURL:(id)a3 exportToURL:(id)a4 options:(id)a5 completion:(id)a6
++ (void)_upgradeFullPosterAtURL:(id)l exportToURL:(id)rL options:(id)options completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  completionCopy = completion;
   v24 = 0;
-  v14 = [MEMORY[0x1E69C07E8] loadFromURL:v10 error:&v24];
+  v14 = [MEMORY[0x1E69C07E8] loadFromURL:lCopy error:&v24];
   v15 = v24;
   if (v14)
   {
@@ -948,10 +948,10 @@ LABEL_44:
     v20[1] = 3221225472;
     v20[2] = __73__PISegmentation__upgradeFullPosterAtURL_exportToURL_options_completion___block_invoke;
     v20[3] = &unk_1E82AC868;
-    v21 = v10;
-    v22 = v11;
-    v23 = v13;
-    [a1 upgradePosterConfiguration:v14 atURL:v21 exportTo:v22 options:v12 completion:v20];
+    v21 = lCopy;
+    v22 = rLCopy;
+    v23 = completionCopy;
+    [self upgradePosterConfiguration:v14 atURL:v21 exportTo:v22 options:optionsCopy completion:v20];
 
     v16 = v21;
   }
@@ -967,16 +967,16 @@ LABEL_44:
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
     {
       v18 = v17;
-      v19 = [v10 path];
+      path = [lCopy path];
       *buf = 138543618;
-      v26 = v19;
+      v26 = path;
       v27 = 2114;
       v28 = v15;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Failed to load poster configuration from: '%{public}@', error: %{public}@", buf, 0x16u);
     }
 
-    v16 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load poster configuration from source URL" object:v10 underlyingError:v15];
-    (*(v13 + 2))(v13, 0, v16);
+    v16 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load poster configuration from source URL" object:lCopy underlyingError:v15];
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -1040,21 +1040,21 @@ void __73__PISegmentation__upgradeFullPosterAtURL_exportToURL_options_completion
   }
 }
 
-+ (void)_upgradeWallpaperAtURL:(id)a3 existingEditConfiguration:(id)a4 exportToURL:(id)a5 options:(id)a6 completion:(id)a7
++ (void)_upgradeWallpaperAtURL:(id)l existingEditConfiguration:(id)configuration exportToURL:(id)rL options:(id)options completion:(id)completion
 {
   v71 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v49 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  configurationCopy = configuration;
+  rLCopy = rL;
+  optionsCopy = options;
+  completionCopy = completion;
   v66 = 0;
-  v51 = [PISegmentationLoader loadSegmentationItemFromWallpaperURL:v12 error:&v66];
+  v51 = [PISegmentationLoader loadSegmentationItemFromWallpaperURL:lCopy error:&v66];
   v16 = v66;
   if (v51)
   {
-    v48 = [MEMORY[0x1E69C0938] deviceConfiguration];
-    v47 = [v14 objectForKeyedSubscript:PISegmentationOptionLayoutConfiguration];
+    deviceConfiguration = [MEMORY[0x1E69C0938] deviceConfiguration];
+    v47 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionLayoutConfiguration];
     if (v47)
     {
       v65 = 0;
@@ -1064,7 +1064,7 @@ void __73__PISegmentation__upgradeFullPosterAtURL_exportToURL_options_completion
       {
         v19 = v17;
 
-        v48 = v19;
+        deviceConfiguration = v19;
       }
 
       else
@@ -1087,12 +1087,12 @@ void __73__PISegmentation__upgradeFullPosterAtURL_exportToURL_options_completion
     }
 
     v64 = v16;
-    v50 = [PISegmentationLoader loadCompoundLayerStackFromWallpaperURL:v12 options:0 error:&v64];
+    v50 = [PISegmentationLoader loadCompoundLayerStackFromWallpaperURL:lCopy options:0 error:&v64];
     v46 = v64;
 
     if (!v50)
     {
-      v15[2](v15, 0, v46);
+      completionCopy[2](completionCopy, 0, v46);
 LABEL_32:
 
       v16 = v46;
@@ -1105,24 +1105,24 @@ LABEL_32:
     v59[3] = &unk_1E82AC818;
     v44 = v51;
     v60 = v44;
-    v21 = v14;
+    v21 = optionsCopy;
     v61 = v21;
-    v62 = v49;
-    v63 = a1;
+    v62 = configurationCopy;
+    selfCopy = self;
     v43 = MEMORY[0x1CCA61740](v59);
-    v22 = [v50 portraitLayerStack];
-    if ([v22 spatialPhotoEnabled])
+    portraitLayerStack = [v50 portraitLayerStack];
+    if ([portraitLayerStack spatialPhotoEnabled])
     {
-      v23 = [v44 isSpatialPhotoAvailable];
+      isSpatialPhotoAvailable = [v44 isSpatialPhotoAvailable];
 
-      if (!v23)
+      if (!isSpatialPhotoAvailable)
       {
         v24 = 1;
         goto LABEL_19;
       }
 
-      v22 = PIParallaxDefaultSpatialPhotoProducer();
-      [v22 enableBackgroundDownload];
+      portraitLayerStack = PIParallaxDefaultSpatialPhotoProducer();
+      [portraitLayerStack enableBackgroundDownload];
       v24 = 257;
     }
 
@@ -1132,16 +1132,16 @@ LABEL_32:
     }
 
 LABEL_19:
-    v42 = [a1 _layerStackOptionsFromOptions:v21];
+    v42 = [self _layerStackOptionsFromOptions:v21];
     v25 = [v21 objectForKeyedSubscript:PISegmentationOptionAllowedLayoutStrategies];
     v26 = v25;
     if (v25)
     {
-      v27 = [v25 unsignedIntValue];
-      v41 = v27;
+      unsignedIntValue = [v25 unsignedIntValue];
+      v41 = unsignedIntValue;
       if (PFPosterIsAdaptiveLayoutEnabled())
       {
-        v45 = (v27 >> 1) & 1;
+        v45 = (unsignedIntValue >> 1) & 1;
       }
 
       else
@@ -1157,9 +1157,9 @@ LABEL_19:
     }
 
     v28 = [v21 objectForKeyedSubscript:PISegmentationOptionOverrideEditConfiguration];
-    v29 = [v28 BOOLValue];
+    bOOLValue = [v28 BOOLValue];
 
-    if (v29)
+    if (bOOLValue)
     {
       if (*MEMORY[0x1E69B3D78] != -1)
       {
@@ -1184,10 +1184,10 @@ LABEL_19:
     v68 = __Block_byref_object_copy__27181;
     v69 = __Block_byref_object_dispose__27182;
     v70 = 0;
-    if ((v29 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v33 = [v50 layout];
-      v32 = [v33 layoutByUpgradingToConfiguration:v48];
+      layout = [v50 layout];
+      v32 = [layout layoutByUpgradingToConfiguration:deviceConfiguration];
 
       v34 = (v43)[2](v43, v50, v32);
       v35 = *(*&buf[8] + 40);
@@ -1197,26 +1197,26 @@ LABEL_19:
     }
 
     v40 = v31;
-    v36 = [v31 style];
+    style = [v31 style];
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __98__PISegmentation__upgradeWallpaperAtURL_existingEditConfiguration_exportToURL_options_completion___block_invoke_159;
     v52[3] = &unk_1E82AC840;
-    v53 = v12;
-    v54 = v13;
-    v58 = v29 ^ 1;
-    v55 = v15;
+    v53 = lCopy;
+    v54 = rLCopy;
+    v58 = bOOLValue ^ 1;
+    v55 = completionCopy;
     v57 = buf;
     v37 = v43;
     v56 = v37;
     LOBYTE(v39) = v45;
-    v38 = [PISegmentationLoader saveSegmentationItem:v44 layerStackOptions:v42 | v24 configuration:v40 style:v36 layout:v32 allowedLayoutStrategies:v41 shouldRecalculateLayoutProperties:v39 toWallpaperURL:v54 completion:v52];
+    v38 = [PISegmentationLoader saveSegmentationItem:v44 layerStackOptions:v42 | v24 configuration:v40 style:style layout:v32 allowedLayoutStrategies:v41 shouldRecalculateLayoutProperties:v39 toWallpaperURL:v54 completion:v52];
 
     _Block_object_dispose(buf, 8);
     goto LABEL_32;
   }
 
-  v15[2](v15, 0, v16);
+  completionCopy[2](completionCopy, 0, v16);
 LABEL_33:
 }
 
@@ -1400,14 +1400,14 @@ LABEL_23:
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)upgradeWallpaperAtURL:(id)a3 exportToURL:(id)a4 options:(id)a5 completion:(id)a6
++ (void)upgradeWallpaperAtURL:(id)l exportToURL:(id)rL options:(id)options completion:(id)completion
 {
   v63 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!lCopy)
   {
     v28 = NUAssertLogger_27086();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1429,8 +1429,8 @@ LABEL_23:
         v41 = dispatch_get_specific(*v30);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v42 callStackSymbols];
+        v45 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v41;
         *&buf[12] = 2114;
@@ -1442,8 +1442,8 @@ LABEL_23:
     else if (v33)
     {
 LABEL_28:
-      v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v40 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v40;
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1455,7 +1455,7 @@ LABEL_34:
     __break(1u);
   }
 
-  if (!v11)
+  if (!rLCopy)
   {
     v34 = NUAssertLogger_27086();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -1485,8 +1485,8 @@ LABEL_34:
       v46 = dispatch_get_specific(*v36);
       v47 = MEMORY[0x1E696AF00];
       v48 = v46;
-      v49 = [v47 callStackSymbols];
-      v50 = [v49 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [v47 callStackSymbols];
+      v50 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v46;
       *&buf[12] = 2114;
@@ -1497,7 +1497,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v14 = v13;
+  v14 = completionCopy;
   if (*MEMORY[0x1E69B3D78] != -1)
   {
     dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_309_27127);
@@ -1507,23 +1507,23 @@ LABEL_34:
   if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v10 path];
-    v18 = [v11 path];
+    path = [lCopy path];
+    path2 = [rLCopy path];
     *buf = 138543874;
-    *&buf[4] = v17;
+    *&buf[4] = path;
     *&buf[12] = 2114;
-    *&buf[14] = v18;
+    *&buf[14] = path2;
     *&buf[22] = 2114;
-    v61 = v12;
+    v61 = optionsCopy;
     _os_log_impl(&dword_1C7694000, v16, OS_LOG_TYPE_DEFAULT, "Upgrading wallpaper at %{public}@ to %{public}@, options: %{public}@", buf, 0x20u);
   }
 
-  v19 = [v12 objectForKeyedSubscript:PISegmentationOptionOutOfProcess];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionOutOfProcess];
+  bOOLValue = [v19 BOOLValue];
 
-  if (v20)
+  if (bOOLValue)
   {
-    v21 = [v12 mutableCopy];
+    v21 = [optionsCopy mutableCopy];
     [v21 setObject:0 forKeyedSubscript:PISegmentationOptionOutOfProcess];
     v56 = 0;
     v57 = &v56;
@@ -1543,38 +1543,38 @@ LABEL_34:
 
     v23 = v22;
     _Block_object_dispose(&v56, 8);
-    v24 = [v22 sharedAnalysisService];
+    sharedAnalysisService = [v22 sharedAnalysisService];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __71__PISegmentation_upgradeWallpaperAtURL_exportToURL_options_completion___block_invoke;
     v54[3] = &unk_1E82AC7C8;
     v55 = v14;
-    [v24 requestWallpaperUpgradeAtURL:v10 toDestinationURL:v11 withOptions:v21 andCompletionHandler:v54];
+    [sharedAnalysisService requestWallpaperUpgradeAtURL:lCopy toDestinationURL:rLCopy withOptions:v21 andCompletionHandler:v54];
   }
 
   else
   {
-    [a1 ensureResources];
+    [self ensureResources];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __71__PISegmentation_upgradeWallpaperAtURL_exportToURL_options_completion___block_invoke_2;
     v51[3] = &unk_1E82AC7F0;
     v52 = v14;
-    v53 = a1;
+    selfCopy = self;
     v25 = MEMORY[0x1CCA61740](v51);
-    v26 = [v12 objectForKeyedSubscript:PISegmentationOptionWallpaperUpgradeMode];
-    v27 = [v26 integerValue];
+    v26 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionWallpaperUpgradeMode];
+    integerValue = [v26 integerValue];
 
-    switch(v27)
+    switch(integerValue)
     {
       case 2:
-        [a1 _createReadOnlyCopyOfPosterAtURL:v10 exportToURL:v11 options:v12 completion:v25];
+        [self _createReadOnlyCopyOfPosterAtURL:lCopy exportToURL:rLCopy options:optionsCopy completion:v25];
         break;
       case 1:
-        [a1 _upgradeFullPosterAtURL:v10 exportToURL:v11 options:v12 completion:v25];
+        [self _upgradeFullPosterAtURL:lCopy exportToURL:rLCopy options:optionsCopy completion:v25];
         break;
       case 0:
-        [a1 _upgradeWallpaperAtURL:v10 existingEditConfiguration:0 exportToURL:v11 options:v12 completion:v25];
+        [self _upgradeWallpaperAtURL:lCopy existingEditConfiguration:0 exportToURL:rLCopy options:optionsCopy completion:v25];
         break;
     }
 
@@ -1610,12 +1610,12 @@ uint64_t __71__PISegmentation_upgradeWallpaperAtURL_exportToURL_options_completi
   return [v2 freeResources];
 }
 
-+ (id)_styleFromOptions:(id)a3 item:(id)a4
++ (id)_styleFromOptions:(id)options item:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:PISegmentationOptionStyle];
+  optionsCopy = options;
+  itemCopy = item;
+  v7 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionStyle];
   if (!v7)
   {
     goto LABEL_18;
@@ -1625,7 +1625,7 @@ uint64_t __71__PISegmentation_upgradeWallpaperAtURL_exportToURL_options_completi
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v9 = [v6 availableStyles];
+    availableStyles = [itemCopy availableStyles];
     v17[1] = MEMORY[0x1E69E9820];
     v17[2] = 3221225472;
     v17[3] = __41__PISegmentation__styleFromOptions_item___block_invoke;
@@ -1640,13 +1640,13 @@ uint64_t __71__PISegmentation_upgradeWallpaperAtURL_exportToURL_options_completi
     }
 
 LABEL_18:
-    v12 = [v5 objectForKeyedSubscript:PISegmentationOptionStyleCategory];
+    v12 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionStyleCategory];
     if (v12)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v6 suggestedStyleForCategory:v12];
+        v11 = [itemCopy suggestedStyleForCategory:v12];
         goto LABEL_26;
       }
 
@@ -1732,11 +1732,11 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
   return v4;
 }
 
-+ (unint64_t)_layerStackOptionsFromOptions:(id)a3
++ (unint64_t)_layerStackOptionsFromOptions:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:PISegmentationOptionLayerStackOptions];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionLayerStackOptions];
   if (v4)
   {
     objc_opt_class();
@@ -1762,8 +1762,8 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
           v15 = dispatch_get_specific(*v9);
           v16 = MEMORY[0x1E696AF00];
           v17 = v15;
-          v18 = [v16 callStackSymbols];
-          v19 = [v18 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v16 callStackSymbols];
+          v19 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v21 = v15;
           v22 = 2114;
@@ -1774,8 +1774,8 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
 
       else if (v12)
       {
-        v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [v13 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v21 = v14;
         _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1784,25 +1784,25 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
       _NUAssertFailHandler();
     }
 
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-+ (void)exportWallpaperForAsset:(id)a3 toURL:(id)a4 options:(id)a5 completion:(id)a6
++ (void)exportWallpaperForAsset:(id)asset toURL:(id)l options:(id)options completion:(id)completion
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  assetCopy = asset;
+  lCopy = l;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!assetCopy)
   {
     v21 = NUAssertLogger_27086();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1813,7 +1813,7 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_27086();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -1821,11 +1821,11 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
     {
       if (v26)
       {
-        v34 = dispatch_get_specific(*v23);
+        v34 = dispatch_get_specific(*callStackSymbols);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v23 = [v35 callStackSymbols];
-        v37 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v34;
         v54 = 2114;
@@ -1836,10 +1836,10 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v53 = v23;
+      v53 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1847,7 +1847,7 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
     goto LABEL_17;
   }
 
-  if (!v11)
+  if (!lCopy)
   {
     v28 = NUAssertLogger_27086();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1858,7 +1858,7 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v30 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_27086();
     v31 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -1866,8 +1866,8 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
     {
       if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v53 = v33;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1879,11 +1879,11 @@ uint64_t __41__PISegmentation__styleFromOptions_item___block_invoke(uint64_t a1,
 LABEL_17:
     if (v31)
     {
-      v38 = dispatch_get_specific(*v23);
+      v38 = dispatch_get_specific(*callStackSymbols);
       v39 = MEMORY[0x1E696AF00];
       v40 = v38;
-      v41 = [v39 callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v39 callStackSymbols];
+      v42 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v53 = v38;
       v54 = 2114;
@@ -1896,14 +1896,14 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v14 = v13;
-  [a1 ensureResources];
+  v14 = completionCopy;
+  [self ensureResources];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __67__PISegmentation_exportWallpaperForAsset_toURL_options_completion___block_invoke;
   v49[3] = &unk_1E82AC750;
   v50 = v14;
-  v51 = a1;
+  selfCopy = self;
   v15 = v14;
   v16 = MEMORY[0x1CCA61740](v49);
   v43[0] = MEMORY[0x1E69E9820];
@@ -1911,15 +1911,15 @@ LABEL_19:
   v43[2] = __67__PISegmentation_exportWallpaperForAsset_toURL_options_completion___block_invoke_2;
   v43[3] = &unk_1E82AC778;
   v47 = v16;
-  v48 = a1;
-  v44 = v12;
-  v45 = v11;
-  v46 = v10;
-  v17 = v10;
+  selfCopy2 = self;
+  v44 = optionsCopy;
+  v45 = lCopy;
+  v46 = assetCopy;
+  v17 = assetCopy;
   v18 = v16;
-  v19 = v11;
-  v20 = v12;
-  [a1 loadSegmentationItemForAsset:v17 options:v20 completion:v43];
+  v19 = lCopy;
+  v20 = optionsCopy;
+  [self loadSegmentationItemForAsset:v17 options:v20 completion:v43];
 }
 
 uint64_t __67__PISegmentation_exportWallpaperForAsset_toURL_options_completion___block_invoke(uint64_t a1)
@@ -1964,62 +1964,62 @@ void __67__PISegmentation_exportWallpaperForAsset_toURL_options_completion___blo
   }
 }
 
-+ (id)segmentationLoaderForAsset:(id)a3
++ (id)segmentationLoaderForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  assetCopy = asset;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = s_segmentationLoaderMap;
-  v7 = [v4 localIdentifier];
-  v8 = [v6 objectForKey:v7];
+  localIdentifier = [assetCopy localIdentifier];
+  v8 = [v6 objectForKey:localIdentifier];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-+ (void)setSegmentationLoader:(id)a3 forAsset:(id)a4
++ (void)setSegmentationLoader:(id)loader forAsset:(id)asset
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = a1;
-  objc_sync_enter(v7);
+  loaderCopy = loader;
+  assetCopy = asset;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = s_segmentationLoaderMap;
   if (s_segmentationLoaderMap)
   {
-    if (v12)
+    if (loaderCopy)
     {
 LABEL_3:
-      v9 = [v6 localIdentifier];
-      [v8 setObject:v12 forKey:v9];
+      localIdentifier = [assetCopy localIdentifier];
+      [v8 setObject:loaderCopy forKey:localIdentifier];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v11 = s_segmentationLoaderMap;
-    s_segmentationLoaderMap = v10;
+    s_segmentationLoaderMap = strongToStrongObjectsMapTable;
 
     v8 = s_segmentationLoaderMap;
-    if (v12)
+    if (loaderCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [v6 localIdentifier];
-  [v8 removeObjectForKey:v9];
+  localIdentifier = [assetCopy localIdentifier];
+  [v8 removeObjectForKey:localIdentifier];
 LABEL_6:
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-+ (BOOL)tryLoadSegmentationForColdAsset:(id)a3
++ (BOOL)tryLoadSegmentationForColdAsset:(id)asset
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v22 = 0;
@@ -2040,7 +2040,7 @@ LABEL_6:
   v21 = &v22;
   v7 = v5;
   v20 = v7;
-  [a1 loadSegmentationItemForAsset:v4 options:v6 completion:&v16];
+  [self loadSegmentationItemForAsset:assetCopy options:v6 completion:&v16];
   v8 = dispatch_time(0, 10000000000);
   v9 = dispatch_group_wait(v7, v8);
   if (*MEMORY[0x1E69B3D78] != -1)
@@ -2051,8 +2051,8 @@ LABEL_6:
   v10 = *MEMORY[0x1E69B3D80];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v4 localIdentifier];
-    v12 = v11;
+    localIdentifier = [assetCopy localIdentifier];
+    v12 = localIdentifier;
     if (v9)
     {
       v13 = @"NO (timeout)";
@@ -2069,7 +2069,7 @@ LABEL_6:
     }
 
     *buf = 138543618;
-    v27 = v11;
+    v27 = localIdentifier;
     v28 = 2114;
     v29 = v13;
     _os_log_impl(&dword_1C7694000, v10, OS_LOG_TYPE_INFO, "Can load cold asset? %{public}@ => %{public}@", buf, 0x16u);
@@ -2089,7 +2089,7 @@ LABEL_6:
   return v14;
 }
 
-+ ($2753767B6D5E71768FC0A26EE39D5FB2)settlingEffectGatingStatisticsFromScores:(SEL)a3
++ ($2753767B6D5E71768FC0A26EE39D5FB2)settlingEffectGatingStatisticsFromScores:(SEL)scores
 {
   v6 = a4;
   v7 = [a2 settlingEffectGatingFailuresFromScores:v6];
@@ -2175,19 +2175,19 @@ LABEL_6:
   return result;
 }
 
-+ (unint64_t)settlingEffectGatingFailuresFromScores:(id)a3
++ (unint64_t)settlingEffectGatingFailuresFromScores:(id)scores
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69C0D18]];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [scores objectForKeyedSubscript:*MEMORY[0x1E69C0D18]];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-+ (void)cancelSegmentationForAsset:(id)a3
++ (void)cancelSegmentationForAsset:(id)asset
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v6 = NUAssertLogger_27086();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2209,8 +2209,8 @@ LABEL_6:
         v14 = dispatch_get_specific(*v8);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v21 = v14;
         v22 = 2114;
@@ -2221,8 +2221,8 @@ LABEL_6:
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v21 = v13;
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2231,18 +2231,18 @@ LABEL_6:
     _NUAssertFailHandler();
   }
 
-  v19 = v4;
-  v5 = [a1 segmentationLoaderForAsset:v4];
+  v19 = assetCopy;
+  v5 = [self segmentationLoaderForAsset:assetCopy];
   [v5 cancel];
 }
 
-+ (void)loadSegmentationItemForAsset:(id)a3 options:(id)a4 completion:(id)a5
++ (void)loadSegmentationItemForAsset:(id)asset options:(id)options completion:(id)completion
 {
   v74 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  specific = a4;
-  v11 = a5;
-  if (!v9)
+  assetCopy = asset;
+  specific = options;
+  completionCopy = completion;
+  if (!assetCopy)
   {
     v44 = NUAssertLogger_27086();
     v14 = "asset != nil";
@@ -2254,7 +2254,7 @@ LABEL_6:
       _os_log_error_impl(&dword_1C7694000, v44, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v13 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v15 = NUAssertLogger_27086();
     v46 = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
@@ -2262,11 +2262,11 @@ LABEL_6:
     {
       if (v46)
       {
-        specific = dispatch_get_specific(v13->super.isa);
+        specific = dispatch_get_specific(callStackSymbols->super.isa);
         v50 = MEMORY[0x1E696AF00];
         v5 = specific;
-        v13 = [v50 callStackSymbols];
-        v51 = [(PISegmentationLoader *)v13 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v50 callStackSymbols];
+        v51 = [(PISegmentationLoader *)callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = specific;
         v72 = 2114;
@@ -2278,9 +2278,9 @@ LABEL_6:
     else if (v46)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v71 = v13;
+      v71 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -2288,9 +2288,9 @@ LABEL_6:
     goto LABEL_52;
   }
 
-  v12 = v11;
-  v13 = [[PISegmentationLoader alloc] initWithParallaxAsset:v9];
-  [(PISegmentationLoader *)v13 setSourceMode:1];
+  v12 = completionCopy;
+  callStackSymbols = [[PISegmentationLoader alloc] initWithParallaxAsset:assetCopy];
+  [(PISegmentationLoader *)callStackSymbols setSourceMode:1];
   v14 = [specific objectForKeyedSubscript:PISegmentationOptionClassification];
   if (!v14)
   {
@@ -2310,7 +2310,7 @@ LABEL_6:
       _os_log_error_impl(&dword_1C7694000, v47, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v13 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v15 = NUAssertLogger_27086();
     v49 = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
@@ -2319,9 +2319,9 @@ LABEL_6:
       if (v49)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v13 = [specific componentsJoinedByString:@"\n"];
+        callStackSymbols = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v71 = v13;
+        v71 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2348,11 +2348,11 @@ LABEL_9:
 LABEL_52:
     if (v49)
     {
-      specific = dispatch_get_specific(v13->super.isa);
+      specific = dispatch_get_specific(callStackSymbols->super.isa);
       v52 = MEMORY[0x1E696AF00];
       v5 = specific;
-      v13 = [v52 callStackSymbols];
-      v53 = [(PISegmentationLoader *)v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v52 callStackSymbols];
+      v53 = [(PISegmentationLoader *)callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v71 = specific;
       v72 = 2114;
@@ -2363,7 +2363,7 @@ LABEL_52:
     goto LABEL_54;
   }
 
-  -[PISegmentationLoader setClassification:](v13, "setClassification:", [v14 unsignedIntegerValue]);
+  -[PISegmentationLoader setClassification:](callStackSymbols, "setClassification:", [v14 unsignedIntegerValue]);
 LABEL_5:
   v61 = v12;
   v6 = [specific objectForKeyedSubscript:PISegmentationOptionLayoutConfiguration];
@@ -2385,7 +2385,7 @@ LABEL_5:
     goto LABEL_55;
   }
 
-  [(PISegmentationLoader *)v13 setLayoutConfiguration:v15];
+  [(PISegmentationLoader *)callStackSymbols setLayoutConfiguration:v15];
 LABEL_11:
 
 LABEL_12:
@@ -2393,35 +2393,35 @@ LABEL_12:
   v18 = v17;
   if (v17)
   {
-    -[PISegmentationLoader setLoadFirstResourceOnly:](v13, "setLoadFirstResourceOnly:", [v17 BOOLValue]);
+    -[PISegmentationLoader setLoadFirstResourceOnly:](callStackSymbols, "setLoadFirstResourceOnly:", [v17 BOOLValue]);
   }
 
   v19 = [specific objectForKeyedSubscript:PISegmentationOptionDisableDownload];
   v20 = v19;
   if (v19)
   {
-    -[PISegmentationLoader setDisableDownload:](v13, "setDisableDownload:", [v19 BOOLValue]);
+    -[PISegmentationLoader setDisableDownload:](callStackSymbols, "setDisableDownload:", [v19 BOOLValue]);
   }
 
   v21 = [specific objectForKeyedSubscript:PISegmentationOptionPriority];
   v22 = v21;
   if (v21)
   {
-    -[PISegmentationLoader setPriority:](v13, "setPriority:", [v21 integerValue]);
+    -[PISegmentationLoader setPriority:](callStackSymbols, "setPriority:", [v21 integerValue]);
   }
 
   v23 = [specific objectForKeyedSubscript:PISegmentationOptionDisableSegmentation];
   v24 = v23;
   if (v23)
   {
-    -[PISegmentationLoader setDisableSegmentation:](v13, "setDisableSegmentation:", [v23 BOOLValue]);
+    -[PISegmentationLoader setDisableSegmentation:](callStackSymbols, "setDisableSegmentation:", [v23 BOOLValue]);
   }
 
   v25 = [specific objectForKeyedSubscript:PISegmentationOptionDisableRendering];
   v26 = v25;
   if (v25)
   {
-    -[PISegmentationLoader setDisableRendering:](v13, "setDisableRendering:", [v25 BOOLValue]);
+    -[PISegmentationLoader setDisableRendering:](callStackSymbols, "setDisableRendering:", [v25 BOOLValue]);
   }
 
   v27 = [specific objectForKeyedSubscript:PISegmentationOptionEnableSettlingEffect];
@@ -2436,25 +2436,25 @@ LABEL_12:
     v28 = 1;
   }
 
-  [(PISegmentationLoader *)v13 setDisableSettlingEffect:v28];
+  [(PISegmentationLoader *)callStackSymbols setDisableSettlingEffect:v28];
   v29 = [specific objectForKeyedSubscript:PISegmentationOptionSettlingEffectGatingLevel];
   v62 = v6;
   v55 = v29;
   if (v29)
   {
-    v30 = [v29 integerValue];
+    integerValue = [v29 integerValue];
   }
 
   else
   {
-    v30 = 2;
+    integerValue = 2;
   }
 
   v60 = v18;
-  [(PISegmentationLoader *)v13 setSettlingEffectGatingLevel:v30];
+  [(PISegmentationLoader *)callStackSymbols setSettlingEffectGatingLevel:integerValue];
   v31 = [specific objectForKeyedSubscript:PISegmentationOptionEnableSpatialPhoto];
   v32 = v31;
-  v33 = v9;
+  v33 = assetCopy;
   if (v31)
   {
     v34 = [v31 BOOLValue] ^ 1;
@@ -2465,28 +2465,28 @@ LABEL_12:
     v34 = 1;
   }
 
-  [(PISegmentationLoader *)v13 setDisableSpatialPhoto:v34];
+  [(PISegmentationLoader *)callStackSymbols setDisableSpatialPhoto:v34];
   v35 = [specific objectForKeyedSubscript:PISegmentationOptionSpatialPhotoGatingLevel];
   v36 = v35;
   v63 = v14;
   if (v35)
   {
-    v37 = [v35 integerValue];
+    integerValue2 = [v35 integerValue];
   }
 
   else
   {
-    v37 = 2;
+    integerValue2 = 2;
   }
 
   v57 = v24;
   v59 = v20;
-  [(PISegmentationLoader *)v13 setSpatialPhotoGatingLevel:v37];
+  [(PISegmentationLoader *)callStackSymbols setSpatialPhotoGatingLevel:integerValue2];
   v38 = [specific objectForKeyedSubscript:PISegmentationOptionOutOfProcess];
   v39 = v38;
   if (v38)
   {
-    -[PISegmentationLoader setPerformMediaAnalysisInProcess:](v13, "setPerformMediaAnalysisInProcess:", [v38 BOOLValue] ^ 1);
+    -[PISegmentationLoader setPerformMediaAnalysisInProcess:](callStackSymbols, "setPerformMediaAnalysisInProcess:", [v38 BOOLValue] ^ 1);
   }
 
   v58 = v22;
@@ -2494,8 +2494,8 @@ LABEL_12:
   v41 = [specific objectForKeyedSubscript:PISegmentationOptionPetsFaceRegions];
   if (v40 | v41)
   {
-    [(PISegmentationLoader *)v13 setPetsRegions:v40];
-    [(PISegmentationLoader *)v13 setPetsFaceRegions:v41];
+    [(PISegmentationLoader *)callStackSymbols setPetsRegions:v40];
+    [(PISegmentationLoader *)callStackSymbols setPetsFaceRegions:v41];
   }
 
   v65[0] = MEMORY[0x1E69E9820];
@@ -2503,12 +2503,12 @@ LABEL_12:
   v65[2] = __66__PISegmentation_loadSegmentationItemForAsset_options_completion___block_invoke;
   v65[3] = &unk_1E82AC700;
   v67 = v61;
-  v68 = a1;
+  selfCopy = self;
   v66 = v33;
   v42 = v33;
   v43 = v61;
-  [(PISegmentationLoader *)v13 loadSegmentationItemWithCompletion:v65];
-  [a1 setSegmentationLoader:v13 forAsset:v42];
+  [(PISegmentationLoader *)callStackSymbols loadSegmentationItemWithCompletion:v65];
+  [self setSegmentationLoader:callStackSymbols forAsset:v42];
 }
 
 uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___block_invoke(void *a1)
@@ -2520,13 +2520,13 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
   return [v2 setSegmentationLoader:0 forAsset:v3];
 }
 
-+ (void)computeSegmentationScoresForAsset:(id)a3 options:(id)a4 completion:(id)a5
++ (void)computeSegmentationScoresForAsset:(id)asset options:(id)options completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!assetCopy)
   {
     v17 = NUAssertLogger_27086();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2537,7 +2537,7 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v19 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v21 = NUAssertLogger_27086();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
@@ -2545,11 +2545,11 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
     {
       if (v22)
       {
-        v30 = dispatch_get_specific(*v19);
+        v30 = dispatch_get_specific(*callStackSymbols);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v19 = [v31 callStackSymbols];
-        v33 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v30;
         v44 = 2114;
@@ -2560,10 +2560,10 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v43 = v19;
+      v43 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -2571,7 +2571,7 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!optionsCopy)
   {
     v24 = NUAssertLogger_27086();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -2582,7 +2582,7 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v19 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v26 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v21 = NUAssertLogger_27086();
     v27 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
@@ -2590,8 +2590,8 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
     {
       if (v27)
       {
-        v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v29 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v43 = v29;
         _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2603,11 +2603,11 @@ uint64_t __66__PISegmentation_loadSegmentationItemForAsset_options_completion___
 LABEL_17:
     if (v27)
     {
-      v34 = dispatch_get_specific(*v19);
+      v34 = dispatch_get_specific(*callStackSymbols);
       v35 = MEMORY[0x1E696AF00];
       v36 = v34;
-      v37 = [v35 callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v35 callStackSymbols];
+      v38 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v43 = v34;
       v44 = 2114;
@@ -2620,23 +2620,23 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
-  v12 = [v9 objectForKeyedSubscript:PISegmentationOptionEnableSettlingEffect];
-  v13 = [v12 BOOLValue];
+  v11 = completionCopy;
+  v12 = [optionsCopy objectForKeyedSubscript:PISegmentationOptionEnableSettlingEffect];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v9 mutableCopy];
-  v15 = [MEMORY[0x1E696AD98] numberWithInt:v13 ^ 1u];
+  v14 = [optionsCopy mutableCopy];
+  v15 = [MEMORY[0x1E696AD98] numberWithInt:bOOLValue ^ 1u];
   [v14 setObject:v15 forKeyedSubscript:PISegmentationOptionLowResolution];
 
-  [a1 ensureResources];
+  [self ensureResources];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __71__PISegmentation_computeSegmentationScoresForAsset_options_completion___block_invoke;
   v39[3] = &unk_1E82AC6D8;
   v40 = v11;
-  v41 = a1;
+  selfCopy = self;
   v16 = v11;
-  [a1 loadSegmentationItemForAsset:v8 options:v14 completion:v39];
+  [self loadSegmentationItemForAsset:assetCopy options:v14 completion:v39];
 }
 
 uint64_t __71__PISegmentation_computeSegmentationScoresForAsset_options_completion___block_invoke(uint64_t a1, void *a2, void *a3)

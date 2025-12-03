@@ -1,14 +1,14 @@
 @interface PGPersonActivityMeaningFeatureExtractor
-- (PGPersonActivityMeaningFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
-- (id)labelsForVersion:(int64_t)a3;
+- (PGPersonActivityMeaningFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
+- (id)labelsForVersion:(int64_t)version;
 @end
 
 @implementation PGPersonActivityMeaningFeatureExtractor
 
-- (id)labelsForVersion:(int64_t)a3
+- (id)labelsForVersion:(int64_t)version
 {
   v7[12] = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (version == 1)
   {
     v7[0] = @"PersonBeachWater";
     v7[1] = @"PersonToys";
@@ -36,13 +36,13 @@
   return v4;
 }
 
-- (PGPersonActivityMeaningFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGPersonActivityMeaningFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
-  v5 = [(PGPersonActivityMeaningFeatureExtractor *)self labelsForVersion:a3, a4];
+  error = [(PGPersonActivityMeaningFeatureExtractor *)self labelsForVersion:version, error];
   v6 = +[PGGraphMomentNode personActivityMeaningOfMoment];
   v9.receiver = self;
   v9.super_class = PGPersonActivityMeaningFeatureExtractor;
-  v7 = [(PGGraphFeatureExtractor *)&v9 initWithName:@"PersonActivityMeaning" featureNames:v5 relation:v6 labelForTargetBlock:&__block_literal_global_8306];
+  v7 = [(PGGraphFeatureExtractor *)&v9 initWithName:@"PersonActivityMeaning" featureNames:error relation:v6 labelForTargetBlock:&__block_literal_global_8306];
 
   return v7;
 }

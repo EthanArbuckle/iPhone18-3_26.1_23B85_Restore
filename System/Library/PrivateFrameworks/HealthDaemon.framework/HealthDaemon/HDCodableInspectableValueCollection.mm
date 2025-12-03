@@ -1,33 +1,33 @@
 @interface HDCodableInspectableValueCollection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCollection:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCollection:(id)collection;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableInspectableValueCollection
 
-- (void)addCollection:(id)a3
+- (void)addCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   collections = self->_collections;
-  v8 = v4;
+  v8 = collectionCopy;
   if (!collections)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_collections;
     self->_collections = v6;
 
-    v4 = v8;
+    collectionCopy = v8;
     collections = self->_collections;
   }
 
-  [(NSMutableArray *)collections addObject:v4];
+  [(NSMutableArray *)collections addObject:collectionCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableInspectableValueCollection;
   v4 = [(HDCodableInspectableValueCollection *)&v8 description];
-  v5 = [(HDCodableInspectableValueCollection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableInspectableValueCollection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,11 +45,11 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_collectionType];
-    [v3 setObject:v4 forKey:@"collectionType"];
+    [dictionary setObject:v4 forKey:@"collectionType"];
   }
 
   if ([(NSMutableArray *)self->_collections count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -84,25 +84,25 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"collection"];
+    [dictionary setObject:v5 forKey:@"collection"];
   }
 
   elementTags = self->_elementTags;
   if (elementTags)
   {
-    v13 = [(HDCodableMedicalCodingList *)elementTags dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"elementTags"];
+    dictionaryRepresentation2 = [(HDCodableMedicalCodingList *)elementTags dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"elementTags"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     collectionType = self->_collectionType;
@@ -149,23 +149,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_collectionType;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_collectionType;
+    *(toCopy + 32) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(HDCodableInspectableValueCollection *)self collectionsCount])
   {
     [v9 clearCollections];
-    v5 = [(HDCodableInspectableValueCollection *)self collectionsCount];
-    if (v5)
+    collectionsCount = [(HDCodableInspectableValueCollection *)self collectionsCount];
+    if (collectionsCount)
     {
-      v6 = v5;
+      v6 = collectionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HDCodableInspectableValueCollection *)self collectionAtIndex:i];
@@ -180,10 +180,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -211,7 +211,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{a3, v17}];
+        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{zone, v17}];
         [v6 addCollection:v12];
 
         ++v11;
@@ -224,7 +224,7 @@
     while (v9);
   }
 
-  v13 = [(HDCodableMedicalCodingList *)self->_elementTags copyWithZone:a3];
+  v13 = [(HDCodableMedicalCodingList *)self->_elementTags copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
@@ -232,24 +232,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_collectionType != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_collectionType != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -257,13 +257,13 @@ LABEL_11:
   }
 
   collections = self->_collections;
-  if (collections | *(v4 + 2) && ![(NSMutableArray *)collections isEqual:?])
+  if (collections | *(equalCopy + 2) && ![(NSMutableArray *)collections isEqual:?])
   {
     goto LABEL_11;
   }
 
   elementTags = self->_elementTags;
-  if (elementTags | *(v4 + 3))
+  if (elementTags | *(equalCopy + 3))
   {
     v8 = [(HDCodableMedicalCodingList *)elementTags isEqual:?];
   }
@@ -294,14 +294,14 @@ LABEL_12:
   return v4 ^ [(HDCodableMedicalCodingList *)self->_elementTags hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 32))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 32))
   {
-    self->_collectionType = *(v4 + 1);
+    self->_collectionType = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -309,7 +309,7 @@ LABEL_12:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

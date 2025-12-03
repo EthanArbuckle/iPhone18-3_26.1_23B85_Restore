@@ -1,46 +1,46 @@
 @interface PKSettingsDeepLinkController
-- (PKSettingsDeepLinkController)initWithDataSource:(id)a3 delegate:(id)a4;
-- (id)_percentEncodeReferrerIdentifier:(id)a3;
-- (void)_presentTransactionDetailsForTransactionWithIdentifier:(id)a3 confirmPaymentOfferPlan:(BOOL)a4;
-- (void)_presentTransactionDetailsForTransactionWithServiceIdentifier:(id)a3 transactionSourceIdentifier:(id)a4 confirmPaymentOfferPlan:(BOOL)a5;
-- (void)handleDeepLinkResourceDictionary:(id)a3 withCompletion:(id)a4;
+- (PKSettingsDeepLinkController)initWithDataSource:(id)source delegate:(id)delegate;
+- (id)_percentEncodeReferrerIdentifier:(id)identifier;
+- (void)_presentTransactionDetailsForTransactionWithIdentifier:(id)identifier confirmPaymentOfferPlan:(BOOL)plan;
+- (void)_presentTransactionDetailsForTransactionWithServiceIdentifier:(id)identifier transactionSourceIdentifier:(id)sourceIdentifier confirmPaymentOfferPlan:(BOOL)plan;
+- (void)handleDeepLinkResourceDictionary:(id)dictionary withCompletion:(id)completion;
 @end
 
 @implementation PKSettingsDeepLinkController
 
-- (PKSettingsDeepLinkController)initWithDataSource:(id)a3 delegate:(id)a4
+- (PKSettingsDeepLinkController)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = PKSettingsDeepLinkController;
   v8 = [(PKSettingsDeepLinkController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
 }
 
-- (void)handleDeepLinkResourceDictionary:(id)a3 withCompletion:(id)a4
+- (void)handleDeepLinkResourceDictionary:(id)dictionary withCompletion:(id)completion
 {
   v286 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_loadWeakRetained(&self->_dataSource);
   v9 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v285 = v6;
+    v285 = dictionaryCopy;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Processing resourceDictionary %{public}@", buf, 0xCu);
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"path"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"path"];
   v265 = v8;
   if ([v10 length])
   {
@@ -56,22 +56,22 @@
   v15 = [v10 componentsSeparatedByString:@"/"];
   v16 = [v15 count];
   v266 = v15;
-  v17 = [v15 firstObject];
+  firstObject = [v15 firstObject];
   v18 = @"payment_setup_IDMS_card_on_file";
   v19 = v18;
-  if (v17 == v18)
+  if (firstObject == v18)
   {
 
     goto LABEL_14;
   }
 
-  if (!v17 || !v18)
+  if (!firstObject || !v18)
   {
 
     goto LABEL_17;
   }
 
-  v20 = [(__CFString *)v17 isEqualToString:v18];
+  v20 = [(__CFString *)firstObject isEqualToString:v18];
 
   if (v20)
   {
@@ -97,7 +97,7 @@ LABEL_14:
   }
 
 LABEL_17:
-  v25 = v17;
+  v25 = firstObject;
   v26 = @"payment_setup";
   v27 = v26;
   if (v25 == v26)
@@ -106,7 +106,7 @@ LABEL_17:
     goto LABEL_26;
   }
 
-  if (!v17 || !v26)
+  if (!firstObject || !v26)
   {
 
     goto LABEL_28;
@@ -137,7 +137,7 @@ LABEL_28:
 
   else
   {
-    if (!v17 || !v31)
+    if (!firstObject || !v31)
     {
 
       v34 = v16 > 1;
@@ -238,7 +238,7 @@ LABEL_43:
   }
 
   v261 = v34;
-  if (!v17 || !v39)
+  if (!firstObject || !v39)
   {
 
     goto LABEL_52;
@@ -249,24 +249,24 @@ LABEL_43:
   if (v41)
   {
 LABEL_49:
-    v262 = v7;
-    v42 = [v6 objectForKeyedSubscript:@"transactionIdentifier"];
-    v43 = [v6 objectForKeyedSubscript:@"serviceIdentifier"];
-    v44 = [v6 objectForKeyedSubscript:@"transactionSourceIdentifier"];
-    v45 = v6;
-    v46 = [v6 objectForKeyedSubscript:@"confirmPaymentOfferPlan"];
-    v47 = [v46 BOOLValue];
+    v262 = completionCopy;
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"transactionIdentifier"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"serviceIdentifier"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"transactionSourceIdentifier"];
+    v45 = dictionaryCopy;
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"confirmPaymentOfferPlan"];
+    bOOLValue = [v46 BOOLValue];
 
     if ([v42 length])
     {
-      [(PKSettingsDeepLinkController *)self _presentTransactionDetailsForTransactionWithIdentifier:v42 confirmPaymentOfferPlan:v47];
+      [(PKSettingsDeepLinkController *)self _presentTransactionDetailsForTransactionWithIdentifier:v42 confirmPaymentOfferPlan:bOOLValue];
     }
 
     else
     {
       if (![v43 length])
       {
-        v6 = v45;
+        dictionaryCopy = v45;
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
@@ -277,12 +277,12 @@ LABEL_49:
         goto LABEL_60;
       }
 
-      [(PKSettingsDeepLinkController *)self _presentTransactionDetailsForTransactionWithServiceIdentifier:v43 transactionSourceIdentifier:v44 confirmPaymentOfferPlan:v47];
+      [(PKSettingsDeepLinkController *)self _presentTransactionDetailsForTransactionWithServiceIdentifier:v43 transactionSourceIdentifier:v44 confirmPaymentOfferPlan:bOOLValue];
     }
 
-    v6 = v45;
+    dictionaryCopy = v45;
 LABEL_60:
-    v7 = v262;
+    completionCopy = v262;
     v21 = WeakRetained;
 
 LABEL_61:
@@ -293,14 +293,14 @@ LABEL_52:
   v48 = v38;
   v49 = @"apple-cash";
   v50 = v49;
-  v51 = v6;
+  v51 = dictionaryCopy;
   if (v48 == v49)
   {
 
     goto LABEL_68;
   }
 
-  if (!v17 || !v49)
+  if (!firstObject || !v49)
   {
 
     goto LABEL_71;
@@ -324,7 +324,7 @@ LABEL_68:
     v21 = WeakRetained;
     v58 = v53;
     v59 = v58;
-    v6 = v51;
+    dictionaryCopy = v51;
     if (v58 == @"autoReload")
     {
     }
@@ -366,17 +366,17 @@ LABEL_95:
 LABEL_124:
             if (v16 < 3)
             {
-              v65 = 0;
+              peerPaymentPass2 = 0;
             }
 
             else
             {
-              v65 = [v266 objectAtIndex:2];
+              peerPaymentPass2 = [v266 objectAtIndex:2];
             }
 
             v24 = v265;
-            v93 = [v265 peerPaymentPass];
-            [WeakRetained presentPeerPaymentRecurringPaymentWithPass:v93 presentationStyle:2 recurringPaymentIdentifier:v65 animated:1];
+            peerPaymentPass = [v265 peerPaymentPass];
+            [WeakRetained presentPeerPaymentRecurringPaymentWithPass:peerPaymentPass presentationStyle:2 recurringPaymentIdentifier:peerPaymentPass2 animated:1];
 
             goto LABEL_135;
           }
@@ -430,9 +430,9 @@ LABEL_156:
                   {
 
 LABEL_175:
-                    v65 = [v265 peerPaymentPass];
+                    peerPaymentPass2 = [v265 peerPaymentPass];
                     v114 = WeakRetained;
-                    v115 = v65;
+                    v115 = peerPaymentPass2;
                     v116 = 0;
                     goto LABEL_176;
                   }
@@ -445,19 +445,19 @@ LABEL_175:
                   }
                 }
 
-                v65 = [v265 peerPaymentPass];
+                peerPaymentPass2 = [v265 peerPaymentPass];
                 v114 = WeakRetained;
-                v115 = v65;
+                v115 = peerPaymentPass2;
                 v116 = 4;
 LABEL_176:
                 [v114 presentPassDetailsViewControllerForPass:v115 presentationStyle:2 presentingView:v116 animated:1];
-                v6 = v100;
+                dictionaryCopy = v100;
                 goto LABEL_135;
               }
             }
 
-            v65 = [v265 peerPaymentPass];
-            [WeakRetained presentPeerPaymentTransferToBankWithPass:v65];
+            peerPaymentPass2 = [v265 peerPaymentPass];
+            [WeakRetained presentPeerPaymentTransferToBankWithPass:peerPaymentPass2];
 LABEL_135:
 
             goto LABEL_63;
@@ -471,9 +471,9 @@ LABEL_135:
           }
         }
 
-        v65 = [v24 peerPaymentPass];
+        peerPaymentPass2 = [v24 peerPaymentPass];
         v66 = WeakRetained;
-        v67 = v65;
+        v67 = peerPaymentPass2;
         v68 = 1;
 LABEL_134:
         [v66 presentPassDetailsViewControllerForPass:v67 presentationStyle:2 presentingView:v68 animated:1];
@@ -482,9 +482,9 @@ LABEL_134:
     }
 
     v24 = v265;
-    v65 = [v265 peerPaymentPass];
+    peerPaymentPass2 = [v265 peerPaymentPass];
     v66 = WeakRetained;
-    v67 = v65;
+    v67 = peerPaymentPass2;
     v68 = 16;
     goto LABEL_134;
   }
@@ -499,7 +499,7 @@ LABEL_71:
     goto LABEL_87;
   }
 
-  if (!v17 || !v55)
+  if (!firstObject || !v55)
   {
 
     goto LABEL_105;
@@ -511,15 +511,15 @@ LABEL_71:
   {
 LABEL_87:
     v24 = v265;
-    v69 = [v265 peerPaymentPass];
+    peerPaymentPass3 = [v265 peerPaymentPass];
     v21 = WeakRetained;
     v70 = WeakRetained;
-    v71 = v69;
+    v71 = peerPaymentPass3;
     v72 = 4;
 LABEL_144:
     [v70 presentPassDetailsViewControllerForPass:v71 presentationStyle:2 presentingView:v72 animated:0];
 
-    v6 = v51;
+    dictionaryCopy = v51;
     goto LABEL_63;
   }
 
@@ -532,15 +532,15 @@ LABEL_105:
 
 LABEL_113:
     v24 = v265;
-    v69 = [v265 peerPaymentPass];
+    peerPaymentPass3 = [v265 peerPaymentPass];
     v21 = WeakRetained;
     v70 = WeakRetained;
-    v71 = v69;
+    v71 = peerPaymentPass3;
     v72 = 5;
     goto LABEL_144;
   }
 
-  if (!v17 || !v80)
+  if (!firstObject || !v80)
   {
 
     goto LABEL_118;
@@ -562,15 +562,15 @@ LABEL_118:
 
 LABEL_143:
     v24 = v265;
-    v69 = [v265 peerPaymentPass];
+    peerPaymentPass3 = [v265 peerPaymentPass];
     v21 = WeakRetained;
     v70 = WeakRetained;
-    v71 = v69;
+    v71 = peerPaymentPass3;
     v72 = 3;
     goto LABEL_144;
   }
 
-  if (!v17 || !v84)
+  if (!firstObject || !v84)
   {
 
     goto LABEL_148;
@@ -593,7 +593,7 @@ LABEL_148:
     goto LABEL_162;
   }
 
-  if (!v17 || !v95)
+  if (!firstObject || !v95)
   {
 
     goto LABEL_167;
@@ -604,13 +604,13 @@ LABEL_148:
   if (v97)
   {
 LABEL_162:
-    v6 = v51;
+    dictionaryCopy = v51;
     v102 = [v51 objectForKeyedSubscript:@"setupAmount"];
-    v103 = [v6 objectForKeyedSubscript:@"setupCurreny"];
-    v104 = [v6 objectForKeyedSubscript:@"setupFlowState"];
+    v103 = [dictionaryCopy objectForKeyedSubscript:@"setupCurreny"];
+    v104 = [dictionaryCopy objectForKeyedSubscript:@"setupFlowState"];
     v105 = PKPeerPaymentRegistrationFlowStateFromString(v104);
 
-    v106 = [v6 objectForKeyedSubscript:@"setupSenderAddress"];
+    v106 = [dictionaryCopy objectForKeyedSubscript:@"setupSenderAddress"];
     v263 = v102;
     v107 = [MEMORY[0x1E696AB90] decimalNumberWithString:v102];
     v108 = v107;
@@ -636,7 +636,7 @@ LABEL_167:
     goto LABEL_178;
   }
 
-  if (!v17 || !v111)
+  if (!firstObject || !v111)
   {
 
     goto LABEL_187;
@@ -652,19 +652,19 @@ LABEL_178:
     v119 = v118;
     if (v118)
     {
-      v120 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v118, 0, 0);
-      if (v120)
+      date = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v118, 0, 0);
+      if (date)
       {
 LABEL_182:
-        v42 = v120;
+        v42 = date;
         goto LABEL_183;
       }
 
       v121 = objc_alloc_init(MEMORY[0x1E696AC80]);
       [v121 setFormatOptions:275];
-      v122 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v123 = [v122 timeZone];
-      [v121 setTimeZone:v123];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      timeZone = [currentCalendar timeZone];
+      [v121 setTimeZone:timeZone];
 
       v117 = v51;
       v42 = [v121 dateFromString:v119];
@@ -672,17 +672,17 @@ LABEL_182:
       if (v42)
       {
 LABEL_183:
-        v124 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v125 = [v124 components:30 fromDate:v42];
+        currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+        v125 = [currentCalendar2 components:30 fromDate:v42];
 
         v126 = [v117 objectForKeyedSubscript:@"redemptionType"];
         v127 = v117;
-        v128 = [v126 integerValue];
+        integerValue = [v126 integerValue];
 
-        v129 = v128 == 3;
-        if (v128 >= 3)
+        v129 = integerValue == 3;
+        if (integerValue >= 3)
         {
-          v6 = v127;
+          dictionaryCopy = v127;
           v21 = WeakRetained;
           if (v129)
           {
@@ -693,7 +693,7 @@ LABEL_183:
         else
         {
           v130 = [v127 objectForKeyedSubscript:@"passUniqueID"];
-          v6 = v127;
+          dictionaryCopy = v127;
           if (v130)
           {
             [v265 paymentPassWithUniqueIdentifier:v130];
@@ -718,7 +718,7 @@ LABEL_183:
       }
     }
 
-    v120 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     goto LABEL_182;
   }
 
@@ -732,7 +732,7 @@ LABEL_187:
     goto LABEL_196;
   }
 
-  if (!v17 || !v132)
+  if (!firstObject || !v132)
   {
 
     goto LABEL_198;
@@ -748,7 +748,7 @@ LABEL_196:
     v278[1] = 3221225472;
     v278[2] = __80__PKSettingsDeepLinkController_handleDeepLinkResourceDictionary_withCompletion___block_invoke;
     v278[3] = &unk_1E79DBDF0;
-    v6 = v51;
+    dictionaryCopy = v51;
     v279 = v51;
     v280 = v265;
     v283 = v16;
@@ -772,7 +772,7 @@ LABEL_198:
     goto LABEL_210;
   }
 
-  if (!v17 || !v137)
+  if (!firstObject || !v137)
   {
 
     goto LABEL_214;
@@ -930,7 +930,7 @@ LABEL_399:
                     v174 = 0;
                     v175 = 11;
 LABEL_400:
-                    v6 = v51;
+                    dictionaryCopy = v51;
                     [WeakRetained presentAccountForFeature:5 destination:v175 fundingSourceIdentifier:v174 animated:1];
 
                     v21 = WeakRetained;
@@ -1111,7 +1111,7 @@ LABEL_214:
 
   else
   {
-    if (!v17 || !v144)
+    if (!firstObject || !v144)
     {
 
       v260 = v16 == 3;
@@ -1169,7 +1169,7 @@ LABEL_278:
 LABEL_279:
 
 LABEL_315:
-    v6 = v51;
+    dictionaryCopy = v51;
     v21 = WeakRetained;
     goto LABEL_62;
   }
@@ -1184,7 +1184,7 @@ LABEL_246:
     goto LABEL_252;
   }
 
-  if (!v17 || !v162)
+  if (!firstObject || !v162)
   {
 
     goto LABEL_259;
@@ -1277,7 +1277,7 @@ LABEL_259:
   {
 
 LABEL_281:
-    v6 = v51;
+    dictionaryCopy = v51;
     v182 = [v51 objectForKeyedSubscript:@"passUniqueID"];
     v21 = WeakRetained;
     [WeakRetained openExpressTransitSettingsForPassUniqueIdentifier:v182];
@@ -1285,7 +1285,7 @@ LABEL_281:
     goto LABEL_62;
   }
 
-  if (!v17 || !v171)
+  if (!firstObject || !v171)
   {
 
     goto LABEL_283;
@@ -1308,7 +1308,7 @@ LABEL_283:
     goto LABEL_317;
   }
 
-  if (!v17 || !v184)
+  if (!firstObject || !v184)
   {
 
     goto LABEL_319;
@@ -1343,7 +1343,7 @@ LABEL_340:
     goto LABEL_341;
   }
 
-  if (!v17 || !v200)
+  if (!firstObject || !v200)
   {
 
     goto LABEL_344;
@@ -1366,7 +1366,7 @@ LABEL_344:
     goto LABEL_363;
   }
 
-  if (!v17 || !v211)
+  if (!firstObject || !v211)
   {
 
     goto LABEL_367;
@@ -1405,18 +1405,18 @@ LABEL_384:
           _os_log_error_impl(&dword_1AD337000, v9, OS_LOG_TYPE_ERROR, "Failed to handle BankConnect auth redirect. The redirectURL is nil.", buf, 2u);
         }
 
-        v6 = v51;
+        dictionaryCopy = v51;
         v21 = WeakRetained;
         goto LABEL_208;
       }
 
       v21 = WeakRetained;
-      [WeakRetained presentAuthorizationFlowWithRedirectURL:v232 completion:v7 animated:0];
+      [WeakRetained presentAuthorizationFlowWithRedirectURL:v232 completion:completionCopy animated:0];
     }
 
     else
     {
-      v6 = v51;
+      dictionaryCopy = v51;
       v21 = WeakRetained;
       v24 = v265;
       v22 = v266;
@@ -1437,17 +1437,17 @@ LABEL_384:
       }
 
       v21 = WeakRetained;
-      [WeakRetained presentBankConnectManagementForInstitution:v237 accountIdentifier:v238 completion:v7];
+      [WeakRetained presentBankConnectManagementForInstitution:v237 accountIdentifier:v238 completion:completionCopy];
     }
 
-    v6 = v51;
+    dictionaryCopy = v51;
 LABEL_208:
     v24 = v265;
     v22 = v266;
     goto LABEL_66;
   }
 
-  if (v17 && v223)
+  if (firstObject && v223)
   {
     v225 = [(__CFString *)v222 isEqualToString:v223];
 
@@ -1474,7 +1474,7 @@ LABEL_390:
 
   else
   {
-    if (!v17 || !v234)
+    if (!firstObject || !v234)
     {
 
       goto LABEL_404;
@@ -1494,7 +1494,7 @@ LABEL_404:
 
       else
       {
-        if (!v17 || !v241)
+        if (!firstObject || !v241)
         {
 
           goto LABEL_420;
@@ -1513,7 +1513,7 @@ LABEL_420:
 
           else
           {
-            if (!v17 || !@"applePayDefaults")
+            if (!firstObject || !@"applePayDefaults")
             {
 
               goto LABEL_431;
@@ -1532,7 +1532,7 @@ LABEL_431:
 
               else
               {
-                if (!v17 || !@"manageAutoFillCards")
+                if (!firstObject || !@"manageAutoFillCards")
                 {
 
 LABEL_439:
@@ -1544,7 +1544,7 @@ LABEL_439:
 
                   else
                   {
-                    if (!v17 || !@"savings-closed")
+                    if (!firstObject || !@"savings-closed")
                     {
 
                       goto LABEL_447;
@@ -1569,7 +1569,7 @@ LABEL_447:
                   v21 = WeakRetained;
                   [WeakRetained openClosedSavingsAccountsSettings];
 LABEL_342:
-                  v6 = v51;
+                  dictionaryCopy = v51;
                   goto LABEL_62;
                 }
 
@@ -1594,7 +1594,7 @@ LABEL_342:
       }
 
       v22 = v266;
-      v6 = v51;
+      dictionaryCopy = v51;
       v21 = WeakRetained;
       v24 = v265;
       if ([v266 count])
@@ -1617,7 +1617,7 @@ LABEL_342:
 
           v249 = v248;
 
-          v6 = v51;
+          dictionaryCopy = v51;
           v250 = +[PKAccountService sharedInstance];
           v267[0] = MEMORY[0x1E69E9820];
           v267[1] = 3221225472;
@@ -1637,12 +1637,12 @@ LABEL_342:
   v21 = WeakRetained;
   [WeakRetained presentMerchantTokenWithIdentifier:v239];
 
-  v6 = v51;
+  dictionaryCopy = v51;
   v24 = v265;
 LABEL_64:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_66:
@@ -2174,24 +2174,24 @@ void __80__PKSettingsDeepLinkController_handleDeepLinkResourceDictionary_withCom
   }
 }
 
-- (void)_presentTransactionDetailsForTransactionWithIdentifier:(id)a3 confirmPaymentOfferPlan:(BOOL)a4
+- (void)_presentTransactionDetailsForTransactionWithIdentifier:(id)identifier confirmPaymentOfferPlan:(BOOL)plan
 {
-  v4 = a4;
+  planCopy = plan;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v4)
+      if (planCopy)
       {
         v8 = @"YES";
       }
 
       *buf = 138412546;
-      v19 = v6;
+      v19 = identifierCopy;
       v20 = 2112;
       v21 = v8;
       _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPassbookDeepLinkController: Preparing for presentation of transaction details for transactionID %@, confirmPaymentOfferPlan %@", buf, 0x16u);
@@ -2209,8 +2209,8 @@ void __80__PKSettingsDeepLinkController_handleDeepLinkResourceDictionary_withCom
     v14 = v11;
     v12 = WeakRetained;
     v15 = v12;
-    v17 = v4;
-    [v11 transactionWithTransactionIdentifier:v6 completion:v13];
+    v17 = planCopy;
+    [v11 transactionWithTransactionIdentifier:identifierCopy completion:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
@@ -2249,27 +2249,27 @@ void __111__PKSettingsDeepLinkController__presentTransactionDetailsForTransactio
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)_presentTransactionDetailsForTransactionWithServiceIdentifier:(id)a3 transactionSourceIdentifier:(id)a4 confirmPaymentOfferPlan:(BOOL)a5
+- (void)_presentTransactionDetailsForTransactionWithServiceIdentifier:(id)identifier transactionSourceIdentifier:(id)sourceIdentifier confirmPaymentOfferPlan:(BOOL)plan
 {
-  v5 = a5;
+  planCopy = plan;
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  if (identifierCopy)
   {
     v10 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
       *buf = 138412802;
-      *&buf[4] = v8;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
-      if (v5)
+      if (planCopy)
       {
         v11 = @"YES";
       }
 
-      *&buf[14] = v9;
+      *&buf[14] = sourceIdentifierCopy;
       *&buf[22] = 2112;
       v40 = v11;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "PKPassbookDeepLinkController: Preparing for presentation of transaction details for serviceIdentifier %@, transactionSourceIdentifier %@, confirmPaymentOfferPlan %@", buf, 0x20u);
@@ -2291,7 +2291,7 @@ void __111__PKSettingsDeepLinkController__presentTransactionDetailsForTransactio
     v14 = dispatch_group_create();
     dispatch_group_enter(v14);
     dispatch_group_enter(v14);
-    if (v9)
+    if (sourceIdentifierCopy)
     {
       v15 = v35;
       v35[0] = MEMORY[0x1E69E9820];
@@ -2303,7 +2303,7 @@ void __111__PKSettingsDeepLinkController__presentTransactionDetailsForTransactio
       v35[5] = v37;
       v17 = v14;
       v35[4] = v17;
-      [v13 transactionSourceTypeForTransactionSourceIdentifier:v9 completion:v35];
+      [v13 transactionSourceTypeForTransactionSourceIdentifier:sourceIdentifierCopy completion:v35];
       dispatch_group_enter(v17);
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
@@ -2312,7 +2312,7 @@ void __111__PKSettingsDeepLinkController__presentTransactionDetailsForTransactio
       objc_copyWeak(&v34, &location);
       v33 = buf;
       v32 = v17;
-      [v13 transactionWithServiceIdentifier:v8 transactionSourceIdentifier:v9 completion:v31];
+      [v13 transactionWithServiceIdentifier:identifierCopy transactionSourceIdentifier:sourceIdentifierCopy completion:v31];
 
       objc_destroyWeak(&v34);
     }
@@ -2332,7 +2332,7 @@ void __111__PKSettingsDeepLinkController__presentTransactionDetailsForTransactio
       v26 = 0;
       v29 = v37;
       v27 = v14;
-      [v18 ambiguousTransactionWithServiceIdentifier:v8 completion:v25];
+      [v18 ambiguousTransactionWithServiceIdentifier:identifierCopy completion:v25];
     }
 
     objc_destroyWeak(v16);
@@ -2343,7 +2343,7 @@ void __111__PKSettingsDeepLinkController__presentTransactionDetailsForTransactio
     v21 = WeakRetained;
     v22 = buf;
     v23 = v37;
-    v24 = v5;
+    v24 = planCopy;
     v19 = WeakRetained;
     dispatch_group_notify(v14, MEMORY[0x1E69E96A0], block);
 
@@ -2410,15 +2410,15 @@ void __146__PKSettingsDeepLinkController__presentTransactionDetailsForTransactio
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)_percentEncodeReferrerIdentifier:(id)a3
+- (id)_percentEncodeReferrerIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 URLQueryAllowedCharacterSet];
-  v6 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  uRLQueryAllowedCharacterSet = [v3 URLQueryAllowedCharacterSet];
+  v6 = [uRLQueryAllowedCharacterSet mutableCopy];
 
   [v6 removeCharactersInString:@"=&"];
-  v7 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+  v7 = [identifierCopy stringByAddingPercentEncodingWithAllowedCharacters:v6];
 
   return v7;
 }

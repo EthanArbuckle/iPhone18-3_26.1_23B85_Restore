@@ -2,41 +2,41 @@
 + (PXNetworkStatusMonitor)sharedInstance;
 - ($CE86B1AE65D1A4A4B278E4ED99C18EFC)bestAvailableNetworkType;
 - (PXNetworkStatusMonitor)init;
-- (void)_queue_handlePathUpdate:(id)a3;
-- (void)_queue_notifyObserversOfBestAvailableNetworkType:(id)a3;
-- (void)registerObserver:(id)a3 queue:(id)a4;
+- (void)_queue_handlePathUpdate:(id)update;
+- (void)_queue_notifyObserversOfBestAvailableNetworkType:(id)type;
+- (void)registerObserver:(id)observer queue:(id)queue;
 @end
 
 @implementation PXNetworkStatusMonitor
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__PXNetworkStatusMonitor_registerObserver_queue___block_invoke;
   block[3] = &unk_1E774A1B8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = queueCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = queueCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_queue_notifyObserversOfBestAvailableNetworkType:(id)a3
+- (void)_queue_notifyObserversOfBestAvailableNetworkType:(id)type
 {
-  v3 = *&a3.var1;
-  var0 = a3.var0;
+  v3 = *&type.var1;
+  var0 = type.var0;
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMapTable *)self->_queue_observers keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keyEnumerator = [(NSMapTable *)self->_queue_observers keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -48,7 +48,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -74,35 +74,35 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_queue_handlePathUpdate:(id)a3
+- (void)_queue_handlePathUpdate:(id)update
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  status = nw_path_get_status(v4);
-  if (MEMORY[0x1A590E0D0](v4, 3))
+  status = nw_path_get_status(updateCopy);
+  if (MEMORY[0x1A590E0D0](updateCopy, 3))
   {
     v6 = 4;
   }
 
-  else if (MEMORY[0x1A590E0D0](v4, 1))
+  else if (MEMORY[0x1A590E0D0](updateCopy, 1))
   {
     v6 = 2;
   }
 
-  else if (MEMORY[0x1A590E0D0](v4, 2))
+  else if (MEMORY[0x1A590E0D0](updateCopy, 2))
   {
     v6 = 3;
   }
 
-  else if (MEMORY[0x1A590E0D0](v4, 0))
+  else if (MEMORY[0x1A590E0D0](updateCopy, 0))
   {
     v6 = 5;
   }
@@ -147,8 +147,8 @@ LABEL_17:
   v8 = @" reason:notAvailable";
   v7 = @"unsatisfied";
 LABEL_20:
-  v9 = MEMORY[0x1A590E070](v4);
-  v10 = MEMORY[0x1A590E080](v4);
+  v9 = MEMORY[0x1A590E070](updateCopy);
+  v10 = MEMORY[0x1A590E080](updateCopy);
   v11 = 256;
   if (!v10)
   {
@@ -227,9 +227,9 @@ __n128 __50__PXNetworkStatusMonitor_bestAvailableNetworkType__block_invoke(uint6
     queue = self->_queue;
     self->_queue = v4;
 
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     queue_observers = self->_queue_observers;
-    self->_queue_observers = v6;
+    self->_queue_observers = weakToStrongObjectsMapTable;
 
     v8 = nw_path_monitor_create();
     defaultPathMonitor = self->_defaultPathMonitor;
@@ -237,13 +237,13 @@ __n128 __50__PXNetworkStatusMonitor_bestAvailableNetworkType__block_invoke(uint6
 
     if (self->_defaultPathMonitor)
     {
-      v10 = self;
+      selfCopy = self;
       v11 = self->_defaultPathMonitor;
       update_handler[0] = MEMORY[0x1E69E9820];
       update_handler[1] = 3221225472;
       update_handler[2] = __30__PXNetworkStatusMonitor_init__block_invoke;
       update_handler[3] = &unk_1E7749A00;
-      v16 = v10;
+      v16 = selfCopy;
       nw_path_monitor_set_update_handler(v11, update_handler);
       nw_path_monitor_set_queue(self->_defaultPathMonitor, self->_queue);
       nw_path_monitor_start(self->_defaultPathMonitor);

@@ -1,14 +1,14 @@
 @interface AVAssetMediaSelectionGroup
-- (AVAssetMediaSelectionGroup)initWithAsset:(id)a3 dictionary:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_mediaSelectionOptionWithPropertyList:(id)a3 matchToMediaSelectionArray:(BOOL)a4;
-- (id)_optionWithID:(id)a3 identifier:(id)a4 source:(id)a5 displaysNonForcedSubtitles:(BOOL)a6 audioCompositionPresetIndex:(id)a7;
+- (AVAssetMediaSelectionGroup)initWithAsset:(id)asset dictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)_mediaSelectionOptionWithPropertyList:(id)list matchToMediaSelectionArray:(BOOL)array;
+- (id)_optionWithID:(id)d identifier:(id)identifier source:(id)source displaysNonForcedSubtitles:(BOOL)subtitles audioCompositionPresetIndex:(id)index;
 - (void)dealloc;
 @end
 
 @implementation AVAssetMediaSelectionGroup
 
-- (AVAssetMediaSelectionGroup)initWithAsset:(id)a3 dictionary:(id)a4
+- (AVAssetMediaSelectionGroup)initWithAsset:(id)asset dictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
@@ -17,14 +17,14 @@
   v7 = v6;
   if (v6)
   {
-    if (a3 && a4)
+    if (asset && dictionary)
     {
-      v6->_asset = a3;
-      v8 = a3;
-      v7->_isStreamingGroup = [a3 _isStreaming];
-      v9 = a4;
-      v7->_dictionary = v9;
-      v7->_groupMediaCharacteristics = [AVTranslateFigMediaCharacteristicsToAVMediaCharacteristics(-[NSDictionary objectForKey:](v9 objectForKey:{*MEMORY[0x1E6973748])), "copy"}];
+      v6->_asset = asset;
+      assetCopy = asset;
+      v7->_isStreamingGroup = [asset _isStreaming];
+      dictionaryCopy = dictionary;
+      v7->_dictionary = dictionaryCopy;
+      v7->_groupMediaCharacteristics = [AVTranslateFigMediaCharacteristicsToAVMediaCharacteristics(-[NSDictionary objectForKey:](dictionaryCopy objectForKey:{*MEMORY[0x1E6973748])), "copy"}];
       v7->_localizedMediaSelectionOptionDisplayNames = [-[AVAsset _localizedMediaSelectionOptionDisplayNames](v7->_asset "_localizedMediaSelectionOptionDisplayNames")];
       v10 = [(NSDictionary *)v7->_dictionary objectForKey:*MEMORY[0x1E6973758]];
       v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
@@ -54,7 +54,7 @@
               LOBYTE(v18) = !v7->_isStreamingGroup;
             }
 
-            v19 = [AVMediaSelectionOption mediaSelectionOptionForAsset:v8 group:v7 dictionary:v17 hasUnderlyingTrack:v18 & 1];
+            v19 = [AVMediaSelectionOption mediaSelectionOptionForAsset:assetCopy group:v7 dictionary:v17 hasUnderlyingTrack:v18 & 1];
             [(NSArray *)v11 addObject:v19];
             if (!v7->_defaultOption && [(AVMediaSelectionOption *)v19 _isDesignatedDefault])
             {
@@ -69,12 +69,12 @@
       }
 
       v7->_options = v11;
-      v20 = [(AVAsset *)v7->_asset _customMediaSelectionScheme];
+      _customMediaSelectionScheme = [(AVAsset *)v7->_asset _customMediaSelectionScheme];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v21 = [v20 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v21 = [_customMediaSelectionScheme countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v21)
       {
         v22 = v21;
@@ -87,7 +87,7 @@
           {
             if (*v30 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(_customMediaSelectionScheme);
             }
 
             v27 = *(*(&v29 + 1) + 8 * j);
@@ -98,7 +98,7 @@
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v22 = [_customMediaSelectionScheme countByEnumeratingWithState:&v29 objects:v38 count:16];
           if (v22)
           {
             continue;
@@ -126,9 +126,9 @@
   [(AVMediaSelectionGroup *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -138,13 +138,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[AVAsset isEqual:](self->_asset, "isEqual:", [a3 asset]);
+      v5 = -[AVAsset isEqual:](self->_asset, "isEqual:", [equal asset]);
       if (v5)
       {
         dictionary = self->_dictionary;
-        v7 = [a3 dictionary];
+        dictionary = [equal dictionary];
 
-        LOBYTE(v5) = [(NSDictionary *)dictionary isEqual:v7];
+        LOBYTE(v5) = [(NSDictionary *)dictionary isEqual:dictionary];
       }
     }
 
@@ -157,23 +157,23 @@
   return v5;
 }
 
-- (id)_optionWithID:(id)a3 identifier:(id)a4 source:(id)a5 displaysNonForcedSubtitles:(BOOL)a6 audioCompositionPresetIndex:(id)a7
+- (id)_optionWithID:(id)d identifier:(id)identifier source:(id)source displaysNonForcedSubtitles:(BOOL)subtitles audioCompositionPresetIndex:(id)index
 {
-  v24 = a6;
+  subtitlesCopy = subtitles;
   v30 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = [(AVAssetMediaSelectionGroup *)self options];
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  options = [(AVAssetMediaSelectionGroup *)self options];
+  v12 = [options countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v12)
   {
     return 0;
   }
 
   v13 = v12;
-  v23 = a5;
+  sourceCopy = source;
   v14 = 0;
   v15 = 0;
   v16 = *v26;
@@ -184,16 +184,16 @@
     {
       if (*v26 != v16)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(options);
       }
 
       v18 = *(*(&v25 + 1) + 8 * v17);
-      if (!a3)
+      if (!d)
       {
-        if (a4)
+        if (identifier)
         {
           v19 = [objc_msgSend(*(*(&v25 + 1) + 8 * v17) "outOfBandIdentifier")];
-          if (a7)
+          if (index)
           {
             goto LABEL_14;
           }
@@ -201,15 +201,15 @@
 
         else
         {
-          if (!v23)
+          if (!sourceCopy)
           {
-            a4 = 0;
+            identifier = 0;
             goto LABEL_24;
           }
 
           v19 = [objc_msgSend(v18 "outOfBandSource")];
-          a4 = 0;
-          if (a7)
+          identifier = 0;
+          if (index)
           {
 LABEL_14:
             if (!v19)
@@ -233,7 +233,7 @@ LABEL_15:
       if (([objc_msgSend(*(*(&v25 + 1) + 8 * v17) "optionID")] & 1) == 0)
       {
         v19 = [objc_msgSend(v18 "fallbackIDs")];
-        if (a7)
+        if (index)
         {
           goto LABEL_14;
         }
@@ -247,13 +247,13 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      if (a7)
+      if (index)
       {
         goto LABEL_15;
       }
 
 LABEL_20:
-      if ([v18 displaysNonForcedSubtitles] == v24)
+      if ([v18 displaysNonForcedSubtitles] == subtitlesCopy)
       {
         return v18;
       }
@@ -273,7 +273,7 @@ LABEL_24:
     }
 
     while (v13 != v17);
-    v21 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v21 = [options countByEnumeratingWithState:&v25 objects:v29 count:16];
     v13 = v21;
     v18 = v15;
   }
@@ -282,26 +282,26 @@ LABEL_24:
   return v18;
 }
 
-- (id)_mediaSelectionOptionWithPropertyList:(id)a3 matchToMediaSelectionArray:(BOOL)a4
+- (id)_mediaSelectionOptionWithPropertyList:(id)list matchToMediaSelectionArray:(BOOL)array
 {
-  v4 = a4;
+  arrayCopy = array;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  if (v4)
+  if (arrayCopy)
   {
     [-[AVAssetMediaSelectionGroup asset](self "asset")];
-    a3 = FigMediaSelectionGroupsCreateMatchingSelection();
+    list = FigMediaSelectionGroupsCreateMatchingSelection();
   }
 
-  v7 = [a3 objectForKey:*MEMORY[0x1E69737D8]];
+  v7 = [list objectForKey:*MEMORY[0x1E69737D8]];
   v8 = v7;
   if (!v7)
   {
-    v8 = [a3 objectForKey:@"AVMediaSelectionTrackOptionTrackIDKey"];
+    v8 = [list objectForKey:@"AVMediaSelectionTrackOptionTrackIDKey"];
   }
 
   objc_opt_class();
@@ -312,22 +312,22 @@ LABEL_24:
 
   if (v8)
   {
-    v9 = [a3 objectForKey:*MEMORY[0x1E6973778]];
+    v9 = [list objectForKey:*MEMORY[0x1E6973778]];
     if (v7)
     {
       v10 = 0;
       v11 = 0;
 LABEL_11:
-      v7 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6973790]), "BOOLValue"}];
+      v7 = [objc_msgSend(list objectForKey:{*MEMORY[0x1E6973790]), "BOOLValue"}];
       goto LABEL_20;
     }
 
     valuePtr = 0;
     CFNumberGetValue(v8, kCFNumberSInt32Type, &valuePtr);
-    v13 = [(AVAssetMediaSelectionGroup *)self asset];
-    if ([objc_msgSend(objc_msgSend(v13 trackWithTrackID:{valuePtr), "mediaType"), "isEqualToString:", @"sbtl"}])
+    asset = [(AVAssetMediaSelectionGroup *)self asset];
+    if ([objc_msgSend(objc_msgSend(asset trackWithTrackID:{valuePtr), "mediaType"), "isEqualToString:", @"sbtl"}])
     {
-      v7 = [objc_msgSend(objc_msgSend(a3 objectForKey:{@"AVMediaSelectionTrackOptionSettingsKey", "objectForKey:", @"AVMediaSelectionTrackOptionCharacteristicsKey", "containsObject:", @"public.subtitles.forced-only"}] ^ 1;
+      v7 = [objc_msgSend(objc_msgSend(list objectForKey:{@"AVMediaSelectionTrackOptionSettingsKey", "objectForKey:", @"AVMediaSelectionTrackOptionCharacteristicsKey", "containsObject:", @"public.subtitles.forced-only"}] ^ 1;
     }
 
     v10 = 0;
@@ -336,15 +336,15 @@ LABEL_11:
 
   else
   {
-    v10 = [a3 objectForKey:*MEMORY[0x1E6973788]];
-    v12 = [a3 objectForKey:*MEMORY[0x1E69737F0]];
+    v10 = [list objectForKey:*MEMORY[0x1E6973788]];
+    v12 = [list objectForKey:*MEMORY[0x1E69737F0]];
     if (!(v10 | v12))
     {
       return 0;
     }
 
     v11 = v12;
-    v9 = [a3 objectForKey:*MEMORY[0x1E6973778]];
+    v9 = [list objectForKey:*MEMORY[0x1E6973778]];
     if (v7 || v10 || v11)
     {
       goto LABEL_11;
@@ -355,7 +355,7 @@ LABEL_11:
   }
 
 LABEL_20:
-  v14 = [a3 objectForKey:*MEMORY[0x1E6973750]];
+  v14 = [list objectForKey:*MEMORY[0x1E6973750]];
   if (v14)
   {
     v15 = v14;
@@ -370,7 +370,7 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v15 = [a3 objectForKey:@"AVMediaSelectionKeyValueOptionMediaTypeKey"];
+  v15 = [list objectForKey:@"AVMediaSelectionKeyValueOptionMediaTypeKey"];
   if (v15)
   {
     goto LABEL_23;
@@ -378,10 +378,10 @@ LABEL_23:
 
   v16 = 0;
 LABEL_26:
-  v17 = [a3 objectForKey:*MEMORY[0x1E6973740]];
+  v17 = [list objectForKey:*MEMORY[0x1E6973740]];
   if (!v17)
   {
-    v17 = [a3 objectForKey:@"AVMediaSelectionKeyValueOptionGroupIDKey"];
+    v17 = [list objectForKey:@"AVMediaSelectionKeyValueOptionGroupIDKey"];
     if (((v17 == 0) & ~v16) != 0)
     {
       return [(AVAssetMediaSelectionGroup *)self _optionWithID:v8 identifier:v10 source:v11 displaysNonForcedSubtitles:v7 audioCompositionPresetIndex:v9];

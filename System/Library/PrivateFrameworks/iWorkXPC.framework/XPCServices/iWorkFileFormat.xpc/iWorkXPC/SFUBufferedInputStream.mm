@@ -1,16 +1,16 @@
 @interface SFUBufferedInputStream
-- (BOOL)seekWithinBufferToOffset:(int64_t)a3;
-- (SFUBufferedInputStream)initWithStream:(id)a3 bufferSize:(unint64_t)a4;
-- (SFUBufferedInputStream)initWithStream:(id)a3 dataLength:(int64_t)a4;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
-- (unint64_t)readToOwnBuffer:(const char *)a3 size:(unint64_t)a4;
+- (BOOL)seekWithinBufferToOffset:(int64_t)offset;
+- (SFUBufferedInputStream)initWithStream:(id)stream bufferSize:(unint64_t)size;
+- (SFUBufferedInputStream)initWithStream:(id)stream dataLength:(int64_t)length;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
+- (unint64_t)readToOwnBuffer:(const char *)buffer size:(unint64_t)size;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation SFUBufferedInputStream
 
-- (SFUBufferedInputStream)initWithStream:(id)a3 bufferSize:(unint64_t)a4
+- (SFUBufferedInputStream)initWithStream:(id)stream bufferSize:(unint64_t)size
 {
   v11.receiver = self;
   v11.super_class = SFUBufferedInputStream;
@@ -18,11 +18,11 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (stream)
     {
-      v6->mStream = a3;
-      v7->mBufferSize = a4;
-      v8 = malloc_type_malloc(a4, 0x100004077774924uLL);
+      v6->mStream = stream;
+      v7->mBufferSize = size;
+      v8 = malloc_type_malloc(size, 0x100004077774924uLL);
       v7->mBuffer = v8;
       if (!v8)
       {
@@ -30,9 +30,9 @@
         [NSException raise:@"SFUBufferedInputStreamError" format:@"Could not create read buffer"];
       }
 
-      v9 = [(SFUInputStream *)v7->mStream offset];
-      v7->mBufferStart = v9;
-      v7->mBufferEnd = v9;
+      offset = [(SFUInputStream *)v7->mStream offset];
+      v7->mBufferStart = offset;
+      v7->mBufferEnd = offset;
     }
 
     else
@@ -45,14 +45,14 @@
   return v7;
 }
 
-- (SFUBufferedInputStream)initWithStream:(id)a3 dataLength:(int64_t)a4
+- (SFUBufferedInputStream)initWithStream:(id)stream dataLength:(int64_t)length
 {
-  if (a4 >= 0x40000)
+  if (length >= 0x40000)
   {
-    a4 = 0x40000;
+    length = 0x40000;
   }
 
-  return [(SFUBufferedInputStream *)self initWithStream:a3 bufferSize:a4];
+  return [(SFUBufferedInputStream *)self initWithStream:stream bufferSize:length];
 }
 
 - (void)dealloc
@@ -64,17 +64,17 @@
   [(SFUBufferedInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   __src = 0;
-  v5 = [(SFUBufferedInputStream *)self readToOwnBuffer:&__src size:a4];
-  memcpy(a3, __src, v5);
+  v5 = [(SFUBufferedInputStream *)self readToOwnBuffer:&__src size:size];
+  memcpy(buffer, __src, v5);
   return v5;
 }
 
-- (unint64_t)readToOwnBuffer:(const char *)a3 size:(unint64_t)a4
+- (unint64_t)readToOwnBuffer:(const char *)buffer size:(unint64_t)size
 {
-  if (!a3)
+  if (!buffer)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -133,19 +133,19 @@
     mBufferEnd = self->mBufferEnd;
   }
 
-  if (mBufferSize >= a4)
+  if (mBufferSize >= size)
   {
-    v10 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v10 = mBufferSize;
+    sizeCopy = mBufferSize;
   }
 
   mBufferOffset = self->mBufferOffset;
   v12 = mBufferEnd - (mBufferStart + mBufferOffset);
-  if (v10 > v12)
+  if (sizeCopy > v12)
   {
     memmove(self->mBuffer, &self->mBuffer[mBufferOffset], mBufferEnd - (mBufferStart + mBufferOffset));
     v13 = self->mBufferStart + self->mBufferOffset;
@@ -184,27 +184,27 @@
     v12 = v16 - (v15 + mBufferOffset);
   }
 
-  if (v10 >= v12)
+  if (sizeCopy >= v12)
   {
     result = v12;
   }
 
   else
   {
-    result = v10;
+    result = sizeCopy;
   }
 
-  *a3 = &self->mBuffer[mBufferOffset];
+  *buffer = &self->mBuffer[mBufferOffset];
   self->mBufferOffset = result + mBufferOffset;
   return result;
 }
 
-- (BOOL)seekWithinBufferToOffset:(int64_t)a3
+- (BOOL)seekWithinBufferToOffset:(int64_t)offset
 {
   mBufferStart = self->mBufferStart;
-  v4 = __OFSUB__(a3, mBufferStart);
-  v5 = a3 - mBufferStart;
-  if (v5 < 0 != v4 || self->mBufferEnd < a3)
+  v4 = __OFSUB__(offset, mBufferStart);
+  v5 = offset - mBufferStart;
+  if (v5 < 0 != v4 || self->mBufferEnd < offset)
   {
     return 0;
   }
@@ -213,7 +213,7 @@
   return 1;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   if (![(SFUBufferedInputStream *)self canSeek])
   {
@@ -221,22 +221,22 @@
   }
 
   mBufferStart = self->mBufferStart;
-  v6 = __OFSUB__(a3, mBufferStart);
-  v7 = a3 - mBufferStart;
-  if (v7 < 0 != v6 || self->mBufferEnd < a3)
+  v6 = __OFSUB__(offset, mBufferStart);
+  v7 = offset - mBufferStart;
+  if (v7 < 0 != v6 || self->mBufferEnd < offset)
   {
     self->mBufferOffset = 0;
-    self->mBufferStart = a3;
+    self->mBufferStart = offset;
     v8 = 48;
   }
 
   else
   {
     v8 = 32;
-    a3 = v7;
+    offset = v7;
   }
 
-  *(&self->super.isa + v8) = a3;
+  *(&self->super.isa + v8) = offset;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SBPIPContentViewLayoutMetricsSizePolicy
-- (SBPIPContentViewLayoutMetricsSizePolicy)initWithSizePreferencesForLandscape:(id)a3 portrait:(id)a4 square:(id)a5;
-- (id)sizePreferencesForAspectRatio:(double)a3;
+- (SBPIPContentViewLayoutMetricsSizePolicy)initWithSizePreferencesForLandscape:(id)landscape portrait:(id)portrait square:(id)square;
+- (id)sizePreferencesForAspectRatio:(double)ratio;
 @end
 
 @implementation SBPIPContentViewLayoutMetricsSizePolicy
 
-- (SBPIPContentViewLayoutMetricsSizePolicy)initWithSizePreferencesForLandscape:(id)a3 portrait:(id)a4 square:(id)a5
+- (SBPIPContentViewLayoutMetricsSizePolicy)initWithSizePreferencesForLandscape:(id)landscape portrait:(id)portrait square:(id)square
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10 && !v11 && !v12)
+  landscapeCopy = landscape;
+  portraitCopy = portrait;
+  squareCopy = square;
+  v13 = squareCopy;
+  if (!landscapeCopy && !portraitCopy && !squareCopy)
   {
     [SBPIPContentViewLayoutMetricsSizePolicy initWithSizePreferencesForLandscape:a2 portrait:self square:?];
   }
@@ -22,29 +22,29 @@
   if (v14)
   {
     v15 = +[SBPIPSettingsDomain rootSettings];
-    v16 = [v15 sizingSettings];
+    sizingSettings = [v15 sizingSettings];
 
-    [v16 landcapeAspectRatioClosedIntervalLowerBound];
+    [sizingSettings landcapeAspectRatioClosedIntervalLowerBound];
     v14->_landscapeAspectRatioInterval.minimum = v17;
-    [v16 landcapeAspectRatioClosedIntervalUpperBound];
+    [sizingSettings landcapeAspectRatioClosedIntervalUpperBound];
     v14->_landscapeAspectRatioInterval.maximum = v18;
-    [v16 squareAspectRatioClosedIntervalLowerBound];
+    [sizingSettings squareAspectRatioClosedIntervalLowerBound];
     v14->_squareAspectRatioInterval.minimum = v19;
-    [v16 squareAspectRatioClosedIntervalUpperBound];
+    [sizingSettings squareAspectRatioClosedIntervalUpperBound];
     v14->_squareAspectRatioInterval.maximum = v20;
-    [v16 portraitAspectRatioClosedIntervalLowerBound];
+    [sizingSettings portraitAspectRatioClosedIntervalLowerBound];
     v14->_portraitAspectRatioInterval.minimum = v21;
-    [v16 portraitAspectRatioClosedIntervalUpperBound];
+    [sizingSettings portraitAspectRatioClosedIntervalUpperBound];
     v14->_portraitAspectRatioInterval.maximum = v22;
-    objc_storeStrong(&v14->_landscapeSizePref, a3);
-    objc_storeStrong(&v14->_portraitSizePref, a4);
-    objc_storeStrong(&v14->_squareSizePref, a5);
+    objc_storeStrong(&v14->_landscapeSizePref, landscape);
+    objc_storeStrong(&v14->_portraitSizePref, portrait);
+    objc_storeStrong(&v14->_squareSizePref, square);
   }
 
   return v14;
 }
 
-- (id)sizePreferencesForAspectRatio:(double)a3
+- (id)sizePreferencesForAspectRatio:(double)ratio
 {
   p_landscapeSizePref = &self->_landscapeSizePref;
   if (self->_landscapeSizePref && BSFloatGreaterThanOrEqualToFloat() && (BSFloatLessThanOrEqualToFloat() & 1) != 0)

@@ -1,10 +1,10 @@
 @interface FLOWSchemaFLOWMapsEntity
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMapsEntity)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMapsEntity)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMapsEntity)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMapsEntity)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (NSString)addressId;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -13,37 +13,37 @@
 - (void)deleteAddressId;
 - (void)deleteMapsFeatureId;
 - (void)deleteMuid;
-- (void)setAddressId:(id)a3;
-- (void)setMapsFeatureId:(unint64_t)a3;
-- (void)setMuid:(unint64_t)a3;
-- (void)writeTo:(id)a3;
+- (void)setAddressId:(id)id;
+- (void)setMapsFeatureId:(unint64_t)id;
+- (void)setMuid:(unint64_t)muid;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMapsEntity
 
-- (FLOWSchemaFLOWMapsEntity)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMapsEntity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLOWSchemaFLOWMapsEntity;
   v5 = [(FLOWSchemaFLOWMapsEntity *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"muid"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"muid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMapsEntity setMuid:](v5, "setMuid:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"mapsFeatureId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"mapsFeatureId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMapsEntity setMapsFeatureId:](v5, "setMapsFeatureId:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"addressId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"addressId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMapsEntity)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMapsEntity)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMapsEntity *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMapsEntity *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMapsEntity *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,19 +93,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_addressId)
   {
-    v4 = [(FLOWSchemaFLOWMapsEntity *)self addressId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"addressId"];
+    addressId = [(FLOWSchemaFLOWMapsEntity *)self addressId];
+    v5 = [addressId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"addressId"];
   }
 
   whichEntityid = self->_whichEntityid;
   if (whichEntityid == 2)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[FLOWSchemaFLOWMapsEntity mapsFeatureId](self, "mapsFeatureId")}];
-    [v3 setObject:v7 forKeyedSubscript:@"mapsFeatureId"];
+    [dictionary setObject:v7 forKeyedSubscript:@"mapsFeatureId"];
 
     whichEntityid = self->_whichEntityid;
   }
@@ -113,12 +113,12 @@
   if (whichEntityid == 1)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[FLOWSchemaFLOWMapsEntity muid](self, "muid")}];
-    [v3 setObject:v8 forKeyedSubscript:@"muid"];
+    [dictionary setObject:v8 forKeyedSubscript:@"muid"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -144,27 +144,27 @@
   return [(NSString *)self->_addressId hash]^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichEntityid = self->_whichEntityid;
-    if (whichEntityid == [v4 whichEntityid])
+    if (whichEntityid == [equalCopy whichEntityid])
     {
       muid = self->_muid;
-      if (muid == [v4 muid])
+      if (muid == [equalCopy muid])
       {
         mapsFeatureId = self->_mapsFeatureId;
-        if (mapsFeatureId == [v4 mapsFeatureId])
+        if (mapsFeatureId == [equalCopy mapsFeatureId])
         {
-          v8 = [(FLOWSchemaFLOWMapsEntity *)self addressId];
-          v9 = [v4 addressId];
-          v10 = v9;
-          if ((v8 != 0) != (v9 == 0))
+          addressId = [(FLOWSchemaFLOWMapsEntity *)self addressId];
+          addressId2 = [equalCopy addressId];
+          v10 = addressId2;
+          if ((addressId != 0) != (addressId2 == 0))
           {
-            v11 = [(FLOWSchemaFLOWMapsEntity *)self addressId];
-            if (!v11)
+            addressId3 = [(FLOWSchemaFLOWMapsEntity *)self addressId];
+            if (!addressId3)
             {
 
 LABEL_13:
@@ -172,10 +172,10 @@ LABEL_13:
               goto LABEL_11;
             }
 
-            v12 = v11;
-            v13 = [(FLOWSchemaFLOWMapsEntity *)self addressId];
-            v14 = [v4 addressId];
-            v15 = [v13 isEqual:v14];
+            v12 = addressId3;
+            addressId4 = [(FLOWSchemaFLOWMapsEntity *)self addressId];
+            addressId5 = [equalCopy addressId];
+            v15 = [addressId4 isEqual:addressId5];
 
             if (v15)
             {
@@ -197,9 +197,9 @@ LABEL_11:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   whichEntityid = self->_whichEntityid;
   if (whichEntityid == 1)
   {
@@ -212,13 +212,13 @@ LABEL_11:
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(FLOWSchemaFLOWMapsEntity *)self addressId];
+  addressId = [(FLOWSchemaFLOWMapsEntity *)self addressId];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (addressId)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
@@ -247,19 +247,19 @@ LABEL_11:
   return v3;
 }
 
-- (void)setAddressId:(id)a3
+- (void)setAddressId:(id)id
 {
   self->_muid = 0;
   self->_mapsFeatureId = 0;
   v4 = 3;
-  if (!a3)
+  if (!id)
   {
     v4 = 0;
   }
 
   self->_whichEntityid = v4;
-  v7 = a3;
-  v5 = [v7 copy];
+  idCopy = id;
+  v5 = [idCopy copy];
   addressId = self->_addressId;
   self->_addressId = v5;
 }
@@ -286,14 +286,14 @@ LABEL_11:
   }
 }
 
-- (void)setMapsFeatureId:(unint64_t)a3
+- (void)setMapsFeatureId:(unint64_t)id
 {
   self->_muid = 0;
   addressId = self->_addressId;
   self->_addressId = 0;
 
   self->_whichEntityid = 2;
-  self->_mapsFeatureId = a3;
+  self->_mapsFeatureId = id;
 }
 
 - (void)deleteMuid
@@ -318,51 +318,51 @@ LABEL_11:
   }
 }
 
-- (void)setMuid:(unint64_t)a3
+- (void)setMuid:(unint64_t)muid
 {
   self->_mapsFeatureId = 0;
   addressId = self->_addressId;
   self->_addressId = 0;
 
   self->_whichEntityid = 1;
-  self->_muid = a3;
+  self->_muid = muid;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = FLOWSchemaFLOWMapsEntity;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(FLOWSchemaFLOWMapsEntity *)self deleteMuid];
     [(FLOWSchemaFLOWMapsEntity *)self deleteMapsFeatureId];
     [(FLOWSchemaFLOWMapsEntity *)self deleteAddressId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(FLOWSchemaFLOWMapsEntity *)self deleteMuid];
     [(FLOWSchemaFLOWMapsEntity *)self deleteMapsFeatureId];
     [(FLOWSchemaFLOWMapsEntity *)self deleteAddressId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(FLOWSchemaFLOWMapsEntity *)self deleteMuid];
     [(FLOWSchemaFLOWMapsEntity *)self deleteMapsFeatureId];
     [(FLOWSchemaFLOWMapsEntity *)self deleteAddressId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(FLOWSchemaFLOWMapsEntity *)self deleteMuid];
     [(FLOWSchemaFLOWMapsEntity *)self deleteMapsFeatureId];
     [(FLOWSchemaFLOWMapsEntity *)self deleteAddressId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(FLOWSchemaFLOWMapsEntity *)self deleteMuid];
     [(FLOWSchemaFLOWMapsEntity *)self deleteMapsFeatureId];

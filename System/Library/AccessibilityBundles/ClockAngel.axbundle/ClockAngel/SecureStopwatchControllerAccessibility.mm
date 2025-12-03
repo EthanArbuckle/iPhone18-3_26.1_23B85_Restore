@@ -1,20 +1,20 @@
 @interface SecureStopwatchControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SecureStopwatchControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"lapCancelButton" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"spinnyResetView" withSwiftType:"Optional<SpinnyResetView>"];
-  [v3 validateClass:@"ClockAngel.SpinnyResetView" hasSwiftField:@"mode" withSwiftType:"Mode"];
-  [v3 validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"playPauseButton" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"pausePlayPackage" withSwiftType:"Optional<BSUICAPackageView>"];
-  [v3 validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_stateController" withType:"CAStateController"];
-  [v3 validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_rootLayer" withType:"CALayer"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"lapCancelButton" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"spinnyResetView" withSwiftType:"Optional<SpinnyResetView>"];
+  [validationsCopy validateClass:@"ClockAngel.SpinnyResetView" hasSwiftField:@"mode" withSwiftType:"Mode"];
+  [validationsCopy validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"playPauseButton" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"ClockAngel.SecureStopwatchController" hasSwiftField:@"pausePlayPackage" withSwiftType:"Optional<BSUICAPackageView>"];
+  [validationsCopy validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_stateController" withType:"CAStateController"];
+  [validationsCopy validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_rootLayer" withType:"CALayer"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

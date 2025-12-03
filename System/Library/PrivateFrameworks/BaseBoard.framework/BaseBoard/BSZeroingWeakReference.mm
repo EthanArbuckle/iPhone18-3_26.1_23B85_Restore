@@ -1,8 +1,8 @@
 @interface BSZeroingWeakReference
-+ (BSZeroingWeakReference)referenceWithObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BSZeroingWeakReference)referenceWithObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (BSZeroingWeakReference)init;
-- (BSZeroingWeakReference)initWithObject:(id)a3;
+- (BSZeroingWeakReference)initWithObject:(id)object;
 - (id)description;
 - (id)object;
 @end
@@ -16,26 +16,26 @@
   return WeakRetained;
 }
 
-+ (BSZeroingWeakReference)referenceWithObject:(id)a3
++ (BSZeroingWeakReference)referenceWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithObject:objectCopy];
 
   return v5;
 }
 
-- (BSZeroingWeakReference)initWithObject:(id)a3
+- (BSZeroingWeakReference)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = BSZeroingWeakReference;
   v5 = [(BSZeroingWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
+    objc_storeWeak(&v5->_object, objectCopy);
     v6->_objectClass = objc_opt_class();
-    v6->_objectAddress = v4;
+    v6->_objectAddress = objectCopy;
   }
 
   return v6;
@@ -55,7 +55,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSZeroingWeakReference.m";
     v18 = 1024;
@@ -74,10 +74,10 @@
 
 - (id)description
 {
-  v3 = [(BSZeroingWeakReference *)self object];
+  object = [(BSZeroingWeakReference *)self object];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromClass(self->_objectClass);
-  if (v3)
+  if (object)
   {
     [v4 stringWithFormat:@"<%@: %p>", v5, self->_objectAddress];
   }
@@ -91,10 +91,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -102,11 +102,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v4->_objectAddress == self->_objectAddress && v4->_objectClass == self->_objectClass)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_objectAddress == self->_objectAddress && equalCopy->_objectClass == self->_objectClass)
     {
-      v7 = [(BSZeroingWeakReference *)self object];
-      v8 = [(BSZeroingWeakReference *)v4 object];
-      v5 = v7 == v8;
+      object = [(BSZeroingWeakReference *)self object];
+      object2 = [(BSZeroingWeakReference *)equalCopy object];
+      v5 = object == object2;
     }
 
     else

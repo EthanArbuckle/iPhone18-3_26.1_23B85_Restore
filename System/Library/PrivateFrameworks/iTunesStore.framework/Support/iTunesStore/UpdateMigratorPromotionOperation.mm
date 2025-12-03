@@ -1,24 +1,24 @@
 @interface UpdateMigratorPromotionOperation
-- (UpdateMigratorPromotionOperation)initWithBundleIdentifiers:(id)a3 options:(id)a4;
+- (UpdateMigratorPromotionOperation)initWithBundleIdentifiers:(id)identifiers options:(id)options;
 - (void)performMigration;
 @end
 
 @implementation UpdateMigratorPromotionOperation
 
-- (UpdateMigratorPromotionOperation)initWithBundleIdentifiers:(id)a3 options:(id)a4
+- (UpdateMigratorPromotionOperation)initWithBundleIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = UpdateMigratorPromotionOperation;
   v8 = [(UpdateMigratorPromotionOperation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     bundleIDs = v8->_bundleIDs;
     v8->_bundleIDs = v9;
 
-    v11 = [v7 copy];
+    v11 = [optionsCopy copy];
     options = v8->_options;
     v8->_options = v11;
   }
@@ -37,19 +37,19 @@
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 &= 2u;
     }
@@ -78,19 +78,19 @@
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v4 shouldLog];
+    shouldLog2 = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog2 | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog2;
     }
 
-    v7 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 &= 2u;
     }
@@ -109,7 +109,7 @@
 
   if (v11)
   {
-    v7 = [NSString stringWithCString:v11 encoding:4, &v21, v18];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, &v21, v18];
     free(v11);
     SSFileLog();
 LABEL_23:

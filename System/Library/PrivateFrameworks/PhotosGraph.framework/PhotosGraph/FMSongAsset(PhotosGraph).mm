@@ -6,10 +6,10 @@
 
 - (uint64_t)pg_requestDownloadIfNeeded
 {
-  if (![a1 localURLExists] || (result = objc_msgSend(a1, "contentUpdateAvailable"), result))
+  if (![self localURLExists] || (result = objc_msgSend(self, "contentUpdateAvailable"), result))
   {
 
-    return [a1 requestDownload];
+    return [self requestDownload];
   }
 
   return result;

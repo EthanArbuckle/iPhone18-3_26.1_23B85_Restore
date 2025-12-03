@@ -3,10 +3,10 @@
 - (CGRect)contentBounds;
 - (CGRect)hitTestBounds;
 - (PSPointerHoverRegion)init;
-- (PSPointerHoverRegion)initWithCoder:(id)a3;
-- (id)_copyWithClass:(Class)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PSPointerHoverRegion)initWithCoder:(id)coder;
+- (id)_copyWithClass:(Class)class;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSPointerHoverRegion
@@ -30,71 +30,71 @@
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(PSPointerHoverRegion *)self _copyWithClass:v4];
 }
 
-- (PSPointerHoverRegion)initWithCoder:(id)a3
+- (PSPointerHoverRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = PSPointerHoverRegion;
   v5 = [(PSPointerHoverRegion *)&v34 init];
   if (v5)
   {
-    v5->_coordinateSpaceSourceContextID = [v4 decodeInt32ForKey:@"coordinateSpaceSourceContextID"];
-    v5->_coordinateSpaceSourceLayerRenderID = [v4 decodeInt64ForKey:@"coordinateSpaceSourceLayerRenderID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentBounds"];
+    v5->_coordinateSpaceSourceContextID = [coderCopy decodeInt32ForKey:@"coordinateSpaceSourceContextID"];
+    v5->_coordinateSpaceSourceLayerRenderID = [coderCopy decodeInt64ForKey:@"coordinateSpaceSourceLayerRenderID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentBounds"];
     [v6 bs_CGRectValue];
     v5->_contentBounds.origin.x = v7;
     v5->_contentBounds.origin.y = v8;
     v5->_contentBounds.size.width = v9;
     v5->_contentBounds.size.height = v10;
 
-    [v4 decodeDoubleForKey:@"contentHoverInverseScale"];
+    [coderCopy decodeDoubleForKey:@"contentHoverInverseScale"];
     v5->_contentHoverInverseScale = v11;
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentMatchMoveSource"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentMatchMoveSource"];
     contentMatchMoveSource = v5->_contentMatchMoveSource;
     v5->_contentMatchMoveSource = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentSlipValue"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentSlipValue"];
     contentSlipValue = v5->_contentSlipValue;
     v5->_contentSlipValue = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hitTestBounds"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hitTestBounds"];
     [v16 bs_CGRectValue];
     v5->_hitTestBounds.origin.x = v17;
     v5->_hitTestBounds.origin.y = v18;
     v5->_hitTestBounds.size.width = v19;
     v5->_hitTestBounds.size.height = v20;
 
-    v5->_overlayEffectStyle = [v4 decodeIntegerForKey:@"overlayEffectStyle"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointerPortalSourceCollection"];
+    v5->_overlayEffectStyle = [coderCopy decodeIntegerForKey:@"overlayEffectStyle"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointerPortalSourceCollection"];
     pointerPortalSourceCollection = v5->_pointerPortalSourceCollection;
     v5->_pointerPortalSourceCollection = v21;
 
-    v5->_pointerRecenteringAxes = [v4 decodeIntegerForKey:@"pointerRecenteringAxes"];
-    v5->_pointerLatchingAxes = [v4 decodeIntegerForKey:@"pointerLatchingAxes"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointerShape"];
+    v5->_pointerRecenteringAxes = [coderCopy decodeIntegerForKey:@"pointerRecenteringAxes"];
+    v5->_pointerLatchingAxes = [coderCopy decodeIntegerForKey:@"pointerLatchingAxes"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointerShape"];
     pointerShape = v5->_pointerShape;
     v5->_pointerShape = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointerSlipValue"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointerSlipValue"];
     pointerSlipValue = v5->_pointerSlipValue;
     v5->_pointerSlipValue = v25;
 
-    [v4 decodeDoubleForKey:@"pointerVisualIntensity"];
+    [coderCopy decodeDoubleForKey:@"pointerVisualIntensity"];
     v5->_pointerVisualIntensity = v27;
-    v5->_preferredPointerMaterialLuminance = [v4 decodeIntegerForKey:@"preferredPointerMaterialLuminance"];
-    v5->_shouldPointerUnderlayContent = [v4 decodeBoolForKey:@"shouldPointerUnderlayContent"];
-    v5->_shouldPointerSuppressMirroring = [v4 decodeBoolForKey:@"shouldPointerSuppressMirroring"];
+    v5->_preferredPointerMaterialLuminance = [coderCopy decodeIntegerForKey:@"preferredPointerMaterialLuminance"];
+    v5->_shouldPointerUnderlayContent = [coderCopy decodeBoolForKey:@"shouldPointerUnderlayContent"];
+    v5->_shouldPointerSuppressMirroring = [coderCopy decodeBoolForKey:@"shouldPointerSuppressMirroring"];
     v28 = MEMORY[0x277CBEB98];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"accessories"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"accessories"];
     accessories = v5->_accessories;
     v5->_accessories = v31;
   }
@@ -102,37 +102,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   coordinateSpaceSourceContextID = self->_coordinateSpaceSourceContextID;
-  v7 = a3;
-  [v7 encodeInt32:coordinateSpaceSourceContextID forKey:@"coordinateSpaceSourceContextID"];
-  [v7 encodeInt64:self->_coordinateSpaceSourceLayerRenderID forKey:@"coordinateSpaceSourceLayerRenderID"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:coordinateSpaceSourceContextID forKey:@"coordinateSpaceSourceContextID"];
+  [coderCopy encodeInt64:self->_coordinateSpaceSourceLayerRenderID forKey:@"coordinateSpaceSourceLayerRenderID"];
   v5 = [MEMORY[0x277CCAE60] bs_valueWithCGRect:{self->_contentBounds.origin.x, self->_contentBounds.origin.y, self->_contentBounds.size.width, self->_contentBounds.size.height}];
-  [v7 encodeObject:v5 forKey:@"contentBounds"];
+  [coderCopy encodeObject:v5 forKey:@"contentBounds"];
 
-  [v7 encodeDouble:@"contentHoverInverseScale" forKey:self->_contentHoverInverseScale];
-  [v7 encodeObject:self->_contentMatchMoveSource forKey:@"contentMatchMoveSource"];
-  [v7 encodeObject:self->_contentSlipValue forKey:@"contentSlipValue"];
+  [coderCopy encodeDouble:@"contentHoverInverseScale" forKey:self->_contentHoverInverseScale];
+  [coderCopy encodeObject:self->_contentMatchMoveSource forKey:@"contentMatchMoveSource"];
+  [coderCopy encodeObject:self->_contentSlipValue forKey:@"contentSlipValue"];
   v6 = [MEMORY[0x277CCAE60] bs_valueWithCGRect:{self->_hitTestBounds.origin.x, self->_hitTestBounds.origin.y, self->_hitTestBounds.size.width, self->_hitTestBounds.size.height}];
-  [v7 encodeObject:v6 forKey:@"hitTestBounds"];
+  [coderCopy encodeObject:v6 forKey:@"hitTestBounds"];
 
-  [v7 encodeInteger:self->_overlayEffectStyle forKey:@"overlayEffectStyle"];
-  [v7 encodeObject:self->_pointerPortalSourceCollection forKey:@"pointerPortalSourceCollection"];
-  [v7 encodeInteger:self->_pointerRecenteringAxes forKey:@"pointerRecenteringAxes"];
-  [v7 encodeInteger:self->_pointerLatchingAxes forKey:@"pointerLatchingAxes"];
-  [v7 encodeObject:self->_pointerShape forKey:@"pointerShape"];
-  [v7 encodeObject:self->_pointerSlipValue forKey:@"pointerSlipValue"];
-  [v7 encodeDouble:@"pointerVisualIntensity" forKey:self->_pointerVisualIntensity];
-  [v7 encodeInteger:self->_preferredPointerMaterialLuminance forKey:@"preferredPointerMaterialLuminance"];
-  [v7 encodeBool:self->_shouldPointerUnderlayContent forKey:@"shouldPointerUnderlayContent"];
-  [v7 encodeBool:self->_shouldPointerSuppressMirroring forKey:@"shouldPointerSuppressMirroring"];
-  [v7 encodeObject:self->_accessories forKey:@"accessories"];
+  [coderCopy encodeInteger:self->_overlayEffectStyle forKey:@"overlayEffectStyle"];
+  [coderCopy encodeObject:self->_pointerPortalSourceCollection forKey:@"pointerPortalSourceCollection"];
+  [coderCopy encodeInteger:self->_pointerRecenteringAxes forKey:@"pointerRecenteringAxes"];
+  [coderCopy encodeInteger:self->_pointerLatchingAxes forKey:@"pointerLatchingAxes"];
+  [coderCopy encodeObject:self->_pointerShape forKey:@"pointerShape"];
+  [coderCopy encodeObject:self->_pointerSlipValue forKey:@"pointerSlipValue"];
+  [coderCopy encodeDouble:@"pointerVisualIntensity" forKey:self->_pointerVisualIntensity];
+  [coderCopy encodeInteger:self->_preferredPointerMaterialLuminance forKey:@"preferredPointerMaterialLuminance"];
+  [coderCopy encodeBool:self->_shouldPointerUnderlayContent forKey:@"shouldPointerUnderlayContent"];
+  [coderCopy encodeBool:self->_shouldPointerSuppressMirroring forKey:@"shouldPointerSuppressMirroring"];
+  [coderCopy encodeObject:self->_accessories forKey:@"accessories"];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {

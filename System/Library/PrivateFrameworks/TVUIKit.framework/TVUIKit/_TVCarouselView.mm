@@ -1,9 +1,9 @@
 @interface _TVCarouselView
 - (BOOL)_canScrollCarouselView;
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (CGPoint)focusDirection;
 - (CGPoint)targetContentOffset;
 - (CGSize)_collectionViewLayoutItemSize;
@@ -11,65 +11,65 @@
 - (CGSize)sizeThatFits:(CGSize)result;
 - (TVCarouselViewDataSource)dataSource;
 - (TVCarouselViewDelegate)delegate;
-- (_TVCarouselView)initWithFrame:(CGRect)a3;
-- (double)_contentOffsetXForCollectionViewIndex:(int64_t)a3;
-- (id)_cellForItemAtIndex:(unint64_t)a3;
-- (id)_prepareIndexMap:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndex:(unint64_t)a4;
+- (_TVCarouselView)initWithFrame:(CGRect)frame;
+- (double)_contentOffsetXForCollectionViewIndex:(int64_t)index;
+- (id)_cellForItemAtIndex:(unint64_t)index;
+- (id)_prepareIndexMap:(int64_t)map;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndex:(unint64_t)index;
 - (id)focusedCell;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
 - (int64_t)_numberOfCells;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)_itemIndexForIndexPath:(id)a3;
-- (unint64_t)_previousItemIndexForIndexPath:(id)a3;
-- (unint64_t)indexForCell:(id)a3;
-- (void)_animatePagedCenteringAnimated:(BOOL)a3 animations:(id)a4 completion:(id)a5;
-- (void)_focusItemAtIndex:(int64_t)a3;
-- (void)_handlePlayGesture:(id)a3;
-- (void)_pageControlValueChanged:(id)a3;
-- (void)_setContentOffsetForCollectionViewIndex:(int64_t)a3 animated:(BOOL)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)_itemIndexForIndexPath:(id)path;
+- (unint64_t)_previousItemIndexForIndexPath:(id)path;
+- (unint64_t)indexForCell:(id)cell;
+- (void)_animatePagedCenteringAnimated:(BOOL)animated animations:(id)animations completion:(id)completion;
+- (void)_focusItemAtIndex:(int64_t)index;
+- (void)_handlePlayGesture:(id)gesture;
+- (void)_pageControlValueChanged:(id)changed;
+- (void)_setContentOffsetForCollectionViewIndex:(int64_t)index animated:(BOOL)animated;
 - (void)_startAutoScrollTimer;
 - (void)_startContinuousScroll;
 - (void)_stopAutoScrollTimer;
 - (void)_stopContinuousScroll;
 - (void)_updateAutoScrollTimer;
-- (void)_updateCarouselWithDataSource:(id)a3 indicesToRemove:(id)a4 indicesToAdd:(id)a5 indicesToReload:(id)a6;
+- (void)_updateCarouselWithDataSource:(id)source indicesToRemove:(id)remove indicesToAdd:(id)add indicesToReload:(id)reload;
 - (void)_updateIdleModeLayoutAttributes;
 - (void)_updatePageControl;
-- (void)calculateChangeSetForFocusedIndex:(int64_t)a3 newDataSourceMap:(id)a4 indexesToRemove:(id *)a5 indexesToAdd:(id *)a6 indexesToReload:(id *)a7;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)calculateChangeSetForFocusedIndex:(int64_t)index newDataSourceMap:(id)map indexesToRemove:(id *)remove indexesToAdd:(id *)add indexesToReload:(id *)reload;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)displayLinkDidFire:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)displayLinkDidFire:(id)fire;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAutoscrollInterval:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setItemSize:(CGSize)a3;
-- (void)setScrollMode:(unint64_t)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setShowsPageControl:(BOOL)a3;
-- (void)setUnitScrollDuration:(double)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAutoscrollInterval:(double)interval;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderView:(id)view;
+- (void)setItemSize:(CGSize)size;
+- (void)setScrollMode:(unint64_t)mode;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setShowsPageControl:(BOOL)control;
+- (void)setUnitScrollDuration:(double)duration;
 @end
 
 @implementation _TVCarouselView
 
-- (_TVCarouselView)initWithFrame:(CGRect)a3
+- (_TVCarouselView)initWithFrame:(CGRect)frame
 {
   v42[1] = *MEMORY[0x277D85DE8];
   v40.receiver = self;
   v40.super_class = _TVCarouselView;
-  v3 = [(_TVCarouselView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVCarouselView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_TVCarouselCollectionView alloc];
@@ -80,9 +80,9 @@
     width = v44.size.width;
     height = v44.size.height;
     v9 = objc_alloc_init(_TVCarouselCollectionViewLayout);
-    v10 = [(_TVCarouselCollectionView *)v4 initWithFrame:v9 collectionViewLayout:x, y, width, height];
+    height = [(_TVCarouselCollectionView *)v4 initWithFrame:v9 collectionViewLayout:x, y, width, height];
     v11 = *(v3 + 53);
-    *(v3 + 53) = v10;
+    *(v3 + 53) = height;
 
     [*(v3 + 53) setAutoresizingMask:18];
     [*(v3 + 53) setDataSource:v3];
@@ -102,17 +102,17 @@
     v39 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel__handlePlayGesture_];
     [v39 setAllowedPressTypes:&unk_287E88DA0];
     [v3 addGestureRecognizer:v39];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v15 = *MEMORY[0x277D76660];
-    v16 = [MEMORY[0x277D75128] sharedApplication];
-    v38 = v14;
-    [v14 addObserver:v3 selector:sel__applicationDidEnterBackgroundNotification_ name:v15 object:v16];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v38 = defaultCenter;
+    [defaultCenter addObserver:v3 selector:sel__applicationDidEnterBackgroundNotification_ name:v15 object:mEMORY[0x277D75128]];
 
     v17 = *MEMORY[0x277D76648];
-    v18 = [MEMORY[0x277D75128] sharedApplication];
-    [v14 addObserver:v3 selector:sel__applicationDidBecomeActiveNotification_ name:v17 object:v18];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter addObserver:v3 selector:sel__applicationDidBecomeActiveNotification_ name:v17 object:mEMORY[0x277D75128]2];
 
-    [v14 addObserver:v3 selector:sel__accessibilityReducedMotionNotification_ name:*MEMORY[0x277D764C0] object:0];
+    [defaultCenter addObserver:v3 selector:sel__accessibilityReducedMotionNotification_ name:*MEMORY[0x277D764C0] object:0];
     *(v3 + 78) = 0x3FD0000000000000;
     *(v3 + 59) = 0;
     *(v3 + 66) = 0x4024000000000000;
@@ -127,21 +127,21 @@
 
     [v3 addLayoutGuide:*(v3 + 72)];
     v33 = MEMORY[0x277CCAAD0];
-    v37 = [v3 leftAnchor];
-    v36 = [*(v3 + 72) leftAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    leftAnchor = [v3 leftAnchor];
+    leftAnchor2 = [*(v3 + 72) leftAnchor];
+    v35 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v41[0] = v35;
-    v34 = [v3 topAnchor];
-    v22 = [*(v3 + 72) topAnchor];
-    v23 = [v34 constraintEqualToAnchor:v22 constant:1.0];
+    topAnchor = [v3 topAnchor];
+    topAnchor2 = [*(v3 + 72) topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:1.0];
     v41[1] = v23;
-    v24 = [v3 rightAnchor];
-    v25 = [*(v3 + 72) rightAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    rightAnchor = [v3 rightAnchor];
+    rightAnchor2 = [*(v3 + 72) rightAnchor];
+    v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v41[2] = v26;
-    v27 = [v3 bottomAnchor];
-    v28 = [*(v3 + 72) bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:-1.0];
+    bottomAnchor = [v3 bottomAnchor];
+    bottomAnchor2 = [*(v3 + 72) bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-1.0];
     v41[3] = v29;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:4];
     [v33 activateConstraints:v30];
@@ -153,31 +153,31 @@
   return v3;
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  v8 = v5;
-  if (headerView != v5)
+  v8 = viewCopy;
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
-    v7 = [(_TVCarouselView *)self headerView];
-    [(_TVCarouselView *)self addSubview:v7];
+    objc_storeStrong(&self->_headerView, view);
+    headerView = [(_TVCarouselView *)self headerView];
+    [(_TVCarouselView *)self addSubview:headerView];
   }
 
   [(_TVCarouselView *)self setNeedsLayout];
 }
 
-- (void)setScrollMode:(unint64_t)a3
+- (void)setScrollMode:(unint64_t)mode
 {
-  if (self->_scrollMode != a3)
+  if (self->_scrollMode != mode)
   {
-    self->_scrollMode = a3;
+    self->_scrollMode = mode;
     autoScrollTimer = self->_autoScrollTimer;
-    if (a3 || !autoScrollTimer)
+    if (mode || !autoScrollTimer)
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
         if (autoScrollTimer)
         {
@@ -193,34 +193,34 @@
   }
 }
 
-- (void)setShowsPageControl:(BOOL)a3
+- (void)setShowsPageControl:(BOOL)control
 {
-  v3 = a3;
-  self->_showsPageControl = a3;
-  v5 = [(_TVCarouselView *)self pageControl];
+  controlCopy = control;
+  self->_showsPageControl = control;
+  pageControl = [(_TVCarouselView *)self pageControl];
 
-  if (v3)
+  if (controlCopy)
   {
-    if (!v5)
+    if (!pageControl)
     {
       v6 = objc_opt_new();
       [v6 setHidesForSinglePage:1];
       [v6 addTarget:self action:sel__pageControlValueChanged_ forControlEvents:4096];
       [(_TVCarouselView *)self setPageControl:v6];
-      v7 = [(_TVCarouselView *)self pageControl];
-      [v7 setHidesForSinglePage:1];
+      pageControl2 = [(_TVCarouselView *)self pageControl];
+      [pageControl2 setHidesForSinglePage:1];
 
-      v8 = [(_TVCarouselView *)self pageControl];
-      [(_TVCarouselView *)self addSubview:v8];
+      pageControl3 = [(_TVCarouselView *)self pageControl];
+      [(_TVCarouselView *)self addSubview:pageControl3];
     }
 
     [(_TVCarouselView *)self setNeedsLayout];
   }
 
-  else if (v5)
+  else if (pageControl)
   {
-    v9 = [(_TVCarouselView *)self pageControl];
-    [v9 removeFromSuperview];
+    pageControl4 = [(_TVCarouselView *)self pageControl];
+    [pageControl4 removeFromSuperview];
 
     [(_TVCarouselView *)self setPageControl:0];
   }
@@ -262,31 +262,31 @@
 {
   if (!self->_displayLink)
   {
-    v4 = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
-    [(_TVCarouselView *)self _setContentOffsetForCollectionViewIndex:v4];
-    v5 = [(_TVCarouselView *)self _collectionView];
-    [v5 contentOffset];
+    _centerCollectionViewCellIndex = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
+    [(_TVCarouselView *)self _setContentOffsetForCollectionViewIndex:_centerCollectionViewCellIndex];
+    _collectionView = [(_TVCarouselView *)self _collectionView];
+    [_collectionView contentOffset];
     v7 = v6;
     v9 = v8;
 
-    [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:v4 + 1];
+    [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:_centerCollectionViewCellIndex + 1];
     v11 = v10;
     [(_TVCarouselView *)self setOffsetChangePerSecond:(v10 - v7) / self->_unitScrollDuration];
     [(_TVCarouselView *)self setTargetContentOffset:v11, v9];
     [(_TVCarouselView *)self setPreviousDisplayLinkTimestamp:0.0];
     [(_TVCarouselView *)self _stopContinuousScroll];
     v13 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel_displayLinkDidFire_];
-    v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v13 addToRunLoop:v12 forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [v13 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
     [(_TVCarouselView *)self setDisplayLink:v13];
   }
 }
 
-- (void)displayLinkDidFire:(id)a3
+- (void)displayLinkDidFire:(id)fire
 {
-  v4 = [(_TVCarouselView *)self displayLink];
-  [v4 timestamp];
+  displayLink = [(_TVCarouselView *)self displayLink];
+  [displayLink timestamp];
   v6 = v5;
 
   [(_TVCarouselView *)self previousDisplayLinkTimestamp];
@@ -304,24 +304,24 @@
   [(_TVCarouselView *)self setPreviousDisplayLinkTimestamp:v6];
   if ([(_TVCarouselView *)self _canScrollCarouselView])
   {
-    v10 = [(_TVCarouselView *)self _collectionView];
-    [v10 contentOffset];
+    _collectionView = [(_TVCarouselView *)self _collectionView];
+    [_collectionView contentOffset];
     v12 = v11;
     v14 = v13;
 
     [(_TVCarouselView *)self offsetChangePerSecond];
     v16 = v12 + v15 * v9;
-    v17 = [(_TVCarouselView *)self _collectionView];
-    [v17 setContentOffset:0 animated:{v16, v14}];
+    _collectionView2 = [(_TVCarouselView *)self _collectionView];
+    [_collectionView2 setContentOffset:0 animated:{v16, v14}];
 
-    v18 = [(_TVCarouselView *)self displayLink];
-    [v18 targetTimestamp];
+    displayLink2 = [(_TVCarouselView *)self displayLink];
+    [displayLink2 targetTimestamp];
     v20 = v19 - v6;
     [(_TVCarouselView *)self offsetChangePerSecond];
     v22 = v20 * v21;
 
-    v23 = [(_TVCarouselView *)self _collectionView];
-    [v23 contentOffset];
+    _collectionView3 = [(_TVCarouselView *)self _collectionView];
+    [_collectionView3 contentOffset];
     v25 = v22 + v24;
     [(_TVCarouselView *)self targetContentOffset];
     v27 = v26;
@@ -346,21 +346,21 @@
 {
   [(_TVCarouselView *)self _stopAutoScrollTimer];
   [(_TVCarouselView *)self _stopContinuousScroll];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _TVCarouselView;
   [(_TVCarouselView *)&v4 dealloc];
 }
 
-- (void)_pageControlValueChanged:(id)a3
+- (void)_pageControlValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 currentPage];
-  v6 = [v4 interactionState];
+  changedCopy = changed;
+  currentPage = [changedCopy currentPage];
+  interactionState = [changedCopy interactionState];
 
-  [(_TVCarouselView *)self _centerItemAtPageIndex:v5 animated:v6 != 2];
+  [(_TVCarouselView *)self _centerItemAtPageIndex:currentPage animated:interactionState != 2];
 }
 
 - (void)didMoveToWindow
@@ -368,19 +368,19 @@
   v4.receiver = self;
   v4.super_class = _TVCarouselView;
   [(_TVCarouselView *)&v4 didMoveToWindow];
-  v3 = [(_TVCarouselView *)self window];
+  window = [(_TVCarouselView *)self window];
 
-  if (v3)
+  if (window)
   {
     self->_flags.firstLayoutPass = 1;
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = _TVCarouselView;
-  [(_TVCarouselView *)&v5 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(_TVCarouselView *)&v5 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   [(_TVCarouselView *)self _updateAutoScrollTimer];
   [(_TVCarouselView *)self _updateIdleModeLayoutAttributes];
 }
@@ -392,30 +392,30 @@
   return result;
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = _TVCarouselView;
   [(_TVCarouselView *)&v5 setSemanticContentAttribute:?];
-  [(_TVCarouselCollectionView *)self->_collectionView setSemanticContentAttribute:a3];
+  [(_TVCarouselCollectionView *)self->_collectionView setSemanticContentAttribute:attribute];
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
-  v3 = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
+  _centerCollectionViewCellIndex = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
   v4 = MEMORY[0x277CCAA70];
 
-  return [v4 indexPathForItem:v3 inSection:0];
+  return [v4 indexPathForItem:_centerCollectionViewCellIndex inSection:0];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   self->_numberOfRealItemsForDataSource = [WeakRetained numberOfItemsInCarouselView:self];
 
   [(_TVCarouselCollectionView *)self->_collectionView setScrollEnabled:self->_numberOfRealItemsForDataSource > 1];
-  v6 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
-  v7 = [v6 count];
+  collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+  v7 = [collectionToDatasourceIndexMap count];
 
   if (!v7)
   {
@@ -423,139 +423,139 @@
     [(_TVCarouselView *)self setCollectionToDatasourceIndexMap:v8];
   }
 
-  v9 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
-  v10 = [v9 count];
+  collectionToDatasourceIndexMap2 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+  v10 = [collectionToDatasourceIndexMap2 count];
 
   return v10;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  self->_indexToDeque = [a4 item];
-  v5 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+  self->_indexToDeque = [path item];
+  collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_indexToDeque];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [collectionToDatasourceIndexMap objectForKey:v6];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v10 = [WeakRetained carouselView:self cellForItemAtIndex:v8];
+  v10 = [WeakRetained carouselView:self cellForItemAtIndex:unsignedIntegerValue];
 
   self->_indexToDeque = 0x7FFFFFFFFFFFFFFFLL;
 
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   if ((*&self->_carouselViewFlags & 2) == 0)
   {
     return 1;
   }
 
-  v5 = self;
-  v6 = a4;
-  WeakRetained = objc_loadWeakRetained(&v5->_delegate);
-  v8 = [(_TVCarouselView *)v5 _itemIndexForIndexPath:v6];
+  selfCopy = self;
+  pathCopy = path;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  v8 = [(_TVCarouselView *)selfCopy _itemIndexForIndexPath:pathCopy];
 
-  LOBYTE(v5) = [WeakRetained carouselView:v5 shouldHighlightItemAtIndex:v8];
-  return v5;
+  LOBYTE(selfCopy) = [WeakRetained carouselView:selfCopy shouldHighlightItemAtIndex:v8];
+  return selfCopy;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
   if ((*&self->_carouselViewFlags & 4) != 0)
   {
-    v6 = a4;
+    pathCopy = path;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:v6];
+    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:pathCopy];
 
     [WeakRetained carouselView:self didHighlightItemAtIndex:v7];
   }
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
   if ((*&self->_carouselViewFlags & 8) != 0)
   {
-    v6 = a4;
+    pathCopy = path;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:v6];
+    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:pathCopy];
 
     [WeakRetained carouselView:self didUnhighlightItemAtIndex:v7];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   if ((*&self->_carouselViewFlags & 0x10) == 0)
   {
     return 1;
   }
 
-  v5 = self;
-  v6 = a4;
-  WeakRetained = objc_loadWeakRetained(&v5->_delegate);
-  v8 = [(_TVCarouselView *)v5 _itemIndexForIndexPath:v6];
+  selfCopy = self;
+  pathCopy = path;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  v8 = [(_TVCarouselView *)selfCopy _itemIndexForIndexPath:pathCopy];
 
-  LOBYTE(v5) = [WeakRetained carouselView:v5 shouldSelectItemAtIndex:v8];
-  return v5;
+  LOBYTE(selfCopy) = [WeakRetained carouselView:selfCopy shouldSelectItemAtIndex:v8];
+  return selfCopy;
 }
 
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path
 {
   if ((*&self->_carouselViewFlags & 0x20) == 0)
   {
     return 1;
   }
 
-  v5 = self;
-  v6 = a4;
-  WeakRetained = objc_loadWeakRetained(&v5->_delegate);
-  v8 = [(_TVCarouselView *)v5 _itemIndexForIndexPath:v6];
+  selfCopy = self;
+  pathCopy = path;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  v8 = [(_TVCarouselView *)selfCopy _itemIndexForIndexPath:pathCopy];
 
-  LOBYTE(v5) = [WeakRetained carouselView:v5 shouldDeselectItemAtIndex:v8];
-  return v5;
+  LOBYTE(selfCopy) = [WeakRetained carouselView:selfCopy shouldDeselectItemAtIndex:v8];
+  return selfCopy;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   if ((*&self->_carouselViewFlags & 0x40) != 0)
   {
-    v6 = a4;
+    pathCopy = path;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:v6];
+    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:pathCopy];
 
     [WeakRetained carouselView:self didSelectItemAtIndex:v7];
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   if ((*&self->_carouselViewFlags & 0x80) != 0)
   {
-    v6 = a4;
+    pathCopy = path;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:v6];
+    v7 = [(_TVCarouselView *)self _itemIndexForIndexPath:pathCopy];
 
     [WeakRetained carouselView:self didDeselectItemAtIndex:v7];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   if (!self->_focusedIndexPath)
   {
     [(_TVCarouselView *)self _updateContentOffsetForFocusedIndex:0x7FFFFFFFFFFFFFFFLL animated:0];
   }
 
-  v11 = [(_TVCarouselView *)self _itemIndexForIndexPath:v10];
+  v11 = [(_TVCarouselView *)self _itemIndexForIndexPath:pathCopy];
   if (*(&self->_carouselViewFlags + 1))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained carouselView:self willDisplayCell:v9 forItemAtIndex:v11];
+    [WeakRetained carouselView:self willDisplayCell:cellCopy forItemAtIndex:v11];
   }
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -572,14 +572,14 @@
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_TVCarouselView *)self _previousItemIndexForIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(_TVCarouselView *)self _previousItemIndexForIndexPath:path];
   if ((*(&self->_carouselViewFlags + 1) & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained carouselView:self didEndDisplayingCell:v7 forItemAtIndex:v8];
+    [WeakRetained carouselView:self didEndDisplayingCell:cellCopy forItemAtIndex:v8];
   }
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -596,15 +596,15 @@
   }
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (self->_scrollMode != 1)
   {
     if (self->_firstFocusChangeInInterval)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [v6 timeIntervalSinceDate:self->_firstFocusChangeInInterval];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:self->_firstFocusChangeInInterval];
       v8 = v7;
 
       if (v8 < self->_focusThrottleTimeInterval)
@@ -626,16 +626,16 @@ LABEL_8:
   return v5;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
-  v10 = v9;
+  y = velocity.y;
+  x = velocity.x;
+  _centerCollectionViewCellIndex = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
+  v10 = _centerCollectionViewCellIndex;
   v11 = y == *(MEMORY[0x277CBF348] + 8) && x == *MEMORY[0x277CBF348];
   if (v11 == 1)
   {
-    [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:v9];
+    [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:_centerCollectionViewCellIndex];
     v13 = v12;
     [(_TVCarouselView *)self itemSize];
     v15 = v13 + v14 * 0.5;
@@ -651,12 +651,12 @@ LABEL_8:
 
   else
   {
-    [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:v9 + 1];
+    [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:_centerCollectionViewCellIndex + 1];
     v17 = v24;
     [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:v10 - 1];
   }
 
-  v25 = floor(a5->x);
+  v25 = floor(offset->x);
   if (v25 <= v23)
   {
     v26 = -1;
@@ -673,17 +673,17 @@ LABEL_8:
 
   if (((v26 != 0) & ~v11) == 0)
   {
-    v29 = [(_TVCarouselView *)self _collectionView];
-    [v29 contentOffset];
-    a5->x = v30;
+    _collectionView = [(_TVCarouselView *)self _collectionView];
+    [_collectionView contentOffset];
+    offset->x = v30;
 
     [(_TVCarouselView *)self _setContentOffsetForCollectionViewIndex:v26 + v10 animated:1];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v15 = a3;
+  scrollCopy = scroll;
   if ((*(&self->_carouselViewFlags + 1) & 4) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -695,16 +695,16 @@ LABEL_8:
   {
     if ([(NSIndexPath *)focusedIndexPath item]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
-      [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:v6 + 1];
+      _centerCollectionViewCellIndex = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
+      [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:_centerCollectionViewCellIndex + 1];
       v8 = v7;
-      [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:v6 - 1];
+      [(_TVCarouselView *)self _contentOffsetXForCollectionViewIndex:_centerCollectionViewCellIndex - 1];
       v10 = v9;
-      [v15 contentOffset];
-      if (floor(v11) <= v10 || ([v15 contentOffset], floor(v12) >= v8))
+      [scrollCopy contentOffset];
+      if (floor(v11) <= v10 || ([scrollCopy contentOffset], floor(v12) >= v8))
       {
         [(_TVCarouselView *)self _focusItemAtIndex:[(NSIndexPath *)self->_focusedIndexPath item]];
-        v13 = [MEMORY[0x277CCAA70] indexPathForItem:v6 inSection:0];
+        v13 = [MEMORY[0x277CCAA70] indexPathForItem:_centerCollectionViewCellIndex inSection:0];
         v14 = self->_focusedIndexPath;
         self->_focusedIndexPath = v13;
       }
@@ -712,21 +712,21 @@ LABEL_8:
   }
 }
 
-- (void)_handlePlayGesture:(id)a3
+- (void)_handlePlayGesture:(id)gesture
 {
-  if ([a3 state] == 3 && (*(&self->_carouselViewFlags + 1) & 0x10) != 0)
+  if ([gesture state] == 3 && (*(&self->_carouselViewFlags + 1) & 0x10) != 0)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    v9 = [v4 focusedView];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    focusedView = [mainScreen focusedView];
 
-    if (v9)
+    if (focusedView)
     {
-      v5 = [(_TVCarouselView *)self visibleCells];
-      v6 = [v5 containsObject:v9];
+      visibleCells = [(_TVCarouselView *)self visibleCells];
+      v6 = [visibleCells containsObject:focusedView];
 
       if (v6)
       {
-        v7 = [(_TVCarouselView *)self indexForCell:v9];
+        v7 = [(_TVCarouselView *)self indexForCell:focusedView];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained carouselView:self didPlayItemAtIndex:v7];
       }
@@ -734,10 +734,10 @@ LABEL_8:
   }
 }
 
-- (id)_cellForItemAtIndex:(unint64_t)a3
+- (id)_cellForItemAtIndex:(unint64_t)index
 {
   collectionView = self->_collectionView;
-  v4 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+  v4 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v5 = [(_TVCarouselCollectionView *)collectionView cellForItemAtIndexPath:v4];
 
   return v5;
@@ -754,9 +754,9 @@ LABEL_8:
   return focusedIndexPath;
 }
 
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndex:(unint64_t)a4
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndex:(unint64_t)index
 {
-  v5 = a3;
+  identifierCopy = identifier;
   indexToDeque = self->_indexToDeque;
   if (indexToDeque == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -768,29 +768,29 @@ LABEL_8:
   {
     collectionView = self->_collectionView;
     v9 = [MEMORY[0x277CCAA70] indexPathForItem:indexToDeque inSection:0];
-    v7 = [(_TVCarouselCollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v5 forIndexPath:v9];
+    v7 = [(_TVCarouselCollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:identifierCopy forIndexPath:v9];
   }
 
   return v7;
 }
 
-- (unint64_t)indexForCell:(id)a3
+- (unint64_t)indexForCell:(id)cell
 {
-  v4 = [(_TVCarouselCollectionView *)self->_collectionView indexPathForCell:a3];
+  v4 = [(_TVCarouselCollectionView *)self->_collectionView indexPathForCell:cell];
   if (v4)
   {
-    v5 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+    collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "item")}];
-    v7 = [v5 objectForKeyedSubscript:v6];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [collectionToDatasourceIndexMap objectForKeyedSubscript:v6];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (void)reloadData
@@ -805,58 +805,58 @@ LABEL_8:
   [(_TVCarouselView *)self _updatePageControl];
   if (*(&self->_carouselViewFlags + 2))
   {
-    v4 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+    collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[_TVCarouselView _centerCollectionViewCellIndex](self, "_centerCollectionViewCellIndex")}];
-    v6 = [v4 objectForKeyedSubscript:v5];
-    v7 = [v6 integerValue];
+    v6 = [collectionToDatasourceIndexMap objectForKeyedSubscript:v5];
+    integerValue = [v6 integerValue];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained carouselView:self didCenterItemAtIndex:v7];
+    [WeakRetained carouselView:self didCenterItemAtIndex:integerValue];
   }
 }
 
-- (void)setItemSize:(CGSize)a3
+- (void)setItemSize:(CGSize)size
 {
-  if (self->_itemSize.width != a3.width || self->_itemSize.height != a3.height)
+  if (self->_itemSize.width != size.width || self->_itemSize.height != size.height)
   {
-    self->_itemSize = a3;
+    self->_itemSize = size;
     [(_TVCarouselView *)self _updateCollectionViewLayout];
   }
 }
 
-- (void)setAutoscrollInterval:(double)a3
+- (void)setAutoscrollInterval:(double)interval
 {
-  if (vabdd_f64(self->_autoscrollInterval, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_autoscrollInterval, interval) > 2.22044605e-16)
   {
-    if (a3 < 0.5 && a3 > 2.22044605e-16)
+    if (interval < 0.5 && interval > 2.22044605e-16)
     {
-      a3 = 0.5;
+      interval = 0.5;
     }
 
-    self->_autoscrollInterval = a3;
+    self->_autoscrollInterval = interval;
     [(_TVCarouselView *)self _updateAutoScrollTimer];
   }
 }
 
-- (void)setUnitScrollDuration:(double)a3
+- (void)setUnitScrollDuration:(double)duration
 {
-  if (vabdd_f64(self->_unitScrollDuration, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_unitScrollDuration, duration) > 2.22044605e-16)
   {
-    if (a3 < 0.5 && a3 > 2.22044605e-16)
+    if (duration < 0.5 && duration > 2.22044605e-16)
     {
-      a3 = 0.5;
+      duration = 0.5;
     }
 
-    self->_unitScrollDuration = a3;
+    self->_unitScrollDuration = duration;
     [(_TVCarouselView *)self _updateAutoScrollTimer];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
-  v4 = [(_TVCarouselView *)self delegate];
-  if (v4 != obj || !obj && (*&self->_carouselViewFlags & 1) != 0)
+  obj = delegate;
+  delegate = [(_TVCarouselView *)self delegate];
+  if (delegate != obj || !obj && (*&self->_carouselViewFlags & 1) != 0)
   {
     objc_storeWeak(&self->_delegate, obj);
     v5 = *&self->_carouselViewFlags & 0xFFFFFFFE;
@@ -1052,35 +1052,35 @@ LABEL_8:
     return self->_numberOfRealItemsForDataSource;
   }
 
-  v3 = [(_TVCarouselCollectionView *)self->_collectionView collectionViewLayout];
-  v4 = [v3 _expectedNumberOfCells];
+  collectionViewLayout = [(_TVCarouselCollectionView *)self->_collectionView collectionViewLayout];
+  _expectedNumberOfCells = [collectionViewLayout _expectedNumberOfCells];
 
-  return v4;
+  return _expectedNumberOfCells;
 }
 
-- (void)calculateChangeSetForFocusedIndex:(int64_t)a3 newDataSourceMap:(id)a4 indexesToRemove:(id *)a5 indexesToAdd:(id *)a6 indexesToReload:(id *)a7
+- (void)calculateChangeSetForFocusedIndex:(int64_t)index newDataSourceMap:(id)map indexesToRemove:(id *)remove indexesToAdd:(id *)add indexesToReload:(id *)reload
 {
-  v43 = a4;
-  v12 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
-  v13 = [v12 copy];
+  mapCopy = map;
+  collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+  v13 = [collectionToDatasourceIndexMap copy];
 
   v14 = [v13 count];
-  if (v14 == [v43 count])
+  if (v14 == [mapCopy count])
   {
-    v42 = a5;
-    v15 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
-    v16 = [v15 count];
+    removeCopy = remove;
+    collectionToDatasourceIndexMap2 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+    v16 = [collectionToDatasourceIndexMap2 count];
 
-    v17 = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
-    v18 = [MEMORY[0x277CBEB18] array];
-    v19 = [MEMORY[0x277CBEB18] array];
-    v20 = v17 - a3;
-    if (v17 != a3)
+    _centerCollectionViewCellIndex = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v20 = _centerCollectionViewCellIndex - index;
+    if (_centerCollectionViewCellIndex != index)
     {
       v21 = 0;
       if (v20 < 0)
       {
-        v20 = a3 - v17;
+        v20 = index - _centerCollectionViewCellIndex;
       }
 
       if (v20 <= 1)
@@ -1097,10 +1097,10 @@ LABEL_8:
       do
       {
         v24 = [MEMORY[0x277CCAA70] indexPathForItem:v21 inSection:0];
-        [v18 addObject:v24];
+        [array addObject:v24];
 
         v25 = [MEMORY[0x277CCAA70] indexPathForItem:v23 inSection:0];
-        [v19 addObject:v25];
+        [array2 addObject:v25];
 
         ++v21;
         --v23;
@@ -1109,50 +1109,50 @@ LABEL_8:
       while (v22 != v21);
     }
 
-    if (v17 >= a3)
+    if (_centerCollectionViewCellIndex >= index)
     {
-      v26 = v18;
+      v26 = array;
     }
 
     else
     {
-      v26 = v19;
+      v26 = array2;
     }
 
-    if (v17 >= a3)
+    if (_centerCollectionViewCellIndex >= index)
     {
-      v27 = v19;
+      v27 = array2;
     }
 
     else
     {
-      v27 = v18;
+      v27 = array;
     }
 
-    *a6 = v26;
+    *add = v26;
     v28 = v27;
-    *v42 = v27;
+    *removeCopy = v27;
   }
 
   else
   {
     v29 = [v13 count];
-    v30 = [v43 count];
+    v30 = [mapCopy count];
     v31 = [v13 count];
     if (v29 >= v30)
     {
-      if (v31 > [v43 count])
+      if (v31 > [mapCopy count])
       {
-        for (i = 0; i < [v43 count]; ++i)
+        for (i = 0; i < [mapCopy count]; ++i)
         {
-          v38 = *a7;
+          v38 = *reload;
           v39 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:0];
           [v38 addObject:v39];
         }
 
         for (; i < [v13 count]; ++i)
         {
-          v40 = *a5;
+          v40 = *remove;
           v41 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:0];
           [v40 addObject:v41];
         }
@@ -1166,7 +1166,7 @@ LABEL_8:
       {
         do
         {
-          v33 = *a7;
+          v33 = *reload;
           v34 = [MEMORY[0x277CCAA70] indexPathForItem:v32 inSection:0];
           [v33 addObject:v34];
 
@@ -1176,9 +1176,9 @@ LABEL_8:
         while (v32 < [v13 count]);
       }
 
-      for (; v32 < [v43 count]; ++v32)
+      for (; v32 < [mapCopy count]; ++v32)
       {
-        v35 = *a6;
+        v35 = *add;
         v36 = [MEMORY[0x277CCAA70] indexPathForItem:v32 inSection:0];
         [v35 addObject:v36];
       }
@@ -1186,137 +1186,137 @@ LABEL_8:
   }
 }
 
-- (void)_focusItemAtIndex:(int64_t)a3
+- (void)_focusItemAtIndex:(int64_t)index
 {
   if ([(_TVCarouselView *)self _canScrollCarouselView]&& !self->_flags.layoutUpdateInProgress)
   {
-    v5 = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
-    v6 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v8 = [v6 objectForKeyedSubscript:v7];
-    v9 = [v8 integerValue];
+    _centerCollectionViewCellIndex = [(_TVCarouselView *)self _centerCollectionViewCellIndex];
+    collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+    v8 = [collectionToDatasourceIndexMap objectForKeyedSubscript:v7];
+    integerValue = [v8 integerValue];
 
-    v10 = [(_TVCarouselView *)self pageControl];
-    [v10 setCurrentPage:v9];
+    pageControl = [(_TVCarouselView *)self pageControl];
+    [pageControl setCurrentPage:integerValue];
 
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = [MEMORY[0x277CBEB18] array];
-    v13 = [MEMORY[0x277CBEB18] array];
-    v14 = [(_TVCarouselView *)self _prepareIndexMap:v9];
-    v20 = v12;
-    v21 = v13;
-    v19 = v11;
-    [(_TVCarouselView *)self calculateChangeSetForFocusedIndex:a3 newDataSourceMap:v14 indexesToRemove:&v21 indexesToAdd:&v20 indexesToReload:&v19];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
+    v14 = [(_TVCarouselView *)self _prepareIndexMap:integerValue];
+    v20 = array2;
+    v21 = array3;
+    v19 = array;
+    [(_TVCarouselView *)self calculateChangeSetForFocusedIndex:index newDataSourceMap:v14 indexesToRemove:&v21 indexesToAdd:&v20 indexesToReload:&v19];
     v15 = v21;
 
     v16 = v20;
     v17 = v19;
 
     [(_TVCarouselView *)self _updateCarouselWithDataSource:v14 indicesToRemove:v15 indicesToAdd:v16 indicesToReload:v17];
-    [(_TVCarouselView *)self _setContentOffsetForCollectionViewIndex:v5];
+    [(_TVCarouselView *)self _setContentOffsetForCollectionViewIndex:_centerCollectionViewCellIndex];
     [(_TVCarouselView *)self _updateAutoScrollTimer];
     if (*(&self->_carouselViewFlags + 2))
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained carouselView:self didCenterItemAtIndex:v9];
+      [WeakRetained carouselView:self didCenterItemAtIndex:integerValue];
     }
   }
 }
 
-- (void)_setContentOffsetForCollectionViewIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)_setContentOffsetForCollectionViewIndex:(int64_t)index animated:(BOOL)animated
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __68___TVCarouselView__setContentOffsetForCollectionViewIndex_animated___block_invoke;
   v4[3] = &unk_279D91AB8;
   v4[4] = self;
-  v4[5] = a3;
-  v5 = a4;
+  v4[5] = index;
+  animatedCopy = animated;
   [MEMORY[0x277D75D18] performWithoutAnimation:v4];
 }
 
-- (void)_updateCarouselWithDataSource:(id)a3 indicesToRemove:(id)a4 indicesToAdd:(id)a5 indicesToReload:(id)a6
+- (void)_updateCarouselWithDataSource:(id)source indicesToRemove:(id)remove indicesToAdd:(id)add indicesToReload:(id)reload
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sourceCopy = source;
+  removeCopy = remove;
+  addCopy = add;
+  reloadCopy = reload;
   v14 = MEMORY[0x277D75D18];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __94___TVCarouselView__updateCarouselWithDataSource_indicesToRemove_indicesToAdd_indicesToReload___block_invoke;
   v19[3] = &unk_279D91AE0;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = sourceCopy;
+  v21 = removeCopy;
+  v22 = addCopy;
+  v23 = reloadCopy;
+  v15 = reloadCopy;
+  v16 = addCopy;
+  v17 = removeCopy;
+  v18 = sourceCopy;
   [v14 performWithoutAnimation:v19];
 }
 
-- (id)_prepareIndexMap:(int64_t)a3
+- (id)_prepareIndexMap:(int64_t)map
 {
-  v5 = [(_TVCarouselView *)self _numberOfCells];
+  _numberOfCells = [(_TVCarouselView *)self _numberOfCells];
   numberOfRealItemsForDataSource = self->_numberOfRealItemsForDataSource;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v5];
-  if (v5 && numberOfRealItemsForDataSource)
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:_numberOfCells];
+  if (_numberOfCells && numberOfRealItemsForDataSource)
   {
-    v8 = v5 / 2;
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    v8 = _numberOfCells / 2;
+    if (map == 0x7FFFFFFFFFFFFFFFLL)
     {
       if ((*(&self->_carouselViewFlags + 1) & 0x80) != 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        a3 = [WeakRetained indexForPreferredCenteredViewInCarouselView:self];
+        map = [WeakRetained indexForPreferredCenteredViewInCarouselView:self];
       }
 
       else
       {
-        a3 = 0;
+        map = 0;
       }
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:v5 / 2];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:map];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:_numberOfCells / 2];
     [v7 setObject:v10 forKey:v11];
 
-    if (v5 >= 2)
+    if (_numberOfCells >= 2)
     {
       v12 = v8 - 1;
       v13 = v8 + 1;
-      v14 = a3;
+      mapCopy = map;
       do
       {
-        if (v14 + 1 == numberOfRealItemsForDataSource)
+        if (mapCopy + 1 == numberOfRealItemsForDataSource)
         {
-          v14 = 0;
+          mapCopy = 0;
         }
 
         else
         {
-          ++v14;
+          ++mapCopy;
         }
 
-        if (a3 >= 1)
+        if (map >= 1)
         {
-          v15 = a3;
+          mapCopy2 = map;
         }
 
         else
         {
-          v15 = numberOfRealItemsForDataSource;
+          mapCopy2 = numberOfRealItemsForDataSource;
         }
 
-        a3 = v15 - 1;
-        v16 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
+        map = mapCopy2 - 1;
+        v16 = [MEMORY[0x277CCABB0] numberWithInteger:mapCopy];
         v17 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
         [v7 setObject:v16 forKey:v17];
 
-        v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+        v18 = [MEMORY[0x277CCABB0] numberWithInteger:map];
         v19 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
         [v7 setObject:v18 forKey:v19];
 
@@ -1333,12 +1333,12 @@ LABEL_8:
   return v20;
 }
 
-- (double)_contentOffsetXForCollectionViewIndex:(int64_t)a3
+- (double)_contentOffsetXForCollectionViewIndex:(int64_t)index
 {
-  v5 = [(_TVCarouselCollectionView *)self->_collectionView collectionViewLayout];
-  [v5 itemSize];
+  collectionViewLayout = [(_TVCarouselCollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout itemSize];
   v7 = v6;
-  [v5 minimumInteritemSpacing];
+  [collectionViewLayout minimumInteritemSpacing];
   v9 = v8;
   [(_TVCarouselView *)self bounds];
   if (CGRectGetWidth(v13) > 0.0)
@@ -1349,33 +1349,33 @@ LABEL_8:
 
   else
   {
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     Width = CGRectGetWidth(v14);
   }
 
-  return v7 * 0.5 + a3 * (v7 + v9) - Width * 0.5;
+  return v7 * 0.5 + index * (v7 + v9) - Width * 0.5;
 }
 
-- (void)_animatePagedCenteringAnimated:(BOOL)a3 animations:(id)a4 completion:(id)a5
+- (void)_animatePagedCenteringAnimated:(BOOL)animated animations:(id)animations completion:(id)completion
 {
-  v6 = a3;
-  v11 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  animationsCopy = animations;
+  completionCopy = completion;
   v9 = MEMORY[0x277D75D18];
   v10 = 0.0;
-  if (v6)
+  if (animatedCopy)
   {
     [(_TVCarouselView *)self _centeringAnimationDuration];
   }
 
-  [v9 animateWithDuration:327686 delay:v11 options:v8 animations:v10 completion:0.0];
+  [v9 animateWithDuration:327686 delay:animationsCopy options:completionCopy animations:v10 completion:0.0];
 }
 
 - (BOOL)_canScrollCarouselView
 {
-  v3 = [(_TVCarouselView *)self window];
-  if (v3)
+  window = [(_TVCarouselView *)self window];
+  if (window)
   {
     v4 = [(_TVCarouselCollectionView *)self->_collectionView numberOfItemsInSection:0]> 1;
   }
@@ -1404,17 +1404,17 @@ LABEL_8:
     [(_TVCarouselView *)self _updateContentOffsetForFocusedIndex:0x7FFFFFFFFFFFFFFFLL animated:0];
   }
 
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 focusedView];
-  if ([v4 isDescendantOfView:self])
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
+  if ([focusedView isDescendantOfView:self])
   {
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  if ([v5 applicationState])
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if ([mEMORY[0x277D75128] applicationState])
   {
 
     goto LABEL_7;
@@ -1502,8 +1502,8 @@ LABEL_7:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v3 = [(_TVCarouselCollectionView *)self->_collectionView visibleCells];
-    v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    visibleCells = [(_TVCarouselCollectionView *)self->_collectionView visibleCells];
+    v4 = [visibleCells countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1515,30 +1515,30 @@ LABEL_7:
         {
           if (*v20 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(visibleCells);
           }
 
           [*(*(&v19 + 1) + 8 * v7++) _setIdleModeLayoutAttributes:0];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v5 = [visibleCells countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v5);
     }
 
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    v9 = [v8 focusedView];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    focusedView = [mainScreen focusedView];
 
-    if ([v9 isDescendantOfView:self])
+    if ([focusedView isDescendantOfView:self])
     {
-      v10 = [(_TVCarouselCollectionView *)self->_collectionView visibleCells];
-      v11 = [v10 containsObject:v9];
+      visibleCells2 = [(_TVCarouselCollectionView *)self->_collectionView visibleCells];
+      v11 = [visibleCells2 containsObject:focusedView];
 
       if (v11)
       {
-        [v9 bounds];
+        [focusedView bounds];
         if (v12 >= v13)
         {
           v14 = v12;
@@ -1554,7 +1554,7 @@ LABEL_7:
         v15 = objc_opt_new();
         v17 = v18;
         [v15 setTransform:&v17];
-        [v9 _setIdleModeLayoutAttributes:v15];
+        [focusedView _setIdleModeLayoutAttributes:v15];
       }
     }
   }
@@ -1562,39 +1562,39 @@ LABEL_7:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_previousItemIndexForIndexPath:(id)a3
+- (unint64_t)_previousItemIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
+  pathCopy = path;
+  v5 = pathCopy;
   previousCollectionToDatasourceIndexMap = self->_previousCollectionToDatasourceIndexMap;
-  if (previousCollectionToDatasourceIndexMap && ([MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "item")}], v7 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](previousCollectionToDatasourceIndexMap, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  if (previousCollectionToDatasourceIndexMap && ([MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "item")}], v7 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](previousCollectionToDatasourceIndexMap, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
     v9 = self->_previousCollectionToDatasourceIndexMap;
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "item")}];
     v11 = [(NSDictionary *)v9 objectForKeyedSubscript:v10];
-    v12 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v12;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)_itemIndexForIndexPath:(id)a3
+- (unint64_t)_itemIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+  pathCopy = path;
+  collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 item];
+  item = [pathCopy item];
 
-  v8 = [v6 numberWithInteger:v7];
-  v9 = [v5 objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedIntegerValue];
+  v8 = [v6 numberWithInteger:item];
+  v9 = [collectionToDatasourceIndexMap objectForKeyedSubscript:v8];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
 - (CGSize)_collectionViewLayoutItemSize
@@ -1608,18 +1608,18 @@ LABEL_7:
 
 - (void)_updatePageControl
 {
-  v3 = [(_TVCarouselView *)self pageControl];
+  pageControl = [(_TVCarouselView *)self pageControl];
 
-  if (v3)
+  if (pageControl)
   {
-    v4 = [(_TVCarouselView *)self dataSource];
-    v5 = [v4 numberOfItemsInCarouselView:self];
+    dataSource = [(_TVCarouselView *)self dataSource];
+    v5 = [dataSource numberOfItemsInCarouselView:self];
 
-    v6 = [(_TVCarouselView *)self pageControl];
-    [v6 setNumberOfPages:v5];
+    pageControl2 = [(_TVCarouselView *)self pageControl];
+    [pageControl2 setNumberOfPages:v5];
 
-    v7 = [(_TVCarouselView *)self pageControl];
-    [v7 sizeForNumberOfPages:v5];
+    pageControl3 = [(_TVCarouselView *)self pageControl];
+    [pageControl3 sizeForNumberOfPages:v5];
     v9 = v8;
     v11 = v10;
 
@@ -1629,16 +1629,16 @@ LABEL_7:
     v15 = v14;
     [(_TVCarouselView *)self frame];
     v17 = v16 - v11 - v15;
-    v18 = [(_TVCarouselView *)self pageControl];
-    [v18 setFrame:{v13, v17, v9, v11}];
+    pageControl4 = [(_TVCarouselView *)self pageControl];
+    [pageControl4 setFrame:{v13, v17, v9, v11}];
 
-    v19 = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
+    collectionToDatasourceIndexMap = [(_TVCarouselView *)self collectionToDatasourceIndexMap];
     v20 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSIndexPath item](self->_focusedIndexPath, "item")}];
-    v21 = [v19 objectForKeyedSubscript:v20];
-    v22 = [v21 integerValue];
+    v21 = [collectionToDatasourceIndexMap objectForKeyedSubscript:v20];
+    integerValue = [v21 integerValue];
 
-    v23 = [(_TVCarouselView *)self pageControl];
-    [v23 setCurrentPage:v22];
+    pageControl5 = [(_TVCarouselView *)self pageControl];
+    [pageControl5 setCurrentPage:integerValue];
   }
 }
 

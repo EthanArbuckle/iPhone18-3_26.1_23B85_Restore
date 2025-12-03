@@ -1,12 +1,12 @@
 @interface CKRichLinkReplyPreviewBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKRichLinkReplyPreviewBalloonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKRichLinkReplyPreviewBalloonView)initWithFrame:(CGRect)frame;
 - (id)description;
-- (void)configureForTranscriptPlugin:(id)a3;
+- (void)configureForTranscriptPlugin:(id)plugin;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setDataSource:(id)a3;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation CKRichLinkReplyPreviewBalloonView
@@ -22,16 +22,16 @@
   return v4;
 }
 
-- (CKRichLinkReplyPreviewBalloonView)initWithFrame:(CGRect)a3
+- (CKRichLinkReplyPreviewBalloonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKRichLinkReplyPreviewBalloonView;
-  v3 = [(CKColoredBalloonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
-    [v5 setEnabled:0];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setEnabled:0];
   }
 
   return v4;
@@ -42,20 +42,20 @@
   v4.receiver = self;
   v4.super_class = CKRichLinkReplyPreviewBalloonView;
   [(CKColoredBalloonView *)&v4 layoutSubviews];
-  v3 = [(CKRichLinkReplyPreviewBalloonView *)self linkView];
+  linkView = [(CKRichLinkReplyPreviewBalloonView *)self linkView];
   [(CKRichLinkReplyPreviewBalloonView *)self bounds];
-  [v3 setFrame:?];
+  [linkView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v19.receiver = self;
   v19.super_class = CKRichLinkReplyPreviewBalloonView;
-  [(CKBalloonView *)&v19 sizeThatFits:a4 textAlignmentInsets:a5 tailInsets:?];
-  v8 = [(CKRichLinkReplyPreviewBalloonView *)self linkView];
-  [v8 sizeThatFits:{width, height}];
+  [(CKBalloonView *)&v19 sizeThatFits:insets textAlignmentInsets:tailInsets tailInsets:?];
+  linkView = [(CKRichLinkReplyPreviewBalloonView *)self linkView];
+  [linkView sizeThatFits:{width, height}];
   v10 = v9;
   v12 = v11;
 
@@ -90,11 +90,11 @@
   v6.receiver = self;
   v6.super_class = CKRichLinkReplyPreviewBalloonView;
   [(CKColoredBalloonView *)&v6 prepareForDisplay];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isCAShapeLayerBalloonsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
   linkView = self->_linkView;
-  if (v4)
+  if (isCAShapeLayerBalloonsEnabled)
   {
     [(CKRichLinkReplyPreviewBalloonView *)self addSubview:linkView];
   }
@@ -113,24 +113,24 @@
   [(CKRichLinkReplyPreviewBalloonView *)self setLinkMetadata:0];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  if (self->_dataSource != sourceCopy)
   {
-    v20 = v5;
-    objc_storeStrong(&self->_dataSource, a3);
+    v20 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
     if ([(LPLinkView *)self->_linkView isDescendantOfView:self])
     {
       [(LPLinkView *)self->_linkView removeFromSuperview];
     }
 
-    v6 = [(IMBalloonPluginDataSource *)self->_dataSource richLinkMetadata];
+    richLinkMetadata = [(IMBalloonPluginDataSource *)self->_dataSource richLinkMetadata];
     v7 = objc_alloc(MEMORY[0x1E696ECC8]);
     v8 = [(IMBalloonPluginDataSource *)self->_dataSource url];
     v9 = [v7 initWithURL:v8];
 
-    [(LPLinkView *)v9 setMetadata:v6];
+    [(LPLinkView *)v9 setMetadata:richLinkMetadata];
     [(LPLinkView *)v9 _setPreferredSizeClass:6];
     [(LPLinkView *)v9 _setApplyCornerRadius:0];
     [(LPLinkView *)v9 _setDisableTapGesture:1];
@@ -146,19 +146,19 @@
     self->_linkView = v9;
 
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
-    v5 = v20;
+    sourceCopy = v20;
   }
 }
 
-- (void)configureForTranscriptPlugin:(id)a3
+- (void)configureForTranscriptPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   v10.receiver = self;
   v10.super_class = CKRichLinkReplyPreviewBalloonView;
-  [(CKColoredBalloonView *)&v10 configureForMessagePart:v4];
-  if (v4)
+  [(CKColoredBalloonView *)&v10 configureForMessagePart:pluginCopy];
+  if (pluginCopy)
   {
-    [v4 balloonDescriptor];
+    [pluginCopy balloonDescriptor];
   }
 
   else
@@ -167,11 +167,11 @@
   }
 
   [(CKColoredBalloonView *)self setBalloonDescriptor:v9];
-  v5 = [v4 message];
-  v6 = [v4 IMChatItem];
-  v7 = [v6 chatContext];
+  message = [pluginCopy message];
+  iMChatItem = [pluginCopy IMChatItem];
+  chatContext = [iMChatItem chatContext];
 
-  v8 = [v5 richLinkDataSourceWithChatContext:v7];
+  v8 = [message richLinkDataSourceWithChatContext:chatContext];
   [(CKRichLinkReplyPreviewBalloonView *)self setDataSource:v8];
 }
 

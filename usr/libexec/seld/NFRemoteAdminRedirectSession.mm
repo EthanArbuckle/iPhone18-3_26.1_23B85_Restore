@@ -1,20 +1,20 @@
 @interface NFRemoteAdminRedirectSession
 - (BOOL)aborted;
 - (BOOL)closeSession;
-- (BOOL)openConnection:(id)a3;
+- (BOOL)openConnection:(id)connection;
 - (BOOL)openSession;
 - (NFRemoteAdminRedirectSession)init;
-- (NFRemoteAdminRedirectSession)initWithState:(id)a3 oneTimeConnection:(BOOL)a4 secureElementManagerSession:(id)a5;
+- (NFRemoteAdminRedirectSession)initWithState:(id)state oneTimeConnection:(BOOL)connection secureElementManagerSession:(id)session;
 - (id)getNextRequest;
 - (int64_t)abortedReason;
-- (unint64_t)executeHttpRequest:(id)a3 httpHeader:(id)a4 response:(id)a5 responseHeader:(id)a6 duration:(double *)a7 sessionError:(id *)a8;
-- (unint64_t)executeScript:(id)a3;
+- (unint64_t)executeHttpRequest:(id)request httpHeader:(id)header response:(id)response responseHeader:(id)responseHeader duration:(double *)duration sessionError:(id *)error;
+- (unint64_t)executeScript:(id)script;
 - (unint64_t)performCheckIn;
 - (unint64_t)performRedirect;
 - (unint64_t)run;
-- (void)abort:(int64_t)a3;
+- (void)abort:(int64_t)abort;
 - (void)closeConnection;
-- (void)processNotification:(id)a3;
+- (void)processNotification:(id)notification;
 @end
 
 @implementation NFRemoteAdminRedirectSession
@@ -26,40 +26,40 @@
   return [(NFRemoteAdminRedirectSession *)&v3 init];
 }
 
-- (NFRemoteAdminRedirectSession)initWithState:(id)a3 oneTimeConnection:(BOOL)a4 secureElementManagerSession:(id)a5
+- (NFRemoteAdminRedirectSession)initWithState:(id)state oneTimeConnection:(BOOL)connection secureElementManagerSession:(id)session
 {
-  v9 = a3;
-  v10 = a5;
+  stateCopy = state;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = NFRemoteAdminRedirectSession;
   v11 = [(NFRemoteAdminRedirectSession *)&v15 init];
   if (v11)
   {
-    v12 = [v9 seid];
+    seid = [stateCopy seid];
     targetSEID = v11->_targetSEID;
-    v11->_targetSEID = v12;
+    v11->_targetSEID = seid;
 
-    objc_storeStrong(&v11->_redirectState, a3);
-    objc_storeStrong(&v11->_seSession, a5);
-    v11->_allocateSESession = v10 == 0;
-    v11->_oneTimeConnection = a4;
+    objc_storeStrong(&v11->_redirectState, state);
+    objc_storeStrong(&v11->_seSession, session);
+    v11->_allocateSESession = sessionCopy == 0;
+    v11->_oneTimeConnection = connection;
   }
 
   return v11;
 }
 
-- (void)abort:(int64_t)a3
+- (void)abort:(int64_t)abort
 {
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
   {
     v7 = Logger;
-    Class = object_getClass(v5);
+    Class = object_getClass(selfCopy);
     isMetaClass = class_isMetaClass(Class);
-    ClassName = object_getClassName(v5);
+    ClassName = object_getClassName(selfCopy);
     Name = sel_getName(a2);
     v11 = 45;
     if (isMetaClass)
@@ -74,7 +74,7 @@
   v12 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = object_getClass(v5);
+    v13 = object_getClass(selfCopy);
     if (class_isMetaClass(v13))
     {
       v14 = 43;
@@ -88,7 +88,7 @@
     *buf = 67109890;
     v18 = v14;
     v19 = 2082;
-    v20 = object_getClassName(v5);
+    v20 = object_getClassName(selfCopy);
     v21 = 2082;
     v22 = sel_getName(a2);
     v23 = 1024;
@@ -96,82 +96,82 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Aborting...", buf, 0x22u);
   }
 
-  v5->_abort = a3;
-  if (v5->_allocateSESession)
+  selfCopy->_abort = abort;
+  if (selfCopy->_allocateSESession)
   {
-    [(NFSecureElementManagerSession *)v5->_seSession endSessionWithCompletion:&stru_100054758];
+    [(NFSecureElementManagerSession *)selfCopy->_seSession endSessionWithCompletion:&stru_100054758];
   }
 
-  v15 = [(NFRemoteAdminRedirectSession *)v5 connection];
-  [v15 disconnect];
+  connection = [(NFRemoteAdminRedirectSession *)selfCopy connection];
+  [connection disconnect];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)aborted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_abort > 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_abort > 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (int64_t)abortedReason
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  abort = v2->_abort;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  abort = selfCopy->_abort;
+  objc_sync_exit(selfCopy);
 
   return abort;
 }
 
-- (void)processNotification:(id)a3
+- (void)processNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v5 setNotification:v4];
+  notificationCopy = notification;
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState setNotification:notificationCopy];
 }
 
 - (id)getNextRequest
 {
   p_isa = &self->super.isa;
-  v4 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v5 = [v4 step];
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step = [redirectState step];
 
-  v6 = [p_isa redirectState];
-  v7 = v6;
-  if (v5 == 2)
+  redirectState2 = [p_isa redirectState];
+  v7 = redirectState2;
+  if (step == 2)
   {
-    p_isa = [v6 redirectResponse];
+    p_isa = [redirectState2 redirectResponse];
 
     goto LABEL_91;
   }
 
-  v8 = [v6 unsentScriptResponse];
+  unsentScriptResponse = [redirectState2 unsentScriptResponse];
 
-  v9 = [p_isa redirectState];
-  v10 = v9;
-  if (v8)
+  redirectState3 = [p_isa redirectState];
+  v10 = redirectState3;
+  if (unsentScriptResponse)
   {
-    p_isa = [v9 unsentScriptResponse];
+    p_isa = [redirectState3 unsentScriptResponse];
 
     goto LABEL_91;
   }
 
-  v11 = [v9 whitelistedInstances];
+  whitelistedInstances = [redirectState3 whitelistedInstances];
 
   v12 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
   v13 = objc_opt_new();
-  v14 = [p_isa redirectState];
-  v15 = [v14 version];
-  if (v15)
+  redirectState4 = [p_isa redirectState];
+  version = [redirectState4 version];
+  if (version)
   {
-    v16 = [p_isa redirectState];
-    v17 = [v16 version];
-    [v13 setObject:v17 forKeyedSubscript:@"version"];
+    redirectState5 = [p_isa redirectState];
+    version2 = [redirectState5 version];
+    [v13 setObject:version2 forKeyedSubscript:@"version"];
   }
 
   else
@@ -179,9 +179,9 @@
     [v13 setObject:&off_100057348 forKeyedSubscript:@"version"];
   }
 
-  if (v11)
+  if (whitelistedInstances)
   {
-    [v13 setObject:v11 forKeyedSubscript:@"whitelistedInstances"];
+    [v13 setObject:whitelistedInstances forKeyedSubscript:@"whitelistedInstances"];
   }
 
   v18 = p_isa[1];
@@ -289,7 +289,7 @@ LABEL_23:
   if (v23)
   {
     v24 = v23;
-    sel = v11;
+    sel = whitelistedInstances;
     v25 = *v113;
     while (2)
     {
@@ -302,8 +302,8 @@ LABEL_23:
 
         v27 = *(*(&v112 + 1) + 8 * i);
         v28 = [v27 NF_stringForKey:@"SEID"];
-        v29 = [p_isa targetSEID];
-        v30 = [v28 isEqualToString:v29];
+        targetSEID = [p_isa targetSEID];
+        v30 = [v28 isEqualToString:targetSEID];
 
         if (v30)
         {
@@ -326,7 +326,7 @@ LABEL_23:
 LABEL_39:
 
     v41 = v31;
-    v11 = sel;
+    whitelistedInstances = sel;
     v13 = v110;
     v12 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
     if (!p_isa)
@@ -345,14 +345,14 @@ LABEL_39:
   v48 = objc_opt_new();
   if (v41)
   {
-    v49 = v11;
-    v50 = [p_isa redirectState];
-    v51 = [v50 version];
-    if (v51)
+    v49 = whitelistedInstances;
+    redirectState6 = [p_isa redirectState];
+    version3 = [redirectState6 version];
+    if (version3)
     {
-      v52 = [p_isa redirectState];
-      v53 = [v52 version];
-      [v48 setObject:v53 forKeyedSubscript:@"kVersion"];
+      redirectState7 = [p_isa redirectState];
+      version4 = [redirectState7 version];
+      [v48 setObject:version4 forKeyedSubscript:@"kVersion"];
     }
 
     else
@@ -360,13 +360,13 @@ LABEL_39:
       [v48 setObject:&off_100057348 forKeyedSubscript:@"kVersion"];
     }
 
-    v67 = [p_isa redirectState];
-    v68 = [v67 forwardDataToSP];
-    if (v68)
+    redirectState8 = [p_isa redirectState];
+    forwardDataToSP = [redirectState8 forwardDataToSP];
+    if (forwardDataToSP)
     {
-      v69 = [p_isa redirectState];
-      v70 = [v69 forwardDataToSP];
-      [v48 setObject:v70 forKeyedSubscript:@"forwardData"];
+      redirectState9 = [p_isa redirectState];
+      forwardDataToSP2 = [redirectState9 forwardDataToSP];
+      [v48 setObject:forwardDataToSP2 forKeyedSubscript:@"forwardData"];
     }
 
     else
@@ -377,22 +377,22 @@ LABEL_39:
     v71 = v12[198];
     v72 = objc_opt_new();
     [v72 setObject:@"internal" forKeyedSubscript:@"secureElementType"];
-    v73 = [p_isa targetSEID];
+    targetSEID2 = [p_isa targetSEID];
 
-    if (v73)
+    if (targetSEID2)
     {
-      v74 = [p_isa targetSEID];
-      [v72 setObject:v74 forKeyedSubscript:@"SEID"];
+      targetSEID3 = [p_isa targetSEID];
+      [v72 setObject:targetSEID3 forKeyedSubscript:@"SEID"];
 
       v75 = [v41 NF_dictionaryForKey:@"casdCertificate"];
       if (v75)
       {
         [v72 setObject:v75 forKeyedSubscript:@"casdCertificate"];
-        v76 = [p_isa redirectState];
-        v77 = [v76 version];
-        v78 = [v77 intValue];
+        redirectState10 = [p_isa redirectState];
+        version5 = [redirectState10 version];
+        intValue = [version5 intValue];
 
-        if (v78 == 4)
+        if (intValue == 4)
         {
           v79 = [v41 NF_arrayForKey:@"protocolV4Containers"];
           if ([v79 count])
@@ -512,7 +512,7 @@ LABEL_39:
       p_isa = objc_opt_new();
     }
 
-    v11 = v49;
+    whitelistedInstances = v49;
     v13 = v110;
   }
 
@@ -526,7 +526,7 @@ LABEL_39:
       v56 = object_getClass(p_isa);
       v57 = class_isMetaClass(v56);
       v58 = v13;
-      v59 = v11;
+      v59 = whitelistedInstances;
       v60 = object_getClassName(p_isa);
       v106 = sel_getName("_generateRequestForSEState:");
       v61 = 45;
@@ -536,7 +536,7 @@ LABEL_39:
       }
 
       v105 = v60;
-      v11 = v59;
+      whitelistedInstances = v59;
       v13 = v58;
       v55(3, "%c[%{public}s %{public}s]:%i Failed to find STATE!!!!", v61, v105, v106, 101);
     }
@@ -580,10 +580,10 @@ LABEL_91:
   return p_isa;
 }
 
-- (unint64_t)executeScript:(id)a3
+- (unint64_t)executeScript:(id)script
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-  v6 = a3;
+  scriptCopy = script;
   Logger = NFLogGetLogger();
   if (Logger)
   {
@@ -634,33 +634,33 @@ LABEL_91:
     [v113 handleFailureInMethod:a2 object:self file:@"NFRemoteAdminRedirectSession.m" lineNumber:191 description:@"Out of resources"];
   }
 
-  v17 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v16 setCheckAIDAllowList:{objc_msgSend(v17, "step") == 1}];
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [v16 setCheckAIDAllowList:{objc_msgSend(redirectState, "step") == 1}];
 
-  v18 = [(NFRemoteAdminRedirectSession *)self targetSEID];
-  [v16 setSeid:v18];
+  targetSEID = [(NFRemoteAdminRedirectSession *)self targetSEID];
+  [v16 setSeid:targetSEID];
 
-  v19 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v20 = [v19 whitelistedInstances];
-  [v16 setAIDAllowList:v20];
+  redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  whitelistedInstances = [redirectState2 whitelistedInstances];
+  [v16 setAIDAllowList:whitelistedInstances];
 
   [v16 setInitialSelectBeforeRun:self->_performInitialAIDSelectFromWhitelist];
   seSession = self->_seSession;
   v121 = 0;
-  LODWORD(v19) = [(NFSecureElementManagerSession *)seSession runScript:v6 parameters:v16 outputResults:&v121];
+  LODWORD(redirectState2) = [(NFSecureElementManagerSession *)seSession runScript:scriptCopy parameters:v16 outputResults:&v121];
 
   v22 = v121;
-  self->_redirectStepError = v19;
+  self->_redirectStepError = redirectState2;
   self->_performInitialAIDSelectFromWhitelist = 0;
-  v23 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v23 setUnsentScriptResponse:v22];
+  redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState3 setUnsentScriptResponse:v22];
 
-  v24 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v25 = [v24 performanceMetrics];
+  redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  performanceMetrics = [redirectState4 performanceMetrics];
   [v16 outTotalAPDUExecutionDuration];
   v27 = v26;
-  [v25 totalAPDUTime];
-  [v25 setTotalAPDUTime:v27 + v28];
+  [performanceMetrics totalAPDUTime];
+  [performanceMetrics setTotalAPDUTime:v27 + v28];
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v29 = NFLogGetLogger();
@@ -779,14 +779,14 @@ LABEL_42:
       v56 = class_isMetaClass(v55);
       v57 = object_getClassName(self);
       v58 = sel_getName(a2);
-      v120 = [v16 outFinalSWStatus];
+      outFinalSWStatus = [v16 outFinalSWStatus];
       v59 = 45;
       if (v56)
       {
         v59 = 43;
       }
 
-      v54(5, "%c[%{public}s %{public}s]:%i Failure response detected: 0x%lX", v59, v57, v58, 216, v120);
+      v54(5, "%c[%{public}s %{public}s]:%i Failure response detected: 0x%lX", v59, v57, v58, 216, outFinalSWStatus);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -809,7 +809,7 @@ LABEL_42:
 
     v62 = object_getClassName(self);
     v63 = sel_getName(a2);
-    v64 = [v16 outFinalSWStatus];
+    outFinalSWStatus2 = [v16 outFinalSWStatus];
     *buf = 67110146;
     v123 = v61;
     v124 = 2082;
@@ -819,7 +819,7 @@ LABEL_42:
     v128 = 1024;
     v129 = 216;
     v130 = 2048;
-    v131 = v64;
+    v131 = outFinalSWStatus2;
     v50 = "%c[%{public}s %{public}s]:%i Failure response detected: 0x%lX";
     v51 = v45;
     v52 = 44;
@@ -1056,32 +1056,32 @@ LABEL_57:
   return v65;
 }
 
-- (unint64_t)executeHttpRequest:(id)a3 httpHeader:(id)a4 response:(id)a5 responseHeader:(id)a6 duration:(double *)a7 sessionError:(id *)a8
+- (unint64_t)executeHttpRequest:(id)request httpHeader:(id)header response:(id)response responseHeader:(id)responseHeader duration:(double *)duration sessionError:(id *)error
 {
   v86 = 0;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(NFRemoteAdminRedirectSession *)self connection];
-  v20 = [v19 performRequest:0 body:v18 header:v17 response:v16 responseHeader:v15 httpStatus:&v86 duration:a7 sessionError:a8];
+  responseHeaderCopy = responseHeader;
+  responseCopy = response;
+  headerCopy = header;
+  requestCopy = request;
+  connection = [(NFRemoteAdminRedirectSession *)self connection];
+  v20 = [connection performRequest:0 body:requestCopy header:headerCopy response:responseCopy responseHeader:responseHeaderCopy httpStatus:&v86 duration:duration sessionError:error];
 
-  v21 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v22 = [v21 step];
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step = [redirectState step];
 
-  if (v22 == 1)
+  if (step == 1)
   {
     if ((v20 & 0xFFFFFFF7) == 0x11)
     {
-      v23 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v23 setHttpStatus:0];
+      redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState2 setHttpStatus:0];
     }
 
     else
     {
-      v23 = [NSNumber numberWithInteger:v86];
-      v24 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v24 setHttpStatus:v23];
+      redirectState2 = [NSNumber numberWithInteger:v86];
+      redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState3 setHttpStatus:redirectState2];
     }
   }
 
@@ -1092,8 +1092,8 @@ LABEL_57:
 
   if (v86 == 412)
   {
-    v25 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v25 setUnsentScriptResponse:0];
+    redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState4 setUnsentScriptResponse:0];
 
     return 6;
   }
@@ -1371,17 +1371,17 @@ LABEL_23:
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NFRemoteAdminRedirectSession *)self getNextRequest];
-  if (v6)
+  getNextRequest = [(NFRemoteAdminRedirectSession *)self getNextRequest];
+  if (getNextRequest)
   {
     v7 = objc_opt_new();
     v115 = 0;
     v116 = 0.0;
-    v4 = [(NFRemoteAdminRedirectSession *)self executeHttpRequest:v6 httpHeader:0 response:v7 responseHeader:0 duration:&v116 sessionError:&v115];
+    v4 = [(NFRemoteAdminRedirectSession *)self executeHttpRequest:getNextRequest httpHeader:0 response:v7 responseHeader:0 duration:&v116 sessionError:&v115];
     v8 = v115;
-    v9 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v10 = [v9 performanceMetrics];
-    [v10 setNsUrlSessionError:v8];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    performanceMetrics = [redirectState performanceMetrics];
+    [performanceMetrics setNsUrlSessionError:v8];
 
     if (v4)
     {
@@ -1394,7 +1394,7 @@ LABEL_23:
         isMetaClass = class_isMetaClass(Class);
         v15 = v5;
         v16 = v7;
-        v17 = v6;
+        v17 = getNextRequest;
         v18 = v8;
         ClassName = object_getClassName(self);
         Name = sel_getName(a2);
@@ -1406,7 +1406,7 @@ LABEL_23:
 
         v104 = ClassName;
         v8 = v18;
-        v6 = v17;
+        getNextRequest = v17;
         v7 = v16;
         v5 = v15;
         v12(6, "%c[%{public}s %{public}s]:%i HTTP failed, status=0x%lx", v20, v104, Name, 419, v4);
@@ -1450,8 +1450,8 @@ LABEL_23:
 
     else
     {
-      v34 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v34 setUnsentScriptResponse:0];
+      redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState2 setUnsentScriptResponse:0];
 
       sub_10000F0FC(self, [v7 count]!= 0, v116);
       v35 = v7;
@@ -1462,10 +1462,10 @@ LABEL_23:
         {
           v113 = v8;
           v37 = [v36 objectForKeyedSubscript:@"kVersion"];
-          v38 = [v37 integerValue];
+          integerValue = [v37 integerValue];
 
           v114 = v5;
-          if (v38 != 2)
+          if (integerValue != 2)
           {
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
             v39 = NFLogGetLogger();
@@ -1476,7 +1476,7 @@ LABEL_23:
               v42 = class_isMetaClass(v41);
               v43 = object_getClassName(self);
               v44 = sel_getName("_processRedirectCommands:");
-              v45 = [NSNumber numberWithInteger:v38];
+              v45 = [NSNumber numberWithInteger:integerValue];
               v46 = 45;
               if (v42)
               {
@@ -1503,7 +1503,7 @@ LABEL_23:
 
               v50 = object_getClassName(self);
               v51 = sel_getName("_processRedirectCommands:");
-              v52 = [NSNumber numberWithInteger:v38];
+              v52 = [NSNumber numberWithInteger:integerValue];
               *buf = 67110146;
               v118 = v49;
               v119 = 2082;
@@ -1521,19 +1521,19 @@ LABEL_23:
           v53 = [v36 NF_numberForKey:@"SPStatusCode"];
           if (v53)
           {
-            v54 = [(NFRemoteAdminRedirectSession *)self redirectState];
-            [v54 setSpStatusCode:v53];
+            redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+            [redirectState3 setSpStatusCode:v53];
           }
 
           else
           {
             v69 = [v36 NF_stringForKey:@"SPStatusCode"];
-            v54 = v69;
+            redirectState3 = v69;
             if (v69)
             {
               v70 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v69 integerValue]);
-              v71 = [(NFRemoteAdminRedirectSession *)self redirectState];
-              [v71 setSpStatusCode:v70];
+              redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+              [redirectState4 setSpStatusCode:v70];
             }
 
             else
@@ -1649,8 +1649,8 @@ LABEL_23:
           v98 = [v36 NF_dictionaryForKey:@"forwardData"];
           if (v98)
           {
-            v99 = [(NFRemoteAdminRedirectSession *)self redirectState];
-            [v99 setForwardDataToSMP:v98];
+            redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+            [redirectState5 setForwardDataToSMP:v98];
           }
 
           v100 = [v36 NF_arrayForKey:@"kCommands"];
@@ -1687,7 +1687,7 @@ LABEL_23:
             v57 = object_getClass(self);
             v58 = class_isMetaClass(v57);
             v59 = v7;
-            v60 = v6;
+            v60 = getNextRequest;
             v61 = v8;
             v62 = object_getClassName(self);
             v110 = sel_getName("_processRedirectCommands:");
@@ -1699,7 +1699,7 @@ LABEL_23:
 
             v105 = v62;
             v8 = v61;
-            v6 = v60;
+            getNextRequest = v60;
             v7 = v59;
             v56(6, "%c[%{public}s %{public}s]:%i no further action required", v63, v105, v110, 330);
           }
@@ -1801,11 +1801,11 @@ LABEL_23:
 - (unint64_t)performCheckIn
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [(NFRemoteAdminRedirectSession *)self getNextRequest];
+  getNextRequest = [(NFRemoteAdminRedirectSession *)self getNextRequest];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   v7 = Logger;
-  if (v5)
+  if (getNextRequest)
   {
     if (Logger)
     {
@@ -1849,18 +1849,18 @@ LABEL_23:
     }
 
     v15 = objc_opt_new();
-    v16 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v17 = [v16 httpHeaderInfo];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    httpHeaderInfo = [redirectState httpHeaderInfo];
     v44 = 0;
-    v18 = [(NFRemoteAdminRedirectSession *)self executeHttpRequest:v5 httpHeader:v17 response:v15 responseHeader:0 duration:0 sessionError:&v44];
+    v18 = [(NFRemoteAdminRedirectSession *)self executeHttpRequest:getNextRequest httpHeader:httpHeaderInfo response:v15 responseHeader:0 duration:0 sessionError:&v44];
     v19 = v44;
 
     v20 = [v15 NF_numberForKey:@"kStartNewSession"];
     if ([v20 BOOLValue])
     {
       v21 = sub_100033310();
-      v22 = [(NFRemoteAdminState *)self->_redirectState serverIdentifier];
-      v23 = sub_100037550(v21, v22);
+      serverIdentifier = [(NFRemoteAdminState *)self->_redirectState serverIdentifier];
+      v23 = sub_100037550(v21, serverIdentifier);
 
       [v23 setPendingImmediateRetry:1];
       [v23 save];
@@ -2030,18 +2030,18 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i eSE unavailable, aborting.  Error - %{public}@", buf, 0x2Cu);
     }
 
-    v19 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v19 setStep:3];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState setStep:3];
 
     v8 = 1;
     goto LABEL_15;
   }
 
-  v6 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v7 = [v6 step];
+  redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step = [redirectState2 step];
 
   v251 = v5;
-  if (v7)
+  if (step)
   {
     v8 = 0;
   }
@@ -2053,11 +2053,11 @@ LABEL_27:
       v253 = 0;
       v22 = [NFSecureElement embeddedSecureElementWithError:&v253];
       v23 = v253;
-      v24 = [v22 serialNumber];
-      if (v24)
+      serialNumber = [v22 serialNumber];
+      if (serialNumber)
       {
-        v25 = [(NFRemoteAdminRedirectSession *)self targetSEID];
-        v26 = [v25 caseInsensitiveCompare:v24];
+        targetSEID = [(NFRemoteAdminRedirectSession *)self targetSEID];
+        v26 = [targetSEID caseInsensitiveCompare:serialNumber];
 
         if (v26)
         {
@@ -2071,7 +2071,7 @@ LABEL_27:
             v31 = object_getClassName(self);
             v32 = v23;
             v33 = sel_getName("_redirectStart");
-            v34 = [(NFRemoteAdminRedirectSession *)self targetSEID];
+            targetSEID2 = [(NFRemoteAdminRedirectSession *)self targetSEID];
             v238 = v33;
             v23 = v32;
             v35 = 45;
@@ -2080,7 +2080,7 @@ LABEL_27:
               v35 = 43;
             }
 
-            v28(5, "%c[%{public}s %{public}s]:%i Invalid target SEID:%{public}@", v35, v31, v238, 484, v34);
+            v28(5, "%c[%{public}s %{public}s]:%i Invalid target SEID:%{public}@", v35, v31, v238, 484, targetSEID2);
           }
 
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2101,7 +2101,7 @@ LABEL_27:
             v39 = object_getClassName(self);
             v40 = v23;
             v41 = sel_getName("_redirectStart");
-            v42 = [(NFRemoteAdminRedirectSession *)self targetSEID];
+            targetSEID3 = [(NFRemoteAdminRedirectSession *)self targetSEID];
             *buf = 67110146;
             v255 = v38;
             v256 = 2082;
@@ -2112,25 +2112,25 @@ LABEL_27:
             v260 = 1024;
             v261 = 484;
             v262 = 2114;
-            v263 = v42;
+            v263 = targetSEID3;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Invalid target SEID:%{public}@", buf, 0x2Cu);
           }
 
-          v43 = [(NFRemoteAdminRedirectSession *)self redirectState];
-          [v43 setStep:2];
+          redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+          [redirectState3 setStep:2];
 
-          v44 = [(NFRemoteAdminRedirectSession *)self redirectState];
-          [v44 setIncompleteReason:@"ScriptExecutionError"];
+          redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+          [redirectState4 setIncompleteReason:@"ScriptExecutionError"];
         }
 
         else
         {
-          v44 = [(NFRemoteAdminRedirectSession *)self redirectState];
-          [v44 setStep:1];
+          redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+          [redirectState4 setStep:1];
         }
 
-        v50 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v50 save];
+        redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState5 save];
         v8 = 0;
       }
 
@@ -2155,8 +2155,8 @@ LABEL_27:
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-        v50 = NFSharedLogGetLogger();
-        if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+        redirectState5 = NFSharedLogGetLogger();
+        if (os_log_type_enabled(redirectState5, OS_LOG_TYPE_ERROR))
         {
           v51 = object_getClass(self);
           if (class_isMetaClass(v51))
@@ -2181,7 +2181,7 @@ LABEL_27:
           v261 = 478;
           v262 = 2114;
           v263 = v23;
-          _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Missing primary SEID (error - %{public}@", buf, 0x2Cu);
+          _os_log_impl(&_mh_execute_header, redirectState5, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Missing primary SEID (error - %{public}@", buf, 0x2Cu);
         }
 
         v8 = 4;
@@ -2196,10 +2196,10 @@ LABEL_27:
     v5 = v251;
   }
 
-  v55 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v56 = [v55 step];
+  redirectState6 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step2 = [redirectState6 step];
 
-  if (v56 != 1)
+  if (step2 != 1)
   {
     goto LABEL_126;
   }
@@ -2256,9 +2256,9 @@ LABEL_27:
     mach_continuous_time();
     if ([(NFRemoteAdminRedirectSession *)self openSession])
     {
-      v68 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v69 = [v68 redirectUrl];
-      v70 = [(NFRemoteAdminRedirectSession *)self openConnection:v69];
+      redirectState7 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      redirectUrl = [redirectState7 redirectUrl];
+      v70 = [(NFRemoteAdminRedirectSession *)self openConnection:redirectUrl];
 
       if (v70)
       {
@@ -2267,16 +2267,16 @@ LABEL_27:
           v71 = 0;
           do
           {
-            v72 = [(NFRemoteAdminRedirectSession *)self performRedirect];
-            if (v72 == 6)
+            performRedirect = [(NFRemoteAdminRedirectSession *)self performRedirect];
+            if (performRedirect == 6)
             {
               v71 = 0;
             }
 
             else
             {
-              v73 = v72;
-              v74 = v72 == 15 || v72 == 3;
+              v73 = performRedirect;
+              v74 = performRedirect == 15 || performRedirect == 3;
               if (!v74 || v71 > 2)
               {
                 goto LABEL_100;
@@ -2457,11 +2457,11 @@ LABEL_100:
 
     else
     {
-      v88 = [(NFRemoteAdminRedirectSession *)self aborted];
+      aborted = [(NFRemoteAdminRedirectSession *)self aborted];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v89 = NFLogGetLogger();
       v90 = v89;
-      if (!v88)
+      if (!aborted)
       {
         if (v89)
         {
@@ -2561,23 +2561,23 @@ LABEL_100:
     v121 = 1;
 LABEL_124:
     v5 = v251;
-    v131 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v132 = [v131 performanceMetrics];
+    redirectState8 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    performanceMetrics = [redirectState8 performanceMetrics];
     mach_continuous_time();
     v133 = GetElapsedTimeInMillisecondsFromMachTime() / 1000.0;
-    [v132 totalSessionTime];
-    [v132 setTotalSessionTime:v134 + v133];
+    [performanceMetrics totalSessionTime];
+    [performanceMetrics setTotalSessionTime:v134 + v133];
 
     if (v121)
     {
-      v135 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v135 incrementStep];
+      redirectState9 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState9 incrementStep];
 
-      v136 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v136 clearRetryInterval];
+      redirectState10 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState10 clearRetryInterval];
 
-      v137 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v137 save];
+      redirectState11 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState11 save];
     }
 
     goto LABEL_126;
@@ -2585,10 +2585,10 @@ LABEL_124:
 
   v8 = 0;
 LABEL_126:
-  v138 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v139 = [v138 step];
+  redirectState12 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step3 = [redirectState12 step];
 
-  if (v139 != 2)
+  if (step3 != 2)
   {
     goto LABEL_16;
   }
@@ -2652,16 +2652,16 @@ LABEL_126:
   {
     if (v152 & 1) != 0 || (-[NFRemoteAdminRedirectSession redirectState](self, "redirectState"), v153 = objc_claimAutoreleasedReturnValue(), [v153 sourceUrl], v154 = objc_claimAutoreleasedReturnValue(), v155 = -[NFRemoteAdminRedirectSession openConnection:](self, "openConnection:", v154), v154, v153, (v155))
     {
-      v156 = [(NFRemoteAdminRedirectSession *)self performCheckIn];
+      performCheckIn = [(NFRemoteAdminRedirectSession *)self performCheckIn];
       v152 = 1;
-      if (v156 == 6)
+      if (performCheckIn == 6)
       {
         continue;
       }
 
-      if (v156 != 3)
+      if (performCheckIn != 3)
       {
-        v8 = v156;
+        v8 = performCheckIn;
         goto LABEL_172;
       }
     }
@@ -2714,12 +2714,12 @@ LABEL_126:
         _os_log_impl(&_mh_execute_header, v163, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to open connection", buf, 0x22u);
       }
 
-      v168 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v169 = [v168 retryInterval];
-      v170 = v169;
-      if (v169)
+      redirectState13 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      retryInterval = [redirectState13 retryInterval];
+      v170 = retryInterval;
+      if (retryInterval)
       {
-        v171 = *(v169 + 16);
+        v171 = *(retryInterval + 16);
       }
 
       else
@@ -2737,8 +2737,8 @@ LABEL_126:
       v152 = 0;
     }
 
-    v173 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v173 clearRetryInterval];
+    redirectState14 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState14 clearRetryInterval];
 
     if (v151 > 2)
     {
@@ -2855,8 +2855,8 @@ LABEL_172:
         _os_log_impl(&_mh_execute_header, v228, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Device not registered", buf, 0x22u);
       }
 
-      v199 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v199 incrementStep];
+      redirectState15 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState15 incrementStep];
       v8 = 8;
       goto LABEL_218;
     }
@@ -2915,8 +2915,8 @@ LABEL_187:
       _os_log_impl(&_mh_execute_header, v206, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Redirect check in completed", buf, 0x22u);
     }
 
-    v199 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v199 incrementStep];
+    redirectState15 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState15 incrementStep];
 LABEL_218:
 
     goto LABEL_219;
@@ -2975,8 +2975,8 @@ LABEL_218:
       _os_log_impl(&_mh_execute_header, v194, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Redirect check in - long retry", buf, 0x22u);
     }
 
-    v199 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v199 incrementLongRetry];
+    redirectState15 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState15 incrementLongRetry];
     v8 = 4;
     goto LABEL_218;
   }
@@ -3030,8 +3030,8 @@ LABEL_197:
       _os_log_impl(&_mh_execute_header, v217, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Abort check in", buf, 0x22u);
     }
 
-    v199 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v199 incrementStep];
+    redirectState15 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState15 incrementStep];
     v8 = 1;
     goto LABEL_218;
   }
@@ -3039,8 +3039,8 @@ LABEL_197:
 LABEL_219:
   [(NFRemoteAdminRedirectSession *)self closeConnection];
 LABEL_15:
-  v20 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v20 save];
+  redirectState16 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState16 save];
 
 LABEL_16:
   return v8;
@@ -3112,9 +3112,9 @@ LABEL_16:
   return 1;
 }
 
-- (BOOL)openConnection:(id)a3
+- (BOOL)openConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (byte_10005BAB0 == 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3132,7 +3132,7 @@ LABEL_16:
         v10 = 43;
       }
 
-      v7(6, "%c[%{public}s %{public}s]:%i [TSM] %@", v10, ClassName, Name, 741, v5);
+      v7(6, "%c[%{public}s %{public}s]:%i [TSM] %@", v10, ClassName, Name, 741, connectionCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3159,12 +3159,12 @@ LABEL_16:
       v67 = 1024;
       v68 = 741;
       v69 = 2112;
-      v70 = v5;
+      v70 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i [TSM] %@", buf, 0x2Cu);
     }
   }
 
-  v14 = [NSURL URLWithString:v5];
+  v14 = [NSURL URLWithString:connectionCopy];
   if (!v14)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3182,7 +3182,7 @@ LABEL_16:
         v39 = 43;
       }
 
-      v36(3, "%c[%{public}s %{public}s]:%i Invalid URL string: %{public}@", v39, v57, v59, 745, v5);
+      v36(3, "%c[%{public}s %{public}s]:%i Invalid URL string: %{public}@", v39, v57, v59, 745, connectionCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3211,7 +3211,7 @@ LABEL_16:
       v67 = 1024;
       v68 = 745;
       v69 = 2114;
-      v70 = v5;
+      v70 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid URL string: %{public}@", buf, 0x2Cu);
     }
 
@@ -3229,14 +3229,14 @@ LABEL_16:
       v18 = class_isMetaClass(v17);
       v19 = object_getClassName(self);
       v20 = sel_getName(a2);
-      v21 = [v14 absoluteString];
+      absoluteString = [v14 absoluteString];
       v22 = 45;
       if (v18)
       {
         v22 = 43;
       }
 
-      v16(6, "%c[%{public}s %{public}s]:%i [TSM] url: %@", v22, v19, v20, 749, v21);
+      v16(6, "%c[%{public}s %{public}s]:%i [TSM] url: %@", v22, v19, v20, 749, absoluteString);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3256,7 +3256,7 @@ LABEL_16:
 
       v26 = object_getClassName(self);
       v27 = sel_getName(a2);
-      v28 = [v14 absoluteString];
+      absoluteString2 = [v14 absoluteString];
       *buf = 67110146;
       v62 = v25;
       v63 = 2082;
@@ -3266,14 +3266,14 @@ LABEL_16:
       v67 = 1024;
       v68 = 749;
       v69 = 2112;
-      v70 = v28;
+      v70 = absoluteString2;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i [TSM] url: %@", buf, 0x2Cu);
     }
   }
 
   v29 = [NFRemoteAdminConnectionHTTP alloc];
-  v30 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v31 = [v30 step] != 1;
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  v31 = [redirectState step] != 1;
   v32 = [NFSecureElement embeddedSecureElementWithError:0];
   v33 = -[NFRemoteAdminConnectionHTTP initWithURL:SEID:showProprietaryHeaders:disableEVTrustValidation:](v29, "initWithURL:SEID:showProprietaryHeaders:disableEVTrustValidation:", v14, 0, v31, [v32 isProductionSigned] ^ 1);
 
@@ -3345,12 +3345,12 @@ LABEL_47:
 
 - (void)closeConnection
 {
-  v3 = [(NFRemoteAdminRedirectSession *)self connection];
+  connection = [(NFRemoteAdminRedirectSession *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(NFRemoteAdminRedirectSession *)self connection];
-    [v4 disconnect];
+    connection2 = [(NFRemoteAdminRedirectSession *)self connection];
+    [connection2 disconnect];
 
     [(NFRemoteAdminRedirectSession *)self setConnection:0];
   }

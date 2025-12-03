@@ -48,7 +48,7 @@
     v26 = v21;
     v28 = a9;
     v29 = a10;
-    v30 = a1;
+    selfCopy = self;
     v31 = a2;
     v32 = a3;
     v33 = a4;

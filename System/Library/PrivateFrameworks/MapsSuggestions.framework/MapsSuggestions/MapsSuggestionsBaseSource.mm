@@ -1,15 +1,15 @@
 @interface MapsSuggestionsBaseSource
 + (BOOL)isEnabled;
 + (unint64_t)disposition;
-- (BOOL)canProduceEntriesOfType:(int64_t)a3;
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5;
-- (MapsSuggestionsBaseSource)initWithDelegate:(id)a3 name:(id)a4;
+- (BOOL)canProduceEntriesOfType:(int64_t)type;
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler;
+- (MapsSuggestionsBaseSource)initWithDelegate:(id)delegate name:(id)name;
 - (MapsSuggestionsSourceDelegate)delegate;
-- (double)updateSuggestionEntriesOfType:(int64_t)a3 handler:(id)a4;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (unint64_t)addOrUpdateMySuggestionEntries:(id)a3;
+- (double)updateSuggestionEntriesOfType:(int64_t)type handler:(id)handler;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (unint64_t)addOrUpdateMySuggestionEntries:(id)entries;
 @end
 
 @implementation MapsSuggestionsBaseSource
@@ -23,30 +23,30 @@
 
 + (BOOL)isEnabled
 {
-  result = [a1 doesNotRecognizeSelector:a2];
+  result = [self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }
 
 + (unint64_t)disposition
 {
-  result = [a1 doesNotRecognizeSelector:a2];
+  result = [self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }
 
-- (MapsSuggestionsBaseSource)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsBaseSource)initWithDelegate:(id)delegate name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = MapsSuggestionsBaseSource;
   v8 = [(MapsSuggestionsBaseSource *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
   }
@@ -54,69 +54,69 @@
   return v9;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  depotCopy = depot;
+  nameCopy = name;
   result = [(MapsSuggestionsBaseSource *)self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
-  v4 = a3;
+  depotCopy = depot;
   v5 = [objc_opt_class() description];
-  v6 = [(MapsSuggestionsBaseSource *)self initFromResourceDepot:v4 name:v5];
+  v6 = [(MapsSuggestionsBaseSource *)self initFromResourceDepot:depotCopy name:v5];
 
   return v6;
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(MapsSuggestionsBaseSource *)self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }
 
-- (double)updateSuggestionEntriesOfType:(int64_t)a3 handler:(id)a4
+- (double)updateSuggestionEntriesOfType:(int64_t)type handler:(id)handler
 {
-  v6 = a4;
-  if (!a3 || (v7 = 0.0, [(MapsSuggestionsBaseSource *)self canProduceEntriesOfType:a3]))
+  handlerCopy = handler;
+  if (!type || (v7 = 0.0, [(MapsSuggestionsBaseSource *)self canProduceEntriesOfType:type]))
   {
-    [(MapsSuggestionsBaseSource *)self updateSuggestionEntriesWithHandler:v6];
+    [(MapsSuggestionsBaseSource *)self updateSuggestionEntriesWithHandler:handlerCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (BOOL)canProduceEntriesOfType:(int64_t)a3
+- (BOOL)canProduceEntriesOfType:(int64_t)type
 {
   result = [(MapsSuggestionsBaseSource *)self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }
 
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  entryCopy = entry;
+  handlerCopy = handler;
   result = [(MapsSuggestionsBaseSource *)self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }
 
-- (unint64_t)addOrUpdateMySuggestionEntries:(id)a3
+- (unint64_t)addOrUpdateMySuggestionEntries:(id)entries
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  entriesCopy = entries;
+  if (entriesCopy)
   {
-    v5 = [(MapsSuggestionsBaseSource *)self delegate];
-    v6 = [(MapsSuggestionsBaseSource *)self uniqueName];
-    v7 = [v5 addOrUpdateSuggestionEntries:v4 source:v6];
+    delegate = [(MapsSuggestionsBaseSource *)self delegate];
+    uniqueName = [(MapsSuggestionsBaseSource *)self uniqueName];
+    v7 = [delegate addOrUpdateSuggestionEntries:entriesCopy source:uniqueName];
   }
 
   else

@@ -1,19 +1,19 @@
 @interface RWIProtocolJSONObject
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (RWIProtocolJSONObject)init;
-- (RWIProtocolJSONObject)initWithJSONObject:(void *)a3;
+- (RWIProtocolJSONObject)initWithJSONObject:(void *)object;
 - (Ref<WTF::JSONImpl::Object,)toJSONObject;
-- (RefPtr<WTF::JSONImpl::Array,)JSONArrayForKey:(id)a3;
+- (RefPtr<WTF::JSONImpl::Array,)JSONArrayForKey:(id)key;
 - (_DWORD)init;
-- (double)doubleForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int)integerForKey:(id)a3;
-- (void)removeKey:(id)a3;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setJSONArray:(void *)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setString:(id)a3 forKey:(id)a4;
+- (double)doubleForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int)integerForKey:(id)key;
+- (void)removeKey:(id)key;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setJSONArray:(void *)array forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setString:(id)string forKey:(id)key;
 @end
 
 @implementation RWIProtocolJSONObject
@@ -48,49 +48,49 @@
   return self;
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"cannot set property with nil key"];
   }
 
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](&v9, a4);
-  WTF::JSONImpl::ObjectBase::setDouble(m_ptr, &v9, a3);
+  MEMORY[0x2743DB520](&v9, key);
+  WTF::JSONImpl::ObjectBase::setDouble(m_ptr, &v9, double);
   [RWIProtocolJSONObject setBool:v8 forKey:?];
 }
 
-- (void)setString:(id)a3 forKey:(id)a4
+- (void)setString:(id)string forKey:(id)key
 {
   v7 = MEMORY[0x277CBE660];
-  if (!a4)
+  if (!key)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"cannot set property with nil key"];
   }
 
-  if (!a3)
+  if (!string)
   {
     [MEMORY[0x277CBEAD8] raise:*v7 format:@"cannot set property to nil value"];
   }
 
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](v10, a4);
-  MEMORY[0x2743DB520](&v9, a3);
+  MEMORY[0x2743DB520](v10, key);
+  MEMORY[0x2743DB520](&v9, string);
   WTF::JSONImpl::ObjectBase::setString(m_ptr, v10, &v9);
   [RWIProtocolJSONObject setString:v10 forKey:?];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
-    if (a3)
+    if (object)
     {
 LABEL_3:
       m_ptr = self->_object.m_ptr;
-      MEMORY[0x2743DB520](&v18, a4);
-      [a3 toJSONObject];
+      MEMORY[0x2743DB520](&v18, key);
+      [object toJSONObject];
       v8 = v16;
       goto LABEL_6;
     }
@@ -99,7 +99,7 @@ LABEL_3:
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"cannot set property with nil key"];
-    if (a3)
+    if (object)
     {
       goto LABEL_3;
     }
@@ -107,7 +107,7 @@ LABEL_3:
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"cannot set property to nil value"];
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](&v18, a4);
+  MEMORY[0x2743DB520](&v18, key);
   v8 = 0;
 LABEL_6:
   v17 = v8;
@@ -153,12 +153,12 @@ LABEL_6:
   }
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     m_ptr = self->_object.m_ptr;
-    MEMORY[0x2743DB520](&v9, a3);
+    MEMORY[0x2743DB520](&v9, key);
     Boolean = WTF::JSONImpl::ObjectBase::getBoolean(m_ptr, &v9);
     v6 = v9;
     v9 = 0;
@@ -178,15 +178,15 @@ LABEL_6:
   return v7;
 }
 
-- (int)integerForKey:(id)a3
+- (int)integerForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](&v8, a3);
+  MEMORY[0x2743DB520](&v8, key);
   Integer = WTF::JSONImpl::ObjectBase::getInteger(m_ptr, &v8);
   v6 = v8;
   v8 = 0;
@@ -206,15 +206,15 @@ LABEL_6:
   }
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0.0;
   }
 
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](&v10, a3);
+  MEMORY[0x2743DB520](&v10, key);
   Double = WTF::JSONImpl::ObjectBase::getDouble(m_ptr, &v10);
   v6 = v5;
   v7 = *&Double;
@@ -234,15 +234,15 @@ LABEL_6:
   return result;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](&v11, a3);
+  MEMORY[0x2743DB520](&v11, key);
   WTF::JSONImpl::ObjectBase::getString(&v12, m_ptr, &v11);
   v5 = v11;
   v11 = 0;
@@ -280,15 +280,15 @@ LABEL_6:
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](&v10, a3);
+  MEMORY[0x2743DB520](&v10, key);
   WTF::JSONImpl::ObjectBase::getObject(&v9, m_ptr, &v10);
   v5 = v10;
   v10 = 0;
@@ -312,28 +312,28 @@ LABEL_6:
   return v10;
 }
 
-- (void)removeKey:(id)a3
+- (void)removeKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     m_ptr = self->_object.m_ptr;
-    MEMORY[0x2743DB520](&v5, a3);
+    MEMORY[0x2743DB520](&v5, key);
     WTF::JSONImpl::ObjectBase::remove(m_ptr, &v5);
     [RWIProtocolJSONObject setBool:v4 forKey:?];
   }
 }
 
-- (void)setJSONArray:(void *)a3 forKey:(id)a4
+- (void)setJSONArray:(void *)array forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"cannot set property with nil key"];
   }
 
   m_ptr = self->_object.m_ptr;
-  MEMORY[0x2743DB520](&v17, a4);
-  v8 = *a3;
-  *a3 = 0;
+  MEMORY[0x2743DB520](&v17, key);
+  v8 = *array;
+  *array = 0;
   v16 = v8;
   WTF::HashMap<WTF::String,WTF::Ref<WTF::JSONImpl::Value,WTF::RawPtrTraits<WTF::JSONImpl::Value>,WTF::DefaultRefDerefTraits<WTF::JSONImpl::Value>>,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::Ref<WTF::JSONImpl::Value,WTF::RawPtrTraits<WTF::JSONImpl::Value>,WTF::DefaultRefDerefTraits<WTF::JSONImpl::Value>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)0,WTF::FastMalloc>::inlineSet<WTF::String const&,WTF::Ref<WTF::JSONImpl::ArrayBase,WTF::RawPtrTraits<WTF::JSONImpl::ArrayBase>,WTF::DefaultRefDerefTraits<WTF::JSONImpl::ArrayBase>>>(m_ptr + 2, &v17, &v16, v18);
   if (v18[16] == 1)
@@ -377,12 +377,12 @@ LABEL_6:
   }
 }
 
-- (RefPtr<WTF::JSONImpl::Array,)JSONArrayForKey:(id)a3
+- (RefPtr<WTF::JSONImpl::Array,)JSONArrayForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     m_ptr = self->_object.m_ptr;
-    MEMORY[0x2743DB520](&v6, a3);
+    MEMORY[0x2743DB520](&v6, key);
     WTF::JSONImpl::ObjectBase::getArray(m_ptr, &v6);
     return [RWIProtocolJSONObject setBool:v5 forKey:?];
   }
@@ -395,7 +395,7 @@ LABEL_6:
   return self;
 }
 
-- (RWIProtocolJSONObject)initWithJSONObject:(void *)a3
+- (RWIProtocolJSONObject)initWithJSONObject:(void *)object
 {
   v9.receiver = self;
   v9.super_class = RWIProtocolJSONObject;
@@ -403,8 +403,8 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    v6 = *a3;
-    *a3 = 0;
+    v6 = *object;
+    *object = 0;
     m_ptr = v4->_object.m_ptr;
     v5->_object.m_ptr = v6;
     if (m_ptr)

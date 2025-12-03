@@ -16,11 +16,11 @@
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI234FollowingNotificationsDisabledView_subtitleLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     sub_219BF5414();
 
     v6 = sub_219BF53D4();

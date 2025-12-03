@@ -1,32 +1,32 @@
 @interface PPRecordStorageHelper
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 algorithm:(unsigned int)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 documentIds:(id)a4 algorithm:(unsigned int)a5 txnWitness:(id)a6 atLeastOneRecordClusterRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9;
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 documentIds:(id)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 algorithm:(unsigned int)a6 txnWitness:(id)a7 atLeastOneRecordClusterRemoved:(BOOL *)a8 deletedCount:(unint64_t *)a9 error:(id *)a10;
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 txnWitness:(id)a6 atLeastOneRecordClusterRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9;
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupIds:(id)a4 algorithm:(unsigned int)a5 txnWitness:(id)a6 atLeastOneRecordClusterRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9;
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupIds:(id)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 txnWitness:(id)a4 atLeastOneRecordClusterRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)a3 algorithm:(unsigned int)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)a3 txnWitness:(id)a4 atLeastOneRecordClusterRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllRecordsWithName:(id)a3 algorithm:(unsigned int)a4 bundleId:(id)a5 groupId:(id)a6 category:(unsigned int)a7 beforeDate:(id)a8 txnWitness:(id)a9 atLeastOneRecordClusterRemoved:(BOOL *)a10 deletedCount:(unint64_t *)a11 error:(id *)a12;
-- (BOOL)deleteFeedbackCountRecordsOlderThanDate:(id)a3 txnWitness:(id)a4;
-- (BOOL)fixupDKEventsWithDatabase:(id)a3 fixup49995922Table:(id)a4 batchSize:(unsigned int)a5 shouldContinueBlock:(id)a6 createRecordWithStatement:(id)a7 eventForRecord:(id)a8;
-- (BOOL)pruneOrphanedFeedbackCountRecordsWithLimit:(unint64_t)a3 rowOffset:(unint64_t)a4 deletedCount:(unint64_t *)a5 txnWitness:(id)a6 isComplete:(BOOL *)a7;
-- (PPRecordStorageHelper)initWithName:(id)a3 table:(id)a4 clusterIdentifierColumn:(id)a5 maxRecords:(unsigned int)a6 duetStorage:(id)a7 duetStream:(id)a8 sourceStorage:(id)a9;
-- (id)blobFromUUID:(id)a3;
-- (id)duetEventDeletionProcessingBlockWithDatabase:(id)a3 client:(unsigned __int8)a4;
-- (id)rowIdsForRecordsOlderThanDate:(id)a3 txnWitness:(id)a4;
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 documentIds:(id)a4 txnWitness:(id)a5;
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 exactMatchGroupId:(id)a4 olderThanDate:(id)a5 txnWitness:(id)a6;
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 groupIds:(id)a4 txnWitness:(id)a5;
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 txnWitness:(id)a4;
-- (id)rowIdsForRecordsToDropMakingRoomForCount:(unsigned int)a3 txnWitness:(id)a4;
-- (id)uuidForStatement:(id)a3 columnName:(const char *)a4 tableName:(const char *)a5;
-- (void)_deleteRecordsWithRowIdsFromQuery:(void *)a3 txnWitness:(uint64_t)a4 atLeastOneRecordClusterRemoved:(uint64_t)a5 deletedCount:(void *)a6 bind:;
-- (void)deleteRecordsForRowIds:(id)a3 txnWitness:(id)a4 atLeastOneClusterRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6;
-- (void)disableSyncForBundleIds:(id)a3 txnWitness:(id)a4;
-- (void)truncateRecordsByDroppingOldestMakingRoomForCount:(unsigned int)a3 txnWitness:(id)a4;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id documentIds:(id)ids algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id documentIds:(id)ids txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)self0;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupIds:(id)ids algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupIds:(id)ids txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)identifier algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)identifier txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllRecordsWithName:(id)name algorithm:(unsigned int)algorithm bundleId:(id)id groupId:(id)groupId category:(unsigned int)category beforeDate:(id)date txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)self0 deletedCount:(unint64_t *)self1 error:(id *)self2;
+- (BOOL)deleteFeedbackCountRecordsOlderThanDate:(id)date txnWitness:(id)witness;
+- (BOOL)fixupDKEventsWithDatabase:(id)database fixup49995922Table:(id)table batchSize:(unsigned int)size shouldContinueBlock:(id)block createRecordWithStatement:(id)statement eventForRecord:(id)record;
+- (BOOL)pruneOrphanedFeedbackCountRecordsWithLimit:(unint64_t)limit rowOffset:(unint64_t)offset deletedCount:(unint64_t *)count txnWitness:(id)witness isComplete:(BOOL *)complete;
+- (PPRecordStorageHelper)initWithName:(id)name table:(id)table clusterIdentifierColumn:(id)column maxRecords:(unsigned int)records duetStorage:(id)storage duetStream:(id)stream sourceStorage:(id)sourceStorage;
+- (id)blobFromUUID:(id)d;
+- (id)duetEventDeletionProcessingBlockWithDatabase:(id)database client:(unsigned __int8)client;
+- (id)rowIdsForRecordsOlderThanDate:(id)date txnWitness:(id)witness;
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id documentIds:(id)ids txnWitness:(id)witness;
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id exactMatchGroupId:(id)groupId olderThanDate:(id)date txnWitness:(id)witness;
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id groupIds:(id)ids txnWitness:(id)witness;
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id txnWitness:(id)witness;
+- (id)rowIdsForRecordsToDropMakingRoomForCount:(unsigned int)count txnWitness:(id)witness;
+- (id)uuidForStatement:(id)statement columnName:(const char *)name tableName:(const char *)tableName;
+- (void)_deleteRecordsWithRowIdsFromQuery:(void *)query txnWitness:(uint64_t)witness atLeastOneRecordClusterRemoved:(uint64_t)removed deletedCount:(void *)count bind:;
+- (void)deleteRecordsForRowIds:(id)ids txnWitness:(id)witness atLeastOneClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count;
+- (void)disableSyncForBundleIds:(id)ids txnWitness:(id)witness;
+- (void)truncateRecordsByDroppingOldestMakingRoomForCount:(unsigned int)count txnWitness:(id)witness;
 @end
 
 @implementation PPRecordStorageHelper
@@ -225,18 +225,18 @@ void __63__PPRecordStorageHelper_distinctClusterCountInDatabase_client___block_i
   [v3 prepAndRunQuery:v4 onPrep:0 onRow:v5 onError:0];
 }
 
-- (BOOL)fixupDKEventsWithDatabase:(id)a3 fixup49995922Table:(id)a4 batchSize:(unsigned int)a5 shouldContinueBlock:(id)a6 createRecordWithStatement:(id)a7 eventForRecord:(id)a8
+- (BOOL)fixupDKEventsWithDatabase:(id)database fixup49995922Table:(id)table batchSize:(unsigned int)size shouldContinueBlock:(id)block createRecordWithStatement:(id)statement eventForRecord:(id)record
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  databaseCopy = database;
+  tableCopy = table;
+  blockCopy = block;
+  statementCopy = statement;
+  recordCopy = record;
   if (self->_duetStorage && self->_duetStream)
   {
-    if (a5 <= 1)
+    if (size <= 1)
     {
-      a5 = 1;
+      size = 1;
     }
 
     *buf = 0;
@@ -247,14 +247,14 @@ void __63__PPRecordStorageHelper_distinctClusterCountInDatabase_client___block_i
     v25[1] = 3221225472;
     v25[2] = __141__PPRecordStorageHelper_fixupDKEventsWithDatabase_fixup49995922Table_batchSize_shouldContinueBlock_createRecordWithStatement_eventForRecord___block_invoke;
     v25[3] = &unk_278973210;
-    v32 = a5;
-    v26 = v15;
-    v27 = self;
-    v28 = v17;
-    v29 = v18;
-    v30 = v16;
+    sizeCopy = size;
+    v26 = tableCopy;
+    selfCopy = self;
+    v28 = statementCopy;
+    v29 = recordCopy;
+    v30 = blockCopy;
     v31 = buf;
-    v19 = [v14 writeTransactionWithClient:1 timeoutInSeconds:v25 block:5.0];
+    v19 = [databaseCopy writeTransactionWithClient:1 timeoutInSeconds:v25 block:5.0];
     if ((v19 & 1) == 0)
     {
       v20 = pp_default_log_handle();
@@ -549,28 +549,28 @@ void __141__PPRecordStorageHelper_fixupDKEventsWithDatabase_fixup49995922Table_b
   [v4 bindNamedParam:":uuidBlob" toNSData:v8];
 }
 
-- (void)deleteRecordsForRowIds:(id)a3 txnWitness:(id)a4 atLeastOneClusterRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6
+- (void)deleteRecordsForRowIds:(id)ids txnWitness:(id)witness atLeastOneClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count
 {
   v98 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v66 = v9;
-  if ([v9 count])
+  idsCopy = ids;
+  witnessCopy = witness;
+  v66 = idsCopy;
+  if ([idsCopy count])
   {
     v61 = a2;
-    v63 = a5;
-    if (a5)
+    removedCopy = removed;
+    if (removed)
     {
       v11 = objc_alloc(MEMORY[0x277CCACA8]);
       clusterIdentifierColumn = self->_clusterIdentifierColumn;
       v13 = [v11 initWithFormat:@"SELECT %@ AS clusterIdent FROM %@ WHERE id IN _pas_nsindexset(:rowIds)", clusterIdentifierColumn, self->_table];
       v14 = objc_opt_new();
-      v15 = [v10 db];
+      v15 = [witnessCopy db];
       v79[0] = MEMORY[0x277D85DD0];
       v79[1] = 3221225472;
       v79[2] = __97__PPRecordStorageHelper_deleteRecordsForRowIds_txnWitness_atLeastOneClusterRemoved_deletedCount___block_invoke;
       v79[3] = &unk_278978CF8;
-      v16 = v9;
+      v16 = idsCopy;
       v80 = v16;
       v77[0] = MEMORY[0x277D85DD0];
       v77[1] = 3221225472;
@@ -584,20 +584,20 @@ void __141__PPRecordStorageHelper_fixupDKEventsWithDatabase_fixup49995922Table_b
       v65 = v17;
 
       v19 = v16;
-      v20 = v10;
+      v20 = witnessCopy;
     }
 
     else
     {
-      v21 = v9;
-      v22 = v10;
+      v21 = idsCopy;
+      v22 = witnessCopy;
       v65 = 0;
       if (!self)
       {
 LABEL_26:
 
         v45 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT source_id, COUNT(source_id) FROM %@ WHERE id IN _pas_nsindexset(:rowIds) GROUP BY source_id", self->_table];
-        v46 = [v10 db];
+        v46 = [witnessCopy db];
         v75[0] = MEMORY[0x277D85DD0];
         v75[1] = 3221225472;
         v75[2] = __97__PPRecordStorageHelper_deleteRecordsForRowIds_txnWitness_atLeastOneClusterRemoved_deletedCount___block_invoke_3;
@@ -609,7 +609,7 @@ LABEL_26:
         v73[2] = __97__PPRecordStorageHelper_deleteRecordsForRowIds_txnWitness_atLeastOneClusterRemoved_deletedCount___block_invoke_4;
         v73[3] = &unk_278974C38;
         v73[4] = self;
-        v48 = v10;
+        v48 = witnessCopy;
         v74 = v48;
         [v46 prepAndRunQuery:v45 onPrep:v75 onRow:v73 onError:0];
 
@@ -622,7 +622,7 @@ LABEL_26:
         v72 = v47;
         [v49 prepAndRunQuery:v50 onPrep:v71 onRow:0 onError:0];
 
-        if (a6)
+        if (count)
         {
           v51 = [v48 db];
           v52 = v51;
@@ -639,19 +639,19 @@ LABEL_26:
             }
           }
 
-          *a6 = v53;
+          *count = v53;
         }
 
         [(PPSourceStorage *)self->_sourceStorage pruneSourcesWithNoReferencesWithTxnWitness:v48];
-        if (v63)
+        if (removedCopy)
         {
           if (!v65)
           {
-            v60 = [MEMORY[0x277CCA890] currentHandler];
-            [v60 handleFailureInMethod:v61 object:self file:@"PPRecordStorageHelper.m" lineNumber:1423 description:{@"Invalid parameter not satisfying: %@", @"clusterIdentSet"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:v61 object:self file:@"PPRecordStorageHelper.m" lineNumber:1423 description:{@"Invalid parameter not satisfying: %@", @"clusterIdentSet"}];
           }
 
-          *v63 = 0;
+          *removedCopy = 0;
           v55 = objc_alloc(MEMORY[0x277CCACA8]);
           v56 = self->_clusterIdentifierColumn;
           v57 = [v55 initWithFormat:@"SELECT touched.value AS touchedId, remaining.%@ as remainingId FROM _pas_nsset(:clusterIdentSet) AS touched LEFT JOIN %@ AS remaining ON touchedId = remainingId WHERE remainingId IS NULL", v56, self->_table];
@@ -665,7 +665,7 @@ LABEL_26:
           v68[1] = 3221225472;
           v68[2] = __97__PPRecordStorageHelper_deleteRecordsForRowIds_txnWitness_atLeastOneClusterRemoved_deletedCount___block_invoke_2_303;
           v68[3] = &__block_descriptor_40_e49___PASDBIterAction__B_16__0___PASSqliteStatement_8l;
-          v68[4] = v63;
+          v68[4] = removedCopy;
           [v58 prepAndRunQuery:v57 onPrep:v69 onRow:v68 onError:0];
         }
 
@@ -680,7 +680,7 @@ LABEL_26:
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       v97 = 0;
-      v23 = [v10 db];
+      v23 = [witnessCopy db];
       v87[0] = MEMORY[0x277D85DD0];
       v87[1] = 3221225472;
       v87[2] = __61__PPRecordStorageHelper__deleteDKEventsForRowIds_txnWitness___block_invoke;
@@ -703,13 +703,13 @@ LABEL_26:
         v84[2] = __61__PPRecordStorageHelper__deleteDKEventsForRowIds_txnWitness___block_invoke_3;
         v84[3] = &unk_278978CF8;
         v85 = v24;
-        v25 = [PPSQLDatabase createTempTableContainingRowsFromQuery:v62 descriptiveTableName:@"del_dk_evt" txnWitness:v10 bind:v84];
+        v25 = [PPSQLDatabase createTempTableContainingRowsFromQuery:v62 descriptiveTableName:@"del_dk_evt" txnWitness:witnessCopy bind:v84];
 
         do
         {
           v26 = objc_opt_new();
           v27 = objc_opt_new();
-          v28 = [v10 db];
+          v28 = [witnessCopy db];
           v29 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rowid, dk_event_id FROM %@ LIMIT :batchSize", v25];
           *v89 = MEMORY[0x277D85DD0];
           v90 = 3221225472;
@@ -758,7 +758,7 @@ LABEL_26:
 
           if ([v30 count])
           {
-            v41 = [v10 db];
+            v41 = [witnessCopy db];
             v42 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DELETE FROM %@ WHERE rowid IN _pas_nsarray(:batchRowIds)", v31];
             v81[0] = MEMORY[0x277D85DD0];
             v81[1] = 3221225472;
@@ -770,21 +770,21 @@ LABEL_26:
         }
 
         while (v33 > 0xC7);
-        [PPSQLDatabase dropTableWithName:v31 txnWitness:v10];
+        [PPSQLDatabase dropTableWithName:v31 txnWitness:witnessCopy];
       }
     }
 
     goto LABEL_26;
   }
 
-  if (a5)
+  if (removed)
   {
-    *a5 = 0;
+    *removed = 0;
   }
 
-  if (a6)
+  if (count)
   {
-    *a6 = 0;
+    *count = 0;
   }
 
 LABEL_37:
@@ -936,20 +936,20 @@ LABEL_6:
   return *MEMORY[0x277D42690];
 }
 
-- (id)rowIdsForRecordsOlderThanDate:(id)a3 txnWitness:(id)a4
+- (id)rowIdsForRecordsOlderThanDate:(id)date txnWitness:(id)witness
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  witnessCopy = witness;
   v8 = objc_opt_new();
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src on rt.source_id = src.id WHERE src.seconds_from_1970 < :timestamp", self->_table];
   v10 = objc_autoreleasePoolPush();
-  v11 = [(NSString *)self->_table UTF8String];
-  v12 = [v7 db];
+  uTF8String = [(NSString *)self->_table UTF8String];
+  v12 = [witnessCopy db];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__PPRecordStorageHelper_rowIdsForRecordsOlderThanDate_txnWitness___block_invoke;
   v19[3] = &unk_278978CF8;
-  v13 = v6;
+  v13 = dateCopy;
   v20 = v13;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -957,7 +957,7 @@ LABEL_6:
   v16[3] = &unk_278972D80;
   v14 = v8;
   v17 = v14;
-  v18 = v11;
+  v18 = uTF8String;
   [v12 prepAndRunQuery:v9 onPrep:v19 onRow:v16 onError:0];
 
   objc_autoreleasePoolPop(v10);
@@ -973,15 +973,15 @@ void __66__PPRecordStorageHelper_rowIdsForRecordsOlderThanDate_txnWitness___bloc
   [v3 bindNamedParam:":timestamp" toDouble:?];
 }
 
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 exactMatchGroupId:(id)a4 olderThanDate:(id)a5 txnWitness:(id)a6
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id exactMatchGroupId:(id)groupId olderThanDate:(id)date txnWitness:(id)witness
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
+  witnessCopy = witness;
   v14 = objc_opt_new();
   v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE src.seconds_from_1970 < :timestamp ", self->_table];
-  if (([v10 isEqualToString:@"PortraitBundleIdWildCardMatchingAll"] & 1) == 0)
+  if (([idCopy isEqualToString:@"PortraitBundleIdWildCardMatchingAll"] & 1) == 0)
   {
     v16 = objc_autoreleasePoolPush();
     v17 = [v15 stringByAppendingString:@"AND src.bundle_id = :bundleId "];
@@ -990,7 +990,7 @@ void __66__PPRecordStorageHelper_rowIdsForRecordsOlderThanDate_txnWitness___bloc
     v15 = v17;
   }
 
-  if (v11)
+  if (groupIdCopy)
   {
     v18 = objc_autoreleasePoolPush();
     v19 = [v15 stringByAppendingString:@"AND src.group_id = :groupId"];
@@ -1000,17 +1000,17 @@ void __66__PPRecordStorageHelper_rowIdsForRecordsOlderThanDate_txnWitness___bloc
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = [(NSString *)self->_table UTF8String];
-  v22 = [v13 db];
+  uTF8String = [(NSString *)self->_table UTF8String];
+  v22 = [witnessCopy db];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __104__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_exactMatchGroupId_olderThanDate_txnWitness___block_invoke;
   v31[3] = &unk_278975708;
-  v23 = v10;
+  v23 = idCopy;
   v32 = v23;
-  v24 = v12;
+  v24 = dateCopy;
   v33 = v24;
-  v25 = v11;
+  v25 = groupIdCopy;
   v34 = v25;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -1018,7 +1018,7 @@ void __66__PPRecordStorageHelper_rowIdsForRecordsOlderThanDate_txnWitness___bloc
   v28[3] = &unk_278972D80;
   v26 = v14;
   v29 = v26;
-  v30 = v21;
+  v30 = uTF8String;
   [v22 prepAndRunQuery:v15 onPrep:v31 onRow:v28 onError:0];
 
   objc_autoreleasePoolPop(v20);
@@ -1042,20 +1042,20 @@ void __104__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_exactMatch
   }
 }
 
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 txnWitness:(id)a4
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id txnWitness:(id)witness
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  witnessCopy = witness;
   v8 = objc_opt_new();
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE src.bundle_id = :bundleId", self->_table];
   v10 = objc_autoreleasePoolPush();
-  v11 = [(NSString *)self->_table UTF8String];
-  v12 = [v7 db];
+  uTF8String = [(NSString *)self->_table UTF8String];
+  v12 = [witnessCopy db];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __72__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_txnWitness___block_invoke;
   v19[3] = &unk_278978CF8;
-  v13 = v6;
+  v13 = idCopy;
   v20 = v13;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1063,7 +1063,7 @@ void __104__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_exactMatch
   v16[3] = &unk_278972D80;
   v14 = v8;
   v17 = v14;
-  v18 = v11;
+  v18 = uTF8String;
   [v12 prepAndRunQuery:v9 onPrep:v19 onRow:v16 onError:0];
 
   objc_autoreleasePoolPop(v10);
@@ -1071,31 +1071,31 @@ void __104__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_exactMatch
   return v14;
 }
 
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 groupIds:(id)a4 txnWitness:(id)a5
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id groupIds:(id)ids txnWitness:(id)witness
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  idsCopy = ids;
+  witnessCopy = witness;
   v11 = objc_opt_new();
   v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE src.bundle_id = :bundleId AND (src.group_id = :domain OR (src.group_id >= :domain || '.' AND src.group_id < :domain || '/'))", self->_table];
-  v13 = [v12 _pas_stringBackedByUTF8CString];
+  _pas_stringBackedByUTF8CString = [v12 _pas_stringBackedByUTF8CString];
 
-  v14 = [v10 db];
+  v14 = [witnessCopy db];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __81__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_groupIds_txnWitness___block_invoke;
   v23[3] = &unk_278978A58;
   v23[4] = self;
-  v24 = v9;
-  v25 = v10;
-  v26 = v13;
-  v27 = v8;
+  v24 = idsCopy;
+  v25 = witnessCopy;
+  v26 = _pas_stringBackedByUTF8CString;
+  v27 = idCopy;
   v15 = v11;
   v28 = v15;
-  v16 = v8;
-  v17 = v13;
-  v18 = v10;
-  v19 = v9;
+  v16 = idCopy;
+  v17 = _pas_stringBackedByUTF8CString;
+  v18 = witnessCopy;
+  v19 = idsCopy;
   [v14 readTransaction:v23];
 
   v20 = v28;
@@ -1166,23 +1166,23 @@ void __81__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_groupIds_tx
   [v4 bindNamedParam:":domain" toNonnullNSString:*(a1 + 40)];
 }
 
-- (id)rowIdsForRecordsSourcedFromBundleId:(id)a3 documentIds:(id)a4 txnWitness:(id)a5
+- (id)rowIdsForRecordsSourcedFromBundleId:(id)id documentIds:(id)ids txnWitness:(id)witness
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  idsCopy = ids;
+  witnessCopy = witness;
   v11 = objc_opt_new();
   v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE src.bundle_id = :bundleId AND src.doc_id IN _pas_nsarray(:documentIds)", self->_table];
   v13 = objc_autoreleasePoolPush();
-  v14 = [(NSString *)self->_table UTF8String];
-  v15 = [v10 db];
+  uTF8String = [(NSString *)self->_table UTF8String];
+  v15 = [witnessCopy db];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __84__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_documentIds_txnWitness___block_invoke;
   v23[3] = &unk_2789743E8;
-  v16 = v8;
+  v16 = idCopy;
   v24 = v16;
-  v17 = v9;
+  v17 = idsCopy;
   v25 = v17;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -1190,7 +1190,7 @@ void __81__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_groupIds_tx
   v20[3] = &unk_278972D80;
   v18 = v11;
   v21 = v18;
-  v22 = v14;
+  v22 = uTF8String;
   [v15 prepAndRunQuery:v12 onPrep:v23 onRow:v20 onError:0];
 
   objc_autoreleasePoolPop(v13);
@@ -1206,31 +1206,31 @@ void __84__PPRecordStorageHelper_rowIdsForRecordsSourcedFromBundleId_documentIds
   [v4 bindNamedParam:":documentIds" toNSArray:*(a1 + 40)];
 }
 
-- (BOOL)pruneOrphanedFeedbackCountRecordsWithLimit:(unint64_t)a3 rowOffset:(unint64_t)a4 deletedCount:(unint64_t *)a5 txnWitness:(id)a6 isComplete:(BOOL *)a7
+- (BOOL)pruneOrphanedFeedbackCountRecordsWithLimit:(unint64_t)limit rowOffset:(unint64_t)offset deletedCount:(unint64_t *)count txnWitness:(id)witness isComplete:(BOOL *)complete
 {
   v12 = MEMORY[0x277CCACA8];
-  v13 = a6;
+  witnessCopy = witness;
   v14 = [v12 alloc];
   table = self->_table;
   v16 = [v14 initWithFormat:@"DELETE FROM %@ AS fb WHERE fb.rowid IN (SELECT rowid FROM %@                    ORDER BY rowid                    LIMIT :limit                    OFFSET :offset) AND NOT EXISTS (SELECT 1 FROM %@ AS rt                 WHERE rt.%@ = fb.item_string)", self->_feedbackTable, self->_feedbackTable, table, self->_clusterIdentifierColumn];
-  v17 = [v13 db];
+  v17 = [witnessCopy db];
   v18 = [v17 numberOfRowsInTable:self->_feedbackTable];
 
-  v19 = [v13 db];
+  v19 = [witnessCopy db];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __113__PPRecordStorageHelper_pruneOrphanedFeedbackCountRecordsWithLimit_rowOffset_deletedCount_txnWitness_isComplete___block_invoke;
   v23[3] = &__block_descriptor_48_e29_v16__0___PASSqliteStatement_8l;
-  v23[4] = a3;
-  v23[5] = a4;
+  v23[4] = limit;
+  v23[5] = offset;
   v20 = [v19 prepAndRunQuery:v16 onPrep:v23 onRow:0 onError:0];
 
-  v21 = [v13 db];
+  v21 = [witnessCopy db];
 
-  *a5 = sqlite3_changes([v21 handle]);
-  if (a4 + a3 >= v18)
+  *count = sqlite3_changes([v21 handle]);
+  if (offset + limit >= v18)
   {
-    *a7 = 1;
+    *complete = 1;
   }
 
   return v20;
@@ -1244,17 +1244,17 @@ void __113__PPRecordStorageHelper_pruneOrphanedFeedbackCountRecordsWithLimit_row
   [v4 bindNamedParam:":offset" toInteger:*(a1 + 40)];
 }
 
-- (BOOL)deleteFeedbackCountRecordsOlderThanDate:(id)a3 txnWitness:(id)a4
+- (BOOL)deleteFeedbackCountRecordsOlderThanDate:(id)date txnWitness:(id)witness
 {
-  v6 = a3;
-  v7 = [a4 db];
+  dateCopy = date;
+  v7 = [witness db];
   v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DELETE FROM %@ WHERE last_update_seconds_from_1970 < :secondsFrom1970", self->_feedbackTable];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__PPRecordStorageHelper_deleteFeedbackCountRecordsOlderThanDate_txnWitness___block_invoke;
   v12[3] = &unk_278978CF8;
-  v13 = v6;
-  v9 = v6;
+  v13 = dateCopy;
+  v9 = dateCopy;
   v10 = [v7 prepAndRunQuery:v8 onPrep:v12 onRow:0 onError:0];
 
   return v10;
@@ -1475,35 +1475,35 @@ void __120__PPRecordStorageHelper__filterAndRemoveMissingRemoteRecordsFromBatch_
   [v3 bindNamedParam:":batch" toNSArray:v4];
 }
 
-- (void)_deleteRecordsWithRowIdsFromQuery:(void *)a3 txnWitness:(uint64_t)a4 atLeastOneRecordClusterRemoved:(uint64_t)a5 deletedCount:(void *)a6 bind:
+- (void)_deleteRecordsWithRowIdsFromQuery:(void *)query txnWitness:(uint64_t)witness atLeastOneRecordClusterRemoved:(uint64_t)removed deletedCount:(void *)count bind:
 {
-  if (a1)
+  if (self)
   {
-    v11 = a6;
-    v12 = a3;
+    countCopy = count;
+    queryCopy = query;
     v13 = a2;
     v14 = objc_opt_new();
-    v15 = [v12 db];
+    v15 = [queryCopy db];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __119__PPRecordStorageHelper__deleteRecordsWithRowIdsFromQuery_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_bind___block_invoke;
     v17[3] = &unk_278978DB8;
     v18 = v14;
     v16 = v14;
-    [v15 prepAndRunQuery:v13 onPrep:v11 onRow:v17 onError:0];
+    [v15 prepAndRunQuery:v13 onPrep:countCopy onRow:v17 onError:0];
 
-    [a1 deleteRecordsForRowIds:v16 txnWitness:v12 atLeastOneClusterRemoved:a4 deletedCount:a5];
+    [self deleteRecordsForRowIds:v16 txnWitness:queryCopy atLeastOneClusterRemoved:witness deletedCount:removed];
   }
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 algorithm:(unsigned int)a6 txnWitness:(id)a7 atLeastOneRecordClusterRemoved:(BOOL *)a8 deletedCount:(unint64_t *)a9 error:(id *)a10
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
+  witnessCopy = witness;
   v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE rt.algorithm = :algorithm AND src.seconds_from_1970 < :timestamp ", self->_table];
-  if (([v15 isEqualToString:@"PortraitBundleIdWildCardMatchingAll"] & 1) == 0)
+  if (([idCopy isEqualToString:@"PortraitBundleIdWildCardMatchingAll"] & 1) == 0)
   {
     v20 = objc_autoreleasePoolPush();
     v21 = [v19 stringByAppendingString:@"AND src.bundle_id = :bundleId "];
@@ -1512,7 +1512,7 @@ void __120__PPRecordStorageHelper__filterAndRemoveMissingRemoteRecordsFromBatch_
     v19 = v21;
   }
 
-  if (v16)
+  if (groupIdCopy)
   {
     v22 = objc_autoreleasePoolPush();
     v23 = [v19 stringByAppendingString:@"AND src.group_id = :groupId"];
@@ -1525,14 +1525,14 @@ void __120__PPRecordStorageHelper__filterAndRemoveMissingRemoteRecordsFromBatch_
   v29[1] = 3221225472;
   v29[2] = __154__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupId_olderThanDate_algorithm_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
   v29[3] = &unk_278973050;
-  v33 = a6;
-  v30 = v15;
-  v31 = v17;
-  v32 = v16;
-  v24 = v16;
-  v25 = v17;
-  v26 = v15;
-  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v19 txnWitness:v18 atLeastOneRecordClusterRemoved:a8 deletedCount:a9 bind:v29];
+  algorithmCopy = algorithm;
+  v30 = idCopy;
+  v31 = dateCopy;
+  v32 = groupIdCopy;
+  v24 = groupIdCopy;
+  v25 = dateCopy;
+  v26 = idCopy;
+  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v19 txnWitness:witnessCopy atLeastOneRecordClusterRemoved:removed deletedCount:count bind:v29];
 
   return 1;
 }
@@ -1554,28 +1554,28 @@ void __154__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupId_ol
   }
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 txnWitness:(id)a6 atLeastOneRecordClusterRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = [v18 db];
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
+  witnessCopy = witness;
+  v19 = [witnessCopy db];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __144__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupId_olderThanDate_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
   v25[3] = &unk_278973028;
   v25[4] = self;
-  v26 = v15;
-  v27 = v16;
-  v28 = v17;
-  v29 = v18;
-  v30 = a7;
-  v31 = a8;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
+  v26 = idCopy;
+  v27 = groupIdCopy;
+  v28 = dateCopy;
+  v29 = witnessCopy;
+  removedCopy = removed;
+  countCopy = count;
+  v20 = witnessCopy;
+  v21 = dateCopy;
+  v22 = groupIdCopy;
+  v23 = idCopy;
   [v19 writeTransaction:v25];
 
   return 1;
@@ -1587,20 +1587,20 @@ void __144__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupId_ol
   [*(a1 + 32) deleteRecordsForRowIds:v2 txnWitness:*(a1 + 64) atLeastOneClusterRemoved:*(a1 + 72) deletedCount:*(a1 + 80)];
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 algorithm:(unsigned int)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v13 = a3;
+  idCopy = id;
   v14 = MEMORY[0x277CCACA8];
-  v15 = a5;
+  witnessCopy = witness;
   v16 = [[v14 alloc] initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE rt.algorithm = :algorithm AND src.bundle_id = :bundleId", self->_table];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __132__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_algorithm_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
   v19[3] = &unk_278972F60;
-  v21 = a4;
-  v20 = v13;
-  v17 = v13;
-  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v16 txnWitness:v15 atLeastOneRecordClusterRemoved:a6 deletedCount:a7 bind:v19];
+  algorithmCopy = algorithm;
+  v20 = idCopy;
+  v17 = idCopy;
+  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v16 txnWitness:witnessCopy atLeastOneRecordClusterRemoved:removed deletedCount:count bind:v19];
 
   return 1;
 }
@@ -1613,22 +1613,22 @@ void __132__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_algorithm_
   [v4 bindNamedParam:":bundleId" toNSString:*(a1 + 32)];
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 txnWitness:(id)a4 atLeastOneRecordClusterRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [v12 db];
+  idCopy = id;
+  witnessCopy = witness;
+  v13 = [witnessCopy db];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __122__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
   v17[3] = &unk_278975258;
   v17[4] = self;
-  v18 = v11;
-  v19 = v12;
-  v20 = a5;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
+  v18 = idCopy;
+  v19 = witnessCopy;
+  removedCopy = removed;
+  countCopy = count;
+  v14 = witnessCopy;
+  v15 = idCopy;
   [v13 writeTransaction:v17];
 
   return 1;
@@ -1641,38 +1641,38 @@ void __122__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_txnWitness
   [v2 deleteRecordsForRowIds:v3 txnWitness:a1[6] atLeastOneClusterRemoved:a1[7] deletedCount:a1[8]];
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupIds:(id)a4 algorithm:(unsigned int)a5 txnWitness:(id)a6 atLeastOneRecordClusterRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupIds:(id)ids algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if ([v16 count])
+  idCopy = id;
+  idsCopy = ids;
+  witnessCopy = witness;
+  if ([idsCopy count])
   {
-    v18 = [v17 db];
+    v18 = [witnessCopy db];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __141__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupIds_algorithm_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
     v20[3] = &unk_278973000;
     v20[4] = self;
-    v21 = v15;
-    v22 = v16;
-    v26 = a5;
-    v23 = v17;
-    v24 = a7;
-    v25 = a8;
+    v21 = idCopy;
+    v22 = idsCopy;
+    algorithmCopy = algorithm;
+    v23 = witnessCopy;
+    removedCopy = removed;
+    countCopy = count;
     [v18 writeTransaction:v20];
   }
 
   else
   {
-    if (a7)
+    if (removed)
     {
-      *a7 = 0;
+      *removed = 0;
     }
 
-    if (a8)
+    if (count)
     {
-      *a8 = 0;
+      *count = 0;
     }
   }
 
@@ -1713,37 +1713,37 @@ void __141__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupIds_a
   [v4 bindNamedParam:":algorithm" toInt64:*(a1 + 40)];
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 groupIds:(id)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id groupIds:(id)ids txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if ([v14 count])
+  idCopy = id;
+  idsCopy = ids;
+  witnessCopy = witness;
+  if ([idsCopy count])
   {
-    v16 = [v15 db];
+    v16 = [witnessCopy db];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __131__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupIds_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
     v18[3] = &unk_278972FB0;
     v18[4] = self;
-    v19 = v13;
-    v20 = v14;
-    v21 = v15;
-    v22 = a6;
-    v23 = a7;
+    v19 = idCopy;
+    v20 = idsCopy;
+    v21 = witnessCopy;
+    removedCopy = removed;
+    countCopy = count;
     [v16 writeTransaction:v18];
   }
 
   else
   {
-    if (a6)
+    if (removed)
     {
-      *a6 = 0;
+      *removed = 0;
     }
 
-    if (a7)
+    if (count)
     {
-      *a7 = 0;
+      *count = 0;
     }
   }
 
@@ -1757,34 +1757,34 @@ void __131__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_groupIds_t
   [v2 deleteRecordsForRowIds:v3 txnWitness:a1[7] atLeastOneClusterRemoved:a1[8] deletedCount:a1[9]];
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 documentIds:(id)a4 algorithm:(unsigned int)a5 txnWitness:(id)a6 atLeastOneRecordClusterRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id documentIds:(id)ids algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if ([v16 count])
+  idCopy = id;
+  idsCopy = ids;
+  witnessCopy = witness;
+  if ([idsCopy count])
   {
     v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE rt.algorithm = :algorithm AND src.bundle_id = :bundleId AND src.doc_id IN _pas_nsarray(:documentIds)", self->_table];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __144__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_documentIds_algorithm_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
     v20[3] = &unk_278972FD8;
-    v23 = a5;
-    v21 = v15;
-    v22 = v16;
-    [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v18 txnWitness:v17 atLeastOneRecordClusterRemoved:a7 deletedCount:a8 bind:v20];
+    algorithmCopy = algorithm;
+    v21 = idCopy;
+    v22 = idsCopy;
+    [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v18 txnWitness:witnessCopy atLeastOneRecordClusterRemoved:removed deletedCount:count bind:v20];
   }
 
   else
   {
-    if (a7)
+    if (removed)
     {
-      *a7 = 0;
+      *removed = 0;
     }
 
-    if (a8)
+    if (count)
     {
-      *a8 = 0;
+      *count = 0;
     }
   }
 
@@ -1800,37 +1800,37 @@ void __144__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_documentId
   [v4 bindNamedParam:":documentIds" toNSArray:*(a1 + 40)];
 }
 
-- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)a3 documentIds:(id)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllRecordsSourcedFromBundleId:(id)id documentIds:(id)ids txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if ([v14 count])
+  idCopy = id;
+  idsCopy = ids;
+  witnessCopy = witness;
+  if ([idsCopy count])
   {
-    v16 = [v15 db];
+    v16 = [witnessCopy db];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __134__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_documentIds_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
     v18[3] = &unk_278972FB0;
     v18[4] = self;
-    v19 = v13;
-    v20 = v14;
-    v21 = v15;
-    v22 = a6;
-    v23 = a7;
+    v19 = idCopy;
+    v20 = idsCopy;
+    v21 = witnessCopy;
+    removedCopy = removed;
+    countCopy = count;
     [v16 writeTransaction:v18];
   }
 
   else
   {
-    if (a6)
+    if (removed)
     {
-      *a6 = 0;
+      *removed = 0;
     }
 
-    if (a7)
+    if (count)
     {
-      *a7 = 0;
+      *count = 0;
     }
   }
 
@@ -1844,30 +1844,30 @@ void __134__PPRecordStorageHelper_deleteAllRecordsSourcedFromBundleId_documentId
   [v2 deleteRecordsForRowIds:v3 txnWitness:a1[7] atLeastOneClusterRemoved:a1[8] deletedCount:a1[9]];
 }
 
-- (BOOL)deleteAllRecordsWithName:(id)a3 algorithm:(unsigned int)a4 bundleId:(id)a5 groupId:(id)a6 category:(unsigned int)a7 beforeDate:(id)a8 txnWitness:(id)a9 atLeastOneRecordClusterRemoved:(BOOL *)a10 deletedCount:(unint64_t *)a11 error:(id *)a12
+- (BOOL)deleteAllRecordsWithName:(id)name algorithm:(unsigned int)algorithm bundleId:(id)id groupId:(id)groupId category:(unsigned int)category beforeDate:(id)date txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)self0 deletedCount:(unint64_t *)self1 error:(id *)self2
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
+  nameCopy = name;
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
   v22 = MEMORY[0x277CCACA8];
-  v23 = a9;
+  witnessCopy = witness;
   v24 = [[v22 alloc] initWithFormat:@"SELECT rt.id FROM %@ AS rt INNER JOIN sources src ON rt.source_id = src.id WHERE rt.algorithm = :algorithm AND rt.name = :name AND rt.category = :category AND src.group_id = :groupId AND src.bundle_id = :bundleId AND src.seconds_from_1970 <= :beforeDate", self->_table];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __158__PPRecordStorageHelper_deleteAllRecordsWithName_algorithm_bundleId_groupId_category_beforeDate_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
   v30[3] = &unk_278972F88;
-  v35 = a4;
-  v36 = a7;
-  v31 = v18;
-  v32 = v19;
-  v33 = v20;
-  v34 = v21;
-  v25 = v21;
-  v26 = v20;
-  v27 = v19;
-  v28 = v18;
-  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v24 txnWitness:v23 atLeastOneRecordClusterRemoved:a10 deletedCount:a11 bind:v30];
+  algorithmCopy = algorithm;
+  categoryCopy = category;
+  v31 = nameCopy;
+  v32 = idCopy;
+  v33 = groupIdCopy;
+  v34 = dateCopy;
+  v25 = dateCopy;
+  v26 = groupIdCopy;
+  v27 = idCopy;
+  v28 = nameCopy;
+  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v24 txnWitness:witnessCopy atLeastOneRecordClusterRemoved:removed deletedCount:count bind:v30];
 
   return 1;
 }
@@ -1885,11 +1885,11 @@ void __158__PPRecordStorageHelper_deleteAllRecordsWithName_algorithm_bundleId_gr
   [v4 bindNamedParam:":beforeDate" toDouble:?];
 }
 
-- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)a3 algorithm:(unsigned int)a4 txnWitness:(id)a5 atLeastOneRecordClusterRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)identifier algorithm:(unsigned int)algorithm txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v13 = a3;
+  identifierCopy = identifier;
   v14 = MEMORY[0x277CCACA8];
-  v15 = a5;
+  witnessCopy = witness;
   v16 = [v14 alloc];
   table = self->_table;
   v18 = [v16 initWithFormat:@"SELECT rt.id FROM %@ AS rt WHERE rt.algorithm = :algorithm AND rt.%@ = :clusterIdent", table, self->_clusterIdentifierColumn];
@@ -1897,10 +1897,10 @@ void __158__PPRecordStorageHelper_deleteAllRecordsWithName_algorithm_bundleId_gr
   v21[1] = 3221225472;
   v21[2] = __134__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_algorithm_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
   v21[3] = &unk_278972F60;
-  v23 = a4;
-  v22 = v13;
-  v19 = v13;
-  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v18 txnWitness:v15 atLeastOneRecordClusterRemoved:a6 deletedCount:a7 bind:v21];
+  algorithmCopy = algorithm;
+  v22 = identifierCopy;
+  v19 = identifierCopy;
+  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v18 txnWitness:witnessCopy atLeastOneRecordClusterRemoved:removed deletedCount:count bind:v21];
 
   return 1;
 }
@@ -1913,11 +1913,11 @@ void __134__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_algorith
   [v4 bindNamedParam:":clusterIdent" toNSString:*(a1 + 32)];
 }
 
-- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)a3 txnWitness:(id)a4 atLeastOneRecordClusterRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllRecordsWithClusterIdentifier:(id)identifier txnWitness:(id)witness atLeastOneRecordClusterRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = MEMORY[0x277CCACA8];
-  v13 = a4;
+  witnessCopy = witness;
   v14 = [v12 alloc];
   table = self->_table;
   v16 = [v14 initWithFormat:@"SELECT rt.id FROM %@ AS rt WHERE rt.%@ = :clusterIdent", table, self->_clusterIdentifierColumn];
@@ -1925,18 +1925,18 @@ void __134__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_algorith
   v19[1] = 3221225472;
   v19[2] = __124__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_txnWitness_atLeastOneRecordClusterRemoved_deletedCount_error___block_invoke;
   v19[3] = &unk_278978CF8;
-  v20 = v11;
-  v17 = v11;
-  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v16 txnWitness:v13 atLeastOneRecordClusterRemoved:a5 deletedCount:a6 bind:v19];
+  v20 = identifierCopy;
+  v17 = identifierCopy;
+  [(PPRecordStorageHelper *)self _deleteRecordsWithRowIdsFromQuery:v16 txnWitness:witnessCopy atLeastOneRecordClusterRemoved:removed deletedCount:count bind:v19];
 
   return 1;
 }
 
-- (void)disableSyncForBundleIds:(id)a3 txnWitness:(id)a4
+- (void)disableSyncForBundleIds:(id)ids txnWitness:(id)witness
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idsCopy = ids;
+  witnessCopy = witness;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -1948,7 +1948,7 @@ void __134__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_algorith
   aBlock[3] = &unk_2789797E0;
   v9 = v8;
   v40 = v9;
-  v41 = self;
+  selfCopy = self;
   v10 = _Block_copy(aBlock);
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -1961,12 +1961,12 @@ void __134__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_algorith
   v37 = v12;
   v13 = _Block_copy(v35);
   v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT rt.dk_event_id FROM %@ AS rt INNER JOIN sources AS src ON rt.source_id = src.id WHERE rt.is_remote = 0 AND rt.is_sync_eligible = 1 AND rt.dk_event_id IS NOT NULL AND src.bundle_id IN _pas_nsset(:bundleIds)", self->_table];
-  v15 = [v7 db];
+  v15 = [witnessCopy db];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __60__PPRecordStorageHelper_disableSyncForBundleIds_txnWitness___block_invoke_2;
   v33[3] = &unk_278978CF8;
-  v16 = v6;
+  v16 = idsCopy;
   v34 = v16;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -1979,7 +1979,7 @@ void __134__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_algorith
 
   v12[2](v12);
   v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"UPDATE %@ SET is_sync_eligible = 0 WHERE is_remote = 0 AND is_sync_eligible = 1 AND source_id IN (SELECT id FROM sources WHERE bundle_id IN _pas_nsset(:bundleIds))", self->_table];
-  v19 = [v7 db];
+  v19 = [witnessCopy db];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __60__PPRecordStorageHelper_disableSyncForBundleIds_txnWitness___block_invoke_4;
@@ -1988,7 +1988,7 @@ void __134__PPRecordStorageHelper_deleteAllRecordsWithClusterIdentifier_algorith
   v30 = v20;
   [v19 prepAndRunQuery:v18 onPrep:v29 onRow:0 onError:0];
 
-  v21 = [v7 db];
+  v21 = [witnessCopy db];
   v22 = v21;
   v23 = sqlite3_changes([v21 handle]);
 
@@ -2662,17 +2662,17 @@ void __78__PPRecordStorageHelper__dkEventMetadataFixupHasCompletedWithDatabase_c
   *(v6 + 40) = v5;
 }
 
-- (id)duetEventDeletionProcessingBlockWithDatabase:(id)a3 client:(unsigned __int8)a4
+- (id)duetEventDeletionProcessingBlockWithDatabase:(id)database client:(unsigned __int8)client
 {
-  v6 = a3;
+  databaseCopy = database;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__PPRecordStorageHelper_duetEventDeletionProcessingBlockWithDatabase_client___block_invoke;
   aBlock[3] = &unk_278972DD0;
-  v13 = a4;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
+  clientCopy = client;
+  v11 = databaseCopy;
+  selfCopy = self;
+  v7 = databaseCopy;
   v8 = _Block_copy(aBlock);
 
   return v8;
@@ -3023,22 +3023,22 @@ void __79__PPRecordStorageHelper__cleanDatabaseOfCloudSyncedEventsWithUUIDs_txnW
   [v3 bindNamedParam:":eventUUIDBlobs" toNSArray:v4];
 }
 
-- (id)rowIdsForRecordsToDropMakingRoomForCount:(unsigned int)a3 txnWitness:(id)a4
+- (id)rowIdsForRecordsToDropMakingRoomForCount:(unsigned int)count txnWitness:(id)witness
 {
-  v7 = a4;
+  witnessCopy = witness;
   v8 = objc_opt_new();
-  v9 = [v7 db];
+  v9 = [witnessCopy db];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__PPRecordStorageHelper_rowIdsForRecordsToDropMakingRoomForCount_txnWitness___block_invoke;
   v15[3] = &unk_278976ED0;
-  v19 = a3;
+  countCopy = count;
   v15[4] = self;
-  v16 = v7;
+  v16 = witnessCopy;
   v18 = a2;
   v10 = v8;
   v17 = v10;
-  v11 = v7;
+  v11 = witnessCopy;
   [v9 readTransaction:v15];
 
   v12 = v17;
@@ -3101,18 +3101,18 @@ void __77__PPRecordStorageHelper_rowIdsForRecordsToDropMakingRoomForCount_txnWit
   }
 }
 
-- (void)truncateRecordsByDroppingOldestMakingRoomForCount:(unsigned int)a3 txnWitness:(id)a4
+- (void)truncateRecordsByDroppingOldestMakingRoomForCount:(unsigned int)count txnWitness:(id)witness
 {
-  v6 = a4;
-  v7 = [v6 db];
+  witnessCopy = witness;
+  v7 = [witnessCopy db];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__PPRecordStorageHelper_truncateRecordsByDroppingOldestMakingRoomForCount_txnWitness___block_invoke;
   v9[3] = &unk_278978E70;
-  v11 = a3;
+  countCopy = count;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = witnessCopy;
+  v8 = witnessCopy;
   [v7 writeTransaction:v9];
 }
 
@@ -3397,10 +3397,10 @@ void __98__PPRecordStorageHelper_clearWithDatabase_client_deletedCount_error_cle
   [PPSQLKVStore removeBlobForKey:*(a1[4] + 64) transaction:v8];
 }
 
-- (id)uuidForStatement:(id)a3 columnName:(const char *)a4 tableName:(const char *)a5
+- (id)uuidForStatement:(id)statement columnName:(const char *)name tableName:(const char *)tableName
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = [a3 getNSDataForColumnName:a4 table:a5];
+  v7 = [statement getNSDataForColumnName:name table:tableName];
   if ([v7 length] == 16)
   {
     v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:{objc_msgSend(v7, "bytes")}];
@@ -3412,9 +3412,9 @@ void __98__PPRecordStorageHelper_clearWithDatabase_client_deletedCount_error_cle
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = 136315650;
-      v13 = a4;
+      nameCopy = name;
       v14 = 2080;
-      v15 = a5;
+      tableNameCopy = tableName;
       v16 = 2048;
       v17 = [v7 length];
       _os_log_error_impl(&dword_23224A000, v9, OS_LOG_TYPE_ERROR, "column '%s' in table '%s' has blob of unexpected length %tu", &v12, 0x20u);
@@ -3428,48 +3428,48 @@ void __98__PPRecordStorageHelper_clearWithDatabase_client_deletedCount_error_cle
   return v8;
 }
 
-- (id)blobFromUUID:(id)a3
+- (id)blobFromUUID:(id)d
 {
   v3 = MEMORY[0x277CBEB28];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithLength:16];
-  [v4 getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
+  [dCopy getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
 
   return v5;
 }
 
-- (PPRecordStorageHelper)initWithName:(id)a3 table:(id)a4 clusterIdentifierColumn:(id)a5 maxRecords:(unsigned int)a6 duetStorage:(id)a7 duetStream:(id)a8 sourceStorage:(id)a9
+- (PPRecordStorageHelper)initWithName:(id)name table:(id)table clusterIdentifierColumn:(id)column maxRecords:(unsigned int)records duetStorage:(id)storage duetStream:(id)stream sourceStorage:(id)sourceStorage
 {
-  v15 = a3;
-  v16 = a4;
-  v29 = a5;
-  v28 = a7;
-  v27 = a8;
-  v17 = a9;
+  nameCopy = name;
+  tableCopy = table;
+  columnCopy = column;
+  storageCopy = storage;
+  streamCopy = stream;
+  sourceStorageCopy = sourceStorage;
   v30.receiver = self;
   v30.super_class = PPRecordStorageHelper;
   v18 = [(PPRecordStorageHelper *)&v30 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_table, a4);
-    v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_fb_pseudocounts", v16, v27, v28, v29];
+    objc_storeStrong(&v18->_table, table);
+    columnCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_fb_pseudocounts", tableCopy, streamCopy, storageCopy, columnCopy];
     feedbackTable = v19->_feedbackTable;
-    v19->_feedbackTable = v20;
+    v19->_feedbackTable = columnCopy;
 
-    objc_storeStrong(&v19->_clusterIdentifierColumn, a5);
-    v19->_maxRecords = a6;
-    objc_storeStrong(&v19->_duetStorage, a7);
-    objc_storeStrong(&v19->_duetStream, a8);
-    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"lastDK%@ImportDate", v15];
+    objc_storeStrong(&v19->_clusterIdentifierColumn, column);
+    v19->_maxRecords = records;
+    objc_storeStrong(&v19->_duetStorage, storage);
+    objc_storeStrong(&v19->_duetStream, stream);
+    nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"lastDK%@ImportDate", nameCopy];
     lastDuetImportDateKey = v19->_lastDuetImportDateKey;
-    v19->_lastDuetImportDateKey = v22;
+    v19->_lastDuetImportDateKey = nameCopy;
 
-    v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"lastDK%@DeletionDate", v15];
+    nameCopy2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"lastDK%@DeletionDate", nameCopy];
     lastDuetDeletionDateKey = v19->_lastDuetDeletionDateKey;
-    v19->_lastDuetDeletionDateKey = v24;
+    v19->_lastDuetDeletionDateKey = nameCopy2;
 
-    objc_storeStrong(&v19->_sourceStorage, a9);
+    objc_storeStrong(&v19->_sourceStorage, sourceStorage);
   }
 
   return v19;

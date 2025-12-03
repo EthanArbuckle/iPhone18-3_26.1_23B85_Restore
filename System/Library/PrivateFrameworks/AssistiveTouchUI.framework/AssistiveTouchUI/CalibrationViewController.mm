@@ -1,6 +1,6 @@
 @interface CalibrationViewController
-- (_TtC16AssistiveTouchUI25CalibrationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleTapGuesture:(id)a3;
+- (_TtC16AssistiveTouchUI25CalibrationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleTapGuesture:(id)guesture;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -9,7 +9,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2414D941C();
 }
 
@@ -19,11 +19,11 @@
   v13.super_class = type metadata accessor for CalibrationViewController();
   v2 = v13.receiver;
   [(CalibrationViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 safeAreaInsets];
+    v4 = view;
+    [view safeAreaInsets];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -42,14 +42,14 @@
   }
 }
 
-- (void)handleTapGuesture:(id)a3
+- (void)handleTapGuesture:(id)guesture
 {
-  v4 = a3;
-  v5 = self;
+  guestureCopy = guesture;
+  selfCopy = self;
   sub_2414DA588();
 }
 
-- (_TtC16AssistiveTouchUI25CalibrationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16AssistiveTouchUI25CalibrationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,31 +1,31 @@
 @interface VUIMediaInfoFetchController
 + (void)initialize;
-- (BOOL)mediaInfoContainsImageAtIndex:(unint64_t)a3;
-- (BOOL)mediaInfoContainsPlayerAtIndex:(unint64_t)a3;
-- (VUIMediaInfoFetchController)initWithMediaInfos:(id)a3;
-- (id)_createPlayerWithPlaylist:(id)a3 isForPrewarming:(BOOL)a4;
-- (id)_identifierForPlaylist:(id)a3 isForPrewarming:(BOOL)a4;
+- (BOOL)mediaInfoContainsImageAtIndex:(unint64_t)index;
+- (BOOL)mediaInfoContainsPlayerAtIndex:(unint64_t)index;
+- (VUIMediaInfoFetchController)initWithMediaInfos:(id)infos;
+- (id)_createPlayerWithPlaylist:(id)playlist isForPrewarming:(BOOL)prewarming;
+- (id)_identifierForPlaylist:(id)playlist isForPrewarming:(BOOL)prewarming;
 - (id)_prewarmIndices;
-- (id)loadPlayerAtIndex:(unint64_t)a3;
-- (int64_t)queuePriorityForIndex:(int64_t)a3 itemCount:(int64_t)a4 selectedIndex:(int64_t)a5;
-- (void)_populateQueueWithMediaInfos:(id)a3;
-- (void)_removePrewarmedPlayerForIdentifier:(id)a3;
+- (id)loadPlayerAtIndex:(unint64_t)index;
+- (int64_t)queuePriorityForIndex:(int64_t)index itemCount:(int64_t)count selectedIndex:(int64_t)selectedIndex;
+- (void)_populateQueueWithMediaInfos:(id)infos;
+- (void)_removePrewarmedPlayerForIdentifier:(id)identifier;
 - (void)_updateImageOperationPriorities;
 - (void)_updatePrewarmedPlayers;
-- (void)appendMediaInfos:(id)a3;
-- (void)clearCachedImageExclude:(int64_t)a3;
+- (void)appendMediaInfos:(id)infos;
+- (void)clearCachedImageExclude:(int64_t)exclude;
 - (void)clearPreloadedPlayback;
 - (void)dealloc;
-- (void)loadImageAtIndex:(unint64_t)a3 completion:(id)a4;
-- (void)populatePlaylistWithMediaItems:(id)a3 atIndex:(unint64_t)a4;
-- (void)preLoadNextImageFromCurrentIndexIfNeeded:(int64_t)a3;
-- (void)removeMediaInfoAtIndex:(unint64_t)a3;
-- (void)removePopulatedMediaItems:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndex:(unint64_t)a3;
-- (void)setMediaInfo:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMediaInfos:(id)a3;
-- (void)setPreloadPlaybackEnabled:(BOOL)a3;
-- (void)startImageOperationAtIndex:(int64_t)a3;
+- (void)loadImageAtIndex:(unint64_t)index completion:(id)completion;
+- (void)populatePlaylistWithMediaItems:(id)items atIndex:(unint64_t)index;
+- (void)preLoadNextImageFromCurrentIndexIfNeeded:(int64_t)needed;
+- (void)removeMediaInfoAtIndex:(unint64_t)index;
+- (void)removePopulatedMediaItems:(id)items atIndex:(unint64_t)index;
+- (void)setIndex:(unint64_t)index;
+- (void)setMediaInfo:(id)info atIndex:(unint64_t)index;
+- (void)setMediaInfos:(id)infos;
+- (void)setPreloadPlaybackEnabled:(BOOL)enabled;
+- (void)startImageOperationAtIndex:(int64_t)index;
 @end
 
 @implementation VUIMediaInfoFetchController
@@ -45,15 +45,15 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
   sLogObject_10 = v0;
 }
 
-- (VUIMediaInfoFetchController)initWithMediaInfos:(id)a3
+- (VUIMediaInfoFetchController)initWithMediaInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v21.receiver = self;
   v21.super_class = VUIMediaInfoFetchController;
   v5 = [(VUIMediaInfoFetchController *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infosCopy copy];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
@@ -61,13 +61,13 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
     v9 = *(v5 + 5);
     *(v5 + 5) = v8;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = *(v5 + 6);
-    *(v5 + 6) = v10;
+    *(v5 + 6) = array;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v13 = *(v5 + 7);
-    *(v5 + 7) = v12;
+    *(v5 + 7) = dictionary;
 
     *(v5 + 24) = xmmword_1E4297170;
     v5[8] = 0;
@@ -77,13 +77,13 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
     *(v5 + 8) = v15;
 
     v17 = +[VUIFeaturesConfiguration sharedInstance];
-    v18 = [v17 mediaShowcaseConfig];
-    *(v5 + 9) = [v18 preloadImageBatchSize];
+    mediaShowcaseConfig = [v17 mediaShowcaseConfig];
+    *(v5 + 9) = [mediaShowcaseConfig preloadImageBatchSize];
 
-    v19 = [v5 imageQueue];
-    [v19 setMaxConcurrentOperationCount:1];
+    imageQueue = [v5 imageQueue];
+    [imageQueue setMaxConcurrentOperationCount:1];
 
-    [v5 _populateQueueWithMediaInfos:v4];
+    [v5 _populateQueueWithMediaInfos:infosCopy];
   }
 
   return v5;
@@ -96,10 +96,10 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
   if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-    v6 = [v5 allValues];
+    prewarmedPlayers = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+    allValues = [prewarmedPlayers allValues];
     *buf = 138412290;
-    v21 = v6;
+    v21 = allValues;
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "clearPreloadedPlayback with players %@", buf, 0xCu);
   }
 
@@ -107,10 +107,10 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-  v8 = [v7 allValues];
+  prewarmedPlayers2 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+  allValues2 = [prewarmedPlayers2 allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [allValues2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -121,7 +121,7 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues2);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -129,46 +129,46 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
         [v13 invalidate];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [allValues2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-  [v14 removeAllObjects];
+  prewarmedPlayers3 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+  [prewarmedPlayers3 removeAllObjects];
 }
 
-- (void)clearCachedImageExclude:(int64_t)a3
+- (void)clearCachedImageExclude:(int64_t)exclude
 {
-  v5 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v6 = [v5 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v6 = [mediaInfos count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      if (a3 != v7)
+      if (exclude != v7)
       {
-        v8 = [(VUIMediaInfoFetchController *)self imageOperations];
-        v9 = [v8 objectAtIndex:v7];
+        imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+        v9 = [imageOperations objectAtIndex:v7];
 
         [v9 cancel];
-        v10 = [(VUIMediaInfoFetchController *)self imageOperations];
-        [v10 removeObjectAtIndex:v7];
+        imageOperations2 = [(VUIMediaInfoFetchController *)self imageOperations];
+        [imageOperations2 removeObjectAtIndex:v7];
 
-        v11 = [(VUIMediaInfoFetchController *)self mediaInfos];
-        v12 = [v11 objectAtIndexedSubscript:v7];
+        mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+        v12 = [mediaInfos2 objectAtIndexedSubscript:v7];
 
         v13 = [[VUIMediaInfoImageFetchOperation alloc] initWithMediaInfo:v12];
-        v14 = [(VUIMediaInfoFetchController *)self imageOperations];
-        [v14 insertObject:v13 atIndex:a3];
+        imageOperations3 = [(VUIMediaInfoFetchController *)self imageOperations];
+        [imageOperations3 insertObject:v13 atIndex:exclude];
       }
 
       ++v7;
-      v15 = [(VUIMediaInfoFetchController *)self mediaInfos];
-      v16 = [v15 count];
+      mediaInfos3 = [(VUIMediaInfoFetchController *)self mediaInfos];
+      v16 = [mediaInfos3 count];
     }
 
     while (v7 < v16);
@@ -190,15 +190,15 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
   [(VUIMediaInfoFetchController *)&v4 dealloc];
 }
 
-- (void)_populateQueueWithMediaInfos:(id)a3
+- (void)_populateQueueWithMediaInfos:(id)infos
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infosCopy = infos;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [infosCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -211,27 +211,27 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(infosCopy);
         }
 
         v10 = [[VUIMediaInfoImageFetchOperation alloc] initWithMediaInfo:*(*(&v13 + 1) + 8 * v9)];
         if (v7 < [(VUIMediaInfoFetchController *)self batchSize])
         {
-          v11 = [(VUIMediaInfoFetchController *)self imageQueue];
-          [v11 addOperation:v10];
+          imageQueue = [(VUIMediaInfoFetchController *)self imageQueue];
+          [imageQueue addOperation:v10];
 
           [(VUIMediaInfoImageFetchOperation *)v10 setAddedToQueue:1];
           ++v7;
         }
 
-        v12 = [(VUIMediaInfoFetchController *)self imageOperations];
-        [v12 addObject:v10];
+        imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+        [imageOperations addObject:v10];
 
         ++v9;
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [infosCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -240,59 +240,59 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
   [(VUIMediaInfoFetchController *)self _updateImageOperationPriorities];
 }
 
-- (void)setIndex:(unint64_t)a3
+- (void)setIndex:(unint64_t)index
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = sLogObject_10;
   if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "setIndex: called with %lu", &v6, 0xCu);
   }
 
-  self->_index = a3;
+  self->_index = index;
   [(VUIMediaInfoFetchController *)self _updateImageOperationPriorities];
   [(VUIMediaInfoFetchController *)self _updatePrewarmedPlayers];
 }
 
 - (void)_updateImageOperationPriorities
 {
-  v3 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v4 = [v3 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v4 = [mediaInfos count];
 
-  v5 = [(VUIMediaInfoFetchController *)self index];
+  index = [(VUIMediaInfoFetchController *)self index];
   if (v4 >= 1)
   {
-    v6 = v5;
+    v6 = index;
     for (i = 0; i != v4; ++i)
     {
-      v8 = [(VUIMediaInfoFetchController *)self imageOperations];
-      v9 = [v8 objectAtIndexedSubscript:i];
+      imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+      v9 = [imageOperations objectAtIndexedSubscript:i];
 
       [v9 setQueuePriority:{-[VUIMediaInfoFetchController queuePriorityForIndex:itemCount:selectedIndex:](self, "queuePriorityForIndex:itemCount:selectedIndex:", i, v4, v6)}];
     }
   }
 }
 
-- (int64_t)queuePriorityForIndex:(int64_t)a3 itemCount:(int64_t)a4 selectedIndex:(int64_t)a5
+- (int64_t)queuePriorityForIndex:(int64_t)index itemCount:(int64_t)count selectedIndex:(int64_t)selectedIndex
 {
-  v5 = a3 - a5;
-  if (a3 - a5 < 0)
+  v5 = index - selectedIndex;
+  if (index - selectedIndex < 0)
   {
-    v5 = a5 - a3;
+    v5 = selectedIndex - index;
   }
 
-  v6 = a4 + a3 - a5;
+  v6 = count + index - selectedIndex;
   if (v6 < 0)
   {
-    v6 = a5 - (a4 + a3);
+    v6 = selectedIndex - (count + index);
   }
 
-  v7 = a3 - (a4 + a5);
+  v7 = index - (count + selectedIndex);
   if (v7 < 0)
   {
-    v7 = a4 + a5 - a3;
+    v7 = count + selectedIndex - index;
   }
 
   if (v6 >= v7)
@@ -319,46 +319,46 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
 - (void)_updatePrewarmedPlayers
 {
   v78 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIMediaInfoFetchController *)self isPreloadPlaybackEnabled];
+  isPreloadPlaybackEnabled = [(VUIMediaInfoFetchController *)self isPreloadPlaybackEnabled];
   v4 = sLogObject_10;
   v5 = os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isPreloadPlaybackEnabled)
   {
     if (v5)
     {
       v6 = v4;
-      v7 = [(VUIMediaInfoFetchController *)self mediaInfos];
+      mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
       *buf = 134218240;
-      v75 = self;
+      selfCopy4 = self;
       v76 = 2048;
-      v77 = [v7 count];
+      v77 = [mediaInfos count];
       _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "MediaInfoFetch::(%p) updatePrewarm Updating prewarmed players for %lu media info(s)", buf, 0x16u);
     }
 
-    v8 = [(VUIMediaInfoFetchController *)self mediaInfos];
-    v9 = [v8 count];
+    mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+    v9 = [mediaInfos2 count];
 
     if (v9)
     {
-      v10 = [(VUIMediaInfoFetchController *)self _prewarmIndices];
+      _prewarmIndices = [(VUIMediaInfoFetchController *)self _prewarmIndices];
       v11 = sLogObject_10;
       if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [v10 count];
+        v13 = [_prewarmIndices count];
         *buf = 134218240;
-        v75 = self;
+        selfCopy4 = self;
         v76 = 2048;
         v77 = v13;
         _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "MediaInfoFetch::(%p) updatePrewarm prewarm %lu players", buf, 0x16u);
       }
 
-      v14 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v15 = v10;
+      v15 = _prewarmIndices;
       v16 = [v15 countByEnumeratingWithState:&v66 objects:v73 count:16];
       if (v16)
       {
@@ -374,10 +374,10 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
             }
 
             v20 = *(*(&v66 + 1) + 8 * i);
-            v21 = [(VUIMediaInfoFetchController *)self mediaInfos];
-            v22 = [v21 objectAtIndex:{objc_msgSend(v20, "unsignedIntegerValue")}];
+            mediaInfos3 = [(VUIMediaInfoFetchController *)self mediaInfos];
+            v22 = [mediaInfos3 objectAtIndex:{objc_msgSend(v20, "unsignedIntegerValue")}];
 
-            [v14 addObject:v22];
+            [array addObject:v22];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v66 objects:v73 count:16];
@@ -391,7 +391,7 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v24 = v14;
+      v24 = array;
       v25 = [v24 countByEnumeratingWithState:&v62 objects:v72 count:16];
       if (v25)
       {
@@ -406,8 +406,8 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
               objc_enumerationMutation(v24);
             }
 
-            v29 = [*(*(&v62 + 1) + 8 * j) tvpPlaylist];
-            v30 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:v29 isForPrewarming:1];
+            tvpPlaylist = [*(*(&v62 + 1) + 8 * j) tvpPlaylist];
+            v30 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:tvpPlaylist isForPrewarming:1];
 
             if (v30)
             {
@@ -425,10 +425,10 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v31 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-      v32 = [v31 allKeys];
+      prewarmedPlayers = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+      allKeys = [prewarmedPlayers allKeys];
 
-      v33 = [v32 countByEnumeratingWithState:&v58 objects:v71 count:16];
+      v33 = [allKeys countByEnumeratingWithState:&v58 objects:v71 count:16];
       if (v33)
       {
         v34 = v33;
@@ -439,7 +439,7 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
           {
             if (*v59 != v35)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(allKeys);
             }
 
             v37 = *(*(&v58 + 1) + 8 * k);
@@ -449,7 +449,7 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
             }
           }
 
-          v34 = [v32 countByEnumeratingWithState:&v58 objects:v71 count:16];
+          v34 = [allKeys countByEnumeratingWithState:&v58 objects:v71 count:16];
         }
 
         while (v34);
@@ -477,13 +477,13 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
               objc_enumerationMutation(obj);
             }
 
-            v42 = [*(*(&v54 + 1) + 8 * m) tvpPlaylist];
-            v43 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:v42 isForPrewarming:1];
+            tvpPlaylist2 = [*(*(&v54 + 1) + 8 * m) tvpPlaylist];
+            v43 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:tvpPlaylist2 isForPrewarming:1];
             if (v43)
             {
-              v44 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-              v45 = [v44 objectForKey:v43];
-              if (v42)
+              prewarmedPlayers2 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+              v45 = [prewarmedPlayers2 objectForKey:v43];
+              if (tvpPlaylist2)
               {
                 v46 = v45 == 0;
               }
@@ -495,8 +495,8 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
 
               if (v46)
               {
-                v48 = [v42 currentMediaItem];
-                v49 = [v48 hasTrait:v52];
+                currentMediaItem = [tvpPlaylist2 currentMediaItem];
+                v49 = [currentMediaItem hasTrait:v52];
 
                 if (!v49)
                 {
@@ -507,21 +507,21 @@ void __41__VUIMediaInfoFetchController_initialize__block_invoke()
                 if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 134218242;
-                  v75 = self;
+                  selfCopy4 = self;
                   v76 = 2112;
                   v77 = v43;
                   _os_log_impl(&dword_1E323F000, v50, OS_LOG_TYPE_DEFAULT, "MediaInfoFetch::(%p) updatePrewarm Creating and starting prewarm player with identifier [%@]", buf, 0x16u);
                 }
 
-                v44 = [(VUIMediaInfoFetchController *)self _createPlayerWithPlaylist:v42 isForPrewarming:1];
-                [v44 pause];
-                v47 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-                [v47 setObject:v44 forKey:v43];
+                prewarmedPlayers2 = [(VUIMediaInfoFetchController *)self _createPlayerWithPlaylist:tvpPlaylist2 isForPrewarming:1];
+                [prewarmedPlayers2 pause];
+                prewarmedPlayers3 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+                [prewarmedPlayers3 setObject:prewarmedPlayers2 forKey:v43];
               }
 
               else
               {
-                v47 = v45;
+                prewarmedPlayers3 = v45;
               }
             }
 
@@ -539,7 +539,7 @@ LABEL_48:
   else if (v5)
   {
     *buf = 134217984;
-    v75 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "MediaInfoFetch::(%p) updatePrewarm is skipped because isPreloadPlaybackEnabled is disabled", buf, 0xCu);
   }
 }
@@ -547,38 +547,38 @@ LABEL_48:
 - (id)_prewarmIndices
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(VUIMediaInfoFetchController *)self playerPreloadOffset];
-  v5 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v6 = [v5 count];
+  playerPreloadOffset = [(VUIMediaInfoFetchController *)self playerPreloadOffset];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v6 = [mediaInfos count];
 
-  v7 = v6 - 1;
+  index = v6 - 1;
   if ([(VUIMediaInfoFetchController *)self index]< v6 - 1)
   {
-    v7 = [(VUIMediaInfoFetchController *)self index];
+    index = [(VUIMediaInfoFetchController *)self index];
   }
 
   if (v6)
   {
     if (v6 == 1)
     {
-      v8 = &unk_1F5E5E8C8;
+      allObjects = &unk_1F5E5E8C8;
     }
 
     else
     {
-      if (v4)
+      if (playerPreloadOffset)
       {
-        v9 = v7 - 1;
-        for (i = 1; i <= v4; ++i)
+        v9 = index - 1;
+        for (i = 1; i <= playerPreloadOffset; ++i)
         {
-          if (i <= v7)
+          if (i <= index)
           {
             v11 = v9;
           }
 
           else
           {
-            v11 = v6 - v4 + i - 1;
+            v11 = v6 - playerPreloadOffset + i - 1;
           }
 
           v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
@@ -587,89 +587,89 @@ LABEL_48:
           --v9;
         }
 
-        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
         [v3 addObject:v13];
 
-        for (j = 1; j <= v4; ++j)
+        for (j = 1; j <= playerPreloadOffset; ++j)
         {
-          v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(v7 + j) % v6];
+          v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(index + j) % v6];
           [v3 addObject:v15];
         }
       }
 
       else
       {
-        v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+        v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
         [v3 addObject:v16];
       }
 
-      v8 = [v3 allObjects];
+      allObjects = [v3 allObjects];
     }
   }
 
   else
   {
-    v8 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  return v8;
+  return allObjects;
 }
 
-- (void)_removePrewarmedPlayerForIdentifier:(id)a3
+- (void)_removePrewarmedPlayerForIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = sLogObject_10;
   if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "MediaInfoFetch::(%p) Invalidating prewarm player with identifier [%@]", &v9, 0x16u);
   }
 
-  v6 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-  v7 = [v6 objectForKey:v4];
+  prewarmedPlayers = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+  v7 = [prewarmedPlayers objectForKey:identifierCopy];
 
   [v7 stop];
   [v7 invalidate];
-  v8 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-  [v8 removeObjectForKey:v4];
+  prewarmedPlayers2 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+  [prewarmedPlayers2 removeObjectForKey:identifierCopy];
 }
 
-- (id)_identifierForPlaylist:(id)a3 isForPrewarming:(BOOL)a4
+- (id)_identifierForPlaylist:(id)playlist isForPrewarming:(BOOL)prewarming
 {
-  v4 = a4;
-  v5 = [a3 currentMediaItem];
-  v6 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
+  prewarmingCopy = prewarming;
+  currentMediaItem = [playlist currentMediaItem];
+  v6 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    absoluteString = v6;
   }
 
   else
   {
-    v9 = [v5 mediaItemURL];
-    v8 = [v9 absoluteString];
+    mediaItemURL = [currentMediaItem mediaItemURL];
+    absoluteString = [mediaItemURL absoluteString];
   }
 
   v10 = &stru_1F5DB25C0;
-  if (v4)
+  if (prewarmingCopy)
   {
     v10 = @"Prewarm ";
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v10, v8];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v10, absoluteString];
 
   return v11;
 }
 
-- (void)setPreloadPlaybackEnabled:(BOOL)a3
+- (void)setPreloadPlaybackEnabled:(BOOL)enabled
 {
-  self->_preloadPlaybackEnabled = a3;
-  if (a3)
+  self->_preloadPlaybackEnabled = enabled;
+  if (enabled)
   {
     [(VUIMediaInfoFetchController *)self _updatePrewarmedPlayers];
   }
@@ -680,31 +680,31 @@ LABEL_48:
   }
 }
 
-- (void)setMediaInfos:(id)a3
+- (void)setMediaInfos:(id)infos
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infosCopy = infos;
   v5 = sLogObject_10;
   if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = infosCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "setMediaInfos: called with %@", &v18, 0xCu);
   }
 
-  v6 = [(VUIMediaInfoFetchController *)self imageQueue];
-  [v6 cancelAllOperations];
+  imageQueue = [(VUIMediaInfoFetchController *)self imageQueue];
+  [imageQueue cancelAllOperations];
 
-  v7 = [(VUIMediaInfoFetchController *)self imageOperations];
-  [v7 removeAllObjects];
+  imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+  [imageOperations removeAllObjects];
 
-  if (v4)
+  if (infosCopy)
   {
-    v8 = [v4 copy];
+    v8 = [infosCopy copy];
     mediaInfos = self->_mediaInfos;
     self->_mediaInfos = v8;
 
-    [(VUIMediaInfoFetchController *)self _populateQueueWithMediaInfos:v4];
+    [(VUIMediaInfoFetchController *)self _populateQueueWithMediaInfos:infosCopy];
   }
 
   else
@@ -713,19 +713,19 @@ LABEL_48:
     self->_mediaInfos = MEMORY[0x1E695E0F0];
   }
 
-  v11 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v12 = [v11 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v12 = [mediaInfos count];
 
   if (v12)
   {
-    v13 = [(VUIMediaInfoFetchController *)self index];
-    v14 = [(VUIMediaInfoFetchController *)self mediaInfos];
-    v15 = [v14 count];
+    index = [(VUIMediaInfoFetchController *)self index];
+    mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+    v15 = [mediaInfos2 count];
 
-    if (v13 >= v15)
+    if (index >= v15)
     {
-      v17 = [(VUIMediaInfoFetchController *)self mediaInfos];
-      -[VUIMediaInfoFetchController setIndex:](self, "setIndex:", [v17 count] - 1);
+      mediaInfos3 = [(VUIMediaInfoFetchController *)self mediaInfos];
+      -[VUIMediaInfoFetchController setIndex:](self, "setIndex:", [mediaInfos3 count] - 1);
     }
 
     else
@@ -747,130 +747,130 @@ LABEL_48:
   }
 }
 
-- (void)setMediaInfo:(id)a3 atIndex:(unint64_t)a4
+- (void)setMediaInfo:(id)info atIndex:(unint64_t)index
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  infoCopy = info;
   v7 = sLogObject_10;
   if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412546;
-    v21 = v6;
+    v21 = infoCopy;
     v22 = 2048;
-    v23 = a4;
+    indexCopy = index;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "setMediaInfo:atIndex: called with %@ at index %lu", &v20, 0x16u);
   }
 
-  v8 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v9 = [v8 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v9 = [mediaInfos count];
 
-  if (v9 > a4)
+  if (v9 > index)
   {
-    v10 = [(VUIMediaInfoFetchController *)self mediaInfos];
-    v11 = [v10 mutableCopy];
+    mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+    v11 = [mediaInfos2 mutableCopy];
 
-    v12 = [(VUIMediaInfoFetchController *)self imageOperations];
-    v13 = [v12 objectAtIndex:a4];
+    imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+    v13 = [imageOperations objectAtIndex:index];
 
     [v13 cancel];
-    v14 = [(VUIMediaInfoFetchController *)self imageOperations];
-    [v14 removeObjectAtIndex:a4];
+    imageOperations2 = [(VUIMediaInfoFetchController *)self imageOperations];
+    [imageOperations2 removeObjectAtIndex:index];
 
-    [v11 setObject:v6 atIndexedSubscript:a4];
+    [v11 setObject:infoCopy atIndexedSubscript:index];
     v15 = [v11 copy];
     mediaInfos = self->_mediaInfos;
     self->_mediaInfos = v15;
 
-    v17 = [[VUIMediaInfoImageFetchOperation alloc] initWithMediaInfo:v6];
-    v18 = [(VUIMediaInfoFetchController *)self imageQueue];
-    [v18 addOperation:v17];
+    v17 = [[VUIMediaInfoImageFetchOperation alloc] initWithMediaInfo:infoCopy];
+    imageQueue = [(VUIMediaInfoFetchController *)self imageQueue];
+    [imageQueue addOperation:v17];
 
     [(VUIMediaInfoImageFetchOperation *)v17 setAddedToQueue:1];
-    v19 = [(VUIMediaInfoFetchController *)self imageOperations];
-    [v19 insertObject:v17 atIndex:a4];
+    imageOperations3 = [(VUIMediaInfoFetchController *)self imageOperations];
+    [imageOperations3 insertObject:v17 atIndex:index];
 
     [(VUIMediaInfoFetchController *)self _updatePrewarmedPlayers];
   }
 }
 
-- (void)appendMediaInfos:(id)a3
+- (void)appendMediaInfos:(id)infos
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infosCopy = infos;
   v5 = sLogObject_10;
   if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = infosCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "appendMediaInfos: called with mediaInfos %@", &v10, 0xCu);
   }
 
-  if (v4)
+  if (infosCopy)
   {
-    v6 = [(VUIMediaInfoFetchController *)self mediaInfos];
-    v7 = [v6 mutableCopy];
+    mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+    v7 = [mediaInfos mutableCopy];
 
-    [v7 addObjectsFromArray:v4];
+    [v7 addObjectsFromArray:infosCopy];
     v8 = [v7 copy];
     mediaInfos = self->_mediaInfos;
     self->_mediaInfos = v8;
 
-    [(VUIMediaInfoFetchController *)self _populateQueueWithMediaInfos:v4];
+    [(VUIMediaInfoFetchController *)self _populateQueueWithMediaInfos:infosCopy];
     [(VUIMediaInfoFetchController *)self _updatePrewarmedPlayers];
   }
 }
 
-- (void)removeMediaInfoAtIndex:(unint64_t)a3
+- (void)removeMediaInfoAtIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = sLogObject_10;
   if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 134217984;
-    v16 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "removeMediaInfoAtIndex: called with index %lu", &v15, 0xCu);
   }
 
-  v6 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v7 = [v6 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v7 = [mediaInfos count];
 
-  if (v7 > a3)
+  if (v7 > index)
   {
-    v8 = [(VUIMediaInfoFetchController *)self mediaInfos];
-    v9 = [v8 mutableCopy];
+    mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+    v9 = [mediaInfos2 mutableCopy];
 
-    [v9 removeObjectAtIndex:a3];
+    [v9 removeObjectAtIndex:index];
     v10 = [v9 copy];
     mediaInfos = self->_mediaInfos;
     self->_mediaInfos = v10;
 
-    v12 = [(VUIMediaInfoFetchController *)self imageOperations];
-    v13 = [v12 objectAtIndex:a3];
+    imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+    v13 = [imageOperations objectAtIndex:index];
 
     [v13 cancel];
-    v14 = [(VUIMediaInfoFetchController *)self imageOperations];
-    [v14 removeObjectAtIndex:a3];
+    imageOperations2 = [(VUIMediaInfoFetchController *)self imageOperations];
+    [imageOperations2 removeObjectAtIndex:index];
 
     [(VUIMediaInfoFetchController *)self _updatePrewarmedPlayers];
   }
 }
 
-- (id)_createPlayerWithPlaylist:(id)a3 isForPrewarming:(BOOL)a4
+- (id)_createPlayerWithPlaylist:(id)playlist isForPrewarming:(BOOL)prewarming
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  prewarmingCopy = prewarming;
+  playlistCopy = playlist;
+  if (playlistCopy)
   {
-    v7 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:v6 isForPrewarming:v4];
+    v7 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:playlistCopy isForPrewarming:prewarmingCopy];
     v8 = [[VUIPlayer alloc] initWithName:v7];
     v9 = v8;
-    if (v4)
+    if (prewarmingCopy)
     {
       [(VUIPlayer *)v8 setWaitsAfterPreparingMediaItems:1];
       [(VUIPlayer *)v9 setSendsPlayerReports:0];
     }
 
-    [(VUIPlayer *)v9 setPlaylist:v6];
+    [(VUIPlayer *)v9 setPlaylist:playlistCopy];
   }
 
   else
@@ -881,14 +881,14 @@ LABEL_48:
   return v9;
 }
 
-- (void)loadImageAtIndex:(unint64_t)a3 completion:(id)a4
+- (void)loadImageAtIndex:(unint64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__VUIMediaInfoFetchController_loadImageAtIndex_completion___block_invoke;
   aBlock[3] = &unk_1E8732270;
-  v7 = v6;
+  v7 = completionCopy;
   v24 = v7;
   v8 = _Block_copy(aBlock);
   objc_initWeak(&location, self);
@@ -900,10 +900,10 @@ LABEL_48:
   v9 = v8;
   v20 = v9;
   v10 = _Block_copy(v19);
-  v11 = [(VUIMediaInfoFetchController *)self imageOperations];
-  v12 = [v11 count];
+  imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+  v12 = [imageOperations count];
 
-  if (v12 <= a3)
+  if (v12 <= index)
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VUIMediaInfoFetchControllerErrorDomain" code:1 userInfo:0];
     (*(v10 + 2))(v10, 0, v14, 0);
@@ -911,14 +911,14 @@ LABEL_48:
 
   else
   {
-    v13 = [(VUIMediaInfoFetchController *)self imageOperations];
-    v14 = [v13 objectAtIndex:a3];
+    imageOperations2 = [(VUIMediaInfoFetchController *)self imageOperations];
+    v14 = [imageOperations2 objectAtIndex:index];
 
     if ([v14 isFinished])
     {
-      v15 = [v14 image];
-      v16 = [v14 error];
-      (*(v10 + 2))(v10, v15, v16, [v14 imageLoadFinished]);
+      image = [v14 image];
+      error = [v14 error];
+      (*(v10 + 2))(v10, image, error, [v14 imageLoadFinished]);
     }
 
     else
@@ -929,10 +929,10 @@ LABEL_48:
       v17[3] = &unk_1E8732270;
       v18 = v10;
       [v14 addCompletion:v17];
-      v15 = v18;
+      image = v18;
     }
 
-    [(VUIMediaInfoFetchController *)self preLoadNextImageFromCurrentIndexIfNeeded:a3];
+    [(VUIMediaInfoFetchController *)self preLoadNextImageFromCurrentIndexIfNeeded:index];
   }
 
   objc_destroyWeak(&v21);
@@ -1005,21 +1005,21 @@ uint64_t __59__VUIMediaInfoFetchController_loadImageAtIndex_completion___block_i
   return v2();
 }
 
-- (void)preLoadNextImageFromCurrentIndexIfNeeded:(int64_t)a3
+- (void)preLoadNextImageFromCurrentIndexIfNeeded:(int64_t)needed
 {
-  v5 = [(VUIMediaInfoFetchController *)self batchSize];
-  if (v5 / 2 <= 1)
+  batchSize = [(VUIMediaInfoFetchController *)self batchSize];
+  if (batchSize / 2 <= 1)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v5 / 2;
+    v6 = batchSize / 2;
   }
 
-  v7 = a3 + 1;
-  v8 = a3 - 1;
+  v7 = needed + 1;
+  v8 = needed - 1;
   do
   {
     [(VUIMediaInfoFetchController *)self startImageOperationAtIndex:v8];
@@ -1031,22 +1031,22 @@ uint64_t __59__VUIMediaInfoFetchController_loadImageAtIndex_completion___block_i
   while (v6);
 }
 
-- (void)startImageOperationAtIndex:(int64_t)a3
+- (void)startImageOperationAtIndex:(int64_t)index
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v5 = [(VUIMediaInfoFetchController *)self imageOperations];
-    v6 = [v5 count];
+    imageOperations = [(VUIMediaInfoFetchController *)self imageOperations];
+    v6 = [imageOperations count];
 
-    if (v6 > a3)
+    if (v6 > index)
     {
-      v7 = [(VUIMediaInfoFetchController *)self imageOperations];
-      v9 = [v7 objectAtIndexedSubscript:a3];
+      imageOperations2 = [(VUIMediaInfoFetchController *)self imageOperations];
+      v9 = [imageOperations2 objectAtIndexedSubscript:index];
 
       if (([v9 addedToQueue] & 1) == 0)
       {
-        v8 = [(VUIMediaInfoFetchController *)self imageQueue];
-        [v8 addOperation:v9];
+        imageQueue = [(VUIMediaInfoFetchController *)self imageQueue];
+        [imageQueue addOperation:v9];
 
         [v9 setAddedToQueue:1];
       }
@@ -1054,111 +1054,111 @@ uint64_t __59__VUIMediaInfoFetchController_loadImageAtIndex_completion___block_i
   }
 }
 
-- (void)populatePlaylistWithMediaItems:(id)a3 atIndex:(unint64_t)a4
+- (void)populatePlaylistWithMediaItems:(id)items atIndex:(unint64_t)index
 {
-  v20 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E696AD50] indexSet];
-  v8 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v9 = [v8 count];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v9 = [mediaInfos count];
 
   if (v9)
   {
     v10 = 0;
     do
     {
-      if (a4 != v10)
+      if (index != v10)
       {
-        v11 = [(VUIMediaInfoFetchController *)self mediaInfos];
-        v12 = [v11 objectAtIndex:v10];
+        mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+        v12 = [mediaInfos2 objectAtIndex:v10];
 
-        v13 = [v12 tvpPlaylist];
-        v14 = [v13 currentMediaItem];
+        tvpPlaylist = [v12 tvpPlaylist];
+        currentMediaItem = [tvpPlaylist currentMediaItem];
 
-        if (v14)
+        if (currentMediaItem)
         {
-          v15 = [v12 tvpPlaylist];
-          v16 = [v15 currentMediaItem];
-          [v6 addObject:v16];
+          tvpPlaylist2 = [v12 tvpPlaylist];
+          currentMediaItem2 = [tvpPlaylist2 currentMediaItem];
+          [array addObject:currentMediaItem2];
 
-          [v7 addIndex:v10];
+          [indexSet addIndex:v10];
         }
       }
 
       ++v10;
-      v17 = [(VUIMediaInfoFetchController *)self mediaInfos];
-      v18 = [v17 count];
+      mediaInfos3 = [(VUIMediaInfoFetchController *)self mediaInfos];
+      v18 = [mediaInfos3 count];
     }
 
     while (v10 < v18);
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    if ([v7 count])
+    if ([indexSet count])
     {
-      v19 = [v6 count];
-      if (v19 == [v7 count])
+      v19 = [array count];
+      if (v19 == [indexSet count])
       {
-        [v20 insertItems:v6 atIndexes:v7];
+        [itemsCopy insertItems:array atIndexes:indexSet];
       }
     }
   }
 }
 
-- (void)removePopulatedMediaItems:(id)a3 atIndex:(unint64_t)a4
+- (void)removePopulatedMediaItems:(id)items atIndex:(unint64_t)index
 {
-  v10 = a3;
-  v5 = [v10 trackList];
-  v6 = [v5 count];
+  itemsCopy = items;
+  trackList = [itemsCopy trackList];
+  v6 = [trackList count];
 
   if (v6 >= 2)
   {
     v7 = MEMORY[0x1E696AD50];
-    v8 = [v10 trackList];
-    v9 = [v7 indexSetWithIndexesInRange:{0, objc_msgSend(v8, "count")}];
+    trackList2 = [itemsCopy trackList];
+    v9 = [v7 indexSetWithIndexesInRange:{0, objc_msgSend(trackList2, "count")}];
 
-    [v9 removeIndex:a4];
-    [v10 removeItemsAtIndexes:v9];
+    [v9 removeIndex:index];
+    [itemsCopy removeItemsAtIndexes:v9];
   }
 }
 
-- (id)loadPlayerAtIndex:(unint64_t)a3
+- (id)loadPlayerAtIndex:(unint64_t)index
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v6 = [v5 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v6 = [mediaInfos count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v20 = 0;
   }
 
   else
   {
-    v7 = [(VUIMediaInfoFetchController *)self mediaInfos];
-    v8 = [v7 objectAtIndex:a3];
+    mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+    v8 = [mediaInfos2 objectAtIndex:index];
 
-    v9 = [v8 tvpPlaylist];
-    v10 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:v9 isForPrewarming:0];
-    v11 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:v9 isForPrewarming:1];
-    v12 = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
-    v13 = [v12 objectForKey:v11];
+    tvpPlaylist = [v8 tvpPlaylist];
+    v10 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:tvpPlaylist isForPrewarming:0];
+    v11 = [(VUIMediaInfoFetchController *)self _identifierForPlaylist:tvpPlaylist isForPrewarming:1];
+    prewarmedPlayers = [(VUIMediaInfoFetchController *)self prewarmedPlayers];
+    v13 = [prewarmedPlayers objectForKey:v11];
 
     v14 = sLogObject_10;
     if (os_log_type_enabled(sLogObject_10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v13 name];
+      name = [v13 name];
       v22 = 138412546;
       v23 = v10;
       v24 = 2112;
-      v25 = v16;
+      v25 = name;
       _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Creating playback player for identifier [%@].  Prewarm player for this identifier is [%@]", &v22, 0x16u);
     }
 
-    v17 = v9;
-    v18 = v17;
+    v17 = tvpPlaylist;
+    playlist = v17;
     if (v13)
     {
       v19 = sLogObject_10;
@@ -1168,49 +1168,49 @@ uint64_t __59__VUIMediaInfoFetchController_loadImageAtIndex_completion___block_i
         _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "Setting playlist from prewarm player on playback player", &v22, 2u);
       }
 
-      v18 = [v13 playlist];
+      playlist = [v13 playlist];
     }
 
-    v20 = [(VUIMediaInfoFetchController *)self _createPlayerWithPlaylist:v18 isForPrewarming:0];
+    v20 = [(VUIMediaInfoFetchController *)self _createPlayerWithPlaylist:playlist isForPrewarming:0];
   }
 
   return v20;
 }
 
-- (BOOL)mediaInfoContainsImageAtIndex:(unint64_t)a3
+- (BOOL)mediaInfoContainsImageAtIndex:(unint64_t)index
 {
-  v5 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v6 = [v5 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v6 = [mediaInfos count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0;
   }
 
-  v7 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v8 = [v7 objectAtIndex:a3];
+  mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v8 = [mediaInfos2 objectAtIndex:index];
 
-  v9 = [v8 imageProxies];
-  v10 = [v9 count] != 0;
+  imageProxies = [v8 imageProxies];
+  v10 = [imageProxies count] != 0;
 
   return v10;
 }
 
-- (BOOL)mediaInfoContainsPlayerAtIndex:(unint64_t)a3
+- (BOOL)mediaInfoContainsPlayerAtIndex:(unint64_t)index
 {
-  v5 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v6 = [v5 count];
+  mediaInfos = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v6 = [mediaInfos count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0;
   }
 
-  v7 = [(VUIMediaInfoFetchController *)self mediaInfos];
-  v8 = [v7 objectAtIndex:a3];
+  mediaInfos2 = [(VUIMediaInfoFetchController *)self mediaInfos];
+  v8 = [mediaInfos2 objectAtIndex:index];
 
-  v9 = [v8 tvpPlaylist];
-  v10 = v9 != 0;
+  tvpPlaylist = [v8 tvpPlaylist];
+  v10 = tvpPlaylist != 0;
 
   return v10;
 }

@@ -1,19 +1,19 @@
 @interface LocalParticipantControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (int64_t)_axDevicePosition;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation LocalParticipantControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"effectsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"cameraBlurButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"cinematicFramingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"cameraFlipButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"collapseButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"effectsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"cameraBlurButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"cinematicFramingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"cameraFlipButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"collapseButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

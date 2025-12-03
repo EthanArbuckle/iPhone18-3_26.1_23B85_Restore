@@ -1,22 +1,22 @@
 @interface BuddyGetStartedSecondaryContentView
 - (BOOL)shouldUseAccessibilityLayout;
-- (BuddyGetStartedSecondaryContentView)initWithFrame:(CGRect)a3;
+- (BuddyGetStartedSecondaryContentView)initWithFrame:(CGRect)frame;
 - (id)_labelFont;
 - (int64_t)_activityIndicatorViewStyle;
 - (void)_updateContentLabelLayout;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BuddyGetStartedSecondaryContentView
 
-- (BuddyGetStartedSecondaryContentView)initWithFrame:(CGRect)a3
+- (BuddyGetStartedSecondaryContentView)initWithFrame:(CGRect)frame
 {
-  v62 = a3;
+  frameCopy = frame;
   v60 = a2;
   location = 0;
   v59.receiver = self;
   v59.super_class = BuddyGetStartedSecondaryContentView;
-  location = [(BuddyGetStartedSecondaryContentView *)&v59 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  location = [(BuddyGetStartedSecondaryContentView *)&v59 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&location, location);
   if (location)
   {
@@ -35,8 +35,8 @@
 
     [*(location + 2) setTranslatesAutoresizingMaskIntoConstraints:0];
     [*(location + 2) setText:v58];
-    v10 = [location _labelFont];
-    [*(location + 2) setFont:v10];
+    _labelFont = [location _labelFont];
+    [*(location + 2) setFont:_labelFont];
 
     v11 = +[UIColor clearColor];
     [*(location + 2) setBackgroundColor:v11];
@@ -51,8 +51,8 @@
     v15 = [(NSBundle *)v14 localizedStringForKey:0x100338000 value:&stru_10032F900 table:@"Localizable"];
     [*(location + 3) setText:v15];
 
-    v16 = [location _labelFont];
-    [*(location + 3) setFont:v16];
+    _labelFont2 = [location _labelFont];
+    [*(location + 3) setFont:_labelFont2];
 
     [*(location + 3) setNumberOfLines:0];
     if ([*(location + 1) isSolariumEnabled])
@@ -87,60 +87,60 @@
     [location addSubview:*(location + 3)];
     [location addSubview:*(location + 2)];
     [*(location + 4) startAnimating];
-    v57 = [*(location + 2) topAnchor];
-    v56 = [location topAnchor];
-    v55 = [v57 constraintEqualToAnchor:15.0 constant:?];
+    topAnchor = [*(location + 2) topAnchor];
+    topAnchor2 = [location topAnchor];
+    v55 = [topAnchor constraintEqualToAnchor:15.0 constant:?];
     v65[0] = v55;
-    v54 = [*(location + 4) centerYAnchor];
-    v53 = [*(location + 3) centerYAnchor];
-    v52 = [v54 constraintEqualToAnchor:?];
+    centerYAnchor = [*(location + 4) centerYAnchor];
+    centerYAnchor2 = [*(location + 3) centerYAnchor];
+    v52 = [centerYAnchor constraintEqualToAnchor:?];
     v65[1] = v52;
-    v51 = [*(location + 4) trailingAnchor];
-    v50 = [*(location + 3) leadingAnchor];
-    v49 = [v51 constraintEqualToAnchor:-10.0 constant:?];
+    trailingAnchor = [*(location + 4) trailingAnchor];
+    leadingAnchor = [*(location + 3) leadingAnchor];
+    v49 = [trailingAnchor constraintEqualToAnchor:-10.0 constant:?];
     v65[2] = v49;
-    v48 = [*(location + 3) trailingAnchor];
-    v47 = [location trailingAnchor];
-    v46 = [v48 constraintLessThanOrEqualToAnchor:?];
+    trailingAnchor2 = [*(location + 3) trailingAnchor];
+    trailingAnchor3 = [location trailingAnchor];
+    v46 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:?];
     v65[3] = v46;
-    v45 = [*(location + 3) topAnchor];
-    v44 = [*(location + 2) bottomAnchor];
-    v43 = [v45 constraintEqualToAnchor:20.0 constant:?];
+    topAnchor3 = [*(location + 3) topAnchor];
+    bottomAnchor = [*(location + 2) bottomAnchor];
+    v43 = [topAnchor3 constraintEqualToAnchor:20.0 constant:?];
     v65[4] = v43;
-    v24 = [*(location + 2) leadingAnchor];
-    v25 = [location leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    leadingAnchor2 = [*(location + 2) leadingAnchor];
+    leadingAnchor3 = [location leadingAnchor];
+    v26 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v65[5] = v26;
-    v27 = [*(location + 2) trailingAnchor];
-    v28 = [location trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    trailingAnchor4 = [*(location + 2) trailingAnchor];
+    trailingAnchor5 = [location trailingAnchor];
+    v29 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v65[6] = v29;
-    v30 = [*(location + 3) bottomAnchor];
-    v31 = [location bottomAnchor];
-    v32 = [v30 constraintLessThanOrEqualToAnchor:v31];
+    bottomAnchor2 = [*(location + 3) bottomAnchor];
+    bottomAnchor3 = [location bottomAnchor];
+    v32 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
     v65[7] = v32;
     v33 = [NSArray arrayWithObjects:v65 count:8];
     [NSLayoutConstraint activateConstraints:v33];
 
     if ([*(location + 1) isSolariumEnabled])
     {
-      v34 = [*(location + 4) leadingAnchor];
-      v35 = [location leadingAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35];
+      leadingAnchor4 = [*(location + 4) leadingAnchor];
+      leadingAnchor5 = [location leadingAnchor];
+      v36 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
       v64 = v36;
-      v37 = [NSArray arrayWithObjects:&v64 count:1];
-      [NSLayoutConstraint activateConstraints:v37];
+      leadingAnchor6 = [NSArray arrayWithObjects:&v64 count:1];
+      [NSLayoutConstraint activateConstraints:leadingAnchor6];
     }
 
     else
     {
-      v34 = [*(location + 3) centerXAnchor];
-      v35 = [location centerXAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35];
+      leadingAnchor4 = [*(location + 3) centerXAnchor];
+      leadingAnchor5 = [location centerXAnchor];
+      v36 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
       v63[0] = v36;
-      v37 = [*(location + 4) leadingAnchor];
-      v38 = [location leadingAnchor];
-      v39 = [(NSArray *)v37 constraintGreaterThanOrEqualToAnchor:v38];
+      leadingAnchor6 = [*(location + 4) leadingAnchor];
+      leadingAnchor7 = [location leadingAnchor];
+      v39 = [(NSArray *)leadingAnchor6 constraintGreaterThanOrEqualToAnchor:leadingAnchor7];
       v63[1] = v39;
       v40 = [NSArray arrayWithObjects:v63 count:2];
       [NSLayoutConstraint activateConstraints:v40];
@@ -184,54 +184,54 @@
 {
   if (([(BuddyFeatureFlags *)self->_featureFlags isSolariumEnabled]& 1) != 0)
   {
-    v2 = [(BuddyGetStartedSecondaryContentView *)self contentLabel];
-    [(UILabel *)v2 setTextAlignment:4];
+    contentLabel = [(BuddyGetStartedSecondaryContentView *)self contentLabel];
+    [(UILabel *)contentLabel setTextAlignment:4];
   }
 
   else
   {
     if ([(BuddyGetStartedSecondaryContentView *)self shouldUseAccessibilityLayout])
     {
-      v3 = [(BuddyGetStartedSecondaryContentView *)self contentLabel];
-      [(UILabel *)v3 setTextAlignment:4];
+      contentLabel2 = [(BuddyGetStartedSecondaryContentView *)self contentLabel];
+      [(UILabel *)contentLabel2 setTextAlignment:4];
     }
 
     else
     {
-      v3 = [(BuddyGetStartedSecondaryContentView *)self contentLabel];
-      [(UILabel *)v3 setTextAlignment:1];
+      contentLabel2 = [(BuddyGetStartedSecondaryContentView *)self contentLabel];
+      [(UILabel *)contentLabel2 setTextAlignment:1];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9.receiver = v11;
+  objc_storeStrong(location, change);
+  v9.receiver = selfCopy;
   v9.super_class = BuddyGetStartedSecondaryContentView;
   [(BuddyGetStartedSecondaryContentView *)&v9 traitCollectionDidChange:location[0]];
-  v3 = [(BuddyGetStartedSecondaryContentView *)v11 _activityIndicatorViewStyle];
-  v4 = [(BuddyGetStartedSecondaryContentView *)v11 spinner];
-  [(UIActivityIndicatorView *)v4 setActivityIndicatorViewStyle:v3];
+  _activityIndicatorViewStyle = [(BuddyGetStartedSecondaryContentView *)selfCopy _activityIndicatorViewStyle];
+  spinner = [(BuddyGetStartedSecondaryContentView *)selfCopy spinner];
+  [(UIActivityIndicatorView *)spinner setActivityIndicatorViewStyle:_activityIndicatorViewStyle];
 
-  v5 = [(BuddyGetStartedSecondaryContentView *)v11 _labelFont];
-  v6 = [(BuddyGetStartedSecondaryContentView *)v11 spinnerLabel];
-  [(UILabel *)v6 setFont:v5];
+  _labelFont = [(BuddyGetStartedSecondaryContentView *)selfCopy _labelFont];
+  spinnerLabel = [(BuddyGetStartedSecondaryContentView *)selfCopy spinnerLabel];
+  [(UILabel *)spinnerLabel setFont:_labelFont];
 
-  v7 = [(BuddyGetStartedSecondaryContentView *)v11 _labelFont];
-  v8 = [(BuddyGetStartedSecondaryContentView *)v11 contentLabel];
-  [(UILabel *)v8 setFont:v7];
+  _labelFont2 = [(BuddyGetStartedSecondaryContentView *)selfCopy _labelFont];
+  contentLabel = [(BuddyGetStartedSecondaryContentView *)selfCopy contentLabel];
+  [(UILabel *)contentLabel setFont:_labelFont2];
 
-  [(BuddyGetStartedSecondaryContentView *)v11 _updateContentLabelLayout];
+  [(BuddyGetStartedSecondaryContentView *)selfCopy _updateContentLabelLayout];
   objc_storeStrong(location, 0);
 }
 
 - (id)_labelFont
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   if (([(BuddyFeatureFlags *)self->_featureFlags isSolariumEnabled]& 1) != 0)
   {
@@ -244,8 +244,8 @@
   }
 
   location[0] = v2;
-  v3 = [(BuddyGetStartedSecondaryContentView *)v8 traitCollection];
-  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:location[0] compatibleWithTraitCollection:v3];
+  traitCollection = [(BuddyGetStartedSecondaryContentView *)selfCopy traitCollection];
+  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:location[0] compatibleWithTraitCollection:traitCollection];
   v5 = [UIFont fontWithDescriptor:v4 size:0.0];
 
   objc_storeStrong(location, 0);

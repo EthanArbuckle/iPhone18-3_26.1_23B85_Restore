@@ -1,26 +1,26 @@
 @interface IMBTimeSelectionTableViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation IMBTimeSelectionTableViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008D3D8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10008D4EC(a3);
+  selfCopy = self;
+  sub_10008D4EC(appear);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = OBJC_IVAR____TtC8Business35IMBTimeSelectionTableViewController_dates;
   swift_beginAccess();
@@ -43,7 +43,7 @@
   return v6 != 0;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5 = OBJC_IVAR____TtC8Business35IMBTimeSelectionTableViewController_dates;
   swift_beginAccess();
@@ -61,7 +61,7 @@
   return sub_1000AC65C();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1000AB97C();
   v7 = *(v6 - 8);
@@ -69,9 +69,9 @@
   __chkstk_darwin(v6, v9);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB93C();
-  v12 = a3;
-  v13 = self;
-  sub_10008DBEC(v12);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10008DBEC(viewCopy);
   v15 = v14;
 
   (*(v7 + 8))(v11, v6);

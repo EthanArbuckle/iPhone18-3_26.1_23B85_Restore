@@ -1,38 +1,38 @@
 @interface PKCloudStoreService
 + (id)sharedInstance;
 - (PKCloudStoreService)init;
-- (id)errorHandlerForMethod:(SEL)a3 completion:(id)a4;
-- (void)allItemsOfItemType:(unint64_t)a3 storeLocally:(BOOL)a4 completion:(id)a5;
-- (void)applePayContainerItemsFromDate:(id)a3 toDate:(id)a4 completion:(id)a5;
-- (void)changeHistoryForContainerIdentifier:(id)a3 completion:(id)a4;
-- (void)checkTLKsMissingWithCompletion:(id)a3;
-- (void)cloudStoreRecordArrayWithConfiguration:(id)a3 completion:(id)a4;
-- (void)cloudStoreStatusForContainer:(id)a3 completion:(id)a4;
-- (void)createInvitationForRecipientHandle:(id)a3 zoneName:(id)a4 containerName:(id)a5 qualityOfService:(int64_t)a6 completion:(id)a7;
-- (void)createZone:(id)a3 containerName:(id)a4 completion:(id)a5;
-- (void)declineInvitationForRecipientHandle:(id)a3 zoneName:(id)a4 containerName:(id)a5 qualityOfService:(int64_t)a6 completion:(id)a7;
-- (void)deleteIssuerMessagingFlagWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteZone:(id)a3 containerName:(id)a4 completion:(id)a5;
-- (void)diagnosticInfoForContainerWithName:(id)a3 completion:(id)a4;
-- (void)diagnosticSnapshotForContainerWithName:(id)a3 completion:(id)a4;
-- (void)generateRandomTransactionForTransactionSourceIdentifier:(id)a3 completion:(id)a4;
-- (void)itemOfItemType:(unint64_t)a3 recordName:(id)a4 qualityOfService:(int64_t)a5 completion:(id)a6;
-- (void)itemOfItemTypeFromAllZones:(unint64_t)a3 recordName:(id)a4 qualityOfService:(int64_t)a5 completion:(id)a6;
-- (void)performAction:(int64_t)a3 inContainerWithName:(id)a4 completion:(id)a5;
-- (void)performBackgroundRecordChangesSyncWithCompletion:(id)a3;
-- (void)performBackgroundTransactionSyncFromDate:(id)a3 completion:(id)a4;
-- (void)populateEvents:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5;
-- (void)removeAllItems:(unint64_t)a3 inZoneName:(id)a4 containerName:(id)a5 storeLocally:(BOOL)a6 completion:(id)a7;
-- (void)removeRecordWithRecordName:(id)a3 zoneName:(id)a4 containerName:(id)a5 completion:(id)a6;
-- (void)resetApplePayManateeViewWithCompletion:(id)a3;
-- (void)resetContainerWithIdentifier:(id)a3 zoneNames:(id)a4 completion:(id)a5;
-- (void)setupCloudDatabaseForContainerName:(id)a3 completion:(id)a4;
-- (void)shareForZoneName:(id)a3 containerName:(id)a4 qualityOfService:(int64_t)a5 completion:(id)a6;
-- (void)simulateCloudStorePushForContainerIdentifier:(id)a3 completion:(id)a4;
-- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)updateCloudStoreWithLocalItemsWithConfigurations:(id)a3 completion:(id)a4;
-- (void)uploadIssuerMessagingFlag:(id)a3 completion:(id)a4;
-- (void)uploadTransaction:(id)a3 forTransactionSourceIdentifier:(id)a4 includeServerData:(BOOL)a5 completion:(id)a6;
+- (id)errorHandlerForMethod:(SEL)method completion:(id)completion;
+- (void)allItemsOfItemType:(unint64_t)type storeLocally:(BOOL)locally completion:(id)completion;
+- (void)applePayContainerItemsFromDate:(id)date toDate:(id)toDate completion:(id)completion;
+- (void)changeHistoryForContainerIdentifier:(id)identifier completion:(id)completion;
+- (void)checkTLKsMissingWithCompletion:(id)completion;
+- (void)cloudStoreRecordArrayWithConfiguration:(id)configuration completion:(id)completion;
+- (void)cloudStoreStatusForContainer:(id)container completion:(id)completion;
+- (void)createInvitationForRecipientHandle:(id)handle zoneName:(id)name containerName:(id)containerName qualityOfService:(int64_t)service completion:(id)completion;
+- (void)createZone:(id)zone containerName:(id)name completion:(id)completion;
+- (void)declineInvitationForRecipientHandle:(id)handle zoneName:(id)name containerName:(id)containerName qualityOfService:(int64_t)service completion:(id)completion;
+- (void)deleteIssuerMessagingFlagWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteZone:(id)zone containerName:(id)name completion:(id)completion;
+- (void)diagnosticInfoForContainerWithName:(id)name completion:(id)completion;
+- (void)diagnosticSnapshotForContainerWithName:(id)name completion:(id)completion;
+- (void)generateRandomTransactionForTransactionSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)itemOfItemType:(unint64_t)type recordName:(id)name qualityOfService:(int64_t)service completion:(id)completion;
+- (void)itemOfItemTypeFromAllZones:(unint64_t)zones recordName:(id)name qualityOfService:(int64_t)service completion:(id)completion;
+- (void)performAction:(int64_t)action inContainerWithName:(id)name completion:(id)completion;
+- (void)performBackgroundRecordChangesSyncWithCompletion:(id)completion;
+- (void)performBackgroundTransactionSyncFromDate:(id)date completion:(id)completion;
+- (void)populateEvents:(id)events forAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)removeAllItems:(unint64_t)items inZoneName:(id)name containerName:(id)containerName storeLocally:(BOOL)locally completion:(id)completion;
+- (void)removeRecordWithRecordName:(id)name zoneName:(id)zoneName containerName:(id)containerName completion:(id)completion;
+- (void)resetApplePayManateeViewWithCompletion:(id)completion;
+- (void)resetContainerWithIdentifier:(id)identifier zoneNames:(id)names completion:(id)completion;
+- (void)setupCloudDatabaseForContainerName:(id)name completion:(id)completion;
+- (void)shareForZoneName:(id)name containerName:(id)containerName qualityOfService:(int64_t)service completion:(id)completion;
+- (void)simulateCloudStorePushForContainerIdentifier:(id)identifier completion:(id)completion;
+- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)updateCloudStoreWithLocalItemsWithConfigurations:(id)configurations completion:(id)completion;
+- (void)uploadIssuerMessagingFlag:(id)flag completion:(id)completion;
+- (void)uploadTransaction:(id)transaction forTransactionSourceIdentifier:(id)identifier includeServerData:(BOOL)data completion:(id)completion;
 @end
 
 @implementation PKCloudStoreService
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = __37__PKCloudStoreService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_274 != -1)
   {
     dispatch_once(&_MergedGlobals_274, block);
@@ -78,18 +78,18 @@ void __37__PKCloudStoreService_sharedInstance__block_invoke(uint64_t a1)
   qword_1ED6D2128 = v1;
 }
 
-- (void)updateCloudStoreWithLocalItemsWithConfigurations:(id)a3 completion:(id)a4
+- (void)updateCloudStoreWithLocalItemsWithConfigurations:(id)configurations completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__PKCloudStoreService_updateCloudStoreWithLocalItemsWithConfigurations_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  configurationsCopy = configurations;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -99,7 +99,7 @@ void __37__PKCloudStoreService_sharedInstance__block_invoke(uint64_t a1)
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateCloudStoreWithLocalItemsWithConfigurations:v9 completion:v13];
+  [v11 updateCloudStoreWithLocalItemsWithConfigurations:configurationsCopy completion:v13];
 }
 
 void __83__PKCloudStoreService_updateCloudStoreWithLocalItemsWithConfigurations_completion___block_invoke(uint64_t a1)
@@ -178,20 +178,20 @@ uint64_t __83__PKCloudStoreService_updateCloudStoreWithLocalItemsWithConfigurati
   return result;
 }
 
-- (void)removeAllItems:(unint64_t)a3 inZoneName:(id)a4 containerName:(id)a5 storeLocally:(BOOL)a6 completion:(id)a7
+- (void)removeAllItems:(unint64_t)items inZoneName:(id)name containerName:(id)containerName storeLocally:(BOOL)locally completion:(id)completion
 {
-  v7 = a6;
-  v13 = a7;
+  locallyCopy = locally;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__PKCloudStoreService_removeAllItems_inZoneName_containerName_storeLocally_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v24 = a2;
-  v14 = v13;
+  v14 = completionCopy;
   aBlock[4] = self;
   v23 = v14;
-  v15 = a5;
-  v16 = a4;
+  containerNameCopy = containerName;
+  nameCopy = name;
   v17 = _Block_copy(aBlock);
   v18 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v17];
   v20[0] = MEMORY[0x1E69E9820];
@@ -201,7 +201,7 @@ uint64_t __83__PKCloudStoreService_updateCloudStoreWithLocalItemsWithConfigurati
   v20[4] = self;
   v21 = v14;
   v19 = v14;
-  [v18 removeAllItems:a3 inZoneName:v16 containerName:v15 storeLocally:v7 completion:v20];
+  [v18 removeAllItems:items inZoneName:nameCopy containerName:containerNameCopy storeLocally:locallyCopy completion:v20];
 }
 
 void __87__PKCloudStoreService_removeAllItems_inZoneName_containerName_storeLocally_completion___block_invoke(uint64_t a1)
@@ -280,20 +280,20 @@ uint64_t __87__PKCloudStoreService_removeAllItems_inZoneName_containerName_store
   return result;
 }
 
-- (void)removeRecordWithRecordName:(id)a3 zoneName:(id)a4 containerName:(id)a5 completion:(id)a6
+- (void)removeRecordWithRecordName:(id)name zoneName:(id)zoneName containerName:(id)containerName completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__PKCloudStoreService_removeRecordWithRecordName_zoneName_containerName_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v23 = a2;
-  v12 = v11;
+  v12 = completionCopy;
   aBlock[4] = self;
   v22 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  containerNameCopy = containerName;
+  zoneNameCopy = zoneName;
+  nameCopy = name;
   v16 = _Block_copy(aBlock);
   v17 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v16];
   v19[0] = MEMORY[0x1E69E9820];
@@ -303,7 +303,7 @@ uint64_t __87__PKCloudStoreService_removeAllItems_inZoneName_containerName_store
   v19[4] = self;
   v20 = v12;
   v18 = v12;
-  [v17 removeRecordWithRecordName:v15 zoneName:v14 containerName:v13 completion:v19];
+  [v17 removeRecordWithRecordName:nameCopy zoneName:zoneNameCopy containerName:containerNameCopy completion:v19];
 }
 
 void __84__PKCloudStoreService_removeRecordWithRecordName_zoneName_containerName_completion___block_invoke(uint64_t a1)
@@ -380,16 +380,16 @@ uint64_t __84__PKCloudStoreService_removeRecordWithRecordName_zoneName_container
   return result;
 }
 
-- (void)allItemsOfItemType:(unint64_t)a3 storeLocally:(BOOL)a4 completion:(id)a5
+- (void)allItemsOfItemType:(unint64_t)type storeLocally:(BOOL)locally completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  locallyCopy = locally;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__PKCloudStoreService_allItemsOfItemType_storeLocally_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v18 = a2;
-  v10 = v9;
+  v10 = completionCopy;
   aBlock[4] = self;
   v17 = v10;
   v11 = _Block_copy(aBlock);
@@ -401,7 +401,7 @@ uint64_t __84__PKCloudStoreService_removeRecordWithRecordName_zoneName_container
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v12 allItemsOfItemType:a3 storeLocally:v5 completion:v14];
+  [v12 allItemsOfItemType:type storeLocally:locallyCopy completion:v14];
 }
 
 void __66__PKCloudStoreService_allItemsOfItemType_storeLocally_completion___block_invoke(uint64_t a1)
@@ -480,19 +480,19 @@ uint64_t __66__PKCloudStoreService_allItemsOfItemType_storeLocally_completion___
   return result;
 }
 
-- (void)applePayContainerItemsFromDate:(id)a3 toDate:(id)a4 completion:(id)a5
+- (void)applePayContainerItemsFromDate:(id)date toDate:(id)toDate completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__PKCloudStoreService_applePayContainerItemsFromDate_toDate_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v20 = a2;
-  v10 = v9;
+  v10 = completionCopy;
   aBlock[4] = self;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  toDateCopy = toDate;
+  dateCopy = date;
   v13 = _Block_copy(aBlock);
   v14 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v13];
   v16[0] = MEMORY[0x1E69E9820];
@@ -502,7 +502,7 @@ uint64_t __66__PKCloudStoreService_allItemsOfItemType_storeLocally_completion___
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 applePayContainerItemsFromDate:v12 toDate:v11 completion:v16];
+  [v14 applePayContainerItemsFromDate:dateCopy toDate:toDateCopy completion:v16];
 }
 
 void __72__PKCloudStoreService_applePayContainerItemsFromDate_toDate_completion___block_invoke(uint64_t a1)
@@ -581,18 +581,18 @@ uint64_t __72__PKCloudStoreService_applePayContainerItemsFromDate_toDate_complet
   return result;
 }
 
-- (void)itemOfItemTypeFromAllZones:(unint64_t)a3 recordName:(id)a4 qualityOfService:(int64_t)a5 completion:(id)a6
+- (void)itemOfItemTypeFromAllZones:(unint64_t)zones recordName:(id)name qualityOfService:(int64_t)service completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PKCloudStoreService_itemOfItemTypeFromAllZones_recordName_qualityOfService_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v21 = a2;
-  v12 = v11;
+  v12 = completionCopy;
   aBlock[4] = self;
   v20 = v12;
-  v13 = a4;
+  nameCopy = name;
   v14 = _Block_copy(aBlock);
   v15 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v14];
   v17[0] = MEMORY[0x1E69E9820];
@@ -602,7 +602,7 @@ uint64_t __72__PKCloudStoreService_applePayContainerItemsFromDate_toDate_complet
   v17[4] = self;
   v18 = v12;
   v16 = v12;
-  [v15 itemOfItemTypeFromAllZones:a3 recordName:v13 qualityOfService:a5 completion:v17];
+  [v15 itemOfItemTypeFromAllZones:zones recordName:nameCopy qualityOfService:service completion:v17];
 }
 
 void __89__PKCloudStoreService_itemOfItemTypeFromAllZones_recordName_qualityOfService_completion___block_invoke(uint64_t a1)
@@ -681,18 +681,18 @@ uint64_t __89__PKCloudStoreService_itemOfItemTypeFromAllZones_recordName_quality
   return result;
 }
 
-- (void)cloudStoreRecordArrayWithConfiguration:(id)a3 completion:(id)a4
+- (void)cloudStoreRecordArrayWithConfiguration:(id)configuration completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PKCloudStoreService_cloudStoreRecordArrayWithConfiguration_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  configurationCopy = configuration;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -702,7 +702,7 @@ uint64_t __89__PKCloudStoreService_itemOfItemTypeFromAllZones_recordName_quality
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 cloudStoreRecordArrayWithConfiguration:v9 completion:v13];
+  [v11 cloudStoreRecordArrayWithConfiguration:configurationCopy completion:v13];
 }
 
 void __73__PKCloudStoreService_cloudStoreRecordArrayWithConfiguration_completion___block_invoke(uint64_t a1)
@@ -781,18 +781,18 @@ uint64_t __73__PKCloudStoreService_cloudStoreRecordArrayWithConfiguration_comple
   return result;
 }
 
-- (void)itemOfItemType:(unint64_t)a3 recordName:(id)a4 qualityOfService:(int64_t)a5 completion:(id)a6
+- (void)itemOfItemType:(unint64_t)type recordName:(id)name qualityOfService:(int64_t)service completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__PKCloudStoreService_itemOfItemType_recordName_qualityOfService_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v21 = a2;
-  v12 = v11;
+  v12 = completionCopy;
   aBlock[4] = self;
   v20 = v12;
-  v13 = a4;
+  nameCopy = name;
   v14 = _Block_copy(aBlock);
   v15 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v14];
   v17[0] = MEMORY[0x1E69E9820];
@@ -802,7 +802,7 @@ uint64_t __73__PKCloudStoreService_cloudStoreRecordArrayWithConfiguration_comple
   v17[4] = self;
   v18 = v12;
   v16 = v12;
-  [v15 itemOfItemType:a3 recordName:v13 qualityOfService:a5 completion:v17];
+  [v15 itemOfItemType:type recordName:nameCopy qualityOfService:service completion:v17];
 }
 
 void __77__PKCloudStoreService_itemOfItemType_recordName_qualityOfService_completion___block_invoke(uint64_t a1)
@@ -881,19 +881,19 @@ uint64_t __77__PKCloudStoreService_itemOfItemType_recordName_qualityOfService_co
   return result;
 }
 
-- (void)resetContainerWithIdentifier:(id)a3 zoneNames:(id)a4 completion:(id)a5
+- (void)resetContainerWithIdentifier:(id)identifier zoneNames:(id)names completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PKCloudStoreService_resetContainerWithIdentifier_zoneNames_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v20 = a2;
-  v10 = v9;
+  v10 = completionCopy;
   aBlock[4] = self;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  namesCopy = names;
+  identifierCopy = identifier;
   v13 = _Block_copy(aBlock);
   v14 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v13];
   v16[0] = MEMORY[0x1E69E9820];
@@ -903,7 +903,7 @@ uint64_t __77__PKCloudStoreService_itemOfItemType_recordName_qualityOfService_co
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 resetContainerWithIdentifier:v12 zoneNames:v11 completion:v16];
+  [v14 resetContainerWithIdentifier:identifierCopy zoneNames:namesCopy completion:v16];
 }
 
 void __73__PKCloudStoreService_resetContainerWithIdentifier_zoneNames_completion___block_invoke(uint64_t a1)
@@ -981,18 +981,18 @@ uint64_t __73__PKCloudStoreService_resetContainerWithIdentifier_zoneNames_comple
   return result;
 }
 
-- (void)generateRandomTransactionForTransactionSourceIdentifier:(id)a3 completion:(id)a4
+- (void)generateRandomTransactionForTransactionSourceIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __90__PKCloudStoreService_generateRandomTransactionForTransactionSourceIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -1002,7 +1002,7 @@ uint64_t __73__PKCloudStoreService_resetContainerWithIdentifier_zoneNames_comple
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 generateRandomTransactionForTransactionSourceIdentifier:v9 completion:v13];
+  [v11 generateRandomTransactionForTransactionSourceIdentifier:identifierCopy completion:v13];
 }
 
 void __90__PKCloudStoreService_generateRandomTransactionForTransactionSourceIdentifier_completion___block_invoke(uint64_t a1)
@@ -1081,20 +1081,20 @@ uint64_t __90__PKCloudStoreService_generateRandomTransactionForTransactionSource
   return result;
 }
 
-- (void)uploadTransaction:(id)a3 forTransactionSourceIdentifier:(id)a4 includeServerData:(BOOL)a5 completion:(id)a6
+- (void)uploadTransaction:(id)transaction forTransactionSourceIdentifier:(id)identifier includeServerData:(BOOL)data completion:(id)completion
 {
-  v6 = a5;
-  v11 = a6;
+  dataCopy = data;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __101__PKCloudStoreService_uploadTransaction_forTransactionSourceIdentifier_includeServerData_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v22 = a2;
-  v12 = v11;
+  v12 = completionCopy;
   aBlock[4] = self;
   v21 = v12;
-  v13 = a4;
-  v14 = a3;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v15 = _Block_copy(aBlock);
   v16 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v15];
   v18[0] = MEMORY[0x1E69E9820];
@@ -1104,7 +1104,7 @@ uint64_t __90__PKCloudStoreService_generateRandomTransactionForTransactionSource
   v18[4] = self;
   v19 = v12;
   v17 = v12;
-  [v16 uploadTransaction:v14 forTransactionSourceIdentifier:v13 includeServerData:v6 completion:v18];
+  [v16 uploadTransaction:transactionCopy forTransactionSourceIdentifier:identifierCopy includeServerData:dataCopy completion:v18];
 }
 
 void __101__PKCloudStoreService_uploadTransaction_forTransactionSourceIdentifier_includeServerData_completion___block_invoke(uint64_t a1)
@@ -1183,19 +1183,19 @@ uint64_t __101__PKCloudStoreService_uploadTransaction_forTransactionSourceIdenti
   return result;
 }
 
-- (void)deleteZone:(id)a3 containerName:(id)a4 completion:(id)a5
+- (void)deleteZone:(id)zone containerName:(id)name completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__PKCloudStoreService_deleteZone_containerName_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v20 = a2;
-  v10 = v9;
+  v10 = completionCopy;
   aBlock[4] = self;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  nameCopy = name;
+  zoneCopy = zone;
   v13 = _Block_copy(aBlock);
   v14 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v13];
   v16[0] = MEMORY[0x1E69E9820];
@@ -1205,7 +1205,7 @@ uint64_t __101__PKCloudStoreService_uploadTransaction_forTransactionSourceIdenti
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 deleteZone:v12 containerName:v11 completion:v16];
+  [v14 deleteZone:zoneCopy containerName:nameCopy completion:v16];
 }
 
 void __59__PKCloudStoreService_deleteZone_containerName_completion___block_invoke(uint64_t a1)
@@ -1283,19 +1283,19 @@ uint64_t __59__PKCloudStoreService_deleteZone_containerName_completion___block_i
   return result;
 }
 
-- (void)createZone:(id)a3 containerName:(id)a4 completion:(id)a5
+- (void)createZone:(id)zone containerName:(id)name completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__PKCloudStoreService_createZone_containerName_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v20 = a2;
-  v10 = v9;
+  v10 = completionCopy;
   aBlock[4] = self;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  nameCopy = name;
+  zoneCopy = zone;
   v13 = _Block_copy(aBlock);
   v14 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v13];
   v16[0] = MEMORY[0x1E69E9820];
@@ -1305,7 +1305,7 @@ uint64_t __59__PKCloudStoreService_deleteZone_containerName_completion___block_i
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 createZone:v12 containerName:v11 completion:v16];
+  [v14 createZone:zoneCopy containerName:nameCopy completion:v16];
 }
 
 void __59__PKCloudStoreService_createZone_containerName_completion___block_invoke(uint64_t a1)
@@ -1383,19 +1383,19 @@ uint64_t __59__PKCloudStoreService_createZone_containerName_completion___block_i
   return result;
 }
 
-- (void)populateEvents:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5
+- (void)populateEvents:(id)events forAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__PKCloudStoreService_populateEvents_forAccountIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v20 = a2;
-  v10 = v9;
+  v10 = completionCopy;
   aBlock[4] = self;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  eventsCopy = events;
   v13 = _Block_copy(aBlock);
   v14 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v13];
   v16[0] = MEMORY[0x1E69E9820];
@@ -1405,7 +1405,7 @@ uint64_t __59__PKCloudStoreService_createZone_containerName_completion___block_i
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 populateEvents:v12 forAccountIdentifier:v11 completion:v16];
+  [v14 populateEvents:eventsCopy forAccountIdentifier:identifierCopy completion:v16];
 }
 
 void __70__PKCloudStoreService_populateEvents_forAccountIdentifier_completion___block_invoke(uint64_t a1)
@@ -1484,18 +1484,18 @@ uint64_t __70__PKCloudStoreService_populateEvents_forAccountIdentifier_completio
   return result;
 }
 
-- (void)simulateCloudStorePushForContainerIdentifier:(id)a3 completion:(id)a4
+- (void)simulateCloudStorePushForContainerIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__PKCloudStoreService_simulateCloudStorePushForContainerIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -1505,7 +1505,7 @@ uint64_t __70__PKCloudStoreService_populateEvents_forAccountIdentifier_completio
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 simulateCloudStorePushForContainerIdentifier:v9 completion:v13];
+  [v11 simulateCloudStorePushForContainerIdentifier:identifierCopy completion:v13];
 }
 
 void __79__PKCloudStoreService_simulateCloudStorePushForContainerIdentifier_completion___block_invoke(uint64_t a1)
@@ -1588,18 +1588,18 @@ uint64_t __79__PKCloudStoreService_simulateCloudStorePushForContainerIdentifier_
   return result;
 }
 
-- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__PKCloudStoreService_simulatePassProvisioningForPassUniqueIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -1609,7 +1609,7 @@ uint64_t __79__PKCloudStoreService_simulateCloudStorePushForContainerIdentifier_
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 simulatePassProvisioningForPassUniqueIdentifier:v9 completion:v13];
+  [v11 simulatePassProvisioningForPassUniqueIdentifier:identifierCopy completion:v13];
 }
 
 void __82__PKCloudStoreService_simulatePassProvisioningForPassUniqueIdentifier_completion___block_invoke(uint64_t a1)
@@ -1686,18 +1686,18 @@ uint64_t __82__PKCloudStoreService_simulatePassProvisioningForPassUniqueIdentifi
   return result;
 }
 
-- (void)declineInvitationForRecipientHandle:(id)a3 zoneName:(id)a4 containerName:(id)a5 qualityOfService:(int64_t)a6 completion:(id)a7
+- (void)declineInvitationForRecipientHandle:(id)handle zoneName:(id)name containerName:(id)containerName qualityOfService:(int64_t)service completion:(id)completion
 {
-  v13 = a7;
+  completionCopy = completion;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __110__PKCloudStoreService_declineInvitationForRecipientHandle_zoneName_containerName_qualityOfService_completion___block_invoke;
   v23[3] = &unk_1E79C4450;
-  v14 = v13;
+  v14 = completionCopy;
   v24 = v14;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  containerNameCopy = containerName;
+  nameCopy = name;
+  handleCopy = handle;
   v18 = [(PKCloudStoreService *)self errorHandlerForMethod:a2 completion:v23];
   v19 = [(PKCloudStoreService *)self _remoteObjectProxyWithErrorHandler:v18];
 
@@ -1708,7 +1708,7 @@ uint64_t __82__PKCloudStoreService_simulatePassProvisioningForPassUniqueIdentifi
   v21[4] = self;
   v22 = v14;
   v20 = v14;
-  [v19 declineInvitationForRecipientHandle:v17 zoneName:v16 containerName:v15 qualityOfService:a6 completion:v21];
+  [v19 declineInvitationForRecipientHandle:handleCopy zoneName:nameCopy containerName:containerNameCopy qualityOfService:service completion:v21];
 }
 
 uint64_t __110__PKCloudStoreService_declineInvitationForRecipientHandle_zoneName_containerName_qualityOfService_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1757,18 +1757,18 @@ uint64_t __110__PKCloudStoreService_declineInvitationForRecipientHandle_zoneName
   return result;
 }
 
-- (void)createInvitationForRecipientHandle:(id)a3 zoneName:(id)a4 containerName:(id)a5 qualityOfService:(int64_t)a6 completion:(id)a7
+- (void)createInvitationForRecipientHandle:(id)handle zoneName:(id)name containerName:(id)containerName qualityOfService:(int64_t)service completion:(id)completion
 {
-  v13 = a7;
+  completionCopy = completion;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __109__PKCloudStoreService_createInvitationForRecipientHandle_zoneName_containerName_qualityOfService_completion___block_invoke;
   v23[3] = &unk_1E79C4450;
-  v14 = v13;
+  v14 = completionCopy;
   v24 = v14;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  containerNameCopy = containerName;
+  nameCopy = name;
+  handleCopy = handle;
   v18 = [(PKCloudStoreService *)self errorHandlerForMethod:a2 completion:v23];
   v19 = [(PKCloudStoreService *)self _remoteObjectProxyWithErrorHandler:v18];
 
@@ -1779,7 +1779,7 @@ uint64_t __110__PKCloudStoreService_declineInvitationForRecipientHandle_zoneName
   v21[4] = self;
   v22 = v14;
   v20 = v14;
-  [v19 createInvitationForRecipientHandle:v17 zoneName:v16 containerName:v15 qualityOfService:a6 completion:v21];
+  [v19 createInvitationForRecipientHandle:handleCopy zoneName:nameCopy containerName:containerNameCopy qualityOfService:service completion:v21];
 }
 
 uint64_t __109__PKCloudStoreService_createInvitationForRecipientHandle_zoneName_containerName_qualityOfService_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1828,19 +1828,19 @@ uint64_t __109__PKCloudStoreService_createInvitationForRecipientHandle_zoneName_
   return result;
 }
 
-- (void)shareForZoneName:(id)a3 containerName:(id)a4 qualityOfService:(int64_t)a5 completion:(id)a6
+- (void)shareForZoneName:(id)name containerName:(id)containerName qualityOfService:(int64_t)service completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__PKCloudStoreService_shareForZoneName_containerName_qualityOfService_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v22 = a2;
-  v12 = v11;
+  v12 = completionCopy;
   aBlock[4] = self;
   v21 = v12;
-  v13 = a4;
-  v14 = a3;
+  containerNameCopy = containerName;
+  nameCopy = name;
   v15 = _Block_copy(aBlock);
   v16 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v15];
   v18[0] = MEMORY[0x1E69E9820];
@@ -1850,7 +1850,7 @@ uint64_t __109__PKCloudStoreService_createInvitationForRecipientHandle_zoneName_
   v18[4] = self;
   v19 = v12;
   v17 = v12;
-  [v16 shareForZoneName:v14 containerName:v13 qualityOfService:a5 completion:v18];
+  [v16 shareForZoneName:nameCopy containerName:containerNameCopy qualityOfService:service completion:v18];
 }
 
 void __82__PKCloudStoreService_shareForZoneName_containerName_qualityOfService_completion___block_invoke(uint64_t a1)
@@ -1929,18 +1929,18 @@ uint64_t __82__PKCloudStoreService_shareForZoneName_containerName_qualityOfServi
   return result;
 }
 
-- (void)cloudStoreStatusForContainer:(id)a3 completion:(id)a4
+- (void)cloudStoreStatusForContainer:(id)container completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__PKCloudStoreService_cloudStoreStatusForContainer_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  containerCopy = container;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -1950,7 +1950,7 @@ uint64_t __82__PKCloudStoreService_shareForZoneName_containerName_qualityOfServi
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 cloudStoreStatusForContainer:v9 completion:v13];
+  [v11 cloudStoreStatusForContainer:containerCopy completion:v13];
 }
 
 void __63__PKCloudStoreService_cloudStoreStatusForContainer_completion___block_invoke(uint64_t a1)
@@ -2030,18 +2030,18 @@ uint64_t __63__PKCloudStoreService_cloudStoreStatusForContainer_completion___blo
   return result;
 }
 
-- (void)setupCloudDatabaseForContainerName:(id)a3 completion:(id)a4
+- (void)setupCloudDatabaseForContainerName:(id)name completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PKCloudStoreService_setupCloudDatabaseForContainerName_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  nameCopy = name;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -2051,7 +2051,7 @@ uint64_t __63__PKCloudStoreService_cloudStoreStatusForContainer_completion___blo
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 setupCloudDatabaseForContainerName:v9 completion:v13];
+  [v11 setupCloudDatabaseForContainerName:nameCopy completion:v13];
 }
 
 void __69__PKCloudStoreService_setupCloudDatabaseForContainerName_completion___block_invoke(uint64_t a1)
@@ -2129,15 +2129,15 @@ uint64_t __69__PKCloudStoreService_setupCloudDatabaseForContainerName_completion
   return result;
 }
 
-- (void)checkTLKsMissingWithCompletion:(id)a3
+- (void)checkTLKsMissingWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__PKCloudStoreService_checkTLKsMissingWithCompletion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v14 = a2;
-  v6 = v5;
+  v6 = completionCopy;
   aBlock[4] = self;
   v13 = v6;
   v7 = _Block_copy(aBlock);
@@ -2227,15 +2227,15 @@ uint64_t __54__PKCloudStoreService_checkTLKsMissingWithCompletion___block_invoke
   return result;
 }
 
-- (void)resetApplePayManateeViewWithCompletion:(id)a3
+- (void)resetApplePayManateeViewWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__PKCloudStoreService_resetApplePayManateeViewWithCompletion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v14 = a2;
-  v6 = v5;
+  v6 = completionCopy;
   aBlock[4] = self;
   v13 = v6;
   v7 = _Block_copy(aBlock);
@@ -2325,18 +2325,18 @@ uint64_t __62__PKCloudStoreService_resetApplePayManateeViewWithCompletion___bloc
   return result;
 }
 
-- (void)diagnosticInfoForContainerWithName:(id)a3 completion:(id)a4
+- (void)diagnosticInfoForContainerWithName:(id)name completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PKCloudStoreService_diagnosticInfoForContainerWithName_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  nameCopy = name;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -2346,7 +2346,7 @@ uint64_t __62__PKCloudStoreService_resetApplePayManateeViewWithCompletion___bloc
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 diagnosticInfoForContainerWithName:v9 completion:v13];
+  [v11 diagnosticInfoForContainerWithName:nameCopy completion:v13];
 }
 
 void __69__PKCloudStoreService_diagnosticInfoForContainerWithName_completion___block_invoke(uint64_t a1)
@@ -2425,18 +2425,18 @@ uint64_t __69__PKCloudStoreService_diagnosticInfoForContainerWithName_completion
   return result;
 }
 
-- (void)diagnosticSnapshotForContainerWithName:(id)a3 completion:(id)a4
+- (void)diagnosticSnapshotForContainerWithName:(id)name completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PKCloudStoreService_diagnosticSnapshotForContainerWithName_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  nameCopy = name;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -2446,7 +2446,7 @@ uint64_t __69__PKCloudStoreService_diagnosticInfoForContainerWithName_completion
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 diagnosticSnapshotForContainerWithName:v9 completion:v13];
+  [v11 diagnosticSnapshotForContainerWithName:nameCopy completion:v13];
 }
 
 void __73__PKCloudStoreService_diagnosticSnapshotForContainerWithName_completion___block_invoke(uint64_t a1)
@@ -2525,18 +2525,18 @@ uint64_t __73__PKCloudStoreService_diagnosticSnapshotForContainerWithName_comple
   return result;
 }
 
-- (void)performAction:(int64_t)a3 inContainerWithName:(id)a4 completion:(id)a5
+- (void)performAction:(int64_t)action inContainerWithName:(id)name completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__PKCloudStoreService_performAction_inContainerWithName_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v19 = a2;
-  v10 = v9;
+  v10 = completionCopy;
   aBlock[4] = self;
   v18 = v10;
-  v11 = a4;
+  nameCopy = name;
   v12 = _Block_copy(aBlock);
   v13 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v12];
   v15[0] = MEMORY[0x1E69E9820];
@@ -2545,7 +2545,7 @@ uint64_t __73__PKCloudStoreService_diagnosticSnapshotForContainerWithName_comple
   v15[3] = &unk_1E79C4450;
   v16 = v10;
   v14 = v10;
-  [v13 performAction:a3 inContainerWithName:v11 completion:v15];
+  [v13 performAction:action inContainerWithName:nameCopy completion:v15];
 }
 
 void __68__PKCloudStoreService_performAction_inContainerWithName_completion___block_invoke(uint64_t a1)
@@ -2588,18 +2588,18 @@ uint64_t __68__PKCloudStoreService_performAction_inContainerWithName_completion_
   return result;
 }
 
-- (void)performBackgroundTransactionSyncFromDate:(id)a3 completion:(id)a4
+- (void)performBackgroundTransactionSyncFromDate:(id)date completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__PKCloudStoreService_performBackgroundTransactionSyncFromDate_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  dateCopy = date;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -2609,7 +2609,7 @@ uint64_t __68__PKCloudStoreService_performAction_inContainerWithName_completion_
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 performBackgroundTransactionSyncFromDate:v9 completion:v13];
+  [v11 performBackgroundTransactionSyncFromDate:dateCopy completion:v13];
 }
 
 void __75__PKCloudStoreService_performBackgroundTransactionSyncFromDate_completion___block_invoke(uint64_t a1)
@@ -2688,15 +2688,15 @@ uint64_t __75__PKCloudStoreService_performBackgroundTransactionSyncFromDate_comp
   return result;
 }
 
-- (void)performBackgroundRecordChangesSyncWithCompletion:(id)a3
+- (void)performBackgroundRecordChangesSyncWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__PKCloudStoreService_performBackgroundRecordChangesSyncWithCompletion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v14 = a2;
-  v6 = v5;
+  v6 = completionCopy;
   aBlock[4] = self;
   v13 = v6;
   v7 = _Block_copy(aBlock);
@@ -2785,18 +2785,18 @@ uint64_t __72__PKCloudStoreService_performBackgroundRecordChangesSyncWithComplet
   return result;
 }
 
-- (void)changeHistoryForContainerIdentifier:(id)a3 completion:(id)a4
+- (void)changeHistoryForContainerIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__PKCloudStoreService_changeHistoryForContainerIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -2806,7 +2806,7 @@ uint64_t __72__PKCloudStoreService_performBackgroundRecordChangesSyncWithComplet
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 changeHistoryForContainerIdentifier:v9 completion:v13];
+  [v11 changeHistoryForContainerIdentifier:identifierCopy completion:v13];
 }
 
 void __70__PKCloudStoreService_changeHistoryForContainerIdentifier_completion___block_invoke(uint64_t a1)
@@ -2885,18 +2885,18 @@ uint64_t __70__PKCloudStoreService_changeHistoryForContainerIdentifier_completio
   return result;
 }
 
-- (void)uploadIssuerMessagingFlag:(id)a3 completion:(id)a4
+- (void)uploadIssuerMessagingFlag:(id)flag completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__PKCloudStoreService_uploadIssuerMessagingFlag_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  flagCopy = flag;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -2905,7 +2905,7 @@ uint64_t __70__PKCloudStoreService_changeHistoryForContainerIdentifier_completio
   v13[3] = &unk_1E79C4450;
   v14 = v8;
   v12 = v8;
-  [v11 uploadIssuerMessagingFlag:v9 completion:v13];
+  [v11 uploadIssuerMessagingFlag:flagCopy completion:v13];
 }
 
 void __60__PKCloudStoreService_uploadIssuerMessagingFlag_completion___block_invoke(uint64_t a1)
@@ -2959,18 +2959,18 @@ uint64_t __60__PKCloudStoreService_uploadIssuerMessagingFlag_completion___block_
   return result;
 }
 
-- (void)deleteIssuerMessagingFlagWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteIssuerMessagingFlagWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__PKCloudStoreService_deleteIssuerMessagingFlagWithIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E79C4658;
   v17 = a2;
-  v8 = v7;
+  v8 = completionCopy;
   aBlock[4] = self;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = _Block_copy(aBlock);
   v11 = [(PKCloudStoreService *)self _remoteObjectProxyWithFailureHandler:v10];
   v13[0] = MEMORY[0x1E69E9820];
@@ -2979,7 +2979,7 @@ uint64_t __60__PKCloudStoreService_uploadIssuerMessagingFlag_completion___block_
   v13[3] = &unk_1E79C4450;
   v14 = v8;
   v12 = v8;
-  [v11 deleteIssuerMessagingFlagWithIdentifier:v9 completion:v13];
+  [v11 deleteIssuerMessagingFlagWithIdentifier:identifierCopy completion:v13];
 }
 
 void __74__PKCloudStoreService_deleteIssuerMessagingFlagWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -3033,17 +3033,17 @@ uint64_t __74__PKCloudStoreService_deleteIssuerMessagingFlagWithIdentifier_compl
   return result;
 }
 
-- (id)errorHandlerForMethod:(SEL)a3 completion:(id)a4
+- (id)errorHandlerForMethod:(SEL)method completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__PKCloudStoreService_errorHandlerForMethod_completion___block_invoke;
   aBlock[3] = &unk_1E79C9778;
-  v12 = v6;
-  v13 = a3;
+  v12 = completionCopy;
+  methodCopy = method;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
   v9 = _Block_copy(v8);
 

@@ -1,7 +1,7 @@
 @interface UARPMetaDataVoiceAssistDigest
 - (UARPMetaDataVoiceAssistDigest)init;
-- (UARPMetaDataVoiceAssistDigest)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataVoiceAssistDigest)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataVoiceAssistDigest)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataVoiceAssistDigest)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataVoiceAssistDigest)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataVoiceAssistDigest)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataVoiceAssistDigest *)self init];
   v7 = v6;
   if (v6)
   {
     v13.receiver = v6;
     v13.super_class = UARPMetaDataVoiceAssistDigest;
-    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:valueCopy];
     modelDigest = v7->_modelDigest;
     v7->_modelDigest = v8;
 
@@ -52,12 +52,12 @@ LABEL_6:
   return v11;
 }
 
-- (UARPMetaDataVoiceAssistDigest)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataVoiceAssistDigest)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataVoiceAssistDigest *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     modelDigest = v6->_modelDigest;
     v6->_modelDigest = v7;
 
@@ -69,9 +69,9 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataVoiceAssistDigest *)self modelDigest];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  modelDigest = [(UARPMetaDataVoiceAssistDigest *)self modelDigest];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, modelDigest];
 
   return v5;
 }

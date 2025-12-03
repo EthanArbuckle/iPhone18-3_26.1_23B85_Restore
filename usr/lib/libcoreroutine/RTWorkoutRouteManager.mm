@@ -1,99 +1,99 @@
 @interface RTWorkoutRouteManager
-+ (id)curveOrientationTypeToString:(unint64_t)a3;
-- (BOOL)_areWorkoutsSimilarBetweenClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6 error:(id *)a7;
-- (BOOL)_clearDistanceMatrixWithError:(id *)a3;
++ (id)curveOrientationTypeToString:(unint64_t)string;
+- (BOOL)_areWorkoutsSimilarBetweenClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold error:(id *)error;
+- (BOOL)_clearDistanceMatrixWithError:(id *)error;
 - (BOOL)_clearInMemoryClusters;
-- (BOOL)_computeAndSaveDistanceMatrixForWorkoutUUIDs:(id)a3 distanceMetric:(int64_t)a4 error:(id *)a5;
-- (BOOL)_deleteAllClustersFromHealthKitError:(id *)a3;
-- (BOOL)_initProcessWorkoutMetrics:(id *)a3;
-- (BOOL)_initProcessWorkoutMetricsForClusteringWithError:(id *)a3;
-- (BOOL)_initProcessWorkoutMetricsForDistanceMatrixWithError:(id *)a3;
-- (BOOL)_initProcessWorkoutMetricsForSyncFromHealthKitWithError:(id *)a3;
-- (BOOL)_initProcessWorkoutMetricsForSyncToHealthKitWithError:(id *)a3;
-- (BOOL)_initProcessWorkoutMetricsForSyncToWatchKitWithError:(id *)a3;
-- (BOOL)_isBoundingBoxAreaLessThanThresholdSubPrefilter:(CGRect)a3 verticesCount:(unint64_t)a4 stimulationDate:(id)a5 error:(id *)a6;
-- (BOOL)_isEligibleForCurveOrientation:(CLLocationCoordinate2D *)a3 lastLocation:(CLLocationCoordinate2D *)a4 error:(id *)a5;
-- (BOOL)_isPreFilteredCentroidBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8;
-- (BOOL)_isPreFilteredCurveOrientationBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 error:(id *)a7;
-- (BOOL)_isPreFilteredForWorkout:(id)a3 firstFewLocations:(CLLocationCoordinate2D *)a4 firstFewLocationsCount:(unint64_t)a5 cachedDictionary:(id)a6 otherWorkout:(id)a7 firstFewOtherLocations:(CLLocationCoordinate2D *)a8 firstFewOtherLocationsCount:(unint64_t)a9 cachedOtherDictionary:(id)a10 preFilteringResults:(id)a11 error:(id *)a12;
-- (BOOL)_isPreFilteredForWorkout:(id)a3 otherWorkout:(id)a4 preFilteringResults:(id)a5 error:(id *)a6;
-- (BOOL)_isPreFilteredIOUBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8;
-- (BOOL)_isPreFilteredLastLocationBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8;
-- (BOOL)_isPreFilteredLocationCountBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8;
-- (BOOL)_isPreFilteredRunningTrackBasedForWorkout:(id)a3 cachedDictionary:(id)a4 error:(id *)a5;
-- (BOOL)_preComputeCacheForWorkout:(id)a3 locations:(CLLocationCoordinate2D *)a4 locationsCount:(unint64_t)a5 decimatedLocations:(CLLocationCoordinate2D *)a6 decimatedLocationsCount:(unint64_t)a7 cachedDictionary:(id)a8 error:(id *)a9;
-- (BOOL)_processWorkoutsUsingActivityTypeToWorkoutUUIDsMap:(id)a3 error:(id *)a4;
-- (BOOL)_refreshWorkoutsCache:(id)a3 workoutUUIDs:(id)a4 startingIndex:(unint64_t)a5 error:(id *)a6;
-- (BOOL)_saveToHealthKitClustersForCreation:(id)a3 remoteClustersForUpdationNewWorkouts:(id)a4 remoteClustersForUpdationWorkoutsToRemove:(id)a5 remoteClustersForDeletion:(id)a6 error:(id *)a7;
-- (BOOL)_shouldDecimateWorkout:(id)a3;
-- (BOOL)_storeWorkoutDistances:(id)a3 error:(id *)a4;
-- (BOOL)_syncClustersToHealthKit:(id)a3 error:(id *)a4;
-- (BOOL)_syncClustersToWatchWithLimit:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_syncWithRemoteClustersUsingLocalClusters:(id)a3 distanceMetric:(int64_t)a4 outLocalClustersForCreation:(id)a5 outRemoteClustersForUpdationNewWorkouts:(id)a6 outRemoteClustersForUpdationWorkoutsToRemove:(id)a7 outRemoteClustersForDeletion:(id)a8 error:(id *)a9;
-- (BOOL)_updateMetricsForCurrentTime:(id)a3 distanceMatrixKey:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_updateMetricsForCurrentTime:(id)a3 minTimeKey:(id)a4 maxTimeKey:(id)a5 averageTimeKey:(id)a6 countKey:(id)a7 error:(id *)a8;
-- (BOOL)_updateMetricsForCurrentTime:(id)a3 syncToHealthKitKey:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_updateWorkoutDistanceRecordsWithObjectIDs:(id)a3 isVisited:(BOOL)a4 error:(id *)a5;
-- (BOOL)_validateWorkout:(id)a3 otherWorkout:(id)a4 error:(id *)a5;
-- (CGRect)_getCGRectFromCoordinates:(CLLocationCoordinate2D *)a3 verticesCount:(unint64_t)a4 outError:(id *)a5;
-- (CLLocationCoordinate2D)_getCoordinatesFromRTPairs:(id)a3;
-- (RTWorkoutRouteManager)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 healthKitManager:(id)a5 locationManager:(id)a6 mapServiceManager:(id)a7 platform:(id)a8 workoutDistanceStore:(id)a9 workoutMetricsManager:(id)a10;
-- (double)_getConstantValueForString:(id)a3 isDecimated:(BOOL)a4 workoutActivityType:(unint64_t)a5 error:(id *)a6;
-- (double)_getMaxDistanceThresholdForMetric:(int64_t)a3 error:(id *)a4;
-- (double)_relevanceScoreForWorkoutUUIDs:(id)a3 representativeWorkout:(id)a4 latestWorkoutAcrossAllWorkouts:(id)a5 countOfAllWorkouts:(unint64_t)a6 currentLocation:(id)a7 error:(id *)a8;
-- (double)similarityDistanceUsingPreFilteringResults:(id)a3 error:(id *)a4;
-- (id)_bestWorkoutFromWorkouts:(id)a3 error:(id *)a4;
-- (id)_clusterizeWorkoutsWithError:(id *)a3;
-- (id)_colorFromHexString:(id)a3;
-- (id)_getActivityTypeToWorkoutUUIDsMapFilteredUsingDistanceThreshold:(double)a3 topN:(unint64_t)a4 error:(id *)a5;
-- (id)_getConstantValueForDistanceThresholdUsingDistanceMetric:(int64_t)a3 isDecimated:(BOOL)a4 workoutActivityType:(unint64_t)a5 error:(id *)a6;
-- (id)_getRTLocationUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)a3;
-- (id)_getRTLocationUsingRTPair:(id)a3;
-- (id)_getRTPairUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)a3;
-- (id)_getRTPairsFromCoordinates:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4;
-- (id)_getRelevanceLocationWithError:(id *)a3;
-- (id)_getRemoteWorkoutClustersForWorkoutUUIDs:(id)a3 error:(id *)a4;
-- (id)_getWorkoutFromWorkouts:(id)a3 UUID:(id)a4 error:(id *)a5;
-- (id)_getWorkoutRouteLabelForWorkout:(id)a3 error:(id *)a4;
-- (id)_getWorkoutRouteSnapshotForWorkout:(id)a3 error:(id *)a4;
-- (id)_getWorkoutUUIDsForCluster:(id)a3 error:(id *)a4;
-- (id)_lastWorkoutFromWorkouts:(id)a3 error:(id *)a4;
-- (id)_latestWorkoutUUIDAcrossWorkouts:(id)a3;
-- (id)_mapWorkoutsToUUIDs:(id)a3 error:(id *)a4;
-- (id)_paceFromWorkout:(id)a3 error:(id *)a4;
-- (id)_readClustersFromHealthKitWithError:(id *)a3;
-- (id)_retrieveUUIDsToPruneWithError:(id *)a3;
-- (id)_sortWorkoutUUIDs:(id)a3 key:(id)a4 ascending:(BOOL)a5 error:(id *)a6;
-- (id)_sortWorkoutUUIDsByDistance:(id)a3 error:(id *)a4;
-- (id)_sortWorkouts:(id)a3 key:(id)a4 ascending:(BOOL)a5 error:(id *)a6;
-- (unint64_t)_getCurveOrientationTypeForLocations:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 error:(id *)a5;
-- (void)_deleteWorkout:(id)a3 handler:(id)a4;
-- (void)_getLocationsForWorkout:(id)a3 decimationLevel:(unint64_t)a4 limit:(int64_t)a5 handler:(id)a6;
-- (void)_logClusters:(id)a3 className:(id)a4 selectorName:(id)a5;
-- (void)_processNewlyAddedWorkout:(id)a3 handler:(id)a4;
-- (void)_processWorkoutsClearClusters:(BOOL)a3 clearExistingDistanceMatrix:(BOOL)a4 buildDistanceMatrix:(BOOL)a5 syncClustersToHealhtKit:(BOOL)a6 syncClustersToWatch:(BOOL)a7 filteringDistanceThreshold:(double)a8 topNWorkouts:(unint64_t)a9 isSchedulerTriggered:(BOOL)a10 handler:(id)a11;
-- (void)_pruneDistanceMatrixWithHandler:(id)a3;
-- (void)_stepCallerWithName:(id)a3 counter:(int64_t)a4 totalCount:(int64_t)a5;
-- (void)_updateRelevanceScoresWithHandler:(id)a3;
-- (void)deleteWorkout:(id)a3 handler:(id)a4;
-- (void)displayWorkoutDistanceRecordsWithHandler:(id)a3;
-- (void)processNewlyAddedWorkout:(id)a3 handler:(id)a4;
-- (void)processWorkoutsClearClusters:(BOOL)a3 clearExistingDistanceMatrix:(BOOL)a4 buildDistanceMatrix:(BOOL)a5 syncClustersToHealhtKit:(BOOL)a6 syncClustersToWatch:(BOOL)a7 filteringDistanceThreshold:(double)a8 topNWorkouts:(unint64_t)a9 isSchedulerTriggered:(BOOL)a10 handler:(id)a11;
-- (void)pruneDistanceMatrixWithHandler:(id)a3;
-- (void)updateRelevanceScoresWithHandler:(id)a3;
+- (BOOL)_computeAndSaveDistanceMatrixForWorkoutUUIDs:(id)ds distanceMetric:(int64_t)metric error:(id *)error;
+- (BOOL)_deleteAllClustersFromHealthKitError:(id *)error;
+- (BOOL)_initProcessWorkoutMetrics:(id *)metrics;
+- (BOOL)_initProcessWorkoutMetricsForClusteringWithError:(id *)error;
+- (BOOL)_initProcessWorkoutMetricsForDistanceMatrixWithError:(id *)error;
+- (BOOL)_initProcessWorkoutMetricsForSyncFromHealthKitWithError:(id *)error;
+- (BOOL)_initProcessWorkoutMetricsForSyncToHealthKitWithError:(id *)error;
+- (BOOL)_initProcessWorkoutMetricsForSyncToWatchKitWithError:(id *)error;
+- (BOOL)_isBoundingBoxAreaLessThanThresholdSubPrefilter:(CGRect)prefilter verticesCount:(unint64_t)count stimulationDate:(id)date error:(id *)error;
+- (BOOL)_isEligibleForCurveOrientation:(CLLocationCoordinate2D *)orientation lastLocation:(CLLocationCoordinate2D *)location error:(id *)error;
+- (BOOL)_isPreFilteredCentroidBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error;
+- (BOOL)_isPreFilteredCurveOrientationBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary error:(id *)error;
+- (BOOL)_isPreFilteredForWorkout:(id)workout firstFewLocations:(CLLocationCoordinate2D *)locations firstFewLocationsCount:(unint64_t)count cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout firstFewOtherLocations:(CLLocationCoordinate2D *)otherLocations firstFewOtherLocationsCount:(unint64_t)locationsCount cachedOtherDictionary:(id)self0 preFilteringResults:(id)self1 error:(id *)self2;
+- (BOOL)_isPreFilteredForWorkout:(id)workout otherWorkout:(id)otherWorkout preFilteringResults:(id)results error:(id *)error;
+- (BOOL)_isPreFilteredIOUBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error;
+- (BOOL)_isPreFilteredLastLocationBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error;
+- (BOOL)_isPreFilteredLocationCountBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error;
+- (BOOL)_isPreFilteredRunningTrackBasedForWorkout:(id)workout cachedDictionary:(id)dictionary error:(id *)error;
+- (BOOL)_preComputeCacheForWorkout:(id)workout locations:(CLLocationCoordinate2D *)locations locationsCount:(unint64_t)count decimatedLocations:(CLLocationCoordinate2D *)decimatedLocations decimatedLocationsCount:(unint64_t)locationsCount cachedDictionary:(id)dictionary error:(id *)error;
+- (BOOL)_processWorkoutsUsingActivityTypeToWorkoutUUIDsMap:(id)map error:(id *)error;
+- (BOOL)_refreshWorkoutsCache:(id)cache workoutUUIDs:(id)ds startingIndex:(unint64_t)index error:(id *)error;
+- (BOOL)_saveToHealthKitClustersForCreation:(id)creation remoteClustersForUpdationNewWorkouts:(id)workouts remoteClustersForUpdationWorkoutsToRemove:(id)remove remoteClustersForDeletion:(id)deletion error:(id *)error;
+- (BOOL)_shouldDecimateWorkout:(id)workout;
+- (BOOL)_storeWorkoutDistances:(id)distances error:(id *)error;
+- (BOOL)_syncClustersToHealthKit:(id)kit error:(id *)error;
+- (BOOL)_syncClustersToWatchWithLimit:(unint64_t)limit error:(id *)error;
+- (BOOL)_syncWithRemoteClustersUsingLocalClusters:(id)clusters distanceMetric:(int64_t)metric outLocalClustersForCreation:(id)creation outRemoteClustersForUpdationNewWorkouts:(id)workouts outRemoteClustersForUpdationWorkoutsToRemove:(id)remove outRemoteClustersForDeletion:(id)deletion error:(id *)error;
+- (BOOL)_updateMetricsForCurrentTime:(id)time distanceMatrixKey:(unint64_t)key error:(id *)error;
+- (BOOL)_updateMetricsForCurrentTime:(id)time minTimeKey:(id)key maxTimeKey:(id)timeKey averageTimeKey:(id)averageTimeKey countKey:(id)countKey error:(id *)error;
+- (BOOL)_updateMetricsForCurrentTime:(id)time syncToHealthKitKey:(unint64_t)key error:(id *)error;
+- (BOOL)_updateWorkoutDistanceRecordsWithObjectIDs:(id)ds isVisited:(BOOL)visited error:(id *)error;
+- (BOOL)_validateWorkout:(id)workout otherWorkout:(id)otherWorkout error:(id *)error;
+- (CGRect)_getCGRectFromCoordinates:(CLLocationCoordinate2D *)coordinates verticesCount:(unint64_t)count outError:(id *)error;
+- (CLLocationCoordinate2D)_getCoordinatesFromRTPairs:(id)pairs;
+- (RTWorkoutRouteManager)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator healthKitManager:(id)kitManager locationManager:(id)locationManager mapServiceManager:(id)serviceManager platform:(id)platform workoutDistanceStore:(id)store workoutMetricsManager:(id)self0;
+- (double)_getConstantValueForString:(id)string isDecimated:(BOOL)decimated workoutActivityType:(unint64_t)type error:(id *)error;
+- (double)_getMaxDistanceThresholdForMetric:(int64_t)metric error:(id *)error;
+- (double)_relevanceScoreForWorkoutUUIDs:(id)ds representativeWorkout:(id)workout latestWorkoutAcrossAllWorkouts:(id)workouts countOfAllWorkouts:(unint64_t)allWorkouts currentLocation:(id)location error:(id *)error;
+- (double)similarityDistanceUsingPreFilteringResults:(id)results error:(id *)error;
+- (id)_bestWorkoutFromWorkouts:(id)workouts error:(id *)error;
+- (id)_clusterizeWorkoutsWithError:(id *)error;
+- (id)_colorFromHexString:(id)string;
+- (id)_getActivityTypeToWorkoutUUIDsMapFilteredUsingDistanceThreshold:(double)threshold topN:(unint64_t)n error:(id *)error;
+- (id)_getConstantValueForDistanceThresholdUsingDistanceMetric:(int64_t)metric isDecimated:(BOOL)decimated workoutActivityType:(unint64_t)type error:(id *)error;
+- (id)_getRTLocationUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)d;
+- (id)_getRTLocationUsingRTPair:(id)pair;
+- (id)_getRTPairUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)d;
+- (id)_getRTPairsFromCoordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count;
+- (id)_getRelevanceLocationWithError:(id *)error;
+- (id)_getRemoteWorkoutClustersForWorkoutUUIDs:(id)ds error:(id *)error;
+- (id)_getWorkoutFromWorkouts:(id)workouts UUID:(id)d error:(id *)error;
+- (id)_getWorkoutRouteLabelForWorkout:(id)workout error:(id *)error;
+- (id)_getWorkoutRouteSnapshotForWorkout:(id)workout error:(id *)error;
+- (id)_getWorkoutUUIDsForCluster:(id)cluster error:(id *)error;
+- (id)_lastWorkoutFromWorkouts:(id)workouts error:(id *)error;
+- (id)_latestWorkoutUUIDAcrossWorkouts:(id)workouts;
+- (id)_mapWorkoutsToUUIDs:(id)ds error:(id *)error;
+- (id)_paceFromWorkout:(id)workout error:(id *)error;
+- (id)_readClustersFromHealthKitWithError:(id *)error;
+- (id)_retrieveUUIDsToPruneWithError:(id *)error;
+- (id)_sortWorkoutUUIDs:(id)ds key:(id)key ascending:(BOOL)ascending error:(id *)error;
+- (id)_sortWorkoutUUIDsByDistance:(id)distance error:(id *)error;
+- (id)_sortWorkouts:(id)workouts key:(id)key ascending:(BOOL)ascending error:(id *)error;
+- (unint64_t)_getCurveOrientationTypeForLocations:(CLLocationCoordinate2D *)locations locationsCount:(unint64_t)count error:(id *)error;
+- (void)_deleteWorkout:(id)workout handler:(id)handler;
+- (void)_getLocationsForWorkout:(id)workout decimationLevel:(unint64_t)level limit:(int64_t)limit handler:(id)handler;
+- (void)_logClusters:(id)clusters className:(id)name selectorName:(id)selectorName;
+- (void)_processNewlyAddedWorkout:(id)workout handler:(id)handler;
+- (void)_processWorkoutsClearClusters:(BOOL)clusters clearExistingDistanceMatrix:(BOOL)matrix buildDistanceMatrix:(BOOL)distanceMatrix syncClustersToHealhtKit:(BOOL)kit syncClustersToWatch:(BOOL)watch filteringDistanceThreshold:(double)threshold topNWorkouts:(unint64_t)workouts isSchedulerTriggered:(BOOL)self0 handler:(id)self1;
+- (void)_pruneDistanceMatrixWithHandler:(id)handler;
+- (void)_stepCallerWithName:(id)name counter:(int64_t)counter totalCount:(int64_t)count;
+- (void)_updateRelevanceScoresWithHandler:(id)handler;
+- (void)deleteWorkout:(id)workout handler:(id)handler;
+- (void)displayWorkoutDistanceRecordsWithHandler:(id)handler;
+- (void)processNewlyAddedWorkout:(id)workout handler:(id)handler;
+- (void)processWorkoutsClearClusters:(BOOL)clusters clearExistingDistanceMatrix:(BOOL)matrix buildDistanceMatrix:(BOOL)distanceMatrix syncClustersToHealhtKit:(BOOL)kit syncClustersToWatch:(BOOL)watch filteringDistanceThreshold:(double)threshold topNWorkouts:(unint64_t)workouts isSchedulerTriggered:(BOOL)self0 handler:(id)self1;
+- (void)pruneDistanceMatrixWithHandler:(id)handler;
+- (void)updateRelevanceScoresWithHandler:(id)handler;
 @end
 
 @implementation RTWorkoutRouteManager
 
-+ (id)curveOrientationTypeToString:(unint64_t)a3
++ (id)curveOrientationTypeToString:(unint64_t)string
 {
   v3 = @"curveOrientationUnknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"curveOrientationClockwise";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"curveOrientationCounterClockwise";
   }
@@ -104,18 +104,18 @@
   }
 }
 
-- (RTWorkoutRouteManager)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 healthKitManager:(id)a5 locationManager:(id)a6 mapServiceManager:(id)a7 platform:(id)a8 workoutDistanceStore:(id)a9 workoutMetricsManager:(id)a10
+- (RTWorkoutRouteManager)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator healthKitManager:(id)kitManager locationManager:(id)locationManager mapServiceManager:(id)serviceManager platform:(id)platform workoutDistanceStore:(id)store workoutMetricsManager:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v34 = a5;
-  v33 = a6;
-  v32 = a7;
-  v31 = a8;
-  v30 = a9;
-  v18 = a10;
-  v29 = v18;
-  if (!v16)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  kitManagerCopy = kitManager;
+  locationManagerCopy = locationManager;
+  serviceManagerCopy = serviceManager;
+  platformCopy = platform;
+  storeCopy = store;
+  metricsManagerCopy = metricsManager;
+  v29 = metricsManagerCopy;
+  if (!managerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -130,7 +130,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!v17)
+  if (!calculatorCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -143,7 +143,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v34)
+  if (!kitManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -156,7 +156,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v33)
+  if (!locationManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -169,7 +169,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v32)
+  if (!serviceManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -182,7 +182,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v31)
+  if (!platformCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -195,7 +195,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v30)
+  if (!storeCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -208,7 +208,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v18)
+  if (!metricsManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -221,7 +221,7 @@ LABEL_28:
 LABEL_29:
 
     v23 = 0;
-    v22 = self;
+    selfCopy = self;
     goto LABEL_30;
   }
 
@@ -231,14 +231,14 @@ LABEL_29:
   if (v19)
   {
     v28 = v19;
-    objc_storeStrong(&v19->_defaultsManager, a3);
-    objc_storeStrong(&v28->_distanceCalculator, a4);
-    objc_storeStrong(&v28->_healthKitManager, a5);
-    objc_storeStrong(&v28->_locationManager, a6);
-    objc_storeStrong(&v28->_mapServiceManager, a7);
-    objc_storeStrong(&v28->_platform, a8);
-    objc_storeStrong(&v28->_workoutDistanceStore, a9);
-    objc_storeStrong(&v28->_workoutMetricsManager, a10);
+    objc_storeStrong(&v19->_defaultsManager, manager);
+    objc_storeStrong(&v28->_distanceCalculator, calculator);
+    objc_storeStrong(&v28->_healthKitManager, kitManager);
+    objc_storeStrong(&v28->_locationManager, locationManager);
+    objc_storeStrong(&v28->_mapServiceManager, serviceManager);
+    objc_storeStrong(&v28->_platform, platform);
+    objc_storeStrong(&v28->_workoutDistanceStore, store);
+    objc_storeStrong(&v28->_workoutMetricsManager, metricsManager);
     v28->_distanceMetric = 2;
     v20 = objc_opt_new();
     workoutActivityTypeToclustersSet = v28->_workoutActivityTypeToclustersSet;
@@ -249,19 +249,19 @@ LABEL_29:
     v19 = v28;
   }
 
-  v22 = v19;
-  v23 = v22;
+  selfCopy = v19;
+  v23 = selfCopy;
 LABEL_30:
 
   return v23;
 }
 
-- (void)processWorkoutsClearClusters:(BOOL)a3 clearExistingDistanceMatrix:(BOOL)a4 buildDistanceMatrix:(BOOL)a5 syncClustersToHealhtKit:(BOOL)a6 syncClustersToWatch:(BOOL)a7 filteringDistanceThreshold:(double)a8 topNWorkouts:(unint64_t)a9 isSchedulerTriggered:(BOOL)a10 handler:(id)a11
+- (void)processWorkoutsClearClusters:(BOOL)clusters clearExistingDistanceMatrix:(BOOL)matrix buildDistanceMatrix:(BOOL)distanceMatrix syncClustersToHealhtKit:(BOOL)kit syncClustersToWatch:(BOOL)watch filteringDistanceThreshold:(double)threshold topNWorkouts:(unint64_t)workouts isSchedulerTriggered:(BOOL)self0 handler:(id)self1
 {
-  v18 = a10;
+  triggeredCopy2 = triggered;
   v50 = *MEMORY[0x277D85DE8];
-  v19 = a11;
-  v20 = [MEMORY[0x277CBEAA8] date];
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -270,7 +270,7 @@ LABEL_30:
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
       NSStringFromSelector(a2);
-      v24 = v29 = a9;
+      v24 = v29 = workouts;
       +[RTRuntime footprint];
       *buf = 138412802;
       v45 = v23;
@@ -280,31 +280,31 @@ LABEL_30:
       v49 = v25;
       _os_log_impl(&dword_2304B3000, v21, OS_LOG_TYPE_INFO, "--------->%@, %@, start processing workouts, footprint, %.4f MB<---------", buf, 0x20u);
 
-      a9 = v29;
-      v18 = a10;
+      workouts = v29;
+      triggeredCopy2 = triggered;
     }
   }
 
-  v26 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __215__RTWorkoutRouteManager_processWorkoutsClearClusters_clearExistingDistanceMatrix_buildDistanceMatrix_syncClustersToHealhtKit_syncClustersToWatch_filteringDistanceThreshold_topNWorkouts_isSchedulerTriggered_handler___block_invoke;
   block[3] = &unk_2788D0398;
-  v38 = a3;
-  v39 = a4;
-  v40 = a5;
-  v41 = a6;
-  v42 = a7;
-  v35 = a8;
-  v43 = v18;
-  v33 = v20;
-  v34 = v19;
-  v36 = a9;
+  clustersCopy = clusters;
+  matrixCopy = matrix;
+  distanceMatrixCopy = distanceMatrix;
+  kitCopy = kit;
+  watchCopy = watch;
+  thresholdCopy = threshold;
+  v43 = triggeredCopy2;
+  v33 = date;
+  v34 = handlerCopy;
+  workoutsCopy = workouts;
   v37 = a2;
   block[4] = self;
-  v27 = v20;
-  v28 = v19;
-  dispatch_async(v26, block);
+  v27 = date;
+  v28 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __215__RTWorkoutRouteManager_processWorkoutsClearClusters_clearExistingDistanceMatrix_buildDistanceMatrix_syncClustersToHealhtKit_syncClustersToWatch_filteringDistanceThreshold_topNWorkouts_isSchedulerTriggered_handler___block_invoke(uint64_t a1)
@@ -402,12 +402,12 @@ LABEL_13:
   }
 }
 
-- (void)processNewlyAddedWorkout:(id)a3 handler:(id)a4
+- (void)processNewlyAddedWorkout:(id)workout handler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEAA8] date];
+  workoutCopy = workout;
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -427,20 +427,20 @@ LABEL_13:
     }
   }
 
-  v15 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTWorkoutRouteManager_processNewlyAddedWorkout_handler___block_invoke;
   block[3] = &unk_2788C47F8;
   block[4] = self;
-  v20 = v7;
-  v22 = v8;
+  v20 = workoutCopy;
+  v22 = handlerCopy;
   v23 = a2;
-  v21 = v9;
-  v16 = v9;
-  v17 = v8;
-  v18 = v7;
-  dispatch_async(v15, block);
+  v21 = date;
+  v16 = date;
+  v17 = handlerCopy;
+  v18 = workoutCopy;
+  dispatch_async(queue, block);
 }
 
 void __58__RTWorkoutRouteManager_processNewlyAddedWorkout_handler___block_invoke(uint64_t a1)
@@ -511,11 +511,11 @@ LABEL_9:
   }
 }
 
-- (void)updateRelevanceScoresWithHandler:(id)a3
+- (void)updateRelevanceScoresWithHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEAA8] date];
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -535,18 +535,18 @@ LABEL_9:
     }
   }
 
-  v12 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__RTWorkoutRouteManager_updateRelevanceScoresWithHandler___block_invoke;
   v15[3] = &unk_2788C6940;
-  v17 = v5;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v6;
-  v13 = v6;
-  v14 = v5;
-  dispatch_async(v12, v15);
+  v16 = date;
+  v13 = date;
+  v14 = handlerCopy;
+  dispatch_async(queue, v15);
 }
 
 void __58__RTWorkoutRouteManager_updateRelevanceScoresWithHandler___block_invoke(uint64_t a1)
@@ -617,12 +617,12 @@ LABEL_9:
   }
 }
 
-- (void)deleteWorkout:(id)a3 handler:(id)a4
+- (void)deleteWorkout:(id)workout handler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEAA8] date];
+  workoutCopy = workout;
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -638,20 +638,20 @@ LABEL_9:
     }
   }
 
-  v13 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTWorkoutRouteManager_deleteWorkout_handler___block_invoke;
   block[3] = &unk_2788C47F8;
   block[4] = self;
-  v18 = v7;
-  v20 = v8;
+  v18 = workoutCopy;
+  v20 = handlerCopy;
   v21 = a2;
-  v19 = v9;
-  v14 = v9;
-  v15 = v8;
-  v16 = v7;
-  dispatch_async(v13, block);
+  v19 = date;
+  v14 = date;
+  v15 = handlerCopy;
+  v16 = workoutCopy;
+  dispatch_async(queue, block);
 }
 
 void __47__RTWorkoutRouteManager_deleteWorkout_handler___block_invoke(uint64_t a1)
@@ -717,11 +717,11 @@ LABEL_9:
   }
 }
 
-- (void)pruneDistanceMatrixWithHandler:(id)a3
+- (void)pruneDistanceMatrixWithHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEAA8] date];
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -737,18 +737,18 @@ LABEL_9:
     }
   }
 
-  v10 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__RTWorkoutRouteManager_pruneDistanceMatrixWithHandler___block_invoke;
   v13[3] = &unk_2788C6940;
-  v15 = v5;
+  v15 = handlerCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v6;
-  v11 = v6;
-  v12 = v5;
-  dispatch_async(v10, v13);
+  v14 = date;
+  v11 = date;
+  v12 = handlerCopy;
+  dispatch_async(queue, v13);
 }
 
 void __56__RTWorkoutRouteManager_pruneDistanceMatrixWithHandler___block_invoke(uint64_t a1)
@@ -813,17 +813,17 @@ LABEL_9:
   }
 }
 
-- (void)displayWorkoutDistanceRecordsWithHandler:(id)a3
+- (void)displayWorkoutDistanceRecordsWithHandler:(id)handler
 {
   v114[1] = *MEMORY[0x277D85DE8];
-  v68 = a3;
-  v64 = [MEMORY[0x277CBEAA8] date];
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
   v92 = 0;
   v93 = &v92;
   v94 = 0x2020000000;
   v95 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+  workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
   v89[0] = MEMORY[0x277D85DD0];
   v89[1] = 3221225472;
   v89[2] = __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___block_invoke;
@@ -831,7 +831,7 @@ LABEL_9:
   v91 = &v92;
   v5 = v3;
   v90 = v5;
-  [v4 fetchTotalWorkoutDistancesCountWithHandler:v89];
+  [workoutDistanceStore fetchTotalWorkoutDistancesCountWithHandler:v89];
 
   dsema = v5;
   v6 = [MEMORY[0x277CBEAA8] now];
@@ -843,11 +843,11 @@ LABEL_9:
     v10 = v9;
     v11 = objc_opt_new();
     v12 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v13 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v14 = [v13 filteredArrayUsingPredicate:v12];
-    v15 = [v14 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v14 = [callStackSymbols filteredArrayUsingPredicate:v12];
+    firstObject = [v14 firstObject];
 
-    [v11 submitToCoreAnalytics:v15 type:1 duration:v10];
+    [v11 submitToCoreAnalytics:firstObject type:1 duration:v10];
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
@@ -876,7 +876,7 @@ LABEL_9:
   if (v21)
   {
     v22 = v21;
-    v68[2](v68, v21);
+    handlerCopy[2](handlerCopy, v21);
   }
 
   else
@@ -902,7 +902,7 @@ LABEL_9:
       v86 = __Block_byref_object_copy__153;
       v87 = __Block_byref_object_dispose__153;
       v88 = 0;
-      v26 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+      workoutDistanceStore2 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
       v79[0] = MEMORY[0x277D85DD0];
       v79[1] = 3221225472;
       v79[2] = __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___block_invoke_128;
@@ -911,7 +911,7 @@ LABEL_9:
       v82 = &v83;
       v27 = v25;
       v80 = v27;
-      [v26 fetchWorkoutDistancesWithOffset:v23 limit:5000 maxDistanceThreshold:0 includeVisitedRecords:v79 handler:1.79769313e308];
+      [workoutDistanceStore2 fetchWorkoutDistancesWithOffset:v23 limit:5000 maxDistanceThreshold:0 includeVisitedRecords:v79 handler:1.79769313e308];
 
       dsema = v27;
       v28 = [MEMORY[0x277CBEAA8] now];
@@ -924,11 +924,11 @@ LABEL_9:
         v33 = v32;
         v34 = objc_opt_new();
         v35 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-        v36 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v37 = [v36 filteredArrayUsingPredicate:v35];
-        v38 = [v37 firstObject];
+        callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v37 = [callStackSymbols2 filteredArrayUsingPredicate:v35];
+        firstObject2 = [v37 firstObject];
 
-        [v34 submitToCoreAnalytics:v38 type:1 duration:v33];
+        [v34 submitToCoreAnalytics:firstObject2 type:1 duration:v33];
         v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
         {
@@ -955,7 +955,7 @@ LABEL_9:
       v44 = v70;
       if (v70 || (v44 = v84[5]) != 0)
       {
-        v68[2](v68, v44);
+        handlerCopy[2](handlerCopy, v44);
         v45 = 0;
       }
 
@@ -988,8 +988,8 @@ LABEL_9:
                 if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
                 {
                   v51 = v23;
-                  v52 = [v48 firstWorkout];
-                  v53 = [v48 secondWorkout];
+                  firstWorkout = [v48 firstWorkout];
+                  secondWorkout = [v48 secondWorkout];
                   [v48 distance];
                   v55 = v54;
                   v56 = +[RTHealthKitManager stringFromRTHealthKitWorkoutActivityType:](RTHealthKitManager, "stringFromRTHealthKitWorkoutActivityType:", [v48 workoutActivityType]);
@@ -1005,9 +1005,9 @@ LABEL_9:
 
                   v58 = +[RTDistanceCalculator distanceMetricToString:](RTDistanceCalculator, "distanceMetricToString:", [v48 distanceMetric]);
                   *buf = 138413570;
-                  *&buf[4] = v52;
+                  *&buf[4] = firstWorkout;
                   v97 = 2112;
-                  v98 = v53;
+                  v98 = secondWorkout;
                   v99 = 2048;
                   v100 = v55;
                   v101 = 2112;
@@ -1063,8 +1063,8 @@ LABEL_9:
       if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
       {
         v61 = v93[3];
-        v62 = [MEMORY[0x277CBEAA8] date];
-        [v62 timeIntervalSinceDate:v64];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [date2 timeIntervalSinceDate:date];
         *buf = 134218240;
         *&buf[4] = v61;
         v97 = 2048;
@@ -1073,7 +1073,7 @@ LABEL_9:
       }
     }
 
-    v68[2](v68, 0);
+    handlerCopy[2](handlerCopy, 0);
     v22 = v70;
   }
 
@@ -1099,15 +1099,15 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_processWorkoutsClearClusters:(BOOL)a3 clearExistingDistanceMatrix:(BOOL)a4 buildDistanceMatrix:(BOOL)a5 syncClustersToHealhtKit:(BOOL)a6 syncClustersToWatch:(BOOL)a7 filteringDistanceThreshold:(double)a8 topNWorkouts:(unint64_t)a9 isSchedulerTriggered:(BOOL)a10 handler:(id)a11
+- (void)_processWorkoutsClearClusters:(BOOL)clusters clearExistingDistanceMatrix:(BOOL)matrix buildDistanceMatrix:(BOOL)distanceMatrix syncClustersToHealhtKit:(BOOL)kit syncClustersToWatch:(BOOL)watch filteringDistanceThreshold:(double)threshold topNWorkouts:(unint64_t)workouts isSchedulerTriggered:(BOOL)self0 handler:(id)self1
 {
-  v266 = a7;
-  v273 = a6;
-  v270 = a5;
-  v13 = a4;
-  v14 = a3;
+  watchCopy = watch;
+  kitCopy = kit;
+  distanceMatrixCopy = distanceMatrix;
+  matrixCopy = matrix;
+  clustersCopy = clusters;
   v325 = *MEMORY[0x277D85DE8];
-  v16 = a11;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -1140,7 +1140,7 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       *buf = 138414594;
       v306 = v24;
       v307 = 2112;
-      if (v14)
+      if (clustersCopy)
       {
         v28 = @"YES";
       }
@@ -1151,7 +1151,7 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       }
 
       v308 = v25;
-      if (v13)
+      if (matrixCopy)
       {
         *&v29 = COERCE_DOUBLE(@"YES");
       }
@@ -1162,7 +1162,7 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       }
 
       v309 = 2112;
-      if (v270)
+      if (distanceMatrixCopy)
       {
         *&v30 = COERCE_DOUBLE(@"YES");
       }
@@ -1173,7 +1173,7 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       }
 
       v310 = v28;
-      if (v273)
+      if (kitCopy)
       {
         *&v31 = COERCE_DOUBLE(@"YES");
       }
@@ -1184,7 +1184,7 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       }
 
       v311 = 2112;
-      if (v266)
+      if (watchCopy)
       {
         v32 = @"YES";
       }
@@ -1195,7 +1195,7 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       }
 
       v312 = *&v29;
-      if (a10)
+      if (triggered)
       {
         v27 = @"YES";
       }
@@ -1207,59 +1207,59 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       v317 = 2112;
       v318 = v32;
       v319 = 2048;
-      v320 = a8;
+      thresholdCopy = threshold;
       v321 = 2048;
-      v322 = a9;
+      workoutsCopy = workouts;
       v323 = 2112;
       v324 = v27;
       _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@, %@, clearClusters, %@, clearExistingDistanceMatrix, %@, buildDistanceMatrix, %@, syncClustersToHealhtKit, %@, syncClustersToWatch, %@, filteringDistanceThreshold, %.3f, topNWorkouts, %lu, isSchedulerTriggered, %@", buf, 0x66u);
     }
   }
 
-  v268 = a9;
+  workoutsCopy2 = workouts;
   v33 = 0x277CBE000uLL;
-  v34 = [MEMORY[0x277CBEAA8] date];
-  [(RTWorkoutRouteManager *)self setIsSchedulerTriggered:a10];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(RTWorkoutRouteManager *)self setIsSchedulerTriggered:triggered];
   context = objc_autoreleasePoolPush();
   v35 = objc_opt_new();
   [(RTWorkoutRouteManager *)self setProcessWorkoutMetrics:v35];
 
-  v36 = [MEMORY[0x277CCABB0] numberWithDouble:a8];
-  v37 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v37 setObject:v36 forKeyedSubscript:@"parameter_filter_size"];
+  v36 = [MEMORY[0x277CCABB0] numberWithDouble:threshold];
+  processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics setObject:v36 forKeyedSubscript:@"parameter_filter_size"];
 
-  v38 = [MEMORY[0x277CCABB0] numberWithBool:v14];
-  v39 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v39 setObject:v38 forKeyedSubscript:@"parameter_clearClusters"];
+  v38 = [MEMORY[0x277CCABB0] numberWithBool:clustersCopy];
+  processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics2 setObject:v38 forKeyedSubscript:@"parameter_clearClusters"];
 
-  v40 = [MEMORY[0x277CCABB0] numberWithDouble:a8];
-  v41 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v41 setObject:v40 forKeyedSubscript:@"parameter_distance_threshold"];
+  v40 = [MEMORY[0x277CCABB0] numberWithDouble:threshold];
+  processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics3 setObject:v40 forKeyedSubscript:@"parameter_distance_threshold"];
 
-  v42 = [MEMORY[0x277CCABB0] numberWithBool:v266];
-  v43 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v43 setObject:v42 forKeyedSubscript:@"parameter_syncClustersToWatch"];
+  v42 = [MEMORY[0x277CCABB0] numberWithBool:watchCopy];
+  processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics4 setObject:v42 forKeyedSubscript:@"parameter_syncClustersToWatch"];
 
-  v44 = [MEMORY[0x277CCABB0] numberWithBool:v270];
-  v45 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v45 setObject:v44 forKeyedSubscript:@"parameter_buildDistanceMatrix"];
+  v44 = [MEMORY[0x277CCABB0] numberWithBool:distanceMatrixCopy];
+  processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics5 setObject:v44 forKeyedSubscript:@"parameter_buildDistanceMatrix"];
 
-  v46 = [MEMORY[0x277CCABB0] numberWithBool:v273];
-  v47 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v47 setObject:v46 forKeyedSubscript:@"parameter_syncClustersToHealhtKit"];
+  v46 = [MEMORY[0x277CCABB0] numberWithBool:kitCopy];
+  processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics6 setObject:v46 forKeyedSubscript:@"parameter_syncClustersToHealhtKit"];
 
-  v48 = [MEMORY[0x277CCABB0] numberWithBool:v13];
-  v49 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v49 setObject:v48 forKeyedSubscript:@"parameter_clearExistingDistanceMatrix"];
+  v48 = [MEMORY[0x277CCABB0] numberWithBool:matrixCopy];
+  processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics7 setObject:v48 forKeyedSubscript:@"parameter_clearExistingDistanceMatrix"];
 
-  v50 = [MEMORY[0x277CCABB0] numberWithBool:a10];
-  v51 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v51 setObject:v50 forKeyedSubscript:@"is_scheduler_triggered"];
+  v50 = [MEMORY[0x277CCABB0] numberWithBool:triggered];
+  processWorkoutMetrics8 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics8 setObject:v50 forKeyedSubscript:@"is_scheduler_triggered"];
 
-  v276 = self;
-  if (v14)
+  selfCopy = self;
+  if (clustersCopy)
   {
-    v52 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
 
     v300 = 0;
     v53 = [(RTWorkoutRouteManager *)self _deleteAllClustersFromHealthKitError:&v300];
@@ -1283,8 +1283,8 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
           v60 = @"NO";
         }
 
-        v61 = [MEMORY[0x277CBEAA8] date];
-        [v61 timeIntervalSinceDate:v52];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        [date3 timeIntervalSinceDate:date2];
         v63 = v62;
         +[RTRuntime footprint];
         *buf = 138413314;
@@ -1293,7 +1293,7 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
         v308 = v59;
         v309 = 2112;
         v310 = v60;
-        self = v276;
+        self = selfCopy;
         v311 = 2048;
         v312 = v63;
         v313 = 2048;
@@ -1304,11 +1304,11 @@ void __66__RTWorkoutRouteManager_displayWorkoutDistanceRecordsWithHandler___bloc
       }
     }
 
-    if (v16 && v54)
+    if (handlerCopy && v54)
     {
       v65 = v54;
 LABEL_55:
-      v16[2](v16, v65);
+      handlerCopy[2](handlerCopy, v65);
       objc_autoreleasePoolPop(context);
       v78 = 0;
       goto LABEL_56;
@@ -1318,7 +1318,7 @@ LABEL_55:
     [(RTWorkoutRouteManager *)self _updateWorkoutDistanceRecordsWithObjectIDs:0 isVisited:0 error:&v299];
     v65 = v299;
 
-    if (v16 && v65)
+    if (handlerCopy && v65)
     {
       goto LABEL_55;
     }
@@ -1327,13 +1327,13 @@ LABEL_55:
   else
   {
     v65 = 0;
-    v52 = v34;
+    date2 = date;
     v55 = 0x277CCA000;
   }
 
-  if (v13)
+  if (matrixCopy)
   {
-    v66 = [*(v33 + 2728) date];
+    date4 = [*(v33 + 2728) date];
 
     v298 = v65;
     v67 = [(RTWorkoutRouteManager *)self _clearDistanceMatrixWithError:&v298];
@@ -1357,8 +1357,8 @@ LABEL_55:
           v73 = @"NO";
         }
 
-        v74 = [MEMORY[0x277CBEAA8] date];
-        [v74 timeIntervalSinceDate:v66];
+        date5 = [MEMORY[0x277CBEAA8] date];
+        [date5 timeIntervalSinceDate:date4];
         v76 = v75;
         +[RTRuntime footprint];
         *buf = 138413314;
@@ -1367,7 +1367,7 @@ LABEL_55:
         v308 = v72;
         v309 = 2112;
         v310 = v73;
-        self = v276;
+        self = selfCopy;
         v311 = 2048;
         v312 = v76;
         v313 = 2048;
@@ -1378,10 +1378,10 @@ LABEL_55:
       }
     }
 
-    if (v16)
+    if (handlerCopy)
     {
       v65 = v68;
-      v52 = v66;
+      date2 = date4;
       if (v68)
       {
         goto LABEL_55;
@@ -1391,7 +1391,7 @@ LABEL_55:
 
   else
   {
-    v66 = v52;
+    date4 = date2;
     v68 = v65;
   }
 
@@ -1399,27 +1399,27 @@ LABEL_55:
   [(RTWorkoutRouteManager *)self _initProcessWorkoutMetrics:&v297];
   v65 = v297;
 
-  if (v16 && v65)
+  if (handlerCopy && v65)
   {
-    v52 = v66;
+    date2 = date4;
     goto LABEL_55;
   }
 
   v79 = objc_opt_new();
-  v256 = v16;
-  if (v270)
+  v256 = handlerCopy;
+  if (distanceMatrixCopy)
   {
-    v52 = [*(v33 + 2728) date];
+    date2 = [*(v33 + 2728) date];
 
     +[RTRuntime footprint];
     v81 = v80;
     v296 = v65;
-    v82 = [(RTWorkoutRouteManager *)self _getActivityTypeToWorkoutUUIDsMapFilteredUsingDistanceThreshold:v268 topN:&v296 error:a8];
+    v82 = [(RTWorkoutRouteManager *)self _getActivityTypeToWorkoutUUIDsMapFilteredUsingDistanceThreshold:workoutsCopy2 topN:&v296 error:threshold];
     v83 = v296;
 
-    if (v16 && v83)
+    if (handlerCopy && v83)
     {
-      v16[2](v16, v83);
+      handlerCopy[2](handlerCopy, v83);
     }
 
     v294 = 0u;
@@ -1427,8 +1427,8 @@ LABEL_55:
     v292 = 0u;
     v293 = 0u;
     v263 = v82;
-    v84 = [v82 allValues];
-    v85 = [v84 countByEnumeratingWithState:&v292 objects:v304 count:16];
+    allValues = [v82 allValues];
+    v85 = [allValues countByEnumeratingWithState:&v292 objects:v304 count:16];
     if (v85)
     {
       v86 = v85;
@@ -1439,7 +1439,7 @@ LABEL_55:
         {
           if (*v293 != v87)
           {
-            objc_enumerationMutation(v84);
+            objc_enumerationMutation(allValues);
           }
 
           v89 = *(*(&v292 + 1) + 8 * i);
@@ -1448,7 +1448,7 @@ LABEL_55:
           objc_autoreleasePoolPop(v90);
         }
 
-        v86 = [v84 countByEnumeratingWithState:&v292 objects:v304 count:16];
+        v86 = [allValues countByEnumeratingWithState:&v292 objects:v304 count:16];
       }
 
       while (v86);
@@ -1460,7 +1460,7 @@ LABEL_55:
 
     +[RTRuntime footprint];
     v93 = v92;
-    v16 = v256;
+    handlerCopy = v256;
     v33 = 0x277CBE000uLL;
     v55 = 0x277CCA000uLL;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1481,15 +1481,15 @@ LABEL_55:
           v98 = @"NO";
         }
 
-        v271 = [MEMORY[0x277CBEAA8] date];
-        [v271 timeIntervalSinceDate:v52];
+        date6 = [MEMORY[0x277CBEAA8] date];
+        [date6 timeIntervalSinceDate:date2];
         *buf = 138413314;
         v306 = v96;
         v307 = 2112;
         v308 = v97;
         v309 = 2112;
         v310 = v98;
-        self = v276;
+        self = selfCopy;
         v311 = 2048;
         v312 = v99;
         v313 = 2048;
@@ -1499,31 +1499,31 @@ LABEL_55:
     }
 
     v100 = [MEMORY[0x277CCABB0] numberWithBool:v91];
-    v101 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    [v101 setObject:v100 forKeyedSubscript:@"distance_matrix_is_success"];
+    processWorkoutMetrics9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    [processWorkoutMetrics9 setObject:v100 forKeyedSubscript:@"distance_matrix_is_success"];
 
     v102 = [MEMORY[0x277CCABB0] numberWithDouble:v93 - v81];
-    v103 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    [v103 setObject:v102 forKeyedSubscript:@"distance_matrix_footprint_delta"];
+    processWorkoutMetrics10 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    [processWorkoutMetrics10 setObject:v102 forKeyedSubscript:@"distance_matrix_footprint_delta"];
 
     v104 = MEMORY[0x277CCABB0];
-    v105 = [MEMORY[0x277CBEAA8] date];
-    [v105 timeIntervalSinceDate:v52];
+    date7 = [MEMORY[0x277CBEAA8] date];
+    [date7 timeIntervalSinceDate:date2];
     v106 = [v104 numberWithDouble:?];
-    v107 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    [v107 setObject:v106 forKeyedSubscript:@"distance_matrix_time_elapsed"];
+    processWorkoutMetrics11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    [processWorkoutMetrics11 setObject:v106 forKeyedSubscript:@"distance_matrix_time_elapsed"];
 
     v65 = v259;
     if (v259)
     {
       v108 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v259, "code")];
-      v109 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      [v109 setObject:v108 forKeyedSubscript:@"distance_matrix_errorcode"];
+      processWorkoutMetrics12 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      [processWorkoutMetrics12 setObject:v108 forKeyedSubscript:@"distance_matrix_errorcode"];
 
-      v110 = [v259 domain];
-      v111 = [v110 description];
-      v112 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      [v112 setObject:v111 forKeyedSubscript:@"distance_matrix_errordomain"];
+      domain = [v259 domain];
+      v111 = [domain description];
+      processWorkoutMetrics13 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      [processWorkoutMetrics13 setObject:v111 forKeyedSubscript:@"distance_matrix_errordomain"];
 
       if (v256)
       {
@@ -1535,7 +1535,7 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v66 = v52;
+    date4 = date2;
     v113 = v263;
   }
 
@@ -1550,18 +1550,18 @@ LABEL_55:
   {
     v115 = objc_autoreleasePoolPush();
     v264 = v115;
-    if (!v273)
+    if (!kitCopy)
     {
       v172 = v115;
       goto LABEL_121;
     }
 
-    v269 = [*(v33 + 2728) date];
+    date8 = [*(v33 + 2728) date];
 
     +[RTRuntime footprint];
     v117 = v116;
-    v118 = [(RTWorkoutRouteManager *)self workoutActivityTypeToclustersSet];
-    v119 = [v118 count];
+    workoutActivityTypeToclustersSet = [(RTWorkoutRouteManager *)self workoutActivityTypeToclustersSet];
+    v119 = [workoutActivityTypeToclustersSet count];
 
     if (v119)
     {
@@ -1610,8 +1610,8 @@ LABEL_118:
     }
 
 LABEL_85:
-    v120 = [v114 objectIDs];
-    v121 = [v120 count];
+    objectIDs = [v114 objectIDs];
+    v121 = [objectIDs count];
 
     if (!v121)
     {
@@ -1624,8 +1624,8 @@ LABEL_85:
     v286 = 0u;
     v287 = 0u;
     v288 = 0u;
-    v123 = [v114 clusters];
-    v124 = [v123 countByEnumeratingWithState:&v285 objects:v303 count:16];
+    clusters = [v114 clusters];
+    v124 = [clusters countByEnumeratingWithState:&v285 objects:v303 count:16];
     if (v124)
     {
       v125 = v124;
@@ -1636,7 +1636,7 @@ LABEL_85:
         {
           if (*v286 != v126)
           {
-            objc_enumerationMutation(v123);
+            objc_enumerationMutation(clusters);
           }
 
           v128 = *(*(&v285 + 1) + 8 * j);
@@ -1645,53 +1645,53 @@ LABEL_85:
           objc_autoreleasePoolPop(v129);
         }
 
-        v125 = [v123 countByEnumeratingWithState:&v285 objects:v303 count:16];
+        v125 = [clusters countByEnumeratingWithState:&v285 objects:v303 count:16];
       }
 
       while (v125);
     }
 
-    self = v276;
+    self = selfCopy;
     v55 = 0x277CCA000uLL;
     if ([v79 count])
     {
       v130 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(v122, "count") * 100.0 / objc_msgSend(v79, "count")}];
-      v131 = [(RTWorkoutRouteManager *)v276 processWorkoutMetrics];
-      [v131 setObject:v130 forKeyedSubscript:@"clustering_percentage_workouts_clustered"];
+      processWorkoutMetrics14 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+      [processWorkoutMetrics14 setObject:v130 forKeyedSubscript:@"clustering_percentage_workouts_clustered"];
     }
 
     +[RTRuntime footprint];
     v133 = v132;
     v134 = v260;
     v135 = [MEMORY[0x277CCABB0] numberWithInt:v260 == 0];
-    v136 = [(RTWorkoutRouteManager *)v276 processWorkoutMetrics];
-    [v136 setObject:v135 forKeyedSubscript:@"clustering_is_success"];
+    processWorkoutMetrics15 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+    [processWorkoutMetrics15 setObject:v135 forKeyedSubscript:@"clustering_is_success"];
 
-    v137 = [MEMORY[0x277CCABB0] numberWithDouble:v133 - v117];
-    v138 = [(RTWorkoutRouteManager *)v276 processWorkoutMetrics];
-    [v138 setObject:v137 forKeyedSubscript:@"clustering_footprint_delta"];
+    v117 = [MEMORY[0x277CCABB0] numberWithDouble:v133 - v117];
+    processWorkoutMetrics16 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+    [processWorkoutMetrics16 setObject:v117 forKeyedSubscript:@"clustering_footprint_delta"];
 
     v139 = MEMORY[0x277CCABB0];
     v33 = 0x277CBE000uLL;
-    v140 = [MEMORY[0x277CBEAA8] date];
-    [v140 timeIntervalSinceDate:v269];
+    date9 = [MEMORY[0x277CBEAA8] date];
+    [date9 timeIntervalSinceDate:date8];
     v141 = [v139 numberWithDouble:?];
-    v142 = [(RTWorkoutRouteManager *)v276 processWorkoutMetrics];
-    [v142 setObject:v141 forKeyedSubscript:@"clustering_time_elapsed"];
+    processWorkoutMetrics17 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+    [processWorkoutMetrics17 setObject:v141 forKeyedSubscript:@"clustering_time_elapsed"];
 
     if (v260)
     {
       v143 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v260, "code")];
-      v144 = [(RTWorkoutRouteManager *)v276 processWorkoutMetrics];
-      [v144 setObject:v143 forKeyedSubscript:@"clustering_errorcode"];
+      processWorkoutMetrics18 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+      [processWorkoutMetrics18 setObject:v143 forKeyedSubscript:@"clustering_errorcode"];
 
-      v145 = [v260 domain];
-      v146 = [v145 description];
-      v147 = [(RTWorkoutRouteManager *)v276 processWorkoutMetrics];
-      [v147 setObject:v146 forKeyedSubscript:@"clustering_errordomain"];
+      domain2 = [v260 domain];
+      v146 = [domain2 description];
+      processWorkoutMetrics19 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+      [processWorkoutMetrics19 setObject:v146 forKeyedSubscript:@"clustering_errordomain"];
 
-      v148 = [v260 domain];
-      if (![v148 isEqualToString:v257])
+      domain3 = [v260 domain];
+      if (![domain3 isEqualToString:v257])
       {
 
 LABEL_169:
@@ -1704,9 +1704,9 @@ LABEL_169:
 
         v244 = 0;
         v255 = v113;
-        v52 = v269;
+        date2 = date8;
         v233 = v134;
-        v16 = v256;
+        handlerCopy = v256;
         v78 = v255;
 LABEL_172:
 
@@ -1715,9 +1715,9 @@ LABEL_172:
         goto LABEL_56;
       }
 
-      v149 = [v260 code];
+      code = [v260 code];
 
-      if (v149 != 15)
+      if (code != 15)
       {
         goto LABEL_169;
       }
@@ -1731,8 +1731,8 @@ LABEL_172:
         v151 = objc_opt_class();
         v152 = NSStringFromClass(v151);
         v153 = NSStringFromSelector(a2);
-        v154 = [MEMORY[0x277CBEAA8] date];
-        [v154 timeIntervalSinceDate:v269];
+        date10 = [MEMORY[0x277CBEAA8] date];
+        [date10 timeIntervalSinceDate:date8];
         *buf = 138413058;
         v306 = v152;
         v307 = 2112;
@@ -1747,12 +1747,12 @@ LABEL_172:
       }
     }
 
-    v66 = [MEMORY[0x277CBEAA8] date];
+    date4 = [MEMORY[0x277CBEAA8] date];
 
-    v156 = [v114 clusters];
+    clusters2 = [v114 clusters];
     v284 = v134;
     v157 = v134;
-    v158 = [(RTWorkoutRouteManager *)v276 _syncClustersToHealthKit:v156 error:&v284];
+    v158 = [(RTWorkoutRouteManager *)selfCopy _syncClustersToHealthKit:clusters2 error:&v284];
     v159 = v284;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1773,8 +1773,8 @@ LABEL_172:
           v164 = @"NO";
         }
 
-        v165 = [MEMORY[0x277CBEAA8] date];
-        [v165 timeIntervalSinceDate:v66];
+        date11 = [MEMORY[0x277CBEAA8] date];
+        [date11 timeIntervalSinceDate:date4];
         v167 = v166;
         +[RTRuntime footprint];
         *buf = 138413314;
@@ -1783,7 +1783,7 @@ LABEL_172:
         v308 = v163;
         v309 = 2112;
         v310 = v164;
-        self = v276;
+        self = selfCopy;
         v311 = 2048;
         v312 = v167;
         v313 = 2048;
@@ -1797,18 +1797,18 @@ LABEL_172:
     if (v159)
     {
       v134 = v159;
-      v269 = v66;
+      date8 = date4;
       goto LABEL_169;
     }
 
-    v169 = [v114 objectIDs];
-    v170 = [v169 count];
+    objectIDs2 = [v114 objectIDs];
+    v170 = [objectIDs2 count];
 
     if (v170)
     {
-      v171 = [v114 objectIDs];
+      objectIDs3 = [v114 objectIDs];
       v283 = 0;
-      [(RTWorkoutRouteManager *)self _updateWorkoutDistanceRecordsWithObjectIDs:v171 isVisited:1 error:&v283];
+      [(RTWorkoutRouteManager *)self _updateWorkoutDistanceRecordsWithObjectIDs:objectIDs3 isVisited:1 error:&v283];
       v65 = v283;
 
       v79 = 0;
@@ -1823,9 +1823,9 @@ LABEL_172:
     v172 = v264;
 LABEL_121:
 
-    if (v266)
+    if (watchCopy)
     {
-      v181 = [*(v33 + 2728) date];
+      date12 = [*(v33 + 2728) date];
 
       +[RTRuntime footprint];
       v183 = v182;
@@ -1853,8 +1853,8 @@ LABEL_121:
             *&v192 = COERCE_DOUBLE(@"NO");
           }
 
-          v193 = [*(v33 + 2728) date];
-          [v193 timeIntervalSinceDate:v181];
+          date13 = [*(v33 + 2728) date];
+          [date13 timeIntervalSinceDate:date12];
           *buf = 138413570;
           v306 = v190;
           v307 = 2112;
@@ -1863,7 +1863,7 @@ LABEL_121:
           v310 = 100;
           v311 = 2112;
           v312 = *&v192;
-          self = v276;
+          self = selfCopy;
           v313 = 2048;
           v314 = v194;
           v315 = 2048;
@@ -1875,35 +1875,35 @@ LABEL_121:
       }
 
       v195 = [*(v55 + 2992) numberWithUnsignedInteger:100];
-      v196 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      [v196 setObject:v195 forKeyedSubscript:@"sync_to_watch_count_clusters"];
+      processWorkoutMetrics20 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      [processWorkoutMetrics20 setObject:v195 forKeyedSubscript:@"sync_to_watch_count_clusters"];
 
       v197 = [*(v55 + 2992) numberWithBool:v184];
-      v198 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      [v198 setObject:v197 forKeyedSubscript:@"sync_to_watch_is_success"];
+      processWorkoutMetrics21 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      [processWorkoutMetrics21 setObject:v197 forKeyedSubscript:@"sync_to_watch_is_success"];
 
-      v199 = [*(v55 + 2992) numberWithDouble:v187 - v183];
-      v200 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      [v200 setObject:v199 forKeyedSubscript:@"sync_to_watch_footprint_delta"];
+      v183 = [*(v55 + 2992) numberWithDouble:v187 - v183];
+      processWorkoutMetrics22 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      [processWorkoutMetrics22 setObject:v183 forKeyedSubscript:@"sync_to_watch_footprint_delta"];
 
       v201 = *(v55 + 2992);
-      v202 = [*(v33 + 2728) date];
-      [v202 timeIntervalSinceDate:v181];
+      date14 = [*(v33 + 2728) date];
+      [date14 timeIntervalSinceDate:date12];
       v203 = [v201 numberWithDouble:?];
-      v204 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      [v204 setObject:v203 forKeyedSubscript:@"sync_to_watch_time_elapsed"];
+      processWorkoutMetrics23 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      [processWorkoutMetrics23 setObject:v203 forKeyedSubscript:@"sync_to_watch_time_elapsed"];
 
-      v269 = v181;
+      date8 = date12;
       if (v185)
       {
         v245 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v185, "code")];
-        v246 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v246 setObject:v245 forKeyedSubscript:@"sync_to_watch_errorcode"];
+        processWorkoutMetrics24 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics24 setObject:v245 forKeyedSubscript:@"sync_to_watch_errorcode"];
 
-        v247 = [v185 domain];
-        v248 = [v247 description];
-        v249 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v249 setObject:v248 forKeyedSubscript:@"sync_to_watch_errordomain"];
+        domain4 = [v185 domain];
+        v248 = [domain4 description];
+        processWorkoutMetrics25 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics25 setObject:v248 forKeyedSubscript:@"sync_to_watch_errordomain"];
 
         v113 = 0;
         v134 = v185;
@@ -1911,18 +1911,18 @@ LABEL_121:
       }
 
       v65 = 0;
-      v66 = v181;
+      date4 = date12;
       v172 = v264;
     }
 
     else
     {
-      v269 = v66;
+      date8 = date4;
     }
 
     objc_autoreleasePoolPop(v172);
-    v205 = [v114 objectIDs];
-    v206 = [v205 count];
+    objectIDs4 = [v114 objectIDs];
+    v206 = [objectIDs4 count];
 
     v79 = 0;
     v113 = 0;
@@ -1946,10 +1946,10 @@ LABEL_135:
   v281 = 0u;
   v278 = 0u;
   v279 = 0u;
-  v209 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v210 = [v209 allKeys];
+  processWorkoutMetrics26 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  allKeys = [processWorkoutMetrics26 allKeys];
 
-  v211 = [v210 countByEnumeratingWithState:&v278 objects:v302 count:16];
+  v211 = [allKeys countByEnumeratingWithState:&v278 objects:v302 count:16];
   if (v211)
   {
     v212 = v211;
@@ -1964,7 +1964,7 @@ LABEL_135:
       {
         if (*v279 != v215)
         {
-          objc_enumerationMutation(v210);
+          objc_enumerationMutation(allKeys);
         }
 
         v217 = *(*(&v278 + 1) + 8 * v216);
@@ -1974,11 +1974,11 @@ LABEL_135:
           v219 = _rt_log_facility_get_os_log(v214);
           if (os_log_type_enabled(v219, OS_LOG_TYPE_INFO))
           {
-            v220 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-            [v220 objectForKeyedSubscript:v217];
+            processWorkoutMetrics27 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+            [processWorkoutMetrics27 objectForKeyedSubscript:v217];
             v221 = v215;
             v222 = v213;
-            v223 = v210;
+            v223 = allKeys;
             v225 = v224 = v214;
             *buf = 138412546;
             v306 = v217;
@@ -1987,12 +1987,12 @@ LABEL_135:
             _os_log_impl(&dword_2304B3000, v219, OS_LOG_TYPE_INFO, "key, %@, value, %@", buf, 0x16u);
 
             v214 = v224;
-            v210 = v223;
+            allKeys = v223;
             v213 = v222;
             v215 = v221;
             v212 = v274;
 
-            self = v276;
+            self = selfCopy;
           }
         }
 
@@ -2001,26 +2001,26 @@ LABEL_135:
       }
 
       while (v212 != v216);
-      v212 = [v210 countByEnumeratingWithState:&v278 objects:v302 count:16];
+      v212 = [allKeys countByEnumeratingWithState:&v278 objects:v302 count:16];
     }
 
     while (v212);
   }
 
-  v226 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v227 = self;
-  v228 = [v226 count];
+  processWorkoutMetrics28 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  selfCopy2 = self;
+  v228 = [processWorkoutMetrics28 count];
 
   if (v228)
   {
-    v52 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
 
-    v229 = [(RTWorkoutRouteManager *)v227 workoutMetricsManager];
-    v230 = [(RTWorkoutRouteManager *)v227 processWorkoutMetrics];
-    v301 = v230;
+    workoutMetricsManager = [(RTWorkoutRouteManager *)selfCopy2 workoutMetricsManager];
+    processWorkoutMetrics29 = [(RTWorkoutRouteManager *)selfCopy2 processWorkoutMetrics];
+    v301 = processWorkoutMetrics29;
     v231 = [MEMORY[0x277CBEA60] arrayWithObjects:&v301 count:1];
     v277 = v261;
-    v232 = [v229 submitMetricsForEvent:3 data:v231 error:&v277];
+    v232 = [workoutMetricsManager submitMetricsForEvent:3 data:v231 error:&v277];
     v233 = v277;
 
     v78 = v265;
@@ -2033,8 +2033,8 @@ LABEL_135:
         v236 = NSStringFromClass(v235);
         v237 = NSStringFromSelector(a2);
         v272 = [RTWorkoutMetricsManager stringFromWorkoutMetricsEvent:3];
-        v275 = [(RTWorkoutRouteManager *)v276 processWorkoutMetrics];
-        *&v238 = COERCE_DOUBLE([v275 count]);
+        processWorkoutMetrics30 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+        *&v238 = COERCE_DOUBLE([processWorkoutMetrics30 count]);
         if (v232)
         {
           *&v239 = COERCE_DOUBLE(@"YES");
@@ -2046,8 +2046,8 @@ LABEL_135:
         }
 
         v78 = v265;
-        v240 = [MEMORY[0x277CBEAA8] date];
-        [v240 timeIntervalSinceDate:v52];
+        date15 = [MEMORY[0x277CBEAA8] date];
+        [date15 timeIntervalSinceDate:date2];
         v242 = v241;
         +[RTRuntime footprint];
         *buf = 138413826;
@@ -2068,10 +2068,10 @@ LABEL_135:
       }
     }
 
-    [(RTWorkoutRouteManager *)v276 setProcessWorkoutMetrics:0];
+    [(RTWorkoutRouteManager *)selfCopy setProcessWorkoutMetrics:0];
     if (v233)
     {
-      v16 = v256;
+      handlerCopy = v256;
       if (v256)
       {
         v256[2](v256, v233);
@@ -2082,13 +2082,13 @@ LABEL_135:
     }
 
     v65 = 0;
-    v16 = v256;
+    handlerCopy = v256;
   }
 
   else
   {
-    v52 = v269;
-    v16 = v256;
+    date2 = date8;
+    handlerCopy = v256;
     v65 = v261;
     v78 = v265;
   }
@@ -2115,19 +2115,19 @@ LABEL_135:
     v78 = v265;
   }
 
-  if (v16)
+  if (handlerCopy)
   {
-    v16[2](v16, v65);
+    handlerCopy[2](handlerCopy, v65);
   }
 
 LABEL_56:
 }
 
-- (BOOL)_processWorkoutsUsingActivityTypeToWorkoutUUIDsMap:(id)a3 error:(id *)a4
+- (BOOL)_processWorkoutsUsingActivityTypeToWorkoutUUIDsMap:(id)map error:(id *)error
 {
   v174 = *MEMORY[0x277D85DE8];
-  v131 = a3;
-  if (v131)
+  mapCopy = map;
+  if (mapCopy)
   {
     v156 = 0;
     v157 = &v156;
@@ -2135,14 +2135,14 @@ LABEL_56:
     v159 = __Block_byref_object_copy__153;
     v160 = __Block_byref_object_dispose__153;
     v161 = 0;
-    v133 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v4 = objc_autoreleasePoolPush();
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v163 = 0;
     v5 = dispatch_semaphore_create(0);
-    v6 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+    workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
     v152[0] = MEMORY[0x277D85DD0];
     v152[1] = 3221225472;
     v152[2] = __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDsMap_error___block_invoke;
@@ -2151,7 +2151,7 @@ LABEL_56:
     v155 = &v156;
     v7 = v5;
     v153 = v7;
-    [v6 fetchTotalWorkoutDistancesCountWithHandler:v152];
+    [workoutDistanceStore fetchTotalWorkoutDistancesCountWithHandler:v152];
 
     v8 = v7;
     v9 = [MEMORY[0x277CBEAA8] now];
@@ -2163,11 +2163,11 @@ LABEL_56:
       v13 = v12;
       v14 = objc_opt_new();
       v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v17 = [v16 filteredArrayUsingPredicate:v15];
-      v18 = [v17 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+      firstObject = [v17 firstObject];
 
-      [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+      [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
       v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
@@ -2194,12 +2194,12 @@ LABEL_56:
 
     v126 = v22;
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(*&buf[8] + 24)];
-    v26 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    [v26 setObject:v25 forKeyedSubscript:@"distance_matrix_initial_size"];
+    processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    [processWorkoutMetrics setObject:v25 forKeyedSubscript:@"distance_matrix_initial_size"];
 
     _Block_object_dispose(buf, 8);
     objc_autoreleasePoolPop(v4);
-    if (a4 && v126)
+    if (error && v126)
     {
       v27 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -2221,7 +2221,7 @@ LABEL_56:
       goto LABEL_17;
     }
 
-    if (a4 && v157[5])
+    if (error && v157[5])
     {
       v31 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -2247,15 +2247,15 @@ LABEL_56:
     v151 = 0u;
     v148 = 0u;
     v149 = 0u;
-    v32 = [v131 allKeys];
-    v33 = [v32 countByEnumeratingWithState:&v148 objects:v171 count:16];
-    obj = v32;
+    allKeys = [mapCopy allKeys];
+    v33 = [allKeys countByEnumeratingWithState:&v148 objects:v171 count:16];
+    obj = allKeys;
     if (!v33)
     {
       v130 = 1;
 LABEL_65:
 
-      if (!a4 || !v157[5])
+      if (!error || !v157[5])
       {
         v136 = objc_autoreleasePoolPush();
         *buf = 0;
@@ -2263,7 +2263,7 @@ LABEL_65:
         *&buf[16] = 0x2020000000;
         v163 = 0;
         v81 = dispatch_semaphore_create(0);
-        v82 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+        workoutDistanceStore2 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
         v139[0] = MEMORY[0x277D85DD0];
         v139[1] = 3221225472;
         v139[2] = __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDsMap_error___block_invoke_149;
@@ -2272,7 +2272,7 @@ LABEL_65:
         v142 = &v156;
         v83 = v81;
         v140 = v83;
-        [v82 fetchTotalWorkoutDistancesCountWithHandler:v139];
+        [workoutDistanceStore2 fetchTotalWorkoutDistancesCountWithHandler:v139];
 
         v84 = v83;
         v85 = [MEMORY[0x277CBEAA8] now];
@@ -2285,11 +2285,11 @@ LABEL_65:
           v90 = v89;
           v91 = objc_opt_new();
           v92 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-          v93 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v94 = [v93 filteredArrayUsingPredicate:v92];
-          v95 = [v94 firstObject];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v94 = [callStackSymbols2 filteredArrayUsingPredicate:v92];
+          firstObject2 = [v94 firstObject];
 
-          [v91 submitToCoreAnalytics:v95 type:1 duration:v90];
+          [v91 submitToCoreAnalytics:firstObject2 type:1 duration:v90];
           v96 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v96, OS_LOG_TYPE_FAULT))
           {
@@ -2314,14 +2314,14 @@ LABEL_65:
 
         v29 = v87;
         v101 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(*&buf[8] + 24)];
-        v102 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v102 setObject:v101 forKeyedSubscript:@"distance_matrix_final_size"];
+        processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics2 setObject:v101 forKeyedSubscript:@"distance_matrix_final_size"];
 
         _Block_object_dispose(buf, 8);
         objc_autoreleasePoolPop(v136);
-        if (!a4 || !v29)
+        if (!error || !v29)
         {
-          if (!a4 || !v157[5])
+          if (!error || !v157[5])
           {
             goto LABEL_72;
           }
@@ -2345,7 +2345,7 @@ LABEL_65:
           v30 = v157[5];
 LABEL_71:
           v130 = 0;
-          *a4 = v30;
+          *error = v30;
 LABEL_72:
 
           _Block_object_dispose(&v156, 8);
@@ -2400,7 +2400,7 @@ LABEL_70:
     v130 = 1;
 LABEL_25:
     v134 = 0;
-    v34 = v133;
+    v34 = date;
     v128 = v33;
     while (1)
     {
@@ -2411,7 +2411,7 @@ LABEL_25:
 
       v135 = *(*(&v148 + 1) + 8 * v134);
       context = objc_autoreleasePoolPush();
-      v133 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -2421,7 +2421,7 @@ LABEL_25:
           v36 = objc_opt_class();
           v37 = NSStringFromClass(v36);
           v38 = NSStringFromSelector(a2);
-          v39 = [v131 objectForKeyedSubscript:v135];
+          v39 = [mapCopy objectForKeyedSubscript:v135];
           v40 = [v39 count];
           +[RTRuntime footprint];
           *buf = 138413314;
@@ -2442,7 +2442,7 @@ LABEL_25:
       v147 = 0u;
       v144 = 0u;
       v145 = 0u;
-      v42 = v131;
+      v42 = mapCopy;
       v43 = [v42 countByEnumeratingWithState:&v144 objects:v170 count:16];
       if (v43)
       {
@@ -2491,10 +2491,10 @@ LABEL_25:
       }
 
       v53 = [v42 objectForKeyedSubscript:v135];
-      v54 = [(RTWorkoutRouteManager *)self distanceMetric];
+      distanceMetric = [(RTWorkoutRouteManager *)self distanceMetric];
       v55 = (v157 + 5);
       v143 = v157[5];
-      v56 = [(RTWorkoutRouteManager *)self _computeAndSaveDistanceMatrixForWorkoutUUIDs:v53 distanceMetric:v54 error:&v143];
+      v56 = [(RTWorkoutRouteManager *)self _computeAndSaveDistanceMatrixForWorkoutUUIDs:v53 distanceMetric:distanceMetric error:&v143];
       objc_storeStrong(v55, v143);
 
       v57 = v157[5];
@@ -2521,8 +2521,8 @@ LABEL_25:
             v62 = @"NO";
           }
 
-          v63 = [MEMORY[0x277CBEAA8] date];
-          [v63 timeIntervalSinceDate:v133];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          [date2 timeIntervalSinceDate:date];
           v65 = v64;
           +[RTRuntime footprint];
           *buf = 138413570;
@@ -2541,8 +2541,8 @@ LABEL_25:
         }
       }
 
-      v67 = [RTHealthKitManager stringFromWorkoutActivityType:37, v124];
-      v68 = [v135 isEqualToString:v67];
+      v124 = [RTHealthKitManager stringFromWorkoutActivityType:37, v124];
+      v68 = [v135 isEqualToString:v124];
 
       if (v68)
       {
@@ -2557,8 +2557,8 @@ LABEL_25:
         v75 = MEMORY[0x277CCABB0];
         v70 = [v42 objectForKeyedSubscript:v135];
         v71 = [v75 numberWithUnsignedInteger:{objc_msgSend(v70, "count")}];
-        v72 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v72 setObject:v71 forKeyedSubscript:@"number_of_workouts_cycling"];
+        processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics3 setObject:v71 forKeyedSubscript:@"number_of_workouts_cycling"];
         goto LABEL_57;
       }
 
@@ -2570,8 +2570,8 @@ LABEL_25:
         v78 = MEMORY[0x277CCABB0];
         v70 = [v42 objectForKeyedSubscript:v135];
         v71 = [v78 numberWithUnsignedInteger:{objc_msgSend(v70, "count")}];
-        v72 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v72 setObject:v71 forKeyedSubscript:v124];
+        processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics3 setObject:v71 forKeyedSubscript:v124];
         goto LABEL_57;
       }
 
@@ -2585,7 +2585,7 @@ LABEL_59:
         goto LABEL_65;
       }
 
-      v34 = v133;
+      v34 = date;
       if (++v134 == v128)
       {
         v33 = [obj countByEnumeratingWithState:&v148 objects:v171 count:16];
@@ -2601,8 +2601,8 @@ LABEL_59:
     v69 = MEMORY[0x277CCABB0];
     v70 = [v42 objectForKeyedSubscript:v135];
     v71 = [v69 numberWithUnsignedInteger:{objc_msgSend(v70, "count")}];
-    v72 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    [v72 setObject:v71 forKeyedSubscript:@"number_of_workouts_running"];
+    processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    [processWorkoutMetrics3 setObject:v71 forKeyedSubscript:@"number_of_workouts_running"];
 LABEL_57:
 
     goto LABEL_58;
@@ -2615,10 +2615,10 @@ LABEL_57:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: activityTypeToWorkoutUUIDsMap", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"activityTypeToWorkoutUUIDsMap");
-    *a4 = v130 = 0;
+    *error = v130 = 0;
   }
 
   else
@@ -2647,12 +2647,12 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_processNewlyAddedWorkout:(id)a3 handler:(id)a4
+- (void)_processNewlyAddedWorkout:(id)workout handler:(id)handler
 {
   v521[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  workoutCopy = workout;
+  handlerCopy = handler;
+  if (workoutCopy)
   {
     aSelector = a2;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2668,7 +2668,7 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
         v507 = 2112;
         v508 = v11;
         v509 = 2112;
-        v510 = v6;
+        v510 = workoutCopy;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@, newly added workout uuid, %@", buf, 0x20u);
       }
     }
@@ -2681,11 +2681,11 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
     v478 = 0;
     context = objc_autoreleasePoolPush();
     v420 = objc_opt_new();
-    v419 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     +[RTRuntime footprint];
     v13 = v12;
-    v421 = [MEMORY[0x277CBEAA8] date];
-    v520 = v6;
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v520 = workoutCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v520 count:1];
     v15 = (v474 + 5);
     obj = v474[5];
@@ -2694,9 +2694,9 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
 
     if (v474[5])
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
       goto LABEL_41;
@@ -2718,16 +2718,16 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
           v507 = 2112;
           v508 = v20;
           v509 = 2112;
-          v510 = v6;
+          v510 = workoutCopy;
           v511 = 2048;
           v512 = v21;
           _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, %@, existing cluster exists for newly added workout uuid, %@, count, %lu, further processing, skipped", buf, 0x2Au);
         }
       }
 
-      if (v7)
+      if (handlerCopy)
       {
-        (v7[2])(v7, v474[5]);
+        (handlerCopy[2])(handlerCopy, v474[5]);
       }
 
       goto LABEL_42;
@@ -2740,7 +2740,7 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
     v470 = __Block_byref_object_dispose__153;
     v471 = 0;
     v22 = dispatch_semaphore_create(0);
-    v23 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+    workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
     v462[0] = MEMORY[0x277D85DD0];
     v462[1] = 3221225472;
     v462[2] = __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invoke;
@@ -2749,7 +2749,7 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
     v465 = &v473;
     v24 = v22;
     v463 = v24;
-    [v23 fetchWorkoutDistancesWithWorkout:v6 handler:v462];
+    [workoutDistanceStore fetchWorkoutDistancesWithWorkout:workoutCopy handler:v462];
 
     dsema = v24;
     v25 = [MEMORY[0x277CBEAA8] now];
@@ -2761,11 +2761,11 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
       v29 = v28;
       v30 = objc_opt_new();
       v31 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v32 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v33 = [v32 filteredArrayUsingPredicate:v31];
-      v34 = [v33 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v33 = [callStackSymbols filteredArrayUsingPredicate:v31];
+      firstObject = [v33 firstObject];
 
-      [v30 submitToCoreAnalytics:v34 type:1 duration:v29];
+      [v30 submitToCoreAnalytics:firstObject type:1 duration:v29];
       v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
       {
@@ -2794,9 +2794,9 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
     if (v40)
     {
       v41 = v40;
-      if (v7)
+      if (handlerCopy)
       {
-        (v7[2])(v7, v40);
+        (handlerCopy[2])(handlerCopy, v40);
       }
 
       goto LABEL_40;
@@ -2804,9 +2804,9 @@ void __82__RTWorkoutRouteManager__processWorkoutsUsingActivityTypeToWorkoutUUIDs
 
     if (v474[5])
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
 LABEL_39:
@@ -2839,7 +2839,7 @@ LABEL_42:
           v507 = 2112;
           v508 = v45;
           v509 = 2112;
-          v510 = v6;
+          v510 = workoutCopy;
           v511 = 2048;
           v512 = v46;
           _os_log_impl(&dword_2304B3000, v42, OS_LOG_TYPE_INFO, "%@, %@, distance matrix records exists for newly added workout uuid, %@, count, %lu, further processing, skipped", buf, 0x2Au);
@@ -2849,27 +2849,27 @@ LABEL_42:
       v47 = v467[5];
       v467[5] = 0;
 
-      if (v7)
+      if (handlerCopy)
       {
-        (v7[2])(v7, v474[5]);
+        (handlerCopy[2])(handlerCopy, v474[5]);
       }
 
       goto LABEL_39;
     }
 
-    v48 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v519 = v6;
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+    v519 = workoutCopy;
     v49 = [MEMORY[0x277CBEA60] arrayWithObjects:&v519 count:1];
     v50 = (v474 + 5);
     v461 = v474[5];
-    v51 = [v48 getWorkoutsWithUUIDs:v49 error:&v461];
+    v51 = [healthKitManager getWorkoutsWithUUIDs:v49 error:&v461];
     objc_storeStrong(v50, v461);
 
     if (v474[5])
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
 LABEL_54:
@@ -2890,28 +2890,28 @@ LABEL_55:
       v60 = v474[5];
       v474[5] = v59;
 
-      if (v7)
+      if (handlerCopy)
       {
-        (v7[2])(v7, v474[5]);
+        (handlerCopy[2])(handlerCopy, v474[5]);
       }
 
       goto LABEL_54;
     }
 
-    v415 = [v51 firstObject];
+    firstObject2 = [v51 firstObject];
 
-    v52 = [(RTWorkoutRouteManager *)self distanceMetric];
-    v53 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v415];
-    v54 = [v415 workoutActivityType];
+    distanceMetric = [(RTWorkoutRouteManager *)self distanceMetric];
+    v53 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:firstObject2];
+    workoutActivityType = [firstObject2 workoutActivityType];
     v55 = (v474 + 5);
     v460 = v474[5];
-    v409 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:v52 isDecimated:v53 workoutActivityType:v54 error:&v460];
+    v409 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:distanceMetric isDecimated:v53 workoutActivityType:workoutActivityType error:&v460];
     objc_storeStrong(v55, v460);
     if (v474[5])
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
       v413 = 0;
@@ -2919,8 +2919,8 @@ LABEL_55:
       goto LABEL_189;
     }
 
-    v61 = [v415 metadata];
-    v404 = [v61 valueForKey:*MEMORY[0x277CCE0B0]];
+    metadata = [firstObject2 metadata];
+    v404 = [metadata valueForKey:*MEMORY[0x277CCE0B0]];
 
     if (v404)
     {
@@ -2940,8 +2940,8 @@ LABEL_55:
         v63 = objc_opt_class();
         v64 = NSStringFromClass(v63);
         v65 = NSStringFromSelector(aSelector);
-        v66 = [MEMORY[0x277CBEAA8] date];
-        [v66 timeIntervalSinceDate:v421];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        [date3 timeIntervalSinceDate:date2];
         v68 = v67;
         +[RTRuntime footprint];
         *buf = 138413570;
@@ -2949,7 +2949,7 @@ LABEL_55:
         v507 = 2112;
         v508 = v65;
         v509 = 2112;
-        v510 = v6;
+        v510 = workoutCopy;
         v511 = 2112;
         v512 = v408;
         v513 = 2048;
@@ -2976,52 +2976,52 @@ LABEL_55:
           v507 = 2112;
           v508 = v74;
           v509 = 2112;
-          v510 = v6;
+          v510 = workoutCopy;
           v511 = 2112;
           v512 = v408;
           _os_log_impl(&dword_2304B3000, v71, OS_LOG_TYPE_INFO, "%@, %@, case 1/2, matching workout uuid, %@, with its reference workout uuid, %@,", buf, 0x2Au);
         }
       }
 
-      v75 = [(RTWorkoutRouteManager *)self healthKitManager];
+      healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
       v505 = v408;
       v76 = [MEMORY[0x277CBEA60] arrayWithObjects:&v505 count:1];
       v77 = (v474 + 5);
       v459 = v474[5];
-      v413 = [v75 getWorkoutsWithUUIDs:v76 error:&v459];
+      v413 = [healthKitManager2 getWorkoutsWithUUIDs:v76 error:&v459];
       objc_storeStrong(v77, v459);
 
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
         v41 = 0;
         goto LABEL_188;
       }
 
-      v410 = [v413 firstObject];
+      firstObject3 = [v413 firstObject];
 
-      v104 = [v410 workoutActivityType];
-      if (v104 != [v415 workoutActivityType])
+      workoutActivityType2 = [firstObject3 workoutActivityType];
+      if (workoutActivityType2 != [firstObject2 workoutActivityType])
       {
         v109 = MEMORY[0x277CCA9B8];
         v503 = *MEMORY[0x277CCA450];
         v110 = MEMORY[0x277CCACA8];
-        v111 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v410 workoutActivityType]);
-        v112 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v415 workoutActivityType]);
-        v113 = [v110 stringWithFormat:@"mismatched workout activity types, refrence workout UUID, %@, reference workout activity type, %@, refrence workout UUID, %@, newly added workout activity type, %@, ", v408, v111, v6, v112];
-        v504 = v113;
+        v111 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [firstObject3 workoutActivityType]);
+        v112 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [firstObject2 workoutActivityType]);
+        v112 = [v110 stringWithFormat:@"mismatched workout activity types, refrence workout UUID, %@, reference workout activity type, %@, refrence workout UUID, %@, newly added workout activity type, %@, ", v408, v111, workoutCopy, v112];
+        v504 = v112;
         v114 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v504 forKeys:&v503 count:1];
         v115 = [v109 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v114];
         v116 = v474[5];
         v474[5] = v115;
 
-        if (v7)
+        if (handlerCopy)
         {
-          (v7[2])(v7, v474[5]);
+          (handlerCopy[2])(handlerCopy, v474[5]);
         }
 
         v41 = 0;
@@ -3037,9 +3037,9 @@ LABEL_55:
 
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
 LABEL_149:
@@ -3085,9 +3085,9 @@ LABEL_189:
         v162 = v474[5];
         v474[5] = v161;
 
-        if (v7)
+        if (handlerCopy)
         {
-          (v7[2])(v7, v474[5]);
+          (handlerCopy[2])(handlerCopy, v474[5]);
         }
 
         goto LABEL_149;
@@ -3095,9 +3095,9 @@ LABEL_189:
 
       v146 = MEMORY[0x277CBEC38];
       [v420 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"does_reference_route_exist"];
-      v147 = [v107 firstObject];
-      v148 = [v147 bestWorkoutUUID];
-      v149 = [v148 isEqual:v408];
+      firstObject4 = [v107 firstObject];
+      bestWorkoutUUID = [firstObject4 bestWorkoutUUID];
+      v149 = [bestWorkoutUUID isEqual:v408];
 
       v150 = MEMORY[0x277CBEC28];
       if (v149)
@@ -3111,9 +3111,9 @@ LABEL_189:
       }
 
       [v420 setObject:v151 forKeyedSubscript:@"is_reference_route_best_route"];
-      v152 = [v107 firstObject];
-      v153 = [v152 lastWorkoutUUID];
-      v154 = [v153 isEqual:v408];
+      firstObject5 = [v107 firstObject];
+      lastWorkoutUUID = [firstObject5 lastWorkoutUUID];
+      v154 = [lastWorkoutUUID isEqual:v408];
 
       if (v154)
       {
@@ -3126,17 +3126,17 @@ LABEL_189:
       }
 
       [v420 setObject:v155 forKeyedSubscript:@"is_reference_route_last_route"];
-      v156 = [v107 firstObject];
+      firstObject6 = [v107 firstObject];
       v157 = (v474 + 5);
       v457 = v474[5];
-      v414 = [(RTWorkoutRouteManager *)self _getWorkoutUUIDsForCluster:v156 error:&v457];
+      v414 = [(RTWorkoutRouteManager *)self _getWorkoutUUIDsForCluster:firstObject6 error:&v457];
       objc_storeStrong(v157, v457);
 
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
 LABEL_171:
@@ -3170,18 +3170,18 @@ LABEL_172:
         v180 = MEMORY[0x277CCA9B8];
         v498 = *MEMORY[0x277CCA450];
         v181 = MEMORY[0x277CCACA8];
-        v182 = [v107 firstObject];
-        v183 = [v182 clusterUUID];
-        v184 = [v181 stringWithFormat:@"reference clusters with cluster uuid, %@, has %lu reference workout uuid, less than threshold, %lu", v183, objc_msgSend(v414, "count"), 2];
+        firstObject7 = [v107 firstObject];
+        clusterUUID = [firstObject7 clusterUUID];
+        v184 = [v181 stringWithFormat:@"reference clusters with cluster uuid, %@, has %lu reference workout uuid, less than threshold, %lu", clusterUUID, objc_msgSend(v414, "count"), 2];
         v499 = v184;
         v185 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v499 forKeys:&v498 count:1];
         v186 = [v180 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v185];
         v187 = v474[5];
         v474[5] = v186;
 
-        if (v7)
+        if (handlerCopy)
         {
-          (v7[2])(v7, v474[5]);
+          (handlerCopy[2])(handlerCopy, v474[5]);
         }
 
         goto LABEL_171;
@@ -3189,8 +3189,8 @@ LABEL_172:
 
       v188 = objc_opt_new();
       [v188 addObjectsFromArray:v414];
-      v189 = [v415 UUID];
-      [v188 addObject:v189];
+      uUID = [firstObject2 UUID];
+      [v188 addObject:uUID];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -3217,15 +3217,15 @@ LABEL_172:
       objc_storeStrong(v195, v456);
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
         goto LABEL_266;
       }
 
-      v200 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v415 workoutActivityType]);
+      v200 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [firstObject2 workoutActivityType]);
       v496 = v200;
       v497 = v406;
       v201 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v497 forKeys:&v496 count:1];
@@ -3237,9 +3237,9 @@ LABEL_172:
 
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
 LABEL_265:
@@ -3254,9 +3254,9 @@ LABEL_267:
 
       v231 = [MEMORY[0x277CBEB58] setWithObject:v408];
       v232 = MEMORY[0x277CBEB58];
-      v233 = [v415 UUID];
-      v234 = [v232 setWithObject:v233];
-      v235 = +[RTHealthKitManager RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:](RTHealthKitManager, "RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:", [v415 workoutActivityType]);
+      uUID2 = [firstObject2 UUID];
+      v234 = [v232 setWithObject:uUID2];
+      v235 = +[RTHealthKitManager RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:](RTHealthKitManager, "RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:", [firstObject2 workoutActivityType]);
       [v409 doubleValue];
       v236 = (v474 + 5);
       v454 = v474[5];
@@ -3290,9 +3290,9 @@ LABEL_267:
 
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
         goto LABEL_265;
@@ -3300,9 +3300,9 @@ LABEL_267:
 
       v289 = [MEMORY[0x277CBEB58] setWithArray:v414];
       v290 = MEMORY[0x277CBEB58];
-      v291 = [v415 UUID];
-      v292 = [v290 setWithObject:v291];
-      v293 = +[RTHealthKitManager RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:](RTHealthKitManager, "RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:", [v415 workoutActivityType]);
+      uUID3 = [firstObject2 UUID];
+      v292 = [v290 setWithObject:uUID3];
+      v293 = +[RTHealthKitManager RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:](RTHealthKitManager, "RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:", [firstObject2 workoutActivityType]);
       [v409 doubleValue];
       v294 = (v474 + 5);
       v453 = v474[5];
@@ -3336,9 +3336,9 @@ LABEL_267:
 
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
         goto LABEL_265;
@@ -3352,7 +3352,7 @@ LABEL_267:
 
       if (v295)
       {
-        v306 = [MEMORY[0x277CBEAA8] date];
+        date4 = [MEMORY[0x277CBEAA8] date];
 
         v495 = v406;
         v307 = [MEMORY[0x277CBEA60] arrayWithObjects:&v495 count:1];
@@ -3363,16 +3363,16 @@ LABEL_267:
 
         if (v474[5])
         {
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7);
+            handlerCopy[2](handlerCopy);
           }
 
           v188 = 0;
           v414 = 0;
           v41 = 0;
 LABEL_286:
-          v421 = v306;
+          date2 = date4;
           goto LABEL_267;
         }
 
@@ -3394,8 +3394,8 @@ LABEL_286:
               v350 = @"NO";
             }
 
-            v351 = [MEMORY[0x277CBEAA8] date];
-            [v351 timeIntervalSinceDate:v306];
+            date5 = [MEMORY[0x277CBEAA8] date];
+            [date5 timeIntervalSinceDate:date4];
             v353 = v352;
             +[RTRuntime footprint];
             *buf = 138413314;
@@ -3412,7 +3412,7 @@ LABEL_286:
           }
         }
 
-        v421 = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
 
         v355 = dispatch_semaphore_create(0);
         v449[0] = MEMORY[0x277D85DD0];
@@ -3433,11 +3433,11 @@ LABEL_286:
           v361 = v360;
           v362 = objc_opt_new();
           v363 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-          v364 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v365 = [v364 filteredArrayUsingPredicate:v363];
-          v366 = [v365 firstObject];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v365 = [callStackSymbols2 filteredArrayUsingPredicate:v363];
+          firstObject8 = [v365 firstObject];
 
-          [v362 submitToCoreAnalytics:v366 type:1 duration:v361];
+          [v362 submitToCoreAnalytics:firstObject8 type:1 duration:v361];
           v367 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v367, OS_LOG_TYPE_FAULT))
           {
@@ -3468,9 +3468,9 @@ LABEL_286:
         {
           v373 = v372;
 LABEL_318:
-          if (v7)
+          if (handlerCopy)
           {
-            (v7[2])(v7, v373);
+            (handlerCopy[2])(handlerCopy, v373);
           }
 
           v188 = 0;
@@ -3492,8 +3492,8 @@ LABEL_318:
             v380 = objc_opt_class();
             v381 = NSStringFromClass(v380);
             v382 = NSStringFromSelector(aSelector);
-            v383 = [MEMORY[0x277CBEAA8] date];
-            [v383 timeIntervalSinceDate:v421];
+            date6 = [MEMORY[0x277CBEAA8] date];
+            [date6 timeIntervalSinceDate:date2];
             v385 = v384;
             +[RTRuntime footprint];
             *buf = 138413058;
@@ -3508,7 +3508,7 @@ LABEL_318:
           }
         }
 
-        v306 = [MEMORY[0x277CBEAA8] date];
+        date4 = [MEMORY[0x277CBEAA8] date];
 
         v387 = (v474 + 5);
         v448 = v474[5];
@@ -3532,8 +3532,8 @@ LABEL_318:
               v393 = @"NO";
             }
 
-            v394 = [MEMORY[0x277CBEAA8] date];
-            [v394 timeIntervalSinceDate:v306];
+            date7 = [MEMORY[0x277CBEAA8] date];
+            [date7 timeIntervalSinceDate:date4];
             v396 = v395;
             +[RTRuntime footprint];
             *buf = 138413570;
@@ -3555,7 +3555,7 @@ LABEL_318:
 
       else
       {
-        v306 = v421;
+        date4 = date2;
       }
 
       v310 = MEMORY[0x277CCABB0];
@@ -3564,17 +3564,17 @@ LABEL_318:
       [v420 setObject:v312 forKeyedSubscript:@"footprint_delta"];
 
       v313 = MEMORY[0x277CCABB0];
-      v314 = [MEMORY[0x277CBEAA8] date];
-      [v314 timeIntervalSinceDate:v419];
+      date8 = [MEMORY[0x277CBEAA8] date];
+      [date8 timeIntervalSinceDate:date];
       v315 = [v313 numberWithDouble:?];
       [v420 setObject:v315 forKeyedSubscript:@"time_elapsed_reference_route_cluster_check"];
 
-      v316 = [(RTWorkoutRouteManager *)self workoutMetricsManager];
+      workoutMetricsManager = [(RTWorkoutRouteManager *)self workoutMetricsManager];
       v494 = v420;
       v317 = [MEMORY[0x277CBEA60] arrayWithObjects:&v494 count:1];
       v318 = (v474 + 5);
       v447 = v474[5];
-      v319 = [v316 submitMetricsForEvent:2 data:v317 error:&v447];
+      v319 = [workoutMetricsManager submitMetricsForEvent:2 data:v317 error:&v447];
       objc_storeStrong(v318, v447);
 
       v320 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -3601,9 +3601,9 @@ LABEL_318:
         _os_log_error_impl(&dword_2304B3000, v320, OS_LOG_TYPE_ERROR, "%@, %@, metrics submission status, %@, metrics count, %lu", buf, 0x2Au);
       }
 
-      if (v7)
+      if (handlerCopy)
       {
-        (v7[2])(v7, v474[5]);
+        (handlerCopy[2])(handlerCopy, v474[5]);
       }
 
       v188 = 0;
@@ -3626,7 +3626,7 @@ LABEL_318:
         v507 = 2112;
         v508 = v81;
         v509 = 2112;
-        v510 = v6;
+        v510 = workoutCopy;
         _os_log_impl(&dword_2304B3000, v78, OS_LOG_TYPE_INFO, "%@, %@, case  2/2, reference workout UUID does not exist. Finding the next best cluster for workout uuid, %@", buf, 0x20u);
       }
     }
@@ -3636,7 +3636,7 @@ LABEL_318:
     v490 = 0x3032000000;
     v491 = __Block_byref_object_copy__153;
     v492 = __Block_byref_object_dispose__153;
-    v493 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v82 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -3655,7 +3655,7 @@ LABEL_318:
 
     v86 = dispatch_semaphore_create(0);
 
-    v87 = [(RTWorkoutRouteManager *)self healthKitManager];
+    healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
     v443[0] = MEMORY[0x277D85DD0];
     v443[1] = 3221225472;
     v443[2] = __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invoke_170;
@@ -3664,7 +3664,7 @@ LABEL_318:
     v446 = &v473;
     v88 = v86;
     v444 = v88;
-    [v87 fetchWorkoutClustersWithHandler:v443];
+    [healthKitManager3 fetchWorkoutClustersWithHandler:v443];
 
     dsema = v88;
     v89 = [MEMORY[0x277CBEAA8] now];
@@ -3676,11 +3676,11 @@ LABEL_318:
       v93 = v92;
       v94 = objc_opt_new();
       v95 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v96 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v97 = [v96 filteredArrayUsingPredicate:v95];
-      v98 = [v97 firstObject];
+      callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v97 = [callStackSymbols3 filteredArrayUsingPredicate:v95];
+      firstObject9 = [v97 firstObject];
 
-      [v94 submitToCoreAnalytics:v98 type:1 duration:v93];
+      [v94 submitToCoreAnalytics:firstObject9 type:1 duration:v93];
       v99 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v99, OS_LOG_TYPE_FAULT))
       {
@@ -3709,9 +3709,9 @@ LABEL_318:
     if (v108)
     {
       v41 = v108;
-      if (v7)
+      if (handlerCopy)
       {
-        (v7[2])(v7, v108);
+        (handlerCopy[2])(handlerCopy, v108);
       }
 
       v413 = 0;
@@ -3720,9 +3720,9 @@ LABEL_318:
 
     if (v474[5])
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
       v413 = 0;
@@ -3778,9 +3778,9 @@ LABEL_107:
         objc_storeStrong(v125, v438);
         if (v474[5])
         {
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7);
+            handlerCopy[2](handlerCopy);
           }
 
           v126 = 1;
@@ -3796,14 +3796,14 @@ LABEL_107:
               v128 = objc_opt_class();
               v129 = NSStringFromClass(v128);
               v130 = NSStringFromSelector(aSelector);
-              v131 = [v124 clusterUUID];
+              clusterUUID2 = [v124 clusterUUID];
               v132 = [v411 count];
               *buf = 138413058;
               *&buf[4] = v129;
               v507 = 2112;
               v508 = v130;
               v509 = 2112;
-              v510 = v131;
+              v510 = clusterUUID2;
               v511 = 2048;
               v512 = v132;
               _os_log_impl(&dword_2304B3000, v127, OS_LOG_TYPE_INFO, "%@, %@, cluster with cluster uuid, %@, count of workouts in the cluster, %lu", buf, 0x2Au);
@@ -3812,20 +3812,20 @@ LABEL_107:
 
           if ([v411 count])
           {
-            v133 = [(RTWorkoutRouteManager *)self healthKitManager];
-            v134 = [v411 firstObject];
-            v486 = v134;
+            healthKitManager4 = [(RTWorkoutRouteManager *)self healthKitManager];
+            firstObject10 = [v411 firstObject];
+            v486 = firstObject10;
             v135 = [MEMORY[0x277CBEA60] arrayWithObjects:&v486 count:1];
             v136 = (v474 + 5);
             v437 = v474[5];
-            v137 = [v133 getWorkoutsWithUUIDs:v135 error:&v437];
+            v137 = [healthKitManager4 getWorkoutsWithUUIDs:v135 error:&v437];
             objc_storeStrong(v136, v437);
 
             if (v474[5])
             {
-              if (v7)
+              if (handlerCopy)
               {
-                v7[2](v7);
+                handlerCopy[2](handlerCopy);
               }
 
               v126 = 1;
@@ -3833,15 +3833,15 @@ LABEL_107:
 
             else
             {
-              v138 = [v137 firstObject];
-              v139 = [v138 workoutActivityType];
-              LODWORD(v139) = v139 == [v415 workoutActivityType];
+              firstObject11 = [v137 firstObject];
+              workoutActivityType3 = [firstObject11 workoutActivityType];
+              LODWORD(workoutActivityType3) = workoutActivityType3 == [firstObject2 workoutActivityType];
 
-              if (v139)
+              if (workoutActivityType3)
               {
                 [v399 addObjectsFromArray:v411];
-                v140 = [v124 clusterUUID];
-                [v398 setObject:v411 forKeyedSubscript:v140];
+                clusterUUID3 = [v124 clusterUUID];
+                [v398 setObject:v411 forKeyedSubscript:clusterUUID3];
               }
 
               v126 = 0;
@@ -3892,17 +3892,17 @@ LABEL_153:
       v167 = v474[5];
       v474[5] = v166;
 
-      if (v7)
+      if (handlerCopy)
       {
-        (v7[2])(v7, v474[5]);
+        (handlerCopy[2])(handlerCopy, v474[5]);
       }
 
       v41 = 0;
       goto LABEL_186;
     }
 
-    v168 = [v415 UUID];
-    [v399 addObject:v168];
+    uUID4 = [firstObject2 UUID];
+    [v399 addObject:uUID4];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3929,9 +3929,9 @@ LABEL_153:
     objc_storeStrong(v174, v436);
     if (v474[5])
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
 LABEL_184:
@@ -3945,7 +3945,7 @@ LABEL_187:
       goto LABEL_188;
     }
 
-    v196 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v415 workoutActivityType]);
+    v196 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [firstObject2 workoutActivityType]);
     v482 = v196;
     v483 = v401;
     v197 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v483 forKeys:&v482 count:1];
@@ -3957,9 +3957,9 @@ LABEL_187:
 
     if (v474[5])
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
       v399 = 0;
@@ -3987,8 +3987,8 @@ LABEL_187:
     v434 = 0u;
     v431 = 0u;
     v432 = 0u;
-    v403 = [v398 allValues];
-    v407 = [v403 countByEnumeratingWithState:&v431 objects:v481 count:16];
+    allValues = [v398 allValues];
+    v407 = [allValues countByEnumeratingWithState:&v431 objects:v481 count:16];
     if (v407)
     {
       v208 = *v432;
@@ -3998,16 +3998,16 @@ LABEL_199:
       {
         if (*v432 != v208)
         {
-          objc_enumerationMutation(v403);
+          objc_enumerationMutation(allValues);
         }
 
         v210 = *(*(&v431 + 1) + 8 * v209);
         v412 = objc_autoreleasePoolPush();
         v211 = [MEMORY[0x277CBEB58] setWithArray:v210];
         v212 = MEMORY[0x277CBEB58];
-        v213 = [v415 UUID];
-        v214 = [v212 setWithObject:v213];
-        v215 = +[RTHealthKitManager RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:](RTHealthKitManager, "RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:", [v415 workoutActivityType]);
+        uUID5 = [firstObject2 UUID];
+        v214 = [v212 setWithObject:uUID5];
+        v215 = +[RTHealthKitManager RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:](RTHealthKitManager, "RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:", [firstObject2 workoutActivityType]);
         [v409 doubleValue];
         v216 = (v474 + 5);
         v430 = v474[5];
@@ -4016,9 +4016,9 @@ LABEL_199:
 
         if (v474[5])
         {
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7);
+            handlerCopy[2](handlerCopy);
           }
 
           v218 = 0;
@@ -4056,7 +4056,7 @@ LABEL_199:
           {
             v226 = [MEMORY[0x277CBEB18] arrayWithArray:v210];
 
-            [v226 addObject:v6];
+            [v226 addObject:workoutCopy];
             v218 = 0;
             v219 = 8;
             v400 = v226;
@@ -4077,7 +4077,7 @@ LABEL_199:
 
         if (v407 == ++v209)
         {
-          v407 = [v403 countByEnumeratingWithState:&v431 objects:v481 count:16];
+          v407 = [allValues countByEnumeratingWithState:&v431 objects:v481 count:16];
           if (v407)
           {
             goto LABEL_199;
@@ -4101,7 +4101,7 @@ LABEL_218:
 LABEL_220:
     if ([v400 count])
     {
-      v227 = [MEMORY[0x277CBEAA8] date];
+      date9 = [MEMORY[0x277CBEAA8] date];
 
       v480 = v400;
       v228 = [MEMORY[0x277CBEA60] arrayWithObjects:&v480 count:1];
@@ -4112,13 +4112,13 @@ LABEL_220:
 
       if (v474[5])
       {
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
 
         v41 = 0;
-        v421 = v227;
+        date2 = date9;
 LABEL_275:
 
         v399 = 0;
@@ -4143,8 +4143,8 @@ LABEL_275:
             v267 = @"NO";
           }
 
-          v268 = [MEMORY[0x277CBEAA8] date];
-          [v268 timeIntervalSinceDate:v227];
+          date10 = [MEMORY[0x277CBEAA8] date];
+          [date10 timeIntervalSinceDate:date9];
           v270 = v269;
           +[RTRuntime footprint];
           *buf = 138413314;
@@ -4161,7 +4161,7 @@ LABEL_275:
         }
       }
 
-      v421 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
 
       v272 = dispatch_semaphore_create(0);
       v426[0] = MEMORY[0x277D85DD0];
@@ -4182,11 +4182,11 @@ LABEL_275:
         v278 = v277;
         v279 = objc_opt_new();
         v280 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-        v281 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v282 = [v281 filteredArrayUsingPredicate:v280];
-        v283 = [v282 firstObject];
+        callStackSymbols4 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v282 = [callStackSymbols4 filteredArrayUsingPredicate:v280];
+        firstObject12 = [v282 firstObject];
 
-        [v279 submitToCoreAnalytics:v283 type:1 duration:v278];
+        [v279 submitToCoreAnalytics:firstObject12 type:1 duration:v278];
         v284 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v284, OS_LOG_TYPE_FAULT))
         {
@@ -4217,9 +4217,9 @@ LABEL_275:
       {
         v303 = v302;
 LABEL_272:
-        if (v7)
+        if (handlerCopy)
         {
-          (v7[2])(v7, v303);
+          (handlerCopy[2])(handlerCopy, v303);
         }
 
         v400 = 0;
@@ -4240,8 +4240,8 @@ LABEL_272:
           v322 = objc_opt_class();
           v323 = NSStringFromClass(v322);
           v324 = NSStringFromSelector(aSelector);
-          v325 = [MEMORY[0x277CBEAA8] date];
-          [v325 timeIntervalSinceDate:v421];
+          date11 = [MEMORY[0x277CBEAA8] date];
+          [date11 timeIntervalSinceDate:date2];
           v327 = v326;
           +[RTRuntime footprint];
           *buf = 138413058;
@@ -4256,7 +4256,7 @@ LABEL_272:
         }
       }
 
-      v329 = [MEMORY[0x277CBEAA8] date];
+      date12 = [MEMORY[0x277CBEAA8] date];
 
       v330 = (v474 + 5);
       v425 = v474[5];
@@ -4280,8 +4280,8 @@ LABEL_272:
             v336 = @"NO";
           }
 
-          v337 = [MEMORY[0x277CBEAA8] date];
-          [v337 timeIntervalSinceDate:v329];
+          date13 = [MEMORY[0x277CBEAA8] date];
+          [date13 timeIntervalSinceDate:date12];
           v339 = v338;
           +[RTRuntime footprint];
           *buf = 138413570;
@@ -4303,7 +4303,7 @@ LABEL_272:
       [v420 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"is_new_workout_clustered_other"];
 
       v400 = 0;
-      v421 = v329;
+      date2 = date12;
     }
 
     else
@@ -4316,8 +4316,8 @@ LABEL_272:
           v245 = objc_opt_class();
           v246 = NSStringFromClass(v245);
           v247 = NSStringFromSelector(aSelector);
-          v248 = [MEMORY[0x277CBEAA8] date];
-          [v248 timeIntervalSinceDate:v421];
+          date14 = [MEMORY[0x277CBEAA8] date];
+          [date14 timeIntervalSinceDate:date2];
           v250 = v249;
           +[RTRuntime footprint];
           *buf = 138413314;
@@ -4325,7 +4325,7 @@ LABEL_272:
           v507 = 2112;
           v508 = v247;
           v509 = 2112;
-          v510 = v6;
+          v510 = workoutCopy;
           v511 = 2048;
           v512 = v250;
           v513 = 2048;
@@ -4343,17 +4343,17 @@ LABEL_272:
     [v420 setObject:v254 forKeyedSubscript:@"footprint_delta"];
 
     v255 = MEMORY[0x277CCABB0];
-    v256 = [MEMORY[0x277CBEAA8] date];
-    [v256 timeIntervalSinceDate:v419];
+    date15 = [MEMORY[0x277CBEAA8] date];
+    [date15 timeIntervalSinceDate:date];
     v257 = [v255 numberWithDouble:?];
     [v420 setObject:v257 forKeyedSubscript:@"time_elapsed_mini_worldbuild_check"];
 
-    v258 = [(RTWorkoutRouteManager *)self workoutMetricsManager];
+    workoutMetricsManager2 = [(RTWorkoutRouteManager *)self workoutMetricsManager];
     v479 = v420;
     v259 = [MEMORY[0x277CBEA60] arrayWithObjects:&v479 count:1];
     v260 = (v474 + 5);
     v424 = v474[5];
-    v261 = [v258 submitMetricsForEvent:2 data:v259 error:&v424];
+    v261 = [workoutMetricsManager2 submitMetricsForEvent:2 data:v259 error:&v424];
     objc_storeStrong(v260, v424);
 
     v262 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -4380,9 +4380,9 @@ LABEL_272:
       _os_log_error_impl(&dword_2304B3000, v262, OS_LOG_TYPE_ERROR, "%@, %@, metrics submission status, %@, metrics count, %lu", buf, 0x2Au);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      (v7[2])(v7, v474[5]);
+      (handlerCopy[2])(handlerCopy, v474[5]);
     }
 
     v41 = 0;
@@ -4448,13 +4448,13 @@ void __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invok
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_updateRelevanceScoresWithHandler:(id)a3
+- (void)_updateRelevanceScoresWithHandler:(id)handler
 {
   v311[1] = *MEMORY[0x277D85DE8];
-  v252 = a3;
+  handlerCopy = handler;
   context = objc_autoreleasePoolPush();
-  v248 = [MEMORY[0x277CBEAA8] date];
-  v249 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   +[RTRuntime footprint];
   v4 = v3;
   v255 = objc_opt_new();
@@ -4491,7 +4491,7 @@ void __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invok
   }
 
   v10 = dispatch_semaphore_create(0);
-  v11 = [(RTWorkoutRouteManager *)self healthKitManager];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
   v275[0] = MEMORY[0x277D85DD0];
   v275[1] = 3221225472;
   v275[2] = __59__RTWorkoutRouteManager__updateRelevanceScoresWithHandler___block_invoke;
@@ -4500,7 +4500,7 @@ void __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invok
   v12 = v10;
   v276 = v12;
   v278 = &v285;
-  [v11 fetchWorkoutClustersWithHandler:v275];
+  [healthKitManager fetchWorkoutClustersWithHandler:v275];
 
   dsema = v12;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -4512,11 +4512,11 @@ void __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invok
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -4560,9 +4560,9 @@ void __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invok
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "%@, %@, %@", buf, 0x20u);
     }
 
-    if (v252)
+    if (handlerCopy)
     {
-      v252[2]();
+      handlerCopy[2]();
     }
 
     goto LABEL_56;
@@ -4586,8 +4586,8 @@ void __59__RTWorkoutRouteManager__processNewlyAddedWorkout_handler___block_invok
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "%@, %@, %@", buf, 0x20u);
     }
 
-    v32 = v252;
-    if (!v252)
+    v32 = handlerCopy;
+    if (!handlerCopy)
     {
       goto LABEL_38;
     }
@@ -4622,7 +4622,7 @@ LABEL_38:
   if (![v286[5] count])
   {
     v33 = 0;
-    v32 = v252;
+    v32 = handlerCopy;
     goto LABEL_37;
   }
 
@@ -4664,9 +4664,9 @@ LABEL_38:
       _os_log_error_impl(&dword_2304B3000, v44, OS_LOG_TYPE_ERROR, "%@, %@, %@", buf, 0x20u);
     }
 
-    if (v252)
+    if (handlerCopy)
     {
-      v252[2]();
+      handlerCopy[2]();
     }
 
     v29 = 0;
@@ -4691,14 +4691,14 @@ LABEL_38:
     }
   }
 
-  v52 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v53 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v54 = [v53 _getWorkoutDefaultStartDateForRaceRoute];
-  v55 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v56 = [v55 _getRTWorkoutDefaultTypesForRaceRoute];
+  healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+  healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
+  _getWorkoutDefaultStartDateForRaceRoute = [healthKitManager3 _getWorkoutDefaultStartDateForRaceRoute];
+  healthKitManager4 = [(RTWorkoutRouteManager *)self healthKitManager];
+  _getRTWorkoutDefaultTypesForRaceRoute = [healthKitManager4 _getRTWorkoutDefaultTypesForRaceRoute];
   v57 = (v280 + 5);
   v273 = v280[5];
-  v241 = [v52 getLatestWorkoutWithStartDate:v54 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:v56 workoutTypes:&v273 error:1.79769313e308];
+  v241 = [healthKitManager2 getLatestWorkoutWithStartDate:_getWorkoutDefaultStartDateForRaceRoute nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:_getRTWorkoutDefaultTypesForRaceRoute workoutTypes:&v273 error:1.79769313e308];
   objc_storeStrong(v57, v273);
 
   if (v280[5])
@@ -4719,23 +4719,23 @@ LABEL_38:
       _os_log_error_impl(&dword_2304B3000, v58, OS_LOG_TYPE_ERROR, "%@, %@, %@", buf, 0x20u);
     }
 
-    if (v252)
+    if (handlerCopy)
     {
-      v252[2]();
+      handlerCopy[2]();
     }
 
 LABEL_53:
     v29 = 0;
-    v68 = v249;
+    date4 = date2;
     goto LABEL_54;
   }
 
-  v63 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v64 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v65 = [v64 _getWorkoutDefaultStartDateForRaceRoute];
+  healthKitManager5 = [(RTWorkoutRouteManager *)self healthKitManager];
+  healthKitManager6 = [(RTWorkoutRouteManager *)self healthKitManager];
+  _getWorkoutDefaultStartDateForRaceRoute2 = [healthKitManager6 _getWorkoutDefaultStartDateForRaceRoute];
   v66 = (v280 + 5);
   v272 = v280[5];
-  v240 = [v63 getWorkoutsCountWithStartDate:v65 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:&v272 error:1.79769313e308];
+  v240 = [healthKitManager5 getWorkoutsCountWithStartDate:_getWorkoutDefaultStartDateForRaceRoute2 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:&v272 error:1.79769313e308];
   objc_storeStrong(v66, v272);
 
   if (v280[5])
@@ -4756,9 +4756,9 @@ LABEL_53:
       _os_log_error_impl(&dword_2304B3000, v67, OS_LOG_TYPE_ERROR, "%@, %@, %@", buf, 0x20u);
     }
 
-    if (v252)
+    if (handlerCopy)
     {
-      v252[2]();
+      handlerCopy[2]();
     }
 
     goto LABEL_53;
@@ -4772,13 +4772,13 @@ LABEL_53:
       v70 = objc_opt_class();
       v71 = NSStringFromClass(v70);
       v72 = NSStringFromSelector(a2);
-      v73 = [v241 UUID];
+      uUID = [v241 UUID];
       *buf = 138412802;
       *&buf[4] = v71;
       v293 = 2112;
       v294 = v72;
       v295 = 2112;
-      v296 = v73;
+      v296 = uUID;
       _os_log_impl(&dword_2304B3000, v69, OS_LOG_TYPE_INFO, "%@, %@, latest workout across all workouts, %@", buf, 0x20u);
     }
   }
@@ -4873,11 +4873,11 @@ LABEL_53:
       v306 = 0x3032000000;
       v307 = __Block_byref_object_copy__153;
       v308 = __Block_byref_object_dispose__153;
-      v309 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
       v88 = dispatch_semaphore_create(0);
 
-      v89 = [(RTWorkoutRouteManager *)self healthKitManager];
-      v90 = [v87 clusterUUID];
+      healthKitManager7 = [(RTWorkoutRouteManager *)self healthKitManager];
+      clusterUUID = [v87 clusterUUID];
       v264[0] = MEMORY[0x277D85DD0];
       v264[1] = 3221225472;
       v264[2] = __59__RTWorkoutRouteManager__updateRelevanceScoresWithHandler___block_invoke_176;
@@ -4886,7 +4886,7 @@ LABEL_53:
       v267 = &v304;
       v91 = v88;
       v265 = v91;
-      [v89 fetchWorkoutUUIDsForClusterUUID:v90 handler:v264];
+      [healthKitManager7 fetchWorkoutUUIDsForClusterUUID:clusterUUID handler:v264];
 
       dsema = v91;
       v92 = [MEMORY[0x277CBEAA8] now];
@@ -4899,11 +4899,11 @@ LABEL_53:
         v97 = v96;
         v98 = objc_opt_new();
         v99 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-        v100 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v101 = [v100 filteredArrayUsingPredicate:v99];
-        v102 = [v101 firstObject];
+        callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v101 = [callStackSymbols2 filteredArrayUsingPredicate:v99];
+        firstObject2 = [v101 firstObject];
 
-        [v98 submitToCoreAnalytics:v102 type:1 duration:v97];
+        [v98 submitToCoreAnalytics:firstObject2 type:1 duration:v97];
         v103 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v103, OS_LOG_TYPE_FAULT))
         {
@@ -4929,13 +4929,13 @@ LABEL_53:
       v29 = v94;
       if (!v257 || !v280[5])
       {
-        v110 = [(RTWorkoutRouteManager *)self healthKitManager];
-        v111 = [v87 lastWorkoutUUID];
-        v303 = v111;
+        healthKitManager8 = [(RTWorkoutRouteManager *)self healthKitManager];
+        lastWorkoutUUID = [v87 lastWorkoutUUID];
+        v303 = lastWorkoutUUID;
         v112 = [MEMORY[0x277CBEA60] arrayWithObjects:&v303 count:1];
         v113 = (v280 + 5);
         v263 = v280[5];
-        v109 = [v110 getWorkoutsWithUUIDs:v112 error:&v263];
+        v109 = [healthKitManager8 getWorkoutsWithUUIDs:v112 error:&v263];
         objc_storeStrong(v113, v263);
 
         if (v257 && v280[5])
@@ -4957,17 +4957,17 @@ LABEL_53:
           }
 
           [v257 addObject:v280[5]];
-          v115 = v280[5];
+          firstObject3 = v280[5];
           v280[5] = 0;
         }
 
         else
         {
-          v115 = [v109 firstObject];
+          firstObject3 = [v109 firstObject];
           v116 = v305[5];
           v117 = (v280 + 5);
           v262 = v280[5];
-          [(RTWorkoutRouteManager *)self _relevanceScoreForWorkoutUUIDs:v116 representativeWorkout:v115 latestWorkoutAcrossAllWorkouts:v241 countOfAllWorkouts:v240 currentLocation:v242 error:&v262];
+          [(RTWorkoutRouteManager *)self _relevanceScoreForWorkoutUUIDs:v116 representativeWorkout:firstObject3 latestWorkoutAcrossAllWorkouts:v241 countOfAllWorkouts:v240 currentLocation:v242 error:&v262];
           v119 = v118;
           objc_storeStrong(v117, v262);
           if (v257 && v280[5])
@@ -5076,12 +5076,12 @@ LABEL_53:
             [v87 relevanceValue];
             if (v119 != v145)
             {
-              v146 = [(RTWorkoutRouteManager *)self healthKitManager];
-              v147 = [v87 clusterUUID];
+              healthKitManager9 = [(RTWorkoutRouteManager *)self healthKitManager];
+              clusterUUID2 = [v87 clusterUUID];
               v148 = [MEMORY[0x277CCABB0] numberWithDouble:v119];
               v149 = (v280 + 5);
               v261 = v280[5];
-              [v146 updateWorkoutClusterWithUUID:v147 newBestWorkoutUUID:0 newLastWorkoutUUID:0 newRelevance:v148 newWorkoutAssociations:0 workoutAssociationsToRemove:0 error:&v261];
+              [healthKitManager9 updateWorkoutClusterWithUUID:clusterUUID2 newBestWorkoutUUID:0 newLastWorkoutUUID:0 newRelevance:v148 newWorkoutAssociations:0 workoutAssociationsToRemove:0 error:&v261];
               objc_storeStrong(v149, v261);
 
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -5092,7 +5092,7 @@ LABEL_53:
                   v151 = objc_opt_class();
                   v152 = NSStringFromClass(v151);
                   v153 = NSStringFromSelector(a2);
-                  v154 = [v87 clusterUUID];
+                  clusterUUID3 = [v87 clusterUUID];
                   [v87 relevanceValue];
                   v156 = v155;
                   +[RTRuntime footprint];
@@ -5101,7 +5101,7 @@ LABEL_53:
                   v293 = 2112;
                   v294 = v153;
                   v295 = 2112;
-                  v296 = v154;
+                  v296 = clusterUUID3;
                   v297 = 2048;
                   v298 = v156;
                   v299 = 2048;
@@ -5190,8 +5190,8 @@ LABEL_128:
       v180 = objc_opt_class();
       v181 = NSStringFromClass(v180);
       v182 = NSStringFromSelector(a2);
-      v183 = [MEMORY[0x277CBEAA8] date];
-      [v183 timeIntervalSinceDate:v249];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      [date3 timeIntervalSinceDate:date2];
       v185 = v184;
       +[RTRuntime footprint];
       *buf = 138413314;
@@ -5214,7 +5214,7 @@ LABEL_128:
   if (v238)
   {
     v188 = objc_autoreleasePoolPush();
-    v68 = [MEMORY[0x277CBEAA8] date];
+    date4 = [MEMORY[0x277CBEAA8] date];
 
     v189 = (v280 + 5);
     v260 = v280[5];
@@ -5261,8 +5261,8 @@ LABEL_128:
           v197 = @"NO";
         }
 
-        v198 = [MEMORY[0x277CBEAA8] date];
-        [v198 timeIntervalSinceDate:v68];
+        date5 = [MEMORY[0x277CBEAA8] date];
+        [date5 timeIntervalSinceDate:date4];
         v200 = v199;
         +[RTRuntime footprint];
         *buf = 138413570;
@@ -5286,7 +5286,7 @@ LABEL_128:
 
   else
   {
-    v68 = v249;
+    date4 = date2;
   }
 
   if ([v257 count])
@@ -5312,9 +5312,9 @@ LABEL_128:
       _os_log_error_impl(&dword_2304B3000, v205, OS_LOG_TYPE_ERROR, "%@, %@, %@", buf, 0x20u);
     }
 
-    if (v252)
+    if (handlerCopy)
     {
-      (v252[2])(v252);
+      (handlerCopy[2])(handlerCopy);
     }
   }
 
@@ -5326,17 +5326,17 @@ LABEL_128:
     [v255 setObject:v208 forKeyedSubscript:@"footprint_delta"];
 
     v209 = MEMORY[0x277CCABB0];
-    v210 = [MEMORY[0x277CBEAA8] date];
-    [v210 timeIntervalSinceDate:v248];
+    date6 = [MEMORY[0x277CBEAA8] date];
+    [date6 timeIntervalSinceDate:date];
     v211 = [v209 numberWithDouble:?];
     [v255 setObject:v211 forKeyedSubscript:@"time_elapsed"];
 
-    v212 = [(RTWorkoutRouteManager *)self workoutMetricsManager];
+    workoutMetricsManager = [(RTWorkoutRouteManager *)self workoutMetricsManager];
     v291 = v255;
     v213 = [MEMORY[0x277CBEA60] arrayWithObjects:&v291 count:1];
     v214 = (v280 + 5);
     v259 = v280[5];
-    v215 = [v212 submitMetricsForEvent:4 data:v213 error:&v259];
+    v215 = [workoutMetricsManager submitMetricsForEvent:4 data:v213 error:&v259];
     objc_storeStrong(v214, v259);
 
     v216 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -5363,9 +5363,9 @@ LABEL_128:
       _os_log_error_impl(&dword_2304B3000, v216, OS_LOG_TYPE_ERROR, "%@, %@, metrics submission status, %@, metrics count, %lu", buf, 0x2Au);
     }
 
-    if (v252)
+    if (handlerCopy)
     {
-      v252[2]();
+      handlerCopy[2]();
     }
 
     v255 = 0;
@@ -5373,7 +5373,7 @@ LABEL_128:
 
 LABEL_54:
 
-  v249 = v68;
+  date2 = date4;
 LABEL_55:
 
 LABEL_56:
@@ -5424,13 +5424,13 @@ void __59__RTWorkoutRouteManager__updateRelevanceScoresWithHandler___block_invok
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_deleteWorkout:(id)a3 handler:(id)a4
+- (void)_deleteWorkout:(id)workout handler:(id)handler
 {
   v196[1] = *MEMORY[0x277D85DE8];
-  v148 = a3;
-  v146 = a4;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  if (v148)
+  workoutCopy = workout;
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
+  if (workoutCopy)
   {
     v166 = 0;
     v167 = &v166;
@@ -5440,7 +5440,7 @@ void __59__RTWorkoutRouteManager__updateRelevanceScoresWithHandler___block_invok
     v171 = 0;
     [(RTWorkoutRouteManager *)self _clearInMemoryClusters];
     v6 = dispatch_semaphore_create(0);
-    v7 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+    workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
     v163[0] = MEMORY[0x277D85DD0];
     v163[1] = 3221225472;
     v163[2] = __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke;
@@ -5448,7 +5448,7 @@ void __59__RTWorkoutRouteManager__updateRelevanceScoresWithHandler___block_invok
     v165 = &v166;
     v8 = v6;
     v164 = v8;
-    [v7 deleteWorkoutDistanceWithWorkoutUUID:v148 handler:v163];
+    [workoutDistanceStore deleteWorkoutDistanceWithWorkoutUUID:workoutCopy handler:v163];
 
     v9 = v8;
     v10 = [MEMORY[0x277CBEAA8] now];
@@ -5460,11 +5460,11 @@ void __59__RTWorkoutRouteManager__updateRelevanceScoresWithHandler___block_invok
       v14 = v13;
       v15 = objc_opt_new();
       v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v18 = [v17 filteredArrayUsingPredicate:v16];
-      v19 = [v18 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+      firstObject = [v18 firstObject];
 
-      [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+      [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
       v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
@@ -5497,7 +5497,7 @@ void __59__RTWorkoutRouteManager__updateRelevanceScoresWithHandler___block_invok
 
     if (v167[5])
     {
-      v146[2]();
+      handlerCopy[2]();
 LABEL_85:
 
       _Block_object_dispose(&v166, 8);
@@ -5512,8 +5512,8 @@ LABEL_85:
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
         v32 = NSStringFromSelector(a2);
-        v33 = [MEMORY[0x277CBEAA8] date];
-        [v33 timeIntervalSinceDate:v5];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [date2 timeIntervalSinceDate:date];
         v35 = v34;
         +[RTRuntime footprint];
         *buf = 138413314;
@@ -5521,7 +5521,7 @@ LABEL_85:
         v173 = 2112;
         v174 = v32;
         v175 = 2112;
-        v176 = v148;
+        v176 = workoutCopy;
         v177 = 2048;
         v178 = v35;
         v179 = 2048;
@@ -5530,9 +5530,9 @@ LABEL_85:
       }
     }
 
-    v136 = [MEMORY[0x277CBEAA8] date];
+    date3 = [MEMORY[0x277CBEAA8] date];
 
-    v193 = v148;
+    v193 = workoutCopy;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v193 count:1];
     v38 = v167 + 5;
     obj = v167[5];
@@ -5560,9 +5560,9 @@ LABEL_85:
 
     if (v167[5] || ![v137 count])
     {
-      if (v146)
+      if (handlerCopy)
       {
-        v146[2]();
+        handlerCopy[2]();
       }
     }
 
@@ -5598,11 +5598,11 @@ LABEL_85:
             v188 = 0x3032000000;
             v189 = __Block_byref_object_copy__153;
             v190 = __Block_byref_object_dispose__153;
-            v191 = [MEMORY[0x277CBEA60] array];
+            array = [MEMORY[0x277CBEA60] array];
             v47 = dispatch_semaphore_create(0);
 
-            v48 = [(RTWorkoutRouteManager *)self healthKitManager];
-            v49 = [v145 clusterUUID];
+            healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+            clusterUUID = [v145 clusterUUID];
             v154[0] = MEMORY[0x277D85DD0];
             v154[1] = 3221225472;
             v154[2] = __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_177;
@@ -5611,7 +5611,7 @@ LABEL_85:
             v157 = &v186;
             v50 = v47;
             v155 = v50;
-            [v48 fetchWorkoutUUIDsForClusterUUID:v49 handler:v154];
+            [healthKitManager fetchWorkoutUUIDsForClusterUUID:clusterUUID handler:v154];
 
             v9 = v50;
             v51 = [MEMORY[0x277CBEAA8] now];
@@ -5624,11 +5624,11 @@ LABEL_85:
               v56 = v55;
               v57 = objc_opt_new();
               v58 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-              v59 = [MEMORY[0x277CCACC8] callStackSymbols];
-              v60 = [v59 filteredArrayUsingPredicate:v58];
-              v61 = [v60 firstObject];
+              callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+              v60 = [callStackSymbols2 filteredArrayUsingPredicate:v58];
+              firstObject2 = [v60 firstObject];
 
-              [v57 submitToCoreAnalytics:v61 type:1 duration:v56];
+              [v57 submitToCoreAnalytics:firstObject2 type:1 duration:v56];
               v62 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
               {
@@ -5657,7 +5657,7 @@ LABEL_85:
             {
               v68 = v28;
               v69 = 0;
-              v70 = v67[5];
+              clusterUUID6 = v67[5];
               v67[5] = v68;
 LABEL_37:
 
@@ -5677,14 +5677,14 @@ LABEL_37:
                 v72 = objc_opt_class();
                 v73 = NSStringFromClass(v72);
                 v74 = NSStringFromSelector(a2);
-                v75 = [v145 clusterUUID];
+                clusterUUID2 = [v145 clusterUUID];
                 v76 = [v187[5] count];
                 *buf = 138413058;
                 *&buf[4] = v73;
                 v173 = 2112;
                 v174 = v74;
                 v175 = 2112;
-                v176 = v75;
+                v176 = clusterUUID2;
                 v177 = 2048;
                 v178 = v76;
                 _os_log_impl(&dword_2304B3000, v71, OS_LOG_TYPE_INFO, "%@, %@, cluster, %@, number of workouts, %lu", buf, 0x2Au);
@@ -5703,13 +5703,13 @@ LABEL_37:
                   v97 = objc_opt_class();
                   v98 = NSStringFromClass(v97);
                   v99 = NSStringFromSelector(a2);
-                  v100 = [v145 clusterUUID];
+                  clusterUUID3 = [v145 clusterUUID];
                   *buf = 138412802;
                   *&buf[4] = v98;
                   v173 = 2112;
                   v174 = v99;
                   v175 = 2112;
-                  v176 = v100;
+                  v176 = clusterUUID3;
                   _os_log_impl(&dword_2304B3000, v96, OS_LOG_TYPE_INFO, "%@, %@, case 2/2, updating the cluster with cluster UUID, %@", buf, 0x20u);
                 }
               }
@@ -5720,7 +5720,7 @@ LABEL_37:
               v151[1] = 3221225472;
               v151[2] = __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_182;
               v151[3] = &unk_2788C9270;
-              v152 = v148;
+              v152 = workoutCopy;
               v103 = [v102 predicateWithBlock:v151];
               v104 = [v101 filteredArrayUsingPredicate:v103];
 
@@ -5752,8 +5752,8 @@ LABEL_37:
                       v112 = @"NO";
                     }
 
-                    v113 = [MEMORY[0x277CBEAA8] date];
-                    [v113 timeIntervalSinceDate:v136];
+                    date4 = [MEMORY[0x277CBEAA8] date];
+                    [date4 timeIntervalSinceDate:date3];
                     v115 = v114;
                     +[RTRuntime footprint];
                     *buf = 138413314;
@@ -5778,7 +5778,7 @@ LABEL_37:
                 v69 = 0;
               }
 
-              v70 = v152;
+              clusterUUID6 = v152;
               goto LABEL_37;
             }
 
@@ -5790,22 +5790,22 @@ LABEL_37:
                 v80 = objc_opt_class();
                 v81 = NSStringFromClass(v80);
                 v82 = NSStringFromSelector(a2);
-                v83 = [v145 clusterUUID];
+                clusterUUID4 = [v145 clusterUUID];
                 *buf = 138412802;
                 *&buf[4] = v81;
                 v173 = 2112;
                 v174 = v82;
                 v175 = 2112;
-                v176 = v83;
+                v176 = clusterUUID4;
                 _os_log_impl(&dword_2304B3000, v79, OS_LOG_TYPE_INFO, "%@, %@, case 1/2, deleting the entire cluster with cluster UUID, %@", buf, 0x20u);
               }
             }
 
-            v84 = [(RTWorkoutRouteManager *)self healthKitManager];
-            v85 = [v145 clusterUUID];
+            healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+            clusterUUID5 = [v145 clusterUUID];
             v86 = v167 + 5;
             v153 = v167[5];
-            v87 = [v84 deleteWorkoutCluster:v85 error:&v153];
+            v87 = [healthKitManager2 deleteWorkoutCluster:clusterUUID5 error:&v153];
             objc_storeStrong(v86, v153);
 
             if (v167[5])
@@ -5821,8 +5821,8 @@ LABEL_39:
                 v117 = MEMORY[0x277CCA9B8];
                 v184 = v140;
                 v118 = MEMORY[0x277CCACA8];
-                v70 = [v145 clusterUUID];
-                v119 = [v118 stringWithFormat:@"workout cluster with clusterUUID, %@, not deleted", v70];
+                clusterUUID6 = [v145 clusterUUID];
+                v119 = [v118 stringWithFormat:@"workout cluster with clusterUUID, %@, not deleted", clusterUUID6];
                 v185 = v119;
                 v120 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v185 forKeys:&v184 count:1];
                 v121 = [v117 errorWithDomain:v139 code:0 userInfo:v120];
@@ -5836,15 +5836,15 @@ LABEL_39:
               v69 = 1;
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
-                v70 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
-                if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
+                clusterUUID6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
+                if (os_log_type_enabled(clusterUUID6, OS_LOG_TYPE_INFO))
                 {
                   v88 = objc_opt_class();
                   v89 = NSStringFromClass(v88);
                   v90 = NSStringFromSelector(a2);
-                  v91 = [v145 clusterUUID];
-                  v92 = [MEMORY[0x277CBEAA8] date];
-                  [v92 timeIntervalSinceDate:v136];
+                  clusterUUID7 = [v145 clusterUUID];
+                  date5 = [MEMORY[0x277CBEAA8] date];
+                  [date5 timeIntervalSinceDate:date3];
                   v94 = v93;
                   +[RTRuntime footprint];
                   *buf = 138413314;
@@ -5852,12 +5852,12 @@ LABEL_39:
                   v173 = 2112;
                   v174 = v90;
                   v175 = 2112;
-                  v176 = v91;
+                  v176 = clusterUUID7;
                   v177 = 2048;
                   v178 = v94;
                   v179 = 2048;
                   v180 = v95;
-                  _os_log_impl(&dword_2304B3000, v70, OS_LOG_TYPE_INFO, "%@, %@, deleted the entire cluster with cluster UUID, %@, latency, %.4f sec, footprint, %.4f MB", buf, 0x34u);
+                  _os_log_impl(&dword_2304B3000, clusterUUID6, OS_LOG_TYPE_INFO, "%@, %@, deleted the entire cluster with cluster UUID, %@, latency, %.4f sec, footprint, %.4f MB", buf, 0x34u);
 
                   v69 = 1;
                 }
@@ -5890,13 +5890,13 @@ LABEL_74:
 
       if (v167[5])
       {
-        v146[2]();
+        handlerCopy[2]();
       }
 
       else
       {
         v123 = objc_autoreleasePoolPush();
-        v124 = [MEMORY[0x277CBEAA8] date];
+        date6 = [MEMORY[0x277CBEAA8] date];
 
         v125 = v167 + 5;
         v149 = v167[5];
@@ -5920,8 +5920,8 @@ LABEL_74:
               v131 = @"NO";
             }
 
-            v132 = [MEMORY[0x277CBEAA8] date];
-            [v132 timeIntervalSinceDate:v124];
+            date7 = [MEMORY[0x277CBEAA8] date];
+            [date7 timeIntervalSinceDate:date6];
             v134 = v133;
             +[RTRuntime footprint];
             *buf = 138413570;
@@ -5941,12 +5941,12 @@ LABEL_74:
         }
 
         objc_autoreleasePoolPop(v123);
-        (v146[2])(v146, v167[5]);
-        v136 = v124;
+        (handlerCopy[2])(handlerCopy, v167[5]);
+        date3 = date6;
       }
     }
 
-    v5 = v136;
+    date = date3;
     goto LABEL_85;
   }
 
@@ -5955,7 +5955,7 @@ LABEL_74:
   v195 = @"requires valid UUID.";
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v195 forKeys:&v194 count:1];
   v27 = [v25 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v26];
-  (v146[2])(v146, v27);
+  (handlerCopy[2])(handlerCopy, v27);
 
 LABEL_86:
 }
@@ -5984,15 +5984,15 @@ void __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_177(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_computeAndSaveDistanceMatrixForWorkoutUUIDs:(id)a3 distanceMetric:(int64_t)a4 error:(id *)a5
+- (BOOL)_computeAndSaveDistanceMatrixForWorkoutUUIDs:(id)ds distanceMetric:(int64_t)metric error:(id *)error
 {
   v757[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v612 = v6;
-  if (v6)
+  dsCopy = ds;
+  v612 = dsCopy;
+  if (dsCopy)
   {
-    v7 = v6;
-    v541 = a4;
+    v7 = dsCopy;
+    metricCopy = metric;
     v8 = objc_opt_new();
     v9 = objc_opt_new();
     v719 = 0;
@@ -6006,9 +6006,9 @@ void __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_177(uint6
     {
       v542 = v9;
       v540 = objc_autoreleasePoolPush();
-      v601 = [MEMORY[0x277CBEAA8] date];
-      v14 = [MEMORY[0x277CBEAA8] date];
-      [v14 timeIntervalSinceDate:v601];
+      date = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:date];
       v16 = v15;
       v591 = objc_opt_new();
       v586 = objc_opt_new();
@@ -6126,7 +6126,7 @@ void __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_177(uint6
           v669 = __Block_byref_object_dispose__153;
           v670 = 0;
           v38 = dispatch_semaphore_create(0);
-          v39 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+          workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
           v40 = [v612 objectAtIndexedSubscript:v610];
           v661[0] = MEMORY[0x277D85DD0];
           v661[1] = 3221225472;
@@ -6136,7 +6136,7 @@ void __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_177(uint6
           v664 = &v719;
           v41 = v38;
           v662 = v41;
-          [v39 fetchWorkoutDistancesWithWorkout:v40 handler:v661];
+          [workoutDistanceStore fetchWorkoutDistancesWithWorkout:v40 handler:v661];
 
           dsema = v41;
           v42 = [MEMORY[0x277CBEAA8] now];
@@ -6148,11 +6148,11 @@ void __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_177(uint6
             v46 = v45;
             v47 = objc_opt_new();
             v48 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-            v49 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v50 = [v49 filteredArrayUsingPredicate:v48];
-            v51 = [v50 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v50 = [callStackSymbols filteredArrayUsingPredicate:v48];
+            firstObject = [v50 firstObject];
 
-            [v47 submitToCoreAnalytics:v51 type:1 duration:v46];
+            [v47 submitToCoreAnalytics:firstObject type:1 duration:v46];
             v52 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v52, OS_LOG_TYPE_FAULT))
             {
@@ -6260,11 +6260,11 @@ void __48__RTWorkoutRouteManager__deleteWorkout_handler___block_invoke_177(uint6
 
                 v66 = *(*(&v657 + 1) + 8 * j);
                 v67 = objc_autoreleasePoolPush();
-                v68 = [v66 firstWorkout];
-                [v61 addObject:v68];
+                firstWorkout = [v66 firstWorkout];
+                [v61 addObject:firstWorkout];
 
-                v69 = [v66 secondWorkout];
-                [v61 addObject:v69];
+                secondWorkout = [v66 secondWorkout];
+                [v61 addObject:secondWorkout];
 
                 objc_autoreleasePoolPop(v67);
               }
@@ -6391,8 +6391,8 @@ LABEL_365:
             }
 
             v82[3] = 0;
-            v84 = [MEMORY[0x277CBEAA8] date];
-            [v84 timeIntervalSinceDate:v601];
+            date3 = [MEMORY[0x277CBEAA8] date];
+            [date3 timeIntervalSinceDate:date];
             v16 = v85;
 
             if (v16 > kRTMaxTimeIntervalPerFunction && [(RTWorkoutRouteManager *)self isSchedulerTriggered])
@@ -6401,9 +6401,9 @@ LABEL_365:
               goto LABEL_129;
             }
 
-            v87 = [MEMORY[0x277CBEAA8] date];
+            date4 = [MEMORY[0x277CBEAA8] date];
 
-            v603 = [MEMORY[0x277CBEAA8] date];
+            date5 = [MEMORY[0x277CBEAA8] date];
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
               v88 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -6443,8 +6443,8 @@ LABEL_365:
                   v97 = objc_opt_class();
                   v98 = NSStringFromClass(v97);
                   v99 = NSStringFromSelector(a2);
-                  v100 = [MEMORY[0x277CBEAA8] date];
-                  [v100 timeIntervalSinceDate:v603];
+                  date6 = [MEMORY[0x277CBEAA8] date];
+                  [date6 timeIntervalSinceDate:date5];
                   v102 = v101;
                   +[RTRuntime footprint];
                   *buf = 138413570;
@@ -6468,7 +6468,7 @@ LABEL_365:
 
               v105 = MEMORY[0x277CCABB0];
               log = [MEMORY[0x277CBEAA8] date];
-              [log timeIntervalSinceDate:v87];
+              [log timeIntervalSinceDate:date4];
               v106 = [v105 numberWithDouble:?];
               v107 = (v720 + 5);
               obj = v720[5];
@@ -6513,7 +6513,7 @@ LABEL_127:
                 v86 = 19;
               }
 
-              v14 = v87;
+              date2 = date4;
 LABEL_129:
               objc_autoreleasePoolPop(context);
               if (v86 != 19 && v86)
@@ -6682,40 +6682,40 @@ LABEL_81:
               v130 = objc_opt_class();
               v565 = NSStringFromClass(v130);
               v583 = NSStringFromSelector(a2);
-              v548 = [v27 UUID];
+              uUID = [v27 UUID];
               v561 = [objc_opt_class() stringFromWorkoutActivityType:{-[NSObject workoutActivityType](v27, "workoutActivityType")}];
-              v557 = [v27 startDate];
-              v578 = [v557 stringFromDate];
-              v554 = [v27 sourceRevision];
-              v551 = [v554 source];
-              v545 = [v551 name];
-              v131 = [log UUID];
+              startDate = [v27 startDate];
+              stringFromDate = [startDate stringFromDate];
+              sourceRevision = [v27 sourceRevision];
+              source = [sourceRevision source];
+              name = [source name];
+              uUID2 = [log UUID];
               v132 = [objc_opt_class() stringFromWorkoutActivityType:{-[NSObject workoutActivityType](log, "workoutActivityType")}];
-              v133 = [log startDate];
-              v134 = [v133 stringFromDate];
-              v135 = [log sourceRevision];
-              v136 = [v135 source];
-              v137 = [v136 name];
+              startDate2 = [log startDate];
+              stringFromDate2 = [startDate2 stringFromDate];
+              sourceRevision2 = [log sourceRevision];
+              source2 = [sourceRevision2 source];
+              name2 = [source2 name];
               *buf = 138414594;
               *&buf[4] = v565;
               v728 = 2112;
               v729 = v583;
               v730 = 2112;
-              v731 = v548;
+              v731 = uUID;
               v732 = 2112;
               v733 = v561;
               v734 = 2112;
-              v735 = v578;
+              v735 = stringFromDate;
               v736 = 2112;
-              v737 = v545;
+              v737 = name;
               v738 = 2112;
-              v739 = v131;
+              v739 = uUID2;
               v740 = 2112;
               v741 = v132;
               v742 = 2112;
-              v743 = v134;
+              v743 = stringFromDate2;
               v744 = 2112;
-              v745 = v137;
+              v745 = name2;
               _os_log_impl(&dword_2304B3000, v543, OS_LOG_TYPE_INFO, "%@, %@, workout UUID, %@, activityType, %@, startDate, %@, source, %@, other workout UUID, %@, other activityType, %@, other startDate, %@, other source, %@,", buf, 0x66u);
 
               v129 = v543;
@@ -6733,7 +6733,7 @@ LABEL_81:
           }
 
           v584 = objc_opt_new();
-          v138 = [MEMORY[0x277CBEAA8] date];
+          date7 = [MEMORY[0x277CBEAA8] date];
 
           v139 = (v720 + 5);
           v650 = v720[5];
@@ -6764,8 +6764,8 @@ LABEL_81:
           if (v140)
           {
             v142 = MEMORY[0x277CCABB0];
-            v143 = [MEMORY[0x277CBEAA8] date];
-            [v143 timeIntervalSinceDate:v138];
+            date8 = [MEMORY[0x277CBEAA8] date];
+            [date8 timeIntervalSinceDate:date7];
             v144 = [v142 numberWithDouble:?];
             v145 = (v720 + 5);
             v649 = v720[5];
@@ -6801,8 +6801,8 @@ LABEL_81:
                 v170 = objc_opt_class();
                 v171 = NSStringFromClass(v170);
                 v172 = NSStringFromSelector(a2);
-                v173 = [MEMORY[0x277CBEAA8] date];
-                [v173 timeIntervalSinceDate:v603];
+                date9 = [MEMORY[0x277CBEAA8] date];
+                [date9 timeIntervalSinceDate:date5];
                 v175 = v174;
                 +[RTRuntime footprint];
                 *buf = 138413570;
@@ -6826,7 +6826,7 @@ LABEL_81:
 
             v86 = 17;
 LABEL_125:
-            v87 = v138;
+            date4 = date7;
             v119 = v584;
 LABEL_126:
 
@@ -6844,7 +6844,7 @@ LABEL_126:
             [v591 setObject:v150 forKeyedSubscript:v151];
           }
 
-          v562 = [MEMORY[0x277CBEAA8] date];
+          date10 = [MEMORY[0x277CBEAA8] date];
 
           if (!v700[3])
           {
@@ -6969,7 +6969,7 @@ LABEL_142:
             v146 = v720[5];
             v720[5] = 0;
             v86 = 19;
-            v138 = v562;
+            date7 = date10;
 LABEL_123:
             v27 = v579;
             goto LABEL_124;
@@ -6987,8 +6987,8 @@ LABEL_123:
           if (v558)
           {
             v179 = MEMORY[0x277CCABB0];
-            v180 = [MEMORY[0x277CBEAA8] date];
-            [v180 timeIntervalSinceDate:v562];
+            date11 = [MEMORY[0x277CBEAA8] date];
+            [date11 timeIntervalSinceDate:date10];
             v181 = [v179 numberWithDouble:?];
             v182 = (v720 + 5);
             v645 = v720[5];
@@ -6997,7 +6997,7 @@ LABEL_123:
             goto LABEL_212;
           }
 
-          v138 = [MEMORY[0x277CBEAA8] date];
+          date7 = [MEMORY[0x277CBEAA8] date];
 
           if (!v716[3])
           {
@@ -7273,20 +7273,20 @@ LABEL_334:
           }
 
           v243 = MEMORY[0x277CCABB0];
-          v180 = [MEMORY[0x277CBEAA8] date];
-          [v180 timeIntervalSinceDate:v138];
+          date11 = [MEMORY[0x277CBEAA8] date];
+          [date11 timeIntervalSinceDate:date7];
           v181 = [v243 numberWithDouble:?];
           v182 = (v720 + 5);
           v638 = v720[5];
           [(RTWorkoutRouteManager *)self _updateMetricsForCurrentTime:v181 distanceMatrixKey:5 error:&v638];
           v183 = v638;
-          v562 = v138;
+          date10 = date7;
 LABEL_212:
           v244 = v183;
           v245 = *v182;
           *v182 = v244;
 
-          v138 = [MEMORY[0x277CBEAA8] date];
+          date7 = [MEMORY[0x277CBEAA8] date];
 
           if (v558)
           {
@@ -7335,8 +7335,8 @@ LABEL_122:
             if (v251)
             {
               v252 = MEMORY[0x277CCABB0];
-              v253 = [MEMORY[0x277CBEAA8] date];
-              [v253 timeIntervalSinceDate:v138];
+              date12 = [MEMORY[0x277CBEAA8] date];
+              [date12 timeIntervalSinceDate:date7];
               v254 = [v252 numberWithDouble:?];
               v255 = (v720 + 5);
               v636 = v720[5];
@@ -7359,7 +7359,7 @@ LABEL_122:
             v258 = 0;
           }
 
-          v259 = [MEMORY[0x277CBEAA8] date];
+          date13 = [MEMORY[0x277CBEAA8] date];
 
           if (v258)
           {
@@ -7400,15 +7400,15 @@ LABEL_233:
               v146 = v720[5];
               v720[5] = 0;
               v86 = 19;
-              v138 = v259;
+              date7 = date13;
               goto LABEL_123;
             }
 
             if (v265)
             {
               v267 = MEMORY[0x277CCABB0];
-              v268 = [MEMORY[0x277CBEAA8] date];
-              [v268 timeIntervalSinceDate:v259];
+              date14 = [MEMORY[0x277CBEAA8] date];
+              [date14 timeIntervalSinceDate:date13];
               v269 = [v267 numberWithDouble:?];
               v270 = (v720 + 5);
               v634 = v720[5];
@@ -7431,7 +7431,7 @@ LABEL_233:
             v273 = 0;
           }
 
-          v138 = [MEMORY[0x277CBEAA8] date];
+          date7 = [MEMORY[0x277CBEAA8] date];
 
           if (v273)
           {
@@ -7474,8 +7474,8 @@ LABEL_244:
             if (v279)
             {
               v280 = MEMORY[0x277CCABB0];
-              v281 = [MEMORY[0x277CBEAA8] date];
-              [v281 timeIntervalSinceDate:v138];
+              date15 = [MEMORY[0x277CBEAA8] date];
+              [date15 timeIntervalSinceDate:date7];
               v282 = [v280 numberWithDouble:?];
               v283 = (v720 + 5);
               v632 = v720[5];
@@ -7498,7 +7498,7 @@ LABEL_244:
             v286 = 0;
           }
 
-          v287 = [MEMORY[0x277CBEAA8] date];
+          date16 = [MEMORY[0x277CBEAA8] date];
 
           if (v286)
           {
@@ -7538,15 +7538,15 @@ LABEL_317:
             v146 = v720[5];
             v720[5] = 0;
             v86 = 19;
-            v138 = v287;
+            date7 = date16;
             goto LABEL_123;
           }
 
           if (v293)
           {
             v295 = MEMORY[0x277CCABB0];
-            v296 = [MEMORY[0x277CBEAA8] date];
-            [v296 timeIntervalSinceDate:v287];
+            date17 = [MEMORY[0x277CBEAA8] date];
+            [date17 timeIntervalSinceDate:date16];
             v297 = [v295 numberWithDouble:?];
             v298 = (v720 + 5);
             v630 = v720[5];
@@ -7586,13 +7586,13 @@ LABEL_317:
 
           if (v322)
           {
-            v360 = [v579 UUID];
-            v361 = [v597 containsObject:v360];
+            uUID3 = [v579 UUID];
+            v361 = [v597 containsObject:uUID3];
 
             if ((v361 & 1) == 0)
             {
-              v362 = [v579 UUID];
-              [v597 addObject:v362];
+              uUID4 = [v579 UUID];
+              [v597 addObject:uUID4];
             }
 
             goto LABEL_253;
@@ -7628,13 +7628,13 @@ LABEL_317:
 
           if (v370)
           {
-            v387 = [log UUID];
-            v388 = [v597 containsObject:v387];
+            uUID5 = [log UUID];
+            v388 = [v597 containsObject:uUID5];
 
             if ((v388 & 1) == 0)
             {
-              v389 = [log UUID];
-              [v597 addObject:v389];
+              uUID6 = [log UUID];
+              [v597 addObject:uUID6];
             }
 
 LABEL_253:
@@ -7657,7 +7657,7 @@ LABEL_256:
             v301 = 0;
           }
 
-          v138 = [MEMORY[0x277CBEAA8] date];
+          date7 = [MEMORY[0x277CBEAA8] date];
 
           v27 = v579;
           if (v301)
@@ -7721,8 +7721,8 @@ LABEL_269:
             if (v307)
             {
               v308 = MEMORY[0x277CCABB0];
-              v309 = [MEMORY[0x277CBEAA8] date];
-              [v309 timeIntervalSinceDate:v138];
+              date18 = [MEMORY[0x277CBEAA8] date];
+              [date18 timeIntervalSinceDate:date7];
               v310 = [v308 numberWithDouble:?];
               v311 = (v720 + 5);
               v626 = v720[5];
@@ -7833,10 +7833,10 @@ LABEL_269:
               }
             }
 
-            v353 = [v579 workoutActivityType];
+            workoutActivityType = [v579 workoutActivityType];
             v354 = (v720 + 5);
             v623 = v720[5];
-            v314 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:v541 isDecimated:v566 workoutActivityType:v353 error:&v623];
+            v314 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:metricCopy isDecimated:v566 workoutActivityType:workoutActivityType error:&v623];
             objc_storeStrong(v354, v623);
             if (v602 && v720[5])
             {
@@ -7859,7 +7859,7 @@ LABEL_269:
               goto LABEL_340;
             }
 
-            v363 = [MEMORY[0x277CBEAA8] date];
+            date19 = [MEMORY[0x277CBEAA8] date];
 
             v364 = (v720 + 5);
             v622 = v720[5];
@@ -7885,24 +7885,24 @@ LABEL_269:
               }
 
               [v602 addObject:v720[5]];
-              v138 = v363;
+              date7 = date19;
               goto LABEL_341;
             }
 
             v375 = MEMORY[0x277CCABB0];
             if (v318 == v17)
             {
-              v376 = [MEMORY[0x277CBEAA8] date];
-              [v376 timeIntervalSinceDate:v363];
+              date20 = [MEMORY[0x277CBEAA8] date];
+              [date20 timeIntervalSinceDate:date19];
               v377 = [v375 numberWithDouble:?];
               v378 = (v720 + 5);
               v621 = v720[5];
               [(RTWorkoutRouteManager *)self _updateMetricsForCurrentTime:v377 distanceMatrixKey:10 error:&v621];
               objc_storeStrong(v378, v621);
 
-              v138 = [MEMORY[0x277CBEAA8] date];
+              date7 = [MEMORY[0x277CBEAA8] date];
 
-              v379 = [(RTWorkoutRouteManager *)self distanceCalculator];
+              distanceCalculator = [(RTWorkoutRouteManager *)self distanceCalculator];
               v380 = v716[3];
               v381 = v712[3];
               v382 = v692[3];
@@ -7910,7 +7910,7 @@ LABEL_269:
               [v314 doubleValue];
               v384 = (v720 + 5);
               v620 = v720[5];
-              [v379 distanceFromLocations:v380 countOfFromLocations:v381 toLocations:v382 countOfToLocations:v383 distanceMetric:v541 threshold:&v620 error:?];
+              [distanceCalculator distanceFromLocations:v380 countOfFromLocations:v381 toLocations:v382 countOfToLocations:v383 distanceMetric:metricCopy threshold:&v620 error:?];
               v318 = v385;
               objc_storeStrong(v384, v620);
 
@@ -7950,8 +7950,8 @@ LABEL_341:
               v418 = MEMORY[0x277CCABB0];
               if (v318 <= v419)
               {
-                v420 = [MEMORY[0x277CBEAA8] date];
-                [v420 timeIntervalSinceDate:v138];
+                date21 = [MEMORY[0x277CBEAA8] date];
+                [date21 timeIntervalSinceDate:date7];
                 v421 = [v418 numberWithDouble:?];
                 v422 = (v720 + 5);
                 v618 = v720[5];
@@ -7961,8 +7961,8 @@ LABEL_341:
 
               else
               {
-                v420 = [MEMORY[0x277CBEAA8] date];
-                [v420 timeIntervalSinceDate:v138];
+                date21 = [MEMORY[0x277CBEAA8] date];
+                [date21 timeIntervalSinceDate:date7];
                 v421 = [v418 numberWithDouble:?];
                 v422 = (v720 + 5);
                 v619 = v720[5];
@@ -7973,14 +7973,14 @@ LABEL_341:
 
             else
             {
-              v420 = [MEMORY[0x277CBEAA8] date];
-              [v420 timeIntervalSinceDate:v363];
+              date21 = [MEMORY[0x277CBEAA8] date];
+              [date21 timeIntervalSinceDate:date19];
               v421 = [v375 numberWithDouble:?];
               v422 = (v720 + 5);
               v617 = v720[5];
               [(RTWorkoutRouteManager *)self _updateMetricsForCurrentTime:v421 distanceMatrixKey:12 error:&v617];
               v423 = v617;
-              v138 = v363;
+              date7 = date19;
             }
 
             v435 = v423;
@@ -8001,12 +8001,12 @@ LABEL_281:
           }
 
           v323 = [RTWorkoutDistance alloc];
-          v324 = [v27 UUID];
-          v325 = [log UUID];
+          uUID7 = [v27 UUID];
+          uUID8 = [log UUID];
           v326 = [objc_opt_class() RTHealthKitWorkoutActivityTypeFromHKWorkoutActivityType:{-[NSObject workoutActivityType](v27, "workoutActivityType")}];
           v327 = [MEMORY[0x277CBEAA8] now];
           LOBYTE(v537) = 0;
-          v146 = [(RTWorkoutDistance *)v323 initWithObjectID:0 firstWorkout:v324 secondWorkout:v325 distanceMetric:v541 workoutActivityType:v326 areBothWorkoutsDecimated:v566 distance:v318 isVisited:v537 date:v327];
+          v146 = [(RTWorkoutDistance *)v323 initWithObjectID:0 firstWorkout:uUID7 secondWorkout:uUID8 distanceMetric:metricCopy workoutActivityType:v326 areBothWorkoutsDecimated:v566 distance:v318 isVisited:v537 date:v327];
 
           [v542 addObject:v146];
           if ([v542 count] >= 0x64)
@@ -8042,33 +8042,33 @@ LABEL_281:
             v330 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v330, OS_LOG_TYPE_INFO))
             {
-              v538 = v138;
+              v538 = date7;
               v539 = v17;
               v331 = objc_opt_class();
               v567 = NSStringFromClass(v331);
               v580 = NSStringFromSelector(a2);
-              v546 = [v27 UUID];
-              v544 = [log UUID];
-              v563 = [(RTWorkoutRouteManager *)self healthKitManager];
-              v555 = [v563 _getTotalDistanceForWorkout:v27];
-              v559 = [MEMORY[0x277CCDAB0] meterUnit];
-              [v555 doubleValueForUnit:v559];
+              uUID9 = [v27 UUID];
+              uUID10 = [log UUID];
+              healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+              v555 = [healthKitManager _getTotalDistanceForWorkout:v27];
+              meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+              [v555 doubleValueForUnit:meterUnit];
               v333 = v332;
-              v552 = [(RTWorkoutRouteManager *)self healthKitManager];
-              [v552 _getDurationForWorkout:v27];
+              healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+              [healthKitManager2 _getDurationForWorkout:v27];
               v335 = v334;
               v336 = v712[3];
-              v549 = [(RTWorkoutRouteManager *)self healthKitManager];
-              v337 = [v549 _getTotalDistanceForWorkout:log];
-              v338 = [MEMORY[0x277CCDAB0] meterUnit];
-              [v337 doubleValueForUnit:v338];
+              healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
+              v337 = [healthKitManager3 _getTotalDistanceForWorkout:log];
+              meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+              [v337 doubleValueForUnit:meterUnit2];
               v340 = v339;
-              v341 = [(RTWorkoutRouteManager *)self healthKitManager];
-              [v341 _getDurationForWorkout:log];
+              healthKitManager4 = [(RTWorkoutRouteManager *)self healthKitManager];
+              [healthKitManager4 _getDurationForWorkout:log];
               v343 = v342;
               v344 = v688[3];
-              v345 = [MEMORY[0x277CBEAA8] date];
-              [v345 timeIntervalSinceDate:v603];
+              date22 = [MEMORY[0x277CBEAA8] date];
+              [date22 timeIntervalSinceDate:date5];
               v347 = v346;
               +[RTRuntime footprint];
               *buf = 138415874;
@@ -8080,9 +8080,9 @@ LABEL_281:
               v732 = 2048;
               v733 = v613;
               v734 = 2112;
-              v735 = v546;
+              v735 = uUID9;
               v736 = 2112;
-              v737 = v544;
+              v737 = uUID10;
               v738 = 2112;
               v739 = v146;
               v740 = 2048;
@@ -8104,7 +8104,7 @@ LABEL_281:
               _os_log_impl(&dword_2304B3000, v330, OS_LOG_TYPE_INFO, "%@, %@, comparison done between i, %lu, j, %lu, workout, %@, other workout, %@, workout distance record, %@, workout distance, %.3f meters, workout duration, %.3f sec, locations count, %lu, other workout distance, %.3f meters, other workout duration, %.3f sec, other locations count, %lu, latency, %.4f sec, footprint, %.4f MB", buf, 0x98u);
 
               v17 = v539;
-              v138 = v538;
+              date7 = v538;
             }
           }
 
@@ -8163,34 +8163,34 @@ LABEL_366:
           v572 = [v612 count];
           loga = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
           contexta = [loga objectForKeyedSubscript:@"distance_matrix_count_prefiltered_metadata"];
-          v570 = [contexta unsignedIntegerValue];
-          v604 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          dsemaa = [v604 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_firstlocation"];
-          v568 = [dsemaa unsignedIntegerValue];
-          v598 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v596 = [v598 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_locationscount"];
-          v564 = [v596 unsignedIntegerValue];
-          v594 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v592 = [v594 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_lastlocation"];
-          v560 = [v592 unsignedIntegerValue];
-          v590 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v587 = [v590 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_centroid"];
-          v556 = [v587 unsignedIntegerValue];
-          v585 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v582 = [v585 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_iou"];
-          v553 = [v582 unsignedIntegerValue];
-          v581 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v577 = [v581 objectForKeyedSubscript:@"distance_matrix_count_lessthan_orequal_quicksimilarity"];
-          v550 = [v577 unsignedIntegerValue];
-          v576 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v501 = [v576 objectForKeyedSubscript:@"distance_matrix_count_exceeded_quicksimilarity"];
-          v547 = [v501 unsignedIntegerValue];
-          v502 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v503 = [v502 objectForKeyedSubscript:@"distance_matrix_count_lessthan_orequal_dtw"];
-          v504 = [v503 unsignedIntegerValue];
-          v505 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          v506 = [v505 objectForKeyedSubscript:@"distance_matrix_count_exceeded_dtw"];
-          v507 = [v506 unsignedIntegerValue];
+          unsignedIntegerValue = [contexta unsignedIntegerValue];
+          processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          dsemaa = [processWorkoutMetrics objectForKeyedSubscript:@"distance_matrix_count_prefiltered_firstlocation"];
+          unsignedIntegerValue2 = [dsemaa unsignedIntegerValue];
+          processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v596 = [processWorkoutMetrics2 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_locationscount"];
+          unsignedIntegerValue3 = [v596 unsignedIntegerValue];
+          processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v592 = [processWorkoutMetrics3 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_lastlocation"];
+          unsignedIntegerValue4 = [v592 unsignedIntegerValue];
+          processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v587 = [processWorkoutMetrics4 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_centroid"];
+          unsignedIntegerValue5 = [v587 unsignedIntegerValue];
+          processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v582 = [processWorkoutMetrics5 objectForKeyedSubscript:@"distance_matrix_count_prefiltered_iou"];
+          unsignedIntegerValue6 = [v582 unsignedIntegerValue];
+          processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v577 = [processWorkoutMetrics6 objectForKeyedSubscript:@"distance_matrix_count_lessthan_orequal_quicksimilarity"];
+          unsignedIntegerValue7 = [v577 unsignedIntegerValue];
+          processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v501 = [processWorkoutMetrics7 objectForKeyedSubscript:@"distance_matrix_count_exceeded_quicksimilarity"];
+          unsignedIntegerValue8 = [v501 unsignedIntegerValue];
+          processWorkoutMetrics8 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v503 = [processWorkoutMetrics8 objectForKeyedSubscript:@"distance_matrix_count_lessthan_orequal_dtw"];
+          unsignedIntegerValue9 = [v503 unsignedIntegerValue];
+          processWorkoutMetrics9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          v506 = [processWorkoutMetrics9 objectForKeyedSubscript:@"distance_matrix_count_exceeded_dtw"];
+          unsignedIntegerValue10 = [v506 unsignedIntegerValue];
           v508 = _RTSafeArray();
           v509 = _RTMultiErrorCreate();
           +[RTRuntime footprint];
@@ -8201,25 +8201,25 @@ LABEL_366:
           v730 = 2048;
           v731 = (v572 * (v574 - 1)) >> 1;
           v732 = 2048;
-          v733 = v570;
+          v733 = unsignedIntegerValue;
           v734 = 2048;
-          v735 = v568;
+          v735 = unsignedIntegerValue2;
           v736 = 2048;
-          v737 = v564;
+          v737 = unsignedIntegerValue3;
           v738 = 2048;
-          v739 = v560;
+          v739 = unsignedIntegerValue4;
           v740 = 2048;
-          v741 = v556;
+          v741 = unsignedIntegerValue5;
           v742 = 2048;
-          v743 = v553;
+          v743 = unsignedIntegerValue6;
           v744 = 2048;
-          v745 = v550;
+          v745 = unsignedIntegerValue7;
           v746 = 2048;
-          v747 = v547;
+          v747 = unsignedIntegerValue8;
           v748 = 2048;
-          v749 = v504;
+          v749 = unsignedIntegerValue9;
           v750 = 2048;
-          v751 = v507;
+          v751 = unsignedIntegerValue10;
           v752 = 2112;
           v753 = v509;
           v754 = 2048;
@@ -8230,11 +8230,11 @@ LABEL_366:
       }
 
       v511 = MEMORY[0x277CCABB0];
-      v512 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      v513 = [v512 objectForKeyedSubscript:@"distance_matrix_total_number_of_comparisons"];
+      processWorkoutMetrics10 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      v513 = [processWorkoutMetrics10 objectForKeyedSubscript:@"distance_matrix_total_number_of_comparisons"];
       v514 = [v511 numberWithUnsignedInteger:{objc_msgSend(v513, "unsignedIntegerValue") + ((objc_msgSend(v612, "count") * (objc_msgSend(v612, "count") - 1)) >> 1)}];
-      v515 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-      [v515 setObject:v514 forKeyedSubscript:@"distance_matrix_total_number_of_comparisons"];
+      processWorkoutMetrics11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+      [processWorkoutMetrics11 setObject:v514 forKeyedSubscript:@"distance_matrix_total_number_of_comparisons"];
 
       v516 = v716;
       v517 = v716[3];
@@ -8347,11 +8347,11 @@ LABEL_366:
         v528 = v602;
       }
 
-      if (a5)
+      if (error)
       {
         v537 = 1;
         v532 = _RTSafeArray();
-        *a5 = _RTMultiErrorCreate();
+        *error = _RTMultiErrorCreate();
 
         v528 = v602;
       }
@@ -8367,7 +8367,7 @@ LABEL_366:
 
     _Block_object_dispose(&v719, 8);
 
-    v13 = v602;
+    dictionary = v602;
   }
 
   else
@@ -8379,13 +8379,13 @@ LABEL_366:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutUUIDs", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = _RTErrorInvalidParameterCreate(@"workoutUUIDs");
+      *error = _RTErrorInvalidParameterCreate(@"workoutUUIDs");
     }
 
-    v13 = [MEMORY[0x277CBEAC0] dictionary];
-    v11 = v13 != 0;
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    v11 = dictionary != 0;
   }
 
   return v11;
@@ -8464,7 +8464,7 @@ void __91__RTWorkoutRouteManager__computeAndSaveDistanceMatrixForWorkoutUUIDs_di
   objc_storeStrong((*(a1[6] + 8) + 40), obj);
 }
 
-- (BOOL)_clearDistanceMatrixWithError:(id *)a3
+- (BOOL)_clearDistanceMatrixWithError:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
   [(RTWorkoutRouteManager *)self _clearInMemoryClusters];
@@ -8475,7 +8475,7 @@ void __91__RTWorkoutRouteManager__computeAndSaveDistanceMatrixForWorkoutUUIDs_di
   v45 = __Block_byref_object_copy__153;
   v46 = __Block_byref_object_dispose__153;
   v47 = 0;
-  v6 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+  workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke;
@@ -8483,7 +8483,7 @@ void __91__RTWorkoutRouteManager__computeAndSaveDistanceMatrixForWorkoutUUIDs_di
   v41 = &v42;
   v7 = v5;
   v40 = v7;
-  [v6 clearWithHandler:v39];
+  [workoutDistanceStore clearWithHandler:v39];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -8495,11 +8495,11 @@ void __91__RTWorkoutRouteManager__computeAndSaveDistanceMatrixForWorkoutUUIDs_di
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -8526,7 +8526,7 @@ void __91__RTWorkoutRouteManager__computeAndSaveDistanceMatrixForWorkoutUUIDs_di
 
   v24 = v22;
   v25 = v24;
-  if (a3 && v24)
+  if (error && v24)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -8548,7 +8548,7 @@ void __91__RTWorkoutRouteManager__computeAndSaveDistanceMatrixForWorkoutUUIDs_di
 
   else
   {
-    if (!a3 || !v43[5])
+    if (!error || !v43[5])
     {
       v29 = 1;
       goto LABEL_19;
@@ -8574,7 +8574,7 @@ void __91__RTWorkoutRouteManager__computeAndSaveDistanceMatrixForWorkoutUUIDs_di
   }
 
   v29 = 0;
-  *a3 = v27;
+  *error = v27;
 LABEL_19:
 
   _Block_object_dispose(&v42, 8);
@@ -8590,41 +8590,41 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
 
 - (BOOL)_clearInMemoryClusters
 {
-  v3 = [(RTWorkoutRouteManager *)self workoutActivityTypeToclustersSet];
+  workoutActivityTypeToclustersSet = [(RTWorkoutRouteManager *)self workoutActivityTypeToclustersSet];
 
-  if (v3)
+  if (workoutActivityTypeToclustersSet)
   {
-    v4 = [(RTWorkoutRouteManager *)self workoutActivityTypeToclustersSet];
-    [v4 removeAllObjects];
+    workoutActivityTypeToclustersSet2 = [(RTWorkoutRouteManager *)self workoutActivityTypeToclustersSet];
+    [workoutActivityTypeToclustersSet2 removeAllObjects];
   }
 
   else
   {
-    v4 = objc_opt_new();
-    [(RTWorkoutRouteManager *)self setWorkoutActivityTypeToclustersSet:v4];
+    workoutActivityTypeToclustersSet2 = objc_opt_new();
+    [(RTWorkoutRouteManager *)self setWorkoutActivityTypeToclustersSet:workoutActivityTypeToclustersSet2];
   }
 
   return 1;
 }
 
-- (BOOL)_preComputeCacheForWorkout:(id)a3 locations:(CLLocationCoordinate2D *)a4 locationsCount:(unint64_t)a5 decimatedLocations:(CLLocationCoordinate2D *)a6 decimatedLocationsCount:(unint64_t)a7 cachedDictionary:(id)a8 error:(id *)a9
+- (BOOL)_preComputeCacheForWorkout:(id)workout locations:(CLLocationCoordinate2D *)locations locationsCount:(unint64_t)count decimatedLocations:(CLLocationCoordinate2D *)decimatedLocations decimatedLocationsCount:(unint64_t)locationsCount cachedDictionary:(id)dictionary error:(id *)error
 {
   v82 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a8;
-  v18 = v17;
-  if (v16)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  v18 = dictionaryCopy;
+  if (workoutCopy)
   {
-    if (v17 && 2 * kRTSmoothingNumberOfLocations + 4 <= a5)
+    if (dictionaryCopy && 2 * kRTSmoothingNumberOfLocations + 4 <= count)
     {
       aSelector = a2;
       context = objc_autoreleasePoolPush();
       v64 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
-      *v64 = a4[a5 - 1];
+      *v64 = locations[count - 1];
       v19 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
-      v20 = [(RTWorkoutRouteManager *)self distanceCalculator];
+      distanceCalculator = [(RTWorkoutRouteManager *)self distanceCalculator];
       v67 = 0;
-      [v20 computeCentroid:a6 locationsCount:a7 error:&v67];
+      [distanceCalculator computeCentroid:decimatedLocations locationsCount:locationsCount error:&v67];
       v22 = v21;
       v24 = v23;
       v25 = v67;
@@ -8638,15 +8638,15 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
 
       else
       {
-        v35 = [(RTWorkoutRouteManager *)self distanceCalculator];
+        distanceCalculator2 = [(RTWorkoutRouteManager *)self distanceCalculator];
         v66 = 0;
-        v26 = [v35 rectVerticesFromCoordinates:a4 locationsCount:a5 ignoreNFirstAndLastLocations:kRTSmoothingNumberOfLocations error:&v66];
+        v26 = [distanceCalculator2 rectVerticesFromCoordinates:locations locationsCount:count ignoreNFirstAndLastLocations:kRTSmoothingNumberOfLocations error:&v66];
         v25 = v66;
 
         if (!v25)
         {
           v65 = 0;
-          v36 = [(RTWorkoutRouteManager *)self _getCurveOrientationTypeForLocations:a4 locationsCount:a5 error:&v65];
+          v36 = [(RTWorkoutRouteManager *)self _getCurveOrientationTypeForLocations:locations locationsCount:count error:&v65];
           v37 = v65;
           if (v37)
           {
@@ -8657,8 +8657,8 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
           {
             v61 = v36;
             v43 = objc_alloc(MEMORY[0x277D011C0]);
-            v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-            v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+            v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+            v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
             v46 = [v43 initWithFirstObject:v44 secondObject:v45];
             v71 = v46;
             v47 = [MEMORY[0x277CBEA60] arrayWithObjects:&v71 count:1];
@@ -8698,8 +8698,8 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
         free(v26);
       }
 
-      v38 = a9;
-      if (a9)
+      errorCopy2 = error;
+      if (error)
       {
         v39 = v25 == 0;
       }
@@ -8723,14 +8723,14 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
           v74 = 2112;
           v75 = v60;
           v76 = 2112;
-          v77 = v25;
+          countCopy = v25;
           _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
 
-          v38 = a9;
+          errorCopy2 = error;
         }
 
         v41 = v25;
-        *v38 = v25;
+        *errorCopy2 = v25;
       }
     }
 
@@ -8751,7 +8751,7 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
           v74 = 2112;
           v75 = v34;
           v76 = 2048;
-          v77 = a5;
+          countCopy = count;
           v78 = 2048;
           v79 = 2 * kRTSmoothingNumberOfLocations + 4;
           v80 = 2048;
@@ -8773,9 +8773,9 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (a9)
+    if (error)
     {
-      *a9 = _RTErrorInvalidParameterCreate(@"workout");
+      *error = _RTErrorInvalidParameterCreate(@"workout");
     }
 
     v28 = 1;
@@ -8784,13 +8784,13 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
   return v28;
 }
 
-- (BOOL)_isPreFilteredForWorkout:(id)a3 otherWorkout:(id)a4 preFilteringResults:(id)a5 error:(id *)a6
+- (BOOL)_isPreFilteredForWorkout:(id)workout otherWorkout:(id)otherWorkout preFilteringResults:(id)results error:(id *)error
 {
   v107 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  workoutCopy = workout;
+  otherWorkoutCopy = otherWorkout;
+  resultsCopy = results;
+  if (!workoutCopy)
   {
     v44 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -8799,7 +8799,7 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
       _os_log_error_impl(&dword_2304B3000, v44, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -8808,7 +8808,7 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
     goto LABEL_28;
   }
 
-  if (!v12)
+  if (!otherWorkoutCopy)
   {
     v46 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -8817,25 +8817,25 @@ void __55__RTWorkoutRouteManager__clearDistanceMatrixWithError___block_invoke(ui
       _os_log_error_impl(&dword_2304B3000, v46, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherWorkout", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_29;
     }
 
     v45 = @"otherWorkout";
 LABEL_28:
-    *a6 = _RTErrorInvalidParameterCreate(v45);
+    *error = _RTErrorInvalidParameterCreate(v45);
 LABEL_29:
     v47 = 1;
     goto LABEL_56;
   }
 
-  v14 = [MEMORY[0x277CBEAA8] date];
-  v15 = [v11 workoutActivityType];
-  v16 = [v12 workoutActivityType];
+  date = [MEMORY[0x277CBEAA8] date];
+  workoutActivityType = [workoutCopy workoutActivityType];
+  workoutActivityType2 = [otherWorkoutCopy workoutActivityType];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v83 = v13;
+    v83 = resultsCopy;
     v17 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -8843,21 +8843,21 @@ LABEL_29:
       v76 = NSStringFromClass(v18);
       v19 = NSStringFromSelector(a2);
       v20 = @"YES";
-      if (v15 == v16)
+      if (workoutActivityType == workoutActivityType2)
       {
         v20 = @"NO";
       }
 
       v74 = v20;
       v75 = v19;
-      v80 = v14;
-      [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(v11, "workoutActivityType")}];
+      v80 = date;
+      [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(workoutCopy, "workoutActivityType")}];
       aSelectora = a2;
       v21 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(v12, "workoutActivityType")}];
+      [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(otherWorkoutCopy, "workoutActivityType")}];
       v22 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v23 = [MEMORY[0x277CBEAA8] date];
-      [v23 timeIntervalSinceDate:v80];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:v80];
       *buf = 138413570;
       v88 = v76;
       v89 = 2112;
@@ -8872,22 +8872,22 @@ LABEL_29:
       v98 = v24;
       _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, activityType mismatch, pre-filtered, %@, workout activityType, %@, other workout activityType, %@, latency, %.4f sec,", buf, 0x3Eu);
 
-      v14 = v80;
+      date = v80;
       a2 = aSelectora;
     }
 
-    v13 = v83;
+    resultsCopy = v83;
   }
 
-  if (v15 == v16)
+  if (workoutActivityType == workoutActivityType2)
   {
     aSelector = a2;
-    v25 = [MEMORY[0x277CBEAA8] date];
+    date3 = [MEMORY[0x277CBEAA8] date];
 
     v26 = @"YES";
-    if (+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", [v11 workoutActivityType]))
+    if (+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", [workoutCopy workoutActivityType]))
     {
-      if (+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", [v12 workoutActivityType]))
+      if (+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", [otherWorkoutCopy workoutActivityType]))
       {
         v26 = @"NO";
       }
@@ -8906,13 +8906,13 @@ LABEL_29:
         v28 = objc_opt_class();
         v79 = NSStringFromClass(v28);
         v78 = NSStringFromSelector(a2);
-        [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(v11, "workoutActivityType")}];
-        v84 = v13;
+        [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(workoutCopy, "workoutActivityType")}];
+        v84 = resultsCopy;
         v77 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(v12, "workoutActivityType")}];
+        [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(otherWorkoutCopy, "workoutActivityType")}];
         v29 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v30 = [MEMORY[0x277CBEAA8] date];
-        [v30 timeIntervalSinceDate:v25];
+        date4 = [MEMORY[0x277CBEAA8] date];
+        [date4 timeIntervalSinceDate:date3];
         *buf = 138413570;
         v88 = v79;
         v89 = 2112;
@@ -8927,27 +8927,27 @@ LABEL_29:
         v98 = v31;
         _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, unsupported activity type, pre-filtered, %@, workout activityType, %@, other workout activityType, %@, latency, %.4f sec,", buf, 0x3Eu);
 
-        v13 = v84;
+        resultsCopy = v84;
       }
     }
 
-    v32 = [MEMORY[0x277CBEAA8] date];
+    date5 = [MEMORY[0x277CBEAA8] date];
 
-    v33 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v34 = [v33 _getTotalDistanceForWorkout:v11];
-    v35 = [MEMORY[0x277CCDAB0] meterUnit];
-    [v34 doubleValueForUnit:v35];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+    v34 = [healthKitManager _getTotalDistanceForWorkout:workoutCopy];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    [v34 doubleValueForUnit:meterUnit];
     v37 = v36;
 
-    v38 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v39 = [v38 _getTotalDistanceForWorkout:v12];
-    v40 = [MEMORY[0x277CCDAB0] meterUnit];
-    [v39 doubleValueForUnit:v40];
+    healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+    v39 = [healthKitManager2 _getTotalDistanceForWorkout:otherWorkoutCopy];
+    meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+    [v39 doubleValueForUnit:meterUnit2];
     v42 = v41;
 
-    if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v11])
+    if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:workoutCopy])
     {
-      v43 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v12];
+      v43 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:otherWorkoutCopy];
     }
 
     else
@@ -8956,11 +8956,11 @@ LABEL_29:
     }
 
     v86 = 0;
-    -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](self, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterTotalDistanceDifferenceThreshold", v43, [v11 workoutActivityType], &v86);
+    -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](self, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterTotalDistanceDifferenceThreshold", v43, [workoutCopy workoutActivityType], &v86);
     v50 = v49;
     v51 = v86;
     v48 = v51;
-    if (a6 && v51)
+    if (error && v51)
     {
       v52 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -8978,7 +8978,7 @@ LABEL_29:
       }
 
       v53 = v48;
-      *a6 = v48;
+      *error = v48;
       v47 = 1;
     }
 
@@ -9007,7 +9007,7 @@ LABEL_29:
 
       v57 = vabdd_f64(v37, v42);
       v47 = v57 > v56;
-      if (v13)
+      if (resultsCopy)
       {
         if (v37 >= v42)
         {
@@ -9020,10 +9020,10 @@ LABEL_29:
         }
 
         v59 = [MEMORY[0x277CCABB0] numberWithInt:v58 > 15000.0];
-        [v13 setObject:v59 forKeyedSubscript:@"kRTSimilarityIsLongWorkout"];
+        [resultsCopy setObject:v59 forKeyedSubscript:@"kRTSimilarityIsLongWorkout"];
 
         v60 = [MEMORY[0x277CCABB0] numberWithDouble:v57];
-        [v13 setObject:v60 forKeyedSubscript:@"kRTSimilarityDifferenceInTotalDistance"];
+        [resultsCopy setObject:v60 forKeyedSubscript:@"kRTSimilarityDifferenceInTotalDistance"];
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -9041,8 +9041,8 @@ LABEL_29:
           }
 
           v85 = v65;
-          v66 = [MEMORY[0x277CBEAA8] date];
-          [v66 timeIntervalSinceDate:v32];
+          date6 = [MEMORY[0x277CBEAA8] date];
+          [date6 timeIntervalSinceDate:date5];
           v68 = v67;
           +[RTRuntime footprint];
           *buf = 138414594;
@@ -9070,7 +9070,7 @@ LABEL_29:
       }
     }
 
-    v14 = v32;
+    date = date5;
   }
 
   else
@@ -9083,17 +9083,17 @@ LABEL_56:
   return v47;
 }
 
-- (BOOL)_isPreFilteredForWorkout:(id)a3 firstFewLocations:(CLLocationCoordinate2D *)a4 firstFewLocationsCount:(unint64_t)a5 cachedDictionary:(id)a6 otherWorkout:(id)a7 firstFewOtherLocations:(CLLocationCoordinate2D *)a8 firstFewOtherLocationsCount:(unint64_t)a9 cachedOtherDictionary:(id)a10 preFilteringResults:(id)a11 error:(id *)a12
+- (BOOL)_isPreFilteredForWorkout:(id)workout firstFewLocations:(CLLocationCoordinate2D *)locations firstFewLocationsCount:(unint64_t)count cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout firstFewOtherLocations:(CLLocationCoordinate2D *)otherLocations firstFewOtherLocationsCount:(unint64_t)locationsCount cachedOtherDictionary:(id)self0 preFilteringResults:(id)self1 error:(id *)self2
 {
-  v17 = a12;
+  errorCopy2 = error;
   v122[1] = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  v22 = a11;
-  v23 = v22;
-  if (!v18)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  otherWorkoutCopy = otherWorkout;
+  otherDictionaryCopy = otherDictionary;
+  resultsCopy = results;
+  v23 = resultsCopy;
+  if (!workoutCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -9102,7 +9102,7 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (!a12)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -9111,14 +9111,14 @@ LABEL_56:
     goto LABEL_14;
   }
 
-  if (v20)
+  if (otherWorkoutCopy)
   {
-    v100 = v22;
-    v98 = v20;
-    v97 = [MEMORY[0x277CBEAA8] date];
-    if (a5)
+    v100 = resultsCopy;
+    v98 = otherWorkoutCopy;
+    date = [MEMORY[0x277CBEAA8] date];
+    if (count)
     {
-      if (a9)
+      if (locationsCount)
       {
         goto LABEL_22;
       }
@@ -9126,23 +9126,23 @@ LABEL_56:
 
     else
     {
-      v28 = [v19 objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
       if (!v28)
       {
         goto LABEL_29;
       }
 
       v23 = v28;
-      if (a9)
+      if (locationsCount)
       {
 
         goto LABEL_22;
       }
     }
 
-    v29 = [v21 objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+    v29 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
 
-    if (!a5)
+    if (!count)
     {
     }
 
@@ -9153,51 +9153,51 @@ LABEL_22:
       v31 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
       context = objc_autoreleasePoolPush();
       v99 = v30;
-      if (v19)
+      if (dictionaryCopy)
       {
-        v32 = [v19 objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+        v32 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
 
         if (!v32)
         {
-          *v30 = *a4;
+          *v30 = *locations;
           v55 = v30;
-          v41 = self;
+          selfCopy2 = self;
           v56 = [(RTWorkoutRouteManager *)self _getRTPairUsingCLLocationCoordinate2D:v55];
           v122[0] = v56;
           v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v122 count:1];
-          [v19 setObject:v57 forKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+          [dictionaryCopy setObject:v57 forKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
 
-          if (v21)
+          if (otherDictionaryCopy)
           {
 LABEL_27:
-            v42 = [v21 objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+            v42 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
 
             if (v42)
             {
-              v43 = [v21 objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
-              v44 = [v43 firstObject];
+              v43 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+              firstObject = [v43 firstObject];
 
-              v45 = [v44 firstObject];
-              [v45 doubleValue];
+              v44FirstObject = [firstObject firstObject];
+              [v44FirstObject doubleValue];
               v47 = v46;
-              v48 = [v44 secondObject];
-              [v48 doubleValue];
+              secondObject = [firstObject secondObject];
+              [secondObject doubleValue];
               *v31 = CLLocationCoordinate2DMake(v47, v49);
             }
 
             else
             {
-              *v31 = *a8;
-              v58 = [(RTWorkoutRouteManager *)v41 _getRTPairUsingCLLocationCoordinate2D:v31];
+              *v31 = *otherLocations;
+              v58 = [(RTWorkoutRouteManager *)selfCopy2 _getRTPairUsingCLLocationCoordinate2D:v31];
               v121 = v58;
               v59 = [MEMORY[0x277CBEA60] arrayWithObjects:&v121 count:1];
-              [v21 setObject:v59 forKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+              [otherDictionaryCopy setObject:v59 forKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
             }
 
 LABEL_36:
-            v60 = [(RTWorkoutRouteManager *)v41 distanceCalculator];
+            distanceCalculator = [(RTWorkoutRouteManager *)selfCopy2 distanceCalculator];
             v104 = 0;
-            [v60 distanceFromLocationCoordinate:v99 toLocationCoordinate:v31 error:&v104];
+            [distanceCalculator distanceFromLocationCoordinate:v99 toLocationCoordinate:v31 error:&v104];
             v62 = v61;
             v54 = v104;
 
@@ -9209,9 +9209,9 @@ LABEL_36:
                 [v100 setObject:v63 forKeyedSubscript:@"kRTSimilarityDistanceBetweenFirstLocations"];
               }
 
-              if ([(RTWorkoutRouteManager *)v41 _shouldDecimateWorkout:v18])
+              if ([(RTWorkoutRouteManager *)selfCopy2 _shouldDecimateWorkout:workoutCopy])
               {
-                v64 = [(RTWorkoutRouteManager *)v41 _shouldDecimateWorkout:v20];
+                v64 = [(RTWorkoutRouteManager *)selfCopy2 _shouldDecimateWorkout:otherWorkoutCopy];
               }
 
               else
@@ -9220,21 +9220,21 @@ LABEL_36:
               }
 
               v103 = 0;
-              -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](v41, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterFirstLocationsDistanceThreshold", v64, [v18 workoutActivityType], &v103);
+              -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](selfCopy2, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterFirstLocationsDistanceThreshold", v64, [workoutCopy workoutActivityType], &v103);
               v66 = v65;
               v67 = v103;
               if (!v67)
               {
-                v71 = [(RTWorkoutRouteManager *)v41 healthKitManager];
-                v72 = [v71 _getTotalDistanceForWorkout:v18];
-                v73 = [MEMORY[0x277CCDAB0] meterUnit];
-                [v72 doubleValueForUnit:v73];
+                healthKitManager = [(RTWorkoutRouteManager *)selfCopy2 healthKitManager];
+                v72 = [healthKitManager _getTotalDistanceForWorkout:workoutCopy];
+                meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+                [v72 doubleValueForUnit:meterUnit];
                 v75 = v74;
 
-                v76 = [(RTWorkoutRouteManager *)v41 healthKitManager];
-                v77 = [v76 _getTotalDistanceForWorkout:v20];
-                v78 = [MEMORY[0x277CCDAB0] meterUnit];
-                [v77 doubleValueForUnit:v78];
+                healthKitManager2 = [(RTWorkoutRouteManager *)selfCopy2 healthKitManager];
+                v77 = [healthKitManager2 _getTotalDistanceForWorkout:otherWorkoutCopy];
+                meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+                [v77 doubleValueForUnit:meterUnit2];
                 v80 = v79;
 
                 if (v75 >= v80)
@@ -9276,8 +9276,8 @@ LABEL_36:
                       v88 = @"YES";
                     }
 
-                    v89 = [MEMORY[0x277CBEAA8] date];
-                    [v89 timeIntervalSinceDate:v97];
+                    date2 = [MEMORY[0x277CBEAA8] date];
+                    [date2 timeIntervalSinceDate:date];
                     v91 = v90;
                     +[RTRuntime footprint];
                     *buf = 138414082;
@@ -9287,9 +9287,9 @@ LABEL_36:
                     v109 = 2112;
                     v110 = v88;
                     v111 = 2048;
-                    v112 = *&v62;
+                    countCopy = *&v62;
                     v113 = 2048;
-                    v114 = *&v66;
+                    locationsCountCopy = *&v66;
                     v115 = 2048;
                     v116 = *&v83;
                     v117 = 2048;
@@ -9303,7 +9303,7 @@ LABEL_36:
                 objc_autoreleasePoolPop(context);
                 v54 = 0;
                 v27 = v62 > v83;
-                v20 = v98;
+                otherWorkoutCopy = v98;
                 goto LABEL_45;
               }
 
@@ -9315,7 +9315,7 @@ LABEL_36:
 LABEL_45:
             free(v99);
             free(v31);
-            if (v17)
+            if (errorCopy2)
             {
               v23 = v100;
               if (v54)
@@ -9336,7 +9336,7 @@ LABEL_45:
                 }
 
                 v69 = v54;
-                *v17 = v54;
+                *errorCopy2 = v54;
                 v27 = 1;
               }
             }
@@ -9352,32 +9352,32 @@ LABEL_52:
           }
 
 LABEL_34:
-          *v31 = *a8;
+          *v31 = *otherLocations;
           goto LABEL_36;
         }
 
-        v33 = [v19 objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
-        v34 = [v33 firstObject];
+        v33 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyFirstFewLocations"];
+        firstObject2 = [v33 firstObject];
 
-        v35 = [v34 firstObject];
-        [v35 doubleValue];
+        v34FirstObject = [firstObject2 firstObject];
+        [v34FirstObject doubleValue];
         v37 = v36;
-        [v34 secondObject];
+        [firstObject2 secondObject];
         v39 = v38 = v31;
         [v39 doubleValue];
         *v30 = CLLocationCoordinate2DMake(v37, v40);
 
         v31 = v38;
-        v17 = a12;
+        errorCopy2 = error;
       }
 
       else
       {
-        *v30 = *a4;
+        *v30 = *locations;
       }
 
-      v41 = self;
-      if (v21)
+      selfCopy2 = self;
+      if (otherDictionaryCopy)
       {
         goto LABEL_27;
       }
@@ -9403,13 +9403,13 @@ LABEL_29:
         v109 = 2112;
         v110 = @"YES";
         v111 = 2048;
-        v112 = a5;
+        countCopy = count;
         v113 = 2048;
-        v114 = a9;
+        locationsCountCopy = locationsCount;
         v115 = 2048;
-        v116 = [v19 count];
+        v116 = [dictionaryCopy count];
         v117 = 2048;
-        v118 = [v21 count];
+        v118 = [otherDictionaryCopy count];
         _os_log_impl(&dword_2304B3000, v50, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, locations count is zero, pre-filtered, %@, firstFewLocations count, %lu, firstFewOtherLocations count, %lu, cachedDictionary count, %lu, cachedOtherDictionary count, %lu", buf, 0x48u);
       }
 
@@ -9432,11 +9432,11 @@ LABEL_29:
     _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherWorkout", buf, 2u);
   }
 
-  if (a12)
+  if (error)
   {
     v25 = @"otherWorkout";
 LABEL_14:
-    *a12 = _RTErrorInvalidParameterCreate(v25);
+    *error = _RTErrorInvalidParameterCreate(v25);
   }
 
 LABEL_15:
@@ -9446,16 +9446,16 @@ LABEL_53:
   return v27;
 }
 
-- (BOOL)_isPreFilteredLocationCountBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8
+- (BOOL)_isPreFilteredLocationCountBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error
 {
   v171 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v144 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = v18;
-  if (!v15)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  otherWorkoutCopy = otherWorkout;
+  otherDictionaryCopy = otherDictionary;
+  resultsCopy = results;
+  v19 = resultsCopy;
+  if (!workoutCopy)
   {
     v104 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
@@ -9464,7 +9464,7 @@ LABEL_53:
       _os_log_error_impl(&dword_2304B3000, v104, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_69;
     }
@@ -9473,7 +9473,7 @@ LABEL_53:
     goto LABEL_68;
   }
 
-  if (!v16)
+  if (!otherWorkoutCopy)
   {
     v106 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
@@ -9482,35 +9482,35 @@ LABEL_53:
       _os_log_error_impl(&dword_2304B3000, v106, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherWorkout", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_69;
     }
 
     v105 = @"otherWorkout";
 LABEL_68:
-    *a8 = _RTErrorInvalidParameterCreate(v105);
+    *error = _RTErrorInvalidParameterCreate(v105);
 LABEL_69:
     LOBYTE(v25) = 1;
     goto LABEL_79;
   }
 
-  v140 = v18;
-  if (v144)
+  v140 = resultsCopy;
+  if (dictionaryCopy)
   {
-    v20 = [v144 objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
     v21 = v20;
-    if (v17 && v20)
+    if (otherDictionaryCopy && v20)
     {
-      v22 = [v17 objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
+      v22 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
 
       if (v22)
       {
         aSelector = a2;
-        v124 = a8;
-        v23 = 0;
+        errorCopy = error;
+        date3 = 0;
         v24 = 1;
-        v135 = v17;
+        v135 = otherDictionaryCopy;
         while (1)
         {
           LOBYTE(v25) = v24;
@@ -9520,25 +9520,25 @@ LABEL_69:
           }
 
           context = objc_autoreleasePoolPush();
-          v141 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
 
-          v26 = [v144 objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
-          v27 = [v26 firstObject];
+          v26 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
+          firstObject = [v26 firstObject];
 
-          v138 = v27;
-          v28 = [v27 firstObject];
-          v143 = [v28 unsignedIntegerValue];
+          v138 = firstObject;
+          v27FirstObject = [firstObject firstObject];
+          unsignedIntegerValue = [v27FirstObject unsignedIntegerValue];
 
-          v29 = [v17 objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
-          v30 = [v29 firstObject];
+          v29 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLocationsCount"];
+          firstObject2 = [v29 firstObject];
 
-          v137 = v30;
-          v31 = [v30 firstObject];
-          v32 = [v31 unsignedIntegerValue];
+          v137 = firstObject2;
+          v30FirstObject = [firstObject2 firstObject];
+          unsignedIntegerValue2 = [v30FirstObject unsignedIntegerValue];
 
-          if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v15])
+          if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:workoutCopy])
           {
-            v33 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v16];
+            v33 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:otherWorkoutCopy];
           }
 
           else
@@ -9547,21 +9547,21 @@ LABEL_69:
           }
 
           v34 = aSelector;
-          v35 = [v15 workoutActivityType];
+          workoutActivityType = [workoutCopy workoutActivityType];
           v146 = 0;
-          [(RTWorkoutRouteManager *)self _getConstantValueForString:@"kRTPreFilterDifferenceBetweenLocationsThreshold" isDecimated:v33 workoutActivityType:v35 error:&v146];
+          [(RTWorkoutRouteManager *)self _getConstantValueForString:@"kRTPreFilterDifferenceBetweenLocationsThreshold" isDecimated:v33 workoutActivityType:workoutActivityType error:&v146];
           v37 = v36;
           v38 = v146;
           if (v38)
           {
             v103 = v38;
-            v23 = v141;
+            date3 = date;
 LABEL_93:
 
             objc_autoreleasePoolPop(context);
-            v17 = v135;
-            v25 = v124;
-            if (!v124)
+            otherDictionaryCopy = v135;
+            v25 = errorCopy;
+            if (!errorCopy)
             {
               goto LABEL_78;
             }
@@ -9580,7 +9580,7 @@ LABEL_93:
               v152 = v103;
               _os_log_error_impl(&dword_2304B3000, v119, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
 
-              v25 = v124;
+              v25 = errorCopy;
             }
 
             v120 = v103;
@@ -9588,70 +9588,70 @@ LABEL_93:
             goto LABEL_75;
           }
 
-          v39 = [(RTWorkoutRouteManager *)self healthKitManager];
-          [v39 _getDurationForWorkout:v15];
+          healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+          [healthKitManager _getDurationForWorkout:workoutCopy];
           if (v40 == 0.0)
           {
             break;
           }
 
-          v41 = [(RTWorkoutRouteManager *)self healthKitManager];
-          [v41 _getDurationForWorkout:v16];
+          healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+          [healthKitManager2 _getDurationForWorkout:otherWorkoutCopy];
           v43 = v42;
 
           v44 = 1;
           v45 = 0.0;
-          if (v43 == 0.0 || !v143)
+          if (v43 == 0.0 || !unsignedIntegerValue)
           {
             goto LABEL_30;
           }
 
           v46 = 0.0;
-          if (v32)
+          if (unsignedIntegerValue2)
           {
-            v47 = [(RTWorkoutRouteManager *)self healthKitManager];
-            v48 = v47;
-            v49 = v143;
-            if (v143 >= v32)
+            healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
+            v48 = healthKitManager3;
+            v49 = unsignedIntegerValue;
+            if (unsignedIntegerValue >= unsignedIntegerValue2)
             {
-              v50 = v32;
+              v50 = unsignedIntegerValue2;
             }
 
             else
             {
-              v50 = v143;
+              v50 = unsignedIntegerValue;
             }
 
-            if (v143 <= v32)
+            if (unsignedIntegerValue <= unsignedIntegerValue2)
             {
-              v49 = v32;
+              v49 = unsignedIntegerValue2;
             }
 
-            if (v143 >= v32)
+            if (unsignedIntegerValue >= unsignedIntegerValue2)
             {
-              v51 = v16;
-            }
-
-            else
-            {
-              v51 = v15;
-            }
-
-            if (v143 >= v32)
-            {
-              v52 = v15;
+              v51 = otherWorkoutCopy;
             }
 
             else
             {
-              v52 = v16;
+              v51 = workoutCopy;
+            }
+
+            if (unsignedIntegerValue >= unsignedIntegerValue2)
+            {
+              v52 = workoutCopy;
+            }
+
+            else
+            {
+              v52 = otherWorkoutCopy;
             }
 
             v46 = v50 / v49;
-            [v47 _getDurationForWorkout:v51];
+            [healthKitManager3 _getDurationForWorkout:v51];
             v54 = v53;
-            v55 = [(RTWorkoutRouteManager *)self healthKitManager];
-            [v55 _getDurationForWorkout:v52];
+            healthKitManager4 = [(RTWorkoutRouteManager *)self healthKitManager];
+            [healthKitManager4 _getDurationForWorkout:v52];
             v45 = v54 / v56;
 
             v44 = v46 - v45 > v37;
@@ -9665,7 +9665,7 @@ LABEL_31:
             {
               v58 = objc_opt_class();
               NSStringFromClass(v58);
-              v59 = v133 = v32;
+              v59 = v133 = unsignedIntegerValue2;
               v60 = NSStringFromSelector(aSelector);
               v61 = @"NO";
               if (v44)
@@ -9675,14 +9675,14 @@ LABEL_31:
 
               v127 = v60;
               v129 = v61;
-              v132 = [(RTWorkoutRouteManager *)self healthKitManager];
-              [v132 _getDurationForWorkout:v15];
+              healthKitManager5 = [(RTWorkoutRouteManager *)self healthKitManager];
+              [healthKitManager5 _getDurationForWorkout:workoutCopy];
               v125 = v62;
-              v63 = [(RTWorkoutRouteManager *)self healthKitManager];
-              [v63 _getDurationForWorkout:v16];
+              healthKitManager6 = [(RTWorkoutRouteManager *)self healthKitManager];
+              [healthKitManager6 _getDurationForWorkout:otherWorkoutCopy];
               v65 = v64;
-              v66 = [MEMORY[0x277CBEAA8] date];
-              [v66 timeIntervalSinceDate:v141];
+              date2 = [MEMORY[0x277CBEAA8] date];
+              [date2 timeIntervalSinceDate:date];
               v68 = v67;
               +[RTRuntime footprint];
               *buf = 138415106;
@@ -9692,7 +9692,7 @@ LABEL_31:
               v151 = 2112;
               v152 = v129;
               v153 = 2048;
-              v154 = v143;
+              v154 = unsignedIntegerValue;
               v155 = 2048;
               v156 = v133;
               v157 = 2048;
@@ -9712,7 +9712,7 @@ LABEL_31:
               _os_log_impl(&dword_2304B3000, v57, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, difference in number of locations is greater than threshold, pre-filtered, %@, locations count, %lu, other locations count, %lu, workout duration, %lu, other workout duration, %lu, difference in number of locations percentage, %.3f, difference in duration percentage, %.3f, difference in number of locations percentage threshold, %.3f, latency, %.4f sec, footprint, %.4f MB", buf, 0x7Au);
 
               v34 = aSelector;
-              v32 = v133;
+              unsignedIntegerValue2 = v133;
             }
           }
 
@@ -9721,7 +9721,7 @@ LABEL_31:
             goto LABEL_90;
           }
 
-          if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v15]|| [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v16])
+          if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:workoutCopy]|| [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:otherWorkoutCopy])
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -9731,7 +9731,7 @@ LABEL_31:
                 v113 = objc_opt_class();
                 v114 = NSStringFromClass(v113);
                 v115 = NSStringFromSelector(v34);
-                if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v15])
+                if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:workoutCopy])
                 {
                   v116 = @"YES";
                 }
@@ -9741,7 +9741,7 @@ LABEL_31:
                   v116 = @"NO";
                 }
 
-                v117 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v16];
+                v117 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:otherWorkoutCopy];
                 *buf = 138413314;
                 if (v117)
                 {
@@ -9770,24 +9770,24 @@ LABEL_90:
 
             objc_autoreleasePoolPop(context);
             v103 = 0;
-            v23 = v141;
+            date3 = date;
             LOBYTE(v25) = v44;
-            v17 = v135;
+            otherDictionaryCopy = v135;
             goto LABEL_78;
           }
 
-          v23 = [MEMORY[0x277CBEAA8] date];
+          date3 = [MEMORY[0x277CBEAA8] date];
 
-          v70 = [(RTWorkoutRouteManager *)self healthKitManager];
-          [v70 _getDurationForWorkout:v15];
+          healthKitManager7 = [(RTWorkoutRouteManager *)self healthKitManager];
+          [healthKitManager7 _getDurationForWorkout:workoutCopy];
           v72 = v71;
-          v73 = v143;
+          v73 = unsignedIntegerValue;
 
-          v74 = [(RTWorkoutRouteManager *)self healthKitManager];
-          [v74 _getDurationForWorkout:v15];
+          healthKitManager8 = [(RTWorkoutRouteManager *)self healthKitManager];
+          [healthKitManager8 _getDurationForWorkout:workoutCopy];
           v76 = v75;
 
-          if (v143 && v72 < v73)
+          if (unsignedIntegerValue && v72 < v73)
           {
             v77 = v76 / v73;
           }
@@ -9797,16 +9797,16 @@ LABEL_90:
             v77 = v73 / v76;
           }
 
-          v78 = [(RTWorkoutRouteManager *)self healthKitManager];
-          [v78 _getDurationForWorkout:v16];
+          healthKitManager9 = [(RTWorkoutRouteManager *)self healthKitManager];
+          [healthKitManager9 _getDurationForWorkout:otherWorkoutCopy];
           v80 = v79;
-          v81 = v32;
+          v81 = unsignedIntegerValue2;
 
-          v82 = [(RTWorkoutRouteManager *)self healthKitManager];
-          [v82 _getDurationForWorkout:v16];
+          healthKitManager10 = [(RTWorkoutRouteManager *)self healthKitManager];
+          [healthKitManager10 _getDurationForWorkout:otherWorkoutCopy];
           v84 = v83;
 
-          if (v32 && v80 < v81)
+          if (unsignedIntegerValue2 && v80 < v81)
           {
             v85 = v84 / v81;
           }
@@ -9816,9 +9816,9 @@ LABEL_90:
             v85 = v81 / v84;
           }
 
-          if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v15])
+          if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:workoutCopy])
           {
-            v86 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v16];
+            v86 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:otherWorkoutCopy];
           }
 
           else
@@ -9826,9 +9826,9 @@ LABEL_90:
             v86 = 0;
           }
 
-          v87 = [v15 workoutActivityType];
+          workoutActivityType2 = [workoutCopy workoutActivityType];
           v145 = 0;
-          [(RTWorkoutRouteManager *)self _getConstantValueForString:@"kRTPreFilterLocationsRateThreshold" isDecimated:v86 workoutActivityType:v87 error:&v145];
+          [(RTWorkoutRouteManager *)self _getConstantValueForString:@"kRTPreFilterLocationsRateThreshold" isDecimated:v86 workoutActivityType:workoutActivityType2 error:&v145];
           v89 = v88;
           v90 = v145;
           if (v90)
@@ -9854,14 +9854,14 @@ LABEL_90:
 
               v130 = v95;
               v131 = v96;
-              v142 = [(RTWorkoutRouteManager *)self healthKitManager];
-              [v142 _getDurationForWorkout:v15];
+              healthKitManager11 = [(RTWorkoutRouteManager *)self healthKitManager];
+              [healthKitManager11 _getDurationForWorkout:workoutCopy];
               v128 = v97;
-              v134 = [(RTWorkoutRouteManager *)self healthKitManager];
-              [v134 _getDurationForWorkout:v16];
+              healthKitManager12 = [(RTWorkoutRouteManager *)self healthKitManager];
+              [healthKitManager12 _getDurationForWorkout:otherWorkoutCopy];
               v126 = v98;
-              v99 = [MEMORY[0x277CBEAA8] date];
-              [v99 timeIntervalSinceDate:v23];
+              date4 = [MEMORY[0x277CBEAA8] date];
+              [date4 timeIntervalSinceDate:date3];
               v101 = v100;
               +[RTRuntime footprint];
               *buf = 138415106;
@@ -9877,11 +9877,11 @@ LABEL_90:
               v157 = 2048;
               v158 = v89;
               v159 = 2048;
-              v160 = v143;
+              v160 = unsignedIntegerValue;
               v161 = 2048;
               v162 = *&v128;
               v163 = 2048;
-              v164 = *&v32;
+              v164 = *&unsignedIntegerValue2;
               v165 = 2048;
               v166 = *&v126;
               v167 = 2048;
@@ -9895,7 +9895,7 @@ LABEL_90:
           objc_autoreleasePoolPop(context);
           v24 = 0;
           v103 = 0;
-          v17 = v135;
+          otherDictionaryCopy = v135;
           if (v91)
           {
             goto LABEL_78;
@@ -9931,13 +9931,13 @@ LABEL_30:
       v151 = 2112;
       v152 = @"YES";
       v153 = 2048;
-      v154 = [v144 count];
+      v154 = [dictionaryCopy count];
       v155 = 2048;
-      v156 = [v17 count];
+      v156 = [otherDictionaryCopy count];
       _os_log_impl(&dword_2304B3000, v107, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, kRTCacheKeyLocationsCount doesn't exist in cache dictionary, pre-filtered, %@, cachedDictionary count, %lu, cachedOtherDictionary count, %lu, ", buf, 0x34u);
     }
 
-    v23 = 0;
+    date3 = 0;
     v103 = 0;
 LABEL_75:
     LOBYTE(v25) = 1;
@@ -9945,7 +9945,7 @@ LABEL_75:
 
   else
   {
-    v23 = 0;
+    date3 = 0;
 LABEL_77:
     v103 = 0;
   }
@@ -9958,15 +9958,15 @@ LABEL_79:
   return v25 & 1;
 }
 
-- (BOOL)_isPreFilteredLastLocationBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8
+- (BOOL)_isPreFilteredLastLocationBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error
 {
   v116 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (!v15)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  otherWorkoutCopy = otherWorkout;
+  otherDictionaryCopy = otherDictionary;
+  resultsCopy = results;
+  if (!workoutCopy)
   {
     v52 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -9975,7 +9975,7 @@ LABEL_79:
       _os_log_error_impl(&dword_2304B3000, v52, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -9984,16 +9984,16 @@ LABEL_79:
     goto LABEL_24;
   }
 
-  if (v17)
+  if (otherWorkoutCopy)
   {
-    v97 = self;
-    if (v16)
+    selfCopy = self;
+    if (dictionaryCopy)
     {
-      v20 = [v16 objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
       v21 = v20;
-      if (v18 && v20)
+      if (otherDictionaryCopy && v20)
       {
-        v22 = [v18 objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
+        v22 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
 
         if (v22)
         {
@@ -10001,25 +10001,25 @@ LABEL_79:
           v23 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
           v96 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
           context = objc_autoreleasePoolPush();
-          v95 = [MEMORY[0x277CBEAA8] date];
-          v24 = [v16 objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
-          v25 = [v24 firstObject];
+          date = [MEMORY[0x277CBEAA8] date];
+          v24 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
+          firstObject = [v24 firstObject];
 
-          v26 = [v25 firstObject];
-          [v26 doubleValue];
+          v25FirstObject = [firstObject firstObject];
+          [v25FirstObject doubleValue];
           v28 = v27;
-          v29 = [v25 secondObject];
-          [v29 doubleValue];
+          secondObject = [firstObject secondObject];
+          [secondObject doubleValue];
           *v23 = CLLocationCoordinate2DMake(v28, v30);
 
-          v31 = [v18 objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
-          v32 = [v31 firstObject];
+          v31 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyLastLocation"];
+          firstObject2 = [v31 firstObject];
 
-          v33 = [v32 firstObject];
-          [v33 doubleValue];
+          v32FirstObject = [firstObject2 firstObject];
+          [v32FirstObject doubleValue];
           v35 = v34;
-          v36 = [v32 secondObject];
-          [v36 doubleValue];
+          secondObject2 = [firstObject2 secondObject];
+          [secondObject2 doubleValue];
           *v96 = CLLocationCoordinate2DMake(v35, v37);
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -10050,23 +10050,23 @@ LABEL_79:
             }
           }
 
-          v46 = [(RTWorkoutRouteManager *)v97 distanceCalculator];
+          distanceCalculator = [(RTWorkoutRouteManager *)selfCopy distanceCalculator];
           v99 = 0;
-          [v46 distanceFromLocationCoordinate:v23 toLocationCoordinate:v96 error:&v99];
+          [distanceCalculator distanceFromLocationCoordinate:v23 toLocationCoordinate:v96 error:&v99];
           v48 = v47;
           v49 = v99;
 
           if (!v49)
           {
-            if (v19)
+            if (resultsCopy)
             {
               v50 = [MEMORY[0x277CCABB0] numberWithDouble:v48];
-              [v19 setObject:v50 forKeyedSubscript:@"kRTSimilarityDistanceBetweenLastLocations"];
+              [resultsCopy setObject:v50 forKeyedSubscript:@"kRTSimilarityDistanceBetweenLastLocations"];
             }
 
-            if ([(RTWorkoutRouteManager *)v97 _shouldDecimateWorkout:v15])
+            if ([(RTWorkoutRouteManager *)selfCopy _shouldDecimateWorkout:workoutCopy])
             {
-              v51 = [(RTWorkoutRouteManager *)v97 _shouldDecimateWorkout:v17];
+              v51 = [(RTWorkoutRouteManager *)selfCopy _shouldDecimateWorkout:otherWorkoutCopy];
             }
 
             else
@@ -10075,21 +10075,21 @@ LABEL_79:
             }
 
             v98 = 0;
-            -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](v97, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterLastLocationsDistanceThreshold", v51, [v15 workoutActivityType], &v98);
+            -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](selfCopy, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterLastLocationsDistanceThreshold", v51, [workoutCopy workoutActivityType], &v98);
             v62 = v61;
             v63 = v98;
             if (!v63)
             {
-              v67 = [(RTWorkoutRouteManager *)v97 healthKitManager];
-              v68 = [v67 _getTotalDistanceForWorkout:v15];
-              v69 = [MEMORY[0x277CCDAB0] meterUnit];
-              [v68 doubleValueForUnit:v69];
+              healthKitManager = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+              v68 = [healthKitManager _getTotalDistanceForWorkout:workoutCopy];
+              meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+              [v68 doubleValueForUnit:meterUnit];
               v71 = v70;
 
-              v72 = [(RTWorkoutRouteManager *)v97 healthKitManager];
-              v73 = [v72 _getTotalDistanceForWorkout:v17];
-              v74 = [MEMORY[0x277CCDAB0] meterUnit];
-              [v73 doubleValueForUnit:v74];
+              healthKitManager2 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+              v73 = [healthKitManager2 _getTotalDistanceForWorkout:otherWorkoutCopy];
+              meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+              [v73 doubleValueForUnit:meterUnit2];
               v76 = v75;
 
               if (v71 >= v76)
@@ -10127,8 +10127,8 @@ LABEL_79:
                     v84 = @"YES";
                   }
 
-                  v92 = [MEMORY[0x277CBEAA8] date];
-                  [v92 timeIntervalSinceDate:v95];
+                  date2 = [MEMORY[0x277CBEAA8] date];
+                  [date2 timeIntervalSinceDate:date];
                   v86 = v85;
                   +[RTRuntime footprint];
                   *buf = 138414082;
@@ -10159,7 +10159,7 @@ LABEL_79:
 LABEL_37:
                 free(v23);
                 free(v96);
-                if (a8 && v49)
+                if (error && v49)
                 {
                   v64 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
                   if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -10177,11 +10177,11 @@ LABEL_37:
                   }
 
                   v65 = v49;
-                  *a8 = v49;
+                  *error = v49;
                   v55 = 1;
                 }
 
-                v60 = v95;
+                v60 = date;
 LABEL_43:
 
                 goto LABEL_44;
@@ -10221,9 +10221,9 @@ LABEL_36:
         v104 = 2112;
         v105 = @"YES";
         v106 = 2048;
-        v107 = [v16 count];
+        v107 = [dictionaryCopy count];
         v108 = 2048;
-        v109 = [v18 count];
+        v109 = [otherDictionaryCopy count];
         _os_log_impl(&dword_2304B3000, v56, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, kRTCacheKeyLastLocation doesn't exist in cache dictionary, pre-filtered, %@, cachedDictionary count, %lu, cachedOtherDictionary count, %lu, ", buf, 0x34u);
       }
 
@@ -10248,11 +10248,11 @@ LABEL_36:
     _os_log_error_impl(&dword_2304B3000, v54, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherWorkout", buf, 2u);
   }
 
-  if (a8)
+  if (error)
   {
     v53 = @"otherWorkout";
 LABEL_24:
-    *a8 = _RTErrorInvalidParameterCreate(v53);
+    *error = _RTErrorInvalidParameterCreate(v53);
   }
 
 LABEL_25:
@@ -10262,15 +10262,15 @@ LABEL_44:
   return v55;
 }
 
-- (BOOL)_isPreFilteredCentroidBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8
+- (BOOL)_isPreFilteredCentroidBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error
 {
   v118 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (!v15)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  otherWorkoutCopy = otherWorkout;
+  otherDictionaryCopy = otherDictionary;
+  resultsCopy = results;
+  if (!workoutCopy)
   {
     v52 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -10279,7 +10279,7 @@ LABEL_44:
       _os_log_error_impl(&dword_2304B3000, v52, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -10288,16 +10288,16 @@ LABEL_44:
     goto LABEL_23;
   }
 
-  if (v17)
+  if (otherWorkoutCopy)
   {
-    v99 = self;
-    if (v16)
+    selfCopy = self;
+    if (dictionaryCopy)
     {
-      v20 = [v16 objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
       v21 = v20;
-      if (v18 && v20)
+      if (otherDictionaryCopy && v20)
       {
-        v22 = [v18 objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
+        v22 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
 
         if (v22)
         {
@@ -10305,26 +10305,26 @@ LABEL_44:
           v23 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
           v98 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
           context = objc_autoreleasePoolPush();
-          v96 = [MEMORY[0x277CBEAA8] date];
-          v24 = [v16 objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
-          v25 = [v24 firstObject];
+          date = [MEMORY[0x277CBEAA8] date];
+          v24 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
+          firstObject = [v24 firstObject];
 
-          v26 = [v25 firstObject];
-          [v26 doubleValue];
+          v25FirstObject = [firstObject firstObject];
+          [v25FirstObject doubleValue];
           v28 = v27;
-          v29 = [v25 secondObject];
-          [v29 doubleValue];
+          secondObject = [firstObject secondObject];
+          [secondObject doubleValue];
           *v23 = CLLocationCoordinate2DMake(v28, v30);
           v97 = v23;
 
-          v31 = [v18 objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
-          v32 = [v31 firstObject];
+          v31 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCentroid"];
+          firstObject2 = [v31 firstObject];
 
-          v33 = [v32 firstObject];
-          [v33 doubleValue];
+          v32FirstObject = [firstObject2 firstObject];
+          [v32FirstObject doubleValue];
           v35 = v34;
-          v36 = [v32 secondObject];
-          [v36 doubleValue];
+          secondObject2 = [firstObject2 secondObject];
+          [secondObject2 doubleValue];
           *v98 = CLLocationCoordinate2DMake(v35, v37);
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -10355,21 +10355,21 @@ LABEL_44:
             }
           }
 
-          v46 = [(RTWorkoutRouteManager *)v99 distanceCalculator];
+          distanceCalculator = [(RTWorkoutRouteManager *)selfCopy distanceCalculator];
           v101 = 0;
-          [v46 distanceFromLocationCoordinate:v23 toLocationCoordinate:v98 error:&v101];
+          [distanceCalculator distanceFromLocationCoordinate:v23 toLocationCoordinate:v98 error:&v101];
           v48 = v47;
           v49 = v101;
 
-          if (v19)
+          if (resultsCopy)
           {
             v50 = [MEMORY[0x277CCABB0] numberWithDouble:v48];
-            [v19 setObject:v50 forKeyedSubscript:@"kRTSimilarityDistanceBetweenCentroids"];
+            [resultsCopy setObject:v50 forKeyedSubscript:@"kRTSimilarityDistanceBetweenCentroids"];
           }
 
-          if ([(RTWorkoutRouteManager *)v99 _shouldDecimateWorkout:v15])
+          if ([(RTWorkoutRouteManager *)selfCopy _shouldDecimateWorkout:workoutCopy])
           {
-            v51 = [(RTWorkoutRouteManager *)v99 _shouldDecimateWorkout:v17];
+            v51 = [(RTWorkoutRouteManager *)selfCopy _shouldDecimateWorkout:otherWorkoutCopy];
           }
 
           else
@@ -10378,7 +10378,7 @@ LABEL_44:
           }
 
           v100 = v49;
-          -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](v99, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterCentroidDistanceThreshold", v51, [v15 workoutActivityType], &v100);
+          -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](selfCopy, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterCentroidDistanceThreshold", v51, [workoutCopy workoutActivityType], &v100);
           v63 = v62;
           v61 = v100;
 
@@ -10389,16 +10389,16 @@ LABEL_44:
 
           else
           {
-            v64 = [(RTWorkoutRouteManager *)v99 healthKitManager];
-            v65 = [v64 _getTotalDistanceForWorkout:v15];
-            v66 = [MEMORY[0x277CCDAB0] meterUnit];
-            [v65 doubleValueForUnit:v66];
+            healthKitManager = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+            v65 = [healthKitManager _getTotalDistanceForWorkout:workoutCopy];
+            meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+            [v65 doubleValueForUnit:meterUnit];
             v68 = v67;
 
-            v69 = [(RTWorkoutRouteManager *)v99 healthKitManager];
-            v70 = [v69 _getTotalDistanceForWorkout:v17];
-            v71 = [MEMORY[0x277CCDAB0] meterUnit];
-            [v70 doubleValueForUnit:v71];
+            healthKitManager2 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+            v70 = [healthKitManager2 _getTotalDistanceForWorkout:otherWorkoutCopy];
+            meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+            [v70 doubleValueForUnit:meterUnit2];
             v73 = v72;
 
             if (v68 >= v73)
@@ -10436,8 +10436,8 @@ LABEL_44:
                   v81 = @"YES";
                 }
 
-                v93 = [MEMORY[0x277CBEAA8] date];
-                [v93 timeIntervalSinceDate:v96];
+                date2 = [MEMORY[0x277CBEAA8] date];
+                [date2 timeIntervalSinceDate:date];
                 v83 = v82;
                 +[RTRuntime footprint];
                 *buf = 138414082;
@@ -10472,7 +10472,7 @@ LABEL_44:
 LABEL_49:
           free(v97);
           free(v98);
-          if (a8 && v61)
+          if (error && v61)
           {
             v85 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
@@ -10490,11 +10490,11 @@ LABEL_49:
             }
 
             v86 = v61;
-            *a8 = v61;
+            *error = v61;
             v55 = 1;
           }
 
-          v60 = v96;
+          v60 = date;
 LABEL_55:
 
           goto LABEL_56;
@@ -10522,9 +10522,9 @@ LABEL_55:
         v106 = 2112;
         v107 = @"YES";
         v108 = 2048;
-        v109 = [v16 count];
+        v109 = [dictionaryCopy count];
         v110 = 2048;
-        v111 = [v18 count];
+        v111 = [otherDictionaryCopy count];
         _os_log_impl(&dword_2304B3000, v56, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, kRTCacheKeyCentroid doesn't exist in cache dictionary, pre-filtered, %@, cachedDictionary count, %lu, cachedOtherDictionary count, %lu, ", buf, 0x34u);
       }
 
@@ -10549,11 +10549,11 @@ LABEL_55:
     _os_log_error_impl(&dword_2304B3000, v54, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherWorkout", buf, 2u);
   }
 
-  if (a8)
+  if (error)
   {
     v53 = @"otherWorkout";
 LABEL_23:
-    *a8 = _RTErrorInvalidParameterCreate(v53);
+    *error = _RTErrorInvalidParameterCreate(v53);
   }
 
 LABEL_24:
@@ -10563,18 +10563,18 @@ LABEL_56:
   return v55;
 }
 
-- (BOOL)_isPreFilteredRunningTrackBasedForWorkout:(id)a3 cachedDictionary:(id)a4 error:(id *)a5
+- (BOOL)_isPreFilteredRunningTrackBasedForWorkout:(id)workout cachedDictionary:(id)dictionary error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  v11 = dictionaryCopy;
+  if (workoutCopy)
   {
-    if (v10 && ([v10 objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if (dictionaryCopy && ([dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
       context = objc_autoreleasePoolPush();
-      v13 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v14 = [v11 objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
       v15 = [(RTWorkoutRouteManager *)self _getCoordinatesFromRTPairs:v14];
 
@@ -10594,7 +10594,7 @@ LABEL_56:
       else
       {
         v40 = 0;
-        v32 = [(RTWorkoutRouteManager *)self _isBoundingBoxAreaLessThanThresholdSubPrefilter:4 verticesCount:v13 stimulationDate:&v40 error:v17, v19, v21, v23];
+        v32 = [(RTWorkoutRouteManager *)self _isBoundingBoxAreaLessThanThresholdSubPrefilter:4 verticesCount:date stimulationDate:&v40 error:v17, v19, v21, v23];
         v25 = v40;
         v26 = 0;
         if (!v25 && v32)
@@ -10610,7 +10610,7 @@ LABEL_56:
         free(v15);
       }
 
-      if (a5 && v25)
+      if (error && v25)
       {
         v33 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -10628,7 +10628,7 @@ LABEL_56:
         }
 
         v34 = v25;
-        *a5 = v25;
+        *error = v25;
         v26 = 1;
       }
     }
@@ -10656,7 +10656,7 @@ LABEL_56:
         }
       }
 
-      v13 = 0;
+      date = 0;
       v25 = 0;
     }
   }
@@ -10670,9 +10670,9 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = _RTErrorInvalidParameterCreate(@"workout");
+      *error = _RTErrorInvalidParameterCreate(@"workout");
     }
 
     v26 = 1;
@@ -10681,21 +10681,21 @@ LABEL_56:
   return v26;
 }
 
-- (BOOL)_isBoundingBoxAreaLessThanThresholdSubPrefilter:(CGRect)a3 verticesCount:(unint64_t)a4 stimulationDate:(id)a5 error:(id *)a6
+- (BOOL)_isBoundingBoxAreaLessThanThresholdSubPrefilter:(CGRect)prefilter verticesCount:(unint64_t)count stimulationDate:(id)date error:(id *)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = prefilter.size.height;
+  width = prefilter.size.width;
+  y = prefilter.origin.y;
+  x = prefilter.origin.x;
   v50 = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = [(RTWorkoutRouteManager *)self distanceCalculator];
+  dateCopy = date;
+  distanceCalculator = [(RTWorkoutRouteManager *)self distanceCalculator];
   v35 = 0;
-  [v15 computeBoundingBoxArea:a4 locationsCount:&v35 error:{x, y, width, height}];
+  [distanceCalculator computeBoundingBoxArea:count locationsCount:&v35 error:{x, y, width, height}];
   v17 = v16;
   v18 = v35;
 
-  if (a6 && v18)
+  if (error && v18)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -10714,7 +10714,7 @@ LABEL_56:
 
     v20 = v18;
     v21 = 0;
-    *a6 = v18;
+    *error = v18;
   }
 
   else
@@ -10738,8 +10738,8 @@ LABEL_56:
           v26 = @"YES";
         }
 
-        v27 = [MEMORY[0x277CBEAA8] date];
-        [v27 timeIntervalSinceDate:v14];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSinceDate:dateCopy];
         v29 = v28;
         +[RTRuntime footprint];
         *buf = 138413826;
@@ -10764,10 +10764,10 @@ LABEL_56:
   return v21;
 }
 
-- (BOOL)_isEligibleForCurveOrientation:(CLLocationCoordinate2D *)a3 lastLocation:(CLLocationCoordinate2D *)a4 error:(id *)a5
+- (BOOL)_isEligibleForCurveOrientation:(CLLocationCoordinate2D *)orientation lastLocation:(CLLocationCoordinate2D *)location error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!orientation)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -10776,19 +10776,19 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: firstLocation", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v19 = @"firstLocation";
 LABEL_16:
       _RTErrorInvalidParameterCreate(v19);
-      *a5 = v17 = 0;
+      *error = v17 = 0;
       return v17;
     }
 
     return 0;
   }
 
-  if (!a4)
+  if (!location)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -10797,7 +10797,7 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: lastLocation", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v19 = @"lastLocation";
       goto LABEL_16;
@@ -10806,14 +10806,14 @@ LABEL_16:
     return 0;
   }
 
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [(RTWorkoutRouteManager *)self distanceCalculator];
+  date = [MEMORY[0x277CBEAA8] date];
+  distanceCalculator = [(RTWorkoutRouteManager *)self distanceCalculator];
   v34 = 0;
-  [v11 distanceFromLocationCoordinate:a3 toLocationCoordinate:a4 error:&v34];
+  [distanceCalculator distanceFromLocationCoordinate:orientation toLocationCoordinate:location error:&v34];
   v13 = v12;
   v14 = v34;
 
-  if (a5 && v14)
+  if (error && v14)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -10832,7 +10832,7 @@ LABEL_16:
 
     v16 = v14;
     v17 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
   else
@@ -10856,8 +10856,8 @@ LABEL_16:
           v25 = @"YES";
         }
 
-        v26 = [MEMORY[0x277CBEAA8] date];
-        [v26 timeIntervalSinceDate:v10];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [date2 timeIntervalSinceDate:date];
         v28 = v27;
         +[RTRuntime footprint];
         *buf = 138413826;
@@ -10882,14 +10882,14 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)_isPreFilteredCurveOrientationBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 error:(id *)a7
+- (BOOL)_isPreFilteredCurveOrientationBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary error:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  otherWorkoutCopy = otherWorkout;
+  otherDictionaryCopy = otherDictionary;
+  if (!workoutCopy)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -10898,7 +10898,7 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v41, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_32;
     }
@@ -10907,7 +10907,7 @@ LABEL_16:
     goto LABEL_31;
   }
 
-  if (!v14)
+  if (!otherWorkoutCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -10916,45 +10916,45 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v43, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherWorkout", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_32;
     }
 
     v42 = @"otherWorkout";
 LABEL_31:
-    *a7 = _RTErrorInvalidParameterCreate(v42);
+    *error = _RTErrorInvalidParameterCreate(v42);
 LABEL_32:
     LOBYTE(v30) = 1;
     goto LABEL_38;
   }
 
-  if (v13)
+  if (dictionaryCopy)
   {
-    v16 = [v13 objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
     v17 = v16;
-    if (v15 && v16)
+    if (otherDictionaryCopy && v16)
     {
-      v18 = [v15 objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
+      v18 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
 
       if (v18)
       {
         aSelector = a2;
         context = objc_autoreleasePoolPush();
-        v55 = [MEMORY[0x277CBEAA8] date];
-        v19 = [v13 objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
-        v20 = [v19 firstObject];
-        v21 = [v20 firstObject];
-        v22 = [v21 unsignedIntegerValue];
+        date = [MEMORY[0x277CBEAA8] date];
+        v19 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
+        firstObject = [v19 firstObject];
+        v20FirstObject = [firstObject firstObject];
+        unsignedIntegerValue = [v20FirstObject unsignedIntegerValue];
 
-        v23 = [v15 objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
-        v24 = [v23 firstObject];
-        v25 = [v24 firstObject];
-        v26 = [v25 unsignedIntegerValue];
+        v23 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyCurveOrientation"];
+        firstObject2 = [v23 firstObject];
+        v24FirstObject = [firstObject2 firstObject];
+        unsignedIntegerValue2 = [v24FirstObject unsignedIntegerValue];
 
-        if (v22)
+        if (unsignedIntegerValue)
         {
-          v27 = v26 == 0;
+          v27 = unsignedIntegerValue2 == 0;
         }
 
         else
@@ -10962,8 +10962,8 @@ LABEL_32:
           v27 = 1;
         }
 
-        v28 = v22;
-        v30 = !v27 && v22 != v26;
+        v28 = unsignedIntegerValue;
+        v30 = !v27 && unsignedIntegerValue != unsignedIntegerValue2;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v31 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -10979,12 +10979,12 @@ LABEL_32:
             }
 
             v51 = v34;
-            v49 = [v12 UUID];
+            uUID = [workoutCopy UUID];
             v35 = [RTWorkoutRouteManager curveOrientationTypeToString:v28];
-            v48 = [v14 UUID];
-            v36 = [RTWorkoutRouteManager curveOrientationTypeToString:v26];
-            v50 = [MEMORY[0x277CBEAA8] date];
-            [v50 timeIntervalSinceDate:v55];
+            uUID2 = [otherWorkoutCopy UUID];
+            v36 = [RTWorkoutRouteManager curveOrientationTypeToString:unsignedIntegerValue2];
+            date2 = [MEMORY[0x277CBEAA8] date];
+            [date2 timeIntervalSinceDate:date];
             v38 = v37;
             +[RTRuntime footprint];
             *buf = 138414338;
@@ -10994,11 +10994,11 @@ LABEL_32:
             v60 = 2112;
             v61 = v51;
             v62 = 2112;
-            v63 = v49;
+            v63 = uUID;
             v64 = 2112;
             v65 = v35;
             v66 = 2112;
-            v67 = v48;
+            v67 = uUID2;
             v68 = 2112;
             v69 = v36;
             v70 = 2048;
@@ -11010,7 +11010,7 @@ LABEL_32:
         }
 
         objc_autoreleasePoolPop(context);
-        v40 = v55;
+        v40 = date;
 LABEL_37:
 
         goto LABEL_38;
@@ -11038,9 +11038,9 @@ LABEL_37:
       v60 = 2112;
       v61 = @"YES";
       v62 = 2048;
-      v63 = [v13 count];
+      v63 = [dictionaryCopy count];
       v64 = 2048;
-      v65 = [v15 count];
+      v65 = [otherDictionaryCopy count];
       LOBYTE(v30) = 1;
       _os_log_impl(&dword_2304B3000, v40, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, kRTCacheKeyCurveOrientation doesn't exist in cache dictionary, pre-filtered, %@, cachedDictionary count, %lu, cachedOtherDictionary count, %lu, ", buf, 0x34u);
     }
@@ -11053,15 +11053,15 @@ LABEL_38:
   return v30;
 }
 
-- (BOOL)_isPreFilteredIOUBasedForWorkout:(id)a3 cachedDictionary:(id)a4 otherWorkout:(id)a5 cachedOtherDictionary:(id)a6 preFilteringResults:(id)a7 error:(id *)a8
+- (BOOL)_isPreFilteredIOUBasedForWorkout:(id)workout cachedDictionary:(id)dictionary otherWorkout:(id)otherWorkout cachedOtherDictionary:(id)otherDictionary preFilteringResults:(id)results error:(id *)error
 {
   v84 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (!v15)
+  workoutCopy = workout;
+  dictionaryCopy = dictionary;
+  otherWorkoutCopy = otherWorkout;
+  otherDictionaryCopy = otherDictionary;
+  resultsCopy = results;
+  if (!workoutCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -11070,7 +11070,7 @@ LABEL_38:
       _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -11079,47 +11079,47 @@ LABEL_38:
     goto LABEL_20;
   }
 
-  if (v17)
+  if (otherWorkoutCopy)
   {
-    if (v16)
+    if (dictionaryCopy)
     {
-      v20 = [v16 objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
       v21 = v20;
-      if (v18 && v20)
+      if (otherDictionaryCopy && v20)
       {
-        v22 = [v18 objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
+        v22 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
 
         if (v22)
         {
           aSelector = a2;
           context = objc_autoreleasePoolPush();
-          v67 = [MEMORY[0x277CBEAA8] date];
-          v23 = [v16 objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
+          date = [MEMORY[0x277CBEAA8] date];
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
           v24 = [(RTWorkoutRouteManager *)self _getCoordinatesFromRTPairs:v23];
 
-          v25 = [v18 objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
+          v25 = [otherDictionaryCopy objectForKeyedSubscript:@"kRTCacheKeyBoundingBoxVertices"];
           v26 = [(RTWorkoutRouteManager *)self _getCoordinatesFromRTPairs:v25];
 
-          v27 = [(RTWorkoutRouteManager *)self distanceCalculator];
+          distanceCalculator = [(RTWorkoutRouteManager *)self distanceCalculator];
           v69 = 0;
           v66 = v24;
           v28 = v24;
           v29 = v26;
-          [v27 computeIntersectionOverUnionUsingBoundingBoxBetweenLocations:v28 locationsCount:4 otherLocations:v26 otherLocationsCount:4 error:&v69];
+          [distanceCalculator computeIntersectionOverUnionUsingBoundingBoxBetweenLocations:v28 locationsCount:4 otherLocations:v26 otherLocationsCount:4 error:&v69];
           v31 = v30;
           v32 = v69;
 
           if (!v32)
           {
-            if (v19)
+            if (resultsCopy)
             {
               v33 = [MEMORY[0x277CCABB0] numberWithDouble:v31];
-              [v19 setObject:v33 forKeyedSubscript:@"kRTSimilarityIOU"];
+              [resultsCopy setObject:v33 forKeyedSubscript:@"kRTSimilarityIOU"];
             }
 
-            if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v15])
+            if ([(RTWorkoutRouteManager *)self _shouldDecimateWorkout:workoutCopy])
             {
-              v34 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v17];
+              v34 = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:otherWorkoutCopy];
             }
 
             else
@@ -11128,7 +11128,7 @@ LABEL_38:
             }
 
             v68 = 0;
-            -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](self, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterIntersectionOverUnionThreshold", v34, [v15 workoutActivityType], &v68);
+            -[RTWorkoutRouteManager _getConstantValueForString:isDecimated:workoutActivityType:error:](self, "_getConstantValueForString:isDecimated:workoutActivityType:error:", @"kRTPreFilterIntersectionOverUnionThreshold", v34, [workoutCopy workoutActivityType], &v68);
             v45 = v44;
             v46 = v68;
             if (!v46)
@@ -11147,8 +11147,8 @@ LABEL_38:
                     v54 = @"YES";
                   }
 
-                  v63 = [MEMORY[0x277CBEAA8] date];
-                  [v63 timeIntervalSinceDate:v67];
+                  date2 = [MEMORY[0x277CBEAA8] date];
+                  [date2 timeIntervalSinceDate:date];
                   v56 = v55;
                   +[RTRuntime footprint];
                   *buf = 138413826;
@@ -11201,7 +11201,7 @@ LABEL_32:
             free(v29);
           }
 
-          if (a8 && v32)
+          if (error && v32)
           {
             v47 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -11219,11 +11219,11 @@ LABEL_32:
             }
 
             v48 = v32;
-            *a8 = v32;
+            *error = v32;
             v38 = 1;
           }
 
-          v43 = v67;
+          v43 = date;
 LABEL_42:
 
           goto LABEL_43;
@@ -11251,9 +11251,9 @@ LABEL_42:
         v74 = 2112;
         v75 = @"YES";
         v76 = 2048;
-        v77 = [v16 count];
+        v77 = [dictionaryCopy count];
         v78 = 2048;
-        v79 = [v18 count];
+        v79 = [otherDictionaryCopy count];
         _os_log_impl(&dword_2304B3000, v39, OS_LOG_TYPE_INFO, "%@, %@, pre-filtering criteria, kRTCacheKeyBoundingBoxVertices doesn't exist in cache dictionary, pre-filtered, %@, cachedDictionary count, %lu, cachedOtherDictionary count, %lu, ", buf, 0x34u);
       }
 
@@ -11278,11 +11278,11 @@ LABEL_42:
     _os_log_error_impl(&dword_2304B3000, v37, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherWorkout", buf, 2u);
   }
 
-  if (a8)
+  if (error)
   {
     v36 = @"otherWorkout";
 LABEL_20:
-    *a8 = _RTErrorInvalidParameterCreate(v36);
+    *error = _RTErrorInvalidParameterCreate(v36);
   }
 
 LABEL_21:
@@ -11292,13 +11292,13 @@ LABEL_43:
   return v38;
 }
 
-- (double)similarityDistanceUsingPreFilteringResults:(id)a3 error:(id *)a4
+- (double)similarityDistanceUsingPreFilteringResults:(id)results error:(id *)error
 {
   v104 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  resultsCopy = results;
+  if (resultsCopy)
   {
-    v63 = self;
+    selfCopy = self;
     aSelector = a2;
     v66 = 0;
     v65 = 0;
@@ -11316,29 +11316,29 @@ LABEL_43:
     {
       if ((v9 & 1) == 0)
       {
-        v19 = v8;
+        date = v8;
         goto LABEL_38;
       }
 
       v18 = objc_autoreleasePoolPush();
-      v19 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
 
-      v20 = [v7 objectForKeyedSubscript:v11];
+      v20 = [resultsCopy objectForKeyedSubscript:v11];
       if (!v20)
       {
         break;
       }
 
       v21 = v20;
-      v22 = [v7 objectForKeyedSubscript:v12];
+      v22 = [resultsCopy objectForKeyedSubscript:v12];
       if (!v22)
       {
         goto LABEL_36;
       }
 
       v23 = v22;
-      v67 = v19;
-      v24 = [v7 objectForKeyedSubscript:v13];
+      v67 = date;
+      v24 = [resultsCopy objectForKeyedSubscript:v13];
       if (!v24)
       {
         goto LABEL_35;
@@ -11349,23 +11349,23 @@ LABEL_43:
       v27 = v13;
       v28 = v12;
       v29 = v11;
-      v30 = [v7 objectForKeyedSubscript:@"kRTSimilarityDistanceBetweenCentroids"];
+      v30 = [resultsCopy objectForKeyedSubscript:@"kRTSimilarityDistanceBetweenCentroids"];
       if (!v30)
       {
 
         v18 = v26;
 LABEL_35:
 
-        v19 = v67;
+        date = v67;
 LABEL_36:
 
         break;
       }
 
       v31 = v30;
-      v32 = [v7 objectForKeyedSubscript:@"kRTSimilarityIOU"];
+      v32 = [resultsCopy objectForKeyedSubscript:@"kRTSimilarityIOU"];
 
-      v19 = v67;
+      date = v67;
       v11 = v29;
       v12 = v28;
       v13 = v27;
@@ -11375,30 +11375,30 @@ LABEL_36:
         break;
       }
 
-      v33 = [v7 objectForKeyedSubscript:@"kRTSimilarityIsLongWorkout"];
-      v34 = [v33 BOOLValue];
+      v33 = [resultsCopy objectForKeyedSubscript:@"kRTSimilarityIsLongWorkout"];
+      bOOLValue = [v33 BOOLValue];
 
-      v35 = [v7 objectForKeyedSubscript:v11];
+      v35 = [resultsCopy objectForKeyedSubscript:v11];
       [v35 doubleValue];
       v14 = v36;
 
-      v37 = [v7 objectForKeyedSubscript:v12];
+      v37 = [resultsCopy objectForKeyedSubscript:v12];
       [v37 doubleValue];
       v15 = v38;
 
-      v39 = [v7 objectForKeyedSubscript:v13];
+      v39 = [resultsCopy objectForKeyedSubscript:v13];
       [v39 doubleValue];
       v16 = v40;
 
-      v41 = [v7 objectForKeyedSubscript:@"kRTSimilarityDistanceBetweenCentroids"];
+      v41 = [resultsCopy objectForKeyedSubscript:@"kRTSimilarityDistanceBetweenCentroids"];
       [v41 doubleValue];
       v17 = v42;
 
-      v43 = [v7 objectForKeyedSubscript:@"kRTSimilarityIOU"];
+      v43 = [resultsCopy objectForKeyedSubscript:@"kRTSimilarityIOU"];
       [v43 doubleValue];
       v10 = v44;
 
-      v45 = (v14 <= 150.0) & ~v34;
+      v45 = (v14 <= 150.0) & ~bOOLValue;
       if (v15 > 150.0)
       {
         v45 = 0;
@@ -11411,7 +11411,7 @@ LABEL_36:
 
       if (v14 <= 250.0)
       {
-        v46 = v34;
+        v46 = bOOLValue;
       }
 
       else
@@ -11440,7 +11440,7 @@ LABEL_36:
       }
 
       v47 = v45 & (v17 <= 150.0);
-      LOBYTE(v66) = v34;
+      LOBYTE(v66) = bOOLValue;
       BYTE4(v66) = v47 & (v10 >= 0.97);
       v65 = v46;
       if (v47)
@@ -11505,8 +11505,8 @@ LABEL_39:
           v57 = @"NO";
         }
 
-        v58 = [MEMORY[0x277CBEAA8] date];
-        [v58 timeIntervalSinceDate:v19];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [date2 timeIntervalSinceDate:date];
         v60 = v59;
         +[RTRuntime footprint];
         *buf = 138416642;
@@ -11560,37 +11560,37 @@ LABEL_39:
     }
 
     v49 = 1.0;
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"preFilteringResults");
+      *error = _RTErrorInvalidParameterCreate(@"preFilteringResults");
     }
   }
 
   return v49;
 }
 
-- (unint64_t)_getCurveOrientationTypeForLocations:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 error:(id *)a5
+- (unint64_t)_getCurveOrientationTypeForLocations:(CLLocationCoordinate2D *)locations locationsCount:(unint64_t)count error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (locations)
   {
-    if (a4 > 1)
+    if (count > 1)
     {
       v16 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
-      *v16 = *a3;
+      *v16 = *locations;
       v17 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
-      *v17 = a3[a4 - 1];
+      *v17 = locations[count - 1];
       v27 = 0;
       v18 = [(RTWorkoutRouteManager *)self _isEligibleForCurveOrientation:v16 lastLocation:v17 error:&v27];
       v10 = v27;
       if (v18)
       {
-        p_longitude = &a3->longitude;
+        p_longitude = &locations->longitude;
         v20 = 0.0;
         v21 = 1;
         do
         {
-          if (v21 == a4)
+          if (v21 == count)
           {
             v22 = 0;
           }
@@ -11600,12 +11600,12 @@ LABEL_39:
             v22 = v21;
           }
 
-          v20 = v20 + *p_longitude * a3[v22].latitude - a3[v22].longitude * *(p_longitude - 1);
+          v20 = v20 + *p_longitude * locations[v22].latitude - locations[v22].longitude * *(p_longitude - 1);
           p_longitude += 2;
           ++v21;
         }
 
-        while (v21 - a4 != 1);
+        while (v21 - count != 1);
         if (v16)
         {
           free(v16);
@@ -11647,11 +11647,11 @@ LABEL_39:
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
       v10 = [v7 errorWithDomain:v8 code:7 userInfo:v9];
 
-      if (a5)
+      if (error)
       {
         v11 = v10;
         v12 = 0;
-        *a5 = v10;
+        *error = v10;
 LABEL_25:
 
         return v12;
@@ -11669,19 +11669,19 @@ LABEL_25:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locations", buf, 2u);
   }
 
-  if (!a5)
+  if (!error)
   {
     return 0;
   }
 
   _RTErrorInvalidParameterCreate(@"locations");
-  *a5 = v12 = 0;
+  *error = v12 = 0;
   return v12;
 }
 
-- (id)_readClustersFromHealthKitWithError:(id *)a3
+- (id)_readClustersFromHealthKitWithError:(id *)error
 {
-  v104 = a3;
+  errorCopy = error;
   v159[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v113 = 0;
@@ -11726,7 +11726,7 @@ LABEL_25:
     v139 = __Block_byref_object_copy__153;
     v140 = __Block_byref_object_dispose__153;
     v141 = 0;
-    v10 = [(RTWorkoutRouteManager *)self healthKitManager];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
     v132[0] = MEMORY[0x277D85DD0];
     v132[1] = 3221225472;
     v132[2] = __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_invoke;
@@ -11735,7 +11735,7 @@ LABEL_25:
     v135 = &v136;
     v11 = v9;
     v133 = v11;
-    [v10 fetchWorkoutClustersWithHandler:v132];
+    [healthKitManager fetchWorkoutClustersWithHandler:v132];
 
     v12 = v11;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -11747,11 +11747,11 @@ LABEL_25:
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -11854,8 +11854,8 @@ LABEL_25:
           v152 = __Block_byref_object_copy__153;
           v153 = __Block_byref_object_dispose__153;
           v154 = objc_opt_new();
-          v45 = [(RTWorkoutRouteManager *)self healthKitManager];
-          v46 = [v43 clusterUUID];
+          healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+          clusterUUID = [v43 clusterUUID];
           v124[0] = MEMORY[0x277D85DD0];
           v124[1] = 3221225472;
           v124[2] = __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_invoke_224;
@@ -11864,7 +11864,7 @@ LABEL_25:
           v127 = &v136;
           v47 = v44;
           v125 = v47;
-          [v45 fetchWorkoutUUIDsForClusterUUID:v46 handler:v124];
+          [healthKitManager2 fetchWorkoutUUIDsForClusterUUID:clusterUUID handler:v124];
 
           v12 = v47;
           v48 = [MEMORY[0x277CBEAA8] now];
@@ -11877,11 +11877,11 @@ LABEL_25:
             v53 = v52;
             v54 = objc_opt_new();
             v55 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-            v56 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v57 = [v56 filteredArrayUsingPredicate:v55];
-            v58 = [v57 firstObject];
+            callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+            v57 = [callStackSymbols2 filteredArrayUsingPredicate:v55];
+            firstObject2 = [v57 firstObject];
 
-            [v54 submitToCoreAnalytics:v58 type:1 duration:v53];
+            [v54 submitToCoreAnalytics:firstObject2 type:1 duration:v53];
             v59 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v59, OS_LOG_TYPE_FAULT))
             {
@@ -11950,13 +11950,13 @@ LABEL_36:
             goto LABEL_38;
           }
 
-          v74 = [(RTWorkoutRouteManager *)self healthKitManager];
-          v75 = [*(*&v151[8] + 40) anyObject];
-          v150 = v75;
+          healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
+          anyObject = [*(*&v151[8] + 40) anyObject];
+          v150 = anyObject;
           v76 = [MEMORY[0x277CBEA60] arrayWithObjects:&v150 count:1];
           v77 = (v137 + 5);
           v123 = v137[5];
-          v67 = [v74 getWorkoutsWithUUIDs:v76 error:&v123];
+          v67 = [healthKitManager3 getWorkoutsWithUUIDs:v76 error:&v123];
           objc_storeStrong(v77, v123);
 
           v78 = v137[5];
@@ -11975,13 +11975,13 @@ LABEL_36:
               goto LABEL_37;
             }
 
-            v80 = [v67 firstObject];
-            v79 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v80 workoutActivityType]);
+            firstObject3 = [v67 firstObject];
+            v79 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [firstObject3 workoutActivityType]);
 
             v81 = [v115 objectForKeyedSubscript:v79];
-            LODWORD(v80) = v81 == 0;
+            LODWORD(firstObject3) = v81 == 0;
 
-            if (v80)
+            if (firstObject3)
             {
               v82 = objc_opt_new();
               [v115 setObject:v82 forKeyedSubscript:v79];
@@ -12162,7 +12162,7 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_clusterizeWorkoutsWithError:(id *)a3
+- (id)_clusterizeWorkoutsWithError:(id *)error
 {
   v294[1] = *MEMORY[0x277D85DE8];
   v211 = objc_opt_new();
@@ -12170,11 +12170,11 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
   v215 = objc_opt_new();
   v208 = [[RTClusterizeResults alloc] initWithClusters:v4 objectIDs:v215];
   v269 = 0;
-  v219 = self;
+  selfCopy = self;
   [(RTWorkoutRouteManager *)self _getMaxDistanceThresholdForMetric:[(RTWorkoutRouteManager *)self distanceMetric] error:&v269];
   v6 = v5;
   v7 = v269;
-  if (a3 && v7)
+  if (error && v7)
   {
     v8 = v7;
     v9 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -12193,7 +12193,7 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
     }
 
     v10 = v8;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_164;
   }
 
@@ -12204,7 +12204,7 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
   v267 = 0x2020000000;
   v268 = 0;
   v11 = dispatch_semaphore_create(0);
-  v12 = [(RTWorkoutRouteManager *)v219 workoutDistanceStore];
+  workoutDistanceStore = [(RTWorkoutRouteManager *)selfCopy workoutDistanceStore];
   v262[0] = MEMORY[0x277D85DD0];
   v262[1] = 3221225472;
   v262[2] = __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke;
@@ -12212,7 +12212,7 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
   v264 = &v265;
   v13 = v11;
   v263 = v13;
-  [v12 fetchTotalWorkoutDistancesCountWithHandler:v262];
+  [workoutDistanceStore fetchTotalWorkoutDistancesCountWithHandler:v262];
 
   v14 = v13;
   v15 = [MEMORY[0x277CBEAA8] now];
@@ -12224,11 +12224,11 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
     v19 = v18;
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v23 = [v22 filteredArrayUsingPredicate:v21];
-    v24 = [v23 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+    firstObject = [v23 firstObject];
 
-    [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+    [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -12298,7 +12298,7 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
   v256[3] = __Block_byref_object_copy__153;
   v256[4] = __Block_byref_object_dispose__153;
   v257 = 0;
-  v37 = [(RTWorkoutRouteManager *)v219 workoutDistanceStore];
+  workoutDistanceStore2 = [(RTWorkoutRouteManager *)selfCopy workoutDistanceStore];
   v251[0] = MEMORY[0x277D85DD0];
   v251[1] = 3221225472;
   v251[2] = __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226;
@@ -12308,7 +12308,7 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
   v255 = v256;
   v38 = v36;
   v252 = v38;
-  [v37 fetchWorkoutDistancesWithOffset:0 limit:5000 maxDistanceThreshold:0 includeVisitedRecords:v251 handler:v6];
+  [workoutDistanceStore2 fetchWorkoutDistancesWithOffset:0 limit:5000 maxDistanceThreshold:0 includeVisitedRecords:v251 handler:v6];
 
   dsema = v38;
   v39 = [MEMORY[0x277CBEAA8] now];
@@ -12321,11 +12321,11 @@ void __61__RTWorkoutRouteManager__readClustersFromHealthKitWithError___block_inv
     v44 = v43;
     v45 = objc_opt_new();
     v46 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v47 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v48 = [v47 filteredArrayUsingPredicate:v46];
-    v49 = [v48 firstObject];
+    callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v48 = [callStackSymbols2 filteredArrayUsingPredicate:v46];
+    firstObject2 = [v48 firstObject];
 
-    [v45 submitToCoreAnalytics:v49 type:1 duration:v44];
+    [v45 submitToCoreAnalytics:firstObject2 type:1 duration:v44];
     v50 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v50, OS_LOG_TYPE_FAULT))
     {
@@ -12389,7 +12389,7 @@ LABEL_119:
 
       if ([v211 count])
       {
-        [(RTWorkoutRouteManager *)v219 setWorkoutActivityTypeToclustersSet:0];
+        [(RTWorkoutRouteManager *)selfCopy setWorkoutActivityTypeToclustersSet:0];
       }
 
       else
@@ -12398,10 +12398,10 @@ LABEL_119:
         v238 = 0u;
         v235 = 0u;
         v236 = 0u;
-        v156 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-        v221 = [v156 allValues];
+        workoutActivityTypeToclustersSet = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+        allValues = [workoutActivityTypeToclustersSet allValues];
 
-        v157 = [v221 countByEnumeratingWithState:&v235 objects:v272 count:16];
+        v157 = [allValues countByEnumeratingWithState:&v235 objects:v272 count:16];
         if (v157)
         {
           v223 = *v236;
@@ -12413,7 +12413,7 @@ LABEL_119:
             {
               if (*v236 != v223)
               {
-                objc_enumerationMutation(v221);
+                objc_enumerationMutation(allValues);
               }
 
               v159 = *(*(&v235 + 1) + 8 * v158);
@@ -12438,8 +12438,8 @@ LABEL_119:
 
                     v165 = *(*(&v231 + 1) + 8 * i);
                     v166 = objc_autoreleasePoolPush();
-                    v167 = [v165 allObjects];
-                    [v4 addObject:v167];
+                    allObjects = [v165 allObjects];
+                    [v4 addObject:allObjects];
 
                     objc_autoreleasePoolPop(v166);
                   }
@@ -12455,7 +12455,7 @@ LABEL_119:
             }
 
             while (v158 != v225);
-            v157 = [v221 countByEnumeratingWithState:&v235 objects:v272 count:16];
+            v157 = [allValues countByEnumeratingWithState:&v235 objects:v272 count:16];
           }
 
           while (v157);
@@ -12552,20 +12552,20 @@ LABEL_119:
         }
 
         v188 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v174];
-        v189 = [(RTWorkoutRouteManager *)v219 processWorkoutMetrics];
-        [v189 setObject:v188 forKeyedSubscript:@"clustering_count_clusters"];
+        processWorkoutMetrics = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+        [processWorkoutMetrics setObject:v188 forKeyedSubscript:@"clustering_count_clusters"];
 
         v190 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v177];
-        v191 = [(RTWorkoutRouteManager *)v219 processWorkoutMetrics];
-        [v191 setObject:v190 forKeyedSubscript:@"clustering_min_cluster_size"];
+        processWorkoutMetrics2 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+        [processWorkoutMetrics2 setObject:v190 forKeyedSubscript:@"clustering_min_cluster_size"];
 
         v192 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v178];
-        v193 = [(RTWorkoutRouteManager *)v219 processWorkoutMetrics];
-        [v193 setObject:v192 forKeyedSubscript:@"clustering_max_cluster_size"];
+        processWorkoutMetrics3 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+        [processWorkoutMetrics3 setObject:v192 forKeyedSubscript:@"clustering_max_cluster_size"];
 
         v194 = [MEMORY[0x277CCABB0] numberWithDouble:v179];
-        v195 = [(RTWorkoutRouteManager *)v219 processWorkoutMetrics];
-        [v195 setObject:v194 forKeyedSubscript:@"clustering_average_cluster_size"];
+        processWorkoutMetrics4 = [(RTWorkoutRouteManager *)selfCopy processWorkoutMetrics];
+        [processWorkoutMetrics4 setObject:v194 forKeyedSubscript:@"clustering_average_cluster_size"];
       }
 
       goto LABEL_159;
@@ -12586,14 +12586,14 @@ LABEL_31:
 
       v64 = *(*(&v247 + 1) + 8 * v220);
       context = objc_autoreleasePoolPush();
-      v65 = [v64 objectID];
-      [v215 addObject:v65];
+      objectID = [v64 objectID];
+      [v215 addObject:objectID];
 
-      v66 = [(RTWorkoutRouteManager *)v219 distanceMetric];
-      v67 = [v64 areBothWorkoutsDecimated];
-      v68 = [v64 workoutActivityType];
+      distanceMetric = [(RTWorkoutRouteManager *)selfCopy distanceMetric];
+      areBothWorkoutsDecimated = [v64 areBothWorkoutsDecimated];
+      workoutActivityType = [v64 workoutActivityType];
       v246 = v63;
-      v218 = [(RTWorkoutRouteManager *)v219 _getConstantValueForDistanceThresholdUsingDistanceMetric:v66 isDecimated:v67 workoutActivityType:v68 error:&v246];
+      v218 = [(RTWorkoutRouteManager *)selfCopy _getConstantValueForDistanceThresholdUsingDistanceMetric:distanceMetric isDecimated:areBothWorkoutsDecimated workoutActivityType:workoutActivityType error:&v246];
       v62 = v246;
 
       if (v62)
@@ -12640,32 +12640,32 @@ LABEL_31:
         if (v78 <= v79)
         {
           v213 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", +[RTHealthKitManager HKHealthKitWorkoutActivityTypeFromRTWorkoutActivityType:](RTHealthKitManager, "HKHealthKitWorkoutActivityTypeFromRTWorkoutActivityType:", [v64 workoutActivityType]));
-          v81 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-          v82 = v81 == 0;
+          workoutActivityTypeToclustersSet2 = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+          v82 = workoutActivityTypeToclustersSet2 == 0;
 
           if (v82)
           {
             v83 = objc_opt_new();
-            [(RTWorkoutRouteManager *)v219 setWorkoutActivityTypeToclustersSet:v83];
+            [(RTWorkoutRouteManager *)selfCopy setWorkoutActivityTypeToclustersSet:v83];
           }
 
-          v84 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-          v85 = [v84 objectForKeyedSubscript:v213];
+          workoutActivityTypeToclustersSet3 = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+          v85 = [workoutActivityTypeToclustersSet3 objectForKeyedSubscript:v213];
           v86 = v85 == 0;
 
           if (v86)
           {
             v87 = objc_opt_new();
-            v88 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-            [v88 setObject:v87 forKeyedSubscript:v213];
+            workoutActivityTypeToclustersSet4 = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+            [workoutActivityTypeToclustersSet4 setObject:v87 forKeyedSubscript:v213];
           }
 
           v244 = 0u;
           v245 = 0u;
           v242 = 0u;
           v243 = 0u;
-          v89 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-          v90 = [v89 objectForKeyedSubscript:v213];
+          workoutActivityTypeToclustersSet5 = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+          v90 = [workoutActivityTypeToclustersSet5 objectForKeyedSubscript:v213];
 
           v91 = [v90 countByEnumeratingWithState:&v242 objects:v273 count:16];
           if (v91)
@@ -12683,8 +12683,8 @@ LABEL_31:
 
                 v94 = *(*(&v242 + 1) + 8 * j);
                 v95 = objc_autoreleasePoolPush();
-                v96 = [v64 firstWorkout];
-                v97 = [v94 containsObject:v96];
+                firstWorkout = [v64 firstWorkout];
+                v97 = [v94 containsObject:firstWorkout];
 
                 if (v97)
                 {
@@ -12693,8 +12693,8 @@ LABEL_31:
                   *(&v222 + 1) = v98;
                 }
 
-                v99 = [v64 secondWorkout];
-                v100 = [v94 containsObject:v99];
+                secondWorkout = [v64 secondWorkout];
+                v100 = [v94 containsObject:secondWorkout];
 
                 if (v100)
                 {
@@ -12731,12 +12731,12 @@ LABEL_31:
           if (v222 == 0)
           {
             v110 = MEMORY[0x277CBEB58];
-            v111 = [v64 firstWorkout];
-            v112 = [v64 secondWorkout];
-            v113 = [v110 setWithObjects:{v111, v112, 0}];
+            firstWorkout2 = [v64 firstWorkout];
+            secondWorkout2 = [v64 secondWorkout];
+            v113 = [v110 setWithObjects:{firstWorkout2, secondWorkout2, 0}];
 
-            v114 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-            v115 = [v114 objectForKeyedSubscript:v213];
+            workoutActivityTypeToclustersSet6 = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+            v115 = [workoutActivityTypeToclustersSet6 objectForKeyedSubscript:v213];
             [v115 addObject:v113];
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -12764,12 +12764,12 @@ LABEL_31:
           if (*(&v222 + 1) && !v222)
           {
             v105 = MEMORY[0x277CBEB58];
-            v106 = [v64 secondWorkout];
-            v107 = [v105 setWithObject:v106];
-            v108 = [v64 workoutActivityType];
+            secondWorkout3 = [v64 secondWorkout];
+            v107 = [v105 setWithObject:secondWorkout3];
+            workoutActivityType2 = [v64 workoutActivityType];
             [v218 doubleValue];
             v241 = 0;
-            v109 = [(RTWorkoutRouteManager *)v219 _areWorkoutsSimilarBetweenClusterSet1:*(&v222 + 1) clusterSet2:v107 workoutActivityType:v108 maxDistanceThreshold:&v241 error:?];
+            v109 = [(RTWorkoutRouteManager *)selfCopy _areWorkoutsSimilarBetweenClusterSet1:*(&v222 + 1) clusterSet2:v107 workoutActivityType:workoutActivityType2 maxDistanceThreshold:&v241 error:?];
             v62 = v241;
 
             if (v62)
@@ -12781,8 +12781,8 @@ LABEL_31:
 
             if (v109)
             {
-              v139 = [v64 secondWorkout];
-              [*(&v222 + 1) addObject:v139];
+              secondWorkout4 = [v64 secondWorkout];
+              [*(&v222 + 1) addObject:secondWorkout4];
 
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
@@ -12827,13 +12827,13 @@ LABEL_116:
               v147 = objc_opt_class();
               v148 = NSStringFromClass(v147);
               v149 = NSStringFromSelector(a2);
-              v150 = [v64 secondWorkout];
+              secondWorkout5 = [v64 secondWorkout];
               *buf = 138413058;
               *&buf[4] = v148;
               v275 = 2112;
               v276 = v149;
               v277 = 2112;
-              v278 = v150;
+              v278 = secondWorkout5;
               v279 = 2112;
               v280 = *(&v222 + 1);
               _os_log_impl(&dword_2304B3000, v113, OS_LOG_TYPE_INFO, "%@, %@, workoutUUID, %@, not added to the cluster, %@, reason, not similar to entire cluster", buf, 0x2Au);
@@ -12855,10 +12855,10 @@ LABEL_64:
               goto LABEL_114;
             }
 
-            v103 = [v64 workoutActivityType];
+            workoutActivityType3 = [v64 workoutActivityType];
             [v218 doubleValue];
             v239 = 0;
-            v104 = [(RTWorkoutRouteManager *)v219 _areWorkoutsSimilarBetweenClusterSet1:v102 clusterSet2:v222 workoutActivityType:v103 maxDistanceThreshold:&v239 error:?];
+            v104 = [(RTWorkoutRouteManager *)selfCopy _areWorkoutsSimilarBetweenClusterSet1:v102 clusterSet2:v222 workoutActivityType:workoutActivityType3 maxDistanceThreshold:&v239 error:?];
             v62 = v239;
             if (v62)
             {
@@ -12871,8 +12871,8 @@ LABEL_64:
               if (v120 <= [v222 count])
               {
                 [v222 unionSet:v102];
-                v134 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-                v135 = [v134 objectForKeyedSubscript:v213];
+                workoutActivityTypeToclustersSet7 = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+                v135 = [workoutActivityTypeToclustersSet7 objectForKeyedSubscript:v213];
                 [v135 removeObject:v102];
 
                 if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -12899,8 +12899,8 @@ LABEL_64:
               else
               {
                 [v102 unionSet:v222];
-                v121 = [(RTWorkoutRouteManager *)v219 workoutActivityTypeToclustersSet];
-                v122 = [v121 objectForKeyedSubscript:v213];
+                workoutActivityTypeToclustersSet8 = [(RTWorkoutRouteManager *)selfCopy workoutActivityTypeToclustersSet];
+                v122 = [workoutActivityTypeToclustersSet8 objectForKeyedSubscript:v213];
                 [v122 removeObject:v222];
 
                 if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -12955,12 +12955,12 @@ LABEL_89:
           }
 
           v129 = MEMORY[0x277CBEB58];
-          v130 = [v64 firstWorkout];
-          v131 = [v129 setWithObject:v130];
-          v132 = [v64 workoutActivityType];
+          firstWorkout3 = [v64 firstWorkout];
+          v131 = [v129 setWithObject:firstWorkout3];
+          workoutActivityType4 = [v64 workoutActivityType];
           [v218 doubleValue];
           v240 = 0;
-          v133 = [(RTWorkoutRouteManager *)v219 _areWorkoutsSimilarBetweenClusterSet1:v131 clusterSet2:v222 workoutActivityType:v132 maxDistanceThreshold:&v240 error:?];
+          v133 = [(RTWorkoutRouteManager *)selfCopy _areWorkoutsSimilarBetweenClusterSet1:v131 clusterSet2:v222 workoutActivityType:workoutActivityType4 maxDistanceThreshold:&v240 error:?];
           v62 = v240;
 
           if (v62)
@@ -12972,8 +12972,8 @@ LABEL_89:
 
           if (v133)
           {
-            v143 = [v64 firstWorkout];
-            [v222 addObject:v143];
+            firstWorkout4 = [v64 firstWorkout];
+            [v222 addObject:firstWorkout4];
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -13006,13 +13006,13 @@ LABEL_112:
               v151 = objc_opt_class();
               v152 = NSStringFromClass(v151);
               v153 = NSStringFromSelector(a2);
-              v154 = [v64 firstWorkout];
+              firstWorkout5 = [v64 firstWorkout];
               *buf = 138413058;
               *&buf[4] = v152;
               v275 = 2112;
               v276 = v153;
               v277 = 2112;
-              v278 = v154;
+              v278 = firstWorkout5;
               v279 = 2112;
               v280 = v222;
               _os_log_impl(&dword_2304B3000, v113, OS_LOG_TYPE_INFO, "%@, %@, workoutUUID, %@, not added to the cluster, %@, reason, not similar to entire cluster", buf, 0x2Au);
@@ -13071,21 +13071,21 @@ LABEL_159:
   v196 = objc_opt_class();
   v197 = NSStringFromClass(v196);
   v198 = NSStringFromSelector(a2);
-  [(RTWorkoutRouteManager *)v219 _logClusters:v4 className:v197 selectorName:v198];
+  [(RTWorkoutRouteManager *)selfCopy _logClusters:v4 className:v197 selectorName:v198];
 
   v8 = v204;
-  if (a3)
+  if (error)
   {
     if ([v211 count])
     {
       v199 = _RTSafeArray();
       v200 = _RTMultiErrorCreate();
-      *a3 = v200;
+      *error = v200;
     }
 
     else
     {
-      *a3 = 0;
+      *error = 0;
     }
 
     v8 = v204;
@@ -13115,11 +13115,11 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_syncClustersToHealthKit:(id)a3 error:(id *)a4
+- (BOOL)_syncClustersToHealthKit:(id)kit error:(id *)error
 {
   v141[1] = *MEMORY[0x277D85DE8];
-  v106 = a3;
-  if (v106)
+  kitCopy = kit;
+  if (kitCopy)
   {
     aSelector = a2;
     v126 = 0;
@@ -13128,7 +13128,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
     v129 = __Block_byref_object_copy__153;
     v130 = __Block_byref_object_dispose__153;
     v131 = 0;
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v107 = *MEMORY[0x277D01448];
     v108 = *MEMORY[0x277CCA450];
     v7 = 1;
@@ -13140,7 +13140,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
       }
 
       context = objc_autoreleasePoolPush();
-      v8 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
 
       +[RTRuntime footprint];
       v10 = v9;
@@ -13155,7 +13155,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
       v124 = __Block_byref_object_dispose__153;
       v125 = 0;
       v11 = dispatch_semaphore_create(0);
-      v12 = [(RTWorkoutRouteManager *)self healthKitManager];
+      healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
       v116[0] = MEMORY[0x277D85DD0];
       v116[1] = 3221225472;
       v116[2] = __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke;
@@ -13164,7 +13164,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
       v119 = &v126;
       v13 = v11;
       v117 = v13;
-      [v12 fetchWorkoutClustersWithHandler:v116];
+      [healthKitManager fetchWorkoutClustersWithHandler:v116];
 
       v14 = v13;
       v15 = [MEMORY[0x277CBEAA8] now];
@@ -13176,11 +13176,11 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
         v19 = v18;
         v20 = objc_opt_new();
         v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-        v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v23 = [v22 filteredArrayUsingPredicate:v21];
-        v24 = [v23 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+        firstObject = [v23 firstObject];
 
-        [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+        [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
         v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
         {
@@ -13213,65 +13213,65 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
 
       else
       {
-        v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v106, "count")}];
-        v33 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v33 setObject:v32 forKeyedSubscript:@"sync_from_healthkit_count_local_clusters"];
+        v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(kitCopy, "count")}];
+        processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics setObject:v32 forKeyedSubscript:@"sync_from_healthkit_count_local_clusters"];
 
         v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v121[5], "count")}];
-        v35 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v35 setObject:v34 forKeyedSubscript:@"sync_from_healthkit_count_remote_clusters"];
+        processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics2 setObject:v34 forKeyedSubscript:@"sync_from_healthkit_count_remote_clusters"];
 
         v36 = v121[5];
         v121[5] = 0;
 
-        v37 = [(RTWorkoutRouteManager *)self distanceMetric];
+        distanceMetric = [(RTWorkoutRouteManager *)self distanceMetric];
         v38 = v127;
         obj = v127[5];
-        v39 = [(RTWorkoutRouteManager *)self _syncWithRemoteClustersUsingLocalClusters:v106 distanceMetric:v37 outLocalClustersForCreation:v113 outRemoteClustersForUpdationNewWorkouts:v112 outRemoteClustersForUpdationWorkoutsToRemove:v111 outRemoteClustersForDeletion:v110 error:&obj];
+        v39 = [(RTWorkoutRouteManager *)self _syncWithRemoteClustersUsingLocalClusters:kitCopy distanceMetric:distanceMetric outLocalClustersForCreation:v113 outRemoteClustersForUpdationNewWorkouts:v112 outRemoteClustersForUpdationWorkoutsToRemove:v111 outRemoteClustersForDeletion:v110 error:&obj];
         objc_storeStrong(v38 + 5, obj);
         +[RTRuntime footprint];
         v41 = v40;
         v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v113, "count")}];
-        v43 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v43 setObject:v42 forKeyedSubscript:@"sync_from_healthkit_count_final_local_clusters"];
+        processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics3 setObject:v42 forKeyedSubscript:@"sync_from_healthkit_count_final_local_clusters"];
 
         v44 = MEMORY[0x277CBEB58];
-        v45 = [v112 allKeys];
-        v46 = [v44 setWithArray:v45];
+        allKeys = [v112 allKeys];
+        v46 = [v44 setWithArray:allKeys];
 
-        v47 = [v111 allKeys];
-        [v46 addObjectsFromArray:v47];
+        allKeys2 = [v111 allKeys];
+        [v46 addObjectsFromArray:allKeys2];
 
         v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v46, "count")}];
-        v49 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v49 setObject:v48 forKeyedSubscript:@"sync_from_healthkit_count_final_remote_clusters"];
+        processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics4 setObject:v48 forKeyedSubscript:@"sync_from_healthkit_count_final_remote_clusters"];
 
         v50 = [MEMORY[0x277CCABB0] numberWithBool:v39];
-        v51 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v51 setObject:v50 forKeyedSubscript:@"sync_from_healthkit_is_success"];
+        processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics5 setObject:v50 forKeyedSubscript:@"sync_from_healthkit_is_success"];
 
         v52 = [MEMORY[0x277CCABB0] numberWithDouble:v41 - v10];
-        v53 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v53 setObject:v52 forKeyedSubscript:@"sync_from_healthkit_footprint_delta"];
+        processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics6 setObject:v52 forKeyedSubscript:@"sync_from_healthkit_footprint_delta"];
 
         v54 = MEMORY[0x277CCABB0];
-        v55 = [MEMORY[0x277CBEAA8] date];
-        [v55 timeIntervalSinceDate:v8];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        [date3 timeIntervalSinceDate:date2];
         v56 = [v54 numberWithDouble:?];
-        v57 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-        [v57 setObject:v56 forKeyedSubscript:@"sync_from_healthkit_time_elapsed"];
+        processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+        [processWorkoutMetrics7 setObject:v56 forKeyedSubscript:@"sync_from_healthkit_time_elapsed"];
 
         v58 = v127[5];
         if (v58)
         {
           v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v58, "code")];
-          v60 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          [v60 setObject:v59 forKeyedSubscript:@"sync_from_healthkit_errorcode"];
+          processWorkoutMetrics8 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          [processWorkoutMetrics8 setObject:v59 forKeyedSubscript:@"sync_from_healthkit_errorcode"];
 
-          v61 = [v127[5] domain];
-          v62 = [v61 description];
-          v63 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          [v63 setObject:v62 forKeyedSubscript:@"sync_from_healthkit_errordomain"];
+          domain = [v127[5] domain];
+          v62 = [domain description];
+          processWorkoutMetrics9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          [processWorkoutMetrics9 setObject:v62 forKeyedSubscript:@"sync_from_healthkit_errordomain"];
           v31 = 0;
         }
 
@@ -13295,8 +13295,8 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
                 v68 = @"NO";
               }
 
-              v69 = [MEMORY[0x277CBEAA8] date];
-              [v69 timeIntervalSinceDate:v8];
+              date4 = [MEMORY[0x277CBEAA8] date];
+              [date4 timeIntervalSinceDate:date2];
               *buf = 138413314;
               *&buf[4] = v66;
               v133 = 2112;
@@ -13311,7 +13311,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
             }
           }
 
-          v71 = [MEMORY[0x277CBEAA8] date];
+          date5 = [MEMORY[0x277CBEAA8] date];
 
           +[RTRuntime footprint];
           v73 = v72;
@@ -13322,34 +13322,34 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
           +[RTRuntime footprint];
           v77 = v76;
           v78 = [MEMORY[0x277CCABB0] numberWithBool:v75];
-          v79 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          [v79 setObject:v78 forKeyedSubscript:@"sync_to_healthkit_is_success"];
+          processWorkoutMetrics10 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          [processWorkoutMetrics10 setObject:v78 forKeyedSubscript:@"sync_to_healthkit_is_success"];
 
           v80 = [MEMORY[0x277CCABB0] numberWithDouble:v77 - v73];
-          v81 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          [v81 setObject:v80 forKeyedSubscript:@"sync_to_healthkit_footprint_delta"];
+          processWorkoutMetrics11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          [processWorkoutMetrics11 setObject:v80 forKeyedSubscript:@"sync_to_healthkit_footprint_delta"];
 
           v82 = MEMORY[0x277CCABB0];
-          v83 = [MEMORY[0x277CBEAA8] date];
-          [v83 timeIntervalSinceDate:v71];
+          date6 = [MEMORY[0x277CBEAA8] date];
+          [date6 timeIntervalSinceDate:date5];
           v84 = [v82 numberWithDouble:?];
-          v85 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-          [v85 setObject:v84 forKeyedSubscript:@"sync_to_healthkit_time_elapsed"];
+          processWorkoutMetrics12 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+          [processWorkoutMetrics12 setObject:v84 forKeyedSubscript:@"sync_to_healthkit_time_elapsed"];
 
           v86 = v127[5];
           if (v86)
           {
             v87 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v86, "code")];
-            v88 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-            [v88 setObject:v87 forKeyedSubscript:@"sync_to_healthkit_errorcode"];
+            processWorkoutMetrics13 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+            [processWorkoutMetrics13 setObject:v87 forKeyedSubscript:@"sync_to_healthkit_errorcode"];
 
-            v61 = [v127[5] domain];
-            v62 = [v61 description];
-            v63 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-            [v63 setObject:v62 forKeyedSubscript:@"sync_to_healthkit_errordomain"];
+            domain = [v127[5] domain];
+            v62 = [domain description];
+            processWorkoutMetrics9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+            [processWorkoutMetrics9 setObject:v62 forKeyedSubscript:@"sync_to_healthkit_errordomain"];
             v31 = 0;
-            v106 = 0;
-            v8 = v71;
+            kitCopy = 0;
+            date2 = date5;
           }
 
           else
@@ -13372,8 +13372,8 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
                   v93 = @"NO";
                 }
 
-                v94 = [MEMORY[0x277CBEAA8] date];
-                [v94 timeIntervalSinceDate:v71];
+                date7 = [MEMORY[0x277CBEAA8] date];
+                [date7 timeIntervalSinceDate:date5];
                 *buf = 138413314;
                 *&buf[4] = v91;
                 v133 = 2112;
@@ -13388,12 +13388,12 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
               }
             }
 
-            v106 = 0;
+            kitCopy = 0;
             v31 = 1;
             v62 = v111;
-            v63 = v112;
-            v61 = v110;
-            v8 = v71;
+            processWorkoutMetrics9 = v112;
+            domain = v110;
+            date2 = date5;
             v110 = 0;
             v111 = 0;
             v112 = 0;
@@ -13402,7 +13402,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
         }
       }
 
-      v6 = v8;
+      date = date2;
 
       _Block_object_dispose(&v120, 8);
       objc_autoreleasePoolPop(context);
@@ -13410,7 +13410,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
     }
 
     while ((v31 & 1) != 0);
-    if (a4 && v127[5])
+    if (error && v127[5])
     {
       v96 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v96, OS_LOG_TYPE_ERROR))
@@ -13429,7 +13429,7 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
       }
 
       v97 = 0;
-      *a4 = v127[5];
+      *error = v127[5];
     }
 
     else
@@ -13449,10 +13449,10 @@ void __54__RTWorkoutRouteManager__clusterizeWorkoutsWithError___block_invoke_226
       _os_log_error_impl(&dword_2304B3000, v98, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: clusters", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"clusters");
-      *a4 = v97 = 0;
+      *error = v97 = 0;
     }
 
     else
@@ -13481,18 +13481,18 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_syncWithRemoteClustersUsingLocalClusters:(id)a3 distanceMetric:(int64_t)a4 outLocalClustersForCreation:(id)a5 outRemoteClustersForUpdationNewWorkouts:(id)a6 outRemoteClustersForUpdationWorkoutsToRemove:(id)a7 outRemoteClustersForDeletion:(id)a8 error:(id *)a9
+- (BOOL)_syncWithRemoteClustersUsingLocalClusters:(id)clusters distanceMetric:(int64_t)metric outLocalClustersForCreation:(id)creation outRemoteClustersForUpdationNewWorkouts:(id)workouts outRemoteClustersForUpdationWorkoutsToRemove:(id)remove outRemoteClustersForDeletion:(id)deletion error:(id *)error
 {
   v240 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v180 = a6;
-  v172 = a7;
-  v15 = a8;
-  v171 = v13;
-  v173 = v14;
-  v181 = v15;
-  if (!v13)
+  clustersCopy = clusters;
+  creationCopy = creation;
+  workoutsCopy = workouts;
+  removeCopy = remove;
+  deletionCopy = deletion;
+  v171 = clustersCopy;
+  v173 = creationCopy;
+  v181 = deletionCopy;
+  if (!clustersCopy)
   {
     v95 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
@@ -13501,7 +13501,7 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
       _os_log_error_impl(&dword_2304B3000, v95, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: localClusters", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_95;
     }
@@ -13510,7 +13510,7 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
     goto LABEL_94;
   }
 
-  if (!v14)
+  if (!creationCopy)
   {
     v97 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
@@ -13519,7 +13519,7 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
       _os_log_error_impl(&dword_2304B3000, v97, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outLocalClustersForCreation", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_95;
     }
@@ -13528,7 +13528,7 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
     goto LABEL_94;
   }
 
-  if (!v180)
+  if (!workoutsCopy)
   {
     v98 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
@@ -13537,7 +13537,7 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
       _os_log_error_impl(&dword_2304B3000, v98, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outRemoteClustersForUpdationNewWorkouts", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_95;
     }
@@ -13546,7 +13546,7 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
     goto LABEL_94;
   }
 
-  if (!v172)
+  if (!removeCopy)
   {
     v99 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v99, OS_LOG_TYPE_ERROR))
@@ -13555,7 +13555,7 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
       _os_log_error_impl(&dword_2304B3000, v99, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outRemoteClustersForUpdationWorkoutsToRemove", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_95;
     }
@@ -13563,12 +13563,12 @@ void __56__RTWorkoutRouteManager__syncClustersToHealthKit_error___block_invoke(u
     v96 = _RTErrorInvalidParameterCreate(@"outRemoteClustersForUpdationWorkoutsToRemove");
 LABEL_94:
     v101 = 0;
-    *a9 = v96;
+    *error = v96;
     goto LABEL_139;
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = deletionCopy;
+  if (!deletionCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -13577,7 +13577,7 @@ LABEL_94:
       _os_log_error_impl(&dword_2304B3000, v100, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outRemoteClustersForDeletion", buf, 2u);
     }
 
-    if (a9)
+    if (error)
     {
       v96 = _RTErrorInvalidParameterCreate(@"outRemoteClustersForDeletion");
       goto LABEL_94;
@@ -13588,9 +13588,9 @@ LABEL_95:
     goto LABEL_139;
   }
 
-  [v14 removeAllObjects];
-  [v180 removeAllObjects];
-  [v172 removeAllObjects];
+  [creationCopy removeAllObjects];
+  [workoutsCopy removeAllObjects];
+  [removeCopy removeAllObjects];
   [v16 removeAllObjects];
   v211 = 0;
   v212 = &v211;
@@ -13598,12 +13598,12 @@ LABEL_95:
   v214 = __Block_byref_object_copy__153;
   v215 = __Block_byref_object_dispose__153;
   v216 = 0;
-  v165 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v209 = 0u;
   v210 = 0u;
   v207 = 0u;
   v208 = 0u;
-  obj = v13;
+  obj = clustersCopy;
   v17 = [obj countByEnumeratingWithState:&v207 objects:v237 count:16];
   if (!v17)
   {
@@ -13738,13 +13738,13 @@ LABEL_47:
                   v51 = objc_opt_class();
                   v52 = NSStringFromClass(v51);
                   v53 = NSStringFromSelector(a2);
-                  v54 = [v48 clusterUUID];
+                  clusterUUID = [v48 clusterUUID];
                   *buf = 138412802;
                   *&buf[4] = v52;
                   *&buf[12] = 2112;
                   *&buf[14] = v53;
                   *&buf[22] = 2112;
-                  v222 = v54;
+                  v222 = clusterUUID;
                   _os_log_impl(&dword_2304B3000, v50, OS_LOG_TYPE_INFO, "%@, %@, cluster uuid marked for deletion, %@", buf, 0x20u);
                 }
               }
@@ -13763,8 +13763,8 @@ LABEL_47:
         goto LABEL_46;
       }
 
-      v25 = [v175 firstObject];
-      v26 = [v180 objectForKeyedSubscript:v25];
+      firstObject = [v175 firstObject];
+      v26 = [workoutsCopy objectForKeyedSubscript:firstObject];
       v27 = v26 == 0;
 
       v28 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
@@ -13778,14 +13778,14 @@ LABEL_47:
             v30 = objc_opt_class();
             v31 = NSStringFromClass(v30);
             v32 = NSStringFromSelector(a2);
-            v33 = [v175 firstObject];
-            v34 = [v33 clusterUUID];
+            firstObject2 = [v175 firstObject];
+            clusterUUID2 = [firstObject2 clusterUUID];
             *buf = 138412802;
             *&buf[4] = v31;
             *&buf[12] = 2112;
             *&buf[14] = v32;
             *&buf[22] = 2112;
-            v222 = v34;
+            v222 = clusterUUID2;
             _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "%@, %@, case 3/4: one remote cluster & it has been already visited (split remote cluster case), cluster uuid, %@, adding to outLocalClusters", buf, 0x20u);
           }
         }
@@ -13801,14 +13801,14 @@ LABEL_47:
           v56 = objc_opt_class();
           v57 = NSStringFromClass(v56);
           v58 = NSStringFromSelector(a2);
-          v59 = [v175 firstObject];
-          v60 = [v59 clusterUUID];
+          firstObject3 = [v175 firstObject];
+          clusterUUID3 = [firstObject3 clusterUUID];
           *buf = 138412802;
           *&buf[4] = v57;
           *&buf[12] = 2112;
           *&buf[14] = v58;
           *&buf[22] = 2112;
-          v222 = v60;
+          v222 = clusterUUID3;
           _os_log_impl(&dword_2304B3000, v55, OS_LOG_TYPE_INFO, "%@, %@, case 2/4: one remote cluster & it hasn't been visited, cluster uuid, %@, setting uuids to outRemoteClustersForUpdation", buf, 0x20u);
         }
       }
@@ -13820,9 +13820,9 @@ LABEL_47:
       *v223 = __Block_byref_object_dispose__153;
       *&v223[8] = objc_opt_new();
       v61 = dispatch_semaphore_create(0);
-      v62 = [(RTWorkoutRouteManager *)self healthKitManager];
-      v63 = [v175 firstObject];
-      v64 = [v63 clusterUUID];
+      healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+      firstObject4 = [v175 firstObject];
+      clusterUUID4 = [firstObject4 clusterUUID];
       v202[0] = MEMORY[0x277D85DD0];
       v202[1] = 3221225472;
       v202[2] = __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_distanceMetric_outLocalClustersForCreation_outRemoteClustersForUpdationNewWorkouts_outRemoteClustersForUpdationWorkoutsToRemove_outRemoteClustersForDeletion_error___block_invoke;
@@ -13831,7 +13831,7 @@ LABEL_47:
       v65 = v61;
       v203 = v65;
       v205 = buf;
-      [v62 fetchWorkoutUUIDsForClusterUUID:v64 handler:v202];
+      [healthKitManager fetchWorkoutUUIDsForClusterUUID:clusterUUID4 handler:v202];
 
       v66 = v65;
       v67 = [MEMORY[0x277CBEAA8] now];
@@ -13843,11 +13843,11 @@ LABEL_47:
         v71 = v70;
         v72 = objc_opt_new();
         v73 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-        v74 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v75 = [v74 filteredArrayUsingPredicate:v73];
-        v76 = [v75 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v75 = [callStackSymbols filteredArrayUsingPredicate:v73];
+        firstObject5 = [v75 firstObject];
 
-        [v72 submitToCoreAnalytics:v76 type:1 duration:v71];
+        [v72 submitToCoreAnalytics:firstObject5 type:1 duration:v71];
         v77 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v77, OS_LOG_TYPE_FAULT))
         {
@@ -13892,13 +13892,13 @@ LABEL_63:
         v87 = [MEMORY[0x277CBEB58] setWithArray:v176];
         if (![*(*&buf[8] + 40) isEqualToSet:v87] || (objc_msgSend(v175, "firstObject"), v88 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v88, "workoutRouteLabel"), v89 = objc_claimAutoreleasedReturnValue(), v90 = objc_msgSend(v89, "isEqualToString:", &stru_284528390), v89, v88, v90))
         {
-          v91 = [v175 firstObject];
-          [v180 setObject:v87 forKeyedSubscript:v91];
+          firstObject6 = [v175 firstObject];
+          [workoutsCopy setObject:v87 forKeyedSubscript:firstObject6];
 
           [*(*&buf[8] + 40) minusSet:v87];
           v92 = *(*&buf[8] + 40);
-          v93 = [v175 firstObject];
-          [v172 setObject:v92 forKeyedSubscript:v93];
+          firstObject7 = [v175 firstObject];
+          [removeCopy setObject:v92 forKeyedSubscript:firstObject7];
 
           v94 = *(*&buf[8] + 40);
           *(*&buf[8] + 40) = 0;
@@ -13936,7 +13936,7 @@ LABEL_48:
   while (v17);
 LABEL_97:
 
-  if (a9 && v212[5])
+  if (error && v212[5])
   {
     v102 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
@@ -13997,8 +13997,8 @@ LABEL_97:
   v193 = 0u;
   v190 = 0u;
   v191 = 0u;
-  v113 = [v180 allKeys];
-  v114 = [v113 countByEnumeratingWithState:&v190 objects:v234 count:16];
+  allKeys = [workoutsCopy allKeys];
+  v114 = [allKeys countByEnumeratingWithState:&v190 objects:v234 count:16];
   if (v114)
   {
     v115 = *v191;
@@ -14008,19 +14008,19 @@ LABEL_97:
       {
         if (*v191 != v115)
         {
-          objc_enumerationMutation(v113);
+          objc_enumerationMutation(allKeys);
         }
 
         v117 = *(*(&v190 + 1) + 8 * k);
         v118 = objc_autoreleasePoolPush();
-        v119 = [v180 objectForKeyedSubscript:v117];
+        v119 = [workoutsCopy objectForKeyedSubscript:v117];
         v120 = [v119 count];
 
         objc_autoreleasePoolPop(v118);
         v105 += v120;
       }
 
-      v114 = [v113 countByEnumeratingWithState:&v190 objects:v234 count:16];
+      v114 = [allKeys countByEnumeratingWithState:&v190 objects:v234 count:16];
     }
 
     while (v114);
@@ -14035,11 +14035,11 @@ LABEL_97:
       v123 = NSStringFromClass(v122);
       v124 = NSStringFromSelector(a2);
       v125 = [v104 count];
-      v126 = [v180 count];
-      v127 = [v172 count];
+      v126 = [workoutsCopy count];
+      v127 = [removeCopy count];
       v128 = [v181 count];
-      v129 = [MEMORY[0x277CBEAA8] date];
-      [v129 timeIntervalSinceDate:v165];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:date];
       v131 = v130;
       +[RTRuntime footprint];
       *buf = 138414594;
@@ -14067,8 +14067,8 @@ LABEL_97:
   }
 
   v133 = MEMORY[0x277CBEB98];
-  v134 = [v180 allKeys];
-  v135 = [v133 setWithArray:v134];
+  allKeys2 = [workoutsCopy allKeys];
+  v135 = [v133 setWithArray:allKeys2];
   v136 = [v135 intersectsSet:v181];
 
   if (v136)
@@ -14079,8 +14079,8 @@ LABEL_97:
     v189 = 0u;
     v186 = 0u;
     v187 = 0u;
-    v139 = [v180 allKeys];
-    v140 = [v139 countByEnumeratingWithState:&v186 objects:v220 count:16];
+    allKeys3 = [workoutsCopy allKeys];
+    v140 = [allKeys3 countByEnumeratingWithState:&v186 objects:v220 count:16];
     if (v140)
     {
       v141 = *v187;
@@ -14090,18 +14090,18 @@ LABEL_97:
         {
           if (*v187 != v141)
           {
-            objc_enumerationMutation(v139);
+            objc_enumerationMutation(allKeys3);
           }
 
           v143 = *(*(&v186 + 1) + 8 * m);
           v144 = objc_autoreleasePoolPush();
-          v145 = [v143 clusterUUID];
-          [v137 addObject:v145];
+          clusterUUID5 = [v143 clusterUUID];
+          [v137 addObject:clusterUUID5];
 
           objc_autoreleasePoolPop(v144);
         }
 
-        v140 = [v139 countByEnumeratingWithState:&v186 objects:v220 count:16];
+        v140 = [allKeys3 countByEnumeratingWithState:&v186 objects:v220 count:16];
       }
 
       while (v140);
@@ -14127,8 +14127,8 @@ LABEL_97:
 
           v150 = *(*(&v182 + 1) + 8 * n);
           v151 = objc_autoreleasePoolPush();
-          v152 = [v150 clusterUUID];
-          [v138 addObject:v152];
+          clusterUUID6 = [v150 clusterUUID];
+          [v138 addObject:clusterUUID6];
 
           objc_autoreleasePoolPop(v151);
         }
@@ -14141,8 +14141,8 @@ LABEL_97:
 
     v153 = MEMORY[0x277CCA9B8];
     v217 = *MEMORY[0x277CCA450];
-    v154 = [MEMORY[0x277CCACA8] stringWithFormat:@"updation and deletion remote clusters overlapped, updation cluster uuids, %@, deletion cluster uuids, %@", v137, v138];
-    v218 = v154;
+    v138 = [MEMORY[0x277CCACA8] stringWithFormat:@"updation and deletion remote clusters overlapped, updation cluster uuids, %@, deletion cluster uuids, %@", v137, v138];
+    v218 = v138;
     v155 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v218 forKeys:&v217 count:1];
     v156 = [v153 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v155];
     v157 = v212[5];
@@ -14151,10 +14151,10 @@ LABEL_97:
 
   objc_autoreleasePoolPop(v103);
   v101 = v136 ^ 1;
-  if (a9)
+  if (error)
   {
 LABEL_137:
-    *a9 = v212[5];
+    *error = v212[5];
   }
 
   _Block_object_dispose(&v211, 8);
@@ -14186,16 +14186,16 @@ void __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_dist
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_saveToHealthKitClustersForCreation:(id)a3 remoteClustersForUpdationNewWorkouts:(id)a4 remoteClustersForUpdationWorkoutsToRemove:(id)a5 remoteClustersForDeletion:(id)a6 error:(id *)a7
+- (BOOL)_saveToHealthKitClustersForCreation:(id)creation remoteClustersForUpdationNewWorkouts:(id)workouts remoteClustersForUpdationWorkoutsToRemove:(id)remove remoteClustersForDeletion:(id)deletion error:(id *)error
 {
   v335 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  v272 = v12;
-  if (!v12)
+  creationCopy = creation;
+  workoutsCopy = workouts;
+  removeCopy = remove;
+  deletionCopy = deletion;
+  v16 = deletionCopy;
+  v272 = creationCopy;
+  if (!creationCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -14204,7 +14204,7 @@ void __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_dist
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: localClustersForCreation", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -14213,7 +14213,7 @@ void __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_dist
     goto LABEL_34;
   }
 
-  if (!v13)
+  if (!workoutsCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -14222,7 +14222,7 @@ void __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_dist
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: remoteClustersForUpdationNewWorkouts", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -14231,7 +14231,7 @@ void __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_dist
     goto LABEL_34;
   }
 
-  if (!v14)
+  if (!removeCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -14240,7 +14240,7 @@ void __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_dist
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: remoteClustersForUpdationWorkoutsToRemove", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -14248,11 +14248,11 @@ void __230__RTWorkoutRouteManager__syncWithRemoteClustersUsingLocalClusters_dist
     v24 = @"remoteClustersForUpdationWorkoutsToRemove";
 LABEL_34:
     _RTErrorInvalidParameterCreate(v24);
-    *a7 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_49;
   }
 
-  if (!v15)
+  if (!deletionCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -14261,7 +14261,7 @@ LABEL_34:
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: remoteClustersForDeletion", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v24 = @"remoteClustersForDeletion";
       goto LABEL_34;
@@ -14273,10 +14273,10 @@ LABEL_35:
   }
 
   location = 0;
-  v258 = [MEMORY[0x277CBEAA8] date];
-  v260 = v14;
+  date = [MEMORY[0x277CBEAA8] date];
+  v260 = removeCopy;
   v262 = v16;
-  v269 = a7;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -14290,25 +14290,25 @@ LABEL_35:
       v319 = 2112;
       v320 = v20;
       v321 = 2048;
-      v322 = [v12 count];
+      v322 = [creationCopy count];
       v323 = 2048;
-      v324 = [v13 count];
+      v324 = [workoutsCopy count];
       v325 = 2048;
       v326 = [v260 count];
       v327 = 2048;
       v328 = [v16 count];
       _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, %@, clusters to be created, %lu, clusters to be updated with new workouts, %lu, clusters to be updated with workouts to remove, %lu, clusters to be deleted, %lu", buf, 0x3Eu);
 
-      v14 = v260;
+      removeCopy = v260;
     }
   }
 
-  if ([v12 count] || objc_msgSend(v13, "count") || objc_msgSend(v14, "count") || objc_msgSend(v16, "count"))
+  if ([creationCopy count] || objc_msgSend(workoutsCopy, "count") || objc_msgSend(removeCopy, "count") || objc_msgSend(v16, "count"))
   {
     obj = location;
     v266 = [(RTWorkoutRouteManager *)self _getRelevanceLocationWithError:&obj];
     objc_storeStrong(&location, obj);
-    if (a7 && location)
+    if (error && location)
     {
       v21 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -14324,25 +14324,25 @@ LABEL_35:
         v322 = location;
         _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
 
-        v14 = v260;
+        removeCopy = v260;
       }
 
       v22 = 0;
-      *a7 = location;
+      *error = location;
       goto LABEL_46;
     }
 
-    v28 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v29 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v30 = [v29 _getWorkoutDefaultStartDateForRaceRoute];
-    v31 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v32 = [v31 _getRTWorkoutDefaultTypesForRaceRoute];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+    healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+    _getWorkoutDefaultStartDateForRaceRoute = [healthKitManager2 _getWorkoutDefaultStartDateForRaceRoute];
+    healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
+    _getRTWorkoutDefaultTypesForRaceRoute = [healthKitManager3 _getRTWorkoutDefaultTypesForRaceRoute];
     v312 = location;
-    v261 = [v28 getLatestWorkoutWithStartDate:v30 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:v32 workoutTypes:&v312 error:1.79769313e308];
+    v261 = [healthKitManager getLatestWorkoutWithStartDate:_getWorkoutDefaultStartDateForRaceRoute nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:_getRTWorkoutDefaultTypesForRaceRoute workoutTypes:&v312 error:1.79769313e308];
     objc_storeStrong(&location, v312);
 
-    v33 = v269;
-    if (v269 && location)
+    v33 = errorCopy;
+    if (errorCopy && location)
     {
       v34 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -14362,14 +14362,14 @@ LABEL_35:
 
     else
     {
-      v38 = [(RTWorkoutRouteManager *)self healthKitManager];
-      v39 = [(RTWorkoutRouteManager *)self healthKitManager];
-      v40 = [v39 _getWorkoutDefaultStartDateForRaceRoute];
+      healthKitManager4 = [(RTWorkoutRouteManager *)self healthKitManager];
+      healthKitManager5 = [(RTWorkoutRouteManager *)self healthKitManager];
+      _getWorkoutDefaultStartDateForRaceRoute2 = [healthKitManager5 _getWorkoutDefaultStartDateForRaceRoute];
       v311 = location;
-      v250 = [v38 getWorkoutsCountWithStartDate:v40 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:&v311 error:1.79769313e308];
+      v250 = [healthKitManager4 getWorkoutsCountWithStartDate:_getWorkoutDefaultStartDateForRaceRoute2 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:&v311 error:1.79769313e308];
       objc_storeStrong(&location, v311);
 
-      if (!v269 || !location)
+      if (!errorCopy || !location)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -14395,8 +14395,8 @@ LABEL_35:
         }
 
         v50 = 1;
-        v257 = v13;
-        v270 = self;
+        v257 = workoutsCopy;
+        selfCopy = self;
         while (1)
         {
           if ((v50 & 1) == 0)
@@ -14432,10 +14432,10 @@ LABEL_35:
               v52 = *(*(&v307 + 1) + 8 * v51);
               v53 = objc_autoreleasePoolPush();
               v54 = objc_opt_new();
-              v267 = [MEMORY[0x277CBEAA8] date];
-              v55 = [(RTWorkoutRouteManager *)v270 healthKitManager];
+              date2 = [MEMORY[0x277CBEAA8] date];
+              healthKitManager6 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
               v306 = location;
-              v56 = [v55 getWorkoutsWithUUIDs:v52 error:&v306];
+              v56 = [healthKitManager6 getWorkoutsWithUUIDs:v52 error:&v306];
               objc_storeStrong(&location, v306);
 
               if (location)
@@ -14444,7 +14444,7 @@ LABEL_35:
               }
 
               v305 = 0;
-              v57 = [(RTWorkoutRouteManager *)v270 _sortWorkouts:v56 key:@"startDate" ascending:0 error:&v305];
+              v57 = [(RTWorkoutRouteManager *)selfCopy _sortWorkouts:v56 key:@"startDate" ascending:0 error:&v305];
               objc_storeStrong(&location, v305);
 
               if (location)
@@ -14454,7 +14454,7 @@ LABEL_35:
               }
 
               v304 = 0;
-              v58 = [(RTWorkoutRouteManager *)v270 _bestWorkoutFromWorkouts:v57 error:&v304];
+              v58 = [(RTWorkoutRouteManager *)selfCopy _bestWorkoutFromWorkouts:v57 error:&v304];
               objc_storeStrong(&location, v304);
               if (location)
               {
@@ -14462,7 +14462,7 @@ LABEL_35:
               }
 
               v303 = 0;
-              v59 = [(RTWorkoutRouteManager *)v270 _lastWorkoutFromWorkouts:v57 error:&v303];
+              v59 = [(RTWorkoutRouteManager *)selfCopy _lastWorkoutFromWorkouts:v57 error:&v303];
               objc_storeStrong(&location, v303);
               if (location)
               {
@@ -14471,11 +14471,11 @@ LABEL_35:
 
               context = v53;
               v302 = 0;
-              v60 = [(RTWorkoutRouteManager *)v270 _mapWorkoutsToUUIDs:v57 error:&v302];
+              v60 = [(RTWorkoutRouteManager *)selfCopy _mapWorkoutsToUUIDs:v57 error:&v302];
               objc_storeStrong(&location, v302);
               if (location)
               {
-                v63 = v60;
+                date3 = v60;
                 v60 = v59;
                 v59 = v58;
                 v58 = v57;
@@ -14483,12 +14483,12 @@ LABEL_35:
               }
 
               v301 = location;
-              [(RTWorkoutRouteManager *)v270 _relevanceScoreForWorkoutUUIDs:v60 representativeWorkout:v59 latestWorkoutAcrossAllWorkouts:v261 countOfAllWorkouts:v250 currentLocation:v266 error:&v301];
+              [(RTWorkoutRouteManager *)selfCopy _relevanceScoreForWorkoutUUIDs:v60 representativeWorkout:v59 latestWorkoutAcrossAllWorkouts:v261 countOfAllWorkouts:v250 currentLocation:v266 error:&v301];
               v62 = v61;
               objc_storeStrong(&location, v301);
               if (location)
               {
-                v63 = v60;
+                date3 = v60;
                 v60 = v59;
                 v59 = v58;
                 v58 = 0;
@@ -14502,16 +14502,16 @@ LABEL_89:
 
 LABEL_90:
                 v56 = v57;
-                v33 = v269;
+                v33 = errorCopy;
 LABEL_91:
 
                 objc_autoreleasePoolPop(v53);
-                self = v270;
+                self = selfCopy;
                 goto LABEL_92;
               }
 
-              v63 = [MEMORY[0x277CBEAA8] date];
-              v264 = [(RTWorkoutRouteManager *)v270 _getWorkoutRouteSnapshotForWorkout:v59 error:&location];
+              date3 = [MEMORY[0x277CBEAA8] date];
+              v264 = [(RTWorkoutRouteManager *)selfCopy _getWorkoutRouteSnapshotForWorkout:v59 error:&location];
               if (location)
               {
                 goto LABEL_87;
@@ -14537,11 +14537,11 @@ LABEL_91:
               }
 
               v69 = MEMORY[0x277CCABB0];
-              v70 = [MEMORY[0x277CBEAA8] date];
-              [v70 timeIntervalSinceDate:v63];
+              date4 = [MEMORY[0x277CBEAA8] date];
+              [date4 timeIntervalSinceDate:date3];
               v71 = [v69 numberWithDouble:?];
               v300 = location;
-              [(RTWorkoutRouteManager *)v270 _updateMetricsForCurrentTime:v71 syncToHealthKitKey:1 error:&v300];
+              [(RTWorkoutRouteManager *)selfCopy _updateMetricsForCurrentTime:v71 syncToHealthKitKey:1 error:&v300];
               objc_storeStrong(&location, v300);
 
               if (location)
@@ -14550,18 +14550,18 @@ LABEL_91:
               }
 
               v299 = 0;
-              v72 = [(RTWorkoutRouteManager *)v270 _getWorkoutRouteLabelForWorkout:v59 error:&v299];
+              v72 = [(RTWorkoutRouteManager *)selfCopy _getWorkoutRouteLabelForWorkout:v59 error:&v299];
               objc_storeStrong(&location, v299);
               if (location)
               {
                 goto LABEL_86;
               }
 
-              v73 = [(RTWorkoutRouteManager *)v270 healthKitManager];
-              v74 = [v58 UUID];
-              v75 = [v59 UUID];
+              healthKitManager7 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+              uUID = [v58 UUID];
+              uUID2 = [v59 UUID];
               v298 = location;
-              v76 = [v73 createWorkoutClusterWithWorkoutUUIDs:v60 bestWorkoutUUID:v74 lastWorkoutUUID:v75 relevanceValue:v264 workoutRouteSnapshot:v72 workoutRouteLabel:&v298 error:v62];
+              v76 = [healthKitManager7 createWorkoutClusterWithWorkoutUUIDs:v60 bestWorkoutUUID:uUID lastWorkoutUUID:uUID2 relevanceValue:v264 workoutRouteSnapshot:v72 workoutRouteLabel:&v298 error:v62];
               objc_storeStrong(&location, v298);
 
               if (location)
@@ -14579,7 +14579,7 @@ LABEL_91:
                   NSStringFromSelector(a2);
                   v80 = v248 = v60;
                   v241 = v72;
-                  v81 = v63;
+                  v81 = date3;
                   if (v76)
                   {
                     v82 = @"YES";
@@ -14591,22 +14591,22 @@ LABEL_91:
                   }
 
                   v239 = [v248 count];
-                  v83 = [v58 UUID];
-                  v84 = [v59 UUID];
+                  uUID3 = [v58 UUID];
+                  uUID4 = [v59 UUID];
                   *buf = 138413826;
                   v318 = v79;
                   v319 = 2112;
                   v320 = v80;
                   v321 = 2112;
                   v322 = v82;
-                  v63 = v81;
+                  date3 = v81;
                   v72 = v241;
                   v323 = 2048;
                   v324 = v239;
                   v325 = 2112;
-                  v326 = v83;
+                  v326 = uUID3;
                   v327 = 2112;
-                  v328 = v84;
+                  v328 = uUID4;
                   v329 = 2048;
                   v330 = v62;
                   _os_log_impl(&dword_2304B3000, v77, OS_LOG_TYPE_INFO, "%@, %@, created cluster, status, %@, cluster size, %lu, bestWorkoutUUID, %@, lastWorkoutUUID, %@, relevance score, %.3f", buf, 0x48u);
@@ -14616,18 +14616,18 @@ LABEL_91:
               }
 
               v85 = MEMORY[0x277CCABB0];
-              v86 = [MEMORY[0x277CBEAA8] date];
-              [v86 timeIntervalSinceDate:v267];
+              date5 = [MEMORY[0x277CBEAA8] date];
+              [date5 timeIntervalSinceDate:date2];
               v87 = [v85 numberWithDouble:?];
               v297 = location;
-              [(RTWorkoutRouteManager *)v270 _updateMetricsForCurrentTime:v87 syncToHealthKitKey:3 error:&v297];
+              [(RTWorkoutRouteManager *)selfCopy _updateMetricsForCurrentTime:v87 syncToHealthKitKey:3 error:&v297];
               objc_storeStrong(&location, v297);
 
               if (location)
               {
 LABEL_86:
 
-                v13 = v257;
+                workoutsCopy = v257;
 LABEL_87:
 
                 v16 = v262;
@@ -14637,43 +14637,43 @@ LABEL_87:
               v88 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v58 workoutActivityType]);
               [v54 setObject:v88 forKeyedSubscript:@"activity_type"];
 
-              v89 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTWorkoutRouteManager _shouldDecimateWorkout:](v270, "_shouldDecimateWorkout:", v58)}];
+              v89 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTWorkoutRouteManager _shouldDecimateWorkout:](selfCopy, "_shouldDecimateWorkout:", v58)}];
               [v54 setObject:v89 forKeyedSubscript:@"is_decimated"];
 
               [v54 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"is_new_cluster"];
               v90 = MEMORY[0x277CCABB0];
-              v91 = [v58 UUID];
-              v92 = [v59 UUID];
-              v93 = [v90 numberWithBool:{objc_msgSend(v91, "isEqual:", v92)}];
+              uUID5 = [v58 UUID];
+              uUID6 = [v59 UUID];
+              v93 = [v90 numberWithBool:{objc_msgSend(uUID5, "isEqual:", uUID6)}];
               [v54 setObject:v93 forKeyedSubscript:@"is_best_also_last_workout"];
 
               v94 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v60, "count")}];
               [v54 setObject:v94 forKeyedSubscript:@"count_workouts"];
 
               v95 = MEMORY[0x277CCABB0];
-              v96 = [(RTWorkoutRouteManager *)v270 healthKitManager];
-              [v96 _getDurationForWorkout:v58];
+              healthKitManager8 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+              [healthKitManager8 _getDurationForWorkout:v58];
               v97 = [v95 numberWithDouble:?];
               [v54 setObject:v97 forKeyedSubscript:@"duration"];
 
               v98 = MEMORY[0x277CCABB0];
-              v99 = [(RTWorkoutRouteManager *)v270 healthKitManager];
-              v100 = [v99 _getTotalDistanceForWorkout:v58];
-              v101 = [MEMORY[0x277CCDAB0] meterUnit];
-              [v100 doubleValueForUnit:v101];
+              healthKitManager9 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+              v100 = [healthKitManager9 _getTotalDistanceForWorkout:v58];
+              meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+              [v100 doubleValueForUnit:meterUnit];
               v102 = [v98 numberWithDouble:?];
               [v54 setObject:v102 forKeyedSubscript:@"total_distance"];
 
               [v263 addObject:v54];
               objc_autoreleasePoolPop(context);
               v51 = v252 + 1;
-              v13 = v257;
+              workoutsCopy = v257;
               v16 = v262;
-              v33 = v269;
+              v33 = errorCopy;
             }
 
             while (v244 != v252 + 1);
-            self = v270;
+            self = selfCopy;
             v244 = [v251 countByEnumeratingWithState:&v307 objects:v334 count:16];
             if (v244)
             {
@@ -14699,8 +14699,8 @@ LABEL_92:
               v105 = NSStringFromClass(v104);
               v106 = NSStringFromSelector(a2);
               v107 = [v251 count];
-              v108 = [MEMORY[0x277CBEAA8] date];
-              [v108 timeIntervalSinceDate:v258];
+              date6 = [MEMORY[0x277CBEAA8] date];
+              [date6 timeIntervalSinceDate:date];
               v110 = v109;
               +[RTRuntime footprint];
               *buf = 138413314;
@@ -14709,7 +14709,7 @@ LABEL_92:
               v320 = v106;
               v321 = 2048;
               v322 = v107;
-              v33 = v269;
+              v33 = errorCopy;
               v323 = 2048;
               v324 = v110;
               v325 = 2048;
@@ -14718,14 +14718,14 @@ LABEL_92:
             }
           }
 
-          v242 = [MEMORY[0x277CBEAA8] date];
+          date7 = [MEMORY[0x277CBEAA8] date];
 
           v295 = 0u;
           v296 = 0u;
           v293 = 0u;
           v294 = 0u;
-          v249 = [v13 allKeys];
-          v245 = [v249 countByEnumeratingWithState:&v293 objects:v333 count:16];
+          allKeys = [workoutsCopy allKeys];
+          v245 = [allKeys countByEnumeratingWithState:&v293 objects:v333 count:16];
           if (v245)
           {
             v247 = *v294;
@@ -14736,24 +14736,24 @@ LABEL_92:
               {
                 if (*v294 != v247)
                 {
-                  objc_enumerationMutation(v249);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v253 = v112;
                 v113 = *(*(&v293 + 1) + 8 * v112);
                 v114 = objc_autoreleasePoolPush();
                 v115 = objc_opt_new();
-                v265 = [MEMORY[0x277CBEAA8] date];
-                v116 = [(RTWorkoutRouteManager *)self healthKitManager];
-                v117 = [v13 objectForKeyedSubscript:v113];
-                v118 = [v117 allObjects];
+                date8 = [MEMORY[0x277CBEAA8] date];
+                healthKitManager10 = [(RTWorkoutRouteManager *)self healthKitManager];
+                v117 = [workoutsCopy objectForKeyedSubscript:v113];
+                allObjects = [v117 allObjects];
                 v292 = location;
-                v119 = [v116 getWorkoutsWithUUIDs:v118 error:&v292];
+                v119 = [healthKitManager10 getWorkoutsWithUUIDs:allObjects error:&v292];
                 objc_storeStrong(&location, v292);
 
                 if (location)
                 {
-                  v33 = v269;
+                  v33 = errorCopy;
                   goto LABEL_148;
                 }
 
@@ -14762,19 +14762,19 @@ LABEL_92:
                 if (v120)
                 {
                   v121 = [v260 objectForKeyedSubscript:v113];
-                  v268 = [v121 allObjects];
+                  allObjects2 = [v121 allObjects];
                 }
 
                 else
                 {
-                  v268 = 0;
+                  allObjects2 = 0;
                 }
 
                 v291 = location;
                 v122 = [(RTWorkoutRouteManager *)self _sortWorkouts:v119 key:@"startDate" ascending:0 error:&v291];
                 objc_storeStrong(&location, v291);
 
-                v33 = v269;
+                v33 = errorCopy;
                 if (location)
                 {
                   goto LABEL_147;
@@ -14816,8 +14816,8 @@ LABEL_92:
                   goto LABEL_144;
                 }
 
-                v128 = [v113 workoutRouteLabel];
-                v129 = [v128 isEqualToString:&stru_284528390];
+                workoutRouteLabel = [v113 workoutRouteLabel];
+                v129 = [workoutRouteLabel isEqualToString:&stru_284528390];
 
                 if (v129)
                 {
@@ -14826,23 +14826,23 @@ LABEL_92:
                   objc_storeStrong(&location, v286);
                   if (location)
                   {
-                    v33 = v269;
+                    v33 = errorCopy;
                     goto LABEL_144;
                   }
 
                   if (([v122 isEqualToString:&stru_284528390] & 1) == 0)
                   {
-                    v130 = [(RTWorkoutRouteManager *)v270 healthKitManager];
-                    v131 = [v113 clusterUUID];
+                    healthKitManager11 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+                    clusterUUID = [v113 clusterUUID];
                     v285 = location;
-                    v132 = [v130 updateWorkoutClusterWithUUID:v131 workoutRouteLabel:v122 error:&v285];
+                    v132 = [healthKitManager11 updateWorkoutClusterWithUUID:clusterUUID workoutRouteLabel:v122 error:&v285];
                     objc_storeStrong(&location, v285);
 
                     if (location)
                     {
-                      v13 = v257;
-                      v33 = v269;
-                      self = v270;
+                      workoutsCopy = v257;
+                      v33 = errorCopy;
+                      self = selfCopy;
                       goto LABEL_144;
                     }
 
@@ -14854,8 +14854,8 @@ LABEL_92:
                         v134 = objc_opt_class();
                         contexta = NSStringFromClass(v134);
                         v135 = NSStringFromSelector(a2);
-                        v136 = [v113 clusterUUID];
-                        v137 = v136;
+                        clusterUUID2 = [v113 clusterUUID];
+                        v137 = clusterUUID2;
                         *buf = 138413314;
                         v138 = @"NO";
                         if (v132)
@@ -14867,7 +14867,7 @@ LABEL_92:
                         v319 = 2112;
                         v320 = v135;
                         v321 = 2112;
-                        v322 = v136;
+                        v322 = clusterUUID2;
                         v323 = 2112;
                         v324 = v138;
                         v325 = 2112;
@@ -14877,26 +14877,26 @@ LABEL_92:
                     }
                   }
 
-                  self = v270;
+                  self = selfCopy;
                 }
 
-                v139 = [(RTWorkoutRouteManager *)self healthKitManager];
-                v140 = [v113 clusterUUID];
+                healthKitManager12 = [(RTWorkoutRouteManager *)self healthKitManager];
+                clusterUUID3 = [v113 clusterUUID];
                 v141 = v123;
-                v142 = [v123 UUID];
+                uUID7 = [v123 UUID];
                 contextb = v124;
-                v143 = [v124 UUID];
+                uUID8 = [v124 UUID];
                 v144 = [MEMORY[0x277CCABB0] numberWithDouble:v127];
                 v284 = location;
-                v145 = [v139 updateWorkoutClusterWithUUID:v140 newBestWorkoutUUID:v142 newLastWorkoutUUID:v143 newRelevance:v144 newWorkoutAssociations:v125 workoutAssociationsToRemove:v268 error:&v284];
+                v145 = [healthKitManager12 updateWorkoutClusterWithUUID:clusterUUID3 newBestWorkoutUUID:uUID7 newLastWorkoutUUID:uUID8 newRelevance:v144 newWorkoutAssociations:v125 workoutAssociationsToRemove:allObjects2 error:&v284];
                 objc_storeStrong(&location, v284);
 
                 if (location)
                 {
                   v122 = 0;
-                  v13 = v257;
-                  v33 = v269;
-                  self = v270;
+                  workoutsCopy = v257;
+                  v33 = errorCopy;
+                  self = selfCopy;
                   goto LABEL_139;
                 }
 
@@ -14908,7 +14908,7 @@ LABEL_92:
                     v147 = objc_opt_class();
                     v148 = NSStringFromClass(v147);
                     v149 = NSStringFromSelector(a2);
-                    v150 = [v113 clusterUUID];
+                    clusterUUID4 = [v113 clusterUUID];
                     v151 = @"NO";
                     if (v145)
                     {
@@ -14917,22 +14917,22 @@ LABEL_92:
 
                     v240 = v151;
                     v152 = [v125 count];
-                    v153 = [v141 UUID];
-                    v154 = [contextb UUID];
+                    uUID9 = [v141 UUID];
+                    uUID10 = [contextb UUID];
                     *buf = 138414082;
                     v318 = v148;
                     v319 = 2112;
                     v320 = v149;
                     v321 = 2112;
-                    v322 = v150;
+                    v322 = clusterUUID4;
                     v323 = 2112;
                     v324 = v240;
                     v325 = 2048;
                     v326 = v152;
                     v327 = 2112;
-                    v328 = v153;
+                    v328 = uUID9;
                     v329 = 2112;
-                    v330 = *&v154;
+                    v330 = *&uUID10;
                     v331 = 2048;
                     v332 = v127;
                     _os_log_impl(&dword_2304B3000, v146, OS_LOG_TYPE_INFO, "%@, %@, updated cluster with cluster uuid, %@, status, %@, cluster size, %lu, bestWorkoutUUID, %@, lastWorkoutUUID, %@, relevance score, %.3f", buf, 0x52u);
@@ -14940,26 +14940,26 @@ LABEL_92:
                 }
 
                 v155 = MEMORY[0x277CCABB0];
-                v156 = [MEMORY[0x277CBEAA8] date];
-                [v156 timeIntervalSinceDate:v265];
+                date9 = [MEMORY[0x277CBEAA8] date];
+                [date9 timeIntervalSinceDate:date8];
                 v157 = [v155 numberWithDouble:?];
                 v283 = location;
-                self = v270;
-                [(RTWorkoutRouteManager *)v270 _updateMetricsForCurrentTime:v157 syncToHealthKitKey:2 error:&v283];
+                self = selfCopy;
+                [(RTWorkoutRouteManager *)selfCopy _updateMetricsForCurrentTime:v157 syncToHealthKitKey:2 error:&v283];
                 objc_storeStrong(&location, v283);
 
                 if (location)
                 {
                   v122 = 0;
-                  v13 = v257;
-                  v33 = v269;
+                  workoutsCopy = v257;
+                  v33 = errorCopy;
 LABEL_139:
                   v124 = contextb;
                   v123 = v141;
 LABEL_144:
 
-                  v122 = v268;
-                  v268 = v123;
+                  v122 = allObjects2;
+                  allObjects2 = v123;
                   v123 = v124;
 LABEL_145:
 
@@ -14978,43 +14978,43 @@ LABEL_148:
                 v158 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v141 workoutActivityType]);
                 [v115 setObject:v158 forKeyedSubscript:@"activity_type"];
 
-                v159 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTWorkoutRouteManager _shouldDecimateWorkout:](v270, "_shouldDecimateWorkout:", v141)}];
+                v159 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTWorkoutRouteManager _shouldDecimateWorkout:](selfCopy, "_shouldDecimateWorkout:", v141)}];
                 [v115 setObject:v159 forKeyedSubscript:@"is_decimated"];
 
                 [v115 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"is_new_cluster"];
                 v160 = MEMORY[0x277CCABB0];
-                v161 = [v141 UUID];
-                v162 = [contextb UUID];
-                v163 = [v160 numberWithBool:{objc_msgSend(v161, "isEqual:", v162)}];
+                uUID11 = [v141 UUID];
+                uUID12 = [contextb UUID];
+                v163 = [v160 numberWithBool:{objc_msgSend(uUID11, "isEqual:", uUID12)}];
                 [v115 setObject:v163 forKeyedSubscript:@"is_best_also_last_workout"];
 
                 v164 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v125, "count")}];
                 [v115 setObject:v164 forKeyedSubscript:@"count_workouts"];
 
                 v165 = MEMORY[0x277CCABB0];
-                v166 = [(RTWorkoutRouteManager *)v270 healthKitManager];
-                [v166 _getDurationForWorkout:v141];
+                healthKitManager13 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+                [healthKitManager13 _getDurationForWorkout:v141];
                 v167 = [v165 numberWithDouble:?];
                 [v115 setObject:v167 forKeyedSubscript:@"duration"];
 
                 v168 = MEMORY[0x277CCABB0];
-                v169 = [(RTWorkoutRouteManager *)v270 healthKitManager];
-                v170 = [v169 _getTotalDistanceForWorkout:v141];
-                v171 = [MEMORY[0x277CCDAB0] meterUnit];
-                [v170 doubleValueForUnit:v171];
+                healthKitManager14 = [(RTWorkoutRouteManager *)selfCopy healthKitManager];
+                v170 = [healthKitManager14 _getTotalDistanceForWorkout:v141];
+                meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+                [v170 doubleValueForUnit:meterUnit2];
                 v172 = [v168 numberWithDouble:?];
                 [v115 setObject:v172 forKeyedSubscript:@"total_distance"];
 
                 [v263 addObject:v115];
                 objc_autoreleasePoolPop(v259);
                 v112 = v253 + 1;
-                v13 = v257;
+                workoutsCopy = v257;
               }
 
               while (v245 != v253 + 1);
               v16 = v262;
-              v33 = v269;
-              v245 = [v249 countByEnumeratingWithState:&v293 objects:v333 count:16];
+              v33 = errorCopy;
+              v245 = [allKeys countByEnumeratingWithState:&v293 objects:v333 count:16];
               if (v245)
               {
                 continue;
@@ -15028,7 +15028,7 @@ LABEL_149:
 
           if (location)
           {
-            v258 = v242;
+            date = date7;
 LABEL_191:
 
             objc_autoreleasePoolPop(v243);
@@ -15043,9 +15043,9 @@ LABEL_191:
               v174 = objc_opt_class();
               v175 = NSStringFromClass(v174);
               v176 = NSStringFromSelector(a2);
-              v177 = [v13 count];
-              v178 = [MEMORY[0x277CBEAA8] date];
-              [v178 timeIntervalSinceDate:v242];
+              v177 = [workoutsCopy count];
+              date10 = [MEMORY[0x277CBEAA8] date];
+              [date10 timeIntervalSinceDate:date7];
               v180 = v179;
               +[RTRuntime footprint];
               *buf = 138413314;
@@ -15062,7 +15062,7 @@ LABEL_191:
             }
           }
 
-          v258 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
 
           v282 = 0u;
           v280 = 0u;
@@ -15085,10 +15085,10 @@ LABEL_191:
 
                 v187 = *(*(&v279 + 1) + 8 * i);
                 v188 = objc_autoreleasePoolPush();
-                v189 = [(RTWorkoutRouteManager *)self healthKitManager];
-                v190 = [v187 clusterUUID];
+                healthKitManager15 = [(RTWorkoutRouteManager *)self healthKitManager];
+                clusterUUID5 = [v187 clusterUUID];
                 v278 = location;
-                v191 = [v189 deleteWorkoutCluster:v190 error:&v278];
+                v191 = [healthKitManager15 deleteWorkoutCluster:clusterUUID5 error:&v278];
                 objc_storeStrong(&location, v278);
 
                 if (location)
@@ -15105,8 +15105,8 @@ LABEL_191:
                     v193 = objc_opt_class();
                     v194 = NSStringFromClass(v193);
                     v195 = NSStringFromSelector(a2);
-                    v196 = [v187 clusterUUID];
-                    v197 = v196;
+                    clusterUUID6 = [v187 clusterUUID];
+                    v197 = clusterUUID6;
                     *buf = 138413058;
                     v198 = @"NO";
                     if (v191)
@@ -15118,12 +15118,12 @@ LABEL_191:
                     v319 = 2112;
                     v320 = v195;
                     v321 = 2112;
-                    v322 = v196;
+                    v322 = clusterUUID6;
                     v323 = 2112;
                     v324 = v198;
                     _os_log_impl(&dword_2304B3000, v192, OS_LOG_TYPE_INFO, "%@, %@, deleted cluster with cluster uuid, %@, status, %@", buf, 0x2Au);
 
-                    self = v270;
+                    self = selfCopy;
                   }
                 }
 
@@ -15144,13 +15144,13 @@ LABEL_170:
 
           if (location)
           {
-            v13 = v257;
+            workoutsCopy = v257;
             v16 = v262;
-            v33 = v269;
+            v33 = errorCopy;
             goto LABEL_191;
           }
 
-          v13 = v257;
+          workoutsCopy = v257;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v199 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -15160,8 +15160,8 @@ LABEL_170:
               v201 = NSStringFromClass(v200);
               v202 = NSStringFromSelector(a2);
               v203 = [v182 count];
-              v204 = [MEMORY[0x277CBEAA8] date];
-              [v204 timeIntervalSinceDate:v258];
+              date11 = [MEMORY[0x277CBEAA8] date];
+              [date11 timeIntervalSinceDate:date];
               v206 = v205;
               +[RTRuntime footprint];
               *buf = 138413314;
@@ -15188,8 +15188,8 @@ LABEL_170:
           v275 = 0u;
           v276 = 0u;
           v277 = 0u;
-          v212 = [v257 allValues];
-          v213 = [v212 countByEnumeratingWithState:&v274 objects:v315 count:16];
+          allValues = [v257 allValues];
+          v213 = [allValues countByEnumeratingWithState:&v274 objects:v315 count:16];
           if (v213)
           {
             v214 = v213;
@@ -15200,7 +15200,7 @@ LABEL_170:
               {
                 if (*v275 != v215)
                 {
-                  objc_enumerationMutation(v212);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v217 = *(*(&v274 + 1) + 8 * j);
@@ -15209,7 +15209,7 @@ LABEL_170:
                 objc_autoreleasePoolPop(v218);
               }
 
-              v214 = [v212 countByEnumeratingWithState:&v274 objects:v315 count:16];
+              v214 = [allValues countByEnumeratingWithState:&v274 objects:v315 count:16];
             }
 
             while (v214);
@@ -15220,9 +15220,9 @@ LABEL_170:
           v221 = NSStringFromSelector(a2);
           [(RTWorkoutRouteManager *)self _logClusters:v211 className:v220 selectorName:v221];
 
-          v222 = [(RTWorkoutRouteManager *)self workoutMetricsManager];
+          workoutMetricsManager = [(RTWorkoutRouteManager *)self workoutMetricsManager];
           v273 = location;
-          v223 = [v222 submitMetricsForEvent:1 data:v263 error:&v273];
+          v223 = [workoutMetricsManager submitMetricsForEvent:1 data:v263 error:&v273];
           objc_storeStrong(&location, v273);
 
           v224 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -15257,14 +15257,14 @@ LABEL_170:
           objc_autoreleasePoolPop(v243);
           v50 = 0;
           v16 = v262;
-          v33 = v269;
+          v33 = errorCopy;
           if (v225)
           {
 LABEL_192:
             v22 = 1;
             if (v33)
             {
-              v14 = v260;
+              removeCopy = v260;
               if (location)
               {
                 v34 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -15291,7 +15291,7 @@ LABEL_44:
 
             else
             {
-              v14 = v260;
+              removeCopy = v260;
             }
 
 LABEL_46:
@@ -15320,7 +15320,7 @@ LABEL_201:
       }
     }
 
-    v14 = v260;
+    removeCopy = v260;
     goto LABEL_44;
   }
 
@@ -15339,7 +15339,7 @@ LABEL_201:
       v320 = v237;
       _os_log_impl(&dword_2304B3000, v41, OS_LOG_TYPE_INFO, "%@, %@, no clusters to save", buf, 0x16u);
 
-      v14 = v260;
+      removeCopy = v260;
     }
 
     goto LABEL_47;
@@ -15351,7 +15351,7 @@ LABEL_49:
   return v22;
 }
 
-- (BOOL)_syncClustersToWatchWithLimit:(unint64_t)a3 error:(id *)a4
+- (BOOL)_syncClustersToWatchWithLimit:(unint64_t)limit error:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
   v51[0] = 0;
@@ -15365,7 +15365,7 @@ LABEL_49:
   v49 = __Block_byref_object_dispose__153;
   v50 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [(RTWorkoutRouteManager *)self healthKitManager];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __61__RTWorkoutRouteManager__syncClustersToWatchWithLimit_error___block_invoke;
@@ -15376,7 +15376,7 @@ LABEL_49:
   v44 = a2;
   v8 = v6;
   v41 = v8;
-  [v7 generateRaceRouteClustersWithLimit:100 handler:v40];
+  [healthKitManager generateRaceRouteClustersWithLimit:100 handler:v40];
 
   v9 = v8;
   v10 = [MEMORY[0x277CBEAA8] now];
@@ -15388,11 +15388,11 @@ LABEL_49:
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -15419,7 +15419,7 @@ LABEL_49:
 
   v25 = v23;
   v26 = v25;
-  if (a4 && v25)
+  if (error && v25)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -15441,7 +15441,7 @@ LABEL_49:
 
   else
   {
-    if (!a4 || !v46[5])
+    if (!error || !v46[5])
     {
       v30 = 1;
       goto LABEL_19;
@@ -15467,7 +15467,7 @@ LABEL_49:
   }
 
   v30 = 0;
-  *a4 = v28;
+  *error = v28;
 LABEL_19:
 
   _Block_object_dispose(&v45, 8);
@@ -15519,7 +15519,7 @@ void __61__RTWorkoutRouteManager__syncClustersToWatchWithLimit_error___block_inv
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_deleteAllClustersFromHealthKitError:(id *)a3
+- (BOOL)_deleteAllClustersFromHealthKitError:(id *)error
 {
   v73[1] = *MEMORY[0x277D85DE8];
   [(RTWorkoutRouteManager *)self _clearInMemoryClusters];
@@ -15531,7 +15531,7 @@ void __61__RTWorkoutRouteManager__syncClustersToWatchWithLimit_error___block_inv
   v64 = __Block_byref_object_copy__153;
   v65 = __Block_byref_object_dispose__153;
   v66 = 0;
-  v6 = [(RTWorkoutRouteManager *)self healthKitManager];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __62__RTWorkoutRouteManager__deleteAllClustersFromHealthKitError___block_invoke;
@@ -15541,7 +15541,7 @@ void __61__RTWorkoutRouteManager__syncClustersToWatchWithLimit_error___block_inv
   v7 = v5;
   v59 = v7;
   v60 = &v61;
-  [v6 fetchWorkoutClustersWithHandler:v57];
+  [healthKitManager fetchWorkoutClustersWithHandler:v57];
 
   dsema = v7;
   v8 = [MEMORY[0x277CBEAA8] now];
@@ -15553,11 +15553,11 @@ void __61__RTWorkoutRouteManager__syncClustersToWatchWithLimit_error___block_inv
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -15627,10 +15627,10 @@ void __61__RTWorkoutRouteManager__syncClustersToWatchWithLimit_error___block_inv
 
         v31 = *(*(&v53 + 1) + 8 * v29);
         v32 = objc_autoreleasePoolPush();
-        v33 = [(RTWorkoutRouteManager *)self healthKitManager];
-        v34 = [v31 clusterUUID];
+        healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+        clusterUUID = [v31 clusterUUID];
         v52 = v30;
-        [v33 deleteWorkoutCluster:v34 error:&v52];
+        [healthKitManager2 deleteWorkoutCluster:clusterUUID error:&v52];
         v24 = v52;
 
         objc_autoreleasePoolPop(v32);
@@ -15676,19 +15676,19 @@ void __61__RTWorkoutRouteManager__syncClustersToWatchWithLimit_error___block_inv
     v24 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     if ([v51 count])
     {
       v47 = 1;
       v37 = _RTSafeArray();
       v38 = _RTMultiErrorCreate();
-      *a3 = v38;
+      *error = v38;
     }
 
     else
     {
-      *a3 = 0;
+      *error = 0;
     }
   }
 
@@ -15715,10 +15715,10 @@ void __62__RTWorkoutRouteManager__deleteAllClustersFromHealthKitError___block_in
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_storeWorkoutDistances:(id)a3 error:(id *)a4
+- (BOOL)_storeWorkoutDistances:(id)distances error:(id *)error
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  distancesCopy = distances;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -15726,17 +15726,17 @@ void __62__RTWorkoutRouteManager__deleteAllClustersFromHealthKitError___block_in
   v50 = __Block_byref_object_dispose__153;
   v51 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+  workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke;
   v42[3] = &unk_2788C46B8;
   v45 = &v46;
-  v9 = v6;
+  v9 = distancesCopy;
   v43 = v9;
   v10 = v7;
   v44 = v10;
-  [v8 storeWorkoutDistances:v9 handler:v42];
+  [workoutDistanceStore storeWorkoutDistances:v9 handler:v42];
 
   v11 = v10;
   v12 = [MEMORY[0x277CBEAA8] now];
@@ -15748,11 +15748,11 @@ void __62__RTWorkoutRouteManager__deleteAllClustersFromHealthKitError___block_in
     v16 = v15;
     v17 = objc_opt_new();
     v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v20 = [v19 filteredArrayUsingPredicate:v18];
-    v21 = [v20 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+    firstObject = [v20 firstObject];
 
-    [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+    [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
@@ -15779,7 +15779,7 @@ void __62__RTWorkoutRouteManager__deleteAllClustersFromHealthKitError___block_in
 
   v27 = v25;
   v28 = v27;
-  if (a4 && v27)
+  if (error && v27)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -15801,7 +15801,7 @@ void __62__RTWorkoutRouteManager__deleteAllClustersFromHealthKitError___block_in
 
   else
   {
-    if (!a4 || !v47[5])
+    if (!error || !v47[5])
     {
       v32 = 1;
       goto LABEL_19;
@@ -15827,7 +15827,7 @@ void __62__RTWorkoutRouteManager__deleteAllClustersFromHealthKitError___block_in
   }
 
   v32 = 0;
-  *a4 = v30;
+  *error = v30;
 LABEL_19:
 
   _Block_object_dispose(&v46, 8);
@@ -15861,11 +15861,11 @@ void __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke(uin
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_updateWorkoutDistanceRecordsWithObjectIDs:(id)a3 isVisited:(BOOL)a4 error:(id *)a5
+- (BOOL)_updateWorkoutDistanceRecordsWithObjectIDs:(id)ds isVisited:(BOOL)visited error:(id *)error
 {
-  v6 = a4;
+  visitedCopy = visited;
   v61[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dsCopy = ds;
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
@@ -15877,9 +15877,9 @@ void __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke(uin
     v8 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 count];
+      v9 = [dsCopy count];
       v10 = @"NO";
-      if (v6)
+      if (visitedCopy)
       {
         v10 = @"YES";
       }
@@ -15893,16 +15893,16 @@ void __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke(uin
   }
 
   v11 = dispatch_semaphore_create(0);
-  v12 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+  workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __84__RTWorkoutRouteManager__updateWorkoutDistanceRecordsWithObjectIDs_isVisited_error___block_invoke;
   v46[3] = &unk_2788C8000;
   v48 = &v50;
-  v49 = v6;
+  v49 = visitedCopy;
   v13 = v11;
   v47 = v13;
-  [v12 updateWorkoutDistancesWithObjectIDs:v7 isVisited:v6 handler:v46];
+  [workoutDistanceStore updateWorkoutDistancesWithObjectIDs:dsCopy isVisited:visitedCopy handler:v46];
 
   v14 = v13;
   v15 = [MEMORY[0x277CBEAA8] now];
@@ -15914,11 +15914,11 @@ void __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke(uin
     v19 = v18;
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v23 = [v22 filteredArrayUsingPredicate:v21];
-    v24 = [v23 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+    firstObject = [v23 firstObject];
 
-    [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+    [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -15945,7 +15945,7 @@ void __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke(uin
 
   v30 = v28;
   v31 = v30;
-  if (a5 && v30)
+  if (error && v30)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -15967,7 +15967,7 @@ void __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke(uin
 
   else
   {
-    if (!a5 || !v51[5])
+    if (!error || !v51[5])
     {
       v35 = 1;
       goto LABEL_25;
@@ -15993,7 +15993,7 @@ void __54__RTWorkoutRouteManager__storeWorkoutDistances_error___block_invoke(uin
   }
 
   v35 = 0;
-  *a5 = v33;
+  *error = v33;
 LABEL_25:
 
   _Block_object_dispose(&v50, 8);
@@ -16038,11 +16038,11 @@ void __84__RTWorkoutRouteManager__updateWorkoutDistanceRecordsWithObjectIDs_isVi
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_bestWorkoutFromWorkouts:(id)a3 error:(id *)a4
+- (id)_bestWorkoutFromWorkouts:(id)workouts error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  workoutsCopy = workouts;
+  if (!workoutsCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -16055,13 +16055,13 @@ void __84__RTWorkoutRouteManager__updateWorkoutDistanceRecordsWithObjectIDs_isVi
     }
   }
 
-  v31 = a4;
+  errorCopy = error;
   v8 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v6;
+  obj = workoutsCopy;
   v9 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (!v9)
   {
@@ -16142,10 +16142,10 @@ LABEL_22:
 
   if ([v8 count])
   {
-    if (v31)
+    if (errorCopy)
     {
       v27 = _RTSafeArray();
-      *v31 = _RTMultiErrorCreate();
+      *errorCopy = _RTMultiErrorCreate();
     }
 
     v28 = 0;
@@ -16161,11 +16161,11 @@ LABEL_22:
   return v28;
 }
 
-- (id)_lastWorkoutFromWorkouts:(id)a3 error:(id *)a4
+- (id)_lastWorkoutFromWorkouts:(id)workouts error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  workoutsCopy = workouts;
+  if (!workoutsCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -16178,14 +16178,14 @@ LABEL_22:
     }
   }
 
-  v22 = a4;
-  v7 = [MEMORY[0x277CBEAA8] distantPast];
+  errorCopy = error;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v23 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v5;
+  v8 = workoutsCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -16203,13 +16203,13 @@ LABEL_22:
 
         v14 = *(*(&v24 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v14 endDate];
-        if ([v16 compare:v7] == 1)
+        endDate = [v14 endDate];
+        if ([endDate compare:distantPast] == 1)
         {
-          v17 = v16;
+          v17 = endDate;
 
           v18 = v14;
-          v7 = v17;
+          distantPast = v17;
           v11 = v18;
         }
 
@@ -16229,11 +16229,11 @@ LABEL_22:
 
   if ([v23 count])
   {
-    v19 = v22;
-    if (v22)
+    v19 = errorCopy;
+    if (errorCopy)
     {
       v20 = _RTSafeArray();
-      *v22 = _RTMultiErrorCreate();
+      *errorCopy = _RTMultiErrorCreate();
 
       v19 = 0;
     }
@@ -16247,7 +16247,7 @@ LABEL_22:
   return v19;
 }
 
-- (id)_getRelevanceLocationWithError:(id *)a3
+- (id)_getRelevanceLocationWithError:(id *)error
 {
   v89[1] = *MEMORY[0x277D85DE8];
   v78 = 0;
@@ -16269,7 +16269,7 @@ LABEL_22:
     v76 = __Block_byref_object_dispose__153;
     v77 = 0;
     v4 = dispatch_semaphore_create(0);
-    v5 = [(RTWorkoutRouteManager *)self locationManager];
+    locationManager = [(RTWorkoutRouteManager *)self locationManager];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __56__RTWorkoutRouteManager__getRelevanceLocationWithError___block_invoke;
@@ -16278,7 +16278,7 @@ LABEL_22:
     v71 = &v72;
     v6 = v4;
     v69 = v6;
-    [v5 fetchCurrentLocationWithHandler:v68];
+    [locationManager fetchCurrentLocationWithHandler:v68];
 
     v8 = (v79 + 5);
     v7 = v79[5];
@@ -16292,11 +16292,11 @@ LABEL_22:
       v14 = v13;
       v15 = objc_opt_new();
       v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v18 = [v17 filteredArrayUsingPredicate:v16];
-      v19 = [v18 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+      firstObject = [v18 firstObject];
 
-      [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+      [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
       v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
@@ -16358,7 +16358,7 @@ LABEL_22:
       {
         v31 = dispatch_semaphore_create(0);
 
-        v32 = [(RTWorkoutRouteManager *)self locationManager];
+        locationManager2 = [(RTWorkoutRouteManager *)self locationManager];
         v64[0] = MEMORY[0x277D85DD0];
         v64[1] = 3221225472;
         v64[2] = __56__RTWorkoutRouteManager__getRelevanceLocationWithError___block_invoke_267;
@@ -16367,7 +16367,7 @@ LABEL_22:
         v67 = &v72;
         v33 = v31;
         v65 = v33;
-        [v32 fetchLastLocationWithHandler:v64];
+        [locationManager2 fetchLastLocationWithHandler:v64];
 
         v35 = (v79 + 5);
         v34 = v79[5];
@@ -16381,11 +16381,11 @@ LABEL_22:
           v40 = v39;
           v41 = objc_opt_new();
           v42 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-          v43 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v44 = [v43 filteredArrayUsingPredicate:v42];
-          v45 = [v44 firstObject];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v44 = [callStackSymbols2 filteredArrayUsingPredicate:v42];
+          firstObject2 = [v44 firstObject];
 
-          [v41 submitToCoreAnalytics:v45 type:1 duration:v40];
+          [v41 submitToCoreAnalytics:firstObject2 type:1 duration:v40];
           v46 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
           {
@@ -16461,9 +16461,9 @@ LABEL_22:
   }
 
   v59 = 0;
-  if (a3)
+  if (error)
   {
-    *a3 = v79[5];
+    *error = v79[5];
   }
 
 LABEL_34:
@@ -16500,15 +16500,15 @@ void __56__RTWorkoutRouteManager__getRelevanceLocationWithError___block_invoke_2
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (double)_relevanceScoreForWorkoutUUIDs:(id)a3 representativeWorkout:(id)a4 latestWorkoutAcrossAllWorkouts:(id)a5 countOfAllWorkouts:(unint64_t)a6 currentLocation:(id)a7 error:(id *)a8
+- (double)_relevanceScoreForWorkoutUUIDs:(id)ds representativeWorkout:(id)workout latestWorkoutAcrossAllWorkouts:(id)workouts countOfAllWorkouts:(unint64_t)allWorkouts currentLocation:(id)location error:(id *)error
 {
   v139[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v98 = v17;
-  v99 = a7;
-  if (!v15)
+  dsCopy = ds;
+  workoutCopy = workout;
+  workoutsCopy = workouts;
+  v98 = workoutsCopy;
+  locationCopy = location;
+  if (!dsCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -16518,18 +16518,18 @@ void __56__RTWorkoutRouteManager__getRelevanceLocationWithError___block_invoke_2
     }
 
     v35 = 0.0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_63;
     }
 
     v36 = _RTErrorInvalidParameterCreate(@"workoutUUIDs");
 LABEL_26:
-    *a8 = v36;
+    *error = v36;
     goto LABEL_63;
   }
 
-  if (!v16)
+  if (!workoutCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -16539,7 +16539,7 @@ LABEL_26:
     }
 
     v35 = 0.0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_63;
     }
@@ -16548,7 +16548,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v17)
+  if (!workoutsCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -16558,7 +16558,7 @@ LABEL_26:
     }
 
     v35 = 0.0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_63;
     }
@@ -16567,7 +16567,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a6)
+  if (allWorkouts)
   {
     aSelector = a2;
     v114 = 0;
@@ -16585,7 +16585,7 @@ LABEL_26:
     v108 = 0x2020000000;
     v109 = 0;
     v18 = dispatch_semaphore_create(0);
-    v19 = [(RTWorkoutRouteManager *)self healthKitManager];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
     v101[0] = MEMORY[0x277D85DD0];
     v101[1] = 3221225472;
     v101[2] = __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeWorkout_latestWorkoutAcrossAllWorkouts_countOfAllWorkouts_currentLocation_error___block_invoke;
@@ -16595,7 +16595,7 @@ LABEL_26:
     v105 = &v114;
     v20 = v18;
     v102 = v20;
-    [v19 fetchRouteLocationsUsingWorkout:v16 decimationLevel:3 limit:1 shift:0 handler:v101];
+    [healthKitManager fetchRouteLocationsUsingWorkout:workoutCopy decimationLevel:3 limit:1 shift:0 handler:v101];
 
     dsema = v20;
     v95 = [MEMORY[0x277CBEAA8] now];
@@ -16607,11 +16607,11 @@ LABEL_26:
       v23 = v22;
       v24 = objc_opt_new();
       v25 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v26 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v27 = [v26 filteredArrayUsingPredicate:v25];
-      v28 = [v27 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v27 = [callStackSymbols filteredArrayUsingPredicate:v25];
+      firstObject = [v27 firstObject];
 
-      [v24 submitToCoreAnalytics:v28 type:1 duration:v23];
+      [v24 submitToCoreAnalytics:firstObject type:1 duration:v23];
       v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
       {
@@ -16638,7 +16638,7 @@ LABEL_26:
 
     v40 = v32;
     v41 = v40;
-    if (a8 && v40)
+    if (error && v40)
     {
       v42 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -16656,20 +16656,20 @@ LABEL_26:
       }
 
       v43 = v41;
-      *a8 = v41;
+      *error = v41;
     }
 
     else
     {
-      if (!a8 || !v115[5])
+      if (!error || !v115[5])
       {
         if (v107[3])
         {
           v96 = [(RTWorkoutRouteManager *)self _getRTLocationUsingCLLocationCoordinate2D:v111[3]];
-          v45 = [(RTWorkoutRouteManager *)self distanceCalculator];
+          distanceCalculator = [(RTWorkoutRouteManager *)self distanceCalculator];
           v46 = (v115 + 5);
           obj = v115[5];
-          [v45 distanceFromLocation:v99 toLocation:v96 error:&obj];
+          [distanceCalculator distanceFromLocation:locationCopy toLocation:v96 error:&obj];
           v48 = v47;
           objc_storeStrong(v46, obj);
 
@@ -16682,7 +16682,7 @@ LABEL_26:
           }
 
           v49[3] = 0;
-          if (a8 && v115[5])
+          if (error && v115[5])
           {
             v51 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -16700,23 +16700,23 @@ LABEL_26:
               _os_log_error_impl(&dword_2304B3000, v51, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
             }
 
-            *a8 = v115[5];
+            *error = v115[5];
             v35 = 0.0;
           }
 
           else if (v48 <= 80467.0)
           {
-            v65 = [v15 count];
-            v66 = [MEMORY[0x277CBEAA8] date];
-            v67 = [v16 endDate];
-            [v66 timeIntervalSinceDate:v67];
+            v65 = [dsCopy count];
+            date = [MEMORY[0x277CBEAA8] date];
+            endDate = [workoutCopy endDate];
+            [date timeIntervalSinceDate:endDate];
             v69 = v68;
 
-            v70 = [v98 endDate];
-            [v66 timeIntervalSinceDate:v70];
+            endDate2 = [v98 endDate];
+            [date timeIntervalSinceDate:endDate2];
             v72 = v71;
 
-            v73 = v65 / a6 * 50.0;
+            v73 = v65 / allWorkouts * 50.0;
             v74 = v69 / 86400.0;
             v75 = v72 / 86400.0;
             v76 = v75 / (v69 / 86400.0) * 50.0;
@@ -16784,9 +16784,9 @@ LABEL_26:
           v56 = MEMORY[0x277CCA9B8];
           v137 = *MEMORY[0x277CCA450];
           v57 = MEMORY[0x277CCACA8];
-          v58 = [v16 UUID];
-          v59 = [v57 stringWithFormat:@"no locations returned for workout UUID, %@", v58, aSelector];
-          v138 = v59;
+          uUID = [workoutCopy UUID];
+          aSelector = [v57 stringWithFormat:@"no locations returned for workout UUID, %@", uUID, aSelector];
+          v138 = aSelector;
           v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v138 forKeys:&v137 count:1];
           v61 = [v56 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v60];
           v62 = v115[5];
@@ -16802,9 +16802,9 @@ LABEL_26:
 
           v63[3] = 0;
           v35 = 0.0;
-          if (a8)
+          if (error)
           {
-            *a8 = v115[5];
+            *error = v115[5];
           }
         }
 
@@ -16827,7 +16827,7 @@ LABEL_26:
         _os_log_error_impl(&dword_2304B3000, v44, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
       }
 
-      *a8 = v115[5];
+      *error = v115[5];
     }
 
     v35 = 0.0;
@@ -16848,7 +16848,7 @@ LABEL_62:
   }
 
   v35 = 0.0;
-  if (a8)
+  if (error)
   {
     v36 = _RTErrorInvalidParameterCreate(@"countOfAllWorkouts");
     goto LABEL_26;
@@ -16868,10 +16868,10 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getWorkoutRouteSnapshotForWorkout:(id)a3 error:(id *)a4
+- (id)_getWorkoutRouteSnapshotForWorkout:(id)workout error:(id *)error
 {
   v160[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  workoutCopy = workout;
   v118 = objc_autoreleasePoolPush();
   v139 = 0;
   v140 = &v139;
@@ -16888,10 +16888,10 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
   v133 = 0x2020000000;
   v134 = 0;
   v7 = dispatch_semaphore_create(0);
-  v119 = v6;
-  LODWORD(v6) = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:v6];
-  v8 = [(RTWorkoutRouteManager *)self healthKitManager];
-  if (v6)
+  v119 = workoutCopy;
+  LODWORD(workoutCopy) = [(RTWorkoutRouteManager *)self _shouldDecimateWorkout:workoutCopy];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+  if (workoutCopy)
   {
     v9 = 2;
   }
@@ -16910,7 +16910,7 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
   v130 = &v139;
   v10 = v7;
   v127 = v10;
-  [v8 fetchRouteLocationsUsingWorkout:v119 decimationLevel:v9 limit:0 shift:1 handler:v126];
+  [healthKitManager fetchRouteLocationsUsingWorkout:v119 decimationLevel:v9 limit:0 shift:1 handler:v126];
 
   v11 = v10;
   v12 = [MEMORY[0x277CBEAA8] now];
@@ -16922,11 +16922,11 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
     v16 = v15;
     v17 = objc_opt_new();
     v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v20 = [v19 filteredArrayUsingPredicate:v18];
-    v21 = [v20 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+    firstObject = [v20 firstObject];
 
-    [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+    [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
@@ -16953,9 +16953,9 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
 
   v27 = v25;
   v28 = v27;
-  if (!a4 || !v27)
+  if (!error || !v27)
   {
-    if (a4 && v140[5])
+    if (error && v140[5])
     {
       v31 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -17009,8 +17009,8 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
     [v34 setMapRect:{0x4044000000000000, 0x4044000000000000, 0x4044000000000000, 0x4044000000000000}];
     [v34 setSize:{157.0, 157.0}];
     [v34 setShowsBuildings:0];
-    v39 = [MEMORY[0x277CD4F10] filterExcludingAllCategories];
-    [v34 setPointOfInterestFilter:v39];
+    filterExcludingAllCategories = [MEMORY[0x277CD4F10] filterExcludingAllCategories];
+    [v34 setPointOfInterestFilter:filterExcludingAllCategories];
     v114 = v34;
 
     [v34 setMapType:5];
@@ -17051,11 +17051,11 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
       v47 = v46;
       v48 = objc_opt_new();
       v49 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v50 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v51 = [v50 filteredArrayUsingPredicate:v49];
-      v52 = [v51 firstObject];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v51 = [callStackSymbols2 filteredArrayUsingPredicate:v49];
+      firstObject2 = [v51 firstObject];
 
-      [v48 submitToCoreAnalytics:v52 type:1 duration:v47];
+      [v48 submitToCoreAnalytics:firstObject2 type:1 duration:v47];
       v53 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
       {
@@ -17083,7 +17083,7 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
     v58 = v56;
     if (v58)
     {
-      v59 = a4 != 0;
+      v59 = error != 0;
     }
 
     else
@@ -17113,25 +17113,25 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
 
     else
     {
-      if (!a4 || !*(*&buf[8] + 40))
+      if (!error || !*(*&buf[8] + 40))
       {
         contexta = objc_autoreleasePoolPush();
-        v65 = [v151[5] image];
-        [v65 size];
+        image = [v151[5] image];
+        [image size];
         v67 = v66;
         v69 = v68;
-        [v65 scale];
+        [image scale];
         v71 = v70;
         v164.width = v67;
         v164.height = v69;
         UIGraphicsBeginImageContextWithOptions(v164, 1, v71);
-        [v65 drawAtPoint:{0.0, 0.0}];
+        [image drawAtPoint:{0.0, 0.0}];
         CurrentContext = UIGraphicsGetCurrentContext();
         v73 = [(RTWorkoutRouteManager *)self _colorFromHexString:@"00FFA8"];
         v74 = v73;
-        v75 = [v73 CGColor];
+        cGColor = [v73 CGColor];
 
-        CGContextSetStrokeColorWithColor(CurrentContext, v75);
+        CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
         CGContextSetLineWidth(CurrentContext, 2.0);
         CGContextSetLineCap(CurrentContext, kCGLineCapRound);
         CGContextSetLineJoin(CurrentContext, kCGLineJoinRound);
@@ -17176,11 +17176,11 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
         [v151[5] pointForCoordinate:{*v136[3], *(v136[3] + 8)}];
         v88 = v87;
         v90 = v89;
-        v91 = [MEMORY[0x277D75348] systemRedColor];
-        v92 = v91;
-        v81[2](v81, CurrentContext, [v91 CGColor], v84, v86);
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+        v92 = systemRedColor;
+        v81[2](v81, CurrentContext, [systemRedColor CGColor], v84, v86);
 
-        v81[2](v81, CurrentContext, v75, v88, v90);
+        v81[2](v81, CurrentContext, cGColor, v88, v90);
         v93 = v136;
         v94 = v136[3];
         if (v94)
@@ -17218,8 +17218,8 @@ void __150__RTWorkoutRouteManager__relevanceScoreForWorkoutUUIDs_representativeW
     }
 
     v63 = v61;
-    v64 = *a4;
-    *a4 = v63;
+    v64 = *error;
+    *error = v63;
 
     v32 = 0;
 LABEL_54:
@@ -17249,8 +17249,8 @@ LABEL_54:
   v30 = v28;
 LABEL_20:
   v32 = 0;
-  v33 = *a4;
-  *a4 = v30;
+  v33 = *error;
+  *error = v30;
 LABEL_55:
 
 LABEL_56:
@@ -17308,11 +17308,11 @@ void __66__RTWorkoutRouteManager__getWorkoutRouteSnapshotForWorkout_error___bloc
   CGContextFillEllipseInRect(a2, *(&v11 - 2));
 }
 
-- (id)_getWorkoutRouteLabelForWorkout:(id)a3 error:(id *)a4
+- (id)_getWorkoutRouteLabelForWorkout:(id)workout error:(id *)error
 {
   v105[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  workoutCopy = workout;
+  if (!workoutCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -17321,20 +17321,20 @@ void __66__RTWorkoutRouteManager__getWorkoutRouteSnapshotForWorkout_error___bloc
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"workout");
+      *error = _RTErrorInvalidParameterCreate(@"workout");
     }
 
     goto LABEL_17;
   }
 
-  v7 = [(RTWorkoutRouteManager *)self lastTimeRouteLabelFailed];
-  if (v7)
+  lastTimeRouteLabelFailed = [(RTWorkoutRouteManager *)self lastTimeRouteLabelFailed];
+  if (lastTimeRouteLabelFailed)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [(RTWorkoutRouteManager *)self lastTimeRouteLabelFailed];
-    [v8 timeIntervalSinceDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastTimeRouteLabelFailed2 = [(RTWorkoutRouteManager *)self lastTimeRouteLabelFailed];
+    [date timeIntervalSinceDate:lastTimeRouteLabelFailed2];
     v11 = v10;
     v12 = kRTWorkoutRouteLabelBackOffDuration;
 
@@ -17362,7 +17362,7 @@ LABEL_17:
   v85[3] = &unk_2788D04D0;
   v85[4] = &v92;
   v85[5] = &v86;
-  [(RTWorkoutRouteManager *)self _getLocationsForWorkout:v6 decimationLevel:3 limit:1 handler:v85];
+  [(RTWorkoutRouteManager *)self _getLocationsForWorkout:workoutCopy decimationLevel:3 limit:1 handler:v85];
   if (v87[5])
   {
     v13 = v93;
@@ -17376,7 +17376,7 @@ LABEL_17:
     v13[3] = 0;
   }
 
-  if (a4 && v87[5])
+  if (error && v87[5])
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -17394,7 +17394,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
-    *a4 = v87[5];
+    *error = v87[5];
     v16 = &stru_284528390;
     goto LABEL_40;
   }
@@ -17447,11 +17447,11 @@ LABEL_17:
     v30 = v29;
     v31 = objc_opt_new();
     v32 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-    v33 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v34 = [v33 filteredArrayUsingPredicate:v32];
-    v35 = [v34 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v34 = [callStackSymbols filteredArrayUsingPredicate:v32];
+    firstObject = [v34 firstObject];
 
-    [v31 submitToCoreAnalytics:v35 type:1 duration:v30];
+    [v31 submitToCoreAnalytics:firstObject type:1 duration:v30];
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
     {
@@ -17479,7 +17479,7 @@ LABEL_17:
   v41 = v39;
   if (v41)
   {
-    v42 = a4 != 0;
+    v42 = error != 0;
   }
 
   else
@@ -17505,7 +17505,7 @@ LABEL_17:
     }
 
     v44 = v41;
-    *a4 = v41;
+    *error = v41;
   }
 
   else
@@ -17513,13 +17513,13 @@ LABEL_17:
     v45 = v80[5];
     if (v45 && !v74[5])
     {
-      v49 = [v45 address];
-      v50 = [v49 locality];
-      v51 = v50;
+      address = [v45 address];
+      locality = [address locality];
+      v51 = locality;
       v52 = &stru_284528390;
-      if (v50)
+      if (locality)
       {
-        v52 = v50;
+        v52 = locality;
       }
 
       v16 = v52;
@@ -17527,8 +17527,8 @@ LABEL_17:
       goto LABEL_39;
     }
 
-    v46 = [MEMORY[0x277CBEAA8] date];
-    [(RTWorkoutRouteManager *)self setLastTimeRouteLabelFailed:v46];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(RTWorkoutRouteManager *)self setLastTimeRouteLabelFailed:date2];
 
     v47 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -17583,14 +17583,14 @@ void __63__RTWorkoutRouteManager__getWorkoutRouteLabelForWorkout_error___block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_areWorkoutsSimilarBetweenClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6 error:(id *)a7
+- (BOOL)_areWorkoutsSimilarBetweenClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold error:(id *)error
 {
   v147[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v116 = v10;
-  v117 = v9;
-  if (!v9)
+  set1Copy = set1;
+  set2Copy = set2;
+  v116 = set2Copy;
+  v117 = set1Copy;
+  if (!set1Copy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -17599,12 +17599,12 @@ void __63__RTWorkoutRouteManager__getWorkoutRouteLabelForWorkout_error___block_i
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inputClusterSet1", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v29 = _RTErrorInvalidParameterCreate(@"inputClusterSet1");
 LABEL_23:
       v27 = 0;
-      *a7 = v29;
+      *error = v29;
       goto LABEL_31;
     }
 
@@ -17613,7 +17613,7 @@ LABEL_24:
     goto LABEL_31;
   }
 
-  if (!v10)
+  if (!set2Copy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -17622,7 +17622,7 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inputClusterSet2", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v29 = _RTErrorInvalidParameterCreate(@"inputClusterSet2");
       goto LABEL_23;
@@ -17642,9 +17642,9 @@ LABEL_24:
   v127 = &v126;
   v128 = 0x2020000000;
   v129 = 0;
-  if ([v9 count] || objc_msgSend(v116, "count"))
+  if ([set1Copy count] || objc_msgSend(v116, "count"))
   {
-    if ([v9 count] && objc_msgSend(v116, "count"))
+    if ([set1Copy count] && objc_msgSend(v116, "count"))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -17692,7 +17692,7 @@ LABEL_24:
         if (v33 <= kRTSQLQueryMaxPredicatesCount)
         {
           v69 = dispatch_semaphore_create(0);
-          v70 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+          workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
           v118[0] = MEMORY[0x277D85DD0];
           v118[1] = 3221225472;
           v118[2] = __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterSet2_workoutActivityType_maxDistanceThreshold_error___block_invoke_2;
@@ -17701,7 +17701,7 @@ LABEL_24:
           v121 = &v130;
           v71 = v69;
           v119 = v71;
-          [v70 fetchTotalWorkoutDistancesCountWithClusterSet1:v108 clusterSet2:v18 workoutActivityType:a5 maxDistanceThreshold:v118 handler:a6];
+          [workoutDistanceStore fetchTotalWorkoutDistancesCountWithClusterSet1:v108 clusterSet2:v18 workoutActivityType:type maxDistanceThreshold:v118 handler:threshold];
 
           dsema = v71;
           v72 = [MEMORY[0x277CBEAA8] now];
@@ -17713,11 +17713,11 @@ LABEL_24:
             v76 = v75;
             v77 = objc_opt_new();
             v78 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-            v79 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v80 = [v79 filteredArrayUsingPredicate:v78];
-            v81 = [v80 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v80 = [callStackSymbols filteredArrayUsingPredicate:v78];
+            firstObject = [v80 firstObject];
 
-            [v77 submitToCoreAnalytics:v81 type:1 duration:v76];
+            [v77 submitToCoreAnalytics:firstObject type:1 duration:v76];
             v82 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v82, OS_LOG_TYPE_FAULT))
             {
@@ -17778,7 +17778,7 @@ LABEL_24:
           v38 = v36;
           v39 = v37;
           dsema = v38;
-          v111 = [v38 allObjects];
+          allObjects = [v38 allObjects];
           v40 = kRTSQLQueryMaxPredicatesCount;
           v107 = v39;
           v41 = [v39 count];
@@ -17797,22 +17797,22 @@ LABEL_24:
           v105 = *MEMORY[0x277CCA450];
           do
           {
-            if (v42 >= [v111 count])
+            if (v42 >= [allObjects count])
             {
               break;
             }
 
             v109 = objc_autoreleasePoolPush();
-            v44 = [v111 count];
+            v44 = [allObjects count];
             if (v44 - v42 < v43)
             {
               v43 = v44 - v42;
             }
 
             v45 = dispatch_semaphore_create(0);
-            v46 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+            workoutDistanceStore2 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
             v47 = MEMORY[0x277CBEB98];
-            v48 = [v111 subarrayWithRange:{v42, v43}];
+            v48 = [allObjects subarrayWithRange:{v42, v43}];
             v49 = [v47 setWithArray:v48];
             v122[0] = MEMORY[0x277D85DD0];
             v122[1] = 3221225472;
@@ -17822,7 +17822,7 @@ LABEL_24:
             v125 = &v130;
             v50 = v45;
             v123 = v50;
-            [v46 fetchTotalWorkoutDistancesCountWithClusterSet1:v49 clusterSet2:v107 workoutActivityType:a5 maxDistanceThreshold:v122 handler:a6];
+            [workoutDistanceStore2 fetchTotalWorkoutDistancesCountWithClusterSet1:v49 clusterSet2:v107 workoutActivityType:type maxDistanceThreshold:v122 handler:threshold];
 
             v51 = v50;
             v52 = [MEMORY[0x277CBEAA8] now];
@@ -17834,11 +17834,11 @@ LABEL_24:
               v56 = v55;
               v57 = objc_opt_new();
               v58 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-              v59 = [MEMORY[0x277CCACC8] callStackSymbols];
-              v60 = [v59 filteredArrayUsingPredicate:v58];
-              v61 = [v60 firstObject];
+              callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+              v60 = [callStackSymbols2 filteredArrayUsingPredicate:v58];
+              firstObject2 = [v60 firstObject];
 
-              [v57 submitToCoreAnalytics:v61 type:1 duration:v56];
+              [v57 submitToCoreAnalytics:firstObject2 type:1 duration:v56];
               v62 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
               {
@@ -17962,9 +17962,9 @@ LABEL_24:
   if (v26)
   {
     v27 = 0;
-    if (a7)
+    if (error)
     {
-      *a7 = v131[5];
+      *error = v131[5];
     }
   }
 
@@ -17990,11 +17990,11 @@ void __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterS
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getWorkoutUUIDsForCluster:(id)a3 error:(id *)a4
+- (id)_getWorkoutUUIDsForCluster:(id)cluster error:(id *)error
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  clusterCopy = cluster;
+  if (clusterCopy)
   {
     aSelector = a2;
     v8 = dispatch_semaphore_create(0);
@@ -18010,8 +18010,8 @@ void __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterS
     v47 = __Block_byref_object_copy__153;
     v48 = __Block_byref_object_dispose__153;
     v49 = 0;
-    v9 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v10 = [v7 clusterUUID];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+    clusterUUID = [clusterCopy clusterUUID];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __58__RTWorkoutRouteManager__getWorkoutUUIDsForCluster_error___block_invoke;
@@ -18020,7 +18020,7 @@ void __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterS
     v11 = v8;
     v41 = v11;
     v43 = &v44;
-    [v9 fetchWorkoutUUIDsForClusterUUID:v10 handler:v40];
+    [healthKitManager fetchWorkoutUUIDsForClusterUUID:clusterUUID handler:v40];
 
     v12 = v11;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -18032,11 +18032,11 @@ void __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterS
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -18063,7 +18063,7 @@ void __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterS
 
     v30 = v26;
     v31 = v30;
-    if (a4 && v30)
+    if (error && v30)
     {
       v32 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -18081,15 +18081,15 @@ void __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterS
       }
 
       v33 = v31;
-      *a4 = v31;
+      *error = v31;
       v34 = objc_opt_new();
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = *(v51 + 5);
+        *error = *(v51 + 5);
       }
 
       v34 = v45[5];
@@ -18110,9 +18110,9 @@ void __122__RTWorkoutRouteManager__areWorkoutsSimilarBetweenClusterSet1_clusterS
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: cluster", v50, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"cluster");
+      *error = _RTErrorInvalidParameterCreate(@"cluster");
     }
 
     v29 = objc_opt_new();
@@ -18145,11 +18145,11 @@ void __58__RTWorkoutRouteManager__getWorkoutUUIDsForCluster_error___block_invoke
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getRemoteWorkoutClustersForWorkoutUUIDs:(id)a3 error:(id *)a4
+- (id)_getRemoteWorkoutClustersForWorkoutUUIDs:(id)ds error:(id *)error
 {
   v105[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  dsCopy = ds;
+  if (dsCopy)
   {
     aSelector = a2;
     *v90 = 0;
@@ -18165,7 +18165,7 @@ void __58__RTWorkoutRouteManager__getWorkoutUUIDsForCluster_error___block_invoke
     v88 = __Block_byref_object_dispose__153;
     v89 = 0;
     v7 = dispatch_semaphore_create(0);
-    v8 = [(RTWorkoutRouteManager *)self healthKitManager];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
     v80[2] = __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error___block_invoke;
@@ -18174,7 +18174,7 @@ void __58__RTWorkoutRouteManager__getWorkoutUUIDsForCluster_error___block_invoke
     v9 = v7;
     v81 = v9;
     v83 = v90;
-    [v8 fetchWorkoutClusterUUIDsContainingWorkoutUUIDs:v6 handler:v80];
+    [healthKitManager fetchWorkoutClusterUUIDsContainingWorkoutUUIDs:dsCopy handler:v80];
 
     v10 = v9;
     v11 = [MEMORY[0x277CBEAA8] now];
@@ -18186,11 +18186,11 @@ void __58__RTWorkoutRouteManager__getWorkoutUUIDsForCluster_error___block_invoke
       v15 = v14;
       v16 = objc_opt_new();
       v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v19 = [v18 filteredArrayUsingPredicate:v17];
-      v20 = [v19 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+      firstObject = [v19 firstObject];
 
-      [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+      [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
       v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
@@ -18217,7 +18217,7 @@ void __58__RTWorkoutRouteManager__getWorkoutUUIDsForCluster_error___block_invoke
 
     v28 = v24;
     v29 = v28;
-    if (a4 && v28)
+    if (error && v28)
     {
       v30 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -18236,7 +18236,7 @@ void __58__RTWorkoutRouteManager__getWorkoutUUIDsForCluster_error___block_invoke
 
       v31 = v29;
 LABEL_23:
-      *a4 = v31;
+      *error = v31;
       v27 = objc_opt_new();
 LABEL_45:
 
@@ -18246,7 +18246,7 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    if (a4 && v85[5])
+    if (error && v85[5])
     {
       v32 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -18276,7 +18276,7 @@ LABEL_45:
     v104 = objc_opt_new();
     v33 = dispatch_semaphore_create(0);
 
-    v34 = [(RTWorkoutRouteManager *)self healthKitManager];
+    healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error___block_invoke_302;
@@ -18286,7 +18286,7 @@ LABEL_45:
     v76 = v35;
     v78 = v90;
     v79 = buf;
-    [v34 fetchWorkoutClustersWithHandler:v75];
+    [healthKitManager2 fetchWorkoutClustersWithHandler:v75];
 
     v10 = v35;
     v36 = [MEMORY[0x277CBEAA8] now];
@@ -18299,11 +18299,11 @@ LABEL_45:
       v40 = v39;
       v41 = objc_opt_new();
       v42 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v43 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v44 = [v43 filteredArrayUsingPredicate:v42];
-      v45 = [v44 firstObject];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v44 = [callStackSymbols2 filteredArrayUsingPredicate:v42];
+      firstObject2 = [v44 firstObject];
 
-      [v41 submitToCoreAnalytics:v45 type:1 duration:v40];
+      [v41 submitToCoreAnalytics:firstObject2 type:1 duration:v40];
       v46 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
       {
@@ -18329,7 +18329,7 @@ LABEL_45:
     v51 = v38;
     if (v51)
     {
-      v52 = a4 != 0;
+      v52 = error != 0;
     }
 
     else
@@ -18356,7 +18356,7 @@ LABEL_45:
 
       v54 = v51;
 LABEL_41:
-      *a4 = v54;
+      *error = v54;
       v56 = objc_opt_new();
 LABEL_44:
       v27 = v56;
@@ -18366,7 +18366,7 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    if (a4)
+    if (error)
     {
       if (v85[5])
       {
@@ -18390,7 +18390,7 @@ LABEL_44:
         goto LABEL_41;
       }
 
-      *a4 = 0;
+      *error = 0;
     }
 
     v56 = *(*&buf[8] + 40);
@@ -18404,9 +18404,9 @@ LABEL_44:
     _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutUUIDs", v90, 2u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = _RTErrorInvalidParameterCreate(@"workoutUUIDs");
+    *error = _RTErrorInvalidParameterCreate(@"workoutUUIDs");
   }
 
   v27 = objc_opt_new();
@@ -18496,18 +18496,18 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
   }
 }
 
-- (id)_sortWorkoutUUIDsByDistance:(id)a3 error:(id *)a4
+- (id)_sortWorkoutUUIDsByDistance:(id)distance error:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  distanceCopy = distance;
+  if (distanceCopy)
   {
     v56 = objc_opt_new();
     v54 = objc_autoreleasePoolPush();
     v65 = objc_opt_new();
-    v63 = self;
-    v57 = v6;
-    if ([v6 count])
+    selfCopy = self;
+    v57 = distanceCopy;
+    if ([distanceCopy count])
     {
       v7 = 0;
       v8 = 0;
@@ -18515,7 +18515,7 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
       do
       {
         context = objc_autoreleasePoolPush();
-        v10 = [v6 count];
+        v10 = [distanceCopy count];
         if ((v10 - v8) >= 0x32)
         {
           v11 = 50;
@@ -18526,11 +18526,11 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
           v11 = v10 - v8;
         }
 
-        v12 = [(RTWorkoutRouteManager *)self healthKitManager];
+        healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
         v59 = v8;
-        v13 = [v6 subarrayWithRange:{v8, v11}];
+        v13 = [distanceCopy subarrayWithRange:{v8, v11}];
         v77 = v7;
-        v14 = [v12 getWorkoutsWithUUIDs:v13 error:&v77];
+        v14 = [healthKitManager getWorkoutsWithUUIDs:v13 error:&v77];
         v60 = v77;
 
         v75 = 0u;
@@ -18555,10 +18555,10 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
 
               v18 = *(*(&v73 + 1) + 8 * i);
               v19 = objc_autoreleasePoolPush();
-              v20 = [(RTWorkoutRouteManager *)self healthKitManager];
-              v21 = [v20 _getTotalDistanceForWorkout:v18];
-              v22 = [v18 UUID];
-              [v16 setObject:v21 forKeyedSubscript:v22];
+              healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+              v21 = [healthKitManager2 _getTotalDistanceForWorkout:v18];
+              uUID = [v18 UUID];
+              [v16 setObject:v21 forKeyedSubscript:uUID];
 
               if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
               {
@@ -18569,22 +18569,22 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
                   v25 = NSStringFromClass(v24);
                   NSStringFromSelector(a2);
                   v27 = v26 = v9;
-                  v28 = [v18 UUID];
-                  v29 = [v18 UUID];
-                  v30 = [v16 objectForKeyedSubscript:v29];
-                  v31 = [MEMORY[0x277CCDAB0] meterUnit];
-                  [v30 doubleValueForUnit:v31];
+                  uUID2 = [v18 UUID];
+                  uUID3 = [v18 UUID];
+                  v30 = [v16 objectForKeyedSubscript:uUID3];
+                  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+                  [v30 doubleValueForUnit:meterUnit];
                   *buf = 138413058;
                   v80 = v25;
                   v81 = 2112;
                   v82 = v27;
                   v83 = 2112;
-                  v84 = v28;
+                  v84 = uUID2;
                   v85 = 2048;
                   v86 = v32;
                   _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_INFO, "%@, %@, before sorting, uuid, %@, distance, %.5f", buf, 0x2Au);
 
-                  self = v63;
+                  self = selfCopy;
                   v16 = v65;
 
                   v9 = v26;
@@ -18603,7 +18603,7 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
 
         objc_autoreleasePoolPop(context);
         v8 = v59 + 50;
-        v6 = v57;
+        distanceCopy = v57;
         v33 = v60;
         v7 = v60;
       }
@@ -18683,7 +18683,7 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
         while (v38);
       }
 
-      v6 = v57;
+      distanceCopy = v57;
       v33 = v61;
     }
 
@@ -18704,9 +18704,9 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
       _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutUUIDs", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"workoutUUIDs");
+      *error = _RTErrorInvalidParameterCreate(@"workoutUUIDs");
     }
 
     v35 = objc_opt_new();
@@ -18715,12 +18715,12 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
   return v35;
 }
 
-- (void)_pruneDistanceMatrixWithHandler:(id)a3
+- (void)_pruneDistanceMatrixWithHandler:(id)handler
 {
   v83[1] = *MEMORY[0x277D85DE8];
-  v54 = a3;
+  handlerCopy = handler;
   v72 = 0;
-  v63 = self;
+  selfCopy = self;
   v55 = [(RTWorkoutRouteManager *)self _retrieveUUIDsToPruneWithError:&v72];
   v4 = v72;
   if (v4)
@@ -18750,7 +18750,7 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "%@, %@, %@, Error fetching prune UUIDs", v79, 0x20u);
     }
 
-    v54[2](v54, v4);
+    handlerCopy[2](handlerCopy, v4);
   }
 
   else
@@ -18791,7 +18791,7 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
           }
 
           v10 = *(*(&v68 + 1) + 8 * i);
-          v11 = [(RTWorkoutRouteManager *)v63 workoutDistanceStore];
+          workoutDistanceStore = [(RTWorkoutRouteManager *)selfCopy workoutDistanceStore];
           v65[0] = MEMORY[0x277D85DD0];
           v65[1] = 3221225472;
           v65[2] = __57__RTWorkoutRouteManager__pruneDistanceMatrixWithHandler___block_invoke;
@@ -18799,7 +18799,7 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
           v67 = v79;
           v12 = v61;
           v66 = v12;
-          [v11 deleteWorkoutDistanceWithWorkoutUUID:v10 handler:v65];
+          [workoutDistanceStore deleteWorkoutDistanceWithWorkoutUUID:v10 handler:v65];
 
           v13 = v12;
           v14 = [MEMORY[0x277CBEAA8] now];
@@ -18812,11 +18812,11 @@ void __72__RTWorkoutRouteManager__getRemoteWorkoutClustersForWorkoutUUIDs_error_
             v19 = v18;
             v20 = objc_opt_new();
             v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-            v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v23 = [v22 filteredArrayUsingPredicate:v21];
-            v24 = [v23 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+            firstObject = [v23 firstObject];
 
-            [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+            [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
             v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
             {
@@ -18895,7 +18895,7 @@ LABEL_29:
         {
 LABEL_32:
 
-          [(RTWorkoutRouteManager *)v63 _clearInMemoryClusters];
+          [(RTWorkoutRouteManager *)selfCopy _clearInMemoryClusters];
           if ([v64 count])
           {
             v41 = _RTSafeArray();
@@ -18922,7 +18922,7 @@ LABEL_32:
             v42 = 0;
           }
 
-          v54[2](v54, v42);
+          handlerCopy[2](handlerCopy, v42);
           _Block_object_dispose(v79, 8);
 
           goto LABEL_43;
@@ -18946,7 +18946,7 @@ LABEL_32:
       }
     }
 
-    v54[2](v54, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_43:
@@ -18959,17 +18959,17 @@ void __57__RTWorkoutRouteManager__pruneDistanceMatrixWithHandler___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_retrieveUUIDsToPruneWithError:(id *)a3
+- (id)_retrieveUUIDsToPruneWithError:(id *)error
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v4 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
-  v6 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v7 = [v6 getWorkoutDefaultSortDescriptors];
-  v8 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v9 = [v8 _getRTWorkoutDefaultTypesForRaceRoute];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+  getWorkoutDefaultSortDescriptors = [healthKitManager2 getWorkoutDefaultSortDescriptors];
+  healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
+  _getRTWorkoutDefaultTypesForRaceRoute = [healthKitManager3 _getRTWorkoutDefaultTypesForRaceRoute];
   v64 = 0;
-  v10 = [v4 getWorkoutsWithStartDate:v5 limit:0 sortDescriptors:v7 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:1.79769313e308 workoutTypes:v9 error:&v64];
+  v10 = [healthKitManager getWorkoutsWithStartDate:distantPast limit:0 sortDescriptors:getWorkoutDefaultSortDescriptors nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:1.79769313e308 workoutTypes:_getRTWorkoutDefaultTypesForRaceRoute error:&v64];
   v58 = v64;
 
   if (!v58)
@@ -18992,7 +18992,7 @@ void __57__RTWorkoutRouteManager__pruneDistanceMatrixWithHandler___block_invoke(
     _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "%@, %@, %@", buf, 0x20u);
   }
 
-  if (a3)
+  if (error)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -19011,7 +19011,7 @@ void __57__RTWorkoutRouteManager__pruneDistanceMatrixWithHandler___block_invoke(
 
     v13 = v58;
     v14 = 0;
-    *a3 = v58;
+    *error = v58;
   }
 
   else
@@ -19024,8 +19024,8 @@ LABEL_8:
       do
       {
         v17 = [v10 objectAtIndexedSubscript:v16];
-        v18 = [v17 UUID];
-        [v15 addObject:v18];
+        uUID = [v17 UUID];
+        [v15 addObject:uUID];
 
         ++v16;
       }
@@ -19040,7 +19040,7 @@ LABEL_8:
     v71 = __Block_byref_object_copy__153;
     v72 = __Block_byref_object_dispose__153;
     v73 = objc_opt_new();
-    v20 = [(RTWorkoutRouteManager *)self workoutDistanceStore];
+    workoutDistanceStore = [(RTWorkoutRouteManager *)self workoutDistanceStore];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __56__RTWorkoutRouteManager__retrieveUUIDsToPruneWithError___block_invoke;
@@ -19052,7 +19052,7 @@ LABEL_8:
     v62 = buf;
     v21 = v19;
     v61 = v21;
-    [v20 fetchUniqueWorkoutUUIDsWithHandler:v59];
+    [workoutDistanceStore fetchUniqueWorkoutUUIDsWithHandler:v59];
 
     v22 = v21;
     v23 = [MEMORY[0x277CBEAA8] now];
@@ -19064,11 +19064,11 @@ LABEL_8:
       v26 = v25;
       v27 = objc_opt_new();
       v28 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v29 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v30 = [v29 filteredArrayUsingPredicate:v28];
-      v31 = [v30 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v30 = [callStackSymbols filteredArrayUsingPredicate:v28];
+      firstObject = [v30 firstObject];
 
-      [v27 submitToCoreAnalytics:v31 type:1 duration:v26];
+      [v27 submitToCoreAnalytics:firstObject type:1 duration:v26];
       v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
       {
@@ -19114,7 +19114,7 @@ LABEL_8:
       _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "%@, %@, %@", v65, 0x20u);
     }
 
-    if (a3)
+    if (error)
     {
       v39 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -19133,7 +19133,7 @@ LABEL_8:
 
       v40 = v37;
       v14 = 0;
-      *a3 = v37;
+      *error = v37;
     }
 
     else
@@ -19184,14 +19184,14 @@ void __56__RTWorkoutRouteManager__retrieveUUIDsToPruneWithError___block_invoke(u
   }
 }
 
-- (BOOL)_initProcessWorkoutMetrics:(id *)a3
+- (BOOL)_initProcessWorkoutMetrics:(id *)metrics
 {
   v36 = *MEMORY[0x277D85DE8];
   v29 = 0;
   [(RTWorkoutRouteManager *)self _initProcessWorkoutMetricsForDistanceMatrixWithError:&v29];
   v6 = v29;
   v7 = v6;
-  if (a3 && v6)
+  if (metrics && v6)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -19200,7 +19200,7 @@ LABEL_4:
 
       v9 = v7;
       v10 = 0;
-      *a3 = v7;
+      *metrics = v7;
       goto LABEL_9;
     }
 
@@ -19223,7 +19223,7 @@ LABEL_26:
   [(RTWorkoutRouteManager *)self _initProcessWorkoutMetricsForClusteringWithError:&v28];
   v11 = v28;
 
-  if (a3 && v11)
+  if (metrics && v11)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -19232,7 +19232,7 @@ LABEL_8:
 
       v13 = v11;
       v10 = 0;
-      *a3 = v11;
+      *metrics = v11;
       v7 = v11;
       goto LABEL_9;
     }
@@ -19256,7 +19256,7 @@ LABEL_28:
   [(RTWorkoutRouteManager *)self _initProcessWorkoutMetricsForSyncFromHealthKitWithError:&v27];
   v7 = v27;
 
-  if (a3 && v7)
+  if (metrics && v7)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -19280,7 +19280,7 @@ LABEL_28:
   [(RTWorkoutRouteManager *)self _initProcessWorkoutMetricsForSyncToHealthKitWithError:&v26];
   v11 = v26;
 
-  if (a3 && v11)
+  if (metrics && v11)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -19304,7 +19304,7 @@ LABEL_28:
   [(RTWorkoutRouteManager *)self _initProcessWorkoutMetricsForSyncToWatchKitWithError:&v25];
   v7 = v25;
 
-  if (a3 && v7)
+  if (metrics && v7)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -19324,10 +19324,10 @@ LABEL_28:
     goto LABEL_26;
   }
 
-  if (a3)
+  if (metrics)
   {
     v22 = v7;
-    *a3 = v7;
+    *metrics = v7;
   }
 
   v10 = v7 == 0;
@@ -19336,380 +19336,380 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_initProcessWorkoutMetricsForDistanceMatrixWithError:(id *)a3
+- (BOOL)_initProcessWorkoutMetricsForDistanceMatrixWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v5 setObject:v4 forKeyedSubscript:@"distance_matrix_initial_size"];
+  processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics setObject:v4 forKeyedSubscript:@"distance_matrix_initial_size"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v7 setObject:v6 forKeyedSubscript:@"distance_matrix_final_size"];
+  processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics2 setObject:v6 forKeyedSubscript:@"distance_matrix_final_size"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v9 setObject:v8 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_metadata"];
+  processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics3 setObject:v8 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_metadata"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v11 setObject:v10 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_firstlocation"];
+  processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics4 setObject:v10 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_firstlocation"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v13 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v13 setObject:v12 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_locationscount"];
+  processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics5 setObject:v12 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_locationscount"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v15 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v15 setObject:v14 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_lastlocation"];
+  processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics6 setObject:v14 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_lastlocation"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v17 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v17 setObject:v16 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_cache"];
+  processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics7 setObject:v16 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_cache"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v19 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v19 setObject:v18 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_centroid"];
+  processWorkoutMetrics8 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics8 setObject:v18 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_centroid"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v21 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v21 setObject:v20 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_iou"];
+  processWorkoutMetrics9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics9 setObject:v20 forKeyedSubscript:@"distance_matrix_min_time_prefiltered_iou"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v23 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v23 setObject:v22 forKeyedSubscript:@"distance_matrix_min_time_lessthan_orequal_quicksimilarity"];
+  processWorkoutMetrics10 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics10 setObject:v22 forKeyedSubscript:@"distance_matrix_min_time_lessthan_orequal_quicksimilarity"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v25 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v25 setObject:v24 forKeyedSubscript:@"distance_matrix_min_time_exceeded_quicksimilarity"];
+  processWorkoutMetrics11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics11 setObject:v24 forKeyedSubscript:@"distance_matrix_min_time_exceeded_quicksimilarity"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v27 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v27 setObject:v26 forKeyedSubscript:@"distance_matrix_min_time_exceeded_dtw"];
+  processWorkoutMetrics12 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics12 setObject:v26 forKeyedSubscript:@"distance_matrix_min_time_exceeded_dtw"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v29 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v29 setObject:v28 forKeyedSubscript:@"distance_matrix_min_time_lessthan_orequal_dtw"];
+  processWorkoutMetrics13 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics13 setObject:v28 forKeyedSubscript:@"distance_matrix_min_time_lessthan_orequal_dtw"];
 
   v30 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v31 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v31 setObject:v30 forKeyedSubscript:@"distance_matrix_min_time_already_computed"];
+  processWorkoutMetrics14 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics14 setObject:v30 forKeyedSubscript:@"distance_matrix_min_time_already_computed"];
 
   v32 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v33 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v33 setObject:v32 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_metadata"];
+  processWorkoutMetrics15 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics15 setObject:v32 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_metadata"];
 
   v34 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v35 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v35 setObject:v34 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_firstlocation"];
+  processWorkoutMetrics16 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics16 setObject:v34 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_firstlocation"];
 
   v36 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v37 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v37 setObject:v36 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_locationscount"];
+  processWorkoutMetrics17 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics17 setObject:v36 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_locationscount"];
 
   v38 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v39 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v39 setObject:v38 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_lastlocation"];
+  processWorkoutMetrics18 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics18 setObject:v38 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_lastlocation"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v41 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v41 setObject:v40 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_cache"];
+  processWorkoutMetrics19 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics19 setObject:v40 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_cache"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v43 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v43 setObject:v42 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_centroid"];
+  processWorkoutMetrics20 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics20 setObject:v42 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_centroid"];
 
   v44 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v45 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v45 setObject:v44 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_iou"];
+  processWorkoutMetrics21 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics21 setObject:v44 forKeyedSubscript:@"distance_matrix_max_time_prefiltered_iou"];
 
   v46 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v47 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v47 setObject:v46 forKeyedSubscript:@"distance_matrix_max_time_lessthan_orequal_quicksimilarity"];
+  processWorkoutMetrics22 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics22 setObject:v46 forKeyedSubscript:@"distance_matrix_max_time_lessthan_orequal_quicksimilarity"];
 
   v48 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v49 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v49 setObject:v48 forKeyedSubscript:@"distance_matrix_max_time_exceeded_quicksimilarity"];
+  processWorkoutMetrics23 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics23 setObject:v48 forKeyedSubscript:@"distance_matrix_max_time_exceeded_quicksimilarity"];
 
   v50 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v51 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v51 setObject:v50 forKeyedSubscript:@"distance_matrix_max_time_exceeded_dtw"];
+  processWorkoutMetrics24 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics24 setObject:v50 forKeyedSubscript:@"distance_matrix_max_time_exceeded_dtw"];
 
   v52 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v53 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v53 setObject:v52 forKeyedSubscript:@"distance_matrix_max_time_lessthan_orequal_dtw"];
+  processWorkoutMetrics25 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics25 setObject:v52 forKeyedSubscript:@"distance_matrix_max_time_lessthan_orequal_dtw"];
 
   v54 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v55 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v55 setObject:v54 forKeyedSubscript:@"distance_matrix_max_time_already_computed"];
+  processWorkoutMetrics26 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics26 setObject:v54 forKeyedSubscript:@"distance_matrix_max_time_already_computed"];
 
   v56 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v57 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v57 setObject:v56 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_metadata"];
+  processWorkoutMetrics27 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics27 setObject:v56 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_metadata"];
 
   v58 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v59 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v59 setObject:v58 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_firstlocation"];
+  processWorkoutMetrics28 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics28 setObject:v58 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_firstlocation"];
 
   v60 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v61 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v61 setObject:v60 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_locationscount"];
+  processWorkoutMetrics29 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics29 setObject:v60 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_locationscount"];
 
   v62 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v63 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v63 setObject:v62 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_lastlocation"];
+  processWorkoutMetrics30 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics30 setObject:v62 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_lastlocation"];
 
   v64 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v65 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v65 setObject:v64 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_cache"];
+  processWorkoutMetrics31 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics31 setObject:v64 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_cache"];
 
   v66 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v67 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v67 setObject:v66 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_centroid"];
+  processWorkoutMetrics32 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics32 setObject:v66 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_centroid"];
 
   v68 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v69 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v69 setObject:v68 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_iou"];
+  processWorkoutMetrics33 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics33 setObject:v68 forKeyedSubscript:@"distance_matrix_average_time_prefiltered_iou"];
 
   v70 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v71 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v71 setObject:v70 forKeyedSubscript:@"distance_matrix_average_time_lessthan_orequal_quicksimilarity"];
+  processWorkoutMetrics34 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics34 setObject:v70 forKeyedSubscript:@"distance_matrix_average_time_lessthan_orequal_quicksimilarity"];
 
   v72 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v73 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v73 setObject:v72 forKeyedSubscript:@"distance_matrix_average_time_exceeded_quicksimilarity"];
+  processWorkoutMetrics35 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics35 setObject:v72 forKeyedSubscript:@"distance_matrix_average_time_exceeded_quicksimilarity"];
 
   v74 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v75 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v75 setObject:v74 forKeyedSubscript:@"distance_matrix_average_time_exceeded_dtw"];
+  processWorkoutMetrics36 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics36 setObject:v74 forKeyedSubscript:@"distance_matrix_average_time_exceeded_dtw"];
 
   v76 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v77 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v77 setObject:v76 forKeyedSubscript:@"distance_matrix_average_time_lessthan_orequal_dtw"];
+  processWorkoutMetrics37 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics37 setObject:v76 forKeyedSubscript:@"distance_matrix_average_time_lessthan_orequal_dtw"];
 
   v78 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v79 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v79 setObject:v78 forKeyedSubscript:@"distance_matrix_average_time_already_computed"];
+  processWorkoutMetrics38 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics38 setObject:v78 forKeyedSubscript:@"distance_matrix_average_time_already_computed"];
 
-  v80 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v80 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_metadata"];
+  processWorkoutMetrics39 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics39 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_metadata"];
 
-  v81 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v81 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_firstlocation"];
+  processWorkoutMetrics40 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics40 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_firstlocation"];
 
-  v82 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v82 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_locationscount"];
+  processWorkoutMetrics41 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics41 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_locationscount"];
 
-  v83 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v83 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_lastlocation"];
+  processWorkoutMetrics42 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics42 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_lastlocation"];
 
-  v84 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v84 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matric_count_prefiltercache"];
+  processWorkoutMetrics43 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics43 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matric_count_prefiltercache"];
 
-  v85 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v85 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_centroid"];
+  processWorkoutMetrics44 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics44 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_centroid"];
 
-  v86 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v86 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_iou"];
+  processWorkoutMetrics45 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics45 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_prefiltered_iou"];
 
-  v87 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v87 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_lessthan_orequal_quicksimilarity"];
+  processWorkoutMetrics46 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics46 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_lessthan_orequal_quicksimilarity"];
 
-  v88 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v88 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_exceeded_quicksimilarity"];
+  processWorkoutMetrics47 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics47 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_exceeded_quicksimilarity"];
 
-  v89 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v89 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_exceeded_dtw"];
+  processWorkoutMetrics48 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics48 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_exceeded_dtw"];
 
-  v90 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v90 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_lessthan_orequal_dtw"];
+  processWorkoutMetrics49 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics49 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_lessthan_orequal_dtw"];
 
-  v91 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v91 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_already_computed"];
+  processWorkoutMetrics50 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics50 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_already_computed"];
 
-  v92 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v92 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_no_workout_decimated"];
+  processWorkoutMetrics51 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics51 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_no_workout_decimated"];
 
-  v93 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v93 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_single_workout_decimated"];
+  processWorkoutMetrics52 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics52 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_single_workout_decimated"];
 
-  v94 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v94 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_both_workouts_decimated"];
+  processWorkoutMetrics53 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics53 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_count_both_workouts_decimated"];
 
-  v95 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v95 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_total_number_of_comparisons"];
+  processWorkoutMetrics54 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics54 setObject:&unk_28459F690 forKeyedSubscript:@"distance_matrix_total_number_of_comparisons"];
 
   v96 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v97 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v97 setObject:v96 forKeyedSubscript:@"distance_matrix_is_success"];
+  processWorkoutMetrics55 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics55 setObject:v96 forKeyedSubscript:@"distance_matrix_is_success"];
 
   v98 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v99 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v99 setObject:v98 forKeyedSubscript:@"distance_matrix_footprint_delta"];
+  processWorkoutMetrics56 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics56 setObject:v98 forKeyedSubscript:@"distance_matrix_footprint_delta"];
 
   v100 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v101 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v101 setObject:v100 forKeyedSubscript:@"distance_matrix_time_elapsed"];
+  processWorkoutMetrics57 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics57 setObject:v100 forKeyedSubscript:@"distance_matrix_time_elapsed"];
 
-  v102 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v102 setObject:&unk_28459F690 forKeyedSubscript:@"number_of_workouts_running"];
+  processWorkoutMetrics58 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics58 setObject:&unk_28459F690 forKeyedSubscript:@"number_of_workouts_running"];
 
-  v103 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v103 setObject:&unk_28459F690 forKeyedSubscript:@"number_of_workouts_cycling"];
+  processWorkoutMetrics59 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics59 setObject:&unk_28459F690 forKeyedSubscript:@"number_of_workouts_cycling"];
 
-  v104 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v104 setObject:&unk_28459F690 forKeyedSubscript:@"number_of_workouts_wheel_chair_run_pace"];
+  processWorkoutMetrics60 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics60 setObject:&unk_28459F690 forKeyedSubscript:@"number_of_workouts_wheel_chair_run_pace"];
 
   return 1;
 }
 
-- (BOOL)_initProcessWorkoutMetricsForClusteringWithError:(id *)a3
+- (BOOL)_initProcessWorkoutMetricsForClusteringWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v5 setObject:v4 forKeyedSubscript:@"clustering_percentage_workouts_clustered"];
+  processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics setObject:v4 forKeyedSubscript:@"clustering_percentage_workouts_clustered"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v7 setObject:v6 forKeyedSubscript:@"clustering_count_clusters"];
+  processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics2 setObject:v6 forKeyedSubscript:@"clustering_count_clusters"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v9 setObject:v8 forKeyedSubscript:@"clustering_min_cluster_size"];
+  processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics3 setObject:v8 forKeyedSubscript:@"clustering_min_cluster_size"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v11 setObject:v10 forKeyedSubscript:@"clustering_max_cluster_size"];
+  processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics4 setObject:v10 forKeyedSubscript:@"clustering_max_cluster_size"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v13 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v13 setObject:v12 forKeyedSubscript:@"clustering_average_cluster_size"];
+  processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics5 setObject:v12 forKeyedSubscript:@"clustering_average_cluster_size"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v15 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v15 setObject:v14 forKeyedSubscript:@"clustering_is_success"];
+  processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics6 setObject:v14 forKeyedSubscript:@"clustering_is_success"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v17 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v17 setObject:v16 forKeyedSubscript:@"clustering_footprint_delta"];
+  processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics7 setObject:v16 forKeyedSubscript:@"clustering_footprint_delta"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v19 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v19 setObject:v18 forKeyedSubscript:@"clustering_time_elapsed"];
+  processWorkoutMetrics8 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics8 setObject:v18 forKeyedSubscript:@"clustering_time_elapsed"];
 
   return 1;
 }
 
-- (BOOL)_initProcessWorkoutMetricsForSyncFromHealthKitWithError:(id *)a3
+- (BOOL)_initProcessWorkoutMetricsForSyncFromHealthKitWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v5 setObject:v4 forKeyedSubscript:@"sync_from_healthkit_count_local_clusters"];
+  processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics setObject:v4 forKeyedSubscript:@"sync_from_healthkit_count_local_clusters"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v7 setObject:v6 forKeyedSubscript:@"sync_from_healthkit_count_remote_clusters"];
+  processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics2 setObject:v6 forKeyedSubscript:@"sync_from_healthkit_count_remote_clusters"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v9 setObject:v8 forKeyedSubscript:@"sync_from_healthkit_count_final_local_clusters"];
+  processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics3 setObject:v8 forKeyedSubscript:@"sync_from_healthkit_count_final_local_clusters"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v11 setObject:v10 forKeyedSubscript:@"sync_from_healthkit_count_final_remote_clusters"];
+  processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics4 setObject:v10 forKeyedSubscript:@"sync_from_healthkit_count_final_remote_clusters"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v13 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v13 setObject:v12 forKeyedSubscript:@"sync_from_healthkit_is_success"];
+  processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics5 setObject:v12 forKeyedSubscript:@"sync_from_healthkit_is_success"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v15 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v15 setObject:v14 forKeyedSubscript:@"sync_from_healthkit_footprint_delta"];
+  processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics6 setObject:v14 forKeyedSubscript:@"sync_from_healthkit_footprint_delta"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v17 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v17 setObject:v16 forKeyedSubscript:@"sync_from_healthkit_time_elapsed"];
+  processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics7 setObject:v16 forKeyedSubscript:@"sync_from_healthkit_time_elapsed"];
 
   return 1;
 }
 
-- (BOOL)_initProcessWorkoutMetricsForSyncToHealthKitWithError:(id *)a3
+- (BOOL)_initProcessWorkoutMetricsForSyncToHealthKitWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v5 setObject:v4 forKeyedSubscript:@"sync_to_healthkit_min_time_snapshot"];
+  processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics setObject:v4 forKeyedSubscript:@"sync_to_healthkit_min_time_snapshot"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v7 setObject:v6 forKeyedSubscript:@"sync_to_healthkit_min_time_update_cluster"];
+  processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics2 setObject:v6 forKeyedSubscript:@"sync_to_healthkit_min_time_update_cluster"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v9 setObject:v8 forKeyedSubscript:@"sync_to_healthkit_min_time_save_new_cluster"];
+  processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics3 setObject:v8 forKeyedSubscript:@"sync_to_healthkit_min_time_save_new_cluster"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v11 setObject:v10 forKeyedSubscript:@"sync_to_healthkit_max_time_snapshot"];
+  processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics4 setObject:v10 forKeyedSubscript:@"sync_to_healthkit_max_time_snapshot"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v13 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v13 setObject:v12 forKeyedSubscript:@"sync_to_healthkit_max_time_update_cluster"];
+  processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics5 setObject:v12 forKeyedSubscript:@"sync_to_healthkit_max_time_update_cluster"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v15 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v15 setObject:v14 forKeyedSubscript:@"sync_to_healthkit_max_time_save_new_cluster"];
+  processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics6 setObject:v14 forKeyedSubscript:@"sync_to_healthkit_max_time_save_new_cluster"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v17 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v17 setObject:v16 forKeyedSubscript:@"sync_to_healthkit_average_time_snapshot"];
+  processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics7 setObject:v16 forKeyedSubscript:@"sync_to_healthkit_average_time_snapshot"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v19 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v19 setObject:v18 forKeyedSubscript:@"sync_to_healthkit_average_time_update_cluster"];
+  processWorkoutMetrics8 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics8 setObject:v18 forKeyedSubscript:@"sync_to_healthkit_average_time_update_cluster"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v21 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v21 setObject:v20 forKeyedSubscript:@"sync_to_healthkit_average_time_save_new_cluster"];
+  processWorkoutMetrics9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics9 setObject:v20 forKeyedSubscript:@"sync_to_healthkit_average_time_save_new_cluster"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v23 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v23 setObject:v22 forKeyedSubscript:@"sync_to_healthkit_is_success"];
+  processWorkoutMetrics10 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics10 setObject:v22 forKeyedSubscript:@"sync_to_healthkit_is_success"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v25 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v25 setObject:v24 forKeyedSubscript:@"sync_to_healthkit_footprint_delta"];
+  processWorkoutMetrics11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics11 setObject:v24 forKeyedSubscript:@"sync_to_healthkit_footprint_delta"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v27 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v27 setObject:v26 forKeyedSubscript:@"sync_to_healthkit_time_elapsed"];
+  processWorkoutMetrics12 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics12 setObject:v26 forKeyedSubscript:@"sync_to_healthkit_time_elapsed"];
 
   return 1;
 }
 
-- (BOOL)_initProcessWorkoutMetricsForSyncToWatchKitWithError:(id *)a3
+- (BOOL)_initProcessWorkoutMetricsForSyncToWatchKitWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v5 setObject:v4 forKeyedSubscript:@"sync_to_watch_count_clusters"];
+  processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics setObject:v4 forKeyedSubscript:@"sync_to_watch_count_clusters"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v7 setObject:v6 forKeyedSubscript:@"sync_to_watch_is_success"];
+  processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics2 setObject:v6 forKeyedSubscript:@"sync_to_watch_is_success"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v9 setObject:v8 forKeyedSubscript:@"sync_to_watch_footprint_delta"];
+  processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics3 setObject:v8 forKeyedSubscript:@"sync_to_watch_footprint_delta"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-  v11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v11 setObject:v10 forKeyedSubscript:@"sync_to_watch_time_elapsed"];
+  processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics4 setObject:v10 forKeyedSubscript:@"sync_to_watch_time_elapsed"];
 
   return 1;
 }
 
-- (BOOL)_updateMetricsForCurrentTime:(id)a3 distanceMatrixKey:(unint64_t)a4 error:(id *)a5
+- (BOOL)_updateMetricsForCurrentTime:(id)time distanceMatrixKey:(unint64_t)key error:(id *)error
 {
-  v8 = a3;
-  if (!v8)
+  timeCopy = time;
+  if (!timeCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -19718,10 +19718,10 @@ LABEL_9:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: currentTime", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"currentTime");
-      *a5 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_36;
     }
 
@@ -19732,11 +19732,11 @@ LABEL_35:
 
   v9 = objc_autoreleasePoolPush();
   v10 = v9;
-  if (a4 > 6)
+  if (key > 6)
   {
-    if (a4 <= 9)
+    if (key <= 9)
     {
-      if (a4 == 7)
+      if (key == 7)
       {
         v11 = @"distance_matrix_min_time_prefiltered_locationscount";
         v12 = @"distance_matrix_max_time_prefiltered_locationscount";
@@ -19747,7 +19747,7 @@ LABEL_35:
         v16 = &v31;
       }
 
-      else if (a4 == 8)
+      else if (key == 8)
       {
         v11 = @"distance_matrix_min_time_prefiltered_iou";
         v12 = @"distance_matrix_max_time_prefiltered_iou";
@@ -19772,7 +19772,7 @@ LABEL_35:
       goto LABEL_31;
     }
 
-    switch(a4)
+    switch(key)
     {
       case 0xAuLL:
         v11 = @"distance_matrix_min_time_exceeded_quicksimilarity";
@@ -19806,9 +19806,9 @@ LABEL_35:
     goto LABEL_34;
   }
 
-  if (a4 > 3)
+  if (key > 3)
   {
-    if (a4 == 4)
+    if (key == 4)
     {
       v11 = @"distance_matrix_min_time_prefiltered_lastlocation";
       v12 = @"distance_matrix_max_time_prefiltered_lastlocation";
@@ -19819,7 +19819,7 @@ LABEL_35:
       v16 = &v27;
     }
 
-    else if (a4 == 5)
+    else if (key == 5)
     {
       v11 = @"distance_matrix_min_time_prefiltered_cache";
       v12 = @"distance_matrix_max_time_prefiltered_cache";
@@ -19844,7 +19844,7 @@ LABEL_35:
     goto LABEL_31;
   }
 
-  if (a4 == 1)
+  if (key == 1)
   {
     v11 = @"distance_matrix_min_time_already_computed";
     v12 = @"distance_matrix_max_time_already_computed";
@@ -19856,7 +19856,7 @@ LABEL_35:
     goto LABEL_31;
   }
 
-  if (a4 == 2)
+  if (key == 2)
   {
     v11 = @"distance_matrix_min_time_prefiltered_metadata";
     v12 = @"distance_matrix_max_time_prefiltered_metadata";
@@ -19868,7 +19868,7 @@ LABEL_35:
     goto LABEL_31;
   }
 
-  if (a4 != 3)
+  if (key != 3)
   {
 LABEL_34:
     objc_autoreleasePoolPop(v9);
@@ -19883,13 +19883,13 @@ LABEL_34:
   v15 = &v30;
   v16 = &v30;
 LABEL_31:
-  [(RTWorkoutRouteManager *)self _updateMetricsForCurrentTime:v8 minTimeKey:v11 maxTimeKey:v12 averageTimeKey:v13 countKey:v14 error:v16, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33];
+  [(RTWorkoutRouteManager *)self _updateMetricsForCurrentTime:timeCopy minTimeKey:v11 maxTimeKey:v12 averageTimeKey:v13 countKey:v14 error:v16, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33];
   v19 = *v15;
   objc_autoreleasePoolPop(v10);
-  if (a5)
+  if (error)
   {
     v20 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   v18 = v19 != 0;
@@ -19898,13 +19898,13 @@ LABEL_36:
   return v18;
 }
 
-- (BOOL)_updateMetricsForCurrentTime:(id)a3 syncToHealthKitKey:(unint64_t)a4 error:(id *)a5
+- (BOOL)_updateMetricsForCurrentTime:(id)time syncToHealthKitKey:(unint64_t)key error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  timeCopy = time;
+  if (timeCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    switch(a4)
+    switch(key)
     {
       case 3uLL:
         v10 = @"sync_to_healthkit_min_time_save_new_cluster";
@@ -19935,7 +19935,7 @@ LABEL_36:
         goto LABEL_14;
     }
 
-    [(RTWorkoutRouteManager *)self _updateMetricsForCurrentTime:v8 minTimeKey:v10 maxTimeKey:v11 averageTimeKey:v12 countKey:0 error:v14];
+    [(RTWorkoutRouteManager *)self _updateMetricsForCurrentTime:timeCopy minTimeKey:v10 maxTimeKey:v11 averageTimeKey:v12 countKey:0 error:v14];
 
     v16 = 1;
 LABEL_14:
@@ -19950,10 +19950,10 @@ LABEL_14:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: currentTime", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"currentTime");
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -19966,16 +19966,16 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)_updateMetricsForCurrentTime:(id)a3 minTimeKey:(id)a4 maxTimeKey:(id)a5 averageTimeKey:(id)a6 countKey:(id)a7 error:(id *)a8
+- (BOOL)_updateMetricsForCurrentTime:(id)time minTimeKey:(id)key maxTimeKey:(id)timeKey averageTimeKey:(id)averageTimeKey countKey:(id)countKey error:(id *)error
 {
   v82 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = v19;
-  if (!v15)
+  timeCopy = time;
+  keyCopy = key;
+  timeKeyCopy = timeKey;
+  averageTimeKeyCopy = averageTimeKey;
+  countKeyCopy = countKey;
+  v20 = countKeyCopy;
+  if (!timeCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -19984,7 +19984,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: currentTime", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -19993,7 +19993,7 @@ LABEL_15:
     goto LABEL_32;
   }
 
-  if (!v16)
+  if (!keyCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -20002,7 +20002,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: minTimeKey", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -20011,7 +20011,7 @@ LABEL_15:
     goto LABEL_32;
   }
 
-  if (!v17)
+  if (!timeKeyCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -20020,7 +20020,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: maxTimeKey", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -20029,7 +20029,7 @@ LABEL_15:
     goto LABEL_32;
   }
 
-  if (!v18)
+  if (!averageTimeKeyCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -20038,7 +20038,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: averageTimeKey", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -20046,11 +20046,11 @@ LABEL_15:
     v26 = @"averageTimeKey";
 LABEL_32:
     _RTErrorInvalidParameterCreate(v26);
-    *a8 = v31 = 0;
+    *error = v31 = 0;
     goto LABEL_44;
   }
 
-  if (!v19)
+  if (!countKeyCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -20059,7 +20059,7 @@ LABEL_32:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: countKey", buf, 2u);
     }
 
-    if (a8)
+    if (error)
     {
       v26 = @"countKey";
       goto LABEL_32;
@@ -20070,7 +20070,7 @@ LABEL_33:
     goto LABEL_44;
   }
 
-  v69 = v19;
+  v69 = countKeyCopy;
   context = objc_autoreleasePoolPush();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -20085,19 +20085,19 @@ LABEL_33:
       v72 = 2112;
       v73 = v65;
       v74 = 2112;
-      v75 = v16;
+      v75 = keyCopy;
       v76 = 2112;
-      v77 = v17;
+      v77 = timeKeyCopy;
       v78 = 2112;
-      v79 = v18;
+      v79 = averageTimeKeyCopy;
       v80 = 2112;
       v81 = v69;
       _os_log_debug_impl(&dword_2304B3000, v21, OS_LOG_TYPE_DEBUG, "%@, %@, updating metrics for minTimeKey, %@, maxTimeKey, %@, averageTimeKey, %@, countKey, %@", buf, 0x3Eu);
     }
   }
 
-  v22 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v23 = [v22 objectForKeyedSubscript:v16];
+  processWorkoutMetrics = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  v23 = [processWorkoutMetrics objectForKeyedSubscript:keyCopy];
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
   if ([v23 isEqualToNumber:v24])
   {
@@ -20105,9 +20105,9 @@ LABEL_33:
 
   else
   {
-    v32 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    v33 = [v32 objectForKeyedSubscript:v16];
-    v66 = [v33 compare:v15];
+    processWorkoutMetrics2 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    v33 = [processWorkoutMetrics2 objectForKeyedSubscript:keyCopy];
+    v66 = [v33 compare:timeCopy];
 
     if (v66 != 1)
     {
@@ -20115,26 +20115,26 @@ LABEL_33:
     }
   }
 
-  v34 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v34 setObject:v15 forKeyedSubscript:v16];
+  processWorkoutMetrics3 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics3 setObject:timeCopy forKeyedSubscript:keyCopy];
 
 LABEL_36:
-  v35 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v36 = [v35 objectForKeyedSubscript:v17];
+  processWorkoutMetrics4 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  v36 = [processWorkoutMetrics4 objectForKeyedSubscript:timeKeyCopy];
   v37 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
   if ([v36 isEqualToNumber:v37])
   {
 
 LABEL_39:
-    v40 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    [v40 setObject:v15 forKeyedSubscript:v17];
+    processWorkoutMetrics5 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    [processWorkoutMetrics5 setObject:timeCopy forKeyedSubscript:timeKeyCopy];
 
     goto LABEL_40;
   }
 
-  v38 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v39 = [v38 objectForKeyedSubscript:v17];
-  v67 = [v39 compare:v15];
+  processWorkoutMetrics6 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  v39 = [processWorkoutMetrics6 objectForKeyedSubscript:timeKeyCopy];
+  v67 = [v39 compare:timeCopy];
 
   if (v67 == -1)
   {
@@ -20142,44 +20142,44 @@ LABEL_39:
   }
 
 LABEL_40:
-  v41 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v42 = [v41 objectForKeyedSubscript:v18];
+  processWorkoutMetrics7 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  v42 = [processWorkoutMetrics7 objectForKeyedSubscript:averageTimeKeyCopy];
   v43 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
   v44 = [v42 isEqualToNumber:v43];
 
-  v45 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v46 = v45;
+  processWorkoutMetrics8 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  v46 = processWorkoutMetrics8;
   if (v44)
   {
-    [v45 setObject:v15 forKeyedSubscript:v18];
+    [processWorkoutMetrics8 setObject:timeCopy forKeyedSubscript:averageTimeKeyCopy];
     v20 = v69;
   }
 
   else
   {
-    v47 = [v45 objectForKeyedSubscript:v18];
+    v47 = [processWorkoutMetrics8 objectForKeyedSubscript:averageTimeKeyCopy];
     [v47 doubleValue];
     v49 = v48;
 
-    v50 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    processWorkoutMetrics9 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
     v20 = v69;
-    v51 = [v50 objectForKeyedSubscript:v69];
+    v51 = [processWorkoutMetrics9 objectForKeyedSubscript:v69];
     [v51 doubleValue];
     v53 = v52;
 
     v54 = MEMORY[0x277CCABB0];
-    [v15 doubleValue];
+    [timeCopy doubleValue];
     v46 = [v54 numberWithDouble:(v55 + v49 * v53) / (v53 + 1.0)];
-    v56 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-    [v56 setObject:v46 forKeyedSubscript:v18];
+    processWorkoutMetrics10 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+    [processWorkoutMetrics10 setObject:v46 forKeyedSubscript:averageTimeKeyCopy];
   }
 
   v57 = MEMORY[0x277CCABB0];
-  v58 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  v59 = [v58 objectForKeyedSubscript:v20];
+  processWorkoutMetrics11 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  v59 = [processWorkoutMetrics11 objectForKeyedSubscript:v20];
   v60 = [v57 numberWithUnsignedInteger:{objc_msgSend(v59, "unsignedIntegerValue") + 1}];
-  v61 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
-  [v61 setObject:v60 forKeyedSubscript:v20];
+  processWorkoutMetrics12 = [(RTWorkoutRouteManager *)self processWorkoutMetrics];
+  [processWorkoutMetrics12 setObject:v60 forKeyedSubscript:v20];
 
   objc_autoreleasePoolPop(context);
   v31 = 1;
@@ -20188,7 +20188,7 @@ LABEL_44:
   return v31;
 }
 
-- (double)_getMaxDistanceThresholdForMetric:(int64_t)a3 error:(id *)a4
+- (double)_getMaxDistanceThresholdForMetric:(int64_t)metric error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v34 = 0u;
@@ -20206,7 +20206,7 @@ LABEL_44:
   v8 = v7;
   v9 = *v35;
   v10 = -1.79769313e308;
-  v31 = a4;
+  errorCopy = error;
   while (2)
   {
     for (i = 0; i != v8; ++i)
@@ -20218,9 +20218,9 @@ LABEL_44:
 
       v12 = *(*(&v34 + 1) + 8 * i);
       v13 = objc_autoreleasePoolPush();
-      v14 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       v33 = 0;
-      v15 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:a3 isDecimated:1 workoutActivityType:v14 error:&v33];
+      v15 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:metric isDecimated:1 workoutActivityType:integerValue error:&v33];
       v16 = v33;
       if (v16)
       {
@@ -20228,13 +20228,13 @@ LABEL_44:
 LABEL_18:
 
         objc_autoreleasePoolPop(v13);
-        a4 = v31;
+        error = errorCopy;
         goto LABEL_19;
       }
 
-      v17 = [v12 integerValue];
+      integerValue2 = [v12 integerValue];
       v32 = 0;
-      v18 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:a3 isDecimated:0 workoutActivityType:v17 error:&v32];
+      v18 = [(RTWorkoutRouteManager *)self _getConstantValueForDistanceThresholdUsingDistanceMetric:metric isDecimated:0 workoutActivityType:integerValue2 error:&v32];
       v19 = v32;
       if (v19)
       {
@@ -20261,7 +20261,7 @@ LABEL_18:
 
     v8 = [&unk_2845A15C8 countByEnumeratingWithState:&v34 objects:v44 count:16];
     v23 = 0;
-    a4 = v31;
+    error = errorCopy;
     if (v8)
     {
       continue;
@@ -20289,47 +20289,47 @@ LABEL_19:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v28 = v23;
-    *a4 = v23;
+    *error = v23;
   }
 
   return v10;
 }
 
-- (id)_getRTPairsFromCoordinates:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4
+- (id)_getRTPairsFromCoordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count
 {
-  for (i = objc_opt_new(); a4; --a4)
+  for (i = objc_opt_new(); count; --count)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [(RTWorkoutRouteManager *)self _getRTPairUsingCLLocationCoordinate2D:a3];
+    v9 = [(RTWorkoutRouteManager *)self _getRTPairUsingCLLocationCoordinate2D:coordinates];
     [i addObject:v9];
 
     objc_autoreleasePoolPop(v8);
-    ++a3;
+    ++coordinates;
   }
 
   return i;
 }
 
-- (CGRect)_getCGRectFromCoordinates:(CLLocationCoordinate2D *)a3 verticesCount:(unint64_t)a4 outError:(id *)a5
+- (CGRect)_getCGRectFromCoordinates:(CLLocationCoordinate2D *)coordinates verticesCount:(unint64_t)count outError:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (coordinates)
   {
-    if (a4 > 3)
+    if (count > 3)
     {
-      v18 = [(RTWorkoutRouteManager *)self distanceCalculator];
+      distanceCalculator = [(RTWorkoutRouteManager *)self distanceCalculator];
       v32 = 0;
-      [v18 cgrectFromCoordinates:a3 locationsCount:a4 error:&v32];
+      [distanceCalculator cgrectFromCoordinates:coordinates locationsCount:count error:&v32];
       v12 = v19;
       v13 = v20;
       v14 = v21;
       v15 = v22;
       v10 = v32;
 
-      if (!a5 || !v10)
+      if (!error || !v10)
       {
         goto LABEL_15;
       }
@@ -20359,14 +20359,14 @@ LABEL_19:
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
       v10 = [v7 errorWithDomain:v8 code:7 userInfo:v9];
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_14;
       }
     }
 
     v24 = v10;
-    *a5 = v10;
+    *error = v10;
 LABEL_14:
     v12 = *MEMORY[0x277CBF398];
     v13 = *(MEMORY[0x277CBF398] + 8);
@@ -20400,24 +20400,24 @@ LABEL_16:
   return result;
 }
 
-- (CLLocationCoordinate2D)_getCoordinatesFromRTPairs:(id)a3
+- (CLLocationCoordinate2D)_getCoordinatesFromRTPairs:(id)pairs
 {
-  v3 = a3;
-  v4 = malloc_type_malloc(16 * [v3 count], 0x1000040451B5BE8uLL);
-  if ([v3 count])
+  pairsCopy = pairs;
+  v4 = malloc_type_malloc(16 * [pairsCopy count], 0x1000040451B5BE8uLL);
+  if ([pairsCopy count])
   {
     v5 = 0;
     p_longitude = &v4->longitude;
     do
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [v3 objectAtIndexedSubscript:v5];
-      v9 = [v8 firstObject];
-      [v9 doubleValue];
+      v8 = [pairsCopy objectAtIndexedSubscript:v5];
+      firstObject = [v8 firstObject];
+      [firstObject doubleValue];
       v11 = v10;
-      v12 = [v3 objectAtIndexedSubscript:v5];
-      v13 = [v12 secondObject];
-      [v13 doubleValue];
+      v12 = [pairsCopy objectAtIndexedSubscript:v5];
+      secondObject = [v12 secondObject];
+      [secondObject doubleValue];
       *(p_longitude - 1) = CLLocationCoordinate2DMake(v11, v14);
 
       objc_autoreleasePoolPop(v7);
@@ -20425,19 +20425,19 @@ LABEL_16:
       p_longitude += 2;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [pairsCopy count]);
   }
 
   return v4;
 }
 
-- (BOOL)_refreshWorkoutsCache:(id)a3 workoutUUIDs:(id)a4 startingIndex:(unint64_t)a5 error:(id *)a6
+- (BOOL)_refreshWorkoutsCache:(id)cache workoutUUIDs:(id)ds startingIndex:(unint64_t)index error:(id *)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (!v11)
+  cacheCopy = cache;
+  dsCopy = ds;
+  v13 = dsCopy;
+  if (!cacheCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -20446,12 +20446,12 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutsCache", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v39 = @"workoutsCache";
 LABEL_28:
       _RTErrorInvalidParameterCreate(v39);
-      *a6 = v37 = 0;
+      *error = v37 = 0;
       goto LABEL_30;
     }
 
@@ -20460,7 +20460,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (!v12)
+  if (!dsCopy)
   {
     v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -20469,7 +20469,7 @@ LABEL_29:
       _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutUUIDs", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v39 = @"workoutUUIDs";
       goto LABEL_28;
@@ -20479,26 +20479,26 @@ LABEL_29:
   }
 
   aSelector = a2;
-  v46 = a6;
+  errorCopy = error;
   context = objc_autoreleasePoolPush();
-  v47 = [MEMORY[0x277CBEAA8] date];
-  [v11 removeAllObjects];
+  date = [MEMORY[0x277CBEAA8] date];
+  [cacheCopy removeAllObjects];
   v14 = [v13 count];
-  if (v14 - a5 >= 0x32)
+  if (v14 - index >= 0x32)
   {
     v15 = 50;
   }
 
   else
   {
-    v15 = v14 - a5;
+    v15 = v14 - index;
   }
 
-  v16 = [(RTWorkoutRouteManager *)self healthKitManager];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
   range = v15;
-  v17 = [v13 subarrayWithRange:{a5, v15}];
+  v17 = [v13 subarrayWithRange:{index, v15}];
   v52 = 0;
-  v18 = [v16 getWorkoutsWithUUIDs:v17 error:&v52];
+  v18 = [healthKitManager getWorkoutsWithUUIDs:v17 error:&v52];
   v44 = v52;
 
   v50 = 0u;
@@ -20522,8 +20522,8 @@ LABEL_29:
 
         v24 = *(*(&v48 + 1) + 8 * i);
         v25 = objc_autoreleasePoolPush();
-        v26 = [v24 UUID];
-        [v11 setObject:v24 forKeyedSubscript:v26];
+        uUID = [v24 UUID];
+        [cacheCopy setObject:v24 forKeyedSubscript:uUID];
 
         objc_autoreleasePoolPop(v25);
       }
@@ -20542,11 +20542,11 @@ LABEL_29:
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
       v30 = NSStringFromSelector(aSelector);
-      v65.location = a5;
+      v65.location = index;
       v65.length = range;
       v31 = NSStringFromRange(v65);
-      v32 = [MEMORY[0x277CBEAA8] date];
-      [v32 timeIntervalSinceDate:v47];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:date];
       v34 = v33;
       +[RTRuntime footprint];
       *buf = 138413314;
@@ -20565,10 +20565,10 @@ LABEL_29:
 
   objc_autoreleasePoolPop(context);
   v36 = v44;
-  if (v46)
+  if (errorCopy)
   {
     v36 = v44;
-    *v46 = v36;
+    *errorCopy = v36;
   }
 
   v37 = 1;
@@ -20577,21 +20577,21 @@ LABEL_30:
   return v37;
 }
 
-- (id)_getWorkoutFromWorkouts:(id)a3 UUID:(id)a4 error:(id *)a5
+- (id)_getWorkoutFromWorkouts:(id)workouts UUID:(id)d error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  workoutsCopy = workouts;
+  dCopy = d;
+  v9 = dCopy;
+  if (workoutsCopy)
   {
-    if (v8)
+    if (dCopy)
     {
-      v10 = [v7 objectForKeyedSubscript:v8];
+      v10 = [workoutsCopy objectForKeyedSubscript:dCopy];
 
       if (v10)
       {
-        v11 = [v7 objectForKeyedSubscript:v9];
+        v11 = [workoutsCopy objectForKeyedSubscript:v9];
         goto LABEL_18;
       }
 
@@ -20603,10 +20603,10 @@ LABEL_30:
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v19 = [v15 errorWithDomain:v16 code:7 userInfo:v18];
 
-      if (a5)
+      if (error)
       {
         v20 = v19;
-        *a5 = v19;
+        *error = v19;
       }
 
       goto LABEL_17;
@@ -20619,7 +20619,7 @@ LABEL_30:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutUUID", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = @"workoutUUID";
       goto LABEL_13;
@@ -20635,12 +20635,12 @@ LABEL_30:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutsCache", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = @"workoutsCache";
 LABEL_13:
       _RTErrorInvalidParameterCreate(v13);
-      *a5 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_18;
     }
   }
@@ -20652,11 +20652,11 @@ LABEL_18:
   return v11;
 }
 
-- (void)_getLocationsForWorkout:(id)a3 decimationLevel:(unint64_t)a4 limit:(int64_t)a5 handler:(id)a6
+- (void)_getLocationsForWorkout:(id)workout decimationLevel:(unint64_t)level limit:(int64_t)limit handler:(id)handler
 {
   v85[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v51 = a6;
+  workoutCopy = workout;
+  handlerCopy = handler;
   v68 = 0;
   v69 = &v68;
   v70 = 0x3032000000;
@@ -20665,8 +20665,8 @@ LABEL_18:
   v73 = 0;
   v47 = *MEMORY[0x277D01448];
   v48 = *MEMORY[0x277CCA450];
-  v52 = v7;
-  if (!v7)
+  v52 = workoutCopy;
+  if (!workoutCopy)
   {
     v8 = MEMORY[0x277CCA9B8];
     v83 = *MEMORY[0x277CCA450];
@@ -20676,7 +20676,7 @@ LABEL_18:
     v11 = v69[5];
     v69[5] = v10;
 
-    (*(v51 + 2))(v51, 0, 0, v69[5]);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v69[5]);
   }
 
   v12 = 0;
@@ -20693,8 +20693,8 @@ LABEL_18:
   {
     context = objc_autoreleasePoolPush();
     v14 = dispatch_semaphore_create(0);
-    v15 = [MEMORY[0x277CBEAA8] date];
-    v16 = [(RTWorkoutRouteManager *)self healthKitManager];
+    date = [MEMORY[0x277CBEAA8] date];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_handler___block_invoke;
@@ -20704,7 +20704,7 @@ LABEL_18:
     v59 = &v68;
     v17 = v14;
     v56 = v17;
-    [v16 fetchRouteLocationsUsingWorkout:v52 decimationLevel:a4 limit:a5 shift:0 handler:v55];
+    [healthKitManager fetchRouteLocationsUsingWorkout:v52 decimationLevel:level limit:limit shift:0 handler:v55];
 
     v18 = v17;
     v19 = [MEMORY[0x277CBEAA8] now];
@@ -20717,11 +20717,11 @@ LABEL_18:
       v24 = v23;
       v25 = objc_opt_new();
       v26 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_599];
-      v27 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v28 = [v27 filteredArrayUsingPredicate:v26];
-      v29 = [v28 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v28 = [callStackSymbols filteredArrayUsingPredicate:v26];
+      firstObject = [v28 firstObject];
 
-      [v25 submitToCoreAnalytics:v29 type:1 duration:v24];
+      [v25 submitToCoreAnalytics:firstObject type:1 duration:v24];
       v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
       {
@@ -20755,8 +20755,8 @@ LABEL_18:
         v39 = NSStringFromSelector(a2);
         v40 = v61[3];
         v41 = v69[5];
-        v42 = [MEMORY[0x277CBEAA8] date];
-        [v42 timeIntervalSinceDate:v15];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [date2 timeIntervalSinceDate:date];
         *buf = 138413314;
         *&buf[4] = v38;
         v75 = 2112;
@@ -20774,7 +20774,7 @@ LABEL_18:
     v44 = v35;
     if (v35 || (v44 = v69[5]) != 0)
     {
-      (*(v51 + 2))(v51, 0, 0, v44);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v44);
       v45 = 0;
     }
 
@@ -20792,7 +20792,7 @@ LABEL_18:
     }
   }
 
-  (*(v51 + 2))(v51, v65[3], v61[3], v69[5]);
+  (*(handlerCopy + 2))(handlerCopy, v65[3], v61[3], v69[5]);
   v35 = v12;
 LABEL_21:
   _Block_object_dispose(&v60, 8);
@@ -20815,13 +20815,13 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getActivityTypeToWorkoutUUIDsMapFilteredUsingDistanceThreshold:(double)a3 topN:(unint64_t)a4 error:(id *)a5
+- (id)_getActivityTypeToWorkoutUUIDsMapFilteredUsingDistanceThreshold:(double)threshold topN:(unint64_t)n error:(id *)error
 {
   v198 = *MEMORY[0x277D85DE8];
-  v129 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v143 = objc_opt_new();
-  v130 = a4;
-  if (a4 == 0x7FFFFFFF)
+  nCopy = n;
+  if (n == 0x7FFFFFFF)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -20841,17 +20841,17 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
       }
     }
 
-    v130 = 5000;
+    nCopy = 5000;
   }
 
-  v12 = [(RTWorkoutRouteManager *)self healthKitManager];
-  v13 = [v12 _getWorkoutDefaultStartDateForRaceRoute];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+  _getWorkoutDefaultStartDateForRaceRoute = [healthKitManager _getWorkoutDefaultStartDateForRaceRoute];
 
   v174 = 0;
   v127 = [(RTWorkoutRouteManager *)self _getRelevanceLocationWithError:&v174];
   v14 = v174;
   v15 = v14;
-  if (a5 && v14)
+  if (error && v14)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -20869,8 +20869,8 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
     }
 
     v17 = v15;
-    *a5 = v15;
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    *error = v15;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v19 = v15;
   }
 
@@ -20884,18 +20884,18 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = NSStringFromSelector(a2);
-        v24 = [v13 stringFromDate];
-        if (a3 == 1.79769313e308)
+        stringFromDate = [_getWorkoutDefaultStartDateForRaceRoute stringFromDate];
+        if (threshold == 1.79769313e308)
         {
           v25 = @"infinity";
         }
 
         else
         {
-          v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", *&a3];
+          v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", *&threshold];
         }
 
-        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v130];
+        nCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", nCopy];
         +[RTRuntime footprint];
         *buf = 138414083;
         v183 = v22;
@@ -20904,40 +20904,40 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
         v186 = 2048;
         v187 = 50;
         v188 = 2112;
-        v189 = v24;
+        v189 = stringFromDate;
         v190 = 2117;
         v191 = v127;
         v192 = 2112;
         v193 = v25;
         v194 = 2112;
-        v195 = v26;
+        v195 = nCopy;
         v196 = 2048;
         v197 = v27;
         _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@, %@, before beginning, batch size, %lu, startDate, %@, location, %{sensitive}@, distance threshold, %@, top N, %@, footprint, %.4f MB", buf, 0x52u);
 
-        if (a3 != 1.79769313e308)
+        if (threshold != 1.79769313e308)
         {
         }
       }
     }
 
-    v136 = a5;
+    errorCopy = error;
     v28 = objc_opt_new();
     v29 = 0;
     v145 = v28;
-    v30 = v13;
+    v30 = _getWorkoutDefaultStartDateForRaceRoute;
     while (1)
     {
       context = objc_autoreleasePoolPush();
-      v31 = [(RTWorkoutRouteManager *)self healthKitManager];
-      v32 = [(RTWorkoutRouteManager *)self healthKitManager];
-      v33 = [v32 getWorkoutDefaultSortDescriptors];
+      healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+      healthKitManager3 = [(RTWorkoutRouteManager *)self healthKitManager];
+      getWorkoutDefaultSortDescriptors = [healthKitManager3 getWorkoutDefaultSortDescriptors];
       [(RTWorkoutRouteManager *)self healthKitManager];
       v35 = v34 = v29;
-      v36 = [v35 _getRTWorkoutDefaultTypesForRaceRoute];
+      _getRTWorkoutDefaultTypesForRaceRoute = [v35 _getRTWorkoutDefaultTypesForRaceRoute];
       v173 = v15;
       v141 = v30;
-      v37 = [v31 getWorkoutsWithStartDate:v30 limit:50 sortDescriptors:v33 nearLocation:v127 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:a3 workoutTypes:v36 error:&v173];
+      v37 = [healthKitManager2 getWorkoutsWithStartDate:v30 limit:50 sortDescriptors:getWorkoutDefaultSortDescriptors nearLocation:v127 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:threshold workoutTypes:_getRTWorkoutDefaultTypesForRaceRoute error:&v173];
       v128 = v173;
 
       v171 = 0u;
@@ -20963,10 +20963,10 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
             v41 = objc_autoreleasePoolPush();
             v42 = v29;
             v43 = [v29 count];
-            v44 = [v40 UUID];
-            v179 = v44;
-            v45 = [(RTWorkoutRouteManager *)self healthKitManager];
-            v46 = [v45 _getTotalDistanceForWorkout:v40];
+            uUID = [v40 UUID];
+            v179 = uUID;
+            healthKitManager4 = [(RTWorkoutRouteManager *)self healthKitManager];
+            v46 = [healthKitManager4 _getTotalDistanceForWorkout:v40];
             v180 = v46;
             v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v180 forKeys:&v179 count:1];
             [v143 addObject:v47];
@@ -20985,8 +20985,8 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
             v38 += v43;
             v52 = [objc_opt_class() stringFromWorkoutActivityType:{objc_msgSend(v40, "workoutActivityType")}];
             v53 = [v145 objectForKeyedSubscript:v52];
-            v54 = [v40 UUID];
-            [v53 addObject:v54];
+            uUID2 = [v40 UUID];
+            [v53 addObject:uUID2];
 
             objc_autoreleasePoolPop(v41);
             v29 = v42;
@@ -20999,9 +20999,9 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
       }
 
       v55 = MEMORY[0x277CBEAA8];
-      v56 = [v29 lastObject];
-      v57 = [v56 startDate];
-      v58 = [v55 dateWithTimeInterval:v57 sinceDate:0.001];
+      lastObject = [v29 lastObject];
+      startDate = [lastObject startDate];
+      v58 = [v55 dateWithTimeInterval:startDate sinceDate:0.001];
 
       v19 = v128;
       if (v128)
@@ -21019,7 +21019,7 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
           v62 = NSStringFromSelector(a2);
           v63 = [v29 count];
           v64 = [v143 count];
-          v65 = [v58 stringFromDate];
+          stringFromDate2 = [v58 stringFromDate];
           +[RTRuntime footprint];
           *buf = 138413826;
           v183 = v61;
@@ -21032,7 +21032,7 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
           v190 = 2048;
           v191 = v64;
           v192 = 2112;
-          v193 = v65;
+          v193 = stringFromDate2;
           v194 = 2048;
           v195 = v66;
           _os_log_impl(&dword_2304B3000, v59, OS_LOG_TYPE_INFO, "%@, %@, workouts count, %lu, valid Workouts count, %lu, total workout UUIDs count, %lu, next startDate, %@, footprint, %.4f MB", buf, 0x48u);
@@ -21049,26 +21049,26 @@ void __79__RTWorkoutRouteManager__getLocationsForWorkout_decimationLevel_limit_h
     }
 
     objc_autoreleasePoolPop(context);
-    if (!v136)
+    if (!errorCopy)
     {
 LABEL_42:
       v125 = v58;
       v124 = objc_autoreleasePoolPush();
-      v69 = [v143 reverseObjectEnumerator];
-      v70 = [v69 allObjects];
+      reverseObjectEnumerator = [v143 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v71 = [v70 count];
-      if (v130 >= v71)
+      v71 = [allObjects count];
+      if (nCopy >= v71)
       {
         v72 = v71;
       }
 
       else
       {
-        v72 = v130;
+        v72 = nCopy;
       }
 
-      v73 = [v70 subarrayWithRange:{0, v72}];
+      v73 = [allObjects subarrayWithRange:{0, v72}];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -21078,7 +21078,7 @@ LABEL_42:
           v75 = objc_opt_class();
           v76 = NSStringFromClass(v75);
           v77 = NSStringFromSelector(a2);
-          v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v130];
+          nCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", nCopy];
           v79 = [v73 count];
           +[RTRuntime footprint];
           *buf = 138413314;
@@ -21086,7 +21086,7 @@ LABEL_42:
           v184 = 2112;
           v185 = v77;
           v186 = 2112;
-          v187 = v78;
+          v187 = nCopy2;
           v188 = 2048;
           v189 = v79;
           v190 = 2048;
@@ -21217,8 +21217,8 @@ LABEL_42:
       v156 = 0u;
       v153 = 0u;
       v154 = 0u;
-      v18 = v82;
-      v99 = [v18 countByEnumeratingWithState:&v153 objects:v175 count:16];
+      dictionary = v82;
+      v99 = [dictionary countByEnumeratingWithState:&v153 objects:v175 count:16];
       if (v99)
       {
         v100 = v99;
@@ -21233,7 +21233,7 @@ LABEL_42:
           {
             if (*v154 != v102)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(dictionary);
             }
 
             v104 = *(*(&v153 + 1) + 8 * v103);
@@ -21246,14 +21246,14 @@ LABEL_42:
                 v107 = objc_opt_class();
                 v108 = NSStringFromClass(v107);
                 v109 = NSStringFromSelector(a2);
-                v152 = [v18 objectForKeyedSubscript:v104];
-                v110 = v18;
+                v152 = [dictionary objectForKeyedSubscript:v104];
+                v110 = dictionary;
                 v111 = [v152 count];
-                v112 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v130];
+                nCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", nCopy];
                 +[RTRuntime footprint];
                 v114 = v113;
-                v115 = [MEMORY[0x277CBEAA8] date];
-                [v115 timeIntervalSinceDate:v129];
+                date2 = [MEMORY[0x277CBEAA8] date];
+                [date2 timeIntervalSinceDate:date];
                 *buf = 138413826;
                 v183 = v108;
                 v184 = 2112;
@@ -21262,10 +21262,10 @@ LABEL_42:
                 v187 = v104;
                 v188 = 2048;
                 v189 = v111;
-                v18 = v110;
+                dictionary = v110;
                 v101 = MEMORY[0x277D86220];
                 v190 = 2112;
-                v191 = v112;
+                v191 = nCopy3;
                 v192 = 2048;
                 v193 = v114;
                 v194 = 2048;
@@ -21282,7 +21282,7 @@ LABEL_42:
           }
 
           while (v100 != v103);
-          v100 = [v18 countByEnumeratingWithState:&v153 objects:v175 count:16];
+          v100 = [dictionary countByEnumeratingWithState:&v153 objects:v175 count:16];
         }
 
         while (v100);
@@ -21312,14 +21312,14 @@ LABEL_42:
     }
 
     v68 = v128;
-    *v136 = v128;
-    v18 = objc_opt_new();
+    *errorCopy = v128;
+    dictionary = objc_opt_new();
 
 LABEL_86:
-    v13 = v58;
+    _getWorkoutDefaultStartDateForRaceRoute = v58;
   }
 
-  return v18;
+  return dictionary;
 }
 
 uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredUsingDistanceThreshold_topN_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -21335,12 +21335,12 @@ uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredU
   return v9;
 }
 
-- (id)_getRTLocationUsingRTPair:(id)a3
+- (id)_getRTLocationUsingRTPair:(id)pair
 {
-  v3 = a3;
-  if (v3)
+  pairCopy = pair;
+  if (pairCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277D01160]) initWithRTPair:v3];
+    v4 = [objc_alloc(MEMORY[0x277D01160]) initWithRTPair:pairCopy];
   }
 
   else
@@ -21358,15 +21358,15 @@ uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredU
   return v4;
 }
 
-- (id)_getRTLocationUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)a3
+- (id)_getRTLocationUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)d
 {
-  if (a3)
+  if (d)
   {
     v4 = objc_alloc(MEMORY[0x277D01160]);
-    latitude = a3->latitude;
-    longitude = a3->longitude;
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v4 initWithLatitude:v7 longitude:latitude horizontalUncertainty:longitude date:0.0];
+    latitude = d->latitude;
+    longitude = d->longitude;
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [v4 initWithLatitude:date longitude:latitude horizontalUncertainty:longitude date:0.0];
   }
 
   else
@@ -21384,13 +21384,13 @@ uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredU
   return v8;
 }
 
-- (id)_getRTPairUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)a3
+- (id)_getRTPairUsingCLLocationCoordinate2D:(CLLocationCoordinate2D *)d
 {
-  if (a3)
+  if (d)
   {
     v4 = objc_alloc(MEMORY[0x277D011C0]);
-    v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3->latitude];
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3->longitude];
+    v5 = [MEMORY[0x277CCABB0] numberWithDouble:d->latitude];
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:d->longitude];
     v7 = [v4 initWithFirstObject:v5 secondObject:v6];
   }
 
@@ -21409,11 +21409,11 @@ uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredU
   return v7;
 }
 
-- (BOOL)_shouldDecimateWorkout:(id)a3
+- (BOOL)_shouldDecimateWorkout:(id)workout
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  workoutCopy = workout;
+  if (!workoutCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -21426,8 +21426,8 @@ uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredU
     goto LABEL_10;
   }
 
-  v6 = [(RTWorkoutRouteManager *)self healthKitManager];
-  [v6 _getDurationForWorkout:v5];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+  [healthKitManager _getDurationForWorkout:workoutCopy];
   v8 = v7 / 60.0;
   v9 = v7 / 60.0 > 90.0;
 
@@ -21439,8 +21439,8 @@ uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredU
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 UUID];
-      v15 = v14;
+      uUID = [workoutCopy UUID];
+      v15 = uUID;
       v18 = 138413314;
       v16 = @"NO";
       v19 = v12;
@@ -21452,7 +21452,7 @@ uint64_t __100__RTWorkoutRouteManager__getActivityTypeToWorkoutUUIDsMapFilteredU
       v20 = 2112;
       v21 = v13;
       v22 = 2112;
-      v23 = v14;
+      v23 = uUID;
       v24 = 2112;
       v25 = v16;
       v26 = 2112;
@@ -21466,18 +21466,18 @@ LABEL_10:
   return v9;
 }
 
-- (id)_mapWorkoutsToUUIDs:(id)a3 error:(id *)a4
+- (id)_mapWorkoutsToUUIDs:(id)ds error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  dsCopy = ds;
+  if (dsCopy)
   {
-    v6 = objc_opt_new();
+    array = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v5;
+    v7 = dsCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
@@ -21494,8 +21494,8 @@ LABEL_10:
 
           v12 = *(*(&v17 + 1) + 8 * i);
           v13 = objc_autoreleasePoolPush();
-          v14 = [v12 UUID];
-          [v6 addObject:v14];
+          uUID = [v12 UUID];
+          [array addObject:uUID];
 
           objc_autoreleasePoolPop(v13);
         }
@@ -21516,25 +21516,25 @@ LABEL_10:
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workouts", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"workouts");
+      *error = _RTErrorInvalidParameterCreate(@"workouts");
     }
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v6;
+  return array;
 }
 
-- (id)_sortWorkoutUUIDs:(id)a3 key:(id)a4 ascending:(BOOL)a5 error:(id *)a6
+- (id)_sortWorkoutUUIDs:(id)ds key:(id)key ascending:(BOOL)ascending error:(id *)error
 {
-  v7 = a5;
+  ascendingCopy = ascending;
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (!v11)
+  dsCopy = ds;
+  keyCopy = key;
+  v13 = keyCopy;
+  if (!dsCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -21543,7 +21543,7 @@ LABEL_10:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutUUIDs", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -21552,7 +21552,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (!v12)
+  if (!keyCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -21561,25 +21561,25 @@ LABEL_10:
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: key", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v21 = @"key";
 LABEL_16:
-    *a6 = _RTErrorInvalidParameterCreate(v21);
+    *error = _RTErrorInvalidParameterCreate(v21);
 LABEL_17:
-    v19 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     goto LABEL_32;
   }
 
-  v14 = [(RTWorkoutRouteManager *)self healthKitManager];
+  healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
   v43 = 0;
-  v15 = [v14 getWorkoutsWithUUIDs:v11 error:&v43];
+  v15 = [healthKitManager getWorkoutsWithUUIDs:dsCopy error:&v43];
   v16 = v43;
 
-  if (a6 && v16)
+  if (error && v16)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -21597,17 +21597,17 @@ LABEL_17:
     }
 
     v18 = v16;
-    *a6 = v16;
-    v19 = [MEMORY[0x277CBEA60] array];
+    *error = v16;
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   else
   {
     v42 = v16;
-    v23 = [(RTWorkoutRouteManager *)self _sortWorkouts:v15 key:v13 ascending:v7 error:&v42];
+    v23 = [(RTWorkoutRouteManager *)self _sortWorkouts:v15 key:v13 ascending:ascendingCopy error:&v42];
     v24 = v42;
 
-    if (a6 && v24)
+    if (error && v24)
     {
       v25 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -21625,8 +21625,8 @@ LABEL_17:
       }
 
       v26 = v24;
-      *a6 = v24;
-      v19 = [MEMORY[0x277CBEA60] array];
+      *error = v24;
+      array = [MEMORY[0x277CBEA60] array];
       v16 = v24;
     }
 
@@ -21636,7 +21636,7 @@ LABEL_17:
       v27 = [(RTWorkoutRouteManager *)self _mapWorkoutsToUUIDs:v23 error:&v41];
       v16 = v41;
 
-      if (a6 && v16)
+      if (error && v16)
       {
         v28 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -21654,31 +21654,31 @@ LABEL_17:
         }
 
         v29 = v16;
-        *a6 = v16;
-        v30 = [MEMORY[0x277CBEA60] array];
+        *error = v16;
+        array2 = [MEMORY[0x277CBEA60] array];
       }
 
       else
       {
-        v30 = v27;
+        array2 = v27;
       }
 
-      v19 = v30;
+      array = array2;
     }
   }
 
 LABEL_32:
 
-  return v19;
+  return array;
 }
 
-- (id)_sortWorkouts:(id)a3 key:(id)a4 ascending:(BOOL)a5 error:(id *)a6
+- (id)_sortWorkouts:(id)workouts key:(id)key ascending:(BOOL)ascending error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  workoutsCopy = workouts;
+  keyCopy = key;
+  v10 = keyCopy;
+  if (!workoutsCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -21687,7 +21687,7 @@ LABEL_32:
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workouts", v19, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -21696,13 +21696,13 @@ LABEL_32:
     goto LABEL_12;
   }
 
-  if (v9)
+  if (keyCopy)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:v10 ascending:0];
     v20[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-    v14 = [v8 sortedArrayUsingDescriptors:v13];
+    array = [workoutsCopy sortedArrayUsingDescriptors:v13];
 
     objc_autoreleasePoolPop(v11);
     goto LABEL_14;
@@ -21715,34 +21715,34 @@ LABEL_32:
     _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: key", v19, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     v16 = @"key";
 LABEL_12:
-    *a6 = _RTErrorInvalidParameterCreate(v16);
+    *error = _RTErrorInvalidParameterCreate(v16);
   }
 
 LABEL_13:
-  v14 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
 LABEL_14:
 
-  return v14;
+  return array;
 }
 
-- (id)_paceFromWorkout:(id)a3 error:(id *)a4
+- (id)_paceFromWorkout:(id)workout error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  workoutCopy = workout;
+  if (workoutCopy)
   {
-    v7 = [(RTWorkoutRouteManager *)self healthKitManager];
-    v8 = [v7 _getTotalDistanceForWorkout:v6];
-    v9 = [MEMORY[0x277CCDAB0] meterUnit];
-    [v8 doubleValueForUnit:v9];
+    healthKitManager = [(RTWorkoutRouteManager *)self healthKitManager];
+    v8 = [healthKitManager _getTotalDistanceForWorkout:workoutCopy];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    [v8 doubleValueForUnit:meterUnit];
     v11 = v10;
 
-    v12 = [(RTWorkoutRouteManager *)self healthKitManager];
-    [v12 _getDurationForWorkout:v6];
+    healthKitManager2 = [(RTWorkoutRouteManager *)self healthKitManager];
+    [healthKitManager2 _getDurationForWorkout:workoutCopy];
     v14 = v13;
 
     if (v11 == 0.0)
@@ -21751,17 +21751,17 @@ LABEL_14:
       v16 = *MEMORY[0x277D01448];
       v37 = *MEMORY[0x277CCA450];
       v17 = MEMORY[0x277CCACA8];
-      v18 = [v6 UUID];
-      v19 = [v17 stringWithFormat:@"total distance for workout is 0, workout UUID, %@", v18];
+      uUID = [workoutCopy UUID];
+      v19 = [v17 stringWithFormat:@"total distance for workout is 0, workout UUID, %@", uUID];
       v38[0] = v19;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
       v21 = [v15 errorWithDomain:v16 code:7 userInfo:v20];
 
-      if (a4)
+      if (error)
       {
         v22 = v21;
         v23 = 0;
-        *a4 = v21;
+        *error = v21;
       }
 
       else
@@ -21777,10 +21777,10 @@ LABEL_14:
         v25 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [v6 UUID];
-          v27 = [v26 UUIDString];
+          uUID2 = [workoutCopy UUID];
+          uUIDString = [uUID2 UUIDString];
           *buf = 138413058;
-          v30 = v27;
+          v30 = uUIDString;
           v31 = 2048;
           v32 = v14;
           v33 = 2048;
@@ -21805,10 +21805,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workout", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"workout");
-      *a4 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else
@@ -21820,23 +21820,23 @@ LABEL_14:
   return v23;
 }
 
-- (void)_logClusters:(id)a3 className:(id)a4 selectorName:(id)a5
+- (void)_logClusters:(id)clusters className:(id)name selectorName:(id)selectorName
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v31 = a4;
-  v30 = a5;
+  clustersCopy = clusters;
+  nameCopy = name;
+  selectorNameCopy = selectorName;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v43 = v31;
+      v43 = nameCopy;
       v44 = 2112;
-      v45 = v30;
+      v45 = selectorNameCopy;
       v46 = 2048;
-      v47 = [v7 count];
+      v47 = [clustersCopy count];
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@, clusters count, %lu", buf, 0x20u);
     }
   }
@@ -21845,7 +21845,7 @@ LABEL_14:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v7;
+  obj = clustersCopy;
   v27 = [obj countByEnumeratingWithState:&v37 objects:v52 count:16];
   if (v27)
   {
@@ -21872,9 +21872,9 @@ LABEL_14:
             v13 = [v11 count];
             +[RTRuntime footprint];
             *buf = 138413314;
-            v43 = v31;
+            v43 = nameCopy;
             v44 = 2112;
-            v45 = v30;
+            v45 = selectorNameCopy;
             v46 = 2048;
             v47 = v32;
             v48 = 2048;
@@ -21913,17 +21913,17 @@ LABEL_14:
                 v23 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
                 {
-                  v24 = [v21 UUIDString];
+                  uUIDString = [v21 UUIDString];
                   *buf = 138413314;
-                  v43 = v31;
+                  v43 = nameCopy;
                   v44 = 2112;
-                  v45 = v30;
+                  v45 = selectorNameCopy;
                   v46 = 2048;
                   v47 = v32;
                   v48 = 2048;
                   v49 = v19;
                   v50 = 2112;
-                  v51 = v24;
+                  v51 = uUIDString;
                   _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_INFO, "%@, %@, cluster, %lu, workout, %lu, uuid, %@", buf, 0x34u);
                 }
               }
@@ -21951,16 +21951,16 @@ LABEL_14:
   }
 }
 
-- (id)_latestWorkoutUUIDAcrossWorkouts:(id)a3
+- (id)_latestWorkoutUUIDAcrossWorkouts:(id)workouts
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
+  workoutsCopy = workouts;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = workoutsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -21978,16 +21978,16 @@ LABEL_14:
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 endDate];
-        v14 = [v4 compare:v13];
+        endDate = [v11 endDate];
+        v14 = [distantPast compare:endDate];
 
         if (v14 == -1)
         {
-          v15 = [v11 endDate];
+          endDate2 = [v11 endDate];
 
           v16 = v11;
           v8 = v16;
-          v4 = v15;
+          distantPast = endDate2;
         }
 
         objc_autoreleasePoolPop(v12);
@@ -22004,15 +22004,15 @@ LABEL_14:
     v8 = 0;
   }
 
-  v17 = [v8 UUID];
+  uUID = [v8 UUID];
 
-  return v17;
+  return uUID;
 }
 
-- (void)_stepCallerWithName:(id)a3 counter:(int64_t)a4 totalCount:(int64_t)a5
+- (void)_stepCallerWithName:(id)name counter:(int64_t)counter totalCount:(int64_t)count
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  nameCopy = name;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -22020,11 +22020,11 @@ LABEL_14:
     {
       +[RTRuntime footprint];
       v10 = 134218754;
-      v11 = a4;
+      counterCopy = counter;
       v12 = 2048;
-      v13 = a5;
+      countCopy = count;
       v14 = 2112;
-      v15 = v7;
+      v15 = nameCopy;
       v16 = 2048;
       v17 = v9;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "Step %lu/%lu %@ done, footprint, %.4f MB", &v10, 0x2Au);
@@ -22032,13 +22032,13 @@ LABEL_14:
   }
 }
 
-- (double)_getConstantValueForString:(id)a3 isDecimated:(BOOL)a4 workoutActivityType:(unint64_t)a5 error:(id *)a6
+- (double)_getConstantValueForString:(id)string isDecimated:(BOOL)decimated workoutActivityType:(unint64_t)type error:(id *)error
 {
-  v8 = a4;
+  decimatedCopy = decimated;
   v28[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  if (!a5)
+  stringCopy = string;
+  v10 = stringCopy;
+  if (!type)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -22047,7 +22047,7 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutActivityType", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -22056,13 +22056,13 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  if (v9)
+  if (stringCopy)
   {
-    if ([objc_opt_class() isPermittedWorkoutActivityType:a5])
+    if ([objc_opt_class() isPermittedWorkoutActivityType:type])
     {
       if (v10 == @"kRTClusteringCentroidDistanceThreshold")
       {
-        if (a5 - 13 <= 0x3A && ((1 << (a5 - 13)) & 0x400000001000001) != 0)
+        if (type - 13 <= 0x3A && ((1 << (type - 13)) & 0x400000001000001) != 0)
         {
           v11 = 0;
           v12 = 500.0;
@@ -22072,10 +22072,10 @@ LABEL_14:
 
       else if (v10 == @"kRTClusteringDTWDistanceEuclideanThreshold" || v10 == @"kRTClusteringDTWDistanceFirstNormThreshold")
       {
-        if (a5 == 13 || a5 == 71 || a5 == 37)
+        if (type == 13 || type == 71 || type == 37)
         {
           v11 = 0;
-          if (v8)
+          if (decimatedCopy)
           {
             v12 = 0.6;
           }
@@ -22091,7 +22091,7 @@ LABEL_14:
 
       else if (v10 == @"kRTPreFilterCentroidDistanceThreshold")
       {
-        if (a5 - 13 <= 0x3A && ((1 << (a5 - 13)) & 0x400000001000001) != 0)
+        if (type - 13 <= 0x3A && ((1 << (type - 13)) & 0x400000001000001) != 0)
         {
           v11 = 0;
           v12 = 0.06;
@@ -22101,10 +22101,10 @@ LABEL_14:
 
       else if (v10 == @"kRTPreFilterIntersectionOverUnionThreshold")
       {
-        if (a5 == 13 || a5 == 71 || a5 == 37)
+        if (type == 13 || type == 71 || type == 37)
         {
           v11 = 0;
-          if (v8)
+          if (decimatedCopy)
           {
             v12 = 0.4;
           }
@@ -22120,7 +22120,7 @@ LABEL_14:
 
       else if (v10 == @"kRTPreFilterTotalDistanceDifferenceThreshold")
       {
-        if (a5 - 13 <= 0x3A && ((1 << (a5 - 13)) & 0x400000001000001) != 0)
+        if (type - 13 <= 0x3A && ((1 << (type - 13)) & 0x400000001000001) != 0)
         {
           v11 = 0;
           v12 = 0.1;
@@ -22130,7 +22130,7 @@ LABEL_14:
 
       else if (v10 == @"kRTPreFilterFirstLocationsDistanceThreshold")
       {
-        if (a5 - 13 <= 0x3A && ((1 << (a5 - 13)) & 0x400000001000001) != 0)
+        if (type - 13 <= 0x3A && ((1 << (type - 13)) & 0x400000001000001) != 0)
         {
           v11 = 0;
           v12 = 0.04;
@@ -22140,7 +22140,7 @@ LABEL_14:
 
       else if (v10 == @"kRTPreFilterLastLocationsDistanceThreshold")
       {
-        if (a5 - 13 <= 0x3A && ((1 << (a5 - 13)) & 0x400000001000001) != 0)
+        if (type - 13 <= 0x3A && ((1 << (type - 13)) & 0x400000001000001) != 0)
         {
           v11 = 0;
           v12 = 0.03;
@@ -22150,7 +22150,7 @@ LABEL_14:
 
       else if (v10 == @"kRTPreFilterDifferenceBetweenLocationsThreshold")
       {
-        if (a5 - 13 <= 0x3A && ((1 << (a5 - 13)) & 0x400000001000001) != 0)
+        if (type - 13 <= 0x3A && ((1 << (type - 13)) & 0x400000001000001) != 0)
         {
           v11 = 0;
           v12 = 0.4;
@@ -22158,7 +22158,7 @@ LABEL_14:
         }
       }
 
-      else if (v10 == @"kRTPreFilterLocationsRateThreshold" && a5 - 13 <= 0x3A && ((1 << (a5 - 13)) & 0x400000001000001) != 0)
+      else if (v10 == @"kRTPreFilterLocationsRateThreshold" && type - 13 <= 0x3A && ((1 << (type - 13)) & 0x400000001000001) != 0)
       {
         v11 = 0;
         v12 = 0.85;
@@ -22186,10 +22186,10 @@ LABEL_62:
       v11 = [v16 errorWithDomain:v17 code:7 userInfo:v18];
     }
 
-    if (a6)
+    if (error)
     {
       v22 = v11;
-      *a6 = v11;
+      *error = v11;
     }
 
     v12 = 1.79769313e308;
@@ -22203,11 +22203,11 @@ LABEL_62:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: constantString", buf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     v14 = @"constantString";
 LABEL_25:
-    *a6 = _RTErrorInvalidParameterCreate(v14);
+    *error = _RTErrorInvalidParameterCreate(v14);
   }
 
 LABEL_26:
@@ -22217,36 +22217,36 @@ LABEL_63:
   return v12;
 }
 
-- (id)_getConstantValueForDistanceThresholdUsingDistanceMetric:(int64_t)a3 isDecimated:(BOOL)a4 workoutActivityType:(unint64_t)a5 error:(id *)a6
+- (id)_getConstantValueForDistanceThresholdUsingDistanceMetric:(int64_t)metric isDecimated:(BOOL)decimated workoutActivityType:(unint64_t)type error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (type)
   {
-    switch(a3)
+    switch(metric)
     {
       case 3:
-        [RTWorkoutRouteManager _getConstantValueForString:"_getConstantValueForString:isDecimated:workoutActivityType:error:" isDecimated:@"kRTClusteringDTWDistanceEuclideanThreshold" workoutActivityType:a4 error:?];
+        [RTWorkoutRouteManager _getConstantValueForString:"_getConstantValueForString:isDecimated:workoutActivityType:error:" isDecimated:@"kRTClusteringDTWDistanceEuclideanThreshold" workoutActivityType:decimated error:?];
         v9 = v13;
         break;
       case 2:
-        [RTWorkoutRouteManager _getConstantValueForString:"_getConstantValueForString:isDecimated:workoutActivityType:error:" isDecimated:@"kRTClusteringDTWDistanceFirstNormThreshold" workoutActivityType:a4 error:?];
+        [RTWorkoutRouteManager _getConstantValueForString:"_getConstantValueForString:isDecimated:workoutActivityType:error:" isDecimated:@"kRTClusteringDTWDistanceFirstNormThreshold" workoutActivityType:decimated error:?];
         v9 = v12;
         break;
       case 1:
-        [RTWorkoutRouteManager _getConstantValueForString:"_getConstantValueForString:isDecimated:workoutActivityType:error:" isDecimated:@"kRTClusteringCentroidDistanceThreshold" workoutActivityType:a4 error:?];
+        [RTWorkoutRouteManager _getConstantValueForString:"_getConstantValueForString:isDecimated:workoutActivityType:error:" isDecimated:@"kRTClusteringCentroidDistanceThreshold" workoutActivityType:decimated error:?];
         v9 = v8;
         break;
       default:
         v15 = MEMORY[0x277CCA9B8];
         v16 = *MEMORY[0x277D01448];
         v31 = *MEMORY[0x277CCA450];
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid distance metric", a4];
-        v32[0] = v17;
+        decimated = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid distance metric", decimated];
+        v32[0] = decimated;
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
         v14 = [v15 errorWithDomain:v16 code:7 userInfo:v18];
 
         v9 = 1.79769313e308;
-        if (!a6)
+        if (!error)
         {
           goto LABEL_19;
         }
@@ -22255,7 +22255,7 @@ LABEL_63:
     }
 
     v14 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -22280,7 +22280,7 @@ LABEL_15:
 
       v20 = v14;
       v11 = 0;
-      *a6 = v14;
+      *error = v14;
       goto LABEL_20;
     }
 
@@ -22298,10 +22298,10 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: workoutActivityType", buf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"workoutActivityType");
-    *a6 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -22314,10 +22314,10 @@ LABEL_21:
   return v11;
 }
 
-- (id)_colorFromHexString:(id)a3
+- (id)_colorFromHexString:(id)string
 {
   v6 = 0;
-  v3 = [MEMORY[0x277CCAC80] scannerWithString:a3];
+  v3 = [MEMORY[0x277CCAC80] scannerWithString:string];
   [v3 setScanLocation:0];
   [v3 scanHexInt:&v6];
   v4 = [MEMORY[0x277D75348] colorWithRed:BYTE2(v6) / 255.0 green:BYTE1(v6) / 255.0 blue:v6 / 255.0 alpha:1.0];
@@ -22325,21 +22325,21 @@ LABEL_21:
   return v4;
 }
 
-- (BOOL)_validateWorkout:(id)a3 otherWorkout:(id)a4 error:(id *)a5
+- (BOOL)_validateWorkout:(id)workout otherWorkout:(id)otherWorkout error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 workoutActivityType];
-  if (v9 != [v8 workoutActivityType])
+  workoutCopy = workout;
+  otherWorkoutCopy = otherWorkout;
+  workoutActivityType = [workoutCopy workoutActivityType];
+  if (workoutActivityType != [otherWorkoutCopy workoutActivityType])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v12 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v7 workoutActivityType]);
-        v14 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v8 workoutActivityType]);
+        v13 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [workoutCopy workoutActivityType]);
+        v14 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [otherWorkoutCopy workoutActivityType]);
         *buf = 138412546;
         v35 = v13;
         v36 = 2112;
@@ -22352,14 +22352,14 @@ LABEL_21:
     v16 = *MEMORY[0x277D01448];
     v32 = *MEMORY[0x277CCA450];
     v17 = MEMORY[0x277CCACA8];
-    v18 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v7 workoutActivityType]);
-    v19 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v8 workoutActivityType]);
+    v18 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [workoutCopy workoutActivityType]);
+    v19 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [otherWorkoutCopy workoutActivityType]);
     v20 = [v17 stringWithFormat:@"workout activity type mismatch, workout workoutActivityType, %@, otherWorkout workoutActivityType, %@", v18, v19];
     v33 = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v10 = [v15 errorWithDomain:v16 code:7 userInfo:v21];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -22367,15 +22367,15 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  if (!+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", [v7 workoutActivityType]) || !+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", objc_msgSend(v8, "workoutActivityType")))
+  if (!+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", [workoutCopy workoutActivityType]) || !+[RTHealthKitManager isPermittedWorkoutActivityType:](RTHealthKitManager, "isPermittedWorkoutActivityType:", objc_msgSend(otherWorkoutCopy, "workoutActivityType")))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v23 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
-        v24 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v7 workoutActivityType]);
-        v25 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [v8 workoutActivityType]);
+        v24 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [workoutCopy workoutActivityType]);
+        v25 = +[RTHealthKitManager stringFromWorkoutActivityType:](RTHealthKitManager, "stringFromWorkoutActivityType:", [otherWorkoutCopy workoutActivityType]);
         *buf = 138412546;
         v35 = v24;
         v36 = 2112;
@@ -22391,7 +22391,7 @@ LABEL_21:
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v10 = [v26 errorWithDomain:v27 code:7 userInfo:v28];
 
-    if (!a5)
+    if (!error)
     {
 LABEL_16:
       v11 = 0;
@@ -22401,7 +22401,7 @@ LABEL_16:
 LABEL_10:
     v22 = v10;
     v11 = 0;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_17;
   }
 

@@ -1,5 +1,5 @@
 @interface ICTextSearchingFindSession
-- (ICTextSearchingFindSession)initWithTextView:(id)a3;
+- (ICTextSearchingFindSession)initWithTextView:(id)view;
 - (ICTextView)textView;
 - (id)divergentResponder;
 - (id)replacementText;
@@ -8,16 +8,16 @@
 
 @implementation ICTextSearchingFindSession
 
-- (ICTextSearchingFindSession)initWithTextView:(id)a3
+- (ICTextSearchingFindSession)initWithTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = ICTextSearchingFindSession;
-  v5 = [(UITextSearchingFindSession *)&v8 initWithSearchableObject:v4];
+  v5 = [(UITextSearchingFindSession *)&v8 initWithSearchableObject:viewCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_textView, v4);
+    objc_storeWeak(&v5->_textView, viewCopy);
   }
 
   return v6;
@@ -25,30 +25,30 @@
 
 - (id)divergentResponder
 {
-  v2 = [(ICTextSearchingFindSession *)self textView];
-  v3 = [v2 editorController];
+  textView = [(ICTextSearchingFindSession *)self textView];
+  editorController = [textView editorController];
 
-  return v3;
+  return editorController;
 }
 
 - (id)searchText
 {
-  v3 = [MEMORY[0x277D369A0] sharedInstance];
-  if (([v3 isSecureScreenShowing] & 1) == 0)
+  mEMORY[0x277D369A0] = [MEMORY[0x277D369A0] sharedInstance];
+  if (([mEMORY[0x277D369A0] isSecureScreenShowing] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x277D369A0] sharedInstance];
-  v5 = [v4 hasClearedInitialSearchTextIfSecure];
+  mEMORY[0x277D369A0]2 = [MEMORY[0x277D369A0] sharedInstance];
+  hasClearedInitialSearchTextIfSecure = [mEMORY[0x277D369A0]2 hasClearedInitialSearchTextIfSecure];
 
-  if (v5)
+  if (hasClearedInitialSearchTextIfSecure)
   {
 LABEL_7:
     v10.receiver = self;
     v10.super_class = ICTextSearchingFindSession;
-    v8 = [(UIFindSession *)&v10 searchText];
+    searchText = [(UIFindSession *)&v10 searchText];
     goto LABEL_8;
   }
 
@@ -58,33 +58,33 @@ LABEL_7:
     [(ICTextSearchingFindSession *)v6 searchText];
   }
 
-  v7 = [MEMORY[0x277D369A0] sharedInstance];
-  [v7 hasClearedInitialSecureSearchText];
+  mEMORY[0x277D369A0]3 = [MEMORY[0x277D369A0] sharedInstance];
+  [mEMORY[0x277D369A0]3 hasClearedInitialSecureSearchText];
 
-  v8 = &stru_282757698;
+  searchText = &stru_282757698;
 LABEL_8:
 
-  return v8;
+  return searchText;
 }
 
 - (id)replacementText
 {
-  v3 = [MEMORY[0x277D369A0] sharedInstance];
-  if (([v3 isSecureScreenShowing] & 1) == 0)
+  mEMORY[0x277D369A0] = [MEMORY[0x277D369A0] sharedInstance];
+  if (([mEMORY[0x277D369A0] isSecureScreenShowing] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x277D369A0] sharedInstance];
-  v5 = [v4 hasClearedInitialReplaceTextIfSecure];
+  mEMORY[0x277D369A0]2 = [MEMORY[0x277D369A0] sharedInstance];
+  hasClearedInitialReplaceTextIfSecure = [mEMORY[0x277D369A0]2 hasClearedInitialReplaceTextIfSecure];
 
-  if (v5)
+  if (hasClearedInitialReplaceTextIfSecure)
   {
 LABEL_7:
     v10.receiver = self;
     v10.super_class = ICTextSearchingFindSession;
-    v8 = [(UIFindSession *)&v10 replacementText];
+    replacementText = [(UIFindSession *)&v10 replacementText];
     goto LABEL_8;
   }
 
@@ -94,13 +94,13 @@ LABEL_7:
     [(ICTextSearchingFindSession *)v6 replacementText];
   }
 
-  v7 = [MEMORY[0x277D369A0] sharedInstance];
-  [v7 hasClearedInitialSecureReplaceText];
+  mEMORY[0x277D369A0]3 = [MEMORY[0x277D369A0] sharedInstance];
+  [mEMORY[0x277D369A0]3 hasClearedInitialSecureReplaceText];
 
-  v8 = &stru_282757698;
+  replacementText = &stru_282757698;
 LABEL_8:
 
-  return v8;
+  return replacementText;
 }
 
 - (ICTextView)textView

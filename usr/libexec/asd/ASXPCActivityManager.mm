@@ -1,6 +1,6 @@
 @interface ASXPCActivityManager
 + (_TtC3asd20ASXPCActivityManager)shared;
-- (void)registerWithActivity:(int64_t)a3;
+- (void)registerWithActivity:(int64_t)activity;
 @end
 
 @implementation ASXPCActivityManager
@@ -12,10 +12,10 @@
   return v2;
 }
 
-- (void)registerWithActivity:(int64_t)a3
+- (void)registerWithActivity:(int64_t)activity
 {
-  v4 = self;
-  ASXPCActivityManager.register(activity:)(a3);
+  selfCopy = self;
+  ASXPCActivityManager.register(activity:)(activity);
 }
 
 @end

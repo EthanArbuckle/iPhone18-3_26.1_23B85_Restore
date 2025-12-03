@@ -1,11 +1,11 @@
 @interface VCTextJitterBuffer
 - (BOOL)start;
 - (BOOL)startHeartbeat;
-- (VCTextJitterBuffer)initWithConfiguration:(tagVCTextJitterBufferConfiguration *)a3;
+- (VCTextJitterBuffer)initWithConfiguration:(tagVCTextJitterBufferConfiguration *)configuration;
 - (void)dealloc;
 - (void)heartbeat;
-- (void)jitterQueuePushPacket:(tagAudioPacket *)a3;
-- (void)releaseTextPacket:(tagAudioPacket *)a3;
+- (void)jitterQueuePushPacket:(tagAudioPacket *)packet;
+- (void)releaseTextPacket:(tagAudioPacket *)packet;
 - (void)startHeartbeat;
 - (void)stop;
 - (void)stopHeartbeat;
@@ -13,7 +13,7 @@
 
 @implementation VCTextJitterBuffer
 
-- (VCTextJitterBuffer)initWithConfiguration:(tagVCTextJitterBufferConfiguration *)a3
+- (VCTextJitterBuffer)initWithConfiguration:(tagVCTextJitterBufferConfiguration *)configuration
 {
   v18 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -25,7 +25,7 @@
     return v5;
   }
 
-  if (!a3)
+  if (!configuration)
   {
     [VCTextJitterBuffer initWithConfiguration:];
 LABEL_12:
@@ -33,8 +33,8 @@ LABEL_12:
     return 0;
   }
 
-  v4->_configuration = *a3;
-  objc_storeWeak(&v4->_delegate, a3->delegate);
+  v4->_configuration = *configuration;
+  objc_storeWeak(&v4->_delegate, configuration->delegate);
   v6 = JitterPreloadQueue_Create();
   v5->_preloadQueue = v6;
   if (!v6)
@@ -51,7 +51,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  JitterQueue_SetMaxPacketTimeDelta(v7, a3->sampleRate, 1.79769313e308);
+  JitterQueue_SetMaxPacketTimeDelta(v7, configuration->sampleRate, 1.79769313e308);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
@@ -124,7 +124,7 @@ LABEL_11:
         v20 = 2112;
         v21 = v3;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) Cleaning up JitterBuffer";
         v7 = v10;
         v8 = 48;
@@ -151,22 +151,22 @@ LABEL_11:
   [(VCTextJitterBuffer *)&v13 dealloc];
 }
 
-- (void)releaseTextPacket:(tagAudioPacket *)a3
+- (void)releaseTextPacket:(tagAudioPacket *)packet
 {
-  if (a3->var16 >= 1)
+  if (packet->var16 >= 1)
   {
     v5 = 0;
     do
     {
-      JitterPreloadQueue_AudioFrameFree(self->_preloadQueue, a3->var15[v5++]);
+      JitterPreloadQueue_AudioFrameFree(self->_preloadQueue, packet->var15[v5++]);
     }
 
-    while (v5 < a3->var16);
+    while (v5 < packet->var16);
   }
 
   preloadQueue = self->_preloadQueue;
 
-  JitterPreloadQueue_AudioPacketFree(preloadQueue, a3);
+  JitterPreloadQueue_AudioPacketFree(preloadQueue, packet);
 }
 
 - (BOOL)start
@@ -222,7 +222,7 @@ LABEL_11:
         WORD2(v13) = 2112;
         *(&v13 + 6) = v3;
         HIWORD(v13) = 2048;
-        v14 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -288,7 +288,7 @@ LABEL_11:
         WORD2(v12) = 2112;
         *(&v12 + 6) = v3;
         HIWORD(v12) = 2048;
-        v13 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -300,20 +300,20 @@ LABEL_11:
   [(VCTextJitterBuffer *)self stopHeartbeat:*v11];
 }
 
-- (void)jitterQueuePushPacket:(tagAudioPacket *)a3
+- (void)jitterQueuePushPacket:(tagAudioPacket *)packet
 {
   v8 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  if (a3->var16 >= 1)
+  if (packet->var16 >= 1)
   {
     v5 = 0;
-    var15 = a3->var15;
+    var15 = packet->var15;
     do
     {
       JitterQueue_Insert(self->_jitterQueue, var15[v5++], &v7);
     }
 
-    while (v5 < a3->var16);
+    while (v5 < packet->var16);
   }
 }
 
@@ -372,7 +372,7 @@ LABEL_11:
         v27 = 2112;
         v28 = v3;
         v29 = 2048;
-        v30 = self;
+        selfCopy2 = self;
         v31 = 2048;
         v32 = 0x3FA0E5604189374CLL;
         v6 = " [%s] %s:%d %@(%p) Starting heartbeat (interval=%f)";
@@ -440,7 +440,7 @@ LABEL_11:
         v27 = 2112;
         v28 = v16;
         v29 = 2048;
-        v30 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create polling", buf, 0x30u);
       }
     }
@@ -525,7 +525,7 @@ LABEL_11:
       v49 = 2112;
       *v50 = v5;
       *&v50[8] = 2048;
-      v51 = self;
+      selfCopy3 = self;
       v8 = " [%s] %s:%d %@(%p) Reset the queue";
       v9 = v12;
       v10 = 48;
@@ -603,8 +603,8 @@ LABEL_44:
           *v50 = v30;
           *&v50[4] = 1024;
           *&v50[6] = v31;
-          LOWORD(v51) = 1024;
-          *(&v51 + 2) = v32;
+          LOWORD(selfCopy3) = 1024;
+          *(&selfCopy3 + 2) = v32;
           v24 = v28;
           v25 = " [%s] %s:%d Frame received seqNumber:%d length:%d isRed:%d";
           v26 = 46;
@@ -637,8 +637,8 @@ LABEL_43:
       *v50 = v39;
       *&v50[4] = 1024;
       *&v50[6] = v40;
-      LOWORD(v51) = 1024;
-      *(&v51 + 2) = v41;
+      LOWORD(selfCopy3) = 1024;
+      *(&selfCopy3 + 2) = v41;
       v36 = v28;
       v37 = " [%s] %s:%d Frame received seqNumber:%d length:%d isRed:%d";
       v38 = 46;
@@ -676,7 +676,7 @@ LABEL_43:
           v49 = 2112;
           *v50 = v17;
           *&v50[8] = 2048;
-          v51 = self;
+          selfCopy3 = self;
           v52 = 1024;
           v53 = v21;
           v54 = 1024;
@@ -711,7 +711,7 @@ LABEL_37:
       v49 = 2112;
       *v50 = v17;
       *&v50[8] = 2048;
-      v51 = self;
+      selfCopy3 = self;
       v52 = 1024;
       v53 = v33;
       v54 = 1024;
@@ -774,7 +774,7 @@ LABEL_37:
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 121;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to create polling", &v2, 0x1Cu);

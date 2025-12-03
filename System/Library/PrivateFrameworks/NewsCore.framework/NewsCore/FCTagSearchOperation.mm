@@ -1,26 +1,26 @@
 @interface FCTagSearchOperation
 - (BOOL)validateOperation;
-- (FCTagSearchOperation)initWithCoreConfiguration:(id)a3;
+- (FCTagSearchOperation)initWithCoreConfiguration:(id)configuration;
 - (id)_establishStreamOfTags;
 - (id)_localIdentifier;
-- (void)_performSearchQuery:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_performSearchQuery:(id)query;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 @end
 
 @implementation FCTagSearchOperation
 
-- (FCTagSearchOperation)initWithCoreConfiguration:(id)a3
+- (FCTagSearchOperation)initWithCoreConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = FCTagSearchOperation;
   v6 = [(FCOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -29,9 +29,9 @@
 - (BOOL)validateOperation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(FCTagSearchOperation *)self contentContext];
+  contentContext = [(FCTagSearchOperation *)self contentContext];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!contentContext && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"tag search operation requires a content context"];
     v9 = 136315906;
@@ -69,7 +69,7 @@
     v4 = 0;
   }
 
-  if (v3)
+  if (contentContext)
   {
     result = v4;
   }
@@ -85,25 +85,25 @@
 
 - (void)prepareOperation
 {
-  v3 = [(FCTagSearchOperation *)self contentContext];
-  v4 = [v3 internalContentContext];
-  v5 = [v4 tagRecordSource];
-  [(FCTagSearchOperation *)self setTagRecordSource:v5];
+  contentContext = [(FCTagSearchOperation *)self contentContext];
+  internalContentContext = [contentContext internalContentContext];
+  tagRecordSource = [internalContentContext tagRecordSource];
+  [(FCTagSearchOperation *)self setTagRecordSource:tagRecordSource];
 
-  v6 = [(FCTagSearchOperation *)self contentContext];
-  v7 = [v6 internalContentContext];
-  v8 = [v7 contentDatabase];
-  [(FCTagSearchOperation *)self setContentDatabase:v8];
+  contentContext2 = [(FCTagSearchOperation *)self contentContext];
+  internalContentContext2 = [contentContext2 internalContentContext];
+  contentDatabase = [internalContentContext2 contentDatabase];
+  [(FCTagSearchOperation *)self setContentDatabase:contentDatabase];
 
-  v10 = [(FCTagSearchOperation *)self contentContext];
-  v9 = [v10 assetManager];
-  [(FCTagSearchOperation *)self setAssetManager:v9];
+  contentContext3 = [(FCTagSearchOperation *)self contentContext];
+  assetManager = [contentContext3 assetManager];
+  [(FCTagSearchOperation *)self setAssetManager:assetManager];
 }
 
 - (void)performOperation
 {
-  v3 = [(FCTagSearchOperation *)self searchString];
-  v4 = [v3 length];
+  searchString = [(FCTagSearchOperation *)self searchString];
+  v4 = [searchString length];
 
   if (v4)
   {
@@ -131,46 +131,46 @@ void __40__FCTagSearchOperation_performOperation__block_invoke(uint64_t a1, uint
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v9 = a3;
-  v4 = [(FCTagSearchOperation *)self searchResultsBlock];
+  errorCopy = error;
+  searchResultsBlock = [(FCTagSearchOperation *)self searchResultsBlock];
 
-  if (v4)
+  if (searchResultsBlock)
   {
-    v5 = [(FCTagSearchOperation *)self searchResultsBlock];
-    v6 = [(FCTagSearchOperation *)self searchResults];
-    v7 = [(FCTagSearchOperation *)self searchError];
-    if (v7)
+    searchResultsBlock2 = [(FCTagSearchOperation *)self searchResultsBlock];
+    searchResults = [(FCTagSearchOperation *)self searchResults];
+    searchError = [(FCTagSearchOperation *)self searchError];
+    if (searchError)
     {
-      v8 = v7;
+      v8 = searchError;
     }
 
     else
     {
-      v8 = v9;
+      v8 = errorCopy;
     }
 
-    (v5)[2](v5, v6, v8);
+    (searchResultsBlock2)[2](searchResultsBlock2, searchResults, v8);
   }
 }
 
-- (void)_performSearchQuery:(id)a3
+- (void)_performSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(FCTagSearchOperation *)self _establishStreamOfTags];
-  v6 = [(FCTagSearchOperation *)self batchSize];
-  v7 = [(FCTagSearchOperation *)self qualityOfService];
+  queryCopy = query;
+  _establishStreamOfTags = [(FCTagSearchOperation *)self _establishStreamOfTags];
+  batchSize = [(FCTagSearchOperation *)self batchSize];
+  qualityOfService = [(FCTagSearchOperation *)self qualityOfService];
   v8 = FCDispatchQueueForQualityOfService([(FCTagSearchOperation *)self qualityOfService]);
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __44__FCTagSearchOperation__performSearchQuery___block_invoke;
   v15 = &unk_1E7C3C498;
-  v16 = v5;
-  v17 = v4;
-  v9 = v5;
-  v10 = v4;
-  v11 = [v9 fetchMoreResultsWithLimit:v6 qualityOfService:v7 callbackQueue:v8 completionHandler:&v12];
+  v16 = _establishStreamOfTags;
+  v17 = queryCopy;
+  v9 = _establishStreamOfTags;
+  v10 = queryCopy;
+  v11 = [v9 fetchMoreResultsWithLimit:batchSize qualityOfService:qualityOfService callbackQueue:v8 completionHandler:&v12];
 
   [(FCOperation *)self associateChildOperation:v11, v12, v13, v14, v15];
 }
@@ -197,10 +197,10 @@ void __44__FCTagSearchOperation__performSearchQuery___block_invoke(uint64_t a1, 
 {
   v2 = MEMORY[0x1E696AEC0];
   v3 = +[FCAppleAccount sharedAccount];
-  v4 = [v3 primaryLanguageCode];
+  primaryLanguageCode = [v3 primaryLanguageCode];
   v5 = +[FCAppleAccount sharedAccount];
-  v6 = [v5 contentStoreFrontID];
-  v7 = [v2 stringWithFormat:@"%@_%@", v4, v6];
+  contentStoreFrontID = [v5 contentStoreFrontID];
+  v7 = [v2 stringWithFormat:@"%@_%@", primaryLanguageCode, contentStoreFrontID];
 
   return v7;
 }

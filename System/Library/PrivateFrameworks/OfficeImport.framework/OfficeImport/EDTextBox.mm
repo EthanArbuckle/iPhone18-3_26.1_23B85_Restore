@@ -1,9 +1,9 @@
 @interface EDTextBox
 + (id)textBox;
 - (id)description;
-- (void)setAlignmentInfo:(id)a3;
-- (void)setProtection:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAlignmentInfo:(id)info;
+- (void)setProtection:(id)protection;
+- (void)setText:(id)text;
 @end
 
 @implementation EDTextBox
@@ -15,42 +15,42 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   mText = self->mText;
   p_mText = &self->mText;
-  if (mText != v5)
+  if (mText != textCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mText, a3);
-    v5 = v8;
+    v8 = textCopy;
+    objc_storeStrong(p_mText, text);
+    textCopy = v8;
   }
 }
 
-- (void)setAlignmentInfo:(id)a3
+- (void)setAlignmentInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   mAlignmentInfo = self->mAlignmentInfo;
   p_mAlignmentInfo = &self->mAlignmentInfo;
-  if (mAlignmentInfo != v5)
+  if (mAlignmentInfo != infoCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mAlignmentInfo, a3);
-    v5 = v8;
+    v8 = infoCopy;
+    objc_storeStrong(p_mAlignmentInfo, info);
+    infoCopy = v8;
   }
 }
 
-- (void)setProtection:(id)a3
+- (void)setProtection:(id)protection
 {
-  v5 = a3;
+  protectionCopy = protection;
   mProtection = self->mProtection;
   p_mProtection = &self->mProtection;
-  if (mProtection != v5)
+  if (mProtection != protectionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mProtection, a3);
-    v5 = v8;
+    v8 = protectionCopy;
+    objc_storeStrong(p_mProtection, protection);
+    protectionCopy = v8;
   }
 }
 

@@ -1,8 +1,8 @@
 @interface EMCellNumberMapper
-- (EMCellNumberMapper)initWithDoubleValue:(double)a3 style:(id)a4 columnWidth:(double)a5 workbook:(id)a6 parent:(id)a7;
+- (EMCellNumberMapper)initWithDoubleValue:(double)value style:(id)style columnWidth:(double)width workbook:(id)workbook parent:(id)parent;
 - (id)formatValueAsNumber;
-- (id)insertRedSpanIfNegativeAt:(id)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (id)insertRedSpanIfNegativeAt:(id)at;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation EMCellNumberMapper
@@ -33,32 +33,32 @@
   return v4;
 }
 
-- (EMCellNumberMapper)initWithDoubleValue:(double)a3 style:(id)a4 columnWidth:(double)a5 workbook:(id)a6 parent:(id)a7
+- (EMCellNumberMapper)initWithDoubleValue:(double)value style:(id)style columnWidth:(double)width workbook:(id)workbook parent:(id)parent
 {
-  v13 = a4;
-  v14 = a6;
+  styleCopy = style;
+  workbookCopy = workbook;
   v18.receiver = self;
   v18.super_class = EMCellNumberMapper;
-  v15 = [(CMMapper *)&v18 initWithParent:a7];
+  v15 = [(CMMapper *)&v18 initWithParent:parent];
   v16 = v15;
   if (v15)
   {
-    v15->edValue = a3;
-    objc_storeStrong(&v15->edStyle, a4);
-    objc_storeStrong(&v16->workbook, a6);
-    v16->_columnWidth = a5;
+    v15->edValue = value;
+    objc_storeStrong(&v15->edStyle, style);
+    objc_storeStrong(&v16->workbook, workbook);
+    v16->_columnWidth = width;
   }
 
   return v16;
 }
 
-- (id)insertRedSpanIfNegativeAt:(id)a3
+- (id)insertRedSpanIfNegativeAt:(id)at
 {
-  v4 = a3;
-  v5 = v4;
+  atCopy = at;
+  v5 = atCopy;
   if (self->edValue >= 0.0)
   {
-    v6 = v4;
+    v6 = atCopy;
   }
 
   else
@@ -71,21 +71,21 @@
   return v6;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v20 = a3;
-  v5 = [(EDStyle *)self->edStyle isContentFormatApplied];
+  atCopy = at;
+  isContentFormatApplied = [(EDStyle *)self->edStyle isContentFormatApplied];
   edStyle = self->edStyle;
-  if (v5)
+  if (isContentFormatApplied)
   {
-    v7 = [(EDStyle *)edStyle contentFormatId];
-    if (!v7)
+    contentFormatId = [(EDStyle *)edStyle contentFormatId];
+    if (!contentFormatId)
     {
 LABEL_15:
       v16 = 0;
-      v15 = [(EMCellNumberMapper *)self formatValueAsNumber];
+      formatValueAsNumber = [(EMCellNumberMapper *)self formatValueAsNumber];
       v13 = 0;
-      if (v15)
+      if (formatValueAsNumber)
       {
         goto LABEL_16;
       }
@@ -96,30 +96,30 @@ LABEL_15:
 
   else
   {
-    v8 = [(EDStyle *)edStyle parent];
-    v7 = [v8 contentFormatId];
+    parent = [(EDStyle *)edStyle parent];
+    contentFormatId = [parent contentFormatId];
 
-    if (!v7)
+    if (!contentFormatId)
     {
       goto LABEL_15;
     }
   }
 
-  v9 = [(EDStyle *)self->edStyle contentFormat];
-  v10 = [v9 formatString];
-  v11 = [v10 string];
+  contentFormat = [(EDStyle *)self->edStyle contentFormat];
+  formatString = [contentFormat formatString];
+  string = [formatString string];
 
-  if (!v11)
+  if (!string)
   {
-    if (v7 != 30)
+    if (contentFormatId != 30)
     {
       goto LABEL_15;
     }
 
-    v11 = @"GenericDate";
+    string = @"GenericDate";
   }
 
-  v12 = [EMNumberFormatter formatterForFormat:v11];
+  v12 = [EMNumberFormatter formatterForFormat:string];
   v13 = v12;
   if (!v12)
   {
@@ -129,34 +129,34 @@ LABEL_15:
 
   if ([v12 isNegativeRed])
   {
-    v14 = [(EMCellNumberMapper *)self insertRedSpanIfNegativeAt:v20];
+    v14 = [(EMCellNumberMapper *)self insertRedSpanIfNegativeAt:atCopy];
 
-    v20 = v14;
+    atCopy = v14;
   }
 
-  if ([v13 formatType] == 1 || (objc_msgSend(v13, "formatValue:inWorkbook:", self->workbook, self->edValue), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ([v13 formatType] == 1 || (objc_msgSend(v13, "formatValue:inWorkbook:", self->workbook, self->edValue), (formatValueAsNumber = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v15 = [(EMCellNumberMapper *)self formatValueAsNumber];
-    v16 = v11;
-    if (v15)
+    formatValueAsNumber = [(EMCellNumberMapper *)self formatValueAsNumber];
+    v16 = string;
+    if (formatValueAsNumber)
     {
 LABEL_16:
-      v11 = v16;
+      string = v16;
       goto LABEL_17;
     }
 
 LABEL_14:
     v17 = 0;
-    v11 = v16;
+    string = v16;
     goto LABEL_21;
   }
 
 LABEL_17:
-  v18 = v15;
-  if ([v15 length])
+  v18 = formatValueAsNumber;
+  if ([formatValueAsNumber length])
   {
     v19 = [OIXMLTextNode textNodeWithStringValue:v18];
-    [v20 addChild:v19];
+    [atCopy addChild:v19];
   }
 
   v17 = v18;

@@ -9,10 +9,10 @@
 {
   v5.receiver = self;
   v5.super_class = CHDBar3DSeries;
-  v3 = [(CHDSeries *)&v5 shallowCopy];
-  [v3 setShapeType:*(&self->super.mHiddenFlag + 3)];
+  shallowCopy = [(CHDSeries *)&v5 shallowCopy];
+  [shallowCopy setShapeType:*(&self->super.mHiddenFlag + 3)];
 
-  return v3;
+  return shallowCopy;
 }
 
 - (CHDBar3DSeries)init

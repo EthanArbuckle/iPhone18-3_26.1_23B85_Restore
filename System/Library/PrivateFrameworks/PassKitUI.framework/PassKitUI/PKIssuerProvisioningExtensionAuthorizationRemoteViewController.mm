@@ -1,18 +1,18 @@
 @interface PKIssuerProvisioningExtensionAuthorizationRemoteViewController
-- (PKIssuerProvisioningExtensionAuthorizationRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PKIssuerProvisioningExtensionAuthorizationRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)pkui_finish;
-- (void)pkui_setCompletionHandler:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)pkui_setCompletionHandler:(id)handler;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation PKIssuerProvisioningExtensionAuthorizationRemoteViewController
 
-- (PKIssuerProvisioningExtensionAuthorizationRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKIssuerProvisioningExtensionAuthorizationRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = PKIssuerProvisioningExtensionAuthorizationRemoteViewController;
-  result = [(PKIssuerProvisioningExtensionAuthorizationRemoteViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(PKIssuerProvisioningExtensionAuthorizationRemoteViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_result = 0;
@@ -41,11 +41,11 @@
   [(PKIssuerProvisioningExtensionAuthorizationRemoteViewController *)&v6 dealloc];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v4.receiver = self;
   v4.super_class = PKIssuerProvisioningExtensionAuthorizationRemoteViewController;
-  [(_UIRemoteViewController *)&v4 viewServiceDidTerminateWithError:a3];
+  [(_UIRemoteViewController *)&v4 viewServiceDidTerminateWithError:error];
   [(PKIssuerProvisioningExtensionAuthorizationRemoteViewController *)self pkui_finish];
 }
 
@@ -64,38 +64,38 @@
   }
 }
 
-- (void)pkui_setCompletionHandler:(id)a3
+- (void)pkui_setCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   completionHandler = self->_completionHandler;
-  if (completionHandler != v4)
+  if (completionHandler != handlerCopy)
   {
     if (self->_finished)
     {
-      if (!v4)
+      if (!handlerCopy)
       {
         goto LABEL_9;
       }
 
-      v8 = v4;
-      v4[2](v4, self->_result == 1);
+      v8 = handlerCopy;
+      handlerCopy[2](handlerCopy, self->_result == 1);
     }
 
     else
     {
-      v8 = v4;
+      v8 = handlerCopy;
       if (completionHandler)
       {
         completionHandler[2](completionHandler, 0);
-        v4 = v8;
+        handlerCopy = v8;
       }
 
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(handlerCopy);
       v7 = self->_completionHandler;
       self->_completionHandler = v6;
     }
 
-    v4 = v8;
+    handlerCopy = v8;
   }
 
 LABEL_9:

@@ -1,39 +1,39 @@
 @interface SPAttachmentInfo
-- (SPAttachmentInfo)initWithAttachedToDevice:(id)a3;
-- (SPAttachmentInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPAttachmentInfo)initWithAttachedToDevice:(id)device;
+- (SPAttachmentInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SPAttachmentInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPAttachmentInfo alloc];
-  v5 = [(SPAttachmentInfo *)self attachedToDevice];
-  v6 = [(SPAttachmentInfo *)v4 initWithAttachedToDevice:v5];
+  attachedToDevice = [(SPAttachmentInfo *)self attachedToDevice];
+  v6 = [(SPAttachmentInfo *)v4 initWithAttachedToDevice:attachedToDevice];
 
   return v6;
 }
 
-- (SPAttachmentInfo)initWithAttachedToDevice:(id)a3
+- (SPAttachmentInfo)initWithAttachedToDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = SPAttachmentInfo;
   v6 = [(SPAttachmentInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attachedToDevice, a3);
+    objc_storeStrong(&v6->_attachedToDevice, device);
   }
 
   return v7;
 }
 
-- (SPAttachmentInfo)initWithCoder:(id)a3
+- (SPAttachmentInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attachedToDevice"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attachedToDevice"];
 
   attachedToDevice = self->_attachedToDevice;
   self->_attachedToDevice = v5;

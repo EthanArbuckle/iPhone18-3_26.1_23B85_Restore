@@ -1,35 +1,35 @@
 @interface CKDAcceptSharesOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)_acceptShares;
-- (BOOL)_callingParticipantOONForShareMetadata:(id)a3;
+- (BOOL)_callingParticipantOONForShareMetadata:(id)metadata;
 - (BOOL)makeStateTransition;
-- (CKDAcceptSharesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)a3 serviceType:(unint64_t)a4 forShareWithURL:(id)a5 error:(id *)a6;
-- (id)_keySwapForOONParticipant:(id)a3;
+- (CKDAcceptSharesOperation)initWithOperationInfo:(id)info container:(id)container;
+- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)s serviceType:(unint64_t)type forShareWithURL:(id)l error:(id *)error;
+- (id)_keySwapForOONParticipant:(id)participant;
 - (id)activityCreate;
-- (unint64_t)sharingServiceTypeForShareMetadata:(id)a3;
+- (unint64_t)sharingServiceTypeForShareMetadata:(id)metadata;
 - (void)_decryptShareMetadata;
 - (void)_fetchAcceptedShares;
 - (void)_fetchMetadataForShares;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleShareURLAccepted:(id)a3 forShare:(id)a4 responseCode:(id)a5;
-- (void)_performCallbackForURL:(id)a3 withShare:(id)a4 error:(id)a5;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleShareURLAccepted:(id)accepted forShare:(id)share responseCode:(id)code;
+- (void)_performCallbackForURL:(id)l withShare:(id)share error:(id)error;
 - (void)_prepareShareMetadata;
 - (void)_processAnonymousShares;
 - (void)_synchronizeUserKeyRegistryIfNeeded;
-- (void)_validateInvitedPCSCanBeDecryptedForShare:(id)a3 completionHandler:(id)a4;
+- (void)_validateInvitedPCSCanBeDecryptedForShare:(id)share completionHandler:(id)handler;
 - (void)main;
 @end
 
 @implementation CKDAcceptSharesOperation
 
-- (CKDAcceptSharesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDAcceptSharesOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v48.receiver = self;
   v48.super_class = CKDAcceptSharesOperation;
-  v7 = [(CKDDatabaseOperation *)&v48 initWithOperationInfo:v6 container:a4];
+  v7 = [(CKDDatabaseOperation *)&v48 initWithOperationInfo:infoCopy container:container];
   if (v7)
   {
     v8 = objc_opt_new();
@@ -60,8 +60,8 @@
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v43 = v6;
-    v22 = objc_msgSend_shareMetadatasToAccept(v6, v20, v21);
+    v43 = infoCopy;
+    v22 = objc_msgSend_shareMetadatasToAccept(infoCopy, v20, v21);
     v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v44, v49, 16);
     if (v24)
     {
@@ -97,7 +97,7 @@
     URLsWaitingKRSByServiceType = v7->_URLsWaitingKRSByServiceType;
     v7->_URLsWaitingKRSByServiceType = v39;
 
-    v6 = v43;
+    infoCopy = v43;
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -189,41 +189,41 @@ LABEL_19:
   return MEMORY[0x2821F9670](self, sel__acceptShares, v9);
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 7)
+  if (state - 2 >= 7)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDAcceptSharesOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_27854A7F0[a3 - 2];
+    v5 = off_27854A7F0[state - 2];
   }
 
   return v5;
 }
 
-- (void)_performCallbackForURL:(id)a3 withShare:(id)a4 error:(id)a5
+- (void)_performCallbackForURL:(id)l withShare:(id)share error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v13 = a5;
-  if (!v9)
+  lCopy = l;
+  shareCopy = share;
+  errorCopy = error;
+  if (!lCopy)
   {
     v26 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v11, v12);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKDAcceptSharesOperation.m", 177, @"Invalid parameter not satisfying: %@", @"shareURL");
   }
 
   v14 = objc_msgSend_shareURLsToAccept(self, v11, v12);
-  objc_msgSend_removeObject_(v14, v15, v9);
+  objc_msgSend_removeObject_(v14, v15, lCopy);
 
   v18 = objc_msgSend_acceptedShareURLsToFetch(self, v16, v17);
-  objc_msgSend_removeObject_(v18, v19, v9);
+  objc_msgSend_removeObject_(v18, v19, lCopy);
 
   v22 = objc_msgSend_callbackQueue(self, v20, v21);
   block[0] = MEMORY[0x277D85DD0];
@@ -231,21 +231,21 @@ LABEL_19:
   block[2] = sub_2252238F4;
   block[3] = &unk_2785463D0;
   block[4] = self;
-  v29 = v9;
-  v30 = v10;
-  v31 = v13;
-  v23 = v13;
-  v24 = v10;
-  v25 = v9;
+  v29 = lCopy;
+  v30 = shareCopy;
+  v31 = errorCopy;
+  v23 = errorCopy;
+  v24 = shareCopy;
+  v25 = lCopy;
   dispatch_async(v22, block);
 }
 
-- (void)_handleShareURLAccepted:(id)a3 forShare:(id)a4 responseCode:(id)a5
+- (void)_handleShareURLAccepted:(id)accepted forShare:(id)share responseCode:(id)code
 {
   v149 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  acceptedCopy = accepted;
+  shareCopy = share;
+  codeCopy = code;
   v139 = 0;
   v140 = &v139;
   v141 = 0x3032000000;
@@ -254,9 +254,9 @@ LABEL_19:
   v144 = 0;
   v13 = objc_msgSend_container(self, v11, v12);
   shouldSerializeOwnerInfo = objc_msgSend_shouldSerializeOwnerInfo(v13, v14, v15);
-  objc_msgSend_setSerializeOwnerInfo_(v9, v17, shouldSerializeOwnerInfo);
+  objc_msgSend_setSerializeOwnerInfo_(shareCopy, v17, shouldSerializeOwnerInfo);
 
-  if (objc_msgSend_code(v10, v18, v19) == 1)
+  if (objc_msgSend_code(codeCopy, v18, v19) == 1)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -267,7 +267,7 @@ LABEL_19:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v146 = v8;
+      v146 = acceptedCopy;
       _os_log_impl(&dword_22506F000, v22, OS_LOG_TYPE_INFO, "Share with URL %@ was successfully accepted", buf, 0xCu);
     }
 
@@ -276,21 +276,21 @@ LABEL_19:
     if (objc_msgSend_useAnonymousToServerShareParticipants(v28, v29, v30))
     {
       v33 = objc_msgSend_anonymousShareTuplesAcceptAttempted(self, v31, v32);
-      v35 = objc_msgSend_objectForKeyedSubscript_(v33, v34, v8);
+      v35 = objc_msgSend_objectForKeyedSubscript_(v33, v34, acceptedCopy);
       v36 = v35 == 0;
 
       if (v36)
       {
 LABEL_10:
         v44 = objc_msgSend_shareMetadatasToAcceptByURL(self, v37, v38);
-        v46 = objc_msgSend_objectForKeyedSubscript_(v44, v45, v8);
+        v46 = objc_msgSend_objectForKeyedSubscript_(v44, v45, acceptedCopy);
 
-        v49 = objc_msgSend_host(v8, v47, v48);
-        objc_msgSend_setDisplayedHostname_(v9, v50, v49);
+        v49 = objc_msgSend_host(acceptedCopy, v47, v48);
+        objc_msgSend_setDisplayedHostname_(shareCopy, v50, v49);
 
         if ((objc_msgSend_isCallingParticipantUsingOTL(v46, v51, v52) & 1) == 0)
         {
-          objc_msgSend_setMutableURL_(v9, v53, v8);
+          objc_msgSend_setMutableURL_(shareCopy, v53, acceptedCopy);
         }
 
         v55 = objc_msgSend_stateTransitionGroup(self, v53, v54);
@@ -304,9 +304,9 @@ LABEL_10:
         v134[2] = sub_2252240CC;
         v134[3] = &unk_27854A780;
         v138 = &v139;
-        v135 = v9;
-        v136 = self;
-        v137 = v8;
+        v135 = shareCopy;
+        selfCopy = self;
+        v137 = acceptedCopy;
         objc_msgSend__prepPCSDataWithContainer_databaseScope_removeServerSpecifiedKeys_requestorOperationID_completionHandler_(v135, v65, v58, 3, 1, v64, v134);
 
         goto LABEL_34;
@@ -314,21 +314,21 @@ LABEL_10:
 
       v25 = objc_msgSend_anonymousShareTuplesAccepted(self, v37, v38);
       v28 = objc_msgSend_anonymousShareTuplesAcceptAttempted(self, v39, v40);
-      v42 = objc_msgSend_objectForKeyedSubscript_(v28, v41, v8);
+      v42 = objc_msgSend_objectForKeyedSubscript_(v28, v41, acceptedCopy);
       objc_msgSend_addObject_(v25, v43, v42);
     }
 
     goto LABEL_10;
   }
 
-  v66 = objc_msgSend_error(v10, v20, v21);
+  v66 = objc_msgSend_error(codeCopy, v20, v21);
   v69 = objc_msgSend_clientError(v66, v67, v68);
   if (objc_msgSend_type(v69, v70, v71) == 52)
   {
     goto LABEL_16;
   }
 
-  v74 = objc_msgSend_error(v10, v72, v73);
+  v74 = objc_msgSend_error(codeCopy, v72, v73);
   v77 = objc_msgSend_clientError(v74, v75, v76);
   if (objc_msgSend_type(v77, v78, v79) == 53)
   {
@@ -344,14 +344,14 @@ LABEL_17:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v146 = v8;
+      v146 = acceptedCopy;
       _os_log_impl(&dword_22506F000, v82, OS_LOG_TYPE_INFO, "PCS oplock failure for share with url %@.", buf, 0xCu);
     }
 
     goto LABEL_34;
   }
 
-  v83 = objc_msgSend_error(v10, v80, v81);
+  v83 = objc_msgSend_error(codeCopy, v80, v81);
   v86 = objc_msgSend_clientError(v83, v84, v85);
   v133 = objc_msgSend_type(v86, v87, v88) == 15;
 
@@ -360,7 +360,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v91 = objc_msgSend_error(v10, v89, v90);
+  v91 = objc_msgSend_error(codeCopy, v89, v90);
   v94 = objc_msgSend_clientError(v91, v92, v93);
   v97 = objc_msgSend_type(v94, v95, v96) == 90;
 
@@ -377,15 +377,15 @@ LABEL_17:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v146 = v8;
+      v146 = acceptedCopy;
       _os_log_error_impl(&dword_22506F000, v100, OS_LOG_TYPE_ERROR, "Participant can be found on the share, but the participantID sent in request does not belong to the found participant. Share url: %@", buf, 0xCu);
     }
 
     v101 = MEMORY[0x277CBC560];
-    v102 = sub_2253962A4(v10);
-    v105 = objc_msgSend_error(v10, v103, v104);
+    v102 = sub_2253962A4(codeCopy);
+    v105 = objc_msgSend_error(codeCopy, v103, v104);
     v108 = objc_msgSend_errorDescription(v105, v106, v107);
-    v110 = objc_msgSend_errorWithDomain_code_format_(v101, v109, *MEMORY[0x277CBC120], v102, @"Error accepting share %@: %@", v8, v108);
+    v110 = objc_msgSend_errorWithDomain_code_format_(v101, v109, *MEMORY[0x277CBC120], v102, @"Error accepting share %@: %@", acceptedCopy, v108);
     v111 = v140[5];
     v140[5] = v110;
   }
@@ -400,27 +400,27 @@ LABEL_17:
     v112 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(v112, OS_LOG_TYPE_INFO))
     {
-      v115 = objc_msgSend_error(v10, v113, v114);
+      v115 = objc_msgSend_error(codeCopy, v113, v114);
       v118 = objc_msgSend_errorDescription(v115, v116, v117);
       *buf = 138412546;
-      v146 = v8;
+      v146 = acceptedCopy;
       v147 = 2114;
       v148 = v118;
       _os_log_impl(&dword_22506F000, v112, OS_LOG_TYPE_INFO, "Error accepting share with URL %@: %{public}@", buf, 0x16u);
     }
 
     v119 = MEMORY[0x277CBC560];
-    v120 = sub_2253962A4(v10);
+    v120 = sub_2253962A4(codeCopy);
     v105 = objc_msgSend_request(self, v121, v122);
-    v108 = sub_225395734(v105, v10);
-    v111 = objc_msgSend_error(v10, v123, v124);
+    v108 = sub_225395734(v105, codeCopy);
+    v111 = objc_msgSend_error(codeCopy, v123, v124);
     v127 = objc_msgSend_errorDescription(v111, v125, v126);
-    v129 = objc_msgSend_errorWithDomain_code_userInfo_format_(v119, v128, *MEMORY[0x277CBC120], v120, v108, @"Error accepting share %@: %@", v8, v127);
+    v129 = objc_msgSend_errorWithDomain_code_userInfo_format_(v119, v128, *MEMORY[0x277CBC120], v120, v108, @"Error accepting share %@: %@", acceptedCopy, v127);
     v130 = v140[5];
     v140[5] = v129;
   }
 
-  objc_msgSend__performCallbackForURL_withShare_error_(self, v131, v8, v9, v140[5]);
+  objc_msgSend__performCallbackForURL_withShare_error_(self, v131, acceptedCopy, shareCopy, v140[5]);
 LABEL_34:
   _Block_object_dispose(&v139, 8);
 
@@ -822,14 +822,14 @@ LABEL_75:
   return v231;
 }
 
-- (unint64_t)sharingServiceTypeForShareMetadata:(id)a3
+- (unint64_t)sharingServiceTypeForShareMetadata:(id)metadata
 {
-  v3 = a3;
-  v6 = objc_msgSend_containerID(v3, v4, v5);
+  metadataCopy = metadata;
+  v6 = objc_msgSend_containerID(metadataCopy, v4, v5);
   v9 = objc_msgSend_specialContainerType(v6, v7, v8);
 
-  v12 = objc_msgSend_participantRole(v3, v10, v11);
-  v15 = objc_msgSend_callingParticipant(v3, v13, v14);
+  v12 = objc_msgSend_participantRole(metadataCopy, v10, v11);
+  v15 = objc_msgSend_callingParticipant(metadataCopy, v13, v14);
 
   v18 = objc_msgSend_userIdentity(v15, v16, v17);
   v21 = objc_msgSend_publicKeyVersion(v18, v19, v20) < 3;
@@ -899,7 +899,7 @@ LABEL_75:
           v50[2] = sub_225225830;
           v50[3] = &unk_27854A708;
           v51 = v22;
-          v52 = self;
+          selfCopy = self;
           v53 = v17;
           v43 = v17;
           v44 = v22;
@@ -1013,13 +1013,13 @@ LABEL_75:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)a3 serviceType:(unint64_t)a4 forShareWithURL:(id)a5 error:(id *)a6
+- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)s serviceType:(unint64_t)type forShareWithURL:(id)l error:(id *)error
 {
   v131 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  sCopy = s;
+  lCopy = l;
   v14 = objc_msgSend_container(self, v12, v13);
-  v17 = objc_msgSend_share(v10, v15, v16);
+  v17 = objc_msgSend_share(sCopy, v15, v16);
   v20 = objc_msgSend_publicProtectionData(v17, v18, v19);
   v23 = MEMORY[0x277CBC880];
   v24 = MEMORY[0x277CBC830];
@@ -1030,7 +1030,7 @@ LABEL_75:
   }
 
   v25 = v20;
-  v26 = objc_msgSend_privateToken(v10, v21, v22);
+  v26 = objc_msgSend_privateToken(sCopy, v21, v22);
 
   if (!v26)
   {
@@ -1044,11 +1044,11 @@ LABEL_20:
     if (os_log_type_enabled(*v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v126 = v11;
+      v126 = lCopy;
       _os_log_impl(&dword_22506F000, v69, OS_LOG_TYPE_INFO, "Share metadata for the share at URL %@ doesn't have protection data on it, skipping", buf, 0xCu);
     }
 
-    v40 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v70, *MEMORY[0x277CBC120], 5001, @"Share metadata for the share at URL %@ doesn't have protection data on it", v11);
+    v40 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v70, *MEMORY[0x277CBC120], 5001, @"Share metadata for the share at URL %@ doesn't have protection data on it", lCopy);
     goto LABEL_37;
   }
 
@@ -1061,16 +1061,16 @@ LABEL_20:
   if (os_log_type_enabled(*v24, OS_LOG_TYPE_INFO))
   {
     v30 = v27;
-    v33 = objc_msgSend_privateToken(v10, v31, v32);
+    v33 = objc_msgSend_privateToken(sCopy, v31, v32);
     *buf = 138412546;
-    v126 = v11;
+    v126 = lCopy;
     v127 = 2112;
     v128 = v33;
     _os_log_impl(&dword_22506F000, v30, OS_LOG_TYPE_INFO, "Preparing public PCS metadata for share at URL %@ using public sharing token %@", buf, 0x16u);
   }
 
   v34 = objc_msgSend_pcsManager(v14, v28, v29);
-  v37 = objc_msgSend_privateToken(v10, v35, v36);
+  v37 = objc_msgSend_privateToken(sCopy, v35, v36);
   v124 = 0;
   v39 = objc_msgSend_createSharingIdentityFromData_error_(v34, v38, v37, &v124);
   v40 = v124;
@@ -1086,7 +1086,7 @@ LABEL_20:
     if (os_log_type_enabled(*v24, OS_LOG_TYPE_ERROR))
     {
       v96 = v71;
-      v99 = objc_msgSend_privateToken(v10, v97, v98);
+      v99 = objc_msgSend_privateToken(sCopy, v97, v98);
       *buf = 138412546;
       v126 = v99;
       v127 = 2112;
@@ -1102,9 +1102,9 @@ LABEL_20:
     goto LABEL_36;
   }
 
-  v117 = a6;
+  errorCopy = error;
   v43 = objc_msgSend_pcsManager(v14, v41, v42);
-  v46 = objc_msgSend_share(v10, v44, v45);
+  v46 = objc_msgSend_share(sCopy, v44, v45);
   v49 = objc_msgSend_publicProtectionData(v46, v47, v48);
   v123 = 0;
   v50 = v39;
@@ -1122,11 +1122,11 @@ LABEL_20:
 
     v39 = v50;
     v73 = *v72;
-    a6 = v117;
+    error = errorCopy;
     if (os_log_type_enabled(*v72, OS_LOG_TYPE_ERROR))
     {
       v100 = v73;
-      v103 = objc_msgSend_share(v10, v101, v102);
+      v103 = objc_msgSend_share(sCopy, v101, v102);
       v106 = objc_msgSend_publicProtectionData(v103, v104, v105);
       *buf = 138543618;
       v126 = v106;
@@ -1150,7 +1150,7 @@ LABEL_37:
 
   v55 = objc_msgSend_pcsManager(v14, v53, v54);
   v57 = v55;
-  if (a4 == 2)
+  if (type == 2)
   {
     v122 = 0;
     v58 = objc_msgSend_copyDiversifiedPublicIdentityForService_withError_(v55, v56, 2, &v122);
@@ -1160,7 +1160,7 @@ LABEL_37:
     v39 = v50;
     if (!v58 || v40)
     {
-      a6 = v117;
+      error = errorCopy;
       if (*MEMORY[0x277CBC880] != -1)
       {
         dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -1174,7 +1174,7 @@ LABEL_37:
         *buf = 138543874;
         v126 = v110;
         v127 = 2112;
-        v128 = v11;
+        v128 = lCopy;
         v129 = 2112;
         v130 = v40;
         _os_log_error_impl(&dword_22506F000, v109, OS_LOG_TYPE_ERROR, "Couldn't get a diversified %{public}@ identity to the public PCS for share at URL %@: %@", buf, 0x20u);
@@ -1196,7 +1196,7 @@ LABEL_72:
       v84 = MEMORY[0x277CBC560];
       v85 = *MEMORY[0x277CBC120];
       v75 = sub_2252927B0(2);
-      v40 = objc_msgSend_errorWithDomain_code_format_(v84, v86, v85, 5000, @"Couldn't get a diversified %@ identity to accept share at %@", v75, v11);
+      v40 = objc_msgSend_errorWithDomain_code_format_(v84, v86, v85, 5000, @"Couldn't get a diversified %@ identity to accept share at %@", v75, lCopy);
 LABEL_71:
 
       goto LABEL_72;
@@ -1205,7 +1205,7 @@ LABEL_71:
     v62 = objc_msgSend_pcsManager(v14, v59, v60);
     v40 = objc_msgSend_addPublicIdentity_toSharePCS_permission_(v62, v63, v58, cf, 0);
 
-    a6 = v117;
+    error = errorCopy;
     if (v40)
     {
       if (*MEMORY[0x277CBC880] != -1)
@@ -1221,7 +1221,7 @@ LABEL_71:
         *buf = 138543874;
         v126 = v68;
         v127 = 2112;
-        v128 = v11;
+        v128 = lCopy;
         v129 = 2112;
         v130 = v40;
         _os_log_error_impl(&dword_22506F000, v67, OS_LOG_TYPE_ERROR, "Couldn't add our %{public}@ identity to the public PCS for share at URL %@: %@", buf, 0x20u);
@@ -1257,7 +1257,7 @@ LABEL_58:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         v111 = v93;
-        v118 = objc_msgSend_share(v10, v112, v113);
+        v118 = objc_msgSend_share(sCopy, v112, v113);
         v116 = objc_msgSend_recordID(v118, v114, v115);
         *buf = 138412290;
         v126 = v116;
@@ -1276,7 +1276,7 @@ LABEL_58:
     if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v126 = v11;
+      v126 = lCopy;
       v127 = 2112;
       v128 = v40;
       _os_log_error_impl(&dword_22506F000, v94, OS_LOG_TYPE_ERROR, "Couldn't serialize share public PCS for share at URL %@: %@", buf, 0x16u);
@@ -1285,18 +1285,18 @@ LABEL_58:
     goto LABEL_71;
   }
 
-  v40 = objc_msgSend_addIdentityForService_toPCS_(v55, v56, a4, v52);
+  v40 = objc_msgSend_addIdentityForService_toPCS_(v55, v56, type, v52);
 
   v61 = MEMORY[0x277CBC830];
   v39 = v50;
   if (!v40)
   {
     v58 = 0;
-    a6 = v117;
+    error = errorCopy;
     goto LABEL_58;
   }
 
-  a6 = v117;
+  error = errorCopy;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -1306,11 +1306,11 @@ LABEL_58:
   if (os_log_type_enabled(*v61, OS_LOG_TYPE_ERROR))
   {
     v107 = v82;
-    v108 = sub_2252927B0(a4);
+    v108 = sub_2252927B0(type);
     *buf = 138543874;
     v126 = v108;
     v127 = 2112;
-    v128 = v11;
+    v128 = lCopy;
     v129 = 2112;
     v130 = v40;
     _os_log_error_impl(&dword_22506F000, v107, OS_LOG_TYPE_ERROR, "Couldn't add our %{public}@ identity to the public PCS for share at URL %@: %@", buf, 0x20u);
@@ -1339,16 +1339,16 @@ LABEL_73:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v126 = v11;
+      v126 = lCopy;
       _os_log_impl(&dword_22506F000, v95, OS_LOG_TYPE_INFO, "Successfully added our public identity to the share's public PCS at %@", buf, 0xCu);
     }
   }
 
 LABEL_38:
-  if (a6)
+  if (error)
   {
     v76 = v40;
-    *a6 = v40;
+    *error = v40;
   }
 
   if (v75)
@@ -1368,11 +1368,11 @@ LABEL_38:
   return v77;
 }
 
-- (void)_validateInvitedPCSCanBeDecryptedForShare:(id)a3 completionHandler:(id)a4
+- (void)_validateInvitedPCSCanBeDecryptedForShare:(id)share completionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -1382,47 +1382,47 @@ LABEL_38:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v33 = v8;
-    v36 = objc_msgSend_callingParticipant(v6, v34, v35);
+    v36 = objc_msgSend_callingParticipant(shareCopy, v34, v35);
     *buf = 138412290;
     v41 = v36;
     _os_log_debug_impl(&dword_22506F000, v33, OS_LOG_TYPE_DEBUG, "Decrypting the per-participant PCS for calling participant %@", buf, 0xCu);
   }
 
-  v10 = objc_msgSend_sharingServiceTypeForShareMetadata_(self, v9, v6);
+  v10 = objc_msgSend_sharingServiceTypeForShareMetadata_(self, v9, shareCopy);
   v13 = objc_msgSend_container(self, v11, v12);
   v16 = objc_msgSend_pcsManager(v13, v14, v15);
-  v19 = objc_msgSend_share(v6, v17, v18);
+  v19 = objc_msgSend_share(shareCopy, v17, v18);
   v22 = objc_msgSend_invitedProtectionData(v19, v20, v21);
-  v25 = objc_msgSend_callingParticipant(v6, v23, v24);
+  v25 = objc_msgSend_callingParticipant(shareCopy, v23, v24);
   v28 = objc_msgSend_protectionInfo(v25, v26, v27);
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = sub_225227328;
   v37[3] = &unk_27854A758;
-  v38 = v6;
-  v39 = v7;
-  v29 = v7;
-  v30 = v6;
+  v38 = shareCopy;
+  v39 = handlerCopy;
+  v29 = handlerCopy;
+  v30 = shareCopy;
   objc_msgSend_canDecryptInvitedProtectionData_participantProtectionInfo_serviceType_completionHandler_(v16, v31, v22, v28, v10, v37);
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_keySwapForOONParticipant:(id)a3
+- (id)_keySwapForOONParticipant:(id)participant
 {
   v129 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = objc_msgSend_privateToken(v5, v6, v7);
+  participantCopy = participant;
+  v8 = objc_msgSend_privateToken(participantCopy, v6, v7);
   if (v8)
   {
     v11 = v8;
-    v12 = objc_msgSend_callingParticipant(v5, v9, v10);
+    v12 = objc_msgSend_callingParticipant(participantCopy, v9, v10);
     v15 = objc_msgSend_userIdentity(v12, v13, v14);
     v18 = objc_msgSend_outOfNetworkPrivateKey(v15, v16, v17);
 
     if (v18)
     {
-      v21 = objc_msgSend_callingParticipant(v5, v19, v20);
+      v21 = objc_msgSend_callingParticipant(participantCopy, v19, v20);
       v24 = objc_msgSend_container(self, v22, v23);
       v27 = objc_msgSend_pcsManager(v24, v25, v26);
       v122 = 0;
@@ -1446,11 +1446,11 @@ LABEL_38:
           v120 = v21;
           v118 = objc_msgSend_container(self, v31, v32);
           v117 = objc_msgSend_pcsManager(v118, v42, v43);
-          v46 = objc_msgSend_callingParticipant(v5, v44, v45);
+          v46 = objc_msgSend_callingParticipant(participantCopy, v44, v45);
           v49 = objc_msgSend_userIdentity(v46, v47, v48);
           v52 = objc_msgSend_outOfNetworkPrivateKey(v49, v50, v51);
-          v55 = objc_msgSend_privateToken(v5, v53, v54);
-          v58 = objc_msgSend_callingParticipant(v5, v56, v57);
+          v55 = objc_msgSend_privateToken(participantCopy, v53, v54);
+          v58 = objc_msgSend_callingParticipant(participantCopy, v56, v57);
           v61 = objc_msgSend_protectionInfo(v58, v59, v60);
           v121 = 0;
           v63 = objc_msgSend_createProtectionInfoFromOONPrivateKey_privateToken_OONProtectionInfo_error_(v117, v62, v52, v55, v61, &v121);
@@ -1471,7 +1471,7 @@ LABEL_38:
             {
               v71 = v68;
               v74 = objc_msgSend_participantID(v120, v72, v73);
-              v77 = objc_msgSend_share(v5, v75, v76);
+              v77 = objc_msgSend_share(participantCopy, v75, v76);
               v80 = objc_msgSend_recordID(v77, v78, v79);
               *buf = 138412546;
               v124 = v74;
@@ -1480,14 +1480,14 @@ LABEL_38:
               _os_log_impl(&dword_22506F000, v71, OS_LOG_TYPE_INFO, "Create protection info in OON key-swap for participantID: %@, recordID: %@", buf, 0x16u);
             }
 
-            v81 = objc_msgSend_callingParticipant(v5, v69, v70);
+            v81 = objc_msgSend_callingParticipant(participantCopy, v69, v70);
             objc_msgSend_setProtectionInfo_(v81, v82, v63);
 
-            v85 = objc_msgSend_callingParticipant(v5, v83, v84);
+            v85 = objc_msgSend_callingParticipant(participantCopy, v83, v84);
             v88 = objc_msgSend_userIdentity(v85, v86, v87);
             objc_msgSend_setPublicSharingKey_(v88, v89, v119);
 
-            v92 = objc_msgSend_callingParticipant(v5, v90, v91);
+            v92 = objc_msgSend_callingParticipant(participantCopy, v90, v91);
             v95 = objc_msgSend_userIdentity(v92, v93, v94);
             objc_msgSend_setPublicKeyVersion_(v95, v96, 2);
 
@@ -1514,7 +1514,7 @@ LABEL_38:
           {
             v104 = v103;
             v107 = objc_msgSend_participantID(v120, v105, v106);
-            v110 = objc_msgSend_share(v5, v108, v109);
+            v110 = objc_msgSend_share(participantCopy, v108, v109);
             v113 = objc_msgSend_recordID(v110, v111, v112);
             *buf = 138412802;
             v124 = v107;
@@ -1573,7 +1573,7 @@ LABEL_26:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     v36 = v34;
-    v39 = objc_msgSend_privateToken(v5, v37, v38);
+    v39 = objc_msgSend_privateToken(participantCopy, v37, v38);
     v40 = "outOfNetworkPrivateKey";
     if (!v39)
     {
@@ -1593,10 +1593,10 @@ LABEL_29:
   return v41;
 }
 
-- (BOOL)_callingParticipantOONForShareMetadata:(id)a3
+- (BOOL)_callingParticipantOONForShareMetadata:(id)metadata
 {
-  v3 = a3;
-  v6 = objc_msgSend_callingParticipant(v3, v4, v5);
+  metadataCopy = metadata;
+  v6 = objc_msgSend_callingParticipant(metadataCopy, v4, v5);
   v9 = objc_msgSend_userIdentity(v6, v7, v8);
   if (objc_msgSend_hasiCloudAccount(v9, v10, v11))
   {
@@ -1605,7 +1605,7 @@ LABEL_29:
 
   else
   {
-    v15 = objc_msgSend_callingParticipant(v3, v12, v13);
+    v15 = objc_msgSend_callingParticipant(metadataCopy, v12, v13);
     v14 = objc_msgSend_isAnonymousInvitedParticipant(v15, v16, v17) ^ 1;
   }
 
@@ -1902,7 +1902,7 @@ LABEL_53:
           v208[3] = &unk_27854A780;
           v209 = v20;
           v210 = v17;
-          v211 = self;
+          selfCopy = self;
           v212 = &v215;
           objc_msgSend__validateInvitedPCSCanBeDecryptedForShare_completionHandler_(self, v196, v209, v208);
           v50 = v209;
@@ -2030,7 +2030,7 @@ LABEL_77:
             v49[3] = &unk_27854A7A8;
             objc_copyWeak(&v53, buf);
             v50 = v48;
-            v51 = self;
+            selfCopy = self;
             v52 = v31;
             objc_msgSend_synchronizeUserKeyRegistryForServiceType_resourceLastModifiedDate_outdatedPublicKeyID_shouldThrottle_context_requestorOperationID_completionHandler_(v43, v44, v32, 0, 0, 1, 0x28387E920, v50, v49);
 
@@ -2382,13 +2382,13 @@ LABEL_23:
   objc_msgSend_makeStateTransition_(self, v8, v7);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setAcceptCompletionBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDAcceptSharesOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

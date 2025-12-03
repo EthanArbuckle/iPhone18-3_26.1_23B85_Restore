@@ -5,27 +5,27 @@
 - (NSString)filename;
 - (UTType)type;
 - (_TtC8Freeform27CRLPreinsertionAssetWrapper)init;
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithAlreadyInsertedAsset:(id)a3 owner:(id)a4;
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithData:(id)a3 filename:(id)a4 owner:(id)a5 error:(id *)a6;
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithImage:(CGImage *)a3 properties:(id)a4 filename:(id)a5 owner:(id)a6 error:(id *)a7;
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)a3 filename:(id)a4 owner:(id)a5;
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)a3 owner:(id)a4;
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithAlreadyInsertedAsset:(id)asset owner:(id)owner;
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithData:(id)data filename:(id)filename owner:(id)owner error:(id *)error;
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithImage:(CGImage *)image properties:(id)properties filename:(id)filename owner:(id)owner error:(id *)error;
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)url filename:(id)filename owner:(id)owner;
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)url owner:(id)owner;
 - (id)synchronouslyCreateAsset;
 - (id)synchronouslyCreateReadonlyAsset;
-- (void)createAssetWithCompletionHandler:(id)a3;
+- (void)createAssetWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRLPreinsertionAssetWrapper
 
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)a3 filename:(id)a4 owner:(id)a5
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)url filename:(id)filename owner:(id)owner
 {
   v8 = type metadata accessor for URL();
   __chkstk_darwin(v8 - 8);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (filename)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    filename = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = v11;
   }
 
@@ -36,10 +36,10 @@
 
   swift_getObjectType();
   swift_unknownObjectRetain();
-  return sub_100CF55F4(v10, a4, v12, a5, self);
+  return sub_100CF55F4(v10, filename, v12, owner, self);
 }
 
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)a3 owner:(id)a4
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithUrl:(id)url owner:(id)owner
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
@@ -49,17 +49,17 @@
   swift_unknownObjectRetain();
   URL._bridgeToObjectiveC()(v10);
   v12 = v11;
-  v13 = [(CRLPreinsertionAssetWrapper *)self initWithUrl:v11 filename:0 owner:a4];
+  v13 = [(CRLPreinsertionAssetWrapper *)self initWithUrl:v11 filename:0 owner:owner];
   swift_unknownObjectRelease();
 
   (*(v7 + 8))(v9, v6);
   return v13;
 }
 
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithData:(id)a3 filename:(id)a4 owner:(id)a5 error:(id *)a6
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithData:(id)data filename:(id)filename owner:(id)owner error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  filenameCopy = filename;
   swift_unknownObjectRetain();
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -67,12 +67,12 @@
   v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 
-  return sub_100CF051C(v10, v12, v13, v15, a5);
+  return sub_100CF051C(v10, v12, v13, v15, owner);
 }
 
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithImage:(CGImage *)a3 properties:(id)a4 filename:(id)a5 owner:(id)a6 error:(id *)a7
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithImage:(CGImage *)image properties:(id)properties filename:(id)filename owner:(id)owner error:(id *)error
 {
-  if (a4)
+  if (properties)
   {
     v9 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -84,24 +84,24 @@
 
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
-  v13 = a3;
+  imageCopy = image;
   swift_unknownObjectRetain();
-  return sub_100CF111C(v13, v9, v10, v12, a6);
+  return sub_100CF111C(imageCopy, v9, v10, v12, owner);
 }
 
-- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithAlreadyInsertedAsset:(id)a3 owner:(id)a4
+- (_TtC8Freeform27CRLPreinsertionAssetWrapper)initWithAlreadyInsertedAsset:(id)asset owner:(id)owner
 {
-  v5 = a3;
+  assetCopy = asset;
   swift_unknownObjectRetain();
-  return sub_100CF1690(v5, a4);
+  return sub_100CF1690(assetCopy, owner);
 }
 
-- (void)createAssetWithCompletionHandler:(id)a3
+- (void)createAssetWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -117,13 +117,13 @@
   v12[3] = 0;
   v12[4] = &unk_1014938A0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_101470870, v12);
 }
 
 - (id)synchronouslyCreateAsset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100CF34E8();
 
   return v3;
@@ -152,7 +152,7 @@
       return result;
     }
 
-    v11 = self;
+    selfCopy = self;
     v7 = sub_100C828B4(v5);
 
     (*(v9 + 8))(v5, v8);
@@ -169,13 +169,13 @@
   v3 = sub_1005B981C(&unk_1019F8DB0);
   __chkstk_darwin(v3 - 8);
   v5 = &v16 - v4;
-  v6 = self;
+  selfCopy = self;
 
   v7 = String._bridgeToObjectiveC()();
 
-  v8 = [v7 crl_pathUTI];
+  crl_pathUTI = [v7 crl_pathUTI];
 
-  if (v8)
+  if (crl_pathUTI)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -204,7 +204,7 @@
 
 - (CGDataProvider)newCGDataProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100CF4BE4();
 
   return v3;
@@ -212,7 +212,7 @@
 
 - (CGImageSource)newCGImageSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100CF4E34();
 
   return v3;
@@ -220,7 +220,7 @@
 
 - (CGImage)newCGImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100CF50A0();
 
   return v3;

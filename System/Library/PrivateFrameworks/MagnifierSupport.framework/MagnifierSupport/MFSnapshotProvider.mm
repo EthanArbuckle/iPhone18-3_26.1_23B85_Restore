@@ -1,6 +1,6 @@
 @interface MFSnapshotProvider
-- (_TtC16MagnifierSupport18MFSnapshotProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (_TtC16MagnifierSupport18MFSnapshotProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 - (id)item;
 @end
 
@@ -16,16 +16,16 @@
   return v6;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_257E6A058();
 
   return v6;
 }
 
-- (_TtC16MagnifierSupport18MFSnapshotProvider)initWithPlaceholderItem:(id)a3
+- (_TtC16MagnifierSupport18MFSnapshotProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_257ED0160();

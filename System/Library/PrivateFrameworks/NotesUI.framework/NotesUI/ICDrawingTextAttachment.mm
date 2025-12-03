@@ -9,20 +9,20 @@
 
 - (id)attachmentFileWrapper
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
 
-  if (v3)
+  if (attachment)
   {
-    v4 = [(ICAbstractTextAttachment *)self attachment];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
     [MEMORY[0x1E69B7748] defaultPixelSize];
-    v5 = [v4 attachmentPreviewImageWithMinSize:? scale:?];
+    v5 = [attachment2 attachmentPreviewImageWithMinSize:? scale:?];
 
     if (v5)
     {
       v6 = objc_alloc(MEMORY[0x1E696AC38]);
-      v7 = [v5 orientedPreviewImageURL];
+      orientedPreviewImageURL = [v5 orientedPreviewImageURL];
       v11 = 0;
-      v3 = [v6 initWithURL:v7 options:0 error:&v11];
+      attachment = [v6 initWithURL:orientedPreviewImageURL options:0 error:&v11];
       v8 = v11;
 
       if (v8)
@@ -37,11 +37,11 @@
 
     else
     {
-      v3 = 0;
+      attachment = 0;
     }
   }
 
-  return v3;
+  return attachment;
 }
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)attachmentBoundsMargins
@@ -53,10 +53,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ICAbstractTextAttachment *)self attachment];
-  v12 = [v11 preferredViewSize];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  preferredViewSize = [attachment preferredViewSize];
 
-  if (v12)
+  if (preferredViewSize)
   {
     v13 = v8;
   }
@@ -66,7 +66,7 @@
     v13 = 4.0;
   }
 
-  if (v12)
+  if (preferredViewSize)
   {
     v14 = v10;
   }
@@ -87,15 +87,15 @@
 
 - (id)printableTextAttachment
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
   [MEMORY[0x1E69B7748] defaultPixelSize];
-  v3 = [v2 attachmentPreviewImageWithMinSize:? scale:?];
+  v3 = [attachment attachmentPreviewImageWithMinSize:? scale:?];
 
-  v4 = [v3 orientedPreviewImageURL];
-  if (v4)
+  orientedPreviewImageURL = [v3 orientedPreviewImageURL];
+  if (orientedPreviewImageURL)
   {
     v8 = 0;
-    v5 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:v4 options:0 error:&v8];
+    v5 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:orientedPreviewImageURL options:0 error:&v8];
     v6 = [[ICPrintableTextAttachment alloc] initWithFileWrapper:v5];
   }
 
@@ -111,7 +111,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D4171000, a2, OS_LOG_TYPE_ERROR, "Error creating drawing file wrapper: %@", &v2, 0xCu);
 }
 

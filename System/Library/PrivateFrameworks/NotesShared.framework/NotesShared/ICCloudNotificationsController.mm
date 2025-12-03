@@ -1,14 +1,14 @@
 @interface ICCloudNotificationsController
 + (id)sharedController;
-+ (void)registerForUserNotificationsWithCompletionHandler:(id)a3;
-- (BOOL)isSubscribedToMentionNotificationsForAccount:(id)a3;
++ (void)registerForUserNotificationsWithCompletionHandler:(id)handler;
+- (BOOL)isSubscribedToMentionNotificationsForAccount:(id)account;
 - (PDSRegistrar)pdsClient;
-- (void)batchUpdateTopicSubscriptionsAllAccountsInContext:(id)a3;
-- (void)batchUpdateTopicSubscriptionsForDSIDs:(id)a3;
-- (void)removeAllPDSRegistrationsForUser:(id)a3;
-- (void)removeAllTopicSubscriptionsForAccount:(id)a3;
-- (void)sendMentionNotificationToParticipant:(id)a3 inlineAttachmentRecordName:(id)a4 shareRecordName:(id)a5 shareOwnerUserId:(id)a6 accountId:(id)a7 noteRecordName:(id)a8 senderName:(id)a9 noteTitle:(id)a10 mentionSnippet:(id)a11 callback:(id)a12;
-- (void)updateSubscriptionPreferenceForMentionNotifications:(BOOL)a3 forAccount:(id)a4;
+- (void)batchUpdateTopicSubscriptionsAllAccountsInContext:(id)context;
+- (void)batchUpdateTopicSubscriptionsForDSIDs:(id)ds;
+- (void)removeAllPDSRegistrationsForUser:(id)user;
+- (void)removeAllTopicSubscriptionsForAccount:(id)account;
+- (void)sendMentionNotificationToParticipant:(id)participant inlineAttachmentRecordName:(id)name shareRecordName:(id)recordName shareOwnerUserId:(id)id accountId:(id)accountId noteRecordName:(id)noteRecordName senderName:(id)senderName noteTitle:(id)self0 mentionSnippet:(id)self1 callback:(id)self2;
+- (void)updateSubscriptionPreferenceForMentionNotifications:(BOOL)notifications forAccount:(id)account;
 @end
 
 @implementation ICCloudNotificationsController
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __50__ICCloudNotificationsController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -37,33 +37,33 @@ void __50__ICCloudNotificationsController_sharedController__block_invoke(uint64_
   sharedController_controller = v1;
 }
 
-+ (void)registerForUserNotificationsWithCompletionHandler:(id)a3
++ (void)registerForUserNotificationsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[ICCloudNotificationsController registerForUserNotificationsWithCompletionHandler:];
   }
 
-  v5 = [MEMORY[0x277CE2028] currentNotificationCenter];
+  currentNotificationCenter = [MEMORY[0x277CE2028] currentNotificationCenter];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__ICCloudNotificationsController_registerForUserNotificationsWithCompletionHandler___block_invoke;
   v12[3] = &unk_278195D58;
-  v13 = v3;
-  v6 = v3;
-  [v5 requestAuthorizationWithOptions:7 completionHandler:v12];
+  v13 = handlerCopy;
+  v6 = handlerCopy;
+  [currentNotificationCenter requestAuthorizationWithOptions:7 completionHandler:v12];
 
   v7 = +[ICNoteContext sharedContext];
-  v8 = [v7 workerManagedObjectContext];
+  workerManagedObjectContext = [v7 workerManagedObjectContext];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__ICCloudNotificationsController_registerForUserNotificationsWithCompletionHandler___block_invoke_34;
   v10[3] = &unk_278194B00;
-  v11 = v8;
-  v9 = v8;
+  v11 = workerManagedObjectContext;
+  v9 = workerManagedObjectContext;
   [v9 performBlock:v10];
 }
 
@@ -154,7 +154,7 @@ void __43__ICCloudNotificationsController_pdsClient__block_invoke()
   }
 }
 
-- (BOOL)isSubscribedToMentionNotificationsForAccount:(id)a3
+- (BOOL)isSubscribedToMentionNotificationsForAccount:(id)account
 {
   objc_opt_class();
   v3 = [MEMORY[0x277D36260] objectForKey:@"ICMentionsShouldNotifyMeDefaultsKey"];
@@ -162,38 +162,38 @@ void __43__ICCloudNotificationsController_pdsClient__block_invoke()
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)updateSubscriptionPreferenceForMentionNotifications:(BOOL)a3 forAccount:(id)a4
+- (void)updateSubscriptionPreferenceForMentionNotifications:(BOOL)notifications forAccount:(id)account
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v6 = MEMORY[0x277D36260];
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
-  v9 = [v7 numberWithBool:v4];
+  accountCopy = account;
+  v9 = [v7 numberWithBool:notificationsCopy];
   [v6 setObject:v9 forKey:@"ICMentionsShouldNotifyMeDefaultsKey"];
 
-  v10 = [v8 managedObjectContext];
+  managedObjectContext = [accountCopy managedObjectContext];
 
-  [(ICCloudNotificationsController *)self batchUpdateTopicSubscriptionsAllAccountsInContext:v10];
+  [(ICCloudNotificationsController *)self batchUpdateTopicSubscriptionsAllAccountsInContext:managedObjectContext];
 }
 
-- (void)removeAllTopicSubscriptionsForAccount:(id)a3
+- (void)removeAllTopicSubscriptionsForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 dsid];
-  if ([v5 length])
+  accountCopy = account;
+  dsid = [accountCopy dsid];
+  if ([dsid length])
   {
-    v6 = [MEMORY[0x277D37AD0] userWithDSID:v5];
+    v6 = [MEMORY[0x277D37AD0] userWithDSID:dsid];
     [(ICCloudNotificationsController *)self removeAllPDSRegistrationsForUser:v6];
   }
 
@@ -202,15 +202,15 @@ void __43__ICCloudNotificationsController_pdsClient__block_invoke()
     v7 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(ICCloudNotificationsController *)v4 removeAllTopicSubscriptionsForAccount:v7];
+      [(ICCloudNotificationsController *)accountCopy removeAllTopicSubscriptionsForAccount:v7];
     }
   }
 }
 
-- (void)batchUpdateTopicSubscriptionsAllAccountsInContext:(id)a3
+- (void)batchUpdateTopicSubscriptionsAllAccountsInContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [ICAccount allCloudKitAccountsInContext:a3];
+  v4 = [ICAccount allCloudKitAccountsInContext:context];
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
@@ -234,8 +234,8 @@ void __43__ICCloudNotificationsController_pdsClient__block_invoke()
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([(ICCloudNotificationsController *)self isSubscribedToMentionNotificationsForAccount:v11, v13])
         {
-          v12 = [v11 dsid];
-          [v5 ic_addNonNilObject:v12];
+          dsid = [v11 dsid];
+          [v5 ic_addNonNilObject:dsid];
         }
       }
 
@@ -248,21 +248,21 @@ void __43__ICCloudNotificationsController_pdsClient__block_invoke()
   [(ICCloudNotificationsController *)self batchUpdateTopicSubscriptionsForDSIDs:v5];
 }
 
-- (void)batchUpdateTopicSubscriptionsForDSIDs:(id)a3
+- (void)batchUpdateTopicSubscriptionsForDSIDs:(id)ds
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dsCopy = ds;
   v4 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(ICCloudNotificationsController *)v3 batchUpdateTopicSubscriptionsForDSIDs:v4];
+    [(ICCloudNotificationsController *)dsCopy batchUpdateTopicSubscriptionsForDSIDs:v4];
   }
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v43 objects:v54 count:16];
   if (v6)
   {
@@ -281,10 +281,10 @@ void __43__ICCloudNotificationsController_pdsClient__block_invoke()
 
         v11 = [MEMORY[0x277D37AD0] userWithDSID:{*(*(&v43 + 1) + 8 * i), v35}];
         v12 = [objc_alloc(MEMORY[0x277D37AC0]) initWithTopic:@"com.apple.notes.mentions" qualifier:&stru_2827172C0 pushEnvironment:0];
-        v13 = [(ICCloudNotificationsController *)self pdsClient];
+        pdsClient = [(ICCloudNotificationsController *)self pdsClient];
         v14 = [MEMORY[0x277CBEB98] setWithObject:v12];
         v42 = 0;
-        v15 = [v13 batchUpdateRegistrations:v14 forUser:v11 error:&v42];
+        v15 = [pdsClient batchUpdateRegistrations:v14 forUser:v11 error:&v42];
         v16 = v42;
 
         if (v15)
@@ -314,10 +314,10 @@ void __43__ICCloudNotificationsController_pdsClient__block_invoke()
           goto LABEL_17;
         }
 
-        v18 = [v16 code];
+        code = [v16 code];
         v19 = os_log_create("com.apple.notes", "Notifications");
         v20 = v19;
-        if (v18 == -202)
+        if (code == -202)
         {
           if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
@@ -355,9 +355,9 @@ LABEL_20:
     while (v8);
   }
 
-  v23 = [(ICCloudNotificationsController *)self pdsClient];
+  pdsClient2 = [(ICCloudNotificationsController *)self pdsClient];
   v41 = 0;
-  v24 = [v23 activeUsersWithError:&v41];
+  v24 = [pdsClient2 activeUsersWithError:&v41];
   v25 = v41;
 
   if (!v24 || v25)
@@ -389,8 +389,8 @@ LABEL_20:
         }
 
         v32 = *(*(&v37 + 1) + 8 * j);
-        v33 = [v32 userID];
-        v34 = [v5 containsObject:v33];
+        userID = [v32 userID];
+        v34 = [v5 containsObject:userID];
 
         if ((v34 & 1) == 0)
         {
@@ -405,18 +405,18 @@ LABEL_20:
   }
 }
 
-- (void)removeAllPDSRegistrationsForUser:(id)a3
+- (void)removeAllPDSRegistrationsForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICCloudNotificationsController removeAllPDSRegistrationsForUser:];
   }
 
-  v6 = [(ICCloudNotificationsController *)self pdsClient];
+  pdsClient = [(ICCloudNotificationsController *)self pdsClient];
   v11 = 0;
-  v7 = [v6 removeAllRegistrationsFromUser:v4 error:&v11];
+  v7 = [pdsClient removeAllRegistrationsFromUser:userCopy error:&v11];
   v8 = v11;
 
   v9 = os_log_create("com.apple.notes", "Notifications");
@@ -435,22 +435,22 @@ LABEL_20:
   }
 }
 
-- (void)sendMentionNotificationToParticipant:(id)a3 inlineAttachmentRecordName:(id)a4 shareRecordName:(id)a5 shareOwnerUserId:(id)a6 accountId:(id)a7 noteRecordName:(id)a8 senderName:(id)a9 noteTitle:(id)a10 mentionSnippet:(id)a11 callback:(id)a12
+- (void)sendMentionNotificationToParticipant:(id)participant inlineAttachmentRecordName:(id)name shareRecordName:(id)recordName shareOwnerUserId:(id)id accountId:(id)accountId noteRecordName:(id)noteRecordName senderName:(id)senderName noteTitle:(id)self0 mentionSnippet:(id)self1 callback:(id)self2
 {
-  v27 = a12;
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  callbackCopy = callback;
+  snippetCopy = snippet;
+  titleCopy = title;
+  senderNameCopy = senderName;
+  noteRecordNameCopy = noteRecordName;
+  accountIdCopy = accountId;
+  idCopy = id;
+  recordNameCopy = recordName;
+  nameCopy = name;
+  participantCopy = participant;
   v26 = +[ICCloudContext sharedContext];
-  v29 = [v26 invernessClientForAccountID:v21];
+  v29 = [v26 invernessClientForAccountID:accountIdCopy];
 
-  [v29 sendMentionNotificationWithRecipientUserId:v25 senderName:v19 noteTitle:v18 mentionSnippet:v17 shareRecordName:v23 shareOwnerUserId:v22 noteRecordName:v20 inlineAttachmentRecordName:v24 callback:v27];
+  [v29 sendMentionNotificationWithRecipientUserId:participantCopy senderName:senderNameCopy noteTitle:titleCopy mentionSnippet:snippetCopy shareRecordName:recordNameCopy shareOwnerUserId:idCopy noteRecordName:noteRecordNameCopy inlineAttachmentRecordName:nameCopy callback:callbackCopy];
 }
 
 - (void)removeAllTopicSubscriptionsForAccount:(void *)a1 .cold.1(void *a1, NSObject *a2)

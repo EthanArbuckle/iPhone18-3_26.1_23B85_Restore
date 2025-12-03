@@ -1,22 +1,22 @@
 @interface BLTPBAddBulletinRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldPlayLightsAndSirens:(BOOL)a3;
-- (void)setHasTrafficRestricted:(BOOL)a3;
-- (void)setHasUpdateType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldPlayLightsAndSirens:(BOOL)sirens;
+- (void)setHasTrafficRestricted:(BOOL)restricted;
+- (void)setHasUpdateType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBAddBulletinRequest
 
-- (void)setHasShouldPlayLightsAndSirens:(BOOL)a3
+- (void)setHasShouldPlayLightsAndSirens:(BOOL)sirens
 {
-  if (a3)
+  if (sirens)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUpdateType:(BOOL)a3
+- (void)setHasUpdateType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTrafficRestricted:(BOOL)a3
+- (void)setHasTrafficRestricted:(BOOL)restricted
 {
-  if (a3)
+  if (restricted)
   {
     v3 = 8;
   }
@@ -65,27 +65,27 @@
   v8.receiver = self;
   v8.super_class = BLTPBAddBulletinRequest;
   v4 = [(BLTPBAddBulletinRequest *)&v8 description];
-  v5 = [(BLTPBAddBulletinRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBAddBulletinRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   bulletin = self->_bulletin;
   if (bulletin)
   {
-    v5 = [(BLTPBBulletin *)bulletin dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"bulletin"];
+    dictionaryRepresentation = [(BLTPBBulletin *)bulletin dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"bulletin"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldPlayLightsAndSirens];
-    [v3 setObject:v9 forKey:@"shouldPlayLightsAndSirens"];
+    [dictionary setObject:v9 forKey:@"shouldPlayLightsAndSirens"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -106,7 +106,7 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_date];
-  [v3 setObject:v10 forKey:@"date"];
+  [dictionary setObject:v10 forKey:@"date"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -122,28 +122,28 @@ LABEL_6:
 
 LABEL_13:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_updateType];
-  [v3 setObject:v11 forKey:@"updateType"];
+  [dictionary setObject:v11 forKey:@"updateType"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_trafficRestricted];
-    [v3 setObject:v7 forKey:@"trafficRestricted"];
+    [dictionary setObject:v7 forKey:@"trafficRestricted"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_bulletin)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -151,7 +151,7 @@ LABEL_8:
   {
     shouldPlayLightsAndSirens = self->_shouldPlayLightsAndSirens;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -172,7 +172,7 @@ LABEL_5:
 
   date = self->_date;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -188,33 +188,33 @@ LABEL_6:
 LABEL_13:
   updateType = self->_updateType;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     trafficRestricted = self->_trafficRestricted;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_bulletin)
   {
-    v6 = v4;
-    [v4 setBulletin:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBulletin:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 28) = self->_shouldPlayLightsAndSirens;
-    *(v4 + 32) |= 4u;
+    *(toCopy + 28) = self->_shouldPlayLightsAndSirens;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -233,8 +233,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = *&self->_date;
-  *(v4 + 32) |= 1u;
+  *(toCopy + 1) = *&self->_date;
+  *(toCopy + 32) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -248,22 +248,22 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 6) = self->_updateType;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 6) = self->_updateType;
+  *(toCopy + 32) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 29) = self->_trafficRestricted;
-    *(v4 + 32) |= 8u;
+    *(toCopy + 29) = self->_trafficRestricted;
+    *(toCopy + 32) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(BLTPBBulletin *)self->_bulletin copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(BLTPBBulletin *)self->_bulletin copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -317,16 +317,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   bulletin = self->_bulletin;
-  if (bulletin | *(v4 + 2))
+  if (bulletin | *(equalCopy + 2))
   {
     if (![(BLTPBBulletin *)bulletin isEqual:?])
     {
@@ -336,71 +336,71 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0)
+    if ((*(equalCopy + 32) & 4) == 0)
     {
       goto LABEL_24;
     }
 
-    v6 = *(v4 + 28);
+    v6 = *(equalCopy + 28);
     if (self->_shouldPlayLightsAndSirens)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_updateType != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_updateType != *(equalCopy + 6))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_24;
   }
 
-  v7 = (*(v4 + 32) & 8) == 0;
+  v7 = (*(equalCopy + 32) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) != 0)
+    if ((*(equalCopy + 32) & 8) != 0)
     {
       if (self->_trafficRestricted)
       {
-        if ((*(v4 + 29) & 1) == 0)
+        if ((*(equalCopy + 29) & 1) == 0)
         {
           goto LABEL_24;
         }
       }
 
-      else if (*(v4 + 29))
+      else if (*(equalCopy + 29))
       {
         goto LABEL_24;
       }
@@ -491,11 +491,11 @@ LABEL_11:
   return v6 ^ v3 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   bulletin = self->_bulletin;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (bulletin)
   {
     if (!v6)
@@ -503,7 +503,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(BLTPBBulletin *)bulletin mergeFrom:?];
   }
 
@@ -514,18 +514,18 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(BLTPBAddBulletinRequest *)self setBulletin:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 4) != 0)
   {
-    self->_shouldPlayLightsAndSirens = *(v4 + 28);
+    self->_shouldPlayLightsAndSirens = *(fromCopy + 28);
     *&self->_has |= 4u;
-    v7 = *(v4 + 32);
+    v7 = *(fromCopy + 32);
     if ((v7 & 1) == 0)
     {
 LABEL_9:
@@ -538,14 +538,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 32) & 1) == 0)
+  else if ((*(fromCopy + 32) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_date = *(v4 + 1);
+  self->_date = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 2) == 0)
   {
 LABEL_10:
@@ -558,12 +558,12 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_updateType = *(v4 + 6);
+  self->_updateType = *(fromCopy + 6);
   *&self->_has |= 2u;
-  if ((*(v4 + 32) & 8) != 0)
+  if ((*(fromCopy + 32) & 8) != 0)
   {
 LABEL_11:
-    self->_trafficRestricted = *(v4 + 29);
+    self->_trafficRestricted = *(fromCopy + 29);
     *&self->_has |= 8u;
   }
 

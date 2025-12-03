@@ -11,23 +11,23 @@
 + (id)em_contactFromEmailAddress:()EmailContactAdditions
 {
   v4 = a3;
-  v5 = [v4 ea_addressCommentPersonNameComponents];
-  v6 = [v4 ea_uncommentedAddress];
-  v7 = [a1 em_contactWithPersonNameComponents:v5 emailAddress:v6 emailAddressLabel:0];
+  ea_addressCommentPersonNameComponents = [v4 ea_addressCommentPersonNameComponents];
+  ea_uncommentedAddress = [v4 ea_uncommentedAddress];
+  v7 = [self em_contactWithPersonNameComponents:ea_addressCommentPersonNameComponents emailAddress:ea_uncommentedAddress emailAddressLabel:0];
 
   return v7;
 }
 
 + (id)em_contactWithPersonNameComponents:()EmailContactAdditions
 {
-  v3 = [a1 em_contactWithPersonNameComponents:a3 emailAddress:0 emailAddressLabel:0];
+  v3 = [self em_contactWithPersonNameComponents:a3 emailAddress:0 emailAddressLabel:0];
 
   return v3;
 }
 
 + (id)em_contactWithPersonNameComponents:()EmailContactAdditions emailAddress:emailAddressLabel:
 {
-  v5 = [a1 em_contactWithPersonNameComponents:a3 emailAddress:a4 emailAddressLabel:a5 allowInvalidEmailAddress:0];
+  v5 = [self em_contactWithPersonNameComponents:a3 emailAddress:a4 emailAddressLabel:a5 allowInvalidEmailAddress:0];
 
   return v5;
 }
@@ -39,69 +39,69 @@
   v10 = a4;
   v11 = a5;
   v12 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  v13 = [v9 namePrefix];
+  namePrefix = [v9 namePrefix];
 
-  if (v13)
+  if (namePrefix)
   {
-    v14 = [v9 namePrefix];
-    [v12 setNamePrefix:v14];
+    namePrefix2 = [v9 namePrefix];
+    [v12 setNamePrefix:namePrefix2];
   }
 
-  v15 = [v9 givenName];
+  givenName = [v9 givenName];
 
-  if (v15)
+  if (givenName)
   {
-    v16 = [v9 givenName];
-    [v12 setGivenName:v16];
+    givenName2 = [v9 givenName];
+    [v12 setGivenName:givenName2];
   }
 
-  v17 = [v9 middleName];
+  middleName = [v9 middleName];
 
-  if (v17)
+  if (middleName)
   {
-    v18 = [v9 middleName];
-    [v12 setMiddleName:v18];
+    middleName2 = [v9 middleName];
+    [v12 setMiddleName:middleName2];
   }
 
-  v19 = [v9 familyName];
+  familyName = [v9 familyName];
 
-  if (v19)
+  if (familyName)
   {
-    v20 = [v9 familyName];
-    [v12 setFamilyName:v20];
+    familyName2 = [v9 familyName];
+    [v12 setFamilyName:familyName2];
   }
 
-  v21 = [v9 nameSuffix];
+  nameSuffix = [v9 nameSuffix];
 
-  if (v21)
+  if (nameSuffix)
   {
-    v22 = [v9 nameSuffix];
-    [v12 setNameSuffix:v22];
+    nameSuffix2 = [v9 nameSuffix];
+    [v12 setNameSuffix:nameSuffix2];
   }
 
-  v23 = [v9 phoneticRepresentation];
-  v24 = [v23 givenName];
+  phoneticRepresentation = [v9 phoneticRepresentation];
+  givenName3 = [phoneticRepresentation givenName];
 
-  if (v24)
+  if (givenName3)
   {
-    v25 = [v23 givenName];
-    [v12 setPhoneticGivenName:v25];
+    givenName4 = [phoneticRepresentation givenName];
+    [v12 setPhoneticGivenName:givenName4];
   }
 
-  v26 = [v23 middleName];
+  middleName3 = [phoneticRepresentation middleName];
 
-  if (v26)
+  if (middleName3)
   {
-    v27 = [v23 middleName];
-    [v12 setPhoneticMiddleName:v27];
+    middleName4 = [phoneticRepresentation middleName];
+    [v12 setPhoneticMiddleName:middleName4];
   }
 
-  v28 = [v23 familyName];
+  familyName3 = [phoneticRepresentation familyName];
 
-  if (v28)
+  if (familyName3)
   {
-    v29 = [v23 familyName];
-    [v12 setPhoneticFamilyName:v29];
+    familyName4 = [phoneticRepresentation familyName];
+    [v12 setPhoneticFamilyName:familyName4];
   }
 
   if (v10 && ([v10 ea_isLegalEmailAddress] | a6) == 1)
@@ -142,9 +142,9 @@
     if ((v33 | v9))
     {
       v27 = [MEMORY[0x1E6996790] componentsFromString:v29];
-      v32 = [v27 givenName];
-      v10 = [v27 familyName];
-      if (v32 | v10)
+      givenName = [v27 givenName];
+      familyName = [v27 familyName];
+      if (givenName | familyName)
       {
         v38 = 0u;
         v39 = 0u;
@@ -169,7 +169,7 @@ LABEL_7:
             v14 = *(*(&v36 + 1) + 8 * v13);
             if (v33)
             {
-              v15 = [*(*(&v36 + 1) + 8 * v13) givenName];
+              givenName2 = [*(*(&v36 + 1) + 8 * v13) givenName];
               if (!v9)
               {
                 goto LABEL_12;
@@ -178,25 +178,25 @@ LABEL_7:
 
             else
             {
-              v15 = 0;
+              givenName2 = 0;
               if (!v9)
               {
 LABEL_12:
-                v16 = 0;
+                familyName2 = 0;
                 goto LABEL_15;
               }
             }
 
-            v16 = [v14 familyName];
+            familyName2 = [v14 familyName];
 LABEL_15:
-            v17 = [v15 isEqualToString:v32];
-            v18 = v10;
-            v19 = [v16 isEqualToString:v10];
+            v17 = [givenName2 isEqualToString:givenName];
+            v18 = familyName;
+            v19 = [familyName2 isEqualToString:familyName];
             if (v17 & v19)
             {
               v22 = v14;
 
-              v10 = v18;
+              familyName = v18;
               v23 = v34;
               if (v22)
               {
@@ -236,7 +236,7 @@ LABEL_15:
               v35 = v14;
             }
 
-            v10 = v18;
+            familyName = v18;
             if (v11 == ++v13)
             {
               v11 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -276,13 +276,13 @@ LABEL_37:
       }
     }
 
-    v8 = [v31 firstObject];
+    firstObject = [v31 firstObject];
     goto LABEL_40;
   }
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 LABEL_40:
-  v22 = v8;
+  v22 = firstObject;
 LABEL_41:
 
   v25 = *MEMORY[0x1E69E9840];

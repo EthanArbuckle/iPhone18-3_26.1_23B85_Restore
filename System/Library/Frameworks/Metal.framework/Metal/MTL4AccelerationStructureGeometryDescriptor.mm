@@ -1,9 +1,9 @@
 @interface MTL4AccelerationStructureGeometryDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4AccelerationStructureGeometryDescriptor)init;
 - (MTL4BufferRange)primitiveDataBuffer;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setIntersectionFunctionTableOffset:self->_intersectionFunctionTableOffset];
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v15) = 1;
   }
@@ -49,48 +49,48 @@
     v26 = v4;
     v27 = v3;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
       goto LABEL_6;
     }
 
-    v12 = [(MTL4AccelerationStructureGeometryDescriptor *)self intersectionFunctionTableOffset];
-    if (v12 != [a3 intersectionFunctionTableOffset])
+    intersectionFunctionTableOffset = [(MTL4AccelerationStructureGeometryDescriptor *)self intersectionFunctionTableOffset];
+    if (intersectionFunctionTableOffset != [equal intersectionFunctionTableOffset])
     {
       goto LABEL_6;
     }
 
-    v13 = [(MTL4AccelerationStructureGeometryDescriptor *)self opaque];
-    if (v13 != [a3 opaque])
+    opaque = [(MTL4AccelerationStructureGeometryDescriptor *)self opaque];
+    if (opaque != [equal opaque])
     {
       goto LABEL_6;
     }
 
-    v14 = [(MTL4AccelerationStructureGeometryDescriptor *)self allowDuplicateIntersectionFunctionInvocation];
-    if (v14 != [a3 allowDuplicateIntersectionFunctionInvocation])
+    allowDuplicateIntersectionFunctionInvocation = [(MTL4AccelerationStructureGeometryDescriptor *)self allowDuplicateIntersectionFunctionInvocation];
+    if (allowDuplicateIntersectionFunctionInvocation != [equal allowDuplicateIntersectionFunctionInvocation])
     {
       goto LABEL_6;
     }
 
-    v16 = [(MTL4AccelerationStructureGeometryDescriptor *)self label];
-    if (v16 == [a3 label] || (v15 = -[NSString isEqualToString:](-[MTL4AccelerationStructureGeometryDescriptor label](self, "label"), "isEqualToString:", objc_msgSend(a3, "label"))))
+    label = [(MTL4AccelerationStructureGeometryDescriptor *)self label];
+    if (label == [equal label] || (v15 = -[NSString isEqualToString:](-[MTL4AccelerationStructureGeometryDescriptor label](self, "label"), "isEqualToString:", objc_msgSend(equal, "label"))))
     {
       v17 = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataBuffer:v6];
       v19 = v18;
-      v21 = [a3 primitiveDataBuffer];
+      primitiveDataBuffer = [equal primitiveDataBuffer];
       LOBYTE(v15) = 0;
-      if (v17 == v21 && v19 == v20)
+      if (v17 == primitiveDataBuffer && v19 == v20)
       {
-        v22 = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataStride];
-        if (v22 != [a3 primitiveDataStride])
+        primitiveDataStride = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataStride];
+        if (primitiveDataStride != [equal primitiveDataStride])
         {
 LABEL_6:
           LOBYTE(v15) = 0;
           return v15;
         }
 
-        v23 = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataElementSize];
-        LOBYTE(v15) = v23 == [a3 primitiveDataElementSize];
+        primitiveDataElementSize = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataElementSize];
+        LOBYTE(v15) = primitiveDataElementSize == [equal primitiveDataElementSize];
       }
     }
   }
@@ -100,16 +100,16 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  bzero(&v5, 0x38uLL);
-  v5 = [(MTL4AccelerationStructureGeometryDescriptor *)self intersectionFunctionTableOffset];
-  v6 = [(MTL4AccelerationStructureGeometryDescriptor *)self opaque];
-  v7 = [(MTL4AccelerationStructureGeometryDescriptor *)self allowDuplicateIntersectionFunctionInvocation];
+  bzero(&intersectionFunctionTableOffset, 0x38uLL);
+  intersectionFunctionTableOffset = [(MTL4AccelerationStructureGeometryDescriptor *)self intersectionFunctionTableOffset];
+  opaque = [(MTL4AccelerationStructureGeometryDescriptor *)self opaque];
+  allowDuplicateIntersectionFunctionInvocation = [(MTL4AccelerationStructureGeometryDescriptor *)self allowDuplicateIntersectionFunctionInvocation];
   v8 = [(NSString *)[(MTL4AccelerationStructureGeometryDescriptor *)self label] hash];
-  v9 = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataBuffer];
+  primitiveDataBuffer = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataBuffer];
   v10 = v3;
-  v11 = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataStride];
-  v12 = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataElementSize];
-  return _MTLHashState(&v5, 0x38uLL);
+  primitiveDataStride = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataStride];
+  primitiveDataElementSize = [(MTL4AccelerationStructureGeometryDescriptor *)self primitiveDataElementSize];
+  return _MTLHashState(&intersectionFunctionTableOffset, 0x38uLL);
 }
 
 - (void)dealloc

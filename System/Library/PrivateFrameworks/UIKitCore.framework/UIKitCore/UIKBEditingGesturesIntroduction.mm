@@ -1,6 +1,6 @@
 @interface UIKBEditingGesturesIntroduction
 + (BOOL)shouldShowEditingIntroduction;
-- (id)animatedTutorialViewNamed:(id)a3 ofType:(id)a4 needsFrame:(BOOL)a5;
+- (id)animatedTutorialViewNamed:(id)named ofType:(id)type needsFrame:(BOOL)frame;
 - (id)buttonTitle;
 - (id)mediaContents;
 - (id)textBodyDescriptions;
@@ -15,8 +15,8 @@
 + (BOOL)shouldShowEditingIntroduction
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  v4 = [v3 oneTimeActionCompleted:*MEMORY[0x1E69D9838]];
+  preferencesActions = [v2 preferencesActions];
+  v4 = [preferencesActions oneTimeActionCompleted:*MEMORY[0x1E69D9838]];
 
   if (v4)
   {
@@ -40,15 +40,15 @@
   v3 = +[UIKeyboard activeKeyboard];
   v4 = [v3 interfaceOrientation] - 3;
 
-  v5 = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
-  v6 = v5;
+  topPaddingConstraint = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
+  v6 = topPaddingConstraint;
   v7 = 0.0;
   if (v4 < 2)
   {
     v7 = 20.0;
   }
 
-  [v5 setConstant:v7];
+  [topPaddingConstraint setConstant:v7];
 }
 
 - (void)extraButtonTapAction
@@ -140,12 +140,12 @@
 - (id)mediaContents
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTutorialModalDisplay *)self appearance];
+  appearance = [(UIKBTutorialModalDisplay *)self appearance];
   SafeDeviceIdiom = UIKeyboardGetSafeDeviceIdiom();
   v5 = *MEMORY[0x1E6979EF8];
   if ((SafeDeviceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    if (v3 == 1)
+    if (appearance == 1)
     {
       v6 = @"DoubleTapUndoDark";
     }
@@ -155,7 +155,7 @@
       v6 = @"DoubleTapUndo";
     }
 
-    if (v3 == 1)
+    if (appearance == 1)
     {
       v7 = @"SwipeUndoRedoDark";
     }
@@ -165,7 +165,7 @@
       v7 = @"SwipeUndoRedo";
     }
 
-    if (v3 == 1)
+    if (appearance == 1)
     {
       v8 = @"PinchCPDark";
     }
@@ -186,7 +186,7 @@
 
   else
   {
-    if (v3 == 1)
+    if (appearance == 1)
     {
       v13 = @"DoubleTapUndoPhoneDark";
     }
@@ -204,13 +204,13 @@
   return v12;
 }
 
-- (id)animatedTutorialViewNamed:(id)a3 ofType:(id)a4 needsFrame:(BOOL)a5
+- (id)animatedTutorialViewNamed:(id)named ofType:(id)type needsFrame:(BOOL)frame
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  frameCopy = frame;
+  typeCopy = type;
+  namedCopy = named;
   [(UIKBTutorialModalDisplay *)self appearance];
-  if (*MEMORY[0x1E6979EF8] == v8)
+  if (*MEMORY[0x1E6979EF8] == typeCopy)
   {
     v10 = @"ca";
   }
@@ -223,11 +223,11 @@
   v11 = MEMORY[0x1E696AAE8];
   v12 = _UIKitResourceBundlePath(@"Artwork.bundle");
   v13 = [v11 bundleWithPath:v12];
-  v14 = [v13 URLForResource:v9 withExtension:v10];
+  v14 = [v13 URLForResource:namedCopy withExtension:v10];
 
   v96 = 0;
   v94 = v14;
-  v95 = [MEMORY[0x1E6979400] packageWithContentsOfURL:v14 type:v8 options:0 error:&v96];
+  v95 = [MEMORY[0x1E6979400] packageWithContentsOfURL:v14 type:typeCopy options:0 error:&v96];
   v15 = v96;
   v16 = v15;
   if (v15)
@@ -240,38 +240,38 @@
   [(UIView *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
   v19 = objc_alloc_init(UILayoutGuide);
   [(UIView *)v18 addLayoutGuide:v19];
-  v20 = [(UILayoutGuide *)v19 topAnchor];
-  v21 = [(UIView *)v18 topAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  topAnchor = [(UILayoutGuide *)v19 topAnchor];
+  topAnchor2 = [(UIView *)v18 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v22 setActive:1];
 
-  v23 = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
+  topPaddingConstraint = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
 
-  if (!v23)
+  if (!topPaddingConstraint)
   {
-    v24 = [(UILayoutGuide *)v19 heightAnchor];
-    v25 = [v24 constraintEqualToConstant:0.0];
+    heightAnchor = [(UILayoutGuide *)v19 heightAnchor];
+    v25 = [heightAnchor constraintEqualToConstant:0.0];
     [(UIKBEditingGesturesIntroduction *)self setTopPaddingConstraint:v25];
   }
 
   v26 = +[UIKeyboard activeKeyboard];
   v27 = [v26 interfaceOrientation] - 3;
 
-  v28 = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
-  v29 = v28;
+  topPaddingConstraint2 = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
+  v29 = topPaddingConstraint2;
   v30 = 0.0;
   if (v27 < 2)
   {
     v30 = 20.0;
   }
 
-  [v28 setConstant:v30];
+  [topPaddingConstraint2 setConstant:v30];
 
-  v31 = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
-  [v31 setActive:1];
+  topPaddingConstraint3 = [(UIKBEditingGesturesIntroduction *)self topPaddingConstraint];
+  [topPaddingConstraint3 setActive:1];
 
   v32 = objc_alloc_init(UIView);
-  if (v5)
+  if (frameCopy)
   {
     v33 = [UIBlurEffect effectWithStyle:1200];
     v34 = [UIVisualEffectView alloc];
@@ -283,24 +283,24 @@
 
   [(UIView *)v32 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v18 addSubview:v32];
-  v37 = [(UIView *)v32 leadingAnchor];
-  v38 = [(UIView *)v18 leadingAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  leadingAnchor = [(UIView *)v32 leadingAnchor];
+  leadingAnchor2 = [(UIView *)v18 leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v39 setActive:1];
 
-  v40 = [(UIView *)v32 trailingAnchor];
-  v41 = [(UIView *)v18 trailingAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
+  trailingAnchor = [(UIView *)v32 trailingAnchor];
+  trailingAnchor2 = [(UIView *)v18 trailingAnchor];
+  v42 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v42 setActive:1];
 
-  v43 = [(UIView *)v32 topAnchor];
-  v44 = [(UILayoutGuide *)v19 bottomAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  topAnchor3 = [(UIView *)v32 topAnchor];
+  bottomAnchor = [(UILayoutGuide *)v19 bottomAnchor];
+  v45 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v45 setActive:1];
 
-  v46 = [(UIView *)v32 bottomAnchor];
-  v47 = [(UIView *)v18 bottomAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
+  bottomAnchor2 = [(UIView *)v32 bottomAnchor];
+  bottomAnchor3 = [(UIView *)v18 bottomAnchor];
+  v48 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v48 setActive:1];
 
   v49 = [[UITutorialAnimatedView alloc] initWithKeyboardAppearance:[(UIKBTutorialModalDisplay *)self appearance]];
@@ -308,56 +308,56 @@
   [(UIView *)v49 setContentMode:1];
   [(UIView *)v49 setClipsToBounds:1];
   [(UITutorialAnimatedView *)v49 setPackage:v95];
-  if (v5)
+  if (frameCopy)
   {
     [(UIView *)v18 addSubview:v49];
-    v50 = objc_alloc_init(UITutorialFramingView);
-    [(UIView *)v50 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v51 = [(UIView *)v32 contentView];
-    [v51 addSubview:v50];
+    trailingAnchor7 = objc_alloc_init(UITutorialFramingView);
+    [(UIView *)trailingAnchor7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView = [(UIView *)v32 contentView];
+    [contentView addSubview:trailingAnchor7];
 
-    v52 = [(UIView *)v50 topAnchor];
-    v53 = [(UIView *)v32 topAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    topAnchor4 = [(UIView *)trailingAnchor7 topAnchor];
+    topAnchor5 = [(UIView *)v32 topAnchor];
+    v54 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     [v54 setActive:1];
 
-    v55 = [(UIView *)v50 bottomAnchor];
-    v56 = [(UIView *)v32 bottomAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
+    bottomAnchor4 = [(UIView *)trailingAnchor7 bottomAnchor];
+    bottomAnchor5 = [(UIView *)v32 bottomAnchor];
+    v57 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     [v57 setActive:1];
 
-    v58 = [(UIView *)v50 leadingAnchor];
-    v59 = [(UIView *)v32 leadingAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59];
+    leadingAnchor3 = [(UIView *)trailingAnchor7 leadingAnchor];
+    leadingAnchor4 = [(UIView *)v32 leadingAnchor];
+    v60 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v60 setActive:1];
 
-    v61 = [(UIView *)v50 trailingAnchor];
-    v62 = [(UIView *)v32 trailingAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    trailingAnchor3 = [(UIView *)trailingAnchor7 trailingAnchor];
+    trailingAnchor4 = [(UIView *)v32 trailingAnchor];
+    v63 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v63 setActive:1];
 
-    v64 = [(UIView *)v50 heightAnchor];
-    v65 = [v64 constraintEqualToConstant:159.0];
+    heightAnchor2 = [(UIView *)trailingAnchor7 heightAnchor];
+    v65 = [heightAnchor2 constraintEqualToConstant:159.0];
     [v65 setActive:1];
 
-    v66 = [(UIView *)v49 topAnchor];
-    v67 = [(UIView *)v50 topAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67 constant:5.0];
+    topAnchor6 = [(UIView *)v49 topAnchor];
+    topAnchor7 = [(UIView *)trailingAnchor7 topAnchor];
+    v68 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:5.0];
     [v68 setActive:1];
 
-    v69 = [(UIView *)v50 bottomAnchor];
-    v70 = [(UIView *)v49 bottomAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70 constant:5.0];
+    bottomAnchor6 = [(UIView *)trailingAnchor7 bottomAnchor];
+    bottomAnchor7 = [(UIView *)v49 bottomAnchor];
+    v71 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:5.0];
     [v71 setActive:1];
 
-    v72 = [(UIView *)v49 leadingAnchor];
-    v73 = [(UIView *)v50 leadingAnchor];
-    v74 = [v72 constraintEqualToAnchor:v73 constant:5.0];
+    leadingAnchor5 = [(UIView *)v49 leadingAnchor];
+    leadingAnchor6 = [(UIView *)trailingAnchor7 leadingAnchor];
+    v74 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:5.0];
     [v74 setActive:1];
 
-    v75 = [(UIView *)v50 trailingAnchor];
-    v76 = [(UIView *)v49 trailingAnchor];
-    v77 = [v75 constraintEqualToAnchor:v76 constant:5.0];
+    trailingAnchor5 = [(UIView *)trailingAnchor7 trailingAnchor];
+    trailingAnchor6 = [(UIView *)v49 trailingAnchor];
+    v77 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:5.0];
     [v77 setActive:1];
   }
 
@@ -365,34 +365,34 @@
   {
     [(UIView *)v32 addSubview:v49];
     v78 = (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    v79 = [(UIView *)v32 widthAnchor];
-    v80 = [(UIView *)v32 heightAnchor];
-    v81 = [v79 constraintEqualToAnchor:v80 multiplier:dbl_18A6786E0[v78]];
+    widthAnchor = [(UIView *)v32 widthAnchor];
+    heightAnchor3 = [(UIView *)v32 heightAnchor];
+    v81 = [widthAnchor constraintEqualToAnchor:heightAnchor3 multiplier:dbl_18A6786E0[v78]];
     [v81 setActive:1];
 
-    v82 = [(UIView *)v32 heightAnchor];
-    v83 = [v82 constraintEqualToConstant:169.0];
+    heightAnchor4 = [(UIView *)v32 heightAnchor];
+    v83 = [heightAnchor4 constraintEqualToConstant:169.0];
     [v83 setActive:1];
 
-    v84 = [(UIView *)v49 topAnchor];
-    v85 = [(UIView *)v32 topAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85 constant:5.0];
+    topAnchor8 = [(UIView *)v49 topAnchor];
+    topAnchor9 = [(UIView *)v32 topAnchor];
+    v86 = [topAnchor8 constraintEqualToAnchor:topAnchor9 constant:5.0];
     [v86 setActive:1];
 
-    v87 = [(UIView *)v32 bottomAnchor];
-    v88 = [(UIView *)v49 bottomAnchor];
-    v89 = [v87 constraintEqualToAnchor:v88 constant:5.0];
+    bottomAnchor8 = [(UIView *)v32 bottomAnchor];
+    bottomAnchor9 = [(UIView *)v49 bottomAnchor];
+    v89 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:5.0];
     [v89 setActive:1];
 
-    v90 = [(UIView *)v49 leadingAnchor];
-    v91 = [(UIView *)v32 leadingAnchor];
-    v92 = [v90 constraintEqualToAnchor:v91 constant:5.0];
+    leadingAnchor7 = [(UIView *)v49 leadingAnchor];
+    leadingAnchor8 = [(UIView *)v32 leadingAnchor];
+    v92 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:5.0];
     [v92 setActive:1];
 
-    v50 = [(UIView *)v32 trailingAnchor];
-    v75 = [(UIView *)v49 trailingAnchor];
-    v76 = [(UITutorialFramingView *)v50 constraintEqualToAnchor:v75 constant:5.0];
-    [v76 setActive:1];
+    trailingAnchor7 = [(UIView *)v32 trailingAnchor];
+    trailingAnchor5 = [(UIView *)v49 trailingAnchor];
+    trailingAnchor6 = [(UITutorialFramingView *)trailingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:5.0];
+    [trailingAnchor6 setActive:1];
   }
 
   return v18;

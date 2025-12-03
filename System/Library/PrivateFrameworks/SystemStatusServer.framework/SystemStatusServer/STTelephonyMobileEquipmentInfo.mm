@@ -1,98 +1,98 @@
 @interface STTelephonyMobileEquipmentInfo
 - (BOOL)isOnBootstrap;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
-- (void)initWithMobileEquipmentInfo:(void *)a1;
+- (void)initWithMobileEquipmentInfo:(void *)info;
 @end
 
 @implementation STTelephonyMobileEquipmentInfo
 
-- (void)initWithMobileEquipmentInfo:(void *)a1
+- (void)initWithMobileEquipmentInfo:(void *)info
 {
   v3 = a2;
-  if (a1)
+  if (info)
   {
-    v20.receiver = a1;
+    v20.receiver = info;
     v20.super_class = STTelephonyMobileEquipmentInfo;
-    a1 = objc_msgSendSuper2(&v20, sel_init);
-    if (a1)
+    info = objc_msgSendSuper2(&v20, sel_init);
+    if (info)
     {
-      v4 = [v3 MEID];
-      v5 = [v4 copy];
-      v6 = a1[1];
-      a1[1] = v5;
+      mEID = [v3 MEID];
+      v5 = [mEID copy];
+      v6 = info[1];
+      info[1] = v5;
 
-      v7 = [v3 IMEI];
-      v8 = [v7 copy];
-      v9 = a1[2];
-      a1[2] = v8;
+      iMEI = [v3 IMEI];
+      v8 = [iMEI copy];
+      v9 = info[2];
+      info[2] = v8;
 
-      v10 = [v3 ICCID];
-      v11 = [v10 copy];
-      v12 = a1[3];
-      a1[3] = v11;
+      iCCID = [v3 ICCID];
+      v11 = [iCCID copy];
+      v12 = info[3];
+      info[3] = v11;
 
       v13 = [v3 CSN];
       v14 = [v13 copy];
-      v15 = a1[4];
-      a1[4] = v14;
+      v15 = info[4];
+      info[4] = v14;
 
-      v16 = [v3 bootstrapICCID];
-      v17 = [v16 copy];
-      v18 = a1[5];
-      a1[5] = v17;
+      bootstrapICCID = [v3 bootstrapICCID];
+      v17 = [bootstrapICCID copy];
+      v18 = info[5];
+      info[5] = v17;
     }
   }
 
-  return a1;
+  return info;
 }
 
 - (BOOL)isOnBootstrap
 {
-  v3 = [(STTelephonyMobileEquipmentInfo *)self ICCID];
-  v4 = [(STTelephonyMobileEquipmentInfo *)self bootstrapICCID];
-  v5 = [v3 isEqualToString:v4];
+  iCCID = [(STTelephonyMobileEquipmentInfo *)self ICCID];
+  bootstrapICCID = [(STTelephonyMobileEquipmentInfo *)self bootstrapICCID];
+  v5 = [iCCID isEqualToString:bootstrapICCID];
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableTelephonyMobileEquipmentInfo allocWithZone:a3];
+  v4 = [STMutableTelephonyMobileEquipmentInfo allocWithZone:zone];
 
   return [(STTelephonyMobileEquipmentInfo *)v4 initWithMobileEquipmentInfo:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonyMobileEquipmentInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonyMobileEquipmentInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyMobileEquipmentInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonyMobileEquipmentInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(STTelephonyMobileEquipmentInfo *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STTelephonyMobileEquipmentInfo *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__STTelephonyMobileEquipmentInfo_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279D34B18;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

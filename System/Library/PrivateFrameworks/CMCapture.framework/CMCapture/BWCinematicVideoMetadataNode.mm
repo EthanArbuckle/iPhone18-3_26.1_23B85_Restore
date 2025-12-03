@@ -1,13 +1,13 @@
 @interface BWCinematicVideoMetadataNode
 - (BWCinematicVideoMetadataNode)init;
 - (uint64_t)_emptyMetadataBlockBuffer;
-- (void)_emitCopyOfMarkerBuffer:(void *)a3 onOutput:;
-- (void)_emitMetadataWithCinematographyMetadata:(CMTime *)a3 time:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_emitCopyOfMarkerBuffer:(void *)buffer onOutput:;
+- (void)_emitMetadataWithCinematographyMetadata:(CMTime *)metadata time:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWCinematicVideoMetadataNode
@@ -143,15 +143,15 @@
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:a3];
+  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:d];
   metadataOutput = self->_metadataOutput;
 
   [(BWNodeOutput *)metadataOutput makeConfiguredFormatLive];
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   [(BWNodeOutput *)self->_passthruOutput markEndOfLiveOutput];
   metadataOutput = self->_metadataOutput;
@@ -159,11 +159,11 @@
   [(BWNodeOutput *)metadataOutput markEndOfLiveOutput];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v21, 0, sizeof(v21));
-  CMSampleBufferGetPresentationTimeStamp(&v21, a3);
-  v6 = CMGetAttachment(a3, @"CinematicVideoMetadata", 0);
+  CMSampleBufferGetPresentationTimeStamp(&v21, buffer);
+  v6 = CMGetAttachment(buffer, @"CinematicVideoMetadata", 0);
   if (v6)
   {
     v7 = v6;
@@ -200,37 +200,37 @@
     }
   }
 
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    [(BWCinematicVideoMetadataNode *)self _emitCopyOfMarkerBuffer:a3 onOutput:self->_metadataOutput];
+    [(BWCinematicVideoMetadataNode *)self _emitCopyOfMarkerBuffer:buffer onOutput:self->_metadataOutput];
   }
 
-  if (!CMGetAttachment(a3, @"RefinedCinematographyStreamEndMarker", 0))
+  if (!CMGetAttachment(buffer, @"RefinedCinematographyStreamEndMarker", 0))
   {
-    [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:buffer];
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:sample, input];
   metadataOutput = self->_metadataOutput;
 
-  [(BWNodeOutput *)metadataOutput emitDroppedSample:a3];
+  [(BWNodeOutput *)metadataOutput emitDroppedSample:sample];
 }
 
-- (void)_emitCopyOfMarkerBuffer:(void *)a3 onOutput:
+- (void)_emitCopyOfMarkerBuffer:(void *)buffer onOutput:
 {
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (buffer)
     {
       sampleBufferOut = 0;
       memset(&v5, 0, sizeof(v5));
       CMSampleBufferGetPresentationTimeStamp(&v5, sbuf);
       if (!CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], sbuf, &sampleBufferOut))
       {
-        [a3 emitSampleBuffer:sampleBufferOut];
+        [buffer emitSampleBuffer:sampleBufferOut];
         if (sampleBufferOut)
         {
           CFRelease(sampleBufferOut);
@@ -240,21 +240,21 @@
   }
 }
 
-- (void)_emitMetadataWithCinematographyMetadata:(CMTime *)a3 time:
+- (void)_emitMetadataWithCinematographyMetadata:(CMTime *)metadata time:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   blockBufferOut = 0;
   v36 = 0;
-  v6 = *(a1 + 136);
+  v6 = *(self + 136);
   v7 = [a2 objectForKeyedSubscript:0x1F21A9A50];
   v8 = MEMORY[0x1E695E480];
   if (v7 && (v9 = v7, [v7 objectForKeyedSubscript:0x1F21A9950]))
   {
-    v32 = a3;
+    metadataCopy = metadata;
     __dst.duration.value = 0;
     v10 = [v9 objectForKeyedSubscript:0x1F21A9950];
     v11 = objc_alloc_init(MEMORY[0x1E695DF88]);
@@ -292,7 +292,7 @@
     v21 = (v16 + 24);
     v17 = malloc_type_malloc(v21, 0xA5E431BFuLL);
     *v17 = bswap32([v11 length] + 8);
-    v17[1] = *(a1 + 176);
+    v17[1] = *(self + 176);
     memcpy(v17 + 2, [v11 bytes], objc_msgSend(v11, "length"));
     v22 = [v11 length];
     v23 = v22 + 8;
@@ -300,7 +300,7 @@
     if (v15)
     {
       *(v17 + v23) = bswap32([v15 length] + 8);
-      *(v17 + v22 + 12) = *(a1 + 180);
+      *(v17 + v22 + 12) = *(self + 180);
       memcpy(v17 + v23 + 8, [v15 bytes], objc_msgSend(v15, "length"));
       v23 = v22 + [v15 length] + 16;
     }
@@ -310,19 +310,19 @@
     {
       v24 = (v17 + v23);
       *v24 = bswap32([v20 length] + 8);
-      v24[1] = *(a1 + 184);
+      v24[1] = *(self + 184);
       memcpy(v17 + v23 + 8, [v20 bytes], objc_msgSend(v20, "length"));
       v23 += [v20 length] + 8;
     }
 
-    a3 = v32;
+    metadata = metadataCopy;
     v25 = (v17 + v23);
     *v25 = 201326592;
-    v25[1] = *(a1 + 168);
+    v25[1] = *(self + 168);
     [objc_msgSend(v9 objectForKeyedSubscript:{0x1F21A98F0), "floatValue"}];
     v25[2] = bswap32(v26);
     v25[3] = 201326592;
-    v25[4] = *(a1 + 172);
+    v25[4] = *(self + 172);
     [objc_msgSend(v9 objectForKeyedSubscript:{0x1F21A9930), "floatValue"}];
     v25[5] = bswap32(v27);
     if (CMBlockBufferCreateWithMemoryBlock(*v8, v17, v21, *MEMORY[0x1E695E488], 0, 0, v21, 0, &blockBufferOut))
@@ -350,21 +350,21 @@
       v17 = 0;
       sampleSizeArray = 0;
 LABEL_27:
-      *&__dst.duration.value = *&a3->value;
-      __dst.duration.epoch = a3->epoch;
-      [*(a1 + 160) emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", 0x1F219C070, &__dst)}];
+      *&__dst.duration.value = *&metadata->value;
+      __dst.duration.epoch = metadata->epoch;
+      [*(self + 160) emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", 0x1F219C070, &__dst)}];
       goto LABEL_28;
     }
 
-    v30 = [(BWCinematicVideoMetadataNode *)a1 _emptyMetadataBlockBuffer];
-    if (!v30)
+    _emptyMetadataBlockBuffer = [(BWCinematicVideoMetadataNode *)self _emptyMetadataBlockBuffer];
+    if (!_emptyMetadataBlockBuffer)
     {
       v17 = 0;
       blockBufferOut = 0;
       goto LABEL_27;
     }
 
-    v31 = CFRetain(v30);
+    v31 = CFRetain(_emptyMetadataBlockBuffer);
     blockBufferOut = v31;
     if (!v31)
     {
@@ -378,9 +378,9 @@ LABEL_26:
   }
 
   memcpy(&__dst, MEMORY[0x1E6960CF0], sizeof(__dst));
-  __dst.presentationTimeStamp = *a3;
+  __dst.presentationTimeStamp = *metadata;
   sampleSizeArray = CMBlockBufferGetDataLength(v28);
-  if (CMSampleBufferCreate(*v8, blockBufferOut, 1u, 0, 0, *(a1 + 128), 1, 1, &__dst, 1, &sampleSizeArray, &v36))
+  if (CMSampleBufferCreate(*v8, blockBufferOut, 1u, 0, 0, *(self + 128), 1, 1, &__dst, 1, &sampleSizeArray, &v36))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_78();
@@ -392,9 +392,9 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  [*(a1 + 160) emitSampleBuffer:?];
+  [*(self + 160) emitSampleBuffer:?];
   v17 = 0;
-  *(a1 + 136) = v29;
+  *(self + 136) = v29;
 LABEL_28:
   if (blockBufferOut)
   {

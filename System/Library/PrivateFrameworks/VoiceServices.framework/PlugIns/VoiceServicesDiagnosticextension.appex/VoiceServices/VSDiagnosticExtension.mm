@@ -1,14 +1,14 @@
 @interface VSDiagnosticExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation VSDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = [(VSDiagnosticExtension *)self attachmentList];
-  v4 = [v3 sortedArrayUsingComparator:&stru_100004080];
+  attachmentList = [(VSDiagnosticExtension *)self attachmentList];
+  v4 = [attachmentList sortedArrayUsingComparator:&stru_100004080];
 
   v5 = [v4 count];
   if (v5 >= 0xF)

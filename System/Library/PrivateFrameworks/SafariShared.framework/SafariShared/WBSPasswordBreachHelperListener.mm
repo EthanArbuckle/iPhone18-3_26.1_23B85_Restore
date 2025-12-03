@@ -1,6 +1,6 @@
 @interface WBSPasswordBreachHelperListener
-- (BOOL)_connectionHasValidEntitlements:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_connectionHasValidEntitlements:(id)entitlements;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (WBSPasswordBreachHelperListener)init;
 @end
 
@@ -26,18 +26,18 @@
   return v2;
 }
 
-- (BOOL)_connectionHasValidEntitlements:(id)a3
+- (BOOL)_connectionHasValidEntitlements:(id)entitlements
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.Safari.PasswordBreachHelper"];
-  v4 = [v3 BOOLValue];
+  v3 = [entitlements valueForEntitlement:@"com.apple.private.Safari.PasswordBreachHelper"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(WBSPasswordBreachHelperListener *)self _connectionHasValidEntitlements:v5];
+  connectionCopy = connection;
+  v6 = [(WBSPasswordBreachHelperListener *)self _connectionHasValidEntitlements:connectionCopy];
   if (v6)
   {
     v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3ABFA08];
@@ -61,10 +61,10 @@
     v23 = [v16 setWithObjects:{v17, v18, v19, v20, v21, v22, objc_opt_class(), 0}];
     [v7 setClasses:v23 forSelector:sel_writePasswordEvaluationsToCache_completionHandler_ argumentIndex:0 ofReply:0];
 
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
     v24 = objc_alloc_init(WBSPasswordBreachHelper);
-    [v5 setExportedObject:v24];
-    [v5 resume];
+    [connectionCopy setExportedObject:v24];
+    [connectionCopy resume];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

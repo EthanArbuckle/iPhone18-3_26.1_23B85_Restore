@@ -1,32 +1,32 @@
 @interface HKMedicationsNgramGenerator
-+ (id)tokensFrom:(id)a3 minimumLength:(int64_t)a4 maximumLength:(int64_t)a5;
++ (id)tokensFrom:(id)from minimumLength:(int64_t)length maximumLength:(int64_t)maximumLength;
 @end
 
 @implementation HKMedicationsNgramGenerator
 
-+ (id)tokensFrom:(id)a3 minimumLength:(int64_t)a4 maximumLength:(int64_t)a5
++ (id)tokensFrom:(id)from minimumLength:(int64_t)length maximumLength:(int64_t)maximumLength
 {
-  v9 = a3;
-  if (a5 < a4 || a4 < 1 || a5 <= 0)
+  fromCopy = from;
+  if (maximumLength < length || length < 1 || maximumLength <= 0)
   {
-    [(HKMedicationsNgramGenerator *)a2 tokensFrom:a1 minimumLength:a5 maximumLength:a4];
+    [(HKMedicationsNgramGenerator *)a2 tokensFrom:self minimumLength:maximumLength maximumLength:length];
   }
 
-  v10 = [v9 normalizeForType:1];
+  v10 = [fromCopy normalizeForType:1];
   v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if (a4 <= a5)
+  if (length <= maximumLength)
   {
-    v12 = 1 - a4;
+    v12 = 1 - length;
     do
     {
       v13 = [v10 length];
-      if (v13 >= a4)
+      if (v13 >= length)
       {
         v14 = 0;
         v15 = v13 + v12;
         do
         {
-          v16 = [v10 substringWithRange:{v14, a4}];
+          v16 = [v10 substringWithRange:{v14, length}];
           [v11 addObject:v16];
 
           ++v14;
@@ -38,12 +38,12 @@
       --v12;
     }
 
-    while (a4++ != a5);
+    while (length++ != maximumLength);
   }
 
-  v18 = [v11 allObjects];
+  allObjects = [v11 allObjects];
 
-  return v18;
+  return allObjects;
 }
 
 + (void)tokensFrom:(uint64_t)a3 minimumLength:(uint64_t)a4 maximumLength:.cold.1(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

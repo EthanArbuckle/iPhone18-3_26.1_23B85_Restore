@@ -16,7 +16,7 @@
   v3[2] = __62__NSTextLineFragment_Mentions__ck_animatingMentionsGlyphCount__block_invoke;
   v3[3] = &unk_1E72F5BD0;
   v3[4] = &v4;
-  [a1 ck_enumerateRunsWithBlock:v3];
+  [self ck_enumerateRunsWithBlock:v3];
   v1 = v5[3];
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -26,11 +26,11 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 lineRef];
-  if (v5)
+  lineRef = [self lineRef];
+  if (lineRef)
   {
-    v6 = v5;
-    v7 = CTLineGetGlyphRuns(v5);
+    v6 = lineRef;
+    v7 = CTLineGetGlyphRuns(lineRef);
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;

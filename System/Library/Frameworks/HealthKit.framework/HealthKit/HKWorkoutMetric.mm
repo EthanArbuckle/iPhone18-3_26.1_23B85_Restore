@@ -1,22 +1,22 @@
 @interface HKWorkoutMetric
 - (_TtC9HealthKit15HKWorkoutMetric)init;
-- (_TtC9HealthKit15HKWorkoutMetric)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9HealthKit15HKWorkoutMetric)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkoutMetric
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  HKWorkoutMetric.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  HKWorkoutMetric.encode(with:)(coderCopy);
 }
 
-- (_TtC9HealthKit15HKWorkoutMetric)initWithCoder:(id)a3
+- (_TtC9HealthKit15HKWorkoutMetric)initWithCoder:(id)coder
 {
-  v3 = a3;
-  sub_191C3DB74(v3);
+  coderCopy = coder;
+  sub_191C3DB74(coderCopy);
   v5 = v4;
 
   return v5;

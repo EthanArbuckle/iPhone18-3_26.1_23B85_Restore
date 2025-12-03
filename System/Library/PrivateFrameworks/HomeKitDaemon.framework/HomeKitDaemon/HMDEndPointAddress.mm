@@ -1,33 +1,33 @@
 @interface HMDEndPointAddress
 - (BOOL)_parseFromTLVData;
-- (BOOL)isCompatibleWithRemoteEndPointAddress:(id)a3;
-- (HMDEndPointAddress)initWithCoder:(id)a3;
-- (HMDEndPointAddress)initWithIPAddress:(id)a3 isIPv6Address:(BOOL)a4 videoRTPPort:(id)a5 audioRTPPort:(id)a6;
+- (BOOL)isCompatibleWithRemoteEndPointAddress:(id)address;
+- (HMDEndPointAddress)initWithCoder:(id)coder;
+- (HMDEndPointAddress)initWithIPAddress:(id)address isIPv6Address:(BOOL)pv6Address videoRTPPort:(id)port audioRTPPort:(id)pPort;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDEndPointAddress
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDEndPointAddress *)self ipAddress];
-  [v4 encodeObject:v5 forKey:@"kStreamManagementControlPoint__ControllerAddress__IPAddress"];
+  coderCopy = coder;
+  ipAddress = [(HMDEndPointAddress *)self ipAddress];
+  [coderCopy encodeObject:ipAddress forKey:@"kStreamManagementControlPoint__ControllerAddress__IPAddress"];
 
-  [v4 encodeBool:-[HMDEndPointAddress isIPv6Address](self forKey:{"isIPv6Address"), @"kStreamManagementControlPoint__ControllerAddress__IPAddressVersion"}];
-  v6 = [(HMDEndPointAddress *)self videoRTPPort];
-  [v4 encodeObject:v6 forKey:@"kStreamManagementControlPoint__ControllerAddress__VideoRTPPort"];
+  [coderCopy encodeBool:-[HMDEndPointAddress isIPv6Address](self forKey:{"isIPv6Address"), @"kStreamManagementControlPoint__ControllerAddress__IPAddressVersion"}];
+  videoRTPPort = [(HMDEndPointAddress *)self videoRTPPort];
+  [coderCopy encodeObject:videoRTPPort forKey:@"kStreamManagementControlPoint__ControllerAddress__VideoRTPPort"];
 
-  v7 = [(HMDEndPointAddress *)self audioRTPPort];
-  [v4 encodeObject:v7 forKey:@"kStreamManagementControlPoint__ControllerAddress__AudioRTPPort"];
+  audioRTPPort = [(HMDEndPointAddress *)self audioRTPPort];
+  [coderCopy encodeObject:audioRTPPort forKey:@"kStreamManagementControlPoint__ControllerAddress__AudioRTPPort"];
 }
 
-- (HMDEndPointAddress)initWithCoder:(id)a3
+- (HMDEndPointAddress)initWithCoder:(id)coder
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = HMDEndPointAddress;
   v5 = [(HMDEndPointAddress *)&v23 init];
@@ -37,16 +37,16 @@
     v26[0] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kStreamManagementControlPoint__ControllerAddress__IPAddress"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kStreamManagementControlPoint__ControllerAddress__IPAddress"];
     ipAddress = v5->_ipAddress;
     v5->_ipAddress = v9;
 
-    v5->_isIPv6Address = [v4 decodeBoolForKey:@"kStreamManagementControlPoint__ControllerAddress__IPAddressVersion"];
+    v5->_isIPv6Address = [coderCopy decodeBoolForKey:@"kStreamManagementControlPoint__ControllerAddress__IPAddressVersion"];
     v11 = MEMORY[0x277CBEB98];
     v25 = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kStreamManagementControlPoint__ControllerAddress__VideoRTPPort"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kStreamManagementControlPoint__ControllerAddress__VideoRTPPort"];
     videoRTPPort = v5->_videoRTPPort;
     v5->_videoRTPPort = v14;
 
@@ -54,7 +54,7 @@
     v24 = objc_opt_class();
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"kStreamManagementControlPoint__ControllerAddress__AudioRTPPort"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kStreamManagementControlPoint__ControllerAddress__AudioRTPPort"];
     audioRTPPort = v5->_audioRTPPort;
     v5->_audioRTPPort = v19;
   }
@@ -63,25 +63,25 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n %@ tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n %@ tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDEndPointAddress *)self ipAddress];
-  [v7 appendFormat:@"\n %@ ipAddress = %@ ", v6, v9];
+  ipAddress = [(HMDEndPointAddress *)self ipAddress];
+  [descriptionCopy appendFormat:@"\n %@ ipAddress = %@ ", indentCopy, ipAddress];
 
   [(HMDEndPointAddress *)self isIPv6Address];
   v10 = HMFBooleanToString();
-  [v7 appendFormat:@"\n %@ isIPv6Address = %@ ", v6, v10];
+  [descriptionCopy appendFormat:@"\n %@ isIPv6Address = %@ ", indentCopy, v10];
 
-  v11 = [(HMDEndPointAddress *)self videoRTPPort];
-  [v7 appendFormat:@"\n %@ videoRTPPort = %@ ", v6, v11];
+  videoRTPPort = [(HMDEndPointAddress *)self videoRTPPort];
+  [descriptionCopy appendFormat:@"\n %@ videoRTPPort = %@ ", indentCopy, videoRTPPort];
 
-  v12 = [(HMDEndPointAddress *)self audioRTPPort];
-  [v7 appendFormat:@"\n %@ audioRTPPort = %@ ", v6, v12];
+  audioRTPPort = [(HMDEndPointAddress *)self audioRTPPort];
+  [descriptionCopy appendFormat:@"\n %@ audioRTPPort = %@ ", indentCopy, audioRTPPort];
 }
 
 - (BOOL)_parseFromTLVData
@@ -99,20 +99,20 @@
   v8 = [(HAPTLVBase *)self _parse:v7];
   if (v8)
   {
-    v9 = [v3 field];
+    field = [v3 field];
     ipAddress = self->_ipAddress;
-    self->_ipAddress = v9;
+    self->_ipAddress = field;
 
-    v11 = [v4 field];
-    self->_isIPv6Address = [v11 BOOLValue];
+    field2 = [v4 field];
+    self->_isIPv6Address = [field2 BOOLValue];
 
-    v12 = [v5 field];
+    field3 = [v5 field];
     videoRTPPort = self->_videoRTPPort;
-    self->_videoRTPPort = v12;
+    self->_videoRTPPort = field3;
 
-    v14 = [v6 field];
+    field4 = [v6 field];
     audioRTPPort = self->_audioRTPPort;
-    self->_audioRTPPort = v14;
+    self->_audioRTPPort = field4;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -121,32 +121,32 @@
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
+  creator = [MEMORY[0x277CFEC80] creator];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDEndPointAddress isIPv6Address](self, "isIPv6Address")}];
-  [v3 addTLV:1 number:v4];
+  [creator addTLV:1 number:v4];
 
-  v5 = [(HMDEndPointAddress *)self ipAddress];
-  [v3 addTLV:2 string:v5];
+  ipAddress = [(HMDEndPointAddress *)self ipAddress];
+  [creator addTLV:2 string:ipAddress];
 
-  v6 = [(HMDEndPointAddress *)self videoRTPPort];
-  [v3 addTLV:3 length:2 number:v6];
+  videoRTPPort = [(HMDEndPointAddress *)self videoRTPPort];
+  [creator addTLV:3 length:2 number:videoRTPPort];
 
-  v7 = [(HMDEndPointAddress *)self audioRTPPort];
-  [v3 addTLV:4 length:2 number:v7];
+  audioRTPPort = [(HMDEndPointAddress *)self audioRTPPort];
+  [creator addTLV:4 length:2 number:audioRTPPort];
 
-  v8 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v8;
+  return serialize;
 }
 
-- (BOOL)isCompatibleWithRemoteEndPointAddress:(id)a3
+- (BOOL)isCompatibleWithRemoteEndPointAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   LODWORD(self) = [(HMDEndPointAddress *)self isIPv6Address];
-  if (self == [v4 isIPv6Address] && (objc_msgSend(v4, "audioRTPPort"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "unsignedIntegerValue"), v5, v6))
+  if (self == [addressCopy isIPv6Address] && (objc_msgSend(addressCopy, "audioRTPPort"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "unsignedIntegerValue"), v5, v6))
   {
-    v7 = [v4 videoRTPPort];
-    v8 = [v7 unsignedIntegerValue] != 0;
+    videoRTPPort = [addressCopy videoRTPPort];
+    v8 = [videoRTPPort unsignedIntegerValue] != 0;
   }
 
   else
@@ -157,21 +157,21 @@
   return v8;
 }
 
-- (HMDEndPointAddress)initWithIPAddress:(id)a3 isIPv6Address:(BOOL)a4 videoRTPPort:(id)a5 audioRTPPort:(id)a6
+- (HMDEndPointAddress)initWithIPAddress:(id)address isIPv6Address:(BOOL)pv6Address videoRTPPort:(id)port audioRTPPort:(id)pPort
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  addressCopy = address;
+  portCopy = port;
+  pPortCopy = pPort;
   v17.receiver = self;
   v17.super_class = HMDEndPointAddress;
   v14 = [(HMDEndPointAddress *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_ipAddress, a3);
-    v15->_isIPv6Address = a4;
-    objc_storeStrong(&v15->_videoRTPPort, a5);
-    objc_storeStrong(&v15->_audioRTPPort, a6);
+    objc_storeStrong(&v14->_ipAddress, address);
+    v15->_isIPv6Address = pv6Address;
+    objc_storeStrong(&v15->_videoRTPPort, port);
+    objc_storeStrong(&v15->_audioRTPPort, pPort);
   }
 
   return v15;

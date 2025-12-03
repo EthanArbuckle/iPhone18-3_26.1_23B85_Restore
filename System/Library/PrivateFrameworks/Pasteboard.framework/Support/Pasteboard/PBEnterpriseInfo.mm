@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100005140;
   block[3] = &unk_100030D20;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100039240 != -1)
   {
     dispatch_once(&qword_100039240, block);
@@ -78,8 +78,8 @@
 - (void)updateOrgName
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 managingOrganizationInformation];
-  v5 = [v4 objectForKeyedSubscript:kMCCCOrganizationNameKey];
+  managingOrganizationInformation = [v3 managingOrganizationInformation];
+  v5 = [managingOrganizationInformation objectForKeyedSubscript:kMCCCOrganizationNameKey];
   orgName = self->_orgName;
   self->_orgName = v5;
 

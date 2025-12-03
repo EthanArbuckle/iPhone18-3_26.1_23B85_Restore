@@ -1,23 +1,23 @@
 @interface _HDStaticSyncSession
-- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)a3;
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3;
+- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)class;
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class;
 @end
 
 @implementation _HDStaticSyncSession
 
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     return 0x20000;
   }
 
-  return [(_HDStaticSyncSession *)self maxEncodedBytesPerChangeSetForSyncEntityClass:a3];
+  return [(_HDStaticSyncSession *)self maxEncodedBytesPerChangeSetForSyncEntityClass:class];
 }
 
-- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)a3
+- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 3145728;
   }

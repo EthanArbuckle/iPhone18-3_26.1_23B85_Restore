@@ -1,18 +1,18 @@
 @interface PDFTextSelectionRect
 - (CGRect)rect;
-- (PDFTextSelectionRect)initWithRect:(CGRect)a3 onPage:(id)a4;
+- (PDFTextSelectionRect)initWithRect:(CGRect)rect onPage:(id)page;
 - (id)description;
 @end
 
 @implementation PDFTextSelectionRect
 
-- (PDFTextSelectionRect)initWithRect:(CGRect)a3 onPage:(id)a4
+- (PDFTextSelectionRect)initWithRect:(CGRect)rect onPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pageCopy = page;
   v14.receiver = self;
   v14.super_class = PDFTextSelectionRect;
   v11 = [(PDFTextSelectionRect *)&v14 init];
@@ -23,7 +23,7 @@
     v11->_rect.origin.y = y;
     v11->_rect.size.width = width;
     v11->_rect.size.height = height;
-    objc_storeStrong(&v11->_page, a4);
+    objc_storeStrong(&v11->_page, page);
   }
 
   return v12;
@@ -45,8 +45,8 @@
 - (id)description
 {
   v3 = self->_page;
-  v4 = [(PDFPage *)v3 document];
-  v5 = [v4 indexForPage:v3];
+  document = [(PDFPage *)v3 document];
+  v5 = [document indexForPage:v3];
 
   v6 = "No";
   if (self->_isStartingRect)

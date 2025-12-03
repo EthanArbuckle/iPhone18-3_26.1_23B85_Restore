@@ -1,7 +1,7 @@
 @interface WRM_SpeedTestConfigIOS
 - (WRM_SpeedTestConfigIOS)init;
 - (void)abort;
-- (void)startDownloadTest:(id)a3;
+- (void)startDownloadTest:(id)test;
 @end
 
 @implementation WRM_SpeedTestConfigIOS
@@ -40,15 +40,15 @@
   }
 
   _Block_object_dispose(&v16, 8);
-  v4 = [v3 defaultConfigurationCellular];
-  if (!v4)
+  defaultConfigurationCellular = [v3 defaultConfigurationCellular];
+  if (!defaultConfigurationCellular)
   {
     v8 = @"CellularThroughput: performanceTestWithConfig is nil";
     goto LABEL_11;
   }
 
-  v5 = v4;
-  [v4 setInterfaceType:0];
+  v5 = defaultConfigurationCellular;
+  [defaultConfigurationCellular setInterfaceType:0];
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"CellularThroughput: performanceTestWithConfig.interfaceType: %d", [v5 interfaceType]);
   [v5 setDownloadSize:100];
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"CellularThroughput: performanceTestWithConfig.downloadSize: %d", [v5 downloadSize]);
@@ -85,7 +85,7 @@ LABEL_11:
   return v2;
 }
 
-- (void)startDownloadTest:(id)a3
+- (void)startDownloadTest:(id)test
 {
   if (self->performanceTest)
   {
@@ -100,7 +100,7 @@ LABEL_11:
       v9[2] = sub_10009D500;
       v9[3] = &unk_10023FF50;
       v9[4] = self;
-      v9[5] = a3;
+      v9[5] = test;
       [(NPTPerformanceTest *)performanceTest startDownloadWithCompletion:v9];
       return;
     }
@@ -114,11 +114,11 @@ LABEL_11:
   }
 
   [WCM_Logging logLevel:22 message:v5];
-  if (a3)
+  if (test)
   {
-    v6 = *(a3 + 2);
+    v6 = *(test + 2);
 
-    v6(a3, @"NO");
+    v6(test, @"NO");
   }
 }
 

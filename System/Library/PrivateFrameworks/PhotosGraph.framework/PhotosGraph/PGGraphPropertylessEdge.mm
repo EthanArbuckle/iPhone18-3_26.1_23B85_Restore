@@ -1,13 +1,13 @@
 @interface PGGraphPropertylessEdge
-- (void)checkConsistencyOfProperties:(id)a3 withExtraPropertyKeys:(id)a4;
+- (void)checkConsistencyOfProperties:(id)properties withExtraPropertyKeys:(id)keys;
 @end
 
 @implementation PGGraphPropertylessEdge
 
-- (void)checkConsistencyOfProperties:(id)a3 withExtraPropertyKeys:(id)a4
+- (void)checkConsistencyOfProperties:(id)properties withExtraPropertyKeys:(id)keys
 {
-  v7 = a3;
-  v8 = a4;
+  propertiesCopy = properties;
+  keysCopy = keys;
   v9 = PGMethodForbiddenException(self, a2);
   objc_exception_throw(v9);
 }

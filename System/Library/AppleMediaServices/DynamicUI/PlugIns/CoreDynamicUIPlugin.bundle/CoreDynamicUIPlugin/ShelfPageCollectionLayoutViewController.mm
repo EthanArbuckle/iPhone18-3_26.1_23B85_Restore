@@ -1,60 +1,60 @@
 @interface ShelfPageCollectionLayoutViewController
-- (_TtC19CoreDynamicUIPlugin39ShelfPageCollectionLayoutViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionViewDidScroll:(id)a3;
+- (_TtC19CoreDynamicUIPlugin39ShelfPageCollectionLayoutViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionViewDidScroll:(id)scroll;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ShelfPageCollectionLayoutViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_62CD4();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_62DC4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_62EA0(a3, &selRef_viewWillAppear_);
+  selfCopy = self;
+  sub_62EA0(appear, &selRef_viewWillAppear_);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_62EA0(a3, &selRef_viewDidAppear_);
+  selfCopy = self;
+  sub_62EA0(appear, &selRef_viewDidAppear_);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_62F50();
 }
 
-- (_TtC19CoreDynamicUIPlugin39ShelfPageCollectionLayoutViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19CoreDynamicUIPlugin39ShelfPageCollectionLayoutViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_8F5F4();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_65044();
 }
 
-- (void)collectionViewDidScroll:(id)a3
+- (void)collectionViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_651E4();
 }
 

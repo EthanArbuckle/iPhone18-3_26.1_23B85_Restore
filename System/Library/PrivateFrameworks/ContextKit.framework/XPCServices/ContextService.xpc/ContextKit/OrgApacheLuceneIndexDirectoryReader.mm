@@ -1,49 +1,49 @@
 @interface OrgApacheLuceneIndexDirectoryReader
-+ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)a3;
-+ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)a3 withOrgApacheLuceneIndexIndexCommit:(id)a4;
-+ (id)openWithOrgApacheLuceneIndexIndexCommit:(id)a3;
-- (OrgApacheLuceneIndexDirectoryReader)initWithOrgApacheLuceneStoreDirectory:(id)a3 withOrgApacheLuceneIndexLeafReaderArray:(id)a4;
++ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)reader;
++ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)reader withOrgApacheLuceneIndexIndexCommit:(id)commit;
++ (id)openWithOrgApacheLuceneIndexIndexCommit:(id)commit;
+- (OrgApacheLuceneIndexDirectoryReader)initWithOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexLeafReaderArray:(id)array;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexDirectoryReader
 
-+ (id)openWithOrgApacheLuceneIndexIndexCommit:(id)a3
++ (id)openWithOrgApacheLuceneIndexIndexCommit:(id)commit
 {
-  if (!a3)
+  if (!commit)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 getDirectory];
+  getDirectory = [commit getDirectory];
 
-  return OrgApacheLuceneIndexStandardDirectoryReader_openWithOrgApacheLuceneStoreDirectory_withOrgApacheLuceneIndexIndexCommit_(v4, a3);
+  return OrgApacheLuceneIndexStandardDirectoryReader_openWithOrgApacheLuceneStoreDirectory_withOrgApacheLuceneIndexIndexCommit_(getDirectory, commit);
 }
 
-+ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)a3
++ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)reader
 {
-  if (!a3)
+  if (!reader)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 doOpenIfChanged];
+  return [reader doOpenIfChanged];
 }
 
-+ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)a3 withOrgApacheLuceneIndexIndexCommit:(id)a4
++ (id)openIfChangedWithOrgApacheLuceneIndexDirectoryReader:(id)reader withOrgApacheLuceneIndexIndexCommit:(id)commit
 {
-  if (!a3)
+  if (!reader)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 doOpenIfChangedWithOrgApacheLuceneIndexIndexCommit:a4];
+  return [reader doOpenIfChangedWithOrgApacheLuceneIndexIndexCommit:commit];
 }
 
-- (OrgApacheLuceneIndexDirectoryReader)initWithOrgApacheLuceneStoreDirectory:(id)a3 withOrgApacheLuceneIndexLeafReaderArray:(id)a4
+- (OrgApacheLuceneIndexDirectoryReader)initWithOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexLeafReaderArray:(id)array
 {
-  OrgApacheLuceneIndexBaseCompositeReader_initWithOrgApacheLuceneIndexIndexReaderArray_(self, a4);
-  JreStrongAssign(&self->directory_, a3);
+  OrgApacheLuceneIndexBaseCompositeReader_initWithOrgApacheLuceneIndexIndexReaderArray_(self, array);
+  JreStrongAssign(&self->directory_, directory);
   return self;
 }
 

@@ -1,12 +1,12 @@
 @interface TextViewLabelAccessibility
 - (BOOL)_accessibilitySupportsHandwriting;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
 - (id)_accessibilityTextViewTextOperationResponder;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation TextViewLabelAccessibility
@@ -20,27 +20,27 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 accessibilityValue];
+  _accessibilityTextViewTextOperationResponder = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityValue = [_accessibilityTextViewTextOperationResponder accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityLineNumberAndColumnForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  _accessibilityTextViewTextOperationResponder = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityLineNumberAndColumnForPoint:{x, y}];
 
   return v6;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityRangeForLineNumberAndColumn:v4];
+  columnCopy = column;
+  _accessibilityTextViewTextOperationResponder = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityRangeForLineNumberAndColumn:columnCopy];
   v8 = v7;
 
   v9 = v6;
@@ -50,21 +50,21 @@
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  [v5 _accessibilitySetSelectedTextRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  _accessibilityTextViewTextOperationResponder = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  [_accessibilityTextViewTextOperationResponder _accessibilitySetSelectedTextRange:{location, length}];
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v2 = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 _accessibilitySelectedTextRange];
+  _accessibilityTextViewTextOperationResponder = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  _accessibilitySelectedTextRange = [_accessibilityTextViewTextOperationResponder _accessibilitySelectedTextRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = _accessibilitySelectedTextRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -73,16 +73,16 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 accessibilityTraits];
+  _accessibilityTextViewTextOperationResponder = [(TextViewLabelAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityTraits = [_accessibilityTextViewTextOperationResponder accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (BOOL)_accessibilitySupportsHandwriting
 {
-  v3 = [(TextViewLabelAccessibility *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7528] & ~v3) == 0)
+  accessibilityTraits = [(TextViewLabelAccessibility *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7528] & ~accessibilityTraits) == 0)
   {
     return 1;
   }

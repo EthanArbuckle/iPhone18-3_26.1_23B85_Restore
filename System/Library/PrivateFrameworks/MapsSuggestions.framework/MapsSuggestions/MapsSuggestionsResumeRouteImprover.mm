@@ -1,20 +1,20 @@
 @interface MapsSuggestionsResumeRouteImprover
-- (BOOL)improveEntry:(id)a3;
-- (id)_extractTitleAndSubtitleFromMapItem:(uint64_t)a1;
-- (void)_setDecayingWeightForEntry:(uint64_t)a1;
+- (BOOL)improveEntry:(id)entry;
+- (id)_extractTitleAndSubtitleFromMapItem:(uint64_t)item;
+- (void)_setDecayingWeightForEntry:(uint64_t)entry;
 @end
 
 @implementation MapsSuggestionsResumeRouteImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
-    v6 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    geoMapItem = GEOFindOrCreateLog();
+    if (os_log_type_enabled(geoMapItem, OS_LOG_TYPE_ERROR))
     {
       v32 = 136446978;
       v33 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsResumeRouteImprover.m";
@@ -25,7 +25,7 @@
       v36 = 2082;
       v37 = "nil == (entry)";
       v10 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a suggestion entry";
-      v11 = v6;
+      v11 = geoMapItem;
       v12 = 38;
 LABEL_14:
       _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, v10, &v32, v12);
@@ -38,31 +38,31 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v4 type] == 11)
+  if ([entryCopy type] == 11)
   {
     if ([v5 containsKey:@"MapsSuggestionsWhenItHappenedKey"])
     {
-      v6 = [v5 geoMapItem];
+      geoMapItem = [v5 geoMapItem];
 
-      if (v6)
+      if (geoMapItem)
       {
-        v7 = [v5 geoMapItem];
-        v8 = [(MapsSuggestionsResumeRouteImprover *)self _extractTitleAndSubtitleFromMapItem:v7];
+        geoMapItem2 = [v5 geoMapItem];
+        v8 = [(MapsSuggestionsResumeRouteImprover *)self _extractTitleAndSubtitleFromMapItem:geoMapItem2];
 
         if ([v8 count])
         {
-          v9 = [v8 firstObject];
-          [v5 setString:v9 forKey:@"MapsSuggestionsEntryTitleNameKey"];
+          firstObject = [v8 firstObject];
+          [v5 setString:firstObject forKey:@"MapsSuggestionsEntryTitleNameKey"];
         }
 
         if ([v8 count] < 2)
         {
-          v6 = 0;
+          geoMapItem = 0;
         }
 
         else
         {
-          v6 = [v8 lastObject];
+          geoMapItem = [v8 lastObject];
         }
       }
 
@@ -79,7 +79,7 @@ LABEL_23:
             {
               v18 = MapsSuggestionsLocalizedMultipointRouteStopsString([v15 waypointsCount]- v17);
 
-              v6 = v18;
+              geoMapItem = v18;
             }
           }
         }
@@ -88,23 +88,23 @@ LABEL_23:
         [v5 setBoolean:1 forKey:@"MapsSuggestionsNeedsETATrackingKey"];
         v19 = MapsSuggestionsLocalizedTitleFormatForStandardResumeRouteEntry(v14);
         [v5 setString:v19 forKey:@"MapsSuggestionsResumeRouteDefaultTitle"];
-        if (![v6 length])
+        if (![geoMapItem length])
         {
           v20 = v14;
 
           v21 = MapsSuggestionsLocalizedResumeRouteString();
 
           v19 = v20;
-          v6 = v21;
+          geoMapItem = v21;
         }
 
         v22 = [v5 numberForKey:@"MapsSuggestionsRequiredChargeForEVKey"];
         if (([v5 BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:0] & 1) != 0 || !v22 || (objc_msgSend(v22, "floatValue"), v23 == 0.0))
         {
           v24 = [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedTitle:v19 forEntry:v5];
-          if (v6)
+          if (geoMapItem)
           {
-            v25 = [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedSubtitle:v6 forEntry:v5];
+            v25 = [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedSubtitle:geoMapItem forEntry:v5];
           }
 
           else
@@ -155,13 +155,13 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v6 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    geoMapItem = GEOFindOrCreateLog();
+    if (os_log_type_enabled(geoMapItem, OS_LOG_TYPE_ERROR))
     {
       v32 = 138412290;
       v33 = v5;
       v10 = "Entry missing a MapsSuggestionsWhenItHappenedKey: %@";
-      v11 = v6;
+      v11 = geoMapItem;
       v12 = 12;
       goto LABEL_14;
     }
@@ -175,32 +175,32 @@ LABEL_24:
   return v13 & 1;
 }
 
-- (id)_extractTitleAndSubtitleFromMapItem:(uint64_t)a1
+- (id)_extractTitleAndSubtitleFromMapItem:(uint64_t)item
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (item && v3)
   {
-    v6 = [v3 name];
-    v7 = [v6 length];
+    name = [v3 name];
+    v7 = [name length];
 
     if (!v7 || ([v4 name], v8 = objc_claimAutoreleasedReturnValue(), v21 = 0, v22 = &v21, v23 = 0x3032000000, v24 = __Block_byref_object_copy__14, v25 = __Block_byref_object_dispose__14, v26 = 0, v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = ___firstLineOfString_block_invoke_1, v20[3] = &unk_1E81F6000, v20[4] = &v21, objc_msgSend(v8, "enumerateLinesUsingBlock:", v20), v7 = v22[5], _Block_object_dispose(&v21, 8), v26, v8, v8, !v7) || (v9 = v7, !objc_msgSend(v7, "length")))
     {
       v9 = MapsSuggestionsMapItemShortAddress(v4);
     }
 
-    v10 = [v4 contactName];
-    v11 = [v10 length];
+    contactName = [v4 contactName];
+    v11 = [contactName length];
 
     if (v11)
     {
-      v12 = [v4 contactName];
+      contactName2 = [v4 contactName];
     }
 
     else
     {
-      v12 = v9;
+      contactName2 = v9;
       v9 = 0;
     }
 
@@ -210,27 +210,27 @@ LABEL_24:
     {
       v15 = v13;
 
-      v12 = v15;
+      contactName2 = v15;
     }
 
-    v16 = [v4 eventName];
-    v17 = [v16 length];
+    eventName = [v4 eventName];
+    v17 = [eventName length];
 
     if (v17)
     {
 
-      v18 = [v4 eventName];
+      eventName2 = [v4 eventName];
     }
 
     else
     {
-      v18 = v12;
-      v12 = v9;
+      eventName2 = contactName2;
+      contactName2 = v9;
     }
 
-    if ([v18 length])
+    if ([eventName2 length])
     {
-      v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v18, v12, 0}];
+      v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{eventName2, contactName2, 0}];
     }
 
     else
@@ -242,12 +242,12 @@ LABEL_24:
   return v5;
 }
 
-- (void)_setDecayingWeightForEntry:(uint64_t)a1
+- (void)_setDecayingWeightForEntry:(uint64_t)entry
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (entry)
   {
     if (v3)
     {

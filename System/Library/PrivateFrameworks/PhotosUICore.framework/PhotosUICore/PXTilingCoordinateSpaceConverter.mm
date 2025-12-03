@@ -1,35 +1,35 @@
 @interface PXTilingCoordinateSpaceConverter
-+ (BOOL)_canConvertBetweenCoordinateSpace:(id)a3 andCoordinateSpace:(id)a4;
-+ (BOOL)canConvertBetweenCoordinateSpaceIdentifier:(void *)a3 andCoordinateSpaceIdentifier:(void *)a4;
++ (BOOL)_canConvertBetweenCoordinateSpace:(id)space andCoordinateSpace:(id)coordinateSpace;
++ (BOOL)canConvertBetweenCoordinateSpaceIdentifier:(void *)identifier andCoordinateSpaceIdentifier:(void *)spaceIdentifier;
 + (id)defaultConverter;
-- (CGAffineTransform)_transformOfCoordinateSpace:(SEL)a3 relativeToCoordinateSpace:(id)a4;
-- (CGAffineTransform)_transformOfCoordinateSpaceIdentifier:(SEL)a3 relativeToCoordinateSpaceIdentifier:(void *)a4;
-- (CGPoint)convertPoint:(CGPoint)result fromCoordinateSpaceIdentifier:(void *)a4 toCoordinateSpaceIdentifier:(void *)a5;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpaceIdentifier:(void *)a4 toCoordinateSpaceIdentifier:(void *)a5;
-- (PXTileGeometry)convertTileGeometry:(SEL)a3 toCoordinateSpaceIdentifier:(PXTileGeometry *)a4;
+- (CGAffineTransform)_transformOfCoordinateSpace:(SEL)space relativeToCoordinateSpace:(id)coordinateSpace;
+- (CGAffineTransform)_transformOfCoordinateSpaceIdentifier:(SEL)identifier relativeToCoordinateSpaceIdentifier:(void *)spaceIdentifier;
+- (CGPoint)convertPoint:(CGPoint)result fromCoordinateSpaceIdentifier:(void *)identifier toCoordinateSpaceIdentifier:(void *)spaceIdentifier;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpaceIdentifier:(void *)identifier toCoordinateSpaceIdentifier:(void *)spaceIdentifier;
+- (PXTileGeometry)convertTileGeometry:(SEL)geometry toCoordinateSpaceIdentifier:(PXTileGeometry *)identifier;
 @end
 
 @implementation PXTilingCoordinateSpaceConverter
 
-- (CGAffineTransform)_transformOfCoordinateSpace:(SEL)a3 relativeToCoordinateSpace:(id)a4
+- (CGAffineTransform)_transformOfCoordinateSpace:(SEL)space relativeToCoordinateSpace:(id)coordinateSpace
 {
-  v9 = a4;
+  coordinateSpaceCopy = coordinateSpace;
   v10 = a5;
   v11 = MEMORY[0x1E695EFD0];
   v12 = *(MEMORY[0x1E695EFD0] + 16);
   *&retstr->a = *MEMORY[0x1E695EFD0];
   *&retstr->c = v12;
   *&retstr->tx = *(v11 + 32);
-  if (v9 != v10)
+  if (coordinateSpaceCopy != v10)
   {
-    v13 = [v9 parentSpace];
-    if (v13)
+    parentSpace = [coordinateSpaceCopy parentSpace];
+    if (parentSpace)
     {
-      v14 = v13;
-      [(PXTilingCoordinateSpaceConverter *)self _transformOfCoordinateSpace:v13 relativeToCoordinateSpace:v10];
-      if (v9)
+      v14 = parentSpace;
+      [(PXTilingCoordinateSpaceConverter *)self _transformOfCoordinateSpace:parentSpace relativeToCoordinateSpace:v10];
+      if (coordinateSpaceCopy)
       {
-        [v9 transform];
+        [coordinateSpaceCopy transform];
       }
 
       else
@@ -53,11 +53,11 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v15 = [v10 parentSpace];
-    if (v15)
+    parentSpace2 = [v10 parentSpace];
+    if (parentSpace2)
     {
-      v14 = v15;
-      [(PXTilingCoordinateSpaceConverter *)self _transformOfCoordinateSpace:v9 relativeToCoordinateSpace:v15];
+      v14 = parentSpace2;
+      [(PXTilingCoordinateSpaceConverter *)self _transformOfCoordinateSpace:coordinateSpaceCopy relativeToCoordinateSpace:parentSpace2];
       if (v10)
       {
         [v10 transform];
@@ -78,8 +78,8 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a3 object:self file:@"PXTilingCoordinateSpaceConverter.m" lineNumber:80 description:@"coordinate spaces don't have a common ancestor"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:space object:self file:@"PXTilingCoordinateSpaceConverter.m" lineNumber:80 description:@"coordinate spaces don't have a common ancestor"];
   }
 
 LABEL_14:
@@ -87,47 +87,47 @@ LABEL_14:
   return result;
 }
 
-- (CGAffineTransform)_transformOfCoordinateSpaceIdentifier:(SEL)a3 relativeToCoordinateSpaceIdentifier:(void *)a4
+- (CGAffineTransform)_transformOfCoordinateSpaceIdentifier:(SEL)identifier relativeToCoordinateSpaceIdentifier:(void *)spaceIdentifier
 {
-  v10 = a4;
+  spaceIdentifierCopy = spaceIdentifier;
   v8 = a5;
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  [(PXTilingCoordinateSpaceConverter *)self _transformOfCoordinateSpace:v10 relativeToCoordinateSpace:v8];
+  [(PXTilingCoordinateSpaceConverter *)self _transformOfCoordinateSpace:spaceIdentifierCopy relativeToCoordinateSpace:v8];
 
   return result;
 }
 
-- (PXTileGeometry)convertTileGeometry:(SEL)a3 toCoordinateSpaceIdentifier:(PXTileGeometry *)a4
+- (PXTileGeometry)convertTileGeometry:(SEL)geometry toCoordinateSpaceIdentifier:(PXTileGeometry *)identifier
 {
-  v6 = *&a4->contentSize.height;
-  *&retstr->hidden = *&a4->hidden;
+  v6 = *&identifier->contentSize.height;
+  *&retstr->hidden = *&identifier->hidden;
   *&retstr->contentSize.height = v6;
-  v7 = *&a4->contentsRect.size.height;
-  *&retstr->contentsRect.origin.y = *&a4->contentsRect.origin.y;
+  v7 = *&identifier->contentsRect.size.height;
+  *&retstr->contentsRect.origin.y = *&identifier->contentsRect.origin.y;
   *&retstr->contentsRect.size.height = v7;
-  v8 = *&a4->transform.c;
-  *&retstr->transform.a = *&a4->transform.a;
+  v8 = *&identifier->transform.c;
+  *&retstr->transform.a = *&identifier->transform.a;
   *&retstr->transform.c = v8;
-  v9 = *&a4->alpha;
-  *&retstr->transform.tx = *&a4->transform.tx;
+  v9 = *&identifier->alpha;
+  *&retstr->transform.tx = *&identifier->transform.tx;
   *&retstr->alpha = v9;
-  size = a4->frame.size;
-  retstr->frame.origin = a4->frame.origin;
+  size = identifier->frame.size;
+  retstr->frame.origin = identifier->frame.origin;
   retstr->frame.size = size;
-  v11 = a4->size;
-  retstr->center = a4->center;
+  v11 = identifier->size;
+  retstr->center = identifier->center;
   retstr->size = v11;
   if (retstr->coordinateSpaceIdentifier != a5)
   {
-    v14 = self;
-    [(PXTileGeometry *)self convertRect:a4->coordinateSpaceIdentifier fromCoordinateSpaceIdentifier:a4->frame.origin.x toCoordinateSpaceIdentifier:a4->frame.origin.y, a4->frame.size.width, a4->frame.size.height];
+    selfCopy = self;
+    [(PXTileGeometry *)self convertRect:identifier->coordinateSpaceIdentifier fromCoordinateSpaceIdentifier:identifier->frame.origin.x toCoordinateSpaceIdentifier:identifier->frame.origin.y, identifier->frame.size.width, identifier->frame.size.height];
     retstr->frame.origin.x = v15;
     retstr->frame.origin.y = v16;
     retstr->frame.size.width = v17;
     retstr->frame.size.height = v18;
-    self = [(PXTileGeometry *)v14 convertPoint:a4->coordinateSpaceIdentifier fromCoordinateSpaceIdentifier:a5 toCoordinateSpaceIdentifier:a4->center.x, a4->center.y];
+    self = [(PXTileGeometry *)selfCopy convertPoint:identifier->coordinateSpaceIdentifier fromCoordinateSpaceIdentifier:a5 toCoordinateSpaceIdentifier:identifier->center.x, identifier->center.y];
     retstr->center.x = v19;
     retstr->center.y = v20;
     retstr->coordinateSpaceIdentifier = a5;
@@ -136,13 +136,13 @@ LABEL_14:
   return self;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpaceIdentifier:(void *)a4 toCoordinateSpaceIdentifier:(void *)a5
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpaceIdentifier:(void *)identifier toCoordinateSpaceIdentifier:(void *)spaceIdentifier
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4 != a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (identifier != spaceIdentifier)
   {
     memset(&v13[1], 0, sizeof(CGAffineTransform));
     [PXTilingCoordinateSpaceConverter _transformOfCoordinateSpaceIdentifier:"_transformOfCoordinateSpaceIdentifier:relativeToCoordinateSpaceIdentifier:" relativeToCoordinateSpaceIdentifier:?];
@@ -169,10 +169,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)result fromCoordinateSpaceIdentifier:(void *)a4 toCoordinateSpaceIdentifier:(void *)a5
+- (CGPoint)convertPoint:(CGPoint)result fromCoordinateSpaceIdentifier:(void *)identifier toCoordinateSpaceIdentifier:(void *)spaceIdentifier
 {
   y = result.y;
-  if (a4 != a5)
+  if (identifier != spaceIdentifier)
   {
     x = result.x;
     v9 = result;
@@ -185,42 +185,42 @@ LABEL_14:
   return result;
 }
 
-+ (BOOL)_canConvertBetweenCoordinateSpace:(id)a3 andCoordinateSpace:(id)a4
++ (BOOL)_canConvertBetweenCoordinateSpace:(id)space andCoordinateSpace:(id)coordinateSpace
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 == v7)
+  spaceCopy = space;
+  coordinateSpaceCopy = coordinateSpace;
+  if (spaceCopy == coordinateSpaceCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    v8 = [v6 parentSpace];
-    if (v8)
+    parentSpace = [spaceCopy parentSpace];
+    if (parentSpace)
     {
-      v9 = v8;
-      v10 = a1;
+      v9 = parentSpace;
+      selfCopy2 = self;
       v11 = v9;
-      v12 = v7;
+      v12 = coordinateSpaceCopy;
     }
 
     else
     {
-      v14 = [v7 parentSpace];
-      if (!v14)
+      parentSpace2 = [coordinateSpaceCopy parentSpace];
+      if (!parentSpace2)
       {
         v13 = 0;
         goto LABEL_8;
       }
 
-      v9 = v14;
-      v10 = a1;
-      v11 = v6;
+      v9 = parentSpace2;
+      selfCopy2 = self;
+      v11 = spaceCopy;
       v12 = v9;
     }
 
-    v13 = [v10 _canConvertBetweenCoordinateSpace:v11 andCoordinateSpace:v12];
+    v13 = [selfCopy2 _canConvertBetweenCoordinateSpace:v11 andCoordinateSpace:v12];
   }
 
 LABEL_8:
@@ -228,13 +228,13 @@ LABEL_8:
   return v13;
 }
 
-+ (BOOL)canConvertBetweenCoordinateSpaceIdentifier:(void *)a3 andCoordinateSpaceIdentifier:(void *)a4
++ (BOOL)canConvertBetweenCoordinateSpaceIdentifier:(void *)identifier andCoordinateSpaceIdentifier:(void *)spaceIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  LOBYTE(a1) = [a1 _canConvertBetweenCoordinateSpace:v6 andCoordinateSpace:v7];
+  identifierCopy = identifier;
+  spaceIdentifierCopy = spaceIdentifier;
+  LOBYTE(self) = [self _canConvertBetweenCoordinateSpace:identifierCopy andCoordinateSpace:spaceIdentifierCopy];
 
-  return a1;
+  return self;
 }
 
 + (id)defaultConverter

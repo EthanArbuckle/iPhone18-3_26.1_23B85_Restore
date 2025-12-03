@@ -1,6 +1,6 @@
 @interface OnboardPromptViewController
 - (void)beginButtonAction;
-- (void)removeButtonAction:(id)a3;
+- (void)removeButtonAction:(id)action;
 @end
 
 @implementation OnboardPromptViewController
@@ -17,7 +17,7 @@
 
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_269D86B64("[%{public}s] Opening Health > Sleep > Onboarding...", MEMORY[0x277D62218]);
 
     swift_unknownObjectRelease();
@@ -28,7 +28,7 @@
   }
 }
 
-- (void)removeButtonAction:(id)a3
+- (void)removeButtonAction:(id)action
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -40,9 +40,9 @@
 
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  v7 = self;
-  v6 = a3;
-  sub_269D855CC(a3, sub_269D86894, v5);
+  selfCopy = self;
+  actionCopy = action;
+  sub_269D855CC(action, sub_269D86894, v5);
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface ANSTISPInferencePostprocessor
-+ (BOOL)getInputImageAcOrientation:(int *)a3 fromPixelBuffer:(id)a4 withError:(id *)a5;
-- (ANSTISPInferencePostprocessor)initWithInferenceInputDescriptors:(id)a3 inferenceOutputDescriptors:(id)a4 processedOutputDescriptors:(id)a5 error:(id *)a6;
-- (BOOL)prewarmBmBuffersForANSTOutputDescriptors:(id)a3 error:(id *)a4;
++ (BOOL)getInputImageAcOrientation:(int *)orientation fromPixelBuffer:(id)buffer withError:(id *)error;
+- (ANSTISPInferencePostprocessor)initWithInferenceInputDescriptors:(id)descriptors inferenceOutputDescriptors:(id)outputDescriptors processedOutputDescriptors:(id)processedOutputDescriptors error:(id *)error;
+- (BOOL)prewarmBmBuffersForANSTOutputDescriptors:(id)descriptors error:(id *)error;
 - (CGSize)originalImageSize;
-- (id)semanticSegmentationMaskDescriptorOfCategory:(id)a3;
-- (id)trackedObjectsOfCategory:(id)a3;
-- (void)_recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex:(unint64_t)a3 skipIndexSet:(id)a4 block:(id)a5;
-- (void)accessANSTOutputsAsBmBuffersWithSkipIndexSet:(id)a3 usingBlock:(id)a4;
+- (id)semanticSegmentationMaskDescriptorOfCategory:(id)category;
+- (id)trackedObjectsOfCategory:(id)category;
+- (void)_recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex:(unint64_t)index skipIndexSet:(id)set block:(id)block;
+- (void)accessANSTOutputsAsBmBuffersWithSkipIndexSet:(id)set usingBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation ANSTISPInferencePostprocessor
 
-- (ANSTISPInferencePostprocessor)initWithInferenceInputDescriptors:(id)a3 inferenceOutputDescriptors:(id)a4 processedOutputDescriptors:(id)a5 error:(id *)a6
+- (ANSTISPInferencePostprocessor)initWithInferenceInputDescriptors:(id)descriptors inferenceOutputDescriptors:(id)outputDescriptors processedOutputDescriptors:(id)processedOutputDescriptors error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = ANSTISPInferencePostprocessor;
-  v6 = [(ANSTInferencePostprocessor *)&v10 initWithInferenceInputDescriptors:a3 inferenceOutputDescriptors:a4 processedOutputDescriptors:a5 error:a6];
+  v6 = [(ANSTInferencePostprocessor *)&v10 initWithInferenceInputDescriptors:descriptors inferenceOutputDescriptors:outputDescriptors processedOutputDescriptors:processedOutputDescriptors error:error];
   v7 = v6;
   if (v6)
   {
@@ -31,37 +31,37 @@
   return v7;
 }
 
-- (id)trackedObjectsOfCategory:(id)a3
+- (id)trackedObjectsOfCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x277CBEAD8], v4, *MEMORY[0x277CBE660], @"A concrete implementation of -trackedObjectsOfCategory: is required.", 0);
   objc_exception_throw(v5);
 }
 
-- (id)semanticSegmentationMaskDescriptorOfCategory:(id)a3
+- (id)semanticSegmentationMaskDescriptorOfCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x277CBEAD8], v4, *MEMORY[0x277CBE660], @"A concrete implementation of -semanticSegmentationMaskDescriptorOfCategory: is required.", 0);
   objc_exception_throw(v5);
 }
 
-- (BOOL)prewarmBmBuffersForANSTOutputDescriptors:(id)a3 error:(id *)a4
+- (BOOL)prewarmBmBuffersForANSTOutputDescriptors:(id)descriptors error:(id *)error
 {
   v100[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v9 = v7;
+  descriptorsCopy = descriptors;
+  v9 = descriptorsCopy;
   if (self->_anstOutputs)
   {
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x277CCA9B8];
-      v11 = v7;
+      v11 = descriptorsCopy;
       v99 = *MEMORY[0x277CCA068];
       v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"BmBuffer array has already been prewarmed.");
       v100[0] = v12;
       v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v100, &v99, 1);
       v9 = v11;
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v10, v15, @"ANSTErrorDomain", 3, v14);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v10, v15, @"ANSTErrorDomain", 3, v14);
 
       goto LABEL_4;
     }
@@ -69,7 +69,7 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&self->_anstOutputDescriptors, a3);
+  objc_storeStrong(&self->_anstOutputDescriptors, descriptors);
   v19 = objc_msgSend_count(v9, v17, v18);
   self->_anstOutputs = malloc_type_malloc(24 * v19, 0x1080040468F112EuLL);
   if (!objc_msgSend_count(v9, v20, v21))
@@ -79,11 +79,11 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v89 = a4;
+  errorCopy = error;
   v90 = v9;
   v23 = 0;
   v24 = 0x27884F000uLL;
-  v91 = self;
+  selfCopy = self;
   while (1)
   {
     v25 = objc_msgSend_objectAtIndexedSubscript_(v9, v22, v23);
@@ -118,7 +118,7 @@ LABEL_42:
         if (!v39)
         {
 LABEL_44:
-          if (v89)
+          if (errorCopy)
           {
             v62 = MEMORY[0x277CCA9B8];
             v97 = *MEMORY[0x277CCA068];
@@ -127,14 +127,14 @@ LABEL_44:
             v66 = objc_msgSend_stringWithFormat_(v63, v65, @"Invalid tensor for descriptor named: %@", v64);
             v98 = v66;
             v68 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v67, &v98, &v97, 1);
-            *v89 = objc_msgSend_errorWithDomain_code_userInfo_(v62, v69, @"ANSTErrorDomain", 10, v68);
+            *errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(v62, v69, @"ANSTErrorDomain", 10, v68);
           }
 
-          anstOutputs = v91->_anstOutputs;
+          anstOutputs = selfCopy->_anstOutputs;
           if (anstOutputs)
           {
             free(anstOutputs);
-            v91->_anstOutputs = 0;
+            selfCopy->_anstOutputs = 0;
           }
 
 LABEL_57:
@@ -166,7 +166,7 @@ LABEL_57:
         v53 = 6;
       }
 
-      self = v91;
+      self = selfCopy;
       v24 = 0x27884F000;
       goto LABEL_41;
     }
@@ -192,7 +192,7 @@ LABEL_57:
     {
       if (v50 != 1278226742 && v50 != 1278226536)
       {
-        if (v89)
+        if (errorCopy)
         {
           v80 = MEMORY[0x277CCA9B8];
           v95 = *MEMORY[0x277CCA068];
@@ -201,7 +201,7 @@ LABEL_57:
           v84 = objc_msgSend_stringWithFormat_(v81, v83, @"Invalid pixel format for descriptor named: %@", v82);
           v96 = v84;
           v86 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v85, &v96, &v95, 1);
-          *v89 = objc_msgSend_errorWithDomain_code_userInfo_(v80, v87, @"ANSTErrorDomain", 10, v86);
+          *errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(v80, v87, @"ANSTErrorDomain", 10, v86);
         }
 
         v88 = self->_anstOutputs;
@@ -226,7 +226,7 @@ LABEL_41:
     }
   }
 
-  if (v89)
+  if (errorCopy)
   {
     v71 = MEMORY[0x277CCA9B8];
     v93 = *MEMORY[0x277CCA068];
@@ -235,7 +235,7 @@ LABEL_41:
     v75 = objc_msgSend_stringWithFormat_(v72, v74, @"Unexpected descriptor type for descriptor named: %@", v73);
     v94 = v75;
     v77 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v76, &v94, &v93, 1);
-    *v89 = objc_msgSend_errorWithDomain_code_userInfo_(v71, v78, @"ANSTErrorDomain", 10, v77);
+    *errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(v71, v78, @"ANSTErrorDomain", 10, v77);
   }
 
   v79 = self->_anstOutputs;
@@ -256,11 +256,11 @@ LABEL_43:
   return v16;
 }
 
-- (void)accessANSTOutputsAsBmBuffersWithSkipIndexSet:(id)a3 usingBlock:(id)a4
+- (void)accessANSTOutputsAsBmBuffersWithSkipIndexSet:(id)set usingBlock:(id)block
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v8 = v6;
+  blockCopy = block;
+  v8 = blockCopy;
   if (self->_anstOutputs)
   {
     v17[0] = MEMORY[0x277D85DD0];
@@ -268,8 +268,8 @@ LABEL_43:
     v17[2] = sub_22E5F47F0;
     v17[3] = &unk_27884FB08;
     v17[4] = self;
-    v18 = v6;
-    objc_msgSend__recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex_skipIndexSet_block_(self, v9, 0, a3, v17);
+    v18 = blockCopy;
+    objc_msgSend__recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex_skipIndexSet_block_(self, v9, 0, set, v17);
     v10 = v18;
   }
 
@@ -288,25 +288,25 @@ LABEL_43:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex:(unint64_t)a3 skipIndexSet:(id)a4 block:(id)a5
+- (void)_recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex:(unint64_t)index skipIndexSet:(id)set block:(id)block
 {
   v84[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (objc_msgSend_count(self->_anstOutputDescriptors, v10, v11) <= a3)
+  setCopy = set;
+  blockCopy = block;
+  if (objc_msgSend_count(self->_anstOutputDescriptors, v10, v11) <= index)
   {
-    v9[2](v9, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
-  else if (objc_msgSend_containsIndex_(v8, v12, a3))
+  else if (objc_msgSend_containsIndex_(setCopy, v12, index))
   {
-    self->_anstOutputs[a3].var0 = 0;
-    objc_msgSend__recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex_skipIndexSet_block_(self, v13, a3 + 1, v8, v9);
+    self->_anstOutputs[index].var0 = 0;
+    objc_msgSend__recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex_skipIndexSet_block_(self, v13, index + 1, setCopy, blockCopy);
   }
 
   else
   {
-    v14 = objc_msgSend_objectAtIndexedSubscript_(self->_anstOutputDescriptors, v13, a3);
+    v14 = objc_msgSend_objectAtIndexedSubscript_(self->_anstOutputDescriptors, v13, index);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -324,15 +324,15 @@ LABEL_43:
         v70[2] = sub_22E5F4E34;
         v70[3] = &unk_27884FB30;
         v70[4] = self;
-        v74 = a3;
-        v71 = v8;
-        v22 = v9;
+        indexCopy = index;
+        v71 = setCopy;
+        v22 = blockCopy;
         v72 = v22;
         v73 = &v75;
         v69 = 0;
         objc_msgSend_performDataAccessWithOptions_usingBlock_error_(v19, v23, 0, v70, &v69);
         v24 = v69;
-        self->_anstOutputs[a3].var0 = 0;
+        self->_anstOutputs[index].var0 = 0;
         if (v24)
         {
           if (*(v76 + 24) == 1)
@@ -364,7 +364,7 @@ LABEL_43:
         v58 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v57, v84, &v83, 1);
         v24 = objc_msgSend_errorWithDomain_code_userInfo_(v52, v59, @"ANSTErrorDomain", 11, v58);
 
-        (v9)[2](v9, v24);
+        (blockCopy)[2](blockCopy, v24);
       }
     }
 
@@ -381,9 +381,9 @@ LABEL_43:
           v33 = objc_msgSend_pixelBuffer(v30, v31, v32);
           CVPixelBufferLockBaseAddress(v33, 1uLL);
           v36 = objc_msgSend_pixelBuffer(v30, v34, v35);
-          self->_anstOutputs[a3].var0 = CVPixelBufferGetBaseAddress(v36);
-          objc_msgSend__recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex_skipIndexSet_block_(self, v37, a3 + 1, v8, v9);
-          self->_anstOutputs[a3].var0 = 0;
+          self->_anstOutputs[index].var0 = CVPixelBufferGetBaseAddress(v36);
+          objc_msgSend__recursiveBatchAccessOfANSTTensorOutputDataCurrentIndex_skipIndexSet_block_(self, v37, index + 1, setCopy, blockCopy);
+          self->_anstOutputs[index].var0 = 0;
           v40 = objc_msgSend_pixelBuffer(v30, v38, v39);
           CVPixelBufferUnlockBaseAddress(v40, 1uLL);
           v24 = 0;
@@ -400,7 +400,7 @@ LABEL_43:
           v66 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v65, &v82, &v81, 1);
           v24 = objc_msgSend_errorWithDomain_code_userInfo_(v60, v67, @"ANSTErrorDomain", 13, v66);
 
-          (v9)[2](v9, v24);
+          (blockCopy)[2](blockCopy, v24);
         }
       }
 
@@ -421,7 +421,7 @@ LABEL_43:
         v50 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v49, &v80, &v79, 1);
         v24 = objc_msgSend_errorWithDomain_code_userInfo_(v42, v51, @"ANSTErrorDomain", 10, v50);
 
-        (v9)[2](v9, v24);
+        (blockCopy)[2](blockCopy, v24);
       }
     }
   }
@@ -443,14 +443,14 @@ LABEL_43:
   [(ANSTISPInferencePostprocessor *)&v4 dealloc];
 }
 
-+ (BOOL)getInputImageAcOrientation:(int *)a3 fromPixelBuffer:(id)a4 withError:(id *)a5
++ (BOOL)getInputImageAcOrientation:(int *)orientation fromPixelBuffer:(id)buffer withError:(id *)error
 {
-  LODWORD(v7) = objc_msgSend_orientation(a4, a2, a3);
+  LODWORD(v7) = objc_msgSend_orientation(buffer, a2, orientation);
   if (v7 <= 3)
   {
     if (v7 == 1)
     {
-      *a3 = 0;
+      *orientation = 0;
       return v7;
     }
 
@@ -463,7 +463,7 @@ LABEL_43:
       }
 
 LABEL_18:
-      if (a5)
+      if (error)
       {
         objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v8, @"ANSTErrorDomain", 16, 0);
         goto LABEL_16;
@@ -473,13 +473,13 @@ LABEL_18:
     }
 
 LABEL_14:
-    if (a5)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v8, @"ANSTErrorDomain", 17, 0);
       v10 = LABEL_16:;
       v7 = v10;
       LOBYTE(v7) = 0;
-      *a5 = v10;
+      *error = v10;
       return v7;
     }
 
@@ -495,7 +495,7 @@ LABEL_20:
       if (v7 == 8)
       {
         LOBYTE(v7) = 1;
-        *a3 = 1;
+        *orientation = 1;
         return v7;
       }
 
@@ -517,7 +517,7 @@ LABEL_20:
 
   v9 = 3;
 LABEL_10:
-  *a3 = v9;
+  *orientation = v9;
   LOBYTE(v7) = 1;
   return v7;
 }

@@ -1,28 +1,28 @@
 @interface CUIKDefaultAlarmPreferences
 + (NSNumber)defaultAllDayAlarmOffset;
 + (NSNumber)defaultTimedAlarmOffset;
-+ (id)defaultAlarmOffsetForAlarmType:(int)a3 eventStore:(id)a4;
-+ (id)defaultBirthdayAlarmOffsetWithEventStore:(id)a3;
-+ (void)setDefaultAlarmOffset:(id)a3 forAlarmType:(int)a4 eventStore:(id)a5;
++ (id)defaultAlarmOffsetForAlarmType:(int)type eventStore:(id)store;
++ (id)defaultBirthdayAlarmOffsetWithEventStore:(id)store;
++ (void)setDefaultAlarmOffset:(id)offset forAlarmType:(int)type eventStore:(id)store;
 @end
 
 @implementation CUIKDefaultAlarmPreferences
 
-+ (id)defaultAlarmOffsetForAlarmType:(int)a3 eventStore:(id)a4
++ (id)defaultAlarmOffsetForAlarmType:(int)type eventStore:(id)store
 {
-  v6 = a4;
-  switch(a3)
+  storeCopy = store;
+  switch(type)
   {
     case 0:
-      v7 = [a1 defaultTimedAlarmOffset];
+      defaultTimedAlarmOffset = [self defaultTimedAlarmOffset];
       goto LABEL_7;
     case 1:
-      v7 = [a1 defaultAllDayAlarmOffset];
+      defaultTimedAlarmOffset = [self defaultAllDayAlarmOffset];
       goto LABEL_7;
     case 2:
-      v7 = [a1 defaultBirthdayAlarmOffsetWithEventStore:v6];
+      defaultTimedAlarmOffset = [self defaultBirthdayAlarmOffsetWithEventStore:storeCopy];
 LABEL_7:
-      v8 = v7;
+      v8 = defaultTimedAlarmOffset;
       goto LABEL_9;
   }
 
@@ -32,25 +32,25 @@ LABEL_9:
   return v8;
 }
 
-+ (void)setDefaultAlarmOffset:(id)a3 forAlarmType:(int)a4 eventStore:(id)a5
++ (void)setDefaultAlarmOffset:(id)offset forAlarmType:(int)type eventStore:(id)store
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 integerValue] == 0x7FFFFFFFFFFFFFFFLL)
+  offsetCopy = offset;
+  storeCopy = store;
+  if ([offsetCopy integerValue] == 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    v7 = 0;
+    offsetCopy = 0;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [v8 sources];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    sources = [storeCopy sources];
+    v12 = [sources countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -61,16 +61,16 @@ LABEL_9:
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sources);
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
           if ([v16 sourceType] == 5)
           {
-            [v16 setDefaultAlarmOffset:v7];
-            v17 = [v16 eventStore];
+            [v16 setDefaultAlarmOffset:offsetCopy];
+            eventStore = [v16 eventStore];
             v20 = 0;
-            v18 = [v17 saveSource:v16 commit:1 error:&v20];
+            v18 = [eventStore saveSource:v16 commit:1 error:&v20];
             v19 = v20;
 
             if (v18)
@@ -88,7 +88,7 @@ LABEL_9:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v13 = [sources countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v13)
         {
           continue;
@@ -109,14 +109,14 @@ LABEL_24:
 
   else
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       CalAlarmSetDefaultAllDayAlarmOffset();
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_10;
       }
@@ -174,15 +174,15 @@ LABEL_10:
   return v5;
 }
 
-+ (id)defaultBirthdayAlarmOffsetWithEventStore:(id)a3
++ (id)defaultBirthdayAlarmOffsetWithEventStore:(id)store
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 sources];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sources = [store sources];
+  v4 = [sources countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -193,7 +193,7 @@ LABEL_3:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(sources);
       }
 
       v8 = *(*(&v11 + 1) + 8 * v7);
@@ -204,7 +204,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [sources countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -214,9 +214,9 @@ LABEL_3:
       }
     }
 
-    v9 = [v8 defaultAlarmOffset];
+    defaultAlarmOffset = [v8 defaultAlarmOffset];
 
-    if (v9)
+    if (defaultAlarmOffset)
     {
       goto LABEL_12;
     }
@@ -227,10 +227,10 @@ LABEL_3:
 LABEL_9:
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:0x7FFFFFFFFFFFFFFFLL];
+  defaultAlarmOffset = [MEMORY[0x1E696AD98] numberWithInteger:0x7FFFFFFFFFFFFFFFLL];
 LABEL_12:
 
-  return v9;
+  return defaultAlarmOffset;
 }
 
 @end

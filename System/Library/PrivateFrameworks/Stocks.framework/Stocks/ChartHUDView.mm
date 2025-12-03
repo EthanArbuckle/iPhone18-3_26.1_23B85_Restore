@@ -1,19 +1,19 @@
 @interface ChartHUDView
 + (id)_dateRangeSeparatorString;
-+ (id)monoSpacedFontWithFont:(id)a3;
++ (id)monoSpacedFontWithFont:(id)font;
 + (id)newHUDLabel;
-+ (id)stringForTimeIntervalSince1970:(double)a3 withInterval:(int64_t)a4 isDouble:(BOOL)a5 isLeft:(BOOL)a6;
-+ (void)initializeDateFormattersIfNeededForInterval:(int64_t)a3 withTimeZone:(id)a4;
-- (ChartHUDView)initWithFrame:(CGRect)a3;
++ (id)stringForTimeIntervalSince1970:(double)since1970 withInterval:(int64_t)interval isDouble:(BOOL)double isLeft:(BOOL)left;
++ (void)initializeDateFormattersIfNeededForInterval:(int64_t)interval withTimeZone:(id)zone;
+- (ChartHUDView)initWithFrame:(CGRect)frame;
 - (StockChartView)chartView;
 - (void)_showHUD;
 - (void)layoutSubviews;
 - (void)resetLocale;
 - (void)resizeSelectedClipViewsIfNeeded;
-- (void)setFrame:(CGRect)a3;
-- (void)setOverlayHidden:(BOOL)a3;
-- (void)setShowingTracking:(BOOL)a3 withTouchInfo:(id)a4 animated:(BOOL)a5;
-- (void)tapDragGestureChanged:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setOverlayHidden:(BOOL)hidden;
+- (void)setShowingTracking:(BOOL)tracking withTouchInfo:(id)info animated:(BOOL)animated;
+- (void)tapDragGestureChanged:(id)changed;
 @end
 
 @implementation ChartHUDView
@@ -23,9 +23,9 @@
   v2 = _dateRangeSeparatorString_dateRangeSeparatorString;
   if (!_dateRangeSeparatorString_dateRangeSeparatorString)
   {
-    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%C", 8211];
+    8211 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%C", 8211];
     v4 = _dateRangeSeparatorString_dateRangeSeparatorString;
-    _dateRangeSeparatorString_dateRangeSeparatorString = v3;
+    _dateRangeSeparatorString_dateRangeSeparatorString = 8211;
 
     v2 = _dateRangeSeparatorString_dateRangeSeparatorString;
   }
@@ -33,11 +33,11 @@
   return v2;
 }
 
-+ (void)initializeDateFormattersIfNeededForInterval:(int64_t)a3 withTimeZone:(id)a4
++ (void)initializeDateFormattersIfNeededForInterval:(int64_t)interval withTimeZone:(id)zone
 {
-  v5 = a4;
-  v20 = v5;
-  if (a3 < 2)
+  zoneCopy = zone;
+  v20 = zoneCopy;
+  if (interval < 2)
   {
     v13 = shortTermSingleDateFormatter;
     if (!shortTermSingleDateFormatter)
@@ -71,7 +71,7 @@
 
   else
   {
-    v6 = v5;
+    v6 = zoneCopy;
     v7 = longTermSingleDateFormatter;
     v8 = &longTermDoubleDateFormatter;
     if (!longTermSingleDateFormatter)
@@ -115,12 +115,12 @@
   daySecondDateFormatter = 0;
 }
 
-+ (id)stringForTimeIntervalSince1970:(double)a3 withInterval:(int64_t)a4 isDouble:(BOOL)a5 isLeft:(BOOL)a6
++ (id)stringForTimeIntervalSince1970:(double)since1970 withInterval:(int64_t)interval isDouble:(BOOL)double isLeft:(BOOL)left
 {
-  if (a4 >= 2)
+  if (interval >= 2)
   {
     v7 = &longTermDoubleDateFormatter;
-    if (!a5)
+    if (!double)
     {
       v7 = &longTermSingleDateFormatter;
     }
@@ -130,10 +130,10 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a5)
+  if (double)
   {
     v7 = &shortTermDoubleDateFormatter;
-    if (a4 != 1 && !a6)
+    if (interval != 1 && !left)
     {
       v7 = &daySecondDateFormatter;
     }
@@ -144,7 +144,7 @@ LABEL_11:
   v9 = shortTermSingleDateFormatter;
 LABEL_13:
   v10 = v9;
-  v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:a3];
+  v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:since1970];
   v12 = [v10 stringFromDate:v11];
 
   return v12;
@@ -155,23 +155,23 @@ LABEL_13:
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   v4 = +[StocksStyle sharedStyle];
   v5 = [v4 lightFontOfSize:22.0];
-  v6 = [a1 monoSpacedFontWithFont:v5];
+  v6 = [self monoSpacedFontWithFont:v5];
   [v3 setFont:v6];
 
   v7 = [MEMORY[0x277D75348] colorWithWhite:0.8 alpha:1.0];
   [v3 setTextColor:v7];
 
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setClipsToBounds:0];
   return v3;
 }
 
-+ (id)monoSpacedFontWithFont:(id)a3
++ (id)monoSpacedFontWithFont:(id)font
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 fontDescriptor];
+  fontDescriptor = [font fontDescriptor];
   v14 = *MEMORY[0x277D74338];
   v4 = *MEMORY[0x277D74388];
   v11[0] = *MEMORY[0x277D74398];
@@ -183,19 +183,19 @@ LABEL_13:
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
   v15[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v8 = [v3 fontDescriptorByAddingAttributes:v7];
+  v8 = [fontDescriptor fontDescriptorByAddingAttributes:v7];
 
   v9 = [MEMORY[0x277D74300] fontWithDescriptor:v8 size:0.0];
 
   return v9;
 }
 
-- (ChartHUDView)initWithFrame:(CGRect)a3
+- (ChartHUDView)initWithFrame:(CGRect)frame
 {
   v54 = *MEMORY[0x277D85DE8];
   v52.receiver = self;
   v52.super_class = ChartHUDView;
-  v3 = [(ChartHUDView *)&v52 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ChartHUDView *)&v52 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[ChartHUDView newHUDLabel];
@@ -226,9 +226,9 @@ LABEL_13:
 
     v17 = [StocksBundles getBundle:1];
     v18 = MEMORY[0x277D755B8];
-    v19 = [(ChartHUDView *)v3 traitCollection];
+    traitCollection = [(ChartHUDView *)v3 traitCollection];
     v46 = v17;
-    v20 = [v18 imageNamed:@"HUDDot" inBundle:v17 compatibleWithTraitCollection:v19];
+    v20 = [v18 imageNamed:@"HUDDot" inBundle:v17 compatibleWithTraitCollection:traitCollection];
 
     v50 = 0u;
     v51 = 0u;
@@ -261,9 +261,9 @@ LABEL_13:
           [v28 setAlpha:0.0];
 
           v29 = +[StocksStyle sharedStyle];
-          v30 = [v29 chartHighlightColor];
+          chartHighlightColor = [v29 chartHighlightColor];
           v31 = [v25 bar];
-          [v31 setBackgroundColor:v30];
+          [v31 setBackgroundColor:chartHighlightColor];
 
           v32 = [v25 dot];
           [v32 setAlpha:0.0];
@@ -286,8 +286,8 @@ LABEL_13:
 
     v35 = [PricePopoverBar alloc];
     v36 = MEMORY[0x277D755B8];
-    v37 = [(ChartHUDView *)v3 traitCollection];
-    v38 = [v36 imageNamed:@"ButtonMask" inBundle:v46 compatibleWithTraitCollection:v37];
+    traitCollection2 = [(ChartHUDView *)v3 traitCollection];
+    v38 = [v36 imageNamed:@"ButtonMask" inBundle:v46 compatibleWithTraitCollection:traitCollection2];
     v39 = CeilToPixel(4.5);
     v40 = [v38 resizableImageWithCapInsets:1 resizingMode:{0.0, v39, 0.0, CeilToPixel(4.5)}];
     v41 = [(PricePopoverBar *)v35 initWithBackgroundImage:v40];
@@ -308,11 +308,11 @@ LABEL_13:
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = ChartHUDView;
-  [(ChartHUDView *)&v22 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ChartHUDView *)&v22 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(StockGraphView *)self->_graphView frame];
   v5 = v4;
   v7 = v6;
@@ -331,17 +331,17 @@ LABEL_13:
   [(StocksTapDragGestureRecognizer *)self->_tapDragGesture setTouchableBounds:v14, v16, v19, v21 - v16];
 }
 
-- (void)setOverlayHidden:(BOOL)a3
+- (void)setOverlayHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v14 = *MEMORY[0x277D85DE8];
-  self->_overlayHidden = a3;
+  self->_overlayHidden = hidden;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(ChartHUDView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [(ChartHUDView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -353,14 +353,14 @@ LABEL_13:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setHidden:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setHidden:hiddenCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -370,14 +370,14 @@ LABEL_13:
 - (void)resizeSelectedClipViewsIfNeeded
 {
   v3 = [(NSMutableSet *)self->_touchInfoSet count];
-  v35 = [(NSMutableSet *)self->_touchInfoSet allObjects];
+  allObjects = [(NSMutableSet *)self->_touchInfoSet allObjects];
   if (v3 == 2)
   {
-    v4 = [v35 objectAtIndex:0];
+    v4 = [allObjects objectAtIndex:0];
     [v4 plottedLocation];
     v6 = v5;
 
-    v7 = [v35 objectAtIndex:1];
+    v7 = [allObjects objectAtIndex:1];
     [v7 plottedLocation];
     v9 = v8;
 
@@ -409,18 +409,18 @@ LABEL_13:
 
   if ([(NSMutableSet *)self->_touchInfoSet count])
   {
-    v15 = [(NSMutableSet *)self->_touchInfoSet allObjects];
-    v16 = [v15 firstObject];
-    v17 = [v16 touch];
-    [v17 locationInView:self->_graphView];
+    allObjects2 = [(NSMutableSet *)self->_touchInfoSet allObjects];
+    firstObject = [allObjects2 firstObject];
+    touch = [firstObject touch];
+    [touch locationInView:self->_graphView];
     v19 = v18;
     v21 = v20;
 
     if (v3 == 2)
     {
-      v22 = [v15 lastObject];
-      v23 = [v22 touch];
-      [v23 locationInView:self->_graphView];
+      lastObject = [allObjects2 lastObject];
+      touch2 = [lastObject touch];
+      [touch2 locationInView:self->_graphView];
       v25 = v24;
       v27 = v26;
 
@@ -516,8 +516,8 @@ LABEL_13:
             v29 = [v27 bar];
             [v29 frame];
             v31 = v30;
-            v2 = [MEMORY[0x277D759A0] mainScreen];
-            [v2 scale];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen scale];
             [v28 setFrame:{v31, v17 + 1.0 / v32, RoundToPixel(0.5), self->_barHeight}];
           }
 
@@ -538,19 +538,19 @@ LABEL_13:
       if (v35)
       {
         v36 = v35;
-        v2 = *v184;
+        mainScreen = *v184;
         do
         {
           for (j = 0; j != v36; ++j)
           {
-            if (*v184 != v2)
+            if (*v184 != mainScreen)
             {
               objc_enumerationMutation(v34);
             }
 
             v38 = *(*(&v183 + 1) + 8 * j);
-            v39 = [v38 touch];
-            [v39 locationInView:self];
+            touch = [v38 touch];
+            [touch locationInView:self];
             v41 = v40;
             v43 = v42;
 
@@ -636,16 +636,16 @@ LABEL_13:
       {
         [(ChartHUDView *)self resizeSelectedClipViewsIfNeeded];
         v70 = +[StocksStyle sharedStyle];
-        v71 = [v70 chartHighlightColor];
+        chartHighlightColor = [v70 chartHighlightColor];
 
-        v164 = v71;
+        v164 = chartHighlightColor;
         if ([(NSMutableSet *)self->_touchInfoSet count]== 1)
         {
-          v72 = [(NSMutableSet *)self->_touchInfoSet anyObject];
-          v73 = v72;
-          if (v72)
+          anyObject = [(NSMutableSet *)self->_touchInfoSet anyObject];
+          v73 = anyObject;
+          if (anyObject)
           {
-            [v72 stockValue];
+            [anyObject stockValue];
             v74 = *(&v177 + 1);
             v75 = *&v177;
 
@@ -671,26 +671,26 @@ LABEL_13:
             v74 = 0.0;
           }
 
-          v78 = [v76 numberWithDouble:v74];
+          allObjects = [v76 numberWithDouble:v74];
           v114 = +[StockDataFormatter sharedDataFormatter];
           if (v77)
           {
-            v2 = [(ChartHUDView *)self chartView];
-            forceTouchUpdate = [v2 stock];
-            v115 = [forceTouchUpdate pricePrecision];
+            mainScreen = [(ChartHUDView *)self chartView];
+            forceTouchUpdate = [mainScreen stock];
+            pricePrecision = [forceTouchUpdate pricePrecision];
           }
 
           else
           {
-            v115 = 0;
+            pricePrecision = 0;
           }
 
-          v108 = [v114 formattedNumber:v78 withPrecision:v115 useGroupSeparator:1];
+          v108 = [v114 formattedNumber:allObjects withPrecision:pricePrecision useGroupSeparator:1];
           if (v77)
           {
           }
 
-          [(PricePopoverBar *)self->_pricePopoverBar setImageMaskColor:v71];
+          [(PricePopoverBar *)self->_pricePopoverBar setImageMaskColor:chartHighlightColor];
           [(PricePopoverBar *)self->_pricePopoverBar setChangeImage:0];
           v106 = 0;
           v92 = 0.0;
@@ -698,16 +698,16 @@ LABEL_13:
 
         else
         {
-          v78 = [(NSMutableSet *)self->_touchInfoSet allObjects];
-          v79 = [v78 objectAtIndex:0];
+          allObjects = [(NSMutableSet *)self->_touchInfoSet allObjects];
+          v79 = [allObjects objectAtIndex:0];
           [v79 locationInHUD];
           v81 = v80;
-          v82 = [v78 objectAtIndex:1];
+          v82 = [allObjects objectAtIndex:1];
           [v82 locationInHUD];
           v84 = v83;
           v85 = v81 >= v83;
 
-          v86 = [v78 objectAtIndex:v85];
+          v86 = [allObjects objectAtIndex:v85];
           v87 = v86;
           v88 = 0.0;
           v89 = 0.0;
@@ -719,7 +719,7 @@ LABEL_13:
             v75 = *&v177;
           }
 
-          v90 = [v78 objectAtIndex:v81 < v84];
+          v90 = [allObjects objectAtIndex:v81 < v84];
           v91 = v90;
           v92 = 0.0;
           if (v90)
@@ -747,9 +747,9 @@ LABEL_13:
           }
 
           v100 = [MEMORY[0x277CCABB0] numberWithDouble:v98];
-          v101 = [(ChartHUDView *)self chartView];
-          v102 = [v101 stock];
-          v103 = [v97 formattedNumber:v100 withPrecision:objc_msgSend(v102 useGroupSeparator:{"pricePrecision"), 1}];
+          chartView = [(ChartHUDView *)self chartView];
+          stock = [chartView stock];
+          v103 = [v97 formattedNumber:v100 withPrecision:objc_msgSend(stock useGroupSeparator:{"pricePrecision"), 1}];
 
           v104 = +[StockDataFormatter sharedDataFormatter];
           v105 = [MEMORY[0x277CCABB0] numberWithDouble:v99];
@@ -766,23 +766,23 @@ LABEL_13:
             v111 = v110;
             if (v94 >= 0.0)
             {
-              v112 = [v110 gainColor];
+              gainColor = [v110 gainColor];
               v113 = @"PlusSign";
             }
 
             else
             {
-              v112 = [v110 lossColor];
+              gainColor = [v110 lossColor];
               v113 = @"MinusSign";
             }
 
-            [(PricePopoverBar *)pricePopoverBar setImageMaskColor:v112];
+            [(PricePopoverBar *)pricePopoverBar setImageMaskColor:gainColor];
 
             v116 = [StocksBundles getBundle:1];
             v117 = self->_pricePopoverBar;
             v118 = MEMORY[0x277D755B8];
-            v119 = [(ChartHUDView *)self traitCollection];
-            v120 = [v118 imageNamed:v113 inBundle:v116 compatibleWithTraitCollection:v119];
+            traitCollection = [(ChartHUDView *)self traitCollection];
+            v120 = [v118 imageNamed:v113 inBundle:v116 compatibleWithTraitCollection:traitCollection];
             [(PricePopoverBar *)v117 setChangeImage:v120];
 
             v106 = v165;
@@ -799,7 +799,7 @@ LABEL_13:
         [(PricePopoverBar *)self->_pricePopoverBar setPriceString:v108];
         [(PricePopoverBar *)self->_pricePopoverBar setPercentChange:v106];
         v121 = [ChartHUDView stringForTimeIntervalSince1970:self->_interval withInterval:[(NSMutableSet *)self->_touchInfoSet count]== 2 isDouble:1 isLeft:v75];
-        v122 = [(UILabel *)self->_leftDateLabel font];
+        font = [(UILabel *)self->_leftDateLabel font];
         if ([(NSMutableSet *)self->_touchInfoSet count]!= 2 || v92 == v75)
         {
           v132 = *MEMORY[0x277CBF3A8];
@@ -823,11 +823,11 @@ LABEL_13:
           p_rightDateLabel = &self->_rightDateLabel;
           [(UILabel *)self->_rightDateLabel setText:v124];
 
-          [v121 _legacy_sizeWithFont:v122];
+          [v121 _legacy_sizeWithFont:font];
           v127 = v126;
           v129 = v128;
-          v130 = [(UILabel *)self->_rightDateLabel text];
-          [v130 _legacy_sizeWithFont:v122];
+          text = [(UILabel *)self->_rightDateLabel text];
+          [text _legacy_sizeWithFont:font];
           v132 = v131;
           v134 = v133;
 
@@ -836,12 +836,12 @@ LABEL_13:
 
         [(UILabel *)*p_rightDateLabel setAlpha:v135];
         [(UILabel *)self->_leftDateLabel setAlpha:v135];
-        v136 = [(UILabel *)self->_centeredLabel font];
-        [v136 ascender];
+        font2 = [(UILabel *)self->_centeredLabel font];
+        [font2 ascender];
         v138 = RoundToPixel(22.0 - v137);
 
-        v139 = [(UILabel *)self->_centeredLabel text];
-        [v139 _legacy_sizeWithFont:v122];
+        text2 = [(UILabel *)self->_centeredLabel text];
+        [text2 _legacy_sizeWithFont:font];
         v141 = v140;
         v163 = v142;
 
@@ -942,12 +942,12 @@ LABEL_13:
   }
 }
 
-- (void)setShowingTracking:(BOOL)a3 withTouchInfo:(id)a4 animated:(BOOL)a5
+- (void)setShowingTracking:(BOOL)tracking withTouchInfo:(id)info animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  animatedCopy = animated;
+  trackingCopy = tracking;
+  infoCopy = info;
+  if (trackingCopy)
   {
     [(ChartHUDView *)self setNeedsLayout];
   }
@@ -957,7 +957,7 @@ LABEL_13:
   v12[0] = MEMORY[0x277D85DD0];
   v12[2] = __58__ChartHUDView_setShowingTracking_withTouchInfo_animated___block_invoke;
   v12[3] = &unk_279D16658;
-  if (v5)
+  if (animatedCopy)
   {
     v10 = 0.150000002;
   }
@@ -967,10 +967,10 @@ LABEL_13:
     v10 = 0.0;
   }
 
-  v15 = v6;
-  v13 = v8;
-  v14 = self;
-  v11 = v8;
+  v15 = trackingCopy;
+  v13 = infoCopy;
+  selfCopy = self;
+  v11 = infoCopy;
   [v9 animateWithDuration:v12 animations:v10];
 }
 
@@ -1005,11 +1005,11 @@ uint64_t __58__ChartHUDView_setShowingTracking_withTouchInfo_animated___block_in
 - (void)_showHUD
 {
   WeakRetained = objc_loadWeakRetained(&self->_chartView);
-  v7 = [WeakRetained chartData];
+  chartData = [WeakRetained chartData];
 
-  v4 = [v7 chartInterval];
-  v5 = [v7 marketTimeZone];
-  [(ChartHUDView *)self setSelectedInterval:v4 timeZone:v5];
+  chartInterval = [chartData chartInterval];
+  marketTimeZone = [chartData marketTimeZone];
+  [(ChartHUDView *)self setSelectedInterval:chartInterval timeZone:marketTimeZone];
 
   v6 = objc_loadWeakRetained(&self->_chartView);
   [v6 setShowingHUD:1];
@@ -1017,12 +1017,12 @@ uint64_t __58__ChartHUDView_setShowingTracking_withTouchInfo_animated___block_in
   [(ChartHUDView *)self setNeedsLayout];
 }
 
-- (void)tapDragGestureChanged:(id)a3
+- (void)tapDragGestureChanged:(id)changed
 {
   v70 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v4 = [v44 state];
-  switch(v4)
+  changedCopy = changed;
+  state = [changedCopy state];
+  switch(state)
   {
     case 3:
       v51 = 0u;
@@ -1111,9 +1111,9 @@ LABEL_5:
             }
 
             v11 = *(*(&v61 + 1) + 8 * k);
-            v12 = [v44 touches];
-            v13 = [v11 touch];
-            v14 = [v12 containsObject:v13];
+            touches = [changedCopy touches];
+            touch = [v11 touch];
+            v14 = [touches containsObject:touch];
 
             if ((v14 & 1) == 0)
             {
@@ -1167,8 +1167,8 @@ LABEL_5:
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v22 = [v44 touches];
-      v23 = [v22 countByEnumeratingWithState:&v53 objects:v67 count:16];
+      touches2 = [changedCopy touches];
+      v23 = [touches2 countByEnumeratingWithState:&v53 objects:v67 count:16];
       if (v23)
       {
         v24 = v23;
@@ -1179,17 +1179,17 @@ LABEL_5:
           {
             if (*v54 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(touches2);
             }
 
             v27 = *(*(&v53 + 1) + 8 * n);
             if (([v21 containsObject:v27] & 1) == 0)
             {
-              v28 = [(NSMutableSet *)self->_inactiveTouchInfoSet anyObject];
-              v29 = v28;
-              if (v28)
+              anyObject = [(NSMutableSet *)self->_inactiveTouchInfoSet anyObject];
+              v29 = anyObject;
+              if (anyObject)
               {
-                [v28 setTouch:v27];
+                [anyObject setTouch:v27];
                 [v27 locationInView:self];
                 [v29 setLocationInHUD:?];
                 [(NSMutableSet *)self->_touchInfoSet addObject:v29];
@@ -1201,7 +1201,7 @@ LABEL_5:
             }
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v53 objects:v67 count:16];
+          v24 = [touches2 countByEnumeratingWithState:&v53 objects:v67 count:16];
         }
 
         while (v24);

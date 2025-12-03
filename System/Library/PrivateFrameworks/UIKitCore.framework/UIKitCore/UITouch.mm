@@ -1,5 +1,5 @@
 @interface UITouch
-+ (id)_createTouchesWithGSEvent:(__GSEvent *)a3 phase:(int64_t)a4 view:(id)a5;
++ (id)_createTouchesWithGSEvent:(__GSEvent *)event phase:(int64_t)phase view:(id)view;
 - (BOOL)_edgeForceActive;
 - (BOOL)_edgeForcePending;
 - (BOOL)_originatesFromPointerEvent;
@@ -17,56 +17,56 @@
 - (NSArray)gestureRecognizers;
 - (NSNumber)estimationUpdateIndex;
 - (NSString)description;
-- (SEL)_responderSelectorForPhase:(int64_t)a3;
+- (SEL)_responderSelectorForPhase:(int64_t)phase;
 - (UITouchProperties)estimatedProperties;
 - (UITouchProperties)estimatedPropertiesExpectingUpdates;
 - (UIView)view;
 - (_UIEventComponentPhaseValue)_eventComponentPhase;
-- (double)_locationInWindow:(double *)a1;
-- (double)_previousLocationInWindow:(double *)a1;
+- (double)_locationInWindow:(double *)window;
+- (double)_previousLocationInWindow:(double *)window;
 - (double)_unclampedForce;
 - (id)_clone;
-- (id)_eventComponentPhaseForValue:(int64_t)a3;
+- (id)_eventComponentPhaseForValue:(int64_t)value;
 - (id)_mutableForwardingRecord;
 - (id)_rehitTest;
-- (id)_rehitTestWithEvent:(char)a3 constrainingToCurrentWindow:;
+- (id)_rehitTestWithEvent:(char)event constrainingToCurrentWindow:;
 - (id)warpedIntoView;
-- (int64_t)_compareIndex:(id)a3;
+- (int64_t)_compareIndex:(id)index;
 - (uint64_t)_effectivelyAuthentic;
-- (uint64_t)_isStationaryRelativeToTouches:(uint64_t)a1;
+- (uint64_t)_isStationaryRelativeToTouches:(uint64_t)touches;
 - (uint64_t)_shouldDeliverTouchForTouchesMoved;
 - (uint64_t)_supportsForce;
 - (void)_abandonForwardingRecord;
-- (void)_addGestureRecognizer:(uint64_t)a1;
-- (void)_clearForReenteringHoverInWindow:(id)a3;
-- (void)_clearForWindowIfNeeded:(uint64_t)a1;
-- (void)_clonePropertiesToTouch:(id)a3;
+- (void)_addGestureRecognizer:(uint64_t)recognizer;
+- (void)_clearForReenteringHoverInWindow:(id)window;
+- (void)_clearForWindowIfNeeded:(uint64_t)needed;
+- (void)_clonePropertiesToTouch:(id)touch;
 - (void)_computeAzimuthAngleInWindow;
-- (void)_loadStateFromTouch:(id)a3;
+- (void)_loadStateFromTouch:(id)touch;
 - (void)_mightBeConsideredForForceSystemGesture;
-- (void)_predictedTouchesWithEvent:(void *)a1;
-- (void)_removeGestureRecognizer:(uint64_t)a1;
-- (void)_setAltitudeAngle:(uint64_t)a1;
-- (void)_setHidEvent:(__IOHIDEvent *)a3;
-- (void)_setHitTestSecurityAnalysis:(uint64_t)a1;
-- (void)_setIsPointerTouch:(BOOL)a3;
-- (void)_setIsRestingTouch:(BOOL)a3;
-- (void)_setIsTapToClick:(BOOL)a3;
-- (void)_setLocationInWindow:(CGPoint)a3 resetPrevious:(BOOL)a4;
-- (void)_setPhaseChangeDelegate:(uint64_t)a1;
-- (void)_setPreviousTouch:(id)a3;
-- (void)_setResponder:(id)a3;
-- (void)_setRollAngle:(double)a3 resetPrevious:;
-- (void)_setWindowServerHitTestWindow:(uint64_t)a1;
-- (void)_updatePredictionsWithCoalescedTouches:(uint64_t)a1;
-- (void)_updatePredictionsWithEvent:(void *)a1;
-- (void)_updateWithChildEvent:(uint64_t)a1;
+- (void)_predictedTouchesWithEvent:(void *)event;
+- (void)_removeGestureRecognizer:(uint64_t)recognizer;
+- (void)_setAltitudeAngle:(uint64_t)angle;
+- (void)_setHidEvent:(__IOHIDEvent *)event;
+- (void)_setHitTestSecurityAnalysis:(uint64_t)analysis;
+- (void)_setIsPointerTouch:(BOOL)touch;
+- (void)_setIsRestingTouch:(BOOL)touch;
+- (void)_setIsTapToClick:(BOOL)click;
+- (void)_setLocationInWindow:(CGPoint)window resetPrevious:(BOOL)previous;
+- (void)_setPhaseChangeDelegate:(uint64_t)delegate;
+- (void)_setPreviousTouch:(id)touch;
+- (void)_setResponder:(id)responder;
+- (void)_setRollAngle:(double)angle resetPrevious:;
+- (void)_setWindowServerHitTestWindow:(uint64_t)window;
+- (void)_updatePredictionsWithCoalescedTouches:(uint64_t)touches;
+- (void)_updatePredictionsWithEvent:(void *)event;
+- (void)_updateWithChildEvent:(uint64_t)event;
 - (void)_willBeDispatchedAsEnded;
 - (void)dealloc;
-- (void)setIsDelayed:(BOOL)a3;
-- (void)setPhase:(int64_t)a3;
-- (void)setWarpedIntoView:(uint64_t)a1;
-- (void)setWindow:(id)a3;
+- (void)setIsDelayed:(BOOL)delayed;
+- (void)setPhase:(int64_t)phase;
+- (void)setWarpedIntoView:(uint64_t)view;
+- (void)setWindow:(id)window;
 @end
 
 @implementation UITouch
@@ -104,18 +104,18 @@
 
 - (void)_computeAzimuthAngleInWindow
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 344) == 2)
+    if (*(self + 344) == 2)
     {
-      v2 = *(a1 + 368);
-      v3 = [a1 window];
-      *(a1 + 376) = _UITouchConvertCADisplayAzimuthAngleToWindow(v3, v2);
+      v2 = *(self + 368);
+      window = [self window];
+      *(self + 376) = _UITouchConvertCADisplayAzimuthAngleToWindow(window, v2);
     }
 
     else
     {
-      *(a1 + 376) = 0;
+      *(self + 376) = 0;
     }
   }
 }
@@ -130,7 +130,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Deallocating touch: %p", buf, 0xCu);
     }
   }
@@ -167,12 +167,12 @@
           break;
         }
 
-        v7 = [(UIView *)v6 nextResponder];
+        nextResponder = [(UIView *)v6 nextResponder];
 
-        v6 = v7;
+        v6 = nextResponder;
       }
 
-      while (v7);
+      while (nextResponder);
       v8 = self->_cachedResponderView;
       self->_cachedResponderView = v6;
       v9 = v6;
@@ -191,13 +191,13 @@
 
 - (id)warpedIntoView
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[11];
+    self = self[11];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_effectivelyAuthentic
@@ -223,10 +223,10 @@
 
     else
     {
-      v3 = [v1 view];
-      v4 = [v3 _acceptsInauthenticTouches];
+      view = [v1 view];
+      _acceptsInauthenticTouches = [view _acceptsInauthenticTouches];
 
-      return v4;
+      return _acceptsInauthenticTouches;
     }
   }
 
@@ -256,7 +256,7 @@
 
       else
       {
-        v4 = [v1 view];
+        view = [v1 view];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -265,7 +265,7 @@
 
         else
         {
-          v5 = [v1 window];
+          window = [v1 window];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -303,12 +303,12 @@
 
 - (CGPoint)_locationInSceneReferenceSpace
 {
-  v3 = [(UITouch *)self window];
-  if (v3)
+  window = [(UITouch *)self window];
+  if (window)
   {
-    v4 = [(UITouch *)self window];
-    v5 = [(UITouch *)self window];
-    [v4 _convertPointToSceneReferenceSpace:{-[UITouch _locationInWindow:](self, v5)}];
+    window2 = [(UITouch *)self window];
+    window3 = [(UITouch *)self window];
+    [window2 _convertPointToSceneReferenceSpace:{-[UITouch _locationInWindow:](self, window3)}];
     v7 = v6;
     v9 = v8;
   }
@@ -339,12 +339,12 @@
 
 - (CGPoint)_previousLocationInSceneReferenceSpace
 {
-  v3 = [(UITouch *)self window];
-  if (v3)
+  window = [(UITouch *)self window];
+  if (window)
   {
-    v4 = [(UITouch *)self window];
-    v5 = [(UITouch *)self window];
-    [v4 _convertPointToSceneReferenceSpace:{-[UITouch _previousLocationInWindow:](self, v5)}];
+    window2 = [(UITouch *)self window];
+    window3 = [(UITouch *)self window];
+    [window2 _convertPointToSceneReferenceSpace:{-[UITouch _previousLocationInWindow:](self, window3)}];
     v7 = v6;
     v9 = v8;
   }
@@ -364,19 +364,19 @@
 
 - (void)_willBeDispatchedAsEnded
 {
-  if (a1 && (*(a1 + 236) & 0x100) == 0)
+  if (self && (*(self + 236) & 0x100) == 0)
   {
-    if (*(a1 + 224) > 0.0)
+    if (*(self + 224) > 0.0)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v2 = +[_UIStatistics maxForce];
-        [v2 recordDistributionValue:*(a1 + 224)];
+        [v2 recordDistributionValue:*(self + 224)];
       }
     }
 
-    *(a1 + 236) |= 0x100u;
+    *(self + 236) |= 0x100u;
   }
 }
 
@@ -389,11 +389,11 @@
 
 - (CGFloat)force
 {
-  v3 = [(UITouch *)self _unclampedForce];
+  _unclampedForce = [(UITouch *)self _unclampedForce];
   [(UITouch *)self maximumPossibleForce];
-  if (v3 < result)
+  if (_unclampedForce < result)
   {
-    return v3;
+    return _unclampedForce;
   }
 
   return result;
@@ -401,17 +401,17 @@
 
 - (CGFloat)maximumPossibleForce
 {
-  v3 = [(UITouch *)self _supportsForce];
+  _supportsForce = [(UITouch *)self _supportsForce];
   result = 0.0;
-  if (v3)
+  if (_supportsForce)
   {
     if (self)
     {
       maximumPossiblePressure = self->_maximumPossiblePressure;
       type = self->_type;
-      v7 = [(UITouch *)self _isPointerTouch];
+      _isPointerTouch = [(UITouch *)self _isPointerTouch];
       v8 = 3;
-      if (!v7)
+      if (!_isPointerTouch)
       {
         v8 = type;
       }
@@ -442,16 +442,16 @@
 - (double)_unclampedForce
 {
   v1 = 0.0;
-  if (a1 && [(UITouch *)a1 _supportsForce])
+  if (self && [(UITouch *)self _supportsForce])
   {
-    [a1 _pressure];
+    [self _pressure];
     v4 = v3;
     _AXSForceTouchSensitivity();
     v6 = v5;
-    v7 = a1[43];
-    v8 = [a1 _isPointerTouch];
+    v7 = self[43];
+    _isPointerTouch = [self _isPointerTouch];
     v9 = 3;
-    if (!v8)
+    if (!_isPointerTouch)
     {
       v9 = v7;
     }
@@ -484,12 +484,12 @@
 
 - (uint64_t)_supportsForce
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (([a1 _isPointerTouch] & 1) != 0 || a1[43] == 2)
+  if (([self _isPointerTouch] & 1) != 0 || self[43] == 2)
   {
     return 1;
   }
@@ -510,7 +510,7 @@
 
 - (NSString)description
 {
-  v3 = [(UITouch *)self _phaseDescription];
+  _phaseDescription = [(UITouch *)self _phaseDescription];
   if (_IsKindOfUIView(self->_responder))
   {
     v4 = MEMORY[0x1E696AEC0];
@@ -549,7 +549,7 @@
 
   tapCount = self->_tapCount;
   [(UITouch *)self force];
-  v19 = [v13 stringWithFormat:@"%@ type: %@ phase: %@;%@ tap count: %lu; force: %0.3f; window: %@; responder: %@; %@", v14, v16, v3, v12, tapCount, v18, self->_window, self->_responder, v9];;
+  v19 = [v13 stringWithFormat:@"%@ type: %@ phase: %@;%@ tap count: %lu; force: %0.3f; window: %@; responder: %@; %@", v14, v16, _phaseDescription, v12, tapCount, v18, self->_window, self->_responder, v9];;
 
   return v19;
 }
@@ -569,55 +569,55 @@
   return 0;
 }
 
-- (void)_clonePropertiesToTouch:(id)a3
+- (void)_clonePropertiesToTouch:(id)touch
 {
-  v23 = a3;
-  *(v23 + 14) = self->_touchIdentifier;
-  *(v23 + 34) = *&self->_timestamp;
-  *(v23 + 50) = *&self->_initialTouchTimestamp;
-  *(v23 + 2) = self->_phase;
-  *(v23 + 3) = self->_tapCount;
-  *(v23 + 4) = self->_edgeType;
-  *(v23 + 5) = self->_edgeAim;
-  *(v23 + 6) = self->_precision;
-  *(v23 + 43) = self->_type;
-  objc_storeStrong(v23 + 42, self->_touchAuthenticationRecord);
-  v4 = v23;
+  touchCopy = touch;
+  *(touchCopy + 14) = self->_touchIdentifier;
+  *(touchCopy + 34) = *&self->_timestamp;
+  *(touchCopy + 50) = *&self->_initialTouchTimestamp;
+  *(touchCopy + 2) = self->_phase;
+  *(touchCopy + 3) = self->_tapCount;
+  *(touchCopy + 4) = self->_edgeType;
+  *(touchCopy + 5) = self->_edgeAim;
+  *(touchCopy + 6) = self->_precision;
+  *(touchCopy + 43) = self->_type;
+  objc_storeStrong(touchCopy + 42, self->_touchAuthenticationRecord);
+  v4 = touchCopy;
   window = self->_window;
-  if (*(v23 + 8) != window)
+  if (*(touchCopy + 8) != window)
   {
-    objc_storeStrong(v23 + 8, window);
-    v4 = v23;
+    objc_storeStrong(touchCopy + 8, window);
+    v4 = touchCopy;
   }
 
   responder = self->_responder;
   if (v4[9] != responder)
   {
     objc_storeStrong(v4 + 9, responder);
-    objc_storeStrong(v23 + 10, self->_cachedResponderView);
-    v4 = v23;
+    objc_storeStrong(touchCopy + 10, self->_cachedResponderView);
+    v4 = touchCopy;
   }
 
   warpedIntoView = self->_warpedIntoView;
   if (v4[11] != warpedIntoView)
   {
     objc_storeStrong(v4 + 11, warpedIntoView);
-    v4 = v23;
+    v4 = touchCopy;
   }
 
   if (([v4[12] isEqualToArray:self->_gestureRecognizers] & 1) == 0)
   {
     v8 = [(NSMutableArray *)self->_gestureRecognizers mutableCopy];
-    v9 = *(v23 + 12);
-    *(v23 + 12) = v8;
+    v9 = *(touchCopy + 12);
+    *(touchCopy + 12) = v8;
   }
 
-  v10 = v23;
+  v10 = touchCopy;
   windowServerHitTestWindow = self->__windowServerHitTestWindow;
-  if (*(v23 + 45) != windowServerHitTestWindow)
+  if (*(touchCopy + 45) != windowServerHitTestWindow)
   {
-    objc_storeStrong(v23 + 45, windowServerHitTestWindow);
-    v10 = v23;
+    objc_storeStrong(touchCopy + 45, windowServerHitTestWindow);
+    v10 = touchCopy;
   }
 
   *(v10 + 7) = self->_locationInWindow;
@@ -671,21 +671,21 @@
   *(v10 + 20) = *&self->_pointerSenderID;
   v10[267] = self->_forceStage;
   [v10 _setHidEvent:self->_hidEvent];
-  *(v23 + 1) = (*(v23 + 14) - *(v23 + 16)) * (*(v23 + 14) - *(v23 + 16)) + (*(v23 + 15) - *(v23 + 17)) * (*(v23 + 15) - *(v23 + 17));
+  *(touchCopy + 1) = (*(touchCopy + 14) - *(touchCopy + 16)) * (*(touchCopy + 14) - *(touchCopy + 16)) + (*(touchCopy + 15) - *(touchCopy + 17)) * (*(touchCopy + 15) - *(touchCopy + 17));
 }
 
-- (void)_setPreviousTouch:(id)a3
+- (void)_setPreviousTouch:(id)touch
 {
-  self->_previousLocationInWindow = *(a3 + 7);
-  self->_precisePreviousLocationInWindow = *(a3 + 9);
-  self->_previousPressure = *(a3 + 27);
-  self->_previousRollAngle = *(a3 + 31);
+  self->_previousLocationInWindow = *(touch + 7);
+  self->_precisePreviousLocationInWindow = *(touch + 9);
+  self->_previousPressure = *(touch + 27);
+  self->_previousRollAngle = *(touch + 31);
   self->_movementMagnitudeSquared = (self->_locationInWindow.x - self->_previousLocationInWindow.x) * (self->_locationInWindow.x - self->_previousLocationInWindow.x) + (self->_locationInWindow.y - self->_previousLocationInWindow.y) * (self->_locationInWindow.y - self->_previousLocationInWindow.y);
 }
 
-- (void)setIsDelayed:(BOOL)a3
+- (void)setIsDelayed:(BOOL)delayed
 {
-  if (a3)
+  if (delayed)
   {
     v3 = 4;
   }
@@ -701,8 +701,8 @@
 - (CGPoint)locationInView:(UIView *)view
 {
   v4 = view;
-  v5 = [(UITouch *)self window];
-  v6 = _UITouchConvertLocationInWindowToView(v5, v4, self->_locationInWindow.x, self->_locationInWindow.y);
+  window = [(UITouch *)self window];
+  v6 = _UITouchConvertLocationInWindowToView(window, v4, self->_locationInWindow.x, self->_locationInWindow.y);
   v8 = v7;
 
   v9 = v6;
@@ -715,8 +715,8 @@
 - (CGPoint)previousLocationInView:(UIView *)view
 {
   v4 = view;
-  v5 = [(UITouch *)self window];
-  v6 = _UITouchConvertLocationInWindowToView(v5, v4, self->_previousLocationInWindow.x, self->_previousLocationInWindow.y);
+  window = [(UITouch *)self window];
+  v6 = _UITouchConvertLocationInWindowToView(window, v4, self->_previousLocationInWindow.x, self->_previousLocationInWindow.y);
   v8 = v7;
 
   v9 = v6;
@@ -729,8 +729,8 @@
 - (CGPoint)preciseLocationInView:(UIView *)view
 {
   v4 = view;
-  v5 = [(UITouch *)self window];
-  v6 = _UITouchConvertLocationInWindowToView(v5, v4, self->_preciseLocationInWindow.x, self->_preciseLocationInWindow.y);
+  window = [(UITouch *)self window];
+  v6 = _UITouchConvertLocationInWindowToView(window, v4, self->_preciseLocationInWindow.x, self->_preciseLocationInWindow.y);
   v8 = v7;
 
   v9 = v6;
@@ -743,8 +743,8 @@
 - (CGPoint)precisePreviousLocationInView:(UIView *)view
 {
   v4 = view;
-  v5 = [(UITouch *)self window];
-  v6 = _UITouchConvertLocationInWindowToView(v5, v4, self->_precisePreviousLocationInWindow.x, self->_precisePreviousLocationInWindow.y);
+  window = [(UITouch *)self window];
+  v6 = _UITouchConvertLocationInWindowToView(window, v4, self->_precisePreviousLocationInWindow.x, self->_precisePreviousLocationInWindow.y);
   v8 = v7;
 
   v9 = v6;
@@ -760,9 +760,9 @@
   azimuthAngleInWindow = 0.0;
   if (self->_type == 2)
   {
-    v6 = [(UITouch *)self window];
+    window = [(UITouch *)self window];
 
-    if (v4 && v6)
+    if (v4 && window)
     {
       [(UITouch *)self azimuthUnitVectorInView:v4];
       azimuthAngleInWindow = atan2(v8, v7);
@@ -786,23 +786,23 @@
   if (self->_type == 2)
   {
     azimuthAngleInWindow = self->_azimuthAngleInWindow;
-    v9 = [(UIView *)v4 window];
-    v10 = v9;
-    if (v9)
+    window = [(UIView *)v4 window];
+    v10 = window;
+    if (window)
     {
-      v11 = v9;
+      window2 = window;
     }
 
     else
     {
-      v11 = [(UITouch *)self window];
+      window2 = [(UITouch *)self window];
     }
 
-    v12 = v11;
+    v12 = window2;
 
-    v13 = [(UITouch *)self window];
+    window3 = [(UITouch *)self window];
 
-    if (v12 != v13)
+    if (v12 != window3)
     {
       azimuthAngleInWindow = _UITouchConvertCADisplayAzimuthAngleToWindow(v12, self->_azimuthAngleInCADisplay);
     }
@@ -818,10 +818,10 @@
   return result;
 }
 
-- (void)_setAltitudeAngle:(uint64_t)a1
+- (void)_setAltitudeAngle:(uint64_t)angle
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (angle)
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("Touch", &_setAltitudeAngle____s_category);
     if (*CategoryCachedImpl)
@@ -830,14 +830,14 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         v6 = 134218240;
-        v7 = a1;
+        angleCopy = angle;
         v8 = 2048;
         v9 = a2;
         _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "%p Set altitude angle: %7.4f", &v6, 0x16u);
       }
     }
 
-    *(a1 + 312) = a2;
+    *(angle + 312) = a2;
   }
 }
 
@@ -852,7 +852,7 @@
     {
       altitudeAngle = self->_altitudeAngle;
       v7 = 134218240;
-      v8 = self;
+      selfCopy = self;
       v9 = 2048;
       v10 = altitudeAngle;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "%p Altitude angle: %7.4f", &v7, 0x16u);
@@ -862,18 +862,18 @@
   return self->_altitudeAngle;
 }
 
-- (void)_setRollAngle:(double)a3 resetPrevious:
+- (void)_setRollAngle:(double)angle resetPrevious:
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v4 = a3;
+    angleCopy = angle;
     if ((a2 & 1) == 0)
     {
-      a3 = *(a1 + 248);
+      angle = *(self + 248);
     }
 
-    *(a1 + 256) = a3;
+    *(self + 256) = angle;
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("Touch", &_setRollAngle_resetPrevious____s_category);
     if (*CategoryCachedImpl)
     {
@@ -881,37 +881,37 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v8 = 134218496;
-        v9 = a1;
+        selfCopy = self;
         v10 = 2048;
-        v11 = v4;
+        v11 = angleCopy;
         v12 = 1024;
         v13 = a2;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "%p Set roll angle: %7.4f, resetPrevious: %d", &v8, 0x1Cu);
       }
     }
 
-    *(a1 + 248) = v4;
+    *(self + 248) = angleCopy;
   }
 }
 
-- (void)_loadStateFromTouch:(id)a3
+- (void)_loadStateFromTouch:(id)touch
 {
-  self->_touchIdentifier = *(a3 + 14);
-  self->_timestamp = *(a3 + 34);
-  self->_phase = *(a3 + 2);
-  self->_tapCount = *(a3 + 3);
-  v5 = *(a3 + 9);
+  self->_touchIdentifier = *(touch + 14);
+  self->_timestamp = *(touch + 34);
+  self->_phase = *(touch + 2);
+  self->_tapCount = *(touch + 3);
+  v5 = *(touch + 9);
   responder = self->_responder;
   self->_responder = v5;
-  v7 = a3;
+  touchCopy = touch;
 
-  objc_storeStrong(&self->_cachedResponderView, *(v7 + 10));
-  objc_storeStrong(&self->_window, *(v7 + 8));
-  self->_locationInWindow = *(v7 + 7);
-  self->_previousLocationInWindow = *(v7 + 8);
-  self->_preciseLocationInWindow = *(v7 + 9);
-  self->_precisePreviousLocationInWindow = *(v7 + 10);
-  LODWORD(responder) = *(v7 + 59);
+  objc_storeStrong(&self->_cachedResponderView, *(touchCopy + 10));
+  objc_storeStrong(&self->_window, *(touchCopy + 8));
+  self->_locationInWindow = *(touchCopy + 7);
+  self->_previousLocationInWindow = *(touchCopy + 8);
+  self->_preciseLocationInWindow = *(touchCopy + 9);
+  self->_precisePreviousLocationInWindow = *(touchCopy + 10);
+  LODWORD(responder) = *(touchCopy + 59);
 
   self->_touchFlags = responder;
   *&self->_touchFlags = responder & 0xCFFF;
@@ -1031,21 +1031,21 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setHidEvent:(__IOHIDEvent *)a3
+- (void)_setHidEvent:(__IOHIDEvent *)event
 {
   hidEvent = self->_hidEvent;
-  if (hidEvent != a3)
+  if (hidEvent != event)
   {
     if (hidEvent)
     {
       CFRelease(hidEvent);
     }
 
-    self->_hidEvent = a3;
-    if (a3)
+    self->_hidEvent = event;
+    if (event)
     {
 
-      CFRetain(a3);
+      CFRetain(event);
     }
   }
 }
@@ -1068,10 +1068,10 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
     v1 = result;
     if (([result _edgeForcePending] & 1) != 0 || (result = objc_msgSend(v1, "_edgeForceActive"), result))
     {
-      v2 = [*(v1 + 8) traitCollection];
-      v3 = [v2 forceTouchCapability];
+      traitCollection = [*(v1 + 8) traitCollection];
+      forceTouchCapability = [traitCollection forceTouchCapability];
 
-      if (v3 == 2)
+      if (forceTouchCapability == 2)
       {
         v4 = *(v1 + 14);
         [*(v1 + 8) bounds];
@@ -1089,12 +1089,12 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_updatePredictionsWithCoalescedTouches:(uint64_t)a1
+- (void)_updatePredictionsWithCoalescedTouches:(uint64_t)touches
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (*(a1 + 240))
+  if (*(touches + 240))
   {
     v11 = 0u;
     v12 = 0u;
@@ -1115,7 +1115,7 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
             objc_enumerationMutation(v4);
           }
 
-          [*(a1 + 240) addTouch:*(*(&v9 + 1) + 8 * v8++)];
+          [*(touches + 240) addTouch:*(*(&v9 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
@@ -1127,12 +1127,12 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updatePredictionsWithEvent:(void *)a1
+- (void)_updatePredictionsWithEvent:(void *)event
 {
   v3 = a2;
-  if (a1 && a1[30])
+  if (event && event[30])
   {
-    if (([a1 type] & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if (([event type] & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("Touch", &_updatePredictionsWithEvent____s_category);
       if (*CategoryCachedImpl)
@@ -1145,31 +1145,31 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
         }
       }
 
-      v5 = a1[30];
-      a1[30] = 0;
+      v5 = event[30];
+      event[30] = 0;
     }
 
     else
     {
-      v6 = [v3 coalescedTouchesForTouch:a1];
-      [(UITouch *)a1 _updatePredictionsWithCoalescedTouches:v6];
+      v6 = [v3 coalescedTouchesForTouch:event];
+      [(UITouch *)event _updatePredictionsWithCoalescedTouches:v6];
     }
   }
 }
 
-- (void)_predictedTouchesWithEvent:(void *)a1
+- (void)_predictedTouchesWithEvent:(void *)event
 {
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    if ([a1 phase] == 3 || objc_msgSend(a1, "phase") == 4 || (objc_msgSend(a1, "type") & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if ([event phase] == 3 || objc_msgSend(event, "phase") == 4 || (objc_msgSend(event, "type") & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
-      a1 = MEMORY[0x1E695E0F0];
+      event = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v5 = a1[30];
+      v5 = event[30];
       if (!v5)
       {
         CategoryCachedImpl = __UILogGetCategoryCachedImpl("Touch", &_predictedTouchesWithEvent____s_category);
@@ -1184,35 +1184,35 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
         }
 
         v7 = objc_alloc_init(_UITouchPredictor);
-        v8 = a1[30];
-        a1[30] = v7;
+        v8 = event[30];
+        event[30] = v7;
 
-        v9 = [v3 coalescedTouchesForTouch:a1];
-        [(UITouch *)a1 _updatePredictionsWithCoalescedTouches:v9];
+        v9 = [v3 coalescedTouchesForTouch:event];
+        [(UITouch *)event _updatePredictionsWithCoalescedTouches:v9];
 
-        v5 = a1[30];
+        v5 = event[30];
       }
 
-      a1 = [v5 predictedTouchesForTouch:a1];
+      event = [v5 predictedTouchesForTouch:event];
     }
   }
 
-  return a1;
+  return event;
 }
 
-+ (id)_createTouchesWithGSEvent:(__GSEvent *)a3 phase:(int64_t)a4 view:(id)a5
++ (id)_createTouchesWithGSEvent:(__GSEvent *)event phase:(int64_t)phase view:(id)view
 {
-  v6 = a5;
+  viewCopy = view;
   v7 = objc_alloc_init(UITouch);
   v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v7, 0}];
-  [(UITouch *)v7 setPhase:a4];
+  [(UITouch *)v7 setPhase:phase];
   GSEventGetTimestamp();
   [(UITouch *)v7 setTimestamp:?];
   [(UITouch *)v7 setTapCount:1];
-  v9 = [v6 window];
-  [(UITouch *)v7 setWindow:v9];
+  window = [viewCopy window];
+  [(UITouch *)v7 setWindow:window];
 
-  [(UITouch *)v7 setView:v6];
+  [(UITouch *)v7 setView:viewCopy];
   GSEventGetLocationInWindow();
   [(UITouch *)v7 _setLocationInWindow:1 resetPrevious:?];
   [(UITouch *)v7 _setIsFirstTouchForView:1];
@@ -1220,7 +1220,7 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)setPhase:(int64_t)a3
+- (void)setPhase:(int64_t)phase
 {
   v21 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("Touch", &_MergedGlobals_1380);
@@ -1230,20 +1230,20 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = v8;
-      v10 = [(UITouch *)self _phaseDescription];
-      v11 = _PhaseDescription(a3);
+      _phaseDescription = [(UITouch *)self _phaseDescription];
+      v11 = _PhaseDescription(phase);
       v15 = 134218498;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v10;
+      v18 = _phaseDescription;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "%p Setting touch phase from %@ to %@", &v15, 0x20u);
     }
   }
 
-  self->_phase = a3;
-  if ((a3 - 3) <= 1 && self->_touchPredictor)
+  self->_phase = phase;
+  if ((phase - 3) <= 1 && self->_touchPredictor)
   {
     v6 = __UILogGetCategoryCachedImpl("Touch", &qword_1ED4A2AB8);
     if (*v6)
@@ -1252,9 +1252,9 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = v12;
-        v14 = _PhaseDescription(a3);
+        v14 = _PhaseDescription(phase);
         v15 = 138412290;
-        v16 = v14;
+        selfCopy = v14;
         _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "Clearing touch predictor for: %@", &v15, 0xCu);
       }
     }
@@ -1266,19 +1266,19 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
   [(_UITouchPhaseChangeDelegate *)self->__phaseChangeDelegate _touchPhaseChangedForTouch:self];
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
-  v5 = a3;
+  windowCopy = window;
   window = self->_window;
-  if (window == v5)
+  if (window == windowCopy)
   {
     goto LABEL_9;
   }
 
-  v28 = v5;
+  v28 = windowCopy;
   if (window)
   {
-    [(UIWindow *)window convertPoint:v5 toWindow:self->_locationInWindow.x, self->_locationInWindow.y];
+    [(UIWindow *)window convertPoint:windowCopy toWindow:self->_locationInWindow.x, self->_locationInWindow.y];
     self->_locationInWindow.x = v7;
     self->_locationInWindow.y = v8;
     [(UIWindow *)self->_window convertPoint:v28 toWindow:self->_previousLocationInWindow.x, self->_previousLocationInWindow.y];
@@ -1297,12 +1297,12 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
 
   else
   {
-    if (!v5)
+    if (!windowCopy)
     {
       goto LABEL_7;
     }
 
-    [(UIWindow *)v5 convertPoint:0 fromWindow:self->_locationInWindow.x, self->_locationInWindow.y];
+    [(UIWindow *)windowCopy convertPoint:0 fromWindow:self->_locationInWindow.x, self->_locationInWindow.y];
     self->_locationInWindow.x = v19;
     self->_locationInWindow.y = v20;
     [(UIWindow *)v28 convertPoint:0 fromWindow:self->_previousLocationInWindow.x, self->_previousLocationInWindow.y];
@@ -1323,11 +1323,11 @@ void __30__UITouch_estimatedProperties__block_invoke(uint64_t a1)
   p_precisePreviousLocationInWindow->x = v25;
   *p_y = v26;
 LABEL_7:
-  objc_storeStrong(&self->_window, a3);
+  objc_storeStrong(&self->_window, window);
   [(UITouch *)self _computeAzimuthAngleInWindow];
-  v27 = [(UITouch *)self isDelayed];
-  v5 = v28;
-  if (!v27)
+  isDelayed = [(UITouch *)self isDelayed];
+  windowCopy = v28;
+  if (!isDelayed)
   {
     *&self->_touchFlags &= ~0x20u;
   }
@@ -1335,14 +1335,14 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)_setLocationInWindow:(CGPoint)a3 resetPrevious:(BOOL)a4
+- (void)_setLocationInWindow:(CGPoint)window resetPrevious:(BOOL)previous
 {
   if (self)
   {
-    if (a4)
+    if (previous)
     {
-      self->_previousLocationInWindow = a3;
-      self->_precisePreviousLocationInWindow = a3;
+      self->_previousLocationInWindow = window;
+      self->_precisePreviousLocationInWindow = window;
     }
 
     else
@@ -1351,73 +1351,73 @@ LABEL_9:
       self->_precisePreviousLocationInWindow = self->_preciseLocationInWindow;
     }
 
-    self->_locationInWindow = a3;
-    self->_preciseLocationInWindow = a3;
+    self->_locationInWindow = window;
+    self->_preciseLocationInWindow = window;
   }
 }
 
-- (void)_addGestureRecognizer:(uint64_t)a1
+- (void)_addGestureRecognizer:(uint64_t)recognizer
 {
   v3 = a2;
-  if (a1)
+  if (recognizer)
   {
-    v4 = *(a1 + 96);
+    v4 = *(recognizer + 96);
     v8 = v3;
     if (!v4)
     {
       v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-      v6 = *(a1 + 96);
-      *(a1 + 96) = v5;
+      v6 = *(recognizer + 96);
+      *(recognizer + 96) = v5;
 
-      v4 = *(a1 + 96);
+      v4 = *(recognizer + 96);
     }
 
     v7 = [v4 containsObject:v8];
     v3 = v8;
     if ((v7 & 1) == 0)
     {
-      [*(a1 + 96) addObject:v8];
+      [*(recognizer + 96) addObject:v8];
       v3 = v8;
     }
   }
 }
 
-- (void)_removeGestureRecognizer:(uint64_t)a1
+- (void)_removeGestureRecognizer:(uint64_t)recognizer
 {
   v3 = a2;
-  if (a1)
+  if (recognizer)
   {
     v5 = v3;
-    v4 = [*(a1 + 96) containsObject:v3];
+    v4 = [*(recognizer + 96) containsObject:v3];
     v3 = v5;
     if (v4)
     {
-      [*(a1 + 96) removeObject:v5];
+      [*(recognizer + 96) removeObject:v5];
       v3 = v5;
     }
   }
 }
 
-- (double)_locationInWindow:(double *)a1
+- (double)_locationInWindow:(double *)window
 {
   v3 = a2;
-  if (a1)
+  if (window)
   {
-    v4 = [a1 window];
+    window = [window window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [a1 window];
-      [v5 convertPoint:v3 toWindow:{a1[14], a1[15]}];
+      window2 = [window window];
+      [window2 convertPoint:v3 toWindow:{window[14], window[15]}];
       v7 = v6;
     }
 
     else
     {
-      v7 = a1[14];
+      v7 = window[14];
       if (v3)
       {
-        [v3 convertPoint:0 fromWindow:{a1[14], a1[15]}];
+        [v3 convertPoint:0 fromWindow:{window[14], window[15]}];
         v7 = v8;
       }
     }
@@ -1431,26 +1431,26 @@ LABEL_9:
   return v7;
 }
 
-- (double)_previousLocationInWindow:(double *)a1
+- (double)_previousLocationInWindow:(double *)window
 {
   v3 = a2;
-  if (a1)
+  if (window)
   {
-    v4 = [a1 window];
+    window = [window window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [a1 window];
-      [v5 convertPoint:v3 toWindow:{a1[16], a1[17]}];
+      window2 = [window window];
+      [window2 convertPoint:v3 toWindow:{window[16], window[17]}];
       v7 = v6;
     }
 
     else
     {
-      v7 = a1[16];
+      v7 = window[16];
       if (v3)
       {
-        [v3 convertPoint:0 fromWindow:{a1[16], a1[17]}];
+        [v3 convertPoint:0 fromWindow:{window[16], window[17]}];
         v7 = v8;
       }
     }
@@ -1464,25 +1464,25 @@ LABEL_9:
   return v7;
 }
 
-- (void)_updateWithChildEvent:(uint64_t)a1
+- (void)_updateWithChildEvent:(uint64_t)event
 {
-  if (a1)
+  if (event)
   {
     IOHIDEventGetFloatValue();
-    [(UITouch *)a1 _setAltitudeAngle:?];
+    [(UITouch *)event _setAltitudeAngle:?];
     IOHIDEventGetFloatValue();
-    *(a1 + 368) = v3;
+    *(event + 368) = v3;
 
-    [(UITouch *)a1 _computeAzimuthAngleInWindow];
+    [(UITouch *)event _computeAzimuthAngleInWindow];
   }
 }
 
-- (int64_t)_compareIndex:(id)a3
+- (int64_t)_compareIndex:(id)index
 {
-  v4 = a3;
-  if ([v4 _pathIndex] <= self->_pathIndex)
+  indexCopy = index;
+  if ([indexCopy _pathIndex] <= self->_pathIndex)
   {
-    v5 = [v4 _pathIndex] < self->_pathIndex;
+    v5 = [indexCopy _pathIndex] < self->_pathIndex;
   }
 
   else
@@ -1493,25 +1493,25 @@ LABEL_9:
   return v5;
 }
 
-- (SEL)_responderSelectorForPhase:(int64_t)a3
+- (SEL)_responderSelectorForPhase:(int64_t)phase
 {
   result = 0;
-  if (a3 > 2)
+  if (phase > 2)
   {
-    if (a3 == 3)
+    if (phase == 3)
     {
       return sel_touchesEnded_withEvent_;
     }
 
-    else if (a3 == 4)
+    else if (phase == 4)
     {
       return sel_touchesCancelled_withEvent_;
     }
   }
 
-  else if (a3)
+  else if (phase)
   {
-    if (a3 == 1)
+    if (phase == 1)
     {
       return sel_touchesMoved_withEvent_;
     }
@@ -1525,32 +1525,32 @@ LABEL_9:
   return result;
 }
 
-- (void)_setResponder:(id)a3
+- (void)_setResponder:(id)responder
 {
-  v5 = a3;
-  if (self->_responder != v5)
+  responderCopy = responder;
+  if (self->_responder != responderCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_responder, a3);
+    v8 = responderCopy;
+    objc_storeStrong(&self->_responder, responder);
     cachedResponderView = self->_cachedResponderView;
     self->_cachedResponderView = 0;
 
-    v7 = [(UITouch *)self isDelayed];
-    v5 = v8;
-    if (!v7)
+    isDelayed = [(UITouch *)self isDelayed];
+    responderCopy = v8;
+    if (!isDelayed)
     {
       *&self->_touchFlags &= ~0x20u;
     }
   }
 }
 
-- (void)setWarpedIntoView:(uint64_t)a1
+- (void)setWarpedIntoView:(uint64_t)view
 {
   v4 = a2;
-  if (a1)
+  if (view)
   {
-    v6 = *(a1 + 88);
-    v5 = (a1 + 88);
+    v6 = *(view + 88);
+    v5 = (view + 88);
     if (v6 != v4)
     {
       v7 = v4;
@@ -1560,12 +1560,12 @@ LABEL_9:
   }
 }
 
-- (uint64_t)_isStationaryRelativeToTouches:(uint64_t)a1
+- (uint64_t)_isStationaryRelativeToTouches:(uint64_t)touches
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (touches)
   {
     v15 = 0u;
     v16 = 0u;
@@ -1604,47 +1604,47 @@ LABEL_9:
       v8 = 0.0;
     }
 
-    v11 = *(a1 + 8);
+    v11 = *(touches + 8);
     if (v11 == 0.0)
     {
-      a1 = v8 > 2.0;
+      touches = v8 > 2.0;
     }
 
     else
     {
-      a1 = v11 < v8 * 0.1;
+      touches = v11 < v8 * 0.1;
     }
   }
 
-  return a1;
+  return touches;
 }
 
 - (id)_rehitTest
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(UITouch *)a1 _rehitTestWithEvent:0 constrainingToCurrentWindow:?];
+    self = [(UITouch *)self _rehitTestWithEvent:0 constrainingToCurrentWindow:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_rehitTestWithEvent:(char)a3 constrainingToCurrentWindow:
+- (id)_rehitTestWithEvent:(char)event constrainingToCurrentWindow:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 360);
-    v7 = *(a1 + 64);
+    v6 = *(self + 360);
+    v7 = *(self + 64);
     v8 = v6;
-    [a1 majorRadius];
+    [self majorRadius];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __59__UITouch__rehitTestWithEvent_constrainingToCurrentWindow___block_invoke;
     v12[3] = &unk_1E7129D68;
-    v12[4] = a1;
-    v10 = _UIHitTestGestureContainer(v5, v7, v8, a3, v12, v9);
+    v12[4] = self;
+    v10 = _UIHitTestGestureContainer(v5, v7, v8, event, v12, v9);
   }
 
   else
@@ -1655,10 +1655,10 @@ LABEL_9:
   return v10;
 }
 
-- (void)_clearForWindowIfNeeded:(uint64_t)a1
+- (void)_clearForWindowIfNeeded:(uint64_t)needed
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (needed)
   {
     v4 = objc_opt_class();
     Name = class_getName(v4);
@@ -1671,34 +1671,34 @@ LABEL_9:
       v12 = 136447234;
       v13 = Name;
       v14 = 2050;
-      v15 = a1;
+      neededCopy = needed;
       v16 = 2082;
       v17 = v7;
       v18 = 2050;
       v19 = a2;
       v20 = 1026;
-      v21 = [a2 _contextId];
+      _contextId = [a2 _contextId];
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "Clearing window reference from touch: <%{public}s: %{public}p>; window: <%{public}s: %{public}p>, contextId: 0x%{public}X", &v12, 0x30u);
     }
 
-    v10 = *(a1 + 64);
+    v10 = *(needed + 64);
     if (v10 == a2)
     {
-      *(a1 + 64) = 0;
+      *(needed + 64) = 0;
     }
 
-    v11 = *(a1 + 360);
+    v11 = *(needed + 360);
     if (v11 == a2)
     {
-      *(a1 + 360) = 0;
+      *(needed + 360) = 0;
     }
   }
 }
 
-- (void)_clearForReenteringHoverInWindow:(id)a3
+- (void)_clearForReenteringHoverInWindow:(id)window
 {
-  v5 = a3;
-  objc_storeStrong(&self->_window, a3);
+  windowCopy = window;
+  objc_storeStrong(&self->_window, window);
   responder = self->_responder;
   self->_responder = 0;
 
@@ -1706,8 +1706,8 @@ LABEL_9:
   self->_cachedResponderView = 0;
 
   windowServerHitTestWindow = self->__windowServerHitTestWindow;
-  self->__windowServerHitTestWindow = v5;
-  v9 = v5;
+  self->__windowServerHitTestWindow = windowCopy;
+  v9 = windowCopy;
 
   warpedIntoView = self->_warpedIntoView;
   self->_warpedIntoView = 0;
@@ -1728,9 +1728,9 @@ LABEL_9:
   self->_eaten = 0;
 }
 
-- (void)_setIsPointerTouch:(BOOL)a3
+- (void)_setIsPointerTouch:(BOOL)touch
 {
-  if (a3)
+  if (touch)
   {
     v3 = 512;
   }
@@ -1743,9 +1743,9 @@ LABEL_9:
   *&self->_touchFlags = *&self->_touchFlags & 0xFDFF | v3;
 }
 
-- (void)_setIsRestingTouch:(BOOL)a3
+- (void)_setIsRestingTouch:(BOOL)touch
 {
-  if (a3)
+  if (touch)
   {
     v3 = 1024;
   }
@@ -1758,9 +1758,9 @@ LABEL_9:
   *&self->_touchFlags = *&self->_touchFlags & 0xFBFF | v3;
 }
 
-- (void)_setIsTapToClick:(BOOL)a3
+- (void)_setIsTapToClick:(BOOL)click
 {
-  if (a3)
+  if (click)
   {
     v3 = 2048;
   }
@@ -1773,35 +1773,35 @@ LABEL_9:
   *&self->_touchFlags = *&self->_touchFlags & 0xF7FF | v3;
 }
 
-- (id)_eventComponentPhaseForValue:(int64_t)a3
+- (id)_eventComponentPhaseForValue:(int64_t)value
 {
   v4 = _eventComponentPhaseMapping_1();
-  v5 = _eventComponentPhaseForValue(a3, v4);
+  v5 = _eventComponentPhaseForValue(value, v4);
 
   return v5;
 }
 
-- (void)_setPhaseChangeDelegate:(uint64_t)a1
+- (void)_setPhaseChangeDelegate:(uint64_t)delegate
 {
-  if (a1)
+  if (delegate)
   {
-    objc_storeStrong((a1 + 352), a2);
+    objc_storeStrong((delegate + 352), a2);
   }
 }
 
-- (void)_setWindowServerHitTestWindow:(uint64_t)a1
+- (void)_setWindowServerHitTestWindow:(uint64_t)window
 {
-  if (a1)
+  if (window)
   {
-    objc_storeStrong((a1 + 360), a2);
+    objc_storeStrong((window + 360), a2);
   }
 }
 
-- (void)_setHitTestSecurityAnalysis:(uint64_t)a1
+- (void)_setHitTestSecurityAnalysis:(uint64_t)analysis
 {
-  if (a1)
+  if (analysis)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((analysis + 392), a2);
   }
 }
 

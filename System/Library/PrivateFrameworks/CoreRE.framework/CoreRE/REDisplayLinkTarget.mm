@@ -1,12 +1,12 @@
 @interface REDisplayLinkTarget
-- (REDisplayLinkTarget)initWithClock:(void *)a3;
+- (REDisplayLinkTarget)initWithClock:(void *)clock;
 - (void)update;
 - (void)updateOnQueue;
 @end
 
 @implementation REDisplayLinkTarget
 
-- (REDisplayLinkTarget)initWithClock:(void *)a3
+- (REDisplayLinkTarget)initWithClock:(void *)clock
 {
   v8.receiver = self;
   v8.super_class = REDisplayLinkTarget;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_clock = a3;
+    v4->_clock = clock;
     v6 = v4;
   }
 

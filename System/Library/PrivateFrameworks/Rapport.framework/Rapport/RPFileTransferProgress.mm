@@ -1,7 +1,7 @@
 @interface RPFileTransferProgress
 - (RPFileTransferProgress)init;
-- (RPFileTransferProgress)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (RPFileTransferProgress)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation RPFileTransferProgress
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (RPFileTransferProgress)initWithCoder:(id)a3
+- (RPFileTransferProgress)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = RPFileTransferProgress;
@@ -38,7 +38,7 @@
   return v4;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v17[1] = 0;
   self->_type;

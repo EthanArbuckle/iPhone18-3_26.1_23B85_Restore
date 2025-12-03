@@ -1,30 +1,30 @@
 @interface PPContactServerRequestHandler
 - (PPContactServerRequestHandler)init;
-- (PPContactServerRequestHandler)initWithStore:(id)a3;
-- (void)contactHandlesForSource:(id)a3 queryId:(unint64_t)a4;
-- (void)contactHandlesForTopics:(id)a3 queryId:(unint64_t)a4;
-- (void)contactNameRecordChangesForClient:(id)a3 completion:(id)a4;
-- (void)contactNameRecordChangesForClient:(id)a3 queryId:(unint64_t)a4;
-- (void)contactNameRecordsForClient:(id)a3 queryId:(unint64_t)a4;
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4 completion:(id)a5;
-- (void)rankedContactsWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)upcomingRelevantContactsForQuery:(id)a3 queryId:(unint64_t)a4;
+- (PPContactServerRequestHandler)initWithStore:(id)store;
+- (void)contactHandlesForSource:(id)source queryId:(unint64_t)id;
+- (void)contactHandlesForTopics:(id)topics queryId:(unint64_t)id;
+- (void)contactNameRecordChangesForClient:(id)client completion:(id)completion;
+- (void)contactNameRecordChangesForClient:(id)client queryId:(unint64_t)id;
+- (void)contactNameRecordsForClient:(id)client queryId:(unint64_t)id;
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier completion:(id)completion;
+- (void)rankedContactsWithQuery:(id)query queryId:(unint64_t)id;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)upcomingRelevantContactsForQuery:(id)query queryId:(unint64_t)id;
 @end
 
 @implementation PPContactServerRequestHandler
 
-- (void)contactNameRecordChangesForClient:(id)a3 queryId:(unint64_t)a4
+- (void)contactNameRecordChangesForClient:(id)client queryId:(unint64_t)id
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = clientCopy;
     v16 = 2048;
-    v17 = a4;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPContactServer: contactNameRecordChangesForClient: %@ queryId: %llu", buf, 0x16u);
   }
 
@@ -34,9 +34,9 @@
   v11[2] = __75__PPContactServerRequestHandler_contactNameRecordChangesForClient_queryId___block_invoke;
   v11[3] = &unk_278978A80;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v9 = v6;
+  v12 = clientCopy;
+  idCopy2 = id;
+  v9 = clientCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -142,16 +142,16 @@ uint64_t __75__PPContactServerRequestHandler_contactNameRecordChangesForClient_q
   return result;
 }
 
-- (void)contactNameRecordChangesForClient:(id)a3 completion:(id)a4
+- (void)contactNameRecordChangesForClient:(id)client completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  completionCopy = completion;
   v8 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = clientCopy;
     _os_log_impl(&dword_23224A000, v8, OS_LOG_TYPE_DEFAULT, "PPContactServer: contactNameRecordChangesForClient: %@", buf, 0xCu);
   }
 
@@ -168,7 +168,7 @@ uint64_t __75__PPContactServerRequestHandler_contactNameRecordChangesForClient_q
 
   store = self->_store;
   v23 = 0;
-  v14 = [(PPLocalContactStore *)store contactNameRecordChangesForClient:v6 error:&v23];
+  v14 = [(PPLocalContactStore *)store contactNameRecordChangesForClient:clientCopy error:&v23];
   v15 = v23;
   v16 = pp_contacts_signpost_handle();
   v17 = v16;
@@ -180,7 +180,7 @@ uint64_t __75__PPContactServerRequestHandler_contactNameRecordChangesForClient_q
 
   if (v14)
   {
-    v7[2](v7, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   else
@@ -192,23 +192,23 @@ uint64_t __75__PPContactServerRequestHandler_contactNameRecordChangesForClient_q
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v21 = [v18 initWithDomain:@"PPServerSideErrorDomain" code:1 userInfo:v20];
 
-    (v7)[2](v7, 0, v21);
+    (completionCopy)[2](completionCopy, 0, v21);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactNameRecordsForClient:(id)a3 queryId:(unint64_t)a4
+- (void)contactNameRecordsForClient:(id)client queryId:(unint64_t)id
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = clientCopy;
     v16 = 2048;
-    v17 = a4;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPContactServer: contactNameRecordsForClient: %@ queryId: %llu", buf, 0x16u);
   }
 
@@ -218,9 +218,9 @@ uint64_t __75__PPContactServerRequestHandler_contactNameRecordChangesForClient_q
   v11[2] = __69__PPContactServerRequestHandler_contactNameRecordsForClient_queryId___block_invoke;
   v11[3] = &unk_278978A80;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v9 = v6;
+  v12 = clientCopy;
+  idCopy2 = id;
+  v9 = clientCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -569,11 +569,11 @@ void __69__PPContactServerRequestHandler_contactNameRecordsForClient_queryId___b
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4 completion:(id)a5
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -587,12 +587,12 @@ void __69__PPContactServerRequestHandler_contactNameRecordsForClient_queryId___b
   v16[2] = __119__PPContactServerRequestHandler_feedbackDisambiguationResultWithChoicesIdentifiers_chosenContactIdentifier_completion___block_invoke;
   v16[3] = &unk_278977290;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = identifiersCopy;
+  v18 = identifierCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
+  v15 = identifiersCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v16];
 }
 
@@ -604,10 +604,10 @@ uint64_t __119__PPContactServerRequestHandler_feedbackDisambiguationResultWithCh
   return v2();
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v8 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -615,21 +615,21 @@ uint64_t __119__PPContactServerRequestHandler_feedbackDisambiguationResultWithCh
     _os_log_impl(&dword_23224A000, v8, OS_LOG_TYPE_DEFAULT, "PPContactServer: registerFeedback", v9, 2u);
   }
 
-  [(PPLocalContactStore *)self->_store registerFeedback:v7 completion:v6];
+  [(PPLocalContactStore *)self->_store registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (void)contactHandlesForSource:(id)a3 queryId:(unint64_t)a4
+- (void)contactHandlesForSource:(id)source queryId:(unint64_t)id
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 documentId];
+    documentId = [sourceCopy documentId];
     *buf = 138412546;
-    v16 = v8;
+    v16 = documentId;
     v17 = 2048;
-    v18 = a4;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPContactServer: contactHandlesForSource:%@ queryId:%llu", buf, 0x16u);
   }
 
@@ -639,9 +639,9 @@ uint64_t __119__PPContactServerRequestHandler_feedbackDisambiguationResultWithCh
   v12[2] = __65__PPContactServerRequestHandler_contactHandlesForSource_queryId___block_invoke;
   v12[3] = &unk_278978A80;
   v12[4] = self;
-  v13 = v6;
-  v14 = a4;
-  v10 = v6;
+  v13 = sourceCopy;
+  idCopy2 = id;
+  v10 = sourceCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -744,17 +744,17 @@ uint64_t __65__PPContactServerRequestHandler_contactHandlesForSource_queryId___b
   return result;
 }
 
-- (void)contactHandlesForTopics:(id)a3 queryId:(unint64_t)a4
+- (void)contactHandlesForTopics:(id)topics queryId:(unint64_t)id
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  topicsCopy = topics;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v15 = [v6 count];
+    v15 = [topicsCopy count];
     v16 = 2048;
-    v17 = a4;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPContactServer: contactHandlesForTopics:%tu queryId:%llu", buf, 0x16u);
   }
 
@@ -764,9 +764,9 @@ uint64_t __65__PPContactServerRequestHandler_contactHandlesForSource_queryId___b
   v11[2] = __65__PPContactServerRequestHandler_contactHandlesForTopics_queryId___block_invoke;
   v11[3] = &unk_278978A80;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v9 = v6;
+  v12 = topicsCopy;
+  idCopy2 = id;
+  v9 = topicsCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -874,18 +874,18 @@ id __65__PPContactServerRequestHandler_contactHandlesForTopics_queryId___block_i
   return v9;
 }
 
-- (void)upcomingRelevantContactsForQuery:(id)a3 queryId:(unint64_t)a4
+- (void)upcomingRelevantContactsForQuery:(id)query queryId:(unint64_t)id
 {
-  v6 = a3;
+  queryCopy = query;
   queryManager = self->_queryManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__PPContactServerRequestHandler_upcomingRelevantContactsForQuery_queryId___block_invoke;
   v9[3] = &unk_278978A80;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = queryCopy;
+  idCopy = id;
+  v8 = queryCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v9];
 }
 
@@ -986,17 +986,17 @@ uint64_t __74__PPContactServerRequestHandler_upcomingRelevantContactsForQuery_qu
   return result;
 }
 
-- (void)rankedContactsWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)rankedContactsWithQuery:(id)query queryId:(unint64_t)id
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = queryCopy;
     v16 = 2048;
-    v17 = a4;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPContactServer: rankedContactsWithQuery:%@ queryId:%llu", buf, 0x16u);
   }
 
@@ -1006,9 +1006,9 @@ uint64_t __74__PPContactServerRequestHandler_upcomingRelevantContactsForQuery_qu
   v11[2] = __65__PPContactServerRequestHandler_rankedContactsWithQuery_queryId___block_invoke;
   v11[3] = &unk_278978A80;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v9 = v6;
+  v12 = queryCopy;
+  idCopy2 = id;
+  v9 = queryCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1111,9 +1111,9 @@ uint64_t __65__PPContactServerRequestHandler_rankedContactsWithQuery_queryId___b
   return result;
 }
 
-- (PPContactServerRequestHandler)initWithStore:(id)a3
+- (PPContactServerRequestHandler)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = PPContactServerRequestHandler;
   v6 = [(PPContactServerRequestHandler *)&v10 init];
@@ -1123,7 +1123,7 @@ uint64_t __65__PPContactServerRequestHandler_rankedContactsWithQuery_queryId___b
     queryManager = v6->_queryManager;
     v6->_queryManager = v7;
 
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     atomic_store(0, &v6->_isTerminated);
   }
 

@@ -1,14 +1,14 @@
 @interface UIDocumentBrowserAction
-- (BOOL)isEqual:(id)a3;
-- (UIDocumentBrowserAction)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIDocumentBrowserAction)initWithCoder:(id)coder;
 - (UIDocumentBrowserAction)initWithIdentifier:(NSString *)identifier localizedTitle:(NSString *)localizedTitle availability:(UIDocumentBrowserActionAvailability)availability handler:(void *)handler;
-- (UIDocumentBrowserAction)initWithIdentifier:(id)a3 localizedTitle:(id)a4 resolvedHandler:(id)a5;
-- (UIDocumentBrowserAction)initWithIdentifier:(id)a3 localizedTitle:(id)a4 unresolvedHandler:(id)a5;
-- (UIDocumentBrowserAction)initWithUIActionDescriptor:(id)a3 providerDomain:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIDocumentBrowserAction)initWithIdentifier:(id)identifier localizedTitle:(id)title resolvedHandler:(id)handler;
+- (UIDocumentBrowserAction)initWithIdentifier:(id)identifier localizedTitle:(id)title unresolvedHandler:(id)handler;
+- (UIDocumentBrowserAction)initWithUIActionDescriptor:(id)descriptor providerDomain:(id)domain;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)commonInit;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDocumentBrowserAction
@@ -16,8 +16,8 @@
 - (void)commonInit
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [*MEMORY[0x1E6982E50] identifier];
-  v12[0] = v3;
+  identifier = [*MEMORY[0x1E6982E50] identifier];
+  v12[0] = identifier;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   supportedContentTypes = self->_supportedContentTypes;
   self->_supportedContentTypes = v4;
@@ -90,11 +90,11 @@ void __82__UIDocumentBrowserAction_initWithIdentifier_localizedTitle_availabilit
   (*(v2 + 16))(v2, v3);
 }
 
-- (UIDocumentBrowserAction)initWithIdentifier:(id)a3 localizedTitle:(id)a4 resolvedHandler:(id)a5
+- (UIDocumentBrowserAction)initWithIdentifier:(id)identifier localizedTitle:(id)title resolvedHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = UIDocumentBrowserAction;
   v12 = [(UIDocumentBrowserAction *)&v18 init];
@@ -102,10 +102,10 @@ void __82__UIDocumentBrowserAction_initWithIdentifier_localizedTitle_availabilit
   if (v12)
   {
     [(UIDocumentBrowserAction *)v12 commonInit];
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v13->_localizedTitle, a4);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v13->_localizedTitle, title);
     v13->_requiresResolvedItems = 1;
-    v14 = MEMORY[0x1E692E2E0](v11);
+    v14 = MEMORY[0x1E692E2E0](handlerCopy);
     resolvedHandler = v13->_resolvedHandler;
     v13->_resolvedHandler = v14;
 
@@ -115,10 +115,10 @@ void __82__UIDocumentBrowserAction_initWithIdentifier_localizedTitle_availabilit
   return v13;
 }
 
-- (UIDocumentBrowserAction)initWithUIActionDescriptor:(id)a3 providerDomain:(id)a4
+- (UIDocumentBrowserAction)initWithUIActionDescriptor:(id)descriptor providerDomain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  domainCopy = domain;
   v19.receiver = self;
   v19.super_class = UIDocumentBrowserAction;
   v9 = [(UIDocumentBrowserAction *)&v19 init];
@@ -126,32 +126,32 @@ void __82__UIDocumentBrowserAction_initWithIdentifier_localizedTitle_availabilit
   if (v9)
   {
     [(UIDocumentBrowserAction *)v9 commonInit];
-    v11 = [v7 identifier];
+    identifier = [descriptorCopy identifier];
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = identifier;
 
-    v13 = [v7 displayName];
+    displayName = [descriptorCopy displayName];
     localizedTitle = v10->_localizedTitle;
-    v10->_localizedTitle = v13;
+    v10->_localizedTitle = displayName;
 
     v10->_requiresResolvedItems = 0;
-    objc_storeStrong(&v10->_uiActionDescriptor, a3);
-    v15 = [v7 uiActionProviderIdentifier];
+    objc_storeStrong(&v10->_uiActionDescriptor, descriptor);
+    uiActionProviderIdentifier = [descriptorCopy uiActionProviderIdentifier];
     uiActionProviderIdentifier = v10->_uiActionProviderIdentifier;
-    v10->_uiActionProviderIdentifier = v15;
+    v10->_uiActionProviderIdentifier = uiActionProviderIdentifier;
 
-    objc_storeStrong(&v10->_uiActionProviderDomain, a4);
+    objc_storeStrong(&v10->_uiActionProviderDomain, domain);
     v17 = v10;
   }
 
   return v10;
 }
 
-- (UIDocumentBrowserAction)initWithIdentifier:(id)a3 localizedTitle:(id)a4 unresolvedHandler:(id)a5
+- (UIDocumentBrowserAction)initWithIdentifier:(id)identifier localizedTitle:(id)title unresolvedHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = UIDocumentBrowserAction;
   v12 = [(UIDocumentBrowserAction *)&v18 init];
@@ -159,10 +159,10 @@ void __82__UIDocumentBrowserAction_initWithIdentifier_localizedTitle_availabilit
   if (v12)
   {
     [(UIDocumentBrowserAction *)v12 commonInit];
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v13->_localizedTitle, a4);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v13->_localizedTitle, title);
     v13->_requiresResolvedItems = 0;
-    v14 = MEMORY[0x1E692E2E0](v11);
+    v14 = MEMORY[0x1E692E2E0](handlerCopy);
     unresolvedHandler = v13->_unresolvedHandler;
     v13->_unresolvedHandler = v14;
 
@@ -178,21 +178,21 @@ void __82__UIDocumentBrowserAction_initWithIdentifier_localizedTitle_availabilit
   v8.receiver = self;
   v8.super_class = UIDocumentBrowserAction;
   v4 = [(UIDocumentBrowserAction *)&v8 description];
-  v5 = [(UIDocumentBrowserAction *)self localizedTitle];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  localizedTitle = [(UIDocumentBrowserAction *)self localizedTitle];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, localizedTitle];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIDocumentBrowserAction *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [(UIDocumentBrowserAction *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -203,157 +203,157 @@ void __82__UIDocumentBrowserAction_initWithIdentifier_localizedTitle_availabilit
   return v7;
 }
 
-- (UIDocumentBrowserAction)initWithCoder:(id)a3
+- (UIDocumentBrowserAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = UIDocumentBrowserAction;
   v5 = [(UIDocumentBrowserAction *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(UIDocumentBrowserAction *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     [(UIDocumentBrowserAction *)v5 setLocalizedTitle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedCompactTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedCompactTitle"];
     [(UIDocumentBrowserAction *)v5 setLocalizedCompactTitle:v8];
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"supportedContentTypes"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"supportedContentTypes"];
     [(UIDocumentBrowserAction *)v5 setSupportedContentTypes:v12];
 
-    -[UIDocumentBrowserAction setSupportsMultipleItems:](v5, "setSupportsMultipleItems:", [v4 decodeBoolForKey:@"supportsMultipleItems"]);
-    -[UIDocumentBrowserAction setAvailability:](v5, "setAvailability:", [v4 decodeIntegerForKey:@"availability"]);
-    -[UIDocumentBrowserAction setNavigationSide:](v5, "setNavigationSide:", [v4 decodeIntegerForKey:@"navigationSide"]);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    -[UIDocumentBrowserAction setSupportsMultipleItems:](v5, "setSupportsMultipleItems:", [coderCopy decodeBoolForKey:@"supportsMultipleItems"]);
+    -[UIDocumentBrowserAction setAvailability:](v5, "setAvailability:", [coderCopy decodeIntegerForKey:@"availability"]);
+    -[UIDocumentBrowserAction setNavigationSide:](v5, "setNavigationSide:", [coderCopy decodeIntegerForKey:@"navigationSide"]);
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     [(UIDocumentBrowserAction *)v5 setImage:v13];
 
-    -[UIDocumentBrowserAction setMenuSortOrder:](v5, "setMenuSortOrder:", [v4 decodeIntegerForKey:@"menuSortOrder"]);
-    -[UIDocumentBrowserAction setRequiresResolvedItems:](v5, "setRequiresResolvedItems:", [v4 decodeBoolForKey:@"requiresResolvedItems"]);
-    -[UIDocumentBrowserAction setRequiresVersioning:](v5, "setRequiresVersioning:", [v4 decodeBoolForKey:@"requiresVersioning"]);
-    -[UIDocumentBrowserAction setRequiresFullyFormedItems:](v5, "setRequiresFullyFormedItems:", [v4 decodeBoolForKey:@"requiresFullyFormedItems"]);
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filteringPredicate"];
+    -[UIDocumentBrowserAction setMenuSortOrder:](v5, "setMenuSortOrder:", [coderCopy decodeIntegerForKey:@"menuSortOrder"]);
+    -[UIDocumentBrowserAction setRequiresResolvedItems:](v5, "setRequiresResolvedItems:", [coderCopy decodeBoolForKey:@"requiresResolvedItems"]);
+    -[UIDocumentBrowserAction setRequiresVersioning:](v5, "setRequiresVersioning:", [coderCopy decodeBoolForKey:@"requiresVersioning"]);
+    -[UIDocumentBrowserAction setRequiresFullyFormedItems:](v5, "setRequiresFullyFormedItems:", [coderCopy decodeBoolForKey:@"requiresFullyFormedItems"]);
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filteringPredicate"];
     [(UIDocumentBrowserAction *)v5 setFilteringPredicate:v14];
 
-    -[UIDocumentBrowserAction setPerformActionExitsEditMode:](v5, "setPerformActionExitsEditMode:", [v4 decodeBoolForKey:@"performActionExitsEditMode"]);
-    -[UIDocumentBrowserAction setActionStyle:](v5, "setActionStyle:", [v4 decodeIntegerForKey:@"actionStyle"]);
-    -[UIDocumentBrowserAction setRequiresAuthentication:](v5, "setRequiresAuthentication:", [v4 decodeBoolForKey:@"requiresAuthentication"]);
+    -[UIDocumentBrowserAction setPerformActionExitsEditMode:](v5, "setPerformActionExitsEditMode:", [coderCopy decodeBoolForKey:@"performActionExitsEditMode"]);
+    -[UIDocumentBrowserAction setActionStyle:](v5, "setActionStyle:", [coderCopy decodeIntegerForKey:@"actionStyle"]);
+    -[UIDocumentBrowserAction setRequiresAuthentication:](v5, "setRequiresAuthentication:", [coderCopy decodeBoolForKey:@"requiresAuthentication"]);
     v15 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(UIDocumentBrowserAction *)self identifier];
+  coderCopy = coder;
+  identifier = [(UIDocumentBrowserAction *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(UIDocumentBrowserAction *)self identifier];
-    [v16 encodeObject:v5 forKey:@"identifier"];
+    identifier2 = [(UIDocumentBrowserAction *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"identifier"];
   }
 
-  v6 = [(UIDocumentBrowserAction *)self localizedTitle];
+  localizedTitle = [(UIDocumentBrowserAction *)self localizedTitle];
 
-  if (v6)
+  if (localizedTitle)
   {
-    v7 = [(UIDocumentBrowserAction *)self localizedTitle];
-    [v16 encodeObject:v7 forKey:@"localizedTitle"];
+    localizedTitle2 = [(UIDocumentBrowserAction *)self localizedTitle];
+    [coderCopy encodeObject:localizedTitle2 forKey:@"localizedTitle"];
   }
 
-  v8 = [(UIDocumentBrowserAction *)self localizedCompactTitle];
+  localizedCompactTitle = [(UIDocumentBrowserAction *)self localizedCompactTitle];
 
-  if (v8)
+  if (localizedCompactTitle)
   {
-    v9 = [(UIDocumentBrowserAction *)self localizedCompactTitle];
-    [v16 encodeObject:v9 forKey:@"localizedCompactTitle"];
+    localizedCompactTitle2 = [(UIDocumentBrowserAction *)self localizedCompactTitle];
+    [coderCopy encodeObject:localizedCompactTitle2 forKey:@"localizedCompactTitle"];
   }
 
-  v10 = [(UIDocumentBrowserAction *)self supportedContentTypes];
+  supportedContentTypes = [(UIDocumentBrowserAction *)self supportedContentTypes];
 
-  if (v10)
+  if (supportedContentTypes)
   {
-    v11 = [(UIDocumentBrowserAction *)self supportedContentTypes];
-    [v16 encodeObject:v11 forKey:@"supportedContentTypes"];
+    supportedContentTypes2 = [(UIDocumentBrowserAction *)self supportedContentTypes];
+    [coderCopy encodeObject:supportedContentTypes2 forKey:@"supportedContentTypes"];
   }
 
-  v12 = [(UIDocumentBrowserAction *)self filteringPredicate];
+  filteringPredicate = [(UIDocumentBrowserAction *)self filteringPredicate];
 
-  if (v12)
+  if (filteringPredicate)
   {
-    v13 = [(UIDocumentBrowserAction *)self filteringPredicate];
-    [v16 encodeObject:v13 forKey:@"filteringPredicate"];
+    filteringPredicate2 = [(UIDocumentBrowserAction *)self filteringPredicate];
+    [coderCopy encodeObject:filteringPredicate2 forKey:@"filteringPredicate"];
   }
 
-  [v16 encodeBool:-[UIDocumentBrowserAction supportsMultipleItems](self forKey:{"supportsMultipleItems"), @"supportsMultipleItems"}];
+  [coderCopy encodeBool:-[UIDocumentBrowserAction supportsMultipleItems](self forKey:{"supportsMultipleItems"), @"supportsMultipleItems"}];
   if ([(UIDocumentBrowserAction *)self availability])
   {
-    [v16 encodeInteger:-[UIDocumentBrowserAction availability](self forKey:{"availability"), @"availability"}];
+    [coderCopy encodeInteger:-[UIDocumentBrowserAction availability](self forKey:{"availability"), @"availability"}];
   }
 
-  [v16 encodeInteger:-[UIDocumentBrowserAction navigationSide](self forKey:{"navigationSide"), @"navigationSide"}];
-  v14 = [(UIDocumentBrowserAction *)self image];
+  [coderCopy encodeInteger:-[UIDocumentBrowserAction navigationSide](self forKey:{"navigationSide"), @"navigationSide"}];
+  image = [(UIDocumentBrowserAction *)self image];
 
-  if (v14)
+  if (image)
   {
-    v15 = [(UIDocumentBrowserAction *)self image];
-    [v16 encodeObject:v15 forKey:@"image"];
+    image2 = [(UIDocumentBrowserAction *)self image];
+    [coderCopy encodeObject:image2 forKey:@"image"];
   }
 
-  [v16 encodeInteger:-[UIDocumentBrowserAction menuSortOrder](self forKey:{"menuSortOrder"), @"menuSortOrder"}];
-  [v16 encodeBool:-[UIDocumentBrowserAction requiresResolvedItems](self forKey:{"requiresResolvedItems"), @"requiresResolvedItems"}];
-  [v16 encodeBool:-[UIDocumentBrowserAction requiresVersioning](self forKey:{"requiresVersioning"), @"requiresVersioning"}];
-  [v16 encodeBool:-[UIDocumentBrowserAction requiresFullyFormedItems](self forKey:{"requiresFullyFormedItems"), @"requiresFullyFormedItems"}];
-  [v16 encodeBool:-[UIDocumentBrowserAction performActionExitsEditMode](self forKey:{"performActionExitsEditMode"), @"performActionExitsEditMode"}];
-  [v16 encodeInteger:-[UIDocumentBrowserAction actionStyle](self forKey:{"actionStyle"), @"actionStyle"}];
-  [v16 encodeBool:-[UIDocumentBrowserAction requiresAuthentication](self forKey:{"requiresAuthentication"), @"requiresAuthentication"}];
+  [coderCopy encodeInteger:-[UIDocumentBrowserAction menuSortOrder](self forKey:{"menuSortOrder"), @"menuSortOrder"}];
+  [coderCopy encodeBool:-[UIDocumentBrowserAction requiresResolvedItems](self forKey:{"requiresResolvedItems"), @"requiresResolvedItems"}];
+  [coderCopy encodeBool:-[UIDocumentBrowserAction requiresVersioning](self forKey:{"requiresVersioning"), @"requiresVersioning"}];
+  [coderCopy encodeBool:-[UIDocumentBrowserAction requiresFullyFormedItems](self forKey:{"requiresFullyFormedItems"), @"requiresFullyFormedItems"}];
+  [coderCopy encodeBool:-[UIDocumentBrowserAction performActionExitsEditMode](self forKey:{"performActionExitsEditMode"), @"performActionExitsEditMode"}];
+  [coderCopy encodeInteger:-[UIDocumentBrowserAction actionStyle](self forKey:{"actionStyle"), @"actionStyle"}];
+  [coderCopy encodeBool:-[UIDocumentBrowserAction requiresAuthentication](self forKey:{"requiresAuthentication"), @"requiresAuthentication"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [UIDocumentBrowserAction allocWithZone:a3];
-  v5 = [(UIDocumentBrowserAction *)self identifier];
-  v6 = [v5 copy];
-  v7 = [(UIDocumentBrowserAction *)self localizedTitle];
-  v8 = [v7 copy];
-  v9 = [(UIDocumentBrowserAction *)self resolvedHandler];
-  v10 = [v9 copy];
+  v4 = [UIDocumentBrowserAction allocWithZone:zone];
+  identifier = [(UIDocumentBrowserAction *)self identifier];
+  v6 = [identifier copy];
+  localizedTitle = [(UIDocumentBrowserAction *)self localizedTitle];
+  v8 = [localizedTitle copy];
+  resolvedHandler = [(UIDocumentBrowserAction *)self resolvedHandler];
+  v10 = [resolvedHandler copy];
   v11 = [(UIDocumentBrowserAction *)v4 initWithIdentifier:v6 localizedTitle:v8 resolvedHandler:v10];
 
   if (v11)
   {
-    v12 = [(UIDocumentBrowserAction *)self image];
-    v13 = [v12 copy];
+    image = [(UIDocumentBrowserAction *)self image];
+    v13 = [image copy];
     [(UIDocumentBrowserAction *)v11 setImage:v13];
 
-    v14 = [(UIDocumentBrowserAction *)self localizedCompactTitle];
-    v15 = [v14 copy];
+    localizedCompactTitle = [(UIDocumentBrowserAction *)self localizedCompactTitle];
+    v15 = [localizedCompactTitle copy];
     [(UIDocumentBrowserAction *)v11 setLocalizedCompactTitle:v15];
 
     v16 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v17 = [(UIDocumentBrowserAction *)self supportedContentTypes];
-    v18 = [v16 initWithArray:v17 copyItems:1];
+    supportedContentTypes = [(UIDocumentBrowserAction *)self supportedContentTypes];
+    v18 = [v16 initWithArray:supportedContentTypes copyItems:1];
     [(UIDocumentBrowserAction *)v11 setSupportedContentTypes:v18];
 
     [(UIDocumentBrowserAction *)v11 setSupportsMultipleItems:[(UIDocumentBrowserAction *)self supportsMultipleItems]];
     [(UIDocumentBrowserAction *)v11 setAvailability:[(UIDocumentBrowserAction *)self availability]];
     [(UIDocumentBrowserAction *)v11 setRequiresResolvedItems:[(UIDocumentBrowserAction *)self requiresResolvedItems]];
-    v19 = [(UIDocumentBrowserAction *)self unresolvedHandler];
-    v20 = [v19 copy];
+    unresolvedHandler = [(UIDocumentBrowserAction *)self unresolvedHandler];
+    v20 = [unresolvedHandler copy];
     [(UIDocumentBrowserAction *)v11 setUnresolvedHandler:v20];
 
     [(UIDocumentBrowserAction *)v11 setNavigationSide:[(UIDocumentBrowserAction *)self navigationSide]];
     [(UIDocumentBrowserAction *)v11 setRequiresVersioning:[(UIDocumentBrowserAction *)self requiresVersioning]];
     [(UIDocumentBrowserAction *)v11 setRequiresFullyFormedItems:[(UIDocumentBrowserAction *)self requiresFullyFormedItems]];
     [(UIDocumentBrowserAction *)v11 setMenuSortOrder:[(UIDocumentBrowserAction *)self menuSortOrder]];
-    v21 = [(UIDocumentBrowserAction *)self filteringPredicate];
-    [(UIDocumentBrowserAction *)v11 setFilteringPredicate:v21];
+    filteringPredicate = [(UIDocumentBrowserAction *)self filteringPredicate];
+    [(UIDocumentBrowserAction *)v11 setFilteringPredicate:filteringPredicate];
 
     [(UIDocumentBrowserAction *)v11 setPerformActionExitsEditMode:[(UIDocumentBrowserAction *)self performActionExitsEditMode]];
     [(UIDocumentBrowserAction *)v11 setActionStyle:[(UIDocumentBrowserAction *)self actionStyle]];

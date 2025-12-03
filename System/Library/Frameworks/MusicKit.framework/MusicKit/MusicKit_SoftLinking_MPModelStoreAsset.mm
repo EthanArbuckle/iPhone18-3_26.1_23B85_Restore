@@ -1,33 +1,33 @@
 @interface MusicKit_SoftLinking_MPModelStoreAsset
-+ (int64_t)endpointTypeForRawValue:(int64_t)a3;
-+ (int64_t)rawValueForEndpointType:(int64_t)a3;
++ (int64_t)endpointTypeForRawValue:(int64_t)value;
++ (int64_t)rawValueForEndpointType:(int64_t)type;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelStoreAsset
 
-+ (int64_t)endpointTypeForRawValue:(int64_t)a3
++ (int64_t)endpointTypeForRawValue:(int64_t)value
 {
-  if ((a3 - 1) >= 3)
+  if ((value - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return value;
   }
 }
 
-+ (int64_t)rawValueForEndpointType:(int64_t)a3
++ (int64_t)rawValueForEndpointType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 

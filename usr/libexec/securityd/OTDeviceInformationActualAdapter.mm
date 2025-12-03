@@ -6,7 +6,7 @@
 - (id)osVersion;
 - (id)serialNumber;
 - (void)dealloc;
-- (void)registerForDeviceNameUpdates:(id)a3;
+- (void)registerForDeviceNameUpdates:(id)updates;
 - (void)setupDeviceNameListener;
 @end
 
@@ -24,9 +24,9 @@
 
 - (void)setupDeviceNameListener
 {
-  v3 = [(OTDeviceInformationActualAdapter *)self deviceNameUpdateListeners];
+  deviceNameUpdateListeners = [(OTDeviceInformationActualAdapter *)self deviceNameUpdateListeners];
 
-  if (!v3)
+  if (!deviceNameUpdateListeners)
   {
     v4 = [[CKKSListenerCollection alloc] initWithName:@"OTDeviceInformationActualAdapter"];
     [(OTDeviceInformationActualAdapter *)self setDeviceNameUpdateListeners:v4];
@@ -45,9 +45,9 @@
       if ([(OTDeviceInformationActualAdapter *)self store])
       {
         SCDynamicStoreSetNotificationKeys([(OTDeviceInformationActualAdapter *)self store], v7, 0);
-        v8 = [(OTDeviceInformationActualAdapter *)self store];
+        store = [(OTDeviceInformationActualAdapter *)self store];
         v9 = dispatch_get_global_queue(0, 0);
-        SCDynamicStoreSetDispatchQueue(v8, v9);
+        SCDynamicStoreSetDispatchQueue(store, v9);
       }
     }
   }
@@ -74,18 +74,18 @@
   return v2;
 }
 
-- (void)registerForDeviceNameUpdates:(id)a3
+- (void)registerForDeviceNameUpdates:(id)updates
 {
-  v6 = a3;
+  updatesCopy = updates;
   if (SecIsInternalRelease())
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    [(OTDeviceInformationActualAdapter *)v4 setupDeviceNameListener];
-    v5 = [(OTDeviceInformationActualAdapter *)v4 deviceNameUpdateListeners];
-    [v5 registerListener:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(OTDeviceInformationActualAdapter *)selfCopy setupDeviceNameListener];
+    deviceNameUpdateListeners = [(OTDeviceInformationActualAdapter *)selfCopy deviceNameUpdateListeners];
+    [deviceNameUpdateListeners registerListener:updatesCopy];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -118,8 +118,8 @@
 
 - (BOOL)isMachineIDOverridden
 {
-  v2 = [(OTDeviceInformationActualAdapter *)self overriddenMachineID];
-  v3 = v2 != 0;
+  overriddenMachineID = [(OTDeviceInformationActualAdapter *)self overriddenMachineID];
+  v3 = overriddenMachineID != 0;
 
   return v3;
 }
@@ -181,9 +181,9 @@
   if (sysctlbyname("kern.osversion", v10, &v8, 0, 0) | v1 || (HIBYTE(v13) = 0, HIBYTE(v11) = 0, [NSString stringWithFormat:@"%s (%s)", v12, v10], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v3 = +[NSProcessInfo processInfo];
-    v4 = [v3 operatingSystemVersionString];
+    operatingSystemVersionString = [v3 operatingSystemVersionString];
 
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"Version" withString:&stru_100348050];
+    v5 = [operatingSystemVersionString stringByReplacingOccurrencesOfString:@"Version" withString:&stru_100348050];
   }
 
   v6 = [NSString stringWithFormat:@"%@ %@", @"iphone", v5];

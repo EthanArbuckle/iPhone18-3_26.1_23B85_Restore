@@ -1,28 +1,28 @@
 @interface CSUImageCaptioningDecoderAXKVCacheE1
-- (BOOL)compareTensorShapesForShape1:(const void *)a3 Shape2:(const void *)a4;
-- (BOOL)loadDecoder:(id *)a3;
-- (BOOL)loadDecoderObj:(id *)a3;
-- (BOOL)loadResources:(id *)a3;
-- (BOOL)populateInputBuffer:(id)a3 WithError:(id *)a4;
-- (CSUImageCaptioningDecoderAXKVCacheE1)initWithConfiguration:(id)a3;
+- (BOOL)compareTensorShapesForShape1:(const void *)shape1 Shape2:(const void *)shape2;
+- (BOOL)loadDecoder:(id *)decoder;
+- (BOOL)loadDecoderObj:(id *)obj;
+- (BOOL)loadResources:(id *)resources;
+- (BOOL)populateInputBuffer:(id)buffer WithError:(id *)error;
+- (CSUImageCaptioningDecoderAXKVCacheE1)initWithConfiguration:(id)configuration;
 - (id).cxx_construct;
-- (id)computeDecodedCaptionsForFeatures:(id)a3 withDecodingMethod:(int64_t)a4 runDecoderOnly:(BOOL)a5 error:(id *)a6;
+- (id)computeDecodedCaptionsForFeatures:(id)features withDecodingMethod:(int64_t)method runDecoderOnly:(BOOL)only error:(id *)error;
 - (id)getCaptionsAfterGreedyDecodingOnEncodedFeatures;
-- (id)postProcessResults:(id)a3 error:(id *)a4;
+- (id)postProcessResults:(id)results error:(id *)error;
 @end
 
 @implementation CSUImageCaptioningDecoderAXKVCacheE1
 
-- (CSUImageCaptioningDecoderAXKVCacheE1)initWithConfiguration:(id)a3
+- (CSUImageCaptioningDecoderAXKVCacheE1)initWithConfiguration:(id)configuration
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v28.receiver = self;
   v28.super_class = CSUImageCaptioningDecoderAXKVCacheE1;
   v10 = [(CSUImageCaptioningDecoderAXKVCacheE1 *)&v28 init];
   if (v10)
   {
-    objc_msgSend_supportedComputeDevices(v5, v6, v7, v8, v9);
+    objc_msgSend_supportedComputeDevices(configurationCopy, v6, v7, v8, v9);
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -46,9 +46,9 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              objc_msgSend_setComputeDevice_(v5, v13, v17, v18, v19, v24);
+              objc_msgSend_setComputeDevice_(configurationCopy, v13, v17, v18, v19, v24);
 
-              objc_storeStrong(&v10->_configuration, a3);
+              objc_storeStrong(&v10->_configuration, configuration);
               v21 = v10;
               goto LABEL_16;
             }
@@ -80,7 +80,7 @@ LABEL_16:
   return v21;
 }
 
-- (BOOL)loadDecoderObj:(id *)a3
+- (BOOL)loadDecoderObj:(id *)obj
 {
   v5 = objc_opt_new();
   decoderNetObj = self->_decoderNetObj;
@@ -89,10 +89,10 @@ LABEL_16:
   v8 = self->_decoderNetObj;
   configuration = self->_configuration;
 
-  return MEMORY[0x1EEE66B58](v8, sel_loadDecoderNetworkfromConfiguration_error_, configuration, a3, v7);
+  return MEMORY[0x1EEE66B58](v8, sel_loadDecoderNetworkfromConfiguration_error_, configuration, obj, v7);
 }
 
-- (BOOL)loadDecoder:(id *)a3
+- (BOOL)loadDecoder:(id *)decoder
 {
   if (self->_decoderNetObj)
   {
@@ -105,7 +105,7 @@ LABEL_16:
   v12 = v8;
   if ((PostProcUtilsWithBeamWidth_error & 1) == 0)
   {
-    if (!a3)
+    if (!decoder)
     {
       v15 = 0;
       goto LABEL_11;
@@ -114,7 +114,7 @@ LABEL_16:
 LABEL_10:
     v16 = v12;
     v15 = 0;
-    *a3 = v12;
+    *decoder = v12;
     goto LABEL_11;
   }
 
@@ -124,7 +124,7 @@ LABEL_10:
 
   if ((DecoderObj & 1) == 0)
   {
-    if (!a3)
+    if (!decoder)
     {
       v15 = 0;
       v12 = v14;
@@ -142,7 +142,7 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   if (self->_decoderNetObj)
   {
@@ -151,21 +151,21 @@ LABEL_11:
 
   else
   {
-    return objc_msgSend_loadDecoder_(self, a2, a3, v3, v4);
+    return objc_msgSend_loadDecoder_(self, a2, resources, v3, v4);
   }
 }
 
-- (BOOL)compareTensorShapesForShape1:(const void *)a3 Shape2:(const void *)a4
+- (BOOL)compareTensorShapesForShape1:(const void *)shape1 Shape2:(const void *)shape2
 {
-  v4 = *a3;
-  v5 = *(a3 + 1) - *a3;
+  v4 = *shape1;
+  v5 = *(shape1 + 1) - *shape1;
   if (!v5)
   {
     return 1;
   }
 
   v6 = v5 >> 3;
-  v7 = *a4;
+  v7 = *shape2;
   if (v6 <= 1)
   {
     v8 = 1;
@@ -198,16 +198,16 @@ LABEL_11:
   return v10 >= v6;
 }
 
-- (BOOL)populateInputBuffer:(id)a3 WithError:(id *)a4
+- (BOOL)populateInputBuffer:(id)buffer WithError:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  bufferCopy = buffer;
+  if (bufferCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_msgSend_espressoBuffer(v4, v5, v6, v7, v8);
+      objc_msgSend_espressoBuffer(bufferCopy, v5, v6, v7, v8);
 
       LOWORD(v11) = 1;
       sub_1AC06910C();
@@ -226,12 +226,12 @@ LABEL_11:
   __cxa_throw(exception, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
 }
 
-- (id)computeDecodedCaptionsForFeatures:(id)a3 withDecodingMethod:(int64_t)a4 runDecoderOnly:(BOOL)a5 error:(id *)a6
+- (id)computeDecodedCaptionsForFeatures:(id)features withDecodingMethod:(int64_t)method runDecoderOnly:(BOOL)only error:(id *)error
 {
-  v9 = a3;
-  if ((objc_msgSend_loadResources_(self, v10, a6, v11, v12) & 1) != 0 && objc_msgSend_populateInputBuffer_WithError_(self, v13, v9, a6, v14))
+  featuresCopy = features;
+  if ((objc_msgSend_loadResources_(self, v10, error, v11, v12) & 1) != 0 && objc_msgSend_populateInputBuffer_WithError_(self, v13, featuresCopy, error, v14))
   {
-    if (a4)
+    if (method)
     {
       objc_msgSend_getCaptionsAfterBeamSearchDecodingOnEncodedFeatures(self, v15, v16, v17, v18);
     }
@@ -262,16 +262,16 @@ LABEL_11:
   return 0;
 }
 
-- (id)postProcessResults:(id)a3 error:(id *)a4
+- (id)postProcessResults:(id)results error:(id *)error
 {
-  v6 = a3;
+  resultsCopy = results;
   v11 = objc_msgSend_postProcessingHandler(self->_procUtils, v7, v8, v9, v10);
 
   if (v11)
   {
     v16 = objc_msgSend_postProcessingHandler(self->_procUtils, v12, v13, v14, v15);
     v21 = objc_msgSend_genderOptionForBeamSearch(self->_procUtils, v17, v18, v19, v20);
-    v23 = objc_msgSend_postProcessResults_genderOption_error_(v16, v22, v6, v21, a4);
+    v23 = objc_msgSend_postProcessResults_genderOption_error_(v16, v22, resultsCopy, v21, error);
   }
 
   else
@@ -282,7 +282,7 @@ LABEL_11:
       sub_1AC1201A0(v24);
     }
 
-    v23 = v6;
+    v23 = resultsCopy;
   }
 
   return v23;

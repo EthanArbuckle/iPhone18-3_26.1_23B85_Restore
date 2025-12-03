@@ -1,23 +1,23 @@
 @interface FPUnpinOperation
-- (FPUnpinOperation)initWithItems:(id)a3;
+- (FPUnpinOperation)initWithItems:(id)items;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 @end
 
 @implementation FPUnpinOperation
 
-- (FPUnpinOperation)initWithItems:(id)a3
+- (FPUnpinOperation)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = FPUnpinOperation;
   v6 = [(FPActionOperation *)&v9 initWithProvider:0 action:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
-    [(FPActionOperation *)v7 setSourceItemsToPreflight:v5];
+    objc_storeStrong(&v6->_items, items);
+    [(FPActionOperation *)v7 setSourceItemsToPreflight:itemsCopy];
   }
 
   return v7;
@@ -38,7 +38,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = self;
+  selfCopy = self;
   obj = self->_items;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v5)
@@ -54,17 +54,17 @@
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 downloadingProgress];
+        downloadingProgress = [v8 downloadingProgress];
 
-        if (v9)
+        if (downloadingProgress)
         {
-          v10 = [v8 downloadingProgress];
-          [v10 cancel];
+          downloadingProgress2 = [v8 downloadingProgress];
+          [downloadingProgress2 cancel];
         }
 
         dispatch_group_enter(v3);
         v11 = +[FPDaemonConnection sharedConnection];
-        v12 = [v8 itemID];
+        itemID = [v8 itemID];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __30__FPUnpinOperation_actionMain__block_invoke;
@@ -72,7 +72,7 @@
         v24 = v29;
         v22 = v4;
         v23 = v3;
-        [v11 unpinItemWithID:v12 completionHandler:v21];
+        [v11 unpinItemWithID:itemID completionHandler:v21];
       }
 
       v5 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v31 count:16];
@@ -81,16 +81,16 @@
     while (v5);
   }
 
-  v13 = [(FPOperation *)v16 callbackQueue];
+  callbackQueue = [(FPOperation *)selfCopy callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __30__FPUnpinOperation_actionMain__block_invoke_2;
   block[3] = &unk_1E793E0D0;
-  block[4] = v16;
+  block[4] = selfCopy;
   v19 = v4;
   v20 = v29;
   v14 = v4;
-  dispatch_group_notify(v3, v13, block);
+  dispatch_group_notify(v3, callbackQueue, block);
 
   _Block_object_dispose(v29, 8);
   v15 = *MEMORY[0x1E69E9840];
@@ -124,14 +124,14 @@ void __30__FPUnpinOperation_actionMain__block_invoke(uint64_t a1, void *a2, void
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
-  [v4 transformItems:self->_items handler:&__block_literal_global_336];
+  stitcher2 = [(FPActionOperation *)self stitcher];
+  [stitcher2 transformItems:self->_items handler:&__block_literal_global_336];
 
-  v5 = [(FPActionOperation *)self stitcher];
-  [v5 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
 void __40__FPUnpinOperation_presendNotifications__block_invoke(uint64_t a1, void *a2)
@@ -143,16 +143,16 @@ void __40__FPUnpinOperation_presendNotifications__block_invoke(uint64_t a1, void
   [v2 setCapabilities:{objc_msgSend(v2, "capabilities") | 0x10000000}];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPActionOperation *)self stitcher];
-  [v8 finishWithItems:v7 error:v6];
+  errorCopy = error;
+  resultCopy = result;
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItems:resultCopy error:errorCopy];
 
   v9.receiver = self;
   v9.super_class = FPUnpinOperation;
-  [(FPActionOperation *)&v9 finishWithResult:v7 error:v6];
+  [(FPActionOperation *)&v9 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

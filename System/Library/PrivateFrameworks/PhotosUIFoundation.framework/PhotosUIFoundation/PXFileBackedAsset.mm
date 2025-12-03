@@ -1,13 +1,13 @@
 @interface PXFileBackedAsset
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFileBackedAsset:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFileBackedAsset:(id)asset;
 - (BOOL)isFavorite;
 - (BOOL)isInCloud;
 - (BOOL)representsBurst;
 - (CGAffineTransform)transform;
 - (CGPoint)positionOffset;
 - (CGRect)acceptableCropRect;
-- (CGRect)bestCropRectForAspectRatio:(double)a3;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
 - (CGSize)size;
@@ -16,8 +16,8 @@
 - (NSString)description;
 - (NSString)uuid;
 - (PXFileBackedAsset)init;
-- (PXFileBackedAsset)initWithDescription:(id)a3;
-- (PXFileBackedAsset)initWithURL:(id)a3 previewImage:(id)a4;
+- (PXFileBackedAsset)initWithDescription:(id)description;
+- (PXFileBackedAsset)initWithURL:(id)l previewImage:(id)image;
 - (double)aspectRatio;
 - (int64_t)mediaType;
 - (int64_t)playbackStyle;
@@ -30,9 +30,9 @@
 
 - (void)_loadFileMetadataIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_metadata)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_metadata)
   {
     v8 = 0;
     v9 = &v8;
@@ -52,12 +52,12 @@
 
     v4 = v3;
     _Block_object_dispose(&v8, 8);
-    v5 = [[v3 alloc] initWithImageURL:v2->_url contentType:0 options:13 timeZoneLookup:0 cacheImageSource:0 cacheImageData:0];
-    metadata = v2->_metadata;
-    v2->_metadata = v5;
+    v5 = [[v3 alloc] initWithImageURL:selfCopy->_url contentType:0 options:13 timeZoneLookup:0 cacheImageSource:0 cacheImageData:0];
+    metadata = selfCopy->_metadata;
+    selfCopy->_metadata = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (CLLocation)location
@@ -76,7 +76,7 @@
   return [(PFMetadata *)metadata creationDate];
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3
+- (CGRect)bestCropRectForAspectRatio:(double)ratio
 {
   [(PXFileBackedAsset *)self size];
   v4 = v3;
@@ -122,7 +122,7 @@
       [(PXFileBackedAsset *)self size];
       v5 = NSStringFromCGSize(v14);
       v9 = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v5;
       _os_log_impl(&dword_1B3F73000, v4, OS_LOG_TYPE_ERROR, "PXFileBackedAsset %@: Invalid size encountered: %@", &v9, 0x16u);
@@ -208,10 +208,10 @@
   fileBackedUUID = self->_fileBackedUUID;
   if (!fileBackedUUID)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v6 = self->_fileBackedUUID;
-    self->_fileBackedUUID = v5;
+    self->_fileBackedUUID = uUIDString;
 
     fileBackedUUID = self->_fileBackedUUID;
   }
@@ -219,10 +219,10 @@
   return fileBackedUUID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -230,44 +230,44 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXFileBackedAsset *)self isEqualToFileBackedAsset:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXFileBackedAsset *)self isEqualToFileBackedAsset:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFileBackedAsset:(id)a3
+- (BOOL)isEqualToFileBackedAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [(PXFileBackedAsset *)self url];
-  v6 = [v4 url];
+  v6 = [assetCopy url];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(assetCopy) = [v5 isEqual:v6];
+  return assetCopy;
 }
 
 - (BOOL)isInCloud
 {
   v2 = [(PXFileBackedAssetDescription *)self->_description objectForKeyedSubscript:@"isInCloud"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)representsBurst
 {
   v2 = [(PXFileBackedAssetDescription *)self->_description objectForKeyedSubscript:@"representsBurst"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isFavorite
 {
   v2 = [(PXFileBackedAssetDescription *)self->_description objectForKeyedSubscript:@"favorite"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unsigned)playbackVariation
@@ -276,15 +276,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 shortValue];
+    shortValue = [v2 shortValue];
   }
 
   else
   {
-    v4 = 0;
+    shortValue = 0;
   }
 
-  return v4;
+  return shortValue;
 }
 
 - (int64_t)playbackStyle
@@ -293,15 +293,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 shortValue];
+    shortValue = [v2 shortValue];
   }
 
   else
   {
-    v4 = 1;
+    shortValue = 1;
   }
 
-  return v4;
+  return shortValue;
 }
 
 - (unint64_t)mediaSubtypes
@@ -310,15 +310,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 shortValue];
+    shortValue = [v2 shortValue];
   }
 
   else
   {
-    v4 = 0;
+    shortValue = 0;
   }
 
-  return v4;
+  return shortValue;
 }
 
 - (int64_t)mediaType
@@ -327,15 +327,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 shortValue];
+    shortValue = [v2 shortValue];
   }
 
   else
   {
-    v4 = 1;
+    shortValue = 1;
   }
 
-  return v4;
+  return shortValue;
 }
 
 - (NSString)description
@@ -344,53 +344,53 @@
   v8.super_class = PXFileBackedAsset;
   v3 = [(PXFileBackedAsset *)&v8 description];
   v4 = [(PXFileBackedAsset *)self url];
-  v5 = [(PXFileBackedAsset *)self previewImage];
-  v6 = [v3 stringByAppendingFormat:@" - URL: %@, PreviewImage: %@", v4, v5];
+  previewImage = [(PXFileBackedAsset *)self previewImage];
+  v6 = [v3 stringByAppendingFormat:@" - URL: %@, PreviewImage: %@", v4, previewImage];
 
   return v6;
 }
 
-- (PXFileBackedAsset)initWithURL:(id)a3 previewImage:(id)a4
+- (PXFileBackedAsset)initWithURL:(id)l previewImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  imageCopy = image;
+  if (!lCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
-  v9 = [PXFileBackedAssetDescription simpleImageDescriptionWithURL:v7 previewImage:v8];
+  v9 = [PXFileBackedAssetDescription simpleImageDescriptionWithURL:lCopy previewImage:imageCopy];
   v10 = [(PXFileBackedAsset *)self initWithDescription:v9];
 
   return v10;
 }
 
-- (PXFileBackedAsset)initWithDescription:(id)a3
+- (PXFileBackedAsset)initWithDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v18.receiver = self;
   v18.super_class = PXFileBackedAsset;
   v6 = [(PXFileBackedAsset *)&v18 init];
   if (v6)
   {
-    v7 = [v5 url];
+    v7 = [descriptionCopy url];
     v8 = [v7 copy];
     url = v6->_url;
     v6->_url = v8;
 
-    v10 = [v5 previewImage];
+    previewImage = [descriptionCopy previewImage];
     previewImage = v6->_previewImage;
-    v6->_previewImage = v10;
+    v6->_previewImage = previewImage;
 
     v12 = MEMORY[0x1E6982C40];
-    v13 = [(NSURL *)v6->_url pathExtension];
-    v14 = [v12 typeWithFilenameExtension:v13];
-    v15 = [v14 identifier];
+    pathExtension = [(NSURL *)v6->_url pathExtension];
+    v14 = [v12 typeWithFilenameExtension:pathExtension];
+    identifier = [v14 identifier];
     uniformTypeIdentifier = v6->_uniformTypeIdentifier;
-    v6->_uniformTypeIdentifier = v15;
+    v6->_uniformTypeIdentifier = identifier;
 
-    objc_storeStrong(&v6->_description, a3);
+    objc_storeStrong(&v6->_description, description);
   }
 
   return v6;
@@ -398,8 +398,8 @@
 
 - (PXFileBackedAsset)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:93 description:{@"%s is not available as initializer", "-[PXFileBackedAsset init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:93 description:{@"%s is not available as initializer", "-[PXFileBackedAsset init]"}];
 
   abort();
 }

@@ -1,10 +1,10 @@
 @interface AVCaption
-+ (id)captionFromFigCaption:(OpaqueFigCaption *)a3;
-+ (void)_appendFigStyleKey:(__CFString *)a3 value:(void *)a4 range:(id)a5 toArray:(id)a6;
++ (id)captionFromFigCaption:(OpaqueFigCaption *)caption;
++ (void)_appendFigStyleKey:(__CFString *)key value:(void *)value range:(id)range toArray:(id)array;
 - (AVCaption)init;
-- (AVCaption)initWithCoder:(id)a3;
-- (AVCaption)initWithFigCaptionData:(OpaqueFigCaptionData *)a3 timeRange:(id *)a4;
-- (AVCaption)initWithFigMutableCaptionData:(OpaqueFigCaptionData *)a3 timeRange:(id *)a4;
+- (AVCaption)initWithCoder:(id)coder;
+- (AVCaption)initWithFigCaptionData:(OpaqueFigCaptionData *)data timeRange:(id *)range;
+- (AVCaption)initWithFigMutableCaptionData:(OpaqueFigCaptionData *)data timeRange:(id *)range;
 - (AVCaption)initWithText:(NSString *)text timeRange:(CMTimeRange *)timeRange;
 - (AVCaptionAnimation)animation;
 - (AVCaptionDecoration)decorationAtIndex:(NSInteger)index range:(NSRange *)outRange;
@@ -13,29 +13,29 @@
 - (AVCaptionRegion)region;
 - (AVCaptionTextAlignment)textAlignment;
 - (AVCaptionTextCombine)textCombineAtIndex:(NSInteger)index range:(NSRange *)outRange;
-- (CGColor)copyBackgroundColorAtIndex:(int64_t)a3 range:(_NSRange *)a4;
-- (CGColor)copyTextColorAtIndex:(int64_t)a3 range:(_NSRange *)a4;
+- (CGColor)copyBackgroundColorAtIndex:(int64_t)index range:(_NSRange *)range;
+- (CGColor)copyTextColorAtIndex:(int64_t)index range:(_NSRange *)range;
 - (CMTimeRange)timeRange;
 - (NSString)text;
 - (id)_stylePropertiesForArchive;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)rubyTextAtIndex:(int64_t)a3 range:(_NSRange *)a4;
-- (void)_setAnimation:(int64_t)a3;
-- (void)_setBackgroundColor:(CGColor *)a3 inRange:(_NSRange)a4;
-- (void)_setDecoration:(unint64_t)a3 inRange:(_NSRange)a4;
-- (void)_setFontStyle:(int64_t)a3 inRange:(_NSRange)a4;
-- (void)_setFontWeight:(int64_t)a3 inRange:(_NSRange)a4;
-- (void)_setRegion:(id)a3;
-- (void)_setRuby:(id)a3 inRange:(_NSRange)a4;
-- (void)_setStylePropertiesForArchive:(id)a3;
-- (void)_setText:(id)a3;
-- (void)_setTextAlignment:(int64_t)a3;
-- (void)_setTextColor:(CGColor *)a3 inRange:(_NSRange)a4;
-- (void)_setTextCombine:(int64_t)a3 inRange:(_NSRange)a4;
-- (void)_setTimeRange:(id *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)rubyTextAtIndex:(int64_t)index range:(_NSRange *)range;
+- (void)_setAnimation:(int64_t)animation;
+- (void)_setBackgroundColor:(CGColor *)color inRange:(_NSRange)range;
+- (void)_setDecoration:(unint64_t)decoration inRange:(_NSRange)range;
+- (void)_setFontStyle:(int64_t)style inRange:(_NSRange)range;
+- (void)_setFontWeight:(int64_t)weight inRange:(_NSRange)range;
+- (void)_setRegion:(id)region;
+- (void)_setRuby:(id)ruby inRange:(_NSRange)range;
+- (void)_setStylePropertiesForArchive:(id)archive;
+- (void)_setText:(id)text;
+- (void)_setTextAlignment:(int64_t)alignment;
+- (void)_setTextColor:(CGColor *)color inRange:(_NSRange)range;
+- (void)_setTextCombine:(int64_t)combine inRange:(_NSRange)range;
+- (void)_setTimeRange:(id *)range;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCaption
@@ -49,26 +49,26 @@
   objc_exception_throw(v12);
 }
 
-- (AVCaption)initWithFigMutableCaptionData:(OpaqueFigCaptionData *)a3 timeRange:(id *)a4
+- (AVCaption)initWithFigMutableCaptionData:(OpaqueFigCaptionData *)data timeRange:(id *)range
 {
-  if (!a3)
+  if (!data)
   {
-    v12 = self;
+    selfCopy3 = self;
     v13 = a2;
-    v23 = self;
+    selfCopy2 = self;
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
     v22 = "figCaptionData != NULL";
 LABEL_11:
-    v24 = [v20 exceptionWithName:v21 reason:AVMethodExceptionReasonWithObjectAndSelector(v12 userInfo:{v13, @"invalid parameter not satisfying: %s", v15, v16, v17, v18, v19, v22), 0}];
+    v24 = [v20 exceptionWithName:v21 reason:AVMethodExceptionReasonWithObjectAndSelector(selfCopy3 userInfo:{v13, @"invalid parameter not satisfying: %s", v15, v16, v17, v18, v19, v22), 0}];
     objc_exception_throw(v24);
   }
 
-  if ((a4->var0.var2 & 0x1D) != 1 || (a4->var1.var2 & 0x1D) != 1)
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
-    v12 = self;
+    selfCopy3 = self;
     v13 = a2;
-    v14 = self;
+    selfCopy4 = self;
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
     v22 = "isValidCaptionTimeRange(timeRange)";
@@ -86,12 +86,12 @@ LABEL_11:
     {
       CFRetain(v7);
       internal = v6->_internal;
-      v9 = *&a4->var0.var0;
-      v10 = *&a4->var1.var1;
-      *&internal->timeRange.start.epoch = *&a4->var0.var3;
+      v9 = *&range->var0.var0;
+      v10 = *&range->var1.var1;
+      *&internal->timeRange.start.epoch = *&range->var0.var3;
       *&internal->timeRange.duration.timescale = v10;
       *&internal->timeRange.start.value = v9;
-      v6->_internal->figCaptionData = CFRetain(a3);
+      v6->_internal->figCaptionData = CFRetain(data);
     }
 
     else
@@ -104,13 +104,13 @@ LABEL_11:
   return v6;
 }
 
-- (AVCaption)initWithFigCaptionData:(OpaqueFigCaptionData *)a3 timeRange:(id *)a4
+- (AVCaption)initWithFigCaptionData:(OpaqueFigCaptionData *)data timeRange:(id *)range
 {
-  v4 = self;
-  if ((a4->var0.var2 & 0x1D) != 1 || (a4->var1.var2 & 0x1D) != 1)
+  selfCopy = self;
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
-    v10 = self;
-    v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v4 userInfo:{a2, @"invalid parameter not satisfying: %s", v11, v12, v13, v14, v15, "CMTIME_IS_NUMERIC(timeRange.start) && CMTIME_IS_NUMERIC(timeRange.duration)"), 0}];
+    selfCopy2 = self;
+    v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(selfCopy userInfo:{a2, @"invalid parameter not satisfying: %s", v11, v12, v13, v14, v15, "CMTIME_IS_NUMERIC(timeRange.start) && CMTIME_IS_NUMERIC(timeRange.duration)"), 0}];
     objc_exception_throw(v16);
   }
 
@@ -118,14 +118,14 @@ LABEL_11:
   if (FigCaptionDataCreateMutableCopy())
   {
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  v6 = *&a4->var0.var3;
-  v17[0] = *&a4->var0.var0;
+  v6 = *&range->var0.var3;
+  v17[0] = *&range->var0.var0;
   v17[1] = v6;
-  v17[2] = *&a4->var1.var1;
-  v7 = [(objc_class *)v4 initWithFigMutableCaptionData:v18 timeRange:v17];
+  v17[2] = *&range->var1.var1;
+  v7 = [(objc_class *)selfCopy initWithFigMutableCaptionData:v18 timeRange:v17];
   if (v18)
   {
     CFRelease(v18);
@@ -136,23 +136,23 @@ LABEL_11:
 
 - (AVCaption)initWithText:(NSString *)text timeRange:(CMTimeRange *)timeRange
 {
-  v4 = self;
+  selfCopy = self;
   if (!text)
   {
     v11 = a2;
-    v21 = self;
+    selfCopy2 = self;
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D940];
     v20 = "text != nil";
 LABEL_14:
-    v22 = [v18 exceptionWithName:v19 reason:AVMethodExceptionReasonWithObjectAndSelector(v4 userInfo:{v11, @"invalid parameter not satisfying: %s", v13, v14, v15, v16, v17, v20), 0}];
+    v22 = [v18 exceptionWithName:v19 reason:AVMethodExceptionReasonWithObjectAndSelector(selfCopy userInfo:{v11, @"invalid parameter not satisfying: %s", v13, v14, v15, v16, v17, v20), 0}];
     objc_exception_throw(v22);
   }
 
   if ((timeRange->start.flags & 0x1D) != 1 || (timeRange->duration.flags & 0x1D) != 1)
   {
     v11 = a2;
-    v12 = self;
+    selfCopy3 = self;
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D940];
     v20 = "CMTIME_IS_NUMERIC(timeRange.start) && CMTIME_IS_NUMERIC(timeRange.duration)";
@@ -163,21 +163,21 @@ LABEL_14:
   if (FigCaptionDataCreateMutable())
   {
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 16);
   if (!v7 || v7(v24, text))
   {
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   v8 = *&timeRange->start.epoch;
   v23[0] = *&timeRange->start.value;
   v23[1] = v8;
   v23[2] = *&timeRange->duration.timescale;
-  v9 = [(objc_class *)v4 initWithFigMutableCaptionData:v24 timeRange:v23];
+  v9 = [(objc_class *)selfCopy initWithFigMutableCaptionData:v24 timeRange:v23];
   if (v24)
   {
     CFRelease(v24);
@@ -186,7 +186,7 @@ LABEL_14:
   return v9;
 }
 
-- (AVCaption)initWithCoder:(id)a3
+- (AVCaption)initWithCoder:(id)coder
 {
   v18 = 0;
   if (FigCaptionDataCreateMutable())
@@ -197,12 +197,12 @@ LABEL_14:
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  if (!a3)
+  if (!coder)
   {
     goto LABEL_2;
   }
 
-  [a3 decodeCMTimeRangeForKey:@"AVCaptionArchiveKeyTimeRange"];
+  [coder decodeCMTimeRangeForKey:@"AVCaptionArchiveKeyTimeRange"];
   if ((BYTE12(v15) & 0x1D) != 1 || (BYTE4(v17) & 0x1D) != 1)
   {
     goto LABEL_2;
@@ -217,7 +217,7 @@ LABEL_14:
     goto LABEL_3;
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionArchiveKeyText"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionArchiveKeyText"];
   if (!v6)
   {
 LABEL_2:
@@ -227,16 +227,16 @@ LABEL_2:
   }
 
   [(AVCaption *)self _setText:v6];
-  -[AVCaption _setAnimation:](self, "_setAnimation:", [a3 decodeIntegerForKey:@"AVCaptionArchiveKeyAnimation"]);
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionArchiveKeyRegion"];
+  -[AVCaption _setAnimation:](self, "_setAnimation:", [coder decodeIntegerForKey:@"AVCaptionArchiveKeyAnimation"]);
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionArchiveKeyRegion"];
   if (v7)
   {
     [(AVCaption *)self _setRegion:v7];
   }
 
-  if ([a3 containsValueForKey:@"AVCaptionArchiveKeyTextAlignment"])
+  if ([coder containsValueForKey:@"AVCaptionArchiveKeyTextAlignment"])
   {
-    -[AVCaption _setTextAlignment:](self, "_setTextAlignment:", [a3 decodeIntegerForKey:@"AVCaptionArchiveKeyTextAlignment"]);
+    -[AVCaption _setTextAlignment:](self, "_setTextAlignment:", [coder decodeIntegerForKey:@"AVCaptionArchiveKeyTextAlignment"]);
   }
 
   v8 = MEMORY[0x1E695DFD8];
@@ -244,7 +244,7 @@ LABEL_2:
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = objc_opt_class();
-  v13 = [a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, v10, v11, v12, objc_opt_class(), 0), @"AVCaptionArchiveKeyStyleProperties"}];
+  v13 = [coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, v10, v11, v12, objc_opt_class(), 0), @"AVCaptionArchiveKeyStyleProperties"}];
   if (v13)
   {
     [(AVCaption *)self _setStylePropertiesForArchive:v13];
@@ -259,10 +259,10 @@ LABEL_3:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:2 forKey:@"AVCaptionArchiveKeyVersion"];
-  [a3 encodeObject:-[AVCaption text](self forKey:{"text"), @"AVCaptionArchiveKeyText"}];
+  [coder encodeInteger:2 forKey:@"AVCaptionArchiveKeyVersion"];
+  [coder encodeObject:-[AVCaption text](self forKey:{"text"), @"AVCaptionArchiveKeyText"}];
   if (self)
   {
     [(AVCaption *)self timeRange];
@@ -273,11 +273,11 @@ LABEL_3:
     memset(v5, 0, sizeof(v5));
   }
 
-  [a3 encodeCMTimeRange:v5 forKey:@"AVCaptionArchiveKeyTimeRange"];
-  [a3 encodeObject:-[AVCaption region](self forKey:{"region"), @"AVCaptionArchiveKeyRegion"}];
-  [a3 encodeInteger:-[AVCaption animation](self forKey:{"animation"), @"AVCaptionArchiveKeyAnimation"}];
-  [a3 encodeInteger:-[AVCaption textAlignment](self forKey:{"textAlignment"), @"AVCaptionArchiveKeyTextAlignment"}];
-  [a3 encodeObject:-[AVCaption _stylePropertiesForArchive](self forKey:{"_stylePropertiesForArchive"), @"AVCaptionArchiveKeyStyleProperties"}];
+  [coder encodeCMTimeRange:v5 forKey:@"AVCaptionArchiveKeyTimeRange"];
+  [coder encodeObject:-[AVCaption region](self forKey:{"region"), @"AVCaptionArchiveKeyRegion"}];
+  [coder encodeInteger:-[AVCaption animation](self forKey:{"animation"), @"AVCaptionArchiveKeyAnimation"}];
+  [coder encodeInteger:-[AVCaption textAlignment](self forKey:{"textAlignment"), @"AVCaptionArchiveKeyTextAlignment"}];
+  [coder encodeObject:-[AVCaption _stylePropertiesForArchive](self forKey:{"_stylePropertiesForArchive"), @"AVCaptionArchiveKeyStyleProperties"}];
 }
 
 - (void)dealloc
@@ -305,10 +305,10 @@ LABEL_3:
   [(AVCaption *)&v5 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [AVMutableCaption alloc];
-  v5 = [(AVCaption *)self _figCaptionData];
+  _figCaptionData = [(AVCaption *)self _figCaptionData];
   if (self)
   {
     [(AVCaption *)self timeRange];
@@ -319,7 +319,7 @@ LABEL_3:
     memset(v7, 0, sizeof(v7));
   }
 
-  return [(AVCaption *)v4 initWithFigCaptionData:v5 timeRange:v7];
+  return [(AVCaption *)v4 initWithFigCaptionData:_figCaptionData timeRange:v7];
 }
 
 - (NSString)text
@@ -408,42 +408,42 @@ LABEL_7:
   return [v5 stringWithFormat:@"<%@: %p, timeRange = %@ text=%@>", NSStringFromClass(v6), self, v4, -[AVCaption text](self, "text")];
 }
 
-- (void)_setText:(id)a3
+- (void)_setText:(id)text
 {
   figCaptionData = self->_internal->figCaptionData;
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 16);
   if (v5)
   {
 
-    v5(figCaptionData, a3);
+    v5(figCaptionData, text);
   }
 }
 
-- (void)_setTimeRange:(id *)a3
+- (void)_setTimeRange:(id *)range
 {
   internal = self->_internal;
-  v4 = *&a3->var0.var0;
-  v5 = *&a3->var1.var1;
-  *&internal->timeRange.start.epoch = *&a3->var0.var3;
+  v4 = *&range->var0.var0;
+  v5 = *&range->var1.var1;
+  *&internal->timeRange.start.epoch = *&range->var0.var3;
   *&internal->timeRange.duration.timescale = v5;
   *&internal->timeRange.start.value = v4;
 }
 
-- (void)_setRegion:(id)a3
+- (void)_setRegion:(id)region
 {
   v34 = 0;
-  if (![a3 endPosition])
+  if (![region endPosition])
   {
     goto LABEL_9;
   }
 
-  v6 = [objc_msgSend(a3 "endPosition")];
+  v6 = [objc_msgSend(region "endPosition")];
   if (!v6)
   {
-    v22 = [objc_msgSend(a3 "endPosition")];
-    v23 = [objc_msgSend(a3 "position")];
-    v24 = [objc_msgSend(a3 "endPosition")];
-    v25 = [objc_msgSend(a3 "position")];
+    v22 = [objc_msgSend(region "endPosition")];
+    v23 = [objc_msgSend(region "position")];
+    v24 = [objc_msgSend(region "endPosition")];
+    v25 = [objc_msgSend(region "position")];
     if (v22 >= v23)
     {
       if (v24 <= v25)
@@ -467,13 +467,13 @@ LABEL_23:
     objc_exception_throw(v32);
   }
 
-  [objc_msgSend(a3 "endPosition")];
+  [objc_msgSend(region "endPosition")];
   v13 = v12;
-  [objc_msgSend(a3 "position")];
+  [objc_msgSend(region "position")];
   v15 = v13 - v14;
-  [objc_msgSend(a3 "endPosition")];
+  [objc_msgSend(region "endPosition")];
   v17 = v16;
-  [objc_msgSend(a3 "position")];
+  [objc_msgSend(region "position")];
   if (v15 <= 0.0)
   {
 LABEL_21:
@@ -493,25 +493,25 @@ LABEL_6:
   }
 
 LABEL_9:
-  v26 = [a3 _figCaptionRegion];
+  _figCaptionRegion = [region _figCaptionRegion];
   CMBaseObject = FigCaptionDataGetCMBaseObject();
   v28 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v28)
   {
-    v28(CMBaseObject, *MEMORY[0x1E6961240], v26);
+    v28(CMBaseObject, *MEMORY[0x1E6961240], _figCaptionRegion);
   }
 
   v29 = FigCaptionDataGetCMBaseObject();
   v30 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (!v30 || (v30(v29, *MEMORY[0x1E6961278], *MEMORY[0x1E695E480], &v34), !v34))
   {
-    if (+[AVCaptionRegion appleiTTTop](AVCaptionRegion, "appleiTTTop") == a3 || +[AVCaptionRegion appleiTTBottom]== a3)
+    if (+[AVCaptionRegion appleiTTTop](AVCaptionRegion, "appleiTTTop") == region || +[AVCaptionRegion appleiTTBottom]== region)
     {
       v31 = 2;
       goto LABEL_19;
     }
 
-    if (+[AVCaptionRegion appleiTTLeft](AVCaptionRegion, "appleiTTLeft") == a3 || +[AVCaptionRegion appleiTTRight]== a3)
+    if (+[AVCaptionRegion appleiTTLeft](AVCaptionRegion, "appleiTTLeft") == region || +[AVCaptionRegion appleiTTRight]== region)
     {
       v31 = 0;
 LABEL_19:
@@ -520,11 +520,11 @@ LABEL_19:
   }
 }
 
-- (void)_setAnimation:(int64_t)a3
+- (void)_setAnimation:(int64_t)animation
 {
-  if (a3)
+  if (animation)
   {
-    if (a3 != 1)
+    if (animation != 1)
     {
       v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"animation property must be one of the values defined in AVCaptionAnimation.", v3, v4, v5, v6, v7, v14), 0}];
       objc_exception_throw(v13);
@@ -549,40 +549,40 @@ LABEL_19:
   }
 }
 
-- (void)_setTextAlignment:(int64_t)a3
+- (void)_setTextAlignment:(int64_t)alignment
 {
   v10 = 0;
-  if (a3 >= 5)
+  if (alignment >= 5)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"textAlignment is not one of the supported value.", v3, v4, v5, v6, v7, v9), 0}];
     objc_exception_throw(v8);
   }
 
-  [(AVCaption *)a3 _setTextAlignment:?];
+  [(AVCaption *)alignment _setTextAlignment:?];
 }
 
-- (void)_setFontWeight:(int64_t)a3 inRange:(_NSRange)a4
+- (void)_setFontWeight:(int64_t)weight inRange:(_NSRange)range
 {
   cf = 0;
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    switch(a3)
+    length = range.length;
+    switch(weight)
     {
       case 0:
         goto LABEL_8;
       case 1:
-        a4.length = MEMORY[0x1E69614B0];
+        range.length = MEMORY[0x1E69614B0];
         break;
       case 2:
-        a4.length = MEMORY[0x1E69614A8];
+        range.length = MEMORY[0x1E69614A8];
         break;
       default:
-        v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"fontWeight property must be one of the values defined in AVCaptionFontWeight.", a4.location, a4.length, v4, v5, v6, v9), 0}];
+        v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"fontWeight property must be one of the values defined in AVCaptionFontWeight.", range.location, range.length, v4, v5, v6, v9), 0}];
         objc_exception_throw(v8);
     }
 
-    if (([(AVCaption *)a4.location _setFontWeight:self inRange:&cf, a4.length]& 1) != 0)
+    if (([(AVCaption *)range.location _setFontWeight:self inRange:&cf, range.length]& 1) != 0)
     {
 LABEL_8:
       [AVCaption _setFontWeight:inRange:];
@@ -595,28 +595,28 @@ LABEL_8:
   }
 }
 
-- (void)_setFontStyle:(int64_t)a3 inRange:(_NSRange)a4
+- (void)_setFontStyle:(int64_t)style inRange:(_NSRange)range
 {
   cf = 0;
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    switch(a3)
+    length = range.length;
+    switch(style)
     {
       case 0:
         goto LABEL_8;
       case 1:
-        a4.length = MEMORY[0x1E6961490];
+        range.length = MEMORY[0x1E6961490];
         break;
       case 2:
-        a4.length = MEMORY[0x1E6961488];
+        range.length = MEMORY[0x1E6961488];
         break;
       default:
-        v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"fontStyle property must be one of the values defined in AVCaptionFontStyle.", a4.location, a4.length, v4, v5, v6, v9), 0}];
+        v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"fontStyle property must be one of the values defined in AVCaptionFontStyle.", range.location, range.length, v4, v5, v6, v9), 0}];
         objc_exception_throw(v8);
     }
 
-    if (([(AVCaption *)a4.location _setFontStyle:self inRange:&cf, a4.length]& 1) != 0)
+    if (([(AVCaption *)range.location _setFontStyle:self inRange:&cf, range.length]& 1) != 0)
     {
 LABEL_8:
       [AVCaption _setFontStyle:inRange:];
@@ -629,13 +629,13 @@ LABEL_8:
   }
 }
 
-- (void)_setTextCombine:(int64_t)a3 inRange:(_NSRange)a4
+- (void)_setTextCombine:(int64_t)combine inRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    if (a3 > 1)
+    if (combine > 1)
     {
-      if (a3 == 2 || a3 == 3 || a3 == 4)
+      if (combine == 2 || combine == 3 || combine == 4)
       {
 LABEL_14:
         [AVCaption _setTextCombine:inRange:];
@@ -645,7 +645,7 @@ LABEL_14:
 
     else
     {
-      switch(a3)
+      switch(combine)
       {
         case -1:
           goto LABEL_14;
@@ -657,67 +657,67 @@ LABEL_14:
       }
     }
 
-    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"textCombine is not one of the supported value.", a4.location, a4.length, v4, v5, v6, v8), 0}];
+    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"textCombine is not one of the supported value.", range.location, range.length, v4, v5, v6, v8), 0}];
     objc_exception_throw(v7);
   }
 }
 
-+ (void)_appendFigStyleKey:(__CFString *)a3 value:(void *)a4 range:(id)a5 toArray:(id)a6
++ (void)_appendFigStyleKey:(__CFString *)key value:(void *)value range:(id)range toArray:(id)array
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v14[3] = *MEMORY[0x1E69E9840];
-  if (CFEqual(a3, *MEMORY[0x1E69614A0]))
+  if (CFEqual(key, *MEMORY[0x1E69614A0]))
   {
-    if (CFEqual(a4, *MEMORY[0x1E69614B0]))
+    if (CFEqual(value, *MEMORY[0x1E69614B0]))
     {
-      a4 = @"AVCaptionArchiveKeyStylePropertyName_FontWeightNormal";
+      value = @"AVCaptionArchiveKeyStylePropertyName_FontWeightNormal";
     }
 
     else
     {
-      if (!CFEqual(a4, *MEMORY[0x1E69614A8]))
+      if (!CFEqual(value, *MEMORY[0x1E69614A8]))
       {
         return;
       }
 
-      a4 = @"AVCaptionArchiveKeyStylePropertyName_FontWeightBold";
+      value = @"AVCaptionArchiveKeyStylePropertyName_FontWeightBold";
     }
 
     v12 = @"AVCaptionArchiveKeyStylePropertyName_FontWeight";
     goto LABEL_13;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69614E8]))
+  if (CFEqual(key, *MEMORY[0x1E69614E8]))
   {
     v11 = FigCopyCGColorSRGBAsCFArray();
     v12 = @"AVCaptionArchiveKeyStylePropertyName_TextColor";
 LABEL_11:
-    a4 = v11;
+    value = v11;
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6961458]))
+  if (CFEqual(key, *MEMORY[0x1E6961458]))
   {
     v11 = FigCopyCGColorSRGBAsCFArray();
     v12 = @"AVCaptionArchiveKeyStylePropertyName_BackgroundColor";
     goto LABEL_11;
   }
 
-  if (!CFEqual(a3, *MEMORY[0x1E6961480]))
+  if (!CFEqual(key, *MEMORY[0x1E6961480]))
   {
-    if (CFEqual(a3, *MEMORY[0x1E6961460]))
+    if (CFEqual(key, *MEMORY[0x1E6961460]))
     {
       v12 = @"AVCaptionArchiveKeyStylePropertyName_Decoration";
     }
 
     else
     {
-      if (!CFEqual(a3, *MEMORY[0x1E69614F0]))
+      if (!CFEqual(key, *MEMORY[0x1E69614F0]))
       {
-        if (CFEqual(a3, *MEMORY[0x1E69614E0]))
+        if (CFEqual(key, *MEMORY[0x1E69614E0]))
         {
-          v11 = [[AVCaptionRuby alloc] initWithFigCaptionData:a4];
+          v11 = [[AVCaptionRuby alloc] initWithFigCaptionData:value];
           v12 = @"AVCaptionArchiveKeyStylePropertyName_RubyText";
           goto LABEL_11;
         }
@@ -729,7 +729,7 @@ LABEL_11:
     }
 
 LABEL_12:
-    if (!a4)
+    if (!value)
     {
       return;
     }
@@ -737,9 +737,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (CFEqual(a4, *MEMORY[0x1E6961490]))
+  if (CFEqual(value, *MEMORY[0x1E6961490]))
   {
-    a4 = @"AVCaptionArchiveStylePropertyValue_FontStyleNormal";
+    value = @"AVCaptionArchiveStylePropertyValue_FontStyleNormal";
 LABEL_22:
     v12 = @"AVCaptionArchiveKeyStylePropertyName_FontStyle";
 LABEL_13:
@@ -748,21 +748,21 @@ LABEL_13:
     v13[0] = @"AVCaptionArchiveKeyStylePropertyName";
     v13[1] = @"AVCaptionArchiveKeyStylePropertyValue";
     v14[0] = v12;
-    v14[1] = a4;
+    v14[1] = value;
     v13[2] = @"AVCaptionArchiveKeyStylePropertyRange";
     v14[2] = NSStringFromRange(v15);
-    [a6 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v14, v13, 3)}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v14, v13, 3)}];
     return;
   }
 
-  if (CFEqual(a4, *MEMORY[0x1E6961488]))
+  if (CFEqual(value, *MEMORY[0x1E6961488]))
   {
-    a4 = @"AVCaptionArchiveStylePropertyValue_FontStyleItalic";
+    value = @"AVCaptionArchiveStylePropertyValue_FontStyleItalic";
     goto LABEL_22;
   }
 }
 
-- (CGColor)copyTextColorAtIndex:(int64_t)a3 range:(_NSRange *)a4
+- (CGColor)copyTextColorAtIndex:(int64_t)index range:(_NSRange *)range
 {
   cf = 0;
   figCaptionData = self->_internal->figCaptionData;
@@ -772,7 +772,7 @@ LABEL_13:
     return 0;
   }
 
-  v8 = v7(figCaptionData, a3, *MEMORY[0x1E69614E8], *MEMORY[0x1E695E480], &cf, a4);
+  v8 = v7(figCaptionData, index, *MEMORY[0x1E69614E8], *MEMORY[0x1E695E480], &cf, range);
   v9 = cf;
   if (v8)
   {
@@ -797,7 +797,7 @@ LABEL_4:
   return InitialValue;
 }
 
-- (CGColor)copyBackgroundColorAtIndex:(int64_t)a3 range:(_NSRange *)a4
+- (CGColor)copyBackgroundColorAtIndex:(int64_t)index range:(_NSRange *)range
 {
   cf = 0;
   figCaptionData = self->_internal->figCaptionData;
@@ -807,7 +807,7 @@ LABEL_4:
     return 0;
   }
 
-  v8 = v7(figCaptionData, a3, *MEMORY[0x1E6961458], *MEMORY[0x1E695E480], &cf, a4);
+  v8 = v7(figCaptionData, index, *MEMORY[0x1E6961458], *MEMORY[0x1E695E480], &cf, range);
   v9 = cf;
   if (v8)
   {
@@ -916,7 +916,7 @@ LABEL_9:
   return v13;
 }
 
-- (id)rubyTextAtIndex:(int64_t)a3 range:(_NSRange *)a4
+- (id)rubyTextAtIndex:(int64_t)index range:(_NSRange *)range
 {
   cf = 0;
   figCaptionData = self->_internal->figCaptionData;
@@ -927,7 +927,7 @@ LABEL_9:
     return v12;
   }
 
-  v8 = v7(figCaptionData, a3, *MEMORY[0x1E69614E0], *MEMORY[0x1E695E480], &cf, a4);
+  v8 = v7(figCaptionData, index, *MEMORY[0x1E69614E0], *MEMORY[0x1E695E480], &cf, range);
   v9 = cf;
   if (v8)
   {
@@ -1053,7 +1053,7 @@ LABEL_11:
   return v8;
 }
 
-+ (id)captionFromFigCaption:(OpaqueFigCaption *)a3
++ (id)captionFromFigCaption:(OpaqueFigCaption *)caption
 {
   v16 = 0u;
   v17 = 0u;
@@ -1061,7 +1061,7 @@ LABEL_11:
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v5)
   {
-    v5(&v15, a3);
+    v5(&v15, caption);
   }
 
   else
@@ -1083,7 +1083,7 @@ LABEL_11:
 
   else
   {
-    v9 = [a1 alloc];
+    v9 = [self alloc];
     v12[0] = v15;
     v12[1] = v16;
     v12[2] = v17;
@@ -1103,9 +1103,9 @@ LABEL_11:
   return v10;
 }
 
-- (void)_setTextColor:(CGColor *)a3 inRange:(_NSRange)a4
+- (void)_setTextColor:(CGColor *)color inRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     OUTLINED_FUNCTION_11();
     if (v4)
@@ -1128,9 +1128,9 @@ LABEL_11:
   }
 }
 
-- (void)_setBackgroundColor:(CGColor *)a3 inRange:(_NSRange)a4
+- (void)_setBackgroundColor:(CGColor *)color inRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     OUTLINED_FUNCTION_11();
     if (v4)
@@ -1153,10 +1153,10 @@ LABEL_11:
   }
 }
 
-- (void)_setDecoration:(unint64_t)a3 inRange:(_NSRange)a4
+- (void)_setDecoration:(unint64_t)decoration inRange:(_NSRange)range
 {
-  valuePtr = a3;
-  if (a4.length)
+  valuePtr = decoration;
+  if (range.length)
   {
     OUTLINED_FUNCTION_11();
     v5 = v4;
@@ -1192,24 +1192,24 @@ LABEL_11:
   }
 }
 
-- (void)_setRuby:(id)a3 inRange:(_NSRange)a4
+- (void)_setRuby:(id)ruby inRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     OUTLINED_FUNCTION_11();
     if (v4)
     {
-      v5 = [v4 copyFigCaptionData];
+      copyFigCaptionData = [v4 copyFigCaptionData];
       if (*(*(CMBaseObjectGetVTable() + 16) + 32))
       {
         v6 = OUTLINED_FUNCTION_0_3();
         v7(v6);
       }
 
-      if (v5)
+      if (copyFigCaptionData)
       {
 
-        CFRelease(v5);
+        CFRelease(copyFigCaptionData);
       }
     }
 
@@ -1222,9 +1222,9 @@ LABEL_11:
   }
 }
 
-- (void)_setStylePropertiesForArchive:(id)a3
+- (void)_setStylePropertiesForArchive:(id)archive
 {
-  v9 = OUTLINED_FUNCTION_14(self, a2, a3, v3, v4, v5, v6, v7, v31, v33, v35, v37, v39, v41, v43, v45, self, v48, v50, v52, v54, v56, 0, 0, 0, 0, 0, 0, 0, 0, v66, 0, v69);
+  v9 = OUTLINED_FUNCTION_14(self, a2, archive, v3, v4, v5, v6, v7, v31, v33, v35, v37, v39, v41, v43, v45, self, v48, v50, v52, v54, v56, 0, 0, 0, 0, 0, 0, 0, 0, v66, 0, v69);
   if (!v9)
   {
     goto LABEL_49;
@@ -1252,7 +1252,7 @@ LABEL_11:
     {
       if (*v60 != v11)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(archive);
       }
 
       v13 = *(v59 + 8 * v12);
@@ -1478,7 +1478,7 @@ LABEL_49:
 {
   cf = 0;
   theArray = 0;
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   FigCaptionDataGetCMBaseObject();
   if (*(*(CMBaseObjectGetVTable() + 8) + 48))
   {
@@ -1501,7 +1501,7 @@ LABEL_49:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (AVCaptionFontWeight)fontWeightAtIndex:(NSInteger)index range:(NSRange *)outRange

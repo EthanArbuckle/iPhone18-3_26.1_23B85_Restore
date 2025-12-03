@@ -1,72 +1,72 @@
 @interface IMAPNotesLibrary
-- (BOOL)isMessageContentsLocallyAvailable:(id)a3;
+- (BOOL)isMessageContentsLocallyAvailable:(id)available;
 - (DAIMAPNotesDaemonAccount)notesAccount;
 - (IMAPAccount)account;
-- (id)addMessages:(id)a3 withMailbox:(id)a4 fetchBodies:(BOOL)a5 newMessagesByOldMessage:(id)a6 remoteIDs:(id)a7 setFlags:(unint64_t)a8 clearFlags:(unint64_t)a9 messageFlagsForMessages:(id)a10 copyFiles:(BOOL)a11 addPOPUIDs:(BOOL)a12 dataSectionsByMessage:(id)a13;
-- (id)getDetailsForAllMessagesFromMailbox:(id)a3;
-- (id)getDetailsForMessages:(unint64_t)a3 absoluteBottom:(unint64_t)a4 topOfDesiredRange:(unint64_t)a5 range:(_NSRange *)a6 fromMailbox:(id)a7;
-- (id)getDetailsForMessagesWithRemoteIDInRange:(_NSRange)a3 fromMailbox:(id)a4;
-- (id)mailboxUidForMessage:(id)a3;
-- (id)messageWithMessageID:(id)a3 options:(unsigned int)a4 inMailbox:(id)a5;
-- (id)messageWithRemoteID:(id)a3 inRemoteMailbox:(id)a4;
-- (id)messagesForMailbox:(id)a3 olderThanNumberOfDays:(int)a4;
-- (id)messagesWithMessageIDHeader:(id)a3;
-- (id)messagesWithSummariesForMailbox:(id)a3 range:(_NSRange)a4;
-- (id)oldestMessageInMailbox:(id)a3;
-- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)a3 inMailbox:(id)a4;
-- (id)setFlagsFromDictionary:(id)a3 forMessages:(id)a4;
-- (unsigned)maximumRemoteIDForMailbox:(id)a3;
-- (unsigned)minimumRemoteIDForMailbox:(id)a3;
-- (unsigned)nonDeletedCountForMailbox:(id)a3;
-- (unsigned)totalCountForMailbox:(id)a3;
-- (void)compactMailbox:(id)a3;
-- (void)compactMessages:(id)a3 permanently:(BOOL)a4;
-- (void)removeAllMessagesFromMailbox:(id)a3 andNotify:(BOOL)a4;
-- (void)sendMessagesMatchingCriterion:(id)a3 to:(id)a4 options:(unsigned int)a5 range:(_NSRange)a6;
-- (void)setFlags:(unint64_t)a3 forMessage:(id)a4;
-- (void)setFlagsForMessages:(id)a3 mask:(unint64_t)a4;
-- (void)setNoteContext:(id)a3;
-- (void)setSequenceIdentifier:(id)a3 forMessagesWithRemoteIDs:(id)a4 inMailbox:(id)a5;
+- (id)addMessages:(id)messages withMailbox:(id)mailbox fetchBodies:(BOOL)bodies newMessagesByOldMessage:(id)message remoteIDs:(id)ds setFlags:(unint64_t)flags clearFlags:(unint64_t)clearFlags messageFlagsForMessages:(id)self0 copyFiles:(BOOL)self1 addPOPUIDs:(BOOL)self2 dataSectionsByMessage:(id)self3;
+- (id)getDetailsForAllMessagesFromMailbox:(id)mailbox;
+- (id)getDetailsForMessages:(unint64_t)messages absoluteBottom:(unint64_t)bottom topOfDesiredRange:(unint64_t)range range:(_NSRange *)a6 fromMailbox:(id)mailbox;
+- (id)getDetailsForMessagesWithRemoteIDInRange:(_NSRange)range fromMailbox:(id)mailbox;
+- (id)mailboxUidForMessage:(id)message;
+- (id)messageWithMessageID:(id)d options:(unsigned int)options inMailbox:(id)mailbox;
+- (id)messageWithRemoteID:(id)d inRemoteMailbox:(id)mailbox;
+- (id)messagesForMailbox:(id)mailbox olderThanNumberOfDays:(int)days;
+- (id)messagesWithMessageIDHeader:(id)header;
+- (id)messagesWithSummariesForMailbox:(id)mailbox range:(_NSRange)range;
+- (id)oldestMessageInMailbox:(id)mailbox;
+- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox;
+- (id)setFlagsFromDictionary:(id)dictionary forMessages:(id)messages;
+- (unsigned)maximumRemoteIDForMailbox:(id)mailbox;
+- (unsigned)minimumRemoteIDForMailbox:(id)mailbox;
+- (unsigned)nonDeletedCountForMailbox:(id)mailbox;
+- (unsigned)totalCountForMailbox:(id)mailbox;
+- (void)compactMailbox:(id)mailbox;
+- (void)compactMessages:(id)messages permanently:(BOOL)permanently;
+- (void)removeAllMessagesFromMailbox:(id)mailbox andNotify:(BOOL)notify;
+- (void)sendMessagesMatchingCriterion:(id)criterion to:(id)to options:(unsigned int)options range:(_NSRange)range;
+- (void)setFlags:(unint64_t)flags forMessage:(id)message;
+- (void)setFlagsForMessages:(id)messages mask:(unint64_t)mask;
+- (void)setNoteContext:(id)context;
+- (void)setSequenceIdentifier:(id)identifier forMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox;
 @end
 
 @implementation IMAPNotesLibrary
 
-- (unsigned)maximumRemoteIDForMailbox:(id)a3
+- (unsigned)maximumRemoteIDForMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(IMAPNotesLibrary *)self noteContext];
+  mailboxCopy = mailbox;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
 
-  if (!v5)
+  if (!noteContext)
   {
     sub_F3E0();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v7 = [(IMAPNotesLibrary *)self noteContext];
-  v8 = [WeakRetained localNotesAccountInContext:v7];
+  noteContext2 = [(IMAPNotesLibrary *)self noteContext];
+  v8 = [WeakRetained localNotesAccountInContext:noteContext2];
 
-  v9 = [v8 storeForExternalId:v4];
-  v10 = [v9 maximumServerIntId];
+  v9 = [v8 storeForExternalId:mailboxCopy];
+  maximumServerIntId = [v9 maximumServerIntId];
   v11 = DALoggingwithCategory();
   v12 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v11, v12))
   {
     v14 = 138412546;
-    v15 = v4;
+    v15 = mailboxCopy;
     v16 = 1024;
-    v17 = v10;
+    v17 = maximumServerIntId;
     _os_log_impl(&dword_0, v11, v12, "Max remote id for mailbox url %@ returning %d", &v14, 0x12u);
   }
 
-  return v10;
+  return maximumServerIntId;
 }
 
-- (id)getDetailsForAllMessagesFromMailbox:(id)a3
+- (id)getDetailsForAllMessagesFromMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(IMAPNotesLibrary *)self noteContext];
+  mailboxCopy = mailbox;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
 
-  if (!v5)
+  if (!noteContext)
   {
     sub_F44C();
   }
@@ -76,22 +76,22 @@
   if (os_log_type_enabled(v6, v7))
   {
     *buf = 138412290;
-    v43 = v4;
+    v43 = mailboxCopy;
     _os_log_impl(&dword_0, v6, v7, "Get details for all messages in mailbox at url %@", buf, 0xCu);
   }
 
   v8 = +[NSMutableArray array];
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v10 = [(IMAPNotesLibrary *)self noteContext];
-  v11 = [WeakRetained localNotesAccountInContext:v10];
+  noteContext2 = [(IMAPNotesLibrary *)self noteContext];
+  v11 = [WeakRetained localNotesAccountInContext:noteContext2];
 
-  v12 = [v11 storeForExternalId:v4];
+  v12 = [v11 storeForExternalId:mailboxCopy];
   if (v12)
   {
     v30 = v11;
-    v31 = v4;
-    v13 = [(IMAPNotesLibrary *)self noteContext];
-    v14 = [v13 allNotesInCollection:v12];
+    v31 = mailboxCopy;
+    noteContext3 = [(IMAPNotesLibrary *)self noteContext];
+    v14 = [noteContext3 allNotesInCollection:v12];
 
     v15 = objc_opt_new();
     v36 = 0u;
@@ -161,39 +161,39 @@
     }
 
     v11 = v30;
-    v4 = v31;
+    mailboxCopy = v31;
     v12 = v29;
   }
 
   return v8;
 }
 
-- (id)getDetailsForMessagesWithRemoteIDInRange:(_NSRange)a3 fromMailbox:(id)a4
+- (id)getDetailsForMessagesWithRemoteIDInRange:(_NSRange)range fromMailbox:(id)mailbox
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  mailboxCopy = mailbox;
   if (length == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(IMAPNotesLibrary *)self getDetailsForAllMessagesFromMailbox:v7];
+    v8 = [(IMAPNotesLibrary *)self getDetailsForAllMessagesFromMailbox:mailboxCopy];
   }
 
   else
   {
-    v9 = [(IMAPNotesLibrary *)self noteContext];
+    noteContext = [(IMAPNotesLibrary *)self noteContext];
 
-    if (!v9)
+    if (!noteContext)
     {
       sub_F5E0();
     }
 
     v8 = +[NSMutableArray array];
     WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-    v11 = [(IMAPNotesLibrary *)self noteContext];
-    v12 = [WeakRetained localNotesAccountInContext:v11];
+    noteContext2 = [(IMAPNotesLibrary *)self noteContext];
+    v12 = [WeakRetained localNotesAccountInContext:noteContext2];
 
     v24 = v12;
-    v13 = [v12 storeForExternalId:v7];
+    v13 = [v12 storeForExternalId:mailboxCopy];
     v14 = [v13 notesForServerIntIdsInRange:location ascending:length + 1 limit:{1, 0}];
     v25 = 0u;
     v26 = 0u;
@@ -240,12 +240,12 @@
   return v8;
 }
 
-- (id)getDetailsForMessages:(unint64_t)a3 absoluteBottom:(unint64_t)a4 topOfDesiredRange:(unint64_t)a5 range:(_NSRange *)a6 fromMailbox:(id)a7
+- (id)getDetailsForMessages:(unint64_t)messages absoluteBottom:(unint64_t)bottom topOfDesiredRange:(unint64_t)range range:(_NSRange *)a6 fromMailbox:(id)mailbox
 {
-  v12 = a7;
-  v13 = [(IMAPNotesLibrary *)self noteContext];
+  mailboxCopy = mailbox;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
 
-  if (!v13)
+  if (!noteContext)
   {
     sub_F64C();
   }
@@ -255,26 +255,26 @@
   if (os_log_type_enabled(v14, v15))
   {
     *buf = 134218754;
-    v48 = a3;
+    messagesCopy = messages;
     v49 = 2112;
-    v50 = v12;
+    v50 = mailboxCopy;
     v51 = 2048;
-    v52 = a4;
+    bottomCopy = bottom;
     v53 = 2048;
-    v54 = a5;
+    rangeCopy = range;
     _os_log_impl(&dword_0, v14, v15, "Getting details for %lu messages in mailbox %@ from top of range [%lu, %lu]", buf, 0x2Au);
   }
 
   v41 = +[NSMutableArray array];
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v17 = [(IMAPNotesLibrary *)self noteContext];
-  v18 = [WeakRetained localNotesAccountInContext:v17];
+  noteContext2 = [(IMAPNotesLibrary *)self noteContext];
+  v18 = [WeakRetained localNotesAccountInContext:noteContext2];
 
   v40 = v18;
-  v19 = [v18 storeForExternalId:v12];
-  v38 = a5 - a4;
-  v39 = a4;
-  [v19 notesForServerIntIdsInRange:a4 ascending:a5 - a4 + 1 limit:{0, a3}];
+  v19 = [v18 storeForExternalId:mailboxCopy];
+  v38 = range - bottom;
+  bottomCopy2 = bottom;
+  [v19 notesForServerIntIdsInRange:bottom ascending:range - bottom + 1 limit:{0, messages}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -295,7 +295,7 @@
   v34 = v19;
   v35 = a6;
   v36 = v15;
-  v37 = v12;
+  v37 = mailboxCopy;
   v23 = 0;
   v24 = *v43;
   v25 = -1;
@@ -323,7 +323,7 @@
           v25 = *&v27[OBJC_IVAR___MFMessageDetails_uid];
         }
 
-        if (!--a3)
+        if (!--messages)
         {
 
           goto LABEL_20;
@@ -342,7 +342,7 @@
 
 LABEL_20:
 
-  v12 = v37;
+  mailboxCopy = v37;
   v15 = v36;
   v19 = v34;
   a6 = v35;
@@ -360,7 +360,7 @@ LABEL_25:
 
 LABEL_24:
     v29 = v38;
-    v30 = v39;
+    v30 = bottomCopy2;
     goto LABEL_25;
   }
 
@@ -370,36 +370,36 @@ LABEL_26:
   {
     v32 = [v41 count];
     *buf = 134217984;
-    v48 = v32;
+    messagesCopy = v32;
     _os_log_impl(&dword_0, v31, v15, "Returning %lu message details", buf, 0xCu);
   }
 
   return v41;
 }
 
-- (void)compactMailbox:(id)a3
+- (void)compactMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = mailboxCopy;
     _os_log_impl(&dword_0, v5, v6, "Deleting all notes in mailbox at url %@", buf, 0xCu);
   }
 
-  v7 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v7)
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_F6B8();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v9 = [WeakRetained localNotesAccountInContext:v7];
+  v9 = [WeakRetained localNotesAccountInContext:noteContext];
 
-  v10 = [v9 storeForExternalId:v4];
-  v11 = [v7 allNotesInCollection:v10];
+  v10 = [v9 storeForExternalId:mailboxCopy];
+  v11 = [noteContext allNotesInCollection:v10];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -418,7 +418,7 @@ LABEL_26:
           objc_enumerationMutation(v11);
         }
 
-        [v7 deleteNoteRegardlessOfConstraints:*(*(&v16 + 1) + 8 * i)];
+        [noteContext deleteNoteRegardlessOfConstraints:*(*(&v16 + 1) + 8 * i)];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -428,23 +428,23 @@ LABEL_26:
   }
 }
 
-- (void)compactMessages:(id)a3 permanently:(BOOL)a4
+- (void)compactMessages:(id)messages permanently:(BOOL)permanently
 {
-  v32 = a4;
-  v5 = a3;
-  v33 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v33)
+  permanentlyCopy = permanently;
+  messagesCopy = messages;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_F714();
   }
 
-  v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
-  v6 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(messagesCopy, "count")}];
+  v6 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(messagesCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v5;
+  obj = messagesCopy;
   v7 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v7)
   {
@@ -511,7 +511,7 @@ LABEL_13:
   if (os_log_type_enabled(v18, v19))
   {
     v20 = &stru_1C808;
-    if (v32)
+    if (permanentlyCopy)
     {
       v20 = @" permanently";
     }
@@ -523,7 +523,7 @@ LABEL_13:
     _os_log_impl(&dword_0, v18, v19, "Deleting messages with int ids %@%@", buf, 0x16u);
   }
 
-  v21 = [v33 notesForIntegerIds:v35];
+  v21 = [noteContext notesForIntegerIds:v35];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -548,7 +548,7 @@ LABEL_13:
 
         if (v28)
         {
-          [v33 deleteNoteRegardlessOfConstraints:v26];
+          [noteContext deleteNoteRegardlessOfConstraints:v26];
         }
 
         else
@@ -556,12 +556,12 @@ LABEL_13:
           v29 = DALoggingwithCategory();
           if (os_log_type_enabled(v29, v19))
           {
-            v30 = [v26 integerId];
-            v31 = [v26 serverIntId];
+            integerId = [v26 integerId];
+            serverIntId = [v26 serverIntId];
             *buf = 138412546;
-            v46 = v30;
+            v46 = integerId;
             v47 = 2048;
-            v48 = v31;
+            v48 = serverIntId;
             _os_log_impl(&dword_0, v29, v19, "Skipping delete of message with int id %@, as we've recently modified its server int id to be something new %lld (condensed add/delete into a modify)", buf, 0x16u);
           }
         }
@@ -574,40 +574,40 @@ LABEL_13:
   }
 }
 
-- (id)addMessages:(id)a3 withMailbox:(id)a4 fetchBodies:(BOOL)a5 newMessagesByOldMessage:(id)a6 remoteIDs:(id)a7 setFlags:(unint64_t)a8 clearFlags:(unint64_t)a9 messageFlagsForMessages:(id)a10 copyFiles:(BOOL)a11 addPOPUIDs:(BOOL)a12 dataSectionsByMessage:(id)a13
+- (id)addMessages:(id)messages withMailbox:(id)mailbox fetchBodies:(BOOL)bodies newMessagesByOldMessage:(id)message remoteIDs:(id)ds setFlags:(unint64_t)flags clearFlags:(unint64_t)clearFlags messageFlagsForMessages:(id)self0 copyFiles:(BOOL)self1 addPOPUIDs:(BOOL)self2 dataSectionsByMessage:(id)self3
 {
-  v90 = a5;
-  v18 = a3;
-  v96 = a4;
-  v95 = a6;
-  v19 = a7;
+  bodiesCopy = bodies;
+  messagesCopy = messages;
+  mailboxCopy = mailbox;
+  messageCopy = message;
+  dsCopy = ds;
   v20 = DALoggingwithCategory();
   v21 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v20, v21))
   {
     *buf = 138412802;
-    v118 = v18;
+    v118 = messagesCopy;
     v119 = 2112;
-    v120 = v19;
+    v120 = dsCopy;
     v121 = 2112;
-    v122 = v96;
+    v122 = mailboxCopy;
     _os_log_impl(&dword_0, v20, v21, "Adding messages %@ (remote ids %@) to mailbox uid %@", buf, 0x20u);
   }
 
   v94 = +[NSMutableArray array];
-  v22 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v22)
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_F780();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v92 = v22;
-  v24 = [WeakRetained localNotesAccountInContext:v22];
+  v92 = noteContext;
+  v24 = [WeakRetained localNotesAccountInContext:noteContext];
 
-  v25 = [v96 URLString];
+  uRLString = [mailboxCopy URLString];
   v88 = v24;
-  v93 = [v24 storeForExternalId:v25];
+  v93 = [v24 storeForExternalId:uRLString];
 
   v26 = objc_opt_new();
   v100 = objc_opt_new();
@@ -615,7 +615,7 @@ LABEL_13:
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v27 = v18;
+  v27 = messagesCopy;
   v28 = [v27 countByEnumeratingWithState:&v110 objects:v116 count:16];
   if (v28)
   {
@@ -645,10 +645,10 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v36 = [v32 localIntegerId];
-          if (v36)
+          localIntegerId = [v32 localIntegerId];
+          if (localIntegerId)
           {
-            v34 = [NSNumber numberWithInt:v36];
+            v34 = [NSNumber numberWithInt:localIntegerId];
             v35 = v100;
             goto LABEL_12;
           }
@@ -663,8 +663,8 @@ LABEL_12:
 
   v87 = a2;
   v97 = v27;
-  v98 = self;
-  v91 = v19;
+  selfCopy = self;
+  v91 = dsCopy;
 
   v37 = [v93 notesForServerIntIds:v26];
   v38 = objc_opt_new();
@@ -726,8 +726,8 @@ LABEL_12:
         }
 
         v53 = *(*(&v102 + 1) + 8 * k);
-        v54 = [v53 integerId];
-        [v47 setObject:v53 forKeyedSubscript:v54];
+        integerId = [v53 integerId];
+        [v47 setObject:v53 forKeyedSubscript:integerId];
       }
 
       v50 = [v48 countByEnumeratingWithState:&v102 objects:v114 count:16];
@@ -749,9 +749,9 @@ LABEL_61:
       v82 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v81, v82))
       {
-        v83 = [v80 DAExtendedDescription];
+        dAExtendedDescription = [v80 DAExtendedDescription];
         *buf = 138412290;
-        v118 = v83;
+        v118 = dAExtendedDescription;
         _os_log_impl(&dword_0, v81, v82, "Failed to save: %@", buf, 0xCu);
       }
 
@@ -765,7 +765,7 @@ LABEL_61:
         }
 
         v85 = +[NSAssertionHandler currentHandler];
-        [v85 handleFailureInMethod:v87 object:v98 file:@"IMAPNotesLibrary.m" lineNumber:335 description:{@"Notes db was corrupted.  Crashing the daemon to get a second chance at it (err %@)", v80}];
+        [v85 handleFailureInMethod:v87 object:selfCopy file:@"IMAPNotesLibrary.m" lineNumber:335 description:{@"Notes db was corrupted.  Crashing the daemon to get a second chance at it (err %@)", v80}];
       }
     }
 
@@ -782,13 +782,13 @@ LABEL_61:
     v59 = [v58 objectAtIndexedSubscript:v56];
     if ([v55 count] <= v56)
     {
-      v61 = 0;
+      longLongValue = 0;
     }
 
     else
     {
       v60 = [v55 objectAtIndexedSubscript:v56];
-      v61 = [v60 longLongValue];
+      longLongValue = [v60 longLongValue];
     }
 
     v62 = [v59 uid];
@@ -803,15 +803,15 @@ LABEL_61:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v65 = [v59 localIntegerId];
-      if (v65)
+      localIntegerId2 = [v59 localIntegerId];
+      if (localIntegerId2)
       {
-        v66 = [NSNumber numberWithInt:v65];
+        v66 = [NSNumber numberWithInt:localIntegerId2];
         v64 = [v47 objectForKeyedSubscript:v66];
 
-        if (v61)
+        if (longLongValue)
         {
-          [v64 setServerIntId:v61];
+          [v64 setServerIntId:longLongValue];
         }
 
 LABEL_41:
@@ -823,12 +823,12 @@ LABEL_41:
     }
 
     v67 = [DAIMAPNotesUtils messageIsSyncableNote:v59];
-    if (v67 && v90)
+    if (v67 && bodiesCopy)
     {
-      v68 = [v59 messageData];
-      v69 = [(IMAPNotesLibrary *)v98 notesAccount];
-      v70 = [v69 attachmentManager];
-      v64 = [DAIMAPNotesUtils _noteObjectFromMessage:v59 withTextContentData:v68 inStore:v93 attachmentManager:v70 andContext:v92];
+      messageData = [v59 messageData];
+      notesAccount = [(IMAPNotesLibrary *)selfCopy notesAccount];
+      attachmentManager = [notesAccount attachmentManager];
+      v64 = [DAIMAPNotesUtils _noteObjectFromMessage:v59 withTextContentData:messageData inStore:v93 attachmentManager:attachmentManager andContext:v92];
 
 LABEL_54:
       v55 = v91;
@@ -840,9 +840,9 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    v71 = [(IMAPNotesLibrary *)v98 notesAccount];
-    v72 = [v71 attachmentManager];
-    v64 = [DAIMAPNotesUtils _noteObjectFromMessage:v59 withTextContentData:0 inStore:v93 attachmentManager:v72 andContext:v92];
+    notesAccount2 = [(IMAPNotesLibrary *)selfCopy notesAccount];
+    attachmentManager2 = [notesAccount2 attachmentManager];
+    v64 = [DAIMAPNotesUtils _noteObjectFromMessage:v59 withTextContentData:0 inStore:v93 attachmentManager:attachmentManager2 andContext:v92];
 
     v73 = v67 ^ 1;
     if (!v64)
@@ -855,7 +855,7 @@ LABEL_54:
       goto LABEL_54;
     }
 
-    v74 = objc_loadWeakRetained(&v98->_notesAccount);
+    v74 = objc_loadWeakRetained(&selfCopy->_notesAccount);
     [v74 addNoteNeedingBodyDownload:v64];
 
     v89 = 1;
@@ -864,18 +864,18 @@ LABEL_55:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v75 = [v59 messageFlags];
-      if (v75 != [v64 flags])
+      messageFlags = [v59 messageFlags];
+      if (messageFlags != [v64 flags])
       {
-        [v64 setFlags:v75];
+        [v64 setFlags:messageFlags];
       }
     }
 
-    v76 = objc_loadWeakRetained(&v98->_account);
-    v77 = [DAIMAPNotesUtils messageFromLocalNoteObject:v64 inMailboxUid:v96 inAccount:v76];
+    v76 = objc_loadWeakRetained(&selfCopy->_account);
+    v77 = [DAIMAPNotesUtils messageFromLocalNoteObject:v64 inMailboxUid:mailboxCopy inAccount:v76];
 
     [v94 addObject:v77];
-    [v95 setObject:v77 forKeyedSubscript:v59];
+    [messageCopy setObject:v77 forKeyedSubscript:v59];
 
 LABEL_59:
     v56 = v99;
@@ -895,22 +895,22 @@ LABEL_69:
   return v94;
 }
 
-- (id)setFlagsFromDictionary:(id)a3 forMessages:(id)a4
+- (id)setFlagsFromDictionary:(id)dictionary forMessages:(id)messages
 {
-  v40 = a3;
-  v6 = a4;
-  v7 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v7)
+  dictionaryCopy = dictionary;
+  messagesCopy = messages;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_F868();
   }
 
-  v8 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(messagesCopy, "count")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v9 = v6;
+  v9 = messagesCopy;
   v10 = [v9 countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v10)
   {
@@ -941,8 +941,8 @@ LABEL_69:
   }
 
   v37 = v8;
-  v38 = v7;
-  v16 = [v7 notesForIntegerIds:v8];
+  v38 = noteContext;
+  v16 = [noteContext notesForIntegerIds:v8];
   v36 = v16;
   if ([v16 count])
   {
@@ -967,8 +967,8 @@ LABEL_69:
           }
 
           v23 = *(*(&v45 + 1) + 8 * j);
-          v24 = [v23 integerId];
-          [v17 setObject:v23 forKeyedSubscript:v24];
+          integerId = [v23 integerId];
+          [v17 setObject:v23 forKeyedSubscript:integerId];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v45 objects:v54 count:16];
@@ -1012,9 +1012,9 @@ LABEL_69:
 
           if (v32)
           {
-            v33 = [v32 flags];
+            flags = [v32 flags];
             v34 = MFMessageFlagsByApplyingDictionary();
-            if (v33 != v34)
+            if (flags != v34)
             {
               [v32 setFlags:v34];
               [v39 addObject:v30];
@@ -1032,24 +1032,24 @@ LABEL_69:
   return v39;
 }
 
-- (id)mailboxUidForMessage:(id)a3
+- (id)mailboxUidForMessage:(id)message
 {
-  v3 = [a3 messageStore];
-  v4 = [v3 mailboxUid];
+  messageStore = [message messageStore];
+  mailboxUid = [messageStore mailboxUid];
 
-  return v4;
+  return mailboxUid;
 }
 
-- (BOOL)isMessageContentsLocallyAvailable:(id)a3
+- (BOOL)isMessageContentsLocallyAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(IMAPNotesLibrary *)self noteContext];
+  availableCopy = available;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v4 libraryID]), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [availableCopy libraryID]), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [NSSet setWithObject:v6];
-    v9 = [v5 notesForIntegerIds:v8];
+    v9 = [noteContext notesForIntegerIds:v8];
 
     v10 = [v9 count] != 0;
   }
@@ -1062,11 +1062,11 @@ LABEL_69:
   return v10;
 }
 
-- (void)setFlags:(unint64_t)a3 forMessage:(id)a4
+- (void)setFlags:(unint64_t)flags forMessage:(id)message
 {
-  v6 = a4;
-  v7 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v7)
+  messageCopy = message;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_F8D4();
   }
@@ -1076,16 +1076,16 @@ LABEL_69:
   if (os_log_type_enabled(v8, v9))
   {
     v19 = 134218242;
-    v20 = a3;
+    flagsCopy = flags;
     v21 = 2112;
-    v22 = v6;
+    v22 = messageCopy;
     _os_log_impl(&dword_0, v8, v9, "Setting flags %llx for message %@", &v19, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 libraryID]);
+    v10 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [messageCopy libraryID]);
   }
 
   else
@@ -1094,60 +1094,60 @@ LABEL_69:
   }
 
   v11 = [NSSet setWithObject:v10];
-  v12 = [v7 notesForIntegerIds:v11];
+  v12 = [noteContext notesForIntegerIds:v11];
 
   if ([v12 count])
   {
     v13 = [v12 objectAtIndexedSubscript:0];
-    if ([v13 flags] != a3)
+    if ([v13 flags] != flags)
     {
-      [v13 setFlags:a3];
+      [v13 setFlags:flags];
     }
 
-    v14 = [v6 remoteID];
+    remoteID = [messageCopy remoteID];
 
-    if (v14)
+    if (remoteID)
     {
-      v15 = [v6 remoteID];
-      v16 = [v15 longLongValue];
+      remoteID2 = [messageCopy remoteID];
+      longLongValue = [remoteID2 longLongValue];
 
-      v17 = [v13 serverIntId];
+      serverIntId = [v13 serverIntId];
       v18 = DALoggingwithCategory();
       if (os_log_type_enabled(v18, v9))
       {
         v19 = 134218240;
-        v20 = v16;
+        flagsCopy = longLongValue;
         v21 = 2048;
-        v22 = v17;
+        v22 = serverIntId;
         _os_log_impl(&dword_0, v18, v9, "Testing remote id %lld with local id %lld", &v19, 0x16u);
       }
 
-      if (v16 != v17)
+      if (longLongValue != serverIntId)
       {
-        [v13 setServerIntId:v16];
+        [v13 setServerIntId:longLongValue];
       }
     }
   }
 }
 
-- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)a3 inMailbox:(id)a4
+- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v8)
+  dsCopy = ds;
+  mailboxCopy = mailbox;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_F940();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v10 = [WeakRetained localNotesAccountInContext:v8];
+  v10 = [WeakRetained localNotesAccountInContext:noteContext];
 
-  v11 = [v10 storeForExternalId:v7];
+  v11 = [v10 storeForExternalId:mailboxCopy];
 
-  if ([v6 count])
+  if ([dsCopy count])
   {
-    v12 = [NSSet setWithArray:v6];
+    v12 = [NSSet setWithArray:dsCopy];
     v13 = [v11 minimumSequenceNumberForServerIntIds:v12];
   }
 
@@ -1161,27 +1161,27 @@ LABEL_69:
   return v14;
 }
 
-- (void)setSequenceIdentifier:(id)a3 forMessagesWithRemoteIDs:(id)a4 inMailbox:(id)a5
+- (void)setSequenceIdentifier:(id)identifier forMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v11)
+  identifierCopy = identifier;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_F9AC();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v13 = [WeakRetained localNotesAccountInContext:v11];
+  v13 = [WeakRetained localNotesAccountInContext:noteContext];
 
-  v14 = [v13 storeForExternalId:v10];
-  if ([v9 count])
+  v14 = [v13 storeForExternalId:mailboxCopy];
+  if ([dsCopy count])
   {
-    v23 = [NSSet setWithArray:v9];
+    v23 = [NSSet setWithArray:dsCopy];
     v15 = [v14 notesForServerIntIds:?];
-    v24 = v8;
-    v16 = [v8 longLongValue];
+    v24 = identifierCopy;
+    longLongValue = [identifierCopy longLongValue];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -1191,7 +1191,7 @@ LABEL_69:
     if (v18)
     {
       v19 = v18;
-      v20 = v16 & ~(v16 >> 63);
+      v20 = longLongValue & ~(longLongValue >> 63);
       v21 = *v26;
       do
       {
@@ -1211,11 +1211,11 @@ LABEL_69:
       while (v19);
     }
 
-    v8 = v24;
+    identifierCopy = v24;
   }
 }
 
-- (void)removeAllMessagesFromMailbox:(id)a3 andNotify:(BOOL)a4
+- (void)removeAllMessagesFromMailbox:(id)mailbox andNotify:(BOOL)notify
 {
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[3];
@@ -1227,7 +1227,7 @@ LABEL_69:
   }
 }
 
-- (id)messageWithMessageID:(id)a3 options:(unsigned int)a4 inMailbox:(id)a5
+- (id)messageWithMessageID:(id)d options:(unsigned int)options inMailbox:(id)mailbox
 {
   v6 = DALoggingwithCategory();
   v7 = _CPLog_to_os_log_type[3];
@@ -1241,7 +1241,7 @@ LABEL_69:
   return 0;
 }
 
-- (id)messagesWithMessageIDHeader:(id)a3
+- (id)messagesWithMessageIDHeader:(id)header
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[3];
@@ -1255,7 +1255,7 @@ LABEL_69:
   return 0;
 }
 
-- (void)sendMessagesMatchingCriterion:(id)a3 to:(id)a4 options:(unsigned int)a5 range:(_NSRange)a6
+- (void)sendMessagesMatchingCriterion:(id)criterion to:(id)to options:(unsigned int)options range:(_NSRange)range
 {
   v7 = DALoggingwithCategory();
   v8 = _CPLog_to_os_log_type[3];
@@ -1267,7 +1267,7 @@ LABEL_69:
   }
 }
 
-- (id)messagesForMailbox:(id)a3 olderThanNumberOfDays:(int)a4
+- (id)messagesForMailbox:(id)mailbox olderThanNumberOfDays:(int)days
 {
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[3];
@@ -1281,7 +1281,7 @@ LABEL_69:
   return 0;
 }
 
-- (id)messagesWithSummariesForMailbox:(id)a3 range:(_NSRange)a4
+- (id)messagesWithSummariesForMailbox:(id)mailbox range:(_NSRange)range
 {
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[3];
@@ -1295,7 +1295,7 @@ LABEL_69:
   return 0;
 }
 
-- (unsigned)nonDeletedCountForMailbox:(id)a3
+- (unsigned)nonDeletedCountForMailbox:(id)mailbox
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[3];
@@ -1309,7 +1309,7 @@ LABEL_69:
   return 0;
 }
 
-- (unsigned)totalCountForMailbox:(id)a3
+- (unsigned)totalCountForMailbox:(id)mailbox
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[3];
@@ -1323,7 +1323,7 @@ LABEL_69:
   return 0;
 }
 
-- (id)oldestMessageInMailbox:(id)a3
+- (id)oldestMessageInMailbox:(id)mailbox
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[3];
@@ -1337,7 +1337,7 @@ LABEL_69:
   return 0;
 }
 
-- (unsigned)minimumRemoteIDForMailbox:(id)a3
+- (unsigned)minimumRemoteIDForMailbox:(id)mailbox
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[3];
@@ -1351,7 +1351,7 @@ LABEL_69:
   return 0;
 }
 
-- (void)setFlagsForMessages:(id)a3 mask:(unint64_t)a4
+- (void)setFlagsForMessages:(id)messages mask:(unint64_t)mask
 {
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[3];
@@ -1363,23 +1363,23 @@ LABEL_69:
   }
 }
 
-- (id)messageWithRemoteID:(id)a3 inRemoteMailbox:(id)a4
+- (id)messageWithRemoteID:(id)d inRemoteMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMAPNotesLibrary *)self noteContext];
-  if (!v8)
+  dCopy = d;
+  mailboxCopy = mailbox;
+  noteContext = [(IMAPNotesLibrary *)self noteContext];
+  if (!noteContext)
   {
     sub_FA18();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_notesAccount);
-  v10 = [WeakRetained localNotesAccountInContext:v8];
+  v10 = [WeakRetained localNotesAccountInContext:noteContext];
 
-  v11 = [v10 storeForExternalId:v7];
+  v11 = [v10 storeForExternalId:mailboxCopy];
 
-  v12 = [v6 longLongValue];
-  v13 = [NSNumber numberWithLongLong:v12];
+  longLongValue = [dCopy longLongValue];
+  v13 = [NSNumber numberWithLongLong:longLongValue];
   v14 = [NSSet setWithObject:v13];
   v15 = [v11 notesForServerIntIds:v14];
 
@@ -1400,9 +1400,9 @@ LABEL_69:
   if (os_log_type_enabled(v19, v20))
   {
     v22 = 134218498;
-    v23 = v12;
+    v23 = longLongValue;
     v24 = 2112;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
     v27 = v18;
     _os_log_impl(&dword_0, v19, v20, "message with remote id %lld (%@) returning %@", &v22, 0x20u);
@@ -1411,14 +1411,14 @@ LABEL_69:
   return v18;
 }
 
-- (void)setNoteContext:(id)a3
+- (void)setNoteContext:(id)context
 {
-  v5 = a3;
-  if (self->_noteContext != v5)
+  contextCopy = context;
+  if (self->_noteContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_noteContext, a3);
-    v5 = v6;
+    v6 = contextCopy;
+    objc_storeStrong(&self->_noteContext, context);
+    contextCopy = v6;
   }
 }
 

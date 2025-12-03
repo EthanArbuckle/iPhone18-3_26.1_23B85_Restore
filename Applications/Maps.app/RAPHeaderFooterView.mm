@@ -1,12 +1,12 @@
 @interface RAPHeaderFooterView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (RAPHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (RAPHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (double)bottomPadding;
 - (id)_initialConstraints;
 - (void)_createSubviews;
 - (void)contentSizeDidChange;
 - (void)layoutSubviews;
-- (void)setTitleLabelText:(id)a3;
+- (void)setTitleLabelText:(id)text;
 @end
 
 @implementation RAPHeaderFooterView
@@ -32,12 +32,12 @@
   [(UILabel *)self->_titleLabel setFont:v4];
 }
 
-- (void)setTitleLabelText:(id)a3
+- (void)setTitleLabelText:(id)text
 {
-  v9 = a3;
-  if (([v9 isEqualToString:self->_titleLabelText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_titleLabelText] & 1) == 0)
   {
-    v4 = [v9 copy];
+    v4 = [textCopy copy];
     titleLabelText = self->_titleLabelText;
     self->_titleLabelText = v4;
 
@@ -60,16 +60,16 @@
 - (id)_initialConstraints
 {
   v3 = +[NSMutableArray array];
-  v4 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v5 = [(RAPHeaderFooterView *)self contentView];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintLessThanOrEqualToAnchor:v6];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  contentView = [(RAPHeaderFooterView *)self contentView];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v7 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
 
   LODWORD(v8) = 1148829696;
   [v7 setPriority:v8];
-  v9 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v10 = [(RAPHeaderFooterView *)self contentView];
-  v11 = [v10 topAnchor];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  contentView2 = [(RAPHeaderFooterView *)self contentView];
+  topAnchor = [contentView2 topAnchor];
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
     +[RAPFontManager regularMoreReportTypesTitleFont];
@@ -81,13 +81,13 @@
   }
   v12 = ;
   [v12 _mapkit_scaledValueForValue:38.0];
-  v13 = [v9 constraintEqualToAnchor:v11 constant:?];
+  v13 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   topToFirstBaselineConstraint = self->_topToFirstBaselineConstraint;
   self->_topToFirstBaselineConstraint = v13;
 
-  v15 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v16 = [(RAPHeaderFooterView *)self contentView];
-  v17 = [v16 bottomAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  contentView3 = [(RAPHeaderFooterView *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
     +[RAPFontManager regularMoreReportTypesTitleFont];
@@ -99,15 +99,15 @@
   }
   v18 = ;
   [v18 _mapkit_scaledValueForValue:-11.0];
-  v19 = [v15 constraintEqualToAnchor:v17 constant:?];
+  v19 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   lastBaselineToBottomConstraint = self->_lastBaselineToBottomConstraint;
   self->_lastBaselineToBottomConstraint = v19;
 
   v28[0] = self->_topToFirstBaselineConstraint;
-  v21 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v22 = [(RAPHeaderFooterView *)self contentView];
-  v23 = [v22 leadingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:16.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView4 = [(RAPHeaderFooterView *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v25 = self->_lastBaselineToBottomConstraint;
   v28[1] = v24;
   v28[2] = v25;
@@ -127,9 +127,9 @@
   return v4 + 7.0;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  v3 = [(RAPHeaderFooterView *)self contentView:a3.width];
+  v3 = [(RAPHeaderFooterView *)self contentView:size.width];
   [v3 intrinsicContentSize];
   v5 = v4;
   v7 = v6;
@@ -148,8 +148,8 @@
   self->_titleLabel = v3;
 
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(RAPHeaderFooterView *)self contentView];
-  [v5 addSubview:self->_titleLabel];
+  contentView = [(RAPHeaderFooterView *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
@@ -166,10 +166,10 @@
   v7 = +[UIColor systemGrayColor];
   [(UILabel *)self->_titleLabel setTextColor:v7];
 
-  v8 = [(RAPHeaderFooterView *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [(RAPHeaderFooterView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9 != 5)
+  if (userInterfaceIdiom != 5)
   {
     [(UILabel *)self->_titleLabel setAdjustsFontForContentSizeCategory:1];
   }
@@ -210,17 +210,17 @@
   [(RAPHeaderFooterView *)self setNeedsLayout];
 }
 
-- (RAPHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (RAPHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = RAPHeaderFooterView;
-  v3 = [(RAPHeaderFooterView *)&v12 initWithReuseIdentifier:a3];
+  v3 = [(RAPHeaderFooterView *)&v12 initWithReuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
     [(RAPHeaderFooterView *)v3 _createSubviews];
-    v5 = [(RAPHeaderFooterView *)v4 _initialConstraints];
-    [NSLayoutConstraint activateConstraints:v5];
+    _initialConstraints = [(RAPHeaderFooterView *)v4 _initialConstraints];
+    [NSLayoutConstraint activateConstraints:_initialConstraints];
 
     v6 = objc_alloc_init(NSMutableParagraphStyle);
     LODWORD(v7) = 1.0;

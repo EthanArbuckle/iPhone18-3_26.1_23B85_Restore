@@ -1,21 +1,21 @@
 @interface BLTRemoteRequest
-- (BLTRemoteRequest)initWithProtobuf:(id)a3 type:(unsigned __int16)a4;
+- (BLTRemoteRequest)initWithProtobuf:(id)protobuf type:(unsigned __int16)type;
 - (id)description;
 @end
 
 @implementation BLTRemoteRequest
 
-- (BLTRemoteRequest)initWithProtobuf:(id)a3 type:(unsigned __int16)a4
+- (BLTRemoteRequest)initWithProtobuf:(id)protobuf type:(unsigned __int16)type
 {
-  v7 = a3;
+  protobufCopy = protobuf;
   v11.receiver = self;
   v11.super_class = BLTRemoteRequest;
   v8 = [(BLTRemoteRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_protobuf, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_protobuf, protobuf);
+    v9->_type = type;
     v9->_allowCloudDelivery = 1;
   }
 
@@ -25,35 +25,35 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BLTRemoteRequest *)self protobuf];
-  v5 = [v3 appendObject:v4 withName:@"protobuf" skipIfNil:0];
+  protobuf = [(BLTRemoteRequest *)self protobuf];
+  v5 = [v3 appendObject:protobuf withName:@"protobuf" skipIfNil:0];
 
   v6 = [v3 appendUnsignedInt:-[BLTRemoteRequest type](self withName:{"type"), @"type"}];
-  v7 = [(BLTRemoteRequest *)self didSend];
-  v8 = [v3 appendObject:v7 withName:@"didSend" skipIfNil:1];
+  didSend = [(BLTRemoteRequest *)self didSend];
+  v8 = [v3 appendObject:didSend withName:@"didSend" skipIfNil:1];
 
-  v9 = [(BLTRemoteRequest *)self timeout];
-  v10 = [v3 appendObject:v9 withName:@"timeout" skipIfNil:1];
+  timeout = [(BLTRemoteRequest *)self timeout];
+  v10 = [v3 appendObject:timeout withName:@"timeout" skipIfNil:1];
 
-  v11 = [(BLTRemoteRequest *)self didQueue];
-  v12 = [v3 appendObject:v11 withName:@"didQueue" skipIfNil:1];
+  didQueue = [(BLTRemoteRequest *)self didQueue];
+  v12 = [v3 appendObject:didQueue withName:@"didQueue" skipIfNil:1];
 
-  v13 = [(BLTRemoteRequest *)self requestDescription];
-  v14 = [v3 appendObject:v13 withName:@"requestDescription" skipIfNil:1];
+  requestDescription = [(BLTRemoteRequest *)self requestDescription];
+  v14 = [v3 appendObject:requestDescription withName:@"requestDescription" skipIfNil:1];
 
   v15 = [v3 appendBool:-[BLTRemoteRequest allowCloudDelivery](self withName:{"allowCloudDelivery"), @"allowCloudDelivery"}];
-  v16 = [(BLTRemoteRequest *)self uniqueID];
-  v17 = [v3 appendObject:v16 withName:@"uniqueID" skipIfNil:1];
+  uniqueID = [(BLTRemoteRequest *)self uniqueID];
+  v17 = [v3 appendObject:uniqueID withName:@"uniqueID" skipIfNil:1];
 
-  v18 = [(BLTRemoteRequest *)self responseCompletion];
-  v19 = [v3 appendObject:v18 withName:@"responseCompletion" skipIfNil:1];
+  responseCompletion = [(BLTRemoteRequest *)self responseCompletion];
+  v19 = [v3 appendObject:responseCompletion withName:@"responseCompletion" skipIfNil:1];
 
-  v20 = [(BLTRemoteRequest *)self responseToRequest];
-  v21 = [v3 appendObject:v20 withName:@"responseToRequest" skipIfNil:1];
+  responseToRequest = [(BLTRemoteRequest *)self responseToRequest];
+  v21 = [v3 appendObject:responseToRequest withName:@"responseToRequest" skipIfNil:1];
 
-  v22 = [v3 build];
+  build = [v3 build];
 
-  return v22;
+  return build;
 }
 
 @end

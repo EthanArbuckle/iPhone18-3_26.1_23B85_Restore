@@ -1,38 +1,38 @@
 @interface CKTypingIndicatorPunchOutLayer
 - (CKTypingIndicatorPunchOutLayer)init;
-- (CKTypingIndicatorPunchOutLayer)initWithLayer:(id)a3;
-- (CKTypingIndicatorPunchOutLayer)initWithVisualConfiguration:(id)a3;
+- (CKTypingIndicatorPunchOutLayer)initWithLayer:(id)layer;
+- (CKTypingIndicatorPunchOutLayer)initWithVisualConfiguration:(id)configuration;
 - (double)convertedCurrentMediaTime;
-- (id)_findSublayerWithName:(id)a3;
-- (id)_largeBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4;
-- (id)_largeBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4;
-- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4;
-- (id)_mediumBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4;
-- (id)_smallBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4;
-- (id)_smallBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4;
+- (id)_findSublayerWithName:(id)name;
+- (id)_largeBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset;
+- (id)_largeBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay;
+- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset;
+- (id)_mediumBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay;
+- (id)_smallBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset;
+- (id)_smallBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay;
 - (void)_setup;
 - (void)_updateBubbleColors;
 - (void)_updateBubbleOpacity;
-- (void)setIsWiderForImageIcon:(BOOL)a3;
-- (void)startGrowAnimationWithCompletionBlock:(id)a3;
+- (void)setIsWiderForImageIcon:(BOOL)icon;
+- (void)startGrowAnimationWithCompletionBlock:(id)block;
 - (void)startPulseAnimation;
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3;
+- (void)startShrinkAnimationWithCompletionBlock:(id)block;
 - (void)stopAnimation;
 - (void)stopPulseAnimation;
 @end
 
 @implementation CKTypingIndicatorPunchOutLayer
 
-- (CKTypingIndicatorPunchOutLayer)initWithVisualConfiguration:(id)a3
+- (CKTypingIndicatorPunchOutLayer)initWithVisualConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = CKTypingIndicatorPunchOutLayer;
   v5 = [(CKTypingIndicatorPunchOutLayer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CKTypingIndicatorPunchOutLayer *)v5 setVisualConfiguration:v4];
+    [(CKTypingIndicatorPunchOutLayer *)v5 setVisualConfiguration:configurationCopy];
     [(CKTypingIndicatorPunchOutLayer *)v6 _setup];
   }
 
@@ -55,23 +55,23 @@
   return v2;
 }
 
-- (CKTypingIndicatorPunchOutLayer)initWithLayer:(id)a3
+- (CKTypingIndicatorPunchOutLayer)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v13.receiver = self;
   v13.super_class = CKTypingIndicatorPunchOutLayer;
-  v5 = [(CKTypingIndicatorPunchOutLayer *)&v13 initWithLayer:v4];
+  v5 = [(CKTypingIndicatorPunchOutLayer *)&v13 initWithLayer:layerCopy];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      v7 = [v6 visualConfiguration];
-      [(CKTypingIndicatorPunchOutLayer *)v5 setVisualConfiguration:v7];
+      v6 = layerCopy;
+      visualConfiguration = [v6 visualConfiguration];
+      [(CKTypingIndicatorPunchOutLayer *)v5 setVisualConfiguration:visualConfiguration];
 
-      v8 = [v6 isWiderForImageIcon];
-      [(CKTypingIndicatorPunchOutLayer *)v5 setIsWiderForImageIcon:v8];
+      isWiderForImageIcon = [v6 isWiderForImageIcon];
+      [(CKTypingIndicatorPunchOutLayer *)v5 setIsWiderForImageIcon:isWiderForImageIcon];
       v9 = [(CKTypingIndicatorPunchOutLayer *)v5 _findSublayerWithName:@"PunchOut-SmallBubble"];
       [(CKTypingIndicatorPunchOutLayer *)v5 setSmallBubble:v9];
 
@@ -86,16 +86,16 @@
   return v5;
 }
 
-- (id)_findSublayerWithName:(id)a3
+- (id)_findSublayerWithName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CKTypingIndicatorPunchOutLayer *)self sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sublayers = [(CKTypingIndicatorPunchOutLayer *)self sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -105,12 +105,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -119,7 +119,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -147,14 +147,14 @@ LABEL_11:
   [(CKTypingIndicatorPunchOutLayer *)self frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v7 defaultSize];
+  visualConfiguration = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration defaultSize];
   v9 = v8;
   v11 = v10;
 
   [(CKTypingIndicatorPunchOutLayer *)self setFrame:v4, v6, v9, v11];
-  v12 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v12 smallBubbleFrame];
+  visualConfiguration2 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration2 smallBubbleFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -168,8 +168,8 @@ LABEL_11:
   [v42 setBounds:{0.0, 0.0, v18, v20}];
   [(CKTypingIndicatorPunchOutLayer *)self addSublayer:v42];
   [(CKTypingIndicatorPunchOutLayer *)self setSmallBubble:v42];
-  v21 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v21 mediumBubbleFrame];
+  visualConfiguration3 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration3 mediumBubbleFrame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -183,8 +183,8 @@ LABEL_11:
   [v30 setBounds:{0.0, 0.0, v27, v29}];
   [(CKTypingIndicatorPunchOutLayer *)self addSublayer:v30];
   [(CKTypingIndicatorPunchOutLayer *)self setMediumBubble:v30];
-  v31 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v31 largeBubbleFrame];
+  visualConfiguration4 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration4 largeBubbleFrame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
@@ -193,8 +193,8 @@ LABEL_11:
   v40 = objc_alloc_init(MEMORY[0x1E6979398]);
   [v40 setName:@"PunchOut-LargeBubble"];
   [v40 setCornerRadius:v39 * 0.5];
-  v41 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v41 largeBubbleAnchorPoint];
+  visualConfiguration5 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration5 largeBubbleAnchorPoint];
   [v40 setAnchorPoint:?];
 
   [v40 setPosition:{v33, v35}];
@@ -205,73 +205,73 @@ LABEL_11:
   [(CKTypingIndicatorPunchOutLayer *)self _updateBubbleOpacity];
 }
 
-- (void)setIsWiderForImageIcon:(BOOL)a3
+- (void)setIsWiderForImageIcon:(BOOL)icon
 {
-  if (self->_isWiderForImageIcon != a3)
+  if (self->_isWiderForImageIcon != icon)
   {
-    v4 = a3;
-    self->_isWiderForImageIcon = a3;
-    v6 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-    [v6 largeBubbleFrame];
+    iconCopy = icon;
+    self->_isWiderForImageIcon = icon;
+    visualConfiguration = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+    [visualConfiguration largeBubbleFrame];
     v8 = v7;
 
-    v9 = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
-    [v9 frame];
+    largeBubble = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
+    [largeBubble frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
     MaxX = 0.0;
-    if (v4)
+    if (iconCopy)
     {
-      v17 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-      [v17 iconImageFrame];
+      visualConfiguration2 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+      [visualConfiguration2 iconImageFrame];
       MaxX = CGRectGetMaxX(v21);
     }
 
     v18 = v8 + MaxX;
-    v19 = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
-    [v19 setFrame:{v11, v13, v18, v15}];
+    largeBubble2 = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
+    [largeBubble2 setFrame:{v11, v13, v18, v15}];
 
-    v20 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
-    [v20 setFrame:{v11, v13, v18, v15}];
+    alignedContentLayer = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+    [alignedContentLayer setFrame:{v11, v13, v18, v15}];
   }
 }
 
 - (void)_updateBubbleColors
 {
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  v4 = [v3 CGColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
 
-  v5 = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
-  [v5 setBackgroundColor:v4];
+  largeBubble = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
+  [largeBubble setBackgroundColor:cGColor];
 
-  v6 = [(CKTypingIndicatorPunchOutLayer *)self mediumBubble];
-  [v6 setBackgroundColor:v4];
+  mediumBubble = [(CKTypingIndicatorPunchOutLayer *)self mediumBubble];
+  [mediumBubble setBackgroundColor:cGColor];
 
-  v7 = [(CKTypingIndicatorPunchOutLayer *)self smallBubble];
-  [v7 setBackgroundColor:v4];
+  smallBubble = [(CKTypingIndicatorPunchOutLayer *)self smallBubble];
+  [smallBubble setBackgroundColor:cGColor];
 }
 
 - (void)_updateBubbleOpacity
 {
-  v3 = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
+  largeBubble = [(CKTypingIndicatorPunchOutLayer *)self largeBubble];
   LODWORD(v4) = 1.0;
-  [v3 setOpacity:v4];
+  [largeBubble setOpacity:v4];
 
-  v5 = [(CKTypingIndicatorPunchOutLayer *)self mediumBubble];
+  mediumBubble = [(CKTypingIndicatorPunchOutLayer *)self mediumBubble];
   LODWORD(v6) = 1.0;
-  [v5 setOpacity:v6];
+  [mediumBubble setOpacity:v6];
 
-  v8 = [(CKTypingIndicatorPunchOutLayer *)self smallBubble];
+  smallBubble = [(CKTypingIndicatorPunchOutLayer *)self smallBubble];
   LODWORD(v7) = 1.0;
-  [v8 setOpacity:v7];
+  [smallBubble setOpacity:v7];
 }
 
-- (id)_smallBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4
+- (id)_smallBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v62[3] = *MEMORY[0x1E69E9840];
   v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"hidden"];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -284,8 +284,8 @@ LABEL_11:
   v11 = *MEMORY[0x1E69797E8];
   [v8 setFillMode:*MEMORY[0x1E69797E8]];
   [v8 setRemovedOnCompletion:1];
-  v12 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v12 smallBubbleGrowOffset];
+  visualConfiguration = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration smallBubbleGrowOffset];
   v14 = v13;
   v16 = v15;
 
@@ -314,8 +314,8 @@ LABEL_11:
   v31 = [MEMORY[0x1E69793D0] functionWithControlPoints:v27 :v30 :v28 :v29];
   [v17 setTimingFunction:v31];
 
-  *&a3 = a3;
-  LODWORD(v32) = LODWORD(a3);
+  *&speed = speed;
+  LODWORD(v32) = LODWORD(speed);
   [v17 setSpeed:v32];
   [v17 setFillMode:v11];
   [v17 setRemovedOnCompletion:1];
@@ -343,7 +343,7 @@ LABEL_11:
   v46 = [MEMORY[0x1E69793D0] functionWithControlPoints:v42 :v45 :v43 :v44];
   [v33 setTimingFunction:v46];
 
-  LODWORD(v47) = LODWORD(a3);
+  LODWORD(v47) = LODWORD(speed);
   [v33 setSpeed:v47];
   [v33 setFillMode:v11];
   [v33 setRemovedOnCompletion:1];
@@ -356,7 +356,7 @@ LABEL_11:
   [v48 setToValue:v51];
 
   [v48 setDuration:0.25];
-  LODWORD(v52) = LODWORD(a3);
+  LODWORD(v52) = LODWORD(speed);
   [v48 setSpeed:v52];
   LODWORD(v53) = 0.25;
   LODWORD(v54) = 0.25;
@@ -376,7 +376,7 @@ LABEL_11:
   return v58;
 }
 
-- (id)_smallBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4
+- (id)_smallBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay
 {
   v7 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.scale.xy"];
   [v7 setValues:&unk_1F04E6D50];
@@ -384,8 +384,8 @@ LABEL_11:
   [v7 setTensionValues:&unk_1F04E6D68];
   [v7 setDuration:0.7];
   [(CKTypingIndicatorPunchOutLayer *)self convertedCurrentMediaTime];
-  [v7 setBeginTime:v8 + a4];
-  *&v9 = a3;
+  [v7 setBeginTime:v8 + delay];
+  *&v9 = speed;
   [v7 setSpeed:v9];
   v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v7 setTimingFunction:v10];
@@ -399,10 +399,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4
+- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v67[3] = *MEMORY[0x1E69E9840];
   v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"hidden"];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -415,9 +415,9 @@ LABEL_11:
   v11 = *MEMORY[0x1E69797E8];
   [v8 setFillMode:*MEMORY[0x1E69797E8]];
   [v8 setRemovedOnCompletion:1];
-  v64 = self;
-  v12 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v12 mediumBubbleGrowOffset];
+  selfCopy = self;
+  visualConfiguration = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration mediumBubbleGrowOffset];
   v14 = v13;
   v16 = v15;
 
@@ -448,8 +448,8 @@ LABEL_11:
   v32 = [MEMORY[0x1E69793D0] functionWithControlPoints:v28 :v31 :v29 :v30];
   [v17 setTimingFunction:v32];
 
-  *&a3 = a3;
-  LODWORD(v33) = LODWORD(a3);
+  *&speed = speed;
+  LODWORD(v33) = LODWORD(speed);
   [v17 setSpeed:v33];
   v34 = v11;
   [v17 setFillMode:v11];
@@ -470,7 +470,7 @@ LABEL_11:
   [v35 setValues:v43];
 
   [v35 setCalculationMode:v26];
-  [(CKTypingIndicatorPunchOutLayer *)v64 convertedCurrentMediaTime];
+  [(CKTypingIndicatorPunchOutLayer *)selfCopy convertedCurrentMediaTime];
   [v35 setBeginTime:v44 + 0.065];
   [v35 setDuration:0.4];
   LODWORD(v45) = 1051315048;
@@ -480,7 +480,7 @@ LABEL_11:
   v49 = [MEMORY[0x1E69793D0] functionWithControlPoints:v45 :v48 :v46 :v47];
   [v35 setTimingFunction:v49];
 
-  LODWORD(v50) = LODWORD(a3);
+  LODWORD(v50) = LODWORD(speed);
   [v35 setSpeed:v50];
   [v35 setFillMode:v34];
   [v35 setRemovedOnCompletion:1];
@@ -492,10 +492,10 @@ LABEL_11:
   v54 = [MEMORY[0x1E696AD98] numberWithFloat:v53];
   [v51 setToValue:v54];
 
-  [(CKTypingIndicatorPunchOutLayer *)v64 convertedCurrentMediaTime];
+  [(CKTypingIndicatorPunchOutLayer *)selfCopy convertedCurrentMediaTime];
   [v51 setBeginTime:v55 + 0.065];
   [v51 setDuration:0.25];
-  LODWORD(v56) = LODWORD(a3);
+  LODWORD(v56) = LODWORD(speed);
   [v51 setSpeed:v56];
   LODWORD(v57) = 0.25;
   LODWORD(v58) = 0.25;
@@ -515,16 +515,16 @@ LABEL_11:
   return v62;
 }
 
-- (id)_mediumBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4
+- (id)_mediumBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay
 {
   v7 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.scale.xy"];
   [v7 setValues:&unk_1F04E6D80];
   [v7 setCalculationMode:*MEMORY[0x1E6979598]];
   [v7 setTensionValues:&unk_1F04E6D98];
   [(CKTypingIndicatorPunchOutLayer *)self convertedCurrentMediaTime];
-  [v7 setBeginTime:v8 + a4];
+  [v7 setBeginTime:v8 + delay];
   [v7 setDuration:0.9];
-  *&v9 = a3;
+  *&v9 = speed;
   [v7 setSpeed:v9];
   v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v7 setTimingFunction:v10];
@@ -538,10 +538,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)_largeBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4
+- (id)_largeBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v69[3] = *MEMORY[0x1E69E9840];
   v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"hidden"];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -554,9 +554,9 @@ LABEL_11:
   v11 = *MEMORY[0x1E69797E8];
   [v8 setFillMode:*MEMORY[0x1E69797E8]];
   [v8 setRemovedOnCompletion:1];
-  v66 = self;
-  v12 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v12 largeBubbleGrowOffset];
+  selfCopy = self;
+  visualConfiguration = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration largeBubbleGrowOffset];
   v14 = v13;
   v16 = v15;
 
@@ -591,8 +591,8 @@ LABEL_11:
   v35 = [MEMORY[0x1E69793D0] functionWithControlPoints:v31 :v34 :v32 :v33];
   [v17 setTimingFunction:v35];
 
-  *&a3 = a3;
-  LODWORD(v36) = LODWORD(a3);
+  *&speed = speed;
+  LODWORD(v36) = LODWORD(speed);
   [v17 setSpeed:v36];
   [v17 setFillMode:v11];
   [v17 setRemovedOnCompletion:1];
@@ -612,7 +612,7 @@ LABEL_11:
   [v37 setValues:v45];
 
   [v37 setCalculationMode:v26];
-  [(CKTypingIndicatorPunchOutLayer *)v66 convertedCurrentMediaTime];
+  [(CKTypingIndicatorPunchOutLayer *)selfCopy convertedCurrentMediaTime];
   [v37 setBeginTime:v46 + 0.12];
   [v37 setDuration:0.4];
   LODWORD(v47) = 1045836616;
@@ -622,7 +622,7 @@ LABEL_11:
   v51 = [MEMORY[0x1E69793D0] functionWithControlPoints:v47 :v48 :v49 :v50];
   [v37 setTimingFunction:v51];
 
-  LODWORD(v52) = LODWORD(a3);
+  LODWORD(v52) = LODWORD(speed);
   [v37 setSpeed:v52];
   [v37 setFillMode:v11];
   [v37 setRemovedOnCompletion:1];
@@ -634,10 +634,10 @@ LABEL_11:
   v56 = [MEMORY[0x1E696AD98] numberWithFloat:v55];
   [v53 setToValue:v56];
 
-  [(CKTypingIndicatorPunchOutLayer *)v66 convertedCurrentMediaTime];
+  [(CKTypingIndicatorPunchOutLayer *)selfCopy convertedCurrentMediaTime];
   [v53 setBeginTime:v57 + 0.12];
   [v53 setDuration:0.25];
-  LODWORD(v58) = LODWORD(a3);
+  LODWORD(v58) = LODWORD(speed);
   [v53 setSpeed:v58];
   LODWORD(v59) = 0.25;
   LODWORD(v60) = 0.25;
@@ -657,16 +657,16 @@ LABEL_11:
   return v64;
 }
 
-- (id)_largeBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4
+- (id)_largeBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay
 {
   v7 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.scale.xy"];
   [v7 setValues:&unk_1F04E6DB0];
   [v7 setCalculationMode:*MEMORY[0x1E6979598]];
   [v7 setTensionValues:&unk_1F04E6DC8];
   [(CKTypingIndicatorPunchOutLayer *)self convertedCurrentMediaTime];
-  [v7 setBeginTime:v8 + a4];
+  [v7 setBeginTime:v8 + delay];
   [v7 setDuration:1.9];
-  *&v9 = a3;
+  *&v9 = speed;
   [v7 setSpeed:v9];
   v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v7 setTimingFunction:v10];
@@ -680,17 +680,17 @@ LABEL_11:
   return v7;
 }
 
-- (void)startGrowAnimationWithCompletionBlock:(id)a3
+- (void)startGrowAnimationWithCompletionBlock:(id)block
 {
   v66 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   [MEMORY[0x1E6979518] begin];
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v5 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v5 smallBubbleFrame];
+  visualConfiguration = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration smallBubbleFrame];
   v8 = [(CKTypingIndicatorPunchOutLayer *)self _smallBubbleGrowAnimationsWithSpeed:1.0 offset:v6, v7];
 
   v9 = [v8 countByEnumeratingWithState:&v58 objects:v65 count:16];
@@ -722,8 +722,8 @@ LABEL_11:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v13 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v13 mediumBubbleFrame];
+  visualConfiguration2 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration2 mediumBubbleFrame];
   v16 = [(CKTypingIndicatorPunchOutLayer *)self _mediumBubbleGrowAnimationsWithSpeed:1.0 offset:v14, v15];
 
   v17 = [v16 countByEnumeratingWithState:&v54 objects:v64 count:16];
@@ -782,9 +782,9 @@ LABEL_11:
     while (v25);
   }
 
-  v28 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+  alignedContentLayer = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
 
-  if (v28)
+  if (alignedContentLayer)
   {
     v48 = 0u;
     v49 = 0u;
@@ -808,8 +808,8 @@ LABEL_11:
           }
 
           v36 = *(*(&v46 + 1) + 8 * v35);
-          v37 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
-          [v37 addAnimation:v36 forKey:0];
+          alignedContentLayer2 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+          [alignedContentLayer2 addAnimation:v36 forKey:0];
 
           ++v35;
         }
@@ -827,9 +827,9 @@ LABEL_11:
   v41 = 3221225472;
   v42 = __72__CKTypingIndicatorPunchOutLayer_startGrowAnimationWithCompletionBlock___block_invoke;
   v43 = &unk_1E72ED1C8;
-  v44 = self;
-  v45 = v4;
-  v39 = v4;
+  selfCopy = self;
+  v45 = blockCopy;
+  v39 = blockCopy;
   [v38 setCompletionBlock:&v40];
   [MEMORY[0x1E6979518] commit];
 }
@@ -864,9 +864,9 @@ uint64_t __72__CKTypingIndicatorPunchOutLayer_startGrowAnimationWithCompletionBl
   v8 = [(CKTypingIndicatorPunchOutLayer *)self _largeBubblePulseAnimationWithSpeed:1.0 delay:0.370000005];
   [(CALayer *)largeBubble addAnimation:v8 forKey:@"kCKAnimationKeyPulse"];
 
-  v9 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+  alignedContentLayer = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
   v10 = [(CKTypingIndicatorPunchOutLayer *)self _largeBubblePulseAnimationWithSpeed:1.0 delay:0.370000005];
-  [v9 addAnimation:v10 forKey:@"kCKAnimationKeyPulse"];
+  [alignedContentLayer addAnimation:v10 forKey:@"kCKAnimationKeyPulse"];
 
   v11 = MEMORY[0x1E6979518];
 
@@ -878,14 +878,14 @@ uint64_t __72__CKTypingIndicatorPunchOutLayer_startGrowAnimationWithCompletionBl
   [(CALayer *)self->_smallBubble removeAnimationForKey:@"kCKAnimationKeyPulse"];
   [(CALayer *)self->_mediumBubble removeAnimationForKey:@"kCKAnimationKeyPulse"];
   [(CALayer *)self->_largeBubble removeAnimationForKey:@"kCKAnimationKeyPulse"];
-  v3 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
-  [v3 removeAnimationForKey:@"kCKAnimationKeyPulse"];
+  alignedContentLayer = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+  [alignedContentLayer removeAnimationForKey:@"kCKAnimationKeyPulse"];
 }
 
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3
+- (void)startShrinkAnimationWithCompletionBlock:(id)block
 {
   v60[3] = *MEMORY[0x1E69E9840];
-  v56 = a3;
+  blockCopy = block;
   [(CKTypingIndicatorPunchOutLayer *)self stopPulseAnimation];
   [MEMORY[0x1E6979518] begin];
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.scale.xy"];
@@ -915,12 +915,12 @@ uint64_t __72__CKTypingIndicatorPunchOutLayer_startGrowAnimationWithCompletionBl
   [(CALayer *)self->_smallBubble addAnimation:v4 forKey:0];
   [(CALayer *)self->_mediumBubble addAnimation:v4 forKey:0];
   [(CALayer *)self->_largeBubble addAnimation:v4 forKey:0];
-  v15 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
-  [v15 addAnimation:v4 forKey:0];
+  alignedContentLayer = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+  [alignedContentLayer addAnimation:v4 forKey:0];
 
   v16 = [MEMORY[0x1E6979390] animationWithKeyPath:@"position.x"];
-  v17 = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
-  [v17 largeBubbleFrame];
+  visualConfiguration = [(CKTypingIndicatorPunchOutLayer *)self visualConfiguration];
+  [visualConfiguration largeBubbleFrame];
   v19 = v18;
   v21 = v20;
 
@@ -957,8 +957,8 @@ uint64_t __72__CKTypingIndicatorPunchOutLayer_startGrowAnimationWithCompletionBl
   [(CALayer *)self->_smallBubble addAnimation:v16 forKey:0];
   [(CALayer *)self->_mediumBubble addAnimation:v16 forKey:0];
   [(CALayer *)self->_largeBubble addAnimation:v16 forKey:0];
-  v37 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
-  [v37 addAnimation:v16 forKey:0];
+  alignedContentLayer2 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+  [alignedContentLayer2 addAnimation:v16 forKey:0];
 
   v38 = [MEMORY[0x1E6979390] animationWithKeyPath:@"position.y"];
   v39 = v21;
@@ -993,17 +993,17 @@ uint64_t __72__CKTypingIndicatorPunchOutLayer_startGrowAnimationWithCompletionBl
   [(CALayer *)self->_smallBubble addAnimation:v38 forKey:0];
   [(CALayer *)self->_mediumBubble addAnimation:v38 forKey:0];
   [(CALayer *)self->_largeBubble addAnimation:v38 forKey:0];
-  v53 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
-  [v53 addAnimation:v38 forKey:0];
+  alignedContentLayer3 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+  [alignedContentLayer3 addAnimation:v38 forKey:0];
 
-  if (v56)
+  if (blockCopy)
   {
     v54 = MEMORY[0x1E6979518];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __74__CKTypingIndicatorPunchOutLayer_startShrinkAnimationWithCompletionBlock___block_invoke;
     v57[3] = &unk_1E72EBDB8;
-    v58 = v56;
+    v58 = blockCopy;
     [v54 setCompletionBlock:v57];
   }
 
@@ -1016,8 +1016,8 @@ uint64_t __72__CKTypingIndicatorPunchOutLayer_startGrowAnimationWithCompletionBl
   [(CALayer *)self->_smallBubble removeAllAnimations];
   [(CALayer *)self->_mediumBubble removeAllAnimations];
   [(CALayer *)self->_largeBubble removeAllAnimations];
-  v3 = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
-  [v3 removeAllAnimations];
+  alignedContentLayer = [(CKTypingIndicatorPunchOutLayer *)self alignedContentLayer];
+  [alignedContentLayer removeAllAnimations];
 }
 
 @end

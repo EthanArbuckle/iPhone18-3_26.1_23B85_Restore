@@ -6,12 +6,12 @@
 
 - (uint64_t)pu_cancel
 {
-  result = [a1 isEnabled];
+  result = [self isEnabled];
   if (result)
   {
-    [a1 setEnabled:0];
+    [self setEnabled:0];
 
-    return [a1 setEnabled:1];
+    return [self setEnabled:1];
   }
 
   return result;

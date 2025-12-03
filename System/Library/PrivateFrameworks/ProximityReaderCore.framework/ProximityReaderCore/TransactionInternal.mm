@@ -1,21 +1,21 @@
 @interface TransactionInternal
 - (NSString)description;
 - (_TtC19ProximityReaderCore19TransactionInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransactionInternal
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TransactionInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TransactionInternal.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TransactionInternal.description.getter();
 
   v3 = sub_26121CC50();

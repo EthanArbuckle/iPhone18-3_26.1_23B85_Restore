@@ -1,33 +1,33 @@
 @interface USOSchemaUSOEntityIdentifierTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOEntityIdentifierTier1)initWithDictionary:(id)a3;
-- (USOSchemaUSOEntityIdentifierTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USOSchemaUSOEntityIdentifierTier1)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOEntityIdentifierTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOEntityIdentifierTier1
 
-- (USOSchemaUSOEntityIdentifierTier1)initWithDictionary:(id)a3
+- (USOSchemaUSOEntityIdentifierTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = USOSchemaUSOEntityIdentifierTier1;
   v5 = [(USOSchemaUSOEntityIdentifierTier1 *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"index"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntityIdentifierTier1 setIndex:](v5, "setIndex:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"value"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(USOSchemaUSOEntityIdentifierTier1 *)v5 setValue:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"backingAppBundleId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"backingAppBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (USOSchemaUSOEntityIdentifierTier1)initWithJSON:(id)a3
+- (USOSchemaUSOEntityIdentifierTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOEntityIdentifierTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOEntityIdentifierTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOEntityIdentifierTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,30 +85,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backingAppBundleId)
   {
-    v4 = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"backingAppBundleId"];
+    backingAppBundleId = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
+    v5 = [backingAppBundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"backingAppBundleId"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntityIdentifierTier1 index](self, "index")}];
-    [v3 setObject:v6 forKeyedSubscript:@"index"];
+    [dictionary setObject:v6 forKeyedSubscript:@"index"];
   }
 
   if (self->_value)
   {
-    v7 = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"value"];
+    value = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
+    v8 = [value copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"value"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,15 +127,15 @@
   return v4 ^ [(NSString *)self->_backingAppBundleId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -143,26 +143,26 @@
   if (*&self->_has)
   {
     index = self->_index;
-    if (index != [v4 index])
+    if (index != [equalCopy index])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
-  v7 = [v4 value];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
+  value2 = [equalCopy value];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
-  if (v8)
+  value3 = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
+  if (value3)
   {
-    v9 = v8;
-    v10 = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
-    v11 = [v4 value];
-    v12 = [v10 isEqual:v11];
+    v9 = value3;
+    value4 = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
+    value5 = [equalCopy value];
+    v12 = [value4 isEqual:value5];
 
     if (!v12)
     {
@@ -174,12 +174,12 @@
   {
   }
 
-  v6 = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
-  v7 = [v4 backingAppBundleId];
-  if ((v6 != 0) != (v7 == 0))
+  value = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
+  value2 = [equalCopy backingAppBundleId];
+  if ((value != 0) != (value2 == 0))
   {
-    v13 = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
-    if (!v13)
+    backingAppBundleId = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
+    if (!backingAppBundleId)
     {
 
 LABEL_18:
@@ -187,10 +187,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
-    v16 = [v4 backingAppBundleId];
-    v17 = [v15 isEqual:v16];
+    v14 = backingAppBundleId;
+    backingAppBundleId2 = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
+    backingAppBundleId3 = [equalCopy backingAppBundleId];
+    v17 = [backingAppBundleId2 isEqual:backingAppBundleId3];
 
     if (v17)
     {
@@ -210,62 +210,62 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
+  value = [(USOSchemaUSOEntityIdentifierTier1 *)self value];
 
-  if (v4)
+  if (value)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
+  backingAppBundleId = [(USOSchemaUSOEntityIdentifierTier1 *)self backingAppBundleId];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (backingAppBundleId)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = USOSchemaUSOEntityIdentifierTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteValue];
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteBackingAppBundleId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteValue];
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteBackingAppBundleId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteValue];
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteBackingAppBundleId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteValue];
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteBackingAppBundleId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteValue];
     [(USOSchemaUSOEntityIdentifierTier1 *)self deleteBackingAppBundleId];

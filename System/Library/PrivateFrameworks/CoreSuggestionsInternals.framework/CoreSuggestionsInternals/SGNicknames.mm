@@ -1,23 +1,23 @@
 @interface SGNicknames
-+ (id)nicknamesForName:(id)a3;
++ (id)nicknamesForName:(id)name;
 @end
 
 @implementation SGNicknames
 
-+ (id)nicknamesForName:(id)a3
++ (id)nicknamesForName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"SGNicknames.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGNicknames.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__SGNicknames_nicknamesForName___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (nicknamesForName__onceToken != -1)
   {
     dispatch_once(&nicknamesForName__onceToken, block);
@@ -28,13 +28,13 @@
     goto LABEL_16;
   }
 
-  v6 = [SGWords normalizeWord:v5];
-  v7 = [v6 UTF8String];
-  v8 = v7;
-  v9 = *v7;
-  if (*v7)
+  v6 = [SGWords normalizeWord:nameCopy];
+  uTF8String = [v6 UTF8String];
+  v8 = uTF8String;
+  v9 = *uTF8String;
+  if (*uTF8String)
   {
-    v10 = v7 + 1;
+    v10 = uTF8String + 1;
     v11 = 5381;
     do
     {

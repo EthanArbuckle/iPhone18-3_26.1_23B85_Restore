@@ -1,57 +1,57 @@
 @interface IDSFamilyMember
-- (IDSFamilyMember)initWithDictionary:(id)a3;
-- (IDSFamilyMember)initWithiCloudID:(id)a3 appleID:(id)a4 handles:(id)a5 devices:(id)a6;
+- (IDSFamilyMember)initWithDictionary:(id)dictionary;
+- (IDSFamilyMember)initWithiCloudID:(id)d appleID:(id)iD handles:(id)handles devices:(id)devices;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IDSFamilyMember
 
-- (IDSFamilyMember)initWithiCloudID:(id)a3 appleID:(id)a4 handles:(id)a5 devices:(id)a6
+- (IDSFamilyMember)initWithiCloudID:(id)d appleID:(id)iD handles:(id)handles devices:(id)devices
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  handlesCopy = handles;
+  devicesCopy = devices;
   v18.receiver = self;
   v18.super_class = IDSFamilyMember;
   v15 = [(IDSFamilyMember *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_DSID, a3);
-    objc_storeStrong(&v16->_appleID, a4);
-    objc_storeStrong(&v16->_handles, a5);
-    objc_storeStrong(&v16->_devices, a6);
+    objc_storeStrong(&v15->_DSID, d);
+    objc_storeStrong(&v16->_appleID, iD);
+    objc_storeStrong(&v16->_handles, handles);
+    objc_storeStrong(&v16->_devices, devices);
   }
 
   return v16;
 }
 
-- (IDSFamilyMember)initWithDictionary:(id)a3
+- (IDSFamilyMember)initWithDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = IDSFamilyMember;
   v5 = [(IDSFamilyMember *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"MemberDSID"];
+    v6 = [dictionaryCopy objectForKey:@"MemberDSID"];
     DSID = v5->_DSID;
     v5->_DSID = v6;
 
-    v8 = [v4 objectForKey:@"MemberHandles"];
+    v8 = [dictionaryCopy objectForKey:@"MemberHandles"];
     handles = v5->_handles;
     v5->_handles = v8;
 
-    v10 = [v4 objectForKey:@"MemberRelationship"];
+    v10 = [dictionaryCopy objectForKey:@"MemberRelationship"];
     v5->_relationship = [v10 integerValue];
 
-    v11 = [v4 objectForKey:@"AppleIDKey"];
+    v11 = [dictionaryCopy objectForKey:@"AppleIDKey"];
     appleID = v5->_appleID;
     v5->_appleID = v11;
 
-    v13 = [v4 objectForKey:@"MemberDevices"];
+    v13 = [dictionaryCopy objectForKey:@"MemberDevices"];
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;
@@ -100,8 +100,8 @@
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_DSID forKey:@"MemberDSID"];
-  v4 = [(NSSet *)self->_handles allObjects];
-  [v3 setObject:v4 forKey:@"MemberHandles"];
+  allObjects = [(NSSet *)self->_handles allObjects];
+  [v3 setObject:allObjects forKey:@"MemberHandles"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_relationship];
   [v3 setObject:v5 forKey:@"MemberRelationship"];
@@ -127,8 +127,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-        [v6 addObject:v12];
+        dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+        [v6 addObject:dictionaryRepresentation];
       }
 
       v9 = [(NSArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];

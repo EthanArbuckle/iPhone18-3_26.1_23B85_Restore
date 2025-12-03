@@ -1,27 +1,27 @@
 @interface SGContactSuggestionHelpers
-+ (id)formattedStringForPhone:(id)a3;
++ (id)formattedStringForPhone:(id)phone;
 + (id)retrieveContactStore;
 @end
 
 @implementation SGContactSuggestionHelpers
 
-+ (id)formattedStringForPhone:(id)a3
++ (id)formattedStringForPhone:(id)phone
 {
-  if (a3)
+  if (phone)
   {
     v3 = MEMORY[0x1E695CF50];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithStringValue:v4];
+    phoneCopy = phone;
+    v5 = [[v3 alloc] initWithStringValue:phoneCopy];
 
-    v6 = [v5 formattedStringValue];
+    formattedStringValue = [v5 formattedStringValue];
   }
 
   else
   {
-    v6 = 0;
+    formattedStringValue = 0;
   }
 
-  return v6;
+  return formattedStringValue;
 }
 
 + (id)retrieveContactStore

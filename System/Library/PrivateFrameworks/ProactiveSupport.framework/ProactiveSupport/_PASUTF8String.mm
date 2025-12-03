@@ -1,38 +1,38 @@
 @interface _PASUTF8String
-- (BOOL)canBeConvertedToEncoding:(unint64_t)a3;
-- (_PASUTF8String)initWithUTF8Data:(id)a3 asciiPrefixLength:(unsigned int)a4 nullTerminated:(BOOL)a5;
+- (BOOL)canBeConvertedToEncoding:(unint64_t)encoding;
+- (_PASUTF8String)initWithUTF8Data:(id)data asciiPrefixLength:(unsigned int)length nullTerminated:(BOOL)terminated;
 - (const)UTF8String;
-- (const)_pas_overrideFastUTF8StringPtrWithOptions:(unint64_t)a3 encodedLength:(unint64_t *)a4;
-- (const)cStringUsingEncoding:(unint64_t)a3;
+- (const)_pas_overrideFastUTF8StringPtrWithOptions:(unint64_t)options encodedLength:(unint64_t *)length;
+- (const)cStringUsingEncoding:(unint64_t)encoding;
 - (id)_pas_overrideStringBackedByUTF8CString;
-- (id)dataUsingEncoding:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (uint64_t)_validateRange:(uint64_t)a3;
-- (unint64_t)lengthOfBytesUsingEncoding:(unint64_t)a3;
-- (unint64_t)maximumLengthOfBytesUsingEncoding:(unint64_t)a3;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (id)dataUsingEncoding:(unint64_t)encoding;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (uint64_t)_validateRange:(uint64_t)range;
+- (unint64_t)lengthOfBytesUsingEncoding:(unint64_t)encoding;
+- (unint64_t)maximumLengthOfBytesUsingEncoding:(unint64_t)encoding;
+- (unsigned)characterAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation _PASUTF8String
 
-- (const)_pas_overrideFastUTF8StringPtrWithOptions:(unint64_t)a3 encodedLength:(unint64_t *)a4
+- (const)_pas_overrideFastUTF8StringPtrWithOptions:(unint64_t)options encodedLength:(unint64_t *)length
 {
-  if ((a3 & 1) != 0 && !self->_nullTerminated)
+  if ((options & 1) != 0 && !self->_nullTerminated)
   {
     return 0;
   }
 
-  if (a4)
+  if (length)
   {
-    *a4 = [(_PASUTF8String *)self lengthOfBytesUsingEncoding:4];
+    *length = [(_PASUTF8String *)self lengthOfBytesUsingEncoding:4];
   }
 
   return self->_buffer;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = self->_bufferEnd - self->_buffer;
   v5 = objc_alloc(MEMORY[0x1E696AD60]);
@@ -41,18 +41,18 @@
   return [v5 initWithBytes:buffer length:v4 encoding:4];
 }
 
-- (const)cStringUsingEncoding:(unint64_t)a3
+- (const)cStringUsingEncoding:(unint64_t)encoding
 {
-  if (a3 == 1)
+  if (encoding == 1)
   {
     return 0;
   }
 
-  if (a3 == 4)
+  if (encoding == 4)
   {
-    v3 = self;
+    selfCopy = self;
 
-    return [(_PASUTF8String *)v3 UTF8String];
+    return [(_PASUTF8String *)selfCopy UTF8String];
   }
 
   else
@@ -67,17 +67,17 @@
 {
   if (self->_nullTerminated)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
     MutableCopy = CFDataCreateMutableCopy(0, [(NSData *)self->_backingData length]+ 1, self->_backingData);
     CFDataAppendBytes(MutableCopy, "", 1);
-    v3 = [[_PASUTF8String alloc] initWithUTF8Data:MutableCopy asciiPrefixLength:self->_asciiPrefixLength nullTerminated:1];
+    selfCopy = [[_PASUTF8String alloc] initWithUTF8Data:MutableCopy asciiPrefixLength:self->_asciiPrefixLength nullTerminated:1];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (const)UTF8String
@@ -94,9 +94,9 @@
   return CFDataGetMutableBytePtr(MutableCopy);
 }
 
-- (BOOL)canBeConvertedToEncoding:(unint64_t)a3
+- (BOOL)canBeConvertedToEncoding:(unint64_t)encoding
 {
-  if (a3 == 1)
+  if (encoding == 1)
   {
     return 0;
   }
@@ -108,9 +108,9 @@
   return [(_PASUTF8String *)&v6 canBeConvertedToEncoding:?];
 }
 
-- (unint64_t)maximumLengthOfBytesUsingEncoding:(unint64_t)a3
+- (unint64_t)maximumLengthOfBytesUsingEncoding:(unint64_t)encoding
 {
-  if (a3 == 4)
+  if (encoding == 4)
   {
 
     return [(_PASUTF8String *)self lengthOfBytesUsingEncoding:?];
@@ -126,14 +126,14 @@
   }
 }
 
-- (unint64_t)lengthOfBytesUsingEncoding:(unint64_t)a3
+- (unint64_t)lengthOfBytesUsingEncoding:(unint64_t)encoding
 {
-  if (a3 == 1)
+  if (encoding == 1)
   {
     return 0;
   }
 
-  if (a3 == 4)
+  if (encoding == 4)
   {
     return self->_bufferEnd - self->_buffer;
   }
@@ -145,9 +145,9 @@
   return [(_PASUTF8String *)&v6 lengthOfBytesUsingEncoding:?];
 }
 
-- (id)dataUsingEncoding:(unint64_t)a3
+- (id)dataUsingEncoding:(unint64_t)encoding
 {
-  if (a3 == 4)
+  if (encoding == 4)
   {
     v5 = self->_backingData;
     v6 = v5;
@@ -164,15 +164,15 @@
       v8 = CFAllocatorCreate(0, &context);
       if (!v8)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"NSString+_PASAdditions.m" lineNumber:440 description:{@"Invalid parameter not satisfying: %@", @"deallocator"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"NSString+_PASAdditions.m" lineNumber:440 description:{@"Invalid parameter not satisfying: %@", @"deallocator"}];
       }
 
       v9 = CFDataCreateWithBytesNoCopy(0, self->_buffer, v7, v8);
       if (!v9)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"NSString+_PASAdditions.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"cfData"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSString+_PASAdditions.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"cfData"}];
       }
 
       CFRelease(v8);
@@ -194,19 +194,19 @@
   return v9;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  [(_PASUTF8String *)self _validateRange:a4.length];
+  length = range.length;
+  location = range.location;
+  [(_PASUTF8String *)self _validateRange:range.length];
   if (length)
   {
-    if (a3)
+    if (characters)
     {
       v24 = length - 1;
-      [(_PASUTF8String *)self getCharacters:a3 + 1 range:location, v24];
-      memmove(a3, a3 + 1, 2 * v24);
-      a3[v24] = [(_PASUTF8String *)self characterAtIndex:v24];
+      [(_PASUTF8String *)self getCharacters:characters + 1 range:location, v24];
+      memmove(characters, characters + 1, 2 * v24);
+      characters[v24] = [(_PASUTF8String *)self characterAtIndex:v24];
     }
 
     else
@@ -234,7 +234,7 @@
         v12 = location;
         do
         {
-          a3[v10++] = buffer[v12++];
+          characters[v10++] = buffer[v12++];
         }
 
         while (v12 < v9);
@@ -259,7 +259,7 @@
               v23 = &v13[v17 >> 8];
               do
               {
-                a3[i] = v23[v22];
+                characters[i] = v23[v22];
                 i = (v10 + 1);
                 LODWORD(v10) = v10 + 1;
                 if (v22 > 0x3E)
@@ -294,7 +294,7 @@
               v21 = advanceCursor(v13, self->_bufferEnd, &v25);
               i = (v10 + 1);
               LODWORD(v10) = v10 + 1;
-              a3[v20] = v21;
+              characters[v20] = v21;
               if (v15 > 0x3E)
               {
                 break;
@@ -312,15 +312,15 @@
   }
 }
 
-- (uint64_t)_validateRange:(uint64_t)a3
+- (uint64_t)_validateRange:(uint64_t)range
 {
   if (result)
   {
-    if (a2 + a3 > *(result + 48))
+    if (a2 + range > *(result + 48))
     {
       v3 = MEMORY[0x1E695DF30];
       v4 = *MEMORY[0x1E695DA20];
-      v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Range {%tu, %tu} out of bounds; string length %u", a2, a3, *(result + 48)];
+      v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Range {%tu, %tu} out of bounds; string length %u", a2, range, *(result + 48)];
       v6 = [v3 exceptionWithName:v4 reason:v5 userInfo:0];
       v7 = v6;
 
@@ -331,19 +331,19 @@
   return result;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (self->_asciiPrefixLength > a3)
+  indexCopy = index;
+  if (self->_asciiPrefixLength > index)
   {
-    return self->_buffer[a3];
+    return self->_buffer[index];
   }
 
-  [(_PASUTF8String *)self _validateRange:a3, 1];
+  [(_PASUTF8String *)self _validateRange:index, 1];
   asciiPrefixLength = self->_asciiPrefixLength;
-  v7 = self->_chunks[(v3 - asciiPrefixLength) >> 6];
+  v7 = self->_chunks[(indexCopy - asciiPrefixLength) >> 6];
   v10 = v7;
-  v8 = (v3 - asciiPrefixLength) & 0x3F;
+  v8 = (indexCopy - asciiPrefixLength) & 0x3F;
   v9 = &self->_buffer[asciiPrefixLength];
   if ((v7 & 0x40) != 0)
   {
@@ -366,11 +366,11 @@
   [(_PASUTF8String *)&v3 dealloc];
 }
 
-- (_PASUTF8String)initWithUTF8Data:(id)a3 asciiPrefixLength:(unsigned int)a4 nullTerminated:(BOOL)a5
+- (_PASUTF8String)initWithUTF8Data:(id)data asciiPrefixLength:(unsigned int)length nullTerminated:(BOOL)terminated
 {
-  v5 = a5;
-  v10 = a3;
-  if (v10)
+  terminatedCopy = terminated;
+  dataCopy = data;
+  if (dataCopy)
   {
     v36.receiver = self;
     v36.super_class = _PASUTF8String;
@@ -380,35 +380,35 @@
     {
 LABEL_33:
       self = v12;
-      v29 = self;
+      selfCopy = self;
       goto LABEL_34;
     }
 
-    objc_storeStrong(&v11->_backingData, a3);
-    v12->_nullTerminated = v5;
-    v13 = [v10 length];
+    objc_storeStrong(&v11->_backingData, data);
+    v12->_nullTerminated = terminatedCopy;
+    v13 = [dataCopy length];
     if (HIDWORD(v13))
     {
       __assert_rtn("[_PASUTF8String initWithUTF8Data:asciiPrefixLength:nullTerminated:]", "NSString+_PASAdditions.m", 165, "asciiAndUtf8Length <= UINT32_MAX");
     }
 
-    v14 = v13 - v5;
-    v12->_asciiPrefixLength = a4;
-    v15 = [(NSData *)v12->_backingData bytes];
-    v12->_buffer = v15;
-    if (v14 <= a4)
+    v14 = v13 - terminatedCopy;
+    v12->_asciiPrefixLength = length;
+    bytes = [(NSData *)v12->_backingData bytes];
+    v12->_buffer = bytes;
+    if (v14 <= length)
     {
       __assert_rtn("[_PASUTF8String initWithUTF8Data:asciiPrefixLength:nullTerminated:]", "NSString+_PASAdditions.m", 169, "asciiPrefixLength < asciiAndUtf8Length");
     }
 
-    if ((*(v15 + a4) & 0x80000000) == 0)
+    if ((*(bytes + length) & 0x80000000) == 0)
     {
       __assert_rtn("[_PASUTF8String initWithUTF8Data:asciiPrefixLength:nullTerminated:]", "NSString+_PASAdditions.m", 170, "!isascii(_buffer[asciiPrefixLength])");
     }
 
-    v16 = (v15 + v14);
-    v12->_bufferEnd = (v15 + v14);
-    v17 = ((v14 - a4) >> 5) + 1;
+    v16 = (bytes + v14);
+    v12->_bufferEnd = (bytes + v14);
+    v17 = ((v14 - length) >> 5) + 1;
     v12->_nchunks = v17;
     v18 = malloc_type_calloc(4uLL, v17, 0xA05DB923uLL);
     if (v18)
@@ -416,19 +416,19 @@ LABEL_33:
       v12->_chunks = v18;
       if (!v12->_nchunks)
       {
-        v24 = a4;
+        lengthCopy4 = length;
         goto LABEL_32;
       }
 
       v34 = a2;
       v19 = 0;
       v20 = 0;
-      RuneUtf8 = &v12->_buffer[a4];
+      RuneUtf8 = &v12->_buffer[length];
 LABEL_9:
       v22 = 0;
       v12->_chunks[v19] = v20;
       LOBYTE(v23) = (v20 & 0x80) == 0;
-      v24 = a4;
+      lengthCopy4 = length;
       while (1)
       {
         v25 = RuneUtf8;
@@ -441,7 +441,7 @@ LABEL_9:
 
         v23 = (v35 < 0x80) & v23;
         v26 = v22 + 1;
-        a4 = v24 + 1;
+        length = lengthCopy4 + 1;
         if (v35 - 0x10000 >= 0x100000 || (v20 & 0x80) != 0)
         {
           v20 = (v20 + ((RuneUtf8 - v25) << 8)) & 0xFFFFFF7F;
@@ -469,7 +469,7 @@ LABEL_19:
             nchunks = v12->_nchunks;
             if (v19 >= nchunks)
             {
-              v24 = a4;
+              lengthCopy4 = length;
               goto LABEL_26;
             }
 
@@ -477,12 +477,12 @@ LABEL_19:
           }
 
           v26 = v22 + 2;
-          a4 = v24 + 2;
+          length = lengthCopy4 + 2;
           v20 = (v20 + ((RuneUtf8 - v25) << 8)) & 0xFFFFFF00 | v20 & 0x7F;
         }
 
         v22 = v26;
-        v24 = a4;
+        lengthCopy4 = length;
         if (v26 >= 0x40)
         {
           goto LABEL_19;
@@ -499,8 +499,8 @@ LABEL_26:
 
       if (!v19)
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v32 handleFailureInMethod:v34 object:v12 file:@"NSString+_PASAdditions.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"i > 0"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:v34 object:v12 file:@"NSString+_PASAdditions.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"i > 0"}];
       }
 
       v30 = reallocf(v12->_chunks, 4 * v19);
@@ -509,7 +509,7 @@ LABEL_26:
         v12->_chunks = v30;
         v12->_nchunks = v19;
 LABEL_32:
-        v12->_length = v24;
+        v12->_length = lengthCopy4;
         goto LABEL_33;
       }
     }
@@ -518,10 +518,10 @@ LABEL_32:
     objc_exception_throw(v33);
   }
 
-  v29 = 0;
+  selfCopy = 0;
 LABEL_34:
 
-  return v29;
+  return selfCopy;
 }
 
 @end

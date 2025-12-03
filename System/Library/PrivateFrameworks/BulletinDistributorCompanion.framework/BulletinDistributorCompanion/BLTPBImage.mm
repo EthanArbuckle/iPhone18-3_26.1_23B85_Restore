@@ -1,10 +1,10 @@
 @interface BLTPBImage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBImage
@@ -15,54 +15,54 @@
   v8.receiver = self;
   v8.super_class = BLTPBImage;
   v4 = [(BLTPBImage *)&v8 description];
-  v5 = [(BLTPBImage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBImage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   data = self->_data;
   if (data)
   {
-    [v3 setObject:data forKey:@"data"];
+    [dictionary setObject:data forKey:@"data"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_data)
   {
     [BLTPBImage writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteDataField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_data copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_data copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     data = self->_data;
-    if (data | v4[1])
+    if (data | equalCopy[1])
     {
       v6 = [(NSData *)data isEqual:?];
     }
@@ -81,9 +81,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(BLTPBImage *)self setData:?];
   }

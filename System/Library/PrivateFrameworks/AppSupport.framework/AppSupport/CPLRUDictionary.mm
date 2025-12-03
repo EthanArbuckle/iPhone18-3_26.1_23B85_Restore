@@ -1,72 +1,72 @@
 @interface CPLRUDictionary
-+ (id)dictionaryWithMaximumCapacity:(unint64_t)a3;
-- (CPLRUDictionary)initWithMaximumCapacity:(unint64_t)a3;
++ (id)dictionaryWithMaximumCapacity:(unint64_t)capacity;
+- (CPLRUDictionary)initWithMaximumCapacity:(unint64_t)capacity;
 - (id)allKeysInLRUOrder;
 - (id)allValuesInLRUOrder;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyWithoutAffectingLRU:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyWithoutAffectingLRU:(id)u;
 - (unint64_t)linkedListCount;
-- (void)_addNodeToFront:(id)a3;
-- (void)_moveNodeToFront:(id)a3;
-- (void)_removeNode:(id)a3;
-- (void)_removeNodeFromLinkedList:(id)a3;
+- (void)_addNodeToFront:(id)front;
+- (void)_moveNodeToFront:(id)front;
+- (void)_removeNode:(id)node;
+- (void)_removeNodeFromLinkedList:(id)list;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CPLRUDictionary
 
-- (void)_removeNodeFromLinkedList:(id)a3
+- (void)_removeNodeFromLinkedList:(id)list
 {
-  v4 = *(a3 + 3);
-  v3 = *(a3 + 4);
+  v4 = *(list + 3);
+  v3 = *(list + 4);
   *(v3 + 24) = v4;
   *(v4 + 32) = v3;
 }
 
-- (void)_removeNode:(id)a3
+- (void)_removeNode:(id)node
 {
   [(CPLRUDictionary *)self _removeNodeFromLinkedList:?];
   dictionary = self->_dictionary;
-  v6 = [a3 key];
+  v6 = [node key];
 
   CFDictionaryRemoveValue(dictionary, v6);
 }
 
-- (void)_moveNodeToFront:(id)a3
+- (void)_moveNodeToFront:(id)front
 {
-  if (self->_head->next != a3)
+  if (self->_head->next != front)
   {
     [(CPLRUDictionary *)self _removeNodeFromLinkedList:?];
 
-    [(CPLRUDictionary *)self _addNodeToFront:a3];
+    [(CPLRUDictionary *)self _addNodeToFront:front];
   }
 }
 
-- (void)_addNodeToFront:(id)a3
+- (void)_addNodeToFront:(id)front
 {
   head = self->_head;
   next = head->next;
-  head->next = a3;
+  head->next = front;
   v5 = self->_head;
-  *(a3 + 3) = next;
-  *(a3 + 4) = v5;
-  next->prev = a3;
+  *(front + 3) = next;
+  *(front + 4) = v5;
+  next->prev = front;
 }
 
-+ (id)dictionaryWithMaximumCapacity:(unint64_t)a3
++ (id)dictionaryWithMaximumCapacity:(unint64_t)capacity
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithMaximumCapacity:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithMaximumCapacity:capacity];
 
   return v3;
 }
 
-- (CPLRUDictionary)initWithMaximumCapacity:(unint64_t)a3
+- (CPLRUDictionary)initWithMaximumCapacity:(unint64_t)capacity
 {
-  if (!a3)
+  if (!capacity)
   {
     [(CPLRUDictionary *)a2 initWithMaximumCapacity:?];
   }
@@ -76,8 +76,8 @@
   v5 = [(CPLRUDictionary *)&v8 init];
   if (v5)
   {
-    v5->_dictionary = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], a3, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-    v5->_maxCount = a3;
+    v5->_dictionary = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], capacity, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
+    v5->_maxCount = capacity;
     v5->_head = [[CPLRUDictionaryNode alloc] initWithKey:0 object:0];
     v6 = [[CPLRUDictionaryNode alloc] initWithKey:0 object:0];
     v5->_tail = v6;
@@ -109,9 +109,9 @@
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  result = CFDictionaryGetValue(self->_dictionary, a3);
+  result = CFDictionaryGetValue(self->_dictionary, key);
   if (result)
   {
     v5 = result;
@@ -123,15 +123,15 @@
   return result;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  Value = CFDictionaryGetValue(self->_dictionary, a4);
+  Value = CFDictionaryGetValue(self->_dictionary, key);
   if (Value)
   {
     v8 = Value;
     [(CPLRUDictionary *)self _moveNodeToFront:Value];
 
-    [v8 setObject:a3];
+    [v8 setObject:object];
   }
 
   else
@@ -141,16 +141,16 @@
       [(CPLRUDictionary *)self _removeNode:self->_tail->prev];
     }
 
-    key = [a4 copyWithZone:0];
-    v9 = [[CPLRUDictionaryNode alloc] initWithKey:key object:a3];
+    key = [key copyWithZone:0];
+    v9 = [[CPLRUDictionaryNode alloc] initWithKey:key object:object];
     CFDictionaryAddValue(self->_dictionary, key, v9);
     [(CPLRUDictionary *)self _addNodeToFront:v9];
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  Value = CFDictionaryGetValue(self->_dictionary, a3);
+  Value = CFDictionaryGetValue(self->_dictionary, key);
   if (Value)
   {
 
@@ -183,29 +183,29 @@
 
 - (id)allKeysInLRUOrder
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = self->_head->next; i != self->_tail; i = i->next)
   {
-    [v3 addObject:{-[CPLRUDictionaryNode key](i, "key")}];
+    [array addObject:{-[CPLRUDictionaryNode key](i, "key")}];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)allValuesInLRUOrder
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = self->_head->next; i != self->_tail; i = i->next)
   {
-    [v3 addObject:{-[CPLRUDictionaryNode object](i, "object")}];
+    [array addObject:{-[CPLRUDictionaryNode object](i, "object")}];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)objectForKeyWithoutAffectingLRU:(id)a3
+- (id)objectForKeyWithoutAffectingLRU:(id)u
 {
-  Value = CFDictionaryGetValue(self->_dictionary, a3);
+  Value = CFDictionaryGetValue(self->_dictionary, u);
 
   return [Value object];
 }

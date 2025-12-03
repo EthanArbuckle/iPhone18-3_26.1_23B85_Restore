@@ -1,20 +1,20 @@
 @interface NTKCompanionRemoteComplication
-+ (id)complicationWithApp:(id)a3;
++ (id)complicationWithApp:(id)app;
 - (id)localizedDetailText;
 @end
 
 @implementation NTKCompanionRemoteComplication
 
-+ (id)complicationWithApp:(id)a3
++ (id)complicationWithApp:(id)app
 {
-  v4 = a3;
-  v5 = [v4 complicationClientIdentifier];
+  appCopy = app;
+  complicationClientIdentifier = [appCopy complicationClientIdentifier];
   v6 = objc_opt_self();
-  v7 = [v6 watchApplicationIdentifier];
-  v8 = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
-  v9 = [a1 complicationWithClientIdentifier:v5 appBundleIdentifier:v7 complicationDescriptor:v8];
+  watchApplicationIdentifier = [v6 watchApplicationIdentifier];
+  legacyComplicationDescriptor = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
+  v9 = [self complicationWithClientIdentifier:complicationClientIdentifier appBundleIdentifier:watchApplicationIdentifier complicationDescriptor:legacyComplicationDescriptor];
 
-  [v9 setApp:v4];
+  [v9 setApp:appCopy];
 
   return v9;
 }
@@ -26,17 +26,17 @@
   if (v3)
   {
     v4 = [(NTKCompanionRemoteComplication *)self app];
-    v5 = [v4 name];
+    name = [v4 name];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = NTKCompanionRemoteComplication;
-    v5 = [(NTKRemoteComplication *)&v7 localizedDetailText];
+    name = [(NTKRemoteComplication *)&v7 localizedDetailText];
   }
 
-  return v5;
+  return name;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SYBacklinkIndicatorService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SYBacklinkIndicatorService)init;
 - (SYBacklinkIndicatorServiceDelegate)delegate;
 - (void)dealloc;
@@ -44,16 +44,16 @@ uint64_t __44__SYBacklinkIndicatorService_sharedInstance__block_invoke()
 
     if ([objc_opt_class() _forTesting])
     {
-      v4 = [MEMORY[0x277CCAE98] anonymousListener];
+      anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     }
 
     else
     {
-      v4 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.synapse.backlinkindicator"];
+      anonymousListener = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.synapse.backlinkindicator"];
     }
 
     listener = v2->_listener;
-    v2->_listener = v4;
+    v2->_listener = anonymousListener;
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     [(NSXPCListener *)v2->_listener resume];
@@ -71,34 +71,34 @@ uint64_t __44__SYBacklinkIndicatorService_sharedInstance__block_invoke()
   [(SYBacklinkIndicatorService *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [SYBacklinkIndicatorService listener:a2 shouldAcceptNewConnection:self];
   }
 
-  if (self->_listener != v7)
+  if (self->_listener != listenerCopy)
   {
     goto LABEL_4;
   }
 
   v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2838F6F88];
-  [v8 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
   if ([objc_opt_class() _forTesting])
   {
 LABEL_6:
-    [v8 setExportedObject:self];
-    [v8 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
     v9 = 1;
     goto LABEL_7;
   }
 
-  v13 = [v8 valueForEntitlement:@"com.apple.synapse.allowBacklinkIndicatorRequests"];
+  v13 = [connectionCopy valueForEntitlement:@"com.apple.synapse.allowBacklinkIndicatorRequests"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 BOOLValue])
   {
@@ -110,7 +110,7 @@ LABEL_6:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v8;
+    v16 = connectionCopy;
     _os_log_impl(&dword_225901000, v14, OS_LOG_TYPE_DEFAULT, "BacklinkIndicatorService: Refusing connection from non-entitled client with connection: %@", &v15, 0xCu);
   }
 
@@ -124,13 +124,13 @@ LABEL_7:
 
 - (void)hideIndicator
 {
-  v3 = [(SYBacklinkIndicatorService *)self delegate];
+  delegate = [(SYBacklinkIndicatorService *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SYBacklinkIndicatorService *)self delegate];
-    [v5 hideIndicator];
+    delegate2 = [(SYBacklinkIndicatorService *)self delegate];
+    [delegate2 hideIndicator];
   }
 }
 

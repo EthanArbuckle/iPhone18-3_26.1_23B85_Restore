@@ -1,17 +1,17 @@
 @interface PDFDetectedFormField
-- (BOOL)canBeMergedWith:(id)a3;
+- (BOOL)canBeMergedWith:(id)with;
 - (CGRect)rect;
-- (PDFDetectedFormField)initWithRect:(CGRect)a3 andKind:(int64_t)a4;
+- (PDFDetectedFormField)initWithRect:(CGRect)rect andKind:(int64_t)kind;
 @end
 
 @implementation PDFDetectedFormField
 
-- (PDFDetectedFormField)initWithRect:(CGRect)a3 andKind:(int64_t)a4
+- (PDFDetectedFormField)initWithRect:(CGRect)rect andKind:(int64_t)kind
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10.receiver = self;
   v10.super_class = PDFDetectedFormField;
   result = [(PDFDetectedFormField *)&v10 init];
@@ -21,21 +21,21 @@
     result->_rect.origin.y = y;
     result->_rect.size.width = width;
     result->_rect.size.height = height;
-    result->_kind = a4;
+    result->_kind = kind;
   }
 
   return result;
 }
 
-- (BOOL)canBeMergedWith:(id)a3
+- (BOOL)canBeMergedWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   [(PDFDetectedFormField *)self minY];
   v6 = v5;
-  [v4 minY];
-  if (v6 == v7 && (-[PDFDetectedFormField maxY](self, "maxY"), v9 = v8, [v4 maxY], v9 == v10))
+  [withCopy minY];
+  if (v6 == v7 && (-[PDFDetectedFormField maxY](self, "maxY"), v9 = v8, [withCopy maxY], v9 == v10))
   {
-    [v4 minX];
+    [withCopy minX];
     v12 = v11;
     [(PDFDetectedFormField *)self maxX];
     v14 = v12 - v13 <= 1.0;

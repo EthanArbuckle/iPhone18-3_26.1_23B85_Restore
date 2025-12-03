@@ -1,12 +1,12 @@
 @interface HPSSpatialProfileSingleStepCrossHairs
-- (HPSSpatialProfileSingleStepCrossHairs)initWithView:(CGRect)a3 view:(id)a4;
-- (void)nudgeCustomDirection:(unint64_t)a3 completion:(id)a4;
-- (void)nudgeInDirection:(unint64_t)a3 smallNudgePeak:(id)a4 largeNudgePeak:(id)a5 completion:(id)a6;
+- (HPSSpatialProfileSingleStepCrossHairs)initWithView:(CGRect)view view:(id)a4;
+- (void)nudgeCustomDirection:(unint64_t)direction completion:(id)completion;
+- (void)nudgeInDirection:(unint64_t)direction smallNudgePeak:(id)peak largeNudgePeak:(id)nudgePeak completion:(id)completion;
 @end
 
 @implementation HPSSpatialProfileSingleStepCrossHairs
 
-- (HPSSpatialProfileSingleStepCrossHairs)initWithView:(CGRect)a3 view:(id)a4
+- (HPSSpatialProfileSingleStepCrossHairs)initWithView:(CGRect)view view:(id)a4
 {
   v6 = a4;
   v9.receiver = self;
@@ -20,42 +20,42 @@
   return v7;
 }
 
-- (void)nudgeCustomDirection:(unint64_t)a3 completion:(id)a4
+- (void)nudgeCustomDirection:(unint64_t)direction completion:(id)completion
 {
   v4.receiver = self;
   v4.super_class = HPSSpatialProfileSingleStepCrossHairs;
-  [(BKUIPearlCrossHairsView *)&v4 nudgeInDirection:a3 smallNudgePeak:0 largeNudgePeak:0 completion:a4];
+  [(BKUIPearlCrossHairsView *)&v4 nudgeInDirection:direction smallNudgePeak:0 largeNudgePeak:0 completion:completion];
 }
 
-- (void)nudgeInDirection:(unint64_t)a3 smallNudgePeak:(id)a4 largeNudgePeak:(id)a5 completion:(id)a6
+- (void)nudgeInDirection:(unint64_t)direction smallNudgePeak:(id)peak largeNudgePeak:(id)nudgePeak completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  peakCopy = peak;
+  nudgePeakCopy = nudgePeak;
+  completionCopy = completion;
   v13 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v17 = a3;
+    directionCopy = direction;
     _os_log_impl(&dword_251143000, v13, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Nudging Requesr in direction  %d", buf, 8u);
   }
 
   if ([_parentView faceCaptured])
   {
-    if (v10)
+    if (peakCopy)
     {
-      v10[2](v10);
+      peakCopy[2](peakCopy);
     }
 
-    if (v11)
+    if (nudgePeakCopy)
     {
-      v11[2](v11);
+      nudgePeakCopy[2](nudgePeakCopy);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -63,7 +63,7 @@
   {
     v15.receiver = self;
     v15.super_class = HPSSpatialProfileSingleStepCrossHairs;
-    [(BKUIPearlCrossHairsView *)&v15 nudgeInDirection:a3 smallNudgePeak:v10 largeNudgePeak:v11 completion:v12];
+    [(BKUIPearlCrossHairsView *)&v15 nudgeInDirection:direction smallNudgePeak:peakCopy largeNudgePeak:nudgePeakCopy completion:completionCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];

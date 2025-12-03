@@ -1,22 +1,22 @@
 @interface CNUrlAddressesDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
 - (id)standardLabels;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNUrlAddressesDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 urlAddresses];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  urlAddresses = [contactCopy urlAddresses];
+  if (!urlAddresses)
   {
-    v4 = [v7 urlAddresses];
-    if (!v4)
+    urlAddresses2 = [otherCopy urlAddresses];
+    if (!urlAddresses2)
     {
       v11 = 1;
 LABEL_6:
@@ -25,11 +25,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 urlAddresses];
-  v10 = [v7 urlAddresses];
-  v11 = [v9 isEqual:v10];
+  urlAddresses3 = [contactCopy urlAddresses];
+  urlAddresses4 = [otherCopy urlAddresses];
+  v11 = [urlAddresses3 isEqual:urlAddresses4];
 
-  if (!v8)
+  if (!urlAddresses)
   {
     goto LABEL_6;
   }
@@ -39,11 +39,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  contactCopy = contact;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -52,35 +52,35 @@ LABEL_7:
   {
   }
 
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:{@"_urlAddresses", v12, v13}];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:{@"_urlAddresses", v12, v13}];
   v10 = [v9 copy];
-  v11 = v6[50];
-  v6[50] = v10;
+  v11 = contactCopy[50];
+  contactCopy[50] = v10;
 }
 
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue
 {
-  if (a3)
+  if (value)
   {
-    v4 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v4 = &stru_1F094DAB0;
+    valueCopy = &stru_1F094DAB0;
   }
 
-  if (a4)
+  if (withValue)
   {
-    v5 = a4;
+    withValueCopy = withValue;
   }
 
   else
   {
-    v5 = &stru_1F094DAB0;
+    withValueCopy = &stru_1F094DAB0;
   }
 
-  return [(__CFString *)v4 localizedCaseInsensitiveCompare:v5]== 0;
+  return [(__CFString *)valueCopy localizedCaseInsensitiveCompare:withValueCopy]== 0;
 }
 
 - (id)standardLabels
@@ -104,14 +104,14 @@ uint64_t __43__CNUrlAddressesDescription_standardLabels__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A630];
+    *d = *MEMORY[0x1E698A630];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

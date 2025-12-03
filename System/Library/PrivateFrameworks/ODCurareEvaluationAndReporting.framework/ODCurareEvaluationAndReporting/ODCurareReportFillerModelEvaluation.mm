@@ -1,12 +1,12 @@
 @interface ODCurareReportFillerModelEvaluation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODCurareReportFillerModelEvaluation
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = ODCurareReportFillerModelEvaluation;
   v4 = [(ODCurareReportFillerModelEvaluation *)&v8 description];
-  v5 = [(ODCurareReportFillerModelEvaluation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ODCurareReportFillerModelEvaluation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   metricName = self->_metricName;
   if (metricName)
   {
-    [v3 setObject:metricName forKey:@"metricName"];
+    [dictionary setObject:metricName forKey:@"metricName"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_metricValue];
@@ -45,15 +45,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_metricName)
   {
     [ODCurareReportFillerModelEvaluation writeTo:];
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteStringField();
   metricValue = self->_metricValue;
   PBDataWriterWriteDoubleField();
@@ -63,20 +63,20 @@
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   metricName = self->_metricName;
-  v5 = a3;
-  [v5 setMetricName:metricName];
-  *(v5 + 1) = *&self->_metricValue;
-  *(v5 + 7) = self->_numberOfSamples;
-  *(v5 + 6) = self->_numberOfPositiveSamples;
+  toCopy = to;
+  [toCopy setMetricName:metricName];
+  *(toCopy + 1) = *&self->_metricValue;
+  *(toCopy + 7) = self->_numberOfSamples;
+  *(toCopy + 6) = self->_numberOfPositiveSamples;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_metricName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_metricName copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -86,10 +86,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((metricName = self->_metricName, !(metricName | *(v4 + 2))) || -[NSString isEqual:](metricName, "isEqual:")) && self->_metricValue == *(v4 + 1) && self->_numberOfSamples == *(v4 + 7) && self->_numberOfPositiveSamples == *(v4 + 6);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((metricName = self->_metricName, !(metricName | *(equalCopy + 2))) || -[NSString isEqual:](metricName, "isEqual:")) && self->_metricValue == *(equalCopy + 1) && self->_numberOfSamples == *(equalCopy + 7) && self->_numberOfPositiveSamples == *(equalCopy + 6);
 
   return v6;
 }
@@ -125,19 +125,19 @@
   return v11 ^ v3 ^ (2654435761 * self->_numberOfSamples) ^ (2654435761 * self->_numberOfPositiveSamples);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(ODCurareReportFillerModelEvaluation *)self setMetricName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_metricValue = *(v4 + 1);
-  self->_numberOfSamples = *(v4 + 7);
-  self->_numberOfPositiveSamples = *(v4 + 6);
+  self->_metricValue = *(fromCopy + 1);
+  self->_numberOfSamples = *(fromCopy + 7);
+  self->_numberOfPositiveSamples = *(fromCopy + 6);
 }
 
 @end

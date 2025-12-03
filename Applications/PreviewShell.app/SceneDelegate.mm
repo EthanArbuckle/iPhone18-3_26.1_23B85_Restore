@@ -1,53 +1,53 @@
 @interface SceneDelegate
 - (_TtC12PreviewShell13SceneDelegate)init;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100040F84(v8, v9);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100040F84(sceneCopy, sessionCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003D738(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_10003D738(foregroundCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003DB10(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_10003DB10(backgroundCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003DE34(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_10003DE34(disconnectCopy);
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = self;
-  sub_100041B4C(a4, a7);
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  selfCopy = self;
+  sub_100041B4C(sScene, context);
 }
 
 - (_TtC12PreviewShell13SceneDelegate)init

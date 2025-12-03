@@ -1,7 +1,7 @@
 @interface PKPaymentApplicationExpressState
 - (BOOL)isExpressEnabled;
 - (PKPaymentApplicationExpressState)init;
-- (void)setIsExpressEnabled:(BOOL)a3;
+- (void)setIsExpressEnabled:(BOOL)enabled;
 @end
 
 @implementation PKPaymentApplicationExpressState
@@ -10,17 +10,17 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_1BE04D8B4();
 
   return v5;
 }
 
-- (void)setIsExpressEnabled:(BOOL)a3
+- (void)setIsExpressEnabled:(BOOL)enabled
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1BE04D8C4();
 }
 

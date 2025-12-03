@@ -6,9 +6,9 @@
 
 - (uint64_t)ins_shouldPrewarmApp
 {
-  v1 = [a1 privatePlayMediaIntentData];
-  v2 = [v1 internalSignals];
-  v3 = [v2 containsObject:@"PrewarmApp"];
+  privatePlayMediaIntentData = [self privatePlayMediaIntentData];
+  internalSignals = [privatePlayMediaIntentData internalSignals];
+  v3 = [internalSignals containsObject:@"PrewarmApp"];
 
   return v3;
 }

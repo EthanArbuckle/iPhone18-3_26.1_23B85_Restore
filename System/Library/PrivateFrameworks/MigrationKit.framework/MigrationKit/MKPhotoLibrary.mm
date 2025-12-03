@@ -1,16 +1,16 @@
 @interface MKPhotoLibrary
-- (BOOL)copy:(id)a3 filename:(id)a4 error:(id *)a5;
-- (BOOL)photoLibraryDidComplete:(id)a3 filename:(id)a4 originalFilename:(id)a5 success:(BOOL)a6 error:(id *)a7;
+- (BOOL)copy:(id)copy filename:(id)filename error:(id *)error;
+- (BOOL)photoLibraryDidComplete:(id)complete filename:(id)filename originalFilename:(id)originalFilename success:(BOOL)success error:(id *)error;
 - (MKPhotoLibrary)init;
-- (MKPhotoLibrary)initWithContentType:(unint64_t)a3;
-- (id)addAsset:(id)a3;
-- (id)assetCollection:(id)a3;
-- (id)assetCollectionChangeRequest:(id)a3;
-- (unint64_t)assetCount:(id)a3;
-- (unint64_t)countForCollection:(id)a3 error:(id *)a4;
-- (void)addAsset:(id)a3 filename:(id)a4 originalFilename:(id)a5 size:(unint64_t)a6 completion:(id)a7;
+- (MKPhotoLibrary)initWithContentType:(unint64_t)type;
+- (id)addAsset:(id)asset;
+- (id)assetCollection:(id)collection;
+- (id)assetCollectionChangeRequest:(id)request;
+- (unint64_t)assetCount:(id)count;
+- (unint64_t)countForCollection:(id)collection error:(id *)error;
+- (void)addAsset:(id)asset filename:(id)filename originalFilename:(id)originalFilename size:(unint64_t)size completion:(id)completion;
 - (void)sendAnalytics;
-- (void)setCollection:(id)a3 forLocalIdentifiers:(id)a4;
+- (void)setCollection:(id)collection forLocalIdentifiers:(id)identifiers;
 @end
 
 @implementation MKPhotoLibrary
@@ -26,12 +26,12 @@
   {
     [(MKPhotoLibrary *)v2 setContentType:0];
     v4 = objc_alloc_init(MKFileProvider);
-    v5 = [(MKFileProvider *)v4 fetchRootPath];
+    fetchRootPath = [(MKFileProvider *)v4 fetchRootPath];
 
-    if (v5)
+    if (fetchRootPath)
     {
       v6 = MKLocalizedString(@"MOVE_TO_IOS");
-      v7 = [v5 stringByAppendingPathComponent:v6];
+      v7 = [fetchRootPath stringByAppendingPathComponent:v6];
       [(MKPhotoLibrary *)v3 setRootPath:v7];
 
       v8 = +[MKLog log];
@@ -43,15 +43,15 @@
         _os_log_impl(&dword_2592D2000, v8, OS_LOG_TYPE_INFO, "file_storage=%@", buf, 0xCu);
       }
 
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
-      v11 = [v10 fileExistsAtPath:v3->_rootPath];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v11 = [defaultManager fileExistsAtPath:v3->_rootPath];
 
       if ((v11 & 1) == 0)
       {
-        v12 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v13 = v3->_rootPath;
         v26 = 0;
-        [v12 createDirectoryAtPath:v13 withIntermediateDirectories:0 attributes:0 error:&v26];
+        [defaultManager2 createDirectoryAtPath:v13 withIntermediateDirectories:0 attributes:0 error:&v26];
         v14 = v26;
 
         if (v14)
@@ -74,15 +74,15 @@
   return v3;
 }
 
-- (MKPhotoLibrary)initWithContentType:(unint64_t)a3
+- (MKPhotoLibrary)initWithContentType:(unint64_t)type
 {
   v4 = [(MKPhotoLibrary *)self init];
   v5 = v4;
   if (v4)
   {
-    [(MKPhotoLibrary *)v4 setContentType:a3];
-    v6 = a3 == 0;
-    if (a3)
+    [(MKPhotoLibrary *)v4 setContentType:type];
+    v6 = type == 0;
+    if (type)
     {
       v7 = 10;
     }
@@ -152,16 +152,16 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAsset:(id)a3 filename:(id)a4 originalFilename:(id)a5 size:(unint64_t)a6 completion:(id)a7
+- (void)addAsset:(id)asset filename:(id)filename originalFilename:(id)originalFilename size:(unint64_t)size completion:(id)completion
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12 && v13)
+  assetCopy = asset;
+  filenameCopy = filename;
+  originalFilenameCopy = originalFilename;
+  completionCopy = completion;
+  if (assetCopy && filenameCopy)
   {
-    v16 = a6 == 0;
+    v16 = size == 0;
     v17 = +[MKLog log];
     v18 = v17;
     if (v16)
@@ -171,7 +171,7 @@
         [(MKPhotoLibrary *)v18 addAsset:v25 filename:v26 originalFilename:v27 size:v28 completion:v29, v30, v31];
       }
 
-      if (v15)
+      if (completionCopy)
       {
         v32 = MEMORY[0x277CCA9B8];
         v54 = *MEMORY[0x277CCA450];
@@ -179,7 +179,7 @@
         v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
         v34 = [v32 errorWithDomain:@"MKPhotoLibraryError" code:1 userInfo:v33];
 
-        (*(v15 + 2))(v15, 0, 0, 0, v34);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, v34);
       }
     }
 
@@ -198,14 +198,14 @@
       v52 = __Block_byref_object_dispose__1;
       v53 = 0;
       objc_initWeak(&location, self);
-      v19 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+      mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __69__MKPhotoLibrary_addAsset_filename_originalFilename_size_completion___block_invoke;
       v43[3] = &unk_2798DCEF8;
       objc_copyWeak(&v46, &location);
       v45 = buf;
-      v20 = v12;
+      v20 = assetCopy;
       v44 = v20;
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
@@ -214,10 +214,10 @@
       objc_copyWeak(&v42, &location);
       v41 = buf;
       v37 = v20;
-      v38 = v13;
-      v39 = v14;
-      v40 = v15;
-      [v19 performChanges:v43 completionHandler:v36];
+      v38 = filenameCopy;
+      v39 = originalFilenameCopy;
+      v40 = completionCopy;
+      [mEMORY[0x277CD9948] performChanges:v43 completionHandler:v36];
 
       objc_destroyWeak(&v42);
       objc_destroyWeak(&v46);
@@ -231,10 +231,10 @@
     v21 = +[MKLog log];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [MKPhotoLibrary addAsset:v12 filename:v13 originalFilename:v21 size:? completion:?];
+      [MKPhotoLibrary addAsset:assetCopy filename:filenameCopy originalFilename:v21 size:? completion:?];
     }
 
-    if (v15)
+    if (completionCopy)
     {
       v22 = MEMORY[0x277CCA9B8];
       v56 = *MEMORY[0x277CCA450];
@@ -242,7 +242,7 @@
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
       v24 = [v22 errorWithDomain:@"MKPhotoLibraryError" code:1 userInfo:v23];
 
-      (*(v15 + 2))(v15, 0, 0, 0, v24);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, v24);
     }
   }
 
@@ -302,33 +302,33 @@ void __69__MKPhotoLibrary_addAsset_filename_originalFilename_size_completion___b
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)countForCollection:(id)a3 error:(id *)a4
+- (unint64_t)countForCollection:(id)collection error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  collectionCopy = collection;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __43__MKPhotoLibrary_countForCollection_error___block_invoke;
   v15[3] = &unk_2798DCF48;
   v15[4] = self;
-  v9 = v6;
+  v9 = collectionCopy;
   v16 = v9;
   v17 = &v18;
-  [v8 performChangesAndWait:v15 error:a4];
+  [mEMORY[0x277CD9948] performChangesAndWait:v15 error:error];
 
   objc_autoreleasePoolPop(v7);
   v10 = +[MKLog log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    if (a4)
+    if (error)
     {
-      v11 = *a4;
+      v11 = *error;
     }
 
     else
@@ -354,24 +354,24 @@ void __43__MKPhotoLibrary_countForCollection_error___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [*(a1 + 32) assetCount:v2];
 }
 
-- (void)setCollection:(id)a3 forLocalIdentifiers:(id)a4
+- (void)setCollection:(id)collection forLocalIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "count"))
+  collectionCopy = collection;
+  identifiersCopy = identifiers;
+  if ([collectionCopy length] && objc_msgSend(identifiersCopy, "count"))
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+    mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __52__MKPhotoLibrary_setCollection_forLocalIdentifiers___block_invoke;
     v14[3] = &unk_2798DCF70;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = collectionCopy;
+    v16 = identifiersCopy;
     v13 = 0;
-    [v9 performChangesAndWait:v14 error:&v13];
+    [mEMORY[0x277CD9948] performChangesAndWait:v14 error:&v13];
     v10 = v13;
 
     objc_autoreleasePoolPop(v8);
@@ -401,9 +401,9 @@ void __52__MKPhotoLibrary_setCollection_forLocalIdentifiers___block_invoke(uint6
   }
 }
 
-- (id)addAsset:(id)a3
+- (id)addAsset:(id)asset
 {
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:asset];
   if (self->_contentType)
   {
     [MEMORY[0x277CD97D0] creationRequestForAssetFromVideoAtFileURL:v4];
@@ -415,23 +415,23 @@ void __52__MKPhotoLibrary_setCollection_forLocalIdentifiers___block_invoke(uint6
   }
   v5 = ;
   [v5 setReduceProcessingForIngest:1];
-  v6 = [v5 placeholderForCreatedAsset];
-  v7 = [v6 localIdentifier];
+  placeholderForCreatedAsset = [v5 placeholderForCreatedAsset];
+  localIdentifier = [placeholderForCreatedAsset localIdentifier];
 
-  return v7;
+  return localIdentifier;
 }
 
-- (BOOL)photoLibraryDidComplete:(id)a3 filename:(id)a4 originalFilename:(id)a5 success:(BOOL)a6 error:(id *)a7
+- (BOOL)photoLibraryDidComplete:(id)complete filename:(id)filename originalFilename:(id)originalFilename success:(BOOL)success error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a6)
+  completeCopy = complete;
+  filenameCopy = filename;
+  originalFilenameCopy = originalFilename;
+  if (success)
   {
     ++self->_importCount;
     v15 = 1;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_28;
     }
@@ -439,20 +439,20 @@ void __52__MKPhotoLibrary_setCollection_forLocalIdentifiers___block_invoke(uint6
     goto LABEL_26;
   }
 
-  if (!a7)
+  if (!error)
   {
-    v17 = 0;
-    v16 = @"unknown";
+    code = 0;
+    domain = @"unknown";
     goto LABEL_9;
   }
 
-  v16 = [*a7 domain];
-  v17 = [*a7 code];
-  if (v17 != 3302)
+  domain = [*error domain];
+  code = [*error code];
+  if (code != 3302)
   {
 LABEL_9:
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", v16, v17];
-    [(NSMutableSet *)self->_importErrors addObject:v18];
+    3302 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", domain, code];
+    [(NSMutableSet *)self->_importErrors addObject:3302];
     goto LABEL_10;
   }
 
@@ -461,33 +461,33 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", v16, 3302];
-  [(NSMutableSet *)self->_importErrors addObject:v18];
-  v19 = [(MKAssetDecoder *)self->_decoder extractFormatOfAsset:v12];
+  3302 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", domain, 3302];
+  [(NSMutableSet *)self->_importErrors addObject:3302];
+  v19 = [(MKAssetDecoder *)self->_decoder extractFormatOfAsset:completeCopy];
   analytics = self->_analytics;
-  [v12 pathExtension];
-  v22 = v21 = v16;
+  [completeCopy pathExtension];
+  v22 = v21 = domain;
   [(MKImportAnalytics *)analytics send:v19 extension:v22];
 
-  v16 = v21;
+  domain = v21;
   decoder = self->_decoder;
   self->_decoder = 0;
 
 LABEL_10:
 LABEL_11:
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v14 length])
+  if ([originalFilenameCopy length])
   {
-    v40 = v16;
-    v41 = v13;
-    [v24 addObject:v14];
+    v40 = domain;
+    v41 = filenameCopy;
+    [v24 addObject:originalFilenameCopy];
     rootPath = self->_rootPath;
-    v26 = [v14 stringByDeletingLastPathComponent];
-    v27 = [(NSString *)rootPath stringByAppendingPathComponent:v26];
+    stringByDeletingLastPathComponent = [originalFilenameCopy stringByDeletingLastPathComponent];
+    v27 = [(NSString *)rootPath stringByAppendingPathComponent:stringByDeletingLastPathComponent];
 
-    v28 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v46 = 0;
-    v29 = [v28 createDirectoryAtPath:v27 withIntermediateDirectories:1 attributes:0 error:&v46];
+    v29 = [defaultManager createDirectoryAtPath:v27 withIntermediateDirectories:1 attributes:0 error:&v46];
     v30 = v46;
 
     v31 = +[MKLog log];
@@ -501,11 +501,11 @@ LABEL_11:
       _os_log_impl(&dword_2592D2000, v31, OS_LOG_TYPE_INFO, "did create directory. success=%d, error=%{private}@", buf, 0x12u);
     }
 
-    v16 = v40;
-    v13 = v41;
+    domain = v40;
+    filenameCopy = v41;
   }
 
-  [v24 addObject:v13];
+  [v24 addObject:filenameCopy];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -525,7 +525,7 @@ LABEL_11:
           objc_enumerationMutation(v33);
         }
 
-        if ([(MKPhotoLibrary *)self copy:v12 filename:*(*(&v42 + 1) + 8 * i) error:a7])
+        if ([(MKPhotoLibrary *)self copy:completeCopy filename:*(*(&v42 + 1) + 8 * i) error:error])
         {
           v15 = 1;
           goto LABEL_25;
@@ -545,12 +545,12 @@ LABEL_11:
   v15 = 0;
 LABEL_25:
 
-  if (a7)
+  if (error)
   {
 LABEL_26:
     if (v15)
     {
-      *a7 = 0;
+      *error = 0;
     }
   }
 
@@ -560,38 +560,38 @@ LABEL_28:
   return v15;
 }
 
-- (BOOL)copy:(id)a3 filename:(id)a4 error:(id *)a5
+- (BOOL)copy:(id)copy filename:(id)filename error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  copyCopy = copy;
+  filenameCopy = filename;
   rootPath = self->_rootPath;
   if (rootPath)
   {
-    v11 = [(NSString *)rootPath stringByAppendingPathComponent:v9];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v12 fileExistsAtPath:v11])
+    v11 = [(NSString *)rootPath stringByAppendingPathComponent:filenameCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:v11])
     {
-      v33 = a5;
-      v35 = v8;
-      v13 = [v9 stringByDeletingPathExtension];
-      v34 = v9;
-      v14 = [v9 pathExtension];
+      errorCopy = error;
+      v35 = copyCopy;
+      stringByDeletingPathExtension = [filenameCopy stringByDeletingPathExtension];
+      v34 = filenameCopy;
+      pathExtension = [filenameCopy pathExtension];
       v15 = 2;
       v16 = 2147483645;
       while (1)
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %ld", v13, v15];
-        if ([v14 length])
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %ld", stringByDeletingPathExtension, v15];
+        if ([pathExtension length])
         {
-          v18 = [v17 stringByAppendingFormat:@".%@", v14];
+          v18 = [v17 stringByAppendingFormat:@".%@", pathExtension];
 
           v17 = v18;
         }
 
         v19 = [(NSString *)self->_rootPath stringByAppendingPathComponent:v17];
 
-        v20 = [v12 fileExistsAtPath:v19];
+        v20 = [defaultManager fileExistsAtPath:v19];
         if ((v20 & 1) == 0)
         {
           break;
@@ -603,15 +603,15 @@ LABEL_28:
         {
 
           LOBYTE(v21) = 0;
-          v9 = v34;
-          v8 = v35;
+          filenameCopy = v34;
+          copyCopy = v35;
           goto LABEL_20;
         }
       }
 
-      v9 = v34;
-      v8 = v35;
-      a5 = v33;
+      filenameCopy = v34;
+      copyCopy = v35;
+      error = errorCopy;
     }
 
     else
@@ -619,7 +619,7 @@ LABEL_28:
       v19 = v11;
     }
 
-    v21 = [v12 moveItemAtPath:v8 toPath:v19 error:a5];
+    v21 = [defaultManager moveItemAtPath:copyCopy toPath:v19 error:error];
     v29 = +[MKLog log];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
@@ -629,14 +629,14 @@ LABEL_28:
     }
 
     v30 = v21 ^ 1;
-    if (!a5)
+    if (!error)
     {
       v30 = 1;
     }
 
     if ((v30 & 1) == 0)
     {
-      *a5 = 0;
+      *error = 0;
       LOBYTE(v21) = 1;
     }
   }
@@ -658,10 +658,10 @@ LABEL_20:
   return v21;
 }
 
-- (id)assetCollectionChangeRequest:(id)a3
+- (id)assetCollectionChangeRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(MKPhotoLibrary *)self assetCollection:v4];
+  requestCopy = request;
+  v5 = [(MKPhotoLibrary *)self assetCollection:requestCopy];
   if (v5)
   {
     [MEMORY[0x277CD97C0] changeRequestForAssetCollection:v5];
@@ -669,37 +669,37 @@ LABEL_20:
 
   else
   {
-    [MEMORY[0x277CD97C0] creationRequestForAssetCollectionWithTitle:v4];
+    [MEMORY[0x277CD97C0] creationRequestForAssetCollectionWithTitle:requestCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)assetCollection:(id)a3
+- (id)assetCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localizedTitle = %@", v3];
+  collectionCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"localizedTitle = %@", collectionCopy];
 
-  [v4 setPredicate:v5];
+  [v4 setPredicate:collectionCopy];
   v6 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:1 subtype:2 options:v4];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (unint64_t)assetCount:(id)a3
+- (unint64_t)assetCount:(id)count
 {
-  if (!a3)
+  if (!count)
   {
     return 0;
   }
 
   v3 = MEMORY[0x277CD97A8];
-  v4 = a3;
+  countCopy = count;
   v5 = objc_opt_new();
-  v6 = [v3 fetchAssetsInAssetCollection:v4 options:v5];
+  v6 = [v3 fetchAssetsInAssetCollection:countCopy options:v5];
 
   v7 = [v6 count];
   return v7;

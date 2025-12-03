@@ -1,35 +1,35 @@
 @interface WFDataConfigurationParametersDataSource
-- (WFDataConfigurationParametersDataSource)initWithTableView:(id)a3 cellProvider:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)applyParametersFromAction:(id)a3 animatingDifferences:(BOOL)a4 hiddenParameterKeys:(id)a5 completion:(id)a6;
+- (WFDataConfigurationParametersDataSource)initWithTableView:(id)view cellProvider:(id)provider;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)applyParametersFromAction:(id)action animatingDifferences:(BOOL)differences hiddenParameterKeys:(id)keys completion:(id)completion;
 @end
 
 @implementation WFDataConfigurationParametersDataSource
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(WFDataConfigurationParametersDataSource *)self snapshot];
-  v7 = [v6 sectionIdentifiers];
-  if ([v7 count] <= a4)
+  snapshot = [(WFDataConfigurationParametersDataSource *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  if ([sectionIdentifiers count] <= section)
   {
 
-    v13 = 0;
+    sectionFooter = 0;
   }
 
   else
   {
-    v8 = [(WFDataConfigurationParametersDataSource *)self showsParameterDescription];
+    showsParameterDescription = [(WFDataConfigurationParametersDataSource *)self showsParameterDescription];
 
-    if ((v8 & 1) == 0)
+    if ((showsParameterDescription & 1) == 0)
     {
-      v13 = 0;
+      sectionFooter = 0;
       goto LABEL_12;
     }
 
-    v9 = [(WFDataConfigurationParametersDataSource *)self snapshot];
-    v10 = [v9 sectionIdentifiers];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    snapshot2 = [(WFDataConfigurationParametersDataSource *)self snapshot];
+    sectionIdentifiers2 = [snapshot2 sectionIdentifiers];
+    v11 = [sectionIdentifiers2 objectAtIndexedSubscript:section];
 
     if (v11)
     {
@@ -50,32 +50,32 @@
       v12 = 0;
     }
 
-    v6 = v12;
+    snapshot = v12;
 
-    v13 = [v6 sectionFooter];
+    sectionFooter = [snapshot sectionFooter];
   }
 
 LABEL_12:
 
-  return v13;
+  return sectionFooter;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(WFDataConfigurationParametersDataSource *)self snapshot];
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 count];
+  snapshot = [(WFDataConfigurationParametersDataSource *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers count];
 
-  if (v8 <= a4)
+  if (v8 <= section)
   {
-    v13 = 0;
+    sectionTitle = 0;
   }
 
   else
   {
-    v9 = [(WFDataConfigurationParametersDataSource *)self snapshot];
-    v10 = [v9 sectionIdentifiers];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    snapshot2 = [(WFDataConfigurationParametersDataSource *)self snapshot];
+    sectionIdentifiers2 = [snapshot2 sectionIdentifiers];
+    v11 = [sectionIdentifiers2 objectAtIndexedSubscript:section];
 
     if (v11)
     {
@@ -98,27 +98,27 @@ LABEL_12:
 
     v14 = v12;
 
-    v13 = [v14 sectionTitle];
+    sectionTitle = [v14 sectionTitle];
   }
 
-  return v13;
+  return sectionTitle;
 }
 
-- (void)applyParametersFromAction:(id)a3 animatingDifferences:(BOOL)a4 hiddenParameterKeys:(id)a5 completion:(id)a6
+- (void)applyParametersFromAction:(id)action animatingDifferences:(BOOL)differences hiddenParameterKeys:(id)keys completion:(id)completion
 {
-  v35 = a4;
-  v9 = a3;
-  v10 = a5;
-  v36 = v9;
-  v37 = a6;
-  v11 = [v9 configurableParameters];
+  differencesCopy = differences;
+  actionCopy = action;
+  keysCopy = keys;
+  v36 = actionCopy;
+  completionCopy = completion;
+  configurableParameters = [actionCopy configurableParameters];
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
   v56[2] = sub_10001BD90;
   v56[3] = &unk_10002DD08;
-  v12 = v10;
+  v12 = keysCopy;
   v57 = v12;
-  v13 = [v11 if_objectsPassingTest:v56];
+  v13 = [configurableParameters if_objectsPassingTest:v56];
 
   if ([v13 count])
   {
@@ -180,27 +180,27 @@ LABEL_12:
     v27 = objc_alloc_init(NSDiffableDataSourceSnapshot);
     v40 = v27;
     [v15 enumerateObjectsUsingBlock:v39];
-    v28 = [(WFDataConfigurationParametersDataSource *)self footerButtons];
-    if ([v28 count])
+    footerButtons = [(WFDataConfigurationParametersDataSource *)self footerButtons];
+    if ([footerButtons count])
     {
-      v29 = [[WFDataConfigurationButtonsSection alloc] initWithButtons:v28];
+      v29 = [[WFDataConfigurationButtonsSection alloc] initWithButtons:footerButtons];
       v58 = v29;
       v30 = [NSArray arrayWithObjects:&v58 count:1];
       [v27 appendSectionsWithIdentifiers:v30];
 
-      v31 = [(WFDataConfigurationButtonsSection *)v29 buttons];
-      v32 = [v31 if_map:&stru_10002DDC0];
+      buttons = [(WFDataConfigurationButtonsSection *)v29 buttons];
+      v32 = [buttons if_map:&stru_10002DDC0];
       [v27 appendItemsWithIdentifiers:v32];
     }
 
-    v33 = [(WFDataConfigurationParametersDataSource *)self snapshot];
-    v34 = [v33 isEqual:v27];
+    snapshot = [(WFDataConfigurationParametersDataSource *)self snapshot];
+    v34 = [snapshot isEqual:v27];
 
     if ((v34 & 1) == 0)
     {
       v38.receiver = self;
       v38.super_class = WFDataConfigurationParametersDataSource;
-      [(WFDataConfigurationParametersDataSource *)&v38 applySnapshot:v27 animatingDifferences:v35 completion:v37];
+      [(WFDataConfigurationParametersDataSource *)&v38 applySnapshot:v27 animatingDifferences:differencesCopy completion:completionCopy];
     }
   }
 
@@ -209,15 +209,15 @@ LABEL_12:
     v25 = objc_alloc_init(NSDiffableDataSourceSnapshot);
     v55.receiver = self;
     v55.super_class = WFDataConfigurationParametersDataSource;
-    [(WFDataConfigurationParametersDataSource *)&v55 applySnapshot:v25 animatingDifferences:v35 completion:v37];
+    [(WFDataConfigurationParametersDataSource *)&v55 applySnapshot:v25 animatingDifferences:differencesCopy completion:completionCopy];
   }
 }
 
-- (WFDataConfigurationParametersDataSource)initWithTableView:(id)a3 cellProvider:(id)a4
+- (WFDataConfigurationParametersDataSource)initWithTableView:(id)view cellProvider:(id)provider
 {
   v8.receiver = self;
   v8.super_class = WFDataConfigurationParametersDataSource;
-  v4 = [(WFDataConfigurationParametersDataSource *)&v8 initWithTableView:a3 cellProvider:a4];
+  v4 = [(WFDataConfigurationParametersDataSource *)&v8 initWithTableView:view cellProvider:provider];
   v5 = v4;
   if (v4)
   {

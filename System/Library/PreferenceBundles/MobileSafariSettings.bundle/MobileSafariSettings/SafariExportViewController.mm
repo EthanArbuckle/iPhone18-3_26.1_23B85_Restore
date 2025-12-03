@@ -1,15 +1,15 @@
 @interface SafariExportViewController
 - (NSString)authenticationPrompt;
-- (SafariExportViewController)initWithExportLocation:(int64_t)a3;
+- (SafariExportViewController)initWithExportLocation:(int64_t)location;
 - (id)temporaryExportZipArchiveURL;
 - (void)_cancelButtonTapped;
-- (void)_moveTemporaryExportZipArchiveToDownloadsWithCompletionHandler:(id)a3;
-- (void)_presentExportFailureAlertWithPresentingViewController:(id)a3;
+- (void)_moveTemporaryExportZipArchiveToDownloadsWithCompletionHandler:(id)handler;
+- (void)_presentExportFailureAlertWithPresentingViewController:(id)controller;
 - (void)_updateExportButton;
 - (void)dealloc;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
-- (void)sender:(id)a3 didToggleBrowsingDataExportType:(unint64_t)a4;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
+- (void)sender:(id)sender didToggleBrowsingDataExportType:(unint64_t)type;
 - (void)viewDidLoad;
 @end
 
@@ -27,10 +27,10 @@
   return v6;
 }
 
-- (SafariExportViewController)initWithExportLocation:(int64_t)a3
+- (SafariExportViewController)initWithExportLocation:(int64_t)location
 {
   v5 = _WBSLocalizedString();
-  if (a3 > 2)
+  if (location > 2)
   {
     v6 = 0;
   }
@@ -54,7 +54,7 @@
   v10 = v9;
   if (v9)
   {
-    v9->_exportLocation = a3;
+    v9->_exportLocation = location;
     v11 = objc_alloc_init(SafariSettingsBrowsingDataExportController);
     exportController = v10->_exportController;
     v10->_exportController = v11;
@@ -191,38 +191,38 @@ void __49__SafariExportViewController__exportButtonTapped__block_invoke_2(uint64
   }
 }
 
-- (void)_presentExportFailureAlertWithPresentingViewController:(id)a3
+- (void)_presentExportFailureAlertWithPresentingViewController:(id)controller
 {
   exportController = self->_exportController;
-  v5 = a3;
-  v6 = [(SafariSettingsBrowsingDataExportController *)exportController exportErrorAlertTitle];
-  v7 = [(SafariSettingsBrowsingDataExportController *)self->_exportController exportErrorAlertMessage];
-  v10 = [UIAlertController alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  controllerCopy = controller;
+  exportErrorAlertTitle = [(SafariSettingsBrowsingDataExportController *)exportController exportErrorAlertTitle];
+  exportErrorAlertMessage = [(SafariSettingsBrowsingDataExportController *)self->_exportController exportErrorAlertMessage];
+  v10 = [UIAlertController alertControllerWithTitle:exportErrorAlertTitle message:exportErrorAlertMessage preferredStyle:1];
 
   v8 = _WBSLocalizedString();
   v9 = [UIAlertAction actionWithTitle:v8 style:0 handler:0];
 
   [v10 addAction:v9];
-  [v5 presentViewController:v10 animated:1 completion:0];
+  [controllerCopy presentViewController:v10 animated:1 completion:0];
 }
 
 - (void)_cancelButtonTapped
 {
-  v2 = [(SafariExportViewController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(SafariExportViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_moveTemporaryExportZipArchiveToDownloadsWithCompletionHandler:(id)a3
+- (void)_moveTemporaryExportZipArchiveToDownloadsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsWithCompletionHandler___block_invoke;
   v7[3] = &unk_89960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -256,13 +256,13 @@ void __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsW
 - (void)_updateExportButton
 {
   v3 = [(SafariSettingsBrowsingDataExportController *)self->_exportController selectedBrowsingDataExportTypes]!= 0;
-  v4 = [(SafariImportExportSheetController *)self button];
-  [v4 setEnabled:v3];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setEnabled:v3];
 }
 
-- (void)sender:(id)a3 didToggleBrowsingDataExportType:(unint64_t)a4
+- (void)sender:(id)sender didToggleBrowsingDataExportType:(unint64_t)type
 {
-  [(SafariSettingsBrowsingDataExportController *)self->_exportController setSelectedBrowsingDataExportTypes:[(SafariSettingsBrowsingDataExportController *)self->_exportController selectedBrowsingDataExportTypes]^ a4];
+  [(SafariSettingsBrowsingDataExportController *)self->_exportController setSelectedBrowsingDataExportTypes:[(SafariSettingsBrowsingDataExportController *)self->_exportController selectedBrowsingDataExportTypes]^ type];
 
   [(SafariExportViewController *)self _updateExportButton];
 }
@@ -275,15 +275,15 @@ void __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsW
   v3 = [UIBarButtonItem alloc];
   v4 = _WBSLocalizedString();
   v5 = [v3 initWithTitle:v4 style:0 target:self action:"_cancelButtonTapped"];
-  v6 = [(SafariExportViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem = [(SafariExportViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 
-  v7 = [(SafariExportViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setAccessibilityIdentifier:@"Cancel"];
+  navigationItem2 = [(SafariExportViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"Cancel"];
 
-  v9 = [(SafariImportExportSheetController *)self button];
-  [v9 setAccessibilityIdentifier:@"ExportBrowsingDataButton"];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setAccessibilityIdentifier:@"ExportBrowsingDataButton"];
 
   v10 = objc_alloc_init(SafariExportDataTypeToggleContainer);
   exportDataTypeToggleContainer = self->_exportDataTypeToggleContainer;
@@ -291,14 +291,14 @@ void __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsW
 
   [(SafariExportDataTypeToggleContainer *)self->_exportDataTypeToggleContainer setDelegate:self];
   [(SafariExportDataTypeToggleContainer *)self->_exportDataTypeToggleContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(SafariImportExportSheetController *)self stackView];
-  [v12 addArrangedSubview:self->_exportDataTypeToggleContainer];
+  stackView = [(SafariImportExportSheetController *)self stackView];
+  [stackView addArrangedSubview:self->_exportDataTypeToggleContainer];
 
-  v13 = [(SafariExportDataTypeToggleContainer *)self->_exportDataTypeToggleContainer widthAnchor];
-  v14 = [(SafariImportExportSheetController *)self stackView];
-  v15 = [v14 layoutMarginsGuide];
-  v16 = [v15 widthAnchor];
-  v17 = [v13 constraintEqualToAnchor:v16];
+  widthAnchor = [(SafariExportDataTypeToggleContainer *)self->_exportDataTypeToggleContainer widthAnchor];
+  stackView2 = [(SafariImportExportSheetController *)self stackView];
+  layoutMarginsGuide = [stackView2 layoutMarginsGuide];
+  widthAnchor2 = [layoutMarginsGuide widthAnchor];
+  v17 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v17 setActive:1];
 
   v18 = +[SafariSettingsController tabGroupManager];
@@ -316,8 +316,8 @@ void __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsW
     objc_copyWeak(&v49, &location);
     v21 = objc_retainBlock(v47);
     v22 = _WBSLocalizedString();
-    v23 = [v20 profiles];
-    v43 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v22, [v23 count]);
+    profiles = [v20 profiles];
+    v43 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v22, [profiles count]);
 
     v41 = [UIImage systemImageNamed:@"square.stack.fill"];
     v24 = [UIAction actionWithTitle:"actionWithTitle:image:identifier:handler:" image:v43 identifier:? handler:?];
@@ -326,14 +326,14 @@ void __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsW
     v42 = [UIMenu menuWithTitle:&stru_8BB60 image:0 identifier:0 options:1 children:v25];
 
     v26 = +[SafariSettingsController tabGroupManager];
-    v27 = [v26 profiles];
+    profiles2 = [v26 profiles];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = __41__SafariExportViewController_viewDidLoad__block_invoke_4;
     v45[3] = &unk_899D8;
     v40 = v21;
     v46 = v40;
-    v28 = [v27 safari_mapObjectsUsingBlock:v45];
+    v28 = [profiles2 safari_mapObjectsUsingBlock:v45];
 
     v52 = v42;
     v29 = [NSArray arrayWithObjects:&v52 count:1];
@@ -344,14 +344,14 @@ void __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsW
 
     [v24 performWithSender:self target:0];
     [(SafariExportProfilePicker *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v32 = [(SafariImportExportSheetController *)self stackView];
-    [v32 addArrangedSubview:v19];
+    stackView3 = [(SafariImportExportSheetController *)self stackView];
+    [stackView3 addArrangedSubview:v19];
 
-    v33 = [(SafariExportProfilePicker *)v19 widthAnchor];
-    v34 = [(SafariImportExportSheetController *)self stackView];
-    v35 = [v34 layoutMarginsGuide];
-    v36 = [v35 widthAnchor];
-    v37 = [v33 constraintEqualToAnchor:v36];
+    widthAnchor3 = [(SafariExportProfilePicker *)v19 widthAnchor];
+    stackView4 = [(SafariImportExportSheetController *)self stackView];
+    layoutMarginsGuide2 = [stackView4 layoutMarginsGuide];
+    widthAnchor4 = [layoutMarginsGuide2 widthAnchor];
+    v37 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     [v37 setActive:1];
 
     objc_destroyWeak(&v49);
@@ -360,8 +360,8 @@ void __93__SafariExportViewController__moveTemporaryExportZipArchiveToDownloadsW
 
   else
   {
-    v38 = [v18 allProfileIdentifiers];
-    [(SafariSettingsBrowsingDataExportController *)self->_exportController setProfileIdentifiersToExportFrom:v38];
+    allProfileIdentifiers = [v18 allProfileIdentifiers];
+    [(SafariSettingsBrowsingDataExportController *)self->_exportController setProfileIdentifiersToExportFrom:allProfileIdentifiers];
 
     exportController = self->_exportController;
     v44[0] = _NSConcreteStackBlock;
@@ -484,17 +484,17 @@ id __41__SafariExportViewController_viewDidLoad__block_invoke_5(uint64_t a1, uin
   return [v6 _updateExportButton];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v5 = a4;
+  lsCopy = ls;
   v6 = dispatch_get_global_queue(25, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __68__SafariExportViewController_documentPicker_didPickDocumentsAtURLs___block_invoke;
   v8[3] = &unk_896A0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = lsCopy;
+  v7 = lsCopy;
   dispatch_async(v6, v8);
 }
 
@@ -525,7 +525,7 @@ void __68__SafariExportViewController_documentPicker_didPickDocumentsAtURLs___bl
   [v4 pushViewController:v5 animated:1];
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;

@@ -1,32 +1,32 @@
 @interface COIDSTransport
-- (BOOL)isEqual:(id)a3;
-- (COIDSTransport)initWithDiscoveryRecord:(id)a3 executionContext:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (COIDSTransport)initWithDiscoveryRecord:(id)record executionContext:(id)context;
 - (COTransportDelegate)delegate;
 - (NSString)description;
-- (id)acceptableResponsesForRequest:(Class)a3;
+- (id)acceptableResponsesForRequest:(Class)request;
 - (id)shortDescription;
 - (unint64_t)hash;
 - (void)_configureTimer;
-- (void)_handleErrorFromMessage:(id)a3 incomingResponseIdentifier:(id)a4 from:(id)a5;
-- (void)_handleRequestFromMessage:(id)a3 incomingRequestIdentifier:(id)a4 from:(id)a5;
-- (void)_handleResponseFromMessage:(id)a3 incomingResponseIdentifier:(id)a4 from:(id)a5;
+- (void)_handleErrorFromMessage:(id)message incomingResponseIdentifier:(id)identifier from:(id)from;
+- (void)_handleRequestFromMessage:(id)message incomingRequestIdentifier:(id)identifier from:(id)from;
+- (void)_handleResponseFromMessage:(id)message incomingResponseIdentifier:(id)identifier from:(id)from;
 - (void)_timerFired;
-- (void)_timerRequestAdded:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)deregisterRequestForClass:(Class)a3;
-- (void)handleMessage:(id)a3 requestIdentifier:(id)a4 responseIdentifier:(id)a5 from:(id)a6;
-- (void)invalidateWithError:(id)a3;
-- (void)registerRequestForClass:(Class)a3 withCompletion:(id)a4;
-- (void)sendCommand:(id)a3 withCompletionHandler:(id)a4;
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4;
+- (void)_timerRequestAdded:(id)added;
+- (void)activateWithCompletion:(id)completion;
+- (void)deregisterRequestForClass:(Class)class;
+- (void)handleMessage:(id)message requestIdentifier:(id)identifier responseIdentifier:(id)responseIdentifier from:(id)from;
+- (void)invalidateWithError:(id)error;
+- (void)registerRequestForClass:(Class)class withCompletion:(id)completion;
+- (void)sendCommand:(id)command withCompletionHandler:(id)handler;
+- (void)sendRequest:(id)request withResponseHandler:(id)handler;
 @end
 
 @implementation COIDSTransport
 
-- (COIDSTransport)initWithDiscoveryRecord:(id)a3 executionContext:(id)a4
+- (COIDSTransport)initWithDiscoveryRecord:(id)record executionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -35,28 +35,28 @@
     v9 = [(COIDSTransport *)&v25 init];
     if (v9)
     {
-      v10 = [v8 networkActivityFactory];
-      v11 = [v10 activityWithLabel:1 parentActivity:0];
+      networkActivityFactory = [contextCopy networkActivityFactory];
+      v11 = [networkActivityFactory activityWithLabel:1 parentActivity:0];
       activity = v9->_activity;
       v9->_activity = v11;
 
-      objc_storeStrong(&v9->_record, a3);
-      v13 = [v7 serviceDirector];
+      objc_storeStrong(&v9->_record, record);
+      serviceDirector = [recordCopy serviceDirector];
       director = v9->_director;
-      v9->_director = v13;
+      v9->_director = serviceDirector;
 
-      objc_storeStrong(&v9->_executionContext, a4);
+      objc_storeStrong(&v9->_executionContext, context);
       v15 = [MEMORY[0x277CBEB58] set];
       registeredCommands = v9->_registeredCommands;
       v9->_registeredCommands = v15;
 
-      v17 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       acceptableResponses = v9->_acceptableResponses;
-      v9->_acceptableResponses = v17;
+      v9->_acceptableResponses = dictionary;
 
-      v19 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       outstandingRequests = v9->_outstandingRequests;
-      v9->_outstandingRequests = v19;
+      v9->_outstandingRequests = dictionary2;
 
       v9->_requestTimeout = 180.0;
       v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, 0);
@@ -67,93 +67,93 @@
     }
 
     self = v9;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (NSString)description
 {
-  v3 = [(COIDSTransport *)self record];
-  v4 = [v3 IDSIdentifier];
+  record = [(COIDSTransport *)self record];
+  iDSIdentifier = [record IDSIdentifier];
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 stringWithFormat:@"<%@: %p, ids = %@>", v7, self, v4];
+  v8 = [v5 stringWithFormat:@"<%@: %p, ids = %@>", v7, self, iDSIdentifier];
 
   return v8;
 }
 
 - (id)shortDescription
 {
-  v3 = [(COIDSTransport *)self record];
-  v4 = [v3 IDSIdentifier];
+  record = [(COIDSTransport *)self record];
+  iDSIdentifier = [record IDSIdentifier];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(COIDSTransport *)self executionContext];
-  v7 = [v6 meshControllerDescription];
+  executionContext = [(COIDSTransport *)self executionContext];
+  meshControllerDescription = [executionContext meshControllerDescription];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v5 stringWithFormat:@"[m:%@] <%@: %p, ids = %.8s>", v7, v9, self, objc_msgSend(v4, "UTF8String")];
+  v10 = [v5 stringWithFormat:@"[m:%@] <%@: %p, ids = %.8s>", meshControllerDescription, v9, self, objc_msgSend(iDSIdentifier, "UTF8String")];
 
   return v10;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v13 = a3;
-  v4 = [(COIDSTransport *)self activity];
+  completionCopy = completion;
+  activity = [(COIDSTransport *)self activity];
 
-  if (v4)
+  if (activity)
   {
-    v5 = [(COIDSTransport *)self activity];
+    activity2 = [(COIDSTransport *)self activity];
     nw_activity_activate();
   }
 
-  v13[2](v13, 0);
-  v6 = [(COIDSTransport *)self record];
-  v7 = [v6 onDemandRequest];
-  v8 = v7;
-  if (v7)
+  completionCopy[2](completionCopy, 0);
+  record = [(COIDSTransport *)self record];
+  onDemandRequest = [record onDemandRequest];
+  v8 = onDemandRequest;
+  if (onDemandRequest)
   {
-    v9 = [v7 message];
-    v10 = [v8 requestIdentifier];
-    v11 = [v8 responseIdentifier];
-    v12 = [v8 fromURIToken];
-    [(COIDSTransport *)self handleMessage:v9 requestIdentifier:v10 responseIdentifier:v11 from:v12];
+    message = [onDemandRequest message];
+    requestIdentifier = [v8 requestIdentifier];
+    responseIdentifier = [v8 responseIdentifier];
+    fromURIToken = [v8 fromURIToken];
+    [(COIDSTransport *)self handleMessage:message requestIdentifier:requestIdentifier responseIdentifier:responseIdentifier from:fromURIToken];
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(COIDSTransport *)self record];
-  v3 = [v2 hash];
+  record = [(COIDSTransport *)self record];
+  v3 = [record hash];
 
   return v3;
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = COCoreLogForCategory(17);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(COIDSTransport *)self shortDescription];
+    shortDescription = [(COIDSTransport *)self shortDescription];
     v15 = 138543362;
-    v16 = v6;
+    v16 = shortDescription;
     _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ invalidated", &v15, 0xCu);
   }
 
-  v7 = [(COIDSTransport *)self activity];
-  if (v7 && nw_activity_is_activated())
+  activity = [(COIDSTransport *)self activity];
+  if (activity && nw_activity_is_activated())
   {
     v8 = xpc_dictionary_create(0, 0, 0);
     if (v8)
@@ -168,16 +168,16 @@
     nw_activity_complete_with_reason();
   }
 
-  v11 = [(COIDSTransport *)self outstandingRequests];
-  [v11 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_11];
+  outstandingRequests = [(COIDSTransport *)self outstandingRequests];
+  [outstandingRequests enumerateKeysAndObjectsUsingBlock:&__block_literal_global_11];
 
-  v12 = [(COIDSTransport *)self outstandingRequests];
-  [v12 removeAllObjects];
+  outstandingRequests2 = [(COIDSTransport *)self outstandingRequests];
+  [outstandingRequests2 removeAllObjects];
 
-  v13 = [(COIDSTransport *)self delegate];
+  delegate = [(COIDSTransport *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v13 transport:self didInvalidateWithError:v4];
+    [delegate transport:self didInvalidateWithError:errorCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -194,17 +194,17 @@ void __38__COIDSTransport_invalidateWithError___block_invoke(uint64_t a1, uint64
   (v6)[2](v6, v5, 0, v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(COIDSTransport *)self record];
-    v7 = [v5 record];
+    v5 = equalCopy;
+    record = [(COIDSTransport *)self record];
+    record2 = [v5 record];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [record isEqual:record2];
   }
 
   else
@@ -215,16 +215,16 @@ void __38__COIDSTransport_invalidateWithError___block_invoke(uint64_t a1, uint64
   return v8;
 }
 
-- (void)registerRequestForClass:(Class)a3 withCompletion:(id)a4
+- (void)registerRequestForClass:(Class)class withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = NSStringFromClass(a3);
-  v8 = [(COIDSTransport *)self registeredCommands];
-  [v8 addObject:v7];
+  completionCopy = completion;
+  v7 = NSStringFromClass(class);
+  registeredCommands = [(COIDSTransport *)self registeredCommands];
+  [registeredCommands addObject:v7];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(objc_class *)a3 acceptableResponses];
+    acceptableResponses = [(objc_class *)class acceptableResponses];
     v10 = [MEMORY[0x277CBEB58] set];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -232,12 +232,12 @@ void __38__COIDSTransport_invalidateWithError___block_invoke(uint64_t a1, uint64
     v13[3] = &unk_278E18E80;
     v14 = v10;
     v11 = v10;
-    [v9 enumerateObjectsUsingBlock:v13];
-    v12 = [(COIDSTransport *)self acceptableResponses];
-    [v12 setObject:v11 forKey:v7];
+    [acceptableResponses enumerateObjectsUsingBlock:v13];
+    acceptableResponses2 = [(COIDSTransport *)self acceptableResponses];
+    [acceptableResponses2 setObject:v11 forKey:v7];
   }
 
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
 void __57__COIDSTransport_registerRequestForClass_withCompletion___block_invoke(uint64_t a1, Class aClass)
@@ -247,21 +247,21 @@ void __57__COIDSTransport_registerRequestForClass_withCompletion___block_invoke(
   [v2 addObject:v3];
 }
 
-- (void)deregisterRequestForClass:(Class)a3
+- (void)deregisterRequestForClass:(Class)class
 {
-  v6 = NSStringFromClass(a3);
-  v4 = [(COIDSTransport *)self registeredCommands];
-  [v4 removeObject:v6];
+  v6 = NSStringFromClass(class);
+  registeredCommands = [(COIDSTransport *)self registeredCommands];
+  [registeredCommands removeObject:v6];
 
-  v5 = [(COIDSTransport *)self acceptableResponses];
-  [v5 removeObjectForKey:v6];
+  acceptableResponses = [(COIDSTransport *)self acceptableResponses];
+  [acceptableResponses removeObjectForKey:v6];
 }
 
-- (id)acceptableResponsesForRequest:(Class)a3
+- (id)acceptableResponsesForRequest:(Class)request
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [(COIDSTransport *)self acceptableResponses];
-  v6 = [v5 objectForKey:v4];
+  v4 = NSStringFromClass(request);
+  acceptableResponses = [(COIDSTransport *)self acceptableResponses];
+  v6 = [acceptableResponses objectForKey:v4];
 
   if (!v6)
   {
@@ -271,31 +271,31 @@ void __57__COIDSTransport_registerRequestForClass_withCompletion___block_invoke(
   return v6;
 }
 
-- (void)sendCommand:(id)a3 withCompletionHandler:(id)a4
+- (void)sendCommand:(id)command withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v5 = [(COIDSTransport *)self executionContext];
-  [v5 assertDispatchQueue];
+  handlerCopy = handler;
+  executionContext = [(COIDSTransport *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)sendRequest:(id)request withResponseHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COIDSTransport *)self executionContext];
-  [v8 assertDispatchQueue];
+  requestCopy = request;
+  handlerCopy = handler;
+  executionContext = [(COIDSTransport *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v9 = [(COIDSTransport *)self director];
-  v10 = [v9 messageFactory];
-  v11 = [v10 encodeRequest:v6 withIDSIdentifier:!self->_resolvedIDSIdentifier];
+  director = [(COIDSTransport *)self director];
+  messageFactory = [director messageFactory];
+  v11 = [messageFactory encodeRequest:requestCopy withIDSIdentifier:!self->_resolvedIDSIdentifier];
 
-  v12 = [v6 activity];
-  v13 = [(COIDSTransport *)self executionContext];
-  v14 = [v13 networkActivityFactory];
-  v15 = [v14 activityWithLabel:2 parentActivity:v12];
+  activity = [requestCopy activity];
+  executionContext2 = [(COIDSTransport *)self executionContext];
+  networkActivityFactory = [executionContext2 networkActivityFactory];
+  v15 = [networkActivityFactory activityWithLabel:2 parentActivity:activity];
 
   if (v15)
   {
@@ -314,17 +314,17 @@ void __57__COIDSTransport_registerRequestForClass_withCompletion___block_invoke(
   v40 = __Block_byref_object_copy__26;
   v41 = __Block_byref_object_dispose__26;
   v42 = 0;
-  v16 = [(COIDSTransport *)self director];
-  v17 = [v11 dictionaryRepresentation];
-  v18 = [(COIDSTransport *)self record];
-  v19 = [v18 deviceTokenURI];
+  director2 = [(COIDSTransport *)self director];
+  dictionaryRepresentation = [v11 dictionaryRepresentation];
+  record = [(COIDSTransport *)self record];
+  deviceTokenURI = [record deviceTokenURI];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __50__COIDSTransport_sendRequest_withResponseHandler___block_invoke;
   v36[3] = &unk_278E18EA8;
   v36[4] = &v37;
   v36[5] = &v43;
-  [v16 sendMessage:v17 toDestination:v19 completionHandler:v36];
+  [director2 sendMessage:dictionaryRepresentation toDestination:deviceTokenURI completionHandler:v36];
 
   if (v44[5])
   {
@@ -351,13 +351,13 @@ LABEL_4:
       nw_activity_complete_with_reason();
     }
 
-    v7[2](v7, v6, 0, v44[5]);
+    handlerCopy[2](handlerCopy, requestCopy, 0, v44[5]);
     goto LABEL_17;
   }
 
-  v22 = [[COIDSOutstandingRequestInfo alloc] initWithRequest:v6 at:clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) callback:v7 activity:v15];
-  v23 = [(COIDSTransport *)self outstandingRequests];
-  [v23 setObject:v22 forKey:v38[5]];
+  v22 = [[COIDSOutstandingRequestInfo alloc] initWithRequest:requestCopy at:clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) callback:handlerCopy activity:v15];
+  outstandingRequests = [(COIDSTransport *)self outstandingRequests];
+  [outstandingRequests setObject:v22 forKey:v38[5]];
 
   [(COIDSTransport *)self _timerRequestAdded:v22];
   if (!self->_resolvedIDSIdentifier)
@@ -366,15 +366,15 @@ LABEL_4:
     v24 = COCoreLogForCategory(17);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [(COIDSTransport *)self shortDescription];
-      v34 = [(COIDSTransport *)self director];
-      v25 = [v34 messageFactory];
-      v26 = [v25 idsIdentifier];
+      shortDescription = [(COIDSTransport *)self shortDescription];
+      director3 = [(COIDSTransport *)self director];
+      messageFactory2 = [director3 messageFactory];
+      idsIdentifier = [messageFactory2 idsIdentifier];
       v27 = v38[5];
       *buf = 138543874;
-      v50 = v35;
+      v50 = shortDescription;
       v51 = 2114;
-      v52 = v26;
+      v52 = idsIdentifier;
       v53 = 2114;
       v54 = v27;
       _os_log_impl(&dword_244378000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ advertised IDS identifier %{public}@ via message %{public}@", buf, 0x20u);
@@ -384,12 +384,12 @@ LABEL_4:
   v28 = COCoreLogForCategory(17);
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [(COIDSTransport *)self shortDescription];
+    shortDescription2 = [(COIDSTransport *)self shortDescription];
     v30 = v38[5];
     *buf = 138543874;
-    v50 = v29;
+    v50 = shortDescription2;
     v51 = 2114;
-    v52 = v6;
+    v52 = requestCopy;
     v53 = 2114;
     v54 = v30;
     _os_log_impl(&dword_244378000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ sent request %{public}@ via message %{public}@", buf, 0x20u);
@@ -416,27 +416,27 @@ void __50__COIDSTransport_sendRequest_withResponseHandler___block_invoke(uint64_
   *(v9 + 40) = v6;
 }
 
-- (void)handleMessage:(id)a3 requestIdentifier:(id)a4 responseIdentifier:(id)a5 from:(id)a6
+- (void)handleMessage:(id)message requestIdentifier:(id)identifier responseIdentifier:(id)responseIdentifier from:(id)from
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(COIDSTransport *)self executionContext];
+  messageCopy = message;
+  identifierCopy = identifier;
+  responseIdentifierCopy = responseIdentifier;
+  fromCopy = from;
+  executionContext = [(COIDSTransport *)self executionContext];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __74__COIDSTransport_handleMessage_requestIdentifier_responseIdentifier_from___block_invoke;
   v19[3] = &unk_278E15868;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v23 = v13;
-  v24 = v12;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
-  [v14 dispatchAsync:v19];
+  v20 = messageCopy;
+  selfCopy = self;
+  v22 = identifierCopy;
+  v23 = fromCopy;
+  v24 = responseIdentifierCopy;
+  v15 = responseIdentifierCopy;
+  v16 = fromCopy;
+  v17 = identifierCopy;
+  v18 = messageCopy;
+  [executionContext dispatchAsync:v19];
 }
 
 void __74__COIDSTransport_handleMessage_requestIdentifier_responseIdentifier_from___block_invoke(uint64_t a1)
@@ -496,18 +496,18 @@ void __74__COIDSTransport_handleMessage_requestIdentifier_responseIdentifier_fro
 
 - (void)_configureTimer
 {
-  v3 = [(COIDSTransport *)self timer];
-  dispatch_source_set_timer(v3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  timer = [(COIDSTransport *)self timer];
+  dispatch_source_set_timer(timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
   [(COIDSTransport *)self setTimerEnabled:0];
   objc_initWeak(&location, self);
-  v4 = [(COIDSTransport *)self timer];
+  timer2 = [(COIDSTransport *)self timer];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __33__COIDSTransport__configureTimer__block_invoke;
   v9 = &unk_278E15B10;
   objc_copyWeak(&v10, &location);
-  dispatch_source_set_event_handler(v4, &v6);
+  dispatch_source_set_event_handler(timer2, &v6);
 
   v5 = [(COIDSTransport *)self timer:v6];
   dispatch_activate(v5);
@@ -529,13 +529,13 @@ void __33__COIDSTransport__configureTimer__block_invoke(uint64_t a1)
 
 - (void)_timerFired
 {
-  v3 = [(COIDSTransport *)self executionContext];
+  executionContext = [(COIDSTransport *)self executionContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __29__COIDSTransport__timerFired__block_invoke;
   v4[3] = &unk_278E15AB8;
   v4[4] = self;
-  [v3 dispatchAsync:v4];
+  [executionContext dispatchAsync:v4];
 }
 
 void __29__COIDSTransport__timerFired__block_invoke(uint64_t a1)
@@ -682,7 +682,7 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
   return result;
 }
 
-- (void)_timerRequestAdded:(id)a3
+- (void)_timerRequestAdded:(id)added
 {
   if (![(COIDSTransport *)self isTimerEnabled])
   {
@@ -695,52 +695,52 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
     [(COIDSTransport *)self setTimerEnabled:1];
     [(COIDSTransport *)self requestTimeout];
     v6 = (v5 * 1000000000.0);
-    v7 = [(COIDSTransport *)self timer];
+    timer = [(COIDSTransport *)self timer];
     v8 = dispatch_time(0, v6);
-    dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+    dispatch_source_set_timer(timer, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   }
 }
 
-- (void)_handleResponseFromMessage:(id)a3 incomingResponseIdentifier:(id)a4 from:(id)a5
+- (void)_handleResponseFromMessage:(id)message incomingResponseIdentifier:(id)identifier from:(id)from
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   v9 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  v10 = [(COIDSTransport *)self outstandingRequests];
-  v11 = [v10 objectForKey:v8];
+  outstandingRequests = [(COIDSTransport *)self outstandingRequests];
+  v11 = [outstandingRequests objectForKey:identifierCopy];
 
   v12 = (v9 - [v11 enqeueStart]) / 1000000000.0;
   v13 = COCoreLogForCategory(17);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(COIDSTransport *)self shortDescription];
+    shortDescription = [(COIDSTransport *)self shortDescription];
     *buf = 138543874;
-    v30 = v14;
+    v30 = shortDescription;
     v31 = 2114;
-    v32 = v8;
+    v32 = identifierCopy;
     v33 = 2048;
     v34 = v12;
     _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ message %{public}@ round trip time: %lfs", buf, 0x20u);
   }
 
-  v15 = [(COIDSTransport *)self outstandingRequests];
-  [v15 removeObjectForKey:v8];
+  outstandingRequests2 = [(COIDSTransport *)self outstandingRequests];
+  [outstandingRequests2 removeObjectForKey:identifierCopy];
 
-  v16 = [v11 callback];
-  if (v16)
+  callback = [v11 callback];
+  if (callback)
   {
-    v17 = [v7 payload];
+    payload = [messageCopy payload];
 
-    if (v17)
+    if (payload)
     {
-      v18 = [v11 request];
+      request = [v11 request];
       v19 = [(COIDSTransport *)self acceptableResponsesForRequest:objc_opt_class()];
       v28 = 0;
-      v17 = [v7 unarchivePayloadOfTypes:v19 error:&v28];
+      payload = [messageCopy unarchivePayloadOfTypes:v19 error:&v28];
       v20 = v28;
       v21 = 0;
-      if (!v17)
+      if (!payload)
       {
         v22 = COCoreLogForCategory(17);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -757,8 +757,8 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
       v21 = 0;
     }
 
-    v23 = [v11 activity];
-    if (v23)
+    activity = [v11 activity];
+    if (activity)
     {
       v24 = xpc_dictionary_create(0, 0, 0);
       v25 = v24;
@@ -772,8 +772,8 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
       nw_activity_complete_with_reason();
     }
 
-    v26 = [v11 request];
-    (v16)[2](v16, v26, v17, v21);
+    request2 = [v11 request];
+    (callback)[2](callback, request2, payload, v21);
   }
 
   else
@@ -788,18 +788,18 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleErrorFromMessage:(id)a3 incomingResponseIdentifier:(id)a4 from:(id)a5
+- (void)_handleErrorFromMessage:(id)message incomingResponseIdentifier:(id)identifier from:(id)from
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(COIDSTransport *)self outstandingRequests];
-  v10 = [v9 objectForKey:v8];
+  messageCopy = message;
+  identifierCopy = identifier;
+  outstandingRequests = [(COIDSTransport *)self outstandingRequests];
+  v10 = [outstandingRequests objectForKey:identifierCopy];
 
-  v11 = [v10 callback];
-  if (v11)
+  callback = [v10 callback];
+  if (callback)
   {
-    v12 = [v10 activity];
-    if (v12)
+    activity = [v10 activity];
+    if (activity)
     {
       v13 = xpc_dictionary_create(0, 0, 0);
       v14 = v13;
@@ -812,33 +812,33 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
       nw_activity_complete_with_reason();
     }
 
-    v15 = [v10 request];
-    v16 = [v7 error];
-    (v11)[2](v11, v15, 0, v16);
+    request = [v10 request];
+    error = [messageCopy error];
+    (callback)[2](callback, request, 0, error);
 
-    v17 = [(COIDSTransport *)self outstandingRequests];
-    [v17 removeObjectForKey:v8];
+    outstandingRequests2 = [(COIDSTransport *)self outstandingRequests];
+    [outstandingRequests2 removeObjectForKey:identifierCopy];
   }
 
   else
   {
-    v12 = COCoreLogForCategory(17);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    activity = COCoreLogForCategory(17);
+    if (os_log_type_enabled(activity, OS_LOG_TYPE_ERROR))
     {
       [COIDSTransport _handleErrorFromMessage:incomingResponseIdentifier:from:];
     }
   }
 }
 
-- (void)_handleRequestFromMessage:(id)a3 incomingRequestIdentifier:(id)a4 from:(id)a5
+- (void)_handleRequestFromMessage:(id)message incomingRequestIdentifier:(id)identifier from:(id)from
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COIDSTransport *)self registeredCommands];
+  messageCopy = message;
+  identifierCopy = identifier;
+  fromCopy = from;
+  registeredCommands = [(COIDSTransport *)self registeredCommands];
   v28 = 0;
-  v12 = [v8 unarchivePayloadOfTypes:v11 error:&v28];
+  v12 = [messageCopy unarchivePayloadOfTypes:registeredCommands error:&v28];
   v13 = v28;
 
   v14 = COCoreLogForCategory(17);
@@ -847,17 +847,17 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(COIDSTransport *)self shortDescription];
+      shortDescription = [(COIDSTransport *)self shortDescription];
       *buf = 138543874;
-      v30 = v16;
+      v30 = shortDescription;
       v31 = 2114;
       v32 = v12;
       v33 = 2114;
-      v34 = v9;
+      v34 = identifierCopy;
       _os_log_impl(&dword_244378000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ received request %{public}@ via message %{public}@", buf, 0x20u);
     }
 
-    v17 = [(COIDSTransport *)self delegate];
+    delegate = [(COIDSTransport *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       objc_initWeak(buf, self);
@@ -867,9 +867,9 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
       v24[3] = &unk_278E18F20;
       objc_copyWeak(&v27, buf);
       v24[4] = self;
-      v25 = v9;
-      v26 = v10;
-      [v17 transport:self didReceiveRequest:v12 callback:v24];
+      v25 = identifierCopy;
+      v26 = fromCopy;
+      [delegate transport:self didReceiveRequest:v12 callback:v24];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(buf);
@@ -883,14 +883,14 @@ unint64_t __29__COIDSTransport__timerFired__block_invoke_2(uint64_t a1, uint64_t
       [COIDSTransport _handleRequestFromMessage:? incomingRequestIdentifier:? from:?];
     }
 
-    v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMeshNodeErrorDomain" code:-4001 userInfo:0];
-    v18 = [(COIDSTransport *)self director];
-    v19 = [v18 messageFactory];
-    v20 = [v19 encodeError:v17];
+    delegate = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMeshNodeErrorDomain" code:-4001 userInfo:0];
+    director = [(COIDSTransport *)self director];
+    messageFactory = [director messageFactory];
+    v20 = [messageFactory encodeError:delegate];
 
-    v21 = [(COIDSTransport *)self director];
-    v22 = [v20 dictionaryRepresentation];
-    [v21 sendResponse:v22 responseIdentifier:v9 toDestination:v10];
+    director2 = [(COIDSTransport *)self director];
+    dictionaryRepresentation = [v20 dictionaryRepresentation];
+    [director2 sendResponse:dictionaryRepresentation responseIdentifier:identifierCopy toDestination:fromCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];

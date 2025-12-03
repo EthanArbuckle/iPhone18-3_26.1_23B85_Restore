@@ -1,13 +1,13 @@
 @interface OBScrollViewWeakLayoutObserver
-- (OBScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)a3;
-- (void)_scrollViewDidLayoutSubviews:(id)a3;
+- (OBScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)observer;
+- (void)_scrollViewDidLayoutSubviews:(id)subviews;
 @end
 
 @implementation OBScrollViewWeakLayoutObserver
 
-- (OBScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)a3
+- (OBScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8.receiver = self;
   v8.super_class = OBScrollViewWeakLayoutObserver;
   v5 = [(OBScrollViewWeakLayoutObserver *)&v8 init];
@@ -15,20 +15,20 @@
   if (v5)
   {
     objc_storeStrong(&v5->_selfReference, v5);
-    objc_storeWeak(&v6->_weakLayoutObserver, v4);
+    objc_storeWeak(&v6->_weakLayoutObserver, observerCopy);
   }
 
   return v6;
 }
 
-- (void)_scrollViewDidLayoutSubviews:(id)a3
+- (void)_scrollViewDidLayoutSubviews:(id)subviews
 {
-  v6 = a3;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_weakLayoutObserver);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained _scrollViewDidLayoutSubviews:v6];
+    [WeakRetained _scrollViewDidLayoutSubviews:subviewsCopy];
   }
 }
 

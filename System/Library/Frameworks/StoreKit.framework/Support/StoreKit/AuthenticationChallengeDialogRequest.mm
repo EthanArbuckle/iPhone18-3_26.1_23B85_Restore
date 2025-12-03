@@ -1,15 +1,15 @@
 @interface AuthenticationChallengeDialogRequest
-+ (id)dialogForAuthenticationChallenge:(id)a3;
++ (id)dialogForAuthenticationChallenge:(id)challenge;
 @end
 
 @implementation AuthenticationChallengeDialogRequest
 
-+ (id)dialogForAuthenticationChallenge:(id)a3
++ (id)dialogForAuthenticationChallenge:(id)challenge
 {
-  v3 = a3;
-  v4 = [v3 localizedTitle];
-  v5 = [v3 localizedMessage];
-  v6 = [AMSDialogRequest requestWithTitle:v4 message:v5];
+  challengeCopy = challenge;
+  localizedTitle = [challengeCopy localizedTitle];
+  localizedMessage = [challengeCopy localizedMessage];
+  v6 = [AMSDialogRequest requestWithTitle:localizedTitle message:localizedMessage];
 
   v7 = ASDLocalizedString();
   v8 = [AMSDialogAction actionWithTitle:v7 style:2];
@@ -25,9 +25,9 @@
   v12 = [AMSDialogTextField textFieldWithPlaceholder:v11 secure:0];
 
   [v12 setKeyboardType:0];
-  v13 = [v3 user];
+  user = [challengeCopy user];
 
-  [v12 setText:v13];
+  [v12 setText:user];
   [v6 addTextField:v12];
   v14 = ASDLocalizedString();
   v15 = [AMSDialogTextField textFieldWithPlaceholder:v14 secure:1];

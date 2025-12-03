@@ -1,10 +1,10 @@
 @interface PTRenderDebugLayer
-- (PTRenderDebugLayer)initWithMetalContext:(id)a3;
+- (PTRenderDebugLayer)initWithMetalContext:(id)context;
 @end
 
 @implementation PTRenderDebugLayer
 
-- (PTRenderDebugLayer)initWithMetalContext:(id)a3
+- (PTRenderDebugLayer)initWithMetalContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = PTRenderDebugLayer;

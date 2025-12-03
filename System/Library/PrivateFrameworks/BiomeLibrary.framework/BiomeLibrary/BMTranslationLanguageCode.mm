@@ -1,39 +1,39 @@
 @interface BMTranslationLanguageCode
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMTranslationLanguageCode)initWithHandles:(id)a3 translationLanguageCode:(id)a4 source:(int)a5 translationToLanguageCode:(id)a6;
-- (BMTranslationLanguageCode)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMTranslationLanguageCode)initWithHandles:(id)handles translationLanguageCode:(id)code source:(int)source translationToLanguageCode:(id)languageCode;
+- (BMTranslationLanguageCode)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_handlesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMTranslationLanguageCode
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMTranslationLanguageCode *)self handles];
-    v7 = [v5 handles];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    handles = [(BMTranslationLanguageCode *)self handles];
+    handles2 = [v5 handles];
+    v8 = handles2;
+    if (handles == handles2)
     {
     }
 
     else
     {
-      v9 = [(BMTranslationLanguageCode *)self handles];
-      v10 = [v5 handles];
-      v11 = [v9 isEqual:v10];
+      handles3 = [(BMTranslationLanguageCode *)self handles];
+      handles4 = [v5 handles];
+      v11 = [handles3 isEqual:handles4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMTranslationLanguageCode *)self translationLanguageCode];
-    v14 = [v5 translationLanguageCode];
-    v15 = v14;
-    if (v13 == v14)
+    translationLanguageCode = [(BMTranslationLanguageCode *)self translationLanguageCode];
+    translationLanguageCode2 = [v5 translationLanguageCode];
+    v15 = translationLanguageCode2;
+    if (translationLanguageCode == translationLanguageCode2)
     {
     }
 
     else
     {
-      v16 = [(BMTranslationLanguageCode *)self translationLanguageCode];
-      v17 = [v5 translationLanguageCode];
-      v18 = [v16 isEqual:v17];
+      translationLanguageCode3 = [(BMTranslationLanguageCode *)self translationLanguageCode];
+      translationLanguageCode4 = [v5 translationLanguageCode];
+      v18 = [translationLanguageCode3 isEqual:translationLanguageCode4];
 
       if (!v18)
       {
@@ -60,21 +60,21 @@
       }
     }
 
-    v19 = [(BMTranslationLanguageCode *)self source];
-    if (v19 == [v5 source])
+    source = [(BMTranslationLanguageCode *)self source];
+    if (source == [v5 source])
     {
-      v20 = [(BMTranslationLanguageCode *)self translationToLanguageCode];
-      v21 = [v5 translationToLanguageCode];
-      if (v20 == v21)
+      translationToLanguageCode = [(BMTranslationLanguageCode *)self translationToLanguageCode];
+      translationToLanguageCode2 = [v5 translationToLanguageCode];
+      if (translationToLanguageCode == translationToLanguageCode2)
       {
         v12 = 1;
       }
 
       else
       {
-        v22 = [(BMTranslationLanguageCode *)self translationToLanguageCode];
-        v23 = [v5 translationToLanguageCode];
-        v12 = [v22 isEqual:v23];
+        translationToLanguageCode3 = [(BMTranslationLanguageCode *)self translationToLanguageCode];
+        translationToLanguageCode4 = [v5 translationToLanguageCode];
+        v12 = [translationToLanguageCode3 isEqual:translationToLanguageCode4];
       }
 
       goto LABEL_17;
@@ -96,44 +96,44 @@ LABEL_18:
 - (id)jsonDictionary
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMTranslationLanguageCode *)self _handlesJSONArray];
-  v4 = [(BMTranslationLanguageCode *)self translationLanguageCode];
+  _handlesJSONArray = [(BMTranslationLanguageCode *)self _handlesJSONArray];
+  translationLanguageCode = [(BMTranslationLanguageCode *)self translationLanguageCode];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMTranslationLanguageCode source](self, "source")}];
-  v6 = [(BMTranslationLanguageCode *)self translationToLanguageCode];
+  translationToLanguageCode = [(BMTranslationLanguageCode *)self translationToLanguageCode];
   v14[0] = @"handles";
-  v7 = v3;
-  if (!v3)
+  null = _handlesJSONArray;
+  if (!_handlesJSONArray)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"translationLanguageCode";
-  v8 = v4;
-  if (!v4)
+  null2 = translationLanguageCode;
+  if (!translationLanguageCode)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"source";
-  v9 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"translationToLanguageCode";
-  v10 = v6;
-  if (!v6)
+  null4 = translationToLanguageCode;
+  if (!translationToLanguageCode)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (v6)
+  if (translationToLanguageCode)
   {
     if (v5)
     {
@@ -147,14 +147,14 @@ LABEL_18:
     if (v5)
     {
 LABEL_11:
-      if (v4)
+      if (translationLanguageCode)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v3)
+      if (_handlesJSONArray)
       {
         goto LABEL_13;
       }
@@ -163,13 +163,13 @@ LABEL_18:
     }
   }
 
-  if (!v4)
+  if (!translationLanguageCode)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v3)
+  if (_handlesJSONArray)
   {
     goto LABEL_13;
   }
@@ -190,8 +190,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMTranslationLanguageCode *)self handles];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  handles = [(BMTranslationLanguageCode *)self handles];
+  v5 = [handles countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -202,13 +202,13 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(handles);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [handles countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -219,13 +219,13 @@ LABEL_13:
   return v3;
 }
 
-- (BMTranslationLanguageCode)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMTranslationLanguageCode)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"handles"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"handles"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
@@ -247,8 +247,8 @@ LABEL_5:
     v11 = v10;
     v12 = *v56;
 LABEL_7:
-    v13 = v5;
-    v14 = a4;
+    v13 = dictionaryCopy;
+    errorCopy = error;
     v15 = 0;
     while (1)
     {
@@ -267,9 +267,9 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v14)
+        if (errorCopy)
         {
-          v21 = v14;
+          v21 = errorCopy;
           v27 = objc_alloc(MEMORY[0x1E696ABC0]);
           v28 = *MEMORY[0x1E698F240];
           v65 = *MEMORY[0x1E696A578];
@@ -288,8 +288,8 @@ LABEL_7:
       if (v11 == ++v15)
       {
         v11 = [v6 countByEnumeratingWithState:&v55 objects:v69 count:16];
-        a4 = v14;
-        v5 = v13;
+        error = errorCopy;
+        dictionaryCopy = v13;
         if (v11)
         {
           goto LABEL_7;
@@ -297,7 +297,7 @@ LABEL_7:
 
 LABEL_14:
 
-        v17 = [v5 objectForKeyedSubscript:@"translationLanguageCode"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"translationLanguageCode"];
         if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v18 = 0;
@@ -309,39 +309,39 @@ LABEL_14:
         {
           v18 = v17;
 LABEL_17:
-          v19 = [v5 objectForKeyedSubscript:@"source"];
+          v19 = [dictionaryCopy objectForKeyedSubscript:@"source"];
           v52 = v19;
           if (!v19)
           {
-            v20 = a4;
+            errorCopy4 = error;
             goto LABEL_39;
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = a4;
+            errorCopy4 = error;
             v19 = 0;
 LABEL_39:
-            v39 = [v5 objectForKeyedSubscript:@"translationToLanguageCode"];
+            v39 = [dictionaryCopy objectForKeyedSubscript:@"translationToLanguageCode"];
             if (!v39 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v20 = 0;
-              v29 = self;
+              errorCopy4 = 0;
+              selfCopy10 = self;
               goto LABEL_42;
             }
 
             v51 = v17;
-            v34 = v5;
+            v34 = dictionaryCopy;
             objc_opt_class();
-            v29 = self;
+            selfCopy10 = self;
             if (objc_opt_isKindOfClass())
             {
-              v20 = v39;
+              errorCopy4 = v39;
               v17 = v51;
 LABEL_42:
-              v29 = -[BMTranslationLanguageCode initWithHandles:translationLanguageCode:source:translationToLanguageCode:](v29, "initWithHandles:translationLanguageCode:source:translationToLanguageCode:", v9, v18, [v19 intValue], v20);
-              v30 = v29;
+              selfCopy10 = -[BMTranslationLanguageCode initWithHandles:translationLanguageCode:source:translationToLanguageCode:](selfCopy10, "initWithHandles:translationLanguageCode:source:translationToLanguageCode:", v9, v18, [v19 intValue], errorCopy4);
+              v30 = selfCopy10;
 LABEL_43:
 
 LABEL_44:
@@ -350,30 +350,30 @@ LABEL_45:
               goto LABEL_46;
             }
 
-            if (v20)
+            if (errorCopy4)
             {
               v50 = objc_alloc(MEMORY[0x1E696ABC0]);
               v49 = *MEMORY[0x1E698F240];
               v59 = *MEMORY[0x1E696A578];
-              v42 = v20;
+              v42 = errorCopy4;
               v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"translationToLanguageCode"];
               v60 = v43;
               v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
               *v42 = [v50 initWithDomain:v49 code:2 userInfo:v44];
 
-              v20 = 0;
+              errorCopy4 = 0;
             }
 
             v30 = 0;
 LABEL_56:
-            v5 = v34;
+            dictionaryCopy = v34;
             v17 = v51;
             goto LABEL_43;
           }
 
           v51 = v17;
-          v34 = v5;
-          v20 = a4;
+          v34 = dictionaryCopy;
+          errorCopy4 = error;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -385,27 +385,27 @@ LABEL_56:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v19 = 0;
                 v30 = 0;
-                v29 = self;
+                selfCopy10 = self;
                 v17 = v51;
                 goto LABEL_44;
               }
 
-              v45 = a4;
+              errorCopy5 = error;
               v46 = objc_alloc(MEMORY[0x1E696ABC0]);
               v47 = *MEMORY[0x1E698F240];
               v61 = *MEMORY[0x1E696A578];
-              v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"source"];
-              v62 = v20;
+              errorCopy4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"source"];
+              v62 = errorCopy4;
               v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
               v48 = [v46 initWithDomain:v47 code:2 userInfo:v39];
               v19 = 0;
               v30 = 0;
-              *v45 = v48;
-              v29 = self;
+              *errorCopy5 = v48;
+              selfCopy10 = self;
               goto LABEL_56;
             }
 
@@ -417,7 +417,7 @@ LABEL_56:
           goto LABEL_39;
         }
 
-        if (a4)
+        if (error)
         {
           v36 = objc_alloc(MEMORY[0x1E696ABC0]);
           v37 = *MEMORY[0x1E698F240];
@@ -428,15 +428,15 @@ LABEL_56:
           v38 = [v36 initWithDomain:v37 code:2 userInfo:?];
           v18 = 0;
           v30 = 0;
-          *a4 = v38;
-          v29 = self;
+          *error = v38;
+          selfCopy10 = self;
 
           goto LABEL_45;
         }
 
         v18 = 0;
         v30 = 0;
-        v29 = self;
+        selfCopy10 = self;
 LABEL_46:
 
 LABEL_47:
@@ -444,9 +444,9 @@ LABEL_47:
       }
     }
 
-    if (v14)
+    if (errorCopy)
     {
-      v21 = v14;
+      v21 = errorCopy;
       v22 = objc_alloc(MEMORY[0x1E696ABC0]);
       v23 = *MEMORY[0x1E698F240];
       v67 = *MEMORY[0x1E696A578];
@@ -456,8 +456,8 @@ LABEL_47:
       v25 = v22;
       v26 = v23;
 LABEL_24:
-      v29 = self;
-      v5 = v13;
+      selfCopy10 = self;
+      dictionaryCopy = v13;
       v30 = 0;
       *v21 = [v25 initWithDomain:v26 code:2 userInfo:v19];
       v17 = v24;
@@ -468,8 +468,8 @@ LABEL_24:
 LABEL_25:
     v30 = 0;
     v18 = v6;
-    v29 = self;
-    v5 = v13;
+    selfCopy10 = self;
+    dictionaryCopy = v13;
     goto LABEL_47;
   }
 
@@ -484,7 +484,7 @@ LABEL_25:
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
     v31 = objc_alloc(MEMORY[0x1E696ABC0]);
     v32 = *MEMORY[0x1E698F240];
@@ -494,13 +494,13 @@ LABEL_25:
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:&v70 count:1];
     v33 = [v31 initWithDomain:v32 code:2 userInfo:v18];
     v30 = 0;
-    *a4 = v33;
-    v29 = self;
+    *error = v33;
+    selfCopy10 = self;
     goto LABEL_47;
   }
 
   v30 = 0;
-  v29 = self;
+  selfCopy10 = self;
 LABEL_48:
 
   v40 = *MEMORY[0x1E69E9840];
@@ -511,15 +511,15 @@ LABEL_48:
 {
   v3 = objc_opt_new();
   [(BMTranslationLanguageCode *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -567,9 +567,9 @@ LABEL_48:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMTranslationLanguageCode;
   v5 = [(BMEventBase *)&v35 init];
@@ -579,12 +579,12 @@ LABEL_48:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_44;
       }
@@ -595,18 +595,18 @@ LABEL_48:
       while (1)
       {
         v36 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v36 & 0x7F) << v8;
@@ -623,9 +623,9 @@ LABEL_48:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_44;
       }
@@ -670,8 +670,8 @@ LABEL_48:
       [v6 addObject:v26];
 
 LABEL_43:
-      v29 = [v4 position];
-      if (v29 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_44;
       }
@@ -692,18 +692,18 @@ LABEL_43:
       while (1)
       {
         v36 = 0;
-        v22 = [v4 position] + 1;
-        if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+        v22 = [fromCopy position] + 1;
+        if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
         {
-          v24 = [v4 data];
-          [v24 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v21 |= (v36 & 0x7F) << v19;
@@ -719,7 +719,7 @@ LABEL_43:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v21 > 4)
+      if (([fromCopy hasError] & 1) != 0 || v21 > 4)
       {
 LABEL_41:
         LODWORD(v21) = 0;
@@ -737,8 +737,8 @@ LABEL_44:
   handles = v5->_handles;
   v5->_handles = v30;
 
-  v32 = [v4 hasError];
-  if (v32)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_45:
     v33 = 0;
@@ -756,30 +756,30 @@ LABEL_46:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMTranslationLanguageCode *)self handles];
-  v5 = [(BMTranslationLanguageCode *)self translationLanguageCode];
+  handles = [(BMTranslationLanguageCode *)self handles];
+  translationLanguageCode = [(BMTranslationLanguageCode *)self translationLanguageCode];
   v6 = BMTranslationLanguageCodeSourceAsString([(BMTranslationLanguageCode *)self source]);
-  v7 = [(BMTranslationLanguageCode *)self translationToLanguageCode];
-  v8 = [v3 initWithFormat:@"BMTranslationLanguageCode with handles: %@, translationLanguageCode: %@, source: %@, translationToLanguageCode: %@", v4, v5, v6, v7];
+  translationToLanguageCode = [(BMTranslationLanguageCode *)self translationToLanguageCode];
+  v8 = [v3 initWithFormat:@"BMTranslationLanguageCode with handles: %@, translationLanguageCode: %@, source: %@, translationToLanguageCode: %@", handles, translationLanguageCode, v6, translationToLanguageCode];
 
   return v8;
 }
 
-- (BMTranslationLanguageCode)initWithHandles:(id)a3 translationLanguageCode:(id)a4 source:(int)a5 translationToLanguageCode:(id)a6
+- (BMTranslationLanguageCode)initWithHandles:(id)handles translationLanguageCode:(id)code source:(int)source translationToLanguageCode:(id)languageCode
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  handlesCopy = handles;
+  codeCopy = code;
+  languageCodeCopy = languageCode;
   v16.receiver = self;
   v16.super_class = BMTranslationLanguageCode;
   v14 = [(BMEventBase *)&v16 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v14->_handles, a3);
-    objc_storeStrong(&v14->_translationLanguageCode, a4);
-    v14->_source = a5;
-    objc_storeStrong(&v14->_translationToLanguageCode, a6);
+    objc_storeStrong(&v14->_handles, handles);
+    objc_storeStrong(&v14->_translationLanguageCode, code);
+    v14->_source = source;
+    objc_storeStrong(&v14->_translationToLanguageCode, languageCode);
   }
 
   return v14;
@@ -830,9 +830,9 @@ id __36__BMTranslationLanguageCode_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -840,8 +840,8 @@ id __36__BMTranslationLanguageCode_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMTranslationLanguageCode alloc] initByReadFrom:v7];
     v4 = v8;

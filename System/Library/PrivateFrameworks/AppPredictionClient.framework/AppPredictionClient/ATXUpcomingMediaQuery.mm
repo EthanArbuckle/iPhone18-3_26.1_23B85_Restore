@@ -1,14 +1,14 @@
 @interface ATXUpcomingMediaQuery
-+ (id)getUpcomingMediaForBundle:(id)a3 isInternalApplication:(BOOL)a4;
-+ (void)getUpcomingMediaForBundle:(id)a3 isInternalApplication:(BOOL)a4 completionHandler:(id)a5;
++ (id)getUpcomingMediaForBundle:(id)bundle isInternalApplication:(BOOL)application;
++ (void)getUpcomingMediaForBundle:(id)bundle isInternalApplication:(BOOL)application completionHandler:(id)handler;
 @end
 
 @implementation ATXUpcomingMediaQuery
 
-+ (id)getUpcomingMediaForBundle:(id)a3 isInternalApplication:(BOOL)a4
++ (id)getUpcomingMediaForBundle:(id)bundle isInternalApplication:(BOOL)application
 {
-  v4 = a4;
-  v6 = a3;
+  applicationCopy = application;
+  bundleCopy = bundle;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -23,7 +23,7 @@
   v15 = &v16;
   v8 = v7;
   v14 = v8;
-  [a1 getUpcomingMediaForBundle:v6 isInternalApplication:v4 completionHandler:v13];
+  [self getUpcomingMediaForBundle:bundleCopy isInternalApplication:applicationCopy completionHandler:v13];
   v9 = v8;
   v10 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v9, v10);
@@ -45,18 +45,18 @@ void __73__ATXUpcomingMediaQuery_getUpcomingMediaForBundle_isInternalApplication
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)getUpcomingMediaForBundle:(id)a3 isInternalApplication:(BOOL)a4 completionHandler:(id)a5
++ (void)getUpcomingMediaForBundle:(id)bundle isInternalApplication:(BOOL)application completionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10 = [v9 initWithFormat:@"(domainIdentifier == '%@')", *MEMORY[0x1E696E700]];
   v11 = objc_opt_new();
   [v11 setInternal:1];
-  if (v7)
+  if (bundleCopy)
   {
-    v33[0] = v7;
+    v33[0] = bundleCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
     [v11 setBundleIDs:v12];
   }
@@ -82,7 +82,7 @@ void __73__ATXUpcomingMediaQuery_getUpcomingMediaForBundle_isInternalApplication
   v26[2] = __91__ATXUpcomingMediaQuery_getUpcomingMediaForBundle_isInternalApplication_completionHandler___block_invoke;
   v26[3] = &unk_1E80C3D48;
   v28 = v29;
-  v16 = v7;
+  v16 = bundleCopy;
   v27 = v16;
   [v15 setFoundItemsHandler:v26];
   v20[0] = MEMORY[0x1E69E9820];
@@ -91,10 +91,10 @@ void __73__ATXUpcomingMediaQuery_getUpcomingMediaForBundle_isInternalApplication
   v20[3] = &unk_1E80C6A68;
   v17 = v10;
   v21 = v17;
-  v18 = v8;
+  v18 = handlerCopy;
   v23 = v18;
   v24 = v29;
-  v25 = a4;
+  applicationCopy = application;
   v19 = v16;
   v22 = v19;
   [v15 setCompletionHandler:v20];

@@ -1,24 +1,24 @@
 @interface TransitDirectionsListItemWalking
-- (BOOL)_shouldHideWalkingSubStep:(id)a3;
-- (TransitDirectionsListItemWalking)initWithWalkingSegment:(id)a3 toBoardStep:(id)a4;
+- (BOOL)_shouldHideWalkingSubStep:(id)step;
+- (TransitDirectionsListItemWalking)initWithWalkingSegment:(id)segment toBoardStep:(id)step;
 - (id)_generateWalkingSubSteps;
 - (id)_transitWalkingLegInstruction;
-- (id)expandingButtonTitleForExpandedState:(BOOL)a3;
-- (id)subItemsWithForceExpand:(BOOL)a3;
-- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)a3;
+- (id)expandingButtonTitleForExpandedState:(BOOL)state;
+- (id)subItemsWithForceExpand:(BOOL)expand;
+- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)expand;
 - (void)_rebuildSubItems;
-- (void)setExpandedItems:(id)a3;
+- (void)setExpandedItems:(id)items;
 @end
 
 @implementation TransitDirectionsListItemWalking
 
-- (BOOL)_shouldHideWalkingSubStep:(id)a3
+- (BOOL)_shouldHideWalkingSubStep:(id)step
 {
-  v3 = a3;
-  v4 = [v3 geoStep];
-  if ([v4 maneuverType] == 18)
+  stepCopy = step;
+  geoStep = [stepCopy geoStep];
+  if ([geoStep maneuverType] == 18)
   {
-    [v3 distance];
+    [stepCopy distance];
     v6 = v5 < 3.048;
   }
 
@@ -32,16 +32,16 @@
 
 - (id)_generateWalkingSubSteps
 {
-  v3 = [(TransitDirectionsListItemWalking *)self _transitWalkingLegInstruction];
-  v4 = [v3 walkingSegment];
+  _transitWalkingLegInstruction = [(TransitDirectionsListItemWalking *)self _transitWalkingLegInstruction];
+  walkingSegment = [_transitWalkingLegInstruction walkingSegment];
 
-  v27 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 stepCount]);
+  v27 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [walkingSegment stepCount]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v25 = v4;
-  obj = [v4 steps];
+  v25 = walkingSegment;
+  obj = [walkingSegment steps];
   v5 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v5)
   {
@@ -63,12 +63,12 @@
         if (![(TransitDirectionsListItemWalking *)self _shouldHideWalkingSubStep:v11])
         {
           v12 = [v11 contentsForContext:1];
-          v13 = [v12 instruction];
+          instruction = [v12 instruction];
 
-          if (v13)
+          if (instruction)
           {
             v14 = objc_alloc_init(TransitDirectionsListItem);
-            v15 = [objc_alloc(v8[152]) initWithString:v13];
+            v15 = [objc_alloc(v8[152]) initWithString:instruction];
             v34 = v15;
             v16 = v9;
             v17 = [v9[286] arrayWithObjects:&v34 count:1];
@@ -83,8 +83,8 @@
             else
             {
               v19 = objc_alloc(v8[152]);
-              v20 = [v11 distanceString];
-              v21 = [v19 initWithString:v20];
+              distanceString = [v11 distanceString];
+              v21 = [v19 initWithString:distanceString];
               [(TransitDirectionsListItem *)v14 setPrimaryAccessoryString:v21];
             }
 
@@ -115,37 +115,37 @@
 
 - (id)_transitWalkingLegInstruction
 {
-  v3 = [(TransitDirectionsListItem *)self transitInstruction];
+  transitInstruction = [(TransitDirectionsListItem *)self transitInstruction];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(TransitDirectionsListItem *)self transitInstruction];
+    transitInstruction2 = [(TransitDirectionsListItem *)self transitInstruction];
   }
 
   else
   {
-    v5 = 0;
+    transitInstruction2 = 0;
   }
 
-  return v5;
+  return transitInstruction2;
 }
 
-- (TransitDirectionsListItemWalking)initWithWalkingSegment:(id)a3 toBoardStep:(id)a4
+- (TransitDirectionsListItemWalking)initWithWalkingSegment:(id)segment toBoardStep:(id)step
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MNTransitWalkingSegmentInstruction instructionForWalkingSegment:v6 context:2];
-  v9 = [v6 steps];
-  v10 = [v9 firstObject];
-  v11 = [v10 routeDetailsPrimaryArtwork];
-  v12 = [v11 firstObject];
+  segmentCopy = segment;
+  stepCopy = step;
+  v8 = [MNTransitWalkingSegmentInstruction instructionForWalkingSegment:segmentCopy context:2];
+  steps = [segmentCopy steps];
+  firstObject = [steps firstObject];
+  routeDetailsPrimaryArtwork = [firstObject routeDetailsPrimaryArtwork];
+  firstObject2 = [routeDetailsPrimaryArtwork firstObject];
 
-  if (v12)
+  if (firstObject2)
   {
     v39 = &off_1016E6CF8;
-    v40 = v12;
+    v40 = firstObject2;
     v13 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   }
 
@@ -157,38 +157,38 @@
   v37.receiver = self;
   v37.super_class = TransitDirectionsListItemWalking;
   v14 = [(TransitDirectionsListArtworkItem *)&v37 initWithArtworks:v13 alternateArtworks:0 instructions:v8];
-  if (v12)
+  if (firstObject2)
   {
   }
 
   if (v14)
   {
-    v15 = [(TransitDirectionsListItemWalking *)v14 _generateWalkingSubSteps];
+    _generateWalkingSubSteps = [(TransitDirectionsListItemWalking *)v14 _generateWalkingSubSteps];
     walkingSubItems = v14->_walkingSubItems;
-    v14->_walkingSubItems = v15;
+    v14->_walkingSubItems = _generateWalkingSubSteps;
 
-    v17 = [v7 boardingInfo];
-    v18 = [v17 hasPreBoardingTimeInstruction];
+    boardingInfo = [stepCopy boardingInfo];
+    hasPreBoardingTimeInstruction = [boardingInfo hasPreBoardingTimeInstruction];
 
-    if (v18)
+    if (hasPreBoardingTimeInstruction)
     {
-      v19 = [v7 boardingInfo];
-      v20 = [v19 preBoardingTimeInstruction];
+      boardingInfo2 = [stepCopy boardingInfo];
+      preBoardingTimeInstruction = [boardingInfo2 preBoardingTimeInstruction];
 
       v21 = [[NSMutableArray alloc] initWithCapacity:2];
-      if ([v20 hasPrimaryText])
+      if ([preBoardingTimeInstruction hasPrimaryText])
       {
         v22 = [GEOComposedString alloc];
-        v23 = [v20 primaryText];
-        v24 = [v22 initWithGeoFormattedString:v23];
+        primaryText = [preBoardingTimeInstruction primaryText];
+        v24 = [v22 initWithGeoFormattedString:primaryText];
         [v21 addObject:v24];
       }
 
-      if ([v20 hasSecondaryText])
+      if ([preBoardingTimeInstruction hasSecondaryText])
       {
         v25 = [GEOComposedString alloc];
-        v26 = [v20 secondaryText];
-        v27 = [v25 initWithGeoFormattedString:v26];
+        secondaryText = [preBoardingTimeInstruction secondaryText];
+        v27 = [v25 initWithGeoFormattedString:secondaryText];
         [v21 addObject:v27];
       }
 
@@ -200,39 +200,39 @@
     }
 
     [(TransitDirectionsListItem *)v14 setType:9];
-    v30 = [v6 steps];
-    [(TransitDirectionsListItem *)v14 setComposedRouteStepsDisplayedOnMap:v30];
-    v31 = [v30 lastObject];
-    v32 = [v31 isArrivalStep];
+    steps2 = [segmentCopy steps];
+    [(TransitDirectionsListItem *)v14 setComposedRouteStepsDisplayedOnMap:steps2];
+    lastObject = [steps2 lastObject];
+    isArrivalStep = [lastObject isArrivalStep];
 
-    if (v32)
+    if (isArrivalStep)
     {
-      v33 = [v30 mutableCopy];
+      v33 = [steps2 mutableCopy];
       [v33 removeLastObject];
       v34 = [v33 copy];
 
-      v30 = v34;
+      steps2 = v34;
     }
 
-    [(TransitDirectionsListItem *)v14 setComposedRouteSteps:v30];
+    [(TransitDirectionsListItem *)v14 setComposedRouteSteps:steps2];
     v35 = v14;
   }
 
   return v14;
 }
 
-- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)a3
+- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)expand
 {
-  v3 = [(TransitDirectionsListItemWalking *)self subItemsWithForceExpand:a3];
+  v3 = [(TransitDirectionsListItemWalking *)self subItemsWithForceExpand:expand];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)subItemsWithForceExpand:(BOOL)a3
+- (id)subItemsWithForceExpand:(BOOL)expand
 {
-  v3 = a3;
-  if ([(TransitDirectionsListItemWalking *)self expanded]|| v3)
+  expandCopy = expand;
+  if ([(TransitDirectionsListItemWalking *)self expanded]|| expandCopy)
   {
     subItemsExpanded = self->super.super._subItemsExpanded;
     if (!subItemsExpanded)
@@ -244,15 +244,15 @@
       subItemsExpanded = self->super.super._subItemsExpanded;
     }
 
-    v5 = subItemsExpanded;
+    subItems = subItemsExpanded;
   }
 
   else
   {
-    v5 = [(TransitDirectionsListItem *)self subItems];
+    subItems = [(TransitDirectionsListItem *)self subItems];
   }
 
-  return v5;
+  return subItems;
 }
 
 - (void)_rebuildSubItems
@@ -262,17 +262,17 @@
   self->super.super._subItems = v3;
 }
 
-- (id)expandingButtonTitleForExpandedState:(BOOL)a3
+- (id)expandingButtonTitleForExpandedState:(BOOL)state
 {
-  v3 = a3;
-  v4 = [(TransitDirectionsListItemWalking *)self expandedItems];
-  v5 = [v4 count];
+  stateCopy = state;
+  expandedItems = [(TransitDirectionsListItemWalking *)self expandedItems];
+  v5 = [expandedItems count];
 
   if (v5)
   {
     v6 = +[NSBundle mainBundle];
     v7 = v6;
-    if (v3)
+    if (stateCopy)
     {
       v8 = @"Transit_Walking_Steps_Hide";
     }
@@ -293,9 +293,9 @@
   return v9;
 }
 
-- (void)setExpandedItems:(id)a3
+- (void)setExpandedItems:(id)items
 {
-  [(TransitDirectionsListItemWalking *)self setWalkingSubItems:a3];
+  [(TransitDirectionsListItemWalking *)self setWalkingSubItems:items];
 
   [(TransitDirectionsListItem *)self _invalidateSubItems];
 }

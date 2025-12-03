@@ -13,71 +13,71 @@
 
 - (double)__ck_scrollToTopContentOffset
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   return v3;
 }
 
 - (double)__ck_bottomOffset
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
-  [a1 __ck_contentSize];
-  [a1 contentInset];
-  [a1 bounds];
-  [a1 __ck_scrollToTopContentOffset];
+  [self __ck_contentSize];
+  [self contentInset];
+  [self bounds];
+  [self __ck_scrollToTopContentOffset];
   return v3;
 }
 
 - (double)__ck_bottomOffsetWithComputedInsets:()CKUtilities
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
-  [a1 __ck_contentSize];
-  [a1 bounds];
-  [a1 __ck_scrollToTopContentOffset];
+  [self __ck_contentSize];
+  [self bounds];
+  [self __ck_scrollToTopContentOffset];
   return v3;
 }
 
 - (BOOL)__ck_isScrolledToBottom
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
-  [a1 __ck_bottomOffset];
+  [self __ck_bottomOffset];
   return v3 >= v4 + -1.0;
 }
 
 - (uint64_t)__ck_scrollToBottom:()CKUtilities
 {
-  [a1 __ck_bottomOffset];
+  [self __ck_bottomOffset];
 
-  return [a1 setContentOffset:a3 animated:?];
+  return [self setContentOffset:a3 animated:?];
 }
 
 - (BOOL)__ck_isScrolledToTop
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
-  [a1 __ck_scrollToTopContentOffset];
+  [self __ck_scrollToTopContentOffset];
   return v3 <= v4 + 1.0;
 }
 
 - (uint64_t)__ck_scrollToTop:()CKUtilities
 {
-  [a1 __ck_scrollToTopContentOffset];
+  [self __ck_scrollToTopContentOffset];
 
-  return [a1 setContentOffset:a3 animated:?];
+  return [self setContentOffset:a3 animated:?];
 }
 
 - (BOOL)__ck_isVerticallyRubberBanding
 {
-  [a1 contentInset];
+  [self contentInset];
   v3 = v2;
   v5 = v4;
-  [a1 contentSize];
+  [self contentSize];
   v7 = v6;
-  [a1 bounds];
+  [self bounds];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;

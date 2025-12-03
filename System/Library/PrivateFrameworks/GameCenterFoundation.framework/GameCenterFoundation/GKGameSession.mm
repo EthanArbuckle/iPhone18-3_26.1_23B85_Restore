@@ -3,10 +3,10 @@
 + (void)loadSessionWithIdentifier:(NSString *)identifier completionHandler:(void *)completionHandler;
 + (void)loadSessionsInContainer:(NSString *)containerName completionHandler:(void *)completionHandler;
 + (void)removeSessionWithIdentifier:(NSString *)identifier completionHandler:(void *)completionHandler;
-- (GKGameSession)initWithCoder:(id)a3;
+- (GKGameSession)initWithCoder:(id)coder;
 - (NSArray)playersWithConnectionState:(GKConnectionState)state;
 - (void)clearBadgeForPlayers:(NSArray *)players completionHandler:(void *)completionHandler;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)getShareURLWithCompletionHandler:(void *)completionHandler;
 - (void)loadDataWithCompletionHandler:(void *)completionHandler;
 - (void)saveData:(NSData *)data completionHandler:(void *)completionHandler;
@@ -93,36 +93,36 @@
   v5[2](v5, v6);
 }
 
-- (GKGameSession)initWithCoder:(id)a3
+- (GKGameSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = GKGameSession;
   v5 = [(GKGameSession *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(GKGameSession *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     [(GKGameSession *)v5 setTitle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"owner"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"owner"];
     [(GKGameSession *)v5 setOwner:v8];
 
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"players"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"players"];
     [(GKGameSession *)v5 setPlayers:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedDate"];
     [(GKGameSession *)v5 setLastModifiedDate:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedPlayer"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedPlayer"];
     [(GKGameSession *)v5 setLastModifiedPlayer:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverChangeTag"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverChangeTag"];
     [(GKGameSession *)v5 setServerChangeTag:v15];
 
     v16 = MEMORY[0x277CBEB98];
@@ -132,45 +132,45 @@
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v16 setWithObjects:{v17, v18, v19, v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"playerStates"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"playerStates"];
     [(GKGameSession *)v5 setPlayerStates:v23];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxNumberOfConnectedPlayers"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxNumberOfConnectedPlayers"];
     -[GKGameSession setMaxNumberOfConnectedPlayers:](v5, "setMaxNumberOfConnectedPlayers:", [v24 integerValue]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GKGameSession *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(GKGameSession *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(GKGameSession *)self title];
-  [v4 encodeObject:v6 forKey:@"title"];
+  title = [(GKGameSession *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(GKGameSession *)self owner];
-  [v4 encodeObject:v7 forKey:@"owner"];
+  owner = [(GKGameSession *)self owner];
+  [coderCopy encodeObject:owner forKey:@"owner"];
 
-  v8 = [(GKGameSession *)self players];
-  [v4 encodeObject:v8 forKey:@"players"];
+  players = [(GKGameSession *)self players];
+  [coderCopy encodeObject:players forKey:@"players"];
 
-  v9 = [(GKGameSession *)self lastModifiedDate];
-  [v4 encodeObject:v9 forKey:@"lastModifiedDate"];
+  lastModifiedDate = [(GKGameSession *)self lastModifiedDate];
+  [coderCopy encodeObject:lastModifiedDate forKey:@"lastModifiedDate"];
 
-  v10 = [(GKGameSession *)self lastModifiedPlayer];
-  [v4 encodeObject:v10 forKey:@"lastModifiedPlayer"];
+  lastModifiedPlayer = [(GKGameSession *)self lastModifiedPlayer];
+  [coderCopy encodeObject:lastModifiedPlayer forKey:@"lastModifiedPlayer"];
 
-  v11 = [(GKGameSession *)self serverChangeTag];
-  [v4 encodeObject:v11 forKey:@"serverChangeTag"];
+  serverChangeTag = [(GKGameSession *)self serverChangeTag];
+  [coderCopy encodeObject:serverChangeTag forKey:@"serverChangeTag"];
 
-  v12 = [(GKGameSession *)self playerStates];
-  [v4 encodeObject:v12 forKey:@"playerStates"];
+  playerStates = [(GKGameSession *)self playerStates];
+  [coderCopy encodeObject:playerStates forKey:@"playerStates"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKGameSession maxNumberOfConnectedPlayers](self, "maxNumberOfConnectedPlayers")}];
-  [v4 encodeObject:v13 forKey:@"maxNumberOfConnectedPlayers"];
+  [coderCopy encodeObject:v13 forKey:@"maxNumberOfConnectedPlayers"];
 }
 
 - (void)getShareURLWithCompletionHandler:(void *)completionHandler

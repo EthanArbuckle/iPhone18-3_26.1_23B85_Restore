@@ -1,6 +1,6 @@
 @interface NTKSpectrumStyleEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
@@ -35,29 +35,29 @@ id __54__NTKSpectrumStyleEditOption__orderedValuesForDevice___block_invoke(uint6
   return v7;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278785E78[a3];
+    return off_278785E78[value];
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278785E90[a3];
+    return off_278785E90[value];
   }
 }
 

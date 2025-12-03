@@ -1,67 +1,67 @@
 @interface BTCloudDevice
-+ (id)deviceWithBluetoothAddress:(id)a3;
-- (BTCloudDevice)initWithBluetoothAddress:(id)a3;
-- (BTCloudDevice)initWithCoder:(id)a3;
++ (id)deviceWithBluetoothAddress:(id)address;
+- (BTCloudDevice)initWithBluetoothAddress:(id)address;
+- (BTCloudDevice)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BTCloudDevice
 
-+ (id)deviceWithBluetoothAddress:(id)a3
++ (id)deviceWithBluetoothAddress:(id)address
 {
-  v3 = a3;
-  v4 = [[BTCloudDevice alloc] initWithBluetoothAddress:v3];
+  addressCopy = address;
+  v4 = [[BTCloudDevice alloc] initWithBluetoothAddress:addressCopy];
 
   return v4;
 }
 
-- (BTCloudDevice)initWithBluetoothAddress:(id)a3
+- (BTCloudDevice)initWithBluetoothAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v8.receiver = self;
   v8.super_class = BTCloudDevice;
   v5 = [(BTCloudDevice *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BTCloudDevice *)v5 setBluetoothAddress:v4];
+    [(BTCloudDevice *)v5 setBluetoothAddress:addressCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BTCloudDevice *)self bluetoothAddress];
+  coderCopy = coder;
+  bluetoothAddress = [(BTCloudDevice *)self bluetoothAddress];
   v6 = NSStringFromSelector(sel_bluetoothAddress);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:bluetoothAddress forKey:v6];
 
-  v7 = [(BTCloudDevice *)self manufacturer];
+  manufacturer = [(BTCloudDevice *)self manufacturer];
   v8 = NSStringFromSelector(sel_manufacturer);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:manufacturer forKey:v8];
 
-  v9 = [(BTCloudDevice *)self modelNumber];
+  modelNumber = [(BTCloudDevice *)self modelNumber];
   v10 = NSStringFromSelector(sel_modelNumber);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:modelNumber forKey:v10];
 
-  v11 = [(BTCloudDevice *)self nickname];
+  nickname = [(BTCloudDevice *)self nickname];
   v12 = NSStringFromSelector(sel_nickname);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:nickname forKey:v12];
 
-  v13 = [(BTCloudDevice *)self productID];
+  productID = [(BTCloudDevice *)self productID];
   v14 = NSStringFromSelector(sel_productID);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:productID forKey:v14];
 
-  v16 = [(BTCloudDevice *)self vendorID];
+  vendorID = [(BTCloudDevice *)self vendorID];
   v15 = NSStringFromSelector(sel_vendorID);
-  [v4 encodeObject:v16 forKey:v15];
+  [coderCopy encodeObject:vendorID forKey:v15];
 }
 
-- (BTCloudDevice)initWithCoder:(id)a3
+- (BTCloudDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = BTCloudDevice;
   v5 = [(BTCloudDevice *)&v26 init];
@@ -72,34 +72,34 @@
 
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(sel_bluetoothAddress);
-  v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+  v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
 
   if (v8)
   {
     [(BTCloudDevice *)v5 setBluetoothAddress:v8];
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_manufacturer);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     [(BTCloudDevice *)v5 setManufacturer:v11];
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_modelNumber);
-    v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
     [(BTCloudDevice *)v5 setModelNumber:v14];
 
     v15 = objc_opt_class();
     v16 = NSStringFromSelector(sel_nickname);
-    v17 = [v4 decodeObjectOfClass:v15 forKey:v16];
+    v17 = [coderCopy decodeObjectOfClass:v15 forKey:v16];
     [(BTCloudDevice *)v5 setNickname:v17];
 
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(sel_productID);
-    v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+    v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
     [(BTCloudDevice *)v5 setProductID:v20];
 
     v21 = objc_opt_class();
     v22 = NSStringFromSelector(sel_vendorID);
-    v23 = [v4 decodeObjectOfClass:v21 forKey:v22];
+    v23 = [coderCopy decodeObjectOfClass:v21 forKey:v22];
     [(BTCloudDevice *)v5 setVendorID:v23];
 
 LABEL_4:
@@ -121,13 +121,13 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BTCloudDevice *)self bluetoothAddress];
-  v5 = [(BTCloudDevice *)self nickname];
-  v6 = [(BTCloudDevice *)self manufacturer];
-  v7 = [(BTCloudDevice *)self modelNumber];
-  v8 = [(BTCloudDevice *)self productID];
-  v9 = [(BTCloudDevice *)self vendorID];
-  v10 = [v3 stringWithFormat:@"BTCloudDevice: %@, %@, %@, %@, %@, %@", v4, v5, v6, v7, v8, v9];
+  bluetoothAddress = [(BTCloudDevice *)self bluetoothAddress];
+  nickname = [(BTCloudDevice *)self nickname];
+  manufacturer = [(BTCloudDevice *)self manufacturer];
+  modelNumber = [(BTCloudDevice *)self modelNumber];
+  productID = [(BTCloudDevice *)self productID];
+  vendorID = [(BTCloudDevice *)self vendorID];
+  v10 = [v3 stringWithFormat:@"BTCloudDevice: %@, %@, %@, %@, %@, %@", bluetoothAddress, nickname, manufacturer, modelNumber, productID, vendorID];
 
   return v10;
 }

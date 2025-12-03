@@ -1,10 +1,10 @@
 @interface FPDVolume
-+ (BOOL)getProviderDomainID:(id)a3 location:(unsigned int)a4 foundDomainID:(id *)a5 error:(id *)a6;
-+ (id)prettyNameForDomain:(id)a3;
-+ (id)prettyNameForNsDomain:(id)a3 provider:(id)a4;
-+ (int)_getProviderDomainIDFromFD:(int)a3 shortDescription:(id)a4 location:(unsigned int)a5 domainID:(id *)a6 error:(id *)a7;
-+ (unsigned)volumeRoleForStatFS:(const statfs *)a3;
-- (BOOL)_computeKnownPathsForRole:(unsigned int)a3;
++ (BOOL)getProviderDomainID:(id)d location:(unsigned int)location foundDomainID:(id *)iD error:(id *)error;
++ (id)prettyNameForDomain:(id)domain;
++ (id)prettyNameForNsDomain:(id)domain provider:(id)provider;
++ (int)_getProviderDomainIDFromFD:(int)d shortDescription:(id)description location:(unsigned int)location domainID:(id *)iD error:(id *)error;
++ (unsigned)volumeRoleForStatFS:(const statfs *)s;
+- (BOOL)_computeKnownPathsForRole:(unsigned int)role;
 - (BOOL)_hasCloudStorageDirAtRoot;
 - (BOOL)isDefaultVolume;
 - (BOOL)isDefaultVolumeForCurrentPersona;
@@ -12,15 +12,15 @@
 - (BOOL)isInLowDiskSpaceState;
 - (BOOL)shouldSkipDiskSpaceMonitor;
 - (BOOL)supportsEAPFS;
-- (BOOL)writeDomainsProperties:(id)a3 underDirectoryAtURL:(id)a4 error:(id *)a5;
+- (BOOL)writeDomainsProperties:(id)properties underDirectoryAtURL:(id)l error:(id *)error;
 - (FPDVolumeManager)volumeManager;
 - (NSURL)purgatoryDirectory;
-- (id)_subAppSupportPathForDomain:(id)a3 fileName:(id)a4 error:(id *)a5;
+- (id)_subAppSupportPathForDomain:(id)domain fileName:(id)name error:(id *)error;
 - (id)description;
-- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)a3 error:(id *)a4;
+- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)l error:(id *)error;
 - (id)removedURL;
-- (id)rootURLForLocation:(unsigned int)a3 error:(id *)a4;
-- (id)supportPathForDomain:(id)a3 failIfNotExisting:(BOOL)a4 error:(id *)a5;
+- (id)rootURLForLocation:(unsigned int)location error:(id *)error;
+- (id)supportPathForDomain:(id)domain failIfNotExisting:(BOOL)existing error:(id *)error;
 - (int64_t)currentAvailableDiskSpace;
 - (int64_t)requiredDiskSpaceThreshold;
 - (unint64_t)maxTimerIterations;
@@ -28,15 +28,15 @@
 - (void)currentAvailableDiskSpace;
 - (void)isInLowDiskSpaceState;
 - (void)monitorLowDiskSpaceRecovery;
-- (void)monitorLowDiskSpaceRecoveryForConcreteError:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)monitorLowDiskSpaceRecoveryForConcreteError:(id)error;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reevaluateLowDiskSpaceState;
 - (void)removeBrokenEbihilLinksFromRoot;
 @end
 
 @implementation FPDVolume
 
-+ (unsigned)volumeRoleForStatFS:(const statfs *)a3
++ (unsigned)volumeRoleForStatFS:(const statfs *)s
 {
   if (!APFSVolumeRole())
   {
@@ -60,13 +60,13 @@
   return v3;
 }
 
-- (BOOL)_computeKnownPathsForRole:(unsigned int)a3
+- (BOOL)_computeKnownPathsForRole:(unsigned int)role
 {
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 1;
-  if (a3 - 1 > 1)
+  if (role - 1 > 1)
   {
     v7 = MEMORY[0x1E695DFF8];
     v8 = [(NSString *)self->_root stringByAppendingPathComponent:@".CloudStorage/System"];
@@ -85,10 +85,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5 = [MEMORY[0x1E69DF068] sharedManager];
-  [v5 personaGenerationIdentifierWithError:0];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  [mEMORY[0x1E69DF068] personaGenerationIdentifierWithError:0];
 
-  if (a3 == 2)
+  if (role == 2)
   {
     [MEMORY[0x1E69DF088] personaAttributesForPersonaType:2];
   }
@@ -98,11 +98,11 @@ LABEL_9:
     [MEMORY[0x1E69DF088] personaAttributesForPersonaType:0];
   }
   v6 = ;
-  v15 = [v6 userPersonaUniqueString];
+  userPersonaUniqueString = [v6 userPersonaUniqueString];
 
-  if (v15 || ([MEMORY[0x1E69DF068] sharedManager], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isSharedIPad"), v16, (v17 & 1) != 0))
+  if (userPersonaUniqueString || ([MEMORY[0x1E69DF068] sharedManager], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isSharedIPad"), v16, (v17 & 1) != 0))
   {
-    v12 = v15;
+    v12 = userPersonaUniqueString;
     FPPerformWithPersona();
     syncRootsDirectory = v12;
     goto LABEL_9;
@@ -167,12 +167,12 @@ void __39__FPDVolume__computeKnownPathsForRole___block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)rootURLForLocation:(unsigned int)a3 error:(id *)a4
+- (id)rootURLForLocation:(unsigned int)location error:(id *)error
 {
-  if (a3 > 2)
+  if (location > 2)
   {
     v5 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -180,8 +180,8 @@ void __39__FPDVolume__computeKnownPathsForRole___block_invoke(uint64_t a1, void 
 
   else
   {
-    v5 = *(&self->super.isa + qword_1CF9F4B78[a3]);
-    if (!a4)
+    v5 = *(&self->super.isa + qword_1CF9F4B78[location]);
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -189,7 +189,7 @@ void __39__FPDVolume__computeKnownPathsForRole___block_invoke(uint64_t a1, void 
 
   if (!v5)
   {
-    *a4 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:2];
+    *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:2];
   }
 
 LABEL_7:
@@ -255,17 +255,17 @@ void __26__FPDVolume_supportsEAPFS__block_invoke()
   }
 }
 
-+ (int)_getProviderDomainIDFromFD:(int)a3 shortDescription:(id)a4 location:(unsigned int)a5 domainID:(id *)a6 error:(id *)a7
++ (int)_getProviderDomainIDFromFD:(int)d shortDescription:(id)description location:(unsigned int)location domainID:(id *)iD error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  descriptionCopy = description;
   v12 = "com.apple.file-provider-domain-id";
-  v13 = fgetxattr(a3, "com.apple.file-provider-domain-id", 0, 0, 0, 0);
+  v13 = fgetxattr(d, "com.apple.file-provider-domain-id", 0, 0, 0, 0);
   v14 = v13;
   if (v13 != -1)
   {
     v15 = v13;
-    if (!a5)
+    if (!location)
     {
       goto LABEL_11;
     }
@@ -273,25 +273,25 @@ void __26__FPDVolume_supportsEAPFS__block_invoke()
     goto LABEL_3;
   }
 
-  if (*__error() != 93 || (v12 = "com.apple.file-provider-domain-id#PN", v16 = fgetxattr(a3, "com.apple.file-provider-domain-id#PN", 0, 0, 0, 0), v16 == -1))
+  if (*__error() != 93 || (v12 = "com.apple.file-provider-domain-id#PN", v16 = fgetxattr(d, "com.apple.file-provider-domain-id#PN", 0, 0, 0, 0), v16 == -1))
   {
     v17 = MEMORY[0x1E696ABC0];
     v18 = *__error();
     v19 = v17;
 LABEL_19:
-    *a7 = [v19 fp_errorWithPOSIXCode:{v18, *v28}];
+    *error = [v19 fp_errorWithPOSIXCode:{v18, *v28}];
 LABEL_20:
     v23 = -1;
     goto LABEL_29;
   }
 
   v15 = v16;
-  if (a5)
+  if (location)
   {
 LABEL_3:
     v28[0] = 0;
     fpfs_is_detached_root();
-    if (a5 == 2 && v28[0] != 1)
+    if (location == 2 && v28[0] != 1)
     {
       goto LABEL_20;
     }
@@ -307,17 +307,17 @@ LABEL_11:
   }
 
   v21 = v20;
-  if (fgetxattr(a3, v12, v20, v15, 0, 0) < 1)
+  if (fgetxattr(d, v12, v20, v15, 0, 0) < 1)
   {
     v24 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
-    a6 = a7;
+    iD = error;
     goto LABEL_26;
   }
 
   v21[v15] = 0;
   if (v14 == -1)
   {
-    if (fsetxattr(a3, "com.apple.file-provider-domain-id", v21, v15, 0, 0) < 0)
+    if (fsetxattr(d, "com.apple.file-provider-domain-id", v21, v15, 0, 0) < 0)
     {
       v22 = fp_current_or_default_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -325,7 +325,7 @@ LABEL_11:
 LABEL_23:
         v25 = *__error();
         *v28 = 138412546;
-        *&v28[4] = v11;
+        *&v28[4] = descriptionCopy;
         *&v28[12] = 1024;
         *&v28[14] = v25;
         _os_log_impl(&dword_1CEFC7000, v22, OS_LOG_TYPE_INFO, "[INFO] couldn't upgrade domain xattr on %@: %d", v28, 0x12u);
@@ -336,7 +336,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (fremovexattr(a3, "com.apple.file-provider-domain-id#PN", 0) < 0)
+    if (fremovexattr(d, "com.apple.file-provider-domain-id#PN", 0) < 0)
     {
       v22 = fp_current_or_default_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -351,9 +351,9 @@ LABEL_24:
 LABEL_25:
   v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v21, *v28, *&v28[16], v29}];
 LABEL_26:
-  *a6 = v24;
+  *iD = v24;
   free(v21);
-  if (*a7)
+  if (*error)
   {
     v23 = -1;
   }
@@ -369,10 +369,10 @@ LABEL_29:
   return v23;
 }
 
-+ (BOOL)getProviderDomainID:(id)a3 location:(unsigned int)a4 foundDomainID:(id *)a5 error:(id *)a6
++ (BOOL)getProviderDomainID:(id)d location:(unsigned int)location foundDomainID:(id *)iD error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dCopy = d;
   v21 = 0;
   v22[0] = &v21;
   v22[1] = 0x3032000000;
@@ -385,20 +385,20 @@ LABEL_29:
   v19[2] = __Block_byref_object_copy__0;
   v19[3] = __Block_byref_object_dispose__0;
   v20 = 0;
-  v9 = v8;
-  [v8 fileSystemRepresentation];
-  v10 = v8;
+  v9 = dCopy;
+  [dCopy fileSystemRepresentation];
+  v10 = dCopy;
   if ((fpfs_openat() & 0x80000000) != 0 && *(v19[0] + 40))
   {
     v12 = fp_current_or_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v10 fp_shortDescription];
-      v14 = [*(v19[0] + 40) fp_prettyDescription];
+      fp_shortDescription = [v10 fp_shortDescription];
+      fp_prettyDescription = [*(v19[0] + 40) fp_prettyDescription];
       *buf = 138412546;
-      v25 = v13;
+      v25 = fp_shortDescription;
       v26 = 2112;
-      v27 = v14;
+      v27 = fp_prettyDescription;
       _os_log_impl(&dword_1CEFC7000, v12, OS_LOG_TYPE_INFO, "[INFO] couldn't retrieve provider domainID from %@: %@", buf, 0x16u);
     }
 
@@ -411,22 +411,22 @@ LABEL_29:
     else
     {
       v11 = 0;
-      if (!a6)
+      if (!error)
       {
         goto LABEL_12;
       }
 
       v15 = v19;
-      a5 = a6;
+      iD = error;
     }
 
-    *a5 = *(*v15 + 40);
+    *iD = *(*v15 + 40);
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  *a5 = *(v22[0] + 40);
+  *iD = *(v22[0] + 40);
   v11 = 1;
 LABEL_13:
   _Block_object_dispose(&v18, 8);
@@ -453,22 +453,22 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
   return v10;
 }
 
-+ (id)prettyNameForNsDomain:(id)a3 provider:(id)a4
++ (id)prettyNameForNsDomain:(id)domain provider:(id)provider
 {
-  v5 = a4;
-  v6 = [a3 displayName];
-  v7 = [v5 descriptor];
+  providerCopy = provider;
+  displayName = [domain displayName];
+  descriptor = [providerCopy descriptor];
 
-  v8 = [v7 localizedName];
+  localizedName = [descriptor localizedName];
 
-  if ([v6 isEqualToString:&stru_1F4C2FFD0])
+  if ([displayName isEqualToString:&stru_1F4C2FFD0])
   {
-    v9 = v8;
+    v9 = localizedName;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v8, v6];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", localizedName, displayName];
   }
 
   v10 = v9;
@@ -480,30 +480,30 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
   return v12;
 }
 
-+ (id)prettyNameForDomain:(id)a3
++ (id)prettyNameForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [v4 nsDomain];
+  domainCopy = domain;
+  nsDomain = [domainCopy nsDomain];
 
-  if (v5)
+  if (nsDomain)
   {
-    v6 = [v4 provider];
+    provider = [domainCopy provider];
 
-    if (!v6)
+    if (!provider)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ no provider for %@", v4];
+      domainCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ no provider for %@", domainCopy];
       v12 = fp_current_or_default_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         +[FPDVolume prettyNameForDomain:];
       }
 
-      __assert_rtn("+[FPDVolume prettyNameForDomain:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDVolume.m", 402, [v11 UTF8String]);
+      __assert_rtn("+[FPDVolume prettyNameForDomain:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDVolume.m", 402, [domainCopy UTF8String]);
     }
 
-    v7 = [v4 nsDomain];
-    v8 = [v4 provider];
-    v9 = [a1 prettyNameForNsDomain:v7 provider:v8];
+    nsDomain2 = [domainCopy nsDomain];
+    provider2 = [domainCopy provider];
+    v9 = [self prettyNameForNsDomain:nsDomain2 provider:provider2];
   }
 
   else
@@ -514,20 +514,20 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
   return v9;
 }
 
-- (id)supportPathForDomain:(id)a3 failIfNotExisting:(BOOL)a4 error:(id *)a5
+- (id)supportPathForDomain:(id)domain failIfNotExisting:(BOOL)existing error:(id *)error
 {
-  v6 = a4;
+  existingCopy = existing;
   v8 = MEMORY[0x1E696AC08];
-  v9 = a3;
-  v10 = [v8 defaultManager];
-  v11 = [(FPDVolume *)self findProviderDomainDirectory:v9 location:0 error:a5];
+  domainCopy = domain;
+  defaultManager = [v8 defaultManager];
+  v11 = [(FPDVolume *)self findProviderDomainDirectory:domainCopy location:0 error:error];
 
-  if (v6 && ([MEMORY[0x1E696AC08] defaultManager], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "path"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "fileExistsAtPath:", v13), v13, v12, !v14))
+  if (existingCopy && ([MEMORY[0x1E696AC08] defaultManager], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "path"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "fileExistsAtPath:", v13), v13, v12, !v14))
   {
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4 userInfo:0];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -544,14 +544,14 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
   return v15;
 }
 
-- (id)_subAppSupportPathForDomain:(id)a3 fileName:(id)a4 error:(id *)a5
+- (id)_subAppSupportPathForDomain:(id)domain fileName:(id)name error:(id *)error
 {
-  v8 = a4;
-  v9 = [(FPDVolume *)self supportPathForDomain:a3 failIfNotExisting:0 error:a5];
+  nameCopy = name;
+  v9 = [(FPDVolume *)self supportPathForDomain:domain failIfNotExisting:0 error:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 URLByAppendingPathComponent:v8 isDirectory:1];
+    v11 = [v9 URLByAppendingPathComponent:nameCopy isDirectory:1];
   }
 
   else
@@ -564,25 +564,25 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
 
 - (NSURL)purgatoryDirectory
 {
-  v2 = [(FPDVolume *)self systemDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Purgatory" isDirectory:1];
+  systemDirectory = [(FPDVolume *)self systemDirectory];
+  v3 = [systemDirectory URLByAppendingPathComponent:@"Purgatory" isDirectory:1];
 
   return v3;
 }
 
 - (id)removedURL
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(FPDVolume *)self purgatoryDirectory];
-  v5 = [v4 path];
-  [v3 fp_createPathIfNeeded:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  purgatoryDirectory = [(FPDVolume *)self purgatoryDirectory];
+  path = [purgatoryDirectory path];
+  [defaultManager fp_createPathIfNeeded:path];
 
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [@"removed_domain_" stringByAppendingString:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [@"removed_domain_" stringByAppendingString:uUIDString];
 
-  v9 = [(FPDVolume *)self purgatoryDirectory];
-  v10 = [v9 URLByAppendingPathComponent:v8 isDirectory:1];
+  purgatoryDirectory2 = [(FPDVolume *)self purgatoryDirectory];
+  v10 = [purgatoryDirectory2 URLByAppendingPathComponent:v8 isDirectory:1];
 
   return v10;
 }
@@ -604,19 +604,19 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
   }
 
   dev = self->_dev;
-  v9 = [(NSUUID *)self->_uuid fp_UUID];
-  v10 = [(NSString *)self->_root fp_prettyPath];
-  v11 = [v3 stringWithFormat:@"<%@:%p role:%@ dev:%d uuid:%@ '%@'>", v5, self, v7, dev, v9, v10];
+  fp_UUID = [(NSUUID *)self->_uuid fp_UUID];
+  fp_prettyPath = [(NSString *)self->_root fp_prettyPath];
+  v11 = [v3 stringWithFormat:@"<%@:%p role:%@ dev:%d uuid:%@ '%@'>", v5, self, v7, dev, fp_UUID, fp_prettyPath];
 
   return v11;
 }
 
 - (BOOL)isDefaultVolumeForCurrentPersona
 {
-  v3 = [MEMORY[0x1E69DF068] sharedManager];
-  v4 = [v3 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  if ([v4 isEnterprisePersona])
+  if ([currentPersona isEnterprisePersona])
   {
     v5 = 2;
   }
@@ -659,9 +659,9 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
   }
 }
 
-- (void)monitorLowDiskSpaceRecoveryForConcreteError:(id)a3
+- (void)monitorLowDiskSpaceRecoveryForConcreteError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(FPDVolume *)self isDiskSpaceMonitorRunning])
   {
     v5 = fp_current_or_default_log();
@@ -673,8 +673,8 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
 
   else
   {
-    v6 = [(FPDVolume *)self currentAvailableDiskSpace];
-    if (v6 < 0)
+    currentAvailableDiskSpace = [(FPDVolume *)self currentAvailableDiskSpace];
+    if (currentAvailableDiskSpace < 0)
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[diskspace] low disk space detected through error, setting up fallback could not determine available disk space. Exiting."];
       v11 = fp_current_or_default_log();
@@ -686,14 +686,14 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
       __assert_rtn("-[FPDVolume monitorLowDiskSpaceRecoveryForConcreteError:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDVolume.m", 581, [v10 UTF8String]);
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithLongLong:v6 + 209715200];
+    209715200 = [MEMORY[0x1E696AD98] numberWithLongLong:currentAvailableDiskSpace + 209715200];
     requiredDiskSpaceThresholdOverride = self->_requiredDiskSpaceThresholdOverride;
-    self->_requiredDiskSpaceThresholdOverride = v7;
+    self->_requiredDiskSpaceThresholdOverride = 209715200;
 
     v9 = fp_current_or_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(FPDVolume *)v4 monitorLowDiskSpaceRecoveryForConcreteError:v9];
+      [(FPDVolume *)errorCopy monitorLowDiskSpaceRecoveryForConcreteError:v9];
     }
 
     [(FPDVolume *)self monitorLowDiskSpaceRecovery];
@@ -739,14 +739,14 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
 - (BOOL)isInLowDiskSpaceState
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(FPDVolume *)self currentAvailableDiskSpace];
+  currentAvailableDiskSpace = [(FPDVolume *)self currentAvailableDiskSpace];
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [(FPDVolume *)self isInLowDiskSpaceState];
   }
 
-  if (v3 < 0)
+  if (currentAvailableDiskSpace < 0)
   {
     v7 = fp_current_or_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -757,19 +757,19 @@ uint64_t __62__FPDVolume_getProviderDomainID_location_foundDomainID_error___bloc
 
   else
   {
-    v5 = [(FPDVolume *)self requiredDiskSpaceThreshold];
-    if (v3 < v5)
+    requiredDiskSpaceThreshold = [(FPDVolume *)self requiredDiskSpaceThreshold];
+    if (currentAvailableDiskSpace < requiredDiskSpaceThreshold)
     {
-      v6 = v5;
+      v6 = requiredDiskSpaceThreshold;
       v7 = fp_current_or_default_log();
       v8 = 1;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v9 = [(NSString *)self->_root fp_prettyPath];
+        fp_prettyPath = [(NSString *)self->_root fp_prettyPath];
         v13 = 138412802;
-        v14 = v9;
+        v14 = fp_prettyPath;
         v15 = 2048;
-        v16 = v3;
+        v16 = currentAvailableDiskSpace;
         v17 = 2048;
         v18 = v6;
         _os_log_impl(&dword_1CEFC7000, v7, OS_LOG_TYPE_INFO, "[INFO] [diskspace] (%@) In low disk space: %lld bytes (< %lld)", &v13, 0x20u);
@@ -820,7 +820,7 @@ LABEL_11:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v9 = [(FPDVolume *)obj maxTimerIterations];
+        maxTimerIterations = [(FPDVolume *)obj maxTimerIterations];
         _os_log_impl(&dword_1CEFC7000, v5, OS_LOG_TYPE_DEFAULT, "[NOTICE] [diskspace] Disk space monitor reached max iterations (%lu), restarting fileproviderd", buf, 0xCu);
       }
 
@@ -852,14 +852,14 @@ LABEL_11:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  if ([a3 isEqualToString:@"force-low-disk-state"])
+  objectCopy = object;
+  if ([path isEqualToString:@"force-low-disk-state"])
   {
     v9 = internalUserDefaults();
 
-    if (v9 == v8)
+    if (v9 == objectCopy)
     {
       v10 = fp_current_or_default_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -875,12 +875,12 @@ LABEL_11:
 
 - (BOOL)isDiskSpaceMonitorRunning
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPDVolume *)v2 _isDiskSpaceMonitorRunning];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _isDiskSpaceMonitorRunning = [(FPDVolume *)selfCopy _isDiskSpaceMonitorRunning];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return _isDiskSpaceMonitorRunning;
 }
 
 - (unint64_t)timerDelay
@@ -936,9 +936,9 @@ LABEL_11:
 - (void)monitorLowDiskSpaceRecovery
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(FPDVolume *)v2 _isDiskSpaceMonitorRunning])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(FPDVolume *)selfCopy _isDiskSpaceMonitorRunning])
   {
     v3 = fp_current_or_default_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -947,7 +947,7 @@ LABEL_11:
     }
   }
 
-  else if ([(FPDVolume *)v2 shouldSkipDiskSpaceMonitor])
+  else if ([(FPDVolume *)selfCopy shouldSkipDiskSpaceMonitor])
   {
     v3 = fp_current_or_default_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -958,45 +958,45 @@ LABEL_11:
 
   else
   {
-    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v2->_serialQueue);
-    v5 = [(FPDVolume *)v2 timerDelay];
-    v6 = [(FPDVolume *)v2 maxTimerIterations];
+    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_serialQueue);
+    timerDelay = [(FPDVolume *)selfCopy timerDelay];
+    maxTimerIterations = [(FPDVolume *)selfCopy maxTimerIterations];
     v7 = fp_current_or_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v17 = v5;
+      v17 = timerDelay;
       v18 = 2048;
-      v19 = v6;
+      v19 = maxTimerIterations;
       _os_log_impl(&dword_1CEFC7000, v7, OS_LOG_TYPE_DEFAULT, "[NOTICE] [diskspace] Setting up to monitor low disk space recovery (delay %lu s, max iterations %lu)", buf, 0x16u);
     }
 
-    v8 = 1000000000 * v5;
+    v8 = 1000000000 * timerDelay;
     v9 = dispatch_time(0, v8);
-    v2->_diskSpaceRecoveryTimerCurrentIteration = 1;
+    selfCopy->_diskSpaceRecoveryTimerCurrentIteration = 1;
     dispatch_source_set_timer(v4, v9, v8, v8 / 0xA);
     dispatch_set_qos_class_fallback();
-    objc_initWeak(buf, v2);
+    objc_initWeak(buf, selfCopy);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__FPDVolume_monitorLowDiskSpaceRecovery__block_invoke;
     block[3] = &unk_1E83BEE50;
     objc_copyWeak(v15, buf);
-    block[4] = v2;
-    v15[1] = v6;
+    block[4] = selfCopy;
+    v15[1] = maxTimerIterations;
     v3 = v4;
     v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, block);
     dispatch_source_set_event_handler(v3, v10);
 
     dispatch_resume(v3);
-    objc_storeStrong(&v2->_diskSpaceRecoveryTimer, v4);
+    objc_storeStrong(&selfCopy->_diskSpaceRecoveryTimer, v4);
     if (os_variant_has_internal_content())
     {
       v11 = internalUserDefaults();
       if ([v11 BOOLForKey:@"force-low-disk-state"])
       {
         v12 = internalUserDefaults();
-        [v12 addObserver:v2 forKeyPath:@"force-low-disk-state" options:0 context:0];
+        [v12 addObserver:selfCopy forKeyPath:@"force-low-disk-state" options:0 context:0];
       }
     }
 
@@ -1004,7 +1004,7 @@ LABEL_11:
     objc_destroyWeak(buf);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x1E69E9840];
 }
 
@@ -1055,22 +1055,22 @@ void __40__FPDVolume_monitorLowDiskSpaceRecovery__block_invoke(uint64_t a1)
   return 1;
 }
 
-- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)a3 error:(id *)a4
+- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)l error:(id *)error
 {
-  v5 = [a3 URLByAppendingPathComponent:@"Domains.plist"];
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5 error:a4];
+  v5 = [l URLByAppendingPathComponent:@"Domains.plist"];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5 error:error];
 
   return v6;
 }
 
-- (BOOL)writeDomainsProperties:(id)a3 underDirectoryAtURL:(id)a4 error:(id *)a5
+- (BOOL)writeDomainsProperties:(id)properties underDirectoryAtURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:a5];
+  lCopy = l;
+  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:properties format:200 options:0 error:error];
   if (v8)
   {
-    v9 = [v7 URLByAppendingPathComponent:@"Domains.plist"];
-    v10 = [v8 writeToURL:v9 options:1 error:a5];
+    v9 = [lCopy URLByAppendingPathComponent:@"Domains.plist"];
+    v10 = [v8 writeToURL:v9 options:1 error:error];
   }
 
   else
@@ -1084,7 +1084,7 @@ void __40__FPDVolume_monitorLowDiskSpaceRecovery__block_invoke(uint64_t a1)
 - (void)removeBrokenEbihilLinksFromRoot
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_1_6(&dword_1CEFC7000, a1, a3, "[CRIT] %s shouldn't be called on default volumes", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_1_6(&dword_1CEFC7000, self, a3, "[CRIT] %s shouldn't be called on default volumes", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -1181,7 +1181,7 @@ void __26__FPDVolume_supportsEAPFS__block_invoke_cold_1()
 - (void)isInLowDiskSpaceState
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [*(a1 + 56) fp_prettyPath];
+  fp_prettyPath = [*(self + 56) fp_prettyPath];
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(&dword_1CEFC7000, a2, OS_LOG_TYPE_ERROR, "[ERROR] [diskspace] (%@) Received error retrieving free bytes available", v5, 0xCu);
 

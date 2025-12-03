@@ -1,15 +1,15 @@
 @interface STAppStoreIconCellInvertColorsAccessibility
-- (STAppStoreIconCellInvertColorsAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STAppStoreIconCellInvertColorsAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_accessibilityLoadInvertColors;
 @end
 
 @implementation STAppStoreIconCellInvertColorsAccessibility
 
-- (STAppStoreIconCellInvertColorsAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STAppStoreIconCellInvertColorsAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = STAppStoreIconCellInvertColorsAccessibility;
-  v5 = [(STAppStoreIconCellInvertColorsAccessibility *)&v7 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(STAppStoreIconCellInvertColorsAccessibility *)&v7 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   [(STAppStoreIconCellInvertColorsAccessibility *)v5 _accessibilityLoadInvertColors];
 
   return v5;

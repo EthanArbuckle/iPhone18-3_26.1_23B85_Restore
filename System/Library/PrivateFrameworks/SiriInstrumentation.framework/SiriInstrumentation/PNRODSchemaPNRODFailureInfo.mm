@@ -1,41 +1,41 @@
 @interface PNRODSchemaPNRODFailureInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODFailureInfo)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODFailureInfo)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODFailureInfo)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODFailureInfo)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFailureSubType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFailureSubType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODFailureInfo
 
-- (PNRODSchemaPNRODFailureInfo)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODFailureInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PNRODSchemaPNRODFailureInfo;
   v5 = [(PNRODSchemaPNRODFailureInfo *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"failureType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"failureType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODFailureInfo setFailureType:](v5, "setFailureType:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"failureSubType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"failureSubType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODFailureInfo setFailureSubType:](v5, "setFailureSubType:", [v7 longLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"error"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(PNRODSchemaPNRODFailureInfo *)v5 setError:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"underlyingError"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"underlyingError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(PNRODSchemaPNRODFailureInfo *)v5 setUnderlyingError:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"underUnderlyingError"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"underUnderlyingError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODFailureInfo)initWithJSON:(id)a3
+- (PNRODSchemaPNRODFailureInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODFailureInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODFailureInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODFailureInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,20 +101,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_error)
   {
-    v4 = [(PNRODSchemaPNRODFailureInfo *)self error];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    error = [(PNRODSchemaPNRODFailureInfo *)self error];
+    dictionaryRepresentation = [error dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"error"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"error"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"error"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"error"];
     }
   }
 
@@ -122,7 +122,7 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODFailureInfo failureSubType](self, "failureSubType")}];
-    [v3 setObject:v8 forKeyedSubscript:@"failureSubType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"failureSubType"];
 
     has = self->_has;
   }
@@ -130,44 +130,44 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODFailureInfo failureType](self, "failureType")}];
-    [v3 setObject:v9 forKeyedSubscript:@"failureType"];
+    [dictionary setObject:v9 forKeyedSubscript:@"failureType"];
   }
 
   if (self->_underUnderlyingError)
   {
-    v10 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    underUnderlyingError = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
+    dictionaryRepresentation2 = [underUnderlyingError dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"underUnderlyingError"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"underUnderlyingError"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"underUnderlyingError"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"underUnderlyingError"];
     }
   }
 
   if (self->_underlyingError)
   {
-    v13 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    underlyingError = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
+    dictionaryRepresentation3 = [underlyingError dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"underlyingError"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"underlyingError"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"underlyingError"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"underlyingError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -199,16 +199,16 @@ LABEL_6:
   return v5 ^ v6 ^ [(PNRODSchemaPNRError *)self->_underUnderlyingError hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = v4[48];
+  v6 = equalCopy[48];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_24;
@@ -217,13 +217,13 @@ LABEL_6:
   if (*&has)
   {
     failureType = self->_failureType;
-    if (failureType != [v4 failureType])
+    if (failureType != [equalCopy failureType])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -235,26 +235,26 @@ LABEL_6:
   if (v8)
   {
     failureSubType = self->_failureSubType;
-    if (failureSubType != [v4 failureSubType])
+    if (failureSubType != [equalCopy failureSubType])
     {
       goto LABEL_24;
     }
   }
 
-  v10 = [(PNRODSchemaPNRODFailureInfo *)self error];
-  v11 = [v4 error];
-  if ((v10 != 0) == (v11 == 0))
+  error = [(PNRODSchemaPNRODFailureInfo *)self error];
+  error2 = [equalCopy error];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_23;
   }
 
-  v12 = [(PNRODSchemaPNRODFailureInfo *)self error];
-  if (v12)
+  error3 = [(PNRODSchemaPNRODFailureInfo *)self error];
+  if (error3)
   {
-    v13 = v12;
-    v14 = [(PNRODSchemaPNRODFailureInfo *)self error];
-    v15 = [v4 error];
-    v16 = [v14 isEqual:v15];
+    v13 = error3;
+    error4 = [(PNRODSchemaPNRODFailureInfo *)self error];
+    error5 = [equalCopy error];
+    v16 = [error4 isEqual:error5];
 
     if (!v16)
     {
@@ -266,20 +266,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
-  v11 = [v4 underlyingError];
-  if ((v10 != 0) == (v11 == 0))
+  error = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
+  error2 = [equalCopy underlyingError];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_23;
   }
 
-  v17 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
-  if (v17)
+  underlyingError = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
+  if (underlyingError)
   {
-    v18 = v17;
-    v19 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
-    v20 = [v4 underlyingError];
-    v21 = [v19 isEqual:v20];
+    v18 = underlyingError;
+    underlyingError2 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
+    underlyingError3 = [equalCopy underlyingError];
+    v21 = [underlyingError2 isEqual:underlyingError3];
 
     if (!v21)
     {
@@ -291,12 +291,12 @@ LABEL_6:
   {
   }
 
-  v10 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
-  v11 = [v4 underUnderlyingError];
-  if ((v10 != 0) != (v11 == 0))
+  error = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
+  error2 = [equalCopy underUnderlyingError];
+  if ((error != 0) != (error2 == 0))
   {
-    v22 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
-    if (!v22)
+    underUnderlyingError = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
+    if (!underUnderlyingError)
     {
 
 LABEL_27:
@@ -304,10 +304,10 @@ LABEL_27:
       goto LABEL_25;
     }
 
-    v23 = v22;
-    v24 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
-    v25 = [v4 underUnderlyingError];
-    v26 = [v24 isEqual:v25];
+    v23 = underUnderlyingError;
+    underUnderlyingError2 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
+    underUnderlyingError3 = [equalCopy underUnderlyingError];
+    v26 = [underUnderlyingError2 isEqual:underUnderlyingError3];
 
     if (v26)
     {
@@ -327,9 +327,9 @@ LABEL_25:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -342,37 +342,37 @@ LABEL_25:
     PBDataWriterWriteInt64Field();
   }
 
-  v5 = [(PNRODSchemaPNRODFailureInfo *)self error];
+  error = [(PNRODSchemaPNRODFailureInfo *)self error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [(PNRODSchemaPNRODFailureInfo *)self error];
+    error2 = [(PNRODSchemaPNRODFailureInfo *)self error];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
+  underlyingError = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
 
-  if (v7)
+  if (underlyingError)
   {
-    v8 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
+    underlyingError2 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
+  underUnderlyingError = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (underUnderlyingError)
   {
-    v11 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
+    underUnderlyingError2 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (void)setHasFailureSubType:(BOOL)a3
+- (void)setHasFailureSubType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -385,35 +385,35 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = PNRODSchemaPNRODFailureInfo;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODFailureInfo *)self error];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  error = [(PNRODSchemaPNRODFailureInfo *)self error];
+  v7 = [error applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODFailureInfo *)self deleteError];
   }
 
-  v9 = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  underlyingError = [(PNRODSchemaPNRODFailureInfo *)self underlyingError];
+  v10 = [underlyingError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODFailureInfo *)self deleteUnderlyingError];
   }
 
-  v12 = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  underUnderlyingError = [(PNRODSchemaPNRODFailureInfo *)self underUnderlyingError];
+  v13 = [underUnderlyingError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODFailureInfo *)self deleteUnderUnderlyingError];
   }

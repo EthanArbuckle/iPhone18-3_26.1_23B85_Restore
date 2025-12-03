@@ -1,42 +1,42 @@
 @interface CBWiFiManager
 + (CBWiFiManager)sharedInstance;
-- (BOOL)attemptingToAssociateToCurrentNetworkByIndex:(int64_t)a3;
+- (BOOL)attemptingToAssociateToCurrentNetworkByIndex:(int64_t)index;
 - (BOOL)isAssociatedToNetwork;
 - (CBWiFiManager)init;
 - (NSString)currentNetworkSSID;
-- (id)_associationParametersFromScanResult:(id)a3 withPassword:(id)a4;
-- (id)scanParametersWithSSID:(id)a3 isHidden:(BOOL)a4;
-- (void)_associateToEncryptedNetworkWithScanResult:(id)a3 password:(id)a4 isHidden:(BOOL)a5;
-- (void)_associateToHiddenUnencryptedNetwork:(id)a3;
-- (void)_associateToNetworkWithScanResult:(id)a3;
-- (void)_associateToUnencryptedNetwork:(id)a3;
+- (id)_associationParametersFromScanResult:(id)result withPassword:(id)password;
+- (id)scanParametersWithSSID:(id)d isHidden:(BOOL)hidden;
+- (void)_associateToEncryptedNetworkWithScanResult:(id)result password:(id)password isHidden:(BOOL)hidden;
+- (void)_associateToHiddenUnencryptedNetwork:(id)network;
+- (void)_associateToNetworkWithScanResult:(id)result;
+- (void)_associateToUnencryptedNetwork:(id)network;
 - (void)_attemptReconnect;
 - (void)_deregisterWiFiNotifications;
 - (void)_forceWiFiOnIfNecessary;
-- (void)_handleCWInterfaceEvent:(id)a3;
-- (void)_performDirectedScanIncludingHidden:(BOOL)a3 AndAssociateToNetworkWithName:(id)a4 password:(id)a5;
-- (void)_postDidAssociateToEncryptedNetworkNotificationWithError:(id)a3;
-- (void)_postDidAssociateToOpenNetworkNotificationWithError:(id)a3;
+- (void)_handleCWInterfaceEvent:(id)event;
+- (void)_performDirectedScanIncludingHidden:(BOOL)hidden AndAssociateToNetworkWithName:(id)name password:(id)password;
+- (void)_postDidAssociateToEncryptedNetworkNotificationWithError:(id)error;
+- (void)_postDidAssociateToOpenNetworkNotificationWithError:(id)error;
 - (void)_powerStateDidChange;
 - (void)_registerWiFiNotifications;
 - (void)_resolveReconnectingStatus;
 - (void)_restartWiFiNetworkScan;
-- (void)_savePendingInfoWithScanResult:(id)a3 password:(id)a4 isHidden:(BOOL)a5;
-- (void)_setTimeForNextScan:(double)a3;
-- (void)_sortWiFiScanResultsAlphabetically:(id)a3;
+- (void)_savePendingInfoWithScanResult:(id)result password:(id)password isHidden:(BOOL)hidden;
+- (void)_setTimeForNextScan:(double)scan;
+- (void)_sortWiFiScanResultsAlphabetically:(id)alphabetically;
 - (void)_startWiFiNetworkScan;
 - (void)_stopWiFiNetworkScan;
 - (void)_updateForAssociationChange;
 - (void)_updateSignalStrength;
-- (void)_updateSignalStrengthFromRawRSSI:(int)a3 andScaledRSSI:(float)a4;
-- (void)_wifiScanCompleted:(id)a3;
-- (void)associateToHiddenUnencryptedNetworkWithName:(id)a3;
-- (void)associateToNetworkByIndex:(int64_t)a3;
+- (void)_updateSignalStrengthFromRawRSSI:(int)i andScaledRSSI:(float)sI;
+- (void)_wifiScanCompleted:(id)completed;
+- (void)associateToHiddenUnencryptedNetworkWithName:(id)name;
+- (void)associateToNetworkByIndex:(int64_t)index;
 - (void)dealloc;
-- (void)setAttemptsNetworkReconnect:(BOOL)a3;
-- (void)setPowered:(BOOL)a3;
-- (void)startWiFiNetworkScanRequestFrom:(id)a3;
-- (void)stopWiFiNetworkScanRequestFrom:(id)a3;
+- (void)setAttemptsNetworkReconnect:(BOOL)reconnect;
+- (void)setPowered:(BOOL)powered;
+- (void)startWiFiNetworkScanRequestFrom:(id)from;
+- (void)stopWiFiNetworkScanRequestFrom:(id)from;
 - (void)updateWiFiState;
 @end
 
@@ -105,8 +105,8 @@
 
   [(CBWiFiManager *)self _stopWiFiNetworkScan];
   [(CBWiFiManager *)self _deregisterWiFiNotifications];
-  v4 = [(CBWiFiManager *)self cwInterface];
-  [v4 invalidate];
+  cwInterface = [(CBWiFiManager *)self cwInterface];
+  [cwInterface invalidate];
 
   v5.receiver = self;
   v5.super_class = CBWiFiManager;
@@ -115,9 +115,9 @@
 
 - (void)_deregisterWiFiNotifications
 {
-  v3 = [(CBWiFiManager *)self cwInterface];
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v3)
+  if (cwInterface)
   {
     v4 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -126,16 +126,16 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Deregistering Wi-Fi notifications…", v6, 2u);
     }
 
-    v5 = [(CBWiFiManager *)self cwInterface];
-    [v5 stopMonitoringAllEvents];
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
+    [cwInterface2 stopMonitoringAllEvents];
   }
 }
 
 - (void)_registerWiFiNotifications
 {
-  v3 = [(CBWiFiManager *)self cwInterface];
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v3)
+  if (cwInterface)
   {
     objc_initWeak(&location, self);
     v34[0] = _NSConcreteStackBlock;
@@ -143,16 +143,16 @@
     v34[2] = sub_10002518C;
     v34[3] = &unk_10007E1E8;
     objc_copyWeak(&v35, &location);
-    v4 = [(CBWiFiManager *)self cwInterface];
-    [v4 setEventHandler:v34];
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
+    [cwInterface2 setEventHandler:v34];
 
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_1000251E8;
     v32[3] = &unk_10007D668;
     objc_copyWeak(&v33, &location);
-    v5 = [(CBWiFiManager *)self cwInterface];
-    [v5 setInvalidationHandler:v32];
+    cwInterface3 = [(CBWiFiManager *)self cwInterface];
+    [cwInterface3 setInvalidationHandler:v32];
 
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -161,44 +161,44 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Registering for Wi-Fi notifications…", buf, 2u);
     }
 
-    v7 = [(CBWiFiManager *)self cwInterface];
+    cwInterface4 = [(CBWiFiManager *)self cwInterface];
     v30 = 0;
-    [v7 startMonitoringEventType:10 error:&v30];
+    [cwInterface4 startMonitoringEventType:10 error:&v30];
     v8 = v30;
 
-    v9 = [(CBWiFiManager *)self cwInterface];
+    cwInterface5 = [(CBWiFiManager *)self cwInterface];
     v29 = v8;
-    [v9 startMonitoringEventType:11 error:&v29];
+    [cwInterface5 startMonitoringEventType:11 error:&v29];
     v10 = v29;
 
-    v11 = [(CBWiFiManager *)self cwInterface];
+    cwInterface6 = [(CBWiFiManager *)self cwInterface];
     v28 = v10;
-    [v11 startMonitoringEventType:18 error:&v28];
+    [cwInterface6 startMonitoringEventType:18 error:&v28];
     v12 = v28;
 
-    v13 = [(CBWiFiManager *)self cwInterface];
+    cwInterface7 = [(CBWiFiManager *)self cwInterface];
     v27 = v12;
-    [v13 startMonitoringEventType:24 error:&v27];
+    [cwInterface7 startMonitoringEventType:24 error:&v27];
     v14 = v27;
 
-    v15 = [(CBWiFiManager *)self cwInterface];
+    cwInterface8 = [(CBWiFiManager *)self cwInterface];
     v26 = v14;
-    [v15 startMonitoringEventType:1 error:&v26];
+    [cwInterface8 startMonitoringEventType:1 error:&v26];
     v16 = v26;
 
-    v17 = [(CBWiFiManager *)self cwInterface];
+    cwInterface9 = [(CBWiFiManager *)self cwInterface];
     v25 = v16;
-    [v17 startMonitoringEventType:6 error:&v25];
+    [cwInterface9 startMonitoringEventType:6 error:&v25];
     v18 = v25;
 
-    v19 = [(CBWiFiManager *)self cwInterface];
+    cwInterface10 = [(CBWiFiManager *)self cwInterface];
     v24 = v18;
-    [v19 startMonitoringEventType:7 error:&v24];
+    [cwInterface10 startMonitoringEventType:7 error:&v24];
     v20 = v24;
 
-    v21 = [(CBWiFiManager *)self cwInterface];
+    cwInterface11 = [(CBWiFiManager *)self cwInterface];
     v23 = v20;
-    [v21 startMonitoringEventType:2 error:&v23];
+    [cwInterface11 startMonitoringEventType:2 error:&v23];
     v22 = v23;
 
     objc_destroyWeak(&v33);
@@ -207,25 +207,25 @@
   }
 }
 
-- (void)_handleCWInterfaceEvent:(id)a3
+- (void)_handleCWInterfaceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
+  eventCopy = event;
+  type = [eventCopy type];
   v6 = CheckerBoardLogHandleForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 > 9)
+  if (type > 9)
   {
-    if (v5 > 17)
+    if (type > 17)
     {
-      if (v5 != 18)
+      if (type != 18)
       {
-        if (v5 == 24)
+        if (type == 24)
         {
           if (v7)
           {
-            v8 = [(CBWiFiManager *)self cwInterface];
+            cwInterface = [(CBWiFiManager *)self cwInterface];
             v21 = 67109120;
-            LODWORD(v22[0]) = [v8 reachabilityFlags];
+            LODWORD(v22[0]) = [cwInterface reachabilityFlags];
             _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WiFi Reachability has changes %u", &v21, 8u);
             goto LABEL_25;
           }
@@ -248,7 +248,7 @@ LABEL_38:
       v10 = "Wifi network service changed";
     }
 
-    else if (v5 == 10)
+    else if (type == 10)
     {
       if (!v7)
       {
@@ -261,7 +261,7 @@ LABEL_38:
 
     else
     {
-      if (v5 != 11)
+      if (type != 11)
       {
         goto LABEL_39;
       }
@@ -279,9 +279,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (v5 > 5)
+  if (type > 5)
   {
-    if (v5 == 6)
+    if (type == 6)
     {
       if (v7)
       {
@@ -292,17 +292,17 @@ LABEL_38:
       v6 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(CBWiFiManager *)self cwInterface];
-        v18 = [v17 cachedLinkDownStatus];
+        cwInterface2 = [(CBWiFiManager *)self cwInterface];
+        cachedLinkDownStatus = [cwInterface2 cachedLinkDownStatus];
         v21 = 138412290;
-        v22[0] = v18;
+        v22[0] = cachedLinkDownStatus;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WiFi link status set to %@", &v21, 0xCu);
       }
 
       goto LABEL_41;
     }
 
-    if (v5 == 7)
+    if (type == 7)
     {
       if (v7)
       {
@@ -313,9 +313,9 @@ LABEL_38:
       v11 = 0.0;
       if ([(CBWiFiManager *)self isAssociatedToNetwork])
       {
-        v12 = [(CBWiFiManager *)self cwInterface];
+        cwInterface3 = [(CBWiFiManager *)self cwInterface];
 
-        if (v12)
+        if (cwInterface3)
         {
           v13 = CheckerBoardLogHandleForCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -324,9 +324,9 @@ LABEL_38:
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Updating signal strength…", &v21, 2u);
           }
 
-          v14 = [(CBWiFiManager *)self cwInterface];
-          v15 = [v14 currentScanResult];
-          v12 = [v15 RSSI];
+          cwInterface4 = [(CBWiFiManager *)self cwInterface];
+          currentScanResult = [cwInterface4 currentScanResult];
+          cwInterface3 = [currentScanResult RSSI];
 
           WFScaleRSSI();
           v11 = v16;
@@ -335,21 +335,21 @@ LABEL_38:
 
       else
       {
-        v12 = 0;
+        cwInterface3 = 0;
       }
 
       v19 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 67109376;
-        LODWORD(v22[0]) = v12;
+        LODWORD(v22[0]) = cwInterface3;
         WORD2(v22[0]) = 2048;
         *(v22 + 6) = v11;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Raw RSSI %d, Scaled RSSI %f", &v21, 0x12u);
       }
 
       *&v20 = v11;
-      [(CBWiFiManager *)self _updateSignalStrengthFromRawRSSI:v12 andScaledRSSI:v20];
+      [(CBWiFiManager *)self _updateSignalStrengthFromRawRSSI:cwInterface3 andScaledRSSI:v20];
       goto LABEL_46;
     }
 
@@ -357,7 +357,7 @@ LABEL_39:
     if (v7)
     {
       v21 = 134217984;
-      v22[0] = [v4 type];
+      v22[0] = [eventCopy type];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unhandled CWFEvent %ld", &v21, 0xCu);
     }
 
@@ -366,16 +366,16 @@ LABEL_41:
     goto LABEL_46;
   }
 
-  if (v5 != 1)
+  if (type != 1)
   {
-    if (v5 == 2)
+    if (type == 2)
     {
       if (v7)
       {
-        v8 = [(CBWiFiManager *)self cwInterface];
-        v9 = [v8 networkName];
+        cwInterface = [(CBWiFiManager *)self cwInterface];
+        networkName = [cwInterface networkName];
         v21 = 138412290;
-        v22[0] = v9;
+        v22[0] = networkName;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WiFi SSID has changed: %@", &v21, 0xCu);
 
 LABEL_25:
@@ -400,11 +400,11 @@ LABEL_46:
 
 - (NSString)currentNetworkSSID
 {
-  v2 = [(CBWiFiManager *)self cwInterface];
-  v3 = [v2 currentScanResult];
-  v4 = [v3 networkName];
+  cwInterface = [(CBWiFiManager *)self cwInterface];
+  currentScanResult = [cwInterface currentScanResult];
+  networkName = [currentScanResult networkName];
 
-  return v4;
+  return networkName;
 }
 
 - (void)updateWiFiState
@@ -432,32 +432,32 @@ LABEL_46:
 
     else
     {
-      v10 = [(CBWiFiManager *)self pendingLastGoodNetwork];
-      if (v10)
+      pendingLastGoodNetwork = [(CBWiFiManager *)self pendingLastGoodNetwork];
+      if (pendingLastGoodNetwork)
       {
-        v20 = v10;
-        v11 = [(CBWiFiManager *)self pendingLastGoodNetwork];
-        v12 = [v11 scanResult];
-        v13 = [v12 networkName];
-        v14 = [(CBWiFiManager *)self currentNetworkSSID];
-        if ([v13 isEqualToString:v14])
+        v20 = pendingLastGoodNetwork;
+        pendingLastGoodNetwork2 = [(CBWiFiManager *)self pendingLastGoodNetwork];
+        scanResult = [pendingLastGoodNetwork2 scanResult];
+        networkName = [scanResult networkName];
+        currentNetworkSSID = [(CBWiFiManager *)self currentNetworkSSID];
+        if ([networkName isEqualToString:currentNetworkSSID])
         {
-          v15 = [(CBWiFiManager *)self cwInterface];
-          v16 = [v15 reachabilityFlags];
+          cwInterface = [(CBWiFiManager *)self cwInterface];
+          reachabilityFlags = [cwInterface reachabilityFlags];
 
-          if ((v16 & 2) != 0)
+          if ((reachabilityFlags & 2) != 0)
           {
             v17 = CheckerBoardLogHandleForCategory();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [(CBWiFiManager *)self currentNetworkSSID];
+              currentNetworkSSID2 = [(CBWiFiManager *)self currentNetworkSSID];
               *buf = 138412290;
-              v23 = v18;
+              v23 = currentNetworkSSID2;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Updating last known good network to %@", buf, 0xCu);
             }
 
-            v19 = [(CBWiFiManager *)self pendingLastGoodNetwork];
-            [(CBWiFiManager *)self setLastGoodNetwork:v19];
+            pendingLastGoodNetwork3 = [(CBWiFiManager *)self pendingLastGoodNetwork];
+            [(CBWiFiManager *)self setLastGoodNetwork:pendingLastGoodNetwork3];
 
             [(CBWiFiManager *)self setPendingLastGoodNetwork:0];
           }
@@ -472,22 +472,22 @@ LABEL_46:
 
   else
   {
-    v3 = [(CBWiFiManager *)self lastGoodNetwork];
-    if (v3)
+    lastGoodNetwork = [(CBWiFiManager *)self lastGoodNetwork];
+    if (lastGoodNetwork)
     {
-      v4 = v3;
-      v5 = [(CBWiFiManager *)self reconnecting];
+      v4 = lastGoodNetwork;
+      reconnecting = [(CBWiFiManager *)self reconnecting];
 
-      if ((v5 & 1) == 0)
+      if ((reconnecting & 1) == 0)
       {
         v6 = CheckerBoardLogHandleForCategory();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [(CBWiFiManager *)self lastGoodNetwork];
-          v8 = [v7 scanResult];
-          v9 = [v8 networkName];
+          lastGoodNetwork2 = [(CBWiFiManager *)self lastGoodNetwork];
+          scanResult2 = [lastGoodNetwork2 scanResult];
+          networkName2 = [scanResult2 networkName];
           *buf = 138412290;
-          v23 = v9;
+          v23 = networkName2;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Beginning attempt to reconnect to network %@", buf, 0xCu);
         }
 
@@ -514,12 +514,12 @@ LABEL_46:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Ending attempt to reconnect to network", v6, 2u);
     }
 
-    v4 = [(CBWiFiManager *)self reconnectTimer];
+    reconnectTimer = [(CBWiFiManager *)self reconnectTimer];
 
-    if (v4)
+    if (reconnectTimer)
     {
-      v5 = [(CBWiFiManager *)self reconnectTimer];
-      [v5 invalidate];
+      reconnectTimer2 = [(CBWiFiManager *)self reconnectTimer];
+      [reconnectTimer2 invalidate];
 
       [(CBWiFiManager *)self setReconnectTimer:0];
     }
@@ -531,16 +531,16 @@ LABEL_46:
 
 - (BOOL)isAssociatedToNetwork
 {
-  v2 = [(CBWiFiManager *)self cwInterface];
-  v3 = [v2 currentScanResult];
-  v4 = v3 != 0;
+  cwInterface = [(CBWiFiManager *)self cwInterface];
+  currentScanResult = [cwInterface currentScanResult];
+  v4 = currentScanResult != 0;
 
   return v4;
 }
 
-- (void)_sortWiFiScanResultsAlphabetically:(id)a3
+- (void)_sortWiFiScanResultsAlphabetically:(id)alphabetically
 {
-  v3 = a3;
+  alphabeticallyCopy = alphabetically;
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -548,15 +548,15 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Sorting Wi-Fi scan results…", v5, 2u);
   }
 
-  [v3 sortWithOptions:16 usingComparator:&stru_10007E228];
+  [alphabeticallyCopy sortWithOptions:16 usingComparator:&stru_10007E228];
 }
 
 - (void)_forceWiFiOnIfNecessary
 {
-  v3 = [(CBWiFiManager *)self isWiFiPoweredOn];
+  isWiFiPoweredOn = [(CBWiFiManager *)self isWiFiPoweredOn];
   v4 = CheckerBoardLogHandleForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isWiFiPoweredOn)
   {
     if (v5)
     {
@@ -577,24 +577,24 @@ LABEL_46:
   }
 }
 
-- (void)setPowered:(BOOL)a3
+- (void)setPowered:(BOOL)powered
 {
-  v3 = a3;
-  v5 = [(CBWiFiManager *)self cwInterface];
+  poweredCopy = powered;
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v5)
+  if (cwInterface)
   {
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v12) = v3;
+      LODWORD(v12) = poweredCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting Wi-Fi power state to %d", buf, 8u);
     }
 
-    v7 = [(CBWiFiManager *)self cwInterface];
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
     v10 = 0;
-    [v7 setPower:v3 error:&v10];
+    [cwInterface2 setPower:poweredCopy error:&v10];
     v8 = v10;
 
     if (v8)
@@ -617,12 +617,12 @@ LABEL_46:
 
 - (void)_powerStateDidChange
 {
-  v3 = [(CBWiFiManager *)self cwInterface];
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v3)
+  if (cwInterface)
   {
-    v4 = [(CBWiFiManager *)self cwInterface];
-    -[CBWiFiManager setWifiPoweredOn:](self, "setWifiPoweredOn:", [v4 powerOn]);
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
+    -[CBWiFiManager setWifiPoweredOn:](self, "setWifiPoweredOn:", [cwInterface2 powerOn]);
 
     v5 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -638,16 +638,16 @@ LABEL_46:
   }
 }
 
-- (id)scanParametersWithSSID:(id)a3 isHidden:(BOOL)a4
+- (id)scanParametersWithSSID:(id)d isHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v5 = a3;
+  hiddenCopy = hidden;
+  dCopy = d;
   v6 = objc_alloc_init(CWFScanParameters);
-  [v6 setIncludeHiddenNetworks:v4];
+  [v6 setIncludeHiddenNetworks:hiddenCopy];
   [v6 setMinimumRSSI:-80];
-  if (v5)
+  if (dCopy)
   {
-    [v6 setSSID:v5];
+    [v6 setSSID:dCopy];
   }
 
   [v6 setMergeScanResults:1];
@@ -657,13 +657,13 @@ LABEL_46:
   return v6;
 }
 
-- (void)startWiFiNetworkScanRequestFrom:(id)a3
+- (void)startWiFiNetworkScanRequestFrom:(id)from
 {
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v5 = [(CBWiFiManager *)self wifiScanRequestors];
-    v6 = [v5 count];
+    wifiScanRequestors = [(CBWiFiManager *)self wifiScanRequestors];
+    v6 = [wifiScanRequestors count];
 
     v7 = CheckerBoardLogHandleForCategory();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -672,7 +672,7 @@ LABEL_46:
       if (v8)
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = fromCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "WiFi scan requested by %@, but it is not the first.", &v12, 0xCu);
       }
     }
@@ -682,38 +682,38 @@ LABEL_46:
       if (v8)
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = fromCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "First WiFi scan request from %@. Beginning WiFi scan", &v12, 0xCu);
       }
 
       [(CBWiFiManager *)self _startWiFiNetworkScan];
     }
 
-    v10 = [(CBWiFiManager *)self wifiScanRequestors];
-    v11 = [v10 containsObject:v4];
+    wifiScanRequestors2 = [(CBWiFiManager *)self wifiScanRequestors];
+    v11 = [wifiScanRequestors2 containsObject:fromCopy];
 
     if (v11)
     {
-      v9 = CheckerBoardLogHandleForCategory();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      wifiScanRequestors3 = CheckerBoardLogHandleForCategory();
+      if (os_log_type_enabled(wifiScanRequestors3, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v4;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ is already known to be a WiFi scan requestor", &v12, 0xCu);
+        v13 = fromCopy;
+        _os_log_impl(&_mh_execute_header, wifiScanRequestors3, OS_LOG_TYPE_DEFAULT, "%@ is already known to be a WiFi scan requestor", &v12, 0xCu);
       }
     }
 
     else
     {
-      v9 = [(CBWiFiManager *)self wifiScanRequestors];
-      [v9 addObject:v4];
+      wifiScanRequestors3 = [(CBWiFiManager *)self wifiScanRequestors];
+      [wifiScanRequestors3 addObject:fromCopy];
     }
   }
 
   else
   {
-    v9 = CheckerBoardLogHandleForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    wifiScanRequestors3 = CheckerBoardLogHandleForCategory();
+    if (os_log_type_enabled(wifiScanRequestors3, OS_LOG_TYPE_ERROR))
     {
       sub_100047708();
     }
@@ -736,24 +736,24 @@ LABEL_46:
   objc_destroyWeak(&location);
 }
 
-- (void)stopWiFiNetworkScanRequestFrom:(id)a3
+- (void)stopWiFiNetworkScanRequestFrom:(id)from
 {
-  v4 = a3;
-  if (v4 && (-[CBWiFiManager wifiScanRequestors](self, "wifiScanRequestors"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v4], v5, v6))
+  fromCopy = from;
+  if (fromCopy && (-[CBWiFiManager wifiScanRequestors](self, "wifiScanRequestors"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:fromCopy], v5, v6))
   {
     v7 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = fromCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "WiFi scan requestor %@ no longer needs WiFi scan.", &v13, 0xCu);
     }
 
-    v8 = [(CBWiFiManager *)self wifiScanRequestors];
-    [v8 removeObject:v4];
+    wifiScanRequestors = [(CBWiFiManager *)self wifiScanRequestors];
+    [wifiScanRequestors removeObject:fromCopy];
 
-    v9 = [(CBWiFiManager *)self wifiScanRequestors];
-    v10 = [v9 count];
+    wifiScanRequestors2 = [(CBWiFiManager *)self wifiScanRequestors];
+    v10 = [wifiScanRequestors2 count];
 
     if (!v10)
     {
@@ -781,21 +781,21 @@ LABEL_46:
 - (void)_stopWiFiNetworkScan
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [(CBWiFiManager *)self cwInterface];
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v3)
+  if (cwInterface)
   {
-    v4 = [(CBWiFiManager *)self cwInterface];
-    v5 = [(CBWiFiManager *)self cwInterface];
-    v6 = [v5 requestParameters];
-    v7 = [v6 UUID];
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
+    cwInterface3 = [(CBWiFiManager *)self cwInterface];
+    requestParameters = [cwInterface3 requestParameters];
+    uUID = [requestParameters UUID];
     v12 = 0;
-    [v4 cancelRequestsWithUUID:v7 error:&v12];
+    [cwInterface2 cancelRequestsWithUUID:uUID error:&v12];
   }
 
-  v8 = [(CBWiFiManager *)self scanTimer];
+  scanTimer = [(CBWiFiManager *)self scanTimer];
 
-  if (v8)
+  if (scanTimer)
   {
     v9 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -804,8 +804,8 @@ LABEL_46:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Invalidating scan timer…", v11, 2u);
     }
 
-    v10 = [(CBWiFiManager *)self scanTimer];
-    [v10 invalidate];
+    scanTimer2 = [(CBWiFiManager *)self scanTimer];
+    [scanTimer2 invalidate];
 
     [(CBWiFiManager *)self setScanTimer:0];
   }
@@ -825,15 +825,15 @@ LABEL_46:
   [(CBWiFiManager *)self performSelector:"_startWiFiNetworkScan" withObject:0 afterDelay:0.3];
 }
 
-- (void)_wifiScanCompleted:(id)a3
+- (void)_wifiScanCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   [(CBWiFiManager *)self updateWiFiState];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  v5 = [NSMutableArray arrayWithArray:completedCopy];
 
   [(CBWiFiManager *)self setFilteredWiFiScanResults:v5];
-  v6 = [(CBWiFiManager *)self filteredWiFiScanResults];
-  [(CBWiFiManager *)self _sortWiFiScanResultsAlphabetically:v6];
+  filteredWiFiScanResults = [(CBWiFiManager *)self filteredWiFiScanResults];
+  [(CBWiFiManager *)self _sortWiFiScanResultsAlphabetically:filteredWiFiScanResults];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 postNotificationName:@"CBWiFiNetworkScanCompletedNotification" object:0];
@@ -843,13 +843,13 @@ LABEL_46:
   [(CBWiFiManager *)self _setTimeForNextScan:8.0];
 }
 
-- (void)_setTimeForNextScan:(double)a3
+- (void)_setTimeForNextScan:(double)scan
 {
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = a3;
+    scanCopy = scan;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Performing next scan in %f seconds", buf, 0xCu);
   }
 
@@ -865,16 +865,16 @@ LABEL_46:
 
   else
   {
-    v7 = [(CBWiFiManager *)self scanTimer];
+    scanTimer = [(CBWiFiManager *)self scanTimer];
 
-    if (v7)
+    if (scanTimer)
     {
-      v8 = [(CBWiFiManager *)self scanTimer];
-      [v8 invalidate];
+      scanTimer2 = [(CBWiFiManager *)self scanTimer];
+      [scanTimer2 invalidate];
     }
 
-    v9 = [(CBWiFiManager *)self filteredWiFiScanResults];
-    v10 = [v9 copy];
+    filteredWiFiScanResults = [(CBWiFiManager *)self filteredWiFiScanResults];
+    v10 = [filteredWiFiScanResults copy];
     [(CBWiFiManager *)self setPreviousScanFilteredWiFiScanResults:v10];
 
     v11[0] = _NSConcreteStackBlock;
@@ -882,50 +882,50 @@ LABEL_46:
     v11[2] = sub_100026DD0;
     v11[3] = &unk_10007E278;
     v11[4] = self;
-    *&v11[5] = a3;
+    *&v11[5] = scan;
     dispatch_sync(&_dispatch_main_q, v11);
   }
 }
 
-- (BOOL)attemptingToAssociateToCurrentNetworkByIndex:(int64_t)a3
+- (BOOL)attemptingToAssociateToCurrentNetworkByIndex:(int64_t)index
 {
-  v5 = [(CBWiFiManager *)self filteredWiFiScanResults];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  filteredWiFiScanResults = [(CBWiFiManager *)self filteredWiFiScanResults];
+  v6 = [filteredWiFiScanResults objectAtIndexedSubscript:index];
 
-  v7 = [v6 networkName];
-  v8 = [(CBWiFiManager *)self currentNetworkSSID];
-  v9 = [v7 isEqualToString:v8];
+  networkName = [v6 networkName];
+  currentNetworkSSID = [(CBWiFiManager *)self currentNetworkSSID];
+  v9 = [networkName isEqualToString:currentNetworkSSID];
 
   return v9;
 }
 
-- (void)associateToNetworkByIndex:(int64_t)a3
+- (void)associateToNetworkByIndex:(int64_t)index
 {
-  v5 = [(CBWiFiManager *)self filteredWiFiScanResults];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  filteredWiFiScanResults = [(CBWiFiManager *)self filteredWiFiScanResults];
+  v6 = [filteredWiFiScanResults objectAtIndexedSubscript:index];
 
   [(CBWiFiManager *)self _associateToNetworkWithScanResult:v6];
 }
 
-- (id)_associationParametersFromScanResult:(id)a3 withPassword:(id)a4
+- (id)_associationParametersFromScanResult:(id)result withPassword:(id)password
 {
-  v5 = a4;
-  v6 = a3;
+  passwordCopy = password;
+  resultCopy = result;
   v7 = objc_alloc_init(CWFAssocParameters);
-  [v7 setScanResult:v6];
+  [v7 setScanResult:resultCopy];
 
   [v7 setRememberUponSuccessfulAssociation:1];
-  if (v5)
+  if (passwordCopy)
   {
-    [v7 setPassword:v5];
+    [v7 setPassword:passwordCopy];
   }
 
   return v7;
 }
 
-- (void)associateToHiddenUnencryptedNetworkWithName:(id)a3
+- (void)associateToHiddenUnencryptedNetworkWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -933,25 +933,25 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Attempting to associate to network with a directed scan", v6, 2u);
   }
 
-  [(CBWiFiManager *)self _performDirectedScanIncludingHidden:1 AndAssociateToNetworkWithName:v4 password:0];
+  [(CBWiFiManager *)self _performDirectedScanIncludingHidden:1 AndAssociateToNetworkWithName:nameCopy password:0];
 }
 
-- (void)_performDirectedScanIncludingHidden:(BOOL)a3 AndAssociateToNetworkWithName:(id)a4 password:(id)a5
+- (void)_performDirectedScanIncludingHidden:(BOOL)hidden AndAssociateToNetworkWithName:(id)name password:(id)password
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  hiddenCopy = hidden;
+  nameCopy = name;
+  passwordCopy = password;
   v10 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v6;
+    HIDWORD(buf) = hiddenCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Attempting to associate to network with hidden scan (%d)…", &buf, 8u);
   }
 
   v11 = +[NSNotificationCenter defaultCenter];
   v12 = v11;
-  if (v9)
+  if (passwordCopy)
   {
     v13 = @"CBWiFiManagerWillAssociateToEncryptedNetworkNotification";
   }
@@ -971,26 +971,26 @@ LABEL_46:
   block[3] = &unk_10007E2C8;
   objc_copyWeak(&v20, &buf);
   block[4] = self;
-  v18 = v8;
-  v21 = v6;
-  v19 = v9;
-  v15 = v9;
-  v16 = v8;
+  v18 = nameCopy;
+  v21 = hiddenCopy;
+  v19 = passwordCopy;
+  v15 = passwordCopy;
+  v16 = nameCopy;
   dispatch_async(v14, block);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&buf);
 }
 
-- (void)_associateToNetworkWithScanResult:(id)a3
+- (void)_associateToNetworkWithScanResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 requiresPassword];
+  resultCopy = result;
+  requiresPassword = [resultCopy requiresPassword];
   v6 = +[NSNotificationCenter defaultCenter];
-  if (v5)
+  if (requiresPassword)
   {
     v11 = @"CBNetworkInfoKey";
-    v12 = v4;
+    v12 = resultCopy;
     v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
     [v6 postNotificationName:@"CBWiFiManagerWillAssociateToEncryptedNetworkNotification" object:0 userInfo:v7];
@@ -999,50 +999,50 @@ LABEL_46:
   else
   {
     v9 = @"CBNetworkInfoKey";
-    v10 = v4;
+    v10 = resultCopy;
     v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     [v6 postNotificationName:@"CBWiFiManagerWillAssociateToOpenNetworkNotification" object:0 userInfo:v8];
 
-    [(CBWiFiManager *)self _associateToUnencryptedNetwork:v4];
-    v6 = v4;
+    [(CBWiFiManager *)self _associateToUnencryptedNetwork:resultCopy];
+    v6 = resultCopy;
   }
 }
 
-- (void)_savePendingInfoWithScanResult:(id)a3 password:(id)a4 isHidden:(BOOL)a5
+- (void)_savePendingInfoWithScanResult:(id)result password:(id)password isHidden:(BOOL)hidden
 {
-  v5 = a5;
-  v13 = a3;
-  v8 = a4;
+  hiddenCopy = hidden;
+  resultCopy = result;
+  passwordCopy = password;
   if (![(CBWiFiManager *)self reconnecting])
   {
     v9 = objc_alloc_init(CBWiFiNetworkInfo);
     [(CBWiFiManager *)self setPendingLastGoodNetwork:v9];
 
-    v10 = [(CBWiFiManager *)self pendingLastGoodNetwork];
-    [v10 setScanResult:v13];
+    pendingLastGoodNetwork = [(CBWiFiManager *)self pendingLastGoodNetwork];
+    [pendingLastGoodNetwork setScanResult:resultCopy];
 
-    v11 = [(CBWiFiManager *)self pendingLastGoodNetwork];
-    [v11 setPassword:v8];
+    pendingLastGoodNetwork2 = [(CBWiFiManager *)self pendingLastGoodNetwork];
+    [pendingLastGoodNetwork2 setPassword:passwordCopy];
 
-    v12 = [(CBWiFiManager *)self pendingLastGoodNetwork];
-    [v12 setIsHidden:v5];
+    pendingLastGoodNetwork3 = [(CBWiFiManager *)self pendingLastGoodNetwork];
+    [pendingLastGoodNetwork3 setIsHidden:hiddenCopy];
 
     [(CBWiFiManager *)self setLastGoodNetwork:0];
   }
 }
 
-- (void)_associateToEncryptedNetworkWithScanResult:(id)a3 password:(id)a4 isHidden:(BOOL)a5
+- (void)_associateToEncryptedNetworkWithScanResult:(id)result password:(id)password isHidden:(BOOL)hidden
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CBWiFiManager *)self cwInterface];
+  hiddenCopy = hidden;
+  resultCopy = result;
+  passwordCopy = password;
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v10)
+  if (cwInterface)
   {
     v11 = CheckerBoardLogHandleForCategory();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (passwordCopy)
     {
       if (v12)
       {
@@ -1060,28 +1060,28 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    [(CBWiFiManager *)self _savePendingInfoWithScanResult:v8 password:v9 isHidden:v5];
-    v14 = [(CBWiFiManager *)self _associationParametersFromScanResult:v8 withPassword:v9];
+    [(CBWiFiManager *)self _savePendingInfoWithScanResult:resultCopy password:passwordCopy isHidden:hiddenCopy];
+    v14 = [(CBWiFiManager *)self _associationParametersFromScanResult:resultCopy withPassword:passwordCopy];
     objc_initWeak(buf, self);
-    v15 = [(CBWiFiManager *)self cwInterface];
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100027BA8;
     v16[3] = &unk_10007E2F0;
     objc_copyWeak(&v17, buf);
-    [v15 associateWithParameters:v14 reply:v16];
+    [cwInterface2 associateWithParameters:v14 reply:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_associateToUnencryptedNetwork:(id)a3
+- (void)_associateToUnencryptedNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(CBWiFiManager *)self cwInterface];
+  networkCopy = network;
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v5)
+  if (cwInterface)
   {
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1090,28 +1090,28 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Begin unencrypted network association…", buf, 2u);
     }
 
-    [(CBWiFiManager *)self _savePendingInfoWithScanResult:v4 password:0 isHidden:0];
-    v7 = [(CBWiFiManager *)self _associationParametersFromScanResult:v4 withPassword:0];
+    [(CBWiFiManager *)self _savePendingInfoWithScanResult:networkCopy password:0 isHidden:0];
+    v7 = [(CBWiFiManager *)self _associationParametersFromScanResult:networkCopy withPassword:0];
     objc_initWeak(buf, self);
-    v8 = [(CBWiFiManager *)self cwInterface];
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100027DA8;
     v9[3] = &unk_10007E2F0;
     objc_copyWeak(&v10, buf);
-    [v8 associateWithParameters:v7 reply:v9];
+    [cwInterface2 associateWithParameters:v7 reply:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_associateToHiddenUnencryptedNetwork:(id)a3
+- (void)_associateToHiddenUnencryptedNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(CBWiFiManager *)self cwInterface];
+  networkCopy = network;
+  cwInterface = [(CBWiFiManager *)self cwInterface];
 
-  if (v5)
+  if (cwInterface)
   {
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1120,34 +1120,34 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Begin hidden unencrypted network association…", buf, 2u);
     }
 
-    [(CBWiFiManager *)self _savePendingInfoWithScanResult:v4 password:0 isHidden:1];
-    v7 = [(CBWiFiManager *)self _associationParametersFromScanResult:v4 withPassword:0];
+    [(CBWiFiManager *)self _savePendingInfoWithScanResult:networkCopy password:0 isHidden:1];
+    v7 = [(CBWiFiManager *)self _associationParametersFromScanResult:networkCopy withPassword:0];
     objc_initWeak(buf, self);
-    v8 = [(CBWiFiManager *)self cwInterface];
+    cwInterface2 = [(CBWiFiManager *)self cwInterface];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100027FA8;
     v9[3] = &unk_10007E2F0;
     objc_copyWeak(&v10, buf);
-    [v8 associateWithParameters:v7 reply:v9];
+    [cwInterface2 associateWithParameters:v7 reply:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)setAttemptsNetworkReconnect:(BOOL)a3
+- (void)setAttemptsNetworkReconnect:(BOOL)reconnect
 {
-  v3 = a3;
+  reconnectCopy = reconnect;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = reconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Network reconnect enabled: %d", v6, 8u);
   }
 
-  [(CBWiFiManager *)self setNetworkReconnectEnabled:v3];
+  [(CBWiFiManager *)self setNetworkReconnectEnabled:reconnectCopy];
 }
 
 - (void)_attemptReconnect
@@ -1162,75 +1162,75 @@ LABEL_7:
 
   if ([(CBWiFiManager *)self reconnecting])
   {
-    v4 = [(CBWiFiManager *)self lastGoodNetwork];
+    lastGoodNetwork = [(CBWiFiManager *)self lastGoodNetwork];
 
-    if (v4)
+    if (lastGoodNetwork)
     {
-      v5 = [(CBWiFiManager *)self attemptsNetworkReconnect];
-      v6 = CheckerBoardLogHandleForCategory();
-      v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-      if (v5)
+      attemptsNetworkReconnect = [(CBWiFiManager *)self attemptsNetworkReconnect];
+      lastGoodNetwork7 = CheckerBoardLogHandleForCategory();
+      v7 = os_log_type_enabled(lastGoodNetwork7, OS_LOG_TYPE_DEFAULT);
+      if (attemptsNetworkReconnect)
       {
         if (v7)
         {
-          v8 = [(CBWiFiManager *)self lastGoodNetwork];
-          v9 = [v8 scanResult];
-          v10 = [v9 networkName];
-          v11 = [(CBWiFiManager *)self lastGoodNetwork];
-          v12 = [v11 password];
-          v13 = [(CBWiFiManager *)self lastGoodNetwork];
-          v14 = [v13 scanResult];
-          v15 = [v14 requiresPassword];
+          lastGoodNetwork2 = [(CBWiFiManager *)self lastGoodNetwork];
+          scanResult = [lastGoodNetwork2 scanResult];
+          networkName = [scanResult networkName];
+          lastGoodNetwork3 = [(CBWiFiManager *)self lastGoodNetwork];
+          password = [lastGoodNetwork3 password];
+          lastGoodNetwork4 = [(CBWiFiManager *)self lastGoodNetwork];
+          scanResult2 = [lastGoodNetwork4 scanResult];
+          requiresPassword = [scanResult2 requiresPassword];
           v30 = 138412802;
-          v31 = v10;
+          v31 = networkName;
           v32 = 1024;
-          v33 = v12 != 0;
+          v33 = password != 0;
           v34 = 1024;
-          v35 = v15;
-          _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Attempting to reconnect to network with SSID: (%@) Password: (%d) Security: (%d)", &v30, 0x18u);
+          v35 = requiresPassword;
+          _os_log_impl(&_mh_execute_header, lastGoodNetwork7, OS_LOG_TYPE_DEFAULT, "Attempting to reconnect to network with SSID: (%@) Password: (%d) Security: (%d)", &v30, 0x18u);
         }
 
-        v16 = [(CBWiFiManager *)self lastGoodNetwork];
-        v17 = [v16 password];
+        lastGoodNetwork5 = [(CBWiFiManager *)self lastGoodNetwork];
+        password2 = [lastGoodNetwork5 password];
 
-        v18 = [(CBWiFiManager *)self lastGoodNetwork];
-        v6 = v18;
-        if (v17)
+        lastGoodNetwork6 = [(CBWiFiManager *)self lastGoodNetwork];
+        lastGoodNetwork7 = lastGoodNetwork6;
+        if (password2)
         {
-          v19 = [v18 isHidden];
+          isHidden = [lastGoodNetwork6 isHidden];
 
-          v6 = [(CBWiFiManager *)self lastGoodNetwork];
-          v20 = [v6 scanResult];
-          v21 = [v20 networkName];
-          v22 = [(CBWiFiManager *)self lastGoodNetwork];
-          v23 = [v22 password];
-          if (v19)
+          lastGoodNetwork7 = [(CBWiFiManager *)self lastGoodNetwork];
+          scanResult3 = [lastGoodNetwork7 scanResult];
+          networkName2 = [scanResult3 networkName];
+          lastGoodNetwork8 = [(CBWiFiManager *)self lastGoodNetwork];
+          password3 = [lastGoodNetwork8 password];
+          if (isHidden)
           {
-            [(CBWiFiManager *)self associateToHiddenEncryptedNetworkWithName:v21 password:v23];
+            [(CBWiFiManager *)self associateToHiddenEncryptedNetworkWithName:networkName2 password:password3];
           }
 
           else
           {
-            [(CBWiFiManager *)self associateToEncryptedNetworkWithName:v21 password:v23];
+            [(CBWiFiManager *)self associateToEncryptedNetworkWithName:networkName2 password:password3];
           }
         }
 
         else
         {
-          v20 = [v18 scanResult];
-          v21 = [v20 networkName];
-          [(CBWiFiManager *)self associateToHiddenUnencryptedNetworkWithName:v21];
+          scanResult3 = [lastGoodNetwork6 scanResult];
+          networkName2 = [scanResult3 networkName];
+          [(CBWiFiManager *)self associateToHiddenUnencryptedNetworkWithName:networkName2];
         }
       }
 
       else if (v7)
       {
-        v27 = [(CBWiFiManager *)self lastGoodNetwork];
-        v28 = [v27 scanResult];
-        v29 = [v28 networkName];
+        lastGoodNetwork9 = [(CBWiFiManager *)self lastGoodNetwork];
+        scanResult4 = [lastGoodNetwork9 scanResult];
+        networkName3 = [scanResult4 networkName];
         v30 = 138412290;
-        v31 = v29;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Network reconnect is disabled. Not attempting to reconnect to network with SSID: (%@)", &v30, 0xCu);
+        v31 = networkName3;
+        _os_log_impl(&_mh_execute_header, lastGoodNetwork7, OS_LOG_TYPE_DEFAULT, "Network reconnect is disabled. Not attempting to reconnect to network with SSID: (%@)", &v30, 0xCu);
       }
 
       return;
@@ -1245,12 +1245,12 @@ LABEL_7:
     [(CBWiFiManager *)self setReconnecting:0];
   }
 
-  v25 = [(CBWiFiManager *)self reconnectTimer];
+  reconnectTimer = [(CBWiFiManager *)self reconnectTimer];
 
-  if (v25)
+  if (reconnectTimer)
   {
-    v26 = [(CBWiFiManager *)self reconnectTimer];
-    [v26 invalidate];
+    reconnectTimer2 = [(CBWiFiManager *)self reconnectTimer];
+    [reconnectTimer2 invalidate];
 
     [(CBWiFiManager *)self setReconnectTimer:0];
   }
@@ -1261,9 +1261,9 @@ LABEL_7:
   v3 = 0.0;
   if ([(CBWiFiManager *)self isAssociatedToNetwork])
   {
-    v4 = [(CBWiFiManager *)self cwInterface];
+    cwInterface = [(CBWiFiManager *)self cwInterface];
 
-    if (v4)
+    if (cwInterface)
     {
       v5 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1272,9 +1272,9 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating signal strength…", v11, 2u);
       }
 
-      v6 = [(CBWiFiManager *)self cwInterface];
-      v7 = [v6 currentScanResult];
-      v4 = [v7 RSSI];
+      cwInterface2 = [(CBWiFiManager *)self cwInterface];
+      currentScanResult = [cwInterface2 currentScanResult];
+      cwInterface = [currentScanResult RSSI];
 
       WFScaleRSSI();
       v3 = v8;
@@ -1283,26 +1283,26 @@ LABEL_7:
 
   else
   {
-    v4 = 0;
+    cwInterface = 0;
   }
 
   v9 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11[0] = 67109376;
-    v11[1] = v4;
+    v11[1] = cwInterface;
     v12 = 2048;
     v13 = v3;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updating signal strength with raw RSSI %d and scaled RSSI %f", v11, 0x12u);
   }
 
   *&v10 = v3;
-  [(CBWiFiManager *)self _updateSignalStrengthFromRawRSSI:v4 andScaledRSSI:v10];
+  [(CBWiFiManager *)self _updateSignalStrengthFromRawRSSI:cwInterface andScaledRSSI:v10];
 }
 
-- (void)_updateSignalStrengthFromRawRSSI:(int)a3 andScaledRSSI:(float)a4
+- (void)_updateSignalStrengthFromRawRSSI:(int)i andScaledRSSI:(float)sI
 {
-  v4 = *&a3;
+  v4 = *&i;
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1342,9 +1342,9 @@ LABEL_7:
   }
 }
 
-- (void)_postDidAssociateToEncryptedNetworkNotificationWithError:(id)a3
+- (void)_postDidAssociateToEncryptedNetworkNotificationWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1356,14 +1356,14 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = sub_1000288F8;
   block[3] = &unk_10007D540;
-  v7 = v3;
-  v5 = v3;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)_postDidAssociateToOpenNetworkNotificationWithError:(id)a3
+- (void)_postDidAssociateToOpenNetworkNotificationWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1375,8 +1375,8 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = sub_100028A6C;
   block[3] = &unk_10007D540;
-  v7 = v3;
-  v5 = v3;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 

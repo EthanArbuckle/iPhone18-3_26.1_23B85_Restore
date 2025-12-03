@@ -1,22 +1,22 @@
 @interface CarrySettings.VerifyRequest
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CarrySettings.VerifyRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CarrySettings.VerifyRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CarrySettings.VerifyRequest.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2543A3158();
     swift_unknownObjectRelease();
@@ -25,7 +25,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CarrySettings.VerifyRequest.isEqual(_:)(v8);

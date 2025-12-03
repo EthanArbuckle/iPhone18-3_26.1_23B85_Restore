@@ -1,103 +1,103 @@
 @interface AEWrappedMediaProvider
-- (AEWrappedMediaProvider)initWithMediaProvider:(id)a3;
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)cancelImageRequest:(int64_t)a3;
+- (AEWrappedMediaProvider)initWithMediaProvider:(id)provider;
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int64_t)request;
 @end
 
 @implementation AEWrappedMediaProvider
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(AEWrappedMediaProvider *)self _internalMediaProvider];
-  v17 = [v14 photoKitRequestOptions];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  _internalMediaProvider = [(AEWrappedMediaProvider *)self _internalMediaProvider];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
-  LODWORD(v14) = [v16 requestImageForAsset:v15 targetSize:a5 contentMode:v17 options:v13 resultHandler:{width, height}];
-  return v14;
+  LODWORD(optionsCopy) = [_internalMediaProvider requestImageForAsset:assetCopy targetSize:mode contentMode:photoKitRequestOptions options:handlerCopy resultHandler:{width, height}];
+  return optionsCopy;
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
-  v4 = [(AEWrappedMediaProvider *)self _internalMediaProvider];
-  [v4 cancelImageRequest:a3];
+  _internalMediaProvider = [(AEWrappedMediaProvider *)self _internalMediaProvider];
+  [_internalMediaProvider cancelImageRequest:request];
 }
 
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AEWrappedMediaProvider *)self _internalMediaProvider];
-  v12 = [v9 photoKitRequestOptions];
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  _internalMediaProvider = [(AEWrappedMediaProvider *)self _internalMediaProvider];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
-  LODWORD(v9) = [v11 requestAnimatedImageForAsset:v10 options:v12 resultHandler:v8];
-  return v9;
+  LODWORD(optionsCopy) = [_internalMediaProvider requestAnimatedImageForAsset:assetCopy options:photoKitRequestOptions resultHandler:handlerCopy];
+  return optionsCopy;
 }
 
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(AEWrappedMediaProvider *)self _internalMediaProvider];
-  v17 = [v14 photoKitRequestOptions];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  _internalMediaProvider = [(AEWrappedMediaProvider *)self _internalMediaProvider];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
-  LODWORD(v14) = [v16 requestLivePhotoForAsset:v15 targetSize:a5 contentMode:v17 options:v13 resultHandler:{width, height}];
-  return v14;
+  LODWORD(optionsCopy) = [_internalMediaProvider requestLivePhotoForAsset:assetCopy targetSize:mode contentMode:photoKitRequestOptions options:handlerCopy resultHandler:{width, height}];
+  return optionsCopy;
 }
 
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AEWrappedMediaProvider *)self _internalMediaProvider];
-  v12 = [v9 photoKitRequestOptions];
+  handlerCopy = handler;
+  optionsCopy = options;
+  videoCopy = video;
+  _internalMediaProvider = [(AEWrappedMediaProvider *)self _internalMediaProvider];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
-  LODWORD(v9) = [v11 requestPlayerItemForVideo:v10 options:v12 resultHandler:v8];
-  return v9;
+  LODWORD(optionsCopy) = [_internalMediaProvider requestPlayerItemForVideo:videoCopy options:photoKitRequestOptions resultHandler:handlerCopy];
+  return optionsCopy;
 }
 
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AEWrappedMediaProvider *)self _internalMediaProvider];
-  v12 = [v9 photoKitRequestOptions];
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  _internalMediaProvider = [(AEWrappedMediaProvider *)self _internalMediaProvider];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
-  LODWORD(v9) = [v11 requestImageURLForAsset:v10 options:v12 resultHandler:v8];
-  return v9;
+  LODWORD(optionsCopy) = [_internalMediaProvider requestImageURLForAsset:assetCopy options:photoKitRequestOptions resultHandler:handlerCopy];
+  return optionsCopy;
 }
 
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AEWrappedMediaProvider *)self _internalMediaProvider];
-  v12 = [v9 photoKitRequestOptions];
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  _internalMediaProvider = [(AEWrappedMediaProvider *)self _internalMediaProvider];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__AEWrappedMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke;
   v15[3] = &unk_278CC70F8;
-  v16 = v8;
-  v13 = v8;
-  LODWORD(v8) = [v11 requestImageDataForAsset:v10 options:v12 resultHandler:v15];
+  v16 = handlerCopy;
+  v13 = handlerCopy;
+  LODWORD(handlerCopy) = [_internalMediaProvider requestImageDataForAsset:assetCopy options:photoKitRequestOptions resultHandler:v15];
 
-  return v8;
+  return handlerCopy;
 }
 
 uint64_t __73__AEWrappedMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke(uint64_t a1)
@@ -111,16 +111,16 @@ uint64_t __73__AEWrappedMediaProvider_requestImageDataForAsset_options_resultHan
   return result;
 }
 
-- (AEWrappedMediaProvider)initWithMediaProvider:(id)a3
+- (AEWrappedMediaProvider)initWithMediaProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = AEWrappedMediaProvider;
   v6 = [(AEWrappedMediaProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__internalMediaProvider, a3);
+    objc_storeStrong(&v6->__internalMediaProvider, provider);
   }
 
   return v7;

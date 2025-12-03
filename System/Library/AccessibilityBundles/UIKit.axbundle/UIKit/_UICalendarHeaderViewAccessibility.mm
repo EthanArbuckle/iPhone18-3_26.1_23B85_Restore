@@ -1,5 +1,5 @@
 @interface _UICalendarHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
@@ -9,19 +9,19 @@
 - (void)_setupViewHierarchy;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
 @end
 
 @implementation _UICalendarHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIDatePickerLinkedLabel" hasInstanceVariable:@"_renderingLabel" withType:"UILabel"];
   v5 = @"_UICalendarHeaderView";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
@@ -44,20 +44,20 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v8 = 0;
   v3 = 0;
   if (AXRequestingClient() == 4)
   {
-    v9 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
     v8 = 1;
-    v3 = [v9 switchControlTapBehavior] == 2;
+    v3 = [mEMORY[0x29EDBDFA0] switchControlTapBehavior] == 2;
   }
 
   if (v8)
   {
-    MEMORY[0x29EDC9740](v9);
+    MEMORY[0x29EDC9740](mEMORY[0x29EDBDFA0]);
   }
 
   if (v3)
@@ -75,7 +75,7 @@
     v7 = v4;
     if ([v4 _accessibilityViewIsVisible])
     {
-      v12 = ([(_UICalendarHeaderViewAccessibility *)v11 safeBoolForKey:@"isExpanded"]^ 1) & 1;
+      v12 = ([(_UICalendarHeaderViewAccessibility *)selfCopy safeBoolForKey:@"isExpanded"]^ 1) & 1;
     }
 
     else
@@ -111,11 +111,11 @@
 
 - (void)accessibilityIncrement
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6 = 0;
   objc_opt_class();
-  v2 = [(_UICalendarHeaderViewAccessibility *)v8 safeValueForKey:@"_nextMonthButton"];
+  v2 = [(_UICalendarHeaderViewAccessibility *)selfCopy safeValueForKey:@"_nextMonthButton"];
   v5 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v2);
   v4 = MEMORY[0x29EDC9748](v5);
@@ -123,7 +123,7 @@
   v7[0] = v4;
   if ([v4 isEnabled])
   {
-    v3 = MEMORY[0x29EDC9748](v8);
+    v3 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(&v3, 0);
   }
@@ -133,11 +133,11 @@
 
 - (void)accessibilityDecrement
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6 = 0;
   objc_opt_class();
-  v2 = [(_UICalendarHeaderViewAccessibility *)v8 safeValueForKey:@"_previousMonthButton"];
+  v2 = [(_UICalendarHeaderViewAccessibility *)selfCopy safeValueForKey:@"_previousMonthButton"];
   v5 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v2);
   v4 = MEMORY[0x29EDC9748](v5);
@@ -145,7 +145,7 @@
   v7[0] = v4;
   if ([v4 isEnabled])
   {
-    v3 = MEMORY[0x29EDC9748](v8);
+    v3 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(&v3, 0);
   }
@@ -171,36 +171,36 @@
 
 - (id)automationElements
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
   v4 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  v3 = [v4 subviews];
+  subviews = [v4 subviews];
   MEMORY[0x29EDC9740](v4);
 
-  return v3;
+  return subviews;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UICalendarHeaderViewAccessibility;
   [(_UICalendarHeaderViewAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(_UICalendarHeaderViewAccessibility *)v4 _axMarkupMonthSelector];
+  [(_UICalendarHeaderViewAccessibility *)selfCopy _axMarkupMonthSelector];
 }
 
 - (void)_axMarkupMonthSelector
 {
-  v42 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    objc_initWeak(&location, v42);
-    v40 = [v42 safeUIViewForKey:@"_monthYearButton"];
+    objc_initWeak(&location, selfCopy);
+    v40 = [selfCopy safeUIViewForKey:@"_monthYearButton"];
     v39 = [v40 safeUIViewForKey:@"_monthYearLabel"];
     [v39 setIsAccessibilityElement:0];
     [v40 setIsAccessibilityElement:1];
@@ -238,20 +238,20 @@
     v18 = &unk_29F30CE38;
     objc_copyWeak(&v19, &v20);
     [v10 _setAccessibilityActivationPointBlock:&v14];
-    v9 = [v42 safeValueForKey:@"_nextMonthButton"];
+    v9 = [selfCopy safeValueForKey:@"_nextMonthButton"];
     v8 = accessibilityLocalizedString(@"calendar.change.month.increment");
     [v9 setAccessibilityLabel:?];
     MEMORY[0x29EDC9740](v8);
     *&v1 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-    v7 = [v42 safeValueForKey:{@"_nextMonthButton", v1}];
+    v7 = [selfCopy safeValueForKey:{@"_nextMonthButton", v1}];
     [v7 setAccessibilityIdentifier:@"DatePicker.NextMonth"];
     *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-    v6 = [v42 safeValueForKey:{@"_previousMonthButton", v2}];
+    v6 = [selfCopy safeValueForKey:{@"_previousMonthButton", v2}];
     v5 = accessibilityLocalizedString(@"calendar.change.month.decrement");
     [v6 setAccessibilityLabel:?];
     MEMORY[0x29EDC9740](v5);
     *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-    v4 = [v42 safeValueForKey:{@"_previousMonthButton", v3}];
+    v4 = [selfCopy safeValueForKey:{@"_previousMonthButton", v3}];
     [v4 setAccessibilityIdentifier:@"DatePicker.PreviousMonth"];
     MEMORY[0x29EDC9740](v4);
     objc_destroyWeak(&v19);
@@ -267,25 +267,25 @@
 
 - (void)_setupViewHierarchy
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UICalendarHeaderViewAccessibility;
   [(_UICalendarHeaderViewAccessibility *)&v2 _setupViewHierarchy];
-  [(_UICalendarHeaderViewAccessibility *)v4 _axMarkupMonthSelector];
+  [(_UICalendarHeaderViewAccessibility *)selfCopy _axMarkupMonthSelector];
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  expandedCopy = expanded;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = _UICalendarHeaderViewAccessibility;
-  [(_UICalendarHeaderViewAccessibility *)&v6 setExpanded:a3 animated:a4];
-  v4 = MEMORY[0x29EDC9748](v10);
-  v5 = v8;
+  [(_UICalendarHeaderViewAccessibility *)&v6 setExpanded:expanded animated:animated];
+  v4 = MEMORY[0x29EDC9748](selfCopy);
+  v5 = expandedCopy;
   AXPerformBlockOnMainThreadAfterDelay();
   objc_storeStrong(&v4, 0);
 }

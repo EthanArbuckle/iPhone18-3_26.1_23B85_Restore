@@ -1,8 +1,8 @@
 @interface MUGridButtonCell
 - (MUDynamicButtonCellModel)viewModel;
-- (MUGridButtonCell)initWithCoder:(id)a3;
-- (void)dynamicButtonCellModelDidChange:(id)a3;
-- (void)setViewModel:(id)a3;
+- (MUGridButtonCell)initWithCoder:(id)coder;
+- (void)dynamicButtonCellModelDidChange:(id)change;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUGridButtonCell
@@ -17,25 +17,25 @@
   return v5;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   v5 = OBJC_IVAR___MUGridButtonCell_viewModel;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = model;
   swift_unknownObjectRetain_n();
-  v7 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
-  if (a3)
+  if (model)
   {
-    [(UIView *)v7 _mapsui_registerButtonCellModel:a3];
+    [(UIView *)selfCopy _mapsui_registerButtonCellModel:model];
   }
 
   _s6MapsUI14GridButtonCellC07dynamicdE14ModelDidChangeyySo09MUDynamicdeG0_pF_0();
   swift_unknownObjectRelease();
 }
 
-- (MUGridButtonCell)initWithCoder:(id)a3
+- (MUGridButtonCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___MUGridButtonCell_hostingView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MUGridButtonCell_menuButton) = 0;
@@ -45,9 +45,9 @@
   return result;
 }
 
-- (void)dynamicButtonCellModelDidChange:(id)a3
+- (void)dynamicButtonCellModelDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   _s6MapsUI14GridButtonCellC07dynamicdE14ModelDidChangeyySo09MUDynamicdeG0_pF_0();
 }
 

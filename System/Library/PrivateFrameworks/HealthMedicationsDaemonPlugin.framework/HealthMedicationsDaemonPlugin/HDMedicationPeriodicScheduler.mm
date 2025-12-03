@@ -1,9 +1,9 @@
 @interface HDMedicationPeriodicScheduler
 - (HDMedicationPeriodicScheduler)init;
-- (HDMedicationPeriodicScheduler)initWithDaemon:(id)a3;
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (HDMedicationPeriodicScheduler)initWithDaemon:(id)daemon;
+- (void)performPeriodicActivity:(id)activity completion:(id)completion;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDMedicationPeriodicScheduler
@@ -18,42 +18,42 @@
   return 0;
 }
 
-- (HDMedicationPeriodicScheduler)initWithDaemon:(id)a3
+- (HDMedicationPeriodicScheduler)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v10.receiver = self;
   v10.super_class = HDMedicationPeriodicScheduler;
   v5 = [(HDMedicationPeriodicScheduler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_daemon, v4);
-    v8 = [v4 primaryProfile];
-    [v8 registerProfileReadyObserver:v6 queue:0];
+    v7 = objc_storeWeak(&v5->_daemon, daemonCopy);
+    primaryProfile = [daemonCopy primaryProfile];
+    [primaryProfile registerProfileReadyObserver:v6 queue:0];
   }
 
   return v6;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v4 = *MEMORY[0x277D86298];
   v5 = objc_alloc(MEMORY[0x277D107E8]);
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v6 = [WeakRetained primaryProfile];
+  primaryProfile = [WeakRetained primaryProfile];
   v7 = HKLogMedication();
-  v8 = [v5 initWithProfile:v6 name:@"com.apple.healthd.medications.scheduler" interval:self delegate:v7 loggingCategory:v4];
+  v8 = [v5 initWithProfile:primaryProfile name:@"com.apple.healthd.medications.scheduler" interval:self delegate:v7 loggingCategory:v4];
   periodicActivity = self->_periodicActivity;
   self->_periodicActivity = v8;
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
-  v9 = [v8 isEqualToString:@"com.apple.healthd.medications.scheduler"];
+  activityCopy = activity;
+  criteriaCopy = criteria;
+  name = [activityCopy name];
+  v9 = [name isEqualToString:@"com.apple.healthd.medications.scheduler"];
 
   _HKInitializeLogging();
   v10 = HKLogMedication();
@@ -62,51 +62,51 @@
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 name];
+      name2 = [activityCopy name];
       v14 = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = v12;
+      v17 = name2;
       _os_log_impl(&dword_25181C000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: configuring periodic activity %{public}@", &v14, 0x16u);
     }
 
-    xpc_dictionary_set_string(v7, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
-    xpc_dictionary_set_BOOL(v7, *MEMORY[0x277D86230], 1);
-    xpc_dictionary_set_BOOL(v7, *MEMORY[0x277D863A0], 1);
-    xpc_dictionary_set_BOOL(v7, *MEMORY[0x277D86378], 1);
+    xpc_dictionary_set_string(criteriaCopy, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D86230], 1);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D863A0], 1);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D86378], 1);
   }
 
   else
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(HDMedicationPeriodicScheduler *)self periodicActivity:v6 configureXPCActivityCriteria:v11];
+      [(HDMedicationPeriodicScheduler *)self periodicActivity:activityCopy configureXPCActivityCriteria:v11];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4
+- (void)performPeriodicActivity:(id)activity completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 name];
-  if ([v7 isEqualToString:@"com.apple.healthd.medications.scheduler"])
+  completionCopy = completion;
+  name = [activity name];
+  if ([name isEqualToString:@"com.apple.healthd.medications.scheduler"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_daemon);
-    v9 = [WeakRetained primaryProfile];
+    primaryProfile = [WeakRetained primaryProfile];
 
     v10 = MEMORY[0x277CCACA8];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v10 stringWithFormat:@"%@-%@", v12, v14];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [v10 stringWithFormat:@"%@-%@", v12, uUIDString];
 
-    v16 = [v9 database];
+    database = [primaryProfile database];
     v39 = 0;
-    v17 = [v16 takeAccessibilityAssertionWithOwnerIdentifier:v15 timeout:&v39 error:300.0];
+    v17 = [database takeAccessibilityAssertionWithOwnerIdentifier:v15 timeout:&v39 error:300.0];
     v18 = v39;
 
     if (!v17)
@@ -121,7 +121,7 @@
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
           *buf = 138543618;
-          v41 = self;
+          selfCopy = self;
           v42 = 2114;
           v43 = v18;
           _os_log_impl(&dword_25181C000, v21, OS_LOG_TYPE_INFO, "[%{public}@]: unable to take accessibility assertion: %{public}@", buf, 0x16u);
@@ -137,22 +137,22 @@
     v34[2] = __68__HDMedicationPeriodicScheduler_performPeriodicActivity_completion___block_invoke;
     v34[3] = &unk_2796CE4D8;
     v34[4] = self;
-    v35 = v7;
+    v35 = name;
     v36 = v17;
-    v37 = v9;
-    v38 = v6;
+    v37 = primaryProfile;
+    v38 = completionCopy;
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __68__HDMedicationPeriodicScheduler_performPeriodicActivity_completion___block_invoke_2;
     v32[3] = &unk_2796CE500;
     v33 = v36;
     v25 = v36;
-    v26 = v9;
+    v26 = primaryProfile;
     v27 = [v22 maintenanceOperationWithName:v24 asynchronousBlock:v34 canceledBlock:v32];
 
     v28 = objc_loadWeakRetained(&self->_daemon);
-    v29 = [v28 maintenanceWorkCoordinator];
-    [v29 enqueueMaintenanceOperation:v27];
+    maintenanceWorkCoordinator = [v28 maintenanceWorkCoordinator];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v27];
   }
 
   else
@@ -161,10 +161,10 @@
     v30 = HKLogMedication();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      [(HDMedicationPeriodicScheduler *)self performPeriodicActivity:v7 completion:v30];
+      [(HDMedicationPeriodicScheduler *)self performPeriodicActivity:name completion:v30];
     }
 
-    (*(v6 + 2))(v6, 1, 0, 0.0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0.0);
   }
 
   v31 = *MEMORY[0x277D85DE8];

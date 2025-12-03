@@ -1,8 +1,8 @@
 @interface MRProtocolMessageLogger
 + (id)sharedLogger;
 - (MRProtocolMessageLogger)init;
-- (void)logMessage:(id)a3 client:(id)a4 protocolMessage:(id)a5;
-- (void)logMessage:(id)a3 label:(id)a4 deviceInfo:(id)a5 protocolMessage:(id)a6;
+- (void)logMessage:(id)message client:(id)client protocolMessage:(id)protocolMessage;
+- (void)logMessage:(id)message label:(id)label deviceInfo:(id)info protocolMessage:(id)protocolMessage;
 @end
 
 @implementation MRProtocolMessageLogger
@@ -42,18 +42,18 @@ void __39__MRProtocolMessageLogger_sharedLogger__block_invoke()
   sharedLogger___sharedContext = v0;
 }
 
-- (void)logMessage:(id)a3 client:(id)a4 protocolMessage:(id)a5
+- (void)logMessage:(id)message client:(id)client protocolMessage:(id)protocolMessage
 {
-  v19 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v19 connection];
+  clientCopy = client;
+  protocolMessageCopy = protocolMessage;
+  messageCopy = message;
+  connection = [clientCopy connection];
   v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v12 = [v19 label];
-  v13 = v12;
-  if (v12)
+  label = [clientCopy label];
+  v13 = label;
+  if (label)
   {
-    v14 = v12;
+    v14 = label;
   }
 
   else
@@ -61,11 +61,11 @@ void __39__MRProtocolMessageLogger_sharedLogger__block_invoke()
     v14 = &stru_1F1513E38;
   }
 
-  if (v10)
+  if (connection)
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v11 initWithFormat:@"[%@<%@:%p>] ", v14, v16, v10];
+    v17 = [v11 initWithFormat:@"[%@<%@:%p>] ", v14, v16, connection];
   }
 
   else
@@ -73,28 +73,28 @@ void __39__MRProtocolMessageLogger_sharedLogger__block_invoke()
     v17 = [v11 initWithFormat:@"[%@<%@:%p>] ", v14, &stru_1F1513E38, 0];
   }
 
-  v18 = [v19 deviceInfo];
-  [(MRProtocolMessageLogger *)self logMessage:v9 label:v17 deviceInfo:v18 protocolMessage:v8];
+  deviceInfo = [clientCopy deviceInfo];
+  [(MRProtocolMessageLogger *)self logMessage:messageCopy label:v17 deviceInfo:deviceInfo protocolMessage:protocolMessageCopy];
 }
 
-- (void)logMessage:(id)a3 label:(id)a4 deviceInfo:(id)a5 protocolMessage:(id)a6
+- (void)logMessage:(id)message label:(id)label deviceInfo:(id)info protocolMessage:(id)protocolMessage
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  labelCopy = label;
+  infoCopy = info;
+  protocolMessageCopy = protocolMessage;
   if ([(MRProtocolMessageLogger *)self shouldLog])
   {
-    v47[0] = v12;
+    v47[0] = protocolMessageCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
     objc_opt_class();
-    v29 = v12;
+    v29 = protocolMessageCopy;
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v12 messages];
+      messages = [protocolMessageCopy messages];
 
-      v13 = v14;
+      v13 = messages;
     }
 
     v34 = 0u;
@@ -107,7 +107,7 @@ void __39__MRProtocolMessageLogger_sharedLogger__block_invoke()
     {
       v17 = v16;
       v18 = *v33;
-      v30 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v17; ++i)
@@ -120,7 +120,7 @@ void __39__MRProtocolMessageLogger_sharedLogger__block_invoke()
           v20 = *(*(&v32 + 1) + 8 * i);
           if ([v20 shouldLog])
           {
-            if (v10)
+            if (labelCopy)
             {
               if (-[MRProtocolMessageLogger shouldVerboselyLog](self, "shouldVerboselyLog") || [v20 shouldVerboselyLog])
               {
@@ -128,17 +128,17 @@ void __39__MRProtocolMessageLogger_sharedLogger__block_invoke()
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                 {
 LABEL_20:
-                  v22 = [v11 effectiveIdentifer];
-                  v23 = [v11 effectiveName];
+                  effectiveIdentifer = [infoCopy effectiveIdentifer];
+                  effectiveName = [infoCopy effectiveName];
                   v24 = [v20 description];
                   *buf = 138544386;
-                  v37 = v10;
+                  v37 = labelCopy;
                   v38 = 2114;
-                  v39 = v31;
+                  v39 = messageCopy;
                   v40 = 2114;
-                  v41 = v22;
+                  v41 = effectiveIdentifer;
                   v42 = 2112;
-                  v43 = v23;
+                  v43 = effectiveName;
                   v44 = 2114;
                   v45 = v24;
                   v25 = v21;
@@ -178,15 +178,15 @@ LABEL_20:
                 }
               }
 
-              v22 = [v11 effectiveIdentifer];
-              v23 = [v11 effectiveName];
+              effectiveIdentifer = [infoCopy effectiveIdentifer];
+              effectiveName = [infoCopy effectiveName];
               v24 = [v20 description];
               *buf = 138413058;
-              v37 = v31;
+              v37 = messageCopy;
               v38 = 2114;
-              v39 = v22;
+              v39 = effectiveIdentifer;
               v40 = 2112;
-              v41 = v23;
+              v41 = effectiveName;
               v42 = 2114;
               v43 = v24;
               v25 = v21;
@@ -195,7 +195,7 @@ LABEL_20:
 LABEL_23:
               _os_log_impl(&dword_1A2860000, v25, OS_LOG_TYPE_DEFAULT, v26, buf, v27);
 
-              self = v30;
+              self = selfCopy;
             }
 
 LABEL_24:
@@ -210,7 +210,7 @@ LABEL_24:
       while (v17);
     }
 
-    v12 = v29;
+    protocolMessageCopy = v29;
   }
 
   v28 = *MEMORY[0x1E69E9840];

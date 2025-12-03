@@ -1,7 +1,7 @@
 @interface WBSBookmarkFolderTouchIconConfiguration
 - (CGSize)shadowOffset;
 - (id)initFor2x2Layout;
-- (id)initFor2x2LayoutWithOuterMarginScaleFactor:(double)a3;
+- (id)initFor2x2LayoutWithOuterMarginScaleFactor:(double)factor;
 - (id)initFor3x3Layout;
 - (id)initForTabGroup;
 - (void)_commonWBSBookmarkFolderIconConfigurationInit;
@@ -18,9 +18,9 @@
   if (v2)
   {
     *&v2->_maximumNumberOfThumbnailsPerRow = vdupq_n_s64(3uLL);
-    v4 = [MEMORY[0x1E69C8880] is2024FavoritesEnabled];
+    is2024FavoritesEnabled = [MEMORY[0x1E69C8880] is2024FavoritesEnabled];
     v5 = 0.24;
-    if (v4)
+    if (is2024FavoritesEnabled)
     {
       v5 = 0.25;
     }
@@ -51,14 +51,14 @@
   return v3;
 }
 
-- (id)initFor2x2LayoutWithOuterMarginScaleFactor:(double)a3
+- (id)initFor2x2LayoutWithOuterMarginScaleFactor:(double)factor
 {
-  v4 = [(WBSBookmarkFolderTouchIconConfiguration *)self initFor2x2Layout];
-  v5 = v4;
-  if (v4)
+  initFor2x2Layout = [(WBSBookmarkFolderTouchIconConfiguration *)self initFor2x2Layout];
+  v5 = initFor2x2Layout;
+  if (initFor2x2Layout)
   {
-    v4[6] = a3;
-    [v4 _commonWBSBookmarkFolderIconConfigurationInit];
+    initFor2x2Layout[6] = factor;
+    [initFor2x2Layout _commonWBSBookmarkFolderIconConfigurationInit];
     v6 = v5;
   }
 
@@ -67,11 +67,11 @@
 
 - (id)initForTabGroup
 {
-  v2 = [(WBSBookmarkFolderTouchIconConfiguration *)self initFor2x2Layout];
-  v3 = v2;
-  if (v2)
+  initFor2x2Layout = [(WBSBookmarkFolderTouchIconConfiguration *)self initFor2x2Layout];
+  v3 = initFor2x2Layout;
+  if (initFor2x2Layout)
   {
-    v2[8] = 1;
+    initFor2x2Layout[8] = 1;
     v4 = tertiaryGroupedBackgroundColor();
     v5 = v3[9];
     v3[9] = v4;

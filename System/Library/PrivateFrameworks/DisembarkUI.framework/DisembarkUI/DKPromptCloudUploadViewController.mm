@@ -1,7 +1,7 @@
 @interface DKPromptCloudUploadViewController
 - (DKPromptCloudUploadViewController)init;
-- (void)_eraseTapped:(id)a3;
-- (void)_uploadTapped:(id)a3;
+- (void)_eraseTapped:(id)tapped;
+- (void)_uploadTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -25,29 +25,29 @@
   v11.receiver = self;
   v11.super_class = DKPromptCloudUploadViewController;
   [(OBBaseWelcomeController *)&v11 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"FINISH_UPLOAD_THEN_ERASE" value:&stru_285BC2A70 table:@"Localizable"];
-  [v3 setTitle:v5 forState:0];
+  [boldButton setTitle:v5 forState:0];
 
-  [v3 addTarget:self action:sel__uploadTapped_ forControlEvents:64];
-  v6 = [(DKPromptCloudUploadViewController *)self buttonTray];
-  [v6 addButton:v3];
+  [boldButton addTarget:self action:sel__uploadTapped_ forControlEvents:64];
+  buttonTray = [(DKPromptCloudUploadViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v7 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"ERASE_NOW" value:&stru_285BC2A70 table:@"Localizable"];
-  [v7 setTitle:v9 forState:0];
+  [linkButton setTitle:v9 forState:0];
 
-  [v7 addTarget:self action:sel__eraseTapped_ forControlEvents:64];
-  v10 = [(DKPromptCloudUploadViewController *)self buttonTray];
-  [v10 addButton:v7];
+  [linkButton addTarget:self action:sel__eraseTapped_ forControlEvents:64];
+  buttonTray2 = [(DKPromptCloudUploadViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 }
 
-- (void)_uploadTapped:(id)a3
+- (void)_uploadTapped:(id)tapped
 {
-  v4 = [(DKPromptCloudUploadViewController *)self hasInternetConnectivity];
-  if (!v4 || (v5 = v4, [(DKPromptCloudUploadViewController *)self hasInternetConnectivity], v6 = objc_claimAutoreleasedReturnValue(), v7 = v6[2](), v6, v5, !v7))
+  hasInternetConnectivity = [(DKPromptCloudUploadViewController *)self hasInternetConnectivity];
+  if (!hasInternetConnectivity || (v5 = hasInternetConnectivity, [(DKPromptCloudUploadViewController *)self hasInternetConnectivity], v6 = objc_claimAutoreleasedReturnValue(), v7 = v6[2](), v6, v5, !v7))
   {
     v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v27 = SFLocalizableWAPIStringKeyForKey();
@@ -76,12 +76,12 @@
     goto LABEL_7;
   }
 
-  v8 = [(DKPromptCloudUploadViewController *)self shouldWarnForDataUsage];
-  if (v8)
+  shouldWarnForDataUsage = [(DKPromptCloudUploadViewController *)self shouldWarnForDataUsage];
+  if (shouldWarnForDataUsage)
   {
-    v9 = v8;
-    v10 = [(DKPromptCloudUploadViewController *)self shouldWarnForDataUsage];
-    v11 = v10[2]();
+    v9 = shouldWarnForDataUsage;
+    shouldWarnForDataUsage2 = [(DKPromptCloudUploadViewController *)self shouldWarnForDataUsage];
+    v11 = shouldWarnForDataUsage2[2]();
 
     if (v11)
     {
@@ -118,12 +118,12 @@ LABEL_7:
     }
   }
 
-  v35 = [(DKPromptCloudUploadViewController *)self uploadThenEraseBlock];
+  uploadThenEraseBlock = [(DKPromptCloudUploadViewController *)self uploadThenEraseBlock];
 
-  if (v35)
+  if (uploadThenEraseBlock)
   {
-    v37 = [(DKPromptCloudUploadViewController *)self uploadThenEraseBlock];
-    v37[2](v37, 0);
+    uploadThenEraseBlock2 = [(DKPromptCloudUploadViewController *)self uploadThenEraseBlock];
+    uploadThenEraseBlock2[2](uploadThenEraseBlock2, 0);
   }
 }
 
@@ -149,14 +149,14 @@ void __51__DKPromptCloudUploadViewController__uploadTapped___block_invoke_2(uint
   }
 }
 
-- (void)_eraseTapped:(id)a3
+- (void)_eraseTapped:(id)tapped
 {
-  v4 = [(DKPromptCloudUploadViewController *)self eraseNowBlock];
+  eraseNowBlock = [(DKPromptCloudUploadViewController *)self eraseNowBlock];
 
-  if (v4)
+  if (eraseNowBlock)
   {
-    v5 = [(DKPromptCloudUploadViewController *)self eraseNowBlock];
-    v5[2]();
+    eraseNowBlock2 = [(DKPromptCloudUploadViewController *)self eraseNowBlock];
+    eraseNowBlock2[2]();
   }
 }
 

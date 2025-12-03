@@ -37,8 +37,8 @@
   v7 = a3;
   v8 = a4;
   v9 = a5;
-  v10 = [MEMORY[0x277D644A0] sharedSimulator];
-  v11 = [v10 begin:@"ma" atFunction:@"startCatalogDownload"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v11 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"startCatalogDownload"];
 
   v12 = MEMORY[0x277D289C0];
   if (v11)
@@ -61,8 +61,8 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x277D644A0] sharedSimulator];
-  v8 = [v7 begin:@"ma" atFunction:@"cancelCatalogDownload"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v8 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"cancelCatalogDownload"];
 
   v9 = MEMORY[0x277D289C0];
   if (v8)
@@ -85,8 +85,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277D644A0] sharedSimulator];
-  v9 = [v8 begin:@"ma" atFunction:@"startDownload"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v9 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"startDownload"];
 
   if (v9)
   {
@@ -95,25 +95,25 @@
 
   else
   {
-    v10 = [v6 sessionId];
-    [a1 _prepAndSendDownloadStartedSplunkEvent:v10];
+    sessionId = [v6 sessionId];
+    [self _prepAndSendDownloadStartedSplunkEvent:sessionId];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __79__MAAsset_SUCoreBorderMAAsset__SUCoreBorder_startDownload_completionWithError___block_invoke;
     v11[3] = &unk_27892C998;
-    v11[4] = a1;
+    v11[4] = self;
     v12 = v6;
     v13 = v7;
-    [a1 startDownload:v12 completionWithError:v11];
+    [self startDownload:v12 completionWithError:v11];
   }
 }
 
 - (void)SUCoreBorder_purgeWithError:()SUCoreBorderMAAsset
 {
   v4 = a3;
-  v5 = [MEMORY[0x277D644A0] sharedSimulator];
-  v6 = [v5 begin:@"ma" atFunction:@"purgeWithError"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v6 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"purgeWithError"];
 
   if (v6)
   {
@@ -127,15 +127,15 @@
     v7[2] = __60__MAAsset_SUCoreBorderMAAsset__SUCoreBorder_purgeWithError___block_invoke;
     v7[3] = &unk_27892C948;
     v8 = v4;
-    [a1 purgeWithError:v7];
+    [self purgeWithError:v7];
   }
 }
 
 - (void)SUCoreBorder_cancelDownload:()SUCoreBorderMAAsset
 {
   v4 = a3;
-  v5 = [MEMORY[0x277D644A0] sharedSimulator];
-  v6 = [v5 begin:@"ma" atFunction:@"cancelDownload"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v6 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"cancelDownload"];
 
   if (v6)
   {
@@ -149,7 +149,7 @@
     v7[2] = __60__MAAsset_SUCoreBorderMAAsset__SUCoreBorder_cancelDownload___block_invoke;
     v7[3] = &unk_27892C970;
     v8 = v4;
-    [a1 cancelDownload:v7];
+    [self cancelDownload:v7];
   }
 }
 
@@ -157,8 +157,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277D644A0] sharedSimulator];
-  v9 = [v8 begin:@"ma" atFunction:@"configDownload"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v9 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"configDownload"];
 
   if (v9)
   {
@@ -172,85 +172,85 @@
     v10[2] = __71__MAAsset_SUCoreBorderMAAsset__SUCoreBorder_configDownload_completion___block_invoke;
     v10[3] = &unk_27892C970;
     v11 = v7;
-    [a1 configDownload:v6 completion:v10];
+    [self configDownload:v6 completion:v10];
   }
 }
 
 - (uint64_t)SUCoreBorder_refreshState
 {
-  v2 = [MEMORY[0x277D644A0] sharedSimulator];
-  v3 = [v2 begin:@"ma" atFunction:@"refreshState"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v3 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"refreshState"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277D289C0] _SUCoreBorder_MABoolResultAtBegin:v3];
+    refreshState = [MEMORY[0x277D289C0] _SUCoreBorder_MABoolResultAtBegin:v3];
   }
 
   else
   {
-    v4 = [a1 refreshState];
-    v5 = [MEMORY[0x277D644A0] sharedSimulator];
-    v6 = [v5 end:@"ma" atFunction:@"refreshState"];
+    refreshState = [self refreshState];
+    mEMORY[0x277D644A0]2 = [MEMORY[0x277D644A0] sharedSimulator];
+    v6 = [mEMORY[0x277D644A0]2 end:@"ma" atFunction:@"refreshState"];
 
     if (v6)
     {
-      v4 = [MEMORY[0x277D289C0] _SUCoreBorder_MABoolResultAtEnd:v6 withResult:v4];
+      refreshState = [MEMORY[0x277D289C0] _SUCoreBorder_MABoolResultAtEnd:v6 withResult:refreshState];
     }
   }
 
-  return v4;
+  return refreshState;
 }
 
 - (uint64_t)SUCoreBorder_state
 {
-  v2 = [MEMORY[0x277D644A0] sharedSimulator];
-  v3 = [v2 begin:@"ma" atFunction:@"state"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v3 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"state"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277D289C0] _SUCoreBorder_MAAssetState:v3];
+    state = [MEMORY[0x277D289C0] _SUCoreBorder_MAAssetState:v3];
   }
 
   else
   {
-    v4 = [a1 state];
-    v5 = [MEMORY[0x277D644A0] sharedSimulator];
-    v6 = [v5 end:@"ma" atFunction:@"state"];
+    state = [self state];
+    mEMORY[0x277D644A0]2 = [MEMORY[0x277D644A0] sharedSimulator];
+    v6 = [mEMORY[0x277D644A0]2 end:@"ma" atFunction:@"state"];
 
     if (v6)
     {
-      v4 = [MEMORY[0x277D289C0] _SUCoreBorder_MAAssetState:v6];
+      state = [MEMORY[0x277D289C0] _SUCoreBorder_MAAssetState:v6];
     }
   }
 
-  return v4;
+  return state;
 }
 
 - (id)SUCoreBorder_attributes
 {
-  v2 = [MEMORY[0x277D644A0] sharedSimulator];
-  v3 = [v2 begin:@"ma" atFunction:@"attributes"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v3 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"attributes"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277D289C0] _SUCoreBorder_MAAttributesAtBegin:v3];
+    attributes = [MEMORY[0x277D289C0] _SUCoreBorder_MAAttributesAtBegin:v3];
   }
 
   else
   {
-    v4 = [a1 attributes];
-    v5 = [MEMORY[0x277D644A0] sharedSimulator];
-    v6 = [v5 end:@"ma" atFunction:@"attributes"];
+    attributes = [self attributes];
+    mEMORY[0x277D644A0]2 = [MEMORY[0x277D644A0] sharedSimulator];
+    v6 = [mEMORY[0x277D644A0]2 end:@"ma" atFunction:@"attributes"];
 
     if (v6)
     {
-      v7 = [MEMORY[0x277D289C0] _SUCoreBorder_MAAttributesAtEnd:v6 withBaseAttributes:v4];
+      v7 = [MEMORY[0x277D289C0] _SUCoreBorder_MAAttributesAtEnd:v6 withBaseAttributes:attributes];
 
-      v4 = v7;
+      attributes = v7;
     }
   }
 
-  return v4;
+  return attributes;
 }
 
 + (id)SUCoreBorder_loadSync:()SUCoreBorderMAAsset allowingDifferences:withPurpose:error:simulateForDescriptor:simulateForType:
@@ -259,8 +259,8 @@
   v14 = a4;
   v15 = a5;
   v16 = a7;
-  v17 = [MEMORY[0x277D644A0] sharedSimulator];
-  v18 = [v17 begin:@"ma" atFunction:@"loadSync"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v18 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"loadSync"];
 
   if (v18)
   {
@@ -274,8 +274,8 @@
     v20 = v13;
     v21 = a6;
     v22 = [MEMORY[0x277D289C0] loadSync:v20 allowingDifferences:v14 withPurpose:v15 error:a6];
-    v23 = [MEMORY[0x277D644A0] sharedSimulator];
-    v24 = [v23 end:@"ma" atFunction:@"loadSync"];
+    mEMORY[0x277D644A0]2 = [MEMORY[0x277D644A0] sharedSimulator];
+    v24 = [mEMORY[0x277D644A0]2 end:@"ma" atFunction:@"loadSync"];
 
     if (v24)
     {
@@ -300,8 +300,8 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 simAction];
-  if (v7 == 3)
+  simAction = [v5 simAction];
+  if (simAction == 3)
   {
     v9 = 0;
     v10 = 0;
@@ -309,26 +309,26 @@
 
   else
   {
-    if (v7 == 1)
+    if (simAction == 1)
     {
-      v8 = [MEMORY[0x277D644A0] sharedSimulator];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
       v9 = 3;
-      v10 = [v8 generateError:@"_SUCoreBorder_MADownloadResultAtBegin" ofDomain:@"com.apple.MobileAssetError.Download" withCode:3];
+      v10 = [mEMORY[0x277D644A0] generateError:@"_SUCoreBorder_MADownloadResultAtBegin" ofDomain:@"com.apple.MobileAssetError.Download" withCode:3];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D64428] sharedDiag];
       v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v5];
-      [v8 trackAnomaly:@"_SUCoreBorder_MADownloadResultAtBegin" forReason:v11 withResult:8113 withError:0];
+      [mEMORY[0x277D644A0] trackAnomaly:@"_SUCoreBorder_MADownloadResultAtBegin" forReason:v11 withResult:8113 withError:0];
 
       v10 = 0;
       v9 = 35;
     }
   }
 
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v13 = [v12 completionQueue];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  completionQueue = [mEMORY[0x277D643F8] completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__MAAsset_SUCoreBorderMAAsset___SUCoreBorder_MADownloadResultAtBegin_withCompletion___block_invoke;
@@ -338,7 +338,7 @@
   v17 = v10;
   v14 = v10;
   v15 = v6;
-  dispatch_async(v13, block);
+  dispatch_async(completionQueue, block);
 }
 
 + (void)_SUCoreBorder_MADownloadResultAtEnd:()SUCoreBorderMAAsset withResult:withError:withCompletion:
@@ -346,29 +346,29 @@
   v15 = a3;
   v9 = a5;
   v10 = a6;
-  v11 = [v15 simAction];
-  if (v11 == 3)
+  simAction = [v15 simAction];
+  if (simAction == 3)
   {
     a4 = 0;
     v13 = 0;
-    v12 = v9;
+    mEMORY[0x277D644A0] = v9;
   }
 
   else
   {
-    if (v11 == 1)
+    if (simAction == 1)
     {
-      v12 = [MEMORY[0x277D644A0] sharedSimulator];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
       a4 = 3;
-      v13 = [v12 generateError:@"_SUCoreBorder_MADownloadResultAtEnd" ofDomain:@"com.apple.MobileAssetError.Download" withCode:3];
+      v13 = [mEMORY[0x277D644A0] generateError:@"_SUCoreBorder_MADownloadResultAtEnd" ofDomain:@"com.apple.MobileAssetError.Download" withCode:3];
       v14 = v9;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D64428] sharedDiag];
       v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v15];
-      [v12 trackAnomaly:@"_SUCoreBorder_MADownloadResultAtEnd" forReason:v14 withResult:8113 withError:0];
+      [mEMORY[0x277D644A0] trackAnomaly:@"_SUCoreBorder_MADownloadResultAtEnd" forReason:v14 withResult:8113 withError:0];
       v13 = v9;
     }
   }
@@ -380,8 +380,8 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 simAction];
-  if (v7 == 3)
+  simAction = [v5 simAction];
+  if (simAction == 3)
   {
     v9 = 0;
     v10 = 0;
@@ -389,26 +389,26 @@
 
   else
   {
-    if (v7 == 1)
+    if (simAction == 1)
     {
-      v8 = [MEMORY[0x277D644A0] sharedSimulator];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
       v9 = 5;
-      v10 = [v8 generateError:@"_SUCoreBorder_MAPurgeResultAtBegin" ofDomain:@"com.apple.MobileAssetError.Purge" withCode:5];
+      v10 = [mEMORY[0x277D644A0] generateError:@"_SUCoreBorder_MAPurgeResultAtBegin" ofDomain:@"com.apple.MobileAssetError.Purge" withCode:5];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D64428] sharedDiag];
       v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v5];
-      [v8 trackAnomaly:@"_SUCoreBorder_MAPurgeResultAtBegin" forReason:v11 withResult:8113 withError:0];
+      [mEMORY[0x277D644A0] trackAnomaly:@"_SUCoreBorder_MAPurgeResultAtBegin" forReason:v11 withResult:8113 withError:0];
 
       v10 = 0;
       v9 = 6;
     }
   }
 
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v13 = [v12 completionQueue];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  completionQueue = [mEMORY[0x277D643F8] completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__MAAsset_SUCoreBorderMAAsset___SUCoreBorder_MAPurgeResultAtBegin_withCompletion___block_invoke;
@@ -418,7 +418,7 @@
   v17 = v10;
   v14 = v10;
   v15 = v6;
-  dispatch_async(v13, block);
+  dispatch_async(completionQueue, block);
 }
 
 + (void)_SUCoreBorder_MAPurgeResultAtEnd:()SUCoreBorderMAAsset withResult:withError:withCompletion:
@@ -426,29 +426,29 @@
   v15 = a3;
   v9 = a5;
   v10 = a6;
-  v11 = [v15 simAction];
-  if (v11 == 3)
+  simAction = [v15 simAction];
+  if (simAction == 3)
   {
     a4 = 0;
     v13 = 0;
-    v12 = v9;
+    mEMORY[0x277D644A0] = v9;
   }
 
   else
   {
-    if (v11 == 1)
+    if (simAction == 1)
     {
-      v12 = [MEMORY[0x277D644A0] sharedSimulator];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
       a4 = 5;
-      v13 = [v12 generateError:@"_SUCoreBorder_MAPurgeResultAtEnd" ofDomain:@"com.apple.MobileAssetError.Purge" withCode:5];
+      v13 = [mEMORY[0x277D644A0] generateError:@"_SUCoreBorder_MAPurgeResultAtEnd" ofDomain:@"com.apple.MobileAssetError.Purge" withCode:5];
       v14 = v9;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D64428] sharedDiag];
       v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v15];
-      [v12 trackAnomaly:@"_SUCoreBorder_MAPurgeResultAtEnd" forReason:v14 withResult:8113 withError:0];
+      [mEMORY[0x277D644A0] trackAnomaly:@"_SUCoreBorder_MAPurgeResultAtEnd" forReason:v14 withResult:8113 withError:0];
       v13 = v9;
     }
   }
@@ -460,28 +460,28 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 simAction];
-  if (v7 == 1)
+  simAction = [v5 simAction];
+  if (simAction == 1)
   {
     v8 = 4;
   }
 
-  else if (v7 == 3)
+  else if (simAction == 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v5];
-    [v9 trackAnomaly:@"_SUCoreBorder_MACancelDownloadResultAtBegin" forReason:v10 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MACancelDownloadResultAtBegin" forReason:v10 withResult:8113 withError:0];
 
     v8 = 5;
   }
 
-  v11 = [MEMORY[0x277D643F8] sharedCore];
-  v12 = [v11 completionQueue];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  completionQueue = [mEMORY[0x277D643F8] completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__MAAsset_SUCoreBorderMAAsset___SUCoreBorder_MACancelDownloadResultAtBegin_withCompletion___block_invoke;
@@ -489,29 +489,29 @@
   v15 = v6;
   v16 = v8;
   v13 = v6;
-  dispatch_async(v12, block);
+  dispatch_async(completionQueue, block);
 }
 
 + (void)_SUCoreBorder_MACancelDownloadResultAtEnd:()SUCoreBorderMAAsset withResult:withCompletion:
 {
   v11 = a3;
   v7 = a5;
-  v8 = [v11 simAction];
-  if (v8 == 1)
+  simAction = [v11 simAction];
+  if (simAction == 1)
   {
     a4 = 4;
   }
 
-  else if (v8 == 3)
+  else if (simAction == 3)
   {
     a4 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v11];
-    [v9 trackAnomaly:@"_SUCoreBorder_MACancelDownloadResultAtEnd" forReason:v10 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MACancelDownloadResultAtEnd" forReason:v10 withResult:8113 withError:0];
   }
 
   v7[2](v7, a4);
@@ -521,28 +521,28 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 simAction];
-  if (v7 == 1)
+  simAction = [v5 simAction];
+  if (simAction == 1)
   {
     v8 = 2;
   }
 
-  else if (v7 == 3)
+  else if (simAction == 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v5];
-    [v9 trackAnomaly:@"_SUCoreBorder_MAOperationResultAtBegin" forReason:v10 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MAOperationResultAtBegin" forReason:v10 withResult:8113 withError:0];
 
     v8 = 4;
   }
 
-  v11 = [MEMORY[0x277D643F8] sharedCore];
-  v12 = [v11 completionQueue];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  completionQueue = [mEMORY[0x277D643F8] completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__MAAsset_SUCoreBorderMAAsset___SUCoreBorder_MAOperationResultAtBegin_withCompletion___block_invoke;
@@ -550,29 +550,29 @@
   v15 = v6;
   v16 = v8;
   v13 = v6;
-  dispatch_async(v12, block);
+  dispatch_async(completionQueue, block);
 }
 
 + (void)_SUCoreBorder_MAOperationResultAtEnd:()SUCoreBorderMAAsset withResult:withCompletion:
 {
   v11 = a3;
   v7 = a5;
-  v8 = [v11 simAction];
-  if (v8 == 1)
+  simAction = [v11 simAction];
+  if (simAction == 1)
   {
     a4 = 2;
   }
 
-  else if (v8 == 3)
+  else if (simAction == 3)
   {
     a4 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v11];
-    [v9 trackAnomaly:@"_SUCoreBorder_MAOperationResultAtEnd" forReason:v10 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MAOperationResultAtEnd" forReason:v10 withResult:8113 withError:0];
   }
 
   v7[2](v7, a4);
@@ -581,17 +581,17 @@
 + (uint64_t)_SUCoreBorder_MABoolResultAtBegin:()SUCoreBorderMAAsset
 {
   v3 = a3;
-  v4 = [v3 simAction];
-  if (v4 == 1)
+  simAction = [v3 simAction];
+  if (simAction == 1)
   {
     goto LABEL_5;
   }
 
-  if (v4 != 3)
+  if (simAction != 3)
   {
-    v6 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v3];
-    [v6 trackAnomaly:@"_SUCoreBorder_MABoolResultAtBegin" forReason:v7 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MABoolResultAtBegin" forReason:v7 withResult:8113 withError:0];
 
 LABEL_5:
     v5 = 0;
@@ -607,22 +607,22 @@ LABEL_6:
 + (uint64_t)_SUCoreBorder_MABoolResultAtEnd:()SUCoreBorderMAAsset withResult:
 {
   v5 = a3;
-  v6 = [v5 simAction];
-  if (v6 == 1)
+  simAction = [v5 simAction];
+  if (simAction == 1)
   {
     a4 = 0;
   }
 
-  else if (v6 == 3)
+  else if (simAction == 3)
   {
     a4 = 1;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v5];
-    [v7 trackAnomaly:@"_SUCoreBorder_MABoolResultAtEnd" forReason:v8 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MABoolResultAtEnd" forReason:v8 withResult:8113 withError:0];
   }
 
   return a4;
@@ -632,18 +632,18 @@ LABEL_6:
 {
   v10 = a3;
   v11 = a4;
-  v12 = [v10 simAction];
-  if (v12 == 3)
+  simAction = [v10 simAction];
+  if (simAction == 3)
   {
-    v14 = [a1 _getSimulatedAssetForDescriptor:v11 type:a5];
+    v14 = [self _getSimulatedAssetForDescriptor:v11 type:a5];
     goto LABEL_7;
   }
 
-  if (v12 != 1)
+  if (simAction != 1)
   {
-    v15 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v10];
-    [v15 trackAnomaly:@"_SUCoreBorder_MAAssetResultAtBegin" forReason:v16 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MAAssetResultAtBegin" forReason:v16 withResult:8113 withError:0];
 
     v14 = 0;
 LABEL_7:
@@ -686,28 +686,28 @@ LABEL_9:
   }
 
   v16 = v15;
-  v17 = [v12 simAction];
-  if (v17 == 3)
+  simAction = [v12 simAction];
+  if (simAction == 3)
   {
-    v18 = [a1 _getSimulatedAssetForDescriptor:v13 type:a5];
+    v18 = [self _getSimulatedAssetForDescriptor:v13 type:a5];
 
-    v19 = v16;
+    mEMORY[0x277D64428] = v16;
     v16 = 0;
   }
 
-  else if (v17 == 1)
+  else if (simAction == 1)
   {
 
     [v12 buildErrorWithDescription:@"SUCoreError created by _SUCoreBorder_MAAssetResultAtEnd"];
     v18 = 0;
-    v16 = v19 = v16;
+    v16 = mEMORY[0x277D64428] = v16;
   }
 
   else
   {
-    v19 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v12];
-    [v19 trackAnomaly:@"_SUCoreBorder_MAAssetResultAtEnd" forReason:v20 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MAAssetResultAtEnd" forReason:v20 withResult:8113 withError:0];
 
     v18 = v14;
   }
@@ -727,21 +727,21 @@ LABEL_9:
   v3 = a3;
   if ([v3 simAction] != 3)
   {
-    v7 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v3];
-    [v7 trackAnomaly:@"_SUCoreBorder_MAAssetState" forReason:v8 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_MAAssetState" forReason:v8 withResult:8113 withError:0];
 
     v6 = 0;
     goto LABEL_20;
   }
 
-  v4 = [v3 assetState];
-  v5 = [v4 isEqualToString:@"MAUnknown"];
+  assetState = [v3 assetState];
+  v5 = [assetState isEqualToString:@"MAUnknown"];
 
   if ((v5 & 1) == 0)
   {
-    v9 = [v3 assetState];
-    v10 = [v9 isEqualToString:@"MANotPresent"];
+    assetState2 = [v3 assetState];
+    v10 = [assetState2 isEqualToString:@"MANotPresent"];
 
     if (v10)
     {
@@ -749,8 +749,8 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v11 = [v3 assetState];
-    v12 = [v11 isEqualToString:@"MAInstalled"];
+    assetState3 = [v3 assetState];
+    v12 = [assetState3 isEqualToString:@"MAInstalled"];
 
     if (v12)
     {
@@ -758,8 +758,8 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v13 = [v3 assetState];
-    v14 = [v13 isEqualToString:@"MAInstalledNotInCatalog"];
+    assetState4 = [v3 assetState];
+    v14 = [assetState4 isEqualToString:@"MAInstalledNotInCatalog"];
 
     if (v14)
     {
@@ -767,8 +767,8 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v15 = [v3 assetState];
-    v16 = [v15 isEqualToString:@"MADownloading"];
+    assetState5 = [v3 assetState];
+    v16 = [assetState5 isEqualToString:@"MADownloading"];
 
     if (v16)
     {
@@ -776,8 +776,8 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v17 = [v3 assetState];
-    v18 = [v17 isEqualToString:@"MARequiredByOs"];
+    assetState6 = [v3 assetState];
+    v18 = [assetState6 isEqualToString:@"MARequiredByOs"];
 
     if (v18)
     {
@@ -785,8 +785,8 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v19 = [v3 assetState];
-    v20 = [v19 isEqualToString:@"MAInstalledWithOs"];
+    assetState7 = [v3 assetState];
+    v20 = [assetState7 isEqualToString:@"MAInstalledWithOs"];
 
     if (v20)
     {
@@ -794,24 +794,24 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v26 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428]2 = [MEMORY[0x277D64428] sharedDiag];
     v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event asset state, event: %@", v3];
-    [v26 trackAnomaly:@"_SUCoreBorder_MAAssetState" forReason:v27 withResult:8113 withError:0];
+    [mEMORY[0x277D64428]2 trackAnomaly:@"_SUCoreBorder_MAAssetState" forReason:v27 withResult:8113 withError:0];
   }
 
   v6 = 0;
 LABEL_17:
-  v21 = [MEMORY[0x277D64460] sharedLogger];
-  v22 = [v21 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v3 assetState];
+    assetState8 = [v3 assetState];
     *buf = 138412546;
-    v29 = v23;
+    v29 = assetState8;
     v30 = 2048;
     v31 = v6;
-    _os_log_impl(&dword_23193C000, v22, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_STATE] using simulated state:%@ (enum:%ld)", buf, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_STATE] using simulated state:%@ (enum:%ld)", buf, 0x16u);
   }
 
 LABEL_20:
@@ -823,43 +823,43 @@ LABEL_20:
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 simAction];
-  if (v4 == 3)
+  simAction = [v3 simAction];
+  if (simAction == 3)
   {
     v7 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v8 = [v3 assetAttributesPlist];
-    v9 = [v7 initWithContentsOfFile:v8];
+    assetAttributesPlist = [v3 assetAttributesPlist];
+    v9 = [v7 initWithContentsOfFile:assetAttributesPlist];
 
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v16 = v9;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] using simulated attributes:%@", buf, 0xCu);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] using simulated attributes:%@", buf, 0xCu);
     }
   }
 
   else
   {
-    if (v4 == 1)
+    if (simAction == 1)
     {
-      v5 = [MEMORY[0x277D64460] sharedLogger];
-      v6 = [v5 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v6, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] simulating missing attributes", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] simulating missing attributes", buf, 2u);
       }
     }
 
     else
     {
-      v6 = [MEMORY[0x277D64428] sharedDiag];
+      oslog2 = [MEMORY[0x277D64428] sharedDiag];
       v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v3];
-      [v6 trackAnomaly:@"_SUCoreBorder_MAAttributesAtBegin" forReason:v12 withResult:8113 withError:0];
+      [oslog2 trackAnomaly:@"_SUCoreBorder_MAAttributesAtBegin" forReason:v12 withResult:8113 withError:0];
     }
 
     v9 = 0;
@@ -875,22 +875,22 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a4;
-  v7 = [v5 simAction];
-  if (v7 == 3)
+  simAction = [v5 simAction];
+  if (simAction == 3)
   {
     v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
     v11 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v12 = [v5 assetAttributesPlist];
-    v13 = [v11 initWithContentsOfFile:v12];
+    assetAttributesPlist = [v5 assetAttributesPlist];
+    v13 = [v11 initWithContentsOfFile:assetAttributesPlist];
 
-    v14 = [MEMORY[0x277D64460] sharedLogger];
-    v15 = [v14 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v20 = v13;
-      _os_log_impl(&dword_23193C000, v15, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] simulating additional/replaced attributes:%@", buf, 0xCu);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] simulating additional/replaced attributes:%@", buf, 0xCu);
     }
 
     [v10 addEntriesFromDictionary:v13];
@@ -898,23 +898,23 @@ LABEL_20:
 
   else
   {
-    if (v7 == 1)
+    if (simAction == 1)
     {
-      v8 = [MEMORY[0x277D64460] sharedLogger];
-      v9 = [v8 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] simulating missing attributes", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[BORDER_MA_ATTRIBUTES] simulating missing attributes", buf, 2u);
       }
     }
 
     else
     {
-      v9 = [MEMORY[0x277D64428] sharedDiag];
+      oslog2 = [MEMORY[0x277D64428] sharedDiag];
       v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v5];
-      [v9 trackAnomaly:@"_SUCoreBorder_MAAttributesAtEnd" forReason:v16 withResult:8113 withError:0];
+      [oslog2 trackAnomaly:@"_SUCoreBorder_MAAttributesAtEnd" forReason:v16 withResult:8113 withError:0];
     }
 
     v10 = 0;
@@ -931,50 +931,50 @@ LABEL_20:
   v6 = v5;
   if (a4 == 2)
   {
-    v9 = [v5 documentationAssetType];
-    v10 = [v6 productBuildVersion];
-    v11 = [v6 productVersion];
-    v13 = [v6 documentationID];
-    v14 = [v6 documentationAssetPurpose];
-    v12 = _getNewDocumentationMAAssetAttributesDictionary(v9, v10, v11, v13, v14);
+    documentationAssetType = [v5 documentationAssetType];
+    productBuildVersion = [v6 productBuildVersion];
+    productVersion = [v6 productVersion];
+    documentationID = [v6 documentationID];
+    documentationAssetPurpose = [v6 documentationAssetPurpose];
+    mEMORY[0x277D64428] = _getNewDocumentationMAAssetAttributesDictionary(documentationAssetType, productBuildVersion, productVersion, documentationID, documentationAssetPurpose);
   }
 
   else
   {
     if (a4 != 1)
     {
-      v12 = [MEMORY[0x277D64428] sharedDiag];
-      [v12 trackAnomaly:@"_getSimulatedAssetForDescriptor" forReason:@"unsupported SUCoreBorderMobileAssetType" withResult:8113 withError:0];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      [mEMORY[0x277D64428] trackAnomaly:@"_getSimulatedAssetForDescriptor" forReason:@"unsupported SUCoreBorderMobileAssetType" withResult:8113 withError:0];
       v15 = 0;
 LABEL_11:
 
       goto LABEL_13;
     }
 
-    v7 = [v5 softwareUpdateAssetType];
-    isUpdateBrainAssetType = _isUpdateBrainAssetType(v7);
+    softwareUpdateAssetType = [v5 softwareUpdateAssetType];
+    isUpdateBrainAssetType = _isUpdateBrainAssetType(softwareUpdateAssetType);
 
-    v9 = [v6 softwareUpdateAssetType];
-    v10 = [v6 productBuildVersion];
+    documentationAssetType = [v6 softwareUpdateAssetType];
+    productBuildVersion = [v6 productBuildVersion];
     if (isUpdateBrainAssetType)
     {
-      v11 = [v6 softwareUpdateAssetPurpose];
-      v12 = _getNewUpdateBrainMAAssetAttributesDictionary(v9, v10, v11);
+      productVersion = [v6 softwareUpdateAssetPurpose];
+      mEMORY[0x277D64428] = _getNewUpdateBrainMAAssetAttributesDictionary(documentationAssetType, productBuildVersion, productVersion);
       goto LABEL_9;
     }
 
-    v11 = [v6 productVersion];
-    v13 = [v6 releaseType];
-    v14 = [v6 prerequisiteBuild];
-    v16 = [v6 prerequisiteOSVersion];
-    v17 = [v6 softwareUpdateAssetPurpose];
-    v12 = _getNewSoftwareUpdateMAAssetAttributesDictionary(v9, v10, v11, v13, v14, v16, v17);
+    productVersion = [v6 productVersion];
+    documentationID = [v6 releaseType];
+    documentationAssetPurpose = [v6 prerequisiteBuild];
+    prerequisiteOSVersion = [v6 prerequisiteOSVersion];
+    softwareUpdateAssetPurpose = [v6 softwareUpdateAssetPurpose];
+    mEMORY[0x277D64428] = _getNewSoftwareUpdateMAAssetAttributesDictionary(documentationAssetType, productBuildVersion, productVersion, documentationID, documentationAssetPurpose, prerequisiteOSVersion, softwareUpdateAssetPurpose);
   }
 
 LABEL_9:
-  if (v12)
+  if (mEMORY[0x277D64428])
   {
-    v15 = [objc_alloc(MEMORY[0x277D289C0]) initWithAttributes:v12];
+    v15 = [objc_alloc(MEMORY[0x277D289C0]) initWithAttributes:mEMORY[0x277D64428]];
     goto LABEL_11;
   }
 
@@ -988,8 +988,8 @@ LABEL_13:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 attributes];
-  v17 = [v8 objectForKey:@"_DownloadSize"];
+  attributes = [self attributes];
+  v17 = [attributes objectForKey:@"_DownloadSize"];
 
   v9 = *MEMORY[0x277D647C8];
   if (v17)
@@ -1003,8 +1003,8 @@ LABEL_13:
   }
 
   [v7 setSafeObject:v10 forKey:*MEMORY[0x277D64718]];
-  v11 = [a1 attributes];
-  v12 = [v11 objectForKey:@"AssetType"];
+  attributes2 = [self attributes];
+  v12 = [attributes2 objectForKey:@"AssetType"];
 
   if (v12)
   {
@@ -1017,8 +1017,8 @@ LABEL_13:
   }
 
   [v7 setSafeObject:v13 forKey:*MEMORY[0x277D646F0]];
-  v14 = [a1 attributes];
-  v15 = [v14 objectForKey:@"Build"];
+  attributes3 = [self attributes];
+  v15 = [attributes3 objectForKey:@"Build"];
 
   if (v15)
   {
@@ -1039,10 +1039,10 @@ LABEL_13:
   v4 = a3;
   v6 = objc_opt_new();
   [v6 setSafeObject:*MEMORY[0x277D64778] forKey:*MEMORY[0x277D64740]];
-  [a1 _setCommonSplunkFields:v6 withSessionId:v4];
+  [self _setCommonSplunkFields:v6 withSessionId:v4];
 
-  v5 = [MEMORY[0x277D64448] sharedReporter];
-  [v5 sendEvent:v6];
+  mEMORY[0x277D64448] = [MEMORY[0x277D64448] sharedReporter];
+  [mEMORY[0x277D64448] sendEvent:v6];
 }
 
 - (void)_prepAndSendDownloadFinishedSplunkEvent:()SUCoreBorderMAAsset withError:withSessionId:
@@ -1056,13 +1056,13 @@ LABEL_13:
 
   if (a3)
   {
-    v11 = [v13 checkedNameForCode];
-    [v9 setSafeObject:v11 forKey:*MEMORY[0x277D64708]];
+    checkedNameForCode = [v13 checkedNameForCode];
+    [v9 setSafeObject:checkedNameForCode forKey:*MEMORY[0x277D64708]];
   }
 
-  [a1 _setCommonSplunkFields:v9 withSessionId:v8];
-  v12 = [MEMORY[0x277D64448] sharedReporter];
-  [v12 sendEvent:v9];
+  [self _setCommonSplunkFields:v9 withSessionId:v8];
+  mEMORY[0x277D64448] = [MEMORY[0x277D64448] sharedReporter];
+  [mEMORY[0x277D64448] sendEvent:v9];
 }
 
 @end

@@ -2,13 +2,13 @@
 - (NSArray)_userStyleSheets;
 - (NSArray)userScripts;
 - (WKUserContentController)init;
-- (void)_addContentRuleList:(id)a3 extensionBaseURL:(id)a4;
-- (void)_addScriptMessageHandler:(id)a3 name:(id)a4 contentWorld:(id)a5;
-- (void)_addScriptMessageHandler:(id)a3 name:(id)a4 userContentWorld:(id)a5;
-- (void)_addScriptMessageHandler:(void *)a3;
-- (void)_addUserContentFilter:(id)a3;
-- (void)_removeScriptMessageHandlerForName:(id)a3 userContentWorld:(id)a4;
-- (void)_removeUserContentFilter:(id)a3;
+- (void)_addContentRuleList:(id)list extensionBaseURL:(id)l;
+- (void)_addScriptMessageHandler:(id)handler name:(id)name contentWorld:(id)world;
+- (void)_addScriptMessageHandler:(id)handler name:(id)name userContentWorld:(id)world;
+- (void)_addScriptMessageHandler:(void *)handler;
+- (void)_addUserContentFilter:(id)filter;
+- (void)_removeScriptMessageHandlerForName:(id)name userContentWorld:(id)world;
+- (void)_removeUserContentFilter:(id)filter;
 - (void)addContentRuleList:(WKContentRuleList *)contentRuleList;
 - (void)addScriptMessageHandler:(id)scriptMessageHandler contentWorld:(WKContentWorld *)world name:(NSString *)name;
 - (void)addScriptMessageHandler:(id)scriptMessageHandler name:(NSString *)name;
@@ -29,9 +29,9 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(WKUserContentController *)v3 _apiObject];
+    _apiObject = [(WKUserContentController *)v3 _apiObject];
     v9 = v3;
-    v10 = v5;
+    v10 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v10, &v9, v8);
     WebKit::WebUserContentControllerProxy::WebUserContentControllerProxy([(WKUserContentController *)v3 _apiObject]);
   }
@@ -85,12 +85,12 @@
   }
 }
 
-- (void)_addScriptMessageHandler:(void *)a3
+- (void)_addScriptMessageHandler:(void *)handler
 {
-  if ((WebKit::WebUserContentControllerProxy::addUserScriptMessageHandler(&self->_userContentControllerProxy, a3) & 1) == 0)
+  if ((WebKit::WebUserContentControllerProxy::addUserScriptMessageHandler(&self->_userContentControllerProxy, handler) & 1) == 0)
   {
     v4 = MEMORY[0x1E695DF30];
-    v5 = *(a3 + 4);
+    v5 = *(handler + 4);
     if (v5)
     {
       atomic_fetch_add_explicit(v5, 2u, memory_order_relaxed);
@@ -207,7 +207,7 @@
   *(v9 + 8) = self;
   if (self)
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   *(v9 + 16) = scriptMessageHandlerWithReply;
@@ -282,9 +282,9 @@
   }
 }
 
-- (void)_addUserContentFilter:(id)a3
+- (void)_addUserContentFilter:(id)filter
 {
-  v4 = *(a3 + 1);
+  v4 = *(filter + 1);
   WTF::URL::URL(v7);
   WebKit::WebUserContentControllerProxy::addContentRuleList(&self->_userContentControllerProxy, (v4 + 8), v7);
   v6 = v7[0];
@@ -298,10 +298,10 @@
   }
 }
 
-- (void)_addContentRuleList:(id)a3 extensionBaseURL:(id)a4
+- (void)_addContentRuleList:(id)list extensionBaseURL:(id)l
 {
-  MEMORY[0x19EB01DE0](v8, a4);
-  WebKit::WebUserContentControllerProxy::addContentRuleList(&self->_userContentControllerProxy, (a3 + 8), v8);
+  MEMORY[0x19EB01DE0](v8, l);
+  WebKit::WebUserContentControllerProxy::addContentRuleList(&self->_userContentControllerProxy, (list + 8), v8);
   v7 = v8[0];
   v8[0] = 0;
   if (v7)
@@ -313,9 +313,9 @@
   }
 }
 
-- (void)_removeUserContentFilter:(id)a3
+- (void)_removeUserContentFilter:(id)filter
 {
-  MEMORY[0x19EB02040](&v7, a3);
+  MEMORY[0x19EB02040](&v7, filter);
   WebKit::WebUserContentControllerProxy::removeContentRuleList(&self->_userContentControllerProxy, &v7, v4);
   v6 = v7;
   v7 = 0;
@@ -347,14 +347,14 @@
   return result;
 }
 
-- (void)_addScriptMessageHandler:(id)a3 name:(id)a4 userContentWorld:(id)a5
+- (void)_addScriptMessageHandler:(id)handler name:(id)name userContentWorld:(id)world
 {
   v9 = ScriptMessageHandlerDelegate::operator new(self, a2);
-  ScriptMessageHandlerDelegate::ScriptMessageHandlerDelegate(v9, self, a3, a4);
+  ScriptMessageHandlerDelegate::ScriptMessageHandlerDelegate(v9, self, handler, name);
   v14 = 0;
   v15 = v9;
-  MEMORY[0x19EB02040](&v13, a4);
-  WebKit::WebScriptMessageHandler::create(&v15, &v13, *(a5 + 1) + 8, &v16);
+  MEMORY[0x19EB02040](&v13, name);
+  WebKit::WebScriptMessageHandler::create(&v15, &v13, *(world + 1) + 8, &v16);
   v11 = v13;
   v13 = 0;
   if (v11 && atomic_fetch_add_explicit(v11, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -371,7 +371,7 @@
   v12 = v16;
   if ((WebKit::WebUserContentControllerProxy::addUserScriptMessageHandler(&self->_userContentControllerProxy, v16) & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to add script message handler with name '%@' when one already exists.", a4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to add script message handler with name '%@' when one already exists.", name}];
   }
 
   if (*(v12 + 2) == 1)
@@ -385,17 +385,17 @@
   }
 }
 
-- (void)_addScriptMessageHandler:(id)a3 name:(id)a4 contentWorld:(id)a5
+- (void)_addScriptMessageHandler:(id)handler name:(id)name contentWorld:(id)world
 {
-  v8 = [a5 _userContentWorld];
+  _userContentWorld = [world _userContentWorld];
 
-  [(WKUserContentController *)self _addScriptMessageHandler:a3 name:a4 userContentWorld:v8];
+  [(WKUserContentController *)self _addScriptMessageHandler:handler name:name userContentWorld:_userContentWorld];
 }
 
-- (void)_removeScriptMessageHandlerForName:(id)a3 userContentWorld:(id)a4
+- (void)_removeScriptMessageHandlerForName:(id)name userContentWorld:(id)world
 {
-  MEMORY[0x19EB02040](&v8, a3);
-  WebKit::WebUserContentControllerProxy::removeUserMessageHandlerForName(&self->_userContentControllerProxy, &v8, (*(a4 + 1) + 8));
+  MEMORY[0x19EB02040](&v8, name);
+  WebKit::WebUserContentControllerProxy::removeUserMessageHandlerForName(&self->_userContentControllerProxy, &v8, (*(world + 1) + 8));
   v7 = v8;
   v8 = 0;
   if (v7)

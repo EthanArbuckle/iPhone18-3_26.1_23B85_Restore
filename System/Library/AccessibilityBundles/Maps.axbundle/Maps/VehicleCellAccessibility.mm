@@ -1,36 +1,36 @@
 @interface VehicleCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axLabelForBatterView;
-- (id)_axLabelForCellWithVehicle:(id)a3;
-- (id)_lableForLprPowerTYpe:(id)a3;
+- (id)_axLabelForCellWithVehicle:(id)vehicle;
+- (id)_lableForLprPowerTYpe:(id)ype;
 @end
 
 @implementation VehicleCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VehicleCell" hasInstanceMethod:@"setupWithVehicle:cellStyle:isSelected:" withFullSignature:{"v", "@", "q", "B", 0}];
-  [v3 validateClass:@"VehicleCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"VehicleCell" hasInstanceVariable:@"_batteryChargeView" withType:"VehicleBatteryView"];
-  [v3 validateClass:@"VehicleBatteryView" hasInstanceVariable:@"_percentLabel" withType:"UILabel"];
-  [v3 validateClass:@"VehicleBatteryView" hasInstanceVariable:@"_batteryStateAgeView" withType:"BatteryStateAgeView"];
-  [v3 validateClass:@"BatteryStateAgeView" hasInstanceVariable:@"_stateUpdatedLabel" withType:"UILabel"];
-  [v3 validateClass:@"BatteryStateAgeView" hasInstanceMethod:@"dateOfLastSync" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VehicleBatteryView" hasInstanceMethod:@"vehicle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VGVehicle" hasInstanceMethod:@"licensePlate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VGVehicle" hasInstanceMethod:@"lprPowerType" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VehicleCell" hasInstanceMethod:@"setupWithVehicle:cellStyle:isSelected:" withFullSignature:{"v", "@", "q", "B", 0}];
+  [validationsCopy validateClass:@"VehicleCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"VehicleCell" hasInstanceVariable:@"_batteryChargeView" withType:"VehicleBatteryView"];
+  [validationsCopy validateClass:@"VehicleBatteryView" hasInstanceVariable:@"_percentLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"VehicleBatteryView" hasInstanceVariable:@"_batteryStateAgeView" withType:"BatteryStateAgeView"];
+  [validationsCopy validateClass:@"BatteryStateAgeView" hasInstanceVariable:@"_stateUpdatedLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"BatteryStateAgeView" hasInstanceMethod:@"dateOfLastSync" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VehicleBatteryView" hasInstanceMethod:@"vehicle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VGVehicle" hasInstanceMethod:@"licensePlate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VGVehicle" hasInstanceMethod:@"lprPowerType" withFullSignature:{"@", 0}];
 }
 
-- (id)_axLabelForCellWithVehicle:(id)a3
+- (id)_axLabelForCellWithVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = [(VehicleCellAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
   v7 = __AXStringForVariables();
-  v8 = [v4 safeStringForKey:{@"licensePlate", @"__AXStringForVariablesSentinel"}];
-  if (([v6 containsString:v8] & 1) == 0)
+  v8 = [vehicleCopy safeStringForKey:{@"licensePlate", @"__AXStringForVariablesSentinel"}];
+  if (([accessibilityLabel containsString:v8] & 1) == 0)
   {
     v14 = v8;
     v15 = @"__AXStringForVariablesSentinel";
@@ -39,18 +39,18 @@
     v7 = v9;
   }
 
-  v10 = [v4 safeStringForKey:{@"lprPowerType", v14, v15}];
+  v10 = [vehicleCopy safeStringForKey:{@"lprPowerType", v14, v15}];
   v11 = [(VehicleCellAccessibility *)self _lableForLprPowerTYpe:v10];
-  v16 = [(VehicleCellAccessibility *)self _axLabelForBatterView];
+  _axLabelForBatterView = [(VehicleCellAccessibility *)self _axLabelForBatterView];
   v12 = __AXStringForVariables();
 
   return v12;
 }
 
-- (id)_lableForLprPowerTYpe:(id)a3
+- (id)_lableForLprPowerTYpe:(id)ype
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EV"])
+  ypeCopy = ype;
+  if ([ypeCopy isEqualToString:@"EV"])
   {
     v4 = @"VEHICLE_POWER_TYPE_EV";
 LABEL_7:
@@ -58,13 +58,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:@"PHEV"])
+  if ([ypeCopy isEqualToString:@"PHEV"])
   {
     v4 = @"VEHICLE_POWER_TYPE_PHEV";
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"FUEL"])
+  if ([ypeCopy isEqualToString:@"FUEL"])
   {
     v4 = @"VEHICLE_POWER_TYPE_FUEL";
     goto LABEL_7;
@@ -90,13 +90,13 @@ LABEL_8:
   else
   {
     v6 = [v4 safeValueForKey:@"_percentLabel"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
 
-    if (v7)
+    if (accessibilityLabel)
     {
       v8 = MEMORY[0x29EDBA0F8];
       v9 = AXMapsLocString(@"VEHICLE_BATTERY_LEVEL");
-      v10 = [v8 localizedStringWithFormat:v9, v7];
+      v10 = [v8 localizedStringWithFormat:v9, accessibilityLabel];
 
       v22 = v10;
       v23 = @"__AXStringForVariablesSentinel";
@@ -112,8 +112,8 @@ LABEL_8:
     v12 = [v11 safeValueForKey:@"_stateUpdatedLabel"];
     if ([v12 _accessibilityViewIsVisible])
     {
-      v13 = [v12 accessibilityLabel];
-      v14 = [v13 length];
+      accessibilityLabel2 = [v12 accessibilityLabel];
+      v14 = [accessibilityLabel2 length];
 
       if (v14)
       {
@@ -129,8 +129,8 @@ LABEL_8:
           }
 
           v17 = _axLabelForBatterView_Formatter;
-          v18 = [MEMORY[0x29EDB8DB0] date];
-          v19 = [v17 localizedStringForDate:v16 relativeToDate:v18];
+          date = [MEMORY[0x29EDB8DB0] date];
+          v19 = [v17 localizedStringForDate:v16 relativeToDate:date];
 
           v20 = __UIAXStringForVariables();
 

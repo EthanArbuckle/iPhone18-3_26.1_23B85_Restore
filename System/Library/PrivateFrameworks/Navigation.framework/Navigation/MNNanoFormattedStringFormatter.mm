@@ -1,57 +1,57 @@
 @interface MNNanoFormattedStringFormatter
 + (id)sharedFormatter;
-- (id)listInstructionForStep:(id)a3;
-- (id)signInstructionsForStep:(id)a3;
+- (id)listInstructionForStep:(id)step;
+- (id)signInstructionsForStep:(id)step;
 @end
 
 @implementation MNNanoFormattedStringFormatter
 
-- (id)signInstructionsForStep:(id)a3
+- (id)signInstructionsForStep:(id)step
 {
-  v3 = a3;
-  if ([v3 transportType] == 6 || objc_msgSend(v3, "transportType") == 1)
+  stepCopy = step;
+  if ([stepCopy transportType] == 6 || objc_msgSend(stepCopy, "transportType") == 1)
   {
-    v4 = 0;
+    instructionWithShorterAlternatives = 0;
   }
 
   else
   {
-    v5 = [v3 contentsForContext:1];
-    v4 = [v5 instructionWithShorterAlternatives];
+    v5 = [stepCopy contentsForContext:1];
+    instructionWithShorterAlternatives = [v5 instructionWithShorterAlternatives];
   }
 
-  return v4;
+  return instructionWithShorterAlternatives;
 }
 
-- (id)listInstructionForStep:(id)a3
+- (id)listInstructionForStep:(id)step
 {
-  v3 = a3;
-  if ([v3 transportType] == 6 || objc_msgSend(v3, "transportType") == 1)
+  stepCopy = step;
+  if ([stepCopy transportType] == 6 || objc_msgSend(stepCopy, "transportType") == 1)
   {
-    v4 = 0;
+    instructions = 0;
   }
 
   else
   {
-    v5 = [v3 geoStep];
-    v6 = [v5 hasInstructions];
+    geoStep = [stepCopy geoStep];
+    hasInstructions = [geoStep hasInstructions];
 
-    if (v6)
+    if (hasInstructions)
     {
-      v7 = [v3 geoStep];
-      v4 = [v7 instructions];
+      geoStep2 = [stepCopy geoStep];
+      instructions = [geoStep2 instructions];
     }
 
     else
     {
-      v7 = [v3 contentsForContext:2];
-      [v7 setSuppressNames:1];
-      v8 = [v7 instructionWithShorterAlternatives];
-      v4 = [v8 lastObject];
+      geoStep2 = [stepCopy contentsForContext:2];
+      [geoStep2 setSuppressNames:1];
+      instructionWithShorterAlternatives = [geoStep2 instructionWithShorterAlternatives];
+      instructions = [instructionWithShorterAlternatives lastObject];
     }
   }
 
-  return v4;
+  return instructions;
 }
 
 + (id)sharedFormatter

@@ -46,10 +46,10 @@
   }
 
   v11 = v10;
-  v13 = [(XPCClient *)v11 clientID];
+  clientID = [(XPCClient *)v11 clientID];
   if (v9)
   {
-    objc_setProperty_nonatomic_copy(v9, v12, v13, 40);
+    objc_setProperty_nonatomic_copy(v9, v12, clientID, 40);
   }
 
   if (self)
@@ -63,8 +63,8 @@
   }
 
   v15 = v14;
-  v16 = [(XPCClient *)v15 clientID];
-  v18 = [NSString stringWithFormat:@"Restore applications request for client %@", v16];
+  clientID2 = [(XPCClient *)v15 clientID];
+  v18 = [NSString stringWithFormat:@"Restore applications request for client %@", clientID2];
   if (v9)
   {
     objc_setProperty_nonatomic_copy(v9, v17, v18, 56);

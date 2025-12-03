@@ -1,16 +1,16 @@
 @interface VSSubscriptionAccountHashValueTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSSubscriptionAccountHashValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy length])
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   else

@@ -1,14 +1,14 @@
 @interface StockChartDisplayMode
 + (id)defaultDisplayMode;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)chartSize;
 - (StockChartDisplayMode)init;
 - (UIEdgeInsets)chartRenderingInsets;
 - (UIEdgeInsets)lineGraphInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)setBackgroundGradient:(CGGradient *)a3;
+- (void)setBackgroundGradient:(CGGradient *)gradient;
 @end
 
 @implementation StockChartDisplayMode
@@ -38,8 +38,8 @@
     v6 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.8];
     [(StockChartDisplayMode *)v3 setXAxisKeylineColor:v6];
 
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(StockChartDisplayMode *)v3 setAxisLabelsColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(StockChartDisplayMode *)v3 setAxisLabelsColor:whiteColor];
 
     [(StockChartDisplayMode *)v3 setVolumeHeight:RoundToPixel(19.5)];
     [(StockChartDisplayMode *)v3 setYAxisLabelCount:5];
@@ -47,10 +47,10 @@
     [(StockChartDisplayMode *)v3 setIntervalRowHeight:34.5];
     [(StockChartDisplayMode *)v3 setShowsVolume:1];
     [(StockChartDisplayMode *)v3 setChartRenderingInsets:0.0, 16.0, 0.0, 16.0];
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     hash = v3->_hash;
-    v3->_hash = v9;
+    v3->_hash = uUIDString;
   }
 
   return v3;
@@ -69,7 +69,7 @@
   [(StockChartDisplayMode *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_hash copy];
@@ -97,26 +97,26 @@
   [v4 setYAxisLabelCount:{-[StockChartDisplayMode yAxisLabelCount](self, "yAxisLabelCount")}];
   [(StockChartDisplayMode *)self lineWidth];
   [v4 setLineWidth:?];
-  v7 = [(StockChartDisplayMode *)self lineColor];
-  [v4 setLineColor:v7];
+  lineColor = [(StockChartDisplayMode *)self lineColor];
+  [v4 setLineColor:lineColor];
 
-  v8 = [(StockChartDisplayMode *)self backgroundLinesColor];
-  [v4 setBackgroundLinesColor:v8];
+  backgroundLinesColor = [(StockChartDisplayMode *)self backgroundLinesColor];
+  [v4 setBackgroundLinesColor:backgroundLinesColor];
 
-  v9 = [(StockChartDisplayMode *)self xAxisKeylineColor];
-  [v4 setXAxisKeylineColor:v9];
+  xAxisKeylineColor = [(StockChartDisplayMode *)self xAxisKeylineColor];
+  [v4 setXAxisKeylineColor:xAxisKeylineColor];
 
-  v10 = [(StockChartDisplayMode *)self axisLabelsColor];
-  [v4 setAxisLabelsColor:v10];
+  axisLabelsColor = [(StockChartDisplayMode *)self axisLabelsColor];
+  [v4 setAxisLabelsColor:axisLabelsColor];
 
   [v4 setBackgroundGradient:{-[StockChartDisplayMode backgroundGradient](self, "backgroundGradient")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -126,7 +126,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSString *)v4->_hash isEqualToString:self->_hash];
+      v5 = [(NSString *)equalCopy->_hash isEqualToString:self->_hash];
     }
 
     else
@@ -153,21 +153,21 @@
   return v4;
 }
 
-- (void)setBackgroundGradient:(CGGradient *)a3
+- (void)setBackgroundGradient:(CGGradient *)gradient
 {
   backgroundGradient = self->_backgroundGradient;
-  if (backgroundGradient != a3)
+  if (backgroundGradient != gradient)
   {
     if (backgroundGradient)
     {
       CGGradientRelease(backgroundGradient);
     }
 
-    self->_backgroundGradient = a3;
-    if (a3)
+    self->_backgroundGradient = gradient;
+    if (gradient)
     {
 
-      CGGradientRetain(a3);
+      CGGradientRetain(gradient);
     }
   }
 }

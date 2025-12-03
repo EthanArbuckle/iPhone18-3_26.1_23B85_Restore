@@ -1,15 +1,15 @@
 @interface RTTripClusterMO
-+ (id)managedObjectWithTripCluster:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripCluster:(id)cluster inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripClusterMO
 
-+ (id)managedObjectWithTripCluster:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripCluster:(id)cluster inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  clusterCopy = cluster;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!clusterCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -25,52 +25,52 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTTripClusterMO alloc] initWithContext:v6];
-    v9 = [v5 clusterID];
-    [(RTTripClusterMO *)v8 setClusterID:v9];
+    v8 = [[RTTripClusterMO alloc] initWithContext:contextCopy];
+    clusterID = [clusterCopy clusterID];
+    [(RTTripClusterMO *)v8 setClusterID:clusterID];
 
-    [v5 startLatitude];
+    [clusterCopy startLatitude];
     [(RTTripClusterMO *)v8 setStartLatitude:?];
-    [v5 startLongitude];
+    [clusterCopy startLongitude];
     [(RTTripClusterMO *)v8 setStartLongitude:?];
-    [v5 endLatitude];
+    [clusterCopy endLatitude];
     [(RTTripClusterMO *)v8 setEndLatitude:?];
-    [v5 endLongitude];
+    [clusterCopy endLongitude];
     [(RTTripClusterMO *)v8 setEndLongitude:?];
-    -[RTTripClusterMO setCountOfTraversal:](v8, "setCountOfTraversal:", [v5 countOfTraversal]);
-    -[RTTripClusterMO setModeOfTransport:](v8, "setModeOfTransport:", [v5 modeOfTransport]);
-    v10 = [v5 lastTimeTaken];
-    [(RTTripClusterMO *)v8 setLastTimeTaken:v10];
+    -[RTTripClusterMO setCountOfTraversal:](v8, "setCountOfTraversal:", [clusterCopy countOfTraversal]);
+    -[RTTripClusterMO setModeOfTransport:](v8, "setModeOfTransport:", [clusterCopy modeOfTransport]);
+    lastTimeTaken = [clusterCopy lastTimeTaken];
+    [(RTTripClusterMO *)v8 setLastTimeTaken:lastTimeTaken];
 
-    [v5 avgTripTime];
+    [clusterCopy avgTripTime];
     [(RTTripClusterMO *)v8 setAvgTripTime:?];
-    [v5 minTripTime];
+    [clusterCopy minTripTime];
     [(RTTripClusterMO *)v8 setMinTripTime:?];
-    [v5 maxTripTime];
+    [clusterCopy maxTripTime];
     [(RTTripClusterMO *)v8 setMaxTripTime:?];
-    [v5 avgTripDistance];
+    [clusterCopy avgTripDistance];
     [(RTTripClusterMO *)v8 setAvgTripDistance:?];
-    [v5 minTripDistance];
+    [clusterCopy minTripDistance];
     [(RTTripClusterMO *)v8 setMinTripDistance:?];
-    [v5 maxTripDistance];
+    [clusterCopy maxTripDistance];
     [(RTTripClusterMO *)v8 setMaxTripDistance:?];
-    v11 = [v5 commuteID];
-    [(RTTripClusterMO *)v8 setCommuteID:v11];
+    commuteID = [clusterCopy commuteID];
+    [(RTTripClusterMO *)v8 setCommuteID:commuteID];
 
-    -[RTTripClusterMO setIsLocked:](v8, "setIsLocked:", [v5 isLocked]);
-    [v5 avgBikeDistance];
+    -[RTTripClusterMO setIsLocked:](v8, "setIsLocked:", [clusterCopy isLocked]);
+    [clusterCopy avgBikeDistance];
     [(RTTripClusterMO *)v8 setAvgBikeDistance:?];
-    [v5 avgBikeTime];
+    [clusterCopy avgBikeTime];
     [(RTTripClusterMO *)v8 setAvgBikeTime:?];
-    [v5 avgWalkDistance];
+    [clusterCopy avgWalkDistance];
     [(RTTripClusterMO *)v8 setAvgWalkDistance:?];
-    [v5 avgWalkTime];
+    [clusterCopy avgWalkTime];
     [(RTTripClusterMO *)v8 setAvgWalkTime:?];
-    -[RTTripClusterMO setCountOfBikeTraversal:](v8, "setCountOfBikeTraversal:", [v5 countOfBikeTraversal]);
-    -[RTTripClusterMO setCountOfWalkTraversal:](v8, "setCountOfWalkTraversal:", [v5 countOfWalkTraversal]);
-    -[RTTripClusterMO setClusterOrder:](v8, "setClusterOrder:", [v5 clusterOrder]);
+    -[RTTripClusterMO setCountOfBikeTraversal:](v8, "setCountOfBikeTraversal:", [clusterCopy countOfBikeTraversal]);
+    -[RTTripClusterMO setCountOfWalkTraversal:](v8, "setCountOfWalkTraversal:", [clusterCopy countOfWalkTraversal]);
+    -[RTTripClusterMO setClusterOrder:](v8, "setClusterOrder:", [clusterCopy clusterOrder]);
     goto LABEL_8;
   }
 

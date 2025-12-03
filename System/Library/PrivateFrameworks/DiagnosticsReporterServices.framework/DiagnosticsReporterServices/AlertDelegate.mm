@@ -1,19 +1,19 @@
 @interface AlertDelegate
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 didReceiveNotificationResponse:(UNNotificationResponse *)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(id)handler;
 @end
 
 @implementation AlertDelegate
 
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 didReceiveNotificationResponse:(UNNotificationResponse *)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CE8EED0, &unk_21DD8D6B0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = center;
+  v14[3] = response;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_21DD8C198();
@@ -28,9 +28,9 @@
   v17[3] = 0;
   v17[4] = &unk_21DD8D4C8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  centerCopy = center;
+  responseCopy = response;
+  selfCopy = self;
   sub_21DD7F014(0, 0, v12, &unk_21DD8D4D8, v17);
 }
 

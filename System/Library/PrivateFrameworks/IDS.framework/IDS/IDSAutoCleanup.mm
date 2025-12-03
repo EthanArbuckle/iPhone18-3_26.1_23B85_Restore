@@ -1,19 +1,19 @@
 @interface IDSAutoCleanup
-- (IDSAutoCleanup)initWithBlock:(id)a3;
+- (IDSAutoCleanup)initWithBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation IDSAutoCleanup
 
-- (IDSAutoCleanup)initWithBlock:(id)a3
+- (IDSAutoCleanup)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = IDSAutoCleanup;
   v5 = [(IDSAutoCleanup *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     cleanupBlock = v5->_cleanupBlock;
     v5->_cleanupBlock = v6;
   }

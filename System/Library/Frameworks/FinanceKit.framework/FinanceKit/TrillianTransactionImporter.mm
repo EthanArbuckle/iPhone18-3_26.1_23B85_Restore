@@ -1,7 +1,7 @@
 @interface TrillianTransactionImporter
-+ (id)makeClassAndReturnError:(id *)a3;
++ (id)makeClassAndReturnError:(id *)error;
 - (_TtC10FinanceKit27TrillianTransactionImporter)init;
-- (void)registerPaymentTransaction:(id)a3;
+- (void)registerPaymentTransaction:(id)transaction;
 @end
 
 @implementation TrillianTransactionImporter
@@ -13,18 +13,18 @@
   return result;
 }
 
-+ (id)makeClassAndReturnError:(id *)a3
++ (id)makeClassAndReturnError:(id *)error
 {
   sub_1B7390658();
 
   return v3;
 }
 
-- (void)registerPaymentTransaction:(id)a3
+- (void)registerPaymentTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B738FDB0(v4);
+  transactionCopy = transaction;
+  selfCopy = self;
+  sub_1B738FDB0(transactionCopy);
 }
 
 @end

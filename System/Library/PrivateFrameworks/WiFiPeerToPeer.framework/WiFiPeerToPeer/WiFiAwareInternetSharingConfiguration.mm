@@ -1,46 +1,46 @@
 @interface WiFiAwareInternetSharingConfiguration
 + (id)automaticallyProvideInternetToResponders;
 + (id)automaticallyRequestInternetFromInitiators;
-+ (id)provideInternetToInitiatorsFromInterface:(id)a3;
++ (id)provideInternetToInitiatorsFromInterface:(id)interface;
 + (id)requestInterentFromResponder;
-- (BOOL)interfaceNameEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WiFiAwareInternetSharingConfiguration)initWithCoder:(id)a3;
-- (WiFiAwareInternetSharingConfiguration)initWithInterfaceName:(id)a3 isProvider:(BOOL)a4 isAutomatic:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)interfaceNameEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (WiFiAwareInternetSharingConfiguration)initWithCoder:(id)coder;
+- (WiFiAwareInternetSharingConfiguration)initWithInterfaceName:(id)name isProvider:(BOOL)provider isAutomatic:(BOOL)automatic;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwareInternetSharingConfiguration
 
-- (WiFiAwareInternetSharingConfiguration)initWithInterfaceName:(id)a3 isProvider:(BOOL)a4 isAutomatic:(BOOL)a5
+- (WiFiAwareInternetSharingConfiguration)initWithInterfaceName:(id)name isProvider:(BOOL)provider isAutomatic:(BOOL)automatic
 {
-  v8 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = WiFiAwareInternetSharingConfiguration;
   v9 = [(WiFiAwareInternetSharingConfiguration *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     interfaceName = v9->_interfaceName;
     v9->_interfaceName = v10;
 
-    v9->_provider = a4;
-    v9->_automatic = a5;
+    v9->_provider = provider;
+    v9->_automatic = automatic;
     v9->_useBridging = 0;
   }
 
   return v9;
 }
 
-- (WiFiAwareInternetSharingConfiguration)initWithCoder:(id)a3
+- (WiFiAwareInternetSharingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareInternetSharingConfiguration.interfaceName"];
-  v6 = [v4 decodeBoolForKey:@"WiFiAwareInternetSharingConfiguration.provider"];
-  v7 = [v4 decodeBoolForKey:@"WiFiAwareInternetSharingConfiguration.automatic"];
-  v8 = [v4 decodeBoolForKey:@"WiFiAwareInternetSharingConfiguration.useBridging"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareInternetSharingConfiguration.interfaceName"];
+  v6 = [coderCopy decodeBoolForKey:@"WiFiAwareInternetSharingConfiguration.provider"];
+  v7 = [coderCopy decodeBoolForKey:@"WiFiAwareInternetSharingConfiguration.automatic"];
+  v8 = [coderCopy decodeBoolForKey:@"WiFiAwareInternetSharingConfiguration.useBridging"];
 
   v9 = [(WiFiAwareInternetSharingConfiguration *)self initWithInterfaceName:v5 isProvider:v6 isAutomatic:v7];
   v9->_useBridging = v8;
@@ -48,31 +48,31 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
-  [v5 encodeObject:v4 forKey:@"WiFiAwareInternetSharingConfiguration.interfaceName"];
+  coderCopy = coder;
+  interfaceName = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
+  [coderCopy encodeObject:interfaceName forKey:@"WiFiAwareInternetSharingConfiguration.interfaceName"];
 
-  [v5 encodeBool:-[WiFiAwareInternetSharingConfiguration provider](self forKey:{"provider"), @"WiFiAwareInternetSharingConfiguration.provider"}];
-  [v5 encodeBool:-[WiFiAwareInternetSharingConfiguration automatic](self forKey:{"automatic"), @"WiFiAwareInternetSharingConfiguration.automatic"}];
-  [v5 encodeBool:-[WiFiAwareInternetSharingConfiguration useBridging](self forKey:{"useBridging"), @"WiFiAwareInternetSharingConfiguration.useBridging"}];
+  [coderCopy encodeBool:-[WiFiAwareInternetSharingConfiguration provider](self forKey:{"provider"), @"WiFiAwareInternetSharingConfiguration.provider"}];
+  [coderCopy encodeBool:-[WiFiAwareInternetSharingConfiguration automatic](self forKey:{"automatic"), @"WiFiAwareInternetSharingConfiguration.automatic"}];
+  [coderCopy encodeBool:-[WiFiAwareInternetSharingConfiguration useBridging](self forKey:{"useBridging"), @"WiFiAwareInternetSharingConfiguration.useBridging"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WiFiAwareInternetSharingConfiguration alloc];
-  v5 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
-  v6 = [(WiFiAwareInternetSharingConfiguration *)v4 initWithInterfaceName:v5 isProvider:[(WiFiAwareInternetSharingConfiguration *)self provider] isAutomatic:[(WiFiAwareInternetSharingConfiguration *)self automatic]];
+  interfaceName = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
+  v6 = [(WiFiAwareInternetSharingConfiguration *)v4 initWithInterfaceName:interfaceName isProvider:[(WiFiAwareInternetSharingConfiguration *)self provider] isAutomatic:[(WiFiAwareInternetSharingConfiguration *)self automatic]];
 
   [(WiFiAwareInternetSharingConfiguration *)v6 setUseBridging:[(WiFiAwareInternetSharingConfiguration *)self useBridging]];
   return v6;
 }
 
-+ (id)provideInternetToInitiatorsFromInterface:(id)a3
++ (id)provideInternetToInitiatorsFromInterface:(id)interface
 {
-  v3 = a3;
-  v4 = [[WiFiAwareInternetSharingConfiguration alloc] initWithInterfaceName:v3 isProvider:1 isAutomatic:0];
+  interfaceCopy = interface;
+  v4 = [[WiFiAwareInternetSharingConfiguration alloc] initWithInterfaceName:interfaceCopy isProvider:1 isAutomatic:0];
 
   return v4;
 }
@@ -98,30 +98,30 @@
   return v2;
 }
 
-- (BOOL)interfaceNameEqual:(id)a3
+- (BOOL)interfaceNameEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
-  v6 = [v4 interfaceName];
-  if (v5 == v6)
+  equalCopy = equal;
+  interfaceName = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
+  interfaceName2 = [equalCopy interfaceName];
+  if (interfaceName == interfaceName2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
-    v8 = [v4 interfaceName];
-    v9 = [v7 isEqualToString:v8];
+    interfaceName3 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
+    interfaceName4 = [equalCopy interfaceName];
+    v9 = [interfaceName3 isEqualToString:interfaceName4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_9:
@@ -137,17 +137,17 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if ([(WiFiAwareInternetSharingConfiguration *)self interfaceNameEqual:v5])
   {
-    v6 = [(WiFiAwareInternetSharingConfiguration *)self provider];
-    if (v6 == [(WiFiAwareInternetSharingConfiguration *)v5 provider])
+    provider = [(WiFiAwareInternetSharingConfiguration *)self provider];
+    if (provider == [(WiFiAwareInternetSharingConfiguration *)v5 provider])
     {
-      v7 = [(WiFiAwareInternetSharingConfiguration *)self automatic];
-      if (v7 == [(WiFiAwareInternetSharingConfiguration *)v5 automatic])
+      automatic = [(WiFiAwareInternetSharingConfiguration *)self automatic];
+      if (automatic == [(WiFiAwareInternetSharingConfiguration *)v5 automatic])
       {
-        v8 = [(WiFiAwareInternetSharingConfiguration *)self useBridging];
-        if (v8 == [(WiFiAwareInternetSharingConfiguration *)v5 useBridging])
+        useBridging = [(WiFiAwareInternetSharingConfiguration *)self useBridging];
+        if (useBridging == [(WiFiAwareInternetSharingConfiguration *)v5 useBridging])
         {
           goto LABEL_9;
         }
@@ -163,21 +163,21 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
+  interfaceName = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
 
   v4 = "";
-  if (v3)
+  if (interfaceName)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
-    v7 = [(WiFiAwareInternetSharingConfiguration *)self useBridging];
+    interfaceName2 = [(WiFiAwareInternetSharingConfiguration *)self interfaceName];
+    useBridging = [(WiFiAwareInternetSharingConfiguration *)self useBridging];
     v8 = " (bridged)";
-    if (!v7)
+    if (!useBridging)
     {
       v8 = "";
     }
 
-    v9 = [v5 stringWithFormat:@" on interface=%@%s", v6, v8];
+    v9 = [v5 stringWithFormat:@" on interface=%@%s", interfaceName2, v8];
   }
 
   else
@@ -191,9 +191,9 @@ LABEL_11:
     v4 = "automatic ";
   }
 
-  v11 = [(WiFiAwareInternetSharingConfiguration *)self provider];
+  provider = [(WiFiAwareInternetSharingConfiguration *)self provider];
   v12 = "requester";
-  if (v11)
+  if (provider)
   {
     v12 = "provider";
   }

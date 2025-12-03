@@ -1,12 +1,12 @@
 @interface DRSProtoClientDeviceMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoClientDeviceMetadata
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = DRSProtoClientDeviceMetadata;
   v4 = [(DRSProtoClientDeviceMetadata *)&v8 description];
-  v5 = [(DRSProtoClientDeviceMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoClientDeviceMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   buildVariant = self->_buildVariant;
   if (buildVariant)
   {
-    [v3 setObject:buildVariant forKey:@"build_variant"];
+    [dictionary setObject:buildVariant forKey:@"build_variant"];
   }
 
   deviceCategory = self->_deviceCategory;
@@ -54,93 +54,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_buildVariant)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceCategory)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceModel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_platform)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_buildVariant)
   {
-    [v4 setBuildVariant:?];
-    v4 = v5;
+    [toCopy setBuildVariant:?];
+    toCopy = v5;
   }
 
   if (self->_deviceCategory)
   {
     [v5 setDeviceCategory:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceModel)
   {
     [v5 setDeviceModel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_platform)
   {
     [v5 setPlatform:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_buildVariant copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_buildVariant copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_deviceCategory copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceCategory copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_platform copyWithZone:a3];
+  v12 = [(NSString *)self->_platform copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((buildVariant = self->_buildVariant, !(buildVariant | v4[1])) || -[NSString isEqual:](buildVariant, "isEqual:")) && ((deviceCategory = self->_deviceCategory, !(deviceCategory | v4[2])) || -[NSString isEqual:](deviceCategory, "isEqual:")) && ((deviceModel = self->_deviceModel, !(deviceModel | v4[3])) || -[NSString isEqual:](deviceModel, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((buildVariant = self->_buildVariant, !(buildVariant | equalCopy[1])) || -[NSString isEqual:](buildVariant, "isEqual:")) && ((deviceCategory = self->_deviceCategory, !(deviceCategory | equalCopy[2])) || -[NSString isEqual:](deviceCategory, "isEqual:")) && ((deviceModel = self->_deviceModel, !(deviceModel | equalCopy[3])) || -[NSString isEqual:](deviceModel, "isEqual:")))
   {
     platform = self->_platform;
-    if (platform | v4[4])
+    if (platform | equalCopy[4])
     {
       v9 = [(NSString *)platform isEqual:?];
     }
@@ -167,25 +167,25 @@
   return v4 ^ v5 ^ [(NSString *)self->_platform hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(DRSProtoClientDeviceMetadata *)self setBuildVariant:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(DRSProtoClientDeviceMetadata *)self setDeviceCategory:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(DRSProtoClientDeviceMetadata *)self setDeviceModel:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(DRSProtoClientDeviceMetadata *)self setPlatform:?];
   }

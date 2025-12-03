@@ -1,7 +1,7 @@
 @interface GKAchievementChallengeCacheObject
 - (BOOL)hasDetails;
 - (id)internalRepresentation;
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKAchievementChallengeCacheObject
@@ -14,8 +14,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKAchievementChallengeCacheObject hasDetails]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKAchievementChallengeCacheObject hasDetails]", [v7 UTF8String], 4681);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKAchievementChallengeCacheObject hasDetails]", [lastPathComponent UTF8String], 4681);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -27,16 +27,16 @@
     return 0;
   }
 
-  v9 = [(GKAchievementChallengeCacheObject *)self identifier];
-  if (v9)
+  identifier = [(GKAchievementChallengeCacheObject *)self identifier];
+  if (identifier)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(GKAchievementChallengeCacheObject *)self groupIdentifier];
-    v10 = v11 != 0;
+    groupIdentifier = [(GKAchievementChallengeCacheObject *)self groupIdentifier];
+    v10 = groupIdentifier != 0;
   }
 
   return v10;
@@ -50,68 +50,68 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKAchievementChallengeCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKAchievementChallengeCacheObject internalRepresentation]", [v7 UTF8String], 4692);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKAchievementChallengeCacheObject internalRepresentation]", [lastPathComponent UTF8String], 4692);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
-  v9 = [(GKAchievementChallengeCacheObject *)self list];
-  v10 = [v9 player];
+  list = [(GKAchievementChallengeCacheObject *)self list];
+  player = [list player];
 
   v22.receiver = self;
   v22.super_class = GKAchievementChallengeCacheObject;
-  v11 = [(GKChallengeCacheObject *)&v22 internalRepresentation];
+  internalRepresentation = [(GKChallengeCacheObject *)&v22 internalRepresentation];
   v12 = +[GKAchievementInternal internalRepresentation];
-  v13 = [(GKAchievementChallengeCacheObject *)self identifier];
-  [v12 setIdentifier:v13];
+  identifier = [(GKAchievementChallengeCacheObject *)self identifier];
+  [v12 setIdentifier:identifier];
 
-  v14 = [(GKAchievementChallengeCacheObject *)self groupIdentifier];
-  [v12 setGroupIdentifier:v14];
+  groupIdentifier = [(GKAchievementChallengeCacheObject *)self groupIdentifier];
+  [v12 setGroupIdentifier:groupIdentifier];
 
-  v15 = [(GKAchievementChallengeCacheObject *)self date];
-  [v12 setLastReportedDate:v15];
+  date = [(GKAchievementChallengeCacheObject *)self date];
+  [v12 setLastReportedDate:date];
 
   [(GKAchievementChallengeCacheObject *)self percentComplete];
   [v12 setPercentComplete:v16];
-  v17 = [v10 internalRepresentation];
-  [v12 setPlayer:v17];
+  internalRepresentation2 = [player internalRepresentation];
+  [v12 setPlayer:internalRepresentation2];
 
-  v18 = [(GKAchievementChallengeCacheObject *)self title];
-  [v12 setTitle:v18];
+  title = [(GKAchievementChallengeCacheObject *)self title];
+  [v12 setTitle:title];
 
-  v19 = [(GKAchievementChallengeCacheObject *)self maximumPoints];
-  [v12 setMaximumPoints:{objc_msgSend(v19, "integerValue")}];
+  maximumPoints = [(GKAchievementChallengeCacheObject *)self maximumPoints];
+  [v12 setMaximumPoints:{objc_msgSend(maximumPoints, "integerValue")}];
 
   [v12 setHidden:{-[GKAchievementChallengeCacheObject hidden](self, "hidden")}];
   [v12 setReplayable:{-[GKAchievementChallengeCacheObject replayable](self, "replayable")}];
-  v20 = [(GKCacheObject *)self imageURLDictionary];
-  [v12 setIcons:v20];
+  imageURLDictionary = [(GKCacheObject *)self imageURLDictionary];
+  [v12 setIcons:imageURLDictionary];
 
-  [v11 setAchievement:v12];
+  [internalRepresentation setAchievement:v12];
 
-  return v11;
+  return internalRepresentation;
 }
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKAchievementChallengeCacheObject updateWithServerRepresentation:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKAchievementChallengeCacheObject updateWithServerRepresentation:]", [v9 UTF8String], 4717);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKAchievementChallengeCacheObject updateWithServerRepresentation:]", [lastPathComponent UTF8String], 4717);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
   v28.receiver = self;
   v28.super_class = GKAchievementChallengeCacheObject;
-  [(GKChallengeCacheObject *)&v28 updateWithServerRepresentation:v4];
-  v11 = [v4 objectForKey:@"achievement"];
+  [(GKChallengeCacheObject *)&v28 updateWithServerRepresentation:representationCopy];
+  v11 = [representationCopy objectForKey:@"achievement"];
   v12 = v11;
   if (v11)
   {
@@ -130,7 +130,7 @@
     [(GKAchievementChallengeCacheObject *)self setDate:v17];
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"achievement-description"];
+  v18 = [representationCopy objectForKeyedSubscript:@"achievement-description"];
   v19 = v18;
   if (v18)
   {

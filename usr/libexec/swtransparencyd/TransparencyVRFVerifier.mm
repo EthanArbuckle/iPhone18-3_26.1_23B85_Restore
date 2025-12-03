@@ -1,20 +1,20 @@
 @interface TransparencyVRFVerifier
-+ (BOOL)verifyMessage:(id)a3 salt:(id)a4 output:(id)a5 proof:(id)a6 key:(id)a7 error:(id *)a8;
-+ (id)saltMessage:(id)a3 salt:(id)a4;
-+ (id)verifierOfType:(int)a3 key:(id)a4;
-- (BOOL)verifyMessage:(id)a3 output:(id)a4 proof:(id)a5 error:(id *)a6;
-- (BOOL)verifyMessage:(id)a3 salt:(id)a4 output:(id)a5 proof:(id)a6 error:(id *)a7;
-- (TransparencyVRFVerifier)initWithKey:(id)a3;
++ (BOOL)verifyMessage:(id)message salt:(id)salt output:(id)output proof:(id)proof key:(id)key error:(id *)error;
++ (id)saltMessage:(id)message salt:(id)salt;
++ (id)verifierOfType:(int)type key:(id)key;
+- (BOOL)verifyMessage:(id)message output:(id)output proof:(id)proof error:(id *)error;
+- (BOOL)verifyMessage:(id)message salt:(id)salt output:(id)output proof:(id)proof error:(id *)error;
+- (TransparencyVRFVerifier)initWithKey:(id)key;
 @end
 
 @implementation TransparencyVRFVerifier
 
-+ (id)verifierOfType:(int)a3 key:(id)a4
++ (id)verifierOfType:(int)type key:(id)key
 {
-  v5 = a4;
-  if (a3 == 3)
+  keyCopy = key;
+  if (type == 3)
   {
-    v6 = [[TransparencyECVRFVerifier alloc] initWithKey:v5];
+    v6 = [[TransparencyECVRFVerifier alloc] initWithKey:keyCopy];
     if (v6)
     {
       goto LABEL_12;
@@ -42,80 +42,80 @@
   if (os_log_type_enabled(qword_100155F08, OS_LOG_TYPE_ERROR))
   {
     v10[0] = 67109120;
-    v10[1] = a3;
+    v10[1] = type;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Unknown VRF algorithm: %d", v10, 8u);
   }
 
-  v6 = [[TransparencyVRFVerifier alloc] initWithKey:v5];
+  v6 = [[TransparencyVRFVerifier alloc] initWithKey:keyCopy];
 LABEL_12:
 
   return v6;
 }
 
-- (TransparencyVRFVerifier)initWithKey:(id)a3
+- (TransparencyVRFVerifier)initWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8.receiver = self;
   v8.super_class = TransparencyVRFVerifier;
   v5 = [(TransparencyVRFVerifier *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TransparencyVRFVerifier *)v5 setKey:v4];
+    [(TransparencyVRFVerifier *)v5 setKey:keyCopy];
   }
 
   return v6;
 }
 
-- (BOOL)verifyMessage:(id)a3 output:(id)a4 proof:(id)a5 error:(id *)a6
+- (BOOL)verifyMessage:(id)message output:(id)output proof:(id)proof error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  proofCopy = proof;
+  outputCopy = output;
+  messageCopy = message;
   v13 = [(TransparencyVRFVerifier *)self key];
-  LOBYTE(a6) = [TransparencyVRFVerifier verifyMessage:v12 salt:0 output:v11 proof:v10 key:v13 error:a6];
+  LOBYTE(error) = [TransparencyVRFVerifier verifyMessage:messageCopy salt:0 output:outputCopy proof:proofCopy key:v13 error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)verifyMessage:(id)a3 salt:(id)a4 output:(id)a5 proof:(id)a6 error:(id *)a7
+- (BOOL)verifyMessage:(id)message salt:(id)salt output:(id)output proof:(id)proof error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  proofCopy = proof;
+  outputCopy = output;
+  saltCopy = salt;
+  messageCopy = message;
   v16 = [(TransparencyVRFVerifier *)self key];
-  LOBYTE(a7) = [TransparencyVRFVerifier verifyMessage:v15 salt:v14 output:v13 proof:v12 key:v16 error:a7];
+  LOBYTE(error) = [TransparencyVRFVerifier verifyMessage:messageCopy salt:saltCopy output:outputCopy proof:proofCopy key:v16 error:error];
 
-  return a7;
+  return error;
 }
 
-+ (BOOL)verifyMessage:(id)a3 salt:(id)a4 output:(id)a5 proof:(id)a6 key:(id)a7 error:(id *)a8
++ (BOOL)verifyMessage:(id)message salt:(id)salt output:(id)output proof:(id)proof key:(id)key error:(id *)error
 {
-  if (a8)
+  if (error)
   {
-    *a8 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-135 description:@"unknown VRF algorithm", a6, a7];
+    *error = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-135 description:@"unknown VRF algorithm", proof, key];
   }
 
   return 0;
 }
 
-+ (id)saltMessage:(id)a3 salt:(id)a4
++ (id)saltMessage:(id)message salt:(id)salt
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  saltCopy = salt;
   v7 = +[NSMutableData data];
-  if (v6)
+  if (saltCopy)
   {
-    v8 = +[NSData kt_dataWithUint64:length:](NSData, "kt_dataWithUint64:length:", [v6 length], 8);
+    v8 = +[NSData kt_dataWithUint64:length:](NSData, "kt_dataWithUint64:length:", [saltCopy length], 8);
     [v7 appendData:v8];
 
-    [v7 appendData:v6];
-    v9 = +[NSData kt_dataWithUint64:length:](NSData, "kt_dataWithUint64:length:", [v5 length], 8);
+    [v7 appendData:saltCopy];
+    v9 = +[NSData kt_dataWithUint64:length:](NSData, "kt_dataWithUint64:length:", [messageCopy length], 8);
     [v7 appendData:v9];
   }
 
-  [v7 appendData:v5];
+  [v7 appendData:messageCopy];
 
   return v7;
 }

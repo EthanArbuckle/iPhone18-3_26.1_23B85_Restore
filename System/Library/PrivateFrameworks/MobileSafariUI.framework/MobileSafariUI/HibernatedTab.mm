@@ -1,10 +1,10 @@
 @interface HibernatedTab
 - (BOOL)isBlank;
-- (BOOL)isReusableForURL:(id)a3 webClipURL:(id)a4;
+- (BOOL)isReusableForURL:(id)l webClipURL:(id)rL;
 - (BrowserController)browserController;
 - (CGSize)tabViewSize;
-- (HibernatedTab)initWithTabDocument:(id)a3;
-- (HibernatedTab)initWithWBTab:(id)a3 browserController:(id)a4;
+- (HibernatedTab)initWithTabDocument:(id)document;
+- (HibernatedTab)initWithWBTab:(id)tab browserController:(id)controller;
 - (NSArray)tabCollectionItems;
 - (NSString)addressForNewBookmark;
 - (NSString)windowIdentifier;
@@ -20,12 +20,12 @@
 - (WBSWebExtensionWindow)webExtensionWindow;
 - (double)parentTabIDForWebExtensions;
 - (id)_localAttributes;
-- (id)_titleAllowURLStringFallback:(BOOL)a3 allowUntitled:(BOOL)a4;
+- (id)_titleAllowURLStringFallback:(BOOL)fallback allowUntitled:(BOOL)untitled;
 - (id)_titleForStatePersistingForTabGroupTab;
 - (id)_titleForStatePersistingForTabStateData;
 - (id)currentUnifiedTabBarItem;
-- (id)itemForTabCollectionView:(id)a3;
-- (id)parentTabForWebExtensionContext:(id)a3;
+- (id)itemForTabCollectionView:(id)view;
+- (id)parentTabForWebExtensionContext:(id)context;
 - (id)readingListAddress;
 - (id)tabUpdateBlock;
 - (id)titleForSharing;
@@ -34,102 +34,102 @@
 - (id)urlForStatePersisting;
 - (id)urlString;
 - (int64_t)pageStatus;
-- (unint64_t)indexInWindowForWebExtensionContext:(id)a3;
+- (unint64_t)indexInWindowForWebExtensionContext:(id)context;
 - (void)_cancelFaviconUpdate;
 - (void)_reconfigureLibraryItemView;
-- (void)_searchEngineControllerDidFinishPopulating:(id)a3;
-- (void)_setIcon:(id)a3 isMonogram:(BOOL)a4;
+- (void)_searchEngineControllerDidFinishPopulating:(id)populating;
+- (void)_setIcon:(id)icon isMonogram:(BOOL)monogram;
 - (void)_updateNavigationBarItem;
-- (void)activateForWebExtensionContext:(id)a3 completionHandler:(id)a4;
+- (void)activateForWebExtensionContext:(id)context completionHandler:(id)handler;
 - (void)clearBrowserController;
 - (void)close;
-- (void)closeForWebExtensionContext:(id)a3 completionHandler:(id)a4;
+- (void)closeForWebExtensionContext:(id)context completionHandler:(id)handler;
 - (void)dealloc;
 - (void)displayNewTabOverridePageIfNecessary;
-- (void)duplicateUsingConfiguration:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)goBackForWebExtensionContext:(id)a3 completionHandler:(id)a4;
-- (void)goForwardForWebExtensionContext:(id)a3 completionHandler:(id)a4;
-- (void)loadURL:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)loadURL:(id)a3 title:(id)a4 skipSyncableTabUpdates:(BOOL)a5;
-- (void)reloadFromOrigin:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
+- (void)duplicateUsingConfiguration:(id)configuration forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)goBackForWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)goForwardForWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)loadURL:(id)l forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)loadURL:(id)l title:(id)title skipSyncableTabUpdates:(BOOL)updates;
+- (void)reloadFromOrigin:(BOOL)origin forWebExtensionContext:(id)context completionHandler:(id)handler;
 - (void)resetTabViewItems;
-- (void)restoreStateFromTab:(id)a3;
+- (void)restoreStateFromTab:(id)tab;
 - (void)select;
-- (void)setBrowserController:(id)a3;
-- (void)setMuted:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setPinned:(BOOL)a3;
-- (void)setPinned:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setReaderModeActive:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setReaderModeShowing:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setSelected:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setShareParticipants:(id)a3;
-- (void)setUnread:(BOOL)a3;
-- (void)setZoomFactor:(double)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)updateAncestryWithParentTab:(id)a3;
+- (void)setBrowserController:(id)controller;
+- (void)setMuted:(BOOL)muted forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setPinned:(BOOL)pinned;
+- (void)setPinned:(BOOL)pinned forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setReaderModeActive:(BOOL)active forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setReaderModeShowing:(BOOL)showing forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setSelected:(BOOL)selected forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setShareParticipants:(id)participants;
+- (void)setUnread:(BOOL)unread;
+- (void)setZoomFactor:(double)factor forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)updateAncestryWithParentTab:(id)tab;
 - (void)updateTabIcon;
-- (void)updateTabIconWithDelay:(double)a3;
+- (void)updateTabIconWithDelay:(double)delay;
 - (void)updateTabTitle;
 @end
 
 @implementation HibernatedTab
 
-- (HibernatedTab)initWithTabDocument:(id)a3
+- (HibernatedTab)initWithTabDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v28.receiver = self;
   v28.super_class = HibernatedTab;
   v5 = [(HibernatedTab *)&v28 init];
   if (v5)
   {
-    v6 = [v4 tabGroupTab];
-    v7 = [v6 url];
+    tabGroupTab = [documentCopy tabGroupTab];
+    v7 = [tabGroupTab url];
     url = v5->_url;
     v5->_url = v7;
 
     if (v5->_url)
     {
-      v9 = [v6 title];
+      title = [tabGroupTab title];
     }
 
     else
     {
-      v9 = 0;
+      title = 0;
     }
 
     title = v5->_title;
-    v5->_title = v9;
+    v5->_title = title;
 
     wbTab = v5->_wbTab;
-    v5->_wbTab = v6;
-    v12 = v6;
+    v5->_wbTab = tabGroupTab;
+    v12 = tabGroupTab;
 
-    v13 = [v4 browserController];
-    [(HibernatedTab *)v5 setBrowserController:v13];
-    v14 = [v4 unifiedTabBarItem];
+    browserController = [documentCopy browserController];
+    [(HibernatedTab *)v5 setBrowserController:browserController];
+    unifiedTabBarItem = [documentCopy unifiedTabBarItem];
     unifiedTabBarItem = v5->_unifiedTabBarItem;
-    v5->_unifiedTabBarItem = v14;
+    v5->_unifiedTabBarItem = unifiedTabBarItem;
 
-    v16 = [v4 tabBarItem];
+    tabBarItem = [documentCopy tabBarItem];
     tabBarItem = v5->_tabBarItem;
-    v5->_tabBarItem = v16;
+    v5->_tabBarItem = tabBarItem;
 
-    v18 = [v4 tabCollectionItem];
+    tabCollectionItem = [documentCopy tabCollectionItem];
     tabCollectionItem = v5->_tabCollectionItem;
-    v5->_tabCollectionItem = v18;
+    v5->_tabCollectionItem = tabCollectionItem;
 
-    [v4 idForWebExtensions];
+    [documentCopy idForWebExtensions];
     v5->_idForWebExtensions = v20;
-    v21 = [v4 ancestorUUIDs];
+    ancestorUUIDs = [documentCopy ancestorUUIDs];
     ancestorUUIDs = v5->_ancestorUUIDs;
-    v5->_ancestorUUIDs = v21;
+    v5->_ancestorUUIDs = ancestorUUIDs;
 
-    [v4 lastViewedTime];
+    [documentCopy lastViewedTime];
     v5->_lastViewedTime = v23;
-    v24 = [v4 shareParticipants];
+    shareParticipants = [documentCopy shareParticipants];
     shareParticipants = v5->_shareParticipants;
-    v5->_shareParticipants = v24;
+    v5->_shareParticipants = shareParticipants;
 
-    -[HibernatedTab setUnread:](v5, "setUnread:", [v4 isUnread]);
+    -[HibernatedTab setUnread:](v5, "setUnread:", [documentCopy isUnread]);
     [(HibernatedTab *)v5 restoreStateFromTab:v12];
 
     v26 = v5;
@@ -138,69 +138,69 @@
   return v5;
 }
 
-- (HibernatedTab)initWithWBTab:(id)a3 browserController:(id)a4
+- (HibernatedTab)initWithWBTab:(id)tab browserController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  tabCopy = tab;
+  controllerCopy = controller;
   v34.receiver = self;
   v34.super_class = HibernatedTab;
   v9 = [(HibernatedTab *)&v34 init];
   if (v9)
   {
-    v10 = [v7 url];
+    v10 = [tabCopy url];
     url = v9->_url;
     v9->_url = v10;
 
     if (v9->_url)
     {
-      v12 = [v7 title];
+      title = [tabCopy title];
     }
 
     else
     {
-      v12 = 0;
+      title = 0;
     }
 
     title = v9->_title;
-    v9->_title = v12;
+    v9->_title = title;
 
-    objc_storeStrong(&v9->_wbTab, a3);
-    [(HibernatedTab *)v9 setBrowserController:v8];
+    objc_storeStrong(&v9->_wbTab, tab);
+    [(HibernatedTab *)v9 setBrowserController:controllerCopy];
     v14 = objc_alloc_init(UnifiedTabBarItem);
     unifiedTabBarItem = v9->_unifiedTabBarItem;
     v9->_unifiedTabBarItem = v14;
 
-    v16 = [(HibernatedTab *)v9 uuid];
-    [(UnifiedTabBarItem *)v9->_unifiedTabBarItem setUUID:v16];
+    uuid = [(HibernatedTab *)v9 uuid];
+    [(UnifiedTabBarItem *)v9->_unifiedTabBarItem setUUID:uuid];
 
-    [(SFUnifiedTabBarItem *)v9->_unifiedTabBarItem setMenuButtonConfigurator:v8];
-    v17 = [MEMORY[0x277D28C70] sharedFeatureManager];
-    v18 = [v17 showRectangularTabsInSeparateBar];
+    [(SFUnifiedTabBarItem *)v9->_unifiedTabBarItem setMenuButtonConfigurator:controllerCopy];
+    mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+    showRectangularTabsInSeparateBar = [mEMORY[0x277D28C70] showRectangularTabsInSeparateBar];
 
-    if (v18)
+    if (showRectangularTabsInSeparateBar)
     {
       v19 = objc_alloc_init(TabBarItem);
       tabBarItem = v9->_tabBarItem;
       v9->_tabBarItem = v19;
 
-      v21 = [(HibernatedTab *)v9 uuid];
-      [(TabBarItem *)v9->_tabBarItem setUUID:v21];
+      uuid2 = [(HibernatedTab *)v9 uuid];
+      [(TabBarItem *)v9->_tabBarItem setUUID:uuid2];
     }
 
     [(HibernatedTab *)v9 resetTabViewItems];
     [MEMORY[0x277D4A8B0] nextTabID];
     v9->_idForWebExtensions = v22;
-    v23 = [v7 localAttributes];
-    v24 = [v23 ancestorTabUUIDs];
-    v25 = [v24 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_33];
+    localAttributes = [tabCopy localAttributes];
+    ancestorTabUUIDs = [localAttributes ancestorTabUUIDs];
+    v25 = [ancestorTabUUIDs safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_33];
     ancestorUUIDs = v9->_ancestorUUIDs;
     v9->_ancestorUUIDs = v25;
 
-    v27 = [v23 lastVisitTime];
-    if (v27)
+    lastVisitTime = [localAttributes lastVisitTime];
+    if (lastVisitTime)
     {
-      v28 = [v23 lastVisitTime];
-      [v28 timeIntervalSinceReferenceDate];
+      lastVisitTime2 = [localAttributes lastVisitTime];
+      [lastVisitTime2 timeIntervalSinceReferenceDate];
       v9->_lastViewedTime = v29;
     }
 
@@ -212,9 +212,9 @@
     shareParticipants = v9->_shareParticipants;
     v9->_shareParticipants = MEMORY[0x277CBEBF8];
 
-    if ([v7 isShared])
+    if ([tabCopy isShared])
     {
-      v31 = [v7 isMarkedAsRead] ^ 1;
+      v31 = [tabCopy isMarkedAsRead] ^ 1;
     }
 
     else
@@ -223,7 +223,7 @@
     }
 
     [(HibernatedTab *)v9 setUnread:v31];
-    [(HibernatedTab *)v9 restoreStateFromTab:v7];
+    [(HibernatedTab *)v9 restoreStateFromTab:tabCopy];
     v32 = v9;
   }
 
@@ -242,26 +242,26 @@ id __49__HibernatedTab_initWithWBTab_browserController___block_invoke(uint64_t a
 - (void)dealloc
 {
   [(HibernatedTab *)self _cancelFaviconUpdate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HibernatedTab;
   [(HibernatedTab *)&v4 dealloc];
 }
 
-- (void)setBrowserController:(id)a3
+- (void)setBrowserController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if (WeakRetained != obj)
   {
-    v5 = [WeakRetained tabController];
-    [v5 willLoseOwnershipOfTab:self];
+    tabController = [WeakRetained tabController];
+    [tabController willLoseOwnershipOfTab:self];
 
     objc_storeWeak(&self->_browserController, obj);
-    v6 = [obj tabController];
-    [v6 didGainOwnershipOfTab:self];
+    tabController2 = [obj tabController];
+    [tabController2 didGainOwnershipOfTab:self];
   }
 }
 
@@ -271,8 +271,8 @@ id __49__HibernatedTab_initWithWBTab_browserController___block_invoke(uint64_t a
   if (!uuid)
   {
     v4 = objc_alloc(MEMORY[0x277CCAD78]);
-    v5 = [(HibernatedTab *)self uuidString];
-    v6 = [v4 initWithUUIDString:v5];
+    uuidString = [(HibernatedTab *)self uuidString];
+    v6 = [v4 initWithUUIDString:uuidString];
     v7 = self->_uuid;
     self->_uuid = v6;
 
@@ -309,19 +309,19 @@ id __49__HibernatedTab_initWithWBTab_browserController___block_invoke(uint64_t a
   }
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  if (self->_pinned != a3)
+  if (self->_pinned != pinned)
   {
-    v4 = a3;
-    self->_pinned = a3;
+    pinnedCopy = pinned;
+    self->_pinned = pinned;
     [(TabBarItem *)self->_tabBarItem setPinned:?];
-    [(UnifiedTabBarItem *)self->_unifiedTabBarItem setPinned:v4];
-    [(TabDocumentCollectionItem *)self->_tabCollectionItem setPinned:v4];
-    if (v4)
+    [(UnifiedTabBarItem *)self->_unifiedTabBarItem setPinned:pinnedCopy];
+    [(TabDocumentCollectionItem *)self->_tabCollectionItem setPinned:pinnedCopy];
+    if (pinnedCopy)
     {
       objc_storeStrong(&self->_pinnedURL, self->_url);
-      v6 = [(HibernatedTab *)self title];
+      title = [(HibernatedTab *)self title];
     }
 
     else
@@ -329,82 +329,82 @@ id __49__HibernatedTab_initWithWBTab_browserController___block_invoke(uint64_t a
       pinnedURL = self->_pinnedURL;
       self->_pinnedURL = 0;
 
-      v6 = 0;
+      title = 0;
     }
 
     pinnedTitle = self->_pinnedTitle;
-    self->_pinnedTitle = v6;
+    self->_pinnedTitle = title;
   }
 }
 
-- (void)loadURL:(id)a3 title:(id)a4 skipSyncableTabUpdates:(BOOL)a5
+- (void)loadURL:(id)l title:(id)title skipSyncableTabUpdates:(BOOL)updates
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  self->_skipSyncableTabUpdates = a5;
-  v9 = a4;
+  lCopy = l;
+  self->_skipSyncableTabUpdates = updates;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v11 = WBS_LOG_CHANNEL_PREFIXPageLoading();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v19 = 134218499;
-    v20 = self;
+    selfCopy = self;
     v21 = 2160;
     v22 = 1752392040;
     v23 = 2117;
-    v24 = v8;
+    v24 = lCopy;
     _os_log_impl(&dword_215819000, v11, OS_LOG_TYPE_INFO, "Store deferred navigation: (hibernated tab: %p) %{sensitive, mask.hash}@", &v19, 0x20u);
   }
 
   self->_hasDeferredNavigation = 1;
-  v12 = [v8 copy];
+  v12 = [lCopy copy];
   url = self->_url;
   self->_url = v12;
 
-  v14 = [v9 copy];
+  v14 = [titleCopy copy];
   title = self->_title;
   self->_title = v14;
 
   [(HibernatedTab *)self updateTabTitle];
   [(HibernatedTab *)self updateTabIcon];
-  v16 = [WeakRetained tabCollectionViewProvider];
-  v17 = [(HibernatedTab *)self uuid];
-  [v16 removeSnapshotForTabWithUUID:v17];
+  tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+  uuid = [(HibernatedTab *)self uuid];
+  [tabCollectionViewProvider removeSnapshotForTabWithUUID:uuid];
 
-  v18 = [WeakRetained tabController];
-  [v18 updateWBTabWithTab:self notify:0 persist:0];
+  tabController = [WeakRetained tabController];
+  [tabController updateWBTabWithTab:self notify:0 persist:0];
 }
 
-- (void)restoreStateFromTab:(id)a3
+- (void)restoreStateFromTab:(id)tab
 {
-  v4 = a3;
-  v18 = [v4 localAttributes];
-  v5 = [v18 queuedNavigation];
-  v6 = [v18 sessionStateData];
+  tabCopy = tab;
+  localAttributes = [tabCopy localAttributes];
+  queuedNavigation = [localAttributes queuedNavigation];
+  sessionStateData = [localAttributes sessionStateData];
 
-  if (v6 && v5)
+  if (sessionStateData && queuedNavigation)
   {
     v7 = MEMORY[0x277CBEBC0];
-    v8 = [v5 objectForKeyedSubscript:@"url"];
+    v8 = [queuedNavigation objectForKeyedSubscript:@"url"];
     v9 = [v7 URLWithString:v8];
 
-    v10 = [v5 objectForKeyedSubscript:@"title"];
+    v10 = [queuedNavigation objectForKeyedSubscript:@"title"];
     [(HibernatedTab *)self loadURL:v9 title:v10 skipSyncableTabUpdates:0];
   }
 
-  -[HibernatedTab setPinned:](self, "setPinned:", [v4 isPinned]);
-  v11 = [v4 pinnedTitle];
-  v12 = [v11 copy];
+  -[HibernatedTab setPinned:](self, "setPinned:", [tabCopy isPinned]);
+  pinnedTitle = [tabCopy pinnedTitle];
+  v12 = [pinnedTitle copy];
   pinnedTitle = self->_pinnedTitle;
   self->_pinnedTitle = v12;
 
-  v14 = [v4 pinnedURL];
-  v15 = [v14 copy];
+  pinnedURL = [tabCopy pinnedURL];
+  v15 = [pinnedURL copy];
   pinnedURL = self->_pinnedURL;
   self->_pinnedURL = v15;
 
   wbTab = self->_wbTab;
-  self->_wbTab = v4;
+  self->_wbTab = tabCopy;
 }
 
 - (id)tabUpdateBlock
@@ -460,12 +460,12 @@ void __31__HibernatedTab_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
   if (self->_hasDeferredNavigation)
   {
     v12[0] = @"url";
-    v4 = [(NSURL *)self->_url absoluteString];
-    v5 = v4;
+    absoluteString = [(NSURL *)self->_url absoluteString];
+    v5 = absoluteString;
     title = &stru_2827BF158;
-    if (v4)
+    if (absoluteString)
     {
-      v7 = v4;
+      v7 = absoluteString;
     }
 
     else
@@ -489,8 +489,8 @@ void __31__HibernatedTab_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
     v8 = 0;
   }
 
-  v9 = [(WBTab *)self->_wbTab localAttributes];
-  v10 = [v9 localAttributesWithLastVisitTime:v3 queuedNavigation:v8];
+  localAttributes = [(WBTab *)self->_wbTab localAttributes];
+  v10 = [localAttributes localAttributesWithLastVisitTime:v3 queuedNavigation:v8];
 
   return v10;
 }
@@ -498,22 +498,22 @@ void __31__HibernatedTab_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
 - (WBSCloudTab)cloudTab
 {
   v3 = objc_alloc(MEMORY[0x277D49ED0]);
-  v4 = [(HibernatedTab *)self urlForCloudTab];
-  v5 = [v3 initWithURL:v4];
+  urlForCloudTab = [(HibernatedTab *)self urlForCloudTab];
+  v5 = [v3 initWithURL:urlForCloudTab];
 
-  v6 = [(HibernatedTab *)self uuid];
-  [v5 setUuid:v6];
+  uuid = [(HibernatedTab *)self uuid];
+  [v5 setUuid:uuid];
 
-  v7 = [(HibernatedTab *)self titleForCloudTab];
-  [v5 setTitle:v7];
+  titleForCloudTab = [(HibernatedTab *)self titleForCloudTab];
+  [v5 setTitle:titleForCloudTab];
 
-  v8 = [(WBTab *)self->_wbTab localAttributes];
-  [v5 setShowingReader:{objc_msgSend(v8, "isShowingReader")}];
+  localAttributes = [(WBTab *)self->_wbTab localAttributes];
+  [v5 setShowingReader:{objc_msgSend(localAttributes, "isShowingReader")}];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v10 = [WeakRetained windowState];
-  v11 = [v10 sceneID];
-  [v5 setSceneID:v11];
+  windowState = [WeakRetained windowState];
+  sceneID = [windowState sceneID];
+  [v5 setSceneID:sceneID];
 
   [v5 setLastViewedTime:self->_lastViewedTime];
   v12 = [objc_alloc(MEMORY[0x277D49EB8]) initWithParameters:v5];
@@ -524,26 +524,26 @@ void __31__HibernatedTab_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
 - (SFTabStateData)tabStateData
 {
   v3 = objc_alloc_init(MEMORY[0x277D28DC0]);
-  v4 = [(HibernatedTab *)self urlForStatePersisting];
-  v5 = [v4 safari_originalDataAsString];
-  v6 = v5;
+  urlForStatePersisting = [(HibernatedTab *)self urlForStatePersisting];
+  safari_originalDataAsString = [urlForStatePersisting safari_originalDataAsString];
+  v6 = safari_originalDataAsString;
   v7 = &stru_2827BF158;
-  if (v5)
+  if (safari_originalDataAsString)
   {
-    v7 = v5;
+    v7 = safari_originalDataAsString;
   }
 
   v8 = v7;
 
-  v9 = [(HibernatedTab *)self uuid];
-  v10 = [v9 UUIDString];
-  [v3 setUUIDString:v10];
+  uuid = [(HibernatedTab *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [v3 setUUIDString:uUIDString];
 
-  v11 = [(HibernatedTab *)self _titleForStatePersistingForTabStateData];
-  [v3 setTitle:v11];
+  _titleForStatePersistingForTabStateData = [(HibernatedTab *)self _titleForStatePersistingForTabStateData];
+  [v3 setTitle:_titleForStatePersistingForTabStateData];
 
   [v3 setUrl:v8];
-  v12 = [(WBTab *)self->_wbTab localAttributes];
+  localAttributes = [(WBTab *)self->_wbTab localAttributes];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if (self->_hasDeferredNavigation)
   {
@@ -553,15 +553,15 @@ void __31__HibernatedTab_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
     [v3 setShowingReader:0];
     [v3 setReaderViewTopScrollOffset:0];
     [v3 setDisplayingStandaloneImage:0];
-    v14 = 0;
+    wasOpenedFromLink = 0;
   }
 
   else
   {
-    if ([v4 isFileURL])
+    if ([urlForStatePersisting isFileURL])
     {
-      v15 = [(HibernatedTab *)self urlString];
-      [v3 setUserVisibleURL:v15];
+      urlString = [(HibernatedTab *)self urlString];
+      [v3 setUserVisibleURL:urlString];
     }
 
     else
@@ -571,43 +571,43 @@ void __31__HibernatedTab_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
 
     [(HibernatedTab *)self lastActivationTime];
     [v3 setLastViewedTime:?];
-    [v3 setReadingListBookmarkID:{objc_msgSend(v12, "readingListBookmarkID")}];
-    [v3 setShowingReader:{objc_msgSend(v12, "isShowingReader")}];
-    [v12 readerViewTopScrollOffset];
+    [v3 setReadingListBookmarkID:{objc_msgSend(localAttributes, "readingListBookmarkID")}];
+    [v3 setShowingReader:{objc_msgSend(localAttributes, "isShowingReader")}];
+    [localAttributes readerViewTopScrollOffset];
     [v3 setReaderViewTopScrollOffset:v16];
-    [v3 setDisplayingStandaloneImage:{objc_msgSend(v12, "isDisplayingStandaloneImage")}];
-    v14 = [v12 wasOpenedFromLink];
+    [v3 setDisplayingStandaloneImage:{objc_msgSend(localAttributes, "isDisplayingStandaloneImage")}];
+    wasOpenedFromLink = [localAttributes wasOpenedFromLink];
   }
 
-  [v3 setWasOpenedFromLink:v14];
+  [v3 setWasOpenedFromLink:wasOpenedFromLink];
   [v3 setPrivateBrowsing:{-[HibernatedTab isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
-  v17 = [v12 sessionStateData];
-  [v3 setSessionStateData:v17];
+  sessionStateData = [localAttributes sessionStateData];
+  [v3 setSessionStateData:sessionStateData];
 
-  v18 = [WeakRetained UUID];
-  v19 = [v18 UUIDString];
-  [v3 setOwningBrowserWindowUUIDString:v19];
+  uUID = [WeakRetained UUID];
+  uUIDString2 = [uUID UUIDString];
+  [v3 setOwningBrowserWindowUUIDString:uUIDString2];
 
   [v3 setOrderIndex:{objc_msgSend(WeakRetained, "orderIndexForTab:", self)}];
-  v20 = [v3 sessionStateData];
-  [v3 setUncompressedSessionStateDataSize:{objc_msgSend(v20, "length")}];
+  sessionStateData2 = [v3 sessionStateData];
+  [v3 setUncompressedSessionStateDataSize:{objc_msgSend(sessionStateData2, "length")}];
 
-  v21 = [(WBTab *)self->_wbTab tabGroupUUID];
-  [v3 setTabGroupUUID:v21];
+  tabGroupUUID = [(WBTab *)self->_wbTab tabGroupUUID];
+  [v3 setTabGroupUUID:tabGroupUUID];
 
-  v22 = [WeakRetained effectiveProfileIdentifier];
-  [v3 setProfileIdentifier:v22];
+  effectiveProfileIdentifier = [WeakRetained effectiveProfileIdentifier];
+  [v3 setProfileIdentifier:effectiveProfileIdentifier];
 
   return v3;
 }
 
-- (void)updateAncestryWithParentTab:(id)a3
+- (void)updateAncestryWithParentTab:(id)tab
 {
-  v4 = a3;
-  v8 = [v4 ancestorUUIDs];
-  v5 = [v4 uuid];
+  tabCopy = tab;
+  ancestorUUIDs = [tabCopy ancestorUUIDs];
+  uuid = [tabCopy uuid];
 
-  v6 = [v8 arrayByAddingObject:v5];
+  v6 = [ancestorUUIDs arrayByAddingObject:uuid];
   ancestorUUIDs = self->_ancestorUUIDs;
   self->_ancestorUUIDs = v6;
 }
@@ -646,27 +646,27 @@ void __31__HibernatedTab_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
   }
 
   [(SFNavigationBarItem *)self->_cachedNavigationBarItem setLockdownModeAnnotation:v3];
-  v15 = [(HibernatedTab *)self urlString];
+  urlString = [(HibernatedTab *)self urlString];
   if ([(NSURL *)self->_url safari_isSafariWebExtensionURL])
   {
 
-    v15 = 0;
+    urlString = 0;
   }
 
-  v4 = [MEMORY[0x277CDB8A8] sharedInstance];
-  v5 = [v4 defaultSearchEngineIfPopulatedForPrivateBrowsing:{-[HibernatedTab isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
+  mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+  v5 = [mEMORY[0x277CDB8A8] defaultSearchEngineIfPopulatedForPrivateBrowsing:{-[HibernatedTab isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
   if (!v5)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = *MEMORY[0x277CDBA28];
-    [v6 removeObserver:self name:*MEMORY[0x277CDBA28] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CDBA28] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel__searchEngineControllerDidFinishPopulating_ name:v7 object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__searchEngineControllerDidFinishPopulating_ name:v7 object:0];
   }
 
   v9 = [v5 userVisibleQueryFromSearchURL:self->_url];
-  v10 = [v15 safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
+  v10 = [urlString safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
   if (([(NSURL *)self->_url safari_isDataURL]& 1) != 0)
   {
     v11 = @"data:";
@@ -708,38 +708,38 @@ LABEL_21:
   [(SFNavigationBarItem *)self->_cachedNavigationBarItem setShowsSearchIndicator:v14];
 }
 
-- (void)_searchEngineControllerDidFinishPopulating:(id)a3
+- (void)_searchEngineControllerDidFinishPopulating:(id)populating
 {
   [(HibernatedTab *)self _updateNavigationBarItem];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CDBA28] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CDBA28] object:0];
 }
 
 - (void)clearBrowserController
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  [v4 willLoseOwnershipOfTab:self];
+  tabController = [WeakRetained tabController];
+  [tabController willLoseOwnershipOfTab:self];
 
   objc_storeWeak(&self->_browserController, 0);
 }
 
-- (BOOL)isReusableForURL:(id)a3 webClipURL:(id)a4
+- (BOOL)isReusableForURL:(id)l webClipURL:(id)rL
 {
-  v6 = a4;
+  rLCopy = rL;
   url = self->_url;
-  v8 = a3;
-  v9 = [(NSURL *)url _webkit_URLByRemovingFragment];
-  LOBYTE(url) = [v9 isEqual:v8];
+  lCopy = l;
+  _webkit_URLByRemovingFragment = [(NSURL *)url _webkit_URLByRemovingFragment];
+  LOBYTE(url) = [_webkit_URLByRemovingFragment isEqual:lCopy];
 
   if (url)
   {
     v10 = 1;
   }
 
-  else if (v6)
+  else if (rLCopy)
   {
-    v10 = [v9 isEqual:v6];
+    v10 = [_webkit_URLByRemovingFragment isEqual:rLCopy];
   }
 
   else
@@ -777,21 +777,21 @@ LABEL_21:
 - (id)currentUnifiedTabBarItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabBarManager];
-  v5 = [v4 displayMode];
+  tabBarManager = [WeakRetained tabBarManager];
+  displayMode = [tabBarManager displayMode];
 
   unifiedTabBarItem = self->_unifiedTabBarItem;
-  if (v5 == 2)
+  if (displayMode == 2)
   {
-    v7 = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
+    secondaryItem = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
   }
 
   else
   {
-    v7 = unifiedTabBarItem;
+    secondaryItem = unifiedTabBarItem;
   }
 
-  return v7;
+  return secondaryItem;
 }
 
 - (void)resetTabViewItems
@@ -800,23 +800,23 @@ LABEL_21:
   tabCollectionItem = self->_tabCollectionItem;
   self->_tabCollectionItem = v3;
 
-  v5 = [(HibernatedTab *)self uuid];
-  [(TabDocumentCollectionItem *)self->_tabCollectionItem setUUID:v5];
+  uuid = [(HibernatedTab *)self uuid];
+  [(TabDocumentCollectionItem *)self->_tabCollectionItem setUUID:uuid];
 
   [(TabDocumentCollectionItem *)self->_tabCollectionItem setPinned:self->_pinned];
 
   [(HibernatedTab *)self updateTabTitle];
 }
 
-- (id)itemForTabCollectionView:(id)a3
+- (id)itemForTabCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     tabBarItem = self->_tabBarItem;
 LABEL_7:
-    v8 = tabBarItem;
+    secondaryItem = tabBarItem;
     goto LABEL_8;
   }
 
@@ -827,25 +827,25 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = [v4 isStandalone];
+  isStandalone = [viewCopy isStandalone];
   unifiedTabBarItem = self->_unifiedTabBarItem;
-  if (v6)
+  if (isStandalone)
   {
-    v8 = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
+    secondaryItem = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
   }
 
   else
   {
-    v8 = unifiedTabBarItem;
+    secondaryItem = unifiedTabBarItem;
   }
 
 LABEL_8:
-  v9 = v8;
+  v9 = secondaryItem;
 
   return v9;
 }
 
-- (void)updateTabIconWithDelay:(double)a3
+- (void)updateTabIconWithDelay:(double)delay
 {
   [(HibernatedTab *)self _cancelFaviconUpdate];
   objc_initWeak(&location, self);
@@ -855,7 +855,7 @@ LABEL_8:
   v7[2] = __40__HibernatedTab_updateTabIconWithDelay___block_invoke;
   v7[3] = &unk_2781D8AF0;
   objc_copyWeak(&v8, &location);
-  v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v7 block:a3];
+  v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v7 block:delay];
   objc_storeWeak(&self->_updateFaviconTimer, v6);
 
   objc_destroyWeak(&v8);
@@ -878,8 +878,8 @@ void __40__HibernatedTab_updateTabIconWithDelay___block_invoke(uint64_t a1)
   }
 
   [WeakRetained invalidate];
-  v4 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-  [v4 cancelRequestWithToken:self->_faviconToken];
+  mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  [mEMORY[0x277D28F58] cancelRequestWithToken:self->_faviconToken];
 
   faviconToken = self->_faviconToken;
   self->_faviconToken = 0;
@@ -898,8 +898,8 @@ void __40__HibernatedTab_updateTabIconWithDelay___block_invoke(uint64_t a1)
   url = self->_url;
   if (url)
   {
-    v5 = [(NSURL *)url absoluteString];
-    v6 = [v5 isEqualToString:@"about:blank"];
+    absoluteString = [(NSURL *)url absoluteString];
+    v6 = [absoluteString isEqualToString:@"about:blank"];
 
     if (!v6)
     {
@@ -907,13 +907,13 @@ void __40__HibernatedTab_updateTabIconWithDelay___block_invoke(uint64_t a1)
       {
         v11 = [objc_alloc(MEMORY[0x277D4A730]) initWithURL:self->_url iconSize:2 fallbackType:+[TabIconAndTitleView defaultTabIconSize]()];
         objc_initWeak(&location, self);
-        v12 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+        mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __30__HibernatedTab_updateTabIcon__block_invoke;
         v16[3] = &unk_2781D5D78;
         objc_copyWeak(&v17, &location);
-        v13 = [v12 registerRequest:v11 priority:2 responseHandler:v16];
+        v13 = [mEMORY[0x277D28F58] registerRequest:v11 priority:2 responseHandler:v16];
         faviconToken = self->_faviconToken;
         self->_faviconToken = v13;
 
@@ -923,26 +923,26 @@ void __40__HibernatedTab_updateTabIconWithDelay___block_invoke(uint64_t a1)
         return;
       }
 
-      v8 = [(HibernatedTab *)self webExtensionsController];
-      v9 = [(NSURL *)self->_url host];
-      v15 = [v8 webExtensionForBaseURIHost:v9];
+      webExtensionsController = [(HibernatedTab *)self webExtensionsController];
+      host = [(NSURL *)self->_url host];
+      v15 = [webExtensionsController webExtensionForBaseURIHost:host];
 
-      v10 = [v15 icon];
-      [(HibernatedTab *)self _setIcon:v10 isMonogram:0];
+      icon = [v15 icon];
+      [(HibernatedTab *)self _setIcon:icon isMonogram:0];
 
       goto LABEL_7;
     }
 
-    v7 = [MEMORY[0x277D28F20] fallbackFavicon];
+    fallbackFavicon = [MEMORY[0x277D28F20] fallbackFavicon];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D28F20] favoritesFavicon];
+    fallbackFavicon = [MEMORY[0x277D28F20] favoritesFavicon];
   }
 
-  v15 = v7;
-  [(HibernatedTab *)self _setIcon:v7 isMonogram:0];
+  v15 = fallbackFavicon;
+  [(HibernatedTab *)self _setIcon:fallbackFavicon isMonogram:0];
 LABEL_7:
 }
 
@@ -967,21 +967,21 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_setIcon:(id)a3 isMonogram:(BOOL)a4
+- (void)_setIcon:(id)icon isMonogram:(BOOL)monogram
 {
-  v4 = a4;
+  monogramCopy = monogram;
   tabBarItem = self->_tabBarItem;
-  v8 = a3;
-  [(TabBarItem *)tabBarItem setIcon:v8];
-  [(UnifiedTabBarItem *)self->_unifiedTabBarItem setIcon:v8];
-  if (v4)
+  iconCopy = icon;
+  [(TabBarItem *)tabBarItem setIcon:iconCopy];
+  [(UnifiedTabBarItem *)self->_unifiedTabBarItem setIcon:iconCopy];
+  if (monogramCopy)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v8;
+    v7 = iconCopy;
   }
 
   [(TabDocumentCollectionItem *)self->_tabCollectionItem setIcon:v7];
@@ -989,20 +989,20 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
 
 - (void)updateTabTitle
 {
-  v3 = [(HibernatedTab *)self titleForTabCollection];
-  [(TabBarItem *)self->_tabBarItem setTitle:v3];
-  [(UnifiedTabBarItem *)self->_unifiedTabBarItem setTitle:v3];
-  [(TabDocumentCollectionItem *)self->_tabCollectionItem setTitle:v3];
+  titleForTabCollection = [(HibernatedTab *)self titleForTabCollection];
+  [(TabBarItem *)self->_tabBarItem setTitle:titleForTabCollection];
+  [(UnifiedTabBarItem *)self->_unifiedTabBarItem setTitle:titleForTabCollection];
+  [(TabDocumentCollectionItem *)self->_tabCollectionItem setTitle:titleForTabCollection];
 }
 
-- (void)setUnread:(BOOL)a3
+- (void)setUnread:(BOOL)unread
 {
-  if (self->_unread != a3)
+  if (self->_unread != unread)
   {
-    v4 = a3;
-    self->_unread = a3;
+    unreadCopy = unread;
+    self->_unread = unread;
     [(TabBarItem *)self->_tabBarItem setUnread:?];
-    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setUnread:v4];
+    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setUnread:unreadCopy];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
     [WeakRetained updateTabOverviewButton];
 
@@ -1010,17 +1010,17 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setShareParticipants:(id)a3
+- (void)setShareParticipants:(id)participants
 {
-  v6 = a3;
+  participantsCopy = participants;
   if (![(NSArray *)self->_shareParticipants isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [participantsCopy copy];
     shareParticipants = self->_shareParticipants;
     self->_shareParticipants = v4;
 
-    [(TabBarItem *)self->_tabBarItem setShareParticipants:v6];
-    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setShareParticipants:v6];
+    [(TabBarItem *)self->_tabBarItem setShareParticipants:participantsCopy];
+    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setShareParticipants:participantsCopy];
     [(HibernatedTab *)self _reconfigureLibraryItemView];
   }
 }
@@ -1028,34 +1028,34 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
 - (void)_reconfigureLibraryItemView
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained libraryController];
+  libraryController = [WeakRetained libraryController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(HibernatedTab *)self uuidString];
-    [v5 reconfigureTabCellWithUUIDString:v4];
+    uuidString = [(HibernatedTab *)self uuidString];
+    [libraryController reconfigureTabCellWithUUIDString:uuidString];
   }
 }
 
 - (NSUUID)webClipID
 {
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(WBTab *)self->_wbTab localAttributes];
-  v5 = [v4 webClipIDString];
-  v6 = [v3 initWithUUIDString:v5];
+  localAttributes = [(WBTab *)self->_wbTab localAttributes];
+  webClipIDString = [localAttributes webClipIDString];
+  v6 = [v3 initWithUUIDString:webClipIDString];
 
   return v6;
 }
 
 - (id)readingListAddress
 {
-  v3 = [(WBTab *)self->_wbTab localAttributes];
-  v4 = [v3 readingListBookmarkID];
+  localAttributes = [(WBTab *)self->_wbTab localAttributes];
+  readingListBookmarkID = [localAttributes readingListBookmarkID];
 
   if ([(NSURL *)self->_url isFileURL])
   {
-    v5 = v4 == 0;
+    v5 = readingListBookmarkID == 0;
   }
 
   else
@@ -1065,68 +1065,68 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
 
   if (v5)
   {
-    v8 = 0;
+    address = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    v7 = [v6 bookmarkWithID:v4];
-    v8 = [v7 address];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    v7 = [mainBookmarkCollection bookmarkWithID:readingListBookmarkID];
+    address = [v7 address];
   }
 
-  return v8;
+  return address;
 }
 
 - (id)urlString
 {
-  v3 = [(HibernatedTab *)self readingListAddress];
-  v4 = v3;
-  if (v3)
+  readingListAddress = [(HibernatedTab *)self readingListAddress];
+  v4 = readingListAddress;
+  if (readingListAddress)
   {
-    v5 = v3;
+    safari_userVisibleStringConsideringLongURLs = readingListAddress;
   }
 
   else
   {
-    v5 = [(NSURL *)self->_url safari_userVisibleStringConsideringLongURLs];
+    safari_userVisibleStringConsideringLongURLs = [(NSURL *)self->_url safari_userVisibleStringConsideringLongURLs];
   }
 
-  v6 = v5;
+  v6 = safari_userVisibleStringConsideringLongURLs;
 
   return v6;
 }
 
 - (NSString)addressForNewBookmark
 {
-  v2 = [(HibernatedTab *)self urlForSharing];
-  v3 = [v2 safari_originalDataAsString];
+  urlForSharing = [(HibernatedTab *)self urlForSharing];
+  safari_originalDataAsString = [urlForSharing safari_originalDataAsString];
 
-  return v3;
+  return safari_originalDataAsString;
 }
 
 - (id)urlForCloudTab
 {
   if ([(NSURL *)self->_url isFileURL])
   {
-    v3 = [(HibernatedTab *)self urlString];
-    v4 = [v3 safari_bestURLForUserTypedString];
+    urlString = [(HibernatedTab *)self urlString];
+    safari_bestURLForUserTypedString = [urlString safari_bestURLForUserTypedString];
   }
 
   else
   {
-    v4 = self->_url;
+    safari_bestURLForUserTypedString = self->_url;
   }
 
-  return v4;
+  return safari_bestURLForUserTypedString;
 }
 
 - (NSURL)urlForSharing
 {
-  v3 = [(HibernatedTab *)self readingListAddress];
-  if (v3)
+  readingListAddress = [(HibernatedTab *)self readingListAddress];
+  if (readingListAddress)
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:readingListAddress];
   }
 
   else
@@ -1135,10 +1135,10 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
   }
 
   v5 = v4;
-  v6 = [(HibernatedTab *)self titleForSharing];
-  if (v6)
+  titleForSharing = [(HibernatedTab *)self titleForSharing];
+  if (titleForSharing)
   {
-    [(NSURL *)v5 _setTitle:v6];
+    [(NSURL *)v5 _setTitle:titleForSharing];
   }
 
   return v5;
@@ -1163,9 +1163,9 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
       v15 = 0u;
       v16 = 0u;
       v6 = +[Application sharedApplication];
-      v7 = [v6 allWebExtensionsControllers];
+      allWebExtensionsControllers = [v6 allWebExtensionsControllers];
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allWebExtensionsControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         v9 = v8;
@@ -1176,7 +1176,7 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
           {
             if (*v16 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allWebExtensionsControllers);
             }
 
             v12 = [*(*(&v15 + 1) + 8 * i) _persistentStateURLForExtensionURL:self->_url];
@@ -1188,7 +1188,7 @@ void __30__HibernatedTab_updateTabIcon__block_invoke(uint64_t a1, void *a2)
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v9 = [allWebExtensionsControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v9)
           {
             continue;
@@ -1210,10 +1210,10 @@ LABEL_15:
 
 - (id)titleForTabCollection
 {
-  v3 = [(WBTab *)self->_wbTab localAttributes];
-  v4 = [v3 isDisplayingStandaloneImage];
+  localAttributes = [(WBTab *)self->_wbTab localAttributes];
+  isDisplayingStandaloneImage = [localAttributes isDisplayingStandaloneImage];
 
-  if (v4)
+  if (isDisplayingStandaloneImage)
   {
     v5 = 0;
   }
@@ -1278,8 +1278,8 @@ LABEL_15:
   {
     if (title)
     {
-      v4 = [MEMORY[0x277CCA900] safari_lockRelatedEmojiCharacterSet];
-      v5 = [(NSString *)title safari_stringByRemovingCharactersInSet:v4];
+      safari_lockRelatedEmojiCharacterSet = [MEMORY[0x277CCA900] safari_lockRelatedEmojiCharacterSet];
+      v5 = [(NSString *)title safari_stringByRemovingCharactersInSet:safari_lockRelatedEmojiCharacterSet];
 
       goto LABEL_7;
     }
@@ -1293,10 +1293,10 @@ LABEL_7:
   return v5;
 }
 
-- (id)_titleAllowURLStringFallback:(BOOL)a3 allowUntitled:(BOOL)a4
+- (id)_titleAllowURLStringFallback:(BOOL)fallback allowUntitled:(BOOL)untitled
 {
-  v4 = a4;
-  v5 = a3;
+  untitledCopy = untitled;
+  fallbackCopy = fallback;
   if ([(NSString *)self->_title length])
   {
     v7 = self->_title;
@@ -1305,15 +1305,15 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (v5 && ([(HibernatedTab *)self urlString], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  if (fallbackCopy && ([(HibernatedTab *)self urlString], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [(HibernatedTab *)self urlString];
-    v8 = [v11 safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:1 simplifiedStringOffset:0];
+    urlString = [(HibernatedTab *)self urlString];
+    v8 = [urlString safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:1 simplifiedStringOffset:0];
   }
 
   else
   {
-    if (v4)
+    if (untitledCopy)
     {
       v7 = _WBSLocalizedString();
       goto LABEL_3;
@@ -1330,18 +1330,18 @@ LABEL_4:
 - (NSString)windowIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained UUID];
-  v4 = [v3 UUIDString];
+  uUID = [WeakRetained UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (SFWebExtensionsController)webExtensionsController
 {
   v3 = +[Application sharedApplication];
-  v4 = [(HibernatedTab *)self isPrivateBrowsingEnabled];
-  v5 = [(HibernatedTab *)self profile];
-  v6 = [v3 webExtensionsControllerForTabWithPrivateBrowsingEnabled:v4 profile:v5];
+  isPrivateBrowsingEnabled = [(HibernatedTab *)self isPrivateBrowsingEnabled];
+  profile = [(HibernatedTab *)self profile];
+  v6 = [v3 webExtensionsControllerForTabWithPrivateBrowsingEnabled:isPrivateBrowsingEnabled profile:profile];
 
   return v6;
 }
@@ -1349,8 +1349,8 @@ LABEL_4:
 - (double)parentTabIDForWebExtensions
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 originatingTabForTab:self];
+  tabController = [WeakRetained tabController];
+  v5 = [tabController originatingTabForTab:self];
 
   if (v5)
   {
@@ -1402,36 +1402,36 @@ LABEL_4:
 - (WBProfile)profile
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained effectiveProfile];
+  effectiveProfile = [WeakRetained effectiveProfile];
 
-  return v3;
+  return effectiveProfile;
 }
 
 - (void)close
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  [v4 closeTab:self animated:1];
+  tabController = [WeakRetained tabController];
+  [tabController closeTab:self animated:1];
 
-  v5 = [MEMORY[0x277D4A060] sharedInstance];
-  [v5 setTabNeedsSpotlightDeletion:self];
+  mEMORY[0x277D4A060] = [MEMORY[0x277D4A060] sharedInstance];
+  [mEMORY[0x277D4A060] setTabNeedsSpotlightDeletion:self];
 }
 
 - (void)select
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabController];
-  [v3 setActiveTab:self];
+  tabController = [WeakRetained tabController];
+  [tabController setActiveTab:self];
 }
 
-- (unint64_t)indexInWindowForWebExtensionContext:(id)a3
+- (unint64_t)indexInWindowForWebExtensionContext:(id)context
 {
-  v4 = [(HibernatedTab *)self webExtensionWindow];
-  v5 = v4;
-  if (v4)
+  webExtensionWindow = [(HibernatedTab *)self webExtensionWindow];
+  v5 = webExtensionWindow;
+  if (webExtensionWindow)
   {
-    v6 = [v4 webExtensionTabs];
-    v7 = [v6 indexOfObjectIdenticalTo:self];
+    webExtensionTabs = [webExtensionWindow webExtensionTabs];
+    v7 = [webExtensionTabs indexOfObjectIdenticalTo:self];
   }
 
   else
@@ -1442,52 +1442,52 @@ LABEL_4:
   return v7;
 }
 
-- (id)parentTabForWebExtensionContext:(id)a3
+- (id)parentTabForWebExtensionContext:(id)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained tabController];
-  v6 = [v5 originatingTabForTab:self];
+  tabController = [WeakRetained tabController];
+  v6 = [tabController originatingTabForTab:self];
 
   return v6;
 }
 
-- (void)setPinned:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setPinned:(BOOL)pinned forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  [(HibernatedTab *)self setPinned:v5];
-  v7[2](v7, 0);
+  pinnedCopy = pinned;
+  handlerCopy = handler;
+  [(HibernatedTab *)self setPinned:pinnedCopy];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setReaderModeShowing:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setReaderModeShowing:(BOOL)showing forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  if ([(HibernatedTab *)self isInReaderMode]!= v5)
+  showingCopy = showing;
+  handlerCopy = handler;
+  if ([(HibernatedTab *)self isInReaderMode]!= showingCopy)
   {
     [(HibernatedTab *)self toggleReader];
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setReaderModeActive:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setReaderModeActive:(BOOL)active forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  if ([(HibernatedTab *)self isInReaderMode]!= v5)
+  activeCopy = active;
+  handlerCopy = handler;
+  if ([(HibernatedTab *)self isInReaderMode]!= activeCopy)
   {
     [(HibernatedTab *)self toggleReader];
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setMuted:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setMuted:(BOOL)muted forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  if (v5)
+  mutedCopy = muted;
+  handlerCopy = handler;
+  if (mutedCopy)
   {
     [(HibernatedTab *)self mute];
   }
@@ -1497,28 +1497,28 @@ LABEL_4:
     [(HibernatedTab *)self unmute];
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setZoomFactor:(double)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setZoomFactor:(double)factor forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v7 = a5;
-  [(HibernatedTab *)self setZoomFactor:a3];
-  v7[2](v7, 0);
+  handlerCopy = handler;
+  [(HibernatedTab *)self setZoomFactor:factor];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)loadURL:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)loadURL:(id)l forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v7 = a5;
-  [(HibernatedTab *)self loadURL:a3];
-  v7[2](v7, 0);
+  handlerCopy = handler;
+  [(HibernatedTab *)self loadURL:l];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)reloadFromOrigin:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)reloadFromOrigin:(BOOL)origin forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  if (v5)
+  originCopy = origin;
+  handlerCopy = handler;
+  if (originCopy)
   {
     [(HibernatedTab *)self reloadFromOrigin];
   }
@@ -1528,56 +1528,56 @@ LABEL_4:
     [(HibernatedTab *)self reload];
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)goBackForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)goBackForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(HibernatedTab *)self goBack];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)goForwardForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)goForwardForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(HibernatedTab *)self goForward];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)activateForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)activateForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(HibernatedTab *)self select];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setSelected:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setSelected:(BOOL)selected forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  if (v5)
+  selectedCopy = selected;
+  handlerCopy = handler;
+  if (selectedCopy)
   {
     [(HibernatedTab *)self select];
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)duplicateUsingConfiguration:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)duplicateUsingConfiguration:(id)configuration forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v8 = [WeakRetained tabController];
-  v9 = [v8 duplicateTab:self];
-  (*(a5 + 2))(v7, v9, 0);
+  tabController = [WeakRetained tabController];
+  v9 = [tabController duplicateTab:self];
+  (*(handler + 2))(handlerCopy, v9, 0);
 }
 
-- (void)closeForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)closeForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(HibernatedTab *)self close];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 - (WBSSiriIntelligenceDonorTabData)tabDataForSpotlightDonation

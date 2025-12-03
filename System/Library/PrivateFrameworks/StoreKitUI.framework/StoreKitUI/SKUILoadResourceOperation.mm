@@ -1,13 +1,13 @@
 @interface SKUILoadResourceOperation
 - (SKUIClientContext)clientContext;
-- (SKUILoadResourceOperation)initWithResourceRequest:(id)a3;
+- (SKUILoadResourceOperation)initWithResourceRequest:(id)request;
 - (id)_initSKUILoadResourceOperation;
 - (id)outputBlock;
 - (void)_initSKUILoadResourceOperation;
 - (void)cancel;
 - (void)main;
-- (void)setClientContext:(id)a3;
-- (void)setOutputBlock:(id)a3;
+- (void)setClientContext:(id)context;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SKUILoadResourceOperation
@@ -32,18 +32,18 @@
   return v3;
 }
 
-- (SKUILoadResourceOperation)initWithResourceRequest:(id)a3
+- (SKUILoadResourceOperation)initWithResourceRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SKUILoadResourceOperation *)self _initSKUILoadResourceOperation];
-  if (v5)
+  requestCopy = request;
+  _initSKUILoadResourceOperation = [(SKUILoadResourceOperation *)self _initSKUILoadResourceOperation];
+  if (_initSKUILoadResourceOperation)
   {
-    v6 = [v4 copy];
-    request = v5->_request;
-    v5->_request = v6;
+    v6 = [requestCopy copy];
+    request = _initSKUILoadResourceOperation->_request;
+    _initSKUILoadResourceOperation->_request = v6;
   }
 
-  return v5;
+  return _initSKUILoadResourceOperation;
 }
 
 - (SKUIClientContext)clientContext
@@ -65,25 +65,25 @@
   return v4;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   [(NSLock *)self->_lock lock];
-  if (self->_clientContext != v5)
+  if (self->_clientContext != contextCopy)
   {
-    objc_storeStrong(&self->_clientContext, a3);
+    objc_storeStrong(&self->_clientContext, context);
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -93,12 +93,12 @@
 
 - (void)main
 {
-  v2 = [(SKUILoadResourceOperation *)self outputBlock];
-  if (v2)
+  outputBlock = [(SKUILoadResourceOperation *)self outputBlock];
+  if (outputBlock)
   {
-    v3 = v2;
-    v2[2](v2, 0, 0);
-    v2 = v3;
+    v3 = outputBlock;
+    outputBlock[2](outputBlock, 0, 0);
+    outputBlock = v3;
   }
 }
 

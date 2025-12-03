@@ -1,56 +1,56 @@
 @interface DDParsecRemoteCollectionViewController
 - (DDParsecHostVCInterface)hostSideDelegate;
-- (void)getStatusBarHidden:(id)a3;
-- (void)loadReportAnIssueImage:(id)a3;
-- (void)openParsecURL:(id)a3;
-- (void)openTrailerPunchout:(id)a3;
-- (void)performClientTextQueryWithTerm:(id)a3 queryId:(unint64_t)a4 sessionId:(id)a5 userAgent:(id)a6 reply:(id)a7;
+- (void)getStatusBarHidden:(id)hidden;
+- (void)loadReportAnIssueImage:(id)image;
+- (void)openParsecURL:(id)l;
+- (void)openTrailerPunchout:(id)punchout;
+- (void)performClientTextQueryWithTerm:(id)term queryId:(unint64_t)id sessionId:(id)sessionId userAgent:(id)agent reply:(id)reply;
 - (void)remoteVCIsReady;
-- (void)reportAnIssueWithReportIdentifier:(id)a3 sfReportData:(id)a4;
-- (void)showingErrorView:(BOOL)a3;
-- (void)showingFTE:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)reportAnIssueWithReportIdentifier:(id)identifier sfReportData:(id)data;
+- (void)showingErrorView:(BOOL)view;
+- (void)showingFTE:(BOOL)e;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation DDParsecRemoteCollectionViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [DDParsecRemoteCollectionViewController viewServiceDidTerminateWithError:v4];
+    [DDParsecRemoteCollectionViewController viewServiceDidTerminateWithError:errorCopy];
   }
 
   [(DDParsecRemoteCollectionViewController *)self interactionEndedWithPunchout:0];
   v5.receiver = self;
   v5.super_class = DDParsecRemoteCollectionViewController;
-  [(_UIRemoteViewController *)&v5 viewServiceDidTerminateWithError:v4];
+  [(_UIRemoteViewController *)&v5 viewServiceDidTerminateWithError:errorCopy];
 }
 
-- (void)reportAnIssueWithReportIdentifier:(id)a3 sfReportData:(id)a4
+- (void)reportAnIssueWithReportIdentifier:(id)identifier sfReportData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
-  [v8 reportAnIssueWithReportIdentifier:v7 sfReportData:v6];
+  dataCopy = data;
+  identifierCopy = identifier;
+  hostSideDelegate = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
+  [hostSideDelegate reportAnIssueWithReportIdentifier:identifierCopy sfReportData:dataCopy];
 }
 
-- (void)loadReportAnIssueImage:(id)a3
+- (void)loadReportAnIssueImage:(id)image
 {
-  v4 = a3;
-  v5 = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
-  [v5 loadReportAnIssueImage:v4];
+  imageCopy = image;
+  hostSideDelegate = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
+  [hostSideDelegate loadReportAnIssueImage:imageCopy];
 }
 
-- (void)showingErrorView:(BOOL)a3
+- (void)showingErrorView:(BOOL)view
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __59__DDParsecRemoteCollectionViewController_showingErrorView___block_invoke;
   v3[3] = &unk_278290CD0;
   v3[4] = self;
-  v4 = a3;
+  viewCopy = view;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -60,14 +60,14 @@ void __59__DDParsecRemoteCollectionViewController_showingErrorView___block_invok
   [v2 showingErrorView:*(a1 + 40)];
 }
 
-- (void)showingFTE:(BOOL)a3
+- (void)showingFTE:(BOOL)e
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __53__DDParsecRemoteCollectionViewController_showingFTE___block_invoke;
   v3[3] = &unk_278290CD0;
   v3[4] = self;
-  v4 = a3;
+  eCopy = e;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -77,41 +77,41 @@ void __53__DDParsecRemoteCollectionViewController_showingFTE___block_invoke(uint
   [v2 showingFTE:*(a1 + 40)];
 }
 
-- (void)openParsecURL:(id)a3
+- (void)openParsecURL:(id)l
 {
-  v4 = a3;
-  v5 = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
-  [v5 openParsecURL:v4];
+  lCopy = l;
+  hostSideDelegate = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
+  [hostSideDelegate openParsecURL:lCopy];
 }
 
-- (void)getStatusBarHidden:(id)a3
+- (void)getStatusBarHidden:(id)hidden
 {
-  v4 = a3;
-  v5 = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
-  [v5 getStatusBarHidden:v4];
+  hiddenCopy = hidden;
+  hostSideDelegate = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
+  [hostSideDelegate getStatusBarHidden:hiddenCopy];
 }
 
-- (void)openTrailerPunchout:(id)a3
+- (void)openTrailerPunchout:(id)punchout
 {
-  v4 = a3;
-  v5 = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
-  [v5 openTrailerPunchout:v4];
+  punchoutCopy = punchout;
+  hostSideDelegate = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
+  [hostSideDelegate openTrailerPunchout:punchoutCopy];
 }
 
-- (void)performClientTextQueryWithTerm:(id)a3 queryId:(unint64_t)a4 sessionId:(id)a5 userAgent:(id)a6 reply:(id)a7
+- (void)performClientTextQueryWithTerm:(id)term queryId:(unint64_t)id sessionId:(id)sessionId userAgent:(id)agent reply:(id)reply
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
-  [v16 performClientTextQueryWithTerm:v15 queryId:a4 sessionId:v14 userAgent:v13 reply:v12];
+  replyCopy = reply;
+  agentCopy = agent;
+  sessionIdCopy = sessionId;
+  termCopy = term;
+  hostSideDelegate = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
+  [hostSideDelegate performClientTextQueryWithTerm:termCopy queryId:id sessionId:sessionIdCopy userAgent:agentCopy reply:replyCopy];
 }
 
 - (void)remoteVCIsReady
 {
-  v2 = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
-  [v2 remoteVCIsReady];
+  hostSideDelegate = [(DDParsecRemoteCollectionViewController *)self hostSideDelegate];
+  [hostSideDelegate remoteVCIsReady];
 }
 
 - (DDParsecHostVCInterface)hostSideDelegate

@@ -1,13 +1,13 @@
 @interface RemotePairingDeviceTunnelServiceConnection
-- (id)copyRemoteUnlockDeviceKeyForTunnelWithTunnelName:(id)a3 error:(id *)a4;
+- (id)copyRemoteUnlockDeviceKeyForTunnelWithTunnelName:(id)name error:(id *)error;
 @end
 
 @implementation RemotePairingDeviceTunnelServiceConnection
 
-- (id)copyRemoteUnlockDeviceKeyForTunnelWithTunnelName:(id)a3 error:(id *)a4
+- (id)copyRemoteUnlockDeviceKeyForTunnelWithTunnelName:(id)name error:(id *)error
 {
   sub_26203A1BC();
-  v5 = self;
+  selfCopy = self;
   v6 = RemotePairingDeviceTunnelServiceConnection.copyRemoteUnlockDeviceKeyForTunnel(tunnelName:)();
   v8 = v7;
 

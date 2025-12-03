@@ -1,22 +1,22 @@
 @interface DKNotableUserDataCellularPlan
-- (DKNotableUserDataCellularPlan)initWithCarrierName:(id)a3 phoneNumber:(id)a4 isTransferred:(BOOL)a5;
+- (DKNotableUserDataCellularPlan)initWithCarrierName:(id)name phoneNumber:(id)number isTransferred:(BOOL)transferred;
 @end
 
 @implementation DKNotableUserDataCellularPlan
 
-- (DKNotableUserDataCellularPlan)initWithCarrierName:(id)a3 phoneNumber:(id)a4 isTransferred:(BOOL)a5
+- (DKNotableUserDataCellularPlan)initWithCarrierName:(id)name phoneNumber:(id)number isTransferred:(BOOL)transferred
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  numberCopy = number;
   v14.receiver = self;
   v14.super_class = DKNotableUserDataCellularPlan;
   v11 = [(DKNotableUserDataCellularPlan *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_carrierName, a3);
-    objc_storeStrong(&v12->_phoneNumber, a4);
-    v12->_isTransferred = a5;
+    objc_storeStrong(&v11->_carrierName, name);
+    objc_storeStrong(&v12->_phoneNumber, number);
+    v12->_isTransferred = transferred;
   }
 
   return v12;

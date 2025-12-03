@@ -1,11 +1,11 @@
 @interface PDFActionNamed
-- (PDFActionNamed)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
+- (PDFActionNamed)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page;
 - (PDFActionNamed)initWithName:(PDFActionNamedName)name;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toolTip;
-- (void)addNameToDictionaryRef:(__CFDictionary *)a3;
+- (void)addNameToDictionaryRef:(__CFDictionary *)ref;
 - (void)commonInit;
 @end
 
@@ -27,11 +27,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = PDFActionNamed;
-  v4 = [(PDFAction *)&v8 copyWithZone:a3];
+  v4 = [(PDFAction *)&v8 copyWithZone:zone];
   if (v4)
   {
     v5 = objc_alloc_init(PDFActionNamedPrivateVars);
@@ -47,19 +47,19 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PDFActionNamed *)self toolTip];
-  v4 = [v2 stringWithFormat:@"Named Action - %@", v3];
+  toolTip = [(PDFActionNamed *)self toolTip];
+  v4 = [v2 stringWithFormat:@"Named Action - %@", toolTip];
 
   return v4;
 }
 
-- (PDFActionNamed)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
+- (PDFActionNamed)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page
 {
   v11.receiver = self;
   v11.super_class = PDFActionNamed;
   value = 0;
-  v6 = [(PDFAction *)&v11 initWithActionDictionary:a3 forDocument:a4 forPage:a5];
-  if (!v6 || !CGPDFDictionaryGetName(a3, "N", &value))
+  v6 = [(PDFAction *)&v11 initWithActionDictionary:dictionary forDocument:document forPage:page];
+  if (!v6 || !CGPDFDictionaryGetName(dictionary, "N", &value))
   {
     goto LABEL_14;
   }
@@ -161,14 +161,14 @@ LABEL_27:
   return Mutable;
 }
 
-- (void)addNameToDictionaryRef:(__CFDictionary *)a3
+- (void)addNameToDictionaryRef:(__CFDictionary *)ref
 {
   v4 = [(PDFActionNamed *)self name]- 1;
   if (v4 <= 0xA)
   {
     v5 = off_1E81516C0[v4];
 
-    CFDictionarySetValue(a3, @"/N", v5);
+    CFDictionarySetValue(ref, @"/N", v5);
   }
 }
 

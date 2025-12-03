@@ -1,27 +1,27 @@
 @interface PKBalanceSummaryFetcher
-- (BOOL)_transactionIsCredit:(id)a3;
-- (BOOL)_transactionIsPurchase:(id)a3;
-- (PKBalanceSummaryFetcher)initWithTransactionSourceCollection:(id)a3 account:(id)a4;
-- (id)_sortedTransactions:(id)a3 ascending:(BOOL)a4;
-- (id)_summaryWithTransactions:(id)a3 currency:(id)a4 type:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7;
-- (void)balanceSummaryStartingWithDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 completion:(id)a6;
+- (BOOL)_transactionIsCredit:(id)credit;
+- (BOOL)_transactionIsPurchase:(id)purchase;
+- (PKBalanceSummaryFetcher)initWithTransactionSourceCollection:(id)collection account:(id)account;
+- (id)_sortedTransactions:(id)transactions ascending:(BOOL)ascending;
+- (id)_summaryWithTransactions:(id)transactions currency:(id)currency type:(unint64_t)type startDate:(id)date endDate:(id)endDate;
+- (void)balanceSummaryStartingWithDate:(id)date endDate:(id)endDate type:(unint64_t)type completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation PKBalanceSummaryFetcher
 
-- (PKBalanceSummaryFetcher)initWithTransactionSourceCollection:(id)a3 account:(id)a4
+- (PKBalanceSummaryFetcher)initWithTransactionSourceCollection:(id)collection account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  accountCopy = account;
   v18.receiver = self;
   v18.super_class = PKBalanceSummaryFetcher;
   v9 = [(PKBalanceSummaryFetcher *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transactionSourceCollection, a3);
-    objc_storeStrong(&v10->_account, a4);
+    objc_storeStrong(&v9->_transactionSourceCollection, collection);
+    objc_storeStrong(&v10->_account, account);
     v11 = dispatch_queue_create("com.apple.passkitui.balance.work", 0);
     workQueue = v10->_workQueue;
     v10->_workQueue = v11;
@@ -48,26 +48,26 @@
   [(PKBalanceSummaryFetcher *)&v3 dealloc];
 }
 
-- (void)balanceSummaryStartingWithDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 completion:(id)a6
+- (void)balanceSummaryStartingWithDate:(id)date endDate:(id)endDate type:(unint64_t)type completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__PKBalanceSummaryFetcher_balanceSummaryStartingWithDate_endDate_type_completion___block_invoke;
   aBlock[3] = &unk_1E79D28D8;
-  v29 = a5;
+  typeCopy = type;
   aBlock[4] = self;
-  v26 = v10;
-  v13 = v11;
+  v26 = dateCopy;
+  v13 = endDateCopy;
   v27 = v13;
-  v28 = v12;
-  v14 = v12;
-  v15 = v10;
+  v28 = completionCopy;
+  v14 = completionCopy;
+  v15 = dateCopy;
   v16 = _Block_copy(aBlock);
   paymentDataProvider = self->_paymentDataProvider;
-  v18 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+  transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __82__PKBalanceSummaryFetcher_balanceSummaryStartingWithDate_endDate_type_completion___block_invoke_3;
@@ -75,10 +75,10 @@
   v21[4] = self;
   v22 = v13;
   v23 = v16;
-  v24 = a5;
+  typeCopy2 = type;
   v19 = v16;
   v20 = v13;
-  [(PKPaymentDefaultDataProvider *)paymentDataProvider approvedTransactionsForTransactionSourceIdentifiers:v18 withTransactionSource:0 withBackingData:1 startDate:v15 endDate:v20 limit:0 completion:v21];
+  [(PKPaymentDefaultDataProvider *)paymentDataProvider approvedTransactionsForTransactionSourceIdentifiers:transactionSourceIdentifiers withTransactionSource:0 withBackingData:1 startDate:v15 endDate:v20 limit:0 completion:v21];
 }
 
 void __82__PKBalanceSummaryFetcher_balanceSummaryStartingWithDate_endDate_type_completion___block_invoke(void *a1, void *a2)
@@ -177,15 +177,15 @@ void __82__PKBalanceSummaryFetcher_balanceSummaryStartingWithDate_endDate_type_c
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_summaryWithTransactions:(id)a3 currency:(id)a4 type:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7
+- (id)_summaryWithTransactions:(id)transactions currency:(id)currency type:(unint64_t)type startDate:(id)date endDate:(id)endDate
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v29 = a6;
-  v27 = a7;
+  transactionsCopy = transactions;
+  dateCopy = date;
+  endDateCopy = endDate;
   v28 = objc_alloc_init(PKBalanceSummary);
-  v30 = v10;
-  v11 = [(PKBalanceSummaryFetcher *)self _sortedTransactions:v10 ascending:0];
+  v30 = transactionsCopy;
+  v11 = [(PKBalanceSummaryFetcher *)self _sortedTransactions:transactionsCopy ascending:0];
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -225,11 +225,11 @@ void __82__PKBalanceSummaryFetcher_balanceSummaryStartingWithDate_endDate_type_c
           [v32 addObject:v18];
         }
 
-        v19 = [v18 rewardsTotalAmount];
-        if (v19)
+        rewardsTotalAmount = [v18 rewardsTotalAmount];
+        if (rewardsTotalAmount)
         {
-          v20 = [MEMORY[0x1E696AB90] zero];
-          v21 = [v19 compare:v20];
+          zero = [MEMORY[0x1E696AB90] zero];
+          v21 = [rewardsTotalAmount compare:zero];
 
           if (v21)
           {
@@ -248,71 +248,71 @@ void __82__PKBalanceSummaryFetcher_balanceSummaryStartingWithDate_endDate_type_c
   [(PKPaymentTransactionGroup *)v22 setType:6];
   [(PKPaymentTransactionGroup *)v22 setTransactions:v12];
   -[PKPaymentTransactionGroup setTransactionCount:](v22, "setTransactionCount:", [v12 count]);
-  [(PKPaymentTransactionGroup *)v22 setStartDate:v29];
-  [(PKPaymentTransactionGroup *)v22 setEndDate:v27];
+  [(PKPaymentTransactionGroup *)v22 setStartDate:dateCopy];
+  [(PKPaymentTransactionGroup *)v22 setEndDate:endDateCopy];
   [(PKBalanceSummary *)v28 setOrderedSpendingTransactions:v22];
   v23 = objc_alloc_init(PKPaymentTransactionGroup);
   [(PKPaymentTransactionGroup *)v23 setType:7];
   [(PKPaymentTransactionGroup *)v23 setTransactions:v33];
   -[PKPaymentTransactionGroup setTransactionCount:](v23, "setTransactionCount:", [v33 count]);
-  [(PKPaymentTransactionGroup *)v23 setStartDate:v29];
-  [(PKPaymentTransactionGroup *)v23 setEndDate:v27];
+  [(PKPaymentTransactionGroup *)v23 setStartDate:dateCopy];
+  [(PKPaymentTransactionGroup *)v23 setEndDate:endDateCopy];
   [(PKBalanceSummary *)v28 setOrderedInterestCharges:v23];
   v24 = objc_alloc_init(PKPaymentTransactionGroup);
   [(PKPaymentTransactionGroup *)v24 setType:8];
   [(PKPaymentTransactionGroup *)v24 setTransactions:v32];
   -[PKPaymentTransactionGroup setTransactionCount:](v24, "setTransactionCount:", [v32 count]);
-  [(PKPaymentTransactionGroup *)v24 setStartDate:v29];
-  [(PKPaymentTransactionGroup *)v24 setEndDate:v27];
+  [(PKPaymentTransactionGroup *)v24 setStartDate:dateCopy];
+  [(PKPaymentTransactionGroup *)v24 setEndDate:endDateCopy];
   [(PKBalanceSummary *)v28 setOrderedCredits:v24];
   v25 = objc_alloc_init(PKPaymentTransactionGroup);
   [(PKPaymentTransactionGroup *)v25 setType:4];
   [(PKPaymentTransactionGroup *)v25 setTransactions:v31];
   -[PKPaymentTransactionGroup setTransactionCount:](v25, "setTransactionCount:", [v31 count]);
-  [(PKPaymentTransactionGroup *)v25 setStartDate:v29];
-  [(PKPaymentTransactionGroup *)v25 setEndDate:v27];
+  [(PKPaymentTransactionGroup *)v25 setStartDate:dateCopy];
+  [(PKPaymentTransactionGroup *)v25 setEndDate:endDateCopy];
   [(PKBalanceSummary *)v28 setRewards:v25];
 
   return v28;
 }
 
-- (id)_sortedTransactions:(id)a3 ascending:(BOOL)a4
+- (id)_sortedTransactions:(id)transactions ascending:(BOOL)ascending
 {
-  v4 = a4;
+  ascendingCopy = ascending;
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AEB0];
-  v6 = a3;
-  v7 = [v5 sortDescriptorWithKey:@"transactionDate" ascending:v4];
+  transactionsCopy = transactions;
+  v7 = [v5 sortDescriptorWithKey:@"transactionDate" ascending:ascendingCopy];
   v11[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v9 = [v6 sortedArrayUsingDescriptors:v8];
+  v9 = [transactionsCopy sortedArrayUsingDescriptors:v8];
 
   return v9;
 }
 
-- (BOOL)_transactionIsPurchase:(id)a3
+- (BOOL)_transactionIsPurchase:(id)purchase
 {
-  v3 = a3;
-  v4 = [v3 transactionType];
-  if (v4 == 13)
+  purchaseCopy = purchase;
+  transactionType = [purchaseCopy transactionType];
+  if (transactionType == 13)
   {
     goto LABEL_5;
   }
 
-  if (v4)
+  if (transactionType)
   {
     v6 = 0;
     goto LABEL_7;
   }
 
-  v5 = [v3 transactionStatus];
+  transactionStatus = [purchaseCopy transactionStatus];
   v6 = 0;
-  if (v5 <= 8 && ((1 << v5) & 0x103) != 0)
+  if (transactionStatus <= 8 && ((1 << transactionStatus) & 0x103) != 0)
   {
 LABEL_5:
-    v7 = [v3 amount];
-    v8 = [MEMORY[0x1E696AB90] zero];
-    v6 = [v7 compare:v8] == 1;
+    amount = [purchaseCopy amount];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v6 = [amount compare:zero] == 1;
   }
 
 LABEL_7:
@@ -320,24 +320,24 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_transactionIsCredit:(id)a3
+- (BOOL)_transactionIsCredit:(id)credit
 {
-  v3 = a3;
-  v4 = [v3 transactionType];
-  if (v4 > 0xA || ((1 << v4) & 0x483) == 0)
+  creditCopy = credit;
+  transactionType = [creditCopy transactionType];
+  if (transactionType > 0xA || ((1 << transactionType) & 0x483) == 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [v3 transactionStatus];
+    transactionStatus = [creditCopy transactionStatus];
     v7 = 0;
-    if (v6 <= 8 && ((1 << v6) & 0x103) != 0)
+    if (transactionStatus <= 8 && ((1 << transactionStatus) & 0x103) != 0)
     {
-      v8 = [v3 amount];
-      v9 = [MEMORY[0x1E696AB90] zero];
-      v7 = [v8 compare:v9] == -1;
+      amount = [creditCopy amount];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v7 = [amount compare:zero] == -1;
     }
   }
 

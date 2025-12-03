@@ -1,10 +1,10 @@
 @interface MFDataDetectors
-+ (BOOL)urlIfyNode:(id)a3;
-+ (BOOL)urlIfyNode:(id)a3 phoneNumberTypes:(unint64_t)a4;
++ (BOOL)urlIfyNode:(id)node;
++ (BOOL)urlIfyNode:(id)node phoneNumberTypes:(unint64_t)types;
 + (Class)_DDURLifierClass;
 + (id)sharedDetectionController;
-+ (id)urlMatchesForString:(id)a3;
-+ (id)urlMatchesForString:(id)a3 includingTel:(BOOL)a4;
++ (id)urlMatchesForString:(id)string;
++ (id)urlMatchesForString:(id)string includingTel:(BOOL)tel;
 @end
 
 @implementation MFDataDetectors
@@ -14,7 +14,7 @@
   v11 = *MEMORY[0x1E69E9840];
   if (sharedDetectionController__DDDetectionControllerClass)
   {
-    v2 = [sharedDetectionController__DDDetectionControllerClass sharedController];
+    sharedController = [sharedDetectionController__DDDetectionControllerClass sharedController];
   }
 
   else
@@ -46,10 +46,10 @@
 
     objc_sync_exit(v3);
 
-    v2 = [sharedDetectionController__DDDetectionControllerClass sharedController];
+    sharedController = [sharedDetectionController__DDDetectionControllerClass sharedController];
   }
 
-  return v2;
+  return sharedController;
 }
 
 + (Class)_DDURLifierClass
@@ -93,37 +93,37 @@
   return v8;
 }
 
-+ (id)urlMatchesForString:(id)a3
++ (id)urlMatchesForString:(id)string
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "_DDURLifierClass")];
+  stringCopy = string;
+  v5 = [objc_msgSend(self "_DDURLifierClass")];
 
   return v5;
 }
 
-+ (id)urlMatchesForString:(id)a3 includingTel:(BOOL)a4
++ (id)urlMatchesForString:(id)string includingTel:(BOOL)tel
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [objc_msgSend(a1 "_DDURLifierClass")];
+  telCopy = tel;
+  stringCopy = string;
+  v7 = [objc_msgSend(self "_DDURLifierClass")];
 
   return v7;
 }
 
-+ (BOOL)urlIfyNode:(id)a3
++ (BOOL)urlIfyNode:(id)node
 {
-  v4 = a3;
-  LOBYTE(a1) = [objc_msgSend(a1 "_DDURLifierClass")];
+  nodeCopy = node;
+  LOBYTE(self) = [objc_msgSend(self "_DDURLifierClass")];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)urlIfyNode:(id)a3 phoneNumberTypes:(unint64_t)a4
++ (BOOL)urlIfyNode:(id)node phoneNumberTypes:(unint64_t)types
 {
-  v6 = a3;
-  LOBYTE(a4) = [objc_msgSend(a1 "_DDURLifierClass")];
+  nodeCopy = node;
+  LOBYTE(types) = [objc_msgSend(self "_DDURLifierClass")];
 
-  return a4;
+  return types;
 }
 
 @end

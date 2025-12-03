@@ -1,31 +1,31 @@
 @interface PKPaymentSetupController
-+ (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4;
-- (void)presentPaymentSetupRequest:(id)a3 completion:(id)a4;
++ (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion;
+- (void)presentPaymentSetupRequest:(id)request completion:(id)completion;
 @end
 
 @implementation PKPaymentSetupController
 
-+ (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4
++ (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion
 {
   v5 = MEMORY[0x1E69B8A58];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  [v8 paymentSetupFeaturesForConfiguration:v7 completion:v6];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  sharedInstance = [v5 sharedInstance];
+  [sharedInstance paymentSetupFeaturesForConfiguration:configurationCopy completion:completionCopy];
 }
 
-- (void)presentPaymentSetupRequest:(id)a3 completion:(id)a4
+- (void)presentPaymentSetupRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   if (PKIsPad())
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v9 = [v8 windows];
-    v10 = [v9 firstObject];
-    v11 = [v10 windowScene];
-    v13 = [v7 numberWithInteger:{objc_msgSend(v11, "interfaceOrientation")}];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    windows = [mEMORY[0x1E69DC668] windows];
+    firstObject = [windows firstObject];
+    windowScene = [firstObject windowScene];
+    v13 = [v7 numberWithInteger:{objc_msgSend(windowScene, "interfaceOrientation")}];
   }
 
   else
@@ -33,8 +33,8 @@
     v13 = &unk_1F3CC7D60;
   }
 
-  v12 = [MEMORY[0x1E69B8A58] sharedInstance];
-  [v12 presentPaymentSetupRequest:v6 orientation:v13 completion:v5];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  [mEMORY[0x1E69B8A58] presentPaymentSetupRequest:requestCopy orientation:v13 completion:completionCopy];
 }
 
 @end

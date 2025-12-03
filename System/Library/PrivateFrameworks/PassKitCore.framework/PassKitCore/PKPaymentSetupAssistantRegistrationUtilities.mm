@@ -1,14 +1,14 @@
 @interface PKPaymentSetupAssistantRegistrationUtilities
-+ (BOOL)setupAssistantNeedsToRun:(unint64_t)a3 returningRequirements:(unint64_t *)a4;
-+ (void)preflightPaymentSetupProvisioningController:(id)a3 forSetupAssistant:(unint64_t)a4 withCompletion:(id)a5;
++ (BOOL)setupAssistantNeedsToRun:(unint64_t)run returningRequirements:(unint64_t *)requirements;
++ (void)preflightPaymentSetupProvisioningController:(id)controller forSetupAssistant:(unint64_t)assistant withCompletion:(id)completion;
 @end
 
 @implementation PKPaymentSetupAssistantRegistrationUtilities
 
-+ (void)preflightPaymentSetupProvisioningController:(id)a3 forSetupAssistant:(unint64_t)a4 withCompletion:(id)a5
++ (void)preflightPaymentSetupProvisioningController:(id)controller forSetupAssistant:(unint64_t)assistant withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(0x2AuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -18,14 +18,14 @@
 
   if (PKNetworkConnectivityAvailable())
   {
-    v9 = [v6 webService];
+    webService = [controllerCopy webService];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __125__PKPaymentSetupAssistantRegistrationUtilities_preflightPaymentSetupProvisioningController_forSetupAssistant_withCompletion___block_invoke;
     v10[3] = &unk_1E79C4C70;
-    v11 = v6;
-    v12 = v7;
-    [PKPaymentRegistrationUtilities configureWebServiceIfNecessary:v9 completion:v10];
+    v11 = controllerCopy;
+    v12 = completionCopy;
+    [PKPaymentRegistrationUtilities configureWebServiceIfNecessary:webService completion:v10];
   }
 
   else
@@ -36,7 +36,7 @@
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Buddy provisioning disabled because device is not online", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -170,13 +170,13 @@ uint64_t __125__PKPaymentSetupAssistantRegistrationUtilities_preflightPaymentSet
   return (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)setupAssistantNeedsToRun:(unint64_t)a3 returningRequirements:(unint64_t *)a4
++ (BOOL)setupAssistantNeedsToRun:(unint64_t)run returningRequirements:(unint64_t *)requirements
 {
-  v5 = [[PKSetupAssistantUtilityContext alloc] initWithSetupAssistant:a3];
+  v5 = [[PKSetupAssistantUtilityContext alloc] initWithSetupAssistant:run];
   v6 = [[PKPaymentSetupAssistantCoreController alloc] initWithSetupAssistantContext:v5];
-  LOBYTE(a4) = [(PKPaymentSetupAssistantCoreController *)v6 _setupAssistantNeedsToRunReturningRequirements:a4];
+  LOBYTE(requirements) = [(PKPaymentSetupAssistantCoreController *)v6 _setupAssistantNeedsToRunReturningRequirements:requirements];
 
-  return a4;
+  return requirements;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface VSSpeechCharacterSet
 + (id)languageMapping;
-- (VSSpeechCharacterSet)initWithLanguage:(id)a3;
-- (id)unspeakableRangeOfText:(id)a3;
+- (VSSpeechCharacterSet)initWithLanguage:(id)language;
+- (id)unspeakableRangeOfText:(id)text;
 @end
 
 @implementation VSSpeechCharacterSet
@@ -16,19 +16,19 @@
   return v4;
 }
 
-- (id)unspeakableRangeOfText:(id)a3
+- (id)unspeakableRangeOfText:(id)text
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([v4 length])
+  textCopy = text;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([textCopy length])
   {
     v6 = 0;
     v7 = 0;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v9 = [(VSSpeechCharacterSet *)self characterSet];
-      v10 = [v9 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", v7)}];
+      characterSet = [(VSSpeechCharacterSet *)self characterSet];
+      v10 = [characterSet characterIsMember:{objc_msgSend(textCopy, "characterAtIndex:", v7)}];
 
       if (!v10 || v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -87,7 +87,7 @@
       else
       {
         v11 = [MEMORY[0x277CCAE60] valueWithRange:{v8, v6}];
-        [v5 addObject:v11];
+        [array addObject:v11];
 
         v6 = 0;
         v8 = 0x7FFFFFFFFFFFFFFFLL;
@@ -96,20 +96,20 @@
       ++v7;
     }
 
-    while (v7 < [v4 length]);
+    while (v7 < [textCopy length]);
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v15 = [MEMORY[0x277CCAE60] valueWithRange:{v8, v6}];
-      [v5 addObject:v15];
+      [array addObject:v15];
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (VSSpeechCharacterSet)initWithLanguage:(id)a3
+- (VSSpeechCharacterSet)initWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v14.receiver = self;
   v14.super_class = VSSpeechCharacterSet;
   v5 = [(VSSpeechCharacterSet *)&v14 init];
@@ -121,7 +121,7 @@ LABEL_5:
   }
 
   v6 = +[VSSpeechCharacterSet languageMapping];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:languageCopy];
 
   if (v7)
   {

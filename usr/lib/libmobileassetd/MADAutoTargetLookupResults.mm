@@ -1,32 +1,32 @@
 @interface MADAutoTargetLookupResults
-- (MADAutoTargetLookupResults)initWithCoder:(id)a3;
-- (id)initForTargetOSVersion:(id)a3 forTargetBuild:(id)a4 forTargetTrainName:(id)a5 forTargetRestoreVersion:(id)a6 targetingGroupNames:(id)a7;
+- (MADAutoTargetLookupResults)initWithCoder:(id)coder;
+- (id)initForTargetOSVersion:(id)version forTargetBuild:(id)build forTargetTrainName:(id)name forTargetRestoreVersion:(id)restoreVersion targetingGroupNames:(id)names;
 - (id)newSummaryWithoutEntryID;
 - (id)summary;
 - (int64_t)lookupResultsAssetCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoTargetLookupResults
 
-- (id)initForTargetOSVersion:(id)a3 forTargetBuild:(id)a4 forTargetTrainName:(id)a5 forTargetRestoreVersion:(id)a6 targetingGroupNames:(id)a7
+- (id)initForTargetOSVersion:(id)version forTargetBuild:(id)build forTargetTrainName:(id)name forTargetRestoreVersion:(id)restoreVersion targetingGroupNames:(id)names
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  versionCopy = version;
+  buildCopy = build;
+  nameCopy = name;
+  restoreVersionCopy = restoreVersion;
+  namesCopy = names;
   v23.receiver = self;
   v23.super_class = MADAutoTargetLookupResults;
   v17 = [(MADAutoTargetLookupResults *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_targetOSVersion, a3);
-    objc_storeStrong(&v18->_targetBuild, a4);
-    objc_storeStrong(&v18->_targetTrainName, a5);
-    objc_storeStrong(&v18->_targetRestoreVersion, a6);
-    objc_storeStrong(&v18->_targetGroupNames, a7);
+    objc_storeStrong(&v17->_targetOSVersion, version);
+    objc_storeStrong(&v18->_targetBuild, build);
+    objc_storeStrong(&v18->_targetTrainName, name);
+    objc_storeStrong(&v18->_targetRestoreVersion, restoreVersion);
+    objc_storeStrong(&v18->_targetGroupNames, names);
     v19 = objc_alloc_init(NSMutableDictionary);
     setLookupResults = v18->_setLookupResults;
     v18->_setLookupResults = v19;
@@ -35,9 +35,9 @@
   return v18;
 }
 
-- (MADAutoTargetLookupResults)initWithCoder:(id)a3
+- (MADAutoTargetLookupResults)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MADAutoTargetLookupResults;
   v5 = [(MADAutoTargetLookupResults *)&v23 init];
@@ -54,27 +54,27 @@
     v8 = [NSArray arrayWithObjects:v24 count:2];
     v9 = [NSSet setWithArray:v8];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetOSVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetOSVersion"];
     targetOSVersion = v5->_targetOSVersion;
     v5->_targetOSVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetBuild"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetBuild"];
     targetBuild = v5->_targetBuild;
     v5->_targetBuild = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetTrainName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetTrainName"];
     targetTrainName = v5->_targetTrainName;
     v5->_targetTrainName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetRestoreVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetRestoreVersion"];
     targetRestoreVersion = v5->_targetRestoreVersion;
     v5->_targetRestoreVersion = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v9 forKey:@"targetGroupNames"];
+    v18 = [coderCopy decodeObjectOfClasses:v9 forKey:@"targetGroupNames"];
     targetGroupNames = v5->_targetGroupNames;
     v5->_targetGroupNames = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v7 forKey:@"setLookupResults"];
+    v20 = [coderCopy decodeObjectOfClasses:v7 forKey:@"setLookupResults"];
     setLookupResults = v5->_setLookupResults;
     v5->_setLookupResults = v20;
   }
@@ -82,34 +82,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoTargetLookupResults *)self targetOSVersion];
-  [v4 encodeObject:v5 forKey:@"targetOSVersion"];
+  coderCopy = coder;
+  targetOSVersion = [(MADAutoTargetLookupResults *)self targetOSVersion];
+  [coderCopy encodeObject:targetOSVersion forKey:@"targetOSVersion"];
 
-  v6 = [(MADAutoTargetLookupResults *)self targetBuild];
-  [v4 encodeObject:v6 forKey:@"targetBuild"];
+  targetBuild = [(MADAutoTargetLookupResults *)self targetBuild];
+  [coderCopy encodeObject:targetBuild forKey:@"targetBuild"];
 
-  v7 = [(MADAutoTargetLookupResults *)self targetTrainName];
-  [v4 encodeObject:v7 forKey:@"targetTrainName"];
+  targetTrainName = [(MADAutoTargetLookupResults *)self targetTrainName];
+  [coderCopy encodeObject:targetTrainName forKey:@"targetTrainName"];
 
-  v8 = [(MADAutoTargetLookupResults *)self targetRestoreVersion];
-  [v4 encodeObject:v8 forKey:@"targetRestoreVersion"];
+  targetRestoreVersion = [(MADAutoTargetLookupResults *)self targetRestoreVersion];
+  [coderCopy encodeObject:targetRestoreVersion forKey:@"targetRestoreVersion"];
 
-  v9 = [(MADAutoTargetLookupResults *)self targetGroupNames];
-  [v4 encodeObject:v9 forKey:@"targetGroupNames"];
+  targetGroupNames = [(MADAutoTargetLookupResults *)self targetGroupNames];
+  [coderCopy encodeObject:targetGroupNames forKey:@"targetGroupNames"];
 
-  v10 = [(MADAutoTargetLookupResults *)self setLookupResults];
-  [v4 encodeObject:v10 forKey:@"setLookupResults"];
+  setLookupResults = [(MADAutoTargetLookupResults *)self setLookupResults];
+  [coderCopy encodeObject:setLookupResults forKey:@"setLookupResults"];
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoTargetLookupResults *)self targetTrainName];
-  v4 = [(MADAutoTargetLookupResults *)self targetRestoreVersion];
-  v5 = [(MADAutoTargetLookupResults *)self newSummaryWithoutEntryID];
-  v6 = [NSString stringWithFormat:@"TARGET[trainName:%@|restoreVersion:%@]%@", v3, v4, v5];
+  targetTrainName = [(MADAutoTargetLookupResults *)self targetTrainName];
+  targetRestoreVersion = [(MADAutoTargetLookupResults *)self targetRestoreVersion];
+  newSummaryWithoutEntryID = [(MADAutoTargetLookupResults *)self newSummaryWithoutEntryID];
+  v6 = [NSString stringWithFormat:@"TARGET[trainName:%@|restoreVersion:%@]%@", targetTrainName, targetRestoreVersion, newSummaryWithoutEntryID];
 
   return v6;
 }
@@ -120,8 +120,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(MADAutoTargetLookupResults *)self targetGroupNames];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  targetGroupNames = [(MADAutoTargetLookupResults *)self targetGroupNames];
+  v5 = [targetGroupNames countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,7 +133,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(targetGroupNames);
         }
 
         if (v7)
@@ -147,7 +147,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [targetGroupNames countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -159,27 +159,27 @@
   }
 
   v18 = [NSString alloc];
-  v9 = [(MADAutoTargetLookupResults *)self targetOSVersion];
-  if (v9)
+  targetOSVersion = [(MADAutoTargetLookupResults *)self targetOSVersion];
+  if (targetOSVersion)
   {
-    v10 = [(MADAutoTargetLookupResults *)self targetOSVersion];
+    targetOSVersion2 = [(MADAutoTargetLookupResults *)self targetOSVersion];
   }
 
   else
   {
-    v10 = @"N";
+    targetOSVersion2 = @"N";
   }
 
-  v11 = [(MADAutoTargetLookupResults *)self targetBuild];
+  targetBuild = [(MADAutoTargetLookupResults *)self targetBuild];
   v12 = @"N";
-  if (v11)
+  if (targetBuild)
   {
-    v13 = [(MADAutoTargetLookupResults *)self targetBuild];
+    targetBuild2 = [(MADAutoTargetLookupResults *)self targetBuild];
   }
 
   else
   {
-    v13 = @"N";
+    targetBuild2 = @"N";
   }
 
   if (v7)
@@ -187,8 +187,8 @@
     v12 = v7;
   }
 
-  v14 = [(MADAutoTargetLookupResults *)self setLookupResults];
-  if (v14)
+  setLookupResults = [(MADAutoTargetLookupResults *)self setLookupResults];
+  if (setLookupResults)
   {
     i = [(MADAutoTargetLookupResults *)self setLookupResults];
     v15 = [i count];
@@ -199,16 +199,16 @@
     v15 = 0;
   }
 
-  v16 = [v18 initWithFormat:@"[OSVersion:%@|Build:%@|GroupNames:%@|LookupResults:%ld|Assets:%ld]", v10, v13, v12, v15, -[MADAutoTargetLookupResults lookupResultsAssetCount](self, "lookupResultsAssetCount")];
-  if (v14)
+  v16 = [v18 initWithFormat:@"[OSVersion:%@|Build:%@|GroupNames:%@|LookupResults:%ld|Assets:%ld]", targetOSVersion2, targetBuild2, v12, v15, -[MADAutoTargetLookupResults lookupResultsAssetCount](self, "lookupResultsAssetCount")];
+  if (setLookupResults)
   {
   }
 
-  if (v11)
+  if (targetBuild)
   {
   }
 
-  if (v9)
+  if (targetOSVersion)
   {
   }
 
@@ -221,8 +221,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(MADAutoTargetLookupResults *)self setLookupResults];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  setLookupResults = [(MADAutoTargetLookupResults *)self setLookupResults];
+  v4 = [setLookupResults countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -234,23 +234,23 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(setLookupResults);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(MADAutoTargetLookupResults *)self setLookupResults];
-        v11 = [v10 safeObjectForKey:v9 ofClass:objc_opt_class()];
+        setLookupResults2 = [(MADAutoTargetLookupResults *)self setLookupResults];
+        v11 = [setLookupResults2 safeObjectForKey:v9 ofClass:objc_opt_class()];
 
         if (v11)
         {
-          v12 = [v11 autoAssetSetCatalog];
-          v13 = [v12 safeObjectForKey:@"Assets" ofClass:objc_opt_class()];
+          autoAssetSetCatalog = [v11 autoAssetSetCatalog];
+          v13 = [autoAssetSetCatalog safeObjectForKey:@"Assets" ofClass:objc_opt_class()];
 
           v6 += [v13 count];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [setLookupResults countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);

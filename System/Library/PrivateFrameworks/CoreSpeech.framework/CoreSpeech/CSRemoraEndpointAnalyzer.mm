@@ -2,19 +2,19 @@
 - (CSRemoraEndpointAnalyzer)init;
 - (id)delegate;
 - (id)endpointerModelVersion;
-- (void)CSAssetManagerDidDownloadNewAsset:(id)a3;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)_emitEndpointDetectedEventWithEndpointTimeMs:(double)a3 endpointBufferHostTime:(unint64_t)a4 endpointerFeatures:(id)a5 endpointerDecisionLagInNs:(double)a6 extraDelayMs:(unint64_t)a7 endpointScore:(double)a8 asrFeaturesLatencies:(id)a9;
+- (void)CSAssetManagerDidDownloadNewAsset:(id)asset;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)_emitEndpointDetectedEventWithEndpointTimeMs:(double)ms endpointBufferHostTime:(unint64_t)time endpointerFeatures:(id)features endpointerDecisionLagInNs:(double)ns extraDelayMs:(unint64_t)delayMs endpointScore:(double)score asrFeaturesLatencies:(id)latencies;
 - (void)_loadAndSetupEndpointerAssetIfNecessary;
-- (void)_readParametersFromHEPAsset:(id)a3;
+- (void)_readParametersFromHEPAsset:(id)asset;
 - (void)_updateAssetWithCurrentLanguage;
-- (void)_updateAssetWithLanguage:(id)a3;
-- (void)osdAnalyzer:(id)a3 didUpdateOSDFeatures:(id)a4;
-- (void)processAudioSamplesAsynchronously:(id)a3;
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6;
-- (void)setMhId:(id)a3;
+- (void)_updateAssetWithLanguage:(id)language;
+- (void)osdAnalyzer:(id)analyzer didUpdateOSDFeatures:(id)features;
+- (void)processAudioSamplesAsynchronously:(id)asynchronously;
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info;
+- (void)setMhId:(id)id;
 - (void)terminateProcessing;
-- (void)updateEndpointerThreshold:(float)a3;
+- (void)updateEndpointerThreshold:(float)threshold;
 @end
 
 @implementation CSRemoraEndpointAnalyzer
@@ -26,7 +26,7 @@
   return WeakRetained;
 }
 
-- (void)updateEndpointerThreshold:(float)a3
+- (void)updateEndpointerThreshold:(float)threshold
 {
   hybridClassifierQueue = self->super._hybridClassifierQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -34,32 +34,32 @@
   v4[2] = sub_1000976D0;
   v4[3] = &unk_1002534E8;
   v4[4] = self;
-  v5 = a3;
+  thresholdCopy = threshold;
   dispatch_async(hybridClassifierQueue, v4);
 }
 
 - (void)_updateAssetWithCurrentLanguage
 {
   v4 = +[CSAssetManager sharedManager];
-  v3 = [v4 currentLanguageCode];
-  [(CSRemoraEndpointAnalyzer *)self _updateAssetWithLanguage:v3];
+  currentLanguageCode = [v4 currentLanguageCode];
+  [(CSRemoraEndpointAnalyzer *)self _updateAssetWithLanguage:currentLanguageCode];
 }
 
-- (void)_updateAssetWithLanguage:(id)a3
+- (void)_updateAssetWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   stateSerialQueue = self->super._stateSerialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000978A4;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = languageCopy;
+  selfCopy = self;
+  v6 = languageCopy;
   dispatch_async(stateSerialQueue, v7);
 }
 
-- (void)CSAssetManagerDidDownloadNewAsset:(id)a3
+- (void)CSAssetManagerDidDownloadNewAsset:(id)asset
 {
   v4 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
@@ -72,41 +72,41 @@
   [(CSRemoraEndpointAnalyzer *)self _updateAssetWithCurrentLanguage];
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSRemoraEndpointAnalyzer CSLanguageCodeUpdateMonitor:didReceiveLanguageCodeChanged:]";
     v9 = 2114;
-    v10 = v5;
+    v10 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Language changed to: %{public}@", &v7, 0x16u);
   }
 
-  [(CSRemoraEndpointAnalyzer *)self _updateAssetWithLanguage:v5];
+  [(CSRemoraEndpointAnalyzer *)self _updateAssetWithLanguage:changedCopy];
 }
 
-- (void)_readParametersFromHEPAsset:(id)a3
+- (void)_readParametersFromHEPAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   asrFeaturesQueue = self->super._asrFeaturesQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100097BEC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(asrFeaturesQueue, v7);
 }
 
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  optionCopy = option;
+  infoCopy = info;
   self->super._recordingDidStop = 0;
   v13 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
@@ -114,9 +114,9 @@
     *buf = 136315650;
     *&buf[4] = "[CSRemoraEndpointAnalyzer resetForNewRequestWithSampleRate:recordContext:recordOption:voiceTriggerInfo:]";
     *&buf[12] = 2050;
-    *&buf[14] = a3;
+    *&buf[14] = rate;
     *&buf[22] = 2114;
-    v37 = v10;
+    v37 = contextCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s sampleRate=%{public}lu, recordContext=%{public}@", buf, 0x20u);
   }
 
@@ -132,7 +132,7 @@
   block[2] = sub_1000982B0;
   block[3] = &unk_100252228;
   block[4] = self;
-  v15 = v10;
+  v15 = contextCopy;
   v30 = v15;
   v31 = buf;
   dispatch_async_and_wait(stateSerialQueue, block);
@@ -171,7 +171,7 @@
     v27[4] = self;
     v27[5] = buf;
     v27[6] = v32;
-    v27[7] = a3;
+    v27[7] = rate;
     dispatch_async_and_wait(hybridClassifierQueue, v27);
     asrFeaturesQueue = self->super._asrFeaturesQueue;
     v26[0] = _NSConcreteStackBlock;
@@ -187,11 +187,11 @@
     v25[2] = sub_100098A18;
     v25[3] = &unk_100253C98;
     v25[4] = self;
-    v25[5] = a3;
+    v25[5] = rate;
     dispatch_async_and_wait(v21, v25);
     if ([v15 isVoiceTriggered])
     {
-      [(CSEndpointAnalyzerBase *)self handleVoiceTriggerWithActivationInfo:v12];
+      [(CSEndpointAnalyzerBase *)self handleVoiceTriggerWithActivationInfo:infoCopy];
     }
 
     _Block_object_dispose(v32, 8);
@@ -203,11 +203,11 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = +[CSAssetManager sharedManager];
-      v24 = [v23 currentLanguageCode];
+      currentLanguageCode = [v23 currentLanguageCode];
       *v32 = 136315394;
       *&v32[4] = "[CSRemoraEndpointAnalyzer resetForNewRequestWithSampleRate:recordContext:recordOption:voiceTriggerInfo:]";
       *&v32[12] = 2114;
-      *&v32[14] = v24;
+      *&v32[14] = currentLanguageCode;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s No asset for CSRemoraEndpointAnalyzer for currentLanguage: %{public}@.", v32, 0x16u);
     }
   }
@@ -229,26 +229,26 @@
   dispatch_async(apQueue, block);
 }
 
-- (void)_emitEndpointDetectedEventWithEndpointTimeMs:(double)a3 endpointBufferHostTime:(unint64_t)a4 endpointerFeatures:(id)a5 endpointerDecisionLagInNs:(double)a6 extraDelayMs:(unint64_t)a7 endpointScore:(double)a8 asrFeaturesLatencies:(id)a9
+- (void)_emitEndpointDetectedEventWithEndpointTimeMs:(double)ms endpointBufferHostTime:(unint64_t)time endpointerFeatures:(id)features endpointerDecisionLagInNs:(double)ns extraDelayMs:(unint64_t)delayMs endpointScore:(double)score asrFeaturesLatencies:(id)latencies
 {
-  v16 = a5;
-  v45 = a9;
+  featuresCopy = features;
+  latenciesCopy = latencies;
   dispatch_assert_queue_V2(self->super._hybridClassifierQueue);
   if (self->_mhId)
   {
     v17 = objc_alloc_init(MHSchemaMHEndpointFeaturesAtEndpoint);
-    [v17 setWordCount:{objc_msgSend(v16, "wordCount")}];
-    *&v18 = [v16 trailingSilenceDuration];
+    [v17 setWordCount:{objc_msgSend(featuresCopy, "wordCount")}];
+    *&v18 = [featuresCopy trailingSilenceDuration];
     [v17 setTrailingSilenceDurationInNs:{+[CSFTimeUtils millisecondsToNs:](CSFTimeUtils, "millisecondsToNs:", v18)}];
-    [v16 clientSilenceFramesCountMs];
+    [featuresCopy clientSilenceFramesCountMs];
     *&v19 = v19;
     [v17 setClientSilenceFramesCountInNs:{+[CSFTimeUtils millisecondsToNs:](CSFTimeUtils, "millisecondsToNs:", v19)}];
-    [v16 endOfSentenceLikelihood];
+    [featuresCopy endOfSentenceLikelihood];
     *&v20 = v20;
     [v17 setEndOfSentenceLikelihood:v20];
-    [v16 serverFeaturesLatency];
+    [featuresCopy serverFeaturesLatency];
     [v17 setServerFeaturesLatencyInNs:{+[CSFTimeUtils millisecondsToNs:](CSFTimeUtils, "millisecondsToNs:")}];
-    [v16 clientSilenceProbability];
+    [featuresCopy clientSilenceProbability];
     *&v21 = v21;
     [v17 setClientSilenceProbability:v21];
     *&v68 = 0;
@@ -293,8 +293,8 @@
     v46[5] = &v47;
     dispatch_async_and_wait(apQueue, v46);
     v44 = objc_alloc_init(SISchemaVersion);
-    v24 = [*(*(&v68 + 1) + 40) configVersion];
-    v25 = [v24 componentsSeparatedByString:@"."];
+    configVersion = [*(*(&v68 + 1) + 40) configVersion];
+    v25 = [configVersion componentsSeparatedByString:@"."];
 
     if ([v25 count] == 2)
     {
@@ -305,20 +305,20 @@
       [v44 setMinor:{objc_msgSend(v27, "intValue")}];
     }
 
-    v28 = [CSEndpointLoggingHelper getMHStatisticDistributionInfoFromDictionary:v45, 368];
-    v29 = a7;
+    v28 = [CSEndpointLoggingHelper getMHStatisticDistributionInfoFromDictionary:latenciesCopy, 368];
+    delayMsCopy = delayMs;
     v30 = objc_alloc_init(MHSchemaMHEndpointerTimeoutMetadata);
     [v30 setIsTimeout:self->super._isRequestTimeout];
     v31 = objc_alloc_init(MHSchemaMHEndpointDetected);
     [v31 setEndpointerType:3];
-    *&v32 = a3;
+    *&v32 = ms;
     [v31 setEndpointAudioDurationInNs:{+[CSFTimeUtils millisecondsToNs:](CSFTimeUtils, "millisecondsToNs:", v32)}];
     [v31 setFirstBufferTimeInNs:{+[CSFTimeUtils hostTimeToNs:](CSFTimeUtils, "hostTimeToNs:", v61[3])}];
-    [v31 setEndpointedBufferTimeInNs:{+[CSFTimeUtils hostTimeToNs:](CSFTimeUtils, "hostTimeToNs:", a4)}];
+    [v31 setEndpointedBufferTimeInNs:{+[CSFTimeUtils hostTimeToNs:](CSFTimeUtils, "hostTimeToNs:", time)}];
     [v31 setEndpointFeaturesAtEndpoint:v17];
-    *&v33 = a6;
+    *&v33 = ns;
     [v31 setEndpointerDecisionLagInNs:{+[CSFTimeUtils millisecondsToNs:](CSFTimeUtils, "millisecondsToNs:", v33)}];
-    *&v34 = v29;
+    *&v34 = delayMsCopy;
     [v31 setExtraDelayInNs:{+[CSFTimeUtils millisecondsToNs:](CSFTimeUtils, "millisecondsToNs:", v34)}];
     [v31 setEndpointModelConfigVersion:v44];
     [v31 setDerivedBufferTimeFromHistoricalAudio:*(v48 + 24)];
@@ -328,7 +328,7 @@
     v36 = v57[3];
     *&v36 = v36;
     [v31 setEndpointResetPositionInNs:{+[CSFTimeUtils millisecondsToNs:](CSFTimeUtils, "millisecondsToNs:", v36)}];
-    *&v37 = a8;
+    *&v37 = score;
     [v31 setEndpointerScore:v37];
     [v31 setAsrFeatureLatencyDistribution:v28];
     [v31 setTimeoutMetadata:v30];
@@ -367,25 +367,25 @@
   }
 }
 
-- (void)setMhId:(id)a3
+- (void)setMhId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   hybridClassifierQueue = self->super._hybridClassifierQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009930C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(hybridClassifierQueue, v7);
 }
 
-- (void)osdAnalyzer:(id)a3 didUpdateOSDFeatures:(id)a4
+- (void)osdAnalyzer:(id)analyzer didUpdateOSDFeatures:(id)features
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  analyzerCopy = analyzer;
+  featuresCopy = features;
+  v8 = featuresCopy;
   if (self->super._recordingDidStop)
   {
     v9 = CSLogCategoryEP;
@@ -401,7 +401,7 @@
 
   else
   {
-    [v7 processedAudioMs];
+    [featuresCopy processedAudioMs];
     v11 = v10;
     [v8 silenceDurationMs];
     v13 = v12;
@@ -497,7 +497,7 @@
 
     else
     {
-      v21 = [(CSEndpointAnalyzerBase *)self multimodalEndpointerEnabled];
+      multimodalEndpointerEnabled = [(CSEndpointAnalyzerBase *)self multimodalEndpointerEnabled];
       hybridClassifierQueue = self->super._hybridClassifierQueue;
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
@@ -509,7 +509,7 @@
       v24 = v8;
       v26 = buf;
       v27 = v40;
-      v29 = v21;
+      v29 = multimodalEndpointerEnabled;
       dispatch_async(hybridClassifierQueue, v23);
     }
 
@@ -520,10 +520,10 @@
   }
 }
 
-- (void)processAudioSamplesAsynchronously:(id)a3
+- (void)processAudioSamplesAsynchronously:(id)asynchronously
 {
-  v4 = a3;
-  v5 = v4;
+  asynchronouslyCopy = asynchronously;
+  v5 = asynchronouslyCopy;
   if (self->super._recordingDidStop)
   {
     v6 = CSLogCategoryEP;
@@ -545,7 +545,7 @@
     block[2] = sub_10009B36C;
     block[3] = &unk_100253C48;
     block[4] = self;
-    v8 = v4;
+    v8 = asynchronouslyCopy;
     v16 = v8;
     dispatch_async_and_wait(stateSerialQueue, block);
     *buf = 0;
@@ -600,9 +600,9 @@
 LABEL_2:
     [(CSRemoraEndpointAnalyzer *)self _readParametersFromHEPAsset:currentAsset];
     v4 = [_EAREndpointer alloc];
-    v5 = [(CSAsset *)self->super._currentAsset path];
+    path = [(CSAsset *)self->super._currentAsset path];
     v18 = 0;
-    v6 = [v4 initWithConfiguration:v5 modelVersion:&v18];
+    v6 = [v4 initWithConfiguration:path modelVersion:&v18];
     v7 = v18;
 
     if (!v7)
@@ -638,13 +638,13 @@ LABEL_2:
     if (v15)
     {
       v16 = v14;
-      v17 = [(CSAsset *)currentAsset path];
+      path2 = [(CSAsset *)currentAsset path];
       *buf = 136315650;
       v20 = "[CSRemoraEndpointAnalyzer _loadAndSetupEndpointerAssetIfNecessary]";
       v21 = 2114;
       v22 = currentAsset;
       v23 = 2114;
-      v24 = v17;
+      v24 = path2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s HEP Asset: %{public}@, path: %{public}@", buf, 0x20u);
 
       currentAsset = self->super._currentAsset;
@@ -692,16 +692,16 @@ LABEL_2:
     v25 = v9;
     dispatch_async(stateSerialQueue, &block);
     v10 = [objc_opt_class() description];
-    v11 = [v10 lowercaseString];
-    v12 = [NSString stringWithFormat:@"com.apple.cs.%@.apQueue", v11, block, v22, v23, v24];
+    lowercaseString = [v10 lowercaseString];
+    v12 = [NSString stringWithFormat:@"com.apple.cs.%@.apQueue", lowercaseString, block, v22, v23, v24];
 
     v13 = [(CSEndpointAnalyzerBase *)v9 getSerialQueueWithName:v12 targetQueue:v9->super._targetQueue];
     apQueue = v9->_apQueue;
     v9->_apQueue = v13;
 
     v15 = [objc_opt_class() description];
-    v16 = [v15 lowercaseString];
-    v17 = [NSString stringWithFormat:@"com.apple.cs.%@.osdQueue", v16];
+    lowercaseString2 = [v15 lowercaseString];
+    v17 = [NSString stringWithFormat:@"com.apple.cs.%@.osdQueue", lowercaseString2];
 
     v18 = [(CSEndpointAnalyzerBase *)v9 getSerialQueueWithName:v17 targetQueue:v9->super._targetQueue];
     osdQueue = v9->_osdQueue;

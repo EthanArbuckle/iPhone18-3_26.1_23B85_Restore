@@ -7,50 +7,50 @@
 
 - (void)PG_updateVibrancyEffectForTintColor
 {
-  v2 = [a1 tintColor];
-  [a1 setAdjustsImageWhenDisabled:{objc_msgSend(v2, "PG_wantsVibrancyEffect") ^ 1}];
+  tintColor = [self tintColor];
+  [self setAdjustsImageWhenDisabled:{objc_msgSend(tintColor, "PG_wantsVibrancyEffect") ^ 1}];
 
-  v3 = [a1 imageForState:0];
+  v3 = [self imageForState:0];
 
   if (v3)
   {
-    v4 = [a1 titleLabel];
-    v5 = [a1 tintColor];
-    [v4 setTintColor:v5];
+    titleLabel = [self titleLabel];
+    tintColor2 = [self tintColor];
+    [titleLabel setTintColor:tintColor2];
 
-    v6 = [a1 imageView];
-    [v6 PG_updateVibrancyEffectForTintColor];
+    imageView = [self imageView];
+    [imageView PG_updateVibrancyEffectForTintColor];
   }
 
-  v7 = [a1 titleForState:0];
+  v7 = [self titleForState:0];
 
   if (v7)
   {
-    v8 = [a1 titleLabel];
-    v9 = [a1 tintColor];
-    [v8 setTintColor:v9];
+    titleLabel2 = [self titleLabel];
+    tintColor3 = [self tintColor];
+    [titleLabel2 setTintColor:tintColor3];
 
-    v10 = [a1 titleLabel];
-    [v10 PG_updateVibrancyEffectForTintColor];
+    titleLabel3 = [self titleLabel];
+    [titleLabel3 PG_updateVibrancyEffectForTintColor];
   }
 }
 
 - (void)PG_removeVibrancyEffect
 {
-  v2 = [a1 imageForState:0];
+  v2 = [self imageForState:0];
 
   if (v2)
   {
-    v3 = [a1 imageView];
-    [v3 PG_removeVibrancyEffect];
+    imageView = [self imageView];
+    [imageView PG_removeVibrancyEffect];
   }
 
-  v4 = [a1 titleForState:0];
+  v4 = [self titleForState:0];
 
   if (v4)
   {
-    v5 = [a1 titleLabel];
-    [v5 PG_removeVibrancyEffect];
+    titleLabel = [self titleLabel];
+    [titleLabel PG_removeVibrancyEffect];
   }
 }
 

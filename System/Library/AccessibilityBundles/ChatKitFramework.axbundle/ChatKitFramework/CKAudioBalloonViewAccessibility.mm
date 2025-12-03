@@ -9,11 +9,11 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsSafeCategory();
-  v3 = [v2 _axMessageSender];
+  _axMessageSender = [v2 _axMessageSender];
   v4 = accessibilityLocalizedString(@"audio.message.label");
-  v5 = [v2 _axStickerDescription];
-  v6 = [v2 _axAcknowledgmentDescription];
-  v9 = [v2 _axMessageTime];
+  _axStickerDescription = [v2 _axStickerDescription];
+  _axAcknowledgmentDescription = [v2 _axAcknowledgmentDescription];
+  _axMessageTime = [v2 _axMessageTime];
   v7 = __UIAXStringForVariables();
 
   return v7;

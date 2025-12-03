@@ -7,72 +7,72 @@
 - (BKCollection)defaultPDFsCollection;
 - (BKCollection)defaultSamplesCollection;
 - (BKCollection)defaultWantToReadCollection;
-- (BKLibraryCollectionManager)initWithLibraryManager:(id)a3;
+- (BKLibraryCollectionManager)initWithLibraryManager:(id)manager;
 - (BKLibraryManager)libraryManager;
 - (BOOL)allowsAutoDownloadOfSamplesToWantToRead;
-- (BOOL)deleteCollectionOnMainQueue:(id)a3;
-- (BOOL)deleteCollectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)p_shouldDeleteAsset:(id)a3 removingFromCollectionIDs:(id)a4;
-- (id)_defaultCollectionsIncludeAllBooks:(BOOL)a3;
-- (id)_defaultManagerAssetsForDefaultCollectionWithID:(id)a3 inManagedObjectContext:(id)a4;
-- (id)_setupDefaultBooksCollection:(id)a3 moc:(id)a4;
-- (id)collectionOnMainQueueWithCollectionID:(id)a3 error:(id *)a4;
-- (id)collectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)defaultCollectionsInManagedObjectContext:(id)a3 withError:(id *)a4;
-- (id)fetchDefaultBooksCollectionInUIMoc:(id)a3;
-- (id)fetchWTRMembersInContext:(id)a3;
-- (id)gatherChangedAssetsCollectionsWithLibraryMoc:(id)a3;
-- (id)insertNewCollectionSyncOnMainQueueWithCollectionID:(id)a3 newCollectionBlock:(id)a4;
-- (id)mutableCollectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)mutableCollectionsWithCollectionIDs:(id)a3 includeDeleted:(BOOL)a4 inManagedObjectContext:(id)a5 error:(id *)a6;
+- (BOOL)deleteCollectionOnMainQueue:(id)queue;
+- (BOOL)deleteCollectionWithCollectionID:(id)d inManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)p_shouldDeleteAsset:(id)asset removingFromCollectionIDs:(id)ds;
+- (id)_defaultCollectionsIncludeAllBooks:(BOOL)books;
+- (id)_defaultManagerAssetsForDefaultCollectionWithID:(id)d inManagedObjectContext:(id)context;
+- (id)_setupDefaultBooksCollection:(id)collection moc:(id)moc;
+- (id)collectionOnMainQueueWithCollectionID:(id)d error:(id *)error;
+- (id)collectionWithCollectionID:(id)d inManagedObjectContext:(id)context error:(id *)error;
+- (id)defaultCollectionsInManagedObjectContext:(id)context withError:(id *)error;
+- (id)fetchDefaultBooksCollectionInUIMoc:(id)moc;
+- (id)fetchWTRMembersInContext:(id)context;
+- (id)gatherChangedAssetsCollectionsWithLibraryMoc:(id)moc;
+- (id)insertNewCollectionSyncOnMainQueueWithCollectionID:(id)d newCollectionBlock:(id)block;
+- (id)mutableCollectionWithCollectionID:(id)d inManagedObjectContext:(id)context error:(id *)error;
+- (id)mutableCollectionsWithCollectionIDs:(id)ds includeDeleted:(BOOL)deleted inManagedObjectContext:(id)context error:(id *)error;
 - (id)p_allOrderedCollections;
-- (id)p_assetsRequiringDeletion:(id)a3 removingFromCollectionIDs:(id)a4;
-- (id)p_fetchOrCreatePlaceholderCollectionForCollectionID:(id)a3 moc:(id)a4;
-- (id)userCollectionsInManagedObjectContext:(id)a3 withError:(id *)a4;
-- (id)userCollectionsOnMainQueueWithError:(id *)a3;
-- (void)_BCCloudCollectionDetailManagerChanged:(id)a3;
-- (void)_BCCloudCollectionMemberManagerChanged:(id)a3;
-- (void)_addMemberWithAsset:(id)a3 toCollection:(id)a4 moc:(id)a5;
-- (void)_checkForChangesFromCloudCollectionDetailManagerInMOC:(id)a3 reason:(id)a4;
-- (void)_checkForChangesFromCloudCollectionMemberManagerInMOC:(id)a3 reason:(id)a4;
-- (void)_performResetCollectionsInMoc:(id)a3 changeSet:(id)a4 completion:(id)a5;
-- (void)addBooks:(id)a3 toCollection:(id)a4 forceToTop:(BOOL)a5 completion:(id)a6;
+- (id)p_assetsRequiringDeletion:(id)deletion removingFromCollectionIDs:(id)ds;
+- (id)p_fetchOrCreatePlaceholderCollectionForCollectionID:(id)d moc:(id)moc;
+- (id)userCollectionsInManagedObjectContext:(id)context withError:(id *)error;
+- (id)userCollectionsOnMainQueueWithError:(id *)error;
+- (void)_BCCloudCollectionDetailManagerChanged:(id)changed;
+- (void)_BCCloudCollectionMemberManagerChanged:(id)changed;
+- (void)_addMemberWithAsset:(id)asset toCollection:(id)collection moc:(id)moc;
+- (void)_checkForChangesFromCloudCollectionDetailManagerInMOC:(id)c reason:(id)reason;
+- (void)_checkForChangesFromCloudCollectionMemberManagerInMOC:(id)c reason:(id)reason;
+- (void)_performResetCollectionsInMoc:(id)moc changeSet:(id)set completion:(id)completion;
+- (void)addBooks:(id)books toCollection:(id)collection forceToTop:(BOOL)top completion:(id)completion;
 - (void)cleanupDefaultCollections;
-- (void)clearSortKeysFromAssetsInMOCForUpgrade:(id)a3;
+- (void)clearSortKeysFromAssetsInMOCForUpgrade:(id)upgrade;
 - (void)dealloc;
 - (void)fixCollectionMemberAssetLinks;
 - (void)fixPDFCollectionIfNeeded;
-- (void)markAsFinishedStoreID:(id)a3 completion:(id)a4;
-- (void)markAssetsAsFinished:(id)a3 completion:(id)a4;
-- (void)mergeCurrentCollectionDetailsToCloudInMoc:(id)a3;
-- (void)mergeCurrentCollectionMembersToCloudInMoc:(id)a3;
-- (void)mocDidSave:(id)a3;
-- (void)p_downloadSampleBook:(id)a3;
-- (void)p_syncCollectionMembers:(id)a3 deletedCollectionMembers:(id)a4 inContext:(id)a5;
-- (void)p_syncCollections:(id)a3 deletedCollections:(id)a4 inContext:(id)a5;
-- (void)p_updateAsset:(id)a3 inCollectionMember:(id)a4 withMOC:(id)a5;
-- (void)p_updateAssetInMembers:(id)a3 moc:(id)a4;
-- (void)performAddRequest:(id)a3 completion:(id)a4;
-- (void)performRemoveRequest:(id)a3 completion:(id)a4;
-- (void)processGatheredChangedAssetsCollections:(id)a3;
-- (void)promoteSampleFromWantToReadForAssetID:(id)a3;
-- (void)removeAssetID:(id)a3 fromCollectionID:(id)a4 completion:(id)a5;
-- (void)removeBook:(id)a3 fromCollections:(id)a4 completion:(id)a5;
-- (void)removeBooks:(id)a3 fromCollection:(id)a4 completion:(id)a5;
+- (void)markAsFinishedStoreID:(id)d completion:(id)completion;
+- (void)markAssetsAsFinished:(id)finished completion:(id)completion;
+- (void)mergeCurrentCollectionDetailsToCloudInMoc:(id)moc;
+- (void)mergeCurrentCollectionMembersToCloudInMoc:(id)moc;
+- (void)mocDidSave:(id)save;
+- (void)p_downloadSampleBook:(id)book;
+- (void)p_syncCollectionMembers:(id)members deletedCollectionMembers:(id)collectionMembers inContext:(id)context;
+- (void)p_syncCollections:(id)collections deletedCollections:(id)deletedCollections inContext:(id)context;
+- (void)p_updateAsset:(id)asset inCollectionMember:(id)member withMOC:(id)c;
+- (void)p_updateAssetInMembers:(id)members moc:(id)moc;
+- (void)performAddRequest:(id)request completion:(id)completion;
+- (void)performRemoveRequest:(id)request completion:(id)completion;
+- (void)processGatheredChangedAssetsCollections:(id)collections;
+- (void)promoteSampleFromWantToReadForAssetID:(id)d;
+- (void)removeAssetID:(id)d fromCollectionID:(id)iD completion:(id)completion;
+- (void)removeBook:(id)book fromCollections:(id)collections completion:(id)completion;
+- (void)removeBooks:(id)books fromCollection:(id)collection completion:(id)completion;
 - (void)resetCollections;
-- (void)resetCollectionsForAssetIDs:(id)a3 completion:(id)a4;
-- (void)setEnableCloudMerge:(BOOL)a3;
-- (void)setupDefaultCollectionsInManagedObjectContext:(id)a3;
-- (void)updateCollectionMemberAssetLinksForAssetIDs:(id)a3 temporaryAssetIDs:(id)a4 moc:(id)a5;
-- (void)updateCollectionMemberAssetLinksInMOCForUpgrade:(id)a3;
-- (void)updateiTunesUCollectionMembersForAssetIDs:(id)a3 temporaryAssetIDs:(id)a4 moc:(id)a5;
+- (void)resetCollectionsForAssetIDs:(id)ds completion:(id)completion;
+- (void)setEnableCloudMerge:(BOOL)merge;
+- (void)setupDefaultCollectionsInManagedObjectContext:(id)context;
+- (void)updateCollectionMemberAssetLinksForAssetIDs:(id)ds temporaryAssetIDs:(id)iDs moc:(id)moc;
+- (void)updateCollectionMemberAssetLinksInMOCForUpgrade:(id)upgrade;
+- (void)updateiTunesUCollectionMembersForAssetIDs:(id)ds temporaryAssetIDs:(id)iDs moc:(id)moc;
 @end
 
 @implementation BKLibraryCollectionManager
 
-- (BKLibraryCollectionManager)initWithLibraryManager:(id)a3
+- (BKLibraryCollectionManager)initWithLibraryManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v36.receiver = self;
   v36.super_class = BKLibraryCollectionManager;
   v5 = [(BKLibraryCollectionManager *)&v36 init];
@@ -80,7 +80,7 @@
   if (v5)
   {
     v5->_accessLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_libraryManager, v4);
+    objc_storeWeak(&v5->_libraryManager, managerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.iBooks.BKLibraryCollectionManager", v7);
     enableCloudMergeQueue = v6->_enableCloudMergeQueue;
@@ -159,11 +159,11 @@
     v3 = NSDistributedNotificationCenter_ptr;
   }
 
-  v5 = [*v3 defaultCenter];
-  [v5 removeObserver:self name:BCCloudCollectionDetailManagerChanged object:0];
+  defaultCenter = [*v3 defaultCenter];
+  [defaultCenter removeObserver:self name:BCCloudCollectionDetailManagerChanged object:0];
 
-  v6 = [*v3 defaultCenter];
-  [v6 removeObserver:self name:BCCloudCollectionMemberManagerChanged object:0];
+  defaultCenter2 = [*v3 defaultCenter];
+  [defaultCenter2 removeObserver:self name:BCCloudCollectionMemberManagerChanged object:0];
 
   objc_storeWeak(&self->_libraryManager, 0);
   v7.receiver = self;
@@ -171,22 +171,22 @@
   [(BKLibraryCollectionManager *)&v7 dealloc];
 }
 
-- (void)setEnableCloudMerge:(BOOL)a3
+- (void)setEnableCloudMerge:(BOOL)merge
 {
-  v5 = [(BKLibraryCollectionManager *)self enableCloudMergeQueue];
+  enableCloudMergeQueue = [(BKLibraryCollectionManager *)self enableCloudMergeQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_60ECC;
   v6[3] = &unk_D61E0;
-  v7 = a3;
+  mergeCopy = merge;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(enableCloudMergeQueue, v6);
 }
 
 - (id)p_allOrderedCollections
 {
-  v3 = [(BKLibraryCollectionManager *)self defaultCollections];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  defaultCollections = [(BKLibraryCollectionManager *)self defaultCollections];
+  v4 = [NSMutableArray arrayWithArray:defaultCollections];
 
   v5 = [(BKLibraryCollectionManager *)self userCollectionsOnMainQueueWithError:0];
   v6 = [NSMutableArray arrayWithArray:v5];
@@ -199,81 +199,81 @@
   return v4;
 }
 
-- (id)_defaultCollectionsIncludeAllBooks:(BOOL)a3
+- (id)_defaultCollectionsIncludeAllBooks:(BOOL)books
 {
-  v3 = a3;
+  booksCopy = books;
   v5 = +[NSMutableArray array];
-  if (v3)
+  if (booksCopy)
   {
-    v6 = [(BKLibraryCollectionManager *)self defaultAllBooksCollection];
-    [v5 addObject:v6];
+    defaultAllBooksCollection = [(BKLibraryCollectionManager *)self defaultAllBooksCollection];
+    [v5 addObject:defaultAllBooksCollection];
   }
 
-  v7 = [(BKLibraryCollectionManager *)self defaultWantToReadCollection];
-  [v5 addObject:v7];
+  defaultWantToReadCollection = [(BKLibraryCollectionManager *)self defaultWantToReadCollection];
+  [v5 addObject:defaultWantToReadCollection];
 
-  v8 = [(BKLibraryCollectionManager *)self defaultFinishedCollection];
-  [v5 addObject:v8];
+  defaultFinishedCollection = [(BKLibraryCollectionManager *)self defaultFinishedCollection];
+  [v5 addObject:defaultFinishedCollection];
 
-  v9 = [(BKLibraryCollectionManager *)self defaultBooksCollection];
-  [v5 addObject:v9];
+  defaultBooksCollection = [(BKLibraryCollectionManager *)self defaultBooksCollection];
+  [v5 addObject:defaultBooksCollection];
 
-  v10 = [(BKLibraryCollectionManager *)self defaultAudioBooksCollection];
-  [v5 addObject:v10];
+  defaultAudioBooksCollection = [(BKLibraryCollectionManager *)self defaultAudioBooksCollection];
+  [v5 addObject:defaultAudioBooksCollection];
 
-  v11 = [(BKLibraryCollectionManager *)self defaultPDFsCollection];
-  [v5 addObject:v11];
+  defaultPDFsCollection = [(BKLibraryCollectionManager *)self defaultPDFsCollection];
+  [v5 addObject:defaultPDFsCollection];
 
-  v12 = [(BKLibraryCollectionManager *)self defaultSamplesCollection];
-  [v5 addObject:v12];
+  defaultSamplesCollection = [(BKLibraryCollectionManager *)self defaultSamplesCollection];
+  [v5 addObject:defaultSamplesCollection];
 
-  v13 = [(BKLibraryCollectionManager *)self defaultDownloadedCollection];
-  [v5 addObject:v13];
+  defaultDownloadedCollection = [(BKLibraryCollectionManager *)self defaultDownloadedCollection];
+  [v5 addObject:defaultDownloadedCollection];
 
   v14 = [NSArray arrayWithArray:v5];
 
   return v14;
 }
 
-- (id)collectionOnMainQueueWithCollectionID:(id)a3 error:(id *)a4
+- (id)collectionOnMainQueueWithCollectionID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   if (!+[NSThread isMainThread])
   {
     sub_91544();
   }
 
-  v7 = [(BKLibraryCollectionManager *)self libraryManager];
-  v8 = [v7 uiChildContext];
-  v9 = [(BKLibraryCollectionManager *)self collectionWithCollectionID:v6 inManagedObjectContext:v8 error:a4];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  uiChildContext = [libraryManager uiChildContext];
+  v9 = [(BKLibraryCollectionManager *)self collectionWithCollectionID:dCopy inManagedObjectContext:uiChildContext error:error];
 
   return v9;
 }
 
-- (id)collectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (id)collectionWithCollectionID:(id)d inManagedObjectContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([BKCollection isSeriesCollectionID:v8])
+  dCopy = d;
+  contextCopy = context;
+  if ([BKCollection isSeriesCollectionID:dCopy])
   {
-    v10 = [BKCollection seriesIDFromSeriesCollectionID:v8];
-    v11 = [(BKLibraryCollectionManager *)self libraryManager];
-    v12 = [v11 libraryAssetOnMainQueueWithAssetID:v10];
+    v10 = [BKCollection seriesIDFromSeriesCollectionID:dCopy];
+    libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+    v12 = [libraryManager libraryAssetOnMainQueueWithAssetID:v10];
 
-    v13 = [v12 title];
-    v14 = [BKUnsyncedSeriesCollection seriesCollectionWithSeriesID:v10 name:v13];
+    title = [v12 title];
+    v14 = [BKUnsyncedSeriesCollection seriesCollectionWithSeriesID:v10 name:title];
   }
 
   else
   {
-    if ([(BKLibraryCollectionManager *)self isAllBooksCollection:v8])
+    if ([(BKLibraryCollectionManager *)self isAllBooksCollection:dCopy])
     {
       [(BKLibraryCollectionManager *)self defaultAllBooksCollection];
     }
 
     else
     {
-      [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:v8 inManagedObjectContext:v9 error:a5];
+      [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:dCopy inManagedObjectContext:contextCopy error:error];
     }
     v14 = ;
   }
@@ -281,25 +281,25 @@
   return v14;
 }
 
-- (id)userCollectionsOnMainQueueWithError:(id *)a3
+- (id)userCollectionsOnMainQueueWithError:(id *)error
 {
   if (!+[NSThread isMainThread])
   {
     sub_91580();
   }
 
-  v5 = [(BKLibraryCollectionManager *)self libraryManager];
-  v6 = [v5 uiChildContext];
-  v7 = [(BKLibraryCollectionManager *)self userCollectionsInManagedObjectContext:v6 withError:a3];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  uiChildContext = [libraryManager uiChildContext];
+  v7 = [(BKLibraryCollectionManager *)self userCollectionsInManagedObjectContext:uiChildContext withError:error];
 
   return v7;
 }
 
-- (id)userCollectionsInManagedObjectContext:(id)a3 withError:(id *)a4
+- (id)userCollectionsInManagedObjectContext:(id)context withError:(id *)error
 {
-  if (a3)
+  if (context)
   {
-    v5 = a3;
+    contextCopy = context;
     v6 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollection"];
     v7 = +[BKCollection predicateForNonDeletedUserCollections];
     [v6 setPredicate:v7];
@@ -310,7 +310,7 @@
     [v6 setSortDescriptors:v9];
 
     [v6 setReturnsObjectsAsFaults:0];
-    v10 = [v5 executeFetchRequest:v6 error:a4];
+    v10 = [contextCopy executeFetchRequest:v6 error:error];
   }
 
   else
@@ -321,17 +321,17 @@
   return v10;
 }
 
-- (id)defaultCollectionsInManagedObjectContext:(id)a3 withError:(id *)a4
+- (id)defaultCollectionsInManagedObjectContext:(id)context withError:(id *)error
 {
-  if (a3)
+  if (context)
   {
-    v5 = a3;
+    contextCopy = context;
     v6 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollection"];
     v7 = +[BKCollection predicateForAllDefaultCollections];
     [v6 setPredicate:v7];
 
     [v6 setReturnsObjectsAsFaults:0];
-    v8 = [v5 executeFetchRequest:v6 error:a4];
+    v8 = [contextCopy executeFetchRequest:v6 error:error];
   }
 
   else
@@ -342,9 +342,9 @@
   return v8;
 }
 
-- (id)fetchDefaultBooksCollectionInUIMoc:(id)a3
+- (id)fetchDefaultBooksCollectionInUIMoc:(id)moc
 {
-  v4 = a3;
+  mocCopy = moc;
   objc_initWeak(&location, self);
   v13 = 0;
   v14 = &v13;
@@ -352,7 +352,7 @@
   v16 = sub_60C78;
   v17 = sub_60C88;
   v18 = 0;
-  v5 = [(BKLibraryCollectionManager *)self libraryManager];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_61E08;
@@ -360,9 +360,9 @@
   objc_copyWeak(&v12, &location);
   v11 = &v13;
   v9[4] = self;
-  v6 = v4;
+  v6 = mocCopy;
   v10 = v6;
-  [v5 performBlockInUIContext:v9];
+  [libraryManager performBlockInUIContext:v9];
 
   v7 = v14[5];
   objc_destroyWeak(&v12);
@@ -373,12 +373,12 @@
   return v7;
 }
 
-- (id)_setupDefaultBooksCollection:(id)a3 moc:(id)a4
+- (id)_setupDefaultBooksCollection:(id)collection moc:(id)moc
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  mocCopy = moc;
   v18 = 0;
-  v8 = [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:v6 inManagedObjectContext:v7 error:&v18];
+  v8 = [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:collectionCopy inManagedObjectContext:mocCopy error:&v18];
   if (v8)
   {
     v9 = v8;
@@ -386,34 +386,34 @@
 
   else
   {
-    v9 = [BKCollection insertNewCollectionWithCollectionID:v6 inManagedObjectContext:v7];
+    v9 = [BKCollection insertNewCollectionWithCollectionID:collectionCopy inManagedObjectContext:mocCopy];
     if (!v9)
     {
       goto LABEL_11;
     }
   }
 
-  v10 = [v9 title];
+  title = [v9 title];
 
-  if (!v10)
+  if (!title)
   {
-    v11 = [BCCollection titleForDefaultCollectionID:v6];
+    v11 = [BCCollection titleForDefaultCollectionID:collectionCopy];
     [v9 setTitle:v11];
   }
 
-  v12 = [v9 sortKey];
-  v13 = [v12 integerValue];
+  sortKey = [v9 sortKey];
+  integerValue = [sortKey integerValue];
 
-  if (!v13 && kBKCollectionDefaultAll != v6)
+  if (!integerValue && kBKCollectionDefaultAll != collectionCopy)
   {
-    v14 = [BCCollection sortKeyForDefaultCollectionID:v6];
+    v14 = [BCCollection sortKeyForDefaultCollectionID:collectionCopy];
     [v9 setSortKey:v14];
   }
 
-  v15 = [v9 deletedFlag];
-  v16 = [v15 integerValue];
+  deletedFlag = [v9 deletedFlag];
+  integerValue2 = [deletedFlag integerValue];
 
-  if (v16)
+  if (integerValue2)
   {
     [v9 setDeletedFlag:&off_DE150];
   }
@@ -536,14 +536,14 @@ LABEL_11:
   return v6;
 }
 
-- (void)setupDefaultCollectionsInManagedObjectContext:(id)a3
+- (void)setupDefaultCollectionsInManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
   v5 = +[BKCollection availableDefaultCollectionIDsForOS];
   v49 = 0;
-  v37 = v4;
-  v6 = [(BKLibraryCollectionManager *)self mutableCollectionsWithCollectionIDs:v5 includeDeleted:1 inManagedObjectContext:v4 error:&v49];
+  v37 = contextCopy;
+  v6 = [(BKLibraryCollectionManager *)self mutableCollectionsWithCollectionIDs:v5 includeDeleted:1 inManagedObjectContext:contextCopy error:&v49];
   v7 = v49;
   if (v7)
   {
@@ -576,8 +576,8 @@ LABEL_11:
         }
 
         v15 = *(*(&v45 + 1) + 8 * i);
-        v16 = [v15 collectionID];
-        [v9 setObject:v15 forKeyedSubscript:v16];
+        collectionID = [v15 collectionID];
+        [v9 setObject:v15 forKeyedSubscript:collectionID];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -611,22 +611,22 @@ LABEL_11:
           v19 = [BKCollection insertNewCollectionWithCollectionID:v18 inManagedObjectContext:v37];
         }
 
-        v20 = [v19 deletedFlag];
-        if (!v20 || (v21 = v20, [v19 deletedFlag], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "BOOLValue"), v22, v21, v23))
+        deletedFlag = [v19 deletedFlag];
+        if (!deletedFlag || (v21 = deletedFlag, [v19 deletedFlag], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "BOOLValue"), v22, v21, v23))
         {
           [v19 setDeletedFlag:&__kCFBooleanFalse];
         }
 
         v24 = [BCCollection sortKeyForDefaultCollectionID:v18];
-        v25 = [v19 sortKey];
-        if (!v25 || (v26 = v25, v27 = [v24 intValue], objc_msgSend(v19, "sortKey"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "intValue"), v28, v26, v27 != v29))
+        sortKey = [v19 sortKey];
+        if (!sortKey || (v26 = sortKey, v27 = [v24 intValue], objc_msgSend(v19, "sortKey"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "intValue"), v28, v26, v27 != v29))
         {
           [v19 setSortKey:v24];
         }
 
         v30 = [BCCollection titleForDefaultCollectionID:v18];
-        v31 = [v19 title];
-        if (!v31 || (v32 = v31, [v19 title], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v30, "isEqualToString:", v33), v33, v32, (v34 & 1) == 0))
+        title = [v19 title];
+        if (!title || (v32 = title, [v19 title], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v30, "isEqualToString:", v33), v33, v32, (v34 & 1) == 0))
         {
           [v19 setTitle:v30];
         }
@@ -641,49 +641,49 @@ LABEL_11:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)mergeCurrentCollectionDetailsToCloudInMoc:(id)a3
+- (void)mergeCurrentCollectionDetailsToCloudInMoc:(id)moc
 {
-  v4 = a3;
+  mocCopy = moc;
   v5 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollection"];
   [v5 setReturnsObjectsAsFaults:0];
   v8 = 0;
-  v6 = [v4 executeFetchRequest:v5 error:&v8];
+  v6 = [mocCopy executeFetchRequest:v5 error:&v8];
   v7 = [NSSet setWithArray:v6];
-  [(BKLibraryCollectionManager *)self p_syncCollections:v7 deletedCollections:0 inContext:v4];
+  [(BKLibraryCollectionManager *)self p_syncCollections:v7 deletedCollections:0 inContext:mocCopy];
 }
 
-- (void)mergeCurrentCollectionMembersToCloudInMoc:(id)a3
+- (void)mergeCurrentCollectionMembersToCloudInMoc:(id)moc
 {
-  v4 = a3;
+  mocCopy = moc;
   v5 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollectionMember"];
   [v5 setReturnsObjectsAsFaults:0];
   v8 = 0;
-  v6 = [v4 executeFetchRequest:v5 error:&v8];
+  v6 = [mocCopy executeFetchRequest:v5 error:&v8];
   v7 = [NSSet setWithArray:v6];
-  [(BKLibraryCollectionManager *)self p_syncCollectionMembers:v7 deletedCollectionMembers:0 inContext:v4];
+  [(BKLibraryCollectionManager *)self p_syncCollectionMembers:v7 deletedCollectionMembers:0 inContext:mocCopy];
 }
 
-- (id)insertNewCollectionSyncOnMainQueueWithCollectionID:(id)a3 newCollectionBlock:(id)a4
+- (id)insertNewCollectionSyncOnMainQueueWithCollectionID:(id)d newCollectionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_60C78;
   v21 = sub_60C88;
   v22 = 0;
-  v8 = [(BKLibraryCollectionManager *)self libraryManager];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_62B9C;
   v13[3] = &unk_D7458;
-  v9 = v6;
+  v9 = dCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = blockCopy;
   v15 = v10;
   v16 = &v17;
-  [v8 performBlockInUIContext:v13];
+  [libraryManager performBlockInUIContext:v13];
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -691,63 +691,63 @@ LABEL_11:
   return v11;
 }
 
-- (id)mutableCollectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (id)mutableCollectionWithCollectionID:(id)d inManagedObjectContext:(id)context error:(id *)error
 {
-  v5 = 0;
-  if (a3 && a4)
+  lastObject = 0;
+  if (d && context)
   {
-    v8 = a4;
-    v9 = a3;
+    contextCopy = context;
+    dCopy = d;
     v10 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollection"];
     [v10 setFetchLimit:1];
-    v11 = [NSPredicate predicateWithFormat:@"%K == %@", @"collectionID", v9];
+    dCopy = [NSPredicate predicateWithFormat:@"%K == %@", @"collectionID", dCopy];
 
-    [v10 setPredicate:v11];
+    [v10 setPredicate:dCopy];
     [v10 setReturnsObjectsAsFaults:0];
-    v12 = [v8 executeFetchRequest:v10 error:a5];
+    v12 = [contextCopy executeFetchRequest:v10 error:error];
 
-    v5 = [v12 lastObject];
+    lastObject = [v12 lastObject];
   }
 
-  return v5;
+  return lastObject;
 }
 
-- (id)mutableCollectionsWithCollectionIDs:(id)a3 includeDeleted:(BOOL)a4 inManagedObjectContext:(id)a5 error:(id *)a6
+- (id)mutableCollectionsWithCollectionIDs:(id)ds includeDeleted:(BOOL)deleted inManagedObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
+  deletedCopy = deleted;
+  dsCopy = ds;
+  contextCopy = context;
+  v11 = contextCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (dsCopy && contextCopy)
   {
-    if (v8)
+    if (deletedCopy)
     {
-      [BKCollection predicateForCollectionWithCollectionIDInList:v9];
+      [BKCollection predicateForCollectionWithCollectionIDInList:dsCopy];
     }
 
     else
     {
-      [NSPredicate predicateWithFormat:@"%K in %@", @"collectionID", v9];
+      [NSPredicate predicateWithFormat:@"%K in %@", @"collectionID", dsCopy];
     }
     v13 = ;
     v14 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollection"];
     [v14 setPredicate:v13];
     [v14 setReturnsObjectsAsFaults:0];
-    v12 = [v11 executeFetchRequest:v14 error:a6];
+    v12 = [v11 executeFetchRequest:v14 error:error];
   }
 
   return v12;
 }
 
-- (BOOL)deleteCollectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)deleteCollectionWithCollectionID:(id)d inManagedObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = v8;
+  contextCopy = context;
+  v9 = contextCopy;
   v10 = 0;
-  if (a3 && v8)
+  if (d && contextCopy)
   {
-    v11 = [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:a3 inManagedObjectContext:v8 error:a5];
+    v11 = [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:d inManagedObjectContext:contextCopy error:error];
     v10 = v11 != 0;
     if (v11)
     {
@@ -758,9 +758,9 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)deleteCollectionOnMainQueue:(id)a3
+- (BOOL)deleteCollectionOnMainQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (!+[NSThread isMainThread])
   {
     sub_91624();
@@ -770,16 +770,16 @@ LABEL_11:
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(BKLibraryCollectionManager *)self libraryManager];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_630C4;
   v9[3] = &unk_D6048;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = queueCopy;
   v10 = v6;
-  [v5 performBlockInUIContext:v9];
+  [libraryManager performBlockInUIContext:v9];
 
   v7 = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -787,52 +787,52 @@ LABEL_11:
   return v7;
 }
 
-- (void)promoteSampleFromWantToReadForAssetID:(id)a3
+- (void)promoteSampleFromWantToReadForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = kBKCollectionDefaultIDWantToRead;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_631FC;
   v7[3] = &unk_D7480;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [(BKLibraryCollectionManager *)self removeAssetID:v6 fromCollectionID:v5 completion:v7];
 }
 
-- (void)markAssetsAsFinished:(id)a3 completion:(id)a4
+- (void)markAssetsAsFinished:(id)finished completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  finishedCopy = finished;
+  completionCopy = completion;
   [(BKLibraryCollectionManager *)self libraryManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_633CC;
   v11[3] = &unk_D5B30;
-  v13 = v12 = v6;
-  v14 = v7;
-  v8 = v7;
+  v13 = v12 = finishedCopy;
+  v14 = completionCopy;
+  v8 = completionCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = finishedCopy;
   [v9 performBlockOnCollectionsWorkerQueue:v11];
 }
 
-- (void)addBooks:(id)a3 toCollection:(id)a4 forceToTop:(BOOL)a5 completion:(id)a6
+- (void)addBooks:(id)books toCollection:(id)collection forceToTop:(BOOL)top completion:(id)completion
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [a4 collectionID];
-  v13 = [v11 valueForKey:@"assetID"];
-  v14 = [v13 allObjects];
+  completionCopy = completion;
+  booksCopy = books;
+  collectionID = [collection collectionID];
+  v13 = [booksCopy valueForKey:@"assetID"];
+  allObjects = [v13 allObjects];
 
-  v15 = [v11 valueForKey:@"temporaryAssetID"];
+  v15 = [booksCopy valueForKey:@"temporaryAssetID"];
 
-  v16 = [v15 allObjects];
+  allObjects2 = [v15 allObjects];
 
-  if (![v16 count])
+  if (![allObjects2 count])
   {
 
-    v16 = 0;
+    allObjects2 = 0;
   }
 
   v21[0] = _NSConcreteStackBlock;
@@ -840,60 +840,60 @@ LABEL_11:
   v21[2] = sub_63740;
   v21[3] = &unk_D74D0;
   v21[4] = self;
-  v22 = v12;
-  v24 = v16;
-  v25 = v10;
-  v23 = v14;
-  v26 = a5;
-  v17 = v16;
-  v18 = v10;
-  v19 = v14;
-  v20 = v12;
+  v22 = collectionID;
+  v24 = allObjects2;
+  v25 = completionCopy;
+  v23 = allObjects;
+  topCopy = top;
+  v17 = allObjects2;
+  v18 = completionCopy;
+  v19 = allObjects;
+  v20 = collectionID;
   dispatch_async(&_dispatch_main_q, v21);
 }
 
-- (void)removeAssetID:(id)a3 fromCollectionID:(id)a4 completion:(id)a5
+- (void)removeAssetID:(id)d fromCollectionID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[BKCollectionControllerMemberManagingRemoveRequest alloc] initWithStoreID:v10 collectionID:v9];
+  completionCopy = completion;
+  iDCopy = iD;
+  dCopy = d;
+  v11 = [[BKCollectionControllerMemberManagingRemoveRequest alloc] initWithStoreID:dCopy collectionID:iDCopy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_63EB8;
   v13[3] = &unk_D74F8;
-  v14 = v8;
-  v12 = v8;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(BKLibraryCollectionManager *)self performRemoveRequest:v11 completion:v13];
 }
 
-- (void)performRemoveRequest:(id)a3 completion:(id)a4
+- (void)performRemoveRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 storeID];
-  v9 = [v7 collectionID];
+  completionCopy = completion;
+  requestCopy = request;
+  storeID = [requestCopy storeID];
+  collectionID = [requestCopy collectionID];
 
-  v10 = [(BKLibraryCollectionManager *)self libraryManager];
-  v11 = v10;
-  if (v10)
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  v11 = libraryManager;
+  if (libraryManager)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_64108;
     v15[3] = &unk_D7520;
-    v15[4] = v9;
-    v15[5] = v8;
+    v15[4] = collectionID;
+    v15[5] = storeID;
     v15[6] = self;
-    v16 = v10;
-    v17 = v6;
+    v16 = libraryManager;
+    v17 = completionCopy;
     [v16 performBlockOnCollectionsWorkerQueue:v15];
   }
 
   else
   {
-    v12 = objc_retainBlock(v6);
+    v12 = objc_retainBlock(completionCopy);
     if (v12)
     {
       v18 = NSLocalizedDescriptionKey;
@@ -905,23 +905,23 @@ LABEL_11:
   }
 }
 
-- (void)markAsFinishedStoreID:(id)a3 completion:(id)a4
+- (void)markAsFinishedStoreID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[BCMutableStoreItem alloc] initWithStoreID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [[BCMutableStoreItem alloc] initWithStoreID:dCopy];
   v9 = +[BCCloudAssetManager sharedManager];
-  v10 = [v9 storeAssetManager];
+  storeAssetManager = [v9 storeAssetManager];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_6467C;
   v18[3] = &unk_D7548;
-  v11 = v6;
+  v11 = dCopy;
   v19 = v11;
-  v20 = v7;
-  v12 = v7;
-  [v10 addStoreItem:v8 completion:v18];
+  v20 = completionCopy;
+  v12 = completionCopy;
+  [storeAssetManager addStoreItem:v8 completion:v18];
   [(BKLibraryCollectionManager *)self libraryManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -933,15 +933,15 @@ LABEL_11:
   [v14 waitForAssetID:v13 completion:v15];
 }
 
-- (void)performAddRequest:(id)a3 completion:(id)a4
+- (void)performAddRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 storeID];
-  v9 = [v7 collectionID];
-  v10 = [v7 forceToTop];
+  completionCopy = completion;
+  requestCopy = request;
+  storeID = [requestCopy storeID];
+  collectionID = [requestCopy collectionID];
+  forceToTop = [requestCopy forceToTop];
 
-  v11 = [v9 isEqualToString:kBKCollectionDefaultIDWantToRead];
+  v11 = [collectionID isEqualToString:kBKCollectionDefaultIDWantToRead];
   v12 = v11;
   if (v11)
   {
@@ -949,53 +949,53 @@ LABEL_11:
     [v13 postNotificationName:@"BKLibraryAssetAddToWTRCollectionNotification" object:self userInfo:0];
   }
 
-  if ([v9 isEqualToString:kBKCollectionDefaultIDFinished])
+  if ([collectionID isEqualToString:kBKCollectionDefaultIDFinished])
   {
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_64C64;
     v25[3] = &unk_D7570;
-    v26 = v6;
-    [(BKLibraryCollectionManager *)self markAsFinishedStoreID:v8 completion:v25];
+    v26 = completionCopy;
+    [(BKLibraryCollectionManager *)self markAsFinishedStoreID:storeID completion:v25];
     v14 = v26;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v15 = [(BKLibraryCollectionManager *)self libraryManager];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
 
-  if (v15)
+  if (libraryManager)
   {
     v16 = BKLibraryCollectionLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v28 = v8;
+      v28 = storeID;
       v29 = 2112;
-      v30 = v9;
+      v30 = collectionID;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_INFO, "Adding storeIDs: %@ to collection %@", buf, 0x16u);
     }
 
-    v17 = [(BKLibraryCollectionManager *)self libraryManager];
+    libraryManager2 = [(BKLibraryCollectionManager *)self libraryManager];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_64D30;
     v21[3] = &unk_D75E8;
     v21[4] = self;
-    v21[5] = v9;
-    v21[6] = v8;
-    v23 = v10;
+    v21[5] = collectionID;
+    v21[6] = storeID;
+    v23 = forceToTop;
     v24 = v12;
-    v22 = v6;
-    [v17 performBlockOnCollectionsWorkerQueue:v21];
+    v22 = completionCopy;
+    [libraryManager2 performBlockOnCollectionsWorkerQueue:v21];
 
     v14 = v22;
     goto LABEL_9;
   }
 
   v18 = [NSError errorWithDomain:@"BKLibraryErrorDomain" code:2 userInfo:0];
-  v19 = objc_retainBlock(v6);
+  v19 = objc_retainBlock(completionCopy);
   v20 = v19;
   if (v19)
   {
@@ -1009,42 +1009,42 @@ LABEL_10:
 {
   objc_opt_class();
   v2 = +[BCRCDataContainer defaultContainer];
-  v3 = [v2 configs];
-  v4 = [v3 valueForKeyPath:BRCBooksDefaultsKeyReadingNowWtrSimpleModeEnabled];
+  configs = [v2 configs];
+  v4 = [configs valueForKeyPath:BRCBooksDefaultsKeyReadingNowWtrSimpleModeEnabled];
   v5 = BUDynamicCast();
 
   LOBYTE(v2) = [v5 BOOLValue];
   return v2 ^ 1;
 }
 
-- (void)p_downloadSampleBook:(id)a3
+- (void)p_downloadSampleBook:(id)book
 {
-  v4 = a3;
+  bookCopy = book;
   v5 = +[AEUserPublishing sharedInstance];
-  v10 = v4;
+  v10 = bookCopy;
   v6 = [NSArray arrayWithObjects:&v10 count:1];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_6547C;
   v8[3] = &unk_D7638;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = bookCopy;
+  v7 = bookCopy;
   [v5 lockupProfilesForStoreIDs:v6 completion:v8];
 }
 
-- (void)removeBook:(id)a3 fromCollections:(id)a4 completion:(id)a5
+- (void)removeBook:(id)book fromCollections:(id)collections completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BKLibraryCollectionManager *)self libraryManager];
-  v12 = v11;
-  if (v8 && v11 && [v9 count])
+  bookCopy = book;
+  collectionsCopy = collections;
+  completionCopy = completion;
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  v12 = libraryManager;
+  if (bookCopy && libraryManager && [collectionsCopy count])
   {
-    v13 = [v8 assetID];
+    assetID = [bookCopy assetID];
     objc_opt_class();
-    v14 = [v9 valueForKey:@"collectionID"];
+    v14 = [collectionsCopy valueForKey:@"collectionID"];
     v15 = BUDynamicCast();
 
     v20[0] = _NSConcreteStackBlock;
@@ -1052,19 +1052,19 @@ LABEL_10:
     v20[2] = sub_65A94;
     v20[3] = &unk_D7688;
     v20[4] = self;
-    v21 = v8;
+    v21 = bookCopy;
     v22 = v15;
-    v23 = v13;
+    v23 = assetID;
     v24 = v12;
-    v25 = v10;
-    v16 = v13;
+    v25 = completionCopy;
+    v16 = assetID;
     v17 = v15;
     [v24 performBlockOnCollectionsWorkerQueue:v20];
   }
 
   else
   {
-    v18 = objc_retainBlock(v10);
+    v18 = objc_retainBlock(completionCopy);
     v19 = v18;
     if (v18)
     {
@@ -1073,34 +1073,34 @@ LABEL_10:
   }
 }
 
-- (void)removeBooks:(id)a3 fromCollection:(id)a4 completion:(id)a5
+- (void)removeBooks:(id)books fromCollection:(id)collection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BKLibraryCollectionManager *)self libraryManager];
-  if (v11 && [v9 deleteRemovesFromCollection])
+  booksCopy = books;
+  collectionCopy = collection;
+  completionCopy = completion;
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  if (libraryManager && [collectionCopy deleteRemovesFromCollection])
   {
-    v12 = [v9 collectionID];
-    v13 = [v8 valueForKey:@"assetID"];
+    collectionID = [collectionCopy collectionID];
+    v13 = [booksCopy valueForKey:@"assetID"];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_65F2C;
     v18[3] = &unk_D7688;
     v18[4] = self;
-    v19 = v8;
-    v20 = v12;
+    v19 = booksCopy;
+    v20 = collectionID;
     v21 = v13;
-    v22 = v11;
-    v23 = v10;
+    v22 = libraryManager;
+    v23 = completionCopy;
     v14 = v13;
-    v15 = v12;
+    v15 = collectionID;
     [v22 performBlockOnCollectionsWorkerQueue:v18];
   }
 
   else
   {
-    v16 = objc_retainBlock(v10);
+    v16 = objc_retainBlock(completionCopy);
     v17 = v16;
     if (v16)
     {
@@ -1111,24 +1111,24 @@ LABEL_10:
 
 - (void)cleanupDefaultCollections
 {
-  v2 = [(BKLibraryCollectionManager *)self libraryManager];
-  [v2 performBlockOnCollectionsWorkerQueueAndWait:&stru_D76C8];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  [libraryManager performBlockOnCollectionsWorkerQueueAndWait:&stru_D76C8];
 }
 
-- (BOOL)p_shouldDeleteAsset:(id)a3 removingFromCollectionIDs:(id)a4
+- (BOOL)p_shouldDeleteAsset:(id)asset removingFromCollectionIDs:(id)ds
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 collectionMembers];
-  v8 = [v7 count];
-  v9 = [v6 count];
+  assetCopy = asset;
+  dsCopy = ds;
+  collectionMembers = [assetCopy collectionMembers];
+  v8 = [collectionMembers count];
+  v9 = [dsCopy count];
 
-  if ([v5 isSample] && objc_msgSend(v5, "isLocal") && ((v10 = v8 - v9, ((v8 - v9) & 0xFFFFFFFFFFFFFFFELL) == 2) || objc_msgSend(v6, "containsObject:", kBKCollectionDefaultIDSamples)))
+  if ([assetCopy isSample] && objc_msgSend(assetCopy, "isLocal") && ((v10 = v8 - v9, ((v8 - v9) & 0xFFFFFFFFFFFFFFFELL) == 2) || objc_msgSend(dsCopy, "containsObject:", kBKCollectionDefaultIDSamples)))
   {
-    v11 = [v5 collectionMembers];
-    v12 = [v11 valueForKeyPath:@"collectionID"];
+    collectionMembers2 = [assetCopy collectionMembers];
+    v12 = [collectionMembers2 valueForKeyPath:@"collectionID"];
 
-    v13 = [v6 isSubsetOfSet:v12] && objc_msgSend(v12, "containsObject:", kBKCollectionDefaultAll) && ((objc_msgSend(v12, "containsObject:", kBKCollectionDefaultIDBooks) & 1) != 0 || objc_msgSend(v12, "containsObject:", kBKCollectionDefaultIDAudiobooks)) && (v10 == 2 || objc_msgSend(v12, "containsObject:", kBKCollectionDefaultIDDownloaded));
+    v13 = [dsCopy isSubsetOfSet:v12] && objc_msgSend(v12, "containsObject:", kBKCollectionDefaultAll) && ((objc_msgSend(v12, "containsObject:", kBKCollectionDefaultIDBooks) & 1) != 0 || objc_msgSend(v12, "containsObject:", kBKCollectionDefaultIDAudiobooks)) && (v10 == 2 || objc_msgSend(v12, "containsObject:", kBKCollectionDefaultIDDownloaded));
   }
 
   else
@@ -1139,16 +1139,16 @@ LABEL_10:
   return v13;
 }
 
-- (id)p_assetsRequiringDeletion:(id)a3 removingFromCollectionIDs:(id)a4
+- (id)p_assetsRequiringDeletion:(id)deletion removingFromCollectionIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  deletionCopy = deletion;
+  dsCopy = ds;
   v8 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = deletionCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -1164,7 +1164,7 @@ LABEL_10:
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if ([(BKLibraryCollectionManager *)self p_shouldDeleteAsset:v14 removingFromCollectionIDs:v7, v16])
+        if ([(BKLibraryCollectionManager *)self p_shouldDeleteAsset:v14 removingFromCollectionIDs:dsCopy, v16])
         {
           [v8 addObject:v14];
         }
@@ -1179,9 +1179,9 @@ LABEL_10:
   return v8;
 }
 
-- (id)fetchWTRMembersInContext:(id)a3
+- (id)fetchWTRMembersInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollectionMember"];
   v5 = [BKLibraryManager predicateForCollectionMembersInCollectionID:kBKCollectionDefaultIDWantToRead hideUnownedItems:0];
   v14[0] = v5;
@@ -1191,7 +1191,7 @@ LABEL_10:
   v8 = [NSCompoundPredicate andPredicateWithSubpredicates:v7];
   [v4 setPredicate:v8];
 
-  v9 = [v3 executeFetchRequest:v4 error:0];
+  v9 = [contextCopy executeFetchRequest:v4 error:0];
 
   if (v9)
   {
@@ -1210,18 +1210,18 @@ LABEL_10:
   return v12;
 }
 
-- (void)p_syncCollections:(id)a3 deletedCollections:(id)a4 inContext:(id)a5
+- (void)p_syncCollections:(id)collections deletedCollections:(id)deletedCollections inContext:(id)context
 {
-  v7 = a3;
-  v53 = a4;
-  v54 = a5;
+  collectionsCopy = collections;
+  deletedCollectionsCopy = deletedCollections;
+  contextCopy = context;
   v8 = +[NSMutableSet set];
   v56 = +[NSMutableDictionary dictionary];
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v7;
+  obj = collectionsCopy;
   v9 = [obj countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (v9)
   {
@@ -1236,15 +1236,15 @@ LABEL_10:
         }
 
         v12 = *(*(&v71 + 1) + 8 * i);
-        v13 = [v12 deletedFlag];
-        v14 = [v13 BOOLValue];
+        deletedFlag = [v12 deletedFlag];
+        bOOLValue = [deletedFlag BOOLValue];
 
-        if (v14)
+        if (bOOLValue)
         {
           v15 = +[BULogUtilities shared];
-          v16 = [v15 verboseLoggingEnabled];
+          verboseLoggingEnabled = [v15 verboseLoggingEnabled];
 
-          if (v16)
+          if (verboseLoggingEnabled)
           {
             v17 = BKLibraryCollectionDevelopmentLog();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1255,18 +1255,18 @@ LABEL_10:
             }
           }
 
-          v18 = [v12 collectionID];
-          if (v18)
+          collectionID = [v12 collectionID];
+          if (collectionID)
           {
-            [v8 addObject:v18];
+            [v8 addObject:collectionID];
           }
 
           else
           {
             v24 = +[BULogUtilities shared];
-            v25 = [v24 verboseLoggingEnabled];
+            verboseLoggingEnabled2 = [v24 verboseLoggingEnabled];
 
-            if (v25)
+            if (verboseLoggingEnabled2)
             {
               v26 = BKLibraryAssetDetailsDevelopmentLog();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1281,43 +1281,43 @@ LABEL_10:
 
         else
         {
-          v19 = [v12 placeholder];
-          v20 = [v19 BOOLValue];
+          placeholder = [v12 placeholder];
+          bOOLValue2 = [placeholder BOOLValue];
 
-          if (v20)
+          if (bOOLValue2)
           {
             v21 = +[BULogUtilities shared];
-            v22 = [v21 verboseLoggingEnabled];
+            verboseLoggingEnabled3 = [v21 verboseLoggingEnabled];
 
-            if (!v22)
+            if (!verboseLoggingEnabled3)
             {
               continue;
             }
 
-            v18 = BKLibraryCollectionDevelopmentLog();
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+            collectionID = BKLibraryCollectionDevelopmentLog();
+            if (os_log_type_enabled(collectionID, OS_LOG_TYPE_DEFAULT))
             {
               LODWORD(buf) = 138412290;
               *(&buf + 4) = v12;
-              _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "\\collection marked placeholder: %@\\"", &buf, 0xCu);
+              _os_log_impl(&dword_0, collectionID, OS_LOG_TYPE_DEFAULT, "\\collection marked placeholder: %@\\"", &buf, 0xCu);
             }
           }
 
           else
           {
-            v18 = [v12 collectionDetailRepresentation];
-            v23 = [v18 collectionID];
-            if (v23)
+            collectionID = [v12 collectionDetailRepresentation];
+            v18CollectionID = [collectionID collectionID];
+            if (v18CollectionID)
             {
-              [v56 setObject:v18 forKey:v23];
+              [v56 setObject:collectionID forKey:v18CollectionID];
             }
 
             else
             {
               v27 = +[BULogUtilities shared];
-              v28 = [v27 verboseLoggingEnabled];
+              verboseLoggingEnabled4 = [v27 verboseLoggingEnabled];
 
-              if (v28)
+              if (verboseLoggingEnabled4)
               {
                 v29 = BKLibraryAssetDetailsDevelopmentLog();
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -1342,7 +1342,7 @@ LABEL_10:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v30 = v53;
+  v30 = deletedCollectionsCopy;
   v31 = [v30 countByEnumeratingWithState:&v67 objects:v78 count:16];
   if (v31)
   {
@@ -1356,10 +1356,10 @@ LABEL_10:
           objc_enumerationMutation(v30);
         }
 
-        v34 = [*(*(&v67 + 1) + 8 * j) collectionID];
-        if (v34)
+        collectionID2 = [*(*(&v67 + 1) + 8 * j) collectionID];
+        if (collectionID2)
         {
-          [v8 addObject:v34];
+          [v8 addObject:collectionID2];
         }
       }
 
@@ -1381,24 +1381,24 @@ LABEL_10:
   v66[5] = &buf;
   v35 = objc_retainBlock(v66);
   v36 = v35;
-  if (v54)
+  if (contextCopy)
   {
     (v35[2])(v35);
   }
 
   else
   {
-    v37 = [(BKLibraryCollectionManager *)self libraryManager];
-    [v37 performBlockOnCollectionsWorkerQueue:v36];
+    libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+    [libraryManager performBlockOnCollectionsWorkerQueue:v36];
   }
 
   v38 = dispatch_group_create();
   if ([v56 count])
   {
     v39 = +[BULogUtilities shared];
-    v40 = [v39 verboseLoggingEnabled];
+    verboseLoggingEnabled5 = [v39 verboseLoggingEnabled];
 
-    if (v40)
+    if (verboseLoggingEnabled5)
     {
       v41 = BKLibraryCollectionDevelopmentLog();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -1408,26 +1408,26 @@ LABEL_10:
       }
     }
 
-    v42 = [v56 allKeys];
+    allKeys = [v56 allKeys];
     dispatch_group_enter(v38);
-    v43 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
-    v44 = [v43 collectionDetailManager];
+    cloudCollectionsManager = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
+    collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
     v62[0] = _NSConcreteStackBlock;
     v62[1] = 3221225472;
     v62[2] = sub_66FC4;
     v62[3] = &unk_D7718;
-    v45 = v42;
+    v45 = allKeys;
     v63 = v45;
     v64 = v38;
-    [v44 setCollectionDetails:v56 completion:v62];
+    [collectionDetailManager setCollectionDetails:v56 completion:v62];
   }
 
   if ([v8 count])
   {
     v46 = +[BULogUtilities shared];
-    v47 = [v46 verboseLoggingEnabled];
+    verboseLoggingEnabled6 = [v46 verboseLoggingEnabled];
 
-    if (v47)
+    if (verboseLoggingEnabled6)
     {
       v48 = BKLibraryCollectionDevelopmentLog();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -1438,16 +1438,16 @@ LABEL_10:
     }
 
     dispatch_group_enter(v38);
-    v49 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
-    v50 = [v49 collectionDetailManager];
-    v51 = [v8 allObjects];
+    cloudCollectionsManager2 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
+    collectionDetailManager2 = [cloudCollectionsManager2 collectionDetailManager];
+    allObjects = [v8 allObjects];
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
     v59[2] = sub_67134;
     v59[3] = &unk_D6A78;
     v60 = v8;
     v61 = v38;
-    [v50 deleteCollectionDetailForCollectionIDs:v51 completion:v59];
+    [collectionDetailManager2 deleteCollectionDetailForCollectionIDs:allObjects completion:v59];
   }
 
   v52 = dispatch_get_global_queue(0, 0);
@@ -1462,19 +1462,19 @@ LABEL_10:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)p_syncCollectionMembers:(id)a3 deletedCollectionMembers:(id)a4 inContext:(id)a5
+- (void)p_syncCollectionMembers:(id)members deletedCollectionMembers:(id)collectionMembers inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
-  v48 = v9;
+  membersCopy = members;
+  collectionMembersCopy = collectionMembers;
+  contextCopy = context;
+  v10 = collectionMembersCopy;
+  v48 = contextCopy;
   v51 = +[NSMutableDictionary dictionary];
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v7;
+  obj = membersCopy;
   v11 = [obj countByEnumeratingWithState:&v67 objects:v72 count:16];
   if (v11)
   {
@@ -1489,24 +1489,24 @@ LABEL_10:
         }
 
         v14 = *(*(&v67 + 1) + 8 * i);
-        v15 = [v14 collection];
-        v16 = [v15 collectionID];
-        if (v16)
+        collection = [v14 collection];
+        collectionID = [collection collectionID];
+        if (collectionID)
         {
-          v17 = [v14 assetID];
-          if (v17)
+          assetID = [v14 assetID];
+          if (assetID)
           {
-            v18 = [v14 collection];
-            v19 = [v18 shouldSyncCollectionMembers];
+            collection2 = [v14 collection];
+            shouldSyncCollectionMembers = [collection2 shouldSyncCollectionMembers];
 
-            if (!v19)
+            if (!shouldSyncCollectionMembers)
             {
               continue;
             }
 
-            v15 = [v14 collectionMemberRepresentation];
-            v16 = [v15 collectionMemberID];
-            [v51 setObject:v15 forKey:v16];
+            collection = [v14 collectionMemberRepresentation];
+            collectionID = [collection collectionMemberID];
+            [v51 setObject:collection forKey:collectionID];
           }
         }
       }
@@ -1540,25 +1540,25 @@ LABEL_10:
       }
 
       v24 = *(*(&v63 + 1) + 8 * j);
-      v25 = [v24 collectionID];
-      if (v25)
+      collectionID2 = [v24 collectionID];
+      if (collectionID2)
       {
-        v26 = [v24 assetID];
-        if (v26)
+        assetID2 = [v24 assetID];
+        if (assetID2)
         {
-          v27 = [v24 collectionID];
-          v28 = [BKCollection shouldSyncCollectionID:v27];
+          collectionID3 = [v24 collectionID];
+          v28 = [BKCollection shouldSyncCollectionID:collectionID3];
 
           if (!v28)
           {
             continue;
           }
 
-          v29 = [v24 collectionID];
-          v30 = [v24 assetID];
-          v25 = [BCCollectionMember collectionMemberIDWithCollectionID:v29 assetID:v30];
+          collectionID4 = [v24 collectionID];
+          assetID3 = [v24 assetID];
+          collectionID2 = [BCCollectionMember collectionMemberIDWithCollectionID:collectionID4 assetID:assetID3];
 
-          [v50 addObject:v25];
+          [v50 addObject:collectionID2];
         }
       }
     }
@@ -1588,17 +1588,17 @@ LABEL_26:
 
   else
   {
-    v33 = [(BKLibraryCollectionManager *)self libraryManager];
-    [v33 performBlockOnCollectionsWorkerQueue:v32];
+    libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+    [libraryManager performBlockOnCollectionsWorkerQueue:v32];
   }
 
   v34 = dispatch_group_create();
   if ([v51 count])
   {
     v35 = +[BULogUtilities shared];
-    v36 = [v35 verboseLoggingEnabled];
+    verboseLoggingEnabled = [v35 verboseLoggingEnabled];
 
-    if (v36)
+    if (verboseLoggingEnabled)
     {
       v37 = BKLibraryCollectionDevelopmentLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -1608,26 +1608,26 @@ LABEL_26:
       }
     }
 
-    v38 = [v51 allKeys];
+    allKeys = [v51 allKeys];
     dispatch_group_enter(v34);
-    v39 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
-    v40 = [v39 collectionMemberManager];
+    cloudCollectionsManager = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
+    collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
     v57[2] = sub_67B04;
     v57[3] = &unk_D7718;
     v58 = v34;
-    v41 = v38;
+    v41 = allKeys;
     v59 = v41;
-    [v40 setCollectionMembers:v51 completion:v57];
+    [collectionMemberManager setCollectionMembers:v51 completion:v57];
   }
 
   if ([v50 count])
   {
     v42 = +[BULogUtilities shared];
-    v43 = [v42 verboseLoggingEnabled];
+    verboseLoggingEnabled2 = [v42 verboseLoggingEnabled];
 
-    if (v43)
+    if (verboseLoggingEnabled2)
     {
       v44 = BKLibraryCollectionDevelopmentLog();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -1638,15 +1638,15 @@ LABEL_26:
     }
 
     dispatch_group_enter(v34);
-    v45 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
-    v46 = [v45 collectionMemberManager];
+    cloudCollectionsManager2 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
+    collectionMemberManager2 = [cloudCollectionsManager2 collectionMemberManager];
     v54[0] = _NSConcreteStackBlock;
     v54[1] = 3221225472;
     v54[2] = sub_67C74;
     v54[3] = &unk_D6A78;
     v55 = v50;
     v56 = v34;
-    [v46 deleteCollectionMemberForCollectionMemberIDs:v55 completion:v54];
+    [collectionMemberManager2 deleteCollectionMemberForCollectionMemberIDs:v55 completion:v54];
   }
 
   v47 = dispatch_get_global_queue(0, 0);
@@ -1661,60 +1661,60 @@ LABEL_26:
   _Block_object_dispose(v62, 8);
 }
 
-- (void)mocDidSave:(id)a3
+- (void)mocDidSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = BKLibraryCollectionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_91964(v4);
+    sub_91964(saveCopy);
   }
 
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
   v44 = 0;
-  v6 = [(BKLibraryCollectionManager *)self enableCloudMergeQueue];
+  enableCloudMergeQueue = [(BKLibraryCollectionManager *)self enableCloudMergeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_68544;
   block[3] = &unk_D7318;
   block[4] = self;
   block[5] = &v41;
-  dispatch_sync(v6, block);
+  dispatch_sync(enableCloudMergeQueue, block);
 
   objc_opt_class();
-  v7 = [v4 object];
+  object = [saveCopy object];
   v8 = BUDynamicCast();
 
   v9 = [v8 sessionContextType] == 5 && objc_msgSend(v8, "saveContext") == 1;
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:NSUpdatedObjectsKey];
+  userInfo = [saveCopy userInfo];
+  v11 = [userInfo objectForKey:NSUpdatedObjectsKey];
 
   if (v8)
   {
-    v12 = [NSPredicate predicateWithFormat:@"self isKindOfClass:%@ AND self.collectionID == %@", objc_opt_class(), kBKCollectionDefaultIDWantToRead];
-    v13 = [v11 filteredSetUsingPredicate:v12];
+    kBKCollectionDefaultIDWantToRead = [NSPredicate predicateWithFormat:@"self isKindOfClass:%@ AND self.collectionID == %@", objc_opt_class(), kBKCollectionDefaultIDWantToRead];
+    v13 = [v11 filteredSetUsingPredicate:kBKCollectionDefaultIDWantToRead];
     if ([v13 count])
     {
-      v14 = [(BKLibraryCollectionManager *)self libraryManager];
-      [v14 collectionManagerDidModifyWantToReadCollection:self];
+      libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+      [libraryManager collectionManagerDidModifyWantToReadCollection:self];
     }
 
     if (!v9 && [v8 sessionContextType] != 2 && objc_msgSend(v8, "sessionContextType") != 3 && objc_msgSend(v8, "sessionContextType") != 1)
     {
-      v15 = [v8 persistentStoreCoordinator];
-      v16 = [(BKLibraryCollectionManager *)self libraryManager];
-      v17 = [v16 persistentStoreCoordinator];
-      v18 = [v15 hasStoreInCommonWith:v17];
+      persistentStoreCoordinator = [v8 persistentStoreCoordinator];
+      libraryManager2 = [(BKLibraryCollectionManager *)self libraryManager];
+      persistentStoreCoordinator2 = [libraryManager2 persistentStoreCoordinator];
+      v18 = [persistentStoreCoordinator hasStoreInCommonWith:persistentStoreCoordinator2];
 
       if (v18)
       {
-        v19 = [v4 userInfo];
-        v39 = [v19 objectForKey:NSInsertedObjectsKey];
+        userInfo2 = [saveCopy userInfo];
+        v39 = [userInfo2 objectForKey:NSInsertedObjectsKey];
 
-        v20 = [v4 userInfo];
-        v38 = [v20 objectForKey:NSDeletedObjectsKey];
+        userInfo3 = [saveCopy userInfo];
+        v38 = [userInfo3 objectForKey:NSDeletedObjectsKey];
 
         if (*(v42 + 24) == 1 && ([v39 count] || objc_msgSend(v11, "count") || objc_msgSend(v38, "count")))
         {
@@ -1795,23 +1795,23 @@ LABEL_26:
   _Block_object_dispose(&v41, 8);
 }
 
-- (void)_BCCloudCollectionDetailManagerChanged:(id)a3
+- (void)_BCCloudCollectionDetailManagerChanged:(id)changed
 {
-  v4 = [(BKLibraryCollectionManager *)self getChangesQueue];
+  getChangesQueue = [(BKLibraryCollectionManager *)self getChangesQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_68600;
   block[3] = &unk_D5528;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(getChangesQueue, block);
 }
 
-- (void)_checkForChangesFromCloudCollectionDetailManagerInMOC:(id)a3 reason:(id)a4
+- (void)_checkForChangesFromCloudCollectionDetailManagerInMOC:(id)c reason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryCollectionManager *)self libraryManager];
-  v9 = [v8 cloudSyncVersionsForDataType:@"BCCollectionDetail" inContext:v7];
+  reasonCopy = reason;
+  cCopy = c;
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  v9 = [libraryManager cloudSyncVersionsForDataType:@"BCCollectionDetail" inContext:cCopy];
 
   v10 = [v9 mutableCopy];
   v11 = BKLibraryCollectionLog();
@@ -1820,37 +1820,37 @@ LABEL_26:
     *buf = 138543618;
     v16 = v10;
     v17 = 2114;
-    v18 = v6;
+    v18 = reasonCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "_checkForChangesFromCloudCollectionDetailManagerInMOC cloudSyncVersions:%{public}@, reason:%{public}@", buf, 0x16u);
   }
 
-  v12 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
-  v13 = [v12 collectionDetailManager];
+  cloudCollectionsManager = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_68938;
   v14[3] = &unk_D7740;
   v14[4] = self;
-  [v13 getCollectionDetailChangesSince:v10 completion:v14];
+  [collectionDetailManager getCollectionDetailChangesSince:v10 completion:v14];
 }
 
-- (void)_BCCloudCollectionMemberManagerChanged:(id)a3
+- (void)_BCCloudCollectionMemberManagerChanged:(id)changed
 {
-  v4 = [(BKLibraryCollectionManager *)self getChangesQueue];
+  getChangesQueue = [(BKLibraryCollectionManager *)self getChangesQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_69494;
   block[3] = &unk_D5528;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(getChangesQueue, block);
 }
 
-- (void)_checkForChangesFromCloudCollectionMemberManagerInMOC:(id)a3 reason:(id)a4
+- (void)_checkForChangesFromCloudCollectionMemberManagerInMOC:(id)c reason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryCollectionManager *)self libraryManager];
-  v9 = [v8 cloudSyncVersionsForDataType:@"BCCollectionMember" inContext:v7];
+  reasonCopy = reason;
+  cCopy = c;
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+  v9 = [libraryManager cloudSyncVersionsForDataType:@"BCCollectionMember" inContext:cCopy];
 
   v10 = [v9 mutableCopy];
   v11 = BKLibraryCollectionLog();
@@ -1859,26 +1859,26 @@ LABEL_26:
     *buf = 138543618;
     v16 = v10;
     v17 = 2114;
-    v18 = v6;
+    v18 = reasonCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "_checkForChangesFromCloudCollectionMemberManagerInMOC cloudSyncVersions:%{public}@, reason:%{public}@", buf, 0x16u);
   }
 
-  v12 = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
-  v13 = [v12 collectionMemberManager];
+  cloudCollectionsManager = [(BKLibraryCollectionManager *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_697CC;
   v14[3] = &unk_D7740;
   v14[4] = self;
-  [v13 getCollectionMemberChangesSince:v10 completion:v14];
+  [collectionMemberManager getCollectionMemberChangesSince:v10 completion:v14];
 }
 
-- (id)p_fetchOrCreatePlaceholderCollectionForCollectionID:(id)a3 moc:(id)a4
+- (id)p_fetchOrCreatePlaceholderCollectionForCollectionID:(id)d moc:(id)moc
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  mocCopy = moc;
   v14 = 0;
-  v8 = [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:v6 inManagedObjectContext:v7 error:&v14];
+  v8 = [(BKLibraryCollectionManager *)self mutableCollectionWithCollectionID:dCopy inManagedObjectContext:mocCopy error:&v14];
   v9 = v14;
   v10 = v9;
   if (!v8 || v9)
@@ -1887,11 +1887,11 @@ LABEL_26:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v16 = v6;
+      v16 = dCopy;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Creating a new placeholder collection for member insertion collectionID:%{public}@", buf, 0xCu);
     }
 
-    v12 = [BKCollection insertNewCollectionWithCollectionID:v6 inManagedObjectContext:v7];
+    v12 = [BKCollection insertNewCollectionWithCollectionID:dCopy inManagedObjectContext:mocCopy];
 
     [v12 setTitle:@"Sync Placeholder"];
     [v12 setLocalModDate:0];
@@ -1902,14 +1902,14 @@ LABEL_26:
   return v8;
 }
 
-- (void)p_updateAssetInMembers:(id)a3 moc:(id)a4
+- (void)p_updateAssetInMembers:(id)members moc:(id)moc
 {
-  v5 = a3;
-  v72 = a4;
+  membersCopy = members;
+  mocCopy = moc;
   v6 = BKLibraryCollectionLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_91ABC(v5);
+    sub_91ABC(membersCopy);
   }
 
   v93 = 0u;
@@ -1933,7 +1933,7 @@ LABEL_26:
 
         v12 = *(*(&v91 + 1) + 8 * i);
         v13 = [NSPredicate predicateWithFormat:@"collectionID == %@", v12];
-        v14 = [v5 filteredArrayUsingPredicate:v13];
+        v14 = [membersCopy filteredArrayUsingPredicate:v13];
         v15 = [v14 count];
 
         if (v15)
@@ -1962,7 +1962,7 @@ LABEL_26:
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v19 = v5;
+  v19 = membersCopy;
   v20 = [v19 countByEnumeratingWithState:&v87 objects:v98 count:16];
   if (v20)
   {
@@ -1978,16 +1978,16 @@ LABEL_26:
         }
 
         v24 = *(*(&v87 + 1) + 8 * j);
-        v25 = [v24 assetID];
-        if (v25)
+        assetID = [v24 assetID];
+        if (assetID)
         {
-          [v17 addObject:v25];
+          [v17 addObject:assetID];
         }
 
-        v26 = [v24 temporaryAssetID];
-        if (v26)
+        temporaryAssetID = [v24 temporaryAssetID];
+        if (temporaryAssetID)
         {
-          [v18 addObject:v26];
+          [v18 addObject:temporaryAssetID];
         }
       }
 
@@ -2007,7 +2007,7 @@ LABEL_26:
     v29 = [NSPredicate predicateWithFormat:@"assetID IN %@", v66];
     [v28 setPredicate:v29];
     v86 = 0;
-    v30 = [v72 executeFetchRequest:v28 error:&v86];
+    v30 = [mocCopy executeFetchRequest:v28 error:&v86];
     v31 = v86;
     v82 = 0u;
     v83 = 0u;
@@ -2029,8 +2029,8 @@ LABEL_26:
           }
 
           v37 = *(*(&v82 + 1) + 8 * k);
-          v38 = [v37 assetID];
-          [v27 setObject:v37 forKey:v38];
+          assetID2 = [v37 assetID];
+          [v27 setObject:v37 forKey:assetID2];
         }
 
         v34 = [v32 countByEnumeratingWithState:&v82 objects:v97 count:16];
@@ -2050,7 +2050,7 @@ LABEL_26:
     v41 = [NSPredicate predicateWithFormat:@"temporaryAssetID IN %@", v18];
     [v40 setPredicate:v41];
     v81 = 0;
-    v42 = [v72 executeFetchRequest:v40 error:&v81];
+    v42 = [mocCopy executeFetchRequest:v40 error:&v81];
     v69 = v81;
     v77 = 0u;
     v78 = 0u;
@@ -2072,8 +2072,8 @@ LABEL_26:
           }
 
           v48 = *(*(&v77 + 1) + 8 * m);
-          v49 = [v48 temporaryAssetID];
-          [v39 setObject:v48 forKey:v49];
+          temporaryAssetID2 = [v48 temporaryAssetID];
+          [v39 setObject:v48 forKey:temporaryAssetID2];
         }
 
         v45 = [v43 countByEnumeratingWithState:&v77 objects:v96 count:16];
@@ -2112,10 +2112,10 @@ LABEL_26:
         }
 
         v55 = *(*(&v73 + 1) + 8 * n);
-        v56 = [v55 assetID];
-        if (v56)
+        assetID3 = [v55 assetID];
+        if (assetID3)
         {
-          v57 = [v27 objectForKey:v56];
+          v57 = [v27 objectForKey:assetID3];
           if (v57)
           {
             goto LABEL_52;
@@ -2124,10 +2124,10 @@ LABEL_26:
 
         else
         {
-          v58 = [v55 temporaryAssetID];
-          if (v58)
+          temporaryAssetID3 = [v55 temporaryAssetID];
+          if (temporaryAssetID3)
           {
-            v57 = [v70 objectForKey:v58];
+            v57 = [v70 objectForKey:temporaryAssetID3];
           }
 
           else
@@ -2138,25 +2138,25 @@ LABEL_26:
           if (v57)
           {
 LABEL_52:
-            [(BKLibraryCollectionManager *)self p_updateAsset:v57 inCollectionMember:v55 withMOC:v72];
+            [(BKLibraryCollectionManager *)self p_updateAsset:v57 inCollectionMember:v55 withMOC:mocCopy];
             goto LABEL_61;
           }
         }
 
         v59 = +[BULogUtilities shared];
-        v60 = [v59 verboseLoggingEnabled];
+        verboseLoggingEnabled = [v59 verboseLoggingEnabled];
 
-        if (v60)
+        if (verboseLoggingEnabled)
         {
           v61 = BKLibraryCollectionDevelopmentLog();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
           {
-            v62 = [v55 collection];
-            v63 = [v62 title];
+            collection = [v55 collection];
+            title = [collection title];
             *buf = 138412546;
-            v100 = v56;
+            v100 = assetID3;
             v101 = 2112;
-            v102 = v63;
+            v102 = title;
             _os_log_impl(&dword_0, v61, OS_LOG_TYPE_DEFAULT, "\\Did not find asset assetID %@ in Collection: %@ \\"", buf, 0x16u);
           }
         }
@@ -2175,9 +2175,9 @@ LABEL_61:
   }
 
   v64 = +[BULogUtilities shared];
-  v65 = [v64 verboseLoggingEnabled];
+  verboseLoggingEnabled2 = [v64 verboseLoggingEnabled];
 
-  if (v65)
+  if (verboseLoggingEnabled2)
   {
     v50 = BKLibraryCollectionDevelopmentLog();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -2195,89 +2195,89 @@ LABEL_64:
   }
 }
 
-- (void)p_updateAsset:(id)a3 inCollectionMember:(id)a4 withMOC:(id)a5
+- (void)p_updateAsset:(id)asset inCollectionMember:(id)member withMOC:(id)c
 {
-  v7 = a4;
-  v8 = a3;
-  [v7 setAsset:v8];
+  memberCopy = member;
+  assetCopy = asset;
+  [memberCopy setAsset:assetCopy];
   v9 = +[BULogUtilities shared];
-  v10 = [v9 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v9 verboseLoggingEnabled];
 
-  if (v10)
+  if (verboseLoggingEnabled)
   {
     v11 = BKLibraryCollectionDevelopmentLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 collection];
-      v13 = [v12 title];
-      v14 = [v7 asset];
-      v15 = [v14 title];
+      collection = [memberCopy collection];
+      title = [collection title];
+      asset = [memberCopy asset];
+      title2 = [asset title];
       v56 = 138412546;
-      v57 = v13;
+      v57 = title;
       v58 = 2112;
-      v59 = v15;
+      v59 = title2;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "\\Initializing asset link for Collection: %@ Asset: %@\\"", &v56, 0x16u);
     }
   }
 
-  v16 = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
-  v17 = [v8 permanentOrTemporaryAssetID];
+  upgradeAssetSortKeys = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
+  permanentOrTemporaryAssetID = [assetCopy permanentOrTemporaryAssetID];
 
-  v18 = [v16 objectForKey:v17];
+  v18 = [upgradeAssetSortKeys objectForKey:permanentOrTemporaryAssetID];
 
-  v19 = [v7 sortKey];
-  if (!v19)
+  sortKey = [memberCopy sortKey];
+  if (!sortKey)
   {
 LABEL_17:
-    [v7 setSortKey:v18];
-    v36 = [v7 sortKey];
-    if (!v36 || (v37 = v36, [v7 sortKey], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "integerValue"), v38, v37, !v39))
+    [memberCopy setSortKey:v18];
+    sortKey2 = [memberCopy sortKey];
+    if (!sortKey2 || (v37 = sortKey2, [memberCopy sortKey], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "integerValue"), v38, v37, !v39))
     {
-      v42 = [v7 collection];
-      v43 = [BKUserSortOrderManager nextSortKeyForCollection:v42];
-      [v7 setSortKey:v43];
+      collection2 = [memberCopy collection];
+      v43 = [BKUserSortOrderManager nextSortKeyForCollection:collection2];
+      [memberCopy setSortKey:v43];
 
       v44 = +[BULogUtilities shared];
-      LODWORD(v42) = [v44 verboseLoggingEnabled];
+      LODWORD(collection2) = [v44 verboseLoggingEnabled];
 
-      if (v42)
+      if (collection2)
       {
         v45 = BKLibraryCollectionDevelopmentLog();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v46 = [v7 collection];
-          v47 = [v46 title];
-          v48 = [v7 asset];
-          v49 = [v48 title];
+          collection3 = [memberCopy collection];
+          title3 = [collection3 title];
+          asset2 = [memberCopy asset];
+          title4 = [asset2 title];
           v56 = 138412546;
-          v57 = v47;
+          v57 = title3;
           v58 = 2112;
-          v59 = v49;
+          v59 = title4;
           _os_log_impl(&dword_0, v45, OS_LOG_TYPE_DEFAULT, "\\#sortKey Did not find sort key in collection member or asset, assigned next sort key - Collection: %@ Asset: %@\\"", &v56, 0x16u);
         }
       }
 
-      v30 = [v7 collection];
-      [v30 updateMaxSortKeyWithMember:v7];
+      collection4 = [memberCopy collection];
+      [collection4 updateMaxSortKeyWithMember:memberCopy];
       goto LABEL_32;
     }
 
     v40 = +[BULogUtilities shared];
-    v41 = [v40 verboseLoggingEnabled];
+    verboseLoggingEnabled2 = [v40 verboseLoggingEnabled];
 
-    if (v41)
+    if (verboseLoggingEnabled2)
     {
-      v30 = BKLibraryCollectionDevelopmentLog();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+      collection4 = BKLibraryCollectionDevelopmentLog();
+      if (os_log_type_enabled(collection4, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v7 collection];
-        v32 = [v31 title];
-        v33 = [v7 asset];
-        v34 = [v33 title];
+        collection5 = [memberCopy collection];
+        title5 = [collection5 title];
+        asset3 = [memberCopy asset];
+        title6 = [asset3 title];
         v56 = 138412546;
-        v57 = v32;
+        v57 = title5;
         v58 = 2112;
-        v59 = v34;
+        v59 = title6;
         v35 = "\\#sortKey Adopted sort key from asset - Collection: %@ Asset: %@\\"";
         goto LABEL_31;
       }
@@ -2288,9 +2288,9 @@ LABEL_17:
     goto LABEL_33;
   }
 
-  v20 = v19;
-  v21 = [v7 sortKey];
-  if (![v21 integerValue])
+  v20 = sortKey;
+  sortKey3 = [memberCopy sortKey];
+  if (![sortKey3 integerValue])
   {
 
     goto LABEL_17;
@@ -2298,8 +2298,8 @@ LABEL_17:
 
   if (v18 && [v18 integerValue])
   {
-    v22 = [v7 sortKey];
-    v23 = [v22 isEqual:v18];
+    sortKey4 = [memberCopy sortKey];
+    v23 = [sortKey4 isEqual:v18];
 
     if ((v23 & 1) == 0)
     {
@@ -2311,32 +2311,32 @@ LABEL_17:
   {
   }
 
-  v24 = [v7 sortKey];
-  v25 = [v7 asset];
-  v26 = [v25 sortKey];
-  v27 = [v24 isEqual:v26];
+  sortKey5 = [memberCopy sortKey];
+  asset4 = [memberCopy asset];
+  sortKey6 = [asset4 sortKey];
+  v27 = [sortKey5 isEqual:sortKey6];
 
   if (v27)
   {
     v28 = +[BULogUtilities shared];
-    v29 = [v28 verboseLoggingEnabled];
+    verboseLoggingEnabled3 = [v28 verboseLoggingEnabled];
 
-    if (v29)
+    if (verboseLoggingEnabled3)
     {
-      v30 = BKLibraryCollectionDevelopmentLog();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+      collection4 = BKLibraryCollectionDevelopmentLog();
+      if (os_log_type_enabled(collection4, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v7 collection];
-        v32 = [v31 title];
-        v33 = [v7 asset];
-        v34 = [v33 title];
+        collection5 = [memberCopy collection];
+        title5 = [collection5 title];
+        asset3 = [memberCopy asset];
+        title6 = [asset3 title];
         v56 = 138412546;
-        v57 = v32;
+        v57 = title5;
         v58 = 2112;
-        v59 = v34;
+        v59 = title6;
         v35 = "\\#sortKey Identical asset and member sort key - Collection: %@ Asset: %@\\"";
 LABEL_31:
-        _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, v35, &v56, 0x16u);
+        _os_log_impl(&dword_0, collection4, OS_LOG_TYPE_DEFAULT, v35, &v56, 0x16u);
       }
 
 LABEL_32:
@@ -2345,29 +2345,29 @@ LABEL_32:
 
   else
   {
-    v50 = [v7 sortKey];
-    v51 = [v7 asset];
-    v52 = [v51 sortKey];
-    v53 = [v50 isEqual:v52];
+    sortKey7 = [memberCopy sortKey];
+    asset5 = [memberCopy asset];
+    sortKey8 = [asset5 sortKey];
+    v53 = [sortKey7 isEqual:sortKey8];
 
     if ((v53 & 1) == 0)
     {
       v54 = +[BULogUtilities shared];
-      v55 = [v54 verboseLoggingEnabled];
+      verboseLoggingEnabled4 = [v54 verboseLoggingEnabled];
 
-      if (v55)
+      if (verboseLoggingEnabled4)
       {
-        v30 = BKLibraryCollectionDevelopmentLog();
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+        collection4 = BKLibraryCollectionDevelopmentLog();
+        if (os_log_type_enabled(collection4, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v7 collection];
-          v32 = [v31 title];
-          v33 = [v7 asset];
-          v34 = [v33 title];
+          collection5 = [memberCopy collection];
+          title5 = [collection5 title];
+          asset3 = [memberCopy asset];
+          title6 = [asset3 title];
           v56 = 138412546;
-          v57 = v32;
+          v57 = title5;
           v58 = 2112;
-          v59 = v34;
+          v59 = title6;
           v35 = "\\#sortKey SortKey mismatch! - Collection: %@ Asset: %@\\"";
           goto LABEL_31;
         }
@@ -2380,18 +2380,18 @@ LABEL_32:
 LABEL_33:
 }
 
-- (void)updateCollectionMemberAssetLinksInMOCForUpgrade:(id)a3
+- (void)updateCollectionMemberAssetLinksInMOCForUpgrade:(id)upgrade
 {
-  v4 = a3;
+  upgradeCopy = upgrade;
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"BKLibraryAsset"];
   [v5 setPropertiesToFetch:&off_DE2A0];
   v6 = [NSPredicate predicateWithFormat:@"sortKey != NULL"];
   [v5 setPredicate:v6];
 
-  v7 = [v4 executeFetchRequest:v5 error:0];
+  v7 = [upgradeCopy executeFetchRequest:v5 error:0];
   if ([v7 count])
   {
-    v23 = v4;
+    v23 = upgradeCopy;
     v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
     [(BKLibraryCollectionManager *)self setUpgradeAssetSortKeys:v8];
 
@@ -2415,17 +2415,17 @@ LABEL_33:
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          v15 = [v14 sortKey];
-          v16 = [v15 integerValue];
+          sortKey = [v14 sortKey];
+          integerValue = [sortKey integerValue];
 
-          if (v16)
+          if (integerValue)
           {
-            v17 = [v14 permanentOrTemporaryAssetID];
-            if (v17)
+            permanentOrTemporaryAssetID = [v14 permanentOrTemporaryAssetID];
+            if (permanentOrTemporaryAssetID)
             {
-              v18 = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
-              v19 = [v14 sortKey];
-              [v18 setObject:v19 forKey:v17];
+              upgradeAssetSortKeys = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
+              sortKey2 = [v14 sortKey];
+              [upgradeAssetSortKeys setObject:sortKey2 forKey:permanentOrTemporaryAssetID];
             }
           }
         }
@@ -2436,7 +2436,7 @@ LABEL_33:
       while (v11);
     }
 
-    v4 = v23;
+    upgradeCopy = v23;
   }
 
   v20 = [NSFetchRequest fetchRequestWithEntityName:@"BKCollectionMember"];
@@ -2444,22 +2444,22 @@ LABEL_33:
   [v20 setPredicate:v21];
 
   [v20 setFetchBatchSize:32];
-  v22 = [v4 executeFetchRequest:v20 error:0];
+  v22 = [upgradeCopy executeFetchRequest:v20 error:0];
   if ([v22 count])
   {
-    [(BKLibraryCollectionManager *)self p_updateAssetInMembers:v22 moc:v4];
+    [(BKLibraryCollectionManager *)self p_updateAssetInMembers:v22 moc:upgradeCopy];
   }
 }
 
-- (void)clearSortKeysFromAssetsInMOCForUpgrade:(id)a3
+- (void)clearSortKeysFromAssetsInMOCForUpgrade:(id)upgrade
 {
-  v4 = a3;
+  upgradeCopy = upgrade;
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"BKLibraryAsset"];
   [v5 setPropertiesToFetch:&off_DE2B8];
   v6 = [NSPredicate predicateWithFormat:@"sortKey != NULL"];
   [v5 setPredicate:v6];
 
-  v7 = [v4 executeFetchRequest:v5 error:0];
+  v7 = [upgradeCopy executeFetchRequest:v5 error:0];
   if ([v7 count])
   {
     v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
@@ -2500,40 +2500,40 @@ LABEL_33:
   [(BKLibraryCollectionManager *)self setUpgradeAssetSortKeys:0, v14];
 }
 
-- (void)updateCollectionMemberAssetLinksForAssetIDs:(id)a3 temporaryAssetIDs:(id)a4 moc:(id)a5
+- (void)updateCollectionMemberAssetLinksForAssetIDs:(id)ds temporaryAssetIDs:(id)iDs moc:(id)moc
 {
-  v13 = a5;
-  v8 = a4;
-  v9 = a3;
+  mocCopy = moc;
+  iDsCopy = iDs;
+  dsCopy = ds;
   v10 = [NSFetchRequest fetchRequestWithEntityName:@"BKCollectionMember"];
-  v11 = [NSPredicate predicateWithFormat:@"asset == NULL AND (assetID IN %@ OR temporaryAssetID IN %@)", v9, v8];
+  iDsCopy = [NSPredicate predicateWithFormat:@"asset == NULL AND (assetID IN %@ OR temporaryAssetID IN %@)", dsCopy, iDsCopy];
 
-  [v10 setPredicate:v11];
+  [v10 setPredicate:iDsCopy];
   [v10 setFetchBatchSize:32];
-  v12 = [v13 executeFetchRequest:v10 error:0];
+  v12 = [mocCopy executeFetchRequest:v10 error:0];
   if ([v12 count])
   {
-    [(BKLibraryCollectionManager *)self p_updateAssetInMembers:v12 moc:v13];
+    [(BKLibraryCollectionManager *)self p_updateAssetInMembers:v12 moc:mocCopy];
   }
 }
 
-- (void)updateiTunesUCollectionMembersForAssetIDs:(id)a3 temporaryAssetIDs:(id)a4 moc:(id)a5
+- (void)updateiTunesUCollectionMembersForAssetIDs:(id)ds temporaryAssetIDs:(id)iDs moc:(id)moc
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  mocCopy = moc;
   v10 = [NSFetchRequest fetchRequestWithEntityName:@"BKCollectionMember"];
-  v11 = [NSPredicate predicateWithFormat:@"asset.permlink != NULL AND (assetID IN %@ OR temporaryAssetID IN %@)", v7, v8];
-  [v10 setPredicate:v11];
+  iDsCopy = [NSPredicate predicateWithFormat:@"asset.permlink != NULL AND (assetID IN %@ OR temporaryAssetID IN %@)", dsCopy, iDsCopy];
+  [v10 setPredicate:iDsCopy];
 
   [v10 setFetchBatchSize:32];
-  v63 = v9;
-  v12 = [v9 executeFetchRequest:v10 error:0];
+  v63 = mocCopy;
+  v12 = [mocCopy executeFetchRequest:v10 error:0];
   if ([v12 count])
   {
     v58 = v10;
-    v59 = v8;
-    v60 = v7;
+    v59 = iDsCopy;
+    v60 = dsCopy;
     v13 = BKLibraryCollectionLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -2564,18 +2564,18 @@ LABEL_33:
           }
 
           v20 = *(*(&v75 + 1) + 8 * i);
-          v21 = [v20 collectionID];
-          if (v21)
+          collectionID = [v20 collectionID];
+          if (collectionID)
           {
-            v22 = [v14 objectForKeyedSubscript:v21];
+            v22 = [v14 objectForKeyedSubscript:collectionID];
 
             if (!v22)
             {
               v23 = +[NSMutableArray array];
-              [v14 setObject:v23 forKeyedSubscript:v21];
+              [v14 setObject:v23 forKeyedSubscript:collectionID];
             }
 
-            v24 = [v14 objectForKeyedSubscript:v21];
+            v24 = [v14 objectForKeyedSubscript:collectionID];
             [v24 addObject:v20];
           }
         }
@@ -2617,71 +2617,71 @@ LABEL_33:
           }
 
           v32 = *(*(&v68 + 1) + 8 * j);
-          v33 = [v32 asset];
-          v34 = [v33 assetID];
+          asset = [v32 asset];
+          assetID = [asset assetID];
 
-          if (v34)
+          if (assetID)
           {
-            v35 = [v32 assetID];
-            v36 = [v34 isEqualToString:v35];
+            assetID2 = [v32 assetID];
+            v36 = [assetID isEqualToString:assetID2];
 
             if ((v36 & 1) == 0)
             {
               v37 = BKLibraryCollectionLog();
               if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
               {
-                v38 = [v32 temporaryAssetID];
-                v39 = [v32 collectionID];
+                temporaryAssetID = [v32 temporaryAssetID];
+                collectionID2 = [v32 collectionID];
                 *buf = 141559298;
                 v81 = 1752392040;
                 v82 = 2112;
-                v83 = v34;
+                v83 = assetID;
                 v84 = 2160;
                 v85 = 1752392040;
                 v86 = 2112;
-                v87 = v38;
+                v87 = temporaryAssetID;
                 v88 = 2160;
                 v89 = 1752392040;
                 v90 = 2112;
-                v91 = v39;
+                v91 = collectionID2;
                 _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "updateiTunesUCollectionMembers: Updated collection member. new asestID: %{mask.hash}@ tempopraryAsestID: %{mask.hash}@ collectionID: %{mask.hash}@", buf, 0x3Eu);
               }
 
-              [v32 setAssetID:v34];
+              [v32 setAssetID:assetID];
             }
           }
 
-          v40 = [v32 asset];
-          v41 = [v40 temporaryAssetID];
+          asset2 = [v32 asset];
+          temporaryAssetID2 = [asset2 temporaryAssetID];
 
-          if (v41)
+          if (temporaryAssetID2)
           {
-            v42 = [v32 temporaryAssetID];
-            v43 = [v41 isEqualToString:v42];
+            temporaryAssetID3 = [v32 temporaryAssetID];
+            v43 = [temporaryAssetID2 isEqualToString:temporaryAssetID3];
 
             if ((v43 & 1) == 0)
             {
               v44 = BKLibraryCollectionLog();
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
-                v45 = [v32 temporaryAssetID];
-                v46 = [v32 collectionID];
+                temporaryAssetID4 = [v32 temporaryAssetID];
+                collectionID3 = [v32 collectionID];
                 *buf = 141559298;
                 v81 = 1752392040;
                 v82 = 2112;
-                v83 = v34;
+                v83 = assetID;
                 v84 = 2160;
                 v85 = 1752392040;
                 v86 = 2112;
-                v87 = v45;
+                v87 = temporaryAssetID4;
                 v88 = 2160;
                 v89 = 1752392040;
                 v90 = 2112;
-                v91 = v46;
+                v91 = collectionID3;
                 _os_log_impl(&dword_0, v44, OS_LOG_TYPE_DEFAULT, "updateiTunesUCollectionMembers: Updated collection member. asestID: %{mask.hash}@ new tempopraryAsestID: %{mask.hash}@ collectionID: %{mask.hash}@", buf, 0x3Eu);
               }
 
-              [v32 setTemporaryAssetID:v41];
+              [v32 setTemporaryAssetID:temporaryAssetID2];
             }
           }
         }
@@ -2715,21 +2715,21 @@ LABEL_33:
           v52 = BKLibraryCollectionLog();
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
           {
-            v53 = [v51 assetID];
-            v54 = [v51 temporaryAssetID];
-            v55 = [v51 collectionID];
+            assetID3 = [v51 assetID];
+            temporaryAssetID5 = [v51 temporaryAssetID];
+            collectionID4 = [v51 collectionID];
             *buf = 141559298;
             v81 = 1752392040;
             v82 = 2112;
-            v83 = v53;
+            v83 = assetID3;
             v84 = 2160;
             v85 = 1752392040;
             v86 = 2112;
-            v87 = v54;
+            v87 = temporaryAssetID5;
             v88 = 2160;
             v89 = 1752392040;
             v90 = 2112;
-            v91 = v55;
+            v91 = collectionID4;
             _os_log_impl(&dword_0, v52, OS_LOG_TYPE_DEFAULT, "updateiTunesUCollectionMembers: Deleted collection member. asestID: %{mask.hash}@ tempopraryAsestID: %{mask.hash}@ collectionID: %{mask.hash}@", buf, 0x3Eu);
           }
 
@@ -2742,8 +2742,8 @@ LABEL_33:
       while (v48);
     }
 
-    v8 = v59;
-    v7 = v60;
+    iDsCopy = v59;
+    dsCopy = v60;
     v12 = v57;
     v10 = v58;
   }
@@ -2751,59 +2751,59 @@ LABEL_33:
 
 - (void)fixCollectionMemberAssetLinks
 {
-  v3 = [(BKLibraryCollectionManager *)self libraryManager];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_6C5E8;
   v4[3] = &unk_D56B8;
   v4[4] = self;
-  [v3 performBlockOnCollectionsWorkerQueueAndWait:v4];
+  [libraryManager performBlockOnCollectionsWorkerQueueAndWait:v4];
 }
 
 - (void)fixPDFCollectionIfNeeded
 {
-  v3 = [(BKLibraryCollectionManager *)self libraryManager];
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_6C8B8;
   v4[3] = &unk_D56B8;
   v4[4] = self;
-  [v3 performBlockOnCollectionsWorkerQueue:v4];
+  [libraryManager performBlockOnCollectionsWorkerQueue:v4];
 }
 
-- (void)_addMemberWithAsset:(id)a3 toCollection:(id)a4 moc:(id)a5
+- (void)_addMemberWithAsset:(id)asset toCollection:(id)collection moc:(id)moc
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 sortKey];
-  if (![v11 integerValue])
+  assetCopy = asset;
+  collectionCopy = collection;
+  mocCopy = moc;
+  sortKey = [assetCopy sortKey];
+  if (![sortKey integerValue])
   {
 
-    v11 = 0;
+    sortKey = 0;
   }
 
-  v12 = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
+  upgradeAssetSortKeys = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
 
-  if (v12)
+  if (upgradeAssetSortKeys)
   {
-    v13 = [v8 isContainer];
-    if (!v11)
+    isContainer = [assetCopy isContainer];
+    if (!sortKey)
     {
-      if (v13)
+      if (isContainer)
       {
-        v28 = v10;
-        v29 = v9;
+        v28 = mocCopy;
+        v29 = collectionCopy;
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v14 = [v8 purchasedAndLocalSeriesItems];
-        v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        purchasedAndLocalSeriesItems = [assetCopy purchasedAndLocalSeriesItems];
+        v15 = [purchasedAndLocalSeriesItems countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v15)
         {
           v16 = v15;
-          v11 = 0;
+          sortKey = 0;
           v17 = *v31;
           do
           {
@@ -2811,24 +2811,24 @@ LABEL_33:
             {
               if (*v31 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(purchasedAndLocalSeriesItems);
               }
 
               v19 = *(*(&v30 + 1) + 8 * i);
-              v20 = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
-              v21 = [v19 assetID];
-              v22 = [v20 objectForKey:v21];
+              upgradeAssetSortKeys2 = [(BKLibraryCollectionManager *)self upgradeAssetSortKeys];
+              assetID = [v19 assetID];
+              v22 = [upgradeAssetSortKeys2 objectForKey:assetID];
 
-              v23 = [v22 integerValue];
-              if (v23 > [v11 integerValue])
+              integerValue = [v22 integerValue];
+              if (integerValue > [sortKey integerValue])
               {
                 v24 = v22;
 
-                v11 = v24;
+                sortKey = v24;
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+            v16 = [purchasedAndLocalSeriesItems countByEnumeratingWithState:&v30 objects:v34 count:16];
           }
 
           while (v16);
@@ -2836,52 +2836,52 @@ LABEL_33:
 
         else
         {
-          v11 = 0;
+          sortKey = 0;
         }
 
-        v10 = v28;
-        v9 = v29;
+        mocCopy = v28;
+        collectionCopy = v29;
       }
     }
   }
 
-  v25 = [v8 assetID];
-  v26 = [v8 temporaryAssetID];
-  v27 = [v9 addCollectionMemberAvoidingDupesWithAsset:v8 assetID:v25 temporaryAssetID:v26 sortKey:v11 forceToTop:0];
+  assetID2 = [assetCopy assetID];
+  temporaryAssetID = [assetCopy temporaryAssetID];
+  v27 = [collectionCopy addCollectionMemberAvoidingDupesWithAsset:assetCopy assetID:assetID2 temporaryAssetID:temporaryAssetID sortKey:sortKey forceToTop:0];
 }
 
 - (void)resetCollections
 {
-  v2 = [(BKLibraryCollectionManager *)self coalescedResetAllCollections];
-  [v2 signalWithCompletion:&stru_D7788];
+  coalescedResetAllCollections = [(BKLibraryCollectionManager *)self coalescedResetAllCollections];
+  [coalescedResetAllCollections signalWithCompletion:&stru_D7788];
 }
 
-- (void)resetCollectionsForAssetIDs:(id)a3 completion:(id)a4
+- (void)resetCollectionsForAssetIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryCollectionManager *)self libraryManager];
+  dsCopy = ds;
+  completionCopy = completion;
+  libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_6D114;
   v11[3] = &unk_D5B30;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlockOnCollectionsWorkerQueue:v11];
+  v12 = dsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  [libraryManager performBlockOnCollectionsWorkerQueue:v11];
 }
 
-- (void)processGatheredChangedAssetsCollections:(id)a3
+- (void)processGatheredChangedAssetsCollections:(id)collections
 {
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_6D1F8;
   v9 = &unk_D5420;
-  v10 = self;
-  v11 = a3;
-  v4 = v11;
+  selfCopy = self;
+  collectionsCopy = collections;
+  v4 = collectionsCopy;
   os_unfair_lock_lock_with_options();
   sub_6D1F8(&v6);
   os_unfair_lock_unlock(&self->_accessLock);
@@ -2889,35 +2889,35 @@ LABEL_33:
   [v5 signalWithCompletion:&stru_D77A8];
 }
 
-- (id)gatherChangedAssetsCollectionsWithLibraryMoc:(id)a3
+- (id)gatherChangedAssetsCollectionsWithLibraryMoc:(id)moc
 {
-  v3 = a3;
+  mocCopy = moc;
   v4 = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@ AND (assetID != NULL OR temporaryAssetID != NULL)", objc_opt_class()];
   v5 = [NSSet setWithObjects:@"contentType", @"state", @"isSample", @"localOnlySeriesItemsParent", @"purchasedAndLocalParent", @"purchasedAndLocalSeriesItems", @"path", 0];
-  v6 = [v3 updatedObjects];
+  updatedObjects = [mocCopy updatedObjects];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_6D574;
   v23[3] = &unk_D77D0;
   v7 = v5;
   v24 = v7;
-  v8 = [v6 objectsPassingTest:v23];
+  v8 = [updatedObjects objectsPassingTest:v23];
 
   v9 = +[NSMutableSet set];
-  v10 = [v3 insertedObjects];
+  insertedObjects = [mocCopy insertedObjects];
 
-  [v9 unionSet:v10];
+  [v9 unionSet:insertedObjects];
   [v9 unionSet:v8];
   v22 = v4;
   v11 = [v9 filteredSetUsingPredicate:v4];
-  v12 = [v11 allObjects];
-  v13 = [v12 valueForKey:@"assetID"];
-  v14 = [v13 bu_arrayByRemovingNSNulls];
-  v15 = [NSSet setWithArray:v14];
+  allObjects = [v11 allObjects];
+  v13 = [allObjects valueForKey:@"assetID"];
+  bu_arrayByRemovingNSNulls = [v13 bu_arrayByRemovingNSNulls];
+  v15 = [NSSet setWithArray:bu_arrayByRemovingNSNulls];
 
-  v16 = [v12 valueForKey:@"temporaryAssetID"];
-  v17 = [v16 bu_arrayByRemovingNSNulls];
-  v18 = [NSSet setWithArray:v17];
+  v16 = [allObjects valueForKey:@"temporaryAssetID"];
+  bu_arrayByRemovingNSNulls2 = [v16 bu_arrayByRemovingNSNulls];
+  v18 = [NSSet setWithArray:bu_arrayByRemovingNSNulls2];
 
   v19 = [v15 setByAddingObjectsFromSet:v18];
   v20 = BKLibraryLog();
@@ -2929,16 +2929,16 @@ LABEL_33:
   return v19;
 }
 
-- (void)_performResetCollectionsInMoc:(id)a3 changeSet:(id)a4 completion:(id)a5
+- (void)_performResetCollectionsInMoc:(id)moc changeSet:(id)set completion:(id)completion
 {
-  v186 = a3;
-  v147 = a4;
-  v146 = a5;
+  mocCopy = moc;
+  setCopy = set;
+  completionCopy = completion;
   kdebug_trace();
   v7 = BKLibraryLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v147 count]);
+    v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [setCopy count]);
     *buf = 138412290;
     v222 = v8;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "#resetCollections: start for changeSet of size %@", buf, 0xCu);
@@ -2949,7 +2949,7 @@ LABEL_33:
   v144 = v9;
   [v10 setPredicate:v9];
   v143 = v10;
-  [v186 executeFetchRequest:v10 error:0];
+  [mocCopy executeFetchRequest:v10 error:0];
   v217 = 0u;
   v218 = 0u;
   v219 = 0u;
@@ -2992,8 +2992,8 @@ LABEL_33:
       v18 = *(*(&v217 + 1) + 8 * i);
       if (([v18 isDeleted] & 1) == 0)
       {
-        v19 = [v18 collectionID];
-        if ([v19 isEqualToString:v14])
+        collectionID = [v18 collectionID];
+        if ([collectionID isEqualToString:v14])
         {
           v21 = v164;
           v20 = v165;
@@ -3001,7 +3001,7 @@ LABEL_33:
           goto LABEL_20;
         }
 
-        if ([v19 isEqualToString:v15])
+        if ([collectionID isEqualToString:v15])
         {
           v21 = v163;
           v20 = v165;
@@ -3009,7 +3009,7 @@ LABEL_33:
           goto LABEL_20;
         }
 
-        if ([v19 isEqualToString:v16])
+        if ([collectionID isEqualToString:v16])
         {
           v21 = v153;
           v20 = v165;
@@ -3017,7 +3017,7 @@ LABEL_33:
           goto LABEL_20;
         }
 
-        if ([v19 isEqualToString:v180])
+        if ([collectionID isEqualToString:v180])
         {
           v21 = v152;
           v20 = v165;
@@ -3025,7 +3025,7 @@ LABEL_33:
           goto LABEL_20;
         }
 
-        if ([v19 isEqualToString:v177])
+        if ([collectionID isEqualToString:v177])
         {
           v21 = v170;
           v20 = v165;
@@ -3035,7 +3035,7 @@ LABEL_33:
 
         v21 = v165;
         v20 = v18;
-        if ([v19 isEqualToString:v174])
+        if ([collectionID isEqualToString:v174])
         {
 LABEL_20:
           v22 = v18;
@@ -3051,12 +3051,12 @@ LABEL_20:
   while (v12);
 LABEL_26:
 
-  v23 = v147;
+  v23 = setCopy;
   v24 = &_s10Foundation12NotificationV6objectypSgvg_ptr;
-  if ([v147 count])
+  if ([setCopy count])
   {
-    v25 = [(BKLibraryCollectionManager *)self libraryManager];
-    v26 = [v25 libraryAssetsWithAssetIDsContainedInList:v147 tempAssetIDs:v147 inManagedObjectContext:v186];
+    libraryManager = [(BKLibraryCollectionManager *)self libraryManager];
+    v26 = [libraryManager libraryAssetsWithAssetIDsContainedInList:setCopy tempAssetIDs:setCopy inManagedObjectContext:mocCopy];
 
     v178 = [v26 count];
   }
@@ -3068,9 +3068,9 @@ LABEL_26:
     [v28 setPredicate:v27];
     v178 = 32;
     [v28 setFetchBatchSize:32];
-    v26 = [v186 executeFetchRequest:v28 error:0];
+    v26 = [mocCopy executeFetchRequest:v28 error:0];
 
-    v23 = v147;
+    v23 = setCopy;
   }
 
   v29 = BKLibraryLog();
@@ -3116,39 +3116,39 @@ LABEL_26:
           v36 = *(*(&v213 + 1) + 8 * v35);
           if (!(v34 % v178) && ([v32 count] || objc_msgSend(v33, "count")))
           {
-            [(BKLibraryCollectionManager *)self updateCollectionMemberAssetLinksForAssetIDs:v32 temporaryAssetIDs:v33 moc:v186];
+            [(BKLibraryCollectionManager *)self updateCollectionMemberAssetLinksForAssetIDs:v32 temporaryAssetIDs:v33 moc:mocCopy];
             [v32 removeAllObjects];
             [v33 removeAllObjects];
           }
 
-          v37 = [v36 assetID];
+          assetID = [v36 assetID];
 
-          if (v37)
+          if (assetID)
           {
-            v38 = [v36 assetID];
-            [v32 addObject:v38];
+            assetID2 = [v36 assetID];
+            [v32 addObject:assetID2];
           }
 
-          v39 = [v36 temporaryAssetID];
+          temporaryAssetID = [v36 temporaryAssetID];
 
-          if (v39)
+          if (temporaryAssetID)
           {
-            v40 = [v36 temporaryAssetID];
-            [v33 addObject:v40];
+            temporaryAssetID2 = [v36 temporaryAssetID];
+            [v33 addObject:temporaryAssetID2];
           }
 
-          v41 = [v36 contentType];
-          v42 = [v36 state];
-          v43 = [v36 collectionMembers];
-          v44 = [v43 allObjects];
-          v45 = [v44 valueForKey:@"collection"];
+          contentType = [v36 contentType];
+          state = [v36 state];
+          collectionMembers = [v36 collectionMembers];
+          allObjects = [collectionMembers allObjects];
+          v45 = [allObjects valueForKey:@"collection"];
 
-          v46 = [v36 localOnlySeriesItemsParent];
-          if (v46)
+          localOnlySeriesItemsParent = [v36 localOnlySeriesItemsParent];
+          if (localOnlySeriesItemsParent)
           {
             v47 = 0;
             v48 = 0;
-            if (v41 == 5)
+            if (contentType == 5)
             {
               goto LABEL_63;
             }
@@ -3156,20 +3156,20 @@ LABEL_26:
             goto LABEL_56;
           }
 
-          v168 = [v36 purchasedAndLocalParent];
-          if (v168 || v42 == 5)
+          purchasedAndLocalParent = [v36 purchasedAndLocalParent];
+          if (purchasedAndLocalParent || state == 5)
           {
             v47 = 0;
             v48 = 0;
-            if (v41 == 5)
+            if (contentType == 5)
             {
               goto LABEL_62;
             }
 
 LABEL_56:
-            v49 = [v36 seriesContainer];
-            v50 = [v49 seriesBooks];
-            v48 = [v50 count] != &dword_0 + 1;
+            seriesContainer = [v36 seriesContainer];
+            seriesBooks = [seriesContainer seriesBooks];
+            v48 = [seriesBooks count] != &dword_0 + 1;
 
             if ((v47 & 1) == 0)
             {
@@ -3179,30 +3179,30 @@ LABEL_56:
             goto LABEL_57;
           }
 
-          v166 = [v36 seriesID];
-          if (!v166)
+          seriesID = [v36 seriesID];
+          if (!seriesID)
           {
             goto LABEL_61;
           }
 
-          v159 = [v36 seriesContainer];
-          if (!v159)
+          seriesContainer2 = [v36 seriesContainer];
+          if (!seriesContainer2)
           {
-            v159 = 0;
+            seriesContainer2 = 0;
 LABEL_61:
 
             v48 = 0;
-            v168 = 0;
+            purchasedAndLocalParent = 0;
 LABEL_62:
 
             goto LABEL_63;
           }
 
-          v157 = [v36 seriesContainer];
-          v155 = [v157 purchasedAndLocalSeriesItems];
+          seriesContainer3 = [v36 seriesContainer];
+          purchasedAndLocalSeriesItems = [seriesContainer3 purchasedAndLocalSeriesItems];
           v48 = 0;
-          v168 = 0;
-          if ([v155 count] && v41 != 5)
+          purchasedAndLocalParent = 0;
+          if ([purchasedAndLocalSeriesItems count] && contentType != 5)
           {
             v47 = 1;
             goto LABEL_56;
@@ -3211,30 +3211,30 @@ LABEL_62:
 LABEL_57:
 
 LABEL_58:
-          if (!v46)
+          if (!localOnlySeriesItemsParent)
           {
             goto LABEL_62;
           }
 
 LABEL_63:
 
-          if (v164 && ([v45 containsObject:v164] & 1) == 0 && (v41 == 5 || !v48 && (objc_msgSend(v36, "isStoreItem") & 1) == 0))
+          if (v164 && ([v45 containsObject:v164] & 1) == 0 && (contentType == 5 || !v48 && (objc_msgSend(v36, "isStoreItem") & 1) == 0))
           {
-            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v164 moc:v186];
+            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v164 moc:mocCopy];
           }
 
           if (v170 && [v36 shouldBeInDownloadedCollection] && (objc_msgSend(v45, "containsObject:", v170) & 1) == 0)
           {
-            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v170 moc:v186];
+            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v170 moc:mocCopy];
           }
 
           if (v165 && [v36 shouldBeInMySamplesCollection] && (objc_msgSend(v45, "containsObject:", v165) & 1) == 0)
           {
-            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v165 moc:v186];
+            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v165 moc:mocCopy];
             v51 = +[BULogUtilities shared];
-            v52 = [v51 verboseLoggingEnabled];
+            verboseLoggingEnabled = [v51 verboseLoggingEnabled];
 
-            if (v52)
+            if (verboseLoggingEnabled)
             {
               v53 = BKLibraryLog();
               if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -3245,29 +3245,29 @@ LABEL_63:
               }
             }
 
-            v54 = [v36 storeID];
+            storeID = [v36 storeID];
 
-            if (v54)
+            if (storeID)
             {
               v55 = [BCMutableStoreItem alloc];
-              v56 = [v36 storeID];
-              v57 = [v55 initWithStoreID:v56];
+              storeID2 = [v36 storeID];
+              v57 = [v55 initWithStoreID:storeID2];
 
               v58 = +[BCCloudAssetManager sharedManager];
-              v59 = [v58 storeAssetManager];
+              storeAssetManager = [v58 storeAssetManager];
 
               v212[0] = _NSConcreteStackBlock;
               v212[1] = 3221225472;
               v212[2] = sub_6EBB4;
               v212[3] = &unk_D77F8;
               v212[4] = v36;
-              [v59 addStoreItem:v57 completion:v212];
+              [storeAssetManager addStoreItem:v57 completion:v212];
             }
           }
 
           if ([v36 state] == 2)
           {
-            v60 = [BKAssetUtilities isAudiobookTrackContentType:v41]^ 1;
+            v60 = [BKAssetUtilities isAudiobookTrackContentType:contentType]^ 1;
           }
 
           else
@@ -3276,16 +3276,16 @@ LABEL_63:
           }
 
           objc_opt_class();
-          v61 = [v36 seriesBooks];
-          v62 = [v61 anyObject];
+          seriesBooks2 = [v36 seriesBooks];
+          anyObject = [seriesBooks2 anyObject];
           v63 = BUDynamicCast();
 
-          v64 = [v63 isStoreAudiobook];
-          v65 = [v64 BOOLValue];
+          isStoreAudiobook = [v63 isStoreAudiobook];
+          bOOLValue = [isStoreAudiobook BOOLValue];
 
-          if (v163 && (v41 <= 4 && ((1 << v41) & 0x16) != 0 || !((v41 != 5) | v65 & 1)) && (([v45 containsObject:v163] | v48) & 1) == 0 && (v66 = v163, !objc_msgSend(v36, "isStoreItem")) || v153 && v41 == 3 && (v66 = v153, !objc_msgSend(v45, "containsObject:", v153)) || v152 && (v41 != 6 ? (v67 = v60) : (v67 = 0), (v67 != 1 || !((v41 != 5) | (v65 ^ 1) & 1)) && ((objc_msgSend(v45, "containsObject:", v152) | v48) & 1) == 0 && (objc_msgSend(v36, "isStoreItem") & 1) == 0 && (v66 = v152, (objc_msgSend(v36, "isSample") & 1) == 0)))
+          if (v163 && (contentType <= 4 && ((1 << contentType) & 0x16) != 0 || !((contentType != 5) | bOOLValue & 1)) && (([v45 containsObject:v163] | v48) & 1) == 0 && (v66 = v163, !objc_msgSend(v36, "isStoreItem")) || v153 && contentType == 3 && (v66 = v153, !objc_msgSend(v45, "containsObject:", v153)) || v152 && (contentType != 6 ? (v67 = v60) : (v67 = 0), (v67 != 1 || !((contentType != 5) | (bOOLValue ^ 1) & 1)) && ((objc_msgSend(v45, "containsObject:", v152) | v48) & 1) == 0 && (objc_msgSend(v36, "isStoreItem") & 1) == 0 && (v66 = v152, (objc_msgSend(v36, "isSample") & 1) == 0)))
           {
-            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v66 moc:v186];
+            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v36 toCollection:v66 moc:mocCopy];
           }
 
           v35 = v35 + 1;
@@ -3304,8 +3304,8 @@ LABEL_63:
 
     if ([v32 count] || objc_msgSend(v33, "count"))
     {
-      [(BKLibraryCollectionManager *)self updateCollectionMemberAssetLinksForAssetIDs:v32 temporaryAssetIDs:v33 moc:v186];
-      [(BKLibraryCollectionManager *)self updateiTunesUCollectionMembersForAssetIDs:v32 temporaryAssetIDs:v33 moc:v186];
+      [(BKLibraryCollectionManager *)self updateCollectionMemberAssetLinksForAssetIDs:v32 temporaryAssetIDs:v33 moc:mocCopy];
+      [(BKLibraryCollectionManager *)self updateiTunesUCollectionMembersForAssetIDs:v32 temporaryAssetIDs:v33 moc:mocCopy];
     }
 
     v26 = v145;
@@ -3335,13 +3335,13 @@ LABEL_63:
           }
 
           v73 = *(*(&v208 + 1) + 8 * j);
-          v74 = [v73 collectionMembers];
-          v75 = [v74 allObjects];
-          v76 = [v75 valueForKey:@"collection"];
+          collectionMembers2 = [v73 collectionMembers];
+          allObjects2 = [collectionMembers2 allObjects];
+          v76 = [allObjects2 valueForKey:@"collection"];
 
           if ([v73 shouldBeInDownloadedCollection] && (objc_msgSend(v76, "containsObject:", v170) & 1) == 0)
           {
-            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v73 toCollection:v170 moc:v186];
+            [(BKLibraryCollectionManager *)self _addMemberWithAsset:v73 toCollection:v170 moc:mocCopy];
           }
 
           if (([v73 shouldBeInDownloadedCollection] & 1) == 0 && objc_msgSend(v76, "containsObject:", v170))
@@ -3350,8 +3350,8 @@ LABEL_63:
             v207 = 0u;
             v204 = 0u;
             v205 = 0u;
-            v77 = [v73 collectionMembers];
-            v78 = [v77 countByEnumeratingWithState:&v204 objects:v238 count:16];
+            collectionMembers3 = [v73 collectionMembers];
+            v78 = [collectionMembers3 countByEnumeratingWithState:&v204 objects:v238 count:16];
             if (v78)
             {
               v79 = v78;
@@ -3362,20 +3362,20 @@ LABEL_63:
                 {
                   if (*v205 != v80)
                   {
-                    objc_enumerationMutation(v77);
+                    objc_enumerationMutation(collectionMembers3);
                   }
 
                   v82 = *(*(&v204 + 1) + 8 * k);
-                  v83 = [v82 collection];
+                  collection = [v82 collection];
 
-                  if (v83 == v170)
+                  if (collection == v170)
                   {
-                    [v186 deleteObject:v82];
+                    [mocCopy deleteObject:v82];
                     goto LABEL_132;
                   }
                 }
 
-                v79 = [v77 countByEnumeratingWithState:&v204 objects:v238 count:16];
+                v79 = [collectionMembers3 countByEnumeratingWithState:&v204 objects:v238 count:16];
                 if (v79)
                 {
                   continue;
@@ -3406,7 +3406,7 @@ LABEL_132:
 
   [v84 setFetchBatchSize:32];
   v142 = v84;
-  v86 = [v186 executeFetchRequest:v84 error:0];
+  v86 = [mocCopy executeFetchRequest:v84 error:0];
   if ([v86 count])
   {
     v202 = 0u;
@@ -3428,7 +3428,7 @@ LABEL_132:
             objc_enumerationMutation(v87);
           }
 
-          [v186 deleteObject:*(*(&v200 + 1) + 8 * m)];
+          [mocCopy deleteObject:*(*(&v200 + 1) + 8 * m)];
         }
 
         v89 = [v87 countByEnumeratingWithState:&v200 objects:v237 count:16];
@@ -3446,7 +3446,7 @@ LABEL_132:
   v140 = v92;
   [v93 setPredicate:v92];
   v139 = v93;
-  v94 = [v186 executeFetchRequest:v93 error:0];
+  v94 = [mocCopy executeFetchRequest:v93 error:0];
   v196 = 0u;
   v197 = 0u;
   v198 = 0u;
@@ -3469,32 +3469,32 @@ LABEL_132:
         }
 
         v100 = *(*(&v196 + 1) + 8 * v99);
-        v101 = [v100 asset];
-        v102 = [v101 seriesContainer];
-        v103 = [v102 seriesBooks];
-        v104 = [v103 count];
+        asset = [v100 asset];
+        seriesContainer4 = [asset seriesContainer];
+        seriesBooks3 = [seriesContainer4 seriesBooks];
+        v104 = [seriesBooks3 count];
 
         if (v104 != &dword_0 + 1)
         {
-          v105 = [v101 localOnlySeriesItemsParent];
-          if (v105 || ([v101 purchasedAndLocalParent], (v105 = objc_claimAutoreleasedReturnValue()) != 0))
+          localOnlySeriesItemsParent2 = [asset localOnlySeriesItemsParent];
+          if (localOnlySeriesItemsParent2 || ([asset purchasedAndLocalParent], (localOnlySeriesItemsParent2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
 
 LABEL_154:
-            [v186 deleteObject:v100];
+            [mocCopy deleteObject:v100];
             goto LABEL_155;
           }
 
-          v106 = [v101 seriesID];
-          if (v106)
+          seriesID2 = [asset seriesID];
+          if (seriesID2)
           {
-            v107 = v106;
-            v108 = [v101 seriesContainer];
-            if (v108)
+            v107 = seriesID2;
+            seriesContainer5 = [asset seriesContainer];
+            if (seriesContainer5)
             {
-              v109 = [v101 seriesContainer];
-              v110 = [v109 purchasedAndLocalSeriesItems];
-              v111 = [v110 count];
+              seriesContainer6 = [asset seriesContainer];
+              purchasedAndLocalSeriesItems2 = [seriesContainer6 purchasedAndLocalSeriesItems];
+              v111 = [purchasedAndLocalSeriesItems2 count];
 
               v95 = v148;
               if (v111)
@@ -3555,11 +3555,11 @@ LABEL_155:
       v172 = [v114 isEqualToString:v156];
       v116 = [NSFetchRequest fetchRequestWithEntityName:@"BKCollectionMember"];
       v183 = v114;
-      v117 = [NSPredicate predicateWithFormat:@"collection.collectionID == %@", v114];
-      [v116 setPredicate:v117];
+      v114 = [NSPredicate predicateWithFormat:@"collection.collectionID == %@", v114];
+      [v116 setPredicate:v114];
 
       v167 = v116;
-      v118 = [v186 executeFetchRequest:v116 error:0];
+      v118 = [mocCopy executeFetchRequest:v116 error:0];
       v188 = 0u;
       v189 = 0u;
       v190 = 0u;
@@ -3582,13 +3582,13 @@ LABEL_155:
             }
 
             v124 = *(*(&v188 + 1) + 8 * n);
-            v125 = [v124 asset];
-            v126 = v125;
-            if (v125)
+            asset2 = [v124 asset];
+            v126 = asset2;
+            if (asset2)
             {
               if (v115)
               {
-                if (([v125 isAudiobook] & 1) == 0 && objc_msgSend(v126, "contentType") != 3)
+                if (([asset2 isAudiobook] & 1) == 0 && objc_msgSend(v126, "contentType") != 3)
                 {
                   goto LABEL_186;
                 }
@@ -3596,13 +3596,13 @@ LABEL_155:
 
               else if (v185)
               {
-                if (([v125 isBook] & 1) == 0)
+                if (([asset2 isBook] & 1) == 0)
                 {
                   goto LABEL_186;
                 }
               }
 
-              else if (!v172 || [v125 contentType] == 3)
+              else if (!v172 || [asset2 contentType] == 3)
               {
                 goto LABEL_186;
               }
@@ -3610,30 +3610,30 @@ LABEL_155:
               v127 = BKLibraryCollectionLog();
               if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
               {
-                v128 = [v126 title];
-                v129 = [v126 assetID];
-                v130 = [v126 isBook];
-                v131 = [v126 isAudiobook];
-                v132 = [v126 contentType];
+                title = [v126 title];
+                assetID3 = [v126 assetID];
+                isBook = [v126 isBook];
+                isAudiobook = [v126 isAudiobook];
+                contentType2 = [v126 contentType];
                 *buf = 138413570;
-                v222 = v128;
+                v222 = title;
                 v223 = 2112;
                 v224 = v183;
                 v225 = 2112;
-                v226 = v129;
+                v226 = assetID3;
                 v227 = 1024;
-                v228 = v130;
+                v228 = isBook;
                 v229 = 1024;
-                v230 = v131;
+                v230 = isAudiobook;
                 v231 = 1024;
-                v232 = v132;
+                v232 = contentType2;
                 _os_log_impl(&dword_0, v127, OS_LOG_TYPE_DEFAULT, "Removing '%@' from %@: id %@, isBook %d, isAudiobook %d, contentType %d ", buf, 0x32u);
 
                 v115 = v179;
                 v122 = v176;
               }
 
-              [v186 deleteObject:v124];
+              [mocCopy deleteObject:v124];
             }
 
 LABEL_186:
@@ -3665,10 +3665,10 @@ LABEL_186:
 
 LABEL_190:
 
-  if ([v186 hasChanges])
+  if ([mocCopy hasChanges])
   {
     v187 = 0;
-    [v186 save:&v187];
+    [mocCopy save:&v187];
     v133 = v187;
     if (v133)
     {
@@ -3683,13 +3683,13 @@ LABEL_190:
   v135 = BKLibraryLog();
   if (os_log_type_enabled(v135, OS_LOG_TYPE_DEFAULT))
   {
-    v136 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v147 count]);
+    v136 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [setCopy count]);
     *buf = 138412290;
     v222 = v136;
     _os_log_impl(&dword_0, v135, OS_LOG_TYPE_DEFAULT, "#resetCollections: done for changeSet of size %@", buf, 0xCu);
   }
 
-  v137 = objc_retainBlock(v146);
+  v137 = objc_retainBlock(completionCopy);
   v138 = v137;
   if (v137)
   {
@@ -3699,10 +3699,10 @@ LABEL_190:
   kdebug_trace();
 }
 
-- (id)_defaultManagerAssetsForDefaultCollectionWithID:(id)a3 inManagedObjectContext:(id)a4
+- (id)_defaultManagerAssetsForDefaultCollectionWithID:(id)d inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = [BKCollection contentTypesForDefaultCollectionWithID:a3];
+  contextCopy = context;
+  v6 = [BKCollection contentTypesForDefaultCollectionWithID:d];
   if (v6)
   {
     v7 = [[NSFetchRequest alloc] initWithEntityName:@"BKLibraryAsset"];
@@ -3712,7 +3712,7 @@ LABEL_190:
     [v7 setPredicate:v8];
 
     v13 = 0;
-    v9 = [v5 executeFetchRequest:v7 error:&v13];
+    v9 = [contextCopy executeFetchRequest:v7 error:&v13];
     v10 = v13;
     if (!v9)
     {

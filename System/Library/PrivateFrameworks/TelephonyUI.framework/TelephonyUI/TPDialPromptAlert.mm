@@ -1,52 +1,52 @@
 @interface TPDialPromptAlert
-- (TPDialPromptAlert)initWithButtonTitle:(id)a3 handles:(id)a4 isFaceTimeRequest:(BOOL)a5 dialAction:(id)a6;
-- (TPDialPromptAlert)initWithButtonTitleForDualSim:(id)a3 handles:(id)a4 isFaceTimeRequest:(BOOL)a5 dialAction:(id)a6;
-- (TPDialPromptAlert)initWithDialRequest:(id)a3 dialAction:(id)a4;
-- (TPDialPromptAlert)initWithDialRequest:(id)a3 dialAction:(id)a4 availableSenderIdentities:(id)a5;
-- (TPDialPromptAlert)initWithJoinRequest:(id)a3 dialAction:(id)a4;
+- (TPDialPromptAlert)initWithButtonTitle:(id)title handles:(id)handles isFaceTimeRequest:(BOOL)request dialAction:(id)action;
+- (TPDialPromptAlert)initWithButtonTitleForDualSim:(id)sim handles:(id)handles isFaceTimeRequest:(BOOL)request dialAction:(id)action;
+- (TPDialPromptAlert)initWithDialRequest:(id)request dialAction:(id)action;
+- (TPDialPromptAlert)initWithDialRequest:(id)request dialAction:(id)action availableSenderIdentities:(id)identities;
+- (TPDialPromptAlert)initWithJoinRequest:(id)request dialAction:(id)action;
 - (id)otherButtonTitle;
 - (id)phoneNumberHandle;
 - (id)title;
 - (void)dealloc;
-- (void)defaultDualSimResponseWithIndex:(unint64_t)a3;
+- (void)defaultDualSimResponseWithIndex:(unint64_t)index;
 - (void)defaultResponse;
 - (void)invalidate;
 - (void)otherDualSimResponse;
 - (void)otherResponse;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 - (void)show;
 @end
 
 @implementation TPDialPromptAlert
 
-- (TPDialPromptAlert)initWithDialRequest:(id)a3 dialAction:(id)a4
+- (TPDialPromptAlert)initWithDialRequest:(id)request dialAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  actionCopy = action;
   v8 = TelephonyUIBundle();
   v9 = [v8 localizedStringForKey:@"CALL" value:&stru_1F2CA8008 table:@"General"];
 
-  v10 = [v6 provider];
-  if ([v10 isFaceTimeProvider])
+  provider = [requestCopy provider];
+  if ([provider isFaceTimeProvider])
   {
-    v11 = [v6 isVideo];
+    isVideo = [requestCopy isVideo];
   }
 
   else
   {
-    v11 = 0;
+    isVideo = 0;
   }
 
-  v12 = [v6 handle];
-  if (!v12)
+  handle = [requestCopy handle];
+  if (!handle)
   {
     goto LABEL_8;
   }
 
-  v13 = v12;
-  if ([v12 type] != 2 || (TUDialAssistedDialRequest(), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "handle"), v15 = objc_claimAutoreleasedReturnValue(), v13, v14, (v13 = v15) != 0))
+  v13 = handle;
+  if ([handle type] != 2 || (TUDialAssistedDialRequest(), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "handle"), v15 = objc_claimAutoreleasedReturnValue(), v13, v14, (v13 = v15) != 0))
   {
     v16 = [MEMORY[0x1E695DFD8] setWithObject:v13];
   }
@@ -57,41 +57,41 @@ LABEL_8:
     v16 = [MEMORY[0x1E695DFD8] set];
   }
 
-  v17 = [v6 processHandle];
+  processHandle = [requestCopy processHandle];
   processHandle = self->_processHandle;
-  self->_processHandle = v17;
+  self->_processHandle = processHandle;
 
-  v19 = [(TPDialPromptAlert *)self initWithButtonTitle:v9 handles:v16 isFaceTimeRequest:v11 dialAction:v7];
+  v19 = [(TPDialPromptAlert *)self initWithButtonTitle:v9 handles:v16 isFaceTimeRequest:isVideo dialAction:actionCopy];
   return v19;
 }
 
-- (TPDialPromptAlert)initWithDialRequest:(id)a3 dialAction:(id)a4 availableSenderIdentities:(id)a5
+- (TPDialPromptAlert)initWithDialRequest:(id)request dialAction:(id)action availableSenderIdentities:(id)identities
 {
-  v8 = a3;
-  v34 = a4;
-  v9 = a5;
+  requestCopy = request;
+  actionCopy = action;
+  identitiesCopy = identities;
   v10 = TelephonyUIBundle();
   v32 = [v10 localizedStringForKey:@"CALL" value:&stru_1F2CA8008 table:@"General"];
 
-  v11 = [v8 provider];
-  if ([v11 isFaceTimeProvider])
+  provider = [requestCopy provider];
+  if ([provider isFaceTimeProvider])
   {
-    v31 = [v8 isVideo];
+    isVideo = [requestCopy isVideo];
   }
 
   else
   {
-    v31 = 0;
+    isVideo = 0;
   }
 
-  v12 = [v8 handle];
-  if (!v12)
+  handle = [requestCopy handle];
+  if (!handle)
   {
     goto LABEL_8;
   }
 
-  v13 = v12;
-  if ([v12 type] != 2 || (TUDialAssistedDialRequest(), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "handle"), v15 = objc_claimAutoreleasedReturnValue(), v13, v14, (v13 = v15) != 0))
+  v13 = handle;
+  if ([handle type] != 2 || (TUDialAssistedDialRequest(), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "handle"), v15 = objc_claimAutoreleasedReturnValue(), v13, v14, (v13 = v15) != 0))
   {
     v29 = [MEMORY[0x1E695DFD8] setWithObject:v13];
   }
@@ -102,14 +102,14 @@ LABEL_8:
     v29 = [MEMORY[0x1E695DFD8] set];
   }
 
-  v16 = [v8 processHandle];
+  processHandle = [requestCopy processHandle];
   processHandle = self->_processHandle;
-  self->_processHandle = v16;
+  self->_processHandle = processHandle;
 
-  v33 = v9;
-  if (v9)
+  v33 = identitiesCopy;
+  if (identitiesCopy)
   {
-    objc_storeStrong(&self->_availableSenderIdentities, a5);
+    objc_storeStrong(&self->_availableSenderIdentities, identities);
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
     senderIdentitiesMapping = self->_senderIdentitiesMapping;
     self->_senderIdentitiesMapping = v18;
@@ -122,33 +122,33 @@ LABEL_8:
       {
         v23 = self->_senderIdentitiesMapping;
         v24 = [(NSArray *)self->_availableSenderIdentities objectAtIndexedSubscript:i];
-        v25 = [v24 localizedName];
+        localizedName = [v24 localizedName];
         v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-        [(NSMutableDictionary *)v23 setObject:v25 forKey:v26];
+        [(NSMutableDictionary *)v23 setObject:localizedName forKey:v26];
       }
     }
   }
 
-  v27 = [(TPDialPromptAlert *)self initWithButtonTitleForDualSim:v32 handles:v30 isFaceTimeRequest:v31 dialAction:v34];
+  v27 = [(TPDialPromptAlert *)self initWithButtonTitleForDualSim:v32 handles:v30 isFaceTimeRequest:isVideo dialAction:actionCopy];
 
   return v27;
 }
 
-- (TPDialPromptAlert)initWithJoinRequest:(id)a3 dialAction:(id)a4
+- (TPDialPromptAlert)initWithJoinRequest:(id)request dialAction:(id)action
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  actionCopy = action;
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [v6 remoteMembers];
-  v10 = [v8 setWithCapacity:{objc_msgSend(v9, "count")}];
+  remoteMembers = [requestCopy remoteMembers];
+  v10 = [v8 setWithCapacity:{objc_msgSend(remoteMembers, "count")}];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [v6 remoteMembers];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  remoteMembers2 = [requestCopy remoteMembers];
+  v12 = [remoteMembers2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -160,18 +160,18 @@ LABEL_8:
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(remoteMembers2);
         }
 
-        v16 = [*(*(&v23 + 1) + 8 * v15) handles];
-        v17 = [v16 anyObject];
-        [v10 addObject:v17];
+        handles = [*(*(&v23 + 1) + 8 * v15) handles];
+        anyObject = [handles anyObject];
+        [v10 addObject:anyObject];
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v13 = [remoteMembers2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v13);
@@ -179,63 +179,63 @@ LABEL_8:
 
   v18 = TelephonyUIBundle();
   v19 = [v18 localizedStringForKey:@"CALL" value:&stru_1F2CA8008 table:@"General"];
-  v20 = [(TPDialPromptAlert *)self initWithButtonTitle:v19 handles:v10 isFaceTimeRequest:1 dialAction:v7];
+  v20 = [(TPDialPromptAlert *)self initWithButtonTitle:v19 handles:v10 isFaceTimeRequest:1 dialAction:actionCopy];
 
   v21 = *MEMORY[0x1E69E9840];
   return v20;
 }
 
-- (TPDialPromptAlert)initWithButtonTitle:(id)a3 handles:(id)a4 isFaceTimeRequest:(BOOL)a5 dialAction:(id)a6
+- (TPDialPromptAlert)initWithButtonTitle:(id)title handles:(id)handles isFaceTimeRequest:(BOOL)request dialAction:(id)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  handlesCopy = handles;
+  actionCopy = action;
   v21.receiver = self;
   v21.super_class = TPDialPromptAlert;
   v13 = [(TPDialPromptAlert *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     buttonTitle = v13->_buttonTitle;
     v13->_buttonTitle = v14;
 
-    v16 = [v11 copy];
+    v16 = [handlesCopy copy];
     handles = v13->_handles;
     v13->_handles = v16;
 
-    v18 = _Block_copy(v12);
+    v18 = _Block_copy(actionCopy);
     dialAction = v13->_dialAction;
     v13->_dialAction = v18;
 
-    v13->_isFaceTimeRequest = a5;
+    v13->_isFaceTimeRequest = request;
   }
 
   return v13;
 }
 
-- (TPDialPromptAlert)initWithButtonTitleForDualSim:(id)a3 handles:(id)a4 isFaceTimeRequest:(BOOL)a5 dialAction:(id)a6
+- (TPDialPromptAlert)initWithButtonTitleForDualSim:(id)sim handles:(id)handles isFaceTimeRequest:(BOOL)request dialAction:(id)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  simCopy = sim;
+  handlesCopy = handles;
+  actionCopy = action;
   v21.receiver = self;
   v21.super_class = TPDialPromptAlert;
   v13 = [(TPDialPromptAlert *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [simCopy copy];
     buttonTitle = v13->_buttonTitle;
     v13->_buttonTitle = v14;
 
-    v16 = [v11 copy];
+    v16 = [handlesCopy copy];
     handles = v13->_handles;
     v13->_handles = v16;
 
-    v18 = _Block_copy(v12);
+    v18 = _Block_copy(actionCopy);
     dialActionForDualSim = v13->_dialActionForDualSim;
     v13->_dialActionForDualSim = v18;
 
-    v13->_isFaceTimeRequest = a5;
+    v13->_isFaceTimeRequest = request;
   }
 
   return v13;
@@ -243,11 +243,11 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(TPDialPromptAlert *)self remoteAlertHandle];
-  [v3 unregisterObserver:self];
+  remoteAlertHandle = [(TPDialPromptAlert *)self remoteAlertHandle];
+  [remoteAlertHandle unregisterObserver:self];
 
-  v4 = [(TPDialPromptAlert *)self remoteAlertHandle];
-  [v4 invalidate];
+  remoteAlertHandle2 = [(TPDialPromptAlert *)self remoteAlertHandle];
+  [remoteAlertHandle2 invalidate];
 
   v5.receiver = self;
   v5.super_class = TPDialPromptAlert;
@@ -258,15 +258,15 @@ LABEL_8:
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(TPDialPromptAlert *)self handles];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  handles = [(TPDialPromptAlert *)self handles];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(handles, "count")}];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(TPDialPromptAlert *)self handles];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  handles2 = [(TPDialPromptAlert *)self handles];
+  v7 = [handles2 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -277,19 +277,19 @@ LABEL_8:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(handles2);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 type];
-        if (v12 == 1 || v12 == 3)
+        type = [v11 type];
+        if (type == 1 || type == 3)
         {
-          v14 = [v11 value];
+          value = [v11 value];
         }
 
-        else if (v12 == 2)
+        else if (type == 2)
         {
-          v15 = [v11 value];
+          value2 = [v11 value];
           v16 = TUNetworkCountryCode();
           v17 = v16;
           if (v16)
@@ -313,21 +313,21 @@ LABEL_8:
 
           else
           {
-            v22 = v15;
+            v22 = value2;
           }
 
-          v14 = v22;
+          value = v22;
         }
 
         else
         {
-          v14 = 0;
+          value = 0;
         }
 
-        [v5 addObject:v14];
+        [v5 addObject:value];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v8 = [handles2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v8);
@@ -349,7 +349,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4894000, v3, OS_LOG_TYPE_DEFAULT, "invalidating alert: %@", buf, 0xCu);
   }
 
@@ -361,14 +361,14 @@ LABEL_8:
 
 - (void)show
 {
-  v3 = [(TPDialPromptAlert *)self phoneNumberHandle];
-  if (!v3 || !TUCurrentProcessHasEntitlement())
+  phoneNumberHandle = [(TPDialPromptAlert *)self phoneNumberHandle];
+  if (!phoneNumberHandle || !TUCurrentProcessHasEntitlement())
   {
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v4 userInterfaceIdiom] == 1 || _MKBGetDeviceLockState() == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1 || _MKBGetDeviceLockState() == 1)
   {
 
 LABEL_6:
@@ -388,20 +388,20 @@ LABEL_6:
   v6 = [objc_alloc(MEMORY[0x1E69D42A0]) initWithServiceName:@"com.apple.BusinessChatViewService" viewControllerClassName:@"BCChatSuggestRemoteViewController"];
   v7 = objc_alloc_init(MEMORY[0x1E69D4298]);
   v8 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v9 = [v3 dictionaryRepresentation];
-  [v8 setObject:v9 forSetting:1];
+  dictionaryRepresentation = [phoneNumberHandle dictionaryRepresentation];
+  [v8 setObject:dictionaryRepresentation forSetting:1];
 
-  v10 = [(TPDialPromptAlert *)self title];
-  [v8 setObject:v10 forSetting:2];
+  title = [(TPDialPromptAlert *)self title];
+  [v8 setObject:title forSetting:2];
 
-  v11 = [(TPDialPromptAlert *)self defaultButtonTitle];
-  [v8 setObject:v11 forSetting:3];
+  defaultButtonTitle = [(TPDialPromptAlert *)self defaultButtonTitle];
+  [v8 setObject:defaultButtonTitle forSetting:3];
 
-  v12 = [(TPDialPromptAlert *)self otherButtonTitle];
-  [v8 setObject:v12 forSetting:4];
+  otherButtonTitle = [(TPDialPromptAlert *)self otherButtonTitle];
+  [v8 setObject:otherButtonTitle forSetting:4];
 
-  v13 = [(TPDialPromptAlert *)self senderIdentitiesMapping];
-  [v8 setObject:v13 forSetting:5];
+  senderIdentitiesMapping = [(TPDialPromptAlert *)self senderIdentitiesMapping];
+  [v8 setObject:senderIdentitiesMapping forSetting:5];
 
   v14 = objc_alloc(MEMORY[0x1E698E5F0]);
   v30[0] = MEMORY[0x1E69E9820];
@@ -410,43 +410,43 @@ LABEL_6:
   v30[3] = &unk_1E7C0C340;
   v30[4] = self;
   v15 = [v14 initWithInfo:v8 timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:v30 withHandler:0.0];
-  v16 = [(TPDialPromptAlert *)self remoteAlertHandle];
+  remoteAlertHandle = [(TPDialPromptAlert *)self remoteAlertHandle];
 
-  if (v16)
+  if (remoteAlertHandle)
   {
-    v17 = [(TPDialPromptAlert *)self remoteAlertHandle];
-    [v17 unregisterObserver:self];
+    remoteAlertHandle2 = [(TPDialPromptAlert *)self remoteAlertHandle];
+    [remoteAlertHandle2 unregisterObserver:self];
 
-    v18 = [(TPDialPromptAlert *)self remoteAlertHandle];
-    [v18 invalidate];
+    remoteAlertHandle3 = [(TPDialPromptAlert *)self remoteAlertHandle];
+    [remoteAlertHandle3 invalidate];
   }
 
   v19 = [MEMORY[0x1E69D42B8] newHandleWithDefinition:v6 configurationContext:v7];
   [(TPDialPromptAlert *)self setRemoteAlertHandle:v19];
 
-  v20 = [(TPDialPromptAlert *)self remoteAlertHandle];
-  [v20 registerObserver:self];
+  remoteAlertHandle4 = [(TPDialPromptAlert *)self remoteAlertHandle];
+  [remoteAlertHandle4 registerObserver:self];
 
   v21 = objc_alloc_init(MEMORY[0x1E69D4288]);
   v22 = [MEMORY[0x1E695DFD8] setWithObject:v15];
   [v21 setActions:v22];
 
-  v23 = [v3 dictionaryRepresentation];
-  [v21 setUserInfo:v23];
+  dictionaryRepresentation2 = [phoneNumberHandle dictionaryRepresentation];
+  [v21 setUserInfo:dictionaryRepresentation2];
 
   [v21 setReason:@"Confirmaiton Alert"];
-  v24 = [(TPDialPromptAlert *)self processHandle];
+  processHandle = [(TPDialPromptAlert *)self processHandle];
 
-  if (v24)
+  if (processHandle)
   {
     v25 = objc_alloc(MEMORY[0x1E69D42C0]);
-    v26 = [(TPDialPromptAlert *)self processHandle];
-    v27 = [v25 initWithTargetProcess:v26];
+    processHandle2 = [(TPDialPromptAlert *)self processHandle];
+    v27 = [v25 initWithTargetProcess:processHandle2];
     [v21 setPresentationTarget:v27];
   }
 
-  v28 = [(TPDialPromptAlert *)self remoteAlertHandle];
-  [v28 activateWithContext:v21];
+  remoteAlertHandle5 = [(TPDialPromptAlert *)self remoteAlertHandle];
+  [remoteAlertHandle5 activateWithContext:v21];
 
 LABEL_7:
 }
@@ -501,23 +501,23 @@ void __25__TPDialPromptAlert_show__block_invoke(uint64_t a1, void *a2)
 
 - (void)defaultResponse
 {
-  v3 = [(TPDialPromptAlert *)self dialAction];
+  dialAction = [(TPDialPromptAlert *)self dialAction];
 
-  if (v3)
+  if (dialAction)
   {
-    v4 = [(TPDialPromptAlert *)self dialAction];
-    v4[2](v4, 1);
+    dialAction2 = [(TPDialPromptAlert *)self dialAction];
+    dialAction2[2](dialAction2, 1);
   }
 }
 
 - (void)otherResponse
 {
-  v3 = [(TPDialPromptAlert *)self dialAction];
+  dialAction = [(TPDialPromptAlert *)self dialAction];
 
-  if (v3)
+  if (dialAction)
   {
-    v4 = [(TPDialPromptAlert *)self dialAction];
-    v4[2](v4, 0);
+    dialAction2 = [(TPDialPromptAlert *)self dialAction];
+    dialAction2[2](dialAction2, 0);
   }
 }
 
@@ -528,8 +528,8 @@ void __25__TPDialPromptAlert_show__block_invoke(uint64_t a1, void *a2)
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TPDialPromptAlert *)self handles];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  handles = [(TPDialPromptAlert *)self handles];
+  v3 = [handles countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -539,7 +539,7 @@ void __25__TPDialPromptAlert_show__block_invoke(uint64_t a1, void *a2)
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(handles);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -550,7 +550,7 @@ void __25__TPDialPromptAlert_show__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [handles countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -567,29 +567,29 @@ LABEL_11:
   return v3;
 }
 
-- (void)defaultDualSimResponseWithIndex:(unint64_t)a3
+- (void)defaultDualSimResponseWithIndex:(unint64_t)index
 {
-  v5 = [(TPDialPromptAlert *)self dialActionForDualSim];
+  dialActionForDualSim = [(TPDialPromptAlert *)self dialActionForDualSim];
 
-  if (v5)
+  if (dialActionForDualSim)
   {
-    v6 = [(TPDialPromptAlert *)self dialActionForDualSim];
-    v6[2](v6, a3);
+    dialActionForDualSim2 = [(TPDialPromptAlert *)self dialActionForDualSim];
+    dialActionForDualSim2[2](dialActionForDualSim2, index);
   }
 }
 
 - (void)otherDualSimResponse
 {
-  v3 = [(TPDialPromptAlert *)self dialActionForDualSim];
+  dialActionForDualSim = [(TPDialPromptAlert *)self dialActionForDualSim];
 
-  if (v3)
+  if (dialActionForDualSim)
   {
-    v4 = [(TPDialPromptAlert *)self dialActionForDualSim];
-    v4[2](v4, -1);
+    dialActionForDualSim2 = [(TPDialPromptAlert *)self dialActionForDualSim];
+    dialActionForDualSim2[2](dialActionForDualSim2, -1);
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = TPDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -599,7 +599,7 @@ LABEL_11:
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = TPDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -645,15 +645,15 @@ uint64_t __52__TPDialPromptAlert_remoteAlertHandleDidDeactivate___block_invoke(u
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  errorCopy = error;
   v5 = TPDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = errorCopy;
     _os_log_impl(&dword_1B4894000, v5, OS_LOG_TYPE_DEFAULT, "[WARN] Remote alert invalidated with error %@", &v7, 0xCu);
   }
 

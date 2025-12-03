@@ -1,8 +1,8 @@
 @interface FCPurchaseLookupFetchOperation
 - (FCPurchaseLookupFetchOperation)init;
-- (FCPurchaseLookupFetchOperation)initWithPurchaseIDs:(id)a3 contentContext:(id)a4;
-- (id)_prefixedPurchasedIDs:(id)a3;
-- (id)processFetchedResults:(id)a3 error:(id)a4;
+- (FCPurchaseLookupFetchOperation)initWithPurchaseIDs:(id)ds contentContext:(id)context;
+- (id)_prefixedPurchasedIDs:(id)ds;
+- (id)processFetchedResults:(id)results error:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,10 +11,10 @@
 - (void)performOperation
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (([v4 isEqualToString:@"com.apple.stocks.widget"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.news.widget"))
+  if (([bundleIdentifier isEqualToString:@"com.apple.stocks.widget"] & 1) != 0 || objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.news.widget"))
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -27,14 +27,14 @@
   else
   {
     v5 = objc_alloc_init(FCRecordChainFetchOperation);
-    v6 = [(FCPurchaseLookupFetchOperation *)self contentContext];
-    [(FCRecordChainFetchOperation *)v5 setContext:v6];
+    contentContext = [(FCPurchaseLookupFetchOperation *)self contentContext];
+    [(FCRecordChainFetchOperation *)v5 setContext:contentContext];
 
     v7 = [FCCachePolicy cachePolicyWithSoftMaxAge:900.0];
     [(FCRecordChainFetchOperation *)v5 setCachePolicy:v7];
 
-    v8 = [(FCPurchaseLookupFetchOperation *)self purchaseIDs];
-    v9 = [(FCPurchaseLookupFetchOperation *)self _prefixedPurchasedIDs:v8];
+    purchaseIDs = [(FCPurchaseLookupFetchOperation *)self purchaseIDs];
+    v9 = [(FCPurchaseLookupFetchOperation *)self _prefixedPurchasedIDs:purchaseIDs];
     [(FCRecordChainFetchOperation *)v5 setTopLevelRecordIDs:v9];
 
     v15 = @"PurchaseLookup";
@@ -109,18 +109,18 @@ void __50__FCPurchaseLookupFetchOperation_performOperation__block_invoke_2(uint6
   objc_exception_throw(v6);
 }
 
-- (FCPurchaseLookupFetchOperation)initWithPurchaseIDs:(id)a3 contentContext:(id)a4
+- (FCPurchaseLookupFetchOperation)initWithPurchaseIDs:(id)ds contentContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = FCPurchaseLookupFetchOperation;
   v9 = [(FCFetchOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_purchaseIDs, a3);
-    objc_storeStrong(&v10->_contentContext, a4);
+    objc_storeStrong(&v9->_purchaseIDs, ds);
+    objc_storeStrong(&v10->_contentContext, context);
   }
 
   return v10;
@@ -132,18 +132,18 @@ void __50__FCPurchaseLookupFetchOperation_performOperation__block_invoke(uint64_
   [*(a1 + 32) finishedPerformingOperationWithError:v2];
 }
 
-- (id)_prefixedPurchasedIDs:(id)a3
+- (id)_prefixedPurchasedIDs:(id)ds
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  dsCopy = ds;
+  array = [v3 array];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__FCPurchaseLookupFetchOperation__prefixedPurchasedIDs___block_invoke;
   v9[3] = &unk_1E7C393D0;
-  v10 = v5;
-  v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  v10 = array;
+  v6 = array;
+  [dsCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -157,30 +157,30 @@ void __56__FCPurchaseLookupFetchOperation__prefixedPurchasedIDs___block_invoke(u
   [v2 addObject:v3];
 }
 
-- (id)processFetchedResults:(id)a3 error:(id)a4
+- (id)processFetchedResults:(id)results error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  resultsCopy = results;
+  errorCopy = error;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__85;
   v22 = __Block_byref_object_dispose__85;
-  v23 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__FCPurchaseLookupFetchOperation_processFetchedResults_error___block_invoke;
   v14[3] = &unk_1E7C46F30;
-  v9 = v7;
+  v9 = dictionary;
   v15 = v9;
-  v10 = v8;
+  v10 = dictionary2;
   v16 = v10;
   v17 = &v18;
-  [v5 enumerateRecordsAndInterestTokensWithBlock:v14];
+  [resultsCopy enumerateRecordsAndInterestTokensWithBlock:v14];
   v11 = [FCPurchaseLookupFetchOperationResult alloc];
-  v12 = [(FCPurchaseLookupFetchOperationResult *)v11 initWithChannelIDsByPurchaseID:v9 bundleChannelIDsByPurchaseID:v10 bundleChannelIDsVersion:v19[5] error:v6];
+  v12 = [(FCPurchaseLookupFetchOperationResult *)v11 initWithChannelIDsByPurchaseID:v9 bundleChannelIDsByPurchaseID:v10 bundleChannelIDsVersion:v19[5] error:errorCopy];
 
   _Block_object_dispose(&v18, 8);
 

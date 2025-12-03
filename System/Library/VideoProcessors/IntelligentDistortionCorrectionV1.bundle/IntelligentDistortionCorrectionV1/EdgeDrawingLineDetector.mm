@@ -1,53 +1,53 @@
 @interface EdgeDrawingLineDetector
-+ (void)getDefaultConfigurationParameters:(id *)a3;
++ (void)getDefaultConfigurationParameters:(id *)parameters;
 - (BOOL)linesAreCollinearWithSortedPoints:(EdgeDrawingLineDetector *)self;
-- (EdgeDrawingLineDetector)initWithFigMetalContext:(id)a3 idcUtilities:(id)a4;
-- (int)compileShaders:(BOOL)a3;
-- (int)detectLinesPart1:(id *)a3 inputImageTexture:(id)a4 inputSegmentationMaskTexture:(id)a5;
-- (int)detectLinesPart2:(id *)a3 results:(id *)a4;
-- (int)determineWorkingBufferRequirements:(id *)a3 bundleConfiguration:(id *)a4 maximumInputImageWidth:(unsigned int)a5 maximumInputImageHeight:(unsigned int)a6 maximumSegmentationMaskWidth:(unsigned int)a7 maximumSegmentationMaskHeight:(unsigned int)a8;
-- (int)doEdgeDrawing:(EdgeDrawingLineDetector *)self outputLineData:(SEL)a2 sharedMemoryPtr:(id *)a3;
-- (int)doLineFitting:(id *)a3 outputLineData:;
-- (int)memoryAllocationHandler:(id *)a3 memoryAllocationParameters:(id *)a4 sharedMemoryBuffer:(id)a5 sharedMetalBufferOffset:(unint64_t)a6 sharedMetalBufferSize:(unint64_t)a7;
-- (int)processImage:(id *)a3 inputImageTexture:(id)a4 inputSegmentationMaskTexture:(id)a5;
-- (int)setSharedMetalBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5;
-- (unsigned)runFullLsr:(EdgeDrawingLineDetector *)self lsr:(SEL)a2 points:(id *)a3 numPointsLeft:(id *)a4;
+- (EdgeDrawingLineDetector)initWithFigMetalContext:(id)context idcUtilities:(id)utilities;
+- (int)compileShaders:(BOOL)shaders;
+- (int)detectLinesPart1:(id *)part1 inputImageTexture:(id)texture inputSegmentationMaskTexture:(id)maskTexture;
+- (int)detectLinesPart2:(id *)part2 results:(id *)results;
+- (int)determineWorkingBufferRequirements:(id *)requirements bundleConfiguration:(id *)configuration maximumInputImageWidth:(unsigned int)width maximumInputImageHeight:(unsigned int)height maximumSegmentationMaskWidth:(unsigned int)maskWidth maximumSegmentationMaskHeight:(unsigned int)maskHeight;
+- (int)doEdgeDrawing:(EdgeDrawingLineDetector *)self outputLineData:(SEL)data sharedMemoryPtr:(id *)ptr;
+- (int)doLineFitting:(id *)fitting outputLineData:;
+- (int)memoryAllocationHandler:(id *)handler memoryAllocationParameters:(id *)parameters sharedMemoryBuffer:(id)buffer sharedMetalBufferOffset:(unint64_t)offset sharedMetalBufferSize:(unint64_t)size;
+- (int)processImage:(id *)image inputImageTexture:(id)texture inputSegmentationMaskTexture:(id)maskTexture;
+- (int)setSharedMetalBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size;
+- (unsigned)runFullLsr:(EdgeDrawingLineDetector *)self lsr:(SEL)lsr points:(id *)points numPointsLeft:(id *)left;
 - (void)dealloc;
-- (void)doLineMerging:(id *)a3 outputLineData:;
+- (void)doLineMerging:(id *)merging outputLineData:;
 - (void)findCollinearLinesWithOutputLineData:(EdgeDrawingLineDetector *)self;
-- (void)rebuildLsr:(EdgeDrawingLineDetector *)self points:(SEL)a2 numPoints:(id *)a3;
+- (void)rebuildLsr:(EdgeDrawingLineDetector *)self points:(SEL)points numPoints:(id *)numPoints;
 - (void)releaseResources;
-- (void)runTraceBackward:(unsigned int)a3 anchorPoint:(unsigned int)a4 initialGradDir:(char *)a5 sharedMemoryPtr:;
-- (void)runTraceForward:(unsigned int)a3 anchorPoint:(unsigned int)a4 initialGradDir:(char *)a5 sharedMemoryPtr:;
-- (void)sort4Points:(EdgeDrawingLineDetector *)self onAxis:(SEL)a2;
+- (void)runTraceBackward:(unsigned int)backward anchorPoint:(unsigned int)point initialGradDir:(char *)dir sharedMemoryPtr:;
+- (void)runTraceForward:(unsigned int)forward anchorPoint:(unsigned int)point initialGradDir:(char *)dir sharedMemoryPtr:;
+- (void)sort4Points:(EdgeDrawingLineDetector *)self onAxis:(SEL)axis;
 @end
 
 @implementation EdgeDrawingLineDetector
 
-+ (void)getDefaultConfigurationParameters:(id *)a3
++ (void)getDefaultConfigurationParameters:(id *)parameters
 {
-  *&a3->var21[0].var0[5] = 0x3E4CCCCD00000004;
-  LODWORD(a3->var21[1].var0[0]) = 1;
-  *&a3->var21[1].var0[5] = 0x1440400000;
-  *&a3->var21[1].var0[1] = 0xA00000002;
-  *&a3->var21[1].var0[3] = 0x3D23D70A40400000;
-  LODWORD(a3->var21[2].var0[0]) = 3;
+  *&parameters->var21[0].var0[5] = 0x3E4CCCCD00000004;
+  LODWORD(parameters->var21[1].var0[0]) = 1;
+  *&parameters->var21[1].var0[5] = 0x1440400000;
+  *&parameters->var21[1].var0[1] = 0xA00000002;
+  *&parameters->var21[1].var0[3] = 0x3D23D70A40400000;
+  LODWORD(parameters->var21[2].var0[0]) = 3;
 }
 
-- (EdgeDrawingLineDetector)initWithFigMetalContext:(id)a3 idcUtilities:(id)a4
+- (EdgeDrawingLineDetector)initWithFigMetalContext:(id)context idcUtilities:(id)utilities
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  contextCopy = context;
+  utilitiesCopy = utilities;
+  v9 = utilitiesCopy;
+  if (!contextCopy)
   {
     sub_2957C112C();
 LABEL_9:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!utilitiesCopy)
   {
     sub_2957C10B4();
     goto LABEL_9;
@@ -59,19 +59,19 @@ LABEL_9:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_metalContext, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_metalContext, context);
+    objc_storeStrong(p_isa + 2, utilities);
     [p_isa compileShaders:0];
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v12;
+  return selfCopy;
 }
 
-- (int)compileShaders:(BOOL)a3
+- (int)compileShaders:(BOOL)shaders
 {
   if (self->_haveShadersBeenCompiled)
   {
@@ -216,21 +216,21 @@ LABEL_6:
   [(EdgeDrawingLineDetector *)&v3 dealloc];
 }
 
-- (int)determineWorkingBufferRequirements:(id *)a3 bundleConfiguration:(id *)a4 maximumInputImageWidth:(unsigned int)a5 maximumInputImageHeight:(unsigned int)a6 maximumSegmentationMaskWidth:(unsigned int)a7 maximumSegmentationMaskHeight:(unsigned int)a8
+- (int)determineWorkingBufferRequirements:(id *)requirements bundleConfiguration:(id *)configuration maximumInputImageWidth:(unsigned int)width maximumInputImageHeight:(unsigned int)height maximumSegmentationMaskWidth:(unsigned int)maskWidth maximumSegmentationMaskHeight:(unsigned int)maskHeight
 {
-  if (!a3)
+  if (!requirements)
   {
     sub_2957C1658();
     return -12780;
   }
 
-  if (!a4)
+  if (!configuration)
   {
     sub_2957C15E0();
     return -12780;
   }
 
-  v8 = a4->var21[0].var0[5];
+  v8 = configuration->var21[0].var0[5];
   if (LODWORD(v8) > 4 || ((1 << SLOBYTE(v8)) & 0x16) == 0)
   {
     fig_log_get_emitter();
@@ -238,12 +238,12 @@ LABEL_6:
     return -12780;
   }
 
-  a3->var0 = 0;
+  requirements->var0 = 0;
   *&self->_maximumMemoryAllocationParameters.segmentationMaskHeight = 0u;
   *&self->_maximumMemoryAllocationParameters.downscaledImageWidth = 0u;
-  v13 = (LODWORD(v8) - 1 + a5) / LODWORD(v8);
-  v14 = (LODWORD(v8) - 1 + a6) / LODWORD(v8);
-  v15 = LODWORD(a4->var21[1].var0[1]);
+  v13 = (LODWORD(v8) - 1 + width) / LODWORD(v8);
+  v14 = (LODWORD(v8) - 1 + height) / LODWORD(v8);
+  v15 = LODWORD(configuration->var21[1].var0[1]);
   v16 = [EdgeDrawingLineDetector memoryAllocationHandler:"memoryAllocationHandler:memoryAllocationParameters:sharedMemoryBuffer:sharedMetalBufferOffset:sharedMetalBufferSize:" memoryAllocationParameters:? sharedMemoryBuffer:? sharedMetalBufferOffset:? sharedMetalBufferSize:?];
   if (v16)
   {
@@ -255,8 +255,8 @@ LABEL_6:
     self->_maximumMemoryAllocationParameters.downscaledImageWidth = v13;
     self->_maximumMemoryAllocationParameters.downscaledImageHeight = v14;
     self->_maximumMemoryAllocationParameters.anchorScanInterval = v15;
-    self->_maximumMemoryAllocationParameters.segmentationMaskWidth = a7;
-    self->_maximumMemoryAllocationParameters.segmentationMaskHeight = a8;
+    self->_maximumMemoryAllocationParameters.segmentationMaskWidth = maskWidth;
+    self->_maximumMemoryAllocationParameters.segmentationMaskHeight = maskHeight;
     self->_maximumMemoryAllocationParameters.anchorGridWidth = v13 / v15;
     self->_maximumMemoryAllocationParameters.anchorGridHeight = v14 / v15;
     self->_maximumMemoryAllocationParameters.anchorMaxCount = v13 / v15 * v15 * (v14 / v15);
@@ -265,15 +265,15 @@ LABEL_6:
   return v16;
 }
 
-- (int)setSharedMetalBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5
+- (int)setSharedMetalBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size
 {
-  v9 = a3;
-  if (v9)
+  bufferCopy = buffer;
+  if (bufferCopy)
   {
-    objc_storeStrong(&self->_sharedMetalBuffer.buffer, a3);
+    objc_storeStrong(&self->_sharedMetalBuffer.buffer, buffer);
     v10 = 0;
-    self->_sharedMetalBuffer.offset = a4;
-    self->_sharedMetalBuffer.size = a5;
+    self->_sharedMetalBuffer.offset = offset;
+    self->_sharedMetalBuffer.size = size;
     self->_sharedMetalBuffer.resourcesAssigned = 0;
     *&self->_currentMemoryAllocationParameters.downscaledImageWidth = 0u;
     *&self->_currentMemoryAllocationParameters.segmentationMaskHeight = 0u;
@@ -288,25 +288,25 @@ LABEL_6:
   return v10;
 }
 
-- (int)detectLinesPart1:(id *)a3 inputImageTexture:(id)a4 inputSegmentationMaskTexture:(id)a5
+- (int)detectLinesPart1:(id *)part1 inputImageTexture:(id)texture inputSegmentationMaskTexture:(id)maskTexture
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  textureCopy = texture;
+  maskTextureCopy = maskTexture;
+  v10 = maskTextureCopy;
   self->_detectLinesPart1CompletedSuccessfully = 0;
-  if (!v8)
+  if (!textureCopy)
   {
     sub_2957C1CF0();
     goto LABEL_29;
   }
 
-  if (!a3)
+  if (!part1)
   {
     sub_2957C1C78();
     goto LABEL_29;
   }
 
-  v11 = a3->var21[0].var0[5];
+  v11 = part1->var21[0].var0[5];
   if (LODWORD(v11) > 4 || ((1 << SLOBYTE(v11)) & 0x16) == 0)
   {
     fig_log_get_emitter();
@@ -322,20 +322,20 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (v9 && [v9 pixelFormat] != 25 && objc_msgSend(v10, "pixelFormat") != 10)
+  if (maskTextureCopy && [maskTextureCopy pixelFormat] != 25 && objc_msgSend(v10, "pixelFormat") != 10)
   {
     sub_2957C1748();
     goto LABEL_29;
   }
 
-  v13 = [v8 width];
-  v14 = [v8 height];
-  v30 = a3;
-  v15 = LODWORD(a3->var21[1].var0[1]);
-  v16 = (LODWORD(v11) - 1 + v13) / LODWORD(v11);
-  v17 = [v10 width];
+  width = [textureCopy width];
+  height = [textureCopy height];
+  part1Copy = part1;
+  v15 = LODWORD(part1->var21[1].var0[1]);
+  v16 = (LODWORD(v11) - 1 + width) / LODWORD(v11);
+  width2 = [v10 width];
   v32 = v10;
-  v18 = [v10 height];
+  height2 = [v10 height];
   if (v16 <= 0xF)
   {
     sub_2957C1B88();
@@ -343,15 +343,15 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v31 = v8;
-  v19 = (LODWORD(v11) - 1 + v14) / LODWORD(v11);
+  v31 = textureCopy;
+  v19 = (LODWORD(v11) - 1 + height) / LODWORD(v11);
   if (v19 <= 0xF)
   {
     sub_2957C1B10();
 LABEL_41:
     v28 = -12780;
 LABEL_42:
-    v8 = v31;
+    textureCopy = v31;
     v10 = v32;
     goto LABEL_30;
   }
@@ -389,8 +389,8 @@ LABEL_42:
     goto LABEL_41;
   }
 
-  v23 = v18;
-  if (self->_sharedMetalBuffer.resourcesAssigned && v16 == self->_currentMemoryAllocationParameters.downscaledImageWidth && v19 == self->_currentMemoryAllocationParameters.downscaledImageHeight && v15 == self->_currentMemoryAllocationParameters.anchorScanInterval && self->_currentMemoryAllocationParameters.segmentationMaskWidth == v17 && self->_currentMemoryAllocationParameters.segmentationMaskHeight == v18)
+  v23 = height2;
+  if (self->_sharedMetalBuffer.resourcesAssigned && v16 == self->_currentMemoryAllocationParameters.downscaledImageWidth && v19 == self->_currentMemoryAllocationParameters.downscaledImageHeight && v15 == self->_currentMemoryAllocationParameters.anchorScanInterval && self->_currentMemoryAllocationParameters.segmentationMaskWidth == width2 && self->_currentMemoryAllocationParameters.segmentationMaskHeight == height2)
   {
     goto LABEL_26;
   }
@@ -402,8 +402,8 @@ LABEL_42:
   v33[0] = v16;
   v33[1] = v19;
   v33[2] = v15;
-  v33[3] = v17;
-  v33[4] = v18;
+  v33[3] = width2;
+  v33[4] = height2;
   v33[5] = v16 / v15;
   v33[6] = v19 / v15;
   v33[7] = v20 * v15 * v21;
@@ -419,15 +419,15 @@ LABEL_42:
   self->_currentMemoryAllocationParameters.downscaledImageWidth = v16;
   self->_currentMemoryAllocationParameters.downscaledImageHeight = v19;
   self->_currentMemoryAllocationParameters.anchorScanInterval = v15;
-  self->_currentMemoryAllocationParameters.segmentationMaskWidth = v17;
+  self->_currentMemoryAllocationParameters.segmentationMaskWidth = width2;
   self->_currentMemoryAllocationParameters.segmentationMaskHeight = v23;
   self->_currentMemoryAllocationParameters.anchorGridWidth = v20;
   self->_currentMemoryAllocationParameters.anchorGridHeight = v21;
   self->_currentMemoryAllocationParameters.anchorMaxCount = v22;
 LABEL_26:
-  v8 = v31;
+  textureCopy = v31;
   v10 = v32;
-  v28 = [(EdgeDrawingLineDetector *)self processImage:v30 inputImageTexture:v31 inputSegmentationMaskTexture:v32];
+  v28 = [(EdgeDrawingLineDetector *)self processImage:part1Copy inputImageTexture:v31 inputSegmentationMaskTexture:v32];
   if (v28)
   {
     sub_2957C183C();
@@ -443,9 +443,9 @@ LABEL_30:
   return v28;
 }
 
-- (int)detectLinesPart2:(id *)a3 results:(id *)a4
+- (int)detectLinesPart2:(id *)part2 results:(id *)results
 {
-  if (!a4)
+  if (!results)
   {
     sub_2957C1FC4();
     return -12780;
@@ -464,25 +464,25 @@ LABEL_30:
   }
 
   self->_output.curNum = 0;
-  self->_output.maxNum = a4->var0;
-  objc_storeStrong(&self->_output.buffer, a4->var3);
-  self->_output.offset = a4->var2;
-  v7 = [(MTLBuffer *)self->_output.buffer contents];
-  v8 = [(MTLBuffer *)self->_sharedMetalBuffer.buffer contents];
-  if (!v7)
+  self->_output.maxNum = results->var0;
+  objc_storeStrong(&self->_output.buffer, results->var3);
+  self->_output.offset = results->var2;
+  contents = [(MTLBuffer *)self->_output.buffer contents];
+  contents2 = [(MTLBuffer *)self->_sharedMetalBuffer.buffer contents];
+  if (!contents)
   {
     sub_2957C1ED4();
     return -12786;
   }
 
-  if (!v8)
+  if (!contents2)
   {
     sub_2957C1E5C();
     return -12786;
   }
 
   offset = self->_output.offset;
-  v10 = [(EdgeDrawingLineDetector *)self doEdgeDrawing:a3 outputLineData:v7 + offset sharedMemoryPtr:v8];
+  v10 = [(EdgeDrawingLineDetector *)self doEdgeDrawing:part2 outputLineData:contents + offset sharedMemoryPtr:contents2];
   if (v10)
   {
     sub_2957C1DE0();
@@ -490,24 +490,24 @@ LABEL_30:
 
   else
   {
-    [(EdgeDrawingLineDetector *)self findCollinearLinesWithOutputLineData:v7 + offset];
-    a4->var1 = self->_output.curNum;
+    [(EdgeDrawingLineDetector *)self findCollinearLinesWithOutputLineData:contents + offset];
+    results->var1 = self->_output.curNum;
   }
 
   return v10;
 }
 
-- (int)memoryAllocationHandler:(id *)a3 memoryAllocationParameters:(id *)a4 sharedMemoryBuffer:(id)a5 sharedMetalBufferOffset:(unint64_t)a6 sharedMetalBufferSize:(unint64_t)a7
+- (int)memoryAllocationHandler:(id *)handler memoryAllocationParameters:(id *)parameters sharedMemoryBuffer:(id)buffer sharedMetalBufferOffset:(unint64_t)offset sharedMetalBufferSize:(unint64_t)size
 {
-  v12 = a5;
-  if (v12 | a7 | a6)
+  bufferCopy = buffer;
+  if (bufferCopy | size | offset)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = a3 == 0;
+    v13 = handler == 0;
   }
 
   v52 = 0;
@@ -515,14 +515,14 @@ LABEL_30:
   v48 = 0u;
   v49 = 0u;
   v47 = 0u;
-  if (a3)
+  if (handler)
   {
-    v14 = (v12 | a7 | a6) == 0;
+    v14 = (bufferCopy | size | offset) == 0;
   }
 
   else
   {
-    v14 = v12 != 0;
+    v14 = bufferCopy != 0;
   }
 
   if (!v14)
@@ -530,14 +530,14 @@ LABEL_30:
     goto LABEL_44;
   }
 
-  *&v15 = *&a4->var0;
-  *(&v15 + 1) = HIDWORD(*&a4->var0);
+  *&v15 = *&parameters->var0;
+  *(&v15 + 1) = HIDWORD(*&parameters->var0);
   v50 = v15;
   v51 = xmmword_2957C7D60;
   [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities computeTextureStrideForBufferAllocation:&v50];
   v16 = v53;
-  *&v15 = *&a4->var0;
-  *(&v15 + 1) = HIDWORD(*&a4->var0);
+  *&v15 = *&parameters->var0;
+  *(&v15 + 1) = HIDWORD(*&parameters->var0);
   v47 = v15;
   v48 = xmmword_2957C7D70;
   [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities computeTextureStrideForBufferAllocation:&v47];
@@ -547,9 +547,9 @@ LABEL_30:
     v17 = v16;
   }
 
-  if (v17 <= ((4 * a4->var7 + 255) & 0x7FFFFFF00uLL))
+  if (v17 <= ((4 * parameters->var7 + 255) & 0x7FFFFFF00uLL))
   {
-    v18 = (4 * a4->var7 + 255) & 0x7FFFFFF00;
+    v18 = (4 * parameters->var7 + 255) & 0x7FFFFFF00;
   }
 
   else
@@ -559,8 +559,8 @@ LABEL_30:
 
   if (v13)
   {
-    v19 = a7 >= v18;
-    a7 -= v18;
+    v19 = size >= v18;
+    size -= v18;
     if (!v19)
     {
       sub_2957C24EC();
@@ -569,14 +569,14 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    self->_offsets.anchors = a6;
-    v20 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:v12 bufferOffset:a6 textureDescriptor:&v50];
+    self->_offsets.anchors = offset;
+    v20 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:bufferCopy bufferOffset:offset textureDescriptor:&v50];
     scaledImage = self->_textures.scaledImage;
     self->_textures.scaledImage = v20;
 
     if (self->_textures.scaledImage)
     {
-      v22 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:v12 bufferOffset:a6 textureDescriptor:&v47];
+      v22 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:bufferCopy bufferOffset:offset textureDescriptor:&v47];
       localMaxPass1 = self->_textures.localMaxPass1;
       self->_textures.localMaxPass1 = v22;
 
@@ -599,8 +599,8 @@ LABEL_48:
   }
 
 LABEL_18:
-  *&v24 = *&a4->var0;
-  *(&v24 + 1) = HIDWORD(*&a4->var0);
+  *&v24 = *&parameters->var0;
+  *(&v24 + 1) = HIDWORD(*&parameters->var0);
   v50 = v24;
   v51 = xmmword_2957C7D80;
   [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities computeTextureStrideForBufferAllocation:&v50];
@@ -610,13 +610,13 @@ LABEL_18:
     goto LABEL_22;
   }
 
-  if (v53 > a7)
+  if (v53 > size)
   {
     sub_2957C2384();
     goto LABEL_44;
   }
 
-  v26 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:v12 bufferOffset:v18 + a6 textureDescriptor:&v50];
+  v26 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:bufferCopy bufferOffset:v18 + offset textureDescriptor:&v50];
   gradientFlags = self->_textures.gradientFlags;
   self->_textures.gradientFlags = v26;
 
@@ -628,13 +628,13 @@ LABEL_18:
 
   v28 = v52;
   v25 = v53;
-  a7 -= v53;
-  self->_offsets.gradientFlags = v18 + a6;
+  size -= v53;
+  self->_offsets.gradientFlags = v18 + offset;
   self->_elemStride.gradientFlags = v28;
 LABEL_22:
   v29 = v25 + v18;
-  *&v30 = *&a4->var0;
-  *(&v30 + 1) = HIDWORD(*&a4->var0);
+  *&v30 = *&parameters->var0;
+  *(&v30 + 1) = HIDWORD(*&parameters->var0);
   v50 = v30;
   v51 = xmmword_2957C7D70;
   [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities computeTextureStrideForBufferAllocation:&v50];
@@ -644,13 +644,13 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  if (v53 > a7)
+  if (v53 > size)
   {
     sub_2957C2294();
     goto LABEL_44;
   }
 
-  v32 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:v12 bufferOffset:v29 + a6 textureDescriptor:&v50];
+  v32 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:bufferCopy bufferOffset:v29 + offset textureDescriptor:&v50];
   gradientMagnitude = self->_textures.gradientMagnitude;
   self->_textures.gradientMagnitude = v32;
 
@@ -662,12 +662,12 @@ LABEL_22:
 
   v34 = v52;
   v31 = v53;
-  a7 -= v53;
-  self->_offsets.gradientMagnitude = v29 + a6;
+  size -= v53;
+  self->_offsets.gradientMagnitude = v29 + offset;
   self->_elemStride.gradientMagnitude = v34 >> 1;
 LABEL_26:
   v35 = v31 + v29;
-  v36 = *&a4->var3;
+  v36 = *&parameters->var3;
   *&v37 = v36;
   *(&v37 + 1) = HIDWORD(v36);
   v50 = v37;
@@ -679,13 +679,13 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  if (v53 > a7)
+  if (v53 > size)
   {
     sub_2957C21A4();
     goto LABEL_44;
   }
 
-  v39 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:v12 bufferOffset:v35 + a6 textureDescriptor:&v50];
+  v39 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:bufferCopy bufferOffset:v35 + offset textureDescriptor:&v50];
   dilatedSegmentationMask = self->_textures.dilatedSegmentationMask;
   self->_textures.dilatedSegmentationMask = v39;
 
@@ -696,11 +696,11 @@ LABEL_26:
   }
 
   v38 = v53;
-  a7 -= v53;
+  size -= v53;
 LABEL_30:
   v41 = v38 + v35;
-  *&v42 = *&a4->var0;
-  *(&v42 + 1) = HIDWORD(*&a4->var0);
+  *&v42 = *&parameters->var0;
+  *(&v42 + 1) = HIDWORD(*&parameters->var0);
   v50 = v42;
   v51 = xmmword_2957C7D60;
   [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities computeTextureStrideForBufferAllocation:&v50];
@@ -709,13 +709,13 @@ LABEL_30:
     goto LABEL_34;
   }
 
-  if (v53 > a7)
+  if (v53 > size)
   {
     sub_2957C20B4();
     goto LABEL_44;
   }
 
-  v43 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:v12 bufferOffset:v41 + a6 textureDescriptor:&v50];
+  v43 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:bufferCopy bufferOffset:v41 + offset textureDescriptor:&v50];
   scaledUndistortedImage = self->_textures.scaledUndistortedImage;
   self->_textures.scaledUndistortedImage = v43;
 
@@ -725,7 +725,7 @@ LABEL_30:
     goto LABEL_48;
   }
 
-  if (!a3)
+  if (!handler)
   {
     v45 = 0;
     goto LABEL_45;
@@ -733,22 +733,22 @@ LABEL_30:
 
 LABEL_34:
   v45 = 0;
-  a3->var0 = v53 + v41;
+  handler->var0 = v53 + v41;
 LABEL_45:
 
   return v45;
 }
 
-- (int)processImage:(id *)a3 inputImageTexture:(id)a4 inputSegmentationMaskTexture:(id)a5
+- (int)processImage:(id *)image inputImageTexture:(id)texture inputSegmentationMaskTexture:(id)maskTexture
 {
-  v8 = a4;
-  v9 = a5;
+  textureCopy = texture;
+  maskTextureCopy = maskTexture;
   downscaledImageWidth = self->_currentMemoryAllocationParameters.downscaledImageWidth;
   downscaledImageHeight = self->_currentMemoryAllocationParameters.downscaledImageHeight;
-  v12 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v13 = [v12 commandBuffer];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v13)
+  if (!commandBuffer)
   {
     sub_2957C2714();
 LABEL_26:
@@ -756,18 +756,18 @@ LABEL_26:
     goto LABEL_23;
   }
 
-  v14 = [v13 computeCommandEncoder];
-  if (!v14)
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_2957C269C();
     goto LABEL_26;
   }
 
-  v15 = v14;
+  v15 = computeCommandEncoder;
   v45 = downscaledImageHeight;
-  v46 = v13;
-  v16 = a3->var21[0].var0[5];
-  v17 = v9;
+  v46 = commandBuffer;
+  v16 = image->var21[0].var0[5];
+  v17 = maskTextureCopy;
   if (LODWORD(v16) == 2)
   {
     convertToRgbaAndDownscale2To1 = self->_kernels.convertToRgbaAndDownscale2To1;
@@ -788,7 +788,7 @@ LABEL_7:
   downscaledImageHeight = self->_currentMemoryAllocationParameters.downscaledImageHeight >> 1;
 LABEL_9:
   [v15 setComputePipelineState:v19];
-  [v15 setTexture:v8 atIndex:0];
+  [v15 setTexture:textureCopy atIndex:0];
   p_textures = &self->_textures;
   [v15 setTexture:self->_textures.scaledImage atIndex:2];
   *v50 = [(MTLComputePipelineState *)v19 threadExecutionWidth];
@@ -798,39 +798,39 @@ LABEL_9:
   v59 = downscaledImageHeight;
   v60 = 1;
   [v15 dispatchThreads:&v58 threadsPerThreadgroup:v50];
-  v22 = a3->var21[0].var0[5];
-  v23 = (a3->var16.var0 + LODWORD(v22) - 1) / SLODWORD(v22);
-  LODWORD(v55) = (a3->var15.var0.var5 + LODWORD(v22) - 1) / SLODWORD(v22);
+  v22 = image->var21[0].var0[5];
+  v23 = (image->var16.var0 + LODWORD(v22) - 1) / SLODWORD(v22);
+  LODWORD(v55) = (image->var15.var0.var5 + LODWORD(v22) - 1) / SLODWORD(v22);
   DWORD1(v55) = v23;
-  var2 = a3->var16.var2;
-  DWORD2(v55) = a3->var16.var1 / SLODWORD(v22);
+  var2 = image->var16.var2;
+  DWORD2(v55) = image->var16.var1 / SLODWORD(v22);
   HIDWORD(v55) = var2 / SLODWORD(v22);
   v56 = DWORD2(v55) - v55 + 1;
   v57 = var2 / SLODWORD(v22) - v23 + 1;
-  if (LOBYTE(a3->var13[2]) == 1)
+  if (LOBYTE(image->var13[2]) == 1)
   {
     p_textures = &self->_textures.scaledUndistortedImage;
-    v25 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities undistortBGRATexture:a3 inputBGRATexture:self->_textures.scaledImage intoOutputBGRA:self->_textures.scaledUndistortedImage encoder:v15 crop:&v55];
-    v9 = v17;
+    v25 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities undistortBGRATexture:image inputBGRATexture:self->_textures.scaledImage intoOutputBGRA:self->_textures.scaledUndistortedImage encoder:v15 crop:&v55];
+    maskTextureCopy = v17;
     if (v25)
     {
       v26 = v25;
       sub_2957C2564(v25, v15, v19);
-      v13 = v46;
+      commandBuffer = v46;
       goto LABEL_23;
     }
   }
 
   else
   {
-    v9 = v17;
+    maskTextureCopy = v17;
   }
 
   v27 = p_textures->scaledImage;
-  v13 = v46;
-  if (v9)
+  commandBuffer = v46;
+  if (maskTextureCopy)
   {
-    v28 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities dilateSegmentationMask:v9 to:self->_textures.dilatedSegmentationMask radius:LODWORD(a3->var21[2].var0[0]) commandEncoder:v15];
+    v28 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities dilateSegmentationMask:maskTextureCopy to:self->_textures.dilatedSegmentationMask radius:LODWORD(image->var21[2].var0[0]) commandEncoder:v15];
     if (v28)
     {
       v26 = v28;
@@ -847,13 +847,13 @@ LABEL_9:
   }
 
   *&v50[16] = 0;
-  *v50 = a3->var21[0].var0[6];
+  *v50 = image->var21[0].var0[6];
   *&v50[4] = v55;
-  v30 = *&a3->var5.var1;
-  v51 = *&a3->var4;
+  v30 = *&image->var5.var1;
+  v51 = *&image->var4;
   v52 = v30;
-  v53 = LODWORD(a3->var21[0].var0[5]);
-  if (LOBYTE(a3[1].var12.var0))
+  v53 = LODWORD(image->var21[0].var0[5]);
+  if (LOBYTE(image[1].var12.var0))
   {
     v31 = 6;
   }
@@ -870,30 +870,30 @@ LABEL_9:
   [v15 setTexture:v27 atIndex:0];
   [v15 setTexture:self->_textures.gradientFlags atIndex:1];
   [v15 setTexture:self->_textures.gradientMagnitude atIndex:2];
-  if (v9)
+  if (maskTextureCopy)
   {
     [v15 setTexture:self->_textures.dilatedSegmentationMask atIndex:3];
   }
 
   [v15 setBytes:v50 length:48 atIndex:0];
-  v33 = [v32 threadExecutionWidth];
-  v34 = [v32 maxTotalThreadsPerThreadgroup];
-  v58 = v33;
-  v59 = v34 / v33;
+  threadExecutionWidth = [v32 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [v32 maxTotalThreadsPerThreadgroup];
+  v58 = threadExecutionWidth;
+  v59 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v60 = 1;
   v47 = downscaledImageWidth;
   v48 = v45;
   v49 = 1;
   [v15 dispatchThreads:&v47 threadsPerThreadgroup:&v58];
-  v47 = *&a3->var21[0].var0[6];
+  v47 = *&image->var21[0].var0[6];
   [v15 setComputePipelineState:self->_kernels.findMaxOfAreaPass1];
   [v15 setTexture:self->_textures.gradientMagnitude atIndex:0];
   [v15 setTexture:self->_textures.localMaxPass1 atIndex:1];
   [v15 setBytes:&v47 length:8 atIndex:0];
-  v35 = [(MTLComputePipelineState *)self->_kernels.findMaxOfAreaPass1 threadExecutionWidth];
-  v36 = [(MTLComputePipelineState *)self->_kernels.findMaxOfAreaPass1 maxTotalThreadsPerThreadgroup];
-  *v50 = v35;
-  *&v50[8] = v36 / v35;
+  threadExecutionWidth2 = [(MTLComputePipelineState *)self->_kernels.findMaxOfAreaPass1 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup2 = [(MTLComputePipelineState *)self->_kernels.findMaxOfAreaPass1 maxTotalThreadsPerThreadgroup];
+  *v50 = threadExecutionWidth2;
+  *&v50[8] = maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2;
   *&v50[16] = 1;
   v58 = downscaledImageWidth;
   v59 = v45;
@@ -904,10 +904,10 @@ LABEL_9:
   [v15 setTexture:self->_textures.localMaxPass1 atIndex:1];
   [v15 setTexture:self->_textures.gradientFlags atIndex:2];
   [v15 setBytes:&v47 length:8 atIndex:0];
-  v37 = [(MTLComputePipelineState *)self->_kernels.gradientNormalize threadExecutionWidth];
-  v38 = [(MTLComputePipelineState *)self->_kernels.gradientNormalize maxTotalThreadsPerThreadgroup];
-  *v50 = v37;
-  *&v50[8] = v38 / v37;
+  threadExecutionWidth3 = [(MTLComputePipelineState *)self->_kernels.gradientNormalize threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup3 = [(MTLComputePipelineState *)self->_kernels.gradientNormalize maxTotalThreadsPerThreadgroup];
+  *v50 = threadExecutionWidth3;
+  *&v50[8] = maxTotalThreadsPerThreadgroup3 / threadExecutionWidth3;
   *&v50[16] = 1;
   v58 = downscaledImageWidth;
   v59 = v45;
@@ -915,21 +915,21 @@ LABEL_9:
   [v15 dispatchThreads:&v58 threadsPerThreadgroup:v50];
   v39 = *&self->_currentMemoryAllocationParameters.anchorGridWidth;
   v47 = vdiv_f32(vcvt_f32_u32(*&self->_currentMemoryAllocationParameters.downscaledImageWidth), vcvt_f32_u32(v39));
-  *&v48 = a3->var21[1].var0[1];
+  *&v48 = image->var21[1].var0[1];
   HIDWORD(v48) = v39.i32[0];
   [v15 setComputePipelineState:self->_kernels.sparseAnchors];
   [v15 setTexture:self->_textures.gradientMagnitude atIndex:0];
   [v15 setBuffer:self->_sharedMetalBuffer.buffer offset:self->_offsets.anchors atIndex:0];
   [v15 setBytes:&v47 length:16 atIndex:1];
-  v40 = [(MTLComputePipelineState *)self->_kernels.sparseAnchors threadExecutionWidth];
-  v41 = [(MTLComputePipelineState *)self->_kernels.sparseAnchors maxTotalThreadsPerThreadgroup];
+  threadExecutionWidth4 = [(MTLComputePipelineState *)self->_kernels.sparseAnchors threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup4 = [(MTLComputePipelineState *)self->_kernels.sparseAnchors maxTotalThreadsPerThreadgroup];
   v42 = *&self->_currentMemoryAllocationParameters.anchorGridWidth;
   *&v43 = v42;
   *(&v43 + 1) = HIDWORD(v42);
   *v50 = v43;
   *&v50[16] = 1;
-  v58 = v40;
-  v59 = v41 / v40;
+  v58 = threadExecutionWidth4;
+  v59 = maxTotalThreadsPerThreadgroup4 / threadExecutionWidth4;
   v60 = 1;
   [v15 dispatchThreads:v50 threadsPerThreadgroup:&v58];
   [v15 endEncoding];
@@ -941,7 +941,7 @@ LABEL_23:
   return v26;
 }
 
-- (int)doEdgeDrawing:(EdgeDrawingLineDetector *)self outputLineData:(SEL)a2 sharedMemoryPtr:(id *)a3
+- (int)doEdgeDrawing:(EdgeDrawingLineDetector *)self outputLineData:(SEL)data sharedMemoryPtr:(id *)ptr
 {
   v33 = v3;
   v5 = self->_currentMemoryAllocationParameters.anchorGridHeight * self->_currentMemoryAllocationParameters.anchorGridWidth;
@@ -951,7 +951,7 @@ LABEL_23:
     v9 = &self->_anon_1f928[16132];
     p_backwardIndex = &self->_anchorArray.backwardIndex;
     v11 = v4 + self->_offsets.gradientFlags;
-    v12 = a3->var21[1].var0[1];
+    v12 = ptr->var21[1].var0[1];
     v13 = (v4 + self->_offsets.anchors);
     v36 = &self->_anon_1f928[4];
     v34 = LODWORD(v12);
@@ -984,7 +984,7 @@ LABEL_23:
             if (v19)
             {
               [(EdgeDrawingLineDetector *)self runTraceForward:2 anchorPoint:v37 initialGradDir:1 sharedMemoryPtr:v6];
-              v20 = self;
+              selfCopy2 = self;
               v21 = 1;
               v22 = v37;
               v23 = 1;
@@ -993,18 +993,18 @@ LABEL_23:
             else
             {
               [(EdgeDrawingLineDetector *)self runTraceForward:8 anchorPoint:v37 initialGradDir:0 sharedMemoryPtr:v6];
-              v20 = self;
+              selfCopy2 = self;
               v21 = 4;
               v22 = v37;
               v23 = 0;
             }
 
-            [(EdgeDrawingLineDetector *)v20 runTraceBackward:v21 anchorPoint:v22 initialGradDir:v23 sharedMemoryPtr:v6];
+            [(EdgeDrawingLineDetector *)selfCopy2 runTraceBackward:v21 anchorPoint:v22 initialGradDir:v23 sharedMemoryPtr:v6];
             v24 = p_backwardIndex[1];
             v25 = *p_backwardIndex - v24;
-            if (v25 >= LODWORD(a3->var21[1].var0[6]) && v25 >= LODWORD(a3->var21[1].var0[2]))
+            if (v25 >= LODWORD(ptr->var21[1].var0[6]) && v25 >= LODWORD(ptr->var21[1].var0[2]))
             {
-              v30 = [(EdgeDrawingLineDetector *)self doLineFitting:a3 outputLineData:v33];
+              v30 = [(EdgeDrawingLineDetector *)self doLineFitting:ptr outputLineData:v33];
               if (v30)
               {
                 v31 = v30;
@@ -1046,9 +1046,9 @@ LABEL_23:
   return 0;
 }
 
-- (int)doLineFitting:(id *)a3 outputLineData:
+- (int)doLineFitting:(id *)fitting outputLineData:
 {
-  v4 = LODWORD(a3->var21[1].var0[2]);
+  v4 = LODWORD(fitting->var21[1].var0[2]);
   v5 = *self->_anon_1f928;
   v6 = (self->_anchorArray.backwardIndex - v5);
   *self->_anon_11c = 0;
@@ -1067,7 +1067,7 @@ LABEL_23:
       }
 
       *self->_anon_11c = v12 + 1;
-      v13 = [(EdgeDrawingLineDetector *)self runFullLsr:a3 lsr:&v11[32 * v12] points:v10 numPointsLeft:v6];
+      v13 = [(EdgeDrawingLineDetector *)self runFullLsr:fitting lsr:&v11[32 * v12] points:v10 numPointsLeft:v6];
       v10 += 4 * v13;
       v6 = v6 - v13;
     }
@@ -1075,28 +1075,28 @@ LABEL_23:
     while (v6 >= v4);
     if (*self->_anon_11c)
     {
-      [(EdgeDrawingLineDetector *)self doLineMerging:a3 outputLineData:v7];
+      [(EdgeDrawingLineDetector *)self doLineMerging:fitting outputLineData:v7];
     }
   }
 
   return 0;
 }
 
-- (void)doLineMerging:(id *)a3 outputLineData:
+- (void)doLineMerging:(id *)merging outputLineData:
 {
   v5 = v3;
   v7 = &self->_anon_1f928[30428];
-  v8 = LODWORD(a3->var21[1].var0[6]) * LODWORD(a3->var21[1].var0[6]);
-  *v4.i32 = LODWORD(a3->var21[0].var0[5]);
-  *v9.f32 = vcvt_f32_s32(*&a3->var15.var0.var5);
+  v8 = LODWORD(merging->var21[1].var0[6]) * LODWORD(merging->var21[1].var0[6]);
+  *v4.i32 = LODWORD(merging->var21[0].var0[5]);
+  *v9.f32 = vcvt_f32_s32(*&merging->var15.var0.var5);
   v9.i64[1] = v9.i64[0];
   v41 = vnegq_f32(v9);
   v10 = *self->_anon_11c;
   if (v10 >= 2)
   {
     v14 = 0;
-    v15 = a3->var21[1].var0[4];
-    v16 = a3->var21[1].var0[5];
+    v15 = merging->var21[1].var0[4];
+    v16 = merging->var21[1].var0[5];
     memset(v42, 0, sizeof(v42));
     v17 = &self->_anon_11c[8];
     v40 = vdupq_lane_s32(v4, 0);
@@ -1213,14 +1213,14 @@ LABEL_18:
   }
 }
 
-- (void)runTraceForward:(unsigned int)a3 anchorPoint:(unsigned int)a4 initialGradDir:(char *)a5 sharedMemoryPtr:
+- (void)runTraceForward:(unsigned int)forward anchorPoint:(unsigned int)point initialGradDir:(char *)dir sharedMemoryPtr:
 {
-  v6 = a4;
-  if (a4 >= 1)
+  pointCopy = point;
+  if (point >= 1)
   {
     v7 = v5 + self->_offsets.gradientFlags;
     v8 = v5 + self->_offsets.gradientMagnitude;
-    v9 = a4 >> 16;
+    v9 = point >> 16;
     downscaledImageWidth = self->_currentMemoryAllocationParameters.downscaledImageWidth;
     downscaledImageHeight = self->_currentMemoryAllocationParameters.downscaledImageHeight;
     v12 = ~downscaledImageWidth;
@@ -1232,7 +1232,7 @@ LABEL_18:
         break;
       }
 
-      if (v6 + 1 >= downscaledImageWidth)
+      if (pointCopy + 1 >= downscaledImageWidth)
       {
         break;
       }
@@ -1242,12 +1242,12 @@ LABEL_18:
         break;
       }
 
-      if (!a3)
+      if (!forward)
       {
         break;
       }
 
-      v14 = (v8 + 2 * v6 + 2 * self->_elemStride.gradientMagnitude * v9);
+      v14 = (v8 + 2 * pointCopy + 2 * self->_elemStride.gradientMagnitude * v9);
       v15 = *v14;
       __asm { FCMP            H1, #0 }
 
@@ -1256,7 +1256,7 @@ LABEL_18:
         break;
       }
 
-      if (a3)
+      if (forward)
       {
         v22 = v14[-downscaledImageWidth];
         __asm { FCMP            H1, #0 }
@@ -1315,7 +1315,7 @@ LABEL_18:
       }
 
       v28 = &v14[downscaledImageWidth];
-      if ((a3 & 2) != 0)
+      if ((forward & 2) != 0)
       {
         _H2 = *v28;
         __asm { FCVT            S2, H2 }
@@ -1351,7 +1351,7 @@ LABEL_18:
         }
       }
 
-      if ((a3 & 4) != 0)
+      if ((forward & 4) != 0)
       {
         _H2 = *(v14 - 1);
         __asm { FCVT            S2, H2 }
@@ -1387,7 +1387,7 @@ LABEL_18:
         }
       }
 
-      if ((a3 & 8) == 0)
+      if ((forward & 8) == 0)
       {
         goto LABEL_46;
       }
@@ -1421,7 +1421,7 @@ LABEL_18:
       {
         v18 = 2;
         ++v9;
-        ++v6;
+        ++pointCopy;
       }
 
       else
@@ -1432,11 +1432,11 @@ LABEL_46:
           return;
         }
 
-        v6 += v19;
+        pointCopy += v19;
         v9 += v20;
       }
 
-      v47 = v6 + self->_elemStride.gradientFlags * v9;
+      v47 = pointCopy + self->_elemStride.gradientFlags * v9;
       v48 = *(v7 + v47);
       if (v48 > 1)
       {
@@ -1450,30 +1450,30 @@ LABEL_46:
         break;
       }
 
-      if (a5 != v48)
+      if (dir != v48)
       {
-        a3 = v18;
+        forward = v18;
       }
 
-      a5 = &self->_anon_1f928[4 * backwardIndex + 4];
-      *(a5 + 1) = v9;
-      *a5 = v6;
+      dir = &self->_anon_1f928[4 * backwardIndex + 4];
+      *(dir + 1) = v9;
+      *dir = pointCopy;
       self->_anchorArray.backwardIndex = backwardIndex + 1;
-      LODWORD(a5) = v48;
+      LODWORD(dir) = v48;
     }
 
-    while (v6 > 0);
+    while (pointCopy > 0);
   }
 }
 
-- (void)runTraceBackward:(unsigned int)a3 anchorPoint:(unsigned int)a4 initialGradDir:(char *)a5 sharedMemoryPtr:
+- (void)runTraceBackward:(unsigned int)backward anchorPoint:(unsigned int)point initialGradDir:(char *)dir sharedMemoryPtr:
 {
-  v6 = a4;
-  if (a4 >= 1)
+  pointCopy = point;
+  if (point >= 1)
   {
     v7 = v5 + self->_offsets.gradientFlags;
     v8 = v5 + self->_offsets.gradientMagnitude;
-    v9 = a4 >> 16;
+    v9 = point >> 16;
     downscaledImageWidth = self->_currentMemoryAllocationParameters.downscaledImageWidth;
     downscaledImageHeight = self->_currentMemoryAllocationParameters.downscaledImageHeight;
     v12 = ~downscaledImageWidth;
@@ -1485,7 +1485,7 @@ LABEL_46:
         break;
       }
 
-      if (v6 + 1 >= downscaledImageWidth)
+      if (pointCopy + 1 >= downscaledImageWidth)
       {
         break;
       }
@@ -1495,12 +1495,12 @@ LABEL_46:
         break;
       }
 
-      if (!a3)
+      if (!backward)
       {
         break;
       }
 
-      v14 = (v8 + 2 * v6 + 2 * self->_elemStride.gradientMagnitude * v9);
+      v14 = (v8 + 2 * pointCopy + 2 * self->_elemStride.gradientMagnitude * v9);
       v15 = *v14;
       __asm { FCMP            H1, #0 }
 
@@ -1509,7 +1509,7 @@ LABEL_46:
         break;
       }
 
-      if (a3)
+      if (backward)
       {
         v22 = v14[-downscaledImageWidth];
         __asm { FCMP            H1, #0 }
@@ -1568,7 +1568,7 @@ LABEL_46:
       }
 
       v28 = &v14[downscaledImageWidth];
-      if ((a3 & 2) != 0)
+      if ((backward & 2) != 0)
       {
         _H2 = *v28;
         __asm { FCVT            S2, H2 }
@@ -1604,7 +1604,7 @@ LABEL_46:
         }
       }
 
-      if ((a3 & 4) != 0)
+      if ((backward & 4) != 0)
       {
         _H2 = *(v14 - 1);
         __asm { FCVT            S2, H2 }
@@ -1640,7 +1640,7 @@ LABEL_46:
         }
       }
 
-      if ((a3 & 8) == 0)
+      if ((backward & 8) == 0)
       {
         goto LABEL_46;
       }
@@ -1674,7 +1674,7 @@ LABEL_46:
       {
         v18 = 2;
         ++v9;
-        ++v6;
+        ++pointCopy;
       }
 
       else
@@ -1685,11 +1685,11 @@ LABEL_46:
           return;
         }
 
-        v6 += v19;
+        pointCopy += v19;
         v9 += v20;
       }
 
-      v47 = v6 + self->_elemStride.gradientFlags * v9;
+      v47 = pointCopy + self->_elemStride.gradientFlags * v9;
       v48 = *(v7 + v47);
       if (v48 > 1)
       {
@@ -1704,25 +1704,25 @@ LABEL_46:
       }
 
       *self->_anon_1f928 = v49 - 1;
-      if (a5 != v48)
+      if (dir != v48)
       {
-        a3 = v18;
+        backward = v18;
       }
 
-      a5 = &self->_anon_1f928[4 * (v49 - 1) + 4];
-      *(a5 + 1) = v9;
-      *a5 = v6;
-      LODWORD(a5) = v48;
+      dir = &self->_anon_1f928[4 * (v49 - 1) + 4];
+      *(dir + 1) = v9;
+      *dir = pointCopy;
+      LODWORD(dir) = v48;
     }
 
-    while (v6 > 0);
+    while (pointCopy > 0);
   }
 }
 
-- (void)rebuildLsr:(EdgeDrawingLineDetector *)self points:(SEL)a2 numPoints:(id *)a3
+- (void)rebuildLsr:(EdgeDrawingLineDetector *)self points:(SEL)points numPoints:(id *)numPoints
 {
-  a3[2].var0 = v3;
-  LODWORD(a3[3].var0) = v4;
+  numPoints[2].var0 = v3;
+  LODWORD(numPoints[3].var0) = v4;
   v5 = *v3;
   *&v6 = v5;
   v7 = v3[1];
@@ -1781,7 +1781,7 @@ LABEL_46:
 
     *&v28 = (v22 - (_S1 * v23)) + (_S1 * v8);
     *(&v28 + 1) = v8;
-    a3->var0 = v28;
+    numPoints->var0 = v28;
     __asm { FMLA            S3, S1, V0.S[1] }
 
     LODWORD(_D0) = _S3;
@@ -1798,26 +1798,26 @@ LABEL_46:
 
     v36 = v23 - (v35 * v22);
     *(&v6 + 1) = v36 + (v35 * *&v6);
-    a3->var0 = v6;
+    numPoints->var0 = v6;
     *(&_D0 + 1) = v36 + (v35 * *&_D0);
   }
 
-  a3[1].var0 = _D0;
+  numPoints[1].var0 = _D0;
 }
 
-- (unsigned)runFullLsr:(EdgeDrawingLineDetector *)self lsr:(SEL)a2 points:(id *)a3 numPointsLeft:(id *)a4
+- (unsigned)runFullLsr:(EdgeDrawingLineDetector *)self lsr:(SEL)lsr points:(id *)points numPointsLeft:(id *)left
 {
-  a4[2].var0 = v4;
+  left[2].var0 = v4;
   v6 = *v4;
   *&v7 = v6;
   v8 = v4[1];
   v9 = v8;
   v10 = v6;
-  v11 = LODWORD(a3->var21[1].var0[2]);
+  v11 = LODWORD(points->var21[1].var0[2]);
   v12.f32[0] = v6;
   v12.f32[1] = v8;
   v13 = v8;
-  v14 = a3->var21[1].var0[3];
+  v14 = points->var21[1].var0[3];
   v15 = v10 * v10;
   v16 = v6 * v8;
   v17 = v13 * v13;
@@ -1871,7 +1871,7 @@ LABEL_46:
     if (v11)
     {
       v33 = v4 + 1;
-      v34 = LODWORD(a3->var21[1].var0[2]);
+      v34 = LODWORD(points->var21[1].var0[2]);
       do
       {
         v35 = *(v33 - 1) - (v32 + (v31 * *v33));
@@ -1881,7 +1881,7 @@ LABEL_46:
       }
 
       while (v34);
-      v36 = LODWORD(a3->var21[1].var0[2]);
+      v36 = LODWORD(points->var21[1].var0[2]);
     }
 
     else
@@ -1937,7 +1937,7 @@ LABEL_46:
 
     *&v52 = (v25 - (_S4 * v26)) + (_S4 * v9);
     *(&v52 + 1) = v9;
-    a4->var0 = v52;
+    left->var0 = v52;
     __asm { FMLA            S0, S4, V3.S[1] }
 
     LODWORD(_D3) = _S0;
@@ -1958,7 +1958,7 @@ LABEL_46:
     if (v11)
     {
       v42 = v4 + 1;
-      v43 = LODWORD(a3->var21[1].var0[2]);
+      v43 = LODWORD(points->var21[1].var0[2]);
       do
       {
         v44 = *v42 - (v41 + (v40 * *(v42 - 1)));
@@ -1968,7 +1968,7 @@ LABEL_46:
       }
 
       while (v43);
-      v45 = LODWORD(a3->var21[1].var0[2]);
+      v45 = LODWORD(points->var21[1].var0[2]);
     }
 
     else
@@ -2024,16 +2024,16 @@ LABEL_46:
 
     v64 = v26 - (v63 * v25);
     *(&v7 + 1) = v64 + (v63 * *&v7);
-    a4->var0 = v7;
+    left->var0 = v7;
     *(&_D3 + 1) = v64 + (v63 * *&_D3);
   }
 
-  a4[1].var0 = _D3;
-  LODWORD(a4[3].var0) = v11;
+  left[1].var0 = _D3;
+  LODWORD(left[3].var0) = v11;
   return v11;
 }
 
-- (void)sort4Points:(EdgeDrawingLineDetector *)self onAxis:(SEL)a2
+- (void)sort4Points:(EdgeDrawingLineDetector *)self onAxis:(SEL)axis
 {
   if (v3 == 1)
   {

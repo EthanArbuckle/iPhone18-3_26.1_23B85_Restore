@@ -1,14 +1,14 @@
 @interface IENLGenerator
-- (BOOL)fromCATI:(id)a3 withOutputFile:(id)a4;
-- (BOOL)fromCATI:(id)a3 withOutputFile:(id)a4 withCATIManifest:(id)a5 withEnsemble:(id)a6;
+- (BOOL)fromCATI:(id)i withOutputFile:(id)file;
+- (BOOL)fromCATI:(id)i withOutputFile:(id)file withCATIManifest:(id)manifest withEnsemble:(id)ensemble;
 @end
 
 @implementation IENLGenerator
 
-- (BOOL)fromCATI:(id)a3 withOutputFile:(id)a4
+- (BOOL)fromCATI:(id)i withOutputFile:(id)file
 {
-  v5 = a3;
-  v6 = a4;
+  iCopy = i;
+  fileCopy = file;
   if ((atomic_load_explicit(&qword_280AF4200, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4200))
   {
     _MergedGlobals_4 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -42,12 +42,12 @@ void __41__IENLGenerator_fromCATI_withOutputFile___block_invoke(siri::intelligen
   }
 }
 
-- (BOOL)fromCATI:(id)a3 withOutputFile:(id)a4 withCATIManifest:(id)a5 withEnsemble:(id)a6
+- (BOOL)fromCATI:(id)i withOutputFile:(id)file withCATIManifest:(id)manifest withEnsemble:(id)ensemble
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  iCopy = i;
+  fileCopy = file;
+  manifestCopy = manifest;
+  ensembleCopy = ensemble;
   if ((atomic_load_explicit(&qword_280AF4210, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4210))
   {
     qword_280AF4208 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");

@@ -1,7 +1,7 @@
 @interface UIUModelFetcher
 + (BOOL)areModelsAvailable;
-+ (BOOL)downloadModelSet:(int64_t)a3 timeout:(double)a4;
-+ (BOOL)downloadModels:(double)a3;
++ (BOOL)downloadModelSet:(int64_t)set timeout:(double)timeout;
++ (BOOL)downloadModels:(double)models;
 @end
 
 @implementation UIUModelFetcher
@@ -9,23 +9,23 @@
 + (BOOL)areModelsAvailable
 {
   v2 = +[UIUModelFetcherCompat sharedFetcher];
-  v3 = [v2 areAssetsPresent];
+  areAssetsPresent = [v2 areAssetsPresent];
 
-  return v3;
+  return areAssetsPresent;
 }
 
-+ (BOOL)downloadModelSet:(int64_t)a3 timeout:(double)a4
++ (BOOL)downloadModelSet:(int64_t)set timeout:(double)timeout
 {
   v6 = +[UIUModelFetcherCompat sharedFetcher];
-  LOBYTE(a3) = [v6 startAssetDownloadWithModelSet:a3 timeout:a4];
+  LOBYTE(set) = [v6 startAssetDownloadWithModelSet:set timeout:timeout];
 
-  return a3;
+  return set;
 }
 
-+ (BOOL)downloadModels:(double)a3
++ (BOOL)downloadModels:(double)models
 {
   v4 = +[UIUModelFetcherCompat sharedFetcher];
-  v5 = [v4 startAssetDownloadWithModelSet:1 timeout:a3];
+  v5 = [v4 startAssetDownloadWithModelSet:1 timeout:models];
 
   return v5;
 }

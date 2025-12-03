@@ -1,8 +1,8 @@
 @interface PBFFocusPosterMastheadConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)symbolImageName;
 - (_TtC11PosterBoard35PBFFocusPosterMastheadConfiguration)init;
-- (_TtC11PosterBoard35PBFFocusPosterMastheadConfiguration)initWithKeyColor:(id)a3 symbolImageName:(id)a4;
+- (_TtC11PosterBoard35PBFFocusPosterMastheadConfiguration)initWithKeyColor:(id)color symbolImageName:(id)name;
 @end
 
 @implementation PBFFocusPosterMastheadConfiguration
@@ -15,24 +15,24 @@
   return v2;
 }
 
-- (_TtC11PosterBoard35PBFFocusPosterMastheadConfiguration)initWithKeyColor:(id)a3 symbolImageName:(id)a4
+- (_TtC11PosterBoard35PBFFocusPosterMastheadConfiguration)initWithKeyColor:(id)color symbolImageName:(id)name
 {
   v6 = sub_21B6C8DA4();
-  *(self + OBJC_IVAR____TtC11PosterBoard35PBFFocusPosterMastheadConfiguration_keyColor) = a3;
+  *(self + OBJC_IVAR____TtC11PosterBoard35PBFFocusPosterMastheadConfiguration_keyColor) = color;
   v7 = (self + OBJC_IVAR____TtC11PosterBoard35PBFFocusPosterMastheadConfiguration_symbolImageName);
   *v7 = v6;
   v7[1] = v8;
   v11.receiver = self;
   v11.super_class = type metadata accessor for PBFFocusPosterMastheadConfiguration();
-  v9 = a3;
+  colorCopy = color;
   return [(PBFFocusPosterMastheadConfiguration *)&v11 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21B6C93E4();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PBFFocusPosterMastheadConfiguration.isEqual(_:)(v8);

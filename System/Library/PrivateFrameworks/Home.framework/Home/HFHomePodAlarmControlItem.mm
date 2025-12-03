@@ -1,61 +1,61 @@
 @interface HFHomePodAlarmControlItem
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFHomeKitSettingsValueManager)valueManager;
-- (HFHomePodAlarmControlItem)initWithMediaProfileContainer:(id)a3 displayResults:(id)a4;
-- (HFHomePodAlarmControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (HFHomePodAlarmControlItem)initWithMediaProfileContainer:(id)container displayResults:(id)results;
+- (HFHomePodAlarmControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 - (id)readValueAndPopulateStandardResults;
-- (id)resultsForBatchReadResponse:(id)a3;
+- (id)resultsForBatchReadResponse:(id)response;
 - (unint64_t)hash;
 @end
 
 @implementation HFHomePodAlarmControlItem
 
-- (HFHomePodAlarmControlItem)initWithMediaProfileContainer:(id)a3 displayResults:(id)a4
+- (HFHomePodAlarmControlItem)initWithMediaProfileContainer:(id)container displayResults:(id)results
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 hf_home];
-  if (!v10)
+  containerCopy = container;
+  resultsCopy = results;
+  hf_home = [containerCopy hf_home];
+  if (!hf_home)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmControlItem.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmControlItem.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v11 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v12 = [v10 hf_characteristicValueManager];
+  hf_characteristicValueManager = [hf_home hf_characteristicValueManager];
   v13 = [MEMORY[0x277CBEB98] set];
-  v14 = [(HFSimpleAggregatedCharacteristicValueSource *)v11 initWithValueSource:v12 characteristics:v13 primaryServiceDescriptor:0];
+  v14 = [(HFSimpleAggregatedCharacteristicValueSource *)v11 initWithValueSource:hf_characteristicValueManager characteristics:v13 primaryServiceDescriptor:0];
 
   v15 = objc_alloc_init(HFControlItemCharacteristicOptions);
   v19.receiver = self;
   v19.super_class = HFHomePodAlarmControlItem;
-  v16 = [(HFControlItem *)&v19 initWithValueSource:v14 characteristicOptions:v15 displayResults:v9];
+  v16 = [(HFControlItem *)&v19 initWithValueSource:v14 characteristicOptions:v15 displayResults:resultsCopy];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_mediaProfileContainer, a3);
+    objc_storeStrong(&v16->_mediaProfileContainer, container);
   }
 
   return v16;
 }
 
-- (HFHomePodAlarmControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFHomePodAlarmControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithMediaProfileContainer_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmControlItem.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HFHomePodAlarmControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmControlItem.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HFHomePodAlarmControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
-  v7 = [(HFControlItem *)self displayResults];
-  v8 = [v5 initWithMediaProfileContainer:v6 displayResults:v7];
+  mediaProfileContainer = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
+  displayResults = [(HFControlItem *)self displayResults];
+  v8 = [v5 initWithMediaProfileContainer:mediaProfileContainer displayResults:displayResults];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
@@ -63,10 +63,10 @@
 
 - (HFHomeKitSettingsValueManager)valueManager
 {
-  v2 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
-  v3 = [v2 hf_settingsValueManager];
+  mediaProfileContainer = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
+  hf_settingsValueManager = [mediaProfileContainer hf_settingsValueManager];
 
-  return v3;
+  return hf_settingsValueManager;
 }
 
 - (id)readValueAndPopulateStandardResults
@@ -74,14 +74,14 @@
   v29 = *MEMORY[0x277D85DE8];
   v24.receiver = self;
   v24.super_class = HFHomePodAlarmControlItem;
-  v3 = [(HFControlItem *)&v24 readValueAndPopulateStandardResults];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [v4 setObject:&unk_2825237F0 forKeyedSubscript:@"controlItemPurpose"];
-  v5 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
-  v6 = [v5 hf_backingAccessory];
-  v7 = [v6 hf_siriEndpointProfile];
+  readValueAndPopulateStandardResults = [(HFControlItem *)&v24 readValueAndPopulateStandardResults];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_2825237F0 forKeyedSubscript:@"controlItemPurpose"];
+  mediaProfileContainer = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
+  hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+  hf_siriEndpointProfile = [hf_backingAccessory hf_siriEndpointProfile];
 
-  if (v7)
+  if (hf_siriEndpointProfile)
   {
     v8 = HFLogForCategory(0x41uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -90,48 +90,48 @@
       _os_log_debug_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEBUG, "Setting HomePodAlarmControlItem purpose to HFControlItemPreferredPurposeSecondaryAlternateQuickControl", buf, 2u);
     }
 
-    [v4 setObject:&unk_282523808 forKeyedSubscript:@"controlItemPurpose"];
+    [dictionary setObject:&unk_282523808 forKeyedSubscript:@"controlItemPurpose"];
   }
 
-  v9 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
-  v10 = [v9 hf_dependentHomeKitObjectsForDownstreamItems];
-  v11 = [v10 mutableCopy];
+  mediaProfileContainer2 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
+  hf_dependentHomeKitObjectsForDownstreamItems = [mediaProfileContainer2 hf_dependentHomeKitObjectsForDownstreamItems];
+  v11 = [hf_dependentHomeKitObjectsForDownstreamItems mutableCopy];
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v12 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
-    v13 = [v12 hf_settingsAdapterManager];
-    v14 = [v13 adapterForIdentifier:@"MobileTimerAdapter"];
+    mediaProfileContainer3 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
+    hf_settingsAdapterManager = [mediaProfileContainer3 hf_settingsAdapterManager];
+    v14 = [hf_settingsAdapterManager adapterForIdentifier:@"MobileTimerAdapter"];
 
-    v15 = [v14 isAdapterReady];
+    isAdapterReady = [v14 isAdapterReady];
     v16 = HFLogForCategory(4uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109376;
-      v26 = v15;
+      v26 = isAdapterReady;
       v27 = 1024;
-      v28 = v15 ^ 1;
+      v28 = isAdapterReady ^ 1;
       _os_log_debug_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEBUG, "mobileTimerAdapter isAdapterReady = %{BOOL}d Alarm QC will be hidden = %{BOOL}d", buf, 0xEu);
     }
 
-    if ((v15 & 1) == 0)
+    if ((isAdapterReady & 1) == 0)
     {
-      [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
     }
 
-    v17 = [v14 alarmCollectionSetting];
-    [v11 na_safeAddObject:v17];
+    alarmCollectionSetting = [v14 alarmCollectionSetting];
+    [v11 na_safeAddObject:alarmCollectionSetting];
   }
 
-  [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"actionRequiresDeviceUnlock"];
-  [v4 na_safeSetObject:v11 forKey:@"dependentHomeKitObjects"];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"actionRequiresDeviceUnlock"];
+  [dictionary na_safeSetObject:v11 forKey:@"dependentHomeKitObjects"];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __64__HFHomePodAlarmControlItem_readValueAndPopulateStandardResults__block_invoke;
   v22[3] = &unk_277DF3FD0;
-  v23 = v4;
-  v18 = v4;
-  v19 = [v3 flatMap:v22];
+  v23 = dictionary;
+  v18 = dictionary;
+  v19 = [readValueAndPopulateStandardResults flatMap:v22];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -147,23 +147,23 @@ id __64__HFHomePodAlarmControlItem_readValueAndPopulateStandardResults__block_in
   return v4;
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v13.receiver = self;
   v13.super_class = HFHomePodAlarmControlItem;
-  v5 = [(HFControlItem *)&v13 resultsForBatchReadResponse:v4];
+  v5 = [(HFControlItem *)&v13 resultsForBatchReadResponse:responseCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
-  LOBYTE(v5) = [v7 hf_isReachable];
+  mediaProfileContainer = [(HFHomePodAlarmControlItem *)self mediaProfileContainer];
+  LOBYTE(v5) = [mediaProfileContainer hf_isReachable];
 
   if ((v5 & 1) == 0)
   {
     v8 = [MEMORY[0x277CCA9B8] hf_errorWithCode:35];
     v9 = [MEMORY[0x277CBEB98] set];
-    v10 = [v4 contextProvider];
-    v11 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v8 readTraits:v9 contextProvider:v10];
+    contextProvider = [responseCopy contextProvider];
+    v11 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v8 readTraits:v9 contextProvider:contextProvider];
 
     [v6 na_safeSetObject:v11 forKey:@"underlyingError"];
   }
@@ -200,19 +200,19 @@ id __40__HFHomePodAlarmControlItem_na_identity__block_invoke_3(uint64_t a1, void
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

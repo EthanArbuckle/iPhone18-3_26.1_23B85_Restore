@@ -1,27 +1,27 @@
 @interface CCHomeMetaContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCHomeMetaContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCHomeMetaContent)initWithSourceItemIdentifier:(id)a3 assistantHomeKitIdentifier:(id)a4 error:(id *)a5;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCHomeMetaContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCHomeMetaContent)initWithSourceItemIdentifier:(id)identifier assistantHomeKitIdentifier:(id)kitIdentifier error:(id *)error;
 - (NSString)assistantHomeKitIdentifier;
 - (NSString)sourceItemIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCHomeMetaContent
 
-- (CCHomeMetaContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCHomeMetaContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"sourceItemIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"assistantHomeKitIdentifier"];
-    v11 = [[CCHomeMetaContent alloc] initWithSourceItemIdentifier:v9 assistantHomeKitIdentifier:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"sourceItemIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"assistantHomeKitIdentifier"];
+    v11 = [[CCHomeMetaContent alloc] initWithSourceItemIdentifier:v9 assistantHomeKitIdentifier:v10 error:error];
   }
 
   else
@@ -38,14 +38,14 @@
   v3 = objc_opt_new();
   if (self->_sourceItemIdentifier)
   {
-    v4 = [(CCHomeMetaContent *)self sourceItemIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"sourceItemIdentifier"];
+    sourceItemIdentifier = [(CCHomeMetaContent *)self sourceItemIdentifier];
+    [v3 setObject:sourceItemIdentifier forKeyedSubscript:@"sourceItemIdentifier"];
   }
 
   if (self->_assistantHomeKitIdentifier)
   {
-    v5 = [(CCHomeMetaContent *)self assistantHomeKitIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"assistantHomeKitIdentifier"];
+    assistantHomeKitIdentifier = [(CCHomeMetaContent *)self assistantHomeKitIdentifier];
+    [v3 setObject:assistantHomeKitIdentifier forKeyedSubscript:@"assistantHomeKitIdentifier"];
   }
 
   v6 = [v3 copy];
@@ -53,19 +53,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_sourceItemIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7699 stringValue:self->_sourceItemIdentifier];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_assistantHomeKitIdentifier)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7700 stringValue:self->_assistantHomeKitIdentifier];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -83,10 +83,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -235,15 +235,15 @@ LABEL_38:
   return v30;
 }
 
-- (CCHomeMetaContent)initWithSourceItemIdentifier:(id)a3 assistantHomeKitIdentifier:(id)a4 error:(id *)a5
+- (CCHomeMetaContent)initWithSourceItemIdentifier:(id)identifier assistantHomeKitIdentifier:(id)kitIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  kitIdentifierCopy = kitIdentifier;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!kitIdentifierCopy)
     {
       goto LABEL_8;
     }
@@ -257,7 +257,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -273,35 +273,35 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (kitIdentifierCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
   v3 = @"HomeMetaContent_assistantHomeKitIdentifier";
-  if (a3 != 7700)
+  if (identifier != 7700)
   {
     v3 = 0;
   }
 
-  if (a3 == 7699)
+  if (identifier == 7699)
   {
     return @"HomeMetaContent_sourceItemIdentifier";
   }

@@ -3,7 +3,7 @@
 - (NSString)deviceId;
 - (NSString)ospreyEndpointURL;
 - (SFSpeechSynthesisInternalSetting)init;
-- (id)ospreyEndpointURLByType:(int64_t)a3;
+- (id)ospreyEndpointURLByType:(int64_t)type;
 @end
 
 @implementation SFSpeechSynthesisInternalSetting
@@ -14,35 +14,35 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    uUIDString = v3;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(NSUserDefaults *)self->_defaults setObject:v5 forKey:@"deviceId"];
+    [(NSUserDefaults *)self->_defaults setObject:uUIDString forKey:@"deviceId"];
     [(NSUserDefaults *)self->_defaults synchronize];
   }
 
-  return v5;
+  return uUIDString;
 }
 
-- (id)ospreyEndpointURLByType:(int64_t)a3
+- (id)ospreyEndpointURLByType:(int64_t)type
 {
-  v5 = a3 - 1;
-  if (a3 - 1) < 7 && ((0x5Fu >> v5))
+  v5 = type - 1;
+  if (type - 1) < 7 && ((0x5Fu >> v5))
   {
-    v6 = off_279C4C3E0[v5];
+    ospreyEndpointURL = off_279C4C3E0[v5];
   }
 
   else
   {
-    v6 = [(SFSpeechSynthesisInternalSetting *)self ospreyEndpointURL];
+    ospreyEndpointURL = [(SFSpeechSynthesisInternalSetting *)self ospreyEndpointURL];
   }
 
-  return v6;
+  return ospreyEndpointURL;
 }
 
 - (NSString)ospreyEndpointURL

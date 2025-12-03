@@ -1,45 +1,45 @@
 @interface SBSceneResizeGestureRootSwitcherModifier
-- (SBSceneResizeGestureRootSwitcherModifier)initWithAppLayout:(id)a3 spaceConfiguration:(int64_t)a4;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)handleTransitionEvent:(id)a3;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (SBSceneResizeGestureRootSwitcherModifier)initWithAppLayout:(id)layout spaceConfiguration:(int64_t)configuration;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)handleTransitionEvent:(id)event;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 @end
 
 @implementation SBSceneResizeGestureRootSwitcherModifier
 
-- (SBSceneResizeGestureRootSwitcherModifier)initWithAppLayout:(id)a3 spaceConfiguration:(int64_t)a4
+- (SBSceneResizeGestureRootSwitcherModifier)initWithAppLayout:(id)layout spaceConfiguration:(int64_t)configuration
 {
-  v7 = a3;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBSceneResizeGestureRootSwitcherModifier;
   v8 = [(SBGestureRootSwitcherModifier *)&v11 initWithStartingEnvironmentMode:3];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appLayout, a3);
-    v9->_startingSpaceConfiguration = a4;
+    objc_storeStrong(&v8->_appLayout, layout);
+    v9->_startingSpaceConfiguration = configuration;
   }
 
   return v9;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [SBSceneResizeGestureSwitcherModifier alloc];
-  v7 = [v5 gestureID];
+  gestureID = [eventCopy gestureID];
 
-  v8 = [(SBSceneResizeGestureSwitcherModifier *)v6 initWithGestureID:v7 appLayout:self->_appLayout spaceConfiguration:self->_startingSpaceConfiguration];
+  v8 = [(SBSceneResizeGestureSwitcherModifier *)v6 initWithGestureID:gestureID appLayout:self->_appLayout spaceConfiguration:self->_startingSpaceConfiguration];
 
   return v8;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
-  v5 = a4;
-  v6 = a3;
+  modifierCopy = modifier;
+  eventCopy = event;
   v7 = objc_opt_class();
-  v8 = v5;
+  v8 = modifierCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -61,28 +61,28 @@
   v10 = v9;
 
   v11 = [SBSceneResizeTransitionSwitcherModifier alloc];
-  v12 = [v6 transitionID];
-  v13 = [v6 fromAppLayout];
-  v14 = [v6 toAppLayout];
+  transitionID = [eventCopy transitionID];
+  fromAppLayout = [eventCopy fromAppLayout];
+  toAppLayout = [eventCopy toAppLayout];
 
   [v10 _minimumCardWidthForDismissalAction];
   v16 = v15;
 
-  v17 = [(SBSceneResizeTransitionSwitcherModifier *)v11 initWithTransitionID:v12 fromAppLayout:v13 toAppLayout:v14 minimumCardWithForDismissal:v16];
+  v17 = [(SBSceneResizeTransitionSwitcherModifier *)v11 initWithTransitionID:transitionID fromAppLayout:fromAppLayout toAppLayout:toAppLayout minimumCardWithForDismissal:v16];
 
   return v17;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBSceneResizeGestureRootSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBGestureRootSwitcherModifier *)&v9 handleTransitionEvent:v4];
-  v6 = [v4 toAppLayout];
+  eventCopy = event;
+  v5 = [(SBGestureRootSwitcherModifier *)&v9 handleTransitionEvent:eventCopy];
+  toAppLayout = [eventCopy toAppLayout];
 
   appLayout = self->_appLayout;
-  self->_appLayout = v6;
+  self->_appLayout = toAppLayout;
 
   return v5;
 }

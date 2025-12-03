@@ -1,23 +1,23 @@
 @interface _DPDediscoUtils
 + (BOOL)isDataCollectionEnabled;
-+ (BOOL)shouldAllowOHTTPExemptionForCollectionID:(id)a3;
-+ (id)toBase64URLEncoded:(id)a3;
-+ (unint64_t)dediscoVersionForDonation:(id)a3;
++ (BOOL)shouldAllowOHTTPExemptionForCollectionID:(id)d;
++ (id)toBase64URLEncoded:(id)encoded;
++ (unint64_t)dediscoVersionForDonation:(id)donation;
 @end
 
 @implementation _DPDediscoUtils
 
-+ (unint64_t)dediscoVersionForDonation:(id)a3
++ (unint64_t)dediscoVersionForDonation:(id)donation
 {
-  v3 = [a3 metadata];
+  metadata = [donation metadata];
   v4 = _DPDediscoVersionWithMetadata();
 
   return v4;
 }
 
-+ (id)toBase64URLEncoded:(id)a3
++ (id)toBase64URLEncoded:(id)encoded
 {
-  v3 = [a3 base64EncodedStringWithOptions:0];
+  v3 = [encoded base64EncodedStringWithOptions:0];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
   v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
   v6 = [v5 stringByReplacingOccurrencesOfString:@"=" withString:&stru_1000741F0];
@@ -35,9 +35,9 @@
   return byte_10007E760;
 }
 
-+ (BOOL)shouldAllowOHTTPExemptionForCollectionID:(id)a3
++ (BOOL)shouldAllowOHTTPExemptionForCollectionID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -56,7 +56,7 @@
           objc_enumerationMutation(&off_100075AC0);
         }
 
-        if ([v3 hasPrefix:*(*(&v10 + 1) + 8 * i)])
+        if ([dCopy hasPrefix:*(*(&v10 + 1) + 8 * i)])
         {
           v8 = 1;
           goto LABEL_11;

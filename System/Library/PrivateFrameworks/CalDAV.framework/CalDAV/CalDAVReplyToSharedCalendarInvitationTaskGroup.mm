@@ -1,16 +1,16 @@
 @interface CalDAVReplyToSharedCalendarInvitationTaskGroup
-- (CalDAVReplyToSharedCalendarInvitationTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4;
+- (CalDAVReplyToSharedCalendarInvitationTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager;
 - (id)generateReply;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CalDAVReplyToSharedCalendarInvitationTaskGroup
 
-- (CalDAVReplyToSharedCalendarInvitationTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4
+- (CalDAVReplyToSharedCalendarInvitationTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  managerCopy = manager;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Initializing this class instance with an inherited initializer not allowed." userInfo:0];
   objc_exception_throw(v7);
 }
@@ -18,16 +18,16 @@
 - (void)startTaskGroup
 {
   v3 = [CalDAVPostWithSharedAsResponse alloc];
-  v4 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self generateReply];
-  v5 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self calendarHomeURL];
-  v8 = [(CoreDAVPostTask *)v3 initWithDataPayload:v4 dataContentType:@"text/xml" atURL:v5 previousETag:0];
+  generateReply = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self generateReply];
+  calendarHomeURL = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self calendarHomeURL];
+  v8 = [(CoreDAVPostTask *)v3 initWithDataPayload:generateReply dataContentType:@"text/xml" atURL:calendarHomeURL previousETag:0];
 
-  v6 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [(CalDAVPostWithSharedAsResponse *)v8 setAccountInfoProvider:v6];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [(CalDAVPostWithSharedAsResponse *)v8 setAccountInfoProvider:accountInfoProvider];
 
   [(CalDAVPostWithSharedAsResponse *)v8 setDelegate:self];
-  v7 = [(CoreDAVTaskGroup *)self taskManager];
-  [v7 submitQueuedCoreDAVTask:v8];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v8];
 }
 
 - (id)generateReply
@@ -37,73 +37,73 @@
   [v3 startElement:? inNamespace:? withAttributeNamesAndValues:?];
   v5 = *MEMORY[0x277CFDF38];
   v6 = *MEMORY[0x277CFDEF8];
-  v7 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
-  v8 = [v7 href];
-  v9 = [v8 payloadAsString];
-  [v3 appendElement:v5 inNamespace:v6 withStringContent:v9 withAttributeNamesAndValues:0];
+  invitation = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
+  href = [invitation href];
+  payloadAsString = [href payloadAsString];
+  [v3 appendElement:v5 inNamespace:v6 withStringContent:payloadAsString withAttributeNamesAndValues:0];
 
-  v10 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self acceptInvitation];
+  acceptInvitation = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self acceptInvitation];
   v11 = cdXMLCalendarServerInviteAccepted;
-  if (!v10)
+  if (!acceptInvitation)
   {
     v11 = cdXMLCalendarServerInviteDeclined;
   }
 
   [v3 appendElement:*v11 inNamespace:v4 withStringContent:0 withAttributeNamesAndValues:0];
   [v3 startElement:@"hosturl" inNamespace:v4 withAttributeNamesAndValues:0];
-  v12 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
-  v13 = [v12 hostURL];
-  v14 = [v13 href];
-  v15 = [v14 payloadAsString];
-  [v3 appendElement:v5 inNamespace:v6 withStringContent:v15 withAttributeNamesAndValues:0];
+  invitation2 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
+  hostURL = [invitation2 hostURL];
+  href2 = [hostURL href];
+  payloadAsString2 = [href2 payloadAsString];
+  [v3 appendElement:v5 inNamespace:v6 withStringContent:payloadAsString2 withAttributeNamesAndValues:0];
 
   [v3 endElement:@"hosturl" inNamespace:v4];
-  v16 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
-  v17 = [v16 uid];
-  v18 = [v17 payloadAsString];
-  [v3 appendElement:@"in-reply-to" inNamespace:v4 withStringContent:v18 withAttributeNamesAndValues:0];
+  invitation3 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
+  v17 = [invitation3 uid];
+  payloadAsString3 = [v17 payloadAsString];
+  [v3 appendElement:@"in-reply-to" inNamespace:v4 withStringContent:payloadAsString3 withAttributeNamesAndValues:0];
 
-  v19 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
-  v20 = [v19 summary];
+  invitation4 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
+  summary = [invitation4 summary];
 
-  if (v20)
+  if (summary)
   {
-    v21 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
-    v22 = [v21 summary];
-    v23 = [v22 payloadAsString];
-    [v3 appendElement:@"summary" inNamespace:v4 withStringContent:v23 withAttributeNamesAndValues:0];
+    invitation5 = [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self invitation];
+    summary2 = [invitation5 summary];
+    payloadAsString4 = [summary2 payloadAsString];
+    [v3 appendElement:@"summary" inNamespace:v4 withStringContent:payloadAsString4 withAttributeNamesAndValues:0];
   }
 
   [v3 endElement:@"invite-reply" inNamespace:v4];
-  v24 = [v3 data];
+  data = [v3 data];
 
-  return v24;
+  return data;
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v12 = a4;
-  v6 = [a3 responseBodyParser];
-  if (!v12)
+  errorCopy = error;
+  responseBodyParser = [task responseBodyParser];
+  if (!errorCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 rootElement];
+      rootElement = [responseBodyParser rootElement];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [v6 rootElement];
-        v10 = [v9 href];
-        v11 = [v10 payloadAsFullURL];
-        [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self setSharedAs:v11];
+        rootElement2 = [responseBodyParser rootElement];
+        href = [rootElement2 href];
+        payloadAsFullURL = [href payloadAsFullURL];
+        [(CalDAVReplyToSharedCalendarInvitationTaskGroup *)self setSharedAs:payloadAsFullURL];
       }
     }
   }
 
-  [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v12 delegateCallbackBlock:0];
+  [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:errorCopy delegateCallbackBlock:0];
 }
 
 @end

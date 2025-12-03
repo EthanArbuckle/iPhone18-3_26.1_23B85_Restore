@@ -1,42 +1,42 @@
 @interface TPSAppIntentValidation
-- (TPSAppIntentValidation)initWithAppIntent:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (TPSAppIntentValidation)initWithAppIntent:(id)intent;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSAppIntentValidation
 
-- (TPSAppIntentValidation)initWithAppIntent:(id)a3
+- (TPSAppIntentValidation)initWithAppIntent:(id)intent
 {
-  v5 = a3;
+  intentCopy = intent;
   v9.receiver = self;
   v9.super_class = TPSAppIntentValidation;
   v6 = [(TPSAppIntentValidation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appIntent, a3);
+    objc_storeStrong(&v6->_appIntent, intent);
   }
 
   return v7;
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPSAppIntent *)self->_appIntent value];
+  completionCopy = completion;
+  value = [(TPSAppIntent *)self->_appIntent value];
   v6 = objc_alloc_init(TPSAppIntentsHelper);
-  v7 = [(TPSAppIntent *)self->_appIntent name];
-  v8 = [(TPSAppIntent *)self->_appIntent bundleId];
+  name = [(TPSAppIntent *)self->_appIntent name];
+  bundleId = [(TPSAppIntent *)self->_appIntent bundleId];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__TPSAppIntentValidation_validateWithCompletion___block_invoke;
   v11[3] = &unk_2789B0948;
-  v13 = self;
-  v14 = v4;
-  v12 = v5;
-  v9 = v5;
-  v10 = v4;
-  [(TPSAppIntentsHelper *)v6 fetchReturnValueFromIntentNamed:v7 inBundleId:v8 withParameters:0 completionHandler:v11];
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = value;
+  v9 = value;
+  v10 = completionCopy;
+  [(TPSAppIntentsHelper *)v6 fetchReturnValueFromIntentNamed:name inBundleId:bundleId withParameters:0 completionHandler:v11];
 }
 
 uint64_t __49__TPSAppIntentValidation_validateWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3)

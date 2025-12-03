@@ -1,15 +1,15 @@
 @interface BLSHSuppressionEvent
-- (BLSHSuppressionEvent)initWithCoreMotionEvent:(id)a3 timestamp:(unint64_t)a4;
-- (BLSHSuppressionEvent)initWithType:(unint64_t)a3 reason:(unint64_t)a4 timestamp:(unint64_t)a5;
+- (BLSHSuppressionEvent)initWithCoreMotionEvent:(id)event timestamp:(unint64_t)timestamp;
+- (BLSHSuppressionEvent)initWithType:(unint64_t)type reason:(unint64_t)reason timestamp:(unint64_t)timestamp;
 - (id)description;
 @end
 
 @implementation BLSHSuppressionEvent
 
-- (BLSHSuppressionEvent)initWithCoreMotionEvent:(id)a3 timestamp:(unint64_t)a4
+- (BLSHSuppressionEvent)initWithCoreMotionEvent:(id)event timestamp:(unint64_t)timestamp
 {
-  v6 = a3;
-  if ([v6 type] == 1)
+  eventCopy = event;
+  if ([eventCopy type] == 1)
   {
     v7 = 1;
   }
@@ -19,21 +19,21 @@
     v7 = 2;
   }
 
-  v8 = [v6 reason];
+  reason = [eventCopy reason];
 
-  return [(BLSHSuppressionEvent *)self initWithType:v7 reason:v8 timestamp:a4];
+  return [(BLSHSuppressionEvent *)self initWithType:v7 reason:reason timestamp:timestamp];
 }
 
-- (BLSHSuppressionEvent)initWithType:(unint64_t)a3 reason:(unint64_t)a4 timestamp:(unint64_t)a5
+- (BLSHSuppressionEvent)initWithType:(unint64_t)type reason:(unint64_t)reason timestamp:(unint64_t)timestamp
 {
   v9.receiver = self;
   v9.super_class = BLSHSuppressionEvent;
   result = [(BLSHSuppressionEvent *)&v9 init];
   if (result)
   {
-    result->_type = a3;
-    result->_reason = a4;
-    result->_machContinuousTimestamp = a5;
+    result->_type = type;
+    result->_reason = reason;
+    result->_machContinuousTimestamp = timestamp;
   }
 
   return result;
@@ -50,9 +50,9 @@
   v7 = NSStringFromBLSAlwaysOnSuppressionReason();
   [v3 appendString:v7 withName:@"reason"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

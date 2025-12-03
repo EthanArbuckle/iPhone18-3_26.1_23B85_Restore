@@ -1,20 +1,20 @@
 @interface SKUIBrickGridCollectionViewCell
 - (UIEdgeInsets)contentInsets;
 - (UIImage)brickImage;
-- (void)applyEditorialLayout:(id)a3 orientation:(int64_t)a4;
+- (void)applyEditorialLayout:(id)layout orientation:(int64_t)orientation;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBrickImage:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setBackgroundColor:(id)color;
+- (void)setBrickImage:(id)image;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setContentInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation SKUIBrickGridCollectionViewCell
 
-- (void)applyEditorialLayout:(id)a3 orientation:(int64_t)a4
+- (void)applyEditorialLayout:(id)layout orientation:(int64_t)orientation
 {
-  v6 = a3;
+  layoutCopy = layout;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -28,7 +28,7 @@
   }
 
   editorialContainerView = self->_editorialContainerView;
-  if (v6)
+  if (layoutCopy)
   {
     if (!editorialContainerView)
     {
@@ -37,11 +37,11 @@
       self->_editorialContainerView = v16;
 
       v18 = self->_editorialContainerView;
-      v19 = [(SKUIBrickGridCollectionViewCell *)self backgroundColor];
-      [(UIView *)v18 setBackgroundColor:v19];
+      backgroundColor = [(SKUIBrickGridCollectionViewCell *)self backgroundColor];
+      [(UIView *)v18 setBackgroundColor:backgroundColor];
 
-      v20 = [(SKUIBrickGridCollectionViewCell *)self contentView];
-      [v20 addSubview:self->_editorialContainerView];
+      contentView = [(SKUIBrickGridCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_editorialContainerView];
 
       [(SKUIBrickGridCollectionViewCell *)self setNeedsLayout];
     }
@@ -63,7 +63,7 @@
     [(UIView *)editorialContainerView setHidden:1];
   }
 
-  [(SKUIEditorialCellLayout *)self->_editorialCellLayout applyEditorialLayout:v6 withOrientation:a4 expanded:1];
+  [(SKUIEditorialCellLayout *)self->_editorialCellLayout applyEditorialLayout:layoutCopy withOrientation:orientation expanded:1];
 }
 
 - (UIImage)brickImage
@@ -80,14 +80,14 @@
     }
   }
 
-  v11 = [(UIImageView *)self->_brickImageView image];
+  image = [(UIImageView *)self->_brickImageView image];
 
-  return v11;
+  return image;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -100,19 +100,19 @@
     }
   }
 
-  if (self->_accessibilityLabel != v4)
+  if (self->_accessibilityLabel != labelCopy)
   {
-    v13 = [(NSString *)v4 copy];
+    v13 = [(NSString *)labelCopy copy];
     accessibilityLabel = self->_accessibilityLabel;
     self->_accessibilityLabel = v13;
 
-    [(UIImageView *)self->_brickImageView setAccessibilityLabel:v4];
+    [(UIImageView *)self->_brickImageView setAccessibilityLabel:labelCopy];
   }
 }
 
-- (void)setBrickImage:(id)a3
+- (void)setBrickImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -125,12 +125,12 @@
     }
   }
 
-  v13 = [(SKUIBrickGridCollectionViewCell *)self brickImage];
+  brickImage = [(SKUIBrickGridCollectionViewCell *)self brickImage];
 
-  if (v13 != v4)
+  if (brickImage != imageCopy)
   {
     brickImageView = self->_brickImageView;
-    if (v4)
+    if (imageCopy)
     {
       if (!brickImageView)
       {
@@ -140,17 +140,17 @@
 
         [(UIImageView *)self->_brickImageView setAccessibilityLabel:self->_accessibilityLabel];
         v17 = self->_brickImageView;
-        v18 = [(SKUIBrickGridCollectionViewCell *)self backgroundColor];
-        [(UIImageView *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIBrickGridCollectionViewCell *)self backgroundColor];
+        [(UIImageView *)v17 setBackgroundColor:backgroundColor];
 
-        v19 = [(SKUIBrickGridCollectionViewCell *)self contentView];
-        [v19 addSubview:self->_brickImageView];
+        contentView = [(SKUIBrickGridCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_brickImageView];
 
         [(SKUIBrickGridCollectionViewCell *)self setNeedsLayout];
         brickImageView = self->_brickImageView;
       }
 
-      [(UIImageView *)brickImageView setImage:v4];
+      [(UIImageView *)brickImageView setImage:imageCopy];
       [(UIImageView *)self->_brickImageView sizeToFit];
     }
 
@@ -163,9 +163,9 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -178,15 +178,15 @@
     }
   }
 
-  [(SKUIEditorialCellLayout *)self->_editorialCellLayout setColoringWithColorScheme:v4];
+  [(SKUIEditorialCellLayout *)self->_editorialCellLayout setColoringWithColorScheme:schemeCopy];
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -230,8 +230,8 @@
   v24.receiver = self;
   v24.super_class = SKUIBrickGridCollectionViewCell;
   [(SKUIBrickGridCollectionViewCell *)&v24 layoutSubviews];
-  v11 = [(SKUIBrickGridCollectionViewCell *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUIBrickGridCollectionViewCell *)self contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
 
@@ -260,9 +260,9 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -275,12 +275,12 @@
     }
   }
 
-  [(UIImageView *)self->_brickImageView setBackgroundColor:v4];
-  [(SKUIEditorialCellLayout *)self->_editorialCellLayout setBackgroundColor:v4];
-  [(UIView *)self->_editorialContainerView setBackgroundColor:v4];
+  [(UIImageView *)self->_brickImageView setBackgroundColor:colorCopy];
+  [(SKUIEditorialCellLayout *)self->_editorialCellLayout setBackgroundColor:colorCopy];
+  [(UIView *)self->_editorialContainerView setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIBrickGridCollectionViewCell;
-  [(SKUIBrickGridCollectionViewCell *)&v13 setBackgroundColor:v4];
+  [(SKUIBrickGridCollectionViewCell *)&v13 setBackgroundColor:colorCopy];
 }
 
 - (UIEdgeInsets)contentInsets

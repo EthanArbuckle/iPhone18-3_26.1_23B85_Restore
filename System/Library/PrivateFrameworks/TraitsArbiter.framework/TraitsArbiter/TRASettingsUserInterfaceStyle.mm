@@ -1,40 +1,40 @@
 @interface TRASettingsUserInterfaceStyle
-- (BOOL)isEqualToUserInterfaceStyleSettings:(id)a3;
-- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleInputs:(id)a3;
-- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleSettings:(id)a3;
+- (BOOL)isEqualToUserInterfaceStyleSettings:(id)settings;
+- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleInputs:(id)inputs;
+- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleSettings:(id)settings;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TRASettingsUserInterfaceStyle
 
-- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleInputs:(id)a3
+- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleInputs:(id)inputs
 {
-  v5 = a3;
+  inputsCopy = inputs;
   v9.receiver = self;
   v9.super_class = TRASettingsUserInterfaceStyle;
   v6 = [(TRASettingsUserInterfaceStyle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userInterfaceStyleInputs, a3);
+    objc_storeStrong(&v6->_userInterfaceStyleInputs, inputs);
   }
 
   return v7;
 }
 
-- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleSettings:(id)a3
+- (TRASettingsUserInterfaceStyle)initWithUserInterfaceStyleSettings:(id)settings
 {
-  v4 = [a3 userInterfaceStyleInputs];
-  v5 = [(TRASettingsUserInterfaceStyle *)self initWithUserInterfaceStyleInputs:v4];
+  userInterfaceStyleInputs = [settings userInterfaceStyleInputs];
+  v5 = [(TRASettingsUserInterfaceStyle *)self initWithUserInterfaceStyleInputs:userInterfaceStyleInputs];
 
   return v5;
 }
 
-- (BOOL)isEqualToUserInterfaceStyleSettings:(id)a3
+- (BOOL)isEqualToUserInterfaceStyleSettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -42,7 +42,7 @@
       [TRASettingsUserInterfaceStyle isEqualToUserInterfaceStyleSettings:];
     }
 
-    if (self == v4)
+    if (self == settingsCopy)
     {
       v7 = 1;
     }
@@ -50,8 +50,8 @@
     else
     {
       userInterfaceStyleInputs = self->_userInterfaceStyleInputs;
-      v6 = [(TRASettingsUserInterfaceStyle *)v4 userInterfaceStyleInputs];
-      v7 = [(TRAArbitrationUserInterfaceStyleInputs *)userInterfaceStyleInputs isEqual:v6];
+      userInterfaceStyleInputs = [(TRASettingsUserInterfaceStyle *)settingsCopy userInterfaceStyleInputs];
+      v7 = [(TRAArbitrationUserInterfaceStyleInputs *)userInterfaceStyleInputs isEqual:userInterfaceStyleInputs];
     }
   }
 
@@ -63,9 +63,9 @@
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAMutableSettingsUserInterfaceStyle allocWithZone:a3];
+  v4 = [TRAMutableSettingsUserInterfaceStyle allocWithZone:zone];
 
   return [(TRASettingsUserInterfaceStyle *)v4 initWithUserInterfaceStyleSettings:self];
 }
@@ -73,8 +73,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(TRASettingsUserInterfaceStyle *)self userInterfaceStyleInputs];
-  v4 = [v2 stringWithFormat:@"userInterfaceStyle: %li", objc_msgSend(v3, "userInterfaceStyle")];
+  userInterfaceStyleInputs = [(TRASettingsUserInterfaceStyle *)self userInterfaceStyleInputs];
+  v4 = [v2 stringWithFormat:@"userInterfaceStyle: %li", objc_msgSend(userInterfaceStyleInputs, "userInterfaceStyle")];
 
   return v4;
 }

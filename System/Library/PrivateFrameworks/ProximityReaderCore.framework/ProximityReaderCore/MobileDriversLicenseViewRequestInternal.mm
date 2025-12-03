@@ -1,14 +1,14 @@
 @interface MobileDriversLicenseViewRequestInternal
 - (NSString)description;
 - (_TtC19ProximityReaderCore39MobileDriversLicenseViewRequestInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MobileDriversLicenseViewRequestInternal
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MobileDriversLicenseViewRequestInternal.description.getter();
 
   v3 = sub_26121CC50();
@@ -16,11 +16,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MobileDriversLicenseViewRequestInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MobileDriversLicenseViewRequestInternal.encode(with:)(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore39MobileDriversLicenseViewRequestInternal)init

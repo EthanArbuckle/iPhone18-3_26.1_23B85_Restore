@@ -1,22 +1,22 @@
 @interface SUUIDialogTemplateViewElement
 - (NSArray)buttons;
-- (SUUIDialogTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIDialogTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUILabelViewElement)message;
 - (SUUILabelViewElement)title;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIDialogTemplateViewElement
 
-- (SUUIDialogTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIDialogTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SUUIDialogTemplateViewElement;
-  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"type"];
+    v10 = [elementCopy getAttribute:@"type"];
     if ([v10 isEqualToString:@"actionSheet"])
     {
       v11 = 1;
@@ -52,12 +52,12 @@ LABEL_11:
 
 - (NSArray)buttons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__SUUIDialogTemplateViewElement_buttons__block_invoke;
   v6[3] = &unk_2798F5B20;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -133,16 +133,16 @@ void __38__SUUIDialogTemplateViewElement_title__block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUIDialogTemplateViewElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_dialogType = [(SUUIDialogTemplateViewElement *)v4 dialogType];
+    self->_dialogType = [(SUUIDialogTemplateViewElement *)elementCopy dialogType];
   }
 
   return v6;

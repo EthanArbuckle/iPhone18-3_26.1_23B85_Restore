@@ -1,15 +1,15 @@
 @interface CHAutoRefineQuery
-- (CHAutoRefineQuery)initWithRecognitionSession:(id)a3;
+- (CHAutoRefineQuery)initWithRecognitionSession:(id)session;
 - (void)q_updateQueryResult;
 @end
 
 @implementation CHAutoRefineQuery
 
-- (CHAutoRefineQuery)initWithRecognitionSession:(id)a3
+- (CHAutoRefineQuery)initWithRecognitionSession:(id)session
 {
   v10.receiver = self;
   v10.super_class = CHAutoRefineQuery;
-  result = [(CHQuery *)&v10 initWithRecognitionSession:a3];
+  result = [(CHQuery *)&v10 initWithRecognitionSession:session];
   if (result)
   {
     v9 = result;

@@ -10,9 +10,9 @@
 {
   v2 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v2 configureWithDefaultBackground];
-  [a1 setStandardAppearance:v2];
-  [a1 setCompactAppearance:v2];
-  [a1 setScrollEdgeAppearance:v2];
+  [self setStandardAppearance:v2];
+  [self setCompactAppearance:v2];
+  [self setScrollEdgeAppearance:v2];
 }
 
 - (void)ams_configureWithTranslucentWhileScrollingBackground
@@ -21,18 +21,18 @@
   [v3 configureWithDefaultBackground];
   v2 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v2 configureWithTransparentBackground];
-  [a1 setStandardAppearance:v3];
-  [a1 setCompactAppearance:v3];
-  [a1 setScrollEdgeAppearance:v2];
+  [self setStandardAppearance:v3];
+  [self setCompactAppearance:v3];
+  [self setScrollEdgeAppearance:v2];
 }
 
 - (void)ams_configureWithTransparentBackground
 {
   v2 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v2 configureWithTransparentBackground];
-  [a1 setStandardAppearance:v2];
-  [a1 setCompactAppearance:v2];
-  [a1 setScrollEdgeAppearance:v2];
+  [self setStandardAppearance:v2];
+  [self setCompactAppearance:v2];
+  [self setScrollEdgeAppearance:v2];
 }
 
 @end

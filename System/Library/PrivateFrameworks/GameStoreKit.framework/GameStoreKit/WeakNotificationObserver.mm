@@ -1,7 +1,7 @@
 @interface WeakNotificationObserver
 - (_TtC12GameStoreKit24WeakNotificationObserver)init;
 - (void)dealloc;
-- (void)didReceiveWithNotification:(id)a3;
+- (void)didReceiveWithNotification:(id)notification;
 @end
 
 @implementation WeakNotificationObserver
@@ -9,18 +9,18 @@
 - (void)dealloc
 {
   Strong = swift_unknownObjectWeakLoadStrong();
-  v4 = self;
+  selfCopy = self;
   if (Strong)
   {
     [Strong removeObserver_];
   }
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for WeakNotificationObserver();
   [(WeakNotificationObserver *)&v5 dealloc];
 }
 
-- (void)didReceiveWithNotification:(id)a3
+- (void)didReceiveWithNotification:(id)notification
 {
   v4 = sub_24F91EB58();
   v5 = *(v4 - 8);
@@ -41,7 +41,7 @@
   *(v15 + 16) = v12;
   *(v15 + 24) = v11;
   (*(v5 + 32))(v15 + v14, v7, v4);
-  v16 = self;
+  selfCopy = self;
 
   sub_24F928C78();
 

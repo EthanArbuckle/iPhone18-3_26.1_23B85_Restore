@@ -1,41 +1,41 @@
 @interface ASDiscoveredDisplayItem
-- (ASDiscoveredDisplayItem)initWithCoder:(id)a3;
-- (ASDiscoveredDisplayItem)initWithName:(id)a3 productImage:(id)a4 accessory:(id)a5;
-- (ASDiscoveredDisplayItem)initWithXPCObject:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (ASDiscoveredDisplayItem)initWithCoder:(id)coder;
+- (ASDiscoveredDisplayItem)initWithName:(id)name productImage:(id)image accessory:(id)accessory;
+- (ASDiscoveredDisplayItem)initWithXPCObject:(id)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ASDiscoveredDisplayItem
 
-- (ASDiscoveredDisplayItem)initWithName:(id)a3 productImage:(id)a4 accessory:(id)a5
+- (ASDiscoveredDisplayItem)initWithName:(id)name productImage:(id)image accessory:(id)accessory
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 descriptor];
+  accessoryCopy = accessory;
+  imageCopy = image;
+  nameCopy = name;
+  descriptor = [accessoryCopy descriptor];
   v16.receiver = self;
   v16.super_class = ASDiscoveredDisplayItem;
-  v13 = [(ASPickerDisplayItem *)&v16 initWithName:v11 productImage:v10 descriptor:v12];
+  v13 = [(ASPickerDisplayItem *)&v16 initWithName:nameCopy productImage:imageCopy descriptor:descriptor];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_accessory, a5);
+    objc_storeStrong(&v13->_accessory, accessory);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (ASDiscoveredDisplayItem)initWithCoder:(id)a3
+- (ASDiscoveredDisplayItem)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ASDiscoveredDisplayItem;
-  v3 = a3;
-  v4 = [(ASPickerDisplayItem *)&v7 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(ASPickerDisplayItem *)&v7 initWithCoder:coderCopy];
   if (v4)
   {
     objc_opt_class();
@@ -46,44 +46,44 @@
 
   else
   {
-    [ASDiscoveredDisplayItem initWithCoder:v3];
+    [ASDiscoveredDisplayItem initWithCoder:coderCopy];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = ASDiscoveredDisplayItem;
-  [(ASPickerDisplayItem *)&v6 encodeWithCoder:v4];
+  [(ASPickerDisplayItem *)&v6 encodeWithCoder:coderCopy];
   accessory = self->_accessory;
   if (accessory)
   {
-    [v4 encodeObject:accessory forKey:@"dsAc"];
+    [coderCopy encodeObject:accessory forKey:@"dsAc"];
   }
 }
 
-- (ASDiscoveredDisplayItem)initWithXPCObject:(id)a3 error:(id *)a4
+- (ASDiscoveredDisplayItem)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = ASDiscoveredDisplayItem;
-  v7 = [(ASPickerDisplayItem *)&v17 initWithXPCObject:v6 error:a4];
+  v7 = [(ASPickerDisplayItem *)&v17 initWithXPCObject:objectCopy error:error];
   if (v7)
   {
-    if (MEMORY[0x2383B4C90](v6) == MEMORY[0x277D86468])
+    if (MEMORY[0x2383B4C90](objectCopy) == MEMORY[0x277D86468])
     {
       objc_opt_class();
       CUXPCDecodeObject();
       v14 = v7;
     }
 
-    else if (a4)
+    else if (error)
     {
       ASErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v16);
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -94,49 +94,49 @@
 
   else
   {
-    [ASPickerDisplayItem initWithXPCObject:a4 error:&v18];
+    [ASPickerDisplayItem initWithXPCObject:error error:&v18];
     v14 = v18;
   }
 
   return v14;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v6.receiver = self;
   v6.super_class = ASDiscoveredDisplayItem;
-  v4 = a3;
-  [(ASPickerDisplayItem *)&v6 encodeWithXPCObject:v4];
+  objectCopy = object;
+  [(ASPickerDisplayItem *)&v6 encodeWithXPCObject:objectCopy];
   accessory = self->_accessory;
   CUXPCEncodeObject();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = ASDiscoveredDisplayItem;
   v5 = [(ASPickerDisplayItem *)&v9 copyWithZone:?];
-  v6 = [(ASDiscoveredAccessory *)self->_accessory copyWithZone:a3];
+  v6 = [(ASDiscoveredAccessory *)self->_accessory copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
-  else if ([(ASDiscoveredDisplayItem *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(ASDiscoveredDisplayItem *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     accessory = self->_accessory;
-    v6 = [(ASDiscoveredDisplayItem *)v4 accessory];
+    accessory = [(ASDiscoveredDisplayItem *)equalCopy accessory];
     v7 = accessory;
-    v8 = v6;
+    v8 = accessory;
     v9 = v8;
     if (v7 == v8)
     {
@@ -162,7 +162,7 @@
   return v10;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   CUAppendF();
   v4 = 0;

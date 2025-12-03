@@ -1,20 +1,20 @@
 @interface CSActivityPickerViewController
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)wouldHandleButtonEvent:(id)a3;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)wouldHandleButtonEvent:(id)event;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (CSActivityPickerViewControllerDelegate)delegate;
 - (CSActivityPickerViewControllerParentContainer)parentContainer;
 - (CSDismissableModalViewController)modalPresenter;
-- (void)_dismissWithRepresentedActivity:(id)a3 transitionCoordinator:(id)a4;
-- (void)_presentFromView:(id)a3 representedActivity:(id)a4 transitionCoordinator:(id)a5;
-- (void)addGrabberView:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
+- (void)_dismissWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator;
+- (void)_presentFromView:(id)view representedActivity:(id)activity transitionCoordinator:(id)coordinator;
+- (void)addGrabberView:(id)view;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
 - (void)dismiss;
-- (void)handleTap:(id)a3;
-- (void)performCustomTransitionToVisible:(BOOL)a3 withAnimationSettings:(id)a4 completion:(id)a5;
+- (void)handleTap:(id)tap;
+- (void)performCustomTransitionToVisible:(BOOL)visible withAnimationSettings:(id)settings completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CSActivityPickerViewController
@@ -24,15 +24,15 @@
   v17.receiver = self;
   v17.super_class = CSActivityPickerViewController;
   [(CSCoverSheetViewControllerBase *)&v17 viewDidLoad];
-  v3 = [(CSActivityPickerViewController *)self view];
+  view = [(CSActivityPickerViewController *)self view];
   v4 = objc_alloc(MEMORY[0x277D75D18]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   contentView = self->_contentView;
   self->_contentView = v5;
 
   [(UIView *)self->_contentView setClipsToBounds:1];
-  [v3 addSubview:self->_contentView];
+  [view addSubview:self->_contentView];
   [(UIView *)self->_contentView setAutoresizingMask:18];
   v7 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTap_];
   tapGesture = self->_tapGesture;
@@ -44,7 +44,7 @@
   self->_backgroundMaterialView = v9;
 
   v11 = self->_backgroundMaterialView;
-  [v3 bounds];
+  [view bounds];
   [(MTMaterialView *)v11 setFrame:?];
   [(UIView *)self->_contentView addSubview:self->_backgroundMaterialView];
   [(MTMaterialView *)self->_backgroundMaterialView setAutoresizingMask:18];
@@ -52,24 +52,24 @@
   activityPickerViewController = self->_activityPickerViewController;
   self->_activityPickerViewController = v12;
 
-  v14 = [(CSActivityPickerViewController *)self traitCollection];
-  v15 = [v14 userInterfaceIdiom];
+  traitCollection = [(CSActivityPickerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v15 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(FCUIActivityPickerViewController *)self->_activityPickerViewController setFooterPinnedToBottom:0];
   }
 
   [(CSActivityPickerViewController *)self bs_addChildViewController:self->_activityPickerViewController withSuperview:self->_contentView];
-  v16 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
-  [v3 bounds];
-  [v16 setFrame:?];
-  [v16 setAlpha:0.0];
+  view2 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAlpha:0.0];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  if (self->_activityPickerViewController == a3)
+  if (self->_activityPickerViewController == container)
   {
     v6 = CCUIDefaultExpandedContentModuleWidth();
 
@@ -80,7 +80,7 @@
   {
     v7.receiver = self;
     v7.super_class = CSActivityPickerViewController;
-    [(CSActivityPickerViewController *)&v7 sizeForChildContentContainer:a4.width withParentContainerSize:a4.height];
+    [(CSActivityPickerViewController *)&v7 sizeForChildContentContainer:size.width withParentContainerSize:size.height];
   }
 
   result.height = v5;
@@ -88,17 +88,17 @@
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = CSActivityPickerViewController;
-  [(CSCoverSheetViewControllerBase *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  if (v7)
+  [(CSCoverSheetViewControllerBase *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -115,7 +115,7 @@
     v8[4] = self;
     *&v8[5] = width;
     *&v8[6] = height;
-    [v7 animateAlongsideTransition:v8 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   }
 }
 
@@ -136,12 +136,12 @@ void __85__CSActivityPickerViewController_viewWillTransitionToSize_withTransitio
   [v11 layoutIfNeeded];
 }
 
-- (void)performCustomTransitionToVisible:(BOOL)a3 withAnimationSettings:(id)a4 completion:(id)a5
+- (void)performCustomTransitionToVisible:(BOOL)visible withAnimationSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
+  visibleCopy = visible;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_parentContainer);
-  if (a4)
+  if (settings)
   {
     v10 = objc_alloc_init(MEMORY[0x277D763A0]);
     [v10 _setDuration:0.81151];
@@ -156,8 +156,8 @@ void __85__CSActivityPickerViewController_viewWillTransitionToSize_withTransitio
     }
 
     [v10 _setContainerView:v11];
-    a4 = objc_alloc_init(_CSActivityPickerAnimator);
-    [v10 _setAnimator:a4];
+    settings = objc_alloc_init(_CSActivityPickerAnimator);
+    [v10 _setAnimator:settings];
   }
 
   else
@@ -169,7 +169,7 @@ void __85__CSActivityPickerViewController_viewWillTransitionToSize_withTransitio
   if (objc_opt_respondsToSelector())
   {
     v13 = [v12 activityPickerViewControllerPresentingView:self];
-    if (!v6)
+    if (!visibleCopy)
     {
       goto LABEL_9;
     }
@@ -178,7 +178,7 @@ void __85__CSActivityPickerViewController_viewWillTransitionToSize_withTransitio
   else
   {
     v13 = 0;
-    if (!v6)
+    if (!visibleCopy)
     {
 LABEL_9:
       if (objc_opt_respondsToSelector())
@@ -206,10 +206,10 @@ LABEL_16:
   v26[1] = 3221225472;
   v26[2] = __100__CSActivityPickerViewController_performCustomTransitionToVisible_withAnimationSettings_completion___block_invoke;
   v26[3] = &unk_27838D860;
-  v31 = v6;
+  v31 = visibleCopy;
   v16 = v13;
   v27 = v16;
-  v28 = self;
+  selfCopy = self;
   v17 = v15;
   v29 = v17;
   v18 = v10;
@@ -224,15 +224,15 @@ LABEL_16:
     block[3] = &unk_27838D8B0;
     v22 = v18;
     v24 = v20;
-    v25 = v8;
-    v23 = a4;
+    v25 = completionCopy;
+    settingsCopy = settings;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
     (*(v19 + 16))(v19, 0);
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -314,75 +314,75 @@ uint64_t __100__CSActivityPickerViewController_performCustomTransitionToVisible_
   }
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v11.receiver = self;
   v11.super_class = CSActivityPickerViewController;
-  v3 = a3;
-  [(CSCoverSheetViewControllerBase *)&v11 aggregateAppearance:v3];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v11 aggregateAppearance:appearanceCopy];
   v4 = objc_opt_new();
   v5 = [v4 priority:{40, v11.receiver, v11.super_class}];
   v6 = [v5 fakeStatusBar:1];
   v7 = [v6 fakeStatusBarLevel:&unk_28307A5C8];
-  [v3 addComponent:v7];
+  [appearanceCopy addComponent:v7];
 
   v8 = +[CSComponent homeAffordance];
   v9 = [v8 priority:40];
   v10 = [v9 hidden:1];
-  [v3 addComponent:v10];
+  [appearanceCopy addComponent:v10];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v4.receiver = self;
   v4.super_class = CSActivityPickerViewController;
-  v3 = a3;
-  [(CSCoverSheetViewControllerBase *)&v4 aggregateBehavior:v3];
-  [v3 setScrollingStrategy:{3, v4.receiver, v4.super_class}];
-  [v3 setIdleTimerMode:1];
-  [v3 setIdleTimerDuration:12];
-  [v3 setIdleWarnMode:2];
+  behaviorCopy = behavior;
+  [(CSCoverSheetViewControllerBase *)&v4 aggregateBehavior:behaviorCopy];
+  [behaviorCopy setScrollingStrategy:{3, v4.receiver, v4.super_class}];
+  [behaviorCopy setIdleTimerMode:1];
+  [behaviorCopy setIdleTimerDuration:12];
+  [behaviorCopy setIdleWarnMode:2];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = CSActivityPickerViewController;
-  if (-[CSCoverSheetViewControllerBase handleEvent:](&v7, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0)
+  if (-[CSCoverSheetViewControllerBase handleEvent:](&v7, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0)
   {
     goto LABEL_7;
   }
 
-  if (([v4 type] | 2) == 0x1B && (-[CSActivityPickerViewController bs_isDisappearingOrDisappeared](self, "bs_isDisappearingOrDisappeared") & 1) == 0)
+  if (([eventCopy type] | 2) == 0x1B && (-[CSActivityPickerViewController bs_isDisappearingOrDisappeared](self, "bs_isDisappearingOrDisappeared") & 1) == 0)
   {
     [(CSActivityPickerViewController *)self dismiss];
 LABEL_7:
-    v5 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
     goto LABEL_8;
   }
 
-  v5 = 0;
+  isConsumable = 0;
 LABEL_8:
 
-  return v5;
+  return isConsumable;
 }
 
-- (BOOL)wouldHandleButtonEvent:(id)a3
+- (BOOL)wouldHandleButtonEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 type] == 27 || objc_msgSend(v3, "type") == 25;
+  eventCopy = event;
+  v4 = [eventCopy type] == 27 || objc_msgSend(eventCopy, "type") == 25;
 
   return v4;
 }
 
-- (void)addGrabberView:(id)a3
+- (void)addGrabberView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   if (SBFEffectiveHomeButtonType() == 2 && (BSEqualObjects() & 1) == 0)
   {
     [(UIView *)self->_grabberView removeFromSuperview];
-    objc_storeStrong(&self->_grabberView, a3);
+    objc_storeStrong(&self->_grabberView, view);
     [(CSActivityPickerViewController *)self loadViewIfNeeded];
     grabberView = self->_grabberView;
     [(UIView *)self->_contentView bounds];
@@ -392,19 +392,19 @@ LABEL_8:
   }
 }
 
-- (void)_presentFromView:(id)a3 representedActivity:(id)a4 transitionCoordinator:(id)a5
+- (void)_presentFromView:(id)view representedActivity:(id)activity transitionCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  activityCopy = activity;
+  coordinatorCopy = coordinator;
   [(_UIPortalView *)self->_presentingPortalView removeFromSuperview];
   v11 = MEMORY[0x277D75D18];
   v34 = MEMORY[0x277D85DD0];
   v35 = 3221225472;
   v36 = __93__CSActivityPickerViewController__presentFromView_representedActivity_transitionCoordinator___block_invoke;
   v37 = &unk_27838B838;
-  v38 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = viewCopy;
   v39 = v12;
   [v11 performWithoutAnimation:&v34];
   [(UIView *)self->_contentView bounds];
@@ -419,16 +419,16 @@ LABEL_8:
   v31 = v16;
   v32 = v17;
   v33 = v18;
-  v27 = self;
-  v28 = v9;
-  v19 = v10;
+  selfCopy2 = self;
+  v28 = activityCopy;
+  v19 = coordinatorCopy;
   v29 = v19;
-  v20 = v9;
+  v20 = activityCopy;
   v21 = MEMORY[0x223D698D0](&v23);
   v22 = v21;
   if (v19)
   {
-    [v19 animateAlongsideTransition:v21 completion:{0, 0, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38}];
+    [v19 animateAlongsideTransition:v21 completion:{0, 0, v23, v24, v25, v26, selfCopy2, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, selfCopy}];
   }
 
   else
@@ -502,19 +502,19 @@ uint64_t __93__CSActivityPickerViewController__presentFromView_representedActivi
   return [MEMORY[0x277D75D18] _animateUsingSpringWithDuration:34 delay:v26 options:0 mass:v25 * 0.135251667 + 0.135251667 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:38.0 completion:0.0];
 }
 
-- (void)_dismissWithRepresentedActivity:(id)a3 transitionCoordinator:(id)a4
+- (void)_dismissWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  coordinatorCopy = coordinator;
   v8 = self->_presentingPortalView;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __88__CSActivityPickerViewController__dismissWithRepresentedActivity_transitionCoordinator___block_invoke;
   v21[3] = &unk_27838D900;
   v21[4] = self;
-  v9 = v6;
+  v9 = activityCopy;
   v22 = v9;
-  v10 = v7;
+  v10 = coordinatorCopy;
   v23 = v10;
   v11 = v8;
   v24 = v11;
@@ -525,7 +525,7 @@ uint64_t __93__CSActivityPickerViewController__presentFromView_representedActivi
   v18 = &unk_27838CAE8;
   v13 = v11;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v14 = MEMORY[0x223D698D0](&v15);
   if (v10)
   {
@@ -667,9 +667,9 @@ void __88__CSActivityPickerViewController__dismissWithRepresentedActivity_transi
   }
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if (self->_tapGesture == a3)
+  if (self->_tapGesture == tap)
   {
     [(CSActivityPickerViewController *)self dismiss];
   }

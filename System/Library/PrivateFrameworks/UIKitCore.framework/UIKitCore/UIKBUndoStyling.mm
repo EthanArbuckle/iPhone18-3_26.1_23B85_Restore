@@ -2,13 +2,13 @@
 - (UIFont)undoInteractiveControlLabelFont;
 - (UIFont)undoStateControlLabelFont;
 - (UIFont)undoStateControlUnavailableLabelFont;
-- (UIKBUndoStyling)initWithKeyboardAppearance:(int64_t)a3 isRTL:(BOOL)a4;
+- (UIKBUndoStyling)initWithKeyboardAppearance:(int64_t)appearance isRTL:(BOOL)l;
 - (void)createDynamicColors;
 @end
 
 @implementation UIKBUndoStyling
 
-- (UIKBUndoStyling)initWithKeyboardAppearance:(int64_t)a3 isRTL:(BOOL)a4
+- (UIKBUndoStyling)initWithKeyboardAppearance:(int64_t)appearance isRTL:(BOOL)l
 {
   v13.receiver = self;
   v13.super_class = UIKBUndoStyling;
@@ -23,8 +23,8 @@
     backgroundVibrancyEffect = v6->_backgroundVibrancyEffect;
     v6->_backgroundVibrancyEffect = v9;
 
-    v6->_isRTL = a4;
-    v6->_appearance = a3;
+    v6->_isRTL = l;
+    v6->_appearance = appearance;
     [(UIKBUndoStyling *)v6 createDynamicColors];
     v11 = v6;
   }

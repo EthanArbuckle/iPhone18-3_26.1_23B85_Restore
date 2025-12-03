@@ -1,60 +1,60 @@
 @interface HDDemoDataAudiogramSampleGenerator
-- (uint64_t)_hearingLevelClassificationForEar:(uint64_t)a1;
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
+- (uint64_t)_hearingLevelClassificationForEar:(uint64_t)ear;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
 @end
 
 @implementation HDDemoDataAudiogramSampleGenerator
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
-  v22 = a4;
-  v21 = a5;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 isAppleWatch];
+  dateCopy = date;
+  collectionCopy = collection;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if ((v8 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
     if (self)
     {
-      v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v10 = [v9 objectForKey:@"HealthDemoDataAudiogramSampleInterval"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v10 = [standardUserDefaults objectForKey:@"HealthDemoDataAudiogramSampleInterval"];
 
       if (v10 && [v10 integerValue] >= 1)
       {
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
       }
 
       else
       {
-        v11 = 60;
+        integerValue = 60;
       }
     }
 
     else
     {
-      v11 = 0;
+      integerValue = 0;
     }
 
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [MEMORY[0x277CBEA80] currentCalendar];
-    v20 = v12;
-    v14 = [v13 components:30 fromDate:v12];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v20 = date;
+    v14 = [currentCalendar components:30 fromDate:date];
     [v14 setHour:10];
     [v14 setMinute:30];
-    v15 = [v13 dateFromComponents:v14];
+    v15 = [currentCalendar dateFromComponents:v14];
     v16 = 0;
     while (1)
     {
-      v17 = [v13 hk_dateBySubtractingDays:v16 fromDate:v15];
-      if ([v17 hk_isBeforeDate:v22])
+      v17 = [currentCalendar hk_dateBySubtractingDays:v16 fromDate:v15];
+      if ([v17 hk_isBeforeDate:dateCopy])
       {
         break;
       }
 
       v18 = [(HDDemoDataAudiogramSampleGenerator *)self _hearingLevelClassificationForEar:?];
       v19 = [MEMORY[0x277CCD030] randomAudiogramSampleWithLeftEarClassification:v18 rightEarClassification:-[HDDemoDataAudiogramSampleGenerator _hearingLevelClassificationForEar:](self startDate:@"HealthDemoDataAudiogramRightEarHearingLevelClassificationOverride" endDate:v17 device:v17 metadata:{0, 0}];
-      [v21 addObjectFromPhone:v19];
-      v16 += v11;
+      [collectionCopy addObjectFromPhone:v19];
+      v16 += integerValue;
 
       if (v16 >= 3650)
       {
@@ -66,28 +66,28 @@ LABEL_13:
   }
 }
 
-- (uint64_t)_hearingLevelClassificationForEar:(uint64_t)a1
+- (uint64_t)_hearingLevelClassificationForEar:(uint64_t)ear
 {
-  if (!a1)
+  if (!ear)
   {
     return 0;
   }
 
   v2 = MEMORY[0x277CBEBD0];
   v3 = a2;
-  v4 = [v2 standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  standardUserDefaults = [v2 standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:v3];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
     v7 = 5;
-    if (v6 < 5)
+    if (integerValue < 5)
     {
-      v7 = v6;
+      v7 = integerValue;
     }
 
-    if (v6)
+    if (integerValue)
     {
       v8 = v7;
     }

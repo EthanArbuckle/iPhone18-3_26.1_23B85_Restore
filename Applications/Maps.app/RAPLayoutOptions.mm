@@ -1,24 +1,24 @@
 @interface RAPLayoutOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)initialLayoutParameters;
 @end
 
 @implementation RAPLayoutOptions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     layoutType = self->_layoutType;
-    v7 = [v5 layoutType];
-    v8 = v7;
+    layoutType = [v5 layoutType];
+    v8 = layoutType;
     reportedMapItem = self->_reportedMapItem;
     if (reportedMapItem)
     {
-      if (layoutType != v7)
+      if (layoutType != layoutType)
       {
         v10 = 0;
 LABEL_16:
@@ -29,9 +29,9 @@ LABEL_16:
 
     else
     {
-      v11 = [v5 reportedMapItem];
+      reportedMapItem = [v5 reportedMapItem];
 
-      if (v11)
+      if (reportedMapItem)
       {
         v12 = 0;
       }
@@ -42,7 +42,7 @@ LABEL_16:
       }
 
       v10 = v12;
-      if (!v11 || layoutType != v8)
+      if (!reportedMapItem || layoutType != v8)
       {
         goto LABEL_16;
       }
@@ -50,8 +50,8 @@ LABEL_16:
       reportedMapItem = self->_reportedMapItem;
     }
 
-    v13 = [v5 reportedMapItem];
-    v10 = [(MKMapItem *)reportedMapItem isEqual:v13];
+    reportedMapItem2 = [v5 reportedMapItem];
+    v10 = [(MKMapItem *)reportedMapItem isEqual:reportedMapItem2];
 
     goto LABEL_16;
   }
@@ -65,10 +65,10 @@ LABEL_17:
 - (id)initialLayoutParameters
 {
   v3 = objc_alloc_init(GEORPFeedbackLayoutConfigParameters);
-  v4 = [(RAPLayoutOptions *)self layoutType];
-  if (v4 <= 5)
+  layoutType = [(RAPLayoutOptions *)self layoutType];
+  if (layoutType <= 5)
   {
-    [v3 setFormType:dword_101215538[v4]];
+    [v3 setFormType:dword_101215538[layoutType]];
   }
 
   return v3;

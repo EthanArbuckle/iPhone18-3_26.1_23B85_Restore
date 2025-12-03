@@ -1,27 +1,27 @@
 @interface ODDSiriSchemaODDDictationExperimentDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDictationExperimentDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDictationExperimentDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDDictationExperimentDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDictationExperimentDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)trigger;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDictationExperimentDimensions
 
-- (ODDSiriSchemaODDDictationExperimentDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDictationExperimentDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ODDSiriSchemaODDDictationExperimentDimensions;
   v5 = [(ODDSiriSchemaODDDictationExperimentDimensions *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dictationDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dictationDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,21 +29,21 @@
       [(ODDSiriSchemaODDDictationExperimentDimensions *)v5 setDictationDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"experimentAllocationStatus"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"experimentAllocationStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDDictationExperimentDimensions setExperimentAllocationStatus:](v5, "setExperimentAllocationStatus:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDDictationExperimentDimensions setIsFirstTriggerOrAfterFirstTrigger:](v5, "setIsFirstTriggerOrAfterFirstTrigger:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"codePathId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"codePathId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDictationExperimentDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDictationExperimentDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDictationExperimentDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,36 +93,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_codePathId)
   {
-    v4 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    codePathId = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
+    dictionaryRepresentation = [codePathId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"codePathId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"codePathId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"codePathId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"codePathId"];
     }
   }
 
   if (self->_dictationDimensions)
   {
-    v7 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    dictationDimensions = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
+    dictionaryRepresentation2 = [dictationDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"dictationDimensions"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"dictationDimensions"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"dictationDimensions"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"dictationDimensions"];
     }
   }
 
@@ -140,19 +140,19 @@
       v12 = off_1E78DD698[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"experimentAllocationStatus"];
+    [dictionary setObject:v12 forKeyedSubscript:@"experimentAllocationStatus"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDDictationExperimentDimensions isFirstTriggerOrAfterFirstTrigger](self, "isFirstTriggerOrAfterFirstTrigger")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -182,28 +182,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(SISchemaUUID *)self->_codePathId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
-  v6 = [v4 dictationDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  dictationDimensions = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
+  dictationDimensions2 = [equalCopy dictationDimensions];
+  if ((dictationDimensions != 0) == (dictationDimensions2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
-  if (v7)
+  dictationDimensions3 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
+  if (dictationDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
-    v10 = [v4 dictationDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = dictationDimensions3;
+    dictationDimensions4 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
+    dictationDimensions5 = [equalCopy dictationDimensions];
+    v11 = [dictationDimensions4 isEqual:dictationDimensions5];
 
     if (!v11)
     {
@@ -216,7 +216,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v13 = v4[32];
+  v13 = equalCopy[32];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -225,13 +225,13 @@ LABEL_3:
   if (*&has)
   {
     experimentAllocationStatus = self->_experimentAllocationStatus;
-    if (experimentAllocationStatus != [v4 experimentAllocationStatus])
+    if (experimentAllocationStatus != [equalCopy experimentAllocationStatus])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -243,23 +243,23 @@ LABEL_3:
   if (v15)
   {
     isFirstTriggerOrAfterFirstTrigger = self->_isFirstTriggerOrAfterFirstTrigger;
-    if (isFirstTriggerOrAfterFirstTrigger != [v4 isFirstTriggerOrAfterFirstTrigger])
+    if (isFirstTriggerOrAfterFirstTrigger != [equalCopy isFirstTriggerOrAfterFirstTrigger])
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
-  v6 = [v4 codePathId];
-  if ((v5 != 0) == (v6 == 0))
+  dictationDimensions = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
+  dictationDimensions2 = [equalCopy codePathId];
+  if ((dictationDimensions != 0) == (dictationDimensions2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v17 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
-  if (!v17)
+  codePathId = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
+  if (!codePathId)
   {
 
 LABEL_22:
@@ -267,10 +267,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v18 = v17;
-  v19 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
-  v20 = [v4 codePathId];
-  v21 = [v19 isEqual:v20];
+  v18 = codePathId;
+  codePathId2 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
+  codePathId3 = [equalCopy codePathId];
+  v21 = [codePathId2 isEqual:codePathId3];
 
   if (v21)
   {
@@ -284,14 +284,14 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
+  toCopy = to;
+  dictationDimensions = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
 
-  if (v4)
+  if (dictationDimensions)
   {
-    v5 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
+    dictationDimensions2 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
     PBDataWriterWriteSubmessage();
   }
 
@@ -307,21 +307,21 @@ LABEL_20:
     PBDataWriterWriteBOOLField();
   }
 
-  v7 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
+  codePathId = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (codePathId)
   {
-    v9 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
+    codePathId2 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)a3
+- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 2;
   }
@@ -334,26 +334,26 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODDSiriSchemaODDDictationExperimentDimensions;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  dictationDimensions = [(ODDSiriSchemaODDDictationExperimentDimensions *)self dictationDimensions];
+  v7 = [dictationDimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDDictationExperimentDimensions *)self deleteDictationDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  codePathId = [(ODDSiriSchemaODDDictationExperimentDimensions *)self codePathId];
+  v10 = [codePathId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDDictationExperimentDimensions *)self deleteCodePathId];
   }

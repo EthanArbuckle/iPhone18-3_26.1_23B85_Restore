@@ -1,6 +1,6 @@
 @interface BLSRuntime
 + (BOOL)isHostProcess;
-+ (void)setIsHostProcess:(BOOL)a3;
++ (void)setIsHostProcess:(BOOL)process;
 @end
 
 @implementation BLSRuntime
@@ -13,10 +13,10 @@
   return v2;
 }
 
-+ (void)setIsHostProcess:(BOOL)a3
++ (void)setIsHostProcess:(BOOL)process
 {
   os_unfair_lock_lock(&_lock);
-  _isHostProcess = a3;
+  _isHostProcess = process;
 
   os_unfair_lock_unlock(&_lock);
 }

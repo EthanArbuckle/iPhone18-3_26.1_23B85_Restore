@@ -1,38 +1,38 @@
 @interface HKSwitchTableViewCell
 - (BOOL)adjustsFontSizeToFitWidth;
 - (CGSize)iconSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HKSwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HKSwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HKSwitchTableViewCellDelegate)delegate;
 - (void)_contextSizeCategoryChanged;
 - (void)_setupUI;
 - (void)_updateFont;
 - (void)layoutSubviews;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setCountText:(id)a3;
-- (void)setDisplayText:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)switchValueChanged:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setCountText:(id)text;
+- (void)setDisplayText:(id)text;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIconImage:(id)image;
+- (void)switchValueChanged:(id)changed;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAutomationIdentifiersIfNeeded;
-- (void)updateAutomationIdentifiersWithBaseIdentifier:(id)a3;
+- (void)updateAutomationIdentifiersWithBaseIdentifier:(id)identifier;
 @end
 
 @implementation HKSwitchTableViewCell
 
-- (HKSwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKSwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = HKSwitchTableViewCell;
-  v4 = [(HKSwitchTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKSwitchTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     v4->_enabled = 1;
     [(HKSwitchTableViewCell *)v4 _setupUI];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v5 selector:sel__contextSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__contextSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v5;
@@ -40,49 +40,49 @@
 
 - (BOOL)adjustsFontSizeToFitWidth
 {
-  v2 = [(HKSwitchTableViewCell *)self textLabel];
-  v3 = [v2 adjustsFontSizeToFitWidth];
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  adjustsFontSizeToFitWidth = [textLabel adjustsFontSizeToFitWidth];
 
-  return v3;
+  return adjustsFontSizeToFitWidth;
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
-  v3 = a3;
-  v4 = [(HKSwitchTableViewCell *)self textLabel];
-  [v4 setAdjustsFontSizeToFitWidth:v3];
+  widthCopy = width;
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel setAdjustsFontSizeToFitWidth:widthCopy];
 }
 
 - (void)_setupUI
 {
   [(HKSwitchTableViewCell *)self setSelectionStyle:0];
-  v3 = [(HKSwitchTableViewCell *)self _displayLabelFont];
-  v4 = [(HKSwitchTableViewCell *)self textLabel];
-  [v4 setFont:v3];
+  _displayLabelFont = [(HKSwitchTableViewCell *)self _displayLabelFont];
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel setFont:_displayLabelFont];
 
-  v5 = [(HKSwitchTableViewCell *)self textLabel];
+  textLabel2 = [(HKSwitchTableViewCell *)self textLabel];
   LODWORD(v6) = 1057803469;
-  [v5 _setHyphenationFactor:v6];
+  [textLabel2 _setHyphenationFactor:v6];
 
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  v8 = [(HKSwitchTableViewCell *)self textLabel];
-  [v8 setTextColor:v7];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textLabel3 = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel3 setTextColor:labelColor];
 
-  v9 = [(HKSwitchTableViewCell *)self textLabel];
-  [v9 setNumberOfLines:0];
+  textLabel4 = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel4 setNumberOfLines:0];
 
-  v10 = [(HKSwitchTableViewCell *)self textLabel];
-  [v10 setLineBreakMode:0];
+  textLabel5 = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel5 setLineBreakMode:0];
 
   v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   countLabel = self->_countLabel;
   self->_countLabel = v11;
 
-  v13 = [(HKSwitchTableViewCell *)self _displayLabelFont];
-  [(UILabel *)self->_countLabel setFont:v13];
+  _displayLabelFont2 = [(HKSwitchTableViewCell *)self _displayLabelFont];
+  [(UILabel *)self->_countLabel setFont:_displayLabelFont2];
 
-  v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_countLabel setTextColor:v14];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_countLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_countLabel setTextAlignment:2];
   v15 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -91,32 +91,32 @@
 
   [(UISwitch *)self->_switch addTarget:self action:sel_switchValueChanged_ forControlEvents:4096];
   [(UISwitch *)self->_switch setEnabled:self->_enabled];
-  v17 = [(HKSwitchTableViewCell *)self contentView];
-  [v17 addSubview:self->_countLabel];
-  [v17 addSubview:self->_switch];
+  contentView = [(HKSwitchTableViewCell *)self contentView];
+  [contentView addSubview:self->_countLabel];
+  [contentView addSubview:self->_switch];
 }
 
 - (void)_updateFont
 {
-  v3 = [(HKSwitchTableViewCell *)self _displayLabelFont];
-  v4 = [(HKSwitchTableViewCell *)self textLabel];
-  [v4 setFont:v3];
+  _displayLabelFont = [(HKSwitchTableViewCell *)self _displayLabelFont];
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel setFont:_displayLabelFont];
 
-  v5 = [(HKSwitchTableViewCell *)self _displayLabelFont];
-  [(UILabel *)self->_countLabel setFont:v5];
+  _displayLabelFont2 = [(HKSwitchTableViewCell *)self _displayLabelFont];
+  [(UILabel *)self->_countLabel setFont:_displayLabelFont2];
 }
 
 - (void)_contextSizeCategoryChanged
 {
-  v3 = [(HKSwitchTableViewCell *)self _displayLabelFont];
-  [(UILabel *)self->_countLabel setFont:v3];
+  _displayLabelFont = [(HKSwitchTableViewCell *)self _displayLabelFont];
+  [(UILabel *)self->_countLabel setFont:_displayLabelFont];
 
   [(HKSwitchTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   [(UISwitch *)self->_switch setEnabled:?];
   if (self->_enabled)
   {
@@ -128,20 +128,20 @@
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
   v5 = ;
-  v4 = [(HKSwitchTableViewCell *)self textLabel];
-  [v4 setTextColor:v5];
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel setTextColor:v5];
 }
 
 - (CGSize)iconSize
 {
-  v3 = [(HKSwitchTableViewCell *)self imageView];
-  v4 = [v3 image];
+  imageView = [(HKSwitchTableViewCell *)self imageView];
+  image = [imageView image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(HKSwitchTableViewCell *)self imageView];
-    v6 = [v5 image];
-    [v6 size];
+    imageView2 = [(HKSwitchTableViewCell *)self imageView];
+    image2 = [imageView2 image];
+    [image2 size];
     v8 = v7;
     v10 = v9;
   }
@@ -159,10 +159,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(HKSwitchTableViewCell *)self layoutMargins];
   v7 = v6;
   v9 = width - (v6 + v8);
@@ -173,17 +173,17 @@
     v9 = v9 - (v10 + 5.0);
   }
 
-  v11 = [(HKSwitchTableViewCell *)self imageView];
-  v12 = [v11 image];
+  imageView = [(HKSwitchTableViewCell *)self imageView];
+  image = [imageView image];
 
-  if (v12)
+  if (image)
   {
     [(HKSwitchTableViewCell *)self iconSize];
     v9 = v9 - (v7 + v13);
   }
 
-  v14 = [(HKSwitchTableViewCell *)self textLabel];
-  [v14 sizeThatFits:{v9, 1.79769313e308}];
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel sizeThatFits:{v9, 1.79769313e308}];
   v16 = v15;
 
   v17 = v16 + 30.0;
@@ -233,8 +233,8 @@
   v9 = v8;
   [(HKSwitchTableViewCell *)self separatorInset];
   v93 = v10;
-  v11 = [(HKSwitchTableViewCell *)self contentView];
-  [v11 frame];
+  contentView = [(HKSwitchTableViewCell *)self contentView];
+  [contentView frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -252,7 +252,7 @@
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(HKSwitchTableViewCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(HKSwitchTableViewCell *)self _shouldReverseLayoutDirection];
   v104 = v26;
   v105 = v30;
   v106 = v28;
@@ -263,7 +263,7 @@
   v33 = rect;
   v34 = v21;
   v35 = v96;
-  if (IsUsingAccessibilityContentSizeCategory == v31)
+  if (IsUsingAccessibilityContentSizeCategory == _shouldReverseLayoutDirection)
   {
     MaxX = CGRectGetMaxX(*&v32);
     v111.origin.x = v24;
@@ -279,8 +279,8 @@
   }
 
   [(UILabel *)self->_countLabel sizeToFit];
-  v38 = [(HKSwitchTableViewCell *)self textLabel];
-  [v38 frame];
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel frame];
   UIRectCenteredYInRect();
   v110.origin.x = v39;
   v41 = v40;
@@ -341,17 +341,17 @@
 
   v99 = x;
   v103 = MinX;
-  v57 = [(HKSwitchTableViewCell *)self imageView];
-  [v57 frame];
+  imageView = [(HKSwitchTableViewCell *)self imageView];
+  [imageView frame];
   v59 = v58;
   v61 = v60;
   v63 = v62;
   recta = v64;
 
-  v65 = [(HKSwitchTableViewCell *)self imageView];
-  v66 = [v65 image];
+  imageView2 = [(HKSwitchTableViewCell *)self imageView];
+  image = [imageView2 image];
 
-  if (v66)
+  if (image)
   {
     if (([(HKSwitchTableViewCell *)self _shouldReverseLayoutDirection]& 1) != 0)
     {
@@ -462,100 +462,100 @@
     v88 = v107;
   }
 
-  v91 = [(HKSwitchTableViewCell *)self imageView];
-  [v91 setFrame:{v98, v61, v80, recta}];
+  imageView3 = [(HKSwitchTableViewCell *)self imageView];
+  [imageView3 setFrame:{v98, v61, v80, recta}];
 
-  v92 = [(HKSwitchTableViewCell *)self textLabel];
-  [v92 setFrame:{v86, v69, v87, v88}];
+  textLabel2 = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel2 setFrame:{v86, v69, v87, v88}];
 
   [(UISwitch *)self->_switch setFrame:v103, v90, v106, v105];
   [(UILabel *)self->_countLabel setFrame:v99, v89, v101, v100];
 }
 
-- (void)setDisplayText:(id)a3
+- (void)setDisplayText:(id)text
 {
-  v4 = a3;
-  v5 = [(HKSwitchTableViewCell *)self textLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel setText:textCopy];
 
   [(HKSwitchTableViewCell *)self setNeedsLayout];
 
   [(HKSwitchTableViewCell *)self updateAutomationIdentifiersIfNeeded];
 }
 
-- (void)setCountText:(id)a3
+- (void)setCountText:(id)text
 {
-  [(UILabel *)self->_countLabel setText:a3];
+  [(UILabel *)self->_countLabel setText:text];
 
   [(HKSwitchTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v4 = a3;
-  v5 = [(HKSwitchTableViewCell *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(HKSwitchTableViewCell *)self imageView];
+  [imageView setImage:imageCopy];
 
   [(HKSwitchTableViewCell *)self setNeedsLayout];
 }
 
 - (void)updateAutomationIdentifiersIfNeeded
 {
-  v10 = [(HKSwitchTableViewCell *)self textLabel];
-  v3 = [v10 accessibilityIdentifier];
-  if (v3)
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  accessibilityIdentifier = [textLabel accessibilityIdentifier];
+  if (accessibilityIdentifier)
   {
-    v4 = v3;
+    v4 = accessibilityIdentifier;
   }
 
   else
   {
-    v5 = [(HKSwitchTableViewCell *)self textLabel];
-    v6 = [v5 text];
+    textLabel2 = [(HKSwitchTableViewCell *)self textLabel];
+    text = [textLabel2 text];
 
-    if (!v6)
+    if (!text)
     {
       return;
     }
 
-    v7 = [(HKSwitchTableViewCell *)self textLabel];
-    v8 = [v7 text];
-    v9 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v10 = [v8 hk_stringByRemovingCharactersInSet:v9];
+    textLabel3 = [(HKSwitchTableViewCell *)self textLabel];
+    text2 = [textLabel3 text];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    textLabel = [text2 hk_stringByRemovingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v4 = [@"UIA.Health" stringByAppendingFormat:@".%@.SwitchCell", v10];
+    v4 = [@"UIA.Health" stringByAppendingFormat:@".%@.SwitchCell", textLabel];
     [(HKSwitchTableViewCell *)self updateAutomationIdentifiersWithBaseIdentifier:v4];
   }
 }
 
-- (void)updateAutomationIdentifiersWithBaseIdentifier:(id)a3
+- (void)updateAutomationIdentifiersWithBaseIdentifier:(id)identifier
 {
-  v4 = a3;
-  [(HKSwitchTableViewCell *)self setAccessibilityIdentifier:v4];
-  v5 = [v4 stringByAppendingString:@".TitleText"];
-  v6 = [(HKSwitchTableViewCell *)self textLabel];
-  [v6 setAccessibilityIdentifier:v5];
+  identifierCopy = identifier;
+  [(HKSwitchTableViewCell *)self setAccessibilityIdentifier:identifierCopy];
+  v5 = [identifierCopy stringByAppendingString:@".TitleText"];
+  textLabel = [(HKSwitchTableViewCell *)self textLabel];
+  [textLabel setAccessibilityIdentifier:v5];
 
-  v7 = [v4 stringByAppendingString:@".CountText"];
+  v7 = [identifierCopy stringByAppendingString:@".CountText"];
   [(UILabel *)self->_countLabel setAccessibilityIdentifier:v7];
 
-  v8 = [v4 stringByAppendingString:@".Switch"];
+  v8 = [identifierCopy stringByAppendingString:@".Switch"];
 
   [(UISwitch *)self->_switch setAccessibilityIdentifier:v8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKSwitchTableViewCell;
-  [(HKSwitchTableViewCell *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKSwitchTableViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKSwitchTableViewCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKSwitchTableViewCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -565,10 +565,10 @@
   }
 }
 
-- (void)switchValueChanged:(id)a3
+- (void)switchValueChanged:(id)changed
 {
-  v4 = [(HKSwitchTableViewCell *)self delegate];
-  [v4 switchCellValueChanged:self value:{-[UISwitch isOn](self->_switch, "isOn")}];
+  delegate = [(HKSwitchTableViewCell *)self delegate];
+  [delegate switchCellValueChanged:self value:{-[UISwitch isOn](self->_switch, "isOn")}];
 }
 
 - (HKSwitchTableViewCellDelegate)delegate

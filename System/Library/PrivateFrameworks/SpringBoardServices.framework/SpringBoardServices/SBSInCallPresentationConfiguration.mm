@@ -1,17 +1,17 @@
 @interface SBSInCallPresentationConfiguration
-- (SBSInCallPresentationConfiguration)initWithCoder:(id)a3;
-- (SBSInCallPresentationConfiguration)initWithSceneBundleIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSInCallPresentationConfiguration)initWithCoder:(id)coder;
+- (SBSInCallPresentationConfiguration)initWithSceneBundleIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSInCallPresentationConfiguration
 
-- (SBSInCallPresentationConfiguration)initWithSceneBundleIdentifier:(id)a3
+- (SBSInCallPresentationConfiguration)initWithSceneBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = SBSInCallPresentationConfiguration;
   v5 = [(SBSInCallPresentationConfiguration *)&v12 init];
@@ -19,100 +19,100 @@
   if (v5)
   {
     v5->_preferredPresentationMode = 1;
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     sceneBundleIdentifier = v6->_sceneBundleIdentifier;
     v6->_sceneBundleIdentifier = v7;
 
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v6->_identifier;
-    v6->_identifier = v9;
+    v6->_identifier = uUID;
   }
 
   return v6;
 }
 
-- (SBSInCallPresentationConfiguration)initWithCoder:(id)a3
+- (SBSInCallPresentationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneBundleIdentifier"];
   if (v5)
   {
     v6 = [(SBSInCallPresentationConfiguration *)self initWithSceneBundleIdentifier:v5];
     if (v6)
     {
-      [v4 decodeDoubleForKey:@"preferredBannerHeight"];
+      [coderCopy decodeDoubleForKey:@"preferredBannerHeight"];
       v6->_preferredBannerHeight = v7;
-      v6->_preferredPresentationMode = [v4 decodeIntegerForKey:@"preferredPresentationMode"];
-      v6->_userInitiated = [v4 decodeBoolForKey:@"userInitiated"];
-      v6->_screenSharingPresentation = [v4 decodeBoolForKey:@"screenSharingPresentation"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v6->_preferredPresentationMode = [coderCopy decodeIntegerForKey:@"preferredPresentationMode"];
+      v6->_userInitiated = [coderCopy decodeBoolForKey:@"userInitiated"];
+      v6->_screenSharingPresentation = [coderCopy decodeBoolForKey:@"screenSharingPresentation"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       identifier = v6->_identifier;
       v6->_identifier = v8;
 
-      v6->_supportsSystemAperture = [v4 decodeBoolForKey:@"supportsSystemAperture"];
-      v6->_shouldPreventBannersWhenPresentedAsOverlay = [v4 decodeBoolForKey:@"preventsBannersWhenPresentedAsOverlay"];
-      v6->_supportsAmbient = [v4 decodeBoolForKey:@"supportsAmbient"];
-      v6->_shouldPreferContinuityDisplayForFullScreenPresentation = [v4 decodeBoolForKey:@"prefersContinuityDisplayForFullScreenPresentation"];
-      v6->_requiresDismissedPresentationmode = [v4 decodeBoolForKey:@"requiresDismissedPresentationmode"];
+      v6->_supportsSystemAperture = [coderCopy decodeBoolForKey:@"supportsSystemAperture"];
+      v6->_shouldPreventBannersWhenPresentedAsOverlay = [coderCopy decodeBoolForKey:@"preventsBannersWhenPresentedAsOverlay"];
+      v6->_supportsAmbient = [coderCopy decodeBoolForKey:@"supportsAmbient"];
+      v6->_shouldPreferContinuityDisplayForFullScreenPresentation = [coderCopy decodeBoolForKey:@"prefersContinuityDisplayForFullScreenPresentation"];
+      v6->_requiresDismissedPresentationmode = [coderCopy decodeBoolForKey:@"requiresDismissedPresentationmode"];
     }
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sceneBundleIdentifier = self->_sceneBundleIdentifier;
-  v6 = a3;
-  [v6 encodeObject:sceneBundleIdentifier forKey:@"sceneBundleIdentifier"];
-  [v6 encodeDouble:@"preferredBannerHeight" forKey:self->_preferredBannerHeight];
-  [v6 encodeInteger:self->_preferredPresentationMode forKey:@"preferredPresentationMode"];
-  [v6 encodeBool:self->_userInitiated forKey:@"userInitiated"];
-  [v6 encodeBool:self->_screenSharingPresentation forKey:@"screenSharingPresentation"];
-  v5 = [(SBSInCallPresentationConfiguration *)self identifier];
-  [v6 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sceneBundleIdentifier forKey:@"sceneBundleIdentifier"];
+  [coderCopy encodeDouble:@"preferredBannerHeight" forKey:self->_preferredBannerHeight];
+  [coderCopy encodeInteger:self->_preferredPresentationMode forKey:@"preferredPresentationMode"];
+  [coderCopy encodeBool:self->_userInitiated forKey:@"userInitiated"];
+  [coderCopy encodeBool:self->_screenSharingPresentation forKey:@"screenSharingPresentation"];
+  identifier = [(SBSInCallPresentationConfiguration *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v6 encodeBool:self->_supportsSystemAperture forKey:@"supportsSystemAperture"];
-  [v6 encodeBool:self->_shouldPreventBannersWhenPresentedAsOverlay forKey:@"preventsBannersWhenPresentedAsOverlay"];
-  [v6 encodeBool:self->_supportsAmbient forKey:@"supportsAmbient"];
-  [v6 encodeBool:self->_shouldPreferContinuityDisplayForFullScreenPresentation forKey:@"prefersContinuityDisplayForFullScreenPresentation"];
-  [v6 encodeBool:self->_requiresDismissedPresentationmode forKey:@"requiresDismissedPresentationmode"];
+  [coderCopy encodeBool:self->_supportsSystemAperture forKey:@"supportsSystemAperture"];
+  [coderCopy encodeBool:self->_shouldPreventBannersWhenPresentedAsOverlay forKey:@"preventsBannersWhenPresentedAsOverlay"];
+  [coderCopy encodeBool:self->_supportsAmbient forKey:@"supportsAmbient"];
+  [coderCopy encodeBool:self->_shouldPreferContinuityDisplayForFullScreenPresentation forKey:@"prefersContinuityDisplayForFullScreenPresentation"];
+  [coderCopy encodeBool:self->_requiresDismissedPresentationmode forKey:@"requiresDismissedPresentationmode"];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBSInCallPresentationConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSInCallPresentationConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSInCallPresentationConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSInCallPresentationConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSInCallPresentationConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBSInCallPresentationConfiguration *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__SBSInCallPresentationConfiguration_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E735F7F0;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 

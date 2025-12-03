@@ -1,21 +1,21 @@
 @interface _UIDiffuseShadowView
 - (CGSize)offset;
-- (_UIDiffuseShadowView)initWithFrame:(CGRect)a3;
+- (_UIDiffuseShadowView)initWithFrame:(CGRect)frame;
 - (double)radius;
 - (void)_updateForCurrentTraits;
-- (void)setOffset:(CGSize)a3;
-- (void)setPath:(id)a3;
-- (void)setRadius:(double)a3;
+- (void)setOffset:(CGSize)offset;
+- (void)setPath:(id)path;
+- (void)setRadius:(double)radius;
 @end
 
 @implementation _UIDiffuseShadowView
 
-- (_UIDiffuseShadowView)initWithFrame:(CGRect)a3
+- (_UIDiffuseShadowView)initWithFrame:(CGRect)frame
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UIDiffuseShadowView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,8 +23,8 @@
     [(_UIDiffuseShadowView *)v4 setRadius:56.0];
     [(_UIDiffuseShadowView *)v4 setOffset:0.0, 7.0];
     [(_UIDiffuseShadowView *)v4 setIntensity:0.24];
-    v5 = [(UIView *)v4 layer];
-    [v5 setShadowPathIsBounds:1];
+    layer = [(UIView *)v4 layer];
+    [layer setShadowPathIsBounds:1];
 
     [(_UIDiffuseShadowView *)v4 _updateForCurrentTraits];
     v10[0] = objc_opt_class();
@@ -35,33 +35,33 @@
   return v4;
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  v4 = [(UIView *)self layer];
-  [v4 setShadowRadius:a3];
+  layer = [(UIView *)self layer];
+  [layer setShadowRadius:radius];
 }
 
 - (double)radius
 {
-  v2 = [(UIView *)self layer];
-  [v2 shadowRadius];
+  layer = [(UIView *)self layer];
+  [layer shadowRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setOffset:(CGSize)a3
+- (void)setOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UIView *)self layer];
-  [v5 setShadowOffset:{width, height}];
+  height = offset.height;
+  width = offset.width;
+  layer = [(UIView *)self layer];
+  [layer setShadowOffset:{width, height}];
 }
 
 - (CGSize)offset
 {
-  v2 = [(UIView *)self layer];
-  [v2 shadowOffset];
+  layer = [(UIView *)self layer];
+  [layer shadowOffset];
   v4 = v3;
   v6 = v5;
 
@@ -72,31 +72,31 @@
   return result;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  pathCopy = path;
+  v5 = [pathCopy copy];
   path = self->_path;
   self->_path = v5;
 
-  v7 = [(UIView *)self layer];
-  [v7 setShadowPathIsBounds:v4 == 0];
+  layer = [(UIView *)self layer];
+  [layer setShadowPathIsBounds:pathCopy == 0];
 
-  v8 = [v4 CGPath];
-  v9 = [(UIView *)self layer];
-  [v9 setShadowPath:v8];
+  cGPath = [pathCopy CGPath];
+  layer2 = [(UIView *)self layer];
+  [layer2 setShadowPath:cGPath];
 }
 
 - (void)_updateForCurrentTraits
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 1)
+  if (userInterfaceStyle == 1)
   {
-    v5 = [(UIView *)self layer];
-    [v5 setFilters:0];
+    layer = [(UIView *)self layer];
+    [layer setFilters:0];
 
     [(_UIDiffuseShadowView *)self intensity];
     v7 = v6;
@@ -120,13 +120,13 @@
     v7 = v11 / 0.24;
   }
 
-  v12 = [(UIView *)self layer];
-  [v12 setFilters:v8];
+  layer2 = [(UIView *)self layer];
+  [layer2 setFilters:v8];
 
-  v14 = [(UIView *)self layer];
+  layer3 = [(UIView *)self layer];
   v13 = v7;
   *&v15 = v13;
-  [v14 setShadowOpacity:v15];
+  [layer3 setShadowOpacity:v15];
 }
 
 @end

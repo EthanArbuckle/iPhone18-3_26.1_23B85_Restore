@@ -1,8 +1,8 @@
 @interface LKCGColorCodingProxy
-- (LKCGColorCodingProxy)initWithCoder:(id)a3;
-- (LKCGColorCodingProxy)initWithObject:(id)a3;
+- (LKCGColorCodingProxy)initWithCoder:(id)coder;
+- (LKCGColorCodingProxy)initWithObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LKCGColorCodingProxy
@@ -16,7 +16,7 @@
   [(LKCGColorCodingProxy *)&v3 dealloc];
 }
 
-- (LKCGColorCodingProxy)initWithCoder:(id)a3
+- (LKCGColorCodingProxy)initWithCoder:(id)coder
 {
   components[4] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -24,16 +24,16 @@
   v4 = [(LKCGColorCodingProxy *)&v15 init];
   if (v4)
   {
-    v5 = [a3 CA_decodeObjectForKey:@"CGColorPattern"];
+    v5 = [coder CA_decodeObjectForKey:@"CGColorPattern"];
     if (!v5)
     {
-      [a3 decodeFloatForKey:@"r"];
+      [coder decodeFloatForKey:@"r"];
       components[0] = v9;
-      [a3 decodeFloatForKey:@"g"];
+      [coder decodeFloatForKey:@"g"];
       components[1] = v10;
-      [a3 decodeFloatForKey:@"b"];
+      [coder decodeFloatForKey:@"b"];
       components[2] = v11;
-      [a3 decodeFloatForKey:@"a"];
+      [coder decodeFloatForKey:@"a"];
       components[3] = v12;
       v13 = CAGetColorSpace(35);
       v8 = CGColorCreate(v13, components);
@@ -53,13 +53,13 @@ LABEL_6:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   Pattern = CGColorGetPattern(self->_color);
   if (Pattern)
   {
 
-    [a3 CA_encodeObject:Pattern forKey:@"CGColorPattern" conditional:0];
+    [coder CA_encodeObject:Pattern forKey:@"CGColorPattern" conditional:0];
   }
 
   else
@@ -67,21 +67,21 @@ LABEL_6:
     Components = CGColorGetComponents(self->_color);
     v7 = *Components;
     *&v7 = *Components;
-    [a3 encodeFloat:@"r" forKey:v7];
+    [coder encodeFloat:@"r" forKey:v7];
     v8 = Components[1];
     *&v8 = v8;
-    [a3 encodeFloat:@"g" forKey:v8];
+    [coder encodeFloat:@"g" forKey:v8];
     v9 = Components[2];
     *&v9 = v9;
-    [a3 encodeFloat:@"b" forKey:v9];
+    [coder encodeFloat:@"b" forKey:v9];
     v10 = Components[3];
     *&v10 = v10;
 
-    [a3 encodeFloat:@"a" forKey:v10];
+    [coder encodeFloat:@"a" forKey:v10];
   }
 }
 
-- (LKCGColorCodingProxy)initWithObject:(id)a3
+- (LKCGColorCodingProxy)initWithObject:(id)object
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -89,7 +89,7 @@ LABEL_6:
   v4 = [(LKCGColorCodingProxy *)&v8 init];
   if (v4)
   {
-    if (!CGColorGetPattern(a3))
+    if (!CGColorGetPattern(object))
     {
       v7 = CAGetColorSpace(35);
       CARetainColorTransform(v7);
@@ -103,7 +103,7 @@ LABEL_6:
       goto LABEL_4;
     }
 
-    v5 = CGColorRetain(a3);
+    v5 = CGColorRetain(object);
     v4->_color = v5;
     if (!v5)
     {

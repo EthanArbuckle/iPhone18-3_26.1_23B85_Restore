@@ -1,9 +1,9 @@
 @interface SBSPhysicalButtonTargetMonitor
 - (SBSPhysicalButtonTargetMonitor)init;
-- (id)startObservingPresenceOfPhysicalButtonTargets:(id)a3;
-- (void)_addObserver:(id)a3;
-- (void)_notifyObserversOfPresenceOfPhysicalButtonTargets:(unint64_t)a3;
-- (void)_removeObserver:(id)a3;
+- (id)startObservingPresenceOfPhysicalButtonTargets:(id)targets;
+- (void)_addObserver:(id)observer;
+- (void)_notifyObserversOfPresenceOfPhysicalButtonTargets:(unint64_t)targets;
+- (void)_removeObserver:(id)observer;
 - (void)dealloc;
 @end
 
@@ -18,17 +18,17 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     lock_observers = v3->_lock_observers;
-    v3->_lock_observers = v4;
+    v3->_lock_observers = array;
   }
 
   return v3;
 }
 
-- (id)startObservingPresenceOfPhysicalButtonTargets:(id)a3
+- (id)startObservingPresenceOfPhysicalButtonTargets:(id)targets
 {
-  v5 = a3;
+  targetsCopy = targets;
   objc_initWeak(&location, self);
   v6 = [_SBSPhysicalButtonTargetMonitorObserver alloc];
   v7 = NSStringFromSelector(a2);
@@ -39,7 +39,7 @@
   objc_copyWeak(&v14, &location);
   v8 = [(BSSimpleAssertion *)v6 initWithIdentifier:@"_SBSPhysicalButtonTargetMonitorObserver" forReason:v7 invalidationBlock:&v10];
 
-  [(_SBSPhysicalButtonTargetMonitorObserver *)v8 setObservationHandler:v5, v10, v11, v12, v13];
+  [(_SBSPhysicalButtonTargetMonitorObserver *)v8 setObservationHandler:targetsCopy, v10, v11, v12, v13];
   [(SBSPhysicalButtonTargetMonitor *)self _addObserver:v8];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -59,7 +59,7 @@ void __80__SBSPhysicalButtonTargetMonitor_startObservingPresenceOfPhysicalButton
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Deallocated SBSPhysicalButtonTargetMonitor while observers were still attached."];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -82,9 +82,9 @@ void __80__SBSPhysicalButtonTargetMonitor_startObservingPresenceOfPhysicalButton
   __break(0);
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   lock_targets = self->_lock_targets;
   if ([(NSMutableArray *)self->_lock_observers count])
@@ -98,7 +98,7 @@ void __80__SBSPhysicalButtonTargetMonitor_startObservingPresenceOfPhysicalButton
     objc_storeStrong(&self->_lock_client, v6);
   }
 
-  [(NSMutableArray *)self->_lock_observers addObject:v4];
+  [(NSMutableArray *)self->_lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v6)
   {
@@ -115,8 +115,8 @@ void __80__SBSPhysicalButtonTargetMonitor_startObservingPresenceOfPhysicalButton
 
   else
   {
-    v7 = [v4 observationHandler];
-    v7[2](v7, lock_targets);
+    observationHandler = [observerCopy observationHandler];
+    observationHandler[2](observationHandler, lock_targets);
   }
 }
 
@@ -126,11 +126,11 @@ void __47__SBSPhysicalButtonTargetMonitor__addObserver___block_invoke(uint64_t a
   [WeakRetained _notifyObserversOfPresenceOfPhysicalButtonTargets:a2];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_lock_observers removeObject:v4];
+  [(NSMutableArray *)self->_lock_observers removeObject:observerCopy];
 
   if ([(NSMutableArray *)self->_lock_observers count])
   {
@@ -150,11 +150,11 @@ void __47__SBSPhysicalButtonTargetMonitor__addObserver___block_invoke(uint64_t a
   [(SBSPhysicalButtonTargetMonitorClient *)v6 invalidate];
 }
 
-- (void)_notifyObserversOfPresenceOfPhysicalButtonTargets:(unint64_t)a3
+- (void)_notifyObserversOfPresenceOfPhysicalButtonTargets:(unint64_t)targets
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_targets = a3;
+  self->_lock_targets = targets;
   v5 = self->_lock_observers;
   os_unfair_lock_unlock(&self->_lock);
   v14 = 0u;
@@ -177,8 +177,8 @@ void __47__SBSPhysicalButtonTargetMonitor__addObserver___block_invoke(uint64_t a
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) observationHandler];
-        v11[2](v11, a3);
+        observationHandler = [*(*(&v12 + 1) + 8 * v10) observationHandler];
+        observationHandler[2](observationHandler, targets);
 
         ++v10;
       }

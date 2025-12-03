@@ -1,24 +1,24 @@
 @interface URLAction
 - (_TtC21CloudRecommendationUI9URLAction)init;
-- (void)liftUIPresenterDidCancelWithUserInfo:(id)a3;
-- (void)liftUIPresenterDidCompleteWithUserInfo:(id)a3;
-- (void)liftUIPresenterDidLoadWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)remoteUIFlowManager:(id)a3 didCompleteFlowWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)remoteUIFlowManager:(id)a3 didDismissWithError:(id)a4;
+- (void)liftUIPresenterDidCancelWithUserInfo:(id)info;
+- (void)liftUIPresenterDidCompleteWithUserInfo:(id)info;
+- (void)liftUIPresenterDidLoadWithSuccess:(BOOL)success error:(id)error;
+- (void)remoteUIFlowManager:(id)manager didCompleteFlowWithSuccess:(BOOL)success error:(id)error;
+- (void)remoteUIFlowManager:(id)manager didDismissWithError:(id)error;
 @end
 
 @implementation URLAction
 
-- (void)liftUIPresenterDidLoadWithSuccess:(BOOL)a3 error:(id)a4
+- (void)liftUIPresenterDidLoadWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = self;
-  v6 = a4;
-  sub_243ABA428(a4);
+  selfCopy = self;
+  errorCopy = error;
+  sub_243ABA428(error);
 }
 
-- (void)liftUIPresenterDidCompleteWithUserInfo:(id)a3
+- (void)liftUIPresenterDidCompleteWithUserInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     v4 = sub_243AC27D8();
   }
@@ -28,35 +28,35 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_243AB9080(v4);
 }
 
-- (void)liftUIPresenterDidCancelWithUserInfo:(id)a3
+- (void)liftUIPresenterDidCancelWithUserInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     sub_243AC27D8();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_243ABA5DC();
 }
 
-- (void)remoteUIFlowManager:(id)a3 didCompleteFlowWithSuccess:(BOOL)a4 error:(id)a5
+- (void)remoteUIFlowManager:(id)manager didCompleteFlowWithSuccess:(BOOL)success error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
-  sub_243ABA72C(a5);
+  managerCopy = manager;
+  selfCopy = self;
+  errorCopy = error;
+  sub_243ABA72C(error);
 }
 
-- (void)remoteUIFlowManager:(id)a3 didDismissWithError:(id)a4
+- (void)remoteUIFlowManager:(id)manager didDismissWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_243ABAA04(a4);
+  managerCopy = manager;
+  selfCopy = self;
+  errorCopy = error;
+  sub_243ABAA04(error);
 }
 
 - (_TtC21CloudRecommendationUI9URLAction)init

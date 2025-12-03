@@ -23,7 +23,7 @@
 - (id)OCXTableStylesRelationshipType;
 - (id)OCXThemeOverrideRelationshipType;
 - (id)OCXThemeRelationshipType;
-- (void)setupNSForXMLFormat:(int)a3;
+- (void)setupNSForXMLFormat:(int)format;
 @end
 
 @implementation OCXState
@@ -42,9 +42,9 @@
   return v3;
 }
 
-- (void)setupNSForXMLFormat:(int)a3
+- (void)setupNSForXMLFormat:(int)format
 {
-  if (a3)
+  if (format)
   {
     self->mXMLFormat = 1;
     v4 = [CXNamespace alloc];

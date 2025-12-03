@@ -1,19 +1,19 @@
 @interface PMSmartPowerNapInterruption
-- (PMSmartPowerNapInterruption)initWithStart:(id)a3;
+- (PMSmartPowerNapInterruption)initWithStart:(id)start;
 @end
 
 @implementation PMSmartPowerNapInterruption
 
-- (PMSmartPowerNapInterruption)initWithStart:(id)a3
+- (PMSmartPowerNapInterruption)initWithStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v8.receiver = self;
   v8.super_class = PMSmartPowerNapInterruption;
   v5 = [(PMSmartPowerNapInterruption *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PMSmartPowerNapInterruption *)v5 setStart:v4];
+    [(PMSmartPowerNapInterruption *)v5 setStart:startCopy];
   }
 
   return v6;

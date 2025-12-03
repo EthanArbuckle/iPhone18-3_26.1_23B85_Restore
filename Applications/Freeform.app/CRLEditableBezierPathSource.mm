@@ -1,6 +1,6 @@
 @interface CRLEditableBezierPathSource
-+ (CRLEditableBezierPathSource)editableBezierPathSourceWithBezierPath:(id)a3;
-+ (CRLEditableBezierPathSource)editableBezierPathSourceWithPathSource:(id)a3;
++ (CRLEditableBezierPathSource)editableBezierPathSourceWithBezierPath:(id)path;
++ (CRLEditableBezierPathSource)editableBezierPathSourceWithPathSource:(id)source;
 + (id)editableBezierPathSource;
 - (BOOL)allNodesSelected;
 - (BOOL)canCloseSelectedNodes;
@@ -13,8 +13,8 @@
 - (BOOL)isCircular;
 - (BOOL)isClosed;
 - (BOOL)isCompound;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualWithStrictComparison:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualWithStrictComparison:(id)comparison;
 - (BOOL)isRectangular;
 - (CGAffineTransform)pathFlipTransform;
 - (CGPath)pathWithoutFlips;
@@ -26,19 +26,19 @@
 - (CRLEditableBezierPathSource)init;
 - (NSArray)nodeTypes;
 - (NSArray)nodes;
-- (double)distanceToPoint:(CGPoint)a3 subpathIndex:(unint64_t *)a4 elementIndex:(unint64_t *)a5 tValue:(double *)a6 threshold:(double)a7;
-- (id)bezierNodeUnderPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6;
+- (double)distanceToPoint:(CGPoint)point subpathIndex:(unint64_t *)index elementIndex:(unint64_t *)elementIndex tValue:(double *)value threshold:(double)threshold;
+- (id)bezierNodeUnderPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)inferredAccessibilityDescription;
 - (id)inferredAccessibilityDescriptionNoShapeNames;
-- (id)nodeAfterNode:(id)a3;
-- (id)nodePriorToNode:(id)a3;
-- (id)splitEdge:(int64_t)a3 at:(double)a4 fromSubpath:(int64_t)a5;
-- (id)subpathsForConnectingUsingFirstSubpathFirstNode:(BOOL *)a3 andSecondPathFirstNode:(BOOL *)a4;
+- (id)nodeAfterNode:(id)node;
+- (id)nodePriorToNode:(id)node;
+- (id)splitEdge:(int64_t)edge at:(double)at fromSubpath:(int64_t)subpath;
+- (id)subpathsForConnectingUsingFirstSubpathFirstNode:(BOOL *)node andSecondPathFirstNode:(BOOL *)firstNode;
 - (unint64_t)hash;
-- (void)addNode:(id)a3;
+- (void)addNode:(id)node;
 - (void)addTemporarySmoothNodes;
 - (void)alignToOrigin;
 - (void)beginNewSubpath;
@@ -46,36 +46,36 @@
 - (void)closeSelectedNodes;
 - (void)connectSelectedNodes;
 - (void)convertToHobby;
-- (void)curveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5;
+- (void)curveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2;
 - (void)cutAtSelectedNodes;
 - (void)deleteSelectedEdges;
-- (void)deleteSelectedNodesForced:(BOOL)a3;
+- (void)deleteSelectedNodesForced:(BOOL)forced;
 - (void)deselectAllNodes;
-- (void)lineToPoint:(CGPoint)a3;
-- (void)morphWithMorphInfo:(id)a3;
-- (void)moveToPoint:(CGPoint)a3;
-- (void)offsetSelectedEdgesByDelta:(CGPoint)a3;
-- (void)offsetSelectedNodesByDelta:(CGPoint)a3;
+- (void)lineToPoint:(CGPoint)point;
+- (void)morphWithMorphInfo:(id)info;
+- (void)moveToPoint:(CGPoint)point;
+- (void)offsetSelectedEdgesByDelta:(CGPoint)delta;
+- (void)offsetSelectedNodesByDelta:(CGPoint)delta;
 - (void)removeLastNode;
-- (void)removeNode:(id)a3;
+- (void)removeNode:(id)node;
 - (void)reverseDirection;
 - (void)selectAllNodes;
-- (void)selectSubpathForNode:(id)a3 toggle:(BOOL)a4;
-- (void)setBezierPath:(id)a3;
-- (void)setClosed:(BOOL)a3;
-- (void)setLockedFlipTransform:(BOOL)a3;
-- (void)setNaturalSize:(CGSize)a3;
-- (void)setNodeTypes:(id)a3;
-- (void)setNodes:(id)a3;
+- (void)selectSubpathForNode:(id)node toggle:(BOOL)toggle;
+- (void)setBezierPath:(id)path;
+- (void)setClosed:(BOOL)closed;
+- (void)setLockedFlipTransform:(BOOL)transform;
+- (void)setNaturalSize:(CGSize)size;
+- (void)setNodeTypes:(id)types;
+- (void)setNodes:(id)nodes;
 - (void)sharpenAllNodes;
 - (void)smoothAllNodes;
-- (void)smoothCurveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5;
-- (void)smoothNode:(id)a3;
+- (void)smoothCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2;
+- (void)smoothNode:(id)node;
 - (void)splitSelectedEdges;
 - (void)splitSelectedNodes;
-- (void)toggleNode:(id)a3 toType:(int64_t)a4 prevNode:(id)a5 nextNode:(id)a6;
-- (void)toggleSelectedNodesToType:(int64_t)a3;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)toggleNode:(id)node toType:(int64_t)type prevNode:(id)prevNode nextNode:(id)nextNode;
+- (void)toggleSelectedNodesToType:(int64_t)type;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 - (void)updateSmoothNodes;
 @end
 
@@ -106,14 +106,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setHasHorizontalFlip:{-[CRLPathSource hasHorizontalFlip](self, "hasHorizontalFlip")}];
   [v4 setHasVerticalFlip:{-[CRLPathSource hasVerticalFlip](self, "hasVerticalFlip")}];
   v5 = [NSArray alloc];
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v7 = [v5 initWithArray:v6 copyItems:1];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v7 = [v5 initWithArray:subpaths copyItems:1];
 
   [v4 setSubpaths:v7];
   return v4;
@@ -126,27 +126,27 @@
   return v2;
 }
 
-+ (CRLEditableBezierPathSource)editableBezierPathSourceWithPathSource:(id)a3
++ (CRLEditableBezierPathSource)editableBezierPathSourceWithPathSource:(id)source
 {
-  v4 = [a3 bezierPath];
-  v5 = [a1 editableBezierPathSourceWithBezierPath:v4];
+  bezierPath = [source bezierPath];
+  v5 = [self editableBezierPathSourceWithBezierPath:bezierPath];
 
   return v5;
 }
 
-+ (CRLEditableBezierPathSource)editableBezierPathSourceWithBezierPath:(id)a3
++ (CRLEditableBezierPathSource)editableBezierPathSourceWithBezierPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[CRLEditableBezierPathSource editableBezierPathSource];
-  [v4 setBezierPath:v3];
+  [v4 setBezierPath:pathCopy];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -155,13 +155,13 @@
   {
     v10.receiver = self;
     v10.super_class = CRLEditableBezierPathSource;
-    if ([(CRLPathSource *)&v10 isEqual:v4])
+    if ([(CRLPathSource *)&v10 isEqual:equalCopy])
     {
-      v5 = v4;
-      v6 = [(CRLPathSource *)self bezierPath];
-      v7 = [(CRLPathSource *)v5 bezierPath];
+      v5 = equalCopy;
+      bezierPath = [(CRLPathSource *)self bezierPath];
+      bezierPath2 = [(CRLPathSource *)v5 bezierPath];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [bezierPath isEqual:bezierPath2];
     }
 
     else
@@ -175,8 +175,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRLPathSource *)self bezierPath];
-  v4 = [v3 hash] != 0;
+  bezierPath = [(CRLPathSource *)self bezierPath];
+  v4 = [bezierPath hash] != 0;
 
   v8 = v4;
   v7.receiver = self;
@@ -185,10 +185,10 @@
   return sub_100083B3C(&v8, 1, v5);
 }
 
-- (BOOL)isEqualWithStrictComparison:(id)a3
+- (BOOL)isEqualWithStrictComparison:(id)comparison
 {
-  v4 = a3;
-  if (v4 == self)
+  comparisonCopy = comparison;
+  if (comparisonCopy == self)
   {
     v10 = 1;
   }
@@ -197,16 +197,16 @@
   {
     v12.receiver = self;
     v12.super_class = CRLEditableBezierPathSource;
-    if ([(CRLPathSource *)&v12 isEqual:v4])
+    if ([(CRLPathSource *)&v12 isEqual:comparisonCopy])
     {
-      v5 = v4;
-      v6 = [(CRLPathSource *)self bezierPath];
-      v7 = [v6 CGPath];
+      v5 = comparisonCopy;
+      bezierPath = [(CRLPathSource *)self bezierPath];
+      cGPath = [bezierPath CGPath];
 
-      v8 = [(CRLPathSource *)v5 bezierPath];
-      v9 = [v8 CGPath];
+      bezierPath2 = [(CRLPathSource *)v5 bezierPath];
+      cGPath2 = [bezierPath2 CGPath];
 
-      v10 = v7 == v9 || CGPathEqualToPath(v7, v9);
+      v10 = cGPath == cGPath2 || CGPathEqualToPath(cGPath, cGPath2);
     }
 
     else
@@ -220,77 +220,77 @@
 
 - (BOOL)closeIfEndpointsAreEqual
 {
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
-  v4 = [v3 objectAtIndex:self->mActiveSubpath];
-  v5 = [v4 closeIfEndpointsAreEqual];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v4 = [subpaths objectAtIndex:self->mActiveSubpath];
+  closeIfEndpointsAreEqual = [v4 closeIfEndpointsAreEqual];
 
-  return v5;
+  return closeIfEndpointsAreEqual;
 }
 
 - (BOOL)isRectangular
 {
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
-  if ([v3 count] == 1)
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  if ([subpaths count] == 1)
   {
-    v4 = [(CRLEditableBezierPathSource *)self subpaths];
-    v5 = [v4 lastObject];
-    v6 = [v5 isRectangular];
+    subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+    lastObject = [subpaths2 lastObject];
+    isRectangular = [lastObject isRectangular];
   }
 
   else
   {
-    v6 = 0;
+    isRectangular = 0;
   }
 
-  return v6;
+  return isRectangular;
 }
 
 - (BOOL)isCircular
 {
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
-  if ([v3 count] == 1)
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  if ([subpaths count] == 1)
   {
-    v4 = [(CRLEditableBezierPathSource *)self subpaths];
-    v5 = [v4 lastObject];
-    v6 = [v5 isCircular];
+    subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+    lastObject = [subpaths2 lastObject];
+    isCircular = [lastObject isCircular];
   }
 
   else
   {
-    v6 = 0;
+    isCircular = 0;
   }
 
-  return v6;
+  return isCircular;
 }
 
 - (id)bezierPathWithoutFlips
 {
   v3 = +[CRLBezierPath bezierPath];
   [v3 moveToPoint:{CGPointZero.x, CGPointZero.y}];
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v4 makeObjectsPerformSelector:"appendToBezierPath:" withObject:v3];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"appendToBezierPath:" withObject:v3];
 
   return v3;
 }
 
 - (CGPath)pathWithoutFlips
 {
-  v2 = [(CRLEditableBezierPathSource *)self bezierPathWithoutFlips];
-  v3 = [v2 CGPath];
+  bezierPathWithoutFlips = [(CRLEditableBezierPathSource *)self bezierPathWithoutFlips];
+  cGPath = [bezierPathWithoutFlips CGPath];
 
-  return v3;
+  return cGPath;
 }
 
 - (void)convertToHobby
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v2 makeObjectsPerformSelector:"convertToHobby"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"convertToHobby"];
 }
 
-- (void)setBezierPath:(id)a3
+- (void)setBezierPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 elementCount];
+  pathCopy = path;
+  elementCount = [pathCopy elementCount];
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -317,20 +317,20 @@
   v28[5] = &v29;
   v28[6] = &v41;
   v6 = objc_retainBlock(v28);
-  if (v5 >= 1)
+  if (elementCount >= 1)
   {
     v7 = 0;
     v8 = 0;
     while (1)
     {
-      v9 = [v4 elementAtIndex:v7 associatedPoints:&v47];
+      v9 = [pathCopy elementAtIndex:v7 associatedPoints:&v47];
       if (v42[5])
       {
         (v6[2])(v6);
       }
 
-      v10 = [v36[5] lastNode];
-      v11 = v10;
+      lastNode = [v36[5] lastNode];
+      v11 = lastNode;
       if (v9 <= 1)
       {
         break;
@@ -338,7 +338,7 @@
 
       if (v9 == 2)
       {
-        [v10 setOutControlPoint:{v47, v48}];
+        [lastNode setOutControlPoint:{v47, v48}];
         [v11 setType:2];
         v24 = [CRLBezierNode bezierNodeWithPoint:v51 inControlPoint:v52 outControlPoint:v49, v50, v51, v52];
 
@@ -349,11 +349,11 @@
 
       if (v9 == 3)
       {
-        v13 = [v36[5] firstNode];
-        v14 = v13;
+        firstNode = [v36[5] firstNode];
+        v14 = firstNode;
         if (v11)
         {
-          v15 = v13 == 0;
+          v15 = firstNode == 0;
         }
 
         else
@@ -381,7 +381,7 @@ LABEL_20:
 
 LABEL_23:
 
-      if (v5 == ++v7)
+      if (elementCount == ++v7)
       {
         goto LABEL_26;
       }
@@ -418,8 +418,8 @@ LABEL_23:
   v8 = 0;
 LABEL_26:
   [(CRLEditableBezierPathSource *)self setSubpaths:v30[5]];
-  v25 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v25 makeObjectsPerformSelector:"updateReflectedState"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"updateReflectedState"];
 
   v26 = +[NSUserDefaults standardUserDefaults];
   v27 = [v26 BOOLForKey:@"CRLCreateBezierNodesByDefault"];
@@ -435,11 +435,11 @@ LABEL_26:
   _Block_object_dispose(&v41, 8);
 }
 
-- (void)setNodes:(id)a3
+- (void)setNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   v5 = objc_alloc_init(CRLBezierSubpath);
-  [(CRLBezierSubpath *)v5 setNodes:v4];
+  [(CRLBezierSubpath *)v5 setNodes:nodesCopy];
 
   v7 = v5;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
@@ -449,8 +449,8 @@ LABEL_26:
 - (NSArray)nodes
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v4 makeObjectsPerformSelector:"addNodesToArray:" withObject:v3];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"addNodesToArray:" withObject:v3];
 
   v5 = [v3 copy];
 
@@ -459,12 +459,12 @@ LABEL_26:
 
 - (void)reverseDirection
 {
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v4 objectAtIndex:self->mActiveSubpath];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths objectAtIndex:self->mActiveSubpath];
   [v3 reverseDirection];
 }
 
-- (void)setLockedFlipTransform:(BOOL)a3
+- (void)setLockedFlipTransform:(BOOL)transform
 {
   p_mLockedFlipTransform = &self->mLockedFlipTransform;
   v7[0].receiver = self;
@@ -474,18 +474,18 @@ LABEL_26:
   *&p_mLockedFlipTransform->a = v7[1];
   *&p_mLockedFlipTransform->c = v6;
   *&p_mLockedFlipTransform->tx = v7[3];
-  self->mHasLockedFlipTransform = a3;
+  self->mHasLockedFlipTransform = transform;
 }
 
 - (void)beginNewSubpath
 {
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
   v4 = objc_alloc_init(CRLBezierSubpath);
-  v5 = [v3 arrayByAddingObject:v4];
+  v5 = [subpaths arrayByAddingObject:v4];
   [(CRLEditableBezierPathSource *)self setSubpaths:v5];
 
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  self->mActiveSubpath = [v6 count] - 1;
+  subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+  self->mActiveSubpath = [subpaths2 count] - 1;
 }
 
 - (CGAffineTransform)pathFlipTransform
@@ -512,11 +512,11 @@ LABEL_26:
 
 - (CGSize)naturalSize
 {
-  v2 = [(CRLEditableBezierPathSource *)self bezierPathWithoutFlips];
-  v3 = v2;
-  if (v2)
+  bezierPathWithoutFlips = [(CRLEditableBezierPathSource *)self bezierPathWithoutFlips];
+  v3 = bezierPathWithoutFlips;
+  if (bezierPathWithoutFlips)
   {
-    [v2 bounds];
+    [bezierPathWithoutFlips bounds];
     width = v4;
     height = v6;
   }
@@ -534,12 +534,12 @@ LABEL_26:
   return result;
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CRLEditableBezierPathSource *)self nodes];
-  v7 = [v6 count];
+  height = size.height;
+  width = size.width;
+  nodes = [(CRLEditableBezierPathSource *)self nodes];
+  v7 = [nodes count];
 
   if (v7 >= 2)
   {
@@ -571,8 +571,8 @@ LABEL_26:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(CRLEditableBezierPathSource *)self subpaths];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+    v13 = [subpaths countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v13)
     {
       v14 = v13;
@@ -583,7 +583,7 @@ LABEL_26:
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subpaths);
           }
 
           v17 = *(*(&v19 + 1) + 8 * i);
@@ -591,7 +591,7 @@ LABEL_26:
           [v17 transformUsingAffineTransform:&v18];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v14 = [subpaths countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v14);
@@ -599,14 +599,14 @@ LABEL_26:
   }
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v5 = [subpaths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -618,20 +618,20 @@ LABEL_26:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subpaths);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = *&a3->c;
-        v11[0] = *&a3->a;
+        v10 = *&transform->c;
+        v11[0] = *&transform->a;
         v11[1] = v10;
-        v11[2] = *&a3->tx;
+        v11[2] = *&transform->tx;
         [v9 transformUsingAffineTransform:v11];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subpaths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -640,8 +640,8 @@ LABEL_26:
 
 - (void)alignToOrigin
 {
-  v3 = [(CRLPathSource *)self bezierPath];
-  [v3 bounds];
+  bezierPath = [(CRLPathSource *)self bezierPath];
+  [bezierPath bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -657,10 +657,10 @@ LABEL_26:
   v34.size.width = v9;
   v34.size.height = v11;
   MinY = CGRectGetMinY(v34);
-  LODWORD(v3) = [(CRLPathSource *)self hasHorizontalFlip];
-  v12 = [(CRLPathSource *)self hasVerticalFlip];
+  LODWORD(bezierPath) = [(CRLPathSource *)self hasHorizontalFlip];
+  hasVerticalFlip = [(CRLPathSource *)self hasVerticalFlip];
   v13 = 1.0;
-  if (v3)
+  if (bezierPath)
   {
     v14 = -1.0;
   }
@@ -670,7 +670,7 @@ LABEL_26:
     v14 = 1.0;
   }
 
-  if (v12)
+  if (hasVerticalFlip)
   {
     v13 = -1.0;
   }
@@ -687,8 +687,8 @@ LABEL_26:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = [(CRLEditableBezierPathSource *)self subpaths];
-    v18 = [v17 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+    v18 = [subpaths countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v18)
     {
       v19 = v18;
@@ -700,7 +700,7 @@ LABEL_26:
         {
           if (*v28 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(subpaths);
           }
 
           v22 = *(*(&v27 + 1) + 8 * v21);
@@ -710,7 +710,7 @@ LABEL_26:
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v19 = [subpaths countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v19);
@@ -718,69 +718,69 @@ LABEL_26:
   }
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
-  v4 = a3;
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v5 = [v6 objectAtIndex:self->mActiveSubpath];
-  [v5 addNode:v4];
+  nodeCopy = node;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v5 = [subpaths objectAtIndex:self->mActiveSubpath];
+  [v5 addNode:nodeCopy];
 }
 
 - (void)removeLastNode
 {
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v4 objectAtIndex:self->mActiveSubpath];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths objectAtIndex:self->mActiveSubpath];
   [v3 removeLastNode];
 }
 
-- (id)nodePriorToNode:(id)a3
+- (id)nodePriorToNode:(id)node
 {
-  v4 = a3;
-  v5 = [(CRLEditableBezierPathSource *)self subpaths];
-  v6 = [v5 objectAtIndex:self->mActiveSubpath];
-  v7 = [v6 nodePriorToNode:v4];
+  nodeCopy = node;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v6 = [subpaths objectAtIndex:self->mActiveSubpath];
+  v7 = [v6 nodePriorToNode:nodeCopy];
 
   return v7;
 }
 
-- (id)nodeAfterNode:(id)a3
+- (id)nodeAfterNode:(id)node
 {
-  v4 = a3;
-  v5 = [(CRLEditableBezierPathSource *)self subpaths];
-  v6 = [v5 objectAtIndex:self->mActiveSubpath];
-  v7 = [v6 nodeAfterNode:v4];
+  nodeCopy = node;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v6 = [subpaths objectAtIndex:self->mActiveSubpath];
+  v7 = [v6 nodeAfterNode:nodeCopy];
 
   return v7;
 }
 
 - (CRLBezierNode)firstNode
 {
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
-  v4 = [v3 objectAtIndex:self->mActiveSubpath];
-  v5 = [v4 firstNode];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v4 = [subpaths objectAtIndex:self->mActiveSubpath];
+  firstNode = [v4 firstNode];
 
-  return v5;
+  return firstNode;
 }
 
 - (CRLBezierNode)lastNode
 {
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
-  v4 = [v3 objectAtIndex:self->mActiveSubpath];
-  v5 = [v4 lastNode];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v4 = [subpaths objectAtIndex:self->mActiveSubpath];
+  lastNode = [v4 lastNode];
 
-  return v5;
+  return lastNode;
 }
 
-- (void)offsetSelectedNodesByDelta:(CGPoint)a3
+- (void)offsetSelectedNodesByDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CRLEditableBezierPathSource *)self subpaths];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v6 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -792,7 +792,7 @@ LABEL_26:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subpaths);
         }
 
         [*(*(&v10 + 1) + 8 * v9) offsetSelectedNodesByDelta:{x, y}];
@@ -800,23 +800,23 @@ LABEL_26:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)offsetSelectedEdgesByDelta:(CGPoint)a3
+- (void)offsetSelectedEdgesByDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CRLEditableBezierPathSource *)self subpaths];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v6 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -828,7 +828,7 @@ LABEL_26:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subpaths);
         }
 
         [*(*(&v10 + 1) + 8 * v9) offsetSelectedEdgesByDelta:{x, y}];
@@ -836,7 +836,7 @@ LABEL_26:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -849,8 +849,8 @@ LABEL_26:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -860,7 +860,7 @@ LABEL_26:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subpaths);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) hasSelectedNode])
@@ -870,7 +870,7 @@ LABEL_26:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [subpaths countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -891,8 +891,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -903,7 +903,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subpaths);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) allNodesSelected])
@@ -913,7 +913,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [subpaths countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -929,74 +929,74 @@ LABEL_11:
   return v7;
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
-  v4 = a3;
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v5 = [v6 objectAtIndex:self->mActiveSubpath];
-  [v5 removeNode:v4];
+  nodeCopy = node;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v5 = [subpaths objectAtIndex:self->mActiveSubpath];
+  [v5 removeNode:nodeCopy];
 }
 
 - (BOOL)isCompound
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 count] > 1;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths count] > 1;
 
   return v3;
 }
 
 - (BOOL)canDeleteSelectedNodes
 {
-  v3 = [(CRLEditableBezierPathSource *)self isCompound];
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  v5 = v4;
-  if ((v3 & 1) == 0)
+  isCompound = [(CRLEditableBezierPathSource *)self isCompound];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  objectEnumerator2 = subpaths;
+  if ((isCompound & 1) == 0)
   {
-    v8 = [v4 lastObject];
-    v10 = [v8 canDeleteSelectedNodes];
+    lastObject = [subpaths lastObject];
+    canDeleteSelectedNodes = [lastObject canDeleteSelectedNodes];
 LABEL_9:
 
-    v6 = v5;
+    objectEnumerator = objectEnumerator2;
     goto LABEL_10;
   }
 
-  v6 = [v4 objectEnumerator];
+  objectEnumerator = [subpaths objectEnumerator];
 
-  v7 = [v6 nextObject];
-  if (v7)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
-    while (![v8 hasSelectedNode] || objc_msgSend(v8, "canDeleteSelectedNodes"))
+    lastObject = nextObject;
+    while (![lastObject hasSelectedNode] || objc_msgSend(lastObject, "canDeleteSelectedNodes"))
     {
-      v9 = [v6 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v8 = v9;
-      if (!v9)
+      lastObject = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_7;
       }
     }
 
-    v12 = [(CRLEditableBezierPathSource *)self subpaths];
-    v5 = [v12 objectEnumerator];
+    subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+    objectEnumerator2 = [subpaths2 objectEnumerator];
 
     do
     {
-      v13 = v8;
-      v8 = [v5 nextObject];
+      v13 = lastObject;
+      lastObject = [objectEnumerator2 nextObject];
 
-      v10 = v8 != 0;
+      canDeleteSelectedNodes = lastObject != 0;
     }
 
-    while (v8 && [v8 hasSelectedNode] && !objc_msgSend(v8, "canDeleteSelectedNodes"));
+    while (lastObject && [lastObject hasSelectedNode] && !objc_msgSend(lastObject, "canDeleteSelectedNodes"));
     goto LABEL_9;
   }
 
 LABEL_7:
-  v10 = 1;
+  canDeleteSelectedNodes = 1;
 LABEL_10:
 
-  return v10;
+  return canDeleteSelectedNodes;
 }
 
 - (BOOL)deletingSelectedNodesWillDeleteShape
@@ -1005,8 +1005,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1017,12 +1017,12 @@ LABEL_10:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subpaths);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 nodes];
-        if ([v8 count] < 3)
+        nodes = [v7 nodes];
+        if ([nodes count] < 3)
         {
         }
 
@@ -1036,16 +1036,16 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v9 = [v7 canDeleteSelectedNodes];
+          canDeleteSelectedNodes = [v7 canDeleteSelectedNodes];
 
-          if (v9)
+          if (canDeleteSelectedNodes)
           {
             goto LABEL_15;
           }
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [subpaths countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -1061,15 +1061,15 @@ LABEL_16:
   return v10;
 }
 
-- (void)deleteSelectedNodesForced:(BOOL)a3
+- (void)deleteSelectedNodesForced:(BOOL)forced
 {
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v7 = [subpaths countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1080,7 +1080,7 @@ LABEL_16:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subpaths);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -1089,7 +1089,7 @@ LABEL_16:
           [v11 deleteSelectedNodes];
         }
 
-        else if (a3 || [v11 allNodesSelected])
+        else if (forced || [v11 allNodesSelected])
         {
           if ([v11 hasSelectedNode])
           {
@@ -1098,14 +1098,14 @@ LABEL_16:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [subpaths countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(CRLEditableBezierPathSource *)self subpaths];
-  v13 = [v12 mutableCopy];
+  subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+  v13 = [subpaths2 mutableCopy];
 
   [v13 removeObjectsInArray:v5];
   [(CRLEditableBezierPathSource *)self setSubpaths:v13];
@@ -1113,39 +1113,39 @@ LABEL_16:
 
 - (void)selectAllNodes
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v2 makeObjectsPerformSelector:"selectAllNodes"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"selectAllNodes"];
 }
 
 - (void)deselectAllNodes
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v2 makeObjectsPerformSelector:"deselectAllNodes"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"deselectAllNodes"];
 }
 
-- (id)bezierNodeUnderPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6
+- (id)bezierNodeUnderPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = [(CRLEditableBezierPathSource *)self subpaths];
-  v12 = [v11 objectEnumerator];
+  y = point.y;
+  x = point.x;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  objectEnumerator = [subpaths objectEnumerator];
 
-  v13 = 0;
+  nextObject = 0;
   while (1)
   {
-    v14 = v13;
-    v13 = [v12 nextObject];
+    v14 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v13)
+    if (!nextObject)
     {
       break;
     }
 
-    v15 = *&a4->c;
-    v19[0] = *&a4->a;
+    v15 = *&transform->c;
+    v19[0] = *&transform->a;
     v19[1] = v15;
-    v19[2] = *&a4->tx;
-    v16 = [v13 bezierNodeUnderPoint:v19 withTransform:a6 andTolerance:x returningType:{y, a5}];
+    v19[2] = *&transform->tx;
+    v16 = [nextObject bezierNodeUnderPoint:v19 withTransform:type andTolerance:x returningType:{y, tolerance}];
     if (v16)
     {
       v17 = v16;
@@ -1159,12 +1159,12 @@ LABEL_6:
   return v17;
 }
 
-- (double)distanceToPoint:(CGPoint)a3 subpathIndex:(unint64_t *)a4 elementIndex:(unint64_t *)a5 tValue:(double *)a6 threshold:(double)a7
+- (double)distanceToPoint:(CGPoint)point subpathIndex:(unint64_t *)index elementIndex:(unint64_t *)elementIndex tValue:(double *)value threshold:(double)threshold
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = [(CRLEditableBezierPathSource *)self subpaths];
-  v14 = [v13 count];
+  y = point.y;
+  x = point.x;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v14 = [subpaths count];
 
   v15 = 0;
   v16 = 0;
@@ -1172,7 +1172,7 @@ LABEL_6:
   if (v14)
   {
     v18 = 0;
-    if (a7 < 1.79769313e308)
+    if (threshold < 1.79769313e308)
     {
       v18 = 0;
       v15 = 0;
@@ -1180,12 +1180,12 @@ LABEL_6:
       v19 = 1;
       do
       {
-        v20 = [(CRLEditableBezierPathSource *)self subpaths];
-        v21 = [v20 objectAtIndexedSubscript:v19 - 1];
+        subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+        v21 = [subpaths2 objectAtIndexedSubscript:v19 - 1];
 
         v25 = 0;
         v26 = 0;
-        [v21 distanceToPoint:&v26 elementIndex:&v25 tValue:x threshold:{y, a7}];
+        [v21 distanceToPoint:&v26 elementIndex:&v25 tValue:x threshold:{y, threshold}];
         if (v22 < v17)
         {
           v18 = v26;
@@ -1202,10 +1202,10 @@ LABEL_6:
         ++v19;
       }
 
-      while (v17 > a7);
+      while (v17 > threshold);
     }
 
-    if (a4)
+    if (index)
     {
       goto LABEL_9;
     }
@@ -1214,21 +1214,21 @@ LABEL_6:
   else
   {
     v18 = 0;
-    if (a4)
+    if (index)
     {
 LABEL_9:
-      *a4 = v15;
+      *index = v15;
     }
   }
 
-  if (a5)
+  if (elementIndex)
   {
-    *a5 = v18;
+    *elementIndex = v18;
   }
 
-  if (a6)
+  if (value)
   {
-    *a6 = v16;
+    *value = v16;
   }
 
   return v17;
@@ -1240,13 +1240,13 @@ LABEL_9:
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v7 = [v6 objectEnumerator];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  objectEnumerator = [subpaths objectEnumerator];
 
-  v8 = [v7 nextObject];
-  if (v8)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    v9 = nextObject;
     do
     {
       [v9 nodeBounds];
@@ -1263,12 +1263,12 @@ LABEL_9:
       y = v20.origin.y;
       width = v20.size.width;
       height = v20.size.height;
-      v14 = [v7 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v9 = v14;
+      v9 = nextObject2;
     }
 
-    while (v14);
+    while (nextObject2);
   }
 
   v15 = x;
@@ -1282,96 +1282,96 @@ LABEL_9:
   return result;
 }
 
-- (void)toggleNode:(id)a3 toType:(int64_t)a4 prevNode:(id)a5 nextNode:(id)a6
+- (void)toggleNode:(id)node toType:(int64_t)type prevNode:(id)prevNode nextNode:(id)nextNode
 {
-  v59 = a3;
-  v9 = a5;
-  v10 = a6;
-  if ([v59 type] != a4)
+  nodeCopy = node;
+  prevNodeCopy = prevNode;
+  nextNodeCopy = nextNode;
+  if ([nodeCopy type] != type)
   {
-    switch(a4)
+    switch(type)
     {
       case 1:
-        [v59 setType:1];
-        if ([v10 type] == 1)
+        [nodeCopy setType:1];
+        if ([nextNodeCopy type] == 1)
         {
-          [v59 nodePoint];
-          [v59 setOutControlPoint:?];
-          [v10 nodePoint];
-          [v10 setInControlPoint:?];
+          [nodeCopy nodePoint];
+          [nodeCopy setOutControlPoint:?];
+          [nextNodeCopy nodePoint];
+          [nextNodeCopy setInControlPoint:?];
         }
 
-        if ([v9 type] == 1)
+        if ([prevNodeCopy type] == 1)
         {
-          [v59 nodePoint];
-          [v59 setInControlPoint:?];
-          [v9 nodePoint];
-          [v9 setOutControlPoint:?];
+          [nodeCopy nodePoint];
+          [nodeCopy setInControlPoint:?];
+          [prevNodeCopy nodePoint];
+          [prevNodeCopy setOutControlPoint:?];
         }
 
         break;
       case 3:
-        [v59 setType:3];
+        [nodeCopy setType:3];
         break;
       case 2:
-        [v59 nodePoint];
+        [nodeCopy nodePoint];
         v12 = v11;
         v14 = v13;
-        [v59 outControlPoint];
+        [nodeCopy outControlPoint];
         if (sub_10011ECC8(v12, v14, v15, v16))
         {
-          [v10 nodePoint];
+          [nextNodeCopy nodePoint];
           v18 = v17;
           v20 = v19;
-          [v10 inControlPoint];
+          [nextNodeCopy inControlPoint];
           if (sub_10011ECC8(v18, v20, v21, v22))
           {
-            [v59 nodePoint];
+            [nodeCopy nodePoint];
             v24 = v23;
             v26 = v25;
-            [v10 nodePoint];
-            [v59 setOutControlPoint:{sub_100120ABC(v24, v26, v27, v28, 0.333333333)}];
-            [v59 nodePoint];
+            [nextNodeCopy nodePoint];
+            [nodeCopy setOutControlPoint:{sub_100120ABC(v24, v26, v27, v28, 0.333333333)}];
+            [nodeCopy nodePoint];
             v30 = v29;
             v32 = v31;
-            [v10 nodePoint];
-            [v10 setInControlPoint:{sub_100120ABC(v30, v32, v33, v34, 0.666666667)}];
+            [nextNodeCopy nodePoint];
+            [nextNodeCopy setInControlPoint:{sub_100120ABC(v30, v32, v33, v34, 0.666666667)}];
           }
         }
 
-        [v59 nodePoint];
+        [nodeCopy nodePoint];
         v36 = v35;
         v38 = v37;
-        [v59 inControlPoint];
+        [nodeCopy inControlPoint];
         if (sub_10011ECC8(v36, v38, v39, v40))
         {
-          [v9 nodePoint];
+          [prevNodeCopy nodePoint];
           v42 = v41;
           v44 = v43;
-          [v9 outControlPoint];
+          [prevNodeCopy outControlPoint];
           if (sub_10011ECC8(v42, v44, v45, v46))
           {
-            [v59 nodePoint];
+            [nodeCopy nodePoint];
             v48 = v47;
             v50 = v49;
-            [v9 nodePoint];
-            [v59 setInControlPoint:{sub_100120ABC(v48, v50, v51, v52, 0.333333333)}];
-            [v59 nodePoint];
+            [prevNodeCopy nodePoint];
+            [nodeCopy setInControlPoint:{sub_100120ABC(v48, v50, v51, v52, 0.333333333)}];
+            [nodeCopy nodePoint];
             v54 = v53;
             v56 = v55;
-            [v9 nodePoint];
-            [v9 setOutControlPoint:{sub_100120ABC(v54, v56, v57, v58, 0.666666667)}];
+            [prevNodeCopy nodePoint];
+            [prevNodeCopy setOutControlPoint:{sub_100120ABC(v54, v56, v57, v58, 0.666666667)}];
           }
         }
 
-        [v59 setType:2];
-        [v59 updateReflectedState];
+        [nodeCopy setType:2];
+        [nodeCopy updateReflectedState];
         break;
     }
   }
 }
 
-- (void)toggleSelectedNodesToType:(int64_t)a3
+- (void)toggleSelectedNodesToType:(int64_t)type
 {
   v21 = 0u;
   v22 = 0u;
@@ -1392,22 +1392,22 @@ LABEL_9:
         }
 
         v4 = *(*(&v21 + 1) + 8 * i);
-        v5 = [v4 nodes];
-        if ([v5 count])
+        nodes = [v4 nodes];
+        if ([nodes count])
         {
-          v6 = [v4 isClosed];
-          if (v6)
+          isClosed = [v4 isClosed];
+          if (isClosed)
           {
-            v7 = [v5 lastObject];
+            lastObject = [nodes lastObject];
           }
 
           else
           {
-            v7 = 0;
+            lastObject = 0;
           }
 
-          v8 = [v5 objectAtIndexedSubscript:0];
-          v9 = [v5 count];
+          v8 = [nodes objectAtIndexedSubscript:0];
+          v9 = [nodes count];
           if (v9)
           {
             v10 = v9;
@@ -1415,7 +1415,7 @@ LABEL_9:
             v12 = v9;
             do
             {
-              if (((v11 >= v10) & ~v6) != 0)
+              if (((v11 >= v10) & ~isClosed) != 0)
               {
                 v14 = 0;
               }
@@ -1432,18 +1432,18 @@ LABEL_9:
                   v13 = v11;
                 }
 
-                v14 = [v5 objectAtIndexedSubscript:v13];
+                v14 = [nodes objectAtIndexedSubscript:v13];
               }
 
               if ([v8 isSelected])
               {
-                [(CRLEditableBezierPathSource *)self toggleNode:v8 toType:a3 prevNode:v7 nextNode:v14];
+                [(CRLEditableBezierPathSource *)self toggleNode:v8 toType:type prevNode:lastObject nextNode:v14];
               }
 
               v15 = v8;
 
               ++v11;
-              v7 = v15;
+              lastObject = v15;
               v8 = v14;
               --v12;
             }
@@ -1454,7 +1454,7 @@ LABEL_9:
           else
           {
             v14 = v8;
-            v15 = v7;
+            v15 = lastObject;
           }
         }
       }
@@ -1468,33 +1468,33 @@ LABEL_9:
 
 - (void)sharpenAllNodes
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v2 makeObjectsPerformSelector:"sharpenAllNodes"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"sharpenAllNodes"];
 }
 
-- (void)smoothNode:(id)a3
+- (void)smoothNode:(id)node
 {
-  v10 = a3;
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  v5 = [v4 objectEnumerator];
+  nodeCopy = node;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  objectEnumerator = [subpaths objectEnumerator];
 
-  v6 = 0;
+  nextObject = 0;
   while (1)
   {
-    v7 = v6;
-    v6 = [v5 nextObject];
+    v7 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [v6 nodes];
-    v9 = [v8 containsObject:v10];
+    nodes = [nextObject nodes];
+    v9 = [nodes containsObject:nodeCopy];
 
     if (v9)
     {
-      [v6 smoothNode:v10];
+      [nextObject smoothNode:nodeCopy];
       break;
     }
   }
@@ -1502,8 +1502,8 @@ LABEL_9:
 
 - (void)smoothAllNodes
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v2 makeObjectsPerformSelector:"smoothAllNodes"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"smoothAllNodes"];
 }
 
 - (BOOL)isClosed
@@ -1512,8 +1512,8 @@ LABEL_9:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -1523,16 +1523,16 @@ LABEL_9:
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subpaths);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 nodes];
-        if ([v7 count])
+        nodes = [v6 nodes];
+        if ([nodes count])
         {
-          v8 = [v6 isClosed];
+          isClosed = [v6 isClosed];
 
-          if (v8)
+          if (isClosed)
           {
             LOBYTE(v3) = 1;
             goto LABEL_12;
@@ -1544,7 +1544,7 @@ LABEL_9:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v3);
@@ -1555,15 +1555,15 @@ LABEL_12:
   return v3;
 }
 
-- (void)setClosed:(BOOL)a3
+- (void)setClosed:(BOOL)closed
 {
-  v3 = a3;
+  closedCopy = closed;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v5 = [subpaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1575,52 +1575,52 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subpaths);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setClosed:v3];
+        [*(*(&v9 + 1) + 8 * v8) setClosed:closedCopy];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [subpaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)selectSubpathForNode:(id)a3 toggle:(BOOL)a4
+- (void)selectSubpathForNode:(id)node toggle:(BOOL)toggle
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v7 = [v6 objectEnumerator];
+  toggleCopy = toggle;
+  nodeCopy = node;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  objectEnumerator = [subpaths objectEnumerator];
 
-  v8 = 0;
+  nextObject = 0;
   while (1)
   {
-    v9 = v8;
-    v8 = [v7 nextObject];
+    v9 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
 
-    v10 = [v8 nodes];
-    v11 = [v10 containsObject:v12];
+    nodes = [nextObject nodes];
+    v11 = [nodes containsObject:nodeCopy];
 
     if (v11)
     {
-      if (v4 && [v8 allNodesSelected])
+      if (toggleCopy && [nextObject allNodesSelected])
       {
-        [v8 deselectAllNodes];
+        [nextObject deselectAllNodes];
       }
 
       else
       {
-        [v8 selectAllNodes];
+        [nextObject selectAllNodes];
       }
 
       break;
@@ -1628,16 +1628,16 @@ LABEL_12:
   }
 }
 
-- (id)subpathsForConnectingUsingFirstSubpathFirstNode:(BOOL *)a3 andSecondPathFirstNode:(BOOL *)a4
+- (id)subpathsForConnectingUsingFirstSubpathFirstNode:(BOOL *)node andSecondPathFirstNode:(BOOL *)firstNode
 {
-  *a3 = 0;
-  *a4 = 0;
+  *node = 0;
+  *firstNode = 0;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v7 = [subpaths countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (!v7)
   {
     v9 = 0;
@@ -1649,7 +1649,7 @@ LABEL_22:
   }
 
   v8 = v7;
-  v23 = a4;
+  firstNodeCopy = firstNode;
   v9 = 0;
   v10 = *v25;
 LABEL_3:
@@ -1658,7 +1658,7 @@ LABEL_3:
   {
     if (*v25 != v10)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(subpaths);
     }
 
     v12 = *(*(&v24 + 1) + 8 * v11);
@@ -1667,27 +1667,27 @@ LABEL_3:
       goto LABEL_14;
     }
 
-    v13 = [v12 nodes];
-    v14 = [v13 count];
+    nodes = [v12 nodes];
+    v14 = [nodes count];
 
     if (!v14)
     {
       goto LABEL_14;
     }
 
-    v15 = [v12 firstNode];
-    v16 = [v15 isSelected];
+    firstNode = [v12 firstNode];
+    isSelected = [firstNode isSelected];
 
-    if (v16)
+    if (isSelected)
     {
       break;
     }
 
 LABEL_11:
-    v18 = [v12 lastNode];
-    v19 = [v18 isSelected];
+    lastNode = [v12 lastNode];
+    isSelected2 = [lastNode isSelected];
 
-    if (v19)
+    if (isSelected2)
     {
       v20 = v12;
       if (v9)
@@ -1701,7 +1701,7 @@ LABEL_11:
 LABEL_14:
     if (v8 == ++v11)
     {
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [subpaths countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v8)
       {
         goto LABEL_3;
@@ -1714,12 +1714,12 @@ LABEL_14:
   v17 = v12;
   if (!v9)
   {
-    *a3 = 1;
+    *node = 1;
     v9 = v17;
     goto LABEL_11;
   }
 
-  *v23 = 1;
+  *firstNodeCopy = 1;
 LABEL_20:
 
   if (v12)
@@ -1727,7 +1727,7 @@ LABEL_20:
     v28[0] = v9;
     v28[1] = v12;
     v21 = [NSArray arrayWithObjects:v28 count:2];
-    v6 = v12;
+    subpaths = v12;
     goto LABEL_22;
   }
 
@@ -1765,18 +1765,18 @@ LABEL_24:
       goto LABEL_14;
     }
 
-    v7 = [(CRLEditableBezierPathSource *)self subpaths];
-    v8 = [v7 mutableCopy];
+    subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+    v8 = [subpaths mutableCopy];
 
     if ((v18 & 0x100) != 0)
     {
       if ((v18 & 1) == 0)
       {
-        v16 = [v6 nodes];
-        v10 = [v16 mutableCopy];
+        nodes = [v6 nodes];
+        v10 = [nodes mutableCopy];
 
-        v17 = [v5 nodes];
-        [v10 addObjectsFromArray:v17];
+        nodes2 = [v5 nodes];
+        [v10 addObjectsFromArray:nodes2];
 
         [v6 setNodes:v10];
         v15 = v5;
@@ -1784,13 +1784,13 @@ LABEL_24:
       }
 
       [v6 reverseDirection];
-      v9 = [v5 nodes];
-      v10 = [v9 mutableCopy];
+      nodes3 = [v5 nodes];
+      v10 = [nodes3 mutableCopy];
 
-      v11 = [v6 nodes];
-      v12 = [v6 nodes];
-      v13 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v12 count]);
-      [v10 insertObjects:v11 atIndexes:v13];
+      nodes4 = [v6 nodes];
+      nodes5 = [v6 nodes];
+      v13 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [nodes5 count]);
+      [v10 insertObjects:nodes4 atIndexes:v13];
     }
 
     else
@@ -1800,11 +1800,11 @@ LABEL_24:
         [v6 reverseDirection];
       }
 
-      v14 = [v5 nodes];
-      v10 = [v14 mutableCopy];
+      nodes6 = [v5 nodes];
+      v10 = [nodes6 mutableCopy];
 
-      v11 = [v6 nodes];
-      [v10 addObjectsFromArray:v11];
+      nodes4 = [v6 nodes];
+      [v10 addObjectsFromArray:nodes4];
     }
 
     [v5 setNodes:v10];
@@ -1823,8 +1823,8 @@ LABEL_14:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = *v14;
@@ -1834,19 +1834,19 @@ LABEL_14:
       {
         if (*v14 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subpaths);
         }
 
         v6 = *(*(&v13 + 1) + 8 * i);
         if (([v6 isClosed] & 1) == 0)
         {
-          v7 = [v6 nodes];
-          v8 = [v7 count];
+          nodes = [v6 nodes];
+          v8 = [nodes count];
 
           if (v8)
           {
-            v9 = [v6 firstNode];
-            if ([v9 isSelected])
+            firstNode = [v6 firstNode];
+            if ([firstNode isSelected])
             {
 
 LABEL_14:
@@ -1854,10 +1854,10 @@ LABEL_14:
               goto LABEL_15;
             }
 
-            v10 = [v6 lastNode];
-            v11 = [v10 isSelected];
+            lastNode = [v6 lastNode];
+            isSelected = [lastNode isSelected];
 
-            if (v11)
+            if (isSelected)
             {
               goto LABEL_14;
             }
@@ -1865,7 +1865,7 @@ LABEL_14:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v3 = [subpaths countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v3)
       {
         continue;
@@ -1886,8 +1886,8 @@ LABEL_15:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1898,40 +1898,40 @@ LABEL_15:
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subpaths);
         }
 
         v7 = *(*(&v16 + 1) + 8 * i);
         if (([v7 isClosed] & 1) == 0)
         {
-          v8 = [v7 nodes];
-          v9 = [v8 count];
+          nodes = [v7 nodes];
+          v9 = [nodes count];
 
           if (v9)
           {
-            v10 = [v7 firstNode];
-            if ([v10 isSelected])
+            firstNode = [v7 firstNode];
+            if ([firstNode isSelected])
             {
             }
 
             else
             {
-              v11 = [v7 lastNode];
-              v12 = [v11 isSelected];
+              lastNode = [v7 lastNode];
+              isSelected = [lastNode isSelected];
 
-              if (!v12)
+              if (!isSelected)
               {
                 continue;
               }
             }
 
-            v13 = [v7 firstNode];
-            v14 = [v13 type];
+            firstNode2 = [v7 firstNode];
+            type = [firstNode2 type];
 
-            if (v14 == 3)
+            if (type == 3)
             {
-              v15 = [v7 firstNode];
-              [v15 setType:1];
+              firstNode3 = [v7 firstNode];
+              [firstNode3 setType:1];
             }
 
             [v7 setClosed:1];
@@ -1939,7 +1939,7 @@ LABEL_15:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v4 = [subpaths countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v4);
@@ -1948,29 +1948,29 @@ LABEL_15:
 
 - (void)deleteSelectedEdges
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v38 = [v2 copy];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v38 = [subpaths copy];
 
-  v3 = [v38 objectEnumerator];
+  objectEnumerator = [v38 objectEnumerator];
   v41 = objc_alloc_init(NSMutableArray);
-  v39 = v3;
-  v4 = [v3 nextObject];
-  if (!v4)
+  v39 = objectEnumerator;
+  nextObject = [objectEnumerator nextObject];
+  if (!nextObject)
   {
     goto LABEL_32;
   }
 
-  v5 = v4;
+  v5 = nextObject;
   do
   {
-    v6 = [v5 nodes];
-    v7 = [v6 mutableCopy];
+    nodes = [v5 nodes];
+    v7 = [nodes mutableCopy];
 
     v8 = [v7 count];
-    v9 = [v7 lastObject];
-    v10 = [v9 isSelected];
+    lastObject = [v7 lastObject];
+    isSelected = [lastObject isSelected];
 
-    if (v10)
+    if (isSelected)
     {
       [v5 setClosed:0];
     }
@@ -2011,15 +2011,15 @@ LABEL_16:
         [(CRLBezierSubpath *)v18 setNodes:v20];
 
         [v41 addObject:v18];
-        v21 = [(CRLBezierSubpath *)v18 nodes];
-        v22 = [v21 lastObject];
+        nodes2 = [(CRLBezierSubpath *)v18 nodes];
+        lastObject2 = [nodes2 lastObject];
 
-        [v22 nodePoint];
-        [v22 setOutControlPoint:?];
+        [lastObject2 nodePoint];
+        [lastObject2 setOutControlPoint:?];
         if (v12 || ([v40 isClosed] & 1) == 0)
         {
-          v24 = [(CRLBezierSubpath *)v18 nodes];
-          v23 = [v24 objectAtIndex:0];
+          nodes3 = [(CRLBezierSubpath *)v18 nodes];
+          v23 = [nodes3 objectAtIndex:0];
 
           [v23 nodePoint];
           [v23 setInControlPoint:?];
@@ -2033,7 +2033,7 @@ LABEL_15:
 
         else
         {
-          v23 = v22;
+          v23 = lastObject2;
         }
 
         v12 = v18;
@@ -2063,13 +2063,13 @@ LABEL_17:
 
       if ([v40 isClosed])
       {
-        v30 = [(CRLBezierSubpath *)v12 nodes];
-        v31 = [v30 count];
+        nodes4 = [(CRLBezierSubpath *)v12 nodes];
+        v31 = [nodes4 count];
 
         if (v31)
         {
-          v32 = [(CRLBezierSubpath *)v12 nodes];
-          [v27 addObjectsFromArray:v32];
+          nodes5 = [(CRLBezierSubpath *)v12 nodes];
+          [v27 addObjectsFromArray:nodes5];
         }
 
         if (v12)
@@ -2083,10 +2083,10 @@ LABEL_17:
         v33 = [v27 objectAtIndex:0];
         [v33 nodePoint];
         [v33 setInControlPoint:?];
-        v34 = [v27 lastObject];
+        lastObject3 = [v27 lastObject];
 
-        [v34 nodePoint];
-        [v34 setOutControlPoint:?];
+        [lastObject3 nodePoint];
+        [lastObject3 setOutControlPoint:?];
       }
 
       v35 = objc_alloc_init(CRLBezierSubpath);
@@ -2096,55 +2096,55 @@ LABEL_17:
 
 LABEL_31:
 
-    v36 = [v39 nextObject];
+    nextObject2 = [v39 nextObject];
 
-    v5 = v36;
+    v5 = nextObject2;
   }
 
-  while (v36);
+  while (nextObject2);
 LABEL_32:
   [(CRLEditableBezierPathSource *)self setSubpaths:v41];
 }
 
-- (id)splitEdge:(int64_t)a3 at:(double)a4 fromSubpath:(int64_t)a5
+- (id)splitEdge:(int64_t)edge at:(double)at fromSubpath:(int64_t)subpath
 {
-  v8 = [(CRLEditableBezierPathSource *)self subpaths];
-  v9 = [v8 objectAtIndexedSubscript:a5];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v9 = [subpaths objectAtIndexedSubscript:subpath];
 
-  v10 = [v9 nodes];
-  v11 = v10;
-  if (a3 <= 0)
+  nodes = [v9 nodes];
+  v11 = nodes;
+  if (edge <= 0)
   {
-    v12 = [v10 lastObject];
+    lastObject = [nodes lastObject];
     v13 = [v11 objectAtIndex:0];
-    a3 = [v11 count];
+    edge = [v11 count];
   }
 
   else
   {
-    v12 = [v10 objectAtIndex:a3 - 1];
-    v13 = [v11 objectAtIndex:a3];
+    lastObject = [nodes objectAtIndex:edge - 1];
+    v13 = [v11 objectAtIndex:edge];
   }
 
   [v13 nodePoint];
   v15 = v14;
   v17 = v16;
   [v13 inControlPoint];
-  if (sub_10011ECC8(v15, v17, v18, v19) && ([v12 nodePoint], v21 = v20, v23 = v22, objc_msgSend(v12, "outControlPoint"), sub_10011ECC8(v21, v23, v24, v25)))
+  if (sub_10011ECC8(v15, v17, v18, v19) && ([lastObject nodePoint], v21 = v20, v23 = v22, objc_msgSend(lastObject, "outControlPoint"), sub_10011ECC8(v21, v23, v24, v25)))
   {
-    [v12 nodePoint];
+    [lastObject nodePoint];
     v27 = v26;
     v29 = v28;
     [v13 nodePoint];
-    v32 = [CRLBezierNode bezierNodeWithPoint:(1.0 - a4) * v27 + a4 * v30, (1.0 - a4) * v29 + a4 * v31];
+    v32 = [CRLBezierNode bezierNodeWithPoint:(1.0 - at) * v27 + at * v30, (1.0 - at) * v29 + at * v31];
   }
 
   else
   {
-    [v12 nodePoint];
+    [lastObject nodePoint];
     v44.f64[0] = v33;
     v44.f64[1] = v34;
-    [v12 outControlPoint];
+    [lastObject outControlPoint];
     v45 = v35;
     v46 = v36;
     [v13 inControlPoint];
@@ -2153,9 +2153,9 @@ LABEL_32:
     [v13 nodePoint];
     v49 = v39;
     v50 = v40;
-    sub_100404958(&v44, v51, 0.0, a4);
-    sub_100404958(&v44, v56, a4, 1.0);
-    [v12 setOutControlPoint:{v52, v53}];
+    sub_100404958(&v44, v51, 0.0, at);
+    sub_100404958(&v44, v56, at, 1.0);
+    [lastObject setOutControlPoint:{v52, v53}];
     [v13 setInControlPoint:{v56[4], v56[5]}];
     v32 = [CRLBezierNode bezierNodeWithPoint:v56[0] inControlPoint:v56[1] outControlPoint:v54, v55, v56[2], v56[3]];
   }
@@ -2163,7 +2163,7 @@ LABEL_32:
   v41 = v32;
   [v32 setSelected:1];
   v42 = [v11 mutableCopy];
-  [v42 insertObject:v41 atIndex:a3];
+  [v42 insertObject:v41 atIndex:edge];
   [v9 setNodes:v42];
 
   return v41;
@@ -2171,18 +2171,18 @@ LABEL_32:
 
 - (void)splitSelectedEdges
 {
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
-  v4 = [v3 count];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v4 = [subpaths count];
 
   if (v4 >= 1)
   {
     for (i = 0; i != v4; ++i)
     {
-      v6 = [(CRLEditableBezierPathSource *)self subpaths];
-      v7 = [v6 objectAtIndex:i];
-      v8 = [v7 nodes];
+      subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+      v7 = [subpaths2 objectAtIndex:i];
+      nodes = [v7 nodes];
 
-      v9 = [v8 count];
+      v9 = [nodes count];
       if (v9 >= 1)
       {
         v10 = v9;
@@ -2190,7 +2190,7 @@ LABEL_32:
         for (j = 0; j < v10; ++j)
         {
           v13 = v11;
-          v14 = [v8 objectAtIndex:j];
+          v14 = [nodes objectAtIndex:j];
 
           if (v13)
           {
@@ -2230,8 +2230,8 @@ LABEL_32:
         }
 
         v6 = *(*(&v26 + 1) + 8 * i);
-        v7 = [v6 nodes];
-        v8 = [v7 mutableCopy];
+        nodes = [v6 nodes];
+        v8 = [nodes mutableCopy];
 
         v9 = [v8 count];
         if (v9)
@@ -2278,8 +2278,8 @@ LABEL_32:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v3 = [subpaths countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2290,25 +2290,25 @@ LABEL_32:
       {
         if (*v18 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subpaths);
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
-        v8 = [v7 nodes];
-        v9 = [v7 isClosed];
-        v10 = [v8 count];
+        nodes = [v7 nodes];
+        isClosed = [v7 isClosed];
+        v10 = [nodes count];
         if (v10)
         {
-          v11 = v9 ^ 1;
+          v11 = isClosed ^ 1;
           v12 = &v10[-([v7 isClosed] ^ 1)];
           if (v12 > v11)
           {
             while (1)
             {
-              v13 = [v8 objectAtIndexedSubscript:v11];
-              v14 = [v13 isSelected];
+              v13 = [nodes objectAtIndexedSubscript:v11];
+              isSelected = [v13 isSelected];
 
-              if (v14)
+              if (isSelected)
               {
                 break;
               }
@@ -2327,7 +2327,7 @@ LABEL_32:
 LABEL_10:
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [subpaths countByEnumeratingWithState:&v17 objects:v21 count:16];
       v15 = 0;
       if (v4)
       {
@@ -2355,14 +2355,14 @@ LABEL_15:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v29 = self;
-  v3 = [(CRLEditableBezierPathSource *)self subpaths];
-  v4 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  selfCopy = self;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v4 = [subpaths countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v35;
-    v30 = v3;
+    v30 = subpaths;
     v31 = *v35;
     do
     {
@@ -2372,12 +2372,12 @@ LABEL_15:
       {
         if (*v35 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subpaths);
         }
 
         v8 = *(*(&v34 + 1) + 8 * v7);
-        v9 = [v8 nodes];
-        v10 = [v9 mutableCopy];
+        nodes = [v8 nodes];
+        v10 = [nodes mutableCopy];
 
         if ([v10 count])
         {
@@ -2458,7 +2458,7 @@ LABEL_16:
               }
 
               while (v21 > 1);
-              v3 = v30;
+              subpaths = v30;
               v6 = v31;
               v5 = v32;
             }
@@ -2469,41 +2469,41 @@ LABEL_16:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v5 = [subpaths countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v5);
   }
 
-  v27 = [(CRLEditableBezierPathSource *)v29 subpaths];
-  v28 = [v27 arrayByAddingObjectsFromArray:v33];
-  [(CRLEditableBezierPathSource *)v29 setSubpaths:v28];
+  subpaths2 = [(CRLEditableBezierPathSource *)selfCopy subpaths];
+  v28 = [subpaths2 arrayByAddingObjectsFromArray:v33];
+  [(CRLEditableBezierPathSource *)selfCopy setSubpaths:v28];
 }
 
 - (CGPath)subpathForSelection
 {
   v3 = +[CRLBezierPath bezierPath];
-  v4 = [(CRLEditableBezierPathSource *)self subpaths];
-  v5 = [v4 objectEnumerator];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  objectEnumerator = [subpaths objectEnumerator];
 
-  v6 = [v5 nextObject];
-  if (v6)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
       [v7 appendToBezierPath:v3 selectedNodesOnly:1 fromIndex:0];
-      v8 = [v5 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v7 = v8;
+      v7 = nextObject2;
     }
 
-    while (v8);
+    while (nextObject2);
   }
 
-  v9 = [v3 CGPath];
+  cGPath = [v3 CGPath];
 
-  return v9;
+  return cGPath;
 }
 
 - (NSArray)nodeTypes
@@ -2533,8 +2533,8 @@ LABEL_16:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [v8 nodes];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        nodes = [v8 nodes];
+        v10 = [nodes countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -2545,14 +2545,14 @@ LABEL_16:
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(nodes);
               }
 
               v14 = +[NSNumber numberWithChar:](NSNumber, "numberWithChar:", [*(*(&v17 + 1) + 8 * j) type]);
               [v3 addObject:v14];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [nodes countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v11);
@@ -2568,9 +2568,9 @@ LABEL_16:
   return v3;
 }
 
-- (void)setNodeTypes:(id)a3
+- (void)setNodeTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -2597,8 +2597,8 @@ LABEL_16:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v9 nodes];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        nodes = [v9 nodes];
+        v11 = [nodes countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -2610,11 +2610,11 @@ LABEL_16:
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(nodes);
               }
 
               v15 = *(*(&v19 + 1) + 8 * v14);
-              v16 = [v4 objectAtIndex:v7];
+              v16 = [typesCopy objectAtIndex:v7];
               [v15 setType:{objc_msgSend(v16, "intValue")}];
 
               ++v7;
@@ -2622,7 +2622,7 @@ LABEL_16:
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [nodes countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v12);
@@ -2639,54 +2639,54 @@ LABEL_16:
   }
 }
 
-- (void)moveToPoint:(CGPoint)a3
+- (void)moveToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v15 = [v6 lastObject];
+  y = point.y;
+  x = point.x;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  lastObject = [subpaths lastObject];
 
-  v7 = [v15 nodes];
-  v8 = [v7 count];
+  nodes = [lastObject nodes];
+  v8 = [nodes count];
 
   if (v8)
   {
-    v9 = [v15 nodes];
-    v10 = [v9 count];
+    nodes2 = [lastObject nodes];
+    v10 = [nodes2 count];
 
     if (v10 == 1)
     {
-      v11 = [v15 nodes];
-      v12 = [v11 lastObject];
+      nodes3 = [lastObject nodes];
+      lastObject2 = [nodes3 lastObject];
 
-      [(CRLBezierSubpath *)v12 setNodePoint:x, y];
+      [(CRLBezierSubpath *)lastObject2 setNodePoint:x, y];
     }
 
     else
     {
-      v12 = objc_alloc_init(CRLBezierSubpath);
-      v13 = [(CRLEditableBezierPathSource *)self subpaths];
-      v14 = [v13 arrayByAddingObject:v12];
+      lastObject2 = objc_alloc_init(CRLBezierSubpath);
+      subpaths2 = [(CRLEditableBezierPathSource *)self subpaths];
+      v14 = [subpaths2 arrayByAddingObject:lastObject2];
       [(CRLEditableBezierPathSource *)self setSubpaths:v14];
     }
   }
 
   else
   {
-    v12 = [CRLBezierNode bezierNodeWithPoint:x, y];
-    [v15 addNode:v12];
+    lastObject2 = [CRLBezierNode bezierNodeWithPoint:x, y];
+    [lastObject addNode:lastObject2];
   }
 }
 
-- (void)lineToPoint:(CGPoint)a3
+- (void)lineToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLEditableBezierPathSource *)self subpaths];
-  v6 = [v5 lastObject];
+  y = point.y;
+  x = point.x;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  lastObject = [subpaths lastObject];
 
-  v7 = [v6 nodes];
-  v8 = [v7 count];
+  nodes = [lastObject nodes];
+  v8 = [nodes count];
 
   if (!v8)
   {
@@ -2718,22 +2718,22 @@ LABEL_16:
   }
 
   v12 = [CRLBezierNode bezierNodeWithPoint:x, y];
-  [v6 addNode:v12];
+  [lastObject addNode:v12];
 }
 
-- (void)curveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5
+- (void)curveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v11 = [(CRLEditableBezierPathSource *)self subpaths];
-  v12 = [v11 lastObject];
+  y = point2.y;
+  x = point2.x;
+  v7 = point1.y;
+  v8 = point1.x;
+  v9 = point.y;
+  v10 = point.x;
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  lastObject = [subpaths lastObject];
 
-  v13 = [v12 nodes];
-  v14 = [v13 count];
+  nodes = [lastObject nodes];
+  v14 = [nodes count];
 
   if (!v14)
   {
@@ -2764,33 +2764,33 @@ LABEL_16:
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:2054 isFatal:0 description:"cannot add line to subpath without move first"];
   }
 
-  v18 = [v12 nodes];
-  v19 = [v18 lastObject];
+  nodes2 = [lastObject nodes];
+  lastObject2 = [nodes2 lastObject];
 
-  [v19 setOutControlPoint:{v8, v7}];
+  [lastObject2 setOutControlPoint:{v8, v7}];
   v20 = [CRLBezierNode bezierNodeWithPoint:v10 inControlPoint:v9 outControlPoint:x, y, v10, v9];
-  [v12 addNode:v20];
+  [lastObject addNode:v20];
 }
 
-- (void)smoothCurveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5
+- (void)smoothCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2
 {
-  [(CRLEditableBezierPathSource *)self curveToPoint:a3.x controlPoint1:a3.y controlPoint2:a4.x, a4.y, a5.x, a5.y];
-  v6 = [(CRLEditableBezierPathSource *)self subpaths];
-  v9 = [v6 lastObject];
+  [(CRLEditableBezierPathSource *)self curveToPoint:point.x controlPoint1:point.y controlPoint2:point1.x, point1.y, point2.x, point2.y];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  lastObject = [subpaths lastObject];
 
-  v7 = [v9 nodes];
-  v8 = [v7 lastObject];
+  nodes = [lastObject nodes];
+  lastObject2 = [nodes lastObject];
 
-  [v8 setType:3];
+  [lastObject2 setType:3];
 }
 
 - (void)closePath
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  v3 = [v2 lastObject];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  lastObject = [subpaths lastObject];
 
-  v4 = [v3 nodes];
-  v5 = [v4 count];
+  nodes = [lastObject nodes];
+  v5 = [nodes count];
 
   if (v5 <= 1)
   {
@@ -2821,23 +2821,23 @@ LABEL_16:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:2073 isFatal:0 description:"cannot close subpath without a line or curve segment"];
   }
 
-  [v3 setClosed:1];
-  v9 = [v3 nodes];
-  v10 = [v9 objectAtIndex:0];
+  [lastObject setClosed:1];
+  nodes2 = [lastObject nodes];
+  v10 = [nodes2 objectAtIndex:0];
 
-  v11 = [v3 nodes];
-  v12 = [v11 lastObject];
+  nodes3 = [lastObject nodes];
+  lastObject2 = [nodes3 lastObject];
 
   [v10 nodePoint];
   v14 = v13;
   v16 = v15;
-  [v12 nodePoint];
+  [lastObject2 nodePoint];
   if (sub_10011ECC8(v14, v16, v17, v18))
   {
-    [v12 inControlPoint];
+    [lastObject2 inControlPoint];
     [v10 setInControlPoint:?];
-    v19 = [v3 nodes];
-    v20 = [v19 mutableCopy];
+    nodes4 = [lastObject nodes];
+    v20 = [nodes4 mutableCopy];
 
     [v20 removeLastObject];
   }
@@ -2845,36 +2845,36 @@ LABEL_16:
 
 - (id)inferredAccessibilityDescriptionNoShapeNames
 {
-  v3 = [(CRLPathSource *)self userDefinedName];
-  if (![v3 length])
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  if (![userDefinedName length])
   {
-    v4 = [(CRLPathSource *)self bezierPath];
-    v5 = [v4 inferredAccessibilityDescription];
+    bezierPath = [(CRLPathSource *)self bezierPath];
+    inferredAccessibilityDescription = [bezierPath inferredAccessibilityDescription];
 
-    v3 = v5;
+    userDefinedName = inferredAccessibilityDescription;
   }
 
-  return v3;
+  return userDefinedName;
 }
 
 - (id)inferredAccessibilityDescription
 {
-  v2 = [(CRLPathSource *)self bezierPath];
-  v3 = [v2 inferredAccessibilityDescription];
+  bezierPath = [(CRLPathSource *)self bezierPath];
+  inferredAccessibilityDescription = [bezierPath inferredAccessibilityDescription];
 
-  return v3;
+  return inferredAccessibilityDescription;
 }
 
-- (void)morphWithMorphInfo:(id)a3
+- (void)morphWithMorphInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(CRLEditableBezierPathSource *)self updateSmoothNodes];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(CRLEditableBezierPathSource *)self subpaths];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  v6 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2886,15 +2886,15 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subpaths);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) morphWithMorphInfo:v4];
+        [*(*(&v10 + 1) + 8 * v9) morphWithMorphInfo:infoCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [subpaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -2903,14 +2903,14 @@ LABEL_16:
 
 - (void)updateSmoothNodes
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v2 makeObjectsPerformSelector:"updateSmoothNodes"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"updateSmoothNodes"];
 }
 
 - (void)addTemporarySmoothNodes
 {
-  v2 = [(CRLEditableBezierPathSource *)self subpaths];
-  [v2 makeObjectsPerformSelector:"addTemporarySmoothNodes"];
+  subpaths = [(CRLEditableBezierPathSource *)self subpaths];
+  [subpaths makeObjectsPerformSelector:"addTemporarySmoothNodes"];
 }
 
 @end

@@ -17,7 +17,7 @@
   v9 = [CIVector vectorWithX:(v6 * v8.__cosval) Y:(v6 * v8.__sinval) Z:-(v8.__sinval * v6) W:?];
   v10 = [CIVector vectorWithX:1.0 / v4 Y:?];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:{self->inputCenter, v10, v9, 0}];
-  v12 = [(CIOpTile *)self _CIOpTile];
+  _CIOpTile = [(CIOpTile *)self _CIOpTile];
   v13 = *MEMORY[0x1E695F040];
   v14 = *(MEMORY[0x1E695F040] + 8);
   v15 = *(MEMORY[0x1E695F040] + 16);
@@ -33,7 +33,7 @@
   v21[1] = inputCenter;
   v21[2] = v10;
   v21[3] = v9;
-  return [v12 applyWithExtent:v20 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 4), v13, v14, v15, v16}];
+  return [_CIOpTile applyWithExtent:v20 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 4), v13, v14, v15, v16}];
 }
 
 double __23__CIOpTile_outputImage__block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)

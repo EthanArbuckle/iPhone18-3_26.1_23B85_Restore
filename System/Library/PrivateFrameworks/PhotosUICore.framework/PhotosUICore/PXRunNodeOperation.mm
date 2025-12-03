@@ -1,8 +1,8 @@
 @interface PXRunNodeOperation
-- (BOOL)_transitionToState:(unint64_t)a3;
+- (BOOL)_transitionToState:(unint64_t)state;
 - (BOOL)cancelIfAble;
 - (BOOL)isReady;
-- (PXRunNodeOperation)initWithRunNode:(id)a3;
+- (PXRunNodeOperation)initWithRunNode:(id)node;
 - (unint64_t)state;
 - (void)start;
 @end
@@ -16,14 +16,14 @@
   return [(PXRunNodeOperation *)self _transitionToState:2];
 }
 
-- (BOOL)_transitionToState:(unint64_t)a3
+- (BOOL)_transitionToState:(unint64_t)state
 {
   [(PXRunNodeOperation *)self willChangeValueForKey:@"state"];
-  v5 = [(PXRunNodeOperation *)self _stateLock];
-  [v5 lock];
+  _stateLock = [(PXRunNodeOperation *)self _stateLock];
+  [_stateLock lock];
 
   state = self->_state;
-  if (a3 == 3)
+  if (state == 3)
   {
     if (state == 1)
     {
@@ -33,15 +33,15 @@
 
   else
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 1 || state)
+      if (state != 1 || state)
       {
         goto LABEL_5;
       }
 
 LABEL_7:
-      self->_state = a3;
+      self->_state = state;
       v7 = 1;
       goto LABEL_8;
     }
@@ -55,8 +55,8 @@ LABEL_7:
 LABEL_5:
   v7 = 0;
 LABEL_8:
-  v8 = [(PXRunNodeOperation *)self _stateLock];
-  [v8 unlock];
+  _stateLock2 = [(PXRunNodeOperation *)self _stateLock];
+  [_stateLock2 unlock];
 
   [(PXRunNodeOperation *)self didChangeValueForKey:@"state"];
   return v7;
@@ -64,23 +64,23 @@ LABEL_8:
 
 - (unint64_t)state
 {
-  v3 = [(PXRunNodeOperation *)self _stateLock];
-  [v3 lock];
+  _stateLock = [(PXRunNodeOperation *)self _stateLock];
+  [_stateLock lock];
 
   state = self->_state;
-  v5 = [(PXRunNodeOperation *)self _stateLock];
-  [v5 unlock];
+  _stateLock2 = [(PXRunNodeOperation *)self _stateLock];
+  [_stateLock2 unlock];
 
   return state;
 }
 
 - (BOOL)isReady
 {
-  v3 = [(PXRunNodeOperation *)self state];
+  state = [(PXRunNodeOperation *)self state];
   v5.receiver = self;
   v5.super_class = PXRunNodeOperation;
   result = [(PXRunNodeOperation *)&v5 isReady];
-  if (v3)
+  if (state)
   {
     return 0;
   }
@@ -90,34 +90,34 @@ LABEL_8:
 
 - (void)start
 {
-  v4 = [(PXRunNodeOperation *)self runNode];
+  runNode = [(PXRunNodeOperation *)self runNode];
   if ([(PXRunNodeOperation *)self _transitionToState:1])
   {
-    v3 = [v4 delegate];
+    delegate = [runNode delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v3 runNodeWillStartRunning:v4];
+      [delegate runNodeWillStartRunning:runNode];
     }
 
-    [v4 run];
+    [runNode run];
   }
 }
 
-- (PXRunNodeOperation)initWithRunNode:(id)a3
+- (PXRunNodeOperation)initWithRunNode:(id)node
 {
-  v6 = a3;
+  nodeCopy = node;
   v12.receiver = self;
   v12.super_class = PXRunNodeOperation;
   v7 = [(PXRunNodeOperation *)&v12 init];
   if (v7)
   {
-    if (!v6)
+    if (!nodeCopy)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:v7 file:@"PXRunNodeOperation.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"runNode"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PXRunNodeOperation.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"runNode"}];
     }
 
-    objc_storeStrong(&v7->_runNode, a3);
+    objc_storeStrong(&v7->_runNode, node);
     v8 = objc_alloc_init(MEMORY[0x1E696AD10]);
     stateLock = v7->__stateLock;
     v7->__stateLock = v8;

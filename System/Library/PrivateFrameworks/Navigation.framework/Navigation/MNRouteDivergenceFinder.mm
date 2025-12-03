@@ -1,34 +1,34 @@
 @interface MNRouteDivergenceFinder
-- (BOOL)_pathsDivergeBetweenRoute:(id)a3 from:(PolylineCoordinate)a4 andRoute:(id)a5 from:(PolylineCoordinate)a6 withinDistance:(double)a7;
-- (BOOL)_pointMeetsConvergenceThreshold:(const _MNRouteConvergencePoint *)a3 withOtherPoint:(const _MNRouteConvergencePoint *)a4 outRouteCoordinateA:(PolylineCoordinate *)a5 outRouteCoordinateB:(PolylineCoordinate *)a6 outDistance:(double *)a7;
+- (BOOL)_pathsDivergeBetweenRoute:(id)route from:(PolylineCoordinate)from andRoute:(id)andRoute from:(PolylineCoordinate)a6 withinDistance:(double)distance;
+- (BOOL)_pointMeetsConvergenceThreshold:(const _MNRouteConvergencePoint *)threshold withOtherPoint:(const _MNRouteConvergencePoint *)point outRouteCoordinateA:(PolylineCoordinate *)a outRouteCoordinateB:(PolylineCoordinate *)b outDistance:(double *)distance;
 - (MNRouteDivergenceFinder)init;
-- (PolylineCoordinate)_closestRouteCoordinateOnRoute:(id)a3 toLocationCoordinate:(id)a4 inRange:(GEOPolylineCoordinateRange)a5;
-- (PolylineCoordinate)_firstRouteCoordinateWithinToleranceOnRoute:(id)a3 nearCoordinate:(id)a4 range:(GEOPolylineCoordinateRange)a5;
-- (PolylineCoordinate)_routeCoordinateForLocationCoordinate:(id)a3 route:(id)a4 startIndex:(unint64_t)a5;
-- (double)_distanceFromCoordinate:(id)a3 toSegmentStart:(id)a4 segmentEnd:(id)a5;
-- (double)_offsetForCoordinate:(id)a3 alongSegmentStart:(id)a4 segmentEnd:(id)a5;
-- (float)findAllOverlapRangesBetweenRoutes:(uint64_t)a3;
-- (id)_routesArrayIdentifierStrings:(id)a3;
-- (id)findAllDivergenceConvergenceBetweenRoute:(id)a3 andRoute:(id)a4;
-- (id)findAllOverlapRangesBetweenRoutes:(id)a3;
-- (id)findFirstConvergenceBetweenRoute:(id)a3 andRoute:(id)a4;
-- (id)findFirstConvergenceBetweenRoute:(id)a3 fromRouteCoordinate:(PolylineCoordinate)a4 andRoute:(id)a5 fromRouteCoordinate:(PolylineCoordinate)a6;
-- (id)findFirstDivergenceBetweenRoute:(id)a3 andRoute:(id)a4;
-- (id)findFirstDivergenceBetweenRoute:(id)a3 fromRouteCoordinate:(PolylineCoordinate)a4 andRoute:(id)a5 fromRouteCoordinate:(PolylineCoordinate)a6;
-- (id)findFirstUniqueRangeBetweenRoute:(id)a3 andRoute:(id)a4;
-- (id)findOverlappingSectionsForRoutes:(id)a3;
-- (uint64_t)findAllOverlapRangesBetweenRoutes:(uint64_t)a1;
+- (PolylineCoordinate)_closestRouteCoordinateOnRoute:(id)route toLocationCoordinate:(id)coordinate inRange:(GEOPolylineCoordinateRange)range;
+- (PolylineCoordinate)_firstRouteCoordinateWithinToleranceOnRoute:(id)route nearCoordinate:(id)coordinate range:(GEOPolylineCoordinateRange)range;
+- (PolylineCoordinate)_routeCoordinateForLocationCoordinate:(id)coordinate route:(id)route startIndex:(unint64_t)index;
+- (double)_distanceFromCoordinate:(id)coordinate toSegmentStart:(id)start segmentEnd:(id)end;
+- (double)_offsetForCoordinate:(id)coordinate alongSegmentStart:(id)start segmentEnd:(id)end;
+- (float)findAllOverlapRangesBetweenRoutes:(uint64_t)routes;
+- (id)_routesArrayIdentifierStrings:(id)strings;
+- (id)findAllDivergenceConvergenceBetweenRoute:(id)route andRoute:(id)andRoute;
+- (id)findAllOverlapRangesBetweenRoutes:(id)routes;
+- (id)findFirstConvergenceBetweenRoute:(id)route andRoute:(id)andRoute;
+- (id)findFirstConvergenceBetweenRoute:(id)route fromRouteCoordinate:(PolylineCoordinate)coordinate andRoute:(id)andRoute fromRouteCoordinate:(PolylineCoordinate)routeCoordinate;
+- (id)findFirstDivergenceBetweenRoute:(id)route andRoute:(id)andRoute;
+- (id)findFirstDivergenceBetweenRoute:(id)route fromRouteCoordinate:(PolylineCoordinate)coordinate andRoute:(id)andRoute fromRouteCoordinate:(PolylineCoordinate)routeCoordinate;
+- (id)findFirstUniqueRangeBetweenRoute:(id)route andRoute:(id)andRoute;
+- (id)findOverlappingSectionsForRoutes:(id)routes;
+- (uint64_t)findAllOverlapRangesBetweenRoutes:(uint64_t)routes;
 - (uint64_t)findOverlappingSectionsForRoutes:;
-- (uint64_t)findOverlappingSectionsForRoutes:(uint64_t)a1;
-- (void)_findFirstConvergenceBetweenRoute:(id)a3 fromRouteCoordinate:(PolylineCoordinate)a4 andRoute:(id)a5 fromRouteCoordinate:(PolylineCoordinate)a6 outRouteCoordinate:(PolylineCoordinate *)a7 outRouteCoordinate:(PolylineCoordinate *)a8;
-- (void)_findFirstConvergenceBetweenRoute:(id)a3 range:(GEOPolylineCoordinateRange)a4 andRoute:(id)a5 range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)a7 outRouteCoordinate:(PolylineCoordinate *)a8;
-- (void)_findFirstConvergenceBetweenRoute:(uint64_t *)a1 range:(uint64_t)a2 andRoute:(uint64_t *)a3 range:(unint64_t)a4 outRouteCoordinate:(uint64_t)a5 outRouteCoordinate:(char)a6;
-- (void)_findFirstDivergenceBetweenRoute:(id)a3 range:(GEOPolylineCoordinateRange)a4 andRoute:(id)a5 range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)a7 outRouteCoordinate:(PolylineCoordinate *)a8;
-- (void)_populateConvergencePoints:(void *)a3 route:(id)a4 range:(GEOPolylineCoordinateRange)a5 isRouteA:(BOOL)a6;
+- (uint64_t)findOverlappingSectionsForRoutes:(uint64_t)routes;
+- (void)_findFirstConvergenceBetweenRoute:(id)route fromRouteCoordinate:(PolylineCoordinate)coordinate andRoute:(id)andRoute fromRouteCoordinate:(PolylineCoordinate)routeCoordinate outRouteCoordinate:(PolylineCoordinate *)outRouteCoordinate outRouteCoordinate:(PolylineCoordinate *)a8;
+- (void)_findFirstConvergenceBetweenRoute:(id)route range:(GEOPolylineCoordinateRange)range andRoute:(id)andRoute range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)coordinate outRouteCoordinate:(PolylineCoordinate *)routeCoordinate;
+- (void)_findFirstConvergenceBetweenRoute:(uint64_t *)route range:(uint64_t)range andRoute:(uint64_t *)andRoute range:(unint64_t)a4 outRouteCoordinate:(uint64_t)coordinate outRouteCoordinate:(char)routeCoordinate;
+- (void)_findFirstDivergenceBetweenRoute:(id)route range:(GEOPolylineCoordinateRange)range andRoute:(id)andRoute range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)coordinate outRouteCoordinate:(PolylineCoordinate *)routeCoordinate;
+- (void)_populateConvergencePoints:(void *)points route:(id)route range:(GEOPolylineCoordinateRange)range isRouteA:(BOOL)a;
 - (void)findAllOverlapRangesBetweenRoutes:;
-- (void)findAllOverlapRangesBetweenRoutes:(uint64_t)a1;
+- (void)findAllOverlapRangesBetweenRoutes:(uint64_t)routes;
 - (void)findOverlappingSectionsForRoutes:;
-- (void)findOverlappingSectionsForRoutes:(void *)a1;
+- (void)findOverlappingSectionsForRoutes:(void *)routes;
 @end
 
 @implementation MNRouteDivergenceFinder
@@ -47,9 +47,9 @@
   return result;
 }
 
-- (id)_routesArrayIdentifierStrings:(id)a3
+- (id)_routesArrayIdentifierStrings:(id)strings
 {
-  v3 = [a3 _geo_map:&__block_literal_global_10672];
+  v3 = [strings _geo_map:&__block_literal_global_10672];
   v4 = [v3 componentsJoinedByString:{@", "}];
 
   return v4;
@@ -63,58 +63,58 @@ id __57__MNRouteDivergenceFinder__routesArrayIdentifierStrings___block_invoke(ui
   return v3;
 }
 
-- (double)_offsetForCoordinate:(id)a3 alongSegmentStart:(id)a4 segmentEnd:(id)a5
+- (double)_offsetForCoordinate:(id)coordinate alongSegmentStart:(id)start segmentEnd:(id)end
 {
-  if (vabdd_f64(a4.var0, a5.var0) > 0.0000005)
+  if (vabdd_f64(start.var0, end.var0) > 0.0000005)
   {
-    v5 = a3.var0 - a4.var0;
-    v6 = a5.var0 - a4.var0;
+    v5 = coordinate.var0 - start.var0;
+    v6 = end.var0 - start.var0;
 LABEL_5:
     v7 = v5 / v6;
     return fmax(fmin(v7, 1.0), 0.0);
   }
 
   v7 = 0.0;
-  if (vabdd_f64(a4.var1, a5.var1) > 0.0000005)
+  if (vabdd_f64(start.var1, end.var1) > 0.0000005)
   {
-    v5 = a3.var1 - a4.var1;
-    v6 = a5.var1 - a4.var1;
+    v5 = coordinate.var1 - start.var1;
+    v6 = end.var1 - start.var1;
     goto LABEL_5;
   }
 
   return fmax(fmin(v7, 1.0), 0.0);
 }
 
-- (PolylineCoordinate)_routeCoordinateForLocationCoordinate:(id)a3 route:(id)a4 startIndex:(unint64_t)a5
+- (PolylineCoordinate)_routeCoordinateForLocationCoordinate:(id)coordinate route:(id)route startIndex:(unint64_t)index
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v10 = a4;
-  [v10 pointAt:a5];
+  var2 = coordinate.var2;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  routeCopy = route;
+  [routeCopy pointAt:index];
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v10 pointAt:a5 + 1];
+  [routeCopy pointAt:index + 1];
   [(MNRouteDivergenceFinder *)self _offsetForCoordinate:var0 alongSegmentStart:var1 segmentEnd:var2, v12, v14, v16, v17, v18, v19];
   v21 = fmax(fmin(v20, 1.0), 0.0);
   if (v21 >= 1.0)
   {
-    LODWORD(a5) = vcvtms_u32_f32(v21) + a5;
+    LODWORD(index) = vcvtms_u32_f32(v21) + index;
     v21 = v21 - floorf(v21);
   }
 
-  return (a5 | (LODWORD(v21) << 32));
+  return (index | (LODWORD(v21) << 32));
 }
 
-- (PolylineCoordinate)_closestRouteCoordinateOnRoute:(id)a3 toLocationCoordinate:(id)a4 inRange:(GEOPolylineCoordinateRange)a5
+- (PolylineCoordinate)_closestRouteCoordinateOnRoute:(id)route toLocationCoordinate:(id)coordinate inRange:(GEOPolylineCoordinateRange)range
 {
-  end = a5.end;
-  start = a5.start;
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v11 = a3;
+  end = range.end;
+  start = range.start;
+  var2 = coordinate.var2;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  routeCopy = route;
   v12 = [MEMORY[0x1E69A23A0] iteratorWithRange:{start, end}];
   [v12 advance];
   index = 0;
@@ -122,8 +122,8 @@ LABEL_5:
   v15 = 1.79769313e308;
   while ([v12 isCurrentValid])
   {
-    [v11 pointAtRouteCoordinate:{objc_msgSend(v12, "previous")}];
-    [v11 pointAtRouteCoordinate:{objc_msgSend(v12, "current")}];
+    [routeCopy pointAtRouteCoordinate:{objc_msgSend(v12, "previous")}];
+    [routeCopy pointAtRouteCoordinate:{objc_msgSend(v12, "current")}];
     v30 = var1;
     v31 = var2;
     v29 = var0;
@@ -135,7 +135,7 @@ LABEL_5:
     v23 = v22;
     if (v22 < v15)
     {
-      v24 = -[MNRouteDivergenceFinder _routeCoordinateForLocationCoordinate:route:startIndex:](self, "_routeCoordinateForLocationCoordinate:route:startIndex:", v11, [v12 previous], v17, v19, v21);
+      v24 = -[MNRouteDivergenceFinder _routeCoordinateForLocationCoordinate:route:startIndex:](self, "_routeCoordinateForLocationCoordinate:route:startIndex:", routeCopy, [v12 previous], v17, v19, v21);
       index = v24.index;
       v14 = HIDWORD(*&v24);
       v15 = v23;
@@ -174,7 +174,7 @@ LABEL_5:
   return end;
 }
 
-- (double)_distanceFromCoordinate:(id)a3 toSegmentStart:(id)a4 segmentEnd:(id)a5
+- (double)_distanceFromCoordinate:(id)coordinate toSegmentStart:(id)start segmentEnd:(id)end
 {
   GEOClosestCoordinateOnLineSegmentFromCoordinate3D();
 
@@ -182,15 +182,15 @@ LABEL_5:
   return result;
 }
 
-- (PolylineCoordinate)_firstRouteCoordinateWithinToleranceOnRoute:(id)a3 nearCoordinate:(id)a4 range:(GEOPolylineCoordinateRange)a5
+- (PolylineCoordinate)_firstRouteCoordinateWithinToleranceOnRoute:(id)route nearCoordinate:(id)coordinate range:(GEOPolylineCoordinateRange)range
 {
-  end = a5.end;
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  start = a5.start;
+  end = range.end;
+  var2 = coordinate.var2;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  start = range.start;
   v59 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  routeCopy = route;
   v14 = MNGetMNRouteDivergenceLog();
   v15 = os_signpost_id_make_with_pointer(v14, self);
 
@@ -200,11 +200,11 @@ LABEL_5:
   v18 = v15 - 1;
   if (v18 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v19 = [v13 uniqueRouteID];
-    v20 = [v19 UUIDString];
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
     v21 = GEOPolylineCoordinateRangeAsString();
     *buf = 138413058;
-    v52 = v20;
+    v52 = uUIDString;
     v53 = 2048;
     v54 = var0;
     v55 = 2048;
@@ -214,7 +214,7 @@ LABEL_5:
     _os_signpost_emit_with_name_impl(&dword_1D311E000, v17, OS_SIGNPOST_INTERVAL_BEGIN, spid, "_firstRouteCoordinate", "Route: %@ | %f, %f | [%@]", buf, 0x2Au);
   }
 
-  v22 = [v13 _navigation_leafBoundingSectionContainingCoordinate:{var0, var1, var2}];
+  v22 = [routeCopy _navigation_leafBoundingSectionContainingCoordinate:{var0, var1, var2}];
   v23 = v22;
   if (v22)
   {
@@ -237,7 +237,7 @@ LABEL_5:
     [v27 advance];
     if ([v27 isCurrentValid])
     {
-      [v13 pointAtRouteCoordinate:{objc_msgSend(v27, "previous")}];
+      [routeCopy pointAtRouteCoordinate:{objc_msgSend(v27, "previous")}];
       v6 = v28;
       v7 = v29;
       v5 = v30;
@@ -245,14 +245,14 @@ LABEL_5:
 
     while ([v27 isCurrentValid])
     {
-      [v13 pointAtRouteCoordinate:{objc_msgSend(v27, "current")}];
+      [routeCopy pointAtRouteCoordinate:{objc_msgSend(v27, "current")}];
       v32 = v31;
       v34 = v33;
       v36 = v35;
       [(MNRouteDivergenceFinder *)self _distanceFromCoordinate:var0 toSegmentStart:var1 segmentEnd:var2, v6, v7, v5, *&v31, *&v33, *&v35];
       if (v37 < self->_toleranceMeters)
       {
-        v40 = -[MNRouteDivergenceFinder _routeCoordinateForLocationCoordinate:route:startIndex:](self, "_routeCoordinateForLocationCoordinate:route:startIndex:", v13, [v27 previous], var0, var1, var2);
+        v40 = -[MNRouteDivergenceFinder _routeCoordinateForLocationCoordinate:route:startIndex:](self, "_routeCoordinateForLocationCoordinate:route:startIndex:", routeCopy, [v27 previous], var0, var1, var2);
         v43 = MNGetMNRouteDivergenceLog();
         v44 = v43;
         if (v18 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
@@ -305,41 +305,41 @@ LABEL_27:
   return v40;
 }
 
-- (BOOL)_pointMeetsConvergenceThreshold:(const _MNRouteConvergencePoint *)a3 withOtherPoint:(const _MNRouteConvergencePoint *)a4 outRouteCoordinateA:(PolylineCoordinate *)a5 outRouteCoordinateB:(PolylineCoordinate *)a6 outDistance:(double *)a7
+- (BOOL)_pointMeetsConvergenceThreshold:(const _MNRouteConvergencePoint *)threshold withOtherPoint:(const _MNRouteConvergencePoint *)point outRouteCoordinateA:(PolylineCoordinate *)a outRouteCoordinateB:(PolylineCoordinate *)b outDistance:(double *)distance
 {
-  if (a3->var6)
+  if (threshold->var6)
   {
-    v11 = a3;
+    pointCopy = threshold;
   }
 
   else
   {
-    v11 = a4;
+    pointCopy = point;
   }
 
-  if (a3->var6)
+  if (threshold->var6)
   {
-    v12 = a4;
+    thresholdCopy2 = point;
   }
 
   else
   {
-    v12 = a3;
+    thresholdCopy2 = threshold;
   }
 
-  [(MNRouteDivergenceFinder *)self _distanceFromCoordinate:v11->var1.var0 toSegmentStart:v11->var1.var1 segmentEnd:v11->var1.var2, v12->var1.var0, v12->var1.var1, v12->var1.var2, *&v12->var2.var0, *&v12->var2.var1, *&v12->var2.var2];
+  [(MNRouteDivergenceFinder *)self _distanceFromCoordinate:pointCopy->var1.var0 toSegmentStart:pointCopy->var1.var1 segmentEnd:pointCopy->var1.var2, thresholdCopy2->var1.var0, thresholdCopy2->var1.var1, thresholdCopy2->var1.var2, *&thresholdCopy2->var2.var0, *&thresholdCopy2->var2.var1, *&thresholdCopy2->var2.var2];
   v14 = v13;
-  [(MNRouteDivergenceFinder *)self _distanceFromCoordinate:v12->var1.var0 toSegmentStart:v12->var1.var1 segmentEnd:v12->var1.var2, v11->var1.var0, v11->var1.var1, v11->var1.var2, *&v11->var2.var0, *&v11->var2.var1, *&v11->var2.var2];
+  [(MNRouteDivergenceFinder *)self _distanceFromCoordinate:thresholdCopy2->var1.var0 toSegmentStart:thresholdCopy2->var1.var1 segmentEnd:thresholdCopy2->var1.var2, pointCopy->var1.var0, pointCopy->var1.var1, pointCopy->var1.var2, *&pointCopy->var2.var0, *&pointCopy->var2.var1, *&pointCopy->var2.var2];
   v16 = v15;
   v17 = v14 <= self->_toleranceMeters || v15 <= self->_toleranceMeters;
   if (v17)
   {
-    a5->index = v11->var3.index;
-    [(MNRouteDivergenceFinder *)self _offsetForCoordinate:v12->var1.var0 alongSegmentStart:v12->var1.var1 segmentEnd:v12->var1.var2, v11->var1.var0, v11->var1.var1, v11->var1.var2, *&v11->var2.var0, *&v11->var2.var1, *&v11->var2.var2];
+    a->index = pointCopy->var3.index;
+    [(MNRouteDivergenceFinder *)self _offsetForCoordinate:thresholdCopy2->var1.var0 alongSegmentStart:thresholdCopy2->var1.var1 segmentEnd:thresholdCopy2->var1.var2, pointCopy->var1.var0, pointCopy->var1.var1, pointCopy->var1.var2, *&pointCopy->var2.var0, *&pointCopy->var2.var1, *&pointCopy->var2.var2];
     v19 = v18;
-    a5->offset = v19;
-    offset = v11->var3.offset;
-    v21 = v11->var4.offset;
+    a->offset = v19;
+    offset = pointCopy->var3.offset;
+    v21 = pointCopy->var4.offset;
     if (offset > 0.0 || v21 > 0.0)
     {
       if (v21 <= 0.0)
@@ -347,10 +347,10 @@ LABEL_27:
         v21 = 1.0;
       }
 
-      a5->offset = offset + ((v21 - offset) * v19);
+      a->offset = offset + ((v21 - offset) * v19);
     }
 
-    v22 = *a5;
+    v22 = *a;
     IsInvalid = GEOPolylineCoordinateIsInvalid();
     v24 = MEMORY[0x1E69A1918];
     if (IsInvalid)
@@ -365,13 +365,13 @@ LABEL_27:
       v25 = vcvtms_u32_f32(v22.offset) + v22.index;
     }
 
-    *a5 = (v25 | (LODWORD(v26) << 32));
-    a6->index = v12->var3.index;
-    [(MNRouteDivergenceFinder *)self _offsetForCoordinate:v11->var1.var0 alongSegmentStart:v11->var1.var1 segmentEnd:v11->var1.var2, v12->var1.var0, v12->var1.var1, v12->var1.var2, *&v12->var2.var0, *&v12->var2.var1, *&v12->var2.var2];
+    *a = (v25 | (LODWORD(v26) << 32));
+    b->index = thresholdCopy2->var3.index;
+    [(MNRouteDivergenceFinder *)self _offsetForCoordinate:pointCopy->var1.var0 alongSegmentStart:pointCopy->var1.var1 segmentEnd:pointCopy->var1.var2, thresholdCopy2->var1.var0, thresholdCopy2->var1.var1, thresholdCopy2->var1.var2, *&thresholdCopy2->var2.var0, *&thresholdCopy2->var2.var1, *&thresholdCopy2->var2.var2];
     v28 = v27;
-    a6->offset = v28;
-    v29 = v12->var3.offset;
-    v30 = v12->var4.offset;
+    b->offset = v28;
+    v29 = thresholdCopy2->var3.offset;
+    v30 = thresholdCopy2->var4.offset;
     if (v29 > 0.0 || v30 > 0.0)
     {
       if (v30 <= 0.0)
@@ -379,10 +379,10 @@ LABEL_27:
         v30 = 1.0;
       }
 
-      a6->offset = v29 + ((v30 - v29) * v28);
+      b->offset = v29 + ((v30 - v29) * v28);
     }
 
-    v31 = *a6;
+    v31 = *b;
     if (GEOPolylineCoordinateIsInvalid())
     {
       v32 = *v24;
@@ -395,37 +395,37 @@ LABEL_27:
       v32 = vcvtms_u32_f32(v31.offset) + v31.index;
     }
 
-    *a6 = (v32 | (LODWORD(v33) << 32));
-    *a7 = fmin(v14, v16);
+    *b = (v32 | (LODWORD(v33) << 32));
+    *distance = fmin(v14, v16);
   }
 
   return v17;
 }
 
-- (void)_populateConvergencePoints:(void *)a3 route:(id)a4 range:(GEOPolylineCoordinateRange)a5 isRouteA:(BOOL)a6
+- (void)_populateConvergencePoints:(void *)points route:(id)route range:(GEOPolylineCoordinateRange)range isRouteA:(BOOL)a
 {
-  end = a5.end;
-  start = a5.start;
-  v39 = a4;
+  end = range.end;
+  start = range.start;
+  routeCopy = route;
   v38 = objc_alloc_init(MEMORY[0x1E69A23A8]);
-  v36 = self;
-  v11 = [v39 legIndexForRouteCoordinate:start];
+  selfCopy = self;
+  v11 = [routeCopy legIndexForRouteCoordinate:start];
   v37 = end;
   while (1)
   {
-    v12 = [v39 legs];
-    v13 = [v12 count];
+    legs = [routeCopy legs];
+    v13 = [legs count];
 
     if (v11 >= v13)
     {
       break;
     }
 
-    v14 = [v39 legs];
-    v15 = [v14 objectAtIndexedSubscript:v11];
+    legs2 = [routeCopy legs];
+    v15 = [legs2 objectAtIndexedSubscript:v11];
 
-    v16 = [v15 startRouteCoordinate];
-    v17 = [v15 endRouteCoordinate];
+    startRouteCoordinate = [v15 startRouteCoordinate];
+    endRouteCoordinate = [v15 endRouteCoordinate];
     if ((GEOPolylineCoordinateRangeIntersectsRange() & 1) == 0)
     {
       goto LABEL_13;
@@ -433,7 +433,7 @@ LABEL_27:
 
     if (GEOPolylineCoordinateIsABeforeB())
     {
-      v18 = v16;
+      v18 = startRouteCoordinate;
     }
 
     else
@@ -456,7 +456,7 @@ LABEL_13:
 
     else
     {
-      end = v17;
+      end = endRouteCoordinate;
     }
 
     [v38 addCoordinateRange:{v18, end}];
@@ -465,7 +465,7 @@ LABEL_13:
   }
 
   v19 = 0;
-  if (v36->_toleranceMeters <= 0.0)
+  if (selfCopy->_toleranceMeters <= 0.0)
   {
     v20 = 0.0;
   }
@@ -482,14 +482,14 @@ LABEL_13:
     [v23 advance];
     while ([v23 isCurrentValid])
     {
-      [v39 pointAtRouteCoordinate:{objc_msgSend(v23, "previous")}];
+      [routeCopy pointAtRouteCoordinate:{objc_msgSend(v23, "previous")}];
       v25 = v24;
       v27 = v26;
       v29 = v28;
       *&v63 = v24;
       *(&v63 + 1) = v26;
       v64 = v28;
-      [v39 pointAtRouteCoordinate:{objc_msgSend(v23, "current")}];
+      [routeCopy pointAtRouteCoordinate:{objc_msgSend(v23, "current")}];
       *&v61 = v30;
       *(&v61 + 1) = v31;
       v62 = v32;
@@ -522,21 +522,21 @@ LABEL_13:
         v52 = v64;
         v53 = v61;
         v54 = v62;
-        v55 = [v23 previous];
-        v56 = [v23 current];
+        previous = [v23 previous];
+        current = [v23 current];
         v57 = 1;
-        v58 = a6;
-        std::deque<_MNRouteConvergencePoint>::emplace_back<_MNRouteConvergencePoint&>(a3, v50);
+        aCopy = a;
+        std::deque<_MNRouteConvergencePoint>::emplace_back<_MNRouteConvergencePoint&>(points, v50);
         v40 = v59;
         v41 = v60;
         v42 = v63;
         v43 = v64;
         v44 = v61;
         v45 = v62;
-        v46 = [v23 previous];
-        v47 = [v23 current];
+        previous2 = [v23 previous];
+        current2 = [v23 current];
         v48 = 0;
-        v49 = a6;
+        aCopy2 = a;
         [v23 advance];
       }
 
@@ -550,20 +550,20 @@ LABEL_13:
   }
 }
 
-- (void)_findFirstConvergenceBetweenRoute:(id)a3 range:(GEOPolylineCoordinateRange)a4 andRoute:(id)a5 range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)a7 outRouteCoordinate:(PolylineCoordinate *)a8
+- (void)_findFirstConvergenceBetweenRoute:(id)route range:(GEOPolylineCoordinateRange)range andRoute:(id)andRoute range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)coordinate outRouteCoordinate:(PolylineCoordinate *)routeCoordinate
 {
   end = a6.end;
   start = a6.start;
-  v11 = a4.end;
-  v12 = a4.start;
+  v11 = range.end;
+  v12 = range.start;
   v102 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
+  routeCopy = route;
+  andRouteCopy = andRoute;
   v93 = 0u;
   v94 = 0u;
   v92 = 0u;
-  [(MNRouteDivergenceFinder *)self _populateConvergencePoints:&v92 route:v14 range:v12 isRouteA:v11, 1];
-  [(MNRouteDivergenceFinder *)self _populateConvergencePoints:&v92 route:v15 range:start isRouteA:end, 0];
+  [(MNRouteDivergenceFinder *)self _populateConvergencePoints:&v92 route:routeCopy range:v12 isRouteA:v11, 1];
+  [(MNRouteDivergenceFinder *)self _populateConvergencePoints:&v92 route:andRouteCopy range:start isRouteA:end, 0];
   v16 = v94 / 0x2A;
   if (v93 == *(&v92 + 1))
   {
@@ -605,8 +605,8 @@ LABEL_7:
   v87 = 0u;
   v88 = 1065353216;
   std::__hash_table<-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_0,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_1,std::allocator<-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate>>::__rehash_unique[abi:ne200100](&v86, 0xAuLL);
-  v75 = v15;
-  v76 = v14;
+  v75 = andRouteCopy;
+  v76 = routeCopy;
   v74 = end;
   if (v93 == *(&v92 + 1))
   {
@@ -998,8 +998,8 @@ LABEL_68:
   while (v29 != v77);
 LABEL_106:
   v70 = MEMORY[0x1E69A1918];
-  *a7 = *MEMORY[0x1E69A1918];
-  *a8 = *v70;
+  *coordinate = *MEMORY[0x1E69A1918];
+  *routeCoordinate = *v70;
   v71 = (v33 | (v30 << 32));
   if ((GEOPolylineCoordinateIsInvalid() & 1) == 0)
   {
@@ -1022,8 +1022,8 @@ LABEL_106:
 
     if (self->_minLengthMetersForConvergence <= 0.0 || ![(MNRouteDivergenceFinder *)self _pathsDivergeBetweenRoute:v76 from:v71 andRoute:v75 from:v27 withinDistance:?])
     {
-      *a7 = v71;
-      *a8 = v27;
+      *coordinate = v71;
+      *routeCoordinate = v27;
     }
   }
 
@@ -1034,23 +1034,23 @@ LABEL_106:
   v72 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_findFirstConvergenceBetweenRoute:(uint64_t *)a1 range:(uint64_t)a2 andRoute:(uint64_t *)a3 range:(unint64_t)a4 outRouteCoordinate:(uint64_t)a5 outRouteCoordinate:(char)a6
+- (void)_findFirstConvergenceBetweenRoute:(uint64_t *)route range:(uint64_t)range andRoute:(uint64_t *)andRoute range:(unint64_t)a4 outRouteCoordinate:(uint64_t)coordinate outRouteCoordinate:(char)routeCoordinate
 {
   v643 = *MEMORY[0x1E69E9840];
-  if (a4 == a2)
+  if (a4 == range)
   {
     goto LABEL_2;
   }
 
   v9 = a4;
-  v10 = a2;
+  rangeCopy = range;
   while (1)
   {
-    v12 = 42 * (a3 - a1);
-    v13 = *a3;
-    v14 = *a1;
-    v15 = v10 - *a1;
-    v16 = v12 - 0x5555555555555555 * ((v9 - *a3) >> 5) + 0x5555555555555555 * (v15 >> 5);
+    v12 = 42 * (andRoute - route);
+    v13 = *andRoute;
+    v14 = *route;
+    v15 = rangeCopy - *route;
+    v16 = v12 - 0x5555555555555555 * ((v9 - *andRoute) >> 5) + 0x5555555555555555 * (v15 >> 5);
     v17 = v16 - 2;
     if (v16 <= 2)
     {
@@ -1063,12 +1063,12 @@ LABEL_106:
       {
         if (v9 == v13)
         {
-          v9 = *(a3 - 1) + 4032;
+          v9 = *(andRoute - 1) + 4032;
         }
 
         v341 = *(v9 - 88);
-        v342 = *(v10 + 8);
-        if (v341 < v342 || v341 <= v342 && *(v9 - 8) == 1 && (*(v10 + 88) & 1) == 0)
+        v342 = *(rangeCopy + 8);
+        if (v341 < v342 || v341 <= v342 && *(v9 - 8) == 1 && (*(rangeCopy + 88) & 1) == 0)
         {
           v343 = (v9 - 96);
           goto LABEL_446;
@@ -1091,20 +1091,20 @@ LABEL_106:
       if (v15 >= -95)
       {
         v347 = (v346 + 1) / 0x2AuLL;
-        v348 = &a1[v347];
+        v348 = &route[v347];
         v349 = *v348 - 4032 * v347 + 96 * (v346 + 1);
         v350 = v346 + 2;
-        v351 = a3;
+        andRouteCopy2 = andRoute;
         goto LABEL_456;
       }
 
-      v348 = &a1[-((40 - v346) / 0x2AuLL)];
+      v348 = &route[-((40 - v346) / 0x2AuLL)];
       v349 = *v348 + 96 * (41 - ((40 - v346) % 0x2AuLL));
-      v351 = a3;
+      andRouteCopy2 = andRoute;
       if (v15 < 0xFFFFFFFFFFFFFF41)
       {
         v593 = 39 - v346;
-        v516 = &a1[-(v593 / 0x2A)];
+        v516 = &route[-(v593 / 0x2A)];
         v517 = (*v516 + 96 * (41 - (v593 % 0x2A)));
       }
 
@@ -1112,18 +1112,18 @@ LABEL_106:
       {
         v350 = 1;
 LABEL_456:
-        v516 = &a1[v350 / 0x2A];
+        v516 = &route[v350 / 0x2A];
         v517 = (*v516 - 4032 * (v350 / 0x2A) + 96 * v350);
       }
 
       if (v9 == v13)
       {
-        v594 = *(v351 - 8);
-        v351 -= 8;
+        v594 = *(andRouteCopy2 - 8);
+        andRouteCopy2 -= 8;
         v9 = v594 + 4032;
       }
 
-      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>,0>(a1, v10, v348, v349, v516, v517, v351, (v9 - 96));
+      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>,0>(route, rangeCopy, v348, v349, v516, v517, andRouteCopy2, (v9 - 96));
       goto LABEL_2;
     }
 
@@ -1133,19 +1133,19 @@ LABEL_456:
       if (v15 >= -95)
       {
         v353 = (v352 + 1) / 0x2AuLL;
-        v354 = &a1[v353];
+        v354 = &route[v353];
         v355 = *v354 - 4032 * v353 + 96 * (v352 + 1);
         v356 = v352 + 2;
         goto LABEL_459;
       }
 
-      v354 = &a1[-((40 - v352) / 0x2AuLL)];
+      v354 = &route[-((40 - v352) / 0x2AuLL)];
       v355 = *v354 + 96 * (41 - ((40 - v352) % 0x2AuLL));
       if (v15 < 0xFFFFFFFFFFFFFF41)
       {
-        v518 = &a1[-((39 - v352) / 0x2AuLL)];
+        v518 = &route[-((39 - v352) / 0x2AuLL)];
         v519 = *v518 + 96 * (41 - ((39 - v352) % 0x2AuLL));
-        v521 = a3;
+        andRouteCopy4 = andRoute;
         if (v15 >= 0xFFFFFFFFFFFFFEE1)
         {
           v520 = 1;
@@ -1153,7 +1153,7 @@ LABEL_456:
         }
 
         v622 = 38 - v352;
-        v522 = &a1[-(v622 / 0x2A)];
+        v522 = &route[-(v622 / 0x2A)];
         v523 = *v522 + 96 * (41 - (v622 % 0x2A));
       }
 
@@ -1161,21 +1161,21 @@ LABEL_456:
       {
         v356 = 1;
 LABEL_459:
-        v518 = &a1[v356 / 0x2A];
+        v518 = &route[v356 / 0x2A];
         v519 = *v518 - 4032 * (v356 / 0x2A) + 96 * v356;
         v520 = v352 + 3;
-        v521 = a3;
+        andRouteCopy4 = andRoute;
 LABEL_460:
-        v522 = &a1[v520 / 0x2A];
+        v522 = &route[v520 / 0x2A];
         v523 = *v522 - 4032 * (v520 / 0x2A) + 96 * v520;
       }
 
       if (v9 == v13)
       {
-        v9 = *(v521 - 1) + 4032;
+        v9 = *(andRouteCopy4 - 1) + 4032;
       }
 
-      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>,0>(a1, v10, v354, v355, v518, v519, v522, v523);
+      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>,0>(route, rangeCopy, v354, v355, v518, v519, v522, v523);
       v524 = *(v9 - 88);
       v525 = *(v523 + 8);
       if (v524 < v525 || v524 <= v525 && *(v9 - 8) == 1 && (*(v523 + 88) & 1) == 0)
@@ -1272,29 +1272,29 @@ LABEL_460:
             *(v519 + 64) = v558;
             *(v519 + 32) = v556;
             v559 = *(v355 + 8);
-            v560 = *(v10 + 8);
-            if (v559 < v560 || v559 <= v560 && *(v355 + 88) == 1 && (*(v10 + 88) & 1) == 0)
+            v560 = *(rangeCopy + 8);
+            if (v559 < v560 || v559 <= v560 && *(v355 + 88) == 1 && (*(rangeCopy + 88) & 1) == 0)
             {
-              v561 = *(v10 + 16);
-              v638 = *v10;
+              v561 = *(rangeCopy + 16);
+              v638 = *rangeCopy;
               v639 = v561;
-              v562 = *(v10 + 32);
-              v563 = *(v10 + 48);
-              v564 = *(v10 + 80);
-              *v642 = *(v10 + 64);
+              v562 = *(rangeCopy + 32);
+              v563 = *(rangeCopy + 48);
+              v564 = *(rangeCopy + 80);
+              *v642 = *(rangeCopy + 64);
               *&v642[16] = v564;
               v640 = v562;
               v641 = v563;
               v566 = *(v355 + 48);
               v565 = *(v355 + 64);
               v567 = *(v355 + 32);
-              *(v10 + 74) = *(v355 + 74);
-              *(v10 + 48) = v566;
-              *(v10 + 64) = v565;
-              *(v10 + 32) = v567;
+              *(rangeCopy + 74) = *(v355 + 74);
+              *(rangeCopy + 48) = v566;
+              *(rangeCopy + 64) = v565;
+              *(rangeCopy + 32) = v567;
               v568 = *(v355 + 16);
-              *v10 = *v355;
-              *(v10 + 16) = v568;
+              *rangeCopy = *v355;
+              *(rangeCopy + 16) = v568;
               v569 = v639;
               *v355 = v638;
               *(v355 + 16) = v569;
@@ -1316,20 +1316,20 @@ LABEL_460:
 LABEL_11:
     if (v16 <= 23)
     {
-      if (a6)
+      if (routeCoordinate)
       {
-        if (v10 == v9)
+        if (rangeCopy == v9)
         {
           goto LABEL_2;
         }
 
-        v357 = v10 + 96;
+        v357 = rangeCopy + 96;
         while (2)
         {
           if (v357 - v14 == 4032)
           {
-            v358 = a1[1];
-            ++a1;
+            v358 = route[1];
+            ++route;
             v14 = v358;
             v357 = v358;
           }
@@ -1339,12 +1339,12 @@ LABEL_11:
             goto LABEL_2;
           }
 
-          v359 = a1;
+          routeCopy = route;
           v360 = v357;
           if (v357 == v14)
           {
-            v359 = a1 - 1;
-            v360 = *(a1 - 1) + 4032;
+            routeCopy = route - 1;
+            v360 = *(route - 1) + 4032;
           }
 
           v361 = *(v357 + 8);
@@ -1382,13 +1382,13 @@ LABEL_336:
               v373 = *(v360 - 80);
               *v357 = *(v360 - 96);
               *(v357 + 16) = v373;
-              if (v360 - 96 != v10)
+              if (v360 - 96 != rangeCopy)
               {
                 do
                 {
-                  if (v369 == *v359)
+                  if (v369 == *routeCopy)
                   {
-                    v375 = *--v359;
+                    v375 = *--routeCopy;
                     v374 = (v375 + 4032);
                   }
 
@@ -1417,7 +1417,7 @@ LABEL_336:
                   v360 = v374;
                 }
 
-                while (v374 - 12 != v10);
+                while (v374 - 12 != rangeCopy);
               }
 
               *(v360 - 96) = v364;
@@ -1432,7 +1432,7 @@ LABEL_336:
               *(v360 - 64) = v381;
               *(v360 - 8) = v363;
               *(v360 - 7) = v368;
-              v14 = *a1;
+              v14 = *route;
             }
           }
 
@@ -1441,7 +1441,7 @@ LABEL_336:
         }
       }
 
-      if (v10 == v9)
+      if (rangeCopy == v9)
       {
         goto LABEL_2;
       }
@@ -1450,7 +1450,7 @@ LABEL_336:
       if (v15 < -95)
       {
         v595 = 40 - v573;
-        v576 = &a1[-((40 - v573) / 0x2AuLL)];
+        v576 = &route[-((40 - v573) / 0x2AuLL)];
         v577 = *v576;
         v578 = *v576 + 96 * (41 - (v595 % 0x2A));
       }
@@ -1459,7 +1459,7 @@ LABEL_336:
       {
         v574 = v573 + 1;
         v575 = v573 + 1;
-        v576 = &a1[(v573 + 1) / 0x2AuLL];
+        v576 = &route[(v573 + 1) / 0x2AuLL];
         v577 = *v576;
         v578 = *v576 - 4032 * (v575 / 0x2A) + 96 * v574;
       }
@@ -1595,9 +1595,9 @@ LABEL_505:
       }
     }
 
-    if (!a5)
+    if (!coordinate)
     {
-      if (v10 == v9)
+      if (rangeCopy == v9)
       {
         goto LABEL_2;
       }
@@ -1607,24 +1607,24 @@ LABEL_505:
       v385 = v17 >> 1;
       while (2)
       {
-        v638.n128_u64[0] = a1;
-        v638.n128_u64[1] = v10;
+        v638.n128_u64[0] = route;
+        v638.n128_u64[1] = rangeCopy;
         std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v385);
         v386 = v638.n128_u64[1];
-        if (v638.n128_u64[1] == v10)
+        if (v638.n128_u64[1] == rangeCopy)
         {
           v387 = 0;
           goto LABEL_355;
         }
 
-        v387 = 42 * ((v638.n128_u64[0] - a1) >> 3) - 0x5555555555555555 * ((v638.n128_u64[1] - *v638.n128_u64[0]) >> 5) + 0x5555555555555555 * ((v10 - *a1) >> 5);
+        v387 = 42 * ((v638.n128_u64[0] - route) >> 3) - 0x5555555555555555 * ((v638.n128_u64[1] - *v638.n128_u64[0]) >> 5) + 0x5555555555555555 * ((rangeCopy - *route) >> 5);
         if (v384 >= v387)
         {
 LABEL_355:
           v388 = 2 * v387;
           v389 = (2 * v387) | 1;
-          v638.n128_u64[0] = a1;
-          v638.n128_u64[1] = v10;
+          v638.n128_u64[0] = route;
+          v638.n128_u64[1] = rangeCopy;
           std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v389);
           v390 = v638.n128_i64[1];
           if (v388 + 2 < v16)
@@ -1677,8 +1677,8 @@ LABEL_355:
                 v405 = v390;
                 v406 = 2 * v389;
                 v389 = (2 * v389) | 1;
-                *&v633 = a1;
-                *(&v633 + 1) = v10;
+                *&v633 = route;
+                *(&v633 + 1) = rangeCopy;
                 std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v633, v389);
                 v390 = *(&v633 + 1);
                 if (v406 + 2 < v16)
@@ -1744,7 +1744,7 @@ LABEL_389:
         if (!v385)
         {
           v420 = v628;
-          v421 = v12 - 0x5555555555555555 * ((v628 - *a3) >> 5) + 0x5555555555555555 * ((v10 - *a1) >> 5);
+          v421 = v12 - 0x5555555555555555 * ((v628 - *andRoute) >> 5) + 0x5555555555555555 * ((rangeCopy - *route) >> 5);
           if (v421 < 2)
           {
             goto LABEL_2;
@@ -1754,19 +1754,19 @@ LABEL_389:
           {
             v629 = v420;
             v422 = 0;
-            v423 = *(v10 + 16);
-            v638 = *v10;
+            v423 = *(rangeCopy + 16);
+            v638 = *rangeCopy;
             v639 = v423;
-            v424 = *(v10 + 32);
-            v425 = *(v10 + 48);
-            v426 = *(v10 + 80);
-            *v642 = *(v10 + 64);
+            v424 = *(rangeCopy + 32);
+            v425 = *(rangeCopy + 48);
+            v426 = *(rangeCopy + 80);
+            *v642 = *(rangeCopy + 64);
             *&v642[16] = v426;
             v640 = v424;
             v641 = v425;
-            *&v633 = a1;
-            *(&v633 + 1) = v10;
-            v427 = v10;
+            *&v633 = route;
+            *(&v633 + 1) = rangeCopy;
+            v427 = rangeCopy;
             do
             {
               v428 = v427;
@@ -1812,9 +1812,9 @@ LABEL_389:
             while (v422 <= ((v421 - 2) >> 1));
             v440 = v633;
             v441 = v629;
-            if (*a3 == v629)
+            if (*andRoute == v629)
             {
-              v441 = *(a3 - 1) + 4032;
+              v441 = *(andRoute - 1) + 4032;
             }
 
             v442 = (v441 - 96);
@@ -1858,17 +1858,17 @@ LABEL_389:
               v442[3] = v451;
               v442[4] = v452;
               v442[2] = v450;
-              if (v447 != v10)
+              if (v447 != rangeCopy)
               {
-                v453 = 42 * (v440 - a1) - 0x5555555555555555 * ((v447 - *v440) >> 5) + 0x5555555555555555 * ((v10 - *a1) >> 5);
+                v453 = 42 * (v440 - route) - 0x5555555555555555 * ((v447 - *v440) >> 5) + 0x5555555555555555 * ((rangeCopy - *route) >> 5);
                 v454 = v453 < 2;
                 v455 = v453 - 2;
                 if (!v454)
                 {
                   v624 = v455;
                   v456 = v455 >> 1;
-                  *&v633 = a1;
-                  *(&v633 + 1) = v10;
+                  *&v633 = route;
+                  *(&v633 + 1) = rangeCopy;
                   std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v633, v455 >> 1);
                   if (*v440 == v447)
                   {
@@ -1920,9 +1920,9 @@ LABEL_417:
                         {
                           v471 = v456 - 1;
                           v456 = (v456 - 1) >> 1;
-                          v631 = a1;
-                          v632 = v10;
-                          std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v631, v456);
+                          routeCopy2 = route;
+                          v632 = rangeCopy;
+                          std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&routeCopy2, v456);
                           v457 = v632;
                           v472 = *(v632 + 8);
                           if (v472 >= v459 && (v472 > v459 || *(v632 + 88) != 1 || (v627 & 1) != 0))
@@ -1970,9 +1970,9 @@ LABEL_431:
             }
 
             v480 = v629;
-            if (v629 == *a3)
+            if (v629 == *andRoute)
             {
-              v481 = *--a3;
+              v481 = *--andRoute;
               v480 = v481 + 4032;
             }
 
@@ -1995,49 +1995,49 @@ LABEL_431:
     v18 = v16 >> 1;
     if (v16 >= 0x81)
     {
-      v638.n128_u64[0] = a1;
-      v638.n128_u64[1] = v10;
+      v638.n128_u64[0] = route;
+      v638.n128_u64[1] = rangeCopy;
       std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v16 >> 1);
-      v19 = v9 - *a3;
+      v19 = v9 - *andRoute;
       v20 = v19 / 96;
       if (v19 < 97)
       {
-        v21 = a3[-((42 - v20) / 0x2AuLL)] + 96 * (41 - ((42 - v20) % 0x2AuLL));
+        v21 = andRoute[-((42 - v20) / 0x2AuLL)] + 96 * (41 - ((42 - v20) % 0x2AuLL));
       }
 
       else
       {
-        v21 = a3[(v20 - 1) / 0x2AuLL] - 4032 * ((v20 - 1) / 0x2AuLL) + 96 * (v20 - 1);
+        v21 = andRoute[(v20 - 1) / 0x2AuLL] - 4032 * ((v20 - 1) / 0x2AuLL) + 96 * (v20 - 1);
       }
 
       v26 = v638.n128_u64[1];
       v27 = *(v638.n128_u64[1] + 8);
-      v28 = *(v10 + 8);
-      if (v27 < v28 || v27 <= v28 && *(v638.n128_u64[1] + 88) == 1 && *(v10 + 88) != 1)
+      v28 = *(rangeCopy + 8);
+      if (v27 < v28 || v27 <= v28 && *(v638.n128_u64[1] + 88) == 1 && *(rangeCopy + 88) != 1)
       {
         v29 = *(v21 + 8);
         if (v29 < v27 || v29 <= v27 && *(v21 + 88) == 1 && (*(v638.n128_u64[1] + 88) & 1) == 0)
         {
-          v30 = *(v10 + 16);
-          v638 = *v10;
+          v30 = *(rangeCopy + 16);
+          v638 = *rangeCopy;
           v639 = v30;
-          v31 = *(v10 + 32);
-          v32 = *(v10 + 48);
-          v33 = *(v10 + 80);
-          *v642 = *(v10 + 64);
+          v31 = *(rangeCopy + 32);
+          v32 = *(rangeCopy + 48);
+          v33 = *(rangeCopy + 80);
+          *v642 = *(rangeCopy + 64);
           *&v642[16] = v33;
           v640 = v31;
           v641 = v32;
           v35 = *(v21 + 48);
           v34 = *(v21 + 64);
           v36 = *(v21 + 32);
-          *(v10 + 74) = *(v21 + 74);
-          *(v10 + 48) = v35;
-          *(v10 + 64) = v34;
-          *(v10 + 32) = v36;
+          *(rangeCopy + 74) = *(v21 + 74);
+          *(rangeCopy + 48) = v35;
+          *(rangeCopy + 64) = v34;
+          *(rangeCopy + 32) = v36;
           v37 = *(v21 + 16);
-          *v10 = *v21;
-          *(v10 + 16) = v37;
+          *rangeCopy = *v21;
+          *(rangeCopy + 16) = v37;
           *(v21 + 48) = v641;
           *(v21 + 32) = v640;
           *(v21 + 64) = *v642;
@@ -2047,26 +2047,26 @@ LABEL_431:
 
         else
         {
-          v80 = *(v10 + 16);
-          v638 = *v10;
+          v80 = *(rangeCopy + 16);
+          v638 = *rangeCopy;
           v639 = v80;
-          v81 = *(v10 + 32);
-          v82 = *(v10 + 48);
-          v83 = *(v10 + 80);
-          *v642 = *(v10 + 64);
+          v81 = *(rangeCopy + 32);
+          v82 = *(rangeCopy + 48);
+          v83 = *(rangeCopy + 80);
+          *v642 = *(rangeCopy + 64);
           *&v642[16] = v83;
           v640 = v81;
           v641 = v82;
           v85 = *(v26 + 48);
           v84 = *(v26 + 64);
           v86 = *(v26 + 32);
-          *(v10 + 74) = *(v26 + 74);
-          *(v10 + 48) = v85;
-          *(v10 + 64) = v84;
-          *(v10 + 32) = v86;
+          *(rangeCopy + 74) = *(v26 + 74);
+          *(rangeCopy + 48) = v85;
+          *(rangeCopy + 64) = v84;
+          *(rangeCopy + 32) = v86;
           v87 = *(v26 + 16);
-          *v10 = *v26;
-          *(v10 + 16) = v87;
+          *rangeCopy = *v26;
+          *(rangeCopy + 16) = v87;
           *(v26 + 48) = v641;
           *(v26 + 32) = v640;
           *(v26 + 64) = *v642;
@@ -2134,29 +2134,29 @@ LABEL_431:
           *(v21 + 32) = v640;
           *(v21 + 16) = v639;
           v51 = *(v26 + 8);
-          v52 = *(v10 + 8);
-          if (v51 < v52 || v51 <= v52 && *(v26 + 88) == 1 && (*(v10 + 88) & 1) == 0)
+          v52 = *(rangeCopy + 8);
+          if (v51 < v52 || v51 <= v52 && *(v26 + 88) == 1 && (*(rangeCopy + 88) & 1) == 0)
           {
-            v53 = *(v10 + 16);
-            v638 = *v10;
+            v53 = *(rangeCopy + 16);
+            v638 = *rangeCopy;
             v639 = v53;
-            v54 = *(v10 + 32);
-            v55 = *(v10 + 48);
-            v56 = *(v10 + 80);
-            *v642 = *(v10 + 64);
+            v54 = *(rangeCopy + 32);
+            v55 = *(rangeCopy + 48);
+            v56 = *(rangeCopy + 80);
+            *v642 = *(rangeCopy + 64);
             *&v642[16] = v56;
             v640 = v54;
             v641 = v55;
             v58 = *(v26 + 48);
             v57 = *(v26 + 64);
             v59 = *(v26 + 32);
-            *(v10 + 74) = *(v26 + 74);
-            *(v10 + 48) = v58;
-            *(v10 + 64) = v57;
-            *(v10 + 32) = v59;
+            *(rangeCopy + 74) = *(v26 + 74);
+            *(rangeCopy + 48) = v58;
+            *(rangeCopy + 64) = v57;
+            *(rangeCopy + 32) = v59;
             v60 = *(v26 + 16);
-            *v10 = *v26;
-            *(v10 + 16) = v60;
+            *rangeCopy = *v26;
+            *(rangeCopy + 16) = v60;
             *(v26 + 48) = v641;
             *(v26 + 32) = v640;
             *(v26 + 64) = *v642;
@@ -2168,32 +2168,32 @@ LABEL_431:
       }
 
 LABEL_44:
-      v94 = v10 - *a1;
+      v94 = rangeCopy - *route;
       v95 = v94 / 96;
       if (v94 < -95)
       {
-        v96 = a1[-((40 - v95) / 0x2AuLL)] + 96 * (41 - ((40 - v95) % 0x2AuLL));
+        v96 = route[-((40 - v95) / 0x2AuLL)] + 96 * (41 - ((40 - v95) % 0x2AuLL));
       }
 
       else
       {
-        v96 = a1[(v95 + 1) / 0x2AuLL] - 4032 * ((v95 + 1) / 0x2AuLL) + 96 * (v95 + 1);
+        v96 = route[(v95 + 1) / 0x2AuLL] - 4032 * ((v95 + 1) / 0x2AuLL) + 96 * (v95 + 1);
       }
 
-      v638.n128_u64[0] = a1;
-      v638.n128_u64[1] = v10;
+      v638.n128_u64[0] = route;
+      v638.n128_u64[1] = rangeCopy;
       std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v18 - 1);
       v97 = v638.n128_u64[1];
-      v98 = v9 - *a3;
+      v98 = v9 - *andRoute;
       v99 = v98 / 96;
       if (v98 < 193)
       {
-        v100 = a3[-((43 - v99) / 0x2AuLL)] + 96 * (41 - ((43 - v99) % 0x2AuLL));
+        v100 = andRoute[-((43 - v99) / 0x2AuLL)] + 96 * (41 - ((43 - v99) % 0x2AuLL));
       }
 
       else
       {
-        v100 = a3[(v99 - 2) / 0x2AuLL] - 4032 * ((v99 - 2) / 0x2AuLL) + 96 * (v99 - 2);
+        v100 = andRoute[(v99 - 2) / 0x2AuLL] - 4032 * ((v99 - 2) / 0x2AuLL) + 96 * (v99 - 2);
       }
 
       v101 = *(v638.n128_u64[1] + 8);
@@ -2336,32 +2336,32 @@ LABEL_44:
       }
 
 LABEL_71:
-      v147 = v10 - *a1;
+      v147 = rangeCopy - *route;
       v148 = v147 / 96;
       if (v147 < -191)
       {
-        v149 = a1[-((39 - v148) / 0x2AuLL)] + 96 * (41 - ((39 - v148) % 0x2AuLL));
+        v149 = route[-((39 - v148) / 0x2AuLL)] + 96 * (41 - ((39 - v148) % 0x2AuLL));
       }
 
       else
       {
-        v149 = a1[(v148 + 2) / 0x2AuLL] - 4032 * ((v148 + 2) / 0x2AuLL) + 96 * (v148 + 2);
+        v149 = route[(v148 + 2) / 0x2AuLL] - 4032 * ((v148 + 2) / 0x2AuLL) + 96 * (v148 + 2);
       }
 
-      v638.n128_u64[0] = a1;
-      v638.n128_u64[1] = v10;
+      v638.n128_u64[0] = route;
+      v638.n128_u64[1] = rangeCopy;
       std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v18 + 1);
       v150 = v638.n128_u64[1];
-      v151 = v9 - *a3;
+      v151 = v9 - *andRoute;
       v152 = v151 / 96;
       if (v151 < 289)
       {
-        v153 = a3[-((44 - v152) / 0x2AuLL)] + 96 * (41 - ((44 - v152) % 0x2AuLL));
+        v153 = andRoute[-((44 - v152) / 0x2AuLL)] + 96 * (41 - ((44 - v152) % 0x2AuLL));
       }
 
       else
       {
-        v153 = a3[(v152 - 3) / 0x2AuLL] - 4032 * ((v152 - 3) / 0x2AuLL) + 96 * (v152 - 3);
+        v153 = andRoute[(v152 - 3) / 0x2AuLL] - 4032 * ((v152 - 3) / 0x2AuLL) + 96 * (v152 - 3);
       }
 
       v154 = *(v638.n128_u64[1] + 8);
@@ -2502,16 +2502,16 @@ LABEL_71:
       }
 
 LABEL_92:
-      v638.n128_u64[0] = a1;
-      v638.n128_u64[1] = v10;
+      v638.n128_u64[0] = route;
+      v638.n128_u64[1] = rangeCopy;
       std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v18 - 1);
       v182 = v638.n128_u64[1];
-      v638.n128_u64[0] = a1;
-      v638.n128_u64[1] = v10;
+      v638.n128_u64[0] = route;
+      v638.n128_u64[1] = rangeCopy;
       std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v18);
       v183 = v638.n128_u64[1];
-      v638.n128_u64[0] = a1;
-      v638.n128_u64[1] = v10;
+      v638.n128_u64[0] = route;
+      v638.n128_u64[1] = rangeCopy;
       std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v18 + 1);
       v184 = v638.n128_u64[1];
       v185 = *(v183 + 8);
@@ -2652,63 +2652,63 @@ LABEL_92:
       *(v184 + 32) = v640;
       *(v184 + 16) = v639;
 LABEL_107:
-      v638.n128_u64[0] = a1;
-      v638.n128_u64[1] = v10;
+      v638.n128_u64[0] = route;
+      v638.n128_u64[1] = rangeCopy;
       std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v18);
       v213 = v638.n128_u64[1];
-      v214 = *(v10 + 16);
-      v638 = *v10;
+      v214 = *(rangeCopy + 16);
+      v638 = *rangeCopy;
       v639 = v214;
-      v215 = *(v10 + 32);
-      v216 = *(v10 + 48);
-      v217 = *(v10 + 80);
-      *v642 = *(v10 + 64);
+      v215 = *(rangeCopy + 32);
+      v216 = *(rangeCopy + 48);
+      v217 = *(rangeCopy + 80);
+      *v642 = *(rangeCopy + 64);
       *&v642[16] = v217;
       v640 = v215;
       v641 = v216;
       v219 = v213[3];
       v218 = v213[4];
       v220 = v213[2];
-      *(v10 + 74) = *(v213 + 74);
-      *(v10 + 48) = v219;
-      *(v10 + 64) = v218;
-      *(v10 + 32) = v220;
+      *(rangeCopy + 74) = *(v213 + 74);
+      *(rangeCopy + 48) = v219;
+      *(rangeCopy + 64) = v218;
+      *(rangeCopy + 32) = v220;
       v221 = v213[1];
-      *v10 = *v213;
-      *(v10 + 16) = v221;
+      *rangeCopy = *v213;
+      *(rangeCopy + 16) = v221;
       v213[3] = v641;
       v213[2] = v640;
       v213[4] = *v642;
       *(v213 + 74) = *&v642[10];
       *v213 = v638;
       v213[1] = v639;
-      v22 = a3;
+      andRouteCopy6 = andRoute;
       goto LABEL_108;
     }
 
-    v638.n128_u64[0] = a1;
-    v638.n128_u64[1] = v10;
+    v638.n128_u64[0] = route;
+    v638.n128_u64[1] = rangeCopy;
     std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>::operator+=[abi:ne200100](&v638, v16 >> 1);
-    v22 = a3;
-    v23 = v9 - *a3;
+    andRouteCopy6 = andRoute;
+    v23 = v9 - *andRoute;
     v24 = v23 / 96;
     if (v23 < 97)
     {
-      v25 = a3[-((42 - v24) / 0x2AuLL)] + 96 * (41 - ((42 - v24) % 0x2AuLL));
+      v25 = andRoute[-((42 - v24) / 0x2AuLL)] + 96 * (41 - ((42 - v24) % 0x2AuLL));
     }
 
     else
     {
-      v25 = a3[(v24 - 1) / 0x2AuLL] - 4032 * ((v24 - 1) / 0x2AuLL) + 96 * (v24 - 1);
+      v25 = andRoute[(v24 - 1) / 0x2AuLL] - 4032 * ((v24 - 1) / 0x2AuLL) + 96 * (v24 - 1);
     }
 
     v38 = v638.n128_u64[1];
-    v39 = *(v10 + 8);
+    v39 = *(rangeCopy + 8);
     v40 = *(v638.n128_u64[1] + 8);
-    if (v39 < v40 || v39 <= v40 && *(v10 + 88) == 1 && *(v638.n128_u64[1] + 88) != 1)
+    if (v39 < v40 || v39 <= v40 && *(rangeCopy + 88) == 1 && *(v638.n128_u64[1] + 88) != 1)
     {
       v41 = *(v25 + 8);
-      if (v41 < v39 || v41 <= v39 && *(v25 + 88) == 1 && (*(v10 + 88) & 1) == 0)
+      if (v41 < v39 || v41 <= v39 && *(v25 + 88) == 1 && (*(rangeCopy + 88) & 1) == 0)
       {
         v640 = *(v638.n128_u64[1] + 32);
         v641 = *(v638.n128_u64[1] + 48);
@@ -2742,50 +2742,50 @@ LABEL_64:
       *&v642[16] = *(v638.n128_u64[1] + 80);
       v638 = *v638.n128_u64[1];
       v639 = *(v38 + 16);
-      v119 = *(v10 + 16);
-      *v38 = *v10;
+      v119 = *(rangeCopy + 16);
+      *v38 = *rangeCopy;
       *(v38 + 16) = v119;
-      v121 = *(v10 + 48);
-      v120 = *(v10 + 64);
-      v122 = *(v10 + 32);
-      *(v38 + 74) = *(v10 + 74);
+      v121 = *(rangeCopy + 48);
+      v120 = *(rangeCopy + 64);
+      v122 = *(rangeCopy + 32);
+      *(v38 + 74) = *(rangeCopy + 74);
       *(v38 + 48) = v121;
       *(v38 + 64) = v120;
       *(v38 + 32) = v122;
       v123 = v639;
-      *v10 = v638;
-      *(v10 + 16) = v123;
+      *rangeCopy = v638;
+      *(rangeCopy + 16) = v123;
       v124 = v640;
       v125 = v641;
       v126 = *v642;
-      *(v10 + 74) = *&v642[10];
-      *(v10 + 48) = v125;
-      *(v10 + 64) = v126;
-      *(v10 + 32) = v124;
+      *(rangeCopy + 74) = *&v642[10];
+      *(rangeCopy + 48) = v125;
+      *(rangeCopy + 64) = v126;
+      *(rangeCopy + 32) = v124;
       v127 = *(v25 + 8);
-      v128 = *(v10 + 8);
-      if (v127 < v128 || v127 <= v128 && *(v25 + 88) == 1 && (*(v10 + 88) & 1) == 0)
+      v128 = *(rangeCopy + 8);
+      if (v127 < v128 || v127 <= v128 && *(v25 + 88) == 1 && (*(rangeCopy + 88) & 1) == 0)
       {
-        v129 = *(v10 + 16);
-        v638 = *v10;
+        v129 = *(rangeCopy + 16);
+        v638 = *rangeCopy;
         v639 = v129;
-        v130 = *(v10 + 32);
-        v131 = *(v10 + 48);
-        v132 = *(v10 + 80);
-        *v642 = *(v10 + 64);
+        v130 = *(rangeCopy + 32);
+        v131 = *(rangeCopy + 48);
+        v132 = *(rangeCopy + 80);
+        *v642 = *(rangeCopy + 64);
         *&v642[16] = v132;
         v640 = v130;
         v641 = v131;
         v134 = *(v25 + 48);
         v133 = *(v25 + 64);
         v135 = *(v25 + 32);
-        *(v10 + 74) = *(v25 + 74);
-        *(v10 + 48) = v134;
-        *(v10 + 64) = v133;
-        *(v10 + 32) = v135;
+        *(rangeCopy + 74) = *(v25 + 74);
+        *(rangeCopy + 48) = v134;
+        *(rangeCopy + 64) = v133;
+        *(rangeCopy + 32) = v135;
         v136 = *(v25 + 16);
-        *v10 = *v25;
-        *(v10 + 16) = v136;
+        *rangeCopy = *v25;
+        *(rangeCopy + 16) = v136;
         *(v25 + 48) = v641;
         *(v25 + 32) = v640;
         *(v25 + 64) = *v642;
@@ -2798,37 +2798,37 @@ LABEL_64:
     else
     {
       v61 = *(v25 + 8);
-      if (v61 < v39 || v61 <= v39 && *(v25 + 88) == 1 && (*(v10 + 88) & 1) == 0)
+      if (v61 < v39 || v61 <= v39 && *(v25 + 88) == 1 && (*(rangeCopy + 88) & 1) == 0)
       {
-        v62 = *(v10 + 16);
-        v638 = *v10;
+        v62 = *(rangeCopy + 16);
+        v638 = *rangeCopy;
         v639 = v62;
-        v63 = *(v10 + 32);
-        v64 = *(v10 + 48);
-        v65 = *(v10 + 80);
-        *v642 = *(v10 + 64);
+        v63 = *(rangeCopy + 32);
+        v64 = *(rangeCopy + 48);
+        v65 = *(rangeCopy + 80);
+        *v642 = *(rangeCopy + 64);
         *&v642[16] = v65;
         v640 = v63;
         v641 = v64;
         v67 = *(v25 + 48);
         v66 = *(v25 + 64);
         v68 = *(v25 + 32);
-        *(v10 + 74) = *(v25 + 74);
-        *(v10 + 48) = v67;
-        *(v10 + 64) = v66;
-        *(v10 + 32) = v68;
+        *(rangeCopy + 74) = *(v25 + 74);
+        *(rangeCopy + 48) = v67;
+        *(rangeCopy + 64) = v66;
+        *(rangeCopy + 32) = v68;
         v69 = *(v25 + 16);
-        *v10 = *v25;
-        *(v10 + 16) = v69;
+        *rangeCopy = *v25;
+        *(rangeCopy + 16) = v69;
         *(v25 + 48) = v641;
         *(v25 + 32) = v640;
         *(v25 + 64) = *v642;
         *(v25 + 74) = *&v642[10];
         *v25 = v638;
         *(v25 + 16) = v639;
-        v70 = *(v10 + 8);
+        v70 = *(rangeCopy + 8);
         v71 = *(v38 + 8);
-        if (v70 < v71 || v70 <= v71 && *(v10 + 88) == 1 && (*(v38 + 88) & 1) == 0)
+        if (v70 < v71 || v70 <= v71 && *(rangeCopy + 88) == 1 && (*(v38 + 88) & 1) == 0)
         {
           v640 = *(v38 + 32);
           v641 = *(v38 + 48);
@@ -2836,85 +2836,85 @@ LABEL_64:
           *&v642[16] = *(v38 + 80);
           v638 = *v38;
           v639 = *(v38 + 16);
-          v72 = *(v10 + 16);
-          *v38 = *v10;
+          v72 = *(rangeCopy + 16);
+          *v38 = *rangeCopy;
           *(v38 + 16) = v72;
-          v74 = *(v10 + 48);
-          v73 = *(v10 + 64);
-          v75 = *(v10 + 32);
-          *(v38 + 74) = *(v10 + 74);
+          v74 = *(rangeCopy + 48);
+          v73 = *(rangeCopy + 64);
+          v75 = *(rangeCopy + 32);
+          *(v38 + 74) = *(rangeCopy + 74);
           *(v38 + 48) = v74;
           *(v38 + 64) = v73;
           *(v38 + 32) = v75;
           v76 = v639;
-          *v10 = v638;
-          *(v10 + 16) = v76;
+          *rangeCopy = v638;
+          *(rangeCopy + 16) = v76;
           v77 = v640;
           v78 = v641;
           v79 = *v642;
-          *(v10 + 74) = *&v642[10];
-          *(v10 + 48) = v78;
-          *(v10 + 64) = v79;
-          *(v10 + 32) = v77;
+          *(rangeCopy + 74) = *&v642[10];
+          *(rangeCopy + 48) = v78;
+          *(rangeCopy + 64) = v79;
+          *(rangeCopy + 32) = v77;
         }
       }
     }
 
 LABEL_108:
-    --a5;
-    if (a6)
+    --coordinate;
+    if (routeCoordinate)
     {
-      v222 = *(v10 + 8);
+      v222 = *(rangeCopy + 8);
     }
 
     else
     {
-      v223 = v10 - *a1;
+      v223 = rangeCopy - *route;
       v224 = v223 / 96;
       if (v223 < 97)
       {
-        v225 = a1[-((42 - v224) / 0x2AuLL)] + 96 * (41 - ((42 - v224) % 0x2AuLL));
+        v225 = route[-((42 - v224) / 0x2AuLL)] + 96 * (41 - ((42 - v224) % 0x2AuLL));
       }
 
       else
       {
-        v225 = a1[(v224 - 1) / 0x2AuLL] - 4032 * ((v224 - 1) / 0x2AuLL) + 96 * (v224 - 1);
+        v225 = route[(v224 - 1) / 0x2AuLL] - 4032 * ((v224 - 1) / 0x2AuLL) + 96 * (v224 - 1);
       }
 
       v226 = *(v225 + 8);
-      v222 = *(v10 + 8);
-      if (v226 >= v222 && (v226 > v222 || *(v225 + 88) != 1 || *(v10 + 88) == 1))
+      v222 = *(rangeCopy + 8);
+      if (v226 >= v222 && (v226 > v222 || *(v225 + 88) != 1 || *(rangeCopy + 88) == 1))
       {
-        v287 = *v10;
-        v288 = *(v10 + 32);
-        v289 = *(v10 + 48);
-        v290 = *(v10 + 64);
-        v637 = *(v10 + 80);
+        v287 = *rangeCopy;
+        v288 = *(rangeCopy + 32);
+        v289 = *(rangeCopy + 48);
+        v290 = *(rangeCopy + 64);
+        v637 = *(rangeCopy + 80);
         v636 = v290;
-        v291 = *(v10 + 16);
+        v291 = *(rangeCopy + 16);
         v634 = v288;
         v635 = v289;
         v633 = v291;
-        v292 = *v22;
-        v293 = v9 - *v22;
+        v292 = *andRouteCopy6;
+        v293 = v9 - *andRouteCopy6;
         v294 = v293 / 96;
         if (v293 < 97)
         {
-          v295 = v22[-((42 - v294) / 0x2AuLL)] + 96 * (41 - ((42 - v294) % 0x2AuLL));
+          v295 = andRouteCopy6[-((42 - v294) / 0x2AuLL)] + 96 * (41 - ((42 - v294) % 0x2AuLL));
         }
 
         else
         {
-          v295 = v22[(v294 - 1) / 0x2AuLL] - 4032 * ((v294 - 1) / 0x2AuLL) + 96 * (v294 - 1);
+          v295 = andRouteCopy6[(v294 - 1) / 0x2AuLL] - 4032 * ((v294 - 1) / 0x2AuLL) + 96 * (v294 - 1);
         }
 
-        v299 = *(v10 + 88);
-        v300 = *(v10 + 89);
+        v299 = *(rangeCopy + 88);
+        v300 = *(rangeCopy + 89);
         v301 = *(v295 + 8);
         if (v222 >= v301)
         {
           v302 = (v222 > v301) & v299;
-          if (v222 <= v301 && (*(v10 + 88) & 1) != 0)
+          if (v222 <= v301 && (*(rangeCopy + 88) & 1) != 0)
           {
             v302 = 1;
             if ((*(v295 + 88) & 1) == 0)
@@ -2923,20 +2923,20 @@ LABEL_108:
             }
           }
 
-          v303 = *a1;
-          v297 = v10;
+          v303 = *route;
+          v297 = rangeCopy;
           do
           {
             v297 += 96;
             if (v297 - v303 == 4032)
             {
-              v306 = a1[1];
-              ++a1;
+              v306 = route[1];
+              ++route;
               v303 = v306;
               v297 = v306;
             }
 
-            if (a1 >= v22 && (a1 != v22 || v297 >= v9))
+            if (route >= andRouteCopy6 && (route != andRouteCopy6 || v297 >= v9))
             {
               break;
             }
@@ -2953,17 +2953,17 @@ LABEL_108:
 
         else
         {
-          v302 = *(v10 + 88);
+          v302 = *(rangeCopy + 88);
 LABEL_219:
-          v303 = *a1;
-          v297 = v10;
+          v303 = *route;
+          v297 = rangeCopy;
           do
           {
             v297 += 96;
             if (v297 - v303 == 4032)
             {
-              v304 = a1[1];
-              ++a1;
+              v304 = route[1];
+              ++route;
               v303 = v304;
               v297 = v304;
             }
@@ -2974,9 +2974,9 @@ LABEL_219:
           while (v222 >= v305 && (((v222 <= v305) & v302) != 1 || (*(v297 + 88) & 1) != 0));
         }
 
-        if (a1 < v22 || a1 == v22 && v297 < v9)
+        if (route < andRouteCopy6 || route == andRouteCopy6 && v297 < v9)
         {
-          v308 = v22;
+          v308 = andRouteCopy6;
           v309 = v9;
           while (1)
           {
@@ -2999,7 +2999,7 @@ LABEL_219:
             }
 
             while (v222 < v312);
-            if (v222 > v312 || (*(v10 + 88) & 1) == 0)
+            if (v222 > v312 || (*(rangeCopy + 88) & 1) == 0)
             {
               break;
             }
@@ -3011,18 +3011,18 @@ LABEL_219:
             }
           }
 
-          v313 = *(v10 + 88);
+          v313 = *(rangeCopy + 88);
         }
 
         else
         {
-          v313 = *(v10 + 88);
-          v308 = v22;
+          v313 = *(rangeCopy + 88);
+          v308 = andRouteCopy6;
           v309 = v9;
         }
 
 LABEL_305:
-        while (a1 < v308 || a1 == v308 && v297 < v309)
+        while (route < v308 || route == v308 && v297 < v309)
         {
           v314 = *(v297 + 16);
           v638 = *v297;
@@ -3054,14 +3054,14 @@ LABEL_305:
           *(v309 + 3) = v324;
           *(v309 + 4) = v325;
           *(v309 + 2) = v323;
-          v303 = *a1;
+          v303 = *route;
           do
           {
             v297 += 96;
             if (v297 - v303 == 4032)
             {
-              v326 = a1[1];
-              ++a1;
+              v326 = route[1];
+              ++route;
               v303 = v326;
               v297 = v326;
             }
@@ -3097,29 +3097,29 @@ LABEL_305:
         v334 = (v333 >> 4) + (v333 >> 63);
         if (v332 < 97)
         {
-          v335 = a1[-((42 - v334) / 0x2AuLL)] + 96 * (41 - ((42 - v334) % 0x2AuLL));
+          v335 = route[-((42 - v334) / 0x2AuLL)] + 96 * (41 - ((42 - v334) % 0x2AuLL));
         }
 
         else
         {
-          v335 = a1[(v334 - 1) / 0x2AuLL] - 4032 * ((v334 - 1) / 0x2AuLL) + 96 * (v334 - 1);
+          v335 = route[(v334 - 1) / 0x2AuLL] - 4032 * ((v334 - 1) / 0x2AuLL) + 96 * (v334 - 1);
         }
 
-        if (v335 != v10)
+        if (v335 != rangeCopy)
         {
           v336 = *(v335 + 16);
-          *v10 = *v335;
-          *(v10 + 16) = v336;
+          *rangeCopy = *v335;
+          *(rangeCopy + 16) = v336;
           v337 = *(v335 + 32);
           v338 = *(v335 + 48);
           v339 = *(v335 + 64);
-          *(v10 + 74) = *(v335 + 74);
-          *(v10 + 48) = v338;
-          *(v10 + 64) = v339;
-          *(v10 + 32) = v337;
+          *(rangeCopy + 74) = *(v335 + 74);
+          *(rangeCopy + 48) = v338;
+          *(rangeCopy + 64) = v339;
+          *(rangeCopy + 32) = v337;
         }
 
-        a6 = 0;
+        routeCoordinate = 0;
         *v335 = v287;
         *(v335 + 8) = v222;
         v340 = v633;
@@ -3134,28 +3134,28 @@ LABEL_305:
       }
     }
 
-    v227 = *v10;
-    v228 = *(v10 + 32);
-    v229 = *(v10 + 48);
-    v230 = *(v10 + 64);
-    v637 = *(v10 + 80);
+    v227 = *rangeCopy;
+    v228 = *(rangeCopy + 32);
+    v229 = *(rangeCopy + 48);
+    v230 = *(rangeCopy + 64);
+    v637 = *(rangeCopy + 80);
     v636 = v230;
-    v231 = *(v10 + 16);
+    v231 = *(rangeCopy + 16);
     v634 = v228;
     v635 = v229;
     v633 = v231;
-    v232 = *(v10 + 88);
-    v233 = *(v10 + 89);
-    v234 = *a1;
-    v235 = a1;
-    v236 = v10;
+    v232 = *(rangeCopy + 88);
+    v233 = *(rangeCopy + 89);
+    v234 = *route;
+    routeCopy3 = route;
+    v236 = rangeCopy;
     do
     {
       v236 += 96;
       if (v236 - v234 == 4032)
       {
-        v237 = v235[1];
-        ++v235;
+        v237 = routeCopy3[1];
+        ++routeCopy3;
         v234 = v237;
         v236 = v237;
       }
@@ -3163,25 +3163,25 @@ LABEL_305:
       v238 = *(v236 + 8);
     }
 
-    while (v238 < v222 || v238 <= v222 && *(v236 + 88) == 1 && (*(v10 + 88) & 1) == 0);
+    while (v238 < v222 || v238 <= v222 && *(v236 + 88) == 1 && (*(rangeCopy + 88) & 1) == 0);
     v239 = (v236 - v234) / 96;
     if ((v236 - v234) < 97)
     {
-      v240 = v235[-((42 - v239) / 0x2AuLL)] + 96 * (41 - ((42 - v239) % 0x2AuLL));
+      v240 = routeCopy3[-((42 - v239) / 0x2AuLL)] + 96 * (41 - ((42 - v239) % 0x2AuLL));
     }
 
     else
     {
-      v240 = v235[(v239 - 1) / 0x2AuLL] - 4032 * ((v239 - 1) / 0x2AuLL) + 96 * (v239 - 1);
+      v240 = routeCopy3[(v239 - 1) / 0x2AuLL] - 4032 * ((v239 - 1) / 0x2AuLL) + 96 * (v239 - 1);
     }
 
-    v241 = v22;
+    v241 = andRouteCopy6;
     v242 = v9;
-    if (v240 == v10)
+    if (v240 == rangeCopy)
     {
       do
       {
-        if (v235 >= v241 && (v235 != v241 || v236 >= v242))
+        if (routeCopy3 >= v241 && (routeCopy3 != v241 || v236 >= v242))
         {
           break;
         }
@@ -3205,13 +3205,13 @@ LABEL_305:
         }
       }
 
-      while (v249 > v222 || *(v247 - 8) != 1 || (*(v10 + 88) & 1) != 0);
+      while (v249 > v222 || *(v247 - 8) != 1 || (*(rangeCopy + 88) & 1) != 0);
     }
 
     else
     {
-      v243 = *v22;
-      v241 = v22;
+      v243 = *andRouteCopy6;
+      v241 = andRouteCopy6;
       v242 = v9;
       do
       {
@@ -3231,11 +3231,11 @@ LABEL_305:
         v246 = *(v244 - 11);
       }
 
-      while (v246 >= v222 && (v246 > v222 || *(v244 - 8) != 1 || (*(v10 + 88) & 1) != 0));
+      while (v246 >= v222 && (v246 > v222 || *(v244 - 8) != 1 || (*(rangeCopy + 88) & 1) != 0));
     }
 
-    v250 = v235 >= v241 && (v235 != v241 || v236 >= v242);
-    while (v235 < v241 || v235 == v241 && v236 < v242)
+    v250 = routeCopy3 >= v241 && (routeCopy3 != v241 || v236 >= v242);
+    while (routeCopy3 < v241 || routeCopy3 == v241 && v236 < v242)
     {
       v252 = *(v236 + 16);
       v638 = *v236;
@@ -3267,14 +3267,14 @@ LABEL_305:
       *(v242 + 3) = v262;
       *(v242 + 4) = v263;
       *(v242 + 2) = v261;
-      v234 = *v235;
+      v234 = *routeCopy3;
       do
       {
         v236 += 96;
         if (v236 - v234 == 4032)
         {
-          v264 = v235[1];
-          ++v235;
+          v264 = routeCopy3[1];
+          ++routeCopy3;
           v234 = v264;
           v236 = v264;
         }
@@ -3310,29 +3310,29 @@ LABEL_305:
     if (v270 < 97)
     {
       v275 = 42 - v271;
-      v273 = &v235[-(v275 / 0x2A)];
+      v273 = &routeCopy3[-(v275 / 0x2A)];
       v274 = *v273 + 96 * (41 - (v275 % 0x2A));
     }
 
     else
     {
       v272 = v271 - 1;
-      v273 = &v235[v272 / 0x2A];
+      v273 = &routeCopy3[v272 / 0x2A];
       v274 = *v273 - 4032 * (v272 / 0x2A) + 96 * v272;
     }
 
-    if (v274 != v10)
+    if (v274 != rangeCopy)
     {
       v276 = *(v274 + 16);
-      *v10 = *v274;
-      *(v10 + 16) = v276;
+      *rangeCopy = *v274;
+      *(rangeCopy + 16) = v276;
       v277 = *(v274 + 32);
       v278 = *(v274 + 48);
       v279 = *(v274 + 64);
-      *(v10 + 74) = *(v274 + 74);
-      *(v10 + 48) = v278;
-      *(v10 + 64) = v279;
-      *(v10 + 32) = v277;
+      *(rangeCopy + 74) = *(v274 + 74);
+      *(rangeCopy + 48) = v278;
+      *(rangeCopy + 64) = v279;
+      *(rangeCopy + 32) = v277;
     }
 
     *v274 = v227;
@@ -3350,7 +3350,7 @@ LABEL_305:
       goto LABEL_191;
     }
 
-    v281 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>>(a1, v10, v273, v274);
+    v281 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>>(route, rangeCopy, v273, v274);
     v282 = v274 - *v273;
     v283 = v282 / 96;
     if (v282 < -95)
@@ -3367,11 +3367,11 @@ LABEL_305:
       v286 = *v285 - 4032 * (v284 / 0x2A) + 96 * v284;
     }
 
-    if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>>(v285, v286, a3, v9))
+    if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>>(v285, v286, andRoute, v9))
     {
-      v297 = v10;
+      v297 = rangeCopy;
       v9 = v274;
-      a3 = v273;
+      andRoute = v273;
       if (v281)
       {
         goto LABEL_2;
@@ -3392,24 +3392,24 @@ LABEL_305:
     else
     {
 LABEL_191:
-      std::__introsort<std::_ClassicAlgPolicy,[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>,false>(a1, v10, v273, v274, a5, a6 & 1);
+      std::__introsort<std::_ClassicAlgPolicy,[MNRouteDivergenceFinder _findFirstConvergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:]::$_5 &,std::__deque_iterator<_MNRouteConvergencePoint,_MNRouteConvergencePoint*,_MNRouteConvergencePoint&,_MNRouteConvergencePoint**,long,42l>,false>(route, rangeCopy, v273, v274, coordinate, routeCoordinate & 1);
       v297 = v274 + 96;
       if (v274 + 96 - *v273 != 4032)
       {
-        a6 = 0;
+        routeCoordinate = 0;
         goto LABEL_195;
       }
 
-      a6 = 0;
+      routeCoordinate = 0;
     }
 
     v298 = v273[1];
     ++v273;
     v297 = v298;
 LABEL_195:
-    a1 = v273;
+    route = v273;
 LABEL_314:
-    v10 = v297;
+    rangeCopy = v297;
     if (v9 == v297)
     {
       goto LABEL_2;
@@ -3419,72 +3419,72 @@ LABEL_314:
   v344 = v15 / 96;
   if (v15 < -95)
   {
-    v345 = a1[-((40 - v344) / 0x2AuLL)] + 96 * (41 - ((40 - v344) % 0x2AuLL));
+    v345 = route[-((40 - v344) / 0x2AuLL)] + 96 * (41 - ((40 - v344) % 0x2AuLL));
   }
 
   else
   {
-    v345 = a1[(v344 + 1) / 0x2AuLL] - 4032 * ((v344 + 1) / 0x2AuLL) + 96 * (v344 + 1);
+    v345 = route[(v344 + 1) / 0x2AuLL] - 4032 * ((v344 + 1) / 0x2AuLL) + 96 * (v344 + 1);
   }
 
   if (v9 == v13)
   {
-    v9 = *(a3 - 1) + 4032;
+    v9 = *(andRoute - 1) + 4032;
   }
 
   v343 = (v9 - 96);
   v482 = *(v345 + 8);
-  v483 = *(v10 + 8);
-  if (v482 < v483 || v482 <= v483 && *(v345 + 88) == 1 && *(v10 + 88) != 1)
+  v483 = *(rangeCopy + 8);
+  if (v482 < v483 || v482 <= v483 && *(v345 + 88) == 1 && *(rangeCopy + 88) != 1)
   {
     v484 = *(v9 - 88);
     if (v484 < v482 || v484 <= v482 && *(v9 - 8) == 1 && (*(v345 + 88) & 1) == 0)
     {
 LABEL_446:
-      v485 = *(v10 + 16);
-      v638 = *v10;
+      v485 = *(rangeCopy + 16);
+      v638 = *rangeCopy;
       v639 = v485;
-      v486 = *(v10 + 32);
-      v487 = *(v10 + 48);
-      v488 = *(v10 + 80);
-      *v642 = *(v10 + 64);
+      v486 = *(rangeCopy + 32);
+      v487 = *(rangeCopy + 48);
+      v488 = *(rangeCopy + 80);
+      *v642 = *(rangeCopy + 64);
       *&v642[16] = v488;
       v640 = v486;
       v641 = v487;
       v490 = v343[3];
       v489 = v343[4];
       v491 = v343[2];
-      *(v10 + 74) = *(v343 + 74);
-      *(v10 + 48) = v490;
-      *(v10 + 64) = v489;
-      *(v10 + 32) = v491;
+      *(rangeCopy + 74) = *(v343 + 74);
+      *(rangeCopy + 48) = v490;
+      *(rangeCopy + 64) = v489;
+      *(rangeCopy + 32) = v491;
       v492 = v343[1];
-      *v10 = *v343;
-      *(v10 + 16) = v492;
+      *rangeCopy = *v343;
+      *(rangeCopy + 16) = v492;
     }
 
     else
     {
-      v579 = *(v10 + 16);
-      v638 = *v10;
+      v579 = *(rangeCopy + 16);
+      v638 = *rangeCopy;
       v639 = v579;
-      v580 = *(v10 + 32);
-      v581 = *(v10 + 48);
-      v582 = *(v10 + 80);
-      *v642 = *(v10 + 64);
+      v580 = *(rangeCopy + 32);
+      v581 = *(rangeCopy + 48);
+      v582 = *(rangeCopy + 80);
+      *v642 = *(rangeCopy + 64);
       *&v642[16] = v582;
       v640 = v580;
       v641 = v581;
       v584 = *(v345 + 48);
       v583 = *(v345 + 64);
       v585 = *(v345 + 32);
-      *(v10 + 74) = *(v345 + 74);
-      *(v10 + 48) = v584;
-      *(v10 + 64) = v583;
-      *(v10 + 32) = v585;
+      *(rangeCopy + 74) = *(v345 + 74);
+      *(rangeCopy + 48) = v584;
+      *(rangeCopy + 64) = v583;
+      *(rangeCopy + 32) = v585;
       v586 = *(v345 + 16);
-      *v10 = *v345;
-      *(v10 + 16) = v586;
+      *rangeCopy = *v345;
+      *(rangeCopy + 16) = v586;
       *(v345 + 48) = v641;
       *(v345 + 32) = v640;
       *(v345 + 64) = *v642;
@@ -3559,29 +3559,29 @@ LABEL_446:
     *(v9 - 32) = v505;
     *(v9 - 64) = v503;
     v506 = *(v345 + 8);
-    v507 = *(v10 + 8);
-    if (v506 < v507 || v506 <= v507 && *(v345 + 88) == 1 && (*(v10 + 88) & 1) == 0)
+    v507 = *(rangeCopy + 8);
+    if (v506 < v507 || v506 <= v507 && *(v345 + 88) == 1 && (*(rangeCopy + 88) & 1) == 0)
     {
-      v508 = *(v10 + 16);
-      v638 = *v10;
+      v508 = *(rangeCopy + 16);
+      v638 = *rangeCopy;
       v639 = v508;
-      v509 = *(v10 + 32);
-      v510 = *(v10 + 48);
-      v511 = *(v10 + 80);
-      *v642 = *(v10 + 64);
+      v509 = *(rangeCopy + 32);
+      v510 = *(rangeCopy + 48);
+      v511 = *(rangeCopy + 80);
+      *v642 = *(rangeCopy + 64);
       *&v642[16] = v511;
       v640 = v509;
       v641 = v510;
       v513 = *(v345 + 48);
       v512 = *(v345 + 64);
       v514 = *(v345 + 32);
-      *(v10 + 74) = *(v345 + 74);
-      *(v10 + 48) = v513;
-      *(v10 + 64) = v512;
-      *(v10 + 32) = v514;
+      *(rangeCopy + 74) = *(v345 + 74);
+      *(rangeCopy + 48) = v513;
+      *(rangeCopy + 64) = v512;
+      *(rangeCopy + 32) = v514;
       v515 = *(v345 + 16);
-      *v10 = *v345;
-      *(v10 + 16) = v515;
+      *rangeCopy = *v345;
+      *(rangeCopy + 16) = v515;
       *(v345 + 48) = v641;
       *(v345 + 32) = v640;
       *(v345 + 64) = *v642;
@@ -3595,13 +3595,13 @@ LABEL_2:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_findFirstConvergenceBetweenRoute:(id)a3 fromRouteCoordinate:(PolylineCoordinate)a4 andRoute:(id)a5 fromRouteCoordinate:(PolylineCoordinate)a6 outRouteCoordinate:(PolylineCoordinate *)a7 outRouteCoordinate:(PolylineCoordinate *)a8
+- (void)_findFirstConvergenceBetweenRoute:(id)route fromRouteCoordinate:(PolylineCoordinate)coordinate andRoute:(id)andRoute fromRouteCoordinate:(PolylineCoordinate)routeCoordinate outRouteCoordinate:(PolylineCoordinate *)outRouteCoordinate outRouteCoordinate:(PolylineCoordinate *)a8
 {
   v85 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v64 = a5;
+  routeCopy = route;
+  andRouteCopy = andRoute;
   v13 = MNGetMNRouteDivergenceLog();
-  v63 = self;
+  selfCopy = self;
   v14 = os_signpost_id_make_with_pointer(v13, self);
 
   v15 = MNGetMNRouteDivergenceLog();
@@ -3609,10 +3609,10 @@ LABEL_2:
   v62 = v14 - 1;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
-    v79[0] = v65;
-    v79[1] = v64;
+    v79[0] = routeCopy;
+    v79[1] = andRouteCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:2];
-    v18 = [(MNRouteDivergenceFinder *)v63 _routesArrayIdentifierStrings:v17];
+    v18 = [(MNRouteDivergenceFinder *)selfCopy _routesArrayIdentifierStrings:v17];
     v19 = GEOPolylineCoordinateAsShortString();
     v20 = GEOPolylineCoordinateAsShortString();
     *buf = 138412802;
@@ -3625,11 +3625,11 @@ LABEL_2:
   }
 
   v21 = MEMORY[0x1E69A1918];
-  *a7 = *MEMORY[0x1E69A1918];
+  *outRouteCoordinate = *MEMORY[0x1E69A1918];
   *a8 = *v21;
-  if ([v65 pointCount] && objc_msgSend(v64, "pointCount"))
+  if ([routeCopy pointCount] && objc_msgSend(andRouteCopy, "pointCount"))
   {
-    [v65 _navigation_allLeafBoundingSections];
+    [routeCopy _navigation_allLeafBoundingSections];
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
@@ -3640,7 +3640,7 @@ LABEL_2:
     {
       v24 = *v74;
       spid = v14;
-      v56 = a7;
+      outRouteCoordinateCopy = outRouteCoordinate;
       v57 = a8;
       v55 = *v74;
       do
@@ -3656,15 +3656,15 @@ LABEL_2:
 
           v26 = *(*(&v73 + 1) + 8 * v25);
           [v26 range];
-          if (v27 >= a4.index)
+          if (v27 >= coordinate.index)
           {
             *&v29 = v28;
-            if (v27 != a4.index || v28 >= a4.offset)
+            if (v27 != coordinate.index || v28 >= coordinate.offset)
             {
-              [v65 pointAt:{objc_msgSend(v26, "range", v29)}];
+              [routeCopy pointAt:{objc_msgSend(v26, "range", v29)}];
               GEOMapPointsPerMeterAtLatitude();
               v60 = v25;
-              v32 = [v64 _navigation_leafBoundingSectionsIntersectingSection:v26 paddingMapPoints:v63->_toleranceMeters * v31];
+              v32 = [andRouteCopy _navigation_leafBoundingSectionsIntersectingSection:v26 paddingMapPoints:selfCopy->_toleranceMeters * v31];
               v71 = 0u;
               v72 = 0u;
               v69 = 0u;
@@ -3685,30 +3685,30 @@ LABEL_2:
 
                     v37 = *(*(&v69 + 1) + 8 * i);
                     [v37 range];
-                    if (v38 >= a6.index)
+                    if (v38 >= routeCoordinate.index)
                     {
                       *&v40 = v39;
-                      if (v38 != a6.index || v39 >= a6.offset)
+                      if (v38 != routeCoordinate.index || v39 >= routeCoordinate.offset)
                       {
-                        v42 = [v26 range];
+                        range = [v26 range];
                         v44 = v43;
-                        v45 = a4;
+                        coordinateCopy = coordinate;
                         if (!GEOPolylineCoordinateIsABeforeB())
                         {
-                          v45 = v42;
+                          coordinateCopy = range;
                         }
 
-                        v46 = [v37 range];
+                        range2 = [v37 range];
                         v48 = v47;
-                        v49 = GEOPolylineCoordinateIsABeforeB() ? a6 : v46;
+                        v49 = GEOPolylineCoordinateIsABeforeB() ? routeCoordinate : range2;
                         *buf = 0xBF80000000000000;
                         v68 = 0xBF80000000000000;
-                        [(MNRouteDivergenceFinder *)v63 _findFirstConvergenceBetweenRoute:v65 range:v45 andRoute:v44 range:v64 outRouteCoordinate:v49 outRouteCoordinate:v48, buf, &v68];
+                        [(MNRouteDivergenceFinder *)selfCopy _findFirstConvergenceBetweenRoute:routeCopy range:coordinateCopy andRoute:v44 range:andRouteCopy outRouteCoordinate:v49 outRouteCoordinate:v48, buf, &v68];
                         if (GEOPolylineCoordinateIsValid())
                         {
                           if (GEOPolylineCoordinateIsValid())
                           {
-                            *v56 = *buf;
+                            *outRouteCoordinateCopy = *buf;
                             *v57 = v68;
                             v52 = MNGetMNRouteDivergenceLog();
                             v53 = v52;
@@ -3770,13 +3770,13 @@ LABEL_45:
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_pathsDivergeBetweenRoute:(id)a3 from:(PolylineCoordinate)a4 andRoute:(id)a5 from:(PolylineCoordinate)a6 withinDistance:(double)a7
+- (BOOL)_pathsDivergeBetweenRoute:(id)route from:(PolylineCoordinate)from andRoute:(id)andRoute from:(PolylineCoordinate)a6 withinDistance:(double)distance
 {
-  v12 = a3;
-  v13 = a5;
+  routeCopy = route;
+  andRouteCopy = andRoute;
   v16 = 0xBF80000000000000;
   v17 = 0xBF80000000000000;
-  -[MNRouteDivergenceFinder _findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:](self, "_findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:", v12, a4, [v12 routeCoordinateForDistance:a4 afterRouteCoordinate:a7], v13, a6, objc_msgSend(v13, "routeCoordinateForDistance:afterRouteCoordinate:", a6, a7), &v17, &v16);
+  -[MNRouteDivergenceFinder _findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:](self, "_findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:", routeCopy, from, [routeCopy routeCoordinateForDistance:from afterRouteCoordinate:distance], andRouteCopy, a6, objc_msgSend(andRouteCopy, "routeCoordinateForDistance:afterRouteCoordinate:", a6, distance), &v17, &v16);
   if (GEOPolylineCoordinateIsValid())
   {
     IsValid = 1;
@@ -3790,17 +3790,17 @@ LABEL_45:
   return IsValid;
 }
 
-- (void)_findFirstDivergenceBetweenRoute:(id)a3 range:(GEOPolylineCoordinateRange)a4 andRoute:(id)a5 range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)a7 outRouteCoordinate:(PolylineCoordinate *)a8
+- (void)_findFirstDivergenceBetweenRoute:(id)route range:(GEOPolylineCoordinateRange)range andRoute:(id)andRoute range:(GEOPolylineCoordinateRange)a6 outRouteCoordinate:(PolylineCoordinate *)coordinate outRouteCoordinate:(PolylineCoordinate *)routeCoordinate
 {
   end = a6.end;
   start = a6.start;
-  v79 = a4.start;
-  v10 = a4.end;
+  v79 = range.start;
+  v10 = range.end;
   v90 = *MEMORY[0x1E69E9840];
-  v80 = a3;
-  v81 = a5;
+  routeCopy = route;
+  andRouteCopy = andRoute;
   v12 = MNGetMNRouteDivergenceLog();
-  v82 = self;
+  selfCopy = self;
   v13 = os_signpost_id_make_with_pointer(v12, self);
 
   v14 = MNGetMNRouteDivergenceLog();
@@ -3809,10 +3809,10 @@ LABEL_45:
   v76 = v13 - 1;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v83[0] = v80;
-    v83[1] = v81;
+    v83[0] = routeCopy;
+    v83[1] = andRouteCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
-    v17 = [(MNRouteDivergenceFinder *)v82 _routesArrayIdentifierStrings:v16];
+    v17 = [(MNRouteDivergenceFinder *)selfCopy _routesArrayIdentifierStrings:v16];
     v18 = GEOPolylineCoordinateRangeAsString();
     v19 = GEOPolylineCoordinateRangeAsString();
     *buf = 138412802;
@@ -3825,28 +3825,28 @@ LABEL_45:
   }
 
   v20 = MEMORY[0x1E69A1918];
-  *a7 = *MEMORY[0x1E69A1918];
-  *a8 = *v20;
-  [v80 pointAtRouteCoordinate:v79];
+  *coordinate = *MEMORY[0x1E69A1918];
+  *routeCoordinate = *v20;
+  [routeCopy pointAtRouteCoordinate:v79];
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  [v81 pointAtRouteCoordinate:start];
+  [andRouteCopy pointAtRouteCoordinate:start];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   GEOCalculateDistance();
-  if (v33 <= v82->_toleranceMeters)
+  if (v33 <= selfCopy->_toleranceMeters)
   {
     goto LABEL_13;
   }
 
-  v34 = [(MNRouteDivergenceFinder *)v82 _firstRouteCoordinateWithinToleranceOnRoute:v80 nearCoordinate:v79 range:v10, v28, v30, v32];
-  v35 = [(MNRouteDivergenceFinder *)v82 _firstRouteCoordinateWithinToleranceOnRoute:v81 nearCoordinate:start range:end, v22, v24, v26];
+  v34 = [(MNRouteDivergenceFinder *)selfCopy _firstRouteCoordinateWithinToleranceOnRoute:routeCopy nearCoordinate:v79 range:v10, v28, v30, v32];
+  v35 = [(MNRouteDivergenceFinder *)selfCopy _firstRouteCoordinateWithinToleranceOnRoute:andRouteCopy nearCoordinate:start range:end, v22, v24, v26];
   if (GEOPolylineCoordinateIsInvalid() && (GEOPolylineCoordinateIsInvalid() & 1) != 0)
   {
-    *a7 = v79;
-    *a8 = start;
+    *coordinate = v79;
+    *routeCoordinate = start;
     goto LABEL_67;
   }
 
@@ -3877,22 +3877,22 @@ LABEL_14:
   {
     if (v36)
     {
-      v43 = v80;
+      v43 = routeCopy;
     }
 
     else
     {
-      v43 = v81;
+      v43 = andRouteCopy;
     }
 
     if (v36)
     {
-      v44 = v81;
+      v44 = andRouteCopy;
     }
 
     else
     {
-      v44 = v80;
+      v44 = routeCopy;
     }
 
     if (v36)
@@ -3922,24 +3922,24 @@ LABEL_14:
     [v50 previous];
     if (GEOPolylineCoordinateIsValid())
     {
-      v51 = [v50 previous];
+      previous = [v50 previous];
     }
 
     else
     {
-      v51 = [v50 current];
+      previous = [v50 current];
     }
 
-    v52 = v51;
-    v53 = [v50 current];
+    v52 = previous;
+    current = [v50 current];
     [v48 pointAtRouteCoordinate:v52];
-    [v48 pointAtRouteCoordinate:v53];
+    [v48 pointAtRouteCoordinate:current];
     v55 = v54;
     v57 = v56;
     v59 = v58;
     [v47 pointAtRouteCoordinate:{objc_msgSend(v49, "current")}];
-    [(MNRouteDivergenceFinder *)v82 _distanceFromCoordinate:v55 toSegmentStart:v57 segmentEnd:v59];
-    if (v60 >= v82->_toleranceMeters)
+    [(MNRouteDivergenceFinder *)selfCopy _distanceFromCoordinate:v55 toSegmentStart:v57 segmentEnd:v59];
+    if (v60 >= selfCopy->_toleranceMeters)
     {
       if (v42 <= 0.0)
       {
@@ -4011,38 +4011,38 @@ LABEL_42:
       [v40 previous];
       if (GEOPolylineCoordinateIsValid())
       {
-        v62 = [v40 previous];
+        previous2 = [v40 previous];
       }
 
       else
       {
-        v62 = [v40 current];
+        previous2 = [v40 current];
       }
 
-      [v81 pointAtRouteCoordinate:v62];
-      v79 = -[MNRouteDivergenceFinder _closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:](v82, "_closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:", v80, [v39 previous], objc_msgSend(v39, "current"), v66, v67, v68);
+      [andRouteCopy pointAtRouteCoordinate:previous2];
+      v79 = -[MNRouteDivergenceFinder _closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:](selfCopy, "_closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:", routeCopy, [v39 previous], objc_msgSend(v39, "current"), v66, v67, v68);
     }
 
-    *a7 = v79;
+    *coordinate = v79;
     [v40 previous];
     if ((GEOPolylineCoordinateIsInvalid() & 1) == 0)
     {
       [v39 previous];
       if (GEOPolylineCoordinateIsValid())
       {
-        v69 = [v39 previous];
+        previous3 = [v39 previous];
       }
 
       else
       {
-        v69 = [v39 current];
+        previous3 = [v39 current];
       }
 
-      [v80 pointAtRouteCoordinate:v69];
-      start = -[MNRouteDivergenceFinder _closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:](v82, "_closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:", v81, [v40 previous], objc_msgSend(v40, "current"), v70, v71, v72);
+      [routeCopy pointAtRouteCoordinate:previous3];
+      start = -[MNRouteDivergenceFinder _closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:](selfCopy, "_closestRouteCoordinateOnRoute:toLocationCoordinate:inRange:", andRouteCopy, [v40 previous], objc_msgSend(v40, "current"), v70, v71, v72);
     }
 
-    *a8 = start;
+    *routeCoordinate = start;
     v73 = MNGetMNRouteDivergenceLog();
     v64 = v73;
     if (v76 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v73))
@@ -4070,11 +4070,11 @@ LABEL_67:
   v74 = *MEMORY[0x1E69E9840];
 }
 
-- (id)findOverlappingSectionsForRoutes:(id)a3
+- (id)findOverlappingSectionsForRoutes:(id)routes
 {
   v177 = *MEMORY[0x1E69E9840];
-  v146 = a3;
-  if ([v146 count])
+  routesCopy = routes;
+  if ([routesCopy count])
   {
     v3 = MNGetMNRouteDivergenceLog();
     v4 = os_signpost_id_make_with_pointer(v3, self);
@@ -4085,13 +4085,13 @@ LABEL_67:
     v142 = v4 - 1;
     if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
     {
-      v7 = [(MNRouteDivergenceFinder *)self _routesArrayIdentifierStrings:v146];
+      v7 = [(MNRouteDivergenceFinder *)self _routesArrayIdentifierStrings:routesCopy];
       *buf = 138412290;
       *&buf[4] = v7;
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v6, OS_SIGNPOST_INTERVAL_BEGIN, spid, "findOverlappingSectionsForRoutes", "%@", buf, 0xCu);
     }
 
-    v8 = [v146 count];
+    v8 = [routesCopy count];
     memset(v170, 0, sizeof(v170));
     *buf = v170;
     buf[8] = 0;
@@ -4111,16 +4111,16 @@ LABEL_67:
     v169 = toleranceMeters;
     v166 = &v167;
     v167 = 0;
-    while (v9 < [v146 count])
+    while (v9 < [routesCopy count])
     {
-      v147 = [v146 objectAtIndexedSubscript:v9];
+      v147 = [routesCopy objectAtIndexedSubscript:v9];
       v150 = (v170[0] + 24 * v9);
       v152 = v9;
       v154 = v9;
-      while (v152 + 1 < [v146 count])
+      while (v152 + 1 < [routesCopy count])
       {
         ++v152;
-        v11 = [v146 objectAtIndexedSubscript:?];
+        v11 = [routesCopy objectAtIndexedSubscript:?];
         v145 = v170[0];
         v153 = [(MNRouteDivergenceFinder *)self findAllDivergenceConvergenceBetweenRoute:v147 andRoute:v11];
         if ([v153 count] != 2)
@@ -4169,9 +4169,9 @@ LABEL_67:
 
               v16 = *(*(&v162 + 1) + 8 * i);
               v17 = [v153 objectAtIndexedSubscript:0];
-              v18 = [v17 results];
-              v19 = [v18 firstObject];
-              v20 = v16 == v19;
+              results = [v17 results];
+              firstObject = [results firstObject];
+              v20 = v16 == firstObject;
 
               *buf = [v16 routeCoordinate];
               v21 = std::map<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>::operator[](v150, buf);
@@ -4275,9 +4275,9 @@ LABEL_67:
 
               v37 = *(*(&v158 + 1) + 8 * j);
               v38 = [v153 objectAtIndexedSubscript:1];
-              v39 = [v38 results];
-              v40 = [v39 firstObject];
-              v41 = v37 == v40;
+              results2 = [v38 results];
+              firstObject2 = [results2 firstObject];
+              v41 = v37 == firstObject2;
 
               *buf = [v37 routeCoordinate];
               v42 = std::map<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>::operator[](v145 + 24 * v152, buf);
@@ -5020,12 +5020,12 @@ LABEL_195:
 
 - (void)findOverlappingSectionsForRoutes:
 {
-  v1 = *a1;
-  v2 = **a1;
+  v1 = *self;
+  v2 = **self;
   if (v2)
   {
     v4 = v1[1];
-    v5 = **a1;
+    v5 = **self;
     if (v4 != v2)
     {
       do
@@ -5036,7 +5036,7 @@ LABEL_195:
       }
 
       while (v6 != v2);
-      v5 = **a1;
+      v5 = **self;
     }
 
     v1[1] = v2;
@@ -5045,13 +5045,13 @@ LABEL_195:
   }
 }
 
-- (uint64_t)findOverlappingSectionsForRoutes:(uint64_t)a1
+- (uint64_t)findOverlappingSectionsForRoutes:(uint64_t)routes
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *routes;
+  *routes = 0;
   if (v2)
   {
-    if (*(a1 + 16) == 1)
+    if (*(routes + 16) == 1)
     {
       std::allocator_traits<std::allocator<std::__tree_node<std::__value_type<-[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionKey,std::vector<-[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSection>>,void *>>>::destroy[abi:ne200100]<std::pair<-[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionKey const,std::vector<-[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSection>>,void,0>(v2 + 4);
     }
@@ -5059,7 +5059,7 @@ LABEL_195:
     operator delete(v2);
   }
 
-  return a1;
+  return routes;
 }
 
 - (uint64_t)findOverlappingSectionsForRoutes:
@@ -5081,7 +5081,7 @@ LABEL_16:
     v20 = *(a3 + 3);
     v21 = *(a3 + 4);
     GEOCalculateDistance();
-    if (v22 >= *a1)
+    if (v22 >= *self)
     {
       v23 = *(a2 + 24);
       v24 = a3[3];
@@ -5237,28 +5237,28 @@ LABEL_16:
   return 1;
 }
 
-- (void)findOverlappingSectionsForRoutes:(void *)a1
+- (void)findOverlappingSectionsForRoutes:(void *)routes
 {
-  if (a1)
+  if (routes)
   {
-    std::__tree<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>>>::destroy(*a1);
-    std::__tree<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>>>::destroy(a1[1]);
-    v2 = a1[5];
+    std::__tree<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>>>::destroy(*routes);
+    std::__tree<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::vector<[MNRouteDivergenceFinder findOverlappingSectionsForRoutes:]::RouteSectionEndpoint>>>>::destroy(routes[1]);
+    v2 = routes[5];
     if (v2)
     {
-      a1[6] = v2;
+      routes[6] = v2;
       operator delete(v2);
     }
 
-    operator delete(a1);
+    operator delete(routes);
   }
 }
 
-- (id)findAllOverlapRangesBetweenRoutes:(id)a3
+- (id)findAllOverlapRangesBetweenRoutes:(id)routes
 {
   v117 = *MEMORY[0x1E69E9840];
-  v98 = a3;
-  if ([v98 count])
+  routesCopy = routes;
+  if ([routesCopy count])
   {
     v3 = MNGetMNRouteDivergenceLog();
     v4 = os_signpost_id_make_with_pointer(v3, self);
@@ -5269,14 +5269,14 @@ LABEL_16:
     v92 = v4 - 1;
     if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
     {
-      v7 = [(MNRouteDivergenceFinder *)self _routesArrayIdentifierStrings:v98];
+      v7 = [(MNRouteDivergenceFinder *)self _routesArrayIdentifierStrings:routesCopy];
       buf[0].i32[0] = 138412290;
       *(buf + 4) = v7;
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "findAllOverlapRangesBetweenRoutes", "%@", buf, 0xCu);
     }
 
-    v93 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v98, "count")}];
-    v8 = [v98 count];
+    v93 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(routesCopy, "count")}];
+    v8 = [routesCopy count];
     memset(v113, 0, sizeof(v113));
     buf[0] = v113;
     buf[1].i8[0] = 0;
@@ -5293,16 +5293,16 @@ LABEL_16:
     v10 = 0;
     *&v9 = 136315906;
     v90 = v9;
-    while (v10 < [v98 count])
+    while (v10 < [routesCopy count])
     {
-      v96 = [v98 objectAtIndexedSubscript:v10];
+      v96 = [routesCopy objectAtIndexedSubscript:v10];
       v11 = (v113[0] + 24 * v10);
       v101 = v10;
       v12 = v10 + 1;
       v94 = v10 + 1;
-      while (v12 < [v98 count])
+      while (v12 < [routesCopy count])
       {
-        v14 = [v98 objectAtIndexedSubscript:v12];
+        v14 = [routesCopy objectAtIndexedSubscript:v12];
         v97 = v113[0];
         v99 = [(MNRouteDivergenceFinder *)self findAllDivergenceConvergenceBetweenRoute:v96 andRoute:v14];
         if ([v99 count] != 2)
@@ -5333,10 +5333,10 @@ LABEL_16:
         v109 = 0u;
         v110 = 0u;
         v15 = [v99 objectAtIndexedSubscript:0];
-        v16 = [v15 results];
+        results = [v15 results];
 
         v102 = v12;
-        v17 = [v16 countByEnumeratingWithState:&v109 objects:v116 count:16];
+        v17 = [results countByEnumeratingWithState:&v109 objects:v116 count:16];
         v103 = v14;
         if (v17)
         {
@@ -5347,11 +5347,11 @@ LABEL_16:
             {
               if (*v110 != v18)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(results);
               }
 
               v20 = *(*(&v109 + 1) + 8 * i);
-              v21 = [v20 routeCoordinate];
+              routeCoordinate = [v20 routeCoordinate];
               v22 = [v20 resultType] == 2;
               v23 = v11[1];
               v24 = v11[2];
@@ -5392,7 +5392,7 @@ LABEL_16:
                 }
 
                 v31 = 8 * ((v23 - *v11) >> 3);
-                *v31 = v21;
+                *v31 = routeCoordinate;
                 *(v31 + 8) = v102;
                 *(v31 + 16) = v22;
                 v25 = 24 * v27 + 24;
@@ -5409,7 +5409,7 @@ LABEL_16:
 
               else
               {
-                *v23 = v21;
+                *v23 = routeCoordinate;
                 *(v23 + 8) = v102;
                 v25 = v23 + 24;
                 *(v23 + 16) = v22;
@@ -5419,7 +5419,7 @@ LABEL_16:
               v11[1] = v25;
             }
 
-            v17 = [v16 countByEnumeratingWithState:&v109 objects:v116 count:16];
+            v17 = [results countByEnumeratingWithState:&v109 objects:v116 count:16];
           }
 
           while (v17);
@@ -5447,7 +5447,7 @@ LABEL_16:
               }
 
               v38 = *(*(&v105 + 1) + 8 * j);
-              v39 = [v38 routeCoordinate];
+              routeCoordinate2 = [v38 routeCoordinate];
               v40 = [v38 resultType] == 2;
               v41 = *(v35 + 8);
               v42 = *(v35 + 16);
@@ -5488,7 +5488,7 @@ LABEL_16:
                 }
 
                 v49 = 8 * ((v41 - *v35) >> 3);
-                *v49 = v39;
+                *v49 = routeCoordinate2;
                 *(v49 + 8) = v101;
                 *(v49 + 16) = v40;
                 v43 = 24 * v45 + 24;
@@ -5505,7 +5505,7 @@ LABEL_16:
 
               else
               {
-                *v41 = v39;
+                *v41 = routeCoordinate2;
                 *(v41 + 8) = v101;
                 v43 = v41 + 24;
                 *(v41 + 16) = v40;
@@ -5537,7 +5537,7 @@ LABEL_16:
       }
 
       *&v55 = std::__introsort<std::_ClassicAlgPolicy,[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *,false>(*v11, v52, v54, 1, v13);
-      v56 = [v98 count];
+      v56 = [routesCopy count];
       memset(buf, 0, 32);
       buf[4].i32[0] = 1065353216;
       std::__hash_table<-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_0,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_1,std::allocator<-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate>>::__rehash_unique[abi:ne200100](buf, v56 - 1);
@@ -5817,7 +5817,7 @@ LABEL_134:
 
       if (buf[3])
       {
-        v82 = [v96 endRouteCoordinate];
+        endRouteCoordinate = [v96 endRouteCoordinate];
         if (GEOPolylineCoordinateRangeIsValid())
         {
           v83 = v57;
@@ -5828,18 +5828,18 @@ LABEL_134:
 
       else
       {
-        v82 = [v96 endRouteCoordinate];
+        endRouteCoordinate = [v96 endRouteCoordinate];
         if (GEOPolylineCoordinateRangeIsValid())
         {
           v83 = v104;
 LABEL_140:
-          [v83 addCoordinateRange:{v61, v82}];
+          [v83 addCoordinateRange:{v61, endRouteCoordinate}];
         }
       }
 
       v84 = objc_alloc_init(MNRouteOverlapResult);
-      v85 = [v96 uniqueRouteID];
-      [(MNRouteOverlapResult *)v84 setRouteID:v85];
+      uniqueRouteID = [v96 uniqueRouteID];
+      [(MNRouteOverlapResult *)v84 setRouteID:uniqueRouteID];
 
       -[MNRouteOverlapResult setRouteRange:](v84, "setRouteRange:", 0, [v96 endRouteCoordinate]);
       [(MNRouteOverlapResult *)v84 setUniqueRanges:v104];
@@ -5874,12 +5874,12 @@ LABEL_140:
 
 - (void)findAllOverlapRangesBetweenRoutes:
 {
-  v1 = *a1;
-  v2 = **a1;
+  v1 = *self;
+  v2 = **self;
   if (v2)
   {
     v4 = v1[1];
-    v5 = **a1;
+    v5 = **self;
     if (v4 != v2)
     {
       v6 = v1[1];
@@ -5898,7 +5898,7 @@ LABEL_140:
       }
 
       while (v6 != v2);
-      v5 = **a1;
+      v5 = **self;
     }
 
     v1[1] = v2;
@@ -5907,18 +5907,18 @@ LABEL_140:
   }
 }
 
-- (float)findAllOverlapRangesBetweenRoutes:(uint64_t)a3
+- (float)findAllOverlapRangesBetweenRoutes:(uint64_t)routes
 {
 LABEL_1:
   v9 = &a2[-2].n128_u32[2];
   v10 = a2 - 3;
   v11 = &a2[-5].n128_i8[8];
-  v12 = a1;
+  selfCopy = self;
   while (1)
   {
-    a1 = v12;
-    v13 = a2 - v12;
-    v14 = 0xAAAAAAAAAAAAAAABLL * ((a2 - v12) >> 3);
+    self = selfCopy;
+    v13 = a2 - selfCopy;
+    v14 = 0xAAAAAAAAAAAAAAABLL * ((a2 - selfCopy) >> 3);
     if (v14 <= 2)
     {
       if (v14 < 2)
@@ -5928,26 +5928,26 @@ LABEL_1:
 
       if (v14 == 2)
       {
-        if (*v9 >= *v12)
+        if (*v9 >= *selfCopy)
         {
-          if (*v9 != *v12)
+          if (*v9 != *selfCopy)
           {
             return a5.n128_f32[0];
           }
 
           a5.n128_u32[0] = a2[-2].n128_u32[3];
-          if (a5.n128_f32[0] >= *(v12 + 4))
+          if (a5.n128_f32[0] >= *(selfCopy + 4))
           {
             return a5.n128_f32[0];
           }
         }
 
 LABEL_210:
-        v216 = *(v12 + 16);
-        v189 = *v12;
+        v216 = *(selfCopy + 16);
+        v189 = *selfCopy;
         v100 = *v9;
-        *(v12 + 16) = a2[-1].n128_u8[8];
-        *v12 = v100;
+        *(selfCopy + 16) = a2[-1].n128_u8[8];
+        *selfCopy = v100;
         a5 = v189;
         a2[-1].n128_u8[8] = v216;
 LABEL_211:
@@ -5966,53 +5966,53 @@ LABEL_211:
     if (v14 == 4)
     {
 
-      a5.n128_f32[0] = std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *,0>(v12, (v12 + 24), (v12 + 48), (a2 - 24), a5);
+      a5.n128_f32[0] = std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *,0>(selfCopy, (selfCopy + 24), (selfCopy + 48), (a2 - 24), a5);
       return a5.n128_f32[0];
     }
 
     if (v14 == 5)
     {
-      a5.n128_f32[0] = std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *,0>(v12, (v12 + 24), (v12 + 48), (v12 + 72), a5);
-      v101 = *(v12 + 72);
-      if (*v9 < v101 || *v9 == v101 && (a5.n128_u32[0] = a2[-2].n128_u32[3], a5.n128_f32[0] < *(v12 + 76)))
+      a5.n128_f32[0] = std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *,0>(selfCopy, (selfCopy + 24), (selfCopy + 48), (selfCopy + 72), a5);
+      v101 = *(selfCopy + 72);
+      if (*v9 < v101 || *v9 == v101 && (a5.n128_u32[0] = a2[-2].n128_u32[3], a5.n128_f32[0] < *(selfCopy + 76)))
       {
-        a5 = *(v12 + 72);
-        v102 = *(v12 + 88);
+        a5 = *(selfCopy + 72);
+        v102 = *(selfCopy + 88);
         v103 = a2[-1].n128_u8[8];
-        *(v12 + 72) = *v9;
-        *(v12 + 88) = v103;
+        *(selfCopy + 72) = *v9;
+        *(selfCopy + 88) = v103;
         a2[-1].n128_u8[8] = v102;
         *v9 = a5;
-        v104 = *(v12 + 72);
-        v105 = *(v12 + 48);
-        if (v104 < v105 || v104 == v105 && (a5.n128_u32[0] = *(v12 + 76), a5.n128_f32[0] < *(v12 + 52)))
+        v104 = *(selfCopy + 72);
+        v105 = *(selfCopy + 48);
+        if (v104 < v105 || v104 == v105 && (a5.n128_u32[0] = *(selfCopy + 76), a5.n128_f32[0] < *(selfCopy + 52)))
         {
-          v106 = *(v12 + 64);
-          a5 = *(v12 + 48);
-          *(v12 + 48) = *(v12 + 72);
-          *(v12 + 64) = *(v12 + 88);
-          *(v12 + 72) = a5;
-          *(v12 + 88) = v106;
-          v107 = *(v12 + 48);
-          v108 = *(v12 + 24);
-          if (v107 < v108 || v107 == v108 && (a5.n128_u32[0] = *(v12 + 52), a5.n128_f32[0] < *(v12 + 28)))
+          v106 = *(selfCopy + 64);
+          a5 = *(selfCopy + 48);
+          *(selfCopy + 48) = *(selfCopy + 72);
+          *(selfCopy + 64) = *(selfCopy + 88);
+          *(selfCopy + 72) = a5;
+          *(selfCopy + 88) = v106;
+          v107 = *(selfCopy + 48);
+          v108 = *(selfCopy + 24);
+          if (v107 < v108 || v107 == v108 && (a5.n128_u32[0] = *(selfCopy + 52), a5.n128_f32[0] < *(selfCopy + 28)))
           {
-            v109 = *(v12 + 40);
-            a5 = *(v12 + 24);
-            *(v12 + 24) = *(v12 + 48);
-            *(v12 + 40) = *(v12 + 64);
-            *(v12 + 48) = a5;
-            *(v12 + 64) = v109;
-            v110 = *(v12 + 24);
-            if (v110 < *v12 || v110 == *v12 && (a5.n128_u32[0] = *(v12 + 28), a5.n128_f32[0] < *(v12 + 4)))
+            v109 = *(selfCopy + 40);
+            a5 = *(selfCopy + 24);
+            *(selfCopy + 24) = *(selfCopy + 48);
+            *(selfCopy + 40) = *(selfCopy + 64);
+            *(selfCopy + 48) = a5;
+            *(selfCopy + 64) = v109;
+            v110 = *(selfCopy + 24);
+            if (v110 < *selfCopy || v110 == *selfCopy && (a5.n128_u32[0] = *(selfCopy + 28), a5.n128_f32[0] < *(selfCopy + 4)))
             {
-              v217 = *(v12 + 16);
-              v190 = *v12;
-              *v12 = *(v12 + 24);
-              *(v12 + 16) = *(v12 + 40);
+              v217 = *(selfCopy + 16);
+              v190 = *selfCopy;
+              *selfCopy = *(selfCopy + 24);
+              *(selfCopy + 16) = *(selfCopy + 40);
               a5.n128_u32[0] = v190.n128_u32[0];
-              *(v12 + 24) = v190;
-              *(v12 + 40) = v217;
+              *(selfCopy + 24) = v190;
+              *(selfCopy + 40) = v217;
             }
           }
         }
@@ -6024,8 +6024,8 @@ LABEL_211:
 LABEL_9:
     if (v13 <= 575)
     {
-      v111 = (v12 + 24);
-      v113 = v12 == a2 || v111 == a2;
+      v111 = (selfCopy + 24);
+      v113 = selfCopy == a2 || v111 == a2;
       if (a4)
       {
         if (v113)
@@ -6034,7 +6034,7 @@ LABEL_9:
         }
 
         v114 = 0;
-        v115 = v12;
+        v115 = selfCopy;
         while (2)
         {
           v116 = v115;
@@ -6055,35 +6055,35 @@ LABEL_228:
               v191 = *(v116 + 32);
               *(v115 + 16) = *(v116 + 16);
               *v115 = *v116;
-              v118 = v12;
-              if (v116 != v12)
+              v118 = selfCopy;
+              if (v116 != selfCopy)
               {
                 v119 = v114;
                 while (1)
                 {
-                  v120 = v12 + v119;
-                  v121 = *(v12 + v119 - 24);
+                  v120 = selfCopy + v119;
+                  v121 = *(selfCopy + v119 - 24);
                   if (v117 >= v121)
                   {
                     if (v117 != v121)
                     {
-                      v118 = v12 + v119;
+                      v118 = selfCopy + v119;
                       goto LABEL_240;
                     }
 
-                    if (a5.n128_f32[0] >= *(v12 + v119 - 20))
+                    if (a5.n128_f32[0] >= *(selfCopy + v119 - 20))
                     {
                       break;
                     }
                   }
 
                   v116 -= 24;
-                  *v120 = *(v12 + v119 - 24);
-                  *(v120 + 16) = *(v12 + v119 - 8);
+                  *v120 = *(selfCopy + v119 - 24);
+                  *(v120 + 16) = *(selfCopy + v119 - 8);
                   v119 -= 24;
                   if (!v119)
                   {
-                    v118 = v12;
+                    v118 = selfCopy;
                     goto LABEL_240;
                   }
                 }
@@ -6117,15 +6117,15 @@ LABEL_240:
 
       while (2)
       {
-        v160 = a1;
-        a1 = v111;
-        v161 = *(v160 + 24);
-        if (v161 >= *v160)
+        selfCopy2 = self;
+        self = v111;
+        v161 = *(selfCopy2 + 24);
+        if (v161 >= *selfCopy2)
         {
-          if (v161 == *v160)
+          if (v161 == *selfCopy2)
           {
-            a5.n128_u32[0] = *(v160 + 28);
-            if (a5.n128_f32[0] < *(v160 + 4))
+            a5.n128_u32[0] = *(selfCopy2 + 28);
+            if (a5.n128_f32[0] < *(selfCopy2 + 4))
             {
               goto LABEL_309;
             }
@@ -6134,18 +6134,18 @@ LABEL_240:
 
         else
         {
-          a5.n128_u32[0] = *(v160 + 28);
+          a5.n128_u32[0] = *(selfCopy2 + 28);
 LABEL_309:
-          v195 = *(v160 + 32);
+          v195 = *(selfCopy2 + 32);
           do
           {
             do
             {
-              v162 = v160;
-              *(v160 + 24) = *v160;
-              *(v160 + 40) = *(v160 + 16);
-              v163 = *(v160 - 24);
-              v160 -= 24;
+              v162 = selfCopy2;
+              *(selfCopy2 + 24) = *selfCopy2;
+              *(selfCopy2 + 40) = *(selfCopy2 + 16);
+              v163 = *(selfCopy2 - 24);
+              selfCopy2 -= 24;
               v164 = v161 == v163;
             }
 
@@ -6159,8 +6159,8 @@ LABEL_309:
           *(v162 + 16) = BYTE8(v195);
         }
 
-        v111 = (a1 + 24);
-        if ((a1 + 24) == a2)
+        v111 = (self + 24);
+        if ((self + 24) == a2)
         {
           return a5.n128_f32[0];
         }
@@ -6169,9 +6169,9 @@ LABEL_309:
       }
     }
 
-    if (!a3)
+    if (!routes)
     {
-      if (v12 == a2)
+      if (selfCopy == a2)
       {
         return a5.n128_f32[0];
       }
@@ -6184,7 +6184,7 @@ LABEL_309:
         if (v122 >= v123)
         {
           v125 = (2 * v123) | 1;
-          v126 = v12 + 24 * v125;
+          v126 = selfCopy + 24 * v125;
           if (2 * v124 + 2 < v14)
           {
             v127 = *(v126 + 24);
@@ -6195,7 +6195,7 @@ LABEL_309:
             }
           }
 
-          v128 = v12 + 24 * v124;
+          v128 = selfCopy + 24 * v124;
           v129 = *v128;
           if (*v126 >= *v128)
           {
@@ -6219,7 +6219,7 @@ LABEL_255:
                 {
                   v133 = 2 * v125;
                   v125 = (2 * v125) | 1;
-                  v132 = v12 + 24 * v125;
+                  v132 = selfCopy + 24 * v125;
                   v134 = v133 + 2;
                   if (v134 < v14)
                   {
@@ -6270,9 +6270,9 @@ LABEL_257:
       while (2)
       {
         v138 = 0;
-        v218 = *(v12 + 16);
-        v193 = *v12;
-        v139 = v12;
+        v218 = *(selfCopy + 16);
+        v193 = *selfCopy;
+        v139 = selfCopy;
         do
         {
           v140 = v139;
@@ -6314,12 +6314,12 @@ LABEL_257:
           a5.n128_u32[0] = v193.n128_u32[0];
           a2[1].n128_u8[0] = v218;
           *a2 = v193;
-          v147 = v139 - v12 + 24;
+          v147 = v139 - selfCopy + 24;
           if (v147 >= 25)
           {
             v148 = -2 - 0x5555555555555555 * (v147 >> 3);
             v149 = v148 >> 1;
-            v150 = v12 + 24 * (v148 >> 1);
+            v150 = selfCopy + 24 * (v148 >> 1);
             v151 = *v139;
             if (*v150 < *v139)
             {
@@ -6343,7 +6343,7 @@ LABEL_281:
                   {
                     v154 = v149 - 1;
                     v149 = (v149 - 1) >> 1;
-                    v153 = v12 + 24 * v149;
+                    v153 = selfCopy + 24 * v149;
                     if (*v153 >= v151 && (*v153 != v151 || *(v153 + 4) >= a5.n128_f32[0]))
                     {
                       break;
@@ -6352,7 +6352,7 @@ LABEL_281:
                     v155 = *v153;
                     *(v150 + 16) = *(v153 + 16);
                     *v150 = v155;
-                    v150 = v12 + 24 * v149;
+                    v150 = selfCopy + 24 * v149;
                     if (v154 <= 1)
                     {
                       goto LABEL_287;
@@ -6381,28 +6381,28 @@ LABEL_287:
     }
 
     v15 = v14 >> 1;
-    v16 = (v12 + 24 * (v14 >> 1));
+    v16 = (selfCopy + 24 * (v14 >> 1));
     if (v13 >= 0xC01)
     {
       v17 = v16->n128_u32[0];
-      if (v16->n128_u32[0] < *v12 || v17 == *v12 && v16->n128_f32[1] < *(v12 + 4))
+      if (v16->n128_u32[0] < *selfCopy || v17 == *selfCopy && v16->n128_f32[1] < *(selfCopy + 4))
       {
         if (*v9 < v17 || *v9 == v17 && a2[-2].n128_f32[3] < v16->n128_f32[1])
         {
-          v196 = *(v12 + 16);
-          v169 = *v12;
+          v196 = *(selfCopy + 16);
+          v169 = *selfCopy;
           v18 = *v9;
-          *(v12 + 16) = a2[-1].n128_u8[8];
-          *v12 = v18;
+          *(selfCopy + 16) = a2[-1].n128_u8[8];
+          *selfCopy = v18;
         }
 
         else
         {
-          v202 = *(v12 + 16);
-          v175 = *v12;
+          v202 = *(selfCopy + 16);
+          v175 = *selfCopy;
           v25 = *v16;
-          *(v12 + 16) = v16[1].n128_u8[0];
-          *v12 = v25;
+          *(selfCopy + 16) = v16[1].n128_u8[0];
+          *selfCopy = v25;
           v16[1].n128_u8[0] = v202;
           *v16 = v175;
           if (*v9 >= v16->n128_u32[0] && (*v9 != v16->n128_u32[0] || a2[-2].n128_f32[3] >= v16->n128_f32[1]))
@@ -6431,45 +6431,45 @@ LABEL_287:
         *v16 = v21;
         a2[-1].n128_u8[8] = v198;
         *v9 = v171;
-        if (v16->n128_u32[0] < *v12 || v16->n128_u32[0] == *v12 && v16->n128_f32[1] < *(v12 + 4))
+        if (v16->n128_u32[0] < *selfCopy || v16->n128_u32[0] == *selfCopy && v16->n128_f32[1] < *(selfCopy + 4))
         {
-          v199 = *(v12 + 16);
-          v172 = *v12;
+          v199 = *(selfCopy + 16);
+          v172 = *selfCopy;
           v22 = *v16;
-          *(v12 + 16) = v16[1].n128_u8[0];
-          *v12 = v22;
+          *(selfCopy + 16) = v16[1].n128_u8[0];
+          *selfCopy = v22;
           v16[1].n128_u8[0] = v199;
           *v16 = v172;
         }
       }
 
 LABEL_33:
-      v27 = (v12 + 24);
-      v28 = *(v12 + 24);
-      v29 = v12 + 24 * v15;
+      v27 = (selfCopy + 24);
+      v28 = *(selfCopy + 24);
+      v29 = selfCopy + 24 * v15;
       v32 = *(v29 - 24);
       v30 = (v29 - 24);
       v31 = v32;
       v33 = v32 == v28;
-      if (v32 < v28 || v33 && v30->n128_f32[1] < *(v12 + 28))
+      if (v32 < v28 || v33 && v30->n128_f32[1] < *(selfCopy + 28))
       {
         if (v10->n128_u32[0] < v31 || v10->n128_u32[0] == v31 && a2[-3].n128_f32[1] < v30->n128_f32[1])
         {
           v34 = *v27;
-          v35 = *(v12 + 40);
+          v35 = *(selfCopy + 40);
           v36 = a2[-2].n128_u8[0];
           *v27 = *v10;
-          *(v12 + 40) = v36;
+          *(selfCopy + 40) = v36;
           a2[-2].n128_u8[0] = v35;
         }
 
         else
         {
           v43 = *v27;
-          v44 = *(v12 + 40);
+          v44 = *(selfCopy + 40);
           v45 = v30[1].n128_i8[0];
           *v27 = *v30;
-          *(v12 + 40) = v45;
+          *(selfCopy + 40) = v45;
           v30[1].n128_u8[0] = v44;
           *v30 = v43;
           if (v10->n128_u32[0] >= v30->n128_u32[0] && (v10->n128_u32[0] != v30->n128_u32[0] || a2[-3].n128_f32[1] >= v30->n128_f32[1]))
@@ -6499,45 +6499,45 @@ LABEL_33:
         *v30 = v37;
         a2[-2].n128_u8[0] = v203;
         *v10 = v176;
-        if (v30->n128_u32[0] < v27->n128_u32[0] || v30->n128_u32[0] == v27->n128_u32[0] && v30->n128_f32[1] < *(v12 + 28))
+        if (v30->n128_u32[0] < v27->n128_u32[0] || v30->n128_u32[0] == v27->n128_u32[0] && v30->n128_f32[1] < *(selfCopy + 28))
         {
           v38 = *v27;
-          v39 = *(v12 + 40);
+          v39 = *(selfCopy + 40);
           v40 = v30[1].n128_i8[0];
           *v27 = *v30;
-          *(v12 + 40) = v40;
+          *(selfCopy + 40) = v40;
           v30[1].n128_u8[0] = v39;
           *v30 = v38;
         }
       }
 
 LABEL_52:
-      v47 = (v12 + 48);
-      v48 = *(v12 + 48);
-      v49 = v12 + 24 * v15;
+      v47 = (selfCopy + 48);
+      v48 = *(selfCopy + 48);
+      v49 = selfCopy + 24 * v15;
       v52 = *(v49 + 24);
       v50 = (v49 + 24);
       v51 = v52;
       v53 = v52 == v48;
-      if (v52 < v48 || v53 && v50->n128_f32[1] < *(v12 + 52))
+      if (v52 < v48 || v53 && v50->n128_f32[1] < *(selfCopy + 52))
       {
         if (*v11 < v51 || *v11 == v51 && a2[-5].n128_f32[3] < v50->n128_f32[1])
         {
           v54 = *v47;
-          v55 = *(v12 + 64);
+          v55 = *(selfCopy + 64);
           v56 = a2[-4].n128_u8[8];
           *v47 = *v11;
-          *(v12 + 64) = v56;
+          *(selfCopy + 64) = v56;
           a2[-4].n128_u8[8] = v55;
         }
 
         else
         {
           v61 = *v47;
-          v62 = *(v12 + 64);
+          v62 = *(selfCopy + 64);
           v63 = v50[1].n128_i8[0];
           *v47 = *v50;
-          *(v12 + 64) = v63;
+          *(selfCopy + 64) = v63;
           v50[1].n128_u8[0] = v62;
           *v50 = v61;
           if (*v11 >= v50->n128_u32[0] && (*v11 != v50->n128_u32[0] || a2[-5].n128_f32[3] >= v50->n128_f32[1]))
@@ -6567,13 +6567,13 @@ LABEL_52:
         *v50 = v57;
         a2[-4].n128_u8[8] = v206;
         *v11 = v179;
-        if (v50->n128_u32[0] < v47->n128_u32[0] || v50->n128_u32[0] == v47->n128_u32[0] && v50->n128_f32[1] < *(v12 + 52))
+        if (v50->n128_u32[0] < v47->n128_u32[0] || v50->n128_u32[0] == v47->n128_u32[0] && v50->n128_f32[1] < *(selfCopy + 52))
         {
           v58 = *v47;
-          v59 = *(v12 + 64);
+          v59 = *(selfCopy + 64);
           v60 = v50[1].n128_i8[0];
           *v47 = *v50;
-          *(v12 + 64) = v60;
+          *(selfCopy + 64) = v60;
           v50[1].n128_u8[0] = v59;
           *v50 = v58;
         }
@@ -6635,47 +6635,47 @@ LABEL_66:
       v50[1].n128_u8[0] = v208;
       *v50 = v181;
 LABEL_79:
-      v212 = *(v12 + 16);
-      v185 = *v12;
+      v212 = *(selfCopy + 16);
+      v185 = *selfCopy;
       v66 = *v16;
-      *(v12 + 16) = v16[1].n128_u8[0];
-      *v12 = v66;
+      *(selfCopy + 16) = v16[1].n128_u8[0];
+      *selfCopy = v66;
       a5 = v185;
       v16[1].n128_u8[0] = v212;
       *v16 = v185;
       goto LABEL_80;
     }
 
-    v19 = *v12;
-    if (*v12 >= v16->n128_u32[0] && (v19 != v16->n128_u32[0] || *(v12 + 4) >= v16->n128_f32[1]))
+    v19 = *selfCopy;
+    if (*selfCopy >= v16->n128_u32[0] && (v19 != v16->n128_u32[0] || *(selfCopy + 4) >= v16->n128_f32[1]))
     {
-      if (*v9 < v19 || *v9 == v19 && a2[-2].n128_f32[3] < *(v12 + 4))
+      if (*v9 < v19 || *v9 == v19 && a2[-2].n128_f32[3] < *(selfCopy + 4))
       {
-        v200 = *(v12 + 16);
-        v173 = *v12;
+        v200 = *(selfCopy + 16);
+        v173 = *selfCopy;
         v23 = *v9;
-        *(v12 + 16) = a2[-1].n128_u8[8];
-        *v12 = v23;
+        *(selfCopy + 16) = a2[-1].n128_u8[8];
+        *selfCopy = v23;
         a5 = v173;
         a2[-1].n128_u8[8] = v200;
         *v9 = v173;
-        if (*v12 < v16->n128_u32[0] || *v12 == v16->n128_u32[0] && *(v12 + 4) < v16->n128_f32[1])
+        if (*selfCopy < v16->n128_u32[0] || *selfCopy == v16->n128_u32[0] && *(selfCopy + 4) < v16->n128_f32[1])
         {
           v201 = v16[1].n128_u64[0];
           v174 = *v16;
-          v24 = *v12;
-          v16[1].n128_u8[0] = *(v12 + 16);
+          v24 = *selfCopy;
+          v16[1].n128_u8[0] = *(selfCopy + 16);
           *v16 = v24;
           a5 = v174;
-          *(v12 + 16) = v201;
-          *v12 = v174;
+          *(selfCopy + 16) = v201;
+          *selfCopy = v174;
         }
       }
 
       goto LABEL_80;
     }
 
-    if (*v9 < v19 || *v9 == v19 && a2[-2].n128_f32[3] < *(v12 + 4))
+    if (*v9 < v19 || *v9 == v19 && a2[-2].n128_f32[3] < *(selfCopy + 4))
     {
       v197 = v16[1].n128_u64[0];
       v170 = *v16;
@@ -6688,39 +6688,39 @@ LABEL_79:
     {
       v204 = v16[1].n128_u64[0];
       v177 = *v16;
-      v41 = *v12;
-      v16[1].n128_u8[0] = *(v12 + 16);
+      v41 = *selfCopy;
+      v16[1].n128_u8[0] = *(selfCopy + 16);
       *v16 = v41;
       a5 = v177;
-      *(v12 + 16) = v204;
-      *v12 = v177;
-      if (*v9 >= *v12 && (*v9 != *v12 || a2[-2].n128_f32[3] >= *(v12 + 4)))
+      *(selfCopy + 16) = v204;
+      *selfCopy = v177;
+      if (*v9 >= *selfCopy && (*v9 != *selfCopy || a2[-2].n128_f32[3] >= *(selfCopy + 4)))
       {
         goto LABEL_80;
       }
 
-      v197 = *(v12 + 16);
-      v170 = *v12;
+      v197 = *(selfCopy + 16);
+      v170 = *selfCopy;
       v42 = *v9;
-      *(v12 + 16) = a2[-1].n128_u8[8];
-      *v12 = v42;
+      *(selfCopy + 16) = a2[-1].n128_u8[8];
+      *selfCopy = v42;
     }
 
     a5 = v170;
     a2[-1].n128_u8[8] = v197;
     *v9 = v170;
 LABEL_80:
-    --a3;
+    --routes;
     if (a4)
     {
-      v67 = *v12;
+      v67 = *selfCopy;
 LABEL_86:
-      a5.n128_u32[0] = *(v12 + 4);
-      v166 = *(v12 + 8);
+      a5.n128_u32[0] = *(selfCopy + 4);
+      v166 = *(selfCopy + 8);
         ;
       }
 
-      if (i - 24 == v12)
+      if (i - 24 == selfCopy)
       {
         j = a2;
         if (i < a2)
@@ -6765,33 +6765,33 @@ LABEL_86:
         }
       }
 
-      v12 = i;
+      selfCopy = i;
       if (i < j)
       {
-        v12 = i;
+        selfCopy = i;
         v75 = j;
         do
         {
-          v213 = *(v12 + 16);
-          v186 = *v12;
+          v213 = *(selfCopy + 16);
+          v186 = *selfCopy;
           v76 = *v75;
-          *(v12 + 16) = *(v75 + 16);
-          *v12 = v76;
+          *(selfCopy + 16) = *(v75 + 16);
+          *selfCopy = v76;
           *(v75 + 16) = v213;
           *v75 = v186;
           do
           {
             do
             {
-              v77 = *(v12 + 24);
-              v12 += 24;
+              v77 = *(selfCopy + 24);
+              selfCopy += 24;
               v78 = v77 == v67;
             }
 
             while (v77 < v67);
           }
 
-          while (v78 && *(v12 + 4) < a5.n128_f32[0]);
+          while (v78 && *(selfCopy + 4) < a5.n128_f32[0]);
           do
           {
             v80 = *(v75 - 24);
@@ -6802,29 +6802,29 @@ LABEL_86:
           while (v80 >= v67 && (v79 != v67 || *(v75 + 4) >= a5.n128_f32[0]));
         }
 
-        while (v12 < v75);
+        while (selfCopy < v75);
       }
 
-      if (v12 - 24 != a1)
+      if (selfCopy - 24 != self)
       {
-        v81 = *(v12 - 24);
-        *(a1 + 16) = *(v12 - 8);
-        *a1 = v81;
+        v81 = *(selfCopy - 24);
+        *(self + 16) = *(selfCopy - 8);
+        *self = v81;
       }
 
-      *(v12 - 24) = v67;
-      *(v12 - 20) = a5.n128_u32[0];
-      *(v12 - 8) = BYTE8(v166);
-      *(v12 - 16) = v166;
+      *(selfCopy - 24) = v67;
+      *(selfCopy - 20) = a5.n128_u32[0];
+      *(selfCopy - 8) = BYTE8(v166);
+      *(selfCopy - 16) = v166;
       if (i < j)
       {
         goto LABEL_122;
       }
 
-      v82 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *>(a1, v12 - 24, a5);
-      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *>(v12, a2, v83))
+      v82 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *>(self, selfCopy - 24, a5);
+      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,-[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *>(selfCopy, a2, v83))
       {
-        a2 = (v12 - 24);
+        a2 = (selfCopy - 24);
         if (v82)
         {
           return a5.n128_f32[0];
@@ -6836,25 +6836,25 @@ LABEL_86:
       if (!v82)
       {
 LABEL_122:
-        std::__introsort<std::_ClassicAlgPolicy,[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *,false>(a1, v12 - 24, a3, a4 & 1);
+        std::__introsort<std::_ClassicAlgPolicy,[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::$_4 &,[MNRouteDivergenceFinder findAllOverlapRangesBetweenRoutes:]::OverlapCoordinate *,false>(self, selfCopy - 24, routes, a4 & 1);
         a4 = 0;
       }
     }
 
     else
     {
-      v68 = *(v12 - 24);
-      v67 = *v12;
-      if (v68 < *v12)
+      v68 = *(selfCopy - 24);
+      v67 = *selfCopy;
+      if (v68 < *selfCopy)
       {
         goto LABEL_86;
       }
 
       if (v68 == v67)
       {
-        a5.n128_u32[0] = *(v12 + 4);
-        v67 = *(v12 - 24);
-        if (*(v12 - 20) < a5.n128_f32[0])
+        a5.n128_u32[0] = *(selfCopy + 4);
+        v67 = *(selfCopy - 24);
+        if (*(selfCopy - 20) < a5.n128_f32[0])
         {
           goto LABEL_86;
         }
@@ -6862,22 +6862,22 @@ LABEL_122:
 
       else
       {
-        a5.n128_u32[0] = *(v12 + 4);
-        v68 = *v12;
+        a5.n128_u32[0] = *(selfCopy + 4);
+        v68 = *selfCopy;
       }
 
-      v167 = *(v12 + 8);
+      v167 = *(selfCopy + 8);
       v84 = *v9;
       if (v68 < *v9 || v68 == v84 && a5.n128_f32[0] < a2[-2].n128_f32[3])
       {
         do
         {
-          v86 = *(v12 + 24);
-          v12 += 24;
+          v86 = *(selfCopy + 24);
+          selfCopy += 24;
           v85 = v86;
         }
 
-        while (v68 >= v86 && (v68 != v85 || a5.n128_f32[0] >= *(v12 + 4)));
+        while (v68 >= v86 && (v68 != v85 || a5.n128_f32[0] >= *(selfCopy + 4)));
       }
 
       else
@@ -6887,7 +6887,7 @@ LABEL_122:
       }
 
       k = a2;
-      if (v12 < a2)
+      if (selfCopy < a2)
       {
         for (k = (a2 - 24); v68 < v84 || v68 == v84 && a5.n128_f32[0] < k->n128_f32[1]; k = (k - 24))
         {
@@ -6896,23 +6896,23 @@ LABEL_122:
         }
       }
 
-      while (v12 < k)
+      while (selfCopy < k)
       {
-        v214 = *(v12 + 16);
-        v187 = *v12;
+        v214 = *(selfCopy + 16);
+        v187 = *selfCopy;
         v89 = *k;
-        *(v12 + 16) = k[1].n128_u8[0];
-        *v12 = v89;
+        *(selfCopy + 16) = k[1].n128_u8[0];
+        *selfCopy = v89;
         k[1].n128_u8[0] = v214;
         *k = v187;
         do
         {
-          v91 = *(v12 + 24);
-          v12 += 24;
+          v91 = *(selfCopy + 24);
+          selfCopy += 24;
           v90 = v91;
         }
 
-        while (v68 >= v91 && (v68 != v90 || a5.n128_f32[0] >= *(v12 + 4)));
+        while (v68 >= v91 && (v68 != v90 || a5.n128_f32[0] >= *(selfCopy + 4)));
         do
         {
           do
@@ -6928,76 +6928,76 @@ LABEL_122:
         while (v93 && a5.n128_f32[0] < k->n128_f32[1]);
       }
 
-      if (v12 - 24 != a1)
+      if (selfCopy - 24 != self)
       {
-        v94 = *(v12 - 24);
-        *(a1 + 16) = *(v12 - 8);
-        *a1 = v94;
+        v94 = *(selfCopy - 24);
+        *(self + 16) = *(selfCopy - 8);
+        *self = v94;
       }
 
       a4 = 0;
-      *(v12 - 24) = v68;
-      *(v12 - 20) = a5.n128_u32[0];
-      *(v12 - 8) = BYTE8(v167);
-      *(v12 - 16) = v167;
+      *(selfCopy - 24) = v68;
+      *(selfCopy - 20) = a5.n128_u32[0];
+      *(selfCopy - 8) = BYTE8(v167);
+      *(selfCopy - 16) = v167;
     }
   }
 
-  v95 = (v12 + 24);
-  v96 = *(v12 + 24);
-  if (v96 < *v12 || v96 == *v12 && (a5.n128_u32[0] = *(v12 + 28), a5.n128_f32[0] < *(v12 + 4)))
+  v95 = (selfCopy + 24);
+  v96 = *(selfCopy + 24);
+  if (v96 < *selfCopy || v96 == *selfCopy && (a5.n128_u32[0] = *(selfCopy + 28), a5.n128_f32[0] < *(selfCopy + 4)))
   {
-    if (*v9 < v96 || *v9 == v96 && a2[-2].n128_f32[3] < *(v12 + 28))
+    if (*v9 < v96 || *v9 == v96 && a2[-2].n128_f32[3] < *(selfCopy + 28))
     {
       goto LABEL_210;
     }
 
-    v215 = *(v12 + 16);
-    v188 = *v12;
-    *v12 = *v95;
-    *(v12 + 16) = *(v12 + 40);
+    v215 = *(selfCopy + 16);
+    v188 = *selfCopy;
+    *selfCopy = *v95;
+    *(selfCopy + 16) = *(selfCopy + 40);
     a5.n128_u32[0] = v188.n128_u32[0];
     *v95 = v188;
-    *(v12 + 40) = v215;
-    v97 = *(v12 + 24);
-    if (*v9 < v97 || *v9 == v97 && (a5.n128_u32[0] = a2[-2].n128_u32[3], a5.n128_f32[0] < *(v12 + 28)))
+    *(selfCopy + 40) = v215;
+    v97 = *(selfCopy + 24);
+    if (*v9 < v97 || *v9 == v97 && (a5.n128_u32[0] = a2[-2].n128_u32[3], a5.n128_f32[0] < *(selfCopy + 28)))
     {
       a5 = *v95;
-      v98 = *(v12 + 40);
+      v98 = *(selfCopy + 40);
       v99 = a2[-1].n128_u8[8];
       *v95 = *v9;
-      *(v12 + 40) = v99;
+      *(selfCopy + 40) = v99;
       a2[-1].n128_u8[8] = v98;
       goto LABEL_211;
     }
   }
 
-  else if (*v9 < v96 || *v9 == v96 && (a5.n128_u32[0] = a2[-2].n128_u32[3], a5.n128_f32[0] < *(v12 + 28)))
+  else if (*v9 < v96 || *v9 == v96 && (a5.n128_u32[0] = a2[-2].n128_u32[3], a5.n128_f32[0] < *(selfCopy + 28)))
   {
     a5 = *v95;
-    v157 = *(v12 + 40);
+    v157 = *(selfCopy + 40);
     v158 = a2[-1].n128_u8[8];
     *v95 = *v9;
-    *(v12 + 40) = v158;
+    *(selfCopy + 40) = v158;
     a2[-1].n128_u8[8] = v157;
     *v9 = a5;
-    v159 = *(v12 + 24);
-    if (v159 < *v12 || v159 == *v12 && (a5.n128_u32[0] = *(v12 + 28), a5.n128_f32[0] < *(v12 + 4)))
+    v159 = *(selfCopy + 24);
+    if (v159 < *selfCopy || v159 == *selfCopy && (a5.n128_u32[0] = *(selfCopy + 28), a5.n128_f32[0] < *(selfCopy + 4)))
     {
-      v219 = *(v12 + 16);
-      v194 = *v12;
-      *v12 = *v95;
-      *(v12 + 16) = *(v12 + 40);
+      v219 = *(selfCopy + 16);
+      v194 = *selfCopy;
+      *selfCopy = *v95;
+      *(selfCopy + 16) = *(selfCopy + 40);
       a5.n128_u32[0] = v194.n128_u32[0];
       *v95 = v194;
-      *(v12 + 40) = v219;
+      *(selfCopy + 40) = v219;
     }
   }
 
   return a5.n128_f32[0];
 }
 
-- (void)findAllOverlapRangesBetweenRoutes:(uint64_t)a1
+- (void)findAllOverlapRangesBetweenRoutes:(uint64_t)routes
 {
   if (__n == 1)
   {
@@ -7013,7 +7013,7 @@ LABEL_122:
     }
   }
 
-  v4 = *(a1 + 8);
+  v4 = *(routes + 8);
   if (prime > *&v4)
   {
 LABEL_6:
@@ -7027,7 +7027,7 @@ LABEL_6:
 
   if (prime < *&v4)
   {
-    v5 = vcvtps_u32_f32(*(a1 + 24) / *(a1 + 32));
+    v5 = vcvtps_u32_f32(*(routes + 24) / *(routes + 32));
     if (*&v4 < 3uLL || (v6 = vcnt_s8(v4), v6.i16[0] = vaddlv_u8(v6), v6.u32[0] > 1uLL))
     {
       v5 = std::__next_prime(v5);
@@ -7054,21 +7054,21 @@ LABEL_6:
         goto LABEL_6;
       }
 
-      v8 = *a1;
-      *a1 = 0;
+      v8 = *routes;
+      *routes = 0;
       if (v8)
       {
         operator delete(v8);
       }
 
-      *(a1 + 8) = 0;
+      *(routes + 8) = 0;
     }
   }
 }
 
-- (uint64_t)findAllOverlapRangesBetweenRoutes:(uint64_t)a1
+- (uint64_t)findAllOverlapRangesBetweenRoutes:(uint64_t)routes
 {
-  v2 = *(a1 + 16);
+  v2 = *(routes + 16);
   if (v2)
   {
     do
@@ -7081,24 +7081,24 @@ LABEL_6:
     while (v3);
   }
 
-  v4 = *a1;
-  *a1 = 0;
+  v4 = *routes;
+  *routes = 0;
   if (v4)
   {
     operator delete(v4);
   }
 
-  return a1;
+  return routes;
 }
 
-- (id)findAllDivergenceConvergenceBetweenRoute:(id)a3 andRoute:(id)a4
+- (id)findAllDivergenceConvergenceBetweenRoute:(id)route andRoute:(id)andRoute
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  routeCopy = route;
+  andRouteCopy = andRoute;
   v8 = 0;
-  v60 = v7;
-  if (v6 && v7)
+  v60 = andRouteCopy;
+  if (routeCopy && andRouteCopy)
   {
     v9 = MNGetMNRouteDivergenceLog();
     v10 = os_signpost_id_make_with_pointer(v9, self);
@@ -7108,7 +7108,7 @@ LABEL_6:
     v57 = v10 - 1;
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
-      v67[0] = v6;
+      v67[0] = routeCopy;
       v67[1] = v60;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
       v14 = [(MNRouteDivergenceFinder *)self _routesArrayIdentifierStrings:v13];
@@ -7120,7 +7120,7 @@ LABEL_6:
     *(&buf + 1) = 0;
     v66 = 0;
     *&buf = &buf + 8;
-    v59 = [(MNRouteDivergenceFinder *)self findFirstConvergenceBetweenRoute:v6 fromRouteCoordinate:0 andRoute:v60 fromRouteCoordinate:0];
+    v59 = [(MNRouteDivergenceFinder *)self findFirstConvergenceBetweenRoute:routeCopy fromRouteCoordinate:0 andRoute:v60 fromRouteCoordinate:0];
     if ([v59 count] == 2)
     {
       v15 = [v59 objectAtIndexedSubscript:0];
@@ -7130,15 +7130,15 @@ LABEL_6:
       if (IsValid)
       {
         v17 = [v59 objectAtIndexedSubscript:0];
-        v63 = [v17 routeCoordinate];
+        routeCoordinate = [v17 routeCoordinate];
         v18 = [v59 objectAtIndexedSubscript:0];
         [v59 objectAtIndexedSubscript:1];
         v62 = *v61 = v18;
-        std::__tree<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>>>::__emplace_unique_key_args<geo::PolylineCoordinate,geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>(&buf, v63, *(&v63 + 1));
+        std::__tree<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>>>::__emplace_unique_key_args<geo::PolylineCoordinate,geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>(&buf, routeCoordinate, *(&routeCoordinate + 1));
       }
     }
 
-    v58 = [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:v6 fromRouteCoordinate:0 andRoute:v60 fromRouteCoordinate:0];
+    v58 = [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:routeCopy fromRouteCoordinate:0 andRoute:v60 fromRouteCoordinate:0];
     if ([v58 count] == 2)
     {
       v19 = [v58 objectAtIndexedSubscript:0];
@@ -7148,11 +7148,11 @@ LABEL_6:
       if (v20)
       {
         v21 = [v58 objectAtIndexedSubscript:0];
-        v63 = [v21 routeCoordinate];
+        routeCoordinate = [v21 routeCoordinate];
         v22 = [v58 objectAtIndexedSubscript:0];
         [v58 objectAtIndexedSubscript:1];
         v62 = *v61 = v22;
-        std::__tree<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>>>::__emplace_unique_key_args<geo::PolylineCoordinate,geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>(&buf, v63, *(&v63 + 1));
+        std::__tree<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>>>::__emplace_unique_key_args<geo::PolylineCoordinate,geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>(&buf, routeCoordinate, *(&routeCoordinate + 1));
       }
     }
 
@@ -7187,29 +7187,29 @@ LABEL_6:
       {
         v40 = *(v24 + 5);
         v41 = *(v24 + 6);
-        v42 = [v6 routeCoordinateForDistance:objc_msgSend(v40 afterRouteCoordinate:{"routeCoordinate"), self->_distancePaddingWhenAlternating}];
+        v42 = [routeCopy routeCoordinateForDistance:objc_msgSend(v40 afterRouteCoordinate:{"routeCoordinate"), self->_distancePaddingWhenAlternating}];
         v43 = [v60 routeCoordinateForDistance:objc_msgSend(v41 afterRouteCoordinate:{"routeCoordinate"), self->_distancePaddingWhenAlternating}];
-        v44 = [v6 endRouteCoordinate];
-        if (v42 > v44 || v42 == v44 && *(&v42 + 1) >= *(&v44 + 1))
+        endRouteCoordinate = [routeCopy endRouteCoordinate];
+        if (v42 > endRouteCoordinate || v42 == endRouteCoordinate && *(&v42 + 1) >= *(&endRouteCoordinate + 1))
         {
           break;
         }
 
-        v29 = [v60 endRouteCoordinate];
-        if (v43 > v29 || v43 == v29 && *(&v43 + 1) >= *(&v29 + 1))
+        endRouteCoordinate2 = [v60 endRouteCoordinate];
+        if (v43 > endRouteCoordinate2 || v43 == endRouteCoordinate2 && *(&v43 + 1) >= *(&endRouteCoordinate2 + 1))
         {
           break;
         }
 
-        v30 = [v40 resultType];
-        if (v30 == 1)
+        resultType = [v40 resultType];
+        if (resultType == 1)
         {
-          [(MNRouteDivergenceFinder *)self findFirstConvergenceBetweenRoute:v6 fromRouteCoordinate:v42 andRoute:v60 fromRouteCoordinate:v43];
+          [(MNRouteDivergenceFinder *)self findFirstConvergenceBetweenRoute:routeCopy fromRouteCoordinate:v42 andRoute:v60 fromRouteCoordinate:v43];
         }
 
         else
         {
-          [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:v6 fromRouteCoordinate:v42 andRoute:v60 fromRouteCoordinate:v43];
+          [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:routeCopy fromRouteCoordinate:v42 andRoute:v60 fromRouteCoordinate:v43];
         }
         v31 = ;
         if ([v31 count] != 2)
@@ -7233,7 +7233,7 @@ LABEL_6:
           goto LABEL_43;
         }
 
-        if (v30 == 1)
+        if (resultType == 1)
         {
           v35 = 2;
         }
@@ -7261,11 +7261,11 @@ LABEL_43:
         }
 
         v38 = [v31 objectAtIndexedSubscript:0];
-        v63 = [v38 routeCoordinate];
+        routeCoordinate = [v38 routeCoordinate];
         v39 = [v31 objectAtIndexedSubscript:0];
         [v31 objectAtIndexedSubscript:1];
         v62 = *v61 = v39;
-        v24 = std::__tree<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>>>::__emplace_unique_key_args<geo::PolylineCoordinate,geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>(&buf, v63, *(&v63 + 1));
+        v24 = std::__tree<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::__map_value_compare<geo::PolylineCoordinate,std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>,std::less<geo::PolylineCoordinate>,true>,std::allocator<std::__value_type<geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>>>::__emplace_unique_key_args<geo::PolylineCoordinate,geo::PolylineCoordinate,std::pair<MNRouteDivergenceResult * {__strong},MNRouteDivergenceResult * {__strong}>>(&buf, routeCoordinate, *(&routeCoordinate + 1));
       }
 
       v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:v66];
@@ -7308,13 +7308,13 @@ LABEL_43:
       }
 
       v49 = objc_alloc_init(MNRouteDivergenceResults);
-      v50 = [v6 uniqueRouteID];
-      [(MNRouteDivergenceResults *)v49 setRouteID:v50];
+      uniqueRouteID = [routeCopy uniqueRouteID];
+      [(MNRouteDivergenceResults *)v49 setRouteID:uniqueRouteID];
 
       [(MNRouteDivergenceResults *)v49 setResults:v26];
       v51 = objc_alloc_init(MNRouteDivergenceResults);
-      v52 = [v60 uniqueRouteID];
-      [(MNRouteDivergenceResults *)v51 setRouteID:v52];
+      uniqueRouteID2 = [v60 uniqueRouteID];
+      [(MNRouteDivergenceResults *)v51 setRouteID:uniqueRouteID2];
 
       [(MNRouteDivergenceResults *)v51 setResults:v45];
       v53 = MNGetMNRouteDivergenceLog();
@@ -7351,61 +7351,61 @@ LABEL_43:
   return v8;
 }
 
-- (id)findFirstUniqueRangeBetweenRoute:(id)a3 andRoute:(id)a4
+- (id)findFirstUniqueRangeBetweenRoute:(id)route andRoute:(id)andRoute
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  routeCopy = route;
+  andRouteCopy = andRoute;
+  v8 = andRouteCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (routeCopy && andRouteCopy)
   {
     v10 = objc_alloc_init(MNRouteOverlapResult);
-    v11 = [v6 uniqueRouteID];
-    [(MNRouteOverlapResult *)v10 setRouteID:v11];
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    [(MNRouteOverlapResult *)v10 setRouteID:uniqueRouteID];
 
-    -[MNRouteOverlapResult setRouteRange:](v10, "setRouteRange:", 0, [v6 endRouteCoordinate]);
+    -[MNRouteOverlapResult setRouteRange:](v10, "setRouteRange:", 0, [routeCopy endRouteCoordinate]);
     v12 = objc_alloc_init(MNRouteOverlapResult);
-    v13 = [v8 uniqueRouteID];
-    [(MNRouteOverlapResult *)v12 setRouteID:v13];
+    uniqueRouteID2 = [v8 uniqueRouteID];
+    [(MNRouteOverlapResult *)v12 setRouteID:uniqueRouteID2];
 
     -[MNRouteOverlapResult setRouteRange:](v12, "setRouteRange:", 0, [v8 endRouteCoordinate]);
     v30[0] = v10;
     v30[1] = v12;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-    v14 = [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:v6 andRoute:v8];
+    v14 = [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:routeCopy andRoute:v8];
     v15 = [v14 objectAtIndexedSubscript:0];
-    v16 = [v15 routeCoordinate];
+    routeCoordinate = [v15 routeCoordinate];
 
     v17 = [v14 objectAtIndexedSubscript:1];
-    v18 = [v17 routeCoordinate];
+    routeCoordinate2 = [v17 routeCoordinate];
 
     if ((GEOPolylineCoordinateIsInvalid() & 1) == 0 && (GEOPolylineCoordinateIsInvalid() & 1) == 0)
     {
-      v28 = -[MNRouteDivergenceFinder findFirstConvergenceBetweenRoute:fromRouteCoordinate:andRoute:fromRouteCoordinate:](self, "findFirstConvergenceBetweenRoute:fromRouteCoordinate:andRoute:fromRouteCoordinate:", v6, [v6 routeCoordinateForDistance:v16 afterRouteCoordinate:self->_distancePaddingWhenAlternating], v8, objc_msgSend(v8, "routeCoordinateForDistance:afterRouteCoordinate:", v18, self->_distancePaddingWhenAlternating));
+      v28 = -[MNRouteDivergenceFinder findFirstConvergenceBetweenRoute:fromRouteCoordinate:andRoute:fromRouteCoordinate:](self, "findFirstConvergenceBetweenRoute:fromRouteCoordinate:andRoute:fromRouteCoordinate:", routeCopy, [routeCopy routeCoordinateForDistance:routeCoordinate afterRouteCoordinate:self->_distancePaddingWhenAlternating], v8, objc_msgSend(v8, "routeCoordinateForDistance:afterRouteCoordinate:", routeCoordinate2, self->_distancePaddingWhenAlternating));
       v19 = [v28 objectAtIndexedSubscript:0];
-      v20 = [v19 routeCoordinate];
+      routeCoordinate3 = [v19 routeCoordinate];
 
       v21 = [v28 objectAtIndexedSubscript:1];
-      v29 = [v21 routeCoordinate];
+      routeCoordinate4 = [v21 routeCoordinate];
 
       if ((GEOPolylineCoordinateIsInvalid() & 1) != 0 || GEOPolylineCoordinateIsInvalid())
       {
-        v20 = [v6 endRouteCoordinate];
-        v29 = [v8 endRouteCoordinate];
+        routeCoordinate3 = [routeCopy endRouteCoordinate];
+        routeCoordinate4 = [v8 endRouteCoordinate];
       }
 
       v22 = objc_alloc_init(MEMORY[0x1E69A23A8]);
       [(MNRouteOverlapResult *)v10 setUniqueRanges:v22];
 
-      v23 = [(MNRouteOverlapResult *)v10 uniqueRanges];
-      [v23 addCoordinateRange:{v16, v20}];
+      uniqueRanges = [(MNRouteOverlapResult *)v10 uniqueRanges];
+      [uniqueRanges addCoordinateRange:{routeCoordinate, routeCoordinate3}];
 
       v24 = objc_alloc_init(MEMORY[0x1E69A23A8]);
       [(MNRouteOverlapResult *)v12 setUniqueRanges:v24];
 
-      v25 = [(MNRouteOverlapResult *)v12 uniqueRanges];
-      [v25 addCoordinateRange:{v18, v29}];
+      uniqueRanges2 = [(MNRouteOverlapResult *)v12 uniqueRanges];
+      [uniqueRanges2 addCoordinateRange:{routeCoordinate2, routeCoordinate4}];
     }
   }
 
@@ -7414,24 +7414,24 @@ LABEL_43:
   return v9;
 }
 
-- (id)findFirstConvergenceBetweenRoute:(id)a3 fromRouteCoordinate:(PolylineCoordinate)a4 andRoute:(id)a5 fromRouteCoordinate:(PolylineCoordinate)a6
+- (id)findFirstConvergenceBetweenRoute:(id)route fromRouteCoordinate:(PolylineCoordinate)coordinate andRoute:(id)andRoute fromRouteCoordinate:(PolylineCoordinate)routeCoordinate
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
+  routeCopy = route;
+  andRouteCopy = andRoute;
+  v12 = andRouteCopy;
   v13 = 0;
-  if (v10 && v11)
+  if (routeCopy && andRouteCopy)
   {
     v22 = 0xBF80000000000000;
     v23 = 0xBF80000000000000;
-    [(MNRouteDivergenceFinder *)self _findFirstConvergenceBetweenRoute:v10 fromRouteCoordinate:a4 andRoute:v11 fromRouteCoordinate:a6 outRouteCoordinate:&v23 outRouteCoordinate:&v22];
+    [(MNRouteDivergenceFinder *)self _findFirstConvergenceBetweenRoute:routeCopy fromRouteCoordinate:coordinate andRoute:andRouteCopy fromRouteCoordinate:routeCoordinate outRouteCoordinate:&v23 outRouteCoordinate:&v22];
     v14 = objc_alloc_init(MNRouteDivergenceResult);
-    v15 = [v10 uniqueRouteID];
-    [(MNRouteDivergenceResult *)v14 setRouteID:v15];
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    [(MNRouteDivergenceResult *)v14 setRouteID:uniqueRouteID];
 
     [(MNRouteDivergenceResult *)v14 setRouteCoordinate:v23];
-    [v10 pointAtRouteCoordinate:v23];
+    [routeCopy pointAtRouteCoordinate:v23];
     [(MNRouteDivergenceResult *)v14 setLocationCoordinate:?];
     if (GEOPolylineCoordinateIsValid())
     {
@@ -7445,8 +7445,8 @@ LABEL_43:
 
     [(MNRouteDivergenceResult *)v14 setResultType:v16];
     v17 = objc_alloc_init(MNRouteDivergenceResult);
-    v18 = [v12 uniqueRouteID];
-    [(MNRouteDivergenceResult *)v17 setRouteID:v18];
+    uniqueRouteID2 = [v12 uniqueRouteID];
+    [(MNRouteDivergenceResult *)v17 setRouteID:uniqueRouteID2];
 
     [(MNRouteDivergenceResult *)v17 setRouteCoordinate:v22];
     [v12 pointAtRouteCoordinate:v22];
@@ -7472,29 +7472,29 @@ LABEL_43:
   return v13;
 }
 
-- (id)findFirstDivergenceBetweenRoute:(id)a3 fromRouteCoordinate:(PolylineCoordinate)a4 andRoute:(id)a5 fromRouteCoordinate:(PolylineCoordinate)a6
+- (id)findFirstDivergenceBetweenRoute:(id)route fromRouteCoordinate:(PolylineCoordinate)coordinate andRoute:(id)andRoute fromRouteCoordinate:(PolylineCoordinate)routeCoordinate
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
+  routeCopy = route;
+  andRouteCopy = andRoute;
+  v12 = andRouteCopy;
   v13 = 0;
-  if (v10 && v11)
+  if (routeCopy && andRouteCopy)
   {
     v20 = 0xBF80000000000000;
     v21 = 0xBF80000000000000;
-    -[MNRouteDivergenceFinder _findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:](self, "_findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:", v10, a4, [v10 endRouteCoordinate], v11, a6, objc_msgSend(v11, "endRouteCoordinate"), &v21, &v20);
+    -[MNRouteDivergenceFinder _findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:](self, "_findFirstDivergenceBetweenRoute:range:andRoute:range:outRouteCoordinate:outRouteCoordinate:", routeCopy, coordinate, [routeCopy endRouteCoordinate], andRouteCopy, routeCoordinate, objc_msgSend(andRouteCopy, "endRouteCoordinate"), &v21, &v20);
     v14 = objc_alloc_init(MNRouteDivergenceResult);
-    v15 = [v10 uniqueRouteID];
-    [(MNRouteDivergenceResult *)v14 setRouteID:v15];
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    [(MNRouteDivergenceResult *)v14 setRouteID:uniqueRouteID];
 
     [(MNRouteDivergenceResult *)v14 setRouteCoordinate:v21];
-    [v10 pointAtRouteCoordinate:v21];
+    [routeCopy pointAtRouteCoordinate:v21];
     [(MNRouteDivergenceResult *)v14 setLocationCoordinate:?];
     [(MNRouteDivergenceResult *)v14 setResultType:GEOPolylineCoordinateIsValid()];
     v16 = objc_alloc_init(MNRouteDivergenceResult);
-    v17 = [v12 uniqueRouteID];
-    [(MNRouteDivergenceResult *)v16 setRouteID:v17];
+    uniqueRouteID2 = [v12 uniqueRouteID];
+    [(MNRouteDivergenceResult *)v16 setRouteID:uniqueRouteID2];
 
     [(MNRouteDivergenceResult *)v16 setRouteCoordinate:v20];
     [v12 pointAtRouteCoordinate:v20];
@@ -7510,16 +7510,16 @@ LABEL_43:
   return v13;
 }
 
-- (id)findFirstConvergenceBetweenRoute:(id)a3 andRoute:(id)a4
+- (id)findFirstConvergenceBetweenRoute:(id)route andRoute:(id)andRoute
 {
-  v4 = [(MNRouteDivergenceFinder *)self findFirstConvergenceBetweenRoute:a3 fromRouteCoordinate:0 andRoute:a4 fromRouteCoordinate:0];
+  v4 = [(MNRouteDivergenceFinder *)self findFirstConvergenceBetweenRoute:route fromRouteCoordinate:0 andRoute:andRoute fromRouteCoordinate:0];
 
   return v4;
 }
 
-- (id)findFirstDivergenceBetweenRoute:(id)a3 andRoute:(id)a4
+- (id)findFirstDivergenceBetweenRoute:(id)route andRoute:(id)andRoute
 {
-  v4 = [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:a3 fromRouteCoordinate:0 andRoute:a4 fromRouteCoordinate:0];
+  v4 = [(MNRouteDivergenceFinder *)self findFirstDivergenceBetweenRoute:route fromRouteCoordinate:0 andRoute:andRoute fromRouteCoordinate:0];
 
   return v4;
 }

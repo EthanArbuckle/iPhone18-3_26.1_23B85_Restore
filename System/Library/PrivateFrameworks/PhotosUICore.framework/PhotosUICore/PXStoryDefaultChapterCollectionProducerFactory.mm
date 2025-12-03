@@ -1,33 +1,33 @@
 @interface PXStoryDefaultChapterCollectionProducerFactory
-- (id)chapterCollectionProducerForConfiguration:(id)a3;
+- (id)chapterCollectionProducerForConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryDefaultChapterCollectionProducerFactory
 
-- (id)chapterCollectionProducerForConfiguration:(id)a3
+- (id)chapterCollectionProducerForConfiguration:(id)configuration
 {
-  v3 = a3;
-  if (([v3 options] & 2) == 0)
+  configurationCopy = configuration;
+  if (([configurationCopy options] & 2) == 0)
   {
-    v4 = [v3 storyQueue];
+    storyQueue = [configurationCopy storyQueue];
     v5 = +[PXStoryChapterSettings sharedInstance];
-    v6 = [v5 chapterCollectionProducerKind];
-    if (v6 == 3)
+    chapterCollectionProducerKind = [v5 chapterCollectionProducerKind];
+    if (chapterCollectionProducerKind == 3)
     {
-      v9 = -[PXStoryDummyCountChapterCollectionProducer initWithCountInterval:storyQueue:]([PXStoryDummyCountChapterCollectionProducer alloc], "initWithCountInterval:storyQueue:", [v5 dummyChaptersCountInterval], v4);
+      v9 = -[PXStoryDummyCountChapterCollectionProducer initWithCountInterval:storyQueue:]([PXStoryDummyCountChapterCollectionProducer alloc], "initWithCountInterval:storyQueue:", [v5 dummyChaptersCountInterval], storyQueue);
     }
 
     else
     {
-      if (v6 != 2)
+      if (chapterCollectionProducerKind != 2)
       {
-        if (v6 == 1)
+        if (chapterCollectionProducerKind == 1)
         {
-          v7 = [v3 assetCollection];
+          assetCollection = [configurationCopy assetCollection];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v8 = [[PXStoryMemoryChapterCollectionProducer alloc] initWithMemory:v7 storyQueue:v4];
+            v8 = [[PXStoryMemoryChapterCollectionProducer alloc] initWithMemory:assetCollection storyQueue:storyQueue];
           }
 
           else
@@ -42,8 +42,8 @@
         }
 
 LABEL_13:
-        v10 = [v3 errorReporter];
-        [(PXStoryTransientChapterCollectionProducer *)v8 setErrorReporter:v10];
+        errorReporter = [configurationCopy errorReporter];
+        [(PXStoryTransientChapterCollectionProducer *)v8 setErrorReporter:errorReporter];
 
         if (v8)
         {
@@ -53,7 +53,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = -[PXStoryDummyDailyChapterCollectionProducer initWithDayInterval:storyQueue:]([PXStoryDummyDailyChapterCollectionProducer alloc], "initWithDayInterval:storyQueue:", [v5 dummyChaptersDayInterval], v4);
+      v9 = -[PXStoryDummyDailyChapterCollectionProducer initWithDayInterval:storyQueue:]([PXStoryDummyDailyChapterCollectionProducer alloc], "initWithDayInterval:storyQueue:", [v5 dummyChaptersDayInterval], storyQueue);
     }
 
     v8 = v9;

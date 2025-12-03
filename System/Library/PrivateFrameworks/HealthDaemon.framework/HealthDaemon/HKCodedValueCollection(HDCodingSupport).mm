@@ -18,8 +18,8 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v4 codedValues];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    codedValues = [v4 codedValues];
+    v7 = [codedValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -30,7 +30,7 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(codedValues);
           }
 
           v11 = [MEMORY[0x277CCD1A0] createWithCodable:*(*(&v16 + 1) + 8 * i)];
@@ -45,7 +45,7 @@
           [v5 addObject:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [codedValues countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -72,8 +72,8 @@ LABEL_13:
 - (HDCodableCodedValueCollection)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableCodedValueCollection);
-  v3 = [a1 codedValues];
-  v4 = [v3 hk_map:&__block_literal_global_482];
+  codedValues = [self codedValues];
+  v4 = [codedValues hk_map:&__block_literal_global_482];
   v5 = [v4 mutableCopy];
   [(HDCodableCodedValueCollection *)v2 setCodedValues:v5];
 

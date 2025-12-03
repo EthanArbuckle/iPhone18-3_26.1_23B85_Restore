@@ -1,23 +1,23 @@
 @interface NTKFaceEditView
-+ (CGRect)screenBottomAlignedKeylineLabelFrameForText:(id)a3;
-- (CGPoint)pageOffsetFromCenter:(int64_t)a3;
-- (CGRect)cachedScreenBottomAlignedKeylineLabelFrameForText:(id)a3;
++ (CGRect)screenBottomAlignedKeylineLabelFrameForText:(id)text;
+- (CGPoint)pageOffsetFromCenter:(int64_t)center;
+- (CGRect)cachedScreenBottomAlignedKeylineLabelFrameForText:(id)text;
 - (CGRect)colorPickerFrame;
-- (CGRect)keylineFrameAtSlot:(id)a3;
-- (NTKFaceEditView)initWithFace:(id)a3;
+- (CGRect)keylineFrameAtSlot:(id)slot;
+- (NTKFaceEditView)initWithFace:(id)face;
 - (NTKFaceEditViewDelegate)delegate;
 @end
 
 @implementation NTKFaceEditView
 
-- (NTKFaceEditView)initWithFace:(id)a3
+- (NTKFaceEditView)initWithFace:(id)face
 {
   v4.receiver = self;
   v4.super_class = NTKFaceEditView;
-  return [(NTKFaceEditView *)&v4 initWithFrame:a3, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  return [(NTKFaceEditView *)&v4 initWithFrame:face, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 }
 
-- (CGPoint)pageOffsetFromCenter:(int64_t)a3
+- (CGPoint)pageOffsetFromCenter:(int64_t)center
 {
   v3 = *MEMORY[0x277CBF348];
   v4 = *(MEMORY[0x277CBF348] + 8);
@@ -26,7 +26,7 @@
   return result;
 }
 
-+ (CGRect)screenBottomAlignedKeylineLabelFrameForText:(id)a3
++ (CGRect)screenBottomAlignedKeylineLabelFrameForText:(id)text
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (CGRect)cachedScreenBottomAlignedKeylineLabelFrameForText:(id)a3
+- (CGRect)cachedScreenBottomAlignedKeylineLabelFrameForText:(id)text
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -65,7 +65,7 @@
   return result;
 }
 
-- (CGRect)keylineFrameAtSlot:(id)a3
+- (CGRect)keylineFrameAtSlot:(id)slot
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);

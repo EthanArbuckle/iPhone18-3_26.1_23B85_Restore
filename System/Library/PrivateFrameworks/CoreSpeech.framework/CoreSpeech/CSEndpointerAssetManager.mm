@@ -1,33 +1,33 @@
 @interface CSEndpointerAssetManager
 + (id)_getFakeEndpointAsset;
-+ (id)_getOEPAssetWithLanguage:(id)a3;
++ (id)_getOEPAssetWithLanguage:(id)language;
 + (id)sharedManager;
-- (BOOL)_isOSDIncludedInAsset:(id)a3;
+- (BOOL)_isOSDIncludedInAsset:(id)asset;
 - (CSEndpointerAssetManager)init;
-- (id)_fetchEndpointMobileAssetWithLanguage:(id)a3;
+- (id)_fetchEndpointMobileAssetWithLanguage:(id)language;
 - (id)_getCurrentHEPAsset;
-- (id)_getModelPathFromInstallationStatusString:(id)a3;
+- (id)_getModelPathFromInstallationStatusString:(id)string;
 - (id)getCurrentEndpointerAsset;
 - (id)getCurrentOSDAsset;
-- (void)CSAssetManagerDidDownloadNewAsset:(id)a3;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
+- (void)CSAssetManagerDidDownloadNewAsset:(id)asset;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
 - (void)_notifyAssetsUpdate;
-- (void)_notifyAssetsUpdateForObserver:(id)a3;
+- (void)_notifyAssetsUpdateForObserver:(id)observer;
 - (void)_registerForAssetUpdateNotifications;
-- (void)_updateAssetWithCurrentLanguageForAssetType:(unint64_t)a3;
-- (void)_updateAssetWithLanguage:(id)a3 assetType:(unint64_t)a4;
+- (void)_updateAssetWithCurrentLanguageForAssetType:(unint64_t)type;
+- (void)_updateAssetWithLanguage:(id)language assetType:(unint64_t)type;
 - (void)_updateEndpointerAssetsIfNeeded;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CSEndpointerAssetManager
 
-- (BOOL)_isOSDIncludedInAsset:(id)a3
+- (BOOL)_isOSDIncludedInAsset:(id)asset
 {
-  v3 = [a3 resourcePath];
-  v4 = [v3 stringByAppendingPathComponent:@"SPG.nnet"];
+  resourcePath = [asset resourcePath];
+  v4 = [resourcePath stringByAppendingPathComponent:@"SPG.nnet"];
 
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:v4];
@@ -35,13 +35,13 @@
   return v6;
 }
 
-- (id)_getModelPathFromInstallationStatusString:(id)a3
+- (id)_getModelPathFromInstallationStatusString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (stringCopy)
   {
-    v5 = [v4 componentsSeparatedByString:@"ModelInfo="];
+    v5 = [stringCopy componentsSeparatedByString:@"ModelInfo="];
     if ([v5 count] == 2)
     {
       v6 = [v5 objectAtIndexedSubscript:1];
@@ -72,23 +72,23 @@
   return v8;
 }
 
-- (id)_fetchEndpointMobileAssetWithLanguage:(id)a3
+- (id)_fetchEndpointMobileAssetWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [v5 isEndpointAssetOverridingEnabled];
+  isEndpointAssetOverridingEnabled = [v5 isEndpointAssetOverridingEnabled];
 
-  if (v6)
+  if (isEndpointAssetOverridingEnabled)
   {
-    v7 = [objc_opt_class() _getFakeEndpointAsset];
+    _getFakeEndpointAsset = [objc_opt_class() _getFakeEndpointAsset];
   }
 
   else
   {
     v8 = +[NSDate date];
     v9 = +[CSAssetManager sharedManager];
-    v7 = [v9 assetOfType:1 language:v4];
+    _getFakeEndpointAsset = [v9 assetOfType:1 language:languageCopy];
 
     v10 = +[NSDate date];
     v11 = CSLogCategoryEP;
@@ -104,12 +104,12 @@
     }
   }
 
-  return v7;
+  return _getFakeEndpointAsset;
 }
 
-- (void)_notifyAssetsUpdateForObserver:(id)a3
+- (void)_notifyAssetsUpdateForObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_currentOEPAsset && [(CSEndpointerAssetManager *)self _isOSDIncludedInAsset:?])
   {
@@ -139,7 +139,7 @@
     v10 = 136315906;
     v11 = "[CSEndpointerAssetManager _notifyAssetsUpdateForObserver:]";
     v12 = 2114;
-    v13 = v4;
+    v13 = observerCopy;
     v14 = 2114;
     v15 = v5;
     v16 = 2114;
@@ -147,8 +147,8 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s observer: %{public}@, endpointAsset: %{public}@, osdAsset: %{public}@", &v10, 0x2Au);
   }
 
-  [v4 endpointerAssetManagerDidUpdateAsset:v5];
-  [v4 endpointerAssetManagerDidUpdateOSDAsset:v6];
+  [observerCopy endpointerAssetManagerDidUpdateAsset:v5];
+  [observerCopy endpointerAssetManagerDidUpdateOSDAsset:v6];
 }
 
 - (void)_notifyAssetsUpdate
@@ -186,20 +186,20 @@
   }
 }
 
-- (void)_updateAssetWithLanguage:(id)a3 assetType:(unint64_t)a4
+- (void)_updateAssetWithLanguage:(id)language assetType:(unint64_t)type
 {
-  v6 = a3;
+  languageCopy = language;
   dispatch_assert_queue_V2(self->_queue);
   v7 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"Invalid CSEndpointerAssetType";
-    if (a4 == 1)
+    if (type == 1)
     {
       v8 = @"HEP";
     }
 
-    if (!a4)
+    if (!type)
     {
       v8 = @"OEP";
     }
@@ -208,23 +208,23 @@
     v15 = 136315650;
     v16 = "[CSEndpointerAssetManager _updateAssetWithLanguage:assetType:]";
     v17 = 2112;
-    v18 = v9;
+    typeCopy = v9;
     v19 = 2112;
-    v20 = v6;
+    v20 = languageCopy;
     v10 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Updating %@ asset with language: %@", &v15, 0x20u);
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v11 = [(CSEndpointerAssetManager *)self _fetchEndpointMobileAssetWithLanguage:v6];
+    v11 = [(CSEndpointerAssetManager *)self _fetchEndpointMobileAssetWithLanguage:languageCopy];
     v12 = 16;
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!type)
   {
-    v11 = [objc_opt_class() _getOEPAssetWithLanguage:v6];
+    v11 = [objc_opt_class() _getOEPAssetWithLanguage:languageCopy];
     v12 = 24;
 LABEL_11:
     v13 = *(&self->super.isa + v12);
@@ -240,18 +240,18 @@ LABEL_11:
     v15 = 136315394;
     v16 = "[CSEndpointerAssetManager _updateAssetWithLanguage:assetType:]";
     v17 = 2048;
-    v18 = a4;
+    typeCopy = type;
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Invalid CSEndpointerAssetType: %lu", &v15, 0x16u);
   }
 
 LABEL_14:
 }
 
-- (void)_updateAssetWithCurrentLanguageForAssetType:(unint64_t)a3
+- (void)_updateAssetWithCurrentLanguageForAssetType:(unint64_t)type
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
-  [(CSEndpointerAssetManager *)self _updateAssetWithLanguage:v5 assetType:a3];
+  [(CSEndpointerAssetManager *)self _updateAssetWithLanguage:v5 assetType:type];
 }
 
 - (void)_updateEndpointerAssetsIfNeeded
@@ -293,13 +293,13 @@ LABEL_6:
     if (v9)
     {
       v10 = v8;
-      v11 = [(CSAsset *)v7 path];
+      path = [(CSAsset *)v7 path];
       v14 = 136315650;
       v15 = "[CSEndpointerAssetManager _getCurrentHEPAsset]";
       v16 = 2114;
       v17 = v7;
       v18 = 2114;
-      v19 = v11;
+      v19 = path;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s HEP Asset: %{public}@, path: %{public}@", &v14, 0x20u);
     }
 
@@ -415,7 +415,7 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)CSAssetManagerDidDownloadNewAsset:(id)a3
+- (void)CSAssetManagerDidDownloadNewAsset:(id)asset
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -426,17 +426,17 @@ LABEL_7:
   dispatch_async(queue, block);
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C1AC4;
   v8[3] = &unk_100253C48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = changedCopy;
+  selfCopy = self;
+  v7 = changedCopy;
   dispatch_async(queue, v8);
 }
 
@@ -492,31 +492,31 @@ LABEL_7:
   return v3;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C20A4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C2148;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -562,9 +562,9 @@ LABEL_7:
 + (id)_getFakeEndpointAsset
 {
   v2 = +[CSFPreferences sharedPreferences];
-  v3 = [v2 fakeEndpointAssetPath];
+  fakeEndpointAssetPath = [v2 fakeEndpointAssetPath];
 
-  v4 = [CSAsset assetForAssetType:1 resourcePath:v3 configVersion:@"0.0" assetProvider:1];
+  v4 = [CSAsset assetForAssetType:1 resourcePath:fakeEndpointAssetPath configVersion:@"0.0" assetProvider:1];
   v5 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
   {
@@ -578,13 +578,13 @@ LABEL_7:
   return v4;
 }
 
-+ (id)_getOEPAssetWithLanguage:(id)a3
++ (id)_getOEPAssetWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [v5 isEndpointAssetBypassTrialEnabled];
+  isEndpointAssetBypassTrialEnabled = [v5 isEndpointAssetBypassTrialEnabled];
 
-  if (v6)
+  if (isEndpointAssetBypassTrialEnabled)
   {
     v7 = CSLogCategoryEP;
     if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
@@ -594,23 +594,23 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Bypass Trial Asset", buf, 0xCu);
     }
 
-    v8 = 0;
+    _getFakeEndpointAsset = 0;
   }
 
   else
   {
     v9 = +[CSFPreferences sharedPreferences];
-    v10 = [v9 isEndpointAssetOverridingEnabled];
+    isEndpointAssetOverridingEnabled = [v9 isEndpointAssetOverridingEnabled];
 
-    if (v10)
+    if (isEndpointAssetOverridingEnabled)
     {
-      v8 = [a1 _getFakeEndpointAsset];
+      _getFakeEndpointAsset = [self _getFakeEndpointAsset];
     }
 
     else
     {
       v11 = +[NSDate date];
-      v12 = [[SFEntitledAssetConfig alloc] initWithAssetType:3 language:v4 regionId:0];
+      v12 = [[SFEntitledAssetConfig alloc] initWithAssetType:3 language:languageCopy regionId:0];
       v13 = +[SFEntitledAssetManager sharedInstance];
       v14 = [v13 installedAssetWithConfig:v12];
 
@@ -630,11 +630,11 @@ LABEL_7:
           if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
           {
             v22 = v21;
-            v23 = [v12 language];
+            language = [v12 language];
             *buf = 136316162;
             v35 = "+[CSEndpointerAssetManager _getOEPAssetWithLanguage:]";
             v36 = 2112;
-            v37 = v23;
+            v37 = language;
             v38 = 2114;
             v39 = v15;
             v40 = 2114;
@@ -658,7 +658,7 @@ LABEL_7:
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%s Elapsed time to get OEP assets: %{public}f seconds", buf, 0x16u);
           }
 
-          v8 = v24;
+          _getFakeEndpointAsset = v24;
         }
 
         else
@@ -673,7 +673,7 @@ LABEL_7:
             _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%s File does not exist: %{public}@", buf, 0x16u);
           }
 
-          v8 = 0;
+          _getFakeEndpointAsset = 0;
         }
       }
 
@@ -683,20 +683,20 @@ LABEL_7:
         if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_ERROR))
         {
           v32 = v29;
-          v33 = [v12 language];
+          language2 = [v12 language];
           *buf = 136315394;
           v35 = "+[CSEndpointerAssetManager _getOEPAssetWithLanguage:]";
           v36 = 2112;
-          v37 = v33;
+          v37 = language2;
           _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%s No OEP asset for %@ was found.", buf, 0x16u);
         }
 
-        v8 = 0;
+        _getFakeEndpointAsset = 0;
       }
     }
   }
 
-  return v8;
+  return _getFakeEndpointAsset;
 }
 
 + (id)sharedManager

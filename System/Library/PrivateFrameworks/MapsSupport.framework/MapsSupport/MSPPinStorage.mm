@@ -1,22 +1,22 @@
 @interface MSPPinStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPPinStorage
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -63,20 +63,20 @@
   v8.receiver = self;
   v8.super_class = MSPPinStorage;
   v4 = [(MSPPinStorage *)&v8 description];
-  v5 = [(MSPPinStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPPinStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -128,28 +128,28 @@ LABEL_13:
   droppedPin = self->_droppedPin;
   if (droppedPin)
   {
-    v11 = [(MSPDroppedPin *)droppedPin dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"droppedPin"];
+    dictionaryRepresentation = [(MSPDroppedPin *)droppedPin dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"droppedPin"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v13 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"Unknown Fields"];
+    dictionaryRepresentation2 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"Unknown Fields"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -157,7 +157,7 @@ LABEL_13:
   {
     position = self->_position;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -178,40 +178,40 @@ LABEL_5:
 
   timestamp = self->_timestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
   if (self->_droppedPin)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = *&self->_position;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 2) = *&self->_position;
+    *(toCopy + 52) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -230,27 +230,27 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 3) = *&self->_timestamp;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 3) = *&self->_timestamp;
+  *(toCopy + 52) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 12) = self->_type;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 12) = self->_type;
+    *(toCopy + 52) |= 4u;
   }
 
 LABEL_7:
   if (self->_droppedPin)
   {
     [v6 setDroppedPin:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -290,7 +290,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(MSPDroppedPin *)self->_droppedPin copyWithZone:a3];
+  v9 = [(MSPDroppedPin *)self->_droppedPin copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
@@ -298,16 +298,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -315,16 +315,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_position != *(v4 + 2))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_position != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_21:
     v8 = 0;
@@ -333,32 +333,32 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_type != *(v4 + 12))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_type != *(equalCopy + 12))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   droppedPin = self->_droppedPin;
-  if (droppedPin | *(v4 + 4))
+  if (droppedPin | *(equalCopy + 4))
   {
     v8 = [(MSPDroppedPin *)droppedPin isEqual:?];
   }
@@ -456,22 +456,22 @@ LABEL_22:
   return v6 ^ v3 ^ v10 ^ v14 ^ [(MSPDroppedPin *)self->_droppedPin hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(MSPPinStorage *)self setIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if (v5)
   {
-    self->_position = *(v4 + 2);
+    self->_position = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -484,23 +484,23 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_timestamp = *(v4 + 3);
+  self->_timestamp = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 52) & 4) != 0)
+  if ((*(fromCopy + 52) & 4) != 0)
   {
 LABEL_6:
-    self->_type = *(v4 + 12);
+    self->_type = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
 LABEL_7:
   droppedPin = self->_droppedPin;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (droppedPin)
   {
     if (v7)

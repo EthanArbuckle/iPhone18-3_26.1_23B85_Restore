@@ -1,278 +1,278 @@
 @interface FHTransaction
 + (id)_allowedCountryNamesForMapsMerchant;
 + (id)fhProperties;
-- (BOOL)bankConnectTransactionHasBeenUpdatedFrom:(id)a3;
+- (BOOL)bankConnectTransactionHasBeenUpdatedFrom:(id)from;
 - (BOOL)hasLocation;
-- (BOOL)isEqual:(id)a3;
-- (FHTransaction)initWithCoder:(id)a3;
-- (FHTransaction)initWithDictionary:(id)a3;
-- (FHTransaction)initWithDictionary:(id)a3 dateFormatter:(id)a4;
-- (FHTransaction)initWithJsonString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FHTransaction)initWithCoder:(id)coder;
+- (FHTransaction)initWithDictionary:(id)dictionary;
+- (FHTransaction)initWithDictionary:(id)dictionary dateFormatter:(id)formatter;
+- (FHTransaction)initWithJsonString:(id)string;
 - (id)description;
 - (id)toDictionary;
-- (id)toJson:(id)a3;
+- (id)toJson:(id)json;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHTransaction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FHTransaction *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(FHTransaction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(FHTransaction *)self transactionServiceIdentifier];
-  [v4 encodeObject:v6 forKey:@"serviceIdentifier"];
+  transactionServiceIdentifier = [(FHTransaction *)self transactionServiceIdentifier];
+  [coderCopy encodeObject:transactionServiceIdentifier forKey:@"serviceIdentifier"];
 
-  v7 = [(FHTransaction *)self financeAccountIdentifier];
-  [v4 encodeObject:v7 forKey:@"financeAccountIdentifier"];
+  financeAccountIdentifier = [(FHTransaction *)self financeAccountIdentifier];
+  [coderCopy encodeObject:financeAccountIdentifier forKey:@"financeAccountIdentifier"];
 
-  v8 = [(FHTransaction *)self financeTransactionIdentifier];
-  [v4 encodeObject:v8 forKey:@"financeTransactionIdentifier"];
+  financeTransactionIdentifier = [(FHTransaction *)self financeTransactionIdentifier];
+  [coderCopy encodeObject:financeTransactionIdentifier forKey:@"financeTransactionIdentifier"];
 
-  v9 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-  [v4 encodeObject:v9 forKey:@"financeTransactionSharedIdentifier"];
+  financeTransactionSharedIdentifier = [(FHTransaction *)self financeTransactionSharedIdentifier];
+  [coderCopy encodeObject:financeTransactionSharedIdentifier forKey:@"financeTransactionSharedIdentifier"];
 
-  [v4 encodeInteger:-[FHTransaction financeTransactionSource](self forKey:{"financeTransactionSource"), @"financeTransactionSource"}];
-  v10 = [(FHTransaction *)self paymentHash];
-  [v4 encodeObject:v10 forKey:@"paymentHash"];
+  [coderCopy encodeInteger:-[FHTransaction financeTransactionSource](self forKey:{"financeTransactionSource"), @"financeTransactionSource"}];
+  paymentHash = [(FHTransaction *)self paymentHash];
+  [coderCopy encodeObject:paymentHash forKey:@"paymentHash"];
 
-  v11 = [(FHTransaction *)self amount];
-  [v4 encodeObject:v11 forKey:@"amount"];
+  amount = [(FHTransaction *)self amount];
+  [coderCopy encodeObject:amount forKey:@"amount"];
 
-  v12 = [(FHTransaction *)self currencyCode];
-  [v4 encodeObject:v12 forKey:@"currencyCode"];
+  currencyCode = [(FHTransaction *)self currencyCode];
+  [coderCopy encodeObject:currencyCode forKey:@"currencyCode"];
 
-  v13 = [(FHTransaction *)self transactionDate];
-  [v4 encodeObject:v13 forKey:@"transactionDate"];
+  transactionDate = [(FHTransaction *)self transactionDate];
+  [coderCopy encodeObject:transactionDate forKey:@"transactionDate"];
 
-  v14 = [(FHTransaction *)self transactionStatusChangedDate];
-  [v4 encodeObject:v14 forKey:@"transactionStatusChangedDate"];
+  transactionStatusChangedDate = [(FHTransaction *)self transactionStatusChangedDate];
+  [coderCopy encodeObject:transactionStatusChangedDate forKey:@"transactionStatusChangedDate"];
 
-  v15 = [(FHTransaction *)self transactionSourceIdentifier];
-  [v4 encodeObject:v15 forKey:@"transactionSourceIdentifier"];
+  transactionSourceIdentifier = [(FHTransaction *)self transactionSourceIdentifier];
+  [coderCopy encodeObject:transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
 
-  [v4 encodeInteger:-[FHTransaction transactionStatus](self forKey:{"transactionStatus"), @"transactionStatus"}];
-  [v4 encodeInteger:-[FHTransaction transactionSource](self forKey:{"transactionSource"), @"transactionSource"}];
-  [v4 encodeInteger:-[FHTransaction cardType](self forKey:{"cardType"), @"cardType"}];
-  [v4 encodeInteger:-[FHTransaction transactionType](self forKey:{"transactionType"), @"transactionType"}];
-  [v4 encodeInteger:-[FHTransaction transactionInternalState](self forKey:{"transactionInternalState"), @"transactionInternalState"}];
-  [v4 encodeInteger:-[FHTransaction accountType](self forKey:{"accountType"), @"accountType"}];
-  v16 = [(FHTransaction *)self timeZone];
-  [v4 encodeObject:v16 forKey:@"timeZone"];
+  [coderCopy encodeInteger:-[FHTransaction transactionStatus](self forKey:{"transactionStatus"), @"transactionStatus"}];
+  [coderCopy encodeInteger:-[FHTransaction transactionSource](self forKey:{"transactionSource"), @"transactionSource"}];
+  [coderCopy encodeInteger:-[FHTransaction cardType](self forKey:{"cardType"), @"cardType"}];
+  [coderCopy encodeInteger:-[FHTransaction transactionType](self forKey:{"transactionType"), @"transactionType"}];
+  [coderCopy encodeInteger:-[FHTransaction transactionInternalState](self forKey:{"transactionInternalState"), @"transactionInternalState"}];
+  [coderCopy encodeInteger:-[FHTransaction accountType](self forKey:{"accountType"), @"accountType"}];
+  timeZone = [(FHTransaction *)self timeZone];
+  [coderCopy encodeObject:timeZone forKey:@"timeZone"];
 
-  v17 = [(FHTransaction *)self altDSID];
-  [v4 encodeObject:v17 forKey:@"altDSID"];
+  altDSID = [(FHTransaction *)self altDSID];
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
 
-  v18 = [(FHTransaction *)self receiptIdentifier];
-  [v4 encodeObject:v18 forKey:@"receiptIdentifier"];
+  receiptIdentifier = [(FHTransaction *)self receiptIdentifier];
+  [coderCopy encodeObject:receiptIdentifier forKey:@"receiptIdentifier"];
 
-  v19 = [(FHTransaction *)self associatedReceiptUniqueID];
-  [v4 encodeObject:v19 forKey:@"associatedReceiptUniqueID"];
+  associatedReceiptUniqueID = [(FHTransaction *)self associatedReceiptUniqueID];
+  [coderCopy encodeObject:associatedReceiptUniqueID forKey:@"associatedReceiptUniqueID"];
 
-  v20 = [(FHTransaction *)self merchantUniqueIdentifier];
-  [v4 encodeObject:v20 forKey:@"merchantUniqueIdentifier"];
+  merchantUniqueIdentifier = [(FHTransaction *)self merchantUniqueIdentifier];
+  [coderCopy encodeObject:merchantUniqueIdentifier forKey:@"merchantUniqueIdentifier"];
 
-  v21 = [(FHTransaction *)self name];
-  [v4 encodeObject:v21 forKey:@"name"];
+  name = [(FHTransaction *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v22 = [(FHTransaction *)self rawName];
-  [v4 encodeObject:v22 forKey:@"rawName"];
+  rawName = [(FHTransaction *)self rawName];
+  [coderCopy encodeObject:rawName forKey:@"rawName"];
 
-  v23 = [(FHTransaction *)self displayName];
-  [v4 encodeObject:v23 forKey:@"displayName"];
+  displayName = [(FHTransaction *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v24 = [(FHTransaction *)self industryCategory];
-  [v4 encodeObject:v24 forKey:@"industryCategory"];
+  industryCategory = [(FHTransaction *)self industryCategory];
+  [coderCopy encodeObject:industryCategory forKey:@"industryCategory"];
 
-  [v4 encodeInteger:-[FHTransaction industryCode](self forKey:{"industryCode"), @"industryCode"}];
-  [v4 encodeInteger:-[FHTransaction category](self forKey:{"category"), @"category"}];
-  v25 = [(FHTransaction *)self street];
-  [v4 encodeObject:v25 forKey:@"street"];
+  [coderCopy encodeInteger:-[FHTransaction industryCode](self forKey:{"industryCode"), @"industryCode"}];
+  [coderCopy encodeInteger:-[FHTransaction category](self forKey:{"category"), @"category"}];
+  street = [(FHTransaction *)self street];
+  [coderCopy encodeObject:street forKey:@"street"];
 
-  v26 = [(FHTransaction *)self city];
-  [v4 encodeObject:v26 forKey:@"city"];
+  city = [(FHTransaction *)self city];
+  [coderCopy encodeObject:city forKey:@"city"];
 
-  v27 = [(FHTransaction *)self state];
-  [v4 encodeObject:v27 forKey:@"state"];
+  state = [(FHTransaction *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
   v28 = [(FHTransaction *)self zip];
-  [v4 encodeObject:v28 forKey:@"zip"];
+  [coderCopy encodeObject:v28 forKey:@"zip"];
 
-  v29 = [(FHTransaction *)self countryCode];
-  [v4 encodeObject:v29 forKey:@"countryCode"];
+  countryCode = [(FHTransaction *)self countryCode];
+  [coderCopy encodeObject:countryCode forKey:@"countryCode"];
 
-  v30 = [(FHTransaction *)self country];
-  [v4 encodeObject:v30 forKey:@"country"];
+  country = [(FHTransaction *)self country];
+  [coderCopy encodeObject:country forKey:@"country"];
 
-  v31 = [(FHTransaction *)self merchantDetailedCategory];
-  [v4 encodeObject:v31 forKey:@"merchantDetailedCategory"];
+  merchantDetailedCategory = [(FHTransaction *)self merchantDetailedCategory];
+  [coderCopy encodeObject:merchantDetailedCategory forKey:@"merchantDetailedCategory"];
 
-  [v4 encodeInt64:-[FHTransaction mapsMerchantID](self forKey:{"mapsMerchantID"), @"mapsMerchantID"}];
-  [v4 encodeInt32:-[FHTransaction mapsMerchantResultProviderID](self forKey:{"mapsMerchantResultProviderID"), @"mapsMerchantResultProviderID"}];
-  [v4 encodeInt64:-[FHTransaction mapsMerchantBrandID](self forKey:{"mapsMerchantBrandID"), @"mapsMerchantBrandID"}];
-  [v4 encodeInt32:-[FHTransaction mapsMerchantBrandResultProviderID](self forKey:{"mapsMerchantBrandResultProviderID"), @"mapsMerchantBrandResultProviderID"}];
-  [v4 encodeBool:-[FHTransaction hasLocation](self forKey:{"hasLocation"), @"hasLocation"}];
-  v32 = [(FHTransaction *)self location];
-  [v4 encodeObject:v32 forKey:@"location"];
+  [coderCopy encodeInt64:-[FHTransaction mapsMerchantID](self forKey:{"mapsMerchantID"), @"mapsMerchantID"}];
+  [coderCopy encodeInt32:-[FHTransaction mapsMerchantResultProviderID](self forKey:{"mapsMerchantResultProviderID"), @"mapsMerchantResultProviderID"}];
+  [coderCopy encodeInt64:-[FHTransaction mapsMerchantBrandID](self forKey:{"mapsMerchantBrandID"), @"mapsMerchantBrandID"}];
+  [coderCopy encodeInt32:-[FHTransaction mapsMerchantBrandResultProviderID](self forKey:{"mapsMerchantBrandResultProviderID"), @"mapsMerchantBrandResultProviderID"}];
+  [coderCopy encodeBool:-[FHTransaction hasLocation](self forKey:{"hasLocation"), @"hasLocation"}];
+  location = [(FHTransaction *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  [v4 encodeInteger:-[FHTransaction disputeType](self forKey:{"disputeType"), @"disputeType"}];
-  [v4 encodeInteger:-[FHTransaction disputeStatus](self forKey:{"disputeStatus"), @"disputeStatus"}];
-  v33 = [(FHTransaction *)self peerPaymentCounterpartHandle];
-  [v4 encodeObject:v33 forKey:@"peerPaymentCounterpartHandle"];
+  [coderCopy encodeInteger:-[FHTransaction disputeType](self forKey:{"disputeType"), @"disputeType"}];
+  [coderCopy encodeInteger:-[FHTransaction disputeStatus](self forKey:{"disputeStatus"), @"disputeStatus"}];
+  peerPaymentCounterpartHandle = [(FHTransaction *)self peerPaymentCounterpartHandle];
+  [coderCopy encodeObject:peerPaymentCounterpartHandle forKey:@"peerPaymentCounterpartHandle"];
 
-  [v4 encodeInteger:-[FHTransaction peerPaymentType](self forKey:{"peerPaymentType"), @"peerPaymentType"}];
-  v34 = [(FHTransaction *)self transactionDescription];
-  [v4 encodeObject:v34 forKey:@"transactionDescription"];
+  [coderCopy encodeInteger:-[FHTransaction peerPaymentType](self forKey:{"peerPaymentType"), @"peerPaymentType"}];
+  transactionDescription = [(FHTransaction *)self transactionDescription];
+  [coderCopy encodeObject:transactionDescription forKey:@"transactionDescription"];
 
-  v35 = [(FHTransaction *)self processedDescription];
-  [v4 encodeObject:v35 forKey:@"processedDescription"];
+  processedDescription = [(FHTransaction *)self processedDescription];
+  [coderCopy encodeObject:processedDescription forKey:@"processedDescription"];
 
-  [v4 encodeBool:-[FHTransaction recurring](self forKey:{"recurring"), @"recurring"}];
-  v36 = [(FHTransaction *)self disputeOpenDate];
-  [v4 encodeObject:v36 forKey:@"disputeOpenDate"];
+  [coderCopy encodeBool:-[FHTransaction recurring](self forKey:{"recurring"), @"recurring"}];
+  disputeOpenDate = [(FHTransaction *)self disputeOpenDate];
+  [coderCopy encodeObject:disputeOpenDate forKey:@"disputeOpenDate"];
 
-  v37 = [(FHTransaction *)self disputeLastUpdatedDate];
-  [v4 encodeObject:v37 forKey:@"disputeLastUpdatedDate"];
+  disputeLastUpdatedDate = [(FHTransaction *)self disputeLastUpdatedDate];
+  [coderCopy encodeObject:disputeLastUpdatedDate forKey:@"disputeLastUpdatedDate"];
 
-  v38 = [(FHTransaction *)self proprietaryBankTransactionCode];
-  [v4 encodeObject:v38 forKey:@"proprietaryBankTransactionCode"];
+  proprietaryBankTransactionCode = [(FHTransaction *)self proprietaryBankTransactionCode];
+  [coderCopy encodeObject:proprietaryBankTransactionCode forKey:@"proprietaryBankTransactionCode"];
 
-  v39 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-  [v4 encodeObject:v39 forKey:@"proprietaryBankTransactionIssuer"];
+  proprietaryBankTransactionIssuer = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+  [coderCopy encodeObject:proprietaryBankTransactionIssuer forKey:@"proprietaryBankTransactionIssuer"];
 }
 
-- (FHTransaction)initWithCoder:(id)a3
+- (FHTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = FHTransaction;
   v5 = [(FHTransaction *)&v42 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(FHTransaction *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
     [(FHTransaction *)v5 setTransactionServiceIdentifier:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"financeAccountIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"financeAccountIdentifier"];
     [(FHTransaction *)v5 setFinanceAccountIdentifier:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"financeTransactionIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"financeTransactionIdentifier"];
     [(FHTransaction *)v5 setFinanceTransactionIdentifier:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"financeTransactionSharedIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"financeTransactionSharedIdentifier"];
     [(FHTransaction *)v5 setFinanceTransactionSharedIdentifier:v10];
 
-    -[FHTransaction setFinanceTransactionSource:](v5, "setFinanceTransactionSource:", [v4 decodeIntegerForKey:@"financeTransactionSource"]);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
+    -[FHTransaction setFinanceTransactionSource:](v5, "setFinanceTransactionSource:", [coderCopy decodeIntegerForKey:@"financeTransactionSource"]);
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
     [(FHTransaction *)v5 setPaymentHash:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     [(FHTransaction *)v5 setAmount:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     [(FHTransaction *)v5 setCurrencyCode:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionDate"];
     [(FHTransaction *)v5 setTransactionDate:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionStatusChangedDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionStatusChangedDate"];
     [(FHTransaction *)v5 setTransactionStatusChangedDate:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
     [(FHTransaction *)v5 setTransactionSourceIdentifier:v16];
 
-    -[FHTransaction setTransactionStatus:](v5, "setTransactionStatus:", [v4 decodeIntegerForKey:@"transactionStatus"]);
-    -[FHTransaction setTransactionSource:](v5, "setTransactionSource:", [v4 decodeIntegerForKey:@"transactionSource"]);
-    -[FHTransaction setCardType:](v5, "setCardType:", [v4 decodeIntegerForKey:@"cardType"]);
-    -[FHTransaction setTransactionType:](v5, "setTransactionType:", [v4 decodeIntegerForKey:@"transactionType"]);
-    -[FHTransaction setAccountType:](v5, "setAccountType:", [v4 decodeIntegerForKey:@"accountType"]);
-    -[FHTransaction setTransactionInternalState:](v5, "setTransactionInternalState:", [v4 decodeIntegerForKey:@"transactionInternalState"]);
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    -[FHTransaction setTransactionStatus:](v5, "setTransactionStatus:", [coderCopy decodeIntegerForKey:@"transactionStatus"]);
+    -[FHTransaction setTransactionSource:](v5, "setTransactionSource:", [coderCopy decodeIntegerForKey:@"transactionSource"]);
+    -[FHTransaction setCardType:](v5, "setCardType:", [coderCopy decodeIntegerForKey:@"cardType"]);
+    -[FHTransaction setTransactionType:](v5, "setTransactionType:", [coderCopy decodeIntegerForKey:@"transactionType"]);
+    -[FHTransaction setAccountType:](v5, "setAccountType:", [coderCopy decodeIntegerForKey:@"accountType"]);
+    -[FHTransaction setTransactionInternalState:](v5, "setTransactionInternalState:", [coderCopy decodeIntegerForKey:@"transactionInternalState"]);
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     [(FHTransaction *)v5 setTimeZone:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     [(FHTransaction *)v5 setAltDSID:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiptIdentifier"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiptIdentifier"];
     [(FHTransaction *)v5 setReceiptIdentifier:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedReceiptUniqueID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedReceiptUniqueID"];
     [(FHTransaction *)v5 setAssociatedReceiptUniqueID:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantUniqueIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantUniqueIdentifier"];
     [(FHTransaction *)v5 setMerchantUniqueIdentifier:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(FHTransaction *)v5 setName:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawName"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawName"];
     [(FHTransaction *)v5 setRawName:v23];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     [(FHTransaction *)v5 setDisplayName:v24];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"industryCategory"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"industryCategory"];
     [(FHTransaction *)v5 setIndustryCategory:v25];
 
-    -[FHTransaction setIndustryCode:](v5, "setIndustryCode:", [v4 decodeIntegerForKey:@"industryCode"]);
-    -[FHTransaction setCategory:](v5, "setCategory:", [v4 decodeIntegerForKey:@"category"]);
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"street"];
+    -[FHTransaction setIndustryCode:](v5, "setIndustryCode:", [coderCopy decodeIntegerForKey:@"industryCode"]);
+    -[FHTransaction setCategory:](v5, "setCategory:", [coderCopy decodeIntegerForKey:@"category"]);
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"street"];
     [(FHTransaction *)v5 setStreet:v26];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"city"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"city"];
     [(FHTransaction *)v5 setCity:v27];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     [(FHTransaction *)v5 setState:v28];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zip"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zip"];
     [(FHTransaction *)v5 setZip:v29];
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     [(FHTransaction *)v5 setCountryCode:v30];
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"country"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"country"];
     [(FHTransaction *)v5 setCountry:v31];
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantDetailedCategory"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantDetailedCategory"];
     [(FHTransaction *)v5 setMerchantDetailedCategory:v32];
 
-    -[FHTransaction setMapsMerchantID:](v5, "setMapsMerchantID:", [v4 decodeInt64ForKey:@"mapsMerchantID"]);
-    -[FHTransaction setMapsMerchantResultProviderID:](v5, "setMapsMerchantResultProviderID:", [v4 decodeInt32ForKey:@"mapsMerchantResultProviderID"]);
-    -[FHTransaction setMapsMerchantBrandID:](v5, "setMapsMerchantBrandID:", [v4 decodeInt64ForKey:@"mapsMerchantBrandID"]);
-    -[FHTransaction setMapsMerchantBrandResultProviderID:](v5, "setMapsMerchantBrandResultProviderID:", [v4 decodeInt32ForKey:@"mapsMerchantBrandResultProviderID"]);
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    -[FHTransaction setMapsMerchantID:](v5, "setMapsMerchantID:", [coderCopy decodeInt64ForKey:@"mapsMerchantID"]);
+    -[FHTransaction setMapsMerchantResultProviderID:](v5, "setMapsMerchantResultProviderID:", [coderCopy decodeInt32ForKey:@"mapsMerchantResultProviderID"]);
+    -[FHTransaction setMapsMerchantBrandID:](v5, "setMapsMerchantBrandID:", [coderCopy decodeInt64ForKey:@"mapsMerchantBrandID"]);
+    -[FHTransaction setMapsMerchantBrandResultProviderID:](v5, "setMapsMerchantBrandResultProviderID:", [coderCopy decodeInt32ForKey:@"mapsMerchantBrandResultProviderID"]);
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     [(FHTransaction *)v5 setLocation:v33];
 
-    -[FHTransaction setHasLocation:](v5, "setHasLocation:", [v4 decodeBoolForKey:@"hasLocation"]);
-    -[FHTransaction setDisputeType:](v5, "setDisputeType:", [v4 decodeIntegerForKey:@"disputeType"]);
-    -[FHTransaction setDisputeStatus:](v5, "setDisputeStatus:", [v4 decodeIntegerForKey:@"disputeStatus"]);
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentCounterpartHandle"];
+    -[FHTransaction setHasLocation:](v5, "setHasLocation:", [coderCopy decodeBoolForKey:@"hasLocation"]);
+    -[FHTransaction setDisputeType:](v5, "setDisputeType:", [coderCopy decodeIntegerForKey:@"disputeType"]);
+    -[FHTransaction setDisputeStatus:](v5, "setDisputeStatus:", [coderCopy decodeIntegerForKey:@"disputeStatus"]);
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentCounterpartHandle"];
     [(FHTransaction *)v5 setPeerPaymentCounterpartHandle:v34];
 
-    -[FHTransaction setPeerPaymentType:](v5, "setPeerPaymentType:", [v4 decodeIntegerForKey:@"peerPaymentType"]);
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionDescription"];
+    -[FHTransaction setPeerPaymentType:](v5, "setPeerPaymentType:", [coderCopy decodeIntegerForKey:@"peerPaymentType"]);
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionDescription"];
     [(FHTransaction *)v5 setTransactionDescription:v35];
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processedDescription"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processedDescription"];
     [(FHTransaction *)v5 setProcessedDescription:v36];
 
-    -[FHTransaction setRecurring:](v5, "setRecurring:", [v4 decodeBoolForKey:@"recurring"]);
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disputeOpenDate"];
+    -[FHTransaction setRecurring:](v5, "setRecurring:", [coderCopy decodeBoolForKey:@"recurring"]);
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disputeOpenDate"];
     [(FHTransaction *)v5 setDisputeOpenDate:v37];
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disputeLastUpdatedDate"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disputeLastUpdatedDate"];
     [(FHTransaction *)v5 setDisputeLastUpdatedDate:v38];
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryBankTransactionCode"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryBankTransactionCode"];
     [(FHTransaction *)v5 setProprietaryBankTransactionCode:v39];
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryBankTransactionIssuer"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryBankTransactionIssuer"];
     [(FHTransaction *)v5 setProprietaryBankTransactionIssuer:v40];
   }
 
@@ -281,86 +281,86 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FHTransaction *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(FHTransaction *)self identifier];
+  v4 = [identifier hash];
 
-  v5 = [(FHTransaction *)self transactionServiceIdentifier];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  transactionServiceIdentifier = [(FHTransaction *)self transactionServiceIdentifier];
+  v6 = [transactionServiceIdentifier hash] - v4 + 32 * v4;
 
-  v7 = [(FHTransaction *)self financeAccountIdentifier];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  financeAccountIdentifier = [(FHTransaction *)self financeAccountIdentifier];
+  v8 = [financeAccountIdentifier hash] - v6 + 32 * v6;
 
-  v9 = [(FHTransaction *)self financeTransactionIdentifier];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  financeTransactionIdentifier = [(FHTransaction *)self financeTransactionIdentifier];
+  v10 = [financeTransactionIdentifier hash] - v8 + 32 * v8;
 
-  v11 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-  v12 = [v11 hash] - v10 + 32 * v10;
+  financeTransactionSharedIdentifier = [(FHTransaction *)self financeTransactionSharedIdentifier];
+  v12 = [financeTransactionSharedIdentifier hash] - v10 + 32 * v10;
 
   v13 = [(FHTransaction *)self financeTransactionSource]- v12 + 32 * v12;
-  v14 = [(FHTransaction *)self paymentHash];
-  v15 = [v14 hash] - v13 + 32 * v13;
+  paymentHash = [(FHTransaction *)self paymentHash];
+  v15 = [paymentHash hash] - v13 + 32 * v13;
 
-  v16 = [(FHTransaction *)self transactionSourceIdentifier];
-  v17 = [v16 hash] - v15 + 32 * v15;
+  transactionSourceIdentifier = [(FHTransaction *)self transactionSourceIdentifier];
+  v17 = [transactionSourceIdentifier hash] - v15 + 32 * v15;
 
-  v18 = [(FHTransaction *)self amount];
-  v19 = [v18 hash] - v17 + 32 * v17;
+  amount = [(FHTransaction *)self amount];
+  v19 = [amount hash] - v17 + 32 * v17;
 
-  v20 = [(FHTransaction *)self currencyCode];
-  v21 = [v20 hash] - v19 + 32 * v19;
+  currencyCode = [(FHTransaction *)self currencyCode];
+  v21 = [currencyCode hash] - v19 + 32 * v19;
 
-  v22 = [(FHTransaction *)self transactionDate];
-  v23 = [v22 hash] - v21 + 32 * v21;
+  transactionDate = [(FHTransaction *)self transactionDate];
+  v23 = [transactionDate hash] - v21 + 32 * v21;
 
-  v24 = [(FHTransaction *)self transactionStatusChangedDate];
-  v25 = [v24 hash] - v23 + 32 * v23;
+  transactionStatusChangedDate = [(FHTransaction *)self transactionStatusChangedDate];
+  v25 = [transactionStatusChangedDate hash] - v23 + 32 * v23;
 
-  v26 = [(FHTransaction *)self industryCategory];
-  v27 = [v26 hash] - v25 + 32 * v25;
+  industryCategory = [(FHTransaction *)self industryCategory];
+  v27 = [industryCategory hash] - v25 + 32 * v25;
 
-  v28 = [(FHTransaction *)self displayName];
-  v29 = [v28 hash] - v27 + 32 * v27;
+  displayName = [(FHTransaction *)self displayName];
+  v29 = [displayName hash] - v27 + 32 * v27;
 
-  v30 = [(FHTransaction *)self merchantUniqueIdentifier];
-  v31 = [v30 hash] - v29 + 32 * v29;
+  merchantUniqueIdentifier = [(FHTransaction *)self merchantUniqueIdentifier];
+  v31 = [merchantUniqueIdentifier hash] - v29 + 32 * v29;
 
-  v32 = [(FHTransaction *)self name];
-  v33 = [v32 hash] - v31 + 32 * v31;
+  name = [(FHTransaction *)self name];
+  v33 = [name hash] - v31 + 32 * v31;
 
-  v34 = [(FHTransaction *)self rawName];
-  v35 = [v34 hash] - v33 + 32 * v33;
+  rawName = [(FHTransaction *)self rawName];
+  v35 = [rawName hash] - v33 + 32 * v33;
 
   v36 = [(FHTransaction *)self industryCode]- v35 + 32 * v35;
   v37 = [(FHTransaction *)self category]- v36 + 32 * v36;
-  v38 = [(FHTransaction *)self street];
-  v39 = [v38 hash] - v37 + 32 * v37;
+  street = [(FHTransaction *)self street];
+  v39 = [street hash] - v37 + 32 * v37;
 
-  v40 = [(FHTransaction *)self city];
-  v41 = [v40 hash] - v39 + 32 * v39;
+  city = [(FHTransaction *)self city];
+  v41 = [city hash] - v39 + 32 * v39;
 
-  v42 = [(FHTransaction *)self state];
-  v43 = [v42 hash] - v41 + 32 * v41;
+  state = [(FHTransaction *)self state];
+  v43 = [state hash] - v41 + 32 * v41;
 
   v44 = [(FHTransaction *)self zip];
   v45 = [v44 hash] - v43 + 32 * v43;
 
-  v46 = [(FHTransaction *)self countryCode];
-  v47 = [v46 hash] - v45 + 32 * v45;
+  countryCode = [(FHTransaction *)self countryCode];
+  v47 = [countryCode hash] - v45 + 32 * v45;
 
-  v48 = [(FHTransaction *)self altDSID];
-  v49 = [v48 hash] - v47 + 32 * v47;
+  altDSID = [(FHTransaction *)self altDSID];
+  v49 = [altDSID hash] - v47 + 32 * v47;
 
-  v50 = [(FHTransaction *)self receiptIdentifier];
-  v51 = [v50 hash] - v49 + 32 * v49;
+  receiptIdentifier = [(FHTransaction *)self receiptIdentifier];
+  v51 = [receiptIdentifier hash] - v49 + 32 * v49;
 
-  v52 = [(FHTransaction *)self associatedReceiptUniqueID];
-  v53 = [v52 hash] - v51 + 32 * v51;
+  associatedReceiptUniqueID = [(FHTransaction *)self associatedReceiptUniqueID];
+  v53 = [associatedReceiptUniqueID hash] - v51 + 32 * v51;
 
-  v54 = [(FHTransaction *)self country];
-  v55 = [v54 hash] - v53 + 32 * v53;
+  country = [(FHTransaction *)self country];
+  v55 = [country hash] - v53 + 32 * v53;
 
-  v56 = [(FHTransaction *)self merchantDetailedCategory];
-  v57 = [v56 hash] - v55 + 32 * v55;
+  merchantDetailedCategory = [(FHTransaction *)self merchantDetailedCategory];
+  v57 = [merchantDetailedCategory hash] - v55 + 32 * v55;
 
   v58 = [(FHTransaction *)self transactionStatus]- v57 + 32 * v57;
   v59 = [(FHTransaction *)self transactionSource]- v58 + 32 * v58;
@@ -368,67 +368,67 @@
   v61 = [(FHTransaction *)self transactionType]- v60 + 32 * v60;
   v62 = [(FHTransaction *)self accountType]- v61 + 32 * v61;
   v63 = [(FHTransaction *)self transactionInternalState]- v62 + 32 * v62;
-  v64 = [(FHTransaction *)self timeZone];
-  v65 = [v64 hash] - v63 + 32 * v63;
+  timeZone = [(FHTransaction *)self timeZone];
+  v65 = [timeZone hash] - v63 + 32 * v63;
 
-  v66 = [(FHTransaction *)self location];
-  v67 = [v66 hash] - v65 + 32 * v65;
+  location = [(FHTransaction *)self location];
+  v67 = [location hash] - v65 + 32 * v65;
 
   v68 = 31 * ([(FHTransaction *)self mapsMerchantID]- v67 + 32 * v67);
   v69 = 31 * (v68 + [(FHTransaction *)self mapsMerchantResultProviderID]);
   v70 = v69 + [(FHTransaction *)self hasLocation];
   v71 = [(FHTransaction *)self disputeType]- v70 + 32 * v70;
   v72 = [(FHTransaction *)self disputeStatus]- v71 + 32 * v71;
-  v73 = [(FHTransaction *)self peerPaymentCounterpartHandle];
-  v74 = [v73 hash] - v72 + 32 * v72;
+  peerPaymentCounterpartHandle = [(FHTransaction *)self peerPaymentCounterpartHandle];
+  v74 = [peerPaymentCounterpartHandle hash] - v72 + 32 * v72;
 
   v75 = [(FHTransaction *)self peerPaymentType]- v74 + 32 * v74;
-  v76 = [(FHTransaction *)self transactionDescription];
-  v77 = [v76 hash] - v75 + 32 * v75;
+  transactionDescription = [(FHTransaction *)self transactionDescription];
+  v77 = [transactionDescription hash] - v75 + 32 * v75;
 
-  v78 = [(FHTransaction *)self processedDescription];
-  v79 = 31 * ([v78 hash] - v77 + 32 * v77);
+  processedDescription = [(FHTransaction *)self processedDescription];
+  v79 = 31 * ([processedDescription hash] - v77 + 32 * v77);
 
   v80 = v79 + [(FHTransaction *)self recurring];
-  v81 = [(FHTransaction *)self disputeOpenDate];
-  v82 = [v81 hash] - v80 + 32 * v80;
+  disputeOpenDate = [(FHTransaction *)self disputeOpenDate];
+  v82 = [disputeOpenDate hash] - v80 + 32 * v80;
 
-  v83 = [(FHTransaction *)self disputeLastUpdatedDate];
-  v84 = [v83 hash] - v82 + 32 * v82;
+  disputeLastUpdatedDate = [(FHTransaction *)self disputeLastUpdatedDate];
+  v84 = [disputeLastUpdatedDate hash] - v82 + 32 * v82;
 
-  v85 = [(FHTransaction *)self proprietaryBankTransactionCode];
-  v86 = [v85 hash] - v84 + 32 * v84;
+  proprietaryBankTransactionCode = [(FHTransaction *)self proprietaryBankTransactionCode];
+  v86 = [proprietaryBankTransactionCode hash] - v84 + 32 * v84;
 
-  v87 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-  v88 = [v87 hash] - v86 + 32 * v86;
+  proprietaryBankTransactionIssuer = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+  v88 = [proprietaryBankTransactionIssuer hash] - v86 + 32 * v86;
 
   return v88 + 0x3D05DF62DD89A5FLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v18) = 1;
     goto LABEL_305;
   }
 
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     LOBYTE(v18) = 0;
     goto LABEL_305;
   }
 
-  v357 = [(FHTransaction *)self identifier];
-  if (v357 && ([(FHTransaction *)v7 identifier], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifier = [(FHTransaction *)self identifier];
+  if (identifier && ([(FHTransaction *)v7 identifier], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v354 = v8;
-    v9 = [(FHTransaction *)self identifier];
+    identifier2 = [(FHTransaction *)self identifier];
     [(FHTransaction *)v7 identifier];
-    v347 = v348 = v9;
-    v10 = [v9 isEqualToString:?];
+    v347 = v348 = identifier2;
+    identifier4 = [identifier2 isEqualToString:?];
     v355 = 0;
     v422 = 0;
     v428 = 0;
@@ -536,7 +536,7 @@
     v17 = 0;
     LOBYTE(v18) = 0;
     v356 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       goto LABEL_24;
     }
@@ -544,8 +544,8 @@
 
   else
   {
-    v19 = [(FHTransaction *)self identifier];
-    v10 = [(FHTransaction *)v7 identifier];
+    identifier3 = [(FHTransaction *)self identifier];
+    identifier4 = [(FHTransaction *)v7 identifier];
     v354 = 0;
     v356 = 0;
     v422 = 0;
@@ -653,9 +653,9 @@
     v17 = 0;
     LOBYTE(v18) = 0;
     v355 = 1;
-    v353 = v19;
-    v352 = v10;
-    v20 = v19 == v10;
+    v353 = identifier3;
+    v352 = identifier4;
+    v20 = identifier3 == identifier4;
     v15 = 0;
     if (!v20)
     {
@@ -663,19 +663,19 @@
     }
   }
 
-  v21 = [(FHTransaction *)self transactionServiceIdentifier];
-  v22 = v21 != 0;
-  v350 = v21;
-  if (v21 && ([(FHTransaction *)v7 transactionServiceIdentifier], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+  transactionServiceIdentifier = [(FHTransaction *)self transactionServiceIdentifier];
+  v22 = transactionServiceIdentifier != 0;
+  v350 = transactionServiceIdentifier;
+  if (transactionServiceIdentifier && ([(FHTransaction *)v7 transactionServiceIdentifier], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v349 = v23;
-    v24 = [(FHTransaction *)self transactionServiceIdentifier];
+    transactionServiceIdentifier2 = [(FHTransaction *)self transactionServiceIdentifier];
     [(FHTransaction *)v7 transactionServiceIdentifier];
-    v341 = v342 = v24;
-    v10 = [v24 isEqualToString:?];
+    v341 = v342 = transactionServiceIdentifier2;
+    identifier4 = [transactionServiceIdentifier2 isEqualToString:?];
     v12 = 0;
     v11 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v428 = 1;
@@ -786,14 +786,14 @@
 
   else
   {
-    v3 = [(FHTransaction *)self transactionServiceIdentifier];
-    v10 = [(FHTransaction *)v7 transactionServiceIdentifier];
+    transactionServiceIdentifier3 = [(FHTransaction *)self transactionServiceIdentifier];
+    identifier4 = [(FHTransaction *)v7 transactionServiceIdentifier];
     v11 = 0;
     v349 = 0;
     v12 = 1;
-    v346 = v3;
-    v345 = v10;
-    if (v3 != v10)
+    v346 = transactionServiceIdentifier3;
+    v345 = identifier4;
+    if (transactionServiceIdentifier3 != identifier4)
     {
       v428 = v22;
       v422 = 1;
@@ -902,20 +902,20 @@
     }
   }
 
-  v25 = [(FHTransaction *)self financeAccountIdentifier];
-  v3 = v25 != 0;
-  v344 = v25;
+  financeAccountIdentifier = [(FHTransaction *)self financeAccountIdentifier];
+  transactionServiceIdentifier3 = financeAccountIdentifier != 0;
+  v344 = financeAccountIdentifier;
   v428 = v22;
-  if (v25 && ([(FHTransaction *)v7 financeAccountIdentifier], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (financeAccountIdentifier && ([(FHTransaction *)v7 financeAccountIdentifier], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v343 = v26;
-    v4 = [(FHTransaction *)self financeAccountIdentifier];
+    financeAccountIdentifier2 = [(FHTransaction *)self financeAccountIdentifier];
     [(FHTransaction *)v7 financeAccountIdentifier];
-    v335 = v336 = v4;
-    v10 = [v4 isEqualToString:?];
+    v335 = v336 = financeAccountIdentifier2;
+    identifier4 = [financeAccountIdentifier2 isEqualToString:?];
     v18 = 0;
     v13 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -1023,17 +1023,17 @@
 
   else
   {
-    v4 = [(FHTransaction *)self financeAccountIdentifier];
-    v10 = [(FHTransaction *)v7 financeAccountIdentifier];
+    financeAccountIdentifier2 = [(FHTransaction *)self financeAccountIdentifier];
+    identifier4 = [(FHTransaction *)v7 financeAccountIdentifier];
     v13 = 0;
     v343 = 0;
     v18 = 1;
-    v340 = v4;
-    v339 = v10;
-    if (v4 != v10)
+    v340 = financeAccountIdentifier2;
+    v339 = identifier4;
+    if (financeAccountIdentifier2 != identifier4)
     {
       LODWORD(v427) = 1;
-      HIDWORD(v427) = v3;
+      HIDWORD(v427) = transactionServiceIdentifier3;
       v422 = 1;
       v421 = 1;
       v420 = 0;
@@ -1138,24 +1138,24 @@
     }
   }
 
-  v29 = [(FHTransaction *)self financeTransactionIdentifier];
-  v454 = v29 != 0;
-  v338 = v29;
-  v427 = __PAIR64__(v3, v18);
-  if (v29 && ([(FHTransaction *)v7 financeTransactionIdentifier], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
+  financeTransactionIdentifier = [(FHTransaction *)self financeTransactionIdentifier];
+  v454 = financeTransactionIdentifier != 0;
+  v338 = financeTransactionIdentifier;
+  v427 = __PAIR64__(transactionServiceIdentifier3, v18);
+  if (financeTransactionIdentifier && ([(FHTransaction *)v7 financeTransactionIdentifier], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v337 = v30;
     [(FHTransaction *)self financeTransactionIdentifier];
-    v13 = v4 = v13;
-    v31 = [(FHTransaction *)v7 financeTransactionIdentifier];
+    v13 = financeAccountIdentifier2 = v13;
+    financeTransactionIdentifier2 = [(FHTransaction *)v7 financeTransactionIdentifier];
     v330 = v13;
     v32 = v13;
-    LODWORD(v13) = v4;
-    v329 = v31;
-    v10 = [v32 isEqualToString:?];
+    LODWORD(v13) = financeAccountIdentifier2;
+    v329 = financeTransactionIdentifier2;
+    identifier4 = [v32 isEqualToString:?];
     v453 = 0;
     v33 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v360 = 1;
       v422 = 1;
@@ -1262,14 +1262,14 @@
 
   else
   {
-    v4 = [(FHTransaction *)self financeTransactionIdentifier];
-    v10 = [(FHTransaction *)v7 financeTransactionIdentifier];
+    financeAccountIdentifier2 = [(FHTransaction *)self financeTransactionIdentifier];
+    identifier4 = [(FHTransaction *)v7 financeTransactionIdentifier];
     v33 = 0;
     v337 = 0;
     v453 = 1;
-    v334 = v4;
-    v333 = v10;
-    if (v4 != v10)
+    v334 = financeAccountIdentifier2;
+    v333 = identifier4;
+    if (financeAccountIdentifier2 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -1374,19 +1374,19 @@
   }
 
   v360 = v33;
-  v34 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-  LODWORD(v452) = v34 != 0;
-  v332 = v34;
-  if (v34 && ([(FHTransaction *)v7 financeTransactionSharedIdentifier], (v35 = objc_claimAutoreleasedReturnValue()) != 0))
+  financeTransactionSharedIdentifier = [(FHTransaction *)self financeTransactionSharedIdentifier];
+  LODWORD(v452) = financeTransactionSharedIdentifier != 0;
+  v332 = financeTransactionSharedIdentifier;
+  if (financeTransactionSharedIdentifier && ([(FHTransaction *)v7 financeTransactionSharedIdentifier], (v35 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v331 = v35;
-    v36 = [(FHTransaction *)self financeTransactionSharedIdentifier];
+    financeTransactionSharedIdentifier2 = [(FHTransaction *)self financeTransactionSharedIdentifier];
     [(FHTransaction *)v7 financeTransactionSharedIdentifier];
-    v325 = v326 = v36;
-    v10 = [v36 isEqualToString:?];
+    v325 = v326 = financeTransactionSharedIdentifier2;
+    identifier4 = [financeTransactionSharedIdentifier2 isEqualToString:?];
     HIDWORD(v452) = 0;
     v37 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v426 = 1;
       v422 = 1;
@@ -1491,14 +1491,14 @@
 
   else
   {
-    v38 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-    v10 = [(FHTransaction *)v7 financeTransactionSharedIdentifier];
+    financeTransactionSharedIdentifier3 = [(FHTransaction *)self financeTransactionSharedIdentifier];
+    identifier4 = [(FHTransaction *)v7 financeTransactionSharedIdentifier];
     v37 = 0;
     v331 = 0;
     HIDWORD(v452) = 1;
-    v328 = v38;
-    v327 = v10;
-    if (v38 != v10)
+    v328 = financeTransactionSharedIdentifier3;
+    v327 = identifier4;
+    if (financeTransactionSharedIdentifier3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -1601,9 +1601,9 @@
   }
 
   v426 = v37;
-  v39 = [(FHTransaction *)self financeTransactionSource];
-  v10 = [(FHTransaction *)v7 financeTransactionSource];
-  if (v39 != v10)
+  financeTransactionSource = [(FHTransaction *)self financeTransactionSource];
+  identifier4 = [(FHTransaction *)v7 financeTransactionSource];
+  if (financeTransactionSource != identifier4)
   {
     v418 = 0;
     v451 = 0;
@@ -1703,19 +1703,19 @@
     goto LABEL_24;
   }
 
-  v40 = [(FHTransaction *)self paymentHash];
-  v451 = v40 != 0;
-  v324 = v40;
-  if (v40 && ([(FHTransaction *)v7 paymentHash], (v41 = objc_claimAutoreleasedReturnValue()) != 0))
+  paymentHash = [(FHTransaction *)self paymentHash];
+  v451 = paymentHash != 0;
+  v324 = paymentHash;
+  if (paymentHash && ([(FHTransaction *)v7 paymentHash], (v41 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v323 = v41;
-    v42 = [(FHTransaction *)self paymentHash];
+    paymentHash2 = [(FHTransaction *)self paymentHash];
     [(FHTransaction *)v7 paymentHash];
-    v317 = v318 = v42;
-    v10 = [v42 isEqualToString:?];
+    v317 = v318 = paymentHash2;
+    identifier4 = [paymentHash2 isEqualToString:?];
     v17 = 0;
     v43 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v359 = 1;
       v422 = 1;
@@ -1817,14 +1817,14 @@
 
   else
   {
-    v44 = [(FHTransaction *)self paymentHash];
-    v10 = [(FHTransaction *)v7 paymentHash];
+    paymentHash3 = [(FHTransaction *)self paymentHash];
+    identifier4 = [(FHTransaction *)v7 paymentHash];
     v43 = 0;
     v323 = 0;
     v17 = 1;
-    v322 = v44;
-    v321 = v10;
-    if (v44 != v10)
+    v322 = paymentHash3;
+    v321 = identifier4;
+    if (paymentHash3 != identifier4)
     {
       v358 = 1;
       v422 = 1;
@@ -1926,19 +1926,19 @@
 
   v358 = v17;
   v359 = v43;
-  v45 = [(FHTransaction *)self transactionSourceIdentifier];
-  v46 = v45 != 0;
-  v320 = v45;
-  if (v45 && ([(FHTransaction *)v7 transactionSourceIdentifier], (v47 = objc_claimAutoreleasedReturnValue()) != 0))
+  transactionSourceIdentifier = [(FHTransaction *)self transactionSourceIdentifier];
+  v46 = transactionSourceIdentifier != 0;
+  v320 = transactionSourceIdentifier;
+  if (transactionSourceIdentifier && ([(FHTransaction *)v7 transactionSourceIdentifier], (v47 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v319 = v47;
-    v4 = [(FHTransaction *)self transactionSourceIdentifier];
+    financeAccountIdentifier2 = [(FHTransaction *)self transactionSourceIdentifier];
     [(FHTransaction *)v7 transactionSourceIdentifier];
-    v312 = v313 = v4;
-    v10 = [v4 isEqualToString:?];
+    v312 = v313 = financeAccountIdentifier2;
+    identifier4 = [financeAccountIdentifier2 isEqualToString:?];
     v17 = 0;
     v48 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2037,14 +2037,14 @@
 
   else
   {
-    v4 = [(FHTransaction *)self transactionSourceIdentifier];
-    v10 = [(FHTransaction *)v7 transactionSourceIdentifier];
+    financeAccountIdentifier2 = [(FHTransaction *)self transactionSourceIdentifier];
+    identifier4 = [(FHTransaction *)v7 transactionSourceIdentifier];
     v48 = 0;
     v319 = 0;
     v17 = 1;
-    v316 = v4;
-    v315 = v10;
-    if (v4 != v10)
+    v316 = financeAccountIdentifier2;
+    v315 = identifier4;
+    if (financeAccountIdentifier2 != identifier4)
     {
       v424 = 1;
       v425 = v46;
@@ -2143,19 +2143,19 @@
   }
 
   v424 = __PAIR64__(v48, v17);
-  v49 = [(FHTransaction *)self amount];
-  v4 = v49 != 0;
-  v314 = v49;
+  amount = [(FHTransaction *)self amount];
+  financeAccountIdentifier2 = amount != 0;
+  v314 = amount;
   v425 = v46;
-  if (v49 && ([(FHTransaction *)v7 amount], (v351 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (amount && ([(FHTransaction *)v7 amount], (v351 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v50 = [(FHTransaction *)self amount];
+    amount2 = [(FHTransaction *)self amount];
     [(FHTransaction *)v7 amount];
-    v306 = v307 = v50;
-    v10 = [v50 isEqual:?];
+    v306 = v307 = amount2;
+    identifier4 = [amount2 isEqual:?];
     v450 = 0;
     v18 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v423 = 0x100000001;
       v422 = 1;
@@ -2252,16 +2252,16 @@
 
   else
   {
-    v51 = [(FHTransaction *)self amount];
-    v10 = [(FHTransaction *)v7 amount];
+    amount3 = [(FHTransaction *)self amount];
+    identifier4 = [(FHTransaction *)v7 amount];
     v18 = 0;
     v351 = 0;
     v450 = 1;
-    v311 = v51;
-    v310 = v10;
-    if (v51 != v10)
+    v311 = amount3;
+    v310 = identifier4;
+    if (amount3 != identifier4)
     {
-      HIDWORD(v423) = v4;
+      HIDWORD(v423) = financeAccountIdentifier2;
       v422 = 1;
       v421 = 1;
       v420 = 1;
@@ -2354,19 +2354,19 @@
     }
   }
 
-  v423 = __PAIR64__(v4, v18);
-  v52 = [(FHTransaction *)self currencyCode];
-  LODWORD(v449) = v52 != 0;
-  v308 = v52;
-  if (v52 && ([(FHTransaction *)v7 currencyCode], (v309 = objc_claimAutoreleasedReturnValue()) != 0))
+  v423 = __PAIR64__(financeAccountIdentifier2, v18);
+  currencyCode = [(FHTransaction *)self currencyCode];
+  LODWORD(v449) = currencyCode != 0;
+  v308 = currencyCode;
+  if (currencyCode && ([(FHTransaction *)v7 currencyCode], (v309 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v53 = [(FHTransaction *)self currencyCode];
+    currencyCode2 = [(FHTransaction *)self currencyCode];
     [(FHTransaction *)v7 currencyCode];
-    v300 = v301 = v53;
-    v10 = [v53 isEqualToString:?];
+    v300 = v301 = currencyCode2;
+    identifier4 = [currencyCode2 isEqualToString:?];
     v448 = 0;
     HIDWORD(v449) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2491,14 +2491,14 @@ LABEL_375:
 
   else
   {
-    v54 = [(FHTransaction *)self currencyCode];
-    v10 = [(FHTransaction *)v7 currencyCode];
+    currencyCode3 = [(FHTransaction *)self currencyCode];
+    identifier4 = [(FHTransaction *)v7 currencyCode];
     HIDWORD(v449) = 0;
     v309 = 0;
     v448 = 1;
-    v305 = v54;
-    v304 = v10;
-    if (v54 != v10)
+    v305 = currencyCode3;
+    v304 = identifier4;
+    if (currencyCode3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2513,18 +2513,18 @@ LABEL_375:
     }
   }
 
-  v55 = [(FHTransaction *)self transactionDate];
-  LODWORD(v447) = v55 != 0;
-  v302 = v55;
-  if (v55 && ([(FHTransaction *)v7 transactionDate], (v303 = objc_claimAutoreleasedReturnValue()) != 0))
+  transactionDate = [(FHTransaction *)self transactionDate];
+  LODWORD(v447) = transactionDate != 0;
+  v302 = transactionDate;
+  if (transactionDate && ([(FHTransaction *)v7 transactionDate], (v303 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v56 = [(FHTransaction *)self transactionDate];
+    transactionDate2 = [(FHTransaction *)self transactionDate];
     [(FHTransaction *)v7 transactionDate];
-    v294 = v295 = v56;
-    v10 = [v56 isEqual:?];
+    v294 = v295 = transactionDate2;
+    identifier4 = [transactionDate2 isEqual:?];
     v446 = 0;
     HIDWORD(v447) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2543,14 +2543,14 @@ LABEL_375:
 
   else
   {
-    v57 = [(FHTransaction *)self transactionDate];
-    v10 = [(FHTransaction *)v7 transactionDate];
+    transactionDate3 = [(FHTransaction *)self transactionDate];
+    identifier4 = [(FHTransaction *)v7 transactionDate];
     HIDWORD(v447) = 0;
     v303 = 0;
     v446 = 1;
-    v299 = v57;
-    v298 = v10;
-    if (v57 != v10)
+    v299 = transactionDate3;
+    v298 = identifier4;
+    if (transactionDate3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2566,18 +2566,18 @@ LABEL_375:
     }
   }
 
-  v58 = [(FHTransaction *)self transactionStatusChangedDate];
-  LODWORD(v445) = v58 != 0;
-  v296 = v58;
-  if (v58 && ([(FHTransaction *)v7 transactionStatusChangedDate], (v297 = objc_claimAutoreleasedReturnValue()) != 0))
+  transactionStatusChangedDate = [(FHTransaction *)self transactionStatusChangedDate];
+  LODWORD(v445) = transactionStatusChangedDate != 0;
+  v296 = transactionStatusChangedDate;
+  if (transactionStatusChangedDate && ([(FHTransaction *)v7 transactionStatusChangedDate], (v297 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v59 = [(FHTransaction *)self transactionStatusChangedDate];
+    transactionStatusChangedDate2 = [(FHTransaction *)self transactionStatusChangedDate];
     [(FHTransaction *)v7 transactionStatusChangedDate];
-    v288 = v289 = v59;
-    v10 = [v59 isEqual:?];
+    v288 = v289 = transactionStatusChangedDate2;
+    identifier4 = [transactionStatusChangedDate2 isEqual:?];
     v444 = 0;
     HIDWORD(v445) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2597,14 +2597,14 @@ LABEL_375:
 
   else
   {
-    v60 = [(FHTransaction *)self transactionStatusChangedDate];
-    v10 = [(FHTransaction *)v7 transactionStatusChangedDate];
+    transactionStatusChangedDate3 = [(FHTransaction *)self transactionStatusChangedDate];
+    identifier4 = [(FHTransaction *)v7 transactionStatusChangedDate];
     HIDWORD(v445) = 0;
     v297 = 0;
     v444 = 1;
-    v293 = v60;
-    v292 = v10;
-    if (v60 != v10)
+    v293 = transactionStatusChangedDate3;
+    v292 = identifier4;
+    if (transactionStatusChangedDate3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2621,18 +2621,18 @@ LABEL_375:
     }
   }
 
-  v61 = [(FHTransaction *)self industryCategory];
-  LODWORD(v443) = v61 != 0;
-  v290 = v61;
-  if (v61 && ([(FHTransaction *)v7 industryCategory], (v291 = objc_claimAutoreleasedReturnValue()) != 0))
+  industryCategory = [(FHTransaction *)self industryCategory];
+  LODWORD(v443) = industryCategory != 0;
+  v290 = industryCategory;
+  if (industryCategory && ([(FHTransaction *)v7 industryCategory], (v291 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v62 = [(FHTransaction *)self industryCategory];
+    industryCategory2 = [(FHTransaction *)self industryCategory];
     [(FHTransaction *)v7 industryCategory];
-    v282 = v283 = v62;
-    v10 = [v62 isEqualToString:?];
+    v282 = v283 = industryCategory2;
+    identifier4 = [industryCategory2 isEqualToString:?];
     v442 = 0;
     HIDWORD(v443) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2653,14 +2653,14 @@ LABEL_375:
 
   else
   {
-    v63 = [(FHTransaction *)self industryCategory];
-    v10 = [(FHTransaction *)v7 industryCategory];
+    industryCategory3 = [(FHTransaction *)self industryCategory];
+    identifier4 = [(FHTransaction *)v7 industryCategory];
     HIDWORD(v443) = 0;
     v291 = 0;
     v442 = 1;
-    v287 = v63;
-    v286 = v10;
-    if (v63 != v10)
+    v287 = industryCategory3;
+    v286 = identifier4;
+    if (industryCategory3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2678,18 +2678,18 @@ LABEL_375:
     }
   }
 
-  v64 = [(FHTransaction *)self displayName];
-  LODWORD(v441) = v64 != 0;
-  v284 = v64;
-  if (v64 && ([(FHTransaction *)v7 displayName], (v285 = objc_claimAutoreleasedReturnValue()) != 0))
+  displayName = [(FHTransaction *)self displayName];
+  LODWORD(v441) = displayName != 0;
+  v284 = displayName;
+  if (displayName && ([(FHTransaction *)v7 displayName], (v285 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v65 = [(FHTransaction *)self displayName];
+    displayName2 = [(FHTransaction *)self displayName];
     [(FHTransaction *)v7 displayName];
-    v276 = v277 = v65;
-    v10 = [v65 isEqual:?];
+    v276 = v277 = displayName2;
+    identifier4 = [displayName2 isEqual:?];
     v440 = 0;
     HIDWORD(v441) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2711,14 +2711,14 @@ LABEL_375:
 
   else
   {
-    v66 = [(FHTransaction *)self displayName];
-    v10 = [(FHTransaction *)v7 displayName];
+    displayName3 = [(FHTransaction *)self displayName];
+    identifier4 = [(FHTransaction *)v7 displayName];
     HIDWORD(v441) = 0;
     v285 = 0;
     v440 = 1;
-    v281 = v66;
-    v280 = v10;
-    if (v66 != v10)
+    v281 = displayName3;
+    v280 = identifier4;
+    if (displayName3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2737,18 +2737,18 @@ LABEL_375:
     }
   }
 
-  v67 = [(FHTransaction *)self street];
-  LODWORD(v439) = v67 != 0;
-  v278 = v67;
-  if (v67 && ([(FHTransaction *)v7 street], (v279 = objc_claimAutoreleasedReturnValue()) != 0))
+  street = [(FHTransaction *)self street];
+  LODWORD(v439) = street != 0;
+  v278 = street;
+  if (street && ([(FHTransaction *)v7 street], (v279 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v68 = [(FHTransaction *)self street];
+    street2 = [(FHTransaction *)self street];
     [(FHTransaction *)v7 street];
-    v270 = v271 = v68;
-    v10 = [v68 isEqualToString:?];
+    v270 = v271 = street2;
+    identifier4 = [street2 isEqualToString:?];
     v438 = 0;
     HIDWORD(v439) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2771,14 +2771,14 @@ LABEL_375:
 
   else
   {
-    v69 = [(FHTransaction *)self street];
-    v10 = [(FHTransaction *)v7 street];
+    street3 = [(FHTransaction *)self street];
+    identifier4 = [(FHTransaction *)v7 street];
     HIDWORD(v439) = 0;
     v279 = 0;
     v438 = 1;
-    v275 = v69;
-    v274 = v10;
-    if (v69 != v10)
+    v275 = street3;
+    v274 = identifier4;
+    if (street3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2798,18 +2798,18 @@ LABEL_375:
     }
   }
 
-  v70 = [(FHTransaction *)self city];
-  LODWORD(v437) = v70 != 0;
-  v272 = v70;
-  if (v70 && ([(FHTransaction *)v7 city], (v273 = objc_claimAutoreleasedReturnValue()) != 0))
+  city = [(FHTransaction *)self city];
+  LODWORD(v437) = city != 0;
+  v272 = city;
+  if (city && ([(FHTransaction *)v7 city], (v273 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v71 = [(FHTransaction *)self city];
+    city2 = [(FHTransaction *)self city];
     [(FHTransaction *)v7 city];
-    v264 = v265 = v71;
-    v10 = [v71 isEqualToString:?];
+    v264 = v265 = city2;
+    identifier4 = [city2 isEqualToString:?];
     v436 = 0;
     HIDWORD(v437) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2833,14 +2833,14 @@ LABEL_375:
 
   else
   {
-    v72 = [(FHTransaction *)self city];
-    v10 = [(FHTransaction *)v7 city];
+    city3 = [(FHTransaction *)self city];
+    identifier4 = [(FHTransaction *)v7 city];
     HIDWORD(v437) = 0;
     v273 = 0;
     v436 = 1;
-    v269 = v72;
-    v268 = v10;
-    if (v72 != v10)
+    v269 = city3;
+    v268 = identifier4;
+    if (city3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2861,18 +2861,18 @@ LABEL_375:
     }
   }
 
-  v73 = [(FHTransaction *)self state];
-  LODWORD(v435) = v73 != 0;
-  v266 = v73;
-  if (v73 && ([(FHTransaction *)v7 state], (v267 = objc_claimAutoreleasedReturnValue()) != 0))
+  state = [(FHTransaction *)self state];
+  LODWORD(v435) = state != 0;
+  v266 = state;
+  if (state && ([(FHTransaction *)v7 state], (v267 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v74 = [(FHTransaction *)self state];
+    state2 = [(FHTransaction *)self state];
     [(FHTransaction *)v7 state];
-    v258 = v259 = v74;
-    v10 = [v74 isEqualToString:?];
+    v258 = v259 = state2;
+    identifier4 = [state2 isEqualToString:?];
     v434 = 0;
     HIDWORD(v435) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2897,14 +2897,14 @@ LABEL_375:
 
   else
   {
-    v75 = [(FHTransaction *)self state];
-    v10 = [(FHTransaction *)v7 state];
+    state3 = [(FHTransaction *)self state];
+    identifier4 = [(FHTransaction *)v7 state];
     HIDWORD(v435) = 0;
     v267 = 0;
     v434 = 1;
-    v263 = v75;
-    v262 = v10;
-    if (v75 != v10)
+    v263 = state3;
+    v262 = identifier4;
+    if (state3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2934,9 +2934,9 @@ LABEL_375:
     v77 = [(FHTransaction *)self zip];
     [(FHTransaction *)v7 zip];
     v253 = v254 = v77;
-    v10 = [v77 isEqualToString:?];
+    identifier4 = [v77 isEqualToString:?];
     v431 = 0x100000000;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -2963,12 +2963,12 @@ LABEL_375:
   else
   {
     v78 = [(FHTransaction *)self zip];
-    v10 = [(FHTransaction *)v7 zip];
+    identifier4 = [(FHTransaction *)v7 zip];
     v261 = 0;
     v431 = 1;
     v257 = v78;
-    v256 = v10;
-    if (v78 != v10)
+    v256 = identifier4;
+    if (v78 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -2991,18 +2991,18 @@ LABEL_375:
     }
   }
 
-  v79 = [(FHTransaction *)self countryCode];
-  HIDWORD(v430) = v79 != 0;
-  v252 = v79;
-  if (v79 && ([(FHTransaction *)v7 countryCode], (v255 = objc_claimAutoreleasedReturnValue()) != 0))
+  countryCode = [(FHTransaction *)self countryCode];
+  HIDWORD(v430) = countryCode != 0;
+  v252 = countryCode;
+  if (countryCode && ([(FHTransaction *)v7 countryCode], (v255 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v80 = [(FHTransaction *)self countryCode];
+    countryCode2 = [(FHTransaction *)self countryCode];
     [(FHTransaction *)v7 countryCode];
-    v246 = v247 = v80;
-    v10 = [v80 isEqualToString:?];
+    v246 = v247 = countryCode2;
+    identifier4 = [countryCode2 isEqualToString:?];
     LODWORD(v430) = 0;
     v432 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3029,14 +3029,14 @@ LABEL_375:
 
   else
   {
-    v81 = [(FHTransaction *)self countryCode];
-    v10 = [(FHTransaction *)v7 countryCode];
+    countryCode3 = [(FHTransaction *)self countryCode];
+    identifier4 = [(FHTransaction *)v7 countryCode];
     v432 = 0;
     v255 = 0;
     LODWORD(v430) = 1;
-    v251 = v81;
-    v250 = v10;
-    if (v81 != v10)
+    v251 = countryCode3;
+    v250 = identifier4;
+    if (countryCode3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3060,18 +3060,18 @@ LABEL_375:
     }
   }
 
-  v82 = [(FHTransaction *)self altDSID];
-  v429 = v82 != 0;
-  v249 = v82;
-  if (v82 && ([(FHTransaction *)v7 altDSID], (v248 = objc_claimAutoreleasedReturnValue()) != 0))
+  altDSID = [(FHTransaction *)self altDSID];
+  v429 = altDSID != 0;
+  v249 = altDSID;
+  if (altDSID && ([(FHTransaction *)v7 altDSID], (v248 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v83 = [(FHTransaction *)self altDSID];
+    altDSID2 = [(FHTransaction *)self altDSID];
     [(FHTransaction *)v7 altDSID];
-    v242 = v243 = v83;
-    v10 = [v83 isEqualToString:?];
+    v242 = v243 = altDSID2;
+    identifier4 = [altDSID2 isEqualToString:?];
     v416 = 0;
     v417 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3099,14 +3099,14 @@ LABEL_375:
 
   else
   {
-    v84 = [(FHTransaction *)self altDSID];
-    v10 = [(FHTransaction *)v7 altDSID];
+    altDSID3 = [(FHTransaction *)self altDSID];
+    identifier4 = [(FHTransaction *)v7 altDSID];
     v417 = 0;
     v248 = 0;
     v416 = 1;
-    v245 = v84;
-    v244 = v10;
-    if (v84 != v10)
+    v245 = altDSID3;
+    v244 = identifier4;
+    if (altDSID3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3131,18 +3131,18 @@ LABEL_375:
     }
   }
 
-  v85 = [(FHTransaction *)self receiptIdentifier];
-  LODWORD(v414) = v85 != 0;
-  v241 = v85;
-  if (v85 && ([(FHTransaction *)v7 receiptIdentifier], (v240 = objc_claimAutoreleasedReturnValue()) != 0))
+  receiptIdentifier = [(FHTransaction *)self receiptIdentifier];
+  LODWORD(v414) = receiptIdentifier != 0;
+  v241 = receiptIdentifier;
+  if (receiptIdentifier && ([(FHTransaction *)v7 receiptIdentifier], (v240 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v86 = [(FHTransaction *)self receiptIdentifier];
+    receiptIdentifier2 = [(FHTransaction *)self receiptIdentifier];
     [(FHTransaction *)v7 receiptIdentifier];
-    v235 = v236 = v86;
-    v10 = [v86 isEqualToString:?];
+    v235 = v236 = receiptIdentifier2;
+    identifier4 = [receiptIdentifier2 isEqualToString:?];
     v413 = 0;
     HIDWORD(v414) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3171,14 +3171,14 @@ LABEL_375:
 
   else
   {
-    v87 = [(FHTransaction *)self receiptIdentifier];
-    v10 = [(FHTransaction *)v7 receiptIdentifier];
+    receiptIdentifier3 = [(FHTransaction *)self receiptIdentifier];
+    identifier4 = [(FHTransaction *)v7 receiptIdentifier];
     HIDWORD(v414) = 0;
     v240 = 0;
     v413 = 1;
-    v239 = v87;
-    v238 = v10;
-    if (v87 != v10)
+    v239 = receiptIdentifier3;
+    v238 = identifier4;
+    if (receiptIdentifier3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3204,18 +3204,18 @@ LABEL_375:
     }
   }
 
-  v88 = [(FHTransaction *)self associatedReceiptUniqueID];
-  LODWORD(v411) = v88 != 0;
-  v234 = v88;
-  if (v88 && ([(FHTransaction *)v7 associatedReceiptUniqueID], (v237 = objc_claimAutoreleasedReturnValue()) != 0))
+  associatedReceiptUniqueID = [(FHTransaction *)self associatedReceiptUniqueID];
+  LODWORD(v411) = associatedReceiptUniqueID != 0;
+  v234 = associatedReceiptUniqueID;
+  if (associatedReceiptUniqueID && ([(FHTransaction *)v7 associatedReceiptUniqueID], (v237 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v89 = [(FHTransaction *)self associatedReceiptUniqueID];
+    associatedReceiptUniqueID2 = [(FHTransaction *)self associatedReceiptUniqueID];
     [(FHTransaction *)v7 associatedReceiptUniqueID];
-    v232 = v233 = v89;
-    v10 = [v89 isEqualToString:?];
+    v232 = v233 = associatedReceiptUniqueID2;
+    identifier4 = [associatedReceiptUniqueID2 isEqualToString:?];
     v410 = 0;
     HIDWORD(v411) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3245,14 +3245,14 @@ LABEL_375:
 
   else
   {
-    v90 = [(FHTransaction *)self associatedReceiptUniqueID];
-    v10 = [(FHTransaction *)v7 associatedReceiptUniqueID];
+    associatedReceiptUniqueID3 = [(FHTransaction *)self associatedReceiptUniqueID];
+    identifier4 = [(FHTransaction *)v7 associatedReceiptUniqueID];
     HIDWORD(v411) = 0;
     v237 = 0;
     v410 = 1;
-    v231 = v90;
-    v230 = v10;
-    if (v90 != v10)
+    v231 = associatedReceiptUniqueID3;
+    v230 = identifier4;
+    if (associatedReceiptUniqueID3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3279,18 +3279,18 @@ LABEL_375:
     }
   }
 
-  v91 = [(FHTransaction *)self country];
-  LODWORD(v408) = v91 != 0;
-  v229 = v91;
-  if (v91 && ([(FHTransaction *)v7 country], (v228 = objc_claimAutoreleasedReturnValue()) != 0))
+  country = [(FHTransaction *)self country];
+  LODWORD(v408) = country != 0;
+  v229 = country;
+  if (country && ([(FHTransaction *)v7 country], (v228 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v92 = [(FHTransaction *)self country];
+    country2 = [(FHTransaction *)self country];
     [(FHTransaction *)v7 country];
-    v226 = v227 = v92;
-    v10 = [v92 isEqualToString:?];
+    v226 = v227 = country2;
+    identifier4 = [country2 isEqualToString:?];
     v407 = 0;
     HIDWORD(v408) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3321,14 +3321,14 @@ LABEL_375:
 
   else
   {
-    v93 = [(FHTransaction *)self country];
-    v10 = [(FHTransaction *)v7 country];
+    country3 = [(FHTransaction *)self country];
+    identifier4 = [(FHTransaction *)v7 country];
     HIDWORD(v408) = 0;
     v228 = 0;
     v407 = 1;
-    v225 = v93;
-    v224 = v10;
-    if (v93 != v10)
+    v225 = country3;
+    v224 = identifier4;
+    if (country3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3356,18 +3356,18 @@ LABEL_375:
     }
   }
 
-  v94 = [(FHTransaction *)self merchantUniqueIdentifier];
-  LODWORD(v405) = v94 != 0;
-  v223 = v94;
-  if (v94 && ([(FHTransaction *)v7 merchantUniqueIdentifier], (v222 = objc_claimAutoreleasedReturnValue()) != 0))
+  merchantUniqueIdentifier = [(FHTransaction *)self merchantUniqueIdentifier];
+  LODWORD(v405) = merchantUniqueIdentifier != 0;
+  v223 = merchantUniqueIdentifier;
+  if (merchantUniqueIdentifier && ([(FHTransaction *)v7 merchantUniqueIdentifier], (v222 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v95 = [(FHTransaction *)self merchantUniqueIdentifier];
+    merchantUniqueIdentifier2 = [(FHTransaction *)self merchantUniqueIdentifier];
     [(FHTransaction *)v7 merchantUniqueIdentifier];
-    v220 = v221 = v95;
-    v10 = [v95 isEqualToString:?];
+    v220 = v221 = merchantUniqueIdentifier2;
+    identifier4 = [merchantUniqueIdentifier2 isEqualToString:?];
     v404 = 0;
     HIDWORD(v405) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3398,14 +3398,14 @@ LABEL_375:
 
   else
   {
-    v96 = [(FHTransaction *)self merchantUniqueIdentifier];
-    v10 = [(FHTransaction *)v7 merchantUniqueIdentifier];
+    merchantUniqueIdentifier3 = [(FHTransaction *)self merchantUniqueIdentifier];
+    identifier4 = [(FHTransaction *)v7 merchantUniqueIdentifier];
     HIDWORD(v405) = 0;
     v222 = 0;
     v404 = 1;
-    v219 = v96;
-    v218 = v10;
-    if (v96 != v10)
+    v219 = merchantUniqueIdentifier3;
+    v218 = identifier4;
+    if (merchantUniqueIdentifier3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3433,18 +3433,18 @@ LABEL_375:
     }
   }
 
-  v97 = [(FHTransaction *)self name];
-  LODWORD(v402) = v97 != 0;
-  v217 = v97;
-  if (v97 && ([(FHTransaction *)v7 name], (v216 = objc_claimAutoreleasedReturnValue()) != 0))
+  name = [(FHTransaction *)self name];
+  LODWORD(v402) = name != 0;
+  v217 = name;
+  if (name && ([(FHTransaction *)v7 name], (v216 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v98 = [(FHTransaction *)self name];
+    name2 = [(FHTransaction *)self name];
     [(FHTransaction *)v7 name];
-    v214 = v215 = v98;
-    v10 = [v98 isEqualToString:?];
+    v214 = v215 = name2;
+    identifier4 = [name2 isEqualToString:?];
     v400 = 0;
     HIDWORD(v402) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3476,14 +3476,14 @@ LABEL_375:
 
   else
   {
-    v99 = [(FHTransaction *)self name];
-    v10 = [(FHTransaction *)v7 name];
+    name3 = [(FHTransaction *)self name];
+    identifier4 = [(FHTransaction *)v7 name];
     HIDWORD(v402) = 0;
     v216 = 0;
     v400 = 1;
-    v212 = v10;
-    v213 = v99;
-    if (v99 != v10)
+    v212 = identifier4;
+    v213 = name3;
+    if (name3 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3512,18 +3512,18 @@ LABEL_375:
     }
   }
 
-  v100 = [(FHTransaction *)self rawName];
-  HIDWORD(v397) = v100 != 0;
-  v211 = v100;
-  if (v100 && ([(FHTransaction *)v7 rawName], (v210 = objc_claimAutoreleasedReturnValue()) != 0))
+  rawName = [(FHTransaction *)self rawName];
+  HIDWORD(v397) = rawName != 0;
+  v211 = rawName;
+  if (rawName && ([(FHTransaction *)v7 rawName], (v210 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v101 = [(FHTransaction *)self rawName];
-    v208 = [(FHTransaction *)v7 rawName];
-    v209 = v101;
-    v10 = [v101 isEqualToString:?];
+    rawName2 = [(FHTransaction *)self rawName];
+    rawName3 = [(FHTransaction *)v7 rawName];
+    v209 = rawName2;
+    identifier4 = [rawName2 isEqualToString:?];
     LODWORD(v397) = 0;
     v398 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3556,14 +3556,14 @@ LABEL_375:
 
   else
   {
-    v102 = [(FHTransaction *)self rawName];
-    v10 = [(FHTransaction *)v7 rawName];
+    rawName4 = [(FHTransaction *)self rawName];
+    identifier4 = [(FHTransaction *)v7 rawName];
     v398 = 0;
     v210 = 0;
     LODWORD(v397) = 1;
-    v206 = v10;
-    v207 = v102;
-    if (v102 != v10)
+    v206 = identifier4;
+    v207 = rawName4;
+    if (rawName4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3593,18 +3593,18 @@ LABEL_375:
     }
   }
 
-  v103 = [(FHTransaction *)self timeZone];
-  HIDWORD(v394) = v103 != 0;
-  v205 = v103;
-  if (v103 && ([(FHTransaction *)v7 timeZone], (v204 = objc_claimAutoreleasedReturnValue()) != 0))
+  timeZone = [(FHTransaction *)self timeZone];
+  HIDWORD(v394) = timeZone != 0;
+  v205 = timeZone;
+  if (timeZone && ([(FHTransaction *)v7 timeZone], (v204 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v104 = [(FHTransaction *)self timeZone];
-    v202 = [(FHTransaction *)v7 timeZone];
-    v203 = v104;
-    v10 = [v104 isEqual:?];
+    timeZone2 = [(FHTransaction *)self timeZone];
+    timeZone3 = [(FHTransaction *)v7 timeZone];
+    v203 = timeZone2;
+    identifier4 = [timeZone2 isEqual:?];
     LODWORD(v394) = 0;
     v395 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3638,14 +3638,14 @@ LABEL_375:
 
   else
   {
-    v105 = [(FHTransaction *)self timeZone];
-    v10 = [(FHTransaction *)v7 timeZone];
+    timeZone4 = [(FHTransaction *)self timeZone];
+    identifier4 = [(FHTransaction *)v7 timeZone];
     v395 = 0;
     v204 = 0;
     LODWORD(v394) = 1;
-    v200 = v10;
-    v201 = v105;
-    if (v105 != v10)
+    v200 = identifier4;
+    v201 = timeZone4;
+    if (timeZone4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3676,18 +3676,18 @@ LABEL_375:
     }
   }
 
-  v106 = [(FHTransaction *)self merchantDetailedCategory];
-  HIDWORD(v391) = v106 != 0;
-  v199 = v106;
-  if (v106 && ([(FHTransaction *)v7 merchantDetailedCategory], (v198 = objc_claimAutoreleasedReturnValue()) != 0))
+  merchantDetailedCategory = [(FHTransaction *)self merchantDetailedCategory];
+  HIDWORD(v391) = merchantDetailedCategory != 0;
+  v199 = merchantDetailedCategory;
+  if (merchantDetailedCategory && ([(FHTransaction *)v7 merchantDetailedCategory], (v198 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v107 = [(FHTransaction *)self merchantDetailedCategory];
-    v196 = [(FHTransaction *)v7 merchantDetailedCategory];
-    v197 = v107;
-    v10 = [v107 isEqualToString:?];
+    merchantDetailedCategory2 = [(FHTransaction *)self merchantDetailedCategory];
+    merchantDetailedCategory3 = [(FHTransaction *)v7 merchantDetailedCategory];
+    v197 = merchantDetailedCategory2;
+    identifier4 = [merchantDetailedCategory2 isEqualToString:?];
     LODWORD(v391) = 0;
     v392 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3722,14 +3722,14 @@ LABEL_375:
 
   else
   {
-    v108 = [(FHTransaction *)self merchantDetailedCategory];
-    v10 = [(FHTransaction *)v7 merchantDetailedCategory];
+    merchantDetailedCategory4 = [(FHTransaction *)self merchantDetailedCategory];
+    identifier4 = [(FHTransaction *)v7 merchantDetailedCategory];
     v392 = 0;
     v198 = 0;
     LODWORD(v391) = 1;
-    v194 = v10;
-    v195 = v108;
-    if (v108 != v10)
+    v194 = identifier4;
+    v195 = merchantDetailedCategory4;
+    if (merchantDetailedCategory4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3761,18 +3761,18 @@ LABEL_375:
     }
   }
 
-  v109 = [(FHTransaction *)self location];
-  v388 = v109 != 0;
-  v193 = v109;
-  if (v109 && ([(FHTransaction *)v7 location], (v192 = objc_claimAutoreleasedReturnValue()) != 0))
+  location = [(FHTransaction *)self location];
+  v388 = location != 0;
+  v193 = location;
+  if (location && ([(FHTransaction *)v7 location], (v192 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v110 = [(FHTransaction *)self location];
-    v190 = [(FHTransaction *)v7 location];
-    v191 = v110;
-    v10 = [v110 isEqual:?];
+    location2 = [(FHTransaction *)self location];
+    location3 = [(FHTransaction *)v7 location];
+    v191 = location2;
+    identifier4 = [location2 isEqual:?];
     v386 = 0;
     v389 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -3808,14 +3808,14 @@ LABEL_375:
 
   else
   {
-    v111 = [(FHTransaction *)self location];
-    v10 = [(FHTransaction *)v7 location];
+    location4 = [(FHTransaction *)self location];
+    identifier4 = [(FHTransaction *)v7 location];
     v389 = 0;
     v192 = 0;
     v386 = 1;
-    v188 = v10;
-    v189 = v111;
-    if (v111 != v10)
+    v188 = identifier4;
+    v189 = location4;
+    if (location4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -3848,86 +3848,86 @@ LABEL_375:
     }
   }
 
-  v112 = [(FHTransaction *)self industryCode];
-  v10 = [(FHTransaction *)v7 industryCode];
-  if (v112 != v10)
+  industryCode = [(FHTransaction *)self industryCode];
+  identifier4 = [(FHTransaction *)v7 industryCode];
+  if (industryCode != identifier4)
   {
     goto LABEL_503;
   }
 
-  v113 = [(FHTransaction *)self category];
-  v10 = [(FHTransaction *)v7 category];
-  if (v113 != v10)
+  category = [(FHTransaction *)self category];
+  identifier4 = [(FHTransaction *)v7 category];
+  if (category != identifier4)
   {
     goto LABEL_503;
   }
 
-  v114 = [(FHTransaction *)self transactionStatus];
-  v10 = [(FHTransaction *)v7 transactionStatus];
-  if (v114 != v10)
+  transactionStatus = [(FHTransaction *)self transactionStatus];
+  identifier4 = [(FHTransaction *)v7 transactionStatus];
+  if (transactionStatus != identifier4)
   {
     goto LABEL_503;
   }
 
-  v115 = [(FHTransaction *)self transactionSource];
-  v10 = [(FHTransaction *)v7 transactionSource];
-  if (v115 != v10)
+  transactionSource = [(FHTransaction *)self transactionSource];
+  identifier4 = [(FHTransaction *)v7 transactionSource];
+  if (transactionSource != identifier4)
   {
     goto LABEL_503;
   }
 
-  v116 = [(FHTransaction *)self cardType];
-  v10 = [(FHTransaction *)v7 cardType];
-  if (v116 != v10)
+  cardType = [(FHTransaction *)self cardType];
+  identifier4 = [(FHTransaction *)v7 cardType];
+  if (cardType != identifier4)
   {
     goto LABEL_503;
   }
 
-  v117 = [(FHTransaction *)self transactionType];
-  v10 = [(FHTransaction *)v7 transactionType];
-  if (v117 != v10)
+  transactionType = [(FHTransaction *)self transactionType];
+  identifier4 = [(FHTransaction *)v7 transactionType];
+  if (transactionType != identifier4)
   {
     goto LABEL_503;
   }
 
-  v118 = [(FHTransaction *)self accountType];
-  v10 = [(FHTransaction *)v7 accountType];
-  if (v118 != v10)
+  accountType = [(FHTransaction *)self accountType];
+  identifier4 = [(FHTransaction *)v7 accountType];
+  if (accountType != identifier4)
   {
     goto LABEL_503;
   }
 
-  v119 = [(FHTransaction *)self transactionInternalState];
-  v10 = [(FHTransaction *)v7 transactionInternalState];
-  if (v119 != v10)
+  transactionInternalState = [(FHTransaction *)self transactionInternalState];
+  identifier4 = [(FHTransaction *)v7 transactionInternalState];
+  if (transactionInternalState != identifier4)
   {
     goto LABEL_503;
   }
 
-  v120 = [(FHTransaction *)self hasLocation];
-  v10 = [(FHTransaction *)v7 hasLocation];
-  if (v120 != v10)
+  hasLocation = [(FHTransaction *)self hasLocation];
+  identifier4 = [(FHTransaction *)v7 hasLocation];
+  if (hasLocation != identifier4)
   {
     goto LABEL_503;
   }
 
-  v121 = [(FHTransaction *)self mapsMerchantID];
-  v10 = [(FHTransaction *)v7 mapsMerchantID];
-  if (v121 != v10)
+  mapsMerchantID = [(FHTransaction *)self mapsMerchantID];
+  identifier4 = [(FHTransaction *)v7 mapsMerchantID];
+  if (mapsMerchantID != identifier4)
   {
     goto LABEL_503;
   }
 
-  v122 = [(FHTransaction *)self mapsMerchantResultProviderID];
-  v10 = [(FHTransaction *)v7 mapsMerchantResultProviderID];
-  if (v122 != v10)
+  mapsMerchantResultProviderID = [(FHTransaction *)self mapsMerchantResultProviderID];
+  identifier4 = [(FHTransaction *)v7 mapsMerchantResultProviderID];
+  if (mapsMerchantResultProviderID != identifier4)
   {
     goto LABEL_503;
   }
 
-  v123 = [(FHTransaction *)self mapsMerchantBrandID];
-  v10 = [(FHTransaction *)v7 mapsMerchantBrandID];
-  if (v123 != v10 || (v124 = [(FHTransaction *)self mapsMerchantBrandResultProviderID], v10 = [(FHTransaction *)v7 mapsMerchantBrandResultProviderID], v124 != v10) || (v125 = [(FHTransaction *)self disputeType], v10 = [(FHTransaction *)v7 disputeType], v125 != v10) || (v126 = [(FHTransaction *)self disputeStatus], v10 = [(FHTransaction *)v7 disputeStatus], v126 != v10))
+  mapsMerchantBrandID = [(FHTransaction *)self mapsMerchantBrandID];
+  identifier4 = [(FHTransaction *)v7 mapsMerchantBrandID];
+  if (mapsMerchantBrandID != identifier4 || (v124 = [(FHTransaction *)self mapsMerchantBrandResultProviderID], identifier4 = [(FHTransaction *)v7 mapsMerchantBrandResultProviderID], v124 != identifier4) || (v125 = [(FHTransaction *)self disputeType], identifier4 = [(FHTransaction *)v7 disputeType], v125 != identifier4) || (v126 = [(FHTransaction *)self disputeStatus], identifier4 = [(FHTransaction *)v7 disputeStatus], v126 != identifier4))
   {
 LABEL_503:
     v373 = 0;
@@ -3979,18 +3979,18 @@ LABEL_503:
     goto LABEL_24;
   }
 
-  v127 = [(FHTransaction *)self peerPaymentCounterpartHandle];
-  LODWORD(v384) = v127 != 0;
-  v186 = v127;
-  if (v127 && ([(FHTransaction *)v7 peerPaymentCounterpartHandle], (v187 = objc_claimAutoreleasedReturnValue()) != 0))
+  peerPaymentCounterpartHandle = [(FHTransaction *)self peerPaymentCounterpartHandle];
+  LODWORD(v384) = peerPaymentCounterpartHandle != 0;
+  v186 = peerPaymentCounterpartHandle;
+  if (peerPaymentCounterpartHandle && ([(FHTransaction *)v7 peerPaymentCounterpartHandle], (v187 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v128 = [(FHTransaction *)self peerPaymentCounterpartHandle];
-    v184 = [(FHTransaction *)v7 peerPaymentCounterpartHandle];
-    v185 = v128;
-    v10 = [v128 isEqualToString:?];
+    peerPaymentCounterpartHandle2 = [(FHTransaction *)self peerPaymentCounterpartHandle];
+    peerPaymentCounterpartHandle3 = [(FHTransaction *)v7 peerPaymentCounterpartHandle];
+    v185 = peerPaymentCounterpartHandle2;
+    identifier4 = [peerPaymentCounterpartHandle2 isEqualToString:?];
     v383 = 0;
     HIDWORD(v384) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -4027,14 +4027,14 @@ LABEL_503:
 
   else
   {
-    v129 = [(FHTransaction *)self peerPaymentCounterpartHandle];
-    v10 = [(FHTransaction *)v7 peerPaymentCounterpartHandle];
+    peerPaymentCounterpartHandle4 = [(FHTransaction *)self peerPaymentCounterpartHandle];
+    identifier4 = [(FHTransaction *)v7 peerPaymentCounterpartHandle];
     HIDWORD(v384) = 0;
     v187 = 0;
     v383 = 1;
-    v182 = v10;
-    v183 = v129;
-    if (v129 != v10)
+    v182 = identifier4;
+    v183 = peerPaymentCounterpartHandle4;
+    if (peerPaymentCounterpartHandle4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -4068,9 +4068,9 @@ LABEL_503:
     }
   }
 
-  v130 = [(FHTransaction *)self peerPaymentType];
-  v10 = [(FHTransaction *)v7 peerPaymentType];
-  if (v130 != v10)
+  peerPaymentType = [(FHTransaction *)self peerPaymentType];
+  identifier4 = [(FHTransaction *)v7 peerPaymentType];
+  if (peerPaymentType != identifier4)
   {
     v371 = 0;
     v379 = 0;
@@ -4119,18 +4119,18 @@ LABEL_503:
     goto LABEL_24;
   }
 
-  v131 = [(FHTransaction *)self transactionDescription];
-  HIDWORD(v379) = v131 != 0;
-  v180 = v131;
-  if (v131 && ([(FHTransaction *)v7 transactionDescription], (v181 = objc_claimAutoreleasedReturnValue()) != 0))
+  transactionDescription = [(FHTransaction *)self transactionDescription];
+  HIDWORD(v379) = transactionDescription != 0;
+  v180 = transactionDescription;
+  if (transactionDescription && ([(FHTransaction *)v7 transactionDescription], (v181 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v132 = [(FHTransaction *)self transactionDescription];
-    v178 = [(FHTransaction *)v7 transactionDescription];
-    v179 = v132;
-    v10 = [v132 isEqualToString:?];
+    transactionDescription2 = [(FHTransaction *)self transactionDescription];
+    transactionDescription3 = [(FHTransaction *)v7 transactionDescription];
+    v179 = transactionDescription2;
+    identifier4 = [transactionDescription2 isEqualToString:?];
     LODWORD(v379) = 0;
     v380 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -4168,14 +4168,14 @@ LABEL_503:
 
   else
   {
-    v133 = [(FHTransaction *)self transactionDescription];
-    v10 = [(FHTransaction *)v7 transactionDescription];
+    transactionDescription4 = [(FHTransaction *)self transactionDescription];
+    identifier4 = [(FHTransaction *)v7 transactionDescription];
     v380 = 0;
     v181 = 0;
     LODWORD(v379) = 1;
-    v176 = v10;
-    v177 = v133;
-    if (v133 != v10)
+    v176 = identifier4;
+    v177 = transactionDescription4;
+    if (transactionDescription4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -4210,18 +4210,18 @@ LABEL_503:
     }
   }
 
-  v134 = [(FHTransaction *)self processedDescription];
-  HIDWORD(v376) = v134 != 0;
-  v174 = v134;
-  if (v134 && ([(FHTransaction *)v7 processedDescription], (v175 = objc_claimAutoreleasedReturnValue()) != 0))
+  processedDescription = [(FHTransaction *)self processedDescription];
+  HIDWORD(v376) = processedDescription != 0;
+  v174 = processedDescription;
+  if (processedDescription && ([(FHTransaction *)v7 processedDescription], (v175 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v135 = [(FHTransaction *)self processedDescription];
-    v172 = [(FHTransaction *)v7 processedDescription];
-    v173 = v135;
-    v10 = [v135 isEqualToString:?];
+    processedDescription2 = [(FHTransaction *)self processedDescription];
+    processedDescription3 = [(FHTransaction *)v7 processedDescription];
+    v173 = processedDescription2;
+    identifier4 = [processedDescription2 isEqualToString:?];
     LODWORD(v376) = 0;
     v377 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -4260,14 +4260,14 @@ LABEL_503:
 
   else
   {
-    v136 = [(FHTransaction *)self processedDescription];
-    v10 = [(FHTransaction *)v7 processedDescription];
+    processedDescription4 = [(FHTransaction *)self processedDescription];
+    identifier4 = [(FHTransaction *)v7 processedDescription];
     v377 = 0;
     v175 = 0;
     LODWORD(v376) = 1;
-    v170 = v10;
-    v171 = v136;
-    if (v136 != v10)
+    v170 = identifier4;
+    v171 = processedDescription4;
+    if (processedDescription4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -4303,9 +4303,9 @@ LABEL_503:
     }
   }
 
-  v137 = [(FHTransaction *)self recurring];
-  v10 = [(FHTransaction *)v7 recurring];
-  if (v137 != v10)
+  recurring = [(FHTransaction *)self recurring];
+  identifier4 = [(FHTransaction *)v7 recurring];
+  if (recurring != identifier4)
   {
     v367 = 0x100000000;
     v374 = 0;
@@ -4350,18 +4350,18 @@ LABEL_503:
     goto LABEL_24;
   }
 
-  v138 = [(FHTransaction *)self disputeOpenDate];
-  LODWORD(v374) = v138 != 0;
-  v168 = v138;
-  if (v138 && ([(FHTransaction *)v7 disputeOpenDate], (v169 = objc_claimAutoreleasedReturnValue()) != 0))
+  disputeOpenDate = [(FHTransaction *)self disputeOpenDate];
+  LODWORD(v374) = disputeOpenDate != 0;
+  v168 = disputeOpenDate;
+  if (disputeOpenDate && ([(FHTransaction *)v7 disputeOpenDate], (v169 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v139 = [(FHTransaction *)self disputeOpenDate];
-    v166 = [(FHTransaction *)v7 disputeOpenDate];
-    v167 = v139;
-    v10 = [v139 isEqual:?];
+    disputeOpenDate2 = [(FHTransaction *)self disputeOpenDate];
+    disputeOpenDate3 = [(FHTransaction *)v7 disputeOpenDate];
+    v167 = disputeOpenDate2;
+    identifier4 = [disputeOpenDate2 isEqual:?];
     HIDWORD(v373) = 0;
     HIDWORD(v374) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -4400,14 +4400,14 @@ LABEL_503:
 
   else
   {
-    v140 = [(FHTransaction *)self disputeOpenDate];
-    v10 = [(FHTransaction *)v7 disputeOpenDate];
+    disputeOpenDate4 = [(FHTransaction *)self disputeOpenDate];
+    identifier4 = [(FHTransaction *)v7 disputeOpenDate];
     HIDWORD(v374) = 0;
     v169 = 0;
     HIDWORD(v373) = 1;
-    v164 = v10;
-    v165 = v140;
-    if (v140 != v10)
+    v164 = identifier4;
+    v165 = disputeOpenDate4;
+    if (disputeOpenDate4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -4443,18 +4443,18 @@ LABEL_503:
     }
   }
 
-  v141 = [(FHTransaction *)self disputeLastUpdatedDate];
-  LODWORD(v370) = v141 != 0;
-  v162 = v141;
-  if (v141 && ([(FHTransaction *)v7 disputeLastUpdatedDate], (v163 = objc_claimAutoreleasedReturnValue()) != 0))
+  disputeLastUpdatedDate = [(FHTransaction *)self disputeLastUpdatedDate];
+  LODWORD(v370) = disputeLastUpdatedDate != 0;
+  v162 = disputeLastUpdatedDate;
+  if (disputeLastUpdatedDate && ([(FHTransaction *)v7 disputeLastUpdatedDate], (v163 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v142 = [(FHTransaction *)self disputeLastUpdatedDate];
-    v160 = [(FHTransaction *)v7 disputeLastUpdatedDate];
-    v161 = v142;
-    v10 = [v142 isEqual:?];
+    disputeLastUpdatedDate2 = [(FHTransaction *)self disputeLastUpdatedDate];
+    disputeLastUpdatedDate3 = [(FHTransaction *)v7 disputeLastUpdatedDate];
+    v161 = disputeLastUpdatedDate2;
+    identifier4 = [disputeLastUpdatedDate2 isEqual:?];
     v368 = 0;
     HIDWORD(v370) = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -4494,14 +4494,14 @@ LABEL_503:
 
   else
   {
-    v143 = [(FHTransaction *)self disputeLastUpdatedDate];
-    v10 = [(FHTransaction *)v7 disputeLastUpdatedDate];
+    disputeLastUpdatedDate4 = [(FHTransaction *)self disputeLastUpdatedDate];
+    identifier4 = [(FHTransaction *)v7 disputeLastUpdatedDate];
     HIDWORD(v370) = 0;
     v163 = 0;
     v368 = 1;
-    v158 = v10;
-    v159 = v143;
-    if (v143 != v10)
+    v158 = identifier4;
+    v159 = disputeLastUpdatedDate4;
+    if (disputeLastUpdatedDate4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -4538,18 +4538,18 @@ LABEL_503:
     }
   }
 
-  v144 = [(FHTransaction *)self proprietaryBankTransactionCode];
-  HIDWORD(v364) = v144 != 0;
-  v156 = v144;
-  if (v144 && ([(FHTransaction *)v7 proprietaryBankTransactionCode], (v157 = objc_claimAutoreleasedReturnValue()) != 0))
+  proprietaryBankTransactionCode = [(FHTransaction *)self proprietaryBankTransactionCode];
+  HIDWORD(v364) = proprietaryBankTransactionCode != 0;
+  v156 = proprietaryBankTransactionCode;
+  if (proprietaryBankTransactionCode && ([(FHTransaction *)v7 proprietaryBankTransactionCode], (v157 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v145 = [(FHTransaction *)self proprietaryBankTransactionCode];
-    v154 = [(FHTransaction *)v7 proprietaryBankTransactionCode];
-    v155 = v145;
-    v10 = [v145 isEqualToString:?];
+    proprietaryBankTransactionCode2 = [(FHTransaction *)self proprietaryBankTransactionCode];
+    proprietaryBankTransactionCode3 = [(FHTransaction *)v7 proprietaryBankTransactionCode];
+    v155 = proprietaryBankTransactionCode2;
+    identifier4 = [proprietaryBankTransactionCode2 isEqualToString:?];
     LODWORD(v364) = 0;
     v365 = 1;
-    if ((v10 & 1) == 0)
+    if ((identifier4 & 1) == 0)
     {
       v422 = 1;
       v421 = 1;
@@ -4590,14 +4590,14 @@ LABEL_503:
 
   else
   {
-    v146 = [(FHTransaction *)self proprietaryBankTransactionCode];
-    v10 = [(FHTransaction *)v7 proprietaryBankTransactionCode];
+    proprietaryBankTransactionCode4 = [(FHTransaction *)self proprietaryBankTransactionCode];
+    identifier4 = [(FHTransaction *)v7 proprietaryBankTransactionCode];
     v365 = 0;
     v157 = 0;
     LODWORD(v364) = 1;
-    v152 = v10;
-    v153 = v146;
-    if (v146 != v10)
+    v152 = identifier4;
+    v153 = proprietaryBankTransactionCode4;
+    if (proprietaryBankTransactionCode4 != identifier4)
     {
       v422 = 1;
       v421 = 1;
@@ -4635,16 +4635,16 @@ LABEL_503:
     }
   }
 
-  v147 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-  v15 = v147 != 0;
-  v150 = v147;
-  if (v147 && ([(FHTransaction *)v7 proprietaryBankTransactionIssuer], (v151 = objc_claimAutoreleasedReturnValue()) != 0))
+  proprietaryBankTransactionIssuer = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+  v15 = proprietaryBankTransactionIssuer != 0;
+  v150 = proprietaryBankTransactionIssuer;
+  if (proprietaryBankTransactionIssuer && ([(FHTransaction *)v7 proprietaryBankTransactionIssuer], (v151 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v148 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-    v4 = [(FHTransaction *)v7 proprietaryBankTransactionIssuer];
-    v149 = v148;
-    v10 = [v148 isEqualToString:v4];
-    LOBYTE(v18) = v10;
+    proprietaryBankTransactionIssuer2 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+    financeAccountIdentifier2 = [(FHTransaction *)v7 proprietaryBankTransactionIssuer];
+    v149 = proprietaryBankTransactionIssuer2;
+    identifier4 = [proprietaryBankTransactionIssuer2 isEqualToString:financeAccountIdentifier2];
+    LOBYTE(v18) = identifier4;
     v17 = 0;
     v422 = 1;
     v421 = 1;
@@ -4683,11 +4683,11 @@ LABEL_503:
 
   else
   {
-    v3 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-    v10 = [(FHTransaction *)v7 proprietaryBankTransactionIssuer];
+    transactionServiceIdentifier3 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+    identifier4 = [(FHTransaction *)v7 proprietaryBankTransactionIssuer];
     v151 = 0;
     v16 = 0;
-    LOBYTE(v18) = v3 == v10;
+    LOBYTE(v18) = transactionServiceIdentifier3 == identifier4;
     v422 = 1;
     v421 = 1;
     v420 = 1;
@@ -5315,7 +5315,7 @@ LABEL_296:
   {
   }
 
-  if (v357)
+  if (identifier)
   {
   }
 
@@ -5323,44 +5323,44 @@ LABEL_305:
   return v18;
 }
 
-- (BOOL)bankConnectTransactionHasBeenUpdatedFrom:(id)a3
+- (BOOL)bankConnectTransactionHasBeenUpdatedFrom:(id)from
 {
   v183 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy == self)
   {
     v14 = 0;
     goto LABEL_118;
   }
 
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!fromCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v14 = 1;
     goto LABEL_118;
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(FHTransaction *)self identifier];
-  if (!v7 || ([(FHTransaction *)v5 identifier], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  identifier = [(FHTransaction *)self identifier];
+  if (!identifier || ([(FHTransaction *)v5 identifier], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v15 = [(FHTransaction *)self identifier];
-    v16 = [(FHTransaction *)v5 identifier];
+    identifier2 = [(FHTransaction *)self identifier];
+    identifier3 = [(FHTransaction *)v5 identifier];
 
-    if (v7)
+    if (identifier)
     {
     }
 
-    if (v15 == v16)
+    if (identifier2 == identifier3)
     {
       goto LABEL_7;
     }
 
 LABEL_13:
     v17 = MEMORY[0x277CCACA8];
-    v18 = [(FHTransaction *)v5 identifier];
-    v19 = [(FHTransaction *)self identifier];
-    v20 = [v17 stringWithFormat:@"Identifier %@ -> %@", v18, v19];
+    identifier4 = [(FHTransaction *)v5 identifier];
+    identifier5 = [(FHTransaction *)self identifier];
+    v20 = [v17 stringWithFormat:@"Identifier %@ -> %@", identifier4, identifier5];
     [v6 addObject:v20];
 
     v13 = 0;
@@ -5368,9 +5368,9 @@ LABEL_13:
   }
 
   v9 = v8;
-  v10 = [(FHTransaction *)self identifier];
-  v11 = [(FHTransaction *)v5 identifier];
-  v12 = [v10 isEqualToString:v11];
+  identifier6 = [(FHTransaction *)self identifier];
+  identifier7 = [(FHTransaction *)v5 identifier];
+  v12 = [identifier6 isEqualToString:identifier7];
 
   if ((v12 & 1) == 0)
   {
@@ -5380,13 +5380,13 @@ LABEL_13:
 LABEL_7:
   v13 = 1;
 LABEL_14:
-  v21 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-  if (v21 && ([(FHTransaction *)v5 financeTransactionSharedIdentifier], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+  financeTransactionSharedIdentifier = [(FHTransaction *)self financeTransactionSharedIdentifier];
+  if (financeTransactionSharedIdentifier && ([(FHTransaction *)v5 financeTransactionSharedIdentifier], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v23 = v22;
-    v24 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-    v25 = [(FHTransaction *)v5 financeTransactionSharedIdentifier];
-    v26 = [v24 isEqualToString:v25];
+    financeTransactionSharedIdentifier2 = [(FHTransaction *)self financeTransactionSharedIdentifier];
+    financeTransactionSharedIdentifier3 = [(FHTransaction *)v5 financeTransactionSharedIdentifier];
+    v26 = [financeTransactionSharedIdentifier2 isEqualToString:financeTransactionSharedIdentifier3];
 
     if (v26)
     {
@@ -5398,47 +5398,47 @@ LABEL_17:
 
   else
   {
-    v27 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-    v28 = [(FHTransaction *)v5 financeTransactionSharedIdentifier];
+    financeTransactionSharedIdentifier4 = [(FHTransaction *)self financeTransactionSharedIdentifier];
+    financeTransactionSharedIdentifier5 = [(FHTransaction *)v5 financeTransactionSharedIdentifier];
 
-    if (v21)
+    if (financeTransactionSharedIdentifier)
     {
     }
 
-    if (v27 == v28)
+    if (financeTransactionSharedIdentifier4 == financeTransactionSharedIdentifier5)
     {
       goto LABEL_17;
     }
   }
 
   v29 = MEMORY[0x277CCACA8];
-  v30 = [(FHTransaction *)v5 financeTransactionSharedIdentifier];
-  v31 = [(FHTransaction *)self financeTransactionSharedIdentifier];
-  v32 = [v29 stringWithFormat:@"Finance Shared Identifier %@ -> %@", v30, v31];
+  financeTransactionSharedIdentifier6 = [(FHTransaction *)v5 financeTransactionSharedIdentifier];
+  financeTransactionSharedIdentifier7 = [(FHTransaction *)self financeTransactionSharedIdentifier];
+  v32 = [v29 stringWithFormat:@"Finance Shared Identifier %@ -> %@", financeTransactionSharedIdentifier6, financeTransactionSharedIdentifier7];
   [v6 addObject:v32];
 
   v172 = 0;
 LABEL_22:
-  v33 = [(FHTransaction *)self financeTransactionSource];
-  v175 = [(FHTransaction *)v5 financeTransactionSource];
-  v176 = v33;
-  if (v33 != v175)
+  financeTransactionSource = [(FHTransaction *)self financeTransactionSource];
+  financeTransactionSource2 = [(FHTransaction *)v5 financeTransactionSource];
+  v176 = financeTransactionSource;
+  if (financeTransactionSource != financeTransactionSource2)
   {
     v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"Finance Transaction Source %lu -> %lu", -[FHTransaction financeTransactionSource](v5, "financeTransactionSource"), -[FHTransaction financeTransactionSource](self, "financeTransactionSource")];
     [v6 addObject:v34];
   }
 
-  v35 = [(FHTransaction *)self amount];
-  if (!v35 || ([(FHTransaction *)v5 amount], (v36 = objc_claimAutoreleasedReturnValue()) == 0))
+  amount = [(FHTransaction *)self amount];
+  if (!amount || ([(FHTransaction *)v5 amount], (v36 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v41 = [(FHTransaction *)self amount];
-    v42 = [(FHTransaction *)v5 amount];
+    amount2 = [(FHTransaction *)self amount];
+    amount3 = [(FHTransaction *)v5 amount];
 
-    if (v35)
+    if (amount)
     {
     }
 
-    if (v41 == v42)
+    if (amount2 == amount3)
     {
       goto LABEL_27;
     }
@@ -5452,9 +5452,9 @@ LABEL_31:
   }
 
   v37 = v36;
-  v38 = [(FHTransaction *)self amount];
-  v39 = [(FHTransaction *)v5 amount];
-  v40 = [v38 isEqual:v39];
+  amount4 = [(FHTransaction *)self amount];
+  amount5 = [(FHTransaction *)v5 amount];
+  v40 = [amount4 isEqual:amount5];
 
   if ((v40 & 1) == 0)
   {
@@ -5464,26 +5464,26 @@ LABEL_31:
 LABEL_27:
   v168 = 1;
 LABEL_32:
-  v44 = [(FHTransaction *)self currencyCode];
-  if (!v44 || ([(FHTransaction *)v5 currencyCode], (v45 = objc_claimAutoreleasedReturnValue()) == 0))
+  currencyCode = [(FHTransaction *)self currencyCode];
+  if (!currencyCode || ([(FHTransaction *)v5 currencyCode], (v45 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v51 = [(FHTransaction *)self currencyCode];
-    v52 = [(FHTransaction *)v5 currencyCode];
+    currencyCode2 = [(FHTransaction *)self currencyCode];
+    currencyCode3 = [(FHTransaction *)v5 currencyCode];
 
-    if (v44)
+    if (currencyCode)
     {
     }
 
-    if (v51 == v52)
+    if (currencyCode2 == currencyCode3)
     {
       goto LABEL_35;
     }
 
 LABEL_39:
     v53 = MEMORY[0x277CCACA8];
-    v54 = [(FHTransaction *)v5 currencyCode];
-    v55 = [(FHTransaction *)self currencyCode];
-    v56 = [v53 stringWithFormat:@"CurrencyCode %@ -> %@", v54, v55];
+    currencyCode4 = [(FHTransaction *)v5 currencyCode];
+    currencyCode5 = [(FHTransaction *)self currencyCode];
+    v56 = [v53 stringWithFormat:@"CurrencyCode %@ -> %@", currencyCode4, currencyCode5];
     [v6 addObject:v56];
 
     v50 = 0;
@@ -5491,9 +5491,9 @@ LABEL_39:
   }
 
   v46 = v45;
-  v47 = [(FHTransaction *)self currencyCode];
-  v48 = [(FHTransaction *)v5 currencyCode];
-  v49 = [v47 isEqualToString:v48];
+  currencyCode6 = [(FHTransaction *)self currencyCode];
+  currencyCode7 = [(FHTransaction *)v5 currencyCode];
+  v49 = [currencyCode6 isEqualToString:currencyCode7];
 
   if ((v49 & 1) == 0)
   {
@@ -5503,25 +5503,25 @@ LABEL_39:
 LABEL_35:
   v50 = 1;
 LABEL_40:
-  v57 = [(FHTransaction *)self transactionDate];
-  [v57 timeIntervalSinceReferenceDate];
+  transactionDate = [(FHTransaction *)self transactionDate];
+  [transactionDate timeIntervalSinceReferenceDate];
   v59 = v58;
 
-  v60 = [(FHTransaction *)v5 transactionDate];
-  [v60 timeIntervalSinceReferenceDate];
+  transactionDate2 = [(FHTransaction *)v5 transactionDate];
+  [transactionDate2 timeIntervalSinceReferenceDate];
   v62 = v61;
 
-  v63 = [(FHTransaction *)self transactionDate];
-  if (!v63 || ([(FHTransaction *)v5 transactionDate], (v64 = objc_claimAutoreleasedReturnValue()) == 0))
+  transactionDate3 = [(FHTransaction *)self transactionDate];
+  if (!transactionDate3 || ([(FHTransaction *)v5 transactionDate], (v64 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v65 = [(FHTransaction *)self transactionDate];
-    v66 = [(FHTransaction *)v5 transactionDate];
+    transactionDate4 = [(FHTransaction *)self transactionDate];
+    transactionDate5 = [(FHTransaction *)v5 transactionDate];
 
-    if (v63)
+    if (transactionDate3)
     {
     }
 
-    if (v65 == v66)
+    if (transactionDate4 == transactionDate5)
     {
       goto LABEL_43;
     }
@@ -5542,17 +5542,17 @@ LABEL_47:
 LABEL_43:
   v166 = 1;
 LABEL_48:
-  v68 = [(FHTransaction *)self displayName];
-  if (!v68 || ([(FHTransaction *)v5 displayName], (v69 = objc_claimAutoreleasedReturnValue()) == 0))
+  displayName = [(FHTransaction *)self displayName];
+  if (!displayName || ([(FHTransaction *)v5 displayName], (v69 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v74 = [(FHTransaction *)self displayName];
-    v75 = [(FHTransaction *)v5 displayName];
+    displayName2 = [(FHTransaction *)self displayName];
+    displayName3 = [(FHTransaction *)v5 displayName];
 
-    if (v68)
+    if (displayName)
     {
     }
 
-    if (v74 == v75)
+    if (displayName2 == displayName3)
     {
       goto LABEL_51;
     }
@@ -5566,9 +5566,9 @@ LABEL_55:
   }
 
   v70 = v69;
-  v71 = [(FHTransaction *)self displayName];
-  v72 = [(FHTransaction *)v5 displayName];
-  v73 = [v71 isEqual:v72];
+  displayName4 = [(FHTransaction *)self displayName];
+  displayName5 = [(FHTransaction *)v5 displayName];
+  v73 = [displayName4 isEqual:displayName5];
 
   if ((v73 & 1) == 0)
   {
@@ -5579,26 +5579,26 @@ LABEL_51:
   v170 = 1;
 LABEL_56:
   v77 = v13 & v172;
-  v78 = [(FHTransaction *)self merchantUniqueIdentifier];
-  if (!v78 || ([(FHTransaction *)v5 merchantUniqueIdentifier], (v79 = objc_claimAutoreleasedReturnValue()) == 0))
+  merchantUniqueIdentifier = [(FHTransaction *)self merchantUniqueIdentifier];
+  if (!merchantUniqueIdentifier || ([(FHTransaction *)v5 merchantUniqueIdentifier], (v79 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v84 = [(FHTransaction *)self merchantUniqueIdentifier];
-    v85 = [(FHTransaction *)v5 merchantUniqueIdentifier];
+    merchantUniqueIdentifier2 = [(FHTransaction *)self merchantUniqueIdentifier];
+    merchantUniqueIdentifier3 = [(FHTransaction *)v5 merchantUniqueIdentifier];
 
-    if (v78)
+    if (merchantUniqueIdentifier)
     {
     }
 
-    if (v84 == v85)
+    if (merchantUniqueIdentifier2 == merchantUniqueIdentifier3)
     {
       goto LABEL_59;
     }
 
 LABEL_63:
     v86 = MEMORY[0x277CCACA8];
-    v87 = [(FHTransaction *)v5 merchantUniqueIdentifier];
-    v88 = [(FHTransaction *)self merchantUniqueIdentifier];
-    v89 = [v86 stringWithFormat:@"MerchantUniqueIdentifier %@ -> %@", v87, v88];
+    merchantUniqueIdentifier4 = [(FHTransaction *)v5 merchantUniqueIdentifier];
+    merchantUniqueIdentifier5 = [(FHTransaction *)self merchantUniqueIdentifier];
+    v89 = [v86 stringWithFormat:@"MerchantUniqueIdentifier %@ -> %@", merchantUniqueIdentifier4, merchantUniqueIdentifier5];
     [v6 addObject:v89];
 
     v173 = 0;
@@ -5606,9 +5606,9 @@ LABEL_63:
   }
 
   v80 = v79;
-  v81 = [(FHTransaction *)self merchantUniqueIdentifier];
-  v82 = [(FHTransaction *)v5 merchantUniqueIdentifier];
-  v83 = [v81 isEqualToString:v82];
+  merchantUniqueIdentifier6 = [(FHTransaction *)self merchantUniqueIdentifier];
+  merchantUniqueIdentifier7 = [(FHTransaction *)v5 merchantUniqueIdentifier];
+  v83 = [merchantUniqueIdentifier6 isEqualToString:merchantUniqueIdentifier7];
 
   if ((v83 & 1) == 0)
   {
@@ -5619,17 +5619,17 @@ LABEL_59:
   v173 = 1;
 LABEL_64:
   v90 = v77 & v168;
-  v91 = [(FHTransaction *)self name];
-  if (!v91 || ([(FHTransaction *)v5 name], (v92 = objc_claimAutoreleasedReturnValue()) == 0))
+  name = [(FHTransaction *)self name];
+  if (!name || ([(FHTransaction *)v5 name], (v92 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v98 = [(FHTransaction *)self name];
-    v99 = [(FHTransaction *)v5 name];
+    name2 = [(FHTransaction *)self name];
+    name3 = [(FHTransaction *)v5 name];
 
-    if (v91)
+    if (name)
     {
     }
 
-    if (v98 == v99)
+    if (name2 == name3)
     {
       goto LABEL_67;
     }
@@ -5643,9 +5643,9 @@ LABEL_71:
   }
 
   v93 = v92;
-  v94 = [(FHTransaction *)self name];
-  v95 = [(FHTransaction *)v5 name];
-  v96 = [v94 isEqualToString:v95];
+  name4 = [(FHTransaction *)self name];
+  name5 = [(FHTransaction *)v5 name];
+  v96 = [name4 isEqualToString:name5];
 
   if ((v96 & 1) == 0)
   {
@@ -5656,38 +5656,38 @@ LABEL_67:
   v97 = 1;
 LABEL_72:
   v101 = v90 & v50;
-  v102 = [(FHTransaction *)self proprietaryBankTransactionCode];
-  if (!v102 || ([(FHTransaction *)v5 proprietaryBankTransactionCode], (v103 = objc_claimAutoreleasedReturnValue()) == 0))
+  proprietaryBankTransactionCode = [(FHTransaction *)self proprietaryBankTransactionCode];
+  if (!proprietaryBankTransactionCode || ([(FHTransaction *)v5 proprietaryBankTransactionCode], (v103 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v110 = [(FHTransaction *)self proprietaryBankTransactionCode];
-    v111 = [(FHTransaction *)v5 proprietaryBankTransactionCode];
+    proprietaryBankTransactionCode2 = [(FHTransaction *)self proprietaryBankTransactionCode];
+    proprietaryBankTransactionCode3 = [(FHTransaction *)v5 proprietaryBankTransactionCode];
 
-    if (v102)
+    if (proprietaryBankTransactionCode)
     {
     }
 
-    if (v110 == v111)
+    if (proprietaryBankTransactionCode2 == proprietaryBankTransactionCode3)
     {
       goto LABEL_75;
     }
 
 LABEL_79:
     v112 = MEMORY[0x277CCACA8];
-    v113 = [(FHTransaction *)v5 proprietaryBankTransactionCode];
-    v114 = [(FHTransaction *)self proprietaryBankTransactionCode];
-    v115 = [v112 stringWithFormat:@"ProprietaryBankTransactionCode %@ -> %@", v113, v114];
+    proprietaryBankTransactionCode4 = [(FHTransaction *)v5 proprietaryBankTransactionCode];
+    proprietaryBankTransactionCode5 = [(FHTransaction *)self proprietaryBankTransactionCode];
+    v114 = [v112 stringWithFormat:@"ProprietaryBankTransactionCode %@ -> %@", proprietaryBankTransactionCode4, proprietaryBankTransactionCode5];
     v109 = v6;
-    [v6 addObject:v115];
+    [v6 addObject:v114];
 
     v164 = 0;
     goto LABEL_80;
   }
 
   v104 = v103;
-  v105 = [(FHTransaction *)self proprietaryBankTransactionCode];
+  proprietaryBankTransactionCode6 = [(FHTransaction *)self proprietaryBankTransactionCode];
   [(FHTransaction *)v5 proprietaryBankTransactionCode];
   v107 = v106 = v97;
-  v108 = [v105 isEqualToString:v107];
+  v108 = [proprietaryBankTransactionCode6 isEqualToString:v107];
 
   v97 = v106;
   if ((v108 & 1) == 0)
@@ -5700,14 +5700,14 @@ LABEL_75:
   v164 = 1;
 LABEL_80:
   v116 = v101 & v166;
-  v117 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-  if (v117 && ([(FHTransaction *)v5 proprietaryBankTransactionIssuer], (v118 = objc_claimAutoreleasedReturnValue()) != 0))
+  proprietaryBankTransactionIssuer = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+  if (proprietaryBankTransactionIssuer && ([(FHTransaction *)v5 proprietaryBankTransactionIssuer], (v118 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v119 = v118;
-    v120 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+    proprietaryBankTransactionIssuer2 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
     [(FHTransaction *)v5 proprietaryBankTransactionIssuer];
     v122 = v121 = v97;
-    v123 = [v120 isEqualToString:v122];
+    v123 = [proprietaryBankTransactionIssuer2 isEqualToString:v122];
 
     v97 = v121;
     if (v123)
@@ -5720,76 +5720,76 @@ LABEL_83:
 
   else
   {
-    v125 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-    v126 = [(FHTransaction *)v5 proprietaryBankTransactionIssuer];
+    proprietaryBankTransactionIssuer3 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+    proprietaryBankTransactionIssuer4 = [(FHTransaction *)v5 proprietaryBankTransactionIssuer];
 
-    if (v117)
+    if (proprietaryBankTransactionIssuer)
     {
     }
 
-    if (v125 == v126)
+    if (proprietaryBankTransactionIssuer3 == proprietaryBankTransactionIssuer4)
     {
       goto LABEL_83;
     }
   }
 
   v127 = MEMORY[0x277CCACA8];
-  v128 = [(FHTransaction *)v5 proprietaryBankTransactionIssuer];
-  v129 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
-  v130 = [v127 stringWithFormat:@"ProprietaryBankTransactionIssuer %@ -> %@", v128, v129];
-  [v109 addObject:v130];
+  proprietaryBankTransactionIssuer5 = [(FHTransaction *)v5 proprietaryBankTransactionIssuer];
+  proprietaryBankTransactionIssuer6 = [(FHTransaction *)self proprietaryBankTransactionIssuer];
+  v129 = [v127 stringWithFormat:@"ProprietaryBankTransactionIssuer %@ -> %@", proprietaryBankTransactionIssuer5, proprietaryBankTransactionIssuer6];
+  [v109 addObject:v129];
 
   v124 = 0;
 LABEL_88:
   v131 = v116 & v170;
-  v132 = [(FHTransaction *)self transactionType];
-  v169 = [(FHTransaction *)v5 transactionType];
-  v171 = v132;
-  if (v132 != v169)
+  transactionType = [(FHTransaction *)self transactionType];
+  transactionType2 = [(FHTransaction *)v5 transactionType];
+  v171 = transactionType;
+  if (transactionType != transactionType2)
   {
     v133 = [MEMORY[0x277CCACA8] stringWithFormat:@"TransactionType %lu -> %lu", -[FHTransaction transactionType](v5, "transactionType"), -[FHTransaction transactionType](self, "transactionType")];
     [v109 addObject:v133];
   }
 
   v134 = v131 & v173;
-  v174 = [(FHTransaction *)self accountType];
-  v167 = [(FHTransaction *)v5 accountType];
-  if (v174 != v167)
+  accountType = [(FHTransaction *)self accountType];
+  accountType2 = [(FHTransaction *)v5 accountType];
+  if (accountType != accountType2)
   {
     v135 = [MEMORY[0x277CCACA8] stringWithFormat:@"AccountType %lu -> %lu", -[FHTransaction accountType](v5, "accountType"), -[FHTransaction accountType](self, "accountType")];
     [v109 addObject:v135];
   }
 
-  v136 = [(FHTransaction *)self mapsMerchantID];
-  v162 = [(FHTransaction *)v5 mapsMerchantID];
-  v163 = v136;
-  if (v136 != v162)
+  mapsMerchantID = [(FHTransaction *)self mapsMerchantID];
+  mapsMerchantID2 = [(FHTransaction *)v5 mapsMerchantID];
+  v163 = mapsMerchantID;
+  if (mapsMerchantID != mapsMerchantID2)
   {
     v137 = [MEMORY[0x277CCACA8] stringWithFormat:@"MapsMerchantID %llu -> %llu", -[FHTransaction mapsMerchantID](v5, "mapsMerchantID"), -[FHTransaction mapsMerchantID](self, "mapsMerchantID")];
     [v109 addObject:v137];
   }
 
   v138 = v134 & v97 & v164;
-  v139 = [(FHTransaction *)self mapsMerchantBrandID];
-  v140 = [(FHTransaction *)v5 mapsMerchantBrandID];
-  if (v139 != v140)
+  mapsMerchantBrandID = [(FHTransaction *)self mapsMerchantBrandID];
+  mapsMerchantBrandID2 = [(FHTransaction *)v5 mapsMerchantBrandID];
+  if (mapsMerchantBrandID != mapsMerchantBrandID2)
   {
     v141 = [MEMORY[0x277CCACA8] stringWithFormat:@"MapsMerchantBrandID %llu -> %llu", -[FHTransaction mapsMerchantBrandID](v5, "mapsMerchantBrandID"), -[FHTransaction mapsMerchantBrandID](self, "mapsMerchantBrandID")];
     [v109 addObject:v141];
   }
 
   v142 = v138 & v124;
-  v143 = [(FHTransaction *)self transactionDescription];
-  if (!v143 || ([(FHTransaction *)v5 transactionDescription], (v144 = objc_claimAutoreleasedReturnValue()) == 0))
+  transactionDescription = [(FHTransaction *)self transactionDescription];
+  if (!transactionDescription || ([(FHTransaction *)v5 transactionDescription], (v144 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v152 = [(FHTransaction *)self transactionDescription];
-    v153 = [(FHTransaction *)v5 transactionDescription];
+    transactionDescription2 = [(FHTransaction *)self transactionDescription];
+    transactionDescription3 = [(FHTransaction *)v5 transactionDescription];
 
-    if (v143)
+    if (transactionDescription)
     {
     }
 
-    if (v152 == v153)
+    if (transactionDescription2 == transactionDescription3)
     {
       goto LABEL_99;
     }
@@ -5803,16 +5803,16 @@ LABEL_103:
   }
 
   v145 = v144;
-  v146 = [(FHTransaction *)self transactionDescription];
+  transactionDescription4 = [(FHTransaction *)self transactionDescription];
   [(FHTransaction *)v5 transactionDescription];
-  v147 = v139;
+  v147 = mapsMerchantBrandID;
   v148 = v142;
   v150 = v149 = v109;
-  v165 = [v146 isEqualToString:v150];
+  v165 = [transactionDescription4 isEqualToString:v150];
 
   v109 = v149;
   v142 = v148;
-  v139 = v147;
+  mapsMerchantBrandID = v147;
 
   if ((v165 & 1) == 0)
   {
@@ -5822,24 +5822,24 @@ LABEL_103:
 LABEL_99:
   v151 = 1;
 LABEL_104:
-  v155 = v139 != v140;
+  v155 = mapsMerchantBrandID != mapsMerchantBrandID2;
   v156 = v142 & v151 ^ 1;
-  if (v176 != v175)
+  if (v176 != financeTransactionSource2)
   {
     v156 = 1;
   }
 
-  if (v171 != v169)
+  if (v171 != transactionType2)
   {
     v156 = 1;
   }
 
-  if (v174 != v167)
+  if (accountType != accountType2)
   {
     v156 = 1;
   }
 
-  if (v163 != v162)
+  if (v163 != mapsMerchantID2)
   {
     v156 = 1;
   }
@@ -5850,12 +5850,12 @@ LABEL_104:
     v157 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v157, OS_LOG_TYPE_DEBUG))
     {
-      v158 = [(FHTransaction *)self identifier];
+      identifier8 = [(FHTransaction *)self identifier];
       v159 = [v109 componentsJoinedByString:@"\n"];
       *buf = 136315651;
       v178 = "[FHTransaction bankConnectTransactionHasBeenUpdatedFrom:]";
       v179 = 2113;
-      v180 = v158;
+      v180 = identifier8;
       v181 = 2113;
       v182 = v159;
       _os_log_impl(&dword_226DD4000, v157, OS_LOG_TYPE_DEBUG, "%sTransaction %{private}@ has been updated:\n%{private}@", buf, 0x20u);
@@ -5867,173 +5867,173 @@ LABEL_118:
   return v14 & 1;
 }
 
-- (FHTransaction)initWithDictionary:(id)a3 dateFormatter:(id)a4
+- (FHTransaction)initWithDictionary:(id)dictionary dateFormatter:(id)formatter
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  formatterCopy = formatter;
   v122.receiver = self;
   v122.super_class = FHTransaction;
   v8 = [(FHTransaction *)&v122 init];
   if (v8)
   {
-    v9 = [v6 valueForKey:@"identifier"];
+    v9 = [dictionaryCopy valueForKey:@"identifier"];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v6 valueForKey:@"serviceIdentifier"];
+    v11 = [dictionaryCopy valueForKey:@"serviceIdentifier"];
     transactionServiceIdentifier = v8->_transactionServiceIdentifier;
     v8->_transactionServiceIdentifier = v11;
 
-    v13 = [v6 valueForKey:@"financeAccountIdentifier"];
+    v13 = [dictionaryCopy valueForKey:@"financeAccountIdentifier"];
     financeAccountIdentifier = v8->_financeAccountIdentifier;
     v8->_financeAccountIdentifier = v13;
 
-    v15 = [v6 valueForKey:@"financeTransactionIdentifier"];
+    v15 = [dictionaryCopy valueForKey:@"financeTransactionIdentifier"];
     financeTransactionIdentifier = v8->_financeTransactionIdentifier;
     v8->_financeTransactionIdentifier = v15;
 
-    v17 = [v6 valueForKey:@"financeTransactionIdentifier"];
+    v17 = [dictionaryCopy valueForKey:@"financeTransactionIdentifier"];
     financeTransactionSharedIdentifier = v8->_financeTransactionSharedIdentifier;
     v8->_financeTransactionSharedIdentifier = v17;
 
-    v19 = [v6 valueForKey:@"financeTransactionSource"];
+    v19 = [dictionaryCopy valueForKey:@"financeTransactionSource"];
     v8->_financeTransactionSource = [v19 integerValue];
 
-    v20 = [v6 valueForKey:@"paymentHash"];
+    v20 = [dictionaryCopy valueForKey:@"paymentHash"];
     paymentHash = v8->_paymentHash;
     v8->_paymentHash = v20;
 
-    v22 = [v6 valueForKey:@"transactionSourceIdentifier"];
+    v22 = [dictionaryCopy valueForKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifier = v8->_transactionSourceIdentifier;
     v8->_transactionSourceIdentifier = v22;
 
-    v24 = [v6 valueForKey:@"amount"];
+    v24 = [dictionaryCopy valueForKey:@"amount"];
 
     if (v24)
     {
       v25 = objc_alloc(MEMORY[0x277CCA980]);
-      v26 = [v6 valueForKey:@"amount"];
+      v26 = [dictionaryCopy valueForKey:@"amount"];
       [v26 doubleValue];
       v27 = [v25 initWithDouble:?];
       amount = v8->_amount;
       v8->_amount = v27;
     }
 
-    v29 = [v6 valueForKey:@"currencyCode"];
+    v29 = [dictionaryCopy valueForKey:@"currencyCode"];
     currencyCode = v8->_currencyCode;
     v8->_currencyCode = v29;
 
-    v31 = [v6 valueForKey:@"transactionDate"];
-    v32 = [v7 dateFromString:v31];
+    v31 = [dictionaryCopy valueForKey:@"transactionDate"];
+    v32 = [formatterCopy dateFromString:v31];
     transactionDate = v8->_transactionDate;
     v8->_transactionDate = v32;
 
-    v34 = [v6 valueForKey:@"transactionStatusChangedDate"];
-    v35 = [v7 dateFromString:v34];
+    v34 = [dictionaryCopy valueForKey:@"transactionStatusChangedDate"];
+    v35 = [formatterCopy dateFromString:v34];
     transactionStatusChangedDate = v8->_transactionStatusChangedDate;
     v8->_transactionStatusChangedDate = v35;
 
-    v37 = [v6 valueForKey:@"transactionStatus"];
+    v37 = [dictionaryCopy valueForKey:@"transactionStatus"];
     v8->_transactionStatus = [v37 integerValue];
 
-    v38 = [v6 valueForKey:@"transactionSource"];
+    v38 = [dictionaryCopy valueForKey:@"transactionSource"];
     v8->_transactionSource = [v38 integerValue];
 
-    v39 = [v6 valueForKey:@"cardType"];
+    v39 = [dictionaryCopy valueForKey:@"cardType"];
     v8->_cardType = [v39 integerValue];
 
-    v40 = [v6 valueForKey:@"transactionType"];
+    v40 = [dictionaryCopy valueForKey:@"transactionType"];
     v8->_transactionType = [v40 integerValue];
 
-    v41 = [v6 valueForKey:@"accountType"];
+    v41 = [dictionaryCopy valueForKey:@"accountType"];
     v8->_accountType = [v41 integerValue];
 
-    v42 = [v6 valueForKey:@"transactionInternalState"];
+    v42 = [dictionaryCopy valueForKey:@"transactionInternalState"];
     v8->_transactionInternalState = [v42 integerValue];
 
-    v43 = [v6 valueForKey:@"street"];
+    v43 = [dictionaryCopy valueForKey:@"street"];
     street = v8->_street;
     v8->_street = v43;
 
-    v45 = [v6 valueForKey:@"city"];
+    v45 = [dictionaryCopy valueForKey:@"city"];
     city = v8->_city;
     v8->_city = v45;
 
-    v47 = [v6 valueForKey:@"state"];
+    v47 = [dictionaryCopy valueForKey:@"state"];
     state = v8->_state;
     v8->_state = v47;
 
-    v49 = [v6 valueForKey:@"zip"];
+    v49 = [dictionaryCopy valueForKey:@"zip"];
     zip = v8->_zip;
     v8->_zip = v49;
 
-    v51 = [v6 valueForKey:@"countryCode"];
+    v51 = [dictionaryCopy valueForKey:@"countryCode"];
     countryCode = v8->_countryCode;
     v8->_countryCode = v51;
 
-    v53 = [v6 valueForKey:@"altDSID"];
+    v53 = [dictionaryCopy valueForKey:@"altDSID"];
     altDSID = v8->_altDSID;
     v8->_altDSID = v53;
 
-    v55 = [v6 valueForKey:@"receiptIdentifier"];
+    v55 = [dictionaryCopy valueForKey:@"receiptIdentifier"];
     receiptIdentifier = v8->_receiptIdentifier;
     v8->_receiptIdentifier = v55;
 
-    v57 = [v6 valueForKey:@"associatedReceiptUniqueID"];
+    v57 = [dictionaryCopy valueForKey:@"associatedReceiptUniqueID"];
     associatedReceiptUniqueID = v8->_associatedReceiptUniqueID;
     v8->_associatedReceiptUniqueID = v57;
 
-    v59 = [v6 valueForKey:@"country"];
+    v59 = [dictionaryCopy valueForKey:@"country"];
     country = v8->_country;
     v8->_country = v59;
 
-    v61 = [v6 valueForKey:@"merchantUniqueIdentifier"];
+    v61 = [dictionaryCopy valueForKey:@"merchantUniqueIdentifier"];
     merchantUniqueIdentifier = v8->_merchantUniqueIdentifier;
     v8->_merchantUniqueIdentifier = v61;
 
-    v63 = [v6 valueForKey:@"name"];
+    v63 = [dictionaryCopy valueForKey:@"name"];
     name = v8->_name;
     v8->_name = v63;
 
-    v65 = [v6 valueForKey:@"rawName"];
+    v65 = [dictionaryCopy valueForKey:@"rawName"];
     rawName = v8->_rawName;
     v8->_rawName = v65;
 
-    v67 = [v6 valueForKey:@"industryCode"];
+    v67 = [dictionaryCopy valueForKey:@"industryCode"];
     v8->_industryCode = [v67 integerValue];
 
-    v68 = [v6 valueForKey:@"category"];
+    v68 = [dictionaryCopy valueForKey:@"category"];
     v8->_category = [v68 integerValue];
 
-    v69 = [v6 valueForKey:@"merchantDetailedCategory"];
+    v69 = [dictionaryCopy valueForKey:@"merchantDetailedCategory"];
     merchantDetailedCategory = v8->_merchantDetailedCategory;
     v8->_merchantDetailedCategory = v69;
 
-    v71 = [v6 valueForKey:@"industryCategory"];
+    v71 = [dictionaryCopy valueForKey:@"industryCategory"];
     industryCategory = v8->_industryCategory;
     v8->_industryCategory = v71;
 
-    v73 = [v6 valueForKey:@"displayName"];
+    v73 = [dictionaryCopy valueForKey:@"displayName"];
     displayName = v8->_displayName;
     v8->_displayName = v73;
 
-    v75 = [v6 valueForKey:@"mapsMerchantID"];
+    v75 = [dictionaryCopy valueForKey:@"mapsMerchantID"];
     v8->_mapsMerchantID = [v75 unsignedLongLongValue];
 
-    v76 = [v6 valueForKey:@"mapsMerchantResultProviderID"];
+    v76 = [dictionaryCopy valueForKey:@"mapsMerchantResultProviderID"];
     v8->_mapsMerchantResultProviderID = [v76 integerValue];
 
-    v77 = [v6 valueForKey:@"mapsMerchantBrandID"];
+    v77 = [dictionaryCopy valueForKey:@"mapsMerchantBrandID"];
     v8->_mapsMerchantBrandID = [v77 unsignedLongLongValue];
 
-    v78 = [v6 valueForKey:@"mapsMerchantBrandResultProviderID"];
+    v78 = [dictionaryCopy valueForKey:@"mapsMerchantBrandResultProviderID"];
     v8->_mapsMerchantBrandResultProviderID = [v78 integerValue];
 
-    v79 = [v6 valueForKey:@"locationLatitude"];
+    v79 = [dictionaryCopy valueForKey:@"locationLatitude"];
     [v79 doubleValue];
     v81 = v80;
 
-    v82 = [v6 valueForKey:@"locationLongitude"];
+    v82 = [dictionaryCopy valueForKey:@"locationLongitude"];
     [v82 doubleValue];
     v84 = v83;
 
@@ -6041,10 +6041,10 @@ LABEL_118:
     if ((v81 != 0.0 || v84 != 0.0) && CLLocationCoordinate2DIsValid(v85))
     {
       v86 = objc_alloc(MEMORY[0x277CE41F8]);
-      v87 = [v6 valueForKey:@"locationHorizontalAccuracy"];
+      v87 = [dictionaryCopy valueForKey:@"locationHorizontalAccuracy"];
       [v87 doubleValue];
       v89 = v88;
-      v90 = [v6 valueForKey:@"locationVerticalAccuracy"];
+      v90 = [dictionaryCopy valueForKey:@"locationVerticalAccuracy"];
       [v90 doubleValue];
       v92 = v91;
       v93 = [MEMORY[0x277CBEAA8] now];
@@ -6053,56 +6053,56 @@ LABEL_118:
       v8->_location = v94;
     }
 
-    v96 = [v6 valueForKey:@"timeZone"];
+    v96 = [dictionaryCopy valueForKey:@"timeZone"];
 
     if (v96)
     {
       v97 = MEMORY[0x277CBEBB0];
-      v98 = [v6 valueForKey:@"timeZone"];
+      v98 = [dictionaryCopy valueForKey:@"timeZone"];
       v99 = [v97 timeZoneForSecondsFromGMT:{objc_msgSend(v98, "integerValue")}];
       timeZone = v8->_timeZone;
       v8->_timeZone = v99;
     }
 
-    v101 = [v6 valueForKey:@"disputeType"];
+    v101 = [dictionaryCopy valueForKey:@"disputeType"];
     v8->_disputeType = [v101 integerValue];
 
-    v102 = [v6 valueForKey:@"disputeStatus"];
+    v102 = [dictionaryCopy valueForKey:@"disputeStatus"];
     v8->_disputeStatus = [v102 integerValue];
 
-    v103 = [v6 valueForKey:@"peerPaymentCounterpartHandle"];
+    v103 = [dictionaryCopy valueForKey:@"peerPaymentCounterpartHandle"];
     peerPaymentCounterpartHandle = v8->_peerPaymentCounterpartHandle;
     v8->_peerPaymentCounterpartHandle = v103;
 
-    v105 = [v6 valueForKey:@"peerPaymentType"];
+    v105 = [dictionaryCopy valueForKey:@"peerPaymentType"];
     v8->_peerPaymentType = [v105 integerValue];
 
-    v106 = [v6 valueForKey:@"transactionDescription"];
+    v106 = [dictionaryCopy valueForKey:@"transactionDescription"];
     transactionDescription = v8->_transactionDescription;
     v8->_transactionDescription = v106;
 
-    v108 = [v6 valueForKey:@"processedDescription"];
+    v108 = [dictionaryCopy valueForKey:@"processedDescription"];
     processedDescription = v8->_processedDescription;
     v8->_processedDescription = v108;
 
-    v110 = [v6 valueForKey:@"recurring"];
+    v110 = [dictionaryCopy valueForKey:@"recurring"];
     v8->_recurring = v110 != 0;
 
-    v111 = [v6 valueForKey:@"disputeOpenDate"];
-    v112 = [v7 dateFromString:v111];
+    v111 = [dictionaryCopy valueForKey:@"disputeOpenDate"];
+    v112 = [formatterCopy dateFromString:v111];
     disputeOpenDate = v8->_disputeOpenDate;
     v8->_disputeOpenDate = v112;
 
-    v114 = [v6 valueForKey:@"disputeLastUpdatedDate"];
-    v115 = [v7 dateFromString:v114];
+    v114 = [dictionaryCopy valueForKey:@"disputeLastUpdatedDate"];
+    v115 = [formatterCopy dateFromString:v114];
     disputeLastUpdatedDate = v8->_disputeLastUpdatedDate;
     v8->_disputeLastUpdatedDate = v115;
 
-    v117 = [v6 valueForKey:@"proprietaryBankTransactionCode"];
+    v117 = [dictionaryCopy valueForKey:@"proprietaryBankTransactionCode"];
     proprietaryBankTransactionCode = v8->_proprietaryBankTransactionCode;
     v8->_proprietaryBankTransactionCode = v117;
 
-    v119 = [v6 valueForKey:@"proprietaryBankTransactionIssuer"];
+    v119 = [dictionaryCopy valueForKey:@"proprietaryBankTransactionIssuer"];
     proprietaryBankTransactionIssuer = v8->_proprietaryBankTransactionIssuer;
     v8->_proprietaryBankTransactionIssuer = v119;
   }
@@ -6110,20 +6110,20 @@ LABEL_118:
   return v8;
 }
 
-- (FHTransaction)initWithDictionary:(id)a3
+- (FHTransaction)initWithDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CCA968];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_alloc_init(v4);
   [v6 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
-  v7 = [(FHTransaction *)self initWithDictionary:v5 dateFormatter:v6];
+  v7 = [(FHTransaction *)self initWithDictionary:dictionaryCopy dateFormatter:v6];
 
   return v7;
 }
 
-- (FHTransaction)initWithJsonString:(id)a3
+- (FHTransaction)initWithJsonString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -6131,9 +6131,9 @@ LABEL_118:
     self = [(FHTransaction *)self initWithDictionary:v5];
   }
 
-  v6 = self;
+  selfCopy = self;
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)toDictionary
@@ -6195,12 +6195,12 @@ LABEL_118:
   return v4;
 }
 
-- (id)toJson:(id)a3
+- (id)toJson:(id)json
 {
-  v4 = a3;
-  v5 = [(FHTransaction *)self toDictionary];
-  v10 = v4;
-  v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:2 error:&v10];
+  jsonCopy = json;
+  toDictionary = [(FHTransaction *)self toDictionary];
+  v10 = jsonCopy;
+  v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:toDictionary options:2 error:&v10];
   v7 = v10;
 
   if (v6)
@@ -6222,7 +6222,7 @@ LABEL_118:
   block[1] = 3221225472;
   block[2] = __29__FHTransaction_fhProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (fhProperties_onceToken != -1)
   {
     dispatch_once(&fhProperties_onceToken, block);
@@ -6359,11 +6359,11 @@ uint64_t __52__FHTransaction__allowedCountryNamesForMapsMerchant__block_invoke()
 
 - (BOOL)hasLocation
 {
-  v3 = [(FHTransaction *)self location];
-  if (v3)
+  location = [(FHTransaction *)self location];
+  if (location)
   {
-    v4 = [(FHTransaction *)self location];
-    [v4 coordinate];
+    location2 = [(FHTransaction *)self location];
+    [location2 coordinate];
     if (v5 == 0.0)
     {
       v8 = 0;
@@ -6371,8 +6371,8 @@ uint64_t __52__FHTransaction__allowedCountryNamesForMapsMerchant__block_invoke()
 
     else
     {
-      v6 = [(FHTransaction *)self location];
-      [v6 coordinate];
+      location3 = [(FHTransaction *)self location];
+      [location3 coordinate];
       v8 = v7 != 0.0;
     }
   }

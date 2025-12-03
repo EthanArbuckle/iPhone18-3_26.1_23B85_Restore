@@ -1,22 +1,22 @@
 @interface SidebarCollectionView.Coordinator
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (_TtCV5Books21SidebarCollectionView11Coordinator)init;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)hoveringChevron:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)updateChevronVisibilityForAccessibilityOnCell:(id)a3;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)hoveringChevron:(id)chevron;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)updateChevronVisibilityForAccessibilityOnCell:(id)cell;
 @end
 
 @implementation SidebarCollectionView.Coordinator
@@ -28,30 +28,30 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
-  sub_100523FE4(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100523FE4(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
-  if ([v10 isEditing])
+  viewCopy = view;
+  selfCopy = self;
+  if ([viewCopy isEditing])
   {
     sub_1005243DC();
   }
@@ -59,30 +59,30 @@
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
-  LOBYTE(self) = sub_100524824(v10);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = sub_100524824(viewCopy);
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v7 = sub_100796E74();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_1005274C4();
 
   (*(v8 + 8))(v10, v7);
@@ -90,7 +90,7 @@
   return v13;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
@@ -103,7 +103,7 @@
   sub_100796E14();
   sub_100796E14();
   sub_1000229CC(&qword_100AE8DA8, &type metadata accessor for IndexPath);
-  v16 = self;
+  selfCopy = self;
   if (sub_1007A28A4())
   {
     v17 = sub_100525158();
@@ -139,27 +139,27 @@
   return v20.super.isa;
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_100527790();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = sub_1001F1160(&qword_100AECD00);
   __chkstk_darwin(v9 - 8);
   v11 = &v18 - v10;
-  if (a5)
+  if (path)
   {
     sub_100796E14();
     v12 = sub_100796E74();
@@ -172,10 +172,10 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v15 = self;
-  v16 = sub_100525848(v14, a4, v11);
+  selfCopy = self;
+  v16 = sub_100525848(viewCopy, update, v11);
 
   swift_unknownObjectRelease();
   sub_100007840(v11, &qword_100AECD00);
@@ -183,33 +183,33 @@
   return v16;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10052792C(a4);
+  selfCopy = self;
+  sub_10052792C(coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_100526064(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_100526064(editingCopy);
 }
 
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
+  length = range.length;
   sub_1007A2254();
-  v8 = a3;
-  v9 = self;
-  v10 = [v8 text];
-  if (v10)
+  barCopy = bar;
+  selfCopy = self;
+  text = [barCopy text];
+  if (text)
   {
-    v11 = v10;
+    v11 = text;
     sub_1007A2254();
 
     v12 = sub_1007A23A4();
@@ -230,54 +230,54 @@
   return result;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   sub_1007A2254();
-  v5 = self;
+  selfCopy = self;
 
   sub_10079B8C4();
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005263C4(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1005263C4(editingCopy);
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005263C4(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_1005263C4(clickedCopy);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005263C4(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_1005263C4(clickedCopy);
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_10052650C(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_10052650C(editingCopy);
 }
 
-- (void)hoveringChevron:(id)a3
+- (void)hoveringChevron:(id)chevron
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005280BC(v4);
+  chevronCopy = chevron;
+  selfCopy = self;
+  sub_1005280BC(chevronCopy);
 }
 
-- (void)updateChevronVisibilityForAccessibilityOnCell:(id)a3
+- (void)updateChevronVisibilityForAccessibilityOnCell:(id)cell
 {
-  v5 = a3;
-  v6 = self;
-  sub_10052892C(a3);
+  cellCopy = cell;
+  selfCopy = self;
+  sub_10052892C(cell);
 }
 
 @end

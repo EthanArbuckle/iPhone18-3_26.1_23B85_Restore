@@ -1,20 +1,20 @@
 @interface PurchaseManagerClient
 - (BOOL)finishesPurchases;
 - (BOOL)useRemoteAuthentication;
-- (PurchaseManagerClient)initWithInputConnection:(id)a3;
+- (PurchaseManagerClient)initWithInputConnection:(id)connection;
 - (int64_t)URLBagType;
 - (int64_t)uniqueIdentifier;
 - (void)ackConnection;
 - (void)dealloc;
-- (void)postNotificationWithResponse:(id)a3;
-- (void)sendAuthenticateRequestWithContext:(id)a3 responseHandler:(id)a4;
-- (void)sendError:(id)a3 forPurchases:(id)a4;
-- (void)sendResponse:(id)a3;
-- (void)sendResponse:(id)a3 forPurchases:(id)a4;
-- (void)sendResponses:(id)a3;
-- (void)setFinishesPurchases:(BOOL)a3;
-- (void)setUniqueIdentifier:(int64_t)a3;
-- (void)setUseRemoteAuthentication:(BOOL)a3;
+- (void)postNotificationWithResponse:(id)response;
+- (void)sendAuthenticateRequestWithContext:(id)context responseHandler:(id)handler;
+- (void)sendError:(id)error forPurchases:(id)purchases;
+- (void)sendResponse:(id)response;
+- (void)sendResponse:(id)response forPurchases:(id)purchases;
+- (void)sendResponses:(id)responses;
+- (void)setFinishesPurchases:(BOOL)purchases;
+- (void)setUniqueIdentifier:(int64_t)identifier;
+- (void)setUseRemoteAuthentication:(BOOL)authentication;
 @end
 
 @implementation PurchaseManagerClient
@@ -68,11 +68,11 @@
   return v3;
 }
 
-- (PurchaseManagerClient)initWithInputConnection:(id)a3
+- (PurchaseManagerClient)initWithInputConnection:(id)connection
 {
   v6.receiver = self;
   v6.super_class = PurchaseManagerClient;
-  v3 = [(XPCClient *)&v6 initWithInputConnection:a3];
+  v3 = [(XPCClient *)&v6 initWithInputConnection:connection];
   if (v3)
   {
     v4 = CFUUIDCreate(0);
@@ -90,7 +90,7 @@
   [(XPCClient *)&v3 dealloc];
 }
 
-- (void)sendAuthenticateRequestWithContext:(id)a3 responseHandler:(id)a4
+- (void)sendAuthenticateRequestWithContext:(id)context responseHandler:(id)handler
 {
   dispatchQueue = self->super._dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -98,31 +98,31 @@
   block[2] = sub_1002134D4;
   block[3] = &unk_10032AF90;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = context;
+  block[6] = handler;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)sendError:(id)a3 forPurchases:(id)a4
+- (void)sendError:(id)error forPurchases:(id)purchases
 {
   v8 = objc_alloc_init(SSPurchaseResponse);
-  v7 = [a3 userInfo];
-  [v8 setCancelsPurchaseBatch:{objc_msgSend(objc_msgSend(v7, "objectForKey:", SSPurchaseErrorKeyShouldCancelPurchaseBatch), "BOOLValue")}];
-  [v8 setError:a3];
-  [(PurchaseManagerClient *)self sendResponse:v8 forPurchases:a4];
-  if ([a4 count])
+  userInfo = [error userInfo];
+  [v8 setCancelsPurchaseBatch:{objc_msgSend(objc_msgSend(userInfo, "objectForKey:", SSPurchaseErrorKeyShouldCancelPurchaseBatch), "BOOLValue")}];
+  [v8 setError:error];
+  [(PurchaseManagerClient *)self sendResponse:v8 forPurchases:purchases];
+  if ([purchases count])
   {
     [(PurchaseManagerClient *)self postNotificationWithResponse:v8];
   }
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v4 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v4 = [[NSArray alloc] initWithObjects:{response, 0}];
   [(PurchaseManagerClient *)self sendResponses:v4];
 }
 
-- (void)sendResponse:(id)a3 forPurchases:(id)a4
+- (void)sendResponse:(id)response forPurchases:(id)purchases
 {
   dispatchQueue = self->super._dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -130,12 +130,12 @@
   block[2] = sub_100213FCC;
   block[3] = &unk_1003273E0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = purchases;
+  block[6] = response;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)sendResponses:(id)a3
+- (void)sendResponses:(id)responses
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -143,31 +143,31 @@
   v4[2] = sub_1002141FC;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = responses;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)postNotificationWithResponse:(id)a3
+- (void)postNotificationWithResponse:(id)response
 {
-  v4 = [a3 error];
+  error = [response error];
   v5 = +[SSLogConfig sharedDaemonConfig];
   v6 = v5;
-  if (v4)
+  if (error)
   {
     if (!v5)
     {
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
     if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -198,15 +198,15 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v6 shouldLog];
+    shouldLog2 = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog2 | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -235,7 +235,7 @@
     v17 = NSStringFromClass(v16);
     [NSKeyedArchiver setClassName:v17 forClass:objc_opt_class()];
     v33 = 0;
-    v18 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v33];
+    v18 = [NSKeyedArchiver archivedDataWithRootObject:response requiringSecureCoding:1 error:&v33];
     if (v33)
     {
       v19 = +[SSLogConfig sharedStoreServicesConfig];
@@ -244,15 +244,15 @@
         v19 = +[SSLogConfig sharedConfig];
       }
 
-      v20 = [v19 shouldLog];
+      shouldLog3 = [v19 shouldLog];
       if ([v19 shouldLogToDisk])
       {
-        v21 = v20 | 2;
+        v21 = shouldLog3 | 2;
       }
 
       else
       {
-        v21 = v20;
+        v21 = shouldLog3;
       }
 
       if (!os_log_type_enabled([v19 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -283,7 +283,7 @@
     v34 = @"response";
     v35 = v18;
     v26 = [v25 initWithDictionary:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v35, &v34, 1)}];
-    v27 = +[AMSBuyParams buyParamsWithString:](AMSBuyParams, "buyParamsWithString:", [objc_msgSend(a3 "purchase")]);
+    v27 = +[AMSBuyParams buyParamsWithString:](AMSBuyParams, "buyParamsWithString:", [objc_msgSend(response "purchase")]);
     v28 = [(AMSBuyParams *)v27 propertyForKey:AMSBuyParamPropertyClientCorrelationKey];
     if (v28)
     {
@@ -297,7 +297,7 @@
   }
 }
 
-- (void)setFinishesPurchases:(BOOL)a3
+- (void)setFinishesPurchases:(BOOL)purchases
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -305,11 +305,11 @@
   v4[2] = sub_1002148A8;
   v4[3] = &unk_100327830;
   v4[4] = self;
-  v5 = a3;
+  purchasesCopy = purchases;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setUniqueIdentifier:(int64_t)a3
+- (void)setUniqueIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -317,11 +317,11 @@
   v4[2] = sub_100214940;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setUseRemoteAuthentication:(BOOL)a3
+- (void)setUseRemoteAuthentication:(BOOL)authentication
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -329,7 +329,7 @@
   v4[2] = sub_1002149D8;
   v4[3] = &unk_100327830;
   v4[4] = self;
-  v5 = a3;
+  authenticationCopy = authentication;
   dispatch_async(dispatchQueue, v4);
 }
 

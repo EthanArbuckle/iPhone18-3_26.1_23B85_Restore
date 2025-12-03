@@ -11,31 +11,31 @@
 - (void)setRemoteDisallowsIDSRacing:()RemoteMessage
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setUserInfoValue:v2 forKey:@"HMD.remoteDisallowsIDSRacing"];
+  [self setUserInfoValue:v2 forKey:@"HMD.remoteDisallowsIDSRacing"];
 }
 
 - (void)setRemoteResponseRestriction:()RemoteMessage
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  [a1 setUserInfoValue:v2 forKey:@"HMD.remoteTransportResponseRestriction"];
+  [self setUserInfoValue:v2 forKey:@"HMD.remoteTransportResponseRestriction"];
 }
 
 - (void)setRemoteRestriction:()RemoteMessage
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  [a1 setUserInfoValue:v2 forKey:@"HMD.remoteTransportRestriction"];
+  [self setUserInfoValue:v2 forKey:@"HMD.remoteTransportRestriction"];
 }
 
 - (void)setSecureRemote:()RemoteMessage
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setUserInfoValue:v2 forKey:@"HMD.remoteSecure"];
+  [self setUserInfoValue:v2 forKey:@"HMD.remoteSecure"];
 }
 
 - (void)setRemote:()RemoteMessage
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setUserInfoValue:v2 forKey:@"HMD.remote"];
+  [self setUserInfoValue:v2 forKey:@"HMD.remote"];
 }
 
 @end

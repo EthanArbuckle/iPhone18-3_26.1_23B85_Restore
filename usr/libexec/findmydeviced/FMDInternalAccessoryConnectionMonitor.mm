@@ -1,7 +1,7 @@
 @interface FMDInternalAccessoryConnectionMonitor
 + (id)sharedMonitor;
-- (void)accessoryDidDisconnect:(id)a3;
-- (void)accessoryDidUpdate:(id)a3;
+- (void)accessoryDidDisconnect:(id)disconnect;
+- (void)accessoryDidUpdate:(id)update;
 @end
 
 @implementation FMDInternalAccessoryConnectionMonitor
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (void)accessoryDidUpdate:(id)a3
+- (void)accessoryDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v8 = objc_alloc_init(FMAlert);
   [v8 setMsgTitle:@"Accessory connected"];
-  v4 = [v3 name];
+  name = [updateCopy name];
 
   v5 = +[NSDate date];
-  v6 = [NSString stringWithFormat:@"'%@' connected at %@", v4, v5];
+  v6 = [NSString stringWithFormat:@"'%@' connected at %@", name, v5];
   [v8 setMsgText:v6];
 
   [v8 setDefaultButtonTitle:@"OK"];
@@ -36,15 +36,15 @@
   [v7 activateAlert:v8];
 }
 
-- (void)accessoryDidDisconnect:(id)a3
+- (void)accessoryDidDisconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   v8 = objc_alloc_init(FMAlert);
   [v8 setMsgTitle:@"Accessory disconnected"];
-  v4 = [v3 name];
+  name = [disconnectCopy name];
 
   v5 = +[NSDate date];
-  v6 = [NSString stringWithFormat:@"'%@' disconnected at %@", v4, v5];
+  v6 = [NSString stringWithFormat:@"'%@' disconnected at %@", name, v5];
   [v8 setMsgText:v6];
 
   [v8 setDefaultButtonTitle:@"OK"];

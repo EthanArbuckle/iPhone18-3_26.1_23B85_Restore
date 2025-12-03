@@ -1,21 +1,21 @@
 @interface ICQImageURL
-- (ICQImageURL)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQImageURL)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQImageURL
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ICQImageURL;
   v5 = [(ICQImageURL *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"1x"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"1x"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -23,7 +23,7 @@
       [(ICQImageURL *)v5 setURL1x:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"2x"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"2x"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(ICQImageURL *)v5 setURL2x:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"3x"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"3x"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQImageURL);
   [(ICQImageURL *)v4 setURL1x:self->_URL1x];
@@ -52,32 +52,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   URL1x = self->_URL1x;
-  v5 = a3;
-  [v5 encodeObject:URL1x forKey:@"URL1x"];
-  [v5 encodeObject:self->_URL2x forKey:@"URL2x"];
-  [v5 encodeObject:self->_URL3x forKey:@"URL3x"];
+  coderCopy = coder;
+  [coderCopy encodeObject:URL1x forKey:@"URL1x"];
+  [coderCopy encodeObject:self->_URL2x forKey:@"URL2x"];
+  [coderCopy encodeObject:self->_URL3x forKey:@"URL3x"];
 }
 
-- (ICQImageURL)initWithCoder:(id)a3
+- (ICQImageURL)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ICQImageURL;
   v5 = [(ICQImageURL *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL1x"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL1x"];
     URL1x = v5->_URL1x;
     v5->_URL1x = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL2x"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL2x"];
     URL2x = v5->_URL2x;
     v5->_URL2x = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL3x"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL3x"];
     URL3x = v5->_URL3x;
     v5->_URL3x = v10;
   }

@@ -1,32 +1,32 @@
 @interface TPSCloudMusicCatalogPlaybackValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSCloudMusicCatalogPlaybackValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v15 = 0;
   v5 = objc_alloc(MEMORY[0x277D7FC30]);
-  v6 = [MEMORY[0x277D7FCA0] activeAccount];
-  v7 = [v5 initWithIdentity:v6];
+  activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
+  v7 = [v5 initWithIdentity:activeAccount];
 
   v8 = [objc_alloc(MEMORY[0x277D7FB88]) initWithStoreRequestContext:v7];
   [v8 setShouldReturnLastKnownStatusOnly:1];
-  v9 = [MEMORY[0x277D7FB78] sharedStatusController];
+  mEMORY[0x277D7FB78] = [MEMORY[0x277D7FB78] sharedStatusController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__TPSCloudMusicCatalogPlaybackValidation_validateWithCompletion___block_invoke;
   v11[3] = &unk_2789B1198;
   v13 = v14;
   v11[4] = self;
-  v10 = v4;
+  v10 = completionCopy;
   v12 = v10;
-  [v9 performSubscriptionStatusRequest:v8 withCompletionHandler:v11];
+  [mEMORY[0x277D7FB78] performSubscriptionStatusRequest:v8 withCompletionHandler:v11];
 
   _Block_object_dispose(v14, 8);
 }

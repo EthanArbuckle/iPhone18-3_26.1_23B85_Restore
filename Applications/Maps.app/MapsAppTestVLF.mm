@@ -1,7 +1,7 @@
 @interface MapsAppTestVLF
 + (id)pptRecordingFileLocation;
 - (BOOL)runTest;
-- (MapsAppTestVLF)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (MapsAppTestVLF)initWithApplication:(id)application testName:(id)name options:(id)options;
 - (VLFSessionTask)task;
 - (VLFSessionTileAvailabilityMonitor)tileAvailabilityMonitor;
 - (void)_dismissVLFUI;
@@ -9,10 +9,10 @@
 - (void)_showVLFUI;
 - (void)_start;
 - (void)_waitForTileAvailability;
-- (void)auxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification:(id)a3;
+- (void)auxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification:(id)notification;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setTask:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setTask:(id)task;
 @end
 
 @implementation MapsAppTestVLF
@@ -31,44 +31,44 @@
   return WeakRetained;
 }
 
-- (void)auxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification:(id)a3
+- (void)auxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification:(id)notification
 {
-  v5 = [a3 object];
-  v4 = [v5 auxilaryTaskForClass:objc_opt_class()];
+  object = [notification object];
+  v4 = [object auxilaryTaskForClass:objc_opt_class()];
   [(MapsAppTestVLF *)self setTask:v4];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
-  v14 = v13;
-  if (v13 != v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  tileAvailabilityMonitor = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
+  v14 = tileAvailabilityMonitor;
+  if (tileAvailabilityMonitor != objectCopy)
   {
 
 LABEL_6:
     v19.receiver = self;
     v19.super_class = MapsAppTestVLF;
-    [(MapsAppTestVLF *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MapsAppTestVLF *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_7;
   }
 
-  v15 = [v10 isEqualToString:@"state"];
+  v15 = [pathCopy isEqualToString:@"state"];
 
   if (!v15)
   {
     goto LABEL_6;
   }
 
-  v16 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
-  v17 = [v16 state];
+  tileAvailabilityMonitor2 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
+  state = [tileAvailabilityMonitor2 state];
 
-  if (v17 == 2)
+  if (state == 2)
   {
-    v18 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
-    [v18 removeObserver:self forKeyPath:@"state"];
+    tileAvailabilityMonitor3 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
+    [tileAvailabilityMonitor3 removeObserver:self forKeyPath:@"state"];
 
     [(MapsAppTestVLF *)self setWaitingForTileAvailability:0];
     [(MapsAppTest *)self finishedSubTest:@"tileAvailability"];
@@ -110,21 +110,21 @@ LABEL_7:
   v8[4] = self;
   [PPTNotificationCenter addOnceObserverForName:@"VLFContaineeViewControllerDidAppearNotification" object:0 usingBlock:v8];
   v3 = +[NSFileManager defaultManager];
-  v4 = [objc_opt_class() pptRecordingFileLocation];
-  v5 = [v3 fileExistsAtPath:v4];
+  pptRecordingFileLocation = [objc_opt_class() pptRecordingFileLocation];
+  v5 = [v3 fileExistsAtPath:pptRecordingFileLocation];
 
-  v6 = [objc_opt_class() pptRecordingFileLocation];
+  pptRecordingFileLocation2 = [objc_opt_class() pptRecordingFileLocation];
   if (v5)
   {
     GEOConfigSetString();
 
-    v6 = [(MapsAppTestVLF *)self task];
-    [v6 showVLFUI];
+    pptRecordingFileLocation2 = [(MapsAppTestVLF *)self task];
+    [pptRecordingFileLocation2 showVLFUI];
   }
 
   else
   {
-    v7 = [NSString stringWithFormat:@"PPT recording file is not present at expected location: %@", v6];
+    v7 = [NSString stringWithFormat:@"PPT recording file is not present at expected location: %@", pptRecordingFileLocation2];
     [(MapsAppTest *)self failedTestWithReason:v7];
   }
 }
@@ -132,10 +132,10 @@ LABEL_7:
 - (void)_waitForTileAvailability
 {
   [(MapsAppTest *)self startedSubTest:@"tileAvailability"];
-  v3 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
-  v4 = [v3 state];
+  tileAvailabilityMonitor = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
+  state = [tileAvailabilityMonitor state];
 
-  if (v4 == 2)
+  if (state == 2)
   {
     [(MapsAppTest *)self finishedSubTest:@"tileAvailability"];
 
@@ -145,8 +145,8 @@ LABEL_7:
   else
   {
     [(MapsAppTestVLF *)self setWaitingForTileAvailability:1];
-    v5 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
-    [v5 addObserver:self forKeyPath:@"state" options:1 context:0];
+    tileAvailabilityMonitor2 = [(MapsAppTestVLF *)self tileAvailabilityMonitor];
+    [tileAvailabilityMonitor2 addObserver:self forKeyPath:@"state" options:1 context:0];
   }
 }
 
@@ -159,9 +159,9 @@ LABEL_7:
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTestVLF *)self task];
+  task = [(MapsAppTestVLF *)self task];
 
-  if (v3)
+  if (task)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -179,29 +179,29 @@ LABEL_7:
   return 1;
 }
 
-- (void)setTask:(id)a3
+- (void)setTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   WeakRetained = objc_loadWeakRetained(&self->_task);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != taskCopy)
   {
-    v6 = objc_storeWeak(&self->_task, v4);
+    v6 = objc_storeWeak(&self->_task, taskCopy);
 
-    if (v4)
+    if (taskCopy)
     {
       v7 = +[NSNotificationCenter defaultCenter];
       [v7 removeObserver:self name:@"AuxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification" object:0];
 
       v8 = objc_loadWeakRetained(&self->_task);
-      v9 = [v8 stateManager];
+      stateManager = [v8 stateManager];
 
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v10 = [v9 allMonitors];
-      v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      allMonitors = [stateManager allMonitors];
+      v11 = [allMonitors countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         v12 = v11;
@@ -212,7 +212,7 @@ LABEL_7:
           {
             if (*v18 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allMonitors);
             }
 
             v15 = *(*(&v17 + 1) + 8 * i);
@@ -224,7 +224,7 @@ LABEL_7:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v12 = [allMonitors countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v12)
           {
             continue;
@@ -263,21 +263,21 @@ LABEL_13:
   [(MapsAppTestVLF *)&v4 dealloc];
 }
 
-- (MapsAppTestVLF)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestVLF)initWithApplication:(id)application testName:(id)name options:(id)options
 {
   v12.receiver = self;
   v12.super_class = MapsAppTestVLF;
-  v5 = [(MapsAppTest *)&v12 initWithApplication:a3 testName:a4 options:a5];
+  v5 = [(MapsAppTest *)&v12 initWithApplication:application testName:name options:options];
   if (v5)
   {
     v6 = +[UIApplication _maps_keyMapsSceneDelegate];
-    v7 = [v6 platformController];
-    v8 = [v7 auxiliaryTasksManager];
+    platformController = [v6 platformController];
+    auxiliaryTasksManager = [platformController auxiliaryTasksManager];
 
     v9 = +[NSNotificationCenter defaultCenter];
-    [v9 addObserver:v5 selector:"auxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification:" name:@"AuxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification" object:v8];
+    [v9 addObserver:v5 selector:"auxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification:" name:@"AuxiliaryTasksManagerDidUpdateAuxiliaryTasksNotification" object:auxiliaryTasksManager];
 
-    v10 = [v8 auxilaryTaskForClass:objc_opt_class()];
+    v10 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
     [(MapsAppTestVLF *)v5 setTask:v10];
   }
 

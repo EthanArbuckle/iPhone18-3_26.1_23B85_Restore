@@ -1,14 +1,14 @@
 @interface CLVehicleHeadingInternal
-- (CLVehicleHeadingInternal)initWithClientVehicleHeading:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLVehicleHeadingInternal)initWithClientVehicleHeading:(id)heading;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CLVehicleHeadingInternal
 
-- (CLVehicleHeadingInternal)initWithClientVehicleHeading:(id)a3
+- (CLVehicleHeadingInternal)initWithClientVehicleHeading:(id)heading
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = heading.var1;
+  var0 = heading.var0;
   v6.receiver = self;
   v6.super_class = CLVehicleHeadingInternal;
   result = [(CLVehicleHeadingInternal *)&v6 init];
@@ -21,9 +21,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   trueHeading = self->fHeading.trueHeading;
   timestamp = self->fHeading.timestamp;
 

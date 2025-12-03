@@ -2,9 +2,9 @@
 - (CLKComplicationTemplate)lockedTemplate;
 - (CLKComplicationTemplate)privacyTemplate;
 - (CLKComplicationTemplate)templateForNoScheduledReminders;
-- (id)_templateForOverdueCount:(int64_t)a3;
-- (id)_templateForReminder:(id)a3;
-- (id)templateForTimelineModelEntry:(id)a3;
+- (id)_templateForOverdueCount:(int64_t)count;
+- (id)_templateForReminder:(id)reminder;
+- (id)templateForTimelineModelEntry:(id)entry;
 @end
 
 @implementation TTRUtilitarianLargeComplicationTemplateGenerator
@@ -31,27 +31,27 @@
   return v5;
 }
 
-- (id)templateForTimelineModelEntry:(id)a3
+- (id)templateForTimelineModelEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 overdueCount];
-  v6 = [v4 representativeReminder];
+  entryCopy = entry;
+  overdueCount = [entryCopy overdueCount];
+  representativeReminder = [entryCopy representativeReminder];
 
-  if (v6)
+  if (representativeReminder)
   {
-    v7 = [(TTRUtilitarianLargeComplicationTemplateGenerator *)self _templateForReminder:v6];
+    v7 = [(TTRUtilitarianLargeComplicationTemplateGenerator *)self _templateForReminder:representativeReminder];
   }
 
   else
   {
-    if (v5 < 1)
+    if (overdueCount < 1)
     {
       [(TTRUtilitarianLargeComplicationTemplateGenerator *)self templateForNoScheduledReminders];
     }
 
     else
     {
-      [(TTRUtilitarianLargeComplicationTemplateGenerator *)self _templateForOverdueCount:v5];
+      [(TTRUtilitarianLargeComplicationTemplateGenerator *)self _templateForOverdueCount:overdueCount];
     }
     v7 = ;
   }
@@ -61,16 +61,16 @@
   return v8;
 }
 
-- (id)_templateForOverdueCount:(int64_t)a3
+- (id)_templateForOverdueCount:(int64_t)count
 {
   v4 = RemindersUICoreBundleGet();
   v5 = [v4 localizedStringForKey:@"COMPLICATION_%@ Reminders Overdue" value:@"%@ Reminders Overdue" table:@"PluralLocalizable"];
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:count];
   v7 = [NSString stringWithFormat:v5, v6];
 
   v8 = RemindersUICoreBundleGet();
   v9 = [v8 localizedStringForKey:@"COMPLICATION_%@ Overdue" value:@"%@ Overdue" table:@"PluralLocalizable"];
-  v10 = [NSNumber numberWithInteger:a3];
+  v10 = [NSNumber numberWithInteger:count];
   v11 = [NSString stringWithFormat:v9, v10];
 
   v12 = [CLKSimpleTextProvider textProviderWithText:v7 shortText:v11];
@@ -79,11 +79,11 @@
   return v13;
 }
 
-- (id)_templateForReminder:(id)a3
+- (id)_templateForReminder:(id)reminder
 {
-  v3 = a3;
+  reminderCopy = reminder;
   v4 = TTRComplicationCalendarCreate();
-  v5 = [v3 makeTitleAndExactDueDateTextProviderUsingCalendar:v4 dropMinutesForRoundHours:0];
+  v5 = [reminderCopy makeTitleAndExactDueDateTextProviderUsingCalendar:v4 dropMinutesForRoundHours:0];
 
   v6 = [[CLKComplicationTemplateUtilitarianLargeFlat alloc] initWithTextProvider:v5];
 

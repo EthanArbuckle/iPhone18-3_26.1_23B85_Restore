@@ -1,9 +1,9 @@
 @interface GDCComputeService
-- (BOOL)stopWithError:(id *)a3;
+- (BOOL)stopWithError:(id *)error;
 - (GDCComputeService)init;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)updateGroupWithName:(id)a3 namesAndRequests:(id)a4 error:(id *)a5;
-- (id)updateViewWithName:(id)a3 viewUpdateSourceRequests:(id)a4 error:(id *)a5;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)updateGroupWithName:(id)name namesAndRequests:(id)requests error:(id *)error;
+- (id)updateViewWithName:(id)name viewUpdateSourceRequests:(id)requests error:(id *)error;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
@@ -109,23 +109,23 @@ void __47__GDCComputeService_locked_establishConnection__block_invoke_27(uint64_
   }
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDCComputeService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDCComputeService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)updateViewWithName:(id)a3 viewUpdateSourceRequests:(id)a4 error:(id *)a5
+- (id)updateViewWithName:(id)name viewUpdateSourceRequests:(id)requests error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  requestsCopy = requests;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -142,7 +142,7 @@ void __47__GDCComputeService_locked_establishConnection__block_invoke_27(uint64_
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v45 = v6;
+    v45 = nameCopy;
     _os_log_impl(&dword_254FB4000, v8, OS_LOG_TYPE_DEFAULT, "GDCComputeService: updateViewWithName called: %@", buf, 0xCu);
   }
 
@@ -150,7 +150,7 @@ void __47__GDCComputeService_locked_establishConnection__block_invoke_27(uint64_
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v7;
+  obj = requestsCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v48 count:16];
   if (v9)
   {
@@ -170,7 +170,7 @@ void __47__GDCComputeService_locked_establishConnection__block_invoke_27(uint64_
         {
           v14 = [v12 description];
           *buf = 138412546;
-          v45 = v6;
+          v45 = nameCopy;
           v46 = 2112;
           v47 = v14;
           _os_log_impl(&dword_254FB4000, v13, OS_LOG_TYPE_DEFAULT, "GDCComputeService: updateViewWithName: request: %@ %@", buf, 0x16u);
@@ -187,7 +187,7 @@ void __47__GDCComputeService_locked_establishConnection__block_invoke_27(uint64_
   v25[1] = 3221225472;
   v25[2] = __71__GDCComputeService_updateViewWithName_viewUpdateSourceRequests_error___block_invoke;
   v25[3] = &unk_2797B59C0;
-  v15 = v6;
+  v15 = nameCopy;
   v26 = v15;
   v27 = &v32;
   v16 = [(GDCComputeService *)self synchronousRemoteObjectProxyWithErrorHandler:v25];
@@ -200,9 +200,9 @@ void __47__GDCComputeService_locked_establishConnection__block_invoke_27(uint64_
   [v16 updateViewWithName:v15 viewUpdateSourceRequests:obj reply:v24];
 
   v17 = v39[5];
-  if (a5 && !v17)
+  if (error && !v17)
   {
-    *a5 = v33[5];
+    *error = v33[5];
     v17 = v39[5];
   }
 
@@ -244,11 +244,11 @@ void __71__GDCComputeService_updateViewWithName_viewUpdateSourceRequests_error__
   *(v9 + 40) = v6;
 }
 
-- (id)updateGroupWithName:(id)a3 namesAndRequests:(id)a4 error:(id *)a5
+- (id)updateGroupWithName:(id)name namesAndRequests:(id)requests error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  requestsCopy = requests;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -265,7 +265,7 @@ void __71__GDCComputeService_updateViewWithName_viewUpdateSourceRequests_error__
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v8;
+    v34 = nameCopy;
     _os_log_impl(&dword_254FB4000, v10, OS_LOG_TYPE_DEFAULT, "GDCComputeService: updateGroupWithName called: %@", buf, 0xCu);
   }
 
@@ -273,7 +273,7 @@ void __71__GDCComputeService_updateViewWithName_viewUpdateSourceRequests_error__
   v18[1] = 3221225472;
   v18[2] = __64__GDCComputeService_updateGroupWithName_namesAndRequests_error___block_invoke;
   v18[3] = &unk_2797B59C0;
-  v11 = v8;
+  v11 = nameCopy;
   v19 = v11;
   v20 = &v21;
   v12 = [(GDCComputeService *)self synchronousRemoteObjectProxyWithErrorHandler:v18];
@@ -283,12 +283,12 @@ void __71__GDCComputeService_updateViewWithName_viewUpdateSourceRequests_error__
   v17[3] = &unk_2797B59E8;
   v17[4] = &v27;
   v17[5] = &v21;
-  [v12 updateGroupWithName:v11 namesAndRequests:v9 reply:v17];
+  [v12 updateGroupWithName:v11 namesAndRequests:requestsCopy reply:v17];
 
   v13 = v28[5];
-  if (a5 && !v13)
+  if (error && !v13)
   {
-    *a5 = v22[5];
+    *error = v22[5];
     v13 = v28[5];
   }
 
@@ -358,7 +358,7 @@ void __60__GDCComputeService_truncateViewWithName_fullRebuild_error___block_invo
   *(v5 + 40) = v3;
 }
 
-- (BOOL)stopWithError:(id *)a3
+- (BOOL)stopWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -392,9 +392,9 @@ void __60__GDCComputeService_truncateViewWithName_fullRebuild_error___block_invo
   [v6 stopWithReply:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 

@@ -1,10 +1,10 @@
 @interface SHSheetCustomSceneViewController
 + (FBSceneWorkspace)sceneWorkspace;
-- (SHSheetCustomSceneViewController)initWithProcessIdentity:(id)a3;
+- (SHSheetCustomSceneViewController)initWithProcessIdentity:(id)identity;
 - (void)_setupScene;
 - (void)_tearDownScene;
 - (void)dealloc;
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4;
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -47,16 +47,16 @@ void __50__SHSheetCustomSceneViewController_sceneWorkspace__block_invoke()
   sceneWorkspace_sceneWorkspace_0 = v2;
 }
 
-- (SHSheetCustomSceneViewController)initWithProcessIdentity:(id)a3
+- (SHSheetCustomSceneViewController)initWithProcessIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = SHSheetCustomSceneViewController;
   v6 = [(SHSheetCustomSceneViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processIdentity, a3);
+    objc_storeStrong(&v6->_processIdentity, identity);
   }
 
   return v7;
@@ -94,20 +94,20 @@ void __50__SHSheetCustomSceneViewController_sceneWorkspace__block_invoke()
 - (void)_setupScene
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v3 stringWithFormat:@"scene::SharingUI::%@", v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v5 = [v3 stringWithFormat:@"scene::SharingUI::%@", uUID];
 
   scene = self->_scene;
   if (!scene)
   {
-    v7 = [objc_opt_class() sceneWorkspace];
+    sceneWorkspace = [objc_opt_class() sceneWorkspace];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __47__SHSheetCustomSceneViewController__setupScene__block_invoke;
     v20[3] = &unk_1E71FB328;
     v21 = v5;
-    v22 = self;
-    v8 = [v7 createScene:v20];
+    selfCopy = self;
+    v8 = [sceneWorkspace createScene:v20];
     v9 = self->_scene;
     self->_scene = v8;
 
@@ -120,26 +120,26 @@ void __50__SHSheetCustomSceneViewController_sceneWorkspace__block_invoke()
     v19[3] = &unk_1E71F9D98;
     v19[4] = self;
     [(FBScene *)v10 configureParameters:v19];
-    v11 = [(FBScene *)self->_scene uiPresentationManager];
-    v12 = [v11 createPresenterWithIdentifier:@"default"];
+    uiPresentationManager = [(FBScene *)self->_scene uiPresentationManager];
+    v12 = [uiPresentationManager createPresenterWithIdentifier:@"default"];
     scenePresenter = self->_scenePresenter;
     self->_scenePresenter = v12;
 
     [(UIScenePresenter *)self->_scenePresenter modifyPresentationContext:&__block_literal_global_23];
     [(UIScenePresenter *)self->_scenePresenter activate];
-    v14 = [(UIScenePresenter *)self->_scenePresenter presentationView];
-    v15 = [(SHSheetCustomSceneViewController *)self view];
-    [v15 insertSubview:v14 atIndex:0];
+    presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
+    view = [(SHSheetCustomSceneViewController *)self view];
+    [view insertSubview:presentationView atIndex:0];
 
-    v16 = [(SHSheetCustomSceneViewController *)self view];
-    [v16 setNeedsLayout];
+    view2 = [(SHSheetCustomSceneViewController *)self view];
+    [view2 setNeedsLayout];
 
-    [(UIView *)v14 setClipsToBounds:1];
-    v17 = [(UIView *)v14 layer];
-    [v17 setName:@"Scene View"];
+    [(UIView *)presentationView setClipsToBounds:1];
+    layer = [(UIView *)presentationView layer];
+    [layer setName:@"Scene View"];
 
     sceneView = self->_sceneView;
-    self->_sceneView = v14;
+    self->_sceneView = presentationView;
 
     scene = self->_scene;
   }
@@ -214,15 +214,15 @@ void __47__SHSheetCustomSceneViewController__setupScene__block_invoke_5(uint64_t
   [v2 setBackgroundColorWhileNotHosting:0];
 }
 
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_scene == v6)
+  deactivateCopy = deactivate;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (self->_scene == deactivateCopy)
   {
-    if (v7)
+    if (errorCopy)
     {
       v9 = share_sheet_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))

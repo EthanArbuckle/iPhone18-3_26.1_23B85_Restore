@@ -1,14 +1,14 @@
 @interface OITSUPositiveZeroNumberFormatter
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation OITSUPositiveZeroNumberFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 floatValue];
+    [value floatValue];
     v6 = v5;
     [-[OITSUPositiveZeroNumberFormatter multiplier](self "multiplier")];
     if (v7 != 0.0)
@@ -18,13 +18,13 @@
 
     if (v6 > pow(0.1, [(OITSUPositiveZeroNumberFormatter *)self maximumFractionDigits]) * -0.5 && v6 <= 0.0)
     {
-      a3 = &unk_286F6D788;
+      value = &unk_286F6D788;
     }
   }
 
   v10.receiver = self;
   v10.super_class = OITSUPositiveZeroNumberFormatter;
-  return [(OITSUPositiveZeroNumberFormatter *)&v10 stringForObjectValue:a3];
+  return [(OITSUPositiveZeroNumberFormatter *)&v10 stringForObjectValue:value];
 }
 
 @end

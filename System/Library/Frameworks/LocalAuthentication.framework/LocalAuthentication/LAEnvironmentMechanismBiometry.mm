@@ -2,7 +2,7 @@
 - (BOOL)builtInSensorInaccessible;
 - (BOOL)isEnrolled;
 - (BOOL)isLockedOut;
-- (LAEnvironmentMechanismBiometry)initWithCoreMechanism:(id)a3;
+- (LAEnvironmentMechanismBiometry)initWithCoreMechanism:(id)mechanism;
 - (NSData)stateHash;
 - (id)unsaltedStateHash;
 - (int64_t)approvalState;
@@ -13,68 +13,68 @@
 
 - (BOOL)isLockedOut
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 lockedOut];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  lockedOut = [coreMechanism lockedOut];
 
-  return v3;
+  return lockedOut;
 }
 
-- (LAEnvironmentMechanismBiometry)initWithCoreMechanism:(id)a3
+- (LAEnvironmentMechanismBiometry)initWithCoreMechanism:(id)mechanism
 {
   v4.receiver = self;
   v4.super_class = LAEnvironmentMechanismBiometry;
-  return [(LAEnvironmentMechanism *)&v4 initWithCoreMechanism:a3];
+  return [(LAEnvironmentMechanism *)&v4 initWithCoreMechanism:mechanism];
 }
 
 - (int64_t)biometryType
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 biometryType];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  biometryType = [coreMechanism biometryType];
 
-  return v3;
+  return biometryType;
 }
 
 - (BOOL)isEnrolled
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 enrolled];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  enrolled = [coreMechanism enrolled];
 
-  return v3;
+  return enrolled;
 }
 
 - (NSData)stateHash
 {
   v2 = MEMORY[0x1E69AD258];
-  v3 = [(LAEnvironmentMechanismBiometry *)self unsaltedStateHash];
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v2 saltHash:v3 withBundleID:v5];
+  unsaltedStateHash = [(LAEnvironmentMechanismBiometry *)self unsaltedStateHash];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [v2 saltHash:unsaltedStateHash withBundleID:bundleIdentifier];
 
   return v6;
 }
 
 - (id)unsaltedStateHash
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 stateHash];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  stateHash = [coreMechanism stateHash];
 
-  return v3;
+  return stateHash;
 }
 
 - (BOOL)builtInSensorInaccessible
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 sensorInaccessible];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  sensorInaccessible = [coreMechanism sensorInaccessible];
 
-  return v3;
+  return sensorInaccessible;
 }
 
 - (int64_t)approvalState
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 approvalState];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  approvalState = [coreMechanism approvalState];
 
-  return v3;
+  return approvalState;
 }
 
 @end

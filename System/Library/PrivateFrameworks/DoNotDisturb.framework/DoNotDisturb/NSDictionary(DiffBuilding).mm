@@ -11,12 +11,12 @@
   v7 = a4;
   v8 = v6;
   v9 = MEMORY[0x277CBEB98];
-  v10 = [a1 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [self allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = MEMORY[0x277CBEB98];
-  v13 = [v8 allKeys];
-  v14 = [v12 setWithArray:v13];
+  allKeys2 = [v8 allKeys];
+  v14 = [v12 setWithArray:allKeys2];
 
   v15 = [v14 mutableCopy];
   [v15 minusSet:v11];
@@ -101,7 +101,7 @@
           [v29 description];
         }
         v30 = ;
-        v31 = [a1 objectForKeyedSubscript:v29];
+        v31 = [self objectForKeyedSubscript:v29];
         [v7 diffObject:v31 againstObject:0 withDescription:v30];
 
         ++v28;
@@ -147,7 +147,7 @@
           [v36 description];
         }
         v37 = ;
-        v38 = [a1 objectForKeyedSubscript:v36];
+        v38 = [self objectForKeyedSubscript:v36];
         v39 = [v8 objectForKeyedSubscript:v36];
         [v7 diffObject:v38 againstObject:v39 withDescription:v37];
 

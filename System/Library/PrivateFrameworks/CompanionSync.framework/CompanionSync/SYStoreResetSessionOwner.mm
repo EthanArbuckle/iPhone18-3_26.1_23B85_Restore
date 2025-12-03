@@ -1,7 +1,7 @@
 @interface SYStoreResetSessionOwner
 - (SYStoreResetSessionOwner)init;
-- (unsigned)_sendBufferedChanges:(id)a3;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
+- (unsigned)_sendBufferedChanges:(id)changes;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
 @end
 
 @implementation SYStoreResetSessionOwner
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (unsigned)_sendBufferedChanges:(id)a3
+- (unsigned)_sendBufferedChanges:(id)changes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -50,7 +50,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if (!v4[2](v4, *(*(&v19 + 1) + 8 * v10)))
+        if (!changesCopy[2](changesCopy, *(*(&v19 + 1) + 8 * v10)))
         {
           v8 = v11;
           goto LABEL_12;
@@ -78,10 +78,10 @@
 
 LABEL_12:
 
-  v12 = [(SYStoreSessionOwner *)self session];
-  v13 = [v12 state];
+  session = [(SYStoreSessionOwner *)self session];
+  state = [session state];
 
-  if (v13 == 5)
+  if (state == 5)
   {
     bufferedState = 5;
   }
@@ -107,13 +107,13 @@ LABEL_12:
   return bufferedState;
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  changesCopy = changes;
   if ([(NSMutableArray *)self->_buffer count])
   {
-    v7 = [(SYStoreResetSessionOwner *)self _sendBufferedChanges:v6];
+    v7 = [(SYStoreResetSessionOwner *)self _sendBufferedChanges:changesCopy];
     goto LABEL_27;
   }
 
@@ -158,10 +158,10 @@ LABEL_11:
             }
 
             v15 = *(*(&v24 + 1) + 8 * i);
-            v16 = [(SYStoreSessionOwner *)self store];
-            v17 = [SYChange changeWithObject:v15 updateType:0 store:v16];
+            store = [(SYStoreSessionOwner *)self store];
+            v17 = [SYChange changeWithObject:v15 updateType:0 store:store];
 
-            if ((v6[2](v6, v17) & 1) == 0)
+            if ((changesCopy[2](changesCopy, v17) & 1) == 0)
             {
               [(NSMutableArray *)self->_buffer addObject:v17];
             }
@@ -192,10 +192,10 @@ LABEL_11:
 
   v10 = 3;
 LABEL_23:
-  v18 = [(SYStoreSessionOwner *)self session];
-  v19 = [v18 state];
+  session = [(SYStoreSessionOwner *)self session];
+  state = [session state];
 
-  if (v19 == 5)
+  if (state == 5)
   {
     v7 = 5;
   }

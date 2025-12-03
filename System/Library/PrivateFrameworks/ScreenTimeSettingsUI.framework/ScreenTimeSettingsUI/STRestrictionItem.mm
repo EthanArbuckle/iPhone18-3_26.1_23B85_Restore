@@ -1,29 +1,29 @@
 @interface STRestrictionItem
-- (BOOL)isEqual:(id)a3;
-- (STRestrictionItem)initWithConfiguration:(id)a3 restrictionKey:(id)a4 labelName:(id)a5 type:(unint64_t)a6 restrictionValue:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (STRestrictionItem)initWithConfiguration:(id)configuration restrictionKey:(id)key labelName:(id)name type:(unint64_t)type restrictionValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation STRestrictionItem
 
-- (STRestrictionItem)initWithConfiguration:(id)a3 restrictionKey:(id)a4 labelName:(id)a5 type:(unint64_t)a6 restrictionValue:(id)a7
+- (STRestrictionItem)initWithConfiguration:(id)configuration restrictionKey:(id)key labelName:(id)name type:(unint64_t)type restrictionValue:(id)value
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12)
+  configurationCopy = configuration;
+  keyCopy = key;
+  nameCopy = name;
+  valueCopy = value;
+  if (configurationCopy)
   {
-    if (v13)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [STRestrictionItem initWithConfiguration:restrictionKey:labelName:type:restrictionValue:];
-    if (v14)
+    if (nameCopy)
     {
       goto LABEL_4;
     }
@@ -32,13 +32,13 @@ LABEL_8:
   }
 
   [STRestrictionItem initWithConfiguration:restrictionKey:labelName:type:restrictionValue:];
-  if (!v13)
+  if (!keyCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (nameCopy)
   {
     goto LABEL_4;
   }
@@ -51,20 +51,20 @@ LABEL_4:
   v16 = [(STRestrictionItem *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [configurationCopy copy];
     rmConfiguration = v16->_rmConfiguration;
     v16->_rmConfiguration = v17;
 
-    v19 = [v13 copy];
+    v19 = [keyCopy copy];
     payloadKey = v16->_payloadKey;
     v16->_payloadKey = v19;
 
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     uiLabel = v16->_uiLabel;
     v16->_uiLabel = v21;
 
-    v16->_restrictionType = a6;
-    v23 = [v15 copy];
+    v16->_restrictionType = type;
+    v23 = [valueCopy copy];
     otherInfo = v16->_otherInfo;
     v16->_otherInfo = v23;
   }
@@ -74,28 +74,28 @@ LABEL_4:
 
 - (unint64_t)hash
 {
-  v3 = [(STRestrictionItem *)self rmConfiguration];
-  v4 = [v3 hash];
-  v5 = [(STRestrictionItem *)self payloadKey];
-  v6 = [v5 hash];
+  rmConfiguration = [(STRestrictionItem *)self rmConfiguration];
+  v4 = [rmConfiguration hash];
+  payloadKey = [(STRestrictionItem *)self payloadKey];
+  v6 = [payloadKey hash];
 
   return v6 + v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 rmConfiguration];
-    v7 = [(STRestrictionItem *)self rmConfiguration];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    rmConfiguration = [v5 rmConfiguration];
+    rmConfiguration2 = [(STRestrictionItem *)self rmConfiguration];
+    if ([rmConfiguration isEqualToString:rmConfiguration2])
     {
-      v8 = [v5 payloadKey];
-      v9 = [(STRestrictionItem *)self payloadKey];
-      v10 = [v8 isEqualToString:v9];
+      payloadKey = [v5 payloadKey];
+      payloadKey2 = [(STRestrictionItem *)self payloadKey];
+      v10 = [payloadKey isEqualToString:payloadKey2];
     }
 
     else
@@ -116,16 +116,16 @@ LABEL_4:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(STRestrictionItem *)self rmConfiguration];
-  v6 = [(STRestrictionItem *)self payloadKey];
-  v7 = [v3 stringWithFormat:@"<%@:%p Conf:%@ Key:%@>", v4, self, v5, v6];
+  rmConfiguration = [(STRestrictionItem *)self rmConfiguration];
+  payloadKey = [(STRestrictionItem *)self payloadKey];
+  v7 = [v3 stringWithFormat:@"<%@:%p Conf:%@ Key:%@>", v4, self, rmConfiguration, payloadKey];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   rmConfiguration = self->_rmConfiguration;
   payloadKey = self->_payloadKey;
   uiLabel = self->_uiLabel;

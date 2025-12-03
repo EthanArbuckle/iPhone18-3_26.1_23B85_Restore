@@ -5,7 +5,7 @@
 + (id)logCategory;
 - (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel)init;
 - (NSSet)lastSynchronizedRecordIDs;
-- (void)setLastSynchronizedRecordIDs:(id)a3;
+- (void)setLastSynchronizedRecordIDs:(id)ds;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel
@@ -99,32 +99,32 @@ uint64_t __86__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStat
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)setLastSynchronizedRecordIDs:(id)a3
+- (void)setLastSynchronizedRecordIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  dsCopy = ds;
+  if (![dsCopy count])
   {
     [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)self setArchivedLastSynchronizedRecordIDs:0];
     goto LABEL_5;
   }
 
   v13 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v13];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dsCopy requiringSecureCoding:1 error:&v13];
   lastSynchronizedRecordIDs = v13;
   if (v5)
   {
     [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)self setArchivedLastSynchronizedRecordIDs:v5];
 
 LABEL_5:
-    v7 = v4;
+    v7 = dsCopy;
     lastSynchronizedRecordIDs = self->_lastSynchronizedRecordIDs;
     self->_lastSynchronizedRecordIDs = v7;
     goto LABEL_9;
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -132,7 +132,7 @@ LABEL_5:
     *buf = 138543874;
     v15 = v11;
     v16 = 2112;
-    v17 = v4;
+    v17 = dsCopy;
     v18 = 2112;
     v19 = lastSynchronizedRecordIDs;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to archive %@: %@", buf, 0x20u);
@@ -153,9 +153,9 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  v4 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)self archivedLastSynchronizedRecordIDs];
+  archivedLastSynchronizedRecordIDs = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)self archivedLastSynchronizedRecordIDs];
 
-  if (v4)
+  if (archivedLastSynchronizedRecordIDs)
   {
     v5 = MEMORY[0x277CBEB98];
     v33[0] = objc_opt_class();
@@ -164,9 +164,9 @@ LABEL_9:
     v7 = [v5 setWithArray:v6];
 
     v8 = MEMORY[0x277CCAAC8];
-    v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)self archivedLastSynchronizedRecordIDs];
+    archivedLastSynchronizedRecordIDs2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)self archivedLastSynchronizedRecordIDs];
     v26 = 0;
-    v10 = [v8 unarchivedObjectOfClasses:v7 fromData:v9 error:&v26];
+    v10 = [v8 unarchivedObjectOfClasses:v7 fromData:archivedLastSynchronizedRecordIDs2 error:&v26];
     v11 = v26;
 
     if (v10)
@@ -194,7 +194,7 @@ LABEL_9:
       }
 
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -211,16 +211,16 @@ LABEL_12:
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy2 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v19 = HMFGetLogIdentifier();
-        v21 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)v20 archivedLastSynchronizedRecordIDs];
+        archivedLastSynchronizedRecordIDs3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel *)selfCopy2 archivedLastSynchronizedRecordIDs];
         *buf = 138543874;
         v28 = v19;
         v29 = 2112;
-        v30 = v21;
+        v30 = archivedLastSynchronizedRecordIDs3;
         v31 = 2112;
         v32 = v11;
         _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to unarchive %@: %@", buf, 0x20u);
@@ -251,9 +251,9 @@ LABEL_17:
 
 - (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel)init
 {
-  v3 = [objc_opt_class() modelID];
-  v4 = [objc_opt_class() parentModelID];
-  v5 = [(HMBModel *)self initWithModelID:v3 parentModelID:v4];
+  modelID = [objc_opt_class() modelID];
+  parentModelID = [objc_opt_class() parentModelID];
+  v5 = [(HMBModel *)self initWithModelID:modelID parentModelID:parentModelID];
 
   return v5;
 }

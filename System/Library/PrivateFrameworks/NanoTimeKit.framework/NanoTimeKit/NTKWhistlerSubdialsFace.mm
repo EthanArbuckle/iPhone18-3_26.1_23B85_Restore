@@ -1,21 +1,21 @@
 @interface NTKWhistlerSubdialsFace
 + (id)_complicationSlotDescriptors;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_customEditModes;
 - (id)_defaultBackgroundOption;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)editOptionsThatHideEditModes;
 - (id)pigmentOptionProvider;
 - (int64_t)timeStyle;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4;
-- (void)selectOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color;
+- (void)selectOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKWhistlerSubdialsFace
@@ -28,20 +28,20 @@
   return v3;
 }
 
-- (void)selectOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)selectOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NTKFace *)self selectedOptionForCustomEditMode:a4 slot:v9];
+  optionCopy = option;
+  slotCopy = slot;
+  v10 = [(NTKFace *)self selectedOptionForCustomEditMode:mode slot:slotCopy];
   v13.receiver = self;
   v13.super_class = NTKWhistlerSubdialsFace;
-  [(NTKFace *)&v13 selectOption:v8 forCustomEditMode:a4 slot:v9];
+  [(NTKFace *)&v13 selectOption:optionCopy forCustomEditMode:mode slot:slotCopy];
 
-  if (a4 == 15 && (NTKEqualObjects(v8, v10) & 1) == 0)
+  if (mode == 15 && (NTKEqualObjects(optionCopy, v10) & 1) == 0)
   {
     v11 = v10;
-    v12 = [v8 style];
-    if (v12 != [v11 style])
+    style = [optionCopy style];
+    if (style != [v11 style])
     {
       [(NTKFace *)self _notifyObserversFaceTimeStyleChanged];
     }
@@ -54,16 +54,16 @@
   v2 = NTKAllSignatureCircularTypes();
   v3 = NTKAllSignatureRectangularTypes();
   v4 = NTKComplicationTypeRankedListWithDefaultTypes(&unk_28418B7E8);
-  v5 = [MEMORY[0x277CBBAE8] currentDevice];
-  v6 = [v5 isRunningNapiliGMOrLater];
-  v7 = [v5 isTinker];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isRunningNapiliGMOrLater = [currentDevice isRunningNapiliGMOrLater];
+  isTinker = [currentDevice isTinker];
   v8 = &unk_28418B800;
-  if (v6)
+  if (isRunningNapiliGMOrLater)
   {
     v8 = MEMORY[0x277CBEBF8];
   }
 
-  if (v7)
+  if (isTinker)
   {
     v9 = v8;
   }
@@ -89,21 +89,21 @@
   return v15;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"bottom"])
+  deviceCopy = device;
+  if ([slot isEqualToString:@"bottom"])
   {
-    v6 = [v5 supportsUrsa];
+    supportsUrsa = [deviceCopy supportsUrsa];
     v7 = NTKBundleComplicationUrsaBearingBundleIdentifier;
-    if (!v6)
+    if (!supportsUrsa)
     {
       v7 = NTKBundleComplicationNoiseBundleIdentifier;
     }
 
     v8 = *v7;
     v9 = NTKBundleComplicationUrsaAppBundleIdentifier;
-    if (!v6)
+    if (!supportsUrsa)
     {
       v9 = NTKBundleComplicationNoiseAppBundleIdentifier;
     }
@@ -132,16 +132,16 @@
 
 - (id)_customEditModes
 {
-  v3 = [(NTKFace *)self device];
-  v4 = NTKShowGossamerUI(v3);
+  device = [(NTKFace *)self device];
+  v4 = NTKShowGossamerUI(device);
 
   if (!v4)
   {
     return &unk_28418B878;
   }
 
-  v5 = [(NTKFace *)self device];
-  v6 = NTKShowIndicScriptNumerals(v5);
+  device2 = [(NTKFace *)self device];
+  v6 = NTKShowIndicScriptNumerals(device2);
 
   if (v6)
   {
@@ -154,73 +154,73 @@
   }
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  v7 = 0;
-  if (a3 <= 16)
+  slotCopy = slot;
+  _defaultBackgroundOption = 0;
+  if (mode <= 16)
   {
-    if (a3 == 10)
+    if (mode == 10)
     {
-      v14 = [(NTKFace *)self device];
-      v15 = NTKDefaultFaceColorForDeviceCollection(v14, 7);
+      device = [(NTKFace *)self device];
+      v15 = NTKDefaultFaceColorForDeviceCollection(device, 7);
 
-      v10 = [(NTKFace *)self device];
-      v11 = [NTKFaceColorEditOption optionWithFaceColor:v15 forDevice:v10];
+      device2 = [(NTKFace *)self device];
+      v11 = [NTKFaceColorEditOption optionWithFaceColor:v15 forDevice:device2];
     }
 
     else
     {
-      if (a3 != 15)
+      if (mode != 15)
       {
         goto LABEL_11;
       }
 
-      v8 = [(NTKFace *)self device];
-      v9 = [v8 isTinker];
+      device3 = [(NTKFace *)self device];
+      isTinker = [device3 isTinker];
 
-      v10 = [(NTKFace *)self device];
-      v11 = [NTKDualTimeStyleEditOption optionWithStyle:v9 forDevice:v10];
+      device2 = [(NTKFace *)self device];
+      v11 = [NTKDualTimeStyleEditOption optionWithStyle:isTinker forDevice:device2];
     }
 
 LABEL_9:
-    v7 = v11;
+    _defaultBackgroundOption = v11;
 
     goto LABEL_11;
   }
 
-  if (a3 != 17)
+  if (mode != 17)
   {
-    if (a3 != 19)
+    if (mode != 19)
     {
       goto LABEL_11;
     }
 
     Language = CLKLocaleNumberSystemForFirstLanguage();
     v13 = NTKNumeralOptionFromCLKLocaleNumberSystem(Language);
-    v10 = [(NTKFace *)self device];
-    v11 = [NTKNumeralEditOption optionWithNumeral:v13 forDevice:v10];
+    device2 = [(NTKFace *)self device];
+    v11 = [NTKNumeralEditOption optionWithNumeral:v13 forDevice:device2];
     goto LABEL_9;
   }
 
-  v7 = [(NTKWhistlerSubdialsFace *)self _defaultBackgroundOption];
+  _defaultBackgroundOption = [(NTKWhistlerSubdialsFace *)self _defaultBackgroundOption];
 LABEL_11:
 
-  return v7;
+  return _defaultBackgroundOption;
 }
 
 - (id)_defaultBackgroundOption
 {
-  v2 = [(NTKFace *)self device];
-  v3 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:0 forDevice:v2];
+  device = [(NTKFace *)self device];
+  v3 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:0 forDevice:device];
 
   return v3;
 }
 
 - (id)pigmentOptionProvider
 {
-  v3 = [(NTKFace *)self device];
-  v4 = NTKShowGossamerUI(v3);
+  device = [(NTKFace *)self device];
+  v4 = NTKShowGossamerUI(device);
 
   if (self->_isGossamerPigmentEditOptionProvider != v4)
   {
@@ -232,11 +232,11 @@ LABEL_11:
   if (!v6)
   {
     self->_isGossamerPigmentEditOptionProvider = v4;
-    v7 = [objc_opt_class() pigmentFaceDomain];
-    v8 = v7;
+    pigmentFaceDomain = [objc_opt_class() pigmentFaceDomain];
+    v8 = pigmentFaceDomain;
     if (self->_isGossamerPigmentEditOptionProvider)
     {
-      v9 = [v7 stringByAppendingString:@"-Gossamer"];
+      v9 = [pigmentFaceDomain stringByAppendingString:@"-Gossamer"];
 
       v8 = v9;
     }
@@ -252,37 +252,37 @@ LABEL_11:
   return v6;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKWhistlerSubdialsFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKWhistlerSubdialsFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKWhistlerSubdialsFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKWhistlerSubdialsFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKWhistlerSubdialsFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKWhistlerSubdialsFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 - 10) <= 9 && ((0x2A1u >> (a3 - 10)))
+  if (mode - 10) <= 9 && ((0x2A1u >> (mode - 10)))
   {
     v4 = objc_opt_class();
   }
@@ -295,24 +295,24 @@ LABEL_11:
   return v4;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = NTKCompanionClockFaceLocalizedString(@"EDIT_MODE_LABEL_TIME_COMPANION", @"Time");
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___NTKWhistlerSubdialsFace;
-    v4 = objc_msgSendSuper2(&v6, sel__localizedNameOverrideForCustomEditMode_forDevice_, a3, a4);
+    v4 = objc_msgSendSuper2(&v6, sel__localizedNameOverrideForCustomEditMode_forDevice_, mode, device);
   }
 
   return v4;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[3] = *MEMORY[0x277D85DE8];
   v5[0] = @"top";
@@ -323,20 +323,20 @@ LABEL_11:
   return v3;
 }
 
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color
 {
-  if (a4 > 3)
+  if (color > 3)
   {
-    if (a4 > 5)
+    if (color > 5)
     {
-      if (a4 == 6)
+      if (color == 6)
       {
         v9 = ntk_standard_pink;
       }
 
       else
       {
-        if (a4 != 7)
+        if (color != 7)
         {
           v5 = 0;
           goto LABEL_24;
@@ -351,21 +351,21 @@ LABEL_11:
 
     v6 = @"gossamer.color8";
     v7 = @"gossamer.color2";
-    if (a4 != 5)
+    if (color != 5)
     {
       v7 = 0;
     }
 
-    v8 = a4 == 4;
+    v8 = color == 4;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (color <= 1)
     {
-      if (a4)
+      if (color)
       {
-        if (a4 == 1)
+        if (color == 1)
         {
           v5 = @"gossamer.color3";
         }
@@ -386,12 +386,12 @@ LABEL_23:
 
     v6 = @"gossamer.color5";
     v7 = @"gossamer.color6";
-    if (a4 != 3)
+    if (color != 3)
     {
       v7 = 0;
     }
 
-    v8 = a4 == 2;
+    v8 = color == 2;
   }
 
   if (v8)
@@ -408,8 +408,8 @@ LABEL_24:
   v15 = v5;
   v11 = [NTKPigmentEditOption pigmentNamed:v5];
   [(NTKWhistlerSubdialsFace *)self selectOption:v11 forCustomEditMode:10 slot:0];
-  v12 = [(NTKFace *)self device];
-  v13 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:v15 != @"special.rainbow" forDevice:v12];
+  device = [(NTKFace *)self device];
+  v13 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:v15 != @"special.rainbow" forDevice:device];
 
   [(NTKWhistlerSubdialsFace *)self selectOption:v13 forCustomEditMode:17 slot:0];
   v14 = [NTKComplication anyComplicationOfType:0];
@@ -421,8 +421,8 @@ LABEL_24:
 - (id)editOptionsThatHideEditModes
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v2 = [(NTKFace *)self device];
-  v3 = [NTKDualTimeStyleEditOption optionWithStyle:0 forDevice:v2];
+  device = [(NTKFace *)self device];
+  v3 = [NTKDualTimeStyleEditOption optionWithStyle:0 forDevice:device];
 
   v7 = v3;
   v8 = &unk_284185C20;

@@ -1,46 +1,46 @@
 @interface AMSDCloudDataSubscriptionTask
 + (BOOL)resetLastAttemptDate;
-- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)a3 identifier:(id)a4;
-- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)a3 identifier:(id)a4 storage:(id)a5;
-- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)a3;
-- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)a3 maxAge:(double)a4;
-- (id)_performSubscriptionModification:(id)a3;
-- (id)_readSubscriptionDateForIdentifier:(id)a3;
-- (id)_subscribeWithIdentifier:(id)a3 attempt:(unint64_t)a4;
-- (id)_subscriptionForIdentifier:(id)a3;
+- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)database identifier:(id)identifier;
+- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)database identifier:(id)identifier storage:(id)storage;
+- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)identifier;
+- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)identifier maxAge:(double)age;
+- (id)_performSubscriptionModification:(id)modification;
+- (id)_readSubscriptionDateForIdentifier:(id)identifier;
+- (id)_subscribeWithIdentifier:(id)identifier attempt:(unint64_t)attempt;
+- (id)_subscriptionForIdentifier:(id)identifier;
 - (id)perform;
-- (void)_writeSubscriptionDateForIdentifier:(id)a3;
+- (void)_writeSubscriptionDateForIdentifier:(id)identifier;
 @end
 
 @implementation AMSDCloudDataSubscriptionTask
 
-- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)a3 identifier:(id)a4 storage:(id)a5
+- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)database identifier:(id)identifier storage:(id)storage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  databaseCopy = database;
+  identifierCopy = identifier;
+  storageCopy = storage;
   v14.receiver = self;
   v14.super_class = AMSDCloudDataSubscriptionTask;
   v11 = [(AMSDCloudDataSubscriptionTask *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(AMSDCloudDataSubscriptionTask *)v11 setDatabase:v8];
-    [(AMSDCloudDataSubscriptionTask *)v12 setIdentifier:v9];
+    [(AMSDCloudDataSubscriptionTask *)v11 setDatabase:databaseCopy];
+    [(AMSDCloudDataSubscriptionTask *)v12 setIdentifier:identifierCopy];
     [(AMSDCloudDataSubscriptionTask *)v12 setMaxRetries:10];
     [(AMSDCloudDataSubscriptionTask *)v12 setMaxAge:86400.0];
-    [(AMSDCloudDataSubscriptionTask *)v12 setStorage:v10];
+    [(AMSDCloudDataSubscriptionTask *)v12 setStorage:storageCopy];
   }
 
   return v12;
 }
 
-- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)a3 identifier:(id)a4
+- (AMSDCloudDataSubscriptionTask)initWithDatabase:(id)database identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  databaseCopy = database;
   v8 = objc_alloc_init(AMSDCloudDataSubscriptionStorage);
-  v9 = [(AMSDCloudDataSubscriptionTask *)self initWithDatabase:v7 identifier:v6 storage:v8];
+  v9 = [(AMSDCloudDataSubscriptionTask *)self initWithDatabase:databaseCopy identifier:identifierCopy storage:v8];
 
   return v9;
 }
@@ -53,30 +53,30 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = AMSLogKey();
     v6 = objc_opt_class();
     v7 = v6;
     if (v5)
     {
-      a1 = AMSLogKey();
-      [NSString stringWithFormat:@"%@: [%@] ", v7, a1];
+      self = AMSLogKey();
+      [NSString stringWithFormat:@"%@: [%@] ", v7, self];
     }
 
     else
     {
       [NSString stringWithFormat:@"%@: ", v6];
     }
-    v8 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v11 = v8;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@Resetting all Subscription Dates.", buf, 0xCu);
+    v11 = selfCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Resetting all Subscription Dates.", buf, 0xCu);
     if (v5)
     {
 
-      v8 = a1;
+      selfCopy = self;
     }
   }
 
@@ -96,10 +96,10 @@
   return v2;
 }
 
-- (id)_subscribeWithIdentifier:(id)a3 attempt:(unint64_t)a4
+- (id)_subscribeWithIdentifier:(id)identifier attempt:(unint64_t)attempt
 {
-  v6 = a3;
-  v7 = [(AMSDCloudDataSubscriptionTask *)self _subscriptionForIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(AMSDCloudDataSubscriptionTask *)self _subscriptionForIdentifier:identifierCopy];
   v16 = v7;
   v8 = [NSArray arrayWithObjects:&v16 count:1];
   v9 = [(AMSDCloudDataSubscriptionTask *)self _performSubscriptionModification:v8];
@@ -109,20 +109,20 @@
   v13[2] = sub_10004ADA4;
   v13[3] = &unk_1002B02C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = a4;
-  v10 = v6;
+  v14 = identifierCopy;
+  attemptCopy = attempt;
+  v10 = identifierCopy;
   v11 = [v9 continueWithBlock:v13];
 
   return v11;
 }
 
-- (id)_subscriptionForIdentifier:(id)a3
+- (id)_subscriptionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(CKNotificationInfo);
   [v5 setShouldSendContentAvailable:1];
-  v6 = [[CKDatabaseSubscription alloc] initWithSubscriptionID:v4];
+  v6 = [[CKDatabaseSubscription alloc] initWithSubscriptionID:identifierCopy];
 
   [v6 setNotificationInfo:v5];
   v7 = +[AMSLogConfig sharedAccountsDaemonConfig];
@@ -131,8 +131,8 @@
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = AMSLogKey();
     v10 = objc_opt_class();
@@ -147,34 +147,34 @@
     {
       [NSString stringWithFormat:@"%@: ", v10];
     }
-    v12 = ;
+    selfCopy = ;
     v13 = AMSHashIfNeeded();
     *buf = 138543618;
-    v16 = v12;
+    v16 = selfCopy;
     v17 = 2114;
     v18 = v13;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Creating database subscription: %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Creating database subscription: %{public}@", buf, 0x16u);
     if (v9)
     {
 
-      v12 = self;
+      selfCopy = self;
     }
   }
 
   return v6;
 }
 
-- (id)_performSubscriptionModification:(id)a3
+- (id)_performSubscriptionModification:(id)modification
 {
-  v4 = a3;
+  modificationCopy = modification;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [[CKModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:v4 subscriptionIDsToDelete:0];
+  v6 = [[CKModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:modificationCopy subscriptionIDsToDelete:0];
 
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_10004B700;
   v15 = &unk_1002B02E8;
-  v16 = self;
+  selfCopy = self;
   v7 = v5;
   v17 = v7;
   [v6 setModifySubscriptionsCompletionBlock:&v12];
@@ -187,12 +187,12 @@
   return v7;
 }
 
-- (void)_writeSubscriptionDateForIdentifier:(id)a3
+- (void)_writeSubscriptionDateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSDCloudDataSubscriptionTask *)self storage];
+  identifierCopy = identifier;
+  storage = [(AMSDCloudDataSubscriptionTask *)self storage];
   v6 = +[NSDate date];
-  [v5 writeSubscriptionDate:v6 identifier:v4];
+  [storage writeSubscriptionDate:v6 identifier:identifierCopy];
 
   v7 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v7)
@@ -200,8 +200,8 @@
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = AMSLogKey();
     v10 = objc_opt_class();
@@ -216,25 +216,25 @@
     {
       [NSString stringWithFormat:@"%@: ", v10];
     }
-    v12 = ;
+    selfCopy = ;
     *buf = 138543618;
-    v14 = v12;
+    v14 = selfCopy;
     v15 = 2114;
-    v16 = v4;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Wrote subscription date for identifier: %{public}@", buf, 0x16u);
+    v16 = identifierCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Wrote subscription date for identifier: %{public}@", buf, 0x16u);
     if (v9)
     {
 
-      v12 = self;
+      selfCopy = self;
     }
   }
 }
 
-- (id)_readSubscriptionDateForIdentifier:(id)a3
+- (id)_readSubscriptionDateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSDCloudDataSubscriptionTask *)self storage];
-  v6 = [v5 subscriptionDateForIdentifier:v4];
+  identifierCopy = identifier;
+  storage = [(AMSDCloudDataSubscriptionTask *)self storage];
+  v6 = [storage subscriptionDateForIdentifier:identifierCopy];
 
   v7 = +[AMSLogConfig sharedAccountsDaemonConfig];
   v8 = v7;
@@ -245,8 +245,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = AMSLogKey();
       v11 = objc_opt_class();
@@ -261,22 +261,22 @@
       {
         [NSString stringWithFormat:@"%@: ", v11];
       }
-      v13 = ;
+      selfCopy = ;
       *buf = 138543874;
-      v21 = v13;
+      v21 = selfCopy;
       v22 = 2114;
-      v23 = v4;
+      v23 = identifierCopy;
       v24 = 2114;
       v25 = v6;
       v16 = "%{public}@Found subscription date for identifier %{public}@: %{public}@";
-      v17 = v9;
+      v17 = oSLogObject;
       v18 = 32;
 LABEL_16:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, v16, buf, v18);
       if (v10)
       {
 
-        v13 = self;
+        selfCopy = self;
       }
     }
   }
@@ -288,8 +288,8 @@ LABEL_16:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = AMSLogKey();
       v14 = objc_opt_class();
@@ -304,13 +304,13 @@ LABEL_16:
       {
         [NSString stringWithFormat:@"%@: ", v14];
       }
-      v13 = ;
+      selfCopy = ;
       *buf = 138543618;
-      v21 = v13;
+      v21 = selfCopy;
       v22 = 2114;
-      v23 = v4;
+      v23 = identifierCopy;
       v16 = "%{public}@No subscription date found for identifier: %{public}@";
-      v17 = v9;
+      v17 = oSLogObject;
       v18 = 22;
       goto LABEL_16;
     }
@@ -319,25 +319,25 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)a3 maxAge:(double)a4
+- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)identifier maxAge:(double)age
 {
-  v6 = a3;
-  v7 = [(AMSDCloudDataSubscriptionTask *)self _readSubscriptionDateForIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(AMSDCloudDataSubscriptionTask *)self _readSubscriptionDateForIdentifier:identifierCopy];
   if (v7)
   {
     v8 = +[NSDate date];
     [v8 timeIntervalSinceDate:v7];
     v10 = v9;
 
-    v11 = v10 > a4;
+    v11 = v10 > age;
     v12 = +[AMSLogConfig sharedAccountsDaemonConfig];
     if (!v12)
     {
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v14 = AMSLogKey();
       v15 = objc_opt_class();
@@ -352,28 +352,28 @@ LABEL_16:
       {
         [NSString stringWithFormat:@"%@: ", v15];
       }
-      v17 = ;
+      selfCopy = ;
       v22 = @"NO";
       *buf = 138544386;
-      v25 = v17;
+      v25 = selfCopy;
       v26 = 2114;
-      if (v10 > a4)
+      if (v10 > age)
       {
         v22 = @"YES";
       }
 
-      v27 = v6;
+      v27 = identifierCopy;
       v28 = 2048;
       v29 = v10;
       v30 = 2048;
-      v31 = a4;
+      ageCopy = age;
       v32 = 2114;
       v33 = v22;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Time since last subscription for %{public}@: %.2f seconds. Max age: %.2f seconds. Should renew: %{public}@", buf, 0x34u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Time since last subscription for %{public}@: %.2f seconds. Max age: %.2f seconds. Should renew: %{public}@", buf, 0x34u);
       if (v14)
       {
 
-        v17 = self;
+        selfCopy = self;
       }
     }
   }
@@ -386,8 +386,8 @@ LABEL_16:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 = AMSLogKey();
       v19 = objc_opt_class();
@@ -402,16 +402,16 @@ LABEL_16:
       {
         [NSString stringWithFormat:@"%@: ", v19];
       }
-      v21 = ;
+      selfCopy2 = ;
       *buf = 138543618;
-      v25 = v21;
+      v25 = selfCopy2;
       v26 = 2114;
-      v27 = v6;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@No previous subscription date found for %{public}@. Should renew.", buf, 0x16u);
+      v27 = identifierCopy;
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@No previous subscription date found for %{public}@. Should renew.", buf, 0x16u);
       if (v18)
       {
 
-        v21 = self;
+        selfCopy2 = self;
       }
     }
 
@@ -421,11 +421,11 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)a3
+- (BOOL)_shouldRenewSubscriptionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(AMSDCloudDataSubscriptionTask *)self maxAge];
-  LOBYTE(self) = [(AMSDCloudDataSubscriptionTask *)self _shouldRenewSubscriptionForIdentifier:v4 maxAge:?];
+  LOBYTE(self) = [(AMSDCloudDataSubscriptionTask *)self _shouldRenewSubscriptionForIdentifier:identifierCopy maxAge:?];
 
   return self;
 }

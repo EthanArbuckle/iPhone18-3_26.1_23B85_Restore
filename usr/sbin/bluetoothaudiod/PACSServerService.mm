@@ -1,10 +1,10 @@
 @interface PACSServerService
 - (PACSServerService)init;
-- (int64_t)handleAvailableAudioContextRead:(id)a3;
-- (int64_t)handleSinkAudioLocationRead:(id)a3;
-- (int64_t)handleSinkPACRead:(id)a3;
-- (int64_t)handleSupportedAudioContextRead:(id)a3;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
+- (int64_t)handleAvailableAudioContextRead:(id)read;
+- (int64_t)handleSinkAudioLocationRead:(id)read;
+- (int64_t)handleSinkPACRead:(id)read;
+- (int64_t)handleSupportedAudioContextRead:(id)read;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
 @end
 
 @implementation PACSServerService
@@ -50,55 +50,55 @@
     v26[2] = v2->_supportedAudioContextCharacteristic;
     v26[3] = v2->_sinkAudioLocationCharacteristic;
     v22 = [NSArray arrayWithObjects:v26 count:4];
-    v23 = [(Service *)v2 service];
-    [v23 setCharacteristics:v22];
+    service = [(Service *)v2 service];
+    [service setCharacteristics:v22];
   }
 
   return v2;
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v13 = a4;
-  v5 = [v13 characteristic];
-  v6 = [(PACSServerService *)self sinkPACCharacteristic];
+  requestCopy = request;
+  characteristic = [requestCopy characteristic];
+  sinkPACCharacteristic = [(PACSServerService *)self sinkPACCharacteristic];
 
-  if (v5 == v6)
+  if (characteristic == sinkPACCharacteristic)
   {
-    v12 = [(PACSServerService *)self handleSinkPACRead:v13];
+    v12 = [(PACSServerService *)self handleSinkPACRead:requestCopy];
   }
 
   else
   {
-    v7 = [v13 characteristic];
-    v8 = [(PACSServerService *)self availableAudioContextCharacteristic];
+    characteristic2 = [requestCopy characteristic];
+    availableAudioContextCharacteristic = [(PACSServerService *)self availableAudioContextCharacteristic];
 
-    if (v7 == v8)
+    if (characteristic2 == availableAudioContextCharacteristic)
     {
-      v12 = [(PACSServerService *)self handleAvailableAudioContextRead:v13];
+      v12 = [(PACSServerService *)self handleAvailableAudioContextRead:requestCopy];
     }
 
     else
     {
-      v9 = [v13 characteristic];
-      v10 = [(PACSServerService *)self supportedAudioContextCharacteristic];
+      characteristic3 = [requestCopy characteristic];
+      supportedAudioContextCharacteristic = [(PACSServerService *)self supportedAudioContextCharacteristic];
 
-      if (v9 != v10)
+      if (characteristic3 != supportedAudioContextCharacteristic)
       {
         v11 = 10;
         goto LABEL_9;
       }
 
-      v12 = [(PACSServerService *)self handleSupportedAudioContextRead:v13];
+      v12 = [(PACSServerService *)self handleSupportedAudioContextRead:requestCopy];
     }
   }
 
   v11 = v12;
 LABEL_9:
-  [(Service *)self respondToRequest:v13 withResult:v11];
+  [(Service *)self respondToRequest:requestCopy withResult:v11];
 }
 
-- (int64_t)handleSinkPACRead:(id)a3
+- (int64_t)handleSinkPACRead:(id)read
 {
   v15 = 2;
   v14 = 13;
@@ -114,7 +114,7 @@ LABEL_9:
   v17[0] = xmmword_100070035;
   v7 = 8;
   v16 = 0xBEEF0203DEAD0103;
-  v3 = a3;
+  readCopy = read;
   v4 = [DataOutputStream outputStreamWithByteOrder:1];
   [v4 writeBytes:&v15 length:1];
   [v4 writeBytes:&v13 length:5];
@@ -126,43 +126,43 @@ LABEL_9:
   [v4 writeBytes:v17 length:v8];
   [v4 writeBytes:&v7 length:1];
   [v4 writeBytes:&v16 length:v7];
-  v5 = [v4 data];
-  [v3 setValue:v5];
+  data = [v4 data];
+  [readCopy setValue:data];
 
   return 0;
 }
 
-- (int64_t)handleAvailableAudioContextRead:(id)a3
+- (int64_t)handleAvailableAudioContextRead:(id)read
 {
-  v3 = a3;
+  readCopy = read;
   v4 = [DataOutputStream outputStreamWithByteOrder:1];
   [v4 writeUint16:518];
   [v4 writeUint16:1];
-  v5 = [v4 data];
-  [v3 setValue:v5];
+  data = [v4 data];
+  [readCopy setValue:data];
 
   return 0;
 }
 
-- (int64_t)handleSupportedAudioContextRead:(id)a3
+- (int64_t)handleSupportedAudioContextRead:(id)read
 {
-  v3 = a3;
+  readCopy = read;
   v4 = [DataOutputStream outputStreamWithByteOrder:1];
   [v4 writeUint16:516];
   [v4 writeUint16:1];
-  v5 = [v4 data];
-  [v3 setValue:v5];
+  data = [v4 data];
+  [readCopy setValue:data];
 
   return 0;
 }
 
-- (int64_t)handleSinkAudioLocationRead:(id)a3
+- (int64_t)handleSinkAudioLocationRead:(id)read
 {
-  v3 = a3;
+  readCopy = read;
   v4 = [DataOutputStream outputStreamWithByteOrder:1];
   [v4 writeUint32:1];
-  v5 = [v4 data];
-  [v3 setValue:v5];
+  data = [v4 data];
+  [readCopy setValue:data];
 
   return 0;
 }

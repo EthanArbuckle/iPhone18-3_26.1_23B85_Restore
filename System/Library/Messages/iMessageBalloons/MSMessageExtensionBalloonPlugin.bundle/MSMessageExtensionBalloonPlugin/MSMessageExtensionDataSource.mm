@@ -1,14 +1,14 @@
 @interface MSMessageExtensionDataSource
-+ (id)_associatedMessagePayloadFromPluginPayload:(id)a3;
-+ (id)associatedMessagePayloadsFromAssociatedPluginPayloads:(id)a3;
-+ (id)messagePayloadFromPluginPayload:(id)a3;
-+ (id)pluginPayloadFromMediaPayload:(id)a3;
++ (id)_associatedMessagePayloadFromPluginPayload:(id)payload;
++ (id)associatedMessagePayloadsFromAssociatedPluginPayloads:(id)payloads;
++ (id)messagePayloadFromPluginPayload:(id)payload;
++ (id)pluginPayloadFromMediaPayload:(id)payload;
 - (BOOL)supportsDynamicSize;
 - (BOOL)wantsInteractiveContentView;
 - (BOOL)wantsStatusItem;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MSMessage)message;
-- (MSMessageExtensionDataSource)initWithPluginPayload:(id)a3;
+- (MSMessageExtensionDataSource)initWithPluginPayload:(id)payload;
 - (MSMessageExtensionDataSourceDelegate)balloonControllerDelegate;
 - (MSMessageExtensionDataSourceDelegate)delegate;
 - (NSArray)associatedMessages;
@@ -18,9 +18,9 @@
 - (void)dealloc;
 - (void)payloadWillEnterShelf;
 - (void)payloadWillSendFromShelf;
-- (void)pluginEnabledStateChanged:(id)a3;
-- (void)pluginInstalled:(id)a3;
-- (void)pluginPayloadDidChange:(unint64_t)a3;
+- (void)pluginEnabledStateChanged:(id)changed;
+- (void)pluginInstalled:(id)installed;
+- (void)pluginPayloadDidChange:(unint64_t)change;
 @end
 
 @implementation MSMessageExtensionDataSource
@@ -35,11 +35,11 @@
   [(MSMessageExtensionDataSource *)&v4 dealloc];
 }
 
-- (MSMessageExtensionDataSource)initWithPluginPayload:(id)a3
+- (MSMessageExtensionDataSource)initWithPluginPayload:(id)payload
 {
   v7.receiver = self;
   v7.super_class = MSMessageExtensionDataSource;
-  v3 = [(MSMessageExtensionDataSource *)&v7 initWithPluginPayload:a3];
+  v3 = [(MSMessageExtensionDataSource *)&v7 initWithPluginPayload:payload];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -54,17 +54,17 @@
 
 - (BOOL)wantsInteractiveContentView
 {
-  v2 = [(MSMessageExtensionDataSource *)self message];
-  v3 = [v2 layout];
+  message = [(MSMessageExtensionDataSource *)self message];
+  layout = [message layout];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)pluginPayloadDidChange:(unint64_t)a3
+- (void)pluginPayloadDidChange:(unint64_t)change
 {
-  if (a3)
+  if (change)
   {
     message = self->_message;
     self->_message = 0;
@@ -78,7 +78,7 @@
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 datasourcePayloadDidChange:self updateFlags:a3];
+      [v9 datasourcePayloadDidChange:self updateFlags:change];
     }
 
     v10 = objc_loadWeakRetained(&self->_balloonControllerDelegate);
@@ -87,20 +87,20 @@
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_balloonControllerDelegate);
-      [v12 datasourcePayloadDidChange:self updateFlags:a3];
+      [v12 datasourcePayloadDidChange:self updateFlags:change];
     }
   }
 }
 
-+ (id)associatedMessagePayloadsFromAssociatedPluginPayloads:(id)a3
++ (id)associatedMessagePayloadsFromAssociatedPluginPayloads:(id)payloads
 {
-  v4 = a3;
+  payloadsCopy = payloads;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = payloadsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
@@ -115,7 +115,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _associatedMessagePayloadFromPluginPayload:{*(*(&v16 + 1) + 8 * i), v16}];
+        v11 = [self _associatedMessagePayloadFromPluginPayload:{*(*(&v16 + 1) + 8 * i), v16}];
         v12 = v11;
         if (v11)
         {
@@ -148,15 +148,15 @@
   return v5;
 }
 
-+ (id)_associatedMessagePayloadFromPluginPayload:(id)a3
++ (id)_associatedMessagePayloadFromPluginPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v26 = IMExtensionPayloadUnarchivingClasses();
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 data];
+    data = [payloadCopy data];
     v28 = 0;
-    v5 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v26 fromData:v4 error:&v28];
+    v5 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v26 fromData:data error:&v28];
     v6 = v28;
 
     if (!v6)
@@ -173,9 +173,9 @@
 
   else
   {
-    v8 = [v3 data];
+    data2 = [payloadCopy data];
     v27 = 0;
-    v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v26 fromData:v8 error:&v27];
+    v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v26 fromData:data2 error:&v27];
     v6 = v27;
 
     if (!v6)
@@ -230,26 +230,26 @@ LABEL_9:
     }
 
     v15 = [_MSMessageCustomAcknowledgement alloc];
-    v16 = [v3 isFromMe];
-    v17 = [v3 time];
-    v14 = [v15 initWithSession:v24 isFromMe:v16 time:v17];
+    isFromMe = [payloadCopy isFromMe];
+    time = [payloadCopy time];
+    v14 = [v15 initWithSession:v24 isFromMe:isFromMe time:time];
 
     [v14 setURL:v25];
     [v14 setAccessibilityLabel:v23];
-    if ([v3 isFromMe])
+    if ([payloadCopy isFromMe])
     {
       v18 = +[IMBalloonPluginManager sharedInstance];
-      v19 = [v3 pluginBundleID];
-      v20 = [v3 sender];
-      [v18 localParticipantIdentifierForAppID:v19 conversationID:v20];
+      pluginBundleID = [payloadCopy pluginBundleID];
+      sender = [payloadCopy sender];
+      [v18 localParticipantIdentifierForAppID:pluginBundleID conversationID:sender];
     }
 
     else
     {
       v18 = +[IMBalloonPluginManager sharedInstance];
-      v19 = [v3 sender];
-      v20 = [v3 pluginBundleID];
-      [v18 recipientIDForRecipient:v19 appID:v20];
+      pluginBundleID = [payloadCopy sender];
+      sender = [payloadCopy pluginBundleID];
+      [v18 recipientIDForRecipient:pluginBundleID appID:sender];
     }
     v21 = ;
     [v14 setSenderParticipantIdentifier:v21];
@@ -269,15 +269,15 @@ LABEL_9:
   return v14;
 }
 
-+ (id)messagePayloadFromPluginPayload:(id)a3
++ (id)messagePayloadFromPluginPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v67 = IMExtensionPayloadUnarchivingClasses();
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 data];
+    data = [payloadCopy data];
     v74 = 0;
-    v5 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v67 fromData:v4 error:&v74];
+    v5 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v67 fromData:data error:&v74];
     v68 = v74;
 
     if (v68)
@@ -299,9 +299,9 @@ LABEL_8:
 
   else
   {
-    v8 = [v3 data];
+    data2 = [payloadCopy data];
     v73 = 0;
-    v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v67 fromData:v8 error:&v73];
+    v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v67 fromData:data2 error:&v73];
     v68 = v73;
 
     if (v68)
@@ -329,14 +329,14 @@ LABEL_11:
     v66 = [v5 objectForKeyedSubscript:IMExtensionPayloadUserSessionIdentifier];
     v65 = [v5 objectForKeyedSubscript:IMExtensionPayloadURLKey];
     v9 = +[IMBalloonPluginManager sharedInstance];
-    v10 = [v3 pluginBundleID];
-    v64 = [v9 balloonPluginForBundleID:v10];
+    pluginBundleID = [payloadCopy pluginBundleID];
+    v64 = [v9 balloonPluginForBundleID:pluginBundleID];
 
-    v11 = [v64 identifier];
+    identifier = [v64 identifier];
     v12 = IMBalloonExtensionIDWithSuffix();
-    LODWORD(v10) = [v11 isEqualToString:v12];
+    LODWORD(pluginBundleID) = [identifier isEqualToString:v12];
 
-    if (v10)
+    if (pluginBundleID)
     {
       v63 = [v5 objectForKeyedSubscript:IMExtensionPayloadDataKey];
       if (!v63)
@@ -344,14 +344,14 @@ LABEL_11:
         aClassName = [v5 objectForKeyedSubscript:IMExtensionPayloadDataFilePathKey];
         if ([(NSString *)aClassName length])
         {
-          v13 = [[NSString alloc] initWithData:aClassName encoding:4];
+          attachments = [[NSString alloc] initWithData:aClassName encoding:4];
           if (IMOSLoggingEnabled())
           {
             v14 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v77 = v13;
+              v77 = attachments;
               _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "Trying to load legacy Mac extension payload data on iOS: %@", buf, 0xCu);
             }
           }
@@ -363,8 +363,8 @@ LABEL_11:
           v72 = 0u;
           v69 = 0u;
           v70 = 0u;
-          v13 = [v3 attachments];
-          v17 = [v13 countByEnumeratingWithState:&v69 objects:v75 count:16];
+          attachments = [payloadCopy attachments];
+          v17 = [attachments countByEnumeratingWithState:&v69 objects:v75 count:16];
           if (v17)
           {
             v18 = *v70;
@@ -375,12 +375,12 @@ LABEL_11:
               {
                 if (*v70 != v18)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(attachments);
                 }
 
                 v21 = *(*(&v69 + 1) + 8 * i);
-                v22 = [v21 pathExtension];
-                v23 = [v22 isEqualToString:v19];
+                pathExtension = [v21 pathExtension];
+                v23 = [pathExtension isEqualToString:v19];
 
                 if (v23)
                 {
@@ -389,7 +389,7 @@ LABEL_11:
                 }
               }
 
-              v17 = [v13 countByEnumeratingWithState:&v69 objects:v75 count:16];
+              v17 = [attachments countByEnumeratingWithState:&v69 objects:v75 count:16];
               if (v17)
               {
                 continue;
@@ -449,9 +449,9 @@ LABEL_35:
       v34 = [v26 objectForKeyedSubscript:IMBalloonLayoutInfoImageSubTitleKey];
       [v28 setImageSubtitle:v34];
 
-      v35 = [v3 attachments];
-      v36 = [v35 firstObject];
-      [v28 setMediaFileURL:v36];
+      attachments2 = [payloadCopy attachments];
+      firstObject = [attachments2 firstObject];
+      [v28 setMediaFileURL:firstObject];
     }
 
     else
@@ -461,20 +461,20 @@ LABEL_35:
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v38 = [v64 isEnabled];
+    isEnabled = [v64 isEnabled];
     objc_opt_class();
     v39 = objc_opt_isKindOfClass();
     v59 = [v5 objectForKeyedSubscript:IMExtensionPayloadBalloonLiveLayoutInfoKey];
     if ((CKShouldShowSURF() & 1) == 0)
     {
-      v43 = [v64 identifier];
-      if ([v43 hasSuffix:IMBalloonPluginIdentifierSurf])
+      identifier2 = [v64 identifier];
+      if ([identifier2 hasSuffix:IMBalloonPluginIdentifierSurf])
       {
         goto LABEL_49;
       }
 
-      v57 = [v64 identifier];
-      v58 = [v57 hasSuffix:IMBalloonPluginIdentifierSurfDeprecated];
+      identifier3 = [v64 identifier];
+      v58 = [identifier3 hasSuffix:IMBalloonPluginIdentifierSurfDeprecated];
 
       if (v58)
       {
@@ -482,7 +482,7 @@ LABEL_35:
       }
     }
 
-    if ((v39 & isKindOfClass & v38 & (v59 != 0)) == 0)
+    if ((v39 & isKindOfClass & isEnabled & (v59 != 0)) == 0)
     {
 LABEL_50:
       if (!v28)
@@ -506,17 +506,17 @@ LABEL_50:
       [v47 setURL:v65];
       [v16 set_data:v63];
       [v16 setLayout:v28];
-      v48 = [v3 statusText];
-      [v16 setStatusText:v48];
+      statusText = [payloadCopy statusText];
+      [v16 setStatusText:statusText];
 
-      [v16 setShouldExpire:{objc_msgSend(v3, "shouldExpire")}];
+      [v16 setShouldExpire:{objc_msgSend(payloadCopy, "shouldExpire")}];
       [v16 setAccessibilityLabel:v60];
-      [v16 setIsFromMe:{objc_msgSend(v3, "isFromMe")}];
+      [v16 setIsFromMe:{objc_msgSend(payloadCopy, "isFromMe")}];
       v49 = [v5 objectForKeyedSubscript:IMExtensionPayloadLocalizedDescriptionTextKey];
       [v16 setSummaryText:v49];
 
-      v50 = [v16 statusText];
-      LODWORD(v49) = v50 == 0;
+      statusText2 = [v16 statusText];
+      LODWORD(v49) = statusText2 == 0;
 
       if (v49)
       {
@@ -524,20 +524,20 @@ LABEL_50:
         [v16 setStatusText:v51];
       }
 
-      if ([v3 isFromMe])
+      if ([payloadCopy isFromMe])
       {
         v52 = +[IMBalloonPluginManager sharedInstance];
-        v53 = [v3 pluginBundleID];
-        v54 = [v3 sender];
-        [v52 localParticipantIdentifierForAppID:v53 conversationID:v54];
+        pluginBundleID2 = [payloadCopy pluginBundleID];
+        sender = [payloadCopy sender];
+        [v52 localParticipantIdentifierForAppID:pluginBundleID2 conversationID:sender];
       }
 
       else
       {
         v52 = +[IMBalloonPluginManager sharedInstance];
-        v53 = [v3 sender];
-        v54 = [v3 pluginBundleID];
-        [v52 recipientIDForRecipient:v53 appID:v54];
+        pluginBundleID2 = [payloadCopy sender];
+        sender = [payloadCopy pluginBundleID];
+        [v52 recipientIDForRecipient:pluginBundleID2 appID:sender];
       }
       v55 = ;
       [v16 setSenderParticipantIdentifier:v55];
@@ -546,20 +546,20 @@ LABEL_50:
     }
 
     v40 = v28;
-    v41 = [v3 data];
+    data3 = [payloadCopy data];
     v42 = IMBalloonPluginFallbackLinkMetadata();
 
-    v43 = v40;
+    identifier2 = v40;
     if (v42)
     {
-      v43 = [[MSMessageRichLinkLayout alloc] initWithLinkMetadata:v42];
+      identifier2 = [[MSMessageRichLinkLayout alloc] initWithLinkMetadata:v42];
     }
 
-    v28 = [[MSMessageLiveLayout alloc] initWithAlternateLayout:v43];
+    v28 = [[MSMessageLiveLayout alloc] initWithAlternateLayout:identifier2];
     v44 = IMBalloonPluginRequiredCapabilitiesWithPayloadDictionary();
     [v28 setRequiredCapabilities:v44];
 
-    v45 = [v3 data];
+    data4 = [payloadCopy data];
     [v28 setSendAlternateLayoutAsText:IMBalloonPluginShouldSendAlternateLayoutAsTextWithMessageData()];
 
 LABEL_49:
@@ -583,52 +583,52 @@ LABEL_61:
   return v16;
 }
 
-+ (id)pluginPayloadFromMediaPayload:(id)a3
++ (id)pluginPayloadFromMediaPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = objc_alloc_init(CKBrowserItemPayload);
-  v5 = [v3 mediaURL];
+  mediaURL = [payloadCopy mediaURL];
 
-  if (v5)
+  if (mediaURL)
   {
-    v6 = [v3 mediaURL];
-    [v4 setFileURL:v6];
+    mediaURL2 = [payloadCopy mediaURL];
+    [v4 setFileURL:mediaURL2];
 
-    v7 = [v3 mediaFilename];
-    [v4 setFilename:v7];
+    mediaFilename = [payloadCopy mediaFilename];
+    [v4 setFilename:mediaFilename];
 
-    v8 = [v3 generativePlaygroundRecipeData];
-    [v4 setGenerativePlaygroundRecipeData:v8];
+    generativePlaygroundRecipeData = [payloadCopy generativePlaygroundRecipeData];
+    [v4 setGenerativePlaygroundRecipeData:generativePlaygroundRecipeData];
   }
 
-  if ([v3 isSticker] && (objc_msgSend(v3, "accessibilityLabel"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  if ([payloadCopy isSticker] && (objc_msgSend(payloadCopy, "accessibilityLabel"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     v10 = [NSAttributedString alloc];
-    v11 = [v3 accessibilityLabel];
+    accessibilityLabel = [payloadCopy accessibilityLabel];
   }
 
   else
   {
-    v12 = [v3 text];
+    text = [payloadCopy text];
 
-    if (!v12)
+    if (!text)
     {
       goto LABEL_9;
     }
 
     v10 = [NSAttributedString alloc];
-    v11 = [v3 text];
+    accessibilityLabel = [payloadCopy text];
   }
 
-  v13 = v11;
-  v14 = [v10 initWithString:v11];
+  v13 = accessibilityLabel;
+  v14 = [v10 initWithString:accessibilityLabel];
   [v4 setText:v14];
 
 LABEL_9:
-  v15 = [v3 attributionInfo];
-  [v4 setAttributionInfo:v15];
+  attributionInfo = [payloadCopy attributionInfo];
+  [v4 setAttributionInfo:attributionInfo];
 
-  [v4 setSticker:{objc_msgSend(v3, "isSticker")}];
+  [v4 setSticker:{objc_msgSend(payloadCopy, "isSticker")}];
 
   return v4;
 }
@@ -636,64 +636,64 @@ LABEL_9:
 - (id)propertyProvider
 {
   v3 = objc_alloc_init(LPAppLinkPresentationProperties);
-  v4 = [(MSMessageExtensionDataSource *)self message];
-  v5 = [v4 layout];
+  message = [(MSMessageExtensionDataSource *)self message];
+  layout = [message layout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 imageTitle];
-    v8 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:v7];
+    v6 = layout;
+    imageTitle = [v6 imageTitle];
+    v8 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:imageTitle];
     [v6 setImageTitle:v8];
 
-    v9 = [v6 imageSubtitle];
-    v10 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:v9];
+    imageSubtitle = [v6 imageSubtitle];
+    v10 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:imageSubtitle];
     [v6 setImageSubtitle:v10];
 
-    v11 = [v6 caption];
-    v12 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:v11];
+    caption = [v6 caption];
+    v12 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:caption];
     [v6 setCaption:v12];
 
-    v13 = [v6 trailingCaption];
-    v14 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:v13];
+    trailingCaption = [v6 trailingCaption];
+    v14 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:trailingCaption];
     [v6 setTrailingCaption:v14];
 
-    v15 = [v6 subcaption];
-    v16 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:v15];
+    subcaption = [v6 subcaption];
+    v16 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:subcaption];
     [v6 setSubcaption:v16];
 
-    v17 = [v6 trailingSubcaption];
-    v18 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:v17];
+    trailingSubcaption = [v6 trailingSubcaption];
+    v18 = [(MSMessageExtensionDataSource *)self _replaceHandleWithContactNameInString:trailingSubcaption];
     [v6 setTrailingSubcaption:v18];
 
-    v19 = [v6 mediaFileURL];
-    if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([(MSMessageExtensionDataSource *)self parentChatHasAllUnknownRecipients]& 1) != 0)
+    mediaFileURL = [v6 mediaFileURL];
+    if (!mediaFileURL || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([(MSMessageExtensionDataSource *)self parentChatHasAllUnknownRecipients]& 1) != 0)
     {
 LABEL_11:
-      v23 = [v6 caption];
-      if (![v23 length])
+      caption2 = [v6 caption];
+      if (![caption2 length])
       {
-        v24 = [v6 trailingCaption];
-        if (![v24 length])
+        trailingCaption2 = [v6 trailingCaption];
+        if (![trailingCaption2 length])
         {
-          v25 = [v6 subcaption];
-          if (![v25 length])
+          subcaption2 = [v6 subcaption];
+          if (![subcaption2 length])
           {
-            v50 = [v6 trailingSubcaption];
-            v51 = [v50 length];
+            trailingSubcaption2 = [v6 trailingSubcaption];
+            v51 = [trailingSubcaption2 length];
 
             if (!v51)
             {
 LABEL_18:
-              v39 = [v6 imageTitle];
-              if ([v39 length])
+              imageTitle2 = [v6 imageTitle];
+              if ([imageTitle2 length])
               {
               }
 
               else
               {
-                v40 = [v6 imageSubtitle];
-                v41 = [v40 length];
+                imageSubtitle2 = [v6 imageSubtitle];
+                v41 = [imageSubtitle2 length];
 
                 if (!v41)
                 {
@@ -704,15 +704,15 @@ LABEL_22:
               }
 
               v42 = objc_alloc_init(LPCaptionBarPresentationProperties);
-              v43 = [v6 imageTitle];
+              imageTitle3 = [v6 imageTitle];
               v44 = [v42 top];
-              v45 = [v44 leading];
-              [v45 setText:v43];
+              leading = [v44 leading];
+              [leading setText:imageTitle3];
 
-              v46 = [v6 imageSubtitle];
-              v47 = [v42 bottom];
-              v48 = [v47 leading];
-              [v48 setText:v46];
+              imageSubtitle3 = [v6 imageSubtitle];
+              bottom = [v42 bottom];
+              leading2 = [bottom leading];
+              [leading2 setText:imageSubtitle3];
 
               [v3 setMediaBottomCaptionBar:v42];
               goto LABEL_22;
@@ -720,25 +720,25 @@ LABEL_22:
 
 LABEL_17:
             v26 = objc_alloc_init(LPCaptionBarPresentationProperties);
-            v27 = [v6 caption];
+            caption3 = [v6 caption];
             v28 = [v26 top];
-            v29 = [v28 leading];
-            [v29 setText:v27];
+            leading3 = [v28 leading];
+            [leading3 setText:caption3];
 
-            v30 = [v6 trailingCaption];
+            trailingCaption3 = [v6 trailingCaption];
             v31 = [v26 top];
-            v32 = [v31 trailing];
-            [v32 setText:v30];
+            trailing = [v31 trailing];
+            [trailing setText:trailingCaption3];
 
-            v33 = [v6 subcaption];
-            v34 = [v26 bottom];
-            v35 = [v34 leading];
-            [v35 setText:v33];
+            subcaption3 = [v6 subcaption];
+            bottom2 = [v26 bottom];
+            leading4 = [bottom2 leading];
+            [leading4 setText:subcaption3];
 
-            v36 = [v6 trailingSubcaption];
-            v37 = [v26 bottom];
-            v38 = [v37 trailing];
-            [v38 setText:v36];
+            trailingSubcaption3 = [v6 trailingSubcaption];
+            bottom3 = [v26 bottom];
+            trailing2 = [bottom3 trailing];
+            [trailing2 setText:trailingSubcaption3];
 
             [v3 setCaptionBar:v26];
             goto LABEL_18;
@@ -749,11 +749,11 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [v19 pathExtension], 0);
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [mediaFileURL pathExtension], 0);
     v21 = UTTypeCopyPreferredTagWithClass(PreferredIdentifierForTag, kUTTagClassMIMEType);
     if (UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeImage))
     {
-      v22 = [[LPImage alloc] initByReferencingFileURL:v19 MIMEType:v21];
+      v22 = [[LPImage alloc] initByReferencingFileURL:mediaFileURL MIMEType:v21];
       [v3 setImage:v22];
     }
 
@@ -766,7 +766,7 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v22 = [[LPVideo alloc] initByReferencingFileURL:v19 MIMEType:v21 hasAudio:1];
+      v22 = [[LPVideo alloc] initByReferencingFileURL:mediaFileURL MIMEType:v21 hasAudio:1];
       [v3 setVideo:v22];
     }
 
@@ -783,8 +783,8 @@ LABEL_23:
   message = self->_message;
   if (!message)
   {
-    v4 = [(MSMessageExtensionDataSource *)self pluginPayload];
-    v5 = [MSMessageExtensionDataSource messagePayloadFromPluginPayload:v4];
+    pluginPayload = [(MSMessageExtensionDataSource *)self pluginPayload];
+    v5 = [MSMessageExtensionDataSource messagePayloadFromPluginPayload:pluginPayload];
     v6 = self->_message;
     self->_message = v5;
 
@@ -799,8 +799,8 @@ LABEL_23:
   associatedMessages = self->_associatedMessages;
   if (!associatedMessages)
   {
-    v4 = [(MSMessageExtensionDataSource *)self associatedPluginPayloads];
-    v5 = [MSMessageExtensionDataSource associatedMessagePayloadsFromAssociatedPluginPayloads:v4];
+    associatedPluginPayloads = [(MSMessageExtensionDataSource *)self associatedPluginPayloads];
+    v5 = [MSMessageExtensionDataSource associatedMessagePayloadsFromAssociatedPluginPayloads:associatedPluginPayloads];
     v6 = self->_associatedMessages;
     self->_associatedMessages = v5;
 
@@ -812,21 +812,21 @@ LABEL_23:
 
 - (id)url
 {
-  v2 = [(MSMessageExtensionDataSource *)self message];
-  v3 = [v2 URL];
+  message = [(MSMessageExtensionDataSource *)self message];
+  v3 = [message URL];
 
   return v3;
 }
 
 - (BOOL)supportsDynamicSize
 {
-  v2 = [(MSMessageExtensionDataSource *)self message];
-  v3 = [v2 layout];
+  message = [(MSMessageExtensionDataSource *)self message];
+  layout = [message layout];
 
   objc_opt_class();
-  LOBYTE(v2) = objc_opt_isKindOfClass();
+  LOBYTE(message) = objc_opt_isKindOfClass();
 
-  return v2 & 1;
+  return message & 1;
 }
 
 - (void)payloadWillSendFromShelf
@@ -853,23 +853,23 @@ LABEL_23:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (qword_571C8 != -1)
   {
     sub_2D364();
   }
 
-  v6 = [(MSMessageExtensionDataSource *)self message];
-  v7 = [v6 layout];
+  message = [(MSMessageExtensionDataSource *)self message];
+  layout = [message layout];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(MSMessageExtensionDataSource *)self balloonControllerDelegate];
-    if (!v8)
+    balloonControllerDelegate = [(MSMessageExtensionDataSource *)self balloonControllerDelegate];
+    if (!balloonControllerDelegate)
     {
       v9 = IMLogHandleForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -878,7 +878,7 @@ LABEL_23:
       }
     }
 
-    [v8 sizeThatFits:self datasource:{width, height}];
+    [balloonControllerDelegate sizeThatFits:self datasource:{width, height}];
     width = v10;
     height = v11;
   }
@@ -915,22 +915,22 @@ LABEL_23:
 
 - (BOOL)wantsStatusItem
 {
-  v2 = [(MSMessageExtensionDataSource *)self message];
-  v3 = [v2 statusText];
-  v4 = [v3 length] != 0;
+  message = [(MSMessageExtensionDataSource *)self message];
+  statusText = [message statusText];
+  v4 = [statusText length] != 0;
 
   return v4;
 }
 
 - (id)statusString
 {
-  v2 = [(MSMessageExtensionDataSource *)self message];
-  v3 = [v2 statusText];
+  message = [(MSMessageExtensionDataSource *)self message];
+  statusText = [message statusText];
 
-  return v3;
+  return statusText;
 }
 
-- (void)pluginEnabledStateChanged:(id)a3
+- (void)pluginEnabledStateChanged:(id)changed
 {
   message = self->_message;
   self->_message = 0;
@@ -938,7 +938,7 @@ LABEL_23:
   [(MSMessageExtensionDataSource *)self needsResize];
 }
 
-- (void)pluginInstalled:(id)a3
+- (void)pluginInstalled:(id)installed
 {
   message = self->_message;
   self->_message = 0;

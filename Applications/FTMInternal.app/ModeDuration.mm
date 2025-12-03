@@ -1,15 +1,15 @@
 @interface ModeDuration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMode:(id)a3;
+- (int)StringAsMode:(id)mode;
 - (int)mode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ModeDuration
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -42,70 +42,70 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsMode:(id)a3
+- (int)StringAsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_OPRT_MODE_NONE"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_NONE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_PWROFF"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_PWROFF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_FTM"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_FTM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_OFFLINE"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_OFFLINE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_OFFLINE_AMPS"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_OFFLINE_AMPS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_OFFLINE_CDMA"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_OFFLINE_CDMA"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_ONLINE"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_ONLINE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_LPM"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_LPM"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_RESET"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_RESET"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_NET_TEST_GW"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_NET_TEST_GW"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_OFFLINE_IF_NOT_FTM"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_OFFLINE_IF_NOT_FTM"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_PSEUDO_ONLINE"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_PSEUDO_ONLINE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_OPRT_MODE_RESET_MODEM"])
+  else if ([modeCopy isEqualToString:@"SYS_OPRT_MODE_RESET_MODEM"])
   {
     v4 = 11;
   }
@@ -123,8 +123,8 @@
   v7.receiver = self;
   v7.super_class = ModeDuration;
   v3 = [(ModeDuration *)&v7 description];
-  v4 = [(ModeDuration *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ModeDuration *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -160,16 +160,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     mode = self->_mode;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -177,31 +177,31 @@
   {
     durationMs = self->_durationMs;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_mode;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_mode;
+    *(toCopy + 16) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_durationMs;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_durationMs;
+    *(toCopy + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -219,33 +219,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_mode != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_mode != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
   }
 
-  else if ((*(v4 + 16) & 2) != 0)
+  else if ((*(equalCopy + 16) & 2) != 0)
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_durationMs != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_durationMs != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
@@ -284,20 +284,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if ((v5 & 2) != 0)
   {
-    self->_mode = *(v4 + 3);
+    self->_mode = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if (v5)
   {
-    self->_durationMs = *(v4 + 2);
+    self->_durationMs = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

@@ -1,53 +1,53 @@
 @interface _LSDModifyClient
-- (BOOL)_canRegisterOrUnregisterURL:(id)a3 withOptions:(unsigned int)a4;
-- (BOOL)clientHasMIEntitlement:(id)a3;
+- (BOOL)_canRegisterOrUnregisterURL:(id)l withOptions:(unsigned int)options;
+- (BOOL)clientHasMIEntitlement:(id)entitlement;
 - (BOOL)clientIsEntitledForEmbeddedRegistrationOperations;
-- (void)doTokenizedRegistrationTaskWithName:(id)a3 xpcReply:(id)a4 work:(id)a5;
-- (void)forceSaveForTestingWithCompletion:(id)a3;
-- (void)garbageCollectDatabaseWithCompletionHandler:(id)a3;
-- (void)installApplication:(id)a3 atURL:(id)a4 withOptions:(id)a5 installType:(unint64_t)a6 reply:(id)a7;
-- (void)performPostInstallationRegistration:(id)a3 personaUniqueStrings:(id)a4 operationUUID:(id)a5 reply:(id)a6;
-- (void)performPostUninstallationUnregistrationOfBundleID:(id)a3 operationUUID:(id)a4 unregisterType:(unsigned int)a5 precondition:(id)a6 reply:(id)a7;
-- (void)performUpdateOfPersonasOfBundleIDs:(id)a3 toPersonaUniqueStrings:(id)a4 operationUUID:(id)a5 reply:(id)a6;
-- (void)refreshContentInFrameworkAtURL:(id)a3 reply:(id)a4;
-- (void)refreshExtensionPointsWithOperationUUID:(id)a3 reply:(id)a4;
-- (void)registerBuiltinAppex:(id)a3 operationUUID:(id)a4 reply:(id)a5;
-- (void)registerBuiltinApplication:(id)a3 personaUniqueStrings:(id)a4 operationUUID:(id)a5 reply:(id)a6;
-- (void)registerContainerURL:(id)a3 completionHandler:(id)a4;
-- (void)registerExtensionPoint:(id)a3 platform:(unsigned int)a4 declaringURL:(id)a5 withInfo:(id)a6 completionHandler:(id)a7;
-- (void)registerItemInfo:(id)a3 alias:(id)a4 diskImageAlias:(id)a5 bundleURL:(id)a6 installationPlist:(id)a7 completionHandler:(id)a8;
-- (void)relaxApplicationTypeRequirements:(BOOL)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)removeAllHandlerPrefsForBundleID:(id)a3 completionHandler:(id)a4;
-- (void)removeAllHandlersWithCompletionHandler:(id)a3;
-- (void)removeDatabaseStoreOnNextOpportunity:(id)a3;
-- (void)removeHandlerForContentType:(id)a3 roles:(unsigned int)a4 completionHandler:(id)a5;
-- (void)removeHandlerForURLScheme:(id)a3 completionHandler:(id)a4;
-- (void)requestLSDExitSafely:(double)a3 completionHandler:(id)a4;
-- (void)resetServerStoreWithCompletionHandler:(id)a3;
-- (void)setDatabaseIsSeeded:(BOOL)a3 completionHandler:(id)a4;
-- (void)setHandler:(id)a3 version:(LSVersionNumber *)a4 forURLScheme:(id)a5 completionHandler:(id)a6;
-- (void)setHandler:(id)a3 version:(LSVersionNumber *)a4 roles:(unsigned int)a5 forContentType:(id)a6 completionHandler:(id)a7;
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4 forApplicationAtURL:(id)a5 completionHandler:(id)a6;
-- (void)setPreferenceValueForCallingApplication:(id)a3 forKey:(id)a4 completionHandler:(id)a5;
-- (void)setPreferredAppMarketplaces:(id)a3 completion:(id)a4;
-- (void)setUpdateAvailabilities:(id)a3 completionHandler:(id)a4;
+- (void)doTokenizedRegistrationTaskWithName:(id)name xpcReply:(id)reply work:(id)work;
+- (void)forceSaveForTestingWithCompletion:(id)completion;
+- (void)garbageCollectDatabaseWithCompletionHandler:(id)handler;
+- (void)installApplication:(id)application atURL:(id)l withOptions:(id)options installType:(unint64_t)type reply:(id)reply;
+- (void)performPostInstallationRegistration:(id)registration personaUniqueStrings:(id)strings operationUUID:(id)d reply:(id)reply;
+- (void)performPostUninstallationUnregistrationOfBundleID:(id)d operationUUID:(id)iD unregisterType:(unsigned int)type precondition:(id)precondition reply:(id)reply;
+- (void)performUpdateOfPersonasOfBundleIDs:(id)ds toPersonaUniqueStrings:(id)strings operationUUID:(id)d reply:(id)reply;
+- (void)refreshContentInFrameworkAtURL:(id)l reply:(id)reply;
+- (void)refreshExtensionPointsWithOperationUUID:(id)d reply:(id)reply;
+- (void)registerBuiltinAppex:(id)appex operationUUID:(id)d reply:(id)reply;
+- (void)registerBuiltinApplication:(id)application personaUniqueStrings:(id)strings operationUUID:(id)d reply:(id)reply;
+- (void)registerContainerURL:(id)l completionHandler:(id)handler;
+- (void)registerExtensionPoint:(id)point platform:(unsigned int)platform declaringURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)registerItemInfo:(id)info alias:(id)alias diskImageAlias:(id)imageAlias bundleURL:(id)l installationPlist:(id)plist completionHandler:(id)handler;
+- (void)relaxApplicationTypeRequirements:(BOOL)requirements forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeAllHandlerPrefsForBundleID:(id)d completionHandler:(id)handler;
+- (void)removeAllHandlersWithCompletionHandler:(id)handler;
+- (void)removeDatabaseStoreOnNextOpportunity:(id)opportunity;
+- (void)removeHandlerForContentType:(id)type roles:(unsigned int)roles completionHandler:(id)handler;
+- (void)removeHandlerForURLScheme:(id)scheme completionHandler:(id)handler;
+- (void)requestLSDExitSafely:(double)safely completionHandler:(id)handler;
+- (void)resetServerStoreWithCompletionHandler:(id)handler;
+- (void)setDatabaseIsSeeded:(BOOL)seeded completionHandler:(id)handler;
+- (void)setHandler:(id)handler version:(LSVersionNumber *)version forURLScheme:(id)scheme completionHandler:(id)completionHandler;
+- (void)setHandler:(id)handler version:(LSVersionNumber *)version roles:(unsigned int)roles forContentType:(id)type completionHandler:(id)completionHandler;
+- (void)setPreferenceValue:(id)value forKey:(id)key forApplicationAtURL:(id)l completionHandler:(id)handler;
+- (void)setPreferenceValueForCallingApplication:(id)application forKey:(id)key completionHandler:(id)handler;
+- (void)setPreferredAppMarketplaces:(id)marketplaces completion:(id)completion;
+- (void)setUpdateAvailabilities:(id)availabilities completionHandler:(id)handler;
 - (void)synchronizeWithMobileInstallation;
-- (void)uninstallApplication:(id)a3 withOptions:(id)a4 uninstallType:(unint64_t)a5 reply:(id)a6;
-- (void)unregisterApplicationAtURL:(id)a3 operationUUID:(id)a4 reply:(id)a5;
-- (void)unregisterApplicationsAtMountPoint:(id)a3 operationUUID:(id)a4 reply:(id)a5;
-- (void)unregisterExtensionPoint:(id)a3 platform:(unsigned int)a4 withVersion:(id)a5 parentBundleUnit:(unsigned int)a6 completionHandler:(id)a7;
-- (void)unregisterPluginAtURL:(id)a3 operationUUID:(id)a4 reply:(id)a5;
-- (void)updateContainerUnit:(unsigned int)a3 completionHandler:(id)a4;
-- (void)updateRecordForApp:(id)a3 withSINF:(id)a4 iTunesMetadata:(id)a5 placeholderMetadata:(id)a6 sendNotification:(int)a7 operationUUID:(id)a8 returnSaveToken:(BOOL)a9 completionHandler:(id)a10;
+- (void)uninstallApplication:(id)application withOptions:(id)options uninstallType:(unint64_t)type reply:(id)reply;
+- (void)unregisterApplicationAtURL:(id)l operationUUID:(id)d reply:(id)reply;
+- (void)unregisterApplicationsAtMountPoint:(id)point operationUUID:(id)d reply:(id)reply;
+- (void)unregisterExtensionPoint:(id)point platform:(unsigned int)platform withVersion:(id)version parentBundleUnit:(unsigned int)unit completionHandler:(id)handler;
+- (void)unregisterPluginAtURL:(id)l operationUUID:(id)d reply:(id)reply;
+- (void)updateContainerUnit:(unsigned int)unit completionHandler:(id)handler;
+- (void)updateRecordForApp:(id)app withSINF:(id)f iTunesMetadata:(id)metadata placeholderMetadata:(id)placeholderMetadata sendNotification:(int)notification operationUUID:(id)d returnSaveToken:(BOOL)token completionHandler:(id)self0;
 @end
 
 @implementation _LSDModifyClient
 
-- (BOOL)_canRegisterOrUnregisterURL:(id)a3 withOptions:(unsigned int)a4
+- (BOOL)_canRegisterOrUnregisterURL:(id)l withOptions:(unsigned int)options
 {
-  v4 = a4;
-  v6 = a3;
-  if ((v4 & 0x10) != 0)
+  optionsCopy = options;
+  lCopy = l;
+  if ((optionsCopy & 0x10) != 0)
   {
     if ([__LSDefaultsGetSharedInstance() isSystemServer])
     {
@@ -68,19 +68,19 @@
   return v7;
 }
 
-- (void)setDatabaseIsSeeded:(BOOL)a3 completionHandler:(id)a4
+- (void)setDatabaseIsSeeded:(BOOL)seeded completionHandler:(id)handler
 {
-  v4 = a3;
+  seededCopy = seeded;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _LSDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(_LSDClient *)self XPCConnection];
+    xPCConnection = [(_LSDClient *)self XPCConnection];
     *buf = 67109376;
-    v16 = v4;
+    v16 = seededCopy;
     v17 = 1024;
-    v18 = [v8 processIdentifier];
+    processIdentifier = [xPCConnection processIdentifier];
     _os_log_impl(&dword_18162D000, v7, OS_LOG_TYPE_DEFAULT, "setting database seeded: %d from pid %d", buf, 0xEu);
   }
 
@@ -89,38 +89,38 @@
   v12[1] = 3221225472;
   v12[2] = __58___LSDModifyClient_setDatabaseIsSeeded_completionHandler___block_invoke;
   v12[3] = &unk_1E6A1C150;
-  v14 = v4;
-  v10 = v6;
+  v14 = seededCopy;
+  v10 = handlerCopy;
   v13 = v10;
   [(LSDBExecutionContext *)v9 syncWrite:v12];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerItemInfo:(id)a3 alias:(id)a4 diskImageAlias:(id)a5 bundleURL:(id)a6 installationPlist:(id)a7 completionHandler:(id)a8
+- (void)registerItemInfo:(id)info alias:(id)alias diskImageAlias:(id)imageAlias bundleURL:(id)l installationPlist:(id)plist completionHandler:(id)handler
 {
   v102[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v39 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v14)
+  infoCopy = info;
+  aliasCopy = alias;
+  imageAliasCopy = imageAlias;
+  lCopy = l;
+  plistCopy = plist;
+  handlerCopy = handler;
+  if (!infoCopy)
   {
     v101 = *MEMORY[0x1E696A278];
     v102[0] = @"invalid LSRegistrationInfo";
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:&v101 count:1];
     v27 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v26, "[_LSDModifyClient registerItemInfo:alias:diskImageAlias:bundleURL:installationPlist:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 437);
-    (*(v18 + 2))(v18, 0, 0, 0, 0, v27);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v27);
 
     goto LABEL_24;
   }
 
-  if (![(_LSDModifyClient *)self canRegisterURL:v16 withOptions:v14[4]])
+  if (![(_LSDModifyClient *)self canRegisterURL:lCopy withOptions:infoCopy[4]])
   {
     v28 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10819, 0, "[_LSDModifyClient registerItemInfo:alias:diskImageAlias:bundleURL:installationPlist:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 441);
-    (*(v18 + 2))(v18, 0, 0, 0, 0, v28);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v28);
 
     goto LABEL_24;
   }
@@ -130,20 +130,20 @@
   v87 = 0x3032000000;
   v88 = __Block_byref_object_copy__24;
   v89 = __Block_byref_object_dispose__24;
-  v38 = v15;
-  v90 = [v14 mutableCopy];
+  v38 = aliasCopy;
+  v90 = [infoCopy mutableCopy];
   v79 = 0;
   v80 = &v79;
   v81 = 0x3032000000;
   v82 = __Block_byref_object_copy__24;
   v83 = __Block_byref_object_dispose__24;
-  v84 = v16;
+  v84 = lCopy;
   v73 = 0;
   v74 = &v73;
   v75 = 0x3032000000;
   v76 = __Block_byref_object_copy__24;
   v77 = __Block_byref_object_dispose__24;
-  v78 = v15;
+  v78 = aliasCopy;
   v71[0] = 0;
   v71[1] = v71;
   v71[2] = 0x3032000000;
@@ -158,7 +158,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = v17;
+    v19 = plistCopy;
   }
 
   else
@@ -240,14 +240,14 @@ LABEL_16:
     v30 = _LSDefaultLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = v17;
-      v31 = [v80[5] filePathURL];
+      v37 = plistCopy;
+      filePathURL = [v80[5] filePathURL];
       v32 = *(v55 + 6);
-      v33 = v14[7];
-      v34 = [(_LSDClient *)self XPCConnection];
-      v35 = [v34 processIdentifier];
+      v33 = infoCopy[7];
+      xPCConnection = [(_LSDClient *)self XPCConnection];
+      processIdentifier = [xPCConnection processIdentifier];
       *buf = 138413314;
-      v92 = v31;
+      v92 = filePathURL;
       v93 = 2048;
       v94 = v32;
       v95 = 2048;
@@ -255,14 +255,14 @@ LABEL_16:
       v97 = 2048;
       v98 = v29;
       v99 = 1024;
-      v100 = v35;
+      v100 = processIdentifier;
       _os_log_impl(&dword_18162D000, v30, OS_LOG_TYPE_DEFAULT, "registered %@ (status %ld, old id 0x%llx) as unit 0x%llx on behalf of pid %d", buf, 0x30u);
 
-      v17 = v37;
-      v15 = v38;
+      plistCopy = v37;
+      aliasCopy = v38;
     }
 
-    (*(v18 + 2))(v18, *(v55 + 6) == 0, v29, v59[6], *(v43 + 24) != 0, v25);
+    (*(handlerCopy + 2))(handlerCopy, *(v55 + 6) == 0, v29, v59[6], *(v43 + 24) != 0, v25);
     goto LABEL_19;
   }
 
@@ -277,7 +277,7 @@ LABEL_16:
 
   v25 = [v86[5] mutableCopy];
   v25[4] |= 2u;
-  [(_LSDModifyClient *)self registerItemInfo:v25 alias:v74[5] diskImageAlias:v39 bundleURL:v80[5] installationPlist:v66[5] completionHandler:v18];
+  [(_LSDModifyClient *)self registerItemInfo:v25 alias:v74[5] diskImageAlias:imageAliasCopy bundleURL:v80[5] installationPlist:v66[5] completionHandler:handlerCopy];
 LABEL_19:
 
   _Block_object_dispose(&v42, 8);
@@ -308,13 +308,13 @@ LABEL_24:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerContainerURL:(id)a3 completionHandler:(id)a4
+- (void)registerContainerURL:(id)l completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient registerContainerURL:completionHandler:]");
-  if (v6 && [v6 isFileURL])
+  if (lCopy && [lCopy isFileURL])
   {
     if ([(_LSDModifyClient *)self canRegisterContainer])
     {
@@ -323,8 +323,8 @@ LABEL_24:
       block[1] = 3221225472;
       block[2] = __59___LSDModifyClient_registerContainerURL_completionHandler___block_invoke;
       block[3] = &unk_1E6A19728;
-      v14 = v6;
-      v15 = v7;
+      v14 = lCopy;
+      v15 = handlerCopy;
       dispatch_sync(v8, block);
 
       v9 = v14;
@@ -336,7 +336,7 @@ LABEL_24:
       v19[0] = @"May not register container";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v9, "[_LSDModifyClient registerContainerURL:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 638);
-      (*(v7 + 2))(v7, 0, v12);
+      (*(handlerCopy + 2))(handlerCopy, 0, v12);
     }
   }
 
@@ -346,18 +346,18 @@ LABEL_24:
     v17 = @"invalid containerURL";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "[_LSDModifyClient registerContainerURL:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 657);
-    (*(v7 + 2))(v7, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateContainerUnit:(unsigned int)a3 completionHandler:(id)a4
+- (void)updateContainerUnit:(unsigned int)unit completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient updateContainerUnit:completionHandler:]");
-  if (a3)
+  if (unit)
   {
     if ([(_LSDModifyClient *)self canRegisterContainer])
     {
@@ -366,8 +366,8 @@ LABEL_24:
       v12[1] = 3221225472;
       v12[2] = __58___LSDModifyClient_updateContainerUnit_completionHandler___block_invoke;
       v12[3] = &unk_1E6A1C1F0;
-      v14 = a3;
-      v13 = v6;
+      unitCopy = unit;
+      v13 = handlerCopy;
       [(LSDBExecutionContext *)v7 syncRead:v12];
 
       v8 = v13;
@@ -379,7 +379,7 @@ LABEL_24:
       v18[0] = @"May not update container registation";
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v8, "[_LSDModifyClient updateContainerUnit:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 669);
-      (*(v6 + 2))(v6, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
     }
   }
 
@@ -389,25 +389,25 @@ LABEL_24:
     v16 = @"invalid container Unit";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v9 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v8, "[_LSDModifyClient updateContainerUnit:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 698);
-    (*(v6 + 2))(v6, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerExtensionPoint:(id)a3 platform:(unsigned int)a4 declaringURL:(id)a5 withInfo:(id)a6 completionHandler:(id)a7
+- (void)registerExtensionPoint:(id)point platform:(unsigned int)platform declaringURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  pointCopy = point;
+  lCopy = l;
+  infoCopy = info;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient registerExtensionPoint:platform:declaringURL:withInfo:completionHandler:]");
   v15 = 0;
-  if (v11 && v13)
+  if (pointCopy && infoCopy)
   {
     v16 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v15 = _LSIsDictionaryWithKeysAndValuesOfClasses(v13, v16, 0);
+    v15 = _LSIsDictionaryWithKeysAndValuesOfClasses(infoCopy, v16, 0);
   }
 
   v17 = _LSExtensionsLog();
@@ -416,13 +416,13 @@ LABEL_24:
     *buf = 136316162;
     v31 = "[_LSDModifyClient registerExtensionPoint:platform:declaringURL:withInfo:completionHandler:]";
     v32 = 2112;
-    v33 = v11;
+    v33 = pointCopy;
     v34 = 1024;
-    v35 = a4;
+    platformCopy = platform;
     v36 = 2112;
-    v37 = v12;
+    v37 = lCopy;
     v38 = 2112;
-    v39 = v13;
+    v39 = infoCopy;
     _os_log_debug_impl(&dword_18162D000, v17, OS_LOG_TYPE_DEBUG, "%s Registering extension point with identifier '%@' platform: %d url '%@' SDK Dictionary: %@", buf, 0x30u);
   }
 
@@ -433,11 +433,11 @@ LABEL_24:
     v22[1] = 3221225472;
     v22[2] = __92___LSDModifyClient_registerExtensionPoint_platform_declaringURL_withInfo_completionHandler___block_invoke;
     v22[3] = &unk_1E6A1C218;
-    v23 = v11;
-    v27 = a4;
-    v24 = v13;
-    v25 = v12;
-    v26 = v14;
+    v23 = pointCopy;
+    platformCopy2 = platform;
+    v24 = infoCopy;
+    v25 = lCopy;
+    v26 = handlerCopy;
     [(LSDBExecutionContext *)v18 syncWrite:v22];
 
     v19 = v23;
@@ -449,31 +449,31 @@ LABEL_24:
     v29 = @"invalid extensionPoint SDK dictionary";
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v20 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v19, "[_LSDModifyClient registerExtensionPoint:platform:declaringURL:withInfo:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 727);
-    (*(v14 + 2))(v14, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, v20);
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterExtensionPoint:(id)a3 platform:(unsigned int)a4 withVersion:(id)a5 parentBundleUnit:(unsigned int)a6 completionHandler:(id)a7
+- (void)unregisterExtensionPoint:(id)point platform:(unsigned int)platform withVersion:(id)version parentBundleUnit:(unsigned int)unit completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
+  pointCopy = point;
+  versionCopy = version;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient unregisterExtensionPoint:platform:withVersion:parentBundleUnit:completionHandler:]");
-  if (v11)
+  if (pointCopy)
   {
     v14 = _LSServer_DatabaseExecutionContext();
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __101___LSDModifyClient_unregisterExtensionPoint_platform_withVersion_parentBundleUnit_completionHandler___block_invoke;
     v18[3] = &unk_1E6A1C240;
-    v19 = v11;
-    v22 = a4;
-    v23 = a6;
-    v20 = v12;
-    v21 = v13;
+    v19 = pointCopy;
+    platformCopy = platform;
+    unitCopy = unit;
+    v20 = versionCopy;
+    v21 = handlerCopy;
     [(LSDBExecutionContext *)v14 syncWrite:v18];
 
     v15 = v19;
@@ -485,34 +485,34 @@ LABEL_24:
     v25[0] = @"invalid extensionPoint identifier";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v16 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[_LSDModifyClient unregisterExtensionPoint:platform:withVersion:parentBundleUnit:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 746);
-    (*(v13 + 2))(v13, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHandler:(id)a3 version:(LSVersionNumber *)a4 roles:(unsigned int)a5 forContentType:(id)a6 completionHandler:(id)a7
+- (void)setHandler:(id)handler version:(LSVersionNumber *)version roles:(unsigned int)roles forContentType:(id)type completionHandler:(id)completionHandler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  handlerCopy = handler;
+  typeCopy = type;
+  completionHandlerCopy = completionHandler;
   _LSAssertRunningInServer("[_LSDModifyClient setHandler:version:roles:forContentType:completionHandler:]");
-  if (v12 && v13)
+  if (handlerCopy && typeCopy)
   {
     v15 = _LSServer_DatabaseExecutionContext();
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __78___LSDModifyClient_setHandler_version_roles_forContentType_completionHandler___block_invoke;
     v22[3] = &unk_1E6A1C290;
-    v23 = v13;
-    v24 = self;
-    v25 = v12;
-    v16 = *&a4->_opaque[16];
-    v28 = *a4->_opaque;
+    v23 = typeCopy;
+    selfCopy = self;
+    v25 = handlerCopy;
+    v16 = *&version->_opaque[16];
+    v28 = *version->_opaque;
     v29 = v16;
-    v27 = a5;
-    v26 = v14;
+    rolesCopy = roles;
+    v26 = completionHandlerCopy;
     [(LSDBExecutionContext *)v15 syncWrite:v22];
 
     v17 = v23;
@@ -524,29 +524,29 @@ LABEL_24:
     v21 = @"bad inputs";
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v18 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v17, "[_LSDModifyClient setHandler:version:roles:forContentType:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 818);
-    (*(v14 + 2))(v14, 0, v18);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v18);
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeHandlerForContentType:(id)a3 roles:(unsigned int)a4 completionHandler:(id)a5
+- (void)removeHandlerForContentType:(id)type roles:(unsigned int)roles completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient removeHandlerForContentType:roles:completionHandler:]");
-  if (v8)
+  if (typeCopy)
   {
     v10 = _LSServer_DatabaseExecutionContext();
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __72___LSDModifyClient_removeHandlerForContentType_roles_completionHandler___block_invoke;
     v14[3] = &unk_1E6A1C2E0;
-    v15 = v8;
-    v16 = self;
-    v18 = a4;
-    v17 = v9;
+    v15 = typeCopy;
+    selfCopy = self;
+    rolesCopy = roles;
+    v17 = handlerCopy;
     [(LSDBExecutionContext *)v10 syncWrite:v14];
 
     v11 = v15;
@@ -558,33 +558,33 @@ LABEL_24:
     v20[0] = @"contentType";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v11, "[_LSDModifyClient removeHandlerForContentType:roles:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 854);
-    (*(v9 + 2))(v9, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHandler:(id)a3 version:(LSVersionNumber *)a4 forURLScheme:(id)a5 completionHandler:(id)a6
+- (void)setHandler:(id)handler version:(LSVersionNumber *)version forURLScheme:(id)scheme completionHandler:(id)completionHandler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  handlerCopy = handler;
+  schemeCopy = scheme;
+  completionHandlerCopy = completionHandler;
   _LSAssertRunningInServer("[_LSDModifyClient setHandler:version:forURLScheme:completionHandler:]");
-  if (v10 && v11)
+  if (handlerCopy && schemeCopy)
   {
     v13 = _LSServer_DatabaseExecutionContext();
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __70___LSDModifyClient_setHandler_version_forURLScheme_completionHandler___block_invoke;
     v20[3] = &unk_1E6A1C330;
-    v21 = v11;
-    v22 = self;
-    v23 = v10;
-    v14 = *&a4->_opaque[16];
-    v25 = *a4->_opaque;
+    v21 = schemeCopy;
+    selfCopy = self;
+    v23 = handlerCopy;
+    v14 = *&version->_opaque[16];
+    v25 = *version->_opaque;
     v26 = v14;
-    v24 = v12;
+    v24 = completionHandlerCopy;
     [(LSDBExecutionContext *)v13 syncWrite:v20];
 
     v15 = v21;
@@ -596,28 +596,28 @@ LABEL_24:
     v19 = @"bad inputs";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v16 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[_LSDModifyClient setHandler:version:forURLScheme:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 891);
-    (*(v12 + 2))(v12, 0, v16);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeHandlerForURLScheme:(id)a3 completionHandler:(id)a4
+- (void)removeHandlerForURLScheme:(id)scheme completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  schemeCopy = scheme;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient removeHandlerForURLScheme:completionHandler:]");
-  if (v6)
+  if (schemeCopy)
   {
     v8 = _LSServer_DatabaseExecutionContext();
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64___LSDModifyClient_removeHandlerForURLScheme_completionHandler___block_invoke;
     v12[3] = &unk_1E6A1A740;
-    v13 = v6;
-    v14 = self;
-    v15 = v7;
+    v13 = schemeCopy;
+    selfCopy = self;
+    v15 = handlerCopy;
     [(LSDBExecutionContext *)v8 syncWrite:v12];
 
     v9 = v13;
@@ -629,15 +629,15 @@ LABEL_24:
     v17[0] = @"scheme";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "[_LSDModifyClient removeHandlerForURLScheme:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 919);
-    (*(v7 + 2))(v7, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAllHandlersWithCompletionHandler:(id)a3
+- (void)removeAllHandlersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient removeAllHandlersWithCompletionHandler:]");
   v5 = _LSServer_DatabaseExecutionContext();
   v7[0] = MEMORY[0x1E69E9820];
@@ -645,40 +645,40 @@ LABEL_24:
   v7[2] = __59___LSDModifyClient_removeAllHandlersWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E6A1BC08;
   v7[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(LSDBExecutionContext *)v5 syncWrite:v7];
 }
 
-- (void)removeAllHandlerPrefsForBundleID:(id)a3 completionHandler:(id)a4
+- (void)removeAllHandlerPrefsForBundleID:(id)d completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    v8 = [(_LSDClient *)self XPCConnection];
-    v9 = [v8 _xpcConnection];
+    xPCConnection = [(_LSDClient *)self XPCConnection];
+    _xpcConnection = [xPCConnection _xpcConnection];
     v16 = 0;
-    v10 = _LSCanModifyDefaultHandler(@"*", @"*", v9, &v16);
+    v10 = _LSCanModifyDefaultHandler(@"*", @"*", _xpcConnection, &v16);
     v11 = v16;
 
     if (!v10)
     {
-      v7[2](v7, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
       goto LABEL_8;
     }
 
-    _LSHandlerPrefRemoveAllWithBundleID(v6, v7);
+    _LSHandlerPrefRemoveAllWithBundleID(dCopy, handlerCopy);
     v12 = _LSDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(_LSDClient *)self XPCConnection];
-      v14 = [v13 processIdentifier];
+      xPCConnection2 = [(_LSDClient *)self XPCConnection];
+      processIdentifier = [xPCConnection2 processIdentifier];
       *buf = 134218242;
-      v20 = v14;
+      v20 = processIdentifier;
       v21 = 2112;
-      v22 = v6;
+      v22 = dCopy;
       _os_log_impl(&dword_18162D000, v12, OS_LOG_TYPE_DEFAULT, "pid %ld removed handlers for %@", buf, 0x16u);
     }
   }
@@ -689,23 +689,23 @@ LABEL_24:
     v18 = @"bundleID";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v11, "[_LSDModifyClient removeAllHandlerPrefsForBundleID:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 966);
-    v7[2](v7, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 
 LABEL_8:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)relaxApplicationTypeRequirements:(BOOL)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)relaxApplicationTypeRequirements:(BOOL)requirements forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([__LSDefaultsGetSharedInstance() isAppleInternal])
   {
-    v10 = [(_LSDClient *)self XPCConnection];
-    v11 = [v10 _xpcConnection];
-    v12 = _LSCheckEntitlementForXPCConnection(v11, @"com.apple.private.launchservices.canChangeEntitlementRequirementsForDefaultApplications");
+    xPCConnection = [(_LSDClient *)self XPCConnection];
+    _xpcConnection = [xPCConnection _xpcConnection];
+    v12 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.launchservices.canChangeEntitlementRequirementsForDefaultApplications");
 
     if (v12)
     {
@@ -714,9 +714,9 @@ LABEL_8:
       v18[1] = 3221225472;
       v18[2] = __91___LSDModifyClient_relaxApplicationTypeRequirements_forBundleIdentifier_completionHandler___block_invoke;
       v18[3] = &unk_1E6A1C3F8;
-      v19 = v8;
-      v21 = a3;
-      v20 = v9;
+      v19 = identifierCopy;
+      requirementsCopy = requirements;
+      v20 = handlerCopy;
       [(LSDBExecutionContext *)v13 syncWrite:v18];
 
       v14 = v19;
@@ -728,7 +728,7 @@ LABEL_8:
       v23 = @"process may not modify the requirements for default applications";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v16 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v14, "[_LSDModifyClient relaxApplicationTypeRequirements:forBundleIdentifier:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 977);
-      (*(v9 + 2))(v9, 0, v16);
+      (*(handlerCopy + 2))(handlerCopy, 0, v16);
     }
   }
 
@@ -738,15 +738,15 @@ LABEL_8:
     v25[0] = @"This functionality is not available on this device.";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v15 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 78, v14, "[_LSDModifyClient relaxApplicationTypeRequirements:forBundleIdentifier:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 974);
-    (*(v9 + 2))(v9, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetServerStoreWithCompletionHandler:(id)a3
+- (void)resetServerStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient resetServerStoreWithCompletionHandler:]");
   v5 = _LSServer_DatabaseExecutionContext();
   v7[0] = MEMORY[0x1E69E9820];
@@ -754,57 +754,57 @@ LABEL_8:
   v7[2] = __58___LSDModifyClient_resetServerStoreWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E6A1BC08;
   v7[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(LSDBExecutionContext *)v5 syncWrite:v7];
 }
 
-- (BOOL)clientHasMIEntitlement:(id)a3
+- (BOOL)clientHasMIEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = [v5 _xpcConnection];
-  v7 = _LSCheckMIAllowedSPIForXPCConnection(v6, v4) != 0;
+  entitlementCopy = entitlement;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v7 = _LSCheckMIAllowedSPIForXPCConnection(_xpcConnection, entitlementCopy) != 0;
 
   return v7;
 }
 
-- (void)updateRecordForApp:(id)a3 withSINF:(id)a4 iTunesMetadata:(id)a5 placeholderMetadata:(id)a6 sendNotification:(int)a7 operationUUID:(id)a8 returnSaveToken:(BOOL)a9 completionHandler:(id)a10
+- (void)updateRecordForApp:(id)app withSINF:(id)f iTunesMetadata:(id)metadata placeholderMetadata:(id)placeholderMetadata sendNotification:(int)notification operationUUID:(id)d returnSaveToken:(BOOL)token completionHandler:(id)self0
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v36 = a4;
-  v17 = a5;
-  v18 = a6;
-  v34 = a8;
-  v19 = a10;
+  appCopy = app;
+  fCopy = f;
+  metadataCopy = metadata;
+  placeholderMetadataCopy = placeholderMetadata;
+  dCopy = d;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient updateRecordForApp:withSINF:iTunesMetadata:placeholderMetadata:sendNotification:operationUUID:returnSaveToken:completionHandler:]");
-  v20 = v16 != 0;
-  if (v16 && v36)
+  v20 = appCopy != 0;
+  if (appCopy && fCopy)
   {
-    v21 = [MEMORY[0x1E695DFD8] setWithObject:{objc_opt_class(), v34}];
-    v20 = _LSIsDictionaryWithKeysAndValuesOfClasses(v36, v21, 0);
+    v21 = [MEMORY[0x1E695DFD8] setWithObject:{objc_opt_class(), dCopy}];
+    v20 = _LSIsDictionaryWithKeysAndValuesOfClasses(fCopy, v21, 0);
   }
 
-  if (v17 && v20)
+  if (metadataCopy && v20)
   {
     v22 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v20 = _LSIsDictionaryWithKeysAndValuesOfClasses(v17, v22, 0);
+    v20 = _LSIsDictionaryWithKeysAndValuesOfClasses(metadataCopy, v22, 0);
   }
 
-  if (v18 && v20)
+  if (placeholderMetadataCopy && v20)
   {
     v23 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v24 = _LSIsDictionaryWithKeysAndValuesOfClasses(v18, v23, 0);
+    v24 = _LSIsDictionaryWithKeysAndValuesOfClasses(placeholderMetadataCopy, v23, 0);
 
     if ((v24 & 1) == 0)
     {
 LABEL_10:
       v46 = *MEMORY[0x1E696A278];
       v47 = @"invalid metadata, cannot update bundle record";
-      v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:{1, v34}];
+      v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:{1, dCopy}];
       v26 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v25, "[_LSDModifyClient updateRecordForApp:withSINF:iTunesMetadata:placeholderMetadata:sendNotification:operationUUID:returnSaveToken:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1105);
-      (*(v19 + 2))(v19, 0, 0, v26);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v26);
       goto LABEL_29;
     }
   }
@@ -816,16 +816,16 @@ LABEL_10:
 
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
-    v25 = v36;
-    v26 = v17;
+    v25 = fCopy;
+    v26 = metadataCopy;
 LABEL_21:
-    v27 = v18;
+    v27 = placeholderMetadataCopy;
     goto LABEL_23;
   }
 
   if ([(_LSDModifyClient *)self clientHasMIEntitlement:@"UpdateSinfForLaunchServices"])
   {
-    v25 = v36;
+    v25 = fCopy;
   }
 
   else
@@ -835,7 +835,7 @@ LABEL_21:
 
   if ([(_LSDModifyClient *)self clientHasMIEntitlement:@"UpdateiTunesMetadataForLaunchServices"])
   {
-    v26 = v17;
+    v26 = metadataCopy;
   }
 
   else
@@ -859,14 +859,14 @@ LABEL_23:
     v37[1] = 3221225472;
     v37[2] = __148___LSDModifyClient_updateRecordForApp_withSINF_iTunesMetadata_placeholderMetadata_sendNotification_operationUUID_returnSaveToken_completionHandler___block_invoke;
     v37[3] = &unk_1E6A1C448;
-    v38 = v16;
+    v38 = appCopy;
     v39 = v25;
     v40 = v26;
     v41 = v29;
-    v45 = a9;
+    tokenCopy = token;
     v42 = v35;
-    v44 = a7;
-    v43 = v19;
+    notificationCopy = notification;
+    v43 = handlerCopy;
     [(LSDBExecutionContext *)v32 syncWrite:v37];
 
     v30 = v38;
@@ -878,7 +878,7 @@ LABEL_23:
     v49[0] = @"UpdateSinfForLaunchServices/UpdateiTunesMetadataForLaunchServices/UpdatePlaceholderMetadata";
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
     v31 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v30, "[_LSDModifyClient updateRecordForApp:withSINF:iTunesMetadata:placeholderMetadata:sendNotification:operationUUID:returnSaveToken:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1101);
-    (*(v19 + 2))(v19, 0, 0, v31);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v31);
   }
 
 LABEL_29:
@@ -898,25 +898,25 @@ LABEL_29:
   dispatch_async(v3, block);
 }
 
-- (void)installApplication:(id)a3 atURL:(id)a4 withOptions:(id)a5 installType:(unint64_t)a6 reply:(id)a7
+- (void)installApplication:(id)application atURL:(id)l withOptions:(id)options installType:(unint64_t)type reply:(id)reply
 {
-  v8 = a7;
+  replyCopy = reply;
   v7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[_LSDModifyClient installApplication:atURL:withOptions:installType:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1194);
-  v8[2](v8, 0, v7);
+  replyCopy[2](replyCopy, 0, v7);
 }
 
-- (void)uninstallApplication:(id)a3 withOptions:(id)a4 uninstallType:(unint64_t)a5 reply:(id)a6
+- (void)uninstallApplication:(id)application withOptions:(id)options uninstallType:(unint64_t)type reply:(id)reply
 {
-  v7 = a6;
+  replyCopy = reply;
   v6 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[_LSDModifyClient uninstallApplication:withOptions:uninstallType:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1202);
-  v7[2](v7, 0, v6);
+  replyCopy[2](replyCopy, 0, v6);
 }
 
-- (void)unregisterApplicationsAtMountPoint:(id)a3 operationUUID:(id)a4 reply:(id)a5
+- (void)unregisterApplicationsAtMountPoint:(id)point operationUUID:(id)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  pointCopy = point;
+  dCopy = d;
+  replyCopy = reply;
   v10 = os_transaction_create();
   _LSDatabaseSentinelIncrement();
   v11 = _LSServer_DatabaseExecutionContext();
@@ -924,98 +924,98 @@ LABEL_29:
   v16[1] = 3221225472;
   v16[2] = __75___LSDModifyClient_unregisterApplicationsAtMountPoint_operationUUID_reply___block_invoke;
   v16[3] = &unk_1E6A1C4C0;
-  v12 = v7;
+  v12 = pointCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = dCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = replyCopy;
   v20 = v14;
   v15 = v10;
   v19 = v15;
   [(LSDBExecutionContext *)v11 syncWrite:v16];
 }
 
-- (void)doTokenizedRegistrationTaskWithName:(id)a3 xpcReply:(id)a4 work:(id)a5
+- (void)doTokenizedRegistrationTaskWithName:(id)name xpcReply:(id)reply work:(id)work
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 UTF8String];
+  nameCopy = name;
+  replyCopy = reply;
+  workCopy = work;
+  [nameCopy UTF8String];
   v10 = os_transaction_create();
   RegisterInstallResultsLock = _LSDatabaseGetRegisterInstallResultsLock();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70___LSDModifyClient_doTokenizedRegistrationTaskWithName_xpcReply_work___block_invoke;
   v15[3] = &unk_1E6A1C510;
-  v12 = v8;
+  v12 = replyCopy;
   v17 = v12;
   v13 = v10;
   v16 = v13;
-  v14 = v9;
+  v14 = workCopy;
   v18 = v14;
   _LSDoWithLock(RegisterInstallResultsLock, v15);
 }
 
-- (void)unregisterApplicationAtURL:(id)a3 operationUUID:(id)a4 reply:(id)a5
+- (void)unregisterApplicationAtURL:(id)l operationUUID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dCopy = d;
+  replyCopy = reply;
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __67___LSDModifyClient_unregisterApplicationAtURL_operationUUID_reply___block_invoke;
     v12[3] = &unk_1E6A1C538;
-    v13 = v9;
-    v14 = v8;
-    v15 = self;
-    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.unregisterApplicationAtURL:operationUUID:reply:" xpcReply:v10 work:v12];
+    v13 = dCopy;
+    v14 = lCopy;
+    selfCopy = self;
+    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.unregisterApplicationAtURL:operationUUID:reply:" xpcReply:replyCopy work:v12];
   }
 
   else
   {
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient unregisterApplicationAtURL:operationUUID:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1334);
-    v10[2](v10, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
   }
 }
 
-- (void)unregisterPluginAtURL:(id)a3 operationUUID:(id)a4 reply:(id)a5
+- (void)unregisterPluginAtURL:(id)l operationUUID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dCopy = d;
+  replyCopy = reply;
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62___LSDModifyClient_unregisterPluginAtURL_operationUUID_reply___block_invoke;
     v12[3] = &unk_1E6A1C538;
-    v13 = v9;
-    v14 = v8;
-    v15 = self;
-    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.unregisterPluginAtURL:operationUUID:reply" xpcReply:v10 work:v12];
+    v13 = dCopy;
+    v14 = lCopy;
+    selfCopy = self;
+    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.unregisterPluginAtURL:operationUUID:reply" xpcReply:replyCopy work:v12];
   }
 
   else
   {
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient unregisterPluginAtURL:operationUUID:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1352);
-    v10[2](v10, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
   }
 }
 
-- (void)registerBuiltinApplication:(id)a3 personaUniqueStrings:(id)a4 operationUUID:(id)a5 reply:(id)a6
+- (void)registerBuiltinApplication:(id)application personaUniqueStrings:(id)strings operationUUID:(id)d reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  applicationCopy = application;
+  stringsCopy = strings;
+  dCopy = d;
+  replyCopy = reply;
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
-    if (v11)
+    if (stringsCopy)
     {
       v14 = +[_LSPersonaDatabase sharedInstance];
-      v15 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+      v15 = [MEMORY[0x1E695DFD8] setWithArray:stringsCopy];
       v27 = 0;
       v16 = [(_LSPersonaDatabase *)v14 personasWithAttributesForPersonaUniqueStrings:v15 error:&v27];
       v17 = v27;
@@ -1042,11 +1042,11 @@ LABEL_29:
     v21[1] = 3221225472;
     v21[2] = __88___LSDModifyClient_registerBuiltinApplication_personaUniqueStrings_operationUUID_reply___block_invoke;
     v21[3] = &unk_1E6A1C560;
-    v22 = v10;
-    v23 = self;
-    v24 = v12;
+    v22 = applicationCopy;
+    selfCopy = self;
+    v24 = dCopy;
     v25 = v16;
-    v26 = v13;
+    v26 = replyCopy;
     v20 = v16;
     [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.registerBuiltinApplicationAtURL:operationUUID:reply" xpcReply:v26 work:v21];
   }
@@ -1054,15 +1054,15 @@ LABEL_29:
   else
   {
     v19 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient registerBuiltinApplication:personaUniqueStrings:operationUUID:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1393);
-    (*(v13 + 2))(v13, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 }
 
-- (void)registerBuiltinAppex:(id)a3 operationUUID:(id)a4 reply:(id)a5
+- (void)registerBuiltinAppex:(id)appex operationUUID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appexCopy = appex;
+  dCopy = d;
+  replyCopy = reply;
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -1070,22 +1070,22 @@ LABEL_29:
     v12[2] = __61___LSDModifyClient_registerBuiltinAppex_operationUUID_reply___block_invoke;
     v12[3] = &unk_1E6A1C538;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.registerBuiltinAppex:operationUUID:reply" xpcReply:v10 work:v12];
+    v13 = appexCopy;
+    v14 = dCopy;
+    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.registerBuiltinAppex:operationUUID:reply" xpcReply:replyCopy work:v12];
   }
 
   else
   {
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient registerBuiltinAppex:operationUUID:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1412);
-    v10[2](v10, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
   }
 }
 
-- (void)refreshExtensionPointsWithOperationUUID:(id)a3 reply:(id)a4
+- (void)refreshExtensionPointsWithOperationUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -1093,56 +1093,56 @@ LABEL_29:
     v9[2] = __66___LSDModifyClient_refreshExtensionPointsWithOperationUUID_reply___block_invoke;
     v9[3] = &unk_1E6A1C588;
     v9[4] = self;
-    v10 = v6;
-    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.registerBuiltinAppex:operationUUID:reply" xpcReply:v7 work:v9];
+    v10 = dCopy;
+    [(_LSDModifyClient *)self doTokenizedRegistrationTaskWithName:@"com.apple.lsd.registerBuiltinAppex:operationUUID:reply" xpcReply:replyCopy work:v9];
   }
 
   else
   {
     v8 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient refreshExtensionPointsWithOperationUUID:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1432);
-    v7[2](v7, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
   }
 }
 
-- (void)refreshContentInFrameworkAtURL:(id)a3 reply:(id)a4
+- (void)refreshContentInFrameworkAtURL:(id)l reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v8 = _LSServer_GetIOQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57___LSDModifyClient_refreshContentInFrameworkAtURL_reply___block_invoke;
   block[3] = &unk_1E6A193B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = lCopy;
   dispatch_sync(v8, block);
 }
 
-- (void)setUpdateAvailabilities:(id)a3 completionHandler:(id)a4
+- (void)setUpdateAvailabilities:(id)availabilities completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  availabilitiesCopy = availabilities;
+  handlerCopy = handler;
   v8 = objc_opt_class();
   v9 = objc_opt_class();
-  if ((_LSIsDictionaryWithKeysAndValuesOfClass(v6, v8, v9) & 1) == 0)
+  if ((_LSIsDictionaryWithKeysAndValuesOfClass(availabilitiesCopy, v8, v9) & 1) == 0)
   {
     v19 = *MEMORY[0x1E696A278];
     v20[0] = @"valuesByBundleID";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v14 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v13, "[_LSDModifyClient setUpdateAvailabilities:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1459);
-    v7[2](v7, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v10 = [(_LSDClient *)self XPCConnection];
-  v11 = [v10 _xpcConnection];
-  v12 = _LSCheckEntitlementForXPCConnection(v11, @"com.apple.private.launchservices.canchangeupdateavailability");
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v12 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.launchservices.canchangeupdateavailability");
 
   if (!v12)
   {
@@ -1160,24 +1160,24 @@ LABEL_9:
     v18 = v15;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v14 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v13, "[_LSDModifyClient setUpdateAvailabilities:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1462);
-    v7[2](v7, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
     goto LABEL_9;
   }
 
-  [LSApplicationRecord setUpdateAvailabilityForApplicationsWithBundleIdentifiers:v6 completionHandler:v7];
+  [LSApplicationRecord setUpdateAvailabilityForApplicationsWithBundleIdentifiers:availabilitiesCopy completionHandler:handlerCopy];
 LABEL_10:
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)garbageCollectDatabaseWithCompletionHandler:(id)a3
+- (void)garbageCollectDatabaseWithCompletionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDModifyClient garbageCollectDatabaseWithCompletionHandler:]");
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = [v5 _xpcConnection];
-  v7 = _LSCheckEntitlementForXPCConnection(v6, @"com.apple.private.coreservices.canforcedatabasegc");
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v7 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.coreservices.canforcedatabasegc");
 
   if (v7)
   {
@@ -1186,7 +1186,7 @@ LABEL_10:
     v13[1] = 3221225472;
     v13[2] = __64___LSDModifyClient_garbageCollectDatabaseWithCompletionHandler___block_invoke;
     v13[3] = &unk_1E6A1A660;
-    v14 = v4;
+    v14 = handlerCopy;
     [(LSDBExecutionContext *)v8 syncWrite:v13];
 
     v9 = v14;
@@ -1208,19 +1208,19 @@ LABEL_10:
     v16[0] = v10;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v9, "[_LSDModifyClient garbageCollectDatabaseWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1509);
-    (*(v4 + 2))(v4, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4 forApplicationAtURL:(id)a5 completionHandler:(id)a6
+- (void)setPreferenceValue:(id)value forKey:(id)key forApplicationAtURL:(id)l completionHandler:(id)handler
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  keyCopy = key;
+  lCopy = l;
+  handlerCopy = handler;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -1233,11 +1233,11 @@ LABEL_10:
   v46 = 0;
   v39 = 0u;
   v40 = 0u;
-  v14 = [(_LSDClient *)self XPCConnection];
-  v15 = v14;
-  if (v14)
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  v15 = xPCConnection;
+  if (xPCConnection)
   {
-    [v14 auditToken];
+    [xPCConnection auditToken];
   }
 
   else
@@ -1248,7 +1248,7 @@ LABEL_10:
 
   v38 = 0;
   _LSIsAuditTokenSandboxed(&v39, &v38, 0);
-  if (v11 && v12 && ([v12 isFileURL] & 1) != 0)
+  if (keyCopy && lCopy && ([lCopy isFileURL] & 1) != 0)
   {
     if (v38 && !_LSCheckEntitlementForAuditToken(&v39, @"com.apple.private.launchservices.canmodifypreferences"))
     {
@@ -1270,12 +1270,12 @@ LABEL_10:
       v42[5] = v27;
     }
 
-    else if ([FSNode canReadMetadataOfURL:v12 fromSandboxWithAuditToken:&v39])
+    else if ([FSNode canReadMetadataOfURL:lCopy fromSandboxWithAuditToken:&v39])
     {
       v16 = [FSNode alloc];
       v17 = (v42 + 5);
       obj = v42[5];
-      v18 = [(FSNode *)v16 initWithURL:v12 flags:1 error:&obj];
+      v18 = [(FSNode *)v16 initWithURL:lCopy flags:1 error:&obj];
       objc_storeStrong(v17, obj);
       if (v18)
       {
@@ -1294,10 +1294,10 @@ LABEL_10:
         v29[2] = __84___LSDModifyClient_setPreferenceValue_forKey_forApplicationAtURL_completionHandler___block_invoke_289;
         v29[3] = &unk_1E6A1C5B0;
         v33 = &v47;
-        v30 = v11;
+        v30 = keyCopy;
         v18 = v20;
         v31 = v18;
-        v32 = v10;
+        v32 = valueCopy;
         v34 = &v41;
         dispatch_sync(v21, v29);
       }
@@ -1321,19 +1321,19 @@ LABEL_10:
     v42[5] = v22;
   }
 
-  v13[2](v13, *(v48 + 24), v42[5]);
+  handlerCopy[2](handlerCopy, *(v48 + 24), v42[5]);
   _Block_object_dispose(&v41, 8);
 
   _Block_object_dispose(&v47, 8);
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPreferenceValueForCallingApplication:(id)a3 forKey:(id)a4 completionHandler:(id)a5
+- (void)setPreferenceValueForCallingApplication:(id)application forKey:(id)key completionHandler:(id)handler
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  keyCopy = key;
+  handlerCopy = handler;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -1346,11 +1346,11 @@ LABEL_10:
   v36 = 0;
   v29 = 0u;
   v30 = 0u;
-  v11 = [(_LSDClient *)self XPCConnection];
-  v12 = v11;
-  if (v11)
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  v12 = xPCConnection;
+  if (xPCConnection)
   {
-    [v11 auditToken];
+    [xPCConnection auditToken];
   }
 
   else
@@ -1359,7 +1359,7 @@ LABEL_10:
     v30 = 0u;
   }
 
-  if (!v9 || (LaunchServices::PrefsStorage::preferenceKeyMayBeSelfSet(v9, v13) & 1) == 0)
+  if (!keyCopy || (LaunchServices::PrefsStorage::preferenceKeyMayBeSelfSet(keyCopy, v13) & 1) == 0)
   {
     v41 = *MEMORY[0x1E696A278];
     v42[0] = @"prefKey";
@@ -1393,8 +1393,8 @@ LABEL_10:
     v19 = v17;
     v23 = v19;
     v26 = &v37;
-    v24 = v9;
-    v25 = v8;
+    v24 = keyCopy;
+    v25 = applicationCopy;
     v27 = &v31;
     [(LSDBExecutionContext *)v18 syncRead:v22];
 
@@ -1403,7 +1403,7 @@ LABEL_10:
 
 LABEL_11:
 
-  v10[2](v10, *(v38 + 24), v32[5]);
+  handlerCopy[2](handlerCopy, *(v38 + 24), v32[5]);
   _Block_object_dispose(&v31, 8);
 
   _Block_object_dispose(&v37, 8);
@@ -1413,10 +1413,10 @@ LABEL_11:
 - (BOOL)clientIsEntitledForEmbeddedRegistrationOperations
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(_LSDClient *)self XPCConnection];
-  v3 = [v2 _xpcConnection];
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
 
-  if (_LSCheckEntitlementForXPCConnectionQuiet(v3, @"com.apple.private.coreservices.can-register-install-results") || _LSCheckEntitlementForXPCConnectionQuiet(v3, @"com.apple.private.installcoordinationd.daemon") || _LSCheckEntitlementForXPCConnectionQuiet(v3, @"com.apple.private.coreservices.lsaw"))
+  if (_LSCheckEntitlementForXPCConnectionQuiet(_xpcConnection, @"com.apple.private.coreservices.can-register-install-results") || _LSCheckEntitlementForXPCConnectionQuiet(_xpcConnection, @"com.apple.private.installcoordinationd.daemon") || _LSCheckEntitlementForXPCConnectionQuiet(_xpcConnection, @"com.apple.private.coreservices.lsaw"))
   {
     v4 = 1;
   }
@@ -1427,7 +1427,7 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      pid = xpc_connection_get_pid(v3);
+      pid = xpc_connection_get_pid(_xpcConnection);
       _os_log_impl(&dword_18162D000, v7, OS_LOG_TYPE_DEFAULT, "Connection from process %llu is not entitled for post installation modifications to the database", &v8, 0xCu);
     }
 
@@ -1438,20 +1438,20 @@ LABEL_11:
   return v4;
 }
 
-- (void)performPostInstallationRegistration:(id)a3 personaUniqueStrings:(id)a4 operationUUID:(id)a5 reply:(id)a6
+- (void)performPostInstallationRegistration:(id)registration personaUniqueStrings:(id)strings operationUUID:(id)d reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  registrationCopy = registration;
+  stringsCopy = strings;
+  dCopy = d;
+  replyCopy = reply;
   if (![(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
     v17 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient performPostInstallationRegistration:personaUniqueStrings:operationUUID:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1659);
-    (*(v13 + 2))(v13, 0, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v17);
     goto LABEL_10;
   }
 
-  if (!v11)
+  if (!stringsCopy)
   {
     v17 = 0;
     v16 = 0;
@@ -1459,7 +1459,7 @@ LABEL_11:
   }
 
   v14 = +[_LSPersonaDatabase sharedInstance];
-  v15 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+  v15 = [MEMORY[0x1E695DFD8] setWithArray:stringsCopy];
   v27 = 0;
   v16 = [(_LSPersonaDatabase *)v14 personasWithAttributesForPersonaUniqueStrings:v15 error:&v27];
   v17 = v27;
@@ -1472,10 +1472,10 @@ LABEL_9:
     v21[1] = 3221225472;
     v21[2] = __97___LSDModifyClient_performPostInstallationRegistration_personaUniqueStrings_operationUUID_reply___block_invoke;
     v21[3] = &unk_1E6A1C628;
-    v22 = v10;
-    v26 = v13;
-    v23 = v12;
-    v24 = self;
+    v22 = registrationCopy;
+    v26 = replyCopy;
+    v23 = dCopy;
+    selfCopy = self;
     v25 = v16;
     v20 = v16;
     _LSDoWithLock(RegisterInstallResultsLock, v21);
@@ -1489,16 +1489,16 @@ LABEL_9:
     [_LSDModifyClient registerBuiltinApplication:personaUniqueStrings:operationUUID:reply:];
   }
 
-  (*(v13 + 2))(v13, 0, 0, v17);
+  (*(replyCopy + 2))(replyCopy, 0, 0, v17);
 LABEL_10:
 }
 
-- (void)performPostUninstallationUnregistrationOfBundleID:(id)a3 operationUUID:(id)a4 unregisterType:(unsigned int)a5 precondition:(id)a6 reply:(id)a7
+- (void)performPostUninstallationUnregistrationOfBundleID:(id)d operationUUID:(id)iD unregisterType:(unsigned int)type precondition:(id)precondition reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  preconditionCopy = precondition;
+  replyCopy = reply;
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
     RegisterInstallResultsLock = _LSDatabaseGetRegisterInstallResultsLock();
@@ -1506,28 +1506,28 @@ LABEL_10:
     v18[1] = 3221225472;
     v18[2] = __118___LSDModifyClient_performPostUninstallationUnregistrationOfBundleID_operationUUID_unregisterType_precondition_reply___block_invoke;
     v18[3] = &unk_1E6A1C678;
-    v23 = v15;
-    v19 = v13;
-    v20 = v12;
-    v24 = a5;
-    v21 = v14;
-    v22 = self;
+    v23 = replyCopy;
+    v19 = iDCopy;
+    v20 = dCopy;
+    typeCopy = type;
+    v21 = preconditionCopy;
+    selfCopy = self;
     _LSDoWithLock(RegisterInstallResultsLock, v18);
   }
 
   else
   {
     v17 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient performPostUninstallationUnregistrationOfBundleID:operationUUID:unregisterType:precondition:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1684);
-    (*(v15 + 2))(v15, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, v17);
   }
 }
 
-- (void)performUpdateOfPersonasOfBundleIDs:(id)a3 toPersonaUniqueStrings:(id)a4 operationUUID:(id)a5 reply:(id)a6
+- (void)performUpdateOfPersonasOfBundleIDs:(id)ds toPersonaUniqueStrings:(id)strings operationUUID:(id)d reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  stringsCopy = strings;
+  dCopy = d;
+  replyCopy = reply;
   if ([(_LSDModifyClient *)self clientIsEntitledForEmbeddedRegistrationOperations])
   {
     v31 = 0;
@@ -1545,7 +1545,7 @@ LABEL_10:
     v14 = +[_LSPersonaDatabase sharedInstance];
     v15 = (v29[0] + 40);
     obj = *(v29[0] + 40);
-    v16 = [(_LSPersonaDatabase *)v14 personasWithAttributesForPersonaUniqueStrings:v11 error:&obj];
+    v16 = [(_LSPersonaDatabase *)v14 personasWithAttributesForPersonaUniqueStrings:stringsCopy error:&obj];
     objc_storeStrong(v15, obj);
 
     if (v16)
@@ -1555,10 +1555,10 @@ LABEL_10:
       v20[1] = 3221225472;
       v20[2] = __98___LSDModifyClient_performUpdateOfPersonasOfBundleIDs_toPersonaUniqueStrings_operationUUID_reply___block_invoke;
       v20[3] = &unk_1E6A1C6C8;
-      v21 = v12;
+      v21 = dCopy;
       v22 = v16;
-      v23 = v10;
-      v24 = self;
+      v23 = dsCopy;
+      selfCopy = self;
       v25 = &v28;
       v26 = &v31;
       [(LSDBExecutionContext *)v17 syncWrite:v20];
@@ -1571,11 +1571,11 @@ LABEL_10:
       v18 = _LSInstallLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [_LSDModifyClient performUpdateOfPersonasOfBundleIDs:v12 toPersonaUniqueStrings:v29 operationUUID:? reply:?];
+        [_LSDModifyClient performUpdateOfPersonasOfBundleIDs:dCopy toPersonaUniqueStrings:v29 operationUUID:? reply:?];
       }
     }
 
-    v13[2](v13, v32[5], *(v29[0] + 40));
+    replyCopy[2](replyCopy, v32[5], *(v29[0] + 40));
     _Block_object_dispose(&v28, 8);
 
     _Block_object_dispose(&v31, 8);
@@ -1584,13 +1584,13 @@ LABEL_10:
   else
   {
     v19 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient performUpdateOfPersonasOfBundleIDs:toPersonaUniqueStrings:operationUUID:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1885);
-    (v13)[2](v13, 0, v19);
+    (replyCopy)[2](replyCopy, 0, v19);
   }
 }
 
-- (void)forceSaveForTestingWithCompletion:(id)a3
+- (void)forceSaveForTestingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (-[_LSDModifyClient clientIsEntitledForEmbeddedRegistrationOperations](self, "clientIsEntitledForEmbeddedRegistrationOperations") || (-[_LSDClient XPCConnection](self, "XPCConnection"), v5 = objc_claimAutoreleasedReturnValue(), [v5 _xpcConnection], v6 = objc_claimAutoreleasedReturnValue(), v7 = _LSCheckEntitlementForXPCConnection(v6, @"com.apple.private.coreservices.can-force-database-save-for-testing"), v6, v5, v7))
   {
     v8 = _LSServer_DatabaseExecutionContext();
@@ -1598,33 +1598,33 @@ LABEL_10:
     v10[1] = 3221225472;
     v10[2] = __54___LSDModifyClient_forceSaveForTestingWithCompletion___block_invoke;
     v10[3] = &unk_1E6A1A660;
-    v11 = v4;
+    v11 = completionCopy;
     [(LSDBExecutionContext *)v8 syncWrite:v10];
   }
 
   else
   {
     v9 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient forceSaveForTestingWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1897);
-    (*(v4 + 2))(v4, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
-- (void)removeDatabaseStoreOnNextOpportunity:(id)a3
+- (void)removeDatabaseStoreOnNextOpportunity:(id)opportunity
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = [v5 _xpcConnection];
-  v7 = _LSCheckEntitlementForXPCConnection(v6, @"com.apple.private.coreservices.canresetserverstore");
+  opportunityCopy = opportunity;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v7 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.coreservices.canresetserverstore");
 
   if (v7)
   {
-    v8 = [__LSDefaultsGetSharedInstance() dbRemoveDBOnStartupURL];
-    if (v8)
+    dbRemoveDBOnStartupURL = [__LSDefaultsGetSharedInstance() dbRemoveDBOnStartupURL];
+    if (dbRemoveDBOnStartupURL)
     {
-      v9 = [MEMORY[0x1E695DEF0] data];
+      data = [MEMORY[0x1E695DEF0] data];
       v18 = 0;
-      v10 = [v9 writeToURL:v8 options:0 error:&v18];
+      v10 = [data writeToURL:dbRemoveDBOnStartupURL options:0 error:&v18];
       v11 = v18;
 
       if (v10)
@@ -1633,7 +1633,7 @@ LABEL_10:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v20 = v8;
+          v20 = dbRemoveDBOnStartupURL;
           _os_log_impl(&dword_18162D000, v12, OS_LOG_TYPE_INFO, "Created removeAtNextStartup sentinel file at %{public}@", buf, 0xCu);
         }
 
@@ -1651,7 +1651,7 @@ LABEL_10:
         v13 = v11;
       }
 
-      (v4)[2](v4, v10, v13);
+      (opportunityCopy)[2](opportunityCopy, v10, v13);
     }
 
     else
@@ -1663,7 +1663,7 @@ LABEL_10:
       }
 
       v16 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient removeDatabaseStoreOnNextOpportunity:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1918);
-      (v4)[2](v4, 0, v16);
+      (opportunityCopy)[2](opportunityCopy, 0, v16);
 
       v11 = 0;
     }
@@ -1680,23 +1680,23 @@ LABEL_10:
     }
 
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient removeDatabaseStoreOnNextOpportunity:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1923);
-    (v4)[2](v4, 0, v11);
+    (opportunityCopy)[2](opportunityCopy, 0, v11);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestLSDExitSafely:(double)a3 completionHandler:(id)a4
+- (void)requestLSDExitSafely:(double)safely completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(_LSDClient *)self XPCConnection];
-  v8 = [v7 _xpcConnection];
-  v9 = _LSCheckEntitlementForXPCConnection(v8, @"com.apple.private.launchservices.requestlsdexit");
+  handlerCopy = handler;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v9 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.launchservices.requestlsdexit");
 
   if (v9)
   {
-    if (a3 <= 0.0)
+    if (safely <= 0.0)
     {
       v19 = _LSDatabaseGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1715,7 +1715,7 @@ LABEL_10:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v29 = a3;
+        safelyCopy = safely;
         _os_log_impl(&dword_18162D000, v10, OS_LOG_TYPE_INFO, "Arming LS save timer, interval=%{public}g", buf, 0xCu);
       }
 
@@ -1724,12 +1724,12 @@ LABEL_10:
       v23 = 3221225472;
       v24 = __59___LSDModifyClient_requestLSDExitSafely_completionHandler___block_invoke;
       v25 = &unk_1E6A1C6F0;
-      v12 = v6;
+      v12 = handlerCopy;
       v27 = v12;
       v13 = v11;
       v26 = v13;
       _LSArmSaveTimerWithObserver(7, &v22);
-      v14 = dispatch_time(0, (a3 * 1000000000.0));
+      v14 = dispatch_time(0, (safely * 1000000000.0));
       if (!dispatch_semaphore_wait(v13, v14))
       {
         v15 = _LSDatabaseGetLog();
@@ -1756,19 +1756,19 @@ LABEL_10:
     }
 
     v18 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDModifyClient requestLSDExitSafely:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1976);
-    (*(v6 + 2))(v6, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPreferredAppMarketplaces:(id)a3 completion:(id)a4
+- (void)setPreferredAppMarketplaces:(id)marketplaces completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_LSDClient *)self XPCConnection];
-  v9 = _LSCheckEntitlementForNSXPCConnection(v8, @"com.apple.private.coreservices.appmarketplace.write");
+  marketplacesCopy = marketplaces;
+  completionCopy = completion;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  v9 = _LSCheckEntitlementForNSXPCConnection(xPCConnection, @"com.apple.private.coreservices.appmarketplace.write");
 
   if (v9)
   {
@@ -1776,9 +1776,9 @@ LABEL_10:
     v15[1] = 3221225472;
     v15[2] = __59___LSDModifyClient_setPreferredAppMarketplaces_completion___block_invoke;
     v15[3] = &unk_1E6A1C718;
-    v16 = v6;
+    v16 = marketplacesCopy;
     v10 = [LSMarketplacesPreferences modifyPreferencesWithBlock:v15];
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
 
     v11 = v16;
   }
@@ -1799,7 +1799,7 @@ LABEL_10:
     v18[0] = v12;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v13 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v11, "[_LSDModifyClient setPreferredAppMarketplaces:completion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDModifyService.mm", 1991);
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   v14 = *MEMORY[0x1E69E9840];

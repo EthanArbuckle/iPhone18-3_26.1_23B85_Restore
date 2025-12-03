@@ -1,34 +1,34 @@
 @interface RPTResizeTestParameters
 - (CGSize)maximumWindowSize;
 - (CGSize)minimumWindowSize;
-- (RPTResizeTestParameters)initWithTestName:(id)a3 window:(id)a4 completionHandler:(id)a5;
+- (RPTResizeTestParameters)initWithTestName:(id)name window:(id)window completionHandler:(id)handler;
 - (id)composerBlock;
-- (void)prepareWithComposer:(id)a3;
+- (void)prepareWithComposer:(id)composer;
 @end
 
 @implementation RPTResizeTestParameters
 
-- (void)prepareWithComposer:(id)a3
+- (void)prepareWithComposer:(id)composer
 {
-  v4 = [(RPTResizeTestParameters *)self window];
+  window = [(RPTResizeTestParameters *)self window];
   [(RPTResizeTestParameters *)self minimumWindowSize];
-  [v4 _rpt_moveToSafeTopLeftOfScreemVisibleFrameAndResize:?];
+  [window _rpt_moveToSafeTopLeftOfScreemVisibleFrameAndResize:?];
 }
 
-- (RPTResizeTestParameters)initWithTestName:(id)a3 window:(id)a4 completionHandler:(id)a5
+- (RPTResizeTestParameters)initWithTestName:(id)name window:(id)window completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  windowCopy = window;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = RPTResizeTestParameters;
   v12 = [(RPTResizeTestParameters *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_testName, a3);
-    objc_storeStrong(&v13->_window, a4);
-    [v10 _rpt_safeVisibleFrameOfScreen];
+    objc_storeStrong(&v12->_testName, name);
+    objc_storeStrong(&v13->_window, window);
+    [windowCopy _rpt_safeVisibleFrameOfScreen];
     v13->_minimumWindowSize = xmmword_261A287C0;
     v16 = 1200.0;
     if (v14 <= 1200.0)
@@ -44,11 +44,11 @@
 
     v13->_maximumWindowSize.width = v16;
     v13->_maximumWindowSize.height = v17;
-    v18 = MEMORY[0x2667162B0](v11);
+    v18 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v18;
 
-    v20 = [RPTCoordinateSpaceConverter converterFromWindow:v10];
+    v20 = [RPTCoordinateSpaceConverter converterFromWindow:windowCopy];
     conversion = v13->_conversion;
     v13->_conversion = v20;
   }

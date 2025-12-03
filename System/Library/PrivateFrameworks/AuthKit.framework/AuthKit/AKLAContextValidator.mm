@@ -1,17 +1,17 @@
 @interface AKLAContextValidator
-+ (BOOL)validateExternalizedContext:(id)a3 error:(id *)a4;
++ (BOOL)validateExternalizedContext:(id)context error:(id *)error;
 @end
 
 @implementation AKLAContextValidator
 
-+ (BOOL)validateExternalizedContext:(id)a3 error:(id *)a4
++ (BOOL)validateExternalizedContext:(id)context error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, context);
+  errorCopy = error;
   v4 = objc_alloc(MEMORY[0x1E696EE58]);
   v16 = [v4 initWithExternalizedContext:location[0]];
   v15 = 0;
@@ -39,11 +39,11 @@
     }
 
     objc_storeStrong(&v10, 0);
-    if (v17)
+    if (errorCopy)
     {
       v7 = v15;
       v5 = v15;
-      *v17 = v7;
+      *errorCopy = v7;
     }
 
     v19 = 0;

@@ -1,10 +1,10 @@
 @interface CTXPCServiceSubscriptionInfo
-- (BOOL)isEqual:(id)a3;
-- (CTXPCServiceSubscriptionInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTXPCServiceSubscriptionInfo)initWithCoder:(id)coder;
 - (NSArray)subscriptionsInUse;
 - (NSArray)subscriptionsValid;
 - (NSString)ct_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
 @end
@@ -14,10 +14,10 @@
 - (NSString)ct_shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CTXPCServiceSubscriptionInfo *)self ct_shortName];
-  v5 = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
-  v6 = [v5 ct_descriptionWithShortDescriptions];
-  v7 = [v3 stringWithFormat:@"<%@ subscriptions=%@>", v4, v6];
+  ct_shortName = [(CTXPCServiceSubscriptionInfo *)self ct_shortName];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
+  ct_descriptionWithShortDescriptions = [subscriptions ct_descriptionWithShortDescriptions];
+  v7 = [v3 stringWithFormat:@"<%@ subscriptions=%@>", ct_shortName, ct_descriptionWithShortDescriptions];
 
   return v7;
 }
@@ -25,13 +25,13 @@
 - (NSArray)subscriptionsInUse
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
+  v5 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -42,17 +42,17 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 isSimPresent])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -60,7 +60,7 @@
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (id)redactedDescription
@@ -101,8 +101,8 @@
           v10 = "";
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v8) redactedDescription];
-        [v3 appendFormat:@"%s%@", v10, v11];
+        redactedDescription = [*(*(&v15 + 1) + 8 * v8) redactedDescription];
+        [v3 appendFormat:@"%s%@", v10, redactedDescription];
 
         ++v8;
         v9 = v6;
@@ -124,8 +124,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
-  [v3 appendFormat:@" subscriptions=%@", v4];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
+  [v3 appendFormat:@" subscriptions=%@", subscriptions];
 
   [v3 appendString:@">"];
 
@@ -135,13 +135,13 @@
 - (NSArray)subscriptionsValid
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
+  v5 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -152,17 +152,17 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 isSimPresent] && objc_msgSend(v9, "isSimGood"))
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -170,13 +170,13 @@
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_7;
   }
@@ -194,9 +194,9 @@
     goto LABEL_6;
   }
 
-  v6 = [(CTXPCServiceSubscriptionInfo *)v4 subscriptions];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)equalCopy subscriptions];
 
-  if (!v6)
+  if (!subscriptions)
   {
 LABEL_7:
     v8 = 1;
@@ -205,27 +205,27 @@ LABEL_7:
 
   subscriptions = self->_subscriptions;
 LABEL_6:
-  v7 = [(CTXPCServiceSubscriptionInfo *)v4 subscriptions];
-  v8 = [(NSArray *)subscriptions isEqualToArray:v7];
+  subscriptions2 = [(CTXPCServiceSubscriptionInfo *)equalCopy subscriptions];
+  v8 = [(NSArray *)subscriptions isEqualToArray:subscriptions2];
 
 LABEL_9:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self subscriptions];
+  v6 = [subscriptions copy];
   [v4 setSubscriptions:v6];
 
   return v4;
 }
 
-- (CTXPCServiceSubscriptionInfo)initWithCoder:(id)a3
+- (CTXPCServiceSubscriptionInfo)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTXPCServiceSubscriptionInfo;
   v5 = [(CTXPCServiceSubscriptionInfo *)&v13 init];
@@ -236,7 +236,7 @@ LABEL_9:
     v14[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"subscriptions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"subscriptions"];
     subscriptions = v5->_subscriptions;
     v5->_subscriptions = v9;
   }

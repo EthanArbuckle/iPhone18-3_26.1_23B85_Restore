@@ -1,9 +1,9 @@
 @interface BMInferredModeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMInferredModeEvent)initWithAbsoluteTimestamp:(double)a3 modeUUID:(id)a4 origin:(int64_t)a5 originBundleId:(id)a6 originAnchorType:(id)a7 isAutomationEnabled:(BOOL)a8 uiLocation:(unint64_t)a9 isStart:(BOOL)a10 confidenceScore:(double)a11 suggestionUUID:(id)a12 serializedTriggers:(id)a13 shouldSuggestTriggers:(BOOL)a14 modeType:(unint64_t)a15 userModeName:(id)a16;
-- (BMInferredModeEvent)initWithProto:(id)a3;
-- (BMInferredModeEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMInferredModeEvent)initWithAbsoluteTimestamp:(double)timestamp modeUUID:(id)d origin:(int64_t)origin originBundleId:(id)id originAnchorType:(id)type isAutomationEnabled:(BOOL)enabled uiLocation:(unint64_t)location isStart:(BOOL)self0 confidenceScore:(double)self1 suggestionUUID:(id)self2 serializedTriggers:(id)self3 shouldSuggestTriggers:(BOOL)self4 modeType:(unint64_t)self5 userModeName:(id)self6;
+- (BMInferredModeEvent)initWithProto:(id)proto;
+- (BMInferredModeEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -12,49 +12,49 @@
 
 @implementation BMInferredModeEvent
 
-- (BMInferredModeEvent)initWithAbsoluteTimestamp:(double)a3 modeUUID:(id)a4 origin:(int64_t)a5 originBundleId:(id)a6 originAnchorType:(id)a7 isAutomationEnabled:(BOOL)a8 uiLocation:(unint64_t)a9 isStart:(BOOL)a10 confidenceScore:(double)a11 suggestionUUID:(id)a12 serializedTriggers:(id)a13 shouldSuggestTriggers:(BOOL)a14 modeType:(unint64_t)a15 userModeName:(id)a16
+- (BMInferredModeEvent)initWithAbsoluteTimestamp:(double)timestamp modeUUID:(id)d origin:(int64_t)origin originBundleId:(id)id originAnchorType:(id)type isAutomationEnabled:(BOOL)enabled uiLocation:(unint64_t)location isStart:(BOOL)self0 confidenceScore:(double)self1 suggestionUUID:(id)self2 serializedTriggers:(id)self3 shouldSuggestTriggers:(BOOL)self4 modeType:(unint64_t)self5 userModeName:(id)self6
 {
-  v23 = a4;
-  v24 = a6;
-  v25 = a7;
-  v26 = a12;
-  v27 = a13;
-  v28 = a16;
+  dCopy = d;
+  idCopy = id;
+  typeCopy = type;
+  iDCopy = iD;
+  triggersCopy = triggers;
+  nameCopy = name;
   v45.receiver = self;
   v45.super_class = BMInferredModeEvent;
   v29 = [(BMInferredModeEvent *)&v45 init];
   v30 = v29;
   if (v29)
   {
-    v29->_absoluteTimestamp = a3;
-    v31 = [v23 copy];
+    v29->_absoluteTimestamp = timestamp;
+    v31 = [dCopy copy];
     modeUUID = v30->_modeUUID;
     v30->_modeUUID = v31;
 
-    v30->_origin = a5;
-    v33 = [v24 copy];
+    v30->_origin = origin;
+    v33 = [idCopy copy];
     originBundleId = v30->_originBundleId;
     v30->_originBundleId = v33;
 
-    v35 = [v25 copy];
+    v35 = [typeCopy copy];
     originAnchorType = v30->_originAnchorType;
     v30->_originAnchorType = v35;
 
-    v30->_isAutomationEnabled = a8;
-    v30->_uiLocation = a9;
-    v30->_isStart = a10;
-    v30->_confidenceScore = a11;
-    v37 = [v26 copy];
+    v30->_isAutomationEnabled = enabled;
+    v30->_uiLocation = location;
+    v30->_isStart = start;
+    v30->_confidenceScore = score;
+    v37 = [iDCopy copy];
     suggestionUUID = v30->_suggestionUUID;
     v30->_suggestionUUID = v37;
 
-    v39 = [v27 copy];
+    v39 = [triggersCopy copy];
     serializedTriggers = v30->_serializedTriggers;
     v30->_serializedTriggers = v39;
 
-    v30->_shouldSuggestTriggers = a14;
-    v30->_modeType = a15;
-    v41 = [v28 copy];
+    v30->_shouldSuggestTriggers = suggestTriggers;
+    v30->_modeType = modeType;
+    v41 = [nameCopy copy];
     userModeName = v30->_userModeName;
     v30->_userModeName = v41;
   }
@@ -62,27 +62,27 @@
   return v30;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = a1;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (version == 2)
   {
-    v7 = BMInferredModeEvent_v2;
+    selfCopy = BMInferredModeEvent_v2;
 LABEL_5:
-    v8 = [[v7 alloc] initWithProtoData:v6];
+    v8 = [[selfCopy alloc] initWithProtoData:dataCopy];
     goto LABEL_9;
   }
 
   v9 = __biome_log_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [BMInferredModeEvent eventWithData:a4 dataVersion:v9];
+    [BMInferredModeEvent eventWithData:version dataVersion:v9];
   }
 
   v8 = 0;
@@ -169,9 +169,9 @@ LABEL_9:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMInferredModeEvent *)self jsonDict];
+  jsonDict = [(BMInferredModeEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -188,24 +188,24 @@ LABEL_9:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMInferredModeEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMInferredModeEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMInferredModeEvent)initWithProto:(id)a3
+- (BMInferredModeEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       [v5 absoluteTimestamp];
       v7 = v6;
-      v30 = [v5 modeIdentifier];
+      modeIdentifier = [v5 modeIdentifier];
       v8 = [v5 origin]+ 1;
       if (v8 >= 0x12)
       {
@@ -224,18 +224,18 @@ LABEL_9:
       }
 
       v28 = v9;
-      v29 = [v5 originBundleId];
-      v12 = [v5 originAnchorType];
-      v27 = [v5 isAutomationEnabled];
-      v26 = [v5 uiLocation];
-      v13 = [v5 isStart];
+      originBundleId = [v5 originBundleId];
+      originAnchorType = [v5 originAnchorType];
+      isAutomationEnabled = [v5 isAutomationEnabled];
+      uiLocation = [v5 uiLocation];
+      isStart = [v5 isStart];
       [v5 confidenceScore];
       v15 = v14;
-      v16 = [v5 uuid];
-      v17 = [v5 serializedTriggers];
-      v18 = [v5 shouldSuggestTriggers];
-      v19 = [v5 modeType];
-      if (v19 >= 0x11)
+      uuid = [v5 uuid];
+      serializedTriggers = [v5 serializedTriggers];
+      shouldSuggestTriggers = [v5 shouldSuggestTriggers];
+      modeType = [v5 modeType];
+      if (modeType >= 0x11)
       {
         v21 = __biome_log_for_category();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -248,15 +248,15 @@ LABEL_9:
 
       else
       {
-        v20 = v19;
+        v20 = modeType;
       }
 
-      v22 = [v5 userModeName];
-      LOBYTE(v25) = v18;
-      LOBYTE(v24) = v13;
-      self = [(BMInferredModeEvent *)self initWithAbsoluteTimestamp:v30 modeUUID:v28 origin:v29 originBundleId:v12 originAnchorType:v27 isAutomationEnabled:v26 uiLocation:v7 isStart:v15 confidenceScore:v24 suggestionUUID:v16 serializedTriggers:v17 shouldSuggestTriggers:v25 modeType:v20 userModeName:v22];
+      userModeName = [v5 userModeName];
+      LOBYTE(v25) = shouldSuggestTriggers;
+      LOBYTE(v24) = isStart;
+      self = [(BMInferredModeEvent *)self initWithAbsoluteTimestamp:modeIdentifier modeUUID:v28 origin:originBundleId originBundleId:originAnchorType originAnchorType:isAutomationEnabled isAutomationEnabled:uiLocation uiLocation:v7 isStart:v15 confidenceScore:v24 suggestionUUID:uuid serializedTriggers:serializedTriggers shouldSuggestTriggers:v25 modeType:v20 userModeName:userModeName];
 
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -267,35 +267,35 @@ LABEL_9:
         [BMInferredModeEvent initWithProto:];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMInferredModeEvent)initWithProtoData:(id)a3
+- (BMInferredModeEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBInferredModeEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBInferredModeEvent alloc] initWithData:dataCopy];
 
     self = [(BMInferredModeEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -426,13 +426,13 @@ LABEL_29:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = equalCopy;
     absoluteTimestamp = self->_absoluteTimestamp;
     [v8 absoluteTimestamp];
     if (vabdd_f64(absoluteTimestamp, v10) >= 0.01)
@@ -445,14 +445,14 @@ LABEL_29:
     v12 = modeUUID;
     if (!modeUUID)
     {
-      v3 = [v8 modeUUID];
-      if (!v3)
+      modeUUID = [v8 modeUUID];
+      if (!modeUUID)
       {
         origin = self->_origin;
-        v17 = [v8 origin];
+        origin = [v8 origin];
         v14 = 0;
         v15 = 0;
-        if (origin != v17)
+        if (origin != origin)
         {
 LABEL_50:
 
@@ -465,8 +465,8 @@ LABEL_50:
       v12 = self->_modeUUID;
     }
 
-    v4 = [v8 modeUUID];
-    if (![(NSString *)v12 isEqualToString:v4])
+    modeUUID2 = [v8 modeUUID];
+    if (![(NSString *)v12 isEqualToString:modeUUID2])
     {
 
       v15 = 0;
@@ -487,20 +487,20 @@ LABEL_14:
     v19 = originBundleId;
     if (!originBundleId)
     {
-      v20 = [v8 originBundleId];
-      if (!v20)
+      originBundleId = [v8 originBundleId];
+      if (!originBundleId)
       {
         v46 = 0;
         v47 = 0;
         goto LABEL_21;
       }
 
-      v46 = v20;
+      v46 = originBundleId;
       v19 = self->_originBundleId;
     }
 
-    v5 = [v8 originBundleId];
-    if (![(NSString *)v19 isEqualToString:v5])
+    originBundleId2 = [v8 originBundleId];
+    if (![(NSString *)v19 isEqualToString:originBundleId2])
     {
       v15 = 0;
       goto LABEL_45;
@@ -512,22 +512,22 @@ LABEL_21:
     v22 = originAnchorType;
     if (!originAnchorType)
     {
-      v23 = [v8 originAnchorType];
-      if (!v23)
+      originAnchorType = [v8 originAnchorType];
+      if (!originAnchorType)
       {
         v44 = 0;
         v45 = 0;
         goto LABEL_28;
       }
 
-      v44 = v23;
+      v44 = originAnchorType;
       v22 = self->_originAnchorType;
     }
 
-    v24 = [v8 originAnchorType];
+    originAnchorType2 = [v8 originAnchorType];
     v25 = v22;
-    v26 = v24;
-    if (![(NSString *)v25 isEqualToString:v24])
+    v26 = originAnchorType2;
+    if (![(NSString *)v25 isEqualToString:originAnchorType2])
     {
 
       v15 = 0;
@@ -574,8 +574,8 @@ LABEL_40:
     v42 = suggestionUUID;
     if (!suggestionUUID)
     {
-      v34 = [v8 suggestionUUID];
-      if (!v34)
+      suggestionUUID = [v8 suggestionUUID];
+      if (!suggestionUUID)
       {
         modeType = self->_modeType;
         v39 = 0;
@@ -597,11 +597,11 @@ LABEL_41:
         goto LABEL_63;
       }
 
-      v40 = v34;
+      v40 = suggestionUUID;
       suggestionUUID = self->_suggestionUUID;
     }
 
-    v41 = [v8 suggestionUUID];
+    suggestionUUID2 = [v8 suggestionUUID];
     if (!-[NSString isEqualToString:](suggestionUUID, "isEqualToString:") || (v35 = self->_modeType, v35 != [v8 modeType]))
     {
       v15 = 0;

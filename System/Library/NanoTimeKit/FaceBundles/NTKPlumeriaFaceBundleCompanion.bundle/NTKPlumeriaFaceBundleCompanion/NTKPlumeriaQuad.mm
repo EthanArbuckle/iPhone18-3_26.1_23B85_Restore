@@ -1,34 +1,34 @@
 @interface NTKPlumeriaQuad
-+ (float)generateZdepthForLayer:(int)a3 numLayers:(int)a4;
++ (float)generateZdepthForLayer:(int)layer numLayers:(int)layers;
 - (BOOL)initDigitStructs;
-- (NTKPlumeriaQuad)initWithDevice:(id)a3;
+- (NTKPlumeriaQuad)initWithDevice:(id)device;
 - (id)_loadMetalBinaryArchives;
-- (id)_loadTextureResource:(id)a3;
-- (void)initBloomPipeline:(id)a3;
+- (id)_loadTextureResource:(id)resource;
+- (void)initBloomPipeline:(id)pipeline;
 - (void)initLayerAndInstanceStructs;
-- (void)initPlumeriaPipeline:(id)a3;
-- (void)morphBetweenColorways:(float)a3 index1:(int)a4 index2:(int)a5;
-- (void)performBlending:(float)a3 input1:(id *)a4 input2:(id *)a5 output:(id *)a6;
-- (void)performBloomBlending:(float)a3 input1:(id *)a4 input2:(id *)a5 output:(id *)a6;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4;
-- (void)setAnimatingOverrideDate:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setupForQuadView:(id)a3;
+- (void)initPlumeriaPipeline:(id)pipeline;
+- (void)morphBetweenColorways:(float)colorways index1:(int)index1 index2:(int)index2;
+- (void)performBlending:(float)blending input1:(id *)input1 input2:(id *)input2 output:(id *)output;
+- (void)performBloomBlending:(float)blending input1:(id *)input1 input2:(id *)input2 output:(id *)output;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)setAnimatingOverrideDate:(BOOL)date;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKPlumeriaQuad
 
-- (NTKPlumeriaQuad)initWithDevice:(id)a3
+- (NTKPlumeriaQuad)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = NTKPlumeriaQuad;
   v6 = [(NTKPlumeriaQuad *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     +[NTKPlumeriaQuad getDesiredFPS];
     v7->_fps = v8;
     v9 = +[CLKUIMetalResourceManager sharedDevice];
@@ -41,7 +41,7 @@
     library = v7->_library;
     v7->_library = v13;
 
-    [v5 screenScale];
+    [deviceCopy screenScale];
     v7->_screenScale = v15;
     v7->_tritiumProgress = 0.0;
     *v7->_anon_1270 = xmmword_9180;
@@ -57,45 +57,45 @@
   return v7;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
+  dateCopy = date;
   overrideDate = self->_overrideDate;
-  v10 = v7;
+  v10 = dateCopy;
   if ((NTKEqualObjects() & 1) == 0)
   {
-    if (a4 > 0.0)
+    if (duration > 0.0)
     {
       [(NTKPlumeriaQuad *)self setAnimatingOverrideDate:1];
     }
 
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     v9 = CACurrentMediaTime();
     self->_startOverrideTime = v9;
-    self->_endOverrideTime = v9 + a4;
+    self->_endOverrideTime = v9 + duration;
   }
 }
 
-- (void)setAnimatingOverrideDate:(BOOL)a3
+- (void)setAnimatingOverrideDate:(BOOL)date
 {
-  if (self->_animatingOverrideDate != a3)
+  if (self->_animatingOverrideDate != date)
   {
-    self->_animatingOverrideDate = a3;
+    self->_animatingOverrideDate = date;
   }
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   screenScale = self->_screenScale;
   self->_renderSize.width = v6 * screenScale;
   self->_renderSize.height = v7 * screenScale;
-  v8 = [v4 superview];
-  [v8 safeAreaInsets];
+  superview = [viewCopy superview];
+  [superview safeAreaInsets];
   v10 = v9;
-  v11 = [v4 superview];
-  [v11 safeAreaInsets];
+  superview2 = [viewCopy superview];
+  [superview2 safeAreaInsets];
   v13 = v10 - v12;
 
   v14 = -v13;
@@ -106,14 +106,14 @@
 
   v15 = self->_screenScale * v14;
   self->_renderSize.height = self->_renderSize.height + v15;
-  v16 = [v4 colorPixelFormat];
+  colorPixelFormat = [viewCopy colorPixelFormat];
 
-  self->_pixelFormat = v16;
+  self->_pixelFormat = colorPixelFormat;
   [(NTKPlumeriaQuad *)self initDigitStructs];
   [(NTKPlumeriaQuad *)self initLayerAndInstanceStructs];
-  v19 = [(NTKPlumeriaQuad *)self _loadMetalBinaryArchives];
-  [(NTKPlumeriaQuad *)self initBloomPipeline:v19];
-  [(NTKPlumeriaQuad *)self initPlumeriaPipeline:v19];
+  _loadMetalBinaryArchives = [(NTKPlumeriaQuad *)self _loadMetalBinaryArchives];
+  [(NTKPlumeriaQuad *)self initBloomPipeline:_loadMetalBinaryArchives];
+  [(NTKPlumeriaQuad *)self initPlumeriaPipeline:_loadMetalBinaryArchives];
   if (!self->_fontHelper)
   {
     v17 = objc_alloc_init(NTKPlumeriaFontHelper);
@@ -124,26 +124,26 @@
   }
 }
 
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
   v8 = +[MTLRenderPassDescriptor renderPassDescriptor];
   tempRenderTargetTexture = self->_tempRenderTargetTexture;
-  v10 = [v8 colorAttachments];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  colorAttachments = [v8 colorAttachments];
+  v11 = [colorAttachments objectAtIndexedSubscript:0];
   [v11 setTexture:tempRenderTargetTexture];
 
-  v12 = [v8 colorAttachments];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v8 colorAttachments];
+  v13 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v13 setLoadAction:2];
 
-  v14 = [v7 renderCommandEncoderWithDescriptor:v8];
+  v14 = [bufferCopy renderCommandEncoderWithDescriptor:v8];
   [(NTKPlumeriaQuad *)self renderForDisplayWithEncoder:v14];
   [v14 endEncoding];
   [(NTKPlumeriaBloomEffect *)self->_bloomEffect setMaxIterations:self->_currentSettings->var22];
-  v15 = [(NTKPlumeriaBloomEffect *)self->_bloomEffect bloom:self->_tempRenderTargetTexture commandBuffer:v7];
-  v16 = [v7 renderCommandEncoderWithDescriptor:v6];
+  v15 = [(NTKPlumeriaBloomEffect *)self->_bloomEffect bloom:self->_tempRenderTargetTexture commandBuffer:bufferCopy];
+  v16 = [bufferCopy renderCommandEncoderWithDescriptor:descriptorCopy];
 
   p_overallScale = &self->_settings.normal[0].overallScale;
   if (self->_editingColors)
@@ -173,17 +173,17 @@
   [v16 endEncoding];
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
-  [v4 setLabel:@"Plumeria Render Encoder"];
+  encoderCopy = encoder;
+  [encoderCopy setLabel:@"Plumeria Render Encoder"];
   v98 = 0;
   v97 = 0;
   renderSize = self->_renderSize;
   v100 = xmmword_9190;
-  [v4 setViewport:&v97];
-  [v4 setRenderPipelineState:self->_plumeriaPipelineState];
-  [v4 setCullMode:0];
+  [encoderCopy setViewport:&v97];
+  [encoderCopy setRenderPipelineState:self->_plumeriaPipelineState];
+  [encoderCopy setCullMode:0];
   [(NTKPlumeriaQuad *)self springStep];
   self->_springPosition = *&tritiumProgress;
   HIDWORD(tritiumProgress) = 0;
@@ -238,9 +238,9 @@
   v12 = v10 / v11;
   *v74 = v12;
   v13 = [(MTLDevice *)self->_mtlDevice newBufferWithBytes:v74 length:416 options:1];
-  [v4 setVertexBuffer:v13 offset:0 atIndex:1];
+  [encoderCopy setVertexBuffer:v13 offset:0 atIndex:1];
   v65 = v13;
-  [v4 setFragmentBuffer:v13 offset:0 atIndex:0];
+  [encoderCopy setFragmentBuffer:v13 offset:0 atIndex:0];
   overrideDate = self->_overrideDate;
   if (overrideDate)
   {
@@ -255,23 +255,23 @@
   v16 = v15;
   v63 = +[NSCalendar currentCalendar];
   v17 = [v63 components:96 fromDate:v16];
-  v18 = [v17 hour];
+  hour = [v17 hour];
   v62 = v17;
-  v19 = [v17 minute];
+  minute = [v17 minute];
   v61 = +[NSLocale currentLocale];
   if ((CLKLocaleIs24HourMode() & 1) == 0)
   {
-    if (v18)
+    if (hour)
     {
-      if (v18 > 12)
+      if (hour > 12)
       {
-        v18 -= 12;
+        hour -= 12;
       }
     }
 
     else
     {
-      v18 = 12;
+      hour = 12;
     }
   }
 
@@ -279,15 +279,15 @@
   v64 = v16;
   if (var1 >= 1)
   {
-    v18 = var1 / 0x64uLL;
-    v19 = var1 % 0x64u;
+    hour = var1 / 0x64uLL;
+    minute = var1 % 0x64u;
   }
 
   v21 = 0;
-  v104[0] = v18 / 10;
-  v104[1] = v18 % 10;
-  v104[2] = v19 / 10;
-  v104[3] = v19 % 10;
+  v104[0] = hour / 10;
+  v104[1] = hour % 10;
+  v104[2] = minute / 10;
+  v104[3] = minute % 10;
   v22 = &self->_layerStructs[2];
   v23 = v103;
   do
@@ -303,8 +303,8 @@
 
   while (v21 != 20);
   v66 = [(MTLDevice *)self->_mtlDevice newBufferWithBytes:v103 length:320 options:1];
-  [v4 setVertexBuffer:? offset:? atIndex:?];
-  [(NTKPlumeriaFontHelper *)self->_fontHelper generateLayout:v18 minute:v19 layout:v101];
+  [encoderCopy setVertexBuffer:? offset:? atIndex:?];
+  [(NTKPlumeriaFontHelper *)self->_fontHelper generateLayout:hour minute:minute layout:v101];
   v26 = 0;
   digitStructs = self->_digitStructs;
   v28 = v102;
@@ -362,54 +362,54 @@
   do
   {
     v41 = v40;
-    [v4 setVertexBuffer:v66 offset:16 * v40 atIndex:2];
+    [encoderCopy setVertexBuffer:v66 offset:16 * v40 atIndex:2];
     v42 = 0;
     v67 = v41;
     v71 = v41 << 6;
     do
     {
       v43 = digitStructs[2 * v104[v42]].mesh;
-      v44 = [(MTKMesh *)v43 vertexBuffers];
-      v45 = [v44 objectAtIndexedSubscript:0];
+      vertexBuffers = [(MTKMesh *)v43 vertexBuffers];
+      v45 = [vertexBuffers objectAtIndexedSubscript:0];
 
-      v46 = [v45 buffer];
+      buffer = [v45 buffer];
       v72 = v45;
-      [v4 setVertexBuffer:v46 offset:objc_msgSend(v45 atIndex:{"offset"), 0}];
+      [encoderCopy setVertexBuffer:buffer offset:objc_msgSend(v45 atIndex:{"offset"), 0}];
 
-      [v4 setFragmentBuffer:v69 offset:v71 + 16 * v42 atIndex:1];
+      [encoderCopy setFragmentBuffer:v69 offset:v71 + 16 * v42 atIndex:1];
       v73 = v42;
-      [v4 setVertexBuffer:v70 offset:32 * v42 atIndex:3];
-      [v4 setVertexBuffer:v69 offset:v71 + 16 * v42 atIndex:4];
-      v47 = [(MTKMesh *)v43 submeshes];
-      v48 = [v47 count];
+      [encoderCopy setVertexBuffer:v70 offset:32 * v42 atIndex:3];
+      [encoderCopy setVertexBuffer:v69 offset:v71 + 16 * v42 atIndex:4];
+      submeshes = [(MTKMesh *)v43 submeshes];
+      v48 = [submeshes count];
 
-      v49 = v4;
+      v49 = encoderCopy;
       if (v48)
       {
         v50 = 0;
         do
         {
-          v51 = [(MTKMesh *)v43 submeshes];
-          v52 = [v51 objectAtIndexedSubscript:v50];
+          submeshes2 = [(MTKMesh *)v43 submeshes];
+          v52 = [submeshes2 objectAtIndexedSubscript:v50];
 
-          v53 = [v52 primitiveType];
-          v54 = [v52 indexCount];
-          v55 = [v52 indexType];
-          v56 = [v52 indexBuffer];
-          v57 = [v56 buffer];
-          v58 = [v52 indexBuffer];
-          [v49 drawIndexedPrimitives:v53 indexCount:v54 indexType:v55 indexBuffer:v57 indexBufferOffset:{objc_msgSend(v58, "offset")}];
+          primitiveType = [v52 primitiveType];
+          indexCount = [v52 indexCount];
+          indexType = [v52 indexType];
+          indexBuffer = [v52 indexBuffer];
+          buffer2 = [indexBuffer buffer];
+          indexBuffer2 = [v52 indexBuffer];
+          [v49 drawIndexedPrimitives:primitiveType indexCount:indexCount indexType:indexType indexBuffer:buffer2 indexBufferOffset:{objc_msgSend(indexBuffer2, "offset")}];
 
           ++v50;
-          v59 = [(MTKMesh *)v43 submeshes];
-          v60 = [v59 count];
+          submeshes3 = [(MTKMesh *)v43 submeshes];
+          v60 = [submeshes3 count];
         }
 
         while (v60 > v50);
       }
 
       v42 = v73 + 1;
-      v4 = v49;
+      encoderCopy = v49;
       digitStructs = v68;
     }
 
@@ -458,9 +458,9 @@
   return v9;
 }
 
-- (void)initPlumeriaPipeline:(id)a3
+- (void)initPlumeriaPipeline:(id)pipeline
 {
-  v4 = a3;
+  pipelineCopy = pipeline;
   v5 = [(MTLLibrary *)self->_library newFunctionWithName:@"plumeriaVertexShader"];
   v6 = [(MTLLibrary *)self->_library newFunctionWithName:@"plumeriaFragmentShader"];
   if (!v6)
@@ -474,23 +474,23 @@
 
   v8 = objc_alloc_init(MTLRenderPipelineDescriptor);
   v9 = v8;
-  if (v4)
+  if (pipelineCopy)
   {
-    [v8 setBinaryArchives:v4];
+    [v8 setBinaryArchives:pipelineCopy];
   }
 
   [v9 setVertexFunction:v5];
   [v9 setFragmentFunction:v6];
   [v9 setLabel:@"Plumeria Render Pipeline"];
-  v10 = [v9 colorAttachments];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  colorAttachments = [v9 colorAttachments];
+  v11 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v11 setPixelFormat:self->_pixelFormat];
   [v11 setBlendingEnabled:0];
   plumeriaPipelineState = self->_plumeriaPipelineState;
   self->_plumeriaPipelineState = 0;
 
-  if (v4)
+  if (pipelineCopy)
   {
     mtlDevice = self->_mtlDevice;
     v24 = 0;
@@ -545,112 +545,112 @@
 LABEL_22:
 }
 
-- (id)_loadTextureResource:(id)a3
+- (id)_loadTextureResource:(id)resource
 {
   v11[0] = MTKTextureLoaderOptionTextureUsage;
   v11[1] = MTKTextureLoaderOptionTextureStorageMode;
   v12[0] = &off_10F48;
   v12[1] = &off_10F60;
-  v4 = a3;
+  resourceCopy = resource;
   v5 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
   v6 = [[MTKTextureLoader alloc] initWithDevice:self->_mtlDevice];
   v7 = sub_42B0();
   v10 = 0;
-  v8 = [v6 newTextureWithName:v4 scaleFactor:v7 bundle:v5 options:&v10 error:1.0];
+  v8 = [v6 newTextureWithName:resourceCopy scaleFactor:v7 bundle:v5 options:&v10 error:1.0];
 
   return v8;
 }
 
-- (void)performBloomBlending:(float)a3 input1:(id *)a4 input2:(id *)a5 output:(id *)a6
+- (void)performBloomBlending:(float)blending input1:(id *)input1 input2:(id *)input2 output:(id *)output
 {
-  v7 = a3 < 0.0;
-  v8 = 0.0;
+  v7 = blending < 0.0;
+  blendingCopy = 0.0;
   if (!v7)
   {
-    v8 = a3;
+    blendingCopy = blending;
   }
 
-  if (v8 > 1.0)
+  if (blendingCopy > 1.0)
   {
-    v8 = 1.0;
+    blendingCopy = 1.0;
   }
 
-  v9 = (v8 * v8);
-  *&v9 = (v8 * -2.0 + 3.0) * v9;
-  v10 = *&a4->var15;
-  v11 = *&a5->var15;
-  *&a6->var0 = vmlaq_n_f32(v10, vsubq_f32(v11, v10), *&v9);
-  *&a6->var4 = vmla_f32(*&a4->var19, vsub_f32(*&a5->var19, *&a4->var19), *&vdupq_lane_s32(*&v9, 0));
-  var21 = a4->var21;
-  v13 = a5->var21;
-  a6->var6 = var21 + (*&v9 * (v13 - var21));
+  v9 = (blendingCopy * blendingCopy);
+  *&v9 = (blendingCopy * -2.0 + 3.0) * v9;
+  v10 = *&input1->var15;
+  v11 = *&input2->var15;
+  *&output->var0 = vmlaq_n_f32(v10, vsubq_f32(v11, v10), *&v9);
+  *&output->var4 = vmla_f32(*&input1->var19, vsub_f32(*&input2->var19, *&input1->var19), *&vdupq_lane_s32(*&v9, 0));
+  var21 = input1->var21;
+  v13 = input2->var21;
+  output->var6 = var21 + (*&v9 * (v13 - var21));
   if (self->_state == 2)
   {
-    var2 = a5[1].var2;
+    var2 = input2[1].var2;
     if (*&var2 > 0.0)
     {
-      a6->var1 = splineInterpolation(v10.f32[1], *&var2, *(&var2 + 1), v11.f32[1], a3);
+      output->var1 = splineInterpolation(v10.f32[1], *&var2, *(&var2 + 1), v11.f32[1], blending);
     }
 
-    var3 = a5[1].var3;
+    var3 = input2[1].var3;
     if (*&var3 > 0.0)
     {
-      a6->var6 = splineInterpolation(var21, *&var3, *(&var3 + 1), v13, a3);
+      output->var6 = splineInterpolation(var21, *&var3, *(&var3 + 1), v13, blending);
     }
   }
 }
 
-- (void)performBlending:(float)a3 input1:(id *)a4 input2:(id *)a5 output:(id *)a6
+- (void)performBlending:(float)blending input1:(id *)input1 input2:(id *)input2 output:(id *)output
 {
-  _NF = a3 < 0.0;
-  v13 = 0.0;
+  _NF = blending < 0.0;
+  blendingCopy = 0.0;
   if (!_NF)
   {
-    v13 = a3;
+    blendingCopy = blending;
   }
 
-  if (v13 > 1.0)
+  if (blendingCopy > 1.0)
   {
-    v13 = 1.0;
+    blendingCopy = 1.0;
   }
 
-  *v6.i32 = (v13 * -2.0 + 3.0) * (v13 * v13);
-  v14.f64[0] = a4->var2;
-  v15.f64[0] = a5->var2;
-  v16 = *&a4->var3;
-  v17 = *&a5->var3;
-  var6 = a4->var6;
-  v19 = a5->var6;
-  a6[1].var5 = var6 + (*v6.i32 * (v19 - var6));
-  v14.f64[1] = a4->var7;
+  *v6.i32 = (blendingCopy * -2.0 + 3.0) * (blendingCopy * blendingCopy);
+  v14.f64[0] = input1->var2;
+  v15.f64[0] = input2->var2;
+  v16 = *&input1->var3;
+  v17 = *&input2->var3;
+  var6 = input1->var6;
+  v19 = input2->var6;
+  output[1].var5 = var6 + (*v6.i32 * (v19 - var6));
+  v14.f64[1] = input1->var7;
   v20 = vcvt_hight_f32_f64(vcvt_f32_f64(v16), v14);
-  v15.f64[1] = a5->var7;
-  *&a6->var9 = vmlaq_n_f32(v20, vsubq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(v17), v15), v20), *v6.i32);
-  v17.f64[0] = a4->var10;
-  v21.f64[0] = a5->var10;
-  v17.f64[1] = a4->var12;
-  v22 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a4->var8), v17);
-  v21.f64[1] = a5->var12;
+  v15.f64[1] = input2->var7;
+  *&output->var9 = vmlaq_n_f32(v20, vsubq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(v17), v15), v20), *v6.i32);
+  v17.f64[0] = input1->var10;
+  v21.f64[0] = input2->var10;
+  v17.f64[1] = input1->var12;
+  v22 = vcvt_hight_f32_f64(vcvt_f32_f64(*&input1->var8), v17);
+  v21.f64[1] = input2->var12;
   v46 = v6;
-  *&a6->var13 = vmlaq_n_f32(v22, vsubq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(*&a5->var8), v21), v22), *v6.i32);
-  *v22.f32 = vcvt_f32_f64(*&a4->var13);
-  *&a6[1].var3 = vmla_f32(*v22.f32, vsub_f32(vcvt_f32_f64(*&a5->var13), *v22.f32), *&vdupq_lane_s32(v6, 0));
+  *&output->var13 = vmlaq_n_f32(v22, vsubq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(*&input2->var8), v21), v22), *v6.i32);
+  *v22.f32 = vcvt_f32_f64(*&input1->var13);
+  *&output[1].var3 = vmla_f32(*v22.f32, vsub_f32(vcvt_f32_f64(*&input2->var13), *v22.f32), *&vdupq_lane_s32(v6, 0));
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
   v24 = IsReduceMotionEnabled;
   if (self->_state == 2 && !IsReduceMotionEnabled)
   {
-    var7 = a4->var7;
-    v26 = a5->var7;
-    a6->var12 = splineInterpolation(var7, COERCE_FLOAT(*&a5->var23), COERCE_FLOAT(HIDWORD(*&a5->var23)), v26, a3);
-    var8 = a4->var8;
-    v28 = a5->var8;
-    *&a6->var13 = splineInterpolation(var8, COERCE_FLOAT(*&a5->var23), COERCE_FLOAT(HIDWORD(*&a5->var23)), v28, a3);
-    var9 = a4->var9;
-    v30 = a5->var9;
-    a6[1].var0 = splineInterpolation(var9, COERCE_FLOAT(*&a5[1].var0), COERCE_FLOAT(HIDWORD(*&a5[1].var0)), v30, a3);
-    var2 = a4->var2;
-    v32 = a5->var2;
-    a6->var11 = splineInterpolation(var2, COERCE_FLOAT(*&a5[1].var4), COERCE_FLOAT(HIDWORD(*&a5[1].var4)), v32, a3);
+    var7 = input1->var7;
+    v26 = input2->var7;
+    output->var12 = splineInterpolation(var7, COERCE_FLOAT(*&input2->var23), COERCE_FLOAT(HIDWORD(*&input2->var23)), v26, blending);
+    var8 = input1->var8;
+    v28 = input2->var8;
+    *&output->var13 = splineInterpolation(var8, COERCE_FLOAT(*&input2->var23), COERCE_FLOAT(HIDWORD(*&input2->var23)), v28, blending);
+    var9 = input1->var9;
+    v30 = input2->var9;
+    output[1].var0 = splineInterpolation(var9, COERCE_FLOAT(*&input2[1].var0), COERCE_FLOAT(HIDWORD(*&input2[1].var0)), v30, blending);
+    var2 = input1->var2;
+    v32 = input2->var2;
+    output->var11 = splineInterpolation(var2, COERCE_FLOAT(*&input2[1].var4), COERCE_FLOAT(HIDWORD(*&input2[1].var4)), v32, blending);
   }
 
   v33 = 0;
@@ -658,13 +658,13 @@ LABEL_22:
   v35 = vdupq_lane_s32(v46, 0);
   do
   {
-    v36 = *(&a4[1].var6 + v33);
-    _Q2 = vsubq_f32(*(&a5[1].var6 + v33), v36);
+    v36 = *(&input1[1].var6 + v33);
+    _Q2 = vsubq_f32(*(&input2[1].var6 + v33), v36);
     __asm { FMLA            S3, S4, V2.S[2] }
 
     v42 = vmlaq_f32(v36, _Q2, v35);
     v42.i32[2] = _S3;
-    *(&a6[1].var10 + v33) = v42;
+    *(&output[1].var10 + v33) = v42;
     v33 += 16;
   }
 
@@ -692,19 +692,19 @@ LABEL_22:
     v44.f32[2] = COERCE_FLOAT(*&self->_deviceAccel[8]) + (*v46.i32 * (0.0 - COERCE_FLOAT(*&self->_deviceAccel[8])));
   }
 
-  *&a6->var4 = v44;
+  *&output->var4 = v44;
   springPosition = self->_springPosition;
   if ((self->_state - 1) < 2)
   {
     springPosition = springPosition + (*v46.i32 * (0.0 - springPosition));
   }
 
-  a6->var8 = springPosition;
+  output->var8 = springPosition;
 }
 
-+ (float)generateZdepthForLayer:(int)a3 numLayers:(int)a4
++ (float)generateZdepthForLayer:(int)layer numLayers:(int)layers
 {
-  result = 1.0 / (a4 - 1) * a3;
+  result = 1.0 / (layers - 1) * layer;
   if (result <= 0.0)
   {
     return 0.001;
@@ -826,8 +826,8 @@ LABEL_22:
 
   v3 = 0;
   v32 = 0;
-  v30 = self;
-  v4 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   do
   {
     v5 = [NSString stringWithFormat:@"%d", v3];
@@ -856,7 +856,7 @@ LABEL_22:
         {
           v19 = [v18 objectAtIndexedSubscript:0];
           v20 = [MTKMesh alloc];
-          mtlDevice = v30->_mtlDevice;
+          mtlDevice = selfCopy->_mtlDevice;
           v35 = 0;
           v22 = [v20 initWithMesh:v19 device:mtlDevice error:&v35];
           v23 = v35;
@@ -864,10 +864,10 @@ LABEL_22:
           if (v22)
           {
             v31 = v23;
-            v4->_digitStructs[0].digit = v3;
-            objc_storeStrong(&v4->_digitStructs[0].mesh, v22);
+            selfCopy2->_digitStructs[0].digit = v3;
+            objc_storeStrong(&selfCopy2->_digitStructs[0].mesh, v22);
             [v19 boundingBox];
-            v4->_digitStructs[1] = vzip1q_s64(v26, v25);
+            selfCopy2->_digitStructs[1] = vzip1q_s64(v26, v25);
             v24 = v31;
             ++v32;
           }
@@ -876,7 +876,7 @@ LABEL_22:
     }
 
     ++v3;
-    v4 = (v4 + 32);
+    selfCopy2 = (selfCopy2 + 32);
   }
 
   while (v3 != 10);
@@ -901,9 +901,9 @@ LABEL_16:
   return v27;
 }
 
-- (void)initBloomPipeline:(id)a3
+- (void)initBloomPipeline:(id)pipeline
 {
-  v4 = a3;
+  pipelineCopy = pipeline;
   [(CLKDevice *)self->_device screenBounds];
   v6 = (v5 * self->_screenScale);
   [(CLKDevice *)self->_device screenBounds];
@@ -924,24 +924,24 @@ LABEL_16:
   v15 = [(MTLLibrary *)self->_library newFunctionWithName:@"bloomCompositeFragment"];
   v16 = objc_alloc_init(MTLRenderPipelineDescriptor);
   v17 = v16;
-  if (v4)
+  if (pipelineCopy)
   {
-    [v16 setBinaryArchives:v4];
+    [v16 setBinaryArchives:pipelineCopy];
   }
 
   v31 = v14;
   [v17 setVertexFunction:v14];
   [v17 setFragmentFunction:v15];
   [v17 setLabel:@"Plumeria Bloom Final Pass Pipeline"];
-  v18 = [v17 colorAttachments];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  colorAttachments = [v17 colorAttachments];
+  v19 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v19 setPixelFormat:self->_pixelFormat];
   [v19 setBlendingEnabled:0];
   bloomPipelineState = self->_bloomPipelineState;
   self->_bloomPipelineState = 0;
 
-  if (v4)
+  if (pipelineCopy)
   {
     mtlDevice = self->_mtlDevice;
     v33 = 0;
@@ -996,18 +996,18 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)morphBetweenColorways:(float)a3 index1:(int)a4 index2:(int)a5
+- (void)morphBetweenColorways:(float)colorways index1:(int)index1 index2:(int)index2
 {
   self->_editingColors = 1;
-  self->_editingIndex1 = a4;
-  self->_editingIndex2 = a5;
-  self->_editingFraction = a3;
+  self->_editingIndex1 = index1;
+  self->_editingIndex2 = index2;
+  self->_editingFraction = colorways;
   self->_state = 5;
-  if (a4 == a5)
+  if (index1 == index2)
   {
     self->_editingColors = 0;
-    self->_currentIndex = a4;
-    v5 = &self->_settings + 512 * a4;
+    self->_currentIndex = index1;
+    v5 = &self->_settings + 512 * index1;
     self->_currentSettings = (v5 + 16);
     self->_currentTritiumSettings = (v5 + 2576);
     self->_state = 4;

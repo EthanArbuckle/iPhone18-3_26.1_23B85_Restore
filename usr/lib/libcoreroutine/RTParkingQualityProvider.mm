@@ -1,27 +1,27 @@
 @interface RTParkingQualityProvider
 - (RTParkingQualityProvider)init;
-- (id)getCdfFromHistogram:(id)a3 numSamples:(double)a4;
-- (id)getHistogramFromSamples:(id)a3;
-- (int)indexOfSmallestElement:(double *)a3 size:(int)a4;
-- (unint64_t)calculateParkingQualityWithLocations:(id)a3 parkingTimestamp:(double)a4;
-- (unint64_t)classifySamples:(id)a3;
-- (unint64_t)parkingQualityToLocationQuality:(unint64_t)a3;
+- (id)getCdfFromHistogram:(id)histogram numSamples:(double)samples;
+- (id)getHistogramFromSamples:(id)samples;
+- (int)indexOfSmallestElement:(double *)element size:(int)size;
+- (unint64_t)calculateParkingQualityWithLocations:(id)locations parkingTimestamp:(double)timestamp;
+- (unint64_t)classifySamples:(id)samples;
+- (unint64_t)parkingQualityToLocationQuality:(unint64_t)quality;
 - (void)reset;
 @end
 
 @implementation RTParkingQualityProvider
 
-- (int)indexOfSmallestElement:(double *)a3 size:(int)a4
+- (int)indexOfSmallestElement:(double *)element size:(int)size
 {
-  if (a4 < 2)
+  if (size < 2)
   {
     return 0;
   }
 
   result = 0;
-  for (i = 1; i != a4; ++i)
+  for (i = 1; i != size; ++i)
   {
-    if (a3[i] < a3[result])
+    if (element[i] < element[result])
     {
       result = i;
     }
@@ -49,27 +49,27 @@
 
 - (void)reset
 {
-  v3 = [(RTParkingQualityProvider *)self movingHistorgram];
-  [v3 removeAllObjects];
+  movingHistorgram = [(RTParkingQualityProvider *)self movingHistorgram];
+  [movingHistorgram removeAllObjects];
 
   [(RTParkingQualityProvider *)self setParkingQualityIndicator:0];
 }
 
-- (id)getHistogramFromSamples:(id)a3
+- (id)getHistogramFromSamples:(id)samples
 {
-  v3 = a3;
+  samplesCopy = samples;
   v4 = objc_opt_new();
   for (i = 0; i != 17; ++i)
   {
     [v4 setObject:&unk_28459FA68 atIndexedSubscript:i];
   }
 
-  if ([v3 count])
+  if ([samplesCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:v6];
+      v7 = [samplesCopy objectAtIndexedSubscript:v6];
       [v7 doubleValue];
       v9 = (v8 / 5.0);
 
@@ -92,17 +92,17 @@
       ++v6;
     }
 
-    while ([v3 count] > v6);
+    while ([samplesCopy count] > v6);
   }
 
   return v4;
 }
 
-- (id)getCdfFromHistogram:(id)a3 numSamples:(double)a4
+- (id)getCdfFromHistogram:(id)histogram numSamples:(double)samples
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 >= 1.0 && [v5 count])
+  histogramCopy = histogram;
+  v6 = histogramCopy;
+  if (samples >= 1.0 && [histogramCopy count])
   {
     v7 = objc_opt_new();
     if ([v6 count])
@@ -147,8 +147,8 @@
         v19 = MEMORY[0x277CCABB0];
         v20 = [v7 objectAtIndexedSubscript:v18];
         [v20 doubleValue];
-        v22 = [v19 numberWithDouble:v21 * 100.0 / a4];
-        [v7 setObject:v22 atIndexedSubscript:v18];
+        samples = [v19 numberWithDouble:v21 * 100.0 / samples];
+        [v7 setObject:samples atIndexedSubscript:v18];
 
         ++v18;
       }
@@ -172,28 +172,28 @@
   return v7;
 }
 
-- (unint64_t)calculateParkingQualityWithLocations:(id)a3 parkingTimestamp:(double)a4
+- (unint64_t)calculateParkingQualityWithLocations:(id)locations parkingTimestamp:(double)timestamp
 {
-  v6 = a3;
+  locationsCopy = locations;
   [(RTParkingQualityProvider *)self reset];
   v7 = objc_opt_new();
-  if ([v6 count])
+  if ([locationsCopy count])
   {
     v8 = 0;
     v9 = 1;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:v8];
+      v10 = [locationsCopy objectAtIndexedSubscript:v8];
       [v10 horizontalAccuracy];
       if (v11 > 0.0)
       {
-        v12 = [v10 timestamp];
-        [v12 timeIntervalSinceReferenceDate];
-        if (a4 - v13 <= 10.0)
+        timestamp = [v10 timestamp];
+        [timestamp timeIntervalSinceReferenceDate];
+        if (timestamp - v13 <= 10.0)
         {
-          v14 = [v10 timestamp];
-          [v14 timeIntervalSinceReferenceDate];
-          v16 = v15 - a4;
+          timestamp2 = [v10 timestamp];
+          [timestamp2 timeIntervalSinceReferenceDate];
+          v16 = v15 - timestamp;
 
           if (v16 > 16.0 || [v10 type] != 1 && objc_msgSend(v10, "type") != 3 && objc_msgSend(v10, "type") != 2 && objc_msgSend(v10, "type") != 10)
           {
@@ -202,8 +202,8 @@
 
           v17 = MEMORY[0x277CCABB0];
           [v10 horizontalAccuracy];
-          v12 = [v17 numberWithDouble:?];
-          [v7 addObject:v12];
+          timestamp = [v17 numberWithDouble:?];
+          [v7 addObject:timestamp];
         }
       }
 
@@ -212,7 +212,7 @@ LABEL_12:
       v8 = v9;
     }
 
-    while ([v6 count] > v9++);
+    while ([locationsCopy count] > v9++);
   }
 
   if ([v7 count])
@@ -230,24 +230,24 @@ LABEL_12:
   return v20;
 }
 
-- (unint64_t)classifySamples:(id)a3
+- (unint64_t)classifySamples:(id)samples
 {
   v85 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  samplesCopy = samples;
   v5 = objc_opt_new();
-  if ([v4 count])
+  if ([samplesCopy count])
   {
     v6 = 0;
     while (1)
     {
-      v7 = [v4 objectAtIndexedSubscript:v6];
+      v7 = [samplesCopy objectAtIndexedSubscript:v6];
       [v7 doubleValue];
       if (v8 <= 0.0)
       {
         goto LABEL_6;
       }
 
-      v9 = [v4 objectAtIndexedSubscript:v6];
+      v9 = [samplesCopy objectAtIndexedSubscript:v6];
       [v9 doubleValue];
       v11 = v10;
 
@@ -257,13 +257,13 @@ LABEL_12:
       }
 
 LABEL_7:
-      if ([v4 count] <= ++v6)
+      if ([samplesCopy count] <= ++v6)
       {
         goto LABEL_8;
       }
     }
 
-    v7 = [v4 objectAtIndexedSubscript:v6];
+    v7 = [samplesCopy objectAtIndexedSubscript:v6];
     [v5 addObject:v7];
 LABEL_6:
 
@@ -273,13 +273,13 @@ LABEL_6:
 LABEL_8:
   if ([v5 count])
   {
-    v12 = [(RTParkingQualityProvider *)self movingHistorgram];
-    v13 = [v12 count];
+    movingHistorgram = [(RTParkingQualityProvider *)self movingHistorgram];
+    v13 = [movingHistorgram count];
 
     if (v13 >= 3)
     {
-      v14 = [(RTParkingQualityProvider *)self movingHistorgram];
-      [v14 removeLastObject];
+      movingHistorgram2 = [(RTParkingQualityProvider *)self movingHistorgram];
+      [movingHistorgram2 removeLastObject];
 
       v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -290,15 +290,15 @@ LABEL_8:
     }
 
     v16 = [(RTParkingQualityProvider *)self getHistogramFromSamples:v5];
-    v17 = [(RTParkingQualityProvider *)self movingHistorgram];
-    [v17 insertObject:v16 atIndex:0];
+    movingHistorgram3 = [(RTParkingQualityProvider *)self movingHistorgram];
+    [movingHistorgram3 insertObject:v16 atIndex:0];
 
-    v18 = [(RTParkingQualityProvider *)self movingHistorgram];
-    v19 = [v18 count];
+    movingHistorgram4 = [(RTParkingQualityProvider *)self movingHistorgram];
+    v19 = [movingHistorgram4 count];
 
     if (v19)
     {
-      v65 = v4;
+      v65 = samplesCopy;
       v66 = v5;
       v20 = objc_opt_new();
       for (i = 0; i != 17; ++i)
@@ -306,8 +306,8 @@ LABEL_8:
         [v20 setObject:&unk_28459FA68 atIndexedSubscript:i];
       }
 
-      v22 = [(RTParkingQualityProvider *)self movingHistorgram];
-      v23 = [v22 objectAtIndexedSubscript:0];
+      movingHistorgram5 = [(RTParkingQualityProvider *)self movingHistorgram];
+      v23 = [movingHistorgram5 objectAtIndexedSubscript:0];
       v24 = [v23 count];
 
       if (v24)
@@ -320,9 +320,9 @@ LABEL_8:
           v78 = 0u;
           v75 = 0u;
           v76 = 0u;
-          v27 = self;
-          v28 = [(RTParkingQualityProvider *)self movingHistorgram];
-          v29 = [v28 countByEnumeratingWithState:&v75 objects:v84 count:16];
+          selfCopy = self;
+          movingHistorgram6 = [(RTParkingQualityProvider *)self movingHistorgram];
+          v29 = [movingHistorgram6 countByEnumeratingWithState:&v75 objects:v84 count:16];
           if (v29)
           {
             v30 = v29;
@@ -334,14 +334,14 @@ LABEL_8:
               {
                 if (*v76 != v32)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(movingHistorgram6);
                 }
 
                 v34 = [*(*(&v75 + 1) + 8 * j) objectAtIndexedSubscript:v25];
                 v31 = [v34 intValue] + v31;
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v75 objects:v84 count:16];
+              v30 = [movingHistorgram6 countByEnumeratingWithState:&v75 objects:v84 count:16];
             }
 
             while (v30);
@@ -355,9 +355,9 @@ LABEL_8:
           v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v31];
           [v20 setObject:v35 atIndexedSubscript:v25];
 
-          self = v27;
-          v36 = [(RTParkingQualityProvider *)v27 movingHistorgram];
-          v37 = [v36 objectAtIndexedSubscript:0];
+          self = selfCopy;
+          movingHistorgram7 = [(RTParkingQualityProvider *)selfCopy movingHistorgram];
+          v37 = [movingHistorgram7 objectAtIndexedSubscript:0];
           v38 = [v37 count];
 
           v25 = ++v26;
@@ -377,7 +377,7 @@ LABEL_8:
         v41 = v40;
         v42 = *v72;
         v43 = 0.0;
-        v4 = v65;
+        samplesCopy = v65;
         do
         {
           for (k = 0; k != v41; ++k)
@@ -400,7 +400,7 @@ LABEL_8:
       else
       {
         v43 = 0.0;
-        v4 = v65;
+        samplesCopy = v65;
       }
 
       v48 = [(RTParkingQualityProvider *)self getCdfFromHistogram:v39 numSamples:v43];
@@ -408,7 +408,7 @@ LABEL_8:
       if (!v48)
       {
         [(RTParkingQualityProvider *)self reset];
-        v47 = 0;
+        parkingQualityIndicator = 0;
         v5 = v66;
 LABEL_63:
 
@@ -426,7 +426,7 @@ LABEL_63:
         }
 
         [(RTParkingQualityProvider *)self reset];
-        v47 = 0;
+        parkingQualityIndicator = 0;
         goto LABEL_63;
       }
 
@@ -485,7 +485,7 @@ LABEL_63:
         if (v81 * 0.93 > *buf)
         {
 LABEL_62:
-          v47 = [(RTParkingQualityProvider *)self parkingQualityIndicator];
+          parkingQualityIndicator = [(RTParkingQualityProvider *)self parkingQualityIndicator];
           goto LABEL_63;
         }
 
@@ -526,16 +526,16 @@ LABEL_62:
     [(RTParkingQualityProvider *)self reset];
   }
 
-  v47 = 0;
+  parkingQualityIndicator = 0;
 LABEL_64:
 
-  return v47;
+  return parkingQualityIndicator;
 }
 
-- (unint64_t)parkingQualityToLocationQuality:(unint64_t)a3
+- (unint64_t)parkingQualityToLocationQuality:(unint64_t)quality
 {
-  result = a3;
-  if (a3 >= 4)
+  result = quality;
+  if (quality >= 4)
   {
     v8 = v3;
     v9 = v4;

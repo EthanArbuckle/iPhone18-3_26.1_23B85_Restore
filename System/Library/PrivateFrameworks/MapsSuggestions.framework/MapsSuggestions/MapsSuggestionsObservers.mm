@@ -1,42 +1,42 @@
 @interface MapsSuggestionsObservers
-- (BOOL)callBlock:(id)a3;
-- (BOOL)synchronouslyCallBlock:(id)a3;
+- (BOOL)callBlock:(id)block;
+- (BOOL)synchronouslyCallBlock:(id)block;
 - (MapsSuggestionsObservers)init;
-- (MapsSuggestionsObservers)initWithCallbackQueue:(id)a3 name:(id)a4 strong:(BOOL)a5;
-- (MapsSuggestionsObservers)initWithName:(id)a3;
+- (MapsSuggestionsObservers)initWithCallbackQueue:(id)queue name:(id)name strong:(BOOL)strong;
+- (MapsSuggestionsObservers)initWithName:(id)name;
 - (NSString)description;
 - (id).cxx_construct;
 - (id)_synchronizedSnapshot;
 - (unint64_t)count;
-- (void)registerObserver:(id)a3 handler:(id)a4;
-- (void)unregisterObserver:(id)a3 handler:(id)a4;
+- (void)registerObserver:(id)observer handler:(id)handler;
+- (void)unregisterObserver:(id)observer handler:(id)handler;
 @end
 
 @implementation MapsSuggestionsObservers
 
 - (id)_synchronizedSnapshot
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_autoreleasePoolPush();
-    v3 = v1[4];
+    v3 = selfCopy[4];
     objc_sync_enter(v3);
-    v4 = [v1[4] allObjects];
-    v1 = [v4 copy];
+    allObjects = [selfCopy[4] allObjects];
+    selfCopy = [allObjects copy];
 
     objc_sync_exit(v3);
     objc_autoreleasePoolPop(v2);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (unint64_t)count
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MapsSuggestionsObservers *)&self->super.isa _synchronizedSnapshot];
-  v5 = [v4 count];
+  _synchronizedSnapshot = [(MapsSuggestionsObservers *)&self->super.isa _synchronizedSnapshot];
+  v5 = [_synchronizedSnapshot count];
 
   objc_autoreleasePoolPop(v3);
   return v5;
@@ -49,14 +49,14 @@
   return self;
 }
 
-- (MapsSuggestionsObservers)initWithCallbackQueue:(id)a3 name:(id)a4 strong:(BOOL)a5
+- (MapsSuggestionsObservers)initWithCallbackQueue:(id)queue name:(id)name strong:(BOOL)strong
 {
-  v5 = a5;
+  strongCopy = strong;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  queueCopy = queue;
+  nameCopy = name;
+  v10 = nameCopy;
+  if (!queueCopy)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!nameCopy)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -93,7 +93,7 @@
 
 LABEL_14:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -106,7 +106,7 @@ LABEL_14:
     name = v11->_name;
     v11->_name = v12;
 
-    MSg::Queue::Queue(buf, v8);
+    MSg::Queue::Queue(buf, queueCopy);
     v14 = *buf;
     *buf = 0;
     innerQueue = v11->_callbackQueue._innerQueue;
@@ -118,7 +118,7 @@ LABEL_14:
     v11->_callbackQueue._name = v16;
 
     v18 = objc_alloc(MEMORY[0x1E696AC70]);
-    if (v5)
+    if (strongCopy)
     {
       v19 = 512;
     }
@@ -134,21 +134,21 @@ LABEL_14:
   }
 
   self = v11;
-  v22 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v22;
+  return selfCopy;
 }
 
-- (MapsSuggestionsObservers)initWithName:(id)a3
+- (MapsSuggestionsObservers)initWithName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingString:@"Queue"];
-  v6 = [v5 UTF8String];
+  nameCopy = name;
+  v5 = [nameCopy stringByAppendingString:@"Queue"];
+  uTF8String = [v5 UTF8String];
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = dispatch_queue_create(v6, v7);
+  v8 = dispatch_queue_create(uTF8String, v7);
 
-  v9 = [(MapsSuggestionsObservers *)self initWithCallbackQueue:v8 name:v4];
+  v9 = [(MapsSuggestionsObservers *)self initWithCallbackQueue:v8 name:nameCopy];
   return v9;
 }
 
@@ -160,11 +160,11 @@ LABEL_15:
   return v4;
 }
 
-- (void)registerObserver:(id)a3 handler:(id)a4
+- (void)registerObserver:(id)observer handler:(id)handler
 {
   *&v27[13] = *MEMORY[0x1E69E9840];
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, observer);
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
   v8 = objc_loadWeakRetained(&location);
   if (v8)
@@ -223,7 +223,7 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __53__MapsSuggestionsObservers_registerObserver_handler___block_invoke;
     block[3] = &unk_1E81F5B50;
-    v21 = v6;
+    v21 = handlerCopy;
     v22 = v15;
     dispatch_async(self->_callbackQueue._innerQueue, block);
     v19 = v21;
@@ -259,13 +259,13 @@ uint64_t __53__MapsSuggestionsObservers_registerObserver_handler___block_invoke(
   return result;
 }
 
-- (void)unregisterObserver:(id)a3 handler:(id)a4
+- (void)unregisterObserver:(id)observer handler:(id)handler
 {
   *&v27[13] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = v6;
+  v9 = observerCopy;
   if (v9)
   {
     v10 = GEOFindOrCreateLog();
@@ -322,7 +322,7 @@ uint64_t __53__MapsSuggestionsObservers_registerObserver_handler___block_invoke(
     v21[1] = 3221225472;
     v21[2] = __55__MapsSuggestionsObservers_unregisterObserver_handler___block_invoke;
     v21[3] = &unk_1E81F5B50;
-    v22 = v7;
+    v22 = handlerCopy;
     v23 = v16;
     dispatch_async(self->_callbackQueue._innerQueue, v21);
     v20 = v22;
@@ -357,11 +357,11 @@ uint64_t __55__MapsSuggestionsObservers_unregisterObserver_handler___block_invok
   return result;
 }
 
-- (BOOL)callBlock:(id)a3
+- (BOOL)callBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     if (MapsSuggestionsLoggingIsVerbose())
     {
@@ -376,14 +376,14 @@ uint64_t __55__MapsSuggestionsObservers_unregisterObserver_handler___block_invok
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = [(MapsSuggestionsObservers *)&self->super.isa _synchronizedSnapshot];
+    _synchronizedSnapshot = [(MapsSuggestionsObservers *)&self->super.isa _synchronizedSnapshot];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __38__MapsSuggestionsObservers_callBlock___block_invoke;
     v12[3] = &unk_1E81F74D0;
-    v13 = v8;
-    v14 = v4;
-    v9 = v8;
+    v13 = _synchronizedSnapshot;
+    v14 = blockCopy;
+    v9 = _synchronizedSnapshot;
     MSg::Queue::async<MapsSuggestionsObservers>(&self->_callbackQueue, self, v12);
 
     objc_autoreleasePoolPop(v7);
@@ -406,7 +406,7 @@ uint64_t __55__MapsSuggestionsObservers_unregisterObserver_handler___block_invok
     }
   }
 
-  return v4 != 0;
+  return blockCopy != 0;
 }
 
 void __38__MapsSuggestionsObservers_callBlock___block_invoke(uint64_t a1, void *a2)
@@ -456,11 +456,11 @@ void __38__MapsSuggestionsObservers_callBlock___block_invoke(uint64_t a1, void *
   }
 }
 
-- (BOOL)synchronouslyCallBlock:(id)a3
+- (BOOL)synchronouslyCallBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     if (MapsSuggestionsLoggingIsVerbose())
     {
@@ -479,7 +479,7 @@ void __38__MapsSuggestionsObservers_callBlock___block_invoke(uint64_t a1, void *
     v9[2] = __51__MapsSuggestionsObservers_synchronouslyCallBlock___block_invoke;
     v9[3] = &unk_1E81F5528;
     v9[4] = self;
-    v10 = v4;
+    v10 = blockCopy;
     dispatch_sync(self->_callbackQueue._innerQueue, v9);
   }
 
@@ -500,7 +500,7 @@ void __38__MapsSuggestionsObservers_callBlock___block_invoke(uint64_t a1, void *
     }
   }
 
-  return v4 != 0;
+  return blockCopy != 0;
 }
 
 void __51__MapsSuggestionsObservers_synchronouslyCallBlock___block_invoke(uint64_t a1)
@@ -555,12 +555,12 @@ void __51__MapsSuggestionsObservers_synchronouslyCallBlock___block_invoke(uint64
 - (NSString)description
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MapsSuggestionsObservers *)&self->super.isa _synchronizedSnapshot];
+  _synchronizedSnapshot = [(MapsSuggestionsObservers *)&self->super.isa _synchronizedSnapshot];
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v9.receiver = self;
   v9.super_class = MapsSuggestionsObservers;
   v6 = [(MapsSuggestionsObservers *)&v9 description];
-  v7 = [v5 initWithFormat:@"%@ %u observers", v6, objc_msgSend(v4, "count")];
+  v7 = [v5 initWithFormat:@"%@ %u observers", v6, objc_msgSend(_synchronizedSnapshot, "count")];
 
   objc_autoreleasePoolPop(v3);
 

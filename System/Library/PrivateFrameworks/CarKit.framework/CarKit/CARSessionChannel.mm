@@ -1,61 +1,61 @@
 @interface CARSessionChannel
-- (BOOL)openChannelWithError:(id *)a3;
-- (BOOL)sendChannelMessage:(id)a3 withDescription:(id)a4;
-- (CARSessionChannel)initWithSession:(id)a3 channelType:(id)a4 channelID:(id)a5 withoutReply:(BOOL)a6 qualityOfService:(id)a7 streamPriority:(id)a8;
-- (CARSessionChannel)initWithSession:(id)a3 channelType:(id)a4 channelID:(id)a5 withoutReply:(BOOL)a6 sendAsIs:(BOOL)a7 qualityOfService:(id)a8 streamPriority:(id)a9;
+- (BOOL)openChannelWithError:(id *)error;
+- (BOOL)sendChannelMessage:(id)message withDescription:(id)description;
+- (CARSessionChannel)initWithSession:(id)session channelType:(id)type channelID:(id)d withoutReply:(BOOL)reply qualityOfService:(id)service streamPriority:(id)priority;
+- (CARSessionChannel)initWithSession:(id)session channelType:(id)type channelID:(id)d withoutReply:(BOOL)reply sendAsIs:(BOOL)is qualityOfService:(id)service streamPriority:(id)priority;
 - (CARSessionChannelDelegate)channelDelegate;
-- (id)_endpointValueForKey:(__CFString *)a3;
+- (id)_endpointValueForKey:(__CFString *)key;
 - (id)shortChannelType;
 - (void)_channelInvalidated;
 - (void)_channelQueue_closeChannel;
 - (void)_channelQueue_invalidate;
-- (void)_dataReceived:(id)a3;
+- (void)_dataReceived:(id)received;
 - (void)_sendComplete;
 - (void)closeChannel;
 @end
 
 @implementation CARSessionChannel
 
-- (CARSessionChannel)initWithSession:(id)a3 channelType:(id)a4 channelID:(id)a5 withoutReply:(BOOL)a6 qualityOfService:(id)a7 streamPriority:(id)a8
+- (CARSessionChannel)initWithSession:(id)session channelType:(id)type channelID:(id)d withoutReply:(BOOL)reply qualityOfService:(id)service streamPriority:(id)priority
 {
-  v9 = a6;
+  replyCopy = reply;
   v14 = *MEMORY[0x1E6962390];
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = -[CARSessionChannel initWithSession:channelType:channelID:withoutReply:sendAsIs:qualityOfService:streamPriority:](self, "initWithSession:channelType:channelID:withoutReply:sendAsIs:qualityOfService:streamPriority:", v19, v18, v17, v9, [v18 isEqualToString:v14] ^ 1, v16, v15);
+  priorityCopy = priority;
+  serviceCopy = service;
+  dCopy = d;
+  typeCopy = type;
+  sessionCopy = session;
+  v20 = -[CARSessionChannel initWithSession:channelType:channelID:withoutReply:sendAsIs:qualityOfService:streamPriority:](self, "initWithSession:channelType:channelID:withoutReply:sendAsIs:qualityOfService:streamPriority:", sessionCopy, typeCopy, dCopy, replyCopy, [typeCopy isEqualToString:v14] ^ 1, serviceCopy, priorityCopy);
 
   return v20;
 }
 
-- (CARSessionChannel)initWithSession:(id)a3 channelType:(id)a4 channelID:(id)a5 withoutReply:(BOOL)a6 sendAsIs:(BOOL)a7 qualityOfService:(id)a8 streamPriority:(id)a9
+- (CARSessionChannel)initWithSession:(id)session channelType:(id)type channelID:(id)d withoutReply:(BOOL)reply sendAsIs:(BOOL)is qualityOfService:(id)service streamPriority:(id)priority
 {
-  v30 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
+  sessionCopy = session;
+  typeCopy = type;
+  dCopy = d;
+  serviceCopy = service;
+  priorityCopy = priority;
   v31.receiver = self;
   v31.super_class = CARSessionChannel;
   v20 = [(CARSessionChannel *)&v31 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_session, a3);
-    v22 = [v16 copy];
+    objc_storeStrong(&v20->_session, session);
+    v22 = [typeCopy copy];
     channelType = v21->_channelType;
     v21->_channelType = v22;
 
-    v24 = [v17 copy];
+    v24 = [dCopy copy];
     channelID = v21->_channelID;
     v21->_channelID = v24;
 
-    v21->_withoutReply = a6;
-    v21->_sendAsIs = a7;
-    objc_storeStrong(&v21->_qualityOfService, a8);
-    objc_storeStrong(&v21->_streamPriority, a9);
+    v21->_withoutReply = reply;
+    v21->_sendAsIs = is;
+    objc_storeStrong(&v21->_qualityOfService, service);
+    objc_storeStrong(&v21->_streamPriority, priority);
     v26 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
     v27 = dispatch_queue_create("com.apple.carkit.SessionChannel", v26);
     channelQueue = v21->_channelQueue;
@@ -67,7 +67,7 @@
   return v21;
 }
 
-- (BOOL)openChannelWithError:(id *)a3
+- (BOOL)openChannelWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -79,7 +79,7 @@
   v12 = __Block_byref_object_copy__5;
   v13 = __Block_byref_object_dispose__5;
   v14 = 0;
-  v5 = [(CARSessionChannel *)self channelQueue];
+  channelQueue = [(CARSessionChannel *)self channelQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__CARSessionChannel_openChannelWithError___block_invoke;
@@ -87,12 +87,12 @@
   block[4] = self;
   block[5] = &v9;
   block[6] = &v15;
-  dispatch_sync(v5, block);
+  dispatch_sync(channelQueue, block);
 
   v6 = *(v16 + 24);
-  if (a3 && (v16[3] & 1) == 0)
+  if (error && (v16[3] & 1) == 0)
   {
-    *a3 = v10[5];
+    *error = v10[5];
     v6 = *(v16 + 24);
   }
 
@@ -254,26 +254,26 @@ uint64_t __42__CARSessionChannel_openChannelWithError___block_invoke_20(uint64_t
   return [v3 _channelQueue_invalidate];
 }
 
-- (BOOL)sendChannelMessage:(id)a3 withDescription:(id)a4
+- (BOOL)sendChannelMessage:(id)message withDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  descriptionCopy = description;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(CARSessionChannel *)self channelQueue];
+  channelQueue = [(CARSessionChannel *)self channelQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__CARSessionChannel_sendChannelMessage_withDescription___block_invoke;
   v12[3] = &unk_1E82FD378;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = descriptionCopy;
+  v14 = messageCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v12);
+  v9 = messageCopy;
+  v10 = descriptionCopy;
+  dispatch_sync(channelQueue, v12);
 
   LOBYTE(self) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -327,19 +327,19 @@ LABEL_12:
 
 - (void)closeChannel
 {
-  v3 = [(CARSessionChannel *)self channelQueue];
+  channelQueue = [(CARSessionChannel *)self channelQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__CARSessionChannel_closeChannel__block_invoke;
   block[3] = &unk_1E82FBF70;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(channelQueue, block);
 }
 
 - (void)_channelQueue_closeChannel
 {
-  v3 = [(CARSessionChannel *)self channelQueue];
-  dispatch_assert_queue_V2(v3);
+  channelQueue = [(CARSessionChannel *)self channelQueue];
+  dispatch_assert_queue_V2(channelQueue);
 
   if (self->_remoteControlSession)
   {
@@ -361,8 +361,8 @@ LABEL_12:
 
 - (void)_channelQueue_invalidate
 {
-  v3 = [(CARSessionChannel *)self channelQueue];
-  dispatch_assert_queue_V2(v3);
+  channelQueue = [(CARSessionChannel *)self channelQueue];
+  dispatch_assert_queue_V2(channelQueue);
 
   if (self->_remoteControlSession)
   {
@@ -391,20 +391,20 @@ LABEL_12:
 
 - (id)shortChannelType
 {
-  v2 = [(CARSessionChannel *)self channelType];
-  v3 = [v2 substringToIndex:8];
+  channelType = [(CARSessionChannel *)self channelType];
+  v3 = [channelType substringToIndex:8];
 
   return v3;
 }
 
-- (id)_endpointValueForKey:(__CFString *)a3
+- (id)_endpointValueForKey:(__CFString *)key
 {
   if (self->_remoteControlSession)
   {
     v12 = 0;
     CMBaseObject = FigEndpointRemoteControlSessionGetCMBaseObject();
     v5 = *(*(CMBaseObjectGetVTable() + 8) + 48);
-    if (!v5 || ((v6 = v5(CMBaseObject, a3, *MEMORY[0x1E695E480], &v12), v6 != -12787) ? (v7 = v6 == 0) : (v7 = 1), !v7))
+    if (!v5 || ((v6 = v5(CMBaseObject, key, *MEMORY[0x1E695E480], &v12), v6 != -12787) ? (v7 = v6 == 0) : (v7 = 1), !v7))
     {
       v8 = CarGeneralLogging();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -430,18 +430,18 @@ LABEL_12:
   return v9;
 }
 
-- (void)_dataReceived:(id)a3
+- (void)_dataReceived:(id)received
 {
-  v4 = a3;
-  v5 = [(CARSessionChannel *)self channelQueue];
+  receivedCopy = received;
+  channelQueue = [(CARSessionChannel *)self channelQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CARSessionChannel__dataReceived___block_invoke;
   v7[3] = &unk_1E82FBE38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = receivedCopy;
+  v6 = receivedCopy;
+  dispatch_async(channelQueue, v7);
 }
 
 void __35__CARSessionChannel__dataReceived___block_invoke(uint64_t a1)
@@ -469,13 +469,13 @@ void __35__CARSessionChannel__dataReceived___block_invoke(uint64_t a1)
 
 - (void)_sendComplete
 {
-  v3 = [(CARSessionChannel *)self channelQueue];
+  channelQueue = [(CARSessionChannel *)self channelQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__CARSessionChannel__sendComplete__block_invoke;
   block[3] = &unk_1E82FBF70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(channelQueue, block);
 }
 
 void __34__CARSessionChannel__sendComplete__block_invoke(uint64_t a1)
@@ -503,13 +503,13 @@ void __34__CARSessionChannel__sendComplete__block_invoke(uint64_t a1)
 
 - (void)_channelInvalidated
 {
-  v3 = [(CARSessionChannel *)self channelQueue];
+  channelQueue = [(CARSessionChannel *)self channelQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__CARSessionChannel__channelInvalidated__block_invoke;
   block[3] = &unk_1E82FBF70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(channelQueue, block);
 }
 
 void __40__CARSessionChannel__channelInvalidated__block_invoke(uint64_t a1)

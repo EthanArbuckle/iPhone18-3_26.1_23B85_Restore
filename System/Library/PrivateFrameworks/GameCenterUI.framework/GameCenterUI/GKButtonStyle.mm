@@ -1,9 +1,9 @@
 @interface GKButtonStyle
 + (id)defaultStyle;
 + (id)standardStyle;
-- (GKButtonStyle)initWithCornerRadius:(double)a3 andBackgroundColor:(id)a4;
+- (GKButtonStyle)initWithCornerRadius:(double)radius andBackgroundColor:(id)color;
 - (UIEdgeInsets)titleEdgeInsets;
-- (void)applyToButton:(id)a3;
+- (void)applyToButton:(id)button;
 @end
 
 @implementation GKButtonStyle
@@ -26,41 +26,41 @@
   return v4;
 }
 
-- (GKButtonStyle)initWithCornerRadius:(double)a3 andBackgroundColor:(id)a4
+- (GKButtonStyle)initWithCornerRadius:(double)radius andBackgroundColor:(id)color
 {
-  v7 = a4;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = GKButtonStyle;
   v8 = [(GKButtonStyle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    *(v8 + 2) = a3;
+    *(v8 + 2) = radius;
     v8[8] = 1;
     *(v8 + 40) = xmmword_24E367C90;
     *(v8 + 56) = xmmword_24E367C90;
-    objc_storeStrong(v8 + 3, a4);
+    objc_storeStrong(v8 + 3, color);
     v9->_compositingFilter = *MEMORY[0x277CDA5E8];
   }
 
   return v9;
 }
 
-- (void)applyToButton:(id)a3
+- (void)applyToButton:(id)button
 {
   cornerRadius = self->_cornerRadius;
-  v8 = a3;
-  v5 = [v8 layer];
-  [v5 setCornerRadius:cornerRadius];
+  buttonCopy = button;
+  layer = [buttonCopy layer];
+  [layer setCornerRadius:cornerRadius];
 
-  [v8 setClipsToBounds:self->_clipToBounds];
-  [v8 setTitleEdgeInsets:{self->_titleEdgeInsets.top, self->_titleEdgeInsets.left, self->_titleEdgeInsets.bottom, self->_titleEdgeInsets.right}];
-  [v8 setBackgroundColor:self->_backgroundColor];
+  [buttonCopy setClipsToBounds:self->_clipToBounds];
+  [buttonCopy setTitleEdgeInsets:{self->_titleEdgeInsets.top, self->_titleEdgeInsets.left, self->_titleEdgeInsets.bottom, self->_titleEdgeInsets.right}];
+  [buttonCopy setBackgroundColor:self->_backgroundColor];
   compositingFilter = self->_compositingFilter;
-  v7 = [v8 layer];
-  [v7 setCompositingFilter:compositingFilter];
+  layer2 = [buttonCopy layer];
+  [layer2 setCompositingFilter:compositingFilter];
 
-  [v8 setNeedsLayout];
+  [buttonCopy setNeedsLayout];
 }
 
 - (UIEdgeInsets)titleEdgeInsets

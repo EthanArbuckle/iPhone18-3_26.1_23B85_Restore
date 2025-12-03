@@ -1,15 +1,15 @@
 @interface PAPBAccess
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)kind;
 - (unint64_t)hash;
-- (void)addAssetIdentifiers:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccessCount:(BOOL)a3;
-- (void)setHasKind:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssetIdentifiers:(id)identifiers;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccessCount:(BOOL)count;
+- (void)setHasKind:(BOOL)kind;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PAPBAccess
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasKind:(BOOL)a3
+- (void)setHasKind:(BOOL)kind
 {
-  if (a3)
+  if (kind)
   {
     v3 = 4;
   }
@@ -42,27 +42,27 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addAssetIdentifiers:(id)a3
+- (void)addAssetIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   assetIdentifiers = self->_assetIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!assetIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_assetIdentifiers;
     self->_assetIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     assetIdentifiers = self->_assetIdentifiers;
   }
 
-  [(NSMutableArray *)assetIdentifiers addObject:v4];
+  [(NSMutableArray *)assetIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasAccessCount:(BOOL)a3
+- (void)setHasAccessCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -81,33 +81,33 @@
   v8.receiver = self;
   v8.super_class = PAPBAccess;
   v4 = [(PAPBAccess *)&v8 description];
-  v5 = [(PAPBAccess *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PAPBAccess *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   accessor = self->_accessor;
   if (accessor)
   {
-    v5 = [(PAPBApplication *)accessor dictionaryRepresentation];
-    [v3 setObject:v5 forKeyedSubscript:@"accessor"];
+    dictionaryRepresentation = [(PAPBApplication *)accessor dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"accessor"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKeyedSubscript:@"identifier"];
+    [dictionary setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_kind];
-    [v3 setObject:v8 forKeyedSubscript:@"kind"];
+    [dictionary setObject:v8 forKeyedSubscript:@"kind"];
 
     has = self->_has;
   }
@@ -115,28 +115,28 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestampAdjustment];
-    [v3 setObject:v9 forKeyedSubscript:@"timestampAdjustment"];
+    [dictionary setObject:v9 forKeyedSubscript:@"timestampAdjustment"];
   }
 
   assetIdentifiers = self->_assetIdentifiers;
   if (assetIdentifiers)
   {
-    [v3 setObject:assetIdentifiers forKeyedSubscript:@"assetIdentifiers"];
+    [dictionary setObject:assetIdentifiers forKeyedSubscript:@"assetIdentifiers"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInt:self->_accessCount];
-    [v3 setObject:v11 forKeyedSubscript:@"accessCount"];
+    [dictionary setObject:v11 forKeyedSubscript:@"accessCount"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_accessor)
   {
     PBDataWriterWriteSubmessage();
@@ -199,15 +199,15 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PAPBApplication *)self->_accessor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PAPBApplication *)self->_accessor copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSData *)self->_identifier copyWithZone:a3];
+  v8 = [(NSData *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -244,7 +244,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v5 addAssetIdentifiers:v16];
       }
 
@@ -264,16 +264,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   accessor = self->_accessor;
-  if (accessor | *(v4 + 3))
+  if (accessor | *(equalCopy + 3))
   {
     if (![(PAPBApplication *)accessor isEqual:?])
     {
@@ -282,7 +282,7 @@
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSData *)identifier isEqual:?])
     {
@@ -291,35 +291,35 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_kind != *(v4 + 12))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_kind != *(equalCopy + 12))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_timestampAdjustment != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_timestampAdjustment != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_23;
   }
 
   assetIdentifiers = self->_assetIdentifiers;
-  if (assetIdentifiers | *(v4 + 4))
+  if (assetIdentifiers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)assetIdentifiers isEqual:?])
     {
@@ -331,10 +331,10 @@ LABEL_23:
     has = self->_has;
   }
 
-  v10 = (*(v4 + 52) & 2) == 0;
+  v10 = (*(equalCopy + 52) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_accessCount != *(v4 + 4))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_accessCount != *(equalCopy + 4))
     {
       goto LABEL_23;
     }
@@ -411,12 +411,12 @@ LABEL_9:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   accessor = self->_accessor;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (accessor)
   {
     if (v6)
@@ -430,22 +430,22 @@ LABEL_9:
     [(PAPBAccess *)self setAccessor:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PAPBAccess *)self setIdentifier:?];
   }
 
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 4) != 0)
   {
-    self->_kind = *(v4 + 12);
+    self->_kind = *(fromCopy + 12);
     *&self->_has |= 4u;
-    v7 = *(v4 + 52);
+    v7 = *(fromCopy + 52);
   }
 
   if (v7)
   {
-    self->_timestampAdjustment = *(v4 + 1);
+    self->_timestampAdjustment = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -453,7 +453,7 @@ LABEL_9:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -477,9 +477,9 @@ LABEL_9:
     while (v10);
   }
 
-  if ((*(v4 + 52) & 2) != 0)
+  if ((*(fromCopy + 52) & 2) != 0)
   {
-    self->_accessCount = *(v4 + 4);
+    self->_accessCount = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 

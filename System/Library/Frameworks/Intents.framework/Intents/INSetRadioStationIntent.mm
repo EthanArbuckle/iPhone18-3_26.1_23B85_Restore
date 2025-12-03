@@ -8,37 +8,37 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setChannel:(id)a3;
-- (void)setFrequency:(id)a3;
-- (void)setPresetNumber:(id)a3;
-- (void)setRadioType:(int64_t)a3;
-- (void)setStationName:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setChannel:(id)channel;
+- (void)setFrequency:(id)frequency;
+- (void)setPresetNumber:(id)number;
+- (void)setRadioType:(int64_t)type;
+- (void)setStationName:(id)name;
 @end
 
 @implementation INSetRadioStationIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v17 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 frequency];
-  v10 = INIntentSlotValueRedactedDoubleFromDouble(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  v17 = idCopy;
+  v8 = [_typedBackingStore copy];
+  frequency = [_typedBackingStore frequency];
+  v10 = INIntentSlotValueRedactedDoubleFromDouble(frequency, options);
   [v8 setFrequency:v10];
 
-  v11 = [v7 stationName];
-  v12 = INIntentSlotValueRedactedStringFromString(v11, a3, v17);
+  stationName = [_typedBackingStore stationName];
+  v12 = INIntentSlotValueRedactedStringFromString(stationName, options, v17);
   [v8 setStationName:v12];
 
-  v13 = [v7 channel];
-  v14 = INIntentSlotValueRedactedStringFromString(v13, a3, v17);
+  channel = [_typedBackingStore channel];
+  v14 = INIntentSlotValueRedactedStringFromString(channel, options, v17);
   [v8 setChannel:v14];
 
-  v15 = [v7 presetNumber];
-  v16 = INIntentSlotValueRedactedIntegerFromInteger(v15, a3);
+  presetNumber = [_typedBackingStore presetNumber];
+  v16 = INIntentSlotValueRedactedIntegerFromInteger(presetNumber, options);
 
   [v8 setPresetNumber:v16];
   [(INIntent *)self setBackingStore:v8];
@@ -48,69 +48,69 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"radioType";
-  v3 = [(INSetRadioStationIntent *)self radioType];
-  if ((v3 - 1) > 4)
+  radioType = [(INSetRadioStationIntent *)self radioType];
+  if ((radioType - 1) > 4)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = off_1E727FE08[v3 - 1];
+    v4 = off_1E727FE08[radioType - 1];
   }
 
   v5 = v4;
   v18[0] = v5;
   v17[1] = @"frequency";
-  v6 = [(INSetRadioStationIntent *)self frequency];
-  v7 = v6;
-  if (!v6)
+  frequency = [(INSetRadioStationIntent *)self frequency];
+  null = frequency;
+  if (!frequency)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v7;
+  v18[1] = null;
   v17[2] = @"stationName";
-  v8 = [(INSetRadioStationIntent *)self stationName];
-  v9 = v8;
-  if (!v8)
+  stationName = [(INSetRadioStationIntent *)self stationName];
+  null2 = stationName;
+  if (!stationName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v9;
+  v18[2] = null2;
   v17[3] = @"channel";
-  v10 = [(INSetRadioStationIntent *)self channel];
-  v11 = v10;
-  if (!v10)
+  channel = [(INSetRadioStationIntent *)self channel];
+  null3 = channel;
+  if (!channel)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v11;
+  v18[3] = null3;
   v17[4] = @"presetNumber";
-  v12 = [(INSetRadioStationIntent *)self presetNumber];
-  v13 = v12;
-  if (!v12)
+  presetNumber = [(INSetRadioStationIntent *)self presetNumber];
+  null4 = presetNumber;
+  if (!presetNumber)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[4] = v13;
+  v18[4] = null4;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  if (!v12)
+  if (!presetNumber)
   {
   }
 
-  if (!v10)
+  if (!channel)
   {
   }
 
-  if (!v8)
+  if (!stationName)
   {
   }
 
-  if (!v6)
+  if (!frequency)
   {
   }
 
@@ -119,103 +119,103 @@
   return v14;
 }
 
-- (void)setPresetNumber:(id)a3
+- (void)setPresetNumber:(id)number
 {
-  v4 = a3;
-  v6 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToInteger(v4);
+  numberCopy = number;
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToInteger(numberCopy);
 
-  [v6 setPresetNumber:v5];
+  [_typedBackingStore setPresetNumber:v5];
 }
 
 - (NSNumber)presetNumber
 {
-  v2 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v3 = [v2 presetNumber];
-  v4 = INIntentSlotValueTransformFromInteger(v3);
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  presetNumber = [_typedBackingStore presetNumber];
+  v4 = INIntentSlotValueTransformFromInteger(presetNumber);
 
   return v4;
 }
 
-- (void)setChannel:(id)a3
+- (void)setChannel:(id)channel
 {
-  v4 = a3;
-  v6 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  channelCopy = channel;
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(channelCopy);
 
-  [v6 setChannel:v5];
+  [_typedBackingStore setChannel:v5];
 }
 
 - (NSString)channel
 {
-  v2 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v3 = [v2 channel];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  channel = [_typedBackingStore channel];
+  v4 = INIntentSlotValueTransformFromString(channel);
 
   return v4;
 }
 
-- (void)setStationName:(id)a3
+- (void)setStationName:(id)name
 {
-  v4 = a3;
-  v6 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(nameCopy);
 
-  [v6 setStationName:v5];
+  [_typedBackingStore setStationName:v5];
 }
 
 - (NSString)stationName
 {
-  v2 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v3 = [v2 stationName];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  stationName = [_typedBackingStore stationName];
+  v4 = INIntentSlotValueTransformFromString(stationName);
 
   return v4;
 }
 
-- (void)setFrequency:(id)a3
+- (void)setFrequency:(id)frequency
 {
-  v4 = a3;
-  v6 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDouble(v4);
+  frequencyCopy = frequency;
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDouble(frequencyCopy);
 
-  [v6 setFrequency:v5];
+  [_typedBackingStore setFrequency:v5];
 }
 
 - (NSNumber)frequency
 {
-  v2 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v3 = [v2 frequency];
-  v4 = INIntentSlotValueTransformFromDouble(v3);
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  frequency = [_typedBackingStore frequency];
+  v4 = INIntentSlotValueTransformFromDouble(frequency);
 
   return v4;
 }
 
-- (void)setRadioType:(int64_t)a3
+- (void)setRadioType:(int64_t)type
 {
-  v3 = a3 - 1;
-  v4 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = type - 1;
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 4)
   {
-    [v4 setHasRadioType:0];
+    [_typedBackingStore setHasRadioType:0];
   }
 
   else
   {
-    [v4 setRadioType:?];
+    [_typedBackingStore setRadioType:?];
   }
 }
 
 - (INRadioType)radioType
 {
-  v3 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v4 = [v3 hasRadioType];
-  v5 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v6 = [v5 radioType];
-  if (((v6 - 1 < 5) & v4) != 0)
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  hasRadioType = [_typedBackingStore hasRadioType];
+  _typedBackingStore2 = [(INSetRadioStationIntent *)self _typedBackingStore];
+  radioType = [_typedBackingStore2 radioType];
+  if (((radioType - 1 < 5) & hasRadioType) != 0)
   {
-    v7 = v6;
+    v7 = radioType;
   }
 
   else
@@ -248,28 +248,28 @@
   return v17;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetRadioStationIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetRadioStationIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

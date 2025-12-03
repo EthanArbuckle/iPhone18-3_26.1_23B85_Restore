@@ -53,11 +53,11 @@
 
 - (BOOL)isExplicit
 {
-  v2 = self;
-  v3 = [(MAsset *)v2 contentRating];
-  if (v3)
+  selfCopy = self;
+  contentRating = [(MAsset *)selfCopy contentRating];
+  if (contentRating)
   {
-    v4 = v3;
+    v4 = contentRating;
     v5 = sub_241CF9038();
     v7 = v6;
 
@@ -90,7 +90,7 @@
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v16[-v5];
   v16[15] = 21;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_241CF1C04(0);
   sub_241CB4490();
   sub_241CD7154(v8, MEMORY[0x277D837D0], v17);
@@ -128,7 +128,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   MAsset.bookSampleDownloadURL.getter(v6);
 
   v8 = sub_241CF8CF8();
@@ -147,11 +147,11 @@
 
 - (BOOL)pagesAreRTL
 {
-  v2 = self;
-  v3 = [(MAsset *)v2 pageProgressionDirection];
-  if (v3)
+  selfCopy = self;
+  pageProgressionDirection = [(MAsset *)selfCopy pageProgressionDirection];
+  if (pageProgressionDirection)
   {
-    v4 = v3;
+    v4 = pageProgressionDirection;
     v5 = sub_241CF9038();
     v7 = v6;
 
@@ -177,7 +177,7 @@
 
 - (double)averageRating
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MAsset.averageRating.getter();
 
   return v3;
@@ -185,7 +185,7 @@
 
 - (unint64_t)ratingCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MAsset.ratingCount.getter();
 
   return v3;
@@ -193,7 +193,7 @@
 
 - (unint64_t)ratingCountForAnalytics
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MAsset.ratingCountForAnalytics.getter();
 
   return v3;
@@ -205,7 +205,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   MAsset.expectedReleaseDate.getter(v6);
 
   v8 = sub_241CF8D88();
@@ -225,7 +225,7 @@
 - (int64_t)fileSize
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_241CB202C();
   sub_241CB48F4();
   sub_241CD7154(v4, MEMORY[0x277D84A28], &v6);
@@ -243,7 +243,7 @@
 
 - (NSDictionary)offer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MAsset.offer.getter();
 
   if (v3)
@@ -261,7 +261,7 @@
 
 - (BOOL)isPreorder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MAsset.isPreorder.getter();
 
   return v3 & 1;
@@ -274,7 +274,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = v16 - v5;
-  v7 = self;
+  selfCopy = self;
   v8 = MAsset.preview.getter();
   sub_241CB4948();
   sub_241CD7154(v8, MEMORY[0x277D837D0], v16);
@@ -311,7 +311,7 @@
   swift_getObjectType();
   v3 = *(self + OBJC_IVAR____TtC14BookFoundation6MAsset_artwork);
   sub_241CB499C();
-  v4 = self;
+  selfCopy = self;
   sub_241CD7154(v3, MEMORY[0x277D837D0], v7);
 
   if (v7[1])
@@ -330,7 +330,7 @@
 - (NSDecimalNumber)sequenceNumber
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x140);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   sub_241CAF20C(1, v4);
   v6 = v5;
@@ -350,7 +350,7 @@
 
 - (NSArray)genres
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_241CA8170(@"genres");
   if (v3)
   {
@@ -371,7 +371,7 @@
 
 - (NSNumber)price
 {
-  v2 = self;
+  selfCopy = self;
   MAsset.price.getter();
   if (v3)
   {
@@ -388,7 +388,7 @@
 
 - (BFMSeries)seriesResource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MAsset.__seriesResource.getter();
 
   return v3;

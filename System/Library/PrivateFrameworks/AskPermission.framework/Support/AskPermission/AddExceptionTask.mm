@@ -1,47 +1,47 @@
 @interface AddExceptionTask
-- (AddExceptionTask)initWithUUID:(id)a3 type:(int64_t)a4 title:(id)a5 message:(id)a6 bundleIdentifier:(id)a7 adamID:(id)a8 distributorID:(id)a9 ageRatingValue:(id)a10 preApprove:(id)a11 postApprove:(id)a12 preDecline:(id)a13 postDecline:(id)a14 metadata:(id)a15 responseBundleIdentifier:(id)a16;
+- (AddExceptionTask)initWithUUID:(id)d type:(int64_t)type title:(id)title message:(id)message bundleIdentifier:(id)identifier adamID:(id)iD distributorID:(id)distributorID ageRatingValue:(id)self0 preApprove:(id)self1 postApprove:(id)self2 preDecline:(id)self3 postDecline:(id)self4 metadata:(id)self5 responseBundleIdentifier:(id)self6;
 - (id)perform;
 @end
 
 @implementation AddExceptionTask
 
-- (AddExceptionTask)initWithUUID:(id)a3 type:(int64_t)a4 title:(id)a5 message:(id)a6 bundleIdentifier:(id)a7 adamID:(id)a8 distributorID:(id)a9 ageRatingValue:(id)a10 preApprove:(id)a11 postApprove:(id)a12 preDecline:(id)a13 postDecline:(id)a14 metadata:(id)a15 responseBundleIdentifier:(id)a16
+- (AddExceptionTask)initWithUUID:(id)d type:(int64_t)type title:(id)title message:(id)message bundleIdentifier:(id)identifier adamID:(id)iD distributorID:(id)distributorID ageRatingValue:(id)self0 preApprove:(id)self1 postApprove:(id)self2 preDecline:(id)self3 postDecline:(id)self4 metadata:(id)self5 responseBundleIdentifier:(id)self6
 {
-  v40 = a3;
-  v28 = a5;
-  v39 = a5;
-  v38 = a6;
-  v20 = a7;
-  v37 = a7;
-  v36 = a8;
-  v35 = a9;
-  v34 = a10;
-  v33 = a11;
-  v32 = a12;
-  v31 = a13;
-  v21 = a14;
-  v30 = a15;
-  v22 = a16;
+  dCopy = d;
+  titleCopy = title;
+  titleCopy2 = title;
+  messageCopy = message;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  iDCopy = iD;
+  distributorIDCopy = distributorID;
+  valueCopy = value;
+  approveCopy = approve;
+  postApproveCopy = postApprove;
+  declineCopy = decline;
+  postDeclineCopy = postDecline;
+  metadataCopy = metadata;
+  bundleIdentifierCopy = bundleIdentifier;
   v41.receiver = self;
   v41.super_class = AddExceptionTask;
   v23 = [(AddExceptionTask *)&v41 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_bundleIdentifier, v20);
-    objc_storeStrong(&v24->_adamID, a8);
-    objc_storeStrong(&v24->_metadata, a15);
-    objc_storeStrong(&v24->_distributorID, a9);
-    objc_storeStrong(&v24->_ageRatingValue, a10);
-    objc_storeStrong(&v24->_UUID, a3);
-    v24->_type = a4;
-    objc_storeStrong(&v24->_message, a6);
-    objc_storeStrong(&v24->_preApprove, a11);
-    objc_storeStrong(&v24->_postApprove, a12);
-    objc_storeStrong(&v24->_preDecline, a13);
-    objc_storeStrong(&v24->_postDecline, a14);
-    objc_storeStrong(&v24->_responseBundleIdentifier, a16);
-    objc_storeStrong(&v24->_title, v28);
+    objc_storeStrong(&v23->_bundleIdentifier, identifierCopy);
+    objc_storeStrong(&v24->_adamID, iD);
+    objc_storeStrong(&v24->_metadata, metadata);
+    objc_storeStrong(&v24->_distributorID, distributorID);
+    objc_storeStrong(&v24->_ageRatingValue, value);
+    objc_storeStrong(&v24->_UUID, d);
+    v24->_type = type;
+    objc_storeStrong(&v24->_message, message);
+    objc_storeStrong(&v24->_preApprove, approve);
+    objc_storeStrong(&v24->_postApprove, postApprove);
+    objc_storeStrong(&v24->_preDecline, decline);
+    objc_storeStrong(&v24->_postDecline, postDecline);
+    objc_storeStrong(&v24->_responseBundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v24->_title, titleCopy);
   }
 
   return v24;
@@ -56,17 +56,17 @@
     v4 = +[APLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v16 = objc_opt_class();
     v6 = v16;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Fetching active iCloud account, so we can check existing ST Exceptions", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Fetching active iCloud account, so we can check existing ST Exceptions", buf, 0xCu);
   }
 
   v7 = +[ACAccountStore ams_sharedAccountStore];
-  v8 = [v7 ams_fetchActiveiCloudAccount];
+  ams_fetchActiveiCloudAccount = [v7 ams_fetchActiveiCloudAccount];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -75,7 +75,7 @@
   v13[4] = self;
   v9 = v3;
   v14 = v9;
-  [v8 addFinishBlock:v13];
+  [ams_fetchActiveiCloudAccount addFinishBlock:v13];
   v10 = v14;
   v11 = v9;
 

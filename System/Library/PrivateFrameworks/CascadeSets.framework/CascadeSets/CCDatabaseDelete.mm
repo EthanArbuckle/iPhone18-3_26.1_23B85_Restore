@@ -1,13 +1,13 @@
 @interface CCDatabaseDelete
-+ (id)builderWithTableName:(id)a3;
++ (id)builderWithTableName:(id)name;
 @end
 
 @implementation CCDatabaseDelete
 
-+ (id)builderWithTableName:(id)a3
++ (id)builderWithTableName:(id)name
 {
-  v3 = a3;
-  v4 = [(CCDatabaseCommandBuilder *)[CCDatabaseDeleteBuilder alloc] initWithTableName:v3];
+  nameCopy = name;
+  v4 = [(CCDatabaseCommandBuilder *)[CCDatabaseDeleteBuilder alloc] initWithTableName:nameCopy];
 
   return v4;
 }

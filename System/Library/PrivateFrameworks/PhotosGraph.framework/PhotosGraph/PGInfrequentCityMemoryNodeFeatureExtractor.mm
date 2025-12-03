@@ -1,15 +1,15 @@
 @interface PGInfrequentCityMemoryNodeFeatureExtractor
-- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)a3 version:(int64_t)a4 graph:(id)a5 cityManager:(id)a6 error:(id *)a7;
-- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)a3 version:(int64_t)a4 graph:(id)a5 error:(id *)a6;
-- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithVersion:(int64_t)a3 graph:(id)a4 error:(id *)a5;
-- (id)labelsForVersion:(int64_t)a3;
+- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)labels version:(int64_t)version graph:(id)graph cityManager:(id)manager error:(id *)error;
+- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)labels version:(int64_t)version graph:(id)graph error:(id *)error;
+- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithVersion:(int64_t)version graph:(id)graph error:(id *)error;
+- (id)labelsForVersion:(int64_t)version;
 @end
 
 @implementation PGInfrequentCityMemoryNodeFeatureExtractor
 
-- (id)labelsForVersion:(int64_t)a3
+- (id)labelsForVersion:(int64_t)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
     return &unk_284486450;
   }
@@ -20,35 +20,35 @@
   }
 }
 
-- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithVersion:(int64_t)a3 graph:(id)a4 error:(id *)a5
+- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithVersion:(int64_t)version graph:(id)graph error:(id *)error
 {
-  v8 = a4;
+  graphCopy = graph;
   v9 = objc_alloc_init(MEMORY[0x277CBEB98]);
-  v10 = [MEMORY[0x277CEC588] sharedManager];
-  if (v8)
+  mEMORY[0x277CEC588] = [MEMORY[0x277CEC588] sharedManager];
+  if (graphCopy)
   {
-    v11 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v8];
-    v12 = [v11 addressNodes];
-    v13 = [v12 cityNodes];
+    v11 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy];
+    addressNodes = [v11 addressNodes];
+    cityNodes = [addressNodes cityNodes];
 
-    if ([v13 count])
+    if ([cityNodes count])
     {
       v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v19 = MEMORY[0x277D85DD0];
       v20 = 3221225472;
       v21 = __74__PGInfrequentCityMemoryNodeFeatureExtractor_initWithVersion_graph_error___block_invoke;
       v22 = &unk_2788883A8;
-      v23 = v10;
+      v23 = mEMORY[0x277CEC588];
       v15 = v14;
       v24 = v15;
-      [v13 enumerateNodesUsingBlock:&v19];
+      [cityNodes enumerateNodesUsingBlock:&v19];
       v16 = v15;
 
       v9 = v16;
     }
   }
 
-  v17 = [(PGInfrequentCityMemoryNodeFeatureExtractor *)self initWithFrequentCityLabels:v9 version:a3 graph:v8 cityManager:v10 error:a5, v19, v20, v21, v22];
+  v17 = [(PGInfrequentCityMemoryNodeFeatureExtractor *)self initWithFrequentCityLabels:v9 version:version graph:graphCopy cityManager:mEMORY[0x277CEC588] error:error, v19, v20, v21, v22];
 
   return v17;
 }
@@ -68,16 +68,16 @@ void __74__PGInfrequentCityMemoryNodeFeatureExtractor_initWithVersion_graph_erro
   [*(a1 + 40) addObject:v8];
 }
 
-- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)a3 version:(int64_t)a4 graph:(id)a5 cityManager:(id)a6 error:(id *)a7
+- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)labels version:(int64_t)version graph:(id)graph cityManager:(id)manager error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(PGInfrequentCityMemoryNodeFeatureExtractor *)self labelsForVersion:a4];
+  labelsCopy = labels;
+  managerCopy = manager;
+  v12 = [(PGInfrequentCityMemoryNodeFeatureExtractor *)self labelsForVersion:version];
   v13 = MEMORY[0x277D22C90];
   v14 = +[PGGraphLocationCityNode filter];
-  v15 = [v14 relation];
-  v27[0] = v15;
+  relation = [v14 relation];
+  v27[0] = relation;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v17 = [v13 chain:v16];
 
@@ -85,12 +85,12 @@ void __74__PGInfrequentCityMemoryNodeFeatureExtractor_initWithVersion_graph_erro
   v24[1] = 3221225472;
   v24[2] = __105__PGInfrequentCityMemoryNodeFeatureExtractor_initWithFrequentCityLabels_version_graph_cityManager_error___block_invoke;
   v24[3] = &unk_278888380;
-  v25 = v11;
-  v26 = v10;
+  v25 = managerCopy;
+  v26 = labelsCopy;
   v23.receiver = self;
   v23.super_class = PGInfrequentCityMemoryNodeFeatureExtractor;
-  v18 = v10;
-  v19 = v11;
+  v18 = labelsCopy;
+  v19 = managerCopy;
   v20 = [(PGGraphMemoryNodeFeatureExtractor *)&v23 initWithName:@"City" featureNames:v12 relation:v17 labelForTargetBlock:v24];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -124,13 +124,13 @@ void *__105__PGInfrequentCityMemoryNodeFeatureExtractor_initWithFrequentCityLabe
   return v10;
 }
 
-- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)a3 version:(int64_t)a4 graph:(id)a5 error:(id *)a6
+- (PGInfrequentCityMemoryNodeFeatureExtractor)initWithFrequentCityLabels:(id)labels version:(int64_t)version graph:(id)graph error:(id *)error
 {
   v10 = MEMORY[0x277CEC588];
-  v11 = a5;
-  v12 = a3;
-  v13 = [v10 sharedManager];
-  v14 = [(PGInfrequentCityMemoryNodeFeatureExtractor *)self initWithFrequentCityLabels:v12 version:a4 graph:v11 cityManager:v13 error:a6];
+  graphCopy = graph;
+  labelsCopy = labels;
+  sharedManager = [v10 sharedManager];
+  v14 = [(PGInfrequentCityMemoryNodeFeatureExtractor *)self initWithFrequentCityLabels:labelsCopy version:version graph:graphCopy cityManager:sharedManager error:error];
 
   return v14;
 }

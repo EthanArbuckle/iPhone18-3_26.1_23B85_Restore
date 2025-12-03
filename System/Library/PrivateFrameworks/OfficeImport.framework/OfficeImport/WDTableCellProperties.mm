@@ -36,10 +36,10 @@
 - (BOOL)verticallyMergedCell;
 - (WDDocument)document;
 - (WDTableCellProperties)init;
-- (WDTableCellProperties)initWithDocument:(id)a3;
+- (WDTableCellProperties)initWithDocument:(id)document;
 - (id).cxx_construct;
 - (id)bottomBorder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)deletionDate;
 - (id)description;
 - (id)diagonalDownBorder;
@@ -79,33 +79,33 @@
 - (unsigned)indexToAuthorIDOfDeletion;
 - (unsigned)indexToAuthorIDOfEdit;
 - (unsigned)indexToAuthorIDOfFormattingChange;
-- (void)addProperties:(id)a3;
-- (void)addPropertiesValues:(id *)a3 to:(id *)a4;
+- (void)addProperties:(id)properties;
+- (void)addPropertiesValues:(id *)values to:(id *)to;
 - (void)clearShading;
-- (void)setBottomMargin:(signed __int16)a3;
-- (void)setBottomMarginType:(int)a3;
-- (void)setDeleted:(int)a3;
-- (void)setDeletionDate:(id)a3;
-- (void)setEditDate:(id)a3;
-- (void)setEdited:(int)a3;
-- (void)setFirstInSetOfVerticallyMergedCells:(BOOL)a3;
-- (void)setFormattingChangeDate:(id)a3;
-- (void)setFormattingChanged:(int)a3;
-- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)a3;
-- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)a3;
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3;
-- (void)setLeftMargin:(signed __int16)a3;
-- (void)setLeftMarginType:(int)a3;
-- (void)setNoWrap:(BOOL)a3;
-- (void)setResolveMode:(int)a3;
-- (void)setRightMargin:(signed __int16)a3;
-- (void)setRightMarginType:(int)a3;
-- (void)setTextDirection:(int)a3;
-- (void)setTopMargin:(signed __int16)a3;
-- (void)setTopMarginType:(int)a3;
-- (void)setVerticalAlignment:(int)a3;
-- (void)setVerticallyMergedCell:(BOOL)a3;
-- (void)setWidthType:(int)a3;
+- (void)setBottomMargin:(signed __int16)margin;
+- (void)setBottomMarginType:(int)type;
+- (void)setDeleted:(int)deleted;
+- (void)setDeletionDate:(id)date;
+- (void)setEditDate:(id)date;
+- (void)setEdited:(int)edited;
+- (void)setFirstInSetOfVerticallyMergedCells:(BOOL)cells;
+- (void)setFormattingChangeDate:(id)date;
+- (void)setFormattingChanged:(int)changed;
+- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)deletion;
+- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)edit;
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change;
+- (void)setLeftMargin:(signed __int16)margin;
+- (void)setLeftMarginType:(int)type;
+- (void)setNoWrap:(BOOL)wrap;
+- (void)setResolveMode:(int)mode;
+- (void)setRightMargin:(signed __int16)margin;
+- (void)setRightMarginType:(int)type;
+- (void)setTextDirection:(int)direction;
+- (void)setTopMargin:(signed __int16)margin;
+- (void)setTopMarginType:(int)type;
+- (void)setVerticalAlignment:(int)alignment;
+- (void)setVerticallyMergedCell:(BOOL)cell;
+- (void)setWidthType:(int)type;
 @end
 
 @implementation WDTableCellProperties
@@ -1046,9 +1046,9 @@ LABEL_10:
   return v7;
 }
 
-- (WDTableCellProperties)initWithDocument:(id)a3
+- (WDTableCellProperties)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v8.receiver = self;
   v8.super_class = WDTableCellProperties;
   v5 = [(WDTableCellProperties *)&v8 init];
@@ -1056,7 +1056,7 @@ LABEL_10:
   if (v5)
   {
     *(v5 + 12) = *(v5 + 12) & 0xF8 | 1;
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
   }
 
   return v6;
@@ -1086,10 +1086,10 @@ LABEL_10:
   }
 }
 
-- (void)setResolveMode:(int)a3
+- (void)setResolveMode:(int)mode
 {
-  v3 = (2 * (a3 == 1)) | (4 * (a3 == 2));
-  if (!a3)
+  v3 = (2 * (mode == 1)) | (4 * (mode == 2));
+  if (!mode)
   {
     ++v3;
   }
@@ -1097,11 +1097,11 @@ LABEL_10:
   *(self + 12) = v3 | *(self + 12) & 0xF8;
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
-  [(WDTableCellProperties *)self addPropertiesValues:v4 + 16 to:&self->mOriginalProperties];
-  [(WDTableCellProperties *)self addPropertiesValues:v4 + 184 to:&self->mTrackedProperties];
+  propertiesCopy = properties;
+  [(WDTableCellProperties *)self addPropertiesValues:propertiesCopy + 16 to:&self->mOriginalProperties];
+  [(WDTableCellProperties *)self addPropertiesValues:propertiesCopy + 184 to:&self->mTrackedProperties];
 }
 
 - (void)clearShading
@@ -1371,7 +1371,7 @@ LABEL_9:
   return 1;
 }
 
-- (void)setWidthType:(int)a3
+- (void)setWidthType:(int)type
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1390,7 +1390,7 @@ LABEL_9:
     v4 = 88;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 0x200u;
 }
 
@@ -1411,7 +1411,7 @@ LABEL_9:
   return 0;
 }
 
-- (void)setTopMargin:(signed __int16)a3
+- (void)setTopMargin:(signed __int16)margin
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1430,7 +1430,7 @@ LABEL_9:
     v4 = 92;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x400u;
 }
 
@@ -1490,7 +1490,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setTopMarginType:(int)a3
+- (void)setTopMarginType:(int)type
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1509,7 +1509,7 @@ LABEL_4:
     v4 = 96;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 0x800u;
 }
 
@@ -1566,7 +1566,7 @@ LABEL_4:
   return 0;
 }
 
-- (void)setBottomMargin:(signed __int16)a3
+- (void)setBottomMargin:(signed __int16)margin
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1585,7 +1585,7 @@ LABEL_4:
     v4 = 100;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x1000u;
 }
 
@@ -1645,7 +1645,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setBottomMarginType:(int)a3
+- (void)setBottomMarginType:(int)type
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1664,7 +1664,7 @@ LABEL_4:
     v4 = 104;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 0x2000u;
 }
 
@@ -1704,7 +1704,7 @@ LABEL_4:
   return v2;
 }
 
-- (void)setLeftMargin:(signed __int16)a3
+- (void)setLeftMargin:(signed __int16)margin
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1723,7 +1723,7 @@ LABEL_4:
     v4 = 108;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x4000u;
 }
 
@@ -1747,7 +1747,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setLeftMarginType:(int)a3
+- (void)setLeftMarginType:(int)type
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1766,7 +1766,7 @@ LABEL_4:
     v4 = 112;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 0x8000u;
 }
 
@@ -1806,7 +1806,7 @@ LABEL_4:
   return v2;
 }
 
-- (void)setRightMargin:(signed __int16)a3
+- (void)setRightMargin:(signed __int16)margin
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1825,7 +1825,7 @@ LABEL_4:
     v4 = 116;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x10000u;
 }
 
@@ -1849,7 +1849,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setRightMarginType:(int)a3
+- (void)setRightMarginType:(int)type
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1868,7 +1868,7 @@ LABEL_4:
     v4 = 120;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 0x20000u;
 }
 
@@ -1908,7 +1908,7 @@ LABEL_4:
   return v2;
 }
 
-- (void)setVerticalAlignment:(int)a3
+- (void)setVerticalAlignment:(int)alignment
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1927,7 +1927,7 @@ LABEL_4:
     v4 = 124;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = alignment;
   *(&self->super.isa + v3) |= 0x40000u;
 }
 
@@ -1951,7 +1951,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setTextDirection:(int)a3
+- (void)setTextDirection:(int)direction
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -1970,7 +1970,7 @@ LABEL_4:
     v4 = 128;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = direction;
   *(&self->super.isa + v3) |= 0x80000u;
 }
 
@@ -2031,7 +2031,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)setVerticallyMergedCell:(BOOL)a3
+- (void)setVerticallyMergedCell:(BOOL)cell
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2048,7 +2048,7 @@ LABEL_4:
     v3 = 176;
   }
 
-  if (a3)
+  if (cell)
   {
     v4 = 3145728;
   }
@@ -2118,7 +2118,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)setFirstInSetOfVerticallyMergedCells:(BOOL)a3
+- (void)setFirstInSetOfVerticallyMergedCells:(BOOL)cells
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2135,7 +2135,7 @@ LABEL_4:
     v3 = 176;
   }
 
-  if (a3)
+  if (cells)
   {
     v4 = 12582912;
   }
@@ -2213,7 +2213,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)setNoWrap:(BOOL)a3
+- (void)setNoWrap:(BOOL)wrap
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2230,7 +2230,7 @@ LABEL_4:
     v3 = 176;
   }
 
-  if (a3)
+  if (wrap)
   {
     v4 = 50331648;
   }
@@ -2299,7 +2299,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setDeleted:(int)a3
+- (void)setDeleted:(int)deleted
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2318,7 +2318,7 @@ LABEL_4:
     v4 = 132;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = deleted;
   *(&self->super.isa + v3) |= 0x4000000u;
 }
 
@@ -2378,7 +2378,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setEdited:(int)a3
+- (void)setEdited:(int)edited
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2397,7 +2397,7 @@ LABEL_4:
     v4 = 136;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = edited;
   *(&self->super.isa + v3) |= 0x8000000u;
 }
 
@@ -2457,7 +2457,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setFormattingChanged:(int)a3
+- (void)setFormattingChanged:(int)changed
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2476,7 +2476,7 @@ LABEL_4:
     v4 = 140;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = changed;
   *(&self->super.isa + v3) |= 0x10000000u;
 }
 
@@ -2536,7 +2536,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)deletion
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2555,7 +2555,7 @@ LABEL_4:
     v4 = 144;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = deletion;
   *(&self->super.isa + v3) |= 0x20000000u;
 }
 
@@ -2615,7 +2615,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)edit
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2634,7 +2634,7 @@ LABEL_4:
     v4 = 146;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = edit;
   *(&self->super.isa + v3) |= 0x40000000u;
 }
 
@@ -2694,7 +2694,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change
 {
   if ((*(self + 12) & 2) != 0)
   {
@@ -2713,7 +2713,7 @@ LABEL_4:
     v4 = 148;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = change;
   *(&self->super.isa + v3) |= 0x80000000;
 }
 
@@ -2772,12 +2772,12 @@ LABEL_8:
   return v4;
 }
 
-- (void)setDeletionDate:(id)a3
+- (void)setDeletionDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ((*(self + 12) & 2) != 0)
   {
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 348;
     v7 = 320;
   }
@@ -2789,14 +2789,14 @@ LABEL_8:
       goto LABEL_6;
     }
 
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 180;
     v7 = 152;
   }
 
-  objc_storeStrong((&self->super.isa + v7), a3);
+  objc_storeStrong((&self->super.isa + v7), date);
   *(&self->super.isa + v6) |= 1u;
-  v5 = v8;
+  dateCopy = v8;
 LABEL_6:
 }
 
@@ -2862,12 +2862,12 @@ LABEL_4:
   return v3;
 }
 
-- (void)setEditDate:(id)a3
+- (void)setEditDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ((*(self + 12) & 2) != 0)
   {
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 348;
     v7 = 328;
   }
@@ -2879,14 +2879,14 @@ LABEL_4:
       goto LABEL_6;
     }
 
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 180;
     v7 = 160;
   }
 
-  objc_storeStrong((&self->super.isa + v7), a3);
+  objc_storeStrong((&self->super.isa + v7), date);
   *(&self->super.isa + v6) |= 2u;
-  v5 = v8;
+  dateCopy = v8;
 LABEL_6:
 }
 
@@ -2950,12 +2950,12 @@ LABEL_4:
   return v3;
 }
 
-- (void)setFormattingChangeDate:(id)a3
+- (void)setFormattingChangeDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ((*(self + 12) & 2) != 0)
   {
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 348;
     v7 = 336;
   }
@@ -2967,14 +2967,14 @@ LABEL_4:
       goto LABEL_6;
     }
 
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 180;
     v7 = 168;
   }
 
-  objc_storeStrong((&self->super.isa + v7), a3);
+  objc_storeStrong((&self->super.isa + v7), date);
   *(&self->super.isa + v6) |= 4u;
-  v5 = v8;
+  dateCopy = v8;
 LABEL_6:
 }
 
@@ -3014,7 +3014,7 @@ LABEL_4:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDTableCellProperties allocWithZone:?]];
   v5 = v4;
@@ -3042,217 +3042,217 @@ LABEL_4:
   return WeakRetained;
 }
 
-- (void)addPropertiesValues:(id *)a3 to:(id *)a4
+- (void)addPropertiesValues:(id *)values to:(id *)to
 {
-  v6 = *(a4 + 40);
-  if (v6 & 1) == 0 && (*(a3 + 40))
+  v6 = *(to + 40);
+  if (v6 & 1) == 0 && (*(values + 40))
   {
-    *(a4 + 40) = v6 | 1;
-    v7 = [a3->var0 copy];
-    var0 = a4->var0;
-    a4->var0 = v7;
+    *(to + 40) = v6 | 1;
+    v7 = [values->var0 copy];
+    var0 = to->var0;
+    to->var0 = v7;
 
-    v6 = *(a4 + 40);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 2) == 0 && (*(a3 + 160) & 2) != 0)
+  if ((v6 & 2) == 0 && (*(values + 160) & 2) != 0)
   {
-    *(a4 + 40) = v6 | 2;
-    objc_storeStrong(&a4->var1, a3->var1);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 2;
+    objc_storeStrong(&to->var1, values->var1);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 4) == 0 && (*(a3 + 160) & 4) != 0)
+  if ((v6 & 4) == 0 && (*(values + 160) & 4) != 0)
   {
-    *(a4 + 40) = v6 | 4;
-    objc_storeStrong(&a4->var2, a3->var2);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 4;
+    objc_storeStrong(&to->var2, values->var2);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 8) == 0 && (*(a3 + 160) & 8) != 0)
+  if ((v6 & 8) == 0 && (*(values + 160) & 8) != 0)
   {
-    *(a4 + 40) = v6 | 8;
-    objc_storeStrong(&a4->var3, a3->var3);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 8;
+    objc_storeStrong(&to->var3, values->var3);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 0x10) == 0 && (*(a3 + 160) & 0x10) != 0)
+  if ((v6 & 0x10) == 0 && (*(values + 160) & 0x10) != 0)
   {
-    *(a4 + 40) = v6 | 0x10;
-    objc_storeStrong(&a4->var4, a3->var4);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 0x10;
+    objc_storeStrong(&to->var4, values->var4);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 0x20) == 0 && (*(a3 + 160) & 0x20) != 0)
+  if ((v6 & 0x20) == 0 && (*(values + 160) & 0x20) != 0)
   {
-    *(a4 + 40) = v6 | 0x20;
-    objc_storeStrong(&a4->var5, a3->var5);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 0x20;
+    objc_storeStrong(&to->var5, values->var5);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 0x40) == 0 && (*(a3 + 160) & 0x40) != 0)
+  if ((v6 & 0x40) == 0 && (*(values + 160) & 0x40) != 0)
   {
-    *(a4 + 40) = v6 | 0x40;
-    objc_storeStrong(&a4->var6, a3->var6);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 0x40;
+    objc_storeStrong(&to->var6, values->var6);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 0x80) == 0 && (*(a3 + 160) & 0x80) != 0)
+  if ((v6 & 0x80) == 0 && (*(values + 160) & 0x80) != 0)
   {
-    *(a4 + 40) = v6 | 0x80;
-    objc_storeStrong(&a4->var7, a3->var7);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 0x80;
+    objc_storeStrong(&to->var7, values->var7);
+    v6 = *(to + 40);
   }
 
-  if (v6 & 0x100) == 0 && (*(a3 + 161))
+  if (v6 & 0x100) == 0 && (*(values + 161))
   {
-    *(a4 + 40) = v6 | 0x100;
-    objc_storeStrong(&a4->var8, a3->var8);
-    v6 = *(a4 + 40);
+    *(to + 40) = v6 | 0x100;
+    objc_storeStrong(&to->var8, values->var8);
+    v6 = *(to + 40);
   }
 
-  if ((v6 & 0x200) == 0 && (*(a3 + 161) & 2) != 0)
+  if ((v6 & 0x200) == 0 && (*(values + 161) & 2) != 0)
   {
     v6 |= 0x200u;
-    *(a4 + 40) = v6;
-    a4->var9 = a3->var9;
+    *(to + 40) = v6;
+    to->var9 = values->var9;
   }
 
-  if ((v6 & 0x400) == 0 && (*(a3 + 161) & 4) != 0)
+  if ((v6 & 0x400) == 0 && (*(values + 161) & 4) != 0)
   {
     v6 |= 0x400u;
-    *(a4 + 40) = v6;
-    a4->var10 = a3->var10;
+    *(to + 40) = v6;
+    to->var10 = values->var10;
   }
 
-  if ((v6 & 0x800) == 0 && (*(a3 + 161) & 8) != 0)
+  if ((v6 & 0x800) == 0 && (*(values + 161) & 8) != 0)
   {
     v6 |= 0x800u;
-    *(a4 + 40) = v6;
-    a4->var11 = a3->var11;
+    *(to + 40) = v6;
+    to->var11 = values->var11;
   }
 
-  if ((v6 & 0x1000) == 0 && (*(a3 + 161) & 0x10) != 0)
+  if ((v6 & 0x1000) == 0 && (*(values + 161) & 0x10) != 0)
   {
     v6 |= 0x1000u;
-    *(a4 + 40) = v6;
-    a4->var12 = a3->var12;
+    *(to + 40) = v6;
+    to->var12 = values->var12;
   }
 
-  if ((v6 & 0x2000) == 0 && (*(a3 + 161) & 0x20) != 0)
+  if ((v6 & 0x2000) == 0 && (*(values + 161) & 0x20) != 0)
   {
     v6 |= 0x2000u;
-    *(a4 + 40) = v6;
-    a4->var13 = a3->var13;
+    *(to + 40) = v6;
+    to->var13 = values->var13;
   }
 
-  if ((v6 & 0x4000) == 0 && (*(a3 + 161) & 0x40) != 0)
+  if ((v6 & 0x4000) == 0 && (*(values + 161) & 0x40) != 0)
   {
     v6 |= 0x4000u;
-    *(a4 + 40) = v6;
-    a4->var14 = a3->var14;
+    *(to + 40) = v6;
+    to->var14 = values->var14;
   }
 
-  if ((v6 & 0x8000) == 0 && (*(a3 + 161) & 0x80) != 0)
+  if ((v6 & 0x8000) == 0 && (*(values + 161) & 0x80) != 0)
   {
     v6 |= 0x8000u;
-    *(a4 + 40) = v6;
-    a4->var15 = a3->var15;
+    *(to + 40) = v6;
+    to->var15 = values->var15;
   }
 
-  if (v6 & 0x10000) == 0 && (*(a3 + 162))
+  if (v6 & 0x10000) == 0 && (*(values + 162))
   {
     v6 |= 0x10000u;
-    *(a4 + 40) = v6;
-    a4->var16 = a3->var16;
+    *(to + 40) = v6;
+    to->var16 = values->var16;
   }
 
-  if ((v6 & 0x20000) == 0 && (*(a3 + 162) & 2) != 0)
+  if ((v6 & 0x20000) == 0 && (*(values + 162) & 2) != 0)
   {
     v6 |= 0x20000u;
-    *(a4 + 40) = v6;
-    a4->var17 = a3->var17;
+    *(to + 40) = v6;
+    to->var17 = values->var17;
   }
 
-  if ((v6 & 0x40000) == 0 && (*(a3 + 162) & 4) != 0)
+  if ((v6 & 0x40000) == 0 && (*(values + 162) & 4) != 0)
   {
     v6 |= 0x40000u;
-    *(a4 + 40) = v6;
-    a4->var18 = a3->var18;
+    *(to + 40) = v6;
+    to->var18 = values->var18;
   }
 
-  if ((v6 & 0x80000) == 0 && (*(a3 + 162) & 8) != 0)
+  if ((v6 & 0x80000) == 0 && (*(values + 162) & 8) != 0)
   {
     v6 |= 0x80000u;
-    *(a4 + 40) = v6;
-    a4->var19 = a3->var19;
+    *(to + 40) = v6;
+    to->var19 = values->var19;
   }
 
-  if ((v6 & 0x200000) == 0 && (*(a3 + 162) & 0x20) != 0)
+  if ((v6 & 0x200000) == 0 && (*(values + 162) & 0x20) != 0)
   {
     v9 = v6 | 0x200000;
-    *(a4 + 40) = v9;
-    v6 = v9 & 0xFFEFFFFF | (((*(a3 + 40) >> 20) & 1) << 20);
-    *(a4 + 40) = v6;
+    *(to + 40) = v9;
+    v6 = v9 & 0xFFEFFFFF | (((*(values + 40) >> 20) & 1) << 20);
+    *(to + 40) = v6;
   }
 
-  if ((v6 & 0x800000) == 0 && (*(a3 + 162) & 0x80) != 0)
+  if ((v6 & 0x800000) == 0 && (*(values + 162) & 0x80) != 0)
   {
     v10 = v6 | 0x800000;
-    *(a4 + 40) = v10;
-    v6 = v10 & 0xFFBFFFFF | (((*(a3 + 40) >> 22) & 1) << 22);
-    *(a4 + 40) = v6;
+    *(to + 40) = v10;
+    v6 = v10 & 0xFFBFFFFF | (((*(values + 40) >> 22) & 1) << 22);
+    *(to + 40) = v6;
   }
 
-  if ((v6 & 0x2000000) == 0 && (*(a3 + 163) & 2) != 0)
+  if ((v6 & 0x2000000) == 0 && (*(values + 163) & 2) != 0)
   {
     v11 = v6 | 0x2000000;
-    *(a4 + 40) = v11;
-    v6 = v11 & 0xFEFFFFFF | ((HIBYTE(*(a3 + 40)) & 1) << 24);
-    *(a4 + 40) = v6;
+    *(to + 40) = v11;
+    v6 = v11 & 0xFEFFFFFF | ((HIBYTE(*(values + 40)) & 1) << 24);
+    *(to + 40) = v6;
   }
 
-  if ((v6 & 0x20000000) == 0 && (*(a3 + 163) & 0x20) != 0)
+  if ((v6 & 0x20000000) == 0 && (*(values + 163) & 0x20) != 0)
   {
     v6 |= 0x20000000u;
-    *(a4 + 40) = v6;
-    a4->var23 = a3->var23;
+    *(to + 40) = v6;
+    to->var23 = values->var23;
   }
 
-  if ((v6 & 0x40000000) == 0 && (*(a3 + 163) & 0x40) != 0)
+  if ((v6 & 0x40000000) == 0 && (*(values + 163) & 0x40) != 0)
   {
     v6 |= 0x40000000u;
-    *(a4 + 40) = v6;
-    a4->var24 = a3->var24;
+    *(to + 40) = v6;
+    to->var24 = values->var24;
   }
 
-  if ((v6 & 0x80000000) == 0 && (*(a3 + 40) & 0x80000000) != 0)
+  if ((v6 & 0x80000000) == 0 && (*(values + 40) & 0x80000000) != 0)
   {
-    *(a4 + 40) = v6 | 0x80000000;
-    a4->var25 = a3->var25;
+    *(to + 40) = v6 | 0x80000000;
+    to->var25 = values->var25;
   }
 
-  v12 = *(a4 + 164);
-  if (v12 & 1) == 0 && (*(a3 + 164))
+  v12 = *(to + 164);
+  if (v12 & 1) == 0 && (*(values + 164))
   {
-    *(a4 + 164) = v12 | 1;
-    objc_storeStrong(&a4->var26, a3->var26);
-    v12 = *(a4 + 164);
+    *(to + 164) = v12 | 1;
+    objc_storeStrong(&to->var26, values->var26);
+    v12 = *(to + 164);
   }
 
-  if ((v12 & 2) == 0 && (*(a3 + 164) & 2) != 0)
+  if ((v12 & 2) == 0 && (*(values + 164) & 2) != 0)
   {
-    *(a4 + 164) = v12 | 2;
-    objc_storeStrong(&a4->var27, a3->var27);
-    v12 = *(a4 + 164);
+    *(to + 164) = v12 | 2;
+    objc_storeStrong(&to->var27, values->var27);
+    v12 = *(to + 164);
   }
 
-  if ((v12 & 4) == 0 && (*(a3 + 164) & 4) != 0)
+  if ((v12 & 4) == 0 && (*(values + 164) & 4) != 0)
   {
-    *(a4 + 164) = v12 | 4;
-    var28 = a3->var28;
+    *(to + 164) = v12 | 4;
+    var28 = values->var28;
 
-    objc_storeStrong(&a4->var28, var28);
+    objc_storeStrong(&to->var28, var28);
   }
 }
 

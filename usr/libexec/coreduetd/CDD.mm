@@ -3,19 +3,19 @@
 - (BOOL)isClassCLocked;
 - (BOOL)isLocked;
 - (BOOL)readConfigParamsFromPlist;
-- (BOOL)saveForecast:(id)a3 queryParameters:(id *)a4 deviceIdentifier:(id)a5 error:(id *)a6;
+- (BOOL)saveForecast:(id)forecast queryParameters:(id *)parameters deviceIdentifier:(id)identifier error:(id *)error;
 - (CDD)init;
 - (id)computeDatabaseAge;
-- (id)histogramOfCountsFromForecast:(id)a3;
+- (id)histogramOfCountsFromForecast:(id)forecast;
 - (id)knowledgeStore;
-- (id)pmfOverHourOfDayWithParams:(id *)a3;
+- (id)pmfOverHourOfDayWithParams:(id *)params;
 - (id)retrieveHistogram;
-- (unint64_t)calculateActualStartEpoch:(unint64_t)a3 endepoch:(unint64_t)a4 recurrenceInterval:(unint64_t)a5;
+- (unint64_t)calculateActualStartEpoch:(unint64_t)epoch endepoch:(unint64_t)endepoch recurrenceInterval:(unint64_t)interval;
 - (void)classCAndPasscodeCheck;
 - (void)dumpAll;
-- (void)loadParamsFromDict:(id)a3 userDefaults:(id)a4;
-- (void)saveRemoteInBedTimes:(id)a3;
-- (void)setDatabaseAge:(id)a3;
+- (void)loadParamsFromDict:(id)dict userDefaults:(id)defaults;
+- (void)saveRemoteInBedTimes:(id)times;
+- (void)setDatabaseAge:(id)age;
 - (void)setDefaultConfigParams;
 - (void)setupCommunicator;
 @end
@@ -119,9 +119,9 @@
       }
     }
 
-    v18 = [(CDD *)v4 config];
-    v19 = [(CDD *)v4 computeDatabaseAge];
-    [v18 setAgeOfDatabase:v19];
+    config = [(CDD *)v4 config];
+    computeDatabaseAge = [(CDD *)v4 computeDatabaseAge];
+    [config setAgeOfDatabase:computeDatabaseAge];
 
     [(CDD *)v4 setupCommunicator];
     [(CDD *)v4 dumpAll];
@@ -216,9 +216,9 @@ LABEL_12:
 - (id)knowledgeStore
 {
   v2 = +[CDKnowledgeDaemon defaultDaemon];
-  v3 = [v2 storage];
+  storage = [v2 storage];
 
-  return v3;
+  return storage;
 }
 
 - (void)setupCommunicator
@@ -261,65 +261,65 @@ LABEL_12:
   return v2;
 }
 
-- (unint64_t)calculateActualStartEpoch:(unint64_t)a3 endepoch:(unint64_t)a4 recurrenceInterval:(unint64_t)a5
+- (unint64_t)calculateActualStartEpoch:(unint64_t)epoch endepoch:(unint64_t)endepoch recurrenceInterval:(unint64_t)interval
 {
-  v8 = [(CDD *)self config];
-  v9 = [v8 ageOfDatabase];
-  [v9 timeIntervalSinceReferenceDate];
+  config = [(CDD *)self config];
+  ageOfDatabase = [config ageOfDatabase];
+  [ageOfDatabase timeIntervalSinceReferenceDate];
   v11 = v10;
 
-  if (v11 - a3 >= 0x15181 && a4 > v11 && a4 > a3 && v11 >= a3)
+  if (v11 - epoch >= 0x15181 && endepoch > v11 && endepoch > epoch && v11 >= epoch)
   {
-    if (a5)
+    if (interval)
     {
-      v15 = a5;
+      intervalCopy = interval;
     }
 
     else
     {
-      v15 = 86400;
+      intervalCopy = 86400;
     }
 
-    if ((a4 - v11) >> 7 > 0xD2E || (v11 = a4 - 432000, a4 - 432000 >= a3))
+    if ((endepoch - v11) >> 7 > 0xD2E || (v11 = endepoch - 432000, endepoch - 432000 >= epoch))
     {
-      a3 += (v11 - a3) / v15 * v15;
+      epoch += (v11 - epoch) / intervalCopy * intervalCopy;
     }
   }
 
-  return a3;
+  return epoch;
 }
 
-- (id)pmfOverHourOfDayWithParams:(id *)a3
+- (id)pmfOverHourOfDayWithParams:(id *)params
 {
-  var3 = a3->var3;
-  var5 = a3->var5;
+  var3 = params->var3;
+  var5 = params->var5;
   if (!var5)
   {
-    a3->var5 = 86400;
+    params->var5 = 86400;
     var5 = 86400;
   }
 
-  if (!a3->var6)
+  if (!params->var6)
   {
-    a3->var6 = 86400;
+    params->var6 = 86400;
   }
 
-  v7 = [(CDD *)self calculateActualStartEpoch:var3 endepoch:a3->var4 recurrenceInterval:var5];
+  v7 = [(CDD *)self calculateActualStartEpoch:var3 endepoch:params->var4 recurrenceInterval:var5];
   v8 = os_transaction_create();
   v9 = objc_autoreleasePoolPush();
   v10 = xpc_dictionary_create(0, 0, 0);
   v11 = v10;
   v12 = 0;
-  if (!a3->var13)
+  if (!params->var13)
   {
     v116 = v7;
     v107 = v8;
-    v108 = self;
-    v109 = a3;
+    selfCopy = self;
+    paramsCopy = params;
     xdict = v10;
     v106 = v9;
-    var4 = a3->var4;
-    var7 = a3->var7;
+    var4 = params->var4;
+    var7 = params->var7;
     v15 = objc_alloc_init(NSMutableArray);
     v16 = objc_alloc_init(NSMutableArray);
     v17 = +[NSTimeZone systemTimeZone];
@@ -342,7 +342,7 @@ LABEL_12:
 
     v115 = v15;
     v118 = v16;
-    if (v109->var8 == 20499)
+    if (paramsCopy->var8 == 20499)
     {
       v112 = v20;
       v24 = v116;
@@ -357,7 +357,7 @@ LABEL_12:
       v102 = v28;
       v103 = v26;
       v29 = [_DKQuery predicateForEventsWithStartInDateRangeFrom:v26 to:v28];
-      if (v109->var14 && v109->var2)
+      if (paramsCopy->var14 && paramsCopy->var2)
       {
         v30 = [NSString stringWithUTF8String:?];
         v31 = [_DKQuery predicateForEventsWithStringValue:v30];
@@ -391,8 +391,8 @@ LABEL_12:
       [v39 setClientName:v41];
 
       [v39 setTracker:&stru_10003D418];
-      v42 = [(CDD *)self knowledgeStore];
-      v43 = [v42 executeQuery:v39 error:0];
+      knowledgeStore = [(CDD *)self knowledgeStore];
+      v43 = [knowledgeStore executeQuery:v39 error:0];
 
       value = [v43 count];
       if (v43)
@@ -420,14 +420,14 @@ LABEL_12:
               }
 
               v48 = *(*(&v124 + 1) + 8 * j);
-              v49 = [v48 stringValue];
+              stringValue = [v48 stringValue];
 
-              if (v49)
+              if (stringValue)
               {
-                v50 = [v48 startDate];
-                v51 = [v114 secondsFromGMTForDate:v50];
-                v52 = [v48 startDate];
-                [v52 timeIntervalSinceReferenceDate];
+                startDate = [v48 startDate];
+                v51 = [v114 secondsFromGMTForDate:startDate];
+                startDate2 = [v48 startDate];
+                [startDate2 timeIntervalSinceReferenceDate];
                 v53 = [NSNumber numberWithDouble:?];
                 v54 = (v51 + [v53 integerValue]) % 0x15180;
 
@@ -438,20 +438,20 @@ LABEL_12:
                 }
 
                 v56 = v55;
-                v57 = [v48 startDate];
-                [v57 timeIntervalSinceReferenceDate];
+                startDate3 = [v48 startDate];
+                [startDate3 timeIntervalSinceReferenceDate];
                 v58 = [NSNumber numberWithDouble:?];
                 v59 = ([v58 unsignedIntegerValue] - v116) / 0x15180uLL;
 
-                v60 = [v115 objectAtIndex:v56 / 0x384];
-                v61 = [v118 objectAtIndex:v56 / 0x384];
-                v62 = [v48 stringValue];
-                [v60 addObject:v62];
+                0x384 = [v115 objectAtIndex:v56 / 0x384];
+                0x3842 = [v118 objectAtIndex:v56 / 0x384];
+                stringValue2 = [v48 stringValue];
+                [0x384 addObject:stringValue2];
 
-                v63 = [v48 stringValue];
+                stringValue3 = [v48 stringValue];
                 v64 = [NSString stringWithFormat:@"%s%03llu", "XQW90", v59];
-                v65 = [v63 stringByAppendingString:v64];
-                [v61 addObject:v65];
+                v65 = [stringValue3 stringByAppendingString:v64];
+                [0x3842 addObject:v65];
               }
             }
 
@@ -473,9 +473,9 @@ LABEL_12:
       v24 = v116;
     }
 
-    v67 = v109->var5;
-    var6 = v109->var6;
-    v68 = v109->var4;
+    v67 = paramsCopy->var5;
+    var6 = paramsCopy->var6;
+    v68 = paramsCopy->var4;
     v69 = v115;
     if (v67 == 86400 && var6 == 86400)
     {
@@ -525,7 +525,7 @@ LABEL_50:
                 v88 = [v87 count];
 
                 v89 = __b[k];
-                v90 = [v85 UTF8String];
+                uTF8String = [v85 UTF8String];
                 if (v89)
                 {
                   v91 = v88 / v89;
@@ -536,7 +536,7 @@ LABEL_50:
                   v91 = 0.0;
                 }
 
-                xpc_dictionary_set_double(v80, v90, v91);
+                xpc_dictionary_set_double(v80, uTF8String, v91);
               }
 
               v82 = [v117 countByEnumeratingWithState:&v120 objects:v128 count:16];
@@ -551,9 +551,9 @@ LABEL_50:
 
         v11 = xdict;
         xpc_dictionary_set_uint64(xdict, "itemsInForecast", value);
-        v92 = [(CDD *)v108 config];
-        v93 = [v92 ageOfDatabase];
-        [v93 timeIntervalSinceReferenceDate];
+        config = [(CDD *)selfCopy config];
+        ageOfDatabase = [config ageOfDatabase];
+        [ageOfDatabase timeIntervalSinceReferenceDate];
         v95 = v94;
 
         xpc_dictionary_set_uint64(xdict, "databaseEpochSeconds", v95);
@@ -577,7 +577,7 @@ LABEL_50:
       v72 = &v24[var6];
       if (v67 > var6)
       {
-        var6 = v109->var5;
+        var6 = paramsCopy->var5;
       }
 
       v73 = v24;
@@ -628,24 +628,24 @@ LABEL_63:
   return v12;
 }
 
-- (void)saveRemoteInBedTimes:(id)a3
+- (void)saveRemoteInBedTimes:(id)times
 {
-  v4 = a3;
-  if ([v4 count] == 2)
+  timesCopy = times;
+  if ([timesCopy count] == 2)
   {
     v5 = +[_DKSystemEventStreams remoteDeviceInBedTimesStream];
-    v6 = [v4 firstObject];
-    v7 = [v4 lastObject];
-    v8 = [_DKEvent eventWithStream:v5 startDate:v6 endDate:v7 categoryIntegerValue:1 metadata:0];
+    firstObject = [timesCopy firstObject];
+    lastObject = [timesCopy lastObject];
+    v8 = [_DKEvent eventWithStream:v5 startDate:firstObject endDate:lastObject categoryIntegerValue:1 metadata:0];
 
-    v9 = [(CDD *)self knowledgeStore];
+    knowledgeStore = [(CDD *)self knowledgeStore];
     v18 = v8;
     v10 = [NSArray arrayWithObjects:&v18 count:1];
     v13 = 0;
-    LODWORD(v7) = [v9 saveObjects:v10 error:&v13];
+    LODWORD(lastObject) = [knowledgeStore saveObjects:v10 error:&v13];
     v11 = v13;
 
-    if (!v7 || v11)
+    if (!lastObject || v11)
     {
       v12 = +[_CDLogging admissionCheckChannel];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -670,16 +670,16 @@ LABEL_63:
   }
 }
 
-- (id)histogramOfCountsFromForecast:(id)a3
+- (id)histogramOfCountsFromForecast:(id)forecast
 {
-  v3 = a3;
+  forecastCopy = forecast;
   +[NSMutableDictionary dictionary];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100020330;
   v4 = v8[3] = &unk_10003D790;
   v9 = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:v8];
+  [forecastCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   v5 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -716,17 +716,17 @@ LABEL_63:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Query is: %@", &v14, 0xCu);
   }
 
-  v11 = [(CDD *)self knowledgeStore];
-  v12 = [v11 executeQuery:v9 error:0];
+  knowledgeStore = [(CDD *)self knowledgeStore];
+  v12 = [knowledgeStore executeQuery:v9 error:0];
 
   return v12;
 }
 
-- (BOOL)saveForecast:(id)a3 queryParameters:(id *)a4 deviceIdentifier:(id)a5 error:(id *)a6
+- (BOOL)saveForecast:(id)forecast queryParameters:(id *)parameters deviceIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
+  forecastCopy = forecast;
   v8 = os_transaction_create();
-  v9 = [(CDD *)self histogramOfCountsFromForecast:v7];
+  v9 = [(CDD *)self histogramOfCountsFromForecast:forecastCopy];
 
   v10 = [[_DKHistogram alloc] initWithHistogram:v9];
   v11 = +[_DKSystemEventStreams pairedDeviceForecastStream];
@@ -738,12 +738,12 @@ LABEL_63:
   v15 = [v13 initWithStartDate:v14 endDate:v12];
   [v10 setInterval:v15];
 
-  v16 = [(CDD *)self retrieveHistogram];
+  retrieveHistogram = [(CDD *)self retrieveHistogram];
   v17 = +[_CDLogging admissionCheckChannel];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v16;
+    v30 = retrieveHistogram;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Retrieved histogram: %@", buf, 0xCu);
   }
 
@@ -756,18 +756,18 @@ LABEL_63:
   }
 
   v19 = +[CDKnowledgeDaemon defaultDaemon];
-  v20 = [v19 storage];
+  storage = [v19 storage];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100020888;
   v25[3] = &unk_10003D7B8;
   v26 = v8;
   v27 = v10;
-  v28 = v16;
-  v21 = v16;
+  v28 = retrieveHistogram;
+  v21 = retrieveHistogram;
   v22 = v10;
   v23 = v8;
-  [v20 saveHistogram:v22 responseQueue:0 withCompletion:v25];
+  [storage saveHistogram:v22 responseQueue:0 withCompletion:v25];
 
   return 1;
 }
@@ -789,9 +789,9 @@ LABEL_63:
   [v9 setClientName:v11];
 
   [v9 setTracker:&stru_10003D7D8];
-  v12 = [(CDD *)self knowledgeStore];
+  knowledgeStore = [(CDD *)self knowledgeStore];
   v21 = 0;
-  v13 = [v12 executeQuery:v9 error:&v21];
+  v13 = [knowledgeStore executeQuery:v9 error:&v21];
   v14 = v21;
 
   if (v14 || ([v13 firstObject], v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) == 0))
@@ -802,27 +802,27 @@ LABEL_63:
       sub_100023348(v14, v13, v19);
     }
 
-    v18 = +[NSDate date];
+    startDate = +[NSDate date];
   }
 
   else
   {
-    v17 = [v13 firstObject];
-    v18 = [v17 startDate];
+    firstObject = [v13 firstObject];
+    startDate = [firstObject startDate];
   }
 
   objc_autoreleasePoolPop(v4);
 
-  return v18;
+  return startDate;
 }
 
-- (void)setDatabaseAge:(id)a3
+- (void)setDatabaseAge:(id)age
 {
-  if (a3)
+  if (age)
   {
-    v4 = a3;
-    v5 = [(CDD *)self config];
-    [v5 setAgeOfDatabase:v4];
+    ageCopy = age;
+    config = [(CDD *)self config];
+    [config setAgeOfDatabase:ageCopy];
   }
 }
 
@@ -859,10 +859,10 @@ LABEL_63:
   v7 = +[_CDLogging admissionCheckChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(CDD *)self config];
-    v9 = [v8 verbose];
+    config = [(CDD *)self config];
+    verbose = [config verbose];
     v22 = 67109120;
-    v23 = v9;
+    v23 = verbose;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "\t\tverbose: %d", &v22, 8u);
   }
 
@@ -883,30 +883,30 @@ LABEL_63:
   v12 = +[_CDLogging admissionCheckChannel];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(CDD *)self config];
-    v14 = [v13 commEnabled];
+    config2 = [(CDD *)self config];
+    commEnabled = [config2 commEnabled];
     v22 = 67109120;
-    v23 = v14;
+    v23 = commEnabled;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "\t\tcommEnabled: %d\n", &v22, 8u);
   }
 
   v15 = +[_CDLogging admissionCheckChannel];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [(CDD *)self config];
-    v17 = [v16 commMinClientGranularity];
+    config3 = [(CDD *)self config];
+    commMinClientGranularity = [config3 commMinClientGranularity];
     v22 = 67109120;
-    v23 = v17;
+    v23 = commMinClientGranularity;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "\t\tcommMinClientGranularity: %d\n", &v22, 8u);
   }
 
   v18 = +[_CDLogging admissionCheckChannel];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [(CDD *)self config];
-    v20 = [v19 commSyncBoundarySeconds];
+    config4 = [(CDD *)self config];
+    commSyncBoundarySeconds = [config4 commSyncBoundarySeconds];
     v22 = 67109120;
-    v23 = v20;
+    v23 = commSyncBoundarySeconds;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "\t\tcommSyncBoundarySeconds: %d\n", &v22, 8u);
   }
 
@@ -942,92 +942,92 @@ LABEL_63:
 
 - (void)setDefaultConfigParams
 {
-  v3 = [(CDD *)self config];
-  [v3 setVerbose:0];
+  config = [(CDD *)self config];
+  [config setVerbose:0];
 
-  v4 = [(CDD *)self config];
-  [v4 setBatteryMonitorExchangeTimerDelta:900];
+  config2 = [(CDD *)self config];
+  [config2 setBatteryMonitorExchangeTimerDelta:900];
 
-  v5 = [(CDD *)self config];
-  [v5 setBatteryMonitorExchangeBattDelta:1];
+  config3 = [(CDD *)self config];
+  [config3 setBatteryMonitorExchangeBattDelta:1];
 
-  v6 = [(CDD *)self config];
-  [v6 setCommEnabled:0];
+  config4 = [(CDD *)self config];
+  [config4 setCommEnabled:0];
 
-  v7 = [(CDD *)self config];
-  [v7 setCommMinClientGranularity:900];
+  config5 = [(CDD *)self config];
+  [config5 setCommMinClientGranularity:900];
 
-  v8 = [(CDD *)self config];
-  [v8 setCommSyncBoundarySeconds:86400];
+  config6 = [(CDD *)self config];
+  [config6 setCommSyncBoundarySeconds:86400];
 
-  v10 = [(CDD *)self config];
+  config7 = [(CDD *)self config];
   v9 = +[NSDate date];
-  [v10 setAgeOfDatabase:v9];
+  [config7 setAgeOfDatabase:v9];
 }
 
-- (void)loadParamsFromDict:(id)a3 userDefaults:(id)a4
+- (void)loadParamsFromDict:(id)dict userDefaults:(id)defaults
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && ([v6 objectForKey:@"CDDVerboseKeyString"], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  dictCopy = dict;
+  defaultsCopy = defaults;
+  v7 = defaultsCopy;
+  if (defaultsCopy && ([defaultsCopy objectForKey:@"CDDVerboseKeyString"], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v9 = [v7 BOOLForKey:@"CDDVerboseKeyString"];
-    v10 = [(CDD *)self config];
-    [v10 setVerbose:v9];
+    config = [(CDD *)self config];
+    [config setVerbose:v9];
   }
 
   else
   {
-    v11 = [v23 valueForKey:@"CDDVerboseKeyString"];
+    v11 = [dictCopy valueForKey:@"CDDVerboseKeyString"];
     if (!v11)
     {
       goto LABEL_7;
     }
 
-    v10 = v11;
-    v12 = [(CDD *)self config];
-    [v12 setVerbose:{objc_msgSend(v10, "BOOLValue")}];
+    config = v11;
+    config2 = [(CDD *)self config];
+    [config2 setVerbose:{objc_msgSend(config, "BOOLValue")}];
   }
 
 LABEL_7:
-  v13 = [v23 valueForKey:@"CDDBatteryMonitorExchangeTimerDeltaString"];
+  v13 = [dictCopy valueForKey:@"CDDBatteryMonitorExchangeTimerDeltaString"];
   if (v13)
   {
-    v14 = [(CDD *)self config];
-    [v14 setBatteryMonitorExchangeTimerDelta:{objc_msgSend(v13, "intValue")}];
+    config3 = [(CDD *)self config];
+    [config3 setBatteryMonitorExchangeTimerDelta:{objc_msgSend(v13, "intValue")}];
   }
 
-  v15 = [v23 valueForKey:@"CDDBatteryMonitorExchangeBattDeltaString"];
+  v15 = [dictCopy valueForKey:@"CDDBatteryMonitorExchangeBattDeltaString"];
 
   if (v15)
   {
-    v16 = [(CDD *)self config];
-    [v16 setBatteryMonitorExchangeBattDelta:{objc_msgSend(v15, "intValue")}];
+    config4 = [(CDD *)self config];
+    [config4 setBatteryMonitorExchangeBattDelta:{objc_msgSend(v15, "intValue")}];
   }
 
-  v17 = [v23 valueForKey:@"CDDCEnabledString"];
+  v17 = [dictCopy valueForKey:@"CDDCEnabledString"];
 
   if (v17)
   {
-    v18 = [(CDD *)self config];
-    [v18 setCommEnabled:{objc_msgSend(v17, "BOOLValue")}];
+    config5 = [(CDD *)self config];
+    [config5 setCommEnabled:{objc_msgSend(v17, "BOOLValue")}];
   }
 
-  v19 = [v23 valueForKey:@"CDDCMinClientGranularityString"];
+  v19 = [dictCopy valueForKey:@"CDDCMinClientGranularityString"];
 
   if (v19)
   {
-    v20 = [(CDD *)self config];
-    [v20 setCommMinClientGranularity:{objc_msgSend(v19, "intValue")}];
+    config6 = [(CDD *)self config];
+    [config6 setCommMinClientGranularity:{objc_msgSend(v19, "intValue")}];
   }
 
-  v21 = [v23 valueForKey:@"CDDCSyncBoundarySecondsString"];
+  v21 = [dictCopy valueForKey:@"CDDCSyncBoundarySecondsString"];
 
   if (v21)
   {
-    v22 = [(CDD *)self config];
-    [v22 setCommSyncBoundarySeconds:{objc_msgSend(v21, "intValue")}];
+    config7 = [(CDD *)self config];
+    [config7 setCommSyncBoundarySeconds:{objc_msgSend(v21, "intValue")}];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface HKTableViewController
 - (HKTableViewController)init;
-- (HKTableViewController)initWithUsingInsetStyling:(BOOL)a3;
+- (HKTableViewController)initWithUsingInsetStyling:(BOOL)styling;
 - (void)viewDidLoad;
 @end
 
@@ -19,9 +19,9 @@
   return result;
 }
 
-- (HKTableViewController)initWithUsingInsetStyling:(BOOL)a3
+- (HKTableViewController)initWithUsingInsetStyling:(BOOL)styling
 {
-  if (a3)
+  if (styling)
   {
     v4 = 2;
   }
@@ -36,7 +36,7 @@
   result = [(HKTableViewController *)&v6 initWithStyle:v4];
   if (result)
   {
-    result->_useInsetStyling = a3;
+    result->_useInsetStyling = styling;
   }
 
   return result;
@@ -48,16 +48,16 @@
   v7.super_class = HKTableViewController;
   [(HKTableViewController *)&v7 viewDidLoad];
   useInsetStyling = self->_useInsetStyling;
-  v4 = [(HKTableViewController *)self tableView];
-  [v4 _setSectionContentInsetFollowsLayoutMargins:useInsetStyling];
+  tableView = [(HKTableViewController *)self tableView];
+  [tableView _setSectionContentInsetFollowsLayoutMargins:useInsetStyling];
 
   if (self->_useInsetStyling)
   {
-    v5 = [(HKTableViewController *)self tableView];
-    [v5 _setSectionCornerRadius:26.0];
+    tableView2 = [(HKTableViewController *)self tableView];
+    [tableView2 _setSectionCornerRadius:26.0];
 
-    v6 = [(HKTableViewController *)self tableView];
-    [v6 _setSectionContentInset:{0.0, 16.0, 20.0, 16.0}];
+    tableView3 = [(HKTableViewController *)self tableView];
+    [tableView3 _setSectionContentInset:{0.0, 16.0, 20.0, 16.0}];
   }
 }
 

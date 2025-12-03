@@ -1,12 +1,12 @@
 @interface HMMediaDestinationController
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)availableDestinationIdentifiersIsEqualToIdentifiers:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)availableDestinationIdentifiersIsEqualToIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMMediaDestination)destination;
-- (HMMediaDestinationController)initWithControllerData:(id)a3;
-- (HMMediaDestinationController)initWithIdentifier:(id)a3 destinationIdentifier:(id)a4 supportedOptions:(unint64_t)a5 availableDestinationIdentifiers:(id)a6;
+- (HMMediaDestinationController)initWithControllerData:(id)data;
+- (HMMediaDestinationController)initWithIdentifier:(id)identifier destinationIdentifier:(id)destinationIdentifier supportedOptions:(unint64_t)options availableDestinationIdentifiers:(id)identifiers;
 - (HMMediaDestinationControllerDataSource)dataSource;
 - (HMMediaDestinationControllerDelegate)delegate;
 - (NSArray)attributeDescriptions;
@@ -17,15 +17,15 @@
 - (id)logIdentifier;
 - (unint64_t)hash;
 - (void)_notifyDidUpdateDestination;
-- (void)callCompletionHandler:(id)a3 error:(id)a4;
+- (void)callCompletionHandler:(id)handler error:(id)error;
 - (void)configureLastNotifiedDestinationIdentifier;
-- (void)configureWithContext:(id)a3 dataSource:(id)a4;
-- (void)mergeSupportedOptionsWithNewController:(id)a3;
+- (void)configureWithContext:(id)context dataSource:(id)source;
+- (void)mergeSupportedOptionsWithNewController:(id)controller;
 - (void)notifyDidUpdateAvailableDestinations;
 - (void)notifyDidUpdateDestination;
-- (void)setAvailableDestinationIdentifiers:(id)a3;
-- (void)setDestinationIdentifier:(id)a3;
-- (void)updateDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (void)setAvailableDestinationIdentifiers:(id)identifiers;
+- (void)setDestinationIdentifier:(id)identifier;
+- (void)updateDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation HMMediaDestinationController
@@ -46,16 +46,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMMediaDestinationController *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMMediaDestinationController *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -65,7 +65,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -76,16 +76,16 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMMediaDestinationController *)self identifier];
-      v8 = [(HMMediaDestinationController *)v6 identifier];
-      if ([v7 hmf_isEqualToUUID:v8])
+      identifier = [(HMMediaDestinationController *)self identifier];
+      identifier2 = [(HMMediaDestinationController *)v6 identifier];
+      if ([identifier hmf_isEqualToUUID:identifier2])
       {
-        v9 = [(HMMediaDestinationController *)v6 availableDestinationIdentifiers];
-        if ([(HMMediaDestinationController *)self availableDestinationIdentifiersIsEqualToIdentifiers:v9])
+        availableDestinationIdentifiers = [(HMMediaDestinationController *)v6 availableDestinationIdentifiers];
+        if ([(HMMediaDestinationController *)self availableDestinationIdentifiersIsEqualToIdentifiers:availableDestinationIdentifiers])
         {
-          v10 = [(HMMediaDestinationController *)self destinationIdentifier];
-          v11 = [(HMMediaDestinationController *)v6 destinationIdentifier];
-          v12 = [v10 hmf_isEqualToUUID:v11];
+          destinationIdentifier = [(HMMediaDestinationController *)self destinationIdentifier];
+          destinationIdentifier2 = [(HMMediaDestinationController *)v6 destinationIdentifier];
+          v12 = [destinationIdentifier hmf_isEqualToUUID:destinationIdentifier2];
         }
 
         else
@@ -113,20 +113,20 @@
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMMediaDestinationController *)self identifier];
-  v5 = [v3 initWithName:@"identifier" value:v4];
+  identifier = [(HMMediaDestinationController *)self identifier];
+  v5 = [v3 initWithName:@"identifier" value:identifier];
   v18[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMMediaDestinationController *)self destinationIdentifier];
-  v8 = [v6 initWithName:@"destinationIdentifier" value:v7];
+  destinationIdentifier = [(HMMediaDestinationController *)self destinationIdentifier];
+  v8 = [v6 initWithName:@"destinationIdentifier" value:destinationIdentifier];
   v18[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
   v10 = HMMediaDestinationControllerSupportOptionsAsString([(HMMediaDestinationController *)self supportedOptions]);
   v11 = [v9 initWithName:@"supportedOptions" value:v10];
   v18[2] = v11;
   v12 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v13 = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
-  v14 = [v12 initWithName:@"availableDestinationIdentifiers" value:v13];
+  availableDestinationIdentifiers = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
+  v14 = [v12 initWithName:@"availableDestinationIdentifiers" value:availableDestinationIdentifiers];
   v18[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:4];
 
@@ -144,26 +144,26 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMMediaDestinationController *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMMediaDestinationController *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)mergeSupportedOptionsWithNewController:(id)a3
+- (void)mergeSupportedOptionsWithNewController:(id)controller
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMMediaDestinationController *)self supportedOptions];
-  if (v5 != [v4 supportedOptions])
+  controllerCopy = controller;
+  supportedOptions = [(HMMediaDestinationController *)self supportedOptions];
+  if (supportedOptions != [controllerCopy supportedOptions])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = HMMediaDestinationControllerSupportOptionsAsString([v4 supportedOptions]);
+      v10 = HMMediaDestinationControllerSupportOptionsAsString([controllerCopy supportedOptions]);
       v12 = 138543618;
       v13 = v9;
       v14 = 2112;
@@ -172,20 +172,20 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    -[HMMediaDestinationController setSupportedOptions:](v7, "setSupportedOptions:", [v4 supportedOptions]);
+    -[HMMediaDestinationController setSupportedOptions:](selfCopy, "setSupportedOptions:", [controllerCopy supportedOptions]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -198,7 +198,7 @@
   if (!v6)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -206,33 +206,33 @@
       *buf = 138543618;
       v51 = v21;
       v52 = 2112;
-      v53 = v4;
+      v53 = objectCopy;
       _os_log_impl(&dword_19BB39000, v20, OS_LOG_TYPE_ERROR, "%{public}@Unable to merge new media destination controller using new object: %@", buf, 0x16u);
     }
 
     goto LABEL_14;
   }
 
-  v7 = [(HMMediaDestinationController *)self identifier];
-  v8 = [v6 identifier];
-  v9 = [v7 hmf_isEqualToUUID:v8];
+  identifier = [(HMMediaDestinationController *)self identifier];
+  identifier2 = [v6 identifier];
+  v9 = [identifier hmf_isEqualToUUID:identifier2];
 
   if ((v9 & 1) == 0)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v6 identifier];
-      v24 = [(HMMediaDestinationController *)v19 identifier];
+      identifier3 = [v6 identifier];
+      identifier4 = [(HMMediaDestinationController *)selfCopy2 identifier];
       *buf = 138543874;
       v51 = v22;
       v52 = 2112;
-      v53 = v23;
+      v53 = identifier3;
       v54 = 2112;
-      v55 = v24;
+      v55 = identifier4;
       _os_log_impl(&dword_19BB39000, v20, OS_LOG_TYPE_ERROR, "%{public}@Unable to merge new media destination controller with identifier: %@ due to existing identifier: %@", buf, 0x20u);
     }
 
@@ -243,8 +243,8 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  v10 = [(HMMediaDestinationController *)self destinationIdentifier];
-  v11 = [v6 destinationIdentifier];
+  destinationIdentifier = [(HMMediaDestinationController *)self destinationIdentifier];
+  destinationIdentifier2 = [v6 destinationIdentifier];
   v12 = HMFEqualObjects();
 
   if (!v12)
@@ -252,9 +252,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v13 = [(HMMediaDestinationController *)self lastNotifiedDestinationIdentifier];
-  v14 = [v6 destinationIdentifier];
-  v15 = [v14 UUIDString];
+  lastNotifiedDestinationIdentifier = [(HMMediaDestinationController *)self lastNotifiedDestinationIdentifier];
+  destinationIdentifier3 = [v6 destinationIdentifier];
+  uUIDString = [destinationIdentifier3 UUIDString];
   v16 = HMFEqualObjects();
 
   if (v16)
@@ -266,16 +266,16 @@ LABEL_14:
   {
 LABEL_15:
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy3 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       v29 = HMFGetLogIdentifier();
-      v30 = [v6 destinationIdentifier];
+      destinationIdentifier4 = [v6 destinationIdentifier];
       *buf = 138543618;
       v51 = v29;
       v52 = 2112;
-      v53 = v30;
+      v53 = destinationIdentifier4;
       _os_log_impl(&dword_19BB39000, v28, OS_LOG_TYPE_INFO, "%{public}@Merging new media destination controller destination: %@", buf, 0x16u);
     }
 
@@ -283,22 +283,22 @@ LABEL_15:
     v17 = 1;
   }
 
-  v31 = [v6 availableDestinationIdentifiers];
-  v32 = [(HMMediaDestinationController *)self availableDestinationIdentifiersIsEqualToIdentifiers:v31];
+  availableDestinationIdentifiers = [v6 availableDestinationIdentifiers];
+  v32 = [(HMMediaDestinationController *)self availableDestinationIdentifiersIsEqualToIdentifiers:availableDestinationIdentifiers];
 
   if (!v32)
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy4 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       v36 = HMFGetLogIdentifier();
-      v37 = [v6 availableDestinationIdentifiers];
+      availableDestinationIdentifiers2 = [v6 availableDestinationIdentifiers];
       *buf = 138543618;
       v51 = v36;
       v52 = 2112;
-      v53 = v37;
+      v53 = availableDestinationIdentifiers2;
       _os_log_impl(&dword_19BB39000, v35, OS_LOG_TYPE_INFO, "%{public}@Merging new media destination controller available destinations: %@", buf, 0x16u);
     }
 
@@ -306,38 +306,38 @@ LABEL_15:
   }
 
   os_unfair_lock_lock_with_options();
-  v38 = [v6 availableDestinationIdentifiers];
+  availableDestinationIdentifiers3 = [v6 availableDestinationIdentifiers];
   availableDestinationIdentifiers = self->_availableDestinationIdentifiers;
-  self->_availableDestinationIdentifiers = v38;
+  self->_availableDestinationIdentifiers = availableDestinationIdentifiers3;
 
-  v40 = [v6 destinationIdentifier];
+  destinationIdentifier5 = [v6 destinationIdentifier];
   destinationIdentifier = self->_destinationIdentifier;
-  self->_destinationIdentifier = v40;
+  self->_destinationIdentifier = destinationIdentifier5;
 
   os_unfair_lock_unlock(&self->_lock);
   [(HMMediaDestinationController *)self mergeSupportedOptionsWithNewController:v6];
   if (v17)
   {
-    v42 = [(HMMediaDestinationController *)self context];
-    v43 = [v42 queue];
+    context = [(HMMediaDestinationController *)self context];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__HMMediaDestinationController_mergeFromNewObject___block_invoke;
     block[3] = &unk_1E754E2A8;
     block[4] = self;
-    dispatch_async(v43, block);
+    dispatch_async(queue, block);
   }
 
   if (!v32)
   {
-    v44 = [(HMMediaDestinationController *)self context];
-    v45 = [v44 queue];
+    context2 = [(HMMediaDestinationController *)self context];
+    queue2 = [context2 queue];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __51__HMMediaDestinationController_mergeFromNewObject___block_invoke_2;
     v48[3] = &unk_1E754E2A8;
     v48[4] = self;
-    dispatch_async(v45, v48);
+    dispatch_async(queue2, v48);
   }
 
   v25 = v17 | !v32;
@@ -347,19 +347,19 @@ LABEL_27:
   return v25;
 }
 
-- (BOOL)availableDestinationIdentifiersIsEqualToIdentifiers:(id)a3
+- (BOOL)availableDestinationIdentifiersIsEqualToIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
-  v6 = [v5 count];
-  if (v6 == [v4 count])
+  identifiersCopy = identifiers;
+  availableDestinationIdentifiers = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
+  v6 = [availableDestinationIdentifiers count];
+  if (v6 == [identifiersCopy count])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __84__HMMediaDestinationController_availableDestinationIdentifiersIsEqualToIdentifiers___block_invoke;
     v9[3] = &unk_1E7548C60;
-    v10 = v5;
-    v7 = [v4 na_allObjectsPassTest:v9];
+    v10 = availableDestinationIdentifiers;
+    v7 = [identifiersCopy na_allObjectsPassTest:v9];
   }
 
   else
@@ -373,23 +373,23 @@ LABEL_27:
 - (void)notifyDidUpdateAvailableDestinations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HMMediaDestinationController *)self context];
-  v4 = [v3 delegateCaller];
-  v5 = v4;
-  if (v4)
+  context = [(HMMediaDestinationController *)self context];
+  delegateCaller = [context delegateCaller];
+  v5 = delegateCaller;
+  if (delegateCaller)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__block_invoke;
     v11[3] = &unk_1E754E2A8;
     v11[4] = self;
-    [v4 invokeBlock:v11];
+    [delegateCaller invokeBlock:v11];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -397,7 +397,7 @@ LABEL_27:
       *buf = 138543618;
       v13 = v9;
       v14 = 2112;
-      v15 = v3;
+      v15 = context;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of updated available destinations due to no delegate caller given by context: %@", buf, 0x16u);
     }
 
@@ -436,24 +436,24 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
 - (void)_notifyDidUpdateDestination
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(HMMediaDestinationController *)self destination];
-  v4 = [(HMMediaDestinationController *)self lastNotifiedDestinationIdentifier];
-  v5 = [v3 audioDestinationIdentifier];
+  destination = [(HMMediaDestinationController *)self destination];
+  lastNotifiedDestinationIdentifier = [(HMMediaDestinationController *)self lastNotifiedDestinationIdentifier];
+  audioDestinationIdentifier = [destination audioDestinationIdentifier];
   v6 = HMFEqualObjects();
 
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HMMediaDestinationController *)v8 lastNotifiedDestinationIdentifier];
+      lastNotifiedDestinationIdentifier2 = [(HMMediaDestinationController *)selfCopy lastNotifiedDestinationIdentifier];
       v19 = 138543618;
       v20 = v10;
       v21 = 2112;
-      v22 = v11;
+      v22 = lastNotifiedDestinationIdentifier2;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@Skipping notifying of update destination due to matching destination identifiers: %@", &v19, 0x16u);
     }
 
@@ -462,12 +462,12 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
 
   else
   {
-    v12 = [v3 audioDestinationIdentifier];
-    [(HMMediaDestinationController *)self setLastNotifiedDestinationIdentifier:v12];
+    audioDestinationIdentifier2 = [destination audioDestinationIdentifier];
+    [(HMMediaDestinationController *)self setLastNotifiedDestinationIdentifier:audioDestinationIdentifier2];
 
-    v13 = [(HMMediaDestinationController *)self delegate];
+    delegate = [(HMMediaDestinationController *)self delegate];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -475,16 +475,16 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
       v19 = 138543874;
       v20 = v17;
       v21 = 2112;
-      v22 = v3;
+      v22 = destination;
       v23 = 2112;
-      v24 = v13;
+      v24 = delegate;
       _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_INFO, "%{public}@Notifying client did update destination: %@ delegate: %@", &v19, 0x20u);
     }
 
     objc_autoreleasePoolPop(v14);
     if (objc_opt_respondsToSelector())
     {
-      [v13 mediaDestinationController:v15 didUpdateDestination:v3];
+      [delegate mediaDestinationController:selfCopy2 didUpdateDestination:destination];
     }
   }
 
@@ -494,23 +494,23 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
 - (void)notifyDidUpdateDestination
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HMMediaDestinationController *)self context];
-  v4 = [v3 delegateCaller];
-  v5 = v4;
-  if (v4)
+  context = [(HMMediaDestinationController *)self context];
+  delegateCaller = [context delegateCaller];
+  v5 = delegateCaller;
+  if (delegateCaller)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __58__HMMediaDestinationController_notifyDidUpdateDestination__block_invoke;
     v11[3] = &unk_1E754E2A8;
     v11[4] = self;
-    [v4 invokeBlock:v11];
+    [delegateCaller invokeBlock:v11];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -518,7 +518,7 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
       *buf = 138543618;
       v13 = v9;
       v14 = 2112;
-      v15 = v3;
+      v15 = context;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of updated destination due to no delegate caller given by context: %@", buf, 0x16u);
     }
 
@@ -528,25 +528,25 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)callCompletionHandler:(id)a3 error:(id)a4
+- (void)callCompletionHandler:(id)handler error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  handlerCopy = handler;
+  errorCopy = error;
+  if (handlerCopy)
   {
-    v8 = [(HMMediaDestinationController *)self context];
-    v9 = [v8 delegateCaller];
-    v10 = v9;
-    if (v9)
+    context = [(HMMediaDestinationController *)self context];
+    delegateCaller = [context delegateCaller];
+    v10 = delegateCaller;
+    if (delegateCaller)
     {
-      [v9 callCompletion:v6 error:v7];
+      [delegateCaller callCompletion:handlerCopy error:errorCopy];
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -554,7 +554,7 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
         v20 = 138543618;
         v21 = v18;
         v22 = 2112;
-        v23 = v8;
+        v23 = context;
         _os_log_impl(&dword_19BB39000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to call client completion handler due to no delegate caller given by context: %@", &v20, 0x16u);
       }
 
@@ -565,7 +565,7 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -584,24 +584,24 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
 - (NSArray)availableDestinations
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
-  v4 = [(HMMediaDestinationController *)self dataSource];
-  if (v4)
+  availableDestinationIdentifiers = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
+  dataSource = [(HMMediaDestinationController *)self dataSource];
+  if (dataSource)
   {
-    v5 = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
+    availableDestinationIdentifiers2 = [(HMMediaDestinationController *)self availableDestinationIdentifiers];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __53__HMMediaDestinationController_availableDestinations__block_invoke;
     v13[3] = &unk_1E7547088;
-    v14 = v4;
-    v15 = self;
-    v6 = [v5 na_map:v13];
+    v14 = dataSource;
+    selfCopy = self;
+    v6 = [availableDestinationIdentifiers2 na_map:v13];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -609,7 +609,7 @@ void __68__HMMediaDestinationController_notifyDidUpdateAvailableDestinations__bl
       *buf = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v3;
+      v19 = availableDestinationIdentifiers;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_ERROR, "%{public}@No data source set to get available destinations with identifiers: %@", buf, 0x16u);
     }
 
@@ -656,14 +656,14 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
 - (HMMediaDestination)destination
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(HMMediaDestinationController *)self destinationIdentifier];
-  if (v3)
+  destinationIdentifier = [(HMMediaDestinationController *)self destinationIdentifier];
+  if (destinationIdentifier)
   {
-    v4 = [(HMMediaDestinationController *)self dataSource];
-    v5 = v4;
-    if (v4)
+    dataSource = [(HMMediaDestinationController *)self dataSource];
+    v5 = dataSource;
+    if (dataSource)
     {
-      v6 = [v4 mediaDestinationController:self destinationWithIdentifier:v3];
+      v6 = [dataSource mediaDestinationController:self destinationWithIdentifier:destinationIdentifier];
       v7 = v6;
       if (v6)
       {
@@ -673,7 +673,7 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
       else
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
@@ -681,7 +681,7 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
           v19 = 138543874;
           v20 = v16;
           v21 = 2112;
-          v22 = v3;
+          v22 = destinationIdentifier;
           v23 = 2112;
           v24 = v5;
           _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to get destination with identifier: %@ from data source: %@", &v19, 0x20u);
@@ -694,7 +694,7 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -702,7 +702,7 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
         v19 = 138543618;
         v20 = v12;
         v21 = 2112;
-        v22 = v3;
+        v22 = destinationIdentifier;
         _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_ERROR, "%{public}@No data source set to get destination with identifier: %@", &v19, 0x16u);
       }
 
@@ -721,12 +721,12 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
   return v7;
 }
 
-- (void)setDestinationIdentifier:(id)a3
+- (void)setDestinationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   destinationIdentifier = self->_destinationIdentifier;
-  self->_destinationIdentifier = v4;
+  self->_destinationIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -740,12 +740,12 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
   return v3;
 }
 
-- (void)setAvailableDestinationIdentifiers:(id)a3
+- (void)setAvailableDestinationIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock_with_options();
   availableDestinationIdentifiers = self->_availableDestinationIdentifiers;
-  self->_availableDestinationIdentifiers = v4;
+  self->_availableDestinationIdentifiers = identifiersCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -762,15 +762,15 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
 - (void)configureLastNotifiedDestinationIdentifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HMMediaDestinationController *)self destination];
-  v4 = [v3 audioDestinationIdentifier];
-  v5 = [(HMMediaDestinationController *)self lastNotifiedDestinationIdentifier];
+  destination = [(HMMediaDestinationController *)self destination];
+  audioDestinationIdentifier = [destination audioDestinationIdentifier];
+  lastNotifiedDestinationIdentifier = [(HMMediaDestinationController *)self lastNotifiedDestinationIdentifier];
   v6 = HMFEqualObjects();
 
   if ((v6 & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -778,24 +778,24 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
       v12 = 138543618;
       v13 = v10;
       v14 = 2112;
-      v15 = v4;
+      v15 = audioDestinationIdentifier;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@Configuring last notified destination identifier: %@", &v12, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMMediaDestinationController *)v8 setLastNotifiedDestinationIdentifier:v4];
+    [(HMMediaDestinationController *)selfCopy setLastNotifiedDestinationIdentifier:audioDestinationIdentifier];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureWithContext:(id)a3 dataSource:(id)a4
+- (void)configureWithContext:(id)context dataSource:(id)source
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  sourceCopy = source;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -803,83 +803,83 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
     v13 = 138544130;
     v14 = v11;
     v15 = 2112;
-    v16 = v9;
+    v16 = selfCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = contextCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = sourceCopy;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Configuring destination controller: %@ context: %@ data source: %@", &v13, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v8);
-  [(HMMediaDestinationController *)v9 setContext:v6];
-  [(HMMediaDestinationController *)v9 setDataSource:v7];
-  [(HMMediaDestinationController *)v9 configureLastNotifiedDestinationIdentifier];
+  [(HMMediaDestinationController *)selfCopy setContext:contextCopy];
+  [(HMMediaDestinationController *)selfCopy setDataSource:sourceCopy];
+  [(HMMediaDestinationController *)selfCopy configureLastNotifiedDestinationIdentifier];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)updateDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  destinationCopy = destination;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = HMMediaDestinationControllerUpateOptionsAsString(a4);
+    v14 = HMMediaDestinationControllerUpateOptionsAsString(options);
     *buf = 138543874;
     v42 = v13;
     v43 = 2112;
-    v44 = v8;
+    v44 = destinationCopy;
     v45 = 2112;
     v46 = v14;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Sending update destination message with destination: %@ options: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = [(HMMediaDestinationController *)v11 context];
-  v16 = [v15 messageDispatcher];
-  if (v16)
+  context = [(HMMediaDestinationController *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  if (messageDispatcher)
   {
-    v17 = [[HMMediaDestinationControllerRequestMessagePayload alloc] initWithDestination:v8 options:a4];
+    v17 = [[HMMediaDestinationControllerRequestMessagePayload alloc] initWithDestination:destinationCopy options:options];
     if (v17)
     {
       v18 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v19 = [(HMMediaDestinationController *)v11 identifier];
-      v20 = [v18 initWithTarget:v19];
+      identifier = [(HMMediaDestinationController *)selfCopy identifier];
+      v20 = [v18 initWithTarget:identifier];
 
       v21 = objc_alloc(MEMORY[0x1E69A2A10]);
-      v22 = [(HMMediaDestinationControllerRequestMessagePayload *)v17 payloadCopy];
-      v23 = [v21 initWithName:@"HMMediaDestinationControllerUpdateDestinationRequestMessage" destination:v20 payload:v22];
+      payloadCopy = [(HMMediaDestinationControllerRequestMessagePayload *)v17 payloadCopy];
+      v23 = [v21 initWithName:@"HMMediaDestinationControllerUpdateDestinationRequestMessage" destination:v20 payload:payloadCopy];
 
       v35 = MEMORY[0x1E69E9820];
       v36 = 3221225472;
       v37 = __76__HMMediaDestinationController_updateDestination_options_completionHandler___block_invoke;
       v38 = &unk_1E754DE00;
-      v39 = v11;
-      v40 = v9;
+      v39 = selfCopy;
+      v40 = handlerCopy;
       [v23 setResponseHandler:&v35];
       v24 = [v23 copy];
-      [v16 sendMessage:v24];
+      [messageDispatcher sendMessage:v24];
     }
 
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v11;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         v32 = HMFGetLogIdentifier();
-        v33 = HMMediaDestinationControllerUpateOptionsAsString(a4);
+        v33 = HMMediaDestinationControllerUpateOptionsAsString(options);
         *buf = 138543874;
         v42 = v32;
         v43 = 2112;
-        v44 = v8;
+        v44 = destinationCopy;
         v45 = 2112;
         v46 = v33;
         _os_log_impl(&dword_19BB39000, v31, OS_LOG_TYPE_ERROR, "%{public}@Failed to get destination payload for destination: %@ options: %@", buf, 0x20u);
@@ -887,14 +887,14 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
 
       objc_autoreleasePoolPop(v29);
       v20 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      [(HMMediaDestinationController *)v30 callCompletionHandler:v9 error:v20];
+      [(HMMediaDestinationController *)v30 callCompletionHandler:handlerCopy error:v20];
     }
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v11;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -902,13 +902,13 @@ id __53__HMMediaDestinationController_availableDestinations__block_invoke(uint64
       *buf = 138543618;
       v42 = v28;
       v43 = 2112;
-      v44 = v15;
+      v44 = context;
       _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@Failed to update destination due to no message dispatcher given by context: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v25);
     v17 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-    [(HMMediaDestinationController *)v26 callCompletionHandler:v9 error:v17];
+    [(HMMediaDestinationController *)v26 callCompletionHandler:handlerCopy error:v17];
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -956,19 +956,19 @@ void __76__HMMediaDestinationController_updateDestination_options_completionHand
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (HMMediaDestinationController)initWithIdentifier:(id)a3 destinationIdentifier:(id)a4 supportedOptions:(unint64_t)a5 availableDestinationIdentifiers:(id)a6
+- (HMMediaDestinationController)initWithIdentifier:(id)identifier destinationIdentifier:(id)destinationIdentifier supportedOptions:(unint64_t)options availableDestinationIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  destinationIdentifierCopy = destinationIdentifier;
+  identifiersCopy = identifiers;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = identifiersCopy;
+  if (!identifiersCopy)
   {
 LABEL_7:
     v20 = _HMFPreconditionFailure();
@@ -981,28 +981,28 @@ LABEL_7:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_destinationIdentifier, a4);
-    v17 = [v12 UUIDString];
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_destinationIdentifier, destinationIdentifier);
+    uUIDString = [destinationIdentifierCopy UUIDString];
     lastNotifiedDestinationIdentifier = v16->_lastNotifiedDestinationIdentifier;
-    v16->_lastNotifiedDestinationIdentifier = v17;
+    v16->_lastNotifiedDestinationIdentifier = uUIDString;
 
-    v16->_supportedOptions = a5;
-    objc_storeStrong(&v16->_availableDestinationIdentifiers, a6);
+    v16->_supportedOptions = options;
+    objc_storeStrong(&v16->_availableDestinationIdentifiers, identifiers);
   }
 
   return v16;
 }
 
-- (HMMediaDestinationController)initWithControllerData:(id)a3
+- (HMMediaDestinationController)initWithControllerData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 destinationIdentifier];
-  v7 = [v4 supportedOptions];
-  v8 = [v4 availableDestinationIdentifiers];
+  dataCopy = data;
+  identifier = [dataCopy identifier];
+  destinationIdentifier = [dataCopy destinationIdentifier];
+  supportedOptions = [dataCopy supportedOptions];
+  availableDestinationIdentifiers = [dataCopy availableDestinationIdentifiers];
 
-  v9 = [(HMMediaDestinationController *)self initWithIdentifier:v5 destinationIdentifier:v6 supportedOptions:v7 availableDestinationIdentifiers:v8];
+  v9 = [(HMMediaDestinationController *)self initWithIdentifier:identifier destinationIdentifier:destinationIdentifier supportedOptions:supportedOptions availableDestinationIdentifiers:availableDestinationIdentifiers];
   return v9;
 }
 

@@ -1,9 +1,9 @@
 @interface PBUIWallpaperImageSlotRequestAction
 - (NSString)slotIdentifier;
-- (PBUIWallpaperImageSlotRequestAction)initWithVariant:(int64_t)a3 desiredStyle:(int64_t)a4 traitCollection:(id)a5 slotIdentifier:(id)a6 forResponseOnQueue:(id)a7 withHandler:(id)a8;
+- (PBUIWallpaperImageSlotRequestAction)initWithVariant:(int64_t)variant desiredStyle:(int64_t)style traitCollection:(id)collection slotIdentifier:(id)identifier forResponseOnQueue:(id)queue withHandler:(id)handler;
 - (UITraitCollection)traitCollection;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)desiredStyle;
 - (int64_t)variant;
 - (void)invalidate;
@@ -11,32 +11,32 @@
 
 @implementation PBUIWallpaperImageSlotRequestAction
 
-- (PBUIWallpaperImageSlotRequestAction)initWithVariant:(int64_t)a3 desiredStyle:(int64_t)a4 traitCollection:(id)a5 slotIdentifier:(id)a6 forResponseOnQueue:(id)a7 withHandler:(id)a8
+- (PBUIWallpaperImageSlotRequestAction)initWithVariant:(int64_t)variant desiredStyle:(int64_t)style traitCollection:(id)collection slotIdentifier:(id)identifier forResponseOnQueue:(id)queue withHandler:(id)handler
 {
-  v14 = a7;
-  v15 = a8;
+  queueCopy = queue;
+  handlerCopy = handler;
   v16 = MEMORY[0x277CF0C80];
-  v17 = a6;
-  v18 = a5;
+  identifierCopy = identifier;
+  collectionCopy = collection;
   v19 = objc_alloc_init(v16);
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:variant];
   [v19 setObject:v20 forSetting:1];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v21 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   [v19 setObject:v21 forSetting:2];
 
-  v22 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
+  v22 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:collectionCopy requiringSecureCoding:1 error:0];
 
   [v19 setObject:v22 forSetting:3];
-  [v19 setObject:v17 forSetting:4];
+  [v19 setObject:identifierCopy forSetting:4];
 
-  if (v15)
+  if (handlerCopy)
   {
-    v23 = [MEMORY[0x277CF0B60] responderWithHandler:v15];
+    v23 = [MEMORY[0x277CF0B60] responderWithHandler:handlerCopy];
     v24 = v23;
-    if (v14)
+    if (queueCopy)
     {
-      [v23 setQueue:v14];
+      [v23 setQueue:queueCopy];
     }
   }
 
@@ -59,26 +59,26 @@
 
 - (int64_t)variant
 {
-  v2 = [(PBUIWallpaperImageSlotRequestAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(PBUIWallpaperImageSlotRequestAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)desiredStyle
 {
-  v2 = [(PBUIWallpaperImageSlotRequestAction *)self info];
-  v3 = [v2 objectForSetting:2];
-  v4 = [v3 integerValue];
+  info = [(PBUIWallpaperImageSlotRequestAction *)self info];
+  v3 = [info objectForSetting:2];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (UITraitCollection)traitCollection
 {
-  v2 = [(PBUIWallpaperImageSlotRequestAction *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(PBUIWallpaperImageSlotRequestAction *)self info];
+  v3 = [info objectForSetting:3];
 
   v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
 
@@ -87,8 +87,8 @@
 
 - (NSString)slotIdentifier
 {
-  v2 = [(PBUIWallpaperImageSlotRequestAction *)self info];
-  v3 = [v2 objectForSetting:4];
+  info = [(PBUIWallpaperImageSlotRequestAction *)self info];
+  v3 = [info objectForSetting:4];
 
   return v3;
 }
@@ -111,32 +111,32 @@
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 3)
+  if (setting - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_278361F70[a3 - 1];
+    return off_278361F70[setting - 1];
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
-  if (a5 == 2)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (setting == 2)
   {
-    v8 = PBUIWallpaperStyleDescription([v6 integerValue]);
+    v8 = PBUIWallpaperStyleDescription([objectCopy integerValue]);
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (setting == 1)
   {
-    v8 = PBUIStringForWallpaperVariant([v6 integerValue]);
+    v8 = PBUIStringForWallpaperVariant([objectCopy integerValue]);
 LABEL_5:
     v9 = v8;
     goto LABEL_7;

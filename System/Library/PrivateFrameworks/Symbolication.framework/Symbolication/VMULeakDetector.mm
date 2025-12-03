@@ -1,49 +1,49 @@
 @interface VMULeakDetector
-+ (id)_consolidatedRootLeakDescriptionsForTree:(id)a3;
-+ (id)referenceDescription:(id *)a3 dstDescription:(id)a4 is64bit:(BOOL)a5;
-- (VMULeakDetector)initWithVMUTask:(id)a3 graph:(id)a4 scanner:(id)a5 stackLogReader:(id)a6;
++ (id)_consolidatedRootLeakDescriptionsForTree:(id)tree;
++ (id)referenceDescription:(id *)description dstDescription:(id)dstDescription is64bit:(BOOL)is64bit;
+- (VMULeakDetector)initWithVMUTask:(id)task graph:(id)graph scanner:(id)scanner stackLogReader:(id)reader;
 - (id)scannerOrGraph;
-- (unsigned)detectLeaksWithError:(id *)a3;
-- (unsigned)doNormalLeakDetectionWithError:(id *)a3;
+- (unsigned)detectLeaksWithError:(id *)error;
+- (unsigned)doNormalLeakDetectionWithError:(id *)error;
 - (void)buildLeakTree;
 - (void)dealloc;
-- (void)printContents:(void *)a3 size:(unint64_t)a4;
+- (void)printContents:(void *)contents size:(unint64_t)size;
 - (void)printLeakTree;
-- (void)printout:(const char *)a3;
+- (void)printout:(const char *)printout;
 @end
 
 @implementation VMULeakDetector
 
-- (VMULeakDetector)initWithVMUTask:(id)a3 graph:(id)a4 scanner:(id)a5 stackLogReader:(id)a6
+- (VMULeakDetector)initWithVMUTask:(id)task graph:(id)graph scanner:(id)scanner stackLogReader:(id)reader
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  taskCopy = task;
+  graphCopy = graph;
+  scannerCopy = scanner;
+  readerCopy = reader;
   v21.receiver = self;
   v21.super_class = VMULeakDetector;
   v15 = [(VMULeakDetector *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_scanner, a5);
-    objc_storeStrong(&v16->_stackLogReader, a6);
-    objc_storeStrong(&v16->_graph, a4);
-    objc_storeStrong(&v16->_task, a3);
+    objc_storeStrong(&v15->_scanner, scanner);
+    objc_storeStrong(&v16->_stackLogReader, reader);
+    objc_storeStrong(&v16->_graph, graph);
+    objc_storeStrong(&v16->_task, task);
     v16->_showBinaryContents = 0;
     *&v16->_showLeakedVMregions = 0;
     scanner = v16->_scanner;
     if (scanner)
     {
-      v18 = [(VMUTaskMemoryScanner *)scanner objectContentLevel];
+      objectContentLevel = [(VMUTaskMemoryScanner *)scanner objectContentLevel];
     }
 
     else
     {
-      v18 = 3;
+      objectContentLevel = 3;
     }
 
-    v16->_objectContentLevel = v18;
+    v16->_objectContentLevel = objectContentLevel;
     *&v16->_checkAbandoned = 0;
     v16->_referenceTreeShowRegionVirtualSize = 0;
     v16->_max_contents_bytes = 128;
@@ -56,7 +56,7 @@
   return v16;
 }
 
-- (void)printout:(const char *)a3
+- (void)printout:(const char *)printout
 {
   if (self->_outputString || self->_outputFile)
   {
@@ -64,7 +64,7 @@
     if (self->_outputString)
     {
       v7 = 0;
-      if (vasprintf(&v7, a3, v8) < 0 || !v7)
+      if (vasprintf(&v7, printout, v8) < 0 || !v7)
       {
         [VMULeakDetector printout:];
       }
@@ -81,7 +81,7 @@
       outputFile = self->_outputFile;
       if (outputFile)
       {
-        vfprintf(outputFile, a3, v8);
+        vfprintf(outputFile, printout, v8);
       }
     }
   }
@@ -98,30 +98,30 @@
   return scanner;
 }
 
-- (void)printContents:(void *)a3 size:(unint64_t)a4
+- (void)printContents:(void *)contents size:(unint64_t)size
 {
-  if (!a3)
+  if (!contents)
   {
     v17 = "< content unavailable >\n";
     goto LABEL_24;
   }
 
   max_contents_bytes = self->_max_contents_bytes;
-  if (max_contents_bytes >= a4)
+  if (max_contents_bytes >= size)
   {
-    v6 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v6 = self->_max_contents_bytes;
+    sizeCopy = self->_max_contents_bytes;
   }
 
-  if (v6 >= 4)
+  if (sizeCopy >= 4)
   {
-    v7 = a3;
-    v18 = a4;
-    v8 = v6 >> 2;
+    contentsCopy = contents;
+    sizeCopy2 = size;
+    v8 = sizeCopy >> 2;
     do
     {
       [(VMULeakDetector *)self printout:"\t"];
@@ -136,7 +136,7 @@
       }
 
       v10 = v9;
-      v11 = v7;
+      v11 = contentsCopy;
       do
       {
         v12 = *v11++;
@@ -156,7 +156,7 @@
         v13 = (4 * v9);
       }
 
-      v14 = v7;
+      v14 = contentsCopy;
       do
       {
         v16 = *v14;
@@ -173,16 +173,16 @@
 
       while (v13);
       [(VMULeakDetector *)self printout:"\n"];
-      v7 += v9;
+      contentsCopy += v9;
       v8 -= v9;
     }
 
     while (v8);
     max_contents_bytes = self->_max_contents_bytes;
-    a4 = v18;
+    size = sizeCopy2;
   }
 
-  if (max_contents_bytes < a4)
+  if (max_contents_bytes < size)
   {
     v17 = "\t...\n";
 LABEL_24:
@@ -191,36 +191,36 @@ LABEL_24:
   }
 }
 
-+ (id)referenceDescription:(id *)a3 dstDescription:(id)a4 is64bit:(BOOL)a5
++ (id)referenceDescription:(id *)description dstDescription:(id)dstDescription is64bit:(BOOL)is64bit
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = *(a3->var0 + 2);
+  is64bitCopy = is64bit;
+  dstDescriptionCopy = dstDescription;
+  v8 = *(description->var0 + 2);
   v9 = 3;
-  if (v5)
+  if (is64bitCopy)
   {
     v9 = 7;
   }
 
-  if ((a3->var1.var0 & v9) != 0 && *(a3->var0 + 1) >> 60 != 3)
+  if ((description->var1.var0 & v9) != 0 && *(description->var0 + 1) >> 60 != 3)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unaligned +%lld:  --> %@", a3->var1.var0, v7];
+    dstDescriptionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"unaligned +%lld:  --> %@", description->var1.var0, dstDescriptionCopy];
 
-    v7 = v20;
+    dstDescriptionCopy = dstDescriptionCopy;
   }
 
   else
   {
-    v10 = [*(a3->var2 + 2) displayName];
-    v11 = [v10 hasSuffix:@"Storage"]);
+    displayName = [*(description->var2 + 2) displayName];
+    v11 = [displayName hasSuffix:@"Storage"]);
 
     if ((v11 & 1) == 0)
     {
-      v12 = [v8 fieldAtOrBeforeOffset:LODWORD(a3->var1.var0)];
+      v12 = [v8 fieldAtOrBeforeOffset:LODWORD(description->var1.var0)];
       v13 = v12;
       if (v12)
       {
-        var0 = a3->var1.var0;
+        var0 = description->var1.var0;
         v15 = var0 - [v12 offset];
         v23 = 0;
         v16 = [v13 getLeafFieldAtOffset:v15 leafOffset:&v23];
@@ -236,14 +236,14 @@ LABEL_24:
           v19 = &stru_1F461F9C8;
         }
 
-        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@ --> %@", v19, v17, v7];
+        dstDescriptionCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@ --> %@", v19, v17, dstDescriptionCopy];
 
-        v7 = v21;
+        dstDescriptionCopy = dstDescriptionCopy2;
       }
     }
   }
 
-  return v7;
+  return dstDescriptionCopy;
 }
 
 - (void)buildLeakTree
@@ -274,88 +274,88 @@ LABEL_24:
   v111 = v4;
   aBlock[6] = v4;
   v5 = _Block_copy(aBlock);
-  v6 = self;
+  selfCopy5 = self;
   v7 = [(VMUProcessObjectGraph *)self->_leakedGraph copy];
   debugTimer = self->_debugTimer;
   if (debugTimer)
   {
-    v9 = [(VMUDebugTimer *)debugTimer signpostID];
+    signpostID = [(VMUDebugTimer *)debugTimer signpostID];
     debugTimer = self->_debugTimer;
-    if (v9)
+    if (signpostID)
     {
-      v10 = [(VMUDebugTimer *)debugTimer logHandle];
-      v11 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
+      logHandle = [(VMUDebugTimer *)debugTimer logHandle];
+      signpostID2 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v10, OS_SIGNPOST_INTERVAL_END, v11, "buildLeakTree", "", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, signpostID2, "buildLeakTree", "", &__pattern4, 2u);
       }
 
-      v6 = self;
+      selfCopy5 = self;
       debugTimer = self->_debugTimer;
     }
   }
 
   [(VMUDebugTimer *)debugTimer endEvent:"buildLeakTree"];
-  [(VMUDebugTimer *)v6->_debugTimer startWithCategory:"buildLeakTree" message:"identifying strongly-connected-components (cycles) in the graph"];
-  v12 = v6->_debugTimer;
+  [(VMUDebugTimer *)selfCopy5->_debugTimer startWithCategory:"buildLeakTree" message:"identifying strongly-connected-components (cycles) in the graph"];
+  v12 = selfCopy5->_debugTimer;
   if (v12)
   {
-    v13 = [(VMUDebugTimer *)v12 logHandle];
-    v14 = [(VMUDebugTimer *)v6->_debugTimer signpostID];
-    if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
+    logHandle2 = [(VMUDebugTimer *)v12 logHandle];
+    signpostID3 = [(VMUDebugTimer *)selfCopy5->_debugTimer signpostID];
+    if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle2))
     {
       LOWORD(__pattern4._pi) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v14, "buildLeakTree", "identifying strongly-connected-components (cycles) in the graph", &__pattern4, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, signpostID3, "buildLeakTree", "identifying strongly-connected-components (cycles) in the graph", &__pattern4, 2u);
     }
 
-    v6 = self;
+    selfCopy5 = self;
   }
 
-  leakedGraph = v6->_leakedGraph;
+  leakedGraph = selfCopy5->_leakedGraph;
   v158[0] = MEMORY[0x1E69E9820];
   v158[1] = 3221225472;
   v158[2] = __32__VMULeakDetector_buildLeakTree__block_invoke_63;
   v158[3] = &unk_1E8278010;
-  v158[4] = v6;
+  v158[4] = selfCopy5;
   [(VMUObjectGraph *)leakedGraph stronglyConnectedComponentSearch:0xFFFFFFFFLL withRecorder:v158];
-  v16 = v6->_debugTimer;
+  v16 = selfCopy5->_debugTimer;
   if (v16)
   {
-    v17 = [(VMUDebugTimer *)v16 signpostID];
-    v16 = v6->_debugTimer;
-    if (v17)
+    signpostID4 = [(VMUDebugTimer *)v16 signpostID];
+    v16 = selfCopy5->_debugTimer;
+    if (signpostID4)
     {
-      v18 = [(VMUDebugTimer *)v16 logHandle];
-      v19 = [(VMUDebugTimer *)v6->_debugTimer signpostID];
-      if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
+      logHandle3 = [(VMUDebugTimer *)v16 logHandle];
+      signpostID5 = [(VMUDebugTimer *)selfCopy5->_debugTimer signpostID];
+      if (signpostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle3))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v18, OS_SIGNPOST_INTERVAL_END, v19, "buildLeakTree", "", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, signpostID5, "buildLeakTree", "", &__pattern4, 2u);
       }
 
-      v6 = self;
+      selfCopy5 = self;
       v16 = self->_debugTimer;
     }
   }
 
   [(VMUDebugTimer *)v16 endEvent:"buildLeakTree"];
-  [(VMUDebugTimer *)v6->_debugTimer startWithCategory:"buildLeakTree" message:"identifying root leaks and cycles"];
-  v20 = v6->_debugTimer;
+  [(VMUDebugTimer *)selfCopy5->_debugTimer startWithCategory:"buildLeakTree" message:"identifying root leaks and cycles"];
+  v20 = selfCopy5->_debugTimer;
   if (v20)
   {
-    v21 = [(VMUDebugTimer *)v20 logHandle];
-    v22 = [(VMUDebugTimer *)v6->_debugTimer signpostID];
-    if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
+    logHandle4 = [(VMUDebugTimer *)v20 logHandle];
+    signpostID6 = [(VMUDebugTimer *)selfCopy5->_debugTimer signpostID];
+    if (signpostID6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle4))
     {
       LOWORD(__pattern4._pi) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v21, OS_SIGNPOST_INTERVAL_BEGIN, v22, "buildLeakTree", "identifying root leaks and cycles", &__pattern4, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle4, OS_SIGNPOST_INTERVAL_BEGIN, signpostID6, "buildLeakTree", "identifying root leaks and cycles", &__pattern4, 2u);
     }
 
-    v6 = self;
+    selfCopy5 = self;
   }
 
-  v114 = v6->_stackLogReader;
+  v114 = selfCopy5->_stackLogReader;
   if (v114)
   {
     v23 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:258 valueOptions:256];
@@ -389,18 +389,18 @@ LABEL_24:
 
   LODWORD(i) = -1;
 LABEL_35:
-  v27 = [(VMUDirectedGraph *)self->_leakedGraph nodeNamespaceSize];
-  v120 = malloc_type_calloc(1uLL, ((v27 + 7) >> 3) + 4, 0xB2EC2458uLL);
-  *v120 = v27;
-  v28 = [(VMUDirectedGraph *)self->_leakedGraph invertedGraph];
+  nodeNamespaceSize = [(VMUDirectedGraph *)self->_leakedGraph nodeNamespaceSize];
+  v120 = malloc_type_calloc(1uLL, ((nodeNamespaceSize + 7) >> 3) + 4, 0xB2EC2458uLL);
+  *v120 = nodeNamespaceSize;
+  invertedGraph = [(VMUDirectedGraph *)self->_leakedGraph invertedGraph];
   v29 = objc_opt_new();
   v148[0] = MEMORY[0x1E69E9820];
   v148[1] = 3221225472;
   v148[2] = __32__VMULeakDetector_buildLeakTree__block_invoke_68;
   v148[3] = &unk_1E8278060;
-  v30 = v28;
+  v30 = invertedGraph;
   v149 = v30;
-  v150 = self;
+  selfCopy6 = self;
   v106 = v29;
   v151 = v106;
   v156 = v120;
@@ -420,16 +420,16 @@ LABEL_35:
     v31 = self->_debugTimer;
     if (v31)
     {
-      v32 = [(VMUDebugTimer *)v31 signpostID];
+      signpostID7 = [(VMUDebugTimer *)v31 signpostID];
       v31 = self->_debugTimer;
-      if (v32)
+      if (signpostID7)
       {
-        v33 = [(VMUDebugTimer *)v31 logHandle];
-        v34 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-        if (v34 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
+        logHandle5 = [(VMUDebugTimer *)v31 logHandle];
+        signpostID8 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+        if (signpostID8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle5))
         {
           LOWORD(__pattern4._pi) = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v33, OS_SIGNPOST_INTERVAL_END, v34, "buildLeakTree", "", &__pattern4, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle5, OS_SIGNPOST_INTERVAL_END, signpostID8, "buildLeakTree", "", &__pattern4, 2u);
         }
 
         v31 = self->_debugTimer;
@@ -441,12 +441,12 @@ LABEL_35:
     v35 = self->_debugTimer;
     if (v35)
     {
-      v36 = [(VMUDebugTimer *)v35 logHandle];
-      v37 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v37 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
+      logHandle6 = [(VMUDebugTimer *)v35 logHandle];
+      signpostID9 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle6))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v36, OS_SIGNPOST_INTERVAL_BEGIN, v37, "buildLeakTree", "enumerate stack logs to populate rootLeakAddressToStackIDMap", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle6, OS_SIGNPOST_INTERVAL_BEGIN, signpostID9, "buildLeakTree", "enumerate stack logs to populate rootLeakAddressToStackIDMap", &__pattern4, 2u);
       }
     }
 
@@ -463,38 +463,38 @@ LABEL_35:
 
   if (v114)
   {
-    v39 = self;
+    selfCopy8 = self;
     v40 = self->_debugTimer;
     if (v40)
     {
-      v41 = [(VMUDebugTimer *)v40 signpostID];
+      signpostID10 = [(VMUDebugTimer *)v40 signpostID];
       v40 = self->_debugTimer;
-      if (v41)
+      if (signpostID10)
       {
-        v42 = [(VMUDebugTimer *)v40 logHandle];
-        v43 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-        if (v43 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v42))
+        logHandle7 = [(VMUDebugTimer *)v40 logHandle];
+        signpostID11 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+        if (signpostID11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle7))
         {
           LOWORD(__pattern4._pi) = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v42, OS_SIGNPOST_INTERVAL_END, v43, "buildLeakTree", "", &__pattern4, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle7, OS_SIGNPOST_INTERVAL_END, signpostID11, "buildLeakTree", "", &__pattern4, 2u);
         }
 
-        v39 = self;
+        selfCopy8 = self;
         v40 = self->_debugTimer;
       }
     }
 
     [(VMUDebugTimer *)v40 endEvent:"buildLeakTree", v106];
-    [(VMUDebugTimer *)v39->_debugTimer startWithCategory:"buildLeakTree" message:"invert rootLeakAddressToStackIDMap to produce stackID --> {size, count, root-leak-call-tree-root} map"];
-    v44 = v39->_debugTimer;
+    [(VMUDebugTimer *)selfCopy8->_debugTimer startWithCategory:"buildLeakTree" message:"invert rootLeakAddressToStackIDMap to produce stackID --> {size, count, root-leak-call-tree-root} map"];
+    v44 = selfCopy8->_debugTimer;
     if (v44)
     {
-      v45 = [(VMUDebugTimer *)v44 logHandle];
-      v46 = [(VMUDebugTimer *)v39->_debugTimer signpostID];
-      if (v46 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v45))
+      logHandle8 = [(VMUDebugTimer *)v44 logHandle];
+      signpostID12 = [(VMUDebugTimer *)selfCopy8->_debugTimer signpostID];
+      if (signpostID12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle8))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v45, OS_SIGNPOST_INTERVAL_BEGIN, v46, "buildLeakTree", "invert rootLeakAddressToStackIDMap to produce stackID --> {size,count,root-leak-call-tree-root} map", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle8, OS_SIGNPOST_INTERVAL_BEGIN, signpostID12, "buildLeakTree", "invert rootLeakAddressToStackIDMap to produce stackID --> {size,count,root-leak-call-tree-root} map", &__pattern4, 2u);
       }
     }
 
@@ -539,40 +539,40 @@ LABEL_35:
     v119 = 0;
   }
 
-  v51 = self;
+  selfCopy10 = self;
   v115 = kVMURootRetainCycle[0];
   v109 = [(__CFString *)v115 length];
   v52 = self->_debugTimer;
   if (v52)
   {
-    v53 = [(VMUDebugTimer *)v52 signpostID];
+    signpostID13 = [(VMUDebugTimer *)v52 signpostID];
     v52 = self->_debugTimer;
-    if (v53)
+    if (signpostID13)
     {
-      v54 = [(VMUDebugTimer *)v52 logHandle];
-      v55 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v55 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v54))
+      logHandle9 = [(VMUDebugTimer *)v52 logHandle];
+      signpostID14 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle9))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v54, OS_SIGNPOST_INTERVAL_END, v55, "buildLeakTree", "", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle9, OS_SIGNPOST_INTERVAL_END, signpostID14, "buildLeakTree", "", &__pattern4, 2u);
       }
 
-      v51 = self;
+      selfCopy10 = self;
       v52 = self->_debugTimer;
     }
   }
 
   [(VMUDebugTimer *)v52 endEvent:"buildLeakTree", v106];
-  [(VMUDebugTimer *)v51->_debugTimer startWithCategory:"buildLeakTree" message:"building call tree from references"];
-  v56 = v51->_debugTimer;
+  [(VMUDebugTimer *)selfCopy10->_debugTimer startWithCategory:"buildLeakTree" message:"building call tree from references"];
+  v56 = selfCopy10->_debugTimer;
   if (v56)
   {
-    v57 = [(VMUDebugTimer *)v56 logHandle];
-    v58 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-    if (v58 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v57))
+    logHandle10 = [(VMUDebugTimer *)v56 logHandle];
+    signpostID15 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+    if (signpostID15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle10))
     {
       LOWORD(__pattern4._pi) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v57, OS_SIGNPOST_INTERVAL_BEGIN, v58, "buildLeakTree", "building call tree from references", &__pattern4, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle10, OS_SIGNPOST_INTERVAL_BEGIN, signpostID15, "buildLeakTree", "building call tree from references", &__pattern4, 2u);
     }
   }
 
@@ -599,7 +599,7 @@ LABEL_35:
       else
       {
         memset(&__pattern4, 0, sizeof(__pattern4));
-        v66 = self;
+        selfCopy12 = self;
         if (v116)
         {
           [v116 nodeDetails:v61];
@@ -624,11 +624,11 @@ LABEL_35:
 
             v119[v61] = v69;
             v62 = v69;
-            v66 = self;
+            selfCopy12 = self;
           }
         }
 
-        v70 = [(VMULeakDetector *)v66 nodeDescription:v61 usingDetails:&__pattern4];
+        v70 = [(VMULeakDetector *)selfCopy12 nodeDescription:v61 usingDetails:&__pattern4];
         v71 = [(__CFString *)v67 stringByAppendingString:v70];
 
         if (self->_groupByType)
@@ -650,27 +650,27 @@ LABEL_35:
         v74 = 0;
         do
         {
-          v75 = [v73 parent];
-          if (v75)
+          parent = [v73 parent];
+          if (parent)
           {
-            v76 = [v73 parent];
-            v77 = [v76 parent];
-            v78 = v77 == 0;
+            parent2 = [v73 parent];
+            v76Parent = [parent2 parent];
+            v78 = v76Parent == 0;
 
             if (v78)
             {
-              v79 = [v73 name];
+              name = [v73 name];
 
-              v74 = v79;
+              v74 = name;
             }
           }
 
-          v80 = [v73 parent];
+          parent3 = [v73 parent];
 
-          v73 = v80;
+          v73 = parent3;
         }
 
-        while (v80);
+        while (parent3);
       }
 
       else
@@ -699,7 +699,7 @@ LABEL_35:
       v131 = v84;
       v139 = v111;
       v135 = v110;
-      v132 = self;
+      selfCopy13 = self;
       v140 = v120;
       v133 = v115;
       v134 = v117;
@@ -717,16 +717,16 @@ LABEL_35:
   v85 = self->_debugTimer;
   if (v85)
   {
-    v86 = [(VMUDebugTimer *)v85 signpostID];
+    signpostID16 = [(VMUDebugTimer *)v85 signpostID];
     v85 = self->_debugTimer;
-    if (v86)
+    if (signpostID16)
     {
-      v87 = [(VMUDebugTimer *)v85 logHandle];
-      v88 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v88 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v87))
+      logHandle11 = [(VMUDebugTimer *)v85 logHandle];
+      signpostID17 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle11))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v87, OS_SIGNPOST_INTERVAL_END, v88, "buildLeakTree", "", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle11, OS_SIGNPOST_INTERVAL_END, signpostID17, "buildLeakTree", "", &__pattern4, 2u);
       }
 
       v85 = self->_debugTimer;
@@ -740,7 +740,7 @@ LABEL_35:
   free(v121);
   free(v119);
 
-  v89 = self;
+  selfCopy16 = self;
   if ([(VMUCallTreeNode *)v113 numChildren])
   {
     [(NSMutableArray *)self->_leakTreeRootsArray addObject:v113];
@@ -749,44 +749,44 @@ LABEL_35:
   v90 = self->_debugTimer;
   if (v90)
   {
-    v91 = [(VMUDebugTimer *)v90 signpostID];
+    signpostID18 = [(VMUDebugTimer *)v90 signpostID];
     v90 = self->_debugTimer;
-    if (v91)
+    if (signpostID18)
     {
-      v92 = [(VMUDebugTimer *)v90 logHandle];
-      v93 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v93 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v92))
+      logHandle12 = [(VMUDebugTimer *)v90 logHandle];
+      signpostID19 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle12))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v92, OS_SIGNPOST_INTERVAL_END, v93, "buildLeakTree", "", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle12, OS_SIGNPOST_INTERVAL_END, signpostID19, "buildLeakTree", "", &__pattern4, 2u);
       }
 
-      v89 = self;
+      selfCopy16 = self;
       v90 = self->_debugTimer;
     }
   }
 
   [(VMUDebugTimer *)v90 endEvent:"buildLeakTree"];
-  [(VMUDebugTimer *)v89->_debugTimer startWithCategory:"buildLeakTree" message:"addChildCountsIntoNode"];
-  v94 = v89->_debugTimer;
+  [(VMUDebugTimer *)selfCopy16->_debugTimer startWithCategory:"buildLeakTree" message:"addChildCountsIntoNode"];
+  v94 = selfCopy16->_debugTimer;
   if (v94)
   {
-    v95 = [(VMUDebugTimer *)v94 logHandle];
-    v96 = [(VMUDebugTimer *)v89->_debugTimer signpostID];
-    if (v96 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v95))
+    logHandle13 = [(VMUDebugTimer *)v94 logHandle];
+    signpostID20 = [(VMUDebugTimer *)selfCopy16->_debugTimer signpostID];
+    if (signpostID20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle13))
     {
       LOWORD(__pattern4._pi) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v95, OS_SIGNPOST_INTERVAL_BEGIN, v96, "buildLeakTree", "addChildCountsIntoNode", &__pattern4, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle13, OS_SIGNPOST_INTERVAL_BEGIN, signpostID20, "buildLeakTree", "addChildCountsIntoNode", &__pattern4, 2u);
     }
 
-    v89 = self;
+    selfCopy16 = self;
   }
 
   v125 = 0u;
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v97 = v89->_leakTreeRootsArray;
+  v97 = selfCopy16->_leakTreeRootsArray;
   v98 = [(NSMutableArray *)v97 countByEnumeratingWithState:&v123 objects:v164 count:16];
   if (v98)
   {
@@ -813,16 +813,16 @@ LABEL_35:
   v101 = self->_debugTimer;
   if (v101)
   {
-    v102 = [(VMUDebugTimer *)v101 signpostID];
+    signpostID21 = [(VMUDebugTimer *)v101 signpostID];
     v101 = self->_debugTimer;
-    if (v102)
+    if (signpostID21)
     {
-      v103 = [(VMUDebugTimer *)v101 logHandle];
-      v104 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v104 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v103))
+      logHandle14 = [(VMUDebugTimer *)v101 logHandle];
+      signpostID22 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle14))
       {
         LOWORD(__pattern4._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v103, OS_SIGNPOST_INTERVAL_END, v104, "buildLeakTree", "", &__pattern4, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle14, OS_SIGNPOST_INTERVAL_END, signpostID22, "buildLeakTree", "", &__pattern4, 2u);
       }
 
       v101 = self->_debugTimer;
@@ -1128,10 +1128,10 @@ LABEL_26:
   objc_autoreleasePoolPop(v8);
 }
 
-+ (id)_consolidatedRootLeakDescriptionsForTree:(id)a3
++ (id)_consolidatedRootLeakDescriptionsForTree:(id)tree
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  treeCopy = tree;
   if (_consolidatedRootLeakDescriptionsForTree__onceToken != -1)
   {
     +[VMULeakDetector _consolidatedRootLeakDescriptionsForTree:];
@@ -1142,8 +1142,8 @@ LABEL_26:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v26 = v3;
-  obj = [v3 sortedChildren];
+  v26 = treeCopy;
+  obj = [treeCopy sortedChildren];
   v5 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v5)
   {
@@ -1159,8 +1159,8 @@ LABEL_26:
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 containsString:@": 0x"];
+        name = [v9 name];
+        v11 = [name containsString:@": 0x"];
 
         if (v11)
         {
@@ -1170,8 +1170,8 @@ LABEL_26:
 
         else
         {
-          v14 = [v9 name];
-          v15 = [v14 containsString:@": VM: "];
+          name2 = [v9 name];
+          v15 = [name2 containsString:@": VM: "];
 
           v12 = &_consolidatedRootLeakDescriptionsForTree__rootLeakTypeNameRegex;
           if (v15)
@@ -1187,12 +1187,12 @@ LABEL_26:
         }
 
         v16 = *v12;
-        v17 = [v9 name];
-        v18 = [v9 name];
-        v19 = [v16 stringByReplacingMatchesInString:v17 options:0 range:0 withTemplate:{objc_msgSend(v18, "length"), v13}];
+        name3 = [v9 name];
+        name4 = [v9 name];
+        v19 = [v16 stringByReplacingMatchesInString:name3 options:0 range:0 withTemplate:{objc_msgSend(name4, "length"), v13}];
 
-        LODWORD(v18) = [v9 count];
-        v20 = v18 - [v9 sumOfChildCounts];
+        LODWORD(name4) = [v9 count];
+        v20 = name4 - [v9 sumOfChildCounts];
         v21 = [v4 objectForKeyedSubscript:v19];
         v22 = v21;
         if (v21)
@@ -1236,19 +1236,19 @@ void __60__VMULeakDetector__consolidatedRootLeakDescriptionsForTree___block_invo
   debugTimer = self->_debugTimer;
   if (debugTimer)
   {
-    v4 = [(VMUDebugTimer *)debugTimer signpostID];
+    signpostID = [(VMUDebugTimer *)debugTimer signpostID];
     debugTimer = self->_debugTimer;
-    if (v4)
+    if (signpostID)
     {
-      v5 = [(VMUDebugTimer *)debugTimer logHandle];
-      v6 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      logHandle = [(VMUDebugTimer *)debugTimer logHandle];
+      signpostID2 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v7 = v6;
-        if (os_signpost_enabled(v5))
+        v7 = signpostID2;
+        if (os_signpost_enabled(logHandle))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v5, OS_SIGNPOST_INTERVAL_END, v7, "printLeakTree", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, v7, "printLeakTree", "", buf, 2u);
         }
       }
 
@@ -1261,15 +1261,15 @@ void __60__VMULeakDetector__consolidatedRootLeakDescriptionsForTree___block_invo
   v8 = self->_debugTimer;
   if (v8)
   {
-    v9 = [(VMUDebugTimer *)v8 logHandle];
-    v10 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-    if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    logHandle2 = [(VMUDebugTimer *)v8 logHandle];
+    signpostID3 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+    if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v11 = v10;
-      if (os_signpost_enabled(v9))
+      v11 = signpostID3;
+      if (os_signpost_enabled(logHandle2))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v11, "printLeakTree", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, v11, "printLeakTree", "", buf, 2u);
       }
     }
   }
@@ -1310,25 +1310,25 @@ void __60__VMULeakDetector__consolidatedRootLeakDescriptionsForTree___block_invo
         v17 = *(*(&v52 + 1) + 8 * v16);
         if (self->_stackLogReader)
         {
-          v18 = [*(*(&v52 + 1) + 8 * v16) backtraceString];
+          backtraceString = [*(*(&v52 + 1) + 8 * v16) backtraceString];
           v19 = VMUBacktraceIsExcludedMarker;
 
-          if (v18 == v19)
+          if (backtraceString == v19)
           {
             self->_numExcluded += [v17 count];
             goto LABEL_41;
           }
 
           v47 = v16;
-          v20 = [v17 backtraceString];
-          v21 = [v20 length];
+          backtraceString2 = [v17 backtraceString];
+          v21 = [backtraceString2 length];
 
           if (v21)
           {
             v45 = v17;
             v22 = [VMULeakDetector _consolidatedRootLeakDescriptionsForTree:v17];
             v23 = [v22 keysSortedByValueUsingComparator:&__block_literal_global_134];
-            v24 = [v23 lastObject];
+            lastObject = [v23 lastObject];
             [(VMULeakDetector *)self printout:"STACK OF "];
             v50 = 0u;
             v51 = 0u;
@@ -1351,9 +1351,9 @@ void __60__VMULeakDetector__consolidatedRootLeakDescriptionsForTree___block_invo
 
                   v30 = *(*(&v48 + 1) + 8 * i);
                   v31 = [v22 objectForKeyedSubscript:v30];
-                  v32 = [v31 unsignedIntValue];
+                  unsignedIntValue = [v31 unsignedIntValue];
 
-                  if (v32 <= 1)
+                  if (unsignedIntValue <= 1)
                   {
                     v33 = "INSTANCE";
                   }
@@ -1363,8 +1363,8 @@ void __60__VMULeakDetector__consolidatedRootLeakDescriptionsForTree___block_invo
                     v33 = "INSTANCES";
                   }
 
-                  -[VMULeakDetector printout:](self, "printout:", "%u %s OF '%s'", v32, v33, [v30 UTF8String]);
-                  if (v30 == v24)
+                  -[VMULeakDetector printout:](self, "printout:", "%u %s OF '%s'", unsignedIntValue, v33, [v30 UTF8String]);
+                  if (v30 == lastObject)
                   {
                     v34 = ":";
                   }
@@ -1384,8 +1384,8 @@ void __60__VMULeakDetector__consolidatedRootLeakDescriptionsForTree___block_invo
             }
 
             v17 = v45;
-            v35 = [v45 backtraceString];
-            -[VMULeakDetector printout:](self, "printout:", "%s\n", [v35 UTF8String]);
+            backtraceString3 = [v45 backtraceString];
+            -[VMULeakDetector printout:](self, "printout:", "%s\n", [backtraceString3 UTF8String]);
 
             v12 = v43;
             v14 = v44;
@@ -1417,19 +1417,19 @@ LABEL_41:
   v36 = self->_debugTimer;
   if (v36)
   {
-    v37 = [(VMUDebugTimer *)v36 signpostID];
+    signpostID4 = [(VMUDebugTimer *)v36 signpostID];
     v36 = self->_debugTimer;
-    if (v37)
+    if (signpostID4)
     {
-      v38 = [(VMUDebugTimer *)v36 logHandle];
-      v39 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v39 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      logHandle3 = [(VMUDebugTimer *)v36 logHandle];
+      signpostID5 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v40 = v39;
-        if (os_signpost_enabled(v38))
+        v40 = signpostID5;
+        if (os_signpost_enabled(logHandle3))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v38, OS_SIGNPOST_INTERVAL_END, v40, "printLeakTree", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, v40, "printLeakTree", "", buf, 2u);
         }
       }
 
@@ -1441,7 +1441,7 @@ LABEL_41:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)detectLeaksWithError:(id *)a3
+- (unsigned)detectLeaksWithError:(id *)error
 {
   v46[1] = *MEMORY[0x1E69E9840];
   v41 = 0;
@@ -1472,13 +1472,13 @@ LABEL_25:
 
   if (!self->_allocationsCount)
   {
-    if (a3)
+    if (error)
     {
       v23 = MEMORY[0x1E696ABC0];
       v45 = @"message";
       v46[0] = @"unable to inspect heap ranges of target process; it may be using a malloc replacement library without the required support";
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:&v45 count:1];
-      *a3 = [v23 errorWithDomain:@"VMULeakDetectorDomain" code:1 userInfo:v24];
+      *error = [v23 errorWithDomain:@"VMULeakDetectorDomain" code:1 userInfo:v24];
     }
 
     goto LABEL_25;
@@ -1487,16 +1487,16 @@ LABEL_25:
   debugTimer = self->_debugTimer;
   if (debugTimer)
   {
-    v7 = [(VMUDebugTimer *)debugTimer signpostID];
+    signpostID = [(VMUDebugTimer *)debugTimer signpostID];
     debugTimer = self->_debugTimer;
-    if (v7)
+    if (signpostID)
     {
-      v8 = [(VMUDebugTimer *)debugTimer logHandle];
-      v9 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
+      logHandle = [(VMUDebugTimer *)debugTimer logHandle];
+      signpostID2 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v8, OS_SIGNPOST_INTERVAL_END, v9, "VMULeakDetector", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, signpostID2, "VMULeakDetector", "", buf, 2u);
       }
 
       debugTimer = self->_debugTimer;
@@ -1508,18 +1508,18 @@ LABEL_25:
   v10 = self->_debugTimer;
   if (v10)
   {
-    v11 = [(VMUDebugTimer *)v10 logHandle];
-    v12 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-    if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
+    logHandle2 = [(VMUDebugTimer *)v10 logHandle];
+    signpostID3 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+    if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle2))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v12, "VMULeakDetector", "scan for leaks", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, signpostID3, "VMULeakDetector", "scan for leaks", buf, 2u);
     }
   }
 
-  v13 = [(VMUDirectedGraph *)self->_graph nodeNamespaceSize];
-  v14 = malloc_type_calloc(1uLL, ((v13 + 7) >> 3) + 4, 0xB2EC2458uLL);
-  *v14 = v13;
+  nodeNamespaceSize = [(VMUDirectedGraph *)self->_graph nodeNamespaceSize];
+  v14 = malloc_type_calloc(1uLL, ((nodeNamespaceSize + 7) >> 3) + 4, 0xB2EC2458uLL);
+  *v14 = nodeNamespaceSize;
   [(VMULeakDetector *)self setLeakedNodes:v14];
   if (self->_checkAbandoned)
   {
@@ -1531,7 +1531,7 @@ LABEL_25:
   v28 = 3221225472;
   v29 = __40__VMULeakDetector_detectLeaksWithError___block_invoke_157;
   v30 = &unk_1E8278120;
-  v31 = self;
+  selfCopy = self;
   v33 = &v41;
   v34 = &v37;
   v32 = v5;
@@ -1543,19 +1543,19 @@ LABEL_25:
     v16 = self->_debugTimer;
     if (v17)
     {
-      v18 = [(VMUDebugTimer *)v16 logHandle];
-      v19 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
+      logHandle3 = [(VMUDebugTimer *)v16 logHandle];
+      signpostID4 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle3))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v18, OS_SIGNPOST_INTERVAL_END, v19, "VMULeakDetector", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, signpostID4, "VMULeakDetector", "", buf, 2u);
       }
 
       v16 = self->_debugTimer;
     }
   }
 
-  [(VMUDebugTimer *)v16 endEvent:"VMULeakDetector", v27, v28, v29, v30, v31];
+  [(VMUDebugTimer *)v16 endEvent:"VMULeakDetector", v27, v28, v29, v30, selfCopy];
   leakedAllocationsCount = self->_leakedAllocationsCount;
   numExcluded = self->_numExcluded;
 
@@ -1622,10 +1622,10 @@ uint64_t __40__VMULeakDetector_detectLeaksWithError___block_invoke_157(void *a1,
   return result;
 }
 
-- (unsigned)doNormalLeakDetectionWithError:(id *)a3
+- (unsigned)doNormalLeakDetectionWithError:(id *)error
 {
   [(VMULeakDetector *)self detectLeaksWithError:?];
-  if (*a3)
+  if (*error)
   {
     return 0;
   }

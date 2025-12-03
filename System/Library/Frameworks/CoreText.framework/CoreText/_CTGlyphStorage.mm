@@ -1,27 +1,27 @@
 @interface _CTGlyphStorage
-- (BOOL)isEqual:(id)a3;
-- (CGPoint)originAtIndex:(int64_t)a3;
-- (_CTGlyphStorage)initWithCount:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGPoint)originAtIndex:(int64_t)index;
+- (_CTGlyphStorage)initWithCount:(int64_t)count;
 @end
 
 @implementation _CTGlyphStorage
 
-- (_CTGlyphStorage)initWithCount:(int64_t)a3
+- (_CTGlyphStorage)initWithCount:(int64_t)count
 {
   v5.receiver = self;
   v5.super_class = _CTGlyphStorage;
   result = [(_CTGlyphStorage *)&v5 init];
   if (result)
   {
-    result->_count = a3;
+    result->_count = count;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -30,7 +30,7 @@
   if (objc_opt_isKindOfClass())
   {
     count = self->_count;
-    if (count == *(a3 + 1))
+    if (count == *(equal + 1))
     {
       if (count < 1)
       {
@@ -40,10 +40,10 @@
       v6 = 0;
       advanceWidths = self->_advanceWidths;
       advances = self->_advances;
-      v10 = *(a3 + 3);
-      v9 = *(a3 + 4);
+      v10 = *(equal + 3);
+      v9 = *(equal + 4);
       glyphs = self->_glyphs;
-      v12 = *(a3 + 2);
+      v12 = *(equal + 2);
       v13 = (v9 + 8);
       for (i = &advances->height; ; i += 2)
       {
@@ -86,7 +86,7 @@
   return 0;
 }
 
-- (CGPoint)originAtIndex:(int64_t)a3
+- (CGPoint)originAtIndex:(int64_t)index
 {
   fprintf(*MEMORY[0x1E69E9848], "%s called on non-concrete instance %p\n", "[_CTGlyphStorage originAtIndex:]", self);
   v3 = *MEMORY[0x1E695EFF8];

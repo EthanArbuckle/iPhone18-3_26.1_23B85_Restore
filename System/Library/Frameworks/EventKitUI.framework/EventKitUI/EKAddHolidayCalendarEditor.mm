@@ -1,39 +1,39 @@
 @interface EKAddHolidayCalendarEditor
-- (BOOL)_alreadySubscribedToCalendar:(id)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)_alreadySubscribedToCalendar:(id)calendar;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (CGSize)calculatePreferredContentSize;
-- (EKAddHolidayCalendarEditor)initWithCalendar:(id)a3 eventStore:(id)a4 entityType:(unint64_t)a5 limitedToSource:(id)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (EKAddHolidayCalendarEditor)initWithCalendar:(id)calendar eventStore:(id)store entityType:(unint64_t)type limitedToSource:(id)source;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_beginLoadingHolidayCalendars;
 - (void)_displayCalendarListScreen;
 - (void)_displayErrorScreen;
 - (void)_displayLoadingScreen;
-- (void)_holidayCalendarsLoadCompletedWithCalendarData:(id)a3;
+- (void)_holidayCalendarsLoadCompletedWithCalendarData:(id)data;
 - (void)_populatedAlreadySubscribedCalendarURLs;
-- (void)calendarEditor:(id)a3 didCompleteWithAction:(int)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)calendarEditor:(id)editor didCompleteWithAction:(int)action;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation EKAddHolidayCalendarEditor
 
-- (EKAddHolidayCalendarEditor)initWithCalendar:(id)a3 eventStore:(id)a4 entityType:(unint64_t)a5 limitedToSource:(id)a6
+- (EKAddHolidayCalendarEditor)initWithCalendar:(id)calendar eventStore:(id)store entityType:(unint64_t)type limitedToSource:(id)source
 {
-  v11 = a6;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = EKAddHolidayCalendarEditor;
-  v12 = [(EKAbstractCalendarEditor *)&v16 initWithCalendar:a3 eventStore:a4 entityType:a5 limitedToSource:v11];
+  v12 = [(EKAbstractCalendarEditor *)&v16 initWithCalendar:calendar eventStore:store entityType:type limitedToSource:sourceCopy];
   if (v12)
   {
     v13 = EventKitUIBundle();
     v14 = [v13 localizedStringForKey:@"Add Holiday Calendar - calendar list" value:@"Add Holiday Calendar" table:0];
     [(EKAddHolidayCalendarEditor *)v12 setTitle:v14];
 
-    objc_storeStrong(&v12->_limitedToSource, a6);
-    v12->_entityType = a5;
+    objc_storeStrong(&v12->_limitedToSource, source);
+    v12->_entityType = type;
   }
 
   return v12;
@@ -50,19 +50,19 @@
   [MEMORY[0x1E6993498] fetchAvailableHolidayCalendarsWithCompletion:v3 queue:MEMORY[0x1E69E96A0]];
 }
 
-- (void)_holidayCalendarsLoadCompletedWithCalendarData:(id)a3
+- (void)_holidayCalendarsLoadCompletedWithCalendarData:(id)data
 {
-  v5 = a3;
-  objc_storeStrong(&self->_calendarData, a3);
+  dataCopy = data;
+  objc_storeStrong(&self->_calendarData, data);
   filteredCalendarData = self->_filteredCalendarData;
-  self->_filteredCalendarData = v5;
-  v7 = v5;
+  self->_filteredCalendarData = dataCopy;
+  v7 = dataCopy;
 
   v8 = [(NSArray *)self->_calendarData count];
   if (v8)
   {
-    v9 = [(EKAddHolidayCalendarEditor *)self tableView];
-    [v9 reloadData];
+    tableView = [(EKAddHolidayCalendarEditor *)self tableView];
+    [tableView reloadData];
 
     [(EKAddHolidayCalendarEditor *)self _displayCalendarListScreen];
   }
@@ -77,8 +77,8 @@
 - (void)_populatedAlreadySubscribedCalendarURLs
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(EKAbstractCalendarEditor *)self eventStore];
-  v4 = [v3 calendarsForEntityType:self->_entityType];
+  eventStore = [(EKAbstractCalendarEditor *)self eventStore];
+  v4 = [eventStore calendarsForEntityType:self->_entityType];
 
   v19 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
   v20 = 0u;
@@ -103,8 +103,8 @@
         v10 = *(*(&v20 + 1) + 8 * i);
         if (self->_limitedToSource)
         {
-          v11 = [*(*(&v20 + 1) + 8 * i) source];
-          v12 = [v11 isEqual:self->_limitedToSource];
+          source = [*(*(&v20 + 1) + 8 * i) source];
+          v12 = [source isEqual:self->_limitedToSource];
 
           if (!v12)
           {
@@ -117,21 +117,21 @@
           }
         }
 
-        v13 = [v10 source];
-        v14 = [v13 isDelegate];
+        source2 = [v10 source];
+        isDelegate = [source2 isDelegate];
 
-        if ((v14 & 1) == 0)
+        if ((isDelegate & 1) == 0)
         {
 LABEL_18:
           if ([v10 isSubscribed])
           {
-            v15 = [v10 subcalURL];
-            v16 = [v15 length];
+            subcalURL = [v10 subcalURL];
+            v16 = [subcalURL length];
 
             if (v16)
             {
-              v17 = [v10 subcalURL];
-              [(NSSet *)v19 addObject:v17];
+              subcalURL2 = [v10 subcalURL];
+              [(NSSet *)v19 addObject:subcalURL2];
             }
           }
         }
@@ -192,15 +192,15 @@ LABEL_18:
   self->_standbyScreen = v4;
 
   [(UIView *)self->_standbyScreen setAutoresizingMask:18];
-  v6 = [(EKAddHolidayCalendarEditor *)self view];
-  [v6 addSubview:self->_standbyScreen];
+  view = [(EKAddHolidayCalendarEditor *)self view];
+  [view addSubview:self->_standbyScreen];
 
   v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   standbyMessageLabel = self->_standbyMessageLabel;
   self->_standbyMessageLabel = v7;
 
-  v9 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_standbyMessageLabel setTextColor:v9];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_standbyMessageLabel setTextColor:labelColor];
 
   [(UILabel *)self->_standbyMessageLabel setTextAlignment:1];
   [(UILabel *)self->_standbyMessageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -211,41 +211,41 @@ LABEL_18:
   spinner = self->_spinner;
   self->_spinner = v10;
 
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  [(UIActivityIndicatorView *)self->_spinner setColor:v12];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(UIActivityIndicatorView *)self->_spinner setColor:labelColor2];
 
   [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIActivityIndicatorView *)self->_spinner sizeToFit];
   [(UIView *)self->_standbyScreen addSubview:self->_spinner];
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_standbyMessageLabel attribute:9 relatedBy:0 toItem:self->_standbyScreen attribute:9 multiplier:1.0 constant:0.0];
-  [v13 addObject:v14];
+  [array addObject:v14];
 
   v15 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_standbyMessageLabel attribute:11 relatedBy:0 toItem:self->_standbyScreen attribute:10 multiplier:1.0 constant:0.0];
-  [v13 addObject:v15];
+  [array addObject:v15];
 
   v16 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_standbyMessageLabel attribute:5 relatedBy:1 toItem:self->_standbyScreen attribute:17 multiplier:1.0 constant:0.0];
-  [v13 addObject:v16];
+  [array addObject:v16];
 
   v17 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_standbyMessageLabel attribute:6 relatedBy:-1 toItem:self->_standbyScreen attribute:18 multiplier:1.0 constant:0.0];
-  [v13 addObject:v17];
+  [array addObject:v17];
 
   v18 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_spinner attribute:9 relatedBy:0 toItem:self->_standbyScreen attribute:9 multiplier:1.0 constant:0.0];
-  [v13 addObject:v18];
+  [array addObject:v18];
 
   v19 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_spinner attribute:4 relatedBy:0 toItem:self->_standbyScreen attribute:10 multiplier:1.0 constant:0.0];
-  [v13 addObject:v19];
+  [array addObject:v19];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v13];
-  v20 = [(EKAddHolidayCalendarEditor *)self tableView];
-  [v20 registerClass:objc_opt_class() forCellReuseIdentifier:@"_HolidayCalendarCellReuseIdentifier"];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
+  tableView = [(EKAddHolidayCalendarEditor *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"_HolidayCalendarCellReuseIdentifier"];
 
   v21 = *MEMORY[0x1E69DE3D0];
-  v22 = [(EKAddHolidayCalendarEditor *)self tableView];
-  [v22 setEstimatedRowHeight:v21];
+  tableView2 = [(EKAddHolidayCalendarEditor *)self tableView];
+  [tableView2 setEstimatedRowHeight:v21];
 
-  v23 = [(EKAddHolidayCalendarEditor *)self tableView];
-  [v23 setRowHeight:v21];
+  tableView3 = [(EKAddHolidayCalendarEditor *)self tableView];
+  [tableView3 setRowHeight:v21];
 
   [(EKAddHolidayCalendarEditor *)self _displayLoadingScreen];
   [(EKAddHolidayCalendarEditor *)self _beginLoadingHolidayCalendars];
@@ -254,19 +254,19 @@ LABEL_18:
   self->_searchController = v24;
 
   [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
-  v26 = [(UISearchController *)self->_searchController searchBar];
-  [v26 sizeToFit];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar sizeToFit];
 
-  v27 = [(UISearchController *)self->_searchController searchBar];
-  v28 = [v27 searchField];
-  [v28 setAccessibilityIdentifier:@"holiday-calendar-search-field"];
+  searchBar2 = [(UISearchController *)self->_searchController searchBar];
+  searchField = [searchBar2 searchField];
+  [searchField setAccessibilityIdentifier:@"holiday-calendar-search-field"];
 
   v29 = self->_searchController;
-  v30 = [(EKAddHolidayCalendarEditor *)self navigationItem];
-  [v30 setSearchController:v29];
+  navigationItem = [(EKAddHolidayCalendarEditor *)self navigationItem];
+  [navigationItem setSearchController:v29];
 
-  v31 = [(EKAddHolidayCalendarEditor *)self navigationItem];
-  [v31 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(EKAddHolidayCalendarEditor *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -274,28 +274,28 @@ LABEL_18:
   v24.receiver = self;
   v24.super_class = EKAddHolidayCalendarEditor;
   [(EKAddHolidayCalendarEditor *)&v24 viewWillLayoutSubviews];
-  v3 = [(EKAddHolidayCalendarEditor *)self view];
-  [v3 safeAreaInsets];
+  view = [(EKAddHolidayCalendarEditor *)self view];
+  [view safeAreaInsets];
   v5 = v4;
 
-  v6 = [(EKAddHolidayCalendarEditor *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(EKAddHolidayCalendarEditor *)self view];
+  [view2 safeAreaInsets];
   v8 = v7;
 
-  v9 = [(EKAddHolidayCalendarEditor *)self view];
-  [v9 layoutMargins];
+  view3 = [(EKAddHolidayCalendarEditor *)self view];
+  [view3 layoutMargins];
   v11 = v10;
-  v12 = [(EKAddHolidayCalendarEditor *)self view];
-  [v12 bounds];
+  view4 = [(EKAddHolidayCalendarEditor *)self view];
+  [view4 bounds];
   v14 = v13;
-  v15 = [(EKAddHolidayCalendarEditor *)self view];
-  [v15 layoutMargins];
+  view5 = [(EKAddHolidayCalendarEditor *)self view];
+  [view5 layoutMargins];
   v17 = v14 - v16;
-  v18 = [(EKAddHolidayCalendarEditor *)self view];
-  [v18 layoutMargins];
+  view6 = [(EKAddHolidayCalendarEditor *)self view];
+  [view6 layoutMargins];
   v20 = v17 - v19;
-  v21 = [(EKAddHolidayCalendarEditor *)self view];
-  [v21 bounds];
+  view7 = [(EKAddHolidayCalendarEditor *)self view];
+  [view7 bounds];
   v23 = v22 - v5 - v8;
 
   [(UIView *)self->_standbyScreen setFrame:v11, 0.0, v20, v23];
@@ -312,35 +312,35 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)_alreadySubscribedToCalendar:(id)a3
+- (BOOL)_alreadySubscribedToCalendar:(id)calendar
 {
   alreadySubscribedCalendarURLStrings = self->_alreadySubscribedCalendarURLStrings;
-  v4 = [a3 URL];
-  v5 = [v4 absoluteString];
-  LOBYTE(alreadySubscribedCalendarURLStrings) = [(NSSet *)alreadySubscribedCalendarURLStrings containsObject:v5];
+  v4 = [calendar URL];
+  absoluteString = [v4 absoluteString];
+  LOBYTE(alreadySubscribedCalendarURLStrings) = [(NSSet *)alreadySubscribedCalendarURLStrings containsObject:absoluteString];
 
   return alreadySubscribedCalendarURLStrings;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   filteredCalendarData = self->_filteredCalendarData;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndex:](filteredCalendarData, "objectAtIndex:", [v7 row]);
-  v10 = [v8 dequeueReusableCellWithIdentifier:@"_HolidayCalendarCellReuseIdentifier" forIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndex:](filteredCalendarData, "objectAtIndex:", [pathCopy row]);
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"_HolidayCalendarCellReuseIdentifier" forIndexPath:pathCopy];
 
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   if ([(EKAddHolidayCalendarEditor *)self _alreadySubscribedToCalendar:v9])
   {
     [v10 setAccessoryType:3];
-    v13 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
 
-    v14 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor2 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
 
-    v11 = v13;
-    v12 = v14;
+    labelColor = tertiaryLabelColor;
+    secondaryLabelColor = tertiaryLabelColor2;
   }
 
   else
@@ -349,61 +349,61 @@ LABEL_18:
   }
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [v9 localizedDescription];
-  v17 = [v15 stringWithFormat:@"holiday-calendar-cell:%@", v16];
+  localizedDescription = [v9 localizedDescription];
+  v17 = [v15 stringWithFormat:@"holiday-calendar-cell:%@", localizedDescription];
   [v10 setAccessibilityIdentifier:v17];
 
-  v18 = [v9 localizedDescription];
-  v19 = [v10 textLabel];
-  [v19 setText:v18];
+  localizedDescription2 = [v9 localizedDescription];
+  textLabel = [v10 textLabel];
+  [textLabel setText:localizedDescription2];
 
-  v20 = [v10 textLabel];
-  [v20 setTextColor:v11];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setTextColor:labelColor];
 
-  v21 = [v10 textLabel];
-  [v21 setNumberOfLines:0];
+  textLabel3 = [v10 textLabel];
+  [textLabel3 setNumberOfLines:0];
 
   v22 = MEMORY[0x1E696AEC0];
-  v23 = [v9 localizedDescription];
-  v24 = [v22 stringWithFormat:@"holiday-calendar:%@", v23];
-  v25 = [v10 textLabel];
-  [v25 setAccessibilityIdentifier:v24];
+  localizedDescription3 = [v9 localizedDescription];
+  v24 = [v22 stringWithFormat:@"holiday-calendar:%@", localizedDescription3];
+  textLabel4 = [v10 textLabel];
+  [textLabel4 setAccessibilityIdentifier:v24];
 
-  v26 = [v9 descriptionInLocaleLanguage];
-  v27 = [v10 detailTextLabel];
-  [v27 setText:v26];
+  descriptionInLocaleLanguage = [v9 descriptionInLocaleLanguage];
+  detailTextLabel = [v10 detailTextLabel];
+  [detailTextLabel setText:descriptionInLocaleLanguage];
 
-  v28 = [v10 detailTextLabel];
-  [v28 setTextColor:v12];
+  detailTextLabel2 = [v10 detailTextLabel];
+  [detailTextLabel2 setTextColor:secondaryLabelColor];
 
-  v29 = [v10 detailTextLabel];
-  [v29 setNumberOfLines:0];
+  detailTextLabel3 = [v10 detailTextLabel];
+  [detailTextLabel3 setNumberOfLines:0];
 
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = self;
-  v5 = -[NSArray objectAtIndex:](self->_filteredCalendarData, "objectAtIndex:", [a4 row]);
-  LOBYTE(v4) = [(EKAddHolidayCalendarEditor *)v4 _alreadySubscribedToCalendar:v5];
+  selfCopy = self;
+  v5 = -[NSArray objectAtIndex:](self->_filteredCalendarData, "objectAtIndex:", [path row]);
+  LOBYTE(selfCopy) = [(EKAddHolidayCalendarEditor *)selfCopy _alreadySubscribedToCalendar:v5];
 
-  return v4 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  obj = -[NSArray objectAtIndex:](self->_filteredCalendarData, "objectAtIndex:", [a4 row]);
+  obj = -[NSArray objectAtIndex:](self->_filteredCalendarData, "objectAtIndex:", [path row]);
   if (![(EKAddHolidayCalendarEditor *)self _alreadySubscribedToCalendar:?])
   {
     objc_storeStrong(&self->_selectedCalendarDatum, obj);
-    v5 = [(EKAddHolidayCalendarEditor *)self navigationItem];
-    v6 = [v5 rightBarButtonItem];
-    [v6 setEnabled:1];
+    navigationItem = [(EKAddHolidayCalendarEditor *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:1];
 
     v7 = [EKSubscribedCalendarEditor alloc];
-    v8 = [(EKAbstractCalendarEditor *)self eventStore];
-    v9 = [(EKSubscribedCalendarEditor *)v7 initWithCalendar:0 eventStore:v8 entityType:self->_entityType limitedToSource:self->_limitedToSource];
+    eventStore = [(EKAbstractCalendarEditor *)self eventStore];
+    v9 = [(EKSubscribedCalendarEditor *)v7 initWithCalendar:0 eventStore:eventStore entityType:self->_entityType limitedToSource:self->_limitedToSource];
 
     subscriptionEditor = self->_subscriptionEditor;
     self->_subscriptionEditor = v9;
@@ -417,15 +417,15 @@ LABEL_18:
     v14 = [v13 localizedStringForKey:@"Holidays (%@)" value:&stru_1F4EF6790 table:0];
 
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [MEMORY[0x1E695DF58] currentLocale];
-    v17 = [obj locale];
-    v18 = [v17 countryCode];
-    v19 = [v16 localizedStringForCountryCode:v18];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    locale = [obj locale];
+    countryCode = [locale countryCode];
+    v19 = [currentLocale localizedStringForCountryCode:countryCode];
     v20 = [v15 stringWithFormat:v14, v19];
 
     [(EKSubscribedCalendarEditor *)v11 setHolidayCalendarModeWithTitle:v20];
-    v21 = [(EKAddHolidayCalendarEditor *)self navigationController];
-    [v21 pushViewController:v11 animated:1];
+    navigationController = [(EKAddHolidayCalendarEditor *)self navigationController];
+    [navigationController pushViewController:v11 animated:1];
 
     v22 = EventKitUIBundle();
     v23 = [v22 localizedStringForKey:@"Add Holiday Calendar - calendar preview" value:@"Add Holiday Calendar" table:0];
@@ -433,36 +433,36 @@ LABEL_18:
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
+  v4 = [view cellForRowAtIndexPath:path];
   [v4 setHighlighted:0];
 }
 
-- (void)calendarEditor:(id)a3 didCompleteWithAction:(int)a4
+- (void)calendarEditor:(id)editor didCompleteWithAction:(int)action
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (self->_subscriptionEditor == v6)
+  editorCopy = editor;
+  if (self->_subscriptionEditor == editorCopy)
   {
-    if (a4)
+    if (action)
     {
-      if ((a4 & 0xFFFFFFFD) == 1)
+      if ((action & 0xFFFFFFFD) == 1)
       {
         v16[0] = @"url";
         v7 = [(CUIKSubscribedHolidayCalendar *)self->_selectedCalendarDatum URL];
-        v8 = [v7 absoluteString];
-        v17[0] = v8;
+        absoluteString = [v7 absoluteString];
+        v17[0] = absoluteString;
         v16[1] = @"locale";
-        v9 = [(CUIKSubscribedHolidayCalendar *)self->_selectedCalendarDatum locale];
-        v10 = [v9 localeIdentifier];
-        v17[1] = v10;
+        locale = [(CUIKSubscribedHolidayCalendar *)self->_selectedCalendarDatum locale];
+        localeIdentifier = [locale localeIdentifier];
+        v17[1] = localeIdentifier;
         v16[2] = @"languageCode";
-        v11 = [(CUIKSubscribedHolidayCalendar *)self->_selectedCalendarDatum languageCode];
-        v17[2] = v11;
+        languageCode = [(CUIKSubscribedHolidayCalendar *)self->_selectedCalendarDatum languageCode];
+        v17[2] = languageCode;
         v16[3] = @"countryCode";
-        v12 = [(CUIKSubscribedHolidayCalendar *)self->_selectedCalendarDatum countryCode];
-        v17[3] = v12;
+        countryCode = [(CUIKSubscribedHolidayCalendar *)self->_selectedCalendarDatum countryCode];
+        v17[3] = countryCode;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
         CalAnalyticsSendEvent();
 
@@ -472,19 +472,19 @@ LABEL_18:
 
     else
     {
-      v14 = [(EKAddHolidayCalendarEditor *)self navigationController];
-      v15 = [v14 popViewControllerAnimated:1];
+      navigationController = [(EKAddHolidayCalendarEditor *)self navigationController];
+      v15 = [navigationController popViewControllerAnimated:1];
     }
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v5 length])
+  if ([text length])
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_calendarData, "count")}];
     v17 = 0u;
@@ -507,8 +507,8 @@ LABEL_18:
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 localizedDescription];
-          v14 = [v13 localizedStandardContainsString:v5];
+          localizedDescription = [v12 localizedDescription];
+          v14 = [localizedDescription localizedStandardContainsString:text];
 
           if (v14)
           {
@@ -531,8 +531,8 @@ LABEL_18:
     objc_storeStrong(&self->_filteredCalendarData, self->_calendarData);
   }
 
-  v16 = [(EKAddHolidayCalendarEditor *)self tableView];
-  [v16 reloadData];
+  tableView = [(EKAddHolidayCalendarEditor *)self tableView];
+  [tableView reloadData];
 }
 
 @end

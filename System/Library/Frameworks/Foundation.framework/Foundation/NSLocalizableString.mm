@@ -1,12 +1,12 @@
 @interface NSLocalizableString
-+ (id)localizableStringWithStringsFileKey:(id)a3 developmentLanguageString:(id)a4;
-- (NSLocalizableString)initWithCoder:(id)a3;
-- (NSLocalizableString)initWithStringsFileKey:(id)a3 developmentLanguageString:(id)a4;
-- (id)awakeAfterUsingCoder:(id)a3;
++ (id)localizableStringWithStringsFileKey:(id)key developmentLanguageString:(id)string;
+- (NSLocalizableString)initWithCoder:(id)coder;
+- (NSLocalizableString)initWithStringsFileKey:(id)key developmentLanguageString:(id)string;
+- (id)awakeAfterUsingCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDevelopmentLanguageString:(id)a3;
-- (void)setStringsFileKey:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDevelopmentLanguageString:(id)string;
+- (void)setStringsFileKey:(id)key;
 @end
 
 @implementation NSLocalizableString
@@ -20,17 +20,17 @@
   [(NSLocalizableString *)&v3 dealloc];
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
-  v4 = [objc_msgSend(+[NSBundle currentNibPath](NSBundle currentNibPath];
+  currentNibPath = [objc_msgSend(+[NSBundle currentNibPath](NSBundle currentNibPath];
   v5 = +[NSBundle currentNibLoadingBundle];
-  if (v4)
+  if (currentNibPath)
   {
     v6 = v5;
     v7 = objc_autoreleasePoolPush();
-    [v6 localizedStringsForTable:v4 localization:0];
+    [v6 localizedStringsForTable:currentNibPath localization:0];
     objc_autoreleasePoolPop(v7);
-    developmentLanguageString = [v6 localizedStringForKey:self->_stringsFileKey value:self->_developmentLanguageString table:v4];
+    developmentLanguageString = [v6 localizedStringForKey:self->_stringsFileKey value:self->_developmentLanguageString table:currentNibPath];
   }
 
   else
@@ -43,7 +43,7 @@
   return developmentLanguageString;
 }
 
-- (NSLocalizableString)initWithCoder:(id)a3
+- (NSLocalizableString)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -51,24 +51,24 @@
   v4 = [(NSString *)&v6 init];
   if (v4)
   {
-    v4->_stringsFileKey = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSKey", "copy"}];
-    v4->_developmentLanguageString = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSDev", "copy"}];
+    v4->_stringsFileKey = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSKey", "copy"}];
+    v4->_developmentLanguageString = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSDev", "copy"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = NSLocalizableString;
   [(NSString *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_stringsFileKey forKey:@"NSKey"];
-  [a3 encodeObject:self->_developmentLanguageString forKey:@"NSDev"];
+  [coder encodeObject:self->_stringsFileKey forKey:@"NSKey"];
+  [coder encodeObject:self->_developmentLanguageString forKey:@"NSDev"];
 }
 
-- (NSLocalizableString)initWithStringsFileKey:(id)a3 developmentLanguageString:(id)a4
+- (NSLocalizableString)initWithStringsFileKey:(id)key developmentLanguageString:(id)string
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -76,37 +76,37 @@
   v6 = [(NSString *)&v8 init];
   if (v6)
   {
-    v6->_stringsFileKey = [a3 copy];
-    v6->_developmentLanguageString = [a4 copy];
+    v6->_stringsFileKey = [key copy];
+    v6->_developmentLanguageString = [string copy];
   }
 
   return v6;
 }
 
-+ (id)localizableStringWithStringsFileKey:(id)a3 developmentLanguageString:(id)a4
++ (id)localizableStringWithStringsFileKey:(id)key developmentLanguageString:(id)string
 {
-  v4 = [[a1 alloc] initWithStringsFileKey:a3 developmentLanguageString:a4];
+  v4 = [[self alloc] initWithStringsFileKey:key developmentLanguageString:string];
 
   return v4;
 }
 
-- (void)setStringsFileKey:(id)a3
+- (void)setStringsFileKey:(id)key
 {
   stringsFileKey = self->_stringsFileKey;
-  if (stringsFileKey != a3)
+  if (stringsFileKey != key)
   {
 
-    self->_stringsFileKey = [a3 copy];
+    self->_stringsFileKey = [key copy];
   }
 }
 
-- (void)setDevelopmentLanguageString:(id)a3
+- (void)setDevelopmentLanguageString:(id)string
 {
   developmentLanguageString = self->_developmentLanguageString;
-  if (developmentLanguageString != a3)
+  if (developmentLanguageString != string)
   {
 
-    self->_developmentLanguageString = [a3 copy];
+    self->_developmentLanguageString = [string copy];
   }
 }
 

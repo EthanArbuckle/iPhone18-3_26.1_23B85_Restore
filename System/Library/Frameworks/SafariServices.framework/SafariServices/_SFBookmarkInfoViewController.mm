@@ -1,95 +1,95 @@
 @interface _SFBookmarkInfoViewController
-- (BOOL)_bookmarkIsInFavoritesFolder:(id)a3;
-- (BOOL)_isIndexPathForNewFolderRow:(id)a3;
+- (BOOL)_bookmarkIsInFavoritesFolder:(id)folder;
+- (BOOL)_isIndexPathForNewFolderRow:(id)row;
 - (BOOL)_showBookmarkAppearanceSwitch;
-- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)a3;
-- (BOOL)bookmarkInfoViewControllerShouldUseTranslucentAppearance:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)changes;
+- (BOOL)bookmarkInfoViewControllerShouldUseTranslucentAppearance:(id)appearance;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canSaveChanges;
 - (BOOL)hasTranslucentAppearance;
 - (BOOL)titleCellHasText;
 - (CGPoint)_centerForIconView;
 - (UIEdgeInsets)_cellInset;
-- (_SFBookmarkInfoViewController)initWithBookmark:(id)a3 childBookmarks:(id)a4 inCollection:(id)a5 addingBookmark:(BOOL)a6 toFavorites:(BOOL)a7 willBeDisplayedModally:(BOOL)a8;
+- (_SFBookmarkInfoViewController)initWithBookmark:(id)bookmark childBookmarks:(id)bookmarks inCollection:(id)collection addingBookmark:(BOOL)addingBookmark toFavorites:(BOOL)favorites willBeDisplayedModally:(BOOL)modally;
 - (_SFBookmarkInfoViewControllerDelegate)delegate;
-- (id)_cellForExpandedFolderAtIndex:(int64_t)a3 withTableView:(id)a4;
-- (id)_cellForNewFolderRowWithTableView:(id)a3;
-- (id)_cellForParentBookmarkWithTableView:(id)a3;
-- (id)_cellForShowTitleSwitch:(id)a3;
-- (id)_dequeueFolderPickerCellFromTableView:(id)a3;
-- (id)_iconForViewCellGivenBookmark:(id)a3 syntheticFolder:(id)a4;
+- (id)_cellForExpandedFolderAtIndex:(int64_t)index withTableView:(id)view;
+- (id)_cellForNewFolderRowWithTableView:(id)view;
+- (id)_cellForParentBookmarkWithTableView:(id)view;
+- (id)_cellForShowTitleSwitch:(id)switch;
+- (id)_dequeueFolderPickerCellFromTableView:(id)view;
+- (id)_iconForViewCellGivenBookmark:(id)bookmark syntheticFolder:(id)folder;
 - (id)_titleCell;
-- (id)backgroundColorUsingTranslucentAppearance:(BOOL)a3;
-- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)backgroundColorUsingTranslucentAppearance:(BOOL)appearance;
+- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)controller;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addActionsForTextFields;
-- (void)_bookmarksDidReload:(id)a3;
+- (void)_bookmarksDidReload:(id)reload;
 - (void)_createCellsIfNeeded;
 - (void)_createNewFolder;
-- (void)_didChangeEditingTextField:(id)a3;
-- (void)_editField:(unint64_t)a3;
-- (void)_reloadFolderInfoForced:(BOOL)a3;
+- (void)_didChangeEditingTextField:(id)field;
+- (void)_editField:(unint64_t)field;
+- (void)_reloadFolderInfoForced:(BOOL)forced;
 - (void)_removeActionsForTextFields;
-- (void)_returnWasPressedInTextField:(id)a3;
+- (void)_returnWasPressedInTextField:(id)field;
 - (void)_saveButtonPressed;
-- (void)_setFolderPickerExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)_showTitleSwitchPressed:(id)a3;
+- (void)_setFolderPickerExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)_showTitleSwitchPressed:(id)pressed;
 - (void)_updateCellValues;
 - (void)_updateIconViewFrame;
 - (void)_updateLastSelectedFolder;
 - (void)_updateNavigationTitle;
 - (void)_updateSaveButton;
 - (void)_valuesChanged;
-- (void)bookmarkInfoViewController:(id)a3 didFinishWithResult:(BOOL)a4;
-- (void)bookmarkTextEntryTableViewController:(id)a3 dismissedWithText:(id)a4;
+- (void)bookmarkInfoViewController:(id)controller didFinishWithResult:(BOOL)result;
+- (void)bookmarkTextEntryTableViewController:(id)controller dismissedWithText:(id)text;
 - (void)cancel;
 - (void)dealloc;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)loadView;
 - (void)reloadData;
 - (void)saveChanges;
-- (void)setBookmark:(id)a3;
-- (void)setParent:(id)a3 syntheticParentFolder:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setBookmark:(id)bookmark;
+- (void)setParent:(id)parent syntheticParentFolder:(id)folder;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateLastSelectedSyntheticFolder;
 - (void)updateTranslucentAppearance;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation _SFBookmarkInfoViewController
 
-- (_SFBookmarkInfoViewController)initWithBookmark:(id)a3 childBookmarks:(id)a4 inCollection:(id)a5 addingBookmark:(BOOL)a6 toFavorites:(BOOL)a7 willBeDisplayedModally:(BOOL)a8
+- (_SFBookmarkInfoViewController)initWithBookmark:(id)bookmark childBookmarks:(id)bookmarks inCollection:(id)collection addingBookmark:(BOOL)addingBookmark toFavorites:(BOOL)favorites willBeDisplayedModally:(BOOL)modally
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  modallyCopy = modally;
+  bookmarkCopy = bookmark;
+  bookmarksCopy = bookmarks;
+  collectionCopy = collection;
   v35.receiver = self;
   v35.super_class = _SFBookmarkInfoViewController;
   v17 = [(_SFBookmarkInfoViewController *)&v35 initWithStyle:2];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [bookmarkCopy copy];
     bookmark = v17->_bookmark;
     v17->_bookmark = v18;
 
-    objc_storeStrong(&v17->_childBookmarks, a4);
-    v17->_addingBookmark = a6;
-    v17->_addingToFavorites = a7;
-    v17->_enableAddFolder = [v14 isFolder] ^ 1;
+    objc_storeStrong(&v17->_childBookmarks, bookmarks);
+    v17->_addingBookmark = addingBookmark;
+    v17->_addingToFavorites = favorites;
+    v17->_enableAddFolder = [bookmarkCopy isFolder] ^ 1;
     v20 = v17->_bookmark;
     if (v20)
     {
-      v21 = [v16 bookmarkWithID:{-[WebBookmark parentID](v20, "parentID")}];
+      v21 = [collectionCopy bookmarkWithID:{-[WebBookmark parentID](v20, "parentID")}];
       parentBookmark = v17->_parentBookmark;
       v17->_parentBookmark = v21;
 
@@ -101,15 +101,15 @@
       v17->_lastSelectedSyntheticFolderID = [(WebBookmark *)v17->_bookmark parentID];
     }
 
-    objc_storeStrong(&v17->_collection, a5);
-    v23 = [(_SFBookmarkInfoViewController *)v17 navigationItem];
+    objc_storeStrong(&v17->_collection, collection);
+    navigationItem = [(_SFBookmarkInfoViewController *)v17 navigationItem];
     [(_SFBookmarkInfoViewController *)v17 _updateNavigationTitle];
-    if (v8)
+    if (modallyCopy)
     {
       v24 = objc_alloc(MEMORY[0x1E69DC708]);
       v25 = [v24 initWithBarButtonSystemItem:objc_msgSend(MEMORY[0x1E69DC708] target:"_sf_popoverCancelButtonItem") action:{v17, sel_cancel}];
       [v25 setAccessibilityIdentifier:@"BookmarkInfoCancelButton"];
-      [v23 setLeftBarButtonItem:v25];
+      [navigationItem setLeftBarButtonItem:v25];
       v26 = objc_alloc(MEMORY[0x1E69DC708]);
       v27 = _WBSLocalizedString();
       v28 = [v26 initWithTitle:v27 style:2 target:v17 action:sel__saveButtonPressed];
@@ -117,7 +117,7 @@
       v17->_saveButton = v28;
 
       [(UIBarButtonItem *)v17->_saveButton setAccessibilityIdentifier:@"BookmarkInfoSaveButton"];
-      [v23 setRightBarButtonItem:v17->_saveButton];
+      [navigationItem setRightBarButtonItem:v17->_saveButton];
     }
 
     v30 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -126,8 +126,8 @@
 
     [(UISwitch *)v17->_showTitleSwitch setOn:[(WebBookmark *)v17->_bookmark showIconOnly]^ 1];
     [(UISwitch *)v17->_showTitleSwitch addTarget:v17 action:sel__showTitleSwitchPressed_ forControlEvents:64];
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v17 selector:sel__bookmarksDidReload_ name:*MEMORY[0x1E69E2118] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel__bookmarksDidReload_ name:*MEMORY[0x1E69E2118] object:0];
 
     v17->_editingField = -1;
     v33 = v17;
@@ -138,22 +138,22 @@
 
 - (void)_updateNavigationTitle
 {
-  v10 = [(_SFBookmarkInfoViewController *)self navigationItem];
+  navigationItem = [(_SFBookmarkInfoViewController *)self navigationItem];
   if (self->_addingToFavorites)
   {
-    v3 = [(SFSyntheticBookmarkFolder *)self->_syntheticParentBookmarkFolder title];
-    if ([v3 length])
+    title = [(SFSyntheticBookmarkFolder *)self->_syntheticParentBookmarkFolder title];
+    if ([title length])
     {
       v4 = MEMORY[0x1E696AEC0];
       v5 = _WBSLocalizedString();
-      v6 = [v4 stringWithFormat:v5, v3];
-      [v10 setTitle:v6];
+      v6 = [v4 stringWithFormat:v5, title];
+      [navigationItem setTitle:v6];
     }
 
     else
     {
       v5 = _WBSLocalizedString();
-      [v10 setTitle:v5];
+      [navigationItem setTitle:v5];
     }
   }
 
@@ -164,18 +164,18 @@
     if (!addingBookmark)
     {
       v8 = _WBSLocalizedString();
-      [v10 setTitle:v8];
+      [navigationItem setTitle:v8];
 
-      v9 = v10;
+      v9 = navigationItem;
       self->_saveWhenDismissed = 1;
       goto LABEL_10;
     }
 
-    v3 = _WBSLocalizedString();
-    [v10 setTitle:v3];
+    title = _WBSLocalizedString();
+    [navigationItem setTitle:title];
   }
 
-  v9 = v10;
+  v9 = navigationItem;
 LABEL_10:
 }
 
@@ -198,7 +198,7 @@ LABEL_10:
   }
 }
 
-- (void)_returnWasPressedInTextField:(id)a3
+- (void)_returnWasPressedInTextField:(id)field
 {
   if ([(_SFBookmarkInfoViewController *)self _sf_canEditFields])
   {
@@ -213,7 +213,7 @@ LABEL_10:
   }
 }
 
-- (void)_showTitleSwitchPressed:(id)a3
+- (void)_showTitleSwitchPressed:(id)pressed
 {
   v4 = [(WebBookmark *)self->_bookmark showIconOnly]^ 1;
   bookmark = self->_bookmark;
@@ -223,8 +223,8 @@ LABEL_10:
 
 - (UIEdgeInsets)_cellInset
 {
-  v2 = [(_SFBookmarkInfoViewController *)self tableView];
-  [v2 separatorInset];
+  tableView = [(_SFBookmarkInfoViewController *)self tableView];
+  [tableView separatorInset];
   v4 = v3 + 15.0 + 60.0;
   v5 = *MEMORY[0x1E69DE3D0];
 
@@ -247,16 +247,16 @@ LABEL_10:
     titleCell = self->_titleCell;
     self->_titleCell = v3;
 
-    v5 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+    editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
     v6 = _WBSLocalizedString();
-    [v5 setPlaceholder:v6];
+    [editableTextField setPlaceholder:v6];
 
-    [v5 setAccessibilityIdentifier:@"BookmarkInfoTitleTextField"];
-    v7 = [v5 textInputTraits];
-    [v7 setEnablesReturnKeyOnNonWhiteSpaceContent:1];
+    [editableTextField setAccessibilityIdentifier:@"BookmarkInfoTitleTextField"];
+    textInputTraits = [editableTextField textInputTraits];
+    [textInputTraits setEnablesReturnKeyOnNonWhiteSpaceContent:1];
 
-    [v5 addTarget:self action:sel__didBeginEditingTextField_ forControlEvents:0x10000];
-    [v5 addTarget:self action:sel__didChangeEditingTextField_ forControlEvents:0x20000];
+    [editableTextField addTarget:self action:sel__didBeginEditingTextField_ forControlEvents:0x10000];
+    [editableTextField addTarget:self action:sel__didChangeEditingTextField_ forControlEvents:0x20000];
   }
 
   if (!self->_addressCell)
@@ -265,14 +265,14 @@ LABEL_10:
     addressCell = self->_addressCell;
     self->_addressCell = v8;
 
-    v11 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-    [v11 setKeyboardType:3];
+    editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+    [editableTextField2 setKeyboardType:3];
     v10 = _WBSLocalizedString();
-    [v11 setPlaceholder:v10];
+    [editableTextField2 setPlaceholder:v10];
 
-    [v11 setAccessibilityIdentifier:@"BookmarkInfoAddressTextField"];
-    [v11 addTarget:self action:sel__didBeginEditingTextField_ forControlEvents:0x10000];
-    [v11 addTarget:self action:sel__didChangeEditingTextField_ forControlEvents:0x20000];
+    [editableTextField2 setAccessibilityIdentifier:@"BookmarkInfoAddressTextField"];
+    [editableTextField2 addTarget:self action:sel__didBeginEditingTextField_ forControlEvents:0x10000];
+    [editableTextField2 addTarget:self action:sel__didChangeEditingTextField_ forControlEvents:0x20000];
   }
 }
 
@@ -281,12 +281,12 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = _SFBookmarkInfoViewController;
   [(_SFBookmarkInfoViewController *)&v8 loadView];
-  v3 = [(_SFBookmarkInfoViewController *)self tableView];
-  [v3 setAccessibilityIdentifier:@"BookmarkInfoTableView"];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v3 setEstimatedRowHeight:44.0];
-  [v3 setEstimatedSectionHeaderHeight:0.0];
-  [v3 setEstimatedSectionFooterHeight:0.0];
+  tableView = [(_SFBookmarkInfoViewController *)self tableView];
+  [tableView setAccessibilityIdentifier:@"BookmarkInfoTableView"];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView setEstimatedRowHeight:44.0];
+  [tableView setEstimatedSectionHeaderHeight:0.0];
+  [tableView setEstimatedSectionFooterHeight:0.0];
   if (([(WebBookmark *)self->_bookmark isFolder]& 1) == 0)
   {
     v4 = objc_alloc(MEMORY[0x1E69B1C60]);
@@ -294,10 +294,10 @@ LABEL_10:
     iconImageView = self->_iconImageView;
     self->_iconImageView = v5;
 
-    v7 = [(_SFSiteIconView *)self->_iconImageView layer];
-    [v7 setZPosition:1.0];
+    layer = [(_SFSiteIconView *)self->_iconImageView layer];
+    [layer setZPosition:1.0];
 
-    [v3 addSubview:self->_iconImageView];
+    [tableView addSubview:self->_iconImageView];
     [(_SFSiteIconView *)self->_iconImageView setBookmark:self->_bookmark];
   }
 
@@ -306,23 +306,23 @@ LABEL_10:
 
 - (id)_titleCell
 {
-  v2 = [(_SFBookmarkInfoViewController *)self tableView];
+  tableView = [(_SFBookmarkInfoViewController *)self tableView];
   v3 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-  v4 = [v2 cellForRowAtIndexPath:v3];
+  v4 = [tableView cellForRowAtIndexPath:v3];
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = _SFBookmarkInfoViewController;
-  [(SFPopoverSizingTableViewController *)&v6 viewWillAppear:a3];
-  v4 = [(_SFBookmarkInfoViewController *)self tableView];
-  [v4 reloadData];
+  [(SFPopoverSizingTableViewController *)&v6 viewWillAppear:appear];
+  tableView = [(_SFBookmarkInfoViewController *)self tableView];
+  [tableView reloadData];
 
-  v5 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-  [v5 setEnabled:!self->_addingBookmark];
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+  [editableTextField setEnabled:!self->_addingBookmark];
 
   if (self->_folderPickerExpanded)
   {
@@ -330,11 +330,11 @@ LABEL_10:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _SFBookmarkInfoViewController;
-  [(_SFBookmarkInfoViewController *)&v5 viewWillDisappear:a3];
+  [(_SFBookmarkInfoViewController *)&v5 viewWillDisappear:disappear];
   [(_SFBookmarkInfoViewController *)self _removeActionsForTextFields];
   if (self->_saveWhenDismissed && (([(_SFBookmarkInfoViewController *)self isBeingDismissed]& 1) != 0 || [(_SFBookmarkInfoViewController *)self isMovingFromParentViewController]))
   {
@@ -347,20 +347,20 @@ LABEL_10:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(_SFBookmarkInfoViewController *)self _addActionsForTextFields];
   if (([(_SFBookmarkInfoViewController *)self _isInPopoverPresentation]& 1) != 0 || [(_SFBookmarkInfoViewController *)self _sf_canEditFields])
   {
-    v5 = [(_SFBookmarkInfoViewController *)self _titleCell];
-    v6 = [v5 editableTextField];
-    [v6 becomeFirstResponder];
+    _titleCell = [(_SFBookmarkInfoViewController *)self _titleCell];
+    editableTextField = [_titleCell editableTextField];
+    [editableTextField becomeFirstResponder];
   }
 
   v7.receiver = self;
   v7.super_class = _SFBookmarkInfoViewController;
-  [(SFPopoverSizingTableViewController *)&v7 viewDidAppear:v3];
+  [(SFPopoverSizingTableViewController *)&v7 viewDidAppear:appearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -377,37 +377,37 @@ LABEL_10:
   }
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   if (([(_SFBookmarkInfoViewController *)self _sf_canEditFields]& 1) != 0)
   {
-    v5 = [(_SFBookmarkInfoViewController *)self _titleCell];
-    v4 = [v5 editableTextField];
-    [v4 becomeFirstResponder];
+    _titleCell = [(_SFBookmarkInfoViewController *)self _titleCell];
+    editableTextField = [_titleCell editableTextField];
+    [editableTextField becomeFirstResponder];
   }
 
   else
   {
-    v5 = [(_SFBookmarkInfoViewController *)self firstResponder];
-    [v5 resignFirstResponder];
+    _titleCell = [(_SFBookmarkInfoViewController *)self firstResponder];
+    [_titleCell resignFirstResponder];
   }
 }
 
-- (void)_bookmarksDidReload:(id)a3
+- (void)_bookmarksDidReload:(id)reload
 {
   v4 = self->_parentBookmark;
   collection = self->_collection;
   v11 = v4;
-  v6 = [(WebBookmark *)v4 UUID];
-  v7 = [(WebBookmarkCollection *)collection bookmarkWithUUID:v6];
+  uUID = [(WebBookmark *)v4 UUID];
+  v7 = [(WebBookmarkCollection *)collection bookmarkWithUUID:uUID];
   parentBookmark = self->_parentBookmark;
   self->_parentBookmark = v7;
 
   if (!self->_parentBookmark)
   {
-    v9 = [(WebBookmarkCollection *)self->_collection rootBookmark];
+    rootBookmark = [(WebBookmarkCollection *)self->_collection rootBookmark];
     v10 = self->_parentBookmark;
-    self->_parentBookmark = v9;
+    self->_parentBookmark = rootBookmark;
   }
 
   [(_SFBookmarkInfoViewController *)self reloadData];
@@ -415,9 +415,9 @@ LABEL_10:
 
 - (BOOL)titleCellHasText
 {
-  v2 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-  v3 = [v2 text];
-  v4 = [v3 length] != 0;
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+  text = [editableTextField text];
+  v4 = [text length] != 0;
 
   return v4;
 }
@@ -425,16 +425,16 @@ LABEL_10:
 - (void)reloadData
 {
   [(_SFBookmarkInfoViewController *)self _createCellsIfNeeded];
-  v3 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-  v4 = [(WebBookmark *)self->_bookmark localizedTitle];
-  [v3 setText:v4];
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+  localizedTitle = [(WebBookmark *)self->_bookmark localizedTitle];
+  [editableTextField setText:localizedTitle];
 
-  v5 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+  editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [(WebBookmark *)self->_bookmark address];
-  v8 = [v6 safari_URLWithDataAsString:v7];
-  v9 = [v8 safari_userVisibleString];
-  [v5 setText:v9];
+  address = [(WebBookmark *)self->_bookmark address];
+  v8 = [v6 safari_URLWithDataAsString:address];
+  safari_userVisibleString = [v8 safari_userVisibleString];
+  [editableTextField2 setText:safari_userVisibleString];
 
   if (([(WebBookmark *)self->_bookmark isFolder]& 1) == 0)
   {
@@ -443,19 +443,19 @@ LABEL_10:
 
   [(_SFBookmarkInfoViewController *)self _reloadFolderInfoForced:1];
   [(_SFBookmarkInfoViewController *)self _updateCellValues];
-  v10 = [(_SFBookmarkInfoViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(_SFBookmarkInfoViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateLastSelectedSyntheticFolder
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 stringForKey:*MEMORY[0x1E69B1F98]];
-  v5 = [v4 integerValue];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults stringForKey:*MEMORY[0x1E69B1F98]];
+  integerValue = [v4 integerValue];
 
-  if (v5)
+  if (integerValue)
   {
-    self->_lastSelectedSyntheticFolderID = v5;
+    self->_lastSelectedSyntheticFolderID = integerValue;
 
     [(_SFBookmarkInfoViewController *)self reloadData];
   }
@@ -463,29 +463,29 @@ LABEL_10:
 
 - (CGPoint)_centerForIconView
 {
-  v3 = [(_SFBookmarkInfoViewController *)self tableView];
-  [v3 rectForSection:0];
+  tableView = [(_SFBookmarkInfoViewController *)self tableView];
+  [tableView rectForSection:0];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 rectForHeaderInSection:0];
+  [tableView rectForHeaderInSection:0];
   v13 = v12;
-  [v3 rectForFooterInSection:0];
+  [tableView rectForFooterInSection:0];
   v15 = v14;
-  v16 = [(_SFBookmarkInfoViewController *)self view];
-  v17 = [v16 _sf_usesLeftToRightLayout];
+  view = [(_SFBookmarkInfoViewController *)self view];
+  _sf_usesLeftToRightLayout = [view _sf_usesLeftToRightLayout];
 
-  if (v17)
+  if (_sf_usesLeftToRightLayout)
   {
-    [v3 _sectionContentInset];
-    [v3 separatorInset];
+    [tableView _sectionContentInset];
+    [tableView separatorInset];
   }
 
   else
   {
-    [v3 separatorInset];
-    [v3 _sectionContentInset];
+    [tableView separatorInset];
+    [tableView _sectionContentInset];
   }
 
   v25.size.height = v11 - v13 - v15;
@@ -515,13 +515,13 @@ LABEL_10:
 - (void)_updateCellValues
 {
   v15 = self->_titleCell;
-  v3 = [(_SFBookmarkTextEntryTableViewCell *)v15 editableTextField];
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)v15 editableTextField];
   v4 = self->_addressCell;
-  v5 = [(_SFBookmarkTextEntryTableViewCell *)v4 editableTextField];
+  editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)v4 editableTextField];
   if (([(_SFBookmarkInfoViewController *)self _sf_canEditFields]& 1) != 0)
   {
-    [v3 setUserInteractionEnabled:1];
-    [v5 setUserInteractionEnabled:1];
+    [editableTextField setUserInteractionEnabled:1];
+    [editableTextField2 setUserInteractionEnabled:1];
     [(_SFBookmarkTextEntryTableViewCell *)v15 setAccessoryType:0];
     [(_SFBookmarkTextEntryTableViewCell *)v4 setAccessoryType:0];
     [(_SFBookmarkTextEntryTableViewCell *)v15 setSelectionStyle:0];
@@ -530,8 +530,8 @@ LABEL_10:
 
   else
   {
-    [v3 setUserInteractionEnabled:0];
-    [v5 setUserInteractionEnabled:0];
+    [editableTextField setUserInteractionEnabled:0];
+    [editableTextField2 setUserInteractionEnabled:0];
     [(_SFBookmarkTextEntryTableViewCell *)v15 setAccessoryType:1];
     [(_SFBookmarkTextEntryTableViewCell *)v4 setAccessoryType:!self->_addingBookmark];
     [(_SFBookmarkTextEntryTableViewCell *)v15 setSelectionStyle:2];
@@ -561,13 +561,13 @@ LABEL_10:
   [(_SFBookmarkInfoViewController *)self _updateSaveButton];
 }
 
-- (void)setBookmark:(id)a3
+- (void)setBookmark:(id)bookmark
 {
-  v4 = a3;
-  if (self->_bookmark != v4)
+  bookmarkCopy = bookmark;
+  if (self->_bookmark != bookmarkCopy)
   {
-    v8 = v4;
-    v5 = [(WebBookmark *)v4 copy];
+    v8 = bookmarkCopy;
+    v5 = [(WebBookmark *)bookmarkCopy copy];
     bookmark = self->_bookmark;
     self->_bookmark = v5;
 
@@ -582,17 +582,17 @@ LABEL_10:
 
     [(_SFSiteIconView *)self->_iconImageView setBookmark:v8];
     [(_SFBookmarkInfoViewController *)self reloadData];
-    v4 = v8;
+    bookmarkCopy = v8;
   }
 }
 
-- (void)setParent:(id)a3 syntheticParentFolder:(id)a4
+- (void)setParent:(id)parent syntheticParentFolder:(id)folder
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [(WebBookmark *)self->_parentBookmark UUID];
-  v9 = [v11 UUID];
-  if (![v8 isEqual:v9])
+  parentCopy = parent;
+  folderCopy = folder;
+  uUID = [(WebBookmark *)self->_parentBookmark UUID];
+  uUID2 = [parentCopy UUID];
+  if (![uUID isEqual:uUID2])
   {
 
     goto LABEL_5;
@@ -603,8 +603,8 @@ LABEL_10:
   if ((v10 & 1) == 0)
   {
 LABEL_5:
-    objc_storeStrong(&self->_parentBookmark, a3);
-    objc_storeStrong(&self->_syntheticParentBookmarkFolder, a4);
+    objc_storeStrong(&self->_parentBookmark, parent);
+    objc_storeStrong(&self->_syntheticParentBookmarkFolder, folder);
     self->_didSelectFolder = 1;
     [(_SFBookmarkInfoViewController *)self _updateNavigationTitle];
   }
@@ -615,36 +615,36 @@ LABEL_5:
   self->_saveWhenDismissed = 0;
   if ([(_SFBookmarkInfoViewController *)self canSaveChanges])
   {
-    v3 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-    [v3 resignFirstResponder];
+    editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+    [editableTextField resignFirstResponder];
 
-    v4 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-    v5 = [v4 text];
-    v19 = [v5 _web_stringByTrimmingWhitespace];
+    editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+    text = [editableTextField2 text];
+    _web_stringByTrimmingWhitespace = [text _web_stringByTrimmingWhitespace];
 
-    [(WebBookmark *)self->_bookmark setTitle:v19];
-    v6 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-    v7 = [v6 text];
+    [(WebBookmark *)self->_bookmark setTitle:_web_stringByTrimmingWhitespace];
+    editableTextField3 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+    text2 = [editableTextField3 text];
 
-    [(WebBookmark *)self->_bookmark setAddress:v7];
+    [(WebBookmark *)self->_bookmark setAddress:text2];
     v8 = [SFBookmarkUtility alloc];
     collection = self->_collection;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = [WeakRetained syntheticBookmarkProviderForBookmarkInfoViewController:self];
     v12 = [(SFBookmarkUtility *)v8 initWithCollection:collection syntheticBookmarkProvider:v11];
 
-    v13 = [(SFSyntheticBookmarkFolder *)self->_syntheticParentBookmarkFolder bookmarkList];
+    bookmarkList = [(SFSyntheticBookmarkFolder *)self->_syntheticParentBookmarkFolder bookmarkList];
 
-    if (v13)
+    if (bookmarkList)
     {
       v14 = [(SFBookmarkUtility *)v12 saveBookmark:self->_bookmark inSyntheticFolder:self->_syntheticParentBookmarkFolder];
     }
 
     else
     {
-      v15 = [(WebBookmark *)self->_bookmark isFolder];
+      isFolder = [(WebBookmark *)self->_bookmark isFolder];
       bookmark = self->_bookmark;
-      if (v15)
+      if (isFolder)
       {
         if (self->_childBookmarks)
         {
@@ -676,38 +676,38 @@ LABEL_5:
 {
   if (self->_didSelectFolder)
   {
-    v11 = [(WebBookmark *)self->_parentBookmark UUID];
+    uUID = [(WebBookmark *)self->_parentBookmark UUID];
     if ([(WebBookmarkCollection *)self->_collection bookmarkIsFavoritesFolder:self->_parentBookmark])
     {
       v4 = *MEMORY[0x1E69B1FA0];
 
-      v11 = v4;
+      uUID = v4;
     }
 
-    v5 = [(SFSyntheticBookmarkFolder *)self->_syntheticParentBookmarkFolder bookmarkList];
-    v6 = v5;
-    if (v5)
+    bookmarkList = [(SFSyntheticBookmarkFolder *)self->_syntheticParentBookmarkFolder bookmarkList];
+    v6 = bookmarkList;
+    if (bookmarkList)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v5, "folderID")];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(bookmarkList, "folderID")];
 
-      v11 = v7;
+      uUID = v7;
     }
 
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v8 setObject:v11 forKey:*MEMORY[0x1E69B1F98]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setObject:uUID forKey:*MEMORY[0x1E69B1F98]];
 
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
     v10 = [MEMORY[0x1E695DF00] now];
-    [v9 setObject:v10 forKey:*MEMORY[0x1E69B1DE0]];
+    [standardUserDefaults2 setObject:v10 forKey:*MEMORY[0x1E69B1DE0]];
   }
 }
 
 - (void)_updateSaveButton
 {
-  v3 = [(_SFBookmarkInfoViewController *)self canSaveChanges];
+  canSaveChanges = [(_SFBookmarkInfoViewController *)self canSaveChanges];
   saveButton = self->_saveButton;
 
-  [(UIBarButtonItem *)saveButton setEnabled:v3];
+  [(UIBarButtonItem *)saveButton setEnabled:canSaveChanges];
 }
 
 - (BOOL)canSaveChanges
@@ -720,17 +720,17 @@ LABEL_5:
 
   else
   {
-    v4 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-    v5 = [v4 text];
-    v6 = [v5 _web_stringByTrimmingWhitespace];
+    editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+    text = [editableTextField text];
+    _web_stringByTrimmingWhitespace = [text _web_stringByTrimmingWhitespace];
 
-    v7 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-    v8 = [v7 text];
-    v9 = [v8 _web_stringByTrimmingWhitespace];
+    editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+    text2 = [editableTextField2 text];
+    _web_stringByTrimmingWhitespace2 = [text2 _web_stringByTrimmingWhitespace];
 
-    if ([v6 length])
+    if ([_web_stringByTrimmingWhitespace length])
     {
-      v10 = (-[WebBookmark isFolder](self->_bookmark, "isFolder") & 1) != 0 || [v9 length] != 0;
+      v10 = (-[WebBookmark isFolder](self->_bookmark, "isFolder") & 1) != 0 || [_web_stringByTrimmingWhitespace2 length] != 0;
     }
 
     else
@@ -742,33 +742,33 @@ LABEL_5:
   return v10;
 }
 
-- (void)_editField:(unint64_t)a3
+- (void)_editField:(unint64_t)field
 {
-  self->_editingField = a3;
-  if (a3 == 1)
+  self->_editingField = field;
+  if (field == 1)
   {
     v14 = [_SFBookmarkTextEntryTableViewController alloc];
-    v8 = [(WebBookmark *)self->_bookmark address];
+    address = [(WebBookmark *)self->_bookmark address];
     v9 = v14;
     v10 = 1;
-    v11 = v8;
+    v11 = address;
     v12 = 0;
     v13 = 1;
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!field)
   {
     bookmark = self->_bookmark;
-    v5 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-    v6 = [v5 text];
-    [(WebBookmark *)bookmark setTitle:v6];
+    editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+    text = [editableTextField text];
+    [(WebBookmark *)bookmark setTitle:text];
 
     v7 = [_SFBookmarkTextEntryTableViewController alloc];
-    v8 = [(WebBookmark *)self->_bookmark localizedTitle];
+    address = [(WebBookmark *)self->_bookmark localizedTitle];
     v9 = v7;
     v10 = 0;
-    v11 = v8;
+    v11 = address;
     v12 = 2;
     v13 = 0;
 LABEL_5:
@@ -779,49 +779,49 @@ LABEL_5:
 
   v16 = 0;
 LABEL_7:
-  v15 = [(_SFBookmarkInfoViewController *)self navigationController];
-  [v15 pushViewController:v16 animated:1];
+  navigationController = [(_SFBookmarkInfoViewController *)self navigationController];
+  [navigationController pushViewController:v16 animated:1];
 }
 
 - (void)_createNewFolder
 {
   v3 = objc_alloc(MEMORY[0x1E69E20F0]);
-  v4 = [(WebBookmark *)self->_bookmark parentID];
-  v5 = [(WebBookmarkCollection *)self->_collection configuration];
-  v8 = [v3 initFolderWithParentID:v4 collectionType:{objc_msgSend(v5, "collectionType")}];
+  parentID = [(WebBookmark *)self->_bookmark parentID];
+  configuration = [(WebBookmarkCollection *)self->_collection configuration];
+  v8 = [v3 initFolderWithParentID:parentID collectionType:{objc_msgSend(configuration, "collectionType")}];
 
   v6 = [[_SFBookmarkInfoViewController alloc] initWithBookmark:v8 inCollection:self->_collection addingBookmark:1];
   [(_SFBookmarkInfoViewController *)v6 setDelegate:self];
-  v7 = [(_SFBookmarkInfoViewController *)self navigationController];
-  [v7 pushViewController:v6 animated:1];
+  navigationController = [(_SFBookmarkInfoViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] != 1 && ((-[_SFBookmarkInfoViewController _sf_canEditFields](self, "_sf_canEditFields") & 1) != 0 || objc_msgSend(v5, "row") && self->_addingBookmark))
+  pathCopy = path;
+  if ([pathCopy section] != 1 && ((-[_SFBookmarkInfoViewController _sf_canEditFields](self, "_sf_canEditFields") & 1) != 0 || objc_msgSend(pathCopy, "row") && self->_addingBookmark))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v6 section];
-  v8 = [v6 row];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  v8 = [pathCopy row];
   v9 = v8;
-  if (v7 == 1)
+  if (section == 1)
   {
-    if ([(_SFBookmarkInfoViewController *)self _isIndexPathForNewFolderRow:v6])
+    if ([(_SFBookmarkInfoViewController *)self _isIndexPathForNewFolderRow:pathCopy])
     {
       [(_SFBookmarkInfoViewController *)self _createNewFolder];
     }
@@ -831,23 +831,23 @@ LABEL_7:
       if (self->_folderPickerExpanded)
       {
         v12 = [MEMORY[0x1E696AC88] indexPathForRow:self->_selectedFolderIndex inSection:1];
-        v13 = [v20 cellForRowAtIndexPath:v12];
+        v13 = [viewCopy cellForRowAtIndexPath:v12];
         [v13 setAccessoryType:0];
 
-        v14 = [v20 cellForRowAtIndexPath:v6];
+        v14 = [viewCopy cellForRowAtIndexPath:pathCopy];
         [v14 setAccessoryType:3];
 
         v15 = [(NSArray *)self->_folders objectAtIndexedSubscript:v9];
-        v16 = [v15 bookmark];
-        v17 = [v15 syntheticFolder];
-        [(_SFBookmarkInfoViewController *)self setParent:v16 syntheticParentFolder:v17];
+        bookmark = [v15 bookmark];
+        syntheticFolder = [v15 syntheticFolder];
+        [(_SFBookmarkInfoViewController *)self setParent:bookmark syntheticParentFolder:syntheticFolder];
       }
 
-      v18 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-      [v18 resignFirstResponder];
+      editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+      [editableTextField resignFirstResponder];
 
-      v19 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-      [v19 resignFirstResponder];
+      editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+      [editableTextField2 resignFirstResponder];
 
       [(_SFBookmarkInfoViewController *)self _setFolderPickerExpanded:!self->_folderPickerExpanded animated:1];
     }
@@ -857,7 +857,7 @@ LABEL_7:
   {
     if (v8 == 1)
     {
-      v10 = self;
+      selfCopy2 = self;
       v11 = 1;
     }
 
@@ -868,17 +868,17 @@ LABEL_7:
         goto LABEL_12;
       }
 
-      v10 = self;
+      selfCopy2 = self;
       v11 = 0;
     }
 
-    [(_SFBookmarkInfoViewController *)v10 _editField:v11];
+    [(_SFBookmarkInfoViewController *)selfCopy2 _editField:v11];
   }
 
 LABEL_12:
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_addingToFavorites)
   {
@@ -893,50 +893,50 @@ LABEL_12:
   return v3 - ([(_SFBookmarkInfoViewController *)self _showBookmarkAppearanceSwitch]^ 1);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 2)
+  viewCopy = view;
+  if (section == 2)
   {
-    v7 = [(_SFBookmarkInfoViewController *)self _showBookmarkAppearanceSwitch];
+    _showBookmarkAppearanceSwitch = [(_SFBookmarkInfoViewController *)self _showBookmarkAppearanceSwitch];
   }
 
-  else if (a4 == 1)
+  else if (section == 1)
   {
     if (self->_folderPickerExpanded)
     {
-      v7 = [(_SFBookmarkInfoViewController *)self _numberOfExpandedFolderPickerRows];
+      _showBookmarkAppearanceSwitch = [(_SFBookmarkInfoViewController *)self _numberOfExpandedFolderPickerRows];
     }
 
     else
     {
-      v7 = 1;
+      _showBookmarkAppearanceSwitch = 1;
     }
   }
 
-  else if (a4)
+  else if (section)
   {
-    v7 = 0;
+    _showBookmarkAppearanceSwitch = 0;
   }
 
   else if ([(WebBookmark *)self->_bookmark isFolder])
   {
-    v7 = 1;
+    _showBookmarkAppearanceSwitch = 1;
   }
 
   else
   {
-    v7 = 2;
+    _showBookmarkAppearanceSwitch = 2;
   }
 
-  return v7;
+  return _showBookmarkAppearanceSwitch;
 }
 
-- (BOOL)_isIndexPathForNewFolderRow:(id)a3
+- (BOOL)_isIndexPathForNewFolderRow:(id)row
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_folderPickerExpanded && [v4 section] == 1)
+  rowCopy = row;
+  v5 = rowCopy;
+  if (self->_folderPickerExpanded && [rowCopy section] == 1)
   {
     v6 = [v5 row];
     v7 = v6 == [(NSArray *)self->_folders count];
@@ -950,32 +950,32 @@ LABEL_12:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v7 section] == 2)
+    if ([pathCopy section] == 2)
     {
-      v8 = [(_SFBookmarkInfoViewController *)self _cellForShowTitleSwitch:v6];
+      v8 = [(_SFBookmarkInfoViewController *)self _cellForShowTitleSwitch:viewCopy];
     }
 
-    else if ([(_SFBookmarkInfoViewController *)self _isIndexPathForNewFolderRow:v7])
+    else if ([(_SFBookmarkInfoViewController *)self _isIndexPathForNewFolderRow:pathCopy])
     {
-      v8 = [(_SFBookmarkInfoViewController *)self _cellForNewFolderRowWithTableView:v6];
+      v8 = [(_SFBookmarkInfoViewController *)self _cellForNewFolderRowWithTableView:viewCopy];
     }
 
     else
     {
       if (self->_folderPickerExpanded)
       {
-        -[_SFBookmarkInfoViewController _cellForExpandedFolderAtIndex:withTableView:](self, "_cellForExpandedFolderAtIndex:withTableView:", [v7 row], v6);
+        -[_SFBookmarkInfoViewController _cellForExpandedFolderAtIndex:withTableView:](self, "_cellForExpandedFolderAtIndex:withTableView:", [pathCopy row], viewCopy);
       }
 
       else
       {
-        [(_SFBookmarkInfoViewController *)self _cellForParentBookmarkWithTableView:v6];
+        [(_SFBookmarkInfoViewController *)self _cellForParentBookmarkWithTableView:viewCopy];
       }
       v8 = ;
     }
@@ -983,7 +983,7 @@ LABEL_12:
 
   else
   {
-    v9 = [v7 row];
+    v9 = [pathCopy row];
     v10 = &OBJC_IVAR____SFBookmarkInfoViewController__addressCell;
     if (!v9)
     {
@@ -998,9 +998,9 @@ LABEL_12:
   return v11;
 }
 
-- (id)_dequeueFolderPickerCellFromTableView:(id)a3
+- (id)_dequeueFolderPickerCellFromTableView:(id)view
 {
-  v3 = [a3 dequeueReusableCellWithIdentifier:@"BookmarkFolderItemTableViewCell"];
+  v3 = [view dequeueReusableCellWithIdentifier:@"BookmarkFolderItemTableViewCell"];
   if (!v3)
   {
     v3 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"BookmarkFolderItemTableViewCell"];
@@ -1010,24 +1010,24 @@ LABEL_12:
     [v3 setLayoutManager:v4];
 
     v5 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:3];
-    v6 = [v3 imageView];
-    [v6 setPreferredSymbolConfiguration:v5];
+    imageView = [v3 imageView];
+    [imageView setPreferredSymbolConfiguration:v5];
   }
 
   return v3;
 }
 
-- (id)_cellForShowTitleSwitch:(id)a3
+- (id)_cellForShowTitleSwitch:(id)switch
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"BookmarkShowTitleSwitch"];
+  v4 = [switch dequeueReusableCellWithIdentifier:@"BookmarkShowTitleSwitch"];
   if (!v4)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"BookmarkShowTitleSwitch"];
   }
 
   v5 = _WBSLocalizedString();
-  v6 = [v4 textLabel];
-  [v6 setText:v5];
+  textLabel = [v4 textLabel];
+  [textLabel setText:v5];
 
   [v4 setAccessoryView:self->_showTitleSwitch];
   [(UISwitch *)self->_showTitleSwitch setAccessibilityIdentifier:@"BookmarkShowTitleSwitch"];
@@ -1035,20 +1035,20 @@ LABEL_12:
   return v4;
 }
 
-- (id)_cellForNewFolderRowWithTableView:(id)a3
+- (id)_cellForNewFolderRowWithTableView:(id)view
 {
-  v3 = [(_SFBookmarkInfoViewController *)self _dequeueFolderPickerCellFromTableView:a3];
+  v3 = [(_SFBookmarkInfoViewController *)self _dequeueFolderPickerCellFromTableView:view];
   v4 = _WBSLocalizedString();
-  v5 = [v3 textLabel];
-  [v5 setText:v4];
+  textLabel = [v3 textLabel];
+  [textLabel setText:v4];
 
-  v6 = [MEMORY[0x1E69DC888] sf_safariAccentColor];
-  v7 = [v3 textLabel];
-  [v7 setTextColor:v6];
+  sf_safariAccentColor = [MEMORY[0x1E69DC888] sf_safariAccentColor];
+  textLabel2 = [v3 textLabel];
+  [textLabel2 setTextColor:sf_safariAccentColor];
 
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus"];
-  v9 = [v3 imageView];
-  [v9 setImage:v8];
+  imageView = [v3 imageView];
+  [imageView setImage:v8];
 
   [v3 setIndentationLevel:0];
   [v3 setAccessoryType:1];
@@ -1059,16 +1059,16 @@ LABEL_12:
   return v3;
 }
 
-- (id)_cellForExpandedFolderAtIndex:(int64_t)a3 withTableView:(id)a4
+- (id)_cellForExpandedFolderAtIndex:(int64_t)index withTableView:(id)view
 {
-  v6 = a4;
-  v7 = [(NSArray *)self->_folders objectAtIndexedSubscript:a3];
-  v8 = [v7 syntheticFolder];
-  v9 = v8;
-  if (v8)
+  viewCopy = view;
+  v7 = [(NSArray *)self->_folders objectAtIndexedSubscript:index];
+  syntheticFolder = [v7 syntheticFolder];
+  v9 = syntheticFolder;
+  if (syntheticFolder)
   {
-    v10 = [v8 bookmarkList];
-    if (v10)
+    bookmarkList = [syntheticFolder bookmarkList];
+    if (bookmarkList)
     {
       v11 = [(WebBookmark *)self->_bookmark isFolder]^ 1;
     }
@@ -1084,10 +1084,10 @@ LABEL_12:
     v11 = 1;
   }
 
-  v12 = [(_SFBookmarkInfoViewController *)self _dequeueFolderPickerCellFromTableView:v6];
-  v13 = [v7 title];
-  v14 = [v12 textLabel];
-  [v14 setText:v13];
+  v12 = [(_SFBookmarkInfoViewController *)self _dequeueFolderPickerCellFromTableView:viewCopy];
+  title = [v7 title];
+  textLabel = [v12 textLabel];
+  [textLabel setText:title];
 
   if (v11)
   {
@@ -1099,18 +1099,18 @@ LABEL_12:
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
   v15 = ;
-  v16 = [v12 textLabel];
-  [v16 setTextColor:v15];
+  textLabel2 = [v12 textLabel];
+  [textLabel2 setTextColor:v15];
 
-  v17 = [v7 bookmark];
-  v18 = [(_SFBookmarkInfoViewController *)self _iconForViewCellGivenBookmark:v17 syntheticFolder:v9];
-  v19 = [v12 imageView];
-  [v19 setImage:v18];
+  bookmark = [v7 bookmark];
+  v18 = [(_SFBookmarkInfoViewController *)self _iconForViewCellGivenBookmark:bookmark syntheticFolder:v9];
+  imageView = [v12 imageView];
+  [imageView setImage:v18];
 
   [v12 setIndentationLevel:{objc_msgSend(v7, "depth")}];
   selectedFolderIndex = self->_selectedFolderIndex;
-  v21 = selectedFolderIndex == a3;
-  v22 = selectedFolderIndex != a3;
+  v21 = selectedFolderIndex == index;
+  v22 = selectedFolderIndex != index;
   if (v21)
   {
     v23 = 3;
@@ -1129,9 +1129,9 @@ LABEL_12:
   return v12;
 }
 
-- (id)_cellForParentBookmarkWithTableView:(id)a3
+- (id)_cellForParentBookmarkWithTableView:(id)view
 {
-  v5 = [(_SFBookmarkInfoViewController *)self _dequeueFolderPickerCellFromTableView:a3];
+  v5 = [(_SFBookmarkInfoViewController *)self _dequeueFolderPickerCellFromTableView:view];
   syntheticParentBookmarkFolder = self->_syntheticParentBookmarkFolder;
   if (syntheticParentBookmarkFolder)
   {
@@ -1149,33 +1149,33 @@ LABEL_4:
   v7 = [(NSArray *)self->_folders objectAtIndexedSubscript:0];
   syntheticParentBookmarkFolder = self->_syntheticParentBookmarkFolder;
 LABEL_5:
-  v8 = [(SFSyntheticBookmarkFolder *)syntheticParentBookmarkFolder title];
-  v9 = v8;
-  if (v8)
+  title = [(SFSyntheticBookmarkFolder *)syntheticParentBookmarkFolder title];
+  v9 = title;
+  if (title)
   {
     v10 = 0;
-    v11 = v8;
+    title2 = title;
   }
 
   else
   {
-    v12 = [(WebBookmark *)self->_parentBookmark localizedTitle];
-    v3 = v12;
-    if (v12)
+    localizedTitle = [(WebBookmark *)self->_parentBookmark localizedTitle];
+    v3 = localizedTitle;
+    if (localizedTitle)
     {
       v10 = 0;
-      v11 = v12;
+      title2 = localizedTitle;
     }
 
     else
     {
-      v11 = [v7 title];
+      title2 = [v7 title];
       v10 = 1;
     }
   }
 
-  v13 = [v5 textLabel];
-  [v13 setText:v11];
+  textLabel = [v5 textLabel];
+  [textLabel setText:title2];
 
   if (v10)
   {
@@ -1186,15 +1186,15 @@ LABEL_5:
   }
 
   parentBookmark = self->_parentBookmark;
-  v15 = parentBookmark;
+  bookmark = parentBookmark;
   if (!parentBookmark)
   {
-    v15 = [v7 bookmark];
+    bookmark = [v7 bookmark];
   }
 
-  v16 = [(_SFBookmarkInfoViewController *)self _iconForViewCellGivenBookmark:v15 syntheticFolder:self->_syntheticParentBookmarkFolder];
-  v17 = [v5 imageView];
-  [v17 setImage:v16];
+  v16 = [(_SFBookmarkInfoViewController *)self _iconForViewCellGivenBookmark:bookmark syntheticFolder:self->_syntheticParentBookmarkFolder];
+  imageView = [v5 imageView];
+  [imageView setImage:v16];
 
   if (!parentBookmark)
   {
@@ -1209,13 +1209,13 @@ LABEL_5:
   return v5;
 }
 
-- (id)_iconForViewCellGivenBookmark:(id)a3 syntheticFolder:(id)a4
+- (id)_iconForViewCellGivenBookmark:(id)bookmark syntheticFolder:(id)folder
 {
-  v6 = a3;
+  bookmarkCopy = bookmark;
   v7 = *MEMORY[0x1E69DDC50];
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
-  v9 = [v8 preferredContentSizeCategory];
-  v10 = UIContentSizeCategoryCompareToCategory(v7, v9);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v10 = UIContentSizeCategoryCompareToCategory(v7, preferredContentSizeCategory);
 
   if (v10 == NSOrderedAscending)
   {
@@ -1225,12 +1225,12 @@ LABEL_5:
   else
   {
     v11 = MEMORY[0x1E69DCAB8];
-    if (a4)
+    if (folder)
     {
       v12 = @"star.square.on.square";
     }
 
-    else if ([(_SFBookmarkInfoViewController *)self _bookmarkIsInFavoritesFolder:v6])
+    else if ([(_SFBookmarkInfoViewController *)self _bookmarkIsInFavoritesFolder:bookmarkCopy])
     {
       v12 = @"star";
     }
@@ -1246,47 +1246,47 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)_bookmarkIsInFavoritesFolder:(id)a3
+- (BOOL)_bookmarkIsInFavoritesFolder:(id)folder
 {
   collection = self->_collection;
-  v4 = a3;
-  v5 = [(WebBookmarkCollection *)collection bookmarksBarBookmark];
-  v6 = [v5 isEqual:v4];
+  folderCopy = folder;
+  bookmarksBarBookmark = [(WebBookmarkCollection *)collection bookmarksBarBookmark];
+  v6 = [bookmarksBarBookmark isEqual:folderCopy];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 2)
+    if (section == 2)
     {
       if ([(_SFBookmarkInfoViewController *)self _showBookmarkAppearanceSwitch])
       {
 LABEL_6:
-        a4 = _WBSLocalizedString();
+        section = _WBSLocalizedString();
         goto LABEL_9;
       }
 
-      a4 = 0;
+      section = 0;
     }
 
     else
     {
-      if (a4 == 1)
+      if (section == 1)
       {
         goto LABEL_6;
       }
 
-      a4 = &stru_1F4FE9E38;
+      section = &stru_1F4FE9E38;
     }
   }
 
 LABEL_9:
 
-  return a4;
+  return section;
 }
 
 - (BOOL)_showBookmarkAppearanceSwitch
@@ -1296,27 +1296,27 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  if ([v4 integerForKey:*MEMORY[0x1E69B1C98]])
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  if ([safari_browserDefaults integerForKey:*MEMORY[0x1E69B1C98]])
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    if ([v5 BOOLForKey:*MEMORY[0x1E69B1C88]])
+    safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    if ([safari_browserDefaults2 BOOLForKey:*MEMORY[0x1E69B1C88]])
     {
       v6 = [(NSArray *)self->_folders objectAtIndexedSubscript:self->_selectedFolderIndex];
-      v7 = [v6 bookmark];
-      if ([(_SFBookmarkInfoViewController *)self _bookmarkIsInFavoritesFolder:v7])
+      bookmark = [v6 bookmark];
+      if ([(_SFBookmarkInfoViewController *)self _bookmarkIsInFavoritesFolder:bookmark])
       {
         if ([(WebBookmark *)self->_bookmark isFolder])
         {
-          v8 = [(WebBookmark *)self->_bookmark title];
+          title = [(WebBookmark *)self->_bookmark title];
           v9 = MEMORY[0x1E69DD250];
-          v10 = [(_SFBookmarkInfoViewController *)self view];
-          v3 = [v8 safari_hasLeadingEmojiSafariIsRightToLeft:{objc_msgSend(v9, "_sf_usesLeftToRightLayoutOnView:", v10) ^ 1}];
+          view = [(_SFBookmarkInfoViewController *)self view];
+          v3 = [title safari_hasLeadingEmojiSafariIsRightToLeft:{objc_msgSend(v9, "_sf_usesLeftToRightLayoutOnView:", view) ^ 1}];
         }
 
         else
@@ -1340,21 +1340,21 @@ LABEL_9:
   return v3;
 }
 
-- (void)_didChangeEditingTextField:(id)a3
+- (void)_didChangeEditingTextField:(id)field
 {
-  v9 = a3;
-  v4 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+  fieldCopy = field;
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
 
-  if (v4 == v9)
+  if (editableTextField == fieldCopy)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+    editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
 
-    if (v5 != v9)
+    if (editableTextField2 != fieldCopy)
     {
       v6 = 0;
       goto LABEL_7;
@@ -1366,35 +1366,35 @@ LABEL_9:
   v6 = [MEMORY[0x1E696AC88] indexPathForRow:v7 inSection:0];
 LABEL_7:
   [(_SFBookmarkInfoViewController *)self _setFolderPickerExpanded:0 animated:1];
-  v8 = [(_SFBookmarkInfoViewController *)self tableView];
-  [v8 scrollToRowAtIndexPath:v6 atScrollPosition:0 animated:1];
+  tableView = [(_SFBookmarkInfoViewController *)self tableView];
+  [tableView scrollToRowAtIndexPath:v6 atScrollPosition:0 animated:1];
 }
 
-- (void)_setFolderPickerExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)_setFolderPickerExpanded:(BOOL)expanded animated:(BOOL)animated
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  if (self->_folderPickerExpanded != a3)
+  if (self->_folderPickerExpanded != expanded)
   {
-    v4 = a4;
-    self->_folderPickerExpanded = a3;
+    animatedCopy = animated;
+    self->_folderPickerExpanded = expanded;
     [(_SFBookmarkInfoViewController *)self _reloadFolderInfoForced:0];
-    v6 = [(_SFBookmarkInfoViewController *)self tableView];
-    v7 = v6;
-    if (v4)
+    tableView = [(_SFBookmarkInfoViewController *)self tableView];
+    v7 = tableView;
+    if (animatedCopy)
     {
       v8 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:1];
       v23[0] = v8;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
 
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = [(_SFBookmarkInfoViewController *)self _numberOfExpandedFolderPickerRows];
-      if (v11)
+      array = [MEMORY[0x1E695DF70] array];
+      _numberOfExpandedFolderPickerRows = [(_SFBookmarkInfoViewController *)self _numberOfExpandedFolderPickerRows];
+      if (_numberOfExpandedFolderPickerRows)
       {
-        v12 = v11;
+        v12 = _numberOfExpandedFolderPickerRows;
         for (i = 0; i != v12; ++i)
         {
           v14 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:1];
-          [v10 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -1406,13 +1406,13 @@ LABEL_7:
 
       else
       {
-        v15 = v10;
+        v15 = array;
       }
 
       [v7 deleteRowsAtIndexPaths:v15 withRowAnimation:0];
       if (self->_folderPickerExpanded)
       {
-        v16 = v10;
+        v16 = array;
       }
 
       else
@@ -1421,8 +1421,8 @@ LABEL_7:
       }
 
       [v7 insertRowsAtIndexPaths:v16 withRowAnimation:0];
-      v17 = [v7 numberOfSections];
-      if ((((v17 < 3) ^ [(_SFBookmarkInfoViewController *)self _showBookmarkAppearanceSwitch]) & 1) == 0)
+      numberOfSections = [v7 numberOfSections];
+      if ((((numberOfSections < 3) ^ [(_SFBookmarkInfoViewController *)self _showBookmarkAppearanceSwitch]) & 1) == 0)
       {
         v18 = [MEMORY[0x1E696AC90] indexSetWithIndex:2];
         if ([(_SFBookmarkInfoViewController *)self _showBookmarkAppearanceSwitch])
@@ -1441,7 +1441,7 @@ LABEL_7:
 
     else
     {
-      [v6 reloadData];
+      [tableView reloadData];
     }
 
     if (self->_folderPickerExpanded)
@@ -1450,16 +1450,16 @@ LABEL_7:
       [v7 scrollToRowAtIndexPath:v19 atScrollPosition:0 animated:1];
     }
 
-    v20 = [(_SFBookmarkInfoViewController *)self sheetPresentationController];
-    v21 = v20;
-    if (v4 && v20)
+    sheetPresentationController = [(_SFBookmarkInfoViewController *)self sheetPresentationController];
+    v21 = sheetPresentationController;
+    if (animatedCopy && sheetPresentationController)
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __67___SFBookmarkInfoViewController__setFolderPickerExpanded_animated___block_invoke;
       v22[3] = &unk_1E848F810;
       v22[4] = self;
-      [v20 animateChanges:v22];
+      [sheetPresentationController animateChanges:v22];
     }
 
     else
@@ -1469,9 +1469,9 @@ LABEL_7:
   }
 }
 
-- (void)_reloadFolderInfoForced:(BOOL)a3
+- (void)_reloadFolderInfoForced:(BOOL)forced
 {
-  if (a3 || self->_folderPickerExpanded && !self->_folders)
+  if (forced || self->_folderPickerExpanded && !self->_folders)
   {
     if ([(WebBookmark *)self->_bookmark isFolder])
     {
@@ -1527,41 +1527,41 @@ LABEL_7:
 
 - (void)_addActionsForTextFields
 {
-  v3 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-  [v3 addTarget:self action:sel__returnWasPressedInTextField_ forControlEvents:0x80000];
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+  [editableTextField addTarget:self action:sel__returnWasPressedInTextField_ forControlEvents:0x80000];
 
-  v4 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-  [v4 addTarget:self action:sel__returnWasPressedInTextField_ forControlEvents:0x80000];
+  editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+  [editableTextField2 addTarget:self action:sel__returnWasPressedInTextField_ forControlEvents:0x80000];
 
-  v5 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-  [v5 addTarget:self action:sel__valuesChanged forControlEvents:0x20000];
+  editableTextField3 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+  [editableTextField3 addTarget:self action:sel__valuesChanged forControlEvents:0x20000];
 
-  v6 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-  [v6 addTarget:self action:sel__valuesChanged forControlEvents:0x20000];
+  editableTextField4 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+  [editableTextField4 addTarget:self action:sel__valuesChanged forControlEvents:0x20000];
 }
 
 - (void)_removeActionsForTextFields
 {
-  v3 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+  [editableTextField removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v4 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)self->_addressCell editableTextField];
+  [editableTextField2 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 }
 
-- (void)bookmarkTextEntryTableViewController:(id)a3 dismissedWithText:(id)a4
+- (void)bookmarkTextEntryTableViewController:(id)controller dismissedWithText:(id)text
 {
-  v8 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  textCopy = text;
   editingField = self->_editingField;
   if (editingField == 1)
   {
-    [(WebBookmark *)self->_bookmark setAddress:v6];
+    [(WebBookmark *)self->_bookmark setAddress:textCopy];
   }
 
   else if (!editingField)
   {
-    [(WebBookmark *)self->_bookmark setTitle:v6];
+    [(WebBookmark *)self->_bookmark setTitle:textCopy];
   }
 
   [(_SFBookmarkInfoViewController *)self reloadData];
@@ -1570,8 +1570,8 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _SFBookmarkInfoViewController;
@@ -1593,30 +1593,30 @@ LABEL_7:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector() & 1) != 0 && ([WeakRetained bookmarkInfoViewControllerShouldUseTranslucentAppearance:self])
   {
-    v4 = 1;
+    hasTranslucentAppearance = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = _SFBookmarkInfoViewController;
-    v4 = [(SFPopoverSizingTableViewController *)&v6 hasTranslucentAppearance];
+    hasTranslucentAppearance = [(SFPopoverSizingTableViewController *)&v6 hasTranslucentAppearance];
   }
 
-  return v4;
+  return hasTranslucentAppearance;
 }
 
 - (void)updateTranslucentAppearance
 {
   p_titleCell = &self->_titleCell;
-  v4 = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
-  v5 = [v4 isFirstResponder];
+  editableTextField = [(_SFBookmarkTextEntryTableViewCell *)self->_titleCell editableTextField];
+  isFirstResponder = [editableTextField isFirstResponder];
 
-  if ((v5 & 1) != 0 || (p_titleCell = &self->_addressCell, -[_SFBookmarkTextEntryTableViewCell editableTextField](self->_addressCell, "editableTextField"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isFirstResponder], v6, v7))
+  if ((isFirstResponder & 1) != 0 || (p_titleCell = &self->_addressCell, -[_SFBookmarkTextEntryTableViewCell editableTextField](self->_addressCell, "editableTextField"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isFirstResponder], v6, v7))
   {
-    v8 = [(_SFBookmarkTextEntryTableViewCell *)*p_titleCell editableTextField];
+    editableTextField2 = [(_SFBookmarkTextEntryTableViewCell *)*p_titleCell editableTextField];
     textFieldToRestoreFirstResponder = self->_textFieldToRestoreFirstResponder;
-    self->_textFieldToRestoreFirstResponder = v8;
+    self->_textFieldToRestoreFirstResponder = editableTextField2;
   }
 
   v10.receiver = self;
@@ -1624,27 +1624,27 @@ LABEL_7:
   [(SFPopoverSizingTableViewController *)&v10 updateTranslucentAppearance];
 }
 
-- (id)backgroundColorUsingTranslucentAppearance:(BOOL)a3
+- (id)backgroundColorUsingTranslucentAppearance:(BOOL)appearance
 {
-  if (a3)
+  if (appearance)
   {
     v5.receiver = self;
     v5.super_class = _SFBookmarkInfoViewController;
-    v3 = [(SFPopoverSizingTableViewController *)&v5 backgroundColorUsingTranslucentAppearance:1];
+    systemGroupedBackgroundColor = [(SFPopoverSizingTableViewController *)&v5 backgroundColorUsingTranslucentAppearance:1];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  return v3;
+  return systemGroupedBackgroundColor;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_cancelKeyPressed == a3)
+  senderCopy = sender;
+  if (sel_cancelKeyPressed == action)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9 = objc_opt_respondsToSelector();
@@ -1652,59 +1652,59 @@ LABEL_7:
 
   else
   {
-    if (sel_saveKeyPressed == a3)
+    if (sel_saveKeyPressed == action)
     {
-      v7 = [(_SFBookmarkInfoViewController *)self canSaveChanges];
+      canSaveChanges = [(_SFBookmarkInfoViewController *)self canSaveChanges];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = _SFBookmarkInfoViewController;
-      v7 = [(_SFBookmarkInfoViewController *)&v11 canPerformAction:a3 withSender:v6];
+      canSaveChanges = [(_SFBookmarkInfoViewController *)&v11 canPerformAction:action withSender:senderCopy];
     }
 
-    v9 = v7;
+    v9 = canSaveChanges;
   }
 
   return v9 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v6.receiver = self;
   v6.super_class = _SFBookmarkInfoViewController;
-  [(_SFBookmarkInfoViewController *)&v6 validateCommand:v4];
-  if ([v4 action] == sel_saveKeyPressed)
+  [(_SFBookmarkInfoViewController *)&v6 validateCommand:commandCopy];
+  if ([commandCopy action] == sel_saveKeyPressed)
   {
     v5 = _WBSLocalizedString();
-    [v4 setDiscoverabilityTitle:v5];
+    [commandCopy setDiscoverabilityTitle:v5];
   }
 }
 
-- (void)bookmarkInfoViewController:(id)a3 didFinishWithResult:(BOOL)a4
+- (void)bookmarkInfoViewController:(id)controller didFinishWithResult:(BOOL)result
 {
-  if (a4)
+  if (result)
   {
-    v5 = a3;
-    v6 = [v5 bookmark];
+    controllerCopy = controller;
+    bookmark = [controllerCopy bookmark];
     parentBookmark = self->_parentBookmark;
-    self->_parentBookmark = v6;
+    self->_parentBookmark = bookmark;
 
-    objc_storeStrong(&self->_syntheticParentBookmarkFolder, v5[137]);
+    objc_storeStrong(&self->_syntheticParentBookmarkFolder, controllerCopy[137]);
     self->_didSelectFolder = 1;
     self->_folderPickerExpanded = 0;
     [(_SFBookmarkInfoViewController *)self _reloadFolderInfoForced:1];
-    v8 = [(_SFBookmarkInfoViewController *)self tableView];
-    [v8 reloadData];
+    tableView = [(_SFBookmarkInfoViewController *)self tableView];
+    [tableView reloadData];
   }
 
-  v10 = [(_SFBookmarkInfoViewController *)self navigationController];
-  v9 = [v10 popViewControllerAnimated:1];
+  navigationController = [(_SFBookmarkInfoViewController *)self navigationController];
+  v9 = [navigationController popViewControllerAnimated:1];
 }
 
-- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)a3
+- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)changes
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1720,7 +1720,7 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)bookmarkInfoViewControllerShouldUseTranslucentAppearance:(id)a3
+- (BOOL)bookmarkInfoViewControllerShouldUseTranslucentAppearance:(id)appearance
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1736,7 +1736,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)a3
+- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained syntheticBookmarkProviderForBookmarkInfoViewController:self];

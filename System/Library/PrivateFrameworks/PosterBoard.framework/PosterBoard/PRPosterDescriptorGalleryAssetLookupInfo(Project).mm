@@ -8,8 +8,8 @@
 - (id)pbf_micaViewFromBundle:()Project error:
 {
   v6 = a3;
-  v7 = [a1 lookupInfo];
-  v8 = [v7 objectForKey:@"micaAssetIdentifier"];
+  lookupInfo = [self lookupInfo];
+  v8 = [lookupInfo objectForKey:@"micaAssetIdentifier"];
 
   if (v8)
   {
@@ -64,8 +64,8 @@ LABEL_8:
     [PRPosterDescriptorGalleryAssetLookupInfo(Project) pbf_imageFromBundle:a2 displayContext:? error:?];
   }
 
-  v12 = [a1 lookupInfo];
-  v13 = [v12 objectForKeyedSubscript:@"assetCatalogIdentifier"];
+  lookupInfo = [self lookupInfo];
+  v13 = [lookupInfo objectForKeyedSubscript:@"assetCatalogIdentifier"];
 
   if (v13)
   {
@@ -73,10 +73,10 @@ LABEL_8:
     if ([v14 checkResourceIsReachableAndReturnError:a5])
     {
       v15 = MEMORY[0x277CCACA8];
-      v16 = [v14 path];
-      v17 = [v10 pbf_displayContextPersistenceIdentifier];
-      v18 = [v15 stringWithFormat:@"[url, %@]-[assetid, %@]-[displayContext, %@]", v16, v13, v17];
-      v19 = [v18 pf_sha256Hash];
+      path = [v14 path];
+      pbf_displayContextPersistenceIdentifier = [v10 pbf_displayContextPersistenceIdentifier];
+      v18 = [v15 stringWithFormat:@"[url, %@]-[assetid, %@]-[displayContext, %@]", path, v13, pbf_displayContextPersistenceIdentifier];
+      pf_sha256Hash = [v18 pf_sha256Hash];
 
       v30 = 0;
       v31 = &v30;
@@ -84,17 +84,17 @@ LABEL_8:
       v33 = __Block_byref_object_copy__2;
       v34 = __Block_byref_object_dispose__2;
       v35 = 0;
-      v20 = [objc_opt_class() imageCache];
+      imageCache = [objc_opt_class() imageCache];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __94__PRPosterDescriptorGalleryAssetLookupInfo_Project__pbf_imageFromBundle_displayContext_error___block_invoke;
       v24[3] = &unk_2782C7820;
       v25 = v10;
-      v26 = a1;
+      selfCopy = self;
       v27 = v14;
       v29 = &v30;
       v28 = v13;
-      v21 = [v20 imageForKey:v19 generatingIfNecessaryWithBlock:v24];
+      v21 = [imageCache imageForKey:pf_sha256Hash generatingIfNecessaryWithBlock:v24];
 
       if (a5)
       {

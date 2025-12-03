@@ -3,32 +3,32 @@
 - (void)handleMuteButtonTapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessibilityElements:(id)a3;
+- (void)setAccessibilityElements:(id)elements;
 @end
 
 @implementation StoryCardCollectionViewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18A090();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_18A614();
 }
 
 - (void)handleMuteButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1883B8();
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18A8A0();
 
   if (v3)
@@ -44,18 +44,18 @@
   return v4.super.isa;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     sub_769460();
-    v4 = self;
+    selfCopy = self;
     v5.super.isa = sub_769450().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5.super.isa = 0;
   }
 

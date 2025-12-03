@@ -1,7 +1,7 @@
 @interface NESMFilterSessionStateIdle
 - (NESMFilterSessionStateIdle)init;
-- (void)enterWithSession:(id)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handleStartMessage:(id)message;
 - (void)handleStop;
 @end
 
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v13 = a3;
+  messageCopy = message;
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -69,11 +69,11 @@ LABEL_6:
   sub_100082FD8(v9, v10);
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = NESMFilterSessionStateIdle;
-  [(NESMFilterSessionState *)&v7 enterWithSession:a3];
+  [(NESMFilterSessionState *)&v7 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -84,14 +84,14 @@ LABEL_6:
     Property = 0;
   }
 
-  v6 = [Property policySession];
-  if (v6)
+  policySession = [Property policySession];
+  if (policySession)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10003420C;
     v8[3] = &unk_1000E9C98;
-    v8[4] = v6;
+    v8[4] = policySession;
     sub_100031500(NESMPolicyMasterSession, v8);
   }
 }

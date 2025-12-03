@@ -1,6 +1,6 @@
 @interface WFDispatchSourceTimer
 - (BOOL)isCancelled;
-- (WFDispatchSourceTimer)initWithInterval:(double)a3 repeatIntervalInt:(unint64_t)a4 queue:(id)a5 handler:(id)a6;
+- (WFDispatchSourceTimer)initWithInterval:(double)interval repeatIntervalInt:(unint64_t)int queue:(id)queue handler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
@@ -11,8 +11,8 @@
 - (void)cancel
 {
   dispatch_source_cancel(self->_source);
-  v3 = [(WFDispatchSourceTimer *)self assertion];
-  [v3 invalidate];
+  assertion = [(WFDispatchSourceTimer *)self assertion];
+  [assertion invalidate];
 
   assertion = self->_assertion;
   self->_assertion = 0;
@@ -24,9 +24,9 @@
   dispatch_resume(self->_source);
   if ([(WFDispatchSourceTimer *)self preventSuspension])
   {
-    v3 = [(WFDispatchSourceTimer *)self assertion];
+    assertion = [(WFDispatchSourceTimer *)self assertion];
 
-    if (!v3)
+    if (!assertion)
     {
       v4 = getWFVoiceShortcutClientLogObject();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -73,7 +73,7 @@
 
       v9 = v8;
       _Block_object_dispose(&v21, 8);
-      v10 = [v8 currentProcess];
+      currentProcess = [v8 currentProcess];
       v21 = 0;
       v22 = &v21;
       v23 = 0x2050000000;
@@ -95,7 +95,7 @@
       v13 = [v11 attributeWithDomain:@"com.apple.shortcuts" name:@"RunningBackground"];
       v25 = v13;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-      v15 = [v7 initWithExplanation:@"An assertion-requiring timer is ticking" target:v10 attributes:v14];
+      v15 = [v7 initWithExplanation:@"An assertion-requiring timer is ticking" target:currentProcess attributes:v14];
 
       v20 = 0;
       LOBYTE(v13) = [v15 acquireWithError:&v20];
@@ -127,8 +127,8 @@
 
 - (BOOL)isCancelled
 {
-  v2 = [(WFDispatchSourceTimer *)self source];
-  v3 = dispatch_source_testcancel(v2) != 0;
+  source = [(WFDispatchSourceTimer *)self source];
+  v3 = dispatch_source_testcancel(source) != 0;
 
   return v3;
 }
@@ -141,14 +141,14 @@
   [(WFDispatchSourceTimer *)&v3 dealloc];
 }
 
-- (WFDispatchSourceTimer)initWithInterval:(double)a3 repeatIntervalInt:(unint64_t)a4 queue:(id)a5 handler:(id)a6
+- (WFDispatchSourceTimer)initWithInterval:(double)interval repeatIntervalInt:(unint64_t)int queue:(id)queue handler:(id)handler
 {
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFDispatchSourceTimer.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDispatchSourceTimer.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v26.receiver = self;
@@ -156,14 +156,14 @@
   v13 = [(WFDispatchSourceTimer *)&v26 init];
   if (v13)
   {
-    v14 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v11);
+    v14 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
     source = v13->_source;
     v13->_source = v14;
 
     v13->_hasFired = 0;
     v16 = v13->_source;
-    v17 = dispatch_time(0, (a3 * 1000000000.0));
-    dispatch_source_set_timer(v16, v17, a4, 0x2FAF080uLL);
+    v17 = dispatch_time(0, (interval * 1000000000.0));
+    dispatch_source_set_timer(v16, v17, int, 0x2FAF080uLL);
     v18 = v13->_source;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -171,7 +171,7 @@
     handler[3] = &unk_1E7B01CB8;
     v19 = v13;
     v24 = v19;
-    v25 = v12;
+    v25 = handlerCopy;
     dispatch_source_set_event_handler(v18, handler);
     v20 = v19;
   }

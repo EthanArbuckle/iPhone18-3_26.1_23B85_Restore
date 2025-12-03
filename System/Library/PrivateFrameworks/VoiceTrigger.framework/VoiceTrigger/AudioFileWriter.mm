@@ -1,23 +1,23 @@
 @interface AudioFileWriter
-- (AudioFileWriter)initWithURL:(id)a3 inputFormat:(AudioStreamBasicDescription *)a4 outputFormat:(AudioStreamBasicDescription *)a5;
-- (signed)addSamples:(void *)a3 len:(int64_t)a4;
+- (AudioFileWriter)initWithURL:(id)l inputFormat:(AudioStreamBasicDescription *)format outputFormat:(AudioStreamBasicDescription *)outputFormat;
+- (signed)addSamples:(void *)samples len:(int64_t)len;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation AudioFileWriter
 
-- (signed)addSamples:(void *)a3 len:(int64_t)a4
+- (signed)addSamples:(void *)samples len:(int64_t)len
 {
-  if (a4 >= 1 && self->isWriting)
+  if (len >= 1 && self->isWriting)
   {
     v10 = v4;
     v11 = v5;
     *&ioData.mNumberBuffers = 1;
     ioData.mBuffers[0].mNumberChannels = 1;
-    ioData.mBuffers[0].mDataByteSize = 2 * a4;
-    ioData.mBuffers[0].mData = a3;
-    if (ExtAudioFileWrite(self->fFile, a4, &ioData))
+    ioData.mBuffers[0].mDataByteSize = 2 * len;
+    ioData.mBuffers[0].mData = samples;
+    if (ExtAudioFileWrite(self->fFile, len, &ioData))
     {
       v6 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -50,18 +50,18 @@
   [(AudioFileWriter *)&v3 dealloc];
 }
 
-- (AudioFileWriter)initWithURL:(id)a3 inputFormat:(AudioStreamBasicDescription *)a4 outputFormat:(AudioStreamBasicDescription *)a5
+- (AudioFileWriter)initWithURL:(id)l inputFormat:(AudioStreamBasicDescription *)format outputFormat:(AudioStreamBasicDescription *)outputFormat
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = AudioFileWriter;
   v9 = [(AudioFileWriter *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    a5->mSampleRate = a4->mSampleRate;
-    v11 = ExtAudioFileCreateWithURL(v8, 0x57415645u, a5, 0, 1u, &v9->fFile);
+    outputFormat->mSampleRate = format->mSampleRate;
+    v11 = ExtAudioFileCreateWithURL(lCopy, 0x57415645u, outputFormat, 0, 1u, &v9->fFile);
     if (v11)
     {
       v12 = v11;
@@ -69,14 +69,14 @@
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v17 = v8;
+        v17 = lCopy;
         v18 = 1026;
         v19 = v12;
         _os_log_error_impl(&dword_223A31000, v13, OS_LOG_TYPE_ERROR, "::: Error creating output file %{public}@, err: %{public}d", buf, 0x12u);
       }
     }
 
-    ExtAudioFileSetProperty(v10->fFile, 0x63666D74u, 0x28u, a4);
+    ExtAudioFileSetProperty(v10->fFile, 0x63666D74u, 0x28u, format);
     v10->isWriting = 1;
   }
 

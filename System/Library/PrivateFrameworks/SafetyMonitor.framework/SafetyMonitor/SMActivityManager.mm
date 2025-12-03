@@ -1,17 +1,17 @@
 @interface SMActivityManager
 + (BOOL)hasActivity;
 + (void)endActivities;
-+ (void)startActivityWithState:(id)a3 localState:(id)a4;
++ (void)startActivityWithState:(id)state localState:(id)localState;
 @end
 
 @implementation SMActivityManager
 
-+ (void)startActivityWithState:(id)a3 localState:(id)a4
++ (void)startActivityWithState:(id)state localState:(id)localState
 {
-  v5 = a4;
-  v6 = a3;
+  localStateCopy = localState;
+  stateCopy = state;
   v7 = +[SMActivityManager shared];
-  [v7 startActivityWith:v6 localState:v5];
+  [v7 startActivityWith:stateCopy localState:localStateCopy];
 }
 
 + (void)endActivities
@@ -23,9 +23,9 @@
 + (BOOL)hasActivity
 {
   v2 = +[SMActivityManager shared];
-  v3 = [v2 hasActivity];
+  hasActivity = [v2 hasActivity];
 
-  return v3;
+  return hasActivity;
 }
 
 @end

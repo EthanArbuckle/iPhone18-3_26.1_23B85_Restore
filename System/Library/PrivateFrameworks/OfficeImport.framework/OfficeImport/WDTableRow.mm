@@ -1,8 +1,8 @@
 @interface WDTableRow
 - (WDTable)table;
-- (WDTableRow)initWithTable:(id)a3 at:(unint64_t)a4;
+- (WDTableRow)initWithTable:(id)table at:(unint64_t)at;
 - (id)addCell;
-- (id)addCellWithIndex:(unint64_t)a3;
+- (id)addCellWithIndex:(unint64_t)index;
 - (id)cellIterator;
 - (id)description;
 - (id)newCellIterator;
@@ -25,36 +25,36 @@
   return v3;
 }
 
-- (WDTableRow)initWithTable:(id)a3 at:(unint64_t)a4
+- (WDTableRow)initWithTable:(id)table at:(unint64_t)at
 {
-  v6 = a3;
+  tableCopy = table;
   v17.receiver = self;
   v17.super_class = WDTableRow;
   v7 = [(WDTableRow *)&v17 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->mTable, v6);
+    objc_storeWeak(&v7->mTable, tableCopy);
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mCells = v8->mCells;
     v8->mCells = v9;
 
     v11 = [WDTableRowProperties alloc];
-    v12 = [v6 properties];
-    v13 = [v12 document];
-    v14 = [(WDTableRowProperties *)v11 initWithDocument:v13];
+    properties = [tableCopy properties];
+    document = [properties document];
+    v14 = [(WDTableRowProperties *)v11 initWithDocument:document];
     mProperties = v8->mProperties;
     v8->mProperties = v14;
 
-    v8->mIndex = a4;
+    v8->mIndex = at;
   }
 
   return v8;
 }
 
-- (id)addCellWithIndex:(unint64_t)a3
+- (id)addCellWithIndex:(unint64_t)index
 {
-  v4 = [[WDTableCell alloc] initWithRow:self at:a3];
+  v4 = [[WDTableCell alloc] initWithRow:self at:index];
   [(NSMutableArray *)self->mCells addObject:v4];
   [(NSMutableArray *)self->mCells sortUsingSelector:sel_compareIndex_];
 

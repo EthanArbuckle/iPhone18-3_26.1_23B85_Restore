@@ -3,13 +3,13 @@
 - (JTAutoPurgeDictionaryDelegate)delegate;
 - (id)copyOfDictionary;
 - (id)description;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
-- (void)addEntriesFromDictionary:(id)a3;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
 - (void)highMemoryWarning;
 - (void)removeAllObjects;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation JTAutoPurgeDictionary
@@ -25,8 +25,8 @@
     dictionary = v2->_dictionary;
     v2->_dictionary = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_highMemoryWarning name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_highMemoryWarning name:*MEMORY[0x277D76670] object:0];
   }
 
   return v2;
@@ -52,31 +52,31 @@
   return v4;
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v4 = self->_dictionary;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:v5];
+  [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:dictionaryCopy];
   objc_sync_exit(v4);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v7 = self->_dictionary;
   objc_sync_enter(v7);
-  [(NSMutableDictionary *)self->_dictionary setObject:v8 forKey:v6];
+  [(NSMutableDictionary *)self->_dictionary setObject:objectCopy forKey:keyCopy];
   objc_sync_exit(v7);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = self->_dictionary;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_dictionary objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_dictionary objectForKey:keyCopy];
   objc_sync_exit(v5);
 
   return v6;
@@ -105,21 +105,21 @@
   if (![(JTAutoPurgeDictionary *)self suspendPurging])
   {
     [(JTAutoPurgeDictionary *)self removeAllObjects];
-    v3 = [(JTAutoPurgeDictionary *)self delegate];
+    delegate = [(JTAutoPurgeDictionary *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(JTAutoPurgeDictionary *)self delegate];
-      [v5 didPurgeItems:self];
+      delegate2 = [(JTAutoPurgeDictionary *)self delegate];
+      [delegate2 didPurgeItems:self];
     }
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
 
   v4.receiver = self;
   v4.super_class = JTAutoPurgeDictionary;

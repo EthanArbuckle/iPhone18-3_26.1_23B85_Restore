@@ -1,9 +1,9 @@
 @interface PFCShuffleDataSource
 - (BOOL)hasSuggestions;
-- (BOOL)hasSuggestionsForShuffleSubtype:(unsigned __int16)a3 persons:(id)a4 minimumCount:(int64_t)a5;
-- (BOOL)hasSuggestionsForSubtype:(unsigned __int16)a3;
-- (PFCShuffleDataSource)initWithPhotoLibrary:(id)a3;
-- (unint64_t)numberOfSuggestionsForTopPerson:(id)a3;
+- (BOOL)hasSuggestionsForShuffleSubtype:(unsigned __int16)subtype persons:(id)persons minimumCount:(int64_t)count;
+- (BOOL)hasSuggestionsForSubtype:(unsigned __int16)subtype;
+- (PFCShuffleDataSource)initWithPhotoLibrary:(id)library;
+- (unint64_t)numberOfSuggestionsForTopPerson:(id)person;
 - (void)calculateAvailableShuffles;
 - (void)calculatePeople;
 - (void)calculatePeopleCount;
@@ -11,54 +11,54 @@
 
 @implementation PFCShuffleDataSource
 
-- (PFCShuffleDataSource)initWithPhotoLibrary:(id)a3
+- (PFCShuffleDataSource)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PFCShuffleDataSource;
   v6 = [(PFCShuffleDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     [(PFCShuffleDataSource *)v7 calculateAvailableShuffles];
   }
 
   return v7;
 }
 
-- (BOOL)hasSuggestionsForSubtype:(unsigned __int16)a3
+- (BOOL)hasSuggestionsForSubtype:(unsigned __int16)subtype
 {
-  v3 = a3;
+  subtypeCopy = subtype;
   v5 = PHSuggestionStringWithSubtype();
-  if (v3 > 802)
+  if (subtypeCopy > 802)
   {
-    if (v3 == 803)
+    if (subtypeCopy == 803)
     {
-      v6 = [(PFCShuffleDataSource *)self hasPets];
+      hasPets = [(PFCShuffleDataSource *)self hasPets];
       goto LABEL_13;
     }
 
-    if (v3 == 804)
+    if (subtypeCopy == 804)
     {
-      v6 = [(PFCShuffleDataSource *)self hasPeople];
+      hasPets = [(PFCShuffleDataSource *)self hasPeople];
       goto LABEL_13;
     }
   }
 
   else
   {
-    if (v3 == 801)
+    if (subtypeCopy == 801)
     {
-      v6 = [(PFCShuffleDataSource *)self hasNature];
+      hasPets = [(PFCShuffleDataSource *)self hasNature];
       goto LABEL_13;
     }
 
-    if (v3 == 802)
+    if (subtypeCopy == 802)
     {
-      v6 = [(PFCShuffleDataSource *)self hasCityscape];
+      hasPets = [(PFCShuffleDataSource *)self hasCityscape];
 LABEL_13:
-      v8 = v6;
+      v8 = hasPets;
       goto LABEL_14;
     }
   }
@@ -75,20 +75,20 @@ LABEL_14:
   return v8;
 }
 
-- (unint64_t)numberOfSuggestionsForTopPerson:(id)a3
+- (unint64_t)numberOfSuggestionsForTopPerson:(id)person
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:person];
   v5 = [(PFCShuffleDataSource *)self numberOfSuggestionsForShuffleSubtype:602 persons:v4];
 
   return v5;
 }
 
-- (BOOL)hasSuggestionsForShuffleSubtype:(unsigned __int16)a3 persons:(id)a4 minimumCount:(int64_t)a5
+- (BOOL)hasSuggestionsForShuffleSubtype:(unsigned __int16)subtype persons:(id)persons minimumCount:(int64_t)count
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = [PFCShuffleDataSource numberOfSuggestionsForShuffleSubtype:"numberOfSuggestionsForShuffleSubtype:persons:" persons:?];
   v7 = PHSuggestionStringWithSubtype();
-  if (v6 < a5)
+  if (v6 < count)
   {
     v8 = pfc_shuffle_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -98,7 +98,7 @@ LABEL_14:
       v13 = 2112;
       v14 = v7;
       v15 = 2048;
-      v16 = a5;
+      countCopy = count;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&dword_1DF9B6000, v8, OS_LOG_TYPE_DEFAULT, "[PFCShuffleDataSource] Found %lu %@ suggestions, required %lu, skipping creating shuffle descriptor for %@", &v11, 0x2Au);
@@ -106,7 +106,7 @@ LABEL_14:
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v6 >= a5;
+  return v6 >= count;
 }
 
 - (void)calculateAvailableShuffles
@@ -122,13 +122,13 @@ LABEL_14:
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E6978B08]) initWithPhotoLibrary:self->_photoLibrary];
-  v4 = [v3 personUUIDsWithNegativeFeedback];
+  personUUIDsWithNegativeFeedback = [v3 personUUIDsWithNegativeFeedback];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = personUUIDsWithNegativeFeedback;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v7)
   {
@@ -195,7 +195,7 @@ LABEL_14:
 - (void)calculatePeopleCount
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -217,7 +217,7 @@ LABEL_14:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PFCShuffleDataSource numberOfSuggestionsForTopPerson:](self, "numberOfSuggestionsForTopPerson:", v9, v14)}];
-        [v3 setObject:v10 forKeyedSubscript:v9];
+        [dictionary setObject:v10 forKeyedSubscript:v9];
       }
 
       v6 = [(NSSet *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -226,7 +226,7 @@ LABEL_14:
     while (v6);
   }
 
-  v11 = [v3 keysSortedByValueUsingComparator:&__block_literal_global];
+  v11 = [dictionary keysSortedByValueUsingComparator:&__block_literal_global];
   sortedTopAmbientPeople = self->_sortedTopAmbientPeople;
   self->_sortedTopAmbientPeople = v11;
 

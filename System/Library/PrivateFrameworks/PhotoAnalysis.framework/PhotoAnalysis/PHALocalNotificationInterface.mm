@@ -1,25 +1,25 @@
 @interface PHALocalNotificationInterface
 + (id)localNotificationInterface;
 - (PHALocalNotificationInterface)init;
-- (void)fireLocalNotificationWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)fireLocalNotificationWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation PHALocalNotificationInterface
 
-- (void)fireLocalNotificationWithOptions:(id)a3 completionHandler:(id)a4
+- (void)fireLocalNotificationWithOptions:(id)options completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ((PLIsFeaturedContentAllowed() & 1) != 0 || [v5 type])
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ((PLIsFeaturedContentAllowed() & 1) != 0 || [optionsCopy type])
   {
     v7 = dispatch_get_global_queue(0, 0);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __84__PHALocalNotificationInterface_fireLocalNotificationWithOptions_completionHandler___block_invoke_33;
     v12[3] = &unk_2788B1910;
-    v13 = v5;
-    v14 = v6;
+    v13 = optionsCopy;
+    v14 = handlerCopy;
     dispatch_async(v7, v12);
 
     v8 = v13;
@@ -37,16 +37,16 @@ LABEL_4:
   if (os_log_type_enabled(__PXLoggraph_workerOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = +[PHANotificationOptions stringFromNotificationType:](PHANotificationOptions, "stringFromNotificationType:", [v5 type]);
+    v11 = +[PHANotificationOptions stringFromNotificationType:](PHANotificationOptions, "stringFromNotificationType:", [optionsCopy type]);
     *buf = 138412290;
     v16 = v11;
     _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_DEFAULT, "[%@ Notification] Not firing notification because featured content is disabled in settings", buf, 0xCu);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v8 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:14 localizedDescription:@"Featured content is disabled in settings"];
-    (*(v6 + 2))(v6, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
     goto LABEL_4;
   }
 

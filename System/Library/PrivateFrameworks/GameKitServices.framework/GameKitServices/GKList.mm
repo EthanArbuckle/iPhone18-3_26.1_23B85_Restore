@@ -1,20 +1,20 @@
 @interface GKList
-- (BOOL)hasID:(unsigned int)a3;
-- (GKList)initWithSize:(unint64_t)a3;
-- (id)allMatchingObjectsFromTable:(id)a3;
-- (void)addID:(unsigned int)a3;
-- (void)copyItemsInto:(id)a3;
+- (BOOL)hasID:(unsigned int)d;
+- (GKList)initWithSize:(unint64_t)size;
+- (id)allMatchingObjectsFromTable:(id)table;
+- (void)addID:(unsigned int)d;
+- (void)copyItemsInto:(id)into;
 - (void)dealloc;
 - (void)lock;
 - (void)print;
 - (void)removeAllIDs;
-- (void)removeID:(unsigned int)a3;
+- (void)removeID:(unsigned int)d;
 - (void)unlock;
 @end
 
 @implementation GKList
 
-- (GKList)initWithSize:(unint64_t)a3
+- (GKList)initWithSize:(unint64_t)size
 {
   v11 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -22,19 +22,19 @@
   v4 = [(GKList *)&v9 init];
   if (v4)
   {
-    if (a3)
+    if (size)
     {
-      v5 = a3;
+      sizeCopy = size;
     }
 
     else
     {
-      v5 = 20;
+      sizeCopy = 20;
     }
 
     v4->_count = 0;
-    v4->_size = v5;
-    v6 = malloc_type_calloc(v5, 4uLL, 0x100004052888210uLL);
+    v4->_size = sizeCopy;
+    v6 = malloc_type_calloc(sizeCopy, 4uLL, 0x100004052888210uLL);
     v4->_items = v6;
     if (v6)
     {
@@ -74,14 +74,14 @@
   [(GKList *)&v3 dealloc];
 }
 
-- (BOOL)hasID:(unsigned int)a3
+- (BOOL)hasID:(unsigned int)d
 {
   [(GKList *)self lock];
   count = self->_count;
   if (count)
   {
     items = self->_items;
-    if (*items == a3)
+    if (*items == d)
     {
       v7 = 1;
     }
@@ -100,7 +100,7 @@
         v10 = items[v8++];
       }
 
-      while (v10 != a3);
+      while (v10 != d);
       v7 = v9 < count;
     }
   }
@@ -114,7 +114,7 @@
   return v7;
 }
 
-- (void)addID:(unsigned int)a3
+- (void)addID:(unsigned int)d
 {
   v28 = *MEMORY[0x277D85DE8];
   [(GKList *)self lock];
@@ -126,7 +126,7 @@
     do
     {
       v8 = *items++;
-      if (v8 == a3)
+      if (v8 == d)
       {
         goto LABEL_10;
       }
@@ -150,7 +150,7 @@
     count = self->_count;
 LABEL_9:
     self->_count = count + 1;
-    v10[count] = a3;
+    v10[count] = d;
 LABEL_10:
     v11 = *MEMORY[0x277D85DE8];
 
@@ -172,9 +172,9 @@ LABEL_10:
       v20 = 1024;
       v21 = 281;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 1024;
-      v25 = a3;
+      dCopy = d;
       v26 = 1024;
       v27 = v15;
       _os_log_error_impl(&dword_24E50C000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d GKList[%p] addID:[%d] realloc error %d", &v16, 0x32u);
@@ -185,7 +185,7 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyItemsInto:(id)a3
+- (void)copyItemsInto:(id)into
 {
   [(GKList *)self lock];
   if (self->_count)
@@ -193,7 +193,7 @@ LABEL_10:
     v5 = 0;
     do
     {
-      [a3 addID:self->_items[v5++]];
+      [into addID:self->_items[v5++]];
     }
 
     while (v5 < self->_count);
@@ -202,7 +202,7 @@ LABEL_10:
   [(GKList *)self unlock];
 }
 
-- (void)removeID:(unsigned int)a3
+- (void)removeID:(unsigned int)d
 {
   [(GKList *)self lock];
   count = self->_count;
@@ -212,7 +212,7 @@ LABEL_10:
     items = self->_items;
     do
     {
-      if (items[v6] == a3)
+      if (items[v6] == d)
       {
         self->_count = --count;
         if (v6 < count)
@@ -238,7 +238,7 @@ LABEL_10:
   [(GKList *)self unlock];
 }
 
-- (id)allMatchingObjectsFromTable:(id)a3
+- (id)allMatchingObjectsFromTable:(id)table
 {
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:self->_count];
   if (v5 && self->_count)
@@ -246,7 +246,7 @@ LABEL_10:
     v6 = 0;
     do
     {
-      v7 = [a3 objectForKey:self->_items[v6]];
+      v7 = [table objectForKey:self->_items[v6]];
       if (v7)
       {
         [v5 addObject:v7];

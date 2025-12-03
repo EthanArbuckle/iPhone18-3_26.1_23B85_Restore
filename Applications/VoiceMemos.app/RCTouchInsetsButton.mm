@@ -1,18 +1,18 @@
 @interface RCTouchInsetsButton
 + (id)touchInsetsButton;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (RCTouchInsetsButton)initWithCoder:(id)a3;
-- (RCTouchInsetsButton)initWithFrame:(CGRect)a3;
-- (void)_animateImage:(BOOL)a3;
-- (void)_animateTouch:(BOOL)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (RCTouchInsetsButton)initWithCoder:(id)coder;
+- (RCTouchInsetsButton)initWithFrame:(CGRect)frame;
+- (void)_animateImage:(BOOL)image;
+- (void)_animateTouch:(BOOL)touch;
 - (void)_commonInit;
-- (void)setAnimationCircleColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setAnimationCircleColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation RCTouchInsetsButton
@@ -33,13 +33,13 @@
   v5 = +[UIColor clearColor];
   [v4 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
 
-  v6 = [v10 transportButtonAnimationCircleColor];
-  [v4 setFillColor:{objc_msgSend(v6, "CGColor")}];
+  transportButtonAnimationCircleColor = [v10 transportButtonAnimationCircleColor];
+  [v4 setFillColor:{objc_msgSend(transportButtonAnimationCircleColor, "CGColor")}];
 
-  v7 = [(RCTouchInsetsButton *)self layer];
-  v8 = [(RCTouchInsetsButton *)self imageView];
-  v9 = [v8 layer];
-  [v7 insertSublayer:v4 below:v9];
+  layer = [(RCTouchInsetsButton *)self layer];
+  imageView = [(RCTouchInsetsButton *)self imageView];
+  layer2 = [imageView layer];
+  [layer insertSublayer:v4 below:layer2];
 
   self->_shouldAnimateOnTap = 0;
 }
@@ -53,11 +53,11 @@
   return v2;
 }
 
-- (RCTouchInsetsButton)initWithFrame:(CGRect)a3
+- (RCTouchInsetsButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RCTouchInsetsButton;
-  v3 = [(RCPointerInteractionButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCPointerInteractionButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -67,11 +67,11 @@
   return v4;
 }
 
-- (RCTouchInsetsButton)initWithCoder:(id)a3
+- (RCTouchInsetsButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RCTouchInsetsButton;
-  v3 = [(RCTouchInsetsButton *)&v6 initWithCoder:a3];
+  v3 = [(RCTouchInsetsButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -81,10 +81,10 @@
   return v4;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(RCTouchInsetsButton *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -103,22 +103,22 @@
   return CGRectContainsPoint(*&v22, *&v25);
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   if (!self->_shouldAnimateOnTap)
   {
     v3.receiver = self;
     v3.super_class = RCTouchInsetsButton;
-    [(RCTouchInsetsButton *)&v3 setHighlighted:a3];
+    [(RCTouchInsetsButton *)&v3 setHighlighted:highlighted];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v12.receiver = self;
   v12.super_class = RCTouchInsetsButton;
   [(RCTouchInsetsButton *)&v12 setBounds:?];
@@ -137,23 +137,23 @@
   -[CAShapeLayer setPath:](self->_circleLayer, "setPath:", [v11 CGPath]);
 }
 
-- (void)setAnimationCircleColor:(id)a3
+- (void)setAnimationCircleColor:(id)color
 {
-  objc_storeStrong(&self->_animationCircleColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_animationCircleColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(RCTouchInsetsButton *)self circleLayer];
-  [v7 setFillColor:v6];
+  circleLayer = [(RCTouchInsetsButton *)self circleLayer];
+  [circleLayer setFillColor:cGColor];
 }
 
-- (void)_animateImage:(BOOL)a3
+- (void)_animateImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v5 transportButtonAnimationDuration];
   v7 = v6;
-  if (v3)
+  if (imageCopy)
   {
     [v5 transportButtonAnimationShrinkFactor];
     v9 = v8;
@@ -166,8 +166,8 @@
     v10 = 0.0;
   }
 
-  v11 = [(RCTouchInsetsButton *)self layer];
-  [v11 removeAllAnimations];
+  layer = [(RCTouchInsetsButton *)self layer];
+  [layer removeAllAnimations];
 
   memset(&v16, 0, sizeof(v16));
   CGAffineTransformMakeScale(&v16, v9, v9);
@@ -187,42 +187,42 @@
   [UIView animateWithDuration:65540 delay:v14 options:v12 animations:v7 completion:0.0];
 }
 
-- (void)_animateTouch:(BOOL)a3
+- (void)_animateTouch:(BOOL)touch
 {
   if (self->_shouldAnimateOnTap)
   {
-    [(RCTouchInsetsButton *)self _animateImage:a3];
+    [(RCTouchInsetsButton *)self _animateImage:touch];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = RCTouchInsetsButton;
-  [(RCTouchInsetsButton *)&v5 touchesBegan:a3 withEvent:a4];
+  [(RCTouchInsetsButton *)&v5 touchesBegan:began withEvent:event];
   [(RCTouchInsetsButton *)self _animateTouch:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = RCTouchInsetsButton;
-  [(RCTouchInsetsButton *)&v4 touchesMoved:a3 withEvent:a4];
+  [(RCTouchInsetsButton *)&v4 touchesMoved:moved withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = RCTouchInsetsButton;
-  [(RCTouchInsetsButton *)&v5 touchesEnded:a3 withEvent:a4];
+  [(RCTouchInsetsButton *)&v5 touchesEnded:ended withEvent:event];
   [(RCTouchInsetsButton *)self _animateTouch:0];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = RCTouchInsetsButton;
-  [(RCTouchInsetsButton *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(RCTouchInsetsButton *)&v5 touchesCancelled:cancelled withEvent:event];
   [(RCTouchInsetsButton *)self _animateTouch:0];
 }
 

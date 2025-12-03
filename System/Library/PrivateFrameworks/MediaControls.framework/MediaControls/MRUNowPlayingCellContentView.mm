@@ -1,18 +1,18 @@
 @interface MRUNowPlayingCellContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUNowPlayingCellContentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUNowPlayingCellContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContentScale:(double)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setContentScale:(double)scale;
+- (void)setStylingProvider:(id)provider;
 @end
 
 @implementation MRUNowPlayingCellContentView
 
-- (MRUNowPlayingCellContentView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingCellContentView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MRUNowPlayingCellContentView;
-  v3 = [(MRUNowPlayingCellContentView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUNowPlayingCellContentView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MRUArtworkView);
@@ -25,14 +25,14 @@
     headerView = v3->_headerView;
     v3->_headerView = v6;
 
-    v8 = [(MRUNowPlayingHeaderView *)v3->_headerView labelView];
-    [v8 setEnabled:0];
+    labelView = [(MRUNowPlayingHeaderView *)v3->_headerView labelView];
+    [labelView setEnabled:0];
 
-    v9 = [(MRUNowPlayingHeaderView *)v3->_headerView labelView];
-    [v9 setShowRoute:1];
+    labelView2 = [(MRUNowPlayingHeaderView *)v3->_headerView labelView];
+    [labelView2 setShowRoute:1];
 
-    v10 = [(MRUNowPlayingHeaderView *)v3->_headerView labelView];
-    [v10 setShowSubtitle:0];
+    labelView3 = [(MRUNowPlayingHeaderView *)v3->_headerView labelView];
+    [labelView3 setShowSubtitle:0];
 
     [(MRUNowPlayingCellContentView *)v3 addSubview:v3->_headerView];
     v3->_contentScale = 1.0;
@@ -101,10 +101,10 @@
   [(MRUNowPlayingHeaderView *)self->_headerView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(MRUNowPlayingHeaderView *)self->_headerView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(MRUNowPlayingHeaderView *)self->_headerView sizeThatFits:fits.width, fits.height];
   if (v4 <= 60.0)
   {
     v4 = 60.0;
@@ -116,29 +116,29 @@
   return result;
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUArtworkView *)self->_artworkView setStylingProvider:v6];
     [(MRUNowPlayingHeaderView *)self->_headerView setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
-    v5 = [(MRUNowPlayingCellContentView *)self headerView];
-    [v5 setContentScale:a3];
+    self->_contentScale = scale;
+    headerView = [(MRUNowPlayingCellContentView *)self headerView];
+    [headerView setContentScale:scale];
 
-    v6 = [(MRUNowPlayingCellContentView *)self artworkView];
-    [v6 setContentScale:a3];
+    artworkView = [(MRUNowPlayingCellContentView *)self artworkView];
+    [artworkView setContentScale:scale];
   }
 }
 

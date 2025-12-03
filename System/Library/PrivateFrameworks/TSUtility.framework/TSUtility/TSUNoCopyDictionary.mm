@@ -1,40 +1,40 @@
 @interface TSUNoCopyDictionary
-- (TSUNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)a3;
-- (TSUNoCopyDictionary)initWithCapacity:(unint64_t)a3;
+- (TSUNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)dictionary;
+- (TSUNoCopyDictionary)initWithCapacity:(unint64_t)capacity;
 - (id)allKeys;
 - (id)allValues;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 andKeys:(id *)a4;
-- (void)setObject:(id)a3 forUncopiedKey:(id)a4;
+- (void)getObjects:(id *)objects andKeys:(id *)keys;
+- (void)setObject:(id)object forUncopiedKey:(id)key;
 @end
 
 @implementation TSUNoCopyDictionary
 
-- (TSUNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)a3
+- (TSUNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)dictionary
 {
   v6.receiver = self;
   v6.super_class = TSUNoCopyDictionary;
   v4 = [(TSUNoCopyDictionary *)&v6 init];
   if (v4)
   {
-    v4->mDictionary = CFDictionaryCreateMutableCopy(0, 0, a3);
+    v4->mDictionary = CFDictionaryCreateMutableCopy(0, 0, dictionary);
   }
 
   return v4;
 }
 
-- (TSUNoCopyDictionary)initWithCapacity:(unint64_t)a3
+- (TSUNoCopyDictionary)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = TSUNoCopyDictionary;
   v4 = [(TSUNoCopyDictionary *)&v6 init];
   if (v4)
   {
-    v4->mDictionary = CFDictionaryCreateMutable(0, a3, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
+    v4->mDictionary = CFDictionaryCreateMutable(0, capacity, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   }
 
   return v4;
@@ -54,31 +54,31 @@
   [(TSUNoCopyDictionary *)&v4 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mDictionary = self->mDictionary;
 
   return [v4 initWithCFDictionary:mDictionary];
 }
 
-- (void)setObject:(id)a3 forUncopiedKey:(id)a4
+- (void)setObject:(id)object forUncopiedKey:(id)key
 {
-  if (!a3)
+  if (!object)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Attempt to insert nil value into %@", objc_opt_class()}];
   }
 
   mDictionary = self->mDictionary;
 
-  CFDictionarySetValue(mDictionary, a4, a3);
+  CFDictionarySetValue(mDictionary, key, object);
 }
 
-- (void)getObjects:(id *)a3 andKeys:(id *)a4
+- (void)getObjects:(id *)objects andKeys:(id *)keys
 {
   if (CFDictionaryGetCount(self->mDictionary))
   {
-    v7 = (a3 | a4) == 0;
+    v7 = (objects | keys) == 0;
   }
 
   else
@@ -90,7 +90,7 @@
   {
     mDictionary = self->mDictionary;
 
-    CFDictionaryGetKeysAndValues(mDictionary, a4, a3);
+    CFDictionaryGetKeysAndValues(mDictionary, keys, objects);
   }
 }
 
@@ -117,9 +117,9 @@
 
 - (id)objectEnumerator
 {
-  v2 = [(TSUNoCopyDictionary *)self allValues];
+  allValues = [(TSUNoCopyDictionary *)self allValues];
 
-  return [v2 objectEnumerator];
+  return [allValues objectEnumerator];
 }
 
 - (id)allKeys
@@ -145,15 +145,15 @@
 
 - (id)keyEnumerator
 {
-  v2 = [(TSUNoCopyDictionary *)self allKeys];
+  allKeys = [(TSUNoCopyDictionary *)self allKeys];
 
-  return [v2 objectEnumerator];
+  return [allKeys objectEnumerator];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   Count = CFDictionaryGetCount(self->mDictionary);
-  if (a3->var0 >= Count)
+  if (state->var0 >= Count)
   {
     return 0;
   }
@@ -161,17 +161,17 @@
   v10 = Count;
   v11 = malloc_type_malloc(8 * Count, 0x80040B8603338uLL);
   CFDictionaryGetKeysAndValues(self->mDictionary, v11, 0);
-  if (v10 - a3->var0 < a5)
+  if (v10 - state->var0 < count)
   {
-    a5 = v10 - a3->var0;
+    count = v10 - state->var0;
   }
 
-  memcpy(a4, &v11[a3->var0], 8 * a5);
+  memcpy(objects, &v11[state->var0], 8 * count);
   free(v11);
-  a3->var0 += a5;
-  a3->var1 = a4;
-  a3->var2 = &a3->var2;
-  return a5;
+  state->var0 += count;
+  state->var1 = objects;
+  state->var2 = &state->var2;
+  return count;
 }
 
 @end

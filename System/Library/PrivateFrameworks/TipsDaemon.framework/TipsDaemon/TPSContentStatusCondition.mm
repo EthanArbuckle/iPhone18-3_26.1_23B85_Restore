@@ -1,7 +1,7 @@
 @interface TPSContentStatusCondition
-+ (id)_contextualEventFromConditionDictionary:(id)a3;
++ (id)_contextualEventFromConditionDictionary:(id)dictionary;
 - (TPSContentStatusCondition)init;
-- (id)_valuesFromValuesArray:(id)a3;
+- (id)_valuesFromValuesArray:(id)array;
 - (id)targetingValidations;
 @end
 
@@ -24,17 +24,17 @@
 - (id)targetingValidations
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TPSCondition *)self values];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  values = [(TPSCondition *)self values];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(values, "count")}];
 
-  v6 = [(TPSCondition *)self values];
+  values2 = [(TPSCondition *)self values];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__TPSContentStatusCondition_targetingValidations__block_invoke;
   v9[3] = &unk_2789B0528;
   v7 = v5;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [values2 enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -47,19 +47,19 @@ void __49__TPSContentStatusCondition_targetingValidations__block_invoke(uint64_t
   [*(a1 + 32) addObject:v4];
 }
 
-- (id)_valuesFromValuesArray:(id)a3
+- (id)_valuesFromValuesArray:(id)array
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  arrayCopy = array;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __52__TPSContentStatusCondition__valuesFromValuesArray___block_invoke;
   v13 = &unk_2789B0550;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [arrayCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -87,17 +87,17 @@ void __52__TPSContentStatusCondition__valuesFromValuesArray___block_invoke(uint6
   }
 }
 
-+ (id)_contextualEventFromConditionDictionary:(id)a3
++ (id)_contextualEventFromConditionDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 TPSSafeStringForKey:@"contentID"];
-  v5 = [v3 TPSSafeIntegerForKey:@"statusType"];
-  v6 = [v3 TPSSafeIntegerForKey:@"status"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy TPSSafeStringForKey:@"contentID"];
+  v5 = [dictionaryCopy TPSSafeIntegerForKey:@"statusType"];
+  v6 = [dictionaryCopy TPSSafeIntegerForKey:@"status"];
 
   v7 = objc_alloc(MEMORY[0x277D71728]);
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 initWithEventIdentifier:v9 contentIdentifier:v4 statusType:v5 status:v6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [v7 initWithEventIdentifier:uUIDString contentIdentifier:v4 statusType:v5 status:v6];
 
   return v10;
 }

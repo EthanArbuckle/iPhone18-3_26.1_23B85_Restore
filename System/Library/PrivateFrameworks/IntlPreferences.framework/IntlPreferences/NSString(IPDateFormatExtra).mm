@@ -14,7 +14,7 @@
     v10 = 0;
     while (1)
     {
-      v11 = [a1 characterAtIndex:a3];
+      v11 = [self characterAtIndex:a3];
       v12 = v11;
       if ((v11 & 0xF800) != 0xD800)
       {

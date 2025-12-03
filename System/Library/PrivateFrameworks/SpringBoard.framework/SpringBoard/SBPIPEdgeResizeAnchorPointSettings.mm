@@ -1,6 +1,6 @@
 @interface SBPIPEdgeResizeAnchorPointSettings
 + (id)settingsControllerModule;
-- (void)_setAnchorPointForType:(unint64_t)a3;
+- (void)_setAnchorPointForType:(unint64_t)type;
 - (void)setDefaultValues;
 @end
 
@@ -246,11 +246,11 @@
   return v83;
 }
 
-- (void)_setAnchorPointForType:(unint64_t)a3
+- (void)_setAnchorPointForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       return;
     }

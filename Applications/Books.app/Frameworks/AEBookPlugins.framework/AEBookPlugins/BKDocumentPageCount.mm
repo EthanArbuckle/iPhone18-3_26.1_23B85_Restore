@@ -1,13 +1,13 @@
 @interface BKDocumentPageCount
-+ (id)newEmptyDocumentPageCount:(id)a3;
++ (id)newEmptyDocumentPageCount:(id)count;
 @end
 
 @implementation BKDocumentPageCount
 
-+ (id)newEmptyDocumentPageCount:(id)a3
++ (id)newEmptyDocumentPageCount:(id)count
 {
-  v3 = a3;
-  v4 = [v3 newByClass:objc_opt_class()];
+  countCopy = count;
+  v4 = [countCopy newByClass:objc_opt_class()];
 
   return v4;
 }

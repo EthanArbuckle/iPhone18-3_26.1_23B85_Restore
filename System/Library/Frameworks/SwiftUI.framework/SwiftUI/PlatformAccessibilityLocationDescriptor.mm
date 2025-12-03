@@ -10,7 +10,7 @@
 
 - (UIView)view
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlatformAccessibilityLocationDescriptor.view.getter();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (CGPoint)point
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlatformAccessibilityLocationDescriptor.point.getter();
   v5 = v4;
 
@@ -31,7 +31,7 @@
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlatformAccessibilityLocationDescriptor.name.getter();
   v5 = v4;
 
@@ -42,7 +42,7 @@
 
 - (NSAttributedString)attributedName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlatformAccessibilityLocationDescriptor.attributedName.getter();
 
   return v3;

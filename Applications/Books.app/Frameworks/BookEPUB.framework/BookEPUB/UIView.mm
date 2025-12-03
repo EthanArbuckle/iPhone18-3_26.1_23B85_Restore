@@ -4,32 +4,32 @@
 + (void)be_enablePageCurlHacks;
 + (void)be_enableWKContentViewOverrides;
 - (BEUIWKTextInteractionAssistantDelegate)be_textInteractionAssistantDelegate;
-- (BOOL)be_curlContentViewPointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)be_curlContentViewPointInside:(CGPoint)inside withEvent:(id)event;
 - (NSArray)be_constraintsToFillSuperview;
-- (id)be_addDebugOverlayWithColor:(id)a3;
-- (id)be_ancestorViewOfClass:(Class)a3;
+- (id)be_addDebugOverlayWithColor:(id)color;
+- (id)be_ancestorViewOfClass:(Class)class;
 - (id)be_passthroughViewDelegate;
-- (void)be_continueContextMenuInteraction:(id)a3;
+- (void)be_continueContextMenuInteraction:(id)interaction;
 - (void)be_setUpTextSelectionAssistant;
 @end
 
 @implementation UIView
 
-- (BOOL)be_curlContentViewPointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)be_curlContentViewPointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIView *)self be_passthroughViewDelegate];
-  v9 = v8;
-  if (v8)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  be_passthroughViewDelegate = [(UIView *)self be_passthroughViewDelegate];
+  v9 = be_passthroughViewDelegate;
+  if (be_passthroughViewDelegate)
   {
-    LODWORD(self) = [v8 passThroughView:self shouldPassthroughHitAtPoint:{x, y}] ^ 1;
+    LODWORD(self) = [be_passthroughViewDelegate passThroughView:self shouldPassthroughHitAtPoint:{x, y}] ^ 1;
   }
 
   else
   {
-    LOBYTE(self) = [(UIView *)self be_curlContentViewPointInside:v7 withEvent:x, y];
+    LOBYTE(self) = [(UIView *)self be_curlContentViewPointInside:eventCopy withEvent:x, y];
   }
 
   return self;
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = sub_11FF0;
   block[3] = &unk_328680;
-  block[4] = a1;
+  block[4] = self;
   if (qword_36AAE8 != -1)
   {
     dispatch_once(&qword_36AAE8, block);
@@ -83,25 +83,25 @@
 - (BEUIWKTextInteractionAssistantDelegate)be_textInteractionAssistantDelegate
 {
   v2 = [(UIView *)self be_ancestorViewOfClass:objc_opt_class()];
-  v3 = [v2 be_textInteractionAssistantDelegate];
+  be_textInteractionAssistantDelegate = [v2 be_textInteractionAssistantDelegate];
 
-  return v3;
+  return be_textInteractionAssistantDelegate;
 }
 
 - (void)be_setUpTextSelectionAssistant
 {
   [(UIView *)self be_setUpTextSelectionAssistant];
   v3 = [(UIView *)self be_ancestorViewOfClass:objc_opt_class()];
-  v4 = [v3 be_textInteractionDelegate];
-  if (v4)
+  be_textInteractionDelegate = [v3 be_textInteractionDelegate];
+  if (be_textInteractionDelegate)
   {
     v16 = 0u;
     v17 = 0u;
     v15 = 0u;
-    v5 = [v3 be_textInputChild];
-    v6 = [v5 interactions];
+    be_textInputChild = [v3 be_textInputChild];
+    interactions = [be_textInputChild interactions];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [interactions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -112,7 +112,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(interactions);
           }
 
           objc_opt_class();
@@ -120,14 +120,14 @@
           if (v11)
           {
             v12 = v11;
-            v13 = [v11 root];
-            [v13 setDelegate:v4];
+            root = [v11 root];
+            [root setDelegate:be_textInteractionDelegate];
 
             goto LABEL_12;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [interactions countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -141,53 +141,53 @@ LABEL_12:
   }
 }
 
-- (void)be_continueContextMenuInteraction:(id)a3
+- (void)be_continueContextMenuInteraction:(id)interaction
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_12354;
   v5[3] = &unk_328718;
-  v6 = a3;
-  v4 = v6;
+  interactionCopy = interaction;
+  v4 = interactionCopy;
   [(UIView *)self be_continueContextMenuInteraction:v5];
 }
 
 - (NSArray)be_constraintsToFillSuperview
 {
-  v3 = [(UIView *)self superview];
-  v17 = [(UIView *)self leadingAnchor];
-  v16 = [v3 leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  superview = [(UIView *)self superview];
+  leadingAnchor = [(UIView *)self leadingAnchor];
+  leadingAnchor2 = [superview leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[0] = v15;
-  v4 = [(UIView *)self trailingAnchor];
-  v5 = [v3 trailingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  trailingAnchor = [(UIView *)self trailingAnchor];
+  trailingAnchor2 = [superview trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[1] = v6;
-  v7 = [(UIView *)self topAnchor];
-  v8 = [v3 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor = [(UIView *)self topAnchor];
+  topAnchor2 = [superview topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[2] = v9;
-  v10 = [(UIView *)self bottomAnchor];
-  v11 = [v3 bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  bottomAnchor = [(UIView *)self bottomAnchor];
+  bottomAnchor2 = [superview bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18[3] = v12;
   v14 = [NSArray arrayWithObjects:v18 count:4];
 
   return v14;
 }
 
-- (id)be_ancestorViewOfClass:(Class)a3
+- (id)be_ancestorViewOfClass:(Class)class
 {
-  v3 = [(UIView *)self superview];
-  if (v3)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v5;
-      if (!v5)
+      v4 = superview2;
+      if (!superview2)
       {
         goto LABEL_5;
       }
@@ -213,13 +213,13 @@ LABEL_5:
   return v3;
 }
 
-- (id)be_addDebugOverlayWithColor:(id)a3
+- (id)be_addDebugOverlayWithColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (colorCopy)
   {
-    v6 = v4;
+    v6 = colorCopy;
   }
 
   else

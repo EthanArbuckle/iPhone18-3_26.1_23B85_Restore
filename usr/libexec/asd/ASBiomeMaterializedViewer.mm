@@ -1,16 +1,16 @@
 @interface ASBiomeMaterializedViewer
-- (id)runWithQuery:(id)a3 inputColNames:(id)a4 inputColTypes:(id)a5 error:(id *)a6;
+- (id)runWithQuery:(id)query inputColNames:(id)names inputColTypes:(id)types error:(id *)error;
 @end
 
 @implementation ASBiomeMaterializedViewer
 
-- (id)runWithQuery:(id)a3 inputColNames:(id)a4 inputColTypes:(id)a5 error:(id *)a6
+- (id)runWithQuery:(id)query inputColNames:(id)names inputColTypes:(id)types error:(id *)error
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = self;
+  selfCopy = self;
   ASBiomeMaterializedViewer.run(query:inputColNames:inputColTypes:)(v7, v9, v10, v11);
 
   sub_1000443DC(&qword_1006CA3C0);

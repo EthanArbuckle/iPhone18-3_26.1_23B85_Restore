@@ -1,18 +1,18 @@
 @interface SFShareAudioConnectingViewController
-- (void)_updateDeviceVisual:(id)a3;
+- (void)_updateDeviceVisual:(id)visual;
 - (void)_updateForDeviceInfo;
-- (void)eventCancel:(id)a3;
-- (void)sessionProgressEvent:(int)a3 info:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)eventCancel:(id)cancel;
+- (void)sessionProgressEvent:(int)event info:(id)info;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFShareAudioConnectingViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioConnectingViewController viewWillAppear:];
@@ -20,9 +20,9 @@
 
   v7.receiver = self;
   v7.super_class = SFShareAudioConnectingViewController;
-  [(SFShareAudioBaseViewController *)&v7 viewWillAppear:v3];
+  [(SFShareAudioBaseViewController *)&v7 viewWillAppear:appearCopy];
   [(SFShareAudioConnectingViewController *)self _updateForDeviceInfo];
-  v5 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+  mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
   [(UIView *)self->_progressView startAnimating];
   v6 = SFLocalizedStringEx();
   [(UIActivityIndicatorView *)self->_progressActivity setText:v6];
@@ -30,9 +30,9 @@
   [(UILabel *)self->_progressLabel setHidden:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioConnectingViewController viewWillDisappear:];
@@ -40,21 +40,21 @@
 
   v5.receiver = self;
   v5.super_class = SFShareAudioConnectingViewController;
-  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:v3];
+  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:disappearCopy];
   [(SFShareAudioViewController *)self->super._mainController setVcConnecting:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SFShareAudioConnectingViewController;
-  [(SFShareAudioConnectingViewController *)&v4 viewDidDisappear:a3];
+  [(SFShareAudioConnectingViewController *)&v4 viewDidDisappear:disappear];
   [(UIImageView *)self->_productImageView stop];
 }
 
-- (void)eventCancel:(id)a3
+- (void)eventCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioConnectingViewController eventCancel:];
@@ -63,24 +63,24 @@
   [(SFShareAudioViewController *)self->super._mainController reportUserCancelled];
 }
 
-- (void)sessionProgressEvent:(int)a3 info:(id)a4
+- (void)sessionProgressEvent:(int)event info:(id)info
 {
-  v6 = a4;
-  if (a3 == 200 || a3 == 300 || a3 == 220)
+  infoCopy = info;
+  if (event == 200 || event == 300 || event == 220)
   {
-    v9 = v6;
+    v9 = infoCopy;
     [(SFShareAudioConnectingViewController *)self _updateForDeviceInfo];
-    v7 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+    mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
     v8 = SFLocalizedStringEx();
     [(UIActivityIndicatorView *)self->_progressActivity setText:v8];
 
-    v6 = v9;
+    infoCopy = v9;
   }
 }
 
 - (void)_updateForDeviceInfo
 {
-  v3 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+  mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
   if (self->_colorCode)
   {
     SFLocalizedNameForBluetoothProductID();
@@ -137,13 +137,13 @@ void __60__SFShareAudioConnectingViewController__updateForDeviceInfo__block_invo
   }
 }
 
-- (void)_updateDeviceVisual:(id)a3
+- (void)_updateDeviceVisual:(id)visual
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  visualCopy = visual;
+  v12 = visualCopy;
+  if (visualCopy)
   {
-    v5 = [MEMORY[0x1E696AAE8] bundleWithPath:v4];
+    v5 = [MEMORY[0x1E696AAE8] bundleWithPath:visualCopy];
   }
 
   else
@@ -175,8 +175,8 @@ void __60__SFShareAudioConnectingViewController__updateForDeviceInfo__block_invo
     }
 
     v9 = MEMORY[0x1E69DCAB8];
-    v10 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
-    v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:v10 compatibleWithTraitCollection:0];
+    mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+    v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:mainBundle compatibleWithTraitCollection:0];
     [(SFMediaPlayerView *)self->_productMovieView setImage:v11];
 
     [(SFMediaPlayerView *)self->_productMovieView setHidden:0];

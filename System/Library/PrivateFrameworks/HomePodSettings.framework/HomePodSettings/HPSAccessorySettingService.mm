@@ -1,42 +1,42 @@
 @interface HPSAccessorySettingService
 - (BOOL)hasOptedToHH2;
 - (HPSAccessorySettingService)init;
-- (HPSAccessorySettingService)initWithConnectionProvider:(id)a3 delegate:(id)a4;
-- (HPSAccessorySettingService)initWithDelegate:(id)a3;
+- (HPSAccessorySettingService)initWithConnectionProvider:(id)provider delegate:(id)delegate;
+- (HPSAccessorySettingService)initWithDelegate:(id)delegate;
 - (HPSAccessorySettingServiceDelegate)delegate;
 - (NSDictionary)heldAssertions;
 - (NSDictionary)keyPaths;
 - (id)keyPathsAvailability;
-- (id)settingForKeyPath:(id)a3;
-- (id)updateSettingForKeyPath:(id)a3 setting:(id)a4;
-- (id)updateSettingWithoutSynchronizationForKeyPath:(id)a3 setting:(id)a4;
+- (id)settingForKeyPath:(id)path;
+- (id)updateSettingForKeyPath:(id)path setting:(id)setting;
+- (id)updateSettingWithoutSynchronizationForKeyPath:(id)path setting:(id)setting;
 - (void)_handleConnectionInterrupted;
-- (void)aggregateAllSettingsInScope:(unint64_t)a3 withCompletionHandler:(id)a4;
+- (void)aggregateAllSettingsInScope:(unint64_t)scope withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchAllSettingsWithCompletionHandler:(id)a3;
-- (void)getAllSettingsWithCompletionHandler:(id)a3;
-- (void)getKeyPathsAvailabilityWithCompletionHandler:(id)a3;
-- (void)getKeyPathsWithCompletionHandler:(id)a3;
-- (void)heldAssertionsWithCompletionHandler:(id)a3;
-- (void)isSettingAvailableForKeyPath:(id)a3 completionHandler:(id)a4;
-- (void)mergeSettingsInScope:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)notifyDidUpdateSetting:(id)a3 forKeyPath:(id)a4;
-- (void)optedToHH2WithCompletionHandler:(id)a3;
-- (void)reconcileSettingsInScope:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)settingForKeyPath:(id)a3 completionHandler:(id)a4;
-- (void)settingsForKeyPaths:(id)a3 completionHandler:(id)a4;
+- (void)fetchAllSettingsWithCompletionHandler:(id)handler;
+- (void)getAllSettingsWithCompletionHandler:(id)handler;
+- (void)getKeyPathsAvailabilityWithCompletionHandler:(id)handler;
+- (void)getKeyPathsWithCompletionHandler:(id)handler;
+- (void)heldAssertionsWithCompletionHandler:(id)handler;
+- (void)isSettingAvailableForKeyPath:(id)path completionHandler:(id)handler;
+- (void)mergeSettingsInScope:(unint64_t)scope withCompletionHandler:(id)handler;
+- (void)notifyDidUpdateSetting:(id)setting forKeyPath:(id)path;
+- (void)optedToHH2WithCompletionHandler:(id)handler;
+- (void)reconcileSettingsInScope:(unint64_t)scope withCompletionHandler:(id)handler;
+- (void)settingForKeyPath:(id)path completionHandler:(id)handler;
+- (void)settingsForKeyPaths:(id)paths completionHandler:(id)handler;
 - (void)startXPCConnection;
-- (void)updateSettingForKeyPath:(id)a3 setting:(id)a4 completionHandler:(id)a5;
-- (void)updateSettingWithoutSynchronizationForKeyPath:(id)a3 setting:(id)a4 completionHandler:(id)a5;
+- (void)updateSettingForKeyPath:(id)path setting:(id)setting completionHandler:(id)handler;
+- (void)updateSettingWithoutSynchronizationForKeyPath:(id)path setting:(id)setting completionHandler:(id)handler;
 @end
 
 @implementation HPSAccessorySettingService
 
-- (HPSAccessorySettingService)initWithConnectionProvider:(id)a3 delegate:(id)a4
+- (HPSAccessorySettingService)initWithConnectionProvider:(id)provider delegate:(id)delegate
 {
   v45 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  obj = a4;
+  providerCopy = provider;
+  obj = delegate;
   v42.receiver = self;
   v42.super_class = HPSAccessorySettingService;
   v6 = [(HPSAccessorySettingService *)&v42 init];
@@ -52,9 +52,9 @@
 
     v6->_notifyRegisterToken = -1;
     objc_storeWeak(&v6->_delegate, obj);
-    v8 = [v32 accessorySettingServiceConnection];
+    accessorySettingServiceConnection = [providerCopy accessorySettingServiceConnection];
     xpcConnection = v6->_xpcConnection;
-    v6->_xpcConnection = v8;
+    v6->_xpcConnection = accessorySettingServiceConnection;
 
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286666308];
     v34 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286658C48];
@@ -189,22 +189,22 @@ void __66__HPSAccessorySettingService_initWithConnectionProvider_delegate___bloc
   }
 }
 
-- (HPSAccessorySettingService)initWithDelegate:(id)a3
+- (HPSAccessorySettingService)initWithDelegate:(id)delegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = _HPSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[HPSAccessorySettingService initWithDelegate:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = delegateCopy;
     _os_log_impl(&dword_2542B7000, v5, OS_LOG_TYPE_DEFAULT, "%s Delegate %@", &v10, 0x16u);
   }
 
   v6 = objc_alloc_init(_HPSAccessorySettingServiceConnectionProvider);
-  v7 = [(HPSAccessorySettingService *)self initWithConnectionProvider:v6 delegate:v4];
+  v7 = [(HPSAccessorySettingService *)self initWithConnectionProvider:v6 delegate:delegateCopy];
 
   v8 = *MEMORY[0x277D85DE8];
   return v7;
@@ -239,8 +239,8 @@ void __66__HPSAccessorySettingService_initWithConnectionProvider_delegate___bloc
     _os_log_impl(&dword_2542B7000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v4 = [(HPSAccessorySettingService *)self xpcConnection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
+  v5 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
   [v5 startXPCConnection];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -264,32 +264,32 @@ void __48__HPSAccessorySettingService_startXPCConnection__block_invoke(uint64_t 
   }
 
   objc_storeWeak(&self->_delegate, 0);
-  v3 = [(HPSAccessorySettingService *)self xpcConnection];
-  [v3 invalidate];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
+  [xpcConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = HPSAccessorySettingService;
   [(HPSAccessorySettingService *)&v4 dealloc];
 }
 
-- (void)updateSettingForKeyPath:(id)a3 setting:(id)a4 completionHandler:(id)a5
+- (void)updateSettingForKeyPath:(id)path setting:(id)setting completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  settingCopy = setting;
+  handlerCopy = handler;
   v11 = _HPSLoggingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v28 = "[HPSAccessorySettingService updateSettingForKeyPath:setting:completionHandler:]";
     v29 = 2112;
-    v30 = v12;
+    v30 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v11, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:v8])
+  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:pathCopy])
   {
     v13 = MEMORY[0x277CCA9B8];
     v25 = *MEMORY[0x277CCA450];
@@ -297,26 +297,26 @@ void __48__HPSAccessorySettingService_startXPCConnection__block_invoke(uint64_t 
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v15 = [v13 errorWithDomain:@"com.apple.homepodsettings" code:10 userInfo:v14];
 
-    v10[2](v10, MEMORY[0x277CBEBF8], v15);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v15);
   }
 
   else
   {
-    v16 = [(HPSAccessorySettingService *)self xpcConnection];
+    xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __80__HPSAccessorySettingService_updateSettingForKeyPath_setting_completionHandler___block_invoke;
     v23[3] = &unk_2797741A0;
-    v17 = v10;
+    v17 = handlerCopy;
     v24 = v17;
-    v18 = [v16 remoteObjectProxyWithErrorHandler:v23];
-    v19 = [HPSHomeKitSettingHelper compatibleWriteSetting:v9];
+    v18 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+    v19 = [HPSHomeKitSettingHelper compatibleWriteSetting:settingCopy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __80__HPSAccessorySettingService_updateSettingForKeyPath_setting_completionHandler___block_invoke_424;
     v21[3] = &unk_279774490;
     v22 = v17;
-    [v18 updateSettingForKeyPath:v8 setting:v19 completionHandler:v21];
+    [v18 updateSettingForKeyPath:pathCopy setting:v19 completionHandler:v21];
 
     v15 = v24;
   }
@@ -344,24 +344,24 @@ void __80__HPSAccessorySettingService_updateSettingForKeyPath_setting_completion
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)updateSettingWithoutSynchronizationForKeyPath:(id)a3 setting:(id)a4 completionHandler:(id)a5
+- (void)updateSettingWithoutSynchronizationForKeyPath:(id)path setting:(id)setting completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  settingCopy = setting;
+  handlerCopy = handler;
   v11 = _HPSLoggingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v28 = "[HPSAccessorySettingService updateSettingWithoutSynchronizationForKeyPath:setting:completionHandler:]";
     v29 = 2112;
-    v30 = v12;
+    v30 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v11, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:v8])
+  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:pathCopy])
   {
     v13 = MEMORY[0x277CCA9B8];
     v25 = *MEMORY[0x277CCA450];
@@ -369,26 +369,26 @@ void __80__HPSAccessorySettingService_updateSettingForKeyPath_setting_completion
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v15 = [v13 errorWithDomain:@"com.apple.homepodsettings" code:10 userInfo:v14];
 
-    v10[2](v10, MEMORY[0x277CBEBF8], v15);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v15);
   }
 
   else
   {
-    v16 = [(HPSAccessorySettingService *)self xpcConnection];
+    xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __102__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKeyPath_setting_completionHandler___block_invoke;
     v23[3] = &unk_2797741A0;
-    v17 = v10;
+    v17 = handlerCopy;
     v24 = v17;
-    v18 = [v16 remoteObjectProxyWithErrorHandler:v23];
-    v19 = [HPSHomeKitSettingHelper compatibleWriteSetting:v9];
+    v18 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+    v19 = [HPSHomeKitSettingHelper compatibleWriteSetting:settingCopy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __102__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKeyPath_setting_completionHandler___block_invoke_426;
     v21[3] = &unk_279774490;
     v22 = v17;
-    [v18 updateSettingWithoutSynchronizationForKeyPath:v8 setting:v19 completionHandler:v21];
+    [v18 updateSettingWithoutSynchronizationForKeyPath:pathCopy setting:v19 completionHandler:v21];
 
     v15 = v24;
   }
@@ -416,19 +416,19 @@ void __102__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKey
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (id)updateSettingForKeyPath:(id)a3 setting:(id)a4
+- (id)updateSettingForKeyPath:(id)path setting:(id)setting
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  settingCopy = setting;
   v8 = _HPSLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     *&buf[4] = "[HPSAccessorySettingService updateSettingForKeyPath:setting:]";
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v8, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
@@ -438,22 +438,22 @@ void __102__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKey
   v23 = __Block_byref_object_copy__0;
   v24 = __Block_byref_object_dispose__0;
   v25 = 0;
-  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:v6])
+  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:pathCopy])
   {
-    v10 = [(HPSAccessorySettingService *)self xpcConnection];
+    xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __62__HPSAccessorySettingService_updateSettingForKeyPath_setting___block_invoke;
     v19[3] = &unk_2797744B8;
     v19[4] = buf;
-    v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v19];
-    v12 = [HPSHomeKitSettingHelper compatibleWriteSetting:v7];
+    v11 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v19];
+    v12 = [HPSHomeKitSettingHelper compatibleWriteSetting:settingCopy];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__HPSAccessorySettingService_updateSettingForKeyPath_setting___block_invoke_427;
     v18[3] = &unk_2797744E0;
     v18[4] = buf;
-    [v11 updateSettingForKeyPath:v6 setting:v12 completionHandler:v18];
+    [v11 updateSettingForKeyPath:pathCopy setting:v12 completionHandler:v18];
   }
 
   else
@@ -461,8 +461,8 @@ void __102__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKey
     v13 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
     v21 = @"Keypath not supported for updating value";
-    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v14 = [v13 errorWithDomain:@"com.apple.homepodsettings" code:10 userInfo:v10];
+    xpcConnection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
+    v14 = [v13 errorWithDomain:@"com.apple.homepodsettings" code:10 userInfo:xpcConnection];
     v11 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v14;
   }
@@ -509,19 +509,19 @@ void __62__HPSAccessorySettingService_updateSettingForKeyPath_setting___block_in
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateSettingWithoutSynchronizationForKeyPath:(id)a3 setting:(id)a4
+- (id)updateSettingWithoutSynchronizationForKeyPath:(id)path setting:(id)setting
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  settingCopy = setting;
   v8 = _HPSLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     *&buf[4] = "[HPSAccessorySettingService updateSettingWithoutSynchronizationForKeyPath:setting:]";
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v8, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
@@ -531,22 +531,22 @@ void __62__HPSAccessorySettingService_updateSettingForKeyPath_setting___block_in
   v23 = __Block_byref_object_copy__0;
   v24 = __Block_byref_object_dispose__0;
   v25 = 0;
-  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:v6])
+  if ([HPSSettingHelper shouldDisableUpdateSettingForKeyPath:pathCopy])
   {
-    v10 = [(HPSAccessorySettingService *)self xpcConnection];
+    xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __84__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKeyPath_setting___block_invoke;
     v19[3] = &unk_2797744B8;
     v19[4] = buf;
-    v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v19];
-    v12 = [HPSHomeKitSettingHelper compatibleWriteSetting:v7];
+    v11 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v19];
+    v12 = [HPSHomeKitSettingHelper compatibleWriteSetting:settingCopy];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __84__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKeyPath_setting___block_invoke_428;
     v18[3] = &unk_2797744E0;
     v18[4] = buf;
-    [v11 updateSettingWithoutSynchronizationForKeyPath:v6 setting:v12 completionHandler:v18];
+    [v11 updateSettingWithoutSynchronizationForKeyPath:pathCopy setting:v12 completionHandler:v18];
   }
 
   else
@@ -554,8 +554,8 @@ void __62__HPSAccessorySettingService_updateSettingForKeyPath_setting___block_in
     v13 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
     v21 = @"Keypath not supported for updating value";
-    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v14 = [v13 errorWithDomain:@"com.apple.homepodsettings" code:10 userInfo:v10];
+    xpcConnection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
+    v14 = [v13 errorWithDomain:@"com.apple.homepodsettings" code:10 userInfo:xpcConnection];
     v11 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v14;
   }
@@ -602,19 +602,19 @@ void __84__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKeyP
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsForKeyPaths:(id)a3 completionHandler:(id)a4
+- (void)settingsForKeyPaths:(id)paths completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  handlerCopy = handler;
   v8 = _HPSLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v21 = "[HPSAccessorySettingService settingsForKeyPaths:completionHandler:]";
     v22 = 2112;
-    v23 = v9;
+    v23 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v8, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
@@ -624,25 +624,25 @@ void __84__HPSAccessorySettingService_updateSettingWithoutSynchronizationForKeyP
     *buf = 136315394;
     v21 = "[HPSAccessorySettingService settingsForKeyPaths:completionHandler:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = pathsCopy;
     _os_log_impl(&dword_2542B7000, v10, OS_LOG_TYPE_DEFAULT, "%s KeyPaths %@", buf, 0x16u);
   }
 
-  v11 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __68__HPSAccessorySettingService_settingsForKeyPaths_completionHandler___block_invoke;
   v18[3] = &unk_2797741A0;
-  v12 = v7;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __68__HPSAccessorySettingService_settingsForKeyPaths_completionHandler___block_invoke_429;
   v16[3] = &unk_279774508;
   v17 = v12;
   v14 = v12;
-  [v13 settingsForKeyPaths:v6 completionHandler:v16];
+  [v13 settingsForKeyPaths:pathsCopy completionHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -666,23 +666,23 @@ void __68__HPSAccessorySettingService_settingsForKeyPaths_completionHandler___bl
   (*(v2 + 16))(v2, v3, 0);
 }
 
-- (void)settingForKeyPath:(id)a3 completionHandler:(id)a4
+- (void)settingForKeyPath:(id)path completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   v8 = _HPSLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v23 = "[HPSAccessorySettingService settingForKeyPath:completionHandler:]";
     v24 = 2112;
-    v25 = v9;
+    v25 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v8, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  v21 = v6;
+  v21 = pathCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
   v11 = _HPSLoggingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -690,18 +690,18 @@ void __68__HPSAccessorySettingService_settingsForKeyPaths_completionHandler___bl
     *buf = 136315394;
     v23 = "[HPSAccessorySettingService settingForKeyPath:completionHandler:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = pathCopy;
     _os_log_impl(&dword_2542B7000, v11, OS_LOG_TYPE_DEFAULT, "%s KeyPath %@", buf, 0x16u);
   }
 
-  v12 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__HPSAccessorySettingService_settingForKeyPath_completionHandler___block_invoke;
   v19[3] = &unk_2797741A0;
-  v13 = v7;
+  v13 = handlerCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66__HPSAccessorySettingService_settingForKeyPath_completionHandler___block_invoke_431;
@@ -747,18 +747,18 @@ void __66__HPSAccessorySettingService_settingForKeyPath_completionHandler___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)settingForKeyPath:(id)a3
+- (id)settingForKeyPath:(id)path
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = _HPSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     *&buf[4] = "[HPSAccessorySettingService settingForKeyPath:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v5, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
@@ -768,14 +768,14 @@ void __66__HPSAccessorySettingService_settingForKeyPath_completionHandler___bloc
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
   v16 = 0;
-  v7 = [(HPSAccessorySettingService *)self xpcConnection];
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_433];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
+  v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_433];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__HPSAccessorySettingService_settingForKeyPath___block_invoke_434;
   v12[3] = &unk_279774530;
   v12[4] = buf;
-  [v8 settingForKeyPath:v4 completionHandler:v12];
+  [v8 settingForKeyPath:pathCopy completionHandler:v12];
 
   v9 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
@@ -814,19 +814,19 @@ void __48__HPSAccessorySettingService_settingForKeyPath___block_invoke_434(uint6
   *(v9 + 40) = v8;
 }
 
-- (void)isSettingAvailableForKeyPath:(id)a3 completionHandler:(id)a4
+- (void)isSettingAvailableForKeyPath:(id)path completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   v8 = _HPSLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v18 = "[HPSAccessorySettingService isSettingAvailableForKeyPath:completionHandler:]";
     v19 = 2112;
-    v20 = v9;
+    v20 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v8, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
@@ -836,19 +836,19 @@ void __48__HPSAccessorySettingService_settingForKeyPath___block_invoke_434(uint6
     *buf = 136315394;
     v18 = "[HPSAccessorySettingService isSettingAvailableForKeyPath:completionHandler:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = pathCopy;
     _os_log_impl(&dword_2542B7000, v10, OS_LOG_TYPE_DEFAULT, "%s KeyPath %@", buf, 0x16u);
   }
 
-  v11 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__HPSAccessorySettingService_isSettingAvailableForKeyPath_completionHandler___block_invoke;
   v15[3] = &unk_2797741A0;
-  v16 = v7;
-  v12 = v7;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v15];
-  [v13 isSettingAvailableForKeyPath:v6 completionHandler:v12];
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  [v13 isSettingAvailableForKeyPath:pathCopy completionHandler:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -865,29 +865,29 @@ void __77__HPSAccessorySettingService_isSettingAvailableForKeyPath_completionHan
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getKeyPathsWithCompletionHandler:(id)a3
+- (void)getKeyPathsWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _HPSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v14 = "[HPSAccessorySettingService getKeyPathsWithCompletionHandler:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v5, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  v7 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__HPSAccessorySettingService_getKeyPathsWithCompletionHandler___block_invoke;
   v11[3] = &unk_2797741A0;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
   [v9 getKeyPathsWithCompletionHandler:v8];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -905,29 +905,29 @@ void __63__HPSAccessorySettingService_getKeyPathsWithCompletionHandler___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getKeyPathsAvailabilityWithCompletionHandler:(id)a3
+- (void)getKeyPathsAvailabilityWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _HPSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v14 = "[HPSAccessorySettingService getKeyPathsAvailabilityWithCompletionHandler:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v5, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  v7 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__HPSAccessorySettingService_getKeyPathsAvailabilityWithCompletionHandler___block_invoke;
   v11[3] = &unk_2797741A0;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
   [v9 getKeyPathsAvailabilityWithCompletionHandler:v8];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -945,30 +945,30 @@ void __75__HPSAccessorySettingService_getKeyPathsAvailabilityWithCompletionHandl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)reconcileSettingsInScope:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)reconcileSettingsInScope:(unint64_t)scope withCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _HPSLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v16 = "[HPSAccessorySettingService reconcileSettingsInScope:withCompletionHandler:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v7, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  v9 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__HPSAccessorySettingService_reconcileSettingsInScope_withCompletionHandler___block_invoke;
   v13[3] = &unk_2797741A0;
-  v14 = v6;
-  v10 = v6;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v13];
-  [v11 reconcileSettingsInScope:a3 withCompletionHandler:v10];
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v13];
+  [v11 reconcileSettingsInScope:scope withCompletionHandler:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -985,30 +985,30 @@ void __77__HPSAccessorySettingService_reconcileSettingsInScope_withCompletionHan
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)mergeSettingsInScope:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)mergeSettingsInScope:(unint64_t)scope withCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _HPSLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v16 = "[HPSAccessorySettingService mergeSettingsInScope:withCompletionHandler:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v7, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  v9 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__HPSAccessorySettingService_mergeSettingsInScope_withCompletionHandler___block_invoke;
   v13[3] = &unk_2797741A0;
-  v14 = v6;
-  v10 = v6;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v13];
-  [v11 mergeSettingsInScope:a3 withCompletionHandler:v10];
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v13];
+  [v11 mergeSettingsInScope:scope withCompletionHandler:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1025,29 +1025,29 @@ void __73__HPSAccessorySettingService_mergeSettingsInScope_withCompletionHandler
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)heldAssertionsWithCompletionHandler:(id)a3
+- (void)heldAssertionsWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _HPSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v14 = "[HPSAccessorySettingService heldAssertionsWithCompletionHandler:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v5, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
-  v7 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__HPSAccessorySettingService_heldAssertionsWithCompletionHandler___block_invoke;
   v11[3] = &unk_2797741A0;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
   [v9 heldAssertionsWithCompletionHandler:v8];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1065,18 +1065,18 @@ void __66__HPSAccessorySettingService_heldAssertionsWithCompletionHandler___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAllSettingsWithCompletionHandler:(id)a3
+- (void)fetchAllSettingsWithCompletionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _HPSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     *buf = 136315394;
     v12 = "[HPSAccessorySettingService fetchAllSettingsWithCompletionHandler:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = callStackSymbols;
     _os_log_impl(&dword_2542B7000, v5, OS_LOG_TYPE_DEFAULT, "%s backtrace: %@", buf, 0x16u);
   }
 
@@ -1085,8 +1085,8 @@ void __66__HPSAccessorySettingService_heldAssertionsWithCompletionHandler___bloc
   v9[2] = __68__HPSAccessorySettingService_fetchAllSettingsWithCompletionHandler___block_invoke;
   v9[3] = &unk_2797745A8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = handlerCopy;
+  v7 = handlerCopy;
   [(HPSAccessorySettingService *)self getKeyPathsWithCompletionHandler:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1183,16 +1183,16 @@ void __68__HPSAccessorySettingService_fetchAllSettingsWithCompletionHandler___bl
   }
 }
 
-- (void)getAllSettingsWithCompletionHandler:(id)a3
+- (void)getAllSettingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__HPSAccessorySettingService_getAllSettingsWithCompletionHandler___block_invoke;
   v6[3] = &unk_2797745A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(HPSAccessorySettingService *)self getKeyPathsWithCompletionHandler:v6];
 }
 
@@ -1274,24 +1274,24 @@ void __66__HPSAccessorySettingService_getAllSettingsWithCompletionHandler___bloc
   }
 }
 
-- (void)aggregateAllSettingsInScope:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)aggregateAllSettingsInScope:(unint64_t)scope withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HPSAccessorySettingService *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__HPSAccessorySettingService_aggregateAllSettingsInScope_withCompletionHandler___block_invoke;
   v13[3] = &unk_2797741A0;
-  v8 = v6;
+  v8 = handlerCopy;
   v14 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v13];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__HPSAccessorySettingService_aggregateAllSettingsInScope_withCompletionHandler___block_invoke_441;
   v11[3] = &unk_2797745D0;
   v12 = v8;
   v10 = v8;
-  [v9 aggregateSettingsInScope:a3 completionHandler:v11];
+  [v9 aggregateSettingsInScope:scope completionHandler:v11];
 }
 
 void __80__HPSAccessorySettingService_aggregateAllSettingsInScope_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1378,13 +1378,13 @@ void __80__HPSAccessorySettingService_aggregateAllSettingsInScope_withCompletion
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v2 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__HPSAccessorySettingService_keyPaths__block_invoke;
   v7[3] = &unk_2797744B8;
   v7[4] = &v8;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__HPSAccessorySettingService_keyPaths__block_invoke_443;
@@ -1420,13 +1420,13 @@ void __38__HPSAccessorySettingService_keyPaths__block_invoke(uint64_t a1, void *
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v2 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__HPSAccessorySettingService_heldAssertions__block_invoke;
   v7[3] = &unk_2797744B8;
   v7[4] = &v8;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__HPSAccessorySettingService_heldAssertions__block_invoke_444;
@@ -1462,13 +1462,13 @@ void __44__HPSAccessorySettingService_heldAssertions__block_invoke(uint64_t a1, 
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v2 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HPSAccessorySettingService_keyPathsAvailability__block_invoke;
   v7[3] = &unk_2797744B8;
   v7[4] = &v8;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__HPSAccessorySettingService_keyPathsAvailability__block_invoke_445;
@@ -1502,13 +1502,13 @@ void __50__HPSAccessorySettingService_keyPathsAvailability__block_invoke(uint64_
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(HPSAccessorySettingService *)self xpcConnection];
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__HPSAccessorySettingService_hasOptedToHH2__block_invoke;
   v6[3] = &unk_2797744B8;
   v6[4] = &v7;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__HPSAccessorySettingService_hasOptedToHH2__block_invoke_2;
@@ -1516,22 +1516,22 @@ void __50__HPSAccessorySettingService_keyPathsAvailability__block_invoke(uint64_
   v5[4] = &v7;
   [v3 optedToHH2WithCompletionHandler:v5];
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(xpcConnection) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return xpcConnection;
 }
 
-- (void)optedToHH2WithCompletionHandler:(id)a3
+- (void)optedToHH2WithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HPSAccessorySettingService *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(HPSAccessorySettingService *)self xpcConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__HPSAccessorySettingService_optedToHH2WithCompletionHandler___block_invoke;
   v8[3] = &unk_2797741A0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 optedToHH2WithCompletionHandler:v6];
 }
 
@@ -1557,31 +1557,31 @@ void __54__HPSAccessorySettingService_overrideOptedToHH2State___block_invoke(uin
   }
 }
 
-- (void)notifyDidUpdateSetting:(id)a3 forKeyPath:(id)a4
+- (void)notifyDidUpdateSetting:(id)setting forKeyPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  settingCopy = setting;
+  pathCopy = path;
   v8 = _HPSLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
-    v10 = [v6 keyPath];
+    v9 = [settingCopy description];
+    keyPath = [settingCopy keyPath];
     v14 = 136315650;
     v15 = "[HPSAccessorySettingService notifyDidUpdateSetting:forKeyPath:]";
     v16 = 2112;
     v17 = v9;
     v18 = 2112;
-    v19 = v10;
+    v19 = keyPath;
     _os_log_impl(&dword_2542B7000, v8, OS_LOG_TYPE_DEFAULT, "%s Notify Setting %@ updated for keyPath %@ ", &v14, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    if (v6)
+    if (settingCopy)
     {
-      v12 = [HPSHomeKitSettingHelper compatibleReadSetting:v6];
+      v12 = [HPSHomeKitSettingHelper compatibleReadSetting:settingCopy];
     }
 
     else
@@ -1589,7 +1589,7 @@ void __54__HPSAccessorySettingService_overrideOptedToHH2State___block_invoke(uin
       v12 = 0;
     }
 
-    [WeakRetained didUpdateSetting:v12 forKeyPath:v7];
+    [WeakRetained didUpdateSetting:v12 forKeyPath:pathCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1598,7 +1598,7 @@ void __54__HPSAccessorySettingService_overrideOptedToHH2State___block_invoke(uin
 - (void)_handleConnectionInterrupted
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_2(&dword_2542B7000, a1, a3, "%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_2(&dword_2542B7000, self, a3, "%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

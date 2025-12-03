@@ -1,10 +1,10 @@
 @interface _NTKCFaceDetailCustomPhotosViewController
 - (BOOL)_allPhotosSelected;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (NTKCFaceDetailCustomPhotosViewControllerDelegate)delegate;
-- (_NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6 externalImagesSet:(BOOL)a7;
+- (_NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view externalImagesSet:(BOOL)set;
 - (id)_currentSelectAllButton;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_addPressed;
 - (void)_deletePressed;
 - (void)_savePressed;
@@ -13,22 +13,22 @@
 - (void)_updateButtons;
 - (void)_updateButtonsForSelectionChanged;
 - (void)_updateTitle;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _NTKCFaceDetailCustomPhotosViewController
 
-- (_NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6 externalImagesSet:(BOOL)a7
+- (_NTKCFaceDetailCustomPhotosViewController)initWithPhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view externalImagesSet:(BOOL)set
 {
-  v7 = a7;
-  v9 = a5;
+  setCopy = set;
+  galleryCopy = gallery;
   v60[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  editorCopy = editor;
+  faceCopy = face;
+  viewCopy = view;
   v15 = objc_opt_new();
   v58.receiver = self;
   v58.super_class = _NTKCFaceDetailCustomPhotosViewController;
@@ -36,11 +36,11 @@
   v17 = v16;
   if (v16)
   {
-    [(_NTKCFaceDetailCustomPhotosViewController *)v16 setEditor:v12];
-    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setFace:v13];
-    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setInGallery:v9];
-    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setFaceView:v14];
-    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setExternalImagesSet:v7];
+    [(_NTKCFaceDetailCustomPhotosViewController *)v16 setEditor:editorCopy];
+    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setFace:faceCopy];
+    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setInGallery:galleryCopy];
+    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setFaceView:viewCopy];
+    [(_NTKCFaceDetailCustomPhotosViewController *)v17 setExternalImagesSet:setCopy];
     v18 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v17 action:sel__savePressed];
     saveButton = v17->_saveButton;
     v17->_saveButton = v18;
@@ -118,64 +118,64 @@
   v12.receiver = self;
   v12.super_class = _NTKCFaceDetailCustomPhotosViewController;
   [(_NTKCFaceDetailCustomPhotosViewController *)&v12 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(_NTKCFaceDetailCustomPhotosViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(_NTKCFaceDetailCustomPhotosViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v6 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
-  [v6 setBackgroundColor:v5];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  collectionView = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+  [collectionView setBackgroundColor:systemBackgroundColor2];
 
-  v7 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+  collectionView2 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
   v8 = objc_opt_class();
   v9 = +[NTKCPhotoListCell reuseIdentifier];
-  [v7 registerClass:v8 forCellWithReuseIdentifier:v9];
+  [collectionView2 registerClass:v8 forCellWithReuseIdentifier:v9];
 
-  v10 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
-  [v10 setAlwaysBounceVertical:1];
+  collectionView3 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+  [collectionView3 setAlwaysBounceVertical:1];
 
-  v11 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
-  [v11 setAllowsSelectionDuringEditing:1];
+  collectionView4 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+  [collectionView4 setAllowsSelectionDuringEditing:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = _NTKCFaceDetailCustomPhotosViewController;
-  [(_NTKCFaceDetailCustomPhotosViewController *)&v7 viewWillAppear:a3];
-  v4 = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationController];
-  [v4 setToolbarHidden:0];
+  [(_NTKCFaceDetailCustomPhotosViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationController];
+  [navigationController setToolbarHidden:0];
 
   [(_NTKCFaceDetailCustomPhotosViewController *)self _updateButtons];
-  v5 = [(_NTKCFaceDetailCustomPhotosViewController *)self presentedViewController];
+  presentedViewController = [(_NTKCFaceDetailCustomPhotosViewController *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
-    v6 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
-    [v6 reloadData];
+    collectionView = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = _NTKCFaceDetailCustomPhotosViewController;
-  [(_NTKCFaceDetailCustomPhotosViewController *)&v7 setEditing:a3 animated:a4];
+  [(_NTKCFaceDetailCustomPhotosViewController *)&v7 setEditing:editing animated:animated];
   [(_NTKCFaceDetailCustomPhotosViewController *)self _updateButtons];
   [(NSMutableIndexSet *)self->_selectedIndexes removeAllIndexes];
-  v5 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
-  v6 = [v5 visibleCells];
-  [v6 enumerateObjectsUsingBlock:&__block_literal_global_157];
+  collectionView = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
+  [visibleCells enumerateObjectsUsingBlock:&__block_literal_global_157];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
   v7 = +[NTKCPhotoListCell reuseIdentifier];
-  v8 = [v6 dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v5];
+  v8 = [collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
-  v9 = [v5 item];
+  item = [pathCopy item];
   editor = self->_editor;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -184,36 +184,36 @@
   v15[4] = self;
   v11 = v8;
   v16 = v11;
-  v17 = v9;
-  [(NTKCompanionCustomPhotosEditor *)editor imageAndCropForPhotoAtIndex:v9 completion:v15];
+  v17 = item;
+  [(NTKCompanionCustomPhotosEditor *)editor imageAndCropForPhotoAtIndex:item completion:v15];
   [v11 setPhoto:0];
   [v11 setCrop:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v11 setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedIndexes, "containsIndex:", v9)}];
+  [v11 setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedIndexes, "containsIndex:", item)}];
   v12 = v16;
   v13 = v11;
 
   return v11;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 item];
+  viewCopy = view;
+  pathCopy = path;
+  item = [pathCopy item];
   if ([(_NTKCFaceDetailCustomPhotosViewController *)self isEditing])
   {
-    v9 = [v6 cellForItemAtIndexPath:v7];
+    v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
     [v9 setSelected:{objc_msgSend(v9, "isSelected") ^ 1}];
-    v10 = [v9 isSelected];
+    isSelected = [v9 isSelected];
     selectedIndexes = self->_selectedIndexes;
-    if (v10)
+    if (isSelected)
     {
-      [(NSMutableIndexSet *)selectedIndexes addIndex:v8];
+      [(NSMutableIndexSet *)selectedIndexes addIndex:item];
     }
 
     else
     {
-      [(NSMutableIndexSet *)selectedIndexes removeIndex:v8];
+      [(NSMutableIndexSet *)selectedIndexes removeIndex:item];
     }
 
     [(_NTKCFaceDetailCustomPhotosViewController *)self _updateButtonsForSelectionChanged];
@@ -221,20 +221,20 @@
 
   else
   {
-    v12 = [(NTKFaceView *)self->_faceView timeView];
-    v13 = [v12 style];
+    timeView = [(NTKFaceView *)self->_faceView timeView];
+    style = [timeView style];
 
     objc_initWeak(&location, self);
     v14 = [NTKCFaceDetailPhotoCropViewController alloc];
-    v15 = [v7 item];
+    item2 = [pathCopy item];
     editor = self->_editor;
-    v17 = [(_NTKCFaceDetailCustomPhotosViewController *)self face];
+    face = [(_NTKCFaceDetailCustomPhotosViewController *)self face];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __88___NTKCFaceDetailCustomPhotosViewController_collectionView_shouldSelectItemAtIndexPath___block_invoke;
     v23 = &unk_27877DC58;
     objc_copyWeak(&v24, &location);
-    v18 = [(NTKCFaceDetailPhotoCropViewController *)v14 initWithIndex:v15 inPhotosEditor:editor forFace:v17 timeStyle:v13 completionHandler:&v20];
+    v18 = [(NTKCFaceDetailPhotoCropViewController *)v14 initWithIndex:item2 inPhotosEditor:editor forFace:face timeStyle:style completionHandler:&v20];
 
     [(_NTKCFaceDetailCustomPhotosViewController *)self presentViewController:v18 animated:1 completion:0, v20, v21, v22, v23];
     objc_destroyWeak(&v24);
@@ -244,23 +244,23 @@
   return 0;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   editor = self->_editor;
-  v7 = a5;
-  v8 = [a4 item];
-  v9 = [v7 item];
+  indexPathCopy = indexPath;
+  item = [path item];
+  item2 = [indexPathCopy item];
 
-  [(NTKCompanionCustomPhotosEditor *)editor movePhotoAtIndex:v8 toIndex:v9];
+  [(NTKCompanionCustomPhotosEditor *)editor movePhotoAtIndex:item toIndex:item2];
 }
 
 - (void)_updateButtons
 {
   if ([(_NTKCFaceDetailCustomPhotosViewController *)self isEditing])
   {
-    v3 = [(_NTKCFaceDetailCustomPhotosViewController *)self _currentSelectAllButton];
-    v4 = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    _currentSelectAllButton = [(_NTKCFaceDetailCustomPhotosViewController *)self _currentSelectAllButton];
+    navigationItem = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:_currentSelectAllButton];
 
     v5 = &OBJC_IVAR____NTKCFaceDetailCustomPhotosViewController__editingToolBarItems;
     v6 = &OBJC_IVAR____NTKCFaceDetailCustomPhotosViewController__doneButton;
@@ -269,15 +269,15 @@
   else
   {
     saveButton = self->_saveButton;
-    v3 = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:saveButton];
+    _currentSelectAllButton = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
+    [_currentSelectAllButton setLeftBarButtonItem:saveButton];
     v5 = &OBJC_IVAR____NTKCFaceDetailCustomPhotosViewController__defaultToolBarItems;
     v6 = &OBJC_IVAR____NTKCFaceDetailCustomPhotosViewController__selectButton;
   }
 
   v8 = *(&self->super.super.super.super.isa + *v6);
-  v9 = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
   [(_NTKCFaceDetailCustomPhotosViewController *)self setToolbarItems:*(&self->super.super.super.super.isa + *v5)];
   [(UIBarButtonItem *)self->_addButton setEnabled:[(NTKCompanionCustomPhotosEditor *)self->_editor photosCount]< 0x18];
@@ -291,9 +291,9 @@
 {
   if ([(_NTKCFaceDetailCustomPhotosViewController *)self isEditing])
   {
-    v3 = [(_NTKCFaceDetailCustomPhotosViewController *)self _currentSelectAllButton];
-    v4 = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    _currentSelectAllButton = [(_NTKCFaceDetailCustomPhotosViewController *)self _currentSelectAllButton];
+    navigationItem = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:_currentSelectAllButton];
 
     v5 = [(NSMutableIndexSet *)self->_selectedIndexes count];
     v6 = v5 != 0;
@@ -301,10 +301,10 @@
     {
       v7 = v5;
       v8 = [(NSMutableIndexSet *)self->_selectedIndexes count];
-      v9 = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
+      photosCount = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
       if (v7)
       {
-        v10 = v8 == v9;
+        v10 = v8 == photosCount;
       }
 
       else
@@ -323,9 +323,9 @@
 
 - (id)_currentSelectAllButton
 {
-  v3 = [(_NTKCFaceDetailCustomPhotosViewController *)self _allPhotosSelected];
+  _allPhotosSelected = [(_NTKCFaceDetailCustomPhotosViewController *)self _allPhotosSelected];
   v4 = &OBJC_IVAR____NTKCFaceDetailCustomPhotosViewController__selectAllButton;
-  if (v3)
+  if (_allPhotosSelected)
   {
     v4 = &OBJC_IVAR____NTKCFaceDetailCustomPhotosViewController__deselectAllButton;
   }
@@ -341,7 +341,7 @@
   {
     v5 = NTKCCustomizationLocalizedFormat(@"PHOTOS_NUMBER", @"# Photos", v3);
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
+    photosCount = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
     goto LABEL_5;
   }
 
@@ -349,9 +349,9 @@
   {
     v5 = NTKCCustomizationLocalizedFormat(@"PHOTOS_NUMBER_SELECTED", @"# Photos Selected", v4);
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(NSMutableIndexSet *)self->_selectedIndexes count];
+    photosCount = [(NSMutableIndexSet *)self->_selectedIndexes count];
 LABEL_5:
-    v8 = [v6 localizedStringWithFormat:v5, v7];
+    v8 = [v6 localizedStringWithFormat:v5, photosCount];
 
     [(_NTKCFaceDetailCustomPhotosViewController *)self setTitle:v8];
     goto LABEL_6;
@@ -391,8 +391,8 @@ LABEL_6:
   else if ([(NTKCompanionResourceDirectoryEditor *)self->_editor state:v10]== 2)
   {
     v8 = self->_spinnerButton;
-    v9 = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
-    [v9 setLeftBarButtonItem:v8];
+    navigationItem = [(_NTKCFaceDetailCustomPhotosViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
 
     [(NTKCompanionCustomPhotosEditor *)self->_editor finalizeWithCompletion:v5];
   }
@@ -409,8 +409,8 @@ LABEL_6:
 
 - (void)_selectAllPressed
 {
-  v3 = [(_NTKCFaceDetailCustomPhotosViewController *)self _allPhotosSelected];
-  if (v3)
+  _allPhotosSelected = [(_NTKCFaceDetailCustomPhotosViewController *)self _allPhotosSelected];
+  if (_allPhotosSelected)
   {
     [(NSMutableIndexSet *)self->_selectedIndexes removeAllIndexes];
   }
@@ -420,28 +420,28 @@ LABEL_6:
     [(_NTKCFaceDetailCustomPhotosViewController *)self _selectAllPhotos];
   }
 
-  v4 = !v3;
-  v5 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
-  v6 = [v5 visibleCells];
+  v4 = !_allPhotosSelected;
+  collectionView = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62___NTKCFaceDetailCustomPhotosViewController__selectAllPressed__block_invoke;
   v7[3] = &__block_descriptor_33_e34_v32__0__NTKCPhotoListCell_8Q16_B24l;
   v8 = v4;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [visibleCells enumerateObjectsUsingBlock:v7];
 
   [(_NTKCFaceDetailCustomPhotosViewController *)self _updateButtonsForSelectionChanged];
 }
 
 - (void)_addPressed
 {
-  v3 = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
+  photosCount = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56___NTKCFaceDetailCustomPhotosViewController__addPressed__block_invoke;
   v4[3] = &unk_2787860A0;
   v4[4] = self;
-  [NTKCPhotosAddController presentPhotosAddControllerFromViewController:self selectionLimit:24 - v3 withCompletion:v4];
+  [NTKCPhotosAddController presentPhotosAddControllerFromViewController:self selectionLimit:24 - photosCount withCompletion:v4];
 }
 
 - (void)_deletePressed
@@ -456,12 +456,12 @@ LABEL_6:
     v21[2] = __59___NTKCFaceDetailCustomPhotosViewController__deletePressed__block_invoke_2;
     v21[3] = &unk_278786AC8;
     v22 = v3;
-    v23 = self;
+    selfCopy = self;
     v5 = v3;
     [(NSMutableIndexSet *)selectedIndexes enumerateIndexesWithOptions:2 usingBlock:v21];
     [(NSMutableIndexSet *)self->_selectedIndexes removeAllIndexes];
-    v6 = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
-    [v6 deleteItemsAtIndexPaths:v5];
+    collectionView = [(_NTKCFaceDetailCustomPhotosViewController *)self collectionView];
+    [collectionView deleteItemsAtIndexPaths:v5];
 
     [(_NTKCFaceDetailCustomPhotosViewController *)self setEditing:0 animated:1];
     v7 = v22;
@@ -504,18 +504,18 @@ LABEL_6:
 
 - (BOOL)_allPhotosSelected
 {
-  v3 = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
+  photosCount = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
   selectedIndexes = self->_selectedIndexes;
 
-  return [(NSMutableIndexSet *)selectedIndexes containsIndexesInRange:0, v3];
+  return [(NSMutableIndexSet *)selectedIndexes containsIndexesInRange:0, photosCount];
 }
 
 - (void)_selectAllPhotos
 {
-  v3 = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
+  photosCount = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
   selectedIndexes = self->_selectedIndexes;
 
-  [(NSMutableIndexSet *)selectedIndexes addIndexesInRange:0, v3];
+  [(NSMutableIndexSet *)selectedIndexes addIndexesInRange:0, photosCount];
 }
 
 - (NTKCFaceDetailCustomPhotosViewControllerDelegate)delegate

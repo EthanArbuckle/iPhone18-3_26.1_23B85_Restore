@@ -1,9 +1,9 @@
 @interface _CPClientTimingFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPClientTimingFeedback)init;
-- (_CPClientTimingFeedback)initWithFacade:(id)a3;
+- (_CPClientTimingFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPClientTimingFeedback
@@ -15,34 +15,34 @@
   return v4 ^ [(NSString *)self->_eventName hash]^ v3 ^ (2654435761u * self->_queryId) ^ (2654435761u * self->_nanosecondInterval);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_13;
   }
 
-  v6 = [(_CPClientTimingFeedback *)self input];
-  v7 = [v4 input];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPClientTimingFeedback *)self input];
+  input2 = [equalCopy input];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(_CPClientTimingFeedback *)self input];
-  if (v8)
+  input3 = [(_CPClientTimingFeedback *)self input];
+  if (input3)
   {
-    v9 = v8;
-    v10 = [(_CPClientTimingFeedback *)self input];
-    v11 = [v4 input];
-    v12 = [v10 isEqual:v11];
+    v9 = input3;
+    input4 = [(_CPClientTimingFeedback *)self input];
+    input5 = [equalCopy input];
+    v12 = [input4 isEqual:input5];
 
     if (!v12)
     {
@@ -54,22 +54,22 @@
   {
   }
 
-  v6 = [(_CPClientTimingFeedback *)self eventName];
-  v7 = [v4 eventName];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPClientTimingFeedback *)self eventName];
+  input2 = [equalCopy eventName];
+  if ((input != 0) == (input2 == 0))
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v13 = [(_CPClientTimingFeedback *)self eventName];
-  if (v13)
+  eventName = [(_CPClientTimingFeedback *)self eventName];
+  if (eventName)
   {
-    v14 = v13;
-    v15 = [(_CPClientTimingFeedback *)self eventName];
-    v16 = [v4 eventName];
-    v17 = [v15 isEqual:v16];
+    v14 = eventName;
+    eventName2 = [(_CPClientTimingFeedback *)self eventName];
+    eventName3 = [equalCopy eventName];
+    v17 = [eventName2 isEqual:eventName3];
 
     if (!v17)
     {
@@ -82,10 +82,10 @@ LABEL_12:
   }
 
   queryId = self->_queryId;
-  if (queryId == [v4 queryId])
+  if (queryId == [equalCopy queryId])
   {
     nanosecondInterval = self->_nanosecondInterval;
-    v18 = nanosecondInterval == [v4 nanosecondInterval];
+    v18 = nanosecondInterval == [equalCopy nanosecondInterval];
     goto LABEL_14;
   }
 
@@ -96,26 +96,26 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPClientTimingFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPClientTimingFeedback *)self input];
+  input = [(_CPClientTimingFeedback *)self input];
 
-  if (v5)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_CPClientTimingFeedback *)self eventName];
+  eventName = [(_CPClientTimingFeedback *)self eventName];
 
-  if (v7)
+  if (eventName)
   {
     eventName = self->_eventName;
     PBDataWriterWriteStringField();
@@ -150,33 +150,33 @@ LABEL_14:
   return v2;
 }
 
-- (_CPClientTimingFeedback)initWithFacade:(id)a3
+- (_CPClientTimingFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPClientTimingFeedback;
   v5 = [(_CPClientTimingFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPClientTimingFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 input];
+    -[_CPClientTimingFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    input = [facadeCopy input];
 
-    if (v6)
+    if (input)
     {
-      v7 = [v4 input];
-      [(_CPClientTimingFeedback *)v5 setInput:v7];
+      input2 = [facadeCopy input];
+      [(_CPClientTimingFeedback *)v5 setInput:input2];
     }
 
-    v8 = [v4 eventName];
+    eventName = [facadeCopy eventName];
 
-    if (v8)
+    if (eventName)
     {
-      v9 = [v4 eventName];
-      [(_CPClientTimingFeedback *)v5 setEventName:v9];
+      eventName2 = [facadeCopy eventName];
+      [(_CPClientTimingFeedback *)v5 setEventName:eventName2];
     }
 
-    -[_CPClientTimingFeedback setQueryId:](v5, "setQueryId:", [v4 queryId]);
-    -[_CPClientTimingFeedback setNanosecondInterval:](v5, "setNanosecondInterval:", [v4 nanosecondInterval]);
+    -[_CPClientTimingFeedback setQueryId:](v5, "setQueryId:", [facadeCopy queryId]);
+    -[_CPClientTimingFeedback setNanosecondInterval:](v5, "setNanosecondInterval:", [facadeCopy nanosecondInterval]);
     v10 = v5;
   }
 

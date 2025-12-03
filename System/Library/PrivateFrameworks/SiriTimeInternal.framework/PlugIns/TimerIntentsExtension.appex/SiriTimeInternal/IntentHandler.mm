@@ -1,15 +1,15 @@
 @interface IntentHandler
 - (_TtC21TimerIntentsExtension13IntentHandler)init;
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation IntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000013CC(v4, v8);
+  intentCopy = intent;
+  selfCopy = self;
+  sub_1000013CC(intentCopy, v8);
 
   sub_10000169C(v8, v8[3]);
   v6 = sub_100001EF4();

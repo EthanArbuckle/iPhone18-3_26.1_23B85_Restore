@@ -1,14 +1,14 @@
 @interface DDSAssetQuery
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAssetQuery:(id)a3;
-- (DDSAssetQuery)initWithAssetType:(id)a3 filter:(id)a4 localOnly:(BOOL)a5 installedOnly:(BOOL)a6 latestOnly:(BOOL)a7 cachedOnly:(BOOL)a8;
-- (DDSAssetQuery)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAssetQuery:(id)query;
+- (DDSAssetQuery)initWithAssetType:(id)type filter:(id)filter localOnly:(BOOL)only installedOnly:(BOOL)installedOnly latestOnly:(BOOL)latestOnly cachedOnly:(BOOL)cachedOnly;
+- (DDSAssetQuery)initWithCoder:(id)coder;
 - (NSString)cacheKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dumpDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DDSAssetQuery
@@ -16,15 +16,15 @@
 - (NSString)cacheKey
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(DDSAssetQuery *)self assetType];
-  v5 = [(DDSAssetQuery *)self installedOnly];
-  v6 = [(DDSAssetQuery *)self latestOnly];
-  v7 = [(DDSAssetQuery *)self localOnly];
+  assetType = [(DDSAssetQuery *)self assetType];
+  installedOnly = [(DDSAssetQuery *)self installedOnly];
+  latestOnly = [(DDSAssetQuery *)self latestOnly];
+  localOnly = [(DDSAssetQuery *)self localOnly];
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(DDSAssetQuery *)self filter];
-  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "hash")}];
-  v11 = [v10 stringValue];
-  v12 = [v3 stringWithFormat:@"%@-%d-%d-%d-%@", v4, v5, v6, v7, v11];
+  filter = [(DDSAssetQuery *)self filter];
+  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(filter, "hash")}];
+  stringValue = [v10 stringValue];
+  v12 = [v3 stringWithFormat:@"%@-%d-%d-%d-%@", assetType, installedOnly, latestOnly, localOnly, stringValue];
 
   return v12;
 }
@@ -32,98 +32,98 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(DDSAssetQuery *)self assetType];
-  v5 = [(DDSAssetQuery *)self localOnly];
-  v6 = [(DDSAssetQuery *)self installedOnly];
-  v7 = [(DDSAssetQuery *)self latestOnly];
-  v8 = [(DDSAssetQuery *)self cachedOnly];
-  v9 = [(DDSAssetQuery *)self filter];
-  v10 = [v3 stringWithFormat:@"<query: %@, locO: %d, iO: %d, latO: %d, cO: %d, %@>", v4, v5, v6, v7, v8, v9];
+  assetType = [(DDSAssetQuery *)self assetType];
+  localOnly = [(DDSAssetQuery *)self localOnly];
+  installedOnly = [(DDSAssetQuery *)self installedOnly];
+  latestOnly = [(DDSAssetQuery *)self latestOnly];
+  cachedOnly = [(DDSAssetQuery *)self cachedOnly];
+  filter = [(DDSAssetQuery *)self filter];
+  v10 = [v3 stringWithFormat:@"<query: %@, locO: %d, iO: %d, latO: %d, cO: %d, %@>", assetType, localOnly, installedOnly, latestOnly, cachedOnly, filter];
 
   return v10;
 }
 
-- (DDSAssetQuery)initWithAssetType:(id)a3 filter:(id)a4 localOnly:(BOOL)a5 installedOnly:(BOOL)a6 latestOnly:(BOOL)a7 cachedOnly:(BOOL)a8
+- (DDSAssetQuery)initWithAssetType:(id)type filter:(id)filter localOnly:(BOOL)only installedOnly:(BOOL)installedOnly latestOnly:(BOOL)latestOnly cachedOnly:(BOOL)cachedOnly
 {
-  v15 = a3;
-  v16 = a4;
+  typeCopy = type;
+  filterCopy = filter;
   v20.receiver = self;
   v20.super_class = DDSAssetQuery;
   v17 = [(DDSAssetQuery *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_assetType, a3);
-    objc_storeStrong(&v18->_filter, a4);
-    v18->_localOnly = a5;
-    v18->_latestOnly = a7;
-    v18->_installedOnly = a6;
-    v18->_cachedOnly = a8;
+    objc_storeStrong(&v17->_assetType, type);
+    objc_storeStrong(&v18->_filter, filter);
+    v18->_localOnly = only;
+    v18->_latestOnly = latestOnly;
+    v18->_installedOnly = installedOnly;
+    v18->_cachedOnly = cachedOnly;
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DDSAssetQuery *)self assetType];
+  coderCopy = coder;
+  assetType = [(DDSAssetQuery *)self assetType];
   v6 = NSStringFromSelector(sel_assetType);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:assetType forKey:v6];
 
-  v7 = [(DDSAssetQuery *)self filter];
+  filter = [(DDSAssetQuery *)self filter];
   v8 = NSStringFromSelector(sel_filter);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:filter forKey:v8];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[DDSAssetQuery localOnly](self, "localOnly")}];
   v10 = NSStringFromSelector(sel_localOnly);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:v9 forKey:v10];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[DDSAssetQuery installedOnly](self, "installedOnly")}];
   v12 = NSStringFromSelector(sel_installedOnly);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:v11 forKey:v12];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[DDSAssetQuery latestOnly](self, "latestOnly")}];
   v14 = NSStringFromSelector(sel_latestOnly);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:v13 forKey:v14];
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[DDSAssetQuery cachedOnly](self, "cachedOnly")}];
   v15 = NSStringFromSelector(sel_cachedOnly);
-  [v4 encodeObject:v16 forKey:v15];
+  [coderCopy encodeObject:v16 forKey:v15];
 }
 
-- (DDSAssetQuery)initWithCoder:(id)a3
+- (DDSAssetQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_assetType);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_filter);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_localOnly);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
-  v14 = [v13 BOOLValue];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
+  bOOLValue = [v13 BOOLValue];
 
   v15 = objc_opt_class();
   v16 = NSStringFromSelector(sel_installedOnly);
-  v17 = [v4 decodeObjectOfClass:v15 forKey:v16];
-  v18 = [v17 BOOLValue];
+  v17 = [coderCopy decodeObjectOfClass:v15 forKey:v16];
+  bOOLValue2 = [v17 BOOLValue];
 
   v19 = objc_opt_class();
   v20 = NSStringFromSelector(sel_latestOnly);
-  v21 = [v4 decodeObjectOfClass:v19 forKey:v20];
-  v22 = [v21 BOOLValue];
+  v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
+  bOOLValue3 = [v21 BOOLValue];
 
   v23 = objc_opt_class();
   v24 = NSStringFromSelector(sel_cachedOnly);
-  v25 = [v4 decodeObjectOfClass:v23 forKey:v24];
+  v25 = [coderCopy decodeObjectOfClass:v23 forKey:v24];
 
-  v26 = [v25 BOOLValue];
-  v27 = [(DDSAssetQuery *)self initWithAssetType:v7 filter:v10 localOnly:v14 installedOnly:v18 latestOnly:v22 cachedOnly:v26];
+  bOOLValue4 = [v25 BOOLValue];
+  v27 = [(DDSAssetQuery *)self initWithAssetType:v7 filter:v10 localOnly:bOOLValue installedOnly:bOOLValue2 latestOnly:bOOLValue3 cachedOnly:bOOLValue4];
 
   return v27;
 }
@@ -133,10 +133,10 @@
   if (DDS_IS_INTERNAL_INSTALL())
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(DDSAssetQuery *)self filter];
-    v5 = [v4 dumpDescription];
-    v6 = [(DDSAssetQuery *)self assetType];
-    v7 = [v3 stringWithFormat:@"%@\n(%@, localOnly: %d, installedOnly: %d, latestOnly: %d, cacheOnly: %d)>", v5, v6, -[DDSAssetQuery localOnly](self, "localOnly"), -[DDSAssetQuery installedOnly](self, "installedOnly"), -[DDSAssetQuery latestOnly](self, "latestOnly"), -[DDSAssetQuery cachedOnly](self, "cachedOnly")];
+    filter = [(DDSAssetQuery *)self filter];
+    dumpDescription = [filter dumpDescription];
+    assetType = [(DDSAssetQuery *)self assetType];
+    v7 = [v3 stringWithFormat:@"%@\n(%@, localOnly: %d, installedOnly: %d, latestOnly: %d, cacheOnly: %d)>", dumpDescription, assetType, -[DDSAssetQuery localOnly](self, "localOnly"), -[DDSAssetQuery installedOnly](self, "installedOnly"), -[DDSAssetQuery latestOnly](self, "latestOnly"), -[DDSAssetQuery cachedOnly](self, "cachedOnly")];
   }
 
   else
@@ -147,28 +147,28 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAssetQuery *)self isEqualToAssetQuery:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAssetQuery *)self isEqualToAssetQuery:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAssetQuery:(id)a3
+- (BOOL)isEqualToAssetQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(DDSAssetQuery *)self assetType];
-  v6 = [v4 assetType];
-  if (DDSObjectsAreEqualOrNil(v5, v6))
+  queryCopy = query;
+  assetType = [(DDSAssetQuery *)self assetType];
+  assetType2 = [queryCopy assetType];
+  if (DDSObjectsAreEqualOrNil(assetType, assetType2))
   {
-    v7 = [(DDSAssetQuery *)self filter];
-    v8 = [v4 filter];
-    if (DDSObjectsAreEqualOrNil(v7, v8) && (v9 = -[DDSAssetQuery localOnly](self, "localOnly"), v9 == [v4 localOnly]) && (v10 = -[DDSAssetQuery installedOnly](self, "installedOnly"), v10 == objc_msgSend(v4, "installedOnly")) && (v11 = -[DDSAssetQuery latestOnly](self, "latestOnly"), v11 == objc_msgSend(v4, "latestOnly")))
+    filter = [(DDSAssetQuery *)self filter];
+    filter2 = [queryCopy filter];
+    if (DDSObjectsAreEqualOrNil(filter, filter2) && (v9 = -[DDSAssetQuery localOnly](self, "localOnly"), v9 == [queryCopy localOnly]) && (v10 = -[DDSAssetQuery installedOnly](self, "installedOnly"), v10 == objc_msgSend(queryCopy, "installedOnly")) && (v11 = -[DDSAssetQuery latestOnly](self, "latestOnly"), v11 == objc_msgSend(queryCopy, "latestOnly")))
     {
-      v14 = [(DDSAssetQuery *)self cachedOnly];
-      v12 = v14 ^ [v4 cachedOnly] ^ 1;
+      cachedOnly = [(DDSAssetQuery *)self cachedOnly];
+      v12 = cachedOnly ^ [queryCopy cachedOnly] ^ 1;
     }
 
     else
@@ -187,10 +187,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DDSAssetQuery *)self assetType];
-  v4 = [v3 hash];
-  v5 = [(DDSAssetQuery *)self filter];
-  v6 = [v5 hash] ^ v4;
+  assetType = [(DDSAssetQuery *)self assetType];
+  v4 = [assetType hash];
+  filter = [(DDSAssetQuery *)self filter];
+  v6 = [filter hash] ^ v4;
   if ([(DDSAssetQuery *)self localOnly])
   {
     v7 = 1231;
@@ -236,12 +236,12 @@
   return v11 ^ v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DDSAssetQuery alloc];
-  v5 = [(DDSAssetQuery *)self assetType];
-  v6 = [(DDSAssetQuery *)self filter];
-  v7 = [(DDSAssetQuery *)v4 initWithAssetType:v5 filter:v6];
+  assetType = [(DDSAssetQuery *)self assetType];
+  filter = [(DDSAssetQuery *)self filter];
+  v7 = [(DDSAssetQuery *)v4 initWithAssetType:assetType filter:filter];
 
   [(DDSAssetQuery *)v7 setInstalledOnly:[(DDSAssetQuery *)self installedOnly]];
   [(DDSAssetQuery *)v7 setLocalOnly:[(DDSAssetQuery *)self localOnly]];

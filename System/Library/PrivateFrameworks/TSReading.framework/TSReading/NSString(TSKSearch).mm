@@ -12,7 +12,7 @@
   v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"*?+[(){}^$|\\./"];
   v7 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"“”"];
   v8 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"'‘’"];
-  v9 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if ([a3 length])
   {
     for (i = 0; i < [a3 length]; ++i)
@@ -20,7 +20,7 @@
       v11 = [a3 characterAtIndex:i];
       if ([v6 characterIsMember:v11])
       {
-        [v9 appendFormat:@"\\%C", v11];
+        [string appendFormat:@"\\%C", v11];
       }
 
       else
@@ -29,7 +29,7 @@
         {
           if ([v7 characterIsMember:v11])
           {
-            v12 = v9;
+            v12 = string;
             v13 = @"[“”]";
 LABEL_11:
             [v12 appendFormat:v13, v25];
@@ -38,54 +38,54 @@ LABEL_11:
 
           if ([v8 characterIsMember:v11])
           {
-            v12 = v9;
+            v12 = string;
             v13 = @"['‘’]";
             goto LABEL_11;
           }
         }
 
-        [v9 appendFormat:@"%C", v11];
+        [string appendFormat:@"%C", v11];
       }
     }
   }
 
   if ((a4 & 8) == 0)
   {
-    return v9;
+    return string;
   }
 
   v14 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"\\b" options:0 error:0];
   if (!v14)
   {
-    return v9;
+    return string;
   }
 
   v15 = v14;
-  v16 = [a3 tsu_range];
-  v18 = [v15 matchesInString:a3 options:0 range:{v16, v17}];
+  tsu_range = [a3 tsu_range];
+  v18 = [v15 matchesInString:a3 options:0 range:{tsu_range, v17}];
   if ([v18 count])
   {
     v19 = [objc_msgSend(v18 objectAtIndex:{0), "range"}];
     if (!(v19 | v20))
     {
-      v9 = [MEMORY[0x277CCAB68] stringWithFormat:@"\\b%@", v9];
+      string = [MEMORY[0x277CCAB68] stringWithFormat:@"\\b%@", string];
     }
   }
 
   if ([v18 count] && (v21 = objc_msgSend(objc_msgSend(v18, "lastObject"), "range"), v23 = v22, v21 == objc_msgSend(a3, "length")) && !v23)
   {
-    return [MEMORY[0x277CCAB68] stringWithFormat:@"%@\\b", v9];
+    return [MEMORY[0x277CCAB68] stringWithFormat:@"%@\\b", string];
   }
 
   else
   {
-    return v9;
+    return string;
   }
 }
 
 - (uint64_t)rangeOfString:()TSKSearch searchOptions:updatingSearchRange:
 {
-  v6 = a1;
+  selfCopy = self;
   v7 = a4 & 1;
   if ((a4 & 4) != 0)
   {
@@ -96,50 +96,50 @@ LABEL_11:
   {
     a3 = [objc_opt_class() regexStringForSearchString:a3 options:a4];
     v8 = v7 | 0x400;
-    a1 = v6;
+    self = selfCopy;
   }
 
-  return [a1 tsu_rangeOfString:a3 options:v8 updatingSearchRange:a5];
+  return [self tsu_rangeOfString:a3 options:v8 updatingSearchRange:a5];
 }
 
 - (id)stringByCapitalizingToMatchString:()TSKSearch range:searchOptions:
 {
-  v11 = a1;
-  v12 = [a1 length];
+  selfCopy = self;
+  v12 = [self length];
   if ((a6 & 1) != 0 && v12 >= 2 && a5 >= 2)
   {
-    v13 = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
-    v14 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    v15 = [a1 characterAtIndex:0];
+    lowercaseLetterCharacterSet = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    v15 = [self characterAtIndex:0];
     v16 = [a3 characterAtIndex:a4];
-    if ([v13 characterIsMember:v15])
+    if ([lowercaseLetterCharacterSet characterIsMember:v15])
     {
-      if ([v14 characterIsMember:v16])
+      if ([uppercaseLetterCharacterSet characterIsMember:v16])
       {
-        v17 = [objc_msgSend(a1 substringWithRange:{0, 1), "capitalizedString"}];
+        v17 = [objc_msgSend(self substringWithRange:{0, 1), "capitalizedString"}];
         if ([v17 length])
         {
-          v11 = [a1 mutableCopy];
-          [v11 replaceCharactersInRange:0 withString:{1, v17}];
+          selfCopy = [self mutableCopy];
+          [selfCopy replaceCharactersInRange:0 withString:{1, v17}];
         }
       }
     }
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)stringByReplacingOccurrencesOfString:()TSKSearch withString:searchOptions:range:replacementCount:
 {
-  v13 = a1;
-  v14 = v13;
+  selfCopy = self;
+  v14 = selfCopy;
   v24 = a6;
   v25 = a7;
   v15 = 0;
   if (a7)
   {
     a7 = 0;
-    v16 = v13;
+    v16 = selfCopy;
     do
     {
       v17 = [v16 rangeOfString:a3 searchOptions:a5 updatingSearchRange:&v24];

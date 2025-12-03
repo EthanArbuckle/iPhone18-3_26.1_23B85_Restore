@@ -1,6 +1,6 @@
 @interface _UIPlaybackControlsStateManager
 - (UIScene)_scene;
-- (_UIPlaybackControlsStateManager)initWithScene:(id)a3;
+- (_UIPlaybackControlsStateManager)initWithScene:(id)scene;
 - (id)_beginFullscreenPlaybackSession;
 - (id)_beginPresentingPlaybackControls;
 - (void)_updateState;
@@ -8,16 +8,16 @@
 
 @implementation _UIPlaybackControlsStateManager
 
-- (_UIPlaybackControlsStateManager)initWithScene:(id)a3
+- (_UIPlaybackControlsStateManager)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v12.receiver = self;
   v12.super_class = _UIPlaybackControlsStateManager;
   v5 = [(_UIPlaybackControlsStateManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     v7 = [MEMORY[0x1E696AC70] hashTableWithOptions:261];
     fullscreenPlaybackAssertions = v6->_fullscreenPlaybackAssertions;
     v6->_fullscreenPlaybackAssertions = v7;
@@ -34,8 +34,8 @@
 {
   if (pthread_main_np() != 1)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIPlaybackControlsState.m" lineNumber:53 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPlaybackControlsState.m" lineNumber:53 description:@"Call must be made on main thread"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_scene);
@@ -76,8 +76,8 @@
 {
   if (pthread_main_np() != 1)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIPlaybackControlsState.m" lineNumber:73 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPlaybackControlsState.m" lineNumber:73 description:@"Call must be made on main thread"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_scene);
@@ -116,13 +116,13 @@
 
 - (void)_updateState
 {
-  v2 = [a1[2] count] != 0;
-  if ((([a1[3] count] != 0) & v2) != 0)
+  v2 = [self[2] count] != 0;
+  if ((([self[3] count] != 0) & v2) != 0)
   {
     v2 = 2;
   }
 
-  WeakRetained = objc_loadWeakRetained(a1 + 1);
+  WeakRetained = objc_loadWeakRetained(self + 1);
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47___UIPlaybackControlsStateManager__updateState__block_invoke;

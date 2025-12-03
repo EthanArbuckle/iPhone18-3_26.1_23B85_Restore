@@ -1,10 +1,10 @@
 @interface PKPaymentPreferenceCardCell
 + (double)textOffset;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (PKPaymentPreferenceCardCell)initWithReuseIdentifier:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (PKPaymentPreferenceCardCell)initWithReuseIdentifier:(id)identifier;
 - (PKPaymentPreferenceCardCellAccessoryViewDelegate)delegate;
 - (void)_calculateAccessoryLayout;
-- (void)_performSwitchToggle:(id)a3;
+- (void)_performSwitchToggle:(id)toggle;
 - (void)_setUpConstraints;
 - (void)_updateAccessoryView;
 - (void)_updateAdditionalContextLabel;
@@ -12,57 +12,57 @@
 - (void)_updateDisclosureLabel;
 - (void)_updateLabelTextColors;
 - (void)_updateSubtitleLabel;
-- (void)pk_applyAppearance:(id)a3;
+- (void)pk_applyAppearance:(id)appearance;
 - (void)prepareForReuse;
-- (void)setAccessoryViewType:(int64_t)a3;
-- (void)setActivityIndicatorActive:(BOOL)a3;
-- (void)setActivityIndicatorColor:(id)a3;
-- (void)setAdditionalContextString:(id)a3;
-- (void)setDimCardArt:(BOOL)a3;
-- (void)setDisabledMainLabelColor:(id)a3;
-- (void)setDisabledSubtitleLabelColor:(id)a3;
-- (void)setDisclosureString:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHasError:(BOOL)a3;
-- (void)setMainLabelColor:(id)a3;
-- (void)setPass:(id)a3;
-- (void)setSubtitleLabelColor:(id)a3;
-- (void)setSubtitleOverrideString:(id)a3;
-- (void)setTransitBalanceModel:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setAccessoryViewType:(int64_t)type;
+- (void)setActivityIndicatorActive:(BOOL)active;
+- (void)setActivityIndicatorColor:(id)color;
+- (void)setAdditionalContextString:(id)string;
+- (void)setDimCardArt:(BOOL)art;
+- (void)setDisabledMainLabelColor:(id)color;
+- (void)setDisabledSubtitleLabelColor:(id)color;
+- (void)setDisclosureString:(id)string;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHasError:(BOOL)error;
+- (void)setMainLabelColor:(id)color;
+- (void)setPass:(id)pass;
+- (void)setSubtitleLabelColor:(id)color;
+- (void)setSubtitleOverrideString:(id)string;
+- (void)setTransitBalanceModel:(id)model;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PKPaymentPreferenceCardCell
 
-- (PKPaymentPreferenceCardCell)initWithReuseIdentifier:(id)a3
+- (PKPaymentPreferenceCardCell)initWithReuseIdentifier:(id)identifier
 {
   v51.receiver = self;
   v51.super_class = PKPaymentPreferenceCardCell;
-  v3 = [(PKPaymentPreferenceCell *)&v51 initWithReuseIdentifier:a3];
+  v3 = [(PKPaymentPreferenceCell *)&v51 initWithReuseIdentifier:identifier];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
-    v3->_isRightToLeft = [v4 userInterfaceLayoutDirection] == 1;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v3->_isRightToLeft = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
     v3->_editing = 0;
     v3->_accessoryViewType = 0;
-    v5 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     mainLabelColor = v3->_mainLabelColor;
-    v3->_mainLabelColor = v5;
+    v3->_mainLabelColor = labelColor;
 
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     subtitleLabelColor = v3->_subtitleLabelColor;
-    v3->_subtitleLabelColor = v7;
+    v3->_subtitleLabelColor = secondaryLabelColor;
 
-    v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     disabledMainLabelColor = v3->_disabledMainLabelColor;
-    v3->_disabledMainLabelColor = v9;
+    v3->_disabledMainLabelColor = tertiaryLabelColor;
 
-    v11 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
     disabledSubtitleLabelColor = v3->_disabledSubtitleLabelColor;
-    v3->_disabledSubtitleLabelColor = v11;
+    v3->_disabledSubtitleLabelColor = quaternaryLabelColor;
 
-    v50 = [(PKPaymentPreferenceCardCell *)v3 contentView];
+    contentView = [(PKPaymentPreferenceCardCell *)v3 contentView];
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     displayLabel = v3->_displayLabel;
     v3->_displayLabel = v13;
@@ -104,14 +104,14 @@
     [(UIImageView *)v3->_cardArtView setContentMode:1];
     [(UIImageView *)v3->_cardArtView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_cardArtView setAccessibilityIgnoresInvertColors:1];
-    [v50 addSubview:v3->_cardArtView];
+    [contentView addSubview:v3->_cardArtView];
     v28 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     snapshotSpinner = v3->_snapshotSpinner;
     v3->_snapshotSpinner = v28;
 
     [(UIActivityIndicatorView *)v3->_snapshotSpinner setHidesWhenStopped:1];
     [(UIActivityIndicatorView *)v3->_snapshotSpinner setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v50 addSubview:v3->_snapshotSpinner];
+    [contentView addSubview:v3->_snapshotSpinner];
     v30 = objc_alloc(MEMORY[0x1E69DCF90]);
     v31 = [v30 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     labelStackView = v3->_labelStackView;
@@ -123,7 +123,7 @@
     [(UIStackView *)v3->_labelStackView addArrangedSubview:v3->_displayLabel];
     [(UIStackView *)v3->_labelStackView addArrangedSubview:v3->_subtitleLabel];
     [(UIStackView *)v3->_labelStackView addArrangedSubview:v3->_additionalContextLabel];
-    [v50 addSubview:v3->_labelStackView];
+    [contentView addSubview:v3->_labelStackView];
     v33 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     activityIndicator = v3->_activityIndicator;
     v3->_activityIndicator = v33;
@@ -150,8 +150,8 @@
     v3->_disclosureView = v39;
 
     v41 = v3->_disclosureView;
-    v42 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v41 setTintColor:v42];
+    tertiaryLabelColor2 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v41 setTintColor:tertiaryLabelColor2];
 
     v43 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     disclosureLabel = v3->_disclosureLabel;
@@ -162,8 +162,8 @@
     [(UILabel *)v45 setFont:v46];
 
     v47 = v3->_disclosureLabel;
-    v48 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UILabel *)v47 setTextColor:v48];
+    tertiaryLabelColor3 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UILabel *)v47 setTextColor:tertiaryLabelColor3];
 
     [(PKPaymentPreferenceCardCell *)v3 _setUpConstraints];
   }
@@ -177,8 +177,8 @@
   v7.super_class = PKPaymentPreferenceCardCell;
   [(PKPaymentPreferenceCell *)&v7 prepareForReuse];
   [(PKPaymentPreferenceCardCell *)self setUserInteractionEnabled:1];
-  v3 = [(PKPaymentPreferenceCardCell *)self textLabel];
-  [v3 setText:0];
+  textLabel = [(PKPaymentPreferenceCardCell *)self textLabel];
+  [textLabel setText:0];
 
   ++self->_snapshotCounter;
   pass = self->_pass;
@@ -200,133 +200,133 @@
   objc_storeWeak(&self->_delegate, 0);
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  v3 = a3;
+  errorCopy = error;
   v6.receiver = self;
   v6.super_class = PKPaymentPreferenceCardCell;
   [(PKPaymentPreferenceCell *)&v6 setHasError:?];
-  if (v3)
+  if (errorCopy)
   {
-    v5 = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
+    pkui_osloErrorColor = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
   }
 
   else
   {
-    v5 = 0;
+    pkui_osloErrorColor = 0;
   }
 
-  if (self->_subtitleLabelColorOverride != v5)
+  if (self->_subtitleLabelColorOverride != pkui_osloErrorColor)
   {
-    objc_storeStrong(&self->_subtitleLabelColorOverride, v5);
+    objc_storeStrong(&self->_subtitleLabelColorOverride, pkui_osloErrorColor);
     [(PKPaymentPreferenceCardCell *)self _updateLabelTextColors];
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = PKPaymentPreferenceCardCell;
   [(PKPaymentPreferenceCardCell *)&v5 setUserInteractionEnabled:?];
-  [(UISwitch *)self->_actionSwitch setEnabled:v3];
+  [(UISwitch *)self->_actionSwitch setEnabled:enabledCopy];
   [(PKPaymentPreferenceCardCell *)self _updateLabelTextColors];
 }
 
-- (void)setAccessoryViewType:(int64_t)a3
+- (void)setAccessoryViewType:(int64_t)type
 {
-  if (self->_accessoryViewType != a3)
+  if (self->_accessoryViewType != type)
   {
-    self->_accessoryViewType = a3;
+    self->_accessoryViewType = type;
     [(PKPaymentPreferenceCardCell *)self _updateAccessoryView];
   }
 }
 
-- (void)setMainLabelColor:(id)a3
+- (void)setMainLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_mainLabelColor != v5)
+  colorCopy = color;
+  if (self->_mainLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mainLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_mainLabelColor, color);
     [(PKPaymentPreferenceCardCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setSubtitleLabelColor:(id)a3
+- (void)setSubtitleLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_subtitleLabelColor != v5)
+  colorCopy = color;
+  if (self->_subtitleLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subtitleLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_subtitleLabelColor, color);
     [(PKPaymentPreferenceCardCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setDisabledMainLabelColor:(id)a3
+- (void)setDisabledMainLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_disabledMainLabelColor != v5)
+  colorCopy = color;
+  if (self->_disabledMainLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_disabledMainLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_disabledMainLabelColor, color);
     [(PKPaymentPreferenceCardCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setDisabledSubtitleLabelColor:(id)a3
+- (void)setDisabledSubtitleLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_disabledSubtitleLabelColor != v5)
+  colorCopy = color;
+  if (self->_disabledSubtitleLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_disabledSubtitleLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_disabledSubtitleLabelColor, color);
     [(PKPaymentPreferenceCardCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setActivityIndicatorColor:(id)a3
+- (void)setActivityIndicatorColor:(id)color
 {
-  v5 = a3;
-  if (self->_activityIndicatorColor != v5)
+  colorCopy = color;
+  if (self->_activityIndicatorColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activityIndicatorColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_activityIndicatorColor, color);
     [(UIActivityIndicatorView *)self->_activityIndicator setColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setActivityIndicatorActive:(BOOL)a3
+- (void)setActivityIndicatorActive:(BOOL)active
 {
-  if (self->_activityIndicatorActive == !a3)
+  if (self->_activityIndicatorActive == !active)
   {
-    self->_activityIndicatorActive = a3;
+    self->_activityIndicatorActive = active;
     [(PKPaymentPreferenceCardCell *)self _updateAccessoryView];
   }
 }
 
-- (void)setDimCardArt:(BOOL)a3
+- (void)setDimCardArt:(BOOL)art
 {
-  if (self->_dimCardArt == !a3)
+  if (self->_dimCardArt == !art)
   {
-    self->_dimCardArt = a3;
+    self->_dimCardArt = art;
     [(PKPaymentPreferenceCardCell *)self _updateCellContent];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing == !a3)
+  if (self->_editing == !editing)
   {
-    v4 = a4;
-    self->_editing = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_editing = editing;
+    if (editing)
     {
       v6 = 0.2;
     }
@@ -336,7 +336,7 @@
       v6 = 1.0;
     }
 
-    if (a3)
+    if (editing)
     {
       v7 = 0;
     }
@@ -347,7 +347,7 @@
     }
 
     [(PKPaymentPreferenceCardCell *)self setSelectionStyle:v7];
-    if (v4)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -366,31 +366,31 @@
   }
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_pass, a3);
+    objc_storeStrong(&self->_pass, pass);
     [(PKPaymentPreferenceCardCell *)self _updateCellContent];
   }
 }
 
-- (void)setTransitBalanceModel:(id)a3
+- (void)setTransitBalanceModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_transitBalanceModel, a3);
+    objc_storeStrong(&self->_transitBalanceModel, model);
     [(PKPaymentPreferenceCardCell *)self _updateSubtitleLabel];
   }
 }
 
-- (void)setSubtitleOverrideString:(id)a3
+- (void)setSubtitleOverrideString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = self->_subtitleOverrideString;
-  v6 = v4;
+  v6 = stringCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -419,11 +419,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDisclosureString:(id)a3
+- (void)setDisclosureString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = self->_disclosureString;
-  v6 = v4;
+  v6 = stringCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -452,11 +452,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAdditionalContextString:(id)a3
+- (void)setAdditionalContextString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = self->_additionalContextString;
-  v6 = v4;
+  v6 = stringCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -485,13 +485,13 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_performSwitchToggle:(id)a3
+- (void)_performSwitchToggle:(id)toggle
 {
-  v5 = a3;
+  toggleCopy = toggle;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained paymentPreferenceCardCell:self didChangeSwitchState:{objc_msgSend(v5, "isOn")}];
+    [WeakRetained paymentPreferenceCardCell:self didChangeSwitchState:{objc_msgSend(toggleCopy, "isOn")}];
   }
 }
 
@@ -506,32 +506,32 @@ LABEL_9:
     return;
   }
 
-  v5 = [(PKPaymentPass *)self->_pass isAccessPass];
+  isAccessPass = [(PKPaymentPass *)self->_pass isAccessPass];
   pass = self->_pass;
-  if (!v5)
+  if (!isAccessPass)
   {
     if ([(PKPaymentPass *)pass isTransitPass])
     {
-      v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v9 = PKSanitizedPrimaryAccountRepresentationForPass();
-      if ([v9 length])
+      peerPaymentBalance2 = objc_alloc_init(MEMORY[0x1E695DF70]);
+      minimalFormattedStringValue = PKSanitizedPrimaryAccountRepresentationForPass();
+      if ([minimalFormattedStringValue length])
       {
-        [v8 addObject:v9];
+        [peerPaymentBalance2 addObject:minimalFormattedStringValue];
       }
 
-      v10 = [(PKTransitBalanceModel *)self->_transitBalanceModel primaryDisplayableBalance];
-      [v8 safelyAddObject:v10];
+      primaryDisplayableBalance = [(PKTransitBalanceModel *)self->_transitBalanceModel primaryDisplayableBalance];
+      [peerPaymentBalance2 safelyAddObject:primaryDisplayableBalance];
 
-      v11 = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableCommutePlanCount];
-      [v8 safelyAddObject:v11];
+      displayableCommutePlanCount = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableCommutePlanCount];
+      [peerPaymentBalance2 safelyAddObject:displayableCommutePlanCount];
 
-      if (![v8 count])
+      if (![peerPaymentBalance2 count])
       {
 
         goto LABEL_18;
       }
 
-      v12 = [v8 componentsJoinedByString:{@", "}];
+      v12 = [peerPaymentBalance2 componentsJoinedByString:{@", "}];
     }
 
     else
@@ -541,46 +541,46 @@ LABEL_9:
         goto LABEL_18;
       }
 
-      v13 = [(PKPaymentPass *)self->_pass peerPaymentBalance];
+      peerPaymentBalance = [(PKPaymentPass *)self->_pass peerPaymentBalance];
 
-      if (!v13)
+      if (!peerPaymentBalance)
       {
         goto LABEL_18;
       }
 
-      v8 = [(PKPaymentPass *)self->_pass peerPaymentBalance];
-      v9 = [v8 minimalFormattedStringValue];
-      v12 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInA.isa, &stru_1F3BD5BF0.isa, v9);
+      peerPaymentBalance2 = [(PKPaymentPass *)self->_pass peerPaymentBalance];
+      minimalFormattedStringValue = [peerPaymentBalance2 minimalFormattedStringValue];
+      v12 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInA.isa, &stru_1F3BD5BF0.isa, minimalFormattedStringValue);
     }
 
-    v22 = v12;
+    value = v12;
 
-    if (v22)
+    if (value)
     {
       goto LABEL_19;
     }
 
 LABEL_18:
-    v22 = PKSanitizedPrimaryAccountRepresentationForPass();
+    value = PKSanitizedPrimaryAccountRepresentationForPass();
     goto LABEL_19;
   }
 
   v7 = [(PKPaymentPass *)pass fieldForKey:*MEMORY[0x1E69BC0D8]];
-  v22 = [v7 value];
+  value = [v7 value];
 
 LABEL_19:
   v14 = self->_availabilityString;
-  if ([v22 length] && -[NSString length](v14, "length"))
+  if ([value length] && -[NSString length](v14, "length"))
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v22, v14];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", value, v14];
 LABEL_26:
     v16 = v15;
     goto LABEL_27;
   }
 
-  if ([v22 length])
+  if ([value length])
   {
-    v15 = v22;
+    v15 = value;
     goto LABEL_26;
   }
 
@@ -592,14 +592,14 @@ LABEL_26:
 
   v16 = 0;
 LABEL_27:
-  v17 = [MEMORY[0x1E69B8CF8] defaults];
-  v18 = [v17 defaultBillingAddressForPaymentPass:self->_pass];
+  defaults = [MEMORY[0x1E69B8CF8] defaults];
+  v18 = [defaults defaultBillingAddressForPaymentPass:self->_pass];
 
   if (self->_showBillingAddress && v18)
   {
-    v19 = [v18 pkSingleLineFormattedContactAddress];
+    pkSingleLineFormattedContactAddress = [v18 pkSingleLineFormattedContactAddress];
     v20 = self->_subtitleLabel;
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v16, v19];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v16, pkSingleLineFormattedContactAddress];
     [(UILabel *)v20 setText:v21];
   }
 
@@ -627,8 +627,8 @@ LABEL_27:
 - (void)_updateCellContent
 {
   displayLabel = self->_displayLabel;
-  v4 = [(PKPaymentPass *)self->_pass localizedDescription];
-  [(UILabel *)displayLabel setText:v4];
+  localizedDescription = [(PKPaymentPass *)self->_pass localizedDescription];
+  [(UILabel *)displayLabel setText:localizedDescription];
 
   [(PKPaymentPreferenceCardCell *)self _updateSubtitleLabel];
   [(PKPaymentPreferenceCardCell *)self _updateAdditionalContextLabel];
@@ -723,9 +723,9 @@ LABEL_9:
 
 - (void)_updateLabelTextColors
 {
-  v3 = [(PKPaymentPreferenceCardCell *)self isUserInteractionEnabled];
+  isUserInteractionEnabled = [(PKPaymentPreferenceCardCell *)self isUserInteractionEnabled];
   displayLabel = self->_displayLabel;
-  if (v3)
+  if (isUserInteractionEnabled)
   {
     [(UILabel *)displayLabel setTextColor:self->_mainLabelColor];
     subtitleLabelColorOverride = self->_subtitleLabelColorOverride;
@@ -754,23 +754,23 @@ LABEL_9:
   [(UILabel *)additionalContextLabel setTextColor:subtitleLabelColor];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
   v43 = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = PKPaymentPreferenceCardCell;
-  [(PKTableViewCell *)&v39 systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(PKTableViewCell *)&v39 systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   v7 = v6;
   v9 = v8;
-  v10 = [(PKPaymentPreferenceCardCell *)self textLabel];
-  v11 = [v10 text];
-  v12 = [v11 length];
+  textLabel = [(PKPaymentPreferenceCardCell *)self textLabel];
+  text = [textLabel text];
+  v12 = [text length];
 
   if (v12)
   {
-    v13 = [(PKPaymentPreferenceCardCell *)self textLabel];
-    v14 = [v13 font];
-    [v14 xHeight];
+    textLabel2 = [(PKPaymentPreferenceCardCell *)self textLabel];
+    font = [textLabel2 font];
+    [font xHeight];
     v16 = v15;
 
     v17 = fmax(v16 + 18.0, 52.0);
@@ -784,8 +784,8 @@ LABEL_9:
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v20 = [(UIStackView *)self->_labelStackView arrangedSubviews];
-    v21 = [v20 countByEnumeratingWithState:&v35 objects:v42 count:16];
+    arrangedSubviews = [(UIStackView *)self->_labelStackView arrangedSubviews];
+    v21 = [arrangedSubviews countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v21)
     {
       v22 = v21;
@@ -797,18 +797,18 @@ LABEL_9:
         {
           if (*v36 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           v26 = *(*(&v35 + 1) + 8 * i);
-          v27 = [v26 text];
-          if ([v27 length])
+          text2 = [v26 text];
+          if ([text2 length])
           {
             v40 = v24;
-            v28 = [v26 font];
-            v41 = v28;
+            font2 = [v26 font];
+            v41 = font2;
             v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-            [v27 sizeWithAttributes:v29];
+            [text2 sizeWithAttributes:v29];
             v31 = v30;
 
             [(UIStackView *)self->_labelStackView spacing];
@@ -816,7 +816,7 @@ LABEL_9:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v35 objects:v42 count:16];
+        v22 = [arrangedSubviews countByEnumeratingWithState:&v35 objects:v42 count:16];
       }
 
       while (v22);
@@ -846,15 +846,15 @@ LABEL_9:
   [(PKPaymentPreferenceCardCell *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PKPaymentPreferenceCardCell *)self accessoryView];
-  v8 = [v7 subviews];
-  if ([v8 count])
+  accessoryView = [(PKPaymentPreferenceCardCell *)self accessoryView];
+  subviews = [accessoryView subviews];
+  if ([subviews count])
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = v8;
+    v9 = subviews;
     v10 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
     v11 = 0.0;
     if (v10)
@@ -898,7 +898,7 @@ LABEL_9:
       v11 = v19;
     }
 
-    [v7 setBounds:{0.0, 0.0, v11, v15}];
+    [accessoryView setBounds:{0.0, 0.0, v11, v15}];
     remainder.origin.x = 0.0;
     remainder.origin.y = 0.0;
     remainder.size.width = v11;
@@ -942,7 +942,7 @@ LABEL_9:
 - (void)_updateAccessoryView
 {
   activityIndicatorActive = self->_activityIndicatorActive;
-  v4 = [(UIActivityIndicatorView *)self->_activityIndicator isAnimating];
+  isAnimating = [(UIActivityIndicatorView *)self->_activityIndicator isAnimating];
   v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
   accessoryViewType = self->_accessoryViewType;
   v13 = v5;
@@ -965,7 +965,7 @@ LABEL_9:
   [v13 addSubview:*(&self->super.super.super.super.super.super.isa + *v7)];
   v5 = v13;
 LABEL_6:
-  v8 = !v4;
+  v8 = !isAnimating;
   if (self->_activityIndicatorActive)
   {
     [v13 addSubview:self->_activityIndicator];
@@ -988,8 +988,8 @@ LABEL_6:
     v5 = v13;
   }
 
-  v10 = [v5 subviews];
-  v11 = [v10 count];
+  subviews = [v5 subviews];
+  v11 = [subviews count];
 
   if (v11)
   {
@@ -1012,45 +1012,45 @@ LABEL_6:
   PKPassFrontFaceContentSize();
   PKFloatRoundToPixel();
   v4 = v3;
-  v5 = [(PKPaymentPreferenceCardCell *)self contentView];
-  v6 = [(UIImageView *)self->_cardArtView leadingAnchor];
-  v7 = [v5 leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:16.0];
+  contentView = [(PKPaymentPreferenceCardCell *)self contentView];
+  leadingAnchor = [(UIImageView *)self->_cardArtView leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v56 addObject:v8];
 
-  v9 = [(UIImageView *)self->_cardArtView heightAnchor];
-  v10 = [v9 constraintEqualToConstant:v4];
+  heightAnchor = [(UIImageView *)self->_cardArtView heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:v4];
   [v56 addObject:v10];
 
-  v11 = [(UIImageView *)self->_cardArtView widthAnchor];
-  v12 = [v11 constraintEqualToConstant:40.0];
+  widthAnchor = [(UIImageView *)self->_cardArtView widthAnchor];
+  v12 = [widthAnchor constraintEqualToConstant:40.0];
   [v56 addObject:v12];
 
-  v13 = [(UIImageView *)self->_cardArtView topAnchor];
-  v14 = [v5 topAnchor];
-  v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14 constant:8.0];
+  topAnchor = [(UIImageView *)self->_cardArtView topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v15 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:8.0];
   [v56 addObject:v15];
 
-  v16 = [(UIImageView *)self->_cardArtView bottomAnchor];
-  v17 = [v5 bottomAnchor];
-  v18 = [v16 constraintLessThanOrEqualToAnchor:v17 constant:-8.0];
+  bottomAnchor = [(UIImageView *)self->_cardArtView bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v18 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-8.0];
   [v56 addObject:v18];
 
-  v19 = [(UIImageView *)self->_cardArtView centerYAnchor];
-  v20 = [v5 centerYAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:0.0];
+  centerYAnchor = [(UIImageView *)self->_cardArtView centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
 
   LODWORD(v22) = 1132068864;
   [v21 setPriority:v22];
   [v56 addObject:v21];
-  v23 = [(UIActivityIndicatorView *)self->_snapshotSpinner centerXAnchor];
-  v24 = [(UIImageView *)self->_cardArtView centerXAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:0.0];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_snapshotSpinner centerXAnchor];
+  centerXAnchor2 = [(UIImageView *)self->_cardArtView centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
   [v56 addObject:v25];
 
-  v26 = [(UIActivityIndicatorView *)self->_snapshotSpinner centerYAnchor];
-  v27 = [(UIImageView *)self->_cardArtView centerYAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:0.0];
+  centerYAnchor3 = [(UIActivityIndicatorView *)self->_snapshotSpinner centerYAnchor];
+  centerYAnchor4 = [(UIImageView *)self->_cardArtView centerYAnchor];
+  v28 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:0.0];
   [v56 addObject:v28];
 
   LODWORD(v29) = 1148846080;
@@ -1069,35 +1069,35 @@ LABEL_6:
   [(UIStackView *)self->_labelStackView setContentCompressionResistancePriority:1 forAxis:v35];
   LODWORD(v36) = 1148846080;
   [(UIStackView *)self->_labelStackView setContentHuggingPriority:1 forAxis:v36];
-  v37 = [(UIStackView *)self->_labelStackView leadingAnchor];
-  v38 = [(UIImageView *)self->_cardArtView trailingAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38 constant:8.0];
+  leadingAnchor3 = [(UIStackView *)self->_labelStackView leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_cardArtView trailingAnchor];
+  v39 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
   [v56 addObject:v39];
 
-  v40 = [(UIStackView *)self->_labelStackView topAnchor];
-  v41 = [v5 topAnchor];
-  v42 = [v40 constraintGreaterThanOrEqualToAnchor:v41 constant:8.0];
+  topAnchor3 = [(UIStackView *)self->_labelStackView topAnchor];
+  topAnchor4 = [contentView topAnchor];
+  v42 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:8.0];
   [v56 addObject:v42];
 
-  v43 = [(UIStackView *)self->_labelStackView bottomAnchor];
-  v44 = [v5 bottomAnchor];
-  v45 = [v43 constraintLessThanOrEqualToAnchor:v44 constant:-8.0];
+  bottomAnchor3 = [(UIStackView *)self->_labelStackView bottomAnchor];
+  bottomAnchor4 = [contentView bottomAnchor];
+  v45 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4 constant:-8.0];
   [v56 addObject:v45];
 
-  v46 = [(UIStackView *)self->_labelStackView trailingAnchor];
-  v47 = [v5 trailingAnchor];
-  v48 = [v46 constraintLessThanOrEqualToAnchor:v47 constant:0.0];
+  trailingAnchor2 = [(UIStackView *)self->_labelStackView trailingAnchor];
+  trailingAnchor3 = [contentView trailingAnchor];
+  v48 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:0.0];
   [v56 addObject:v48];
 
-  v49 = [(UIStackView *)self->_labelStackView centerYAnchor];
-  v50 = [v5 centerYAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50 constant:0.0];
+  centerYAnchor5 = [(UIStackView *)self->_labelStackView centerYAnchor];
+  centerYAnchor6 = [contentView centerYAnchor];
+  v51 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6 constant:0.0];
 
   LODWORD(v52) = 1132068864;
   [v51 setPriority:v52];
   [v56 addObject:v51];
-  v53 = [v5 heightAnchor];
-  v54 = [v53 constraintGreaterThanOrEqualToConstant:v4 + 16.0];
+  heightAnchor2 = [contentView heightAnchor];
+  v54 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:v4 + 16.0];
 
   LODWORD(v55) = 1144750080;
   [v54 setPriority:v55];
@@ -1119,27 +1119,27 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
   v10.receiver = self;
   v10.super_class = PKPaymentPreferenceCardCell;
-  v4 = a3;
-  [(PKTableViewCell *)&v10 pk_applyAppearance:v4];
-  v5 = [v4 textColor];
-  [(PKPaymentPreferenceCardCell *)self setMainLabelColor:v5];
+  appearanceCopy = appearance;
+  [(PKTableViewCell *)&v10 pk_applyAppearance:appearanceCopy];
+  textColor = [appearanceCopy textColor];
+  [(PKPaymentPreferenceCardCell *)self setMainLabelColor:textColor];
 
-  v6 = [v4 altTextColor];
-  [(PKPaymentPreferenceCardCell *)self setSubtitleLabelColor:v6];
+  altTextColor = [appearanceCopy altTextColor];
+  [(PKPaymentPreferenceCardCell *)self setSubtitleLabelColor:altTextColor];
 
-  v7 = [v4 altTextColor];
-  [(PKPaymentPreferenceCardCell *)self setDisabledMainLabelColor:v7];
+  altTextColor2 = [appearanceCopy altTextColor];
+  [(PKPaymentPreferenceCardCell *)self setDisabledMainLabelColor:altTextColor2];
 
-  v8 = [v4 altTextColor];
-  [(PKPaymentPreferenceCardCell *)self setDisabledSubtitleLabelColor:v8];
+  altTextColor3 = [appearanceCopy altTextColor];
+  [(PKPaymentPreferenceCardCell *)self setDisabledSubtitleLabelColor:altTextColor3];
 
-  v9 = [v4 tintColor];
+  tintColor = [appearanceCopy tintColor];
 
-  [(PKPaymentPreferenceCardCell *)self setTintColor:v9];
+  [(PKPaymentPreferenceCardCell *)self setTintColor:tintColor];
 }
 
 @end

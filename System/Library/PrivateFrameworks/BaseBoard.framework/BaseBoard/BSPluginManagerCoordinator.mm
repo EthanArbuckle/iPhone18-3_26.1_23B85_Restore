@@ -1,9 +1,9 @@
 @interface BSPluginManagerCoordinator
 + (id)sharedInstance;
 - (id)mainPluginManager;
-- (id)pluginManagerForBundle:(id)a3;
+- (id)pluginManagerForBundle:(id)bundle;
 - (void)registerPlugins;
-- (void)registerPluginsFromBundle:(id)a3;
+- (void)registerPluginsFromBundle:(id)bundle;
 @end
 
 @implementation BSPluginManagerCoordinator
@@ -47,54 +47,54 @@ void __44__BSPluginManagerCoordinator_sharedInstance__block_invoke()
 
 - (void)registerPlugins
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
   [(BSPluginManagerCoordinator *)self registerPluginsFromBundle:?];
 }
 
-- (void)registerPluginsFromBundle:(id)a3
+- (void)registerPluginsFromBundle:(id)bundle
 {
-  v7 = a3;
-  v4 = [v7 bundleIdentifier];
-  if (v4)
+  bundleCopy = bundle;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_managersByBundleID objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_managersByBundleID objectForKey:bundleIdentifier];
     if (!v6)
     {
-      v6 = [BSPluginManager managerForBundle:v7];
+      v6 = [BSPluginManager managerForBundle:bundleCopy];
       if (v6)
       {
-        [(NSMutableDictionary *)v5->_managersByBundleID setObject:v6 forKey:v4];
+        [(NSMutableDictionary *)selfCopy->_managersByBundleID setObject:v6 forKey:bundleIdentifier];
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (id)mainPluginManager
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [(BSPluginManagerCoordinator *)self pluginManagerForBundle:v3];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [(BSPluginManagerCoordinator *)self pluginManagerForBundle:mainBundle];
 
   return v4;
 }
 
-- (id)pluginManagerForBundle:(id)a3
+- (id)pluginManagerForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  bundleCopy = bundle;
+  v5 = bundleCopy;
+  if (bundleCopy)
   {
-    v6 = [v4 bundleIdentifier];
-    if (v6)
+    bundleIdentifier = [bundleCopy bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v7 = self;
-      objc_sync_enter(v7);
-      [(BSPluginManagerCoordinator *)v7 registerPluginsFromBundle:v5];
-      v8 = [(NSMutableDictionary *)v7->_managersByBundleID objectForKey:v6];
-      objc_sync_exit(v7);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(BSPluginManagerCoordinator *)selfCopy registerPluginsFromBundle:v5];
+      v8 = [(NSMutableDictionary *)selfCopy->_managersByBundleID objectForKey:bundleIdentifier];
+      objc_sync_exit(selfCopy);
     }
 
     else

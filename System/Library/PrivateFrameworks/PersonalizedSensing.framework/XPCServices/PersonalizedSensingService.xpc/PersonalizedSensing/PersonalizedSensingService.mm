@@ -1,24 +1,24 @@
 @interface PersonalizedSensingService
 - (BOOL)isFetchedContextDonationEnabled;
-- (PersonalizedSensingService)initWithClientID:(id)a3;
+- (PersonalizedSensingService)initWithClientID:(id)d;
 - (void)clearMemoryAndExitCleanly;
 - (void)dealloc;
-- (void)fetchContextWithOptions:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 withReply:(id)a6;
-- (void)fetchPersonalizedContextWithOptions:(id)a3 withReply:(id)a4;
+- (void)fetchContextWithOptions:(id)options predicates:(id)predicates authorizedTypes:(id)types withReply:(id)reply;
+- (void)fetchPersonalizedContextWithOptions:(id)options withReply:(id)reply;
 - (void)interruptionHandler;
 - (void)invalidationHandler;
-- (void)notifyContextFeedback:(id)a3 withReply:(id)a4;
-- (void)refreshMomentsContextWithReply:(id)a3;
+- (void)notifyContextFeedback:(id)feedback withReply:(id)reply;
+- (void)refreshMomentsContextWithReply:(id)reply;
 - (void)releaseOSTransaction;
-- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)a3;
+- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)reply;
 - (void)takeOSTransaction;
 @end
 
 @implementation PersonalizedSensingService
 
-- (PersonalizedSensingService)initWithClientID:(id)a3
+- (PersonalizedSensingService)initWithClientID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -32,7 +32,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_clientBundleId, a3);
+    objc_storeStrong(&v7->_clientBundleId, d);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("PersonalizedSensingService.internal", v9);
     internalQueue = v8->_internalQueue;
@@ -43,7 +43,7 @@
     externalQueue = v8->_externalQueue;
     v8->_externalQueue = v13;
 
-    v15 = [[MOContextManager alloc] initWithClientID:v5];
+    v15 = [[MOContextManager alloc] initWithClientID:dCopy];
     contextManager = v8->_contextManager;
     v8->_contextManager = v15;
 
@@ -137,16 +137,16 @@
 - (BOOL)isFetchedContextDonationEnabled
 {
   v2 = +[ACAccountStore defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
 
-  LOBYTE(v2) = [v3 isEnabledForDataclass:kAccountDataclassCloudPhotos];
+  LOBYTE(v2) = [aa_primaryAppleAccount isEnabledForDataclass:kAccountDataclassCloudPhotos];
   return v2;
 }
 
-- (void)fetchPersonalizedContextWithOptions:(id)a3 withReply:(id)a4
+- (void)fetchPersonalizedContextWithOptions:(id)options withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   if (self->hasEntitlementForNLData)
   {
     [(PersonalizedSensingService *)self takeOSTransaction];
@@ -173,10 +173,10 @@
     v16[2] = __76__PersonalizedSensingService_fetchPersonalizedContextWithOptions_withReply___block_invoke;
     v16[3] = &unk_1000B4FB8;
     v16[4] = self;
-    v17 = v6;
+    v17 = optionsCopy;
     v18 = v11;
     v19 = v9;
-    v20 = v7;
+    v20 = replyCopy;
     v13 = v9;
     v14 = v11;
     [(MOContextManager *)contextManager retrievePersonalizedContextWithOption:v17 handler:v16];
@@ -196,7 +196,7 @@
     v23 = @"PSService, application missing NL data entitlement";
     v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v13 = [NSError errorWithDomain:@"MOContextErrorDomain" code:1286 userInfo:v14];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
   }
 }
 
@@ -294,21 +294,21 @@ void __76__PersonalizedSensingService_fetchPersonalizedContextWithOptions_withRe
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)fetchContextWithOptions:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 withReply:(id)a6
+- (void)fetchContextWithOptions:(id)options predicates:(id)predicates authorizedTypes:(id)types withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  optionsCopy = options;
+  predicatesCopy = predicates;
+  typesCopy = types;
+  replyCopy = reply;
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v12;
+    v31 = typesCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "PSService, authorizedTypes,%@", buf, 0xCu);
   }
 
-  if ([v12 isEqualToSet:self->dataAccessEntitlements])
+  if ([typesCopy isEqualToSet:self->dataAccessEntitlements])
   {
     [(PersonalizedSensingService *)self takeOSTransaction];
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -333,9 +333,9 @@ void __76__PersonalizedSensingService_fetchPersonalizedContextWithOptions_withRe
     v24 = __91__PersonalizedSensingService_fetchContextWithOptions_predicates_authorizedTypes_withReply___block_invoke;
     v25 = &unk_1000B4FE0;
     v26 = v16;
-    v27 = v13;
+    v27 = replyCopy;
     v19 = v16;
-    [(MOContextManager *)contextManager retrieveContextWithOption:v10 predicates:v11 authorizedTypes:v12 handler:&v22];
+    [(MOContextManager *)contextManager retrieveContextWithOption:optionsCopy predicates:predicatesCopy authorizedTypes:typesCopy handler:&v22];
     [(PersonalizedSensingService *)self clearMemoryAndExitCleanly:v22];
 
     v20 = v26;
@@ -353,7 +353,7 @@ void __76__PersonalizedSensingService_fetchPersonalizedContextWithOptions_withRe
     v29 = @"PSService, context retrieval entitlement check failed";
     v19 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v20 = [NSError errorWithDomain:@"MOContextErrorDomain" code:1286 userInfo:v19];
-    (*(v13 + 2))(v13, 0, v20);
+    (*(replyCopy + 2))(replyCopy, 0, v20);
   }
 }
 
@@ -414,10 +414,10 @@ void __91__PersonalizedSensingService_fetchContextWithOptions_predicates_authori
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)notifyContextFeedback:(id)a3 withReply:(id)a4
+- (void)notifyContextFeedback:(id)feedback withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  replyCopy = reply;
   [(PersonalizedSensingService *)self takeOSTransaction];
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
@@ -431,7 +431,7 @@ void __91__PersonalizedSensingService_fetchContextWithOptions_predicates_authori
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 description];
+    v11 = [feedbackCopy description];
     v13 = 138412290;
     v14 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "PSService, notifyContextFeedback, feedback,%@", &v13, 0xCu);
@@ -445,14 +445,14 @@ void __91__PersonalizedSensingService_fetchContextWithOptions_predicates_authori
   }
 
   [(MOPerformanceMeasurement *)v9 endSession];
-  v7[2](v7, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 
   [(PersonalizedSensingService *)self clearMemoryAndExitCleanly];
 }
 
-- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)a3
+- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v5))
   {
@@ -470,8 +470,8 @@ void __91__PersonalizedSensingService_fetchContextWithOptions_predicates_authori
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PSService,requestDBAccessForPersonalizedSensingService", v12, 2u);
   }
 
-  v8 = [(PersonalizedSensingService *)self contextManager];
-  v9 = [v8 requestBackgroundProcessAccessForDB];
+  contextManager = [(PersonalizedSensingService *)self contextManager];
+  requestBackgroundProcessAccessForDB = [contextManager requestBackgroundProcessAccessForDB];
 
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v10))
@@ -481,14 +481,14 @@ void __91__PersonalizedSensingService_fetchContextWithOptions_predicates_authori
   }
 
   [(MOPerformanceMeasurement *)v6 endSession];
-  v4[2](v4, v9);
+  replyCopy[2](replyCopy, requestBackgroundProcessAccessForDB);
 
   [(PersonalizedSensingService *)self clearMemoryAndExitCleanly];
 }
 
-- (void)refreshMomentsContextWithReply:(id)a3
+- (void)refreshMomentsContextWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(PersonalizedSensingService *)self takeOSTransaction];
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v5))
@@ -512,8 +512,8 @@ void __91__PersonalizedSensingService_fetchContextWithOptions_predicates_authori
   v13 = __61__PersonalizedSensingService_refreshMomentsContextWithReply___block_invoke;
   v14 = &unk_1000B5008;
   v15 = v6;
-  v16 = v4;
-  v9 = v4;
+  v16 = replyCopy;
+  v9 = replyCopy;
   v10 = v6;
   [(MOContextManager *)contextManager refreshMomentsContextWithReply:&v11];
   [(PersonalizedSensingService *)self clearMemoryAndExitCleanly:v11];

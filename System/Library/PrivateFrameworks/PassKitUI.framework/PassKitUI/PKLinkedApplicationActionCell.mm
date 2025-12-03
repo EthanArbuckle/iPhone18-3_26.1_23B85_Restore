@@ -1,49 +1,49 @@
 @interface PKLinkedApplicationActionCell
-- (PKLinkedApplicationActionCell)initWithCoder:(id)a3;
-- (PKLinkedApplicationActionCell)initWithLinkedApplication:(id)a3 reuseIdentifier:(id)a4;
-- (PKLinkedApplicationActionCell)initWithStoreIDs:(id)a3 appLaunchURL:(id)a4 reuseIdentifier:(id)a5;
+- (PKLinkedApplicationActionCell)initWithCoder:(id)coder;
+- (PKLinkedApplicationActionCell)initWithLinkedApplication:(id)application reuseIdentifier:(id)identifier;
+- (PKLinkedApplicationActionCell)initWithStoreIDs:(id)ds appLaunchURL:(id)l reuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)linkedApplicationDidChangeState:(id)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
 @end
 
 @implementation PKLinkedApplicationActionCell
 
-- (PKLinkedApplicationActionCell)initWithCoder:(id)a3
+- (PKLinkedApplicationActionCell)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This class is not NSCoding compliant"];
 
   return [(PKLinkedApplicationActionCell *)self init];
 }
 
-- (PKLinkedApplicationActionCell)initWithStoreIDs:(id)a3 appLaunchURL:(id)a4 reuseIdentifier:(id)a5
+- (PKLinkedApplicationActionCell)initWithStoreIDs:(id)ds appLaunchURL:(id)l reuseIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PKLinkedApplication alloc] initWithStoreIDs:v10 defaultLaunchURL:v9];
+  identifierCopy = identifier;
+  lCopy = l;
+  dsCopy = ds;
+  v11 = [[PKLinkedApplication alloc] initWithStoreIDs:dsCopy defaultLaunchURL:lCopy];
 
-  v12 = [(PKLinkedApplicationActionCell *)self initWithLinkedApplication:v11 reuseIdentifier:v8];
+  v12 = [(PKLinkedApplicationActionCell *)self initWithLinkedApplication:v11 reuseIdentifier:identifierCopy];
   return v12;
 }
 
-- (PKLinkedApplicationActionCell)initWithLinkedApplication:(id)a3 reuseIdentifier:(id)a4
+- (PKLinkedApplicationActionCell)initWithLinkedApplication:(id)application reuseIdentifier:(id)identifier
 {
-  v6 = a3;
+  applicationCopy = application;
   v10.receiver = self;
   v10.super_class = PKLinkedApplicationActionCell;
-  v7 = [(PKLinkedApplicationActionCell *)&v10 initWithStyle:0 reuseIdentifier:a4];
+  v7 = [(PKLinkedApplicationActionCell *)&v10 initWithStyle:0 reuseIdentifier:identifier];
   if (v7)
   {
-    v8 = v6;
-    if (!v6)
+    v8 = applicationCopy;
+    if (!applicationCopy)
     {
       v8 = [[PKLinkedApplication alloc] initWithStoreIDs:0 defaultLaunchURL:0];
     }
 
     objc_storeStrong(&v7->_linkedApplication, v8);
-    if (!v6)
+    if (!applicationCopy)
     {
     }
 
@@ -67,9 +67,9 @@
   v4.receiver = self;
   v4.super_class = PKLinkedApplicationActionCell;
   [(PKLinkedApplicationActionCell *)&v4 didMoveToWindow];
-  v3 = [(PKLinkedApplicationActionCell *)self window];
+  window = [(PKLinkedApplicationActionCell *)self window];
 
-  if (v3)
+  if (window)
   {
     [(PKLinkedApplication *)self->_linkedApplication reloadApplicationStateIfNecessary];
   }
@@ -80,21 +80,21 @@
   v17.receiver = self;
   v17.super_class = PKLinkedApplicationActionCell;
   [(PKLinkedApplicationActionCell *)&v17 layoutSubviews];
-  v3 = [(PKLinkedApplication *)self->_linkedApplication state];
-  v4 = v3 == 1 || v3 != 0;
-  v5 = v3 == 1;
-  v6 = [(PKLinkedApplicationActionCell *)self textLabel];
-  v7 = v6;
+  state = [(PKLinkedApplication *)self->_linkedApplication state];
+  v4 = state == 1 || state != 0;
+  v5 = state == 1;
+  textLabel = [(PKLinkedApplicationActionCell *)self textLabel];
+  v7 = textLabel;
   if (!v4 || !v5)
   {
     if (!self->_disabledTextColor)
     {
-      v8 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
       goto LABEL_11;
     }
 
 LABEL_9:
-    [v6 setTextColor:?];
+    [textLabel setTextColor:?];
     goto LABEL_12;
   }
 
@@ -103,16 +103,16 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [MEMORY[0x1E69DC888] systemBlueColor];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] systemBlueColor];
 LABEL_11:
-  v9 = v8;
-  [v7 setTextColor:v8];
+  v9 = tertiaryLabelColor;
+  [v7 setTextColor:tertiaryLabelColor];
 
 LABEL_12:
-  v10 = [(PKLinkedApplication *)self->_linkedApplication displayName];
-  if ([v10 length])
+  displayName = [(PKLinkedApplication *)self->_linkedApplication displayName];
+  if ([displayName length])
   {
-    PKLocalizedString(&cfstr_OpenApp.isa, &stru_1F3BD5BF0.isa, v10, 0);
+    PKLocalizedString(&cfstr_OpenApp.isa, &stru_1F3BD5BF0.isa, displayName, 0);
   }
 
   else
@@ -124,9 +124,9 @@ LABEL_12:
 
   if (v4)
   {
-    v12 = [(PKLinkedApplicationActionCell *)self accessoryView];
+    accessoryView = [(PKLinkedApplicationActionCell *)self accessoryView];
 
-    if (v12)
+    if (accessoryView)
     {
       [(UIActivityIndicatorView *)self->_activityIndicator stopAnimating];
       [(PKLinkedApplicationActionCell *)self setAccessoryView:0];
@@ -142,9 +142,9 @@ LABEL_12:
       self->_activityIndicator = v13;
     }
 
-    v15 = [(PKLinkedApplicationActionCell *)self accessoryView];
+    accessoryView2 = [(PKLinkedApplicationActionCell *)self accessoryView];
 
-    if (!v15)
+    if (!accessoryView2)
     {
       [(PKLinkedApplicationActionCell *)self setAccessoryView:self->_activityIndicator];
       [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
@@ -165,16 +165,16 @@ LABEL_12:
   [(PKLinkedApplicationActionCell *)self setUserInteractionEnabled:v5];
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  v5 = a3;
-  if (![v5 state])
+  stateCopy = state;
+  if (![stateCopy state])
   {
-    v4 = [(PKLinkedApplicationActionCell *)self window];
+    window = [(PKLinkedApplicationActionCell *)self window];
 
-    if (v4)
+    if (window)
     {
-      [v5 reloadApplicationStateIfNecessary];
+      [stateCopy reloadApplicationStateIfNecessary];
     }
   }
 

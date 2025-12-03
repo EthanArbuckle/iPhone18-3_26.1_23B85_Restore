@@ -1,13 +1,13 @@
 @interface EKFrozenReminderRecurrenceRule
-+ (int)convertFromReminderKitFrequency:(int64_t)a3;
-+ (int)convertFromReminderKitWeekday:(int64_t)a3;
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4;
-- (EKFrozenReminderRecurrenceRule)initWithAlternateUniverseObject:(id)a3 inEventStore:(id)a4 withUpdatedChildObjects:(id)a5;
-- (EKFrozenReminderRecurrenceRule)initWithREMObject:(id)a3 inStore:(id)a4 withChanges:(id)a5;
-- (id)addUpdatedRecurrenceRule:(id)a3;
++ (int)convertFromReminderKitFrequency:(int64_t)frequency;
++ (int)convertFromReminderKitWeekday:(int64_t)weekday;
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error;
+- (EKFrozenReminderRecurrenceRule)initWithAlternateUniverseObject:(id)object inEventStore:(id)store withUpdatedChildObjects:(id)objects;
+- (EKFrozenReminderRecurrenceRule)initWithREMObject:(id)object inStore:(id)store withChanges:(id)changes;
+- (id)addUpdatedRecurrenceRule:(id)rule;
 - (id)daysOfTheWeekFromREMRecurrenceRule;
 - (id)endDate;
-- (id)remDaysOfTheWeekFromEKDaysOfTheWeek:(id)a3;
+- (id)remDaysOfTheWeekFromEKDaysOfTheWeek:(id)week;
 - (id)remObjectID;
 - (id)specifier;
 - (id)uniqueIdentifier;
@@ -15,20 +15,20 @@
 - (int)frequencyRaw;
 - (int64_t)interval;
 - (unint64_t)count;
-- (void)loadSpecifierDaysOfTheWeek:(id *)a3 daysOfTheMonth:(id *)a4 monthsOfTheYear:(id *)a5 weeksOfTheYear:(id *)a6 daysOfTheYear:(id *)a7 setPositions:(id *)a8;
+- (void)loadSpecifierDaysOfTheWeek:(id *)week daysOfTheMonth:(id *)month monthsOfTheYear:(id *)year weeksOfTheYear:(id *)theYear daysOfTheYear:(id *)ofTheYear setPositions:(id *)positions;
 @end
 
 @implementation EKFrozenReminderRecurrenceRule
 
-- (EKFrozenReminderRecurrenceRule)initWithREMObject:(id)a3 inStore:(id)a4 withChanges:(id)a5
+- (EKFrozenReminderRecurrenceRule)initWithREMObject:(id)object inStore:(id)store withChanges:(id)changes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  objectCopy = object;
+  storeCopy = store;
+  changesCopy = changes;
+  v11 = changesCopy;
+  if (!objectCopy)
   {
-    if (!v10)
+    if (!changesCopy)
     {
       v11 = objc_alloc_init(EKChangeSet);
       [(EKChangeSet *)v11 setSkipsPersistentObjectCopy:1];
@@ -37,67 +37,67 @@
     v12 = [(EKChangeSet *)v11 valueForSingleValueKey:@"uniqueIdentifier" basedOn:0];
     if (!v12)
     {
-      v13 = [MEMORY[0x1E696AFB0] UUID];
-      v14 = [v13 UUIDString];
-      [(EKChangeSet *)v11 changeSingleValue:v14 forKey:@"uniqueIdentifier" basedOn:0];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      [(EKChangeSet *)v11 changeSingleValue:uUIDString forKey:@"uniqueIdentifier" basedOn:0];
     }
   }
 
   v17.receiver = self;
   v17.super_class = EKFrozenReminderRecurrenceRule;
-  v15 = [(EKFrozenReminderObject *)&v17 initWithREMObject:v8 inStore:v9 withChanges:v11];
+  v15 = [(EKFrozenReminderObject *)&v17 initWithREMObject:objectCopy inStore:storeCopy withChanges:v11];
 
   return v15;
 }
 
-- (EKFrozenReminderRecurrenceRule)initWithAlternateUniverseObject:(id)a3 inEventStore:(id)a4 withUpdatedChildObjects:(id)a5
+- (EKFrozenReminderRecurrenceRule)initWithAlternateUniverseObject:(id)object inEventStore:(id)store withUpdatedChildObjects:(id)objects
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  storeCopy = store;
   v9 = objc_alloc_init(EKChangeSet);
   [(EKChangeSet *)v9 setSkipsPersistentObjectCopy:1];
-  v10 = [v7 valueForKey:@"uniqueIdentifier"];
+  v10 = [objectCopy valueForKey:@"uniqueIdentifier"];
   if (v10)
   {
     [(EKChangeSet *)v9 changeSingleValue:v10 forKey:@"uniqueIdentifier" basedOn:0];
   }
 
-  v11 = [v7 valueForKey:@"endDate"];
+  v11 = [objectCopy valueForKey:@"endDate"];
   [(EKChangeSet *)v9 changeSingleValue:v11 forKey:@"endDate" basedOn:0];
 
-  v12 = [v7 valueForKey:@"count"];
+  v12 = [objectCopy valueForKey:@"count"];
   [(EKChangeSet *)v9 changeSingleValue:v12 forKey:@"count" basedOn:0];
 
-  v13 = [v7 valueForKey:@"frequencyRaw"];
+  v13 = [objectCopy valueForKey:@"frequencyRaw"];
   [(EKChangeSet *)v9 changeSingleValue:v13 forKey:@"frequencyRaw" basedOn:0];
 
-  v14 = [v7 valueForKey:@"interval"];
+  v14 = [objectCopy valueForKey:@"interval"];
   [(EKChangeSet *)v9 changeSingleValue:v14 forKey:@"interval" basedOn:0];
 
-  v15 = [v7 valueForKey:@"firstDayOfTheWeekRaw"];
+  v15 = [objectCopy valueForKey:@"firstDayOfTheWeekRaw"];
   [(EKChangeSet *)v9 changeSingleValue:v15 forKey:@"firstDayOfTheWeekRaw" basedOn:0];
 
-  v16 = [v7 valueForKey:@"specifier"];
+  v16 = [objectCopy valueForKey:@"specifier"];
   [(EKChangeSet *)v9 changeSingleValue:v16 forKey:@"specifier" basedOn:0];
 
-  v17 = [v8 reminderStore];
+  reminderStore = [storeCopy reminderStore];
 
-  v18 = [(EKFrozenReminderRecurrenceRule *)self initWithREMObject:0 inStore:v17 withChanges:v9];
+  v18 = [(EKFrozenReminderRecurrenceRule *)self initWithREMObject:0 inStore:reminderStore withChanges:v9];
   return v18;
 }
 
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error
 {
-  v6 = [(EKFrozenReminderObject *)self path];
-  v7 = [v6 firstObject];
+  path = [(EKFrozenReminderObject *)self path];
+  firstObject = [path firstObject];
 
-  if (v7)
+  if (firstObject)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._reminderStore);
-    v9 = [WeakRetained remStore];
+    remStore = [WeakRetained remStore];
 
     v16 = 0;
-    v10 = [v9 fetchReminderWithObjectID:v7 error:&v16];
+    v10 = [remStore fetchReminderWithObjectID:firstObject error:&v16];
     v11 = v16;
     v12 = v10 != 0;
     if (!v10)
@@ -108,9 +108,9 @@
         [EKFrozenReminderRecurrenceRule _applyChangesToSaveRequest:error:];
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:5];
+        *error = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:5];
       }
     }
   }
@@ -123,10 +123,10 @@
       [EKFrozenReminderRecurrenceRule _applyChangesToSaveRequest:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithEKErrorCode:5];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -161,27 +161,27 @@ id __50__EKFrozenReminderRecurrenceRule_uniqueIdentifier__block_invoke(uint64_t 
 
 - (id)remObjectID
 {
-  v3 = [(EKFrozenReminderRecurrenceRule *)self _recurrenceRule];
+  _recurrenceRule = [(EKFrozenReminderRecurrenceRule *)self _recurrenceRule];
 
-  if (v3)
+  if (_recurrenceRule)
   {
-    v4 = [(EKFrozenReminderRecurrenceRule *)self _recurrenceRule];
-    v5 = [v4 objectID];
+    _recurrenceRule2 = [(EKFrozenReminderRecurrenceRule *)self _recurrenceRule];
+    objectID = [_recurrenceRule2 objectID];
   }
 
   else
   {
-    v5 = 0;
+    objectID = 0;
   }
 
-  return v5;
+  return objectID;
 }
 
-- (id)addUpdatedRecurrenceRule:(id)a3
+- (id)addUpdatedRecurrenceRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   v21 = [EKFrozenReminderRecurrenceRule convertToReminderKitFrequency:[(EKFrozenReminderRecurrenceRule *)self frequencyRaw]];
-  v19 = [(EKFrozenReminderRecurrenceRule *)self interval];
+  interval = [(EKFrozenReminderRecurrenceRule *)self interval];
   v18 = [objc_opt_class() convertToReminderKitWeekday:{-[EKFrozenReminderRecurrenceRule firstDayOfTheWeekRaw](self, "firstDayOfTheWeekRaw")}];
   v27 = 0;
   v28[0] = 0;
@@ -204,10 +204,10 @@ id __50__EKFrozenReminderRecurrenceRule_uniqueIdentifier__block_invoke(uint64_t 
 
   else
   {
-    v10 = [(EKFrozenReminderRecurrenceRule *)self endDate];
-    if (v10)
+    endDate = [(EKFrozenReminderRecurrenceRule *)self endDate];
+    if (endDate)
     {
-      v9 = [getREMRecurrenceEndClass() recurrenceEndWithEndDate:v10];
+      v9 = [getREMRecurrenceEndClass() recurrenceEndWithEndDate:endDate];
     }
 
     else
@@ -216,13 +216,13 @@ id __50__EKFrozenReminderRecurrenceRule_uniqueIdentifier__block_invoke(uint64_t 
     }
   }
 
-  v11 = [getREMRecurrenceRuleClass() newObjectID];
+  newObjectID = [getREMRecurrenceRuleClass() newObjectID];
   v12 = objc_alloc(getREMRecurrenceRuleClass());
-  v13 = [v4 accountID];
-  v14 = [v4 objectID];
-  v15 = [v12 initRecurrenceRuleWithObjectID:v11 accountID:v13 reminderID:v14 frequency:v21 interval:v19 firstDayOfTheWeek:v18 daysOfTheWeek:v20 daysOfTheMonth:v22 monthsOfTheYear:v5 weeksOfTheYear:v6 daysOfTheYear:v7 setPositions:v17 end:v9];
+  accountID = [ruleCopy accountID];
+  objectID = [ruleCopy objectID];
+  v15 = [v12 initRecurrenceRuleWithObjectID:newObjectID accountID:accountID reminderID:objectID frequency:v21 interval:interval firstDayOfTheWeek:v18 daysOfTheWeek:v20 daysOfTheMonth:v22 monthsOfTheYear:v5 weeksOfTheYear:v6 daysOfTheYear:v7 setPositions:v17 end:v9];
 
-  [v4 addRecurrenceRule:v15];
+  [ruleCopy addRecurrenceRule:v15];
 
   return v15;
 }
@@ -256,9 +256,9 @@ id __41__EKFrozenReminderRecurrenceRule_endDate__block_invoke(uint64_t a1)
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKFrozenReminderObject *)self valueForSingleValueKey:@"count" backingValue:v5];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 id __39__EKFrozenReminderRecurrenceRule_count__block_invoke(uint64_t a1)
@@ -279,9 +279,9 @@ id __39__EKFrozenReminderRecurrenceRule_count__block_invoke(uint64_t a1)
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKFrozenReminderObject *)self valueForSingleValueKey:@"frequencyRaw" backingValue:v5];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 id __46__EKFrozenReminderRecurrenceRule_frequencyRaw__block_invoke(uint64_t a1)
@@ -293,11 +293,11 @@ id __46__EKFrozenReminderRecurrenceRule_frequencyRaw__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (int)convertFromReminderKitFrequency:(int64_t)a3
++ (int)convertFromReminderKitFrequency:(int64_t)frequency
 {
-  if (a3 < 5)
+  if (frequency < 5)
   {
-    return dword_1A81C3C98[a3];
+    return dword_1A81C3C98[frequency];
   }
 
   v4 = +[EKReminderStore log];
@@ -317,9 +317,9 @@ id __46__EKFrozenReminderRecurrenceRule_frequencyRaw__block_invoke(uint64_t a1)
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKFrozenReminderObject *)self valueForSingleValueKey:@"interval" backingValue:v5];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 id __42__EKFrozenReminderRecurrenceRule_interval__block_invoke(uint64_t a1)
@@ -339,9 +339,9 @@ id __42__EKFrozenReminderRecurrenceRule_interval__block_invoke(uint64_t a1)
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKFrozenReminderObject *)self valueForSingleValueKey:@"firstDayOfTheWeekRaw" backingValue:v5];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 id __54__EKFrozenReminderRecurrenceRule_firstDayOfTheWeekRaw__block_invoke(uint64_t a1)
@@ -353,11 +353,11 @@ id __54__EKFrozenReminderRecurrenceRule_firstDayOfTheWeekRaw__block_invoke(uint6
   return v3;
 }
 
-+ (int)convertFromReminderKitWeekday:(int64_t)a3
++ (int)convertFromReminderKitWeekday:(int64_t)weekday
 {
-  if (a3 < 8)
+  if (weekday < 8)
   {
-    return dword_1A81C3CAC[a3];
+    return dword_1A81C3CAC[weekday];
   }
 
   v4 = +[EKReminderStore log];
@@ -372,15 +372,15 @@ id __54__EKFrozenReminderRecurrenceRule_firstDayOfTheWeekRaw__block_invoke(uint6
 - (id)daysOfTheWeekFromREMRecurrenceRule
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(EKFrozenReminderRecurrenceRule *)self _recurrenceRule];
-  v4 = [v3 daysOfTheWeek];
+  _recurrenceRule = [(EKFrozenReminderRecurrenceRule *)self _recurrenceRule];
+  daysOfTheWeek = [_recurrenceRule daysOfTheWeek];
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(daysOfTheWeek, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = daysOfTheWeek;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -412,16 +412,16 @@ id __54__EKFrozenReminderRecurrenceRule_firstDayOfTheWeekRaw__block_invoke(uint6
   return v5;
 }
 
-- (id)remDaysOfTheWeekFromEKDaysOfTheWeek:(id)a3
+- (id)remDaysOfTheWeekFromEKDaysOfTheWeek:(id)week
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  weekCopy = week;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(weekCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v4;
+  obj = weekCopy;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v6)
   {
@@ -509,20 +509,20 @@ id __43__EKFrozenReminderRecurrenceRule_specifier__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)loadSpecifierDaysOfTheWeek:(id *)a3 daysOfTheMonth:(id *)a4 monthsOfTheYear:(id *)a5 weeksOfTheYear:(id *)a6 daysOfTheYear:(id *)a7 setPositions:(id *)a8
+- (void)loadSpecifierDaysOfTheWeek:(id *)week daysOfTheMonth:(id *)month monthsOfTheYear:(id *)year weeksOfTheYear:(id *)theYear daysOfTheYear:(id *)ofTheYear setPositions:(id *)positions
 {
   v15 = [EKRecurrenceHelper alloc];
-  v16 = [(EKFrozenReminderRecurrenceRule *)self specifier];
-  v19 = [(EKRecurrenceHelper *)v15 initWithSpecifier:v16];
+  specifier = [(EKFrozenReminderRecurrenceRule *)self specifier];
+  v19 = [(EKRecurrenceHelper *)v15 initWithSpecifier:specifier];
 
-  v17 = [(EKRecurrenceHelper *)v19 daysOfTheWeek];
-  v18 = [(EKFrozenReminderRecurrenceRule *)self remDaysOfTheWeekFromEKDaysOfTheWeek:v17];
-  *a3 = v18;
-  *a4 = [(EKRecurrenceHelper *)v19 daysOfTheMonth];
-  *a5 = [(EKRecurrenceHelper *)v19 monthsOfTheYear];
-  *a6 = [(EKRecurrenceHelper *)v19 weeksOfTheYear];
-  *a7 = [(EKRecurrenceHelper *)v19 daysOfTheYear];
-  *a8 = [(EKRecurrenceHelper *)v19 setPositions];
+  daysOfTheWeek = [(EKRecurrenceHelper *)v19 daysOfTheWeek];
+  v18 = [(EKFrozenReminderRecurrenceRule *)self remDaysOfTheWeekFromEKDaysOfTheWeek:daysOfTheWeek];
+  *week = v18;
+  *month = [(EKRecurrenceHelper *)v19 daysOfTheMonth];
+  *year = [(EKRecurrenceHelper *)v19 monthsOfTheYear];
+  *theYear = [(EKRecurrenceHelper *)v19 weeksOfTheYear];
+  *ofTheYear = [(EKRecurrenceHelper *)v19 daysOfTheYear];
+  *positions = [(EKRecurrenceHelper *)v19 setPositions];
 }
 
 - (void)_applyChangesToSaveRequest:error:.cold.1()

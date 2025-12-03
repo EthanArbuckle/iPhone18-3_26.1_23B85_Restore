@@ -1,5 +1,5 @@
 @interface CRKConcreteContact
-- (CRKConcreteContact)initWithContact:(id)a3;
+- (CRKConcreteContact)initWithContact:(id)contact;
 - (NSData)thumbnailImageData;
 - (NSString)familyName;
 - (NSString)givenName;
@@ -11,16 +11,16 @@
 
 @implementation CRKConcreteContact
 
-- (CRKConcreteContact)initWithContact:(id)a3
+- (CRKConcreteContact)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = CRKConcreteContact;
   v6 = [(CRKConcreteContact *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingContact, a3);
+    objc_storeStrong(&v6->_underlyingContact, contact);
   }
 
   return v7;
@@ -28,58 +28,58 @@
 
 - (NSString)identifier
 {
-  v2 = [(CRKConcreteContact *)self underlyingContact];
-  v3 = [v2 identifier];
+  underlyingContact = [(CRKConcreteContact *)self underlyingContact];
+  identifier = [underlyingContact identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)nickname
 {
-  v2 = [(CRKConcreteContact *)self underlyingContact];
-  v3 = [v2 nickname];
+  underlyingContact = [(CRKConcreteContact *)self underlyingContact];
+  nickname = [underlyingContact nickname];
 
-  return v3;
+  return nickname;
 }
 
 - (NSString)familyName
 {
-  v2 = [(CRKConcreteContact *)self underlyingContact];
-  v3 = [v2 familyName];
+  underlyingContact = [(CRKConcreteContact *)self underlyingContact];
+  familyName = [underlyingContact familyName];
 
-  return v3;
+  return familyName;
 }
 
 - (NSString)givenName
 {
-  v2 = [(CRKConcreteContact *)self underlyingContact];
-  v3 = [v2 givenName];
+  underlyingContact = [(CRKConcreteContact *)self underlyingContact];
+  givenName = [underlyingContact givenName];
 
-  return v3;
+  return givenName;
 }
 
 - (NSString)phoneticFamilyName
 {
-  v2 = [(CRKConcreteContact *)self underlyingContact];
-  v3 = [v2 phoneticFamilyName];
+  underlyingContact = [(CRKConcreteContact *)self underlyingContact];
+  phoneticFamilyName = [underlyingContact phoneticFamilyName];
 
-  return v3;
+  return phoneticFamilyName;
 }
 
 - (NSString)phoneticGivenName
 {
-  v2 = [(CRKConcreteContact *)self underlyingContact];
-  v3 = [v2 phoneticGivenName];
+  underlyingContact = [(CRKConcreteContact *)self underlyingContact];
+  phoneticGivenName = [underlyingContact phoneticGivenName];
 
-  return v3;
+  return phoneticGivenName;
 }
 
 - (NSData)thumbnailImageData
 {
-  v2 = [(CRKConcreteContact *)self underlyingContact];
-  v3 = [v2 thumbnailImageData];
+  underlyingContact = [(CRKConcreteContact *)self underlyingContact];
+  thumbnailImageData = [underlyingContact thumbnailImageData];
 
-  return v3;
+  return thumbnailImageData;
 }
 
 @end

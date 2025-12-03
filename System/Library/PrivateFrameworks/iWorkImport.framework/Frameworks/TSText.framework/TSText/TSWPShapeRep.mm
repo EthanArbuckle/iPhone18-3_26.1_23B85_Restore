@@ -1,7 +1,7 @@
 @interface TSWPShapeRep
 - (CGRect)reflectionFrameInRootForClipping;
 - (TSDContainerInfo)containerInfo;
-- (TSWPShapeRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSWPShapeRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)childReps;
 - (id)layoutsForChildReps;
 - (void)dealloc;
@@ -11,10 +11,10 @@
 
 @implementation TSWPShapeRep
 
-- (TSWPShapeRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSWPShapeRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  canvasCopy = canvas;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -30,7 +30,7 @@
 
   v24.receiver = self;
   v24.super_class = TSWPShapeRep;
-  v17 = [(TSDShapeRep *)&v24 initWithLayout:v6 canvas:v7];
+  v17 = [(TSDShapeRep *)&v24 initWithLayout:layoutCopy canvas:canvasCopy];
   v20 = v17;
   if (v17)
   {
@@ -114,8 +114,8 @@ LABEL_5:
 
   v9.receiver = self;
   v9.super_class = TSWPShapeRep;
-  v5 = [(TSDRep *)&v9 childReps];
-  v7 = objc_msgSend_arrayByAddingObjectsFromArray_(v4, v6, v5);
+  childReps = [(TSDRep *)&v9 childReps];
+  v7 = objc_msgSend_arrayByAddingObjectsFromArray_(v4, v6, childReps);
 
   return v7;
 }
@@ -125,7 +125,7 @@ LABEL_5:
   v20[1] = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = TSWPShapeRep;
-  v3 = [(TSDRep *)&v19 layoutsForChildReps];
+  layoutsForChildReps = [(TSDRep *)&v19 layoutsForChildReps];
   v6 = objc_msgSend_layout(self, v4, v5);
   v9 = objc_msgSend_containedLayout(v6, v7, v8);
   v10 = v9 == 0;
@@ -135,12 +135,12 @@ LABEL_5:
     v13 = objc_msgSend_containedLayout(v6, v11, v12);
     v20[0] = v13;
     v15 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v14, v20, 1);
-    v17 = objc_msgSend_tsu_arrayByRemovingObjectsIdenticalToObjectsInArray_(v3, v16, v15);
+    v17 = objc_msgSend_tsu_arrayByRemovingObjectsIdenticalToObjectsInArray_(layoutsForChildReps, v16, v15);
 
-    v3 = v17;
+    layoutsForChildReps = v17;
   }
 
-  return v3;
+  return layoutsForChildReps;
 }
 
 - (CGRect)reflectionFrameInRootForClipping

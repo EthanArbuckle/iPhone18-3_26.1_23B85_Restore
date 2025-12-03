@@ -1,49 +1,49 @@
 @interface ADDeviceRouterResult
-+ (id)newWithBuilder:(id)a3;
-- (ADDeviceRouterResult)initWithBuilder:(id)a3;
-- (ADDeviceRouterResult)initWithCoder:(id)a3;
-- (ADDeviceRouterResult)initWithPeerInfo:(id)a3 contextIdentifier:(id)a4 proximity:(int64_t)a5 commandRelayProxyIdentifier:(id)a6 error:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADDeviceRouterResult)initWithBuilder:(id)builder;
+- (ADDeviceRouterResult)initWithCoder:(id)coder;
+- (ADDeviceRouterResult)initWithPeerInfo:(id)info contextIdentifier:(id)identifier proximity:(int64_t)proximity commandRelayProxyIdentifier:(id)proxyIdentifier error:(id)error;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADDeviceRouterResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   peerInfo = self->_peerInfo;
-  v6 = a3;
-  [v6 encodeObject:peerInfo forKey:@"ADDeviceRouterResult::peerInfo"];
-  [v6 encodeObject:self->_contextIdentifier forKey:@"ADDeviceRouterResult::contextIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:peerInfo forKey:@"ADDeviceRouterResult::peerInfo"];
+  [coderCopy encodeObject:self->_contextIdentifier forKey:@"ADDeviceRouterResult::contextIdentifier"];
   v5 = [NSNumber numberWithInteger:self->_proximity];
-  [v6 encodeObject:v5 forKey:@"ADDeviceRouterResult::proximity"];
+  [coderCopy encodeObject:v5 forKey:@"ADDeviceRouterResult::proximity"];
 
-  [v6 encodeObject:self->_commandRelayProxyIdentifier forKey:@"ADDeviceRouterResult::commandRelayProxyIdentifier"];
-  [v6 encodeObject:self->_error forKey:@"ADDeviceRouterResult::error"];
+  [coderCopy encodeObject:self->_commandRelayProxyIdentifier forKey:@"ADDeviceRouterResult::commandRelayProxyIdentifier"];
+  [coderCopy encodeObject:self->_error forKey:@"ADDeviceRouterResult::error"];
 }
 
-- (ADDeviceRouterResult)initWithCoder:(id)a3
+- (ADDeviceRouterResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::peerInfo"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::contextIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::proximity"];
-  v8 = [v7 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::peerInfo"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::contextIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::proximity"];
+  integerValue = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::commandRelayProxyIdentifier"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::error"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::commandRelayProxyIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceRouterResult::error"];
 
-  v11 = [(ADDeviceRouterResult *)self initWithPeerInfo:v5 contextIdentifier:v6 proximity:v8 commandRelayProxyIdentifier:v9 error:v10];
+  v11 = [(ADDeviceRouterResult *)self initWithPeerInfo:v5 contextIdentifier:v6 proximity:integerValue commandRelayProxyIdentifier:v9 error:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       proximity = self->_proximity;
       if (proximity == [(ADDeviceRouterResult *)v5 proximity])
       {
-        v7 = [(ADDeviceRouterResult *)v5 peerInfo];
+        peerInfo = [(ADDeviceRouterResult *)v5 peerInfo];
         peerInfo = self->_peerInfo;
-        if (peerInfo == v7 || [(ADPeerInfo *)peerInfo isEqual:v7])
+        if (peerInfo == peerInfo || [(ADPeerInfo *)peerInfo isEqual:peerInfo])
         {
-          v9 = [(ADDeviceRouterResult *)v5 contextIdentifier];
+          contextIdentifier = [(ADDeviceRouterResult *)v5 contextIdentifier];
           contextIdentifier = self->_contextIdentifier;
-          if (contextIdentifier == v9 || [(NSUUID *)contextIdentifier isEqual:v9])
+          if (contextIdentifier == contextIdentifier || [(NSUUID *)contextIdentifier isEqual:contextIdentifier])
           {
-            v11 = [(ADDeviceRouterResult *)v5 commandRelayProxyIdentifier];
+            commandRelayProxyIdentifier = [(ADDeviceRouterResult *)v5 commandRelayProxyIdentifier];
             commandRelayProxyIdentifier = self->_commandRelayProxyIdentifier;
-            if (commandRelayProxyIdentifier == v11 || [(NSString *)commandRelayProxyIdentifier isEqual:v11])
+            if (commandRelayProxyIdentifier == commandRelayProxyIdentifier || [(NSString *)commandRelayProxyIdentifier isEqual:commandRelayProxyIdentifier])
             {
-              v13 = [(ADDeviceRouterResult *)v5 error];
+              error = [(ADDeviceRouterResult *)v5 error];
               error = self->_error;
-              v15 = error == v13 || [(NSError *)error isEqual:v13];
+              v15 = error == error || [(NSError *)error isEqual:error];
             }
 
             else
@@ -119,7 +119,7 @@
   return v7 ^ v8;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -130,60 +130,60 @@
   return v6;
 }
 
-- (ADDeviceRouterResult)initWithPeerInfo:(id)a3 contextIdentifier:(id)a4 proximity:(int64_t)a5 commandRelayProxyIdentifier:(id)a6 error:(id)a7
+- (ADDeviceRouterResult)initWithPeerInfo:(id)info contextIdentifier:(id)identifier proximity:(int64_t)proximity commandRelayProxyIdentifier:(id)proxyIdentifier error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  infoCopy = info;
+  identifierCopy = identifier;
+  proxyIdentifierCopy = proxyIdentifier;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10022CDB0;
   v21[3] = &unk_100517338;
-  v22 = v12;
-  v23 = v13;
-  v25 = a7;
-  v26 = a5;
-  v24 = v14;
-  v15 = v25;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v22 = infoCopy;
+  v23 = identifierCopy;
+  errorCopy = error;
+  proximityCopy = proximity;
+  v24 = proxyIdentifierCopy;
+  v15 = errorCopy;
+  v16 = proxyIdentifierCopy;
+  v17 = identifierCopy;
+  v18 = infoCopy;
   v19 = [(ADDeviceRouterResult *)self initWithBuilder:v21];
 
   return v19;
 }
 
-- (ADDeviceRouterResult)initWithBuilder:(id)a3
+- (ADDeviceRouterResult)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = ADDeviceRouterResult;
   v5 = [(ADDeviceRouterResult *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADDeviceRouterResultMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADDeviceRouterResultMutation *)v7 isDirty])
     {
-      v8 = [(_ADDeviceRouterResultMutation *)v7 getPeerInfo];
-      v9 = [v8 copy];
+      getPeerInfo = [(_ADDeviceRouterResultMutation *)v7 getPeerInfo];
+      v9 = [getPeerInfo copy];
       peerInfo = v6->_peerInfo;
       v6->_peerInfo = v9;
 
-      v11 = [(_ADDeviceRouterResultMutation *)v7 getContextIdentifier];
-      v12 = [v11 copy];
+      getContextIdentifier = [(_ADDeviceRouterResultMutation *)v7 getContextIdentifier];
+      v12 = [getContextIdentifier copy];
       contextIdentifier = v6->_contextIdentifier;
       v6->_contextIdentifier = v12;
 
       v6->_proximity = [(_ADDeviceRouterResultMutation *)v7 getProximity];
-      v14 = [(_ADDeviceRouterResultMutation *)v7 getCommandRelayProxyIdentifier];
-      v15 = [v14 copy];
+      getCommandRelayProxyIdentifier = [(_ADDeviceRouterResultMutation *)v7 getCommandRelayProxyIdentifier];
+      v15 = [getCommandRelayProxyIdentifier copy];
       commandRelayProxyIdentifier = v6->_commandRelayProxyIdentifier;
       v6->_commandRelayProxyIdentifier = v15;
 
-      v17 = [(_ADDeviceRouterResultMutation *)v7 getError];
-      v18 = [v17 copy];
+      getError = [(_ADDeviceRouterResultMutation *)v7 getError];
+      v18 = [getError copy];
       error = v6->_error;
       v6->_error = v18;
     }
@@ -192,42 +192,42 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADDeviceRouterResultMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADDeviceRouterResultMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADDeviceRouterResult);
-      v7 = [(_ADDeviceRouterResultMutation *)v5 getPeerInfo];
-      v8 = [v7 copy];
+      getPeerInfo = [(_ADDeviceRouterResultMutation *)v5 getPeerInfo];
+      v8 = [getPeerInfo copy];
       peerInfo = v6->_peerInfo;
       v6->_peerInfo = v8;
 
-      v10 = [(_ADDeviceRouterResultMutation *)v5 getContextIdentifier];
-      v11 = [v10 copy];
+      getContextIdentifier = [(_ADDeviceRouterResultMutation *)v5 getContextIdentifier];
+      v11 = [getContextIdentifier copy];
       contextIdentifier = v6->_contextIdentifier;
       v6->_contextIdentifier = v11;
 
       v6->_proximity = [(_ADDeviceRouterResultMutation *)v5 getProximity];
-      v13 = [(_ADDeviceRouterResultMutation *)v5 getCommandRelayProxyIdentifier];
-      v14 = [v13 copy];
+      getCommandRelayProxyIdentifier = [(_ADDeviceRouterResultMutation *)v5 getCommandRelayProxyIdentifier];
+      v14 = [getCommandRelayProxyIdentifier copy];
       commandRelayProxyIdentifier = v6->_commandRelayProxyIdentifier;
       v6->_commandRelayProxyIdentifier = v14;
 
-      v16 = [(_ADDeviceRouterResultMutation *)v5 getError];
-      v17 = [v16 copy];
+      getError = [(_ADDeviceRouterResultMutation *)v5 getError];
+      v17 = [getError copy];
       error = v6->_error;
       v6->_error = v17;
     }

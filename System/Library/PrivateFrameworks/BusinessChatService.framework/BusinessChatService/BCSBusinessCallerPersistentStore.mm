@@ -1,12 +1,12 @@
 @interface BCSBusinessCallerPersistentStore
 - (BCSBusinessCallerPersistentStore)init;
 - (id)databasePath;
-- (id)itemMatching:(id)a3;
-- (void)deleteExpiredItemsOfType:(int64_t)a3;
-- (void)deleteItemMatching:(id)a3;
-- (void)deleteItemsOfType:(int64_t)a3;
-- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)a3 fromSchemaVersion:(int64_t)a4 toSchemaVersion:(int64_t)a5;
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4;
+- (id)itemMatching:(id)matching;
+- (void)deleteExpiredItemsOfType:(int64_t)type;
+- (void)deleteItemMatching:(id)matching;
+- (void)deleteItemsOfType:(int64_t)type;
+- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)database fromSchemaVersion:(int64_t)version toSchemaVersion:(int64_t)schemaVersion;
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSBusinessCallerPersistentStore
@@ -32,10 +32,10 @@
   if (![databasePath_databasePath_3 length])
   {
     v2 = +[BCSPathProvider sharedInstance];
-    v3 = [v2 documentsURL];
-    v4 = [v3 path];
+    documentsURL = [v2 documentsURL];
+    path = [documentsURL path];
 
-    v5 = [v4 stringByAppendingPathComponent:@"business_caller_items.db"];
+    v5 = [path stringByAppendingPathComponent:@"business_caller_items.db"];
     v6 = databasePath_databasePath_3;
     databasePath_databasePath_3 = v5;
   }
@@ -45,7 +45,7 @@
   return v7;
 }
 
-- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)a3 fromSchemaVersion:(int64_t)a4 toSchemaVersion:(int64_t)a5
+- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)database fromSchemaVersion:(int64_t)version toSchemaVersion:(int64_t)schemaVersion
 {
   v19 = *MEMORY[0x277D85DE8];
   v8 = ABSLogCommon();
@@ -54,21 +54,21 @@
     *buf = 136315650;
     v14 = "[BCSBusinessCallerPersistentStore schemaVersionWillChangeForDatabase:fromSchemaVersion:toSchemaVersion:]";
     v15 = 2048;
-    v16 = a4;
+    versionCopy = version;
     v17 = 2048;
-    v18 = a5;
+    schemaVersionCopy = schemaVersion;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s schema version will change from '%ld' to '%ld', dropping link_items table", buf, 0x20u);
   }
 
   ppStmt = 0;
-  if (!sqlite3_prepare_v2(a3, "DROP TABLE IF EXISTS business_caller_items", -1, &ppStmt, 0))
+  if (!sqlite3_prepare_v2(database, "DROP TABLE IF EXISTS business_caller_items", -1, &ppStmt, 0))
   {
     if (sqlite3_step(ppStmt) != 101)
     {
       v9 = ABSLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v11 = sqlite3_errmsg(a3);
+        v11 = sqlite3_errmsg(database);
         *buf = 136315138;
         v14 = v11;
         _os_log_error_impl(&dword_242072000, v9, OS_LOG_TYPE_ERROR, "error while dropping link_items table: %s", buf, 0xCu);
@@ -81,7 +81,7 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteExpiredItemsOfType:(int64_t)a3
+- (void)deleteExpiredItemsOfType:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = ABSLogCommon();
@@ -92,17 +92,17 @@
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     [(BCSPersistentStore *)self beginBatch];
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v9 = [v6 stringWithFormat:@"DELETE FROM business_caller_items WHERE expiration_date <= %f", v8];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
 
     *buf = 0;
-    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v10, -1, buf, 0))
+    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], uTF8String, -1, buf, 0))
     {
       sqlite3_step(*buf);
       sqlite3_finalize(*buf);
@@ -114,10 +114,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteItemMatching:(id)a3
+- (void)deleteItemMatching:(id)matching
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchingCopy = matching;
   v5 = ABSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -126,14 +126,14 @@
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if ([v4 type] == 3)
+  if ([matchingCopy type] == 3)
   {
     [(BCSPersistentStore *)self beginBatch];
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM business_caller_items WHERE phone_hash = %lld", objc_msgSend(v4, "truncatedHash")];
-    v7 = [v6 UTF8String];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM business_caller_items WHERE phone_hash = %lld", objc_msgSend(matchingCopy, "truncatedHash")];
+    uTF8String = [v6 UTF8String];
 
     *buf = 0;
-    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v7, -1, buf, 0))
+    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], uTF8String, -1, buf, 0))
     {
       sqlite3_step(*buf);
       sqlite3_finalize(*buf);
@@ -145,7 +145,7 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteItemsOfType:(int64_t)a3
+- (void)deleteItemsOfType:(int64_t)type
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = ABSLogCommon();
@@ -156,7 +156,7 @@
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s", pStmt, 0xCu);
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     [(BCSPersistentStore *)self beginBatch];
     *pStmt = 0;
@@ -172,10 +172,10 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)itemMatching:(id)a3
+- (id)itemMatching:(id)matching
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchingCopy = matching;
   v5 = ABSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -184,15 +184,15 @@
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if ([v4 type] == 3)
+  if ([matchingCopy type] == 3)
   {
     [(BCSPersistentStore *)self beginBatch];
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT phone_hash, phone, message, expiration_date    FROM business_caller_items    WHERE phone_hash = %lld", objc_msgSend(v4, "truncatedHash")];
-    v7 = [v6 UTF8String];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT phone_hash, phone, message, expiration_date    FROM business_caller_items    WHERE phone_hash = %lld", objc_msgSend(matchingCopy, "truncatedHash")];
+    uTF8String = [v6 UTF8String];
 
     *buf = 0;
     v8 = 0;
-    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v7, -1, buf, 0))
+    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], uTF8String, -1, buf, 0))
     {
       if (sqlite3_step(*buf) == 100)
       {
@@ -220,11 +220,11 @@
   return v8;
 }
 
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier
 {
   *&v19[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  identifierCopy = identifier;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -233,9 +233,9 @@
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if ([v7 type] == 3)
+  if ([identifierCopy type] == 3)
   {
-    v9 = v6;
+    v9 = itemCopy;
     [(BCSPersistentStore *)self beginBatch];
     ppStmt = 0;
     if (sqlite3_prepare_v2(-[BCSPersistentStore openedDatabase](self, "openedDatabase"), [@""INSERT OR REPLACE INTO business_caller_items    (phone_hash phone], -1, &ppStmt, 0)
@@ -252,7 +252,7 @@
 
     else
     {
-      [v9 updateStatementValues:ppStmt withItemIdentifier:v7];
+      [v9 updateStatementValues:ppStmt withItemIdentifier:identifierCopy];
       v11 = sqlite3_step(ppStmt);
       if (v11 != 101)
       {

@@ -1,32 +1,32 @@
 @interface STKUSSDAlertSession
 - (BOOL)hasReceivedContent;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (STKUSSDAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 event:(int64_t)a5 options:(id)a6 sound:(id)a7;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (STKUSSDAlertSession)initWithLogger:(id)logger responseProvider:(id)provider event:(int64_t)event options:(id)options sound:(id)sound;
 - (void)invalidate;
-- (void)performUSSDUpdate:(id)a3;
-- (void)setHasReceivedContent:(BOOL)a3;
+- (void)performUSSDUpdate:(id)update;
+- (void)setHasReceivedContent:(BOOL)content;
 @end
 
 @implementation STKUSSDAlertSession
 
-- (STKUSSDAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 event:(int64_t)a5 options:(id)a6 sound:(id)a7
+- (STKUSSDAlertSession)initWithLogger:(id)logger responseProvider:(id)provider event:(int64_t)event options:(id)options sound:(id)sound
 {
   v15.receiver = self;
   v15.super_class = STKUSSDAlertSession;
-  v8 = [(STKAlertSession *)&v15 initWithLogger:a3 responseProvider:a4 options:a6 sound:a7];
+  v8 = [(STKAlertSession *)&v15 initWithLogger:logger responseProvider:provider options:options sound:sound];
   v9 = v8;
   if (v8)
   {
-    v8->_event = a5;
-    v10 = [MEMORY[0x277CCAE98] anonymousListener];
+    v8->_event = event;
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     ussdListener = v9->_ussdListener;
-    v9->_ussdListener = v10;
+    v9->_ussdListener = anonymousListener;
 
     [(NSXPCListener *)v9->_ussdListener setDelegate:v9];
     [(NSXPCListener *)v9->_ussdListener resume];
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connectionQueue = v9->_connectionQueue;
-    v9->_connectionQueue = v12;
+    v9->_connectionQueue = array;
   }
 
   return v9;
@@ -74,27 +74,27 @@ uint64_t __33__STKUSSDAlertSession_invalidate__block_invoke(uint64_t result)
   return v2;
 }
 
-- (void)setHasReceivedContent:(BOOL)a3
+- (void)setHasReceivedContent:(BOOL)content
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__STKUSSDAlertSession_setHasReceivedContent___block_invoke;
   v3[3] = &unk_279B4C888;
   v3[4] = self;
-  v4 = a3;
+  contentCopy = content;
   _STKWithLock(self, v3);
 }
 
-- (void)performUSSDUpdate:(id)a3
+- (void)performUSSDUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__STKUSSDAlertSession_performUSSDUpdate___block_invoke;
   v6[3] = &unk_279B4C698;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   _STKWithLock(self, v6);
 }
 
@@ -116,20 +116,20 @@ void __41__STKUSSDAlertSession_performUSSDUpdate___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = STKUSSDSessionCommunicationInterface();
-  [v6 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
   v8 = STKUSSDHostCommunicationInterface();
-  [v6 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v6 setExportedObject:self];
-  [v6 resume];
-  objc_storeStrong(&self->_ussdConnection, a4);
-  v9 = [(NSXPCConnection *)self->_ussdConnection remoteObjectProxy];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
+  objc_storeStrong(&self->_ussdConnection, connection);
+  remoteObjectProxy = [(NSXPCConnection *)self->_ussdConnection remoteObjectProxy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;

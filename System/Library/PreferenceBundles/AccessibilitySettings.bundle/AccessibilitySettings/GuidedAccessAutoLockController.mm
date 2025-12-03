@@ -1,8 +1,8 @@
 @interface GuidedAccessAutoLockController
-- (id)_specifierForTimeInSeconds:(int64_t)a3;
+- (id)_specifierForTimeInSeconds:(int64_t)seconds;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation GuidedAccessAutoLockController
@@ -17,10 +17,10 @@
     v6 = +[PSSpecifier emptyGroupSpecifier];
     [v6 setProperty:@"DurationsGroup" forKey:PSIDKey];
     v7 = +[AXSettings sharedInstance];
-    v8 = [v7 guidedAccessAutoLockTimeInSeconds];
+    guidedAccessAutoLockTimeInSeconds = [v7 guidedAccessAutoLockTimeInSeconds];
     v9 = AXSGuidedAccessAutoLockTimeMirrorSystem;
 
-    if (v8 == v9)
+    if (guidedAccessAutoLockTimeInSeconds == v9)
     {
       v10 = AXLocStringKeyForModel();
       v11 = settingsLocString(v10, @"GuidedAccessSettings");
@@ -90,12 +90,12 @@ void __44__GuidedAccessAutoLockController_specifiers__block_invoke(id a1)
   specifiers_standardDurations = v3;
 }
 
-- (id)_specifierForTimeInSeconds:(int64_t)a3
+- (id)_specifierForTimeInSeconds:(int64_t)seconds
 {
-  v4 = GuidedAccessDescriptionForAutoLockTime(a3);
+  v4 = GuidedAccessDescriptionForAutoLockTime(seconds);
   v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:seconds];
   [v5 setProperty:v6 forKey:@"TimeInSeconds"];
 
   [v5 setProperty:&__kCFBooleanFalse forKey:PSSpecifierIsSearchableKey];
@@ -103,49 +103,49 @@ void __44__GuidedAccessAutoLockController_specifiers__block_invoke(id a1)
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = GuidedAccessAutoLockController;
-  v4 = [(GuidedAccessAutoLockController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:@"TimeInSeconds"];
-  v7 = [v6 integerValue];
+  v4 = [(GuidedAccessAutoLockController *)&v10 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:@"TimeInSeconds"];
+  integerValue = [v6 integerValue];
   v8 = +[AXSettings sharedInstance];
-  [v4 setChecked:{v7 == objc_msgSend(v8, "guidedAccessAutoLockTimeInSeconds")}];
+  [v4 setChecked:{integerValue == objc_msgSend(v8, "guidedAccessAutoLockTimeInSeconds")}];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = GuidedAccessAutoLockController;
-  [(GuidedAccessAutoLockController *)&v17 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(GuidedAccessAutoLockController *)self specifierAtIndexPath:v6];
+  [(GuidedAccessAutoLockController *)&v17 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(GuidedAccessAutoLockController *)self specifierAtIndexPath:pathCopy];
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 guidedAccessAutoLockTimeInSeconds];
+  guidedAccessAutoLockTimeInSeconds = [v8 guidedAccessAutoLockTimeInSeconds];
 
   v10 = [v7 propertyForKey:@"TimeInSeconds"];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  if (v9 != v11)
+  if (guidedAccessAutoLockTimeInSeconds != integerValue)
   {
     v12 = +[AXSettings sharedInstance];
-    [v12 setGuidedAccessAutoLockTimeInSeconds:v11];
+    [v12 setGuidedAccessAutoLockTimeInSeconds:integerValue];
 
-    [(GuidedAccessAutoLockController *)self updateVisibleCellsWithCheckedSelection:v6];
+    [(GuidedAccessAutoLockController *)self updateVisibleCellsWithCheckedSelection:pathCopy];
     v13 = [(GuidedAccessAutoLockController *)self specifierForID:@"DurationsGroup"];
     v14 = v13;
-    if (v9 == AXSGuidedAccessAutoLockTimeMirrorSystem)
+    if (guidedAccessAutoLockTimeInSeconds == AXSGuidedAccessAutoLockTimeMirrorSystem)
     {
       [v13 setProperty:&stru_25D420 forKey:PSFooterTextGroupKey];
     }
 
     else
     {
-      if (v11 != AXSGuidedAccessAutoLockTimeMirrorSystem)
+      if (integerValue != AXSGuidedAccessAutoLockTimeMirrorSystem)
       {
 LABEL_7:
 

@@ -1,38 +1,38 @@
 @interface BCSWebPresentmentItemIdentifier
-- (BCSWebPresentmentItemIdentifier)initWithBrandID:(id)a3 serverType:(int64_t)a4;
-- (BCSWebPresentmentItemIdentifier)initWithCoder:(id)a3;
-- (BOOL)matchesItemIdentifying:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BCSWebPresentmentItemIdentifier)initWithBrandID:(id)d serverType:(int64_t)type;
+- (BCSWebPresentmentItemIdentifier)initWithCoder:(id)coder;
+- (BOOL)matchesItemIdentifying:(id)identifying;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSWebPresentmentItemIdentifier
 
-- (BCSWebPresentmentItemIdentifier)initWithBrandID:(id)a3 serverType:(int64_t)a4
+- (BCSWebPresentmentItemIdentifier)initWithBrandID:(id)d serverType:(int64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = BCSWebPresentmentItemIdentifier;
   v8 = [(BCSWebPresentmentItemIdentifier *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_brandId, a3);
-    v9->_computedTruncatedHash = [BCSWebPresentmentItemIdentifier _truncatedHashForBrandID:v7];
-    v9->_serverType = a4;
+    objc_storeStrong(&v8->_brandId, d);
+    v9->_computedTruncatedHash = [BCSWebPresentmentItemIdentifier _truncatedHashForBrandID:dCopy];
+    v9->_serverType = type;
   }
 
   return v9;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [(BCSWebPresentmentItemIdentifier *)self type];
-  if (v5 == [v4 type])
+  identifyingCopy = identifying;
+  type = [(BCSWebPresentmentItemIdentifier *)self type];
+  if (type == [identifyingCopy type])
   {
-    v6 = [(BCSWebPresentmentItemIdentifier *)self truncatedHash];
-    v7 = v6 == [v4 truncatedHash];
+    truncatedHash = [(BCSWebPresentmentItemIdentifier *)self truncatedHash];
+    v7 = truncatedHash == [identifyingCopy truncatedHash];
   }
 
   else
@@ -43,14 +43,14 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v4[2] = [(BCSWebPresentmentItemIdentifier *)self computedTruncatedHash];
-    v5 = [(BCSWebPresentmentItemIdentifier *)self brandId];
-    v6 = [v5 copy];
+    brandId = [(BCSWebPresentmentItemIdentifier *)self brandId];
+    v6 = [brandId copy];
     v7 = v4[1];
     v4[1] = v6;
 
@@ -60,20 +60,20 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   brandId = self->_brandId;
-  v5 = a3;
-  [v5 encodeObject:brandId forKey:@"BrandID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:brandId forKey:@"BrandID"];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_serverType];
-  [v5 encodeObject:v6 forKey:@"PIRServerType"];
+  [coderCopy encodeObject:v6 forKey:@"PIRServerType"];
 }
 
-- (BCSWebPresentmentItemIdentifier)initWithCoder:(id)a3
+- (BCSWebPresentmentItemIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BrandID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PIRServerType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BrandID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PIRServerType"];
 
   v7 = -[BCSWebPresentmentItemIdentifier initWithBrandID:serverType:](self, "initWithBrandID:serverType:", v5, [v6 integerValue]);
   return v7;

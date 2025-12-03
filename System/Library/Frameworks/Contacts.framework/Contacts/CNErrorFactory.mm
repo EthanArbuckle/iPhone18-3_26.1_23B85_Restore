@@ -1,15 +1,15 @@
 @interface CNErrorFactory
-+ (id)_localizedDescriptionForCode:(int64_t)a3;
-+ (id)_localizedReasonForCode:(int64_t)a3;
-+ (id)errorByAddingUserInfoEntries:(id)a3 toError:(id)a4;
-+ (id)errorByPrependingKeyPath:(id)a3 toKeyPathsInError:(id)a4;
-+ (id)errorForiOSABError:(__CFError *)a3;
-+ (id)errorObject:(id)a3 doesNotImplementSelector:(SEL)a4;
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4;
++ (id)_localizedDescriptionForCode:(int64_t)code;
++ (id)_localizedReasonForCode:(int64_t)code;
++ (id)errorByAddingUserInfoEntries:(id)entries toError:(id)error;
++ (id)errorByPrependingKeyPath:(id)path toKeyPathsInError:(id)error;
++ (id)errorForiOSABError:(__CFError *)error;
++ (id)errorObject:(id)object doesNotImplementSelector:(SEL)selector;
++ (id)errorWithCode:(int64_t)code userInfo:(id)info;
 + (id)genericiOSABError;
 + (id)os_log;
-+ (id)validationErrorByAggregatingValidationErrors:(id)a3;
-+ (int64_t)CNErrorCodeForABError:(__CFError *)a3;
++ (id)validationErrorByAggregatingValidationErrors:(id)errors;
++ (int64_t)CNErrorCodeForABError:(__CFError *)error;
 @end
 
 @implementation CNErrorFactory
@@ -38,18 +38,18 @@ uint64_t __31__CNErrorFactory_iOSAB__os_log__block_invoke()
 + (id)genericiOSABError
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [a1 os_log];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  os_log = [self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
-    +[(CNErrorFactory(iOSAB) *)v2];
+    +[(CNErrorFactory(iOSAB) *)os_log];
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v4 = [v3 _cn_balancedSlicesWithMaximumCount:5];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v4 = [callStackSymbols _cn_balancedSlicesWithMaximumCount:5];
 
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v5)
@@ -90,35 +90,35 @@ uint64_t __31__CNErrorFactory_iOSAB__os_log__block_invoke()
   return v11;
 }
 
-+ (id)errorForiOSABError:(__CFError *)a3
++ (id)errorForiOSABError:(__CFError *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  if (!a3)
+  errorCopy = error;
+  if (!error)
   {
-    v5 = [a1 genericiOSABError];
+    errorCopy2 = [self genericiOSABError];
     goto LABEL_5;
   }
 
-  if ([@"CNErrorDomain" isEqualToString:CFErrorGetDomain(a3)])
+  if ([@"CNErrorDomain" isEqualToString:CFErrorGetDomain(error)])
   {
-    v5 = a3;
+    errorCopy2 = error;
 LABEL_5:
-    v6 = v5;
+    v6 = errorCopy2;
     goto LABEL_7;
   }
 
-  v7 = [a1 CNErrorCodeForABError:a3];
+  v7 = [self CNErrorCodeForABError:error];
   v28 = *MEMORY[0x1E696AA08];
-  v29[0] = a3;
+  v29[0] = error;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-  v6 = [a1 errorWithCode:v7 userInfo:v8];
+  v6 = [self errorWithCode:v7 userInfo:v8];
 
 LABEL_7:
-  v9 = [a1 os_log];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  os_log = [self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
-    [(CNErrorFactory(iOSAB) *)&v24 errorForiOSABError:v6, v9];
+    [(CNErrorFactory(iOSAB) *)&errorCopy errorForiOSABError:v6, os_log];
   }
 
   v19 = v6;
@@ -127,8 +127,8 @@ LABEL_7:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v11 = [v10 _cn_balancedSlicesWithMaximumCount:5];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v11 = [callStackSymbols _cn_balancedSlicesWithMaximumCount:5];
 
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v12)
@@ -163,7 +163,7 @@ LABEL_7:
   return v19;
 }
 
-+ (int64_t)CNErrorCodeForABError:(__CFError *)a3
++ (int64_t)CNErrorCodeForABError:(__CFError *)error
 {
   if (CNErrorCodeForABError__cn_once_token_5 != -1)
   {
@@ -171,12 +171,12 @@ LABEL_7:
   }
 
   v4 = CNErrorCodeForABError__cn_once_object_5;
-  v5 = [v4 objectForKeyedSubscript:CFErrorGetDomain(a3)];
+  v5 = [v4 objectForKeyedSubscript:CFErrorGetDomain(error)];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
@@ -184,32 +184,32 @@ LABEL_7:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = 2;
+      integerValue = 2;
       goto LABEL_15;
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithLong:CFErrorGetCode(a3)];
+    v7 = [MEMORY[0x1E696AD98] numberWithLong:CFErrorGetCode(error)];
     v8 = [v5 objectForKeyedSubscript:v7];
 
     if (v8)
     {
-      v6 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v6 = 2;
+      integerValue = 2;
     }
   }
 
-  if (v6 == 500)
+  if (integerValue == 500)
   {
-    v9 = CFErrorCopyUserInfo(a3);
+    v9 = CFErrorCopyUserInfo(error);
     v10 = [(__CFDictionary *)v9 objectForKey:*MEMORY[0x1E698A0A8]];
     if (([v10 isEqualToString:*MEMORY[0x1E698A0B0]] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", *MEMORY[0x1E698A0B8]))
     {
 
-      v6 = 206;
+      integerValue = 206;
     }
 
     else
@@ -218,19 +218,19 @@ LABEL_7:
 
       if (v12)
       {
-        v6 = 207;
+        integerValue = 207;
       }
 
       else
       {
-        v6 = 500;
+        integerValue = 500;
       }
     }
   }
 
 LABEL_15:
 
-  return v6;
+  return integerValue;
 }
 
 void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
@@ -259,19 +259,19 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
   CNErrorCodeForABError__cn_once_object_5 = v4;
 }
 
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v6 = a4;
-  v7 = [a1 _localizedReasonForCode:a3];
-  v8 = [a1 _localizedDescriptionForCode:a3];
+  infoCopy = info;
+  v7 = [self _localizedReasonForCode:code];
+  v8 = [self _localizedDescriptionForCode:code];
   v9 = v8;
-  if (v6 || v8 || v7)
+  if (infoCopy || v8 || v7)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v10 = v11;
-    if (v6)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v10 = dictionary;
+    if (infoCopy)
     {
-      [v11 addEntriesFromDictionary:v6];
+      [dictionary addEntriesFromDictionary:infoCopy];
     }
 
     if (v9)
@@ -290,51 +290,51 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
     v10 = 0;
   }
 
-  v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNErrorDomain" code:a3 userInfo:v10];
+  v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNErrorDomain" code:code userInfo:v10];
 
   return v12;
 }
 
-+ (id)_localizedDescriptionForCode:(int64_t)a3
++ (id)_localizedDescriptionForCode:(int64_t)code
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v5 = [v4 stringValue];
-  v6 = [v5 stringByAppendingString:@"_DESCRIPTION"];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:code];
+  stringValue = [v4 stringValue];
+  v6 = [stringValue stringByAppendingString:@"_DESCRIPTION"];
 
   v7 = MEMORY[0x1E6996750];
-  v8 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
+  v8 = [MEMORY[0x1E696AAE8] bundleForClass:self];
   v9 = [v7 localizedStringForString:v6 bundle:v8 table:@"Errors" returningNilIfNotFound:1];
 
   return v9;
 }
 
-+ (id)_localizedReasonForCode:(int64_t)a3
++ (id)_localizedReasonForCode:(int64_t)code
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v5 = [v4 stringValue];
-  v6 = [v5 stringByAppendingString:@"_REASON"];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:code];
+  stringValue = [v4 stringValue];
+  v6 = [stringValue stringByAppendingString:@"_REASON"];
 
   v7 = MEMORY[0x1E6996750];
-  v8 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
+  v8 = [MEMORY[0x1E696AAE8] bundleForClass:self];
   v9 = [v7 localizedStringForString:v6 bundle:v8 table:@"Errors" returningNilIfNotFound:1];
 
   return v9;
 }
 
-+ (id)errorByPrependingKeyPath:(id)a3 toKeyPathsInError:(id)a4
++ (id)errorByPrependingKeyPath:(id)path toKeyPathsInError:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  pathCopy = path;
+  errorCopy = error;
+  if (errorCopy)
   {
-    if ([v5 length])
+    if ([pathCopy length])
     {
-      v26 = v6;
-      v7 = [v6 userInfo];
-      v8 = [v7 mutableCopy];
+      v26 = errorCopy;
+      userInfo = [errorCopy userInfo];
+      v8 = [userInfo mutableCopy];
 
-      v9 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
@@ -356,11 +356,11 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
             }
 
             v15 = *(*(&v27 + 1) + 8 * i);
-            v31[0] = v5;
+            v31[0] = pathCopy;
             v31[1] = v15;
             v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
             v17 = [v16 componentsJoinedByString:@"."];
-            [v9 addObject:v17];
+            [array addObject:v17];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -369,23 +369,23 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
         while (v12);
       }
 
-      if ([v9 count])
+      if ([array count])
       {
-        v18 = [v9 copy];
+        v18 = [array copy];
         [v25 setObject:v18 forKeyedSubscript:@"CNKeyPaths"];
       }
 
       v19 = MEMORY[0x1E696ABC0];
-      v6 = v26;
-      v20 = [v26 domain];
-      v21 = [v26 code];
+      errorCopy = v26;
+      domain = [v26 domain];
+      code = [v26 code];
       v22 = [v25 copy];
-      v23 = [v19 errorWithDomain:v20 code:v21 userInfo:v22];
+      v23 = [v19 errorWithDomain:domain code:code userInfo:v22];
     }
 
     else
     {
-      v23 = v6;
+      v23 = errorCopy;
     }
   }
 
@@ -397,25 +397,25 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
   return v23;
 }
 
-+ (id)errorByAddingUserInfoEntries:(id)a3 toError:(id)a4
++ (id)errorByAddingUserInfoEntries:(id)entries toError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 userInfo];
-  v8 = [v7 mutableCopy];
+  errorCopy = error;
+  entriesCopy = entries;
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo mutableCopy];
 
-  [v8 addEntriesFromDictionary:v6];
+  [v8 addEntriesFromDictionary:entriesCopy];
   v9 = MEMORY[0x1E696ABC0];
-  v10 = [v5 domain];
-  v11 = [v5 code];
+  domain = [errorCopy domain];
+  code = [errorCopy code];
 
   v12 = [v8 copy];
-  v13 = [v9 errorWithDomain:v10 code:v11 userInfo:v12];
+  v13 = [v9 errorWithDomain:domain code:code userInfo:v12];
 
   return v13;
 }
 
-+ (id)errorObject:(id)a3 doesNotImplementSelector:(SEL)a4
++ (id)errorObject:(id)object doesNotImplementSelector:(SEL)selector
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E696A578];
@@ -432,13 +432,13 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
   return v8;
 }
 
-+ (id)validationErrorByAggregatingValidationErrors:(id)a3
++ (id)validationErrorByAggregatingValidationErrors:(id)errors
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] == 1)
+  errorsCopy = errors;
+  if ([errorsCopy count] == 1)
   {
-    v4 = [v3 lastObject];
+    lastObject = [errorsCopy lastObject];
   }
 
   else
@@ -449,7 +449,7 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = v3;
+    v5 = errorsCopy;
     v6 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v6)
     {
@@ -466,12 +466,12 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
 
           v10 = *(*(&v28 + 1) + 8 * i);
           v11 = MEMORY[0x1E696AEC0];
-          v12 = [v10 domain];
-          v13 = [v11 stringWithFormat:@"%@:%ld", v12, objc_msgSend(v10, "code")];
+          domain = [v10 domain];
+          v13 = [v11 stringWithFormat:@"%@:%ld", domain, objc_msgSend(v10, "code")];
           [v27 addObject:v13];
 
-          v14 = [v10 userInfo];
-          v15 = [v14 objectForKeyedSubscript:@"CNInvalidRecords"];
+          userInfo = [v10 userInfo];
+          v15 = [userInfo objectForKeyedSubscript:@"CNInvalidRecords"];
           if (v15)
           {
             [v26 addObjectsFromArray:v15];
@@ -492,14 +492,14 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
 
     if ([v27 count] < 2)
     {
-      v21 = [v5 lastObject];
-      v22 = [v21 code];
+      lastObject2 = [v5 lastObject];
+      code = [lastObject2 code];
       v32 = @"CNInvalidRecords";
-      v23 = [v26 array];
-      v33 = v23;
+      array = [v26 array];
+      v33 = array;
       v19 = v26;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-      v4 = [CNErrorFactory errorWithCode:v22 userInfo:v24];
+      lastObject = [CNErrorFactory errorWithCode:code userInfo:v24];
     }
 
     else
@@ -507,15 +507,15 @@ void __47__CNErrorFactory_iOSAB__CNErrorCodeForABError___block_invoke()
       v19 = v26;
       if ([v26 count])
       {
-        v20 = [v26 array];
-        [v18 setObject:v20 forKey:@"CNInvalidRecords"];
+        array2 = [v26 array];
+        [v18 setObject:array2 forKey:@"CNInvalidRecords"];
       }
 
-      v4 = [CNErrorFactory errorWithCode:300 userInfo:v18];
+      lastObject = [CNErrorFactory errorWithCode:300 userInfo:v18];
     }
   }
 
-  return v4;
+  return lastObject;
 }
 
 @end

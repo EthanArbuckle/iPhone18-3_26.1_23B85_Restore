@@ -1,24 +1,24 @@
 @interface RCPGlobalPositionEvent
 - (CGPoint)location;
-- (RCPGlobalPositionEvent)initWithLocation:(CGFloat)a3 zPosition:(double)a4 orientation:(__n128)a5 timestamp:(uint64_t)a6 senderProperties:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RCPGlobalPositionEvent)initWithLocation:(CGFloat)location zPosition:(double)position orientation:(__n128)orientation timestamp:(uint64_t)timestamp senderProperties:(unint64_t)properties;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation RCPGlobalPositionEvent
 
-- (RCPGlobalPositionEvent)initWithLocation:(CGFloat)a3 zPosition:(double)a4 orientation:(__n128)a5 timestamp:(uint64_t)a6 senderProperties:(unint64_t)a7
+- (RCPGlobalPositionEvent)initWithLocation:(CGFloat)location zPosition:(double)position orientation:(__n128)orientation timestamp:(uint64_t)timestamp senderProperties:(unint64_t)properties
 {
   v13 = a8;
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = RCPGlobalPositionEvent;
   v14 = [(RCPGlobalPositionEvent *)&v18 init];
   v14->_location.x = a2;
-  v14->_location.y = a3;
-  v14->_zPosition = a4;
-  *&v14[1].super.isa = a5;
+  v14->_location.y = location;
+  v14->_zPosition = position;
+  *&v14[1].super.isa = orientation;
   senderProperties = v14->_senderProperties;
-  v14->_timestamp = a7;
+  v14->_timestamp = properties;
   v14->_senderProperties = v13;
 
   return v14;
@@ -42,16 +42,16 @@
   v16 = v15;
   [(RCPGlobalPositionEvent *)self orientation];
   v18 = v17;
-  v19 = [(RCPGlobalPositionEvent *)self timestamp];
-  v20 = [(RCPGlobalPositionEvent *)self senderProperties];
-  v21 = [v3 stringWithFormat:@"<%@: { Location: (%f, %f), zPosition: %f, Orientation: (%f, %f, %f, %f), Timestamp: %llu, Sender Properties: %@ }>", v4, v6, v8, v10, *&v12, *&v14, *&v16, *&v18, v19, v20];
+  timestamp = [(RCPGlobalPositionEvent *)self timestamp];
+  senderProperties = [(RCPGlobalPositionEvent *)self senderProperties];
+  v21 = [v3 stringWithFormat:@"<%@: { Location: (%f, %f), zPosition: %f, Orientation: (%f, %f, %f, %f), Timestamp: %llu, Sender Properties: %@ }>", v4, v6, v8, v10, *&v12, *&v14, *&v16, *&v18, timestamp, senderProperties];
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   zPosition = self->_zPosition;
   timestamp = self->_timestamp;
   senderProperties = self->_senderProperties;

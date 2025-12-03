@@ -1,8 +1,8 @@
 @interface PKSearchObjectTypeResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)typeName;
-- (PKSearchObjectTypeResult)initWithCoder:(id)a3;
+- (PKSearchObjectTypeResult)initWithCoder:(id)coder;
 @end
 
 @implementation PKSearchObjectTypeResult
@@ -23,13 +23,13 @@
   return v4;
 }
 
-- (PKSearchObjectTypeResult)initWithCoder:(id)a3
+- (PKSearchObjectTypeResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchObjectTypeResult *)self init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
@@ -48,11 +48,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy[1];
 
   return v5;
 }

@@ -1,14 +1,14 @@
 @interface STUsageBundleOverrides
 + (id)overrides;
-+ (id)overridesFor:(id)a3;
-- (STUsageBundleOverrides)initWithDictionary:(id)a3;
++ (id)overridesFor:(id)for;
+- (STUsageBundleOverrides)initWithDictionary:(id)dictionary;
 @end
 
 @implementation STUsageBundleOverrides
 
-- (STUsageBundleOverrides)initWithDictionary:(id)a3
+- (STUsageBundleOverrides)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = STUsageBundleOverrides;
   v5 = [(STUsageBundleOverrides *)&v10 init];
@@ -20,7 +20,7 @@
     v8[2] = __45__STUsageBundleOverrides_initWithDictionary___block_invoke;
     v8[3] = &unk_279D1D130;
     v9 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v8];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v8];
   }
 
   return v6;
@@ -92,11 +92,11 @@ void __35__STUsageBundleOverrides_overrides__block_invoke_80(uint64_t a1, void *
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-+ (id)overridesFor:(id)a3
++ (id)overridesFor:(id)for
 {
-  v4 = a3;
-  v5 = [a1 overrides];
-  v6 = [v5 objectForKey:v4];
+  forCopy = for;
+  overrides = [self overrides];
+  v6 = [overrides objectForKey:forCopy];
 
   v7 = _defaultBundleOverrides;
   if (v6)

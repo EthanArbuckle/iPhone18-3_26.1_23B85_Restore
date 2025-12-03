@@ -1,38 +1,38 @@
 @interface AVContentSelectionViewController
-- (AVContentSelectionViewController)initWithCoder:(id)a3;
-- (AVContentSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AVContentSelectionViewController)initWithCoder:(id)coder;
+- (AVContentSelectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation AVContentSelectionViewController
 
-- (AVContentSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AVContentSelectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_18B6C562C();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_18B6C55FC();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AVContentSelectionViewController();
-  v9 = [(AVContentSelectionViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AVContentSelectionViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (AVContentSelectionViewController)initWithCoder:(id)a3
+- (AVContentSelectionViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AVContentSelectionViewController();
-  v4 = a3;
-  v5 = [(AVContentSelectionViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AVContentSelectionViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

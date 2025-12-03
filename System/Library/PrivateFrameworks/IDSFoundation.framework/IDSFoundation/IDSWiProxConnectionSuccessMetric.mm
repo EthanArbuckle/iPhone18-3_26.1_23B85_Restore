@@ -1,5 +1,5 @@
 @interface IDSWiProxConnectionSuccessMetric
-- (IDSWiProxConnectionSuccessMetric)initWithDuration:(unint64_t)a3;
+- (IDSWiProxConnectionSuccessMetric)initWithDuration:(unint64_t)duration;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (IDSWiProxConnectionSuccessMetric)initWithDuration:(unint64_t)a3
+- (IDSWiProxConnectionSuccessMetric)initWithDuration:(unint64_t)duration
 {
   v5.receiver = self;
   v5.super_class = IDSWiProxConnectionSuccessMetric;
   result = [(IDSWiProxConnectionSuccessMetric *)&v5 init];
   if (result)
   {
-    result->_duration = a3;
+    result->_duration = duration;
   }
 
   return result;

@@ -11,8 +11,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = self;
-  v5 = [(NSDictionary *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v5 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -23,16 +23,16 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [(NSDictionary *)v4 objectForKeyedSubscript:v9, v13];
-        v11 = [v10 fp_jsonRepresentation];
-        [v3 setObject:v11 forKeyedSubscript:v9];
+        v10 = [(NSDictionary *)selfCopy objectForKeyedSubscript:v9, v13];
+        fp_jsonRepresentation = [v10 fp_jsonRepresentation];
+        [v3 setObject:fp_jsonRepresentation forKeyedSubscript:v9];
       }
 
-      v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

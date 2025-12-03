@@ -1,7 +1,7 @@
 @interface MessageListCellHelperMobileMailProxy
 + (id)addressListFormatter;
 + (id)sharedApplicationProxy;
-- (BOOL)isMessageListCellObject:(id)a3;
+- (BOOL)isMessageListCellObject:(id)object;
 @end
 
 @implementation MessageListCellHelperMobileMailProxy
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (BOOL)isMessageListCellObject:(id)a3
+- (BOOL)isMessageListCellObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

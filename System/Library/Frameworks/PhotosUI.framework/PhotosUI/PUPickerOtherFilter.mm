@@ -1,32 +1,32 @@
 @interface PUPickerOtherFilter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidFilter;
-- (PUPickerOtherFilter)initWithCoder:(id)a3;
-- (PUPickerOtherFilter)initWithFilterType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUPickerOtherFilter)initWithCoder:(id)coder;
+- (PUPickerOtherFilter)initWithFilterType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generatedAssetPredicate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPickerOtherFilter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[PUPickerOtherFilter filterType](self, "filterType")}];
-  [v5 encodeObject:v6 forKey:@"PUPickerOtherFilterDictionaryFilterTypeKey"];
+  [coderCopy encodeObject:v6 forKey:@"PUPickerOtherFilterDictionaryFilterTypeKey"];
 }
 
-- (PUPickerOtherFilter)initWithCoder:(id)a3
+- (PUPickerOtherFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PUPickerOtherFilter;
   v5 = [(PUPickerOtherFilter *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerOtherFilterDictionaryFilterTypeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerOtherFilterDictionaryFilterTypeKey"];
     v5->_filterType = [v6 integerValue];
   }
 
@@ -45,24 +45,24 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PUPickerOtherFilter alloc];
-  v5 = [(PUPickerOtherFilter *)self filterType];
+  filterType = [(PUPickerOtherFilter *)self filterType];
 
-  return [(PUPickerOtherFilter *)v4 initWithFilterType:v5];
+  return [(PUPickerOtherFilter *)v4 initWithFilterType:filterType];
 }
 
 - (id)generatedAssetPredicate
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PUPickerOtherFilter *)self filterType];
-  if (v2 == 1)
+  filterType = [(PUPickerOtherFilter *)self filterType];
+  if (filterType == 1)
   {
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %K", @"width", @"height"];
   }
 
-  else if (v2)
+  else if (filterType)
   {
     v9 = 0;
   }
@@ -88,27 +88,27 @@
 - (BOOL)isValidFilter
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPickerOtherFilter *)self filterType];
-  if (v2 >= 2)
+  filterType = [(PUPickerOtherFilter *)self filterType];
+  if (filterType >= 2)
   {
     v3 = PLPickerGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v6 = 134217984;
-      v7 = v2;
+      v7 = filterType;
       _os_log_impl(&dword_1D2128000, v3, OS_LOG_TYPE_ERROR, "PUPickerOtherFilter: invalid filter type: %ld", &v6, 0xCu);
     }
   }
 
-  result = v2 < 2;
+  result = filterType < 2;
   v5 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_8;
@@ -121,14 +121,14 @@
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(PUPickerOtherFilter *)self filterType];
-      v8 = v7 == [(PUPickerOtherFilter *)v5 filterType];
+      filterType = [(PUPickerOtherFilter *)self filterType];
+      v8 = filterType == [(PUPickerOtherFilter *)v5 filterType];
 
 LABEL_8:
       return v8;
@@ -152,7 +152,7 @@ LABEL_8:
   return [(PUPickerOtherFilter *)v12 initWithFilterType:v13, v14];
 }
 
-- (PUPickerOtherFilter)initWithFilterType:(int64_t)a3
+- (PUPickerOtherFilter)initWithFilterType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = PUPickerOtherFilter;
@@ -160,7 +160,7 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    v4->_filterType = a3;
+    v4->_filterType = type;
   }
 
   if ([(PUPickerOtherFilter *)v4 isValidFilter])

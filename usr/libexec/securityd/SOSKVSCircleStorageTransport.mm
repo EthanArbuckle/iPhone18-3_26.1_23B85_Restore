@@ -1,30 +1,30 @@
 @interface SOSKVSCircleStorageTransport
-- (BOOL)expireRetirementRecords:(__CFDictionary *)a3 err:(__CFError *)a4;
-- (BOOL)kvsAppendDebugKeyInterest:(__CFArray *)a3 firstUnlock:(__CFArray *)a4 unlocked:(__CFArray *)a5 err:(__CFError *)a6;
-- (BOOL)kvsAppendKeyInterest:(__CFArray *)a3 firstUnlock:(__CFArray *)a4 unlocked:(__CFArray *)a5 err:(__CFError *)a6;
-- (BOOL)kvsAppendRingKeyInterest:(__CFArray *)a3 firstUnlock:(__CFArray *)a4 unlocked:(__CFArray *)a5 err:(__CFError *)a6;
-- (BOOL)kvsRingPostRing:(__CFString *)a3 ring:(__CFData *)a4 err:(__CFError *)a5;
-- (BOOL)kvsSendOfficialDSID:(__CFString *)a3 err:(__CFError *)a4;
-- (BOOL)kvsSendPendingChanges:(__CFError *)a3;
-- (BOOL)kvssendDebugInfo:(__CFString *)a3 debug:(void *)a4 err:(__CFError *)a5;
-- (BOOL)postCircle:(__CFString *)a3 circleData:(__CFData *)a4 err:(__CFError *)a5;
-- (BOOL)postRetirement:(__CFString *)a3 peer:(__OpaqueSOSPeerInfo *)a4 err:(__CFError *)a5;
+- (BOOL)expireRetirementRecords:(__CFDictionary *)records err:(__CFError *)err;
+- (BOOL)kvsAppendDebugKeyInterest:(__CFArray *)interest firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err;
+- (BOOL)kvsAppendKeyInterest:(__CFArray *)interest firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err;
+- (BOOL)kvsAppendRingKeyInterest:(__CFArray *)interest firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err;
+- (BOOL)kvsRingPostRing:(__CFString *)ring ring:(__CFData *)a4 err:(__CFError *)err;
+- (BOOL)kvsSendOfficialDSID:(__CFString *)d err:(__CFError *)err;
+- (BOOL)kvsSendPendingChanges:(__CFError *)changes;
+- (BOOL)kvssendDebugInfo:(__CFString *)info debug:(void *)debug err:(__CFError *)err;
+- (BOOL)postCircle:(__CFString *)circle circleData:(__CFData *)data err:(__CFError *)err;
+- (BOOL)postRetirement:(__CFString *)retirement peer:(__OpaqueSOSPeerInfo *)peer err:(__CFError *)err;
 - (SOSKVSCircleStorageTransport)init;
-- (SOSKVSCircleStorageTransport)initWithAccount:(id)a3 andCircleName:(id)a4;
-- (__CFArray)handleCircleMessagesAndReturnHandledCopy:(__CFDictionary *)a3 err:(__CFError *)a4;
-- (__CFDictionary)handleRetirementMessages:(__CFDictionary *)a3 err:(__CFError *)a4;
-- (void)kvsAddToPendingChanges:(__CFString *)a3 data:(__CFData *)a4;
+- (SOSKVSCircleStorageTransport)initWithAccount:(id)account andCircleName:(id)name;
+- (__CFArray)handleCircleMessagesAndReturnHandledCopy:(__CFDictionary *)copy err:(__CFError *)err;
+- (__CFDictionary)handleRetirementMessages:(__CFDictionary *)messages err:(__CFError *)err;
+- (void)kvsAddToPendingChanges:(__CFString *)changes data:(__CFData *)data;
 @end
 
 @implementation SOSKVSCircleStorageTransport
 
-- (BOOL)postRetirement:(__CFString *)a3 peer:(__OpaqueSOSPeerInfo *)a4 err:(__CFError *)a5
+- (BOOL)postRetirement:(__CFString *)retirement peer:(__OpaqueSOSPeerInfo *)peer err:(__CFError *)err
 {
   v6 = SOSPeerInfoCopyEncodedData();
   if (v6)
   {
     v7 = v6;
-    v8 = [(SOSKVSCircleStorageTransport *)self circleName];
+    circleName = [(SOSKVSCircleStorageTransport *)self circleName];
     SOSPeerInfoGetPeerID();
     v9 = SOSRetirementKeyCreateWithCircleNameAndPeer();
 
@@ -40,11 +40,11 @@
   return 1;
 }
 
-- (BOOL)kvsSendOfficialDSID:(__CFString *)a3 err:(__CFError *)a4
+- (BOOL)kvsSendOfficialDSID:(__CFString *)d err:(__CFError *)err
 {
-  if (a3)
+  if (d)
   {
-    ExternalRepresentation = CFStringCreateExternalRepresentation(kCFAllocatorDefault, a3, 0x8000100u, 0x3Fu);
+    ExternalRepresentation = CFStringCreateExternalRepresentation(kCFAllocatorDefault, d, 0x8000100u, 0x3Fu);
     [(SOSKVSCircleStorageTransport *)self kvsAddToPendingChanges:kSOSKVSOfficialDSIDKey data:ExternalRepresentation];
     if (ExternalRepresentation)
     {
@@ -55,7 +55,7 @@
   return 1;
 }
 
-- (BOOL)kvsRingPostRing:(__CFString *)a3 ring:(__CFData *)a4 err:(__CFError *)a5
+- (BOOL)kvsRingPostRing:(__CFString *)ring ring:(__CFData *)a4 err:(__CFError *)err
 {
   v7 = SOSRingKeyCreateWithName();
   if (v7)
@@ -68,12 +68,12 @@
   return 1;
 }
 
-- (BOOL)kvssendDebugInfo:(__CFString *)a3 debug:(void *)a4 err:(__CFError *)a5
+- (BOOL)kvssendDebugInfo:(__CFString *)info debug:(void *)debug err:(__CFError *)err
 {
   v6 = SOSDebugInfoKeyCreateWithTypeName();
   v9 = v6;
-  v10 = a4;
-  v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+  debugCopy = debug;
+  v7 = [NSDictionary dictionaryWithObjects:&debugCopy forKeys:&v9 count:1];
   if (v6)
   {
     CFRelease(v6);
@@ -84,10 +84,10 @@
   return 1;
 }
 
-- (BOOL)kvsAppendDebugKeyInterest:(__CFArray *)a3 firstUnlock:(__CFArray *)a4 unlocked:(__CFArray *)a5 err:(__CFError *)a6
+- (BOOL)kvsAppendDebugKeyInterest:(__CFArray *)interest firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err
 {
   v7 = SOSDebugInfoKeyCreateWithTypeName();
-  CFArrayAppendValue(a3, v7);
+  CFArrayAppendValue(interest, v7);
   if (v7)
   {
     CFRelease(v7);
@@ -96,9 +96,9 @@
   return 1;
 }
 
-- (BOOL)kvsAppendRingKeyInterest:(__CFArray *)a3 firstUnlock:(__CFArray *)a4 unlocked:(__CFArray *)a5 err:(__CFError *)a6
+- (BOOL)kvsAppendRingKeyInterest:(__CFArray *)interest firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err
 {
-  v8 = [(SOSCircleStorageTransport *)self account:a3];
+  v8 = [(SOSCircleStorageTransport *)self account:interest];
   v9 = sub_100218428(v8);
 
   if (!v9)
@@ -111,15 +111,15 @@ LABEL_9:
   account = self->super.account;
   if (account)
   {
-    v11 = [(SOSAccount *)account trust];
-    if ([v11 trustedCircle])
+    trust = [(SOSAccount *)account trust];
+    if ([trust trustedCircle])
     {
       v12 = self->super.account;
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v18 = sub_10023CE10;
       v19 = &unk_100346A98;
-      v20 = a5;
+      unlockedCopy = unlocked;
       v13 = v17;
       if ([(SOSAccount *)v12 peerInfo])
       {
@@ -148,9 +148,9 @@ LABEL_9:
   return account;
 }
 
-- (BOOL)kvsAppendKeyInterest:(__CFArray *)a3 firstUnlock:(__CFArray *)a4 unlocked:(__CFArray *)a5 err:(__CFError *)a6
+- (BOOL)kvsAppendKeyInterest:(__CFArray *)interest firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err
 {
-  v8 = [(SOSCircleStorageTransport *)self account:a3];
+  v8 = [(SOSCircleStorageTransport *)self account:interest];
   v9 = sub_100218428(v8);
 
   if (!v9)
@@ -158,9 +158,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [(SOSKVSCircleStorageTransport *)self circleName];
+  circleName = [(SOSKVSCircleStorageTransport *)self circleName];
 
-  if (!v10)
+  if (!circleName)
   {
     goto LABEL_12;
   }
@@ -172,16 +172,16 @@ LABEL_9:
     account = self->super.account;
     if (account)
     {
-      v14 = [(SOSAccount *)account trust];
-      if ([v14 trustedCircle])
+      trust = [(SOSAccount *)account trust];
+      if ([trust trustedCircle])
       {
         Name = SOSCircleGetName();
         if (Name)
         {
-          if (CFEqual(v10, Name))
+          if (CFEqual(circleName, Name))
           {
             SOSCircleForEachActivePeer();
-            CFArrayAppendValue(a5, v12);
+            CFArrayAppendValue(unlocked, v12);
             CFRelease(v12);
 
 LABEL_9:
@@ -200,7 +200,7 @@ LABEL_12:
   return v11;
 }
 
-- (__CFArray)handleCircleMessagesAndReturnHandledCopy:(__CFDictionary *)a3 err:(__CFError *)a4
+- (__CFArray)handleCircleMessagesAndReturnHandledCopy:(__CFDictionary *)copy err:(__CFError *)err
 {
   Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
   v8[0] = _NSConcreteStackBlock;
@@ -209,41 +209,41 @@ LABEL_12:
   v8[3] = &unk_1003476F0;
   v8[4] = self;
   v8[5] = Mutable;
-  CFDictionaryApplyFunction(a3, sub_10023D684, v8);
+  CFDictionaryApplyFunction(copy, sub_10023D684, v8);
   return Mutable;
 }
 
-- (__CFDictionary)handleRetirementMessages:(__CFDictionary *)a3 err:(__CFError *)a4
+- (__CFDictionary)handleRetirementMessages:(__CFDictionary *)messages err:(__CFError *)err
 {
-  v6 = [(SOSCircleStorageTransport *)self account];
-  v7 = [v6 trust];
-  [v7 trustedCircle];
+  account = [(SOSCircleStorageTransport *)self account];
+  trust = [account trust];
+  [trust trustedCircle];
   Name = SOSCircleGetName();
   Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-  if ([v7 trustedCircle] && (Value = CFDictionaryGetValue(a3, Name)) != 0 && (v18 = Value, v19 = CFGetTypeID(Value), v19 == CFDictionaryGetTypeID()))
+  if ([trust trustedCircle] && (Value = CFDictionaryGetValue(messages, Name)) != 0 && (v18 = Value, v19 = CFGetTypeID(Value), v19 == CFDictionaryGetTypeID()))
   {
     context[0] = _NSConcreteStackBlock;
     context[1] = 3221225472;
     context[2] = sub_100220440;
     context[3] = &unk_100345A50;
-    v40 = a4;
-    v20 = v7;
+    errCopy = err;
+    v20 = trust;
     v38 = v20;
-    v21 = v6;
+    v21 = account;
     v39 = v21;
     v41 = Mutable;
     CFDictionaryApplyFunction(v18, sub_10021FCB8, context);
-    v22 = [v21 peerInfo];
-    if (v22)
+    peerInfo = [v21 peerInfo];
+    if (peerInfo)
     {
-      v23 = v22;
-      v24 = [v20 retirees];
-      LODWORD(v23) = [v24 containsObject:v23];
+      v23 = peerInfo;
+      retirees = [v20 retirees];
+      LODWORD(v23) = [retirees containsObject:v23];
 
       if (v23)
       {
-        v25 = [v21 trust];
-        [v25 purgeIdentity];
+        trust2 = [v21 trust];
+        [trust2 purgeIdentity];
 
         [v20 setDepartureCode:6];
       }
@@ -274,20 +274,20 @@ LABEL_12:
   return v34;
 }
 
-- (BOOL)postCircle:(__CFString *)a3 circleData:(__CFData *)a4 err:(__CFError *)a5
+- (BOOL)postCircle:(__CFString *)circle circleData:(__CFData *)data err:(__CFError *)err
 {
   v7 = SOSCircleKeyCreateWithName();
   if (v7)
   {
     v8 = v7;
-    [(SOSKVSCircleStorageTransport *)self kvsAddToPendingChanges:v7 data:a4];
+    [(SOSKVSCircleStorageTransport *)self kvsAddToPendingChanges:v7 data:data];
     CFRelease(v8);
   }
 
   return 1;
 }
 
-- (BOOL)expireRetirementRecords:(__CFDictionary *)a3 err:(__CFError *)a4
+- (BOOL)expireRetirementRecords:(__CFDictionary *)records err:(__CFError *)err
 {
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   context[0] = _NSConcreteStackBlock;
@@ -295,7 +295,7 @@ LABEL_12:
   context[2] = sub_10023D9E4;
   context[3] = &unk_1003469D0;
   context[4] = Mutable;
-  CFDictionaryApplyFunction(a3, sub_10023D684, context);
+  CFDictionaryApplyFunction(records, sub_10023D684, context);
   if (CFDictionaryGetCount(Mutable))
   {
     sub_10023CB20();
@@ -309,38 +309,38 @@ LABEL_12:
   return 1;
 }
 
-- (void)kvsAddToPendingChanges:(__CFString *)a3 data:(__CFData *)a4
+- (void)kvsAddToPendingChanges:(__CFString *)changes data:(__CFData *)data
 {
-  v7 = [(SOSKVSCircleStorageTransport *)self pending_changes];
+  pending_changes = [(SOSKVSCircleStorageTransport *)self pending_changes];
 
-  if (!v7)
+  if (!pending_changes)
   {
     v8 = +[NSMutableDictionary dictionary];
     [(SOSKVSCircleStorageTransport *)self setPending_changes:v8];
   }
 
-  v9 = [(SOSKVSCircleStorageTransport *)self pending_changes];
-  v11 = v9;
-  if (a4)
+  pending_changes2 = [(SOSKVSCircleStorageTransport *)self pending_changes];
+  v11 = pending_changes2;
+  if (data)
   {
-    [v9 setObject:a4 forKey:a3];
+    [pending_changes2 setObject:data forKey:changes];
   }
 
   else
   {
     v10 = +[NSNull null];
-    [v11 setObject:v10 forKey:a3];
+    [v11 setObject:v10 forKey:changes];
   }
 }
 
-- (BOOL)kvsSendPendingChanges:(__CFError *)a3
+- (BOOL)kvsSendPendingChanges:(__CFError *)changes
 {
-  v4 = [(SOSKVSCircleStorageTransport *)self pending_changes];
-  if (v4)
+  pending_changes = [(SOSKVSCircleStorageTransport *)self pending_changes];
+  if (pending_changes)
   {
-    v5 = v4;
-    v6 = [(SOSKVSCircleStorageTransport *)self pending_changes];
-    v7 = [v6 count];
+    v5 = pending_changes;
+    pending_changes2 = [(SOSKVSCircleStorageTransport *)self pending_changes];
+    v7 = [pending_changes2 count];
 
     if (v7)
     {
@@ -355,24 +355,24 @@ LABEL_12:
         v9 = kCFNull;
       }
 
-      v10 = [(SOSKVSCircleStorageTransport *)self pending_changes];
-      [v10 setObject:v9 forKey:kSOSKVSRequiredKey];
+      pending_changes3 = [(SOSKVSCircleStorageTransport *)self pending_changes];
+      [pending_changes3 setObject:v9 forKey:kSOSKVSRequiredKey];
 
-      v11 = [(SOSKVSCircleStorageTransport *)self pending_changes];
+      pending_changes4 = [(SOSKVSCircleStorageTransport *)self pending_changes];
       sub_10023CB20();
 
-      v12 = [(SOSKVSCircleStorageTransport *)self pending_changes];
-      [v12 removeAllObjects];
+      pending_changes5 = [(SOSKVSCircleStorageTransport *)self pending_changes];
+      [pending_changes5 removeAllObjects];
     }
   }
 
   return 1;
 }
 
-- (SOSKVSCircleStorageTransport)initWithAccount:(id)a3 andCircleName:(id)a4
+- (SOSKVSCircleStorageTransport)initWithAccount:(id)account andCircleName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = SOSKVSCircleStorageTransport;
   v8 = [(SOSCircleStorageTransport *)&v12 init];
@@ -381,10 +381,10 @@ LABEL_12:
     v9 = +[NSMutableDictionary dictionary];
     [(SOSKVSCircleStorageTransport *)v8 setPending_changes:v9];
 
-    v10 = [[NSString alloc] initWithString:v7];
+    v10 = [[NSString alloc] initWithString:nameCopy];
     [(SOSKVSCircleStorageTransport *)v8 setCircleName:v10];
 
-    [(SOSCircleStorageTransport *)v8 setAccount:v6];
+    [(SOSCircleStorageTransport *)v8 setAccount:accountCopy];
     sub_1002360B4(v8);
   }
 

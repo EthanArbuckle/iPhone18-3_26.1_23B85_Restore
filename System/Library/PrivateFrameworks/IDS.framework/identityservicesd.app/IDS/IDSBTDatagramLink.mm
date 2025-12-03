@@ -1,10 +1,10 @@
 @interface IDSBTDatagramLink
-- (IDSBTDatagramLink)initWithPipe:(id)a3 withDeviceUniqueID:(id)a4 cbuuid:(id)a5;
+- (IDSBTDatagramLink)initWithPipe:(id)pipe withDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (IDSLinkDelegate)alternateDelegate;
 - (IDSLinkDelegate)delegate;
 - (id)copyLinkStatsDict;
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4;
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5;
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link;
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (void)_processIncomingPacket;
 - (void)dealloc;
 - (void)invalidate;
@@ -13,11 +13,11 @@
 
 @implementation IDSBTDatagramLink
 
-- (IDSBTDatagramLink)initWithPipe:(id)a3 withDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (IDSBTDatagramLink)initWithPipe:(id)pipe withDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pipeCopy = pipe;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v19.receiver = self;
   v19.super_class = IDSBTDatagramLink;
   v12 = [(IDSBTDatagramLink *)&v19 init];
@@ -27,13 +27,13 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v12->_pipe, a3);
-  v14 = [v9 channel];
-  v13->_channel = v14;
-  if (v14)
+  objc_storeStrong(&v12->_pipe, pipe);
+  channel = [pipeCopy channel];
+  v13->_channel = channel;
+  if (channel)
   {
     objc_storeStrong(&v13->_cbuuid, kIDSDefaultPairedDeviceID);
-    objc_storeStrong(&v13->_deviceUniqueID, a4);
+    objc_storeStrong(&v13->_deviceUniqueID, d);
 LABEL_4:
     v15 = v13;
     goto LABEL_12;
@@ -92,7 +92,7 @@ LABEL_12:
     rxRing = self->_rxRing;
     txRing = self->_txRing;
     *buf = 138413314;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = channel;
     v14 = 1024;
@@ -169,18 +169,18 @@ LABEL_12:
   self->_state = 4;
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   if (self->_channel)
   {
-    if (a3->var2 >= 676)
+    if (buffer->var2 >= 676)
     {
       v10 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        var2 = a3->var2;
+        var2 = buffer->var2;
         *buf = 67109120;
         *&buf[4] = var2;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "DLW 0/%d (packet size too large for link)", buf, 8u);
@@ -213,13 +213,13 @@ LABEL_21:
       *buf = v13;
       *__dst = v13;
       os_channel_get_next_slot();
-      v14 = a3->var2;
+      v14 = buffer->var2;
       if (v14 > *&buf[2])
       {
         v15 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = a3->var2;
+          v16 = buffer->var2;
           *v25 = 67109376;
           v26 = v16;
           v27 = 1024;
@@ -245,7 +245,7 @@ LABEL_21:
 
       *buf = 0;
       *&buf[2] = v14;
-      memcpy(__dst[0], a3->var0, v14);
+      memcpy(__dst[0], buffer->var0, v14);
       os_channel_set_slot_properties();
       v17 = os_channel_advance_slot();
       if (v17)
@@ -275,7 +275,7 @@ LABEL_21:
       v19 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = a3->var2;
+        v20 = buffer->var2;
         *v25 = 67109120;
         v26 = v20;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "DLW %d", v25, 8u);
@@ -294,7 +294,7 @@ LABEL_21:
       }
 
       v21 = vdupq_n_s64(1uLL);
-      v21.i64[0] = a3->var2;
+      v21.i64[0] = buffer->var2;
       *&self->_totalBytesSent = vaddq_s64(*&self->_totalBytesSent, v21);
       _IDSLinkPacketBufferRelease();
       v12 = 0;
@@ -305,7 +305,7 @@ LABEL_21:
       v22 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = a3->var2;
+        v23 = buffer->var2;
         *buf = 67109120;
         *&buf[4] = v23;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "DLW 0/%d (no space)", buf, 8u);
@@ -501,7 +501,7 @@ LABEL_34:
   }
 }
 
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link
 {
   if (self->_previousReportTime == 0.0)
   {
@@ -511,7 +511,7 @@ LABEL_34:
   else
   {
     state = self->_state;
-    if (a4)
+    if (link)
     {
       v7 = 42;
     }
@@ -546,7 +546,7 @@ LABEL_34:
     v9 = [NSString stringWithFormat:@"%c MagnetIso(%s)  Tx %6llu pkts %@B %@bps     %6llu pkts %@B\n                        Rx %6llu pkts %@B %@bps     %6llu pkts %@B\n", v23, v22, v21, v10, v11, totalPacketsSent, v13, v14, v15, v16, totalPacketsReceived, v18];
   }
 
-  self->_previousReportTime = a3;
+  self->_previousReportTime = report;
   v19 = *&self->_totalBytesReceived;
   *&self->_previousBytesSent = *&self->_totalBytesSent;
   *&self->_previousBytesReceived = v19;

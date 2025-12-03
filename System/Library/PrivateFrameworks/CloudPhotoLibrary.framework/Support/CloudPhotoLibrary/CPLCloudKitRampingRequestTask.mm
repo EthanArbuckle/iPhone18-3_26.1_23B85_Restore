@@ -1,23 +1,23 @@
 @interface CPLCloudKitRampingRequestTask
 - (BOOL)_shouldSkipRampingRequest;
-- (CPLCloudKitRampingRequestTask)initWithController:(id)a3 resourceType:(unint64_t)a4 numRequested:(unint64_t)a5 completionHandler:(id)a6;
+- (CPLCloudKitRampingRequestTask)initWithController:(id)controller resourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitRampingRequestTask
 
-- (CPLCloudKitRampingRequestTask)initWithController:(id)a3 resourceType:(unint64_t)a4 numRequested:(unint64_t)a5 completionHandler:(id)a6
+- (CPLCloudKitRampingRequestTask)initWithController:(id)controller resourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = CPLCloudKitRampingRequestTask;
-  v11 = [(CPLCloudKitTransportTask *)&v16 initWithController:a3];
+  v11 = [(CPLCloudKitTransportTask *)&v16 initWithController:controller];
   v12 = v11;
   if (v11)
   {
-    v11->_resourceType = a4;
-    v11->_numRequested = a5;
-    v13 = [v10 copy];
+    v11->_resourceType = type;
+    v11->_numRequested = requested;
+    v13 = [handlerCopy copy];
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v13;
 
@@ -46,19 +46,19 @@
     v5 = v21;
     if (v4)
     {
-      v6 = [(CPLCloudKitTransportTask *)self controller];
-      v7 = [v6 isNetworkConnected];
+      controller = [(CPLCloudKitTransportTask *)self controller];
+      isNetworkConnected = [controller isNetworkConnected];
 
-      if (v7)
+      if (isNetworkConnected)
       {
         v8 = objc_alloc_init(CPLRampingRequestResource);
         v9 = sub_100084A0C(CPLCloudKitResourceKeys, self->_resourceType);
         v10 = sub_100194210(v9);
         [v8 setResource:v10];
 
-        v11 = [v8 resource];
+        resource = [v8 resource];
 
-        if (v11)
+        if (resource)
         {
           [v8 setNumRequested:self->_numRequested];
           v12 = objc_alloc_init(CPLRampingRequest);

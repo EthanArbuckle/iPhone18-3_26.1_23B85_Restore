@@ -17,7 +17,7 @@
 + (id)edgeCacheHintForTrending;
 + (id)edgeCacheHintForWidgetArticles;
 + (id)edgeCacheHintForWidgetConfig;
-- (FCEdgeCacheHint)initWithGroupName:(id)a3 cacheControlKey:(id)a4;
+- (FCEdgeCacheHint)initWithGroupName:(id)name cacheControlKey:(id)key;
 @end
 
 @implementation FCEdgeCacheHint
@@ -29,20 +29,20 @@
   return v2;
 }
 
-- (FCEdgeCacheHint)initWithGroupName:(id)a3 cacheControlKey:(id)a4
+- (FCEdgeCacheHint)initWithGroupName:(id)name cacheControlKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = FCEdgeCacheHint;
   v8 = [(FCEdgeCacheHint *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     groupName = v8->_groupName;
     v8->_groupName = v9;
 
-    v11 = [v7 copy];
+    v11 = [keyCopy copy];
     cacheControlKey = v8->_cacheControlKey;
     v8->_cacheControlKey = v11;
   }

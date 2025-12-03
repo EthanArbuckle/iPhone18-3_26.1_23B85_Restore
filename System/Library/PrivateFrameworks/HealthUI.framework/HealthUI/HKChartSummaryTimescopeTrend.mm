@@ -1,33 +1,33 @@
 @interface HKChartSummaryTimescopeTrend
-- (BOOL)isEqual:(id)a3;
-- (id)initForTimeScope:(int64_t)a3 trendSpans:(id)a4 localizableTrendDescription:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (id)initForTimeScope:(int64_t)scope trendSpans:(id)spans localizableTrendDescription:(id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HKChartSummaryTimescopeTrend
 
-- (id)initForTimeScope:(int64_t)a3 trendSpans:(id)a4 localizableTrendDescription:(id)a5
+- (id)initForTimeScope:(int64_t)scope trendSpans:(id)spans localizableTrendDescription:(id)description
 {
-  v9 = a4;
-  v10 = a5;
+  spansCopy = spans;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = HKChartSummaryTimescopeTrend;
   v11 = [(HKChartSummaryTimescopeTrend *)&v14 init];
   p_isa = &v11->super.isa;
   if (v11)
   {
-    v11->_timeScope = a3;
-    objc_storeStrong(&v11->_trendSpans, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    v11->_timeScope = scope;
+    objc_storeStrong(&v11->_trendSpans, spans);
+    objc_storeStrong(p_isa + 3, description);
   }
 
   return p_isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_timeScope == v5->_timeScope && [(NSArray *)self->_trendSpans isEqual:v5->_trendSpans]&& [(NSString *)self->_localizableTrendDescription isEqualToString:v5->_localizableTrendDescription];
     }
 

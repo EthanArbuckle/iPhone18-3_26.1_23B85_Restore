@@ -1,37 +1,37 @@
 @interface BYODMultilineTextCell
-- (BYODMultilineTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BYODMultilineTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation BYODMultilineTextCell
 
-- (BYODMultilineTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BYODMultilineTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = BYODMultilineTextCell;
-  v7 = [(BYODMultilineTextCell *)&v17 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(BYODMultilineTextCell *)&v17 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(BYODMultilineTextCell *)v7 valueLabel];
-    [v9 setNumberOfLines:0];
+    valueLabel = [(BYODMultilineTextCell *)v7 valueLabel];
+    [valueLabel setNumberOfLines:0];
 
     v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    v11 = [(BYODMultilineTextCell *)v8 valueLabel];
-    [v11 setFont:v10];
+    valueLabel2 = [(BYODMultilineTextCell *)v8 valueLabel];
+    [valueLabel2 setFont:v10];
 
     v12 = +[PSListController appearance];
-    v13 = [v12 textColor];
-    v14 = v13;
-    if (!v13)
+    textColor = [v12 textColor];
+    v14 = textColor;
+    if (!textColor)
     {
       v14 = +[UIColor labelColor];
     }
 
-    v15 = [(BYODMultilineTextCell *)v8 valueLabel];
-    [v15 setTextColor:v14];
+    valueLabel3 = [(BYODMultilineTextCell *)v8 valueLabel];
+    [valueLabel3 setTextColor:v14];
 
-    if (!v13)
+    if (!textColor)
     {
     }
   }

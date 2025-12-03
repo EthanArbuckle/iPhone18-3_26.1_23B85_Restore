@@ -1,29 +1,29 @@
 @interface PKAccountPromotionBehavior
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountPromotionBehavior:(id)a3;
-- (PKAccountPromotionBehavior)initWithCoder:(id)a3;
-- (PKAccountPromotionBehavior)initWithDictionary:(id)a3;
-- (PKAccountPromotionBehavior)initWithMinRefreshPeriod:(id)a3 maxImpressionCount:(id)a4 timeVisibleAfterCompleted:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountPromotionBehavior:(id)behavior;
+- (PKAccountPromotionBehavior)initWithCoder:(id)coder;
+- (PKAccountPromotionBehavior)initWithDictionary:(id)dictionary;
+- (PKAccountPromotionBehavior)initWithMinRefreshPeriod:(id)period maxImpressionCount:(id)count timeVisibleAfterCompleted:(id)completed;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountPromotionBehavior
 
-- (PKAccountPromotionBehavior)initWithMinRefreshPeriod:(id)a3 maxImpressionCount:(id)a4 timeVisibleAfterCompleted:(id)a5
+- (PKAccountPromotionBehavior)initWithMinRefreshPeriod:(id)period maxImpressionCount:(id)count timeVisibleAfterCompleted:(id)completed
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  periodCopy = period;
+  countCopy = count;
+  completedCopy = completed;
   v16.receiver = self;
   v16.super_class = PKAccountPromotionBehavior;
   v11 = [(PKAccountPromotionBehavior *)&v16 init];
   if (v11)
   {
-    if (v8)
+    if (periodCopy)
     {
-      [v8 doubleValue];
+      [periodCopy doubleValue];
     }
 
     else
@@ -32,20 +32,20 @@
     }
 
     *&v11->_minRefreshPeriod = v12;
-    if (v9)
+    if (countCopy)
     {
-      v13 = [v9 integerValue];
+      integerValue = [countCopy integerValue];
     }
 
     else
     {
-      v13 = 1;
+      integerValue = 1;
     }
 
-    v11->_maxImpressionCount = v13;
-    if (v10)
+    v11->_maxImpressionCount = integerValue;
+    if (completedCopy)
     {
-      [v10 doubleValue];
+      [completedCopy doubleValue];
     }
 
     else
@@ -59,12 +59,12 @@
   return v11;
 }
 
-- (PKAccountPromotionBehavior)initWithDictionary:(id)a3
+- (PKAccountPromotionBehavior)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKNumberForKey:@"minRefreshPeriod"];
-  v6 = [v4 PKNumberForKey:@"maxImpressionCount"];
-  v7 = [v4 PKNumberForKey:@"timeVisibleAfterCompleted"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKNumberForKey:@"minRefreshPeriod"];
+  v6 = [dictionaryCopy PKNumberForKey:@"maxImpressionCount"];
+  v7 = [dictionaryCopy PKNumberForKey:@"timeVisibleAfterCompleted"];
 
   v8 = [(PKAccountPromotionBehavior *)self initWithMinRefreshPeriod:v5 maxImpressionCount:v6 timeVisibleAfterCompleted:v7];
   return v8;
@@ -81,61 +81,61 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountPromotionBehavior *)self isEqualToAccountPromotionBehavior:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountPromotionBehavior *)self isEqualToAccountPromotionBehavior:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountPromotionBehavior:(id)a3
+- (BOOL)isEqualToAccountPromotionBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = v4 && self->_minRefreshPeriod == v4[1] && self->_maxImpressionCount == *(v4 + 2) && self->_timeVisibleAfterCompleted == v4[3];
+  behaviorCopy = behavior;
+  v5 = behaviorCopy && self->_minRefreshPeriod == behaviorCopy[1] && self->_maxImpressionCount == *(behaviorCopy + 2) && self->_timeVisibleAfterCompleted == behaviorCopy[3];
 
   return v5;
 }
 
-- (PKAccountPromotionBehavior)initWithCoder:(id)a3
+- (PKAccountPromotionBehavior)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKAccountPromotionBehavior;
   v5 = [(PKAccountPromotionBehavior *)&v9 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"minRefreshPeriod"];
+    [coderCopy decodeDoubleForKey:@"minRefreshPeriod"];
     v5->_minRefreshPeriod = v6;
-    v5->_maxImpressionCount = [v4 decodeIntegerForKey:@"maxImpressionCount"];
-    [v4 decodeDoubleForKey:@"timeVisibleAfterCompleted"];
+    v5->_maxImpressionCount = [coderCopy decodeIntegerForKey:@"maxImpressionCount"];
+    [coderCopy decodeDoubleForKey:@"timeVisibleAfterCompleted"];
     v5->_timeVisibleAfterCompleted = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minRefreshPeriod = self->_minRefreshPeriod;
-  v5 = a3;
-  [v5 encodeDouble:@"minRefreshPeriod" forKey:minRefreshPeriod];
-  [v5 encodeInteger:self->_maxImpressionCount forKey:@"maxImpressionCount"];
-  [v5 encodeDouble:@"timeVisibleAfterCompleted" forKey:self->_timeVisibleAfterCompleted];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"minRefreshPeriod" forKey:minRefreshPeriod];
+  [coderCopy encodeInteger:self->_maxImpressionCount forKey:@"maxImpressionCount"];
+  [coderCopy encodeDouble:@"timeVisibleAfterCompleted" forKey:self->_timeVisibleAfterCompleted];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = *&self->_minRefreshPeriod;
   *(result + 2) = self->_maxImpressionCount;
   *(result + 3) = *&self->_timeVisibleAfterCompleted;

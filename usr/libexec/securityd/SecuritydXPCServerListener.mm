@@ -1,27 +1,27 @@
 @interface SecuritydXPCServerListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SecuritydXPCServerListener)init;
 @end
 
 @implementation SecuritydXPCServerListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.keychain.deny"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.keychain.deny"];
 
   if (!v5)
   {
     v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SecuritydXPCProtocol];
-    [v4 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
-    v7 = [v4 exportedInterface];
-    [SecuritydXPCClient configureSecuritydXPCProtocol:v7];
+    exportedInterface = [connectionCopy exportedInterface];
+    [SecuritydXPCClient configureSecuritydXPCProtocol:exportedInterface];
 
-    v8 = [[SecuritydXPCServer alloc] initWithConnection:v4];
-    [v4 setExportedObject:v8];
+    v8 = [[SecuritydXPCServer alloc] initWithConnection:connectionCopy];
+    [connectionCopy setExportedObject:v8];
 
-    [v4 resume];
+    [connectionCopy resume];
   }
 
   return v5 == 0;
@@ -37,11 +37,11 @@
     v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.securityd.general"];
     [(SecuritydXPCServerListener *)v2 setListener:v3];
 
-    v4 = [(SecuritydXPCServerListener *)v2 listener];
-    [v4 setDelegate:v2];
+    listener = [(SecuritydXPCServerListener *)v2 listener];
+    [listener setDelegate:v2];
 
-    v5 = [(SecuritydXPCServerListener *)v2 listener];
-    [v5 resume];
+    listener2 = [(SecuritydXPCServerListener *)v2 listener];
+    [listener2 resume];
   }
 
   return v2;

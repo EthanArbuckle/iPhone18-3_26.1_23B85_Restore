@@ -3,24 +3,24 @@
 - (HUComfortSoundProtocol)selectedComfortSound;
 - (HUComfortSoundsFilterPoint)tinnitusFilterPoint;
 - (id)keysMonitoredForUpdates;
-- (id)preferenceKeyForSelector:(SEL)a3;
-- (void)logMessage:(id)a3;
+- (id)preferenceKeyForSelector:(SEL)selector;
+- (void)logMessage:(id)message;
 - (void)reset;
 - (void)resetTimers;
 - (void)selectedComfortSound;
-- (void)setActiveTimerEndTimeStamp:(double)a3;
-- (void)setLastEnablementTimestamp:(double)a3;
-- (void)setMediaVolume:(double)a3;
-- (void)setRelativeVolume:(double)a3;
-- (void)setSelectedComfortSound:(id)a3;
-- (void)setTimerDurationInSeconds:(double)a3;
-- (void)setTimerEndInterval:(double)a3;
-- (void)setTimerInHoursAndMinutes:(int64_t)a3 minutes:(int64_t)a4;
-- (void)setTimerOption:(unint64_t)a3;
-- (void)setTinnitusBalance:(double)a3;
-- (void)setTinnitusFilterMode:(unint64_t)a3;
-- (void)setTinnitusFilterPoint:(id)a3;
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4;
+- (void)setActiveTimerEndTimeStamp:(double)stamp;
+- (void)setLastEnablementTimestamp:(double)timestamp;
+- (void)setMediaVolume:(double)volume;
+- (void)setRelativeVolume:(double)volume;
+- (void)setSelectedComfortSound:(id)sound;
+- (void)setTimerDurationInSeconds:(double)seconds;
+- (void)setTimerEndInterval:(double)interval;
+- (void)setTimerInHoursAndMinutes:(int64_t)minutes minutes:(int64_t)a4;
+- (void)setTimerOption:(unint64_t)option;
+- (void)setTinnitusBalance:(double)balance;
+- (void)setTinnitusFilterMode:(unint64_t)mode;
+- (void)setTinnitusFilterPoint:(id)point;
+- (void)setValue:(id)value forPreferenceKey:(id)key;
 @end
 
 @implementation HUComfortSoundsSettings
@@ -90,7 +90,7 @@ uint64_t __41__HUComfortSoundsSettings_sharedInstance__block_invoke()
   [(HCSettings *)self resetValueForSelector:sel_activeTimerEndTimeStamp];
 }
 
-- (id)preferenceKeyForSelector:(SEL)a3
+- (id)preferenceKeyForSelector:(SEL)selector
 {
   if (preferenceKeyForSelector__onceToken != -1)
   {
@@ -98,7 +98,7 @@ uint64_t __41__HUComfortSoundsSettings_sharedInstance__block_invoke()
   }
 
   v5 = preferenceKeyForSelector__SelectorMap;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   v7 = [v5 objectForKey:v6];
 
   if (v7)
@@ -110,7 +110,7 @@ uint64_t __41__HUComfortSoundsSettings_sharedInstance__block_invoke()
   {
     v11.receiver = self;
     v11.super_class = HUComfortSoundsSettings;
-    v8 = [(HCSettings *)&v11 preferenceKeyForSelector:a3];
+    v8 = [(HCSettings *)&v11 preferenceKeyForSelector:selector];
   }
 
   v9 = v8;
@@ -135,79 +135,79 @@ uint64_t __50__HUComfortSoundsSettings_keysMonitoredForUpdates__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   v4 = HCLogComfortSounds();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = messageCopy;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRelativeVolume:(double)a3
+- (void)setRelativeVolume:(double)volume
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:volume];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"relativeVolume"];
 }
 
-- (void)setMediaVolume:(double)a3
+- (void)setMediaVolume:(double)volume
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:volume];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"mediaVolume"];
 }
 
-- (void)setLastEnablementTimestamp:(double)a3
+- (void)setLastEnablementTimestamp:(double)timestamp
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:timestamp];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"lastEnablementTimestamp"];
 }
 
-- (void)setTimerOption:(unint64_t)a3
+- (void)setTimerOption:(unint64_t)option
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:option];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"timerOption"];
 }
 
-- (void)setTimerEndInterval:(double)a3
+- (void)setTimerEndInterval:(double)interval
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:interval];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"timerEndInterval"];
 }
 
-- (void)setTimerDurationInSeconds:(double)a3
+- (void)setTimerDurationInSeconds:(double)seconds
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:seconds];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"timerDurationInSeconds"];
 }
 
-- (void)setActiveTimerEndTimeStamp:(double)a3
+- (void)setActiveTimerEndTimeStamp:(double)stamp
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:stamp];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"activeTimerEndTimeStamp"];
 }
 
-- (void)setTinnitusBalance:(double)a3
+- (void)setTinnitusBalance:(double)balance
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:balance];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"tinnitusBalance"];
 }
 
-- (void)setTinnitusFilterMode:(unint64_t)a3
+- (void)setTinnitusFilterMode:(unint64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
   [(HUComfortSoundsSettings *)self setValue:v4 forPreferenceKey:@"tinnitusFilterMode"];
 }
 
-- (void)setTimerInHoursAndMinutes:(int64_t)a3 minutes:(int64_t)a4
+- (void)setTimerInHoursAndMinutes:(int64_t)minutes minutes:(int64_t)a4
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a4 > 59 || (a4 | a3) < 0)
+  if (a4 > 59 || (a4 | minutes) < 0)
   {
     v8 = HCLogComfortSounds();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -218,7 +218,7 @@ uint64_t __50__HUComfortSoundsSettings_keysMonitoredForUpdates__block_invoke()
 
   else
   {
-    v5 = (3600 * a3 + 60 * a4);
+    v5 = (3600 * minutes + 60 * a4);
     v6 = HCLogComfortSounds();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -234,23 +234,23 @@ uint64_t __50__HUComfortSoundsSettings_keysMonitoredForUpdates__block_invoke()
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSelectedComfortSound:(id)a3
+- (void)setSelectedComfortSound:(id)sound
 {
-  v4 = a3;
-  if (v4)
+  soundCopy = sound;
+  if (soundCopy)
   {
     v5 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-    [v5 encodeObject:v4 forKey:*MEMORY[0x1E696A508]];
+    [v5 encodeObject:soundCopy forKey:*MEMORY[0x1E696A508]];
     [v5 finishEncoding];
-    v6 = [v5 encodedData];
+    encodedData = [v5 encodedData];
   }
 
   else
   {
-    v6 = 0;
+    encodedData = 0;
   }
 
-  [(HUComfortSoundsSettings *)self setValue:v6 forPreferenceKey:@"ComfortSoundsSelectedSound"];
+  [(HUComfortSoundsSettings *)self setValue:encodedData forPreferenceKey:@"ComfortSoundsSelectedSound"];
 }
 
 - (HUComfortSoundsFilterPoint)tinnitusFilterPoint
@@ -267,30 +267,30 @@ uint64_t __50__HUComfortSoundsSettings_keysMonitoredForUpdates__block_invoke()
   return v5;
 }
 
-- (void)setTinnitusFilterPoint:(id)a3
+- (void)setTinnitusFilterPoint:(id)point
 {
-  v4 = a3;
-  if (v4)
+  pointCopy = point;
+  if (pointCopy)
   {
     v5 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-    [v5 encodeObject:v4 forKey:*MEMORY[0x1E696A508]];
+    [v5 encodeObject:pointCopy forKey:*MEMORY[0x1E696A508]];
     [v5 finishEncoding];
-    v6 = [v5 encodedData];
+    encodedData = [v5 encodedData];
   }
 
   else
   {
-    v6 = 0;
+    encodedData = 0;
   }
 
-  [(HUComfortSoundsSettings *)self setValue:v6 forPreferenceKey:@"HUComfortSoundsFilterPointKey"];
+  [(HUComfortSoundsSettings *)self setValue:encodedData forPreferenceKey:@"HUComfortSoundsFilterPointKey"];
 }
 
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4
+- (void)setValue:(id)value forPreferenceKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"comfortSoundsEnabled"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"comfortSoundsEnabled"])
   {
     v8 = AXLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -304,7 +304,7 @@ uint64_t __50__HUComfortSoundsSettings_keysMonitoredForUpdates__block_invoke()
 
   v9.receiver = self;
   v9.super_class = HUComfortSoundsSettings;
-  [(HCSettings *)&v9 setValue:v6 forPreferenceKey:v7];
+  [(HCSettings *)&v9 setValue:valueCopy forPreferenceKey:keyCopy];
 }
 
 - (void)selectedComfortSound

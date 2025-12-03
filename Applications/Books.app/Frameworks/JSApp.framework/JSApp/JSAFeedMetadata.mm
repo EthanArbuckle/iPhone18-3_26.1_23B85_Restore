@@ -1,15 +1,15 @@
 @interface JSAFeedMetadata
-+ (id)metadataDictionary:(id)a3 variationWithNavigationBarStyle:(unint64_t)a4;
++ (id)metadataDictionary:(id)dictionary variationWithNavigationBarStyle:(unint64_t)style;
 - (JSAFeedMetadata)init;
-- (JSAFeedMetadata)initWithDictionary:(id)a3;
+- (JSAFeedMetadata)initWithDictionary:(id)dictionary;
 - (UIEdgeInsets)navigationBarLayoutInsets;
 @end
 
 @implementation JSAFeedMetadata
 
-- (JSAFeedMetadata)initWithDictionary:(id)a3
+- (JSAFeedMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v64.receiver = self;
   v64.super_class = JSAFeedMetadata;
   v5 = [(JSAFeedMetadata *)&v64 init];
@@ -19,12 +19,12 @@
     v5->_navigationBarVisible = 1;
     v5->_navigationBarStyle = 0;
     v5->_navigationBarInitialBackgroundOpacity = 1.0;
-    if (v4)
+    if (dictionaryCopy)
     {
-      v7 = [v4 objectForKeyedSubscript:@"navigationBarVisibility"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarVisibility"];
       if (v7)
       {
-        v8 = [v4 objectForKeyedSubscript:@"navigationBarVisibility"];
+        v8 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarVisibility"];
         v6->_navigationBarVisible = [v8 BOOLValue];
       }
 
@@ -33,11 +33,11 @@
         v6->_navigationBarVisible = 1;
       }
 
-      v9 = [v4 objectForKeyedSubscript:@"showsVerticalScrollIndicator"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"showsVerticalScrollIndicator"];
       if (v9)
       {
         objc_opt_class();
-        v10 = [v4 objectForKeyedSubscript:@"showsVerticalScrollIndicator"];
+        v10 = [dictionaryCopy objectForKeyedSubscript:@"showsVerticalScrollIndicator"];
         v11 = BUDynamicCast();
         v6->_showsVerticalScrollIndicator = [v11 BOOLValue];
       }
@@ -47,7 +47,7 @@
         v6->_showsVerticalScrollIndicator = 1;
       }
 
-      v12 = [v4 objectForKeyedSubscript:@"navigationBarStyle"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarStyle"];
       if ([v12 isEqualToString:@"transparent"])
       {
         v13 = 2;
@@ -74,10 +74,10 @@
       }
 
       v6->_navigationBarStyle = v13;
-      v14 = [v4 objectForKeyedSubscript:@"navigationBarInitialBackgroundOpacity"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarInitialBackgroundOpacity"];
       if (v14)
       {
-        v15 = [v4 objectForKeyedSubscript:@"navigationBarInitialBackgroundOpacity"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarInitialBackgroundOpacity"];
         [v15 doubleValue];
         v6->_navigationBarInitialBackgroundOpacity = v16;
       }
@@ -87,38 +87,38 @@
         v6->_navigationBarInitialBackgroundOpacity = 1.0;
       }
 
-      v17 = [v4 objectForKeyedSubscript:@"navigationBarTintOpacity"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarTintOpacity"];
       v18 = 1.0;
       v19 = 1.0;
       if (v17)
       {
-        v20 = [v4 objectForKeyedSubscript:@"navigationBarTintOpacity"];
+        v20 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarTintOpacity"];
         [v20 doubleValue];
         v19 = v21;
       }
 
-      v22 = [v4 objectForKeyedSubscript:@"navigationBarTintColor"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarTintColor"];
       v23 = [UIColor jsa_colorWithHexString:v22 alpha:v19];
       navigationBarTintColor = v6->_navigationBarTintColor;
       v6->_navigationBarTintColor = v23;
 
-      v25 = [v4 objectForKeyedSubscript:@"dayBackgroundOpacity"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"dayBackgroundOpacity"];
       if (v25)
       {
-        v26 = [v4 objectForKeyedSubscript:@"dayBackgroundOpacity"];
+        v26 = [dictionaryCopy objectForKeyedSubscript:@"dayBackgroundOpacity"];
         [v26 doubleValue];
         v18 = v27;
       }
 
-      v28 = [v4 objectForKeyedSubscript:@"dayBackgroundColor"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"dayBackgroundColor"];
       v29 = [UIColor jsa_colorWithHexString:v28 alpha:v18];
       dayBackgroundColor = v6->_dayBackgroundColor;
       v6->_dayBackgroundColor = v29;
 
-      v31 = [v4 objectForKeyedSubscript:@"nightBackgroundOpacity"];
+      v31 = [dictionaryCopy objectForKeyedSubscript:@"nightBackgroundOpacity"];
       if (v31)
       {
-        v32 = [v4 objectForKeyedSubscript:@"nightBackgroundOpacity"];
+        v32 = [dictionaryCopy objectForKeyedSubscript:@"nightBackgroundOpacity"];
         [v32 doubleValue];
         v34 = v33;
       }
@@ -128,53 +128,53 @@
         v34 = 1.0;
       }
 
-      v35 = [v4 objectForKeyedSubscript:@"nightBackgroundColor"];
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"nightBackgroundColor"];
       v36 = [UIColor jsa_colorWithHexString:v35 alpha:v34];
       nightBackgroundColor = v6->_nightBackgroundColor;
       v6->_nightBackgroundColor = v36;
 
       objc_opt_class();
-      v38 = [v4 objectForKeyedSubscript:@"backTitle"];
+      v38 = [dictionaryCopy objectForKeyedSubscript:@"backTitle"];
       v39 = BUDynamicCast();
       v40 = [v39 copy];
       backTitle = v6->_backTitle;
       v6->_backTitle = v40;
 
       objc_opt_class();
-      v42 = [v4 objectForKeyedSubscript:@"title"];
+      v42 = [dictionaryCopy objectForKeyedSubscript:@"title"];
       v43 = BUDynamicCast();
       v44 = [v43 copy];
       title = v6->_title;
       v6->_title = v44;
 
       objc_opt_class();
-      v46 = [v4 objectForKeyedSubscript:@"trackerName"];
+      v46 = [dictionaryCopy objectForKeyedSubscript:@"trackerName"];
       v47 = BUDynamicCast();
       v48 = [v47 copy];
       trackerName = v6->_trackerName;
       v6->_trackerName = v48;
 
       objc_opt_class();
-      v50 = [v4 objectForKeyedSubscript:@"accessibilitySummary"];
+      v50 = [dictionaryCopy objectForKeyedSubscript:@"accessibilitySummary"];
       v51 = BUDynamicCast();
       v52 = [v51 copy];
       accessibilitySummary = v6->_accessibilitySummary;
       v6->_accessibilitySummary = v52;
 
       objc_opt_class();
-      v54 = [v4 objectForKeyedSubscript:@"messagePlacements"];
+      v54 = [dictionaryCopy objectForKeyedSubscript:@"messagePlacements"];
       v55 = BUDynamicCast();
       v56 = [v55 copy];
       messagePlacements = v6->_messagePlacements;
       v6->_messagePlacements = v56;
 
       objc_opt_class();
-      v58 = [v4 objectForKeyedSubscript:@"ignoreActiveAppearanceEnvironmentUpdate"];
+      v58 = [dictionaryCopy objectForKeyedSubscript:@"ignoreActiveAppearanceEnvironmentUpdate"];
       v59 = BUDynamicCast();
       v6->_ignoreActiveAppearanceEnvironmentUpdate = [v59 BOOLValue];
 
       objc_opt_class();
-      v60 = [v4 objectForKeyedSubscript:@"navigationBarHorizontalLayoutInset"];
+      v60 = [dictionaryCopy objectForKeyedSubscript:@"navigationBarHorizontalLayoutInset"];
       v61 = BUDynamicCast();
 
       if (v61)
@@ -206,13 +206,13 @@
   return result;
 }
 
-+ (id)metadataDictionary:(id)a3 variationWithNavigationBarStyle:(unint64_t)a4
++ (id)metadataDictionary:(id)dictionary variationWithNavigationBarStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [dictionaryCopy mutableCopy];
   }
 
   else
@@ -221,9 +221,9 @@
   }
 
   v8 = v7;
-  if (a4 <= 4)
+  if (style <= 4)
   {
-    [v7 setObject:off_B2608[a4] forKeyedSubscript:@"navigationBarStyle"];
+    [v7 setObject:off_B2608[style] forKeyedSubscript:@"navigationBarStyle"];
   }
 
   v9 = [v8 copy];

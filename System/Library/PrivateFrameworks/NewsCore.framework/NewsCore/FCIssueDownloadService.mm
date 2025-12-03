@@ -1,8 +1,8 @@
 @interface FCIssueDownloadService
 - (FCIssueDownloadService)init;
-- (FCIssueDownloadService)initWithContext:(id)a3 ANFHelper:(id)a4 articleDownloadService:(id)a5;
-- (id)fetchCachedIssueWithID:(id)a3 completionHandler:(id)a4;
-- (int64_t)isIssueDownloadedEnoughToRead:(id)a3;
+- (FCIssueDownloadService)initWithContext:(id)context ANFHelper:(id)helper articleDownloadService:(id)service;
+- (id)fetchCachedIssueWithID:(id)d completionHandler:(id)handler;
+- (int64_t)isIssueDownloadedEnoughToRead:(id)read;
 @end
 
 @implementation FCIssueDownloadService
@@ -33,34 +33,34 @@
   objc_exception_throw(v6);
 }
 
-- (FCIssueDownloadService)initWithContext:(id)a3 ANFHelper:(id)a4 articleDownloadService:(id)a5
+- (FCIssueDownloadService)initWithContext:(id)context ANFHelper:(id)helper articleDownloadService:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  helperCopy = helper;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = FCIssueDownloadService;
   v12 = [(FCIssueDownloadService *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_ANFHelper, a4);
-    objc_storeStrong(&v13->_articleDownloadService, a5);
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_ANFHelper, helper);
+    objc_storeStrong(&v13->_articleDownloadService, service);
   }
 
   return v13;
 }
 
-- (id)fetchCachedIssueWithID:(id)a3 completionHandler:(id)a4
+- (id)fetchCachedIssueWithID:(id)d completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = [FCOfflineIssueFetchOperation alloc];
-  v9 = [(FCIssueDownloadService *)self context];
-  v10 = [(FCIssueDownloadService *)self ANFHelper];
-  v11 = [(FCOfflineIssueFetchOperation *)v8 initWithContext:v9 ANFHelper:v10 issueID:v6];
+  context = [(FCIssueDownloadService *)self context];
+  aNFHelper = [(FCIssueDownloadService *)self ANFHelper];
+  v11 = [(FCOfflineIssueFetchOperation *)v8 initWithContext:context ANFHelper:aNFHelper issueID:dCopy];
 
   [(FCOperation *)v11 setQualityOfService:9];
   [(FCOfflineIssueFetchOperation *)v11 setCachedOnly:1];
@@ -80,9 +80,9 @@
   v21 = 3221225472;
   v22 = __67__FCIssueDownloadService_fetchCachedIssueWithID_completionHandler___block_invoke_2;
   v23 = &unk_1E7C36F18;
-  v12 = v6;
+  v12 = dCopy;
   v24 = v12;
-  v13 = v7;
+  v13 = handlerCopy;
   v25 = v13;
   v26 = v28;
   [(FCOfflineIssueFetchOperation *)v11 setFetchCompletionHandler:&v20];
@@ -151,36 +151,36 @@ void __67__FCIssueDownloadService_fetchCachedIssueWithID_completionHandler___blo
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)isIssueDownloadedEnoughToRead:(id)a3
+- (int64_t)isIssueDownloadedEnoughToRead:(id)read
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCIssueDownloadService *)self context];
-  v6 = [v5 internalContentContext];
-  v7 = [v6 issueRecordSource];
-  v8 = [v7 cachedRecordWithID:v4];
+  readCopy = read;
+  context = [(FCIssueDownloadService *)self context];
+  internalContentContext = [context internalContentContext];
+  issueRecordSource = [internalContentContext issueRecordSource];
+  v8 = [issueRecordSource cachedRecordWithID:readCopy];
 
   if (v8)
   {
     v9 = v8;
-    v10 = [(FCIssueDownloadService *)self context];
-    v11 = [v10 assetManager];
-    v12 = [v9 generateMetadataJSONAssetHandleWithAssetManager:v11];
+    context2 = [(FCIssueDownloadService *)self context];
+    assetManager = [context2 assetManager];
+    v12 = [v9 generateMetadataJSONAssetHandleWithAssetManager:assetManager];
 
     if (v12)
     {
-      v13 = [v12 dataProvider];
+      dataProvider = [v12 dataProvider];
 
-      if (v13)
+      if (dataProvider)
       {
-        v14 = [v9 type];
-        if (v14 == 2)
+        type = [v9 type];
+        if (type == 2)
         {
           v21 = FCOfflineDownloadsLog;
           if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v33 = v4;
+            v33 = readCopy;
             _os_log_impl(&dword_1B63EF000, v21, OS_LOG_TYPE_DEFAULT, "Issue %{public}@ has unknown readability because it's a PDF issue'", buf, 0xCu);
           }
 
@@ -188,13 +188,13 @@ void __67__FCIssueDownloadService_fetchCachedIssueWithID_completionHandler___blo
           goto LABEL_18;
         }
 
-        if (v14 != 1 || (-[FCIssueDownloadService articleDownloadService](self, "articleDownloadService"), v15 = objc_claimAutoreleasedReturnValue(), [v9 coverArticleID], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isArticleDownloadedEnoughToRead:", v16), v16, v15, (v17 & 1) != 0))
+        if (type != 1 || (-[FCIssueDownloadService articleDownloadService](self, "articleDownloadService"), v15 = objc_claimAutoreleasedReturnValue(), [v9 coverArticleID], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isArticleDownloadedEnoughToRead:", v16), v16, v15, (v17 & 1) != 0))
         {
           v18 = FCOfflineDownloadsLog;
           if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v33 = v4;
+            v33 = readCopy;
             _os_log_impl(&dword_1B63EF000, v18, OS_LOG_TYPE_DEFAULT, "Issue %{public}@ is readable", buf, 0xCu);
           }
 
@@ -206,7 +206,7 @@ void __67__FCIssueDownloadService_fetchCachedIssueWithID_completionHandler___blo
         v24[1] = 3221225472;
         v24[2] = __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke_21;
         v24[3] = &unk_1E7C3F068;
-        v25 = v4;
+        v25 = readCopy;
         __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke_21(v24);
         v20 = v25;
       }
@@ -217,7 +217,7 @@ void __67__FCIssueDownloadService_fetchCachedIssueWithID_completionHandler___blo
         v26[1] = 3221225472;
         v26[2] = __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke_20;
         v26[3] = &unk_1E7C3F068;
-        v27 = v4;
+        v27 = readCopy;
         __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke_20(v26);
         v20 = v27;
       }
@@ -229,7 +229,7 @@ void __67__FCIssueDownloadService_fetchCachedIssueWithID_completionHandler___blo
       v28[1] = 3221225472;
       v28[2] = __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke_19;
       v28[3] = &unk_1E7C3F068;
-      v29 = v4;
+      v29 = readCopy;
       __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke_19(v28);
       v20 = v29;
     }
@@ -244,7 +244,7 @@ LABEL_18:
   v30[1] = 3221225472;
   v30[2] = __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke;
   v30[3] = &unk_1E7C3F068;
-  v31 = v4;
+  v31 = readCopy;
   __56__FCIssueDownloadService_isIssueDownloadedEnoughToRead___block_invoke(v30);
   v19 = 0;
   v9 = v31;

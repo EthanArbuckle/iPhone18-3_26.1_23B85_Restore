@@ -1,39 +1,39 @@
 @interface NTKUnity2025Face
 + (id)_complicationSlotDescriptors;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKUnity2025Face
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKUnity2025Face *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKUnity2025Face *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKUnity2025Face *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKUnity2025Face *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKUnity2025Face *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKUnity2025Face *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
@@ -57,7 +57,7 @@
   return v7;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D2BEE8];
@@ -81,17 +81,17 @@
   return v3;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D2BF08]])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:*MEMORY[0x277D2BF08]])
   {
     v4 = @"TOP_LEFT";
   }
 
   else
   {
-    v5 = [v3 isEqualToString:*MEMORY[0x277D2BEE8]];
+    v5 = [slotCopy isEqualToString:*MEMORY[0x277D2BEE8]];
     v4 = @"BOTTOM_RIGHT";
     if (!v5)
     {

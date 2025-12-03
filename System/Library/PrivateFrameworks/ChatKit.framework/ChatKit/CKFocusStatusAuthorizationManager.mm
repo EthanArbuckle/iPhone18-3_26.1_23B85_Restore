@@ -2,12 +2,12 @@
 + (CKFocusStatusAuthorizationManager)sharedInstance;
 - (BOOL)deviceSupportsFocusStatusAuthorizationPrompt;
 - (id)newDNDGlobalConfigurationService;
-- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertFromViewController:(id)a3;
-- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertIfNotPreviouslyShownFromViewController:(id)a3;
+- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertFromViewController:(id)controller;
+- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertIfNotPreviouslyShownFromViewController:(id)controller;
 - (void)notifyDNDFocusStatusAuthorizationChanged;
-- (void)presentFocusStatusAuthorizationAlertIfNecessaryFromViewController:(id)a3;
-- (void)promptForFocusStatusAuthorizationFromViewController:(id)a3;
-- (void)verifyPublishedStatusIsConsistentWithDeniedFocusStatusAuthorizationFromViewController:(id)a3;
+- (void)presentFocusStatusAuthorizationAlertIfNecessaryFromViewController:(id)controller;
+- (void)promptForFocusStatusAuthorizationFromViewController:(id)controller;
+- (void)verifyPublishedStatusIsConsistentWithDeniedFocusStatusAuthorizationFromViewController:(id)controller;
 @end
 
 @implementation CKFocusStatusAuthorizationManager
@@ -46,22 +46,22 @@ void __51__CKFocusStatusAuthorizationManager_sharedInstance__block_invoke()
   return 1;
 }
 
-- (void)presentFocusStatusAuthorizationAlertIfNecessaryFromViewController:(id)a3
+- (void)presentFocusStatusAuthorizationAlertIfNecessaryFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (CKIsRunningInMessages())
   {
     if ([MEMORY[0x1E69A7EE0] isInAppleStoreDemoMode])
     {
       if (IMOSLoggingEnabled())
       {
-        v5 = OSLogHandleForIMFoundationCategory();
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+        defaultCenter = OSLogHandleForIMFoundationCategory();
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
         {
           *v13 = 0;
           v6 = "Not checking Focus Status Authorization. Device is in Apple Store Demo Mode.";
 LABEL_30:
-          _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, v6, v13, 2u);
+          _os_log_impl(&dword_19020E000, defaultCenter, OS_LOG_TYPE_INFO, v6, v13, 2u);
           goto LABEL_31;
         }
 
@@ -73,8 +73,8 @@ LABEL_30:
     {
       if (IMOSLoggingEnabled())
       {
-        v5 = OSLogHandleForIMFoundationCategory();
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+        defaultCenter = OSLogHandleForIMFoundationCategory();
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
         {
           *v13 = 0;
           v6 = "Focus Status Authorization prompt is already presented, not re-presenting.";
@@ -89,8 +89,8 @@ LABEL_30:
     {
       if (IMOSLoggingEnabled())
       {
-        v5 = OSLogHandleForIMFoundationCategory();
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+        defaultCenter = OSLogHandleForIMFoundationCategory();
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
         {
           *v13 = 0;
           v6 = "Inconsistent Focus Status Authorization prompt is already presented, not re-presenting.";
@@ -103,16 +103,16 @@ LABEL_30:
 
     else if ([(CKFocusStatusAuthorizationManager *)self deviceSupportsFocusStatusAuthorizationPrompt])
     {
-      v7 = [MEMORY[0x1E69A5A80] sharedInstance];
-      v8 = [v7 activeIMessageAccount];
+      mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+      activeIMessageAccount = [mEMORY[0x1E69A5A80] activeIMessageAccount];
 
-      if (v8)
+      if (activeIMessageAccount)
       {
-        v5 = [MEMORY[0x1E696E848] defaultCenter];
-        v9 = [v5 authorizationStatus];
-        if (v9 > 1)
+        defaultCenter = [MEMORY[0x1E696E848] defaultCenter];
+        authorizationStatus = [defaultCenter authorizationStatus];
+        if (authorizationStatus > 1)
         {
-          if (v9 == 2)
+          if (authorizationStatus == 2)
           {
             if (IMOSLoggingEnabled())
             {
@@ -124,11 +124,11 @@ LABEL_30:
               }
             }
 
-            [(CKFocusStatusAuthorizationManager *)self verifyPublishedStatusIsConsistentWithDeniedFocusStatusAuthorizationFromViewController:v4];
+            [(CKFocusStatusAuthorizationManager *)self verifyPublishedStatusIsConsistentWithDeniedFocusStatusAuthorizationFromViewController:controllerCopy];
             goto LABEL_31;
           }
 
-          if (v9 != 3 || !IMOSLoggingEnabled())
+          if (authorizationStatus != 3 || !IMOSLoggingEnabled())
           {
             goto LABEL_31;
           }
@@ -143,7 +143,7 @@ LABEL_30:
 
         else
         {
-          if (!v9)
+          if (!authorizationStatus)
           {
             if (IMOSLoggingEnabled())
             {
@@ -155,11 +155,11 @@ LABEL_30:
               }
             }
 
-            [(CKFocusStatusAuthorizationManager *)self promptForFocusStatusAuthorizationFromViewController:v4];
+            [(CKFocusStatusAuthorizationManager *)self promptForFocusStatusAuthorizationFromViewController:controllerCopy];
             goto LABEL_31;
           }
 
-          if (v9 != 1)
+          if (authorizationStatus != 1)
           {
             goto LABEL_31;
           }
@@ -176,8 +176,8 @@ LABEL_30:
 
       if (IMOSLoggingEnabled())
       {
-        v5 = OSLogHandleForIMFoundationCategory();
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+        defaultCenter = OSLogHandleForIMFoundationCategory();
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
         {
           *v13 = 0;
           v6 = "Not checking Focus Status Authorization. There is no active iMessage account.";
@@ -190,8 +190,8 @@ LABEL_30:
 
     else if (IMOSLoggingEnabled())
     {
-      v5 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      defaultCenter = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
       {
         *v13 = 0;
         v6 = "Not checking Focus Status Authorization. Device does not support prompting for Focus Status TCC.";
@@ -204,8 +204,8 @@ LABEL_30:
 
   else if (IMOSLoggingEnabled())
   {
-    v5 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    defaultCenter = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
     {
       *v13 = 0;
       v6 = "Not checking Focus Status Authorization. Not running in Messages.";
@@ -216,10 +216,10 @@ LABEL_31:
   }
 }
 
-- (void)promptForFocusStatusAuthorizationFromViewController:(id)a3
+- (void)promptForFocusStatusAuthorizationFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696E848] defaultCenter];
+  controllerCopy = controller;
+  defaultCenter = [MEMORY[0x1E696E848] defaultCenter];
   [(CKFocusStatusAuthorizationManager *)self setPresentingFocusStatusAuthorizationPrompt:1];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -227,9 +227,9 @@ LABEL_31:
   v7[2] = __89__CKFocusStatusAuthorizationManager_promptForFocusStatusAuthorizationFromViewController___block_invoke;
   v7[3] = &unk_1E72F42F8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = controllerCopy;
   v8 = v6;
-  [v5 requestAuthorizationWithCompletionHandler:v7];
+  [defaultCenter requestAuthorizationWithCompletionHandler:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -308,8 +308,8 @@ LABEL_13:
     }
   }
 
-  v4 = [(CKFocusStatusAuthorizationManager *)self newDNDGlobalConfigurationService];
-  [v4 didChangeFocusStatusSharingSettingForApplicationIdentifier:@"com.apple.MobileSMS"];
+  newDNDGlobalConfigurationService = [(CKFocusStatusAuthorizationManager *)self newDNDGlobalConfigurationService];
+  [newDNDGlobalConfigurationService didChangeFocusStatusSharingSettingForApplicationIdentifier:@"com.apple.MobileSMS"];
 }
 
 - (id)newDNDGlobalConfigurationService
@@ -351,13 +351,13 @@ LABEL_13:
   return v5;
 }
 
-- (void)verifyPublishedStatusIsConsistentWithDeniedFocusStatusAuthorizationFromViewController:(id)a3
+- (void)verifyPublishedStatusIsConsistentWithDeniedFocusStatusAuthorizationFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CKFocusStatusAuthorizationManager *)self newDNDGlobalConfigurationService];
-  if ([v5 isCloudSyncActive])
+  controllerCopy = controller;
+  newDNDGlobalConfigurationService = [(CKFocusStatusAuthorizationManager *)self newDNDGlobalConfigurationService];
+  if ([newDNDGlobalConfigurationService isCloudSyncActive])
   {
-    v6 = [MEMORY[0x1E69A5B98] sharedInstance];
+    mEMORY[0x1E69A5B98] = [MEMORY[0x1E69A5B98] sharedInstance];
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
@@ -374,8 +374,8 @@ LABEL_13:
     v8[2] = __123__CKFocusStatusAuthorizationManager_verifyPublishedStatusIsConsistentWithDeniedFocusStatusAuthorizationFromViewController___block_invoke;
     v8[3] = &unk_1E72F42F8;
     objc_copyWeak(&v10, buf);
-    v9 = v4;
-    [v6 fetchPersonalAvailabilityWithCompletion:v8];
+    v9 = controllerCopy;
+    [mEMORY[0x1E69A5B98] fetchPersonalAvailabilityWithCompletion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -388,11 +388,11 @@ LABEL_13:
       goto LABEL_11;
     }
 
-    v6 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    mEMORY[0x1E69A5B98] = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(mEMORY[0x1E69A5B98], OS_LOG_TYPE_INFO))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Not verifying published status, share across devices is disabled for this device", buf, 2u);
+      _os_log_impl(&dword_19020E000, mEMORY[0x1E69A5B98], OS_LOG_TYPE_INFO, "Not verifying published status, share across devices is disabled for this device", buf, 2u);
     }
   }
 
@@ -440,9 +440,9 @@ LABEL_9:
   }
 }
 
-- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertIfNotPreviouslyShownFromViewController:(id)a3
+- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertIfNotPreviouslyShownFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (IMGetCachedDomainBoolForKeyWithDefaultValue())
   {
     v5 = IMLogHandleForCategory();
@@ -464,13 +464,13 @@ LABEL_9:
       }
     }
 
-    [(CKFocusStatusAuthorizationManager *)self displayFocusStatusAuthorizationInconsistencyRepairAlertFromViewController:v4];
+    [(CKFocusStatusAuthorizationManager *)self displayFocusStatusAuthorizationInconsistencyRepairAlertFromViewController:controllerCopy];
   }
 }
 
-- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertFromViewController:(id)a3
+- (void)displayFocusStatusAuthorizationInconsistencyRepairAlertFromViewController:(id)controller
 {
-  v18 = a3;
+  controllerCopy = controller;
   [(CKFocusStatusAuthorizationManager *)self setPresentingInconsistentFocusStatusAuthorizationPrompt:1];
   v4 = CKFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"INCONSISTENT_FOCUS_STATUS_AUTHORIZATION_ALERT_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -522,7 +522,7 @@ LABEL_9:
   v17 = [CKAlertAction actionWithTitle:v16 style:1 handler:v19];
   [v10 addAction:v14];
   [v10 addAction:v17];
-  [v10 presentFromViewController:v18 animated:1 completion:0];
+  [v10 presentFromViewController:controllerCopy animated:1 completion:0];
   IMSetDomainBoolForKey();
 
   objc_destroyWeak(&v20);

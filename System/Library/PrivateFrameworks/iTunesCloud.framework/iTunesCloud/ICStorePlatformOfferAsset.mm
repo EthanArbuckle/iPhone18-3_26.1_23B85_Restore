@@ -1,5 +1,5 @@
 @interface ICStorePlatformOfferAsset
-- (ICStorePlatformOfferAsset)initWithResponseDictionary:(id)a3;
+- (ICStorePlatformOfferAsset)initWithResponseDictionary:(id)dictionary;
 - (NSURL)previewURL;
 - (double)duration;
 - (double)previewDuration;
@@ -13,15 +13,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"size"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSURL)previewURL
@@ -90,15 +90,15 @@ LABEL_8:
   return v3;
 }
 
-- (ICStorePlatformOfferAsset)initWithResponseDictionary:(id)a3
+- (ICStorePlatformOfferAsset)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICStorePlatformOfferAsset;
   v5 = [(ICStorePlatformOfferAsset *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

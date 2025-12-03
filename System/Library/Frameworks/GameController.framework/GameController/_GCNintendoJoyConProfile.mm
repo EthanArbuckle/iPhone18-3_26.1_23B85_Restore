@@ -1,8 +1,8 @@
 @interface _GCNintendoJoyConProfile
 + (_GCPhysicalDeviceManager)deviceManager;
-+ (int64_t)physicalDeviceGetIndicatedPlayerIndex:(id)a3;
-+ (void)physicalDevice:(id)a3 getBatteryWithReply:(id)a4;
-+ (void)physicalDevice:(id)a3 setIndicatedPlayerIndex:(int64_t)a4;
++ (int64_t)physicalDeviceGetIndicatedPlayerIndex:(id)index;
++ (void)physicalDevice:(id)device getBatteryWithReply:(id)reply;
++ (void)physicalDevice:(id)device setIndicatedPlayerIndex:(int64_t)index;
 @end
 
 @implementation _GCNintendoJoyConProfile
@@ -19,10 +19,10 @@
   return v3;
 }
 
-+ (int64_t)physicalDeviceGetIndicatedPlayerIndex:(id)a3
++ (int64_t)physicalDeviceGetIndicatedPlayerIndex:(id)index
 {
-  v3 = [a3 serviceInfo];
-  v4 = IOHIDServiceClientCopyProperty([v3 service], @"JoyConPlayerLights");
+  serviceInfo = [index serviceInfo];
+  v4 = IOHIDServiceClientCopyProperty([serviceInfo service], @"JoyConPlayerLights");
 
   v15 = 0;
   v5 = v4;
@@ -98,14 +98,14 @@ LABEL_12:
   return v12;
 }
 
-+ (void)physicalDevice:(id)a3 setIndicatedPlayerIndex:(int64_t)a4
++ (void)physicalDevice:(id)device setIndicatedPlayerIndex:(int64_t)index
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a4 + 1;
-  if ((a4 + 1) <= 8)
+  v4 = index + 1;
+  if ((index + 1) <= 8)
   {
-    v5 = [a3 serviceInfo];
-    v6 = [v5 service];
+    serviceInfo = [device serviceInfo];
+    service = [serviceInfo service];
     v7 = PlayerLightsConfig[v4];
     v8 = PlayerLightsConfig[v4];
     v23 = @"LED";
@@ -163,23 +163,23 @@ LABEL_12:
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
 
     v20 = v19;
-    IOHIDServiceClientSetProperty(v6, @"JoyConPlayerLights", v19);
+    IOHIDServiceClientSetProperty(service, @"JoyConPlayerLights", v19);
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)physicalDevice:(id)a3 getBatteryWithReply:(id)a4
++ (void)physicalDevice:(id)device getBatteryWithReply:(id)reply
 {
-  v5 = a4;
-  v6 = [a3 batteryServiceServer];
+  replyCopy = reply;
+  batteryServiceServer = [device batteryServiceServer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63___GCNintendoJoyConProfile_physicalDevice_getBatteryWithReply___block_invoke;
   v8[3] = &unk_1E8419578;
-  v9 = v5;
-  v7 = v5;
-  [v6 readBatteryWithReply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [batteryServiceServer readBatteryWithReply:v8];
 }
 
 @end

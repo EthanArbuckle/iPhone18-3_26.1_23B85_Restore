@@ -1,19 +1,19 @@
 @interface NESMVPNSessionStateRunning
 - (BOOL)handleSleep;
 - (NESMVPNSessionStateRunning)init;
-- (void)handleInterfaceUnavailable:(id)a3;
-- (void)handlePluginStatusDidChangeToReasserting:(id)a3;
+- (void)handleInterfaceUnavailable:(id)unavailable;
+- (void)handlePluginStatusDidChangeToReasserting:(id)reasserting;
 - (void)handleUserLogout;
 - (void)handleUserSwitch;
 @end
 
 @implementation NESMVPNSessionStateRunning
 
-- (void)handleInterfaceUnavailable:(id)a3
+- (void)handleInterfaceUnavailable:(id)unavailable
 {
   v6.receiver = self;
   v6.super_class = NESMVPNSessionStateRunning;
-  [(NESMVPNSessionState *)&v6 handleInterfaceUnavailable:a3];
+  [(NESMVPNSessionState *)&v6 handleInterfaceUnavailable:unavailable];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -27,11 +27,11 @@
   [Property setState:6];
 }
 
-- (void)handlePluginStatusDidChangeToReasserting:(id)a3
+- (void)handlePluginStatusDidChangeToReasserting:(id)reasserting
 {
   v6.receiver = self;
   v6.super_class = NESMVPNSessionStateRunning;
-  [(NESMVPNSessionState *)&v6 handlePluginStatusDidChangeToReasserting:a3];
+  [(NESMVPNSessionState *)&v6 handlePluginStatusDidChangeToReasserting:reasserting];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -61,23 +61,23 @@
 
 - (BOOL)handleSleep
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 16, 1);
   }
 
-  v3 = [(NESMVPNSessionStateRunning *)self protocol];
-  v4 = [v3 disconnectOnSleep];
+  protocol = [(NESMVPNSessionStateRunning *)self protocol];
+  disconnectOnSleep = [protocol disconnectOnSleep];
 
-  if (v4)
+  if (disconnectOnSleep)
   {
     v5 = ne_log_obj();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      if (v2)
+      if (selfCopy)
       {
-        Property = objc_getProperty(v2, v6, 16, 1);
+        Property = objc_getProperty(selfCopy, v6, 16, 1);
       }
 
       else
@@ -94,11 +94,11 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: delaying sleep until disconnected", buf, 0x16u);
     }
 
-    if (v2)
+    if (selfCopy)
     {
-      [objc_getProperty(v2 v10];
-      [objc_getProperty(v2 v11];
-      v13 = objc_getProperty(v2, v12, 16, 1);
+      [objc_getProperty(selfCopy v10];
+      [objc_getProperty(selfCopy v11];
+      v13 = objc_getProperty(selfCopy, v12, 16, 1);
     }
 
     else
@@ -113,7 +113,7 @@
 
   else
   {
-    v15.receiver = v2;
+    v15.receiver = selfCopy;
     v15.super_class = NESMVPNSessionStateRunning;
     [(NESMVPNSessionState *)&v15 handleSleep];
   }

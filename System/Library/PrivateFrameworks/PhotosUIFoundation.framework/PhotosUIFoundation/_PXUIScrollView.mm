@@ -3,30 +3,30 @@
 + (double)_horizontalGesturesAngularToleranceInDegrees;
 + (double)_upGesturesAngularToleranceInDegrees;
 + (void)_registerDefaultsIfNecessary;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGPoint)pagingOriginOffset;
-- (CGRect)scrollIndicatorFrameForAxis:(int64_t)a3;
+- (CGRect)scrollIndicatorFrameForAxis:(int64_t)axis;
 - (PXUIScrollViewDelegate)px_delegate;
 - (UIEdgeInsets)hitTestContentInsets;
 - (UIEdgeInsets)safeAreaInsets;
-- (_PXUIScrollView)initWithFrame:(CGRect)a3;
+- (_PXUIScrollView)initWithFrame:(CGRect)frame;
 - (_PXUIScrollViewFocusItemProvider)focusItemProvider;
-- (id)focusItemsInRect:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)focusItemsInRect:(CGRect)rect;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updatePagingOrigin;
-- (void)addSubview:(id)a3;
+- (void)addSubview:(id)subview;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)px_addSubview:(id)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setDeferContentOffsetUpdates:(BOOL)a3;
-- (void)setIsFocusFastScrolling:(BOOL)a3;
-- (void)setPagingOriginOffset:(CGPoint)a3;
-- (void)willRemoveSubview:(id)a3;
+- (void)px_addSubview:(id)subview;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setDeferContentOffsetUpdates:(BOOL)updates;
+- (void)setIsFocusFastScrolling:(BOOL)scrolling;
+- (void)setPagingOriginOffset:(CGPoint)offset;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation _PXUIScrollView
@@ -57,14 +57,14 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(_PXUIScrollView *)self px_delegate];
-  [v3 scrollViewWillLayoutSubviews:self];
+  px_delegate = [(_PXUIScrollView *)self px_delegate];
+  [px_delegate scrollViewWillLayoutSubviews:self];
 
   v5.receiver = self;
   v5.super_class = _PXUIScrollView;
   [(_PXUIScrollView *)&v5 layoutSubviews];
-  v4 = [(_PXUIScrollView *)self px_delegate];
-  [v4 scrollViewDidLayoutSubviews:self];
+  px_delegate2 = [(_PXUIScrollView *)self px_delegate];
+  [px_delegate2 scrollViewDidLayoutSubviews:self];
 }
 
 - (PXUIScrollViewDelegate)px_delegate
@@ -103,43 +103,43 @@
   return WeakRetained;
 }
 
-- (void)setIsFocusFastScrolling:(BOOL)a3
+- (void)setIsFocusFastScrolling:(BOOL)scrolling
 {
-  if (self->_isFocusFastScrolling != a3)
+  if (self->_isFocusFastScrolling != scrolling)
   {
-    v4 = a3;
-    self->_isFocusFastScrolling = a3;
-    v6 = [(_PXUIScrollView *)self px_delegate];
-    v7 = v6;
-    if (v4)
+    scrollingCopy = scrolling;
+    self->_isFocusFastScrolling = scrolling;
+    px_delegate = [(_PXUIScrollView *)self px_delegate];
+    v7 = px_delegate;
+    if (scrollingCopy)
     {
-      [v6 scrollViewDidBeginFocusFastScrolling:self];
+      [px_delegate scrollViewDidBeginFocusFastScrolling:self];
     }
 
     else
     {
-      [v6 scrollViewDidEndFocusFastScrolling:self];
+      [px_delegate scrollViewDidEndFocusFastScrolling:self];
     }
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   if ([(_PXUIScrollView *)self shouldScrollSimultaneouslyWithDescendantScrollView])
   {
-    v8 = [(_PXUIScrollView *)self panGestureRecognizer];
-    if (v8 == v6)
+    panGestureRecognizer = [(_PXUIScrollView *)self panGestureRecognizer];
+    if (panGestureRecognizer == recognizerCopy)
     {
       v15 = 0;
-      v11 = [v7 px_isPanGestureRecognizerOfScrollView:&v15];
+      v11 = [gestureRecognizerCopy px_isPanGestureRecognizerOfScrollView:&v15];
       v12 = v15;
       v9 = v12;
       if (v11)
       {
-        v13 = [v12 px_scrollableAxis];
-        if (v13 != [(UIScrollView *)self px_scrollableAxis])
+        px_scrollableAxis = [v12 px_scrollableAxis];
+        if (px_scrollableAxis != [(UIScrollView *)self px_scrollableAxis])
         {
           v10 = [v9 isDescendantOfView:self];
           goto LABEL_8;
@@ -164,33 +164,33 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_PXUIScrollView *)self panGestureRecognizer];
+  beginCopy = begin;
+  panGestureRecognizer = [(_PXUIScrollView *)self panGestureRecognizer];
 
-  if (v5 != v4)
+  if (panGestureRecognizer != beginCopy)
   {
     goto LABEL_2;
   }
 
-  [v5 velocityInView:self];
+  [panGestureRecognizer velocityInView:self];
   v9 = v8;
   v11 = v10;
   if (![(_PXUIScrollView *)self shouldScrollSimultaneouslyWithDescendantScrollView])
   {
-    [v5 locationInView:self];
+    [panGestureRecognizer locationInView:self];
     v18 = v17;
     v20 = v19;
-    v21 = [(_PXUIScrollView *)self px_delegate];
-    v6 = [v21 scrollView:self shouldBeginScrollingWithPanAtLocation:v18 velocity:{v20, v9, v11}];
+    px_delegate = [(_PXUIScrollView *)self px_delegate];
+    v6 = [px_delegate scrollView:self shouldBeginScrollingWithPanAtLocation:v18 velocity:{v20, v9, v11}];
 
     goto LABEL_3;
   }
 
-  v12 = [(UIScrollView *)self px_scrollableAxis];
+  px_scrollableAxis = [(UIScrollView *)self px_scrollableAxis];
   v13 = atan2(v11, v9) * 180.0 / 3.14159265;
-  if (v12 == 2)
+  if (px_scrollableAxis == 2)
   {
     +[_PXUIScrollView _upGesturesAngularToleranceInDegrees];
     if (fabs(v13 + 90.0) > v22)
@@ -206,7 +206,7 @@ LABEL_12:
     }
   }
 
-  else if (v12 == 1)
+  else if (px_scrollableAxis == 1)
   {
     +[_PXUIScrollView _horizontalGesturesAngularToleranceInDegrees];
     v15 = fabs(v13);
@@ -225,11 +225,11 @@ LABEL_3:
   return v6;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = _PXUIScrollView;
-  [(_PXUIScrollView *)&v6 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(_PXUIScrollView *)&v6 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68___PXUIScrollView_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
@@ -238,20 +238,20 @@ LABEL_3:
   [MEMORY[0x1E6979518] addCommitHandler:v5 forPhase:0];
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14.receiver = self;
   v14.super_class = _PXUIScrollView;
   v8 = [(_PXUIScrollView *)&v14 focusItemsInRect:?];
-  v9 = [(_PXUIScrollView *)self focusItemProvider];
-  v10 = v9;
-  if (v9)
+  focusItemProvider = [(_PXUIScrollView *)self focusItemProvider];
+  v10 = focusItemProvider;
+  if (focusItemProvider)
   {
-    v11 = [v9 focusItemsForScrollView:self inRect:{x, y, width, height}];
+    v11 = [focusItemProvider focusItemsForScrollView:self inRect:{x, y, width, height}];
     v12 = [v8 arrayByAddingObjectsFromArray:v11];
 
     v8 = v12;
@@ -260,15 +260,15 @@ LABEL_3:
   return v8;
 }
 
-- (CGRect)scrollIndicatorFrameForAxis:(int64_t)a3
+- (CGRect)scrollIndicatorFrameForAxis:(int64_t)axis
 {
   v34 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(_PXUIScrollView *)self scrollIndicatorViews];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  scrollIndicatorViews = [(_PXUIScrollView *)self scrollIndicatorViews];
+  v6 = [scrollIndicatorViews countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -280,11 +280,11 @@ LABEL_3:
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(scrollIndicatorViews);
         }
 
         v10 = *(*(&v29 + 1) + 8 * v9);
-        if (a3 == 2)
+        if (axis == 2)
         {
           [*(*(&v29 + 1) + 8 * v9) frame];
           v15 = v14;
@@ -295,7 +295,7 @@ LABEL_3:
           }
         }
 
-        else if (a3 == 1)
+        else if (axis == 1)
         {
           [*(*(&v29 + 1) + 8 * v9) frame];
           v12 = v11;
@@ -321,7 +321,7 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v7 = [scrollIndicatorViews countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v7)
       {
         continue;
@@ -347,10 +347,10 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(_PXUIScrollView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -369,24 +369,24 @@ LABEL_15:
   return CGRectContainsPoint(*&v22, *&v25);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__10289;
   v29 = __Block_byref_object_dispose__10290;
   v30 = 0;
-  if (-[_PXUIScrollView respectsContentZOrder](self, "respectsContentZOrder") && (![v7 type] || objc_msgSend(v7, "type") == 11))
+  if (-[_PXUIScrollView respectsContentZOrder](self, "respectsContentZOrder") && (![eventCopy type] || objc_msgSend(eventCopy, "type") == 11))
   {
     v24[0] = 0;
     v24[1] = v24;
     v24[2] = 0x2020000000;
     v24[3] = 0xFFEFFFFFFFFFFFFFLL;
-    v8 = [(_PXUIScrollView *)self subviews];
+    subviews = [(_PXUIScrollView *)self subviews];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __37___PXUIScrollView_hitTest_withEvent___block_invoke;
@@ -395,10 +395,10 @@ LABEL_15:
     v23 = y;
     v20 = v24;
     v18[4] = self;
-    v9 = v7;
+    v9 = eventCopy;
     v19 = v9;
     v21 = &v25;
-    [v8 enumerateObjectsWithOptions:2 usingBlock:v18];
+    [subviews enumerateObjectsWithOptions:2 usingBlock:v18];
 
     if (!v26[5])
     {
@@ -416,7 +416,7 @@ LABEL_15:
   {
     v16.receiver = self;
     v16.super_class = _PXUIScrollView;
-    v12 = [(_PXUIScrollView *)&v16 hitTest:v7 withEvent:x, y];
+    v12 = [(_PXUIScrollView *)&v16 hitTest:eventCopy withEvent:x, y];
     v13 = v26[5];
     v26[5] = v12;
   }
@@ -427,16 +427,16 @@ LABEL_15:
   return v14;
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  x = a3.x;
-  y = a3.y;
-  v6 = [(_PXUIScrollView *)self traitCollection];
-  [v6 displayScale];
+  animatedCopy = animated;
+  x = offset.x;
+  y = offset.y;
+  traitCollection = [(_PXUIScrollView *)self traitCollection];
+  [traitCollection displayScale];
   v22 = v7;
 
-  if (v4)
+  if (animatedCopy)
   {
     v8.f64[0] = y;
     v8.f64[1] = x;
@@ -481,21 +481,21 @@ LABEL_15:
         }
       }
 
-      v20 = [(_PXUIScrollView *)self px_delegate];
-      [v20 scrollView:self willBeginScrollingAnimationTowardsContentEdges:v16];
+      px_delegate = [(_PXUIScrollView *)self px_delegate];
+      [px_delegate scrollView:self willBeginScrollingAnimationTowardsContentEdges:v16];
     }
   }
 
   v25.receiver = self;
   v25.super_class = _PXUIScrollView;
-  [(_PXUIScrollView *)&v25 setContentOffset:v4 animated:x, y];
+  [(_PXUIScrollView *)&v25 setContentOffset:animatedCopy animated:x, y];
 }
 
-- (void)setDeferContentOffsetUpdates:(BOOL)a3
+- (void)setDeferContentOffsetUpdates:(BOOL)updates
 {
-  if (self->_deferContentOffsetUpdates != a3)
+  if (self->_deferContentOffsetUpdates != updates)
   {
-    self->_deferContentOffsetUpdates = a3;
+    self->_deferContentOffsetUpdates = updates;
     kdebug_trace();
   }
 }
@@ -512,11 +512,11 @@ LABEL_15:
   [(_PXUIScrollView *)self _setPagingOrigin:v8, v10];
 }
 
-- (void)setPagingOriginOffset:(CGPoint)a3
+- (void)setPagingOriginOffset:(CGPoint)offset
 {
-  if (a3.x != self->_pagingOriginOffset.x || a3.y != self->_pagingOriginOffset.y)
+  if (offset.x != self->_pagingOriginOffset.x || offset.y != self->_pagingOriginOffset.y)
   {
-    self->_pagingOriginOffset = a3;
+    self->_pagingOriginOffset = offset;
     [(_PXUIScrollView *)self _updatePagingOrigin];
   }
 }
@@ -526,8 +526,8 @@ LABEL_15:
   v4.receiver = self;
   v4.super_class = _PXUIScrollView;
   [(_PXUIScrollView *)&v4 layoutMarginsDidChange];
-  v3 = [(_PXUIScrollView *)self px_delegate];
-  [v3 scrollViewLayoutMarginsDidChange:self];
+  px_delegate = [(_PXUIScrollView *)self px_delegate];
+  [px_delegate scrollViewLayoutMarginsDidChange:self];
 }
 
 - (void)didMoveToWindow
@@ -535,50 +535,50 @@ LABEL_15:
   v4.receiver = self;
   v4.super_class = _PXUIScrollView;
   [(_PXUIScrollView *)&v4 didMoveToWindow];
-  v3 = [(_PXUIScrollView *)self px_delegate];
-  [v3 scrollViewDidMoveToWindow:self];
+  px_delegate = [(_PXUIScrollView *)self px_delegate];
+  [px_delegate scrollViewDidMoveToWindow:self];
 }
 
-- (void)px_addSubview:(id)a3
+- (void)px_addSubview:(id)subview
 {
   v3.receiver = self;
   v3.super_class = _PXUIScrollView;
-  [(_PXUIScrollView *)&v3 addSubview:a3];
+  [(_PXUIScrollView *)&v3 addSubview:subview];
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NSMutableArray *)self->_scrollIndicatorViews removeObject:v4];
+    [(NSMutableArray *)self->_scrollIndicatorViews removeObject:subviewCopy];
   }
 
   v5.receiver = self;
   v5.super_class = _PXUIScrollView;
-  [(_PXUIScrollView *)&v5 willRemoveSubview:v4];
+  [(_PXUIScrollView *)&v5 willRemoveSubview:subviewCopy];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NSMutableArray *)self->_scrollIndicatorViews addObject:v4];
+    [(NSMutableArray *)self->_scrollIndicatorViews addObject:subviewCopy];
   }
 
   v5.receiver = self;
   v5.super_class = _PXUIScrollView;
-  [(_PXUIScrollView *)&v5 addSubview:v4];
+  [(_PXUIScrollView *)&v5 addSubview:subviewCopy];
 }
 
-- (_PXUIScrollView)initWithFrame:(CGRect)a3
+- (_PXUIScrollView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _PXUIScrollView;
-  v3 = [(_PXUIScrollView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PXUIScrollView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -593,9 +593,9 @@ LABEL_15:
 
 + (double)_downGesturesAngularToleranceInDegrees
 {
-  [a1 _registerDefaultsIfNecessary];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PXUIScrollViewDownGesturesAngularTolerance"];
+  [self _registerDefaultsIfNecessary];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PXUIScrollViewDownGesturesAngularTolerance"];
   v4 = v3;
 
   return v4;
@@ -603,9 +603,9 @@ LABEL_15:
 
 + (double)_upGesturesAngularToleranceInDegrees
 {
-  [a1 _registerDefaultsIfNecessary];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PXUIScrollViewUpGesturesAngularTolerance"];
+  [self _registerDefaultsIfNecessary];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PXUIScrollViewUpGesturesAngularTolerance"];
   v4 = v3;
 
   return v4;
@@ -613,9 +613,9 @@ LABEL_15:
 
 + (double)_horizontalGesturesAngularToleranceInDegrees
 {
-  [a1 _registerDefaultsIfNecessary];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PXUIScrollViewHorizontalGesturesAngularTolerance"];
+  [self _registerDefaultsIfNecessary];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PXUIScrollViewHorizontalGesturesAngularTolerance"];
   v4 = v3;
 
   return v4;
@@ -627,7 +627,7 @@ LABEL_15:
   if ((_registerDefaultsIfNecessary_hasRegistered & 1) == 0)
   {
     _registerDefaultsIfNecessary_hasRegistered = 1;
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v4[0] = @"PXUIScrollViewHorizontalGesturesAngularTolerance";
     v4[1] = @"PXUIScrollViewUpGesturesAngularTolerance";
     v5[0] = &unk_1F2BACB10;
@@ -635,7 +635,7 @@ LABEL_15:
     v4[2] = @"PXUIScrollViewDownGesturesAngularTolerance";
     v5[2] = &unk_1F2BACB10;
     v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:v4 count:3];
-    [v2 registerDefaults:v3];
+    [standardUserDefaults registerDefaults:v3];
   }
 }
 

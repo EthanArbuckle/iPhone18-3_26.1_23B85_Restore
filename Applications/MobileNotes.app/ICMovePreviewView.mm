@@ -1,11 +1,11 @@
 @interface ICMovePreviewView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)objectIds;
 - (void)reloadImages;
-- (void)setHtmlContext:(id)a3;
-- (void)setModernContext:(id)a3;
-- (void)setObjectIds:(id)a3;
+- (void)setHtmlContext:(id)context;
+- (void)setModernContext:(id)context;
+- (void)setObjectIds:(id)ids;
 @end
 
 @implementation ICMovePreviewView
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 44.0;
   v4 = 44.0;
@@ -28,18 +28,18 @@
   return result;
 }
 
-- (void)setModernContext:(id)a3
+- (void)setModernContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___ICMovePreviewView_modernContext);
-  *(self + OBJC_IVAR___ICMovePreviewView_modernContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICMovePreviewView_modernContext) = context;
+  contextCopy = context;
 }
 
-- (void)setHtmlContext:(id)a3
+- (void)setHtmlContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___ICMovePreviewView_htmlContext);
-  *(self + OBJC_IVAR___ICMovePreviewView_htmlContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICMovePreviewView_htmlContext) = context;
+  contextCopy = context;
 }
 
 - (NSArray)objectIds
@@ -51,18 +51,18 @@
   return v2.super.isa;
 }
 
-- (void)setObjectIds:(id)a3
+- (void)setObjectIds:(id)ids
 {
   sub_1000054A4(0, &qword_1006BFEC0);
   *(self + OBJC_IVAR___ICMovePreviewView_objectIds) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
 
   sub_100226B1C();
 }
 
 - (void)reloadImages
 {
-  v2 = self;
+  selfCopy = self;
   sub_100226B1C();
 }
 

@@ -27,17 +27,17 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
     v5 = NSStringFromSelector(sel_allowPinchToZoom);
-    [v4 setObject:@"AllowPinchToZoom" forKeyedSubscript:v5];
+    [preferenceKeysBySelectorName setObject:@"AllowPinchToZoom" forKeyedSubscript:v5];
 
-    v6 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName2 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v7 = NSStringFromSelector(sel_includeSharedAlbums);
-    [v6 setObject:@"IncludeSharedAlbums" forKeyedSubscript:v7];
+    [preferenceKeysBySelectorName2 setObject:@"IncludeSharedAlbums" forKeyedSubscript:v7];
 
-    v8 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName3 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v9 = NSStringFromSelector(sel_selectedSharedAlbumCloudIdentifiers);
-    [v8 setObject:@"SelectedSharedAlbumCloudIdentifiers" forKeyedSubscript:v9];
+    [preferenceKeysBySelectorName3 setObject:@"SelectedSharedAlbumCloudIdentifiers" forKeyedSubscript:v9];
   }
 
   return v3;
@@ -46,7 +46,7 @@
 + (id)allPreferenceSelectorsAsStrings
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___CLFPhotosSettings_GeneratedCode;
   v2 = objc_msgSendSuper2(&v10, sel_allPreferenceSelectorsAsStrings);
   v3 = NSStringFromSelector(sel_allowPinchToZoom);

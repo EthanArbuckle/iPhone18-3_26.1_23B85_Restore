@@ -61,7 +61,7 @@ uint64_t __42__ICNASamplingController_sharedController__block_invoke()
   }
 
   v8 = 2048;
-  v9 = a1 % 0x64;
+  v9 = self % 0x64;
   v10 = 2112;
   v11 = v4;
   _os_log_debug_impl(&dword_25C6BF000, log, OS_LOG_TYPE_DEBUG, "Sync Health Tracking Sampling Ratio = %f, generated random number %lu, decision = %@", &v6, 0x20u);

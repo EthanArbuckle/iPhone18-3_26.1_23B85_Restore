@@ -1,21 +1,21 @@
 @interface DRDragContinuationSession
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (DRDragContinuationSession)initWithDragSession:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (DRDragContinuationSession)initWithDragSession:(id)session;
 - (DRDragSession)dragSession;
 @end
 
 @implementation DRDragContinuationSession
 
-- (DRDragContinuationSession)initWithDragSession:(id)a3
+- (DRDragContinuationSession)initWithDragSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v10.receiver = self;
   v10.super_class = DRDragContinuationSession;
   v5 = [(DRDragContinuationSession *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dragSession, v4);
+    objc_storeWeak(&v5->_dragSession, sessionCopy);
     v7 = +[NSXPCListener anonymousListener];
     listener = v6->_listener;
     v6->_listener = v7;
@@ -27,24 +27,24 @@
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(DRDragContinuationSession *)self continuationConnection];
+  connectionCopy = connection;
+  continuationConnection = [(DRDragContinuationSession *)self continuationConnection];
 
-  if (!v6)
+  if (!continuationConnection)
   {
     v7 = [[DRDragContinuation alloc] initWithContinuationSession:self];
-    [v5 setExportedObject:v7];
+    [connectionCopy setExportedObject:v7];
 
     v8 = _DUINewDragContinuationInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 resume];
-    [(DRDragContinuationSession *)self setContinuationConnection:v5];
+    [connectionCopy resume];
+    [(DRDragContinuationSession *)self setContinuationConnection:connectionCopy];
   }
 
-  return v6 == 0;
+  return continuationConnection == 0;
 }
 
 - (DRDragSession)dragSession

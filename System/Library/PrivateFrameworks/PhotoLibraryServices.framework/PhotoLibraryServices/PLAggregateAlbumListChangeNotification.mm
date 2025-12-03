@@ -1,22 +1,22 @@
 @interface PLAggregateAlbumListChangeNotification
-+ (id)notificationForAggregateAlbumList:(id)a3 fromAlbumListChangeNotification:(id)a4 indexOffset:(unint64_t)a5;
-- (PLAggregateAlbumListChangeNotification)initWithAggregateAlbumList:(id)a3 fromAlbumListChangeNotification:(id)a4 indexOffset:(unint64_t)a5;
++ (id)notificationForAggregateAlbumList:(id)list fromAlbumListChangeNotification:(id)notification indexOffset:(unint64_t)offset;
+- (PLAggregateAlbumListChangeNotification)initWithAggregateAlbumList:(id)list fromAlbumListChangeNotification:(id)notification indexOffset:(unint64_t)offset;
 - (id)changedIndexes;
 - (id)changedIndexesRelativeToSnapshot;
 - (id)deletedIndexes;
 - (id)insertedIndexes;
-- (unint64_t)snapshotIndexForContainedObject:(id)a3;
+- (unint64_t)snapshotIndexForContainedObject:(id)object;
 - (void)dealloc;
-- (void)enumerateMovesWithBlock:(id)a3;
+- (void)enumerateMovesWithBlock:(id)block;
 @end
 
 @implementation PLAggregateAlbumListChangeNotification
 
-- (unint64_t)snapshotIndexForContainedObject:(id)a3
+- (unint64_t)snapshotIndexForContainedObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = PLAggregateAlbumListChangeNotification;
-  v4 = [(PLContainerChangeNotification *)&v7 snapshotIndexForContainedObject:a3];
+  v4 = [(PLContainerChangeNotification *)&v7 snapshotIndexForContainedObject:object];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -28,8 +28,8 @@
 
 - (id)changedIndexesRelativeToSnapshot
 {
-  v3 = [(PLContainerChangeNotification *)self->_note changedIndexesRelativeToSnapshot];
-  v4 = [v3 mutableCopy];
+  changedIndexesRelativeToSnapshot = [(PLContainerChangeNotification *)self->_note changedIndexesRelativeToSnapshot];
+  v4 = [changedIndexesRelativeToSnapshot mutableCopy];
 
   [v4 shiftIndexesStartingAtIndex:0 by:self->_indexOffet];
 
@@ -38,25 +38,25 @@
 
 - (id)changedIndexes
 {
-  v3 = [(PLContainerChangeNotification *)self->_note changedIndexes];
-  v4 = [v3 mutableCopy];
+  changedIndexes = [(PLContainerChangeNotification *)self->_note changedIndexes];
+  v4 = [changedIndexes mutableCopy];
 
   [v4 shiftIndexesStartingAtIndex:0 by:self->_indexOffet];
 
   return v4;
 }
 
-- (void)enumerateMovesWithBlock:(id)a3
+- (void)enumerateMovesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   note = self->_note;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PLAggregateAlbumListChangeNotification_enumerateMovesWithBlock___block_invoke;
   v7[3] = &unk_1E75708C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(PLContainerChangeNotification *)note enumerateMovesWithBlock:v7];
 }
 
@@ -73,8 +73,8 @@ uint64_t __66__PLAggregateAlbumListChangeNotification_enumerateMovesWithBlock___
 
 - (id)insertedIndexes
 {
-  v3 = [(PLContainerChangeNotification *)self->_note insertedIndexes];
-  v4 = [v3 mutableCopy];
+  insertedIndexes = [(PLContainerChangeNotification *)self->_note insertedIndexes];
+  v4 = [insertedIndexes mutableCopy];
 
   [v4 shiftIndexesStartingAtIndex:0 by:self->_indexOffet];
 
@@ -83,8 +83,8 @@ uint64_t __66__PLAggregateAlbumListChangeNotification_enumerateMovesWithBlock___
 
 - (id)deletedIndexes
 {
-  v3 = [(PLContainerChangeNotification *)self->_note deletedIndexes];
-  v4 = [v3 mutableCopy];
+  deletedIndexes = [(PLContainerChangeNotification *)self->_note deletedIndexes];
+  v4 = [deletedIndexes mutableCopy];
 
   [v4 shiftIndexesStartingAtIndex:0 by:self->_indexOffet];
 
@@ -104,36 +104,36 @@ uint64_t __66__PLAggregateAlbumListChangeNotification_enumerateMovesWithBlock___
   [(PLContainerChangeNotification *)&v5 dealloc];
 }
 
-- (PLAggregateAlbumListChangeNotification)initWithAggregateAlbumList:(id)a3 fromAlbumListChangeNotification:(id)a4 indexOffset:(unint64_t)a5
+- (PLAggregateAlbumListChangeNotification)initWithAggregateAlbumList:(id)list fromAlbumListChangeNotification:(id)notification indexOffset:(unint64_t)offset
 {
-  v9 = a3;
-  v10 = a4;
+  listCopy = list;
+  notificationCopy = notification;
   v14.receiver = self;
   v14.super_class = PLAggregateAlbumListChangeNotification;
-  v11 = [(PLContainerChangeNotification *)&v14 _init];
-  v12 = v11;
-  if (v11)
+  _init = [(PLContainerChangeNotification *)&v14 _init];
+  v12 = _init;
+  if (_init)
   {
-    objc_storeStrong(v11 + 12, a3);
-    objc_storeStrong(&v12->_note, a4);
-    v12->_indexOffet = a5;
+    objc_storeStrong(_init + 12, list);
+    objc_storeStrong(&v12->_note, notification);
+    v12->_indexOffet = offset;
   }
 
   return v12;
 }
 
-+ (id)notificationForAggregateAlbumList:(id)a3 fromAlbumListChangeNotification:(id)a4 indexOffset:(unint64_t)a5
++ (id)notificationForAggregateAlbumList:(id)list fromAlbumListChangeNotification:(id)notification indexOffset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  listCopy = list;
+  notificationCopy = notification;
+  if (!notificationCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [[a1 alloc] initWithAggregateAlbumList:v8 fromAlbumListChangeNotification:v9 indexOffset:a5];
+    v10 = [[self alloc] initWithAggregateAlbumList:listCopy fromAlbumListChangeNotification:notificationCopy indexOffset:offset];
   }
 
   return v10;

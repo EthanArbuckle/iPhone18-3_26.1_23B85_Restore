@@ -1,30 +1,30 @@
 @interface FHMerchantSpendInsight
-- (FHMerchantSpendInsight)initWithCoder:(id)a3;
+- (FHMerchantSpendInsight)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHMerchantSpendInsight
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FHMerchantSpendInsight;
-  v4 = a3;
-  [(FHFeatureInsight *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(FHFeatureInsight *)&v6 encodeWithCoder:coderCopy];
   v5 = [(FHMerchantSpendInsight *)self merchantName:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"merchantName"];
+  [coderCopy encodeObject:v5 forKey:@"merchantName"];
 }
 
-- (FHMerchantSpendInsight)initWithCoder:(id)a3
+- (FHMerchantSpendInsight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FHMerchantSpendInsight;
-  v5 = [(FHFeatureInsight *)&v9 initWithCoder:v4];
+  v5 = [(FHFeatureInsight *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
     merchantName = v5->merchantName;
     v5->merchantName = v6;
   }

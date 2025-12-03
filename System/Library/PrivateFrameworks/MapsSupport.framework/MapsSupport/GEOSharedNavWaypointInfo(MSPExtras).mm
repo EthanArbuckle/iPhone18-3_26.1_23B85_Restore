@@ -6,22 +6,22 @@
 
 - (id)name
 {
-  if ([a1 hasChargingStationInfo])
+  if ([self hasChargingStationInfo])
   {
-    v2 = [a1 chargingStationInfo];
-    v3 = [v2 name];
+    chargingStationInfo = [self chargingStationInfo];
+    name = [chargingStationInfo name];
   }
 
   else
   {
-    v2 = [a1 mapItemStorage];
-    if ([v2 _placeDisplayType] == 3 || (objc_msgSend(v2, "name"), (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+    chargingStationInfo = [self mapItemStorage];
+    if ([chargingStationInfo _placeDisplayType] == 3 || (objc_msgSend(chargingStationInfo, "name"), (name = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v3 = [v2 shortAddress];
+      name = [chargingStationInfo shortAddress];
     }
   }
 
-  v4 = v3;
+  v4 = name;
 
   return v4;
 }

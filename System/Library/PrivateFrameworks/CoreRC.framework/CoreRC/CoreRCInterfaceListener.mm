@@ -1,15 +1,15 @@
 @interface CoreRCInterfaceListener
-- (CoreRCInterfaceListener)initWithInterfaceController:(id)a3;
-- (void)addInterface:(id)a3;
+- (CoreRCInterfaceListener)initWithInterfaceController:(id)controller;
+- (void)addInterface:(id)interface;
 - (void)dealloc;
-- (void)removeInterface:(id)a3;
-- (void)scheduleWithDispatchQueue:(id)a3;
-- (void)unscheduleFromDispatchQueue:(id)a3;
+- (void)removeInterface:(id)interface;
+- (void)scheduleWithDispatchQueue:(id)queue;
+- (void)unscheduleFromDispatchQueue:(id)queue;
 @end
 
 @implementation CoreRCInterfaceListener
 
-- (CoreRCInterfaceListener)initWithInterfaceController:(id)a3
+- (CoreRCInterfaceListener)initWithInterfaceController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = CoreRCInterfaceListener;
@@ -35,7 +35,7 @@
   [(CoreRCInterfaceListener *)&v3 dealloc];
 }
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 60 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
@@ -43,7 +43,7 @@
   }
 }
 
-- (void)unscheduleFromDispatchQueue:(id)a3
+- (void)unscheduleFromDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 60 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
@@ -51,20 +51,20 @@
   }
 }
 
-- (void)addInterface:(id)a3
+- (void)addInterface:(id)interface
 {
   [(NSMutableArray *)self->_interfaces addObject:?];
-  v5 = [(CoreRCInterfaceListener *)self delegate];
+  delegate = [(CoreRCInterfaceListener *)self delegate];
 
-  [(CoreRCInterfaceListenerDelegate *)v5 interfaceListener:self didAddInterface:a3];
+  [(CoreRCInterfaceListenerDelegate *)delegate interfaceListener:self didAddInterface:interface];
 }
 
-- (void)removeInterface:(id)a3
+- (void)removeInterface:(id)interface
 {
-  [(CoreRCInterfaceListenerDelegate *)[(CoreRCInterfaceListener *)self delegate] interfaceListener:self didRemoveInterface:a3];
+  [(CoreRCInterfaceListenerDelegate *)[(CoreRCInterfaceListener *)self delegate] interfaceListener:self didRemoveInterface:interface];
   interfaces = self->_interfaces;
 
-  [(NSMutableArray *)interfaces removeObject:a3];
+  [(NSMutableArray *)interfaces removeObject:interface];
 }
 
 @end

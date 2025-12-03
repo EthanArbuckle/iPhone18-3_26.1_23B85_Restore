@@ -1,5 +1,5 @@
 @interface RawUnifiedStreamMessage
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (id)serialize;
 @end
 
@@ -7,7 +7,7 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RawUnifiedStreamMessage.serialize()();
   v5 = v4;
 
@@ -25,14 +25,14 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = sub_1D992AD84();
   v8 = v7;
 
   swift_getObjCClassMetadata();
-  v9 = static RawUnifiedStreamMessage.event(with:dataVersion:)(v6, v8, a4);
+  v9 = static RawUnifiedStreamMessage.event(with:dataVersion:)(v6, v8, version);
   sub_1D987106C(v6, v8);
 
   return v9;

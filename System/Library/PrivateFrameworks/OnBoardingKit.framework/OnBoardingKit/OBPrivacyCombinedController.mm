@@ -1,16 +1,16 @@
 @interface OBPrivacyCombinedController
-+ (void)presentPrivacyCombinedControllerOverController:(id)a3 dismissHandler:(id)a4;
-- (OBPrivacyCombinedController)initWithBundles:(id)a3;
++ (void)presentPrivacyCombinedControllerOverController:(id)controller dismissHandler:(id)handler;
+- (OBPrivacyCombinedController)initWithBundles:(id)bundles;
 @end
 
 @implementation OBPrivacyCombinedController
 
-- (OBPrivacyCombinedController)initWithBundles:(id)a3
+- (OBPrivacyCombinedController)initWithBundles:(id)bundles
 {
-  v4 = a3;
+  bundlesCopy = bundles;
   if ([(OBPrivacyCombinedController *)self isMemberOfClass:objc_opt_class()])
   {
-    v5 = [[OBPrivacyCombinedController_iOS alloc] initWithBundles:v4];
+    v5 = [[OBPrivacyCombinedController_iOS alloc] initWithBundles:bundlesCopy];
   }
 
   else
@@ -27,14 +27,14 @@
   return &v5->super;
 }
 
-+ (void)presentPrivacyCombinedControllerOverController:(id)a3 dismissHandler:(id)a4
++ (void)presentPrivacyCombinedControllerOverController:(id)controller dismissHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v7 = +[OBPrivacyPresenter presenterForPrivacyUnifiedAbout];
-  [v7 setDismissHandler:v5];
+  [v7 setDismissHandler:handlerCopy];
 
-  [v7 setPresentingViewController:v6];
+  [v7 setPresentingViewController:controllerCopy];
   [v7 setModalPresentationStyle:0];
   [v7 present];
 }

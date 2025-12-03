@@ -1,28 +1,28 @@
 @interface FCOfflineArticleFetchOperation
 - (BOOL)validateOperation;
-- (FCOfflineArticleFetchOperation)initWithContext:(id)a3 ANFHelper:(id)a4 articleID:(id)a5;
-- (void)_handleArchive:(void *)a1;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCOfflineArticleFetchOperation)initWithContext:(id)context ANFHelper:(id)helper articleID:(id)d;
+- (void)_handleArchive:(void *)archive;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 @end
 
 @implementation FCOfflineArticleFetchOperation
 
-- (FCOfflineArticleFetchOperation)initWithContext:(id)a3 ANFHelper:(id)a4 articleID:(id)a5
+- (FCOfflineArticleFetchOperation)initWithContext:(id)context ANFHelper:(id)helper articleID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  helperCopy = helper;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = FCOfflineArticleFetchOperation;
   v12 = [(FCOperation *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_ANFHelper, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_ANFHelper, helper);
+    v14 = [dCopy copy];
     articleID = v13->_articleID;
     v13->_articleID = v14;
 
@@ -122,18 +122,18 @@ LABEL_17:
 
 - (void)prepareOperation
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_context;
   }
 
-  v5 = [(FCOfflineArticleFetchOperation *)self appConfigurationManager];
-  v3 = [v5 possiblyUnfetchedAppConfiguration];
-  v4 = [v3 offlineDownloadsConfig];
-  if (v2)
+  appConfigurationManager = [(FCOfflineArticleFetchOperation *)self appConfigurationManager];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  offlineDownloadsConfig = [possiblyUnfetchedAppConfiguration offlineDownloadsConfig];
+  if (selfCopy)
   {
-    objc_storeStrong(&v2->_config, v4);
+    objc_storeStrong(&selfCopy->_config, offlineDownloadsConfig);
   }
 }
 
@@ -149,7 +149,7 @@ LABEL_17:
   v3 = FCOperationLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if ([(FCOfflineArticleFetchOperation *)self cachedOnly])
     {
       v5 = @"lookup cached";
@@ -196,9 +196,9 @@ LABEL_17:
     }
 
     v11 = v10;
-    v12 = [(FCOfflineDownloadsConfiguration *)v11 useSmallestArticleImages];
+    useSmallestArticleImages = [(FCOfflineDownloadsConfiguration *)v11 useSmallestArticleImages];
     *buf = 138544386;
-    if (v12)
+    if (useSmallestArticleImages)
     {
       v13 = @"small";
     }
@@ -208,7 +208,7 @@ LABEL_17:
       v13 = @"normal";
     }
 
-    v36 = v4;
+    v36 = shortOperationDescription;
     v37 = 2114;
     v38 = v5;
     v39 = 2114;
@@ -417,31 +417,31 @@ id __50__FCOfflineArticleFetchOperation_performOperation__block_invoke_4(uint64_
   return v7;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(FCOfflineArticleFetchOperation *)self fetchCompletionQueue];
+  errorCopy = error;
+  fetchCompletionQueue = [(FCOfflineArticleFetchOperation *)self fetchCompletionQueue];
 
-  v6 = [(FCOfflineArticleFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCOfflineArticleFetchOperation *)self fetchCompletionHandler];
 
-  if (v5)
+  if (fetchCompletionQueue)
   {
-    if (v6)
+    if (fetchCompletionHandler)
     {
-      v7 = [(FCOfflineArticleFetchOperation *)self fetchCompletionQueue];
+      fetchCompletionQueue2 = [(FCOfflineArticleFetchOperation *)self fetchCompletionQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __63__FCOfflineArticleFetchOperation_operationWillFinishWithError___block_invoke;
       v12[3] = &unk_1E7C36C58;
       v12[4] = self;
-      v13 = v4;
-      dispatch_async(v7, v12);
+      v13 = errorCopy;
+      dispatch_async(fetchCompletionQueue2, v12);
     }
   }
 
-  else if (v6)
+  else if (fetchCompletionHandler)
   {
-    v8 = [(FCOfflineArticleFetchOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler2 = [(FCOfflineArticleFetchOperation *)self fetchCompletionHandler];
     if (self)
     {
       resultInterestTokens = self->_resultInterestTokens;
@@ -453,8 +453,8 @@ id __50__FCOfflineArticleFetchOperation_performOperation__block_invoke_4(uint64_
     }
 
     v10 = resultInterestTokens;
-    v11 = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
-    (v8)[2](v8, v11, v4);
+    readOnlyArray = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, readOnlyArray, errorCopy);
   }
 }
 
@@ -627,35 +627,35 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)_handleArchive:(void *)a1
+- (void)_handleArchive:(void *)archive
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (archive && v3)
   {
-    v5 = [a1 archiveQueue];
+    archiveQueue = [archive archiveQueue];
 
-    v6 = [a1 archiveHandler];
+    archiveHandler = [archive archiveHandler];
 
-    if (v5)
+    if (archiveQueue)
     {
-      if (v6)
+      if (archiveHandler)
       {
-        v7 = [a1 archiveQueue];
+        archiveQueue2 = [archive archiveQueue];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __49__FCOfflineArticleFetchOperation__handleArchive___block_invoke_2;
         v9[3] = &unk_1E7C36C58;
-        v9[4] = a1;
+        v9[4] = archive;
         v10 = v4;
-        dispatch_async(v7, v9);
+        dispatch_async(archiveQueue2, v9);
       }
     }
 
-    else if (v6)
+    else if (archiveHandler)
     {
-      v8 = [a1 archiveHandler];
-      (v8)[2](v8, v4);
+      archiveHandler2 = [archive archiveHandler];
+      (archiveHandler2)[2](archiveHandler2, v4);
     }
   }
 }

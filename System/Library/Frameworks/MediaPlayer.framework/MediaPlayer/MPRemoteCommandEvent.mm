@@ -1,7 +1,7 @@
 @interface MPRemoteCommandEvent
-+ (MPRemoteCommandEvent)eventWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
++ (MPRemoteCommandEvent)eventWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 - (MPRemoteCommandEvent)init;
-- (MPRemoteCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
+- (MPRemoteCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 - (NSString)associatedParticipantIdentifier;
 - (NSString)contentItemID;
 - (NSString)interfaceID;
@@ -9,18 +9,18 @@
 - (id)description;
 - (int64_t)playbackQueueOffset;
 - (unsigned)mediaRemoteCommandType;
-- (void)_updateDispatch:(id)a3;
+- (void)_updateDispatch:(id)dispatch;
 @end
 
 @implementation MPRemoteCommandEvent
 
-- (void)_updateDispatch:(id)a3
+- (void)_updateDispatch:(id)dispatch
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dispatchCopy = dispatch;
+  v5 = dispatchCopy;
+  if (dispatchCopy)
   {
-    objc_storeStrong(&self->_deliveryDate, v4[6]);
+    objc_storeStrong(&self->_deliveryDate, dispatchCopy[6]);
     v6 = v5[7];
   }
 
@@ -51,45 +51,45 @@
 
 - (int64_t)playbackQueueOffset
 {
-  v2 = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69B1180]];
+  mediaRemoteOptions = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
+  v3 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B1180]];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)contentItemID
 {
-  v2 = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69B10C8]];
+  mediaRemoteOptions = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
+  v3 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B10C8]];
 
   return v3;
 }
 
 - (NSString)associatedParticipantIdentifier
 {
-  v2 = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69B1098]];
+  mediaRemoteOptions = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
+  v3 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B1098]];
 
   return v3;
 }
 
 - (NSString)sourceID
 {
-  v3 = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
-  v4 = [v3 objectForKeyedSubscript:@"kMRMediaRemoteOptionSenderID"];
+  mediaRemoteOptions = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
+  v4 = [mediaRemoteOptions objectForKeyedSubscript:@"kMRMediaRemoteOptionSenderID"];
 
-  v5 = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69B1200]];
+  mediaRemoteOptions2 = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
+  v6 = [mediaRemoteOptions2 objectForKeyedSubscript:*MEMORY[0x1E69B1200]];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v4, v6];
 
@@ -98,67 +98,67 @@
 
 - (NSString)interfaceID
 {
-  v2 = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69B1200]];
+  mediaRemoteOptions = [(MPRemoteCommandEvent *)self mediaRemoteOptions];
+  v3 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B1200]];
 
   return v3;
 }
 
 - (unsigned)mediaRemoteCommandType
 {
-  v2 = [(MPRemoteCommandEvent *)self command];
-  v3 = [v2 mediaRemoteCommandType];
+  command = [(MPRemoteCommandEvent *)self command];
+  mediaRemoteCommandType = [command mediaRemoteCommandType];
 
-  return v3;
+  return mediaRemoteCommandType;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPRemoteCommandEvent *)self commandID];
-  v6 = [(MPRemoteCommandEvent *)self command];
-  v7 = [(MPRemoteCommandEvent *)self sourceID];
-  v8 = [v3 stringWithFormat:@"<%@: %p commandID=%@ command=%@ sourceID=%@>", v4, self, v5, v6, v7];
+  commandID = [(MPRemoteCommandEvent *)self commandID];
+  command = [(MPRemoteCommandEvent *)self command];
+  sourceID = [(MPRemoteCommandEvent *)self sourceID];
+  v8 = [v3 stringWithFormat:@"<%@: %p commandID=%@ command=%@ sourceID=%@>", v4, self, commandID, command, sourceID];
 
   return v8;
 }
 
-- (MPRemoteCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPRemoteCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  commandCopy = command;
+  optionsCopy = options;
   v33.receiver = self;
   v33.super_class = MPRemoteCommandEvent;
   v10 = [(MPRemoteCommandEvent *)&v33 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_command, a3);
+    objc_storeStrong(&v10->_command, command);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v11->_timestamp = v12;
-    [v8 timeout];
+    [commandCopy timeout];
     v11->_timeout = v13;
     v14 = *MEMORY[0x1E69B10C0];
-    v15 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69B10C0]];
+    v15 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10C0]];
 
     if (v15)
     {
-      v16 = [v9 objectForKeyedSubscript:v14];
+      v16 = [optionsCopy objectForKeyedSubscript:v14];
       [v16 doubleValue];
       v11->_timeout = v17;
     }
 
-    v18 = [v9 copy];
+    v18 = [optionsCopy copy];
     mediaRemoteOptions = v11->_mediaRemoteOptions;
     v11->_mediaRemoteOptions = v18;
 
-    v20 = [v9 objectForKey:*MEMORY[0x1E69B10D0]];
+    v20 = [optionsCopy objectForKey:*MEMORY[0x1E69B10D0]];
     v21 = [v20 copy];
     contextID = v11->_contextID;
     v11->_contextID = v21;
 
-    v23 = [v9 objectForKey:*MEMORY[0x1E69B10B0]];
+    v23 = [optionsCopy objectForKey:*MEMORY[0x1E69B10B0]];
     v24 = [v23 copy];
     v25 = v24;
     if (v24)
@@ -172,8 +172,8 @@
     {
       v28 = MEMORY[0x1E696AEC0];
       commandID = [MEMORY[0x1E696AFB0] UUID];
-      v29 = [commandID UUIDString];
-      v30 = [v28 stringWithFormat:@"<missing: %@>", v29];
+      uUIDString = [commandID UUIDString];
+      v30 = [v28 stringWithFormat:@"<missing: %@>", uUIDString];
       v31 = v11->_commandID;
       v11->_commandID = v30;
     }
@@ -193,11 +193,11 @@
   return 0;
 }
 
-+ (MPRemoteCommandEvent)eventWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
++ (MPRemoteCommandEvent)eventWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
-  v5 = *&a4;
-  v7 = a5;
-  v8 = a3;
+  v5 = *&type;
+  optionsCopy = options;
+  commandCopy = command;
   v9 = objc_opt_class();
   if (v5 <= 25)
   {
@@ -297,7 +297,7 @@ LABEL_26:
   }
 
 LABEL_27:
-  v10 = [[v9 alloc] initWithCommand:v8 mediaRemoteType:v5 options:v7];
+  v10 = [[v9 alloc] initWithCommand:commandCopy mediaRemoteType:v5 options:optionsCopy];
 
   return v10;
 }

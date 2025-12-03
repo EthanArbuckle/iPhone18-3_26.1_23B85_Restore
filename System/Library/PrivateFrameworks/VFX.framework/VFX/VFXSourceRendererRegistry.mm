@@ -1,10 +1,10 @@
 @interface VFXSourceRendererRegistry
 + (id)sharedRegistry;
 - (VFXSourceRendererRegistry)init;
-- (id)sourceRendererForEngineContext:(__CFXEngineContext *)a3 source:(id)a4 textureSource:(id)a5 targetTexture:(id)a6;
+- (id)sourceRendererForEngineContext:(__CFXEngineContext *)context source:(id)source textureSource:(id)textureSource targetTexture:(id)texture;
 - (void)dealloc;
-- (void)removeSourceRenderersForSource:(id)a3;
-- (void)rendererDidChange:(id)a3;
+- (void)removeSourceRenderersForSource:(id)source;
+- (void)rendererDidChange:(id)change;
 @end
 
 @implementation VFXSourceRendererRegistry
@@ -45,11 +45,11 @@
   return qword_1EB64FB20;
 }
 
-- (void)rendererDidChange:(id)a3
+- (void)rendererDidChange:(id)change
 {
   if (pthread_main_np())
   {
-    v7 = objc_msgSend_layer(a3, v4, v5, v6);
+    v7 = objc_msgSend_layer(change, v4, v5, v6);
     v11 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v8, v9, v10);
 
     objc_msgSend_postNotificationName_object_(v11, v12, @"VFXLayerTreeDidChange", v7);
@@ -59,7 +59,7 @@
   {
     objc_msgSend_begin(MEMORY[0x1E6979518], v4, v5, v6);
     objc_msgSend_activateBackground_(MEMORY[0x1E6979518], v13, 1, v14);
-    v18 = objc_msgSend_layer(a3, v15, v16, v17);
+    v18 = objc_msgSend_layer(change, v15, v16, v17);
     v22 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v19, v20, v21);
     objc_msgSend_postNotificationName_object_(v22, v23, @"VFXLayerTreeDidChange", v18);
     v27 = MEMORY[0x1E6979518];
@@ -68,11 +68,11 @@
   }
 }
 
-- (id)sourceRendererForEngineContext:(__CFXEngineContext *)a3 source:(id)a4 textureSource:(id)a5 targetTexture:(id)a6
+- (id)sourceRendererForEngineContext:(__CFXEngineContext *)context source:(id)source textureSource:(id)textureSource targetTexture:(id)texture
 {
   v42[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&unk_1EB644850);
-  Value = CFDictionaryGetValue(self->_registry, a4);
+  Value = CFDictionaryGetValue(self->_registry, source);
   if (Value)
   {
     goto LABEL_15;
@@ -88,7 +88,7 @@ LABEL_14:
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v18 = objc_msgSend_valueForKey_(a4, v11, @"VFXIsBackingViewAsMaterialPropertyTag", v13);
+    v18 = objc_msgSend_valueForKey_(source, v11, @"VFXIsBackingViewAsMaterialPropertyTag", v13);
     if (!objc_msgSend_BOOLValue(v18, v19, v20, v21))
     {
       goto LABEL_9;
@@ -107,7 +107,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v14 = objc_msgSend_rendererOptions(a4, v11, v12, v13);
+  v14 = objc_msgSend_rendererOptions(source, v11, v12, v13);
   if (v14)
   {
     goto LABEL_8;
@@ -117,7 +117,7 @@ LABEL_9:
   v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
 LABEL_10:
   v26 = v25;
-  if (!a6)
+  if (!texture)
   {
 
     goto LABEL_14;
@@ -125,16 +125,16 @@ LABEL_10:
 
   v27 = sub_1AF164458();
   objc_msgSend_setObject_forKeyedSubscript_(v26, v28, v27, *MEMORY[0x1E6979F08]);
-  v29 = sub_1AF12E2AC(a3);
+  v29 = sub_1AF12E2AC(context);
   v33 = objc_msgSend_commandQueue(v29, v30, v31, v32);
   objc_msgSend_setObject_forKeyedSubscript_(v26, v34, v33, *MEMORY[0x1E6979F10]);
   objc_msgSend_setObject_forKeyedSubscript_(v26, v35, MEMORY[0x1E695E118], *MEMORY[0x1E6979F00]);
-  Value = objc_msgSend_rendererWithMTLTexture_options_(MEMORY[0x1E6979428], v36, a6, v26);
+  Value = objc_msgSend_rendererWithMTLTexture_options_(MEMORY[0x1E6979428], v36, texture, v26);
   objc_msgSend_setDelegate_(Value, v37, self, v38);
 
   if (Value)
   {
-    CFDictionarySetValue(self->_registry, a4, Value);
+    CFDictionarySetValue(self->_registry, source, Value);
   }
 
 LABEL_15:
@@ -143,10 +143,10 @@ LABEL_15:
   return Value;
 }
 
-- (void)removeSourceRenderersForSource:(id)a3
+- (void)removeSourceRenderersForSource:(id)source
 {
   os_unfair_lock_lock(&unk_1EB644850);
-  CFDictionaryRemoveValue(self->_registry, a3);
+  CFDictionaryRemoveValue(self->_registry, source);
 
   os_unfair_lock_unlock(&unk_1EB644850);
 }

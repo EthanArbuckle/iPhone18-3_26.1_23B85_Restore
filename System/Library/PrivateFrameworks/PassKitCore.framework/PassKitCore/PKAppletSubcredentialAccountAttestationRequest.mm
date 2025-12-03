@@ -1,68 +1,68 @@
 @interface PKAppletSubcredentialAccountAttestationRequest
-- (PKAppletSubcredentialAccountAttestationRequest)initWithCoder:(id)a3;
-- (PKAppletSubcredentialAccountAttestationRequest)initWithRequestData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKAppletSubcredentialAccountAttestationRequest)initWithCoder:(id)coder;
+- (PKAppletSubcredentialAccountAttestationRequest)initWithRequestData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppletSubcredentialAccountAttestationRequest
 
-- (PKAppletSubcredentialAccountAttestationRequest)initWithRequestData:(id)a3
+- (PKAppletSubcredentialAccountAttestationRequest)initWithRequestData:(id)data
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = [(PKAppletSubcredentialAccountAttestationRequest *)self init];
     if (v5)
     {
-      v6 = [v4 subCaAttestation];
+      subCaAttestation = [dataCopy subCaAttestation];
       subCASEResidencyAttestation = v5->_subCASEResidencyAttestation;
-      v5->_subCASEResidencyAttestation = v6;
+      v5->_subCASEResidencyAttestation = subCaAttestation;
 
       v20[0] = 0;
       v20[1] = 0;
-      v8 = [v4 sharingSessionIdentifier];
-      [v8 getUUIDBytes:v20];
+      sharingSessionIdentifier = [dataCopy sharingSessionIdentifier];
+      [sharingSessionIdentifier getUUIDBytes:v20];
 
       v9 = [MEMORY[0x1E695DEF0] dataWithBytes:v20 length:16];
-      v10 = [v9 SHA256Hash];
+      sHA256Hash = [v9 SHA256Hash];
       sharingTokenHash = v5->_sharingTokenHash;
-      v5->_sharingTokenHash = v10;
+      v5->_sharingTokenHash = sHA256Hash;
 
       v12 = [PKSecureElementCertificateSet alloc];
-      v13 = [v4 rsaCertData];
-      v14 = [v13 hexEncoding];
-      v15 = [v4 casd];
-      v16 = [v15 hexEncoding];
-      v17 = [(PKSecureElementCertificateSet *)v12 initWithRSACertificate:v14 ECDSACertificate:v16];
+      rsaCertData = [dataCopy rsaCertData];
+      hexEncoding = [rsaCertData hexEncoding];
+      casd = [dataCopy casd];
+      hexEncoding2 = [casd hexEncoding];
+      v17 = [(PKSecureElementCertificateSet *)v12 initWithRSACertificate:hexEncoding ECDSACertificate:hexEncoding2];
       [(PKAccountAttestationRequest *)v5 setCasdCertificate:v17];
     }
 
     self = v5;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (PKAppletSubcredentialAccountAttestationRequest)initWithCoder:(id)a3
+- (PKAppletSubcredentialAccountAttestationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAppletSubcredentialAccountAttestationRequest;
-  v5 = [(PKAccountAttestationRequest *)&v11 initWithCoder:v4];
+  v5 = [(PKAccountAttestationRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subCASEResidencyAttestation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subCASEResidencyAttestation"];
     subCASEResidencyAttestation = v5->_subCASEResidencyAttestation;
     v5->_subCASEResidencyAttestation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingTokenHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingTokenHash"];
     sharingTokenHash = v5->_sharingTokenHash;
     v5->_sharingTokenHash = v8;
   }
@@ -70,14 +70,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKAppletSubcredentialAccountAttestationRequest;
-  v4 = a3;
-  [(PKAccountAttestationRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_subCASEResidencyAttestation forKey:{@"subCASEResidencyAttestation", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_sharingTokenHash forKey:@"sharingTokenHash"];
+  coderCopy = coder;
+  [(PKAccountAttestationRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_subCASEResidencyAttestation forKey:{@"subCASEResidencyAttestation", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_sharingTokenHash forKey:@"sharingTokenHash"];
 }
 
 @end

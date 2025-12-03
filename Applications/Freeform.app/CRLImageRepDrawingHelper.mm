@@ -1,35 +1,35 @@
 @interface CRLImageRepDrawingHelper
-- (BOOL)canRenderDirectlyManagedForRenderable:(id)a3;
+- (BOOL)canRenderDirectlyManagedForRenderable:(id)renderable;
 - (BOOL)drawsBitmap;
 - (BOOL)drawsError;
 - (BOOL)imagePrefersDrawing;
 - (BOOL)isDesiredImageSizePerceptuallyMuchBiggerThanGeneratedImageSize;
 - (BOOL)isGeneratingSizedImageWithBakedMask;
 - (BOOL)p_canDrawThumbnailAsSizedImage;
-- (BOOL)p_generateSizedImage:(id)a3;
+- (BOOL)p_generateSizedImage:(id)image;
 - (BOOL)shouldShowLoadingUI;
 - (CGImage)sizedImage;
-- (CGRect)imageRectInContext:(CGContext *)a3;
-- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (CGRect)imageRectInContext:(CGContext *)context;
+- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)rect inContext:(CGContext *)context;
 - (CGSize)p_desiredSizedImageSize;
 - (CGSize)p_imagePixelSize;
 - (CRLImageRepDrawingDataSource)rep;
-- (CRLImageRepDrawingHelper)initWithRep:(id)a3;
+- (CRLImageRepDrawingHelper)initWithRep:(id)rep;
 - (_TtC8Freeform8CRLAsset)imageDataForDrawing;
-- (id)p_contentsRecipeForDirectlyManagedRenderable:(id)a3 requiringProperlySizedImage:(BOOL)a4;
+- (id)p_contentsRecipeForDirectlyManagedRenderable:(id)renderable requiringProperlySizedImage:(BOOL)image;
 - (id)p_desiredSizedImageDescription;
 - (id)p_imageProvider;
 - (id)p_validatedBitmapImageProvider;
 - (id)p_validatedImageProvider;
 - (id)p_validatedThumbnailImageProvider;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 forLayer:(BOOL)a4 forShadowOrHitTest:(BOOL)a5;
+- (void)drawInContext:(CGContext *)context forLayer:(BOOL)layer forShadowOrHitTest:(BOOL)test;
 - (void)generateSizedImageIfNeeded;
 - (void)invalidateSizedImage;
 - (void)invalidateSizedImageIfItHasBakedMask;
-- (void)invalidateSizedImageIfNeededForBakedMaskPathFromBlock:(id)a3;
+- (void)invalidateSizedImageIfNeededForBakedMaskPathFromBlock:(id)block;
 - (void)p_invalidateSizedImageOnAccessQueue;
-- (void)p_prepareToGenerateSizedImageWithDescription:(id)a3;
+- (void)p_prepareToGenerateSizedImageWithDescription:(id)description;
 - (void)p_retryGeneratingSizedImageIfPossible;
 - (void)p_startGeneratingSizedImage;
 - (void)p_takeSizedImageFromStateIfReady;
@@ -39,16 +39,16 @@
 
 @implementation CRLImageRepDrawingHelper
 
-- (CRLImageRepDrawingHelper)initWithRep:(id)a3
+- (CRLImageRepDrawingHelper)initWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v10.receiver = self;
   v10.super_class = CRLImageRepDrawingHelper;
   v5 = [(CRLImageRepDrawingHelper *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_rep, v4);
+    objc_storeWeak(&v5->_rep, repCopy);
     v7 = dispatch_queue_create("com.apple.freeform.CRLImageRepDrawingHelper.sizedImage", 0);
     sizedImageAccessQueue = v6->_sizedImageAccessQueue;
     v6->_sizedImageAccessQueue = v7;
@@ -77,7 +77,7 @@
   dispatch_sync(sizedImageAccessQueue, block);
 }
 
-- (CGRect)imageRectInContext:(CGContext *)a3
+- (CGRect)imageRectInContext:(CGContext *)context
 {
   v5 = [(CRLImageRepDrawingHelper *)self rep];
   v6 = v5;
@@ -89,20 +89,20 @@
     width = v11;
     height = v13;
     v15 = [(CRLImageRepDrawingHelper *)self rep];
-    v16 = [v15 canvas];
-    if ([v16 isDrawingIntoPDF])
+    canvas = [v15 canvas];
+    if ([canvas isDrawingIntoPDF])
     {
     }
 
     else
     {
       v20 = [(CRLImageRepDrawingHelper *)self rep];
-      v21 = [v20 canvas];
-      v22 = [v21 isPrinting];
+      canvas2 = [v20 canvas];
+      isPrinting = [canvas2 isPrinting];
 
-      if ((v22 & 1) == 0)
+      if ((isPrinting & 1) == 0)
       {
-        [(CRLImageRepDrawingHelper *)self p_antialiasingDefeatedRectForRect:a3 inContext:x, y, width, height];
+        [(CRLImageRepDrawingHelper *)self p_antialiasingDefeatedRectForRect:context inContext:x, y, width, height];
         x = v23;
         y = v24;
         width = v25;
@@ -156,10 +156,10 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 forLayer:(BOOL)a4 forShadowOrHitTest:(BOOL)a5
+- (void)drawInContext:(CGContext *)context forLayer:(BOOL)layer forShadowOrHitTest:(BOOL)test
 {
-  v5 = a5;
-  v6 = a4;
+  testCopy = test;
+  layerCopy = layer;
   v9 = [(CRLImageRepDrawingHelper *)self rep];
   if (v9)
   {
@@ -180,12 +180,12 @@
     block[5] = &v51;
     block[6] = &v47;
     dispatch_sync(sizedImageAccessQueue, block);
-    [(CRLImageRepDrawingHelper *)self imageRectInContext:a3];
+    [(CRLImageRepDrawingHelper *)self imageRectInContext:context];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    if (!v5 || ([v9 imageDrawingHelperImageHasAlpha:self] & 1) != 0)
+    if (!testCopy || ([v9 imageDrawingHelperImageHasAlpha:self] & 1) != 0)
     {
       if (v52[3] && ![(CRLImageRepDrawingHelper *)self imagePrefersDrawing])
       {
@@ -199,15 +199,15 @@
         v57.size.width = v16;
         v57.size.height = v18;
         MaxY = CGRectGetMaxY(v57);
-        CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-        CGContextScaleCTM(a3, 1.0, -1.0);
+        CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+        CGContextScaleCTM(context, 1.0, -1.0);
         sub_1004F3D84(v48[3], 1, &transform, v12, v14, v16, v18);
-        CGContextConcatCTM(a3, &transform);
+        CGContextConcatCTM(context, &transform);
         v58.origin.x = v12;
         v58.origin.y = v14;
         v58.size.width = v16;
         v58.size.height = v18;
-        CGContextDrawImage(a3, v58, v52[3]);
+        CGContextDrawImage(context, v58, v52[3]);
         goto LABEL_34;
       }
 
@@ -225,12 +225,12 @@
         v40[4] = self;
         v40[5] = &v41;
         dispatch_sync(v22, v40);
-        if ([(CRLImageRepDrawingHelper *)self p_canDrawThumbnailAsSizedImage]|| v6 && *(v42 + 24) == 1)
+        if ([(CRLImageRepDrawingHelper *)self p_canDrawThumbnailAsSizedImage]|| layerCopy && *(v42 + 24) == 1)
         {
-          v23 = [(CRLImageRepDrawingHelper *)self p_validatedThumbnailImageProvider];
-          if (v23 && ![(CRLImageRepDrawingHelper *)self imagePrefersDrawing])
+          p_validatedThumbnailImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedThumbnailImageProvider];
+          if (p_validatedThumbnailImageProvider && ![(CRLImageRepDrawingHelper *)self imagePrefersDrawing])
           {
-            v37 = [v23 CGImageForSize:a3 inContext:0 orContentsScaleProvider:{v16, v18}];
+            v37 = [p_validatedThumbnailImageProvider CGImageForSize:context inContext:0 orContentsScaleProvider:{v16, v18}];
             v59.origin.x = v12;
             v59.origin.y = v14;
             v59.size.width = v16;
@@ -241,69 +241,69 @@
             v60.size.width = v16;
             v60.size.height = v18;
             v39 = CGRectGetMaxY(v60);
-            CGContextTranslateCTM(a3, 0.0, v38 + v39);
-            CGContextScaleCTM(a3, 1.0, -1.0);
+            CGContextTranslateCTM(context, 0.0, v38 + v39);
+            CGContextScaleCTM(context, 1.0, -1.0);
             sub_1004F3D84(v48[3], 1, &transform, v12, v14, v16, v18);
-            CGContextConcatCTM(a3, &transform);
+            CGContextConcatCTM(context, &transform);
             v61.origin.x = v12;
             v61.origin.y = v14;
             v61.size.width = v16;
             v61.size.height = v18;
-            CGContextDrawImage(a3, v61, v37);
+            CGContextDrawImage(context, v61, v37);
           }
 
           else
           {
-            v24 = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
-            [v24 drawImageInContext:a3 rect:{v12, v14, v16, v18}];
+            p_validatedImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
+            [p_validatedImageProvider drawImageInContext:context rect:{v12, v14, v16, v18}];
           }
         }
 
         else
         {
-          v23 = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
-          if ([v23 isError])
+          p_validatedThumbnailImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
+          if ([p_validatedThumbnailImageProvider isError])
           {
-            v34 = [(CRLImageRepDrawingHelper *)self p_validatedThumbnailImageProvider];
-            v35 = v34;
-            if (v34)
+            p_validatedThumbnailImageProvider2 = [(CRLImageRepDrawingHelper *)self p_validatedThumbnailImageProvider];
+            v35 = p_validatedThumbnailImageProvider2;
+            if (p_validatedThumbnailImageProvider2)
             {
-              v36 = v34;
+              v36 = p_validatedThumbnailImageProvider2;
 
-              v23 = v36;
+              p_validatedThumbnailImageProvider = v36;
             }
           }
 
-          [v23 drawImageInContext:a3 rect:{v12, v14, v16, v18}];
+          [p_validatedThumbnailImageProvider drawImageInContext:context rect:{v12, v14, v16, v18}];
         }
 
         _Block_object_dispose(&v41, 8);
         goto LABEL_34;
       }
 
-      if (!v5)
+      if (!testCopy)
       {
         v28 = objc_opt_class();
         v29 = [(CRLImageRepDrawingHelper *)self rep];
         v30 = sub_100014370(v28, v29);
 
         v31 = [_TtC8Freeform38CRLImageUndownloadedAssetDrawingHelper alloc];
-        v32 = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
-        v33 = [(CRLImageUndownloadedAssetDrawingHelper *)v31 initWithImageRep:v30 asset:v32];
+        imageDataForDrawing = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
+        v33 = [(CRLImageUndownloadedAssetDrawingHelper *)v31 initWithImageRep:v30 asset:imageDataForDrawing];
 
-        [(CRLImageUndownloadedAssetDrawingHelper *)v33 drawInConext:a3 withOriginalImageRect:v12, v14, v16, v18];
+        [(CRLImageUndownloadedAssetDrawingHelper *)v33 drawInConext:context withOriginalImageRect:v12, v14, v16, v18];
         goto LABEL_34;
       }
     }
 
     v25 = +[CRLColor blackColor];
-    CGContextSetFillColorWithColor(a3, [v25 CGColor]);
+    CGContextSetFillColorWithColor(context, [v25 CGColor]);
 
     v55.origin.x = v12;
     v55.origin.y = v14;
     v55.size.width = v16;
     v55.size.height = v18;
-    CGContextFillRect(a3, v55);
+    CGContextFillRect(context, v55);
 LABEL_34:
     CGImageRelease(v52[3]);
     _Block_object_dispose(&v47, 8);
@@ -340,12 +340,12 @@ LABEL_34:
 LABEL_35:
 }
 
-- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)a3 inContext:(CGContext *)a4
+- (CGRect)p_antialiasingDefeatedRectForRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = [(CRLImageRepDrawingHelper *)self rep];
   v11 = v10;
   if (v10)
@@ -398,9 +398,9 @@ LABEL_35:
     v16 = v38.origin.y;
     v17 = v38.size.width;
     v18 = v38.size.height;
-    v19 = sub_100510A7C(a4);
-    v20 = [v11 canvas];
-    [v20 viewScale];
+    v19 = sub_100510A7C(context);
+    canvas = [v11 canvas];
+    [canvas viewScale];
     v22 = v21;
 
     v23 = sub_1001221E8(v15, v16, v17, v18, v19 * v22);
@@ -459,25 +459,25 @@ LABEL_35:
       sub_10130DA10(v8);
     }
 
-    v5 = [NSString stringWithUTF8String:"[CRLImageRepDrawingHelper p_canDrawThumbnailAsSizedImage]"];
-    v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLImageRepDrawingHelper.m"];
-    [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:207 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
+    canvas = [NSString stringWithUTF8String:"[CRLImageRepDrawingHelper p_canDrawThumbnailAsSizedImage]"];
+    p_validatedBitmapImageProvider = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLImageRepDrawingHelper.m"];
+    [CRLAssertionHandler handleFailureInFunction:canvas file:p_validatedBitmapImageProvider lineNumber:207 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
     v7 = 0;
     goto LABEL_16;
   }
 
-  v5 = [v3 canvas];
-  if ([v5 isCanvasInteractive])
+  canvas = [v3 canvas];
+  if ([canvas isCanvasInteractive])
   {
-    v6 = [(CRLImageRepDrawingHelper *)self p_validatedBitmapImageProvider];
-    if ([v6 isError])
+    p_validatedBitmapImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedBitmapImageProvider];
+    if ([p_validatedBitmapImageProvider isError])
     {
       v7 = 1;
     }
 
     else
     {
-      [v6 naturalSize];
+      [p_validatedBitmapImageProvider naturalSize];
       v10 = v9;
       v12 = v11;
       v13 = sub_10050CFD8();
@@ -496,17 +496,17 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)canRenderDirectlyManagedForRenderable:(id)a3
+- (BOOL)canRenderDirectlyManagedForRenderable:(id)renderable
 {
-  v3 = [(CRLImageRepDrawingHelper *)self p_contentsRecipeForDirectlyManagedRenderable:a3 requiringProperlySizedImage:0];
+  v3 = [(CRLImageRepDrawingHelper *)self p_contentsRecipeForDirectlyManagedRenderable:renderable requiringProperlySizedImage:0];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)p_contentsRecipeForDirectlyManagedRenderable:(id)a3 requiringProperlySizedImage:(BOOL)a4
+- (id)p_contentsRecipeForDirectlyManagedRenderable:(id)renderable requiringProperlySizedImage:(BOOL)image
 {
-  v6 = a3;
+  renderableCopy = renderable;
   v7 = [(CRLImageRepDrawingHelper *)self rep];
   if (v7)
   {
@@ -536,8 +536,8 @@ LABEL_17:
     v17 = &v32;
     v18 = &v28;
     v19 = &v24;
-    v21 = a4;
-    v16 = v6;
+    imageCopy = image;
+    v16 = renderableCopy;
     v20 = v22;
     dispatch_sync(sizedImageAccessQueue, block);
     if (v33[3])
@@ -641,10 +641,10 @@ LABEL_17:
 
 - (BOOL)drawsError
 {
-  v2 = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
-  v3 = [v2 isError];
+  p_validatedImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
+  isError = [p_validatedImageProvider isError];
 
-  return v3;
+  return isError;
 }
 
 - (BOOL)drawsBitmap
@@ -663,18 +663,18 @@ LABEL_17:
   dispatch_sync(sizedImageAccessQueue, v9);
   if ((v11[3] & 1) == 0)
   {
-    v5 = [(CRLImageRepDrawingHelper *)self p_canDrawThumbnailAsSizedImage];
-    if (v5 && ([(CRLImageRepDrawingHelper *)self p_validatedThumbnailImageProvider], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    p_canDrawThumbnailAsSizedImage = [(CRLImageRepDrawingHelper *)self p_canDrawThumbnailAsSizedImage];
+    if (p_canDrawThumbnailAsSizedImage && ([(CRLImageRepDrawingHelper *)self p_validatedThumbnailImageProvider], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [(CRLImageRepDrawingHelper *)self p_validatedBitmapImageProvider];
-      v4 = v7 != 0;
+      p_validatedBitmapImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedBitmapImageProvider];
+      v4 = p_validatedBitmapImageProvider != 0;
 
-      if (!v5)
+      if (!p_canDrawThumbnailAsSizedImage)
       {
         goto LABEL_9;
       }
@@ -726,8 +726,8 @@ LABEL_9:
   [(CRLImageRepDrawingHelper *)self p_imagePixelSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
-  [v11 naturalSize];
+  p_validatedImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
+  [p_validatedImageProvider naturalSize];
   v13 = v12;
   v15 = v14;
 
@@ -735,7 +735,7 @@ LABEL_9:
   v20 = 0;
   if (!v16)
   {
-    v17 = [(CRLImageRepDrawingHelper *)self p_imageProvider];
+    p_imageProvider = [(CRLImageRepDrawingHelper *)self p_imageProvider];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -753,10 +753,10 @@ LABEL_9:
 
 - (BOOL)shouldShowLoadingUI
 {
-  v2 = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
-  v3 = [v2 needsDownload];
+  imageDataForDrawing = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
+  needsDownload = [imageDataForDrawing needsDownload];
 
-  return v3;
+  return needsDownload;
 }
 
 - (CGSize)p_imagePixelSize
@@ -791,13 +791,13 @@ LABEL_9:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:358 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
   }
 
-  v7 = [v3 canvas];
+  canvas = [v3 canvas];
   [v3 imageDrawingHelperImageRect:self];
   v9 = v8;
   v11 = v10;
-  [v7 viewScale];
+  [canvas viewScale];
   v13 = v12;
-  [v7 contentsScale];
+  [canvas contentsScale];
   v15 = sub_10011F340(v9, v11, v13 * v14);
   v17 = v16;
 
@@ -811,8 +811,8 @@ LABEL_9:
 - (id)p_imageProvider
 {
   v3 = +[CRLImageProviderPool sharedPool];
-  v4 = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
-  v5 = [v3 providerForAsset:v4 shouldValidate:0];
+  imageDataForDrawing = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
+  v5 = [v3 providerForAsset:imageDataForDrawing shouldValidate:0];
 
   return v5;
 }
@@ -820,8 +820,8 @@ LABEL_9:
 - (id)p_validatedImageProvider
 {
   v3 = +[CRLImageProviderPool sharedPool];
-  v4 = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
-  v5 = [v3 providerForAsset:v4 shouldValidate:1];
+  imageDataForDrawing = [(CRLImageRepDrawingHelper *)self imageDataForDrawing];
+  v5 = [v3 providerForAsset:imageDataForDrawing shouldValidate:1];
 
   return v5;
 }
@@ -829,8 +829,8 @@ LABEL_9:
 - (id)p_validatedBitmapImageProvider
 {
   v3 = objc_opt_class();
-  v4 = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
-  v5 = sub_100014370(v3, v4);
+  p_validatedImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
+  v5 = sub_100014370(v3, p_validatedImageProvider);
 
   return v5;
 }
@@ -879,33 +879,33 @@ LABEL_9:
 
 - (BOOL)isDesiredImageSizePerceptuallyMuchBiggerThanGeneratedImageSize
 {
-  v2 = self;
+  selfCopy = self;
   [(CRLImageRepDrawingHelper *)self p_desiredSizedImageSize];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  sizedImageAccessQueue = v2->_sizedImageAccessQueue;
+  sizedImageAccessQueue = selfCopy->_sizedImageAccessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100513DAC;
   v7[3] = &unk_10186BAB8;
-  v7[4] = v2;
+  v7[4] = selfCopy;
   v7[5] = &v8;
   v7[6] = v4;
   v7[7] = v5;
   dispatch_sync(sizedImageAccessQueue, v7);
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)generateSizedImageIfNeeded
 {
-  v3 = [(CRLImageRepDrawingHelper *)self p_imageProvider];
-  if ([v3 isValid] && (objc_msgSend(v3, "isError") & 1) == 0)
+  p_imageProvider = [(CRLImageRepDrawingHelper *)self p_imageProvider];
+  if ([p_imageProvider isValid] && (objc_msgSend(p_imageProvider, "isError") & 1) == 0)
   {
-    v4 = [(CRLImageRepDrawingHelper *)self p_desiredSizedImageDescription];
+    p_desiredSizedImageDescription = [(CRLImageRepDrawingHelper *)self p_desiredSizedImageDescription];
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
@@ -915,10 +915,10 @@ LABEL_9:
     v8 = 3221225472;
     v9 = sub_100513F84;
     v10 = &unk_101842C40;
-    v11 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = p_desiredSizedImageDescription;
     v12 = v6;
-    v13 = v3;
+    v13 = p_imageProvider;
     v14 = &v15;
     dispatch_sync(sizedImageAccessQueue, &v7);
     if (*(v16 + 24) == 1)
@@ -965,10 +965,10 @@ LABEL_9:
   [(CRLImageRepDrawingHelper *)self p_desiredSizedImageSize];
   v8 = v7;
   v10 = v9;
-  v11 = [v3 canvas];
-  v12 = [v11 canvasIsWideGamut];
+  canvas = [v3 canvas];
+  canvasIsWideGamut = [canvas canvasIsWideGamut];
 
-  v13 = -[TSDSizedImageDescription initWithSize:isWideGamut:hasBakedMask:]([TSDSizedImageDescription alloc], "initWithSize:isWideGamut:hasBakedMask:", v12, [v3 imageDrawingHelperShouldBakeMaskIntoSizedImage:self], v8, v10);
+  v13 = -[TSDSizedImageDescription initWithSize:isWideGamut:hasBakedMask:]([TSDSizedImageDescription alloc], "initWithSize:isWideGamut:hasBakedMask:", canvasIsWideGamut, [v3 imageDrawingHelperShouldBakeMaskIntoSizedImage:self], v8, v10);
 
   return v13;
 }
@@ -1005,8 +1005,8 @@ LABEL_9:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:470 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
   }
 
-  v7 = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
-  [v7 naturalSize];
+  p_validatedImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedImageProvider];
+  [p_validatedImageProvider naturalSize];
   v9 = v8;
   v11 = v10;
 
@@ -1028,17 +1028,17 @@ LABEL_9:
     }
   }
 
-  v21 = [(CRLImageRepDrawingHelper *)self p_imageProvider];
-  v22 = [v21 isError];
+  p_imageProvider = [(CRLImageRepDrawingHelper *)self p_imageProvider];
+  isError = [p_imageProvider isError];
 
-  if ((v22 & 1) != 0 || v13 <= v17 && v15 <= v16)
+  if ((isError & 1) != 0 || v13 <= v17 && v15 <= v16)
   {
     v9 = v13;
   }
 
   else
   {
-    v28 = [(CRLImageRepDrawingHelper *)self p_imageProvider];
+    p_imageProvider2 = [(CRLImageRepDrawingHelper *)self p_imageProvider];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1059,9 +1059,9 @@ LABEL_9:
   return result;
 }
 
-- (void)p_prepareToGenerateSizedImageWithDescription:(id)a3
+- (void)p_prepareToGenerateSizedImageWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = self->_sizedImageAccessQueue;
   if (v5 != &_dispatch_main_q || !+[NSThread isMainThread])
   {
@@ -1127,10 +1127,10 @@ LABEL_9:
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:519 isFatal:0 description:"expected nil value for '%{public}s'", "_sizingState"];
   }
 
-  [v4 size];
+  [descriptionCopy size];
   v14 = v13;
   v16 = v15;
-  if ([v4 hasBakedMask])
+  if ([descriptionCopy hasBakedMask])
   {
     if (self->_sizedImage)
     {
@@ -1139,8 +1139,8 @@ LABEL_9:
 
     else
     {
-      v19 = [(CRLImageRepDrawingHelper *)self p_validatedBitmapImageProvider];
-      sizedImageOrientation = [v19 orientation];
+      p_validatedBitmapImageProvider = [(CRLImageRepDrawingHelper *)self p_validatedBitmapImageProvider];
+      sizedImageOrientation = [p_validatedBitmapImageProvider orientation];
     }
 
     v18 = [v6 imageDrawingHelper:self newMaskPathForSizedImageWithSize:sizedImageOrientation orientation:{v14, v16}];
@@ -1152,8 +1152,8 @@ LABEL_9:
   }
 
   v20 = [CRLImageRepSizingState alloc];
-  v21 = [(CRLImageRepDrawingHelper *)self p_imageProvider];
-  v22 = -[CRLImageRepSizingState initWithDesiredSize:provider:maskPath:wideGamutCanvas:](v20, "initWithDesiredSize:provider:maskPath:wideGamutCanvas:", v21, v18, [v4 isWideGamut], v14, v16);
+  p_imageProvider = [(CRLImageRepDrawingHelper *)self p_imageProvider];
+  v22 = -[CRLImageRepSizingState initWithDesiredSize:provider:maskPath:wideGamutCanvas:](v20, "initWithDesiredSize:provider:maskPath:wideGamutCanvas:", p_imageProvider, v18, [descriptionCopy isWideGamut], v14, v16);
   sizingState = self->_sizingState;
   self->_sizingState = v22;
 
@@ -1216,36 +1216,36 @@ LABEL_9:
     block[2] = sub_100514D58;
     block[3] = &unk_10183AE00;
     v13 = v3;
-    v14 = self;
+    selfCopy = self;
     v15 = v9;
     v11 = v9;
     dispatch_async(v10, block);
   }
 }
 
-- (BOOL)p_generateSizedImage:(id)a3
+- (BOOL)p_generateSizedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   dispatch_assert_queue_not_V2(self->_sizedImageAccessQueue);
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  [v4 generateSizedImage];
+  [imageCopy generateSizedImage];
   sizedImageAccessQueue = self->_sizedImageAccessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100514F40;
   block[3] = &unk_101860668;
-  v9 = v4;
-  v10 = self;
+  v9 = imageCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = imageCopy;
   dispatch_sync(sizedImageAccessQueue, block);
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(imageCopy) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return imageCopy;
 }
 
 - (void)p_takeSizedImageFromStateIfReady
@@ -1273,8 +1273,8 @@ LABEL_9:
 
 - (void)p_retryGeneratingSizedImageIfPossible
 {
-  v3 = [(CRLImageRepDrawingHelper *)self p_imageProvider];
-  if ([v3 isValid])
+  p_imageProvider = [(CRLImageRepDrawingHelper *)self p_imageProvider];
+  if ([p_imageProvider isValid])
   {
     sizedImageAccessQueue = self->_sizedImageAccessQueue;
     block[0] = _NSConcreteStackBlock;
@@ -1340,9 +1340,9 @@ LABEL_9:
   dispatch_sync(sizedImageAccessQueue, block);
 }
 
-- (void)invalidateSizedImageIfNeededForBakedMaskPathFromBlock:(id)a3
+- (void)invalidateSizedImageIfNeededForBakedMaskPathFromBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(CRLImageRepDrawingHelper *)self rep];
   if (v5)
   {
@@ -1352,7 +1352,7 @@ LABEL_9:
     block[2] = sub_100515938;
     block[3] = &unk_10183FC10;
     block[4] = self;
-    v11 = v4;
+    v11 = blockCopy;
     dispatch_sync(sizedImageAccessQueue, block);
   }
 

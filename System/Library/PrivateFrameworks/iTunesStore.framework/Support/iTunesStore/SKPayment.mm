@@ -1,11 +1,11 @@
 @interface SKPayment
 + (SKPayment)paymentWithProduct:(SKProduct *)product;
-+ (id)paymentFromPurchaseIntentWithProduct:(id)a3;
++ (id)paymentFromPurchaseIntentWithProduct:(id)product;
 + (id)paymentWithProductIdentifier:(NSString *)identifier;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SKPayment)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -26,20 +26,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[SKPayment allocWithZone:](SKPayment init];
-  v6 = [self->_internal copyWithZone:a3];
+  v6 = [self->_internal copyWithZone:zone];
   internal = v5->_internal;
   v5->_internal = v6;
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [(SKPayment *)+[SKMutablePayment allocWithZone:](SKMutablePayment init];
-  v6 = [self->_internal copyWithZone:a3];
+  v6 = [self->_internal copyWithZone:zone];
   internal = v5->super._internal;
   v5->super._internal = v6;
 
@@ -49,17 +49,17 @@
 + (SKPayment)paymentWithProduct:(SKProduct *)product
 {
   v4 = product;
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v7 = [(SKProduct *)v4 productIdentifier];
-  v8 = [v7 copy];
+  productIdentifier = [(SKProduct *)v4 productIdentifier];
+  v8 = [productIdentifier copy];
   v9 = v6[4];
   v6[4] = v8;
 
   if (qword_100383F70)
   {
-    v10 = [(SKProduct *)v4 productIdentifier];
-    v11 = [v10 isEqualToString:qword_100383F70];
+    productIdentifier2 = [(SKProduct *)v4 productIdentifier];
+    v11 = [productIdentifier2 isEqualToString:qword_100383F70];
 
     if (v11)
     {
@@ -70,13 +70,13 @@
   return v5;
 }
 
-+ (id)paymentFromPurchaseIntentWithProduct:(id)a3
++ (id)paymentFromPurchaseIntentWithProduct:(id)product
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  productCopy = product;
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v7 = [v4 productIdentifier];
-  v8 = [v7 copy];
+  productIdentifier = [productCopy productIdentifier];
+  v8 = [productIdentifier copy];
   v9 = v6[4];
   v6[4] = v8;
 
@@ -87,8 +87,8 @@
     qword_100383F70 = 0;
   }
 
-  v11 = [v4 productIdentifier];
-  v12 = [v11 copy];
+  productIdentifier2 = [productCopy productIdentifier];
+  v12 = [productIdentifier2 copy];
   v13 = qword_100383F70;
   qword_100383F70 = v12;
 
@@ -98,7 +98,7 @@
 + (id)paymentWithProductIdentifier:(NSString *)identifier
 {
   v4 = identifier;
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
   v7 = [(NSString *)v4 copy];
 
@@ -129,13 +129,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && *(self->_internal + 5) == *(v4[1] + 40);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && *(self->_internal + 5) == *(equalCopy[1] + 40);
   v6 = *(self->_internal + 4);
-  v7 = *(v4[1] + 32);
+  v7 = *(equalCopy[1] + 32);
   v8 = v7;
   if (v5)
   {

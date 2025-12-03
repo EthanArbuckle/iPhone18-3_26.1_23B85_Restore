@@ -1,28 +1,28 @@
 @interface CPSSessionRemoteObserver
-+ (id)observerWithXPCProxy:(id)a3;
-- (CPSSessionRemoteObserver)initWithXPCProxy:(id)a3;
++ (id)observerWithXPCProxy:(id)proxy;
+- (CPSSessionRemoteObserver)initWithXPCProxy:(id)proxy;
 @end
 
 @implementation CPSSessionRemoteObserver
 
-+ (id)observerWithXPCProxy:(id)a3
++ (id)observerWithXPCProxy:(id)proxy
 {
-  v3 = a3;
-  v4 = [[CPSSessionRemoteObserver alloc] initWithXPCProxy:v3];
+  proxyCopy = proxy;
+  v4 = [[CPSSessionRemoteObserver alloc] initWithXPCProxy:proxyCopy];
 
   return v4;
 }
 
-- (CPSSessionRemoteObserver)initWithXPCProxy:(id)a3
+- (CPSSessionRemoteObserver)initWithXPCProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v10.receiver = self;
   v10.super_class = CPSSessionRemoteObserver;
   v6 = [(CPSSessionRemoteObserver *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcProxy, a3);
+    objc_storeStrong(&v6->_xpcProxy, proxy);
     v8 = v7;
   }
 

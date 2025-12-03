@@ -1,15 +1,15 @@
 @interface ContextualClampController
-- (ContextualClampController)initWithParams:(id)a3 backlightController:(id)a4 product:(id)a5;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
-- (void)handleFrontCameraPowerStateNotification:(unint64_t)a3;
-- (void)handleOasisStateNotification:(unint64_t)a3;
-- (void)handleOdeonStateNotification:(unint64_t)a3;
-- (void)handleRearCameraPowerStateNotification:(unint64_t)a3;
+- (ContextualClampController)initWithParams:(id)params backlightController:(id)controller product:(id)product;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
+- (void)handleFrontCameraPowerStateNotification:(unint64_t)notification;
+- (void)handleOasisStateNotification:(unint64_t)notification;
+- (void)handleOdeonStateNotification:(unint64_t)notification;
+- (void)handleRearCameraPowerStateNotification:(unint64_t)notification;
 - (void)update;
 - (void)updateInternal;
 - (void)updateMaxLIFloorsAndCeilings;
-- (void)updatePackageFloorsAndCeilings:(BOOL)a3;
+- (void)updatePackageFloorsAndCeilings:(BOOL)ceilings;
 @end
 
 @implementation ContextualClampController
@@ -134,7 +134,7 @@ LABEL_21:
 
 - (void)updateInternal
 {
-  v3 = [(CommonProduct *)self->_product gasGaugeBatteryTemperature];
+  gasGaugeBatteryTemperature = [(CommonProduct *)self->_product gasGaugeBatteryTemperature];
   v4 = sub_10000449C();
   self->_lowTempSyntheticSOC = v4;
   if (self->_syntheticSOCType == 1)
@@ -246,7 +246,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v20 = [(TableDrivenLowTempController *)lowTempClampBL outputForBatteryTemperature:v3 stateOfCharge:v4 batteryRaValue:v13];
+  v20 = [(TableDrivenLowTempController *)lowTempClampBL outputForBatteryTemperature:gasGaugeBatteryTemperature stateOfCharge:v4 batteryRaValue:v13];
 LABEL_27:
   if (self->_lowTempPerfCapCPU != 100 || self->_lowTempPerfCapGPU != 100 || v20 != self->_lowTempPerfCapBL || self->_lowTempPerfCapCPULegacy != 100)
   {
@@ -261,7 +261,7 @@ LABEL_27:
   {
     case 0x1EuLL:
       coldThresholdHysteresis = self->_coldThresholdHysteresis;
-      if (v3 <= coldThresholdHysteresis + self->_coldThresholdHeavy)
+      if (gasGaugeBatteryTemperature <= coldThresholdHysteresis + self->_coldThresholdHeavy)
       {
         goto LABEL_45;
       }
@@ -269,7 +269,7 @@ LABEL_27:
       coldThresholdModerate = self->_coldThresholdModerate;
       goto LABEL_41;
     case 0x14uLL:
-      if (v3 <= self->_coldThresholdHeavy)
+      if (gasGaugeBatteryTemperature <= self->_coldThresholdHeavy)
       {
         goto LABEL_45;
       }
@@ -279,7 +279,7 @@ LABEL_27:
 LABEL_41:
       v22 = coldThresholdModerate + coldThresholdHysteresis;
 LABEL_42:
-      if (v3 <= v22)
+      if (gasGaugeBatteryTemperature <= v22)
       {
         v25 = 20;
       }
@@ -291,7 +291,7 @@ LABEL_42:
 
       goto LABEL_49;
     case 0uLL:
-      if (v3 > self->_coldThresholdHeavy)
+      if (gasGaugeBatteryTemperature > self->_coldThresholdHeavy)
       {
         v22 = self->_coldThresholdModerate;
         goto LABEL_42;
@@ -310,7 +310,7 @@ LABEL_45:
   v25 = 0;
 LABEL_49:
   lowTempClampPeakPowerPressure = self->_lowTempClampPeakPowerPressure;
-  if (lowTempClampPeakPowerPressure && (v27 = [(TableDrivenLowTempController *)lowTempClampPeakPowerPressure outputForBatteryTemperature:v3 stateOfCharge:v4 batteryRaValue:v13]) != 0)
+  if (lowTempClampPeakPowerPressure && (v27 = [(TableDrivenLowTempController *)lowTempClampPeakPowerPressure outputForBatteryTemperature:gasGaugeBatteryTemperature stateOfCharge:v4 batteryRaValue:v13]) != 0)
   {
     v28 = v27;
     if (sub_100033098(self->_chargerService))
@@ -375,7 +375,7 @@ LABEL_49:
   lowTempClampStrobe = self->_lowTempClampStrobe;
   if (lowTempClampStrobe)
   {
-    v32 = [(TableDrivenLowTempController *)lowTempClampStrobe outputForBatteryTemperature:v3 stateOfCharge:self->_lowTempSyntheticSOC batteryRaValue:v13];
+    v32 = [(TableDrivenLowTempController *)lowTempClampStrobe outputForBatteryTemperature:gasGaugeBatteryTemperature stateOfCharge:self->_lowTempSyntheticSOC batteryRaValue:v13];
     if (v32 != self->_lowTempMaxStrobe && byte_1000A22A0 == 1)
     {
       v33 = v32;
@@ -408,7 +408,7 @@ LABEL_49:
   lowTempClampPPMBaseline = self->_lowTempClampPPMBaseline;
   if (lowTempClampPPMBaseline)
   {
-    v38 = [(TableDrivenLowTempController *)lowTempClampPPMBaseline outputForBatteryTemperature:v3 stateOfCharge:self->_lowTempSyntheticSOC batteryRaValue:v13];
+    v38 = [(TableDrivenLowTempController *)lowTempClampPPMBaseline outputForBatteryTemperature:gasGaugeBatteryTemperature stateOfCharge:self->_lowTempSyntheticSOC batteryRaValue:v13];
     if (v38 != self->_lowTempPPMBaseline && byte_1000A22A0 == 1)
     {
       v39 = v38;
@@ -448,7 +448,7 @@ LABEL_49:
   }
 }
 
-- (ContextualClampController)initWithParams:(id)a3 backlightController:(id)a4 product:(id)a5
+- (ContextualClampController)initWithParams:(id)params backlightController:(id)controller product:(id)product
 {
   v57.receiver = self;
   v57.super_class = ContextualClampController;
@@ -459,8 +459,8 @@ LABEL_49:
     return v9;
   }
 
-  v8->_product = a5;
-  v8->_backlightController = a4;
+  v8->_product = product;
+  v8->_backlightController = controller;
   v10 = dispatch_queue_create("com.apple.ThermalMonitor.context.clamp", 0);
   v9->_odeonFloorCPUPower = 0;
   v9->_clampQueue = v10;
@@ -468,9 +468,9 @@ LABEL_49:
   v9->_odeonEnabled = 0;
   v9->_oasisEnabled = 0;
   v9->_oasisFloorCPUPower = 0;
-  v11 = [qword_1000ABCB0 requestListID];
+  requestListID = [qword_1000ABCB0 requestListID];
   v9->_cameraFloorCPU = 0;
-  v9->_mitigationControllerListID = v11;
+  v9->_mitigationControllerListID = requestListID;
   v9->_cameraFloorPackagePower = 0;
   v9->_cameraFloorGPU = 0;
   v9->_usesPackagePowerControl = 0;
@@ -484,7 +484,7 @@ LABEL_49:
   v9->_cameraFloorDetails = 0;
   v9->_hasCameraFloorDetails = 0;
   *(&v9->_lowTempSyntheticSOC + 1) = 0;
-  if (!a3)
+  if (!params)
   {
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
@@ -495,17 +495,17 @@ LABEL_49:
     goto LABEL_82;
   }
 
-  sub_100002A20(a3, @"cameraFloorCPU", kCFNumberIntType, &v9->_cameraFloorCPU);
-  sub_100002A20(a3, @"cameraFloorGPU", kCFNumberIntType, &v9->_cameraFloorGPU);
-  sub_100002A20(a3, @"cameraFloorPackagePower", kCFNumberIntType, &v9->_cameraFloorPackagePower);
+  sub_100002A20(params, @"cameraFloorCPU", kCFNumberIntType, &v9->_cameraFloorCPU);
+  sub_100002A20(params, @"cameraFloorGPU", kCFNumberIntType, &v9->_cameraFloorGPU);
+  sub_100002A20(params, @"cameraFloorPackagePower", kCFNumberIntType, &v9->_cameraFloorPackagePower);
   if (v9->_cameraFloorPackagePower >= 1)
   {
     v9->_usesPackagePowerControl = 1;
   }
 
-  sub_100002A20(a3, @"odFloorCPU", kCFNumberIntType, &v9->_odeonFloorCPUPower);
-  sub_100002A20(a3, @"oasisFloorCPU", kCFNumberIntType, &v9->_oasisFloorCPUPower);
-  if (sub_100031D64(a3, @"usesCameraFloorPackageDetails", 0))
+  sub_100002A20(params, @"odFloorCPU", kCFNumberIntType, &v9->_odeonFloorCPUPower);
+  sub_100002A20(params, @"oasisFloorCPU", kCFNumberIntType, &v9->_oasisFloorCPUPower);
+  if (sub_100031D64(params, @"usesCameraFloorPackageDetails", 0))
   {
     v12 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
@@ -518,9 +518,9 @@ LABEL_49:
     v9->_hasCameraFloorDetails = 1;
   }
 
-  v13 = sub_100031D64(a3, @"usesFrontCameraFloors", 0);
-  v9->_isAgeAware = [a3 objectForKey:@"isAgeAware"] != 0;
-  v14 = [a3 valueForKey:@"useWeightedRa"];
+  v13 = sub_100031D64(params, @"usesFrontCameraFloors", 0);
+  v9->_isAgeAware = [params objectForKey:@"isAgeAware"] != 0;
+  v14 = [params valueForKey:@"useWeightedRa"];
   v9->_deviceUsesWeightedRa = v14 != 0;
   v15 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
@@ -534,13 +534,13 @@ LABEL_49:
   }
 
   v9->_backlightCapIsSoft = v9->_isAgeAware;
-  v17 = [a3 objectForKey:@"lowParamsBL"];
+  v17 = [params objectForKey:@"lowParamsBL"];
   if (v17)
   {
     v9->_lowTempClampBL = [[TableDrivenLowTempController alloc] initWithParams:v17];
   }
 
-  v18 = [a3 objectForKey:@"batteryParams"];
+  v18 = [params objectForKey:@"batteryParams"];
   LODWORD(out_token) = 0;
   token = 0;
   if (!v18)
@@ -599,7 +599,7 @@ LABEL_32:
   v25 = [v24 objectForKey:{-[NSNumber stringValue](+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", sub_100032A18()), "stringValue")}];
   if (v25)
   {
-    v26 = [v25 intValue];
+    intValue = [v25 intValue];
   }
 
   else
@@ -622,10 +622,10 @@ LABEL_32:
       sub_1000568F8();
     }
 
-    v26 = [v28 intValue];
+    intValue = [v28 intValue];
   }
 
-  v27 = v26;
+  v27 = intValue;
 LABEL_38:
   if (notify_register_check("com.apple.system.batteryHealth.p0Threshold", &out_token))
   {
@@ -696,7 +696,7 @@ LABEL_38:
     }
   }
 
-  sub_100002A20(a3, @"syntheticSOCType", kCFNumberIntType, &v9->_syntheticSOCType);
+  sub_100002A20(params, @"syntheticSOCType", kCFNumberIntType, &v9->_syntheticSOCType);
   if (byte_1000AB2F8 == 1)
   {
     v32 = qword_1000AB718;
@@ -709,7 +709,7 @@ LABEL_38:
     }
   }
 
-  v34 = [a3 objectForKey:@"lowParamsStrobe"];
+  v34 = [params objectForKey:@"lowParamsStrobe"];
   if (v34)
   {
     v35 = [[TableDrivenLowTempController alloc] initWithParams:v34];
@@ -731,7 +731,7 @@ LABEL_38:
     }
   }
 
-  v38 = [a3 objectForKey:@"lowParamsPPMBaseline"];
+  v38 = [params objectForKey:@"lowParamsPPMBaseline"];
   if (v38)
   {
     v39 = [[TableDrivenLowTempController alloc] initWithParams:v38];
@@ -760,7 +760,7 @@ LABEL_38:
     sub_100056C48();
   }
 
-  v43 = [a3 objectForKey:@"lowNotificationLimits"];
+  v43 = [params objectForKey:@"lowNotificationLimits"];
   v44 = v43;
   if (v43)
   {
@@ -774,7 +774,7 @@ LABEL_38:
     sub_100056C84();
   }
 
-  v45 = [a3 objectForKey:@"lowParamsPeakPower"];
+  v45 = [params objectForKey:@"lowParamsPeakPower"];
   if (v45)
   {
     v9->_lowTempClampPeakPowerPressure = [[TableDrivenLowTempController alloc] initWithParams:v45];
@@ -820,9 +820,9 @@ LABEL_82:
   return v9;
 }
 
-- (void)updatePackageFloorsAndCeilings:(BOOL)a3
+- (void)updatePackageFloorsAndCeilings:(BOOL)ceilings
 {
-  if (a3)
+  if (ceilings)
   {
     cameraFloorPackagePower = self->_cameraFloorPackagePower;
   }
@@ -855,7 +855,7 @@ LABEL_82:
   }
 }
 
-- (void)handleRearCameraPowerStateNotification:(unint64_t)a3
+- (void)handleRearCameraPowerStateNotification:(unint64_t)notification
 {
   if (byte_1000AB2F8 == 1)
   {
@@ -863,12 +863,12 @@ LABEL_82:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = a3;
+      notificationCopy = notification;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Clamp: rear camera state %lld", &v7, 0xCu);
     }
   }
 
-  v6 = a3 != 0;
+  v6 = notification != 0;
   if (self->_rearCameraPowered != v6)
   {
     self->_rearCameraPowered = v6;
@@ -876,7 +876,7 @@ LABEL_82:
   }
 }
 
-- (void)handleFrontCameraPowerStateNotification:(unint64_t)a3
+- (void)handleFrontCameraPowerStateNotification:(unint64_t)notification
 {
   if (byte_1000AB2F8 == 1)
   {
@@ -884,12 +884,12 @@ LABEL_82:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = a3;
+      notificationCopy = notification;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Clamp: front camera state %lld", &v7, 0xCu);
     }
   }
 
-  v6 = a3 != 0;
+  v6 = notification != 0;
   if (self->_frontCameraPowered != v6)
   {
     self->_frontCameraPowered = v6;
@@ -897,7 +897,7 @@ LABEL_82:
   }
 }
 
-- (void)handleOdeonStateNotification:(unint64_t)a3
+- (void)handleOdeonStateNotification:(unint64_t)notification
 {
   if (byte_1000AB2F8 == 1)
   {
@@ -905,12 +905,12 @@ LABEL_82:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = a3;
+      notificationCopy = notification;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Clamp: Odeon state %lld", &v7, 0xCu);
     }
   }
 
-  v6 = a3 != 0;
+  v6 = notification != 0;
   if (self->_odeonEnabled != v6)
   {
     self->_odeonEnabled = v6;
@@ -918,7 +918,7 @@ LABEL_82:
   }
 }
 
-- (void)handleOasisStateNotification:(unint64_t)a3
+- (void)handleOasisStateNotification:(unint64_t)notification
 {
   if (byte_1000AB2F8 == 1)
   {
@@ -926,12 +926,12 @@ LABEL_82:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = a3;
+      notificationCopy = notification;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Clamp: Oasis state %lld", &v7, 0xCu);
     }
   }
 
-  v6 = a3 != 0;
+  v6 = notification != 0;
   if (self->_oasisEnabled != v6)
   {
     self->_oasisEnabled = v6;
@@ -939,27 +939,27 @@ LABEL_82:
   }
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 > 8)
+  if (index > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1000860F0[a3];
+    return off_1000860F0[index];
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 <= 3)
+  if (index <= 3)
   {
-    if (a3 > 1)
+    if (index > 1)
     {
       v5 = kCFAllocatorDefault;
-      if (a3 == 2)
+      if (index == 2)
       {
         lowTempPerfCapCPU = self->_lowTempPerfCapCPU;
       }
@@ -972,14 +972,14 @@ LABEL_82:
 
     else
     {
-      if (!a3)
+      if (!index)
       {
         v3 = kCFAllocatorDefault;
         coldPressureState = self->_coldPressureState;
         return CFStringCreateWithFormat(v3, 0, @"%lld", coldPressureState);
       }
 
-      if (a3 != 1)
+      if (index != 1)
       {
         return 0;
       }
@@ -991,10 +991,10 @@ LABEL_82:
     return CFStringCreateWithFormat(v5, 0, @"%d", lowTempPerfCapCPU);
   }
 
-  if (a3 <= 5)
+  if (index <= 5)
   {
     v5 = kCFAllocatorDefault;
-    if (a3 == 4)
+    if (index == 4)
     {
       lowTempPerfCapCPU = self->_lowTempPerfCapBL;
     }
@@ -1007,7 +1007,7 @@ LABEL_82:
     return CFStringCreateWithFormat(v5, 0, @"%d", lowTempPerfCapCPU);
   }
 
-  switch(a3)
+  switch(index)
   {
     case 6:
       v5 = kCFAllocatorDefault;

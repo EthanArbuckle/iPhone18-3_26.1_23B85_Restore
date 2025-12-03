@@ -1,13 +1,13 @@
 @interface PDAccountInfo
-+ (BOOL)isVerifiedMAIDAccount:(id)a3;
-+ (id)_orgAdminUserRecordID:(id *)a3;
-+ (id)_schoolworkUbiquitousContainerURL:(id *)a3;
-+ (id)_userRecordID:(id *)a3;
++ (BOOL)isVerifiedMAIDAccount:(id)account;
++ (id)_orgAdminUserRecordID:(id *)d;
++ (id)_schoolworkUbiquitousContainerURL:(id *)l;
++ (id)_userRecordID:(id *)d;
 + (id)accountInfo;
-+ (id)stringFromACAccountCredentialRenewResult:(int64_t)a3;
-+ (id)tokenForAccount:(id)a3 withAltDSID:(id)a4 forService:(id)a5 fromAccountStore:(id)a6;
-+ (void)_fetchOrgAdminUserRecordIDWithCompletion:(id)a3;
-+ (void)_fetchUserRecordIDWithCompletion:(id)a3;
++ (id)stringFromACAccountCredentialRenewResult:(int64_t)result;
++ (id)tokenForAccount:(id)account withAltDSID:(id)d forService:(id)service fromAccountStore:(id)store;
++ (void)_fetchOrgAdminUserRecordIDWithCompletion:(id)completion;
++ (void)_fetchUserRecordIDWithCompletion:(id)completion;
 + (void)checkForiCloudDriveInitialSync;
 - (id)description;
 - (void)_updateOrgAdminUserRecordID;
@@ -16,7 +16,7 @@
 
 @implementation PDAccountInfo
 
-+ (id)_schoolworkUbiquitousContainerURL:(id *)a3
++ (id)_schoolworkUbiquitousContainerURL:(id *)l
 {
   if (qword_10024D8A0 != -1)
   {
@@ -24,11 +24,11 @@
   }
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 ubiquityIdentityToken];
+  ubiquityIdentityToken = [v4 ubiquityIdentityToken];
 
   os_unfair_lock_lock(&unk_10024D888);
   v6 = qword_10024D890;
-  if (v5)
+  if (ubiquityIdentityToken)
   {
     if (qword_10024D890)
     {
@@ -57,7 +57,7 @@ LABEL_10:
         *buf = 138543362;
         v20 = qword_10024D898;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "_schoolworkUbiquitousContainerURL failed with error: %{public}@", buf, 0xCu);
-        if (!a3)
+        if (!l)
         {
           goto LABEL_9;
         }
@@ -65,10 +65,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      if (a3)
+      if (l)
       {
 LABEL_8:
-        *a3 = qword_10024D898;
+        *l = qword_10024D898;
       }
     }
 
@@ -91,17 +91,17 @@ LABEL_9:
     *buf = 138543362;
     v20 = qword_10024D898;
     _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "_schoolworkUbiquitousContainerURL failed with error: %{public}@", buf, 0xCu);
-    if (a3)
+    if (l)
     {
       goto LABEL_13;
     }
   }
 
-  else if (a3)
+  else if (l)
   {
 LABEL_13:
     v14 = 0;
-    *a3 = qword_10024D898;
+    *l = qword_10024D898;
     goto LABEL_16;
   }
 
@@ -112,10 +112,10 @@ LABEL_16:
   return v14;
 }
 
-+ (void)_fetchOrgAdminUserRecordIDWithCompletion:(id)a3
++ (void)_fetchOrgAdminUserRecordIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _cloudDocsContainer];
+  completionCopy = completion;
+  _cloudDocsContainer = [self _cloudDocsContainer];
   CLSInitLog();
   v6 = CLSLogAuthorization;
   if (os_log_type_enabled(CLSLogAuthorization, OS_LOG_TYPE_DEFAULT))
@@ -128,15 +128,15 @@ LABEL_16:
   v8[1] = 3221225472;
   v8[2] = sub_10003D72C;
   v8[3] = &unk_100202C20;
-  v9 = v4;
-  v7 = v4;
-  [v5 fetchOrgAdminUserRecordIDWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_cloudDocsContainer fetchOrgAdminUserRecordIDWithCompletionHandler:v8];
 }
 
-+ (void)_fetchUserRecordIDWithCompletion:(id)a3
++ (void)_fetchUserRecordIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _cloudDocsContainer];
+  completionCopy = completion;
+  _cloudDocsContainer = [self _cloudDocsContainer];
   CLSInitLog();
   v6 = CLSLogAuthorization;
   if (os_log_type_enabled(CLSLogAuthorization, OS_LOG_TYPE_DEFAULT))
@@ -149,12 +149,12 @@ LABEL_16:
   v8[1] = 3221225472;
   v8[2] = sub_10003D954;
   v8[3] = &unk_100202C20;
-  v9 = v4;
-  v7 = v4;
-  [v5 fetchUserRecordIDWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_cloudDocsContainer fetchUserRecordIDWithCompletionHandler:v8];
 }
 
-+ (id)_orgAdminUserRecordID:(id *)a3
++ (id)_orgAdminUserRecordID:(id *)d
 {
   v22 = 0;
   v23 = &v22;
@@ -176,7 +176,7 @@ LABEL_16:
   v15 = &v22;
   v5 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &stru_100202C40);
   v13 = v5;
-  [a1 _fetchOrgAdminUserRecordIDWithCompletion:v12];
+  [self _fetchOrgAdminUserRecordIDWithCompletion:v12];
   v6 = dispatch_time(0, 20000000000);
   if (dispatch_block_wait(v5, v6))
   {
@@ -186,9 +186,9 @@ LABEL_16:
   }
 
   v9 = v23[5];
-  if (a3)
+  if (d)
   {
-    *a3 = v9;
+    *d = v9;
   }
 
   v10 = v17[5];
@@ -199,7 +199,7 @@ LABEL_16:
   return v10;
 }
 
-+ (id)_userRecordID:(id *)a3
++ (id)_userRecordID:(id *)d
 {
   v22 = 0;
   v23 = &v22;
@@ -221,7 +221,7 @@ LABEL_16:
   v15 = &v22;
   v5 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &stru_100202C88);
   v13 = v5;
-  [a1 _fetchUserRecordIDWithCompletion:v12];
+  [self _fetchUserRecordIDWithCompletion:v12];
   v6 = dispatch_time(0, 20000000000);
   if (dispatch_block_wait(v5, v6))
   {
@@ -231,9 +231,9 @@ LABEL_16:
   }
 
   v9 = v23[5];
-  if (a3)
+  if (d)
   {
-    *a3 = v9;
+    *d = v9;
   }
 
   v10 = v17[5];
@@ -244,27 +244,27 @@ LABEL_16:
   return v10;
 }
 
-+ (id)stringFromACAccountCredentialRenewResult:(int64_t)a3
++ (id)stringFromACAccountCredentialRenewResult:(int64_t)result
 {
-  if (a3 > 2)
+  if (result > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_100202EB8 + a3);
+    return *(&off_100202EB8 + result);
   }
 }
 
-+ (id)tokenForAccount:(id)a3 withAltDSID:(id)a4 forService:(id)a5 fromAccountStore:(id)a6
++ (id)tokenForAccount:(id)account withAltDSID:(id)d forService:(id)service fromAccountStore:(id)store
 {
-  v9 = a5;
+  serviceCopy = service;
   v17 = 0;
-  v10 = [a6 credentialForAccount:a3 serviceID:v9 error:&v17];
+  v10 = [store credentialForAccount:account serviceID:serviceCopy error:&v17];
   v11 = v17;
   v12 = v11;
-  if (!a4 || !v10)
+  if (!d || !v10)
   {
     if (!v11)
     {
@@ -284,8 +284,8 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  v13 = [v10 token];
-  if (v13)
+  token = [v10 token];
+  if (token)
   {
     goto LABEL_9;
   }
@@ -295,33 +295,33 @@ LABEL_16:
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v19 = v9;
+    v19 = serviceCopy;
     v15 = "Did not get a service token for service: %{public}@.";
 LABEL_13:
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, v15, buf, 0xCu);
   }
 
 LABEL_8:
-  v13 = 0;
+  token = 0;
 LABEL_9:
 
-  return v13;
+  return token;
 }
 
-+ (BOOL)isVerifiedMAIDAccount:(id)a3
++ (BOOL)isVerifiedMAIDAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 aa_isManagedAppleID])
+  accountCopy = account;
+  if ([accountCopy aa_isManagedAppleID])
   {
-    v4 = [v3 aa_isPrimaryEmailVerified];
+    aa_isPrimaryEmailVerified = [accountCopy aa_isPrimaryEmailVerified];
   }
 
   else
   {
-    v4 = 0;
+    aa_isPrimaryEmailVerified = 0;
   }
 
-  return v4;
+  return aa_isPrimaryEmailVerified;
 }
 
 + (void)checkForiCloudDriveInitialSync
@@ -333,9 +333,9 @@ LABEL_9:
 + (id)accountInfo
 {
   v2 = +[PDUserDefaults sharedDefaults];
-  v3 = [v2 enableVerboseLogging];
+  enableVerboseLogging = [v2 enableVerboseLogging];
 
-  if (v3)
+  if (enableVerboseLogging)
   {
     CLSLogDebugCurrentPersona();
   }
@@ -369,15 +369,15 @@ LABEL_9:
       *(v10 + 5) = 1;
     }
 
-    v11 = [v5 aa_personID];
-    v12 = [v11 copy];
+    aa_personID = [v5 aa_personID];
+    v12 = [aa_personID copy];
     v14 = v12;
     if (v10)
     {
       objc_setProperty_nonatomic_copy(v10, v13, v12, 32);
 
-      v15 = [v5 identifier];
-      objc_storeStrong(v10 + 8, v15);
+      identifier = [v5 identifier];
+      objc_storeStrong(v10 + 8, identifier);
 
       objc_storeStrong(v10 + 9, v6);
       *(v10 + 8) = v35;
@@ -386,10 +386,10 @@ LABEL_9:
       {
 LABEL_12:
         v16 = +[MCProfileConnection sharedConnection];
-        v17 = [v16 mayOpenFromManagedToUnmanaged];
+        mayOpenFromManagedToUnmanaged = [v16 mayOpenFromManagedToUnmanaged];
         if (v10)
         {
-          *(v10 + 10) = v17;
+          *(v10 + 10) = mayOpenFromManagedToUnmanaged;
           *(v10 + 11) = [v16 mayOpenFromUnmanagedToManaged];
         }
 
@@ -416,8 +416,8 @@ LABEL_12:
     }
 
 LABEL_19:
-    v20 = [v5 aa_altDSID];
-    v21 = [v20 copy];
+    aa_altDSID = [v5 aa_altDSID];
+    v21 = [aa_altDSID copy];
 
     if (v10)
     {

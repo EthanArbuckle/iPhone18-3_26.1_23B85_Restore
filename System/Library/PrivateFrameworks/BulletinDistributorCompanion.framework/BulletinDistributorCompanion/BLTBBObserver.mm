@@ -1,39 +1,39 @@
 @interface BLTBBObserver
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)surrogateGatewayWithQueue:(id)a3 calloutQueue:(id)a4 name:(id)a5 priority:(unint64_t)a6;
-+ (id)surrogateWithQueue:(id)a3 calloutQueue:(id)a4;
-- (BLTBBObserver)initWithQueue:(id)a3 calloutQueue:(id)a4 name:(id)a5 priority:(unint64_t)a6 isGateway:(BOOL)a7;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)surrogateGatewayWithQueue:(id)queue calloutQueue:(id)calloutQueue name:(id)name priority:(unint64_t)priority;
++ (id)surrogateWithQueue:(id)queue calloutQueue:(id)calloutQueue;
+- (BLTBBObserver)initWithQueue:(id)queue calloutQueue:(id)calloutQueue name:(id)name priority:(unint64_t)priority isGateway:(BOOL)gateway;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)_reconnectObserver;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setObserverFeed:(unint64_t)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)setDelegate:(id)delegate;
+- (void)setObserverFeed:(unint64_t)feed;
 @end
 
 @implementation BLTBBObserver
 
-- (BLTBBObserver)initWithQueue:(id)a3 calloutQueue:(id)a4 name:(id)a5 priority:(unint64_t)a6 isGateway:(BOOL)a7
+- (BLTBBObserver)initWithQueue:(id)queue calloutQueue:(id)calloutQueue name:(id)name priority:(unint64_t)priority isGateway:(BOOL)gateway
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  queueCopy = queue;
+  calloutQueueCopy = calloutQueue;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = BLTBBObserver;
   v16 = [(BLTBBObserver *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_queue, a3);
-    objc_storeStrong(&v17->_calloutQueue, a4);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_queue, queue);
+    objc_storeStrong(&v17->_calloutQueue, calloutQueue);
+    v18 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v18;
 
-    v17->_priority = a6;
-    v17->_isGateway = a7;
+    v17->_priority = priority;
+    v17->_isGateway = gateway;
     v20 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     actualObserverLock = v17->_actualObserverLock;
     v17->_actualObserverLock = v20;
@@ -49,28 +49,28 @@
   return v17;
 }
 
-+ (id)surrogateWithQueue:(id)a3 calloutQueue:(id)a4
++ (id)surrogateWithQueue:(id)queue calloutQueue:(id)calloutQueue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BLTBBObserver alloc] initWithQueue:v6 calloutQueue:v5 name:0 priority:0 isGateway:0];
+  calloutQueueCopy = calloutQueue;
+  queueCopy = queue;
+  v7 = [[BLTBBObserver alloc] initWithQueue:queueCopy calloutQueue:calloutQueueCopy name:0 priority:0 isGateway:0];
 
   return v7;
 }
 
-+ (id)surrogateGatewayWithQueue:(id)a3 calloutQueue:(id)a4 name:(id)a5 priority:(unint64_t)a6
++ (id)surrogateGatewayWithQueue:(id)queue calloutQueue:(id)calloutQueue name:(id)name priority:(unint64_t)priority
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[BLTBBObserver alloc] initWithQueue:v11 calloutQueue:v10 name:v9 priority:a6 isGateway:1];
+  nameCopy = name;
+  calloutQueueCopy = calloutQueue;
+  queueCopy = queue;
+  v12 = [[BLTBBObserver alloc] initWithQueue:queueCopy calloutQueue:calloutQueueCopy name:nameCopy priority:priority isGateway:1];
 
   return v12;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  [(BLTBBObserverDelegate *)self->_delegateSurrogate setActualDelegate:a3];
+  [(BLTBBObserverDelegate *)self->_delegateSurrogate setActualDelegate:delegate];
   [(NSLock *)self->_actualObserverLock lock];
   [(BBObserver *)self->_actualObserver setDelegate:self->_delegateSurrogate];
   actualObserverLock = self->_actualObserverLock;
@@ -81,7 +81,7 @@
 - (void)_reconnectObserver
 {
   [(NSLock *)self->_actualObserverLock lock];
-  v3 = [(BBObserver *)self->_actualObserver observerOptions];
+  observerOptions = [(BBObserver *)self->_actualObserver observerOptions];
   [(BBObserver *)self->_actualObserver invalidate];
   if (self->_isGateway)
   {
@@ -96,9 +96,9 @@
   actualObserver = self->_actualObserver;
   self->_actualObserver = v4;
 
-  v6 = [(BLTBBObserverDelegate *)self->_delegateSurrogate actualDelegate];
+  actualDelegate = [(BLTBBObserverDelegate *)self->_delegateSurrogate actualDelegate];
 
-  if (v6)
+  if (actualDelegate)
   {
     [(BBObserver *)self->_actualObserver setDelegate:self->_delegateSurrogate];
   }
@@ -108,18 +108,18 @@
     [(BBObserver *)self->_actualObserver setObserverFeed:self->_observerFeed];
   }
 
-  [(BBObserver *)self->_actualObserver setObserverOptions:v3];
+  [(BBObserver *)self->_actualObserver setObserverOptions:observerOptions];
   actualObserverLock = self->_actualObserverLock;
 
   [(NSLock *)actualObserverLock unlock];
 }
 
-- (void)setObserverFeed:(unint64_t)a3
+- (void)setObserverFeed:(unint64_t)feed
 {
   [(NSLock *)self->_actualObserverLock lock];
-  self->_observerFeed = a3;
+  self->_observerFeed = feed;
   self->_hasFeed = 1;
-  [(BBObserver *)self->_actualObserver setObserverFeed:a3];
+  [(BBObserver *)self->_actualObserver setObserverFeed:feed];
   actualObserverLock = self->_actualObserverLock;
 
   [(NSLock *)actualObserverLock unlock];
@@ -136,29 +136,29 @@
   [(BLTBBObserver *)&v4 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   actualObserverLock = self->_actualObserverLock;
-  v5 = a3;
+  invocationCopy = invocation;
   [(NSLock *)actualObserverLock lock];
   v6 = self->_actualObserverLock;
   v7 = self->_actualObserver;
   [(NSLock *)v6 unlock];
-  [v5 selector];
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v5 invokeWithTarget:v7];
+    [invocationCopy invokeWithTarget:v7];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = BLTBBObserver;
-    [(BLTBBObserver *)&v8 forwardInvocation:v5];
+    [(BLTBBObserver *)&v8 forwardInvocation:invocationCopy];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = BLTBBObserver;
@@ -180,9 +180,9 @@
   return v4 & 1;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     isKindOfClass = 1;
   }
@@ -200,9 +200,9 @@
   return isKindOfClass & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___BLTBBObserver;
   if (objc_msgSendSuper2(&v5, sel_instancesRespondToSelector_))
   {
@@ -211,11 +211,11 @@
 
   else
   {
-    return [MEMORY[0x277CF3550] instancesRespondToSelector:a3];
+    return [MEMORY[0x277CF3550] instancesRespondToSelector:selector];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = BLTBBObserver;
@@ -227,7 +227,7 @@
     actualObserverLock = self->_actualObserverLock;
     v8 = actualObserver;
     [(NSLock *)actualObserverLock unlock];
-    v5 = [(BBObserver *)v8 methodSignatureForSelector:a3];
+    v5 = [(BBObserver *)v8 methodSignatureForSelector:selector];
   }
 
   return v5;

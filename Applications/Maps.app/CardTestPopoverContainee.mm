@@ -1,5 +1,5 @@
 @interface CardTestPopoverContainee
-- (CardTestPopoverContainee)initWithContext:(id)a3 forLabelMarker:(id)a4;
+- (CardTestPopoverContainee)initWithContext:(id)context forLabelMarker:(id)marker;
 - (void)_createSubviews;
 @end
 
@@ -13,43 +13,43 @@
   [v3 setText:v4];
 
   [v3 setNumberOfLines:0];
-  v5 = [(CardTestPopoverContainee *)self view];
-  [v5 addSubview:v3];
+  view = [(CardTestPopoverContainee *)self view];
+  [view addSubview:v3];
 
-  v21 = [v3 leadingAnchor];
-  v22 = [(CardTestPopoverContainee *)self view];
-  v20 = [v22 leadingAnchor];
-  v19 = [v21 constraintEqualToSystemSpacingAfterAnchor:v20 multiplier:1.0];
+  leadingAnchor = [v3 leadingAnchor];
+  view2 = [(CardTestPopoverContainee *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
   v23[0] = v19;
-  v17 = [v3 topAnchor];
-  v18 = [(CardTestPopoverContainee *)self view];
-  v16 = [v18 topAnchor];
-  v15 = [v17 constraintEqualToSystemSpacingBelowAnchor:v16 multiplier:1.0];
+  topAnchor = [v3 topAnchor];
+  view3 = [(CardTestPopoverContainee *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v15 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   v23[1] = v15;
-  v6 = [(CardTestPopoverContainee *)self view];
-  v7 = [v6 trailingAnchor];
-  v8 = [v3 trailingAnchor];
-  v9 = [v7 constraintEqualToSystemSpacingAfterAnchor:v8 multiplier:1.0];
+  view4 = [(CardTestPopoverContainee *)self view];
+  trailingAnchor = [view4 trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
   v23[2] = v9;
-  v10 = [(CardTestPopoverContainee *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [v3 bottomAnchor];
-  v13 = [v11 constraintEqualToSystemSpacingBelowAnchor:v12 multiplier:1.0];
+  view5 = [(CardTestPopoverContainee *)self view];
+  bottomAnchor = [view5 bottomAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   v23[3] = v13;
   v14 = [NSArray arrayWithObjects:v23 count:4];
   [NSLayoutConstraint activateConstraints:v14];
 }
 
-- (CardTestPopoverContainee)initWithContext:(id)a3 forLabelMarker:(id)a4
+- (CardTestPopoverContainee)initWithContext:(id)context forLabelMarker:(id)marker
 {
-  v7 = a4;
+  markerCopy = marker;
   v11.receiver = self;
   v11.super_class = CardTestPopoverContainee;
-  v8 = [(CardTestContainee *)&v11 initWithContext:a3];
+  v8 = [(CardTestContainee *)&v11 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_labelMarker, a4);
+    objc_storeStrong(&v8->_labelMarker, marker);
   }
 
   return v9;

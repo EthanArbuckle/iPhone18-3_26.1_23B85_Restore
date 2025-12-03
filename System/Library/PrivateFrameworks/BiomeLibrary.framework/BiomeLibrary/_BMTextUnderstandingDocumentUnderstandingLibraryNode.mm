@@ -8,32 +8,32 @@
 + (id)storeConfigurationForPoem;
 + (id)storeConfigurationForPoemAnalytics;
 + (id)storeConfigurationForPoemBuffer;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMTextUnderstandingDocumentUnderstandingLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Poem"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Poem"])
   {
-    v5 = [a1 Poem];
+    poem = [self Poem];
 LABEL_7:
-    v6 = v5;
+    v6 = poem;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"PoemAnalytics"])
+  if ([nameCopy isEqualToString:@"PoemAnalytics"])
   {
-    v5 = [a1 PoemAnalytics];
+    poem = [self PoemAnalytics];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"PoemBuffer"])
+  if ([nameCopy isEqualToString:@"PoemBuffer"])
   {
-    v5 = [a1 PoemBuffer];
+    poem = [self PoemBuffer];
     goto LABEL_7;
   }
 
@@ -62,13 +62,13 @@ LABEL_8:
 
 + (id)configurationForPoemBuffer
 {
-  v3 = [a1 storeConfigurationForPoemBuffer];
-  v4 = [a1 syncPolicyForPoemBuffer];
+  storeConfigurationForPoemBuffer = [self storeConfigurationForPoemBuffer];
+  syncPolicyForPoemBuffer = [self syncPolicyForPoemBuffer];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"DA3E57AB-70D4-4A05-AADE-5D98466D9137"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemBuffer" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemBuffer" eventClass:objc_opt_class() storeConfig:storeConfigurationForPoemBuffer syncPolicy:syncPolicyForPoemBuffer legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -83,13 +83,13 @@ LABEL_8:
 
 + (id)configurationForPoemAnalytics
 {
-  v3 = [a1 storeConfigurationForPoemAnalytics];
-  v4 = [a1 syncPolicyForPoemAnalytics];
+  storeConfigurationForPoemAnalytics = [self storeConfigurationForPoemAnalytics];
+  syncPolicyForPoemAnalytics = [self syncPolicyForPoemAnalytics];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"3E554CD4-21D8-41A4-8718-3659E4ED8B2D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemAnalytics" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemAnalytics" eventClass:objc_opt_class() storeConfig:storeConfigurationForPoemAnalytics syncPolicy:syncPolicyForPoemAnalytics legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -104,13 +104,13 @@ LABEL_8:
 
 + (id)configurationForPoem
 {
-  v3 = [a1 storeConfigurationForPoem];
-  v4 = [a1 syncPolicyForPoem];
+  storeConfigurationForPoem = [self storeConfigurationForPoem];
+  syncPolicyForPoem = [self syncPolicyForPoem];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"6D346CE9-6964-4E1D-9031-74CA45BEE8C0"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"TextUnderstanding.DocumentUnderstanding.Poem" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"TextUnderstanding.DocumentUnderstanding.Poem" eventClass:objc_opt_class() storeConfig:storeConfigurationForPoem syncPolicy:syncPolicyForPoem legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -126,7 +126,7 @@ LABEL_8:
 + (id)PoemBuffer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPoemBuffer];
+  configurationForPoemBuffer = [self configurationForPoemBuffer];
   v3 = +[BMTextUnderstandingPoemBuffer columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -138,7 +138,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"TextUnderstanding.DocumentUnderstanding.PoemBuffer" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemBuffer" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemBuffer" schema:v9 configuration:configurationForPoemBuffer];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -148,7 +148,7 @@ LABEL_8:
 + (id)PoemAnalytics
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPoemAnalytics];
+  configurationForPoemAnalytics = [self configurationForPoemAnalytics];
   v3 = +[BMTextUnderstandingPoemAnalytics columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -160,7 +160,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"TextUnderstanding.DocumentUnderstanding.PoemAnalytics" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemAnalytics" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"TextUnderstanding.DocumentUnderstanding.PoemAnalytics" schema:v9 configuration:configurationForPoemAnalytics];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -170,7 +170,7 @@ LABEL_8:
 + (id)Poem
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPoem];
+  configurationForPoem = [self configurationForPoem];
   v3 = +[BMTextUnderstandingPoem columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -182,7 +182,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"TextUnderstanding.DocumentUnderstanding.Poem" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"TextUnderstanding.DocumentUnderstanding.Poem" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"TextUnderstanding.DocumentUnderstanding.Poem" schema:v9 configuration:configurationForPoem];
 
   v11 = *MEMORY[0x1E69E9840];
 

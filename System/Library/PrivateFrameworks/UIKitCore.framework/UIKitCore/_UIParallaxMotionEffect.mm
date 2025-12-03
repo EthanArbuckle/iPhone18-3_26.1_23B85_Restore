@@ -1,17 +1,17 @@
 @interface _UIParallaxMotionEffect
 - (UIOffset)slideMagnitude;
 - (_UIParallaxMotionEffect)init;
-- (_UIParallaxMotionEffect)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIParallaxMotionEffect)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_activateTiltEffectIfNecessary;
 - (void)_updateGroupMotionEffect;
 - (void)_updateSlideEffectsWithCurrentSlideMagnitude;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMaximumHorizontalTiltAngle:(double)a3;
-- (void)setMaximumVerticalTiltAngle:(double)a3;
-- (void)setRotatingSphereRadius:(double)a3;
-- (void)setSlideMagnitude:(UIOffset)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMaximumHorizontalTiltAngle:(double)angle;
+- (void)setMaximumVerticalTiltAngle:(double)angle;
+- (void)setRotatingSphereRadius:(double)radius;
+- (void)setSlideMagnitude:(UIOffset)magnitude;
 @end
 
 @implementation _UIParallaxMotionEffect
@@ -125,11 +125,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = _UIParallaxMotionEffect;
-  v4 = [(UIMotionEffect *)&v12 copyWithZone:a3];
+  v4 = [(UIMotionEffect *)&v12 copyWithZone:zone];
   v5 = [(UIInterpolatingMotionEffect *)self->_horizontalSlideEffect copy];
   v6 = v4[6];
   v4[6] = v5;
@@ -147,27 +147,27 @@
   return v4;
 }
 
-- (_UIParallaxMotionEffect)initWithCoder:(id)a3
+- (_UIParallaxMotionEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _UIParallaxMotionEffect;
-  v5 = [(UIMotionEffect *)&v14 initWithCoder:v4];
+  v5 = [(UIMotionEffect *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"horizontalSlideEffect"];
+    v6 = [coderCopy decodeObjectForKey:@"horizontalSlideEffect"];
     horizontalSlideEffect = v5->_horizontalSlideEffect;
     v5->_horizontalSlideEffect = v6;
 
-    v8 = [v4 decodeObjectForKey:@"verticalSlideEffect"];
+    v8 = [coderCopy decodeObjectForKey:@"verticalSlideEffect"];
     verticalSlideEffect = v5->_verticalSlideEffect;
     v5->_verticalSlideEffect = v8;
 
-    v10 = [v4 decodeObjectForKey:@"tiltEffect"];
+    v10 = [coderCopy decodeObjectForKey:@"tiltEffect"];
     tiltEffect = v5->_tiltEffect;
     v5->_tiltEffect = v10;
 
-    [v4 decodeUIOffsetForKey:@"slideMagnitude"];
+    [coderCopy decodeUIOffsetForKey:@"slideMagnitude"];
     [(_UIParallaxMotionEffect *)v5 setSlideMagnitude:?];
     _UIParallaxMotionEffectCommonInit(v5);
     v12 = v5;
@@ -176,19 +176,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = _UIParallaxMotionEffect;
-  [(UIMotionEffect *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_horizontalSlideEffect forKey:@"horizontalSlideEffect"];
-  [v4 encodeObject:self->_verticalSlideEffect forKey:@"verticalSlideEffect"];
-  [v4 encodeUIOffset:@"slideMagnitude" forKey:{self->_slideMagnitude.horizontal, self->_slideMagnitude.vertical}];
+  [(UIMotionEffect *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_horizontalSlideEffect forKey:@"horizontalSlideEffect"];
+  [coderCopy encodeObject:self->_verticalSlideEffect forKey:@"verticalSlideEffect"];
+  [coderCopy encodeUIOffset:@"slideMagnitude" forKey:{self->_slideMagnitude.horizontal, self->_slideMagnitude.vertical}];
   tiltEffect = self->_tiltEffect;
   if (tiltEffect)
   {
-    [v4 encodeObject:tiltEffect forKey:@"tiltEffect"];
+    [coderCopy encodeObject:tiltEffect forKey:@"tiltEffect"];
   }
 }
 
@@ -213,11 +213,11 @@
   return v16;
 }
 
-- (void)setSlideMagnitude:(UIOffset)a3
+- (void)setSlideMagnitude:(UIOffset)magnitude
 {
-  if (a3.horizontal != self->_slideMagnitude.horizontal || a3.vertical != self->_slideMagnitude.vertical)
+  if (magnitude.horizontal != self->_slideMagnitude.horizontal || magnitude.vertical != self->_slideMagnitude.vertical)
   {
-    self->_slideMagnitude = a3;
+    self->_slideMagnitude = magnitude;
     [(_UIParallaxMotionEffect *)self _updateSlideEffectsWithCurrentSlideMagnitude];
   }
 }
@@ -238,28 +238,28 @@
   }
 }
 
-- (void)setMaximumHorizontalTiltAngle:(double)a3
+- (void)setMaximumHorizontalTiltAngle:(double)angle
 {
   [(_UIParallaxMotionEffect *)self _activateTiltEffectIfNecessary];
   tiltEffect = self->_tiltEffect;
 
-  [(_UITiltMotionEffect *)tiltEffect setMaximumHorizontalTiltAngle:a3];
+  [(_UITiltMotionEffect *)tiltEffect setMaximumHorizontalTiltAngle:angle];
 }
 
-- (void)setMaximumVerticalTiltAngle:(double)a3
+- (void)setMaximumVerticalTiltAngle:(double)angle
 {
   [(_UIParallaxMotionEffect *)self _activateTiltEffectIfNecessary];
   tiltEffect = self->_tiltEffect;
 
-  [(_UITiltMotionEffect *)tiltEffect setMaximumVerticalTiltAngle:a3];
+  [(_UITiltMotionEffect *)tiltEffect setMaximumVerticalTiltAngle:angle];
 }
 
-- (void)setRotatingSphereRadius:(double)a3
+- (void)setRotatingSphereRadius:(double)radius
 {
   [(_UIParallaxMotionEffect *)self _activateTiltEffectIfNecessary];
   tiltEffect = self->_tiltEffect;
 
-  [(_UITiltMotionEffect *)tiltEffect setRotatingSphereRadius:a3];
+  [(_UITiltMotionEffect *)tiltEffect setRotatingSphereRadius:radius];
 }
 
 @end

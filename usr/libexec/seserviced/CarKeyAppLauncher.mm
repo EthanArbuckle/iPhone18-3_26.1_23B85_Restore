@@ -1,13 +1,13 @@
 @interface CarKeyAppLauncher
-+ (void)maybeLaunchAppsForKeyIdentifier:(id)a3;
-- (void)quitMonitor:(id)a3 userClosedLastSceneOfApplicationWithBundleID:(id)a4;
++ (void)maybeLaunchAppsForKeyIdentifier:(id)identifier;
+- (void)quitMonitor:(id)monitor userClosedLastSceneOfApplicationWithBundleID:(id)d;
 @end
 
 @implementation CarKeyAppLauncher
 
-+ (void)maybeLaunchAppsForKeyIdentifier:(id)a3
++ (void)maybeLaunchAppsForKeyIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 
@@ -17,12 +17,12 @@
   sub_10006A178(v4, v6);
 }
 
-- (void)quitMonitor:(id)a3 userClosedLastSceneOfApplicationWithBundleID:(id)a4
+- (void)quitMonitor:(id)monitor userClosedLastSceneOfApplicationWithBundleID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  monitorCopy = monitor;
+  selfCopy = self;
   sub_10013EC0C(v6, v8);
 }
 

@@ -1,25 +1,25 @@
 @interface SBCaptureButtonBehaviorsResponse
 + (id)emptyResponse;
-- (BOOL)isEqual:(id)a3;
-- (SBCaptureButtonBehaviorsResponse)initWithBehavior:(id)a3 context:(id)a4;
-- (SBCaptureButtonBehaviorsResponse)initWithDictionary:(id)a3;
-- (SBCaptureButtonBehaviorsResponse)initWithPrewarmIntent:(unint64_t)a3 launchIntent:(unint64_t)a4 wakeIntent:(unint64_t)a5 coachIntent:(unint64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (SBCaptureButtonBehaviorsResponse)initWithBehavior:(id)behavior context:(id)context;
+- (SBCaptureButtonBehaviorsResponse)initWithDictionary:(id)dictionary;
+- (SBCaptureButtonBehaviorsResponse)initWithPrewarmIntent:(unint64_t)intent launchIntent:(unint64_t)launchIntent wakeIntent:(unint64_t)wakeIntent coachIntent:(unint64_t)coachIntent;
 - (id)dictionaryRepresentation;
-- (id)responseByMergingResponse:(id)a3;
+- (id)responseByMergingResponse:(id)response;
 - (unint64_t)hash;
 @end
 
 @implementation SBCaptureButtonBehaviorsResponse
 
-- (SBCaptureButtonBehaviorsResponse)initWithBehavior:(id)a3 context:(id)a4
+- (SBCaptureButtonBehaviorsResponse)initWithBehavior:(id)behavior context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  behaviorCopy = behavior;
   v8 = [SBCaptureButtonBehaviorsResponse alloc];
-  v9 = [v7 prewarmIntentInContext:v6];
-  v10 = [v7 cameraLaunchIntentInContext:v6];
-  v11 = [v7 wakeIntentInContext:v6];
-  v12 = [v7 coachIntentInContext:v6];
+  v9 = [behaviorCopy prewarmIntentInContext:contextCopy];
+  v10 = [behaviorCopy cameraLaunchIntentInContext:contextCopy];
+  v11 = [behaviorCopy wakeIntentInContext:contextCopy];
+  v12 = [behaviorCopy coachIntentInContext:contextCopy];
 
   v13 = [(SBCaptureButtonBehaviorsResponse *)v8 initWithPrewarmIntent:v9 launchIntent:v10 wakeIntent:v11 coachIntent:v12];
   return v13;
@@ -32,32 +32,32 @@
   return v2;
 }
 
-- (SBCaptureButtonBehaviorsResponse)initWithPrewarmIntent:(unint64_t)a3 launchIntent:(unint64_t)a4 wakeIntent:(unint64_t)a5 coachIntent:(unint64_t)a6
+- (SBCaptureButtonBehaviorsResponse)initWithPrewarmIntent:(unint64_t)intent launchIntent:(unint64_t)launchIntent wakeIntent:(unint64_t)wakeIntent coachIntent:(unint64_t)coachIntent
 {
   v11.receiver = self;
   v11.super_class = SBCaptureButtonBehaviorsResponse;
   result = [(SBCaptureButtonBehaviorsResponse *)&v11 init];
   if (result)
   {
-    result->_prewarmIntent = a3;
-    result->_launchIntent = a4;
-    result->_wakeIntent = a5;
-    result->_coachIntent = a6;
+    result->_prewarmIntent = intent;
+    result->_launchIntent = launchIntent;
+    result->_wakeIntent = wakeIntent;
+    result->_coachIntent = coachIntent;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   prewarmIntent = self->_prewarmIntent;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __44__SBCaptureButtonBehaviorsResponse_isEqual___block_invoke;
   v28[3] = &unk_2783ACDE0;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendInteger:prewarmIntent counterpart:v28];
   launchIntent = self->_launchIntent;
@@ -91,22 +91,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_prewarmIntent];
-  v5 = [v3 appendInteger:self->_launchIntent];
-  v6 = [v3 appendInteger:self->_wakeIntent];
-  v7 = [v3 appendInteger:self->_coachIntent];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_prewarmIntent];
+  v5 = [builder appendInteger:self->_launchIntent];
+  v6 = [builder appendInteger:self->_wakeIntent];
+  v7 = [builder appendInteger:self->_coachIntent];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (id)responseByMergingResponse:(id)a3
+- (id)responseByMergingResponse:(id)response
 {
-  v4 = a3;
-  if ([v4 prewarmIntent])
+  responseCopy = response;
+  if ([responseCopy prewarmIntent])
   {
-    prewarmIntent = [v4 prewarmIntent];
+    prewarmIntent = [responseCopy prewarmIntent];
   }
 
   else
@@ -114,9 +114,9 @@
     prewarmIntent = self->_prewarmIntent;
   }
 
-  if ([v4 launchIntent])
+  if ([responseCopy launchIntent])
   {
-    launchIntent = [v4 launchIntent];
+    launchIntent = [responseCopy launchIntent];
   }
 
   else
@@ -124,9 +124,9 @@
     launchIntent = self->_launchIntent;
   }
 
-  if ([v4 wakeIntent])
+  if ([responseCopy wakeIntent])
   {
-    wakeIntent = [v4 wakeIntent];
+    wakeIntent = [responseCopy wakeIntent];
   }
 
   else
@@ -134,9 +134,9 @@
     wakeIntent = self->_wakeIntent;
   }
 
-  if ([v4 coachIntent])
+  if ([responseCopy coachIntent])
   {
-    coachIntent = [v4 coachIntent];
+    coachIntent = [responseCopy coachIntent];
   }
 
   else
@@ -149,16 +149,16 @@
   return v9;
 }
 
-- (SBCaptureButtonBehaviorsResponse)initWithDictionary:(id)a3
+- (SBCaptureButtonBehaviorsResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"PrewarmIntent"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"PrewarmIntent"];
   v6 = SBCameraPrewarmIntentFromString(v5);
-  v7 = [v4 objectForKeyedSubscript:@"LaunchIntent"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"LaunchIntent"];
   v8 = SBCameraLaunchIntentFromString(v7);
-  v9 = [v4 objectForKeyedSubscript:@"WakeIntent"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"WakeIntent"];
   v10 = SBCameraWakeIntentFromString(v9);
-  v11 = [v4 objectForKeyedSubscript:@"CoachIntent"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"CoachIntent"];
 
   v12 = [(SBCaptureButtonBehaviorsResponse *)self initWithPrewarmIntent:v6 launchIntent:v8 wakeIntent:v10 coachIntent:SBCameraCoachIntentFromString(v11)];
   return v12;

@@ -1,11 +1,11 @@
 @interface CollectionPickerViewController
 - (CGSize)contentSize;
-- (CollectionPickerViewController)initWithCollectionEditSession:(id)a3;
+- (CollectionPickerViewController)initWithCollectionEditSession:(id)session;
 - (CollectionPickerViewControllerDelegate)delegate;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
-- (void)dataSourceUpdated:(id)a3;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
+- (void)dataSourceUpdated:(id)updated;
 - (void)loadDataSource;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -19,20 +19,20 @@
   return WeakRetained;
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v6 = a4;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained collectionPickerViewController:self selectCollection:v6];
+    [WeakRetained collectionPickerViewController:self selectCollection:tappedCopy];
   }
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
-  if (self->_collectionListDataSource == a3)
+  if (self->_collectionListDataSource == updated)
   {
     [(UITableView *)self->_tableView reloadData];
     [(CollectionPickerViewController *)self contentSize];
@@ -57,11 +57,11 @@
   [(CollectionPickerViewController *)self setPreferredContentSize:?];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CollectionPickerViewController;
-  [(CollectionPickerViewController *)&v4 viewDidAppear:a3];
+  [(CollectionPickerViewController *)&v4 viewDidAppear:appear];
   [(CollectionPickerViewController *)self contentSize];
   [(CollectionPickerViewController *)self setPreferredContentSize:?];
 }
@@ -94,15 +94,15 @@
 {
   +[CollectionTableViewCell estimatedCellHeight];
   v4 = v3;
-  v5 = [(UITableView *)self->_tableView visibleCells];
-  v6 = [v5 firstObject];
+  visibleCells = [(UITableView *)self->_tableView visibleCells];
+  firstObject = [visibleCells firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    [v6 frame];
+    [firstObject frame];
     if (v7 > v4)
     {
-      [v6 frame];
+      [firstObject frame];
       v4 = v8;
     }
   }
@@ -125,8 +125,8 @@
   v25.receiver = self;
   v25.super_class = CollectionPickerViewController;
   [(CollectionPickerViewController *)&v25 viewDidLoad];
-  v3 = [(CollectionPickerViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CollectionPicker"];
+  view = [(CollectionPickerViewController *)self view];
+  [view setAccessibilityIdentifier:@"CollectionPicker"];
 
   v4 = [[MapsThemeTableView alloc] initWithFrame:0 style:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   tableView = self->_tableView;
@@ -138,28 +138,28 @@
   [(UITableView *)self->_tableView setBackgroundColor:v6];
 
   [(UITableView *)self->_tableView setAccessibilityIdentifier:@"CollectionPickerTable"];
-  v7 = [(CollectionPickerViewController *)self view];
-  [v7 addSubview:self->_tableView];
+  view2 = [(CollectionPickerViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
-  v23 = [(UITableView *)self->_tableView topAnchor];
-  v24 = [(CollectionPickerViewController *)self view];
-  v22 = [v24 topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  topAnchor = [(UITableView *)self->_tableView topAnchor];
+  view3 = [(CollectionPickerViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[0] = v21;
-  v19 = [(UITableView *)self->_tableView leadingAnchor];
-  v20 = [(CollectionPickerViewController *)self view];
-  v18 = [v20 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+  view4 = [(CollectionPickerViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[1] = v17;
-  v8 = [(UITableView *)self->_tableView bottomAnchor];
-  v9 = [(CollectionPickerViewController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  view5 = [(CollectionPickerViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[2] = v11;
-  v12 = [(UITableView *)self->_tableView trailingAnchor];
-  v13 = [(CollectionPickerViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+  view6 = [(CollectionPickerViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[3] = v15;
   v16 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v16];
@@ -167,16 +167,16 @@
   [(CollectionPickerViewController *)self loadDataSource];
 }
 
-- (CollectionPickerViewController)initWithCollectionEditSession:(id)a3
+- (CollectionPickerViewController)initWithCollectionEditSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = CollectionPickerViewController;
   v6 = [(CollectionPickerViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionSession, a3);
+    objc_storeStrong(&v6->_collectionSession, session);
   }
 
   return v7;

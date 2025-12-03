@@ -12,14 +12,14 @@
   v4.receiver = self;
   v4.super_class = STUniquedManagedObject;
   [(STUniquedManagedObject *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  [(STUniquedManagedObject *)self setPrimitiveValue:v3 forKey:@"sortKey"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(STUniquedManagedObject *)self setPrimitiveValue:uUID forKey:@"sortKey"];
 }
 
 - (void)updateUniqueIdentifier
 {
-  v3 = [(STUniquedManagedObject *)self computeUniqueIdentifier];
-  [(STUniquedManagedObject *)self setValue:v3 forKey:@"uniqueIdentifier"];
+  computeUniqueIdentifier = [(STUniquedManagedObject *)self computeUniqueIdentifier];
+  [(STUniquedManagedObject *)self setValue:computeUniqueIdentifier forKey:@"uniqueIdentifier"];
 }
 
 - (id)dictionaryRepresentation
@@ -28,12 +28,12 @@
   v4 = objc_opt_class();
   if ([v4 conformsToProtocol:&unk_1F305E1D8])
   {
-    v5 = [v4 serializableClassName];
-    [v3 setObject:v5 forKeyedSubscript:@"class"];
+    serializableClassName = [v4 serializableClassName];
+    [v3 setObject:serializableClassName forKeyedSubscript:@"class"];
   }
 
-  v6 = [(STUniquedManagedObject *)self uniqueIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"uniqueIdentifier"];
+  uniqueIdentifier = [(STUniquedManagedObject *)self uniqueIdentifier];
+  [v3 setObject:uniqueIdentifier forKeyedSubscript:@"uniqueIdentifier"];
 
   return v3;
 }

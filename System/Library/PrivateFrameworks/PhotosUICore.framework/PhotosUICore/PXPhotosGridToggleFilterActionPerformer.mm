@@ -1,21 +1,21 @@
 @interface PXPhotosGridToggleFilterActionPerformer
-+ (BOOL)isContentFilterHidden:(int64_t)a3 viewModel:(id)a4;
-+ (BOOL)isLibaryFilterHidden:(int64_t)a3 viewModel:(id)a4;
-- (BOOL)updateToContentFilterStateAndFinishTask:(id)a3;
-- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)a3;
++ (BOOL)isContentFilterHidden:(int64_t)hidden viewModel:(id)model;
++ (BOOL)isLibaryFilterHidden:(int64_t)hidden viewModel:(id)model;
+- (BOOL)updateToContentFilterStateAndFinishTask:(id)task;
+- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)task;
 - (id)menuElement;
 @end
 
 @implementation PXPhotosGridToggleFilterActionPerformer
 
-- (BOOL)updateToContentFilterStateAndFinishTask:(id)a3
+- (BOOL)updateToContentFilterStateAndFinishTask:(id)task
 {
-  v4 = a3;
-  v5 = [(PXActionPerformer *)self delegate];
+  taskCopy = task;
+  delegate = [(PXActionPerformer *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    [v5 photosGridActionPerformer:self contentFilterStateChanged:v4];
+    [delegate photosGridActionPerformer:self contentFilterStateChanged:taskCopy];
   }
 
   [(PXPhotosGridToggleFilterActionPerformer *)self finishedUserInteractionTask];
@@ -23,14 +23,14 @@
   return v6 & 1;
 }
 
-- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)a3
+- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)task
 {
-  v4 = a3;
-  v5 = [(PXActionPerformer *)self delegate];
+  taskCopy = task;
+  delegate = [(PXActionPerformer *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    [v5 photosGridActionPerformer:self libraryFilterStateChanged:v4];
+    [delegate photosGridActionPerformer:self libraryFilterStateChanged:taskCopy];
   }
 
   [(PXPhotosGridToggleFilterActionPerformer *)self finishedUserInteractionTask];
@@ -42,56 +42,56 @@
 {
   v11.receiver = self;
   v11.super_class = PXPhotosGridToggleFilterActionPerformer;
-  v4 = [(PXActionPerformer *)&v11 menuElement];
-  if (v4)
+  menuElement = [(PXActionPerformer *)&v11 menuElement];
+  if (menuElement)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v4 px_descriptionForAssertionMessage];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleFilterActionPerformer.m" lineNumber:45 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v9, v10}];
+      px_descriptionForAssertionMessage = [menuElement px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleFilterActionPerformer.m" lineNumber:45 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v9, px_descriptionForAssertionMessage}];
     }
   }
 
   v5 = [(PXActionPerformer *)self localizedTitleForUseCase:0];
-  [v4 setTitle:v5];
+  [menuElement setTitle:v5];
 
-  return v4;
+  return menuElement;
 }
 
-+ (BOOL)isContentFilterHidden:(int64_t)a3 viewModel:(id)a4
++ (BOOL)isContentFilterHidden:(int64_t)hidden viewModel:(id)model
 {
-  v5 = a4;
-  v6 = [v5 dataSourceManager];
-  v7 = [v6 dataSource];
-  v8 = [v7 containerCollection];
+  modelCopy = model;
+  dataSourceManager = [modelCopy dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  v9 = [v5 libraryFilterState];
+  libraryFilterState = [modelCopy libraryFilterState];
 
-  v10 = PXContentFilterHiddenTypesForAssetCollection(v8);
+  v10 = PXContentFilterHiddenTypesForAssetCollection(containerCollection);
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  LOBYTE(v9) = [v10 containsObject:v11];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:hidden];
+  LOBYTE(libraryFilterState) = [v10 containsObject:v11];
 
-  return v9;
+  return libraryFilterState;
 }
 
-+ (BOOL)isLibaryFilterHidden:(int64_t)a3 viewModel:(id)a4
++ (BOOL)isLibaryFilterHidden:(int64_t)hidden viewModel:(id)model
 {
-  v5 = a4;
-  if ([v5 allowsSwitchLibraryAction] && (objc_msgSend(v5, "sharedLibraryStatusProvider"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hasSharedLibraryOrPreview"), v6, v7))
+  modelCopy = model;
+  if ([modelCopy allowsSwitchLibraryAction] && (objc_msgSend(modelCopy, "sharedLibraryStatusProvider"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hasSharedLibraryOrPreview"), v6, v7))
   {
-    v8 = [v5 dataSourceManager];
-    v9 = [v8 dataSource];
-    v10 = [v9 containerCollection];
+    dataSourceManager = [modelCopy dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    containerCollection = [dataSource containerCollection];
 
-    v11 = [v5 libraryFilterState];
-    v12 = PXLibraryFilterHiddenTypesForAssetCollection(v10);
+    libraryFilterState = [modelCopy libraryFilterState];
+    v12 = PXLibraryFilterHiddenTypesForAssetCollection(containerCollection);
 
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:hidden];
     v14 = [v12 containsObject:v13];
   }
 

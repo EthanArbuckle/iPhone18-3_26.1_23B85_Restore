@@ -1,6 +1,6 @@
 @interface SXJSONObjectComponentSupport
 + (id)shared;
-- (SXJSONObjectComponentSupport)initWithSpecVersion:(id)a3;
+- (SXJSONObjectComponentSupport)initWithSpecVersion:(id)version;
 - (id)purgeClassBlock;
 @end
 
@@ -27,16 +27,16 @@ uint64_t __38__SXJSONObjectComponentSupport_shared__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (SXJSONObjectComponentSupport)initWithSpecVersion:(id)a3
+- (SXJSONObjectComponentSupport)initWithSpecVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v9.receiver = self;
   v9.super_class = SXJSONObjectComponentSupport;
   v6 = [(SXJSONObjectComponentSupport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specVersion, a3);
+    objc_storeStrong(&v6->_specVersion, version);
   }
 
   return v7;

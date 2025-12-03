@@ -1,29 +1,29 @@
 @interface NEVPN
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (NEVPN)init;
-- (NEVPN)initWithCoder:(id)a3;
+- (NEVPN)initWithCoder:(id)coder;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEVPN
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = NEVPN;
   v5 = [(NEVPN *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"__NEVPNProtocolType"];
-    v7 = [v6 intValue];
-    if (v7 > 2)
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNProtocolType"];
+    intValue = [v6 intValue];
+    if (intValue > 2)
     {
-      if (v7 == 3)
+      if (intValue == 3)
       {
         v15 = ne_log_obj();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -37,7 +37,7 @@
         goto LABEL_29;
       }
 
-      if (v7 == 4)
+      if (intValue == 4)
       {
         v8 = off_1E7F04E40;
         goto LABEL_11;
@@ -46,38 +46,38 @@
 
     else
     {
-      if (v7 == 1)
+      if (intValue == 1)
       {
         v8 = off_1E7F04ED0;
         goto LABEL_11;
       }
 
-      if (v7 == 2)
+      if (intValue == 2)
       {
         v8 = off_1E7F04ED8;
 LABEL_11:
-        v10 = [objc_alloc(*v8) initFromLegacyDictionary:v4];
+        v10 = [objc_alloc(*v8) initFromLegacyDictionary:dictionaryCopy];
         protocol = v5->_protocol;
         v5->_protocol = v10;
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69827B8]];
+    v12 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69827B8]];
 
     if (v12)
     {
       v5->_onDemandEnabled = [v12 BOOLValue];
     }
 
-    v13 = [NEOnDemandRule createOnDemandRulesFromLegacyDictionary:v4];
+    v13 = [NEOnDemandRule createOnDemandRulesFromLegacyDictionary:dictionaryCopy];
     onDemandRules = v5->_onDemandRules;
     v5->_onDemandRules = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"ExceptionApps"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"ExceptionApps"];
     if (isa_nsarray(v15) && [v15 count])
     {
       v26 = v12;
-      v16 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
@@ -103,7 +103,7 @@ LABEL_11:
               v23 = [[NEAppRule alloc] initWithSigningIdentifier:v22];
               if (v23)
               {
-                [v16 addObject:v23];
+                [array addObject:v23];
               }
             }
           }
@@ -133,35 +133,35 @@ LABEL_30:
 - (id)copyLegacyDictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(NEVPN *)self protocol];
+  protocol = [(NEVPN *)self protocol];
 
-  if (v3)
+  if (protocol)
   {
-    v4 = [(NEVPN *)self protocol];
-    v5 = [v4 copyLegacyDictionary];
+    protocol2 = [(NEVPN *)self protocol];
+    copyLegacyDictionary = [protocol2 copyLegacyDictionary];
   }
 
   else
   {
-    v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    copyLegacyDictionary = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPN isOnDemandEnabled](self, "isOnDemandEnabled")}];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69827B8]];
+  [copyLegacyDictionary setObject:v6 forKeyedSubscript:*MEMORY[0x1E69827B8]];
 
-  v7 = [(NEVPN *)self onDemandRules];
+  onDemandRules = [(NEVPN *)self onDemandRules];
 
-  if (v7)
+  if (onDemandRules)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [(NEVPN *)self onDemandRules];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    onDemandRules2 = [(NEVPN *)self onDemandRules];
+    v9 = [onDemandRules2 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (!v9)
     {
-      v11 = v8;
+      v11 = onDemandRules2;
       goto LABEL_17;
     }
 
@@ -174,41 +174,41 @@ LABEL_30:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(onDemandRules2);
         }
 
-        v14 = [*(*(&v29 + 1) + 8 * i) copyLegacyDictionary];
+        copyLegacyDictionary2 = [*(*(&v29 + 1) + 8 * i) copyLegacyDictionary];
         if (!v11)
         {
           v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
         }
 
-        [v11 addObject:v14];
+        [v11 addObject:copyLegacyDictionary2];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v10 = [onDemandRules2 countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v10);
 
     if (v11)
     {
-      [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6982838]];
+      [copyLegacyDictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E6982838]];
 LABEL_17:
     }
   }
 
-  v15 = [(NEVPN *)self exceptionApps];
+  exceptionApps = [(NEVPN *)self exceptionApps];
 
-  if (v15)
+  if (exceptionApps)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = [(NEVPN *)self exceptionApps];
-    v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    exceptionApps2 = [(NEVPN *)self exceptionApps];
+    v18 = [exceptionApps2 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v18)
     {
       v19 = v18;
@@ -219,41 +219,41 @@ LABEL_17:
         {
           if (*v26 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(exceptionApps2);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * j) matchSigningIdentifier];
-          [v16 addObject:v22];
+          matchSigningIdentifier = [*(*(&v25 + 1) + 8 * j) matchSigningIdentifier];
+          [v16 addObject:matchSigningIdentifier];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v19 = [exceptionApps2 countByEnumeratingWithState:&v25 objects:v33 count:16];
       }
 
       while (v19);
     }
 
-    [v5 setObject:v16 forKeyedSubscript:@"ExceptionApps"];
+    [copyLegacyDictionary setObject:v16 forKeyedSubscript:@"ExceptionApps"];
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v5;
+  return copyLegacyDictionary;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEVPN *)self onDemandRules];
+  errorsCopy = errors;
+  onDemandRules = [(NEVPN *)self onDemandRules];
 
-  if (v5)
+  if (onDemandRules)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v24 = self;
-    v6 = [(NEVPN *)self onDemandRules];
-    v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    selfCopy = self;
+    onDemandRules2 = [(NEVPN *)self onDemandRules];
+    v7 = [onDemandRules2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -265,24 +265,24 @@ LABEL_17:
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(onDemandRules2);
           }
 
           v12 = *(*(&v25 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 &= [v12 checkValidityAndCollectErrors:v4];
+            v10 &= [v12 checkValidityAndCollectErrors:errorsCopy];
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
+            [NEConfiguration addError:errorsCopy toList:?];
             v10 = 0;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v8 = [onDemandRules2 countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v8);
@@ -293,7 +293,7 @@ LABEL_17:
       LOBYTE(v10) = 1;
     }
 
-    self = v24;
+    self = selfCopy;
   }
 
   else
@@ -301,82 +301,82 @@ LABEL_17:
     LOBYTE(v10) = 1;
   }
 
-  v13 = [(NEVPN *)self protocol];
+  protocol = [(NEVPN *)self protocol];
 
-  if (v13)
+  if (protocol)
   {
-    v13 = [(NEVPN *)self protocol];
-    v14 = [v13 checkValidityAndCollectErrors:v4];
+    protocol = [(NEVPN *)self protocol];
+    v14 = [protocol checkValidityAndCollectErrors:errorsCopy];
 
-    LOBYTE(v13) = v14 & v10;
+    LOBYTE(protocol) = v14 & v10;
   }
 
   else
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  v15 = [(NEVPN *)self exceptionApps];
-  if (v15)
+  exceptionApps = [(NEVPN *)self exceptionApps];
+  if (exceptionApps)
   {
-    v16 = v15;
+    v16 = exceptionApps;
     v17 = ne_session_disable_restrictions();
 
     if ((v17 & 1) == 0)
     {
-      [NEConfiguration addError:v4 toList:?];
-      LOBYTE(v13) = 0;
+      [NEConfiguration addError:errorsCopy toList:?];
+      LOBYTE(protocol) = 0;
     }
   }
 
   if ([(NEVPN *)self tunnelType]== 2)
   {
-    v18 = [(NEVPN *)self protocol];
-    if (v18)
+    protocol2 = [(NEVPN *)self protocol];
+    if (protocol2)
     {
-      v19 = v18;
-      v20 = [(NEVPN *)self protocol];
-      v21 = [v20 type];
+      v19 = protocol2;
+      protocol3 = [(NEVPN *)self protocol];
+      type = [protocol3 type];
 
-      if (v21 != 4)
+      if (type != 4)
       {
-        [NEConfiguration addError:v4 toList:?];
-        LOBYTE(v13) = 0;
+        [NEConfiguration addError:errorsCopy toList:?];
+        LOBYTE(protocol) = 0;
       }
     }
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return v13;
+  return protocol;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setEnabled:{-[NEVPN isEnabled](self, "isEnabled")}];
   [v4 setOnDemandEnabled:{-[NEVPN isOnDemandEnabled](self, "isOnDemandEnabled")}];
   [v4 setDisconnectOnDemandEnabled:{-[NEVPN isDisconnectOnDemandEnabled](self, "isDisconnectOnDemandEnabled")}];
   [v4 setOnDemandUserOverrideDisabled:{-[NEVPN isOnDemandUserOverrideDisabled](self, "isOnDemandUserOverrideDisabled")}];
-  v5 = [(NEVPN *)self onDemandRules];
+  onDemandRules = [(NEVPN *)self onDemandRules];
 
-  if (v5)
+  if (onDemandRules)
   {
     v6 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v7 = [(NEVPN *)self onDemandRules];
-    v8 = [v6 initWithArray:v7 copyItems:1];
+    onDemandRules2 = [(NEVPN *)self onDemandRules];
+    v8 = [v6 initWithArray:onDemandRules2 copyItems:1];
     [v4 setOnDemandRules:v8];
   }
 
-  v9 = [(NEVPN *)self protocol];
-  [v4 setProtocol:v9];
+  protocol = [(NEVPN *)self protocol];
+  [v4 setProtocol:protocol];
 
-  v10 = [(NEVPN *)self exceptionApps];
+  exceptionApps = [(NEVPN *)self exceptionApps];
 
-  if (v10)
+  if (exceptionApps)
   {
     v11 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v12 = [(NEVPN *)self exceptionApps];
-    v13 = [v11 initWithArray:v12 copyItems:1];
+    exceptionApps2 = [(NEVPN *)self exceptionApps];
+    v13 = [v11 initWithArray:exceptionApps2 copyItems:1];
     [v4 setExceptionApps:v13];
   }
 
@@ -384,54 +384,54 @@ LABEL_17:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeBool:-[NEVPN isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  [v7 encodeBool:-[NEVPN isOnDemandEnabled](self forKey:{"isOnDemandEnabled"), @"OnDemandEnabled"}];
-  [v7 encodeBool:-[NEVPN isDisconnectOnDemandEnabled](self forKey:{"isDisconnectOnDemandEnabled"), @"DisconnectOnDemandEnabled"}];
-  [v7 encodeBool:-[NEVPN isOnDemandUserOverrideDisabled](self forKey:{"isOnDemandUserOverrideDisabled"), @"OnDemandUserOverrideDisabled"}];
-  v4 = [(NEVPN *)self onDemandRules];
-  [v7 encodeObject:v4 forKey:@"OnDemandRules"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEVPN isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  [coderCopy encodeBool:-[NEVPN isOnDemandEnabled](self forKey:{"isOnDemandEnabled"), @"OnDemandEnabled"}];
+  [coderCopy encodeBool:-[NEVPN isDisconnectOnDemandEnabled](self forKey:{"isDisconnectOnDemandEnabled"), @"DisconnectOnDemandEnabled"}];
+  [coderCopy encodeBool:-[NEVPN isOnDemandUserOverrideDisabled](self forKey:{"isOnDemandUserOverrideDisabled"), @"OnDemandUserOverrideDisabled"}];
+  onDemandRules = [(NEVPN *)self onDemandRules];
+  [coderCopy encodeObject:onDemandRules forKey:@"OnDemandRules"];
 
-  v5 = [(NEVPN *)self protocol];
-  [v7 encodeObject:v5 forKey:@"Protocol"];
+  protocol = [(NEVPN *)self protocol];
+  [coderCopy encodeObject:protocol forKey:@"Protocol"];
 
-  v6 = [(NEVPN *)self exceptionApps];
-  [v7 encodeObject:v6 forKey:@"ExceptionApps"];
+  exceptionApps = [(NEVPN *)self exceptionApps];
+  [coderCopy encodeObject:exceptionApps forKey:@"ExceptionApps"];
 
-  [v7 encodeInteger:-[NEVPN tunnelType](self forKey:{"tunnelType"), @"TunnelType"}];
+  [coderCopy encodeInteger:-[NEVPN tunnelType](self forKey:{"tunnelType"), @"TunnelType"}];
 }
 
-- (NEVPN)initWithCoder:(id)a3
+- (NEVPN)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NEVPN *)self init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
-    v5->_onDemandEnabled = [v4 decodeBoolForKey:@"OnDemandEnabled"];
-    v5->_disconnectOnDemandEnabled = [v4 decodeBoolForKey:@"DisconnectOnDemandEnabled"];
-    v5->_onDemandUserOverrideDisabled = [v4 decodeBoolForKey:@"OnDemandUserOverrideDisabled"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
+    v5->_onDemandEnabled = [coderCopy decodeBoolForKey:@"OnDemandEnabled"];
+    v5->_disconnectOnDemandEnabled = [coderCopy decodeBoolForKey:@"DisconnectOnDemandEnabled"];
+    v5->_onDemandUserOverrideDisabled = [coderCopy decodeBoolForKey:@"OnDemandUserOverrideDisabled"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"OnDemandRules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"OnDemandRules"];
     onDemandRules = v5->_onDemandRules;
     v5->_onDemandRules = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Protocol"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Protocol"];
     protocol = v5->_protocol;
     v5->_protocol = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"ExceptionApps"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"ExceptionApps"];
     exceptionApps = v5->_exceptionApps;
     v5->_exceptionApps = v16;
 
-    v18 = [v4 decodeIntegerForKey:@"TunnelType"];
+    v18 = [coderCopy decodeIntegerForKey:@"TunnelType"];
     v5->_tunnelType = v18;
     if (!v18)
     {

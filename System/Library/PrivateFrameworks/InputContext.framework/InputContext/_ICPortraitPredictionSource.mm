@@ -1,17 +1,17 @@
 @interface _ICPortraitPredictionSource
-- (BOOL)_populateError:(id *)a3 withExplanations:(id)a4;
+- (BOOL)_populateError:(id *)error withExplanations:(id)explanations;
 - (_ICPortraitPredictionSource)init;
 - (id)_makePPQuickTypeBroker;
-- (id)_quickTypeQueryWithQuery:(id)a3 limit:(unint64_t)a4 timeoutInMilliseconds:(unint64_t)a5;
-- (id)_quickTypeQueryWithTrigger:(id)a3 searchContext:(id)a4 limit:(unint64_t)a5 timeoutInMilliseconds:(unint64_t)a6 errorWithExplanations:(id *)a7;
+- (id)_quickTypeQueryWithQuery:(id)query limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds;
+- (id)_quickTypeQueryWithTrigger:(id)trigger searchContext:(id)context limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds errorWithExplanations:(id *)explanations;
 - (id)getPPBroker;
 - (void)getPPBroker;
 - (void)hibernate;
 - (void)init;
-- (void)predictedItemsWithProactiveTrigger:(id)a3 searchContext:(id)a4 limit:(unint64_t)a5 timeoutInMilliseconds:(unint64_t)a6 handler:(id)a7;
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5;
-- (void)searchForMeCardEmailAddressesWithTimeout:(unint64_t)a3 handler:(id)a4;
-- (void)searchForMeCardRegionsWithTimeout:(unint64_t)a3 handler:(id)a4;
+- (void)predictedItemsWithProactiveTrigger:(id)trigger searchContext:(id)context limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds handler:(id)handler;
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style;
+- (void)searchForMeCardEmailAddressesWithTimeout:(unint64_t)timeout handler:(id)handler;
+- (void)searchForMeCardRegionsWithTimeout:(unint64_t)timeout handler:(id)handler;
 - (void)warmUp;
 @end
 
@@ -20,12 +20,12 @@
 - (void)warmUp
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(_ICPortraitPredictionSource *)self getPPBroker];
+  getPPBroker = [(_ICPortraitPredictionSource *)self getPPBroker];
   v3 = _ICProactiveQuickTypeOSLogFacility();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = v2;
+    v9 = getPPBroker;
     _os_log_impl(&dword_254BD0000, v3, OS_LOG_TYPE_INFO, "_ICPPSource warming up %@", buf, 0xCu);
   }
 
@@ -33,8 +33,8 @@
   v6[1] = 3221225472;
   v6[2] = __37___ICPortraitPredictionSource_warmUp__block_invoke;
   v6[3] = &unk_2797AD990;
-  v7 = v2;
-  v4 = v2;
+  v7 = getPPBroker;
+  v4 = getPPBroker;
   [v4 warmUpWithCompletion:v6];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -42,21 +42,21 @@
 
 - (id)getPPBroker
 {
-  v3 = [(_ICPortraitPredictionSource *)self ppBroker];
+  ppBroker = [(_ICPortraitPredictionSource *)self ppBroker];
 
-  if (v3)
+  if (ppBroker)
   {
 LABEL_2:
-    v4 = [(_ICPortraitPredictionSource *)self ppBroker];
+    ppBroker2 = [(_ICPortraitPredictionSource *)self ppBroker];
     goto LABEL_3;
   }
 
   if (![MEMORY[0x277CCACC8] isMainThread])
   {
     [(NSCondition *)self->_ppBrokerLoadedCondition lock];
-    v7 = [(_ICPortraitPredictionSource *)self ppBroker];
+    ppBroker3 = [(_ICPortraitPredictionSource *)self ppBroker];
 
-    if (v7)
+    if (ppBroker3)
     {
       [(NSCondition *)self->_ppBrokerLoadedCondition unlock];
     }
@@ -72,10 +72,10 @@ LABEL_2:
         }
 
         [(NSCondition *)self->_ppBrokerLoadedCondition wait];
-        v9 = [(_ICPortraitPredictionSource *)self ppBroker];
+        ppBroker4 = [(_ICPortraitPredictionSource *)self ppBroker];
       }
 
-      while (!v9);
+      while (!ppBroker4);
       [(NSCondition *)self->_ppBrokerLoadedCondition unlock];
       v10 = _ICProactiveQuickTypeOSLogFacility();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -93,10 +93,10 @@ LABEL_2:
     [_ICPortraitPredictionSource getPPBroker];
   }
 
-  v4 = 0;
+  ppBroker2 = 0;
 LABEL_3:
 
-  return v4;
+  return ppBroker2;
 }
 
 - (_ICPortraitPredictionSource)init
@@ -149,12 +149,12 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)_populateError:(id *)a3 withExplanations:(id)a4
+- (BOOL)_populateError:(id *)error withExplanations:(id)explanations
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = *a3;
-  if (!*a3)
+  explanationsCopy = explanations;
+  v6 = *error;
+  if (!*error)
   {
     v14 = 0;
     v15 = &v14;
@@ -167,7 +167,7 @@ LABEL_3:
     v13[2] = __63___ICPortraitPredictionSource__populateError_withExplanations___block_invoke;
     v13[3] = &unk_2797ADB58;
     v13[4] = &v14;
-    [v5 enumerateWithBlock:v13];
+    [explanationsCopy enumerateWithBlock:v13];
     if ([v15[5] count])
     {
       v7 = [v15[5] componentsJoinedByString:@" "];
@@ -175,7 +175,7 @@ LABEL_3:
       v20 = *MEMORY[0x277CCA450];
       v21[0] = v7;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      *a3 = [v8 errorWithDomain:@"com.apple.inputcontext.errors" code:5 userInfo:v9];
+      *error = [v8 errorWithDomain:@"com.apple.inputcontext.errors" code:5 userInfo:v9];
 
       v10 = _ICProactiveQuickTypeOSLogFacility();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -200,10 +200,10 @@ LABEL_3:
   return v6 == 0;
 }
 
-- (id)_quickTypeQueryWithQuery:(id)a3 limit:(unint64_t)a4 timeoutInMilliseconds:(unint64_t)a5
+- (id)_quickTypeQueryWithQuery:(id)query limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  queryCopy = query;
   v30 = 0;
   v28 = @"_ICPPSource_quickTypeQueryWithQuery";
   v9 = mach_absolute_time();
@@ -212,12 +212,12 @@ LABEL_3:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = queryCopy;
     _os_log_impl(&dword_254BD0000, v10, OS_LOG_TYPE_INFO, "_ICPPSource _quickTypeQueryWithQuery: %@", &buf, 0xCu);
   }
 
-  v11 = [(_ICPortraitPredictionSource *)self getPPBroker];
-  if (v11)
+  getPPBroker = [(_ICPortraitPredictionSource *)self getPPBroker];
+  if (getPPBroker)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -233,8 +233,8 @@ LABEL_3:
     p_buf = &buf;
     v13 = v12;
     v26 = v13;
-    [v11 quickTypeItemsWithQuery:v8 limit:a4 completion:v25];
-    v14 = dispatch_time(0, 1000000 * a5);
+    [getPPBroker quickTypeItemsWithQuery:queryCopy limit:limit completion:v25];
+    v14 = dispatch_time(0, 1000000 * milliseconds);
     if (dispatch_semaphore_wait(v13, v14))
     {
       v15 = _ICProactiveQuickTypeOSLogFacility();
@@ -287,11 +287,11 @@ LABEL_3:
   return v16;
 }
 
-- (id)_quickTypeQueryWithTrigger:(id)a3 searchContext:(id)a4 limit:(unint64_t)a5 timeoutInMilliseconds:(unint64_t)a6 errorWithExplanations:(id *)a7
+- (id)_quickTypeQueryWithTrigger:(id)trigger searchContext:(id)context limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds errorWithExplanations:(id *)explanations
 {
   v78 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v52 = a4;
+  triggerCopy = trigger;
+  contextCopy = context;
   v69 = 0;
   v67 = @"_ICPPSource_quickTypeQueryWithTrigger";
   v11 = mach_absolute_time();
@@ -300,12 +300,12 @@ LABEL_3:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = triggerCopy;
     _os_log_impl(&dword_254BD0000, v12, OS_LOG_TYPE_INFO, "_ICPPSource _quickTypeQueryWithTrigger: %@", &buf, 0xCu);
   }
 
-  v13 = [(_ICPortraitPredictionSource *)self getPPBroker];
-  if (v13)
+  getPPBroker = [(_ICPortraitPredictionSource *)self getPPBroker];
+  if (getPPBroker)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -320,8 +320,8 @@ LABEL_3:
     v65 = __Block_byref_object_dispose__0;
     v66 = 0;
     v14 = dispatch_semaphore_create(0);
-    v15 = [v10 attributedString];
-    v16 = [v15 objectForKey:@"contextBeforeInput"];
+    attributedString = [triggerCopy attributedString];
+    v16 = [attributedString objectForKey:@"contextBeforeInput"];
 
     v17 = isPqt1ForContactAutofillEnabled();
     if (v16)
@@ -336,17 +336,17 @@ LABEL_3:
 
     if (v18 == 1)
     {
-      v19 = [v10 contentType];
-      if (v19)
+      contentType = [triggerCopy contentType];
+      if (contentType)
       {
-        v20 = [v10 attributedString];
-        v21 = [v20 objectForKeyedSubscript:@"contextBeforeInput"];
+        attributedString2 = [triggerCopy attributedString];
+        v21 = [attributedString2 objectForKeyedSubscript:@"contextBeforeInput"];
         v22 = v21 == 0;
 
         if (!v22)
         {
-          v23 = [v10 contentType];
-          v24 = [v23 isEqualToString:@"email"];
+          contentType2 = [triggerCopy contentType];
+          v24 = [contentType2 isEqualToString:@"email"];
 
           if (v24)
           {
@@ -355,8 +355,8 @@ LABEL_3:
 
           else
           {
-            v32 = [v10 contentType];
-            v33 = [v32 isEqualToString:@"tel"];
+            contentType3 = [triggerCopy contentType];
+            v33 = [contentType3 isEqualToString:@"tel"];
 
             if (v33)
             {
@@ -365,8 +365,8 @@ LABEL_3:
 
             else
             {
-              v34 = [v10 contentType];
-              v35 = [v34 isEqualToString:@"street-address"];
+              contentType4 = [triggerCopy contentType];
+              v35 = [contentType4 isEqualToString:@"street-address"];
 
               if (v35)
               {
@@ -381,8 +381,8 @@ LABEL_3:
           }
 
           v36 = MEMORY[0x277D3A480];
-          v37 = [v10 attributedString];
-          v38 = [v37 objectForKey:@"contextBeforeInput"];
+          attributedString3 = [triggerCopy attributedString];
+          v38 = [attributedString3 objectForKey:@"contextBeforeInput"];
           v72 = v38;
           v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
           v40 = [v36 quickTypeQueryWithType:1 subtype:2 semanticTag:0 fields:v25 time:0 subFields:0 label:0 people:v39 localeIdentifier:0 bundleIdentifier:0 recipients:0];
@@ -395,17 +395,17 @@ LABEL_3:
           v57[4] = self;
           v60 = &v61;
           v58 = v14;
-          [v13 quickTypeItemsWithQuery:v40 limit:100 completion:v57];
+          [getPPBroker quickTypeItemsWithQuery:v40 limit:100 completion:v57];
         }
       }
     }
 
     else
     {
-      v28 = [v10 attributedString];
-      v29 = [v52 locale];
-      v30 = [v52 recipients];
-      v31 = [v52 applicationBundleIdentifier];
+      attributedString4 = [triggerCopy attributedString];
+      locale = [contextCopy locale];
+      recipients = [contextCopy recipients];
+      applicationBundleIdentifier = [contextCopy applicationBundleIdentifier];
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __122___ICPortraitPredictionSource__quickTypeQueryWithTrigger_searchContext_limit_timeoutInMilliseconds_errorWithExplanations___block_invoke_2;
@@ -414,10 +414,10 @@ LABEL_3:
       v53[4] = self;
       v56 = &v61;
       v54 = v14;
-      [v13 quickTypeItemsWithLanguageModelingTokens:v28 localeIdentifier:v29 recipients:v30 bundleIdentifier:v31 limit:a5 completion:v53];
+      [getPPBroker quickTypeItemsWithLanguageModelingTokens:attributedString4 localeIdentifier:locale recipients:recipients bundleIdentifier:applicationBundleIdentifier limit:limit completion:v53];
     }
 
-    v41 = dispatch_time(0, 1000000 * a6);
+    v41 = dispatch_time(0, 1000000 * milliseconds);
     if (dispatch_semaphore_wait(v14, v41))
     {
       v42 = _ICProactiveQuickTypeOSLogFacility();
@@ -440,9 +440,9 @@ LABEL_3:
         _os_log_impl(&dword_254BD0000, v43, OS_LOG_TYPE_INFO, "_ICPPSource _quickTypeQueryWithTrigger got %lu items", v70, 0xCu);
       }
 
-      if (*a7)
+      if (*explanations)
       {
-        *a7 = v62[5];
+        *explanations = v62[5];
       }
 
       v27 = *(*(&buf + 1) + 40);
@@ -476,12 +476,12 @@ LABEL_3:
   return v27;
 }
 
-- (void)predictedItemsWithProactiveTrigger:(id)a3 searchContext:(id)a4 limit:(unint64_t)a5 timeoutInMilliseconds:(unint64_t)a6 handler:(id)a7
+- (void)predictedItemsWithProactiveTrigger:(id)trigger searchContext:(id)context limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds handler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v29 = a4;
-  v27 = a7;
+  triggerCopy = trigger;
+  contextCopy = context;
+  handlerCopy = handler;
   v34[3] = 0;
   v34[1] = @"_ICPPPredictionSource_predictedItemsWithProactiveTrigger";
   v26 = mach_absolute_time();
@@ -493,7 +493,7 @@ LABEL_3:
   }
 
   v34[0] = 0;
-  v14 = [(_ICPortraitPredictionSource *)self _quickTypeQueryWithTrigger:v12 searchContext:v29 limit:a5 timeoutInMilliseconds:a6 errorWithExplanations:v34];
+  v14 = [(_ICPortraitPredictionSource *)self _quickTypeQueryWithTrigger:triggerCopy searchContext:contextCopy limit:limit timeoutInMilliseconds:milliseconds errorWithExplanations:v34];
   v28 = v34[0];
   v15 = objc_opt_new();
   v32 = 0u;
@@ -515,7 +515,7 @@ LABEL_3:
           objc_enumerationMutation(v16);
         }
 
-        v20 = [_ICPredictedItem predictedItemFromQuickTypeItem:*(*(&v30 + 1) + 8 * v19) trigger:v12, v26];
+        v20 = [_ICPredictedItem predictedItemFromQuickTypeItem:*(*(&v30 + 1) + 8 * v19) trigger:triggerCopy, v26];
         if (v20)
         {
           v21 = _ICProactiveQuickTypeOSLogFacility();
@@ -539,7 +539,7 @@ LABEL_3:
     while (v17);
   }
 
-  v27[2](v27, v15, v28);
+  handlerCopy[2](handlerCopy, v15, v28);
   v22 = mach_absolute_time();
   v23 = _ICMachTimeToNanoseconds(v22 - v26);
   v24 = _ICProactiveQuickTypeOSLogFacility();
@@ -551,10 +551,10 @@ LABEL_3:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)searchForMeCardRegionsWithTimeout:(unint64_t)a3 handler:(id)a4
+- (void)searchForMeCardRegionsWithTimeout:(unint64_t)timeout handler:(id)handler
 {
   v59 = *MEMORY[0x277D85DE8];
-  v42 = a4;
+  handlerCopy = handler;
   v56 = 0;
   v54 = @"_ICPPPredictionSource_searchForMeCardRegionsWithTimeout";
   v41 = mach_absolute_time();
@@ -566,9 +566,9 @@ LABEL_3:
     [_ICPortraitPredictionSource searchForMeCardRegionsWithTimeout:handler:];
   }
 
-  v7 = [(_ICPortraitPredictionSource *)self _quickTypeQueryWithQuery:v43 limit:10 timeoutInMilliseconds:a3];
-  v45 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  v7 = [(_ICPortraitPredictionSource *)self _quickTypeQueryWithQuery:v43 limit:10 timeoutInMilliseconds:timeout];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -589,13 +589,13 @@ LABEL_3:
         }
 
         v12 = *(*(&v50 + 1) + 8 * v11);
-        v13 = [v12 label];
-        v14 = [v13 length] == 0;
+        label = [v12 label];
+        v14 = [label length] == 0;
 
         if (!v14)
         {
-          v15 = [v12 value];
-          v16 = [v15 componentsSeparatedByString:@"|"];
+          value = [v12 value];
+          v16 = [value componentsSeparatedByString:@"|"];
 
           if ([v16 count] == 3)
           {
@@ -611,31 +611,31 @@ LABEL_3:
 
 LABEL_13:
 LABEL_14:
-              v19 = [v12 label];
-              v20 = [v8 objectForKey:v19];
+              label2 = [v12 label];
+              dictionary2 = [dictionary objectForKey:label2];
 
-              if (!v20)
+              if (!dictionary2)
               {
-                v20 = [MEMORY[0x277CBEB38] dictionary];
-                v21 = [v12 label];
-                [v8 setObject:v20 forKey:v21];
+                dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+                label3 = [v12 label];
+                [dictionary setObject:dictionary2 forKey:label3];
 
                 v22 = [v16 objectAtIndex:0];
                 if ([v22 length])
                 {
-                  [v20 setValue:v22 forKey:@"City"];
+                  [dictionary2 setValue:v22 forKey:@"City"];
                 }
 
                 v23 = [v16 objectAtIndex:1];
                 if ([v23 length])
                 {
-                  [v20 setValue:v23 forKey:@"Province"];
+                  [dictionary2 setValue:v23 forKey:@"Province"];
                 }
 
                 v24 = [v16 objectAtIndex:2];
                 if ([v24 length])
                 {
-                  [v20 setValue:v24 forKey:@"Country"];
+                  [dictionary2 setValue:v24 forKey:@"Country"];
                 }
               }
             }
@@ -668,8 +668,8 @@ LABEL_14:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v28 = [v8 allKeys];
-  v29 = [v28 countByEnumeratingWithState:&v46 objects:v57 count:16];
+  allKeys = [dictionary allKeys];
+  v29 = [allKeys countByEnumeratingWithState:&v46 objects:v57 count:16];
   if (v29)
   {
     v30 = *v47;
@@ -679,22 +679,22 @@ LABEL_14:
       {
         if (*v47 != v30)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allKeys);
         }
 
         v32 = *(*(&v46 + 1) + 8 * i);
-        v33 = [v8 objectForKey:v32];
+        v33 = [dictionary objectForKey:v32];
         [v33 setValue:v32 forKey:@"ContactLabel"];
-        [v45 addObject:v33];
+        [array addObject:v33];
       }
 
-      v29 = [v28 countByEnumeratingWithState:&v46 objects:v57 count:16];
+      v29 = [allKeys countByEnumeratingWithState:&v46 objects:v57 count:16];
     }
 
     while (v29);
   }
 
-  v42[2](v42, v45);
+  handlerCopy[2](handlerCopy, array);
   v34 = mach_absolute_time();
   v35 = _ICMachTimeToNanoseconds(v34 - v41);
   v36 = _ICProactiveQuickTypeOSLogFacility();
@@ -717,10 +717,10 @@ LABEL_14:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)searchForMeCardEmailAddressesWithTimeout:(unint64_t)a3 handler:(id)a4
+- (void)searchForMeCardEmailAddressesWithTimeout:(unint64_t)timeout handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v27 = 0;
   v25 = @"_ICPPPredictionSource_searchForMeCardEmailAddressesWithTimeout";
   v7 = mach_absolute_time();
@@ -732,7 +732,7 @@ LABEL_14:
     [_ICPortraitPredictionSource searchForMeCardEmailAddressesWithTimeout:handler:];
   }
 
-  v10 = [(_ICPortraitPredictionSource *)self _quickTypeQueryWithQuery:v8 limit:10 timeoutInMilliseconds:a3];
+  v10 = [(_ICPortraitPredictionSource *)self _quickTypeQueryWithQuery:v8 limit:10 timeoutInMilliseconds:timeout];
   v11 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
@@ -753,8 +753,8 @@ LABEL_14:
           objc_enumerationMutation(v12);
         }
 
-        v16 = [*(*(&v21 + 1) + 8 * v15) value];
-        [v11 addObject:v16];
+        value = [*(*(&v21 + 1) + 8 * v15) value];
+        [v11 addObject:value];
 
         ++v15;
       }
@@ -766,7 +766,7 @@ LABEL_14:
     while (v13);
   }
 
-  v6[2](v6, v11);
+  handlerCopy[2](handlerCopy, v11);
   v17 = mach_absolute_time();
   v18 = _ICMachTimeToNanoseconds(v17 - v7);
   v19 = _ICProactiveQuickTypeOSLogFacility();
@@ -788,54 +788,54 @@ LABEL_14:
   }
 }
 
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v6 == 3)
+  styleCopy = style;
+  typeCopy = type;
+  stringCopy = string;
+  if (typeCopy == 3)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithOfferedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithOfferedString:stringCopy];
 LABEL_15:
     v10 = v9;
     v11 = _ICProactiveQuickTypeOSLogFacility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [_ICPortraitPredictionSource provideFeedbackForString:v5 type:v6 style:v11];
+      [_ICPortraitPredictionSource provideFeedbackForString:styleCopy type:typeCopy style:v11];
     }
 
     [(PPQuickTypeBroker *)self->_ppBroker registerFeedback:v10 completion:0];
     goto LABEL_18;
   }
 
-  if (v6 == 1 && v5 == 1)
+  if (typeCopy == 1 && styleCopy == 1)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyEngagedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyEngagedString:stringCopy];
     goto LABEL_15;
   }
 
-  if (v6 == 1 && v5 == 2)
+  if (typeCopy == 1 && styleCopy == 2)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyEngagedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyEngagedString:stringCopy];
     goto LABEL_15;
   }
 
-  if (v6 == 2 && v5 == 1)
+  if (typeCopy == 2 && styleCopy == 1)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyRejectedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyRejectedString:stringCopy];
     goto LABEL_15;
   }
 
-  if (v6 == 2 && v5 == 2)
+  if (typeCopy == 2 && styleCopy == 2)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyRejectedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyRejectedString:stringCopy];
     goto LABEL_15;
   }
 
   v10 = _ICProactiveQuickTypeOSLogFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [_ICPortraitPredictionSource provideFeedbackForString:v6 type:v5 style:v10];
+    [_ICPortraitPredictionSource provideFeedbackForString:typeCopy type:styleCopy style:v10];
   }
 
 LABEL_18:

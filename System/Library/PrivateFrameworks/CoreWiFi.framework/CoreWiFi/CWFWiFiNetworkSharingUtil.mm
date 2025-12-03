@@ -1,19 +1,19 @@
 @interface CWFWiFiNetworkSharingUtil
-+ (id)prepareSharedNetworksJSONDataWithNetworks:(id)a3 matching:(id)a4;
-+ (id)prepareSharedNetworksObjcWithNetworks:(id)a3 matching:(id)a4;
++ (id)prepareSharedNetworksJSONDataWithNetworks:(id)networks matching:(id)matching;
++ (id)prepareSharedNetworksObjcWithNetworks:(id)networks matching:(id)matching;
 - (CWFWiFiNetworkSharingUtil)init;
 @end
 
 @implementation CWFWiFiNetworkSharingUtil
 
-+ (id)prepareSharedNetworksJSONDataWithNetworks:(id)a3 matching:(id)a4
++ (id)prepareSharedNetworksJSONDataWithNetworks:(id)networks matching:(id)matching
 {
   sub_1E0BEAD90(0, &qword_1ECE80A78, off_1E86E4EB8);
   v5 = sub_1E0D6D05C();
-  if (a4)
+  if (matching)
   {
-    v6 = a4;
-    a4 = sub_1E0D6CEEC();
+    matchingCopy = matching;
+    matching = sub_1E0D6CEEC();
     v8 = v7;
   }
 
@@ -22,9 +22,9 @@
     v8 = 0xF000000000000000;
   }
 
-  v9 = sub_1E0BEAFB0(v5, a4, v8);
+  v9 = sub_1E0BEAFB0(v5, matching, v8);
   v11 = v10;
-  sub_1E0BE98D4(a4, v8);
+  sub_1E0BE98D4(matching, v8);
 
   if (v11 >> 60 == 15)
   {
@@ -41,14 +41,14 @@
   return v12;
 }
 
-+ (id)prepareSharedNetworksObjcWithNetworks:(id)a3 matching:(id)a4
++ (id)prepareSharedNetworksObjcWithNetworks:(id)networks matching:(id)matching
 {
   sub_1E0BEAD90(0, &qword_1ECE80A78, off_1E86E4EB8);
   v5 = sub_1E0D6D05C();
-  if (a4)
+  if (matching)
   {
-    v6 = a4;
-    a4 = sub_1E0D6CEEC();
+    matchingCopy = matching;
+    matching = sub_1E0D6CEEC();
     v8 = v7;
   }
 
@@ -57,8 +57,8 @@
     v8 = 0xF000000000000000;
   }
 
-  v9 = sub_1E0BEB55C(v5, a4, v8);
-  sub_1E0BE98D4(a4, v8);
+  v9 = sub_1E0BEB55C(v5, matching, v8);
+  sub_1E0BE98D4(matching, v8);
 
   if (v9)
   {

@@ -2,13 +2,13 @@
 - (NSString)description;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
-- (_TtC17proximitycontrold24BannerViewControllerBase)initWithCoder:(id)a3;
-- (_TtC17proximitycontrold24BannerViewControllerBase)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17proximitycontrold24BannerViewControllerBase)initWithCoder:(id)coder;
+- (_TtC17proximitycontrold24BannerViewControllerBase)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation BannerViewControllerBase
 
-- (_TtC17proximitycontrold24BannerViewControllerBase)initWithCoder:(id)a3
+- (_TtC17proximitycontrold24BannerViewControllerBase)initWithCoder:(id)coder
 {
   *&self->requestID[OBJC_IVAR____TtC17proximitycontrold24BannerViewControllerBase_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -37,7 +37,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000CCC94();
 
   v3 = String._bridgeToObjectiveC()();
@@ -45,7 +45,7 @@
   return v3;
 }
 
-- (_TtC17proximitycontrold24BannerViewControllerBase)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17proximitycontrold24BannerViewControllerBase)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

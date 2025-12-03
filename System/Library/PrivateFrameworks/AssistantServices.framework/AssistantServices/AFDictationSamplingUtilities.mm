@@ -8,9 +8,9 @@
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a1 sampledLibraryDirectoryPath];
-  v5 = [a1 sampledPlistFileName];
-  v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+  sampledLibraryDirectoryPath = [self sampledLibraryDirectoryPath];
+  sampledPlistFileName = [self sampledPlistFileName];
+  v6 = [v3 stringWithFormat:@"%@/%@", sampledLibraryDirectoryPath, sampledPlistFileName];
 
   v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
   v22 = 0;
@@ -22,11 +22,11 @@
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
     {
       v18 = v10;
-      v19 = [a1 component];
+      component = [self component];
       *buf = 136315906;
       v24 = "+[AFDictationSamplingUtilities samplingDateAsString]";
       v25 = 2112;
-      v26 = v19;
+      v26 = component;
       v27 = 2112;
       v28 = v6;
       v29 = 2112;
@@ -39,13 +39,13 @@
 
   else
   {
-    v12 = [a1 sampledCurrentSamplingDateKey];
-    v13 = [v8 objectForKey:v12];
+    sampledCurrentSamplingDateKey = [self sampledCurrentSamplingDateKey];
+    v13 = [v8 objectForKey:sampledCurrentSamplingDateKey];
 
     if (v13)
     {
-      v14 = [objc_opt_class() dateFormatter];
-      v11 = [v14 stringFromDate:v13];
+      dateFormatter = [objc_opt_class() dateFormatter];
+      v11 = [dateFormatter stringFromDate:v13];
     }
 
     else
@@ -54,11 +54,11 @@
       if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
       {
         v20 = v15;
-        v21 = [a1 component];
+        component2 = [self component];
         *buf = 136315394;
         v24 = "+[AFDictationSamplingUtilities samplingDateAsString]";
         v25 = 2112;
-        v26 = v21;
+        v26 = component2;
         _os_log_error_impl(&dword_1912FE000, v20, OS_LOG_TYPE_ERROR, "%s %@ Sampling: currentSamplingDate is nil. Check if ADDictationOnDeviceSampling is getting initialized.", buf, 0x16u);
       }
 

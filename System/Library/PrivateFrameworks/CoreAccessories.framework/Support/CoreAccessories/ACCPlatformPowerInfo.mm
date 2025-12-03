@@ -1,26 +1,26 @@
 @interface ACCPlatformPowerInfo
-- (ACCPlatformPowerInfo)initWithEndpointUID:(id)a3 andBitmask:(unint64_t)a4 andOldBitmask:(unint64_t)a5;
+- (ACCPlatformPowerInfo)initWithEndpointUID:(id)d andBitmask:(unint64_t)bitmask andOldBitmask:(unint64_t)oldBitmask;
 - (void)dealloc;
-- (void)powerInfoChangeNotificationHandler:(id)a3;
+- (void)powerInfoChangeNotificationHandler:(id)handler;
 - (void)startPowerUpdates;
 - (void)startSiphoningControl;
 - (void)stopPowerUpdates;
-- (void)systemHasPoweredOnNotificationHandler:(id)a3;
-- (void)systemWillSleepNotificationHandler:(id)a3;
+- (void)systemHasPoweredOnNotificationHandler:(id)handler;
+- (void)systemWillSleepNotificationHandler:(id)handler;
 @end
 
 @implementation ACCPlatformPowerInfo
 
-- (ACCPlatformPowerInfo)initWithEndpointUID:(id)a3 andBitmask:(unint64_t)a4 andOldBitmask:(unint64_t)a5
+- (ACCPlatformPowerInfo)initWithEndpointUID:(id)d andBitmask:(unint64_t)bitmask andOldBitmask:(unint64_t)oldBitmask
 {
-  v9 = a3;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = ACCPlatformPowerInfo;
   v10 = [(ACCPlatformPowerInfo *)&v20 init];
   if (v10)
   {
-    EndpointWithUUID = acc_manager_getEndpointWithUUID(v9);
-    objc_storeStrong(v10 + 4, a3);
+    EndpointWithUUID = acc_manager_getEndpointWithUUID(dCopy);
+    objc_storeStrong(v10 + 4, d);
     if (EndpointWithUUID && *EndpointWithUUID)
     {
       v12 = **EndpointWithUUID;
@@ -32,8 +32,8 @@
     }
 
     objc_storeStrong(v10 + 5, v12);
-    [v10 setUpdateTypesBitmask:a4];
-    [v10 setOldUpdateTypesBitmask:a5];
+    [v10 setUpdateTypesBitmask:bitmask];
+    [v10 setOldUpdateTypesBitmask:oldBitmask];
     v13 = *(v10 + 7);
     *(v10 + 7) = 0;
 
@@ -92,11 +92,11 @@
 
 - (void)startPowerUpdates
 {
-  v4 = [a1 isUpdateTypeEnabled:3];
-  v5 = [a1 isUpdateTypeEnabled:8];
-  v6 = [a1 isUpdateTypeEnabled:9];
-  v7 = [a1 isUpdateTypeEnabled:10];
-  [a1 isUpdateTypeEnabled:11];
+  v4 = [self isUpdateTypeEnabled:3];
+  v5 = [self isUpdateTypeEnabled:8];
+  v6 = [self isUpdateTypeEnabled:9];
+  v7 = [self isUpdateTypeEnabled:10];
+  [self isUpdateTypeEnabled:11];
   *v10 = 67111424;
   *&v10[2] = 3;
   OUTLINED_FUNCTION_9_13();
@@ -127,13 +127,13 @@
 
   if ([(ACCPlatformPowerInfo *)self isUpdateTypeEnabled:7])
   {
-    v4 = [(ACCPlatformPowerInfo *)self sleepNotificationClientUUID];
+    sleepNotificationClientUUID = [(ACCPlatformPowerInfo *)self sleepNotificationClientUUID];
 
-    if (v4)
+    if (sleepNotificationClientUUID)
     {
       v5 = _getIOKitPowerPluginInstance();
-      v6 = [(ACCPlatformPowerInfo *)self sleepNotificationClientUUID];
-      [v5 destroySleepNotificationsForClient:v6];
+      sleepNotificationClientUUID2 = [(ACCPlatformPowerInfo *)self sleepNotificationClientUUID];
+      [v5 destroySleepNotificationsForClient:sleepNotificationClientUUID2];
 
       [(ACCPlatformPowerInfo *)self setSleepNotificationClientUUID:0];
     }
@@ -142,20 +142,20 @@
   else if ([(ACCPlatformPowerInfo *)self isUpdateTypeEnabled:4]|| [(ACCPlatformPowerInfo *)self isUpdateTypeEnabled:5]|| [(ACCPlatformPowerInfo *)self isUpdateTypeEnabled:6])
   {
     v7 = _getIOKitPowerPluginInstance();
-    v8 = [(ACCPlatformPowerInfo *)self batteryNotificationClientUUID];
-    [v7 destroyBatteryNotificationsForClient:v8];
+    batteryNotificationClientUUID = [(ACCPlatformPowerInfo *)self batteryNotificationClientUUID];
+    [v7 destroyBatteryNotificationsForClient:batteryNotificationClientUUID];
 
     [(ACCPlatformPowerInfo *)self setBatteryNotificationClientUUID:0];
   }
 }
 
-- (void)powerInfoChangeNotificationHandler:(id)a3
+- (void)powerInfoChangeNotificationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 userInfo];
+  handlerCopy = handler;
+  name = [handlerCopy name];
+  userInfo = [handlerCopy userInfo];
 
-  v7 = [v6 objectForKey:ACCPlatformPowerPlugin_ConnectionUUID];
+  v7 = [userInfo objectForKey:ACCPlatformPowerPlugin_ConnectionUUID];
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 8;
@@ -187,11 +187,11 @@
     v66 = 136315394;
     *v67 = "[ACCPlatformPowerInfo powerInfoChangeNotificationHandler:]";
     *&v67[8] = 2112;
-    *v68 = v5;
+    *v68 = name;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#Power] %s: Received notification: %@\n", &v66, 0x16u);
   }
 
-  if ([v5 isEqualToString:ACCPlatformPowerPlugin_USBCurrentLimitDidChangeNotification])
+  if ([name isEqualToString:ACCPlatformPowerPlugin_USBCurrentLimitDidChangeNotification])
   {
     p_availableCurrent = &self->_availableCurrent;
     availableCurrent = self->_availableCurrent;
@@ -204,7 +204,7 @@
       {
         if (gLogObjects && gNumLogObjects >= 8)
         {
-          v14 = *(gLogObjects + 56);
+          endpointUID2 = *(gLogObjects + 56);
         }
 
         else
@@ -214,11 +214,11 @@
             platform_connectionInfo_configStreamGetCategories_cold_2();
           }
 
-          v14 = &_os_log_default;
+          endpointUID2 = &_os_log_default;
           v41 = &_os_log_default;
         }
 
-        if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(endpointUID2, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_115;
         }
@@ -295,13 +295,13 @@
       }
     }
 
-    v28 = [(ACCPlatformPowerInfo *)self endpointUID];
+    endpointUID = [(ACCPlatformPowerInfo *)self endpointUID];
     v29 = self->_availableCurrent;
     v30 = 0;
     goto LABEL_102;
   }
 
-  if ([v5 isEqualToString:ACCPlatformPowerPlugin_BatteryPackModeDidChangeNotification])
+  if ([name isEqualToString:ACCPlatformPowerPlugin_BatteryPackModeDidChangeNotification])
   {
     isDeviceBatteryCharging = self->_isDeviceBatteryCharging;
     v16 = _getPowerPluginInstance();
@@ -313,7 +313,7 @@
       {
         if (gLogObjects && gNumLogObjects >= 8)
         {
-          v14 = *(gLogObjects + 56);
+          endpointUID2 = *(gLogObjects + 56);
         }
 
         else
@@ -323,11 +323,11 @@
             platform_connectionInfo_configStreamGetCategories_cold_2();
           }
 
-          v14 = &_os_log_default;
+          endpointUID2 = &_os_log_default;
           v45 = &_os_log_default;
         }
 
-        if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(endpointUID2, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_115;
         }
@@ -393,15 +393,15 @@
       }
     }
 
-    v28 = [(ACCPlatformPowerInfo *)self endpointUID];
+    endpointUID = [(ACCPlatformPowerInfo *)self endpointUID];
     v29 = self->_isDeviceBatteryCharging;
     v30 = 1;
 LABEL_102:
-    platform_power_sendPowerUpdate(v28, v30, v29, 13, 0);
+    platform_power_sendPowerUpdate(endpointUID, v30, v29, 13, 0);
     goto LABEL_103;
   }
 
-  if ([v5 isEqualToString:ACCPlatformIOKitPowerPlugin_IsExternalChargerConnected])
+  if ([name isEqualToString:ACCPlatformIOKitPowerPlugin_IsExternalChargerConnected])
   {
     isExternalChargerConnected = self->_isExternalChargerConnected;
     v19 = _getIOKitPowerPluginInstance();
@@ -431,7 +431,7 @@ LABEL_102:
         [ACCPlatformPowerInfo powerInfoChangeNotificationHandler:?];
       }
 
-      v28 = [(ACCPlatformPowerInfo *)self endpointUID];
+      endpointUID = [(ACCPlatformPowerInfo *)self endpointUID];
       v29 = self->_isExternalChargerConnected;
       v30 = 4;
       goto LABEL_102;
@@ -439,7 +439,7 @@ LABEL_102:
 
     if (gLogObjects && gNumLogObjects >= 8)
     {
-      v14 = *(gLogObjects + 56);
+      endpointUID2 = *(gLogObjects + 56);
     }
 
     else
@@ -449,11 +449,11 @@ LABEL_102:
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v14 = &_os_log_default;
+      endpointUID2 = &_os_log_default;
       v48 = &_os_log_default;
     }
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(endpointUID2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_115;
     }
@@ -469,11 +469,11 @@ LABEL_102:
     *&v68[6] = 1024;
     *&v68[8] = isFirstSent_ExternalChargerConnected;
 LABEL_114:
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[#Power] Skip Sending Power Update: %d: %d = %d, isFirst=%d", &v66, 0x1Au);
+    _os_log_impl(&_mh_execute_header, endpointUID2, OS_LOG_TYPE_DEFAULT, "[#Power] Skip Sending Power Update: %d: %d = %d, isFirst=%d", &v66, 0x1Au);
     goto LABEL_115;
   }
 
-  if ([v5 isEqualToString:ACCPlatformIOKitPowerPlugin_BatteryChargingState])
+  if ([name isEqualToString:ACCPlatformIOKitPowerPlugin_BatteryChargingState])
   {
     batteryChargingState = self->_batteryChargingState;
     v24 = _getIOKitPowerPluginInstance();
@@ -503,14 +503,14 @@ LABEL_114:
         [ACCPlatformPowerInfo powerInfoChangeNotificationHandler:?];
       }
 
-      v28 = [(ACCPlatformPowerInfo *)self endpointUID];
+      endpointUID = [(ACCPlatformPowerInfo *)self endpointUID];
       v29 = self->_batteryChargingState;
       v30 = 5;
       goto LABEL_102;
     }
 
-    v14 = logObjectForModule_19();
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    endpointUID2 = logObjectForModule_19();
+    if (!os_log_type_enabled(endpointUID2, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_115:
 
@@ -530,7 +530,7 @@ LABEL_115:
     goto LABEL_114;
   }
 
-  if ([v5 isEqualToString:ACCPlatformIOKitPowerPlugin_BatteryChargeLevel])
+  if ([name isEqualToString:ACCPlatformIOKitPowerPlugin_BatteryChargeLevel])
   {
     batteryChargeLevel = self->_batteryChargeLevel;
     v59 = _getIOKitPowerPluginInstance();
@@ -582,15 +582,15 @@ LABEL_115:
       platform_power_sendPowerUpdate([(ACCPlatformPowerInfo *)self endpointUID], 6, self->_batteryChargeLevel, 13, 0);
     }
 
-    v14 = [(ACCPlatformPowerInfo *)self endpointUID];
-    if (!_isModelNumberConnected(v14, @"A1603") || !platform_systemInfo_isApplePencilSupported() || self->_batteryChargeLevel > 0xAu)
+    endpointUID2 = [(ACCPlatformPowerInfo *)self endpointUID];
+    if (!_isModelNumberConnected(endpointUID2, @"A1603") || !platform_systemInfo_isApplePencilSupported() || self->_batteryChargeLevel > 0xAu)
     {
       goto LABEL_115;
     }
 
-    v65 = [(ACCPlatformPowerInfo *)self holdingApplePencilSleepAssertion];
+    holdingApplePencilSleepAssertion = [(ACCPlatformPowerInfo *)self holdingApplePencilSleepAssertion];
 
-    if (v65)
+    if (holdingApplePencilSleepAssertion)
     {
       platform_sleepAssertion_destroyForApplePencil();
       [(ACCPlatformPowerInfo *)self setHoldingApplePencilSleepAssertion:0];
@@ -599,13 +599,13 @@ LABEL_115:
 
   else
   {
-    if (![v5 isEqualToString:ACCPlatformPowerPlugin_PowerDidChangeNotification])
+    if (![name isEqualToString:ACCPlatformPowerPlugin_PowerDidChangeNotification])
     {
       v33 = logObjectForModule_19();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         v66 = 138412290;
-        *v67 = v5;
+        *v67 = name;
         v34 = "[#Power] PowerInfoChangeNotifications: Unknown notification received: %@\n";
         v35 = v33;
         v36 = OS_LOG_TYPE_DEFAULT;
@@ -656,7 +656,7 @@ LABEL_94:
         _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "[#Power] Sending Power Update: %d: %d->%d\n", &v66, 0x14u);
       }
 
-      v28 = [(ACCPlatformPowerInfo *)self endpointUID];
+      endpointUID = [(ACCPlatformPowerInfo *)self endpointUID];
       v29 = self->_accessoryChargingCurrent;
       v30 = 7;
       goto LABEL_102;
@@ -682,9 +682,9 @@ LABEL_94:
 LABEL_103:
 }
 
-- (void)systemWillSleepNotificationHandler:(id)a3
+- (void)systemWillSleepNotificationHandler:(id)handler
 {
-  [a3 name];
+  [handler name];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_10_14();
   if (v9)
@@ -718,7 +718,7 @@ LABEL_103:
   {
     [(ACCPlatformPowerInfo *)self endpointUID];
     objc_claimAutoreleasedReturnValue();
-    v18 = [OUTLINED_FUNCTION_10_4() connectionUID];
+    connectionUID = [OUTLINED_FUNCTION_10_4() connectionUID];
     OUTLINED_FUNCTION_8_11();
     OUTLINED_FUNCTION_27_0();
     _os_log_impl(v19, v20, v21, v22, v23, 0x20u);
@@ -730,21 +730,21 @@ LABEL_103:
     platform_power_sendSleepUpdate([(ACCPlatformPowerInfo *)self endpointUID]);
   }
 
-  v24 = [(ACCPlatformPowerInfo *)self endpointUID];
-  v25 = platform_power_powerDuringSleepEnabled(v24);
+  endpointUID = [(ACCPlatformPowerInfo *)self endpointUID];
+  v25 = platform_power_powerDuringSleepEnabled(endpointUID);
 
   if (v25)
   {
-    v26 = [(ACCPlatformPowerInfo *)self endpointUID];
-    isModelNumberConnected = _isModelNumberConnected(v26, @"A1603");
+    endpointUID2 = [(ACCPlatformPowerInfo *)self endpointUID];
+    isModelNumberConnected = _isModelNumberConnected(endpointUID2, @"A1603");
 
     if (isModelNumberConnected)
     {
-      v28 = [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
+      accessoryChargingCurrent = [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
       _getPowerPluginInstance();
       objc_claimAutoreleasedReturnValue();
-      v29 = [OUTLINED_FUNCTION_10_4() connectionUID];
-      -[ACCPlatformPowerInfo setAccessoryChargingCurrent:](self, "setAccessoryChargingCurrent:", [isModelNumberConnected sleepPowerCurrentLimitInmA:v29]);
+      connectionUID2 = [OUTLINED_FUNCTION_10_4() connectionUID];
+      -[ACCPlatformPowerInfo setAccessoryChargingCurrent:](self, "setAccessoryChargingCurrent:", [isModelNumberConnected sleepPowerCurrentLimitInmA:connectionUID2]);
 
       v30 = *(v6 + 3928);
       v31 = *(v7 + 3936);
@@ -771,14 +771,14 @@ LABEL_103:
       {
         [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
         v58 = 67109376;
-        *v59 = v28;
+        *v59 = accessoryChargingCurrent;
         OUTLINED_FUNCTION_9_13();
         *&v59[6] = v35;
         OUTLINED_FUNCTION_11_10();
         _os_log_impl(v36, v37, v38, v39, v40, 0xEu);
       }
 
-      if (v28 != [(ACCPlatformPowerInfo *)self accessoryChargingCurrent])
+      if (accessoryChargingCurrent != [(ACCPlatformPowerInfo *)self accessoryChargingCurrent])
       {
         v41 = *(v6 + 3928);
         if (v41 && *(v7 + 3936) >= 8)
@@ -800,20 +800,20 @@ LABEL_103:
 
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v44 = [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
+          accessoryChargingCurrent2 = [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
           [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
           v58 = 67109632;
           *v59 = 7;
           OUTLINED_FUNCTION_9_13();
-          *&v59[6] = v44;
+          *&v59[6] = accessoryChargingCurrent2;
           LOWORD(v60[0]) = v45;
           *(v60 + 2) = v46;
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "[#Power] Sending Power Update (for sleep): %d: %d->%d\n", &v58, 0x14u);
         }
 
         [(ACCPlatformPowerInfo *)self endpointUID];
-        v47 = [OUTLINED_FUNCTION_15_11() accessoryChargingCurrent];
-        OUTLINED_FUNCTION_13_11(v47);
+        accessoryChargingCurrent3 = [OUTLINED_FUNCTION_15_11() accessoryChargingCurrent];
+        OUTLINED_FUNCTION_13_11(accessoryChargingCurrent3);
         [(ACCPlatformPowerInfo *)self setPowerUpdateSentDueToSleep:1];
       }
     }
@@ -822,15 +822,15 @@ LABEL_103:
     {
       _getIOKitPowerPluginInstance();
       objc_claimAutoreleasedReturnValue();
-      v33 = [OUTLINED_FUNCTION_15_11() sleepNotificationClientUUID];
-      [v26 clientHandledSleepNotification:v33];
+      sleepNotificationClientUUID = [OUTLINED_FUNCTION_15_11() sleepNotificationClientUUID];
+      [endpointUID2 clientHandledSleepNotification:sleepNotificationClientUUID];
     }
   }
 }
 
-- (void)systemHasPoweredOnNotificationHandler:(id)a3
+- (void)systemHasPoweredOnNotificationHandler:(id)handler
 {
-  [a3 name];
+  [handler name];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_10_14();
   if (v9)
@@ -864,7 +864,7 @@ LABEL_103:
   {
     [(ACCPlatformPowerInfo *)self endpointUID];
     objc_claimAutoreleasedReturnValue();
-    v18 = [OUTLINED_FUNCTION_10_4() connectionUID];
+    connectionUID = [OUTLINED_FUNCTION_10_4() connectionUID];
     OUTLINED_FUNCTION_8_11();
     OUTLINED_FUNCTION_27_0();
     _os_log_impl(v19, v20, v21, v22, v23, 0x20u);
@@ -876,21 +876,21 @@ LABEL_103:
     platform_power_sendWakeUpdate([(ACCPlatformPowerInfo *)self endpointUID]);
   }
 
-  v24 = [(ACCPlatformPowerInfo *)self endpointUID];
-  v25 = platform_power_powerDuringSleepEnabled(v24);
+  endpointUID = [(ACCPlatformPowerInfo *)self endpointUID];
+  v25 = platform_power_powerDuringSleepEnabled(endpointUID);
 
   if (v25)
   {
-    v26 = [(ACCPlatformPowerInfo *)self endpointUID];
-    isModelNumberConnected = _isModelNumberConnected(v26, @"A1603");
+    endpointUID2 = [(ACCPlatformPowerInfo *)self endpointUID];
+    isModelNumberConnected = _isModelNumberConnected(endpointUID2, @"A1603");
 
     if (isModelNumberConnected)
     {
-      v28 = [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
+      accessoryChargingCurrent = [(ACCPlatformPowerInfo *)self accessoryChargingCurrent];
       _getPowerPluginInstance();
       objc_claimAutoreleasedReturnValue();
-      v29 = [OUTLINED_FUNCTION_10_4() connectionUID];
-      -[ACCPlatformPowerInfo setAccessoryChargingCurrent:](self, "setAccessoryChargingCurrent:", [isModelNumberConnected accessoryChargingCurrentInmA:v29]);
+      connectionUID2 = [OUTLINED_FUNCTION_10_4() connectionUID];
+      -[ACCPlatformPowerInfo setAccessoryChargingCurrent:](self, "setAccessoryChargingCurrent:", [isModelNumberConnected accessoryChargingCurrentInmA:connectionUID2]);
 
       v30 = *(v6 + 3928);
       if (v30 && *(v7 + 3936) >= 8)
@@ -918,7 +918,7 @@ LABEL_103:
         _os_log_impl(v33, v34, v35, v36, v37, 0xEu);
       }
 
-      if (v28 != [(ACCPlatformPowerInfo *)self accessoryChargingCurrent])
+      if (accessoryChargingCurrent != [(ACCPlatformPowerInfo *)self accessoryChargingCurrent])
       {
         v38 = *(v6 + 3928);
         if (v38 && *(v7 + 3936) >= 8)
@@ -947,8 +947,8 @@ LABEL_103:
         }
 
         [(ACCPlatformPowerInfo *)self endpointUID];
-        v46 = [OUTLINED_FUNCTION_15_11() accessoryChargingCurrent];
-        OUTLINED_FUNCTION_13_11(v46);
+        accessoryChargingCurrent2 = [OUTLINED_FUNCTION_15_11() accessoryChargingCurrent];
+        OUTLINED_FUNCTION_13_11(accessoryChargingCurrent2);
       }
     }
   }

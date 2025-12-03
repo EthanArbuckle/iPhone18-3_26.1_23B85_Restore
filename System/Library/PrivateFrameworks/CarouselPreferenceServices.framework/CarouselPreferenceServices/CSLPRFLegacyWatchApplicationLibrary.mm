@@ -1,37 +1,37 @@
 @interface CSLPRFLegacyWatchApplicationLibrary
-- (CSLPRFLegacyWatchApplicationLibrary)initWithPairedWatch:(id)a3;
+- (CSLPRFLegacyWatchApplicationLibrary)initWithPairedWatch:(id)watch;
 - (NSArray)allApplications;
 - (NSDictionary)allApplicationsDictionary;
-- (id)applicationWithBundleIdentifier:(id)a3;
+- (id)applicationWithBundleIdentifier:(id)identifier;
 - (void)_ensureApplicationsCachedSync;
-- (void)_loadApplicationsWithCompletion:(uint64_t)a1;
-- (void)addObserver:(id)a3;
-- (void)allApplicationsWithCompletion:(id)a3;
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4;
+- (void)_loadApplicationsWithCompletion:(uint64_t)completion;
+- (void)addObserver:(id)observer;
+- (void)allApplicationsWithCompletion:(id)completion;
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d;
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d;
 - (void)dealloc;
-- (void)nanoRegistrySource:(id)a3 updatedWithAllApplications:(id)a4;
+- (void)nanoRegistrySource:(id)source updatedWithAllApplications:(id)applications;
 @end
 
 @implementation CSLPRFLegacyWatchApplicationLibrary
 
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDRDevice *)self->_pairedWatch pairingID];
+  uninstalledCopy = uninstalled;
+  dCopy = d;
+  pairingID = [(PDRDevice *)self->_pairedWatch pairingID];
 
-  if (v8 == v7)
+  if (pairingID == dCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v6;
+    v9 = uninstalledCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -71,16 +71,16 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDRDevice *)self->_pairedWatch pairingID];
+  updatedCopy = updated;
+  dCopy = d;
+  pairingID = [(PDRDevice *)self->_pairedWatch pairingID];
 
-  if (v8 == v7)
+  if (pairingID == dCopy)
   {
-    v9 = [v6 bs_mapNoNulls:&__block_literal_global_15];
+    v9 = [updatedCopy bs_mapNoNulls:&__block_literal_global_15];
     os_unfair_lock_lock(&self->_lock);
     v25 = 0u;
     v26 = 0u;
@@ -103,8 +103,8 @@
 
           v15 = *(*(&v23 + 1) + 8 * i);
           lock_cachedApplications = self->_lock_cachedApplications;
-          v17 = [v15 bundleIdentifier];
-          [(NSMutableDictionary *)lock_cachedApplications setObject:v15 forKey:v17];
+          bundleIdentifier = [v15 bundleIdentifier];
+          [(NSMutableDictionary *)lock_cachedApplications setObject:v15 forKey:bundleIdentifier];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -128,16 +128,16 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDRDevice *)self->_pairedWatch pairingID];
+  installedCopy = installed;
+  dCopy = d;
+  pairingID = [(PDRDevice *)self->_pairedWatch pairingID];
 
-  if (v8 == v7)
+  if (pairingID == dCopy)
   {
-    v9 = [v6 bs_mapNoNulls:&__block_literal_global_12];
+    v9 = [installedCopy bs_mapNoNulls:&__block_literal_global_12];
     os_unfair_lock_lock(&self->_lock);
     v25 = 0u;
     v26 = 0u;
@@ -160,8 +160,8 @@
 
           v15 = *(*(&v23 + 1) + 8 * i);
           lock_cachedApplications = self->_lock_cachedApplications;
-          v17 = [v15 bundleIdentifier];
-          [(NSMutableDictionary *)lock_cachedApplications setObject:v15 forKey:v17];
+          bundleIdentifier = [v15 bundleIdentifier];
+          [(NSMutableDictionary *)lock_cachedApplications setObject:v15 forKey:bundleIdentifier];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -185,22 +185,22 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nanoRegistrySource:(id)a3 updatedWithAllApplications:(id)a4
+- (void)nanoRegistrySource:(id)source updatedWithAllApplications:(id)applications
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  applicationsCopy = applications;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_lock_firstPartyApplications;
   v7 = MEMORY[0x277CBEB38];
-  v8 = [v5 bs_mapNoNulls:&__block_literal_global_2443];
-  v9 = [v7 dictionaryWithObjects:v5 forKeys:v8];
+  v8 = [applicationsCopy bs_mapNoNulls:&__block_literal_global_2443];
+  v9 = [v7 dictionaryWithObjects:applicationsCopy forKeys:v8];
 
   objc_storeStrong(&self->_lock_firstPartyApplications, v9);
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v10 = v5;
+  v10 = applicationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (v11)
   {
@@ -217,8 +217,8 @@
 
         v15 = *(*(&v59 + 1) + 8 * i);
         lock_cachedApplications = self->_lock_cachedApplications;
-        v17 = [v15 bundleIdentifier];
-        [(NSMutableDictionary *)lock_cachedApplications setObject:v15 forKey:v17];
+        bundleIdentifier = [v15 bundleIdentifier];
+        [(NSMutableDictionary *)lock_cachedApplications setObject:v15 forKey:bundleIdentifier];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v59 objects:v64 count:16];
@@ -230,13 +230,13 @@
   os_unfair_lock_unlock(&self->_lock);
   v18 = MEMORY[0x277CBEB98];
   v44 = v6;
-  v19 = [(NSMutableDictionary *)v6 allKeys];
-  v20 = [v18 setWithArray:v19];
+  allKeys = [(NSMutableDictionary *)v6 allKeys];
+  v20 = [v18 setWithArray:allKeys];
 
   v21 = MEMORY[0x277CBEB98];
   v42 = v9;
-  v22 = [v9 allKeys];
-  v23 = [v21 setWithArray:v22];
+  allKeys2 = [v9 allKeys];
+  v23 = [v21 setWithArray:allKeys2];
 
   v24 = [v23 mutableCopy];
   [v24 minusSet:v20];
@@ -277,13 +277,13 @@
   os_unfair_lock_unlock(&self->_lock);
   if ([v24 count])
   {
-    v32 = [v42 allValues];
+    allValues = [v42 allValues];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __85__CSLPRFLegacyWatchApplicationLibrary_nanoRegistrySource_updatedWithAllApplications___block_invoke_2;
     v53[3] = &unk_278744C28;
     v54 = v24;
-    v33 = [v32 bs_filter:v53];
+    v33 = [allValues bs_filter:v53];
 
     observationHelper = self->_observationHelper;
     v51[0] = MEMORY[0x277D85DD0];
@@ -298,13 +298,13 @@
 
   if ([v25 count])
   {
-    v36 = [v42 allValues];
+    allValues2 = [v42 allValues];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __85__CSLPRFLegacyWatchApplicationLibrary_nanoRegistrySource_updatedWithAllApplications___block_invoke_4;
     v49[3] = &unk_278744C28;
     v50 = v25;
-    v37 = [v36 bs_filter:v49];
+    v37 = [allValues2 bs_filter:v49];
 
     v38 = self->_observationHelper;
     v47[0] = MEMORY[0x277D85DD0];
@@ -359,16 +359,16 @@ void __85__CSLPRFLegacyWatchApplicationLibrary_nanoRegistrySource_updatedWithAll
   [v4 applicationLibrary:v2 didRemoveApplications:v5];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__CSLPRFLegacyWatchApplicationLibrary_addObserver___block_invoke;
   v6[3] = &unk_278744C00;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(CSLPRFLegacyWatchApplicationLibrary *)self _loadApplicationsWithCompletion:v6];
 }
 
@@ -381,18 +381,18 @@ void __51__CSLPRFLegacyWatchApplicationLibrary_addObserver___block_invoke(uint64
   [*(a1 + 40) applicationLibrary:*(a1 + 32) didAddApplications:v5];
 }
 
-- (void)_loadApplicationsWithCompletion:(uint64_t)a1
+- (void)_loadApplicationsWithCompletion:(uint64_t)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 8);
+    v5 = *(completion + 8);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __71__CSLPRFLegacyWatchApplicationLibrary__loadApplicationsWithCompletion___block_invoke;
     v6[3] = &unk_278744F48;
-    v6[4] = a1;
+    v6[4] = completion;
     v7 = v3;
     [v5 allApplicationsWithCompletion:v6];
   }
@@ -584,31 +584,31 @@ void __108__CSLPRFLegacyWatchApplicationLibrary__withFirstPartyApplications_load
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)allApplicationsWithCompletion:(id)a3
+- (void)allApplicationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__CSLPRFLegacyWatchApplicationLibrary_allApplicationsWithCompletion___block_invoke;
   v6[3] = &unk_278744BD8;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CSLPRFLegacyWatchApplicationLibrary *)self _loadApplicationsWithCompletion:v6];
 }
 
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_completion___block_invoke;
   v10[3] = &unk_278744BB0;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = identifierCopy;
+  v9 = completionCopy;
   [(CSLPRFLegacyWatchApplicationLibrary *)self _loadApplicationsWithCompletion:v10];
 }
 
@@ -632,11 +632,11 @@ void __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_c
 - (void)_ensureApplicationsCachedSync
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 48));
-    v2 = *(a1 + 32);
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_lock((self + 48));
+    v2 = *(self + 32);
+    os_unfair_lock_unlock((self + 48));
     if (v2)
     {
       v3 = dispatch_semaphore_create(0);
@@ -644,7 +644,7 @@ void __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_c
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v10 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_22CE92000, v4, OS_LOG_TYPE_DEFAULT, "%@ will block while fetching applications asynchronously", buf, 0xCu);
       }
 
@@ -654,7 +654,7 @@ void __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_c
       v7[3] = &unk_278744B88;
       v8 = v3;
       v5 = v3;
-      [a1 allApplicationsWithCompletion:v7];
+      [self allApplicationsWithCompletion:v7];
       dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
     }
   }
@@ -664,18 +664,18 @@ void __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_c
 
 - (NSArray)allApplications
 {
-  v2 = [(CSLPRFLegacyWatchApplicationLibrary *)self allApplicationsDictionary];
-  v3 = [v2 allValues];
+  allApplicationsDictionary = [(CSLPRFLegacyWatchApplicationLibrary *)self allApplicationsDictionary];
+  allValues = [allApplicationsDictionary allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(CSLPRFLegacyWatchApplicationLibrary *)self _ensureApplicationsCachedSync];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_cachedApplications objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_cachedApplications objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -686,8 +686,8 @@ void __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_c
 {
   if (self)
   {
-    v3 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-    [v3 removeObserver:self];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    [mEMORY[0x277CEAF80] removeObserver:self];
 
     [(CSLPRFNanoAppRegistryApplicationSource *)self->_nanoAppRegistrySource setDelegate:0];
   }
@@ -697,9 +697,9 @@ void __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_c
   [(CSLPRFLegacyWatchApplicationLibrary *)&v4 dealloc];
 }
 
-- (CSLPRFLegacyWatchApplicationLibrary)initWithPairedWatch:(id)a3
+- (CSLPRFLegacyWatchApplicationLibrary)initWithPairedWatch:(id)watch
 {
-  v5 = a3;
+  watchCopy = watch;
   v13.receiver = self;
   v13.super_class = CSLPRFLegacyWatchApplicationLibrary;
   v6 = [(CSLPRFLegacyWatchApplicationLibrary *)&v13 init];
@@ -707,7 +707,7 @@ void __82__CSLPRFLegacyWatchApplicationLibrary_applicationWithBundleIdentifier_c
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_pairedWatch, a3);
+    objc_storeStrong(&v6->_pairedWatch, watch);
     v8 = objc_alloc_init(CSLPRFObservationHelper);
     observationHelper = v7->_observationHelper;
     v7->_observationHelper = v8;

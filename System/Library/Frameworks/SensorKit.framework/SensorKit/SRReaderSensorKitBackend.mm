@@ -5,25 +5,25 @@
 + (void)initialize;
 - (NSXPCConnection)connection;
 - (SRReaderSensorKitBackend)init;
-- (SRReaderSensorKitBackend)initWithSensor:(id)a3 xpcConnection:(id)a4;
+- (SRReaderSensorKitBackend)initWithSensor:(id)sensor xpcConnection:(id)connection;
 - (id)datastore;
-- (void)continueFetchRequest:(void *)a3 from:(uint64_t)a4 to:(double)a5 withDatastoreFiles:(double)a6 callback:;
+- (void)continueFetchRequest:(void *)request from:(uint64_t)from to:(double)to withDatastoreFiles:(double)files callback:;
 - (void)dealloc;
-- (void)fetch:(id)a3 withCallback:(id)a4;
-- (void)fetchDevices:(id)a3 reply:(id)a4;
-- (void)fetchReaderMetadata:(id)a3 reply:(id)a4;
-- (void)fetchSampleBytesFrom:(uint64_t)a3 to:(void *)a4 inSegment:(uint64_t)a5 fetchRequest:(double)a6 retryAttempt:(double)a7 sampleCallback:;
-- (void)resetDatastoreFiles:(id)a3;
+- (void)fetch:(id)fetch withCallback:(id)callback;
+- (void)fetchDevices:(id)devices reply:(id)reply;
+- (void)fetchReaderMetadata:(id)metadata reply:(id)reply;
+- (void)fetchSampleBytesFrom:(uint64_t)from to:(void *)to inSegment:(uint64_t)segment fetchRequest:(double)request retryAttempt:(double)attempt sampleCallback:;
+- (void)resetDatastoreFiles:(id)files;
 - (void)setupConnection;
-- (void)startRecording:(id)a3 reply:(id)a4;
-- (void)stopRecording:(id)a3 reply:(id)a4;
+- (void)startRecording:(id)recording reply:(id)reply;
+- (void)stopRecording:(id)recording reply:(id)reply;
 @end
 
 @implementation SRReaderSensorKitBackend
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogSensorKitBackend = os_log_create("com.apple.SensorKit", "SensorKitReaderBackend");
   }
@@ -208,16 +208,16 @@ void __43__SRReaderSensorKitBackend_setupConnection__block_invoke_52(uint64_t a1
   return self->_connection;
 }
 
-- (SRReaderSensorKitBackend)initWithSensor:(id)a3 xpcConnection:(id)a4
+- (SRReaderSensorKitBackend)initWithSensor:(id)sensor xpcConnection:(id)connection
 {
   v8.receiver = self;
   v8.super_class = SRReaderSensorKitBackend;
   v6 = [(SRReaderSensorKitBackend *)&v8 init];
   if (v6)
   {
-    v6->_sensor = [a3 copy];
+    v6->_sensor = [sensor copy];
     objc_sync_enter(v6);
-    v6->_connection = a4;
+    v6->_connection = connection;
     objc_sync_exit(v6);
   }
 
@@ -236,7 +236,7 @@ void __43__SRReaderSensorKitBackend_setupConnection__block_invoke_52(uint64_t a1
   [(SRReaderSensorKitBackend *)&v4 dealloc];
 }
 
-- (void)fetch:(id)a3 withCallback:(id)a4
+- (void)fetch:(id)fetch withCallback:(id)callback
 {
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
@@ -244,25 +244,25 @@ void __43__SRReaderSensorKitBackend_setupConnection__block_invoke_52(uint64_t a1
   v13[2] = __47__SRReaderSensorKitBackend_fetch_withCallback___block_invoke;
   v13[3] = &unk_1E83302C8;
   v13[4] = self;
-  v13[5] = a4;
+  v13[5] = callback;
   sensor = self->_sensor;
-  v8 = [(SRReaderSensorKitBackend *)self connection];
+  connection = [(SRReaderSensorKitBackend *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__SRReaderSensorKitBackend_fetch_withCallback___block_invoke_58;
   v12[3] = &unk_1E83302F0;
-  v12[5] = a3;
+  v12[5] = fetch;
   v12[6] = v13;
   v12[4] = sensor;
-  v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v12];
+  v9 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__SRReaderSensorKitBackend_fetch_withCallback___block_invoke_60;
   v10[3] = &unk_1E8330318;
   objc_copyWeak(&v11, &location);
-  v10[4] = a3;
+  v10[4] = fetch;
   v10[5] = v13;
-  [v9 requestFileHandleForReading:a3 reply:v10];
+  [v9 requestFileHandleForReading:fetch reply:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
@@ -347,54 +347,54 @@ void __47__SRReaderSensorKitBackend_fetch_withCallback___block_invoke_60(uint64_
   [(SRReaderSensorKitBackend *)Weak continueFetchRequest:v5 from:a2 to:v9 withDatastoreFiles:v7 callback:v8];
 }
 
-- (void)continueFetchRequest:(void *)a3 from:(uint64_t)a4 to:(double)a5 withDatastoreFiles:(double)a6 callback:
+- (void)continueFetchRequest:(void *)request from:(uint64_t)from to:(double)to withDatastoreFiles:(double)files callback:
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
 LABEL_19:
     v24 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  v12 = [a3 objectForKeyedSubscript:0x1F48C0660];
+  v12 = [request objectForKeyedSubscript:0x1F48C0660];
   if (v12)
   {
     v13 = v12;
-    [a1 resetDatastoreFiles:{objc_msgSend(MEMORY[0x1E695DF20], "dictionary")}];
-    v14 = *(a4 + 16);
+    [self resetDatastoreFiles:{objc_msgSend(MEMORY[0x1E695DF20], "dictionary")}];
+    v14 = *(from + 16);
     v15 = *MEMORY[0x1E69E9840];
-    v16 = a4;
-    v17.n128_f64[0] = a6;
+    fromCopy2 = from;
+    v17.n128_f64[0] = files;
     v18 = v13;
 LABEL_4:
 
-    v14(v16, 0, 0, 0, 0, 1, 0, v18, v17);
+    v14(fromCopy2, 0, 0, 0, 0, 1, 0, v18, v17);
     return;
   }
 
-  [a1 resetDatastoreFiles:a3];
-  if (![a1 datastore])
+  [self resetDatastoreFiles:request];
+  if (![self datastore])
   {
-    v14 = *(a4 + 16);
+    v14 = *(from + 16);
     v22 = *MEMORY[0x1E69E9840];
-    v16 = a4;
-    v17.n128_f64[0] = a6;
+    fromCopy2 = from;
+    v17.n128_f64[0] = files;
     v18 = 0;
     goto LABEL_4;
   }
 
-  v19 = [a3 objectForKeyedSubscript:0x1F48C05C0];
+  v19 = [request objectForKeyedSubscript:0x1F48C05C0];
   if (!v19 || (v20 = [-[NSFileHandle pathname](v19) lastPathComponent]) == 0)
   {
-    if (a3)
+    if (request)
     {
-      if ([a3 objectForKeyedSubscript:0x1F48C05C0])
+      if ([request objectForKeyedSubscript:0x1F48C05C0])
       {
         v23 = SRLogSensorKitBackend;
         if (os_log_type_enabled(SRLogSensorKitBackend, OS_LOG_TYPE_ERROR))
         {
-          v25 = a1[4];
+          v25 = self[4];
           v26 = 138543362;
           v27 = v25;
           _os_log_error_impl(&dword_1C914D000, v23, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to get segment name from file handle", &v26, 0xCu);
@@ -402,19 +402,19 @@ LABEL_4:
       }
     }
 
-    (*(a4 + 16))(a4, 0, 0, 0, 0, 1, 0, 0, a6);
+    (*(from + 16))(from, 0, 0, 0, 0, 1, 0, 0, files);
     goto LABEL_19;
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  [(SRReaderSensorKitBackend *)a1 fetchSampleBytesFrom:v20 to:a2 inSegment:0 fetchRequest:a4 retryAttempt:a5 sampleCallback:a6];
+  [(SRReaderSensorKitBackend *)self fetchSampleBytesFrom:v20 to:a2 inSegment:0 fetchRequest:from retryAttempt:to sampleCallback:files];
 }
 
-- (void)fetchSampleBytesFrom:(uint64_t)a3 to:(void *)a4 inSegment:(uint64_t)a5 fetchRequest:(double)a6 retryAttempt:(double)a7 sampleCallback:
+- (void)fetchSampleBytesFrom:(uint64_t)from to:(void *)to inSegment:(uint64_t)segment fetchRequest:(double)request retryAttempt:(double)attempt sampleCallback:
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v37[0] = 0;
     v37[1] = v37;
@@ -436,11 +436,11 @@ LABEL_4:
     v34[3] = __Block_byref_object_copy_;
     v34[4] = __Block_byref_object_dispose_;
     v34[5] = 0;
-    v14 = [a1 datastore];
-    [(SRDatastore *)v14 startTimeOfCurrentSegment];
-    if (a6 > a7 || v16 > a7)
+    datastore = [self datastore];
+    [(SRDatastore *)datastore startTimeOfCurrentSegment];
+    if (request > attempt || v16 > attempt)
     {
-      (*(a5 + 16))(a5, 0, 0, 0, 0, 1, 0, 0, a7);
+      (*(segment + 16))(segment, 0, 0, 0, 0, 1, 0, 0, attempt);
     }
 
     else
@@ -448,7 +448,7 @@ LABEL_4:
       v33[0] = 0;
       v33[1] = v33;
       v33[2] = 0x2020000000;
-      *&v33[3] = a6;
+      *&v33[3] = request;
       v29 = 0;
       v30 = &v29;
       v31 = 0x2020000000;
@@ -463,15 +463,15 @@ LABEL_4:
       v28[9] = v34;
       v28[10] = v33;
       v28[11] = &v29;
-      v28[4] = a1;
-      v28[5] = a5;
-      [(SRDatastore *)v14 fetchSamplesFrom:v28 to:a6 callback:a7];
+      v28[4] = self;
+      v28[5] = segment;
+      [(SRDatastore *)datastore fetchSamplesFrom:v28 to:request callback:attempt];
       v17 = SRLogSensorKitBackend;
       if (v30[3])
       {
         if (os_log_type_enabled(SRLogSensorKitBackend, OS_LOG_TYPE_INFO))
         {
-          v18 = a1[4];
+          v18 = self[4];
           *buf = 138543618;
           v39 = v18;
           v40 = 2114;
@@ -479,32 +479,32 @@ LABEL_4:
           _os_log_impl(&dword_1C914D000, v17, OS_LOG_TYPE_INFO, "[%{public}@] Requesting next segment after %{public}@", buf, 0x16u);
         }
 
-        objc_initWeak(buf, a1);
-        v19 = a1[4];
-        v20 = [a1 connection];
+        objc_initWeak(buf, self);
+        v19 = self[4];
+        connection = [self connection];
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
         v26[2] = __103__SRReaderSensorKitBackend_fetchSampleBytesFrom_to_inSegment_fetchRequest_retryAttempt_sampleCallback___block_invoke_68;
         v26[3] = &unk_1E8330368;
-        v27[1] = a4;
-        v27[2] = *&a7;
-        v26[7] = a5;
+        v27[1] = to;
+        v27[2] = *&attempt;
+        v26[7] = segment;
         v26[4] = v19;
         objc_copyWeak(v27, buf);
-        v27[3] = *&a6;
+        v27[3] = *&request;
         v26[5] = a2;
-        v26[6] = a3;
-        v21 = [v20 remoteObjectProxyWithErrorHandler:v26];
+        v26[6] = from;
+        v21 = [connection remoteObjectProxyWithErrorHandler:v26];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __103__SRReaderSensorKitBackend_fetchSampleBytesFrom_to_inSegment_fetchRequest_retryAttempt_sampleCallback___block_invoke_69;
         v24[3] = &unk_1E8330390;
         objc_copyWeak(v25, buf);
-        v24[5] = a5;
+        v24[5] = segment;
         v24[6] = v33;
-        v25[1] = *&a7;
-        v24[4] = a3;
-        [v21 requestFileHandleForReading:a3 afterSegment:a2 reply:v24];
+        v25[1] = *&attempt;
+        v24[4] = from;
+        [v21 requestFileHandleForReading:from afterSegment:a2 reply:v24];
         objc_destroyWeak(v25);
         objc_destroyWeak(v27);
         objc_destroyWeak(buf);
@@ -512,7 +512,7 @@ LABEL_4:
 
       else if (os_log_type_enabled(SRLogSensorKitBackend, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = a1[4];
+        v22 = self[4];
         *buf = 138543362;
         v39 = v22;
         _os_log_impl(&dword_1C914D000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ending fetching early due to an error or delegate's intent", buf, 0xCu);
@@ -673,16 +673,16 @@ uint64_t __103__SRReaderSensorKitBackend_fetchSampleBytesFrom_to_inSegment_fetch
   return [(SRReaderSensorKitBackend *)Weak continueFetchRequest:v8 from:a2 to:v5 withDatastoreFiles:v6 callback:v7];
 }
 
-- (void)fetchReaderMetadata:(id)a3 reply:(id)a4
+- (void)fetchReaderMetadata:(id)metadata reply:(id)reply
 {
   sensor = self->_sensor;
-  v7 = [(SRReaderSensorKitBackend *)self connection];
+  connection = [(SRReaderSensorKitBackend *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__SRReaderSensorKitBackend_fetchReaderMetadata_reply___block_invoke;
   v8[3] = &unk_1E83303B8;
   v8[4] = sensor;
-  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](v7 synchronousRemoteObjectProxyWithErrorHandler:{v8), "fetchReaderMetadata:reply:", a3, a4}];
+  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](connection synchronousRemoteObjectProxyWithErrorHandler:{v8), "fetchReaderMetadata:reply:", metadata, reply}];
 }
 
 void __54__SRReaderSensorKitBackend_fetchReaderMetadata_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -702,23 +702,23 @@ void __54__SRReaderSensorKitBackend_fetchReaderMetadata_reply___block_invoke(uin
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRecording:(id)a3 reply:(id)a4
+- (void)startRecording:(id)recording reply:(id)reply
 {
   sensor = self->_sensor;
-  v7 = [(SRReaderSensorKitBackend *)self connection];
+  connection = [(SRReaderSensorKitBackend *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__SRReaderSensorKitBackend_startRecording_reply___block_invoke;
   v10[3] = &unk_1E83303E0;
   v10[4] = sensor;
-  v10[5] = a4;
-  v8 = [(NSXPCConnection *)v7 remoteObjectProxyWithErrorHandler:v10];
+  v10[5] = reply;
+  v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__SRReaderSensorKitBackend_startRecording_reply___block_invoke_70;
   v9[3] = &unk_1E8330408;
-  v9[4] = a4;
-  [v8 startRecording:a3 reply:v9];
+  v9[4] = reply;
+  [v8 startRecording:recording reply:v9];
 }
 
 uint64_t __49__SRReaderSensorKitBackend_startRecording_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -740,17 +740,17 @@ uint64_t __49__SRReaderSensorKitBackend_startRecording_reply___block_invoke(uint
   return result;
 }
 
-- (void)stopRecording:(id)a3 reply:(id)a4
+- (void)stopRecording:(id)recording reply:(id)reply
 {
   sensor = self->_sensor;
-  v7 = [(SRReaderSensorKitBackend *)self connection];
+  connection = [(SRReaderSensorKitBackend *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__SRReaderSensorKitBackend_stopRecording_reply___block_invoke;
   v8[3] = &unk_1E83303E0;
   v8[4] = sensor;
-  v8[5] = a4;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](v7 remoteObjectProxyWithErrorHandler:{v8), "stopRecording:reply:", a3, a4}];
+  v8[5] = reply;
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](connection remoteObjectProxyWithErrorHandler:{v8), "stopRecording:reply:", recording, reply}];
 }
 
 uint64_t __48__SRReaderSensorKitBackend_stopRecording_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -772,17 +772,17 @@ uint64_t __48__SRReaderSensorKitBackend_stopRecording_reply___block_invoke(uint6
   return result;
 }
 
-- (void)fetchDevices:(id)a3 reply:(id)a4
+- (void)fetchDevices:(id)devices reply:(id)reply
 {
   sensor = self->_sensor;
-  v7 = [(SRReaderSensorKitBackend *)self connection];
+  connection = [(SRReaderSensorKitBackend *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__SRReaderSensorKitBackend_fetchDevices_reply___block_invoke;
   v8[3] = &unk_1E83303E0;
   v8[4] = sensor;
-  v8[5] = a4;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](v7 remoteObjectProxyWithErrorHandler:{v8), "fetchAllDevices:reply:", a3, a4}];
+  v8[5] = reply;
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](connection remoteObjectProxyWithErrorHandler:{v8), "fetchAllDevices:reply:", devices, reply}];
 }
 
 uint64_t __47__SRReaderSensorKitBackend_fetchDevices_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -804,11 +804,11 @@ uint64_t __47__SRReaderSensorKitBackend_fetchDevices_reply___block_invoke(uint64
   return result;
 }
 
-- (void)resetDatastoreFiles:(id)a3
+- (void)resetDatastoreFiles:(id)files
 {
   if (self)
   {
-    objc_setProperty_atomic(self, a2, a3, 40);
+    objc_setProperty_atomic(self, a2, files, 40);
   }
 }
 

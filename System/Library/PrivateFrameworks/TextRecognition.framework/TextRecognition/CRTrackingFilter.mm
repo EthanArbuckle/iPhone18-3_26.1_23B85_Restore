@@ -1,20 +1,20 @@
 @interface CRTrackingFilter
-+ (BOOL)shouldEdgeIntersectionFilterQuad:(id)a3 originalQuad:(id)a4 imageSize:(CGSize)a5;
-+ (BOOL)shouldFilterHomographyWithResultQuad:(id)a3 originalQuad:(id)a4 imageSize:(CGSize)a5;
-+ (BOOL)shouldStartTrackingGroup:(id)a3;
-+ (void)filterLowQualityTranscriptRegions:(id)a3;
++ (BOOL)shouldEdgeIntersectionFilterQuad:(id)quad originalQuad:(id)originalQuad imageSize:(CGSize)size;
++ (BOOL)shouldFilterHomographyWithResultQuad:(id)quad originalQuad:(id)originalQuad imageSize:(CGSize)size;
++ (BOOL)shouldStartTrackingGroup:(id)group;
++ (void)filterLowQualityTranscriptRegions:(id)regions;
 @end
 
 @implementation CRTrackingFilter
 
-+ (BOOL)shouldStartTrackingGroup:(id)a3
++ (BOOL)shouldStartTrackingGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 averageLineHeight];
-  if (v4)
+  groupCopy = group;
+  averageLineHeight = [groupCopy averageLineHeight];
+  if (averageLineHeight)
   {
-    v5 = [v3 averageLineHeight];
-    [v5 doubleValue];
+    averageLineHeight2 = [groupCopy averageLineHeight];
+    [averageLineHeight2 doubleValue];
     v7 = v6 >= 5.0;
   }
 
@@ -26,21 +26,21 @@
   return v7;
 }
 
-+ (void)filterLowQualityTranscriptRegions:(id)a3
++ (void)filterLowQualityTranscriptRegions:(id)regions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  regionsCopy = regions;
   if (qword_1ED9600A0 != -1)
   {
     dispatch_once(&qword_1ED9600A0, &__block_literal_global_15);
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = regionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -56,13 +56,13 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 text];
-        v12 = [v11 length];
+        text = [v10 text];
+        v12 = [text length];
 
         if (v12 != 1)
         {
-          v13 = [v10 text];
-          v14 = [v13 rangeOfCharacterFromSet:_MergedGlobals_20 options:2];
+          text2 = [v10 text];
+          v14 = [text2 rangeOfCharacterFromSet:_MergedGlobals_20 options:2];
 
           if (v14 != 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -70,7 +70,7 @@
           }
         }
 
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -79,7 +79,7 @@
     while (v7);
   }
 
-  [v5 removeObjectsInArray:v4];
+  [v5 removeObjectsInArray:array];
 }
 
 void __54__CRTrackingFilter_filterLowQualityTranscriptRegions___block_invoke()
@@ -99,21 +99,21 @@ void __54__CRTrackingFilter_filterLowQualityTranscriptRegions___block_invoke()
   _MergedGlobals_20 = v3;
 }
 
-+ (BOOL)shouldFilterHomographyWithResultQuad:(id)a3 originalQuad:(id)a4 imageSize:(CGSize)a5
++ (BOOL)shouldFilterHomographyWithResultQuad:(id)quad originalQuad:(id)originalQuad imageSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  [v8 squaredDistanceFromCorrespondingCornersOfQuad:a4];
-  if (v9 > 40000.0 || ([v8 hasIntersectingEdges] & 1) != 0 || (objc_msgSend(v8, "boundingBox"), v10 > width * 1.20000005) || (objc_msgSend(v8, "boundingBox"), v11 > height * 1.20000005))
+  height = size.height;
+  width = size.width;
+  quadCopy = quad;
+  [quadCopy squaredDistanceFromCorrespondingCornersOfQuad:originalQuad];
+  if (v9 > 40000.0 || ([quadCopy hasIntersectingEdges] & 1) != 0 || (objc_msgSend(quadCopy, "boundingBox"), v10 > width * 1.20000005) || (objc_msgSend(quadCopy, "boundingBox"), v11 > height * 1.20000005))
   {
     v12 = 1;
   }
 
   else
   {
-    v14 = [v8 cornerAngles];
-    v15 = [v14 sortedArrayUsingSelector:sel_compare_];
+    cornerAngles = [quadCopy cornerAngles];
+    v15 = [cornerAngles sortedArrayUsingSelector:sel_compare_];
     v16 = [v15 objectAtIndexedSubscript:0];
     [v16 doubleValue];
     v18 = v17;
@@ -127,13 +127,13 @@ void __54__CRTrackingFilter_filterLowQualityTranscriptRegions___block_invoke()
   return v12;
 }
 
-+ (BOOL)shouldEdgeIntersectionFilterQuad:(id)a3 originalQuad:(id)a4 imageSize:(CGSize)a5
++ (BOOL)shouldEdgeIntersectionFilterQuad:(id)quad originalQuad:(id)originalQuad imageSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  quadCopy = quad;
   v9 = fmin(width, height);
-  v10 = [a4 intersectsImageMargin:v9 * 0.0399999991 imageSize:{width, height}] && !objc_msgSend(v8, "intersectsImageMargin:imageSize:", v9 * 0.119999997, width, height);
+  v10 = [originalQuad intersectsImageMargin:v9 * 0.0399999991 imageSize:{width, height}] && !objc_msgSend(quadCopy, "intersectsImageMargin:imageSize:", v9 * 0.119999997, width, height);
 
   return v10;
 }

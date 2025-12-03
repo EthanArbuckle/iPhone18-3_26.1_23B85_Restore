@@ -1,23 +1,23 @@
 @interface PXUIWidgetHeaderBar
 - (double)viewHeight;
 - (id)createView;
-- (void)setDisclosureTitle:(id)a3;
-- (void)setSpec:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setDisclosureTitle:(id)title;
+- (void)setSpec:(id)spec;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)updateView;
 @end
 
 @implementation PXUIWidgetHeaderBar
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v4 = a3;
-  v5 = [(PXWidgetBar *)self spec];
+  specCopy = spec;
+  spec = [(PXWidgetBar *)self spec];
   v7.receiver = self;
   v7.super_class = PXUIWidgetHeaderBar;
-  [(PXWidgetBar *)&v7 setSpec:v4];
-  if (v5 != v4 && ([v4 isEqual:v5] & 1) == 0)
+  [(PXWidgetBar *)&v7 setSpec:specCopy];
+  if (spec != specCopy && ([specCopy isEqual:spec] & 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -36,14 +36,14 @@ uint64_t __31__PXUIWidgetHeaderBar_setSpec___block_invoke(uint64_t a1)
   return [v2 invalidateViewHeight];
 }
 
-- (void)setDisclosureTitle:(id)a3
+- (void)setDisclosureTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PXWidgetBar *)self disclosureTitle];
+  titleCopy = title;
+  disclosureTitle = [(PXWidgetBar *)self disclosureTitle];
   v7.receiver = self;
   v7.super_class = PXUIWidgetHeaderBar;
-  [(PXWidgetBar *)&v7 setDisclosureTitle:v4];
-  if (v5 != v4 && ([v4 isEqual:v5] & 1) == 0)
+  [(PXWidgetBar *)&v7 setDisclosureTitle:titleCopy];
+  if (disclosureTitle != titleCopy && ([titleCopy isEqual:disclosureTitle] & 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -62,14 +62,14 @@ uint64_t __42__PXUIWidgetHeaderBar_setDisclosureTitle___block_invoke(uint64_t a1
   return [v2 invalidateViewHeight];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(PXWidgetBar *)self subtitle];
+  subtitleCopy = subtitle;
+  subtitle = [(PXWidgetBar *)self subtitle];
   v7.receiver = self;
   v7.super_class = PXUIWidgetHeaderBar;
-  [(PXWidgetBar *)&v7 setSubtitle:v4];
-  if (v5 != v4 && ([v4 isEqual:v5] & 1) == 0)
+  [(PXWidgetBar *)&v7 setSubtitle:subtitleCopy];
+  if (subtitle != subtitleCopy && ([subtitleCopy isEqual:subtitle] & 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -88,14 +88,14 @@ uint64_t __35__PXUIWidgetHeaderBar_setSubtitle___block_invoke(uint64_t a1)
   return [v2 invalidateViewHeight];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PXWidgetBar *)self title];
+  titleCopy = title;
+  title = [(PXWidgetBar *)self title];
   v7.receiver = self;
   v7.super_class = PXUIWidgetHeaderBar;
-  [(PXWidgetBar *)&v7 setTitle:v4];
-  if (v5 != v4 && ([v4 isEqual:v5] & 1) == 0)
+  [(PXWidgetBar *)&v7 setTitle:titleCopy];
+  if (title != titleCopy && ([titleCopy isEqual:title] & 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -116,8 +116,8 @@ uint64_t __32__PXUIWidgetHeaderBar_setTitle___block_invoke(uint64_t a1)
 
 - (double)viewHeight
 {
-  v2 = [(PXWidgetBar *)self view];
-  [v2 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  view = [(PXWidgetBar *)self view];
+  [view sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v4 = v3;
 
   return v4;
@@ -128,19 +128,19 @@ uint64_t __32__PXUIWidgetHeaderBar_setTitle___block_invoke(uint64_t a1)
   v30.receiver = self;
   v30.super_class = PXUIWidgetHeaderBar;
   [(PXUIWidgetBar *)&v30 updateView];
-  v3 = [(PXWidgetBar *)self spec];
-  [v3 contentInsets];
+  spec = [(PXWidgetBar *)self spec];
+  [spec contentInsets];
   v5 = v4;
   v7 = v6;
-  [v3 minimumDistanceBetweenTopAndFirstAscender];
+  [spec minimumDistanceBetweenTopAndFirstAscender];
   v9 = v8;
-  [v3 minimumDistanceBetweenLastDescenderAndBottom];
+  [spec minimumDistanceBetweenLastDescenderAndBottom];
   v11 = v10;
-  v12 = [(PXWidgetBar *)self disclosureTitle];
-  v13 = [v12 length];
+  disclosureTitle = [(PXWidgetBar *)self disclosureTitle];
+  v13 = [disclosureTitle length];
   if (v13)
   {
-    v14 = v12;
+    v14 = disclosureTitle;
   }
 
   else
@@ -149,23 +149,23 @@ uint64_t __32__PXUIWidgetHeaderBar_setTitle___block_invoke(uint64_t a1)
   }
 
   v15 = v13 != 0;
-  v16 = [(PXWidgetBar *)self view];
+  view = [(PXWidgetBar *)self view];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __33__PXUIWidgetHeaderBar_updateView__block_invoke;
   v20[3] = &unk_1E772C8E8;
-  v21 = v16;
-  v22 = self;
+  v21 = view;
+  selfCopy = self;
   v23 = v14;
-  v24 = v3;
+  v24 = spec;
   v29 = v15;
   v25 = v9;
   v26 = v5;
   v27 = v11;
   v28 = v7;
-  v17 = v3;
+  v17 = spec;
   v18 = v14;
-  v19 = v16;
+  v19 = view;
   [v19 performChanges:v20];
 }
 

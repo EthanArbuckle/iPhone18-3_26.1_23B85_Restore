@@ -1,15 +1,15 @@
 @interface PUGridTilingLayout
-- (CGRect)_frameForItemAtIndexPath:(id)a3;
+- (CGRect)_frameForItemAtIndexPath:(id)path;
 - (CGSize)estimatedSectionSize;
 - (CGSize)interItemSpacing;
 - (CGSize)itemSize;
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4;
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items;
 - (PUGridTilingLayout)init;
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4;
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind;
 - (int64_t)_numberOfColumns;
-- (void)addLayoutInfosForTilesInRect:(CGRect)a3 section:(int64_t)a4 toSet:(id)a5;
+- (void)addLayoutInfosForTilesInRect:(CGRect)rect section:(int64_t)section toSet:(id)set;
 - (void)prepareLayout;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setVisibleRect:(CGRect)rect;
 @end
 
 @implementation PUGridTilingLayout
@@ -37,8 +37,8 @@
   result = self->_numberOfColumns;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUGridTilingLayout.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"_numberOfColumns != NSNotFound"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUGridTilingLayout.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"_numberOfColumns != NSNotFound"}];
 
     return self->_numberOfColumns;
   }
@@ -46,21 +46,21 @@
   return result;
 }
 
-- (CGRect)_frameForItemAtIndexPath:(id)a3
+- (CGRect)_frameForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  -[PUSectionedTilingLayout boundsForSection:](self, "boundsForSection:", [v4 section]);
+  pathCopy = path;
+  -[PUSectionedTilingLayout boundsForSection:](self, "boundsForSection:", [pathCopy section]);
   v6 = v5;
   v8 = v7;
-  v9 = [(PUGridTilingLayout *)self _numberOfColumns];
-  v10 = [v4 item];
+  _numberOfColumns = [(PUGridTilingLayout *)self _numberOfColumns];
+  item = [pathCopy item];
 
   [(PUGridTilingLayout *)self itemSize];
   v12 = v11;
   v14 = v13;
   [(PUGridTilingLayout *)self interItemSpacing];
-  v16 = v6 + (v10 % v9) * (v12 + v15);
-  v18 = v8 + (v10 / v9) * (v14 + v17);
+  v16 = v6 + (item % _numberOfColumns) * (v12 + v15);
+  v18 = v8 + (item / _numberOfColumns) * (v14 + v17);
   v19 = v12;
   v20 = v14;
   result.size.height = v20;
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items
 {
   [(PUGridTilingLayout *)self itemSize];
   v7 = v6;
@@ -78,43 +78,43 @@
   [(PUGridTilingLayout *)self interItemSpacing];
   v11 = v10;
   v13 = v12;
-  v14 = [(PUGridTilingLayout *)self _numberOfColumns];
-  if (a4 < 1)
+  _numberOfColumns = [(PUGridTilingLayout *)self _numberOfColumns];
+  if (items < 1)
   {
     v15 = *(MEMORY[0x1E695F060] + 8);
   }
 
   else
   {
-    v15 = -(v13 - ((a4 + v14 - 1) / v14) * (v9 + v13));
+    v15 = -(v13 - ((items + _numberOfColumns - 1) / _numberOfColumns) * (v9 + v13));
   }
 
-  v16 = -(v11 - v14 * (v7 + v11));
+  v16 = -(v11 - _numberOfColumns * (v7 + v11));
   result.height = v15;
   result.width = v16;
   return result;
 }
 
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"PUTileKindItemContent"])
+  pathCopy = path;
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:@"PUTileKindItemContent"])
   {
-    [(PUGridTilingLayout *)self _frameForItemAtIndexPath:v6];
+    [(PUGridTilingLayout *)self _frameForItemAtIndexPath:pathCopy];
     v9 = v8;
     v11 = v10;
-    v12 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v6 kind:v7];
+    v12 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v13 = [PUTileLayoutInfo alloc];
     UIRectGetCenter();
     v15 = v14;
     v17 = v16;
-    v18 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
     v19 = *(MEMORY[0x1E695EFD0] + 16);
     v22[0] = *MEMORY[0x1E695EFD0];
     v22[1] = v19;
     v22[2] = *(MEMORY[0x1E695EFD0] + 32);
-    v20 = [(PUTileLayoutInfo *)v13 initWithTileIdentifier:v12 center:v22 size:v18 alpha:v15 transform:v17 zPosition:v9 coordinateSystem:v11, 1.0, 0.0];
+    v20 = [(PUTileLayoutInfo *)v13 initWithTileIdentifier:v12 center:v22 size:coordinateSystem alpha:v15 transform:v17 zPosition:v9 coordinateSystem:v11, 1.0, 0.0];
   }
 
   else
@@ -125,23 +125,23 @@
   return v20;
 }
 
-- (void)addLayoutInfosForTilesInRect:(CGRect)a3 section:(int64_t)a4 toSet:(id)a5
+- (void)addLayoutInfosForTilesInRect:(CGRect)rect section:(int64_t)section toSet:(id)set
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  setCopy = set;
   v17.receiver = self;
   v17.super_class = PUGridTilingLayout;
-  [(PUSectionedTilingLayout *)&v17 addLayoutInfosForTilesInRect:a4 section:v11 toSet:x, y, width, height];
-  v12 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:a4];
+  [(PUSectionedTilingLayout *)&v17 addLayoutInfosForTilesInRect:section section:setCopy toSet:x, y, width, height];
+  v12 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:section];
   if (v12 >= 1)
   {
     v13 = v12;
     for (i = 0; i != v13; ++i)
     {
-      v15 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:a4];
+      v15 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:section];
       [(PUGridTilingLayout *)self _frameForItemAtIndexPath:v15];
       v19.origin.x = x;
       v19.origin.y = y;
@@ -150,7 +150,7 @@
       if (CGRectIntersectsRect(v18, v19))
       {
         v16 = [(PUGridTilingLayout *)self layoutInfoForTileWithIndexPath:v15 kind:@"PUTileKindItemContent"];
-        [v11 addObject:v16];
+        [setCopy addObject:v16];
       }
     }
   }
@@ -182,12 +182,12 @@
   self->_numberOfColumns = vcvtmd_s64_f64((v6 + CGRectGetWidth(v8)) / (v4 + v6));
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PUTilingLayout *)self visibleRect];
   v9 = v8;
   v11 = v10;

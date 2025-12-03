@@ -1,6 +1,6 @@
 @interface AMSURLResponseDecoder
 - (AMSURLResponseDecoder)init;
-- (id)resultFromResult:(id)a3 error:(id *)a4;
+- (id)resultFromResult:(id)result error:(id *)error;
 @end
 
 @implementation AMSURLResponseDecoder
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (id)resultFromResult:(id)a3 error:(id *)a4
+- (id)resultFromResult:(id)result error:(id *)error
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 response];
+  resultCopy = result;
+  response = [resultCopy response];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -36,41 +36,41 @@
     goto LABEL_14;
   }
 
-  v9 = [v6 response];
-  v10 = [(AMSURLResponseDecoder *)self allowedStatusCodes];
-  if (v10)
+  response2 = [resultCopy response];
+  allowedStatusCodes = [(AMSURLResponseDecoder *)self allowedStatusCodes];
+  if (allowedStatusCodes)
   {
-    v11 = [(AMSURLResponseDecoder *)self allowedStatusCodes];
-    v12 = [v11 containsIndex:{objc_msgSend(v9, "statusCode")}];
+    allowedStatusCodes2 = [(AMSURLResponseDecoder *)self allowedStatusCodes];
+    v12 = [allowedStatusCodes2 containsIndex:{objc_msgSend(response2, "statusCode")}];
 
     if (v12)
     {
-      v10 = 0;
+      allowedStatusCodes = 0;
     }
 
     else
     {
       v34[0] = @"AMSStatusCode";
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "statusCode")}];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(response2, "statusCode")}];
       v35[0] = v13;
       v34[1] = @"AMSURL";
-      v14 = [v6 response];
-      v15 = [v14 URL];
+      response3 = [resultCopy response];
+      v15 = [response3 URL];
       v16 = AMSHashIfNeeded(v15);
       v35[1] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
-      v10 = AMSCustomError(@"AMSErrorDomain", 301, @"Invalid Status Code", @"The response has an invalid status code", v17, 0);
+      allowedStatusCodes = AMSCustomError(@"AMSErrorDomain", 301, @"Invalid Status Code", @"The response has an invalid status code", v17, 0);
     }
   }
 
-  v18 = [v9 ams_valueForHTTPHeaderField:@"Content-Type"];
-  v19 = [(AMSURLResponseDecoder *)self allowedContentTypes];
-  if (v19)
+  v18 = [response2 ams_valueForHTTPHeaderField:@"Content-Type"];
+  allowedContentTypes = [(AMSURLResponseDecoder *)self allowedContentTypes];
+  if (allowedContentTypes)
   {
-    v20 = v19;
-    v21 = [(AMSURLResponseDecoder *)self allowedContentTypes];
-    v22 = [v21 containsObject:v18];
+    v20 = allowedContentTypes;
+    allowedContentTypes2 = [(AMSURLResponseDecoder *)self allowedContentTypes];
+    v22 = [allowedContentTypes2 containsObject:v18];
 
     if ((v22 & 1) == 0)
     {
@@ -83,25 +83,25 @@
       v33[0] = v23;
       v32[0] = @"AMSContentType";
       v32[1] = @"AMSURL";
-      v24 = [v6 response];
-      v25 = [v24 URL];
+      response4 = [resultCopy response];
+      v25 = [response4 URL];
       v26 = AMSHashIfNeeded(v25);
       v33[1] = v26;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
 
       v28 = AMSCustomError(@"AMSErrorDomain", 301, @"Invalid Content Type", @"The response has an invalid content type", v27, 0);
 
-      v10 = v28;
+      allowedStatusCodes = v28;
     }
   }
 
-  if (v10)
+  if (allowedStatusCodes)
   {
-    if (a4)
+    if (error)
     {
-      v29 = v10;
+      v29 = allowedStatusCodes;
       v30 = 0;
-      *a4 = v10;
+      *error = allowedStatusCodes;
     }
 
     else
@@ -113,8 +113,8 @@
   else
   {
 LABEL_14:
-    v30 = v6;
-    v10 = 0;
+    v30 = resultCopy;
+    allowedStatusCodes = 0;
   }
 
   return v30;

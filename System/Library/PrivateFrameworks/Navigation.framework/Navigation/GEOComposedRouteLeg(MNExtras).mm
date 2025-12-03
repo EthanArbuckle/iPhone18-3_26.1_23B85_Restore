@@ -29,24 +29,24 @@
 
 - (id)destinationListInstructionString
 {
-  v2 = [a1 destinationListInstruction];
-  v3 = [a1 destination];
-  v4 = [a1 waypointSubstitutedComposedStringForString:v2 waypoint:v3 useWaypointAddress:0];
+  destinationListInstruction = [self destinationListInstruction];
+  destination = [self destination];
+  v4 = [self waypointSubstitutedComposedStringForString:destinationListInstruction waypoint:destination useWaypointAddress:0];
 
-  v5 = [v4 stringWithDefaultOptions];
+  stringWithDefaultOptions = [v4 stringWithDefaultOptions];
 
-  return v5;
+  return stringWithDefaultOptions;
 }
 
 - (id)originListInstructionString
 {
-  v2 = [a1 originListInstruction];
-  v3 = [a1 origin];
-  v4 = [a1 waypointSubstitutedComposedStringForString:v2 waypoint:v3 useWaypointAddress:0];
+  originListInstruction = [self originListInstruction];
+  origin = [self origin];
+  v4 = [self waypointSubstitutedComposedStringForString:originListInstruction waypoint:origin useWaypointAddress:0];
 
-  v5 = [v4 stringWithDefaultOptions];
+  stringWithDefaultOptions = [v4 stringWithDefaultOptions];
 
-  return v5;
+  return stringWithDefaultOptions;
 }
 
 @end

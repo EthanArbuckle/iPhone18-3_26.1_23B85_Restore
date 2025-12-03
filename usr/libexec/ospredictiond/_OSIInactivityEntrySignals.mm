@@ -1,9 +1,9 @@
 @interface _OSIInactivityEntrySignals
-- (BOOL)checkInactivitySignalsWithTimeSinceInactive:(double)a3;
-- (BOOL)checkSleepSignalsWithTimeSinceInactive:(double)a3 andPredictorType:(id)a4;
+- (BOOL)checkInactivitySignalsWithTimeSinceInactive:(double)inactive;
+- (BOOL)checkSleepSignalsWithTimeSinceInactive:(double)inactive andPredictorType:(id)type;
 - (_OSIInactivityEntrySignals)init;
-- (double)dynamicMinPctStationaryThresholdSinceWait:(double)a3;
-- (int)dynamicMaxDarkLuxThresholdSinceWait:(double)a3;
+- (double)dynamicMinPctStationaryThresholdSinceWait:(double)wait;
+- (int)dynamicMaxDarkLuxThresholdSinceWait:(double)wait;
 - (void)updateTrialParameters;
 @end
 
@@ -114,11 +114,11 @@
   self->_wakeOffset = v23;
 }
 
-- (BOOL)checkSleepSignalsWithTimeSinceInactive:(double)a3 andPredictorType:(id)a4
+- (BOOL)checkSleepSignalsWithTimeSinceInactive:(double)inactive andPredictorType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v7 = +[NSDate date];
-  v8 = [(_OSIInactivityEntrySignals *)self dynamicMaxDarkLuxThresholdSinceWait:a3];
+  v8 = [(_OSIInactivityEntrySignals *)self dynamicMaxDarkLuxThresholdSinceWait:inactive];
   self->_lux = [(OSIAmbientLightMonitor *)self->_lightMonitor currentAmbientLightLevel];
   v9 = MGGetBoolAnswer();
   self->_canAlwaysReadLux = v9;
@@ -147,9 +147,9 @@
     v11 = 1;
   }
 
-  v14 = [(OSIBLSStateMonitor *)self->_blsStateMonitor aodOffOrSuppressed];
-  self->_aodAlreadySuppressedOrOff = v14;
-  if (v14)
+  aodOffOrSuppressed = [(OSIBLSStateMonitor *)self->_blsStateMonitor aodOffOrSuppressed];
+  self->_aodAlreadySuppressedOrOff = aodOffOrSuppressed;
+  if (aodOffOrSuppressed)
   {
     v15 = self->_log;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -158,12 +158,12 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Restricting entry because already suppressed", &v37, 2u);
     }
 
-    [(_OSIInactivityEntrySignals *)self dynamicMinPctStationaryThresholdSinceWait:a3];
+    [(_OSIInactivityEntrySignals *)self dynamicMinPctStationaryThresholdSinceWait:inactive];
     v17 = v16;
     goto LABEL_14;
   }
 
-  [(_OSIInactivityEntrySignals *)self dynamicMinPctStationaryThresholdSinceWait:a3];
+  [(_OSIInactivityEntrySignals *)self dynamicMinPctStationaryThresholdSinceWait:inactive];
   v17 = v18;
   if (!v11)
   {
@@ -177,9 +177,9 @@ LABEL_14:
   v20 = 1;
 LABEL_15:
   self->_pctStationary = v19;
-  v21 = [(OSIMotionMonitor *)self->_motionMonitor currentlyInCar];
-  self->_inCar = v21;
-  if (self->_pctStationary < v17 || v21)
+  currentlyInCar = [(OSIMotionMonitor *)self->_motionMonitor currentlyInCar];
+  self->_inCar = currentlyInCar;
+  if (self->_pctStationary < v17 || currentlyInCar)
   {
     v26 = self->_log;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -232,7 +232,7 @@ LABEL_26:
   v30 = +[_CDClientContext userContext];
   self->_pluggedIn = [OSIntelligenceUtilities isPluggedInWithContext:v30];
 
-  if (self->_useSleep && !self->_inSleepWindow && (([v6 isEqualToString:@"ruleBased"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"backup")))
+  if (self->_useSleep && !self->_inSleepWindow && (([typeCopy isEqualToString:@"ruleBased"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"backup")))
   {
     v31 = self->_log;
     v25 = 0;
@@ -260,13 +260,13 @@ LABEL_26:
   return areSleepHeuristicsMet;
 }
 
-- (BOOL)checkInactivitySignalsWithTimeSinceInactive:(double)a3
+- (BOOL)checkInactivitySignalsWithTimeSinceInactive:(double)inactive
 {
   [(OSIMotionMonitor *)self->_motionMonitor percentStationaryOverDuration:self->_stationaryLookbackSeconds];
   self->_pctStationary = v5;
   self->_inCar = [(OSIMotionMonitor *)self->_motionMonitor currentlyInCar];
   self->_hasRecentPlaybackChange = [(OSIMediaPlaybackMonitor *)self->_mediaPlaybackMonitor hasPlaybackStateChangeRecently:self->_playbackLookbackSeconds];
-  [(_OSIInactivityEntrySignals *)self dynamicMinPctStationaryThresholdSinceWait:a3];
+  [(_OSIInactivityEntrySignals *)self dynamicMinPctStationaryThresholdSinceWait:inactive];
   v7 = v6;
   if (self->_pctStationary < v6 || self->_inCar)
   {
@@ -324,9 +324,9 @@ LABEL_26:
   return self->_areInactiveHeuristicsMet;
 }
 
-- (int)dynamicMaxDarkLuxThresholdSinceWait:(double)a3
+- (int)dynamicMaxDarkLuxThresholdSinceWait:(double)wait
 {
-  v3 = self->_requeryDelta < a3 || a3 < 0.0;
+  v3 = self->_requeryDelta < wait || wait < 0.0;
   v4 = 36;
   if (v3)
   {
@@ -336,14 +336,14 @@ LABEL_26:
   return *(&self->super.isa + v4);
 }
 
-- (double)dynamicMinPctStationaryThresholdSinceWait:(double)a3
+- (double)dynamicMinPctStationaryThresholdSinceWait:(double)wait
 {
-  if (a3 >= 0.0)
+  if (wait >= 0.0)
   {
-    if (a3 >= 15.0)
+    if (wait >= 15.0)
     {
       v3 = 80;
-      if (self->_requeryDelta > a3)
+      if (self->_requeryDelta > wait)
       {
         v3 = 104;
       }

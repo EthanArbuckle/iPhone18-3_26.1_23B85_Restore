@@ -1,38 +1,38 @@
 @interface CSDCTCallCapabilities
-+ (id)callCapabilitiesForCTCallCapabilities:(id)a3;
-+ (id)callCapabilitiesForCallManagementStateInfo:(id)a3;
++ (id)callCapabilitiesForCTCallCapabilities:(id)capabilities;
++ (id)callCapabilitiesForCallManagementStateInfo:(id)info;
 - (id)debugDescription;
 @end
 
 @implementation CSDCTCallCapabilities
 
-+ (id)callCapabilitiesForCTCallCapabilities:(id)a3
++ (id)callCapabilitiesForCTCallCapabilities:(id)capabilities
 {
-  v3 = a3;
+  capabilitiesCopy = capabilities;
   v4 = objc_alloc_init(CSDCTCallCapabilities);
-  -[CSDCTCallCapabilities setCsCallingAvailable:](v4, "setCsCallingAvailable:", [v3 isCSCallingAvailable]);
-  -[CSDCTCallCapabilities setVoLTECallingAvailable:](v4, "setVoLTECallingAvailable:", [v3 isVoLTECallingAvailable]);
-  -[CSDCTCallCapabilities setWiFiCallingAvailable:](v4, "setWiFiCallingAvailable:", [v3 isWifiCallingAvailable]);
-  -[CSDCTCallCapabilities setWiFiEmergencyCallingAllowed:](v4, "setWiFiEmergencyCallingAllowed:", [v3 isEmergencyCallingOnWifiAllowed]);
-  v5 = [v3 isEmergencyCallingOnWifiAvailable];
+  -[CSDCTCallCapabilities setCsCallingAvailable:](v4, "setCsCallingAvailable:", [capabilitiesCopy isCSCallingAvailable]);
+  -[CSDCTCallCapabilities setVoLTECallingAvailable:](v4, "setVoLTECallingAvailable:", [capabilitiesCopy isVoLTECallingAvailable]);
+  -[CSDCTCallCapabilities setWiFiCallingAvailable:](v4, "setWiFiCallingAvailable:", [capabilitiesCopy isWifiCallingAvailable]);
+  -[CSDCTCallCapabilities setWiFiEmergencyCallingAllowed:](v4, "setWiFiEmergencyCallingAllowed:", [capabilitiesCopy isEmergencyCallingOnWifiAllowed]);
+  isEmergencyCallingOnWifiAvailable = [capabilitiesCopy isEmergencyCallingOnWifiAvailable];
 
-  [(CSDCTCallCapabilities *)v4 setWiFiEmergencyCallingAvailable:v5];
+  [(CSDCTCallCapabilities *)v4 setWiFiEmergencyCallingAvailable:isEmergencyCallingOnWifiAvailable];
 
   return v4;
 }
 
-+ (id)callCapabilitiesForCallManagementStateInfo:(id)a3
++ (id)callCapabilitiesForCallManagementStateInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(CSDCTCallCapabilities);
-  v5 = [v3 objectForKeyedSubscript:kCTCallManagementPhoneServicesCSCallingAvailable];
+  v5 = [infoCopy objectForKeyedSubscript:kCTCallManagementPhoneServicesCSCallingAvailable];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     -[CSDCTCallCapabilities setCsCallingAvailable:](v4, "setCsCallingAvailable:", [v5 BOOLValue]);
   }
 
-  v6 = [v3 objectForKeyedSubscript:kCTCallManagementPhoneServicesVoLTECallingAvailable];
+  v6 = [infoCopy objectForKeyedSubscript:kCTCallManagementPhoneServicesVoLTECallingAvailable];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -40,7 +40,7 @@
     -[CSDCTCallCapabilities setVoLTECallingAvailable:](v4, "setVoLTECallingAvailable:", [v6 BOOLValue]);
   }
 
-  v7 = [v3 objectForKeyedSubscript:kCTCallManagementIsPhoneServicesActive];
+  v7 = [infoCopy objectForKeyedSubscript:kCTCallManagementIsPhoneServicesActive];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -48,7 +48,7 @@
     -[CSDCTCallCapabilities setWiFiCallingAvailable:](v4, "setWiFiCallingAvailable:", [v7 BOOLValue]);
   }
 
-  v8 = [v3 objectForKeyedSubscript:kCTCallManagementEmergencyWifiAllowed];
+  v8 = [infoCopy objectForKeyedSubscript:kCTCallManagementEmergencyWifiAllowed];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -56,7 +56,7 @@
     -[CSDCTCallCapabilities setWiFiEmergencyCallingAllowed:](v4, "setWiFiEmergencyCallingAllowed:", [v8 BOOLValue]);
   }
 
-  v9 = [v3 objectForKeyedSubscript:kCTCallManagementEmergencyWifiCallCapable];
+  v9 = [infoCopy objectForKeyedSubscript:kCTCallManagementEmergencyWifiCallCapable];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

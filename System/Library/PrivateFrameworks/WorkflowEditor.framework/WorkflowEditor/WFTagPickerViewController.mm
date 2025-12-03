@@ -1,14 +1,14 @@
 @interface WFTagPickerViewController
 - (CGSize)preferredContentSize;
-- (WFTagPickerViewController)initWithTitle:(id)a3 tags:(id)a4;
+- (WFTagPickerViewController)initWithTitle:(id)title tags:(id)tags;
 - (WFTagPickerViewControllerDelegate)delegate;
 - (id)currentResults;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancel;
 - (void)dismiss;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -21,58 +21,58 @@
   return WeakRetained;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v3 = [(WFTagPickerViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(WFTagPickerViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFTagPickerViewController *)self currentResults];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  currentResults = [(WFTagPickerViewController *)self currentResults];
+  v9 = [currentResults objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [(WFTagPickerViewController *)self selectedTags];
-  v11 = [v10 containsObject:v9];
+  selectedTags = [(WFTagPickerViewController *)self selectedTags];
+  v11 = [selectedTags containsObject:v9];
 
-  v12 = [(WFTagPickerViewController *)self selectedTags];
-  v13 = v12;
+  selectedTags2 = [(WFTagPickerViewController *)self selectedTags];
+  v13 = selectedTags2;
   if (v11)
   {
-    [v12 removeObject:v9];
+    [selectedTags2 removeObject:v9];
   }
 
   else
   {
-    [v12 addObject:v9];
+    [selectedTags2 addObject:v9];
   }
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v15[0] = v6;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v15[0] = pathCopy;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  [v7 reloadRowsAtIndexPaths:v14 withRowAnimation:100];
+  [viewCopy reloadRowsAtIndexPaths:v14 withRowAnimation:100];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:v6];
-  v8 = [(WFTagPickerViewController *)self currentResults];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:pathCopy];
+  currentResults = [(WFTagPickerViewController *)self currentResults];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [currentResults objectAtIndex:v9];
 
-  v11 = [v7 textLabel];
-  [v11 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
-  v13 = [(WFTagPickerViewController *)self selectedTags];
-  if ([v13 containsObject:v10])
+  selectedTags = [(WFTagPickerViewController *)self selectedTags];
+  if ([selectedTags containsObject:v10])
   {
     v14 = 3;
   }
@@ -87,9 +87,9 @@
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFTagPickerViewController *)self currentResults:a3];
+  v4 = [(WFTagPickerViewController *)self currentResults:view];
   v5 = [v4 count];
 
   return v5;
@@ -97,29 +97,29 @@
 
 - (id)currentResults
 {
-  v3 = [(WFTagPickerViewController *)self searchController];
-  if ([v3 isActive])
+  searchController = [(WFTagPickerViewController *)self searchController];
+  if ([searchController isActive])
   {
-    v4 = [(WFTagPickerViewController *)self searchController];
-    v5 = [v4 searchBar];
-    v6 = [v5 text];
-    v7 = [v6 length];
+    searchController2 = [(WFTagPickerViewController *)self searchController];
+    searchBar = [searchController2 searchBar];
+    text = [searchBar text];
+    v7 = [text length];
 
     if (v7)
     {
-      v8 = [(WFTagPickerViewController *)self searchController];
-      v9 = [v8 searchBar];
-      v10 = [v9 text];
-      v11 = [v10 lowercaseString];
+      searchController3 = [(WFTagPickerViewController *)self searchController];
+      searchBar2 = [searchController3 searchBar];
+      text2 = [searchBar2 text];
+      lowercaseString = [text2 lowercaseString];
 
-      v12 = [(WFTagPickerViewController *)self tags];
+      tags = [(WFTagPickerViewController *)self tags];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __43__WFTagPickerViewController_currentResults__block_invoke;
       v16[3] = &unk_279EDBA40;
-      v17 = v11;
-      v13 = v11;
-      v14 = [v12 if_compactMap:v16];
+      v17 = lowercaseString;
+      v13 = lowercaseString;
+      tags2 = [tags if_compactMap:v16];
 
       goto LABEL_6;
     }
@@ -129,10 +129,10 @@
   {
   }
 
-  v14 = [(WFTagPickerViewController *)self tags];
+  tags2 = [(WFTagPickerViewController *)self tags];
 LABEL_6:
 
-  return v14;
+  return tags2;
 }
 
 void *__43__WFTagPickerViewController_currentResults__block_invoke(uint64_t a1, void *a2)
@@ -156,22 +156,22 @@ void *__43__WFTagPickerViewController_currentResults__block_invoke(uint64_t a1, 
 
 - (void)dismiss
 {
-  v5 = [(WFTagPickerViewController *)self delegate];
-  v3 = [(WFTagPickerViewController *)self selectedTags];
-  v4 = [v3 array];
-  [v5 tagPicker:self didSelectTags:v4];
+  delegate = [(WFTagPickerViewController *)self delegate];
+  selectedTags = [(WFTagPickerViewController *)self selectedTags];
+  array = [selectedTags array];
+  [delegate tagPicker:self didSelectTags:array];
 }
 
 - (void)cancel
 {
-  v3 = [(WFTagPickerViewController *)self delegate];
-  [v3 tagPickerDidCancel:self];
+  delegate = [(WFTagPickerViewController *)self delegate];
+  [delegate tagPickerDidCancel:self];
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(WFTagPickerViewController *)self tableView];
-  [v2 contentSize];
+  tableView = [(WFTagPickerViewController *)self tableView];
+  [tableView contentSize];
   v4 = v3;
 
   v5 = 320.0;
@@ -187,44 +187,44 @@ void *__43__WFTagPickerViewController_currentResults__block_invoke(uint64_t a1, 
   v16.super_class = WFTagPickerViewController;
   [(WFTagPickerViewController *)&v16 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-  v4 = [(WFTagPickerViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(WFTagPickerViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismiss];
-  v6 = [(WFTagPickerViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem2 = [(WFTagPickerViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v5];
 
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  v8 = [(WFTagPickerViewController *)self view];
-  [v8 setBackgroundColor:v7];
-  v9 = [(WFTagPickerViewController *)self tableView];
-  [v9 setBackgroundColor:v7];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  view = [(WFTagPickerViewController *)self view];
+  [view setBackgroundColor:whiteColor];
+  tableView = [(WFTagPickerViewController *)self tableView];
+  [tableView setBackgroundColor:whiteColor];
 
   v10 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 1.0, 1.0}];
-  v11 = [(WFTagPickerViewController *)self tableView];
-  [v11 setTableFooterView:v10];
+  tableView2 = [(WFTagPickerViewController *)self tableView];
+  [tableView2 setTableFooterView:v10];
 
-  v12 = [(WFTagPickerViewController *)self tableView];
-  [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"TagCell"];
+  tableView3 = [(WFTagPickerViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"TagCell"];
 
-  v13 = [(WFTagPickerViewController *)self searchController];
-  v14 = [v13 searchBar];
-  v15 = [(WFTagPickerViewController *)self tableView];
-  [v15 setTableHeaderView:v14];
+  searchController = [(WFTagPickerViewController *)self searchController];
+  searchBar = [searchController searchBar];
+  tableView4 = [(WFTagPickerViewController *)self tableView];
+  [tableView4 setTableHeaderView:searchBar];
 
   [(WFTagPickerViewController *)self setDefinesPresentationContext:1];
 }
 
-- (WFTagPickerViewController)initWithTitle:(id)a3 tags:(id)a4
+- (WFTagPickerViewController)initWithTitle:(id)title tags:(id)tags
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  tagsCopy = tags;
   v17.receiver = self;
   v17.super_class = WFTagPickerViewController;
   v8 = [(WFTagPickerViewController *)&v17 initWithStyle:0];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [tagsCopy copy];
     tags = v8->_tags;
     v8->_tags = v9;
 
@@ -239,7 +239,7 @@ void *__43__WFTagPickerViewController_currentResults__block_invoke(uint64_t a1, 
     [(UISearchController *)v8->_searchController setSearchResultsUpdater:v8];
     [(UISearchController *)v8->_searchController setObscuresBackgroundDuringPresentation:0];
     [(UISearchController *)v8->_searchController setHidesNavigationBarDuringPresentation:0];
-    [(WFTagPickerViewController *)v8 setTitle:v6];
+    [(WFTagPickerViewController *)v8 setTitle:titleCopy];
     v15 = v8;
   }
 

@@ -17,7 +17,7 @@
   v26 = __Block_byref_object_dispose__1;
   v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = MEMORY[0x277D108E8];
-  v10 = [v8 database];
+  database = [v8 database];
   v21 = 0;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -29,7 +29,7 @@
   v12 = v8;
   v18 = v12;
   v19 = &v22;
-  [v9 performWriteTransactionWithHealthDatabase:v10 error:&v21 block:v16];
+  [v9 performWriteTransactionWithHealthDatabase:database error:&v21 block:v16];
   v13 = v21;
 
   v14 = v23[5];
@@ -55,64 +55,64 @@
     v7 = [v6 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
-  v8 = [v4 compatibilityVersionRange];
+  compatibilityVersionRange = [v4 compatibilityVersionRange];
 
-  if (v8)
+  if (compatibilityVersionRange)
   {
-    v9 = [v4 compatibilityVersionRange];
-    v41 = [v9 minimum];
-    v10 = [v4 compatibilityVersionRange];
-    v40 = [v10 origin];
+    compatibilityVersionRange2 = [v4 compatibilityVersionRange];
+    minimum = [compatibilityVersionRange2 minimum];
+    compatibilityVersionRange3 = [v4 compatibilityVersionRange];
+    origin = [compatibilityVersionRange3 origin];
   }
 
   else
   {
-    v40 = 0;
-    v41 = 0;
+    origin = 0;
+    minimum = 0;
   }
 
-  v11 = [v4 medicationIdentifier];
-  if (![v11 length])
+  medicationIdentifier = [v4 medicationIdentifier];
+  if (![medicationIdentifier length])
   {
 
-    v11 = 0;
+    medicationIdentifier = 0;
   }
 
-  v42 = v11;
+  v42 = medicationIdentifier;
   v43 = v7;
   if ([v4 hasScheduleType])
   {
-    v12 = [v4 scheduleType];
+    scheduleType = [v4 scheduleType];
   }
 
   else
   {
     [v4 frequencyType];
-    v12 = v13;
+    scheduleType = v13;
   }
 
   v14 = objc_alloc(MEMORY[0x277D11570]);
-  v37 = [v4 decodedUUID];
-  v38 = [v4 decodedMedicationUUID];
+  decodedUUID = [v4 decodedUUID];
+  decodedMedicationUUID = [v4 decodedMedicationUUID];
   v15 = MEMORY[0x277CBEBB0];
-  v39 = [v4 createdTimeZone];
-  v35 = [v15 timeZoneWithName:v39];
+  createdTimeZone = [v4 createdTimeZone];
+  v35 = [v15 timeZoneWithName:createdTimeZone];
   v16 = MEMORY[0x277CBEAA8];
   [v4 startDateTime];
   v34 = [v16 dateWithTimeIntervalSinceReferenceDate:?];
-  v36 = [v4 intervalDatas];
-  v33 = a1;
-  v17 = [(HKMedicationSchedule *)a1 _medicationScheduleIntervalDataFromCodable:v36];
-  v18 = [v4 displayOptions];
+  intervalDatas = [v4 intervalDatas];
+  selfCopy = self;
+  v17 = [(HKMedicationSchedule *)self _medicationScheduleIntervalDataFromCodable:intervalDatas];
+  displayOptions = [v4 displayOptions];
   v19 = MEMORY[0x277CBEAB8];
-  v20 = [v4 cycleStartDateComponents];
-  v21 = [v19 hk_dateComponentsWithCodableDateComponents:v20];
-  v22 = [v4 deleted];
+  cycleStartDateComponents = [v4 cycleStartDateComponents];
+  v21 = [v19 hk_dateComponentsWithCodableDateComponents:cycleStartDateComponents];
+  deleted = [v4 deleted];
   [v4 creationDate];
   v24 = v23;
-  v25 = [v4 note];
-  LOBYTE(v32) = v22;
-  v26 = [v14 initWithUUID:v37 medicationUUID:v38 medicationIdentifier:v42 createdUTCOffset:v35 startDateTime:v34 endDateTime:v43 timeIntervals:v24 scheduleType:v17 displayOptions:v12 cycleStartDateComponents:v18 deleted:v21 creationTimestamp:v32 note:v25 compatibilityVersionRange:{v41, v40}];
+  note = [v4 note];
+  LOBYTE(v32) = deleted;
+  v26 = [v14 initWithUUID:decodedUUID medicationUUID:decodedMedicationUUID medicationIdentifier:v42 createdUTCOffset:v35 startDateTime:v34 endDateTime:v43 timeIntervals:v24 scheduleType:v17 displayOptions:scheduleType cycleStartDateComponents:displayOptions deleted:v21 creationTimestamp:v32 note:note compatibilityVersionRange:{minimum, origin}];
 
   if ([v26 isUnavailable])
   {
@@ -121,7 +121,7 @@
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v45 = v33;
+      v45 = selfCopy;
       v46 = 2114;
       v47 = v26;
       _os_log_impl(&dword_25181C000, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@] Receiving a schedule that has already been marked as unavailable. %{public}@", buf, 0x16u);
@@ -136,7 +136,7 @@
     v28 = HKLogMedication();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [(HKMedicationSchedule(HDCodingSupport) *)v33 hd_medicationScheduleFromCodable:v26, v28];
+      [(HKMedicationSchedule(HDCodingSupport) *)selfCopy hd_medicationScheduleFromCodable:v26, v28];
     }
   }
 
@@ -156,19 +156,19 @@ LABEL_21:
 - (HDCodableMedicationSchedule)hd_codableMedicationSchedule
 {
   v2 = objc_alloc_init(HDCodableMedicationSchedule);
-  v3 = [a1 UUID];
-  v4 = [v3 hk_dataForUUIDBytes];
-  [(HDCodableMedicationSchedule *)v2 setUuid:v4];
+  uUID = [self UUID];
+  hk_dataForUUIDBytes = [uUID hk_dataForUUIDBytes];
+  [(HDCodableMedicationSchedule *)v2 setUuid:hk_dataForUUIDBytes];
 
-  v5 = [a1 medicationUUID];
-  v6 = [v5 hk_dataForUUIDBytes];
-  [(HDCodableMedicationSchedule *)v2 setMedicationUUID:v6];
+  medicationUUID = [self medicationUUID];
+  hk_dataForUUIDBytes2 = [medicationUUID hk_dataForUUIDBytes];
+  [(HDCodableMedicationSchedule *)v2 setMedicationUUID:hk_dataForUUIDBytes2];
 
-  v7 = [a1 medicationIdentifier];
-  if (v7)
+  medicationIdentifier = [self medicationIdentifier];
+  if (medicationIdentifier)
   {
-    v8 = [a1 medicationIdentifier];
-    [(HDCodableMedicationSchedule *)v2 setMedicationIdentifier:v8];
+    medicationIdentifier2 = [self medicationIdentifier];
+    [(HDCodableMedicationSchedule *)v2 setMedicationIdentifier:medicationIdentifier2];
   }
 
   else
@@ -176,39 +176,39 @@ LABEL_21:
     [(HDCodableMedicationSchedule *)v2 setMedicationIdentifier:&stru_2863B7AF8];
   }
 
-  v9 = [a1 startDateTime];
-  [v9 timeIntervalSinceReferenceDate];
+  startDateTime = [self startDateTime];
+  [startDateTime timeIntervalSinceReferenceDate];
   [(HDCodableMedicationSchedule *)v2 setStartDateTime:?];
 
-  v10 = [a1 endDateTime];
-  [v10 timeIntervalSinceReferenceDate];
+  endDateTime = [self endDateTime];
+  [endDateTime timeIntervalSinceReferenceDate];
   [(HDCodableMedicationSchedule *)v2 setEndDateTime:?];
 
-  v11 = [a1 createdUTCOffset];
-  v12 = [v11 name];
-  [(HDCodableMedicationSchedule *)v2 setCreatedTimeZone:v12];
+  createdUTCOffset = [self createdUTCOffset];
+  name = [createdUTCOffset name];
+  [(HDCodableMedicationSchedule *)v2 setCreatedTimeZone:name];
 
-  -[HDCodableMedicationSchedule setFrequencyType:](v2, "setFrequencyType:", [a1 frequencyType]);
-  -[HDCodableMedicationSchedule setScheduleType:](v2, "setScheduleType:", [a1 scheduleType]);
-  v13 = [a1 cycleStartDate];
-  v14 = [v13 hk_codableDateComponents];
-  [(HDCodableMedicationSchedule *)v2 setCycleStartDateComponents:v14];
+  -[HDCodableMedicationSchedule setFrequencyType:](v2, "setFrequencyType:", [self frequencyType]);
+  -[HDCodableMedicationSchedule setScheduleType:](v2, "setScheduleType:", [self scheduleType]);
+  cycleStartDate = [self cycleStartDate];
+  hk_codableDateComponents = [cycleStartDate hk_codableDateComponents];
+  [(HDCodableMedicationSchedule *)v2 setCycleStartDateComponents:hk_codableDateComponents];
 
-  v15 = [a1 note];
-  [(HDCodableMedicationSchedule *)v2 setNote:v15];
+  note = [self note];
+  [(HDCodableMedicationSchedule *)v2 setNote:note];
 
   v16 = MEMORY[0x277D11570];
-  v17 = [a1 timeIntervals];
-  v18 = [(HKMedicationSchedule *)v16 _codableArrayForMedicationScheduleIntervalDatas:v17];
+  timeIntervals = [self timeIntervals];
+  v18 = [(HKMedicationSchedule *)v16 _codableArrayForMedicationScheduleIntervalDatas:timeIntervals];
   v19 = [v18 mutableCopy];
   [(HDCodableMedicationSchedule *)v2 setIntervalDatas:v19];
 
-  [a1 creationTimestamp];
+  [self creationTimestamp];
   [(HDCodableMedicationSchedule *)v2 setCreationDate:?];
-  -[HDCodableMedicationSchedule setDeleted:](v2, "setDeleted:", [a1 isDeleted]);
+  -[HDCodableMedicationSchedule setDeleted:](v2, "setDeleted:", [self isDeleted]);
   v20 = objc_alloc_init(HDCodableMedicationScheduleCompatibilityVersionRange);
-  -[HDCodableMedicationScheduleCompatibilityVersionRange setMinimum:](v20, "setMinimum:", [a1 compatibilityRange]);
-  [a1 compatibilityRange];
+  -[HDCodableMedicationScheduleCompatibilityVersionRange setMinimum:](v20, "setMinimum:", [self compatibilityRange]);
+  [self compatibilityRange];
   [(HDCodableMedicationScheduleCompatibilityVersionRange *)v20 setOrigin:v21];
   [(HDCodableMedicationSchedule *)v2 setCompatibilityVersionRange:v20];
 

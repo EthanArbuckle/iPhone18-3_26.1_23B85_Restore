@@ -1,33 +1,33 @@
 @interface SVXModuleFactory
-- (SVXModuleFactory)initWithInstanceContext:(id)a3 preferences:(id)a4 analytics:(id)a5;
-- (id)createModuleWithIdentifier:(id)a3 class:(Class)a4 performer:(id)a5;
+- (SVXModuleFactory)initWithInstanceContext:(id)context preferences:(id)preferences analytics:(id)analytics;
+- (id)createModuleWithIdentifier:(id)identifier class:(Class)class performer:(id)performer;
 @end
 
 @implementation SVXModuleFactory
 
-- (id)createModuleWithIdentifier:(id)a3 class:(Class)a4 performer:(id)a5
+- (id)createModuleWithIdentifier:(id)identifier class:(Class)class performer:(id)performer
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[SVXModule alloc] initWithIdentifier:v9 instanceClass:a4 instanceContext:self->_instanceContext preferences:self->_preferences analytics:self->_analytics performer:v8];
+  performerCopy = performer;
+  identifierCopy = identifier;
+  v10 = [[SVXModule alloc] initWithIdentifier:identifierCopy instanceClass:class instanceContext:self->_instanceContext preferences:self->_preferences analytics:self->_analytics performer:performerCopy];
 
   return v10;
 }
 
-- (SVXModuleFactory)initWithInstanceContext:(id)a3 preferences:(id)a4 analytics:(id)a5
+- (SVXModuleFactory)initWithInstanceContext:(id)context preferences:(id)preferences analytics:(id)analytics
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  preferencesCopy = preferences;
+  analyticsCopy = analytics;
   v15.receiver = self;
   v15.super_class = SVXModuleFactory;
   v12 = [(SVXModuleFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_instanceContext, a3);
-    objc_storeStrong(&v13->_preferences, a4);
-    objc_storeStrong(&v13->_analytics, a5);
+    objc_storeStrong(&v12->_instanceContext, context);
+    objc_storeStrong(&v13->_preferences, preferences);
+    objc_storeStrong(&v13->_analytics, analytics);
   }
 
   return v13;

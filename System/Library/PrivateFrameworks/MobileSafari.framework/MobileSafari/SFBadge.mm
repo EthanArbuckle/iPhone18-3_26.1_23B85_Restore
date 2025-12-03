@@ -1,26 +1,26 @@
 @interface SFBadge
 - (CGSize)intrinsicContentSize;
-- (SFBadge)initWithFrame:(CGRect)a3;
+- (SFBadge)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation SFBadge
 
-- (SFBadge)initWithFrame:(CGRect)a3
+- (SFBadge)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SFBadge;
-  v3 = [(SFBadge *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFBadge *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SFBadge *)v3 tintColor];
-    [(SFBadge *)v4 setBackgroundColor:v5];
+    tintColor = [(SFBadge *)v3 tintColor];
+    [(SFBadge *)v4 setBackgroundColor:tintColor];
 
     v6 = *MEMORY[0x1E69796E0];
-    v7 = [(SFBadge *)v4 layer];
-    [v7 setCornerCurve:v6];
+    layer = [(SFBadge *)v4 layer];
+    [layer setCornerCurve:v6];
 
     v8 = v4;
   }
@@ -33,8 +33,8 @@
   v4.receiver = self;
   v4.super_class = SFBadge;
   [(SFBadge *)&v4 tintColorDidChange];
-  v3 = [(SFBadge *)self tintColor];
-  [(SFBadge *)self setBackgroundColor:v3];
+  tintColor = [(SFBadge *)self tintColor];
+  [(SFBadge *)self setBackgroundColor:tintColor];
 }
 
 - (void)layoutSubviews
@@ -53,8 +53,8 @@
   v12.size.width = width;
   v12.size.height = height;
   v8 = fmin(v7, CGRectGetHeight(v12)) * 0.5;
-  v9 = [(SFBadge *)self layer];
-  [v9 setCornerRadius:v8];
+  layer = [(SFBadge *)self layer];
+  [layer setCornerRadius:v8];
 }
 
 - (CGSize)intrinsicContentSize

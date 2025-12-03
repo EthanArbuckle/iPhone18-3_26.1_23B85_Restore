@@ -1,5 +1,5 @@
 @interface SafariStorageSettingsProfileFilterViewController
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -14,25 +14,25 @@
   [(SafariStorageSettingsProfileFilterViewController *)self setTitle:v3];
 
   v4 = +[UIColor systemGroupedBackgroundColor];
-  v5 = [(SafariStorageSettingsProfileFilterViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(SafariStorageSettingsProfileFilterViewController *)self view];
+  [view setBackgroundColor:v4];
 
   v6 = +[SafariSettingsController tabGroupManager];
-  v7 = [v6 profiles];
+  profiles = [v6 profiles];
   profiles = self->_profiles;
-  self->_profiles = v7;
+  self->_profiles = profiles;
 
-  v9 = [(SafariStorageSettingsProfileFilterViewController *)self tableView];
-  [v9 registerClass:objc_opt_class() forCellReuseIdentifier:@"ProfileFilterCell"];
+  tableView = [(SafariStorageSettingsProfileFilterViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"ProfileFilterCell"];
 
   v10 = [SafariSettingsUITableViewDiffableDataSource alloc];
-  v11 = [(SafariStorageSettingsProfileFilterViewController *)self tableView];
+  tableView2 = [(SafariStorageSettingsProfileFilterViewController *)self tableView];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = __63__SafariStorageSettingsProfileFilterViewController_viewDidLoad__block_invoke;
   v18[3] = &unk_89870;
   v18[4] = self;
-  v12 = [(SafariSettingsUITableViewDiffableDataSource *)v10 initWithTableView:v11 cellProvider:v18];
+  v12 = [(SafariSettingsUITableViewDiffableDataSource *)v10 initWithTableView:tableView2 cellProvider:v18];
   dataSource = self->_dataSource;
   self->_dataSource = v12;
 
@@ -80,20 +80,20 @@ id __63__SafariStorageSettingsProfileFilterViewController_viewDidLoad__block_inv
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v8 = [NSIndexPath indexPathForRow:[(NSArray *)self->_profiles indexOfObject:self->_selectedProfile] inSection:0];
-  v9 = [v7 cellForRowAtIndexPath:v8];
+  v9 = [viewCopy cellForRowAtIndexPath:v8];
   [v9 setAccessoryType:0];
 
-  v10 = [v7 cellForRowAtIndexPath:v6];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v10 setAccessoryType:3];
   profiles = self->_profiles;
-  v12 = [v6 row];
+  v12 = [pathCopy row];
 
   v13 = [(NSArray *)profiles objectAtIndexedSubscript:v12];
   selectedProfile = self->_selectedProfile;

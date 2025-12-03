@@ -1,24 +1,24 @@
 @interface ADLocalContextStore
-- (ADLocalContextStore)initWithInstanceContext:(id)a3 rapportLink:(id)a4 queue:(id)a5 delegate:(id)a6;
+- (ADLocalContextStore)initWithInstanceContext:(id)context rapportLink:(id)link queue:(id)queue delegate:(id)delegate;
 - (id)_contextLinkMessageOptions;
-- (id)_deviceContextToVendForPrivacyClass:(int64_t)a3;
-- (id)_initWithInstanceContext:(id)a3 rapportLink:(id)a4 queue:(id)a5 delegate:(id)a6 deviceCircleManager:(id)a7;
-- (id)_localContextWithPrivacyClass:(int64_t)a3;
-- (id)localContextWithPrivacyClass:(int64_t)a3;
+- (id)_deviceContextToVendForPrivacyClass:(int64_t)class;
+- (id)_initWithInstanceContext:(id)context rapportLink:(id)link queue:(id)queue delegate:(id)delegate deviceCircleManager:(id)manager;
+- (id)_localContextWithPrivacyClass:(int64_t)class;
+- (id)localContextWithPrivacyClass:(int64_t)class;
 - (void)_didUpdateContext;
 - (void)_initializeBuiltInContextProviders;
-- (void)_pushContextToCollector:(id)a3 forReason:(id)a4 includingKeys:(id)a5 excludingMandatoryKeys:(id)a6 includingKeysInResponse:(id)a7 excludingMandatoryKeysInResponse:(id)a8 completion:(id)a9;
-- (void)_pushContextToCollectorsForReason:(id)a3 completion:(id)a4;
-- (void)_updateLocalPeerInfo:(id)a3;
-- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)a3 localDeviceIsCollector:(BOOL)a4;
-- (void)donateContext:(id)a3 withMetadata:(id)a4 pushToRemote:(BOOL)a5;
-- (void)donateSerializedContextMapByPrivacyClass:(id)a3 withMetadataMap:(id)a4 forType:(id)a5 pushToRemote:(BOOL)a6 completion:(id)a7;
-- (void)getLocalContextWithPrivacyClass:(int64_t)a3 completion:(id)a4;
-- (void)localPeerInfoUpdatedFrom:(id)a3 to:(id)a4;
-- (void)pushContextToContextCollectorIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 expectingResponseIncludingKeys:(id)a5 excludingMandatoryKeys:(id)a6 completion:(id)a7;
-- (void)registerContextTransformer:(id)a3 forType:(id)a4;
-- (void)setMyriadAdvertisementContext:(id)a3 completion:(id)a4;
-- (void)updateRapportLink:(id)a3;
+- (void)_pushContextToCollector:(id)collector forReason:(id)reason includingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys includingKeysInResponse:(id)response excludingMandatoryKeysInResponse:(id)inResponse completion:(id)completion;
+- (void)_pushContextToCollectorsForReason:(id)reason completion:(id)completion;
+- (void)_updateLocalPeerInfo:(id)info;
+- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)identifiers localDeviceIsCollector:(BOOL)collector;
+- (void)donateContext:(id)context withMetadata:(id)metadata pushToRemote:(BOOL)remote;
+- (void)donateSerializedContextMapByPrivacyClass:(id)class withMetadataMap:(id)map forType:(id)type pushToRemote:(BOOL)remote completion:(id)completion;
+- (void)getLocalContextWithPrivacyClass:(int64_t)class completion:(id)completion;
+- (void)localPeerInfoUpdatedFrom:(id)from to:(id)to;
+- (void)pushContextToContextCollectorIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys expectingResponseIncludingKeys:(id)includingKeys excludingMandatoryKeys:(id)excludingMandatoryKeys completion:(id)completion;
+- (void)registerContextTransformer:(id)transformer forType:(id)type;
+- (void)setMyriadAdvertisementContext:(id)context completion:(id)completion;
+- (void)updateRapportLink:(id)link;
 @end
 
 @implementation ADLocalContextStore
@@ -36,24 +36,24 @@
   }
 }
 
-- (void)localPeerInfoUpdatedFrom:(id)a3 to:(id)a4
+- (void)localPeerInfoUpdatedFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B2890;
   block[3] = &unk_10051DB68;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = fromCopy;
+  v13 = toCopy;
+  selfCopy = self;
+  v9 = toCopy;
+  v10 = fromCopy;
   dispatch_async(queue, block);
 }
 
-- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)a3 localDeviceIsCollector:(BOOL)a4
+- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)identifiers localDeviceIsCollector:(BOOL)collector
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -64,21 +64,21 @@
   dispatch_async(queue, block);
 }
 
-- (void)donateSerializedContextMapByPrivacyClass:(id)a3 withMetadataMap:(id)a4 forType:(id)a5 pushToRemote:(BOOL)a6 completion:(id)a7
+- (void)donateSerializedContextMapByPrivacyClass:(id)class withMetadataMap:(id)map forType:(id)type pushToRemote:(BOOL)remote completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  classCopy = class;
+  mapCopy = map;
+  typeCopy = type;
+  completionCopy = completion;
   v16 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v26 = "[ADLocalContextStore donateSerializedContextMapByPrivacyClass:withMetadataMap:forType:pushToRemote:completion:]";
     v27 = 2112;
-    v28 = v14;
+    v28 = typeCopy;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s #hal %@", buf, 0x16u);
-    if (!v14)
+    if (!typeCopy)
     {
       goto LABEL_4;
     }
@@ -86,7 +86,7 @@
     goto LABEL_3;
   }
 
-  if (v14)
+  if (typeCopy)
   {
 LABEL_3:
     queue = self->_queue;
@@ -94,31 +94,31 @@ LABEL_3:
     v18[1] = 3221225472;
     v18[2] = sub_1001B2EA4;
     v18[3] = &unk_1005167F0;
-    v19 = v14;
-    v20 = v12;
-    v21 = self;
-    v22 = v13;
-    v24 = a6;
-    v23 = v15;
+    v19 = typeCopy;
+    v20 = classCopy;
+    selfCopy = self;
+    v22 = mapCopy;
+    remoteCopy = remote;
+    v23 = completionCopy;
     dispatch_async(queue, v18);
   }
 
 LABEL_4:
 }
 
-- (void)donateContext:(id)a3 withMetadata:(id)a4 pushToRemote:(BOOL)a5
+- (void)donateContext:(id)context withMetadata:(id)metadata pushToRemote:(BOOL)remote
 {
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  metadataCopy = metadata;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315651;
     v20 = "[ADLocalContextStore donateContext:withMetadata:pushToRemote:]";
     v21 = 2113;
-    v22 = v8;
+    v22 = contextCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = metadataCopy;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s #hal %{private}@ %@", buf, 0x20u);
   }
 
@@ -127,41 +127,41 @@ LABEL_4:
   v14[1] = 3221225472;
   v14[2] = sub_1001B31F4;
   v14[3] = &unk_10051C958;
-  v15 = v9;
-  v16 = v8;
-  v17 = self;
-  v18 = a5;
-  v12 = v8;
-  v13 = v9;
+  v15 = metadataCopy;
+  v16 = contextCopy;
+  selfCopy = self;
+  remoteCopy = remote;
+  v12 = contextCopy;
+  v13 = metadataCopy;
   dispatch_async(queue, v14);
 }
 
-- (void)registerContextTransformer:(id)a3 forType:(id)a4
+- (void)registerContextTransformer:(id)transformer forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  transformerCopy = transformer;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B371C;
   block[3] = &unk_10051DB68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = transformerCopy;
+  v13 = typeCopy;
+  v9 = typeCopy;
+  v10 = transformerCopy;
   dispatch_async(queue, block);
 }
 
-- (id)_deviceContextToVendForPrivacyClass:(int64_t)a3
+- (id)_deviceContextToVendForPrivacyClass:(int64_t)class
 {
-  if (!a3 || a3 == 50)
+  if (!class || class == 50)
   {
     v5 = [(NSMutableDictionary *)self->_redactedContextByPrivacyClass objectForKey:&off_100533AB8];
     v4 = [v5 mutableCopy];
   }
 
-  else if (a3 == 10)
+  else if (class == 10)
   {
     v4 = [(AFMutableDeviceContext *)self->_localContext mutableCopy];
   }
@@ -174,21 +174,21 @@ LABEL_4:
   v6 = +[NSUUID UUID];
   [v4 setIdentifier:v6];
 
-  [v4 setPrivacyClass:a3];
+  [v4 setPrivacyClass:class];
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (void)_pushContextToCollector:(id)a3 forReason:(id)a4 includingKeys:(id)a5 excludingMandatoryKeys:(id)a6 includingKeysInResponse:(id)a7 excludingMandatoryKeysInResponse:(id)a8 completion:(id)a9
+- (void)_pushContextToCollector:(id)collector forReason:(id)reason includingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys includingKeysInResponse:(id)response excludingMandatoryKeysInResponse:(id)inResponse completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  collectorCopy = collector;
+  reasonCopy = reason;
+  keysCopy = keys;
+  mandatoryKeysCopy = mandatoryKeys;
+  responseCopy = response;
+  inResponseCopy = inResponse;
+  completionCopy = completion;
   if ((AFSupportsHALContextDonation() & 1) == 0)
   {
     v29 = AFSiriLogContextDaemon;
@@ -197,13 +197,13 @@ LABEL_4:
       *buf = 136315138;
       v36 = "[ADLocalContextStore _pushContextToCollector:forReason:includingKeys:excludingMandatoryKeys:includingKeysInResponse:excludingMandatoryKeysInResponse:completion:]";
       _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%s #hal context donation not supported on this platform", buf, 0xCu);
-      if (!v21)
+      if (!completionCopy)
       {
         goto LABEL_23;
       }
     }
 
-    else if (!v21)
+    else if (!completionCopy)
     {
       goto LABEL_23;
     }
@@ -211,16 +211,16 @@ LABEL_4:
     v30 = 13;
 LABEL_21:
     v28 = [AFError errorWithCode:v30];
-    v21[2](v21, 0, v28);
+    completionCopy[2](completionCopy, 0, v28);
 LABEL_22:
 
     goto LABEL_23;
   }
 
   v22 = +[AFPreferences sharedPreferences];
-  v23 = [v22 assistantIsEnabled];
+  assistantIsEnabled = [v22 assistantIsEnabled];
 
-  if (v23)
+  if (assistantIsEnabled)
   {
     dispatch_assert_queue_V2(self->_queue);
     v24 = AFSiriLogContextDaemon;
@@ -229,31 +229,31 @@ LABEL_22:
       *buf = 136315394;
       v36 = "[ADLocalContextStore _pushContextToCollector:forReason:includingKeys:excludingMandatoryKeys:includingKeysInResponse:excludingMandatoryKeysInResponse:completion:]";
       v37 = 2112;
-      v38 = v16;
+      v38 = reasonCopy;
       _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%s #hal reason: %@", buf, 0x16u);
     }
 
     v25 = objc_alloc_init(NSMutableDictionary);
     v26 = v25;
-    if (v15)
+    if (collectorCopy)
     {
-      [v25 addEntriesFromDictionary:v15];
+      [v25 addEntriesFromDictionary:collectorCopy];
     }
 
-    [v26 setObject:v17 forKey:@"included_context_types_in_request"];
-    if ([v18 count])
+    [v26 setObject:keysCopy forKey:@"included_context_types_in_request"];
+    if ([mandatoryKeysCopy count])
     {
-      [v26 setObject:v18 forKey:@"excluded_context_keys_in_request"];
+      [v26 setObject:mandatoryKeysCopy forKey:@"excluded_context_keys_in_request"];
     }
 
-    if ([v19 count])
+    if ([responseCopy count])
     {
-      [v26 setObject:v19 forKey:@"included_context_types_in_response"];
+      [v26 setObject:responseCopy forKey:@"included_context_types_in_response"];
     }
 
-    if ([v20 count])
+    if ([inResponseCopy count])
     {
-      [v26 setObject:v20 forKey:@"excluded_context_keys_in_response"];
+      [v26 setObject:inResponseCopy forKey:@"excluded_context_keys_in_response"];
     }
 
     [v26 setObject:&__kCFBooleanTrue forKey:@"prefers_assistant_identifiers"];
@@ -263,7 +263,7 @@ LABEL_22:
     v32[2] = sub_1001B3BA4;
     v32[3] = &unk_100514EF8;
     v33 = v26;
-    v34 = v21;
+    v34 = completionCopy;
     v32[4] = self;
     v28 = v26;
     [(ADDeviceCircleManager *)deviceCircleManager getContextCollectorDeviceIdentifiersWithCompletion:v32];
@@ -279,7 +279,7 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "%s #hal skip pushing context to remote because Siri is disabled on this device", buf, 0xCu);
   }
 
-  if (v21)
+  if (completionCopy)
   {
     v30 = 18;
     goto LABEL_21;
@@ -297,20 +297,20 @@ LABEL_23:
   return v2;
 }
 
-- (void)_pushContextToCollectorsForReason:(id)a3 completion:(id)a4
+- (void)_pushContextToCollectorsForReason:(id)reason completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  reasonCopy = reason;
   v8 = [(ADLocalContextStore *)self _deviceContextToVendForPrivacyClass:50];
-  v9 = [v8 serializedBackingStore];
+  serializedBackingStore = [v8 serializedBackingStore];
   v11 = AFDeviceContextKeyAll;
   v10 = [NSArray arrayWithObjects:&v11 count:1];
-  [(ADLocalContextStore *)self _pushContextToCollector:v9 forReason:v7 includingKeys:v10 excludingMandatoryKeys:0 includingKeysInResponse:0 excludingMandatoryKeysInResponse:0 completion:v6];
+  [(ADLocalContextStore *)self _pushContextToCollector:serializedBackingStore forReason:reasonCopy includingKeys:v10 excludingMandatoryKeys:0 includingKeysInResponse:0 excludingMandatoryKeysInResponse:0 completion:completionCopy];
 }
 
-- (void)_updateLocalPeerInfo:(id)a3
+- (void)_updateLocalPeerInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -318,17 +318,17 @@ LABEL_23:
     *buf = 136315394;
     v17 = "[ADLocalContextStore _updateLocalPeerInfo:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = infoCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
-  [(AFMutableDeviceContext *)self->_localContext setDeviceInfo:v4];
+  [(AFMutableDeviceContext *)self->_localContext setDeviceInfo:infoCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMutableDictionary *)self->_redactedContextByPrivacyClass allValues];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_redactedContextByPrivacyClass allValues];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -340,15 +340,15 @@ LABEL_23:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) setDeviceInfo:v4];
+        [*(*(&v11 + 1) + 8 * v10) setDeviceInfo:infoCopy];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -380,47 +380,47 @@ LABEL_23:
   }
 }
 
-- (void)pushContextToContextCollectorIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 expectingResponseIncludingKeys:(id)a5 excludingMandatoryKeys:(id)a6 completion:(id)a7
+- (void)pushContextToContextCollectorIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys expectingResponseIncludingKeys:(id)includingKeys excludingMandatoryKeys:(id)excludingMandatoryKeys completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keysCopy = keys;
+  mandatoryKeysCopy = mandatoryKeys;
+  includingKeysCopy = includingKeys;
+  excludingMandatoryKeysCopy = excludingMandatoryKeys;
+  completionCopy = completion;
   queue = self->_queue;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1001B4C04;
   v23[3] = &unk_1005183C8;
-  v24 = v12;
-  v25 = self;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  v22 = v12;
+  v24 = keysCopy;
+  selfCopy = self;
+  v26 = mandatoryKeysCopy;
+  v27 = includingKeysCopy;
+  v28 = excludingMandatoryKeysCopy;
+  v29 = completionCopy;
+  v18 = excludingMandatoryKeysCopy;
+  v19 = includingKeysCopy;
+  v20 = mandatoryKeysCopy;
+  v21 = completionCopy;
+  v22 = keysCopy;
   dispatch_async(queue, v23);
 }
 
-- (void)updateRapportLink:(id)a3
+- (void)updateRapportLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B4E70;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = linkCopy;
+  v6 = linkCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)_localContextWithPrivacyClass:(int64_t)a3
+- (id)_localContextWithPrivacyClass:(int64_t)class
 {
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -434,7 +434,7 @@ LABEL_23:
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s #hal %@", &v11, 0x16u);
   }
 
-  v6 = [(ADLocalContextStore *)self _deviceContextToVendForPrivacyClass:a3];
+  v6 = [(ADLocalContextStore *)self _deviceContextToVendForPrivacyClass:class];
   if (([v6 isValid] & 1) == 0)
   {
     v7 = AFSiriLogContextDaemon;
@@ -453,7 +453,7 @@ LABEL_23:
   return v6;
 }
 
-- (id)localContextWithPrivacyClass:(int64_t)a3
+- (id)localContextWithPrivacyClass:(int64_t)class
 {
   v7 = 0;
   v8 = &v7;
@@ -468,7 +468,7 @@ LABEL_23:
   block[3] = &unk_100514E58;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = class;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -476,11 +476,11 @@ LABEL_23:
   return v4;
 }
 
-- (void)getLocalContextWithPrivacyClass:(int64_t)a3 completion:(id)a4
+- (void)getLocalContextWithPrivacyClass:(int64_t)class completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -488,29 +488,29 @@ LABEL_23:
     block[2] = sub_1001B5238;
     block[3] = &unk_10051BFA8;
     block[4] = self;
-    v10 = v6;
-    v11 = a3;
+    v10 = completionCopy;
+    classCopy = class;
     dispatch_async(queue, block);
   }
 }
 
-- (id)_initWithInstanceContext:(id)a3 rapportLink:(id)a4 queue:(id)a5 delegate:(id)a6 deviceCircleManager:(id)a7
+- (id)_initWithInstanceContext:(id)context rapportLink:(id)link queue:(id)queue delegate:(id)delegate deviceCircleManager:(id)manager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  linkCopy = link;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v37.receiver = self;
   v37.super_class = ADLocalContextStore;
   v17 = [(ADLocalContextStore *)&v37 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_queue, a5);
-    if (v12)
+    objc_storeStrong(&v17->_queue, queue);
+    if (contextCopy)
     {
-      v19 = v12;
+      v19 = contextCopy;
     }
 
     else
@@ -521,8 +521,8 @@ LABEL_23:
     instanceContext = v18->_instanceContext;
     v18->_instanceContext = v19;
 
-    objc_storeWeak(&v18->_delegate, v15);
-    objc_storeStrong(&v18->_deviceCircleManager, a7);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_deviceCircleManager, manager);
     v21 = objc_alloc_init(AFMutableDeviceContext);
     localContext = v18->_localContext;
     v18->_localContext = v21;
@@ -548,7 +548,7 @@ LABEL_23:
     v30 = v18;
     v36 = v30;
     dispatch_async(queue, block);
-    objc_storeStrong(v30 + 5, a4);
+    objc_storeStrong(v30 + 5, link);
     [v30[5] addListener:v30];
     [(ADDeviceCircleManager *)v18->_deviceCircleManager addListener:v30];
     v31 = v18->_queue;
@@ -563,32 +563,32 @@ LABEL_23:
   return v18;
 }
 
-- (ADLocalContextStore)initWithInstanceContext:(id)a3 rapportLink:(id)a4 queue:(id)a5 delegate:(id)a6
+- (ADLocalContextStore)initWithInstanceContext:(id)context rapportLink:(id)link queue:(id)queue delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  linkCopy = link;
+  contextCopy = context;
   v14 = +[ADDeviceCircleManager sharedInstance];
-  v15 = [(ADLocalContextStore *)self _initWithInstanceContext:v13 rapportLink:v12 queue:v11 delegate:v10 deviceCircleManager:v14];
+  v15 = [(ADLocalContextStore *)self _initWithInstanceContext:contextCopy rapportLink:linkCopy queue:queueCopy delegate:delegateCopy deviceCircleManager:v14];
 
   return v15;
 }
 
-- (void)setMyriadAdvertisementContext:(id)a3 completion:(id)a4
+- (void)setMyriadAdvertisementContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B5768;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
   dispatch_async(queue, block);
 }
 

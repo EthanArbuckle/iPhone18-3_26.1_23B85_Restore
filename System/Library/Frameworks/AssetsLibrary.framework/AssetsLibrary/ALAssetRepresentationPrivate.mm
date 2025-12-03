@@ -1,28 +1,28 @@
 @interface ALAssetRepresentationPrivate
-+ (int)_fileDescriptorForPersistentURL:(id)a3;
++ (int)_fileDescriptorForPersistentURL:(id)l;
 + (void)_clearFileDescriptorQueue;
 + (void)_setupFileDescriptorQueue;
-- (ALAssetRepresentationPrivate)initWithManagedAsset:(id)a3 sidecar:(id)a4 extension:(id)a5 library:(id)a6;
+- (ALAssetRepresentationPrivate)initWithManagedAsset:(id)asset sidecar:(id)sidecar extension:(id)extension library:(id)library;
 - (BOOL)_isImage;
 - (BOOL)_isVideo;
-- (void)_performBlockAndWait:(id)a3;
+- (void)_performBlockAndWait:(id)wait;
 - (void)dealloc;
 @end
 
 @implementation ALAssetRepresentationPrivate
 
-- (void)_performBlockAndWait:(id)a3
+- (void)_performBlockAndWait:(id)wait
 {
-  v5 = [(ALAssetRepresentationPrivate *)self library];
-  if (v5)
+  library = [(ALAssetRepresentationPrivate *)self library];
+  if (library)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __53__ALAssetRepresentationPrivate__performBlockAndWait___block_invoke;
     v9[3] = &unk_278A07C08;
     v9[4] = self;
-    v9[5] = a3;
-    [(ALAssetsLibrary *)v5 _performBlockAndWait:v9];
+    v9[5] = wait;
+    [(ALAssetsLibrary *)library _performBlockAndWait:v9];
   }
 
   else if (_CFExecutableLinkedOnOrAfter())
@@ -50,7 +50,7 @@
       block[7] = __53__ALAssetRepresentationPrivate__performBlockAndWait___block_invoke_3;
       block[8] = &unk_278A07C30;
       block[9] = self;
-      block[10] = a3;
+      block[10] = wait;
     }
 
     else
@@ -62,7 +62,7 @@
       block[13] = __53__ALAssetRepresentationPrivate__performBlockAndWait___block_invoke_2;
       block[14] = &unk_278A07C30;
       block[15] = self;
-      block[16] = a3;
+      block[16] = wait;
     }
 
     [(PLPhotoLibrary *)photoLibrary withDispatchGroup:v6 performBlock:?];
@@ -173,17 +173,17 @@ uint64_t __40__ALAssetRepresentationPrivate__isImage__block_invoke(uint64_t a1)
   [(ALAssetRepresentationPrivate *)&v3 dealloc];
 }
 
-- (ALAssetRepresentationPrivate)initWithManagedAsset:(id)a3 sidecar:(id)a4 extension:(id)a5 library:(id)a6
+- (ALAssetRepresentationPrivate)initWithManagedAsset:(id)asset sidecar:(id)sidecar extension:(id)extension library:(id)library
 {
   v12.receiver = self;
   v12.super_class = ALAssetRepresentationPrivate;
   v10 = [(ALAssetRepresentationPrivate *)&v12 init];
   if (v10)
   {
-    v10->_photo = a3;
-    v10->_sidecar = a4;
-    v10->_extension = [a5 copy];
-    [(ALAssetRepresentationPrivate *)v10 setLibrary:a6];
+    v10->_photo = asset;
+    v10->_sidecar = sidecar;
+    v10->_extension = [extension copy];
+    [(ALAssetRepresentationPrivate *)v10 setLibrary:library];
     [(ALAssetRepresentationPrivate *)v10 setIsValid:1];
   }
 
@@ -233,12 +233,12 @@ uint64_t __40__ALAssetRepresentationPrivate__isImage__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (int)_fileDescriptorForPersistentURL:(id)a3
++ (int)_fileDescriptorForPersistentURL:(id)l
 {
   +[ALAssetRepresentationPrivate _setupFileDescriptorQueue];
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  v5 = [__persistentURLQueue indexOfObject:a3];
+  v5 = [__persistentURLQueue indexOfObject:l];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL || v5 >= [__persistentURLQueue count])
   {
     v6 = -1;
@@ -246,7 +246,7 @@ uint64_t __40__ALAssetRepresentationPrivate__isImage__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [objc_msgSend(__fileDescriptorDictionary objectForKey:{a3), "intValue"}];
+    v6 = [objc_msgSend(__fileDescriptorDictionary objectForKey:{l), "intValue"}];
     if ([__persistentURLQueue count] >= 2 && v5 != objc_msgSend(__persistentURLQueue, "count") - 1)
     {
       [__persistentURLQueue exchangeObjectAtIndex:v5 withObjectAtIndex:?];

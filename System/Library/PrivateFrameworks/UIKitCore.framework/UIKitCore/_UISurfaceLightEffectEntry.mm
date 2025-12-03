@@ -1,47 +1,47 @@
 @interface _UISurfaceLightEffectEntry
-- (BOOL)isSameTypeOfEffect:(id)a3;
+- (BOOL)isSameTypeOfEffect:(id)effect;
 - (_TtC5UIKitP33_DE00D3934C8DD6B37DA91C2A6799985526_UISurfaceLightEffectEntry)init;
-- (void)addEffectToView:(id)a3;
-- (void)applyIdentityEffectToView:(id)a3;
-- (void)applyRequestedEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)applyIdentityEffectToView:(id)view;
+- (void)applyRequestedEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation _UISurfaceLightEffectEntry
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188DCFA28(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188DCFA28(viewCopy);
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188DD1654(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188DD1654(viewCopy);
 }
 
-- (void)applyIdentityEffectToView:(id)a3
+- (void)applyIdentityEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188DEBB54(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188DEBB54(viewCopy);
 }
 
-- (void)applyRequestedEffectToView:(id)a3
+- (void)applyRequestedEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188DECB48(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188DECB48(viewCopy);
 }
 
-- (BOOL)isSameTypeOfEffect:(id)a3
+- (BOOL)isSameTypeOfEffect:(id)effect
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1890F48FC(v4);
+  effectCopy = effect;
+  selfCopy = self;
+  LOBYTE(self) = sub_1890F48FC(effectCopy);
 
   return self & 1;
 }

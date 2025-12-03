@@ -6,13 +6,13 @@
 
 - (__CFString)mf_convertFromFlowedText:()FormatFlowedSupport visuallyEmpty:
 {
-  v28 = [a1 length];
+  v28 = [self length];
   v31 = 0;
   if (a4)
   {
-    v7 = [a1 rangeOfCharacterFromSet:{objc_msgSend(MEMORY[0x277CCA900], "whitespaceAndNewlineCharacterSet")}];
+    v7 = [self rangeOfCharacterFromSet:{objc_msgSend(MEMORY[0x277CCA900], "whitespaceAndNewlineCharacterSet")}];
     v9 = v8;
-    if ([a1 length])
+    if ([self length])
     {
       if (v7)
       {
@@ -21,7 +21,7 @@
 
       else
       {
-        v10 = v9 == [a1 length];
+        v10 = v9 == [self length];
       }
     }
 
@@ -57,7 +57,7 @@
     v29 = 0;
     v30 = 0;
     v17 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-    [a1 getLineStart:&v31 end:&v29 contentsEnd:&v30 forRange:{v31, 0}];
+    [self getLineStart:&v31 end:&v29 contentsEnd:&v30 forRange:{v31, 0}];
     v18 = v30;
     if (v30 >= v29)
     {
@@ -79,7 +79,7 @@
     v15 = 0;
     while (1)
     {
-      v21 = [a1 characterAtIndex:{v20, v28}];
+      v21 = [self characterAtIndex:{v20, v28}];
       if (v21 != 62)
       {
         break;
@@ -109,7 +109,7 @@ LABEL_25:
 
     if (a3)
     {
-      if ([a1 characterAtIndex:v20] == 32)
+      if ([self characterAtIndex:v20] == 32)
       {
         ++v20;
       }
@@ -146,7 +146,7 @@ LABEL_38:
       goto LABEL_38;
     }
 
-    v22 = [a1 rangeOfString:@">" options:4 range:{v31, v20 - v31}];
+    v22 = [self rangeOfString:@">" options:4 range:{v31, v20 - v31}];
     v23 = v22 + 2;
     if (v20 < v22 + 2)
     {
@@ -164,20 +164,20 @@ LABEL_38:
     }
 
 LABEL_41:
-    v24 = [a1 substringWithRange:{v20, v30 - v20, v28}];
+    v24 = [self substringWithRange:{v20, v30 - v20, v28}];
     if ((a3 & 1) == 0)
     {
       goto LABEL_60;
     }
 
-    if (v31 >= v30 || [a1 characterAtIndex:v30 - 1] != 32)
+    if (v31 >= v30 || [self characterAtIndex:v30 - 1] != 32)
     {
       goto LABEL_73;
     }
 
-    if (v30 - v20 == 3 && [a1 characterAtIndex:v20] == 45)
+    if (v30 - v20 == 3 && [self characterAtIndex:v20] == 45)
     {
-      v25 = [a1 characterAtIndex:v20 + 1] != 45;
+      v25 = [self characterAtIndex:v20 + 1] != 45;
       if ((a3 & 2) == 0)
       {
         goto LABEL_52;

@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_5600;
   block[3] = &unk_2C7CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_3420B8 != -1)
   {
     dispatch_once(&qword_3420B8, block);
@@ -25,8 +25,8 @@
 
 - (BCLayerRenderer)init
 {
-  v3 = [(BCLayerRenderer *)self _isAppExtension];
-  if (v3)
+  _isAppExtension = [(BCLayerRenderer *)self _isAppExtension];
+  if (_isAppExtension)
   {
     v4 = 0;
   }
@@ -40,7 +40,7 @@
   v9.receiver = self;
   v9.super_class = BCLayerRenderer;
   v6 = [(BCLayerRenderer *)&v9 initWithSuspended:v4];
-  if ((v3 & 1) == 0)
+  if ((_isAppExtension & 1) == 0)
   {
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"_applicationDidEnterBackground:" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -54,8 +54,8 @@
 - (BOOL)_isAppExtension
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundlePath];
-  v4 = [v3 hasSuffix:@".appex"];
+  bundlePath = [v2 bundlePath];
+  v4 = [bundlePath hasSuffix:@".appex"];
 
   return v4;
 }

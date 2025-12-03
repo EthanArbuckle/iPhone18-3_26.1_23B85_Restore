@@ -1,20 +1,20 @@
 @interface NTKHadesFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (NTKHadesFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_timeAlphaForEditMode:(int64_t)a3;
-- (id)_logoForRotation:(unint64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (NTKHadesFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_timeAlphaForEditMode:(int64_t)mode;
+- (id)_logoForRotation:(unint64_t)rotation;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (void)_applyBreathingAndRubberbanding;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyFraction:(double)a3 fromRotation:(id)a4 toRotation:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyFraction:(double)fraction fromRotation:(id)rotation toRotation:(id)toRotation;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_layoutLogo;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
@@ -25,20 +25,20 @@
 - (void)_startHourUpdate;
 - (void)_stopHourUpdate;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateContentColorsFromPalette:(id)a3;
+- (void)_updateContentColorsFromPalette:(id)palette;
 - (void)_updateHour;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKHadesFaceView
 
-- (NTKHadesFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKHadesFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NTKHadesFaceView;
-  return [(NTKHadesFaceView *)&v6 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  return [(NTKHadesFaceView *)&v6 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
 }
 
 - (void)dealloc
@@ -75,16 +75,16 @@
 - (void)_setupViews
 {
   v3 = [NTKHadesHourView alloc];
-  v4 = [(NTKHadesFaceView *)self device];
-  v5 = [(NTKHadesHourView *)v3 initWithDevice:v4];
+  device = [(NTKHadesFaceView *)self device];
+  v5 = [(NTKHadesHourView *)v3 initWithDevice:device];
   [(NTKHadesFaceView *)self setHourView:v5];
 
-  v6 = [(NTKHadesFaceView *)self contentView];
-  [v6 addSubview:self->_hourView];
+  contentView = [(NTKHadesFaceView *)self contentView];
+  [contentView addSubview:self->_hourView];
 
   v20 = [(NTKHadesFaceView *)self _logoForRotation:self->_rotation];
-  v7 = [(NTKHadesFaceView *)self contentView];
-  [v7 addSubview:v20];
+  contentView2 = [(NTKHadesFaceView *)self contentView];
+  [contentView2 addSubview:v20];
 
   v8 = [NTKRoundedCornerOverlayView alloc];
   [(NTKHadesFaceView *)self bounds];
@@ -92,12 +92,12 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(NTKHadesFaceView *)self device];
-  v18 = [v8 initWithFrame:v17 forDeviceCornerRadius:{v10, v12, v14, v16}];
+  device2 = [(NTKHadesFaceView *)self device];
+  v18 = [v8 initWithFrame:device2 forDeviceCornerRadius:{v10, v12, v14, v16}];
   [(NTKHadesFaceView *)self setCorners:v18];
 
-  v19 = [(NTKHadesFaceView *)self contentView];
-  [v19 addSubview:self->_corners];
+  contentView3 = [(NTKHadesFaceView *)self contentView];
+  [contentView3 addSubview:self->_corners];
 }
 
 - (void)_setupListeners
@@ -131,24 +131,24 @@
   v5.receiver = self;
   v5.super_class = NTKHadesFaceView;
   [(NTKHadesFaceView *)&v5 _applyDataMode];
-  v3 = [(NTKHadesFaceView *)self dataMode];
-  if ((v3 - 2) < 4 || v3 == 0)
+  dataMode = [(NTKHadesFaceView *)self dataMode];
+  if ((dataMode - 2) < 4 || dataMode == 0)
   {
     [(NTKHadesFaceView *)self _stopHourUpdate];
   }
 
-  else if (v3 == &dword_0 + 1)
+  else if (dataMode == &dword_0 + 1)
   {
     [(NTKHadesFaceView *)self _startHourUpdate];
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = NTKHadesFaceView;
-  [(NTKHadesFaceView *)&v6 setOverrideDate:a4 duration:?];
-  if (a3)
+  [(NTKHadesFaceView *)&v6 setOverrideDate:duration duration:?];
+  if (date)
   {
     [(NTKHadesFaceView *)self _stopHourUpdate];
   }
@@ -195,8 +195,8 @@
 
 - (void)_updateHour
 {
-  v3 = [(NTKHadesFaceView *)self currentDisplayDate];
-  if (v3)
+  currentDisplayDate = [(NTKHadesFaceView *)self currentDisplayDate];
+  if (currentDisplayDate)
   {
     CLKClockTimerDateForDate();
   }
@@ -209,14 +209,14 @@
   [(NTKHadesFaceView *)self _updateHour:v5];
 }
 
-- (id)_logoForRotation:(unint64_t)a3
+- (id)_logoForRotation:(unint64_t)rotation
 {
   v5 = [NSNumber numberWithUnsignedInteger:?];
   v6 = [(NSMutableDictionary *)self->_logos objectForKeyedSubscript:v5];
   if (!v6)
   {
     v7 = @"HadesLogoStraight";
-    if (a3 == 1)
+    if (rotation == 1)
     {
       v7 = @"HadesLogoTwisted";
     }
@@ -245,15 +245,15 @@
   return v6;
 }
 
-- (void)_updateContentColorsFromPalette:(id)a3
+- (void)_updateContentColorsFromPalette:(id)palette
 {
-  v7 = a3;
-  v4 = [v7 secondHand];
-  v5 = [(NTKHadesFaceView *)self timeView];
-  v6 = [v5 secondHandView];
-  [v6 setColor:v4];
+  paletteCopy = palette;
+  secondHand = [paletteCopy secondHand];
+  timeView = [(NTKHadesFaceView *)self timeView];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setColor:secondHand];
 
-  [(NTKHadesHourView *)self->_hourView setPalette:v7];
+  [(NTKHadesHourView *)self->_hourView setPalette:paletteCopy];
 }
 
 - (void)layoutSubviews
@@ -278,8 +278,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NTKHadesFaceView *)self device];
-  v12 = sub_1DE88(v11, v11);
+  device = [(NTKHadesFaceView *)self device];
+  v12 = sub_1DE88(device, device);
   v14 = v13;
 
   logos = self->_logos;
@@ -329,34 +329,34 @@
   [v5 enumerateObjectsUsingBlock:v6];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v8.receiver = self;
   v8.super_class = NTKHadesFaceView;
   [(NTKHadesFaceView *)&v8 _configureForEditMode:?];
-  [(NTKHadesFaceView *)self _timeAlphaForEditMode:a3];
+  [(NTKHadesFaceView *)self _timeAlphaForEditMode:mode];
   v6 = v5;
-  v7 = [(NTKHadesFaceView *)self timeView];
-  [v7 setAlpha:v6];
+  timeView = [(NTKHadesFaceView *)self timeView];
+  [timeView setAlpha:v6];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v11.receiver = self;
   v11.super_class = NTKHadesFaceView;
   [NTKHadesFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKHadesFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKHadesFaceView *)self _timeAlphaForEditMode:a5];
+  [(NTKHadesFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKHadesFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  v10 = [(NTKHadesFaceView *)self timeView];
-  [v10 setAlpha:v9];
+  timeView = [(NTKHadesFaceView *)self timeView];
+  [timeView setAlpha:v9];
 }
 
-- (double)_timeAlphaForEditMode:(int64_t)a3
+- (double)_timeAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -364,61 +364,61 @@
   return result;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v10.receiver = self;
   v10.super_class = NTKHadesFaceView;
-  [(NTKHadesFaceView *)&v10 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 == 10)
+  [(NTKHadesFaceView *)&v10 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode == 10)
   {
-    v9 = [(NTKHadesFaceView *)self palette];
-    [(NTKHadesFaceView *)self _updateContentColorsFromPalette:v9];
+    palette = [(NTKHadesFaceView *)self palette];
+    [(NTKHadesFaceView *)self _updateContentColorsFromPalette:palette];
   }
 
-  else if (a4 == 15)
+  else if (mode == 15)
   {
-    [(NTKHadesFaceView *)self _applyRotation:v8];
+    [(NTKHadesFaceView *)self _applyRotation:optionCopy];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v15.receiver = self;
   v15.super_class = NTKHadesFaceView;
-  [(NTKHadesFaceView *)&v15 _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 == 10)
+  [(NTKHadesFaceView *)&v15 _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode == 10)
   {
-    v14 = [(NTKHadesFaceView *)self interpolatedColorPalette];
-    [(NTKHadesFaceView *)self _updateContentColorsFromPalette:v14];
+    interpolatedColorPalette = [(NTKHadesFaceView *)self interpolatedColorPalette];
+    [(NTKHadesFaceView *)self _updateContentColorsFromPalette:interpolatedColorPalette];
   }
 
-  else if (a6 == 15)
+  else if (mode == 15)
   {
-    [(NTKHadesFaceView *)self _applyFraction:v12 fromRotation:v13 toRotation:a3];
+    [(NTKHadesFaceView *)self _applyFraction:optionCopy fromRotation:toOptionCopy toRotation:fraction];
   }
 }
 
-- (void)_applyFraction:(double)a3 fromRotation:(id)a4 toRotation:(id)a5
+- (void)_applyFraction:(double)fraction fromRotation:(id)rotation toRotation:(id)toRotation
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  rotationCopy = rotation;
+  toRotationCopy = toRotation;
+  v10 = toRotationCopy;
+  if (!rotationCopy)
   {
-    v8 = v9;
-    a3 = 1.0;
+    rotationCopy = toRotationCopy;
+    fraction = 1.0;
   }
 
-  v11 = [v8 rotation];
-  v12 = [v10 rotation];
-  [(NTKHadesHourView *)self->_hourView applyFraction:v11 fromRotation:v12 toRotation:a3];
-  if (![(NTKHadesFaceView *)self _isFractionAtEnd:a3])
+  rotation = [rotationCopy rotation];
+  rotation2 = [v10 rotation];
+  [(NTKHadesHourView *)self->_hourView applyFraction:rotation fromRotation:rotation2 toRotation:fraction];
+  if (![(NTKHadesFaceView *)self _isFractionAtEnd:fraction])
   {
-    v21 = [(NTKHadesFaceView *)self _logoForRotation:v11];
-    v22 = [(NTKHadesFaceView *)self _logoForRotation:v12];
+    v21 = [(NTKHadesFaceView *)self _logoForRotation:rotation];
+    v22 = [(NTKHadesFaceView *)self _logoForRotation:rotation2];
     logos = self->_logos;
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
@@ -429,19 +429,19 @@
     v20 = v22;
     v48 = v20;
     [(NSMutableDictionary *)logos enumerateKeysAndObjectsUsingBlock:v46];
-    v24 = [v16 superview];
+    superview = [v16 superview];
 
-    if (!v24)
+    if (!superview)
     {
-      v25 = [(NTKHadesFaceView *)self contentView];
-      [v25 addSubview:v16];
+      contentView = [(NTKHadesFaceView *)self contentView];
+      [contentView addSubview:v16];
     }
 
-    v26 = [v20 superview];
+    superview2 = [v20 superview];
 
-    if (v26)
+    if (superview2)
     {
-      if (v24)
+      if (superview)
       {
 LABEL_17:
         [v20 bounds];
@@ -456,8 +456,8 @@ LABEL_17:
         v29 = v28;
         CLKInterpolateBetweenFloatsClipped();
         v31 = v30;
-        v32 = [(NTKHadesFaceView *)self device];
-        v44 = sub_1DE88(v32, v32);
+        device = [(NTKHadesFaceView *)self device];
+        v44 = sub_1DE88(device, device);
         v45 = v33;
 
         CLKInterpolateBetweenFloatsClipped();
@@ -485,22 +485,22 @@ LABEL_17:
 
     else
     {
-      v27 = [(NTKHadesFaceView *)self contentView];
-      [v27 addSubview:v20];
+      contentView2 = [(NTKHadesFaceView *)self contentView];
+      [contentView2 addSubview:v20];
     }
 
     [(NTKHadesFaceView *)self _layoutLogo];
     goto LABEL_17;
   }
 
-  if (a3 == 0.0)
+  if (fraction == 0.0)
   {
-    v13 = v11;
+    v13 = rotation;
   }
 
   else
   {
-    v13 = v12;
+    v13 = rotation2;
   }
 
   [(NTKHadesFaceView *)self setRotation:v13];
@@ -513,12 +513,12 @@ LABEL_17:
   v16 = v14;
   v51 = v16;
   [(NSMutableDictionary *)v15 enumerateKeysAndObjectsUsingBlock:v50];
-  v17 = [v16 superview];
+  superview3 = [v16 superview];
 
-  if (!v17)
+  if (!superview3)
   {
-    v18 = [(NTKHadesFaceView *)self contentView];
-    [v18 addSubview:v16];
+    contentView3 = [(NTKHadesFaceView *)self contentView];
+    [contentView3 addSubview:v16];
 
     [(NTKHadesFaceView *)self _layoutLogo];
   }
@@ -533,26 +533,26 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKHadesFaceView;
-  [(NTKHadesFaceView *)&v8 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKHadesFaceView *)&v8 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
-    self->_breathingFraction = a3;
+    self->_breathingFraction = fraction;
     [(NTKHadesFaceView *)self _applyBreathingAndRubberbanding];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKHadesFaceView;
-  [(NTKHadesFaceView *)&v8 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKHadesFaceView *)&v8 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
-    self->_rubberbandingFraction = a3;
+    self->_rubberbandingFraction = fraction;
     [(NTKHadesFaceView *)self _applyBreathingAndRubberbanding];
   }
 }
@@ -564,13 +564,13 @@ LABEL_18:
   NTKScaleForRubberBandingFraction();
   memset(&v9, 0, sizeof(v9));
   CGAffineTransformMakeScale(&v9, v4 * v5, v4 * v5);
-  v6 = [(NTKHadesFaceView *)self contentView];
+  contentView = [(NTKHadesFaceView *)self contentView];
   v8 = v9;
-  [v6 setTransform:&v8];
+  [contentView setTransform:&v8];
 
-  v7 = [(NTKHadesFaceView *)self timeView];
+  timeView = [(NTKHadesFaceView *)self timeView];
   v8 = v9;
-  [v7 setTransform:&v8];
+  [timeView setTransform:&v8];
 }
 
 - (id)createFaceColorPalette
@@ -580,9 +580,9 @@ LABEL_18:
   return v2;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_47FC8;
   }
@@ -593,12 +593,12 @@ LABEL_18:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  if (a4 == 15)
+  optionCopy = option;
+  if (mode == 15)
   {
-    v9 = [a5 objectForKeyedSubscript:&off_477A8];
+    v9 = [options objectForKeyedSubscript:&off_477A8];
     if (!qword_58B10)
     {
       v10 = objc_opt_new();
@@ -606,16 +606,16 @@ LABEL_18:
       qword_58B10 = v10;
     }
 
-    v12 = [NSString stringWithFormat:@"%@-%@", v8, v9];
+    v12 = [NSString stringWithFormat:@"%@-%@", optionCopy, v9];
     v13 = [qword_58B10 objectForKey:v12];
     if (!v13)
     {
-      v14 = [(NTKHadesFaceView *)self palette];
-      v15 = [v14 copy];
+      palette = [(NTKHadesFaceView *)self palette];
+      v15 = [palette copy];
 
       [v15 setPigmentEditOption:v9];
-      +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [v8 swatchStyle]);
-      v13 = +[NTKHadesHourView imageForRotation:palette:hour:size:](NTKHadesHourView, "imageForRotation:palette:hour:size:", [v8 rotation], v15, 10, v16, v17);
+      +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [optionCopy swatchStyle]);
+      v13 = +[NTKHadesHourView imageForRotation:palette:hour:size:](NTKHadesHourView, "imageForRotation:palette:hour:size:", [optionCopy rotation], v15, 10, v16, v17);
       [qword_58B10 setObject:v13 forKey:v12];
     }
   }
@@ -624,7 +624,7 @@ LABEL_18:
   {
     v19.receiver = self;
     v19.super_class = NTKHadesFaceView;
-    v13 = [(NTKHadesFaceView *)&v19 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:a5];
+    v13 = [(NTKHadesFaceView *)&v19 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:options];
   }
 
   return v13;

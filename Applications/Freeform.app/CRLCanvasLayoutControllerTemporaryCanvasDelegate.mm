@@ -1,12 +1,12 @@
 @interface CRLCanvasLayoutControllerTemporaryCanvasDelegate
-- (CRLCanvasLayoutControllerTemporaryCanvasDelegate)initWithInfos:(id)a3;
+- (CRLCanvasLayoutControllerTemporaryCanvasDelegate)initWithInfos:(id)infos;
 @end
 
 @implementation CRLCanvasLayoutControllerTemporaryCanvasDelegate
 
-- (CRLCanvasLayoutControllerTemporaryCanvasDelegate)initWithInfos:(id)a3
+- (CRLCanvasLayoutControllerTemporaryCanvasDelegate)initWithInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v38.receiver = self;
   v38.super_class = CRLCanvasLayoutControllerTemporaryCanvasDelegate;
   v5 = [(CRLCanvasLayoutControllerTemporaryCanvasDelegate *)&v38 init];
@@ -19,8 +19,8 @@
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v27 = v4;
-    obj = v4;
+    v27 = infosCopy;
+    obj = infosCopy;
     v8 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v8)
     {
@@ -48,8 +48,8 @@
             v33 = 0u;
             v30 = 0u;
             v31 = 0u;
-            v16 = [v14 additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases];
-            v17 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases = [v14 additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases];
+            v17 = [additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases countByEnumeratingWithState:&v30 objects:v39 count:16];
             if (v17)
             {
               v18 = v17;
@@ -60,7 +60,7 @@
                 {
                   if (*v31 != v19)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases);
                   }
 
                   v21 = *(*(&v30 + 1) + 8 * j);
@@ -68,7 +68,7 @@
                   [v7 setObject:v21 forKey:v22];
                 }
 
-                v18 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
+                v18 = [additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases countByEnumeratingWithState:&v30 objects:v39 count:16];
               }
 
               while (v18);
@@ -87,7 +87,7 @@
     UUIDsToBoardItems = v26->_UUIDsToBoardItems;
     v26->_UUIDsToBoardItems = v23;
 
-    v4 = v27;
+    infosCopy = v27;
   }
 
   return v6;

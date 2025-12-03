@@ -19,32 +19,32 @@
 
 - (id)safari_privacyPreservingDescription
 {
-  v1 = [a1 safari_privacyPreservingError];
-  v2 = [v1 description];
+  safari_privacyPreservingError = [self safari_privacyPreservingError];
+  v2 = [safari_privacyPreservingError description];
 
   return v2;
 }
 
 - (id)safari_privacyPreservingError
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [a1 userInfo];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  userInfo = [self userInfo];
   v4 = *MEMORY[0x1E696AA08];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-  v6 = [v5 safari_privacyPreservingError];
-  [v2 setObject:v6 forKeyedSubscript:v4];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  safari_privacyPreservingError = [v5 safari_privacyPreservingError];
+  [dictionary setObject:safari_privacyPreservingError forKeyedSubscript:v4];
 
   v7 = *MEMORY[0x1E696A750];
-  v8 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A750]];
   v9 = [v8 safari_mapObjectsUsingBlock:&__block_literal_global_9];
-  [v2 setObject:v9 forKeyedSubscript:v7];
+  [dictionary setObject:v9 forKeyedSubscript:v7];
 
-  v10 = [a1 domain];
-  v11 = v10;
+  domain = [self domain];
+  v11 = domain;
   v12 = &stru_1F3064D08;
-  if (v10)
+  if (domain)
   {
-    v12 = v10;
+    v12 = domain;
   }
 
   v13 = v12;
@@ -67,12 +67,12 @@
   v16 = v31[5];
   if (v16)
   {
-    v17 = (*(v16 + 16))(v16, a1);
-    [v2 addEntriesFromDictionary:{v17, v24, v25, v26, v27}];
+    v17 = (*(v16 + 16))(v16, self);
+    [dictionary addEntriesFromDictionary:{v17, v24, v25, v26, v27}];
   }
 
-  v18 = [a1 userInfo];
-  v19 = [v18 safari_stringForKey:@"WBSPrivacyPreservingDescription"];
+  userInfo2 = [self userInfo];
+  v19 = [userInfo2 safari_stringForKey:@"WBSPrivacyPreservingDescription"];
 
   if (v19)
   {
@@ -81,12 +81,12 @@
 
   if (-[__CFString length](v15, "length") && ([MEMORY[0x1E696ABC0] userInfoValueProviderForDomain:v15], v20 = objc_claimAutoreleasedReturnValue(), (v21 = v20) != 0))
   {
-    v19 = (*(v20 + 16))(v20, a1, @"WBSPrivacyPreservingDescription");
+    v19 = (*(v20 + 16))(v20, self, @"WBSPrivacyPreservingDescription");
 
     if (v19)
     {
 LABEL_6:
-      [v2 setObject:v19 forKeyedSubscript:@"WBSPrivacyPreservingDescription"];
+      [dictionary setObject:v19 forKeyedSubscript:@"WBSPrivacyPreservingDescription"];
     }
   }
 
@@ -95,7 +95,7 @@ LABEL_6:
     v19 = 0;
   }
 
-  v22 = [MEMORY[0x1E696ABC0] errorWithDomain:v15 code:objc_msgSend(a1 userInfo:{"code"), v2}];
+  v22 = [MEMORY[0x1E696ABC0] errorWithDomain:v15 code:objc_msgSend(self userInfo:{"code"), dictionary}];
 
   _Block_object_dispose(&v30, 8);
 
@@ -129,7 +129,7 @@ LABEL_6:
   v12 = v7;
   v8 = v7;
   v9 = v6;
-  [a1 _safari_getPrivacyPreservingUserInfoProvidersUsingBlock:v10];
+  [self _safari_getPrivacyPreservingUserInfoProvidersUsingBlock:v10];
 }
 
 + (id)safari_privacyPreservingUserInfoProviderForDomain:()SafariCoreExtras
@@ -148,7 +148,7 @@ LABEL_6:
   v10 = &v11;
   v5 = v4;
   v9 = v5;
-  [a1 _safari_getPrivacyPreservingUserInfoProvidersUsingBlock:v8];
+  [self _safari_getPrivacyPreservingUserInfoProvidersUsingBlock:v8];
   v6 = _Block_copy(v12[5]);
 
   _Block_object_dispose(&v11, 8);
@@ -158,20 +158,20 @@ LABEL_6:
 
 - (uint64_t)safari_isOrContainsClientSideNetworkError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696A978]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
   if (v3)
   {
-    v4 = [a1 code] + 1020;
+    v4 = [self code] + 1020;
     if (v4 < 0x14 && ((0x88803u >> v4) & 1) != 0)
     {
       return 1;
     }
   }
 
-  v6 = [a1 underlyingErrors];
-  v7 = [v6 safari_containsObjectPassingTest:&__block_literal_global_5];
+  underlyingErrors = [self underlyingErrors];
+  v7 = [underlyingErrors safari_containsObjectPassingTest:&__block_literal_global_5];
 
   return v7;
 }
@@ -189,7 +189,7 @@ LABEL_6:
     a5 = [v9 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   }
 
-  v11 = [a1 initWithDomain:v8 code:a4 userInfo:a5];
+  v11 = [self initWithDomain:v8 code:a4 userInfo:a5];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
@@ -199,25 +199,25 @@ LABEL_6:
 {
   v8 = a5;
   v9 = a3;
-  v10 = [[a1 alloc] safari_initWithDomain:v9 code:a4 privacyPreservingDescription:v8];
+  v10 = [[self alloc] safari_initWithDomain:v9 code:a4 privacyPreservingDescription:v8];
 
   return v10;
 }
 
 - (uint64_t)safari_isSQLiteError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"com.apple.Safari.SQLite"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"com.apple.Safari.SQLite"];
 
   return v2;
 }
 
 - (uint64_t)safari_isSQLiteCorruptionError
 {
-  result = [a1 safari_isSQLiteError];
+  result = [self safari_isSQLiteError];
   if (result)
   {
-    return [a1 code] == 11;
+    return [self code] == 11;
   }
 
   return result;
@@ -225,29 +225,29 @@ LABEL_6:
 
 - (uint64_t)safari_isOrContainsNetworkUnavailableError
 {
-  if ([a1 safari_isOrContainsClientSideNetworkError])
+  if ([self safari_isOrContainsClientSideNetworkError])
   {
     return 1;
   }
 
-  return [a1 safari_hasOrContainsErrorWithCloudKitErrorCode:3];
+  return [self safari_hasOrContainsErrorWithCloudKitErrorCode:3];
 }
 
 - (uint64_t)safari_matchesErrorDomain:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v5 isEqualToString:v4];
+  domain = [self domain];
+  v6 = [domain isEqualToString:v4];
 
   return v6;
 }
 
 - (uint64_t)safari_matchesErrorDomain:()SafariCoreExtras andCode:
 {
-  result = [a1 safari_matchesErrorDomain:?];
+  result = [self safari_matchesErrorDomain:?];
   if (result)
   {
-    return [a1 code] == a4;
+    return [self code] == a4;
   }
 
   return result;
@@ -256,12 +256,12 @@ LABEL_6:
 - (uint64_t)safari_matchesErrorDomainsAndCodes:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  domain = [self domain];
+  v6 = [v4 objectForKeyedSubscript:domain];
 
   if ([v6 count])
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
     v8 = [v6 containsObject:v7];
   }
 

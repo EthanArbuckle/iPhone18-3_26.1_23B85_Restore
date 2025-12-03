@@ -1,8 +1,8 @@
 @interface WFLinkActionRunDescriptor
-- (WFLinkActionRunDescriptor)initWithCoder:(id)a3;
-- (WFLinkActionRunDescriptor)initWithIdentifier:(id)a3 name:(id)a4 action:(id)a5 metadata:(id)a6 isAutoShortcut:(BOOL)a7;
+- (WFLinkActionRunDescriptor)initWithCoder:(id)coder;
+- (WFLinkActionRunDescriptor)initWithIdentifier:(id)identifier name:(id)name action:(id)action metadata:(id)metadata isAutoShortcut:(BOOL)shortcut;
 - (id)kind;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkActionRunDescriptor
@@ -22,27 +22,27 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(WFLinkActionRunDescriptor *)self identifier];
-  [v8 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFLinkActionRunDescriptor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(WFLinkActionRunDescriptor *)self action];
-  [v8 encodeObject:v5 forKey:@"action"];
+  action = [(WFLinkActionRunDescriptor *)self action];
+  [coderCopy encodeObject:action forKey:@"action"];
 
-  v6 = [(WFLinkActionRunDescriptor *)self metadata];
-  [v8 encodeObject:v6 forKey:@"metadata"];
+  metadata = [(WFLinkActionRunDescriptor *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 
-  v7 = [(WFLinkActionRunDescriptor *)self name];
-  [v8 encodeObject:v7 forKey:@"name"];
+  name = [(WFLinkActionRunDescriptor *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v8 encodeBool:-[WFLinkActionRunDescriptor isAutoShortcut](self forKey:{"isAutoShortcut"), @"isAutoShortcut"}];
+  [coderCopy encodeBool:-[WFLinkActionRunDescriptor isAutoShortcut](self forKey:{"isAutoShortcut"), @"isAutoShortcut"}];
 }
 
-- (WFLinkActionRunDescriptor)initWithCoder:(id)a3
+- (WFLinkActionRunDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -61,7 +61,7 @@
 
   v6 = v5;
   _Block_object_dispose(&v23, 8);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"identifier"];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -80,7 +80,7 @@
 
   v9 = v8;
   _Block_object_dispose(&v23, 8);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:@"action"];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:@"action"];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -99,38 +99,38 @@
 
   v12 = v11;
   _Block_object_dispose(&v23, 8);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:@"metadata"];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:@"metadata"];
   v14 = v13;
-  v15 = 0;
+  selfCopy = 0;
   if (v10 && v13)
   {
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    self = -[WFLinkActionRunDescriptor initWithIdentifier:name:action:metadata:isAutoShortcut:](self, "initWithIdentifier:name:action:metadata:isAutoShortcut:", v7, v16, v10, v14, [v4 decodeBoolForKey:@"isAutoShortcut"]);
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    self = -[WFLinkActionRunDescriptor initWithIdentifier:name:action:metadata:isAutoShortcut:](self, "initWithIdentifier:name:action:metadata:isAutoShortcut:", v7, v16, v10, v14, [coderCopy decodeBoolForKey:@"isAutoShortcut"]);
 
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (WFLinkActionRunDescriptor)initWithIdentifier:(id)a3 name:(id)a4 action:(id)a5 metadata:(id)a6 isAutoShortcut:(BOOL)a7
+- (WFLinkActionRunDescriptor)initWithIdentifier:(id)identifier name:(id)name action:(id)action metadata:(id)metadata isAutoShortcut:(BOOL)shortcut
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (v13)
+  identifierCopy = identifier;
+  nameCopy = name;
+  actionCopy = action;
+  metadataCopy = metadata;
+  if (identifierCopy)
   {
-    if (v15)
+    if (actionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunDescriptors.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowRunDescriptors.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-    if (v16)
+    if (metadataCopy)
     {
       goto LABEL_4;
     }
@@ -138,23 +138,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunDescriptors.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunDescriptors.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-  if (!v15)
+  if (!actionCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (metadataCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunDescriptors.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunDescriptors.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
 
 LABEL_4:
   v25.receiver = self;
@@ -163,11 +163,11 @@ LABEL_4:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v18->_action, a5);
-    objc_storeStrong(&v18->_metadata, a6);
-    objc_storeStrong(&v18->_name, a4);
-    v18->_isAutoShortcut = a7;
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v18->_action, action);
+    objc_storeStrong(&v18->_metadata, metadata);
+    objc_storeStrong(&v18->_name, name);
+    v18->_isAutoShortcut = shortcut;
     v19 = v18;
   }
 

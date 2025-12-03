@@ -1,19 +1,19 @@
 @interface BuddyPosedDeviceSelectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation BuddyPosedDeviceSelectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"leftContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"centerContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"rightContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"leftPosedView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"centerPosedView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"rightPosedView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"leftContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"centerContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"rightContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"leftPosedView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"centerPosedView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyPosedDeviceSelectionView" hasInstanceMethod:@"rightPosedView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

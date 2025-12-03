@@ -1,6 +1,6 @@
 @interface ATThroughputCalculator
 - (ATThroughputCalculator)init;
-- (BOOL)update:(double)a3;
+- (BOOL)update:(double)update;
 - (double)throughput;
 - (void)resume;
 - (void)suspend;
@@ -21,17 +21,17 @@
   return result;
 }
 
-- (BOOL)update:(double)a3
+- (BOOL)update:(double)update
 {
   if (self->_suspended)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ATThroughputCalculator.m" lineNumber:47 description:@"calculator is suspended"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATThroughputCalculator.m" lineNumber:47 description:@"calculator is suspended"];
   }
 
   Current = CFAbsoluteTimeGetCurrent();
   v6 = Current - self->_lastUpdate;
-  v7 = self->_currentValue + a3;
+  v7 = self->_currentValue + update;
   self->_currentValue = v7;
   if (v6 >= 1.0)
   {
@@ -47,8 +47,8 @@
 {
   if (self->_suspended)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"ATThroughputCalculator.m" lineNumber:41 description:@"calculator is suspended"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATThroughputCalculator.m" lineNumber:41 description:@"calculator is suspended"];
   }
 
   self->_suspended = 1;
@@ -58,8 +58,8 @@
 {
   if (!self->_suspended)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"ATThroughputCalculator.m" lineNumber:32 description:@"calculator is not suspended"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATThroughputCalculator.m" lineNumber:32 description:@"calculator is not suspended"];
   }
 
   Current = CFAbsoluteTimeGetCurrent();

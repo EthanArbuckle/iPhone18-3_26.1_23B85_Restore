@@ -1,27 +1,27 @@
 @interface _SFPBRFVisualPropertyWithAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFVisualPropertyWithAction)initWithDictionary:(id)a3;
-- (_SFPBRFVisualPropertyWithAction)initWithFacade:(id)a3;
-- (_SFPBRFVisualPropertyWithAction)initWithJSON:(id)a3;
+- (_SFPBRFVisualPropertyWithAction)initWithDictionary:(id)dictionary;
+- (_SFPBRFVisualPropertyWithAction)initWithFacade:(id)facade;
+- (_SFPBRFVisualPropertyWithAction)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addVisual_elements:(id)a3;
-- (void)setVisual_elements:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addVisual_elements:(id)visual_elements;
+- (void)setVisual_elements:(id)visual_elements;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFVisualPropertyWithAction
 
-- (_SFPBRFVisualPropertyWithAction)initWithFacade:(id)a3
+- (_SFPBRFVisualPropertyWithAction)initWithFacade:(id)facade
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFVisualPropertyWithAction *)self init];
   if (v5)
   {
-    v6 = [v4 visual_elements];
-    if (v6)
+    visual_elements = [facadeCopy visual_elements];
+    if (visual_elements)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -35,8 +35,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v4 visual_elements];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    visual_elements2 = [facadeCopy visual_elements];
+    v9 = [visual_elements2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -47,7 +47,7 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(visual_elements2);
           }
 
           v13 = [[_SFPBRFVisualElement alloc] initWithFacade:*(*(&v21 + 1) + 8 * i)];
@@ -57,25 +57,25 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [visual_elements2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBRFVisualPropertyWithAction *)v5 setVisual_elements:v7];
-    if ([v4 hasIs_safe_for_logging])
+    if ([facadeCopy hasIs_safe_for_logging])
     {
-      -[_SFPBRFVisualPropertyWithAction setIs_safe_for_logging:](v5, "setIs_safe_for_logging:", [v4 is_safe_for_logging]);
+      -[_SFPBRFVisualPropertyWithAction setIs_safe_for_logging:](v5, "setIs_safe_for_logging:", [facadeCopy is_safe_for_logging]);
     }
 
-    v14 = [v4 commandItem];
+    commandItem = [facadeCopy commandItem];
 
-    if (v14)
+    if (commandItem)
     {
       v15 = [_SFPBCommandButtonItem alloc];
-      v16 = [v4 commandItem];
-      v17 = [(_SFPBCommandButtonItem *)v15 initWithFacade:v16];
+      commandItem2 = [facadeCopy commandItem];
+      v17 = [(_SFPBCommandButtonItem *)v15 initWithFacade:commandItem2];
       [(_SFPBRFVisualPropertyWithAction *)v5 setCommandItem:v17];
     }
 
@@ -86,16 +86,16 @@
   return v5;
 }
 
-- (_SFPBRFVisualPropertyWithAction)initWithDictionary:(id)a3
+- (_SFPBRFVisualPropertyWithAction)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = _SFPBRFVisualPropertyWithAction;
   v5 = [(_SFPBRFVisualPropertyWithAction *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"visualElements"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"visualElements"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,14 +139,14 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"isSafeForLogging", v21}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"isSafeForLogging", v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFVisualPropertyWithAction setIs_safe_for_logging:](v5, "setIs_safe_for_logging:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"commandItem"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"commandItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,30 +161,30 @@
   return v5;
 }
 
-- (_SFPBRFVisualPropertyWithAction)initWithJSON:(id)a3
+- (_SFPBRFVisualPropertyWithAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFVisualPropertyWithAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFVisualPropertyWithAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFVisualPropertyWithAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -198,32 +198,32 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_commandItem)
   {
-    v4 = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    commandItem = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
+    dictionaryRepresentation = [commandItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"commandItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"commandItem"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"commandItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"commandItem"];
     }
   }
 
   if (self->_is_safe_for_logging)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFVisualPropertyWithAction is_safe_for_logging](self, "is_safe_for_logging")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isSafeForLogging"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isSafeForLogging"];
   }
 
   if ([(NSArray *)self->_visual_elements count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -243,16 +243,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation2 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -262,12 +262,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"visualElements"];
+    [dictionary setObject:array forKeyedSubscript:@"visualElements"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -286,28 +286,28 @@
   return v4 ^ v3 ^ [(_SFPBCommandButtonItem *)self->_commandItem hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
-  v6 = [v4 visual_elements];
-  if ((v5 != 0) == (v6 == 0))
+  visual_elements = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
+  visual_elements2 = [equalCopy visual_elements];
+  if ((visual_elements != 0) == (visual_elements2 == 0))
   {
     goto LABEL_12;
   }
 
-  v7 = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
-  if (v7)
+  visual_elements3 = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
+  if (visual_elements3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
-    v10 = [v4 visual_elements];
-    v11 = [v9 isEqual:v10];
+    v8 = visual_elements3;
+    visual_elements4 = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
+    visual_elements5 = [equalCopy visual_elements];
+    v11 = [visual_elements4 isEqual:visual_elements5];
 
     if (!v11)
     {
@@ -320,22 +320,22 @@
   }
 
   is_safe_for_logging = self->_is_safe_for_logging;
-  if (is_safe_for_logging != [v4 is_safe_for_logging])
+  if (is_safe_for_logging != [equalCopy is_safe_for_logging])
   {
     goto LABEL_13;
   }
 
-  v5 = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
-  v6 = [v4 commandItem];
-  if ((v5 != 0) == (v6 == 0))
+  visual_elements = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
+  visual_elements2 = [equalCopy commandItem];
+  if ((visual_elements != 0) == (visual_elements2 == 0))
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v13 = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
-  if (!v13)
+  commandItem = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
+  if (!commandItem)
   {
 
 LABEL_16:
@@ -343,10 +343,10 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  v14 = v13;
-  v15 = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
-  v16 = [v4 commandItem];
-  v17 = [v15 isEqual:v16];
+  v14 = commandItem;
+  commandItem2 = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
+  commandItem3 = [equalCopy commandItem];
+  v17 = [commandItem2 isEqual:commandItem3];
 
   if (v17)
   {
@@ -360,16 +360,16 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
+  toCopy = to;
+  visual_elements = [(_SFPBRFVisualPropertyWithAction *)self visual_elements];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [visual_elements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -381,7 +381,7 @@ LABEL_14:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visual_elements);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -390,7 +390,7 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [visual_elements countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -401,8 +401,8 @@ LABEL_14:
     PBDataWriterWriteBOOLField();
   }
 
-  v11 = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
-  if (v11)
+  commandItem = [(_SFPBRFVisualPropertyWithAction *)self commandItem];
+  if (commandItem)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -410,27 +410,27 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addVisual_elements:(id)a3
+- (void)addVisual_elements:(id)visual_elements
 {
-  v4 = a3;
+  visual_elementsCopy = visual_elements;
   visual_elements = self->_visual_elements;
-  v8 = v4;
+  v8 = visual_elementsCopy;
   if (!visual_elements)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_visual_elements;
-    self->_visual_elements = v6;
+    self->_visual_elements = array;
 
-    v4 = v8;
+    visual_elementsCopy = v8;
     visual_elements = self->_visual_elements;
   }
 
-  [(NSArray *)visual_elements addObject:v4];
+  [(NSArray *)visual_elements addObject:visual_elementsCopy];
 }
 
-- (void)setVisual_elements:(id)a3
+- (void)setVisual_elements:(id)visual_elements
 {
-  v4 = [a3 copy];
+  v4 = [visual_elements copy];
   visual_elements = self->_visual_elements;
   self->_visual_elements = v4;
 

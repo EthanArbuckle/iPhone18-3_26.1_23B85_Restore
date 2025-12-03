@@ -1,12 +1,12 @@
 @interface FCFetchedValueDescriptor
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4;
+- (BOOL)isValue:(id)value equalToValue:(id)toValue;
 - (FCFetchedValueDescriptor)init;
 - (FCFetchedValueDescriptorObserving)observer;
 - (NSArray)inputManagers;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fastCachedValue;
-- (id)valuePromiseWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4;
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5;
+- (id)valuePromiseWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service;
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCFetchedValueDescriptor
@@ -18,10 +18,10 @@
   return [(FCFetchedValueDescriptor *)&v3 init];
 }
 
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a5;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -71,11 +71,11 @@
   objc_exception_throw(v6);
 }
 
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4
+- (BOOL)isValue:(id)value equalToValue:(id)toValue
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  toValueCopy = toValue;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -125,7 +125,7 @@
   objc_exception_throw(v6);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -158,7 +158,7 @@
   return WeakRetained;
 }
 
-- (id)valuePromiseWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4
+- (id)valuePromiseWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service
 {
   v7 = objc_alloc(MEMORY[0x1E69B68F8]);
   v10[0] = MEMORY[0x1E69E9820];
@@ -166,8 +166,8 @@
   v10[2] = __82__FCFetchedValueDescriptor_Promise__valuePromiseWithCachePolicy_qualityOfService___block_invoke;
   v10[3] = &unk_1E7C3CC18;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
+  v10[5] = policy;
+  v10[6] = service;
   v8 = [v7 initWithResolver:v10];
 
   return v8;

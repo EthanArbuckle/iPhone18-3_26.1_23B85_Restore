@@ -1,42 +1,42 @@
 @interface PKSpendingInsightTrend
-- (BOOL)isEqual:(id)a3;
-- (PKSpendingInsightTrend)initWithCoder:(id)a3;
-- (PKSpendingInsightTrend)initWithFHFeatureInsight:(id)a3;
-- (PKSpendingInsightTrend)initWithType:(unint64_t)a3 direction:(unint64_t)a4 percentageChange:(double)a5 amountChange:(id)a6 merchantCategory:(int64_t)a7 totalSpending:(id)a8 previousTotalSpending:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (PKSpendingInsightTrend)initWithCoder:(id)coder;
+- (PKSpendingInsightTrend)initWithFHFeatureInsight:(id)insight;
+- (PKSpendingInsightTrend)initWithType:(unint64_t)type direction:(unint64_t)direction percentageChange:(double)change amountChange:(id)amountChange merchantCategory:(int64_t)category totalSpending:(id)spending previousTotalSpending:(id)totalSpending;
 - (id)description;
 - (id)formattedPercentage;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSpendingInsightTrend
 
-- (PKSpendingInsightTrend)initWithType:(unint64_t)a3 direction:(unint64_t)a4 percentageChange:(double)a5 amountChange:(id)a6 merchantCategory:(int64_t)a7 totalSpending:(id)a8 previousTotalSpending:(id)a9
+- (PKSpendingInsightTrend)initWithType:(unint64_t)type direction:(unint64_t)direction percentageChange:(double)change amountChange:(id)amountChange merchantCategory:(int64_t)category totalSpending:(id)spending previousTotalSpending:(id)totalSpending
 {
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  amountChangeCopy = amountChange;
+  spendingCopy = spending;
+  totalSpendingCopy = totalSpending;
   v23.receiver = self;
   v23.super_class = PKSpendingInsightTrend;
   v20 = [(PKSpendingInsightTrend *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    v20->_type = a3;
-    v20->_direction = a4;
-    v20->_percentageChange = a5;
-    objc_storeStrong(&v20->_amountChange, a6);
-    v21->_category = a7;
-    objc_storeStrong(&v21->_totalSpending, a8);
-    objc_storeStrong(&v21->_previousTotalSpending, a9);
+    v20->_type = type;
+    v20->_direction = direction;
+    v20->_percentageChange = change;
+    objc_storeStrong(&v20->_amountChange, amountChange);
+    v21->_category = category;
+    objc_storeStrong(&v21->_totalSpending, spending);
+    objc_storeStrong(&v21->_previousTotalSpending, totalSpending);
   }
 
   return v21;
 }
 
-- (PKSpendingInsightTrend)initWithFHFeatureInsight:(id)a3
+- (PKSpendingInsightTrend)initWithFHFeatureInsight:(id)insight
 {
-  v5 = a3;
+  insightCopy = insight;
   v52.receiver = self;
   v52.super_class = PKSpendingInsightTrend;
   v6 = [(PKSpendingInsightTrend *)&v52 init];
@@ -47,14 +47,14 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (!v5)
+  if (!insightCopy)
   {
     goto LABEL_11;
   }
 
-  v7 = [v5 type];
+  type = [insightCopy type];
   v8 = _MergedGlobals_170();
-  v9 = v7;
+  v9 = type;
   v10 = v8;
   v11 = v10;
   if (v9 == v10)
@@ -66,7 +66,7 @@ LABEL_41:
     if (!v9 || !v10)
     {
 
-      v13 = v9;
+      averageAmount = v9;
       goto LABEL_13;
     }
 
@@ -78,16 +78,16 @@ LABEL_41:
     }
   }
 
-  v13 = [v5 averageAmount];
-  if (![v13 pk_isZeroNumber])
+  averageAmount = [insightCopy averageAmount];
+  if (![averageAmount pk_isZeroNumber])
   {
 LABEL_13:
 
 LABEL_14:
 LABEL_15:
-    v17 = [v5 type];
+    type2 = [insightCopy type];
     v18 = _MergedGlobals_170();
-    v19 = v17;
+    v19 = type2;
     v20 = v18;
     v21 = v20;
     if (v20 == v19)
@@ -125,30 +125,30 @@ LABEL_31:
 LABEL_32:
 
             v6->_type = v23;
-            v29 = [v5 spendingInsightPercentageValue];
-            [v29 doubleValue];
+            spendingInsightPercentageValue = [insightCopy spendingInsightPercentageValue];
+            [spendingInsightPercentageValue doubleValue];
             v6->_percentageChange = v30;
 
-            v31 = [v5 spendAmount];
-            v32 = PKCurrencyAmountCreate(v31, &cfstr_Usd.isa, 0);
+            spendAmount = [insightCopy spendAmount];
+            v32 = PKCurrencyAmountCreate(spendAmount, &cfstr_Usd.isa, 0);
             totalSpending = v6->_totalSpending;
             v6->_totalSpending = v32;
 
-            v34 = [v5 averageAmount];
-            v35 = PKCurrencyAmountCreate(v34, &cfstr_Usd.isa, 0);
+            averageAmount2 = [insightCopy averageAmount];
+            v35 = PKCurrencyAmountCreate(averageAmount2, &cfstr_Usd.isa, 0);
             previousTotalSpending = v6->_previousTotalSpending;
             v6->_previousTotalSpending = v35;
 
-            v37 = [v5 spendAmount];
-            v38 = [v37 pk_isZeroNumber];
+            spendAmount2 = [insightCopy spendAmount];
+            pk_isZeroNumber = [spendAmount2 pk_isZeroNumber];
 
             v39 = 0;
-            if ((v38 & 1) == 0)
+            if ((pk_isZeroNumber & 1) == 0)
             {
-              v47 = [v5 direction];
-              if (v47)
+              direction = [insightCopy direction];
+              if (direction)
               {
-                if (v47 == 2)
+                if (direction == 2)
                 {
                   percentageChange = v6->_percentageChange;
                   if (percentageChange <= 0.0 || (+[PKSpendingInsightTrend percentageChangeSteadyThreshold], percentageChange >= v51))
@@ -164,27 +164,27 @@ LABEL_32:
 
                 else
                 {
-                  if (v47 != 1)
+                  if (direction != 1)
                   {
 LABEL_34:
-                    v40 = [v5 spendingInsightAmount];
-                    v41 = [v40 pk_absoluteValue];
+                    spendingInsightAmount = [insightCopy spendingInsightAmount];
+                    pk_absoluteValue = [spendingInsightAmount pk_absoluteValue];
 
-                    v42 = PKCurrencyAmountCreate(v41, &cfstr_Usd.isa, 0);
+                    v42 = PKCurrencyAmountCreate(pk_absoluteValue, &cfstr_Usd.isa, 0);
                     amountChange = v6->_amountChange;
                     v6->_amountChange = v42;
 
                     if (v6->_type == 2 && (off_1ED6D1088(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
-                      v44 = [v5 merchantCategory];
-                      if ((v44 - 1) >= 7)
+                      merchantCategory = [insightCopy merchantCategory];
+                      if ((merchantCategory - 1) >= 7)
                       {
                         v45 = 0;
                       }
 
                       else
                       {
-                        v45 = v44;
+                        v45 = merchantCategory;
                       }
                     }
 
@@ -194,7 +194,7 @@ LABEL_34:
                     }
 
                     v6->_category = v45;
-                    objc_storeStrong(&v6->_fhInsight, a3);
+                    objc_storeStrong(&v6->_fhInsight, insight);
 
                     goto LABEL_41;
                   }
@@ -239,10 +239,10 @@ LABEL_34:
     goto LABEL_32;
   }
 
-  v14 = [v5 spendAmount];
-  v15 = [v14 pk_isZeroNumber];
+  spendAmount3 = [insightCopy spendAmount];
+  pk_isZeroNumber2 = [spendAmount3 pk_isZeroNumber];
 
-  if (v15)
+  if (pk_isZeroNumber2)
   {
     goto LABEL_15;
   }
@@ -254,37 +254,37 @@ LABEL_42:
   return v16;
 }
 
-- (PKSpendingInsightTrend)initWithCoder:(id)a3
+- (PKSpendingInsightTrend)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKSpendingInsightTrend;
   v5 = [(PKSpendingInsightTrend *)&v10 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_direction = [v4 decodeIntegerForKey:@"direction"];
-    [v4 decodeDoubleForKey:@"percentageChange"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_direction = [coderCopy decodeIntegerForKey:@"direction"];
+    [coderCopy decodeDoubleForKey:@"percentageChange"];
     v5->_percentageChange = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountChange"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountChange"];
     amountChange = v5->_amountChange;
     v5->_amountChange = v7;
 
-    v5->_category = [v4 decodeIntegerForKey:@"category"];
+    v5->_category = [coderCopy decodeIntegerForKey:@"category"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_direction forKey:@"direction"];
-  [v5 encodeDouble:@"percentageChange" forKey:self->_percentageChange];
-  [v5 encodeObject:self->_amountChange forKey:@"amountChange"];
-  [v5 encodeInteger:self->_category forKey:@"category"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_direction forKey:@"direction"];
+  [coderCopy encodeDouble:@"percentageChange" forKey:self->_percentageChange];
+  [coderCopy encodeObject:self->_amountChange forKey:@"amountChange"];
+  [coderCopy encodeInteger:self->_category forKey:@"category"];
 }
 
 - (id)formattedPercentage
@@ -328,17 +328,17 @@ LABEL_42:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_percentageChange != v4[4])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_percentageChange != equalCopy[4])
   {
     goto LABEL_18;
   }
 
   amountChange = self->_amountChange;
-  v6 = *(v4 + 5);
+  v6 = *(equalCopy + 5);
   if (amountChange && v6)
   {
     if (![(PKCurrencyAmount *)amountChange isEqual:?])
@@ -352,13 +352,13 @@ LABEL_42:
     goto LABEL_18;
   }
 
-  if (self->_type != *(v4 + 2) || self->_direction != *(v4 + 3) || self->_category != *(v4 + 6))
+  if (self->_type != *(equalCopy + 2) || self->_direction != *(equalCopy + 3) || self->_category != *(equalCopy + 6))
   {
     goto LABEL_18;
   }
 
   totalSpending = self->_totalSpending;
-  v8 = *(v4 + 7);
+  v8 = *(equalCopy + 7);
   if (!totalSpending || !v8)
   {
     if (totalSpending == v8)
@@ -378,7 +378,7 @@ LABEL_18:
 
 LABEL_14:
   previousTotalSpending = self->_previousTotalSpending;
-  v10 = *(v4 + 8);
+  v10 = *(equalCopy + 8);
   if (previousTotalSpending && v10)
   {
     v11 = [(PKCurrencyAmount *)previousTotalSpending isEqual:?];

@@ -1,18 +1,18 @@
 @interface ASCCredentialRequestContext
-- (ASCCredentialRequestContext)initWithCoder:(id)a3;
-- (ASCCredentialRequestContext)initWithRequestTypes:(unint64_t)a3;
+- (ASCCredentialRequestContext)initWithCoder:(id)coder;
+- (ASCCredentialRequestContext)initWithRequestTypes:(unint64_t)types;
 - (BOOL)isUsingWebBrowserOnlyOptions;
 - (BOOL)requestRequiresRelyingParty;
 - (void)applyMagicCredentialIDIfNecessary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)logRequest;
 - (void)sanitizeRequestTypesForAutoFillRequestIfNecessary;
-- (void)setProxiedOriginDeviceName:(id)a3;
+- (void)setProxiedOriginDeviceName:(id)name;
 @end
 
 @implementation ASCCredentialRequestContext
 
-- (ASCCredentialRequestContext)initWithRequestTypes:(unint64_t)a3
+- (ASCCredentialRequestContext)initWithRequestTypes:(unint64_t)types
 {
   v8.receiver = self;
   v8.super_class = ASCCredentialRequestContext;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_requestTypes = a3;
+    v4->_requestTypes = types;
     v4->_isClientLinkedOnOrAfterIOS15Aligned = dyld_program_sdk_at_least();
     v6 = v5;
   }
@@ -28,112 +28,112 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   requestTypes = self->_requestTypes;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:requestTypes];
-  [v7 encodeObject:v6 forKey:@"requestTypes"];
+  [coderCopy encodeObject:v6 forKey:@"requestTypes"];
 
-  [v7 encodeObject:self->_proxiedAppName forKey:@"appName"];
-  [v7 encodeObject:self->_proxiedAppIdentifier forKey:@"appIdentifier"];
-  [v7 encodeObject:self->_proxiedBundleIdentifier forKey:@"bundleIdentifier"];
-  [v7 encodeObject:self->_proxiedTeamIdentifier forKey:@"teamIdentifier"];
-  [v7 encodeObject:self->_proxiedAssociatedDomains forKey:@"associatedDomains"];
-  [v7 encodeObject:self->_proxiedIconData forKey:@"iconData"];
-  [v7 encodeObject:self->_proxiedIconScale forKey:@"iconScale"];
-  [v7 encodeObject:self->_proxiedOriginDeviceName forKey:@"proxiedOriginDeviceName"];
-  [v7 encodeObject:self->_proxySheetHeaderOverride forKey:@"proxySheetHeaderOverride"];
-  [v7 encodeObject:self->_proxySheetTitleOverride forKey:@"proxySheetTitleOverride"];
-  [v7 encodeObject:self->_proxySheetSubtitleOverride forKey:@"proxySheetSubtitleOverride"];
-  [v7 encodeObject:self->_proxySheetNoCredentialsErrorTitleOverride forKey:@"proxySheetNoCredentialsErrorTitleOverride"];
-  [v7 encodeObject:self->_proxySheetNoCredentialsErrorMessageOverride forKey:@"proxySheetNoCredentialsErrorMessageOverride"];
-  [v7 encodeInteger:self->_requestStyle forKey:@"requestStyle"];
-  [v7 encodeObject:self->_globalFrameID forKey:@"webGlobalFrameID"];
-  [v7 encodeInteger:self->_requestOptions forKey:@"requestOptions"];
-  [v7 encodeObject:self->_authenticatedContext forKey:@"authenticatedContext"];
-  [v7 encodeBool:self->_useAlternativeSecurityKeysIcon forKey:@"useAlternativeSecurityKeysIcon"];
-  [v7 encodeObject:self->_appleIDAuthorizationRequest forKey:@"appleIDAuthorizationRequest"];
-  [v7 encodeBool:self->_isClientLinkedOnOrAfterIOS15Aligned forKey:@"linkedOnOrAfterIOS15Aligned"];
-  [v7 encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v7 encodeObject:self->_platformKeyCredentialCreationOptions forKey:@"platformCredentialCreationOptions"];
-  [v7 encodeObject:self->_platformKeyCredentialAssertionOptions forKey:@"platformCredentialAssertionOptions"];
-  [v7 encodeObject:self->_securityKeyCredentialCreationOptions forKey:@"securityKeyCredentialCreationOptions"];
-  [v7 encodeObject:self->_securityKeyCredentialAssertionOptions forKey:@"securityKeyCredentialAssertionOptions"];
-  [v7 encodeObject:self->_platformAccountRegistrationOptions forKey:@"platformAccountRegistrationOptions"];
-  [v7 encodeObject:self->_testOptions forKey:@"testOptions"];
-  [v7 encodeObject:self->_savedAccountContext forKey:@"savedAccountContext"];
-  [v7 encodeBool:self->_isConditionalRegistrationRequest forKey:@"isConditionalRegistrationRequest"];
-  [v7 encodeObject:self->_windowSceneIdentifier forKey:@"windowSceneIdentifier"];
+  [coderCopy encodeObject:self->_proxiedAppName forKey:@"appName"];
+  [coderCopy encodeObject:self->_proxiedAppIdentifier forKey:@"appIdentifier"];
+  [coderCopy encodeObject:self->_proxiedBundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_proxiedTeamIdentifier forKey:@"teamIdentifier"];
+  [coderCopy encodeObject:self->_proxiedAssociatedDomains forKey:@"associatedDomains"];
+  [coderCopy encodeObject:self->_proxiedIconData forKey:@"iconData"];
+  [coderCopy encodeObject:self->_proxiedIconScale forKey:@"iconScale"];
+  [coderCopy encodeObject:self->_proxiedOriginDeviceName forKey:@"proxiedOriginDeviceName"];
+  [coderCopy encodeObject:self->_proxySheetHeaderOverride forKey:@"proxySheetHeaderOverride"];
+  [coderCopy encodeObject:self->_proxySheetTitleOverride forKey:@"proxySheetTitleOverride"];
+  [coderCopy encodeObject:self->_proxySheetSubtitleOverride forKey:@"proxySheetSubtitleOverride"];
+  [coderCopy encodeObject:self->_proxySheetNoCredentialsErrorTitleOverride forKey:@"proxySheetNoCredentialsErrorTitleOverride"];
+  [coderCopy encodeObject:self->_proxySheetNoCredentialsErrorMessageOverride forKey:@"proxySheetNoCredentialsErrorMessageOverride"];
+  [coderCopy encodeInteger:self->_requestStyle forKey:@"requestStyle"];
+  [coderCopy encodeObject:self->_globalFrameID forKey:@"webGlobalFrameID"];
+  [coderCopy encodeInteger:self->_requestOptions forKey:@"requestOptions"];
+  [coderCopy encodeObject:self->_authenticatedContext forKey:@"authenticatedContext"];
+  [coderCopy encodeBool:self->_useAlternativeSecurityKeysIcon forKey:@"useAlternativeSecurityKeysIcon"];
+  [coderCopy encodeObject:self->_appleIDAuthorizationRequest forKey:@"appleIDAuthorizationRequest"];
+  [coderCopy encodeBool:self->_isClientLinkedOnOrAfterIOS15Aligned forKey:@"linkedOnOrAfterIOS15Aligned"];
+  [coderCopy encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeObject:self->_platformKeyCredentialCreationOptions forKey:@"platformCredentialCreationOptions"];
+  [coderCopy encodeObject:self->_platformKeyCredentialAssertionOptions forKey:@"platformCredentialAssertionOptions"];
+  [coderCopy encodeObject:self->_securityKeyCredentialCreationOptions forKey:@"securityKeyCredentialCreationOptions"];
+  [coderCopy encodeObject:self->_securityKeyCredentialAssertionOptions forKey:@"securityKeyCredentialAssertionOptions"];
+  [coderCopy encodeObject:self->_platformAccountRegistrationOptions forKey:@"platformAccountRegistrationOptions"];
+  [coderCopy encodeObject:self->_testOptions forKey:@"testOptions"];
+  [coderCopy encodeObject:self->_savedAccountContext forKey:@"savedAccountContext"];
+  [coderCopy encodeBool:self->_isConditionalRegistrationRequest forKey:@"isConditionalRegistrationRequest"];
+  [coderCopy encodeObject:self->_windowSceneIdentifier forKey:@"windowSceneIdentifier"];
 }
 
-- (ASCCredentialRequestContext)initWithCoder:(id)a3
+- (ASCCredentialRequestContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v64.receiver = self;
   v64.super_class = ASCCredentialRequestContext;
   v5 = [(ASCCredentialRequestContext *)&v64 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestTypes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestTypes"];
     v5->_requestTypes = [v6 unsignedIntegerValue];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
     proxiedAppName = v5->_proxiedAppName;
     v5->_proxiedAppName = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appIdentifier"];
     proxiedAppIdentifier = v5->_proxiedAppIdentifier;
     v5->_proxiedAppIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     proxiedBundleIdentifier = v5->_proxiedBundleIdentifier;
     v5->_proxiedBundleIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
     proxiedTeamIdentifier = v5->_proxiedTeamIdentifier;
     v5->_proxiedTeamIdentifier = v13;
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"associatedDomains"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"associatedDomains"];
     proxiedAssociatedDomains = v5->_proxiedAssociatedDomains;
     v5->_proxiedAssociatedDomains = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconData"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconData"];
     proxiedIconData = v5->_proxiedIconData;
     v5->_proxiedIconData = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconScale"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconScale"];
     proxiedIconScale = v5->_proxiedIconScale;
     v5->_proxiedIconScale = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxiedOriginDeviceName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxiedOriginDeviceName"];
     proxiedOriginDeviceName = v5->_proxiedOriginDeviceName;
     v5->_proxiedOriginDeviceName = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetHeaderOverride"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetHeaderOverride"];
     proxySheetHeaderOverride = v5->_proxySheetHeaderOverride;
     v5->_proxySheetHeaderOverride = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetTitleOverride"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetTitleOverride"];
     proxySheetTitleOverride = v5->_proxySheetTitleOverride;
     v5->_proxySheetTitleOverride = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetSubtitleOverride"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetSubtitleOverride"];
     proxySheetSubtitleOverride = v5->_proxySheetSubtitleOverride;
     v5->_proxySheetSubtitleOverride = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetNoCredentialsErrorTitleOverride"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetNoCredentialsErrorTitleOverride"];
     proxySheetNoCredentialsErrorTitleOverride = v5->_proxySheetNoCredentialsErrorTitleOverride;
     v5->_proxySheetNoCredentialsErrorTitleOverride = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetNoCredentialsErrorMessageOverride"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxySheetNoCredentialsErrorMessageOverride"];
     proxySheetNoCredentialsErrorMessageOverride = v5->_proxySheetNoCredentialsErrorMessageOverride;
     v5->_proxySheetNoCredentialsErrorMessageOverride = v34;
 
-    v36 = [v4 decodeIntegerForKey:@"requestStyle"];
+    v36 = [coderCopy decodeIntegerForKey:@"requestStyle"];
     if (v36 >= 3)
     {
       v37 = 0;
@@ -145,58 +145,58 @@
     }
 
     v5->_requestStyle = v37;
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webGlobalFrameID"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webGlobalFrameID"];
     globalFrameID = v5->_globalFrameID;
     v5->_globalFrameID = v38;
 
-    v5->_requestOptions = [v4 decodeIntegerForKey:@"requestOptions"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticatedContext"];
+    v5->_requestOptions = [coderCopy decodeIntegerForKey:@"requestOptions"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticatedContext"];
     authenticatedContext = v5->_authenticatedContext;
     v5->_authenticatedContext = v40;
 
-    v5->_useAlternativeSecurityKeysIcon = [v4 decodeBoolForKey:@"useAlternativeSecurityKeysIcon"];
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleIDAuthorizationRequest"];
+    v5->_useAlternativeSecurityKeysIcon = [coderCopy decodeBoolForKey:@"useAlternativeSecurityKeysIcon"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleIDAuthorizationRequest"];
     appleIDAuthorizationRequest = v5->_appleIDAuthorizationRequest;
     v5->_appleIDAuthorizationRequest = v42;
 
-    v5->_isClientLinkedOnOrAfterIOS15Aligned = [v4 decodeBoolForKey:@"linkedOnOrAfterIOS15Aligned"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+    v5->_isClientLinkedOnOrAfterIOS15Aligned = [coderCopy decodeBoolForKey:@"linkedOnOrAfterIOS15Aligned"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
     relyingPartyIdentifier = v5->_relyingPartyIdentifier;
     v5->_relyingPartyIdentifier = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformCredentialCreationOptions"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformCredentialCreationOptions"];
     platformKeyCredentialCreationOptions = v5->_platformKeyCredentialCreationOptions;
     v5->_platformKeyCredentialCreationOptions = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformCredentialAssertionOptions"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformCredentialAssertionOptions"];
     platformKeyCredentialAssertionOptions = v5->_platformKeyCredentialAssertionOptions;
     v5->_platformKeyCredentialAssertionOptions = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityKeyCredentialCreationOptions"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityKeyCredentialCreationOptions"];
     securityKeyCredentialCreationOptions = v5->_securityKeyCredentialCreationOptions;
     v5->_securityKeyCredentialCreationOptions = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityKeyCredentialAssertionOptions"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityKeyCredentialAssertionOptions"];
     securityKeyCredentialAssertionOptions = v5->_securityKeyCredentialAssertionOptions;
     v5->_securityKeyCredentialAssertionOptions = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformAccountRegistrationOptions"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformAccountRegistrationOptions"];
     platformAccountRegistrationOptions = v5->_platformAccountRegistrationOptions;
     v5->_platformAccountRegistrationOptions = v54;
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testOptions"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testOptions"];
     testOptions = v5->_testOptions;
     v5->_testOptions = v56;
 
     v58 = 0;
     if ([ASCAgent validatePresenceOfTestOptions:v5->_testOptions])
     {
-      v5->_isConditionalRegistrationRequest = [v4 decodeBoolForKey:@"isConditionalRegistrationRequest"];
-      v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"windowSceneIdentifier"];
+      v5->_isConditionalRegistrationRequest = [coderCopy decodeBoolForKey:@"isConditionalRegistrationRequest"];
+      v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"windowSceneIdentifier"];
       windowSceneIdentifier = v5->_windowSceneIdentifier;
       v5->_windowSceneIdentifier = v59;
 
-      v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"savedAccountContext"];
+      v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"savedAccountContext"];
       savedAccountContext = v5->_savedAccountContext;
       v5->_savedAccountContext = v61;
 
@@ -215,28 +215,28 @@
 - (BOOL)isUsingWebBrowserOnlyOptions
 {
   v3 = self->_platformKeyCredentialAssertionOptions;
-  v4 = [(ASCPublicKeyCredentialAssertionOptions *)v3 clientDataHash];
-  if (!v4)
+  clientDataHash = [(ASCPublicKeyCredentialAssertionOptions *)v3 clientDataHash];
+  if (!clientDataHash)
   {
-    v5 = [(ASCPublicKeyCredentialAssertionOptions *)v3 clientDataJSON];
-    if (v5 || [(ASCPublicKeyCredentialAssertionOptions *)v3 shouldHideHybrid])
+    clientDataJSON = [(ASCPublicKeyCredentialAssertionOptions *)v3 clientDataJSON];
+    if (clientDataJSON || [(ASCPublicKeyCredentialAssertionOptions *)v3 shouldHideHybrid])
     {
       goto LABEL_5;
     }
 
-    v8 = [(ASCPublicKeyCredentialAssertionOptions *)v3 appIDForSecurityKeys];
+    appIDForSecurityKeys = [(ASCPublicKeyCredentialAssertionOptions *)v3 appIDForSecurityKeys];
 
-    if (v8)
+    if (appIDForSecurityKeys)
     {
       v6 = 1;
       goto LABEL_7;
     }
 
-    v5 = self->_platformKeyCredentialCreationOptions;
-    v9 = [(ASCPublicKeyCredentialCreationOptions *)v5 clientDataHash];
-    if (v9 || ([(ASCPublicKeyCredentialCreationOptions *)v5 clientDataJSON], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    clientDataJSON = self->_platformKeyCredentialCreationOptions;
+    clientDataHash2 = [(ASCPublicKeyCredentialCreationOptions *)clientDataJSON clientDataHash];
+    if (clientDataHash2 || ([(ASCPublicKeyCredentialCreationOptions *)clientDataJSON clientDataJSON], (clientDataHash2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = v9;
+      v10 = clientDataHash2;
 LABEL_13:
       v6 = 1;
 LABEL_14:
@@ -244,14 +244,14 @@ LABEL_14:
       goto LABEL_6;
     }
 
-    if ([(ASCPublicKeyCredentialCreationOptions *)v5 shouldHideHybrid])
+    if ([(ASCPublicKeyCredentialCreationOptions *)clientDataJSON shouldHideHybrid])
     {
       goto LABEL_5;
     }
 
     v10 = self->_securityKeyCredentialAssertionOptions;
-    v11 = [(ASCPublicKeyCredentialAssertionOptions *)v10 clientDataHash];
-    if (v11 || ([(ASCPublicKeyCredentialAssertionOptions *)v10 clientDataJSON], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    clientDataHash3 = [(ASCPublicKeyCredentialAssertionOptions *)v10 clientDataHash];
+    if (clientDataHash3 || ([(ASCPublicKeyCredentialAssertionOptions *)v10 clientDataJSON], (clientDataHash3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = 1;
 LABEL_19:
@@ -259,51 +259,51 @@ LABEL_19:
       goto LABEL_14;
     }
 
-    v12 = [(ASCPublicKeyCredentialAssertionOptions *)v10 appIDForSecurityKeys];
+    appIDForSecurityKeys2 = [(ASCPublicKeyCredentialAssertionOptions *)v10 appIDForSecurityKeys];
 
-    if (v12)
+    if (appIDForSecurityKeys2)
     {
       goto LABEL_13;
     }
 
     v17 = self->_securityKeyCredentialCreationOptions;
-    v13 = [(ASCPublicKeyCredentialCreationOptions *)v17 clientDataHash];
-    if (v13)
+    clientDataHash4 = [(ASCPublicKeyCredentialCreationOptions *)v17 clientDataHash];
+    if (clientDataHash4)
     {
       goto LABEL_22;
     }
 
-    v14 = [(ASCPublicKeyCredentialCreationOptions *)v17 clientDataJSON];
+    clientDataJSON2 = [(ASCPublicKeyCredentialCreationOptions *)v17 clientDataJSON];
 
-    if (v14)
+    if (clientDataJSON2)
     {
       goto LABEL_24;
     }
 
-    v13 = [(ASCPublicKeyCredentialAssertionOptions *)v3 origin];
-    if (v13)
+    clientDataHash4 = [(ASCPublicKeyCredentialAssertionOptions *)v3 origin];
+    if (clientDataHash4)
     {
       goto LABEL_22;
     }
 
-    v15 = [(ASCPublicKeyCredentialAssertionOptions *)v10 origin];
+    origin = [(ASCPublicKeyCredentialAssertionOptions *)v10 origin];
 
-    if (v15)
+    if (origin)
     {
       goto LABEL_24;
     }
 
-    v13 = [(ASCPublicKeyCredentialCreationOptions *)v5 origin];
-    if (v13)
+    clientDataHash4 = [(ASCPublicKeyCredentialCreationOptions *)clientDataJSON origin];
+    if (clientDataHash4)
     {
 LABEL_22:
     }
 
     else
     {
-      v16 = [(ASCPublicKeyCredentialCreationOptions *)v17 origin];
+      origin2 = [(ASCPublicKeyCredentialCreationOptions *)v17 origin];
 
-      if (!v16)
+      if (!origin2)
       {
         v6 = self->_authenticatedContext != 0;
         goto LABEL_25;
@@ -313,11 +313,11 @@ LABEL_22:
 LABEL_24:
     v6 = 1;
 LABEL_25:
-    v11 = v17;
+    clientDataHash3 = v17;
     goto LABEL_19;
   }
 
-  v5 = v4;
+  clientDataJSON = clientDataHash;
 LABEL_5:
   v6 = 1;
 LABEL_6:
@@ -326,12 +326,12 @@ LABEL_7:
   return v6;
 }
 
-- (void)setProxiedOriginDeviceName:(id)a3
+- (void)setProxiedOriginDeviceName:(id)name
 {
-  v5 = a3;
-  if ([v5 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v4 = v5;
+    v4 = nameCopy;
   }
 
   else
@@ -354,16 +354,16 @@ LABEL_7:
 {
   if ((self->_requestTypes & 8) != 0)
   {
-    v3 = [(ASCPublicKeyCredentialAssertionOptions *)self->_platformKeyCredentialAssertionOptions allowedCredentials];
-    if ([v3 count] == 1)
+    allowedCredentials = [(ASCPublicKeyCredentialAssertionOptions *)self->_platformKeyCredentialAssertionOptions allowedCredentials];
+    if ([allowedCredentials count] == 1)
     {
-      v4 = [v3 objectAtIndexedSubscript:0];
+      v4 = [allowedCredentials objectAtIndexedSubscript:0];
       v5 = v4;
       if (v4)
       {
-        v6 = [v4 credentialID];
+        credentialID = [v4 credentialID];
         v7 = +[ASCPublicKeyCredentialDescriptor magicCredentialID];
-        v8 = [v6 isEqualToData:v7];
+        v8 = [credentialID isEqualToData:v7];
 
         if (v8)
         {

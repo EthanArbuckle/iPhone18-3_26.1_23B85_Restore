@@ -1,24 +1,24 @@
 @interface PUIReportSensorManager
-+ (id)_iconFromImage:(id)a3;
-+ (id)applicationBundleIdentifierForCategory:(id)a3;
-+ (id)iconTypeIdentifierForCategory:(id)a3;
-+ (id)localizedStringForCategory:(id)a3;
-- (BOOL)shouldIncludeBundleID:(id)a3;
-- (id)bundleIDsAndLatestDatesFromEvents:(id)a3;
-- (id)categoriesAndLatestDatesFromEvents:(id)a3;
-- (id)events:(id)a3 filtered:(id)a4;
-- (id)eventsFiltered:(id)a3;
++ (id)_iconFromImage:(id)image;
++ (id)applicationBundleIdentifierForCategory:(id)category;
++ (id)iconTypeIdentifierForCategory:(id)category;
++ (id)localizedStringForCategory:(id)category;
+- (BOOL)shouldIncludeBundleID:(id)d;
+- (id)bundleIDsAndLatestDatesFromEvents:(id)events;
+- (id)categoriesAndLatestDatesFromEvents:(id)events;
+- (id)events:(id)events filtered:(id)filtered;
+- (id)eventsFiltered:(id)filtered;
 - (id)loadAllEvents;
 - (void)dataDidChange;
-- (void)reloadDataWithCompletion:(id)a3;
+- (void)reloadDataWithCompletion:(id)completion;
 @end
 
 @implementation PUIReportSensorManager
 
-+ (id)localizedStringForCategory:(id)a3
++ (id)localizedStringForCategory:(id)category
 {
   v16[7] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  categoryCopy = category;
   v4 = *MEMORY[0x277D412B8];
   v15[0] = *MEMORY[0x277D412A0];
   v15[1] = v4;
@@ -37,7 +37,7 @@
   v15[6] = *MEMORY[0x277D412C0];
   v16[6] = @"SCREEN_RECORDING";
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:7];
-  v8 = [v7 objectForKeyedSubscript:v3];
+  v8 = [v7 objectForKeyedSubscript:categoryCopy];
   v9 = PUI_LocalizedStringForAppReport(v8);
 
   v10 = v9;
@@ -46,10 +46,10 @@
     v11 = _PUILoggingFacility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(PUIReportSensorManager *)v3 localizedStringForCategory:v11];
+      [(PUIReportSensorManager *)categoryCopy localizedStringForCategory:v11];
     }
 
-    v10 = v3;
+    v10 = categoryCopy;
   }
 
   v12 = v10;
@@ -58,11 +58,11 @@
   return v10;
 }
 
-+ (id)iconTypeIdentifierForCategory:(id)a3
++ (id)iconTypeIdentifierForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = __56__PUIReportSensorManager_iconTypeIdentifierForCategory___block_invoke();
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:categoryCopy];
 
   return v5;
 }
@@ -99,11 +99,11 @@ void __56__PUIReportSensorManager_iconTypeIdentifierForCategory___block_invoke_2
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)applicationBundleIdentifierForCategory:(id)a3
++ (id)applicationBundleIdentifierForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = __65__PUIReportSensorManager_applicationBundleIdentifierForCategory___block_invoke();
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:categoryCopy];
 
   return v5;
 }
@@ -137,14 +137,14 @@ void __65__PUIReportSensorManager_applicationBundleIdentifierForCategory___block
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_iconFromImage:(id)a3
++ (id)_iconFromImage:(id)image
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  imageCopy = image;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
-  if (v3 && ([v3 CGImage], (v7 = LICreateIconForImage()) != 0))
+  if (imageCopy && ([imageCopy CGImage], (v7 = LICreateIconForImage()) != 0))
   {
     v8 = v7;
     v9 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v7 scale:0 orientation:v6];
@@ -161,33 +161,33 @@ void __65__PUIReportSensorManager_applicationBundleIdentifierForCategory___block
 
 - (void)dataDidChange
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
 }
 
-- (BOOL)shouldIncludeBundleID:(id)a3
+- (BOOL)shouldIncludeBundleID:(id)d
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
 
-  v6 = [v5 appTags];
-  v7 = [v6 containsObject:@"hidden"];
+  appTags = [v5 appTags];
+  v7 = [appTags containsObject:@"hidden"];
 
   return v7 ^ 1;
 }
 
-- (void)reloadDataWithCompletion:(id)a3
+- (void)reloadDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__PUIReportSensorManager_reloadDataWithCompletion___block_invoke;
   v7[3] = &unk_279BA1E00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -255,9 +255,9 @@ uint64_t __51__PUIReportSensorManager_reloadDataWithCompletion___block_invoke_2(
 
   v4 = v3;
   _Block_object_dispose(&v17, 8);
-  v5 = [v3 sharedInstance];
+  sharedInstance = [v3 sharedInstance];
   v16 = 0;
-  v6 = [v5 publisherForReportWithError:&v16];
+  v6 = [sharedInstance publisherForReportWithError:&v16];
   v7 = v16;
 
   if (v7)
@@ -323,16 +323,16 @@ void __39__PUIReportSensorManager_loadAllEvents__block_invoke(uint64_t a1, void 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bundleIDsAndLatestDatesFromEvents:(id)a3
+- (id)bundleIDsAndLatestDatesFromEvents:(id)events
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v6)
   {
@@ -355,32 +355,32 @@ void __39__PUIReportSensorManager_loadAllEvents__block_invoke(uint64_t a1, void 
         {
           [v11 startTime];
           v13 = v12;
-          v14 = [v11 access];
-          v15 = [v14 accessor];
-          v16 = [v15 identifier];
-          v17 = [v4 objectForKeyedSubscript:v16];
+          access = [v11 access];
+          accessor = [access accessor];
+          identifier = [accessor identifier];
+          v17 = [v4 objectForKeyedSubscript:identifier];
           [v17 timeIntervalSinceReferenceDate];
           v19 = v18;
 
           if (v19 < v13)
           {
             v20 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v13];
-            v21 = [v14 accessor];
-            v22 = [v21 identifier];
-            [v4 setObject:v20 forKeyedSubscript:v22];
+            accessor2 = [access accessor];
+            identifier2 = [accessor2 identifier];
+            [v4 setObject:v20 forKeyedSubscript:identifier2];
           }
         }
 
         else
         {
-          v14 = _PUILoggingFacility();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          access = _PUILoggingFacility();
+          if (os_log_type_enabled(access, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v26;
             v32 = "[PUIReportSensorManager bundleIDsAndLatestDatesFromEvents:]";
             v33 = 2112;
             v34 = v11;
-            _os_log_impl(&dword_2657FE000, v14, OS_LOG_TYPE_DEFAULT, "%s: Unrecognized record class, %@", buf, 0x16u);
+            _os_log_impl(&dword_2657FE000, access, OS_LOG_TYPE_DEFAULT, "%s: Unrecognized record class, %@", buf, 0x16u);
           }
         }
       }
@@ -397,16 +397,16 @@ void __39__PUIReportSensorManager_loadAllEvents__block_invoke(uint64_t a1, void 
   return v23;
 }
 
-- (id)categoriesAndLatestDatesFromEvents:(id)a3
+- (id)categoriesAndLatestDatesFromEvents:(id)events
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v6)
   {
@@ -429,30 +429,30 @@ void __39__PUIReportSensorManager_loadAllEvents__block_invoke(uint64_t a1, void 
         {
           [v11 startTime];
           v13 = v12;
-          v14 = [v11 access];
-          v15 = [v14 category];
-          v16 = [v4 objectForKeyedSubscript:v15];
+          access = [v11 access];
+          category = [access category];
+          v16 = [v4 objectForKeyedSubscript:category];
           [v16 timeIntervalSinceReferenceDate];
           v18 = v17;
 
           if (v18 < v13)
           {
             v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v13];
-            v20 = [v14 category];
-            [v4 setObject:v19 forKeyedSubscript:v20];
+            category2 = [access category];
+            [v4 setObject:v19 forKeyedSubscript:category2];
           }
         }
 
         else
         {
-          v14 = _PUILoggingFacility();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          access = _PUILoggingFacility();
+          if (os_log_type_enabled(access, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v24;
             v30 = "[PUIReportSensorManager categoriesAndLatestDatesFromEvents:]";
             v31 = 2112;
             v32 = v11;
-            _os_log_impl(&dword_2657FE000, v14, OS_LOG_TYPE_DEFAULT, "%s: Unrecognized record class, %@", buf, 0x16u);
+            _os_log_impl(&dword_2657FE000, access, OS_LOG_TYPE_DEFAULT, "%s: Unrecognized record class, %@", buf, 0x16u);
           }
         }
       }
@@ -469,28 +469,28 @@ void __39__PUIReportSensorManager_loadAllEvents__block_invoke(uint64_t a1, void 
   return v21;
 }
 
-- (id)eventsFiltered:(id)a3
+- (id)eventsFiltered:(id)filtered
 {
-  v4 = a3;
-  v5 = [(PUIReportSensorManager *)self allEvents];
-  v6 = [(PUIReportSensorManager *)self events:v5 filtered:v4];
+  filteredCopy = filtered;
+  allEvents = [(PUIReportSensorManager *)self allEvents];
+  v6 = [(PUIReportSensorManager *)self events:allEvents filtered:filteredCopy];
 
   return v6;
 }
 
-- (id)events:(id)a3 filtered:(id)a4
+- (id)events:(id)events filtered:(id)filtered
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  eventsCopy = events;
+  filteredCopy = filtered;
+  if (filteredCopy)
   {
     v7 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = eventsCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -506,7 +506,7 @@ void __39__PUIReportSensorManager_loadAllEvents__block_invoke(uint64_t a1, void 
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if (v6[2](v6, v13))
+          if (filteredCopy[2](filteredCopy, v13))
           {
             [v7 addObject:{v13, v17}];
           }
@@ -523,7 +523,7 @@ void __39__PUIReportSensorManager_loadAllEvents__block_invoke(uint64_t a1, void 
 
   else
   {
-    v14 = v5;
+    v14 = eventsCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];

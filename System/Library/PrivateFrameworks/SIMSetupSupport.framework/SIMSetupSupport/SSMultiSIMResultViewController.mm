@@ -1,28 +1,28 @@
 @interface SSMultiSIMResultViewController
-- (SSMultiSIMResultViewController)initWithPlanInfos:(id)a3;
+- (SSMultiSIMResultViewController)initWithPlanInfos:(id)infos;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_continueButtonTapped;
-- (void)prepare:(id)a3;
-- (void)pushTimeoutFailureViewControllerWithStatus:(unint64_t)a3 forPlan:(id)a4;
-- (void)pushToDetailViewControllerWithError:(id)a3 forPlan:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)prepare:(id)prepare;
+- (void)pushTimeoutFailureViewControllerWithStatus:(unint64_t)status forPlan:(id)plan;
+- (void)pushToDetailViewControllerWithError:(id)error forPlan:(id)plan;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation SSMultiSIMResultViewController
 
-- (SSMultiSIMResultViewController)initWithPlanInfos:(id)a3
+- (SSMultiSIMResultViewController)initWithPlanInfos:(id)infos
 {
   v41 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v3 = a3;
-  v4 = [v3 count];
+  obj = infos;
+  infosCopy = infos;
+  v4 = [infosCopy count];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = v3;
+  v5 = infosCopy;
   v6 = [v5 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v6)
   {
@@ -41,13 +41,13 @@
           objc_enumerationMutation(v5);
         }
 
-        v13 = [*(*(&v36 + 1) + 8 * v12) status];
-        if (v13 == 4 || v13 == 14 || v13 == 10004 || v13 == 10003)
+        status = [*(*(&v36 + 1) + 8 * v12) status];
+        if (status == 4 || status == 14 || status == 10004 || status == 10003)
         {
           ++v10;
         }
 
-        else if (v13 == 5)
+        else if (status == 5)
         {
           ++v9;
         }
@@ -77,7 +77,7 @@
 
   if (v10 == v4)
   {
-    v18 = self;
+    selfCopy2 = self;
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"MULTISIM_RESULT_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
@@ -88,7 +88,7 @@
 
   else
   {
-    v18 = self;
+    selfCopy2 = self;
     if (v9 == v4)
     {
       v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -141,7 +141,7 @@
 
   v27 = [v21 localizedStringForKey:v23 value:&stru_28753DF48 table:{@"Localizable", obj}];
 
-  v35.receiver = v18;
+  v35.receiver = selfCopy2;
   v35.super_class = SSMultiSIMResultViewController;
   v28 = [(OBTableWelcomeController *)&v35 initWithTitle:v20 detailText:v27 symbolName:@"antenna.radiowaves.left.and.right" adoptTableViewScrollView:1];
   v29 = v28;
@@ -159,9 +159,9 @@
   v25.receiver = self;
   v25.super_class = SSMultiSIMResultViewController;
   [(TSOBTableWelcomeController *)&v25 viewDidLoad];
-  v3 = [(SSMultiSIMResultViewController *)self navigationController];
-  v4 = [v3 navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationController = [(SSMultiSIMResultViewController *)self navigationController];
+  navigationItem = [navigationController navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v5 = +[SSOBBoldTrayButton boldButton];
   [v5 addTarget:self action:sel__continueButtonTapped forControlEvents:64];
@@ -170,102 +170,102 @@
   [v5 setTitle:v7 forState:0];
 
   [v5 setEnabled:1];
-  v8 = [(SSMultiSIMResultViewController *)self buttonTray];
-  [v8 addButton:v5];
+  buttonTray = [(SSMultiSIMResultViewController *)self buttonTray];
+  [buttonTray addButton:v5];
 
   v9 = objc_alloc(MEMORY[0x277D75B40]);
   v10 = [v9 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v10];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setEstimatedRowHeight:1.0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setEstimatedRowHeight:1.0];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setAllowsMultipleSelection:0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 setScrollEnabled:1];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setScrollEnabled:1];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setShowsVerticalScrollIndicator:0];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setShowsVerticalScrollIndicator:0];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  v18 = [MEMORY[0x277D75348] clearColor];
-  [v17 setBackgroundColor:v18];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView7 setBackgroundColor:clearColor];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  v20 = [MEMORY[0x277D75348] lightGrayColor];
-  [v19 setSeparatorColor:v20];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+  [tableView8 setSeparatorColor:lightGrayColor];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  [v21 setDataSource:self];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 setDataSource:self];
 
-  v22 = [(OBTableWelcomeController *)self tableView];
-  [v22 setDelegate:self];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 setDelegate:self];
 
-  v23 = [(OBTableWelcomeController *)self tableView];
-  [v23 reloadData];
+  tableView11 = [(OBTableWelcomeController *)self tableView];
+  [tableView11 reloadData];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained setCancelNavigationBarItems:self];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a3;
-  v9 = [v7 stringWithFormat:@"plan%ld", objc_msgSend(v6, "row")];
-  v10 = [v8 dequeueReusableCellWithIdentifier:v9];
+  viewCopy = view;
+  v9 = [v7 stringWithFormat:@"plan%ld", objc_msgSend(pathCopy, "row")];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:v9];
   }
 
-  v11 = [v6 row];
+  v11 = [pathCopy row];
   if (v11 < [(NSArray *)self->_infos count])
   {
     v12 = [(NSArray *)self->_infos objectAtIndexedSubscript:v11];
-    v13 = [v10 defaultContentConfiguration];
-    v14 = [v12 displayPlan];
-    if (+[TSUtilities isPhone](TSUtilities, "isPhone") && ([v14 phoneNumber], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v16))
+    defaultContentConfiguration = [v10 defaultContentConfiguration];
+    displayPlan = [v12 displayPlan];
+    if (+[TSUtilities isPhone](TSUtilities, "isPhone") && ([displayPlan phoneNumber], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v16))
     {
-      v17 = [v14 phoneNumber];
-      v18 = [v17 formattedPhoneNumber];
+      phoneNumber = [displayPlan phoneNumber];
+      formattedPhoneNumber = [phoneNumber formattedPhoneNumber];
     }
 
     else
     {
-      v21 = [v14 carrierName];
-      v22 = [v21 length];
+      carrierName = [displayPlan carrierName];
+      v22 = [carrierName length];
 
       if (v22)
       {
-        v17 = [v14 carrierName];
-        [v13 setText:v17];
+        phoneNumber = [displayPlan carrierName];
+        [defaultContentConfiguration setText:phoneNumber];
         goto LABEL_14;
       }
 
-      v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v18 = [v17 localizedStringForKey:@"NEW_CELLULAR_PLAN_NO_CARRIER_TITLE" value:&stru_28753DF48 table:@"Localizable"];
+      phoneNumber = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      formattedPhoneNumber = [phoneNumber localizedStringForKey:@"NEW_CELLULAR_PLAN_NO_CARRIER_TITLE" value:&stru_28753DF48 table:@"Localizable"];
     }
 
-    v23 = v18;
-    [v13 setText:v18];
+    v23 = formattedPhoneNumber;
+    [defaultContentConfiguration setText:formattedPhoneNumber];
 
 LABEL_14:
-    v24 = [v12 status];
-    if (isSuccessState(v24))
+    status = [v12 status];
+    if (isSuccessState(status))
     {
-      v25 = [v12 planItem];
-      if (v25 && (v26 = v25, [v12 planItem], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isSelected"), v27, v26, (v28 & 1) != 0))
+      planItem = [v12 planItem];
+      if (planItem && (v26 = planItem, [v12 planItem], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isSelected"), v27, v26, (v28 & 1) != 0))
       {
         v29 = @"READY";
       }
@@ -277,56 +277,56 @@ LABEL_14:
 
       v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v37 = [v36 localizedStringForKey:v29 value:&stru_28753DF48 table:@"Localizable"];
-      [v13 setSecondaryText:v37];
+      [defaultContentConfiguration setSecondaryText:v37];
 
       [v10 setSelectionStyle:0];
       goto LABEL_34;
     }
 
-    if (v24 != 5)
+    if (status != 5)
     {
       v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v39 = [v38 localizedStringForKey:@"MULTISIM_RESULT_PENDING" value:&stru_28753DF48 table:@"Localizable"];
-      [v13 setSecondaryText:v39];
+      [defaultContentConfiguration setSecondaryText:v39];
 
       [v10 setAccessoryType:1];
 LABEL_34:
-      v57 = [MEMORY[0x277D75348] lightGrayColor];
-      v58 = [v13 secondaryTextProperties];
-      [v58 setColor:v57];
+      lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+      secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+      [secondaryTextProperties setColor:lightGrayColor];
 
       v59 = MEMORY[0x277D755B8];
-      v60 = [v12 imageName];
-      v61 = [v59 systemImageNamed:v60];
-      [v13 setImage:v61];
+      imageName = [v12 imageName];
+      v61 = [v59 systemImageNamed:imageName];
+      [defaultContentConfiguration setImage:v61];
 
-      [v10 setContentConfiguration:v13];
-      v62 = [v10 contentView];
-      [v62 setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+      [v10 setContentConfiguration:defaultContentConfiguration];
+      contentView = [v10 contentView];
+      [contentView setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
 
       v20 = v10;
       goto LABEL_35;
     }
 
-    v30 = [v12 installError];
-    v31 = [TSUtilities getErrorDescription:v30];
-    [v13 setSecondaryText:v31];
+    installError = [v12 installError];
+    v31 = [TSUtilities getErrorDescription:installError];
+    [defaultContentConfiguration setSecondaryText:v31];
 
-    v32 = [v13 secondaryText];
-    v33 = [v32 length];
+    secondaryText = [defaultContentConfiguration secondaryText];
+    v33 = [secondaryText length];
 
     if (v33)
     {
 LABEL_30:
       v64 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.forward"];
       v42 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v64];
-      v43 = [MEMORY[0x277D75348] systemLightGrayColor];
-      [v42 setTintColor:v43];
+      systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+      [v42 setTintColor:systemLightGrayColor];
 
       v44 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill"];
       v45 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v44];
-      v46 = [MEMORY[0x277D75348] systemYellowColor];
-      [v45 setTintColor:v46];
+      systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+      [v45 setTintColor:systemYellowColor];
 
       [v42 bounds];
       v48 = v47;
@@ -357,10 +357,10 @@ LABEL_30:
       goto LABEL_34;
     }
 
-    if (v14)
+    if (displayPlan)
     {
-      v34 = [v14 plan];
-      if (v34)
+      plan = [displayPlan plan];
+      if (plan)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -369,7 +369,7 @@ LABEL_30:
 LABEL_29:
           v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v41 = [v40 localizedStringForKey:v35 value:&stru_28753DF48 table:@"Localizable"];
-          [v13 setSecondaryText:v41];
+          [defaultContentConfiguration setSecondaryText:v41];
 
           goto LABEL_30;
         }
@@ -378,7 +378,7 @@ LABEL_29:
 
     else
     {
-      v34 = 0;
+      plan = 0;
     }
 
     v35 = @"SETUP_FAILED";
@@ -397,11 +397,11 @@ LABEL_35:
   return v20;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8 >= [(NSArray *)self->_infos count])
   {
     v13 = _TSLogDomain();
@@ -414,69 +414,69 @@ LABEL_35:
   else
   {
     v9 = [(NSArray *)self->_infos objectAtIndexedSubscript:v8];
-    v10 = [v9 status];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    if (v10 != 4 && v10 != 14)
+    status = [v9 status];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    if (status != 4 && status != 14)
     {
-      if (v10 == 5)
+      if (status == 5)
       {
-        v12 = [v9 installError];
-        [(SSMultiSIMResultViewController *)self pushToDetailViewControllerWithError:v12 forPlan:v9];
+        installError = [v9 installError];
+        [(SSMultiSIMResultViewController *)self pushToDetailViewControllerWithError:installError forPlan:v9];
       }
 
-      else if (v10 != 10004 && v10 != 10003)
+      else if (status != 10004 && status != 10003)
       {
-        [(SSMultiSIMResultViewController *)self pushTimeoutFailureViewControllerWithStatus:v10 forPlan:v9];
+        [(SSMultiSIMResultViewController *)self pushTimeoutFailureViewControllerWithStatus:status forPlan:v9];
       }
     }
   }
 }
 
-- (void)pushToDetailViewControllerWithError:(id)a3 forPlan:(id)a4
+- (void)pushToDetailViewControllerWithError:(id)error forPlan:(id)plan
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  errorCopy = error;
+  planCopy = plan;
+  if (!errorCopy)
   {
     v8 = _TSLogDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [SSMultiSIMResultViewController pushToDetailViewControllerWithError:v7 forPlan:v8];
+      [SSMultiSIMResultViewController pushToDetailViewControllerWithError:planCopy forPlan:v8];
     }
   }
 
-  v9 = [v7 websheetUrl];
-  v10 = [v9 length];
+  websheetUrl = [planCopy websheetUrl];
+  v10 = [websheetUrl length];
 
   if (v10)
   {
     v11 = [[TSWebsheetViewController alloc] initForRemotePlan:0 carrierName:0 skipUIDismissal:0];
     v12 = MEMORY[0x277CBEBC0];
-    v13 = [v7 websheetUrl];
-    v14 = [v12 URLWithString:v13];
-    v15 = [v7 postdata];
-    v16 = [TSURLRequestFactory requestWithType:3 URL:v14 postdata:v15];
+    websheetUrl2 = [planCopy websheetUrl];
+    v14 = [v12 URLWithString:websheetUrl2];
+    postdata = [planCopy postdata];
+    carrierName = [TSURLRequestFactory requestWithType:3 URL:v14 postdata:postdata];
 
-    [(TSMidOperationFailureViewController *)v11 loadRequest:v16 completion:0];
+    [(TSMidOperationFailureViewController *)v11 loadRequest:carrierName completion:0];
   }
 
   else
   {
     v17 = [TSMidOperationFailureViewController alloc];
-    v16 = [v7 carrierName];
-    v18 = [v7 carrierErrorCode];
-    v11 = [(TSMidOperationFailureViewController *)v17 initWithPlanItemError:v6 updatePlanItem:0 withBackButton:1 forCarrier:v16 withCarrierErrorCode:v18 isEmbeddedInResultView:1];
+    carrierName = [planCopy carrierName];
+    carrierErrorCode = [planCopy carrierErrorCode];
+    v11 = [(TSMidOperationFailureViewController *)v17 initWithPlanItemError:errorCopy updatePlanItem:0 withBackButton:1 forCarrier:carrierName withCarrierErrorCode:carrierErrorCode isEmbeddedInResultView:1];
   }
 
-  v19 = [(SSMultiSIMResultViewController *)self navigationController];
-  [v19 pushViewController:v11 animated:1];
+  navigationController = [(SSMultiSIMResultViewController *)self navigationController];
+  [navigationController pushViewController:v11 animated:1];
 }
 
-- (void)pushTimeoutFailureViewControllerWithStatus:(unint64_t)a3 forPlan:(id)a4
+- (void)pushTimeoutFailureViewControllerWithStatus:(unint64_t)status forPlan:(id)plan
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 == 10001)
+  planCopy = plan;
+  if (status == 10001)
   {
     v7 = 1;
   }
@@ -487,7 +487,7 @@ LABEL_35:
   }
 
   v8 = [TSCellularSetupTimeoutFailureViewController alloc];
-  v24[0] = v6;
+  v24[0] = planCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   v10 = [(TSCellularSetupTimeoutFailureViewController *)v8 initWithTimeoutReason:v7 isEmbeddedInResultView:1 plans:v9];
 
@@ -495,31 +495,31 @@ LABEL_35:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
-    v13 = [v6 identifier];
+    identifier = [planCopy identifier];
     v16 = 138413058;
     v17 = v12;
     v18 = 2112;
-    v19 = v13;
+    v19 = identifier;
     v20 = 2080;
-    v21 = SSPlanTransferStatusAsString(a3);
+    v21 = SSPlanTransferStatusAsString(status);
     v22 = 2080;
     v23 = "[SSMultiSIMResultViewController pushTimeoutFailureViewControllerWithStatus:forPlan:]";
     _os_log_impl(&dword_262AA8000, v11, OS_LOG_TYPE_DEFAULT, "push %@ for %@ with status : %s @%s", &v16, 0x2Au);
   }
 
-  v14 = [(SSMultiSIMResultViewController *)self navigationController];
-  [v14 pushViewController:v10 animated:1];
+  navigationController = [(SSMultiSIMResultViewController *)self navigationController];
+  [navigationController pushViewController:v10 animated:1];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_continueButtonTapped
 {
-  v3 = [(SSMultiSIMResultViewController *)self buttonTray];
-  [v3 showButtonsBusy];
+  buttonTray = [(SSMultiSIMResultViewController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
-  v4 = [(SSMultiSIMResultViewController *)self delegate];
-  [v4 viewControllerDidComplete:self];
+  delegate = [(SSMultiSIMResultViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 }
 
 - (TSSIMSetupFlowDelegate)delegate
@@ -529,11 +529,11 @@ LABEL_35:
   return WeakRetained;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
   infos = self->_infos;
-  v4 = a3;
-  v4[2](v4, [(NSArray *)infos count]> 1);
+  prepareCopy = prepare;
+  prepareCopy[2](prepareCopy, [(NSArray *)infos count]> 1);
 }
 
 - (void)tableView:cellForRowAtIndexPath:.cold.1()

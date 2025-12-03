@@ -7,16 +7,16 @@
 - (uint64_t)initWithLearnedVisit:()RTExtensions
 {
   v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 entryDate];
-  v7 = [v4 exitDate];
-  v8 = [v4 location];
-  v9 = [v8 location];
+  identifier = [v4 identifier];
+  entryDate = [v4 entryDate];
+  exitDate = [v4 exitDate];
+  location = [v4 location];
+  v8Location = [location location];
   [v4 placeConfidence];
   v11 = v10;
-  v12 = [v4 placeSource];
+  placeSource = [v4 placeSource];
 
-  v13 = [a1 initWithIdentifier:v5 entry:v6 exit:v7 location:v9 locationOfInterestConfidence:v12 locationOfInterestSource:v11];
+  v13 = [self initWithIdentifier:identifier entry:entryDate exit:exitDate location:v8Location locationOfInterestConfidence:placeSource locationOfInterestSource:v11];
   return v13;
 }
 

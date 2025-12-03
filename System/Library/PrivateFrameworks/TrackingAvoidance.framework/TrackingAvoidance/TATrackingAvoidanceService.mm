@@ -1,35 +1,35 @@
 @interface TATrackingAvoidanceService
-+ (id)createRandomBytes:(unint64_t)a3;
++ (id)createRandomBytes:(unint64_t)bytes;
 - (BOOL)shouldPerformDetection;
-- (TATrackingAvoidanceService)initWithSettings:(id)a3;
-- (TATrackingAvoidanceService)initWithTASettings:(id)a3;
-- (id)sendUnstagingUpdatesAndRemoveUnstagingUpdatesRequests:(id)a3;
+- (TATrackingAvoidanceService)initWithSettings:(id)settings;
+- (TATrackingAvoidanceService)initWithTASettings:(id)settings;
+- (id)sendUnstagingUpdatesAndRemoveUnstagingUpdatesRequests:(id)requests;
 - (void)_performDetection;
-- (void)_performUpdateIfNecessary:(id)a3;
-- (void)bootstrapDeviceRecord:(id)a3;
-- (void)bootstrapVisitState:(id)a3;
-- (void)debugForceSurfaceStagedDetections:(id)a3 deviceType:(unint64_t)a4 detailsBitmask:(unsigned int)a5;
-- (void)debugStageTADetection:(id)a3 deviceType:(unint64_t)a4 detailsBitmask:(unsigned int)a5 shouldRemoveDevice:(BOOL)a6;
-- (void)didRequestAIS:(id)a3;
-- (void)fetchTAUnknownBeacon:(id)a3 withCompletion:(id)a4;
-- (void)filterAndStageDetectionResults:(id)a3;
-- (void)ingestTAEvent:(id)a3;
-- (void)notifyObserversOfRequests:(id)a3;
-- (void)notifyObserversOfStagedSuspiciousDevices:(id)a3;
-- (void)notifyObserversOfSuspiciousDeviceUpdate:(id)a3;
-- (void)notifyObserversOfSuspiciousDevices:(id)a3;
-- (void)notifyObserversOfUnstagedSuspiciousDevices:(id)a3;
+- (void)_performUpdateIfNecessary:(id)necessary;
+- (void)bootstrapDeviceRecord:(id)record;
+- (void)bootstrapVisitState:(id)state;
+- (void)debugForceSurfaceStagedDetections:(id)detections deviceType:(unint64_t)type detailsBitmask:(unsigned int)bitmask;
+- (void)debugStageTADetection:(id)detection deviceType:(unint64_t)type detailsBitmask:(unsigned int)bitmask shouldRemoveDevice:(BOOL)device;
+- (void)didRequestAIS:(id)s;
+- (void)fetchTAUnknownBeacon:(id)beacon withCompletion:(id)completion;
+- (void)filterAndStageDetectionResults:(id)results;
+- (void)ingestTAEvent:(id)event;
+- (void)notifyObserversOfRequests:(id)requests;
+- (void)notifyObserversOfStagedSuspiciousDevices:(id)devices;
+- (void)notifyObserversOfSuspiciousDeviceUpdate:(id)update;
+- (void)notifyObserversOfSuspiciousDevices:(id)devices;
+- (void)notifyObserversOfUnstagedSuspiciousDevices:(id)devices;
 - (void)notifyObserversOfVisitStateChange;
-- (void)visitState:(id)a3 didChangeStateFromType:(unint64_t)a4 toType:(unint64_t)a5;
-- (void)visitState:(id)a3 didIssueMetricsSubmissionHint:(unint64_t)a4;
+- (void)visitState:(id)state didChangeStateFromType:(unint64_t)type toType:(unint64_t)toType;
+- (void)visitState:(id)state didIssueMetricsSubmissionHint:(unint64_t)hint;
 @end
 
 @implementation TATrackingAvoidanceService
 
 - (BOOL)shouldPerformDetection
 {
-  v3 = [(TAStore *)self->_store clock];
-  [v3 timeIntervalSinceDate:self->_latestClassificationDate];
+  clock = [(TAStore *)self->_store clock];
+  [clock timeIntervalSinceDate:self->_latestClassificationDate];
   v5 = v4;
 
   [(TATrackingAvoidanceServiceSettings *)self->_serviceSettings classificationTimeInterval];
@@ -41,15 +41,15 @@
   v87 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(TAStore *)self->_store visitState];
-  v6 = [v5 state];
+  visitState = [(TAStore *)self->_store visitState];
+  state = [visitState state];
 
-  if (v6)
+  if (state)
   {
-    if (v6 == 2)
+    if (state == 2)
     {
-      v7 = [MEMORY[0x277CBEA60] array];
-      v8 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
+      array2 = [MEMORY[0x277CBEA60] array];
       if ([(TATrackingAvoidanceServiceSettings *)self->_serviceSettings enableTAFilterGeneral])
       {
         v17 = TAStatusLog;
@@ -60,10 +60,10 @@
         }
 
         store = self->_store;
-        v19 = [(TASettings *)self->_settings filterGeneralSettings];
-        v20 = [TAFilterGeneral filterSuspiciousDeviceWithStore:store settings:v19 andAppendOutgoingRequestsTo:v3];
+        filterGeneralSettings = [(TASettings *)self->_settings filterGeneralSettings];
+        v20 = [TAFilterGeneral filterSuspiciousDeviceWithStore:store settings:filterGeneralSettings andAppendOutgoingRequestsTo:v3];
 
-        v7 = v20;
+        array = v20;
       }
 
       if (![(TATrackingAvoidanceServiceSettings *)self->_serviceSettings enableTAFilterLeavingLOI])
@@ -79,19 +79,19 @@
       }
 
       v22 = self->_store;
-      v15 = [(TASettings *)self->_settings filterLeavingLOISettings];
-      v16 = [TAFilterLeavingLOI filterSuspiciousDeviceWithStore:v22 leavingLOISettings:v15 andAppendOutgoingRequestsTo:v3];
+      filterLeavingLOISettings = [(TASettings *)self->_settings filterLeavingLOISettings];
+      v16 = [TAFilterLeavingLOI filterSuspiciousDeviceWithStore:v22 leavingLOISettings:filterLeavingLOISettings andAppendOutgoingRequestsTo:v3];
     }
 
     else
     {
-      if (v6 != 1)
+      if (state != 1)
       {
         goto LABEL_22;
       }
 
-      v7 = [MEMORY[0x277CBEA60] array];
-      v8 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
+      array2 = [MEMORY[0x277CBEA60] array];
       if ([(TATrackingAvoidanceServiceSettings *)self->_serviceSettings enableTAFilterVisits])
       {
         v9 = TAStatusLog;
@@ -102,10 +102,10 @@
         }
 
         v10 = self->_store;
-        v11 = [(TASettings *)self->_settings filterVisitsSettings];
-        v12 = [TAFilterVisits filterSuspiciousDeviceWithStore:v10 settings:v11 andAppendOutgoingRequestsTo:v3];
+        filterVisitsSettings = [(TASettings *)self->_settings filterVisitsSettings];
+        v12 = [TAFilterVisits filterSuspiciousDeviceWithStore:v10 settings:filterVisitsSettings andAppendOutgoingRequestsTo:v3];
 
-        v7 = v12;
+        array = v12;
       }
 
       if (![(TATrackingAvoidanceServiceSettings *)self->_serviceSettings enableTAFilterSingleVisit])
@@ -121,16 +121,16 @@
       }
 
       v14 = self->_store;
-      v15 = [(TASettings *)self->_settings filterSingleVisitSettings];
-      v16 = [TAFilterSingleVisit filterSuspiciousDeviceWithStore:v14 singleVisitSettings:v15 andAppendOutgoingRequestsTo:v3];
+      filterLeavingLOISettings = [(TASettings *)self->_settings filterSingleVisitSettings];
+      v16 = [TAFilterSingleVisit filterSuspiciousDeviceWithStore:v14 singleVisitSettings:filterLeavingLOISettings andAppendOutgoingRequestsTo:v3];
     }
 
     v23 = v16;
 
-    v8 = v23;
+    array2 = v23;
 LABEL_21:
-    [v4 addObjectsFromArray:v7];
-    [v4 addObjectsFromArray:v8];
+    [v4 addObjectsFromArray:array];
+    [v4 addObjectsFromArray:array2];
 
     goto LABEL_22;
   }
@@ -144,41 +144,41 @@ LABEL_21:
 
 LABEL_22:
   v67 = v3;
-  v24 = [(TAStore *)self->_store clock];
+  clock = [(TAStore *)self->_store clock];
   latestClassificationDate = self->_latestClassificationDate;
-  self->_latestClassificationDate = v24;
+  self->_latestClassificationDate = clock;
 
   v68 = v4;
   [(TATrackingAvoidanceService *)self filterAndStageDetectionResults:v4];
-  v26 = [(TAStore *)self->_store deviceRecord];
-  v27 = [v26 getDetectionResultsToPush];
+  deviceRecord = [(TAStore *)self->_store deviceRecord];
+  getDetectionResultsToPush = [deviceRecord getDetectionResultsToPush];
 
-  v70 = v27;
-  v28 = [TAFilterKnownDevices removeDuplicateSuspiciousDevices:v27];
-  v29 = [(TATrackingAvoidanceService *)self store];
-  v30 = [v29 deviceRecord];
+  v70 = getDetectionResultsToPush;
+  v28 = [TAFilterKnownDevices removeDuplicateSuspiciousDevices:getDetectionResultsToPush];
+  store = [(TATrackingAvoidanceService *)self store];
+  deviceRecord2 = [store deviceRecord];
   v69 = v28;
-  v31 = [TAFilterKnownDevices removeIssuedDevices:v28 deviceRecord:v30];
+  v31 = [TAFilterKnownDevices removeIssuedDevices:v28 deviceRecord:deviceRecord2];
 
-  v32 = [(TAStore *)self->_store deviceRecord];
-  v33 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v31 deviceRecord:v32];
+  deviceRecord3 = [(TAStore *)self->_store deviceRecord];
+  v33 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v31 deviceRecord:deviceRecord3];
 
-  v34 = [(TAStore *)self->_store visitState];
-  v35 = [v34 visitSnapshotBuffer];
-  v36 = [(TAStore *)self->_store visitState];
-  v37 = [v36 interVisitMetricSnapshotBuffer];
-  v38 = [(TAStore *)self->_store clock];
-  v39 = [TAFilterObservationAggregator aggregateObservationsThroughHistoryForDetectionResults:v33 visitSnapshotBuffer:v35 intervisitSnapshotBuffer:v37 clock:v38];
+  visitState2 = [(TAStore *)self->_store visitState];
+  visitSnapshotBuffer = [visitState2 visitSnapshotBuffer];
+  visitState3 = [(TAStore *)self->_store visitState];
+  interVisitMetricSnapshotBuffer = [visitState3 interVisitMetricSnapshotBuffer];
+  clock2 = [(TAStore *)self->_store clock];
+  v39 = [TAFilterObservationAggregator aggregateObservationsThroughHistoryForDetectionResults:v33 visitSnapshotBuffer:visitSnapshotBuffer intervisitSnapshotBuffer:interVisitMetricSnapshotBuffer clock:clock2];
 
-  v40 = [(TAStore *)self->_store deviceRecord];
-  [TAFilterObservationAggregator attachAISInfo:v39 deviceRecord:v40];
+  deviceRecord4 = [(TAStore *)self->_store deviceRecord];
+  [TAFilterObservationAggregator attachAISInfo:v39 deviceRecord:deviceRecord4];
 
   if (_os_feature_enabled_impl())
   {
-    v41 = [(TATrackingAvoidanceService *)self getDailyAlertLimitPerAccessory];
-    v42 = [(TATrackingAvoidanceService *)self store];
-    v43 = [v42 deviceRecord];
-    v44 = [v43 limitSuspiciousDevicesSentToObservers:v39 forDailyMaximum:v41];
+    getDailyAlertLimitPerAccessory = [(TATrackingAvoidanceService *)self getDailyAlertLimitPerAccessory];
+    store2 = [(TATrackingAvoidanceService *)self store];
+    deviceRecord5 = [store2 deviceRecord];
+    v44 = [deviceRecord5 limitSuspiciousDevicesSentToObservers:v39 forDailyMaximum:getDailyAlertLimitPerAccessory];
 
     if ([v39 count])
     {
@@ -212,9 +212,9 @@ LABEL_22:
       }
     }
 
-    v52 = [(TATrackingAvoidanceService *)self store];
-    v53 = [v52 deviceRecord];
-    [v53 processSurfacedAlerts:v44];
+    store3 = [(TATrackingAvoidanceService *)self store];
+    deviceRecord6 = [store3 deviceRecord];
+    [deviceRecord6 processSurfacedAlerts:v44];
 
     v54 = v67;
     [(TATrackingAvoidanceService *)self notifyObserversOfRequests:v67];
@@ -252,9 +252,9 @@ LABEL_22:
       }
     }
 
-    v62 = [(TATrackingAvoidanceService *)self store];
-    v63 = [v62 deviceRecord];
-    [v63 processSurfacedAlerts:v39];
+    store4 = [(TATrackingAvoidanceService *)self store];
+    deviceRecord7 = [store4 deviceRecord];
+    [deviceRecord7 processSurfacedAlerts:v39];
 
     v54 = v67;
     [(TATrackingAvoidanceService *)self notifyObserversOfRequests:v67];
@@ -264,51 +264,51 @@ LABEL_22:
   v64 = *MEMORY[0x277D85DE8];
 }
 
-- (TATrackingAvoidanceService)initWithSettings:(id)a3
+- (TATrackingAvoidanceService)initWithSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [[TASettings alloc] initWithSettings:v4];
+  settingsCopy = settings;
+  v5 = [[TASettings alloc] initWithSettings:settingsCopy];
 
   v6 = [(TATrackingAvoidanceService *)self initWithTASettings:v5];
   return v6;
 }
 
-- (TATrackingAvoidanceService)initWithTASettings:(id)a3
+- (TATrackingAvoidanceService)initWithTASettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v23.receiver = self;
   v23.super_class = TATrackingAvoidanceService;
   v6 = [(TATrackingAvoidanceService *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     TARegisterLogs();
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
     {
       [TATrackingAvoidanceService initWithTASettings:?];
     }
 
-    v8 = [(TASettings *)v7->_settings serviceSettings];
+    serviceSettings = [(TASettings *)v7->_settings serviceSettings];
     serviceSettings = v7->_serviceSettings;
-    v7->_serviceSettings = v8;
+    v7->_serviceSettings = serviceSettings;
 
     v10 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v7->_observers;
     v7->_observers = v10;
 
     v12 = [TAStore alloc];
-    v13 = [(TASettings *)v7->_settings eventBufferSettings];
-    v14 = [(TASettings *)v7->_settings scanRequestSettings];
-    v15 = [(TASettings *)v7->_settings visitStateSettings];
-    v16 = [(TASettings *)v7->_settings deviceRecordSettings];
-    v17 = [(TAStore *)v12 initWithEventBufferSettings:v13 scanRequestSettings:v14 visitStateSettings:v15 deviceRecordSettings:v16];
+    eventBufferSettings = [(TASettings *)v7->_settings eventBufferSettings];
+    scanRequestSettings = [(TASettings *)v7->_settings scanRequestSettings];
+    visitStateSettings = [(TASettings *)v7->_settings visitStateSettings];
+    deviceRecordSettings = [(TASettings *)v7->_settings deviceRecordSettings];
+    v17 = [(TAStore *)v12 initWithEventBufferSettings:eventBufferSettings scanRequestSettings:scanRequestSettings visitStateSettings:visitStateSettings deviceRecordSettings:deviceRecordSettings];
     store = v7->_store;
     v7->_store = v17;
 
-    v19 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     latestClassificationDate = v7->_latestClassificationDate;
-    v7->_latestClassificationDate = v19;
+    v7->_latestClassificationDate = distantPast;
 
     [(TAStore *)v7->_store addObserver:v7];
     stagedIntervisitMetrics = v7->_stagedIntervisitMetrics;
@@ -318,19 +318,19 @@ LABEL_22:
   return v7;
 }
 
-- (void)fetchTAUnknownBeacon:(id)a3 withCompletion:(id)a4
+- (void)fetchTAUnknownBeacon:(id)beacon withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  beaconCopy = beacon;
+  completionCopy = completion;
+  if (beaconCopy)
   {
-    v8 = [(TAStore *)self->_store fetchTAUnknownBeacon:v6];
+    v8 = [(TAStore *)self->_store fetchTAUnknownBeacon:beaconCopy];
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
     {
       [TATrackingAvoidanceService fetchTAUnknownBeacon:withCompletion:];
     }
 
-    v7[2](v7, v8);
+    completionCopy[2](completionCopy, v8);
   }
 
   else if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
@@ -339,16 +339,16 @@ LABEL_22:
   }
 }
 
-- (void)didRequestAIS:(id)a3
+- (void)didRequestAIS:(id)s
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  sCopy = s;
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v6)
   {
     v8 = v6;
@@ -361,7 +361,7 @@ LABEL_22:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
@@ -369,7 +369,7 @@ LABEL_22:
         {
           if ([(TASettings *)self->_settings aisFetchEnabled])
           {
-            [v11 trackingAvoidanceService:self didRequestAIS:v4];
+            [v11 trackingAvoidanceService:self didRequestAIS:sCopy];
             continue;
           }
 
@@ -377,7 +377,7 @@ LABEL_22:
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
           {
             v13 = v17;
-            v14 = [v4 description];
+            v14 = [sCopy description];
             *buf = v21;
             v27 = v14;
             v15 = v13;
@@ -392,7 +392,7 @@ LABEL_22:
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
           {
             v13 = v12;
-            v14 = [v4 description];
+            v14 = [sCopy description];
             *buf = v21;
             v27 = v14;
             v15 = v13;
@@ -402,12 +402,12 @@ LABEL_13:
           }
         }
 
-        v18 = [(TAStore *)self->_store deviceRecord];
-        v19 = [v4 address];
-        [v18 forceUpdateAISFetchState:v19 state:8];
+        deviceRecord = [(TAStore *)self->_store deviceRecord];
+        address = [sCopy address];
+        [deviceRecord forceUpdateAISFetchState:address state:8];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v8);
@@ -416,13 +416,13 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bootstrapDeviceRecord:(id)a3
+- (void)bootstrapDeviceRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
-    v5 = [(TAStore *)self->_store deviceRecord];
-    [v5 mergeWithAnotherDeviceRecord:v4];
+    deviceRecord = [(TAStore *)self->_store deviceRecord];
+    [deviceRecord mergeWithAnotherDeviceRecord:recordCopy];
   }
 
   else if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
@@ -431,13 +431,13 @@ LABEL_13:
   }
 }
 
-- (void)bootstrapVisitState:(id)a3
+- (void)bootstrapVisitState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
-    v5 = [(TAStore *)self->_store visitState];
-    [v5 mergeWithAnotherTAVisitState:v4];
+    visitState = [(TAStore *)self->_store visitState];
+    [visitState mergeWithAnotherTAVisitState:stateCopy];
   }
 
   else if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
@@ -446,12 +446,12 @@ LABEL_13:
   }
 }
 
-- (void)notifyObserversOfSuspiciousDevices:(id)a3
+- (void)notifyObserversOfSuspiciousDevices:(id)devices
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  devicesCopy = devices;
+  v5 = devicesCopy;
+  if (devicesCopy && [devicesCopy count])
   {
     v48 = 0u;
     v49 = 0u;
@@ -463,7 +463,7 @@ LABEL_13:
     if (v36)
     {
       v34 = *v47;
-      v35 = self;
+      selfCopy = self;
       do
       {
         v6 = 0;
@@ -490,8 +490,8 @@ LABEL_13:
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v11 = [v7 locationHistory];
-          v12 = [v11 countByEnumeratingWithState:&v42 objects:v55 count:16];
+          locationHistory = [v7 locationHistory];
+          v12 = [locationHistory countByEnumeratingWithState:&v42 objects:v55 count:16];
           if (v12)
           {
             v13 = v12;
@@ -503,7 +503,7 @@ LABEL_13:
               {
                 if (*v43 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(locationHistory);
                 }
 
                 v16 = TAStatusLog;
@@ -511,10 +511,10 @@ LABEL_13:
                 {
                   v17 = *(*(&v42 + 1) + 8 * v15);
                   v18 = v16;
-                  v19 = [v7 address];
+                  address = [v7 address];
                   v20 = [v17 description];
                   *buf = 138478083;
-                  v52 = v19;
+                  v52 = address;
                   v53 = 2117;
                   v54 = v20;
                   _os_log_debug_impl(&dword_26F2E2000, v18, OS_LOG_TYPE_DEBUG, "#TATrackingAvoidanceService detection location associated with %{private}@:%{sensitive}@", buf, 0x16u);
@@ -524,19 +524,19 @@ LABEL_13:
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v42 objects:v55 count:16];
+              v13 = [locationHistory countByEnumeratingWithState:&v42 objects:v55 count:16];
             }
 
             while (v13);
           }
 
-          self = v35;
-          v21 = [(TAStore *)v35->_store deviceRecord];
+          self = selfCopy;
+          deviceRecord = [(TAStore *)selfCopy->_store deviceRecord];
           v22 = [TADeviceInformation alloc];
-          v23 = [v7 latestAdvertisement];
-          v24 = [v7 date];
-          v25 = [(TADeviceInformation *)v22 initWithTASPAdvertisement:v23 deviceType:0 notificationState:1 date:v24];
-          [v21 ingestTAEvent:v25 andAppendOutgoingRequestsTo:0];
+          latestAdvertisement = [v7 latestAdvertisement];
+          date = [v7 date];
+          v25 = [(TADeviceInformation *)v22 initWithTASPAdvertisement:latestAdvertisement deviceType:0 notificationState:1 date:date];
+          [deviceRecord ingestTAEvent:v25 andAppendOutgoingRequestsTo:0];
 
           v6 = v37 + 1;
         }
@@ -548,12 +548,12 @@ LABEL_13:
       while (v36);
     }
 
-    v26 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v27 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+    v27 = [allObjects countByEnumeratingWithState:&v38 objects:v50 count:16];
     if (v27)
     {
       v28 = v27;
@@ -564,13 +564,13 @@ LABEL_13:
         {
           if (*v39 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v38 + 1) + 8 * i) trackingAvoidanceService:self didFindSuspiciousDevices:obj];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+        v28 = [allObjects countByEnumeratingWithState:&v38 objects:v50 count:16];
       }
 
       while (v28);
@@ -582,12 +582,12 @@ LABEL_13:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversOfRequests:(id)a3
+- (void)notifyObserversOfRequests:(id)requests
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  requestsCopy = requests;
+  v5 = requestsCopy;
+  if (requestsCopy && [requestsCopy count])
   {
     v29 = 0u;
     v30 = 0u;
@@ -627,12 +627,12 @@ LABEL_13:
       while (v8);
     }
 
-    v15 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    v16 = [allObjects countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v16)
     {
       v17 = v16;
@@ -643,7 +643,7 @@ LABEL_13:
         {
           if (*v24 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allObjects);
           }
 
           v20 = *(*(&v23 + 1) + 8 * j);
@@ -653,7 +653,7 @@ LABEL_13:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v17 = [allObjects countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v17);
@@ -665,18 +665,18 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversOfSuspiciousDeviceUpdate:(id)a3
+- (void)notifyObserversOfSuspiciousDeviceUpdate:(id)update
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  updateCopy = update;
+  if (updateCopy)
   {
-    v30 = v4;
-    v54[0] = v4;
+    v30 = updateCopy;
+    v54[0] = updateCopy;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:1];
-    v29 = self;
-    v6 = [(TAStore *)self->_store deviceRecord];
-    v7 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v5 deviceRecord:v6];
+    selfCopy = self;
+    deviceRecord = [(TAStore *)self->_store deviceRecord];
+    v7 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v5 deviceRecord:deviceRecord];
 
     v8 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
@@ -713,8 +713,8 @@ LABEL_13:
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v13 = [v12 locationHistory];
-          v14 = [v13 countByEnumeratingWithState:&v39 objects:v52 count:16];
+          locationHistory = [v12 locationHistory];
+          v14 = [locationHistory countByEnumeratingWithState:&v39 objects:v52 count:16];
           if (v14)
           {
             v15 = v14;
@@ -726,7 +726,7 @@ LABEL_13:
               {
                 if (*v40 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(locationHistory);
                 }
 
                 v18 = TAStatusLog;
@@ -734,10 +734,10 @@ LABEL_13:
                 {
                   v19 = *(*(&v39 + 1) + 8 * v17);
                   v20 = v18;
-                  v21 = [v12 address];
+                  address = [v12 address];
                   v22 = [v19 description];
                   *buf = 138478083;
-                  v49 = v21;
+                  v49 = address;
                   v50 = 2117;
                   v51 = v22;
                   _os_log_debug_impl(&dword_26F2E2000, v20, OS_LOG_TYPE_DEBUG, "#TATrackingAvoidanceService update location associated with %{private}@:%{sensitive}@", buf, 0x16u);
@@ -747,7 +747,7 @@ LABEL_13:
               }
 
               while (v15 != v17);
-              v15 = [v13 countByEnumeratingWithState:&v39 objects:v52 count:16];
+              v15 = [locationHistory countByEnumeratingWithState:&v39 objects:v52 count:16];
             }
 
             while (v15);
@@ -763,12 +763,12 @@ LABEL_13:
       while (v32);
     }
 
-    v23 = [(NSHashTable *)v29->_observers allObjects];
+    allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = [v23 countByEnumeratingWithState:&v35 objects:v47 count:16];
+    v24 = [allObjects countByEnumeratingWithState:&v35 objects:v47 count:16];
     if (v24)
     {
       v25 = v24;
@@ -779,40 +779,40 @@ LABEL_13:
         {
           if (*v36 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(allObjects);
           }
 
-          [*(*(&v35 + 1) + 8 * i) trackingAvoidanceService:v29 didUpdateSuspiciousDevices:obj];
+          [*(*(&v35 + 1) + 8 * i) trackingAvoidanceService:selfCopy didUpdateSuspiciousDevices:obj];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v35 objects:v47 count:16];
+        v25 = [allObjects countByEnumeratingWithState:&v35 objects:v47 count:16];
       }
 
       while (v25);
     }
 
-    v4 = v30;
+    updateCopy = v30;
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversOfStagedSuspiciousDevices:(id)a3
+- (void)notifyObserversOfStagedSuspiciousDevices:(id)devices
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  devicesCopy = devices;
+  v5 = devicesCopy;
+  if (devicesCopy && [devicesCopy count])
   {
-    v6 = [(TAStore *)self->_store deviceRecord];
-    v7 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v5 deviceRecord:v6];
+    deviceRecord = [(TAStore *)self->_store deviceRecord];
+    v7 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v5 deviceRecord:deviceRecord];
 
-    v8 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v30 objects:v37 count:16];
+    v9 = [allObjects countByEnumeratingWithState:&v30 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
@@ -823,7 +823,7 @@ LABEL_13:
         {
           if (*v31 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
@@ -833,7 +833,7 @@ LABEL_13:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v30 objects:v37 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v30 objects:v37 count:16];
       }
 
       while (v10);
@@ -884,22 +884,22 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversOfUnstagedSuspiciousDevices:(id)a3
+- (void)notifyObserversOfUnstagedSuspiciousDevices:(id)devices
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  devicesCopy = devices;
+  v5 = devicesCopy;
+  if (devicesCopy && [devicesCopy count])
   {
-    v6 = [(TAStore *)self->_store deviceRecord];
-    v7 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v5 deviceRecord:v6];
+    deviceRecord = [(TAStore *)self->_store deviceRecord];
+    v7 = [TAFilterObservationAggregator normalizeDualT18PoshAdvertisersAsPosh:v5 deviceRecord:deviceRecord];
 
-    v8 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -911,7 +911,7 @@ LABEL_13:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
@@ -924,7 +924,7 @@ LABEL_13:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -937,12 +937,12 @@ LABEL_13:
 - (void)notifyObserversOfVisitStateChange
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -954,7 +954,7 @@ LABEL_13:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -967,7 +967,7 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -976,7 +976,7 @@ LABEL_13:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)visitState:(id)a3 didChangeStateFromType:(unint64_t)a4 toType:(unint64_t)a5
+- (void)visitState:(id)state didChangeStateFromType:(unint64_t)type toType:(unint64_t)toType
 {
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
   {
@@ -987,11 +987,11 @@ LABEL_13:
   [(TATrackingAvoidanceService *)self notifyObserversOfVisitStateChange];
 }
 
-- (void)visitState:(id)a3 didIssueMetricsSubmissionHint:(unint64_t)a4
+- (void)visitState:(id)state didIssueMetricsSubmissionHint:(unint64_t)hint
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  switch(a4)
+  stateCopy = state;
+  switch(hint)
   {
     case 2uLL:
       if (self->_stagedIntervisitMetrics)
@@ -1025,8 +1025,8 @@ LABEL_13:
         }
 
         v17 = [TAOutgoingRequests alloc];
-        v18 = [(TAStore *)self->_store clock];
-        v19 = [(TAOutgoingRequests *)v17 initWithRequestKey:@"DonatingInterVisitMetrics" additionalInformation:v9 date:v18];
+        clock = [(TAStore *)self->_store clock];
+        v19 = [(TAOutgoingRequests *)v17 initWithRequestKey:@"DonatingInterVisitMetrics" additionalInformation:v9 date:clock];
         v20 = self->_stagedIntervisitMetrics;
         self->_stagedIntervisitMetrics = v19;
       }
@@ -1034,8 +1034,8 @@ LABEL_13:
       goto LABEL_14;
     case 0uLL:
       store = self->_store;
-      v8 = [(TASettings *)self->_settings filterVisitsSettings];
-      v9 = [TACoreAnalyticMetricManager computeMetricsVisit:store withFilterVisitsSettings:v8];
+      filterVisitsSettings = [(TASettings *)self->_settings filterVisitsSettings];
+      v9 = [TACoreAnalyticMetricManager computeMetricsVisit:store withFilterVisitsSettings:filterVisitsSettings];
 
       if (v9 && [v9 count])
       {
@@ -1047,8 +1047,8 @@ LABEL_13:
         }
 
         v11 = [TAOutgoingRequests alloc];
-        v12 = [(TAStore *)self->_store clock];
-        v13 = [(TAOutgoingRequests *)v11 initWithRequestKey:@"DonatingVisitMetrics" additionalInformation:v9 date:v12];
+        clock2 = [(TAStore *)self->_store clock];
+        v13 = [(TAOutgoingRequests *)v11 initWithRequestKey:@"DonatingVisitMetrics" additionalInformation:v9 date:clock2];
 
         v28[0] = v13;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
@@ -1062,7 +1062,7 @@ LABEL_14:
       v24 = TAStatusLog;
       if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
       {
-        [TATrackingAvoidanceService visitState:a4 didIssueMetricsSubmissionHint:v24];
+        [TATrackingAvoidanceService visitState:hint didIssueMetricsSubmissionHint:v24];
       }
 
       break;
@@ -1071,17 +1071,17 @@ LABEL_14:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)filterAndStageDetectionResults:(id)a3
+- (void)filterAndStageDetectionResults:(id)results
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TAStore *)self->_store deviceRecord];
-  v22 = v4;
-  v6 = [TAFilterKnownDevices removeAndProcessBackgroundDetections:v4 deviceRecord:v5];
+  resultsCopy = results;
+  deviceRecord = [(TAStore *)self->_store deviceRecord];
+  v22 = resultsCopy;
+  v6 = [TAFilterKnownDevices removeAndProcessBackgroundDetections:resultsCopy deviceRecord:deviceRecord];
 
-  v7 = [(TAStore *)self->_store deviceRecord];
+  deviceRecord2 = [(TAStore *)self->_store deviceRecord];
   v21 = v6;
-  v8 = [TAFilterKnownDevices removeKnownSuspiciousDevices:v6 deviceRecord:v7];
+  v8 = [TAFilterKnownDevices removeKnownSuspiciousDevices:v6 deviceRecord:deviceRecord2];
 
   v9 = [TAFilterKnownDevices removeDuplicateSuspiciousDevices:v8];
   v23 = 0u;
@@ -1103,15 +1103,15 @@ LABEL_14:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [(TAStore *)self->_store deviceRecord];
-        v16 = [v14 latestAdvertisement];
-        v17 = [(TAStore *)self->_store clock];
-        [v15 stageDevice:v16 withCurrentDate:v17];
+        deviceRecord3 = [(TAStore *)self->_store deviceRecord];
+        latestAdvertisement = [v14 latestAdvertisement];
+        clock = [(TAStore *)self->_store clock];
+        [deviceRecord3 stageDevice:latestAdvertisement withCurrentDate:clock];
 
-        v18 = [(TAStore *)self->_store deviceRecord];
+        deviceRecord4 = [(TAStore *)self->_store deviceRecord];
         v27 = v14;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-        [v18 stageDetectionResults:v19];
+        [deviceRecord4 stageDetectionResults:v19];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -1125,41 +1125,41 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performUpdateIfNecessary:(id)a3
+- (void)_performUpdateIfNecessary:(id)necessary
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TAStore *)self->_store deviceRecord];
-  v6 = [v4 address];
-  v7 = [v5 hasSurfacedNotificationFor:v6];
+  necessaryCopy = necessary;
+  deviceRecord = [(TAStore *)self->_store deviceRecord];
+  address = [necessaryCopy address];
+  v7 = [deviceRecord hasSurfacedNotificationFor:address];
 
   if (v7)
   {
-    v8 = [(TAStore *)self->_store eventBuffer];
-    v9 = [v8 getLatestElementOf:objc_opt_class()];
+    eventBuffer = [(TAStore *)self->_store eventBuffer];
+    v9 = [eventBuffer getLatestElementOf:objc_opt_class()];
 
     if (v9)
     {
-      v10 = [v4 scanDate];
-      v11 = [v9 timestamp];
-      [v10 timeIntervalSinceDate:v11];
+      scanDate = [necessaryCopy scanDate];
+      timestamp = [v9 timestamp];
+      [scanDate timeIntervalSinceDate:timestamp];
       v13 = v12;
 
-      v14 = [(TASettings *)self->_settings filterGeneralSettings];
-      [v14 thresholdOfLocationRelevance];
+      filterGeneralSettings = [(TASettings *)self->_settings filterGeneralSettings];
+      [filterGeneralSettings thresholdOfLocationRelevance];
       v16 = v15;
 
       if (v13 <= v16)
       {
         v18 = [TASuspiciousDevice alloc];
-        v19 = [v4 getDate];
+        getDate = [necessaryCopy getDate];
         v27 = v9;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-        v21 = [[TAMetricsDetection alloc] initWithDetectionType:0 visitDetectionMetrics:0 generalDetectionMetrics:0 singleVisitDetectionMetrics:0 latestAdvertisement:v4];
-        v22 = [(TAStore *)self->_store deviceRecord];
-        v23 = [v4 address];
-        v24 = [v22 getAccessoryInfo:v23];
-        v25 = [(TASuspiciousDevice *)v18 initWithLatestAdv:v4 detectionSummary:&unk_287F6FFF8 date:v19 locHistory:v20 detectionMetrics:v21 detectionType:0 immediacyType:0 accessoryInfo:v24 forceSurfaceReason:0];
+        v21 = [[TAMetricsDetection alloc] initWithDetectionType:0 visitDetectionMetrics:0 generalDetectionMetrics:0 singleVisitDetectionMetrics:0 latestAdvertisement:necessaryCopy];
+        deviceRecord2 = [(TAStore *)self->_store deviceRecord];
+        address2 = [necessaryCopy address];
+        v24 = [deviceRecord2 getAccessoryInfo:address2];
+        v25 = [(TASuspiciousDevice *)v18 initWithLatestAdv:necessaryCopy detectionSummary:&unk_287F6FFF8 date:getDate locHistory:v20 detectionMetrics:v21 detectionType:0 immediacyType:0 accessoryInfo:v24 forceSurfaceReason:0];
 
         [(TATrackingAvoidanceService *)self notifyObserversOfSuspiciousDeviceUpdate:v25];
       }
@@ -1174,7 +1174,7 @@ LABEL_14:
           v30 = 2082;
           v31 = "";
           v32 = 2113;
-          v33 = v4;
+          v33 = necessaryCopy;
           v34 = 2117;
           v35 = v9;
           _os_log_impl(&dword_26F2E2000, v17, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#TATrackingAvoidanceService location too stale to update, advertisement:%{private}@, latestLocation:%{sensitive}@}", buf, 0x26u);
@@ -1186,17 +1186,17 @@ LABEL_14:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendUnstagingUpdatesAndRemoveUnstagingUpdatesRequests:(id)a3
+- (id)sendUnstagingUpdatesAndRemoveUnstagingUpdatesRequests:(id)requests
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  requestsCopy = requests;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v3;
+  v6 = requestsCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -1217,8 +1217,8 @@ LABEL_14:
 
         if (v13)
         {
-          v14 = [v11 additionalInformation];
-          v15 = [v14 objectForKeyedSubscript:@"UnstagingUpdate"];
+          additionalInformation = [v11 additionalInformation];
+          v15 = [additionalInformation objectForKeyedSubscript:@"UnstagingUpdate"];
           v16 = v15;
           if (v15)
           {
@@ -1230,12 +1230,12 @@ LABEL_14:
             v17 = MEMORY[0x277CBEBF8];
           }
 
-          [v5 addObjectsFromArray:v17];
+          [array2 addObjectsFromArray:v17];
         }
 
         else
         {
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -1245,37 +1245,37 @@ LABEL_14:
     while (v8);
   }
 
-  [(TATrackingAvoidanceService *)self notifyObserversOfUnstagedSuspiciousDevices:v5];
-  v18 = [v4 copy];
+  [(TATrackingAvoidanceService *)self notifyObserversOfUnstagedSuspiciousDevices:array2];
+  v18 = [array copy];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (_os_feature_enabled_impl() & 1) == 0)
     {
-      v5 = v4;
+      v5 = eventCopy;
       if ([v5 isPosh])
       {
         v6 = TAStatusLog;
         if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
         {
           v7 = v6;
-          v8 = [v5 descriptionDictionary];
+          descriptionDictionary = [v5 descriptionDictionary];
           v23 = 68289283;
           *v24 = 0;
           *&v24[4] = 2082;
           *&v24[6] = "";
           v25 = 2113;
-          v26 = v8;
+          v26 = descriptionDictionary;
           _os_log_impl(&dword_26F2E2000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TATrackingAvoidanceService skip adv ff not enabled, adv:%{private}@}", &v23, 0x1Cu);
         }
 
@@ -1286,8 +1286,8 @@ LABEL_22:
     }
 
     v9 = [MEMORY[0x277CBEAA8] now];
-    v10 = [v4 getDate];
-    [v9 timeIntervalSinceDate:v10];
+    getDate = [eventCopy getDate];
+    [v9 timeIntervalSinceDate:getDate];
     v12 = v11;
 
     [(TASettings *)self->_settings futureEventToleranceInterval];
@@ -1297,12 +1297,12 @@ LABEL_22:
       if (os_log_type_enabled(TAEventsLog, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138739971;
-        *v24 = v4;
+        *v24 = eventCopy;
         _os_log_impl(&dword_26F2E2000, v17, OS_LOG_TYPE_DEFAULT, "%{sensitive}@", &v23, 0xCu);
       }
 
       v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [(TAStore *)self->_store addTAEvent:v4 andAppendOutgoingRequestsTo:v5];
+      [(TAStore *)self->_store addTAEvent:eventCopy andAppendOutgoingRequestsTo:v5];
       v18 = [(TATrackingAvoidanceService *)self sendUnstagingUpdatesAndRemoveUnstagingUpdatesRequests:v5];
       if ([(TATrackingAvoidanceService *)self shouldPerformDetection])
       {
@@ -1319,11 +1319,11 @@ LABEL_22:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(TATrackingAvoidanceService *)self _performUpdateIfNecessary:v4];
+        [(TATrackingAvoidanceService *)self _performUpdateIfNecessary:eventCopy];
       }
 
-      v20 = [(TAStore *)self->_store deviceRecord];
-      v21 = [TAFilterKnownDevices removeMetricsFromKnownDevices:v18 deviceRecord:v20];
+      deviceRecord = [(TAStore *)self->_store deviceRecord];
+      v21 = [TAFilterKnownDevices removeMetricsFromKnownDevices:v18 deviceRecord:deviceRecord];
 
       [(TATrackingAvoidanceService *)self notifyObserversOfRequests:v21];
       goto LABEL_22;
@@ -1333,7 +1333,7 @@ LABEL_22:
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
     {
       v15 = v14;
-      v16 = [v4 description];
+      v16 = [eventCopy description];
       v23 = 68289283;
       *v24 = 0;
       *&v24[4] = 2082;
@@ -1354,64 +1354,64 @@ LABEL_23:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createRandomBytes:(unint64_t)a3
++ (id)createRandomBytes:(unint64_t)bytes
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = v8 - ((a3 + 15) & 0xFFFFFFFFFFFFFFF0);
-  arc4random_buf(v4, a3);
-  v5 = [MEMORY[0x277CBEA90] dataWithBytes:v4 length:a3];
+  v4 = v8 - ((bytes + 15) & 0xFFFFFFFFFFFFFFF0);
+  arc4random_buf(v4, bytes);
+  v5 = [MEMORY[0x277CBEA90] dataWithBytes:v4 length:bytes];
   v6 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (void)debugStageTADetection:(id)a3 deviceType:(unint64_t)a4 detailsBitmask:(unsigned int)a5 shouldRemoveDevice:(BOOL)a6
+- (void)debugStageTADetection:(id)detection deviceType:(unint64_t)type detailsBitmask:(unsigned int)bitmask shouldRemoveDevice:(BOOL)device
 {
-  v6 = a6;
+  deviceCopy = device;
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  detectionCopy = detection;
   v11 = TAStatusLog;
-  if (v10)
+  if (detectionCopy)
   {
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v10 hexString];
+      hexString = [detectionCopy hexString];
       *buf = 68289539;
       *v53 = 0;
       *&v53[4] = 2082;
       *&v53[6] = "";
       v54 = 2113;
-      v55 = v13;
+      v55 = hexString;
       v56 = 1026;
-      v57 = v6;
+      v57 = deviceCopy;
       _os_log_impl(&dword_26F2E2000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TATrackingAvoidanceService start stageTADetection for, address:%{private}@, shouldRemoveSingleDeviceRecord:%{public}hhd}", buf, 0x22u);
     }
 
-    if (v6)
+    if (deviceCopy)
     {
-      v14 = [(TAStore *)self->_store deviceRecord];
-      [v14 removeDevice:v10];
+      deviceRecord = [(TAStore *)self->_store deviceRecord];
+      [deviceRecord removeDevice:detectionCopy];
     }
 
-    if (a4 >= 4)
+    if (type >= 4)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = 0xF4E4D400 >> (8 * a4);
+      v15 = 0xF4E4D400 >> (8 * type);
     }
 
-    v16 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v17 = &unk_287F6FEA8;
-    if (a5 == 3)
+    if (bitmask == 3)
     {
       v17 = &unk_287F6FED8;
     }
 
-    if (a5 == 1)
+    if (bitmask == 1)
     {
       v18 = &unk_287F6FEC0;
     }
@@ -1424,28 +1424,28 @@ LABEL_23:
     v19 = [TASPAdvertisement alloc];
     v20 = [TATrackingAvoidanceService createRandomBytes:22];
     v21 = [TATrackingAvoidanceService createRandomBytes:2];
-    LODWORD(v46) = a5;
-    v48 = v16;
-    v22 = [(TASPAdvertisement *)v19 initWithAddress:v10 advertisementData:v20 status:v15 & 0x3FC reserved:v21 rssi:-55 scanDate:v16 detailsBitmask:v46 uuid:0 protocolID:v18];
+    LODWORD(v46) = bitmask;
+    v48 = date;
+    v22 = [(TASPAdvertisement *)v19 initWithAddress:detectionCopy advertisementData:v20 status:v15 & 0x3FC reserved:v21 rssi:-55 scanDate:date detailsBitmask:v46 uuid:0 protocolID:v18];
 
-    v23 = [(TAStore *)self->_store deviceRecord];
-    v24 = [(TASPAdvertisement *)v22 getDate];
-    [v23 stageDevice:v22 withCurrentDate:v24];
+    deviceRecord2 = [(TAStore *)self->_store deviceRecord];
+    getDate = [(TASPAdvertisement *)v22 getDate];
+    [deviceRecord2 stageDevice:v22 withCurrentDate:getDate];
 
-    v25 = [(TAStore *)self->_store deviceRecord];
+    deviceRecord3 = [(TAStore *)self->_store deviceRecord];
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v25 ingestTAEvent:v22 andAppendOutgoingRequestsTo:v26];
+    [deviceRecord3 ingestTAEvent:v22 andAppendOutgoingRequestsTo:v26];
 
-    v27 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v16 sinceDate:-5400.0];
+    v27 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:date sinceDate:-5400.0];
     v28 = [TASPAdvertisement alloc];
     v29 = [TATrackingAvoidanceService createRandomBytes:22];
     v30 = [TATrackingAvoidanceService createRandomBytes:2];
-    LODWORD(v47) = a5;
-    v31 = [(TASPAdvertisement *)v28 initWithAddress:v10 advertisementData:v29 status:v15 & 0x3FC reserved:v30 rssi:-55 scanDate:v27 detailsBitmask:v47 uuid:0 protocolID:v18];
+    LODWORD(v47) = bitmask;
+    v31 = [(TASPAdvertisement *)v28 initWithAddress:detectionCopy advertisementData:v29 status:v15 & 0x3FC reserved:v30 rssi:-55 scanDate:v27 detailsBitmask:v47 uuid:0 protocolID:v18];
 
-    v32 = [(TAStore *)self->_store deviceRecord];
+    deviceRecord4 = [(TAStore *)self->_store deviceRecord];
     v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v32 ingestTAEvent:v31 andAppendOutgoingRequestsTo:v33];
+    [deviceRecord4 ingestTAEvent:v31 andAppendOutgoingRequestsTo:v33];
 
     v34 = [[TALocationLite alloc] initWithTimestamp:v27 latitude:37.3348314 longitude:-122.008961 horizontalAccuracy:100.0];
     v35 = [TASuspiciousDevice alloc];
@@ -1454,10 +1454,10 @@ LABEL_23:
     v37 = [[TAMetricsDetection alloc] initWithDetectionType:1 visitDetectionMetrics:0 generalDetectionMetrics:0 singleVisitDetectionMetrics:0 latestAdvertisement:v22];
     v38 = [(TASuspiciousDevice *)v35 initWithLatestAdv:v22 detectionSummary:&unk_287F70020 date:v48 locHistory:v36 detectionMetrics:v37 detectionType:1 immediacyType:1 accessoryInfo:0 forceSurfaceReason:0];
 
-    v39 = [(TAStore *)self->_store deviceRecord];
+    deviceRecord5 = [(TAStore *)self->_store deviceRecord];
     v50 = v38;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
-    [v39 stageDetectionResults:v40];
+    [deviceRecord5 stageDetectionResults:v40];
 
     v49 = v38;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
@@ -1467,9 +1467,9 @@ LABEL_23:
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v43 = v42;
-      v44 = [v10 hexString];
+      hexString2 = [detectionCopy hexString];
       *buf = 138477827;
-      *v53 = v44;
+      *v53 = hexString2;
       _os_log_impl(&dword_26F2E2000, v43, OS_LOG_TYPE_DEFAULT, "#TATrackingAvoidanceService end stageDevice %{private}@", buf, 0xCu);
     }
   }
@@ -1482,43 +1482,43 @@ LABEL_23:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)debugForceSurfaceStagedDetections:(id)a3 deviceType:(unint64_t)a4 detailsBitmask:(unsigned int)a5
+- (void)debugForceSurfaceStagedDetections:(id)detections deviceType:(unint64_t)type detailsBitmask:(unsigned int)bitmask
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  detectionsCopy = detections;
   v9 = TAStatusLog;
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v8 hexString];
+    hexString = [detectionsCopy hexString];
     *buf = 138477827;
-    v24 = v11;
+    v24 = hexString;
     _os_log_impl(&dword_26F2E2000, v10, OS_LOG_TYPE_DEFAULT, "#TATrackingAvoidanceService forceSurfaceStagedDetections for address: %{private}@", buf, 0xCu);
   }
 
-  if (a4 >= 4)
+  if (type >= 4)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = 0xF4E4D400 >> (8 * a4);
+    v12 = 0xF4E4D400 >> (8 * type);
   }
 
   v13 = [TASPAdvertisement alloc];
   v14 = [TATrackingAvoidanceService createRandomBytes:22];
   v15 = [TATrackingAvoidanceService createRandomBytes:2];
   v16 = [MEMORY[0x277CBEAA8] now];
-  LODWORD(v22) = a5;
-  v17 = [(TASPAdvertisement *)v13 initWithAddress:v8 advertisementData:v14 status:v12 & 0x3FC reserved:v15 rssi:-55 scanDate:v16 detailsBitmask:v22 uuid:0 protocolID:0];
+  LODWORD(v22) = bitmask;
+  v17 = [(TASPAdvertisement *)v13 initWithAddress:detectionsCopy advertisementData:v14 status:v12 & 0x3FC reserved:v15 rssi:-55 scanDate:v16 detailsBitmask:v22 uuid:0 protocolID:0];
 
-  v18 = [(TAStore *)self->_store deviceRecord];
+  deviceRecord = [(TAStore *)self->_store deviceRecord];
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [v18 ingestTAEvent:v17 andAppendOutgoingRequestsTo:v19];
+  [deviceRecord ingestTAEvent:v17 andAppendOutgoingRequestsTo:v19];
 
-  v20 = [(TAStore *)self->_store deviceRecord];
-  [v20 forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:v17 withReason:0];
+  deviceRecord2 = [(TAStore *)self->_store deviceRecord];
+  [deviceRecord2 forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:v17 withReason:0];
 
   [(TATrackingAvoidanceService *)self _performDetection];
   v21 = *MEMORY[0x277D85DE8];

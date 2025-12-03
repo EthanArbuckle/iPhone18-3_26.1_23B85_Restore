@@ -1,20 +1,20 @@
 @interface LACPSAuthorizerDispatchDecorator
-- (LACPSAuthorizerDispatchDecorator)initWithAuthorizer:(id)a3;
-- (void)authorizeWithCompletion:(id)a3;
+- (LACPSAuthorizerDispatchDecorator)initWithAuthorizer:(id)authorizer;
+- (void)authorizeWithCompletion:(id)completion;
 @end
 
 @implementation LACPSAuthorizerDispatchDecorator
 
-- (LACPSAuthorizerDispatchDecorator)initWithAuthorizer:(id)a3
+- (LACPSAuthorizerDispatchDecorator)initWithAuthorizer:(id)authorizer
 {
-  v5 = a3;
+  authorizerCopy = authorizer;
   v13.receiver = self;
   v13.super_class = LACPSAuthorizerDispatchDecorator;
   v6 = [(LACPSAuthorizerDispatchDecorator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authorizer, a3);
+    objc_storeStrong(&v6->_authorizer, authorizer);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [LACConcurrencyUtilities createUserInitiatedSerialQueueWithIdentifier:v9];
@@ -25,16 +25,16 @@
   return v7;
 }
 
-- (void)authorizeWithCompletion:(id)a3
+- (void)authorizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__LACPSAuthorizerDispatchDecorator_authorizeWithCompletion___block_invoke;
   v6[3] = &unk_1E7A957E8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(LACPSAuthorizerDispatchDecorator *)self _performOnBackgroundQueue:v6];
 

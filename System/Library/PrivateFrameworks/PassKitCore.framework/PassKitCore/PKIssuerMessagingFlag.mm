@@ -1,92 +1,92 @@
 @interface PKIssuerMessagingFlag
-+ (id)issuerMessagingFlagIdentifierFromRecordName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIssuerMessagingFlag:(id)a3;
-- (PKIssuerMessagingFlag)initWithCloudStoreCoder:(id)a3;
-- (PKIssuerMessagingFlag)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)issuerMessagingFlagIdentifierFromRecordName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIssuerMessagingFlag:(id)flag;
+- (PKIssuerMessagingFlag)initWithCloudStoreCoder:(id)coder;
+- (PKIssuerMessagingFlag)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3;
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type;
 - (unint64_t)hash;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIssuerMessagingFlag
 
-- (PKIssuerMessagingFlag)initWithCoder:(id)a3
+- (PKIssuerMessagingFlag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKIssuerMessagingFlag;
   v5 = [(PKIssuerMessagingFlag *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v5->_contextType = [v4 decodeIntegerForKey:@"contextType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextIdentifier"];
+    v5->_contextType = [coderCopy decodeIntegerForKey:@"contextType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextIdentifier"];
     contextIdentifier = v5->_contextIdentifier;
     v5->_contextIdentifier = v10;
 
-    v5->_contextFeature = [v4 decodeIntegerForKey:@"contextFeature"];
+    v5->_contextFeature = [coderCopy decodeIntegerForKey:@"contextFeature"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeInteger:self->_contextType forKey:@"contextType"];
-  [v5 encodeObject:self->_contextIdentifier forKey:@"contextIdentifier"];
-  [v5 encodeInteger:self->_contextFeature forKey:@"contextFeature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_contextType forKey:@"contextType"];
+  [coderCopy encodeObject:self->_contextIdentifier forKey:@"contextIdentifier"];
+  [coderCopy encodeInteger:self->_contextFeature forKey:@"contextFeature"];
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
-  v4 = [a3 recordsWithRecordType:@"Message"];
-  v13 = [v4 firstObject];
+  v4 = [record recordsWithRecordType:@"Message"];
+  firstObject = [v4 firstObject];
 
-  v5 = [v13 pk_encryptedStringForKey:@"identifier"];
+  v5 = [firstObject pk_encryptedStringForKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  v7 = [v13 pk_encryptedStringForKey:@"name"];
+  v7 = [firstObject pk_encryptedStringForKey:@"name"];
   name = self->_name;
   self->_name = v7;
 
-  v9 = [v13 pk_encryptedStringForKey:@"contextType"];
+  v9 = [firstObject pk_encryptedStringForKey:@"contextType"];
   self->_contextType = PKIssuerMessagingFlagContextTypeFromString(v9);
 
-  v10 = [v13 pk_encryptedStringForKey:@"contextIdentifier"];
+  v10 = [firstObject pk_encryptedStringForKey:@"contextIdentifier"];
   contextIdentifier = self->_contextIdentifier;
   self->_contextIdentifier = v10;
 
-  v12 = [v13 pk_encryptedStringForKey:@"contextFeature"];
+  v12 = [firstObject pk_encryptedStringForKey:@"contextFeature"];
   self->_contextFeature = PKFeatureIdentifierFromString(v12);
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  v13 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v13 recordsWithRecordType:@"Message"];
-  v7 = [v6 firstObject];
+  v6 = [coderCopy recordsWithRecordType:@"Message"];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 encryptedValues];
-  [v8 setObject:self->_identifier forKey:@"identifier"];
-  [v8 setObject:self->_name forKey:@"name"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:self->_identifier forKey:@"identifier"];
+  [encryptedValues setObject:self->_name forKey:@"name"];
   contextType = self->_contextType;
   v10 = @"unknown";
   if (contextType == 2)
@@ -104,17 +104,17 @@
     v11 = v10;
   }
 
-  [v8 setObject:v11 forKey:@"contextType"];
-  [v8 setObject:self->_contextIdentifier forKey:@"contextIdentifier"];
+  [encryptedValues setObject:v11 forKey:@"contextType"];
+  [encryptedValues setObject:self->_contextIdentifier forKey:@"contextIdentifier"];
   v12 = PKFeatureIdentifierToString(self->_contextFeature);
-  [v8 setObject:v12 forKey:@"contextFeature"];
+  [encryptedValues setObject:v12 forKey:@"contextFeature"];
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (PKIssuerMessagingFlag)initWithCloudStoreCoder:(id)a3
+- (PKIssuerMessagingFlag)initWithCloudStoreCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKIssuerMessagingFlag;
   v5 = [(PKIssuerMessagingFlag *)&v21 init];
@@ -123,10 +123,10 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 recordsWithRecordType:@"Message"];
-  v7 = [v6 firstObject];
+  v6 = [coderCopy recordsWithRecordType:@"Message"];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 pk_encryptedStringForKey:@"identifier"];
+  v8 = [firstObject pk_encryptedStringForKey:@"identifier"];
   identifier = v5->_identifier;
   v5->_identifier = v8;
 
@@ -146,18 +146,18 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = [v7 pk_encryptedStringForKey:@"name"];
+  v10 = [firstObject pk_encryptedStringForKey:@"name"];
   name = v5->_name;
   v5->_name = v10;
 
-  v12 = [v7 pk_encryptedStringForKey:@"contextType"];
+  v12 = [firstObject pk_encryptedStringForKey:@"contextType"];
   v5->_contextType = PKIssuerMessagingFlagContextTypeFromString(v12);
 
-  v13 = [v7 pk_encryptedStringForKey:@"contextIdentifier"];
+  v13 = [firstObject pk_encryptedStringForKey:@"contextIdentifier"];
   contextIdentifier = v5->_contextIdentifier;
   v5->_contextIdentifier = v13;
 
-  v15 = [v7 pk_encryptedStringForKey:@"contextFeature"];
+  v15 = [firstObject pk_encryptedStringForKey:@"contextFeature"];
   v5->_contextFeature = PKFeatureIdentifierFromString(v15);
 
   if (!v5->_name || !v5->_contextType)
@@ -182,16 +182,16 @@ LABEL_13:
   return v16;
 }
 
-+ (id)issuerMessagingFlagIdentifierFromRecordName:(id)a3
++ (id)issuerMessagingFlagIdentifierFromRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 recordNamePrefix];
-  v6 = [v4 hasPrefix:v5];
+  nameCopy = name;
+  recordNamePrefix = [self recordNamePrefix];
+  v6 = [nameCopy hasPrefix:recordNamePrefix];
 
   if (v6)
   {
-    v7 = [a1 recordNamePrefix];
-    v8 = [v4 substringFromIndex:{objc_msgSend(v7, "length")}];
+    recordNamePrefix2 = [self recordNamePrefix];
+    v8 = [nameCopy substringFromIndex:{objc_msgSend(recordNamePrefix2, "length")}];
   }
 
   else
@@ -202,12 +202,12 @@ LABEL_13:
   return v8;
 }
 
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = [objc_opt_class() recordNamePrefix];
-  v5 = [(PKIssuerMessagingFlag *)self primaryIdentifier];
-  v6 = [v4 stringByAppendingString:v5];
+  recordNamePrefix = [objc_opt_class() recordNamePrefix];
+  primaryIdentifier = [(PKIssuerMessagingFlag *)self primaryIdentifier];
+  v6 = [recordNamePrefix stringByAppendingString:primaryIdentifier];
   v11 = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v12[0] = v7;
@@ -216,27 +216,27 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIssuerMessagingFlag *)self isEqualToIssuerMessagingFlag:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIssuerMessagingFlag *)self isEqualToIssuerMessagingFlag:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToIssuerMessagingFlag:(id)a3
+- (BOOL)isEqualToIssuerMessagingFlag:(id)flag
 {
-  v4 = a3;
-  v5 = v4[1];
+  flagCopy = flag;
+  v5 = flagCopy[1];
   v6 = self->_identifier;
   v7 = v5;
   v8 = v7;
@@ -269,7 +269,7 @@ LABEL_13:
     }
   }
 
-  v11 = v4[2];
+  v11 = flagCopy[2];
   v6 = self->_name;
   v12 = v11;
   v8 = v12;
@@ -292,7 +292,7 @@ LABEL_13:
     }
   }
 
-  v14 = v4[4];
+  v14 = flagCopy[4];
   v6 = self->_contextIdentifier;
   v15 = v14;
   v8 = v15;
@@ -316,9 +316,9 @@ LABEL_20:
   }
 
 LABEL_24:
-  if (self->_contextType == v4[3])
+  if (self->_contextType == flagCopy[3])
   {
-    v17 = self->_contextFeature == v4[5];
+    v17 = self->_contextFeature == flagCopy[5];
     goto LABEL_22;
   }
 
@@ -331,11 +331,11 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_name];
-  [v3 safelyAddObject:self->_contextIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_name];
+  [array safelyAddObject:self->_contextIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_contextType - v4 + 32 * v4;
   v6 = self->_contextFeature - v5 + 32 * v5;
 
@@ -375,7 +375,7 @@ LABEL_22:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKIssuerMessagingFlag allocWithZone:?]];
   v5 = [(NSString *)self->_identifier copy];

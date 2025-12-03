@@ -1,8 +1,8 @@
 @interface CPLConfigurationFetcher
-- (CPLConfigurationFetcher)initWithConfigurationURL:(id)a3 delegate:(id)a4 queue:(id)a5;
+- (CPLConfigurationFetcher)initWithConfigurationURL:(id)l delegate:(id)delegate queue:(id)queue;
 - (CPLConfigurationFetcherDelegate)delegate;
-- (void)_updateConfigurationWithFetchData:(id)a3 fetchError:(id)a4 fetchURL:(id)a5 fromConfigurationDictionary:(id)a6;
-- (void)fetchConfigurationDictionary:(id)a3 completionHandler:(id)a4;
+- (void)_updateConfigurationWithFetchData:(id)data fetchError:(id)error fetchURL:(id)l fromConfigurationDictionary:(id)dictionary;
+- (void)fetchConfigurationDictionary:(id)dictionary completionHandler:(id)handler;
 - (void)invalidate;
 @end
 
@@ -78,17 +78,17 @@ uint64_t __37__CPLConfigurationFetcher_invalidate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)fetchConfigurationDictionary:(id)a3 completionHandler:(id)a4
+- (void)fetchConfigurationDictionary:(id)dictionary completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __74__CPLConfigurationFetcher_fetchConfigurationDictionary_completionHandler___block_invoke;
   v14[3] = &unk_1E861F5D0;
-  v15 = v6;
-  v16 = v7;
+  v15 = dictionaryCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -97,8 +97,8 @@ uint64_t __37__CPLConfigurationFetcher_invalidate__block_invoke(uint64_t a1)
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = dictionaryCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -241,15 +241,15 @@ uint64_t __74__CPLConfigurationFetcher_fetchConfigurationDictionary_completionHa
   return result;
 }
 
-- (void)_updateConfigurationWithFetchData:(id)a3 fetchError:(id)a4 fetchURL:(id)a5 fromConfigurationDictionary:(id)a6
+- (void)_updateConfigurationWithFetchData:(id)data fetchError:(id)error fetchURL:(id)l fromConfigurationDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  errorCopy = error;
+  lCopy = l;
+  dictionaryCopy = dictionary;
   dispatch_assert_queue_V2(self->_queue);
-  if (v11)
+  if (errorCopy)
   {
     if (_CPLSilentLogging)
     {
@@ -263,32 +263,32 @@ uint64_t __74__CPLConfigurationFetcher_fetchConfigurationDictionary_completionHa
     }
 
     *buf = 138543618;
-    v39 = v12;
+    v39 = lCopy;
     v40 = 2112;
-    v41 = v11;
+    v41 = errorCopy;
     v15 = "Could not fetch configuration from %{public}@. Will retry later: %@";
     v16 = v14;
     v17 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_5;
   }
 
-  if (v10)
+  if (dataCopy)
   {
     v18 = [CPLConfigurationDictionary alloc];
-    v19 = [v13 refreshIntervalKey];
-    [v13 minRefreshInterval];
+    refreshIntervalKey = [dictionaryCopy refreshIntervalKey];
+    [dictionaryCopy minRefreshInterval];
     v36 = 0;
-    v20 = [(CPLConfigurationDictionary *)v18 initWithData:v10 refreshIntervalKey:v19 minRefreshInterval:&v36 error:?];
+    v20 = [(CPLConfigurationDictionary *)v18 initWithData:dataCopy refreshIntervalKey:refreshIntervalKey minRefreshInterval:&v36 error:?];
     v14 = v36;
 
     if (v20)
     {
-      v21 = [v20 matchesConfigurationDictionary:v13];
+      v21 = [v20 matchesConfigurationDictionary:dictionaryCopy];
       if (v21)
       {
-        v22 = [v13 copyConfigurationDictionaryWithUpdatedDate];
+        copyConfigurationDictionaryWithUpdatedDate = [dictionaryCopy copyConfigurationDictionaryWithUpdatedDate];
 
-        v20 = v22;
+        v20 = copyConfigurationDictionaryWithUpdatedDate;
       }
 
       if ((_CPLSilentLogging & 1) == 0)
@@ -303,7 +303,7 @@ uint64_t __74__CPLConfigurationFetcher_fetchConfigurationDictionary_completionHa
           }
 
           *buf = 138543618;
-          v39 = v12;
+          v39 = lCopy;
           v40 = 2112;
           v41 = v24;
           _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_DEFAULT, "Fetched configuration from %{public}@ successfully - %@", buf, 0x16u);
@@ -325,7 +325,7 @@ uint64_t __74__CPLConfigurationFetcher_fetchConfigurationDictionary_completionHa
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v39 = v12;
+        v39 = lCopy;
         v40 = 2112;
         v41 = v14;
         _os_log_impl(&dword_1DC05A000, v20, OS_LOG_TYPE_ERROR, "Fetched configuration from %{public}@ is invalid. Will retry later: %@", buf, 0x16u);
@@ -344,7 +344,7 @@ uint64_t __74__CPLConfigurationFetcher_fetchConfigurationDictionary_completionHa
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v39 = v12;
+    v39 = lCopy;
     v40 = 2112;
     v41 = 0;
     v15 = "Fetched configuration from %{public}@ is empty. Will retry later: %@";
@@ -389,22 +389,22 @@ LABEL_25:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (CPLConfigurationFetcher)initWithConfigurationURL:(id)a3 delegate:(id)a4 queue:(id)a5
+- (CPLConfigurationFetcher)initWithConfigurationURL:(id)l delegate:(id)delegate queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = CPLConfigurationFetcher;
   v11 = [(CPLConfigurationFetcher *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     configurationURL = v11->_configurationURL;
     v11->_configurationURL = v12;
 
-    objc_storeWeak(&v11->_delegate, v9);
-    objc_storeStrong(&v11->_queue, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_queue, queue);
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     completionHandlers = v11->_completionHandlers;
     v11->_completionHandlers = v14;

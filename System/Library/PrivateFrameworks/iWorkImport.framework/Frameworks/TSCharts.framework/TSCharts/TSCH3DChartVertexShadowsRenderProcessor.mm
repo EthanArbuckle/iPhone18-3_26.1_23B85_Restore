@@ -1,8 +1,8 @@
 @interface TSCH3DChartVertexShadowsRenderProcessor
 - (TSCH3DChartVertexShadowsRenderProcessor)init;
 - (id)p_effects;
-- (int64_t)attribute:(id)a3 resource:(id)a4 specs:(const AttributeSpecs *)a5;
-- (void)submit:(id)a3;
+- (int64_t)attribute:(id)attribute resource:(id)resource specs:(const AttributeSpecs *)specs;
+- (void)submit:(id)submit;
 @end
 
 @implementation TSCH3DChartVertexShadowsRenderProcessor
@@ -35,15 +35,15 @@
   return v7;
 }
 
-- (int64_t)attribute:(id)a3 resource:(id)a4 specs:(const AttributeSpecs *)a5
+- (int64_t)attribute:(id)attribute resource:(id)resource specs:(const AttributeSpecs *)specs
 {
-  v8 = a3;
-  v9 = a4;
-  if (qword_280A46550 == v8)
+  attributeCopy = attribute;
+  resourceCopy = resource;
+  if (qword_280A46550 == attributeCopy)
   {
     v12.receiver = self;
     v12.super_class = TSCH3DChartVertexShadowsRenderProcessor;
-    v10 = [(TSCH3DRetargetRenderProcessor *)&v12 attribute:v8 resource:v9 specs:a5];
+    v10 = [(TSCH3DRetargetRenderProcessor *)&v12 attribute:attributeCopy resource:resourceCopy specs:specs];
   }
 
   else
@@ -54,15 +54,15 @@
   return v10;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v4 = a3;
+  submitCopy = submit;
   v9 = objc_msgSend_effects(self, v5, v6, v7, v8);
   objc_msgSend_resetToArray_(v9, v10, v11, v12, v13, self->_shadowsEffects);
 
   v14.receiver = self;
   v14.super_class = TSCH3DChartVertexShadowsRenderProcessor;
-  [(TSCH3DRetargetRenderProcessor *)&v14 submit:v4];
+  [(TSCH3DRetargetRenderProcessor *)&v14 submit:submitCopy];
 }
 
 @end

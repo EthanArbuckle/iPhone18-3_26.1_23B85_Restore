@@ -1,21 +1,21 @@
 @interface SCATCustomizeTopLevelMenuController
-- (id)_replaceSubMenuTopLevelItems:(id)a3 withItem:(id)a4 itemKey:(id)a5;
-- (id)_shortFirstPageEnabled:(id)a3;
+- (id)_replaceSubMenuTopLevelItems:(id)items withItem:(id)item itemKey:(id)key;
+- (id)_shortFirstPageEnabled:(id)enabled;
 - (id)itemsFromPreferences;
 - (id)specifiers;
-- (id)titleForItem:(id)a3;
-- (void)_setShortFirstPageEnabled:(id)a3 specifier:(id)a4;
-- (void)updateItemsInPreferences:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)titleForItem:(id)item;
+- (void)_setShortFirstPageEnabled:(id)enabled specifier:(id)specifier;
+- (void)updateItemsInPreferences:(id)preferences;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATCustomizeTopLevelMenuController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SCATCustomizeTopLevelMenuController;
-  [(SCATCustomizeTopLevelMenuController *)&v4 viewWillAppear:a3];
+  [(SCATCustomizeTopLevelMenuController *)&v4 viewWillAppear:appear];
   [(AXReorderableCheckmarkListController *)self clearItemCache];
   [(SCATCustomizeTopLevelMenuController *)self reloadSpecifiers];
 }
@@ -27,8 +27,8 @@
   if (!v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(SCATCustomizeMenuBaseController *)self menuItemSpecifiersIncludingToggleButton];
-    [v5 addObjectsFromArray:v6];
+    menuItemSpecifiersIncludingToggleButton = [(SCATCustomizeMenuBaseController *)self menuItemSpecifiersIncludingToggleButton];
+    [v5 addObjectsFromArray:menuItemSpecifiersIncludingToggleButton];
 
     v7 = +[PSSpecifier emptyGroupSpecifier];
     [v5 addObject:v7];
@@ -37,9 +37,9 @@
 
     [v5 addObject:v9];
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 switchControlTapBehavior];
+    switchControlTapBehavior = [v10 switchControlTapBehavior];
 
-    if ((v11 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    if ((switchControlTapBehavior - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v12 = AXParameterizedLocalizedString();
       [v7 setProperty:v12 forKey:PSFooterTextGroupKey];
@@ -59,14 +59,14 @@
   return v4;
 }
 
-- (void)_setShortFirstPageEnabled:(id)a3 specifier:(id)a4
+- (void)_setShortFirstPageEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setSwitchControlShouldUseShortFirstPage:v4];
+  [v5 setSwitchControlShouldUseShortFirstPage:bOOLValue];
 }
 
-- (id)_shortFirstPageEnabled:(id)a3
+- (id)_shortFirstPageEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 switchControlShouldUseShortFirstPage]);
@@ -77,8 +77,8 @@
 - (id)itemsFromPreferences
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlTopLevelMenuItems];
-  v5 = [(SCATCustomizeMenuBaseController *)self filterAndTrackMenuItemsMatchingBlock:&__block_literal_global_21 allItems:v4];
+  switchControlTopLevelMenuItems = [v3 switchControlTopLevelMenuItems];
+  v5 = [(SCATCustomizeMenuBaseController *)self filterAndTrackMenuItemsMatchingBlock:&__block_literal_global_21 allItems:switchControlTopLevelMenuItems];
 
   return v5;
 }
@@ -100,25 +100,25 @@ BOOL __59__SCATCustomizeTopLevelMenuController_itemsFromPreferences__block_invok
   return v4;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = +[AXSettings sharedInstance];
-  v34 = [v5 gestureKeys];
-  v31 = [v5 deviceKeys];
-  v28 = [v5 settingsKeys];
-  v26 = [v5 mediaControlsKeys];
-  v30 = [v5 switchControlGesturesTopLevelMenuItems];
-  v27 = [v5 switchControlDeviceTopLevelMenuItems];
-  v25 = [v5 switchControlSettingsTopLevelMenuItems];
+  gestureKeys = [v5 gestureKeys];
+  deviceKeys = [v5 deviceKeys];
+  settingsKeys = [v5 settingsKeys];
+  mediaControlsKeys = [v5 mediaControlsKeys];
+  switchControlGesturesTopLevelMenuItems = [v5 switchControlGesturesTopLevelMenuItems];
+  switchControlDeviceTopLevelMenuItems = [v5 switchControlDeviceTopLevelMenuItems];
+  switchControlSettingsTopLevelMenuItems = [v5 switchControlSettingsTopLevelMenuItems];
   v33 = v5;
-  v24 = [v5 switchControlMediaControlsTopLevelMenuItems];
-  v29 = [v4 mutableCopy];
+  switchControlMediaControlsTopLevelMenuItems = [v5 switchControlMediaControlsTopLevelMenuItems];
+  v29 = [preferencesCopy mutableCopy];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v4;
+  obj = preferencesCopy;
   v6 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v6)
   {
@@ -137,15 +137,15 @@ BOOL __59__SCATCustomizeTopLevelMenuController_itemsFromPreferences__block_invok
 
         v12 = *(*(&v35 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:v9];
-        if ([v34 containsObject:v13])
+        if ([gestureKeys containsObject:v13])
         {
           v14 = [v12 objectForKeyedSubscript:v10];
-          v15 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
 
-          v16 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:v30 withItem:v12 itemKey:v13];
+          v16 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:switchControlGesturesTopLevelMenuItems withItem:v12 itemKey:v13];
           [v33 setSwitchControlGesturesTopLevelMenuItems:v16];
 
-          if ((v15 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             goto LABEL_16;
           }
@@ -153,39 +153,39 @@ BOOL __59__SCATCustomizeTopLevelMenuController_itemsFromPreferences__block_invok
 
         else
         {
-          if ([v31 containsObject:v13])
+          if ([deviceKeys containsObject:v13])
           {
             v17 = [v12 objectForKeyedSubscript:v10];
-            v18 = [v17 BOOLValue];
+            bOOLValue2 = [v17 BOOLValue];
 
-            v19 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:v27 withItem:v12 itemKey:v13];
+            v19 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:switchControlDeviceTopLevelMenuItems withItem:v12 itemKey:v13];
             [v33 setSwitchControlDeviceTopLevelMenuItems:v19];
           }
 
-          else if ([v28 containsObject:v13])
+          else if ([settingsKeys containsObject:v13])
           {
             v20 = [v12 objectForKeyedSubscript:v10];
-            v18 = [v20 BOOLValue];
+            bOOLValue2 = [v20 BOOLValue];
 
-            v19 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:v25 withItem:v12 itemKey:v13];
+            v19 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:switchControlSettingsTopLevelMenuItems withItem:v12 itemKey:v13];
             [v33 setSwitchControlSettingsTopLevelMenuItems:v19];
           }
 
           else
           {
-            if (![v26 containsObject:v13])
+            if (![mediaControlsKeys containsObject:v13])
             {
               goto LABEL_17;
             }
 
             v21 = [v12 objectForKeyedSubscript:v10];
-            v18 = [v21 BOOLValue];
+            bOOLValue2 = [v21 BOOLValue];
 
-            v19 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:v24 withItem:v12 itemKey:v13];
+            v19 = [(SCATCustomizeTopLevelMenuController *)self _replaceSubMenuTopLevelItems:switchControlMediaControlsTopLevelMenuItems withItem:v12 itemKey:v13];
             [v33 setSwitchControlMediaControlsTopLevelMenuItems:v19];
           }
 
-          if ((v18 & 1) == 0)
+          if ((bOOLValue2 & 1) == 0)
           {
 LABEL_16:
             [v29 removeObject:v12];
@@ -207,34 +207,34 @@ LABEL_17:
   [v23 setSwitchControlTopLevelMenuItems:v22];
 }
 
-- (id)_replaceSubMenuTopLevelItems:(id)a3 withItem:(id)a4 itemKey:(id)a5
+- (id)_replaceSubMenuTopLevelItems:(id)items withItem:(id)item itemKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 mutableCopy];
-  if ([v7 count])
+  itemsCopy = items;
+  itemCopy = item;
+  keyCopy = key;
+  v10 = [itemsCopy mutableCopy];
+  if ([itemsCopy count])
   {
     v11 = 0;
     v12 = AXSSwitchControlMenuItemTypeKey;
     while (1)
     {
-      v13 = [v7 objectAtIndex:v11];
+      v13 = [itemsCopy objectAtIndex:v11];
       v14 = [v13 objectForKeyedSubscript:v12];
-      v15 = [v14 isEqualToString:v9];
+      v15 = [v14 isEqualToString:keyCopy];
 
       if (v15)
       {
         break;
       }
 
-      if (++v11 >= [v7 count])
+      if (++v11 >= [itemsCopy count])
       {
         goto LABEL_7;
       }
     }
 
-    [v10 replaceObjectAtIndex:v11 withObject:v8];
+    [v10 replaceObjectAtIndex:v11 withObject:itemCopy];
   }
 
 LABEL_7:
@@ -242,10 +242,10 @@ LABEL_7:
   return v10;
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:AXSSwitchControlMenuItemTypeKey];
+  itemCopy = item;
+  v5 = [itemCopy objectForKeyedSubscript:AXSSwitchControlMenuItemTypeKey];
   if ([v5 isEqualToString:AXSSwitchControlMenuItemDeviceSiriVoiceControl])
   {
     if (![(SCATCustomizeTopLevelMenuController *)self _isSiriAvailable]&& ![(SCATCustomizeTopLevelMenuController *)self _isVoiceControlAvailable])
@@ -260,7 +260,7 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = SCATCustomizeTopLevelMenuController;
-    v6 = [(SCATCustomizeMenuBaseController *)&v9 titleForItem:v4];
+    v6 = [(SCATCustomizeMenuBaseController *)&v9 titleForItem:itemCopy];
     goto LABEL_11;
   }
 

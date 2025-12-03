@@ -1,41 +1,41 @@
 @interface CKMediaObjectAddToLibraryAssetActionPerformer
-+ (BOOL)canPerformWithActionManager:(id)a3 selectionSnapshot:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
++ (BOOL)canPerformWithActionManager:(id)manager selectionSnapshot:(id)snapshot;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
 - (void)performUserInteractionTask;
 @end
 
 @implementation CKMediaObjectAddToLibraryAssetActionPerformer
 
-+ (BOOL)canPerformWithActionManager:(id)a3 selectionSnapshot:(id)a4
++ (BOOL)canPerformWithActionManager:(id)manager selectionSnapshot:(id)snapshot
 {
-  v5 = a4;
-  v6 = [a3 chatItem];
-  if ([v6 canPerformQuickAction])
+  snapshotCopy = snapshot;
+  chatItem = [manager chatItem];
+  if ([chatItem canPerformQuickAction])
   {
-    v7 = [v5 isAnyItemSelected];
+    isAnyItemSelected = [snapshotCopy isAnyItemSelected];
   }
 
   else
   {
-    v7 = 0;
+    isAnyItemSelected = 0;
   }
 
-  return v7;
+  return isAnyItemSelected;
 }
 
 - (void)performUserInteractionTask
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  if ([v3 isAnyItemSelected])
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  if ([selectionSnapshot isAnyItemSelected])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [v3 allItemsEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
+    v6 = [allItemsEnumerator countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v6)
     {
       v7 = *v20;
@@ -45,17 +45,17 @@
         {
           if (*v20 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allItemsEnumerator);
           }
 
-          v9 = [*(*(&v19 + 1) + 8 * i) mediaObject];
-          if (v9)
+          mediaObject = [*(*(&v19 + 1) + 8 * i) mediaObject];
+          if (mediaObject)
           {
-            [v4 addObject:v9];
+            [v4 addObject:mediaObject];
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v6 = [allItemsEnumerator countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v6);
@@ -130,7 +130,7 @@ void __75__CKMediaObjectAddToLibraryAssetActionPerformer_performUserInteractionT
   [WeakRetained completeUserInteractionTaskWithSuccess:a2 error:v5];
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
   v4 = CKFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"SAVE_TO_PHOTO_LIBRARY" value:&stru_1F04268F8 table:@"ChatKit"];

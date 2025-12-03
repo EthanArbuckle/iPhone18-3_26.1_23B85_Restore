@@ -1,33 +1,33 @@
 @interface WFUISceneDelegateRouter
 - (WFUISceneDelegateRouter)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
 @end
 
 @implementation WFUISceneDelegateRouter
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(WFUISceneDelegateRouter *)self forwardingTarget];
-  [v5 sceneDidEnterBackground:v4];
+  backgroundCopy = background;
+  forwardingTarget = [(WFUISceneDelegateRouter *)self forwardingTarget];
+  [forwardingTarget sceneDidEnterBackground:backgroundCopy];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(WFUISceneDelegateRouter *)self forwardingTarget];
-  [v5 sceneDidDisconnect:v4];
+  disconnectCopy = disconnect;
+  forwardingTarget = [(WFUISceneDelegateRouter *)self forwardingTarget];
+  [forwardingTarget sceneDidDisconnect:disconnectCopy];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WFUISceneDelegateRouter *)self forwardingTarget];
-  [v11 scene:v10 willConnectToSession:v9 options:v8];
+  optionsCopy = options;
+  sessionCopy = session;
+  sceneCopy = scene;
+  forwardingTarget = [(WFUISceneDelegateRouter *)self forwardingTarget];
+  [forwardingTarget scene:sceneCopy willConnectToSession:sessionCopy options:optionsCopy];
 }
 
 - (WFUISceneDelegateRouter)init

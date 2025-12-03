@@ -1,25 +1,25 @@
 @interface PDDPClientConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addExcludeAppIds:(id)a3;
-- (void)addHostAllowList:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsContextTrackingAllowed:(BOOL)a3;
-- (void)setHasRecordActivity:(BOOL)a3;
-- (void)setHasSendToCloudKit:(BOOL)a3;
-- (void)setHasSendToOnramp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addExcludeAppIds:(id)ids;
+- (void)addHostAllowList:(id)list;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsContextTrackingAllowed:(BOOL)allowed;
+- (void)setHasRecordActivity:(BOOL)activity;
+- (void)setHasSendToCloudKit:(BOOL)kit;
+- (void)setHasSendToOnramp:(BOOL)onramp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPClientConfig
 
-- (void)setHasRecordActivity:(BOOL)a3
+- (void)setHasRecordActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = 4;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSendToCloudKit:(BOOL)a3
+- (void)setHasSendToCloudKit:(BOOL)kit
 {
-  if (a3)
+  if (kit)
   {
     v3 = 8;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSendToOnramp:(BOOL)a3
+- (void)setHasSendToOnramp:(BOOL)onramp
 {
-  if (a3)
+  if (onramp)
   {
     v3 = 16;
   }
@@ -62,45 +62,45 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addExcludeAppIds:(id)a3
+- (void)addExcludeAppIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   excludeAppIds = self->_excludeAppIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!excludeAppIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_excludeAppIds;
     self->_excludeAppIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     excludeAppIds = self->_excludeAppIds;
   }
 
-  [(NSMutableArray *)excludeAppIds addObject:v4];
+  [(NSMutableArray *)excludeAppIds addObject:idsCopy];
 }
 
-- (void)addHostAllowList:(id)a3
+- (void)addHostAllowList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   hostAllowLists = self->_hostAllowLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!hostAllowLists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_hostAllowLists;
     self->_hostAllowLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     hostAllowLists = self->_hostAllowLists;
   }
 
-  [(NSMutableArray *)hostAllowLists addObject:v4];
+  [(NSMutableArray *)hostAllowLists addObject:listCopy];
 }
 
-- (void)setHasIsContextTrackingAllowed:(BOOL)a3
+- (void)setHasIsContextTrackingAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 2;
   }
@@ -118,8 +118,8 @@
   v7.receiver = self;
   v7.super_class = PDDPClientConfig;
   v3 = [(PDDPClientConfig *)&v7 description];
-  v4 = [(PDDPClientConfig *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPClientConfig *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -192,9 +192,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -301,9 +301,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -313,8 +313,8 @@ LABEL_5:
     }
 
 LABEL_21:
-    v4[34] = self->_sendToCloudKit;
-    v4[36] |= 8u;
+    toCopy[34] = self->_sendToCloudKit;
+    toCopy[36] |= 8u;
     if ((*&self->_has & 0x10) == 0)
     {
       goto LABEL_5;
@@ -323,8 +323,8 @@ LABEL_21:
     goto LABEL_4;
   }
 
-  v4[33] = self->_recordActivity;
-  v4[36] |= 4u;
+  toCopy[33] = self->_recordActivity;
+  toCopy[36] |= 4u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -335,19 +335,19 @@ LABEL_3:
   if ((has & 0x10) != 0)
   {
 LABEL_4:
-    v4[35] = self->_sendToOnramp;
-    v4[36] |= 0x10u;
+    toCopy[35] = self->_sendToOnramp;
+    toCopy[36] |= 0x10u;
   }
 
 LABEL_5:
-  v15 = v4;
+  v15 = toCopy;
   if ([(PDDPClientConfig *)self excludeAppIdsCount])
   {
     [v15 clearExcludeAppIds];
-    v6 = [(PDDPClientConfig *)self excludeAppIdsCount];
-    if (v6)
+    excludeAppIdsCount = [(PDDPClientConfig *)self excludeAppIdsCount];
+    if (excludeAppIdsCount)
     {
-      v7 = v6;
+      v7 = excludeAppIdsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPClientConfig *)self excludeAppIdsAtIndex:i];
@@ -359,10 +359,10 @@ LABEL_5:
   if ([(PDDPClientConfig *)self hostAllowListsCount])
   {
     [v15 clearHostAllowLists];
-    v10 = [(PDDPClientConfig *)self hostAllowListsCount];
-    if (v10)
+    hostAllowListsCount = [(PDDPClientConfig *)self hostAllowListsCount];
+    if (hostAllowListsCount)
     {
-      v11 = v10;
+      v11 = hostAllowListsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(PDDPClientConfig *)self hostAllowListAtIndex:j];
@@ -386,9 +386,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -442,7 +442,7 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:zone];
         [v6 addExcludeAppIds:v13];
       }
 
@@ -471,7 +471,7 @@ LABEL_5:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:{zone, v22}];
         [v6 addHostAllowList:v19];
       }
 
@@ -498,104 +498,104 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_37;
     }
 
-    v8 = *(v4 + 33);
+    v8 = *(equalCopy + 33);
     if (self->_recordActivity)
     {
-      if ((*(v4 + 33) & 1) == 0)
+      if ((*(equalCopy + 33) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 33))
+    else if (*(equalCopy + 33))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0)
+    if ((*(equalCopy + 36) & 8) == 0)
     {
       goto LABEL_37;
     }
 
-    v9 = *(v4 + 34);
+    v9 = *(equalCopy + 34);
     if (self->_sendToCloudKit)
     {
-      if ((*(v4 + 34) & 1) == 0)
+      if ((*(equalCopy + 34) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 34))
+    else if (*(equalCopy + 34))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0)
+    if ((*(equalCopy + 36) & 0x10) == 0)
     {
       goto LABEL_37;
     }
 
-    v10 = *(v4 + 35);
+    v10 = *(equalCopy + 35);
     if (self->_sendToOnramp)
     {
-      if ((*(v4 + 35) & 1) == 0)
+      if ((*(equalCopy + 35) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 35))
+    else if (*(equalCopy + 35))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_37;
   }
 
   excludeAppIds = self->_excludeAppIds;
-  if (excludeAppIds | *(v4 + 2) && ![(NSMutableArray *)excludeAppIds isEqual:?])
+  if (excludeAppIds | *(equalCopy + 2) && ![(NSMutableArray *)excludeAppIds isEqual:?])
   {
     goto LABEL_37;
   }
 
   hostAllowLists = self->_hostAllowLists;
-  if (hostAllowLists | *(v4 + 3))
+  if (hostAllowLists | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)hostAllowLists isEqual:?])
     {
@@ -605,31 +605,31 @@ LABEL_5:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_cloudKitSyncFetchGracePeriod != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_cloudKitSyncFetchGracePeriod != *(equalCopy + 2))
     {
       goto LABEL_37;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_37;
   }
 
-  v11 = (*(v4 + 36) & 2) == 0;
+  v11 = (*(equalCopy + 36) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) != 0)
+    if ((*(equalCopy + 36) & 2) != 0)
     {
       if (self->_isContextTrackingAllowed)
       {
-        if ((*(v4 + 32) & 1) == 0)
+        if ((*(equalCopy + 32) & 1) == 0)
         {
           goto LABEL_37;
         }
       }
 
-      else if (*(v4 + 32))
+      else if (*(equalCopy + 32))
       {
         goto LABEL_37;
       }
@@ -711,16 +711,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if ((v6 & 4) != 0)
   {
-    self->_recordActivity = *(v4 + 33);
+    self->_recordActivity = *(fromCopy + 33);
     *&self->_has |= 4u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
     if ((v6 & 8) == 0)
     {
 LABEL_3:
@@ -733,17 +733,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 8) == 0)
+  else if ((*(fromCopy + 36) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sendToCloudKit = *(v4 + 34);
+  self->_sendToCloudKit = *(fromCopy + 34);
   *&self->_has |= 8u;
-  if ((*(v4 + 36) & 0x10) != 0)
+  if ((*(fromCopy + 36) & 0x10) != 0)
   {
 LABEL_4:
-    self->_sendToOnramp = *(v4 + 35);
+    self->_sendToOnramp = *(fromCopy + 35);
     *&self->_has |= 0x10u;
   }
 
@@ -752,7 +752,7 @@ LABEL_5:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {

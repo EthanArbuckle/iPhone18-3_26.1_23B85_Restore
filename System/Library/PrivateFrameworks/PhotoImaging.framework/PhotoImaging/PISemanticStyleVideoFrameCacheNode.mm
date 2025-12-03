@@ -1,34 +1,34 @@
 @interface PISemanticStyleVideoFrameCacheNode
-- (id)evaluateSettings:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4;
-- (void)resolveSourceWithPixelBuffer:(__CVBuffer *)a3;
-- (void)resolveSourceWithVideo:(id)a3 videoComposition:(id)a4;
+- (id)evaluateSettings:(id)settings pipelineState:(id)state error:(id *)error;
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error;
+- (void)resolveSourceWithPixelBuffer:(__CVBuffer *)buffer;
+- (void)resolveSourceWithVideo:(id)video videoComposition:(id)composition;
 @end
 
 @implementation PISemanticStyleVideoFrameCacheNode
 
-- (void)resolveSourceWithPixelBuffer:(__CVBuffer *)a3
+- (void)resolveSourceWithPixelBuffer:(__CVBuffer *)buffer
 {
-  v7 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:a3];
-  v4 = [(NUMemoryCacheNode *)self persistentURL];
-  v5 = [v4 absoluteString];
+  v7 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:buffer];
+  persistentURL = [(NUMemoryCacheNode *)self persistentURL];
+  absoluteString = [persistentURL absoluteString];
 
-  v6 = [objc_alloc(MEMORY[0x1E69B39B8]) initWithImage:v7 identifier:v5 orientation:1];
+  v6 = [objc_alloc(MEMORY[0x1E69B39B8]) initWithImage:v7 identifier:absoluteString orientation:1];
   [(NUCacheNode *)self resolveWithSourceNode:v6 error:0];
 }
 
-- (void)resolveSourceWithVideo:(id)a3 videoComposition:(id)a4
+- (void)resolveSourceWithVideo:(id)video videoComposition:(id)composition
 {
   memset(&v17, 0, sizeof(v17));
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NURenderNode *)self settings];
-  v9 = [v8 objectForKeyedSubscript:@"time"];
+  compositionCopy = composition;
+  videoCopy = video;
+  settings = [(NURenderNode *)self settings];
+  v9 = [settings objectForKeyedSubscript:@"time"];
   CMTimeMakeFromDictionary(&v17, v9);
 
   v16 = 0;
   v15 = v17;
-  v10 = [MEMORY[0x1E69B3D40] readVideoFrameAtTime:&v15 fromAsset:v7 outputSettings:0 videoComposition:v6 auxiliaryImageType:1 error:&v16];
+  v10 = [MEMORY[0x1E69B3D40] readVideoFrameAtTime:&v15 fromAsset:videoCopy outputSettings:0 videoComposition:compositionCopy auxiliaryImageType:1 error:&v16];
 
   v11 = v16;
   if (v10)
@@ -49,11 +49,11 @@
   }
 }
 
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error
 {
   v5 = MEMORY[0x1E69B3D30];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithRequest:v6];
+  requestCopy = request;
+  v7 = [[v5 alloc] initWithRequest:requestCopy];
 
   v8 = [objc_alloc(MEMORY[0x1E69B3C18]) initWithPurpose:2];
   [v7 setRenderContext:v8];
@@ -86,13 +86,13 @@ void __80__PISemanticStyleVideoFrameCacheNode_newRenderRequestWithOriginalReques
   }
 }
 
-- (id)evaluateSettings:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)evaluateSettings:(id)settings pipelineState:(id)state error:(id *)error
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  if (v6)
+  stateCopy = state;
+  v7 = [settings mutableCopy];
+  if (stateCopy)
   {
-    [v6 time];
+    [stateCopy time];
   }
 
   else

@@ -1,10 +1,10 @@
 @interface GKInstallMetadataCache
-- (GKInstallMetadataCache)initWithPlayerID:(id)a3 language:(id)a4 error:(id *)a5;
+- (GKInstallMetadataCache)initWithPlayerID:(id)d language:(id)language error:(id *)error;
 @end
 
 @implementation GKInstallMetadataCache
 
-- (GKInstallMetadataCache)initWithPlayerID:(id)a3 language:(id)a4 error:(id *)a5
+- (GKInstallMetadataCache)initWithPlayerID:(id)d language:(id)language error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();

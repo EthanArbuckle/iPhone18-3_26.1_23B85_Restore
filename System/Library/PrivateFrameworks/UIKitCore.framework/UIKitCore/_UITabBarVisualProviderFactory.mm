@@ -1,18 +1,18 @@
 @interface _UITabBarVisualProviderFactory
-+ (Class)visualProviderClassForIdiom:(int64_t)a3;
++ (Class)visualProviderClassForIdiom:(int64_t)idiom;
 - (_UITabBarVisualProviderFactory)init;
 @end
 
 @implementation _UITabBarVisualProviderFactory
 
-+ (Class)visualProviderClassForIdiom:(int64_t)a3
++ (Class)visualProviderClassForIdiom:(int64_t)idiom
 {
-  if (a3 == 1)
+  if (idiom == 1)
   {
     type metadata accessor for _UITabBarVisualProvider_FloatingPad();
   }
 
-  else if (a3 == 3)
+  else if (idiom == 3)
   {
     type metadata accessor for _UITabBarVisualProvider_FloatingCarPlay();
   }

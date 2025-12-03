@@ -1,21 +1,21 @@
 @interface RMSAudioRouteMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSelected:(BOOL)a3;
-- (void)setHasSupportsVideo:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSelected:(BOOL)selected;
+- (void)setHasSupportsVideo:(BOOL)video;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSAudioRouteMessage
 
-- (void)setHasSupportsVideo:(BOOL)a3
+- (void)setHasSupportsVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSelected:(BOOL)a3
+- (void)setHasSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = RMSAudioRouteMessage;
   v4 = [(RMSAudioRouteMessage *)&v8 description];
-  v5 = [(RMSAudioRouteMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSAudioRouteMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   displayName = self->_displayName;
   if (displayName)
   {
-    [v3 setObject:displayName forKey:@"displayName"];
+    [dictionary setObject:displayName forKey:@"displayName"];
   }
 
   has = self->_has;
@@ -104,21 +104,21 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -138,32 +138,32 @@ LABEL_5:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_displayName)
   {
-    v6 = v4;
-    [v4 setDisplayName:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setDisplayName:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_macAddress;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = self->_macAddress;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -182,22 +182,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 25) = self->_supportsVideo;
-  *(v4 + 28) |= 4u;
+  *(toCopy + 25) = self->_supportsVideo;
+  *(toCopy + 28) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 24) = self->_selected;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 24) = self->_selected;
+    *(toCopy + 28) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_displayName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_displayName copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -239,16 +239,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 2))
+  if (displayName | *(equalCopy + 2))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -258,57 +258,57 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_macAddress != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_macAddress != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
       goto LABEL_17;
     }
 
     if (self->_supportsVideo)
     {
-      if ((*(v4 + 25) & 1) == 0)
+      if ((*(equalCopy + 25) & 1) == 0)
       {
         goto LABEL_17;
       }
     }
 
-    else if (*(v4 + 25))
+    else if (*(equalCopy + 25))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_17;
   }
 
-  v6 = (*(v4 + 28) & 2) == 0;
+  v6 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) != 0)
+    if ((*(equalCopy + 28) & 2) != 0)
     {
       if (self->_selected)
       {
-        if (*(v4 + 24))
+        if (*(equalCopy + 24))
         {
           goto LABEL_25;
         }
       }
 
-      else if (!*(v4 + 24))
+      else if (!*(equalCopy + 24))
       {
 LABEL_25:
         v6 = 1;
@@ -366,22 +366,22 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(RMSAudioRouteMessage *)self setDisplayName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_macAddress = *(v4 + 1);
+    self->_macAddress = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -394,17 +394,17 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 28) & 4) == 0)
+  else if ((*(fromCopy + 28) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_supportsVideo = *(v4 + 25);
+  self->_supportsVideo = *(fromCopy + 25);
   *&self->_has |= 4u;
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
 LABEL_6:
-    self->_selected = *(v4 + 24);
+    self->_selected = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 

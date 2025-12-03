@@ -1,24 +1,24 @@
 @interface _UIDynamicAnimation
-+ (id)dynamicAnimationForView:(id)a3 withInitialValue:(double)a4 velocity:(double)a5 type:(int)a6 anchorPoint:(CGPoint)a7;
-+ (void)_updateAnimations:(id)a3 timer:(id)a4;
++ (id)dynamicAnimationForView:(id)view withInitialValue:(double)value velocity:(double)velocity type:(int)type anchorPoint:(CGPoint)point;
++ (void)_updateAnimations:(id)animations timer:(id)timer;
 - (_UIDynamicAnimation)init;
 - (id)description;
-- (void)_appendDescriptionToString:(id)a3 atLevel:(int)a4;
-- (void)_callAppliers:(id)a3 additionalEndAppliers:(id)a4 done:(BOOL)a5;
-- (void)_cancelWithAppliers:(id)a3;
-- (void)_completeWithFinished:(BOOL)a3;
-- (void)_setGrouped:(BOOL)a3;
-- (void)_setShouldYield:(BOOL)a3;
-- (void)_setUsesNSTimer:(BOOL)a3;
+- (void)_appendDescriptionToString:(id)string atLevel:(int)level;
+- (void)_callAppliers:(id)appliers additionalEndAppliers:(id)endAppliers done:(BOOL)done;
+- (void)_cancelWithAppliers:(id)appliers;
+- (void)_completeWithFinished:(BOOL)finished;
+- (void)_setGrouped:(BOOL)grouped;
+- (void)_setShouldYield:(BOOL)yield;
+- (void)_setUsesNSTimer:(BOOL)timer;
 - (void)_stopAnimation;
 - (void)dealloc;
-- (void)runWithCompletion:(id)a3 forScreen:(id)a4 runLoopMode:(id)a5;
+- (void)runWithCompletion:(id)completion forScreen:(id)screen runLoopMode:(id)mode;
 - (void)stop;
 @end
 
 @implementation _UIDynamicAnimation
 
-+ (void)_updateAnimations:(id)a3 timer:(id)a4
++ (void)_updateAnimations:(id)animations timer:(id)timer
 {
   v35 = *MEMORY[0x1E69E9840];
   if (qword_1ED499FC8)
@@ -48,16 +48,16 @@
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        if (a3 && *(v11 + 16) == a3 || a4 && *(v11 + 24) == a4)
+        if (animations && *(v11 + 16) == animations || timer && *(v11 + 24) == timer)
         {
           if (*(v11 + 48) == 1)
           {
             sched_yield();
           }
 
-          if (a3)
+          if (animations)
           {
-            [a3 timestamp];
+            [animations timestamp];
           }
 
           else
@@ -90,15 +90,15 @@
                 v21 = *(*(&v25 + 1) + 8 * j);
                 if ([v21 _usesNSTimer])
                 {
-                  v22 = a3;
+                  timerCopy = animations;
                 }
 
                 else
                 {
-                  v22 = a4;
+                  timerCopy = timer;
                 }
 
-                if (!v22)
+                if (!timerCopy)
                 {
                   v23 = v21;
                   if ([v21 _animateForInterval:v18])
@@ -136,16 +136,16 @@
     }
   }
 
-  [a3 invalidate];
-  [a4 invalidate];
+  [animations invalidate];
+  [timer invalidate];
 }
 
-+ (id)dynamicAnimationForView:(id)a3 withInitialValue:(double)a4 velocity:(double)a5 type:(int)a6 anchorPoint:(CGPoint)a7
++ (id)dynamicAnimationForView:(id)view withInitialValue:(double)value velocity:(double)velocity type:(int)type anchorPoint:(CGPoint)point
 {
-  y = a7.y;
-  x = a7.x;
+  y = point.y;
+  x = point.x;
   v13 = [_UIDynamicValueAnimation alloc];
-  if ((a6 - 6) >= 7)
+  if ((type - 6) >= 7)
   {
     v14 = 1.0;
   }
@@ -155,18 +155,18 @@
     v14 = 0.0001;
   }
 
-  v15 = [(_UIDynamicValueAnimation *)v13 initWithValue:a4 velocity:a5 unitSize:v14];
+  v15 = [(_UIDynamicValueAnimation *)v13 initWithValue:value velocity:velocity unitSize:v14];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
-  *&v28[3] = a4;
+  *&v28[3] = value;
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x3010000000;
   v27[3] = "";
   *&v27[4] = x;
   *&v27[5] = y;
-  switch(a6)
+  switch(type)
   {
     case 0:
       v20 = MEMORY[0x1E69E9820];
@@ -200,7 +200,7 @@
 LABEL_15:
       v22 = v16;
       v23 = &unk_1E70F5D18;
-      v24 = a3;
+      viewCopy3 = view;
       goto LABEL_21;
     case 6:
       v20 = MEMORY[0x1E69E9820];
@@ -234,7 +234,7 @@ LABEL_15:
 LABEL_20:
       v22 = v17;
       v23 = &unk_1E70F5CF0;
-      v24 = a3;
+      viewCopy3 = view;
       v25 = v27;
       v26 = v28;
       goto LABEL_21;
@@ -243,7 +243,7 @@ LABEL_20:
       v21 = 3221225472;
       v22 = ___CreateDefaultAnimationApplier_block_invoke;
       v23 = &unk_1E70F5CC8;
-      v24 = a3;
+      viewCopy3 = view;
       v25 = v27;
 LABEL_21:
       v18 = [&v20 copy];
@@ -291,14 +291,14 @@ LABEL_21:
   self->_state = 0;
 }
 
-- (void)_callAppliers:(id)a3 additionalEndAppliers:(id)a4 done:(BOOL)a5
+- (void)_callAppliers:(id)appliers additionalEndAppliers:(id)endAppliers done:(BOOL)done
 {
-  v5 = a5;
+  doneCopy = done;
   self->_state = 2;
   v8 = *(self + 20);
   if (v8)
   {
-    if (a5)
+    if (done)
     {
       v12 = 3;
       self->_state = 3;
@@ -309,37 +309,37 @@ LABEL_21:
       v12 = 2;
     }
 
-    v10 = *(a3 + 2);
-    v11 = a3;
+    v10 = *(appliers + 2);
+    endAppliersCopy = appliers;
     goto LABEL_10;
   }
 
   self->_state = 1;
   *(self + 20) = v8 | 1;
-  (*(a3 + 2))(a3, 1);
-  if (!v5)
+  (*(appliers + 2))(appliers, 1);
+  if (!doneCopy)
   {
     return;
   }
 
   self->_state = 3;
-  if (a4)
+  if (endAppliers)
   {
-    v10 = *(a4 + 2);
-    v11 = a4;
+    v10 = *(endAppliers + 2);
+    endAppliersCopy = endAppliers;
     v12 = 3;
 LABEL_10:
 
-    v10(v11, v12);
+    v10(endAppliersCopy, v12);
     return;
   }
 
-  v13 = *(a3 + 2);
+  v13 = *(appliers + 2);
 
-  v13(a3, 3);
+  v13(appliers, 3);
 }
 
-- (void)runWithCompletion:(id)a3 forScreen:(id)a4 runLoopMode:(id)a5
+- (void)runWithCompletion:(id)completion forScreen:(id)screen runLoopMode:(id)mode
 {
   v22 = *MEMORY[0x1E69E9840];
   if ((*(self + 20) & 0x10) != 0)
@@ -347,20 +347,20 @@ LABEL_10:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"%@ is grouped. Grouped dynamic animations may not be run independent of their group", self}];
   }
 
-  if (!a4)
+  if (!screen)
   {
-    a4 = [objc_opt_self() mainScreen];
+    screen = [objc_opt_self() mainScreen];
   }
 
-  if (!a5)
+  if (!mode)
   {
-    a5 = *MEMORY[0x1E695DA28];
+    mode = *MEMORY[0x1E695DA28];
   }
 
   if ((*(self + 20) & 2) == 0)
   {
 
-    self->_completion = [a3 copy];
+    self->_completion = [completion copy];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -381,7 +381,7 @@ LABEL_10:
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        if (v14->_screen == a4)
+        if (v14->_screen == screen)
         {
           break;
         }
@@ -426,9 +426,9 @@ LABEL_16:
     [(NSMutableArray *)activeAnimations addObject:self];
     if (![(_UIDynamicAnimation *)self _usesNSTimer]&& !v14->_displayLink)
     {
-      v16 = [a4 displayLinkWithTarget:objc_opt_class() selector:sel__updateAnimations_];
+      v16 = [screen displayLinkWithTarget:objc_opt_class() selector:sel__updateAnimations_];
       v14->_displayLink = v16;
-      -[CADisplayLink addToRunLoop:forMode:](v16, "addToRunLoop:forMode:", [MEMORY[0x1E695DFD0] mainRunLoop], a5);
+      -[CADisplayLink addToRunLoop:forMode:](v16, "addToRunLoop:forMode:", [MEMORY[0x1E695DFD0] mainRunLoop], mode);
       v14->_lastUpdateTime = CACurrentMediaTime();
     }
 
@@ -448,7 +448,7 @@ LABEL_16:
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   if ((*(self + 20) & 2) != 0)
   {
     [(_UIDynamicAnimation *)self _completeWithFinished:0];
@@ -460,7 +460,7 @@ LABEL_16:
   }
 }
 
-- (void)_completeWithFinished:(BOOL)a3
+- (void)_completeWithFinished:(BOOL)finished
 {
   v30 = *MEMORY[0x1E69E9840];
   if ((*(self + 20) & 4) == 0)
@@ -470,9 +470,9 @@ LABEL_16:
     completion = self->_completion;
     if (completion)
     {
-      v6 = a3;
+      finishedCopy = finished;
       v7 = completion;
-      v7[2](v7, v6);
+      v7[2](v7, finishedCopy);
 
       v4 = *(self + 20);
     }
@@ -577,20 +577,20 @@ LABEL_21:
   }
 }
 
-- (void)_cancelWithAppliers:(id)a3
+- (void)_cancelWithAppliers:(id)appliers
 {
   if ((*(self + 20) & 2) != 0)
   {
     self->_state = 4;
-    (*(a3 + 2))(a3, a2);
+    (*(appliers + 2))(appliers, a2);
 
     [(_UIDynamicAnimation *)self stop];
   }
 }
 
-- (void)_setShouldYield:(BOOL)a3
+- (void)_setShouldYield:(BOOL)yield
 {
-  if (a3)
+  if (yield)
   {
     v3 = 8;
   }
@@ -603,9 +603,9 @@ LABEL_21:
   *(self + 20) = *(self + 20) & 0xF7 | v3;
 }
 
-- (void)_setUsesNSTimer:(BOOL)a3
+- (void)_setUsesNSTimer:(BOOL)timer
 {
-  if (a3)
+  if (timer)
   {
     v3 = 32;
   }
@@ -618,9 +618,9 @@ LABEL_21:
   *(self + 20) = *(self + 20) & 0xDF | v3;
 }
 
-- (void)_setGrouped:(BOOL)a3
+- (void)_setGrouped:(BOOL)grouped
 {
-  if (a3)
+  if (grouped)
   {
     v3 = 16;
   }
@@ -633,13 +633,13 @@ LABEL_21:
   *(self + 20) = *(self + 20) & 0xEF | v3;
 }
 
-- (void)_appendDescriptionToString:(id)a3 atLevel:(int)a4
+- (void)_appendDescriptionToString:(id)string atLevel:(int)level
 {
-  v4 = *&a4;
+  v4 = *&level;
   v12 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  if ([a3 length])
+  if ([string length])
   {
-    [a3 appendString:@"\n"];
+    [string appendString:@"\n"];
   }
 
   if (v4)
@@ -647,14 +647,14 @@ LABEL_21:
     v7 = 1;
     do
     {
-      [a3 appendString:@"    "];
+      [string appendString:@"    "];
       ++v7;
     }
 
     while (v7 <= v4);
   }
 
-  [a3 appendFormat:@"<%@: %p", objc_opt_class(), self];
+  [string appendFormat:@"<%@: %p", objc_opt_class(), self];
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   for (i = objc_opt_class(); [MEMORY[0x1E696AAE8] bundleForClass:i] != v8; i = objc_msgSend(i, "superclass"))
   {
@@ -666,7 +666,7 @@ LABEL_21:
 
   if (objc_opt_class() != i)
   {
-    [a3 appendFormat:@"; baseClass = %@", NSStringFromClass(i)];
+    [string appendFormat:@"; baseClass = %@", NSStringFromClass(i)];
   }
 
   state = self->_state;
@@ -680,16 +680,16 @@ LABEL_21:
     v11 = off_1E70F5D38[state];
   }
 
-  [a3 appendFormat:@"; state = %@", v11];
-  [(_UIDynamicAnimation *)self _appendSubclassDescription:a3 atLevel:v4];
-  [a3 appendFormat:@">"];
+  [string appendFormat:@"; state = %@", v11];
+  [(_UIDynamicAnimation *)self _appendSubclassDescription:string atLevel:v4];
+  [string appendFormat:@">"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(_UIDynamicAnimation *)self _appendDescriptionToString:v3 atLevel:0];
-  return v3;
+  string = [MEMORY[0x1E696AD60] string];
+  [(_UIDynamicAnimation *)self _appendDescriptionToString:string atLevel:0];
+  return string;
 }
 
 @end

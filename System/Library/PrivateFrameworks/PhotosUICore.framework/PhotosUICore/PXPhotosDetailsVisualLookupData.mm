@@ -1,7 +1,7 @@
 @interface PXPhotosDetailsVisualLookupData
-- (BOOL)_isEqualToVisualLookupData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PXPhotosDetailsVisualLookupData)initWithGlyphName:(id)a3 visualDomain:(id)a4 displayMessage:(id)a5;
+- (BOOL)_isEqualToVisualLookupData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (PXPhotosDetailsVisualLookupData)initWithGlyphName:(id)name visualDomain:(id)domain displayMessage:(id)message;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -12,47 +12,47 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(PXPhotosDetailsVisualLookupData *)self glyphImageName];
-  v6 = [(PXPhotosDetailsVisualLookupData *)self visualDomain];
-  v7 = [(PXPhotosDetailsVisualLookupData *)self displayMessage];
-  v8 = [v3 initWithFormat:@"<%@: %p; glyph name = %@, domain name = %@, display message = %@>", v4, self, v5, v6, v7];
+  glyphImageName = [(PXPhotosDetailsVisualLookupData *)self glyphImageName];
+  visualDomain = [(PXPhotosDetailsVisualLookupData *)self visualDomain];
+  displayMessage = [(PXPhotosDetailsVisualLookupData *)self displayMessage];
+  v8 = [v3 initWithFormat:@"<%@: %p; glyph name = %@, domain name = %@, display message = %@>", v4, self, glyphImageName, visualDomain, displayMessage];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PXPhotosDetailsVisualLookupData *)self glyphImageName];
-  v4 = [v3 hash];
-  v5 = [(PXPhotosDetailsVisualLookupData *)self visualDomain];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(PXPhotosDetailsVisualLookupData *)self displayMessage];
-  v8 = [v7 hash];
+  glyphImageName = [(PXPhotosDetailsVisualLookupData *)self glyphImageName];
+  v4 = [glyphImageName hash];
+  visualDomain = [(PXPhotosDetailsVisualLookupData *)self visualDomain];
+  v6 = [visualDomain hash] ^ v4;
+  displayMessage = [(PXPhotosDetailsVisualLookupData *)self displayMessage];
+  v8 = [displayMessage hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)_isEqualToVisualLookupData:(id)a3
+- (BOOL)_isEqualToVisualLookupData:(id)data
 {
-  v4 = a3;
-  v5 = [(PXPhotosDetailsVisualLookupData *)self glyphImageName];
-  v6 = [v4 glyphImageName];
-  if (v5 == v6 || [v5 isEqualToString:v6])
+  dataCopy = data;
+  glyphImageName = [(PXPhotosDetailsVisualLookupData *)self glyphImageName];
+  glyphImageName2 = [dataCopy glyphImageName];
+  if (glyphImageName == glyphImageName2 || [glyphImageName isEqualToString:glyphImageName2])
   {
-    v7 = [(PXPhotosDetailsVisualLookupData *)self visualDomain];
-    v8 = [v4 visualDomain];
-    if (v7 == v8 || [v7 isEqualToString:v8])
+    visualDomain = [(PXPhotosDetailsVisualLookupData *)self visualDomain];
+    visualDomain2 = [dataCopy visualDomain];
+    if (visualDomain == visualDomain2 || [visualDomain isEqualToString:visualDomain2])
     {
-      v9 = [(PXPhotosDetailsVisualLookupData *)self displayMessage];
-      v10 = [v4 displayMessage];
-      if (v9 == v10)
+      displayMessage = [(PXPhotosDetailsVisualLookupData *)self displayMessage];
+      displayMessage2 = [dataCopy displayMessage];
+      if (displayMessage == displayMessage2)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = [v9 isEqualToString:v10];
+        v11 = [displayMessage isEqualToString:displayMessage2];
       }
     }
 
@@ -70,10 +70,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -81,26 +81,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = PXPhotosDetailsVisualLookupData, [(PXPhotosDetailsVisualLookupData *)&v7 isEqual:v4]) && [(PXPhotosDetailsVisualLookupData *)self _isEqualToVisualLookupData:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = PXPhotosDetailsVisualLookupData, [(PXPhotosDetailsVisualLookupData *)&v7 isEqual:equalCopy]) && [(PXPhotosDetailsVisualLookupData *)self _isEqualToVisualLookupData:equalCopy];
   }
 
   return v5;
 }
 
-- (PXPhotosDetailsVisualLookupData)initWithGlyphName:(id)a3 visualDomain:(id)a4 displayMessage:(id)a5
+- (PXPhotosDetailsVisualLookupData)initWithGlyphName:(id)name visualDomain:(id)domain displayMessage:(id)message
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  domainCopy = domain;
+  messageCopy = message;
   v15.receiver = self;
   v15.super_class = PXPhotosDetailsVisualLookupData;
   v12 = [(PXPhotosDetailsVisualLookupData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_glyphImageName, a3);
-    objc_storeStrong(&v13->_visualDomain, a4);
-    objc_storeStrong(&v13->_displayMessage, a5);
+    objc_storeStrong(&v12->_glyphImageName, name);
+    objc_storeStrong(&v13->_visualDomain, domain);
+    objc_storeStrong(&v13->_displayMessage, message);
   }
 
   return v13;

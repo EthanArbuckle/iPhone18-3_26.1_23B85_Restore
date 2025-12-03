@@ -1,17 +1,17 @@
 @interface TSPKnownFieldNumericValue
-- (TSPKnownFieldNumericValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6;
+- (TSPKnownFieldNumericValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection;
 - (id)debugDescription;
-- (id)initSubclassWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6;
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4;
+- (id)initSubclassWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection;
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection;
 @end
 
 @implementation TSPKnownFieldNumericValue
 
-- (TSPKnownFieldNumericValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6
+- (TSPKnownFieldNumericValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection
 {
   v43.receiver = self;
   v43.super_class = TSPKnownFieldNumericValue;
-  v9 = [TSPKnownField initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:a3 message:a4 reflection:?];
+  v9 = [TSPKnownField initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:descriptor message:info reflection:?];
   v10 = v9;
   if (!v9)
   {
@@ -26,7 +26,7 @@
       if (type == 7)
       {
         v23 = MEMORY[0x277CCABB0];
-        Bool = google::protobuf::Reflection::GetBool(a6, a5, a3);
+        Bool = google::protobuf::Reflection::GetBool(reflection, message, descriptor);
         v15 = objc_msgSend_numberWithBool_(v23, v25, Bool);
         goto LABEL_18;
       }
@@ -50,13 +50,13 @@
     v16 = MEMORY[0x277CCABB0];
     if (type == 5)
     {
-      Double = google::protobuf::Reflection::GetDouble(a6, a5, a3);
+      Double = google::protobuf::Reflection::GetDouble(reflection, message, descriptor);
       objc_msgSend_numberWithDouble_(v16, v27, v28, Double);
     }
 
     else
     {
-      *&v17 = google::protobuf::Reflection::GetFloat(a6, a5, a3);
+      *&v17 = google::protobuf::Reflection::GetFloat(reflection, message, descriptor);
       objc_msgSend_numberWithFloat_(v16, v18, v19, v17);
     }
 
@@ -69,13 +69,13 @@
     v20 = MEMORY[0x277CCABB0];
     if (type == 3)
     {
-      UInt32 = google::protobuf::Reflection::GetUInt32(a6, a5, a3);
+      UInt32 = google::protobuf::Reflection::GetUInt32(reflection, message, descriptor);
       objc_msgSend_numberWithUnsignedInt_(v20, v33, UInt32);
     }
 
     else
     {
-      UInt64 = google::protobuf::Reflection::GetUInt64(a6, a5, a3);
+      UInt64 = google::protobuf::Reflection::GetUInt64(reflection, message, descriptor);
       objc_msgSend_numberWithUnsignedLongLong_(v20, v22, UInt64);
     }
 
@@ -85,7 +85,7 @@
   if (type == 1)
   {
     v29 = MEMORY[0x277CCABB0];
-    Int32 = google::protobuf::Reflection::GetInt32(a6, a5, a3);
+    Int32 = google::protobuf::Reflection::GetInt32(reflection, message, descriptor);
     v15 = objc_msgSend_numberWithInt_(v29, v31, Int32);
     goto LABEL_18;
   }
@@ -93,7 +93,7 @@
   if (type == 2)
   {
     v12 = MEMORY[0x277CCABB0];
-    Int64 = google::protobuf::Reflection::GetInt64(a6, a5, a3);
+    Int64 = google::protobuf::Reflection::GetInt64(reflection, message, descriptor);
     v15 = objc_msgSend_numberWithLongLong_(v12, v14, Int64);
 LABEL_18:
     value = v10->_value;
@@ -103,23 +103,23 @@ LABEL_18:
   return v10;
 }
 
-- (id)initSubclassWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6
+- (id)initSubclassWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection
 {
   v7.receiver = self;
   v7.super_class = TSPKnownFieldNumericValue;
-  return [(TSPKnownField *)&v7 initWithFieldDescriptor:a3 fieldInfo:a4 message:a5 reflection:a6];
+  return [(TSPKnownField *)&v7 initWithFieldDescriptor:descriptor fieldInfo:info message:message reflection:reflection];
 }
 
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection
 {
   if (self->_value)
   {
-    v7 = (*(a3->var0 + 19))(a3, a2);
+    v7 = (*(message->var0 + 19))(message, a2);
     FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v7, self->super._number);
-    if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(a4, self->super._number)) != 0)
+    if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(reflection, self->super._number)) != 0)
     {
       v10 = FieldByNumber;
-      google::protobuf::Reflection::ClearField(a4, a3, FieldByNumber);
+      google::protobuf::Reflection::ClearField(reflection, message, FieldByNumber);
       type = self->super._type;
       if (type > 4)
       {
@@ -129,7 +129,7 @@ LABEL_18:
           {
             v25 = objc_msgSend_BOOLValue(self->_value, v11, v12);
 
-            google::protobuf::Reflection::SetBool(a4, a3, v10, v25);
+            google::protobuf::Reflection::SetBool(reflection, message, v10, v25);
           }
 
           else if ((type - 8) < 3)
@@ -150,14 +150,14 @@ LABEL_18:
         {
           objc_msgSend_doubleValue(self->_value, v11, v12);
 
-          google::protobuf::Reflection::SetDouble(a4, a3, v10, v26);
+          google::protobuf::Reflection::SetDouble(reflection, message, v10, v26);
         }
 
         else
         {
           objc_msgSend_floatValue(self->_value, v11, v12);
 
-          google::protobuf::Reflection::SetFloat(a4, a3, v10, v15);
+          google::protobuf::Reflection::SetFloat(reflection, message, v10, v15);
         }
       }
 
@@ -167,14 +167,14 @@ LABEL_18:
         {
           v28 = objc_msgSend_unsignedIntValue(self->_value, v11, v12);
 
-          google::protobuf::Reflection::SetUInt32(a4, a3, v10, v28);
+          google::protobuf::Reflection::SetUInt32(reflection, message, v10, v28);
         }
 
         else
         {
           v16 = objc_msgSend_unsignedLongLongValue(self->_value, v11, v12);
 
-          google::protobuf::Reflection::SetUInt64(a4, a3, v10, v16);
+          google::protobuf::Reflection::SetUInt64(reflection, message, v10, v16);
         }
       }
 
@@ -182,14 +182,14 @@ LABEL_18:
       {
         v27 = objc_msgSend_intValue(self->_value, v11, v12);
 
-        google::protobuf::Reflection::SetInt32(a4, a3, v10, v27);
+        google::protobuf::Reflection::SetInt32(reflection, message, v10, v27);
       }
 
       else if (type == 2)
       {
         v14 = objc_msgSend_longLongValue(self->_value, v11, v12);
 
-        google::protobuf::Reflection::SetInt64(a4, a3, v10, v14);
+        google::protobuf::Reflection::SetInt64(reflection, message, v10, v14);
       }
     }
 

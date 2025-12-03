@@ -1,14 +1,14 @@
 @interface DNDEventBehaviorResolutionService
-+ (id)serviceForClientIdentifier:(id)a3;
-- (id)_initWithClientIdentifier:(id)a3;
-- (id)resolveBehaviorForEventDetails:(id)a3 error:(id *)a4;
++ (id)serviceForClientIdentifier:(id)identifier;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (id)resolveBehaviorForEventDetails:(id)details error:(id *)error;
 @end
 
 @implementation DNDEventBehaviorResolutionService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_4 != -1)
   {
     +[DNDEventBehaviorResolutionService serviceForClientIdentifier:];
@@ -25,10 +25,10 @@
   block[1] = 3221225472;
   block[2] = __64__DNDEventBehaviorResolutionService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -73,15 +73,15 @@ void __64__DNDEventBehaviorResolutionService_serviceForClientIdentifier___block_
   }
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DNDEventBehaviorResolutionService;
   v5 = [(DNDEventBehaviorResolutionService *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
   }
@@ -89,10 +89,10 @@ void __64__DNDEventBehaviorResolutionService_serviceForClientIdentifier___block_
   return v5;
 }
 
-- (id)resolveBehaviorForEventDetails:(id)a3 error:(id *)a4
+- (id)resolveBehaviorForEventDetails:(id)details error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  detailsCopy = details;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDEventBehaviorResolutionService.resolveEvent", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -104,7 +104,7 @@ void __64__DNDEventBehaviorResolutionService_serviceForClientIdentifier___block_
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = detailsCopy;
     _os_log_impl(&dword_22002F000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Resolving behavior for event, details=%@", buf, 0x16u);
   }
 
@@ -127,7 +127,7 @@ void __64__DNDEventBehaviorResolutionService_serviceForClientIdentifier___block_
   v17[3] = &unk_27843A810;
   v17[4] = buf;
   v17[5] = &v18;
-  [v10 resolveBehaviorForEventDetails:v6 requestDetails:v8 completionHandler:v17];
+  [v10 resolveBehaviorForEventDetails:detailsCopy requestDetails:v8 completionHandler:v17];
 
   if (*(v19[0] + 40))
   {
@@ -137,9 +137,9 @@ void __64__DNDEventBehaviorResolutionService_serviceForClientIdentifier___block_
       [(DNDEventBehaviorResolutionService *)v8 resolveBehaviorForEventDetails:v19 error:v11];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v19[0] + 40);
+      *error = *(v19[0] + 40);
     }
   }
 
@@ -150,7 +150,7 @@ void __64__DNDEventBehaviorResolutionService_serviceForClientIdentifier___block_
     *v22 = 138543874;
     v23 = v8;
     v24 = 2112;
-    v25 = v6;
+    v25 = detailsCopy;
     v26 = 2112;
     v27 = v13;
     _os_log_impl(&dword_22002F000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Resolved event, details=%@ behavior=%@", v22, 0x20u);

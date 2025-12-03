@@ -1,66 +1,66 @@
 @interface ICQUIEligibleTipPicker
-- (BOOL)_deviceStoragePassesCriteria:(id)a3 freeCloudStorage:(id)a4;
-- (BOOL)_eligibleForSyncWithiCloudTipExcludingApps:(id)a3;
-- (ICQUIEligibleTipPicker)initWithAccount:(id)a3 planRecommendation:(id)a4;
-- (void)getFirstEligibleTipFromTips:(id)a3 completion:(id)a4;
+- (BOOL)_deviceStoragePassesCriteria:(id)criteria freeCloudStorage:(id)storage;
+- (BOOL)_eligibleForSyncWithiCloudTipExcludingApps:(id)apps;
+- (ICQUIEligibleTipPicker)initWithAccount:(id)account planRecommendation:(id)recommendation;
+- (void)getFirstEligibleTipFromTips:(id)tips completion:(id)completion;
 @end
 
 @implementation ICQUIEligibleTipPicker
 
-- (ICQUIEligibleTipPicker)initWithAccount:(id)a3 planRecommendation:(id)a4
+- (ICQUIEligibleTipPicker)initWithAccount:(id)account planRecommendation:(id)recommendation
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  recommendationCopy = recommendation;
   v12.receiver = self;
   v12.super_class = ICQUIEligibleTipPicker;
   v9 = [(ICQUIEligibleTipPicker *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_planRecommendation, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_planRecommendation, recommendation);
   }
 
   return v10;
 }
 
-- (void)getFirstEligibleTipFromTips:(id)a3 completion:(id)a4
+- (void)getFirstEligibleTipFromTips:(id)tips completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tipsCopy = tips;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v18 = "[ICQUIEligibleTipPicker getFirstEligibleTipFromTips:completion:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = tipsCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "%s determining first eligible tip from tips: %@", buf, 0x16u);
   }
 
-  v9 = [v6 firstObject];
-  v10 = [v9 criteria];
+  firstObject = [tipsCopy firstObject];
+  criteria = [firstObject criteria];
 
-  if (v10)
+  if (criteria)
   {
     planRecommendation = self->_planRecommendation;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __65__ICQUIEligibleTipPicker_getFirstEligibleTipFromTips_completion___block_invoke;
     v13[3] = &unk_27A65C1A0;
-    v16 = v7;
-    v14 = v6;
-    v15 = self;
+    v16 = completionCopy;
+    v14 = tipsCopy;
+    selfCopy = self;
     [(ICQStoragePlanRecommendation *)planRecommendation calculateExtraQuotaNeededToSyncIsAccountFull:0 completion:v13];
 
-    v12 = v16;
+    firstObject2 = v16;
   }
 
   else
   {
-    v12 = [v6 firstObject];
-    (*(v7 + 2))(v7, v12);
+    firstObject2 = [tipsCopy firstObject];
+    (*(completionCopy + 2))(completionCopy, firstObject2);
   }
 }
 
@@ -157,10 +157,10 @@ LABEL_20:
   }
 }
 
-- (BOOL)_eligibleForSyncWithiCloudTipExcludingApps:(id)a3
+- (BOOL)_eligibleForSyncWithiCloudTipExcludingApps:(id)apps
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   v5 = [ICQUIDataclassHelper unsyncedDataclassesExcludingPhotosForAccount:self->_account];
   v23 = 0u;
   v24 = 0u;
@@ -181,7 +181,7 @@ LABEL_20:
           objc_enumerationMutation(v5);
         }
 
-        v8 += [v4 containsObject:*(*(&v23 + 1) + 8 * i)] ^ 1;
+        v8 += [appsCopy containsObject:*(*(&v23 + 1) + 8 * i)] ^ 1;
       }
 
       v7 = [v5 countByEnumeratingWithState:&v23 objects:v37 count:16];
@@ -197,8 +197,8 @@ LABEL_20:
 
   v11 = MEMORY[0x277D7F3E0];
   account = self->_account;
-  v13 = [MEMORY[0x277CB8F48] defaultStore];
-  v14 = [v11 isBackupEnabledForAccount:account accountStore:v13];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v14 = [v11 isBackupEnabledForAccount:account accountStore:defaultStore];
 
   v15 = [MEMORY[0x277D7F3E0] isICPLEnabledForAccount:self->_account];
   v16 = v15 ^ 1;
@@ -262,29 +262,29 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)_deviceStoragePassesCriteria:(id)a3 freeCloudStorage:(id)a4
+- (BOOL)_deviceStoragePassesCriteria:(id)criteria freeCloudStorage:(id)storage
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 minimumRange];
-  v8 = [v7 unsignedIntegerValue];
-  v9 = [v6 unsignedIntegerValue];
+  criteriaCopy = criteria;
+  storageCopy = storage;
+  minimumRange = [criteriaCopy minimumRange];
+  unsignedIntegerValue = [minimumRange unsignedIntegerValue];
+  unsignedIntegerValue2 = [storageCopy unsignedIntegerValue];
 
-  v10 = [v6 unsignedIntegerValue];
-  v11 = [v5 maximumRange];
-  v12 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue3 = [storageCopy unsignedIntegerValue];
+  maximumRange = [criteriaCopy maximumRange];
+  unsignedIntegerValue4 = [maximumRange unsignedIntegerValue];
 
   v13 = _ICQGetLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v6 unsignedLongValue];
+    unsignedLongValue = [storageCopy unsignedLongValue];
     v15 = @"NO";
     v20 = 136316162;
     v21 = "[ICQUIEligibleTipPicker _deviceStoragePassesCriteria:freeCloudStorage:]";
     v22 = 2112;
     v24 = 2048;
-    if (v8 >= v9)
+    if (unsignedIntegerValue >= unsignedIntegerValue2)
     {
       v16 = @"NO";
     }
@@ -294,9 +294,9 @@ LABEL_20:
       v16 = @"YES";
     }
 
-    v23 = v5;
-    v25 = v14;
-    if (v10 < v12)
+    v23 = criteriaCopy;
+    v25 = unsignedLongValue;
+    if (unsignedIntegerValue3 < unsignedIntegerValue4)
     {
       v15 = @"YES";
     }
@@ -308,7 +308,7 @@ LABEL_20:
     _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "%s criteria (%@) and freeCloudStorage %lu: satisfies minimum range (%@) satisfies maximum range (%@)", &v20, 0x34u);
   }
 
-  v18 = v8 < v9 && v10 < v12;
+  v18 = unsignedIntegerValue < unsignedIntegerValue2 && unsignedIntegerValue3 < unsignedIntegerValue4;
   return v18;
 }
 

@@ -1,14 +1,14 @@
 @interface CKPendingMomentShareBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
 - (CKBalloonDescriptor_t)balloonDescriptor;
 - (void)prepareForDisplay;
 @end
 
 @implementation CKPendingMomentShareBalloonView
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  v5 = [CKUIBehavior sharedBehaviors:a4];
+  v5 = [CKUIBehavior sharedBehaviors:insets];
   [v5 attachmentBalloonSize];
   v7 = v6;
   v9 = v8;
@@ -43,15 +43,15 @@
   v7.receiver = self;
   v7.super_class = CKPendingMomentShareBalloonView;
   [(CKAttachmentBalloonView *)&v7 prepareForDisplay];
-  v3 = [(CKPendingMomentShareBalloonView *)self layer];
-  [v3 setShadowOffset:{0.0, 7.0}];
+  layer = [(CKPendingMomentShareBalloonView *)self layer];
+  [layer setShadowOffset:{0.0, 7.0}];
 
-  v4 = [(CKPendingMomentShareBalloonView *)self layer];
+  layer2 = [(CKPendingMomentShareBalloonView *)self layer];
   LODWORD(v5) = 1045220557;
-  [v4 setShadowOpacity:v5];
+  [layer2 setShadowOpacity:v5];
 
-  v6 = [(CKPendingMomentShareBalloonView *)self layer];
-  [v6 setShadowRadius:27.0];
+  layer3 = [(CKPendingMomentShareBalloonView *)self layer];
+  [layer3 setShadowRadius:27.0];
 }
 
 @end

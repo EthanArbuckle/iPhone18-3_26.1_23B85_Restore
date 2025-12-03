@@ -1,12 +1,12 @@
 @interface RadioStoreBag
 - (BOOL)isAdFreeRadioEnabled;
-- (BOOL)shouldMescalSignRequestWithURL:(id)a3;
-- (BOOL)shouldMescalVerifyResponseFromURL:(id)a3;
+- (BOOL)shouldMescalSignRequestWithURL:(id)l;
+- (BOOL)shouldMescalVerifyResponseFromURL:(id)l;
 - (BOOL)shouldSendKBSyncData;
 - (NSURL)baseURL;
 - (id)_cacheRepresentation;
-- (id)_initWithCacheRepresentation:(id)a3;
-- (id)_initWithURLBag:(id)a3;
+- (id)_initWithCacheRepresentation:(id)representation;
+- (id)_initWithURLBag:(id)bag;
 - (id)_platformContext;
 @end
 
@@ -40,12 +40,12 @@
 
 - (id)_cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   srdnldURLString = self->_srdnldURLString;
   if (srdnldURLString)
   {
-    [v3 setObject:srdnldURLString forKey:@"sRdnld"];
+    [dictionary setObject:srdnldURLString forKey:@"sRdnld"];
   }
 
   tiltDictionary = self->_tiltDictionary;
@@ -102,18 +102,18 @@
     [v4 setObject:leaseCertificateURLString forKey:*MEMORY[0x277D6A618]];
   }
 
-  v15 = [(SSVPlatformContext *)self->_platformContext bagDictionary];
-  if (v15)
+  bagDictionary = [(SSVPlatformContext *)self->_platformContext bagDictionary];
+  if (bagDictionary)
   {
-    [v4 addEntriesFromDictionary:v15];
+    [v4 addEntriesFromDictionary:bagDictionary];
   }
 
   return v4;
 }
 
-- (id)_initWithCacheRepresentation:(id)a3
+- (id)_initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -122,7 +122,7 @@
     v5 = [(RadioStoreBag *)&v37 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"radio"];
+      v6 = [representationCopy objectForKey:@"radio"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -130,7 +130,7 @@
         v6 = 0;
       }
 
-      v7 = [v4 objectForKey:@"sRdnld"];
+      v7 = [representationCopy objectForKey:@"sRdnld"];
       v8 = [v7 copy];
       srdnldURLString = v5->_srdnldURLString;
       v5->_srdnldURLString = v8;
@@ -139,7 +139,7 @@
       tiltDictionary = v5->_tiltDictionary;
       v5->_tiltDictionary = v10;
 
-      v12 = [v4 objectForKey:@"sign-sap-request"];
+      v12 = [representationCopy objectForKey:@"sign-sap-request"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -148,7 +148,7 @@
         v5->_mescalRequestAllowList = v13;
       }
 
-      v15 = [v4 objectForKey:@"sign-sap-response"];
+      v15 = [representationCopy objectForKey:@"sign-sap-response"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -159,8 +159,8 @@
 
       if (v5->_mescalRequestAllowList || v5->_mescalResponseAllowList)
       {
-        v18 = [v4 objectForKey:@"sign-sap-setup-cert"];
-        v19 = [v4 objectForKey:@"sign-sap-setup"];
+        v18 = [representationCopy objectForKey:@"sign-sap-setup-cert"];
+        v19 = [representationCopy objectForKey:@"sign-sap-setup"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -178,7 +178,7 @@
         }
       }
 
-      v24 = [v4 objectForKey:@"amd-domains"];
+      v24 = [representationCopy objectForKey:@"amd-domains"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -187,7 +187,7 @@
         v5->_amdDomains = v25;
       }
 
-      v27 = [v4 objectForKey:@"storefront-header-suffix"];
+      v27 = [representationCopy objectForKey:@"storefront-header-suffix"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -196,32 +196,32 @@
         v5->_storeFrontSuffix = v28;
       }
 
-      v30 = [v4 objectForKey:*MEMORY[0x277D6A618]];
+      v30 = [representationCopy objectForKey:*MEMORY[0x277D6A618]];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         objc_storeStrong(&v5->_leaseCertificateURLString, v30);
       }
 
-      v31 = [v4 objectForKey:@"auth-can-post"];
+      v31 = [representationCopy objectForKey:@"auth-can-post"];
       shouldSendKBSyncDataValue = v5->_shouldSendKBSyncDataValue;
       v5->_shouldSendKBSyncDataValue = v31;
 
-      v33 = [objc_alloc(MEMORY[0x277D69CE8]) initWithBagDictionary:v4];
+      v33 = [objc_alloc(MEMORY[0x277D69CE8]) initWithBagDictionary:representationCopy];
       platformContext = v5->_platformContext;
       v5->_platformContext = v33;
     }
 
     self = v5;
-    v35 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v35 = 0;
+    selfCopy = 0;
   }
 
-  return v35;
+  return selfCopy;
 }
 
 - (BOOL)shouldSendKBSyncData
@@ -241,15 +241,15 @@
   return [(NSNumber *)shouldSendKBSyncDataValue BOOLValue];
 }
 
-- (BOOL)shouldMescalVerifyResponseFromURL:(id)a3
+- (BOOL)shouldMescalVerifyResponseFromURL:(id)l
 {
   if (!self->_mescalResponseAllowList)
   {
     return 0;
   }
 
-  v4 = [a3 path];
-  if (v4)
+  path = [l path];
+  if (path)
   {
     mescalResponseAllowList = self->_mescalResponseAllowList;
     v6 = SSVURLPathMatchesActionDictionary();
@@ -263,15 +263,15 @@
   return v6;
 }
 
-- (BOOL)shouldMescalSignRequestWithURL:(id)a3
+- (BOOL)shouldMescalSignRequestWithURL:(id)l
 {
   if (!self->_mescalRequestAllowList)
   {
     return 0;
   }
 
-  v4 = [a3 path];
-  if (v4)
+  path = [l path];
+  if (path)
   {
     mescalRequestAllowList = self->_mescalRequestAllowList;
     v6 = SSVURLPathMatchesActionDictionary();
@@ -290,26 +290,26 @@
   v2 = [(NSDictionary *)self->_tiltDictionary objectForKey:@"ad-free-radio-enabled"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)_initWithURLBag:(id)a3
+- (id)_initWithURLBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v38.receiver = self;
   v38.super_class = RadioStoreBag;
   v5 = [(RadioStoreBag *)&v38 init];
   if (v5)
   {
-    v6 = [v4 dictionaryForBagKey:@"radio"];
+    v6 = [bagCopy dictionaryForBagKey:@"radio"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -317,7 +317,7 @@
       v6 = 0;
     }
 
-    v37 = [v4 stringForBagKey:@"sRdnld"];
+    v37 = [bagCopy stringForBagKey:@"sRdnld"];
     v7 = [v37 copy];
     srdnldURLString = v5->_srdnldURLString;
     v5->_srdnldURLString = v7;
@@ -326,7 +326,7 @@
     tiltDictionary = v5->_tiltDictionary;
     v5->_tiltDictionary = v9;
 
-    v11 = [v4 dictionaryForBagKey:@"sign-sap-request"];
+    v11 = [bagCopy dictionaryForBagKey:@"sign-sap-request"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -335,7 +335,7 @@
       v5->_mescalRequestAllowList = v12;
     }
 
-    v14 = [v4 dictionaryForBagKey:@"sign-sap-response"];
+    v14 = [bagCopy dictionaryForBagKey:@"sign-sap-response"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -346,8 +346,8 @@
 
     if (v5->_mescalRequestAllowList || v5->_mescalResponseAllowList)
     {
-      v17 = [v4 stringForBagKey:@"sign-sap-setup-cert"];
-      v18 = [v4 stringForBagKey:@"sign-sap-setup"];
+      v17 = [bagCopy stringForBagKey:@"sign-sap-setup-cert"];
+      v18 = [bagCopy stringForBagKey:@"sign-sap-setup"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -365,7 +365,7 @@
       }
     }
 
-    v23 = [v4 arrayForBagKey:@"amd-domains"];
+    v23 = [bagCopy arrayForBagKey:@"amd-domains"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -374,7 +374,7 @@
       v5->_amdDomains = v24;
     }
 
-    v26 = [v4 stringForBagKey:@"storefront-header-suffix"];
+    v26 = [bagCopy stringForBagKey:@"storefront-header-suffix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -383,20 +383,20 @@
       v5->_storeFrontSuffix = v27;
     }
 
-    v29 = [v4 stringForBagKey:*MEMORY[0x277D6A618]];
+    v29 = [bagCopy stringForBagKey:*MEMORY[0x277D6A618]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_leaseCertificateURLString, v29);
     }
 
-    v30 = [v4 numberForBagKey:@"auth-can-post"];
+    v30 = [bagCopy numberForBagKey:@"auth-can-post"];
     shouldSendKBSyncDataValue = v5->_shouldSendKBSyncDataValue;
     v5->_shouldSendKBSyncDataValue = v30;
 
     v32 = objc_alloc(MEMORY[0x277D69CE8]);
-    v33 = [v4 _allValues];
-    v34 = [v32 initWithBagDictionary:v33];
+    _allValues = [bagCopy _allValues];
+    v34 = [v32 initWithBagDictionary:_allValues];
     platformContext = v5->_platformContext;
     v5->_platformContext = v34;
   }

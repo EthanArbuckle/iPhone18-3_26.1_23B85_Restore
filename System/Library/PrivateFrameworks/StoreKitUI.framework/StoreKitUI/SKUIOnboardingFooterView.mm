@@ -1,21 +1,21 @@
 @interface SKUIOnboardingFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIButton)leftButton;
 - (UIButton)rightButton;
 - (id)_newButton;
-- (void)_hideButton:(id)a3 withAnimation:(int64_t)a4;
-- (void)_showButton:(id)a3 withTitle:(id)a4 animation:(int64_t)a5;
-- (void)hideLeftButtonWithAnimation:(int64_t)a3;
-- (void)hideRightButtonWithAnimation:(int64_t)a3;
+- (void)_hideButton:(id)button withAnimation:(int64_t)animation;
+- (void)_showButton:(id)button withTitle:(id)title animation:(int64_t)animation;
+- (void)hideLeftButtonWithAnimation:(int64_t)animation;
+- (void)hideRightButtonWithAnimation:(int64_t)animation;
 - (void)layoutSubviews;
-- (void)setProgressView:(id)a3;
-- (void)showLeftButtonWithTitle:(id)a3 animation:(int64_t)a4;
-- (void)showRightButtonWithTitle:(id)a3 animation:(int64_t)a4;
+- (void)setProgressView:(id)view;
+- (void)showLeftButtonWithTitle:(id)title animation:(int64_t)animation;
+- (void)showRightButtonWithTitle:(id)title animation:(int64_t)animation;
 @end
 
 @implementation SKUIOnboardingFooterView
 
-- (void)hideLeftButtonWithAnimation:(int64_t)a3
+- (void)hideLeftButtonWithAnimation:(int64_t)animation
 {
   if (os_variant_has_internal_content())
   {
@@ -29,10 +29,10 @@
     }
   }
 
-  [(SKUIOnboardingFooterView *)self _hideButton:self->_leftButton withAnimation:a3];
+  [(SKUIOnboardingFooterView *)self _hideButton:self->_leftButton withAnimation:animation];
 }
 
-- (void)hideRightButtonWithAnimation:(int64_t)a3
+- (void)hideRightButtonWithAnimation:(int64_t)animation
 {
   if (os_variant_has_internal_content())
   {
@@ -46,7 +46,7 @@
     }
   }
 
-  [(SKUIOnboardingFooterView *)self _hideButton:self->_rightButton withAnimation:a3];
+  [(SKUIOnboardingFooterView *)self _hideButton:self->_rightButton withAnimation:animation];
 }
 
 - (UIButton)leftButton
@@ -66,9 +66,9 @@
   leftButton = self->_leftButton;
   if (!leftButton)
   {
-    v12 = [(SKUIOnboardingFooterView *)self _newButton];
+    _newButton = [(SKUIOnboardingFooterView *)self _newButton];
     v13 = self->_leftButton;
-    self->_leftButton = v12;
+    self->_leftButton = _newButton;
 
     [(SKUIOnboardingFooterView *)self addSubview:self->_leftButton];
     leftButton = self->_leftButton;
@@ -94,9 +94,9 @@
   rightButton = self->_rightButton;
   if (!rightButton)
   {
-    v12 = [(SKUIOnboardingFooterView *)self _newButton];
+    _newButton = [(SKUIOnboardingFooterView *)self _newButton];
     v13 = self->_rightButton;
-    self->_rightButton = v12;
+    self->_rightButton = _newButton;
 
     [(SKUIOnboardingFooterView *)self addSubview:self->_rightButton];
     rightButton = self->_rightButton;
@@ -105,9 +105,9 @@
   return rightButton;
 }
 
-- (void)setProgressView:(id)a3
+- (void)setProgressView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -121,10 +121,10 @@
   }
 
   progressView = self->_progressView;
-  if (progressView != v5)
+  if (progressView != viewCopy)
   {
     [(SKUIOnboardingProgressView *)progressView removeFromSuperview];
-    objc_storeStrong(&self->_progressView, a3);
+    objc_storeStrong(&self->_progressView, view);
     if (self->_progressView)
     {
       [(SKUIOnboardingFooterView *)self addSubview:?];
@@ -134,9 +134,9 @@
   }
 }
 
-- (void)showLeftButtonWithTitle:(id)a3 animation:(int64_t)a4
+- (void)showLeftButtonWithTitle:(id)title animation:(int64_t)animation
 {
-  v6 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -149,13 +149,13 @@
     }
   }
 
-  v15 = [(SKUIOnboardingFooterView *)self leftButton];
-  [(SKUIOnboardingFooterView *)self _showButton:v15 withTitle:v6 animation:a4];
+  leftButton = [(SKUIOnboardingFooterView *)self leftButton];
+  [(SKUIOnboardingFooterView *)self _showButton:leftButton withTitle:titleCopy animation:animation];
 }
 
-- (void)showRightButtonWithTitle:(id)a3 animation:(int64_t)a4
+- (void)showRightButtonWithTitle:(id)title animation:(int64_t)animation
 {
-  v6 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -168,8 +168,8 @@
     }
   }
 
-  v15 = [(SKUIOnboardingFooterView *)self rightButton];
-  [(SKUIOnboardingFooterView *)self _showButton:v15 withTitle:v6 animation:a4];
+  rightButton = [(SKUIOnboardingFooterView *)self rightButton];
+  [(SKUIOnboardingFooterView *)self _showButton:rightButton withTitle:titleCopy animation:animation];
 }
 
 - (void)layoutSubviews
@@ -238,7 +238,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v26 = *MEMORY[0x277D85DE8];
   if (os_variant_has_internal_content())
@@ -286,11 +286,11 @@
   return result;
 }
 
-- (void)_hideButton:(id)a3 withAnimation:(int64_t)a4
+- (void)_hideButton:(id)button withAnimation:(int64_t)animation
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && ([v6 isHidden] & 1) == 0)
+  buttonCopy = button;
+  v7 = buttonCopy;
+  if (buttonCopy && ([buttonCopy isHidden] & 1) == 0)
   {
     v8 = MEMORY[0x277D75D18];
     v17[0] = MEMORY[0x277D85DD0];
@@ -300,14 +300,14 @@
     v9 = v7;
     v18 = v9;
     [v8 _performWithoutAnimation:v17];
-    if (a4 != 2)
+    if (animation != 2)
     {
-      if (a4 == 1)
+      if (animation == 1)
       {
         [v9 setHidden:1];
       }
 
-      else if (!a4)
+      else if (!animation)
       {
         v10 = MEMORY[0x277D75D18];
         v15[0] = MEMORY[0x277D85DD0];
@@ -379,30 +379,30 @@ uint64_t __54__SKUIOnboardingFooterView__hideButton_withAnimation___block_invoke
   return v2;
 }
 
-- (void)_showButton:(id)a3 withTitle:(id)a4 animation:(int64_t)a5
+- (void)_showButton:(id)button withTitle:(id)title animation:(int64_t)animation
 {
-  v8 = a3;
-  v9 = a4;
-  [(UIButton *)v8 setEnabled:1];
-  [(UIButton *)v8 setTitle:v9 forState:0];
+  buttonCopy = button;
+  titleCopy = title;
+  [(UIButton *)buttonCopy setEnabled:1];
+  [(UIButton *)buttonCopy setTitle:titleCopy forState:0];
 
-  [(UIButton *)v8 sizeToFit];
-  if (([(UIButton *)v8 isHidden]& 1) == 0)
+  [(UIButton *)buttonCopy sizeToFit];
+  if (([(UIButton *)buttonCopy isHidden]& 1) == 0)
   {
-    [(UIButton *)v8 alpha];
+    [(UIButton *)buttonCopy alpha];
     if (v10 > 0.00000011920929)
     {
       goto LABEL_13;
     }
   }
 
-  [(UIButton *)v8 setHidden:0];
-  switch(a5)
+  [(UIButton *)buttonCopy setHidden:0];
+  switch(animation)
   {
     case 0:
       goto LABEL_10;
     case 1:
-      [(UIButton *)v8 setAlpha:1.0];
+      [(UIButton *)buttonCopy setAlpha:1.0];
 LABEL_13:
       [(SKUIOnboardingFooterView *)self setNeedsLayout];
       break;
@@ -411,42 +411,42 @@ LABEL_13:
       {
         [(SKUIOnboardingFooterView *)self bounds];
         v12 = v11;
-        [(UIButton *)v8 frame];
+        [(UIButton *)buttonCopy frame];
         v14 = v13;
         v16 = v15;
         [(SKUIOnboardingProgressView *)self->_progressView frame];
         v21 = v17;
-        if (self->_leftButton == v8)
+        if (self->_leftButton == buttonCopy)
         {
           v21 = CGRectGetMaxX(*&v17) - v14;
         }
 
         v22 = (v12 - v16) * 0.5;
         v23 = floorf(v22);
-        [(UIButton *)v8 setAlpha:0.0];
-        [(UIButton *)v8 setFrame:v21, v23, v14, v16];
-        [(SKUIOnboardingFooterView *)self sendSubviewToBack:v8];
+        [(UIButton *)buttonCopy setAlpha:0.0];
+        [(UIButton *)buttonCopy setFrame:v21, v23, v14, v16];
+        [(SKUIOnboardingFooterView *)self sendSubviewToBack:buttonCopy];
         v24 = MEMORY[0x277D75D18];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __60__SKUIOnboardingFooterView__showButton_withTitle_animation___block_invoke_2;
         v27[3] = &unk_2781F80C8;
-        v28 = v8;
-        v29 = self;
+        v28 = buttonCopy;
+        selfCopy = self;
         [v24 animateWithDuration:v27 animations:0.5];
         v25 = v28;
         goto LABEL_11;
       }
 
 LABEL_10:
-      [(UIButton *)v8 setAlpha:0.0];
+      [(UIButton *)buttonCopy setAlpha:0.0];
       [(SKUIOnboardingFooterView *)self layoutSubviews];
       v26 = MEMORY[0x277D75D18];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __60__SKUIOnboardingFooterView__showButton_withTitle_animation___block_invoke;
       v30[3] = &unk_2781F80F0;
-      v31 = v8;
+      v31 = buttonCopy;
       [v26 animateWithDuration:v30 animations:0.25];
       v25 = v31;
 LABEL_11:

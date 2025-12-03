@@ -1,10 +1,10 @@
 @interface HomeActivityStateAdapter
-- (void)homeActivityStateManager:(id)a3 didMoveToState:(id)a4;
+- (void)homeActivityStateManager:(id)manager didMoveToState:(id)state;
 @end
 
 @implementation HomeActivityStateAdapter
 
-- (void)homeActivityStateManager:(id)a3 didMoveToState:(id)a4
+- (void)homeActivityStateManager:(id)manager didMoveToState:(id)state
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D882030, &qword_22A586C30);
   v7 = *(*(v6 - 8) + 64);
@@ -25,9 +25,9 @@
 
   else
   {
-    v19[1] = a4;
-    v17 = a4;
-    v18 = self;
+    v19[1] = state;
+    stateCopy = state;
+    selfCopy = self;
     sub_22A4DDA0C();
 
     (*(v11 + 8))(v14, v10);

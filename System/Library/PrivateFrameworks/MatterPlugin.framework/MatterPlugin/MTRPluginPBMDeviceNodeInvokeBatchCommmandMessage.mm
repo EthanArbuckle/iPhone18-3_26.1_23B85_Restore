@@ -1,29 +1,29 @@
 @interface MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage
-+ (id)_convertArray:(id)a3;
-+ (id)deviceNodeInvokeBatchCommandMessageFromMessage:(id)a3;
-+ (id)deviceNodeInvokeBatchCommandMessageWithNodeID:(id)a3 commands:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_convertArray:(id)array;
++ (id)deviceNodeInvokeBatchCommandMessageFromMessage:(id)message;
++ (id)deviceNodeInvokeBatchCommandMessageWithNodeID:(id)d commands:(id)commands;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (NSArray)commands;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCommandWithRequiredResponsesValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCommandWithRequiredResponsesValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage
 
-+ (id)deviceNodeInvokeBatchCommandMessageFromMessage:(id)a3
++ (id)deviceNodeInvokeBatchCommandMessageFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage alloc];
-  v5 = [v3 messageData];
+  messageData = [messageCopy messageData];
 
-  v6 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)v4 initWithData:v5];
+  v6 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)v4 initWithData:messageData];
   if ([(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)v6 isValid])
   {
     v7 = v6;
@@ -37,15 +37,15 @@
   return v7;
 }
 
-+ (id)deviceNodeInvokeBatchCommandMessageWithNodeID:(id)a3 commands:(id)a4
++ (id)deviceNodeInvokeBatchCommandMessageWithNodeID:(id)d commands:(id)commands
 {
-  v5 = a4;
-  v6 = a3;
+  commandsCopy = commands;
+  dCopy = d;
   v7 = objc_alloc_init(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage);
-  v8 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:v6];
+  v8 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:dCopy];
 
   [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)v7 setNode:v8];
-  v9 = [MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage _convertArray:v5];
+  v9 = [MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage _convertArray:commandsCopy];
 
   if (v9)
   {
@@ -61,16 +61,16 @@
   return v10;
 }
 
-+ (id)_convertArray:(id)a3
++ (id)_convertArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  arrayCopy = array;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -110,11 +110,11 @@
     return 0;
   }
 
-  v3 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self header];
-  if ([v3 isValid] && -[MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage hasNode](self, "hasNode"))
+  header = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self header];
+  if ([header isValid] && -[MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage hasNode](self, "hasNode"))
   {
-    v4 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self node];
-    if ([v4 isValid])
+    node = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self node];
+    if ([node isValid])
     {
       v5 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self commandWithRequiredResponsesValuesCount]!= 0;
     }
@@ -136,13 +136,13 @@
 - (NSArray)commands
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self commandWithRequiredResponsesValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  commandWithRequiredResponsesValues = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self commandWithRequiredResponsesValues];
+  v5 = [commandWithRequiredResponsesValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -153,17 +153,17 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(commandWithRequiredResponsesValues);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) commandWithRequiredResponses];
-        if (v9)
+        commandWithRequiredResponses = [*(*(&v12 + 1) + 8 * i) commandWithRequiredResponses];
+        if (commandWithRequiredResponses)
         {
-          [v3 addObject:v9];
+          [array addObject:commandWithRequiredResponses];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [commandWithRequiredResponsesValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -171,25 +171,25 @@
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (void)addCommandWithRequiredResponsesValue:(id)a3
+- (void)addCommandWithRequiredResponsesValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   commandWithRequiredResponsesValues = self->_commandWithRequiredResponsesValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!commandWithRequiredResponsesValues)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_commandWithRequiredResponsesValues;
     self->_commandWithRequiredResponsesValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     commandWithRequiredResponsesValues = self->_commandWithRequiredResponsesValues;
   }
 
-  [(NSMutableArray *)commandWithRequiredResponsesValues addObject:v4];
+  [(NSMutableArray *)commandWithRequiredResponsesValues addObject:valueCopy];
 }
 
 - (id)description
@@ -198,8 +198,8 @@
   v8.receiver = self;
   v8.super_class = MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage;
   v4 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)&v8 description];
-  v5 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -207,19 +207,19 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   node = self->_node;
   if (node)
   {
-    v7 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"node"];
+    dictionaryRepresentation2 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"node"];
   }
 
   if ([(NSMutableArray *)self->_commandWithRequiredResponsesValues count])
@@ -244,8 +244,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -254,18 +254,18 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"commandWithRequiredResponsesValue"];
+    [dictionary setObject:v8 forKey:@"commandWithRequiredResponsesValue"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
@@ -311,44 +311,44 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_header)
   {
-    [v8 setHeader:?];
+    [toCopy setHeader:?];
   }
 
   if (self->_node)
   {
-    [v8 setNode:?];
+    [toCopy setNode:?];
   }
 
   if ([(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self commandWithRequiredResponsesValuesCount])
   {
-    [v8 clearCommandWithRequiredResponsesValues];
-    v4 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self commandWithRequiredResponsesValuesCount];
-    if (v4)
+    [toCopy clearCommandWithRequiredResponsesValues];
+    commandWithRequiredResponsesValuesCount = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self commandWithRequiredResponsesValuesCount];
+    if (commandWithRequiredResponsesValuesCount)
     {
-      v5 = v4;
+      v5 = commandWithRequiredResponsesValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage *)self commandWithRequiredResponsesValueAtIndex:i];
-        [v8 addCommandWithRequiredResponsesValue:v7];
+        [toCopy addCommandWithRequiredResponsesValue:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:a3];
+  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -372,7 +372,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addCommandWithRequiredResponsesValue:v15];
 
         ++v14;
@@ -389,13 +389,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[2])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")) && ((node = self->_node, !(node | v4[3])) || -[MTRPluginPBMDeviceNode isEqual:](node, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[2])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")) && ((node = self->_node, !(node | equalCopy[3])) || -[MTRPluginPBMDeviceNode isEqual:](node, "isEqual:")))
   {
     commandWithRequiredResponsesValues = self->_commandWithRequiredResponsesValues;
-    if (commandWithRequiredResponsesValues | v4[1])
+    if (commandWithRequiredResponsesValues | equalCopy[1])
     {
       v8 = [(NSMutableArray *)commandWithRequiredResponsesValues isEqual:?];
     }
@@ -421,12 +421,12 @@
   return v4 ^ [(NSMutableArray *)self->_commandWithRequiredResponsesValues hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (header)
   {
     if (v6)
@@ -441,7 +441,7 @@
   }
 
   node = self->_node;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (node)
   {
     if (v8)
@@ -459,7 +459,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 1);
+  v9 = *(fromCopy + 1);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

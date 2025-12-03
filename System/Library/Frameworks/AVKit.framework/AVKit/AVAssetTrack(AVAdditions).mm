@@ -9,13 +9,13 @@
 
 - (uint64_t)_avkit_frameRateIsValid:()AVAdditions
 {
-  v1 = a1 < 0.0;
-  if (a1 > 0.0)
+  v1 = self < 0.0;
+  if (self > 0.0)
   {
     v1 = 1;
   }
 
-  v3 = a1 != 1.1755e-38 && a1 != 3.4028e38;
+  v3 = self != 1.1755e-38 && self != 3.4028e38;
   return v3 & v1;
 }
 
@@ -57,8 +57,8 @@
 {
   v1 = MEMORY[0x1E6960C70];
   result = *MEMORY[0x1E6960C70];
-  *a1 = *MEMORY[0x1E6960C70];
-  *(a1 + 16) = *(v1 + 16);
+  *self = *MEMORY[0x1E6960C70];
+  *(self + 16) = *(v1 + 16);
   return result;
 }
 
@@ -67,8 +67,8 @@
   v8 = MEMORY[0x1E6960C70];
   *a4 = *MEMORY[0x1E6960C70];
   *(a4 + 16) = *(v8 + 16);
-  v9 = [a1 mediaType];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E6987608]];
+  mediaType = [self mediaType];
+  v10 = [mediaType isEqualToString:*MEMORY[0x1E6987608]];
 
   if ((v10 & 1) == 0)
   {
@@ -110,11 +110,11 @@ LABEL_13:
   if (a2)
   {
     time1 = *a3;
-    [a1 _avkit_timeForFrameUsingSampleCursorSteppedByFrameCount:a2 fromFrameAtTime:&time1];
+    [self _avkit_timeForFrameUsingSampleCursorSteppedByFrameCount:a2 fromFrameAtTime:&time1];
     if ((*(a4 + 12) & 1) == 0)
     {
       v13 = *a3;
-      [a1 _avkit_findTimeForFrameUsingFrameRateSteppedByFrameCount:a2 fromFrameAtTime:&v13];
+      [self _avkit_findTimeForFrameUsingFrameRateSteppedByFrameCount:a2 fromFrameAtTime:&v13];
       *a4 = time1;
     }
   }

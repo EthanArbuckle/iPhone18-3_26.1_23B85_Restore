@@ -1,7 +1,7 @@
 @interface NFAsserter
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualType:(id)a3;
-- (NFAsserter)initWithRemoteAssertion:(id)a3 xpcConnection:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualType:(id)type;
+- (NFAsserter)initWithRemoteAssertion:(id)assertion xpcConnection:(id)connection;
 - (NSString)description;
 - (NSXPCConnection)xpc;
 - (id)onAssert;
@@ -14,25 +14,25 @@
 - (NSString)description
 {
   v3 = [NSString alloc];
-  v4 = [(NFAsserter *)self remoteAssertion];
-  v5 = [v4 description];
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  v5 = [remoteAssertion description];
   v6 = [v3 initWithFormat:@"%@, state=%lu", v5, -[NFAsserter state](self, "state")];
 
   return v6;
 }
 
-- (NFAsserter)initWithRemoteAssertion:(id)a3 xpcConnection:(id)a4
+- (NFAsserter)initWithRemoteAssertion:(id)assertion xpcConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = NFAsserter;
   v9 = [(NFAsserter *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remoteAssertion, a3);
-    objc_storeWeak(&v10->_xpc, v8);
+    objc_storeStrong(&v9->_remoteAssertion, assertion);
+    objc_storeWeak(&v10->_xpc, connectionCopy);
     v10->_state = 0;
     v11 = v10;
   }
@@ -68,10 +68,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -81,9 +81,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NFAsserter *)self remoteAssertion];
-      v6 = [(NFAsserter *)v4 remoteAssertion];
-      v7 = [v5 isEqual:v6];
+      remoteAssertion = [(NFAsserter *)self remoteAssertion];
+      remoteAssertion2 = [(NFAsserter *)equalCopy remoteAssertion];
+      v7 = [remoteAssertion isEqual:remoteAssertion2];
     }
 
     else
@@ -95,8 +95,8 @@
         goto LABEL_9;
       }
 
-      v5 = [(NFAsserter *)self remoteAssertion];
-      v7 = [v5 isEqual:v4];
+      remoteAssertion = [(NFAsserter *)self remoteAssertion];
+      v7 = [remoteAssertion isEqual:equalCopy];
     }
   }
 
@@ -105,21 +105,21 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqualType:(id)a3
+- (BOOL)isEqualType:(id)type
 {
-  v4 = a3;
-  v5 = [(NFAsserter *)self remoteAssertion];
-  v6 = [v5 assertionType];
-  v7 = [v4 remoteAssertion];
+  typeCopy = type;
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  assertionType = [remoteAssertion assertionType];
+  remoteAssertion2 = [typeCopy remoteAssertion];
 
-  LOBYTE(v4) = v6 == [v7 assertionType];
-  return v4;
+  LOBYTE(typeCopy) = assertionType == [remoteAssertion2 assertionType];
+  return typeCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NFAsserter *)self remoteAssertion];
-  v3 = [v2 hash];
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  v3 = [remoteAssertion hash];
 
   return v3;
 }

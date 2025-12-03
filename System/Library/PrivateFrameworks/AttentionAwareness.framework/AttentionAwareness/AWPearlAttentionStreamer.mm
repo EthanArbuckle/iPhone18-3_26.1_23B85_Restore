@@ -1,21 +1,21 @@
 @interface AWPearlAttentionStreamer
 - (id)cancelEventStream;
-- (id)initForUnitTest:(BOOL)a3 queue:(id)a4;
-- (id)streamEventWithBlock:(id)a3 options:(id)a4 operationStartFailedBlock:(id)a5;
-- (void)operation:(id)a3 faceDetectStateChanged:(id)a4;
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)sendNotification:(unint64_t)a3;
-- (void)setDisplayState:(BOOL)a3;
-- (void)setNotificationHandler:(id)a3;
-- (void)setSmartCoverState:(BOOL)a3;
+- (id)initForUnitTest:(BOOL)test queue:(id)queue;
+- (id)streamEventWithBlock:(id)block options:(id)options operationStartFailedBlock:(id)failedBlock;
+- (void)operation:(id)operation faceDetectStateChanged:(id)changed;
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason;
+- (void)sendNotification:(unint64_t)notification;
+- (void)setDisplayState:(BOOL)state;
+- (void)setNotificationHandler:(id)handler;
+- (void)setSmartCoverState:(BOOL)state;
 @end
 
 @implementation AWPearlAttentionStreamer
 
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
   {
@@ -36,9 +36,9 @@
       v18 = 134218498;
       v19 = v9;
       v20 = 2112;
-      *v21 = v6;
+      *v21 = operationCopy;
       *&v21[8] = 2080;
-      *&v21[10] = getEndReasonDescriptions(a4);
+      *&v21[10] = getEndReasonDescriptions(reason);
       v14 = "%13.5f: Operation %@ cancelled due to reason: %s";
       v15 = v7;
       v16 = 32;
@@ -85,9 +85,9 @@ LABEL_19:
           *&v21[4] = 2048;
           *&v21[6] = v13;
           *&v21[14] = 2112;
-          *&v21[16] = v6;
+          *&v21[16] = operationCopy;
           v22 = 2080;
-          EndReasonDescriptions = getEndReasonDescriptions(a4);
+          EndReasonDescriptions = getEndReasonDescriptions(reason);
           v14 = "%30s:%-4d: %13.5f: Operation %@ cancelled due to reason: %s";
           v15 = v7;
           v16 = 48;
@@ -98,7 +98,7 @@ LABEL_19:
   }
 
 LABEL_21:
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((reason & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [(AWPearlAttentionStreamer *)self sendNotification:1];
     self->_attentionStreamerRunning = 0;
@@ -107,11 +107,11 @@ LABEL_21:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operation:(id)a3 faceDetectStateChanged:(id)a4
+- (void)operation:(id)operation faceDetectStateChanged:(id)changed
 {
   v97 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_queue);
   v69 = 0u;
   v67 = 0u;
@@ -119,45 +119,45 @@ LABEL_21:
   v65 = 0u;
   v66 = 0u;
   v64 = 0u;
-  v61 = [v7 faceDetected];
-  v8 = [v7 pitch];
-  v9 = [v7 yaw];
-  v10 = [v7 roll];
-  v11 = [v7 orientation];
-  if ((v11 - 1) >= 4)
+  faceDetected = [changedCopy faceDetected];
+  pitch = [changedCopy pitch];
+  v9 = [changedCopy yaw];
+  roll = [changedCopy roll];
+  orientation = [changedCopy orientation];
+  if ((orientation - 1) >= 4)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = v11;
+    v12 = orientation;
   }
 
   v62 = v12;
-  v13 = [v7 distance];
-  v14 = [v7 eyeReliefStatus];
+  distance = [changedCopy distance];
+  eyeReliefStatus = [changedCopy eyeReliefStatus];
   v15 = 0;
   v16 = 1;
-  if (v14 <= 2)
+  if (eyeReliefStatus <= 2)
   {
-    if (v14 != 1 && v14 != 2)
+    if (eyeReliefStatus != 1 && eyeReliefStatus != 2)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v14 != 3 && v14 != 4 && v14 != 5)
+  else if (eyeReliefStatus != 3 && eyeReliefStatus != 4 && eyeReliefStatus != 5)
   {
     goto LABEL_12;
   }
 
   v16 = 0;
-  v15 = v14;
+  v15 = eyeReliefStatus;
 LABEL_12:
   v60 = v16;
-  v17 = [v7 faceDetectionScore];
-  [v17 floatValue];
+  faceDetectionScore = [changedCopy faceDetectionScore];
+  [faceDetectionScore floatValue];
   v19 = v18;
   *(&v69 + 2) = v18;
 
@@ -175,7 +175,7 @@ LABEL_12:
     goto LABEL_27;
   }
 
-  v59 = v6;
+  v59 = operationCopy;
   v21 = "/Library/Caches/com.apple.xbs/Sources/AttentionAwareness/Framework/XPCService/Streaming/PearlAttentionStreamer.m";
   for (i = "Library/Caches/com.apple.xbs/Sources/AttentionAwareness/Framework/XPCService/Streaming/PearlAttentionStreamer.m"; *(i - 1) == 47; ++i)
   {
@@ -191,7 +191,7 @@ LABEL_19:
 
   v23 = absTimeNS();
   v57 = v9;
-  v58 = v8;
+  v58 = pitch;
   if (v23 == -1)
   {
     v24 = INFINITY;
@@ -203,7 +203,7 @@ LABEL_19:
   }
 
   pendingPresenceOperation = self->_pendingPresenceOperation;
-  if (v61)
+  if (faceDetected)
   {
     v26 = "FACE FOUND";
   }
@@ -226,7 +226,7 @@ LABEL_19:
   *&v76[14] = 2112;
   *&v76[16] = v27;
   v77 = 2048;
-  v6 = v59;
+  operationCopy = v59;
   v78 = v59;
   v79 = 2048;
   v80 = pendingPresenceOperation;
@@ -234,16 +234,16 @@ LABEL_19:
   v82 = v26;
   v83 = 2112;
   v9 = v57;
-  v8 = v58;
+  pitch = v58;
   v84 = v58;
   v85 = 2112;
   v86 = v57;
   v87 = 2112;
-  v88 = v10;
+  v88 = roll;
   v89 = 2112;
   v90 = v28;
   v91 = 2112;
-  v92 = v13;
+  v92 = distance;
   v93 = 2112;
   v94 = v29;
   v95 = 2048;
@@ -255,16 +255,16 @@ LABEL_19:
 LABEL_27:
 
 LABEL_28:
-  LOBYTE(v64) = v61;
+  LOBYTE(v64) = faceDetected;
   memset_pattern16(v68, &unk_1BB32B2C0, 0x40uLL);
   *&v67 = v15;
-  [v13 doubleValue];
+  [distance doubleValue];
   *(&v66 + 1) = v30;
-  [v8 doubleValue];
+  [pitch doubleValue];
   *(&v64 + 1) = v31;
   [v9 doubleValue];
   *&v65 = v32;
-  [v10 doubleValue];
+  [roll doubleValue];
   *(&v65 + 1) = v33;
   *&v66 = v62;
   if (!self->_eyeReliefStarted)
@@ -323,7 +323,7 @@ LABEL_28:
       *buf = 134218498;
       v74 = v41;
       v75 = 2112;
-      *v76 = v13;
+      *v76 = distance;
       *&v76[8] = 2112;
       *&v76[10] = v48;
       _os_log_impl(&dword_1BB2EF000, v39, OS_LOG_TYPE_DEFAULT, "%13.5f: Distance from EyeRelief network: %@ EyeReliefState: %@", buf, 0x20u);
@@ -353,8 +353,8 @@ LABEL_54:
         goto LABEL_52;
       }
 
-      v63 = self;
-      v43 = v10;
+      selfCopy = self;
+      v43 = roll;
       v44 = "/Library/Caches/com.apple.xbs/Sources/AttentionAwareness/Framework/XPCService/Streaming/PearlAttentionStreamer.m";
       for (j = "Library/Caches/com.apple.xbs/Sources/AttentionAwareness/Framework/XPCService/Streaming/PearlAttentionStreamer.m"; ; ++j)
       {
@@ -384,13 +384,13 @@ LABEL_54:
           *&v76[4] = 2048;
           *&v76[6] = v47;
           *&v76[14] = 2112;
-          *&v76[16] = v13;
+          *&v76[16] = distance;
           v77 = 2112;
           v78 = v49;
           _os_log_impl(&dword_1BB2EF000, v39, OS_LOG_TYPE_DEFAULT, "%30s:%-4d: %13.5f: Distance from EyeRelief network: %@ EyeReliefState: %@", buf, 0x30u);
 
-          v10 = v43;
-          self = v63;
+          roll = v43;
+          self = selfCopy;
           goto LABEL_52;
         }
       }
@@ -426,14 +426,14 @@ LABEL_61:
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDisplayState:(BOOL)a3
+- (void)setDisplayState:(BOOL)state
 {
   v30 = *MEMORY[0x1E69E9840];
   displayOn = self->_displayOn;
-  if (displayOn != a3)
+  if (displayOn != state)
   {
-    v5 = a3;
-    self->_displayOn = a3;
+    stateCopy = state;
+    self->_displayOn = state;
     if (currentLogLevel == 5)
     {
       v6 = _AALog();
@@ -451,7 +451,7 @@ LABEL_61:
         }
 
         v13 = "OFF";
-        if (v5)
+        if (stateCopy)
         {
           v13 = "ON";
         }
@@ -469,7 +469,7 @@ LABEL_61:
       goto LABEL_25;
     }
 
-    LOBYTE(displayOn) = a3;
+    LOBYTE(displayOn) = state;
     if (currentLogLevel >= 6)
     {
       v6 = _AALog();
@@ -503,7 +503,7 @@ LABEL_61:
           v24 = 136315906;
           v25 = *&v9;
           v26 = 1024;
-          if (v5)
+          if (stateCopy)
           {
             v17 = "ON";
           }
@@ -529,20 +529,20 @@ LABEL_25:
 
   if (!displayOn && self->_attentionStreamerRunning)
   {
-    v18 = [(AWPearlAttentionStreamer *)self cancelEventStream];
+    cancelEventStream = [(AWPearlAttentionStreamer *)self cancelEventStream];
     (*(self->_notificationBlock + 2))(self->_notificationBlock, 1, v19, v20, v21, v22);
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSmartCoverState:(BOOL)a3
+- (void)setSmartCoverState:(BOOL)state
 {
   v30 = *MEMORY[0x1E69E9840];
   smartCoverClosed = self->_smartCoverClosed;
-  if (smartCoverClosed != a3)
+  if (smartCoverClosed != state)
   {
-    self->_smartCoverClosed = a3;
+    self->_smartCoverClosed = state;
     if (currentLogLevel == 5)
     {
       v5 = _AALog();
@@ -579,7 +579,7 @@ LABEL_27:
 
     else
     {
-      smartCoverClosed = a3;
+      smartCoverClosed = state;
       if (currentLogLevel < 6)
       {
         goto LABEL_2;
@@ -654,7 +654,7 @@ LABEL_2:
 LABEL_29:
   if (self->_attentionStreamerRunning)
   {
-    v18 = [(AWPearlAttentionStreamer *)self cancelEventStream];
+    cancelEventStream = [(AWPearlAttentionStreamer *)self cancelEventStream];
     (*(self->_notificationBlock + 2))(self->_notificationBlock, 1, v19, v20, v21, v22);
   }
 
@@ -662,12 +662,12 @@ LABEL_31:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendNotification:(unint64_t)a3
+- (void)sendNotification:(unint64_t)notification
 {
   notificationBlock = self->_notificationBlock;
   if (notificationBlock)
   {
-    notificationBlock[2](notificationBlock, a3);
+    notificationBlock[2](notificationBlock, notification);
   }
 }
 
@@ -683,7 +683,7 @@ LABEL_31:
     block[2] = __45__AWPearlAttentionStreamer_cancelEventStream__block_invoke;
     block[3] = &unk_1E7F38060;
     v13 = v3;
-    v14 = self;
+    selfCopy = self;
     v4 = v3;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     pendingPresenceOperation = self->_pendingPresenceOperation;
@@ -805,12 +805,12 @@ LABEL_21:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)streamEventWithBlock:(id)a3 options:(id)a4 operationStartFailedBlock:(id)a5
+- (id)streamEventWithBlock:(id)block options:(id)options operationStartFailedBlock:(id)failedBlock
 {
-  var0 = a4.var0;
+  var0 = options.var0;
   v66[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  blockCopy = block;
+  failedBlockCopy = failedBlock;
   dispatch_assert_queue_V2(self->_queue);
   if (![(AWPearlAttentionStreamer *)self isAttentionAwareFeaturesEnabled])
   {
@@ -1038,7 +1038,7 @@ LABEL_65:
   }
 
 LABEL_66:
-  v41 = [(AWPearlAttentionStreamer *)self cancelEventStream];
+  cancelEventStream = [(AWPearlAttentionStreamer *)self cancelEventStream];
 LABEL_67:
   [(BKDevicePearl *)self->_pearlDevice setQueue:self->_queue];
   [(BKDevicePearl *)self->_pearlDevice setDelegate:self];
@@ -1056,9 +1056,9 @@ LABEL_67:
     [(BKFaceDetectOperation *)self->_pendingPresenceOperation setQueue:self->_queue];
     [(BKFaceDetectOperation *)self->_pendingPresenceOperation setMode:1];
     [(BKFaceDetectOperation *)self->_pendingPresenceOperation setEyeRelief:var0];
-    if (v8)
+    if (blockCopy)
     {
-      v46 = MEMORY[0x1BFB0D030](v8);
+      v46 = MEMORY[0x1BFB0D030](blockCopy);
       callbackBlock = self->_callbackBlock;
       self->_callbackBlock = v46;
     }
@@ -1069,7 +1069,7 @@ LABEL_67:
     v52[2] = __83__AWPearlAttentionStreamer_streamEventWithBlock_options_operationStartFailedBlock___block_invoke;
     v52[3] = &unk_1E7F37408;
     v52[4] = self;
-    v53 = v9;
+    v53 = failedBlockCopy;
     [(BKFaceDetectOperation *)v48 startWithReply:v52];
     v49 = v53;
     v18 = v19;
@@ -1346,23 +1346,23 @@ LABEL_50:
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNotificationHandler:(id)a3
+- (void)setNotificationHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     __assert_rtn("[AWPearlAttentionStreamer setNotificationHandler:]", "PearlAttentionStreamer.m", 199, "notificationBlock != nil");
   }
 
-  v7 = v4;
+  v7 = handlerCopy;
   v5 = MEMORY[0x1BFB0D030]();
   notificationBlock = self->_notificationBlock;
   self->_notificationBlock = v5;
 }
 
-- (id)initForUnitTest:(BOOL)a3 queue:(id)a4
+- (id)initForUnitTest:(BOOL)test queue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v38.receiver = self;
   v38.super_class = AWPearlAttentionStreamer;
   v8 = [(AWPearlAttentionStreamer *)&v38 init];
@@ -1374,8 +1374,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8->_unitTest = a3;
-  if (a3)
+  v8->_unitTest = test;
+  if (test)
   {
     +[AWUnitTestPearlDevice sharedDevice];
   }
@@ -1388,7 +1388,7 @@ LABEL_11:
   pearlDevice = v9->_pearlDevice;
   v9->_pearlDevice = v10;
 
-  objc_storeStrong(&v9->_queue, a4);
+  objc_storeStrong(&v9->_queue, queue);
   if (v9->_pearlDevice)
   {
     notificationBlock = v9->_notificationBlock;
@@ -1414,22 +1414,22 @@ LABEL_11:
     if (v9->_unitTest)
     {
       *(v14 + 40) = 1;
-      v15 = [v14 unitTestDevice];
+      unitTestDevice = [v14 unitTestDevice];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __50__AWPearlAttentionStreamer_initForUnitTest_queue___block_invoke_11;
       v31[3] = &unk_1E7F37B98;
       v16 = v14;
       v32 = v16;
-      [v15 setDisplayCallback:v31];
+      [unitTestDevice setDisplayCallback:v31];
 
-      v17 = [v16 unitTestDevice];
+      unitTestDevice2 = [v16 unitTestDevice];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __50__AWPearlAttentionStreamer_initForUnitTest_queue___block_invoke_3;
       v29[3] = &unk_1E7F37B98;
       v30 = v16;
-      [v17 setSmartCoverCallback:v29];
+      [unitTestDevice2 setSmartCoverCallback:v29];
       v18 = &v32;
       v19 = &v30;
     }

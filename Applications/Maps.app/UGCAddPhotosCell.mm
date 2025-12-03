@@ -1,7 +1,7 @@
 @interface UGCAddPhotosCell
 - (UGCARPAddPhotosCellRequestDelegate)delegate;
-- (UGCAddPhotosCell)initWithDelegate:(id)a3;
-- (void)_addPhotosUsingSourceType:(int64_t)a3;
+- (UGCAddPhotosCell)initWithDelegate:(id)delegate;
+- (void)_addPhotosUsingSourceType:(int64_t)type;
 - (void)setupSubviews;
 @end
 
@@ -14,10 +14,10 @@
   return WeakRetained;
 }
 
-- (void)_addPhotosUsingSourceType:(int64_t)a3
+- (void)_addPhotosUsingSourceType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained addPhotosCellRequestsAddingNewPhoto:self usingSourceType:a3];
+  [WeakRetained addPhotosCellRequestsAddingNewPhoto:self usingSourceType:type];
 }
 
 - (void)setupSubviews
@@ -46,8 +46,8 @@
   [(UGCAddPhotosCell *)self addSubview:self->_buttonView];
   v7 = [MUEdgeLayout alloc];
   v8 = self->_buttonView;
-  v9 = [(UGCAddPhotosCell *)self layoutMarginsGuide];
-  v10 = [v7 initWithItem:v8 container:v9];
+  layoutMarginsGuide = [(UGCAddPhotosCell *)self layoutMarginsGuide];
+  v10 = [v7 initWithItem:v8 container:layoutMarginsGuide];
 
   v17 = v10;
   v11 = [NSArray arrayWithObjects:&v17 count:1];
@@ -58,16 +58,16 @@
   objc_destroyWeak(&location);
 }
 
-- (UGCAddPhotosCell)initWithDelegate:(id)a3
+- (UGCAddPhotosCell)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = UGCAddPhotosCell;
   v5 = [(UGCPOIEnrichmentEditorCell *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(UGCAddPhotosCell *)v6 setupSubviews];
   }
 

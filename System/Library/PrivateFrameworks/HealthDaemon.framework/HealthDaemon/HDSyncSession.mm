@@ -1,17 +1,17 @@
 @interface HDSyncSession
-- (BOOL)transactionDidEndWithError:(id *)a3;
+- (BOOL)transactionDidEndWithError:(id *)error;
 - (HDSyncPredicate)syncPredicate;
 - (HDSyncSession)init;
-- (HDSyncSession)initWithSyncStore:(id)a3 reason:(id)a4 delegate:(id)a5;
+- (HDSyncSession)initWithSyncStore:(id)store reason:(id)reason delegate:(id)delegate;
 - (HDSyncSessionDelegate)delegate;
 - (id)description;
 - (id)excludedSyncStores;
-- (id)newChangeWithSyncEntityClass:(Class)a3 version:(id)a4;
-- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)a3;
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3;
-- (void)sendChanges:(id)a3 completion:(id)a4;
+- (id)newChangeWithSyncEntityClass:(Class)class version:(id)version;
+- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)class;
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class;
+- (void)sendChanges:(id)changes completion:(id)completion;
 - (void)syncWillBegin;
-- (void)willSyncAnchorRanges:(id)a3;
+- (void)willSyncAnchorRanges:(id)ranges;
 @end
 
 @implementation HDSyncSession
@@ -26,8 +26,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSUUID *)self->_sessionUUID UUIDString];
-  v6 = [v3 stringWithFormat:@"<%@:%p uuid:%@ reason:%@>", v4, self, v5, self->_reason];
+  uUIDString = [(NSUUID *)self->_sessionUUID UUIDString];
+  v6 = [v3 stringWithFormat:@"<%@:%p uuid:%@ reason:%@>", v4, self, uUIDString, self->_reason];
 
   return v6;
 }
@@ -35,21 +35,21 @@
 - (id)excludedSyncStores
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HDSyncSession *)self syncStore];
-  v4 = [v2 setWithObject:v3];
+  syncStore = [(HDSyncSession *)self syncStore];
+  v4 = [v2 setWithObject:syncStore];
 
   return v4;
 }
 
-- (HDSyncSession)initWithSyncStore:(id)a3 reason:(id)a4 delegate:(id)a5
+- (HDSyncSession)initWithSyncStore:(id)store reason:(id)reason delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  storeCopy = store;
+  reasonCopy = reason;
+  delegateCopy = delegate;
+  if (!storeCopy)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"HDSyncSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"syncStore != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"syncStore != nil"}];
   }
 
   v29.receiver = self;
@@ -58,26 +58,26 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v12);
-    objc_storeStrong(&v14->_syncStore, a3);
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v14->_syncStore, store);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     sessionUUID = v14->_sessionUUID;
-    v14->_sessionUUID = v15;
+    v14->_sessionUUID = uUID;
 
-    v17 = [(NSUUID *)v14->_sessionUUID UUIDString];
-    v18 = [v17 substringToIndex:4];
+    uUIDString = [(NSUUID *)v14->_sessionUUID UUIDString];
+    v18 = [uUIDString substringToIndex:4];
     shortSessionIdentifier = v14->_shortSessionIdentifier;
     v14->_shortSessionIdentifier = v18;
 
-    v20 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v14->_startDate;
-    v14->_startDate = v20;
+    v14->_startDate = date;
 
-    v22 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     calendar = v14->_calendar;
-    v14->_calendar = v22;
+    v14->_calendar = currentCalendar;
 
-    v24 = [v11 copy];
+    v24 = [reasonCopy copy];
     reason = v14->_reason;
     v14->_reason = v24;
 
@@ -110,9 +110,9 @@
   return v7;
 }
 
-- (void)willSyncAnchorRanges:(id)a3
+- (void)willSyncAnchorRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   objc_copyWeak(&to, &self->_delegate);
   v5 = objc_loadWeakRetained(&to);
   v6 = objc_opt_respondsToSelector();
@@ -120,21 +120,21 @@
   if (v6)
   {
     v7 = objc_loadWeakRetained(&to);
-    [v7 syncSession:self willSyncAnchorRanges:v4];
+    [v7 syncSession:self willSyncAnchorRanges:rangesCopy];
   }
 
   objc_destroyWeak(&to);
 }
 
-- (void)sendChanges:(id)a3 completion:(id)a4
+- (void)sendChanges:(id)changes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  changesCopy = changes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained syncSession:self sendChanges:v7 completion:v6];
+  [WeakRetained syncSession:self sendChanges:changesCopy completion:completionCopy];
 }
 
-- (BOOL)transactionDidEndWithError:(id *)a3
+- (BOOL)transactionDidEndWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
@@ -142,7 +142,7 @@
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 syncSession:self didEndTransactionWithError:a3];
+    v9 = [v8 syncSession:self didEndTransactionWithError:error];
   }
 
   else
@@ -154,10 +154,10 @@
     v13 = [v10 hk_errorForInvalidArgument:@"@" class:v11 selector:a2 format:{@"%@ does not respond to selector %@", v8, v12}];
     if (v13)
     {
-      if (a3)
+      if (error)
       {
         v14 = v13;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -172,21 +172,21 @@
   return v9;
 }
 
-- (id)newChangeWithSyncEntityClass:(Class)a3 version:(id)a4
+- (id)newChangeWithSyncEntityClass:(Class)class version:(id)version
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)a3
+- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)class
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

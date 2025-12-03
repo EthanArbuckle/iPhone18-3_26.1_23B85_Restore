@@ -1,12 +1,12 @@
 @interface GEOAPCurrentUploadTableViewCell
-- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithCoder:(id)a3;
-- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithCoder:(id)coder;
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation GEOAPCurrentUploadTableViewCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
@@ -32,15 +32,15 @@
   v12[4] = v9;
   v12[5] = v10;
   swift_retain_n();
-  v11 = self;
+  selfCopy = self;
   UITableViewCell.contentConfiguration.setter();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC4Maps31GEOAPCurrentUploadTableViewCell_cellConfig) = 0;
@@ -55,12 +55,12 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for GEOAPCurrentUploadTableViewCell();
-  v7 = [(GEOAPCurrentUploadTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(GEOAPCurrentUploadTableViewCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithCoder:(id)a3
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC4Maps31GEOAPCurrentUploadTableViewCell_cellConfig) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();

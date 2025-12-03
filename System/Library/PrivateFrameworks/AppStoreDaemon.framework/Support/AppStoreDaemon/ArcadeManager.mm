@@ -1,12 +1,12 @@
 @interface ArcadeManager
 - (ArcadeManager)init;
-- (id)createMetricsEventsForEventType:(unsigned __int8)a3 context:(id)a4;
-- (void)_handleNetworkStateDidChangeNotification:(id)a3;
-- (void)_handleRepairBundleIDNotification:(id)a3;
-- (void)decorateMetricsEvent:(id)a3 context:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (id)createMetricsEventsForEventType:(unsigned __int8)type context:(id)context;
+- (void)_handleNetworkStateDidChangeNotification:(id)notification;
+- (void)_handleRepairBundleIDNotification:(id)notification;
+- (void)decorateMetricsEvent:(id)event context:(id)context;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation ArcadeManager
@@ -80,9 +80,9 @@
     v2->_upsellQueue = v35;
 
     v37 = sub_1003BBF50();
-    v38 = [v37 isHRNMode];
+    isHRNMode = [v37 isHRNMode];
 
-    if ((v38 & 1) == 0)
+    if ((isHRNMode & 1) == 0)
     {
       v39 = +[NSNotificationCenter defaultCenter];
       [v39 addObserver:v2 selector:"_handleRepairBundleIDNotification:" name:@"com.apple.appstored.ASDRepairBundleID" object:0];
@@ -101,12 +101,12 @@
   return v2;
 }
 
-- (id)createMetricsEventsForEventType:(unsigned __int8)a3 context:(id)a4
+- (id)createMetricsEventsForEventType:(unsigned __int8)type context:(id)context
 {
-  v4 = a3;
-  v6 = a4;
+  typeCopy = type;
+  contextCopy = context;
   v7 = objc_opt_new();
-  v8 = sub_1002AAAA4(self, v4, v6);
+  v8 = sub_1002AAAA4(self, typeCopy, contextCopy);
   if ([v8 count])
   {
     v29 = 0u;
@@ -120,7 +120,7 @@
     {
       v10 = v9;
       v11 = *v28;
-      v24 = self;
+      selfCopy = self;
       v25 = v7;
       do
       {
@@ -136,9 +136,9 @@
           v14 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
-            if (v6)
+            if (contextCopy)
             {
-              v15 = v6[9];
+              v15 = contextCopy[9];
             }
 
             else
@@ -148,7 +148,7 @@
 
             v16 = v15;
             v17 = sub_1001FCF14(v13);
-            v18 = sub_1001FC658(AppEvent, v4);
+            v18 = sub_1001FC658(AppEvent, typeCopy);
             *buf = 138412802;
             v32 = v16;
             v33 = 2114;
@@ -157,11 +157,11 @@
             v36 = v18;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%@] [%{public}@] Adding event for app with type: %{public}@", buf, 0x20u);
 
-            self = v24;
+            self = selfCopy;
             v7 = v25;
           }
 
-          v19 = sub_1002A989C(self, v13, v4, v6);
+          v19 = sub_1002A989C(self, v13, typeCopy, contextCopy);
           [v7 addObject:v19];
 
           v12 = v12 + 1;
@@ -183,25 +183,25 @@
   return v21;
 }
 
-- (void)decorateMetricsEvent:(id)a3 context:(id)a4
+- (void)decorateMetricsEvent:(id)event context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  contextCopy = context;
   v8 = +[BagService appstoredService];
-  v9 = [v8 lastBag];
+  lastBag = [v8 lastBag];
 
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
-  v131 = v6;
-  v129 = v11;
-  sub_1003D75DC(v6, v11);
-  if (v7)
+  v131 = eventCopy;
+  v129 = uUIDString;
+  sub_1003D75DC(eventCopy, uUIDString);
+  if (contextCopy)
   {
-    v12 = v7[4];
+    v12 = contextCopy[4];
     if (v12 == 3 || v12 == 7)
     {
-      [v6 setAnonymous:1];
+      [eventCopy setAnonymous:1];
       v13 = sub_1003D4D04();
     }
 
@@ -218,7 +218,7 @@
     v14 = v13;
     if (v13)
     {
-      sub_1003D83D4(v6, v13);
+      sub_1003D83D4(eventCopy, v13);
     }
   }
 
@@ -226,30 +226,30 @@ LABEL_9:
   osBuild = self->_osBuild;
   if (osBuild)
   {
-    sub_1003D84C4(v6, osBuild);
+    sub_1003D84C4(eventCopy, osBuild);
   }
 
   hardwareFamily = self->_hardwareFamily;
   if (hardwareFamily)
   {
-    sub_1003D8014(v6, hardwareFamily);
+    sub_1003D8014(eventCopy, hardwareFamily);
   }
 
   hardwareModel = self->_hardwareModel;
   if (hardwareModel)
   {
-    sub_1003D808C(v6, hardwareModel);
+    sub_1003D808C(eventCopy, hardwareModel);
   }
 
   os = self->_os;
   if (os)
   {
-    sub_1003D82E4(v6, os);
+    sub_1003D82E4(eventCopy, os);
   }
 
-  if (v7)
+  if (contextCopy)
   {
-    v19 = v7[16];
+    v19 = contextCopy[16];
   }
 
   else
@@ -259,12 +259,12 @@ LABEL_9:
 
   v20 = v19;
 
-  v130 = v9;
+  v130 = lastBag;
   if (!v20)
   {
-    if (v7)
+    if (contextCopy)
     {
-      v21 = v7[9];
+      v21 = contextCopy[9];
     }
 
     else
@@ -274,11 +274,11 @@ LABEL_9:
 
     v22 = v21;
     v23 = +[ACAccountStore ams_sharedAccountStore];
-    v24 = [v23 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v23 ams_activeiTunesAccount];
 
-    v25 = [v24 ams_DSID];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
     v145 = 0;
-    v26 = sub_1002A1944(SbsyncTask, v25, &v145);
+    v26 = sub_1002A1944(SbsyncTask, ams_DSID, &v145);
     v27 = v145;
 
     if (v27)
@@ -286,11 +286,11 @@ LABEL_9:
       v28 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v125 = [v24 ams_DSID];
+        ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
         *buf = 138412546;
         v150 = v22;
         v151 = 2114;
-        v152 = v125;
+        v152 = ams_DSID2;
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "[%@] Error looking up subscription bag status for account: %{public}@", buf, 0x16u);
       }
     }
@@ -311,11 +311,11 @@ LABEL_9:
         v32 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          v126 = [v24 ams_DSID];
+          ams_DSID3 = [ams_activeiTunesAccount ams_DSID];
           *buf = 138412802;
           v150 = v22;
           v151 = 2114;
-          v152 = v126;
+          v152 = ams_DSID3;
           v153 = 2114;
           v154[0] = v31;
           _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "[%@] Error looking up fsEntitlement status for account: %{public}@ error: %{public}@", buf, 0x20u);
@@ -329,42 +329,42 @@ LABEL_9:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       v34 = v26;
-      v35 = v7;
+      v35 = contextCopy;
       v36 = v34;
-      v37 = [v24 ams_DSID];
+      ams_DSID4 = [ams_activeiTunesAccount ams_DSID];
       *buf = 138413058;
       v150 = v22;
       v151 = 2114;
-      v152 = v37;
+      v152 = ams_DSID4;
       v153 = 1024;
       LODWORD(v154[0]) = v36;
-      v7 = v35;
+      contextCopy = v35;
       WORD2(v154[0]) = 1024;
       *(v154 + 6) = v29;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "[%@] Subscribed accountID: %{public}@ bag subscribed: %d fsEntitlement subscribed: %{BOOL}d", buf, 0x22u);
     }
 
-    if (v30 && ([v24 ams_DSID], v38 = objc_claimAutoreleasedReturnValue(), v38, v38))
+    if (v30 && ([ams_activeiTunesAccount ams_DSID], v38 = objc_claimAutoreleasedReturnValue(), v38, v38))
     {
-      v39 = [v24 ams_DSID];
+      ams_DSID5 = [ams_activeiTunesAccount ams_DSID];
     }
 
     else
     {
-      v39 = 0;
+      ams_DSID5 = 0;
     }
 
-    v9 = v130;
+    lastBag = v130;
 
     v40 = ASDLogHandleForCategory();
     v41 = os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT);
-    if (v39)
+    if (ams_DSID5)
     {
       if (v41)
       {
-        if (v7)
+        if (contextCopy)
         {
-          v42 = v7[9];
+          v42 = contextCopy[9];
         }
 
         else
@@ -376,15 +376,15 @@ LABEL_9:
         *buf = 138412546;
         v150 = v43;
         v151 = 2112;
-        v152 = v39;
+        v152 = ams_DSID5;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "[%@] Setting cached subscribed accountID to: %@", buf, 0x16u);
       }
 
       v40 = +[ACAccountStore ams_sharedAccountStore];
-      v45 = [v40 ams_iTunesAccountWithDSID:v39];
-      if (v7)
+      v45 = [v40 ams_iTunesAccountWithDSID:ams_DSID5];
+      if (contextCopy)
       {
-        objc_setProperty_nonatomic_copy(v7, v44, v45, 128);
+        objc_setProperty_nonatomic_copy(contextCopy, v44, v45, 128);
       }
     }
 
@@ -397,9 +397,9 @@ LABEL_54:
         goto LABEL_55;
       }
 
-      if (v7)
+      if (contextCopy)
       {
-        v46 = v7[9];
+        v46 = contextCopy[9];
       }
 
       else
@@ -417,9 +417,9 @@ LABEL_54:
   }
 
 LABEL_55:
-  if (v7)
+  if (contextCopy)
   {
-    v47 = v7[17];
+    v47 = contextCopy[17];
   }
 
   else
@@ -432,10 +432,10 @@ LABEL_55:
   if (!v48)
   {
     v49 = +[_TtC9appstored29KatanaSubscriptionCoordinator shared];
-    if (v7)
+    if (contextCopy)
     {
-      v50 = v7[16];
-      v51 = v7[9];
+      v50 = contextCopy[16];
+      v51 = contextCopy[9];
     }
 
     else
@@ -446,32 +446,32 @@ LABEL_55:
 
     v52 = v51;
     v54 = [v49 subscriptionInfoDictionaryWithAccount:v50 onlyReturnForPreviouslySubscribedAccount:0 logKey:v52];
-    if (v7)
+    if (contextCopy)
     {
-      objc_setProperty_nonatomic_copy(v7, v53, v54, 136);
+      objc_setProperty_nonatomic_copy(contextCopy, v53, v54, 136);
     }
   }
 
-  if (!v7)
+  if (!contextCopy)
   {
     goto LABEL_120;
   }
 
-  v55 = v7[4];
+  v55 = contextCopy[4];
   if (v55 == 3)
   {
-    v72 = v7[12];
+    v72 = contextCopy[12];
     v73 = [AMSMetrics serverTimeFromDate:v72];
 
     v127 = v73;
     sub_1003D7EB4(v131, v73);
-    v74 = v7 + 3;
-    v75 = v7[3];
+    v74 = contextCopy + 3;
+    v75 = contextCopy[3];
 
     if (!v75)
     {
-      v76 = sub_10035E7B8(self, v7, v130);
-      objc_setProperty_nonatomic_copy(v7, v77, v76, 24);
+      v76 = sub_10035E7B8(self, contextCopy, v130);
+      objc_setProperty_nonatomic_copy(contextCopy, v77, v76, 24);
     }
 
     v138 = 0u;
@@ -480,7 +480,7 @@ LABEL_55:
     v137 = 0u;
     v78 = [v130 arrayOfStringsForKey:@"allowed-anonymous-arcade-keys"];
     v79 = v78;
-    v128 = v7;
+    v128 = contextCopy;
     if (v78)
     {
       v80 = v78;
@@ -497,7 +497,7 @@ LABEL_55:
     {
       v97 = v96;
       v98 = *v137;
-      v99 = v7 + 17;
+      v99 = contextCopy + 17;
       do
       {
         for (i = 0; i != v97; i = i + 1)
@@ -537,22 +537,22 @@ LABEL_55:
 
   if (v55 == 7)
   {
-    v65 = v7 + 3;
-    v66 = v7[3];
+    v65 = contextCopy + 3;
+    v66 = contextCopy[3];
 
     if (!v66)
     {
-      v67 = sub_10035E7B8(self, v7, v9);
-      objc_setProperty_nonatomic_copy(v7, v68, v67, 24);
+      v67 = sub_10035E7B8(self, contextCopy, lastBag);
+      objc_setProperty_nonatomic_copy(contextCopy, v68, v67, 24);
     }
 
     v134 = 0u;
     v135 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v69 = [v9 arrayOfStringsForKey:@"allowed-anonymous-arcade-account-keys"];
+    v69 = [lastBag arrayOfStringsForKey:@"allowed-anonymous-arcade-account-keys"];
     v70 = v69;
-    v128 = v7;
+    v128 = contextCopy;
     if (v69)
     {
       v71 = v69;
@@ -569,7 +569,7 @@ LABEL_55:
     {
       v82 = v81;
       v83 = *v133;
-      v84 = v7 + 17;
+      v84 = contextCopy + 17;
       do
       {
         for (j = 0; j != v82; j = j + 1)
@@ -606,32 +606,32 @@ LABEL_55:
 
     [v131 removePropertiesForKeys:&off_1005495C0];
 LABEL_106:
-    v7 = v128;
+    contextCopy = v128;
 LABEL_119:
-    v9 = v130;
+    lastBag = v130;
     goto LABEL_120;
   }
 
   if (v55 == 4)
   {
-    sub_1003D85B4(v131, v7[10]);
+    sub_1003D85B4(v131, contextCopy[10]);
     [v131 removePropertiesForKeys:&off_1005495A8];
-    v56 = v7 + 14;
-    v57 = v7[14];
+    v56 = contextCopy + 14;
+    v57 = contextCopy[14];
 
     if (!v57)
     {
-      v58 = sub_10035E7B8(self, v7, v9);
-      objc_setProperty_nonatomic_copy(v7, v59, v58, 112);
+      v58 = sub_10035E7B8(self, contextCopy, lastBag);
+      objc_setProperty_nonatomic_copy(contextCopy, v59, v58, 112);
     }
 
     v60 = *v56;
 
     if (v60)
     {
-      v61 = [v9 arrayOfStringsForKey:@"allowed-payout-arcade-keys"];
+      v61 = [lastBag arrayOfStringsForKey:@"allowed-payout-arcade-keys"];
       v62 = v61;
-      v63 = v7;
+      v63 = contextCopy;
       if (v61)
       {
         v64 = v61;
@@ -689,7 +689,7 @@ LABEL_119:
         while (v112);
       }
 
-      v7 = v63;
+      contextCopy = v63;
       goto LABEL_119;
     }
   }
@@ -707,7 +707,7 @@ LABEL_120:
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -717,7 +717,7 @@ LABEL_120:
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -732,26 +732,26 @@ LABEL_120:
     if (sharedSBSRemoteHandle)
     {
       [(SBSRemoteAlertHandle *)sharedSBSRemoteHandle unregisterObserver:self];
-      v6 = self;
-      objc_sync_enter(v6);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v7 = self->_sharedSBSRemoteHandle;
       self->_sharedSBSRemoteHandle = 0;
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
     }
   }
 
   dispatch_semaphore_signal(self->_alertSemaphore);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v10 = 138543362;
-    v11 = v5;
+    v11 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "[Arcade] Remote handle did invalidate with error: %{public}@", &v10, 0xCu);
   }
 
@@ -761,24 +761,24 @@ LABEL_120:
     if (sharedSBSRemoteHandle)
     {
       [(SBSRemoteAlertHandle *)sharedSBSRemoteHandle unregisterObserver:self];
-      v8 = self;
-      objc_sync_enter(v8);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v9 = self->_sharedSBSRemoteHandle;
       self->_sharedSBSRemoteHandle = 0;
 
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
     }
   }
 
   dispatch_semaphore_signal(self->_alertSemaphore);
 }
 
-- (void)_handleNetworkStateDidChangeNotification:(id)a3
+- (void)_handleNetworkStateDidChangeNotification:(id)notification
 {
   v4 = sub_100227468();
-  v5 = [v4 isConnected];
+  isConnected = [v4 isConnected];
 
-  if (v5)
+  if (isConnected)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     v7 = sub_100227468();
@@ -794,16 +794,16 @@ LABEL_120:
   }
 }
 
-- (void)_handleRepairBundleIDNotification:(id)a3
+- (void)_handleRepairBundleIDNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   distNotificationQueue = self->_distNotificationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100360244;
   block[3] = &unk_10051AF98;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(distNotificationQueue, block);
 }
 

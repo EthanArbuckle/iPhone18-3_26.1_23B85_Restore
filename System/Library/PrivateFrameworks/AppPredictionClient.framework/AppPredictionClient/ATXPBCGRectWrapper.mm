@@ -1,12 +1,12 @@
 @interface ATXPBCGRectWrapper
-- (BOOL)isEqual:(id)a3;
-- (double)copyTo:(uint64_t)a1;
+- (BOOL)isEqual:(id)equal;
+- (double)copyTo:(uint64_t)to;
 - (double)height;
-- (double)mergeFrom:(uint64_t)a1;
+- (double)mergeFrom:(uint64_t)from;
 - (double)width;
 - (double)x;
 - (double)y;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)setHeight:(uint64_t)result;
@@ -14,7 +14,7 @@
 - (uint64_t)setX:(uint64_t)result;
 - (uint64_t)setY:(uint64_t)result;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBCGRectWrapper
@@ -25,42 +25,42 @@
   v8.receiver = self;
   v8.super_class = ATXPBCGRectWrapper;
   v4 = [(ATXPBCGRectWrapper *)&v8 description];
-  v5 = [(ATXPBCGRectWrapper *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBCGRectWrapper *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_x];
-  [v3 setObject:v4 forKey:@"x"];
+  [dictionary setObject:v4 forKey:@"x"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_y];
-  [v3 setObject:v5 forKey:@"y"];
+  [dictionary setObject:v5 forKey:@"y"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_width];
-  [v3 setObject:v6 forKey:@"width"];
+  [dictionary setObject:v6 forKey:@"width"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_height];
-  [v3 setObject:v7 forKey:@"height"];
+  [dictionary setObject:v7 forKey:@"height"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = *&self->_x;
   *(result + 4) = *&self->_y;
   *(result + 2) = *&self->_width;
@@ -68,10 +68,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_x == v4[3] && self->_y == v4[4] && self->_width == v4[2] && self->_height == v4[1];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_x == equalCopy[3] && self->_y == equalCopy[4] && self->_width == equalCopy[2] && self->_height == equalCopy[1];
 
   return v5;
 }
@@ -178,29 +178,29 @@
   return v19 ^ v13 ^ v26 ^ v31;
 }
 
-- (double)copyTo:(uint64_t)a1
+- (double)copyTo:(uint64_t)to
 {
-  if (a1)
+  if (to)
   {
-    *(a2 + 24) = *(a1 + 24);
-    *(a2 + 32) = *(a1 + 32);
-    *(a2 + 16) = *(a1 + 16);
-    result = *(a1 + 8);
+    *(a2 + 24) = *(to + 24);
+    *(a2 + 32) = *(to + 32);
+    *(a2 + 16) = *(to + 16);
+    result = *(to + 8);
     *(a2 + 8) = result;
   }
 
   return result;
 }
 
-- (double)mergeFrom:(uint64_t)a1
+- (double)mergeFrom:(uint64_t)from
 {
-  if (a1)
+  if (from)
   {
-    *(a1 + 24) = *(a2 + 24);
-    *(a1 + 32) = *(a2 + 32);
-    *(a1 + 16) = *(a2 + 16);
+    *(from + 24) = *(a2 + 24);
+    *(from + 32) = *(a2 + 32);
+    *(from + 16) = *(a2 + 16);
     result = *(a2 + 8);
-    *(a1 + 8) = result;
+    *(from + 8) = result;
   }
 
   return result;
@@ -208,9 +208,9 @@
 
 - (double)x
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_1_14(a1, 24);
+    return OUTLINED_FUNCTION_1_14(self, 24);
   }
 
   else
@@ -231,9 +231,9 @@
 
 - (double)y
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_1_14(a1, 32);
+    return OUTLINED_FUNCTION_1_14(self, 32);
   }
 
   else
@@ -254,9 +254,9 @@
 
 - (double)width
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_1_14(a1, 16);
+    return OUTLINED_FUNCTION_1_14(self, 16);
   }
 
   else
@@ -277,9 +277,9 @@
 
 - (double)height
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_1_14(a1, 8);
+    return OUTLINED_FUNCTION_1_14(self, 8);
   }
 
   else

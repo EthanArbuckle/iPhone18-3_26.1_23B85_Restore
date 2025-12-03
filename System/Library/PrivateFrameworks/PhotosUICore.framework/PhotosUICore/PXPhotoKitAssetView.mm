@@ -1,22 +1,22 @@
 @interface PXPhotoKitAssetView
-- (void)setAsset:(id)a3;
-- (void)setPhotoLibrary:(id)a3;
+- (void)setAsset:(id)asset;
+- (void)setPhotoLibrary:(id)library;
 @end
 
 @implementation PXPhotoKitAssetView
 
-- (void)setPhotoLibrary:(id)a3
+- (void)setPhotoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_photoLibrary != v5)
+  libraryCopy = library;
+  v6 = libraryCopy;
+  if (self->_photoLibrary != libraryCopy)
   {
-    v11 = v5;
-    v7 = [(PHPhotoLibrary *)v5 isEqual:?];
+    v11 = libraryCopy;
+    v7 = [(PHPhotoLibrary *)libraryCopy isEqual:?];
     v6 = v11;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_photoLibrary, a3);
+      objc_storeStrong(&self->_photoLibrary, library);
       v6 = v11;
       if (self->_photoLibrary)
       {
@@ -31,15 +31,15 @@
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
   v6.receiver = self;
   v6.super_class = PXPhotoKitAssetView;
-  v4 = a3;
-  [(PXDisplayAssetView *)&v6 setAsset:v4];
-  v5 = [v4 photoLibrary];
+  assetCopy = asset;
+  [(PXDisplayAssetView *)&v6 setAsset:assetCopy];
+  photoLibrary = [assetCopy photoLibrary];
 
-  [(PXPhotoKitAssetView *)self setPhotoLibrary:v5];
+  [(PXPhotoKitAssetView *)self setPhotoLibrary:photoLibrary];
 }
 
 @end

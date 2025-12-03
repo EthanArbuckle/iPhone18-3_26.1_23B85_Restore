@@ -3,47 +3,47 @@
 - (id)exceptionCodesDescription;
 - (id)getStackshotData;
 - (id)getVMStatistics;
-- (id)initForPid:(int)a3 process:(id)a4 withReason:(id)a5 exceptionCode:(int64_t *)a6 exceptionCodeCount:(unsigned int)a7 stackshotFlags:(unsigned int)a8;
+- (id)initForPid:(int)pid process:(id)process withReason:(id)reason exceptionCode:(int64_t *)code exceptionCodeCount:(unsigned int)count stackshotFlags:(unsigned int)flags;
 - (id)reportNamePrefix;
 - (void)acquireStackshot;
-- (void)addCustomField:(const char *)a3 value:(id)a4 into:(id)a5;
+- (void)addCustomField:(const char *)field value:(id)value into:(id)into;
 - (void)dealloc;
-- (void)decodeKCDataWithBlock:(id)a3 withTuning:(id)a4 usingCatalog:(id)a5;
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4;
+- (void)decodeKCDataWithBlock:(id)block withTuning:(id)tuning usingCatalog:(id)catalog;
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block;
 - (void)queryThermalData;
-- (void)useStackshotBuffer:(const void *)a3 size:(unsigned int)a4 frontmostPids:(id)a5 atTime:(double)a6 machTime:(unint64_t)a7 sequence:(unsigned int)a8 isSnapshotDead:(BOOL)a9;
+- (void)useStackshotBuffer:(const void *)buffer size:(unsigned int)size frontmostPids:(id)pids atTime:(double)time machTime:(unint64_t)machTime sequence:(unsigned int)sequence isSnapshotDead:(BOOL)dead;
 @end
 
 @implementation CDStackshotReport
 
-- (id)initForPid:(int)a3 process:(id)a4 withReason:(id)a5 exceptionCode:(int64_t *)a6 exceptionCodeCount:(unsigned int)a7 stackshotFlags:(unsigned int)a8
+- (id)initForPid:(int)pid process:(id)process withReason:(id)reason exceptionCode:(int64_t *)code exceptionCodeCount:(unsigned int)count stackshotFlags:(unsigned int)flags
 {
-  v15 = a4;
-  v16 = a5;
+  processCopy = process;
+  reasonCopy = reason;
   v27.receiver = self;
   v27.super_class = CDStackshotReport;
   v17 = [(OSAReport *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    v17->_pid = a3;
-    objc_storeStrong(&v17->_appName, a4);
-    [(CDStackshotReport *)v18 setReason:v16];
+    v17->_pid = pid;
+    objc_storeStrong(&v17->_appName, process);
+    [(CDStackshotReport *)v18 setReason:reasonCopy];
     v19 = objc_opt_new();
     frontmostPids = v18->_frontmostPids;
     v18->_frontmostPids = v19;
 
     v18->_ss_sequence = -1;
-    v18->_exceptionCodeCount = a7;
-    v21 = malloc_type_calloc(8uLL, a7, 0xDA47F5F1uLL);
+    v18->_exceptionCodeCount = count;
+    v21 = malloc_type_calloc(8uLL, count, 0xDA47F5F1uLL);
     v18->_exceptionCodes = v21;
-    memcpy(v21, a6, 8 * v18->_exceptionCodeCount);
-    if ((a8 & 0x80000000) != 0)
+    memcpy(v21, code, 8 * v18->_exceptionCodeCount);
+    if ((flags & 0x80000000) != 0)
     {
       [*(&v18->super.super.isa + *MEMORY[0x1E69B7C28]) setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69B7C68]];
     }
 
-    v18->_flags = a8 & 0x7FFFFFFF;
+    v18->_flags = flags & 0x7FFFFFFF;
     v18->_jetsamLevel = -1;
     v22 = objc_opt_new();
     extras = v18->_extras;
@@ -51,10 +51,10 @@
 
     v18->_capture_absoluteTime = mach_absolute_time();
     *(&v18->super.super.isa + *MEMORY[0x1E69B7C18]) = CFAbsoluteTimeGetCurrent();
-    v24 = [MEMORY[0x1E69B7C10] sharedInstance];
-    v25 = [v24 appleInternal];
+    mEMORY[0x1E69B7C10] = [MEMORY[0x1E69B7C10] sharedInstance];
+    appleInternal = [mEMORY[0x1E69B7C10] appleInternal];
 
-    if (v25)
+    if (appleInternal)
     {
       v18->_includeSyslog = 1;
     }
@@ -108,8 +108,8 @@ void __99__CDStackshotReport_initForPid_process_withReason_exceptionCode_excepti
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 userAppName];
-      v6 = CFURLCreateWithFileSystemPath(0, v5, kCFURLPOSIXPathStyle, 1u);
+      userAppName = [v3 userAppName];
+      v6 = CFURLCreateWithFileSystemPath(0, userAppName, kCFURLPOSIXPathStyle, 1u);
       if (v6)
       {
         v7 = v6;
@@ -203,12 +203,12 @@ void __99__CDStackshotReport_initForPid_process_withReason_exceptionCode_excepti
   appName = self->_appName;
   if (appName)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"stacks+%@", appName];
+    appName = [MEMORY[0x1E696AEC0] stringWithFormat:@"stacks+%@", appName];
   }
 
   else
   {
-    v4 = @"stacks";
+    appName = @"stacks";
   }
 
   if (self->_ss_sequence == -1)
@@ -221,7 +221,7 @@ void __99__CDStackshotReport_initForPid_process_withReason_exceptionCode_excepti
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%u", self->_ss_sequence];
   }
 
-  v6 = [(__CFString *)v4 stringByAppendingString:v5];
+  v6 = [(__CFString *)appName stringByAppendingString:v5];
 
   return v6;
 }
@@ -248,28 +248,28 @@ uint64_t __37__CDStackshotReport_queryThermalData__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)useStackshotBuffer:(const void *)a3 size:(unsigned int)a4 frontmostPids:(id)a5 atTime:(double)a6 machTime:(unint64_t)a7 sequence:(unsigned int)a8 isSnapshotDead:(BOOL)a9
+- (void)useStackshotBuffer:(const void *)buffer size:(unsigned int)size frontmostPids:(id)pids atTime:(double)time machTime:(unint64_t)machTime sequence:(unsigned int)sequence isSnapshotDead:(BOOL)dead
 {
-  v16 = a5;
+  pidsCopy = pids;
   if (self->_stackshot_config)
   {
     stackshot_config_dealloc();
     self->_stackshot_config = 0;
   }
 
-  self->_ss_trace_buffer = a3;
-  self->_ss_trace_length = a4;
-  self->_ss_sequence = a8;
+  self->_ss_trace_buffer = buffer;
+  self->_ss_trace_length = size;
+  self->_ss_sequence = sequence;
   if (!self->_pid)
   {
     self->_pid = -1;
   }
 
   [(NSMutableArray *)self->_frontmostPids removeAllObjects];
-  [(NSMutableArray *)self->_frontmostPids addObjectsFromArray:v16];
-  *(&self->super.super.isa + *MEMORY[0x1E69B7C18]) = a6;
-  self->_capture_absoluteTime = a7;
-  self->_dead_snapshot = a9;
+  [(NSMutableArray *)self->_frontmostPids addObjectsFromArray:pidsCopy];
+  *(&self->super.super.isa + *MEMORY[0x1E69B7C18]) = time;
+  self->_capture_absoluteTime = machTime;
+  self->_dead_snapshot = dead;
 }
 
 - (void)acquireStackshot
@@ -452,47 +452,47 @@ LABEL_47:
   return v3;
 }
 
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block
 {
   v83[10] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   v82[0] = @"incident";
-  v56 = [(OSAReport *)self incidentID];
-  v83[0] = v56;
+  incidentID = [(OSAReport *)self incidentID];
+  v83[0] = incidentID;
   v82[1] = @"crashReporterKey";
-  v55 = [MEMORY[0x1E69B7C10] sharedInstance];
-  v54 = [v55 crashReporterKey];
-  v83[1] = v54;
+  mEMORY[0x1E69B7C10] = [MEMORY[0x1E69B7C10] sharedInstance];
+  crashReporterKey = [mEMORY[0x1E69B7C10] crashReporterKey];
+  v83[1] = crashReporterKey;
   v82[2] = @"product";
-  v53 = [MEMORY[0x1E69B7C10] sharedInstance];
-  v52 = [v53 modelCode];
-  v83[2] = v52;
+  mEMORY[0x1E69B7C10]2 = [MEMORY[0x1E69B7C10] sharedInstance];
+  modelCode = [mEMORY[0x1E69B7C10]2 modelCode];
+  v83[2] = modelCode;
   v82[3] = @"build";
-  v6 = [MEMORY[0x1E69B7C10] sharedInstance];
-  v7 = [v6 productNameVersionBuildString];
-  v83[3] = v7;
+  mEMORY[0x1E69B7C10]3 = [MEMORY[0x1E69B7C10] sharedInstance];
+  productNameVersionBuildString = [mEMORY[0x1E69B7C10]3 productNameVersionBuildString];
+  v83[3] = productNameVersionBuildString;
   v82[4] = @"kernel";
-  v8 = [objc_opt_class() kernelVersionDescription];
-  v9 = v8;
+  kernelVersionDescription = [objc_opt_class() kernelVersionDescription];
+  v9 = kernelVersionDescription;
   v10 = tasked_tuning;
   if (!tasked_tuning)
   {
     v10 = MEMORY[0x1E695E0F8];
   }
 
-  v83[4] = v8;
+  v83[4] = kernelVersionDescription;
   v83[5] = v10;
   v82[5] = @"tuning";
   v82[6] = @"exception";
-  v11 = [(CDStackshotReport *)self exceptionCodesDescription];
-  v12 = v11;
+  exceptionCodesDescription = [(CDStackshotReport *)self exceptionCodesDescription];
+  v12 = exceptionCodesDescription;
   reason = self->_reason;
   if (!reason)
   {
     reason = &stru_1F550D880;
   }
 
-  v83[6] = v11;
+  v83[6] = exceptionCodesDescription;
   v83[7] = reason;
   v82[7] = @"reason";
   v82[8] = @"frontmostPids";
@@ -501,12 +501,12 @@ LABEL_47:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(objc_opt_class(), "codeSigningMonitor")}];
   v83[9] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:10];
-  v5[2](v5, v15);
+  blockCopy[2](blockCopy, v15);
 
   v16 = MEMORY[0x1E69B7C00];
-  v17 = [(CDStackshotReport *)self problemType];
-  v18 = [v16 commonFieldsForBody:v17];
-  v5[2](v5, v18);
+  problemType = [(CDStackshotReport *)self problemType];
+  v18 = [v16 commonFieldsForBody:problemType];
+  blockCopy[2](blockCopy, v18);
 
   if (self->_pid)
   {
@@ -514,7 +514,7 @@ LABEL_47:
     v19 = [MEMORY[0x1E696AD98] numberWithInt:?];
     v81 = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-    v5[2](v5, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   additionalPayload = self->_additionalPayload;
@@ -523,7 +523,7 @@ LABEL_47:
     v78 = @"additionalPayload";
     v79 = additionalPayload;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
-    v5[2](v5, v22);
+    blockCopy[2](blockCopy, v22);
   }
 
   if (self->_thermalSensorValues)
@@ -537,33 +537,33 @@ LABEL_47:
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:2];
     v77 = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
-    v5[2](v5, v25);
+    blockCopy[2](blockCopy, v25);
   }
 
   if ([objc_opt_class() isInLDM])
   {
-    v5[2](v5, &unk_1F5514598);
+    blockCopy[2](blockCopy, &unk_1F5514598);
   }
 
   if ([objc_opt_class() isDeveloperMode])
   {
-    v5[2](v5, &unk_1F55145C0);
+    blockCopy[2](blockCopy, &unk_1F55145C0);
   }
 
   if (!+[_TtC15CoreDiagnostics11DeviceState isCustomerFused])
   {
-    v5[2](v5, &unk_1F55145E8);
+    blockCopy[2](blockCopy, &unk_1F55145E8);
   }
 
-  v26 = [objc_opt_class() bootProgressRegister];
-  v27 = v26;
-  if (v26)
+  bootProgressRegister = [objc_opt_class() bootProgressRegister];
+  v27 = bootProgressRegister;
+  if (bootProgressRegister)
   {
     v72 = @"bootProgressRegister";
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%llx", objc_msgSend(v26, "unsignedLongLongValue")];
+    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%llx", objc_msgSend(bootProgressRegister, "unsignedLongLongValue")];
     v73 = v28;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-    v5[2](v5, v29);
+    blockCopy[2](blockCopy, v29);
   }
 
   v30 = +[_TtC15CoreDiagnostics22AppleIntelligenceState getAppleIntelligenceAvailability];
@@ -572,7 +572,7 @@ LABEL_47:
     v70 = @"appleIntelligenceStatus";
     v71 = v30;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-    v5[2](v5, v31);
+    blockCopy[2](blockCopy, v31);
   }
 
   v32 = objc_alloc_init(MEMORY[0x1E69B7BF0]);
@@ -587,25 +587,25 @@ LABEL_47:
   }
 
   v34 = v33;
-  [(CDStackshotReport *)self decodeKCDataWithBlock:v5 withTuning:v34 usingCatalog:v32];
+  [(CDStackshotReport *)self decodeKCDataWithBlock:blockCopy withTuning:v34 usingCatalog:v32];
   v68 = @"date";
   v35 = *(&self->super.super.isa + *MEMORY[0x1E69B7C18]);
   v36 = OSADateFormat();
   v69 = v36;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-  v5[2](v5, v37);
+  blockCopy[2](blockCopy, v37);
 
   v66 = @"absoluteTime";
   v38 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_capture_absoluteTime];
   v67 = v38;
   v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-  v5[2](v5, v39);
+  blockCopy[2](blockCopy, v39);
 
   v64 = @"binaryImages";
-  v40 = [v32 reportUsedImages];
-  v65 = v40;
+  reportUsedImages = [v32 reportUsedImages];
+  v65 = reportUsedImages;
   v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-  v5[2](v5, v41);
+  blockCopy[2](blockCopy, v41);
 
   v42 = *MEMORY[0x1E69B7C30];
   [v32 appendNotesTo:*(&self->super.super.isa + v42)];
@@ -617,13 +617,13 @@ LABEL_47:
     if (v43)
     {
       v62[0] = @"syslog";
-      v57 = [v43 reverseObjectEnumerator];
-      v45 = [v57 allObjects];
+      reverseObjectEnumerator = [v43 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
       v62[1] = &unk_1F5514480;
-      v63[0] = v45;
+      v63[0] = allObjects;
       v63[1] = &unk_1F5514468;
       v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:2];
-      v5[2](v5, v46);
+      blockCopy[2](blockCopy, v46);
     }
 
     else
@@ -638,7 +638,7 @@ LABEL_47:
     v60 = @"notes";
     v61 = v47;
     v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
-    v5[2](v5, v48);
+    blockCopy[2](blockCopy, v48);
   }
 
   if ([(NSMutableDictionary *)self->_extras count])
@@ -647,7 +647,7 @@ LABEL_47:
     v58 = @"additionalDetails";
     v59 = extras;
     v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-    v5[2](v5, v50);
+    blockCopy[2](blockCopy, v50);
   }
 
   v51 = *MEMORY[0x1E69E9840];
@@ -657,14 +657,14 @@ LABEL_47:
 {
   if (self->_exceptionCodeCount)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (self->_exceptionCodeCount)
     {
       v4 = 0;
       do
       {
         v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%08x", self->_exceptionCodes[v4]];
-        [v3 addObject:v5];
+        [array addObject:v5];
 
         ++v4;
       }
@@ -672,7 +672,7 @@ LABEL_47:
       while (v4 < self->_exceptionCodeCount);
     }
 
-    v6 = [v3 componentsJoinedByString:{@", "}];
+    v6 = [array componentsJoinedByString:{@", "}];
   }
 
   else
@@ -796,36 +796,36 @@ uint64_t __55__CDStackshotReport_resampleUUIDsForTask_usingCatalog___block_invok
   return result;
 }
 
-- (void)addCustomField:(const char *)a3 value:(id)a4 into:(id)a5
+- (void)addCustomField:(const char *)field value:(id)value into:(id)into
 {
-  v13 = a4;
-  v8 = a5;
-  if (a3 && v13)
+  valueCopy = value;
+  intoCopy = into;
+  if (field && valueCopy)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+    v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:field];
     if (v9)
     {
-      if ([v8 count] && (objc_msgSend(v8, "top"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ([intoCopy count] && (objc_msgSend(intoCopy, "top"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v11 = v10;
-        v12 = [v10 data];
-        [v12 setObject:v13 forKeyedSubscript:v9];
+        data = [v10 data];
+        [data setObject:valueCopy forKeyedSubscript:v9];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_extras setObject:v13 forKeyedSubscript:v9];
+        [(NSMutableDictionary *)self->_extras setObject:valueCopy forKeyedSubscript:v9];
       }
     }
   }
 }
 
-- (void)decodeKCDataWithBlock:(id)a3 withTuning:(id)a4 usingCatalog:(id)a5
+- (void)decodeKCDataWithBlock:(id)block withTuning:(id)tuning usingCatalog:(id)catalog
 {
   v572[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  tuningCopy = tuning;
+  catalogCopy = catalog;
   ss_trace_buffer = self->_ss_trace_buffer;
   if (!ss_trace_buffer || (ss_trace_length = self->_ss_trace_length, !ss_trace_length))
   {
@@ -845,9 +845,9 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v528 = [MEMORY[0x1E695DF70] array];
-  v514 = [MEMORY[0x1E695DF70] array];
-  v530 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   if (self->_dead_snapshot)
   {
     v491 = 0;
@@ -855,17 +855,17 @@ LABEL_10:
 
   else
   {
-    v491 = excludeSection(v9, @"sampleTruncatedStacks") ^ 1;
+    v491 = excludeSection(tuningCopy, @"sampleTruncatedStacks") ^ 1;
   }
 
-  v510 = v8;
-  v503 = [MEMORY[0x1E695DF70] array];
-  v512 = [MEMORY[0x1E695DF70] array];
+  v510 = blockCopy;
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
   v509 = objc_opt_new();
-  v502 = [MEMORY[0x1E695DF70] array];
-  v500 = [MEMORY[0x1E695DF70] array];
-  v18 = [MEMORY[0x1E69B7C10] sharedInstance];
-  v505 = [v18 appleInternal];
+  array6 = [MEMORY[0x1E695DF70] array];
+  array7 = [MEMORY[0x1E695DF70] array];
+  mEMORY[0x1E69B7C10] = [MEMORY[0x1E69B7C10] sharedInstance];
+  appleInternal = [mEMORY[0x1E69B7C10] appleInternal];
 
   v19 = *MEMORY[0x1E69E9A60];
   CSSymbolicatorGetFlagsForNListOnlyData();
@@ -902,9 +902,9 @@ LABEL_10:
   v24 = *MEMORY[0x1E695E468];
   v483 = 1;
   v25 = 0x1E695D000uLL;
-  v515 = v9;
-  v519 = v10;
-  v529 = self;
+  v515 = tuningCopy;
+  v519 = catalogCopy;
+  selfCopy = self;
   while (1)
   {
     v26 = *(ss_trace_buffer + 1);
@@ -935,24 +935,24 @@ LABEL_669:
       switch(v28)
       {
         case 2305:
-          if (!includeSection(v9, @"ioStats"))
+          if (!includeSection(tuningCopy, @"ioStats"))
           {
             goto LABEL_623;
           }
 
-          v29 = [v530 top];
+          v29 = [array3 top];
           if (!v29)
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
           }
 
           v30 = v29;
-          v31 = [v29 data];
+          data = [v29 data];
 
-          if (v31)
+          if (data)
           {
             v520 = v13;
-            v32 = [MEMORY[0x1E695DF70] array];
+            array8 = [MEMORY[0x1E695DF70] array];
             v33 = (ss_trace_buffer + 80);
             v34 = 4;
             do
@@ -963,7 +963,7 @@ LABEL_669:
               v37 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v36];
               v549[1] = v37;
               v38 = [*(v25 + 3784) arrayWithObjects:v549 count:2];
-              [v32 addObject:v38];
+              [array8 addObject:v38];
 
               v25 = 0x1E695D000uLL;
               --v34;
@@ -1013,14 +1013,14 @@ LABEL_669:
             v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v541 count:2];
             v547[6] = @"priorities";
             v548[5] = v42;
-            v548[6] = v32;
+            v548[6] = array8;
             v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v548 forKeys:v547 count:7];
-            v44 = [v30 data];
-            [v44 setObject:v43 forKeyedSubscript:@"ioStats"];
+            data2 = [v30 data];
+            [data2 setObject:v43 forKeyedSubscript:@"ioStats"];
 
             v25 = 0x1E695D000;
-            v9 = v515;
-            v10 = v519;
+            tuningCopy = v515;
+            catalogCopy = v519;
             v13 = v520;
           }
 
@@ -1103,10 +1103,10 @@ LABEL_669:
           {
           }
 
-          v9 = v515;
-          v10 = v519;
+          tuningCopy = v515;
+          catalogCopy = v519;
           v13 = v526;
-          self = v529;
+          self = selfCopy;
           goto LABEL_468;
         case 2307:
         case 2308:
@@ -1153,7 +1153,7 @@ LABEL_669:
           goto LABEL_61;
         case 2309:
           v524 = v13;
-          v86 = [v530 top];
+          v86 = [array3 top];
           if (!v86 || (v87 = v86, [v86 type] != 2307))
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
@@ -1170,7 +1170,7 @@ LABEL_669:
             goto LABEL_107;
           }
 
-          if (!excludeSection(v9, @"kernel"))
+          if (!excludeSection(tuningCopy, @"kernel"))
           {
             goto LABEL_345;
           }
@@ -1189,13 +1189,13 @@ LABEL_107:
             {
 
 LABEL_518:
-              v293 = [v530 top];
+              v293 = [array3 top];
               [v293 omit];
               v13 = v524;
               goto LABEL_482;
             }
 
-            v267 = excludeSection(v9, @"allPids");
+            v267 = excludeSection(tuningCopy, @"allPids");
 
             if (v267)
             {
@@ -1205,63 +1205,63 @@ LABEL_518:
 
 LABEL_345:
           [v87 setPid:*(ss_trace_buffer + 25)];
-          v268 = [MEMORY[0x1E695DF90] dictionary];
-          v269 = [v87 data];
-          [v269 setObject:v268 forKeyedSubscript:@"threadById"];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          data3 = [v87 data];
+          [data3 setObject:dictionary forKeyedSubscript:@"threadById"];
 
           v270 = [MEMORY[0x1E696AD98] numberWithInt:*(ss_trace_buffer + 25)];
-          v271 = [v87 data];
-          [v271 setObject:v270 forKeyedSubscript:@"pid"];
+          data4 = [v87 data];
+          [data4 setObject:v270 forKeyedSubscript:@"pid"];
 
           v272 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ss_trace_buffer + 104];
-          v273 = [v87 data];
-          [v273 setObject:v272 forKeyedSubscript:@"procname"];
+          data5 = [v87 data];
+          [data5 setObject:v272 forKeyedSubscript:@"procname"];
 
           v274 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 19)];
-          v275 = [v87 data];
-          [v275 setObject:v274 forKeyedSubscript:@"pageFaults"];
+          data6 = [v87 data];
+          [data6 setObject:v274 forKeyedSubscript:@"pageFaults"];
 
           v276 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 20)];
-          v277 = [v87 data];
-          [v277 setObject:v276 forKeyedSubscript:@"pageIns"];
+          data7 = [v87 data];
+          [data7 setObject:v276 forKeyedSubscript:@"pageIns"];
 
           v278 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 21)];
-          v279 = [v87 data];
-          [v279 setObject:v278 forKeyedSubscript:@"copyOnWriteFaults"];
+          data8 = [v87 data];
+          [data8 setObject:v278 forKeyedSubscript:@"copyOnWriteFaults"];
 
           v280 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 22)];
-          v281 = [v87 data];
-          [v281 setObject:v280 forKeyedSubscript:@"timesThrottled"];
+          data9 = [v87 data];
+          [data9 setObject:v280 forKeyedSubscript:@"timesThrottled"];
 
           v282 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 23)];
-          v283 = [v87 data];
-          [v283 setObject:v282 forKeyedSubscript:@"timesDidThrottle"];
+          data10 = [v87 data];
+          [data10 setObject:v282 forKeyedSubscript:@"timesDidThrottle"];
 
           v284 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%llX", *(ss_trace_buffer + 3)];
-          v285 = [v87 data];
-          [v285 setObject:v284 forKeyedSubscript:@"rawFlags"];
+          data11 = [v87 data];
+          [data11 setObject:v284 forKeyedSubscript:@"rawFlags"];
 
           v286 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 34)];
-          v287 = [v87 data];
-          [v287 setObject:v286 forKeyedSubscript:@"userID"];
+          data12 = [v87 data];
+          [data12 setObject:v286 forKeyedSubscript:@"userID"];
 
           v288 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 35)];
-          v289 = [v87 data];
-          [v289 setObject:v288 forKeyedSubscript:@"groupID"];
+          data13 = [v87 data];
+          [data13 setObject:v288 forKeyedSubscript:@"groupID"];
 
           if (*(ss_trace_buffer + 18))
           {
             v290 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-            v291 = [v87 data];
-            [v291 setObject:v290 forKeyedSubscript:@"suspendCount"];
+            data14 = [v87 data];
+            [data14 setObject:v290 forKeyedSubscript:@"suspendCount"];
           }
 
-          v292 = [MEMORY[0x1E695DF70] array];
-          v293 = v292;
+          array9 = [MEMORY[0x1E695DF70] array];
+          v293 = array9;
           v294 = *(ss_trace_buffer + 3);
           if ((v294 & 4) != 0)
           {
-            [v292 addObject:@"rsrcFlagged"];
+            [array9 addObject:@"rsrcFlagged"];
             v294 = *(ss_trace_buffer + 3);
             if ((v294 & 8) == 0)
             {
@@ -1471,8 +1471,8 @@ LABEL_377:
 LABEL_381:
           if ((v294 & 0x700000) != 0)
           {
-            v295 = [MEMORY[0x1E696AEC0] stringWithFormat:@"uuidFaultFlags0x%08llX", v294 & 0x700000];
-            [v293 addObject:v295];
+            0x700000 = [MEMORY[0x1E696AEC0] stringWithFormat:@"uuidFaultFlags0x%08llX", v294 & 0x700000];
+            [v293 addObject:0x700000];
 
             v294 = *(ss_trace_buffer + 3);
           }
@@ -1480,17 +1480,17 @@ LABEL_381:
           if ((v294 & 0x200000) != 0)
           {
             v296 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v87, "pid")}];
-            [v512 addObject:v296];
+            [array5 addObject:v296];
 
-            [v87 setInvalid_images:{objc_msgSend(v87, "invalid_images") + objc_msgSend(v514, "count")}];
+            [v87 setInvalid_images:{objc_msgSend(v87, "invalid_images") + objc_msgSend(array2, "count")}];
             if ((excludeSection(v515, @"uuidResampling") & 1) == 0 && !self->_dead_snapshot)
             {
-              v297 = -[CDStackshotReport resampleUUIDsForTask:usingCatalog:](self, "resampleUUIDsForTask:usingCatalog:", [v87 pid], v10);
+              v297 = -[CDStackshotReport resampleUUIDsForTask:usingCatalog:](self, "resampleUUIDsForTask:usingCatalog:", [v87 pid], catalogCopy);
               v298 = [v297 count];
               v299 = [v297 count];
-              v300 = [v87 invalid_images];
+              invalid_images = [v87 invalid_images];
               v301 = @"resampledAllImages";
-              if (v299 != v300)
+              if (v299 != invalid_images)
               {
                 v302 = [v297 count];
                 if (v302 <= [v87 invalid_images])
@@ -1508,21 +1508,21 @@ LABEL_381:
               if ([v297 count])
               {
                 v303 = [v297 valueForKey:@"details"];
-                v304 = [v87 data];
-                [v304 setObject:v303 forKeyedSubscript:@"resampled_images"];
+                data15 = [v87 data];
+                [data15 setObject:v303 forKeyedSubscript:@"resampled_images"];
 
-                self = v529;
-                [v528 addObjectsFromArray:v297];
+                self = selfCopy;
+                [array addObjectsFromArray:v297];
               }
 
               v484 = (v484 + v298);
             }
           }
 
-          else if ([v514 count])
+          else if ([array2 count])
           {
-            [v528 addObjectsFromArray:v514];
-            [v528 sortByAddressAndSetInferredSizes];
+            [array addObjectsFromArray:array2];
+            [array sortByAddressAndSetInferredSizes];
           }
 
           v305 = *(ss_trace_buffer + 3);
@@ -1698,15 +1698,15 @@ LABEL_428:
 LABEL_409:
           if ([v293 count])
           {
-            v306 = [v87 data];
-            [v306 setObject:v293 forKeyedSubscript:@"flags"];
+            data16 = [v87 data];
+            [data16 setObject:v293 forKeyedSubscript:@"flags"];
           }
 
           if (*(ss_trace_buffer + 7))
           {
             v307 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-            v308 = [v87 data];
-            [v308 setObject:v307 forKeyedSubscript:@"residentMemoryBytes"];
+            data17 = [v87 data];
+            [data17 setObject:v307 forKeyedSubscript:@"residentMemoryBytes"];
           }
 
           v309 = self->_frontmostPids;
@@ -1715,22 +1715,22 @@ LABEL_409:
 
           if (v309)
           {
-            v311 = [v87 data];
-            [v311 setObject:&unk_1F5514468 forKeyedSubscript:@"frontmost"];
+            data18 = [v87 data];
+            [data18 setObject:&unk_1F5514468 forKeyedSubscript:@"frontmost"];
           }
 
           v312 = *(ss_trace_buffer + 4);
           v506 = *(ss_trace_buffer + 5);
-          v313 = [(CDStackshotReport *)self problemType];
+          problemType = [(CDStackshotReport *)self problemType];
           v507 = v312;
-          if ([v313 isEqualToString:@"409"])
+          if ([problemType isEqualToString:@"409"])
           {
           }
 
           else
           {
-            v314 = [(CDStackshotReport *)self problemType];
-            v315 = [v314 isEqualToString:@"509"];
+            problemType2 = [(CDStackshotReport *)self problemType];
+            v315 = [problemType2 isEqualToString:@"509"];
 
             if (!v315)
             {
@@ -1739,8 +1739,8 @@ LABEL_409:
           }
 
           v316 = [objc_opt_class() reduceToTwoSigFigures:(*(&self->super.super.isa + *MEMORY[0x1E69B7C18]) - (*(ss_trace_buffer + 6) - v24))];
-          v317 = [v87 data];
-          [v317 setObject:v316 forKeyedSubscript:@"processUptime"];
+          data19 = [v87 data];
+          [data19 setObject:v316 forKeyedSubscript:@"processUptime"];
 
 LABEL_432:
           v318 = v513;
@@ -1753,7 +1753,7 @@ LABEL_432:
           v320 = v319;
           if (v319)
           {
-            [v10 targetSharedCache:-[SharedCacheEntry original](v319 withSlide:"original") + 8 atBaseAddress:{-[SharedCacheEntry sharedCacheSlide](v319, "sharedCacheSlide"), -[SharedCacheEntry original](v319, "original")[32]}];
+            [catalogCopy targetSharedCache:-[SharedCacheEntry original](v319 withSlide:"original") + 8 atBaseAddress:{-[SharedCacheEntry sharedCacheSlide](v319, "sharedCacheSlide"), -[SharedCacheEntry original](v319, "original")[32]}];
             if ([(SharedCacheEntry *)v320 layout])
             {
               v25 = 0x1E695D000;
@@ -1761,7 +1761,7 @@ LABEL_432:
               {
                 if ((v460 & 1) == 0)
                 {
-                  [v10 setRootedCacheLibs:-[SharedCacheEntry layout](v320 count:{"layout"), -[SharedCacheEntry layoutImageCount](v320, "layoutImageCount")}];
+                  [catalogCopy setRootedCacheLibs:-[SharedCacheEntry layout](v320 count:{"layout"), -[SharedCacheEntry layoutImageCount](v320, "layoutImageCount")}];
                 }
 
                 v460 = 1;
@@ -1769,7 +1769,7 @@ LABEL_432:
 
               else
               {
-                [v10 setRootedCacheLibs:-[SharedCacheEntry layout](v320 count:{"layout"), -[SharedCacheEntry layoutImageCount](v320, "layoutImageCount")}];
+                [catalogCopy setRootedCacheLibs:-[SharedCacheEntry layout](v320 count:{"layout"), -[SharedCacheEntry layoutImageCount](v320, "layoutImageCount")}];
                 v460 = 0;
               }
 
@@ -1796,26 +1796,26 @@ LABEL_432:
           }
 
 LABEL_482:
-          v9 = v515;
+          tuningCopy = v515;
           goto LABEL_623;
         case 2310:
           v525 = v13;
-          v96 = [v530 top];
+          v96 = [array3 top];
           if (!v96 || (v97 = v96, [v96 type] != 2308))
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
           }
 
           v98 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
-          v99 = [v97 data];
-          [v99 setObject:v98 forKeyedSubscript:@"id"];
+          data20 = [v97 data];
+          [data20 setObject:v98 forKeyedSubscript:@"id"];
 
           v100 = *(ss_trace_buffer + 26);
-          v101 = [MEMORY[0x1E695DF70] array];
-          v102 = v101;
+          array10 = [MEMORY[0x1E695DF70] array];
+          v102 = array10;
           if (v100)
           {
-            [v101 addObject:@"TH_WAIT"];
+            [array10 addObject:@"TH_WAIT"];
             if ((v100 & 2) == 0)
             {
 LABEL_116:
@@ -1894,85 +1894,85 @@ LABEL_235:
           }
 
 LABEL_122:
-          v103 = [v97 data];
-          [v103 setObject:v102 forKeyedSubscript:@"state"];
+          data21 = [v97 data];
+          [data21 setObject:v102 forKeyedSubscript:@"state"];
 
           v104 = *(ss_trace_buffer + 3);
           if (v104)
           {
-            v105 = [v10 searchFrame:v104 in:v528 result:0];
-            v106 = [v97 data];
-            [v106 setObject:v105 forKeyedSubscript:@"waitEvent"];
+            v105 = [catalogCopy searchFrame:v104 in:array result:0];
+            data22 = [v97 data];
+            [data22 setObject:v105 forKeyedSubscript:@"waitEvent"];
           }
 
           v107 = [MEMORY[0x1E696AD98] numberWithShort:*(ss_trace_buffer + 57)];
-          v108 = [v97 data];
-          [v108 setObject:v107 forKeyedSubscript:@"schedPriority"];
+          data23 = [v97 data];
+          [data23 setObject:v107 forKeyedSubscript:@"schedPriority"];
 
           v109 = [MEMORY[0x1E696AD98] numberWithShort:*(ss_trace_buffer + 56)];
-          v110 = [v97 data];
-          [v110 setObject:v109 forKeyedSubscript:@"basePriority"];
+          data24 = [v97 data];
+          [data24 setObject:v109 forKeyedSubscript:@"basePriority"];
 
           if (ss_trace_buffer[117])
           {
             v111 = DecodeQOS(ss_trace_buffer[117]);
-            v112 = [v97 data];
-            [v112 setObject:v111 forKeyedSubscript:@"qosRequested"];
+            data25 = [v97 data];
+            [data25 setObject:v111 forKeyedSubscript:@"qosRequested"];
           }
 
           if (ss_trace_buffer[118])
           {
             v113 = DecodeQOS(ss_trace_buffer[118]);
-            v114 = [v97 data];
-            [v114 setObject:v113 forKeyedSubscript:@"qosOverride"];
+            data26 = [v97 data];
+            [data26 setObject:v113 forKeyedSubscript:@"qosOverride"];
           }
 
           if (ss_trace_buffer[116])
           {
             v115 = DecodeQOS(ss_trace_buffer[116]);
-            v116 = [v97 data];
-            [v116 setObject:v115 forKeyedSubscript:@"qosEffective"];
+            data27 = [v97 data];
+            [data27 setObject:v115 forKeyedSubscript:@"qosEffective"];
           }
 
           v117 = *(ss_trace_buffer + 27);
           if (v117)
           {
             v118 = DecodeThreadFlags(v117, 0);
-            v119 = [v97 data];
-            [v119 setObject:v118 forKeyedSubscript:@"schedFlags"];
+            data28 = [v97 data];
+            [data28 setObject:v118 forKeyedSubscript:@"schedFlags"];
           }
 
           v120 = *(ss_trace_buffer + 10);
           if (v120)
           {
             v121 = DecodeThreadFlags(v120, 1);
-            v122 = [v97 data];
-            [v122 setObject:v121 forKeyedSubscript:@"snapshotFlags"];
+            data29 = [v97 data];
+            [data29 setObject:v121 forKeyedSubscript:@"snapshotFlags"];
           }
 
           v123 = *(ss_trace_buffer + 4);
           if (v123)
           {
-            v124 = [v10 searchFrame:v123 in:v528 result:0];
-            v125 = [v97 data];
-            [v125 setObject:v124 forKeyedSubscript:@"continuation"];
+            v124 = [catalogCopy searchFrame:v123 in:array result:0];
+            data30 = [v97 data];
+            [data30 setObject:v124 forKeyedSubscript:@"continuation"];
           }
 
           if (ss_trace_buffer[80] < 0)
           {
             if (v491)
             {
-              v210 = [v530 parent];
-              v211 = [v97 data];
-              v212 = [v210 truncated_threads];
+              parent = [array3 parent];
+              data31 = [v97 data];
+              truncated_threads = [parent truncated_threads];
               v213 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
-              [v212 setObject:v211 forKeyedSubscript:v213];
+              [truncated_threads setObject:data31 forKeyedSubscript:v213];
             }
 
             else
             {
-              v210 = [v97 data];
-              [v210 setObject:@"Unmapped pages caused truncated backtrace (resampling disabled)" forKeyedSubscript:@"notice"];
+              parent = [v97 data];
+              [parent setObject:@"Unmapped pages caused truncated backtrace (resampling disabled)" forKeyedSubscript:@"notice"];
             }
 
             v126 = v511;
@@ -1997,8 +1997,8 @@ LABEL_122:
           }
 
           v250 = [MEMORY[0x1E696AD98] numberWithDouble:v249 / 1000000000.0];
-          v251 = [v97 data];
-          [v251 setObject:v250 forKeyedSubscript:@"userTime"];
+          data32 = [v97 data];
+          [data32 setObject:v250 forKeyedSubscript:@"userTime"];
 
           v252 = *(ss_trace_buffer + 9);
           if (v126)
@@ -2007,10 +2007,10 @@ LABEL_122:
           }
 
           v253 = [MEMORY[0x1E696AD98] numberWithDouble:v252 / 1000000000.0];
-          v254 = [v97 data];
-          [v254 setObject:v253 forKeyedSubscript:@"systemTime"];
+          data33 = [v97 data];
+          [data33 setObject:v253 forKeyedSubscript:@"systemTime"];
 
-          v255 = v529->_capture_absoluteTime - *(ss_trace_buffer + 11);
+          v255 = selfCopy->_capture_absoluteTime - *(ss_trace_buffer + 11);
           if (v126)
           {
             v255 = v255 * *v126 / v126[1];
@@ -2018,31 +2018,31 @@ LABEL_122:
 
           v25 = 0x1E695D000;
           v256 = [MEMORY[0x1E696AD98] numberWithDouble:v255 / 1000000000.0];
-          v257 = [v97 data];
-          [v257 setObject:v256 forKeyedSubscript:@"lastRunTime"];
+          data34 = [v97 data];
+          [data34 setObject:v256 forKeyedSubscript:@"lastRunTime"];
 
           v258 = *(ss_trace_buffer + 12);
           if (v258 != -1)
           {
-            v259 = v529->_capture_absoluteTime - v258;
+            v259 = selfCopy->_capture_absoluteTime - v258;
             if (v511)
             {
               v259 = v259 * *v511 / v511[1];
             }
 
             v260 = [MEMORY[0x1E696AD98] numberWithDouble:v259 / 1000000000.0];
-            v261 = [v97 data];
-            [v261 setObject:v260 forKeyedSubscript:@"lastMadeRunnableTime"];
+            data35 = [v97 data];
+            [data35 setObject:v260 forKeyedSubscript:@"lastMadeRunnableTime"];
           }
 
           v504 = (v504 + 1);
           v507 += v247;
           v506 += v248;
 
-          v10 = v519;
+          catalogCopy = v519;
           v13 = v525;
 LABEL_334:
-          self = v529;
+          self = selfCopy;
           goto LABEL_623;
         case 2312:
         case 2319:
@@ -2059,7 +2059,7 @@ LABEL_334:
           goto LABEL_623;
         case 2313:
           v91 = v13;
-          v132 = [v530 top];
+          v132 = [array3 top];
           if ([v132 type] != 2308)
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
@@ -2077,13 +2077,13 @@ LABEL_334:
             v135 = @"<unprintable>";
           }
 
-          v136 = [v132 data];
-          v137 = v136;
+          data36 = [v132 data];
+          v137 = data36;
           v138 = v135;
           v139 = @"name";
           goto LABEL_164;
         case 2318:
-          if (!v505)
+          if (!appleInternal)
           {
             goto LABEL_623;
           }
@@ -2105,14 +2105,14 @@ LABEL_334:
           goto LABEL_623;
         case 2329:
           v129 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
-          [(CDStackshotReport *)self addCustomField:"user_usec" value:v129 into:v530];
+          [(CDStackshotReport *)self addCustomField:"user_usec" value:v129 into:array3];
 
           v25 = 0x1E695D000;
           v49 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 3)];
-          v73 = self;
+          selfCopy4 = self;
           v72 = "system_usec";
           v130 = v49;
-          v131 = v530;
+          v131 = array3;
           goto LABEL_455;
         case 2330:
           v174 = *(ss_trace_buffer + 2);
@@ -2122,7 +2122,7 @@ LABEL_334:
           }
 
           v175 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v174];
-          [(CDStackshotReport *)self addCustomField:"stackshot_duration_nsec" value:v175 into:v530];
+          [(CDStackshotReport *)self addCustomField:"stackshot_duration_nsec" value:v175 into:array3];
 
           v176 = *(ss_trace_buffer + 3);
           if (v511)
@@ -2132,7 +2132,7 @@ LABEL_334:
 
           v25 = 0x1E695D000;
           v177 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v176];
-          [(CDStackshotReport *)self addCustomField:"stackshot_duration_outer_nsec" value:v177 into:v530];
+          [(CDStackshotReport *)self addCustomField:"stackshot_duration_outer_nsec" value:v177 into:array3];
 
           v178 = *ss_trace_buffer;
           if ((*ss_trace_buffer & 0xFFFFFFF0) == 0x20)
@@ -2208,11 +2208,11 @@ LABEL_451:
           }
 
           v49 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v321];
-          v73 = self;
+          selfCopy4 = self;
           v72 = "stackshot_duration_prior_nsec";
           goto LABEL_454;
         case 2337:
-          v171 = [v530 top];
+          v171 = [array3 top];
           if (!v171 || (v49 = v171, [v171 type] != 2307) && objc_msgSend(v49, "type") != 2353)
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
@@ -2287,19 +2287,19 @@ LABEL_462:
 LABEL_463:
           [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
           v323 = v322 = v13;
-          v324 = [v49 data];
-          v325 = v324;
+          data37 = [v49 data];
+          v325 = data37;
           v326 = v323;
           v327 = @"jetsamCoalition";
 LABEL_477:
-          [v324 setObject:v326 forKeyedSubscript:v327];
+          [data37 setObject:v326 forKeyedSubscript:v327];
 
           v25 = 0x1E695D000;
           v13 = v322;
           goto LABEL_478;
         case 2344:
           v91 = v13;
-          v132 = [v530 top];
+          v132 = [array3 top];
           if ([v132 type] != 2308)
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
@@ -2317,52 +2317,52 @@ LABEL_477:
             v170 = @"<unknown>";
           }
 
-          v136 = [v132 data];
-          v137 = v136;
+          data36 = [v132 data];
+          v137 = data36;
           v138 = v170;
           v139 = @"dispatch_queue_label";
 LABEL_164:
-          [v136 setObject:v138 forKeyedSubscript:v139];
+          [data36 setObject:v138 forKeyedSubscript:v139];
 
-          self = v529;
+          self = selfCopy;
           goto LABEL_467;
         case 2352:
           v154 = v13;
-          v155 = [v530 top];
+          v155 = [array3 top];
           if (!v155 || (v156 = v155, [v155 type] != 2353))
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
           }
 
           [v156 setPid:*(ss_trace_buffer + 10)];
-          v157 = [MEMORY[0x1E695DF90] dictionary];
-          v158 = [v156 data];
-          [v158 setObject:v157 forKeyedSubscript:@"threadById"];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          data38 = [v156 data];
+          [data38 setObject:dictionary2 forKeyedSubscript:@"threadById"];
 
           v159 = [MEMORY[0x1E696AD98] numberWithInt:*(ss_trace_buffer + 10)];
-          v160 = [v156 data];
-          [v160 setObject:v159 forKeyedSubscript:@"pid"];
+          data39 = [v156 data];
+          [data39 setObject:v159 forKeyedSubscript:@"pid"];
 
           v161 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ss_trace_buffer + 44];
-          v162 = [v156 data];
-          [v162 setObject:v161 forKeyedSubscript:@"procname"];
+          data40 = [v156 data];
+          [data40 setObject:v161 forKeyedSubscript:@"procname"];
 
           v163 = *(&self->super.super.isa + *MEMORY[0x1E69B7C30]);
           v164 = MEMORY[0x1E696AEC0];
-          v165 = [v156 data];
-          v166 = [v165 objectForKeyedSubscript:@"pid"];
+          data41 = [v156 data];
+          v166 = [data41 objectForKeyedSubscript:@"pid"];
           v167 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 4)];
-          v168 = [v164 stringWithFormat:@"Process %@ is in transition type %@", v166, v167];
-          [v163 addObject:v168];
+          v167 = [v164 stringWithFormat:@"Process %@ is in transition type %@", v166, v167];
+          [v163 addObject:v167];
 
-          self = v529;
-          v10 = v519;
+          self = selfCopy;
+          catalogCopy = v519;
           v13 = v154;
           v25 = 0x1E695D000;
-          v9 = v515;
+          tuningCopy = v515;
           goto LABEL_623;
         case 2360:
-          v74 = [v530 top];
+          v74 = [array3 top];
           if (!v74 || (v49 = v74, [v74 type] != 2307))
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
@@ -2381,8 +2381,8 @@ LABEL_164:
           }
 
           v76 = [MEMORY[0x1E696AD98] numberWithDouble:v75 / 1000000000.0];
-          v77 = [v49 data];
-          [v77 setObject:v76 forKeyedSubscript:@"suspensionLastStart"];
+          data42 = [v49 data];
+          [data42 setObject:v76 forKeyedSubscript:@"suspensionLastStart"];
 
           v78 = *(ss_trace_buffer + 3);
           if (v511)
@@ -2391,8 +2391,8 @@ LABEL_164:
           }
 
           v79 = [MEMORY[0x1E696AD98] numberWithDouble:v78 / 1000000000.0];
-          v80 = [v49 data];
-          [v80 setObject:v79 forKeyedSubscript:@"suspensionLastEnd"];
+          data43 = [v49 data];
+          [data43 setObject:v79 forKeyedSubscript:@"suspensionLastEnd"];
 
           v81 = *(ss_trace_buffer + 5);
           if (v511)
@@ -2401,12 +2401,12 @@ LABEL_164:
           }
 
           v82 = [MEMORY[0x1E696AD98] numberWithDouble:v81 / 1000000000.0];
-          v83 = [v49 data];
-          [v83 setObject:v82 forKeyedSubscript:@"suspensionDuration"];
+          data44 = [v49 data];
+          [data44 setObject:v82 forKeyedSubscript:@"suspensionDuration"];
 
           v84 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 4)];
-          v85 = [v49 data];
-          [v85 setObject:v84 forKeyedSubscript:@"suspensionCount"];
+          data45 = [v49 data];
+          [data45 setObject:v84 forKeyedSubscript:@"suspensionCount"];
 
           v13 = v523;
 LABEL_140:
@@ -2414,9 +2414,9 @@ LABEL_140:
           goto LABEL_478;
         case 2371:
           v91 = v13;
-          if ([v530 count])
+          if ([array3 count])
           {
-            v93 = [v530 top];
+            v93 = [array3 top];
           }
 
           else
@@ -2438,7 +2438,7 @@ LABEL_140:
             v217 = v215;
 
             v513 = v217;
-            self = v529;
+            self = selfCopy;
           }
 
           goto LABEL_250;
@@ -2453,10 +2453,10 @@ LABEL_140:
           {
             v184 = v181;
 
-            if ([v530 count])
+            if ([array3 count])
             {
-              v185 = [v530 top];
-              v186 = v505;
+              v185 = [array3 top];
+              v186 = appleInternal;
               if (!v185)
               {
                 v186 = 0;
@@ -2473,11 +2473,11 @@ LABEL_140:
                 v187 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SharedCacheEntry original](v184, "original")[32]}];
                 v561[1] = v187;
                 v188 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v561 forKeys:v560 count:2];
-                v189 = [v185 data];
-                [v189 setObject:v188 forKeyedSubscript:@"taskSpecificSharedCache"];
+                data46 = [v185 data];
+                [data46 setObject:v188 forKeyedSubscript:@"taskSpecificSharedCache"];
 
-                v9 = v515;
-                v10 = v519;
+                tuningCopy = v515;
+                catalogCopy = v519;
               }
             }
 
@@ -2497,39 +2497,39 @@ LABEL_140:
             v184 = v516;
           }
 
-          self = v529;
+          self = selfCopy;
 
           v516 = v184;
           goto LABEL_467;
         case 2374:
           v147 = v13;
-          v148 = [v530 top];
+          v148 = [array3 top];
           if (!v148 || (v149 = v148, [v148 type] != 2307))
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
           }
 
           v150 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
-          v151 = [v149 data];
-          [v151 setObject:v150 forKeyedSubscript:@"csFlags"];
+          data47 = [v149 data];
+          [data47 setObject:v150 forKeyedSubscript:@"csFlags"];
 
           v152 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(ss_trace_buffer + 6)];
-          v153 = [v149 data];
-          [v153 setObject:v152 forKeyedSubscript:@"csTrustLevel"];
+          data48 = [v149 data];
+          [data48 setObject:v152 forKeyedSubscript:@"csTrustLevel"];
 
           v13 = v147;
           goto LABEL_468;
         case 2376:
           v91 = v13;
-          v92 = [v530 top];
+          v92 = [array3 top];
           if (!v92 || (v93 = v92, [v92 type] != 2308))
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
           }
 
           v94 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
-          v95 = [v93 data];
-          [v95 setObject:v94 forKeyedSubscript:@"exclaveScid"];
+          data49 = [v93 data];
+          [data49 setObject:v94 forKeyedSubscript:@"exclaveScid"];
 
           v492 = *(ss_trace_buffer + 6);
 LABEL_250:
@@ -2564,7 +2564,7 @@ LABEL_61:
             goto LABEL_623;
           }
 
-          v190 = [v530 top];
+          v190 = [array3 top];
           if (!v190 || (v49 = v190, [v190 type] != 2307))
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
@@ -2611,8 +2611,8 @@ LABEL_469:
 LABEL_476:
             [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
             v323 = v322 = v13;
-            v324 = [v49 data];
-            v325 = v324;
+            data37 = [v49 data];
+            v325 = data37;
             v326 = v323;
             v327 = @"codeSigningAuxiliaryInfo";
             goto LABEL_477;
@@ -2653,7 +2653,7 @@ LABEL_475:
       {
         if (v28 == 20)
         {
-          v54 = [v530 pop];
+          v54 = [array3 pop];
           v55 = *(ss_trace_buffer + 1);
           if (v55 != [v54 tag])
           {
@@ -2664,9 +2664,9 @@ LABEL_475:
           {
             if ([v54 type] == 2307 || objc_msgSend(v54, "type") == 2353)
             {
-              v193 = [v54 data];
+              data50 = [v54 data];
 
-              if (v193)
+              if (data50)
               {
                 v521 = v13;
                 v194 = v507;
@@ -2676,8 +2676,8 @@ LABEL_475:
                 }
 
                 v195 = [MEMORY[0x1E696AD98] numberWithDouble:v194 / 1000000000.0];
-                v196 = [v54 data];
-                [v196 setObject:v195 forKeyedSubscript:@"userTimeTask"];
+                data51 = [v54 data];
+                [data51 setObject:v195 forKeyedSubscript:@"userTimeTask"];
 
                 v197 = v506;
                 if (v511)
@@ -2686,60 +2686,60 @@ LABEL_475:
                 }
 
                 v198 = [MEMORY[0x1E696AD98] numberWithDouble:v197 / 1000000000.0];
-                v199 = [v54 data];
-                [v199 setObject:v198 forKeyedSubscript:@"systemTimeTask"];
+                data52 = [v54 data];
+                [data52 setObject:v198 forKeyedSubscript:@"systemTimeTask"];
 
                 if ([v54 unindexed_frames])
                 {
                   v200 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v54, "unindexed_frames")}];
-                  v201 = [v54 data];
-                  [v201 setObject:v200 forKeyedSubscript:@"unindexed_frames"];
+                  data53 = [v54 data];
+                  [data53 setObject:v200 forKeyedSubscript:@"unindexed_frames"];
 
                   v496 = [v54 unindexed_frames] + v496;
                   v202 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v54, "pid")}];
-                  [v502 addObject:v202];
+                  [array6 addObject:v202];
                 }
 
-                v203 = [v54 truncated_threads];
-                v204 = [v203 count];
+                truncated_threads2 = [v54 truncated_threads];
+                v204 = [truncated_threads2 count];
 
-                if (v204 && ([MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v54, "pid")}], v205 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v503, "addObject:", v205), v205, (excludeSection(v9, @"stackResampling") & 1) == 0))
+                if (v204 && ([MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v54, "pid")}], v205 = objc_claimAutoreleasedReturnValue(), objc_msgSend(array4, "addObject:", v205), v205, (excludeSection(tuningCopy, @"stackResampling") & 1) == 0))
                 {
                   v335 = [v54 pid];
-                  v336 = [v54 truncated_threads];
-                  v206 = [(CDStackshotReport *)self resampleTruncatedBacktracesForTask:v335 forThreads:v336 usingCatalog:v10 in:v528 usingSymbolicator:v494, v493];
+                  truncated_threads3 = [v54 truncated_threads];
+                  v493 = [(CDStackshotReport *)self resampleTruncatedBacktracesForTask:v335 forThreads:truncated_threads3 usingCatalog:catalogCopy in:array usingSymbolicator:v494, v493];
 
-                  if (v206)
+                  if (v493)
                   {
-                    v337 = [MEMORY[0x1E696AD98] numberWithInt:v206];
-                    v338 = [v54 data];
-                    [v338 setObject:v337 forKeyedSubscript:@"unindexed_rs_frames"];
+                    v337 = [MEMORY[0x1E696AD98] numberWithInt:v493];
+                    data54 = [v54 data];
+                    [data54 setObject:v337 forKeyedSubscript:@"unindexed_rs_frames"];
 
-                    v495 = (v206 + v495);
-                    v206 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v54, "pid")}];
-                    [v500 addObject:v206];
+                    v495 = (v493 + v495);
+                    v493 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v54, "pid")}];
+                    [array7 addObject:v493];
 
-                    LODWORD(v206) = 1;
+                    LODWORD(v493) = 1;
                   }
                 }
 
                 else
                 {
-                  LODWORD(v206) = 0;
+                  LODWORD(v493) = 0;
                 }
 
-                if (v505 && (([v54 unindexed_frames] == 0) & ~v206) == 0)
+                if (appleInternal && (([v54 unindexed_frames] == 0) & ~v493) == 0)
                 {
-                  v339 = [v528 valueForKey:@"details"];
-                  v340 = [v54 data];
-                  [v340 setObject:v339 forKeyedSubscript:@"process_images"];
+                  v339 = [array valueForKey:@"details"];
+                  data55 = [v54 data];
+                  [data55 setObject:v339 forKeyedSubscript:@"process_images"];
                 }
 
                 if ([v54 invalid_images])
                 {
                   v341 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v54, "invalid_images")}];
-                  v342 = [v54 data];
-                  [v342 setObject:v341 forKeyedSubscript:@"invalid_images"];
+                  data56 = [v54 data];
+                  [data56 setObject:v341 forKeyedSubscript:@"invalid_images"];
 
                   v485 = [v54 invalid_images] + v485;
                 }
@@ -2754,11 +2754,11 @@ LABEL_475:
 
                 v498 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v54, "pid")];
                 v550[0] = v498;
-                v344 = [v54 data];
-                v551[0] = v344;
+                data57 = [v54 data];
+                v551[0] = data57;
                 v550[1] = &unk_1F5514480;
                 v345 = MEMORY[0x1E696AD98];
-                pid = v529->_pid;
+                pid = selfCopy->_pid;
                 v347 = [v54 pid];
                 if (pid == v347)
                 {
@@ -2767,11 +2767,11 @@ LABEL_475:
 
                 else
                 {
-                  v349 = v529->_frontmostPids;
+                  v349 = selfCopy->_frontmostPids;
                   v350 = MEMORY[0x1E696AD98];
                   v351 = [v54 pid];
                   v352 = v350;
-                  v9 = v515;
+                  tuningCopy = v515;
                   v452 = [v352 numberWithInt:v351];
                   v348 = [(NSMutableArray *)v349 containsObject:?];
                 }
@@ -2786,7 +2786,7 @@ LABEL_475:
                 }
 
                 v497 = 1;
-                v10 = v519;
+                catalogCopy = v519;
                 goto LABEL_621;
               }
             }
@@ -2796,9 +2796,9 @@ LABEL_475:
               v328 = MEMORY[0x1E69E9C10];
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
               {
-                v329 = [v54 type];
+                type = [v54 type];
                 *out = 67109120;
-                *&out[4] = v329;
+                *&out[4] = type;
                 _os_log_impl(&dword_1D97FA000, v328, OS_LOG_TYPE_DEFAULT, "Unknown KCDATA CONTAINER %X", out, 8u);
               }
             }
@@ -2808,17 +2808,17 @@ LABEL_622:
             goto LABEL_623;
           }
 
-          if (![v530 count])
+          if (![array3 count])
           {
             [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
           }
 
           v521 = v13;
-          v56 = [v54 data];
-          v57 = [v56 objectForKeyedSubscript:@"id"];
+          data58 = [v54 data];
+          v57 = [data58 objectForKeyedSubscript:@"id"];
 
-          v58 = [v54 data];
-          v59 = [v58 objectForKeyedSubscript:@"exclaveScid"];
+          data59 = [v54 data];
+          v59 = [data59 objectForKeyedSubscript:@"exclaveScid"];
 
           if (!v59)
           {
@@ -2826,65 +2826,65 @@ LABEL_622:
           }
 
           v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%llX", objc_msgSend(v59, "unsignedLongLongValue")];
-          v61 = [v54 data];
-          [v61 setObject:v60 forKeyedSubscript:@"exclaveScid"];
+          data60 = [v54 data];
+          [data60 setObject:v60 forKeyedSubscript:@"exclaveScid"];
 
           [v508 setThreadId:v57 withScId:v59];
-          v62 = [v508 getFramesForThread:v57 usingCatalog:v10];
+          v62 = [v508 getFramesForThread:v57 usingCatalog:catalogCopy];
           if (![v62 count])
           {
             goto LABEL_617;
           }
 
-          v63 = [v54 data];
-          v64 = [v63 objectForKeyedSubscript:@"kernelFrames"];
+          data61 = [v54 data];
+          v64 = [data61 objectForKeyedSubscript:@"kernelFrames"];
 
-          v65 = [MEMORY[0x1E695DF70] array];
+          array11 = [MEMORY[0x1E695DF70] array];
           v488 = v57;
           if ([v64 count] < v492)
           {
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
-              v418 = [v57 unsignedLongLongValue];
+              unsignedLongLongValue = [v57 unsignedLongLongValue];
               *out = 67109376;
               *&out[4] = v492;
               *&out[8] = 2048;
-              *&out[10] = v418;
+              *&out[10] = unsignedLongLongValue;
               _os_log_error_impl(&dword_1D97FA000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Exclave frames offset of %d for thread %llu is invalid", out, 0x12u);
             }
 
-            v66 = *(&v529->super.super.isa + *MEMORY[0x1E69B7C30]);
-            v67 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Thread %llu with %lu kernel frames has exclave frames but invalid exclave frame offset of %d. Skipping adding exclave frames into kernel frames ", objc_msgSend(v57, "unsignedLongLongValue"), objc_msgSend(v64, "count"), v492];
-            [v66 addObject:v67];
-            v9 = v515;
+            v66 = *(&selfCopy->super.super.isa + *MEMORY[0x1E69B7C30]);
+            v492 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Thread %llu with %lu kernel frames has exclave frames but invalid exclave frame offset of %d. Skipping adding exclave frames into kernel frames ", objc_msgSend(v57, "unsignedLongLongValue"), objc_msgSend(v64, "count"), v492];
+            [v66 addObject:v492];
+            tuningCopy = v515;
 LABEL_616:
 
             v57 = v488;
 LABEL_617:
 
-            v10 = v519;
+            catalogCopy = v519;
 LABEL_618:
-            v410 = [v530 top];
-            v411 = [v410 data];
+            v410 = [array3 top];
+            data62 = [v410 data];
 
-            if (v411)
+            if (data62)
             {
-              v412 = [v410 data];
-              [v412 objectForKeyedSubscript:@"threadById"];
+              data63 = [v410 data];
+              [data63 objectForKeyedSubscript:@"threadById"];
               v413 = v59;
               v415 = v414 = v57;
 
-              v416 = [v54 data];
-              v417 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v414];
-              [v415 setObject:v416 forKeyedSubscript:v417];
+              data64 = [v54 data];
+              v414 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v414];
+              [v415 setObject:data64 forKeyedSubscript:v414];
 
-              v10 = v519;
+              catalogCopy = v519;
               v57 = v414;
               v59 = v413;
             }
 
 LABEL_621:
-            self = v529;
+            self = selfCopy;
             v13 = v521;
             v25 = 0x1E695D000;
             goto LABEL_622;
@@ -2899,11 +2899,11 @@ LABEL_621:
               {
                 if (v492 == v330)
                 {
-                  [v65 addObjectsFromArray:v62];
+                  [array11 addObjectsFromArray:v62];
                 }
 
                 v331 = [v64 objectAtIndexedSubscript:v330];
-                [v65 addObject:v331];
+                [array11 addObject:v331];
 
                 ++v330;
               }
@@ -2913,16 +2913,16 @@ LABEL_621:
 
             if ([v64 count] == v492)
             {
-              [v65 addObjectsFromArray:v62];
+              [array11 addObjectsFromArray:v62];
             }
 
-            v9 = v515;
+            tuningCopy = v515;
             if (!v492)
             {
-              v332 = *(&v529->super.super.isa + *MEMORY[0x1E69B7C30]);
+              v332 = *(&selfCopy->super.super.isa + *MEMORY[0x1E69B7C30]);
               v333 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Thread %llu has an incorrect exclave frame offset %d", objc_msgSend(v488, "unsignedLongLongValue"), 0];
               v334 = v332;
-              v9 = v515;
+              tuningCopy = v515;
               [v334 addObject:v333];
               goto LABEL_614;
             }
@@ -2932,15 +2932,15 @@ LABEL_621:
           {
             v408 = v62;
 
-            v409 = *(&v529->super.super.isa + *MEMORY[0x1E69B7C30]);
+            v409 = *(&selfCopy->super.super.isa + *MEMORY[0x1E69B7C30]);
             v333 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Thread %llu has exclave frames but no kernel frames", objc_msgSend(v57, "unsignedLongLongValue")];
             [v409 addObject:v333];
-            v65 = v408;
+            array11 = v408;
 LABEL_614:
           }
 
-          v67 = [v54 data];
-          [v67 setObject:v65 forKeyedSubscript:@"kernelFrames"];
+          v492 = [v54 data];
+          [v492 setObject:array11 forKeyedSubscript:@"kernelFrames"];
           goto LABEL_616;
         }
 
@@ -2963,7 +2963,7 @@ LABEL_614:
             *(&self->super.super.isa + *MEMORY[0x1E69B7C18]) = *(ss_trace_buffer + 2) / 1000000.0 - v24;
             break;
           case 0x840:
-            v48 = [v530 top];
+            v48 = [array3 top];
             if (!v48 || (v49 = v48, [v48 type] != 2307))
             {
               [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
@@ -3025,16 +3025,16 @@ LABEL_341:
 LABEL_342:
                 [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 2)];
                 v263 = v262 = v13;
-                v264 = [v49 data];
-                [v264 setObject:v263 forKeyedSubscript:@"jitStartAddress"];
+                data65 = [v49 data];
+                [data65 setObject:v263 forKeyedSubscript:@"jitStartAddress"];
 
                 v265 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(ss_trace_buffer + 3)];
-                v266 = [v49 data];
-                [v266 setObject:v265 forKeyedSubscript:@"jitEndAddress"];
+                data66 = [v49 data];
+                [data66 setObject:v265 forKeyedSubscript:@"jitEndAddress"];
 
                 v25 = 0x1E695D000;
                 v13 = v262;
-                [v528 addJITImage:*(ss_trace_buffer + 2) size:*(ss_trace_buffer + 3) - *(ss_trace_buffer + 2)];
+                [array addJITImage:*(ss_trace_buffer + 2) size:*(ss_trace_buffer + 3) - *(ss_trace_buffer + 2)];
                 goto LABEL_478;
               }
 
@@ -3080,12 +3080,12 @@ LABEL_335:
 LABEL_86:
           v49 = v52;
           v72 = ss_trace_buffer + 16;
-          v73 = self;
+          selfCopy4 = self;
 LABEL_454:
           v130 = v49;
-          v131 = v530;
+          v131 = array3;
 LABEL_455:
-          [(CDStackshotReport *)v73 addCustomField:v72 value:v130 into:v131];
+          [(CDStackshotReport *)selfCopy4 addCustomField:v72 value:v130 into:v131];
 LABEL_478:
         }
       }
@@ -3110,7 +3110,7 @@ LABEL_478:
           v480 = v68;
           if (v27 != 17)
           {
-            v70 = v530;
+            v70 = array3;
             if (!v68)
             {
               goto LABEL_490;
@@ -3120,7 +3120,7 @@ LABEL_478:
             goto LABEL_520;
           }
 
-          v70 = v530;
+          v70 = array3;
           if (SHIDWORD(v68) > 2313)
           {
             if (SHIDWORD(v68) <= 2315)
@@ -3212,13 +3212,13 @@ LABEL_520:
                     [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
                   }
 
-                  v356 = [v490 data];
+                  data67 = [v490 data];
 
-                  if (v356)
+                  if (data67)
                   {
-                    v357 = [MEMORY[0x1E695DF70] array];
-                    v358 = [v490 data];
-                    [v358 setObject:v357 forKeyedSubscript:@"donatingPids"];
+                    array12 = [MEMORY[0x1E695DF70] array];
+                    data68 = [v490 data];
+                    [data68 setObject:array12 forKeyedSubscript:@"donatingPids"];
 
                     if (v480)
                     {
@@ -3228,7 +3228,7 @@ LABEL_520:
                       {
                         v361 = *v359++;
                         v362 = [MEMORY[0x1E696AD98] numberWithInt:v361];
-                        [v357 addObject:v362];
+                        [array12 addObject:v362];
 
                         --v360;
                       }
@@ -3236,7 +3236,7 @@ LABEL_520:
                       while (v360);
                     }
 
-                    self = v529;
+                    self = selfCopy;
                     v25 = 0x1E695D000;
                     v355 = v490;
                   }
@@ -3250,7 +3250,7 @@ LABEL_612:
                 NSLog(&cfstr_UnknownKcdataA.isa, v69, v480, v407, *(ss_trace_buffer + 1));
 LABEL_611:
 
-                v9 = v515;
+                tuningCopy = v515;
                 v13 = v522;
                 break;
               }
@@ -3271,9 +3271,9 @@ LABEL_573:
                 [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
               }
 
-              v393 = [MEMORY[0x1E695DF70] array];
-              v394 = [v490 data];
-              [v394 setObject:v393 forKeyedSubscript:@"kernelFrames"];
+              array13 = [MEMORY[0x1E695DF70] array];
+              data69 = [v490 data];
+              [data69 setObject:array13 forKeyedSubscript:@"kernelFrames"];
 
               if (v480)
               {
@@ -3282,8 +3282,8 @@ LABEL_573:
                 do
                 {
                   v397 = *v395++;
-                  v398 = [v10 searchFrame:v397 in:v528 result:0];
-                  [v393 addObject:v398];
+                  v398 = [catalogCopy searchFrame:v397 in:array result:0];
+                  [array13 addObject:v398];
 
                   --v396;
                 }
@@ -3301,10 +3301,10 @@ LABEL_573:
                   [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
                 }
 
-                v368 = [v530 parent];
-                v369 = [MEMORY[0x1E695DF70] array];
-                v370 = [v490 data];
-                [v370 setObject:v369 forKeyedSubscript:@"userFrames"];
+                parent2 = [array3 parent];
+                array14 = [MEMORY[0x1E695DF70] array];
+                data70 = [v490 data];
+                [data70 setObject:array14 forKeyedSubscript:@"userFrames"];
 
                 if (v480)
                 {
@@ -3316,13 +3316,13 @@ LABEL_573:
                     v374 = v371;
                     v375 = *v372;
                     v531 = v371;
-                    v376 = [v519 searchFrame:v375 in:v528 result:&v531];
+                    v376 = [v519 searchFrame:v375 in:array result:&v531];
                     v371 = v531;
 
-                    [v369 addObject:v376];
+                    [array14 addObject:v376];
                     if (!v371 && *v372)
                     {
-                      [v368 setUnindexed_frames:{objc_msgSend(v368, "unindexed_frames") + 1}];
+                      [parent2 setUnindexed_frames:{objc_msgSend(parent2, "unindexed_frames") + 1}];
                     }
 
                     ++v372;
@@ -3341,9 +3341,9 @@ LABEL_573:
                 [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
               }
 
-              v393 = [MEMORY[0x1E695DF70] array];
-              v402 = [v490 data];
-              [v402 setObject:v393 forKeyedSubscript:@"kernelFrames"];
+              array13 = [MEMORY[0x1E695DF70] array];
+              data71 = [v490 data];
+              [data71 setObject:array13 forKeyedSubscript:@"kernelFrames"];
 
               if (v480)
               {
@@ -3352,8 +3352,8 @@ LABEL_573:
                 do
                 {
                   v405 = *v403++;
-                  v406 = [v10 searchFrame:v405 in:v528 result:0];
-                  [v393 addObject:v406];
+                  v406 = [catalogCopy searchFrame:v405 in:array result:0];
+                  [array13 addObject:v406];
 
                   --v404;
                 }
@@ -3362,7 +3362,7 @@ LABEL_573:
               }
             }
 
-            self = v529;
+            self = selfCopy;
 LABEL_610:
             v25 = 0x1E695D000;
             goto LABEL_611;
@@ -3382,7 +3382,7 @@ LABEL_610:
                     [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
                   }
 
-                  v377 = [MEMORY[0x1E695DF70] array];
+                  array15 = [MEMORY[0x1E695DF70] array];
                   if (v480)
                   {
                     v378 = v480;
@@ -3391,15 +3391,15 @@ LABEL_610:
                     {
                       if (*(v379 - 12) && *(v379 - 1) && *v379 && *(v379 - 20))
                       {
-                        v380 = [MEMORY[0x1E695DF90] dictionary];
+                        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
                         v381 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v379 - 12)];
-                        [v380 setObject:v381 forKeyedSubscript:@"suspensionThreadID"];
+                        [dictionary3 setObject:v381 forKeyedSubscript:@"suspensionThreadID"];
 
                         v382 = [MEMORY[0x1E696AD98] numberWithInt:*(v379 - 1)];
-                        [v380 setObject:v382 forKeyedSubscript:@"suspensionProcID"];
+                        [dictionary3 setObject:v382 forKeyedSubscript:@"suspensionProcID"];
 
                         v383 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v379];
-                        [v380 setObject:v383 forKeyedSubscript:@"suspensionProcName"];
+                        [dictionary3 setObject:v383 forKeyedSubscript:@"suspensionProcName"];
 
                         v384 = *(v379 - 20);
                         if (v511)
@@ -3408,10 +3408,10 @@ LABEL_610:
                         }
 
                         v385 = [MEMORY[0x1E696AD98] numberWithDouble:v384 / 1000000000.0];
-                        [v380 setObject:v385 forKeyedSubscript:@"suspensionTime"];
+                        [dictionary3 setObject:v385 forKeyedSubscript:@"suspensionTime"];
 
-                        [v377 addObject:v380];
-                        self = v529;
+                        [array15 addObject:dictionary3];
+                        self = selfCopy;
                         v25 = 0x1E695D000;
                         v355 = v490;
                       }
@@ -3423,13 +3423,13 @@ LABEL_610:
                     while (v378);
                   }
 
-                  if ([v377 count])
+                  if ([array15 count])
                   {
-                    v386 = [v355 data];
-                    [v386 setObject:v377 forKeyedSubscript:@"suspensionSources"];
+                    data72 = [v355 data];
+                    [data72 setObject:array15 forKeyedSubscript:@"suspensionSources"];
                   }
 
-                  v10 = v519;
+                  catalogCopy = v519;
                   goto LABEL_611;
                 }
 
@@ -3445,15 +3445,15 @@ LABEL_610:
               [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
             }
 
-            v399 = [v490 data];
+            data73 = [v490 data];
 
-            if (!v399)
+            if (!data73)
             {
               goto LABEL_611;
             }
 
-            v400 = [v490 data];
-            [v400 addTurnstileInfoDesc:ss_trace_buffer + 16 count:v480 elSize:v71];
+            data74 = [v490 data];
+            [data74 addTurnstileInfoDesc:ss_trace_buffer + 16 count:v480 elSize:v71];
           }
 
           else
@@ -3465,10 +3465,10 @@ LABEL_610:
                 [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
               }
 
-              v368 = [v70 parent];
-              v369 = [MEMORY[0x1E695DF70] array];
-              v387 = [v490 data];
-              [v387 setObject:v369 forKeyedSubscript:@"userFrames"];
+              parent2 = [v70 parent];
+              array14 = [MEMORY[0x1E695DF70] array];
+              data75 = [v490 data];
+              [data75 setObject:array14 forKeyedSubscript:@"userFrames"];
 
               v355 = v490;
               if (v480)
@@ -3481,13 +3481,13 @@ LABEL_610:
                   v390 = v371;
                   v391 = *v388;
                   v532 = v371;
-                  v392 = [v519 searchFrame:v391 in:v528 result:&v532];
+                  v392 = [v519 searchFrame:v391 in:array result:&v532];
                   v371 = v532;
 
-                  [v369 addObject:v392];
+                  [array14 addObject:v392];
                   if (!v371 && *v388)
                   {
-                    [v368 setUnindexed_frames:{objc_msgSend(v368, "unindexed_frames") + 1}];
+                    [parent2 setUnindexed_frames:{objc_msgSend(parent2, "unindexed_frames") + 1}];
                   }
 
                   ++v388;
@@ -3497,13 +3497,13 @@ LABEL_610:
                 while (v389);
 LABEL_585:
 
-                self = v529;
+                self = selfCopy;
                 v355 = v490;
               }
 
 LABEL_586:
 
-              v10 = v519;
+              catalogCopy = v519;
               goto LABEL_610;
             }
 
@@ -3533,7 +3533,7 @@ LABEL_586:
                 [CDStackshotReport decodeKCDataWithBlock:v556 withTuning:v363 usingCatalog:&v557];
               }
 
-              self = v529;
+              self = selfCopy;
               goto LABEL_610;
             }
 
@@ -3543,35 +3543,35 @@ LABEL_586:
               [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
             }
 
-            v401 = [v490 data];
+            data76 = [v490 data];
 
-            if (!v401)
+            if (!data76)
             {
               goto LABEL_611;
             }
 
-            v400 = [v490 data];
-            [v400 addWaitInfoDesc:ss_trace_buffer + 16 count:v480 elSize:v71];
+            data74 = [v490 data];
+            [data74 addWaitInfoDesc:ss_trace_buffer + 16 count:v480 elSize:v71];
           }
 
           goto LABEL_611;
         case 0x13:
           v45 = [objc_alloc(MEMORY[0x1E69B7BE8]) initWithKCData:{ss_trace_buffer, v13}];
-          [v530 push:v45];
+          [array3 push:v45];
 
           if (*(ss_trace_buffer + 4) == 2307)
           {
             v487 = *(ss_trace_buffer + 2);
 
-            [v528 removeAllObjects];
-            [v514 removeAllObjects];
+            [array removeAllObjects];
+            [array2 removeAllObjects];
             v46 = &v14[*(ss_trace_buffer + 1)];
             v47 = v46 + 16;
             if ((v46 + 16) > v13)
             {
               v516 = 0;
 LABEL_315:
-              v10 = v519;
+              catalogCopy = v519;
               break;
             }
 
@@ -3583,7 +3583,7 @@ LABEL_315:
               if (&v47[*(v46 + 1)] > v13 || (v222 = *v46, *v46 == -242132755))
               {
 LABEL_314:
-                v9 = v515;
+                tuningCopy = v515;
                 goto LABEL_315;
               }
 
@@ -3615,11 +3615,11 @@ LABEL_314:
                     {
                       v229 = v226;
 
-                      v230 = [v530 count];
+                      v230 = [array3 count];
                       if (v230)
                       {
-                        v230 = [v530 top];
-                        v231 = v505;
+                        v230 = [array3 top];
+                        v231 = appleInternal;
                         if (!v230)
                         {
                           v231 = 0;
@@ -3637,14 +3637,14 @@ LABEL_314:
                           v475 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SharedCacheEntry original](v229, "original")[32]}];
                           v555[1] = v475;
                           v482 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v555 forKeys:v554 count:2];
-                          v232 = [v518 data];
-                          [v232 setObject:v482 forKeyedSubscript:@"taskSpecificSharedCache"];
+                          data77 = [v518 data];
+                          [data77 setObject:v482 forKeyedSubscript:@"taskSpecificSharedCache"];
 
                           v230 = v518;
                         }
                       }
 
-                      self = v529;
+                      self = selfCopy;
                     }
 
                     else
@@ -3658,7 +3658,7 @@ LABEL_314:
                       }
 
                       v229 = v516;
-                      self = v529;
+                      self = selfCopy;
                     }
 
                     v516 = v229;
@@ -3689,7 +3689,7 @@ LABEL_313:
                 ++v221;
                 if (*(v46 + 4) == 2356)
                 {
-                  v233 = [v530 top];
+                  v233 = [array3 top];
                   [v233 data];
                   v235 = v234 = v13;
                   [v235 parsePortLabelContainer:{v46, v234}];
@@ -3708,7 +3708,7 @@ LABEL_313:
             {
               if (HIDWORD(v236) == 2350 || HIDWORD(v236) == 49)
               {
-                v238 = [v530 top];
+                v238 = [array3 top];
                 if (v236)
                 {
                   v239 = v236;
@@ -3723,12 +3723,12 @@ LABEL_313:
                         goto LABEL_290;
                       }
 
-                      v241 = v514;
+                      v241 = array2;
                     }
 
                     else
                     {
-                      v241 = v528;
+                      v241 = array;
                     }
 
                     [v241 addImage:v240 address:? size:?];
@@ -3740,20 +3740,20 @@ LABEL_290:
                   while (v239);
                 }
 
-                [v528 sortByAddressAndSetInferredSizes];
-                self = v529;
+                [array sortByAddressAndSetInferredSizes];
+                self = selfCopy;
                 if (!v487)
                 {
                   if (v237 == 2350)
                   {
-                    v242 = v528;
-                    [v519 setKernelTextExecImages:v528];
+                    v242 = array;
+                    [v519 setKernelTextExecImages:array];
                     goto LABEL_309;
                   }
 
 LABEL_308:
-                  v242 = v528;
-                  [v519 setKernelImages:v528];
+                  v242 = array;
+                  [v519 setKernelImages:array];
 LABEL_309:
                   [v242 removeAllObjects];
                 }
@@ -3765,11 +3765,11 @@ LABEL_310:
               goto LABEL_312;
             }
 
-            v238 = [v530 top];
+            v238 = [array3 top];
             if (!v236)
             {
 LABEL_307:
-              [v528 sortByAddressAndSetInferredSizes];
+              [array sortByAddressAndSetInferredSizes];
               if (!v487)
               {
                 goto LABEL_308;
@@ -3786,7 +3786,7 @@ LABEL_307:
               {
                 if (*(v245 - 1))
                 {
-                  v246 = v514;
+                  v246 = array2;
                   goto LABEL_304;
                 }
 
@@ -3795,7 +3795,7 @@ LABEL_307:
 
               else
               {
-                v246 = v528;
+                v246 = array;
 LABEL_304:
                 [v246 addImage:v245 address:? size:?];
               }
@@ -3825,14 +3825,14 @@ LABEL_623:
     }
   }
 
-  if ([v530 count])
+  if ([array3 count])
   {
     [CDStackshotReport decodeKCDataWithBlock:withTuning:usingCatalog:];
   }
 
   v419 = *MEMORY[0x1E69B7C30];
   [v508 appendNotesTo:*(&self->super.super.isa + v419)];
-  v8 = v510;
+  blockCopy = v510;
   if (v497)
   {
     v539 = &unk_1F55144B0;
@@ -3843,7 +3843,7 @@ LABEL_623:
 
   if (v513)
   {
-    v421 = v505;
+    v421 = appleInternal;
   }
 
   else
@@ -3867,71 +3867,71 @@ LABEL_623:
     v425 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v538 forKeys:&v537 count:1];
     v510[2](v510, v425);
 
-    self = v529;
+    self = selfCopy;
   }
 
   if (v501)
   {
     v426 = *(&self->super.super.isa + v419);
     v427 = MEMORY[0x1E696AEC0];
-    v428 = [v503 count];
-    v429 = [v503 sortedPids];
-    v430 = [v427 stringWithFormat:@"resampled %d of %d threads with truncated backtraces from %d pids: %@", v501, v504, v428, v429];
-    [v426 addObject:v430];
+    v428 = [array4 count];
+    sortedPids = [array4 sortedPids];
+    v429 = [v427 stringWithFormat:@"resampled %d of %d threads with truncated backtraces from %d pids: %@", v501, v504, v428, sortedPids];
+    [v426 addObject:v429];
 
-    self = v529;
+    self = selfCopy;
     if (v491)
     {
       v533 = @"postSampleVMStats";
-      v431 = [(CDStackshotReport *)v529 getVMStatistics];
-      v534 = v431;
+      getVMStatistics = [(CDStackshotReport *)selfCopy getVMStatistics];
+      v534 = getVMStatistics;
       v432 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v534 forKeys:&v533 count:1];
       v510[2](v510, v432);
     }
   }
 
-  v433 = v512;
-  if ([v512 count])
+  v433 = array5;
+  if ([array5 count])
   {
     v434 = *(&self->super.super.isa + v419);
     v435 = MEMORY[0x1E696AEC0];
-    v436 = [v512 count];
-    v437 = [v512 sortedPids];
+    v436 = [array5 count];
+    sortedPids2 = [array5 sortedPids];
     v451 = v436;
-    v433 = v512;
-    v438 = [v435 stringWithFormat:@"resampled %d of %d images missing from %d pids: %@", v484, v485, v451, v437];
-    [v434 addObject:v438];
+    v433 = array5;
+    v437 = [v435 stringWithFormat:@"resampled %d of %d images missing from %d pids: %@", v484, v485, v451, sortedPids2];
+    [v434 addObject:v437];
 
-    self = v529;
+    self = selfCopy;
   }
 
   if (v496)
   {
     v439 = *(&self->super.super.isa + v419);
     v440 = MEMORY[0x1E696AEC0];
-    v441 = [v502 count];
-    v442 = [v502 sortedPids];
+    v441 = [array6 count];
+    sortedPids3 = [array6 sortedPids];
     v449 = v441;
-    v433 = v512;
-    v443 = [v440 stringWithFormat:@"%d unindexed user-stack frames from %d pids: %@", v496, v449, v442];
-    [v439 addObject:v443];
+    v433 = array5;
+    v442 = [v440 stringWithFormat:@"%d unindexed user-stack frames from %d pids: %@", v496, v449, sortedPids3];
+    [v439 addObject:v442];
 
-    self = v529;
+    self = selfCopy;
   }
 
   if (v495)
   {
     v444 = *(&self->super.super.isa + v419);
     v445 = MEMORY[0x1E696AEC0];
-    v446 = [v500 count];
-    v447 = [v500 sortedPids];
+    v446 = [array7 count];
+    sortedPids4 = [array7 sortedPids];
     v450 = v446;
-    v433 = v512;
-    v448 = [v445 stringWithFormat:@"%d unindexed re-sampled frames from %d pids: %@", v495, v450, v447];
-    [v444 addObject:v448];
+    v433 = array5;
+    v447 = [v445 stringWithFormat:@"%d unindexed re-sampled frames from %d pids: %@", v495, v450, sortedPids4];
+    [v444 addObject:v447];
   }
 
-  [v503 count];
+  [array4 count];
   if ((CSIsNull() & 1) == 0)
   {
     CSRelease();

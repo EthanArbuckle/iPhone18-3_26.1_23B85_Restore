@@ -1,14 +1,14 @@
 @interface AVPlayerRateState
-- (AVPlayerRateState)initWithAutomaticallyWaitsToMinimizeStalling:(BOOL)a3 usesLegacyAutomaticWaitingBehavior:(BOOL)a4 timeControlStatus:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)rateStateByInferringTimeControlStatusAndWaitingReasonBasedOnPresenceOfCurrentItem:(BOOL)a3 hasCurrentInterstitialEvent:(BOOL)a4 nameForLogging:(id)a5;
-- (id)rateStateBySettingAutomaticallyWaitsToMinimizeStalling:(BOOL)a3;
-- (id)rateStateBySettingRate:(float)a3 nameForLogging:(id)a4;
-- (id)rateStateBySettingTimeControlStatus:(int64_t)a3 reasonForWaitingToPlay:(id)a4 nameForLogging:(id)a5;
-- (id)rateStateBySettingUsesLegacyAutomaticWaitingBehavior:(BOOL)a3;
-- (id)rateStateByUpdatingBasedOnFigPlayer:(OpaqueFigPlayer *)a3 hasCurrentItem:(BOOL)a4 hasCurrentInterstitialEvent:(BOOL)a5 nameForLogging:(id)a6;
-- (id)rateStateByUpdatingBasedOnFigPlayerPlaybackState:(int)a3 hasCurrentInterstitialEvent:(BOOL)a4 nameForLogging:(id)a5;
-- (id)rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:(BOOL)a3 nameForLogging:(id)a4;
+- (AVPlayerRateState)initWithAutomaticallyWaitsToMinimizeStalling:(BOOL)stalling usesLegacyAutomaticWaitingBehavior:(BOOL)behavior timeControlStatus:(int64_t)status;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)rateStateByInferringTimeControlStatusAndWaitingReasonBasedOnPresenceOfCurrentItem:(BOOL)item hasCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging;
+- (id)rateStateBySettingAutomaticallyWaitsToMinimizeStalling:(BOOL)stalling;
+- (id)rateStateBySettingRate:(float)rate nameForLogging:(id)logging;
+- (id)rateStateBySettingTimeControlStatus:(int64_t)status reasonForWaitingToPlay:(id)play nameForLogging:(id)logging;
+- (id)rateStateBySettingUsesLegacyAutomaticWaitingBehavior:(BOOL)behavior;
+- (id)rateStateByUpdatingBasedOnFigPlayer:(OpaqueFigPlayer *)player hasCurrentItem:(BOOL)item hasCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging;
+- (id)rateStateByUpdatingBasedOnFigPlayerPlaybackState:(int)state hasCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging;
+- (id)rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging;
 - (void)dealloc;
 @end
 
@@ -21,7 +21,7 @@
   [(AVPlayerRateState *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVPlayerRateState);
   [(AVPlayerRateState *)self rate];
@@ -33,64 +33,64 @@
   return v4;
 }
 
-- (id)rateStateBySettingRate:(float)a3 nameForLogging:(id)a4
+- (id)rateStateBySettingRate:(float)rate nameForLogging:(id)logging
 {
   v5 = [(AVPlayerRateState *)self copy];
-  v5[2] = a3;
+  v5[2] = rate;
 
   return v5;
 }
 
-- (id)rateStateBySettingUsesLegacyAutomaticWaitingBehavior:(BOOL)a3
+- (id)rateStateBySettingUsesLegacyAutomaticWaitingBehavior:(BOOL)behavior
 {
   v4 = [(AVPlayerRateState *)self copy];
-  v4[13] = a3;
+  v4[13] = behavior;
 
   return v4;
 }
 
-- (id)rateStateBySettingAutomaticallyWaitsToMinimizeStalling:(BOOL)a3
+- (id)rateStateBySettingAutomaticallyWaitsToMinimizeStalling:(BOOL)stalling
 {
   result = [(AVPlayerRateState *)self copy];
-  *(result + 12) = a3;
+  *(result + 12) = stalling;
   *(result + 13) = 0;
   return result;
 }
 
-- (id)rateStateBySettingTimeControlStatus:(int64_t)a3 reasonForWaitingToPlay:(id)a4 nameForLogging:(id)a5
+- (id)rateStateBySettingTimeControlStatus:(int64_t)status reasonForWaitingToPlay:(id)play nameForLogging:(id)logging
 {
-  v7 = [(AVPlayerRateState *)self copy:a3];
-  v7[2] = a3;
+  v7 = [(AVPlayerRateState *)self copy:status];
+  v7[2] = status;
   v8 = v7[3];
-  if (v8 != a4)
+  if (v8 != play)
   {
 
-    v7[3] = [a4 copy];
+    v7[3] = [play copy];
   }
 
   return v7;
 }
 
-- (id)rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:(BOOL)a3 nameForLogging:(id)a4
+- (id)rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging
 {
-  v5 = a3;
-  v7 = [(AVPlayerRateState *)self timeControlStatus];
-  v8 = [(AVPlayerRateState *)self reasonForWaitingToPlay];
-  if ([(AVPlayerRateState *)self timeControlStatus]!= 2 && ![(NSString *)[(AVPlayerRateState *)self reasonForWaitingToPlay] isEqualToString:@"AVPlayerWaitingWithNoItemToPlayReason"]&& v5)
+  eventCopy = event;
+  timeControlStatus = [(AVPlayerRateState *)self timeControlStatus];
+  reasonForWaitingToPlay = [(AVPlayerRateState *)self reasonForWaitingToPlay];
+  if ([(AVPlayerRateState *)self timeControlStatus]!= 2 && ![(NSString *)[(AVPlayerRateState *)self reasonForWaitingToPlay] isEqualToString:@"AVPlayerWaitingWithNoItemToPlayReason"]&& eventCopy)
   {
-    v7 = 1;
-    v8 = @"AVPlayerWaitingDuringInterstitialEventReason";
+    timeControlStatus = 1;
+    reasonForWaitingToPlay = @"AVPlayerWaitingDuringInterstitialEventReason";
   }
 
-  return [(AVPlayerRateState *)self rateStateBySettingTimeControlStatus:v7 reasonForWaitingToPlay:v8 nameForLogging:a4];
+  return [(AVPlayerRateState *)self rateStateBySettingTimeControlStatus:timeControlStatus reasonForWaitingToPlay:reasonForWaitingToPlay nameForLogging:logging];
 }
 
-- (id)rateStateByUpdatingBasedOnFigPlayerPlaybackState:(int)a3 hasCurrentInterstitialEvent:(BOOL)a4 nameForLogging:(id)a5
+- (id)rateStateByUpdatingBasedOnFigPlayerPlaybackState:(int)state hasCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging
 {
-  v6 = a4;
-  if (a3 > 3)
+  eventCopy = event;
+  if (state > 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 4:
         v12 = 0;
@@ -115,19 +115,19 @@
   v7 = @"AVPlayerWaitingToMinimizeStallsReason";
   v8 = 1;
   v9 = @"AVPlayerWaitingWithNoItemToPlayReason";
-  if (a3 != 3)
+  if (state != 3)
   {
     v9 = 0;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
-    v8 = a3 == 3;
+    v8 = state == 3;
     v7 = v9;
   }
 
-  v10 = a3 == 1;
-  v11 = a3 == 1 || v8;
+  v10 = state == 1;
+  v11 = state == 1 || v8;
   if (v10)
   {
     v12 = @"AVPlayerWaitingWhileEvaluatingBufferingRateReason";
@@ -139,17 +139,17 @@
   }
 
 LABEL_19:
-  v13 = [(AVPlayerRateState *)self rateStateBySettingTimeControlStatus:v11 reasonForWaitingToPlay:v12 nameForLogging:a5];
+  v13 = [(AVPlayerRateState *)self rateStateBySettingTimeControlStatus:v11 reasonForWaitingToPlay:v12 nameForLogging:logging];
 
-  return [v13 rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:v6 nameForLogging:a5];
+  return [v13 rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:eventCopy nameForLogging:logging];
 }
 
-- (id)rateStateByInferringTimeControlStatusAndWaitingReasonBasedOnPresenceOfCurrentItem:(BOOL)a3 hasCurrentInterstitialEvent:(BOOL)a4 nameForLogging:(id)a5
+- (id)rateStateByInferringTimeControlStatusAndWaitingReasonBasedOnPresenceOfCurrentItem:(BOOL)item hasCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(AVPlayerRateState *)self timeControlStatus];
-  v10 = [(AVPlayerRateState *)self reasonForWaitingToPlay];
+  eventCopy = event;
+  itemCopy = item;
+  timeControlStatus = [(AVPlayerRateState *)self timeControlStatus];
+  reasonForWaitingToPlay = [(AVPlayerRateState *)self reasonForWaitingToPlay];
   [(AVPlayerRateState *)self rate];
   v12 = v11 != 0.0;
   if (v11 == 0.0)
@@ -162,11 +162,11 @@ LABEL_19:
     v13 = @"AVPlayerWaitingWithNoItemToPlayReason";
   }
 
-  if (v11 != 0.0 && v7)
+  if (v11 != 0.0 && itemCopy)
   {
     if ([(AVPlayerRateState *)self automaticallyWaitsToMinimizeStalling])
     {
-      if (v9 == 2)
+      if (timeControlStatus == 2)
       {
         v13 = 0;
         v12 = 2;
@@ -176,34 +176,34 @@ LABEL_19:
 
     else
     {
-      v15 = [(AVPlayerRateState *)self usesLegacyAutomaticWaitingBehavior];
+      usesLegacyAutomaticWaitingBehavior = [(AVPlayerRateState *)self usesLegacyAutomaticWaitingBehavior];
       v13 = 0;
       v12 = 2;
-      if (!v15 || v9 == 2)
+      if (!usesLegacyAutomaticWaitingBehavior || timeControlStatus == 2)
       {
         goto LABEL_17;
       }
     }
 
     v13 = @"AVPlayerWaitingWhileEvaluatingBufferingRateReason";
-    if (v10 && ![(NSString *)v10 isEqualToString:@"AVPlayerWaitingWithNoItemToPlayReason"])
+    if (reasonForWaitingToPlay && ![(NSString *)reasonForWaitingToPlay isEqualToString:@"AVPlayerWaitingWithNoItemToPlayReason"])
     {
-      v13 = v10;
+      v13 = reasonForWaitingToPlay;
     }
 
     v12 = 1;
   }
 
 LABEL_17:
-  v16 = [(AVPlayerRateState *)self rateStateBySettingTimeControlStatus:v12 reasonForWaitingToPlay:v13 nameForLogging:a5];
+  v16 = [(AVPlayerRateState *)self rateStateBySettingTimeControlStatus:v12 reasonForWaitingToPlay:v13 nameForLogging:logging];
 
-  return [v16 rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:v6 nameForLogging:a5];
+  return [v16 rateStateByUpdatingBasedOnPresenceOfCurrentInterstitialEvent:eventCopy nameForLogging:logging];
 }
 
-- (id)rateStateByUpdatingBasedOnFigPlayer:(OpaqueFigPlayer *)a3 hasCurrentItem:(BOOL)a4 hasCurrentInterstitialEvent:(BOOL)a5 nameForLogging:(id)a6
+- (id)rateStateByUpdatingBasedOnFigPlayer:(OpaqueFigPlayer *)player hasCurrentItem:(BOOL)item hasCurrentInterstitialEvent:(BOOL)event nameForLogging:(id)logging
 {
-  v7 = a5;
-  if (a3)
+  eventCopy = event;
+  if (player)
   {
     number = 0;
     valuePtr = 0;
@@ -221,7 +221,7 @@ LABEL_17:
     }
 
     CFNumberGetValue(number, kCFNumberSInt32Type, &valuePtr);
-    v11 = [(AVPlayerRateState *)self rateStateByUpdatingBasedOnFigPlayerPlaybackState:valuePtr hasCurrentInterstitialEvent:v7 nameForLogging:a6];
+    v11 = [(AVPlayerRateState *)self rateStateByUpdatingBasedOnFigPlayerPlaybackState:valuePtr hasCurrentInterstitialEvent:eventCopy nameForLogging:logging];
     if (number)
     {
       CFRelease(number);
@@ -233,11 +233,11 @@ LABEL_17:
   else
   {
 
-    return [(AVPlayerRateState *)self rateStateByInferringTimeControlStatusAndWaitingReasonBasedOnPresenceOfCurrentItem:a4 hasCurrentInterstitialEvent:a5 nameForLogging:a6];
+    return [(AVPlayerRateState *)self rateStateByInferringTimeControlStatusAndWaitingReasonBasedOnPresenceOfCurrentItem:item hasCurrentInterstitialEvent:event nameForLogging:logging];
   }
 }
 
-- (AVPlayerRateState)initWithAutomaticallyWaitsToMinimizeStalling:(BOOL)a3 usesLegacyAutomaticWaitingBehavior:(BOOL)a4 timeControlStatus:(int64_t)a5
+- (AVPlayerRateState)initWithAutomaticallyWaitsToMinimizeStalling:(BOOL)stalling usesLegacyAutomaticWaitingBehavior:(BOOL)behavior timeControlStatus:(int64_t)status
 {
   v12.receiver = self;
   v12.super_class = AVPlayerRateState;
@@ -245,9 +245,9 @@ LABEL_17:
   v9 = v8;
   if (v8)
   {
-    v8->_automaticallyWaitsToMinimizeStalling = a3;
-    v8->_usesLegacyAutomaticWaitingBehavior = a4;
-    v8->_timeControlStatus = a5;
+    v8->_automaticallyWaitsToMinimizeStalling = stalling;
+    v8->_usesLegacyAutomaticWaitingBehavior = behavior;
+    v8->_timeControlStatus = status;
     v10 = v8;
   }
 

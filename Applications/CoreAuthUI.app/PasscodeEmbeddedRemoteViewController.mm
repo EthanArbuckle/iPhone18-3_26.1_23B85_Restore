@@ -1,12 +1,12 @@
 @interface PasscodeEmbeddedRemoteViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (BOOL)verifyPasscode:(id)a3;
+- (BOOL)verifyPasscode:(id)passcode;
 - (double)_backoffTimeout;
 - (void)_dispatchBackoffTimer;
-- (void)_notifyPasscodeVerificationFinishedWithSuccess:(BOOL)a3;
-- (void)handleAction:(id)a3 completion:(id)a4;
-- (void)setContext:(id)a3;
+- (void)_notifyPasscodeVerificationFinishedWithSuccess:(BOOL)success;
+- (void)handleAction:(id)action completion:(id)completion;
+- (void)setContext:(id)context;
 - (void)startEditing;
 @end
 
@@ -36,29 +36,29 @@
   return v3;
 }
 
-- (void)handleAction:(id)a3 completion:(id)a4
+- (void)handleAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [[LACUIEmbeddedPasscodeAction alloc] initWithAction:v7];
+  completionCopy = completion;
+  actionCopy = action;
+  v12 = [[LACUIEmbeddedPasscodeAction alloc] initWithAction:actionCopy];
 
-  v8 = [v12 identifier];
-  if (v8 == 3)
+  identifier = [v12 identifier];
+  if (identifier == 3)
   {
     [(PasscodeEmbeddedRemoteViewController *)self endEditing];
     goto LABEL_7;
   }
 
-  if (v8 == 2)
+  if (identifier == 2)
   {
     [(PasscodeEmbeddedRemoteViewController *)self startEditing];
     goto LABEL_7;
   }
 
-  if (v8 == 1)
+  if (identifier == 1)
   {
-    v9 = [v12 rawValue];
-    [(PasscodeEmbeddedRemoteViewController *)self setContext:v9];
+    rawValue = [v12 rawValue];
+    [(PasscodeEmbeddedRemoteViewController *)self setContext:rawValue];
 
 LABEL_7:
     v10 = 0;
@@ -69,12 +69,12 @@ LABEL_7:
   v10 = [LACError errorWithCode:LACErrorCodeInternal debugDescription:v11];
 
 LABEL_9:
-  v6[2](v6, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -84,7 +84,7 @@ LABEL_9:
   }
 
   externalizedContext = self->_externalizedContext;
-  self->_externalizedContext = v4;
+  self->_externalizedContext = contextCopy;
 }
 
 - (void)startEditing
@@ -97,27 +97,27 @@ LABEL_9:
   }
 }
 
-- (BOOL)verifyPasscode:(id)a3
+- (BOOL)verifyPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [LACSecureData secureDataWithString:v4];
+  passcodeCopy = passcode;
+  v5 = [LACSecureData secureDataWithString:passcodeCopy];
   v32 = 0u;
   v33 = 0u;
   v6 = +[LACFlags sharedInstance];
-  v7 = [v6 featureFlagLaunchAngelEnabled];
+  featureFlagLaunchAngelEnabled = [v6 featureFlagLaunchAngelEnabled];
 
-  if (v7)
+  if (featureFlagLaunchAngelEnabled)
   {
-    v8 = [(PasscodeEmbeddedRemoteViewController *)self view];
-    v9 = [v8 window];
-    v10 = [v9 windowScene];
-    v11 = [v10 _FBSScene];
-    v12 = [v11 hostHandle];
-    v13 = [v12 auditToken];
-    v14 = v13;
-    if (v13)
+    view = [(PasscodeEmbeddedRemoteViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    _FBSScene = [windowScene _FBSScene];
+    hostHandle = [_FBSScene hostHandle];
+    auditToken = [hostHandle auditToken];
+    v14 = auditToken;
+    if (auditToken)
     {
-      [v13 realToken];
+      [auditToken realToken];
     }
 
     else
@@ -142,7 +142,7 @@ LABEL_9:
   v25 = &unk_100096DC8;
   v16 = v5;
   v26 = v16;
-  v27 = self;
+  selfCopy = self;
   v28 = v32;
   v29 = v33;
   v17 = sub_100024904(&v22);
@@ -164,7 +164,7 @@ LABEL_9:
   else
   {
     v19 = [[LAContext alloc] initWithExternalizedContext:self->_externalizedContext];
-    v20 = [v4 dataUsingEncoding:4];
+    v20 = [passcodeCopy dataUsingEncoding:4];
     [v19 setCredential:v20 forProcessedEvent:2 credentialType:-1 reply:&stru_100096E08];
 
     [(PasscodeEmbeddedRemoteViewController *)self _notifyPasscodeVerificationFinishedWithSuccess:1];
@@ -173,9 +173,9 @@ LABEL_9:
   return v18 == 0;
 }
 
-- (void)_notifyPasscodeVerificationFinishedWithSuccess:(BOOL)a3
+- (void)_notifyPasscodeVerificationFinishedWithSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v4 = 0;
   }
@@ -189,9 +189,9 @@ LABEL_9:
   }
 
   v6 = +[LACFlags sharedInstance];
-  v7 = [v6 featureFlagLaunchAngelEnabled];
+  featureFlagLaunchAngelEnabled = [v6 featureFlagLaunchAngelEnabled];
 
-  if (v7)
+  if (featureFlagLaunchAngelEnabled)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;

@@ -1,6 +1,6 @@
 @interface SAWatchApplicationLauncher
 - (SAWatchApplicationLauncher)init;
-- (void)openApplicationInBackgroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5;
+- (void)openApplicationInBackgroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation SAWatchApplicationLauncher
@@ -12,19 +12,19 @@
   return [(SAWatchApplicationLauncher *)&v3 init];
 }
 
-- (void)openApplicationInBackgroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5
+- (void)openApplicationInBackgroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sa_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [SAWatchApplicationLauncher openApplicationInBackgroundWithBundleId:v6 withReason:v8 completion:?];
+    [SAWatchApplicationLauncher openApplicationInBackgroundWithBundleId:idCopy withReason:v8 completion:?];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

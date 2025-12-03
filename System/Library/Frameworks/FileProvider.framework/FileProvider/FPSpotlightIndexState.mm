@@ -1,9 +1,9 @@
 @interface FPSpotlightIndexState
-+ (FPSpotlightIndexState)stateWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (FPSpotlightIndexState)stateWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (FPSpotlightIndexState)init;
-- (FPSpotlightIndexState)initWithChangeToken:(id)a3;
-- (FPSpotlightIndexState)initWithPage:(id)a3 changeToken:(id)a4;
+- (FPSpotlightIndexState)initWithChangeToken:(id)token;
+- (FPSpotlightIndexState)initWithPage:(id)page changeToken:(id)token;
 - (NSData)dataRepresentation;
 - (id)description;
 - (void)dataRepresentation;
@@ -46,8 +46,8 @@
       goto LABEL_8;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"FPSpotlightIndexState.m" lineNumber:137 description:{@"UNREACHABLE: index state is too large! %@", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPSpotlightIndexState.m" lineNumber:137 description:{@"UNREACHABLE: index state is too large! %@", v9}];
   }
 
   else
@@ -81,50 +81,50 @@ LABEL_9:
   return v3;
 }
 
-- (FPSpotlightIndexState)initWithPage:(id)a3 changeToken:(id)a4
+- (FPSpotlightIndexState)initWithPage:(id)page changeToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  pageCopy = page;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = FPSpotlightIndexState;
   v9 = [(FPSpotlightIndexState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lastPage, a3);
-    objc_storeStrong(&v10->_lastChangeToken, a4);
+    objc_storeStrong(&v9->_lastPage, page);
+    objc_storeStrong(&v10->_lastChangeToken, token);
   }
 
   return v10;
 }
 
-- (FPSpotlightIndexState)initWithChangeToken:(id)a3
+- (FPSpotlightIndexState)initWithChangeToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = FPSpotlightIndexState;
   v6 = [(FPSpotlightIndexState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lastChangeToken, a3);
+    objc_storeStrong(&v6->_lastChangeToken, token);
   }
 
   return v7;
 }
 
-+ (FPSpotlightIndexState)stateWithData:(id)a3
++ (FPSpotlightIndexState)stateWithData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
+  dataCopy = data;
+  v4 = dataCopy;
   memset(v13, 0, 5);
-  if (!v3)
+  if (!dataCopy)
   {
     v6 = 0;
     goto LABEL_15;
   }
 
-  if ([v3 length] > 4)
+  if ([dataCopy length] > 4)
   {
     [v4 getBytes:v13 length:5];
     if (LOBYTE(v13[0]) != 1)
@@ -216,30 +216,30 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 lastPage];
-    if (v6 == self->_lastPage)
+    v5 = equalCopy;
+    lastPage = [v5 lastPage];
+    if (lastPage == self->_lastPage)
     {
       v8 = 1;
     }
 
     else
     {
-      v7 = [v5 lastPage];
-      v8 = [v7 isEqual:self->_lastPage];
+      lastPage2 = [v5 lastPage];
+      v8 = [lastPage2 isEqual:self->_lastPage];
     }
 
-    v9 = [v5 lastChangeToken];
-    if (v9 != self->_lastChangeToken)
+    lastChangeToken = [v5 lastChangeToken];
+    if (lastChangeToken != self->_lastChangeToken)
     {
-      v10 = [v5 lastChangeToken];
-      v8 &= [v10 isEqual:self->_lastChangeToken];
+      lastChangeToken2 = [v5 lastChangeToken];
+      v8 &= [lastChangeToken2 isEqual:self->_lastChangeToken];
     }
   }
 
@@ -255,17 +255,17 @@ LABEL_15:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPSpotlightIndexState *)self phase];
-  v6 = [(FPSpotlightIndexState *)self phase];
+  phase = [(FPSpotlightIndexState *)self phase];
+  phase2 = [(FPSpotlightIndexState *)self phase];
   v7 = 16;
-  if (!v6)
+  if (!phase2)
   {
     v7 = 8;
   }
 
   v8 = *(&self->super.isa + v7);
   v9 = @"changes";
-  if (!v5)
+  if (!phase)
   {
     v9 = @"gathering";
   }
@@ -312,7 +312,7 @@ LABEL_15:
 - (void)dataRepresentation
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v4 = *a2;
   v6 = 138412546;
   v7 = v3;

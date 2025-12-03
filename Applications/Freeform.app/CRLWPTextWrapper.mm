@@ -1,27 +1,27 @@
 @interface CRLWPTextWrapper
-+ (double)p_skipHintForRect:(CGRect)a3 wrapSegments:(id)a4 type:(int64_t)a5;
-+ (double)unobstructedSpanForWrapSegments:(id)a3 startingSpan:(CGRect)a4 columnBounds:(CGRect)a5;
-+ (id)horizontalIntersectionsOfRectList:(id)a3 withRectList:(id)a4 minWidth:(double)a5;
-+ (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrapSegments:(id)a5 type:(int64_t)a6 skipHint:(double *)a7;
++ (double)p_skipHintForRect:(CGRect)rect wrapSegments:(id)segments type:(int64_t)type;
++ (double)unobstructedSpanForWrapSegments:(id)segments startingSpan:(CGRect)span columnBounds:(CGRect)bounds;
++ (id)horizontalIntersectionsOfRectList:(id)list withRectList:(id)rectList minWidth:(double)width;
++ (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrapSegments:(id)segments type:(int64_t)type skipHint:(double *)hint;
 @end
 
 @implementation CRLWPTextWrapper
 
-+ (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrapSegments:(id)a5 type:(int64_t)a6 skipHint:(double *)a7
++ (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrapSegments:(id)segments type:(int64_t)type skipHint:(double *)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a5;
-  v17 = v16;
-  if (a7)
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
+  rectsCopy = rects;
+  segmentsCopy = segments;
+  v17 = segmentsCopy;
+  if (hint)
   {
-    *a7 = 1.0;
+    *hint = 1.0;
   }
 
-  [v16 bounds];
+  [segmentsCopy bounds];
   v63.origin.x = v18;
   v63.origin.y = v19;
   v63.size.width = v20;
@@ -61,12 +61,12 @@
     v55 = 0;
     v56 = 0;
     sub_100191580(&__p, 0x40uLL);
-    v26 = [v17 segmentCount];
-    v27 = [v17 segments];
-    if (v26)
+    segmentCount = [v17 segmentCount];
+    segments = [v17 segments];
+    if (segmentCount)
     {
       v29 = 0;
-      v30 = (v27 + 16);
+      v30 = (segments + 16);
       do
       {
         v31 = *(v30 - 1);
@@ -163,10 +163,10 @@ LABEL_32:
         }
 
         v30 += 4;
-        --v26;
+        --segmentCount;
       }
 
-      while (v26);
+      while (segmentCount);
     }
 
     v43 = 126 - 2 * __clz(0xAAAAAAAAAAAAAAABLL * ((v55 - __p) >> 3));
@@ -184,8 +184,8 @@ LABEL_32:
     v45 = __p;
     if (__p != v55)
     {
-      v46 = a6 != 1;
-      v47 = a6 != 1;
+      v46 = type != 1;
+      v47 = type != 1;
       do
       {
         if (!v46 && !v47 && MinX < v45->n128_f64[0])
@@ -200,7 +200,7 @@ LABEL_32:
             v48 = MaxX - MinX;
           }
 
-          [v15 addRect:{MinX, MinY, v48, v51}];
+          [rectsCopy addRect:{MinX, MinY, v48, v51}];
         }
 
         if (MinX < v45->n128_f64[1])
@@ -221,18 +221,18 @@ LABEL_32:
       while (v45 != v55);
     }
 
-    if (a6 == 1 && MinX < MaxX)
+    if (type == 1 && MinX < MaxX)
     {
-      [v15 addRect:{MinX, MinY, MaxX - MinX, v51}];
+      [rectsCopy addRect:{MinX, MinY, MaxX - MinX, v51}];
     }
 
-    if (a7)
+    if (hint)
     {
-      v49 = [v15 count];
-      if (a6 == 1 && !v49)
+      v49 = [rectsCopy count];
+      if (type == 1 && !v49)
       {
-        [a1 p_skipHintForRect:v17 wrapSegments:1 type:{x, y, width, height}];
-        *a7 = v50;
+        [self p_skipHintForRect:v17 wrapSegments:1 type:{x, y, width, height}];
+        *hint = v50;
       }
     }
 
@@ -243,23 +243,23 @@ LABEL_32:
     }
   }
 
-  else if (a6 == 1)
+  else if (type == 1)
   {
-    [v15 addRect:{x, y, width, height}];
+    [rectsCopy addRect:{x, y, width, height}];
   }
 }
 
-+ (double)unobstructedSpanForWrapSegments:(id)a3 startingSpan:(CGRect)a4 columnBounds:(CGRect)a5
++ (double)unobstructedSpanForWrapSegments:(id)segments startingSpan:(CGRect)span columnBounds:(CGRect)bounds
 {
-  width = a5.size.width;
-  height = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v6 = a4.size.height;
-  v7 = a4.size.width;
-  v8 = a4.origin.y;
-  v9 = a4.origin.x;
-  v10 = a3;
+  width = bounds.size.width;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v6 = span.size.height;
+  v7 = span.size.width;
+  v8 = span.origin.y;
+  v9 = span.origin.x;
+  segmentsCopy = segments;
   v56.origin.x = v9;
   v56.origin.y = v8;
   v56.size.width = v7;
@@ -279,12 +279,12 @@ LABEL_32:
   v54 = 0;
   v55 = 0;
   sub_100191580(&v53, 0x40uLL);
-  v13 = [v10 segmentCount];
-  v14 = [v10 segments];
-  if (v13)
+  segmentCount = [segmentsCopy segmentCount];
+  segments = [segmentsCopy segments];
+  if (segmentCount)
   {
     v16 = 0;
-    v17 = (v14 + 16);
+    v17 = (segments + 16);
     do
     {
       v15.n128_f64[0] = *(v17 - 2);
@@ -417,10 +417,10 @@ LABEL_48:
       }
 
       v17 += 4;
-      --v13;
+      --segmentCount;
     }
 
-    while (v13);
+    while (segmentCount);
   }
 
   v35 = 126 - 2 * __clz(0xAAAAAAAAAAAAAAABLL * ((v54 - v53) >> 3));
@@ -488,22 +488,22 @@ LABEL_48:
   return MinY;
 }
 
-+ (id)horizontalIntersectionsOfRectList:(id)a3 withRectList:(id)a4 minWidth:(double)a5
++ (id)horizontalIntersectionsOfRectList:(id)list withRectList:(id)rectList minWidth:(double)width
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  rectListCopy = rectList;
   v8 = objc_opt_new();
   v9 = 0;
   v10 = 0;
   v33 = 0.000000999999997;
-  while (v10 < [v6 count] && v9 < objc_msgSend(v7, "count"))
+  while (v10 < [listCopy count] && v9 < objc_msgSend(rectListCopy, "count"))
   {
-    [v6 rectAtIndex:v10];
+    [listCopy rectAtIndex:v10];
     rect = v11;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v7 rectAtIndex:v9];
+    [rectListCopy rectAtIndex:v9];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -549,7 +549,7 @@ LABEL_48:
     y = v43.origin.y;
     width = v43.size.width;
     height = v43.size.height;
-    if (CGRectGetWidth(v43) >= a5)
+    if (CGRectGetWidth(v43) >= width)
     {
       [v8 addRect:{x, y, width, height}];
     }
@@ -575,14 +575,14 @@ LABEL_11:
   return v8;
 }
 
-+ (double)p_skipHintForRect:(CGRect)a3 wrapSegments:(id)a4 type:(int64_t)a5
++ (double)p_skipHintForRect:(CGRect)rect wrapSegments:(id)segments type:(int64_t)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if ([v9 segmentCount] < 1)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  segmentsCopy = segments;
+  if ([segmentsCopy segmentCount] < 1)
   {
     v15 = 1.0;
   }
@@ -604,15 +604,15 @@ LABEL_11:
     v38.size.width = width;
     v38.size.height = height;
     MinY = CGRectGetMinY(v38);
-    v13 = [v9 segmentCount];
-    v14 = [v9 segments];
+    segmentCount = [segmentsCopy segmentCount];
+    segments = [segmentsCopy segments];
     v15 = 1.0;
-    if (v13)
+    if (segmentCount)
     {
       v16 = MinY + 1.0;
       v17 = ceilf(v16);
-      v18 = v13 - 1;
-      v19 = (v14 + 16);
+      v18 = segmentCount - 1;
+      v19 = (segments + 16);
       v20 = 1.79769313e308;
       do
       {

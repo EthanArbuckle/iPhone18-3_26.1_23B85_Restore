@@ -1,33 +1,33 @@
 @interface HKCodableHorizontalTimePeriodData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDateIntervals:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDateIntervals:(id)intervals;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHorizontalTimePeriodData
 
-- (void)addDateIntervals:(id)a3
+- (void)addDateIntervals:(id)intervals
 {
-  v4 = a3;
+  intervalsCopy = intervals;
   dateIntervals = self->_dateIntervals;
-  v8 = v4;
+  v8 = intervalsCopy;
   if (!dateIntervals)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dateIntervals;
     self->_dateIntervals = v6;
 
-    v4 = v8;
+    intervalsCopy = v8;
     dateIntervals = self->_dateIntervals;
   }
 
-  [(NSMutableArray *)dateIntervals addObject:v4];
+  [(NSMutableArray *)dateIntervals addObject:intervalsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableHorizontalTimePeriodData;
   v4 = [(HKCodableHorizontalTimePeriodData *)&v8 description];
-  v5 = [(HKCodableHorizontalTimePeriodData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHorizontalTimePeriodData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,11 +45,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_value];
-    [v3 setObject:v4 forKey:@"value"];
+    [dictionary setObject:v4 forKey:@"value"];
   }
 
   if ([(NSMutableArray *)self->_dateIntervals count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -84,16 +84,16 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"dateIntervals"];
+    [dictionary setObject:v5 forKey:@"dateIntervals"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
@@ -131,23 +131,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_value;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_value;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(HKCodableHorizontalTimePeriodData *)self dateIntervalsCount])
   {
     [v9 clearDateIntervals];
-    v5 = [(HKCodableHorizontalTimePeriodData *)self dateIntervalsCount];
-    if (v5)
+    dateIntervalsCount = [(HKCodableHorizontalTimePeriodData *)self dateIntervalsCount];
+    if (dateIntervalsCount)
     {
-      v6 = v5;
+      v6 = dateIntervalsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HKCodableHorizontalTimePeriodData *)self dateIntervalsAtIndex:i];
@@ -157,10 +157,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addDateIntervals:v12];
 
         ++v11;
@@ -204,23 +204,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_value != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_value != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v6 = 0;
@@ -228,7 +228,7 @@ LABEL_9:
   }
 
   dateIntervals = self->_dateIntervals;
-  if (dateIntervals | *(v4 + 2))
+  if (dateIntervals | *(equalCopy + 2))
   {
     v6 = [(NSMutableArray *)dateIntervals isEqual:?];
   }
@@ -258,14 +258,14 @@ LABEL_10:
   return [(NSMutableArray *)self->_dateIntervals hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_value = *(v4 + 1);
+    self->_value = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -273,7 +273,7 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

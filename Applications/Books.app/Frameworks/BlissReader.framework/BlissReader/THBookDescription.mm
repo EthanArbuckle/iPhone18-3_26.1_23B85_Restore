@@ -1,13 +1,13 @@
 @interface THBookDescription
-+ (BOOL)containsUnknownContentVersions:(id)a3;
-+ (BOOL)isSampleAtURL:(id)a3;
-+ (BOOL)readOpfMetadataWithArchive:(id)a3 toProperties:(id)a4;
-+ (THBookDescription)descriptionWithAsset:(id)a3;
-+ (THBookDescription)descriptionWithURL:(id)a3;
-+ (THBookDescription)descriptionWithURL:(id)a3 assetID:(id)a4;
-+ (id)displayNameFromFilePath:(id)a3;
-+ (id)readBookPropertiesFromURL:(id)a3 error:(id *)a4;
-+ (id)summaryWithURL:(id)a3;
++ (BOOL)containsUnknownContentVersions:(id)versions;
++ (BOOL)isSampleAtURL:(id)l;
++ (BOOL)readOpfMetadataWithArchive:(id)archive toProperties:(id)properties;
++ (THBookDescription)descriptionWithAsset:(id)asset;
++ (THBookDescription)descriptionWithURL:(id)l;
++ (THBookDescription)descriptionWithURL:(id)l assetID:(id)d;
++ (id)displayNameFromFilePath:(id)path;
++ (id)readBookPropertiesFromURL:(id)l error:(id *)error;
++ (id)summaryWithURL:(id)l;
 - (BOOL)allowCopy;
 - (BOOL)autoHyphenate;
 - (BOOL)containsUnknownContentVersions;
@@ -22,11 +22,11 @@
 - (NSURL)bookBundleUrl;
 - (NSURL)storeURL;
 - (PFDContext)drmContext;
-- (THBookDescription)initWithAsset:(id)a3 summary:(id)a4;
-- (id)dataForAbsoluteURL:(id)a3 context:(id)a4;
-- (id)dataForDocRelativePath:(id)a3 context:(id)a4;
+- (THBookDescription)initWithAsset:(id)asset summary:(id)summary;
+- (id)dataForAbsoluteURL:(id)l context:(id)context;
+- (id)dataForDocRelativePath:(id)path context:(id)context;
 - (id)libraryManagerInfo;
-- (id)urlForDocRelativePath:(id)a3;
+- (id)urlForDocRelativePath:(id)path;
 - (id)userDataPath;
 - (int)orientationLock;
 - (void)dealloc;
@@ -35,15 +35,15 @@
 
 @implementation THBookDescription
 
-- (THBookDescription)initWithAsset:(id)a3 summary:(id)a4
+- (THBookDescription)initWithAsset:(id)asset summary:(id)summary
 {
   v9.receiver = self;
   v9.super_class = THBookDescription;
   v6 = [(THBookDescription *)&v9 init];
   if (v6)
   {
-    v6->mAsset = a3;
-    v6->mBookSummary = a4;
+    v6->mAsset = asset;
+    v6->mBookSummary = summary;
     v6->mOrientationLock = 0;
     v6->mCitationsAllowed = 0;
     v6->_absolutePathToDataMap = +[NSMapTable strongToWeakObjectsMapTable];
@@ -75,12 +75,12 @@
   return result;
 }
 
-+ (id)summaryWithURL:(id)a3
++ (id)summaryWithURL:(id)l
 {
   v11 = 0;
-  if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [a3 path]))
+  if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [l path]))
   {
-    result = [a1 readBookPropertiesFromURL:a3 error:&v11];
+    result = [self readBookPropertiesFromURL:l error:&v11];
     if (result)
     {
       return result;
@@ -104,9 +104,9 @@
   return 0;
 }
 
-+ (THBookDescription)descriptionWithURL:(id)a3
++ (THBookDescription)descriptionWithURL:(id)l
 {
-  result = [a1 summaryWithURL:?];
+  result = [self summaryWithURL:?];
   if (result)
   {
     v5 = result;
@@ -132,45 +132,45 @@
       {
         v8 = [(THBookDescription *)v5 objectForKey:kTHBookInfoOPF];
         v11 = 0;
-        if (v8 && (v9 = v8, -[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [a3 path], &v11)) && v11 == 1)
+        if (v8 && (v9 = v8, -[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [l path], &v11)) && v11 == 1)
         {
-          v10 = +[NSString md5StringWithContentsOfFile:](NSString, "md5StringWithContentsOfFile:", [objc_msgSend(a3 URLByAppendingPathComponent:{v9), "path"}]);
+          v10 = +[NSString md5StringWithContentsOfFile:](NSString, "md5StringWithContentsOfFile:", [objc_msgSend(l URLByAppendingPathComponent:{v9), "path"}]);
         }
 
         else
         {
-          v10 = THUniqueIdForPath([a3 path]);
+          v10 = THUniqueIdForPath([l path]);
         }
 
         v6 = v10;
       }
     }
 
-    return [[THBookDescription alloc] initWithAsset:[THAsset summary:"assetWithURL:assetID:" assetWithURL:a3 assetID:v6], v5];
+    return [[THBookDescription alloc] initWithAsset:[THAsset summary:"assetWithURL:assetID:" assetWithURL:l assetID:v6], v5];
   }
 
   return result;
 }
 
-+ (THBookDescription)descriptionWithURL:(id)a3 assetID:(id)a4
++ (THBookDescription)descriptionWithURL:(id)l assetID:(id)d
 {
-  result = [a1 summaryWithURL:?];
+  result = [self summaryWithURL:?];
   if (result)
   {
-    v7 = [[THBookDescription alloc] initWithAsset:[THAsset summary:"assetWithURL:assetID:" assetWithURL:a3 assetID:a4], result];
+    result = [[THBookDescription alloc] initWithAsset:[THAsset summary:"assetWithURL:assetID:" assetWithURL:l assetID:d], result];
 
-    return v7;
+    return result;
   }
 
   return result;
 }
 
-+ (THBookDescription)descriptionWithAsset:(id)a3
++ (THBookDescription)descriptionWithAsset:(id)asset
 {
-  result = [a1 summaryWithURL:{objc_msgSend(a3, "url")}];
+  result = [self summaryWithURL:{objc_msgSend(asset, "url")}];
   if (result)
   {
-    v5 = [[THBookDescription alloc] initWithAsset:a3 summary:result];
+    v5 = [[THBookDescription alloc] initWithAsset:asset summary:result];
 
     return v5;
   }
@@ -178,9 +178,9 @@
   return result;
 }
 
-+ (id)displayNameFromFilePath:(id)a3
++ (id)displayNameFromFilePath:(id)path
 {
-  v3 = [objc_msgSend(a3 "lastPathComponent")];
+  v3 = [objc_msgSend(path "lastPathComponent")];
   v4 = [NSCharacterSet characterSetWithCharactersInString:@":/"];
 
   return [v3 tsu_stringByRemovingCharactersInSet:v4];
@@ -209,16 +209,16 @@
 
 - (NSString)storeID
 {
-  v2 = [(THBookDescription *)self asset];
+  asset = [(THBookDescription *)self asset];
 
-  return [(THAsset *)v2 storeID];
+  return [(THAsset *)asset storeID];
 }
 
 - (NSURL)storeURL
 {
-  v2 = [(THBookDescription *)self asset];
+  asset = [(THBookDescription *)self asset];
 
-  return [(THAsset *)v2 storeUrl];
+  return [(THAsset *)asset storeUrl];
 }
 
 - (NSString)annotationID
@@ -226,9 +226,9 @@
   result = [(THBookDescription *)self storeID];
   if (!result)
   {
-    v4 = [(THBookDescription *)self asset];
+    asset = [(THBookDescription *)self asset];
 
-    return [(THAsset *)v4 assetID];
+    return [(THAsset *)asset assetID];
   }
 
   return result;
@@ -236,12 +236,12 @@
 
 - (NSURL)bookBundleUrl
 {
-  v2 = [(THBookDescription *)self asset];
+  asset = [(THBookDescription *)self asset];
 
-  return [(THAsset *)v2 url];
+  return [(THAsset *)asset url];
 }
 
-- (id)dataForAbsoluteURL:(id)a3 context:(id)a4
+- (id)dataForAbsoluteURL:(id)l context:(id)context
 {
   v16 = 0;
   v17 = &v16;
@@ -249,33 +249,33 @@
   v19 = sub_61794;
   v20 = sub_617A4;
   v21 = 0;
-  if (!a3)
+  if (!l)
   {
     goto LABEL_9;
   }
 
-  v6 = [a3 path];
+  path = [l path];
   absolutePathToDataSync = self->_absolutePathToDataSync;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_617B0;
   block[3] = &unk_45BDE8;
-  block[5] = v6;
+  block[5] = path;
   block[6] = &v16;
   block[4] = self;
   dispatch_sync(absolutePathToDataSync, block);
   v8 = v17[5];
   if (!v8)
   {
-    v9 = [(THBookDescription *)self drmContext];
-    if (v9)
+    drmContext = [(THBookDescription *)self drmContext];
+    if (drmContext)
     {
-      v10 = +[TSPData readOnlyDataFromDataRep:filename:context:](TSPData, "readOnlyDataFromDataRep:filename:context:", -[PFDContext dataRepresentationForFile:error:](v9, "dataRepresentationForFile:error:", v6, 0), [v6 lastPathComponent], a4);
+      v10 = +[TSPData readOnlyDataFromDataRep:filename:context:](TSPData, "readOnlyDataFromDataRep:filename:context:", -[PFDContext dataRepresentationForFile:error:](drmContext, "dataRepresentationForFile:error:", path, 0), [path lastPathComponent], context);
       v17[5] = v10;
       if (!v10)
       {
 LABEL_7:
-        v11 = [TSPData readOnlyDataWithoutDataDigestFromURL:[NSURL fileURLWithPath:v6 isDirectory:0] context:a4];
+        v11 = [TSPData readOnlyDataWithoutDataDigestFromURL:[NSURL fileURLWithPath:path isDirectory:0] context:context];
         v17[5] = v11;
         if (v11)
         {
@@ -300,7 +300,7 @@ LABEL_8:
     v14[2] = sub_617E8;
     v14[3] = &unk_45BE10;
     v14[4] = self;
-    v14[5] = v6;
+    v14[5] = path;
     v14[6] = &v16;
     dispatch_sync(v12, v14);
     v8 = v17[5];
@@ -311,24 +311,24 @@ LABEL_10:
   return v8;
 }
 
-- (id)dataForDocRelativePath:(id)a3 context:(id)a4
+- (id)dataForDocRelativePath:(id)path context:(id)context
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  v6 = [NSURL fileURLWithPath:[(NSString *)[(NSURL *)[(THBookDescription *)self bookBundleUrl] path] stringByAppendingPathComponent:a3] isDirectory:0];
+  v6 = [NSURL fileURLWithPath:[(NSString *)[(NSURL *)[(THBookDescription *)self bookBundleUrl] path] stringByAppendingPathComponent:path] isDirectory:0];
 
-  return [(THBookDescription *)self dataForAbsoluteURL:v6 context:a4];
+  return [(THBookDescription *)self dataForAbsoluteURL:v6 context:context];
 }
 
-- (id)urlForDocRelativePath:(id)a3
+- (id)urlForDocRelativePath:(id)path
 {
-  result = [a3 length];
+  result = [path length];
   if (result)
   {
-    v6 = [(NSString *)[(NSURL *)[(THBookDescription *)self bookBundleUrl] path] stringByAppendingPathComponent:a3];
+    v6 = [(NSString *)[(NSURL *)[(THBookDescription *)self bookBundleUrl] path] stringByAppendingPathComponent:path];
 
     return [NSURL fileURLWithPath:v6 isDirectory:0];
   }
@@ -338,35 +338,35 @@ LABEL_10:
 
 - (NSString)tspObjectContextPath
 {
-  v2 = [(THBookDescription *)self contextDirectoryPath];
+  contextDirectoryPath = [(THBookDescription *)self contextDirectoryPath];
 
-  return [(NSString *)v2 stringByAppendingPathComponent:@"database"];
+  return [(NSString *)contextDirectoryPath stringByAppendingPathComponent:@"database"];
 }
 
 - (NSString)bookTitle
 {
-  v3 = [(THAsset *)[(THBookDescription *)self asset] title];
-  if (![(NSString *)v3 length])
+  title = [(THAsset *)[(THBookDescription *)self asset] title];
+  if (![(NSString *)title length])
   {
-    v3 = [(NSDictionary *)self->mBookSummary objectForKey:kTHBookInfoTitleKey];
+    title = [(NSDictionary *)self->mBookSummary objectForKey:kTHBookInfoTitleKey];
   }
 
-  if ([(NSString *)v3 length])
+  if ([(NSString *)title length])
   {
-    return v3;
+    return title;
   }
 
   v5 = objc_opt_class();
-  v6 = [(NSURL *)[(THAsset *)self->mAsset url] path];
+  path = [(NSURL *)[(THAsset *)self->mAsset url] path];
 
-  return [v5 displayNameFromFilePath:v6];
+  return [v5 displayNameFromFilePath:path];
 }
 
 - (void)loadMetadata
 {
-  v2 = [(THBookDescription *)self asset];
+  asset = [(THBookDescription *)self asset];
 
-  [(THAsset *)v2 loadMetadata];
+  [(THAsset *)asset loadMetadata];
 }
 
 - (NSString)bookAuthor
@@ -377,17 +377,17 @@ LABEL_10:
     return v3;
   }
 
-  v5 = [(THBookDescription *)self asset];
+  asset = [(THBookDescription *)self asset];
 
-  return [(THAsset *)v5 author];
+  return [(THAsset *)asset author];
 }
 
 - (NSString)genre
 {
-  v3 = [(THAsset *)[(THBookDescription *)self asset] genre];
-  if ([(NSString *)v3 length])
+  genre = [(THAsset *)[(THBookDescription *)self asset] genre];
+  if ([(NSString *)genre length])
   {
-    return v3;
+    return genre;
   }
 
   mBookSummary = self->mBookSummary;
@@ -444,14 +444,14 @@ LABEL_7:
 
 - (BOOL)isSample
 {
-  v2 = [(THBookDescription *)self asset];
+  asset = [(THBookDescription *)self asset];
 
-  return [(THAsset *)v2 isSample];
+  return [(THAsset *)asset isSample];
 }
 
-+ (BOOL)isSampleAtURL:(id)a3
++ (BOOL)isSampleAtURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = [+[AEAssetEngine libraryMgr](AEAssetEngine "libraryMgr")];
     if (v4)
@@ -487,29 +487,29 @@ LABEL_7:
 
 - (BOOL)isEpub
 {
-  v2 = [(THBookDescription *)self asset];
+  asset = [(THBookDescription *)self asset];
 
-  return [(THAsset *)v2 isEpub];
+  return [(THAsset *)asset isEpub];
 }
 
 - (id)userDataPath
 {
-  v2 = [(THBookDescription *)self contextDirectoryPath];
+  contextDirectoryPath = [(THBookDescription *)self contextDirectoryPath];
   v3 = [NSString stringWithFormat:@"userdata_v%ld.sqlite", 0];
 
-  return [(NSString *)v2 stringByAppendingPathComponent:v3];
+  return [(NSString *)contextDirectoryPath stringByAppendingPathComponent:v3];
 }
 
-+ (BOOL)containsUnknownContentVersions:(id)a3
++ (BOOL)containsUnknownContentVersions:(id)versions
 {
   if (qword_567948 != -1)
   {
     sub_1E460C();
   }
 
-  if ([a3 hasPrefix:@"{"] && objc_msgSend(a3, "hasSuffix:", @"}"))
+  if ([versions hasPrefix:@"{"] && objc_msgSend(versions, "hasSuffix:", @"}"))
   {
-    v4 = [objc_msgSend(a3 substringWithRange:{1, objc_msgSend(a3, "length") - 2), "componentsSeparatedByString:", @";"}];
+    v4 = [objc_msgSend(versions substringWithRange:{1, objc_msgSend(versions, "length") - 2), "componentsSeparatedByString:", @";"}];
   }
 
   else
@@ -555,8 +555,8 @@ LABEL_7:
             v14 = 1;
             [v10 objectAtIndexedSubscript:1];
             v15 = TSUDynamicCast();
-            v16 = [v13 integerValue];
-            v17 = v16 < [v15 integerValue];
+            integerValue = [v13 integerValue];
+            v17 = integerValue < [v15 integerValue];
             p_class_meths = (&OBJC_PROTOCOL___THWOverlayableZoomableCanvasControllerAccessibilityDelegate + 32);
             if (v17)
             {
@@ -579,7 +579,7 @@ LABEL_7:
   return 0;
 }
 
-+ (BOOL)readOpfMetadataWithArchive:(id)a3 toProperties:(id)a4
++ (BOOL)readOpfMetadataWithArchive:(id)archive toProperties:(id)properties
 {
   v7 = [PFAXPackage opfXmlUriFromPackage:?];
   v8 = v7;
@@ -595,14 +595,14 @@ LABEL_7:
       v9 = [NSString stringWithFormat:@"/%@", v8];
     }
 
-    [a4 setValue:v9 forKey:kTHBookInfoOPF];
+    [properties setValue:v9 forKey:kTHBookInfoOPF];
     v52 = objc_alloc_init(NSAutoreleasePool);
-    v10 = [a3 isEPUB];
-    v11 = [objc_msgSend(a3 entryWithName:{v9), "xmlReader"}];
+    isEPUB = [archive isEPUB];
+    v11 = [objc_msgSend(archive entryWithName:{v9), "xmlReader"}];
     v12 = v11;
     if (v11)
     {
-      v50 = a1;
+      selfCopy = self;
       v54[0] = 0;
       v54[1] = 0;
       v53 = v54;
@@ -721,26 +721,26 @@ LABEL_32:
 
                 if (xmlStrEqual("ibooks:contentVersions", v23))
                 {
-                  if ([v50 containsUnknownContentVersions:{+[NSString stringWithXmlString:](NSString, "stringWithXmlString:", v22)}])
+                  if ([selfCopy containsUnknownContentVersions:{+[NSString stringWithXmlString:](NSString, "stringWithXmlString:", v22)}])
                   {
                     v26 = [NSNumber numberWithBool:1];
                     v27 = &kTHBookInfoContentVersions;
 LABEL_57:
-                    [a4 setValue:v26 forKey:*v27];
+                    [properties setValue:v26 forKey:*v27];
                   }
                 }
 
                 else if (xmlStrEqual("ibooks:autoHyphenate", v23))
                 {
                   v43 = [NSNumber numberWithBool:[[NSString stringWithXmlString:?], "isEqualToString:", @"yes"]];
-                  [a4 setValue:v43 forKey:kTHBookInfoAutoHyphenate];
+                  [properties setValue:v43 forKey:kTHBookInfoAutoHyphenate];
                 }
 
                 else if (xmlStrEqual("ibooks:version", v21))
                 {
                   InnerXml = xmlTextReaderReadInnerXml(v12);
                   v47 = [NSString stringWithXmlString:InnerXml];
-                  [a4 setValue:v47 forKey:kTHBookInfoBookVersionStringKey];
+                  [properties setValue:v47 forKey:kTHBookInfoBookVersionStringKey];
                   if (InnerXml)
                   {
                     free(InnerXml);
@@ -818,7 +818,7 @@ LABEL_57:
 
                 v41 = xmlTextReaderConstLocalName(v12);
                 v42 = xmlTextReaderConstValue(v12);
-                if (v10)
+                if (isEPUB)
                 {
                   break;
                 }
@@ -876,13 +876,13 @@ LABEL_37:
 
                 if ([(__CFString *)v31 isEqualToString:kTHBookInfoLanguageKey])
                 {
-                  [a4 setValue:v33 forKey:kTHBookInfoRawLanguageKey];
+                  [properties setValue:v33 forKey:kTHBookInfoRawLanguageKey];
                   v35 = [PFSConstants languageForString:v33];
 
                   v33 = v35;
                 }
 
-                [a4 setValue:v33 forKey:v31];
+                [properties setValue:v33 forKey:v31];
                 if (String)
                 {
                   free(String);
@@ -905,11 +905,11 @@ LABEL_86:
   return v8 != 0;
 }
 
-+ (id)readBookPropertiesFromURL:(id)a3 error:(id *)a4
++ (id)readBookPropertiesFromURL:(id)l error:(id *)error
 {
   objc_opt_class();
   v7 = +[NSMutableDictionary dictionary];
-  v8 = -[PFXArchive initWithPath:]([PFXArchive alloc], "initWithPath:", [a3 path]);
+  v8 = -[PFXArchive initWithPath:]([PFXArchive alloc], "initWithPath:", [l path]);
   if (![(PFXArchive *)v8 isValid])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -917,12 +917,12 @@ LABEL_86:
 
   if ([(PFXArchive *)v8 isValid])
   {
-    [(PFXArchive *)v8 setPreventUseOfEncryptionCache:[THBookDescription isSampleAtURL:a3]];
-    [a1 readOpfMetadataWithArchive:v8 toProperties:v7];
+    [(PFXArchive *)v8 setPreventUseOfEncryptionCache:[THBookDescription isSampleAtURL:l]];
+    [self readOpfMetadataWithArchive:v8 toProperties:v7];
     [PFAIDisplayOptions readWithArchive:v8 toProperties:v7];
   }
 
-  if (a4 && *a4)
+  if (error && *error)
   {
     return 0;
   }

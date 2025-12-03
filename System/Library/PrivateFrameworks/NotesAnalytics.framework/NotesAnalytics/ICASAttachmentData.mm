@@ -1,20 +1,20 @@
 @interface ICASAttachmentData
-- (ICASAttachmentData)initWithAttachmentSummary:(id)a3;
+- (ICASAttachmentData)initWithAttachmentSummary:(id)summary;
 - (id)toDict;
 @end
 
 @implementation ICASAttachmentData
 
-- (ICASAttachmentData)initWithAttachmentSummary:(id)a3
+- (ICASAttachmentData)initWithAttachmentSummary:(id)summary
 {
-  v5 = a3;
+  summaryCopy = summary;
   v9.receiver = self;
   v9.super_class = ICASAttachmentData;
   v6 = [(ICASAttachmentData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attachmentSummary, a3);
+    objc_storeStrong(&v6->_attachmentSummary, summary);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"attachmentSummary";
-  v3 = [(ICASAttachmentData *)self attachmentSummary];
-  if (v3)
+  attachmentSummary = [(ICASAttachmentData *)self attachmentSummary];
+  if (attachmentSummary)
   {
-    v4 = [(ICASAttachmentData *)self attachmentSummary];
+    attachmentSummary2 = [(ICASAttachmentData *)self attachmentSummary];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    attachmentSummary2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = attachmentSummary2;
+  v10[0] = attachmentSummary2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

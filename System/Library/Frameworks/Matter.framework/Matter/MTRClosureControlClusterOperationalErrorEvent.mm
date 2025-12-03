@@ -1,6 +1,6 @@
 @interface MTRClosureControlClusterOperationalErrorEvent
 - (MTRClosureControlClusterOperationalErrorEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,19 +13,19 @@
   v2 = [(MTRClosureControlClusterOperationalErrorEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     errorState = v2->_errorState;
-    v2->_errorState = v3;
+    v2->_errorState = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureControlClusterOperationalErrorEvent);
-  v5 = [(MTRClosureControlClusterOperationalErrorEvent *)self errorState];
-  [(MTRClosureControlClusterOperationalErrorEvent *)v4 setErrorState:v5];
+  errorState = [(MTRClosureControlClusterOperationalErrorEvent *)self errorState];
+  [(MTRClosureControlClusterOperationalErrorEvent *)v4 setErrorState:errorState];
 
   return v4;
 }

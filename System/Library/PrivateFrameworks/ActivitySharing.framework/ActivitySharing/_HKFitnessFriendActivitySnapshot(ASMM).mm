@@ -9,9 +9,9 @@
 - (id)mmgQuantity
 {
   v2 = MEMORY[0x277CCD7E8];
-  v3 = [MEMORY[0x277CCDAB0] minuteUnit];
-  [a1 mmg];
-  v4 = [v2 quantityWithUnit:v3 doubleValue:?];
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+  [self mmg];
+  v4 = [v2 quantityWithUnit:minuteUnit doubleValue:?];
 
   return v4;
 }
@@ -19,25 +19,25 @@
 - (id)mmvQuantity
 {
   v2 = MEMORY[0x277CCD7E8];
-  v3 = [MEMORY[0x277CCDAB0] minuteUnit];
-  [a1 mmv];
-  v4 = [v2 quantityWithUnit:v3 doubleValue:?];
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+  [self mmv];
+  v4 = [v2 quantityWithUnit:minuteUnit doubleValue:?];
 
   return v4;
 }
 
 - (void)mmPercent
 {
-  v2 = [a1 mmgQuantity];
-  v3 = [MEMORY[0x277CCDAB0] minuteUnit];
-  [v2 doubleValueForUnit:v3];
+  mmgQuantity = [self mmgQuantity];
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+  [mmgQuantity doubleValueForUnit:minuteUnit];
   v5 = v4;
 
   if (v5 >= 0.00000011920929)
   {
-    v6 = [a1 mmvQuantity];
-    v7 = [MEMORY[0x277CCDAB0] minuteUnit];
-    [v6 doubleValueForUnit:v7];
+    mmvQuantity = [self mmvQuantity];
+    minuteUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
+    [mmvQuantity doubleValueForUnit:minuteUnit2];
   }
 }
 

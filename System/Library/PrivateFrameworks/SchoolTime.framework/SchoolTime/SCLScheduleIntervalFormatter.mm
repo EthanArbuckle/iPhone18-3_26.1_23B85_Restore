@@ -1,13 +1,13 @@
 @interface SCLScheduleIntervalFormatter
 - (SCLScheduleIntervalFormatter)init;
-- (id)_shortIntervalStringWithStart:(id)a3 end:(id)a4;
-- (id)_stringForCoalescedAMPMSymbolsWithDateInterval:(id)a3 locale:(id)a4 startTimeComponents:(id)a5 endTimeComponents:(id)a6;
-- (id)_stringForDateInterval:(id)a3 startComponents:(id)a4 endComponents:(id)a5;
-- (id)newDateFormatterWithLocale:(id)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromTime:(id)a3 toTime:(id)a4;
-- (id)stringFromTimeInterval:(id)a3;
-- (void)setLocale:(id)a3;
+- (id)_shortIntervalStringWithStart:(id)start end:(id)end;
+- (id)_stringForCoalescedAMPMSymbolsWithDateInterval:(id)interval locale:(id)locale startTimeComponents:(id)components endTimeComponents:(id)timeComponents;
+- (id)_stringForDateInterval:(id)interval startComponents:(id)components endComponents:(id)endComponents;
+- (id)newDateFormatterWithLocale:(id)locale;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromTime:(id)time toTime:(id)toTime;
+- (id)stringFromTimeInterval:(id)interval;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation SCLScheduleIntervalFormatter
@@ -22,9 +22,9 @@
     v3 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
     v4 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
     [(NSCalendar *)v3 setTimeZone:v4];
-    v5 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     locale = v2->_locale;
-    v2->_locale = v5;
+    v2->_locale = autoupdatingCurrentLocale;
 
     referenceCalendar = v2->_referenceCalendar;
     v2->_referenceCalendar = v3;
@@ -43,11 +43,11 @@
 
     v14 = objc_alloc_init(MEMORY[0x277CCA978]);
     [(NSDateIntervalFormatter *)v14 setLocale:v2->_locale];
-    v15 = [(SCLScheduleIntervalFormatter *)v2 referenceCalendar];
-    [(NSDateIntervalFormatter *)v14 setCalendar:v15];
+    referenceCalendar = [(SCLScheduleIntervalFormatter *)v2 referenceCalendar];
+    [(NSDateIntervalFormatter *)v14 setCalendar:referenceCalendar];
 
-    v16 = [(SCLScheduleIntervalFormatter *)v2 referenceTimeZone];
-    [(NSDateIntervalFormatter *)v14 setTimeZone:v16];
+    referenceTimeZone = [(SCLScheduleIntervalFormatter *)v2 referenceTimeZone];
+    [(NSDateIntervalFormatter *)v14 setTimeZone:referenceTimeZone];
 
     [(NSDateIntervalFormatter *)v14 setDateStyle:0];
     [(NSDateIntervalFormatter *)v14 setTimeStyle:1];
@@ -66,54 +66,54 @@
   return v2;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  objc_storeStrong(&self->_locale, a3);
-  v5 = a3;
-  [(NSDateIntervalFormatter *)self->_briefFormatter setLocale:v5];
-  [(NSDateFormatter *)self->_shortFormatter setLocale:v5];
+  objc_storeStrong(&self->_locale, locale);
+  localeCopy = locale;
+  [(NSDateIntervalFormatter *)self->_briefFormatter setLocale:localeCopy];
+  [(NSDateFormatter *)self->_shortFormatter setLocale:localeCopy];
 }
 
-- (id)newDateFormatterWithLocale:(id)a3
+- (id)newDateFormatterWithLocale:(id)locale
 {
   v4 = MEMORY[0x277CCA968];
-  v5 = a3;
+  localeCopy = locale;
   v6 = objc_alloc_init(v4);
-  [v6 setLocale:v5];
+  [v6 setLocale:localeCopy];
 
-  v7 = [(SCLScheduleIntervalFormatter *)self referenceCalendar];
-  [v6 setCalendar:v7];
+  referenceCalendar = [(SCLScheduleIntervalFormatter *)self referenceCalendar];
+  [v6 setCalendar:referenceCalendar];
 
-  v8 = [(SCLScheduleIntervalFormatter *)self referenceTimeZone];
-  [v6 setTimeZone:v8];
+  referenceTimeZone = [(SCLScheduleIntervalFormatter *)self referenceTimeZone];
+  [v6 setTimeZone:referenceTimeZone];
 
   return v6;
 }
 
-- (id)stringFromTimeInterval:(id)a3
+- (id)stringFromTimeInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 startTime];
-  v6 = [v4 endTime];
+  intervalCopy = interval;
+  startTime = [intervalCopy startTime];
+  endTime = [intervalCopy endTime];
 
-  v7 = [(SCLScheduleIntervalFormatter *)self stringFromTime:v5 toTime:v6];
+  v7 = [(SCLScheduleIntervalFormatter *)self stringFromTime:startTime toTime:endTime];
 
   return v7;
 }
 
-- (id)stringFromTime:(id)a3 toTime:(id)a4
+- (id)stringFromTime:(id)time toTime:(id)toTime
 {
   v4 = 0;
-  if (a3 && a4)
+  if (time && toTime)
   {
-    v7 = a4;
-    v8 = [a3 dateComponents];
-    v9 = [v7 dateComponents];
+    toTimeCopy = toTime;
+    dateComponents = [time dateComponents];
+    dateComponents2 = [toTimeCopy dateComponents];
 
     v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:0.0];
-    v11 = [(SCLScheduleIntervalFormatter *)self referenceCalendar];
-    v12 = [v11 dateByAddingComponents:v8 toDate:v10 options:0];
-    v13 = [v11 dateByAddingComponents:v9 toDate:v10 options:0];
+    referenceCalendar = [(SCLScheduleIntervalFormatter *)self referenceCalendar];
+    v12 = [referenceCalendar dateByAddingComponents:dateComponents toDate:v10 options:0];
+    v13 = [referenceCalendar dateByAddingComponents:dateComponents2 toDate:v10 options:0];
     v14 = [v12 earlierDate:v13];
 
     if (v14 == v12)
@@ -123,7 +123,7 @@
 
     else
     {
-      v15 = [v11 dateByAddingUnit:16 value:1 toDate:v13 options:0];
+      v15 = [referenceCalendar dateByAddingUnit:16 value:1 toDate:v13 options:0];
 
       v16 = [v12 earlierDate:v15];
 
@@ -138,7 +138,7 @@ LABEL_8:
     }
 
     v17 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v12 endDate:v13];
-    v4 = [(SCLScheduleIntervalFormatter *)self _stringForDateInterval:v17 startComponents:v8 endComponents:v9];
+    v4 = [(SCLScheduleIntervalFormatter *)self _stringForDateInterval:v17 startComponents:dateComponents endComponents:dateComponents2];
 
     goto LABEL_8;
   }
@@ -148,13 +148,13 @@ LABEL_9:
   return v4;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SCLScheduleIntervalFormatter *)self stringFromTimeInterval:v4];
+    v5 = [(SCLScheduleIntervalFormatter *)self stringFromTimeInterval:valueCopy];
   }
 
   else
@@ -165,25 +165,25 @@ LABEL_9:
   return v5;
 }
 
-- (id)_stringForDateInterval:(id)a3 startComponents:(id)a4 endComponents:(id)a5
+- (id)_stringForDateInterval:(id)interval startComponents:(id)components endComponents:(id)endComponents
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intervalCopy = interval;
+  componentsCopy = components;
+  endComponentsCopy = endComponents;
   if (![(SCLScheduleIntervalFormatter *)self formattingStyle])
   {
-    v11 = [(SCLScheduleIntervalFormatter *)self briefFormatter];
-    v12 = [v11 stringFromDateInterval:v8];
+    briefFormatter = [(SCLScheduleIntervalFormatter *)self briefFormatter];
+    v12 = [briefFormatter stringFromDateInterval:intervalCopy];
     goto LABEL_10;
   }
 
   if ([(SCLScheduleIntervalFormatter *)self formattingStyle]== 1 && ![(SCLScheduleIntervalFormatter *)self coalescesAMPMSymbols]&& ![(SCLScheduleIntervalFormatter *)self prefersHoursOnly])
   {
-    v11 = [(SCLScheduleIntervalFormatter *)self shortFormatter];
-    v15 = [v8 startDate];
-    v16 = [v11 stringFromDate:v15];
-    v17 = [v8 endDate];
-    v18 = [v11 stringFromDate:v17];
+    briefFormatter = [(SCLScheduleIntervalFormatter *)self shortFormatter];
+    startDate = [intervalCopy startDate];
+    v16 = [briefFormatter stringFromDate:startDate];
+    endDate = [intervalCopy endDate];
+    v18 = [briefFormatter stringFromDate:endDate];
     v13 = [(SCLScheduleIntervalFormatter *)self _shortIntervalStringWithStart:v16 end:v18];
 
     goto LABEL_11;
@@ -191,8 +191,8 @@ LABEL_9:
 
   if ([(SCLScheduleIntervalFormatter *)self formattingStyle]== 1 && ([(SCLScheduleIntervalFormatter *)self coalescesAMPMSymbols]|| [(SCLScheduleIntervalFormatter *)self prefersHoursOnly]))
   {
-    v11 = [(SCLScheduleIntervalFormatter *)self locale];
-    v12 = [(SCLScheduleIntervalFormatter *)self _stringForCoalescedAMPMSymbolsWithDateInterval:v8 locale:v11 startTimeComponents:v9 endTimeComponents:v10];
+    briefFormatter = [(SCLScheduleIntervalFormatter *)self locale];
+    v12 = [(SCLScheduleIntervalFormatter *)self _stringForCoalescedAMPMSymbolsWithDateInterval:intervalCopy locale:briefFormatter startTimeComponents:componentsCopy endTimeComponents:endComponentsCopy];
 LABEL_10:
     v13 = v12;
 LABEL_11:
@@ -206,56 +206,56 @@ LABEL_13:
   return v13;
 }
 
-- (id)_shortIntervalStringWithStart:(id)a3 end:(id)a4
+- (id)_shortIntervalStringWithStart:(id)start end:(id)end
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCLScheduleIntervalFormatter *)self bundle];
-  v9 = [(SCLScheduleIntervalFormatter *)self table];
-  v10 = [v8 localizedStringForKey:@"SCHEDULE_TIME_INTERVAL_SHORT_FORMAT" value:&stru_287622948 table:v9];
+  endCopy = end;
+  startCopy = start;
+  bundle = [(SCLScheduleIntervalFormatter *)self bundle];
+  table = [(SCLScheduleIntervalFormatter *)self table];
+  v10 = [bundle localizedStringForKey:@"SCHEDULE_TIME_INTERVAL_SHORT_FORMAT" value:&stru_287622948 table:table];
 
-  v11 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v10 validFormatSpecifiers:@"%@%@" error:0, v7, v6];
+  endCopy = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v10 validFormatSpecifiers:@"%@%@" error:0, startCopy, endCopy];
 
-  return v11;
+  return endCopy;
 }
 
-- (id)_stringForCoalescedAMPMSymbolsWithDateInterval:(id)a3 locale:(id)a4 startTimeComponents:(id)a5 endTimeComponents:(id)a6
+- (id)_stringForCoalescedAMPMSymbolsWithDateInterval:(id)interval locale:(id)locale startTimeComponents:(id)components endTimeComponents:(id)timeComponents
 {
-  v10 = a4;
-  v32 = a5;
-  v34 = a6;
-  v11 = a3;
-  v12 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:v10];
+  localeCopy = locale;
+  componentsCopy = components;
+  timeComponentsCopy = timeComponents;
+  intervalCopy = interval;
+  v12 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:localeCopy];
   [v12 setTimeStyle:1];
   [v12 setDateStyle:0];
   [v12 setFormattingContext:1];
-  v13 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:v10];
+  v13 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:localeCopy];
   [v13 setFormattingContext:1];
   [v13 setLocalizedDateFormatFromTemplate:@"j"];
-  v14 = [v11 startDate];
-  v15 = [v11 endDate];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v16 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:v10];
+  v16 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:localeCopy];
   [v16 setLocalizedDateFormatFromTemplate:@"a"];
-  v36 = [v16 stringFromDate:v14];
-  v35 = [v16 stringFromDate:v15];
+  v36 = [v16 stringFromDate:startDate];
+  v35 = [v16 stringFromDate:endDate];
   v17 = MEMORY[0x277CCA968];
-  if (v10)
+  if (localeCopy)
   {
-    v18 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"j" options:0 locale:v10];
+    v18 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"j" options:0 locale:localeCopy];
   }
 
   else
   {
-    v19 = [MEMORY[0x277CBEAF8] currentLocale];
-    v18 = [v17 dateFormatFromTemplate:@"j" options:0 locale:v19];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v18 = [v17 dateFormatFromTemplate:@"j" options:0 locale:currentLocale];
   }
 
-  if ([v18 containsString:{@"H", v32}])
+  if ([v18 containsString:{@"H", componentsCopy}])
   {
 
 LABEL_7:
-    v21 = 0;
+    prefersHoursOnly = 0;
     v22 = 1;
     goto LABEL_8;
   }
@@ -270,21 +270,21 @@ LABEL_7:
   if ([v33 minute])
   {
     v22 = 0;
-    v21 = 0;
+    prefersHoursOnly = 0;
   }
 
   else
   {
-    v21 = [(SCLScheduleIntervalFormatter *)self prefersHoursOnly];
+    prefersHoursOnly = [(SCLScheduleIntervalFormatter *)self prefersHoursOnly];
     v22 = 0;
   }
 
 LABEL_8:
   if ([v36 isEqualToString:v35] && -[SCLScheduleIntervalFormatter coalescesAMPMSymbols](self, "coalescesAMPMSymbols"))
   {
-    v23 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:v10];
+    v23 = [(SCLScheduleIntervalFormatter *)self newDateFormatterWithLocale:localeCopy];
     [v23 setFormattingContext:1];
-    if (v21)
+    if (prefersHoursOnly)
     {
       v24 = @"J";
     }
@@ -295,12 +295,12 @@ LABEL_8:
     }
 
     [v23 setLocalizedDateFormatFromTemplate:v24];
-    v25 = [v23 stringFromDate:v14];
+    v25 = [v23 stringFromDate:startDate];
   }
 
   else
   {
-    if (v21)
+    if (prefersHoursOnly)
     {
       v26 = v13;
     }
@@ -310,15 +310,15 @@ LABEL_8:
       v26 = v12;
     }
 
-    v25 = [v26 stringFromDate:v14];
+    v25 = [v26 stringFromDate:startDate];
   }
 
   v27 = v12;
   if ((v22 & 1) == 0)
   {
-    v28 = [v34 minute];
+    minute = [timeComponentsCopy minute];
     v27 = v12;
-    if (!v28)
+    if (!minute)
     {
       if ([(SCLScheduleIntervalFormatter *)self prefersHoursOnly])
       {
@@ -332,7 +332,7 @@ LABEL_8:
     }
   }
 
-  v29 = [v27 stringFromDate:v15];
+  v29 = [v27 stringFromDate:endDate];
   v30 = [(SCLScheduleIntervalFormatter *)self _shortIntervalStringWithStart:v25 end:v29];
 
   return v30;

@@ -1,6 +1,6 @@
 @interface UMDPersonaManifestEmbedded
 + (id)manifest;
-+ (id)manifestFromData:(id)a3;
++ (id)manifestFromData:(id)data;
 - (id)dataValue;
 @end
 
@@ -8,16 +8,16 @@
 
 + (id)manifest
 {
-  v3 = objc_alloc_init(a1);
-  [v3 setVersion:{objc_msgSend(a1, "currentVersion")}];
+  v3 = objc_alloc_init(self);
+  [v3 setVersion:{objc_msgSend(self, "currentVersion")}];
 
   return v3;
 }
 
-+ (id)manifestFromData:(id)a3
++ (id)manifestFromData:(id)data
 {
-  v4 = a3;
-  v5 = sub_10009950C(v4);
+  dataCopy = data;
+  v5 = sub_10009950C(dataCopy);
   v6 = v5;
   if (!v5)
   {
@@ -106,16 +106,16 @@ LABEL_37:
     }
   }
 
-  v8 = [v7 unsignedIntValue];
-  if (v8 == 1)
+  unsignedIntValue = [v7 unsignedIntValue];
+  if (unsignedIntValue == 1)
   {
-    v9 = sub_100055B28(a1, v6);
+    v9 = sub_100055B28(self, v6);
     goto LABEL_26;
   }
 
-  if (!v8)
+  if (!unsignedIntValue)
   {
-    v9 = sub_1000557E4(a1, v4);
+    v9 = sub_1000557E4(self, dataCopy);
 LABEL_26:
     v18 = v9;
     goto LABEL_41;
@@ -171,8 +171,8 @@ LABEL_41:
   v4 = [NSNumber numberWithUnsignedLongLong:[(UMDPersonaManifest *)self generation]];
   [v3 setObject:v4 forKeyedSubscript:@"UsePersonaGenerationID"];
 
-  v5 = [(UMDPersonaManifest *)self users];
-  v6 = [UMDPersonaManifest dictForUserSet:v5];
+  users = [(UMDPersonaManifest *)self users];
+  v6 = [UMDPersonaManifest dictForUserSet:users];
 
   if (v6)
   {

@@ -5,72 +5,72 @@
 - (CGRect)timeRectInAsset;
 - (CGRect)visibleRect;
 - (CGSize)assetSize;
-- (PFLLayoutConfiguration)initWithAsset:(id)a3 timePosition:(unint64_t)a4 segmentationData:(id)a5 coreLayout:(id)a6;
+- (PFLLayoutConfiguration)initWithAsset:(id)asset timePosition:(unint64_t)position segmentationData:(id)data coreLayout:(id)layout;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation PFLLayoutConfiguration
 
-- (PFLLayoutConfiguration)initWithAsset:(id)a3 timePosition:(unint64_t)a4 segmentationData:(id)a5 coreLayout:(id)a6
+- (PFLLayoutConfiguration)initWithAsset:(id)asset timePosition:(unint64_t)position segmentationData:(id)data coreLayout:(id)layout
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  assetCopy = asset;
+  dataCopy = data;
+  layoutCopy = layout;
   v56.receiver = self;
   v56.super_class = PFLLayoutConfiguration;
   v13 = [(PFLLayoutConfiguration *)&v56 init];
   if (v13)
   {
-    v14 = [v10 localIdentifier];
+    localIdentifier = [assetCopy localIdentifier];
     assetId = v13->_assetId;
-    v13->_assetId = v14;
+    v13->_assetId = localIdentifier;
 
-    v16 = [v11 segmentationBuffer];
-    v13->_foregroundMask = v16;
-    CVPixelBufferRetain(v16);
-    v13->_maskIsInverted = ([v11 classification] - 3) < 2;
-    v17 = [v10 pixelWidth];
-    v18 = [v10 pixelHeight];
-    v13->_assetSize.width = v17;
-    v13->_assetSize.height = v18;
-    [v12 visibleRect];
+    segmentationBuffer = [dataCopy segmentationBuffer];
+    v13->_foregroundMask = segmentationBuffer;
+    CVPixelBufferRetain(segmentationBuffer);
+    v13->_maskIsInverted = ([dataCopy classification] - 3) < 2;
+    pixelWidth = [assetCopy pixelWidth];
+    pixelHeight = [assetCopy pixelHeight];
+    v13->_assetSize.width = pixelWidth;
+    v13->_assetSize.height = pixelHeight;
+    [layoutCopy visibleRect];
     v13->_visibleRect.origin.x = v19;
     v13->_visibleRect.origin.y = v20;
     v13->_visibleRect.size.width = v21;
     v13->_visibleRect.size.height = v22;
-    v13->_timePosition = a4;
+    v13->_timePosition = position;
     PFCRectForTimePosition();
     v13->_timeRect.origin.x = v23;
     v13->_timeRect.origin.y = v24;
     v13->_timeRect.size.width = v25;
     v13->_timeRect.size.height = v26;
-    v27 = [v11 colorAnalysis];
+    colorAnalysis = [dataCopy colorAnalysis];
     colorAnalysis = v13->_colorAnalysis;
-    v13->_colorAnalysis = v27;
+    v13->_colorAnalysis = colorAnalysis;
 
-    [v12 cropScore];
+    [layoutCopy cropScore];
     v13->_cropScore = v29;
-    [v12 layoutScore];
+    [layoutCopy layoutScore];
     v13->_layoutScore = v30;
-    v13->_usesMask = [v12 usesMask];
-    v31 = [v11 regions];
-    v32 = [v31 faceRegions];
-    v33 = flipYNormalizedRects(v32);
+    v13->_usesMask = [layoutCopy usesMask];
+    regions = [dataCopy regions];
+    faceRegions = [regions faceRegions];
+    v33 = flipYNormalizedRects(faceRegions);
     faceRects = v13->_faceRects;
     v13->_faceRects = v33;
 
-    v35 = [v31 petRegions];
-    v36 = flipYNormalizedRects(v35);
+    petRegions = [regions petRegions];
+    v36 = flipYNormalizedRects(petRegions);
     petRects = v13->_petRects;
     v13->_petRects = v36;
 
-    [v31 acceptableCropRect];
+    [regions acceptableCropRect];
     v13->_acceptableCropRect.origin.x = flipYNormalizedRect(v38, v39, v40, v41);
     v13->_acceptableCropRect.origin.y = v42;
     v13->_acceptableCropRect.size.width = v43;
     v13->_acceptableCropRect.size.height = v44;
-    [v31 preferredCropRect];
+    [regions preferredCropRect];
     v13->_preferredCropRect.origin.x = flipYNormalizedRect(v45, v46, v47, v48);
     v13->_preferredCropRect.origin.y = v49;
     v13->_preferredCropRect.size.width = v50;

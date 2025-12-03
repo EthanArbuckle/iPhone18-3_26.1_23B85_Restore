@@ -1,45 +1,45 @@
 @interface HKMHReminder
-- (HKMHReminder)initWithCoder:(id)a3;
-- (HKMHReminder)initWithDateComponents:(id)a3 isEnabled:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKMHReminder)initWithCoder:(id)coder;
+- (HKMHReminder)initWithDateComponents:(id)components isEnabled:(BOOL)enabled;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMHReminder
 
-- (HKMHReminder)initWithDateComponents:(id)a3 isEnabled:(BOOL)a4
+- (HKMHReminder)initWithDateComponents:(id)components isEnabled:(BOOL)enabled
 {
-  v6 = a3;
+  componentsCopy = components;
   v11.receiver = self;
   v11.super_class = HKMHReminder;
   v7 = [(HKMHReminder *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [componentsCopy copy];
     dateComponents = v7->_dateComponents;
     v7->_dateComponents = v8;
 
-    v7->_isEnabled = a4;
+    v7->_isEnabled = enabled;
   }
 
   return v7;
 }
 
-- (HKMHReminder)initWithCoder:(id)a3
+- (HKMHReminder)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"EnabledKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DateComponentsKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"EnabledKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateComponentsKey"];
 
   v7 = [(HKMHReminder *)self initWithDateComponents:v6 isEnabled:v5];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isEnabled = self->_isEnabled;
-  v5 = a3;
-  [v5 encodeBool:isEnabled forKey:@"EnabledKey"];
-  [v5 encodeObject:self->_dateComponents forKey:@"DateComponentsKey"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isEnabled forKey:@"EnabledKey"];
+  [coderCopy encodeObject:self->_dateComponents forKey:@"DateComponentsKey"];
 }
 
 @end

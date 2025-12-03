@@ -1,11 +1,11 @@
 @interface RMModelAssetCredentialUserNameAndPasswordDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 reference:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 reference:(id)a4 authentication:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier reference:(id)reference;
++ (id)buildWithIdentifier:(id)identifier reference:(id)reference authentication:(id)authentication;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAssetCredentialUserNameAndPasswordDeclaration
@@ -24,52 +24,52 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 reference:(id)a4 authentication:(id)a5
++ (id)buildWithIdentifier:(id)identifier reference:(id)reference authentication:(id)authentication
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  authenticationCopy = authentication;
+  referenceCopy = reference;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.asset.credential.userpassword"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadReference:v9];
+  [v10 setPayloadReference:referenceCopy];
 
-  [v10 setPayloadAuthentication:v8];
+  [v10 setPayloadAuthentication:authenticationCopy];
   [v10 updateServerToken];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 reference:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier reference:(id)reference
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.asset.credential.userpassword"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadReference:v6];
+  [v7 setPayloadReference:referenceCopy];
 
   [v7 updateServerToken];
 
@@ -128,12 +128,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelAssetCredentialUserNameAndPasswordDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -141,11 +141,11 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  LOWORD(v16) = a4;
-  if ([(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Reference" forKeyPath:@"payloadReference" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:a5])
+  LOWORD(v16) = type;
+  if ([(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Reference" forKeyPath:@"payloadReference" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:error])
   {
-    LOWORD(v17) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Authentication" forKeyPath:@"payloadAuthentication" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:a5];
+    LOWORD(v17) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Authentication" forKeyPath:@"payloadAuthentication" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:error];
   }
 
   else
@@ -156,35 +156,35 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelAssetCredentialUserNameAndPasswordDeclaration *)self payloadReference];
+  payloadReference = [(RMModelAssetCredentialUserNameAndPasswordDeclaration *)self payloadReference];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__RMModelAssetCredentialUserNameAndPasswordDeclaration_serializePayloadWithType___block_invoke;
   v12[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v13 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Reference" value:v6 dictSerializer:v12 isRequired:1 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Reference" value:payloadReference dictSerializer:v12 isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelAssetCredentialUserNameAndPasswordDeclaration *)self payloadAuthentication];
+  payloadAuthentication = [(RMModelAssetCredentialUserNameAndPasswordDeclaration *)self payloadAuthentication];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__RMModelAssetCredentialUserNameAndPasswordDeclaration_serializePayloadWithType___block_invoke_2;
   v10[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v11 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Authentication" value:v7 dictSerializer:v10 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Authentication" value:payloadAuthentication dictSerializer:v10 isRequired:0 defaultValue:0];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelAssetCredentialUserNameAndPasswordDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:zone];
   v5 = [(RMModelAssetBaseReference *)self->_payloadReference copy];
   v6 = v4[6];
   v4[6] = v5;

@@ -1,67 +1,67 @@
 @interface PKPencilSqueezeController
 - (BOOL)_onlyShowUndoOrRedo;
-- (double)_paletteViewCenterInRect:(CGFloat)a3 hoverLocation:(CGFloat)a4 paletteViewSize:(CGFloat)a5;
+- (double)_paletteViewCenterInRect:(CGFloat)rect hoverLocation:(CGFloat)location paletteViewSize:(CGFloat)size;
 - (double)_paletteViewScale;
-- (double)paletteViewFrameForHoverLocation:(double)a3;
+- (double)paletteViewFrameForHoverLocation:(double)location;
 - (id)_currentFirstResponder;
 - (id)_currentUndoManager;
-- (id)_hoverViewInPalette:(id *)a1;
-- (id)_loggableNotificationDescription:(uint64_t)a1;
-- (id)hitTest:(void *)a3 fromView:(double)a4 withEvent:(double)a5;
-- (uint64_t)_canSelectTool:(uint64_t)a1 atIndex:(void *)a2;
+- (id)_hoverViewInPalette:(id *)palette;
+- (id)_loggableNotificationDescription:(uint64_t)description;
+- (id)hitTest:(void *)test fromView:(double)view withEvent:(double)event;
+- (uint64_t)_canSelectTool:(uint64_t)tool atIndex:(void *)index;
 - (uint64_t)_isColorPickerVisible;
-- (uint64_t)_isPresentedViewController:(uint64_t)a1;
+- (uint64_t)_isPresentedViewController:(uint64_t)controller;
 - (uint64_t)_keyWindow;
 - (uint64_t)_toolPickerForKeyWindow;
-- (uint64_t)_updatePalettePositionWithHoverLocation:(double)a3;
+- (uint64_t)_updatePalettePositionWithHoverLocation:(double)location;
 - (uint64_t)_updatePaletteViewPresentationState;
-- (uint64_t)initWithContainerView:(void *)a3 rootViewController:(void *)a4 textEffectsWindowObserver:;
+- (uint64_t)initWithContainerView:(void *)view rootViewController:(void *)controller textEffectsWindowObserver:;
 - (void)_didChangePaletteViewToVisible;
-- (void)_didSelectTool:(uint64_t *)a1 atIndex:(void *)a2;
+- (void)_didSelectTool:(uint64_t *)tool atIndex:(void *)index;
 - (void)_dismissPopovers;
-- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)a3;
-- (void)_handleKeyboardWillHideNotification:(id)a3;
-- (void)_handleKeyboardWillShowNotification:(id)a3;
-- (void)_handleSceneDidEnterBackgroundNotification:(id)a3;
-- (void)_handleSceneWillEnterForegroundNotification:(id)a3;
-- (void)_hidePaletteViewAfterDelay:(void *)a1;
-- (void)_presentViewControllerAsPopover:(void *)a3 sourceView:;
-- (void)_setPaletteViewVisible:(int)a3 notify:(void *)a4 didChangeHandler:;
-- (void)_togglePresentViewControllerAsPopover:(void *)a3 sourceView:;
+- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)change;
+- (void)_handleKeyboardWillHideNotification:(id)notification;
+- (void)_handleKeyboardWillShowNotification:(id)notification;
+- (void)_handleSceneDidEnterBackgroundNotification:(id)notification;
+- (void)_handleSceneWillEnterForegroundNotification:(id)notification;
+- (void)_hidePaletteViewAfterDelay:(void *)delay;
+- (void)_presentViewControllerAsPopover:(void *)popover sourceView:;
+- (void)_setPaletteViewVisible:(int)visible notify:(void *)notify didChangeHandler:;
+- (void)_togglePresentViewControllerAsPopover:(void *)popover sourceView:;
 - (void)_updatePalettePosition;
-- (void)_updateToolPickerVisibilityWithCompletion:(uint64_t *)a1;
-- (void)_updateUIWithSqueeze:(void *)a3 customHoverPoint:(int)a4 animated:;
+- (void)_updateToolPickerVisibilityWithCompletion:(uint64_t *)completion;
+- (void)_updateUIWithSqueeze:(void *)squeeze customHoverPoint:(int)point animated:;
 - (void)_updateUserInterfaceStyle;
-- (void)imageWandOnboardingControllerDidHideView:(id)a3;
+- (void)imageWandOnboardingControllerDidHideView:(id)view;
 - (void)keyWindowDidChangeBounds;
-- (void)pencilInteraction:(id)a3 didReceiveSqueeze:(id)a4;
-- (void)pencilInteraction:(id)a3 didReceiveTap:(id)a4;
+- (void)pencilInteraction:(id)interaction didReceiveSqueeze:(id)squeeze;
+- (void)pencilInteraction:(id)interaction didReceiveTap:(id)tap;
 - (void)pencilSettingsDidChange;
 - (void)performSqueezeAction;
-- (void)setMiniPaletteVisible:(double)a3 hoverLocation:(double)a4;
+- (void)setMiniPaletteVisible:(double)visible hoverLocation:(double)location;
 - (void)textEffectsWindowDidChangeBounds;
 - (void)updateUserInterfaceStyle;
 @end
 
 @implementation PKPencilSqueezeController
 
-- (uint64_t)initWithContainerView:(void *)a3 rootViewController:(void *)a4 textEffectsWindowObserver:
+- (uint64_t)initWithContainerView:(void *)view rootViewController:(void *)controller textEffectsWindowObserver:
 {
   v83[4] = *MEMORY[0x1E69E9840];
   obj = a2;
-  v75 = a3;
-  v73 = a4;
-  if (a1)
+  viewCopy = view;
+  controllerCopy = controller;
+  if (self)
   {
-    v81.receiver = a1;
+    v81.receiver = self;
     v81.super_class = PKPencilSqueezeController;
     v7 = objc_msgSendSuper2(&v81, sel_init);
     v8 = v7;
     if (v7)
     {
       objc_storeWeak(v7 + 1, obj);
-      objc_storeWeak((v8 + 232), v75);
-      objc_storeStrong((v8 + 240), a4);
+      objc_storeWeak((v8 + 232), viewCopy);
+      objc_storeStrong((v8 + 240), controller);
       *(v8 + 216) = 0;
       *(v8 + 144) = PKSqueezePaletteViewHideDelay;
       *(v8 + 24) = PKSqueezePaletteViewSize();
@@ -73,13 +73,13 @@
       WeakRetained = objc_loadWeakRetained((v8 + 8));
       [WeakRetained addLayoutGuide:*(v8 + 64)];
 
-      v13 = [*(v8 + 64) widthAnchor];
-      v14 = [v13 constraintEqualToConstant:0.0];
+      widthAnchor = [*(v8 + 64) widthAnchor];
+      v14 = [widthAnchor constraintEqualToConstant:0.0];
       v15 = *(v8 + 72);
       *(v8 + 72) = v14;
 
-      v16 = [*(v8 + 64) heightAnchor];
-      v17 = [v16 constraintEqualToConstant:0.0];
+      heightAnchor = [*(v8 + 64) heightAnchor];
+      v17 = [heightAnchor constraintEqualToConstant:0.0];
       v18 = *(v8 + 80);
       *(v8 + 80) = v17;
 
@@ -87,15 +87,15 @@
       v19 = *(v8 + 80);
       v83[0] = *(v8 + 72);
       v83[1] = v19;
-      v20 = [*(v8 + 64) topAnchor];
+      topAnchor = [*(v8 + 64) topAnchor];
       v21 = objc_loadWeakRetained((v8 + 8));
-      v22 = [v21 topAnchor];
-      v23 = [v20 constraintEqualToAnchor:v22];
+      topAnchor2 = [v21 topAnchor];
+      v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v83[2] = v23;
-      v24 = [*(v8 + 64) leadingAnchor];
+      leadingAnchor = [*(v8 + 64) leadingAnchor];
       v25 = objc_loadWeakRetained((v8 + 8));
-      v26 = [v25 leadingAnchor];
-      v27 = [v24 constraintEqualToAnchor:v26];
+      leadingAnchor2 = [v25 leadingAnchor];
+      v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v83[3] = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:4];
       [v71 activateConstraints:v28];
@@ -109,10 +109,10 @@
       [v31 addInteraction:*(v8 + 128)];
 
       v32 = *(v8 + 128);
-      v33 = [(PKPencilSqueezeController *)v8 _onlyShowUndoOrRedo];
+      _onlyShowUndoOrRedo = [(PKPencilSqueezeController *)v8 _onlyShowUndoOrRedo];
       if (v32)
       {
-        *(v32 + 136) = !v33;
+        *(v32 + 136) = !_onlyShowUndoOrRedo;
       }
 
       v34 = objc_alloc_init(PKPencilSqueezeContainerViewOverlay);
@@ -124,25 +124,25 @@
       [v36 addSubview:*(v8 + 120)];
 
       v63 = MEMORY[0x1E696ACD8];
-      v70 = [*(v8 + 120) topAnchor];
+      topAnchor3 = [*(v8 + 120) topAnchor];
       v72 = objc_loadWeakRetained((v8 + 8));
-      v69 = [v72 topAnchor];
-      v68 = [v70 constraintEqualToAnchor:v69];
+      topAnchor4 = [v72 topAnchor];
+      v68 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v82[0] = v68;
-      v66 = [*(v8 + 120) leadingAnchor];
+      leadingAnchor3 = [*(v8 + 120) leadingAnchor];
       v67 = objc_loadWeakRetained((v8 + 8));
-      v65 = [v67 leadingAnchor];
-      v64 = [v66 constraintEqualToAnchor:v65];
+      leadingAnchor4 = [v67 leadingAnchor];
+      v64 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v82[1] = v64;
-      v37 = [*(v8 + 120) bottomAnchor];
+      bottomAnchor = [*(v8 + 120) bottomAnchor];
       v38 = objc_loadWeakRetained((v8 + 8));
-      v39 = [v38 bottomAnchor];
-      v40 = [v37 constraintEqualToAnchor:v39];
+      bottomAnchor2 = [v38 bottomAnchor];
+      v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v82[2] = v40;
-      v41 = [*(v8 + 120) trailingAnchor];
+      trailingAnchor = [*(v8 + 120) trailingAnchor];
       v42 = objc_loadWeakRetained((v8 + 8));
-      v43 = [v42 trailingAnchor];
-      v44 = [v41 constraintEqualToAnchor:v43];
+      trailingAnchor2 = [v42 trailingAnchor];
+      v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v82[3] = v44;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
       [v63 activateConstraints:v45];
@@ -183,12 +183,12 @@
       v58 = *(v8 + 248);
       *(v8 + 248) = v57;
 
-      v59 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v59 addObserver:v8 selector:sel__handleKeyboardWillHideNotification_ name:*MEMORY[0x1E69DE078] object:0];
-      [v59 addObserver:v8 selector:sel__handleKeyboardWillShowNotification_ name:*MEMORY[0x1E69DE080] object:0];
-      [v59 addObserver:v8 selector:sel__handleSceneWillEnterForegroundNotification_ name:*MEMORY[0x1E69DE360] object:0];
-      [v59 addObserver:v8 selector:sel__handleSceneDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DE348] object:0];
-      [v59 addObserver:v8 selector:sel__handleHandwritingEducationPaneSettingsDidChange_ name:@"PKHandwritingEducationPaneSettingsDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel__handleKeyboardWillHideNotification_ name:*MEMORY[0x1E69DE078] object:0];
+      [defaultCenter addObserver:v8 selector:sel__handleKeyboardWillShowNotification_ name:*MEMORY[0x1E69DE080] object:0];
+      [defaultCenter addObserver:v8 selector:sel__handleSceneWillEnterForegroundNotification_ name:*MEMORY[0x1E69DE360] object:0];
+      [defaultCenter addObserver:v8 selector:sel__handleSceneDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DE348] object:0];
+      [defaultCenter addObserver:v8 selector:sel__handleHandwritingEducationPaneSettingsDidChange_ name:@"PKHandwritingEducationPaneSettingsDidChangeNotification" object:0];
       v60 = objc_alloc_init(PKPencilSqueezeUserDefaults);
       v61 = *(v8 + 192);
       *(v8 + 192) = v60;
@@ -210,9 +210,9 @@
 
 - (BOOL)_onlyShowUndoOrRedo
 {
-  v1 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-  v2 = [v1 _tools];
-  v3 = [v2 count];
+  _toolPickerForKeyWindow = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+  _tools = [_toolPickerForKeyWindow _tools];
+  v3 = [_tools count];
 
   return v3 == 0;
 }
@@ -296,19 +296,19 @@ void __96__PKPencilSqueezeController_initWithContainerView_rootViewController_te
   }
 }
 
-- (id)_loggableNotificationDescription:(uint64_t)a1
+- (id)_loggableNotificationDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
     v2 = MEMORY[0x1E696AEC0];
     v3 = a2;
-    v4 = [v3 name];
-    v5 = [v3 object];
+    name = [v3 name];
+    object = [v3 object];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v3 object];
+    object2 = [v3 object];
 
-    v9 = [v2 stringWithFormat:@"notificationName:%@ object:<%@:%p>", v4, v7, v8];
+    v9 = [v2 stringWithFormat:@"notificationName:%@ object:<%@:%p>", name, v7, object2];
   }
 
   else
@@ -319,38 +319,38 @@ void __96__PKPencilSqueezeController_initWithContainerView_rootViewController_te
   return v9;
 }
 
-- (void)_handleSceneWillEnterForegroundNotification:(id)a3
+- (void)_handleSceneWillEnterForegroundNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:v4];
+    v6 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:notificationCopy];
     v7 = 138477827;
     v8 = v6;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Scene will enter foreground, notification: %{private}@", &v7, 0xCu);
   }
 }
 
-- (void)_handleSceneDidEnterBackgroundNotification:(id)a3
+- (void)_handleSceneDidEnterBackgroundNotification:(id)notification
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:v4];
+    v6 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:notificationCopy];
     *buf = 138477827;
     v12 = v6;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Scene did enter background, notification: %{private}@", buf, 0xCu);
   }
 
-  v7 = [v4 object];
-  v8 = [(PKPencilSqueezeController *)self _keyWindow];
-  v9 = [v8 windowScene];
+  object = [notificationCopy object];
+  _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+  windowScene = [_keyWindow windowScene];
 
-  if (v7 == v9 && self->_paletteViewVisible)
+  if (object == windowScene && self->_paletteViewVisible)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -364,25 +364,25 @@ void __96__PKPencilSqueezeController_initWithContainerView_rootViewController_te
 
 - (uint64_t)_keyWindow
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(PKTextEffectsWindowObserver *)a1[30] keyWindow];
+    self = [(PKTextEffectsWindowObserver *)self[30] keyWindow];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setPaletteViewVisible:(int)a3 notify:(void *)a4 didChangeHandler:
+- (void)_setPaletteViewVisible:(int)visible notify:(void *)notify didChangeHandler:
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a1)
+  notifyCopy = notify;
+  if (!self)
   {
     goto LABEL_26;
   }
 
-  v8 = *(a1 + 216);
+  v8 = *(self + 216);
   if (v8 == a2)
   {
     goto LABEL_26;
@@ -393,10 +393,10 @@ void __96__PKPencilSqueezeController_initWithContainerView_rootViewController_te
     goto LABEL_11;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 224));
+  WeakRetained = objc_loadWeakRetained((self + 224));
   v10 = objc_opt_respondsToSelector();
 
-  if ((v10 & 1) != 0 && (v11 = objc_loadWeakRetained((a1 + 224)), v12 = [v11 pencilSqueezeControllerCanShowPaletteView:a1], v11, (v12 & 1) == 0))
+  if ((v10 & 1) != 0 && (v11 = objc_loadWeakRetained((self + 224)), v12 = [v11 pencilSqueezeControllerCanShowPaletteView:self], v11, (v12 & 1) == 0))
   {
     v28 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -408,17 +408,17 @@ void __96__PKPencilSqueezeController_initWithContainerView_rootViewController_te
 
   else
   {
-    v13 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-    v14 = [(PKPencilSqueezeController *)a1 _currentUndoManager];
-    v15 = [v13 _tools];
-    if ([v15 count] || objc_msgSend(v14, "canUndo"))
+    _toolPickerForKeyWindow = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+    _currentUndoManager = [(PKPencilSqueezeController *)self _currentUndoManager];
+    _tools = [_toolPickerForKeyWindow _tools];
+    if ([_tools count] || objc_msgSend(_currentUndoManager, "canUndo"))
     {
 
 LABEL_10:
 LABEL_11:
-      if (a3)
+      if (visible)
       {
-        v16 = objc_loadWeakRetained((a1 + 224));
+        v16 = objc_loadWeakRetained((self + 224));
         v17 = objc_opt_respondsToSelector();
 
         if (v17)
@@ -431,19 +431,19 @@ LABEL_11:
             _os_log_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_DEFAULT, "Notify palette view visibility will change, toVisible: %{BOOL}d", &v31, 8u);
           }
 
-          v19 = objc_loadWeakRetained((a1 + 224));
-          [v19 pencilSqueezeControllerWillChangePaletteViewVisibility:a1 toVisible:a2];
+          v19 = objc_loadWeakRetained((self + 224));
+          [v19 pencilSqueezeControllerWillChangePaletteViewVisibility:self toVisible:a2];
         }
 
-        *(a1 + 216) = a2;
-        v20 = *(a1 + 128);
-        v21 = [(PKPencilSqueezeController *)a1 _onlyShowUndoOrRedo];
+        *(self + 216) = a2;
+        v20 = *(self + 128);
+        _onlyShowUndoOrRedo = [(PKPencilSqueezeController *)self _onlyShowUndoOrRedo];
         if (v20)
         {
-          *(v20 + 136) = !v21;
+          *(v20 + 136) = !_onlyShowUndoOrRedo;
         }
 
-        v22 = objc_loadWeakRetained((a1 + 224));
+        v22 = objc_loadWeakRetained((self + 224));
         v23 = objc_opt_respondsToSelector();
 
         if (v23)
@@ -456,33 +456,33 @@ LABEL_11:
             _os_log_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_DEFAULT, "Notify palette view visibility did change, toVisible: %{BOOL}d", &v31, 8u);
           }
 
-          v25 = objc_loadWeakRetained((a1 + 224));
-          [v25 pencilSqueezeControllerDidChangePaletteViewVisibility:a1];
+          v25 = objc_loadWeakRetained((self + 224));
+          [v25 pencilSqueezeControllerDidChangePaletteViewVisibility:self];
         }
       }
 
       else
       {
-        *(a1 + 216) = a2;
-        v26 = *(a1 + 128);
-        v27 = [(PKPencilSqueezeController *)a1 _onlyShowUndoOrRedo];
+        *(self + 216) = a2;
+        v26 = *(self + 128);
+        _onlyShowUndoOrRedo2 = [(PKPencilSqueezeController *)self _onlyShowUndoOrRedo];
         if (v26)
         {
-          *(v26 + 136) = !v27;
+          *(v26 + 136) = !_onlyShowUndoOrRedo2;
         }
       }
 
-      if (v7)
+      if (notifyCopy)
       {
-        v7[2](v7);
+        notifyCopy[2](notifyCopy);
       }
 
       goto LABEL_26;
     }
 
-    v29 = [v14 canRedo];
+    canRedo = [_currentUndoManager canRedo];
 
-    if (v29)
+    if (canRedo)
     {
       goto LABEL_10;
     }
@@ -491,13 +491,13 @@ LABEL_11:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 134218752;
-      v32 = v13;
+      v32 = _toolPickerForKeyWindow;
       v33 = 2048;
-      v34 = v14;
+      v34 = _currentUndoManager;
       v35 = 1024;
-      v36 = [v14 canUndo];
+      canUndo = [_currentUndoManager canUndo];
       v37 = 1024;
-      v38 = [v14 canRedo];
+      canRedo2 = [_currentUndoManager canRedo];
       _os_log_impl(&dword_1C7CCA000, v30, OS_LOG_TYPE_DEFAULT, "Unable to toggle palette view to visible, toolPicker: %p, undoManager: %p, canUndo: %{BOOL}d, canRedo: %{BOOL}d", &v31, 0x22u);
     }
   }
@@ -505,12 +505,12 @@ LABEL_11:
 LABEL_26:
 }
 
-- (void)_updateUIWithSqueeze:(void *)a3 customHoverPoint:(int)a4 animated:
+- (void)_updateUIWithSqueeze:(void *)squeeze customHoverPoint:(int)point animated:
 {
   v143[5] = *MEMORY[0x1E69E9840];
   v117 = a2;
-  v116 = a3;
-  if (!a1)
+  squeezeCopy = squeeze;
+  if (!self)
   {
     goto LABEL_86;
   }
@@ -518,28 +518,28 @@ LABEL_26:
   v8 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = *(a1 + 216);
-    v10 = [v117 hoverPose];
-    v4 = [(PKPencilSqueezeController *)a1 _keyWindow];
-    v5 = [(PKPencilSqueezeController *)a1 _keyWindow];
-    v11 = [v5 windowScene];
+    v9 = *(self + 216);
+    hoverPose = [v117 hoverPose];
+    _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+    _keyWindow2 = [(PKPencilSqueezeController *)self _keyWindow];
+    windowScene = [_keyWindow2 windowScene];
     *buf = 67110403;
     *v136 = v9;
     *&v136[4] = 2048;
     *&v136[6] = v117;
     *&v136[14] = 2113;
-    *&v136[16] = v10;
+    *&v136[16] = hoverPose;
     v137 = 2048;
-    v138 = v116;
+    v138 = squeezeCopy;
     v139 = 2113;
-    v140 = v4;
+    v140 = _keyWindow;
     v141 = 2113;
-    v142 = v11;
+    v142 = windowScene;
     _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Update UI, visible: %{BOOL}d, squeeze: %p, hover pose: %{private}@ custom hover point: %p, window: %{private}@, scene: %{private}@", buf, 0x3Au);
   }
 
-  v12 = *(a1 + 16);
-  if (*(a1 + 216) != 1)
+  v12 = *(self + 16);
+  if (*(self + 216) != 1)
   {
     if (v12)
     {
@@ -550,21 +550,21 @@ LABEL_26:
         _os_log_impl(&dword_1C7CCA000, v20, OS_LOG_TYPE_DEFAULT, "Hide mini palette", buf, 2u);
       }
 
-      [(PKPencilSqueezeController *)a1 _dismissPopovers];
-      [(PKPencilSqueezeControllerPaletteViewDelegateProxy *)*(a1 + 88) dismissEyeDropper];
+      [(PKPencilSqueezeController *)self _dismissPopovers];
+      [(PKPencilSqueezeControllerPaletteViewDelegateProxy *)*(self + 88) dismissEyeDropper];
     }
 
 LABEL_63:
-    objc_initWeak(buf, a1);
-    [*(a1 + 120) setHidden:*(a1 + 216) == 0];
-    v87 = *(a1 + 216);
+    objc_initWeak(buf, self);
+    [*(self + 120) setHidden:*(self + 216) == 0];
+    v87 = *(self + 216);
     if (v87 == 1)
     {
       v127[0] = MEMORY[0x1E69E9820];
       v127[1] = 3221225472;
       v127[2] = __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_animated___block_invoke_53;
       v127[3] = &unk_1E82D8A28;
-      v4 = &v128;
+      _keyWindow = &v128;
       objc_copyWeak(&v128, buf);
       v88 = v127;
     }
@@ -574,20 +574,20 @@ LABEL_63:
       v88 = 0;
     }
 
-    v89 = *(a1 + 120);
+    v89 = *(self + 120);
     if (v89)
     {
       objc_setProperty_nonatomic_copy(v89, v86, v88, 416);
     }
 
-    v90 = *(a1 + 216);
+    v90 = *(self + 216);
     if (v90 == 1)
     {
       v125[0] = MEMORY[0x1E69E9820];
       v125[1] = 3221225472;
       v125[2] = __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_animated___block_invoke_2;
       v125[3] = &unk_1E82D7970;
-      v5 = &v126;
+      _keyWindow2 = &v126;
       objc_copyWeak(&v126, buf);
       v91 = v125;
     }
@@ -597,14 +597,14 @@ LABEL_63:
       v91 = 0;
     }
 
-    v92 = *(a1 + 120);
+    v92 = *(self + 120);
     if (v92)
     {
       objc_setProperty_nonatomic_copy(v92, v86, v91, 408);
     }
 
-    v93 = *(a1 + 216);
-    if (*(a1 + 216))
+    v93 = *(self + 216);
+    if (*(self + 216))
     {
       v94 = 1.0;
     }
@@ -614,7 +614,7 @@ LABEL_63:
       v94 = 0.05;
     }
 
-    v95 = *(a1 + 152);
+    v95 = *(self + 152);
     v123[0] = MEMORY[0x1E69E9820];
     v123[1] = 3221225472;
     v123[2] = __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_animated___block_invoke_3;
@@ -625,20 +625,20 @@ LABEL_63:
     v121[2] = __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_animated___block_invoke_4;
     v121[3] = &unk_1E82D8A50;
     objc_copyWeak(&v122, buf);
-    [(PKSqueezePaletteViewPresentationHandle *)v95 animateToPaletteViewOpacity:a4 paletteViewScale:v123 animated:v121 presentationValueHandler:v93 completion:v94];
-    if (*(a1 + 216) == 1)
+    [(PKSqueezePaletteViewPresentationHandle *)v95 animateToPaletteViewOpacity:point paletteViewScale:v123 animated:v121 presentationValueHandler:v93 completion:v94];
+    if (*(self + 216) == 1)
     {
-      v96 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-      v97 = [v96 _windowScene];
-      if (v97)
+      _toolPickerForKeyWindow = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+      _windowScene = [_toolPickerForKeyWindow _windowScene];
+      if (_windowScene)
       {
         v118[0] = MEMORY[0x1E69E9820];
         v118[1] = 3221225472;
         v118[2] = __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_animated___block_invoke_5;
         v118[3] = &unk_1E82D7690;
         objc_copyWeak(&v120, buf);
-        v119 = v97;
-        [(PKPencilSqueezeController *)a1 _updateToolPickerVisibilityWithCompletion:v118];
+        v119 = _windowScene;
+        [(PKPencilSqueezeController *)self _updateToolPickerVisibilityWithCompletion:v118];
 
         objc_destroyWeak(&v120);
       }
@@ -646,19 +646,19 @@ LABEL_63:
 
     else
     {
-      [(PKPencilSqueezeController *)a1 _updateToolPickerVisibilityWithCompletion:?];
+      [(PKPencilSqueezeController *)self _updateToolPickerVisibilityWithCompletion:?];
     }
 
     objc_destroyWeak(&v122);
     objc_destroyWeak(&v124);
     if (v90)
     {
-      objc_destroyWeak(v5);
+      objc_destroyWeak(_keyWindow2);
     }
 
     if (v87)
     {
-      objc_destroyWeak(v4);
+      objc_destroyWeak(_keyWindow);
     }
 
     objc_destroyWeak(buf);
@@ -666,41 +666,41 @@ LABEL_63:
   }
 
   [v12 removeFromSuperview];
-  v13 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  v13 = *(self + 16);
+  *(self + 16) = 0;
 
-  v110 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-  v111 = [(PKPencilSqueezeController *)a1 _currentUndoManager];
+  _toolPickerForKeyWindow2 = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+  _currentUndoManager = [(PKPencilSqueezeController *)self _currentUndoManager];
   v14 = MEMORY[0x1E69DD250];
-  v15 = [(PKPencilSqueezeController *)a1 _keyWindow];
-  LODWORD(v14) = [v14 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v15, "semanticContentAttribute")}] == 0;
+  _keyWindow3 = [(PKPencilSqueezeController *)self _keyWindow];
+  LODWORD(v14) = [v14 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(_keyWindow3, "semanticContentAttribute")}] == 0;
 
   v112 = objc_alloc_init(PKSqueezePaletteViewLayoutFactory);
   v129[0] = MEMORY[0x1E69E9820];
   v129[1] = 3221225472;
   v129[2] = __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_animated___block_invoke;
   v129[3] = &unk_1E82D8A00;
-  v129[4] = a1;
-  v115 = [(PKSqueezePaletteViewLayoutFactory *)v112 makeInitialLayoutWithToolPicker:v110 undoManager:v111 paletteViewStartAngleProvider:v129 isLTR:v14];
+  v129[4] = self;
+  v115 = [(PKSqueezePaletteViewLayoutFactory *)v112 makeInitialLayoutWithToolPicker:_toolPickerForKeyWindow2 undoManager:_currentUndoManager paletteViewStartAngleProvider:v129 isLTR:v14];
   if (v115)
   {
     v108 = objc_alloc_init(PKPaletteBackgroundViewFactory);
     v106 = objc_alloc_init(PKPaletteBackgroundColorFactory);
-    v105 = [(PKPaletteBackgroundColorFactory *)v106 makeBackgroundColor];
-    v109 = [(PKPaletteBackgroundViewFactory *)v108 makeBackgroundViewWithName:v105 backgroundColor:0 shouldUseGlassBackground:?];
+    makeBackgroundColor = [(PKPaletteBackgroundColorFactory *)v106 makeBackgroundColor];
+    v109 = [(PKPaletteBackgroundViewFactory *)v108 makeBackgroundViewWithName:makeBackgroundColor backgroundColor:0 shouldUseGlassBackground:?];
     if (v109)
     {
       [v109 setUserInteractionEnabled:0];
     }
 
     v107 = v117;
-    v16 = [v107 hoverPose];
-    v17 = v16 == 0;
+    hoverPose2 = [v107 hoverPose];
+    v17 = hoverPose2 == 0;
 
     if (v17)
     {
-      v23 = *(a1 + 56);
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      v23 = *(self + 56);
+      WeakRetained = objc_loadWeakRetained((self + 8));
       [v23 azimuthAngleInView:WeakRetained];
     }
 
@@ -712,33 +712,33 @@ LABEL_63:
 
     v24 = v19;
 
-    *(a1 + 184) = v24;
+    *(self + 184) = v24;
     v25 = [PKSqueezePaletteView alloc];
-    v26 = [(PKSqueezePaletteView *)&v25->super.super.super.isa initWithBackgroundView:v109 radius:v112 contentHeight:*&PKSqueezePaletteViewRadius layoutFactory:*&PKSqueezePaletteViewContentHeight azimuth:*(a1 + 184)];
-    v27 = *(a1 + 16);
-    *(a1 + 16) = v26;
+    v26 = [(PKSqueezePaletteView *)&v25->super.super.super.isa initWithBackgroundView:v109 radius:v112 contentHeight:*&PKSqueezePaletteViewRadius layoutFactory:*&PKSqueezePaletteViewContentHeight azimuth:*(self + 184)];
+    v27 = *(self + 16);
+    *(self + 16) = v26;
 
-    v28 = [[PKPencilSqueezeControllerPaletteViewDelegateProxy alloc] initWithController:a1 paletteView:*(a1 + 16)];
-    v29 = *(a1 + 88);
-    *(a1 + 88) = v28;
+    v28 = [[PKPencilSqueezeControllerPaletteViewDelegateProxy alloc] initWithController:self paletteView:*(self + 16)];
+    v29 = *(self + 88);
+    *(self + 88) = v28;
 
-    [(PKSqueezePaletteView *)*(a1 + 16) setDelegate:?];
-    [*(a1 + 16) setTintAdjustmentMode:1];
-    v114 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-    if (v114)
+    [(PKSqueezePaletteView *)*(self + 16) setDelegate:?];
+    [*(self + 16) setTintAdjustmentMode:1];
+    _toolPickerForKeyWindow3 = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+    if (_toolPickerForKeyWindow3)
     {
       v30 = objc_alloc_init(PKSqueezePaletteViewContext);
-      v32 = [v114 _tools];
+      _tools = [_toolPickerForKeyWindow3 _tools];
       if (v30)
       {
-        objc_setProperty_nonatomic_copy(v30, v31, v32, 16);
+        objc_setProperty_nonatomic_copy(v30, v31, _tools, 16);
       }
 
-      v33 = [v114 selectedTool];
-      [(PKMathResultAttribution *)v30 setString:v33];
+      selectedTool = [_toolPickerForKeyWindow3 selectedTool];
+      [(PKMathResultAttribution *)v30 setString:selectedTool];
 
-      v34 = [v114 selectedTool];
-      v35 = PKDisplayColorForTool(v34);
+      selectedTool2 = [_toolPickerForKeyWindow3 selectedTool];
+      v35 = PKDisplayColorForTool(selectedTool2);
       [(PKSqueezePaletteViewContext *)v30 setSelectedColor:v35];
 
       v104 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
@@ -759,18 +759,18 @@ LABEL_63:
       v101 = [MEMORY[0x1E695DEC8] arrayWithObjects:v143 count:5];
 
       v43 = MEMORY[0x1E695DEC8];
-      v44 = [v101 reverseObjectEnumerator];
-      v45 = [v44 allObjects];
-      v46 = [v43 arrayWithArray:v45];
+      reverseObjectEnumerator = [v101 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v46 = [v43 arrayWithArray:allObjects];
 
       if (v30)
       {
         objc_setProperty_nonatomic_copy(v30, v47, v46, 32);
       }
 
-      v48 = [MEMORY[0x1E696AAE8] mainBundle];
-      v49 = [v48 bundleIdentifier];
-      v50 = [v49 isEqualToString:@"com.apple.mobilenotes"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v50 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
       if (v50)
       {
@@ -779,10 +779,10 @@ LABEL_63:
 
       else
       {
-        v52 = [(PKPencilSqueezeController *)a1 _currentFirstResponder];
+        _currentFirstResponder = [(PKPencilSqueezeController *)self _currentFirstResponder];
         if (objc_opt_respondsToSelector())
         {
-          v51 = [v52 _supportsCanvasElements:v114];
+          v51 = [_currentFirstResponder _supportsCanvasElements:_toolPickerForKeyWindow3];
         }
 
         else
@@ -791,8 +791,8 @@ LABEL_63:
           v133 = 0u;
           v130 = 0u;
           v131 = 0u;
-          v53 = [v114 _observers];
-          v54 = [v53 countByEnumeratingWithState:&v130 objects:buf count:16];
+          _observers = [_toolPickerForKeyWindow3 _observers];
+          v54 = [_observers countByEnumeratingWithState:&v130 objects:buf count:16];
           if (v54)
           {
             v55 = *v131;
@@ -802,18 +802,18 @@ LABEL_63:
               {
                 if (*v131 != v55)
                 {
-                  objc_enumerationMutation(v53);
+                  objc_enumerationMutation(_observers);
                 }
 
                 v57 = *(*(&v130 + 1) + 8 * i);
                 if (objc_opt_respondsToSelector())
                 {
-                  v51 = [v57 _supportsCanvasElements:v114];
+                  v51 = [v57 _supportsCanvasElements:_toolPickerForKeyWindow3];
                   goto LABEL_37;
                 }
               }
 
-              v54 = [v53 countByEnumeratingWithState:&v130 objects:buf count:16];
+              v54 = [_observers countByEnumeratingWithState:&v130 objects:buf count:16];
               if (v54)
               {
                 continue;
@@ -831,13 +831,13 @@ LABEL_37:
       if (v30)
       {
         v30->_supportsCanvasElements = v51;
-        [v114 colorMaximumLinearExposure];
+        [_toolPickerForKeyWindow3 colorMaximumLinearExposure];
         v30->_colorMaximumLinearExposure = v58;
       }
 
       else
       {
-        [v114 colorMaximumLinearExposure];
+        [_toolPickerForKeyWindow3 colorMaximumLinearExposure];
       }
     }
 
@@ -846,108 +846,108 @@ LABEL_37:
       v30 = 0;
     }
 
-    v60 = *(a1 + 16);
+    v60 = *(self + 16);
     if (v60)
     {
       objc_setProperty_nonatomic_copy(v60, v59, v30, 576);
     }
 
-    [(PKSqueezePaletteView *)*(a1 + 16) setCurrentLayout:v115];
-    [(PKPencilSqueezeController *)a1 _updateUserInterfaceStyle];
-    [*(a1 + 16) setTranslatesAutoresizingMaskIntoConstraints:0];
-    v61 = objc_loadWeakRetained((a1 + 8));
-    [v61 addSubview:*(a1 + 16)];
+    [(PKSqueezePaletteView *)*(self + 16) setCurrentLayout:v115];
+    [(PKPencilSqueezeController *)self _updateUserInterfaceStyle];
+    [*(self + 16) setTranslatesAutoresizingMaskIntoConstraints:0];
+    v61 = objc_loadWeakRetained((self + 8));
+    [v61 addSubview:*(self + 16)];
 
     v62 = v107;
     v63 = v62;
     if (v62)
     {
-      v64 = [v62 hoverPose];
-      v65 = v64 != 0;
+      hoverPose3 = [v62 hoverPose];
+      v65 = hoverPose3 != 0;
     }
 
     else
     {
-      v65 = [*(a1 + 56) state] == 1 || objc_msgSend(*(a1 + 56), "state") == 2;
+      v65 = [*(self + 56) state] == 1 || objc_msgSend(*(self + 56), "state") == 2;
     }
 
-    *(a1 + 160) = v65;
+    *(self + 160) = v65;
     v66 = v63;
-    v67 = [v66 hoverPose];
-    v68 = v67 == 0;
+    hoverPose4 = [v66 hoverPose];
+    v68 = hoverPose4 == 0;
 
     if (v68)
     {
-      v72 = *(a1 + 56);
-      v69 = objc_loadWeakRetained((a1 + 8));
-      [v72 locationInView:v69];
+      v72 = *(self + 56);
+      hoverPose5 = objc_loadWeakRetained((self + 8));
+      [v72 locationInView:hoverPose5];
     }
 
     else
     {
-      v69 = [v66 hoverPose];
-      [v69 location];
+      hoverPose5 = [v66 hoverPose];
+      [hoverPose5 location];
     }
 
     v73 = v70;
     v74 = v71;
 
-    *(a1 + 168) = v73;
-    *(a1 + 176) = v74;
-    if (*(a1 + 160) == 1)
+    *(self + 168) = v73;
+    *(self + 176) = v74;
+    if (*(self + 160) == 1)
     {
-      [(PKPencilSqueezeUserDefaults *)*(a1 + 192) saveLastPaletteHoverLocation:v73, v74];
-      *(a1 + 200) = CACurrentMediaTime();
+      [(PKPencilSqueezeUserDefaults *)*(self + 192) saveLastPaletteHoverLocation:v73, v74];
+      *(self + 200) = CACurrentMediaTime();
     }
 
-    if (v116)
+    if (squeezeCopy)
     {
-      [v116 CGPointValue];
-      [(PKPencilSqueezeController *)a1 _updatePalettePositionWithHoverLocation:v75, v76];
+      [squeezeCopy CGPointValue];
+      [(PKPencilSqueezeController *)self _updatePalettePositionWithHoverLocation:v75, v76];
     }
 
     else
     {
-      [(PKPencilSqueezeController *)a1 _updatePalettePosition];
+      [(PKPencilSqueezeController *)self _updatePalettePosition];
     }
 
-    v4 = MEMORY[0x1E696ACD8];
-    v77 = [*(a1 + 16) widthAnchor];
-    v78 = [v77 constraintEqualToConstant:*(a1 + 24)];
+    _keyWindow = MEMORY[0x1E696ACD8];
+    widthAnchor = [*(self + 16) widthAnchor];
+    v78 = [widthAnchor constraintEqualToConstant:*(self + 24)];
     v134[0] = v78;
-    v5 = [*(a1 + 16) heightAnchor];
-    v79 = [v5 constraintEqualToConstant:*(a1 + 32)];
+    _keyWindow2 = [*(self + 16) heightAnchor];
+    v79 = [_keyWindow2 constraintEqualToConstant:*(self + 32)];
     v134[1] = v79;
     v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v134 count:2];
-    [v4 activateConstraints:v80];
+    [_keyWindow activateConstraints:v80];
 
     v81 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = *(a1 + 160);
-      v82 = NSStringFromCGPoint(*(a1 + 168));
-      v83 = *(a1 + 184);
+      _keyWindow = *(self + 160);
+      v82 = NSStringFromCGPoint(*(self + 168));
+      v83 = *(self + 184);
       *buf = 67110147;
-      *v136 = v4;
+      *v136 = _keyWindow;
       *&v136[4] = 2113;
       *&v136[6] = v82;
       *&v136[14] = 2049;
       *&v136[16] = v83;
       v137 = 2113;
-      v138 = v110;
+      v138 = _toolPickerForKeyWindow2;
       v139 = 2113;
-      v140 = v111;
+      v140 = _currentUndoManager;
       _os_log_impl(&dword_1C7CCA000, v81, OS_LOG_TYPE_DEFAULT, "Show mini palette, hovering: %{BOOL}d, location: %{private}@, azimuth: %{private}.2f, toolPicker: %{private}@, undoManager: %{private}@", buf, 0x30u);
     }
 
-    if (!*(a1 + 152))
+    if (!*(self + 152))
     {
       v84 = [[PKSqueezePaletteViewPresentationHandle alloc] initWithPaletteViewOpacityPresentationValue:0.05 paletteViewScalePresentationValue:?];
-      v85 = *(a1 + 152);
-      *(a1 + 152) = v84;
+      v85 = *(self + 152);
+      *(self + 152) = v84;
     }
 
-    [(PKPencilSqueezeController *)a1 _updatePaletteViewPresentationState];
+    [(PKPencilSqueezeController *)self _updatePaletteViewPresentationState];
 
     v22 = v106;
   }
@@ -958,16 +958,16 @@ LABEL_37:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v98 = v21;
-      v99 = [v111 canUndo];
-      v100 = [v111 canRedo];
+      canUndo = [_currentUndoManager canUndo];
+      canRedo = [_currentUndoManager canRedo];
       *buf = 138478595;
-      *v136 = v110;
+      *v136 = _toolPickerForKeyWindow2;
       *&v136[8] = 2113;
-      *&v136[10] = v111;
+      *&v136[10] = _currentUndoManager;
       *&v136[18] = 1024;
-      *&v136[20] = v99;
+      *&v136[20] = canUndo;
       v137 = 1024;
-      LODWORD(v138) = v100;
+      LODWORD(v138) = canRedo;
       _os_log_error_impl(&dword_1C7CCA000, v98, OS_LOG_TYPE_ERROR, "Unable to display mini palette, toolPicker: %{private}@, undoManager: %{private}@, canUndo: %{BOOL}d, canRedo: %{BOOL}d", buf, 0x22u);
       v22 = v98;
       v108 = v98;
@@ -988,22 +988,22 @@ LABEL_37:
 LABEL_86:
 }
 
-- (void)_handleKeyboardWillShowNotification:(id)a3
+- (void)_handleKeyboardWillShowNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   isColorPicker = [(PKPencilSqueezeController *)self _isColorPickerVisible];
   v6 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:v4];
+    v7 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:notificationCopy];
     paletteViewVisible = self->_paletteViewVisible;
     *buf = 138478339;
     v12 = v7;
     v13 = 1024;
     v14 = paletteViewVisible;
     v15 = 1024;
-    v16 = [(PKPencilSqueezeController *)self _isColorPickerVisible];
+    _isColorPickerVisible = [(PKPencilSqueezeController *)self _isColorPickerVisible];
     _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "Keyboard will show, notification: %{private}@, _paletteViewVisible: %{BOOL}d, colorPickerVisible: %{BOOL}d", buf, 0x18u);
   }
 
@@ -1034,12 +1034,12 @@ LABEL_86:
 
 - (uint64_t)_isColorPickerVisible
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (*(a1 + 216) == 1)
+    if (*(self + 216) == 1)
     {
-      v2 = *(a1 + 16);
+      v2 = *(self + 16);
       if (v2)
       {
         v2 = v2[71];
@@ -1048,12 +1048,12 @@ LABEL_86:
       v3 = v2;
       if (PKSqueezePaletteViewLayoutIsUndoRedoLayout(v3))
       {
-        v1 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        v1 = [(PKPencilSqueezeControllerPaletteViewDelegateProxy *)*(v1 + 88) isColorPickerVisible];
+        selfCopy = [(PKPencilSqueezeControllerPaletteViewDelegateProxy *)*(selfCopy + 88) isColorPickerVisible];
       }
     }
 
@@ -1063,18 +1063,18 @@ LABEL_86:
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_handleKeyboardWillHideNotification:(id)a3
+- (void)_handleKeyboardWillHideNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   isColorPicker = [(PKPencilSqueezeController *)self _isColorPickerVisible];
   v6 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:v4];
+    v7 = [(PKPencilSqueezeController *)self _loggableNotificationDescription:notificationCopy];
     *buf = 138478083;
     v11 = v7;
     v12 = 1024;
@@ -1107,7 +1107,7 @@ LABEL_86:
   }
 }
 
-- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)a3
+- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)change
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_paletteViewVisible)
@@ -1133,15 +1133,15 @@ LABEL_86:
 - (void)keyWindowDidChangeBounds
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = [(PKPencilSqueezeController *)a1 _keyWindow];
-      [v3 bounds];
+      _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+      [_keyWindow bounds];
       v4 = NSStringFromCGRect(v11);
-      v5 = *(a1 + 216);
+      v5 = *(self + 216);
       v6 = 138478083;
       v7 = v4;
       v8 = 1024;
@@ -1149,27 +1149,27 @@ LABEL_86:
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "Key window bounds did change to: %{private}@, paletteVisible: %{BOOL}d", &v6, 0x12u);
     }
 
-    [(PKPencilSqueezeController *)a1 _updatePalettePosition];
+    [(PKPencilSqueezeController *)self _updatePalettePosition];
   }
 }
 
 - (void)_updatePalettePosition
 {
-  v2 = [(PKPencilSqueezeController *)a1 _keyWindow];
-  [v2 bounds];
+  _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+  [_keyWindow bounds];
   v4 = v3;
   v6 = v5;
 
   v7 = v4 + -40.0;
   v8 = v6 + -50.0;
-  if (CACurrentMediaTime() - *(a1 + 200) >= *&PKSqueezePaletteViewLastHoverLocationSavedTimeout)
+  if (CACurrentMediaTime() - *(self + 200) >= *&PKSqueezePaletteViewLastHoverLocationSavedTimeout)
   {
-    v13 = 0;
+    loadLastPaletteHoverLocation = 0;
   }
 
   else
   {
-    v13 = [(PKPencilSqueezeUserDefaults *)*(a1 + 192) loadLastPaletteHoverLocation];
+    loadLastPaletteHoverLocation = [(PKPencilSqueezeUserDefaults *)*(self + 192) loadLastPaletteHoverLocation];
   }
 
   v15.origin.x = 20.0;
@@ -1182,9 +1182,9 @@ LABEL_86:
   v16.size.width = v7;
   v16.size.height = v8;
   MidY = CGRectGetMidY(v16);
-  if (v13)
+  if (loadLastPaletteHoverLocation)
   {
-    [v13 CGPointValue];
+    [loadLastPaletteHoverLocation CGPointValue];
     MidX = v12;
   }
 
@@ -1193,24 +1193,24 @@ LABEL_86:
     v11 = MidY;
   }
 
-  if (*(a1 + 160) == 1)
+  if (*(self + 160) == 1)
   {
-    MidX = *(a1 + 168);
-    v11 = *(a1 + 176);
+    MidX = *(self + 168);
+    v11 = *(self + 176);
   }
 
-  [(PKPencilSqueezeController *)a1 _updatePalettePositionWithHoverLocation:v11];
+  [(PKPencilSqueezeController *)self _updatePalettePositionWithHoverLocation:v11];
 }
 
 - (void)textEffectsWindowDidChangeBounds
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = *(a1 + 240);
+      v3 = *(self + 240);
       if (v3)
       {
         WeakRetained = objc_loadWeakRetained((v3 + 56));
@@ -1223,7 +1223,7 @@ LABEL_86:
 
       [WeakRetained bounds];
       v5 = NSStringFromCGRect(v12);
-      v6 = *(a1 + 216);
+      v6 = *(self + 216);
       v7 = 138478083;
       v8 = v5;
       v9 = 1024;
@@ -1231,13 +1231,13 @@ LABEL_86:
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "UITEW bounds did change to: %{private}@, paletteVisible: %{BOOL}d", &v7, 0x12u);
     }
 
-    [(PKPencilSqueezeController *)a1 _updatePalettePosition];
+    [(PKPencilSqueezeController *)self _updatePalettePosition];
   }
 }
 
 - (void)updateUserInterfaceStyle
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -1246,42 +1246,42 @@ LABEL_86:
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "Update UI style", v3, 2u);
     }
 
-    [(PKPencilSqueezeController *)a1 _updateUserInterfaceStyle];
+    [(PKPencilSqueezeController *)self _updateUserInterfaceStyle];
   }
 }
 
 - (void)_updateUserInterfaceStyle
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (*(a1 + 216))
+  if (*(self + 216))
   {
-    v2 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-    v3 = [(PKPencilSqueezeController *)a1 _keyWindow];
-    v4 = [v3 traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    _toolPickerForKeyWindow = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+    _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+    traitCollection = [_keyWindow traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v2)
+    if (_toolPickerForKeyWindow)
     {
-      if ([v2 overrideUserInterfaceStyle])
+      if ([_toolPickerForKeyWindow overrideUserInterfaceStyle])
       {
-        v5 = [v2 overrideUserInterfaceStyle];
+        userInterfaceStyle = [_toolPickerForKeyWindow overrideUserInterfaceStyle];
       }
 
-      v7 = *(a1 + 16);
-      v6 = (a1 + 16);
-      [v7 setOverrideUserInterfaceStyle:v5];
-      v8 = [v2 colorUserInterfaceStyle];
+      v7 = *(self + 16);
+      v6 = (self + 16);
+      [v7 setOverrideUserInterfaceStyle:userInterfaceStyle];
+      colorUserInterfaceStyle = [_toolPickerForKeyWindow colorUserInterfaceStyle];
     }
 
     else
     {
-      v9 = *(a1 + 16);
-      v6 = (a1 + 16);
-      [v9 setOverrideUserInterfaceStyle:v5];
-      v8 = 0;
+      v9 = *(self + 16);
+      v6 = (self + 16);
+      [v9 setOverrideUserInterfaceStyle:userInterfaceStyle];
+      colorUserInterfaceStyle = 0;
     }
 
-    [(PKSqueezePaletteView *)*v6 setColorUserInterfaceStyle:v8];
+    [(PKSqueezePaletteView *)*v6 setColorUserInterfaceStyle:colorUserInterfaceStyle];
     v10 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1292,7 +1292,7 @@ LABEL_86:
       }
 
       v12 = 134283777;
-      v13 = v5;
+      v13 = userInterfaceStyle;
       v14 = 2049;
       v15 = v11;
       _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "Update palette UI style: %{private}ld, color UI style: %{private}ld", &v12, 0x16u);
@@ -1302,7 +1302,7 @@ LABEL_86:
 
 - (void)performSqueezeAction
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -1311,13 +1311,13 @@ LABEL_86:
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "Perform squeeze action", buf, 2u);
     }
 
-    v3 = *(a1 + 216);
+    v3 = *(self + 216);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __49__PKPencilSqueezeController_performSqueezeAction__block_invoke;
     v4[3] = &unk_1E82D7148;
-    v4[4] = a1;
-    [(PKPencilSqueezeController *)a1 _setPaletteViewVisible:1 notify:v4 didChangeHandler:?];
+    v4[4] = self;
+    [(PKPencilSqueezeController *)self _setPaletteViewVisible:1 notify:v4 didChangeHandler:?];
   }
 }
 
@@ -1343,15 +1343,15 @@ void __49__PKPencilSqueezeController_performSqueezeAction__block_invoke(uint64_t
 
 - (void)_didChangePaletteViewToVisible
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (v2)
     {
       v3 = *(v2 + 568);
       IsUndoRedoLayout = PKSqueezePaletteViewLayoutIsUndoRedoLayout(v3);
 
-      v5 = *(a1 + 248);
+      v5 = *(self + 248);
 
       [(PKPencilSqueezeAnalyticsController *)v5 didShowMiniPaletteIsUndoRedoPalette:?];
     }
@@ -1370,7 +1370,7 @@ void __49__PKPencilSqueezeController_performSqueezeAction__block_invoke(uint64_t
 
 - (void)pencilSettingsDidChange
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -1379,27 +1379,27 @@ void __49__PKPencilSqueezeController_performSqueezeAction__block_invoke(uint64_t
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "Pencil settings did change", buf, 2u);
     }
 
-    if (*(a1 + 216) == 1 && [MEMORY[0x1E69DCD58] preferredSqueezeAction] != 5)
+    if (*(self + 216) == 1 && [MEMORY[0x1E69DCD58] preferredSqueezeAction] != 5)
     {
       v3[0] = MEMORY[0x1E69E9820];
       v3[1] = 3221225472;
       v3[2] = __52__PKPencilSqueezeController_pencilSettingsDidChange__block_invoke;
       v3[3] = &unk_1E82D7148;
-      v3[4] = a1;
-      [(PKPencilSqueezeController *)a1 _setPaletteViewVisible:1 notify:v3 didChangeHandler:?];
-      [(PKPencilSqueezeController *)a1 _updateUIWithSqueeze:0 customHoverPoint:1 animated:?];
+      v3[4] = self;
+      [(PKPencilSqueezeController *)self _setPaletteViewVisible:1 notify:v3 didChangeHandler:?];
+      [(PKPencilSqueezeController *)self _updateUIWithSqueeze:0 customHoverPoint:1 animated:?];
     }
   }
 }
 
 - (uint64_t)_toolPickerForKeyWindow
 {
-  v1 = a1;
+  selfCopy = self;
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [(PKPencilSqueezeController *)a1 _keyWindow];
-    [PKToolPicker _toolPickersForWindow:v2 includeHidden:1];
+    _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+    [PKToolPicker _toolPickersForWindow:_keyWindow includeHidden:1];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -1421,7 +1421,7 @@ void __49__PKPencilSqueezeController_performSqueezeAction__block_invoke(uint64_t
           v8 = *(*(&v13 + 1) + 8 * i);
           if ([v8 _isEnabled])
           {
-            v1 = v8;
+            selfCopy = v8;
             v10 = v3;
             goto LABEL_14;
           }
@@ -1437,7 +1437,7 @@ void __49__PKPencilSqueezeController_performSqueezeAction__block_invoke(uint64_t
       }
     }
 
-    v9 = [PKToolPicker _existingToolPickerForWindow:v2];
+    v9 = [PKToolPicker _existingToolPickerForWindow:_keyWindow];
     if (v9)
     {
       v10 = v9;
@@ -1445,47 +1445,47 @@ void __49__PKPencilSqueezeController_performSqueezeAction__block_invoke(uint64_t
 
     else
     {
-      v12 = [(PKPencilSqueezeController *)v1 _currentFirstResponder];
-      [PKToolPicker _cycleToolPickersForResponder:v12];
-      v10 = [PKToolPicker _existingToolPickerForWindow:v2];
+      _currentFirstResponder = [(PKPencilSqueezeController *)selfCopy _currentFirstResponder];
+      [PKToolPicker _cycleToolPickersForResponder:_currentFirstResponder];
+      v10 = [PKToolPicker _existingToolPickerForWindow:_keyWindow];
     }
 
-    v1 = v10;
+    selfCopy = v10;
 LABEL_14:
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_currentUndoManager
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(PKPencilSqueezeController *)a1 _currentFirstResponder];
-    v2 = [v1 undoManager];
+    _currentFirstResponder = [(PKPencilSqueezeController *)self _currentFirstResponder];
+    undoManager = [_currentFirstResponder undoManager];
   }
 
   else
   {
-    v2 = 0;
+    undoManager = 0;
   }
 
-  return v2;
+  return undoManager;
 }
 
-- (void)setMiniPaletteVisible:(double)a3 hoverLocation:(double)a4
+- (void)setMiniPaletteVisible:(double)visible hoverLocation:(double)location
 {
-  if (a1)
+  if (self)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __65__PKPencilSqueezeController_setMiniPaletteVisible_hoverLocation___block_invoke;
     v4[3] = &unk_1E82D89D8;
-    v4[4] = a1;
+    v4[4] = self;
     v5 = a2;
-    *&v4[5] = a3;
-    *&v4[6] = a4;
-    [(PKPencilSqueezeController *)a1 _setPaletteViewVisible:a2 notify:1 didChangeHandler:v4];
+    *&v4[5] = visible;
+    *&v4[6] = location;
+    [(PKPencilSqueezeController *)self _setPaletteViewVisible:a2 notify:1 didChangeHandler:v4];
   }
 }
 
@@ -1515,7 +1515,7 @@ void __65__PKPencilSqueezeController_setMiniPaletteVisible_hoverLocation___block
   }
 }
 
-- (void)_hidePaletteViewAfterDelay:(void *)a1
+- (void)_hidePaletteViewAfterDelay:(void *)delay
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
@@ -1526,7 +1526,7 @@ void __65__PKPencilSqueezeController_setMiniPaletteVisible_hoverLocation___block
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Hide palette view after delay: %.2f", buf, 0xCu);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, delay);
   v5 = dispatch_time(0, (a2 * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1544,32 +1544,32 @@ void __56__PKPencilSqueezeController__hidePaletteViewAfterDelay___block_invoke(u
   [(PKPencilSqueezeController *)WeakRetained setMiniPaletteVisible:*MEMORY[0x1E695EFF8] hoverLocation:*(MEMORY[0x1E695EFF8] + 8)];
 }
 
-- (id)hitTest:(void *)a3 fromView:(double)a4 withEvent:(double)a5
+- (id)hitTest:(void *)test fromView:(double)view withEvent:(double)event
 {
   v9 = a2;
-  v10 = a3;
-  if (a1)
+  testCopy = test;
+  if (self)
   {
-    v11 = [*(a1 + 16) window];
-    v12 = [v9 window];
-    [v11 convertPoint:v12 fromWindow:{a4, a5}];
+    window = [*(self + 16) window];
+    window2 = [v9 window];
+    [window convertPoint:window2 fromWindow:{view, event}];
     v14 = v13;
     v16 = v15;
 
-    [*(a1 + 16) convertPoint:0 fromView:{v14, v16}];
-    v17 = [*(a1 + 16) hitTest:v10 withEvent:?];
+    [*(self + 16) convertPoint:0 fromView:{v14, v16}];
+    v17 = [*(self + 16) hitTest:testCopy withEvent:?];
     if (!v17)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 232));
-      v19 = [WeakRetained presentedViewController];
+      WeakRetained = objc_loadWeakRetained((self + 232));
+      presentedViewController = [WeakRetained presentedViewController];
 
-      v20 = [v19 view];
-      [v9 convertPoint:v20 toView:{a4, a5}];
+      view = [presentedViewController view];
+      [v9 convertPoint:view toView:{view, event}];
       v22 = v21;
       v24 = v23;
 
-      v25 = [v19 view];
-      v17 = [v25 hitTest:v10 withEvent:{v22, v24}];
+      view2 = [presentedViewController view];
+      v17 = [view2 hitTest:testCopy withEvent:{v22, v24}];
     }
   }
 
@@ -1584,28 +1584,28 @@ void __56__PKPencilSqueezeController__hidePaletteViewAfterDelay___block_invoke(u
 - (void)_dismissPopovers
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 29);
-    v3 = [WeakRetained presentedViewController];
+    WeakRetained = objc_loadWeakRetained(self + 29);
+    presentedViewController = [WeakRetained presentedViewController];
 
-    if (v3 && ([v3 isBeingDismissed] & 1) == 0)
+    if (presentedViewController && ([presentedViewController isBeingDismissed] & 1) == 0)
     {
       v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
-        v9 = v3;
+        v9 = presentedViewController;
         _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Dismiss presented view controller: %{private}@", buf, 0xCu);
       }
 
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __45__PKPencilSqueezeController__dismissPopovers__block_invoke;
       v5[3] = &unk_1E82D7690;
       objc_copyWeak(&v7, buf);
-      v6 = v3;
+      v6 = presentedViewController;
       [v6 dismissViewControllerAnimated:1 completion:v5];
 
       objc_destroyWeak(&v7);
@@ -1614,13 +1614,13 @@ void __56__PKPencilSqueezeController__hidePaletteViewAfterDelay___block_invoke(u
   }
 }
 
-- (void)pencilInteraction:(id)a3 didReceiveTap:(id)a4
+- (void)pencilInteraction:(id)interaction didReceiveTap:(id)tap
 {
   v11 = *MEMORY[0x1E69E9840];
   if (os_variant_has_internal_diagnostics())
   {
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v9 BOOLForKey:@"PKUsePencilDoubleTapAsSqueeze"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults BOOLForKey:@"PKUsePencilDoubleTapAsSqueeze"];
   }
 
   else
@@ -1660,26 +1660,26 @@ void __56__PKPencilSqueezeController__hidePaletteViewAfterDelay___block_invoke(u
   }
 }
 
-- (void)pencilInteraction:(id)a3 didReceiveSqueeze:(id)a4
+- (void)pencilInteraction:(id)interaction didReceiveSqueeze:(id)squeeze
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E69DCD58] preferredSqueezeAction];
-  v7 = [v5 phase];
+  squeezeCopy = squeeze;
+  preferredSqueezeAction = [MEMORY[0x1E69DCD58] preferredSqueezeAction];
+  phase = [squeezeCopy phase];
   v8 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     isHidingPaletteAfterDelay = self->_isHidingPaletteAfterDelay;
     *buf = 134284033;
-    v42 = v6;
+    v42 = preferredSqueezeAction;
     v43 = 2049;
-    *v44 = v7;
+    *v44 = phase;
     *&v44[8] = 1024;
     *v45 = isHidingPaletteAfterDelay;
     _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Handle pencil interaction did squeeze, preferredSqueezeAction: %{private}ld, phase: %{private}ld, isHidingPaletteAfterDelay: %{BOOL}d", buf, 0x1Cu);
   }
 
-  if (self->_isHidingPaletteAfterDelay || v6 != 5)
+  if (self->_isHidingPaletteAfterDelay || preferredSqueezeAction != 5)
   {
     v10 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1695,16 +1695,16 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v7 <= 1)
+  if (phase <= 1)
   {
-    if (!v7)
+    if (!phase)
     {
       v12 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v5 hoverPose];
+        hoverPose = [squeezeCopy hoverPose];
         *buf = 138477827;
-        v42 = v13;
+        v42 = hoverPose;
         _os_log_impl(&dword_1C7CCA000, v12, OS_LOG_TYPE_DEFAULT, "Pencil squeeze interaction phase began, hoverPose: %{private}@", buf, 0xCu);
       }
 
@@ -1712,7 +1712,7 @@ LABEL_20:
       self->_paletteViewVisibleBeforeSqueezeBegan = paletteViewVisible;
       if (paletteViewVisible)
       {
-        v15 = [(PKPencilSqueezeController *)&self->super.isa _hoverViewInPalette:v5];
+        v15 = [(PKPencilSqueezeController *)&self->super.isa _hoverViewInPalette:squeezeCopy];
         self->_squeezeBeganOnPalette = v15 != 0;
 
         if (self->_paletteViewVisible)
@@ -1735,20 +1735,20 @@ LABEL_20:
       v39[2] = __65__PKPencilSqueezeController_pencilInteraction_didReceiveSqueeze___block_invoke;
       v39[3] = &unk_1E82D6E70;
       v39[4] = self;
-      v40 = v5;
+      v40 = squeezeCopy;
       [(PKPencilSqueezeController *)self _setPaletteViewVisible:1 notify:v39 didChangeHandler:?];
 
       goto LABEL_21;
     }
 
-    if (v7 == 1)
+    if (phase == 1)
     {
       v10 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v5 hoverPose];
+        hoverPose2 = [squeezeCopy hoverPose];
         *buf = 138477827;
-        v42 = v33;
+        v42 = hoverPose2;
         _os_log_debug_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEBUG, "Pencil squeeze interaction phase changed, hoverPose: %{private}@", buf, 0xCu);
       }
 
@@ -1766,9 +1766,9 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (v7 != 2)
+  if (phase != 2)
   {
-    if (v7 != 3)
+    if (phase != 3)
     {
       goto LABEL_18;
     }
@@ -1784,16 +1784,16 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v16 = [(PKPencilSqueezeController *)&self->super.isa _hoverViewInPalette:v5];
-  v17 = [(PKSqueezePaletteViewPresentationHandle *)self->_paletteViewPresentationHandle animationProgress];
+  v16 = [(PKPencilSqueezeController *)&self->super.isa _hoverViewInPalette:squeezeCopy];
+  animationProgress = [(PKSqueezePaletteViewPresentationHandle *)self->_paletteViewPresentationHandle animationProgress];
   v18 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v5 hoverPose];
+    hoverPose3 = [squeezeCopy hoverPose];
     paletteViewVisibleBeforeSqueezeBegan = self->_paletteViewVisibleBeforeSqueezeBegan;
     squeezeBeganOnPalette = self->_squeezeBeganOnPalette;
     *buf = 138479363;
-    v42 = v19;
+    v42 = hoverPose3;
     v43 = 1024;
     *v44 = paletteViewVisibleBeforeSqueezeBegan;
     *&v44[4] = 1024;
@@ -1803,13 +1803,13 @@ LABEL_18:
     v46 = 2113;
     v47 = v16;
     v48 = 1024;
-    v49 = v17 < 0.9;
+    v49 = animationProgress < 0.9;
     v50 = 2048;
-    v51 = v17;
+    v51 = animationProgress;
     _os_log_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_DEFAULT, "Pencil squeeze interaction phase ended, hoverState: %{private}@, paletteViewVisibleBeforeSqueezeBegan: %{BOOL}d, squeezeBeganOnPalette: %{BOOL}d, isHoverOnPalette: %{BOOL}d, hitView: %{private}@, isAnimating: %{BOOL}d, progress: %.f", buf, 0x38u);
   }
 
-  if (v17 >= 0.9 && v16)
+  if (animationProgress >= 0.9 && v16)
   {
     paletteView = self->_paletteView;
     if (paletteView)
@@ -1820,9 +1820,9 @@ LABEL_18:
     v23 = paletteView;
     if (!self->_squeezeBeganOnPalette)
     {
-      v24 = [v16 _pk_longSqueezeAction];
+      _pk_longSqueezeAction = [v16 _pk_longSqueezeAction];
 
-      if (v24)
+      if (_pk_longSqueezeAction)
       {
         v25 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1832,8 +1832,8 @@ LABEL_18:
           _os_log_impl(&dword_1C7CCA000, v25, OS_LOG_TYPE_DEFAULT, "Perform long squeeze action on view: %{private}@", buf, 0xCu);
         }
 
-        v26 = [v16 _pk_longSqueezeAction];
-        v26[2]();
+        _pk_longSqueezeAction2 = [v16 _pk_longSqueezeAction];
+        _pk_longSqueezeAction2[2]();
       }
     }
 
@@ -1872,7 +1872,7 @@ LABEL_18:
       [(PKPencilSqueezeController *)self _setPaletteViewVisible:1 notify:v38 didChangeHandler:?];
       if (self->_squeezeBeganOnPalette)
       {
-        [(PKPencilSqueezeController *)self _updateUIWithSqueeze:v5 customHoverPoint:0 animated:1];
+        [(PKPencilSqueezeController *)self _updateUIWithSqueeze:squeezeCopy customHoverPoint:0 animated:1];
       }
 
       else
@@ -1891,7 +1891,7 @@ LABEL_18:
         block[2] = __65__PKPencilSqueezeController_pencilInteraction_didReceiveSqueeze___block_invoke_41;
         block[3] = &unk_1E82D6E70;
         block[4] = self;
-        v37 = v5;
+        v37 = squeezeCopy;
         dispatch_after(v32, MEMORY[0x1E69E96A0], block);
       }
     }
@@ -1904,42 +1904,42 @@ LABEL_18:
     v34[2] = __65__PKPencilSqueezeController_pencilInteraction_didReceiveSqueeze___block_invoke_2;
     v34[3] = &unk_1E82D6E70;
     v34[4] = self;
-    v35 = v5;
+    v35 = squeezeCopy;
     [(PKPencilSqueezeController *)self _setPaletteViewVisible:1 notify:v34 didChangeHandler:?];
   }
 
 LABEL_21:
 }
 
-- (id)_hoverViewInPalette:(id *)a1
+- (id)_hoverViewInPalette:(id *)palette
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (palette)
   {
-    if (a1[2] && ([v3 hoverPose], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+    if (palette[2] && ([v3 hoverPose], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
-      v6 = [v4 hoverPose];
-      [v6 location];
+      hoverPose = [v4 hoverPose];
+      [hoverPose location];
       v8 = v7;
       v10 = v9;
 
-      v11 = a1[2];
-      v12 = [a1[16] view];
-      [v11 convertPoint:v12 fromView:{v8, v10}];
+      v11 = palette[2];
+      view = [palette[16] view];
+      [v11 convertPoint:view fromView:{v8, v10}];
       v14 = v13;
       v16 = v15;
 
-      a1 = [a1[2] hitTest:0 withEvent:{v14, v16}];
+      palette = [palette[2] hitTest:0 withEvent:{v14, v16}];
     }
 
     else
     {
-      a1 = 0;
+      palette = 0;
     }
   }
 
-  return a1;
+  return palette;
 }
 
 void __65__PKPencilSqueezeController_pencilInteraction_didReceiveSqueeze___block_invoke(uint64_t a1)
@@ -2027,7 +2027,7 @@ double __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_ani
   return v14;
 }
 
-- (uint64_t)_updatePalettePositionWithHoverLocation:(double)a3
+- (uint64_t)_updatePalettePositionWithHoverLocation:(double)location
 {
   v41 = *MEMORY[0x1E69E9840];
   if (*(result + 216))
@@ -2035,8 +2035,8 @@ double __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_ani
     v5 = result;
     [*(result + 40) setActive:0];
     [*(v5 + 48) setActive:0];
-    v6 = [(PKPencilSqueezeController *)v5 _keyWindow];
-    [v6 bounds];
+    _keyWindow = [(PKPencilSqueezeController *)v5 _keyWindow];
+    [_keyWindow bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -2072,17 +2072,17 @@ double __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_ani
       _os_log_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_DEFAULT, "Update palette view position, displayRect: %{private}@", &buf, 0xCu);
     }
 
-    v21 = [(PKPencilSqueezeController *)v5 _paletteViewScale];
+    _paletteViewScale = [(PKPencilSqueezeController *)v5 _paletteViewScale];
     v22 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf.a) = 134283521;
-      *(&buf.a + 4) = v21;
+      *(&buf.a + 4) = _paletteViewScale;
       _os_log_impl(&dword_1C7CCA000, v22, OS_LOG_TYPE_DEFAULT, "Update palette view position, paletteViewScale: %{private}.2f", &buf, 0xCu);
     }
 
     memset(&buf, 0, sizeof(buf));
-    CGAffineTransformMakeScale(&buf, v21, v21);
+    CGAffineTransformMakeScale(&buf, _paletteViewScale, _paletteViewScale);
     v39 = buf;
     [*(v5 + 16) setTransform:&v39];
     v23 = *(v5 + 184);
@@ -2098,7 +2098,7 @@ double __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_ani
       v25 = 30.0;
     }
 
-    v26 = [(PKPencilSqueezeController *)v5 _paletteViewCenterInRect:30.0 hoverLocation:v17 paletteViewSize:v18, a2 + v25, a3 + 30.0, vmlaq_n_f64(vmulq_n_f64(*&buf.c, *(v5 + 32)), *&buf.a, *(v5 + 24)).f64[0]];
+    v26 = [(PKPencilSqueezeController *)v5 _paletteViewCenterInRect:30.0 hoverLocation:v17 paletteViewSize:v18, a2 + v25, location + 30.0, vmlaq_n_f64(vmulq_n_f64(*&buf.c, *(v5 + 32)), *&buf.a, *(v5 + 24)).f64[0]];
     v28 = v27;
     v29 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -2111,15 +2111,15 @@ double __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_ani
       _os_log_impl(&dword_1C7CCA000, v29, OS_LOG_TYPE_DEFAULT, "Update palette view position, center: %{private}@", &v39, 0xCu);
     }
 
-    v31 = [*(v5 + 16) centerXAnchor];
-    v32 = [*(v5 + 64) leftAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:v26];
+    centerXAnchor = [*(v5 + 16) centerXAnchor];
+    leftAnchor = [*(v5 + 64) leftAnchor];
+    v33 = [centerXAnchor constraintEqualToAnchor:leftAnchor constant:v26];
     v34 = *(v5 + 40);
     *(v5 + 40) = v33;
 
-    v35 = [*(v5 + 16) centerYAnchor];
-    v36 = [*(v5 + 64) topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:v28];
+    centerYAnchor = [*(v5 + 16) centerYAnchor];
+    topAnchor = [*(v5 + 64) topAnchor];
+    v37 = [centerYAnchor constraintEqualToAnchor:topAnchor constant:v28];
     v38 = *(v5 + 48);
     *(v5 + 48) = v37;
 
@@ -2144,7 +2144,7 @@ double __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_ani
     }
 
     [*(v1 + 16) setAlpha:v4];
-    v5 = [(PKPencilSqueezeController *)v1 _paletteViewScale];
+    _paletteViewScale = [(PKPencilSqueezeController *)v1 _paletteViewScale];
     v6 = *(v1 + 152);
     if (v6)
     {
@@ -2152,7 +2152,7 @@ double __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_ani
       v3 = v7;
     }
 
-    CGAffineTransformMakeScale(&v10, v5 * v3, v5 * v3);
+    CGAffineTransformMakeScale(&v10, _paletteViewScale * v3, _paletteViewScale * v3);
     v8 = *(v1 + 16);
     v9 = v10;
     return [v8 setTransform:&v9];
@@ -2297,10 +2297,10 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
   }
 }
 
-- (void)_updateToolPickerVisibilityWithCompletion:(uint64_t *)a1
+- (void)_updateToolPickerVisibilityWithCompletion:(uint64_t *)completion
 {
   v3 = a2;
-  v6 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
+  _toolPickerForKeyWindow = [(PKPencilSqueezeController *)completion _toolPickerForKeyWindow];
   v4 = objc_alloc_init(PKToolPickerVisibilityContext);
   v5 = v4;
   if (v4)
@@ -2308,28 +2308,28 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
     v4->_squeezePaletteVisibleDidChange = 1;
   }
 
-  if (v6)
+  if (_toolPickerForKeyWindow)
   {
-    [v6 _updateToolPickerVisibilityForFirstResponder:0 withContext:v4 completion:v3];
+    [_toolPickerForKeyWindow _updateToolPickerVisibilityForFirstResponder:0 withContext:v4 completion:v3];
   }
 }
 
 - (double)_paletteViewScale
 {
-  v2 = [(PKPencilSqueezeController *)a1 _keyWindow];
-  [v2 bounds];
+  _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+  [_keyWindow bounds];
   v4 = v3;
   v6 = v5;
 
-  v7 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-  v8 = PKSqueezePaletteViewScaleFactor(v7, 20.0, 30.0, v4 + -40.0, v6 + -50.0, *(a1 + 24));
+  _toolPickerForKeyWindow = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+  v8 = PKSqueezePaletteViewScaleFactor(_toolPickerForKeyWindow, 20.0, 30.0, v4 + -40.0, v6 + -50.0, *(self + 24));
 
   return v8;
 }
 
-- (double)_paletteViewCenterInRect:(CGFloat)a3 hoverLocation:(CGFloat)a4 paletteViewSize:(CGFloat)a5
+- (double)_paletteViewCenterInRect:(CGFloat)rect hoverLocation:(CGFloat)location paletteViewSize:(CGFloat)size
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -2342,9 +2342,9 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
   }
 
   v17.origin.x = a2;
-  v17.origin.y = a3;
-  v17.size.width = a4;
-  v17.size.height = a5;
+  v17.origin.y = rect;
+  v17.size.width = location;
+  v17.size.height = size;
   v15 = CGRectGetMaxX(v17) - v13;
   if (a6 >= v15)
   {
@@ -2352,36 +2352,36 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
   }
 
   v18.origin.x = a2;
-  v18.origin.y = a3;
-  v18.size.width = a4;
-  v18.size.height = a5;
+  v18.origin.y = rect;
+  v18.size.width = location;
+  v18.size.height = size;
   CGRectGetMinY(v18);
   v19.origin.x = a2;
-  v19.origin.y = a3;
-  v19.size.width = a4;
-  v19.size.height = a5;
+  v19.origin.y = rect;
+  v19.size.width = location;
+  v19.size.height = size;
   CGRectGetMaxY(v19);
   return a6;
 }
 
-- (double)paletteViewFrameForHoverLocation:(double)a3
+- (double)paletteViewFrameForHoverLocation:(double)location
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v6 = [(PKPencilSqueezeController *)a1 _keyWindow];
-  [v6 bounds];
+  _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+  [_keyWindow bounds];
   v8 = v7;
   v10 = v9;
 
   v11 = v8 + -40.0;
   v12 = v10 + -50.0;
-  v13 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-  v14 = PKSqueezePaletteViewScaleFactor(v13, 20.0, 30.0, v11, v12, *(a1 + 24));
-  v15 = *(a1 + 56);
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  _toolPickerForKeyWindow = [(PKPencilSqueezeController *)self _toolPickerForKeyWindow];
+  v14 = PKSqueezePaletteViewScaleFactor(_toolPickerForKeyWindow, 20.0, 30.0, v11, v12, *(self + 24));
+  v15 = *(self + 56);
+  WeakRetained = objc_loadWeakRetained((self + 8));
   [v15 azimuthAngleInView:WeakRetained];
   v18 = v17;
 
@@ -2401,40 +2401,40 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
   v22 = a2 + v21;
   memset(&v26, 0, sizeof(v26));
   CGAffineTransformMakeScale(&v26, v14, v14);
-  v25 = vmlaq_n_f64(vmulq_n_f64(*&v26.c, *(a1 + 32)), *&v26.a, *(a1 + 24)).f64[0];
-  v23 = [(PKPencilSqueezeController *)a1 _paletteViewCenterInRect:30.0 hoverLocation:v11 paletteViewSize:v12, v22, a3 + 30.0, v25]- 0.5 * v25;
+  v25 = vmlaq_n_f64(vmulq_n_f64(*&v26.c, *(self + 32)), *&v26.a, *(self + 24)).f64[0];
+  v23 = [(PKPencilSqueezeController *)self _paletteViewCenterInRect:30.0 hoverLocation:v11 paletteViewSize:v12, v22, location + 30.0, v25]- 0.5 * v25;
 
   return v23;
 }
 
 - (id)_currentFirstResponder
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(PKPencilSqueezeController *)a1 _keyWindow];
-    v2 = [v1 firstResponder];
+    _keyWindow = [(PKPencilSqueezeController *)self _keyWindow];
+    firstResponder = [_keyWindow firstResponder];
   }
 
   else
   {
-    v2 = 0;
+    firstResponder = 0;
   }
 
-  return v2;
+  return firstResponder;
 }
 
-- (uint64_t)_isPresentedViewController:(uint64_t)a1
+- (uint64_t)_isPresentedViewController:(uint64_t)controller
 {
-  v2 = a1;
-  if (a1)
+  controllerCopy = controller;
+  if (controller)
   {
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained((v2 + 232));
-    v5 = [WeakRetained presentedViewController];
+    WeakRetained = objc_loadWeakRetained((controllerCopy + 232));
+    presentedViewController = [WeakRetained presentedViewController];
 
-    if (v5)
+    if (presentedViewController)
     {
-      v6 = v5 == v3;
+      v6 = presentedViewController == v3;
     }
 
     else
@@ -2442,38 +2442,38 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
       v6 = 0;
     }
 
-    v2 = v6;
+    controllerCopy = v6;
   }
 
-  return v2;
+  return controllerCopy;
 }
 
-- (void)_togglePresentViewControllerAsPopover:(void *)a3 sourceView:
+- (void)_togglePresentViewControllerAsPopover:(void *)popover sourceView:
 {
   v6 = a2;
-  v5 = a3;
-  if (a1)
+  popoverCopy = popover;
+  if (self)
   {
-    if ([(PKPencilSqueezeController *)a1 _isPresentedViewController:v6])
+    if ([(PKPencilSqueezeController *)self _isPresentedViewController:v6])
     {
       [v6 dismissViewControllerAnimated:1 completion:0];
     }
 
     else
     {
-      [(PKPencilSqueezeController *)a1 _presentViewControllerAsPopover:v6 sourceView:v5];
+      [(PKPencilSqueezeController *)self _presentViewControllerAsPopover:v6 sourceView:popoverCopy];
     }
   }
 }
 
-- (void)_presentViewControllerAsPopover:(void *)a3 sourceView:
+- (void)_presentViewControllerAsPopover:(void *)popover sourceView:
 {
   v38 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  popoverCopy = popover;
+  if (self)
   {
-    if ((-[PKPencilSqueezeController _isPresentedViewController:](a1, v5) & 1) != 0 || (v8 = [v5 isBeingPresented], !v6) || v8)
+    if ((-[PKPencilSqueezeController _isPresentedViewController:](self, v5) & 1) != 0 || (v8 = [v5 isBeingPresented], !popoverCopy) || v8)
     {
       v7 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2481,7 +2481,7 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
         *buf = 138478083;
         v35 = v5;
         v36 = 2113;
-        v37 = v6;
+        v37 = popoverCopy;
         _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Unable to present view controller: %{private}@, sourceView: %{private}@", buf, 0x16u);
       }
     }
@@ -2489,40 +2489,40 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
     else
     {
       [v5 setModalPresentationStyle:7];
-      v9 = [v5 popoverPresentationController];
-      [v9 setDelegate:a1];
+      popoverPresentationController = [v5 popoverPresentationController];
+      [popoverPresentationController setDelegate:self];
 
-      v10 = [v5 popoverPresentationController];
-      [v10 setSourceView:v6];
+      popoverPresentationController2 = [v5 popoverPresentationController];
+      [popoverPresentationController2 setSourceView:popoverCopy];
 
-      [v6 bounds];
+      [popoverCopy bounds];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [v5 popoverPresentationController];
-      [v19 setSourceRect:{v12, v14, v16, v18}];
+      popoverPresentationController3 = [v5 popoverPresentationController];
+      [popoverPresentationController3 setSourceRect:{v12, v14, v16, v18}];
 
-      v20 = [v5 popoverPresentationController];
-      [v20 setSourceItem:v6];
+      popoverPresentationController4 = [v5 popoverPresentationController];
+      [popoverPresentationController4 setSourceItem:popoverCopy];
 
-      v21 = [v5 popoverPresentationController];
-      [v21 _setIgnoresKeyboardNotifications:1];
+      popoverPresentationController5 = [v5 popoverPresentationController];
+      [popoverPresentationController5 _setIgnoresKeyboardNotifications:1];
 
-      v33[0] = *(a1 + 120);
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      v33[0] = *(self + 120);
+      WeakRetained = objc_loadWeakRetained((self + 8));
       v33[1] = WeakRetained;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
-      v24 = [v5 popoverPresentationController];
-      [v24 setPassthroughViews:v23];
+      popoverPresentationController6 = [v5 popoverPresentationController];
+      [popoverPresentationController6 setPassthroughViews:v23];
 
-      v25 = [v5 popoverPresentationController];
-      [v25 setPermittedArrowDirections:15];
+      popoverPresentationController7 = [v5 popoverPresentationController];
+      [popoverPresentationController7 setPermittedArrowDirections:15];
 
       v26 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = objc_loadWeakRetained((a1 + 232));
+        v27 = objc_loadWeakRetained((self + 232));
         *buf = 138478083;
         v35 = v5;
         v36 = 2113;
@@ -2530,15 +2530,15 @@ void __76__PKPencilSqueezeController__updateUIWithSqueeze_customHoverPoint_anima
         _os_log_impl(&dword_1C7CCA000, v26, OS_LOG_TYPE_DEFAULT, "Present view controller: %{private}@, root view controller: %{private}@", buf, 0x16u);
       }
 
-      objc_initWeak(buf, a1);
-      v28 = objc_loadWeakRetained((a1 + 232));
+      objc_initWeak(buf, self);
+      v28 = objc_loadWeakRetained((self + 232));
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __72__PKPencilSqueezeController__presentViewControllerAsPopover_sourceView___block_invoke;
       v29[3] = &unk_1E82D6FC0;
       objc_copyWeak(&v32, buf);
       v30 = v5;
-      v31 = v6;
+      v31 = popoverCopy;
       [v28 presentViewController:v30 animated:1 completion:v29];
 
       objc_destroyWeak(&v32);
@@ -2597,29 +2597,29 @@ void __45__PKPencilSqueezeController__dismissPopovers__block_invoke(uint64_t a1)
   }
 }
 
-- (uint64_t)_canSelectTool:(uint64_t)a1 atIndex:(void *)a2
+- (uint64_t)_canSelectTool:(uint64_t)tool atIndex:(void *)index
 {
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  indexCopy = index;
+  v4 = indexCopy;
+  if (tool)
   {
-    v5 = [v3 ink];
-    v6 = [v5 _isGenerationTool];
+    v5 = [indexCopy ink];
+    _isGenerationTool = [v5 _isGenerationTool];
 
-    if (v6)
+    if (_isGenerationTool)
     {
-      v7 = [(PKTextEffectsWindowObserver *)*(a1 + 240) keyWindow];
-      if (v7)
+      keyWindow = [(PKTextEffectsWindowObserver *)*(tool + 240) keyWindow];
+      if (keyWindow)
       {
-        v8 = v7;
+        v8 = keyWindow;
         v9 = +[PKGenerationModelAvailabilityController sharedInstance];
         v10 = [v9 presentGreymatterAvailabilityAlertControllerInWindow:v8];
 
         if (v10)
         {
-          [(PKPencilSqueezeController *)a1 _hidePaletteViewAfterDelay:?];
+          [(PKPencilSqueezeController *)tool _hidePaletteViewAfterDelay:?];
 
-          a1 = 0;
+          tool = 0;
           goto LABEL_11;
         }
       }
@@ -2635,22 +2635,22 @@ void __45__PKPencilSqueezeController__dismissPopovers__block_invoke(uint64_t a1)
       }
     }
 
-    a1 = 1;
+    tool = 1;
   }
 
 LABEL_11:
 
-  return a1;
+  return tool;
 }
 
-- (void)_didSelectTool:(uint64_t *)a1 atIndex:(void *)a2
+- (void)_didSelectTool:(uint64_t *)tool atIndex:(void *)index
 {
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  indexCopy = index;
+  v4 = indexCopy;
+  if (tool)
   {
-    v5 = [v3 ink];
-    if (![v5 _isGenerationTool])
+    rootViewController = [indexCopy ink];
+    if (![rootViewController _isGenerationTool])
     {
 LABEL_11:
 
@@ -2661,21 +2661,21 @@ LABEL_11:
 
     if (v6)
     {
-      v7 = [(PKTextEffectsWindowObserver *)a1[30] keyWindow];
-      v5 = [v7 rootViewController];
+      keyWindow = [(PKTextEffectsWindowObserver *)tool[30] keyWindow];
+      rootViewController = [keyWindow rootViewController];
 
-      if (v5)
+      if (rootViewController)
       {
-        v8 = [(PKPencilSqueezeController *)a1 _toolPickerForKeyWindow];
-        v9 = [[PKImageWandOnboardingController alloc] initWithPresentationViewController:v5 toolPicker:v8];
-        v10 = a1[26];
-        a1[26] = v9;
+        _toolPickerForKeyWindow = [(PKPencilSqueezeController *)tool _toolPickerForKeyWindow];
+        v9 = [[PKImageWandOnboardingController alloc] initWithPresentationViewController:rootViewController toolPicker:_toolPickerForKeyWindow];
+        v10 = tool[26];
+        tool[26] = v9;
 
-        v11 = a1[26];
+        v11 = tool[26];
         if (v11)
         {
-          objc_storeWeak((v11 + 40), a1);
-          v12 = a1[26];
+          objc_storeWeak((v11 + 40), tool);
+          v12 = tool[26];
         }
 
         else
@@ -2684,7 +2684,7 @@ LABEL_11:
         }
 
         [(PKImageWandOnboardingController *)v12 showOnboardingViewAfterDelay:?];
-        [(PKPencilSqueezeController *)a1 _hidePaletteViewAfterDelay:?];
+        [(PKPencilSqueezeController *)tool _hidePaletteViewAfterDelay:?];
       }
 
       else
@@ -2704,9 +2704,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)imageWandOnboardingControllerDidHideView:(id)a3
+- (void)imageWandOnboardingControllerDidHideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2715,7 +2715,7 @@ LABEL_12:
   }
 
   imageWandOnboardingController = self->_imageWandOnboardingController;
-  if (imageWandOnboardingController == v4)
+  if (imageWandOnboardingController == viewCopy)
   {
     self->_imageWandOnboardingController = 0;
   }

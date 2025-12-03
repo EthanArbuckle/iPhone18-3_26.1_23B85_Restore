@@ -3,16 +3,16 @@
 - (CAColorMatrix)pageIndicatorVibrantColorMatrix;
 - (CGAffineTransform)activeTransformForTouchedPage;
 - (CGAffineTransform)targetTransformForTouchedPage;
-- (CGRect)indicatorFrameForPage:(int64_t)a3;
+- (CGRect)indicatorFrameForPage:(int64_t)page;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeForNumberOfPages:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIPageControlVisualProvider)initWithPageControl:(id)a3;
-- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3;
-- (void)setActiveTransformForTouchedPage:(CGAffineTransform *)a3;
-- (void)setPage:(int64_t)a3 interactionState:(int64_t)a4;
-- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3;
-- (void)setTargetTransformForTouchedPage:(CGAffineTransform *)a3;
+- (CGSize)sizeForNumberOfPages:(int64_t)pages;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIPageControlVisualProvider)initWithPageControl:(id)control;
+- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix;
+- (void)setActiveTransformForTouchedPage:(CGAffineTransform *)page;
+- (void)setPage:(int64_t)page interactionState:(int64_t)state;
+- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix;
+- (void)setTargetTransformForTouchedPage:(CGAffineTransform *)page;
 @end
 
 @implementation _UIPageControlVisualProvider
@@ -41,14 +41,14 @@
   return self;
 }
 
-- (_UIPageControlVisualProvider)initWithPageControl:(id)a3
+- (_UIPageControlVisualProvider)initWithPageControl:(id)control
 {
   v15.receiver = self;
   v15.super_class = _UIPageControlVisualProvider;
   result = [(_UIPageControlVisualProvider *)&v15 init];
   if (result)
   {
-    result->_pageControl = a3;
+    result->_pageControl = control;
     v5 = MEMORY[0x1E695EFD0];
     v6 = *MEMORY[0x1E695EFD0];
     v7 = *(MEMORY[0x1E695EFD0] + 16);
@@ -80,15 +80,15 @@
   return result;
 }
 
-- (void)setPage:(int64_t)a3 interactionState:(int64_t)a4
+- (void)setPage:(int64_t)page interactionState:(int64_t)state
 {
-  [(UIPageControl *)self->_pageControl _updateCurrentPage:a3 updateDisplayImmediately:1];
+  [(UIPageControl *)self->_pageControl _updateCurrentPage:page updateDisplayImmediately:1];
   pageControl = self->_pageControl;
 
   [(UIPageControl *)pageControl _emitValueChanged];
 }
 
-- (CGSize)sizeForNumberOfPages:(int64_t)a3
+- (CGSize)sizeForNumberOfPages:(int64_t)pages
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -106,7 +106,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -115,7 +115,7 @@
   return result;
 }
 
-- (CGRect)indicatorFrameForPage:(int64_t)a3
+- (CGRect)indicatorFrameForPage:(int64_t)page
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);
@@ -137,11 +137,11 @@
   return self;
 }
 
-- (void)setActiveTransformForTouchedPage:(CGAffineTransform *)a3
+- (void)setActiveTransformForTouchedPage:(CGAffineTransform *)page
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_activeTransformForTouchedPage.c = *&a3->c;
+  v3 = *&page->a;
+  v4 = *&page->tx;
+  *&self->_activeTransformForTouchedPage.c = *&page->c;
   *&self->_activeTransformForTouchedPage.tx = v4;
   *&self->_activeTransformForTouchedPage.a = v3;
 }
@@ -155,34 +155,34 @@
   return self;
 }
 
-- (void)setTargetTransformForTouchedPage:(CGAffineTransform *)a3
+- (void)setTargetTransformForTouchedPage:(CGAffineTransform *)page
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_targetTransformForTouchedPage.c = *&a3->c;
+  v3 = *&page->a;
+  v4 = *&page->tx;
+  *&self->_targetTransformForTouchedPage.c = *&page->c;
   *&self->_targetTransformForTouchedPage.tx = v4;
   *&self->_targetTransformForTouchedPage.a = v3;
 }
 
-- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix
 {
-  *&self->_pageIndicatorVibrantColorMatrix.m11 = *&a3->m11;
-  v3 = *&a3->m15;
-  v4 = *&a3->m24;
-  v5 = *&a3->m42;
-  *&self->_pageIndicatorVibrantColorMatrix.m33 = *&a3->m33;
+  *&self->_pageIndicatorVibrantColorMatrix.m11 = *&matrix->m11;
+  v3 = *&matrix->m15;
+  v4 = *&matrix->m24;
+  v5 = *&matrix->m42;
+  *&self->_pageIndicatorVibrantColorMatrix.m33 = *&matrix->m33;
   *&self->_pageIndicatorVibrantColorMatrix.m42 = v5;
   *&self->_pageIndicatorVibrantColorMatrix.m15 = v3;
   *&self->_pageIndicatorVibrantColorMatrix.m24 = v4;
 }
 
-- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix
 {
-  *&self->_activePageIndicatorVibrantColorMatrix.m11 = *&a3->m11;
-  v3 = *&a3->m15;
-  v4 = *&a3->m24;
-  v5 = *&a3->m42;
-  *&self->_activePageIndicatorVibrantColorMatrix.m33 = *&a3->m33;
+  *&self->_activePageIndicatorVibrantColorMatrix.m11 = *&matrix->m11;
+  v3 = *&matrix->m15;
+  v4 = *&matrix->m24;
+  v5 = *&matrix->m42;
+  *&self->_activePageIndicatorVibrantColorMatrix.m33 = *&matrix->m33;
   *&self->_activePageIndicatorVibrantColorMatrix.m42 = v5;
   *&self->_activePageIndicatorVibrantColorMatrix.m15 = v3;
   *&self->_activePageIndicatorVibrantColorMatrix.m24 = v4;

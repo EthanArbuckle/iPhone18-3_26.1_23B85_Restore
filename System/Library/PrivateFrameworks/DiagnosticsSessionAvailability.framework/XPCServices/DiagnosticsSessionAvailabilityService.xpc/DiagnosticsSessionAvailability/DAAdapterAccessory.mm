@@ -1,37 +1,37 @@
 @interface DAAdapterAccessory
-+ (id)accessoryWithIdentifier:(id)a3 attributes:(id)a4;
-- (DAAdapterAccessory)initWithIdentifier:(id)a3 attributes:(id)a4;
++ (id)accessoryWithIdentifier:(id)identifier attributes:(id)attributes;
+- (DAAdapterAccessory)initWithIdentifier:(id)identifier attributes:(id)attributes;
 - (id)modelNumber;
 - (id)serialNumber;
 @end
 
 @implementation DAAdapterAccessory
 
-+ (id)accessoryWithIdentifier:(id)a3 attributes:(id)a4
++ (id)accessoryWithIdentifier:(id)identifier attributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 attributes:v6];
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy attributes:attributesCopy];
 
   return v8;
 }
 
-- (DAAdapterAccessory)initWithIdentifier:(id)a3 attributes:(id)a4
+- (DAAdapterAccessory)initWithIdentifier:(id)identifier attributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
   v17.receiver = self;
   v17.super_class = DAAdapterAccessory;
   v9 = [(DAAdapterAccessory *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_attributes, a4);
-    if ([v7 isEqualToString:@"Accessory.SmartBatteryCase"])
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_attributes, attributes);
+    if ([identifierCopy isEqualToString:@"Accessory.SmartBatteryCase"])
     {
-      v11 = [(DAAdapterAccessory *)v10 attributes];
-      v12 = [v11 objectForKeyedSubscript:@"name"];
+      attributes = [(DAAdapterAccessory *)v10 attributes];
+      v12 = [attributes objectForKeyedSubscript:@"name"];
       name = v10->_name;
       v10->_name = v12;
 
@@ -46,14 +46,14 @@ LABEL_9:
 
     else
     {
-      if ([v7 isEqualToString:@"Accessory.SmartKeyboard"])
+      if ([identifierCopy isEqualToString:@"Accessory.SmartKeyboard"])
       {
         v14 = v10->_name;
         v15 = @"Smart Keyboard";
         goto LABEL_9;
       }
 
-      if ([v7 isEqualToString:@"Accessory.ApplePencil"])
+      if ([identifierCopy isEqualToString:@"Accessory.ApplePencil"])
       {
         v14 = v10->_name;
         v15 = @"Apple Pencil";
@@ -67,16 +67,16 @@ LABEL_9:
 
 - (id)serialNumber
 {
-  v2 = [(DAAdapterAccessory *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"serialNumber"];
+  attributes = [(DAAdapterAccessory *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"serialNumber"];
 
   return v3;
 }
 
 - (id)modelNumber
 {
-  v2 = [(DAAdapterAccessory *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"modelNumber"];
+  attributes = [(DAAdapterAccessory *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"modelNumber"];
 
   return v3;
 }

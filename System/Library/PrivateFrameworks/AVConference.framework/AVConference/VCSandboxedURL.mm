@@ -1,15 +1,15 @@
 @interface VCSandboxedURL
-+ (id)deserialize:(id)a3;
-+ (id)stringFromAccessType:(unsigned __int8)a3;
-- (BOOL)issueSandboxExtensionForPath:(id)a3;
-- (VCSandboxedURL)initWithCoder:(id)a3;
-- (VCSandboxedURL)initWithURL:(id)a3 accessType:(unsigned __int8)a4;
++ (id)deserialize:(id)deserialize;
++ (id)stringFromAccessType:(unsigned __int8)type;
+- (BOOL)issueSandboxExtensionForPath:(id)path;
+- (VCSandboxedURL)initWithCoder:(id)coder;
+- (VCSandboxedURL)initWithURL:(id)l accessType:(unsigned __int8)type;
 - (const)extensionClass;
 - (id)consumeToken;
 - (id)description;
 - (id)serialize;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)serialize;
 @end
 
@@ -40,32 +40,32 @@
   return result;
 }
 
-- (BOOL)issueSandboxExtensionForPath:(id)a3
+- (BOOL)issueSandboxExtensionForPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [(VCSandboxedURL *)self extensionClass];
-  if (!v5)
+  extensionClass = [(VCSandboxedURL *)self extensionClass];
+  if (!extensionClass)
   {
     goto LABEL_15;
   }
 
-  [a3 UTF8String];
+  [path UTF8String];
   v6 = sandbox_extension_issue_file();
   if (!v6)
   {
-    [(VCSandboxedURL *)a3 issueSandboxExtensionForPath:buf, &v20];
+    [(VCSandboxedURL *)path issueSandboxExtensionForPath:buf, &v20];
 LABEL_19:
-    v5 = *buf;
+    extensionClass = *buf;
     v18 = v20;
     goto LABEL_16;
   }
 
-  v5 = v6;
+  extensionClass = v6;
   v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v6];
   self->_urlToken = v7;
   if (!v7)
   {
-    [(VCSandboxedURL *)v5 issueSandboxExtensionForPath:buf, &v20];
+    [(VCSandboxedURL *)extensionClass issueSandboxExtensionForPath:buf, &v20];
     goto LABEL_19;
   }
 
@@ -93,7 +93,7 @@ LABEL_19:
     v26 = 2112;
     v27 = urlToken;
     v28 = 2112;
-    v29 = a3;
+    selfCopy = path;
     v12 = " [%s] %s:%d Successfully issued token=%@ for path=%@";
     v13 = v10;
     v14 = 48;
@@ -133,11 +133,11 @@ LABEL_19:
     v26 = 2112;
     v27 = v8;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v17;
     v32 = 2112;
-    v33 = a3;
+    pathCopy2 = path;
     v12 = " [%s] %s:%d %@(%p) Successfully issued token=%@ for path=%@";
     v13 = v16;
     v14 = 68;
@@ -147,15 +147,15 @@ LABEL_19:
 LABEL_15:
   v18 = 1;
 LABEL_16:
-  free(v5);
+  free(extensionClass);
   return v18;
 }
 
-- (VCSandboxedURL)initWithURL:(id)a3 accessType:(unsigned __int8)a4
+- (VCSandboxedURL)initWithURL:(id)l accessType:(unsigned __int8)type
 {
   v26 = *MEMORY[0x1E69E9840];
   self->_urlTokenHandle = -1;
-  if (!a3)
+  if (!l)
   {
     [VCSandboxedURL initWithURL:buf accessType:?];
 LABEL_16:
@@ -163,25 +163,25 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a4 >= 3u)
+  if (type >= 3u)
   {
-    [(VCSandboxedURL *)a4 initWithURL:buf accessType:?];
+    [(VCSandboxedURL *)type initWithURL:buf accessType:?];
     goto LABEL_16;
   }
 
-  v6 = [a3 path];
+  path = [l path];
   v16.receiver = self;
   v16.super_class = VCSandboxedURL;
-  v7 = [(VCSandboxedURL *)&v16 initFileURLWithPath:v6];
+  v7 = [(VCSandboxedURL *)&v16 initFileURLWithPath:path];
   if (!v7)
   {
-    [VCSandboxedURL initWithURL:v6 accessType:buf];
+    [VCSandboxedURL initWithURL:path accessType:buf];
     goto LABEL_16;
   }
 
   v8 = v7;
-  v7->_accessType = a4;
-  if (![(VCSandboxedURL *)v7 issueSandboxExtensionForPath:v6])
+  v7->_accessType = type;
+  if (![(VCSandboxedURL *)v7 issueSandboxExtensionForPath:path])
   {
 LABEL_17:
 
@@ -230,19 +230,19 @@ LABEL_17:
   return v8;
 }
 
-+ (id)stringFromAccessType:(unsigned __int8)a3
++ (id)stringFromAccessType:(unsigned __int8)type
 {
-  if (a3 > 2u)
+  if (type > 2u)
   {
     v5 = "Invalid";
   }
 
   else
   {
-    v5 = off_1E85F6FB0[a3];
+    v5 = off_1E85F6FB0[type];
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s(%hhu)", v5, a3, v3, v4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s(%hhu)", v5, type, v3, v4];
 }
 
 - (id)description
@@ -286,7 +286,7 @@ LABEL_17:
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 125;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d Bad usage: deserializer never consumed the token.", &v2, 0x1Cu);
@@ -337,11 +337,11 @@ LABEL_17:
           v32 = 1024;
           v33 = 154;
           v34 = 2112;
-          v35 = v21;
+          selfCopy5 = v21;
           v36 = 2048;
-          v37 = self;
+          selfCopy6 = self;
           v38 = 2112;
-          v39 = v26;
+          selfCopy7 = v26;
           _os_log_error_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Can't serialize for configured accessType=%@", buf, 0x3Au);
         }
       }
@@ -374,9 +374,9 @@ LABEL_17:
       v32 = 1024;
       v33 = 158;
       v34 = 2112;
-      v35 = self;
+      selfCopy5 = self;
       v36 = 2112;
-      v37 = v27;
+      selfCopy6 = v27;
       v7 = " [%s] %s:%d Failed to serialize instance=%@, error=%@";
       v8 = v6;
       v9 = 48;
@@ -413,11 +413,11 @@ LABEL_17:
       v32 = 1024;
       v33 = 158;
       v34 = 2112;
-      v35 = v4;
+      selfCopy5 = v4;
       v36 = 2048;
-      v37 = self;
+      selfCopy6 = self;
       v38 = 2112;
-      v39 = self;
+      selfCopy7 = self;
       v40 = 2112;
       v41 = v27;
       v7 = " [%s] %s:%d %@(%p) Failed to serialize instance=%@, error=%@";
@@ -444,7 +444,7 @@ LABEL_12:
         v32 = 1024;
         v33 = 161;
         v34 = 2112;
-        v35 = self;
+        selfCopy5 = self;
         v15 = " [%s] %s:%d Successfully serialized instance=%@";
         v16 = v14;
         v17 = 38;
@@ -479,11 +479,11 @@ LABEL_22:
         v32 = 1024;
         v33 = 161;
         v34 = 2112;
-        v35 = v12;
+        selfCopy5 = v12;
         v36 = 2048;
-        v37 = self;
+        selfCopy6 = self;
         v38 = 2112;
-        v39 = self;
+        selfCopy7 = self;
         v15 = " [%s] %s:%d %@(%p) Successfully serialized instance=%@";
         v16 = v19;
         v17 = 58;
@@ -495,16 +495,16 @@ LABEL_22:
   return v3;
 }
 
-+ (id)deserialize:(id)a3
++ (id)deserialize:(id)deserialize
 {
   v39 = *MEMORY[0x1E69E9840];
   v24 = 0;
-  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v24];
+  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:deserialize error:&v24];
   v5 = v24;
   v6 = objc_opt_class();
   if (v5)
   {
-    if (v6 == a1)
+    if (v6 == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 3)
       {
@@ -527,7 +527,7 @@ LABEL_22:
       v31 = 2112;
       v32 = v4;
       v33 = 2112;
-      v34 = v24;
+      selfCopy2 = v24;
       v11 = " [%s] %s:%d Failed to deserialize instance=%@, error=%@";
       v12 = v10;
       v13 = 48;
@@ -537,7 +537,7 @@ LABEL_22:
     {
       if (objc_opt_respondsToSelector())
       {
-        v7 = [a1 performSelector:sel_logPrefix];
+        v7 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -566,7 +566,7 @@ LABEL_22:
       v31 = 2112;
       v32 = v7;
       v33 = 2048;
-      v34 = a1;
+      selfCopy2 = self;
       v35 = 2112;
       v36 = v4;
       v37 = 2112;
@@ -580,7 +580,7 @@ LABEL_22:
     return 0;
   }
 
-  if (v6 == a1)
+  if (v6 == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -609,7 +609,7 @@ LABEL_23:
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [a1 performSelector:sel_logPrefix];
+      v8 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -632,7 +632,7 @@ LABEL_23:
         v31 = 2112;
         v32 = v8;
         v33 = 2048;
-        v34 = a1;
+        selfCopy2 = self;
         v35 = 2112;
         v36 = v4;
         v19 = " [%s] %s:%d %@(%p) Successfully deserialized instance=%@";
@@ -646,7 +646,7 @@ LABEL_23:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
   if (self->_tokenConsumed)
@@ -691,7 +691,7 @@ LABEL_23:
           v17 = 2112;
           v18 = v4;
           v19 = 2048;
-          v20 = self;
+          selfCopy = self;
           v21 = 2048;
           v22 = urlTokenHandle;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Bad usage: attempting to encode with a tokenHandle=%lld, we are within the consuming process.", buf, 0x3Au);
@@ -705,12 +705,12 @@ LABEL_23:
     v10.receiver = self;
     v10.super_class = VCSandboxedURL;
     [(VCSandboxedURL *)&v10 encodeWithCoder:?];
-    [a3 encodeBytes:&self->_accessType length:1 forKey:@"VCSandboxedURL_AccessType"];
-    [a3 encodeObject:self->_urlToken forKey:@"VCSandboxedURL_URLToken"];
+    [coder encodeBytes:&self->_accessType length:1 forKey:@"VCSandboxedURL_AccessType"];
+    [coder encodeObject:self->_urlToken forKey:@"VCSandboxedURL_URLToken"];
   }
 }
 
-- (VCSandboxedURL)initWithCoder:(id)a3
+- (VCSandboxedURL)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -724,20 +724,20 @@ LABEL_25:
     return 0;
   }
 
-  if (([a3 containsValueForKey:@"VCSandboxedURL_AccessType"] & 1) == 0)
+  if (([coder containsValueForKey:@"VCSandboxedURL_AccessType"] & 1) == 0)
   {
     [VCSandboxedURL initWithCoder:v4];
     goto LABEL_25;
   }
 
-  if (([a3 containsValueForKey:@"VCSandboxedURL_URLToken"] & 1) == 0)
+  if (([coder containsValueForKey:@"VCSandboxedURL_URLToken"] & 1) == 0)
   {
     [VCSandboxedURL initWithCoder:v4];
     goto LABEL_25;
   }
 
   v17 = 0;
-  v5 = [a3 decodeBytesForKey:@"VCSandboxedURL_AccessType" returnedLength:&v17];
+  v5 = [coder decodeBytesForKey:@"VCSandboxedURL_AccessType" returnedLength:&v17];
   if (v17 != 1)
   {
     [VCSandboxedURL initWithCoder:v4];
@@ -751,7 +751,7 @@ LABEL_25:
     v4->_tokenConsumed = 1;
   }
 
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"VCSandboxedURL_URLToken"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"VCSandboxedURL_URLToken"];
   v4->_urlToken = v7;
   if (!v7)
   {
@@ -828,7 +828,7 @@ LABEL_18:
 
 - (id)consumeToken
 {
-  v2 = self;
+  selfCopy = self;
   v56 = *MEMORY[0x1E69E9840];
   if (*(self + 65))
   {
@@ -902,7 +902,7 @@ LABEL_49:
   v3 = *(self + 6);
   if (!v3)
   {
-    if (objc_opt_class() != v2)
+    if (objc_opt_class() != selfCopy)
     {
       if (OUTLINED_FUNCTION_28_0())
       {
@@ -951,11 +951,11 @@ LABEL_49:
 
   [v3 UTF8String];
   v4 = sandbox_extension_consume();
-  v2[7] = v4;
+  selfCopy[7] = v4;
   v5 = objc_opt_class();
   if (v4 == -1)
   {
-    if (v5 != v2)
+    if (v5 != selfCopy)
     {
       if (OUTLINED_FUNCTION_28_0())
       {
@@ -978,7 +978,7 @@ LABEL_49:
         goto LABEL_49;
       }
 
-      v38 = v2[6];
+      v38 = selfCopy[6];
       v39 = __error();
       strerror(*v39);
       OUTLINED_FUNCTION_10();
@@ -987,7 +987,7 @@ LABEL_49:
       OUTLINED_FUNCTION_9_9();
       v49 = v23;
       v50 = 2048;
-      v51 = v2;
+      v51 = selfCopy;
       v52 = v41;
       v53 = v38;
       v54 = v42;
@@ -1009,7 +1009,7 @@ LABEL_49:
       goto LABEL_49;
     }
 
-    v32 = v2[6];
+    v32 = selfCopy[6];
     v33 = __error();
     strerror(*v33);
     OUTLINED_FUNCTION_1_0();
@@ -1026,7 +1026,7 @@ LABEL_49:
     goto LABEL_43;
   }
 
-  if (v5 == v2)
+  if (v5 == selfCopy)
   {
     VRTraceGetErrorLogLevelForModule();
     self = OUTLINED_FUNCTION_17_8();
@@ -1051,7 +1051,7 @@ LABEL_49:
         v15 = 48;
 LABEL_15:
         _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, v13, &v44, v15);
-        self = v2;
+        self = selfCopy;
       }
     }
   }
@@ -1085,7 +1085,7 @@ LABEL_15:
         OUTLINED_FUNCTION_10_13();
         v49 = v6;
         v50 = 2048;
-        v51 = v2;
+        v51 = selfCopy;
         v52 = v20;
         v53 = v21;
         v54 = 2048;
@@ -1099,7 +1099,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  *(v2 + 65) = 1;
+  *(selfCopy + 65) = 1;
   return self;
 }
 

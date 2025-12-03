@@ -1,9 +1,9 @@
 @interface FCNetworkEvent
-- (FCNetworkEvent)initWithType:(int)a3 URL:(id)a4 operationID:(id)a5 requestUUID:(id)a6 responseMIMEType:(id)a7 HTTPStatusCode:(unint64_t)a8 HTTPMethod:(id)a9 HTTPResponseHeaders:(id)a10 containerName:(id)a11 isProxyConnection:(BOOL)a12 error:(id)a13 startTime:(double)a14 dnsDuration:(double)a15 connectDuration:(double)a16 requestDuration:(double)a17 responseDuration:(double)a18 requestSize:(double)a19 responseSize:(double)a20 smarterFetchSources:(id)a21 smarterFetchStrategy:(id)a22;
-- (FCNetworkEvent)initWithType:(int)a3 URLRequest:(id)a4 operationID:(id)a5 requestUUID:(id)a6 startTime:(double)a7 HTTPResponse:(id)a8 metrics:(id)a9 containerName:(id)a10 error:(id)a11;
-- (FCNetworkEvent)initWithType:(int)a3 URLRequest:(id)a4 requestUUID:(id)a5 startTime:(double)a6 HTTPResponse:(id)a7 metrics:(id)a8 smarterFetchSources:(id)a9 smarterFetchStrategy:(id)a10 error:(id)a11;
-- (FCNetworkEvent)initWithType:(int)a3 URLSessionTask:(id)a4 requestUUID:(id)a5 startTime:(double)a6 smarterFetchSources:(id)a7 smarterFetchStrategy:(id)a8;
-- (FCNetworkEvent)initWithType:(int)a3 ckRequestInfo:(id)a4 operationID:(id)a5 startTime:(double)a6 containerName:(id)a7 error:(id)a8;
+- (FCNetworkEvent)initWithType:(int)type URL:(id)l operationID:(id)d requestUUID:(id)iD responseMIMEType:(id)eType HTTPStatusCode:(unint64_t)code HTTPMethod:(id)method HTTPResponseHeaders:(id)self0 containerName:(id)self1 isProxyConnection:(BOOL)self2 error:(id)self3 startTime:(double)self4 dnsDuration:(double)self5 connectDuration:(double)self6 requestDuration:(double)self7 responseDuration:(double)self8 requestSize:(double)self9 responseSize:(double)responseSize smarterFetchSources:(id)sources smarterFetchStrategy:(id)strategy;
+- (FCNetworkEvent)initWithType:(int)type URLRequest:(id)request operationID:(id)d requestUUID:(id)iD startTime:(double)time HTTPResponse:(id)response metrics:(id)metrics containerName:(id)self0 error:(id)self1;
+- (FCNetworkEvent)initWithType:(int)type URLRequest:(id)request requestUUID:(id)d startTime:(double)time HTTPResponse:(id)response metrics:(id)metrics smarterFetchSources:(id)sources smarterFetchStrategy:(id)self0 error:(id)self1;
+- (FCNetworkEvent)initWithType:(int)type URLSessionTask:(id)task requestUUID:(id)d startTime:(double)time smarterFetchSources:(id)sources smarterFetchStrategy:(id)strategy;
+- (FCNetworkEvent)initWithType:(int)type ckRequestInfo:(id)info operationID:(id)d startTime:(double)time containerName:(id)name error:(id)error;
 - (NSDateInterval)dateInterval;
 - (double)endTime;
 - (double)totalDuration;
@@ -13,70 +13,70 @@
 
 @implementation FCNetworkEvent
 
-- (FCNetworkEvent)initWithType:(int)a3 URL:(id)a4 operationID:(id)a5 requestUUID:(id)a6 responseMIMEType:(id)a7 HTTPStatusCode:(unint64_t)a8 HTTPMethod:(id)a9 HTTPResponseHeaders:(id)a10 containerName:(id)a11 isProxyConnection:(BOOL)a12 error:(id)a13 startTime:(double)a14 dnsDuration:(double)a15 connectDuration:(double)a16 requestDuration:(double)a17 responseDuration:(double)a18 requestSize:(double)a19 responseSize:(double)a20 smarterFetchSources:(id)a21 smarterFetchStrategy:(id)a22
+- (FCNetworkEvent)initWithType:(int)type URL:(id)l operationID:(id)d requestUUID:(id)iD responseMIMEType:(id)eType HTTPStatusCode:(unint64_t)code HTTPMethod:(id)method HTTPResponseHeaders:(id)self0 containerName:(id)self1 isProxyConnection:(BOOL)self2 error:(id)self3 startTime:(double)self4 dnsDuration:(double)self5 connectDuration:(double)self6 requestDuration:(double)self7 responseDuration:(double)self8 requestSize:(double)self9 responseSize:(double)responseSize smarterFetchSources:(id)sources smarterFetchStrategy:(id)strategy
 {
-  v66 = a4;
-  v31 = a5;
-  v32 = a6;
-  v33 = a7;
-  v34 = a9;
-  v35 = a10;
-  v36 = a11;
-  v37 = a13;
-  v38 = a21;
-  v39 = a22;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  eTypeCopy = eType;
+  methodCopy = method;
+  headersCopy = headers;
+  nameCopy = name;
+  errorCopy = error;
+  sourcesCopy = sources;
+  strategyCopy = strategy;
   v67.receiver = self;
   v67.super_class = FCNetworkEvent;
   v40 = [(FCNetworkEvent *)&v67 init];
   v41 = v40;
   if (v40)
   {
-    v40->_type = a3;
-    v42 = [v66 copy];
+    v40->_type = type;
+    v42 = [lCopy copy];
     URL = v41->_URL;
     v41->_URL = v42;
 
-    v44 = [v31 copy];
+    v44 = [dCopy copy];
     operationID = v41->_operationID;
     v41->_operationID = v44;
 
-    v46 = [v32 copy];
+    v46 = [iDCopy copy];
     requestUUID = v41->_requestUUID;
     v41->_requestUUID = v46;
 
-    v48 = [v33 copy];
+    v48 = [eTypeCopy copy];
     responseMIMEType = v41->_responseMIMEType;
     v41->_responseMIMEType = v48;
 
-    v41->_HTTPStatusCode = a8;
-    v50 = [v34 copy];
+    v41->_HTTPStatusCode = code;
+    v50 = [methodCopy copy];
     HTTPMethod = v41->_HTTPMethod;
     v41->_HTTPMethod = v50;
 
-    v52 = [v35 copy];
+    v52 = [headersCopy copy];
     HTTPResponseHeaders = v41->_HTTPResponseHeaders;
     v41->_HTTPResponseHeaders = v52;
 
-    v54 = [v36 copy];
+    v54 = [nameCopy copy];
     containerName = v41->_containerName;
     v41->_containerName = v54;
 
-    v41->_isProxyConnection = a12;
-    v56 = [v37 copy];
+    v41->_isProxyConnection = connection;
+    v56 = [errorCopy copy];
     error = v41->_error;
     v41->_error = v56;
 
-    v41->_startTime = a14;
-    v41->_connectDuration = a16;
-    v41->_requestDuration = a17;
-    v41->_responseDuration = a18;
-    v41->_requestSize = a19;
-    v41->_responseSize = a20;
-    v58 = [v38 copy];
+    v41->_startTime = time;
+    v41->_connectDuration = connectDuration;
+    v41->_requestDuration = requestDuration;
+    v41->_responseDuration = responseDuration;
+    v41->_requestSize = size;
+    v41->_responseSize = responseSize;
+    v58 = [sourcesCopy copy];
     smarterFetchSources = v41->_smarterFetchSources;
     v41->_smarterFetchSources = v58;
 
-    v60 = [v39 copy];
+    v60 = [strategyCopy copy];
     smarterFetchStrategy = v41->_smarterFetchStrategy;
     v41->_smarterFetchStrategy = v60;
   }
@@ -84,150 +84,150 @@
   return v41;
 }
 
-- (FCNetworkEvent)initWithType:(int)a3 URLRequest:(id)a4 operationID:(id)a5 requestUUID:(id)a6 startTime:(double)a7 HTTPResponse:(id)a8 metrics:(id)a9 containerName:(id)a10 error:(id)a11
+- (FCNetworkEvent)initWithType:(int)type URLRequest:(id)request operationID:(id)d requestUUID:(id)iD startTime:(double)time HTTPResponse:(id)response metrics:(id)metrics containerName:(id)self0 error:(id)self1
 {
-  v17 = a11;
-  v49 = a10;
-  v18 = a9;
-  v19 = a8;
-  v50 = a6;
-  v48 = a5;
-  v20 = a4;
-  v21 = [v20 URL];
-  v45 = [v19 MIMEType];
-  v44 = [v19 statusCode];
-  v41 = [v20 HTTPMethod];
+  errorCopy = error;
+  nameCopy = name;
+  metricsCopy = metrics;
+  responseCopy = response;
+  iDCopy = iD;
+  dCopy = d;
+  requestCopy = request;
+  v21 = [requestCopy URL];
+  mIMEType = [responseCopy MIMEType];
+  statusCode = [responseCopy statusCode];
+  hTTPMethod = [requestCopy HTTPMethod];
 
-  v22 = [v19 allHeaderFields];
+  allHeaderFields = [responseCopy allHeaderFields];
 
-  LOBYTE(v20) = [v18 isProxyConnection];
-  v47 = [v18 domainLookupEndDate];
-  v46 = [v18 domainLookupStartDate];
-  [v47 timeIntervalSinceDate:v46];
+  LOBYTE(requestCopy) = [metricsCopy isProxyConnection];
+  domainLookupEndDate = [metricsCopy domainLookupEndDate];
+  domainLookupStartDate = [metricsCopy domainLookupStartDate];
+  [domainLookupEndDate timeIntervalSinceDate:domainLookupStartDate];
   v24 = v23;
-  v43 = [v18 connectEndDate];
-  v42 = [v18 connectStartDate];
-  [v43 timeIntervalSinceDate:v42];
+  connectEndDate = [metricsCopy connectEndDate];
+  connectStartDate = [metricsCopy connectStartDate];
+  [connectEndDate timeIntervalSinceDate:connectStartDate];
   v26 = v25;
-  v40 = [v18 responseStartDate];
-  v39 = [v18 requestStartDate];
-  [v40 timeIntervalSinceDate:v39];
+  responseStartDate = [metricsCopy responseStartDate];
+  requestStartDate = [metricsCopy requestStartDate];
+  [responseStartDate timeIntervalSinceDate:requestStartDate];
   v28 = v27;
-  v29 = [v18 responseEndDate];
-  v30 = [v18 responseStartDate];
-  [v29 timeIntervalSinceDate:v30];
+  responseEndDate = [metricsCopy responseEndDate];
+  responseStartDate2 = [metricsCopy responseStartDate];
+  [responseEndDate timeIntervalSinceDate:responseStartDate2];
   v32 = v31;
-  v33 = [v18 countOfRequestHeaderBytesSent];
-  v34 = ([v18 countOfRequestBodyBytesSent] + v33);
-  v35 = [v18 countOfResponseHeaderBytesReceived];
-  v36 = [v18 countOfResponseBodyBytesReceived];
+  countOfRequestHeaderBytesSent = [metricsCopy countOfRequestHeaderBytesSent];
+  v34 = ([metricsCopy countOfRequestBodyBytesSent] + countOfRequestHeaderBytesSent);
+  countOfResponseHeaderBytesReceived = [metricsCopy countOfResponseHeaderBytesReceived];
+  countOfResponseBodyBytesReceived = [metricsCopy countOfResponseBodyBytesReceived];
 
-  LOBYTE(v38) = v20;
-  v53 = [(FCNetworkEvent *)self initWithType:a3 URL:v21 operationID:v48 requestUUID:v50 responseMIMEType:v45 HTTPStatusCode:v44 HTTPMethod:a7 HTTPResponseHeaders:v24 containerName:v26 isProxyConnection:v28 error:v32 startTime:v34 dnsDuration:(v36 + v35) connectDuration:v41 requestDuration:v22 responseDuration:v49 requestSize:v38 responseSize:v17 smarterFetchSources:0 smarterFetchStrategy:0];
+  LOBYTE(v38) = requestCopy;
+  v53 = [(FCNetworkEvent *)self initWithType:type URL:v21 operationID:dCopy requestUUID:iDCopy responseMIMEType:mIMEType HTTPStatusCode:statusCode HTTPMethod:time HTTPResponseHeaders:v24 containerName:v26 isProxyConnection:v28 error:v32 startTime:v34 dnsDuration:(countOfResponseBodyBytesReceived + countOfResponseHeaderBytesReceived) connectDuration:hTTPMethod requestDuration:allHeaderFields responseDuration:nameCopy requestSize:v38 responseSize:errorCopy smarterFetchSources:0 smarterFetchStrategy:0];
 
   return v53;
 }
 
-- (FCNetworkEvent)initWithType:(int)a3 URLRequest:(id)a4 requestUUID:(id)a5 startTime:(double)a6 HTTPResponse:(id)a7 metrics:(id)a8 smarterFetchSources:(id)a9 smarterFetchStrategy:(id)a10 error:(id)a11
+- (FCNetworkEvent)initWithType:(int)type URLRequest:(id)request requestUUID:(id)d startTime:(double)time HTTPResponse:(id)response metrics:(id)metrics smarterFetchSources:(id)sources smarterFetchStrategy:(id)self0 error:(id)self1
 {
-  v51 = a11;
-  v48 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v50 = a5;
-  v20 = a4;
-  v21 = [v20 URL];
-  v46 = [v19 MIMEType];
-  v45 = [v19 statusCode];
-  v42 = [v20 HTTPMethod];
+  errorCopy = error;
+  strategyCopy = strategy;
+  sourcesCopy = sources;
+  metricsCopy = metrics;
+  responseCopy = response;
+  dCopy = d;
+  requestCopy = request;
+  v21 = [requestCopy URL];
+  mIMEType = [responseCopy MIMEType];
+  statusCode = [responseCopy statusCode];
+  hTTPMethod = [requestCopy HTTPMethod];
 
-  v40 = [v19 allHeaderFields];
+  allHeaderFields = [responseCopy allHeaderFields];
 
-  v38 = [v18 isProxyConnection];
-  v49 = [v18 domainLookupEndDate];
-  v47 = [v18 domainLookupStartDate];
-  [v49 timeIntervalSinceDate:v47];
+  isProxyConnection = [metricsCopy isProxyConnection];
+  domainLookupEndDate = [metricsCopy domainLookupEndDate];
+  domainLookupStartDate = [metricsCopy domainLookupStartDate];
+  [domainLookupEndDate timeIntervalSinceDate:domainLookupStartDate];
   v23 = v22;
-  v44 = [v18 connectEndDate];
-  v43 = [v18 connectStartDate];
-  [v44 timeIntervalSinceDate:v43];
+  connectEndDate = [metricsCopy connectEndDate];
+  connectStartDate = [metricsCopy connectStartDate];
+  [connectEndDate timeIntervalSinceDate:connectStartDate];
   v25 = v24;
-  v41 = [v18 responseStartDate];
-  v39 = [v18 requestStartDate];
-  [v41 timeIntervalSinceDate:v39];
+  responseStartDate = [metricsCopy responseStartDate];
+  requestStartDate = [metricsCopy requestStartDate];
+  [responseStartDate timeIntervalSinceDate:requestStartDate];
   v27 = v26;
-  v28 = [v18 responseEndDate];
-  v29 = [v18 responseStartDate];
-  [v28 timeIntervalSinceDate:v29];
+  responseEndDate = [metricsCopy responseEndDate];
+  responseStartDate2 = [metricsCopy responseStartDate];
+  [responseEndDate timeIntervalSinceDate:responseStartDate2];
   v31 = v30;
-  v32 = [v18 countOfRequestHeaderBytesSent];
-  v33 = ([v18 countOfRequestBodyBytesSent] + v32);
-  v34 = [v18 countOfResponseHeaderBytesReceived];
-  v35 = [v18 countOfResponseBodyBytesReceived];
+  countOfRequestHeaderBytesSent = [metricsCopy countOfRequestHeaderBytesSent];
+  v33 = ([metricsCopy countOfRequestBodyBytesSent] + countOfRequestHeaderBytesSent);
+  countOfResponseHeaderBytesReceived = [metricsCopy countOfResponseHeaderBytesReceived];
+  countOfResponseBodyBytesReceived = [metricsCopy countOfResponseBodyBytesReceived];
 
-  LOBYTE(v37) = v38;
-  v54 = [(FCNetworkEvent *)self initWithType:a3 URL:v21 operationID:0 requestUUID:v50 responseMIMEType:v46 HTTPStatusCode:v45 HTTPMethod:a6 HTTPResponseHeaders:v23 containerName:v25 isProxyConnection:v27 error:v31 startTime:v33 dnsDuration:(v35 + v34) connectDuration:v42 requestDuration:v40 responseDuration:0 requestSize:v37 responseSize:v51 smarterFetchSources:v17 smarterFetchStrategy:v48];
+  LOBYTE(v37) = isProxyConnection;
+  v54 = [(FCNetworkEvent *)self initWithType:type URL:v21 operationID:0 requestUUID:dCopy responseMIMEType:mIMEType HTTPStatusCode:statusCode HTTPMethod:time HTTPResponseHeaders:v23 containerName:v25 isProxyConnection:v27 error:v31 startTime:v33 dnsDuration:(countOfResponseBodyBytesReceived + countOfResponseHeaderBytesReceived) connectDuration:hTTPMethod requestDuration:allHeaderFields responseDuration:0 requestSize:v37 responseSize:errorCopy smarterFetchSources:sourcesCopy smarterFetchStrategy:strategyCopy];
 
   return v54;
 }
 
-- (FCNetworkEvent)initWithType:(int)a3 ckRequestInfo:(id)a4 operationID:(id)a5 startTime:(double)a6 containerName:(id)a7 error:(id)a8
+- (FCNetworkEvent)initWithType:(int)type ckRequestInfo:(id)info operationID:(id)d startTime:(double)time containerName:(id)name error:(id)error
 {
-  v12 = a4;
-  v13 = a8;
-  v14 = a7;
-  v52 = a5;
-  v59 = [v12 requestUUID];
-  v57 = [v12 responseHTTPHeaders];
-  v58 = [v57 objectForKeyedSubscript:@"Content-Type"];
-  v56 = v13;
-  if (v13)
+  infoCopy = info;
+  errorCopy = error;
+  nameCopy = name;
+  dCopy = d;
+  requestUUID = [infoCopy requestUUID];
+  responseHTTPHeaders = [infoCopy responseHTTPHeaders];
+  v58 = [responseHTTPHeaders objectForKeyedSubscript:@"Content-Type"];
+  v56 = errorCopy;
+  if (errorCopy)
   {
-    v39 = [v13 userInfo];
-    v38 = [v39 objectForKeyedSubscript:*MEMORY[0x1E695B780]];
-    v47 = [v38 unsignedIntegerValue];
+    userInfo = [errorCopy userInfo];
+    v38 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B780]];
+    unsignedIntegerValue = [v38 unsignedIntegerValue];
   }
 
   else
   {
-    v47 = 200;
+    unsignedIntegerValue = 200;
   }
 
-  v15 = [v12 responseHTTPHeaders];
-  v51 = [v12 w3cNavigationTiming];
-  v50 = [v51 objectForKeyedSubscript:@"_kCFNTimingDataDomainLookupEnd"];
+  responseHTTPHeaders2 = [infoCopy responseHTTPHeaders];
+  w3cNavigationTiming = [infoCopy w3cNavigationTiming];
+  v50 = [w3cNavigationTiming objectForKeyedSubscript:@"_kCFNTimingDataDomainLookupEnd"];
   [v50 doubleValue];
   v17 = v16;
-  v49 = [v12 w3cNavigationTiming];
-  v48 = [v49 objectForKeyedSubscript:@"_kCFNTimingDataDomainLookupStart"];
+  w3cNavigationTiming2 = [infoCopy w3cNavigationTiming];
+  v48 = [w3cNavigationTiming2 objectForKeyedSubscript:@"_kCFNTimingDataDomainLookupStart"];
   [v48 doubleValue];
   v19 = v17 - v18;
-  v46 = [v12 w3cNavigationTiming];
-  v45 = [v46 objectForKeyedSubscript:@"_kCFNTimingDataConnectEnd"];
+  w3cNavigationTiming3 = [infoCopy w3cNavigationTiming];
+  v45 = [w3cNavigationTiming3 objectForKeyedSubscript:@"_kCFNTimingDataConnectEnd"];
   [v45 doubleValue];
   v21 = v20;
-  v44 = [v12 w3cNavigationTiming];
-  v43 = [v44 objectForKeyedSubscript:@"_kCFNTimingDataConnectStart"];
+  w3cNavigationTiming4 = [infoCopy w3cNavigationTiming];
+  v43 = [w3cNavigationTiming4 objectForKeyedSubscript:@"_kCFNTimingDataConnectStart"];
   [v43 doubleValue];
   v23 = v21 - v22;
-  v42 = [v12 w3cNavigationTiming];
-  v41 = [v42 objectForKeyedSubscript:@"_kCFNTimingDataResponseStart"];
+  w3cNavigationTiming5 = [infoCopy w3cNavigationTiming];
+  v41 = [w3cNavigationTiming5 objectForKeyedSubscript:@"_kCFNTimingDataResponseStart"];
   [v41 doubleValue];
   v25 = v24;
-  v40 = [v12 w3cNavigationTiming];
-  v26 = [v40 objectForKeyedSubscript:@"_kCFNTimingDataRequestStart"];
+  w3cNavigationTiming6 = [infoCopy w3cNavigationTiming];
+  v26 = [w3cNavigationTiming6 objectForKeyedSubscript:@"_kCFNTimingDataRequestStart"];
   [v26 doubleValue];
   v28 = v25 - v27;
-  v29 = [v12 w3cNavigationTiming];
-  v30 = [v29 objectForKeyedSubscript:@"_kCFNTimingDataResponseEnd"];
+  w3cNavigationTiming7 = [infoCopy w3cNavigationTiming];
+  v30 = [w3cNavigationTiming7 objectForKeyedSubscript:@"_kCFNTimingDataResponseEnd"];
   [v30 doubleValue];
   v32 = v31;
-  v33 = [v12 w3cNavigationTiming];
-  v34 = [v33 objectForKeyedSubscript:@"_kCFNTimingDataResponseStart"];
+  w3cNavigationTiming8 = [infoCopy w3cNavigationTiming];
+  v34 = [w3cNavigationTiming8 objectForKeyedSubscript:@"_kCFNTimingDataResponseStart"];
   [v34 doubleValue];
   LOBYTE(v37) = 0;
-  v55 = [(FCNetworkEvent *)self initWithType:a3 URL:0 operationID:v52 requestUUID:v59 responseMIMEType:v58 HTTPStatusCode:v47 HTTPMethod:a6 HTTPResponseHeaders:v19 containerName:v23 isProxyConnection:v28 error:v32 - v35 startTime:0.0 dnsDuration:0.0 connectDuration:@"POST" requestDuration:v15 responseDuration:v14 requestSize:v37 responseSize:v56 smarterFetchSources:0 smarterFetchStrategy:0];
+  v55 = [(FCNetworkEvent *)self initWithType:type URL:0 operationID:dCopy requestUUID:requestUUID responseMIMEType:v58 HTTPStatusCode:unsignedIntegerValue HTTPMethod:time HTTPResponseHeaders:v19 containerName:v23 isProxyConnection:v28 error:v32 - v35 startTime:0.0 dnsDuration:0.0 connectDuration:@"POST" requestDuration:responseHTTPHeaders2 responseDuration:nameCopy requestSize:v37 responseSize:v56 smarterFetchSources:0 smarterFetchStrategy:0];
 
   if (v56)
   {
@@ -236,20 +236,20 @@
   return v55;
 }
 
-- (FCNetworkEvent)initWithType:(int)a3 URLSessionTask:(id)a4 requestUUID:(id)a5 startTime:(double)a6 smarterFetchSources:(id)a7 smarterFetchStrategy:(id)a8
+- (FCNetworkEvent)initWithType:(int)type URLSessionTask:(id)task requestUUID:(id)d startTime:(double)time smarterFetchSources:(id)sources smarterFetchStrategy:(id)strategy
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = [v16 originalRequest];
+  strategyCopy = strategy;
+  sourcesCopy = sources;
+  dCopy = d;
+  taskCopy = task;
+  originalRequest = [taskCopy originalRequest];
   objc_opt_class();
-  v18 = [v16 response];
-  if (v18)
+  response = [taskCopy response];
+  if (response)
   {
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = response;
     }
 
     else
@@ -264,10 +264,10 @@
   }
 
   v20 = v19;
-  v21 = [v16 _incompleteCurrentTaskTransactionMetrics];
-  v22 = [v16 error];
+  _incompleteCurrentTaskTransactionMetrics = [taskCopy _incompleteCurrentTaskTransactionMetrics];
+  error = [taskCopy error];
 
-  v23 = [(FCNetworkEvent *)self initWithType:a3 URLRequest:v17 requestUUID:v15 startTime:v20 HTTPResponse:v21 metrics:v14 smarterFetchSources:a6 smarterFetchStrategy:v13 error:v22];
+  v23 = [(FCNetworkEvent *)self initWithType:type URLRequest:originalRequest requestUUID:dCopy startTime:v20 HTTPResponse:_incompleteCurrentTaskTransactionMetrics metrics:sourcesCopy smarterFetchSources:time smarterFetchStrategy:strategyCopy error:error];
   return v23;
 }
 
@@ -317,23 +317,23 @@
     [v3 addField:@"URL" object:v6];
   }
 
-  v7 = [(FCNetworkEvent *)self requestUUID];
-  [v3 addField:@"requestUUID" object:v7];
+  requestUUID = [(FCNetworkEvent *)self requestUUID];
+  [v3 addField:@"requestUUID" object:requestUUID];
 
-  v8 = [(FCNetworkEvent *)self operationID];
-  [v3 addField:@"operationID" object:v8];
+  operationID = [(FCNetworkEvent *)self operationID];
+  [v3 addField:@"operationID" object:operationID];
 
-  v9 = [(FCNetworkEvent *)self containerName];
+  containerName = [(FCNetworkEvent *)self containerName];
 
-  if (v9)
+  if (containerName)
   {
-    v10 = [(FCNetworkEvent *)self containerName];
-    [v3 addField:@"containerName" value:v10];
+    containerName2 = [(FCNetworkEvent *)self containerName];
+    [v3 addField:@"containerName" value:containerName2];
   }
 
-  v11 = [(FCNetworkEvent *)self error];
+  error = [(FCNetworkEvent *)self error];
 
-  if (!v11)
+  if (!error)
   {
     [(FCNetworkEvent *)self connectDuration];
     v13 = v12;
@@ -364,8 +364,8 @@
     }
   }
 
-  v25 = [(FCNetworkEvent *)self HTTPResponseHeaders];
-  v26 = [v25 objectForKeyedSubscript:@"X-Apple-Cache"];
+  hTTPResponseHeaders = [(FCNetworkEvent *)self HTTPResponseHeaders];
+  v26 = [hTTPResponseHeaders objectForKeyedSubscript:@"X-Apple-Cache"];
 
   if (v26)
   {
@@ -382,17 +382,17 @@
     [v3 addField:@"cached" object:v27];
   }
 
-  v28 = [(FCNetworkEvent *)self error];
+  error2 = [(FCNetworkEvent *)self error];
 
-  if (v28)
+  if (error2)
   {
-    v29 = [(FCNetworkEvent *)self error];
-    [v3 addField:@"error" object:v29];
+    error3 = [(FCNetworkEvent *)self error];
+    [v3 addField:@"error" object:error3];
   }
 
-  v30 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v30;
+  return descriptionString;
 }
 
 - (id)debugDescription
@@ -409,21 +409,21 @@
     [v3 addField:@"URL" object:v6];
   }
 
-  v7 = [(FCNetworkEvent *)self HTTPMethod];
-  [v3 addField:@"httpMethod" object:v7];
+  hTTPMethod = [(FCNetworkEvent *)self HTTPMethod];
+  [v3 addField:@"httpMethod" object:hTTPMethod];
 
-  v8 = [(FCNetworkEvent *)self requestUUID];
-  [v3 addField:@"requestUUID" object:v8];
+  requestUUID = [(FCNetworkEvent *)self requestUUID];
+  [v3 addField:@"requestUUID" object:requestUUID];
 
-  v9 = [(FCNetworkEvent *)self operationID];
-  [v3 addField:@"operationID" value:v9];
+  operationID = [(FCNetworkEvent *)self operationID];
+  [v3 addField:@"operationID" value:operationID];
 
-  v10 = [(FCNetworkEvent *)self containerName];
+  containerName = [(FCNetworkEvent *)self containerName];
 
-  if (v10)
+  if (containerName)
   {
-    v11 = [(FCNetworkEvent *)self containerName];
-    [v3 addField:@"containerName" value:v11];
+    containerName2 = [(FCNetworkEvent *)self containerName];
+    [v3 addField:@"containerName" value:containerName2];
   }
 
   v12 = MEMORY[0x1E695DF00];
@@ -431,9 +431,9 @@
   v13 = [v12 dateWithTimeIntervalSinceReferenceDate:?];
   [v3 addField:@"startDate" object:v13];
 
-  v14 = [(FCNetworkEvent *)self error];
+  error = [(FCNetworkEvent *)self error];
 
-  if (!v14)
+  if (!error)
   {
     [(FCNetworkEvent *)self connectDuration];
     v16 = v15;
@@ -461,8 +461,8 @@
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCNetworkEvent HTTPStatusCode](self, "HTTPStatusCode")}];
   [v3 addField:@"httpStatusCode" object:v27];
 
-  v28 = [(FCNetworkEvent *)self HTTPResponseHeaders];
-  v29 = [v28 objectForKeyedSubscript:@"X-Apple-Cache"];
+  hTTPResponseHeaders = [(FCNetworkEvent *)self HTTPResponseHeaders];
+  v29 = [hTTPResponseHeaders objectForKeyedSubscript:@"X-Apple-Cache"];
 
   if (v29)
   {
@@ -479,12 +479,12 @@
     [v3 addField:@"cached" object:v30];
   }
 
-  v31 = [(FCNetworkEvent *)self responseMIMEType];
+  responseMIMEType = [(FCNetworkEvent *)self responseMIMEType];
 
-  if (v31)
+  if (responseMIMEType)
   {
-    v32 = [(FCNetworkEvent *)self responseMIMEType];
-    [v3 addField:@"responseMIMEType" object:v32];
+    responseMIMEType2 = [(FCNetworkEvent *)self responseMIMEType];
+    [v3 addField:@"responseMIMEType" object:responseMIMEType2];
   }
 
   if ([(FCNetworkEvent *)self requestSize])
@@ -499,25 +499,25 @@
     [v3 addField:@"responseSize" object:v34];
   }
 
-  v35 = [(FCNetworkEvent *)self error];
+  error2 = [(FCNetworkEvent *)self error];
 
-  if (v35)
+  if (error2)
   {
-    v36 = [(FCNetworkEvent *)self error];
-    [v3 addField:@"error" object:v36];
+    error3 = [(FCNetworkEvent *)self error];
+    [v3 addField:@"error" object:error3];
   }
 
-  v37 = [(FCNetworkEvent *)self HTTPResponseHeaders];
+  hTTPResponseHeaders2 = [(FCNetworkEvent *)self HTTPResponseHeaders];
 
-  if (v37)
+  if (hTTPResponseHeaders2)
   {
-    v38 = [(FCNetworkEvent *)self HTTPResponseHeaders];
-    [v3 addField:@"httpResponseHeaders" object:v38];
+    hTTPResponseHeaders3 = [(FCNetworkEvent *)self HTTPResponseHeaders];
+    [v3 addField:@"httpResponseHeaders" object:hTTPResponseHeaders3];
   }
 
-  v39 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v39;
+  return descriptionString;
 }
 
 @end

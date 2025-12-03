@@ -1,32 +1,32 @@
 @interface UPQuiltConfiguration
 - (CGRect)timeBounds;
 - (CGRect)viewport;
-- (UPQuiltConfiguration)initWithRandomizationSeedValue:(unint64_t)a3 viewport:(CGRect)a4 timeBounds:(CGRect)a5 lineVariance:(double)a6;
+- (UPQuiltConfiguration)initWithRandomizationSeedValue:(unint64_t)value viewport:(CGRect)viewport timeBounds:(CGRect)bounds lineVariance:(double)variance;
 - (void)initRandomizer;
 @end
 
 @implementation UPQuiltConfiguration
 
-- (UPQuiltConfiguration)initWithRandomizationSeedValue:(unint64_t)a3 viewport:(CGRect)a4 timeBounds:(CGRect)a5 lineVariance:(double)a6
+- (UPQuiltConfiguration)initWithRandomizationSeedValue:(unint64_t)value viewport:(CGRect)viewport timeBounds:(CGRect)bounds lineVariance:(double)variance
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.size.height;
-  v11 = a4.size.width;
-  v12 = a4.origin.y;
-  v13 = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v10 = viewport.size.height;
+  v11 = viewport.size.width;
+  v12 = viewport.origin.y;
+  v13 = viewport.origin.x;
   v18.receiver = self;
   v18.super_class = UPQuiltConfiguration;
   v15 = [(UPQuiltConfiguration *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    [(UPQuiltConfiguration *)v15 setRandomizationSeedValue:a3];
+    [(UPQuiltConfiguration *)v15 setRandomizationSeedValue:value];
     [(UPQuiltConfiguration *)v16 setViewport:v13, v12, v11, v10];
     [(UPQuiltConfiguration *)v16 setTimeBounds:x, y, width, height];
-    [(UPQuiltConfiguration *)v16 setLineVariance:a6];
+    [(UPQuiltConfiguration *)v16 setLineVariance:variance];
     [(UPQuiltConfiguration *)v16 initRandomizer];
   }
 
@@ -61,20 +61,20 @@
 
 - (void)initRandomizer
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 randomizer];
+    randomizer = [self randomizer];
 
-    if (v2)
+    if (randomizer)
     {
-      v3 = [a1 randomizer];
-      [v3 reset];
+      randomizer2 = [self randomizer];
+      [randomizer2 reset];
     }
 
     else
     {
-      v3 = +[UPSeededRandomizer randomizerWithSeedValue:](UPSeededRandomizer, "randomizerWithSeedValue:", [a1 randomizationSeedValue]);
-      [a1 setRandomizer:?];
+      randomizer2 = +[UPSeededRandomizer randomizerWithSeedValue:](UPSeededRandomizer, "randomizerWithSeedValue:", [self randomizationSeedValue]);
+      [self setRandomizer:?];
     }
   }
 }

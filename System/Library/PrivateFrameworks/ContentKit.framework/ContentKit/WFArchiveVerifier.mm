@@ -1,28 +1,28 @@
 @interface WFArchiveVerifier
-+ (BOOL)checkArchiveForDisallowedContent:(id)a3 error:(id *)a4;
-+ (BOOL)isFileAtURLShellConfiguration:(id)a3;
++ (BOOL)checkArchiveForDisallowedContent:(id)content error:(id *)error;
++ (BOOL)isFileAtURLShellConfiguration:(id)configuration;
 @end
 
 @implementation WFArchiveVerifier
 
-+ (BOOL)isFileAtURLShellConfiguration:(id)a3
++ (BOOL)isFileAtURLShellConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   if (isFileAtURLShellConfiguration__onceToken != -1)
   {
     dispatch_once(&isFileAtURLShellConfiguration__onceToken, &__block_literal_global_911);
   }
 
-  v4 = [MEMORY[0x277CBEBC0] wf_realHomeDirectoryURL];
-  v5 = [v3 lastPathComponent];
-  v6 = [v5 lowercaseString];
+  wf_realHomeDirectoryURL = [MEMORY[0x277CBEBC0] wf_realHomeDirectoryURL];
+  lastPathComponent = [configurationCopy lastPathComponent];
+  lowercaseString = [lastPathComponent lowercaseString];
 
-  if ([isFileAtURLShellConfiguration__configurationFileNames containsObject:v6] && (objc_msgSend(v3, "URLByDeletingLastPathComponent"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqual:", v4), v7, (v8 & 1) != 0))
+  if ([isFileAtURLShellConfiguration__configurationFileNames containsObject:lowercaseString] && (objc_msgSend(configurationCopy, "URLByDeletingLastPathComponent"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqual:", wf_realHomeDirectoryURL), v7, (v8 & 1) != 0))
   {
     v9 = 1;
   }
 
-  else if ([isFileAtURLShellConfiguration__zShellConfigurationFileNames containsObject:v6])
+  else if ([isFileAtURLShellConfiguration__zShellConfigurationFileNames containsObject:lowercaseString])
   {
     v10 = getenv("ZDOTDIR");
     if (v10)
@@ -34,12 +34,12 @@
 
     else
     {
-      v13 = v4;
+      v13 = wf_realHomeDirectoryURL;
     }
 
-    v14 = [v3 URLByDeletingLastPathComponent];
-    v15 = [v14 URLByStandardizingPath];
-    v9 = [v15 isEqual:v4];
+    uRLByDeletingLastPathComponent = [configurationCopy URLByDeletingLastPathComponent];
+    uRLByStandardizingPath = [uRLByDeletingLastPathComponent URLByStandardizingPath];
+    v9 = [uRLByStandardizingPath isEqual:wf_realHomeDirectoryURL];
   }
 
   else
@@ -61,12 +61,12 @@ uint64_t __51__WFArchiveVerifier_isFileAtURLShellConfiguration___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)checkArchiveForDisallowedContent:(id)a3 error:(id *)a4
++ (BOOL)checkArchiveForDisallowedContent:(id)content error:(id *)error
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contentCopy = content;
   v51 = 0;
-  v7 = [[WFArchiveReader alloc] initWithArchiveFile:v6 error:&v51];
+  v7 = [[WFArchiveReader alloc] initWithArchiveFile:contentCopy error:&v51];
   v8 = v51;
   v9 = v8;
   if (v7)
@@ -100,7 +100,7 @@ uint64_t __51__WFArchiveVerifier_isFileAtURLShellConfiguration___block_invoke()
         v19 = v18;
         v41 = v9;
         v42 = v7;
-        v43 = v6;
+        v43 = contentCopy;
         v20 = *v47;
         while (2)
         {
@@ -123,14 +123,14 @@ uint64_t __51__WFArchiveVerifier_isFileAtURLShellConfiguration___block_invoke()
             }
 
             v24 = objc_alloc(MEMORY[0x277CBEBC0]);
-            v25 = [MEMORY[0x277CBEBC0] wf_realHomeDirectoryURL];
-            v26 = [v24 initFileURLWithPath:v22 relativeToURL:v25];
+            wf_realHomeDirectoryURL = [MEMORY[0x277CBEBC0] wf_realHomeDirectoryURL];
+            v26 = [v24 initFileURLWithPath:v22 relativeToURL:wf_realHomeDirectoryURL];
 
-            if ([a1 isFileAtURLShellConfiguration:v26])
+            if ([self isFileAtURLShellConfiguration:v26])
             {
-              v6 = v43;
+              contentCopy = v43;
               v13 = v44;
-              if (a4)
+              if (error)
               {
                 v28 = WFLocalizedString(@"The shortcut was prevented from running because it tried to process an archive containing shell configuration files which could damage the device.");
                 v29 = v28;
@@ -149,7 +149,7 @@ uint64_t __51__WFArchiveVerifier_isFileAtURLShellConfiguration___block_invoke()
                 v36 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"WFArchiveVerifierErrorDomain" code:3 userInfo:v30];
 
                 v37 = v36;
-                *a4 = v36;
+                *error = v36;
               }
 
               v27 = 0;
@@ -170,7 +170,7 @@ uint64_t __51__WFArchiveVerifier_isFileAtURLShellConfiguration___block_invoke()
         }
 
         v7 = v42;
-        v6 = v43;
+        contentCopy = v43;
         v9 = v41;
       }
 
@@ -194,7 +194,7 @@ uint64_t __51__WFArchiveVerifier_isFileAtURLShellConfiguration___block_invoke()
         _os_log_impl(&dword_21E1BD000, v31, OS_LOG_TYPE_ERROR, "%s Failed to enumerate filePaths in archive: %@", buf, 0x16u);
       }
 
-      if (!a4)
+      if (!error)
       {
         v27 = 0;
 LABEL_42:
@@ -222,7 +222,7 @@ LABEL_43:
 
       v39 = v38;
       v27 = 0;
-      *a4 = v38;
+      *error = v38;
     }
 
 LABEL_41:
@@ -241,7 +241,7 @@ LABEL_41:
     _os_log_impl(&dword_21E1BD000, v11, OS_LOG_TYPE_ERROR, "%s WFArchiveReader init failed with %@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v12 = WFLocalizedString(@"The shortcut was prevented from running because because a library error occurred while attempting to verify its contents. Check that the archive file is not corrupted and try again.");
     v13 = v12;
@@ -261,7 +261,7 @@ LABEL_41:
 
     v35 = v34;
     v27 = 0;
-    *a4 = v34;
+    *error = v34;
     goto LABEL_43;
   }
 

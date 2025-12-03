@@ -2,17 +2,17 @@
 + (id)sharedRegionDetector;
 - (BOOL)getCountryFromTelephony;
 - (ISRegionDetector)init;
-- (id)_checkForAliases:(id)a3;
-- (id)_checkForAliasesOrInvalid:(id)a3;
-- (id)_checkedArrayForString:(id)a3;
+- (id)_checkForAliases:(id)aliases;
+- (id)_checkForAliasesOrInvalid:(id)invalid;
+- (id)_checkedArrayForString:(id)string;
 - (id)_countryFromTelephony;
 - (id)guessedLanguages;
 - (uint64_t)_startWifiScan;
 - (void)_closeWifiConnection;
 - (void)_getWifiDevice;
-- (void)_scanComplete:(id)a3 error:(BOOL)a4;
+- (void)_scanComplete:(id)complete error:(BOOL)error;
 - (void)_scanWifiList;
-- (void)_scanWifiListWithDevice:(__WiFiDeviceClient *)a3;
+- (void)_scanWifiListWithDevice:(__WiFiDeviceClient *)device;
 - (void)_startWifiScan;
 - (void)dealloc;
 - (void)reset;
@@ -48,13 +48,13 @@
 
   else
   {
-    v7 = [v3 subscriptionsInUse];
-    v5 = [v7 count];
+    subscriptionsInUse = [v3 subscriptionsInUse];
+    v5 = [subscriptionsInUse count];
 
     if (v5)
     {
-      v8 = [v3 subscriptionsInUse];
-      v9 = [v8 objectAtIndexedSubscript:0];
+      subscriptionsInUse2 = [v3 subscriptionsInUse];
+      v9 = [subscriptionsInUse2 objectAtIndexedSubscript:0];
       v13 = 0;
       v10 = [v2 copyMobileCountryCode:v9 error:&v13];
       v5 = v13;
@@ -81,14 +81,14 @@ LABEL_9:
   return v6;
 }
 
-- (id)_checkForAliases:(id)a3
+- (id)_checkForAliases:(id)aliases
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  aliasesCopy = aliases;
+  v4 = aliasesCopy;
+  if (aliasesCopy)
   {
-    v5 = [v3 count];
+    v5 = [aliasesCopy count];
     if (v5)
     {
       v6 = v5;
@@ -133,21 +133,21 @@ LABEL_9:
   return v4;
 }
 
-- (id)_checkForAliasesOrInvalid:(id)a3
+- (id)_checkForAliasesOrInvalid:(id)invalid
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  invalidCopy = invalid;
+  array = [MEMORY[0x1E695DF70] array];
   if (!self->_validCountries)
   {
-    v26 = v4;
+    v26 = invalidCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v7 = [MEMORY[0x1E695DF58] availableLocaleIdentifiers];
-    v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    availableLocaleIdentifiers = [MEMORY[0x1E695DF58] availableLocaleIdentifiers];
+    v8 = [availableLocaleIdentifiers countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -159,7 +159,7 @@ LABEL_9:
         {
           if (*v32 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(availableLocaleIdentifiers);
           }
 
           v13 = MEMORY[0x1E695DF58];
@@ -173,7 +173,7 @@ LABEL_9:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v9 = [availableLocaleIdentifiers countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v9);
@@ -182,14 +182,14 @@ LABEL_9:
     validCountries = self->_validCountries;
     self->_validCountries = v6;
 
-    v4 = v26;
+    invalidCopy = v26;
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v18 = [(ISRegionDetector *)self _checkForAliases:v4];
+  v18 = [(ISRegionDetector *)self _checkForAliases:invalidCopy];
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v19)
   {
@@ -207,7 +207,7 @@ LABEL_9:
         v23 = *(*(&v27 + 1) + 8 * j);
         if ([(NSSet *)self->_validCountries containsObject:v23])
         {
-          [v5 addObject:v23];
+          [array addObject:v23];
         }
       }
 
@@ -219,12 +219,12 @@ LABEL_9:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (id)_checkedArrayForString:(id)a3
+- (id)_checkedArrayForString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithObject:?];
     v5 = [(ISRegionDetector *)self _checkForAliases:v4];
@@ -273,16 +273,16 @@ LABEL_9:
   guessedCountryFromTelephony = self->_guessedCountryFromTelephony;
   if (!guessedCountryFromTelephony)
   {
-    v4 = [(ISRegionDetector *)self _countryFromTelephony];
+    _countryFromTelephony = [(ISRegionDetector *)self _countryFromTelephony];
     v5 = self->_guessedCountryFromTelephony;
-    self->_guessedCountryFromTelephony = v4;
+    self->_guessedCountryFromTelephony = _countryFromTelephony;
 
     v6 = [(NSString *)self->_guessedCountryFromTelephony length];
     guessedCountryFromTelephony = self->_guessedCountryFromTelephony;
     if (v6)
     {
-      v7 = [(NSString *)guessedCountryFromTelephony uppercaseString];
-      v8 = [(ISRegionDetector *)self _checkedArrayForString:v7];
+      uppercaseString = [(NSString *)guessedCountryFromTelephony uppercaseString];
+      v8 = [(ISRegionDetector *)self _checkedArrayForString:uppercaseString];
       [(ISRegionDetector *)self setGuessedCountries:v8];
 
       guessedCountryFromTelephony = self->_guessedCountryFromTelephony;
@@ -294,18 +294,18 @@ LABEL_9:
 
 - (id)guessedLanguages
 {
-  v2 = self;
+  selfCopy = self;
   v34 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_guessedCountries count])
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v23 = v2;
-    v5 = v2->_guessedCountries;
+    v23 = selfCopy;
+    v5 = selfCopy->_guessedCountries;
     v6 = [(NSArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v6)
     {
@@ -321,10 +321,10 @@ LABEL_9:
           }
 
           v10 = [MEMORY[0x1E695DF58] languagesForRegion:*(*(&v28 + 1) + 8 * i) subdivision:0 withThreshold:1 filter:0];
-          v11 = [v10 reverseObjectEnumerator];
-          v12 = [v11 allObjects];
+          reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
 
-          [v4 addObject:v12];
+          [array2 addObject:allObjects];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -339,7 +339,7 @@ LABEL_9:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v13 = v4;
+      v13 = array2;
       v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (!v14)
       {
@@ -359,12 +359,12 @@ LABEL_9:
           }
 
           v19 = *(*(&v24 + 1) + 8 * j);
-          v20 = [v19 lastObject];
-          if (v20)
+          lastObject = [v19 lastObject];
+          if (lastObject)
           {
-            if (([v3 containsObject:v20] & 1) == 0)
+            if (([array containsObject:lastObject] & 1) == 0)
             {
-              [v3 addObject:v20];
+              [array addObject:lastObject];
             }
 
             [v19 removeLastObject];
@@ -384,22 +384,22 @@ LABEL_9:
     }
 
 LABEL_25:
-    v2 = v23;
+    selfCopy = v23;
   }
 
   else
   {
-    v3 = 0;
+    array = 0;
   }
 
-  if (!v2->_firstGuessedLanguages)
+  if (!selfCopy->_firstGuessedLanguages)
   {
-    [(ISRegionDetector *)v2 setFirstGuessedLanguages:v3];
+    [(ISRegionDetector *)selfCopy setFirstGuessedLanguages:array];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (void)_startWifiScan
@@ -564,12 +564,12 @@ LABEL_12:
   CFRelease(v7);
 }
 
-- (void)_scanWifiListWithDevice:(__WiFiDeviceClient *)a3
+- (void)_scanWifiListWithDevice:(__WiFiDeviceClient *)device
 {
-  if (a3)
+  if (device)
   {
-    self->fWifiDevice = a3;
-    CFRetain(a3);
+    self->fWifiDevice = device;
+    CFRetain(device);
 
     [(ISRegionDetector *)self _scanWifiList];
   }
@@ -583,9 +583,9 @@ LABEL_12:
 
 - (void)_scanWifiList
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(ISRegionDetector *)self setWirelessScanStartDate:v4];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  date = [MEMORY[0x1E695DF00] date];
+  [(ISRegionDetector *)self setWirelessScanStartDate:date];
 
   fWifiDevice = self->fWifiDevice;
   v12 = 0;
@@ -614,7 +614,7 @@ LABEL_12:
     _Unwind_Resume(started);
   }
 
-  if (v6(fWifiDevice, v3, scanComplete, self))
+  if (v6(fWifiDevice, dictionary, scanComplete, self))
   {
     if ([(ISRegionDetector *)self numberOfWiFiScanAttemptsRemaining])
     {
@@ -649,22 +649,22 @@ void *__33__ISRegionDetector__scanWifiList__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_scanComplete:(id)a3 error:(BOOL)a4
+- (void)_scanComplete:(id)complete error:(BOOL)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!a4 && !self->_guessedCountries)
+  completeCopy = complete;
+  v7 = completeCopy;
+  if (!error && !self->_guessedCountries)
   {
-    v34 = self;
-    v8 = [v6 count];
+    selfCopy = self;
+    v8 = [completeCopy count];
     if (!v8)
     {
 LABEL_43:
-      v32 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v32 postNotificationName:@"BYCountryScanCompletedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"BYCountryScanCompletedNotification" object:0];
 
-      self = v34;
+      self = selfCopy;
       goto LABEL_44;
     }
 
@@ -745,14 +745,14 @@ LABEL_43:
     v40 = 0u;
     v41 = 0u;
     v21 = v10;
-    v22 = [v21 countByEnumeratingWithState:&v40 objects:v60 count:16];
-    if (v22)
+    array = [v21 countByEnumeratingWithState:&v40 objects:v60 count:16];
+    if (array)
     {
       v23 = 0;
       v24 = *v41;
       do
       {
-        for (j = 0; j != v22; j = j + 1)
+        for (j = 0; j != array; j = j + 1)
         {
           if (*v41 != v24)
           {
@@ -766,18 +766,18 @@ LABEL_43:
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v40 objects:v60 count:16];
+        array = [v21 countByEnumeratingWithState:&v40 objects:v60 count:16];
       }
 
-      while (v22);
+      while (array);
 
       if (!v23)
       {
-        v22 = 0;
+        array = 0;
         goto LABEL_40;
       }
 
-      v22 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -799,7 +799,7 @@ LABEL_43:
             v31 = *(*(&v36 + 1) + 8 * k);
             if ([v27 countForObject:v31] == v23)
             {
-              [v22 addObject:v31];
+              [array addObject:v31];
             }
           }
 
@@ -811,9 +811,9 @@ LABEL_43:
     }
 
 LABEL_40:
-    if ([v22 count])
+    if ([array count])
     {
-      [(ISRegionDetector *)v34 setGuessedCountries:v22];
+      [(ISRegionDetector *)selfCopy setGuessedCountries:array];
     }
 
     goto LABEL_43;

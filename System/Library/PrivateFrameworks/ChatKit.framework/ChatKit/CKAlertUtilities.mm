@@ -9,9 +9,9 @@
 - (CKAlertUtilitiesProtocol)delegate;
 - (void)_didFinishCheckingMissingCarrierSetting;
 - (void)_displayFirstTimeRCSAlert;
-- (void)_displayMissingInformationAlert:(int64_t)a3;
-- (void)_displayNonPrimarySIMRCSActivationAlertForCarrierName:(id)a3;
-- (void)_showNetworkPrefs:(int64_t)a3;
+- (void)_displayMissingInformationAlert:(int64_t)alert;
+- (void)_displayNonPrimarySIMRCSActivationAlertForCarrierName:(id)name;
+- (void)_showNetworkPrefs:(int64_t)prefs;
 - (void)checkFirstTimeRCS;
 - (void)checkMissingCarrierSetting;
 @end
@@ -20,10 +20,10 @@
 
 - (void)checkFirstTimeRCS
 {
-  v3 = [MEMORY[0x1E69A7F50] sharedManager];
-  v4 = [v3 carrierRequiresFirstTimeOnAlert];
+  mEMORY[0x1E69A7F50] = [MEMORY[0x1E69A7F50] sharedManager];
+  carrierRequiresFirstTimeOnAlert = [mEMORY[0x1E69A7F50] carrierRequiresFirstTimeOnAlert];
 
-  if (v4)
+  if (carrierRequiresFirstTimeOnAlert)
   {
 
     [(CKAlertUtilities *)self _displayFirstTimeRCSAlert];
@@ -32,11 +32,11 @@
 
 - (void)checkMissingCarrierSetting
 {
-  v3 = [objc_opt_class() missingAlertTypeToNotify];
-  if (v3)
+  missingAlertTypeToNotify = [objc_opt_class() missingAlertTypeToNotify];
+  if (missingAlertTypeToNotify)
   {
 
-    [(CKAlertUtilities *)self _displayMissingInformationAlert:v3];
+    [(CKAlertUtilities *)self _displayMissingInformationAlert:missingAlertTypeToNotify];
   }
 
   else
@@ -49,23 +49,23 @@
 + (int64_t)missingAlertTypeToNotify
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _getCTPhoneNumber];
-  if (![MEMORY[0x1E69A7F58] IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:v2 simID:0])
+  _getCTPhoneNumber = [objc_opt_class() _getCTPhoneNumber];
+  if (![MEMORY[0x1E69A7F58] IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:_getCTPhoneNumber simID:0])
   {
     goto LABEL_7;
   }
 
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 showMMSSetup];
+  showMMSSetup = [v3 showMMSSetup];
 
-  if (!v4)
+  if (!showMMSSetup)
   {
     goto LABEL_7;
   }
 
-  if ([MEMORY[0x1E69A7F58] IMShouldShowMMSEmailAddress:v2 simID:0])
+  if ([MEMORY[0x1E69A7F58] IMShouldShowMMSEmailAddress:_getCTPhoneNumber simID:0])
   {
-    v5 = [MEMORY[0x1E69A7F58] IMMMSEmailAddressToMatchForPhoneNumber:v2 simID:0];
+    v5 = [MEMORY[0x1E69A7F58] IMMMSEmailAddressToMatchForPhoneNumber:_getCTPhoneNumber simID:0];
     if (![v5 length])
     {
       if (IMOSLoggingEnabled())
@@ -74,7 +74,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v15 = 138412290;
-          v16 = v2;
+          v16 = _getCTPhoneNumber;
           _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Missing email for phoneNumber: %@", &v15, 0xCu);
         }
       }
@@ -84,12 +84,12 @@
     }
   }
 
-  if ((MEMORY[0x193AF5D40](v2) & 1) == 0)
+  if ((MEMORY[0x193AF5D40](_getCTPhoneNumber) & 1) == 0)
   {
-    v8 = [objc_opt_class() _isNumberEditable];
-    v9 = [objc_opt_class() _grabCTSIMStatus];
-    v5 = v9;
-    if (v8 && [v9 isEqualToString:*MEMORY[0x1E6965470]])
+    _isNumberEditable = [objc_opt_class() _isNumberEditable];
+    _grabCTSIMStatus = [objc_opt_class() _grabCTSIMStatus];
+    v5 = _grabCTSIMStatus;
+    if (_isNumberEditable && [_grabCTSIMStatus isEqualToString:*MEMORY[0x1E6965470]])
     {
       if (IMOSLoggingEnabled())
       {
@@ -97,13 +97,13 @@
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v15 = 138412290;
-          v16 = v2;
+          v16 = _getCTPhoneNumber;
           _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Missing phone for phoneNumber: %@", &v15, 0xCu);
         }
       }
 
-      v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v12 = [v11 BOOLForKey:@"SkipMissingPhoneNumberAlert"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v12 = [standardUserDefaults BOOLForKey:@"SkipMissingPhoneNumberAlert"];
 
       if (!v12)
       {
@@ -137,25 +137,25 @@ LABEL_8:
 
 + (id)_getCTPhoneNumber
 {
-  v3 = [a1 _phoneNumberInfo];
-  if (v3)
+  _phoneNumberInfo = [self _phoneNumberInfo];
+  if (_phoneNumberInfo)
   {
-    v4 = [a1 _phoneNumberInfo];
-    v5 = [v4 displayPhoneNumber];
+    _phoneNumberInfo2 = [self _phoneNumberInfo];
+    displayPhoneNumber = [_phoneNumberInfo2 displayPhoneNumber];
   }
 
   else
   {
-    v5 = 0;
+    displayPhoneNumber = 0;
   }
 
-  return v5;
+  return displayPhoneNumber;
 }
 
 + (id)_phoneNumberInfo
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (_phoneNumberInfo && ([_phoneNumberInfo number], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "length"), v3, v4) || (objc_msgSend(a1, "coreTelephonyClient"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "selectedSubscriptionContext"), v6 = objc_claimAutoreleasedReturnValue(), v13 = 0, objc_msgSend(v5, "getPhoneNumber:error:", v6, &v13), v7 = objc_claimAutoreleasedReturnValue(), v8 = v13, v9 = _phoneNumberInfo, _phoneNumberInfo = v7, v9, v6, v5, !v8))
+  if (_phoneNumberInfo && ([_phoneNumberInfo number], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "length"), v3, v4) || (objc_msgSend(self, "coreTelephonyClient"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "selectedSubscriptionContext"), v6 = objc_claimAutoreleasedReturnValue(), v13 = 0, objc_msgSend(v5, "getPhoneNumber:error:", v6, &v13), v7 = objc_claimAutoreleasedReturnValue(), v8 = v13, v9 = _phoneNumberInfo, _phoneNumberInfo = v7, v9, v6, v5, !v8))
   {
     v11 = _phoneNumberInfo;
   }
@@ -203,18 +203,18 @@ LABEL_8:
     goto LABEL_2;
   }
 
-  v4 = [a1 coreTelephonyClient];
+  coreTelephonyClient = [self coreTelephonyClient];
   v13 = 0;
-  v5 = [v4 getActiveContexts:&v13];
+  v5 = [coreTelephonyClient getActiveContexts:&v13];
   v6 = v13;
 
   if (!v6)
   {
-    v9 = [v5 voicePreferred];
-    v10 = [v5 findForUuid:v9];
-    v11 = [v10 context];
+    voicePreferred = [v5 voicePreferred];
+    v10 = [v5 findForUuid:voicePreferred];
+    context = [v10 context];
     v12 = _selectedSubscriptionContext;
-    _selectedSubscriptionContext = v11;
+    _selectedSubscriptionContext = context;
 
     v2 = _selectedSubscriptionContext;
 LABEL_2:
@@ -241,13 +241,13 @@ LABEL_9:
 
 - (void)_didFinishCheckingMissingCarrierSetting
 {
-  v3 = [(CKAlertUtilities *)self delegate];
+  delegate = [(CKAlertUtilities *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKAlertUtilities *)self delegate];
-    [v5 didFinishCheckingMissingCarrierSetting];
+    delegate2 = [(CKAlertUtilities *)self delegate];
+    [delegate2 didFinishCheckingMissingCarrierSetting];
   }
 }
 
@@ -261,16 +261,16 @@ LABEL_9:
 + (BOOL)_isNumberEditable
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _phoneNumberInfo];
-  v3 = v2;
-  if (v2)
+  _phoneNumberInfo = [self _phoneNumberInfo];
+  v3 = _phoneNumberInfo;
+  if (_phoneNumberInfo)
   {
-    v4 = [v2 isEditable];
+    isEditable = [_phoneNumberInfo isEditable];
   }
 
   else
   {
-    v4 = 0;
+    isEditable = 0;
   }
 
   if (IMOSLoggingEnabled())
@@ -278,9 +278,9 @@ LABEL_9:
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v3 isEditable];
+      isEditable2 = [v3 isEditable];
       v7 = @"NO";
-      if (v6)
+      if (isEditable2)
       {
         v7 = @"YES";
       }
@@ -293,16 +293,16 @@ LABEL_9:
     }
   }
 
-  return v4;
+  return isEditable;
 }
 
 + (id)_grabCTSIMStatus
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a1 coreTelephonyClient];
-  v4 = [a1 selectedSubscriptionContext];
+  coreTelephonyClient = [self coreTelephonyClient];
+  selectedSubscriptionContext = [self selectedSubscriptionContext];
   v13 = 0;
-  v5 = [v3 getSIMStatus:v4 error:&v13];
+  v5 = [coreTelephonyClient getSIMStatus:selectedSubscriptionContext error:&v13];
   v6 = v13;
 
   v7 = IMOSLoggingEnabled();
@@ -329,11 +329,11 @@ LABEL_9:
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [a1 selectedSubscriptionContext];
+        selectedSubscriptionContext2 = [self selectedSubscriptionContext];
         *buf = 138412546;
         v15 = v5;
         v16 = 2112;
-        v17 = v11;
+        v17 = selectedSubscriptionContext2;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Sim status returned: %@ for selected subscription: %@", buf, 0x16u);
       }
     }
@@ -344,7 +344,7 @@ LABEL_9:
   return v9;
 }
 
-- (void)_displayMissingInformationAlert:(int64_t)a3
+- (void)_displayMissingInformationAlert:(int64_t)alert
 {
   if (IMGetCachedDomainBoolForKey())
   {
@@ -369,10 +369,10 @@ LABEL_9:
   v23[2] = __52__CKAlertUtilities__displayMissingInformationAlert___block_invoke_2;
   v23[3] = &unk_1E72F3888;
   v23[4] = self;
-  v23[5] = a3;
+  v23[5] = alert;
   v12 = [v9 actionWithTitle:v11 style:0 handler:v23];
 
-  if (a3 == 2)
+  if (alert == 2)
   {
     v15 = @"MMS_EMAIL_MISSING_BODY";
     v16 = @"MMS_EMAIL_MISSING_TITLE";
@@ -381,7 +381,7 @@ LABEL_9:
 
   v13 = 0;
   v14 = 0;
-  if (a3 == 1)
+  if (alert == 1)
   {
     v15 = @"MMS_PHONE_NUMBER_MISSING_BODY";
     v16 = @"MMS_PHONE_NUMBER_MISSING_TITLE";
@@ -396,13 +396,13 @@ LABEL_6:
   v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v14 message:v13 preferredStyle:1];
   [v19 addAction:v8];
   [v19 addAction:v12];
-  v20 = [(CKAlertUtilities *)self delegate];
+  delegate = [(CKAlertUtilities *)self delegate];
   v21 = objc_opt_respondsToSelector();
 
   if (v21)
   {
-    v22 = [(CKAlertUtilities *)self delegate];
-    [v22 presentCKAlertController:v19];
+    delegate2 = [(CKAlertUtilities *)self delegate];
+    [delegate2 presentCKAlertController:v19];
   }
 }
 
@@ -414,15 +414,15 @@ uint64_t __52__CKAlertUtilities__displayMissingInformationAlert___block_invoke_2
   return [v2 _didFinishCheckingMissingCarrierSetting];
 }
 
-- (void)_showNetworkPrefs:(int64_t)a3
+- (void)_showNetworkPrefs:(int64_t)prefs
 {
-  if (a3 == 2)
+  if (prefs == 2)
   {
     v3 = @"prefs:root=MESSAGES&path=MMS_EMAIL";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (prefs == 1)
   {
     v3 = @"prefs:root=Phone&path=MY_NUMBER";
 LABEL_5:
@@ -432,8 +432,8 @@ LABEL_5:
 
   v5 = 0;
 LABEL_7:
-  v4 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v4 openSensitiveURL:v5 withOptions:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v5 withOptions:0];
 }
 
 - (void)_displayFirstTimeRCSAlert
@@ -463,13 +463,13 @@ LABEL_7:
   v16 = [v13 actionWithTitle:v15 style:1 handler:0];
 
   [v8 addAction:v16];
-  v17 = [(CKAlertUtilities *)self delegate];
+  delegate = [(CKAlertUtilities *)self delegate];
   LOBYTE(v13) = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v18 = [(CKAlertUtilities *)self delegate];
-    [v18 presentCKAlertController:v8];
+    delegate2 = [(CKAlertUtilities *)self delegate];
+    [delegate2 presentCKAlertController:v8];
   }
 }
 
@@ -564,19 +564,19 @@ LABEL_14:
   }
 }
 
-- (void)_displayNonPrimarySIMRCSActivationAlertForCarrierName:(id)a3
+- (void)_displayNonPrimarySIMRCSActivationAlertForCarrierName:(id)name
 {
-  v34 = a3;
+  nameCopy = name;
   v32 = MEMORY[0x1E69DC650];
   v3 = MEMORY[0x1E696AEC0];
   v4 = CKFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"RCS_INACTIVE_SIM_ACTIVATION_ERROR_TITLE" value:? table:?];
-  v6 = [v3 stringWithFormat:v5, v34];
+  nameCopy = [v3 stringWithFormat:v5, nameCopy];
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v8 = [v7 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v8 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v9 = @"\u200F";
   }
@@ -586,19 +586,19 @@ LABEL_14:
     v9 = @"\u200E";
   }
 
-  v10 = [(__CFString *)v9 stringByAppendingString:v6];
+  v10 = [(__CFString *)v9 stringByAppendingString:nameCopy];
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = CKFrameworkBundle();
   v13 = [v12 localizedStringForKey:@"RCS_INACTIVE_SIM_ACTIVATION_ERROR_TEXT" value:&stru_1F04268F8 table:@"ChatKit"];
   v14 = CKFrameworkBundle();
   v15 = [v14 localizedStringForKey:@"RCS_INACTIVE_SIM_ACTIVATION_ERROR_CELLULAR_DATA_SETTINGS" value:&stru_1F04268F8 table:@"ChatKit"];
-  v16 = [v11 stringWithFormat:v13, v34, v15];
+  v16 = [v11 stringWithFormat:v13, nameCopy, v15];
 
-  v17 = [MEMORY[0x1E69DC668] sharedApplication];
-  v18 = [v17 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-  if (v18 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v19 = @"\u200F";
   }
@@ -625,13 +625,13 @@ LABEL_14:
   v29 = [v26 actionWithTitle:v28 style:1 handler:0];
 
   [v21 addAction:v29];
-  v30 = [(CKAlertUtilities *)self delegate];
+  delegate = [(CKAlertUtilities *)self delegate];
   LOBYTE(v28) = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v31 = [(CKAlertUtilities *)self delegate];
-    [v31 presentCKAlertController:v21];
+    delegate2 = [(CKAlertUtilities *)self delegate];
+    [delegate2 presentCKAlertController:v21];
   }
 }
 

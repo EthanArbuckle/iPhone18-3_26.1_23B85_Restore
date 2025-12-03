@@ -2,12 +2,12 @@
 + (double)microLocationCorrelationGracePeriod;
 + (double)minimumRoutingEventDuration;
 + (double)routingSessionTimeout;
-+ (id)routingSessionsFromNowPlayingEvents:(id)a3 microLocationEvents:(id)a4 routingSessionTimeout:(double)a5;
-+ (void)writeSessions:(id)a3 routingSessionTimeout:(double)a4 file:(id)a5 error:(id *)a6;
-- (ARPRoutingSession)initWithCoder:(id)a3;
-- (ARPRoutingSession)initWithOutputDeviceID:(id)a3 interval:(id)a4 microLocationProbabilityVector:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)routingSessionsFromNowPlayingEvents:(id)events microLocationEvents:(id)locationEvents routingSessionTimeout:(double)timeout;
++ (void)writeSessions:(id)sessions routingSessionTimeout:(double)timeout file:(id)file error:(id *)error;
+- (ARPRoutingSession)initWithCoder:(id)coder;
+- (ARPRoutingSession)initWithOutputDeviceID:(id)d interval:(id)interval microLocationProbabilityVector:(id)vector;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPRoutingSession
@@ -63,18 +63,18 @@
   return v4;
 }
 
-+ (id)routingSessionsFromNowPlayingEvents:(id)a3 microLocationEvents:(id)a4 routingSessionTimeout:(double)a5
++ (id)routingSessionsFromNowPlayingEvents:(id)events microLocationEvents:(id)locationEvents routingSessionTimeout:(double)timeout
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  eventsCopy = events;
+  locationEventsCopy = locationEvents;
   v9 = ARPLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v29 = [v7 count];
+    v29 = [eventsCopy count];
     v30 = 2048;
-    v31 = [v8 count];
+    v31 = [locationEventsCopy count];
     _os_log_impl(&dword_23EB15000, v9, OS_LOG_TYPE_INFO, "routingSessionsFromNowPlayingEvents: nowPlayingEvents: %lu microLocationEvents: %lu", buf, 0x16u);
   }
 
@@ -92,20 +92,20 @@
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [v7 reverseObjectEnumerator];
-  v16 = [v15 allObjects];
+  reverseObjectEnumerator = [eventsCopy reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __99__ARPRoutingSession_routingSessionsFromNowPlayingEvents_microLocationEvents_routingSessionTimeout___block_invoke;
   v22[3] = &unk_278C645A0;
-  v23 = v8;
+  v23 = locationEventsCopy;
   v24 = v14;
   v25 = v13;
-  v26 = a5;
+  timeoutCopy = timeout;
   v27 = v11;
   v17 = v14;
-  v18 = v8;
-  [v16 enumerateObjectsUsingBlock:v22];
+  v18 = locationEventsCopy;
+  [allObjects enumerateObjectsUsingBlock:v22];
 
   v19 = [v17 copy];
   v20 = *MEMORY[0x277D85DE8];
@@ -308,100 +308,100 @@ LABEL_12:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (ARPRoutingSession)initWithOutputDeviceID:(id)a3 interval:(id)a4 microLocationProbabilityVector:(id)a5
+- (ARPRoutingSession)initWithOutputDeviceID:(id)d interval:(id)interval microLocationProbabilityVector:(id)vector
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  intervalCopy = interval;
+  vectorCopy = vector;
   v17.receiver = self;
   v17.super_class = ARPRoutingSession;
   v11 = [(ARPRoutingSession *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     outputDeviceID = v11->_outputDeviceID;
     v11->_outputDeviceID = v12;
 
-    v14 = [v9 copy];
+    v14 = [intervalCopy copy];
     interval = v11->_interval;
     v11->_interval = v14;
 
-    objc_storeStrong(&v11->_microLocationProbabilityVector, a5);
+    objc_storeStrong(&v11->_microLocationProbabilityVector, vector);
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ARPRoutingSession allocWithZone:a3];
-  v5 = [(ARPRoutingSession *)self outputDeviceID];
-  v6 = [(ARPRoutingSession *)self interval];
-  v7 = [(ARPRoutingSession *)self microLocationProbabilityVector];
-  v8 = [(ARPRoutingSession *)v4 initWithOutputDeviceID:v5 interval:v6 microLocationProbabilityVector:v7];
+  v4 = [ARPRoutingSession allocWithZone:zone];
+  outputDeviceID = [(ARPRoutingSession *)self outputDeviceID];
+  interval = [(ARPRoutingSession *)self interval];
+  microLocationProbabilityVector = [(ARPRoutingSession *)self microLocationProbabilityVector];
+  v8 = [(ARPRoutingSession *)v4 initWithOutputDeviceID:outputDeviceID interval:interval microLocationProbabilityVector:microLocationProbabilityVector];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ARPRoutingSession *)self outputDeviceID];
+  coderCopy = coder;
+  outputDeviceID = [(ARPRoutingSession *)self outputDeviceID];
   v6 = NSStringFromSelector(sel_outputDeviceID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:outputDeviceID forKey:v6];
 
-  v7 = [(ARPRoutingSession *)self interval];
+  interval = [(ARPRoutingSession *)self interval];
   v8 = NSStringFromSelector(sel_interval);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:interval forKey:v8];
 
-  v10 = [(ARPRoutingSession *)self microLocationProbabilityVector];
+  microLocationProbabilityVector = [(ARPRoutingSession *)self microLocationProbabilityVector];
   v9 = NSStringFromSelector(sel_microLocationProbabilityVector);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:microLocationProbabilityVector forKey:v9];
 }
 
-- (ARPRoutingSession)initWithCoder:(id)a3
+- (ARPRoutingSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_outputDeviceID);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_interval);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = MEMORY[0x277CBEB98];
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
   v15 = NSStringFromSelector(sel_microLocationProbabilityVector);
-  v16 = [v4 decodeObjectOfClasses:v14 forKey:v15];
+  v16 = [coderCopy decodeObjectOfClasses:v14 forKey:v15];
 
   v17 = [(ARPRoutingSession *)self initWithOutputDeviceID:v7 interval:v10 microLocationProbabilityVector:v16];
   return v17;
 }
 
-+ (void)writeSessions:(id)a3 routingSessionTimeout:(double)a4 file:(id)a5 error:(id *)a6
++ (void)writeSessions:(id)sessions routingSessionTimeout:(double)timeout file:(id)file error:(id *)error
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = [[ARPRoutingSessionArchive alloc] initWithSessions:v10 routingSessionTimeout:a4];
+  fileCopy = file;
+  sessionsCopy = sessions;
+  v11 = [[ARPRoutingSessionArchive alloc] initWithSessions:sessionsCopy routingSessionTimeout:timeout];
 
   v21 = 0;
   v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v21];
   v13 = v21;
   if (!v13)
   {
-    v14 = [v9 stringByDeletingLastPathComponent];
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v20 = 0;
-    [v15 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:&v20];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v20];
     v13 = v20;
 
     if (!v13)
     {
       v19 = 0;
-      [v12 writeToFile:v9 options:1073741825 error:&v19];
+      [v12 writeToFile:fileCopy options:1073741825 error:&v19];
       v16 = v19;
       if (v16)
       {
@@ -410,7 +410,7 @@ LABEL_12:
 
       else
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.AirPlayRoutePrediction:%s", objc_msgSend(v9, "fileSystemRepresentation")];
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.AirPlayRoutePrediction:%s", objc_msgSend(fileCopy, "fileSystemRepresentation")];
         notify_post([v17 UTF8String]);
 
         v13 = 0;
@@ -418,10 +418,10 @@ LABEL_12:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v18 = v13;
-    *a6 = v13;
+    *error = v13;
   }
 }
 

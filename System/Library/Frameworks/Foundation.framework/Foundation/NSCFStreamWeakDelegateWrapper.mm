@@ -1,11 +1,11 @@
 @interface NSCFStreamWeakDelegateWrapper
-- (NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)a3;
+- (NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)delegate;
 - (void)dealloc;
 @end
 
 @implementation NSCFStreamWeakDelegateWrapper
 
-- (NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)a3
+- (NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)delegate
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;

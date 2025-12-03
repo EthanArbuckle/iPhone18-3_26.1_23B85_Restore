@@ -1,14 +1,14 @@
 @interface RoutingAppSelectionLoadingCell
-- (RoutingAppSelectionLoadingCell)initWithMode:(unint64_t)a3 reuseIdentifier:(id)a4;
-- (void)_configureViewsForMode:(unint64_t)a3;
-- (void)setMode:(unint64_t)a3;
+- (RoutingAppSelectionLoadingCell)initWithMode:(unint64_t)mode reuseIdentifier:(id)identifier;
+- (void)_configureViewsForMode:(unint64_t)mode;
+- (void)setMode:(unint64_t)mode;
 @end
 
 @implementation RoutingAppSelectionLoadingCell
 
-- (void)_configureViewsForMode:(unint64_t)a3
+- (void)_configureViewsForMode:(unint64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     if (!self->_noAppsLabel)
     {
@@ -29,34 +29,34 @@
     }
 
     [(LoadingModeView *)self->_loadingView removeFromSuperview];
-    v21 = [(RoutingAppSelectionLoadingCell *)self contentView];
-    [v21 addSubview:self->_noAppsLabel];
+    contentView = [(RoutingAppSelectionLoadingCell *)self contentView];
+    [contentView addSubview:self->_noAppsLabel];
 
-    v37 = [(UILabel *)self->_noAppsLabel topAnchor];
-    v39 = [(RoutingAppSelectionLoadingCell *)self contentView];
-    v36 = [v39 topAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    topAnchor = [(UILabel *)self->_noAppsLabel topAnchor];
+    contentView2 = [(RoutingAppSelectionLoadingCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v40[0] = v35;
-    v33 = [(UILabel *)self->_noAppsLabel leadingAnchor];
-    v34 = [(RoutingAppSelectionLoadingCell *)self contentView];
-    v32 = [v34 leadingAnchor];
-    v22 = [v33 constraintEqualToAnchor:v32 constant:16.0];
+    leadingAnchor = [(UILabel *)self->_noAppsLabel leadingAnchor];
+    contentView3 = [(RoutingAppSelectionLoadingCell *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v40[1] = v22;
-    v23 = [(RoutingAppSelectionLoadingCell *)self contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [(UILabel *)self->_noAppsLabel bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    contentView4 = [(RoutingAppSelectionLoadingCell *)self contentView];
+    bottomAnchor = [contentView4 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)self->_noAppsLabel bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v40[2] = v26;
-    v27 = [(RoutingAppSelectionLoadingCell *)self contentView];
-    v28 = [v27 trailingAnchor];
-    v29 = [(UILabel *)self->_noAppsLabel trailingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:16.0];
+    contentView5 = [(RoutingAppSelectionLoadingCell *)self contentView];
+    trailingAnchor = [contentView5 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)self->_noAppsLabel trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
     v40[3] = v30;
     v31 = [NSArray arrayWithObjects:v40 count:4];
     [NSLayoutConstraint activateConstraints:v31];
   }
 
-  else if (!a3)
+  else if (!mode)
   {
     if (!self->_loadingView)
     {
@@ -71,49 +71,49 @@
     }
 
     [(UILabel *)self->_noAppsLabel removeFromSuperview];
-    v9 = [(RoutingAppSelectionLoadingCell *)self contentView];
-    [v9 addSubview:self->_loadingView];
+    contentView6 = [(RoutingAppSelectionLoadingCell *)self contentView];
+    [contentView6 addSubview:self->_loadingView];
 
     v10 = self->_loadingView;
-    v11 = [(RoutingAppSelectionLoadingCell *)self contentView];
+    contentView7 = [(RoutingAppSelectionLoadingCell *)self contentView];
     LODWORD(v12) = 1148846080;
-    v38 = v11;
+    v38 = contentView7;
     v13 = [(LoadingModeView *)v10 _maps_constraintsEqualToEdgesOfView:v12 priority:?];
-    v14 = [v13 allConstraints];
-    [NSLayoutConstraint activateConstraints:v14];
+    allConstraints = [v13 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(RoutingAppSelectionLoadingCell *)self _configureViewsForMode:?];
   }
 }
 
-- (RoutingAppSelectionLoadingCell)initWithMode:(unint64_t)a3 reuseIdentifier:(id)a4
+- (RoutingAppSelectionLoadingCell)initWithMode:(unint64_t)mode reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = RoutingAppSelectionLoadingCell;
-  v5 = [(RoutingAppSelectionLoadingCell *)&v15 initWithStyle:0 reuseIdentifier:a4];
+  v5 = [(RoutingAppSelectionLoadingCell *)&v15 initWithStyle:0 reuseIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
-    v5->_mode = a3;
-    [(RoutingAppSelectionLoadingCell *)v5 _configureViewsForMode:a3];
+    v5->_mode = mode;
+    [(RoutingAppSelectionLoadingCell *)v5 _configureViewsForMode:mode];
     v7 = +[UIColor clearColor];
     [(RoutingAppSelectionLoadingCell *)v6 setBackgroundColor:v7];
 
     v8 = +[UIColor clearColor];
-    v9 = [(RoutingAppSelectionLoadingCell *)v6 contentView];
-    [v9 setBackgroundColor:v8];
+    contentView = [(RoutingAppSelectionLoadingCell *)v6 contentView];
+    [contentView setBackgroundColor:v8];
 
     [(RoutingAppSelectionLoadingCell *)v6 setUserInteractionEnabled:0];
-    v10 = [(RoutingAppSelectionLoadingCell *)v6 contentView];
-    v11 = [v10 heightAnchor];
-    v12 = [v11 constraintGreaterThanOrEqualToConstant:50.0];
+    contentView2 = [(RoutingAppSelectionLoadingCell *)v6 contentView];
+    heightAnchor = [contentView2 heightAnchor];
+    v12 = [heightAnchor constraintGreaterThanOrEqualToConstant:50.0];
     v16 = v12;
     v13 = [NSArray arrayWithObjects:&v16 count:1];
     [NSLayoutConstraint activateConstraints:v13];

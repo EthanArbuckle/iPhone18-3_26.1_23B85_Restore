@@ -1,43 +1,43 @@
 @interface WFScanSessionEvent
-+ (id)scanSessionEventWithSectionCounts:(id)a3 duration:(double)a4;
-- (WFScanSessionEvent)initWithScanSectionCounts:(id)a3 duration:(double)a4;
-- (id)_sectionCountsToJSONString:(id)a3;
-- (unint64_t)_durationBucketFromTimeInterval:(double)a3;
++ (id)scanSessionEventWithSectionCounts:(id)counts duration:(double)duration;
+- (WFScanSessionEvent)initWithScanSectionCounts:(id)counts duration:(double)duration;
+- (id)_sectionCountsToJSONString:(id)string;
+- (unint64_t)_durationBucketFromTimeInterval:(double)interval;
 @end
 
 @implementation WFScanSessionEvent
 
-+ (id)scanSessionEventWithSectionCounts:(id)a3 duration:(double)a4
++ (id)scanSessionEventWithSectionCounts:(id)counts duration:(double)duration
 {
-  v5 = a3;
-  v6 = [[WFScanSessionEvent alloc] initWithScanSectionCounts:v5 duration:a4];
+  countsCopy = counts;
+  v6 = [[WFScanSessionEvent alloc] initWithScanSectionCounts:countsCopy duration:duration];
 
   return v6;
 }
 
-- (WFScanSessionEvent)initWithScanSectionCounts:(id)a3 duration:(double)a4
+- (WFScanSessionEvent)initWithScanSectionCounts:(id)counts duration:(double)duration
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  countsCopy = counts;
   v18[0] = @"duration";
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[WFScanSessionEvent _durationBucketFromTimeInterval:](self, "_durationBucketFromTimeInterval:", a4)}];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[WFScanSessionEvent _durationBucketFromTimeInterval:](self, "_durationBucketFromTimeInterval:", duration)}];
   v18[1] = @"sections";
   v19[0] = v7;
-  v8 = [(WFScanSessionEvent *)self _sectionCountsToJSONString:v6];
+  v8 = [(WFScanSessionEvent *)self _sectionCountsToJSONString:countsCopy];
   v19[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
   eventDictionary = self->_eventDictionary;
   self->_eventDictionary = v9;
 
-  if ([v6 count])
+  if ([countsCopy count])
   {
-    v11 = [v6 keysSortedByValueUsingComparator:&__block_literal_global];
-    v12 = [v11 lastObject];
+    v11 = [countsCopy keysSortedByValueUsingComparator:&__block_literal_global];
+    lastObject = [v11 lastObject];
 
-    v13 = [v6 objectForKey:v12];
+    v13 = [countsCopy objectForKey:lastObject];
     v14 = [(NSDictionary *)self->_eventDictionary mutableCopy];
     [(NSDictionary *)v14 setObject:v13 forKey:@"maxCount"];
-    [(NSDictionary *)v14 setObject:v12 forKey:@"maxSection"];
+    [(NSDictionary *)v14 setObject:lastObject forKey:@"maxSection"];
     v15 = self->_eventDictionary;
     self->_eventDictionary = v14;
   }
@@ -46,19 +46,19 @@
   return self;
 }
 
-- (unint64_t)_durationBucketFromTimeInterval:(double)a3
+- (unint64_t)_durationBucketFromTimeInterval:(double)interval
 {
-  if (a3 > 10.0 && a3 < 30.0)
+  if (interval > 10.0 && interval < 30.0)
   {
     return 1;
   }
 
-  if (a3 > 30.0 && a3 < 60.0)
+  if (interval > 30.0 && interval < 60.0)
   {
     return 2;
   }
 
-  if (a3 > 60.0)
+  if (interval > 60.0)
   {
     return 3;
   }
@@ -66,14 +66,14 @@
   return 0;
 }
 
-- (id)_sectionCountsToJSONString:(id)a3
+- (id)_sectionCountsToJSONString:(id)string
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v12 = 0;
-    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:0 error:&v12];
+    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:stringCopy options:0 error:&v12];
     v5 = v12;
     if (v4)
     {
@@ -89,7 +89,7 @@
         *buf = 136315394;
         v14 = "[WFScanSessionEvent _sectionCountsToJSONString:]";
         v15 = 2112;
-        v16 = v3;
+        v16 = stringCopy;
         _os_log_impl(&dword_273ECD000, v8, v9, "%s: failed to create json from dictionary %@", buf, 0x16u);
       }
 

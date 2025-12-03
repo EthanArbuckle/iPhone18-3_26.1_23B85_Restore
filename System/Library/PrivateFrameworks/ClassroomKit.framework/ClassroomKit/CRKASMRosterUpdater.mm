@@ -1,82 +1,82 @@
 @interface CRKASMRosterUpdater
-- (CRKASMRosterUpdater)initWithRequirements:(id)a3;
-- (id)courseWithIdentifier:(id)a3 inRoster:(id)a4;
-- (id)errorWrappingCompletionForCompletion:(id)a3 selectorName:(id)a4;
-- (id)objectIDForCourseWithIdentifier:(id)a3 inRoster:(id)a4 error:(id *)a5;
-- (void)createClassOperationDidFinish:(id)a3 completion:(id)a4;
-- (void)createClassWithProperties:(id)a3 completion:(id)a4;
-- (void)removeCourseWithIdentifier:(id)a3 roster:(id)a4 completion:(id)a5;
-- (void)removeOperationDidFinish:(id)a3 completion:(id)a4;
-- (void)updateClassOperationDidFinish:(id)a3 completion:(id)a4;
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 roster:(id)a5 completion:(id)a6;
+- (CRKASMRosterUpdater)initWithRequirements:(id)requirements;
+- (id)courseWithIdentifier:(id)identifier inRoster:(id)roster;
+- (id)errorWrappingCompletionForCompletion:(id)completion selectorName:(id)name;
+- (id)objectIDForCourseWithIdentifier:(id)identifier inRoster:(id)roster error:(id *)error;
+- (void)createClassOperationDidFinish:(id)finish completion:(id)completion;
+- (void)createClassWithProperties:(id)properties completion:(id)completion;
+- (void)removeCourseWithIdentifier:(id)identifier roster:(id)roster completion:(id)completion;
+- (void)removeOperationDidFinish:(id)finish completion:(id)completion;
+- (void)updateClassOperationDidFinish:(id)finish completion:(id)completion;
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties roster:(id)roster completion:(id)completion;
 @end
 
 @implementation CRKASMRosterUpdater
 
-- (CRKASMRosterUpdater)initWithRequirements:(id)a3
+- (CRKASMRosterUpdater)initWithRequirements:(id)requirements
 {
-  v5 = a3;
+  requirementsCopy = requirements;
   v9.receiver = self;
   v9.super_class = CRKASMRosterUpdater;
   v6 = [(CRKASMRosterUpdater *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requirements, a3);
+    objc_storeStrong(&v6->_requirements, requirements);
   }
 
   return v7;
 }
 
-- (void)createClassWithProperties:(id)a3 completion:(id)a4
+- (void)createClassWithProperties:(id)properties completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  propertiesCopy = properties;
   v9 = NSStringFromSelector(a2);
-  v15 = [(CRKASMRosterUpdater *)self errorWrappingCompletionForCompletion:v7 selectorName:v9];
+  v15 = [(CRKASMRosterUpdater *)self errorWrappingCompletionForCompletion:completionCopy selectorName:v9];
 
   v10 = [CRKCreateASMClassOperation alloc];
-  v11 = [(CRKASMRosterUpdater *)self requirements];
-  v12 = [(CRKCreateASMClassOperation *)v10 initWithProperties:v8 requirements:v11];
+  requirements = [(CRKASMRosterUpdater *)self requirements];
+  v12 = [(CRKCreateASMClassOperation *)v10 initWithProperties:propertiesCopy requirements:requirements];
 
   v13 = MEMORY[0x245D3AAD0](v15);
   [(CRKCreateASMClassOperation *)v12 addTarget:self selector:sel_createClassOperationDidFinish_completion_ forOperationEvents:6 userInfo:v13];
 
-  v14 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  [v14 addOperation:v12];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  [crk_backgroundQueue addOperation:v12];
 }
 
-- (void)createClassOperationDidFinish:(id)a3 completion:(id)a4
+- (void)createClassOperationDidFinish:(id)finish completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 error];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  error = [finish error];
+  (*(completion + 2))(completionCopy, error);
 }
 
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 roster:(id)a5 completion:(id)a6
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties roster:(id)roster completion:(id)completion
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  rosterCopy = roster;
+  identifierCopy = identifier;
   v15 = NSStringFromSelector(a2);
-  v16 = [(CRKASMRosterUpdater *)self errorWrappingCompletionForCompletion:v12 selectorName:v15];
+  v16 = [(CRKASMRosterUpdater *)self errorWrappingCompletionForCompletion:completionCopy selectorName:v15];
 
   v24 = 0;
-  v17 = [(CRKASMRosterUpdater *)self objectIDForCourseWithIdentifier:v14 inRoster:v13 error:&v24];
+  v17 = [(CRKASMRosterUpdater *)self objectIDForCourseWithIdentifier:identifierCopy inRoster:rosterCopy error:&v24];
 
   v18 = v24;
   if (v17)
   {
     v19 = [CRKUpdateASMClassOperation alloc];
-    v20 = [(CRKASMRosterUpdater *)self requirements];
-    v21 = [(CRKUpdateASMClassOperation *)v19 initWithObjectID:v17 properties:v11 requirements:v20];
+    requirements = [(CRKASMRosterUpdater *)self requirements];
+    v21 = [(CRKUpdateASMClassOperation *)v19 initWithObjectID:v17 properties:propertiesCopy requirements:requirements];
 
     v22 = MEMORY[0x245D3AAD0](v16);
     [(CRKUpdateASMClassOperation *)v21 addTarget:self selector:sel_updateClassOperationDidFinish_completion_ forOperationEvents:6 userInfo:v22];
 
-    v23 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-    [v23 addOperation:v21];
+    crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+    [crk_backgroundQueue addOperation:v21];
   }
 
   else
@@ -85,34 +85,34 @@
   }
 }
 
-- (void)updateClassOperationDidFinish:(id)a3 completion:(id)a4
+- (void)updateClassOperationDidFinish:(id)finish completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 error];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  error = [finish error];
+  (*(completion + 2))(completionCopy, error);
 }
 
-- (void)removeCourseWithIdentifier:(id)a3 roster:(id)a4 completion:(id)a5
+- (void)removeCourseWithIdentifier:(id)identifier roster:(id)roster completion:(id)completion
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  rosterCopy = roster;
+  identifierCopy = identifier;
   v12 = NSStringFromSelector(a2);
-  v19 = [(CRKASMRosterUpdater *)self errorWrappingCompletionForCompletion:v9 selectorName:v12];
+  v19 = [(CRKASMRosterUpdater *)self errorWrappingCompletionForCompletion:completionCopy selectorName:v12];
 
-  v13 = [(CRKASMRosterUpdater *)self objectIDForCourseWithIdentifier:v11 inRoster:v10 error:0];
+  v13 = [(CRKASMRosterUpdater *)self objectIDForCourseWithIdentifier:identifierCopy inRoster:rosterCopy error:0];
 
   if (v13)
   {
     v14 = [CRKRemoveASMClassOperation alloc];
-    v15 = [(CRKASMRosterUpdater *)self requirements];
-    v16 = [(CRKRemoveASMClassOperation *)v14 initWithObjectID:v13 requirements:v15];
+    requirements = [(CRKASMRosterUpdater *)self requirements];
+    v16 = [(CRKRemoveASMClassOperation *)v14 initWithObjectID:v13 requirements:requirements];
 
     v17 = MEMORY[0x245D3AAD0](v19);
     [(CRKRemoveASMClassOperation *)v16 addTarget:self selector:sel_removeOperationDidFinish_completion_ forOperationEvents:6 userInfo:v17];
 
-    v18 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-    [v18 addOperation:v16];
+    crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+    [crk_backgroundQueue addOperation:v16];
   }
 
   else
@@ -121,18 +121,18 @@
   }
 }
 
-- (void)removeOperationDidFinish:(id)a3 completion:(id)a4
+- (void)removeOperationDidFinish:(id)finish completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 error];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  error = [finish error];
+  (*(completion + 2))(completionCopy, error);
 }
 
-- (id)objectIDForCourseWithIdentifier:(id)a3 inRoster:(id)a4 error:(id *)a5
+- (id)objectIDForCourseWithIdentifier:(id)identifier inRoster:(id)roster error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(CRKASMRosterUpdater *)self courseWithIdentifier:v8 inRoster:a4];
+  identifierCopy = identifier;
+  v9 = [(CRKASMRosterUpdater *)self courseWithIdentifier:identifierCopy inRoster:roster];
   v10 = v9;
   if (v9)
   {
@@ -143,43 +143,43 @@
       [CRKASMRosterUpdater objectIDForCourseWithIdentifier:inRoster:error:];
     }
 
-    v12 = [v11 backingClassObjectID];
+    backingClassObjectID = [v11 backingClassObjectID];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v18 = @"kCRKItemNameErrorKey";
-      v13 = [v8 stringValue];
-      v14 = v13;
+      stringValue = [identifierCopy stringValue];
+      v14 = stringValue;
       v15 = @"courseIdentifier.stringValue";
-      if (v13)
+      if (stringValue)
       {
-        v15 = v13;
+        v15 = stringValue;
       }
 
       v19[0] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a5 = CRKErrorWithCodeAndUserInfo(12, v16);
+      *error = CRKErrorWithCodeAndUserInfo(12, v16);
     }
 
-    v12 = 0;
+    backingClassObjectID = 0;
   }
 
-  return v12;
+  return backingClassObjectID;
 }
 
-- (id)courseWithIdentifier:(id)a3 inRoster:(id)a4
+- (id)courseWithIdentifier:(id)identifier inRoster:(id)roster
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a4 courses];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  courses = [roster courses];
+  v7 = [courses countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -189,12 +189,12 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(courses);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqual:v5];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqual:identifierCopy];
 
         if (v12)
         {
@@ -203,7 +203,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [courses countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -218,19 +218,19 @@ LABEL_11:
   return v7;
 }
 
-- (id)errorWrappingCompletionForCompletion:(id)a3 selectorName:(id)a4
+- (id)errorWrappingCompletionForCompletion:(id)completion selectorName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  nameCopy = name;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__CRKASMRosterUpdater_errorWrappingCompletionForCompletion_selectorName___block_invoke;
   v12[3] = &unk_278DC1A40;
-  v13 = v7;
-  v14 = v6;
+  v13 = nameCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v8 = v7;
-  v9 = v6;
+  v8 = nameCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x245D3AAD0](v12);
 
   return v10;

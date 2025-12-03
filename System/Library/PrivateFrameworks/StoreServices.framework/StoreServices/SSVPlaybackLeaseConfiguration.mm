@@ -1,46 +1,46 @@
 @interface SSVPlaybackLeaseConfiguration
-- (SSVPlaybackLeaseConfiguration)initWithCertificateURL:(id)a3 leaseType:(int64_t)a4 leaseURL:(id)a5 pastisKeyServerURL:(id)a6 provisionMachineURL:(id)a7 storeFrontSuffix:(id)a8 syncMachineURL:(id)a9;
-- (SSVPlaybackLeaseConfiguration)initWithURLBagDictionary:(id)a3 leaseType:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVPlaybackLeaseConfiguration)initWithCertificateURL:(id)l leaseType:(int64_t)type leaseURL:(id)rL pastisKeyServerURL:(id)uRL provisionMachineURL:(id)machineURL storeFrontSuffix:(id)suffix syncMachineURL:(id)syncMachineURL;
+- (SSVPlaybackLeaseConfiguration)initWithURLBagDictionary:(id)dictionary leaseType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SSVPlaybackLeaseConfiguration
 
-- (SSVPlaybackLeaseConfiguration)initWithCertificateURL:(id)a3 leaseType:(int64_t)a4 leaseURL:(id)a5 pastisKeyServerURL:(id)a6 provisionMachineURL:(id)a7 storeFrontSuffix:(id)a8 syncMachineURL:(id)a9
+- (SSVPlaybackLeaseConfiguration)initWithCertificateURL:(id)l leaseType:(int64_t)type leaseURL:(id)rL pastisKeyServerURL:(id)uRL provisionMachineURL:(id)machineURL storeFrontSuffix:(id)suffix syncMachineURL:(id)syncMachineURL
 {
-  v26 = a3;
-  v25 = a5;
-  v24 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  machineURLCopy = machineURL;
+  suffixCopy = suffix;
+  syncMachineURLCopy = syncMachineURL;
   v27.receiver = self;
   v27.super_class = SSVPlaybackLeaseConfiguration;
   v19 = [(SSVPlaybackLeaseConfiguration *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_beginLeaseURL, a5);
-    objc_storeStrong(&v20->_certificateURL, a3);
-    objc_storeStrong(&v20->_getAssetURL, a5);
-    v20->_leaseType = a4;
-    objc_storeStrong(&v20->_pastisCertificateURL, a3);
-    objc_storeStrong(&v20->_pastisKeyServerURL, a6);
-    objc_storeStrong(&v20->_provisionMachineURL, a7);
-    objc_storeStrong(&v20->_refreshLeaseURL, a5);
-    v21 = [v17 copy];
+    objc_storeStrong(&v19->_beginLeaseURL, rL);
+    objc_storeStrong(&v20->_certificateURL, l);
+    objc_storeStrong(&v20->_getAssetURL, rL);
+    v20->_leaseType = type;
+    objc_storeStrong(&v20->_pastisCertificateURL, l);
+    objc_storeStrong(&v20->_pastisKeyServerURL, uRL);
+    objc_storeStrong(&v20->_provisionMachineURL, machineURL);
+    objc_storeStrong(&v20->_refreshLeaseURL, rL);
+    v21 = [suffixCopy copy];
     storeFrontSuffix = v20->_storeFrontSuffix;
     v20->_storeFrontSuffix = v21;
 
-    objc_storeStrong(&v20->_syncMachineURL, a9);
+    objc_storeStrong(&v20->_syncMachineURL, syncMachineURL);
   }
 
   return v20;
 }
 
-- (SSVPlaybackLeaseConfiguration)initWithURLBagDictionary:(id)a3 leaseType:(int64_t)a4
+- (SSVPlaybackLeaseConfiguration)initWithURLBagDictionary:(id)dictionary leaseType:(int64_t)type
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = SSVPlaybackLeaseConfiguration;
   v7 = [(SSVPlaybackLeaseConfiguration *)&v31 init];
@@ -49,7 +49,7 @@
     goto LABEL_21;
   }
 
-  v8 = [v6 objectForKey:@"fps-cert"];
+  v8 = [dictionaryCopy objectForKey:@"fps-cert"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -58,7 +58,7 @@
     v7->_certificateURL = v9;
   }
 
-  v11 = [v6 objectForKey:@"amd-finish-provisioning"];
+  v11 = [dictionaryCopy objectForKey:@"amd-finish-provisioning"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -68,7 +68,7 @@
     v7->_provisionMachineURL = v12;
   }
 
-  v14 = [v6 objectForKey:@"amd-sync-machine"];
+  v14 = [dictionaryCopy objectForKey:@"amd-sync-machine"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -78,7 +78,7 @@
     v7->_syncMachineURL = v15;
   }
 
-  v17 = [v6 objectForKey:@"fps-cert"];
+  v17 = [dictionaryCopy objectForKey:@"fps-cert"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -88,7 +88,7 @@
     v7->_pastisCertificateURL = v18;
   }
 
-  v20 = [v6 objectForKey:@"fps-request"];
+  v20 = [dictionaryCopy objectForKey:@"fps-request"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -98,12 +98,12 @@
     v7->_pastisKeyServerURL = v21;
   }
 
-  v7->_leaseType = a4;
-  if (!a4)
+  v7->_leaseType = type;
+  if (!type)
   {
     v23 = SSVLeaseURLBagKeySubscriptionLease;
 LABEL_16:
-    v24 = [v6 objectForKey:*v23];
+    v24 = [dictionaryCopy objectForKey:*v23];
 
     objc_opt_class();
     v20 = v24;
@@ -121,14 +121,14 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v23 = SSVLeaseURLBagKeyKDLease;
     goto LABEL_16;
   }
 
 LABEL_18:
-  v27 = [v6 objectForKey:@"storefront-header-suffix"];
+  v27 = [dictionaryCopy objectForKey:@"storefront-header-suffix"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -141,9 +141,9 @@ LABEL_21:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setBeginLeaseURL:self->_beginLeaseURL];
   [v4 setCertificateURL:self->_certificateURL];
   [v4 setGetAssetURL:self->_getAssetURL];

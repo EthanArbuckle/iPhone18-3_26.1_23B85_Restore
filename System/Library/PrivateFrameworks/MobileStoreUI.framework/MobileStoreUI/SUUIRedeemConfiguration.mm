@@ -1,48 +1,48 @@
 @interface SUUIRedeemConfiguration
-- (SUUIRedeemConfiguration)initWithOperationQueue:(id)a3 category:(int64_t)a4 clientContext:(id)a5;
+- (SUUIRedeemConfiguration)initWithOperationQueue:(id)queue category:(int64_t)category clientContext:(id)context;
 - (id)_redeemPreflightRequestBodyData;
-- (void)_didLoadWithResponseDictionary:(id)a3;
-- (void)_loadConfigurationWithURLBagDictionary:(id)a3 completionBlock:(id)a4;
+- (void)_didLoadWithResponseDictionary:(id)dictionary;
+- (void)_loadConfigurationWithURLBagDictionary:(id)dictionary completionBlock:(id)block;
 - (void)_loadDefaultImages;
-- (void)_setInputImage:(id)a3;
-- (void)_setLandingImage:(id)a3;
-- (void)_setSuccessImage:(id)a3;
-- (void)loadConfigurationWithCompletionBlock:(id)a3;
+- (void)_setInputImage:(id)image;
+- (void)_setLandingImage:(id)image;
+- (void)_setSuccessImage:(id)image;
+- (void)loadConfigurationWithCompletionBlock:(id)block;
 @end
 
 @implementation SUUIRedeemConfiguration
 
-- (SUUIRedeemConfiguration)initWithOperationQueue:(id)a3 category:(int64_t)a4 clientContext:(id)a5
+- (SUUIRedeemConfiguration)initWithOperationQueue:(id)queue category:(int64_t)category clientContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  queueCopy = queue;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = SUUIRedeemConfiguration;
   v11 = [(SUUIRedeemConfiguration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_category = a4;
-    objc_storeStrong(&v11->_clientContext, a5);
-    objc_storeStrong(&v12->_operationQueue, a3);
+    v11->_category = category;
+    objc_storeStrong(&v11->_clientContext, context);
+    objc_storeStrong(&v12->_operationQueue, queue);
   }
 
   return v12;
 }
 
-- (void)loadConfigurationWithCompletionBlock:(id)a3
+- (void)loadConfigurationWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v5 = [(SUUIClientContext *)self->_clientContext URLBag];
+  uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__SUUIRedeemConfiguration_loadConfigurationWithCompletionBlock___block_invoke;
   v7[3] = &unk_2798FC930;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   objc_copyWeak(&v9, &location);
-  [v5 loadWithCompletionBlock:v7];
+  [uRLBag loadWithCompletionBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -77,9 +77,9 @@ void __64__SUUIRedeemConfiguration_loadConfigurationWithCompletionBlock___block_
   [WeakRetained _loadConfigurationWithURLBagDictionary:*(a1 + 32) completionBlock:*(a1 + 40)];
 }
 
-- (void)_didLoadWithResponseDictionary:(id)a3
+- (void)_didLoadWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   category = self->_category;
   v6 = @"inputAppStore;";
   if (category == 2)
@@ -97,8 +97,8 @@ void __64__SUUIRedeemConfiguration_loadConfigurationWithCompletionBlock___block_
     v7 = v6;
   }
 
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = @"RetinaImageUrl";
   if (v10 == 1.0)
   {
@@ -110,7 +110,7 @@ void __64__SUUIRedeemConfiguration_loadConfigurationWithCompletionBlock___block_
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v7, v11];
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"landing", v11];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"success", v11];
-  v15 = [v4 objectForKey:v13];
+  v15 = [dictionaryCopy objectForKey:v13];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -134,7 +134,7 @@ void __64__SUUIRedeemConfiguration_loadConfigurationWithCompletionBlock___block_
     objc_destroyWeak(&location);
   }
 
-  v20 = [v4 objectForKey:v14];
+  v20 = [dictionaryCopy objectForKey:v14];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -159,7 +159,7 @@ void __64__SUUIRedeemConfiguration_loadConfigurationWithCompletionBlock___block_
     objc_destroyWeak(&location);
   }
 
-  v25 = [v4 objectForKey:v12];
+  v25 = [dictionaryCopy objectForKey:v12];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -184,7 +184,7 @@ void __64__SUUIRedeemConfiguration_loadConfigurationWithCompletionBlock___block_
     objc_destroyWeak(&location);
   }
 
-  v30 = [v4 objectForKey:@"itunesPass"];
+  v30 = [dictionaryCopy objectForKey:@"itunesPass"];
   if (self->_itunesPassConfiguration)
   {
     objc_opt_class();
@@ -260,11 +260,11 @@ void __58__SUUIRedeemConfiguration__didLoadWithResponseDictionary___block_invoke
   [WeakRetained _setInputImage:*(a1 + 32)];
 }
 
-- (void)_loadConfigurationWithURLBagDictionary:(id)a3 completionBlock:(id)a4
+- (void)_loadConfigurationWithURLBagDictionary:(id)dictionary completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"getAddCreditPassUrl"];
+  dictionaryCopy = dictionary;
+  blockCopy = block;
+  v8 = [dictionaryCopy objectForKey:@"getAddCreditPassUrl"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -274,15 +274,15 @@ void __58__SUUIRedeemConfiguration__didLoadWithResponseDictionary___block_invoke
   }
 
   [(SUUIRedeemConfiguration *)self _loadDefaultImages];
-  v11 = [v6 objectForKey:@"redeemPreflightIosSrv"];
+  v11 = [dictionaryCopy objectForKey:@"redeemPreflightIosSrv"];
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277CBAB50]);
     v13 = [MEMORY[0x277CBEBC0] URLWithString:v11];
     v14 = [v12 initWithURL:v13];
 
-    v15 = [(SUUIRedeemConfiguration *)self _redeemPreflightRequestBodyData];
-    [v14 setHTTPBody:v15];
+    _redeemPreflightRequestBodyData = [(SUUIRedeemConfiguration *)self _redeemPreflightRequestBodyData];
+    [v14 setHTTPBody:_redeemPreflightRequestBodyData];
 
     [v14 setHTTPMethod:@"POST"];
     [v14 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -300,7 +300,7 @@ void __58__SUUIRedeemConfiguration__didLoadWithResponseDictionary___block_invoke
     v19[2] = __82__SUUIRedeemConfiguration__loadConfigurationWithURLBagDictionary_completionBlock___block_invoke;
     v19[3] = &unk_2798F7410;
     objc_copyWeak(&v21, &location);
-    v20 = v7;
+    v20 = blockCopy;
     [v16 setOutputBlock:v19];
     [(NSOperationQueue *)self->_operationQueue addOperation:v16];
 
@@ -310,7 +310,7 @@ void __58__SUUIRedeemConfiguration__didLoadWithResponseDictionary___block_invoke
 
   else
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(blockCopy + 2))(blockCopy, 1, 0);
   }
 }
 
@@ -361,12 +361,12 @@ uint64_t __82__SUUIRedeemConfiguration__loadConfigurationWithURLBagDictionary_co
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v2 setObject:@"iosRedeemPreflightInfo" forKey:@"preflightKey"];
   [v2 setObject:@"application/json" forKey:@"response-content-type"];
-  v3 = [MEMORY[0x277D7FCE0] sharedInstance];
-  v4 = [v3 guid];
+  mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+  guid = [mEMORY[0x277D7FCE0] guid];
 
-  if (v4)
+  if (guid)
   {
-    [v2 setObject:v4 forKey:@"guid"];
+    [v2 setObject:guid forKey:@"guid"];
   }
 
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"{"];
@@ -383,55 +383,55 @@ uint64_t __82__SUUIRedeemConfiguration__loadConfigurationWithURLBagDictionary_co
   return v7;
 }
 
-- (void)_setInputImage:(id)a3
+- (void)_setInputImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_inputImage = &self->_inputImage;
-  if (self->_inputImage != v5)
+  if (self->_inputImage != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_inputImage, a3);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"SUUIRedeemConfigurationImagesDidLoadNotification" object:self];
+    v8 = imageCopy;
+    objc_storeStrong(p_inputImage, image);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIRedeemConfigurationImagesDidLoadNotification" object:self];
 
-    v5 = v8;
+    imageCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_inputImage, v5);
+  MEMORY[0x2821F96F8](p_inputImage, imageCopy);
 }
 
-- (void)_setLandingImage:(id)a3
+- (void)_setLandingImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_landingImage = &self->_landingImage;
-  if (self->_landingImage != v5)
+  if (self->_landingImage != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_landingImage, a3);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"SUUIRedeemConfigurationImagesDidLoadNotification" object:self];
+    v8 = imageCopy;
+    objc_storeStrong(p_landingImage, image);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIRedeemConfigurationImagesDidLoadNotification" object:self];
 
-    v5 = v8;
+    imageCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_landingImage, v5);
+  MEMORY[0x2821F96F8](p_landingImage, imageCopy);
 }
 
-- (void)_setSuccessImage:(id)a3
+- (void)_setSuccessImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_successImage = &self->_successImage;
-  if (self->_successImage != v5)
+  if (self->_successImage != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_successImage, a3);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"SUUIRedeemConfigurationImagesDidLoadNotification" object:self];
+    v8 = imageCopy;
+    objc_storeStrong(p_successImage, image);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIRedeemConfigurationImagesDidLoadNotification" object:self];
 
-    v5 = v8;
+    imageCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_successImage, v5);
+  MEMORY[0x2821F96F8](p_successImage, imageCopy);
 }
 
 @end

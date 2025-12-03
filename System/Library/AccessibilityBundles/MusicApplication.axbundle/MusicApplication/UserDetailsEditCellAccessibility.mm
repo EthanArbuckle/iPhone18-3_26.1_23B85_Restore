@@ -1,15 +1,15 @@
 @interface UserDetailsEditCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UserDetailsEditCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.UserDetailsEditCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.UserDetailsEditCell" hasInstanceMethod:@"nickname" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.UserDetailsEditCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.UserDetailsEditCell" hasInstanceMethod:@"nickname" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

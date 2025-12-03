@@ -1,8 +1,8 @@
 @interface HKFHIRPatientResourceComparisonResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKFHIRPatientResourceComparisonResult)init;
-- (HKFHIRPatientResourceComparisonResult)initWithCoder:(id)a3;
-- (HKFHIRPatientResourceComparisonResult)initWithOutcome:(unint64_t)a3;
+- (HKFHIRPatientResourceComparisonResult)initWithCoder:(id)coder;
+- (HKFHIRPatientResourceComparisonResult)initWithOutcome:(unint64_t)outcome;
 @end
 
 @implementation HKFHIRPatientResourceComparisonResult
@@ -17,23 +17,23 @@
   return 0;
 }
 
-- (HKFHIRPatientResourceComparisonResult)initWithOutcome:(unint64_t)a3
+- (HKFHIRPatientResourceComparisonResult)initWithOutcome:(unint64_t)outcome
 {
   v5.receiver = self;
   v5.super_class = HKFHIRPatientResourceComparisonResult;
   result = [(HKFHIRPatientResourceComparisonResult *)&v5 init];
   if (result)
   {
-    result->_outcome = a3;
+    result->_outcome = outcome;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -44,7 +44,7 @@
     if (objc_opt_isKindOfClass())
     {
       outcome = self->_outcome;
-      v6 = outcome == [(HKFHIRPatientResourceComparisonResult *)v4 outcome];
+      v6 = outcome == [(HKFHIRPatientResourceComparisonResult *)equalCopy outcome];
     }
 
     else
@@ -56,9 +56,9 @@
   return v6;
 }
 
-- (HKFHIRPatientResourceComparisonResult)initWithCoder:(id)a3
+- (HKFHIRPatientResourceComparisonResult)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"outcome"];
+  v4 = [coder decodeIntegerForKey:@"outcome"];
 
   return [(HKFHIRPatientResourceComparisonResult *)self initWithOutcome:v4];
 }

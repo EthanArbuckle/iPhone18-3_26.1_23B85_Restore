@@ -1,22 +1,22 @@
 @interface _MRAudioBufferProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPacketDescriptions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPacketCapacity:(BOOL)a3;
-- (void)setHasPacketCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPacketDescriptions:(id)descriptions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPacketCapacity:(BOOL)capacity;
+- (void)setHasPacketCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRAudioBufferProtobuf
 
-- (void)setHasPacketCapacity:(BOOL)a3
+- (void)setHasPacketCapacity:(BOOL)capacity
 {
-  if (a3)
+  if (capacity)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPacketCount:(BOOL)a3
+- (void)setHasPacketCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -44,22 +44,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addPacketDescriptions:(id)a3
+- (void)addPacketDescriptions:(id)descriptions
 {
-  v4 = a3;
+  descriptionsCopy = descriptions;
   packetDescriptions = self->_packetDescriptions;
-  v8 = v4;
+  v8 = descriptionsCopy;
   if (!packetDescriptions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_packetDescriptions;
     self->_packetDescriptions = v6;
 
-    v4 = v8;
+    descriptionsCopy = v8;
     packetDescriptions = self->_packetDescriptions;
   }
 
-  [(NSMutableArray *)packetDescriptions addObject:v4];
+  [(NSMutableArray *)packetDescriptions addObject:descriptionsCopy];
 }
 
 - (id)description
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = _MRAudioBufferProtobuf;
   v4 = [(_MRAudioBufferProtobuf *)&v8 description];
-  v5 = [(_MRAudioBufferProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRAudioBufferProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,19 +77,19 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   formatSettings = self->_formatSettings;
   if (formatSettings)
   {
-    v5 = [(_MRAudioFormatSettingsProtobuf *)formatSettings dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"formatSettings"];
+    dictionaryRepresentation = [(_MRAudioFormatSettingsProtobuf *)formatSettings dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"formatSettings"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_packetCapacity];
-    [v3 setObject:v18 forKey:@"packetCapacity"];
+    [dictionary setObject:v18 forKey:@"packetCapacity"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -110,20 +110,20 @@ LABEL_5:
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_maximumPacketSize];
-  [v3 setObject:v19 forKey:@"maximumPacketSize"];
+  [dictionary setObject:v19 forKey:@"maximumPacketSize"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_packetCount];
-    [v3 setObject:v7 forKey:@"packetCount"];
+    [dictionary setObject:v7 forKey:@"packetCount"];
   }
 
 LABEL_7:
   contents = self->_contents;
   if (contents)
   {
-    [v3 setObject:contents forKey:@"contents"];
+    [dictionary setObject:contents forKey:@"contents"];
   }
 
   if ([(NSMutableArray *)self->_packetDescriptions count])
@@ -148,8 +148,8 @@ LABEL_7:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation2];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -158,18 +158,18 @@ LABEL_7:
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"packetDescriptions"];
+    [dictionary setObject:v9 forKey:@"packetDescriptions"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_formatSettings)
   {
     PBDataWriterWriteSubmessage();
@@ -245,21 +245,21 @@ LABEL_7:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_formatSettings)
   {
-    [v4 setFormatSettings:?];
-    v4 = v10;
+    [toCopy setFormatSettings:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_packetCapacity;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 2) = self->_packetCapacity;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -278,13 +278,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = self->_maximumPacketSize;
-  *(v4 + 56) |= 1u;
+  *(toCopy + 1) = self->_maximumPacketSize;
+  *(toCopy + 56) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 3) = self->_packetCount;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 3) = self->_packetCount;
+    *(toCopy + 56) |= 4u;
   }
 
 LABEL_7:
@@ -296,10 +296,10 @@ LABEL_7:
   if ([(_MRAudioBufferProtobuf *)self packetDescriptionsCount])
   {
     [v10 clearPacketDescriptions];
-    v6 = [(_MRAudioBufferProtobuf *)self packetDescriptionsCount];
-    if (v6)
+    packetDescriptionsCount = [(_MRAudioBufferProtobuf *)self packetDescriptionsCount];
+    if (packetDescriptionsCount)
     {
-      v7 = v6;
+      v7 = packetDescriptionsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(_MRAudioBufferProtobuf *)self packetDescriptionsAtIndex:i];
@@ -309,11 +309,11 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRAudioFormatSettingsProtobuf *)self->_formatSettings copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRAudioFormatSettingsProtobuf *)self->_formatSettings copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -350,7 +350,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSData *)self->_contents copyWithZone:a3];
+  v9 = [(NSData *)self->_contents copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
@@ -373,7 +373,7 @@ LABEL_5:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v5 addPacketDescriptions:v16];
       }
 
@@ -387,16 +387,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   formatSettings = self->_formatSettings;
-  if (formatSettings | *(v4 + 5))
+  if (formatSettings | *(equalCopy + 5))
   {
     if (![(_MRAudioFormatSettingsProtobuf *)formatSettings isEqual:?])
     {
@@ -404,16 +404,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_packetCapacity != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_packetCapacity != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_23:
     v9 = 0;
@@ -422,38 +422,38 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_maximumPacketSize != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_maximumPacketSize != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_packetCount != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_packetCount != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   contents = self->_contents;
-  if (contents | *(v4 + 4) && ![(NSData *)contents isEqual:?])
+  if (contents | *(equalCopy + 4) && ![(NSData *)contents isEqual:?])
   {
     goto LABEL_23;
   }
 
   packetDescriptions = self->_packetDescriptions;
-  if (packetDescriptions | *(v4 + 6))
+  if (packetDescriptions | *(equalCopy + 6))
   {
     v9 = [(NSMutableArray *)packetDescriptions isEqual:?];
   }
@@ -511,12 +511,12 @@ LABEL_8:
   return v7 ^ [(NSMutableArray *)self->_packetDescriptions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   formatSettings = self->_formatSettings;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (formatSettings)
   {
     if (v6)
@@ -530,12 +530,12 @@ LABEL_8:
     [(_MRAudioBufferProtobuf *)self setFormatSettings:?];
   }
 
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 2) != 0)
   {
-    self->_packetCapacity = *(v4 + 2);
+    self->_packetCapacity = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v7 = *(v4 + 56);
+    v7 = *(fromCopy + 56);
     if ((v7 & 1) == 0)
     {
 LABEL_8:
@@ -548,22 +548,22 @@ LABEL_8:
     }
   }
 
-  else if ((*(v4 + 56) & 1) == 0)
+  else if ((*(fromCopy + 56) & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  self->_maximumPacketSize = *(v4 + 1);
+  self->_maximumPacketSize = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
 LABEL_9:
-    self->_packetCount = *(v4 + 3);
+    self->_packetCount = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_10:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_MRAudioBufferProtobuf *)self setContents:?];
   }
@@ -572,7 +572,7 @@ LABEL_10:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = *(v4 + 6);
+  v8 = *(fromCopy + 6);
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {

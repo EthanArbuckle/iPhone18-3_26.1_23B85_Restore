@@ -1,26 +1,26 @@
 @interface SIRINLUINTERNALQUERYREWRITEQRHypothesis
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRewriteType:(id)a3;
+- (int)StringAsRewriteType:(id)type;
 - (int)rewriteType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRewriteType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRewriteType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALQUERYREWRITEQRHypothesis
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   asrId = self->_asrId;
-  v6 = *(v4 + 2);
-  v8 = v4;
+  v6 = *(fromCopy + 2);
+  v8 = fromCopy;
   if (asrId)
   {
     if (!v6)
@@ -41,25 +41,25 @@
     [(SIRINLUINTERNALQUERYREWRITEQRHypothesis *)self setAsrId:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SIRINLUINTERNALQUERYREWRITEQRHypothesis *)self setUtterance:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if (v7)
   {
-    self->_confidence = *(v4 + 1);
+    self->_confidence = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_rewriteType = *(v4 + 6);
+    self->_rewriteType = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
@@ -116,16 +116,16 @@ LABEL_7:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   asrId = self->_asrId;
-  if (asrId | *(v4 + 2))
+  if (asrId | *(equalCopy + 2))
   {
     if (![(SIRINLUEXTERNALUUID *)asrId isEqual:?])
     {
@@ -134,7 +134,7 @@ LABEL_7:
   }
 
   utterance = self->_utterance;
-  if (utterance | *(v4 + 4))
+  if (utterance | *(equalCopy + 4))
   {
     if (![(NSString *)utterance isEqual:?])
     {
@@ -144,23 +144,23 @@ LABEL_7:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_confidence != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_confidence != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 2) == 0;
+  v7 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_rewriteType != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_rewriteType != *(equalCopy + 6))
     {
       goto LABEL_15;
     }
@@ -173,14 +173,14 @@ LABEL_16:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_asrId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_asrId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_utterance copyWithZone:a3];
+  v8 = [(NSString *)self->_utterance copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -201,51 +201,51 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_asrId)
   {
-    [v4 setAsrId:?];
-    v4 = v6;
+    [toCopy setAsrId:?];
+    toCopy = v6;
   }
 
   if (self->_utterance)
   {
     [v6 setUtterance:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_confidence;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_confidence;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_rewriteType;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 6) = self->_rewriteType;
+    *(toCopy + 40) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_asrId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_utterance)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -253,7 +253,7 @@ LABEL_16:
   {
     confidence = self->_confidence;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -261,31 +261,31 @@ LABEL_16:
   {
     rewriteType = self->_rewriteType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   asrId = self->_asrId;
   if (asrId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)asrId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"asr_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)asrId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"asr_id"];
   }
 
   utterance = self->_utterance;
   if (utterance)
   {
-    [v3 setObject:utterance forKey:@"utterance"];
+    [dictionary setObject:utterance forKey:@"utterance"];
   }
 
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_confidence];
-    [v3 setObject:v8 forKey:@"confidence"];
+    [dictionary setObject:v8 forKey:@"confidence"];
 
     has = self->_has;
   }
@@ -311,10 +311,10 @@ LABEL_16:
       v10 = @"CORRECTION";
     }
 
-    [v3 setObject:v10 forKey:@"rewrite_type"];
+    [dictionary setObject:v10 forKey:@"rewrite_type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -323,31 +323,31 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALQUERYREWRITEQRHypothesis;
   v4 = [(SIRINLUINTERNALQUERYREWRITEQRHypothesis *)&v8 description];
-  v5 = [(SIRINLUINTERNALQUERYREWRITEQRHypothesis *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALQUERYREWRITEQRHypothesis *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsRewriteType:(id)a3
+- (int)StringAsRewriteType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CORRECTION"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"CORRECTION"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"REFERENCE_RESOLUTION"];
+    v4 = [typeCopy isEqualToString:@"REFERENCE_RESOLUTION"];
   }
 
   return v4;
 }
 
-- (void)setHasRewriteType:(BOOL)a3
+- (void)setHasRewriteType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

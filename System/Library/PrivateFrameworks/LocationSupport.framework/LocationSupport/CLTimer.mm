@@ -1,15 +1,15 @@
 @interface CLTimer
 - (double)nextFireDelay;
 - (double)nextFireTime;
-- (id)initInSilo:(id)a3 withScheduler:(id)a4;
+- (id)initInSilo:(id)silo withScheduler:(id)scheduler;
 - (void)dbgAssertInside;
 - (void)invalidate;
-- (void)setFireInterval:(double)a3;
-- (void)setHandler:(id)a3;
-- (void)setNextFireDelay:(double)a3;
-- (void)setNextFireDelay:(double)a3 interval:(double)a4;
-- (void)setNextFireTime:(double)a3;
-- (void)setNextFireTime:(double)a3 interval:(double)a4;
+- (void)setFireInterval:(double)interval;
+- (void)setHandler:(id)handler;
+- (void)setNextFireDelay:(double)delay;
+- (void)setNextFireDelay:(double)delay interval:(double)interval;
+- (void)setNextFireTime:(double)time;
+- (void)setNextFireTime:(double)time interval:(double)interval;
 - (void)shouldFire;
 @end
 
@@ -90,24 +90,24 @@
   [(CLTimer *)self updateScheduler];
 }
 
-- (id)initInSilo:(id)a3 withScheduler:(id)a4
+- (id)initInSilo:(id)silo withScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  siloCopy = silo;
+  schedulerCopy = scheduler;
   v13.receiver = self;
   v13.super_class = CLTimer;
   v8 = [(CLTimer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_silo, v6);
+    objc_storeWeak(&v8->_silo, siloCopy);
     [(CLTimer *)v9 dbgAssertInside];
     v9->_nextFireDelay = 1.79769313e308;
     handler = v9->_handler;
     v9->_handler = 0;
     v9->_fireInterval = 1.79769313e308;
 
-    objc_storeStrong(&v9->_scheduler, a4);
+    objc_storeStrong(&v9->_scheduler, scheduler);
     [(CLTimerScheduler *)v9->_scheduler setTimer:v9];
     [(CLTimer *)v9 updateScheduler];
     v11 = v9;
@@ -116,12 +116,12 @@
   return v9;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  handlerCopy = handler;
   [(CLTimer *)self dbgAssertInside];
-  if (!v10)
+  if (!handlerCopy)
   {
     v7 = sub_1DF81194C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -168,14 +168,14 @@
     abort_report_np();
   }
 
-  v4 = [v10 copy];
+  v4 = [handlerCopy copy];
   handler = self->_handler;
   self->_handler = v4;
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNextFireDelay:(double)a3
+- (void)setNextFireDelay:(double)delay
 {
   [(CLTimer *)self dbgAssertInside];
   [(CLTimer *)self fireInterval];
@@ -183,7 +183,7 @@
   MEMORY[0x1EEE66B58](self, sel_setNextFireDelay_interval_);
 }
 
-- (void)setFireInterval:(double)a3
+- (void)setFireInterval:(double)interval
 {
   [(CLTimer *)self dbgAssertInside];
   [(CLTimer *)self nextFireDelay];
@@ -191,33 +191,33 @@
   MEMORY[0x1EEE66B58](self, sel_setNextFireDelay_interval_);
 }
 
-- (void)setNextFireDelay:(double)a3 interval:(double)a4
+- (void)setNextFireDelay:(double)delay interval:(double)interval
 {
   [(CLTimer *)self dbgAssertInside];
-  self->_nextFireDelay = fmax(a3, 0.0);
-  v7 = 1.79769313e308;
-  if (a4 > 0.0)
+  self->_nextFireDelay = fmax(delay, 0.0);
+  intervalCopy = 1.79769313e308;
+  if (interval > 0.0)
   {
-    v7 = a4;
+    intervalCopy = interval;
   }
 
-  self->_fireInterval = v7;
+  self->_fireInterval = intervalCopy;
   v8 = mach_continuous_time();
   self->_delaySetAtTime = sub_1DF7FF29C(v8);
 
   [(CLTimer *)self updateScheduler];
 }
 
-- (void)setNextFireTime:(double)a3
+- (void)setNextFireTime:(double)time
 {
   [(CLTimer *)self fireInterval];
 
   MEMORY[0x1EEE66B58](self, sel_setNextFireTime_interval_);
 }
 
-- (void)setNextFireTime:(double)a3 interval:(double)a4
+- (void)setNextFireTime:(double)time interval:(double)interval
 {
-  if (a3 != 1.79769313e308)
+  if (time != 1.79769313e308)
   {
     CFAbsoluteTimeGetCurrent();
   }

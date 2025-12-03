@@ -1,49 +1,49 @@
 @interface ANHomeManager
 + (id)shared;
 + (unint64_t)defaultHomeOptions;
-- (ANHomeManager)initWithCaching:(BOOL)a3 homeOptions:(unint64_t)a4;
-- (BOOL)isEndpointWithUUID:(id)a3 inRoomWithName:(id)a4;
-- (BOOL)isLocalDeviceInRoom:(id)a3;
+- (ANHomeManager)initWithCaching:(BOOL)caching homeOptions:(unint64_t)options;
+- (BOOL)isEndpointWithUUID:(id)d inRoomWithName:(id)name;
+- (BOOL)isLocalDeviceInRoom:(id)room;
 - (HMAccessory)currentAccessory;
 - (HMHome)currentHome;
 - (NSArray)allHomes;
 - (NSArray)homesSupportingAnnounce;
 - (id)_currentHomesWeAreIn;
 - (id)_findBestHomeNames;
-- (id)_homeNamesForAccessoryForContext:(id)a3;
-- (id)_homesForContext:(id)a3;
-- (id)homeForID:(id)a3;
-- (id)homeNamesForContext:(id)a3;
-- (id)homeWithName:(id)a3;
-- (id)homesWithRoomNames:(id)a3;
-- (id)homesWithZoneNames:(id)a3;
+- (id)_homeNamesForAccessoryForContext:(id)context;
+- (id)_homesForContext:(id)context;
+- (id)homeForID:(id)d;
+- (id)homeNamesForContext:(id)context;
+- (id)homeWithName:(id)name;
+- (id)homesWithRoomNames:(id)names;
+- (id)homesWithZoneNames:(id)names;
 - (id)refreshHomeSynchronous;
-- (void)_executeBlockForDelegates:(id)a3;
-- (void)_notifyManagerLoadedHomes:(id)a3;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)accessoryDidUpdateName:(id)a3;
-- (void)accessoryDidUpdateSupportsAudioAnalysis:(id)a3;
-- (void)accessoryDidUpdateSupportsDropIn:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)home:(id)a3 didUpdateAccessControlForUser:(id)a4;
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)_executeBlockForDelegates:(id)delegates;
+- (void)_notifyManagerLoadedHomes:(id)homes;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)accessoryDidUpdateName:(id)name;
+- (void)accessoryDidUpdateSupportsAudioAnalysis:(id)analysis;
+- (void)accessoryDidUpdateSupportsDropIn:(id)in;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)home:(id)home didUpdateAccessControlForUser:(id)user;
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)loadHomeSynchronous;
-- (void)loadHomes:(id)a3;
-- (void)registerDelegate:(id)a3 queue:(id)a4;
+- (void)loadHomes:(id)homes;
+- (void)registerDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation ANHomeManager
 
-- (id)homeForID:(id)a3
+- (id)homeForID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(ANHomeManager *)self allHomes];
   v14 = 0u;
   v15 = 0u;
@@ -63,8 +63,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v10 isEqual:v4];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v11 = [uniqueIdentifier isEqual:dCopy];
 
         if (v11)
         {
@@ -90,10 +90,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)homeWithName:(id)a3
+- (id)homeWithName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   [(ANHomeManager *)self allHomes];
   v14 = 0u;
   v15 = 0u;
@@ -113,8 +113,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 caseInsensitiveCompare:v4];
+        name = [v9 name];
+        v11 = [name caseInsensitiveCompare:nameCopy];
 
         if (!v11)
         {
@@ -140,109 +140,109 @@ LABEL_11:
   return v6;
 }
 
-- (id)homesWithRoomNames:(id)a3
+- (id)homesWithRoomNames:(id)names
 {
   v4 = MEMORY[0x277CD1A60];
-  v5 = a3;
-  v6 = [(ANHomeManager *)self allHomes];
-  v7 = [v4 hmu_homesFromHomes:v6 withRoomNames:v5];
+  namesCopy = names;
+  allHomes = [(ANHomeManager *)self allHomes];
+  v7 = [v4 hmu_homesFromHomes:allHomes withRoomNames:namesCopy];
 
   return v7;
 }
 
-- (id)homesWithZoneNames:(id)a3
+- (id)homesWithZoneNames:(id)names
 {
   v4 = MEMORY[0x277CD1A60];
-  v5 = a3;
-  v6 = [(ANHomeManager *)self allHomes];
-  v7 = [v4 hmu_homesFromHomes:v6 withZoneNames:v5];
+  namesCopy = names;
+  allHomes = [(ANHomeManager *)self allHomes];
+  v7 = [v4 hmu_homesFromHomes:allHomes withZoneNames:namesCopy];
 
   return v7;
 }
 
 - (NSArray)homesSupportingAnnounce
 {
-  v2 = [(ANHomeManager *)self allHomes];
-  v3 = [v2 an_homesSupportingAnnounce];
+  allHomes = [(ANHomeManager *)self allHomes];
+  an_homesSupportingAnnounce = [allHomes an_homesSupportingAnnounce];
 
-  return v3;
+  return an_homesSupportingAnnounce;
 }
 
-- (BOOL)isLocalDeviceInRoom:(id)a3
+- (BOOL)isLocalDeviceInRoom:(id)room
 {
-  v4 = a3;
+  roomCopy = room;
   if (![(ANHomeManager *)self homesLoaded])
   {
     [(ANHomeManager *)self loadHomeSynchronous];
   }
 
-  v5 = [(ANHomeManager *)self currentAccessory];
-  v6 = v5;
-  if (v5)
+  currentAccessory = [(ANHomeManager *)self currentAccessory];
+  v6 = currentAccessory;
+  if (currentAccessory)
   {
-    v7 = [v5 room];
+    room = [currentAccessory room];
 
-    if (v7)
+    if (room)
     {
-      v8 = [v6 room];
-      v9 = [v8 name];
-      LOBYTE(v7) = [v9 isEqualToString:v4];
+      room2 = [v6 room];
+      name = [room2 name];
+      LOBYTE(room) = [name isEqualToString:roomCopy];
     }
   }
 
   else
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(room) = 0;
   }
 
-  return v7;
+  return room;
 }
 
-- (BOOL)isEndpointWithUUID:(id)a3 inRoomWithName:(id)a4
+- (BOOL)isEndpointWithUUID:(id)d inRoomWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   if (![(ANHomeManager *)self homesLoaded])
   {
     [(ANHomeManager *)self loadHomeSynchronous];
   }
 
-  v8 = [(ANHomeManager *)self currentAccessory];
-  v9 = v8;
-  if (v8)
+  currentAccessory = [(ANHomeManager *)self currentAccessory];
+  v9 = currentAccessory;
+  if (currentAccessory)
   {
-    v10 = v8;
+    v10 = currentAccessory;
     v11 = v10;
-    if (v6 && ([v10 home], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "accessoryWithUniqueIdentifier:", v6), v13 = objc_claimAutoreleasedReturnValue(), v11, v12, (v11 = v13) == 0))
+    if (dCopy && ([v10 home], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "accessoryWithUniqueIdentifier:", dCopy), v13 = objc_claimAutoreleasedReturnValue(), v11, v12, (v11 = v13) == 0))
     {
-      LOBYTE(v14) = 0;
+      LOBYTE(room) = 0;
     }
 
     else
     {
-      v14 = [v11 room];
+      room = [v11 room];
 
-      if (v14)
+      if (room)
       {
-        v15 = [v11 room];
-        v16 = [v15 name];
-        LOBYTE(v14) = [v16 isEqualToString:v7];
+        room2 = [v11 room];
+        name = [room2 name];
+        LOBYTE(room) = [name isEqualToString:nameCopy];
       }
     }
   }
 
   else
   {
-    LOBYTE(v14) = 0;
+    LOBYTE(room) = 0;
   }
 
-  return v14;
+  return room;
 }
 
-- (id)homeNamesForContext:(id)a3
+- (id)homeNamesForContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (![(ANHomeManager *)self homesLoaded])
   {
     v5 = ANLogHandleHomeManager_HomeContext();
@@ -251,14 +251,14 @@ LABEL_11:
       v15 = 138412546;
       v16 = &stru_2851BDB18;
       v17 = 2112;
-      v18 = v4;
+      v18 = contextCopy;
       _os_log_impl(&dword_23F525000, v5, OS_LOG_TYPE_DEFAULT, "%@Loading homes to search names for context: %@", &v15, 0x16u);
     }
 
     [(ANHomeManager *)self loadHomeSynchronous];
   }
 
-  if ([v4 isEmpty])
+  if ([contextCopy isEmpty])
   {
     v6 = ANLogHandleHomeManager_HomeContext();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -268,17 +268,17 @@ LABEL_11:
       _os_log_impl(&dword_23F525000, v6, OS_LOG_TYPE_DEFAULT, "%@Home Context empty. Will find best home names.", &v15, 0xCu);
     }
 
-    v7 = [(ANHomeManager *)self _findBestHomeNames];
+    _findBestHomeNames = [(ANHomeManager *)self _findBestHomeNames];
 LABEL_13:
-    v11 = v7;
+    v11 = _findBestHomeNames;
     goto LABEL_14;
   }
 
-  v8 = [(ANHomeManager *)self currentAccessory];
+  currentAccessory = [(ANHomeManager *)self currentAccessory];
 
   v9 = ANLogHandleHomeManager_HomeContext();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (currentAccessory)
   {
     if (v10)
     {
@@ -287,7 +287,7 @@ LABEL_13:
       _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEFAULT, "%@Will find home names for Accessory.", &v15, 0xCu);
     }
 
-    v7 = [(ANHomeManager *)self _homeNamesForAccessoryForContext:v4];
+    _findBestHomeNames = [(ANHomeManager *)self _homeNamesForAccessoryForContext:contextCopy];
     goto LABEL_13;
   }
 
@@ -298,7 +298,7 @@ LABEL_13:
     _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEFAULT, "%@Will find home names for personal device.", &v15, 0xCu);
   }
 
-  v14 = [(ANHomeManager *)self _homesForContext:v4];
+  v14 = [(ANHomeManager *)self _homesForContext:contextCopy];
   v11 = [v14 na_map:&__block_literal_global_12];
 
 LABEL_14:
@@ -307,44 +307,44 @@ LABEL_14:
   return v11;
 }
 
-- (id)_homesForContext:(id)a3
+- (id)_homesForContext:(id)context
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 homeName];
-  v6 = [v5 length];
+  contextCopy = context;
+  homeName = [contextCopy homeName];
+  v6 = [homeName length];
 
   if (v6)
   {
-    v7 = [v4 homeName];
-    v8 = [(ANHomeManager *)self homeWithName:v7];
+    homeName2 = [contextCopy homeName];
+    an_homesSupportingAnnounce = [(ANHomeManager *)self homeWithName:homeName2];
 
-    if (v8)
+    if (an_homesSupportingAnnounce)
     {
-      v27[0] = v8;
-      v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
+      v27[0] = an_homesSupportingAnnounce;
+      allObjects = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
     }
 
     else
     {
-      v9 = MEMORY[0x277CBEBF8];
+      allObjects = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
-    v10 = [(ANHomeManager *)self currentAccessory];
-    if (v10)
+    currentAccessory = [(ANHomeManager *)self currentAccessory];
+    if (currentAccessory)
     {
-      v11 = MEMORY[0x277CBEBF8];
+      _currentHomesWeAreIn = MEMORY[0x277CBEBF8];
     }
 
     else
     {
-      v11 = [(ANHomeManager *)self _currentHomesWeAreIn];
+      _currentHomesWeAreIn = [(ANHomeManager *)self _currentHomesWeAreIn];
     }
 
-    v12 = [v11 count];
+    v12 = [_currentHomesWeAreIn count];
     v13 = ANLogHandleHomeManager_HomeContext();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
     if (v12)
@@ -356,7 +356,7 @@ LABEL_14:
         _os_log_impl(&dword_23F525000, v13, OS_LOG_TYPE_DEFAULT, "%@Checking Current Homes we are in for Rooms and Zones", &v25, 0xCu);
       }
 
-      v8 = v11;
+      an_homesSupportingAnnounce = _currentHomesWeAreIn;
     }
 
     else
@@ -368,48 +368,48 @@ LABEL_14:
         _os_log_impl(&dword_23F525000, v13, OS_LOG_TYPE_DEFAULT, "%@Checking All Homes Supporting Announce for Rooms and Zones", &v25, 0xCu);
       }
 
-      v15 = [(ANHomeManager *)self allHomes];
-      v8 = [v15 an_homesSupportingAnnounce];
+      allHomes = [(ANHomeManager *)self allHomes];
+      an_homesSupportingAnnounce = [allHomes an_homesSupportingAnnounce];
     }
 
     v16 = objc_opt_new();
     v17 = MEMORY[0x277CD1A60];
-    v18 = [v4 roomNames];
-    v19 = [v17 hmu_homesFromHomes:v8 withRoomNames:v18];
+    roomNames = [contextCopy roomNames];
+    v19 = [v17 hmu_homesFromHomes:an_homesSupportingAnnounce withRoomNames:roomNames];
     [v16 addObjectsFromArray:v19];
 
     v20 = MEMORY[0x277CD1A60];
-    v21 = [v4 zoneNames];
-    v22 = [v20 hmu_homesFromHomes:v8 withZoneNames:v21];
+    zoneNames = [contextCopy zoneNames];
+    v22 = [v20 hmu_homesFromHomes:an_homesSupportingAnnounce withZoneNames:zoneNames];
     [v16 addObjectsFromArray:v22];
 
-    v9 = [v16 allObjects];
+    allObjects = [v16 allObjects];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return allObjects;
 }
 
-- (id)_homeNamesForAccessoryForContext:(id)a3
+- (id)_homeNamesForAccessoryForContext:(id)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANHomeManager *)self currentAccessory];
-  v6 = [v5 home];
+  contextCopy = context;
+  currentAccessory = [(ANHomeManager *)self currentAccessory];
+  home = [currentAccessory home];
 
   v7 = ANLogHandleHomeManager_HomeContext();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 name];
+    name = [home name];
     *buf = 138412546;
     v41 = &stru_2851BDB18;
     v42 = 2112;
-    v43 = v8;
+    v43 = name;
     _os_log_impl(&dword_23F525000, v7, OS_LOG_TYPE_DEFAULT, "%@Acessory Home Name: %@", buf, 0x16u);
   }
 
-  if (!v6)
+  if (!home)
   {
     v13 = ANLogHandleHomeManager_HomeContext();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -422,23 +422,23 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  v9 = [v4 homeName];
-  if ([v9 length])
+  homeName = [contextCopy homeName];
+  if ([homeName length])
   {
-    v10 = [v4 homeName];
-    v11 = [v6 name];
-    v12 = [v10 isEqualToString:v11];
+    homeName2 = [contextCopy homeName];
+    name2 = [home name];
+    v12 = [homeName2 isEqualToString:name2];
 
     if ((v12 & 1) == 0)
     {
       v13 = ANLogHandleHomeManager_HomeContext();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v4 homeName];
+        homeName3 = [contextCopy homeName];
         *buf = 138412546;
         v41 = &stru_2851BDB18;
         v42 = 2112;
-        v43 = v14;
+        v43 = homeName3;
         v15 = "%@Context Home Name mismatch: %@";
 LABEL_23:
         _os_log_impl(&dword_23F525000, v13, OS_LOG_TYPE_ERROR, v15, buf, 0x16u);
@@ -454,18 +454,18 @@ LABEL_23:
   {
   }
 
-  v16 = [(ANHomeManager *)self _homesForContext:v4];
+  v16 = [(ANHomeManager *)self _homesForContext:contextCopy];
   v17 = ANLogHandleHomeManager_HomeContext();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = [v16 count];
-    v19 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [home uniqueIdentifier];
     *buf = 138412802;
     v41 = &stru_2851BDB18;
     v42 = 2048;
     v43 = v18;
     v44 = 2112;
-    v45 = v19;
+    v45 = uniqueIdentifier;
     _os_log_impl(&dword_23F525000, v17, OS_LOG_TYPE_DEFAULT, "%@Checking %lu homes for Accessory Home ID %@", buf, 0x20u);
   }
 
@@ -489,25 +489,25 @@ LABEL_23:
         }
 
         v24 = *(*(&v34 + 1) + 8 * i);
-        v25 = [v24 uniqueIdentifier];
-        v26 = [v6 uniqueIdentifier];
-        v27 = [v25 isEqual:v26];
+        uniqueIdentifier2 = [v24 uniqueIdentifier];
+        uniqueIdentifier3 = [home uniqueIdentifier];
+        v27 = [uniqueIdentifier2 isEqual:uniqueIdentifier3];
 
         if (v27)
         {
           v29 = ANLogHandleHomeManager_HomeContext();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v24 name];
+            name3 = [v24 name];
             *buf = 138412546;
             v41 = &stru_2851BDB18;
             v42 = 2112;
-            v43 = v30;
+            v43 = name3;
             _os_log_impl(&dword_23F525000, v29, OS_LOG_TYPE_DEFAULT, "%@Matched home with Accessory Home ID to Home Name %@", buf, 0x16u);
           }
 
-          v31 = [v24 name];
-          v38 = v31;
+          name4 = [v24 name];
+          v38 = name4;
           v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
 
           goto LABEL_28;
@@ -527,11 +527,11 @@ LABEL_23:
   v13 = ANLogHandleHomeManager_HomeContext();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [v6 name];
+    homeName3 = [home name];
     *buf = 138412546;
     v41 = &stru_2851BDB18;
     v42 = 2112;
-    v43 = v14;
+    v43 = homeName3;
     v15 = "%@No home found for Accessory Home Name %@";
     goto LABEL_23;
   }
@@ -548,28 +548,28 @@ LABEL_28:
 - (id)_findBestHomeNames
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ANHomeManager *)self currentAccessory];
-  v4 = v3;
-  if (v3)
+  currentAccessory = [(ANHomeManager *)self currentAccessory];
+  v4 = currentAccessory;
+  if (currentAccessory)
   {
-    v5 = [v3 home];
-    v6 = v5;
-    if (!v5)
+    home = [currentAccessory home];
+    v6 = home;
+    if (!home)
     {
       v8 = MEMORY[0x277CBEBF8];
       goto LABEL_21;
     }
 
-    v7 = [v5 name];
-    v28[0] = v7;
+    name = [home name];
+    v28[0] = name;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   }
 
   else
   {
     v8 = objc_opt_new();
-    v7 = [(ANHomeManager *)self _currentHomesWeAreIn];
-    if ([v7 count])
+    name = [(ANHomeManager *)self _currentHomesWeAreIn];
+    if ([name count])
     {
       v9 = ANLogHandleHomeManager_HomeContext();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -577,23 +577,23 @@ LABEL_28:
         *buf = 138412546;
         v25 = &stru_2851BDB18;
         v26 = 2112;
-        v27 = v7;
+        v27 = name;
         _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEFAULT, "%@Selecting Current Homes: %@", buf, 0x16u);
       }
 
-      v10 = v7;
+      homesSupportingAnnounce = name;
     }
 
     else
     {
-      v10 = [(ANHomeManager *)self homesSupportingAnnounce];
+      homesSupportingAnnounce = [(ANHomeManager *)self homesSupportingAnnounce];
       v11 = ANLogHandleHomeManager_HomeContext();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
         v25 = &stru_2851BDB18;
         v26 = 2112;
-        v27 = v10;
+        v27 = homesSupportingAnnounce;
         _os_log_impl(&dword_23F525000, v11, OS_LOG_TYPE_DEFAULT, "%@Selecting All Homes Supporting announce: %@", buf, 0x16u);
       }
     }
@@ -602,7 +602,7 @@ LABEL_28:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v10;
+    v6 = homesSupportingAnnounce;
     v12 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
@@ -617,8 +617,8 @@ LABEL_28:
             objc_enumerationMutation(v6);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) name];
-          [v8 addObject:v16];
+          name2 = [*(*(&v19 + 1) + 8 * i) name];
+          [v8 addObject:name2];
         }
 
         v13 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -639,22 +639,22 @@ LABEL_21:
   v40 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB58];
   v4 = MEMORY[0x277CD1A60];
-  v5 = [(ANHomeManager *)self allHomes];
-  v6 = [v4 hmu_homesFromHomes:v5 withHomeLocationStatus:1];
+  allHomes = [(ANHomeManager *)self allHomes];
+  v6 = [v4 hmu_homesFromHomes:allHomes withHomeLocationStatus:1];
   v7 = [v3 setWithArray:v6];
 
-  v8 = [(ANHomeManager *)self currentHome];
+  currentHome = [(ANHomeManager *)self currentHome];
   v9 = ANLogHandleHomeManager_HomeContext();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v34 = &stru_2851BDB18;
     v35 = 2112;
-    v36 = v8;
+    v36 = currentHome;
     _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEFAULT, "%@Current Home: %@", buf, 0x16u);
   }
 
-  v28 = v8;
+  v28 = currentHome;
 
   v10 = ANLogHandleHomeManager_HomeContext();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -670,8 +670,8 @@ LABEL_21:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = [(ANHomeManager *)self allHomes];
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v39 count:16];
+  allHomes2 = [(ANHomeManager *)self allHomes];
+  v12 = [allHomes2 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v12)
   {
     v13 = v12;
@@ -682,25 +682,25 @@ LABEL_21:
       {
         if (*v30 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allHomes2);
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
         v17 = ANLogHandleHomeManager_HomeContext();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v16 homeLocationStatus];
+          homeLocationStatus = [v16 homeLocationStatus];
           *buf = 138412802;
           v34 = &stru_2851BDB18;
           v35 = 2112;
           v36 = v16;
           v37 = 2048;
-          v38 = v18;
+          v38 = homeLocationStatus;
           _os_log_impl(&dword_23F525000, v17, OS_LOG_TYPE_DEFAULT, "%@HomeKit Location Status: %@: %ld", buf, 0x20u);
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v29 objects:v39 count:16];
+      v13 = [allHomes2 countByEnumeratingWithState:&v29 objects:v39 count:16];
     }
 
     while (v13);
@@ -716,39 +716,39 @@ LABEL_21:
       _os_log_impl(&dword_23F525000, v25, OS_LOG_TYPE_DEFAULT, "%@Current Home is set but no Homes with Location Status at Home. Falling back to all Homes.", buf, 0xCu);
     }
 
-    v19 = [(ANHomeManager *)self allHomes];
+    allHomes3 = [(ANHomeManager *)self allHomes];
     goto LABEL_24;
   }
 
   if ([v7 count] == 1)
   {
-    v19 = [v7 allObjects];
+    allHomes3 = [v7 allObjects];
 LABEL_24:
-    v24 = v19;
+    allObjects2 = allHomes3;
     goto LABEL_25;
   }
 
   v20 = MEMORY[0x277CBEB58];
-  v21 = [v7 allObjects];
-  v22 = [v21 an_homesSupportingAnnounce];
-  v23 = [v20 setWithArray:v22];
+  allObjects = [v7 allObjects];
+  an_homesSupportingAnnounce = [allObjects an_homesSupportingAnnounce];
+  v23 = [v20 setWithArray:an_homesSupportingAnnounce];
 
   if (v28)
   {
     [v23 addObject:v28];
   }
 
-  v24 = [v23 allObjects];
+  allObjects2 = [v23 allObjects];
 
 LABEL_25:
   v26 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return allObjects2;
 }
 
-- (ANHomeManager)initWithCaching:(BOOL)a3 homeOptions:(unint64_t)a4
+- (ANHomeManager)initWithCaching:(BOOL)caching homeOptions:(unint64_t)options
 {
-  v5 = a3;
+  cachingCopy = caching;
   v38 = *MEMORY[0x277D85DE8];
   v33.receiver = self;
   v33.super_class = ANHomeManager;
@@ -767,7 +767,7 @@ LABEL_25:
     homesLoadedCompletionHandlers = v6->_homesLoadedCompletionHandlers;
     v6->_homesLoadedCompletionHandlers = v11;
 
-    if (v5)
+    if (cachingCopy)
     {
       v13 = 2;
     }
@@ -777,8 +777,8 @@ LABEL_25:
       v13 = 0;
     }
 
-    v14 = [MEMORY[0x277CEAB80] sharedInstance];
-    v15 = [v14 BOOLForDefault:*MEMORY[0x277CEA8B0]];
+    mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+    v15 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA8B0]];
 
     if (v15)
     {
@@ -795,7 +795,7 @@ LABEL_25:
       v13 = 0;
     }
 
-    v17 = [objc_alloc(MEMORY[0x277CD1C60]) initWithOptions:a4 cachePolicy:v13];
+    v17 = [objc_alloc(MEMORY[0x277CD1C60]) initWithOptions:options cachePolicy:v13];
     [v17 setDiscretionary:0];
     v18 = objc_opt_new();
     [v17 setDelegateQueue:v18];
@@ -830,8 +830,8 @@ LABEL_25:
     v6->_homeManager = v25;
 
     v27 = [ANAccessorySettingsCache alloc];
-    v28 = [(HMHomeManager *)v6->_homeManager createAccessorySettingsDataSource];
-    v29 = [(ANAccessorySettingsCache *)v27 initWithAccessorySettingsDataSource:v28];
+    createAccessorySettingsDataSource = [(HMHomeManager *)v6->_homeManager createAccessorySettingsDataSource];
+    v29 = [(ANAccessorySettingsCache *)v27 initWithAccessorySettingsDataSource:createAccessorySettingsDataSource];
     accessorySettingsCache = v6->_accessorySettingsCache;
     v6->_accessorySettingsCache = v29;
 
@@ -844,8 +844,8 @@ LABEL_25:
 
 + (unint64_t)defaultHomeOptions
 {
-  v2 = [MEMORY[0x277CEAB80] sharedInstance];
-  v3 = [v2 BOOLForDefault:*MEMORY[0x277CEA8A0]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v3 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA8A0]];
 
   if (v3)
   {
@@ -864,7 +864,7 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = __23__ANHomeManager_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -883,9 +883,9 @@ uint64_t __23__ANHomeManager_shared__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)loadHomes:(id)a3
+- (void)loadHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -893,8 +893,8 @@ uint64_t __23__ANHomeManager_shared__block_invoke(uint64_t a1)
   block[2] = __27__ANHomeManager_loadHomes___block_invoke;
   block[3] = &unk_278C86868;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = homesCopy;
+  v6 = homesCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
@@ -941,14 +941,14 @@ void __27__ANHomeManager_loadHomes___block_invoke(uint64_t a1)
 - (void)loadHomeSynchronous
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(ANHomeManager *)self allHomes];
+  allHomes = [(ANHomeManager *)self allHomes];
   v3 = ANLogHandleHomeManager();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412546;
     v6 = &stru_2851BDB18;
     v7 = 2112;
-    v8 = v2;
+    v8 = allHomes;
     _os_log_impl(&dword_23F525000, v3, OS_LOG_TYPE_DEFAULT, "%@Loaded Homes Synchronous: %@", &v5, 0x16u);
   }
 
@@ -958,9 +958,9 @@ void __27__ANHomeManager_loadHomes___block_invoke(uint64_t a1)
 - (id)refreshHomeSynchronous
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CEAB80] sharedInstance];
-  v5 = [v4 numberForDefault:*MEMORY[0x277CEA8F0]];
+  date = [MEMORY[0x277CBEAA8] date];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v5 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA8F0]];
   [v5 doubleValue];
   v7 = v6;
 
@@ -974,7 +974,7 @@ void __27__ANHomeManager_loadHomes___block_invoke(uint64_t a1)
     _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_DEFAULT, "%@Home manager refresh start (%.2fs timeout)", buf, 0x16u);
   }
 
-  v9 = [v3 dateByAddingTimeInterval:v7];
+  v9 = [date dateByAddingTimeInterval:v7];
   v10 = dispatch_semaphore_create(0);
   *buf = 0;
   *&buf[8] = buf;
@@ -1027,21 +1027,21 @@ void __39__ANHomeManager_refreshHomeSynchronous__block_invoke(uint64_t a1, void 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)registerDelegate:(id)a3 queue:(id)a4
+- (void)registerDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANHomeManager *)self serialQueue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__ANHomeManager_registerDelegate_queue___block_invoke;
   block[3] = &unk_278C86668;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  selfCopy = self;
+  v14 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __40__ANHomeManager_registerDelegate_queue___block_invoke(uint64_t a1)
@@ -1091,60 +1091,60 @@ void __40__ANHomeManager_registerDelegate_queue___block_invoke(uint64_t a1)
     }
   }
 
-  v7 = [(HMHomeManager *)self->_homeManager homes];
+  homes = [(HMHomeManager *)self->_homeManager homes];
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return homes;
 }
 
 - (HMHome)currentHome
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(ANHomeManager *)self allHomes];
+  allHomes = [(ANHomeManager *)self allHomes];
   v4 = ANLogHandleHomeManager();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
     v10 = &stru_2851BDB18;
     v11 = 2112;
-    v12 = v3;
+    v12 = allHomes;
     _os_log_impl(&dword_23F525000, v4, OS_LOG_TYPE_DEBUG, "%@Loaded homes %@", &v9, 0x16u);
   }
 
-  v5 = [(ANHomeManager *)self homeManager];
-  v6 = [v5 currentHome];
+  homeManager = [(ANHomeManager *)self homeManager];
+  currentHome = [homeManager currentHome];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return currentHome;
 }
 
 - (HMAccessory)currentAccessory
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(ANHomeManager *)self allHomes];
+  allHomes = [(ANHomeManager *)self allHomes];
   v4 = ANLogHandleHomeManager();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
     v10 = &stru_2851BDB18;
     v11 = 2112;
-    v12 = v3;
+    v12 = allHomes;
     _os_log_impl(&dword_23F525000, v4, OS_LOG_TYPE_DEBUG, "%@Loaded homes %@", &v9, 0x16u);
   }
 
-  v5 = [(ANHomeManager *)self homeManager];
-  v6 = [v5 currentAccessory];
+  homeManager = [(ANHomeManager *)self homeManager];
+  currentAccessory = [homeManager currentAccessory];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return currentAccessory;
 }
 
-- (void)_notifyManagerLoadedHomes:(id)a3
+- (void)_notifyManagerLoadedHomes:(id)homes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homesCopy = homes;
   v5 = ANLogHandleHomeManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1191,20 +1191,20 @@ void __40__ANHomeManager_registerDelegate_queue___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   objc_initWeak(&location, self);
-  v5 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ANHomeManager_homeManagerDidUpdateHomes___block_invoke;
   v7[3] = &unk_278C86B70;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = homesCopy;
+  v6 = homesCopy;
+  dispatch_async(serialQueue, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1347,20 +1347,20 @@ void __43__ANHomeManager_homeManagerDidUpdateHomes___block_invoke_24(uint64_t a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  homeCopy = home;
   objc_initWeak(&location, self);
-  v8 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__ANHomeManager_homeManager_didAddHome___block_invoke;
   block[3] = &unk_278C86B98;
-  v11 = v7;
-  v9 = v7;
+  v11 = homeCopy;
+  v9 = homeCopy;
   objc_copyWeak(&v12, &location);
-  dispatch_async(v8, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1435,20 +1435,20 @@ void __40__ANHomeManager_homeManager_didAddHome___block_invoke_28(uint64_t a1, v
   }
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  homeCopy = home;
   objc_initWeak(&location, self);
-  v8 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__ANHomeManager_homeManager_didRemoveHome___block_invoke;
   block[3] = &unk_278C86B98;
-  v11 = v7;
-  v9 = v7;
+  v11 = homeCopy;
+  v9 = homeCopy;
   objc_copyWeak(&v12, &location);
-  dispatch_async(v8, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1491,19 +1491,19 @@ void __43__ANHomeManager_homeManager_didRemoveHome___block_invoke_31(uint64_t a1
   }
 }
 
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   objc_initWeak(&location, self);
-  v5 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ANHomeManager_homeDidUpdateAccessControlForCurrentUser___block_invoke;
   block[3] = &unk_278C86B98;
-  v8 = v4;
-  v6 = v4;
+  v8 = userCopy;
+  v6 = userCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1543,22 +1543,22 @@ void __58__ANHomeManager_homeDidUpdateAccessControlForCurrentUser___block_invoke
   }
 }
 
-- (void)home:(id)a3 didUpdateAccessControlForUser:(id)a4
+- (void)home:(id)home didUpdateAccessControlForUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  userCopy = user;
   objc_initWeak(&location, self);
-  v8 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__ANHomeManager_home_didUpdateAccessControlForUser___block_invoke;
   v11[3] = &unk_278C86BE8;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = userCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = userCopy;
   objc_copyWeak(&v14, &location);
-  dispatch_async(v8, v11);
+  dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1627,23 +1627,23 @@ void __52__ANHomeManager_home_didUpdateAccessControlForUser___block_invoke_2(uin
   }
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   objc_initWeak(&location, self);
-  v8 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__ANHomeManager_home_didAddAccessory___block_invoke;
   block[3] = &unk_278C86C10;
-  v12 = v7;
-  v13 = self;
-  v9 = v7;
+  v12 = accessoryCopy;
+  selfCopy = self;
+  v9 = accessoryCopy;
   objc_copyWeak(&v15, &location);
-  v14 = v6;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v14 = homeCopy;
+  v10 = homeCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1688,22 +1688,22 @@ void __38__ANHomeManager_home_didAddAccessory___block_invoke_40(uint64_t a1, voi
   }
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   objc_initWeak(&location, self);
-  v8 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__ANHomeManager_home_didRemoveAccessory___block_invoke;
   v11[3] = &unk_278C86C38;
-  v12 = v7;
-  v9 = v7;
+  v12 = accessoryCopy;
+  v9 = accessoryCopy;
   objc_copyWeak(&v14, &location);
-  v13 = v6;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v13 = homeCopy;
+  v10 = homeCopy;
+  dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1747,22 +1747,22 @@ void __41__ANHomeManager_home_didRemoveAccessory___block_invoke_43(uint64_t a1, 
   }
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  userCopy = user;
   objc_initWeak(&location, self);
-  v8 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __33__ANHomeManager_home_didAddUser___block_invoke;
   v11[3] = &unk_278C86C38;
-  v12 = v7;
-  v9 = v7;
+  v12 = userCopy;
+  v9 = userCopy;
   objc_copyWeak(&v14, &location);
-  v13 = v6;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v13 = homeCopy;
+  v10 = homeCopy;
+  dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1809,22 +1809,22 @@ void __33__ANHomeManager_home_didAddUser___block_invoke_46(uint64_t a1, void *a2
   }
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  userCopy = user;
   objc_initWeak(&location, self);
-  v8 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __36__ANHomeManager_home_didRemoveUser___block_invoke;
   v11[3] = &unk_278C86C38;
-  v12 = v7;
-  v9 = v7;
+  v12 = userCopy;
+  v9 = userCopy;
   objc_copyWeak(&v14, &location);
-  v13 = v6;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v13 = homeCopy;
+  v10 = homeCopy;
+  dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1871,19 +1871,19 @@ void __36__ANHomeManager_home_didRemoveUser___block_invoke_49(uint64_t a1, void 
   }
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
-  v4 = a3;
+  controllableCopy = controllable;
   objc_initWeak(&location, self);
-  v5 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ANHomeManager_accessoryDidUpdateControllable___block_invoke;
   block[3] = &unk_278C86B98;
-  v8 = v4;
-  v6 = v4;
+  v8 = controllableCopy;
+  v6 = controllableCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1928,19 +1928,19 @@ void __48__ANHomeManager_accessoryDidUpdateControllable___block_invoke_53(uint64
   }
 }
 
-- (void)accessoryDidUpdateName:(id)a3
+- (void)accessoryDidUpdateName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
-  v5 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__ANHomeManager_accessoryDidUpdateName___block_invoke;
   block[3] = &unk_278C86B98;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1983,19 +1983,19 @@ void __40__ANHomeManager_accessoryDidUpdateName___block_invoke_56(uint64_t a1, v
   }
 }
 
-- (void)accessoryDidUpdateSupportsAudioAnalysis:(id)a3
+- (void)accessoryDidUpdateSupportsAudioAnalysis:(id)analysis
 {
-  v4 = a3;
+  analysisCopy = analysis;
   objc_initWeak(&location, self);
-  v5 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ANHomeManager_accessoryDidUpdateSupportsAudioAnalysis___block_invoke;
   block[3] = &unk_278C86B98;
-  v8 = v4;
-  v6 = v4;
+  v8 = analysisCopy;
+  v6 = analysisCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2041,19 +2041,19 @@ void __57__ANHomeManager_accessoryDidUpdateSupportsAudioAnalysis___block_invoke_
   }
 }
 
-- (void)accessoryDidUpdateSupportsDropIn:(id)a3
+- (void)accessoryDidUpdateSupportsDropIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   objc_initWeak(&location, self);
-  v5 = [(ANHomeManager *)self serialQueue];
+  serialQueue = [(ANHomeManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ANHomeManager_accessoryDidUpdateSupportsDropIn___block_invoke;
   block[3] = &unk_278C86B98;
-  v8 = v4;
-  v6 = v4;
+  v8 = inCopy;
+  v6 = inCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2099,18 +2099,18 @@ void __50__ANHomeManager_accessoryDidUpdateSupportsDropIn___block_invoke_62(uint
   }
 }
 
-- (void)_executeBlockForDelegates:(id)a3
+- (void)_executeBlockForDelegates:(id)delegates
 {
-  v4 = a3;
-  v5 = [(ANHomeManager *)self serialQueue];
+  delegatesCopy = delegates;
+  serialQueue = [(ANHomeManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ANHomeManager__executeBlockForDelegates___block_invoke;
   v7[3] = &unk_278C86840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegatesCopy;
+  v6 = delegatesCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __43__ANHomeManager__executeBlockForDelegates___block_invoke(uint64_t a1)

@@ -1,99 +1,99 @@
 @interface TNPageController
 + (NSMapTable)cachedAutoFitContentScaleDictionary;
-+ (double)autoFitContentScaleForInfoProvider:(id)a3;
-+ (double)p_unclampedAutoFitContentScaleForInfoProvider:(id)a3;
++ (double)autoFitContentScaleForInfoProvider:(id)provider;
++ (double)p_unclampedAutoFitContentScaleForInfoProvider:(id)provider;
 - ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContent;
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentAndAddendaWithUpperBound:(TSUCellCoord)a3;
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentWithUpperBound:(TSUCellCoord)a3;
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForInfo:(id)a3 upperBound:(TSUCellCoord)a4;
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForPageIndex:(unint64_t)a3;
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithPlaceholdersWithUpperBound:(TSUCellCoord)a3;
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentAndAddendaWithUpperBound:(TSUCellCoord)bound;
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentWithUpperBound:(TSUCellCoord)bound;
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForInfo:(id)info upperBound:(TSUCellCoord)bound;
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForPageIndex:(unint64_t)index;
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithPlaceholdersWithUpperBound:(TSUCellCoord)bound;
 - (BOOL)_hasAddendumContent;
-- (BOOL)_isPageAddendumAtPageCoordinate:(TSUCellCoord)a3;
-- (BOOL)_isPageAddendumAtPageIndex:(unint64_t)a3;
+- (BOOL)_isPageAddendumAtPageCoordinate:(TSUCellCoord)coordinate;
+- (BOOL)_isPageAddendumAtPageIndex:(unint64_t)index;
 - (BOOL)_shouldPrintComments;
 - (BOOL)isInteractive;
-- (BOOL)isPagePlaceholderAtPageCoordinate:(TSUCellCoord)a3;
+- (BOOL)isPagePlaceholderAtPageCoordinate:(TSUCellCoord)coordinate;
 - (BOOL)isPortrait;
 - (BOOL)p_headersOrFootersContainPageNumberRelatedAttachments;
-- (BOOL)shouldSuppressBackgroundsForPageIndex:(unint64_t)a3;
-- (CGAffineTransform)annotationPrintingHelper:(SEL)a3 inversePureTransformInRootForContentAtPageIndex:(id)a4;
-- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)a3;
+- (BOOL)shouldSuppressBackgroundsForPageIndex:(unint64_t)index;
+- (CGAffineTransform)annotationPrintingHelper:(SEL)helper inversePureTransformInRootForContentAtPageIndex:(id)index;
+- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)helper;
 - (CGRect)contentFrame;
-- (CGRect)firstPartitionFrameForInfo:(id)a3 outStartPageCoordinate:(TSUCellCoord *)a4;
-- (CGRect)printingLayoutRectForPageIndex:(unint64_t)a3;
-- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)a3;
+- (CGRect)firstPartitionFrameForInfo:(id)info outStartPageCoordinate:(TSUCellCoord *)coordinate;
+- (CGRect)printingLayoutRectForPageIndex:(unint64_t)index;
+- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)helper;
 - (CGSize)contentSizeForCanvasLayer;
 - (CGSize)pageSize;
 - (CGSize)pageSizeWithGutter;
 - (NSArray)additionalContentProviders;
 - (TNAnnotationPrintingHelper)annotationPrintingHelper;
 - (TNDocumentRoot)documentRoot;
-- (TNPageController)initWithDocumentRoot:(id)a3;
+- (TNPageController)initWithDocumentRoot:(id)root;
 - (TNPageControllerDelegate)delegate;
 - (TNPrintProperties)printProperties;
 - (TNPrintableInfoProviding)infoProvider;
 - (TNSheet)sheet;
-- (TSUCellCoord)_pageCoordinateWithPageSize:(CGSize)a3 forPoint:(CGPoint)a4;
-- (TSUCellCoord)p_pageCoordinateForPageLayoutAtDevicePoint:(CGPoint)a3;
-- (TSUCellCoord)pageCoordinateForDrawableAtUnscaledPoint:(CGPoint)a3;
+- (TSUCellCoord)_pageCoordinateWithPageSize:(CGSize)size forPoint:(CGPoint)point;
+- (TSUCellCoord)p_pageCoordinateForPageLayoutAtDevicePoint:(CGPoint)point;
+- (TSUCellCoord)pageCoordinateForDrawableAtUnscaledPoint:(CGPoint)point;
 - (TSUCellCoord)pageCoordinateForMaxVisiblePage;
-- (TSUCellCoord)pageCoordinateForPageIndex:(unint64_t)a3;
-- (TSUCellCoord)pageCoordinateForPageLayoutAtUnscaledPoint:(CGPoint)a3;
+- (TSUCellCoord)pageCoordinateForPageIndex:(unint64_t)index;
+- (TSUCellCoord)pageCoordinateForPageLayoutAtUnscaledPoint:(CGPoint)point;
 - (double)contentScale;
 - (double)printViewDefaultUserViewScale;
-- (id)_createPageLayoutForCoordinate:(TSUCellCoord)a3;
-- (id)_layoutsForPageIndex:(unint64_t)a3;
+- (id)_createPageLayoutForCoordinate:(TSUCellCoord)coordinate;
+- (id)_layoutsForPageIndex:(unint64_t)index;
 - (id)_printableInfos;
-- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)a3;
-- (id)additionalContentProviderAtPageIndex:(unint64_t)a3 outPageIndexInProvider:(unint64_t *)a4;
-- (id)annotationPrintingHelper:(id)a3 layoutsForPageIndex:(unint64_t)a4;
-- (id)i_childLayersAtAddendumPageCoordinate:(TSUCellCoord)a3;
-- (id)i_layerForHeaderType:(int64_t)a3 fragment:(int64_t)a4 atPageCoordinate:(TSUCellCoord)a5;
-- (id)p_hintCacheForInfo:(id)a3;
-- (id)p_layoutForInfo:(id)a3 atCoordinate:(TSUCellCoord)a4 parentLayout:(id)a5;
-- (id)p_pageInfoForPageAtIndex:(unint64_t)a3;
-- (id)p_pageLayoutAtCoordinate:(TSUCellCoord)a3 shouldCachePageLayout:(BOOL)a4;
-- (id)pageInfoForPageIndex:(unint64_t)a3;
-- (id)pageLayoutGeometryForPageCoordinate:(TSUCellCoord)a3;
-- (id)pageLayoutGeometryForPrintingAtPageCoordinate:(TSUCellCoord)a3;
-- (int64_t)p_pageCountForInfoProvider:(id)a3;
+- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)helper;
+- (id)additionalContentProviderAtPageIndex:(unint64_t)index outPageIndexInProvider:(unint64_t *)provider;
+- (id)annotationPrintingHelper:(id)helper layoutsForPageIndex:(unint64_t)index;
+- (id)i_childLayersAtAddendumPageCoordinate:(TSUCellCoord)coordinate;
+- (id)i_layerForHeaderType:(int64_t)type fragment:(int64_t)fragment atPageCoordinate:(TSUCellCoord)coordinate;
+- (id)p_hintCacheForInfo:(id)info;
+- (id)p_layoutForInfo:(id)info atCoordinate:(TSUCellCoord)coordinate parentLayout:(id)layout;
+- (id)p_pageInfoForPageAtIndex:(unint64_t)index;
+- (id)p_pageLayoutAtCoordinate:(TSUCellCoord)coordinate shouldCachePageLayout:(BOOL)layout;
+- (id)pageInfoForPageIndex:(unint64_t)index;
+- (id)pageLayoutGeometryForPageCoordinate:(TSUCellCoord)coordinate;
+- (id)pageLayoutGeometryForPrintingAtPageCoordinate:(TSUCellCoord)coordinate;
+- (int64_t)p_pageCountForInfoProvider:(id)provider;
 - (int64_t)p_priorPageCount;
 - (int64_t)p_updateCachedPageCountForCurrentInfoProvider;
-- (unint64_t)_pageIndexForPageCoordinate:(TSUCellCoord)a3;
+- (unint64_t)_pageIndexForPageCoordinate:(TSUCellCoord)coordinate;
 - (unint64_t)numPagesForAddenda;
-- (unint64_t)pageNumberForPageCoordinate:(TSUCellCoord)a3;
+- (unint64_t)pageNumberForPageCoordinate:(TSUCellCoord)coordinate;
 - (void)_measureHeadersAndFootersIfNecessary;
 - (void)_postAdditionalContentChangedNotification;
 - (void)_resetAnnotationPrintingHelper;
-- (void)annotationPrintingHelper:(id)a3 enumerateLayoutsByPageWithBlock:(id)a4;
+- (void)annotationPrintingHelper:(id)helper enumerateLayoutsByPageWithBlock:(id)block;
 - (void)dealloc;
 - (void)didExitPrintPreview;
-- (void)drawAdditionalContentForPageIndex:(unint64_t)a3 inContext:(CGContext *)a4;
-- (void)enumerateAnnotationPagesWithBlock:(id)a3;
-- (void)enumerateLayoutsByPageWithBlock:(id)a3;
-- (void)i_addChildLayer:(id)a3 atAddendumPageCoordinate:(TSUCellCoord)a4;
+- (void)drawAdditionalContentForPageIndex:(unint64_t)index inContext:(CGContext *)context;
+- (void)enumerateAnnotationPagesWithBlock:(id)block;
+- (void)enumerateLayoutsByPageWithBlock:(id)block;
+- (void)i_addChildLayer:(id)layer atAddendumPageCoordinate:(TSUCellCoord)coordinate;
 - (void)i_invalidateForHeaderChange;
 - (void)i_invalidateHintCache;
 - (void)i_invalidatePageLayoutCache;
-- (void)i_setLayer:(id)a3 forHeaderType:(int64_t)a4 fragment:(int64_t)a5 atPageCoordinate:(TSUCellCoord)a6;
+- (void)i_setLayer:(id)layer forHeaderType:(int64_t)type fragment:(int64_t)fragment atPageCoordinate:(TSUCellCoord)coordinate;
 - (void)invalidateDrawableLayouts;
 - (void)invalidatePageLayoutGeometries;
-- (void)layoutInPageRange:(id)a3 forLayoutController:(id)a4;
-- (void)layoutPrintableInfosIntoPageLayout:(id)a3 atPageCoordinate:(TSUCellCoord)a4;
+- (void)layoutInPageRange:(id)range forLayoutController:(id)controller;
+- (void)layoutPrintableInfosIntoPageLayout:(id)layout atPageCoordinate:(TSUCellCoord)coordinate;
 - (void)p_computePriorPageCountForCurrentSheet;
 - (void)p_computeSubsequentPageCountForCurrentSheet;
-- (void)p_didEndDynamicContentScaleChange:(id)a3;
-- (void)p_invalidateCachedAutoFitContentScaleForInfoProvider:(id)a3 notify:(BOOL)a4;
+- (void)p_didEndDynamicContentScaleChange:(id)change;
+- (void)p_invalidateCachedAutoFitContentScaleForInfoProvider:(id)provider notify:(BOOL)notify;
 - (void)p_invalidatePageCounts;
-- (void)p_layoutInfo:(id)a3 intoPageLayout:(id)a4 atPageCoordinate:(TSUCellCoord)a5;
+- (void)p_layoutInfo:(id)info intoPageLayout:(id)layout atPageCoordinate:(TSUCellCoord)coordinate;
 - (void)p_measureHeadersAndFooters;
 - (void)p_postAutoFitContentScaleDidChangeNotification;
-- (void)p_updateVisiblePageRange:(id)a3 forLayoutController:(id)a4;
-- (void)p_willBeginDynamicContentScaleChange:(id)a3;
-- (void)registerPageLayout:(id)a3 atPageCoordinate:(TSUCellCoord)a4;
-- (void)setDelegate:(id)a3;
-- (void)setInfoProvider:(id)a3;
+- (void)p_updateVisiblePageRange:(id)range forLayoutController:(id)controller;
+- (void)p_willBeginDynamicContentScaleChange:(id)change;
+- (void)registerPageLayout:(id)layout atPageCoordinate:(TSUCellCoord)coordinate;
+- (void)setDelegate:(id)delegate;
+- (void)setInfoProvider:(id)provider;
 - (void)updateContentScale;
 - (void)updatePrintMargins;
 - (void)updateUserViewScale;
@@ -124,16 +124,16 @@
   return v18 * v20 * 0.000000520299977 + 0.289400011;
 }
 
-- (TNPageController)initWithDocumentRoot:(id)a3
+- (TNPageController)initWithDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v32.receiver = self;
   v32.super_class = TNPageController;
   v5 = [(TNPageController *)&v32 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_documentRoot, v4);
+    objc_storeWeak(&v5->_documentRoot, rootCopy);
     v7 = objc_alloc_init(TNPageCoordinateDictionary);
     headerLayerCache = v6->_headerLayerCache;
     v6->_headerLayerCache = v7;
@@ -161,9 +161,9 @@
     objc_msgSend_setHeaderTextHeight_(v6, v21, v22, -1.0);
     objc_msgSend_setFooterTextHeight_(v6, v23, v24, -1.0);
     v27 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v25, v26);
-    objc_msgSend_addObserver_selector_name_object_(v27, v28, v6, sel_p_willBeginDynamicContentScaleChange_, @"TNSheetWillBeginDynamicContentScaleChange", v4);
-    objc_msgSend_addObserver_selector_name_object_(v27, v29, v6, sel_p_didEndDynamicContentScaleChange_, @"TNSheetDidEndDynamicContentScaleChange", v4);
-    objc_msgSend_addObserver_selector_name_object_(v27, v30, v6, sel__resetAnnotationPrintingHelper, *MEMORY[0x277D805B0], v4);
+    objc_msgSend_addObserver_selector_name_object_(v27, v28, v6, sel_p_willBeginDynamicContentScaleChange_, @"TNSheetWillBeginDynamicContentScaleChange", rootCopy);
+    objc_msgSend_addObserver_selector_name_object_(v27, v29, v6, sel_p_didEndDynamicContentScaleChange_, @"TNSheetDidEndDynamicContentScaleChange", rootCopy);
+    objc_msgSend_addObserver_selector_name_object_(v27, v30, v6, sel__resetAnnotationPrintingHelper, *MEMORY[0x277D805B0], rootCopy);
     v6->_priorPageCount = -1;
     v6->_subsequentPageCount = -1;
     v6->_cachedPageCountDuringDynamicContentScaleChange = -1;
@@ -258,9 +258,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   MEMORY[0x2821F9670](self, sel_updateUserViewScale, v4);
 }
@@ -320,9 +320,9 @@
   return v6;
 }
 
-- (void)setInfoProvider:(id)a3
+- (void)setInfoProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_infoProvider);
   if (WeakRetained == obj)
   {
@@ -384,11 +384,11 @@ LABEL_9:
   return v4;
 }
 
-- (int64_t)p_pageCountForInfoProvider:(id)a3
+- (int64_t)p_pageCountForInfoProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v7 = objc_msgSend_infoProvider(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(self->_infoProviderPageCountCache, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(self->_infoProviderPageCountCache, v8, providerCopy);
   v12 = v9;
   if (v9)
   {
@@ -397,7 +397,7 @@ LABEL_9:
 
   else
   {
-    objc_msgSend_setInfoProvider_(self, v10, v4);
+    objc_msgSend_setInfoProvider_(self, v10, providerCopy);
     updated = objc_msgSend_p_updateCachedPageCountForCurrentInfoProvider(self, v14, v15);
     objc_msgSend_setInfoProvider_(self, v16, v7);
   }
@@ -620,21 +620,21 @@ LABEL_9:
   return priorPageCount;
 }
 
-+ (double)p_unclampedAutoFitContentScaleForInfoProvider:(id)a3
++ (double)p_unclampedAutoFitContentScaleForInfoProvider:(id)provider
 {
   v76 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_opt_class();
   v7 = objc_msgSend_cachedAutoFitContentScaleDictionary(v4, v5, v6);
   v10 = v7;
-  if (!v3 || (objc_msgSend_objectForKey_(v7, v8, v3), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!providerCopy || (objc_msgSend_objectForKey_(v7, v8, providerCopy), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v12 = MEMORY[0x277CBF3A0];
     x = *MEMORY[0x277CBF3A0];
     y = *(MEMORY[0x277CBF3A0] + 8);
     width = *(MEMORY[0x277CBF3A0] + 16);
     height = *(MEMORY[0x277CBF3A0] + 24);
-    objc_msgSend_printableInfos(v3, v8, v9);
+    objc_msgSend_printableInfos(providerCopy, v8, v9);
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
@@ -688,17 +688,17 @@ LABEL_9:
     v38 = 1.0;
     if (!v35)
     {
-      v39 = objc_msgSend_inPortraitPageOrientation(v3, v36, v37, 1.0);
-      v42 = objc_msgSend_documentRoot(v3, v40, v41);
+      v39 = objc_msgSend_inPortraitPageOrientation(providerCopy, v36, v37, 1.0);
+      v42 = objc_msgSend_documentRoot(providerCopy, v40, v41);
       objc_msgSend_pageSize(v42, v43, v44);
       v46 = v45;
       v48 = v47;
       v49 = [TNPrintProperties alloc];
-      objc_msgSend_printMargins(v3, v50, v51);
+      objc_msgSend_printMargins(providerCopy, v50, v51);
       v58 = objc_msgSend_initWithPageSize_printMargins_(v49, v52, v53, v46, v48, v54, v55, v56, v57);
       objc_msgSend_contentRectForContentScale_portraitOrientation_headerHeight_footerHeight_(v58, v59, v39, 1.0, 0.0, 0.0);
       v60 = CGRectGetWidth(v80);
-      if (objc_msgSend_layoutIsLeftToRight(v3, v61, v62))
+      if (objc_msgSend_layoutIsLeftToRight(providerCopy, v61, v62))
       {
         v81.origin.x = x;
         v81.origin.y = y;
@@ -723,9 +723,9 @@ LABEL_9:
     }
 
     v11 = objc_msgSend_tsu_numberWithCGFloat_(MEMORY[0x277CCABB0], v36, v37, v38, v71);
-    if (v3)
+    if (providerCopy)
     {
-      objc_msgSend_setObject_forKey_(v10, v67, v11, v3);
+      objc_msgSend_setObject_forKey_(v10, v67, v11, providerCopy);
     }
   }
 
@@ -735,9 +735,9 @@ LABEL_9:
   return v69;
 }
 
-+ (double)autoFitContentScaleForInfoProvider:(id)a3
++ (double)autoFitContentScaleForInfoProvider:(id)provider
 {
-  objc_msgSend_p_unclampedAutoFitContentScaleForInfoProvider_(a1, a2, a3);
+  objc_msgSend_p_unclampedAutoFitContentScaleForInfoProvider_(self, a2, provider);
   if (result <= 0.25)
   {
     result = 0.25;
@@ -818,13 +818,13 @@ LABEL_9:
   return result;
 }
 
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentWithUpperBound:(TSUCellCoord)a3
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentWithUpperBound:(TSUCellCoord)bound
 {
   v35 = *MEMORY[0x277D85DE8];
   maxPageCoordinate = self->_maxPageCoordinate;
-  if (a3.row > maxPageCoordinate.row || a3.column > maxPageCoordinate.column)
+  if (bound.row > maxPageCoordinate.row || bound.column > maxPageCoordinate.column)
   {
-    objc_msgSend__printableInfos(self, a2, *&a3);
+    objc_msgSend__printableInfos(self, a2, *&bound);
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -844,7 +844,7 @@ LABEL_9:
             objc_enumerationMutation(v7);
           }
 
-          v13 = objc_msgSend_pageRangeForInfo_upperBound_(self, v9, *(*(&v29 + 1) + 8 * i), a3, v29);
+          v13 = objc_msgSend_pageRangeForInfo_upperBound_(self, v9, *(*(&v29 + 1) + 8 * i), bound, v29);
           v14 = v9 >> 32;
           if (v26 >= v13)
           {
@@ -931,9 +931,9 @@ LABEL_9:
   return result;
 }
 
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentAndAddendaWithUpperBound:(TSUCellCoord)a3
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForContentAndAddendaWithUpperBound:(TSUCellCoord)bound
 {
-  v4 = objc_msgSend_pageRangeForContentWithUpperBound_(self, a2, *&a3);
+  v4 = objc_msgSend_pageRangeForContentWithUpperBound_(self, a2, *&bound);
   v6 = v5;
   v8 = objc_msgSend_numPagesForAddenda(self, v5, v7);
   v11 = objc_msgSend_infoProvider(self, v9, v10);
@@ -1009,9 +1009,9 @@ LABEL_9:
   return result;
 }
 
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithPlaceholdersWithUpperBound:(TSUCellCoord)a3
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithPlaceholdersWithUpperBound:(TSUCellCoord)bound
 {
-  v4 = objc_msgSend_pageRangeForContentAndAddendaWithUpperBound_(self, a2, *&a3);
+  v4 = objc_msgSend_pageRangeForContentAndAddendaWithUpperBound_(self, a2, *&bound);
   v6 = v5;
   v8 = objc_msgSend_pageCoordinateForMaxVisiblePage(self, v5, v7);
   if ((v8 + v6 + 1) < 0xFFFE)
@@ -1078,21 +1078,21 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isPagePlaceholderAtPageCoordinate:(TSUCellCoord)a3
+- (BOOL)isPagePlaceholderAtPageCoordinate:(TSUCellCoord)coordinate
 {
-  v5 = objc_msgSend_pageRangeForContentWithUpperBound_(self, a2, *&a3);
-  if (a3.row <= v6 && a3.column <= WORD2(v6) && v5 <= a3.row && WORD2(v5) <= a3.column)
+  v5 = objc_msgSend_pageRangeForContentWithUpperBound_(self, a2, *&coordinate);
+  if (coordinate.row <= v6 && coordinate.column <= WORD2(v6) && v5 <= coordinate.row && WORD2(v5) <= coordinate.column)
   {
     return 0;
   }
 
-  v8 = objc_msgSend__pageIndexForPageCoordinate_(self, v6, *&a3);
+  v8 = objc_msgSend__pageIndexForPageCoordinate_(self, v6, *&coordinate);
   return objc_msgSend__isPageAddendumAtPageIndex_(self, v9, v8) ^ 1;
 }
 
-- (unint64_t)_pageIndexForPageCoordinate:(TSUCellCoord)a3
+- (unint64_t)_pageIndexForPageCoordinate:(TSUCellCoord)coordinate
 {
-  v5 = objc_msgSend_pageRangeForContent(self, a2, *&a3);
+  v5 = objc_msgSend_pageRangeForContent(self, a2, *&coordinate);
   v7 = v6;
   v9 = objc_msgSend_infoProvider(self, v6, v8);
   v12 = objc_msgSend_pageOrder(v9, v10, v11);
@@ -1100,29 +1100,29 @@ LABEL_9:
   if (v12)
   {
     v13 = WORD2(v7) - WORD2(v5) + 1;
-    if (a3.column < v13)
+    if (coordinate.column < v13)
     {
-      return a3.column + v13 * a3.row;
+      return coordinate.column + v13 * coordinate.row;
     }
   }
 
   else
   {
     v15 = v7 - v5 + 1;
-    if (v15 > a3.row)
+    if (v15 > coordinate.row)
     {
-      return a3.row + v15 * a3.column;
+      return coordinate.row + v15 * coordinate.column;
     }
   }
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)pageNumberForPageCoordinate:(TSUCellCoord)a3
+- (unint64_t)pageNumberForPageCoordinate:(TSUCellCoord)coordinate
 {
-  v5 = objc_msgSend_infoProvider(self, a2, *&a3);
+  v5 = objc_msgSend_infoProvider(self, a2, *&coordinate);
   v8 = v5;
-  if ((*&a3 & 0xFFFF00000000) != 0)
+  if ((*&coordinate & 0xFFFF00000000) != 0)
   {
     goto LABEL_7;
   }
@@ -1154,23 +1154,23 @@ LABEL_9:
     }
 
 LABEL_10:
-    v20 = a3.row + 1;
+    v20 = coordinate.row + 1;
     goto LABEL_8;
   }
 
 LABEL_6:
 
 LABEL_7:
-  v20 = objc_msgSend__pageIndexForPageCoordinate_(self, v6, *&a3) + 1;
+  v20 = objc_msgSend__pageIndexForPageCoordinate_(self, v6, *&coordinate) + 1;
 LABEL_8:
   v21 = objc_msgSend_p_priorPageCount(self, v6, v9);
 
   return v21 + v20;
 }
 
-- (BOOL)shouldSuppressBackgroundsForPageIndex:(unint64_t)a3
+- (BOOL)shouldSuppressBackgroundsForPageIndex:(unint64_t)index
 {
-  if (objc_msgSend__isPageAddendumAtPageIndex_(self, a2, a3))
+  if (objc_msgSend__isPageAddendumAtPageIndex_(self, a2, index))
   {
     LOBYTE(v6) = 0;
   }
@@ -1184,12 +1184,12 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_isPageAddendumAtPageCoordinate:(TSUCellCoord)a3
+- (BOOL)_isPageAddendumAtPageCoordinate:(TSUCellCoord)coordinate
 {
-  hasAddendumContent = objc_msgSend__hasAddendumContent(self, a2, *&a3);
+  hasAddendumContent = objc_msgSend__hasAddendumContent(self, a2, *&coordinate);
   if (hasAddendumContent)
   {
-    v8 = objc_msgSend__pageIndexForPageCoordinate_(self, v6, *&a3);
+    v8 = objc_msgSend__pageIndexForPageCoordinate_(self, v6, *&coordinate);
 
     LOBYTE(hasAddendumContent) = objc_msgSend__isPageAddendumAtPageIndex_(self, v7, v8);
   }
@@ -1197,20 +1197,20 @@ LABEL_8:
   return hasAddendumContent;
 }
 
-- (BOOL)_isPageAddendumAtPageIndex:(unint64_t)a3
+- (BOOL)_isPageAddendumAtPageIndex:(unint64_t)index
 {
-  hasAddendumContent = objc_msgSend__hasAddendumContent(self, a2, a3);
+  hasAddendumContent = objc_msgSend__hasAddendumContent(self, a2, index);
   if (hasAddendumContent)
   {
-    LOBYTE(hasAddendumContent) = objc_msgSend_numPagesForContent(self, v6, v7) <= a3 && objc_msgSend_numPages(self, v8, v9) > a3;
+    LOBYTE(hasAddendumContent) = objc_msgSend_numPagesForContent(self, v6, v7) <= index && objc_msgSend_numPages(self, v8, v9) > index;
   }
 
   return hasAddendumContent;
 }
 
-- (CGRect)firstPartitionFrameForInfo:(id)a3 outStartPageCoordinate:(TSUCellCoord *)a4
+- (CGRect)firstPartitionFrameForInfo:(id)info outStartPageCoordinate:(TSUCellCoord *)coordinate
 {
-  v6 = objc_msgSend_partitioner(a3, a2, a3);
+  v6 = objc_msgSend_partitioner(info, a2, info);
   objc_msgSend_totalPartitionFrame(v6, v7, v8);
   v10 = v9;
   v12 = v11;
@@ -1249,13 +1249,13 @@ LABEL_8:
     }
 
     v36 = v20 - v31;
-    if (!a4)
+    if (!coordinate)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    *a4 = objc_msgSend_pageCoordinateForDrawableAtUnscaledPoint_(self, v32, v33, v10, v12);
+    *coordinate = objc_msgSend_pageCoordinateForDrawableAtUnscaledPoint_(self, v32, v33, v10, v12);
     goto LABEL_16;
   }
 
@@ -1282,7 +1282,7 @@ LABEL_15:
   }
 
   v36 = v20 + v42;
-  if (a4)
+  if (coordinate)
   {
     v10 = MaxX;
     v12 = MinY;
@@ -1349,20 +1349,20 @@ LABEL_16:
   }
 }
 
-- (void)layoutInPageRange:(id)a3 forLayoutController:(id)a4
+- (void)layoutInPageRange:(id)range forLayoutController:(id)controller
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  objc_msgSend_p_measureHeadersAndFooters(v8, v9, v10);
-  objc_msgSend_p_updateVisiblePageRange_forLayoutController_(v8, v11, var0, var1, v7);
-  v14 = objc_msgSend__printableInfos(v8, v12, v13);
+  var1 = range.var1;
+  var0 = range.var0;
+  controllerCopy = controller;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_p_measureHeadersAndFooters(selfCopy, v9, v10);
+  objc_msgSend_p_updateVisiblePageRange_forLayoutController_(selfCopy, v11, var0, var1, controllerCopy);
+  v14 = objc_msgSend__printableInfos(selfCopy, v12, v13);
   v15 = objc_alloc(MEMORY[0x277CBEB18]);
-  v18 = objc_msgSend_count(v8->_hintCacheDictionary, v16, v17);
+  v18 = objc_msgSend_count(selfCopy->_hintCacheDictionary, v16, v17);
   v20 = objc_msgSend_initWithCapacity_(v15, v19, v18);
-  hintCacheDictionary = v8->_hintCacheDictionary;
+  hintCacheDictionary = selfCopy->_hintCacheDictionary;
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = sub_275F3A754;
@@ -1372,12 +1372,12 @@ LABEL_16:
   v23 = v20;
   v31 = v23;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(hintCacheDictionary, v24, &v26);
-  objc_msgSend_removeObjectsForKeys_(v8->_hintCacheDictionary, v25, v23, v26, v27, v28, v29);
+  objc_msgSend_removeObjectsForKeys_(selfCopy->_hintCacheDictionary, v25, v23, v26, v27, v28, v29);
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (TSUCellCoord)pageCoordinateForPageLayoutAtUnscaledPoint:(CGPoint)a3
+- (TSUCellCoord)pageCoordinateForPageLayoutAtUnscaledPoint:(CGPoint)point
 {
   v5 = objc_msgSend_printProperties(self, a2, v3);
   objc_msgSend_contentScale(self, v6, v7);
@@ -1391,7 +1391,7 @@ LABEL_16:
   return v20;
 }
 
-- (TSUCellCoord)p_pageCoordinateForPageLayoutAtDevicePoint:(CGPoint)a3
+- (TSUCellCoord)p_pageCoordinateForPageLayoutAtDevicePoint:(CGPoint)point
 {
   v5 = objc_msgSend_printProperties(self, a2, v3);
   objc_msgSend_userViewScale(self, v6, v7);
@@ -1405,21 +1405,21 @@ LABEL_16:
   return v18;
 }
 
-- (TSUCellCoord)pageCoordinateForDrawableAtUnscaledPoint:(CGPoint)a3
+- (TSUCellCoord)pageCoordinateForDrawableAtUnscaledPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   objc_msgSend_contentFrame(self, a2, v3);
 
   return objc_msgSend__pageCoordinateWithPageSize_forPoint_(self, v7, v8, v9, v10, x, y);
 }
 
-- (TSUCellCoord)_pageCoordinateWithPageSize:(CGSize)a3 forPoint:(CGPoint)a4
+- (TSUCellCoord)_pageCoordinateWithPageSize:(CGSize)size forPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   v9 = objc_msgSend_infoProvider(self, a2, v4);
   IsLeftToRight = objc_msgSend_layoutIsLeftToRight(v9, v10, v11);
   v13 = -x;
@@ -1507,9 +1507,9 @@ LABEL_11:
   return (v18 | v17);
 }
 
-- (id)pageLayoutGeometryForPrintingAtPageCoordinate:(TSUCellCoord)a3
+- (id)pageLayoutGeometryForPrintingAtPageCoordinate:(TSUCellCoord)coordinate
 {
-  v5 = objc_msgSend_printProperties(self, a2, *&a3);
+  v5 = objc_msgSend_printProperties(self, a2, *&coordinate);
   objc_msgSend_contentScale(self, v6, v7);
   v9 = v8;
   isPortrait = objc_msgSend_isPortrait(self, v10, v11);
@@ -1518,7 +1518,7 @@ LABEL_11:
   v17 = v16;
 
   memset(&v23, 0, sizeof(v23));
-  CGAffineTransformMakeTranslation(&v23, v15 * a3.column, v17 * a3.row);
+  CGAffineTransformMakeTranslation(&v23, v15 * coordinate.column, v17 * coordinate.row);
   v18 = objc_alloc(MEMORY[0x277D80300]);
   v22 = v23;
   v20 = objc_msgSend_initWithSize_transform_(v18, v19, &v22, v15, v17);
@@ -1526,9 +1526,9 @@ LABEL_11:
   return v20;
 }
 
-- (id)pageLayoutGeometryForPageCoordinate:(TSUCellCoord)a3
+- (id)pageLayoutGeometryForPageCoordinate:(TSUCellCoord)coordinate
 {
-  v5 = objc_msgSend_infoProvider(self, a2, *&a3);
+  v5 = objc_msgSend_infoProvider(self, a2, *&coordinate);
   IsLeftToRight = objc_msgSend_layoutIsLeftToRight(v5, v6, v7);
 
   v11 = objc_msgSend_printProperties(self, v9, v10);
@@ -1541,7 +1541,7 @@ LABEL_11:
 
   objc_msgSend_pageSizeWithGutter(self, v24, v25);
   memset(&v36, 0, sizeof(v36));
-  column = a3.column;
+  column = coordinate.column;
   v29 = -(v21 + v28 * column);
   v30 = v28 * column;
   if (!IsLeftToRight)
@@ -1549,7 +1549,7 @@ LABEL_11:
     v30 = v29;
   }
 
-  CGAffineTransformMakeTranslation(&v36, v30, v26 * a3.row);
+  CGAffineTransformMakeTranslation(&v36, v30, v26 * coordinate.row);
   v31 = objc_alloc(MEMORY[0x277D80300]);
   v35 = v36;
   v33 = objc_msgSend_initWithSize_transform_(v31, v32, &v35, v21, v23);
@@ -1557,9 +1557,9 @@ LABEL_11:
   return v33;
 }
 
-- (CGRect)printingLayoutRectForPageIndex:(unint64_t)a3
+- (CGRect)printingLayoutRectForPageIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_pageCoordinateForPageIndex_(self, a2, a3);
+  v4 = objc_msgSend_pageCoordinateForPageIndex_(self, a2, index);
   v7 = objc_msgSend_printProperties(self, v5, v6);
   objc_msgSend_contentScale(self, v8, v9);
   v11 = v10;
@@ -1579,28 +1579,28 @@ LABEL_11:
   return result;
 }
 
-- (id)p_pageLayoutAtCoordinate:(TSUCellCoord)a3 shouldCachePageLayout:(BOOL)a4
+- (id)p_pageLayoutAtCoordinate:(TSUCellCoord)coordinate shouldCachePageLayout:(BOOL)layout
 {
-  v4 = a4;
-  v8 = objc_msgSend_objectForPageCoordinate_(self->_pageLayoutCache, a2, *&a3);
+  layoutCopy = layout;
+  v8 = objc_msgSend_objectForPageCoordinate_(self->_pageLayoutCache, a2, *&coordinate);
   if (!v8)
   {
-    v8 = objc_msgSend__createPageLayoutForCoordinate_(self, v7, *&a3);
-    if (v4)
+    v8 = objc_msgSend__createPageLayoutForCoordinate_(self, v7, *&coordinate);
+    if (layoutCopy)
     {
-      objc_msgSend_setObject_forPageCoordinate_(self->_pageLayoutCache, v9, v8, a3);
+      objc_msgSend_setObject_forPageCoordinate_(self->_pageLayoutCache, v9, v8, coordinate);
     }
   }
 
   return v8;
 }
 
-- (id)_createPageLayoutForCoordinate:(TSUCellCoord)a3
+- (id)_createPageLayoutForCoordinate:(TSUCellCoord)coordinate
 {
-  v5 = objc_msgSend_pageRangeForContentWithUpperBound_(self, a2, *&a3);
-  if (a3.row > v6 || a3.column > WORD2(v6) || v5 > a3.row || WORD2(v5) > a3.column)
+  v5 = objc_msgSend_pageRangeForContentWithUpperBound_(self, a2, *&coordinate);
+  if (coordinate.row > v6 || coordinate.column > WORD2(v6) || v5 > coordinate.row || WORD2(v5) > coordinate.column)
   {
-    isPageAddendumAtPageCoordinate = objc_msgSend__isPageAddendumAtPageCoordinate_(self, v6, *&a3);
+    isPageAddendumAtPageCoordinate = objc_msgSend__isPageAddendumAtPageCoordinate_(self, v6, *&coordinate);
     v12 = off_27A6A2030;
     if (!isPageAddendumAtPageCoordinate)
     {
@@ -1608,22 +1608,22 @@ LABEL_11:
     }
 
     v13 = objc_alloc(*v12);
-    v9 = objc_msgSend_initWithPageController_pageCoordinate_(v13, v14, self, a3);
+    v9 = objc_msgSend_initWithPageController_pageCoordinate_(v13, v14, self, coordinate);
   }
 
   else
   {
     v7 = [TNPageLayoutContainer alloc];
-    v9 = objc_msgSend_initWithPageController_pageCoordinate_(v7, v8, self, a3);
-    objc_msgSend_layoutPrintableInfosIntoPageLayout_atPageCoordinate_(self, v10, v9, a3);
+    v9 = objc_msgSend_initWithPageController_pageCoordinate_(v7, v8, self, coordinate);
+    objc_msgSend_layoutPrintableInfosIntoPageLayout_atPageCoordinate_(self, v10, v9, coordinate);
   }
 
   return v9;
 }
 
-- (TSUCellCoord)pageCoordinateForPageIndex:(unint64_t)a3
+- (TSUCellCoord)pageCoordinateForPageIndex:(unint64_t)index
 {
-  objc_msgSend_pageRangeForContent(self, a2, a3);
+  objc_msgSend_pageRangeForContent(self, a2, index);
   v6 = v5;
   v8 = objc_msgSend_infoProvider(self, v5, v7);
   v11 = objc_msgSend_pageOrder(v8, v9, v10);
@@ -1637,10 +1637,10 @@ LABEL_11:
 
     else
     {
-      v12 = a3 / (WORD2(v6) + 1);
+      v12 = index / (WORD2(v6) + 1);
     }
 
-    LOWORD(v13) = a3 - v12 * (WORD2(v6) + 1);
+    LOWORD(v13) = index - v12 * (WORD2(v6) + 1);
   }
 
   else
@@ -1653,18 +1653,18 @@ LABEL_11:
 
     else
     {
-      v13 = a3 / v12;
+      v13 = index / v12;
     }
 
-    LODWORD(v12) = a3 - v12 * v13;
+    LODWORD(v12) = index - v12 * v13;
   }
 
   return ((v13 << 32) | v12);
 }
 
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForPageIndex:(unint64_t)a3
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForPageIndex:(unint64_t)index
 {
-  v3 = objc_msgSend_pageCoordinateForPageIndex_(self, a2, a3);
+  v3 = objc_msgSend_pageCoordinateForPageIndex_(self, a2, index);
   v4 = v3;
   result.var1 = v4;
   result.var0 = v3;
@@ -1805,11 +1805,11 @@ LABEL_11:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)p_invalidateCachedAutoFitContentScaleForInfoProvider:(id)a3 notify:(BOOL)a4
+- (void)p_invalidateCachedAutoFitContentScaleForInfoProvider:(id)provider notify:(BOOL)notify
 {
-  v4 = a4;
-  v34 = a3;
-  if (!v34)
+  notifyCopy = notify;
+  providerCopy = provider;
+  if (!providerCopy)
   {
     v18 = objc_opt_class();
     v21 = objc_msgSend_cachedAutoFitContentScaleDictionary(v18, v19, v20);
@@ -1823,16 +1823,16 @@ LABEL_6:
 
   v6 = objc_opt_class();
   v9 = objc_msgSend_cachedAutoFitContentScaleDictionary(v6, v7, v8);
-  objc_msgSend_removeObjectForKey_(v9, v10, v34);
+  objc_msgSend_removeObjectForKey_(v9, v10, providerCopy);
 
   v15 = objc_msgSend_infoProvider(self, v11, v12);
-  if (v15 != v34)
+  if (v15 != providerCopy)
   {
 
     goto LABEL_7;
   }
 
-  isAutofitOn = objc_msgSend_isAutofitOn(v34, v13, v14);
+  isAutofitOn = objc_msgSend_isAutofitOn(providerCopy, v13, v14);
 
   if (isAutofitOn)
   {
@@ -1842,9 +1842,9 @@ LABEL_6:
 LABEL_7:
   v27 = objc_msgSend_infoProvider(self, v16, v17);
 
-  if (v34)
+  if (providerCopy)
   {
-    v30 = v27 == v34;
+    v30 = v27 == providerCopy;
   }
 
   else
@@ -1853,7 +1853,7 @@ LABEL_7:
   }
 
   v31 = v30;
-  if (v4 && v31)
+  if (notifyCopy && v31)
   {
     if (objc_msgSend_isProcessingChanges(self, v28, v29))
     {
@@ -1867,25 +1867,25 @@ LABEL_7:
   }
 }
 
-- (id)i_layerForHeaderType:(int64_t)a3 fragment:(int64_t)a4 atPageCoordinate:(TSUCellCoord)a5
+- (id)i_layerForHeaderType:(int64_t)type fragment:(int64_t)fragment atPageCoordinate:(TSUCellCoord)coordinate
 {
   v6 = 112;
-  if (!a3)
+  if (!type)
   {
     v6 = 104;
   }
 
-  v7 = objc_msgSend_objectForPageCoordinate_(*(&self->super.isa + v6), a2, *&a5);
-  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v8, a4);
+  v7 = objc_msgSend_objectForPageCoordinate_(*(&self->super.isa + v6), a2, *&coordinate);
+  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v8, fragment);
   v11 = objc_msgSend_objectForKeyedSubscript_(v7, v10, v9);
 
   return v11;
 }
 
-- (id)i_childLayersAtAddendumPageCoordinate:(TSUCellCoord)a3
+- (id)i_childLayersAtAddendumPageCoordinate:(TSUCellCoord)coordinate
 {
   v20 = 0;
-  v4 = objc_msgSend__pageIndexForPageCoordinate_(self, a2, *&a3);
+  v4 = objc_msgSend__pageIndexForPageCoordinate_(self, a2, *&coordinate);
   v6 = objc_msgSend_additionalContentProviderAtPageIndex_outPageIndexInProvider_(self, v5, v4, &v20);
   v9 = objc_msgSend_addendumContentCache(self, v7, v8);
   v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v6);
@@ -1897,11 +1897,11 @@ LABEL_7:
   return v18;
 }
 
-- (void)i_addChildLayer:(id)a3 atAddendumPageCoordinate:(TSUCellCoord)a4
+- (void)i_addChildLayer:(id)layer atAddendumPageCoordinate:(TSUCellCoord)coordinate
 {
-  v6 = a3;
+  layerCopy = layer;
   v29 = 0;
-  v8 = objc_msgSend__pageIndexForPageCoordinate_(self, v7, *&a4);
+  v8 = objc_msgSend__pageIndexForPageCoordinate_(self, v7, *&coordinate);
   v10 = objc_msgSend_additionalContentProviderAtPageIndex_outPageIndexInProvider_(self, v9, v8, &v29);
   v13 = objc_msgSend_addendumContentCache(self, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v13, v14, v10);
@@ -1925,44 +1925,44 @@ LABEL_7:
     v23 = v25;
   }
 
-  objc_msgSend_addObject_(v23, v24, v6);
+  objc_msgSend_addObject_(v23, v24, layerCopy);
 }
 
-- (void)i_setLayer:(id)a3 forHeaderType:(int64_t)a4 fragment:(int64_t)a5 atPageCoordinate:(TSUCellCoord)a6
+- (void)i_setLayer:(id)layer forHeaderType:(int64_t)type fragment:(int64_t)fragment atPageCoordinate:(TSUCellCoord)coordinate
 {
-  v19 = a3;
+  layerCopy = layer;
   v10 = 112;
-  if (!a4)
+  if (!type)
   {
     v10 = 104;
   }
 
   v11 = *(&self->super.isa + v10);
-  v15 = objc_msgSend_objectForPageCoordinate_(v11, v12, *&a6);
+  v15 = objc_msgSend_objectForPageCoordinate_(v11, v12, *&coordinate);
   if (!v15)
   {
     v15 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v13, v14);
-    objc_msgSend_setObject_forPageCoordinate_(v11, v16, v15, a6);
+    objc_msgSend_setObject_forPageCoordinate_(v11, v16, v15, coordinate);
   }
 
-  v17 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v13, a5);
-  objc_msgSend_setObject_forKeyedSubscript_(v15, v18, v19, v17);
+  v17 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v13, fragment);
+  objc_msgSend_setObject_forKeyedSubscript_(v15, v18, layerCopy, v17);
 }
 
-- (void)p_willBeginDynamicContentScaleChange:(id)a3
+- (void)p_willBeginDynamicContentScaleChange:(id)change
 {
   self->_inDynamicContentScaleChange = 1;
-  if (objc_msgSend_p_headersOrFootersContainPageNumberRelatedAttachments(self, a2, a3))
+  if (objc_msgSend_p_headersOrFootersContainPageNumberRelatedAttachments(self, a2, change))
   {
     self->_cachedPageCountDuringDynamicContentScaleChange = objc_msgSend_numPages(self, v4, v5);
   }
 }
 
-- (void)p_didEndDynamicContentScaleChange:(id)a3
+- (void)p_didEndDynamicContentScaleChange:(id)change
 {
   self->_inDynamicContentScaleChange = 0;
   self->_cachedPageCountDuringDynamicContentScaleChange = -1;
-  objc_msgSend_removeAllObjects(self->_headerLayerCache, a2, a3);
+  objc_msgSend_removeAllObjects(self->_headerLayerCache, a2, change);
   objc_msgSend_removeAllObjects(self->_footerLayerCache, v4, v5);
   objc_msgSend_removeAllObjects(self->_addendumContentCache, v6, v7);
 
@@ -1988,12 +1988,12 @@ LABEL_7:
   return v3;
 }
 
-- (void)registerPageLayout:(id)a3 atPageCoordinate:(TSUCellCoord)a4
+- (void)registerPageLayout:(id)layout atPageCoordinate:(TSUCellCoord)coordinate
 {
-  v10 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v8 = objc_msgSend_objectForPageCoordinate_(v6->_pageLayoutCache, v7, *&a4);
+  layoutCopy = layout;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_objectForPageCoordinate_(selfCopy->_pageLayoutCache, v7, *&coordinate);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2001,22 +2001,22 @@ LABEL_7:
     if (objc_opt_isKindOfClass())
     {
 
-      v10 = 0;
+      layoutCopy = 0;
     }
   }
 
-  objc_msgSend_setObject_forPageCoordinate_(v6->_pageLayoutCache, v9, v10, a4);
+  objc_msgSend_setObject_forPageCoordinate_(selfCopy->_pageLayoutCache, v9, layoutCopy, coordinate);
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_updateVisiblePageRange:(id)a3 forLayoutController:(id)a4
+- (void)p_updateVisiblePageRange:(id)range forLayoutController:(id)controller
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v68 = *MEMORY[0x277D85DE8];
-  v54 = a4;
-  v9 = objc_msgSend_rootLayout(v54, v7, v8);
+  controllerCopy = controller;
+  v9 = objc_msgSend_rootLayout(controllerCopy, v7, v8);
   v12 = objc_msgSend_children(v9, v10, v11);
   v55 = objc_msgSend_mutableCopy(v12, v13, v14);
 
@@ -2137,7 +2137,7 @@ LABEL_7:
   v60[1] = 3221225472;
   v61 = sub_275F3C5D0;
   v62 = &unk_27A6A33C8;
-  v63 = self;
+  selfCopy = self;
   v39 = v55;
   v64 = v39;
   v40 = v9;
@@ -2195,24 +2195,24 @@ LABEL_7:
   }
 }
 
-- (id)p_hintCacheForInfo:(id)a3
+- (id)p_hintCacheForInfo:(id)info
 {
-  v4 = a3;
-  v6 = objc_msgSend_objectForKey_(self->_hintCacheDictionary, v5, v4);
+  infoCopy = info;
+  v6 = objc_msgSend_objectForKey_(self->_hintCacheDictionary, v5, infoCopy);
   if (!v6)
   {
     v7 = [TNHintCache alloc];
-    v6 = objc_msgSend_initWithInfo_pageController_(v7, v8, v4, self);
-    objc_msgSend_setObject_forUncopiedKey_(self->_hintCacheDictionary, v9, v6, v4);
+    v6 = objc_msgSend_initWithInfo_pageController_(v7, v8, infoCopy, self);
+    objc_msgSend_setObject_forUncopiedKey_(self->_hintCacheDictionary, v9, v6, infoCopy);
   }
 
   return v6;
 }
 
-- (id)p_layoutForInfo:(id)a3 atCoordinate:(TSUCellCoord)a4 parentLayout:(id)a5
+- (id)p_layoutForInfo:(id)info atCoordinate:(TSUCellCoord)coordinate parentLayout:(id)layout
 {
-  v8 = a5;
-  v11 = objc_msgSend_p_hintCacheForInfo_(self, v9, a3);
+  layoutCopy = layout;
+  v11 = objc_msgSend_p_hintCacheForInfo_(self, v9, info);
   if (!v11)
   {
     v12 = MEMORY[0x277D81150];
@@ -2223,15 +2223,15 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  v19 = objc_msgSend_layoutAtCoordinate_parentLayout_(v11, v10, *&a4, v8);
+  v19 = objc_msgSend_layoutAtCoordinate_parentLayout_(v11, v10, *&coordinate, layoutCopy);
 
   return v19;
 }
 
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForInfo:(id)a3 upperBound:(TSUCellCoord)a4
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeForInfo:(id)info upperBound:(TSUCellCoord)bound
 {
-  v5 = objc_msgSend_p_hintCacheForInfo_(self, a2, a3);
-  v7 = objc_msgSend_pageRangeWithUpperBound_(v5, v6, *&a4);
+  v5 = objc_msgSend_p_hintCacheForInfo_(self, a2, info);
+  v7 = objc_msgSend_pageRangeWithUpperBound_(v5, v6, *&bound);
   v9 = v8;
 
   v10 = v7;
@@ -2241,10 +2241,10 @@ LABEL_7:
   return result;
 }
 
-- (void)layoutPrintableInfosIntoPageLayout:(id)a3 atPageCoordinate:(TSUCellCoord)a4
+- (void)layoutPrintableInfosIntoPageLayout:(id)layout atPageCoordinate:(TSUCellCoord)coordinate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  layoutCopy = layout;
   objc_msgSend__printableInfos(self, v7, v8);
   v17 = 0u;
   v18 = 0u;
@@ -2264,7 +2264,7 @@ LABEL_7:
           objc_enumerationMutation(v9);
         }
 
-        objc_msgSend_p_layoutInfo_intoPageLayout_atPageCoordinate_(self, v11, *(*(&v15 + 1) + 8 * v14++), v6, a4, v15);
+        objc_msgSend_p_layoutInfo_intoPageLayout_atPageCoordinate_(self, v11, *(*(&v15 + 1) + 8 * v14++), layoutCopy, coordinate, v15);
       }
 
       while (v12 != v14);
@@ -2275,15 +2275,15 @@ LABEL_7:
   }
 }
 
-- (void)p_layoutInfo:(id)a3 intoPageLayout:(id)a4 atPageCoordinate:(TSUCellCoord)a5
+- (void)p_layoutInfo:(id)info intoPageLayout:(id)layout atPageCoordinate:(TSUCellCoord)coordinate
 {
-  v31 = a3;
-  v8 = a4;
-  v10 = objc_msgSend_pageRangeForInfo_upperBound_(self, v9, v31, a5);
-  if (a5.row <= v11 && a5.column <= WORD2(v11) && v10 <= a5.row && WORD2(v10) <= a5.column && (objc_msgSend_containsLayoutForInfo_(v8, v11, v31) & 1) == 0)
+  infoCopy = info;
+  layoutCopy = layout;
+  v10 = objc_msgSend_pageRangeForInfo_upperBound_(self, v9, infoCopy, coordinate);
+  if (coordinate.row <= v11 && coordinate.column <= WORD2(v11) && v10 <= coordinate.row && WORD2(v10) <= coordinate.column && (objc_msgSend_containsLayoutForInfo_(layoutCopy, v11, infoCopy) & 1) == 0)
   {
-    v14 = objc_msgSend_contentLayout(v8, v12, v13);
-    v18 = objc_msgSend_p_layoutForInfo_atCoordinate_parentLayout_(self, v15, v31, a5, v14);
+    v14 = objc_msgSend_contentLayout(layoutCopy, v12, v13);
+    v18 = objc_msgSend_p_layoutForInfo_atCoordinate_parentLayout_(self, v15, infoCopy, coordinate, v14);
     if (!v18)
     {
       v19 = MEMORY[0x277D81150];
@@ -2300,14 +2300,14 @@ LABEL_7:
     {
       v27 = v18;
       objc_msgSend_removeFromParent(v27, v28, v29);
-      objc_msgSend_addChild_(v8, v30, v27);
+      objc_msgSend_addChild_(layoutCopy, v30, v27);
     }
   }
 }
 
-- (id)p_pageInfoForPageAtIndex:(unint64_t)a3
+- (id)p_pageInfoForPageAtIndex:(unint64_t)index
 {
-  isPageAddendumAtPageIndex = objc_msgSend__isPageAddendumAtPageIndex_(self, a2, a3);
+  isPageAddendumAtPageIndex = objc_msgSend__isPageAddendumAtPageIndex_(self, a2, index);
   v6 = off_27A6A2020;
   if (!isPageAddendumAtPageIndex)
   {
@@ -2315,25 +2315,25 @@ LABEL_7:
   }
 
   v7 = objc_alloc(*v6);
-  v9 = objc_msgSend_initWithPageIndex_pageController_(v7, v8, a3, self);
+  v9 = objc_msgSend_initWithPageIndex_pageController_(v7, v8, index, self);
 
   return v9;
 }
 
-- (id)pageInfoForPageIndex:(unint64_t)a3
+- (id)pageInfoForPageIndex:(unint64_t)index
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  pageLayoutCache = v4->_pageLayoutCache;
-  v7 = objc_msgSend_pageCoordinateForPageIndex_(v4, v6, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pageLayoutCache = selfCopy->_pageLayoutCache;
+  v7 = objc_msgSend_pageCoordinateForPageIndex_(selfCopy, v6, index);
   v9 = objc_msgSend_objectForPageCoordinate_(pageLayoutCache, v8, v7);
   v12 = v9;
   if (!v9 || (objc_msgSend_info(v9, v10, v11), (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v13 = objc_msgSend_p_pageInfoForPageAtIndex_(v4, v10, a3);
+    v13 = objc_msgSend_p_pageInfoForPageAtIndex_(selfCopy, v10, index);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
@@ -2378,12 +2378,12 @@ LABEL_7:
   return v8;
 }
 
-- (void)drawAdditionalContentForPageIndex:(unint64_t)a3 inContext:(CGContext *)a4
+- (void)drawAdditionalContentForPageIndex:(unint64_t)index inContext:(CGContext *)context
 {
   v40 = *MEMORY[0x277D85DE8];
   if (!self->_inDynamicContentScaleChange)
   {
-    v7 = objc_msgSend_numPagesForContent(self, a2, a3);
+    v7 = objc_msgSend_numPagesForContent(self, a2, index);
     v10 = objc_msgSend_infoProvider(self, v8, v9);
     isUsingStartPageNumber = objc_msgSend_isUsingStartPageNumber(v10, v11, v12);
 
@@ -2403,7 +2403,7 @@ LABEL_7:
       v19 = objc_msgSend_priorPageCount(self, v22, v23);
     }
 
-    v24 = a3 - v19;
+    v24 = index - v19;
     if (v24 >= v7)
     {
       v34 = 0;
@@ -2411,7 +2411,7 @@ LABEL_7:
       v33 = v31;
       if (v31)
       {
-        objc_msgSend_drawContentForAdditionalPage_inContext_(v31, v32, v34, a4);
+        objc_msgSend_drawContentForAdditionalPage_inContext_(v31, v32, v34, context);
       }
     }
 
@@ -2436,7 +2436,7 @@ LABEL_7:
               objc_enumerationMutation(v25);
             }
 
-            objc_msgSend_drawOverlayContentForPageIndex_inContext_(*(*(&v35 + 1) + 8 * v30++), v27, v24, a4);
+            objc_msgSend_drawOverlayContentForPageIndex_inContext_(*(*(&v35 + 1) + 8 * v30++), v27, v24, context);
           }
 
           while (v28 != v30);
@@ -2449,16 +2449,16 @@ LABEL_7:
   }
 }
 
-- (id)additionalContentProviderAtPageIndex:(unint64_t)a3 outPageIndexInProvider:(unint64_t *)a4
+- (id)additionalContentProviderAtPageIndex:(unint64_t)index outPageIndexInProvider:(unint64_t *)provider
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (provider)
   {
-    *a4 = 0x7FFFFFFFFFFFFFFFLL;
+    *provider = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = objc_msgSend_numPagesForContent(self, a2, a3);
-  if (v7 <= a3)
+  v7 = objc_msgSend_numPagesForContent(self, a2, index);
+  if (v7 <= index)
   {
     v11 = v7;
     v25 = 0u;
@@ -2484,12 +2484,12 @@ LABEL_7:
           v20 = *(*(&v23 + 1) + 8 * v18);
           v21 = objc_msgSend_numberOfAdditionalPages(v20, v14, v15);
           v11 = v21 + v19;
-          if (v21 + v19 > a3)
+          if (v21 + v19 > index)
           {
             v10 = v20;
-            if (a4)
+            if (provider)
             {
-              *a4 = a3 - v19;
+              *provider = index - v19;
             }
 
             goto LABEL_16;
@@ -2522,17 +2522,17 @@ LABEL_16:
   return v10;
 }
 
-- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)a3
+- (id)addendumPageTitleOfAnnotationPrintingHelper:(id)helper
 {
-  v3 = objc_msgSend_infoProvider(self, a2, a3);
+  v3 = objc_msgSend_infoProvider(self, a2, helper);
   v6 = objc_msgSend_name(v3, v4, v5);
 
   return v6;
 }
 
-- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)a3
+- (CGRect)rectForAddendumContentOfAnnotationPrintingHelper:(id)helper
 {
-  objc_msgSend__measureHeadersAndFootersIfNecessary(self, a2, a3);
+  objc_msgSend__measureHeadersAndFootersIfNecessary(self, a2, helper);
   v6 = objc_msgSend_printProperties(self, v4, v5);
   isPortrait = objc_msgSend_isPortrait(self, v7, v8);
   objc_msgSend_headerTextHeight(self, v10, v11);
@@ -2553,9 +2553,9 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)a3
+- (CGRect)availableRectForAddendumContentOfAnnotationPrintingHelper:(id)helper
 {
-  MEMORY[0x2821F9670](self, sel_rectForAddendumContentOfAnnotationPrintingHelper_, a3);
+  MEMORY[0x2821F9670](self, sel_rectForAddendumContentOfAnnotationPrintingHelper_, helper);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2563,22 +2563,22 @@ LABEL_16:
   return result;
 }
 
-- (void)annotationPrintingHelper:(id)a3 enumerateLayoutsByPageWithBlock:(id)a4
+- (void)annotationPrintingHelper:(id)helper enumerateLayoutsByPageWithBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_275F3D4D4;
   v8[3] = &unk_27A6A33F0;
-  v9 = v5;
-  v6 = v5;
+  v9 = blockCopy;
+  v6 = blockCopy;
   objc_msgSend_enumerateAnnotationPagesWithBlock_(self, v7, v8);
 }
 
-- (void)enumerateAnnotationPagesWithBlock:(id)a3
+- (void)enumerateAnnotationPagesWithBlock:(id)block
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v45[0] = 0;
   v45[1] = 0;
   v44 = v45;
@@ -2665,7 +2665,7 @@ LABEL_16:
 
       v34 = objc_msgSend_contentLayout(v31, v32, v33);
       v37 = objc_msgSend_children(v34, v35, v36);
-      v4[2](v4, v37);
+      blockCopy[2](blockCopy, v37);
 
       ++v26;
     }
@@ -2683,30 +2683,30 @@ LABEL_16:
   sub_275F16814(&v44, v45[0]);
 }
 
-- (void)enumerateLayoutsByPageWithBlock:(id)a3
+- (void)enumerateLayoutsByPageWithBlock:(id)block
 {
-  v10 = a3;
+  blockCopy = block;
   v7 = objc_msgSend_numPagesForContent(self, v4, v5);
   if (v7)
   {
     for (i = 0; i != v7; ++i)
     {
       v9 = objc_msgSend__layoutsForPageIndex_(self, v6, i);
-      v10[2](v10, v9, i);
+      blockCopy[2](blockCopy, v9, i);
     }
   }
 }
 
-- (id)annotationPrintingHelper:(id)a3 layoutsForPageIndex:(unint64_t)a4
+- (id)annotationPrintingHelper:(id)helper layoutsForPageIndex:(unint64_t)index
 {
-  v4 = objc_msgSend__layoutsForPageIndex_(self, a2, a4);
+  v4 = objc_msgSend__layoutsForPageIndex_(self, a2, index);
 
   return v4;
 }
 
-- (id)_layoutsForPageIndex:(unint64_t)a3
+- (id)_layoutsForPageIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_pageCoordinateForPageIndex_(self, a2, a3);
+  v4 = objc_msgSend_pageCoordinateForPageIndex_(self, a2, index);
   objc_opt_class();
   v6 = objc_msgSend_p_pageLayoutAtCoordinate_(self, v5, v4);
   v7 = TSUCheckedDynamicCast();
@@ -2717,9 +2717,9 @@ LABEL_16:
   return v13;
 }
 
-- (CGAffineTransform)annotationPrintingHelper:(SEL)a3 inversePureTransformInRootForContentAtPageIndex:(id)a4
+- (CGAffineTransform)annotationPrintingHelper:(SEL)helper inversePureTransformInRootForContentAtPageIndex:(id)index
 {
-  v7 = objc_msgSend_pageCoordinateForPageIndex_(self, a3, a5);
+  v7 = objc_msgSend_pageCoordinateForPageIndex_(self, helper, a5);
   objc_opt_class();
   v9 = objc_msgSend_p_pageLayoutAtCoordinate_(self, v8, v7);
   v20 = TSUCheckedDynamicCast();

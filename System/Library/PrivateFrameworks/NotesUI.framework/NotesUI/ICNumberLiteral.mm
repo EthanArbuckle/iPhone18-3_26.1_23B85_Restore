@@ -1,11 +1,11 @@
 @interface ICNumberLiteral
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICNumberLiteral)init;
-- (ICNumberLiteral)initWithRange:(_NSRange)a3 string:(id)a4;
+- (ICNumberLiteral)initWithRange:(_NSRange)range string:(id)string;
 - (NSString)string;
 - (_NSRange)range;
-- (void)setRange:(_NSRange)a3;
-- (void)setString:(id)a3;
+- (void)setRange:(_NSRange)range;
+- (void)setString:(id)string;
 @end
 
 @implementation ICNumberLiteral
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = (self + OBJC_IVAR___ICNumberLiteral_range);
   swift_beginAccess();
   *v5 = location;
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   v4 = sub_1D4419C54();
   v6 = v5;
@@ -50,10 +50,10 @@
   v7[1] = v6;
 }
 
-- (ICNumberLiteral)initWithRange:(_NSRange)a3 string:(id)a4
+- (ICNumberLiteral)initWithRange:(_NSRange)range string:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = sub_1D4419C54();
   v8 = (self + OBJC_IVAR___ICNumberLiteral_range);
   *v8 = location;
@@ -66,11 +66,11 @@
   return [(ICNumberLiteral *)&v12 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D441A804();
     swift_unknownObjectRelease();
@@ -79,7 +79,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ICNumberLiteral.isEqual(_:)(v8);

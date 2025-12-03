@@ -1,8 +1,8 @@
 @interface MASecureMobileAssetTypes
 + (id)sharedInstance;
-- (BOOL)fsTag:(unsigned int *)a3 forAssetType:(id)a4 specifier:(id)a5;
-- (BOOL)supportsDarwin:(id)a3;
-- (BOOL)supportsLoadableTrustCache:(id)a3;
+- (BOOL)fsTag:(unsigned int *)tag forAssetType:(id)type specifier:(id)specifier;
+- (BOOL)supportsDarwin:(id)darwin;
+- (BOOL)supportsLoadableTrustCache:(id)cache;
 - (MASecureMobileAssetTypes)init;
 - (id)_loadTypes;
 @end
@@ -29,62 +29,62 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(MASecureMobileAssetTypes *)v2 _loadTypes];
+    _loadTypes = [(MASecureMobileAssetTypes *)v2 _loadTypes];
     types = v3->_types;
-    v3->_types = v4;
+    v3->_types = _loadTypes;
   }
 
   return v3;
 }
 
-- (BOOL)supportsDarwin:(id)a3
+- (BOOL)supportsDarwin:(id)darwin
 {
-  v4 = a3;
-  v5 = [(MASecureMobileAssetTypes *)self types];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  darwinCopy = darwin;
+  types = [(MASecureMobileAssetTypes *)self types];
+  v6 = [types objectForKeyedSubscript:darwinCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [v6 objectForKeyedSubscript:@"SupportsDarwin"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)supportsLoadableTrustCache:(id)a3
+- (BOOL)supportsLoadableTrustCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(MASecureMobileAssetTypes *)self types];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  cacheCopy = cache;
+  types = [(MASecureMobileAssetTypes *)self types];
+  v6 = [types objectForKeyedSubscript:cacheCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [v6 objectForKeyedSubscript:@"SupportsLoadableTrustCache"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)fsTag:(unsigned int *)a3 forAssetType:(id)a4 specifier:(id)a5
+- (BOOL)fsTag:(unsigned int *)tag forAssetType:(id)type specifier:(id)specifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MASecureMobileAssetTypes *)self types];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  specifierCopy = specifier;
+  typeCopy = type;
+  types = [(MASecureMobileAssetTypes *)self types];
+  v11 = [types objectForKeyedSubscript:typeCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -93,13 +93,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v12 objectForKeyedSubscript:v8];
+      v13 = [v12 objectForKeyedSubscript:specifierCopy];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v15 = isKindOfClass;
-      if (a3 && (isKindOfClass & 1) != 0)
+      if (tag && (isKindOfClass & 1) != 0)
       {
-        *a3 = [v13 unsignedIntValue];
+        *tag = [v13 unsignedIntValue];
       }
     }
 

@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFHistoricalNotificationUserActions)historicalNotificationUserActionsValue;
 - (id)formattedValue;
-- (void)setHistoricalNotificationUserActionsValue:(id)a3;
+- (void)setHistoricalNotificationUserActionsValue:(id)value;
 @end
 
 @implementation CAFHistoricalNotificationUserActionsCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFHistoricalNotificationUserActionsCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFHistoricalNotificationUserActions)historicalNotificationUserActionsValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFHistoricalNotificationUserActions historicalNotificationUserActionsWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFHistoricalNotificationUserActions historicalNotificationUserActionsWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setHistoricalNotificationUserActionsValue:(id)a3
+- (void)setHistoricalNotificationUserActionsValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFHistoricalNotificationUserActionsCharacteristic *)self historicalNotificationUserActionsValue];
-  v3 = [v2 formattedValue];
+  historicalNotificationUserActionsValue = [(CAFHistoricalNotificationUserActionsCharacteristic *)self historicalNotificationUserActionsValue];
+  formattedValue = [historicalNotificationUserActionsValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

@@ -1,18 +1,18 @@
 @interface APControllerRequesterCoordinator
 + (id)requestCoordinator;
 - (APControllerRequesterCoordinator)init;
-- (id)proxyURLForRequester:(id)a3;
-- (void)_addDelegate:(id)a3 withID:(id)a4;
+- (id)proxyURLForRequester:(id)requester;
+- (void)_addDelegate:(id)delegate withID:(id)d;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)contentResponses:(id)a3 requester:(id)a4;
-- (void)extendCollectionClassesForExportedInterface:(id)a3;
-- (void)extendCollectionClassesForRemoteInterface:(id)a3;
-- (void)finishedWithRequestsForID:(id)a3;
-- (void)preWarm:(id)a3 forRequester:(id)a4 completion:(id)a5;
-- (void)proxyURLForRequester:(id)a3 withCompletionHandler:(id)a4;
-- (void)requestPromotedContentOfTypes:(id)a3 forRequester:(id)a4 forContext:(id)a5 completionHandler:(id)a6;
-- (void)sendAndRankContent:(id)a3 forContext:(id)a4 placement:(unint64_t)a5 completionHandler:(id)a6;
+- (void)contentResponses:(id)responses requester:(id)requester;
+- (void)extendCollectionClassesForExportedInterface:(id)interface;
+- (void)extendCollectionClassesForRemoteInterface:(id)interface;
+- (void)finishedWithRequestsForID:(id)d;
+- (void)preWarm:(id)warm forRequester:(id)requester completion:(id)completion;
+- (void)proxyURLForRequester:(id)requester withCompletionHandler:(id)handler;
+- (void)requestPromotedContentOfTypes:(id)types forRequester:(id)requester forContext:(id)context completionHandler:(id)handler;
+- (void)sendAndRankContent:(id)content forContext:(id)context placement:(unint64_t)placement completionHandler:(id)handler;
 @end
 
 @implementation APControllerRequesterCoordinator
@@ -48,15 +48,15 @@
   return v6;
 }
 
-- (void)requestPromotedContentOfTypes:(id)a3 forRequester:(id)a4 forContext:(id)a5 completionHandler:(id)a6
+- (void)requestPromotedContentOfTypes:(id)types forRequester:(id)requester forContext:(id)context completionHandler:(id)handler
 {
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v20 = objc_msgSend_requesterID(v10, v14, v15, v16, v17, v18, v19);
-  objc_msgSend__addDelegate_withID_(self, v21, v10, v20, v22, v23, v24);
+  requesterCopy = requester;
+  contextCopy = context;
+  handlerCopy = handler;
+  typesCopy = types;
+  v20 = objc_msgSend_requesterID(requesterCopy, v14, v15, v16, v17, v18, v19);
+  objc_msgSend__addDelegate_withID_(self, v21, requesterCopy, v20, v22, v23, v24);
 
   v31 = objc_msgSend_activeClientInfo(MEMORY[0x1E6986190], v25, v26, v27, v28, v29, v30);
   if (!v31)
@@ -72,7 +72,7 @@
   v33 = APLogForCategory();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
-    v40 = objc_msgSend_identifier(v11, v34, v35, v36, v37, v38, v39);
+    v40 = objc_msgSend_identifier(contextCopy, v34, v35, v36, v37, v38, v39);
     *buf = 138543362;
     v64 = v40;
     _os_log_impl(&dword_1BAFC4000, v33, OS_LOG_TYPE_INFO, "Requesting ad from promotedcontentd for context %{public}@", buf, 0xCu);
@@ -89,17 +89,17 @@
   }
 
   v51 = objc_msgSend_remoteObjectProxy(self, v45, v46, v47, v48, v49, v50);
-  v58 = objc_msgSend_requesterID(v10, v52, v53, v54, v55, v56, v57);
-  objc_msgSend_requestPromotedContentOfTypes_forRequester_forContext_withClientInfo_deliverEntireBatch_logID_completionHandler_(v51, v59, v13, v58, v11, v60, v61, v31, 0, v42, v12);
+  v58 = objc_msgSend_requesterID(requesterCopy, v52, v53, v54, v55, v56, v57);
+  objc_msgSend_requestPromotedContentOfTypes_forRequester_forContext_withClientInfo_deliverEntireBatch_logID_completionHandler_(v51, v59, typesCopy, v58, contextCopy, v60, v61, v31, 0, v42, handlerCopy);
 
   v62 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendAndRankContent:(id)a3 forContext:(id)a4 placement:(unint64_t)a5 completionHandler:(id)a6
+- (void)sendAndRankContent:(id)content forContext:(id)context placement:(unint64_t)placement completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
+  contentCopy = content;
   v13 = APPerfLogForCategory();
   v14 = os_signpost_id_generate(v13);
   v15 = v13;
@@ -115,25 +115,25 @@
   v28[1] = 3221225472;
   v28[2] = sub_1BAFCEEA0;
   v28[3] = &unk_1E7F20DF8;
-  v29 = v10;
-  v24 = v10;
-  objc_msgSend_sendAndRankContent_forContext_placement_logID_completionHandler_(v23, v25, v12, v11, a5, v26, v27, v14, v28);
+  v29 = handlerCopy;
+  v24 = handlerCopy;
+  objc_msgSend_sendAndRankContent_forContext_placement_logID_completionHandler_(v23, v25, contentCopy, contextCopy, placement, v26, v27, v14, v28);
 }
 
-- (void)contentResponses:(id)a3 requester:(id)a4
+- (void)contentResponses:(id)responses requester:(id)requester
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responsesCopy = responses;
+  requesterCopy = requester;
   v14 = objc_msgSend_lock(self, v8, v9, v10, v11, v12, v13);
   objc_msgSend_lock(v14, v15, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_requestDelegates(self, v21, v22, v23, v24, v25, v26);
-  v33 = objc_msgSend_objectForKey_(v27, v28, v7, v29, v30, v31, v32);
+  v33 = objc_msgSend_objectForKey_(v27, v28, requesterCopy, v29, v30, v31, v32);
 
   objc_msgSend_unlock(v14, v34, v35, v36, v37, v38, v39);
   if (v33)
   {
-    objc_msgSend_contentResponses_(v33, v40, v6, v41, v42, v43, v44);
+    objc_msgSend_contentResponses_(v33, v40, responsesCopy, v41, v42, v43, v44);
   }
 
   else
@@ -146,7 +146,7 @@
       v49 = 138412546;
       v50 = v47;
       v51 = 2112;
-      v52 = v7;
+      v52 = requesterCopy;
       _os_log_impl(&dword_1BAFC4000, v45, OS_LOG_TYPE_DEFAULT, "[%@] The requester for %@ is no longer stored. Dropping response.", &v49, 0x16u);
     }
   }
@@ -154,9 +154,9 @@
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishedWithRequestsForID:(id)a3
+- (void)finishedWithRequestsForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = APPerfLogForCategory();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -168,12 +168,12 @@
   }
 
   v15 = objc_msgSend_remoteObjectProxy(self, v9, v10, v11, v12, v13, v14);
-  objc_msgSend_finishedWithRequestsForRequester_logID_(v15, v16, v4, v6, v17, v18, v19);
+  objc_msgSend_finishedWithRequestsForRequester_logID_(v15, v16, dCopy, v6, v17, v18, v19);
 
   v26 = objc_msgSend_lock(self, v20, v21, v22, v23, v24, v25);
   objc_msgSend_lock(v26, v27, v28, v29, v30, v31, v32);
   v39 = objc_msgSend_requestDelegates(self, v33, v34, v35, v36, v37, v38);
-  objc_msgSend_removeObjectForKey_(v39, v40, v4, v41, v42, v43, v44);
+  objc_msgSend_removeObjectForKey_(v39, v40, dCopy, v41, v42, v43, v44);
 
   v51 = objc_msgSend_requestDelegates(self, v45, v46, v47, v48, v49, v50);
   v58 = objc_msgSend_count(v51, v52, v53, v54, v55, v56, v57);
@@ -185,11 +185,11 @@
   }
 }
 
-- (id)proxyURLForRequester:(id)a3
+- (id)proxyURLForRequester:(id)requester
 {
-  v4 = a3;
-  v11 = objc_msgSend_requesterID(v4, v5, v6, v7, v8, v9, v10);
-  objc_msgSend__addDelegate_withID_(self, v12, v4, v11, v13, v14, v15);
+  requesterCopy = requester;
+  v11 = objc_msgSend_requesterID(requesterCopy, v5, v6, v7, v8, v9, v10);
+  objc_msgSend__addDelegate_withID_(self, v12, requesterCopy, v11, v13, v14, v15);
 
   v32 = 0;
   v33 = &v32;
@@ -221,12 +221,12 @@
   return v28;
 }
 
-- (void)proxyURLForRequester:(id)a3 withCompletionHandler:(id)a4
+- (void)proxyURLForRequester:(id)requester withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v14 = objc_msgSend_requesterID(v7, v8, v9, v10, v11, v12, v13);
-  objc_msgSend__addDelegate_withID_(self, v15, v7, v14, v16, v17, v18);
+  handlerCopy = handler;
+  requesterCopy = requester;
+  v14 = objc_msgSend_requesterID(requesterCopy, v8, v9, v10, v11, v12, v13);
+  objc_msgSend__addDelegate_withID_(self, v15, requesterCopy, v14, v16, v17, v18);
 
   v25 = objc_msgSend_remoteObjectProxy(self, v19, v20, v21, v22, v23, v24);
   v26 = APPerfLogForCategory();
@@ -239,16 +239,16 @@
     _os_signpost_emit_with_name_impl(&dword_1BAFC4000, v29, OS_SIGNPOST_INTERVAL_BEGIN, v27, "xpcDelay", "", v34, 2u);
   }
 
-  objc_msgSend_proxyURLWithLogID_completionHandler_(v25, v30, v27, v6, v31, v32, v33);
+  objc_msgSend_proxyURLWithLogID_completionHandler_(v25, v30, v27, handlerCopy, v31, v32, v33);
 }
 
-- (void)preWarm:(id)a3 forRequester:(id)a4 completion:(id)a5
+- (void)preWarm:(id)warm forRequester:(id)requester completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v17 = objc_msgSend_requesterID(v9, v11, v12, v13, v14, v15, v16);
-  objc_msgSend__addDelegate_withID_(self, v18, v9, v17, v19, v20, v21);
+  completionCopy = completion;
+  requesterCopy = requester;
+  warmCopy = warm;
+  v17 = objc_msgSend_requesterID(requesterCopy, v11, v12, v13, v14, v15, v16);
+  objc_msgSend__addDelegate_withID_(self, v18, requesterCopy, v17, v19, v20, v21);
 
   v27 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(self, v22, &unk_1F390A6D0, v23, v24, v25, v26);
   v28 = APPerfLogForCategory();
@@ -261,22 +261,22 @@
     _os_signpost_emit_with_name_impl(&dword_1BAFC4000, v31, OS_SIGNPOST_INTERVAL_BEGIN, v29, "xpcDelay", "", v35, 2u);
   }
 
-  objc_msgSend_preWarm_logID_completion_(v27, v32, v10, v29, v8, v33, v34);
+  objc_msgSend_preWarm_logID_completion_(v27, v32, warmCopy, v29, completionCopy, v33, v34);
 }
 
-- (void)_addDelegate:(id)a3 withID:(id)a4
+- (void)_addDelegate:(id)delegate withID:(id)d
 {
-  v44 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   v13 = objc_msgSend_lock(self, v7, v8, v9, v10, v11, v12);
   objc_msgSend_lock(v13, v14, v15, v16, v17, v18, v19);
   v26 = objc_msgSend_requestDelegates(self, v20, v21, v22, v23, v24, v25);
-  v32 = objc_msgSend_objectForKey_(v26, v27, v6, v28, v29, v30, v31);
+  v32 = objc_msgSend_objectForKey_(v26, v27, dCopy, v28, v29, v30, v31);
 
   if (!v32)
   {
     v39 = objc_msgSend_requestDelegates(self, v33, v34, v35, v36, v37, v38);
-    objc_msgSend_setObject_forKey_(v39, v40, v44, v6, v41, v42, v43);
+    objc_msgSend_setObject_forKey_(v39, v40, delegateCopy, dCopy, v41, v42, v43);
   }
 
   objc_msgSend_unlock(v13, v33, v34, v35, v36, v37, v38);
@@ -376,24 +376,24 @@
   v61 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extendCollectionClassesForExportedInterface:(id)a3
+- (void)extendCollectionClassesForExportedInterface:(id)interface
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v15 = objc_msgSend_setWithObjects_(v3, v7, v5, v8, v9, v10, v11, v6, 0);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v12, v15, sel_contentResponses_requester_, 0, v13, v14, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(interfaceCopy, v12, v15, sel_contentResponses_requester_, 0, v13, v14, 0);
 }
 
-- (void)extendCollectionClassesForRemoteInterface:(id)a3
+- (void)extendCollectionClassesForRemoteInterface:(id)interface
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v15 = objc_msgSend_setWithObjects_(v3, v7, v5, v8, v9, v10, v11, v6, 0);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v12, v15, sel_sendAndRankContent_forContext_placement_logID_completionHandler_, 0, v13, v14, 1);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(interfaceCopy, v12, v15, sel_sendAndRankContent_forContext_placement_logID_completionHandler_, 0, v13, v14, 1);
 }
 
 @end

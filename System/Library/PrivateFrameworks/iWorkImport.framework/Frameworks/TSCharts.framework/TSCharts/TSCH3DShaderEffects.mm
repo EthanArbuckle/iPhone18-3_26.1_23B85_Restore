@@ -1,27 +1,27 @@
 @interface TSCH3DShaderEffects
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSectionEnabled:(int)a3;
-- (BOOL)removeEffectOfClass:(Class)a3 fromSection:(int)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSectionEnabled:(int)enabled;
+- (BOOL)removeEffectOfClass:(Class)class fromSection:(int)section;
 - (NSSet)identifier;
 - (TSCH3DShaderEffects)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)effects;
-- (void)addEffect:(id)a3 toSection:(int)a4;
-- (void)addEffectOnce:(id)a3 toSection:(int)a4;
-- (void)addEffectsFromArray:(id)a3 toSection:(int)a4;
-- (void)addVariables:(id)a3;
-- (void)enumerateEffectsUsingBlock:(id)a3;
-- (void)injectGLSLInto:(id)a3 context:(id)a4;
-- (void)injectMetalShaderInto:(id)a3 context:(id)a4;
-- (void)prependEffect:(id)a3 toSection:(int)a4;
-- (void)removeEffect:(id)a3 fromSection:(int)a4;
+- (void)addEffect:(id)effect toSection:(int)section;
+- (void)addEffectOnce:(id)once toSection:(int)section;
+- (void)addEffectsFromArray:(id)array toSection:(int)section;
+- (void)addVariables:(id)variables;
+- (void)enumerateEffectsUsingBlock:(id)block;
+- (void)injectGLSLInto:(id)into context:(id)context;
+- (void)injectMetalShaderInto:(id)into context:(id)context;
+- (void)prependEffect:(id)effect toSection:(int)section;
+- (void)removeEffect:(id)effect fromSection:(int)section;
 - (void)reset;
 - (void)resetCacheList;
-- (void)resetSection:(int)a3;
-- (void)resetSection:(int)a3 toArray:(id)a4;
-- (void)resetToArray:(id)a3;
-- (void)setEnable:(BOOL)a3 forSection:(int)a4;
+- (void)resetSection:(int)section;
+- (void)resetSection:(int)section toArray:(id)array;
+- (void)resetToArray:(id)array;
+- (void)setEnable:(BOOL)enable forSection:(int)section;
 @end
 
 @implementation TSCH3DShaderEffects
@@ -94,9 +94,9 @@
   return cacheList;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)
@@ -123,11 +123,11 @@
   return v11;
 }
 
-- (BOOL)removeEffectOfClass:(Class)a3 fromSection:(int)a4
+- (BOOL)removeEffectOfClass:(Class)class fromSection:(int)section
 {
-  v7 = *&a4;
+  v7 = *&section;
   v56 = *MEMORY[0x277D85DE8];
-  if (a4 >= 4)
+  if (section >= 4)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCH3DShaderEffects removeEffectOfClass:fromSection:]");
@@ -186,10 +186,10 @@ LABEL_13:
   return v49;
 }
 
-- (void)removeEffect:(id)a3 fromSection:(int)a4
+- (void)removeEffect:(id)effect fromSection:(int)section
 {
-  v4 = *&a4;
-  v66 = a3;
+  v4 = *&section;
+  effectCopy = effect;
   if (v4 >= 4)
   {
     v10 = MEMORY[0x277D81150];
@@ -206,14 +206,14 @@ LABEL_13:
   v35 = objc_msgSend_objectForKeyedSubscript_(sections, v31, v32, v33, v34, v30);
   v36 = TSUCheckedDynamicCast();
 
-  v41 = objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, v66);
+  v41 = objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, effectCopy);
   v46 = v41;
   if (v36 && v41 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v47 = MEMORY[0x277D81150];
     v48 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, v43, v44, v45, "[TSCH3DShaderEffects removeEffect:fromSection:]");
     v53 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v49, v50, v51, v52, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderEffects.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v47, v54, v55, v56, v57, v48, v53, 100, 0, "effect does not exist %@", v66);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v47, v54, v55, v56, v57, v48, v53, 100, 0, "effect does not exist %@", effectCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v58, v59, v60, v61);
   }
@@ -230,17 +230,17 @@ LABEL_13:
   }
 }
 
-- (void)resetToArray:(id)a3
+- (void)resetToArray:(id)array
 {
-  v12 = a3;
+  arrayCopy = array;
   objc_msgSend_reset(self, v4, v5, v6, v7);
-  objc_msgSend_addEffectsFromArray_(self, v8, v9, v10, v11, v12);
+  objc_msgSend_addEffectsFromArray_(self, v8, v9, v10, v11, arrayCopy);
 }
 
-- (void)prependEffect:(id)a3 toSection:(int)a4
+- (void)prependEffect:(id)effect toSection:(int)section
 {
-  v4 = *&a4;
-  v60 = a3;
+  v4 = *&section;
+  effectCopy = effect;
   if (v4 >= 4)
   {
     v10 = MEMORY[0x277D81150];
@@ -257,24 +257,24 @@ LABEL_13:
   v35 = objc_msgSend_objectForKeyedSubscript_(sections, v31, v32, v33, v34, v30);
   v36 = TSUCheckedDynamicCast();
 
-  if (v36 && objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, v60) != 0x7FFFFFFFFFFFFFFFLL)
+  if (v36 && objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, effectCopy) != 0x7FFFFFFFFFFFFFFFLL)
   {
     v41 = MEMORY[0x277D81150];
     v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v37, v38, v39, v40, "[TSCH3DShaderEffects prependEffect:toSection:]");
     v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, v44, v45, v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderEffects.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 122, 0, "effect already exists %@", v60);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 122, 0, "effect already exists %@", effectCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55);
   }
 
   objc_msgSend_resetCacheList(self, v37, v38, v39, v40);
-  objc_msgSend_insertObject_atIndex_(v36, v56, v57, v58, v59, v60, 0);
+  objc_msgSend_insertObject_atIndex_(v36, v56, v57, v58, v59, effectCopy, 0);
 }
 
-- (void)addEffect:(id)a3 toSection:(int)a4
+- (void)addEffect:(id)effect toSection:(int)section
 {
-  v4 = *&a4;
-  v60 = a3;
+  v4 = *&section;
+  effectCopy = effect;
   if (v4 >= 4)
   {
     v10 = MEMORY[0x277D81150];
@@ -291,24 +291,24 @@ LABEL_13:
   v35 = objc_msgSend_objectForKeyedSubscript_(sections, v31, v32, v33, v34, v30);
   v36 = TSUCheckedDynamicCast();
 
-  if (v36 && objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, v60) != 0x7FFFFFFFFFFFFFFFLL)
+  if (v36 && objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, effectCopy) != 0x7FFFFFFFFFFFFFFFLL)
   {
     v41 = MEMORY[0x277D81150];
     v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v37, v38, v39, v40, "[TSCH3DShaderEffects addEffect:toSection:]");
     v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, v44, v45, v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderEffects.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 134, 0, "effect already exists %@", v60);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 134, 0, "effect already exists %@", effectCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55);
   }
 
   objc_msgSend_resetCacheList(self, v37, v38, v39, v40);
-  objc_msgSend_addObject_(v36, v56, v57, v58, v59, v60);
+  objc_msgSend_addObject_(v36, v56, v57, v58, v59, effectCopy);
 }
 
-- (void)addEffectsFromArray:(id)a3 toSection:(int)a4
+- (void)addEffectsFromArray:(id)array toSection:(int)section
 {
-  v4 = *&a4;
-  v74 = a3;
+  v4 = *&section;
+  arrayCopy = array;
   if (v4 >= 4)
   {
     v10 = MEMORY[0x277D81150];
@@ -326,7 +326,7 @@ LABEL_13:
   v36 = TSUCheckedDynamicCast();
 
   v41 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v37, v38, v39, v40, v36);
-  v46 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v42, v43, v44, v45, v74);
+  v46 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v42, v43, v44, v45, arrayCopy);
   LODWORD(v35) = objc_msgSend_intersectsSet_(v41, v47, v48, v49, v50, v46);
 
   if (v35)
@@ -334,19 +334,19 @@ LABEL_13:
     v55 = MEMORY[0x277D81150];
     v56 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v51, v52, v53, v54, "[TSCH3DShaderEffects addEffectsFromArray:toSection:]");
     v61 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v57, v58, v59, v60, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderEffects.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v55, v62, v63, v64, v65, v56, v61, 145, 0, "effect array intersects existing array %@ %@", v74, v36);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v55, v62, v63, v64, v65, v56, v61, 145, 0, "effect array intersects existing array %@ %@", arrayCopy, v36);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v66, v67, v68, v69);
   }
 
   objc_msgSend_resetCacheList(self, v51, v52, v53, v54);
-  objc_msgSend_addObjectsFromArray_(v36, v70, v71, v72, v73, v74);
+  objc_msgSend_addObjectsFromArray_(v36, v70, v71, v72, v73, arrayCopy);
 }
 
-- (void)addEffectOnce:(id)a3 toSection:(int)a4
+- (void)addEffectOnce:(id)once toSection:(int)section
 {
-  v4 = *&a4;
-  v45 = a3;
+  v4 = *&section;
+  onceCopy = once;
   if (v4 >= 4)
   {
     v10 = MEMORY[0x277D81150];
@@ -363,16 +363,16 @@ LABEL_13:
   v35 = objc_msgSend_objectForKeyedSubscript_(sections, v31, v32, v33, v34, v30);
   v36 = TSUCheckedDynamicCast();
 
-  if (objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, v45) == 0x7FFFFFFFFFFFFFFFLL)
+  if (objc_msgSend_indexOfObject_(v36, v37, v38, v39, v40, onceCopy) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    objc_msgSend_addEffect_toSection_(self, v41, v42, v43, v44, v45, v4);
+    objc_msgSend_addEffect_toSection_(self, v41, v42, v43, v44, onceCopy, v4);
   }
 }
 
-- (void)setEnable:(BOOL)a3 forSection:(int)a4
+- (void)setEnable:(BOOL)enable forSection:(int)section
 {
-  v7 = *&a4;
-  if (a4 >= 4)
+  v7 = *&section;
+  if (section >= 4)
   {
     v10 = MEMORY[0x277D81150];
     v56 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCH3DShaderEffects setEnable:forSection:]");
@@ -388,7 +388,7 @@ LABEL_13:
   v34 = objc_msgSend_objectForKeyedSubscript_(sections, v30, v31, v32, v33, v29);
   v57 = TSUCheckedDynamicCast();
 
-  if (a3)
+  if (enable)
   {
     v39 = v57;
     if (v57)
@@ -413,10 +413,10 @@ LABEL_13:
 LABEL_8:
 }
 
-- (BOOL)isSectionEnabled:(int)a3
+- (BOOL)isSectionEnabled:(int)enabled
 {
-  v6 = *&a3;
-  if (a3 >= 4)
+  v6 = *&enabled;
+  if (enabled >= 4)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DShaderEffects isSectionEnabled:]");
@@ -435,10 +435,10 @@ LABEL_8:
   return v34 != 0;
 }
 
-- (void)resetSection:(int)a3
+- (void)resetSection:(int)section
 {
-  v6 = *&a3;
-  if (a3 >= 4)
+  v6 = *&section;
+  if (section >= 4)
   {
     v8 = MEMORY[0x277D81150];
     v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DShaderEffects resetSection:]");
@@ -458,25 +458,25 @@ LABEL_8:
   objc_msgSend_removeAllObjects(v42, v37, v38, v39, v40);
 }
 
-- (void)resetSection:(int)a3 toArray:(id)a4
+- (void)resetSection:(int)section toArray:(id)array
 {
-  v4 = *&a3;
-  v14 = a4;
+  v4 = *&section;
+  arrayCopy = array;
   objc_msgSend_resetSection_(self, v6, v7, v8, v9, v4);
-  objc_msgSend_addEffectsFromArray_toSection_(self, v10, v11, v12, v13, v14, v4);
+  objc_msgSend_addEffectsFromArray_toSection_(self, v10, v11, v12, v13, arrayCopy, v4);
 }
 
-- (void)enumerateEffectsUsingBlock:(id)a3
+- (void)enumerateEffectsUsingBlock:(id)block
 {
-  v13 = a3;
+  blockCopy = block;
   v8 = objc_msgSend_effects(self, v4, v5, v6, v7);
-  objc_msgSend_enumerateObjectsUsingBlock_(v8, v9, v10, v11, v12, v13);
+  objc_msgSend_enumerateObjectsUsingBlock_(v8, v9, v10, v11, v12, blockCopy);
 }
 
-- (void)addVariables:(id)a3
+- (void)addVariables:(id)variables
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  variablesCopy = variables;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -496,7 +496,7 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        objc_msgSend_addVariables_(*(*(&v20 + 1) + 8 * v19++), v13, v15, v16, v17, v4);
+        objc_msgSend_addVariables_(*(*(&v20 + 1) + 8 * v19++), v13, v15, v16, v17, variablesCopy);
       }
 
       while (v14 != v19);
@@ -507,11 +507,11 @@ LABEL_8:
   }
 }
 
-- (void)injectGLSLInto:(id)a3 context:(id)a4
+- (void)injectGLSLInto:(id)into context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  intoCopy = into;
+  contextCopy = context;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -531,7 +531,7 @@ LABEL_8:
           objc_enumerationMutation(v11);
         }
 
-        objc_msgSend_injectGLSLInto_context_(*(*(&v23 + 1) + 8 * v22++), v16, v18, v19, v20, v6, v7);
+        objc_msgSend_injectGLSLInto_context_(*(*(&v23 + 1) + 8 * v22++), v16, v18, v19, v20, intoCopy, contextCopy);
       }
 
       while (v17 != v22);
@@ -542,11 +542,11 @@ LABEL_8:
   }
 }
 
-- (void)injectMetalShaderInto:(id)a3 context:(id)a4
+- (void)injectMetalShaderInto:(id)into context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  intoCopy = into;
+  contextCopy = context;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -566,7 +566,7 @@ LABEL_8:
           objc_enumerationMutation(v11);
         }
 
-        objc_msgSend_injectMetalShaderInto_context_(*(*(&v23 + 1) + 8 * v22++), v16, v18, v19, v20, v6, v7);
+        objc_msgSend_injectMetalShaderInto_context_(*(*(&v23 + 1) + 8 * v22++), v16, v18, v19, v20, intoCopy, contextCopy);
       }
 
       while (v17 != v22);
@@ -577,11 +577,11 @@ LABEL_8:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v57 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v51 = objc_msgSend_init(v10, v11, v12, v13, v14);
   if (v51)
   {

@@ -5,29 +5,29 @@
 - (BOOL)isFirstResponder;
 - (BOOL)resignFirstResponder;
 - (CGSize)intrinsicContentSize;
-- (NCNotificationTextInputView)initWithFrame:(CGRect)a3;
+- (NCNotificationTextInputView)initWithFrame:(CGRect)frame;
 - (NCNotificationTextInputViewDelegate)delegate;
 - (double)_maximumTextViewHeight;
 - (double)_pencilModeHeight;
 - (double)_textViewHeight;
 - (double)_textViewWidth;
-- (void)_buttonPressed:(id)a3;
+- (void)_buttonPressed:(id)pressed;
 - (void)_updateForTextChange;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)setAction:(id)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setInputContextHistory:(id)a3;
-- (void)setPlaceholder:(id)a3;
+- (void)setAction:(id)action;
+- (void)setButtonTitle:(id)title;
+- (void)setInputContextHistory:(id)history;
+- (void)setPlaceholder:(id)placeholder;
 @end
 
 @implementation NCNotificationTextInputView
 
-- (NCNotificationTextInputView)initWithFrame:(CGRect)a3
+- (NCNotificationTextInputView)initWithFrame:(CGRect)frame
 {
   v33.receiver = self;
   v33.super_class = NCNotificationTextInputView;
-  v3 = [(NCNotificationTextInputView *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationTextInputView *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -57,9 +57,9 @@
 
     LODWORD(v17) = 1148846080;
     [(UIButton *)v4->_button setContentHuggingPriority:0 forAxis:v17];
-    v18 = [(UIButton *)v4->_button titleLabel];
+    titleLabel = [(UIButton *)v4->_button titleLabel];
     v19 = [MEMORY[0x277D74300] bsui_preferredFontForTextStyle:v13 hiFontStyle:4];
-    [v18 setFont:v19];
+    [titleLabel setFont:v19];
 
     v20 = v4->_button;
     v21 = NCUserNotificationsUIKitFrameworkBundle();
@@ -77,13 +77,13 @@
     [(UIStackView *)v4->_horizontalStack setAxis:0];
     [(UIStackView *)v4->_horizontalStack setSpacing:8.0];
     [(NCNotificationTextInputView *)v4 addSubview:v4->_horizontalStack];
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(NCNotificationTextInputView *)v4 setBackgroundColor:v25];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NCNotificationTextInputView *)v4 setBackgroundColor:clearColor];
 
     v26 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:0 smoothness:12.0];
     v27 = v4->_textView;
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v27 setBackgroundColor:v28];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v27 setBackgroundColor:clearColor2];
 
     [(UIStackView *)v4->_horizontalStack _setBackground:v26];
     [(UIStackView *)v4->_horizontalStack setLayoutMargins:0.0, 12.0, 0.0, 12.0];
@@ -92,8 +92,8 @@
     scribbleInteraction = v4->_scribbleInteraction;
     v4->_scribbleInteraction = v29;
 
-    v31 = [(NCNotificationTextInputView *)v4 textView];
-    [v31 addInteraction:v4->_scribbleInteraction];
+    textView = [(NCNotificationTextInputView *)v4 textView];
+    [textView addInteraction:v4->_scribbleInteraction];
 
     [(NCNotificationTextInputView *)v4 _updateForTextChange];
   }
@@ -159,34 +159,34 @@
   [(UIStackView *)self->_horizontalStack _setContinuousCornerRadius:fmin(v19, 19.0)];
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
-  if (self->_action != v5)
+  actionCopy = action;
+  if (self->_action != actionCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_action, a3);
-    v6 = [(NCNotificationAction *)v10 behaviorParameters];
-    v7 = [v6 objectForKey:*MEMORY[0x277CE20B8]];
+    v10 = actionCopy;
+    objc_storeStrong(&self->_action, action);
+    behaviorParameters = [(NCNotificationAction *)v10 behaviorParameters];
+    v7 = [behaviorParameters objectForKey:*MEMORY[0x277CE20B8]];
 
     [(NCNotificationTextInputView *)self setButtonTitle:v7];
-    v8 = [(NCNotificationAction *)v10 behaviorParameters];
-    v9 = [v8 objectForKey:*MEMORY[0x277CE20C0]];
+    behaviorParameters2 = [(NCNotificationAction *)v10 behaviorParameters];
+    v9 = [behaviorParameters2 objectForKey:*MEMORY[0x277CE20C0]];
 
     [(NCNotificationTextInputView *)self setPlaceholder:v9];
-    v5 = v10;
+    actionCopy = v10;
   }
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v9 = a3;
-  v4 = [v9 length];
-  v5 = [(NCNotificationTextInputView *)self button];
-  v6 = v5;
+  titleCopy = title;
+  v4 = [titleCopy length];
+  button = [(NCNotificationTextInputView *)self button];
+  v6 = button;
   if (v4)
   {
-    [v5 setTitle:v9 forState:0];
+    [button setTitle:titleCopy forState:0];
   }
 
   else
@@ -197,47 +197,47 @@
   }
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v5 = [MEMORY[0x277CCA898] nc_safeAttributedStringWithString:a3];
-  v4 = [(NCNotificationTextInputView *)self textView];
-  [v4 setAttributedPlaceholder:v5];
+  v5 = [MEMORY[0x277CCA898] nc_safeAttributedStringWithString:placeholder];
+  textView = [(NCNotificationTextInputView *)self textView];
+  [textView setAttributedPlaceholder:v5];
 }
 
-- (void)setInputContextHistory:(id)a3
+- (void)setInputContextHistory:(id)history
 {
-  v5 = a3;
-  if (self->_inputContextHistory != v5)
+  historyCopy = history;
+  if (self->_inputContextHistory != historyCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_inputContextHistory, a3);
+    v6 = historyCopy;
+    objc_storeStrong(&self->_inputContextHistory, history);
     [(UITextView *)self->_textView setInputContextHistory:v6];
-    v5 = v6;
+    historyCopy = v6;
   }
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(NCNotificationTextInputView *)self textView];
-  v3 = [v2 canBecomeFirstResponder];
+  textView = [(NCNotificationTextInputView *)self textView];
+  canBecomeFirstResponder = [textView canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(NCNotificationTextInputView *)self textView];
-  v3 = [v2 becomeFirstResponder];
+  textView = [(NCNotificationTextInputView *)self textView];
+  becomeFirstResponder = [textView becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(NCNotificationTextInputView *)self textView];
-  v3 = [v2 canResignFirstResponder];
+  textView = [(NCNotificationTextInputView *)self textView];
+  canResignFirstResponder = [textView canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
@@ -249,24 +249,24 @@
     return 1;
   }
 
-  v4 = [(NCNotificationTextInputView *)self textView];
-  v3 = [v4 resignFirstResponder];
+  textView = [(NCNotificationTextInputView *)self textView];
+  resignFirstResponder = [textView resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(NCNotificationTextInputView *)self textView];
-  v3 = [v2 isFirstResponder];
+  textView = [(NCNotificationTextInputView *)self textView];
+  isFirstResponder = [textView isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (double)_textViewWidth
 {
-  v3 = [(NCNotificationTextInputView *)self button];
-  [v3 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  button = [(NCNotificationTextInputView *)self button];
+  [button sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v5 = v4;
 
   [(NCNotificationTextInputView *)self directionalLayoutMargins];
@@ -284,13 +284,13 @@
 
 - (double)_textViewHeight
 {
-  v3 = [(NCNotificationTextInputView *)self button];
-  [v3 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  button = [(NCNotificationTextInputView *)self button];
+  [button sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v5 = v4;
 
-  v6 = [(NCNotificationTextInputView *)self textView];
+  textView = [(NCNotificationTextInputView *)self textView];
   [(NCNotificationTextInputView *)self _textViewWidth];
-  [v6 sizeThatFits:?];
+  [textView sizeThatFits:?];
   v8 = v7;
 
   if ([MEMORY[0x277D759B0] isPencilInputExpected])
@@ -314,8 +314,8 @@
 
 - (double)_maximumTextViewHeight
 {
-  v2 = [(UITextView *)self->_textView font];
-  [v2 lineHeight];
+  font = [(UITextView *)self->_textView font];
+  [font lineHeight];
   v4 = v3 * 4.0;
 
   return v4;
@@ -323,8 +323,8 @@
 
 - (double)_pencilModeHeight
 {
-  v2 = [(UITextView *)self->_textView font];
-  [v2 lineHeight];
+  font = [(UITextView *)self->_textView font];
+  [font lineHeight];
   v4 = v3;
   [MEMORY[0x277D759B0] _recommendedBlankSpaceHeight];
   v6 = v4 + v5;
@@ -332,18 +332,18 @@
   return v6;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277D75658] activeKeyboard];
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__NCNotificationTextInputView__buttonPressed___block_invoke;
   v6[3] = &unk_27836F510;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  [v5 acceptAutocorrectionWithCompletionHandler:v6];
+  [activeKeyboard acceptAutocorrectionWithCompletionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -370,8 +370,8 @@ void __46__NCNotificationTextInputView__buttonPressed___block_invoke(uint64_t a1
 - (void)_updateForTextChange
 {
   [(NCNotificationTextInputView *)self invalidateIntrinsicContentSize];
-  v3 = [(UITextView *)self->_textView text];
-  v4 = [v3 length] != 0;
+  text = [(UITextView *)self->_textView text];
+  v4 = [text length] != 0;
 
   [(UIButton *)self->_button setEnabled:v4];
   [(NCNotificationTextInputView *)self _textViewHeight];

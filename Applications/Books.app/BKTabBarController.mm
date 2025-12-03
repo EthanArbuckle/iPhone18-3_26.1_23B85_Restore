@@ -1,51 +1,51 @@
 @interface BKTabBarController
 + (NSString)rootBarReadyNotification;
 - (BKRootBarCoordinating)bk_rootBarCoordinator;
-- (BKTabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (BKTabBarController)initWithTabs:(id)a3;
-- (BOOL)bc_analyticsVisibilityOfChild:(id)a3;
+- (BKTabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (BKTabBarController)initWithTabs:(id)tabs;
+- (BOOL)bc_analyticsVisibilityOfChild:(id)child;
 - (BOOL)prefersStatusBarHidden;
 - (NSString)bc_stringForReturnToRootBarItem;
 - (UIViewController)childViewControllerForStatusBarHidden;
 - (UIViewController)childViewControllerForStatusBarStyle;
 - (id)flowControllers;
 - (int64_t)preferredStatusBarStyle;
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_setSelectedViewController:(id)a3 performUpdates:(BOOL)a4;
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_setSelectedViewController:(id)controller performUpdates:(BOOL)updates;
 - (void)didReceiveMemoryWarning;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
-- (void)traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKTabBarController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TabBarController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9 = 0;
   v10 = 0;
-  v8 = a3;
+  appearCopy2 = appear;
   v11 = 0;
-  v4 = self;
+  selfCopy = self;
   sub_10079B8C4();
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for TabBarController();
-  [(MiniPlayerHostingTabBarController *)&v7 viewWillAppear:v3];
-  v5 = [(BKTabBarController *)v4 view];
-  if (v5)
+  [(MiniPlayerHostingTabBarController *)&v7 viewWillAppear:appearCopy];
+  view = [(BKTabBarController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
-    [v5 setAccessibilityElementsHidden:0];
+    v6 = view;
+    [view setAccessibilityElementsHidden:0];
   }
 
   else
@@ -54,16 +54,16 @@
   }
 }
 
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = a3;
-  v4 = [v3 selectedViewController];
-  if (v4)
+  orientationsCopy = orientations;
+  selectedViewController = [orientationsCopy selectedViewController];
+  if (selectedViewController)
   {
-    v5 = v4;
-    v6 = [v4 supportedInterfaceOrientations];
+    v5 = selectedViewController;
+    supportedInterfaceOrientations = [selectedViewController supportedInterfaceOrientations];
 
-    return v6;
+    return supportedInterfaceOrientations;
   }
 
   else
@@ -84,7 +84,7 @@
 
 - (UIViewController)childViewControllerForStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabBarController.childForStatusBarHidden.getter();
 
   return v3;
@@ -92,18 +92,18 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
-  v3 = [(BKTabBarController *)v2 bc_windowForViewController];
-  v4 = [v3 windowScene];
+  selfCopy = self;
+  bc_windowForViewController = [(BKTabBarController *)selfCopy bc_windowForViewController];
+  windowScene = [bc_windowForViewController windowScene];
 
-  if (v4)
+  if (windowScene)
   {
-    v5 = [v4 interfaceOrientation];
+    interfaceOrientation = [windowScene interfaceOrientation];
   }
 
   else
   {
-    v5 = 0;
+    interfaceOrientation = 0;
   }
 
   v6 = isPad();
@@ -113,7 +113,7 @@
     return 0;
   }
 
-  return sub_100025674(v5);
+  return sub_100025674(interfaceOrientation);
 }
 
 - (BKRootBarCoordinating)bk_rootBarCoordinator
@@ -124,37 +124,37 @@
   return Strong;
 }
 
-- (void)_setSelectedViewController:(id)a3 performUpdates:(BOOL)a4
+- (void)_setSelectedViewController:(id)controller performUpdates:(BOOL)updates
 {
-  v7 = a3;
-  v8 = self;
-  v9 = v8;
-  v10 = v8;
-  v12.value.super.super.isa = a3;
-  v12.is_nil = a4;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9 = selfCopy;
+  v10 = selfCopy;
+  v12.value.super.super.isa = controller;
+  v12.is_nil = updates;
   TabBarController._setSelectedViewController(_:performUpdates:)(v12, v9);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  TabBarController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  TabBarController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  TabBarController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  TabBarController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1007A3504();
   swift_unknownObjectRelease();
   _s5Books33MiniPlayerHostingTabBarControllerC11viewDidMove2to23shouldAppearOrDisappearySo8UIWindowCSg_SbtF_0();
@@ -164,19 +164,19 @@
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   TabBarController.didReceiveMemoryWarning()();
 }
 
-- (BOOL)bc_analyticsVisibilityOfChild:(id)a3
+- (BOOL)bc_analyticsVisibilityOfChild:(id)child
 {
-  v4 = a3;
-  v5 = [(BKTabBarController *)self selectedViewController];
-  if (v5)
+  childCopy = child;
+  selectedViewController = [(BKTabBarController *)self selectedViewController];
+  if (selectedViewController)
   {
-    v6 = v5;
+    v6 = selectedViewController;
 
-    return v6 == v4;
+    return v6 == childCopy;
   }
 
   else
@@ -188,7 +188,7 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabBarController.childForStatusBarStyle.getter();
 
   return v3;
@@ -196,33 +196,33 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabBarController.preferredStatusBarStyle.getter();
 
   return v3;
 }
 
-- (BKTabBarController)initWithTabs:(id)a3
+- (BKTabBarController)initWithTabs:(id)tabs
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BKTabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKTabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10058CBC8(v9, a5);
+  controllerCopy = controller;
+  tabCopy = tab;
+  previousTabCopy = previousTab;
+  selfCopy = self;
+  sub_10058CBC8(tabCopy, previousTab);
 }
 
 - (id)flowControllers
@@ -232,7 +232,7 @@
   *(v3 + 16) = xmmword_10080B690;
   *(v3 + 56) = type metadata accessor for TabBarController();
   *(v3 + 32) = self;
-  v4 = self;
+  selfCopy = self;
   v5.super.isa = sub_1007A25D4().super.isa;
 
   return v5.super.isa;
@@ -240,7 +240,7 @@
 
 - (NSString)bc_stringForReturnToRootBarItem
 {
-  v2 = self;
+  selfCopy = self;
   TabBarController.bc_stringForReturnToRootBarItem.getter();
   v4 = v3;
 

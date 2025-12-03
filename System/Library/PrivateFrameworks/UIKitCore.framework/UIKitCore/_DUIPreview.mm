@@ -1,8 +1,8 @@
 @interface _DUIPreview
 + (double)defaultStackAlpha;
-+ (id)defaultPreviewWithFrame:(CGRect)a3;
++ (id)defaultPreviewWithFrame:(CGRect)frame;
 - ($1AB5FA073B851C12C2339EC22442E995)placeholderContentSize3D;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOversized;
 - (CGAffineTransform)liftTransform;
 - (CGAffineTransform)overrideStackTransform;
@@ -21,26 +21,26 @@
 - (UIColor)backgroundColor;
 - (UIDragPreviewParameters)parameters;
 - (_DUIPreview)init;
-- (_DUIPreview)initWithBounds:(CGRect)a3 outline:(id)a4;
-- (_DUIPreview)initWithCoder:(id)a3;
-- (_DUIPreview)initWithView:(id)a3 container:(id)a4 parameters:(id)a5;
+- (_DUIPreview)initWithBounds:(CGRect)bounds outline:(id)outline;
+- (_DUIPreview)initWithCoder:(id)coder;
+- (_DUIPreview)initWithView:(id)view container:(id)container parameters:(id)parameters;
 - (double)_topOffset;
 - (double)backAlpha;
 - (double)scaleFactor;
 - (double)stackAlpha;
-- (id)_initWithView:(id)a3 container:(id)a4 parameters:(id)a5 platformCenter:(CAPoint3D)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_applyPropertiesFromPreviewParameters:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOriginalCenterInCoordinateSpace:(CGPoint)a3;
-- (void)setOverrideStackTransform:(CGAffineTransform *)a3;
+- (id)_initWithView:(id)view container:(id)container parameters:(id)parameters platformCenter:(CAPoint3D)center;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_applyPropertiesFromPreviewParameters:(id)parameters;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOriginalCenterInCoordinateSpace:(CGPoint)space;
+- (void)setOverrideStackTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _DUIPreview
 
-+ (id)defaultPreviewWithFrame:(CGRect)a3
++ (id)defaultPreviewWithFrame:(CGRect)frame
 {
-  v3 = [[a1 alloc] initWithBounds:0 outline:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.size.width, a3.size.height}];
+  v3 = [[self alloc] initWithBounds:0 outline:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), frame.size.width, frame.size.height}];
 
   return v3;
 }
@@ -53,11 +53,11 @@
   return v4;
 }
 
-- (_DUIPreview)initWithBounds:(CGRect)a3 outline:(id)a4
+- (_DUIPreview)initWithBounds:(CGRect)bounds outline:(id)outline
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v7 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  outlineCopy = outline;
   v29.receiver = self;
   v29.super_class = _DUIPreview;
   v8 = [(_DUIPreview *)&v29 init];
@@ -71,7 +71,7 @@
     *(v8 + 2) = height;
     *(v8 + 3) = 0;
     v8[56] = 1;
-    v11 = [v7 copy];
+    v11 = [outlineCopy copy];
     [v11 bounds];
     if (v11)
     {
@@ -105,28 +105,28 @@
   return v8;
 }
 
-- (_DUIPreview)initWithView:(id)a3 container:(id)a4 parameters:(id)a5
+- (_DUIPreview)initWithView:(id)view container:(id)container parameters:(id)parameters
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v10 frame];
-  v15 = [(_DUIPreview *)self initWithView:v10 container:v9 parameters:v8 center:v12 + v11 * 0.5, v14 + v13 * 0.5];
+  parametersCopy = parameters;
+  containerCopy = container;
+  viewCopy = view;
+  [viewCopy frame];
+  v15 = [(_DUIPreview *)self initWithView:viewCopy container:containerCopy parameters:parametersCopy center:v12 + v11 * 0.5, v14 + v13 * 0.5];
 
   return v15;
 }
 
-- (id)_initWithView:(id)a3 container:(id)a4 parameters:(id)a5 platformCenter:(CAPoint3D)a6
+- (id)_initWithView:(id)view container:(id)container parameters:(id)parameters platformCenter:(CAPoint3D)center
 {
-  y = a6.y;
-  x = a6.x;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  if (v12)
+  y = center.y;
+  x = center.x;
+  viewCopy = view;
+  containerCopy = container;
+  parametersCopy = parameters;
+  v15 = parametersCopy;
+  if (viewCopy)
   {
-    if (v14)
+    if (parametersCopy)
     {
       goto LABEL_3;
     }
@@ -134,8 +134,8 @@
 
   else
   {
-    v82 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v82 handleFailureInMethod:a2 object:self file:@"DUIPreview.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DUIPreview.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
     if (v15)
     {
@@ -143,33 +143,33 @@
     }
   }
 
-  v83 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v83 handleFailureInMethod:a2 object:self file:@"DUIPreview.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"parameters != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"DUIPreview.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"parameters != nil"}];
 
 LABEL_3:
   v85 = y;
-  v16 = [v15 visiblePath];
-  v17 = [v16 copy];
+  visiblePath = [v15 visiblePath];
+  v17 = [visiblePath copy];
 
   self->_hasCustomOutline = v17 != 0;
-  v18 = [v12 traitCollection];
-  v19 = _UIDragAndDropGetPlatformMetrics([v18 userInterfaceIdiom]);
+  traitCollection = [viewCopy traitCollection];
+  v19 = _UIDragAndDropGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   if (!v17)
   {
-    v20 = [v19 defaultPreviewOutlineProvider];
-    v17 = (v20)[2](v20, v12);
+    defaultPreviewOutlineProvider = [v19 defaultPreviewOutlineProvider];
+    v17 = (defaultPreviewOutlineProvider)[2](defaultPreviewOutlineProvider, viewCopy);
   }
 
   v86 = v19;
-  [v12 bounds];
+  [viewCopy bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = v12;
+  v29 = viewCopy;
   v30 = v29;
-  if (v12)
+  if (viewCopy)
   {
     [v29 transform];
     a = v93.a;
@@ -188,8 +188,8 @@ LABEL_3:
 
   v35 = hypot(a, c);
   v36 = hypot(b, d);
-  v37 = [v30 superview];
-  v38 = DUIPreviewConvertSizeFromViewToView(v37, 0, v35, v36);
+  superview = [v30 superview];
+  v38 = DUIPreviewConvertSizeFromViewToView(superview, 0, v35, v36);
   sya = v39;
 
   memset(&v93, 0, sizeof(v93));
@@ -227,9 +227,9 @@ LABEL_3:
   v46 = [(_DUIPreview *)self initWithBounds:v17 outline:v43, v44, v45, sya * CGRectGetHeight(v97)];
   if (v46)
   {
-    if (v13)
+    if (containerCopy)
     {
-      v47 = v13;
+      v47 = containerCopy;
     }
 
     else
@@ -238,26 +238,26 @@ LABEL_3:
     }
 
     v48 = v47;
-    v49 = [v15 backgroundColor];
+    backgroundColor = [v15 backgroundColor];
     sy = v48;
-    v50 = [v48 traitCollection];
-    v51 = [v49 resolvedColorWithTraitCollection:v50];
+    traitCollection2 = [v48 traitCollection];
+    v51 = [backgroundColor resolvedColorWithTraitCollection:traitCollection2];
     v52 = [v51 copy];
     backgroundColor = v46->_backgroundColor;
     v46->_backgroundColor = v52;
 
     if (objc_opt_respondsToSelector())
     {
-      v54 = [v15 _shadowProperties];
+      _shadowProperties = [v15 _shadowProperties];
       shadowProperties = v46->_shadowProperties;
-      v46->_shadowProperties = v54;
+      v46->_shadowProperties = _shadowProperties;
     }
 
     v46->_originalCenter = *v42;
-    RotationAngleFromViewToView = DUIPreviewGetRotationAngleFromViewToView(v13, 0, 0);
+    RotationAngleFromViewToView = DUIPreviewGetRotationAngleFromViewToView(containerCopy, 0, 0);
     memset(&t1, 0, sizeof(t1));
     v57 = v85;
-    if (v12)
+    if (viewCopy)
     {
       [v30 transform];
       v59 = t1.a;
@@ -271,56 +271,56 @@ LABEL_3:
     }
 
     v46->_originalRotation = RotationAngleFromViewToView + atan2(v58, v59);
-    v60 = [v13 _window];
-    if (v60)
+    _window = [containerCopy _window];
+    if (_window)
     {
-      v61 = v13;
+      superview2 = containerCopy;
     }
 
     else
     {
-      v62 = [v30 _window];
-      if (v62)
+      _window2 = [v30 _window];
+      if (_window2)
       {
-        v61 = [v30 superview];
+        superview2 = [v30 superview];
       }
 
       else
       {
-        v61 = 0;
+        superview2 = 0;
       }
     }
 
-    if (!v61)
+    if (!superview2)
     {
       goto LABEL_32;
     }
 
-    v63 = v61;
-    v64 = [v63 layer];
+    v63 = superview2;
+    layer = [v63 layer];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v84 = v13;
+      v84 = containerCopy;
       v65 = v63;
       do
       {
-        v66 = v64;
+        v66 = layer;
         v67 = v65;
-        v68 = [v65 superview];
-        [v67 convertPoint:v68 toView:{x, v57}];
+        superview3 = [v65 superview];
+        [v67 convertPoint:superview3 toView:{x, v57}];
         x = v69;
         v57 = v70;
-        v65 = v68;
+        v65 = superview3;
 
-        v64 = [v65 layer];
+        layer = [v65 layer];
 
         objc_opt_class();
       }
 
       while ((objc_opt_isKindOfClass() & 1) != 0);
 
-      v13 = v84;
+      containerCopy = v84;
       if (!v65)
       {
         goto LABEL_31;
@@ -340,19 +340,19 @@ LABEL_3:
     coordinateSpaceSourceLayerContext = v46->_coordinateSpaceSourceLayerContext;
     v46->_coordinateSpaceSourceLayerContext = v71;
 
-    v73 = [v65 layer];
-    v74 = [v73 context];
-    -[_DUITargetLayerDescriptor setContextID:](v46->_coordinateSpaceSourceLayerContext, "setContextID:", [v74 contextId]);
+    layer2 = [v65 layer];
+    context = [layer2 context];
+    -[_DUITargetLayerDescriptor setContextID:](v46->_coordinateSpaceSourceLayerContext, "setContextID:", [context contextId]);
 
-    v75 = [v65 layer];
+    layer3 = [v65 layer];
     [(_DUITargetLayerDescriptor *)v46->_coordinateSpaceSourceLayerContext setRenderID:CALayerGetRenderId()];
 
-    v76 = [v65 window];
-    v77 = [v76 windowScene];
+    window = [v65 window];
+    windowScene = [window windowScene];
 
-    v78 = [v77 systemShellHostingEnvironment];
-    v79 = [v78 systemShellHostingSpaceIdentifier];
-    [(_DUITargetLayerDescriptor *)v46->_coordinateSpaceSourceLayerContext setSystemShellHostingSpaceIdentifier:v79];
+    systemShellHostingEnvironment = [windowScene systemShellHostingEnvironment];
+    systemShellHostingSpaceIdentifier = [systemShellHostingEnvironment systemShellHostingSpaceIdentifier];
+    [(_DUITargetLayerDescriptor *)v46->_coordinateSpaceSourceLayerContext setSystemShellHostingSpaceIdentifier:systemShellHostingSpaceIdentifier];
 
 LABEL_31:
 LABEL_32:
@@ -386,21 +386,21 @@ LABEL_32:
   return v7;
 }
 
-- (void)_applyPropertiesFromPreviewParameters:(id)a3
+- (void)_applyPropertiesFromPreviewParameters:(id)parameters
 {
-  v4 = a3;
-  self->_previewMode = [v4 _previewMode];
-  v5 = [v4 shadowPath];
+  parametersCopy = parameters;
+  self->_previewMode = [parametersCopy _previewMode];
+  shadowPath = [parametersCopy shadowPath];
   shadowPath = self->_shadowPath;
-  self->_shadowPath = v5;
+  self->_shadowPath = shadowPath;
 
-  [v4 _placeholderContentSize3D];
+  [parametersCopy _placeholderContentSize3D];
   self->_placeholderContentSize3D.width = v7;
   self->_placeholderContentSize3D.height = v8;
   self->_placeholderContentSize3D.depth = v9;
-  v10 = [v4 _isHiddenDuringDrag];
+  _isHiddenDuringDrag = [parametersCopy _isHiddenDuringDrag];
 
-  self->_hiddenDuringDrag = v10;
+  self->_hiddenDuringDrag = _isHiddenDuringDrag;
 }
 
 + (double)defaultStackAlpha
@@ -468,7 +468,7 @@ LABEL_32:
 
 - (CGAffineTransform)liftTransform
 {
-  v3 = self;
+  selfCopy = self;
   c = self[2].c;
   if (*&c > 6uLL)
   {
@@ -495,7 +495,7 @@ LABEL_32:
 LABEL_6:
     [(CGAffineTransform *)self unscaledSize];
     v10 = v9;
-    [(CGAffineTransform *)v3 unscaledSize];
+    [(CGAffineTransform *)selfCopy unscaledSize];
     if (v10 >= v11)
     {
       v12 = v10;
@@ -521,10 +521,10 @@ LABEL_6:
   return result;
 }
 
-- (void)setOriginalCenterInCoordinateSpace:(CGPoint)a3
+- (void)setOriginalCenterInCoordinateSpace:(CGPoint)space
 {
-  self->_originalCenterInCoordinateSpace.x = a3.x;
-  self->_originalCenterInCoordinateSpace.y = a3.y;
+  self->_originalCenterInCoordinateSpace.x = space.x;
+  self->_originalCenterInCoordinateSpace.y = space.y;
   self->_originalCenterInCoordinateSpace.z = 0.0;
 }
 
@@ -539,8 +539,8 @@ LABEL_6:
   [(_DUIPreview *)self unscaledSize];
   v6 = v5;
   v8 = v7;
-  v9 = [objc_opt_self() mainScreen];
-  [v9 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v11 = v10;
   v13 = v12;
 
@@ -672,12 +672,12 @@ LABEL_6:
 
 - (CGSize)unscaledSize
 {
-  v3 = [(_DUIPreview *)self outline];
+  outline = [(_DUIPreview *)self outline];
 
-  if (v3)
+  if (outline)
   {
-    v4 = [(_DUIPreview *)self outline];
-    [v4 bounds];
+    outline2 = [(_DUIPreview *)self outline];
+    [outline2 bounds];
     v6 = v5;
     v8 = v7;
 
@@ -715,27 +715,27 @@ LABEL_6:
 
 - (UIBezierPath)effectiveShadowPath
 {
-  v3 = [(_DUIPreview *)self shadowPath];
-  v4 = v3;
-  if (v3)
+  shadowPath = [(_DUIPreview *)self shadowPath];
+  v4 = shadowPath;
+  if (shadowPath)
   {
-    v5 = v3;
+    outline = shadowPath;
   }
 
   else
   {
-    v5 = [(_DUIPreview *)self outline];
+    outline = [(_DUIPreview *)self outline];
   }
 
-  v6 = v5;
+  v6 = outline;
 
   return v6;
 }
 
-- (_DUIPreview)initWithCoder:(id)a3
+- (_DUIPreview)initWithCoder:(id)coder
 {
   v68[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_DUIPreview *)self init];
   if (v5)
   {
@@ -751,80 +751,80 @@ LABEL_6:
 
     v9 = objc_opt_class();
     v67 = v5;
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"backgroundColor"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"backgroundColor"];
     backgroundColor = v67->_backgroundColor;
     v67->_backgroundColor = v10;
 
     v66 = v67;
-    [v4 decodeCGPointForKey:@"contentOffset"];
+    [coderCopy decodeCGPointForKey:@"contentOffset"];
     v67->_contentOffset.x = v12;
     v66->_contentOffset.y = v13;
     v65 = v66;
-    [v4 decodeUISize3DForKey:@"contentSize"];
+    [coderCopy decodeUISize3DForKey:@"contentSize"];
     v66->_contentSize.width = v14;
     v65->_contentSize.height = v15;
     v65->_contentSize.depth = v16;
     v64 = v65;
-    v64->_hidesSourceView = [v4 decodeBoolForKey:@"hidesSourceView"];
+    v64->_hidesSourceView = [coderCopy decodeBoolForKey:@"hidesSourceView"];
     v63 = v64;
-    [v4 decodeCGPointForKey:@"liftAnchorPoint"];
+    [coderCopy decodeCGPointForKey:@"liftAnchorPoint"];
     v64->_liftAnchorPoint.x = v17;
     v63->_liftAnchorPoint.y = v18;
     v62 = v63;
-    [v4 decodeCGPointForKey:@"originalCenter"];
+    [coderCopy decodeCGPointForKey:@"originalCenter"];
     v63->_originalCenter.x = v19;
     v62->_originalCenter.y = v20;
     v61 = v62;
-    [v4 decodeDoubleForKey:@"originalRotation"];
+    [coderCopy decodeDoubleForKey:@"originalRotation"];
     v61->_originalRotation = v21;
     v60 = v61;
-    [v4 ui_decodeCAPoint3DForKey:@"originalCenterInCoordinateSpace"];
+    [coderCopy ui_decodeCAPoint3DForKey:@"originalCenterInCoordinateSpace"];
     v61->_originalCenterInCoordinateSpace.x = v22;
     *&v60->_originalCenterInCoordinateSpace.y = v23;
     *&v60->_originalCenterInCoordinateSpace.z = v24;
     v25 = objc_opt_class();
     v59 = v60;
-    v26 = [v4 decodeObjectOfClass:v25 forKey:@"coordinateSpaceSourceLayerContext"];
+    v26 = [coderCopy decodeObjectOfClass:v25 forKey:@"coordinateSpaceSourceLayerContext"];
     v27 = v59[12];
     v59[12] = v26;
 
     v28 = objc_opt_class();
     v58 = v59;
-    v29 = [v4 decodeObjectOfClass:v28 forKey:@"outline"];
+    v29 = [coderCopy decodeObjectOfClass:v28 forKey:@"outline"];
     v30 = v58[9];
     v58[9] = v29;
 
     v57 = v58;
-    v57[58] = [v4 decodeBoolForKey:@"hasCustomOutline"];
+    v57[58] = [coderCopy decodeBoolForKey:@"hasCustomOutline"];
     v31 = objc_opt_class();
     v56 = v57;
-    v32 = [v4 decodeObjectOfClass:v31 forKey:@"shadowPath"];
+    v32 = [coderCopy decodeObjectOfClass:v31 forKey:@"shadowPath"];
     v33 = v56[10];
     v56[10] = v32;
 
     v55 = v56;
-    v55[14] = [v4 decodeIntegerForKey:@"previewMode"];
+    v55[14] = [coderCopy decodeIntegerForKey:@"previewMode"];
     v54 = v55;
-    v54[59] = [v4 decodeBoolForKey:@"avoidAnimation"];
+    v54[59] = [coderCopy decodeBoolForKey:@"avoidAnimation"];
     v53 = v54;
-    v53[60] = [v4 decodeBoolForKey:@"wantsSuppressedMask"];
+    v53[60] = [coderCopy decodeBoolForKey:@"wantsSuppressedMask"];
     v34 = objc_opt_class();
     v52 = v53;
-    v35 = [v4 decodeObjectOfClass:v34 forKey:@"shadowProperties"];
+    v35 = [coderCopy decodeObjectOfClass:v34 forKey:@"shadowProperties"];
     v36 = v52[11];
     v52[11] = v35;
 
     v51 = v52;
-    *(v51 + 57) = [v4 decodeBoolForKey:@"hiddenDuringDrag"];
+    *(v51 + 57) = [coderCopy decodeBoolForKey:@"hiddenDuringDrag"];
     v37 = v51;
-    [v4 decodeUISize3DForKey:@"placeholderContentSize3D"];
+    [coderCopy decodeUISize3DForKey:@"placeholderContentSize3D"];
     v51[26] = v38;
     *(v37 + 27) = v39;
     *(v37 + 28) = v40;
     v41 = v37;
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCGAffineTransformForKey:@"overrideStackTransform"];
+      [coderCopy decodeCGAffineTransformForKey:@"overrideStackTransform"];
     }
 
     else
@@ -838,18 +838,18 @@ LABEL_6:
     *(v37 + 248) = v49;
     *(v37 + 264) = v50;
     v47 = v41;
-    [v4 decodeCGPointForKey:@"initialBadgeLocation"];
+    [coderCopy decodeCGPointForKey:@"initialBadgeLocation"];
     *(v41 + 18) = v42;
     *(v47 + 19) = v43;
     v46 = v47;
-    *(v46 + 15) = [v4 decodeIntegerForKey:@"preferredStackOrder"];
+    *(v46 + 15) = [coderCopy decodeIntegerForKey:@"preferredStackOrder"];
     v44 = v46;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 8, self->_backgroundColor);
@@ -898,150 +898,150 @@ LABEL_6:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   backgroundColor = self->_backgroundColor;
   v109 = MEMORY[0x1E69E9820];
   v110 = 3221225472;
   v111 = __31___DUIPreview_encodeWithCoder___block_invoke;
   v112 = &unk_1E70F7FE0;
-  v113 = self;
-  v5 = a3;
-  [v5 encodeObject:backgroundColor forKey:@"backgroundColor"];
+  selfCopy = self;
+  coderCopy = coder;
+  [coderCopy encodeObject:backgroundColor forKey:@"backgroundColor"];
   v104 = MEMORY[0x1E69E9820];
   v105 = 3221225472;
   v106 = __31___DUIPreview_encodeWithCoder___block_invoke_2;
   v107 = &unk_1E70F7FE0;
-  v108 = self;
-  [v5 encodeCGPoint:@"contentOffset" forKey:{self->_contentOffset.x, self->_contentOffset.y}];
+  selfCopy2 = self;
+  [coderCopy encodeCGPoint:@"contentOffset" forKey:{self->_contentOffset.x, self->_contentOffset.y}];
   v99 = MEMORY[0x1E69E9820];
   v100 = 3221225472;
   v101 = __31___DUIPreview_encodeWithCoder___block_invoke_3;
   v102 = &unk_1E70F7FE0;
-  v103 = self;
-  [v5 encodeUISize3D:@"contentSize" forKey:{self->_contentSize.width, self->_contentSize.height, self->_contentSize.depth}];
+  selfCopy3 = self;
+  [coderCopy encodeUISize3D:@"contentSize" forKey:{self->_contentSize.width, self->_contentSize.height, self->_contentSize.depth}];
   hidesSourceView = self->_hidesSourceView;
   v94 = MEMORY[0x1E69E9820];
   v95 = 3221225472;
   v96 = __31___DUIPreview_encodeWithCoder___block_invoke_4;
   v97 = &unk_1E70F7FE0;
-  v98 = self;
-  [v5 encodeBool:hidesSourceView forKey:@"hidesSourceView"];
+  selfCopy4 = self;
+  [coderCopy encodeBool:hidesSourceView forKey:@"hidesSourceView"];
   v89 = MEMORY[0x1E69E9820];
   v90 = 3221225472;
   v91 = __31___DUIPreview_encodeWithCoder___block_invoke_5;
   v92 = &unk_1E70F7FE0;
-  v93 = self;
-  [v5 encodeCGPoint:@"liftAnchorPoint" forKey:{self->_liftAnchorPoint.x, self->_liftAnchorPoint.y}];
+  selfCopy5 = self;
+  [coderCopy encodeCGPoint:@"liftAnchorPoint" forKey:{self->_liftAnchorPoint.x, self->_liftAnchorPoint.y}];
   v84 = MEMORY[0x1E69E9820];
   v85 = 3221225472;
   v86 = __31___DUIPreview_encodeWithCoder___block_invoke_6;
   v87 = &unk_1E70F7FE0;
-  v88 = self;
-  [v5 encodeCGPoint:@"originalCenter" forKey:{self->_originalCenter.x, self->_originalCenter.y}];
+  selfCopy6 = self;
+  [coderCopy encodeCGPoint:@"originalCenter" forKey:{self->_originalCenter.x, self->_originalCenter.y}];
   originalRotation = self->_originalRotation;
   v79 = MEMORY[0x1E69E9820];
   v80 = 3221225472;
   v81 = __31___DUIPreview_encodeWithCoder___block_invoke_7;
   v82 = &unk_1E70F7FE0;
-  v83 = self;
-  [v5 encodeDouble:@"originalRotation" forKey:originalRotation];
+  selfCopy7 = self;
+  [coderCopy encodeDouble:@"originalRotation" forKey:originalRotation];
   v74 = MEMORY[0x1E69E9820];
   v75 = 3221225472;
   v76 = __31___DUIPreview_encodeWithCoder___block_invoke_8;
   v77 = &unk_1E70F7FE0;
-  v78 = self;
-  [v5 ui_encodeCAPoint3D:@"originalCenterInCoordinateSpace" forKey:{self->_originalCenterInCoordinateSpace.x, self->_originalCenterInCoordinateSpace.y, self->_originalCenterInCoordinateSpace.z}];
+  selfCopy8 = self;
+  [coderCopy ui_encodeCAPoint3D:@"originalCenterInCoordinateSpace" forKey:{self->_originalCenterInCoordinateSpace.x, self->_originalCenterInCoordinateSpace.y, self->_originalCenterInCoordinateSpace.z}];
   coordinateSpaceSourceLayerContext = self->_coordinateSpaceSourceLayerContext;
   v69 = MEMORY[0x1E69E9820];
   v70 = 3221225472;
   v71 = __31___DUIPreview_encodeWithCoder___block_invoke_9;
   v72 = &unk_1E70F7FE0;
-  v73 = self;
-  [v5 encodeObject:coordinateSpaceSourceLayerContext forKey:@"coordinateSpaceSourceLayerContext"];
+  selfCopy9 = self;
+  [coderCopy encodeObject:coordinateSpaceSourceLayerContext forKey:@"coordinateSpaceSourceLayerContext"];
   outline = self->_outline;
   v64 = MEMORY[0x1E69E9820];
   v65 = 3221225472;
   v66 = __31___DUIPreview_encodeWithCoder___block_invoke_10;
   v67 = &unk_1E70F7FE0;
-  v68 = self;
-  [v5 encodeObject:outline forKey:@"outline"];
+  selfCopy10 = self;
+  [coderCopy encodeObject:outline forKey:@"outline"];
   hasCustomOutline = self->_hasCustomOutline;
   v59 = MEMORY[0x1E69E9820];
   v60 = 3221225472;
   v61 = __31___DUIPreview_encodeWithCoder___block_invoke_11;
   v62 = &unk_1E70F7FE0;
-  v63 = self;
-  [v5 encodeBool:hasCustomOutline forKey:@"hasCustomOutline"];
+  selfCopy11 = self;
+  [coderCopy encodeBool:hasCustomOutline forKey:@"hasCustomOutline"];
   shadowPath = self->_shadowPath;
   v54 = MEMORY[0x1E69E9820];
   v55 = 3221225472;
   v56 = __31___DUIPreview_encodeWithCoder___block_invoke_12;
   v57 = &unk_1E70F7FE0;
-  v58 = self;
-  [v5 encodeObject:shadowPath forKey:@"shadowPath"];
+  selfCopy12 = self;
+  [coderCopy encodeObject:shadowPath forKey:@"shadowPath"];
   previewMode = self->_previewMode;
   v49 = MEMORY[0x1E69E9820];
   v50 = 3221225472;
   v51 = __31___DUIPreview_encodeWithCoder___block_invoke_13;
   v52 = &unk_1E70F7FE0;
-  v53 = self;
-  [v5 encodeInteger:previewMode forKey:@"previewMode"];
+  selfCopy13 = self;
+  [coderCopy encodeInteger:previewMode forKey:@"previewMode"];
   avoidAnimation = self->_avoidAnimation;
   v44 = MEMORY[0x1E69E9820];
   v45 = 3221225472;
   v46 = __31___DUIPreview_encodeWithCoder___block_invoke_14;
   v47 = &unk_1E70F7FE0;
-  v48 = self;
-  [v5 encodeBool:avoidAnimation forKey:@"avoidAnimation"];
+  selfCopy14 = self;
+  [coderCopy encodeBool:avoidAnimation forKey:@"avoidAnimation"];
   wantsSuppressedMask = self->_wantsSuppressedMask;
   v39 = MEMORY[0x1E69E9820];
   v40 = 3221225472;
   v41 = __31___DUIPreview_encodeWithCoder___block_invoke_15;
   v42 = &unk_1E70F7FE0;
-  v43 = self;
-  [v5 encodeBool:wantsSuppressedMask forKey:@"wantsSuppressedMask"];
+  selfCopy15 = self;
+  [coderCopy encodeBool:wantsSuppressedMask forKey:@"wantsSuppressedMask"];
   shadowProperties = self->_shadowProperties;
   v34 = MEMORY[0x1E69E9820];
   v35 = 3221225472;
   v36 = __31___DUIPreview_encodeWithCoder___block_invoke_16;
   v37 = &unk_1E70F7FE0;
-  v38 = self;
-  [v5 encodeObject:shadowProperties forKey:@"shadowProperties"];
+  selfCopy16 = self;
+  [coderCopy encodeObject:shadowProperties forKey:@"shadowProperties"];
   hiddenDuringDrag = self->_hiddenDuringDrag;
   v29 = MEMORY[0x1E69E9820];
   v30 = 3221225472;
   v31 = __31___DUIPreview_encodeWithCoder___block_invoke_17;
   v32 = &unk_1E70F7FE0;
-  v33 = self;
-  [v5 encodeBool:hiddenDuringDrag forKey:@"hiddenDuringDrag"];
+  selfCopy17 = self;
+  [coderCopy encodeBool:hiddenDuringDrag forKey:@"hiddenDuringDrag"];
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __31___DUIPreview_encodeWithCoder___block_invoke_18;
   v27 = &unk_1E70F7FE0;
-  v28 = self;
-  [v5 encodeUISize3D:@"placeholderContentSize3D" forKey:{self->_placeholderContentSize3D.width, self->_placeholderContentSize3D.height, self->_placeholderContentSize3D.depth}];
+  selfCopy18 = self;
+  [coderCopy encodeUISize3D:@"placeholderContentSize3D" forKey:{self->_placeholderContentSize3D.width, self->_placeholderContentSize3D.height, self->_placeholderContentSize3D.depth}];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __31___DUIPreview_encodeWithCoder___block_invoke_19;
   v22 = &unk_1E70F7FE0;
-  v23 = self;
+  selfCopy19 = self;
   v17 = *&self->_overrideStackTransform.c;
   v18[0] = *&self->_overrideStackTransform.a;
   v18[1] = v17;
   v18[2] = *&self->_overrideStackTransform.tx;
-  [v5 encodeCGAffineTransform:v18 forKey:@"overrideStackTransform"];
-  [v5 encodeCGPoint:@"initialBadgeLocation" forKey:{self->_initialBadgeLocation.x, self->_initialBadgeLocation.y}];
-  [v5 encodeInteger:self->_preferredStackOrder forKey:{@"preferredStackOrder", MEMORY[0x1E69E9820], 3221225472, __31___DUIPreview_encodeWithCoder___block_invoke_21, &unk_1E70F7FE0, self}];
+  [coderCopy encodeCGAffineTransform:v18 forKey:@"overrideStackTransform"];
+  [coderCopy encodeCGPoint:@"initialBadgeLocation" forKey:{self->_initialBadgeLocation.x, self->_initialBadgeLocation.y}];
+  [coderCopy encodeInteger:self->_preferredStackOrder forKey:{@"preferredStackOrder", MEMORY[0x1E69E9820], 3221225472, __31___DUIPreview_encodeWithCoder___block_invoke_21, &unk_1E70F7FE0, self}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     backgroundColor = self->_backgroundColor;
     if ((backgroundColor == *(v5 + 8) || [(UIColor *)backgroundColor isEqual:?]) && self->_contentOffset.x == *(v5 + 16) && self->_contentOffset.y == *(v5 + 17))
     {
@@ -1135,11 +1135,11 @@ LABEL_47:
   return self;
 }
 
-- (void)setOverrideStackTransform:(CGAffineTransform *)a3
+- (void)setOverrideStackTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_overrideStackTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_overrideStackTransform.tx = *&transform->tx;
   *&self->_overrideStackTransform.c = v4;
   *&self->_overrideStackTransform.a = v3;
 }

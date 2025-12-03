@@ -1,17 +1,17 @@
 @interface SSUCacheDirectoryProviderSandbox
-- (SSUCacheDirectoryProviderSandbox)initWithDirectory:(id)a3;
+- (SSUCacheDirectoryProviderSandbox)initWithDirectory:(id)directory;
 @end
 
 @implementation SSUCacheDirectoryProviderSandbox
 
-- (SSUCacheDirectoryProviderSandbox)initWithDirectory:(id)a3
+- (SSUCacheDirectoryProviderSandbox)initWithDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v8.receiver = self;
   v8.super_class = SSUCacheDirectoryProviderSandbox;
   v5 = [(SSUCacheDirectoryProviderSandbox *)&v8 init];
   directory = v5->_directory;
-  v5->_directory = v4;
+  v5->_directory = directoryCopy;
 
   return v5;
 }

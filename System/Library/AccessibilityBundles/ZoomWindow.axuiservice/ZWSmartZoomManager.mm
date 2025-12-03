@@ -1,17 +1,17 @@
 @interface ZWSmartZoomManager
-- (BOOL)setNativeFocusOnBestElementNearRect:(CGRect)a3;
+- (BOOL)setNativeFocusOnBestElementNearRect:(CGRect)rect;
 - (CGRect)focusRect;
 - (ZWSmartZoomDelegate)delegate;
 - (id)_elementForFocus;
 - (void)_accessibilitySystemServerDied;
 - (void)_handleFirstResponderChangedNotification;
-- (void)_handleNativeFocusItemChangedNotification:(void *)a3;
+- (void)_handleNativeFocusItemChangedNotification:(void *)notification;
 - (void)_handleUpdateElementVisualsNotification;
 - (void)_initializeAccessibility;
 - (void)_registerForAccessibilityRuntimeNotifications;
 - (void)_speakFocusedElement;
 - (void)_unregisterForAccessibilityRuntimeNotifications;
-- (void)_updateApplicationAccessibility:(BOOL)a3;
+- (void)_updateApplicationAccessibility:(BOOL)accessibility;
 - (void)dealloc;
 - (void)disableSmartZoom;
 - (void)enableSmartZoom;
@@ -59,44 +59,44 @@
 - (void)_speakFocusedElement
 {
   AXOverrideRequestingClientType();
-  v3 = [(ZWSmartZoomManager *)self synthesizer];
-  v4 = [v3 isSpeaking];
+  synthesizer = [(ZWSmartZoomManager *)self synthesizer];
+  isSpeaking = [synthesizer isSpeaking];
 
-  if (v4)
+  if (isSpeaking)
   {
-    v5 = [(ZWSmartZoomManager *)self synthesizer];
-    [v5 stopSpeakingAtBoundary:1];
+    synthesizer2 = [(ZWSmartZoomManager *)self synthesizer];
+    [synthesizer2 stopSpeakingAtBoundary:1];
   }
 
   else
   {
-    v6 = [(ZWSmartZoomManager *)self focusElement];
-    v7 = [v6 application];
+    focusElement = [(ZWSmartZoomManager *)self focusElement];
+    application = [focusElement application];
 
-    v28 = v7;
-    v8 = [v7 explorerElements];
+    v28 = application;
+    explorerElements = [application explorerElements];
     v9 = +[NSMutableOrderedSet orderedSet];
-    v10 = [(ZWSmartZoomManager *)self focusElement];
-    v11 = [v10 label];
+    focusElement2 = [(ZWSmartZoomManager *)self focusElement];
+    label = [focusElement2 label];
 
-    v12 = [(ZWSmartZoomManager *)self focusElement];
-    v13 = [v12 value];
+    focusElement3 = [(ZWSmartZoomManager *)self focusElement];
+    value = [focusElement3 value];
 
-    if (v11)
+    if (label)
     {
-      [v9 addObject:v11];
+      [v9 addObject:label];
     }
 
-    if (v13)
+    if (value)
     {
-      [v9 addObject:v13];
+      [v9 addObject:value];
     }
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = v8;
+    v14 = explorerElements;
     v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v15)
     {
@@ -105,8 +105,8 @@
       do
       {
         v18 = 0;
-        v19 = v13;
-        v20 = v11;
+        v19 = value;
+        v20 = label;
         do
         {
           if (*v30 != v17)
@@ -115,23 +115,23 @@
           }
 
           v21 = *(*(&v29 + 1) + 8 * v18);
-          v11 = [v21 label];
+          label = [v21 label];
 
-          v13 = [v21 value];
+          value = [v21 value];
 
-          if (v11)
+          if (label)
           {
-            [v9 addObject:v11];
+            [v9 addObject:label];
           }
 
-          if (v13)
+          if (value)
           {
-            [v9 addObject:v13];
+            [v9 addObject:value];
           }
 
           v18 = v18 + 1;
-          v19 = v13;
-          v20 = v11;
+          v19 = value;
+          v20 = label;
         }
 
         while (v16 != v18);
@@ -141,8 +141,8 @@
       while (v16);
     }
 
-    v22 = [v9 array];
-    v23 = [v22 componentsJoinedByString:@"\n\n"];
+    array = [v9 array];
+    v23 = [array componentsJoinedByString:@"\n\n"];
 
     if ([v23 length])
     {
@@ -152,8 +152,8 @@
       [v24 setRate:v25];
       LODWORD(v26) = 1061997773;
       [v24 setVolume:v26];
-      v27 = [(ZWSmartZoomManager *)self synthesizer];
-      [v27 speakUtterance:v24];
+      synthesizer3 = [(ZWSmartZoomManager *)self synthesizer];
+      [synthesizer3 speakUtterance:v24];
     }
   }
 
@@ -162,15 +162,15 @@
 
 - (void)speakContent
 {
-  v3 = [(ZWSmartZoomManager *)self synthesizer];
+  synthesizer = [(ZWSmartZoomManager *)self synthesizer];
 
-  if (!v3)
+  if (!synthesizer)
   {
     v4 = objc_alloc_init(AVSpeechSynthesizer);
     [(ZWSmartZoomManager *)self setSynthesizer:v4];
 
-    v5 = [(ZWSmartZoomManager *)self synthesizer];
-    [v5 setDelegate:self];
+    synthesizer2 = [(ZWSmartZoomManager *)self synthesizer];
+    [synthesizer2 setDelegate:self];
   }
 
   [(ZWSmartZoomManager *)self _speakFocusedElement];
@@ -179,17 +179,17 @@
 - (CGRect)focusRect
 {
   AXOverrideRequestingClientType();
-  v3 = [(ZWSmartZoomManager *)self focusElement];
+  focusElement = [(ZWSmartZoomManager *)self focusElement];
 
-  if (!v3)
+  if (!focusElement)
   {
-    v4 = [(ZWSmartZoomManager *)self _elementForFocus];
-    [(ZWSmartZoomManager *)self setFocusElement:v4];
+    _elementForFocus = [(ZWSmartZoomManager *)self _elementForFocus];
+    [(ZWSmartZoomManager *)self setFocusElement:_elementForFocus];
   }
 
-  v5 = [(ZWSmartZoomManager *)self focusElement];
-  v6 = [v5 uiElement];
-  [v6 rectWithAXAttribute:2149];
+  focusElement2 = [(ZWSmartZoomManager *)self focusElement];
+  uiElement = [focusElement2 uiElement];
+  [uiElement rectWithAXAttribute:2149];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -210,28 +210,28 @@
 - (id)_elementForFocus
 {
   v2 = +[AXElement systemWideElement];
-  v3 = [v2 systemApplication];
-  v4 = [v3 currentApplications];
-  v5 = [v4 firstObject];
+  systemApplication = [v2 systemApplication];
+  currentApplications = [systemApplication currentApplications];
+  firstObject = [currentApplications firstObject];
 
-  v6 = [v5 nativeFocusElement];
+  nativeFocusElement = [firstObject nativeFocusElement];
 
-  return v6;
+  return nativeFocusElement;
 }
 
-- (BOOL)setNativeFocusOnBestElementNearRect:(CGRect)a3
+- (BOOL)setNativeFocusOnBestElementNearRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   AXOverrideRequestingClientType();
   v7 = +[AXElement systemWideElement];
-  v8 = [v7 systemApplication];
-  v9 = [v8 currentApplications];
-  v10 = [v9 firstObject];
+  systemApplication = [v7 systemApplication];
+  currentApplications = [systemApplication currentApplications];
+  firstObject = [currentApplications firstObject];
 
-  [v10 visibleElements];
+  [firstObject visibleElements];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -338,38 +338,38 @@ LABEL_9:
 LABEL_21:
 
 LABEL_22:
-  v30 = [v21 setNativeFocus];
+  setNativeFocus = [v21 setNativeFocus];
   AXOverrideRequestingClientType();
 
-  return v30;
+  return setNativeFocus;
 }
 
 - (void)_handleFirstResponderChangedNotification
 {
-  v3 = [(ZWSmartZoomManager *)self _elementForFocus];
-  [(ZWSmartZoomManager *)self setFocusElement:v3];
+  _elementForFocus = [(ZWSmartZoomManager *)self _elementForFocus];
+  [(ZWSmartZoomManager *)self setFocusElement:_elementForFocus];
 
-  v4 = [(ZWSmartZoomManager *)self focusElement];
-  if (v4)
+  focusElement = [(ZWSmartZoomManager *)self focusElement];
+  if (focusElement)
   {
-    v5 = v4;
-    v6 = [(ZWSmartZoomManager *)self delegate];
-    v7 = [v6 isZoomInStandByModeWithSmartZoom:self];
+    v5 = focusElement;
+    delegate = [(ZWSmartZoomManager *)self delegate];
+    v7 = [delegate isZoomInStandByModeWithSmartZoom:self];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(ZWSmartZoomManager *)self delegate];
-      [v8 updateFocusWithSmartZoom:self];
+      delegate2 = [(ZWSmartZoomManager *)self delegate];
+      [delegate2 updateFocusWithSmartZoom:self];
     }
   }
 }
 
-- (void)_handleNativeFocusItemChangedNotification:(void *)a3
+- (void)_handleNativeFocusItemChangedNotification:(void *)notification
 {
-  v5 = CFGetTypeID(a3);
+  v5 = CFGetTypeID(notification);
   if (v5 == CFDictionaryGetTypeID())
   {
-    v6 = [a3 objectForKeyedSubscript:kAXElementKey];
+    v6 = [notification objectForKeyedSubscript:kAXElementKey];
     v7 = v6;
     if (v6)
     {
@@ -382,25 +382,25 @@ LABEL_22:
     }
   }
 
-  v10 = [(ZWSmartZoomManager *)self focusElement];
+  focusElement = [(ZWSmartZoomManager *)self focusElement];
 
-  if (!v10)
+  if (!focusElement)
   {
-    v11 = [(ZWSmartZoomManager *)self _elementForFocus];
-    [(ZWSmartZoomManager *)self setFocusElement:v11];
+    _elementForFocus = [(ZWSmartZoomManager *)self _elementForFocus];
+    [(ZWSmartZoomManager *)self setFocusElement:_elementForFocus];
   }
 
-  v12 = [(ZWSmartZoomManager *)self focusElement];
-  if (v12)
+  focusElement2 = [(ZWSmartZoomManager *)self focusElement];
+  if (focusElement2)
   {
-    v13 = v12;
-    v14 = [(ZWSmartZoomManager *)self delegate];
-    v15 = [v14 isZoomInStandByModeWithSmartZoom:self];
+    v13 = focusElement2;
+    delegate = [(ZWSmartZoomManager *)self delegate];
+    v15 = [delegate isZoomInStandByModeWithSmartZoom:self];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(ZWSmartZoomManager *)self delegate];
-      [v16 updateFocusWithSmartZoom:self];
+      delegate2 = [(ZWSmartZoomManager *)self delegate];
+      [delegate2 updateFocusWithSmartZoom:self];
     }
   }
 }
@@ -408,31 +408,31 @@ LABEL_22:
 - (void)_handleUpdateElementVisualsNotification
 {
   AXOverrideRequestingClientType();
-  v3 = [(ZWSmartZoomManager *)self focusElement];
-  v4 = [v3 uiElement];
-  [v4 updateCache:2149];
+  focusElement = [(ZWSmartZoomManager *)self focusElement];
+  uiElement = [focusElement uiElement];
+  [uiElement updateCache:2149];
 
   AXOverrideRequestingClientType();
-  v5 = [(ZWSmartZoomManager *)self focusElement];
-  if (v5)
+  focusElement2 = [(ZWSmartZoomManager *)self focusElement];
+  if (focusElement2)
   {
-    v6 = v5;
-    v7 = [(ZWSmartZoomManager *)self delegate];
-    v8 = [v7 isZoomInStandByModeWithSmartZoom:self];
+    v6 = focusElement2;
+    delegate = [(ZWSmartZoomManager *)self delegate];
+    v8 = [delegate isZoomInStandByModeWithSmartZoom:self];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(ZWSmartZoomManager *)self delegate];
-      [v9 updateFocusWithSmartZoom:self];
+      delegate2 = [(ZWSmartZoomManager *)self delegate];
+      [delegate2 updateFocusWithSmartZoom:self];
     }
   }
 }
 
-- (void)_updateApplicationAccessibility:(BOOL)a3
+- (void)_updateApplicationAccessibility:(BOOL)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = _AXSApplicationAccessibilityEnabled();
-  if (v3 && !v4 || !v3 && v4 && _AXSCanDisableApplicationAccessibility())
+  if (accessibilityCopy && !v4 || !accessibilityCopy && v4 && _AXSCanDisableApplicationAccessibility())
   {
 
     _AXSApplicationAccessibilitySetEnabled();
@@ -444,11 +444,11 @@ LABEL_22:
   [(ZWSmartZoomManager *)self _updateApplicationAccessibility:1];
   AXUIElementRegisterSystemWideServerDeathCallback();
   v3 = +[AXElement systemWideElement];
-  v4 = [v3 uiElement];
-  v5 = [v4 axElement];
+  uiElement = [v3 uiElement];
+  axElement = [uiElement axElement];
 
   pid = 0;
-  AXUIElementGetPid(v5, &pid);
+  AXUIElementGetPid(axElement, &pid);
   accessibilityRuntimeObserver = self->_accessibilityRuntimeObserver;
   if (!accessibilityRuntimeObserver)
   {
@@ -485,15 +485,15 @@ LABEL_7:
   LOBYTE(v16) = 1;
   _AXLogWithFacility();
   v3 = [AXElement systemWideElement:v16];
-  v4 = [v3 uiElement];
-  v5 = [v4 axElement];
+  uiElement = [v3 uiElement];
+  axElement = [uiElement axElement];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(ZWSmartZoomManager *)self _accessibilityRuntimeNotifications];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  _accessibilityRuntimeNotifications = [(ZWSmartZoomManager *)self _accessibilityRuntimeNotifications];
+  v7 = [_accessibilityRuntimeNotifications countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -505,12 +505,12 @@ LABEL_7:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_accessibilityRuntimeNotifications);
         }
 
-        v12 = [*(*(&v22 + 1) + 8 * i) intValue];
-        v13 = v12;
-        v14 = AXObserverAddNotification(self->_accessibilityRuntimeObserver, v5, v12, self);
+        intValue = [*(*(&v22 + 1) + 8 * i) intValue];
+        v13 = intValue;
+        v14 = AXObserverAddNotification(self->_accessibilityRuntimeObserver, axElement, intValue, self);
         if (v14)
         {
           v18 = @"Zoom could not register for notification:%ld. Error:%ld";
@@ -530,7 +530,7 @@ LABEL_7:
         _AXLogWithFacility();
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [_accessibilityRuntimeNotifications countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v8);
@@ -557,8 +557,8 @@ LABEL_7:
   LOBYTE(v16) = 1;
   _AXLogWithFacility();
   v3 = [AXElement systemWideElement:v16];
-  v4 = [v3 uiElement];
-  v5 = [v4 axElement];
+  uiElement = [v3 uiElement];
+  axElement = [uiElement axElement];
 
   v6 = +[AXElement systemWideElement];
   [v6 setPassivelyListeningForEvents:1];
@@ -567,8 +567,8 @@ LABEL_7:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(ZWSmartZoomManager *)self _accessibilityRuntimeNotifications];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  _accessibilityRuntimeNotifications = [(ZWSmartZoomManager *)self _accessibilityRuntimeNotifications];
+  v8 = [_accessibilityRuntimeNotifications countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -580,15 +580,15 @@ LABEL_7:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_accessibilityRuntimeNotifications);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * v11) intValue];
-        v13 = AXObserverRemoveNotification(self->_accessibilityRuntimeObserver, v5, v12);
+        intValue = [*(*(&v21 + 1) + 8 * v11) intValue];
+        v13 = AXObserverRemoveNotification(self->_accessibilityRuntimeObserver, axElement, intValue);
         if (v13)
         {
           v14 = v13;
-          v15 = [NSNumber numberWithInt:v12];
+          v15 = [NSNumber numberWithInt:intValue];
           [NSNumber numberWithInt:v14];
           v20 = v19 = v15;
           v18 = @"Zoom could not unregister for notification:%@. Error:%@";
@@ -600,7 +600,7 @@ LABEL_7:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [_accessibilityRuntimeNotifications countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);

@@ -1,28 +1,28 @@
 @interface _NFTagSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)willStartSession;
 - (unsigned)_hceComplete;
-- (void)_handleOneAPDU:(id)a3;
+- (void)_handleOneAPDU:(id)u;
 - (void)_printHceCurrentState;
 - (void)cleanup;
-- (void)didEndSession:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)enableWrite:(BOOL)a3 completion:(id)a4;
-- (void)endSession:(id)a3;
-- (void)getTagContentWithCompletion:(id)a3;
-- (void)handleHostCardReaderDetected:(id)a3;
+- (void)didEndSession:(id)session;
+- (void)didStartSession:(id)session;
+- (void)enableWrite:(BOOL)write completion:(id)completion;
+- (void)endSession:(id)session;
+- (void)getTagContentWithCompletion:(id)completion;
+- (void)handleHostCardReaderDetected:(id)detected;
 - (void)handleNdefTagRead;
-- (void)prioritizeSessionWithCompletion:(id)a3;
-- (void)setTagContent:(id)a3 completion:(id)a4;
-- (void)startEmulation:(id)a3 withMessageType:(unsigned int)a4 completion:(id)a5;
-- (void)stopEmulationWithCompletion:(id)a3;
+- (void)prioritizeSessionWithCompletion:(id)completion;
+- (void)setTagContent:(id)content completion:(id)completion;
+- (void)startEmulation:(id)emulation withMessageType:(unsigned int)type completion:(id)completion;
+- (void)stopEmulationWithCompletion:(id)completion;
 @end
 
 @implementation _NFTagSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 readerInternalAccess])
+  if ([entitlements readerInternalAccess])
   {
     v5 = 0;
   }
@@ -34,9 +34,9 @@
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -51,7 +51,7 @@
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -65,7 +65,7 @@
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -152,30 +152,30 @@
   return [(_NFSession *)&v4 willStartSession];
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = _NFTagSession;
-  [(_NFXPCSession *)&v3 endSession:a3];
+  [(_NFXPCSession *)&v3 endSession:session];
 }
 
-- (void)prioritizeSessionWithCompletion:(id)a3
+- (void)prioritizeSessionWithCompletion:(id)completion
 {
   v3.receiver = self;
   v3.super_class = _NFTagSession;
-  [(_NFXPCSession *)&v3 prioritizeSessionWithCompletion:a3];
+  [(_NFXPCSession *)&v3 prioritizeSessionWithCompletion:completion];
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v16.receiver = self;
   v16.super_class = _NFTagSession;
-  [(_NFXPCSession *)&v16 didStartSession:v5];
-  if (v5)
+  [(_NFXPCSession *)&v16 didStartSession:sessionCopy];
+  if (sessionCopy)
   {
-    v6 = [(_NFXPCSession *)self remoteObject];
-    [v6 didStartSession:v5];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didStartSession:sessionCopy];
   }
 
   else
@@ -185,8 +185,8 @@
     self->_tagReadCALogger = v7;
 
     sub_10000AA28(self->_tagReadCALogger);
-    v9 = [(_NFXPCSession *)self remoteObject];
-    [v9 didStartSession:0];
+    remoteObject2 = [(_NFXPCSession *)self remoteObject];
+    [remoteObject2 didStartSession:0];
 
     v10 = sub_1000A7AB0(&self->_tagAgent->super.isa);
 
@@ -195,7 +195,7 @@
       objc_initWeak(&location, self);
       v14.receiver = self;
       v14.super_class = _NFTagSession;
-      v11 = [(_NFSession *)&v14 workQueue];
+      workQueue = [(_NFSession *)&v14 workQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1000D95D8;
@@ -203,7 +203,7 @@
       objc_copyWeak(v13, &location);
       v12[4] = self;
       v13[1] = a2;
-      dispatch_async(v11, v12);
+      dispatch_async(workQueue, v12);
 
       objc_destroyWeak(v13);
       objc_destroyWeak(&location);
@@ -211,9 +211,9 @@
   }
 }
 
-- (void)didEndSession:(id)a3
+- (void)didEndSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (![(_NFSession *)self didEnd])
   {
     Logger = NFLogGetLogger();
@@ -224,14 +224,14 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v12 = [(_NFXPCSession *)self clientName];
+      clientName = [(_NFXPCSession *)self clientName];
       v13 = 45;
       if (isMetaClass)
       {
         v13 = 43;
       }
 
-      v7(6, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", v13, ClassName, Name, 108, v12);
+      v7(6, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", v13, ClassName, Name, 108, clientName);
     }
 
     v14 = NFSharedLogGetLogger();
@@ -250,7 +250,7 @@
 
       v17 = object_getClassName(self);
       v18 = sel_getName(a2);
-      v19 = [(_NFXPCSession *)self clientName];
+      clientName2 = [(_NFXPCSession *)self clientName];
       *buf = 67110146;
       v23 = v16;
       v24 = 2082;
@@ -260,7 +260,7 @@
       v28 = 1024;
       v29 = 108;
       v30 = 2112;
-      v31 = v19;
+      v31 = clientName2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", buf, 0x2Cu);
     }
 
@@ -272,12 +272,12 @@
 
   v21.receiver = self;
   v21.super_class = _NFTagSession;
-  [(_NFSession *)&v21 didEndSession:v5];
+  [(_NFSession *)&v21 didEndSession:sessionCopy];
 }
 
-- (void)handleHostCardReaderDetected:(id)a3
+- (void)handleHostCardReaderDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   kdebug_trace();
   v5 = NFSharedSignpostLog();
   if (os_signpost_enabled(v5))
@@ -287,7 +287,7 @@
   }
 
   sub_10000A684(self->_tagReadCALogger);
-  [(_NFTagSession *)self _handleOneAPDU:v4];
+  [(_NFTagSession *)self _handleOneAPDU:detectedCopy];
 }
 
 - (void)handleNdefTagRead
@@ -349,8 +349,8 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Tag is read", buf, 0x22u);
     }
 
-    v17 = [(_NFXPCSession *)self remoteObject];
-    [v17 didTagStateChange:2];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didTagStateChange:2];
   }
 }
 
@@ -425,9 +425,9 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Tag had error", buf, 0x22u);
     }
 
-    v30 = [(_NFXPCSession *)self remoteObject];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
     v18 = 5;
-    [v30 didTagStateChange:5];
+    [remoteObject didTagStateChange:5];
 
     tagAgent = self->_tagAgent;
     if (tagAgent)
@@ -435,9 +435,9 @@ LABEL_17:
 LABEL_28:
       if (tagAgent->_isSelected)
       {
-        v31 = [(_NFXPCSession *)self remoteObject];
+        remoteObject2 = [(_NFXPCSession *)self remoteObject];
         v18 = 4;
-        [v31 didTagStateChange:4];
+        [remoteObject2 didTagStateChange:4];
       }
     }
 
@@ -490,9 +490,9 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Tag was written", buf, 0x22u);
   }
 
-  v17 = [(_NFXPCSession *)self remoteObject];
+  remoteObject3 = [(_NFXPCSession *)self remoteObject];
   v18 = 3;
-  [v17 didTagStateChange:3];
+  [remoteObject3 didTagStateChange:3];
 
   tagAgent = self->_tagAgent;
   if (tagAgent)
@@ -669,9 +669,9 @@ LABEL_24:
   }
 }
 
-- (void)_handleOneAPDU:(id)a3
+- (void)_handleOneAPDU:(id)u
 {
-  v5 = a3;
+  uCopy = u;
   if ([(_NFSession *)self didEnd])
   {
     kdebug_trace();
@@ -732,7 +732,7 @@ LABEL_24:
   }
 
   v132 = 0;
-  v18 = [v5 readApduAndReturnError:&v132];
+  v18 = [uCopy readApduAndReturnError:&v132];
   v19 = v132;
   v13 = v19;
   if (!v18)
@@ -785,17 +785,17 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Tag halted", &buf, 0x22u);
       }
 
-      v90 = [(_NFXPCSession *)self remoteObject];
-      [v90 didTagStateChange:6];
+      remoteObject = [(_NFXPCSession *)self remoteObject];
+      [remoteObject didTagStateChange:6];
 
       goto LABEL_87;
     }
 
-    v91 = [v13 code];
+    code = [v13 code];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v92 = NFLogGetLogger();
     v93 = v92;
-    if (v91 == 28)
+    if (code == 28)
     {
       if (v92)
       {
@@ -900,7 +900,7 @@ LABEL_87:
     goto LABEL_88;
   }
 
-  v127 = self;
+  selfCopy = self;
   v20 = [[NFCommandAPDU alloc] initWithData:v18];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v21 = NFLogGetLogger();
@@ -908,17 +908,17 @@ LABEL_87:
   if (v21)
   {
     v23 = v21;
-    v24 = object_getClass(v127);
+    v24 = object_getClass(selfCopy);
     v122 = class_isMetaClass(v24);
-    v124 = object_getClassName(v127);
+    v124 = object_getClassName(selfCopy);
     v120 = sel_getName(a2);
-    v25 = [v20 clss];
-    v26 = [v20 instruction];
+    clss = [v20 clss];
+    instruction = [v20 instruction];
     v27 = [v22 p1];
     v28 = [v22 p2];
-    v118 = [v22 payloadLength];
-    v119 = [v22 lengthExpected];
-    v117 = v26;
+    payloadLength = [v22 payloadLength];
+    lengthExpected = [v22 lengthExpected];
+    v117 = instruction;
     v20 = v22;
     v29 = 43;
     if (!v122)
@@ -926,14 +926,14 @@ LABEL_87:
       v29 = 45;
     }
 
-    v23(6, "%c[%{public}s %{public}s]:%i class = %02x ins = %02x  p1 = %d p2 = %d, lc = %u, le = %u", v29, v124, v120, 218, v25, v117, v27, v28, v118, v119);
+    v23(6, "%c[%{public}s %{public}s]:%i class = %02x ins = %02x  p1 = %d p2 = %d, lc = %u, le = %u", v29, v124, v120, 218, clss, v117, v27, v28, payloadLength, lengthExpected);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v30 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = object_getClass(v127);
+    v31 = object_getClass(selfCopy);
     if (class_isMetaClass(v31))
     {
       v32 = 43;
@@ -945,18 +945,18 @@ LABEL_87:
     }
 
     v126 = v32;
-    v125 = object_getClassName(v127);
+    v125 = object_getClassName(selfCopy);
     v121 = sel_getName(a2);
-    v123 = [v20 clss];
-    v33 = [v20 instruction];
-    v34 = v5;
+    clss2 = [v20 clss];
+    instruction2 = [v20 instruction];
+    v34 = uCopy;
     v35 = [v22 p1];
     v36 = v18;
     v37 = v13;
     v38 = [v22 p2];
     v39 = a2;
-    v40 = [v22 payloadLength];
-    v41 = [v22 lengthExpected];
+    payloadLength2 = [v22 payloadLength];
+    lengthExpected2 = [v22 lengthExpected];
     LODWORD(buf) = 67111426;
     HIDWORD(buf) = v126;
     v134 = 2082;
@@ -966,22 +966,22 @@ LABEL_87:
     v138 = 1024;
     v139 = 218;
     v140 = 1024;
-    *v141 = v123;
+    *v141 = clss2;
     *&v141[4] = 1024;
-    *&v141[6] = v33;
+    *&v141[6] = instruction2;
     v20 = v22;
     v142 = 1024;
     v143 = v35;
-    v5 = v34;
+    uCopy = v34;
     v144 = 1024;
     v145 = v38;
     v13 = v37;
     v18 = v36;
     v146 = 1024;
-    v147 = v40;
+    v147 = payloadLength2;
     a2 = v39;
     v148 = 1024;
-    v149 = v41;
+    v149 = lengthExpected2;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i class = %02x ins = %02x  p1 = %d p2 = %d, lc = %u, le = %u", &buf, 0x46u);
   }
 
@@ -990,18 +990,18 @@ LABEL_87:
   if (v42)
   {
     v43 = v42;
-    v44 = object_getClass(v127);
+    v44 = object_getClass(selfCopy);
     v45 = class_isMetaClass(v44);
-    v46 = object_getClassName(v127);
+    v46 = object_getClassName(selfCopy);
     v47 = sel_getName(a2);
-    v48 = [v20 payload];
+    payload = [v20 payload];
     v49 = 45;
     if (v45)
     {
       v49 = 43;
     }
 
-    v43(6, "%c[%{public}s %{public}s]:%i payload: %{public}@", v49, v46, v47, 219, v48);
+    v43(6, "%c[%{public}s %{public}s]:%i payload: %{public}@", v49, v46, v47, 219, payload);
 
     v20 = v22;
   }
@@ -1010,7 +1010,7 @@ LABEL_87:
   v50 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
   {
-    v51 = object_getClass(v127);
+    v51 = object_getClass(selfCopy);
     if (class_isMetaClass(v51))
     {
       v52 = 43;
@@ -1021,9 +1021,9 @@ LABEL_87:
       v52 = 45;
     }
 
-    v53 = object_getClassName(v127);
+    v53 = object_getClassName(selfCopy);
     v54 = sel_getName(a2);
-    v55 = [v22 payload];
+    payload2 = [v22 payload];
     LODWORD(buf) = 67110146;
     HIDWORD(buf) = v52;
     v20 = v22;
@@ -1034,15 +1034,15 @@ LABEL_87:
     v138 = 1024;
     v139 = 219;
     v140 = 2114;
-    *v141 = v55;
+    *v141 = payload2;
     _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i payload: %{public}@", &buf, 0x2Cu);
   }
 
   if ([v20 instruction] == 164 && objc_msgSend(v20, "p1") == 4)
   {
-    v56 = v127;
-    [(NFNdefTagAgent *)v127->_tagAgent handleDeselect];
-    v57 = [(NFNdefTagAgent *)v127->_tagAgent handleSelect:v20];
+    v56 = selfCopy;
+    [(NFNdefTagAgent *)selfCopy->_tagAgent handleDeselect];
+    v57 = [(NFNdefTagAgent *)selfCopy->_tagAgent handleSelect:v20];
     if (!v57)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1050,9 +1050,9 @@ LABEL_87:
       if (v58)
       {
         v59 = v58;
-        v60 = object_getClass(v127);
+        v60 = object_getClass(selfCopy);
         v61 = class_isMetaClass(v60);
-        v62 = object_getClassName(v127);
+        v62 = object_getClassName(selfCopy);
         v113 = sel_getName(a2);
         v63 = 45;
         if (v61)
@@ -1067,7 +1067,7 @@ LABEL_87:
       v64 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
-        v65 = object_getClass(v127);
+        v65 = object_getClass(selfCopy);
         if (class_isMetaClass(v65))
         {
           v66 = 43;
@@ -1078,7 +1078,7 @@ LABEL_87:
           v66 = 45;
         }
 
-        v67 = object_getClassName(v127);
+        v67 = object_getClassName(selfCopy);
         v68 = sel_getName(a2);
         LODWORD(buf) = 67109890;
         HIDWORD(buf) = v66;
@@ -1098,20 +1098,20 @@ LABEL_87:
 
     if ([v57 status] == 36864)
     {
-      v70 = [(_NFXPCSession *)v127 remoteObject];
-      [v70 didTagStateChange:1];
+      remoteObject2 = [(_NFXPCSession *)selfCopy remoteObject];
+      [remoteObject2 didTagStateChange:1];
     }
   }
 
   else
   {
-    v56 = v127;
-    v57 = [(NFNdefTagAgent *)v127->_tagAgent handleAPDU:v20];
-    [(_NFTagSession *)v127 _printHceCurrentState];
+    v56 = selfCopy;
+    v57 = [(NFNdefTagAgent *)selfCopy->_tagAgent handleAPDU:v20];
+    [(_NFTagSession *)selfCopy _printHceCurrentState];
   }
 
-  v71 = [v57 data];
-  [v5 sendAPDU:v71];
+  data = [v57 data];
+  [uCopy sendAPDU:data];
 
   tagReadCALogger = v56->_tagReadCALogger;
   v73 = [v18 length];
@@ -1132,8 +1132,8 @@ LABEL_87:
     v75 = 0;
   }
 
-  v76 = [v57 data];
-  v77 = [v76 length];
+  data2 = [v57 data];
+  v77 = [data2 length];
   if (v75)
   {
     v75->_rawBytesRx += v77;
@@ -1143,14 +1143,14 @@ LABEL_87:
   objc_initWeak(&buf, v56);
   v131.receiver = v56;
   v131.super_class = _NFTagSession;
-  v78 = [(_NFSession *)&v131 workQueue];
+  workQueue = [(_NFSession *)&v131 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DB3A0;
   block[3] = &unk_1003183C0;
   objc_copyWeak(&v130, &buf);
-  v129 = v5;
-  dispatch_async(v78, block);
+  v129 = uCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v130);
   objc_destroyWeak(&buf);
@@ -1159,10 +1159,10 @@ LABEL_87:
 LABEL_88:
 }
 
-- (void)startEmulation:(id)a3 withMessageType:(unsigned int)a4 completion:(id)a5
+- (void)startEmulation:(id)emulation withMessageType:(unsigned int)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  emulationCopy = emulation;
+  completionCopy = completion;
   kdebug_trace();
   v10 = NFSharedSignpostLog();
   if (os_signpost_enabled(v10))
@@ -1173,90 +1173,90 @@ LABEL_88:
 
   v18.receiver = self;
   v18.super_class = _NFTagSession;
-  v11 = [(_NFSession *)&v18 workQueue];
+  workQueue = [(_NFSession *)&v18 workQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000DB570;
   v14[3] = &unk_1003165E8;
-  v16 = v9;
+  v16 = completionCopy;
   v17 = a2;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  dispatch_async(v11, v14);
+  v15 = emulationCopy;
+  v12 = emulationCopy;
+  v13 = completionCopy;
+  dispatch_async(workQueue, v14);
 }
 
-- (void)stopEmulationWithCompletion:(id)a3
+- (void)stopEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFTagSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DBD88;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)setTagContent:(id)a3 completion:(id)a4
+- (void)setTagContent:(id)content completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  contentCopy = content;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = _NFTagSession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000DC414;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = contentCopy;
+  v10 = contentCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)getTagContentWithCompletion:(id)a3
+- (void)getTagContentWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFTagSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DC904;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)enableWrite:(BOOL)a3 completion:(id)a4
+- (void)enableWrite:(BOOL)write completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _NFTagSession;
-  v8 = [(_NFSession *)&v14 workQueue];
+  workQueue = [(_NFSession *)&v14 workQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000DCE14;
   v10[3] = &unk_100316FA0;
-  v11 = v7;
+  v11 = completionCopy;
   v12 = a2;
   v10[4] = self;
-  v13 = a3;
-  v9 = v7;
-  dispatch_async(v8, v10);
+  writeCopy = write;
+  v9 = completionCopy;
+  dispatch_async(workQueue, v10);
 }
 
 @end

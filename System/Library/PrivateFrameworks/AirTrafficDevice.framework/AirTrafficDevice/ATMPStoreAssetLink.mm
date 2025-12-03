@@ -1,20 +1,20 @@
 @interface ATMPStoreAssetLink
 - (ATAssetLinkDelegate)delegate;
 - (ATMPStoreAssetLink)init;
-- (BOOL)canEnqueueAsset:(id)a3;
+- (BOOL)canEnqueueAsset:(id)asset;
 - (BOOL)open;
-- (id)_assetTypeForStoreKind:(id)a3;
-- (id)_dataClassForStoreKind:(id)a3;
-- (id)_errorForFinishedDownload:(id)a3;
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4;
-- (void)_enqueueAssets:(id)a3;
-- (void)_finishAsset:(id)a3 error:(id)a4 retryable:(BOOL)a5;
-- (void)cancelAssets:(id)a3;
+- (id)_assetTypeForStoreKind:(id)kind;
+- (id)_dataClassForStoreKind:(id)kind;
+- (id)_errorForFinishedDownload:(id)download;
+- (id)enqueueAssets:(id)assets force:(BOOL)force;
+- (void)_enqueueAssets:(id)assets;
+- (void)_finishAsset:(id)asset error:(id)error retryable:(BOOL)retryable;
+- (void)cancelAssets:(id)assets;
 - (void)close;
-- (void)downloadManager:(id)a3 didAddActiveDownloads:(id)a4 removeActiveDownloads:(id)a5;
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4;
-- (void)downloadManager:(id)a3 downloadDidProgress:(id)a4;
-- (void)prioritizeAsset:(id)a3;
+- (void)downloadManager:(id)manager didAddActiveDownloads:(id)downloads removeActiveDownloads:(id)activeDownloads;
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish;
+- (void)downloadManager:(id)manager downloadDidProgress:(id)progress;
+- (void)prioritizeAsset:(id)asset;
 @end
 
 @implementation ATMPStoreAssetLink
@@ -26,20 +26,20 @@
   return WeakRetained;
 }
 
-- (id)_errorForFinishedDownload:(id)a3
+- (id)_errorForFinishedDownload:(id)download
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 failureError];
-  if ([v4 isCanceled])
+  downloadCopy = download;
+  failureError = [downloadCopy failureError];
+  if ([downloadCopy isCanceled])
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = [v4 failureError];
-    if (v7)
+    failureError2 = [downloadCopy failureError];
+    if (failureError2)
     {
       v16 = *MEMORY[0x277CCA7E8];
-      v3 = [v4 failureError];
-      v17[0] = v3;
+      failureError3 = [downloadCopy failureError];
+      v17[0] = failureError3;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     }
 
@@ -54,18 +54,18 @@
 
   else
   {
-    if ([v5 code] != 103)
+    if ([failureError code] != 103)
     {
       goto LABEL_14;
     }
 
     v9 = MEMORY[0x277CCA9B8];
-    v7 = [v4 failureError];
-    if (v7)
+    failureError2 = [downloadCopy failureError];
+    if (failureError2)
     {
       v14 = *MEMORY[0x277CCA7E8];
-      v3 = [v4 failureError];
-      v15 = v3;
+      failureError3 = [downloadCopy failureError];
+      v15 = failureError3;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     }
 
@@ -80,29 +80,29 @@
 
   v12 = [v10 errorWithDomain:@"ATError" code:v11 userInfo:v8];
 
-  if (v7)
+  if (failureError2)
   {
   }
 
-  v5 = v12;
+  failureError = v12;
 LABEL_14:
 
-  return v5;
+  return failureError;
 }
 
-- (void)_finishAsset:(id)a3 error:(id)a4 retryable:(BOOL)a5
+- (void)_finishAsset:(id)asset error:(id)error retryable:(BOOL)retryable
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 identifier];
-  v11 = [v10 longLongValue];
+  assetCopy = asset;
+  errorCopy = error;
+  identifier = [assetCopy identifier];
+  longLongValue = [identifier longLongValue];
 
   assetMap = self->_assetMap;
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:longLongValue];
   [(NSMutableDictionary *)assetMap removeObjectForKey:v13];
 
   downloadsMap = self->_downloadsMap;
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:longLongValue];
   [(NSMutableDictionary *)downloadsMap removeObjectForKey:v15];
 
   callbackQueue = self->_callbackQueue;
@@ -110,23 +110,23 @@ LABEL_14:
   v24 = 3221225472;
   v25 = __51__ATMPStoreAssetLink__finishAsset_error_retryable___block_invoke;
   v26 = &unk_2784E4A80;
-  v17 = v8;
+  v17 = assetCopy;
   v27 = v17;
-  v28 = self;
-  v18 = v9;
+  selfCopy = self;
+  v18 = errorCopy;
   v29 = v18;
-  v30 = a5;
+  retryableCopy = retryable;
   dispatch_async(callbackQueue, &v23);
   if (v18)
   {
     ATReportEventIncrementingScalarKey();
-    v19 = [v18 domain];
-    v20 = [v19 isEqualToString:@"ATError"];
+    domain = [v18 domain];
+    v20 = [domain isEqualToString:@"ATError"];
 
     if (v20)
     {
-      v21 = [v18 code];
-      if (v21 == 8 || v21 == 4 || v21 == 2)
+      code = [v18 code];
+      if (code == 8 || code == 4 || code == 2)
       {
         ATReportEventIncrementingScalarKey();
       }
@@ -155,19 +155,19 @@ void __51__ATMPStoreAssetLink__finishAsset_error_retryable___block_invoke(uint64
   }
 }
 
-- (void)_enqueueAssets:(id)a3
+- (void)_enqueueAssets:(id)assets
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 count];
+  assetsCopy = assets;
+  [assetsCopy count];
   ATReportEventAddIntToScalarKey();
-  v28 = [MEMORY[0x277CBEB18] array];
-  v29 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = assetsCopy;
   v4 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v4)
   {
@@ -184,11 +184,11 @@ void __51__ATMPStoreAssetLink__finishAsset_error_retryable___block_invoke(uint64
         }
 
         v7 = *(*(&v35 + 1) + 8 * i);
-        v8 = [v7 identifier];
-        v9 = [v8 longLongValue];
+        identifier = [v7 identifier];
+        longLongValue = [identifier longLongValue];
 
-        v10 = [getMPMediaLibraryClass() defaultMediaLibrary];
-        v11 = [v10 itemWithPersistentID:v9 verifyExistence:0];
+        defaultMediaLibrary = [getMPMediaLibraryClass() defaultMediaLibrary];
+        v11 = [defaultMediaLibrary itemWithPersistentID:longLongValue verifyExistence:0];
 
         if ([v7 downloadOnly])
         {
@@ -238,10 +238,10 @@ void __51__ATMPStoreAssetLink__finishAsset_error_retryable___block_invoke(uint64
         v19 = [v17 storeDownloadForMediaItem:v11 type:1 attributes:v16];
         if (v19)
         {
-          v20 = [MEMORY[0x277CCABB0] numberWithLongLong:v9];
-          [v29 setObject:v7 forKey:v20];
+          v20 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
+          [dictionary setObject:v7 forKey:v20];
 
-          [v28 addObject:v19];
+          [array addObject:v19];
         }
 
         else
@@ -265,9 +265,9 @@ void __51__ATMPStoreAssetLink__finishAsset_error_retryable___block_invoke(uint64
     while (v4);
   }
 
-  if ([v28 count])
+  if ([array count])
   {
-    v23 = [(MPStoreDownloadManager *)self->_downloadManager addDownloads:v28];
+    v23 = [(MPStoreDownloadManager *)self->_downloadManager addDownloads:array];
     v24 = _ATLogCategoryStoreDownloads_Oversize();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
@@ -280,8 +280,8 @@ void __51__ATMPStoreAssetLink__finishAsset_error_retryable___block_invoke(uint64
     v32[1] = 3221225472;
     v32[2] = __37__ATMPStoreAssetLink__enqueueAssets___block_invoke;
     v32[3] = &unk_2784E4A30;
-    v33 = v29;
-    v34 = self;
+    v33 = dictionary;
+    selfCopy = self;
     [v23 enumerateObjectsUsingBlock:v32];
   }
 
@@ -290,7 +290,7 @@ void __51__ATMPStoreAssetLink__finishAsset_error_retryable___block_invoke(uint64
   v31[2] = __37__ATMPStoreAssetLink__enqueueAssets___block_invoke_2;
   v31[3] = &unk_2784E4A58;
   v31[4] = self;
-  [v29 enumerateKeysAndObjectsUsingBlock:v31];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v31];
 }
 
 void __37__ATMPStoreAssetLink__enqueueAssets___block_invoke(uint64_t a1, void *a2)
@@ -322,19 +322,19 @@ void __37__ATMPStoreAssetLink__enqueueAssets___block_invoke_2(uint64_t a1, uint6
   [*(a1 + 32) _finishAsset:v4 error:0 retryable:1];
 }
 
-- (id)_dataClassForStoreKind:(id)a3
+- (id)_dataClassForStoreKind:(id)kind
 {
-  v5 = a3;
+  kindCopy = kind;
   if (_dataClassForStoreKind__onceToken_1481 != -1)
   {
     dispatch_once(&_dataClassForStoreKind__onceToken_1481, &__block_literal_global_47);
   }
 
-  v6 = [_dataClassForStoreKind__dataClassByKind_1482 objectForKeyedSubscript:v5];
+  v6 = [_dataClassForStoreKind__dataClassByKind_1482 objectForKeyedSubscript:kindCopy];
   if (!v6)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ATMPStoreAssetLink.m" lineNumber:324 description:{@"Unknown dataclass for kind %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATMPStoreAssetLink.m" lineNumber:324 description:{@"Unknown dataclass for kind %@", kindCopy}];
   }
 
   return v6;
@@ -360,16 +360,16 @@ uint64_t __45__ATMPStoreAssetLink__dataClassForStoreKind___block_invoke()
   return [v2 setObject:@"Media" forKeyedSubscript:v3];
 }
 
-- (id)_assetTypeForStoreKind:(id)a3
+- (id)_assetTypeForStoreKind:(id)kind
 {
   v3 = _assetTypeForStoreKind__onceToken_1495;
-  v4 = a3;
+  kindCopy = kind;
   if (v3 != -1)
   {
     dispatch_once(&_assetTypeForStoreKind__onceToken_1495, &__block_literal_global_1496);
   }
 
-  v5 = [_assetTypeForStoreKind__assetTypeByStoreKind_1497 objectForKeyedSubscript:v4];
+  v5 = [_assetTypeForStoreKind__assetTypeByStoreKind_1497 objectForKeyedSubscript:kindCopy];
 
   return v5;
 }
@@ -395,20 +395,20 @@ uint64_t __45__ATMPStoreAssetLink__assetTypeForStoreKind___block_invoke()
   return [v4 setObject:@"iTunesUVideo" forKeyedSubscript:v3];
 }
 
-- (void)downloadManager:(id)a3 didAddActiveDownloads:(id)a4 removeActiveDownloads:(id)a5
+- (void)downloadManager:(id)manager didAddActiveDownloads:(id)downloads removeActiveDownloads:(id)activeDownloads
 {
-  v7 = a4;
-  v8 = a5;
+  downloadsCopy = downloads;
+  activeDownloadsCopy = activeDownloads;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__ATMPStoreAssetLink_downloadManager_didAddActiveDownloads_removeActiveDownloads___block_invoke;
   block[3] = &unk_2784E59B0;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = downloadsCopy;
+  selfCopy = self;
+  v15 = activeDownloadsCopy;
+  v10 = activeDownloadsCopy;
+  v11 = downloadsCopy;
   dispatch_sync(queue, block);
 }
 
@@ -470,17 +470,17 @@ void __82__ATMPStoreAssetLink_downloadManager_didAddActiveDownloads_removeActive
   }
 }
 
-- (void)downloadManager:(id)a3 downloadDidProgress:(id)a4
+- (void)downloadManager:(id)manager downloadDidProgress:(id)progress
 {
-  v5 = a4;
+  progressCopy = progress;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__ATMPStoreAssetLink_downloadManager_downloadDidProgress___block_invoke;
   v8[3] = &unk_2784E5960;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = progressCopy;
+  selfCopy = self;
+  v7 = progressCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -500,17 +500,17 @@ void __58__ATMPStoreAssetLink_downloadManager_downloadDidProgress___block_invoke
   }
 }
 
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  finishCopy = finish;
   v6 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v5;
+    v15 = finishCopy;
     _os_log_impl(&dword_223819000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ download finished: %{public}@", buf, 0x16u);
   }
 
@@ -519,9 +519,9 @@ void __58__ATMPStoreAssetLink_downloadManager_downloadDidProgress___block_invoke
   v9[1] = 3221225472;
   v9[2] = __56__ATMPStoreAssetLink_downloadManager_downloadDidFinish___block_invoke;
   v9[3] = &unk_2784E5960;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
+  v10 = finishCopy;
+  selfCopy2 = self;
+  v8 = finishCopy;
   dispatch_sync(queue, v9);
 }
 
@@ -603,17 +603,17 @@ void __56__ATMPStoreAssetLink_downloadManager_downloadDidFinish___block_invoke(u
   }
 }
 
-- (void)prioritizeAsset:(id)a3
+- (void)prioritizeAsset:(id)asset
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = assetCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Prioritize %{public}@", buf, 0x16u);
   }
 
@@ -622,9 +622,9 @@ void __56__ATMPStoreAssetLink_downloadManager_downloadDidFinish___block_invoke(u
   v8[1] = 3221225472;
   v8[2] = __38__ATMPStoreAssetLink_prioritizeAsset___block_invoke;
   v8[3] = &unk_2784E5960;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = assetCopy;
+  selfCopy2 = self;
+  v7 = assetCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -663,17 +663,17 @@ void __38__ATMPStoreAssetLink_prioritizeAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)cancelAssets:(id)a3
+- (void)cancelAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__ATMPStoreAssetLink_cancelAssets___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assetsCopy;
+  selfCopy = self;
+  v6 = assetsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -739,23 +739,23 @@ void __35__ATMPStoreAssetLink_cancelAssets___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)canEnqueueAsset:(id)a3
+- (BOOL)canEnqueueAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = +[ATDeviceSettings sharedInstance];
-  v5 = [v4 useNewDownloadService];
+  useNewDownloadService = [v4 useNewDownloadService];
 
-  if (v5 & 1) != 0 || ([v3 variantOptions], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKey:", @"AssetParts"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "unsignedIntegerValue"), v7, v6, (objc_msgSend(v3, "bypassStore")))
+  if (useNewDownloadService & 1) != 0 || ([assetCopy variantOptions], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKey:", @"AssetParts"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "unsignedIntegerValue"), v7, v6, (objc_msgSend(assetCopy, "bypassStore")))
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v3 dataclass];
-    if ([v10 isEqualToString:@"Media"])
+    dataclass = [assetCopy dataclass];
+    if ([dataclass isEqualToString:@"Media"])
     {
-      if ([v3 isRestore])
+      if ([assetCopy isRestore])
       {
         v9 = 0;
       }
@@ -775,32 +775,32 @@ void __35__ATMPStoreAssetLink_cancelAssets___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4
+- (id)enqueueAssets:(id)assets force:(BOOL)force
 {
-  v6 = a3;
+  assetsCopy = assets;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__1516;
   v22 = __Block_byref_object_dispose__1517;
-  v23 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__1516;
   v16[4] = __Block_byref_object_dispose__1517;
-  v17 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__ATMPStoreAssetLink_enqueueAssets_force___block_invoke;
   block[3] = &unk_2784E49E0;
   block[4] = self;
-  v12 = v6;
-  v15 = a4;
+  v12 = assetsCopy;
+  forceCopy = force;
   v13 = &v18;
   v14 = v16;
-  v8 = v6;
+  v8 = assetsCopy;
   dispatch_sync(queue, block);
   v9 = v19[5];
 
@@ -1142,8 +1142,8 @@ void __26__ATMPStoreAssetLink_open__block_invoke_11(uint64_t a1)
     v8 = v7;
     _Block_object_dispose(&v25, 8);
     [v7 setFilteringDisabled:1];
-    v9 = [getMPMediaLibraryClass() defaultMediaLibrary];
-    [v9 setCloudFilteringType:1];
+    defaultMediaLibrary = [getMPMediaLibraryClass() defaultMediaLibrary];
+    [defaultMediaLibrary setCloudFilteringType:1];
 
     v25 = 0;
     v26 = &v25;
@@ -1163,9 +1163,9 @@ void __26__ATMPStoreAssetLink_open__block_invoke_11(uint64_t a1)
 
     v11 = v10;
     _Block_object_dispose(&v25, 8);
-    v12 = [v10 sharedManager];
+    sharedManager = [v10 sharedManager];
     downloadManager = v2->_downloadManager;
-    v2->_downloadManager = v12;
+    v2->_downloadManager = sharedManager;
 
     [(MPStoreDownloadManager *)v2->_downloadManager addObserver:v2 forDownloads:0];
     v14 = objc_opt_new();

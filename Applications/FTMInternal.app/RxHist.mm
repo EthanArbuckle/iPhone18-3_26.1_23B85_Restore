@@ -1,21 +1,21 @@
 @interface RxHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAgcMode:(id)a3;
-- (int)StringAsAntenna:(id)a3;
+- (int)StringAsAgcMode:(id)mode;
+- (int)StringAsAntenna:(id)antenna;
 - (int)agcMode;
 - (int)antenna;
 - (unint64_t)hash;
-- (unsigned)numRxLevelAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)numRxLevelAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAntenna:(BOOL)a3;
-- (void)setHasMinRxLevel:(BOOL)a3;
-- (void)setHasWorkMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAntenna:(BOOL)antenna;
+- (void)setHasMinRxLevel:(BOOL)level;
+- (void)setHasWorkMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RxHist
@@ -41,45 +41,45 @@
   }
 }
 
-- (int)StringAsAgcMode:(id)a3
+- (int)StringAsAgcMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FREQ_SCAN"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"FREQ_SCAN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"INIT_ACQ"])
+  else if ([modeCopy isEqualToString:@"INIT_ACQ"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TRAFFIC"])
+  else if ([modeCopy isEqualToString:@"TRAFFIC"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PBCH"])
+  else if ([modeCopy isEqualToString:@"PBCH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"INTER_FREQ"])
+  else if ([modeCopy isEqualToString:@"INTER_FREQ"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ONLINE_DRX"])
+  else if ([modeCopy isEqualToString:@"ONLINE_DRX"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OFFLINE_DRX"])
+  else if ([modeCopy isEqualToString:@"OFFLINE_DRX"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"OFF"])
+  else if ([modeCopy isEqualToString:@"OFF"])
   {
     v4 = 15;
   }
@@ -105,9 +105,9 @@
   }
 }
 
-- (void)setHasAntenna:(BOOL)a3
+- (void)setHasAntenna:(BOOL)antenna
 {
-  if (a3)
+  if (antenna)
   {
     v3 = 2;
   }
@@ -120,20 +120,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAntenna:(id)a3
+- (int)StringAsAntenna:(id)antenna
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RX_0"])
+  antennaCopy = antenna;
+  if ([antennaCopy isEqualToString:@"RX_0"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RX_1"])
+  else if ([antennaCopy isEqualToString:@"RX_1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RX_BOTH"])
+  else if ([antennaCopy isEqualToString:@"RX_BOTH"])
   {
     v4 = 2;
   }
@@ -146,9 +146,9 @@
   return v4;
 }
 
-- (void)setHasWorkMode:(BOOL)a3
+- (void)setHasWorkMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMinRxLevel:(BOOL)a3
+- (void)setHasMinRxLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 4;
   }
@@ -176,18 +176,18 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)numRxLevelAtIndex:(unint64_t)a3
+- (unsigned)numRxLevelAtIndex:(unint64_t)index
 {
   p_numRxLevels = &self->_numRxLevels;
   count = self->_numRxLevels.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_numRxLevels->list[a3];
+  return p_numRxLevels->list[index];
 }
 
 - (id)description
@@ -195,8 +195,8 @@
   v7.receiver = self;
   v7.super_class = RxHist;
   v3 = [(RxHist *)&v7 description];
-  v4 = [(RxHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RxHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -261,9 +261,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -333,14 +333,14 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[8] = self->_agcMode;
-    *(v4 + 48) |= 1u;
+    toCopy[8] = self->_agcMode;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -351,8 +351,8 @@ LABEL_3:
       }
 
 LABEL_15:
-      v4[11] = self->_workMode;
-      *(v4 + 48) |= 8u;
+      toCopy[11] = self->_workMode;
+      *(toCopy + 48) |= 8u;
       if ((*&self->_has & 4) == 0)
       {
         goto LABEL_6;
@@ -367,8 +367,8 @@ LABEL_15:
     goto LABEL_3;
   }
 
-  v4[9] = self->_antenna;
-  *(v4 + 48) |= 2u;
+  toCopy[9] = self->_antenna;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -379,19 +379,19 @@ LABEL_4:
   if ((has & 4) != 0)
   {
 LABEL_5:
-    v4[10] = self->_minRxLevel;
-    *(v4 + 48) |= 4u;
+    toCopy[10] = self->_minRxLevel;
+    *(toCopy + 48) |= 4u;
   }
 
 LABEL_6:
-  v9 = v4;
+  v9 = toCopy;
   if ([(RxHist *)self numRxLevelsCount])
   {
     [v9 clearNumRxLevels];
-    v6 = [(RxHist *)self numRxLevelsCount];
-    if (v6)
+    numRxLevelsCount = [(RxHist *)self numRxLevelsCount];
+    if (numRxLevelsCount)
     {
-      v7 = v6;
+      v7 = numRxLevelsCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addNumRxLevel:{-[RxHist numRxLevelAtIndex:](self, "numRxLevelAtIndex:", i)}];
@@ -400,9 +400,9 @@ LABEL_6:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -456,24 +456,24 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_agcMode != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_agcMode != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_23:
     IsEqual = 0;
@@ -482,39 +482,39 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_antenna != *(v4 + 9))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_antenna != *(equalCopy + 9))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_workMode != *(v4 + 11))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_workMode != *(equalCopy + 11))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_minRxLevel != *(v4 + 10))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_minRxLevel != *(equalCopy + 10))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_23;
   }
@@ -579,15 +579,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if (v5)
   {
-    self->_agcMode = *(v4 + 8);
+    self->_agcMode = *(fromCopy + 8);
     *&self->_has |= 1u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -600,14 +600,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 2) == 0)
+  else if ((*(fromCopy + 48) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_antenna = *(v4 + 9);
+  self->_antenna = *(fromCopy + 9);
   *&self->_has |= 2u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -620,21 +620,21 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_workMode = *(v4 + 11);
+  self->_workMode = *(fromCopy + 11);
   *&self->_has |= 8u;
-  if ((*(v4 + 48) & 4) != 0)
+  if ((*(fromCopy + 48) & 4) != 0)
   {
 LABEL_5:
-    self->_minRxLevel = *(v4 + 10);
+    self->_minRxLevel = *(fromCopy + 10);
     *&self->_has |= 4u;
   }
 
 LABEL_6:
-  v9 = v4;
-  v6 = [v4 numRxLevelsCount];
-  if (v6)
+  v9 = fromCopy;
+  numRxLevelsCount = [fromCopy numRxLevelsCount];
+  if (numRxLevelsCount)
   {
-    v7 = v6;
+    v7 = numRxLevelsCount;
     for (i = 0; i != v7; ++i)
     {
       -[RxHist addNumRxLevel:](self, "addNumRxLevel:", [v9 numRxLevelAtIndex:i]);

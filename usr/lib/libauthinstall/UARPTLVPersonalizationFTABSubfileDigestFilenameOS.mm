@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationFTABSubfileDigestFilenameOS
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationFTABSubfileDigestFilenameOS)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setFilename:(id)a3;
+- (void)setFilename:(id)filename;
 @end
 
 @implementation UARPTLVPersonalizationFTABSubfileDigestFilenameOS
@@ -18,16 +18,16 @@
   return [(UARPMetaDataTLVStringOS *)&v3 init];
 }
 
-- (void)setFilename:(id)a3
+- (void)setFilename:(id)filename
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 copy];
-  filename = v5->_filename;
-  v5->_filename = v6;
+  filenameCopy = filename;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [filenameCopy copy];
+  filename = selfCopy->_filename;
+  selfCopy->_filename = v6;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -76,14 +76,14 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_new();
-    [v4 setFilename:v3];
+    [v4 setFilename:valueCopy];
   }
 
   else
@@ -94,9 +94,9 @@
   return v4;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  v4 = strndup(a4, a3);
+  v4 = strndup(value, length);
   v5 = objc_opt_new();
   v6 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v4];
   [v5 setFilename:v6];

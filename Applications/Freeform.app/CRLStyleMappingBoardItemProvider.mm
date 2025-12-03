@@ -1,23 +1,23 @@
 @interface CRLStyleMappingBoardItemProvider
 - (CRLStyleMappingBoardItemProvider)init;
-- (CRLStyleMappingBoardItemProvider)initWithIngestibleBoardItem:(id)a3;
+- (CRLStyleMappingBoardItemProvider)initWithIngestibleBoardItem:(id)item;
 - (id)imageData;
 - (id)thumbnailImageData;
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4;
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler;
 @end
 
 @implementation CRLStyleMappingBoardItemProvider
 
-- (CRLStyleMappingBoardItemProvider)initWithIngestibleBoardItem:(id)a3
+- (CRLStyleMappingBoardItemProvider)initWithIngestibleBoardItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = CRLStyleMappingBoardItemProvider;
   v6 = [(CRLStyleMappingBoardItemProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ingestibleItemDrawable, a3);
+    objc_storeStrong(&v6->_ingestibleItemDrawable, item);
   }
 
   return v7;
@@ -75,36 +75,36 @@
 
 - (id)imageData
 {
-  v2 = [(CRLIngestibleBoardItemAndDescription *)self->_ingestibleItemDrawable boardItem];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLPasteboardImageDataProvider);
+  boardItem = [(CRLIngestibleBoardItemAndDescription *)self->_ingestibleItemDrawable boardItem];
+  v9 = sub_1003035DC(boardItem, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLPasteboardImageDataProvider);
 
-  v10 = [v9 imageData];
+  imageData = [v9 imageData];
 
-  return v10;
+  return imageData;
 }
 
 - (id)thumbnailImageData
 {
-  v2 = [(CRLIngestibleBoardItemAndDescription *)self->_ingestibleItemDrawable boardItem];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLPasteboardImageDataProvider);
+  boardItem = [(CRLIngestibleBoardItemAndDescription *)self->_ingestibleItemDrawable boardItem];
+  v9 = sub_1003035DC(boardItem, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLPasteboardImageDataProvider);
 
-  v10 = [v9 thumbnailImageData];
+  thumbnailImageData = [v9 thumbnailImageData];
 
-  return v10;
+  return thumbnailImageData;
 }
 
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = [(CRLStyleMappingBoardItemProvider *)self newBoardItemWithFactory:a3 bakedSize:0];
+  handlerCopy = handler;
+  v6 = [(CRLStyleMappingBoardItemProvider *)self newBoardItemWithFactory:factory bakedSize:0];
   boardItem = self->_boardItem;
   self->_boardItem = v6;
 
-  v8 = v9;
-  if (v9)
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(handlerCopy + 2))(handlerCopy);
+    v8 = handlerCopy;
   }
 }
 

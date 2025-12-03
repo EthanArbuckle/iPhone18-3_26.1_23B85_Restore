@@ -1,14 +1,14 @@
 @interface PKHoverControllerDisplayLinkDelegate
 - (PKHoverController)controller;
-- (void)display:(id)a3;
+- (void)display:(id)display;
 @end
 
 @implementation PKHoverControllerDisplayLinkDelegate
 
-- (void)display:(id)a3
+- (void)display:(id)display
 {
-  v3 = [(PKHoverControllerDisplayLinkDelegate *)self controller];
-  [v3 vsync];
+  controller = [(PKHoverControllerDisplayLinkDelegate *)self controller];
+  [controller vsync];
 }
 
 - (PKHoverController)controller

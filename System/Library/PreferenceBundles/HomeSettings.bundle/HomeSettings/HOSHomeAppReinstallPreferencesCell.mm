@@ -1,15 +1,15 @@
 @interface HOSHomeAppReinstallPreferencesCell
-+ (id)cloudDownloadImageForTintColor:(id)a3 outlineColor:(id)a4 traitCollection:(id)a5;
++ (id)cloudDownloadImageForTintColor:(id)color outlineColor:(id)outlineColor traitCollection:(id)collection;
 + (id)specifier;
-- (void)_downloadHomeApp:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)_downloadHomeApp:(id)app;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HOSHomeAppReinstallPreferencesCell
 
 + (id)specifier
 {
-  v2 = NSStringFromClass(a1);
+  v2 = NSStringFromClass(self);
   v3 = [PSSpecifier preferenceSpecifierNamed:v2 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
 
   [v3 setProperty:objc_opt_class() forKey:PSCellClassKey];
@@ -34,17 +34,17 @@
   return v3;
 }
 
-+ (id)cloudDownloadImageForTintColor:(id)a3 outlineColor:(id)a4 traitCollection:(id)a5
++ (id)cloudDownloadImageForTintColor:(id)color outlineColor:(id)outlineColor traitCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  colorCopy = color;
+  outlineColorCopy = outlineColor;
+  collectionCopy = collection;
   v10 = [NSBundle bundleForClass:objc_opt_class()];
-  v11 = [UIImage imageNamed:@"UniversalAddControlDownloadArrow" inBundle:v10 compatibleWithTraitCollection:v9];
-  v12 = [v11 _flatImageWithColor:v7];
+  v11 = [UIImage imageNamed:@"UniversalAddControlDownloadArrow" inBundle:v10 compatibleWithTraitCollection:collectionCopy];
+  v12 = [v11 _flatImageWithColor:colorCopy];
 
-  v13 = [UIImage imageNamed:@"UniversalAddControlDownloadCloud" inBundle:v10 compatibleWithTraitCollection:v9];
-  v14 = [v13 _flatImageWithColor:v7];
+  v13 = [UIImage imageNamed:@"UniversalAddControlDownloadCloud" inBundle:v10 compatibleWithTraitCollection:collectionCopy];
+  v14 = [v13 _flatImageWithColor:colorCopy];
 
   [v12 size];
   v16 = v15;
@@ -87,62 +87,62 @@
   return v26;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
   [v5 _scaledValueForValue:15.0];
   v6 = [UIFont boldSystemFontOfSize:?];
-  v7 = [(HOSHomeAppReinstallPreferencesCell *)self textLabel];
-  [v7 setFont:v6];
+  textLabel = [(HOSHomeAppReinstallPreferencesCell *)self textLabel];
+  [textLabel setFont:v6];
 
   v21 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 
   [v21 _scaledValueForValue:13.0];
   v8 = [UIFont systemFontOfSize:?];
-  v9 = [(HOSHomeAppReinstallPreferencesCell *)self detailTextLabel];
-  [v9 setFont:v8];
+  detailTextLabel = [(HOSHomeAppReinstallPreferencesCell *)self detailTextLabel];
+  [detailTextLabel setFont:v8];
 
-  v10 = [v4 propertyForKey:PSTitleKey];
-  v11 = [(HOSHomeAppReinstallPreferencesCell *)self textLabel];
-  [v11 setText:v10];
+  v10 = [specifierCopy propertyForKey:PSTitleKey];
+  textLabel2 = [(HOSHomeAppReinstallPreferencesCell *)self textLabel];
+  [textLabel2 setText:v10];
 
-  v12 = [v4 propertyForKey:PSTableCellSubtitleTextKey];
-  v13 = [(HOSHomeAppReinstallPreferencesCell *)self detailTextLabel];
-  [v13 setText:v12];
+  v12 = [specifierCopy propertyForKey:PSTableCellSubtitleTextKey];
+  detailTextLabel2 = [(HOSHomeAppReinstallPreferencesCell *)self detailTextLabel];
+  [detailTextLabel2 setText:v12];
 
-  v14 = [v4 propertyForKey:PSIconImageKey];
-  v15 = [(HOSHomeAppReinstallPreferencesCell *)self imageView];
-  [v15 setImage:v14];
+  v14 = [specifierCopy propertyForKey:PSIconImageKey];
+  imageView = [(HOSHomeAppReinstallPreferencesCell *)self imageView];
+  [imageView setImage:v14];
 
-  v16 = [v4 propertyForKey:HOSHomeAppReinstallPreferencesCellHomeAppInstallControllerSpecifierKey];
+  v16 = [specifierCopy propertyForKey:HOSHomeAppReinstallPreferencesCellHomeAppInstallControllerSpecifierKey];
 
   [(HOSHomeAppReinstallPreferencesCell *)self setInstallController:v16];
   v17 = objc_opt_new();
   [(HOSHomeAppReinstallPreferencesCell *)self setDownloadControl:v17];
 
   [(HOSHomeAppReinstallPreferencesCell *)self _updateDownloadControl:0];
-  v18 = [(HOSHomeAppReinstallPreferencesCell *)self downloadControl];
-  [v18 addTarget:self action:"_downloadHomeApp:" forEvents:64];
+  downloadControl = [(HOSHomeAppReinstallPreferencesCell *)self downloadControl];
+  [downloadControl addTarget:self action:"_downloadHomeApp:" forEvents:64];
 
-  v19 = [(HOSHomeAppReinstallPreferencesCell *)self downloadControl];
-  [v19 sizeToFit];
+  downloadControl2 = [(HOSHomeAppReinstallPreferencesCell *)self downloadControl];
+  [downloadControl2 sizeToFit];
 
-  v20 = [(HOSHomeAppReinstallPreferencesCell *)self downloadControl];
-  [(HOSHomeAppReinstallPreferencesCell *)self setAccessoryView:v20];
+  downloadControl3 = [(HOSHomeAppReinstallPreferencesCell *)self downloadControl];
+  [(HOSHomeAppReinstallPreferencesCell *)self setAccessoryView:downloadControl3];
 
   [(HOSHomeAppReinstallPreferencesCell *)self setSelectionStyle:0];
 }
 
-- (void)_downloadHomeApp:(id)a3
+- (void)_downloadHomeApp:(id)app
 {
-  v5 = [(HOSHomeAppReinstallPreferencesCell *)self installController];
+  installController = [(HOSHomeAppReinstallPreferencesCell *)self installController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_4B38;
   v10[3] = &unk_107A0;
   v10[4] = self;
-  v6 = [v5 downloadHomeAppWithUpdateBlock:v10];
+  v6 = [installController downloadHomeAppWithUpdateBlock:v10];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_4B48;

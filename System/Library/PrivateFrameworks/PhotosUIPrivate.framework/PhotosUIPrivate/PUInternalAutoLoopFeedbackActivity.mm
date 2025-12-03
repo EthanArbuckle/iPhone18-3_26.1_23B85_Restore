@@ -1,5 +1,5 @@
 @interface PUInternalAutoLoopFeedbackActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityViewController;
 - (id)asset;
 @end
@@ -9,52 +9,52 @@
 - (id)activityViewController
 {
   v3 = objc_alloc(MEMORY[0x1E69C3568]);
-  v4 = [(PUInternalAutoLoopFeedbackActivity *)self asset];
-  v5 = [v3 initWithAsset:v4 delegate:self];
+  asset = [(PUInternalAutoLoopFeedbackActivity *)self asset];
+  v5 = [v3 initWithAsset:asset delegate:self];
 
   [v5 setModalPresentationStyle:0];
 
   return v5;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 isPreparingIndividualItems];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  isPreparingIndividualItems = [itemSourceController isPreparingIndividualItems];
 
-  v6 = [(PUInternalAutoLoopFeedbackActivity *)self asset];
-  v7 = 0;
-  if (PFOSVariantHasInternalUI() && v5)
+  asset = [(PUInternalAutoLoopFeedbackActivity *)self asset];
+  canPlayLongExposure = 0;
+  if (PFOSVariantHasInternalUI() && isPreparingIndividualItems)
   {
-    if ([v6 canPlayLoopingVideo])
+    if ([asset canPlayLoopingVideo])
     {
-      v7 = 1;
+      canPlayLongExposure = 1;
     }
 
     else
     {
-      v7 = [v6 canPlayLongExposure];
+      canPlayLongExposure = [asset canPlayLongExposure];
     }
   }
 
-  return v7;
+  return canPlayLongExposure;
 }
 
 - (id)asset
 {
-  v2 = [(PXActivity *)self itemSourceController];
-  v3 = [v2 assets];
-  if ([v3 count] == 1)
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  if ([assets count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [assets firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 @end

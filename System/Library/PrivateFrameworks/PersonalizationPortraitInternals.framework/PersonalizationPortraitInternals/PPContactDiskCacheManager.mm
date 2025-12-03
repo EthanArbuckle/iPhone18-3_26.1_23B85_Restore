@@ -1,21 +1,21 @@
 @interface PPContactDiskCacheManager
-- (PPContactDiskCacheManager)initWithPath:(id)a3;
-- (void)accessCacheWithBlock:(id)a3;
-- (void)mutateCacheWithBlock:(id)a3;
+- (PPContactDiskCacheManager)initWithPath:(id)path;
+- (void)accessCacheWithBlock:(id)block;
+- (void)mutateCacheWithBlock:(id)block;
 @end
 
 @implementation PPContactDiskCacheManager
 
-- (void)mutateCacheWithBlock:(id)a3
+- (void)mutateCacheWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__PPContactDiskCacheManager_mutateCacheWithBlock___block_invoke;
   v7[3] = &unk_278973328;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -51,16 +51,16 @@ void __50__PPContactDiskCacheManager_mutateCacheWithBlock___block_invoke(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCacheWithBlock:(id)a3
+- (void)accessCacheWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__PPContactDiskCacheManager_accessCacheWithBlock___block_invoke;
   v7[3] = &unk_278973328;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -73,9 +73,9 @@ void __50__PPContactDiskCacheManager_accessCacheWithBlock___block_invoke(uint64_
   [v4 deleteCacheIfTooOld];
 }
 
-- (PPContactDiskCacheManager)initWithPath:(id)a3
+- (PPContactDiskCacheManager)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (initWithPath___pasOnceToken35 != -1)
   {
     dispatch_once(&initWithPath___pasOnceToken35, &__block_literal_global_5763);
@@ -93,10 +93,10 @@ void __50__PPContactDiskCacheManager_accessCacheWithBlock___block_invoke(uint64_
   v12[2] = __42__PPContactDiskCacheManager_initWithPath___block_invoke_2;
   v12[3] = &unk_278974EA0;
   v15 = &v16;
-  v6 = v4;
+  v6 = pathCopy;
   v13 = v6;
-  v7 = self;
-  v14 = v7;
+  selfCopy = self;
+  v14 = selfCopy;
   [v5 runWithLockAcquired:v12];
   v8 = v17[5];
 

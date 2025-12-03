@@ -1,6 +1,6 @@
 @interface _SCDAAssertionImpl
 - (NSString)description;
-- (_SCDAAssertionImpl)initWithUUID:(id)a3 context:(id)a4 relinquishmentHandler:(id)a5;
+- (_SCDAAssertionImpl)initWithUUID:(id)d context:(id)context relinquishmentHandler:(id)handler;
 @end
 
 @implementation _SCDAAssertionImpl
@@ -17,21 +17,21 @@
   return v6;
 }
 
-- (_SCDAAssertionImpl)initWithUUID:(id)a3 context:(id)a4 relinquishmentHandler:(id)a5
+- (_SCDAAssertionImpl)initWithUUID:(id)d context:(id)context relinquishmentHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  contextCopy = context;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = _SCDAAssertionImpl;
   v11 = [(_SCDAAssertionImpl *)&v23 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     uuid = v11->_uuid;
     v11->_uuid = v12;
 
-    v14 = [v9 copy];
+    v14 = [contextCopy copy];
     context = v11->_context;
     v11->_context = v14;
 
@@ -40,7 +40,7 @@
     v21[1] = 3221225472;
     v21[2] = __65___SCDAAssertionImpl_initWithUUID_context_relinquishmentHandler___block_invoke;
     v21[3] = &unk_1E85D2C90;
-    v22 = v10;
+    v22 = handlerCopy;
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kSCDAErrorDomain" code:40 userInfo:0];
     v18 = [(SCDATwoArgumentSafetyBlock *)v16 initWithBlock:v21 defaultValue1:0 defaultValue2:v17];
     relinquishmentHandler = v11->_relinquishmentHandler;

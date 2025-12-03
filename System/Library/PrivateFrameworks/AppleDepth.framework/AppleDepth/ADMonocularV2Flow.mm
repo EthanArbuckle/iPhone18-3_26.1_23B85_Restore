@@ -1,26 +1,26 @@
 @interface ADMonocularV2Flow
-- (ADMonocularV2Flow)initWithExecutor:(id)a3;
-- (void)processColor:(__CVBuffer *)a3 timestamp:(double)a4;
+- (ADMonocularV2Flow)initWithExecutor:(id)executor;
+- (void)processColor:(__CVBuffer *)color timestamp:(double)timestamp;
 @end
 
 @implementation ADMonocularV2Flow
 
-- (void)processColor:(__CVBuffer *)a3 timestamp:(double)a4
+- (void)processColor:(__CVBuffer *)color timestamp:(double)timestamp
 {
-  if (a3)
+  if (color)
   {
     texture = 0;
     v7 = objc_opt_new();
-    [v7 setColor:a3];
-    v8 = [(ADMonocularV2Executor *)self->_executor executeWithColor:a3 outDisparity:&texture];
+    [v7 setColor:color];
+    v8 = [(ADMonocularV2Executor *)self->_executor executeWithColor:color outDisparity:&texture];
     if (v8)
     {
-      v9 = [(ADFlow *)self delegate];
+      delegate = [(ADFlow *)self delegate];
 
-      if (v9)
+      if (delegate)
       {
-        v10 = [(ADFlow *)self delegate];
-        [v10 didFailOnFrame:v7 input:@"failed executing Monocular V2" message:v8 error:a4];
+        delegate2 = [(ADFlow *)self delegate];
+        [delegate2 didFailOnFrame:v7 input:@"failed executing Monocular V2" message:v8 error:timestamp];
 LABEL_11:
       }
     }
@@ -29,42 +29,42 @@ LABEL_11:
     {
       if (texture)
       {
-        v10 = objc_opt_new();
-        [v10 setDepth:texture];
-        v11 = [(ADFlow *)self delegate];
+        delegate2 = objc_opt_new();
+        [delegate2 setDepth:texture];
+        delegate3 = [(ADFlow *)self delegate];
 
-        if (v11)
+        if (delegate3)
         {
-          v12 = [(ADFlow *)self delegate];
-          [v12 didProcessFrame:v7 input:v10 output:a4];
+          delegate4 = [(ADFlow *)self delegate];
+          [delegate4 didProcessFrame:v7 input:delegate2 output:timestamp];
         }
 
         CVPixelBufferRelease(texture);
         goto LABEL_11;
       }
 
-      v13 = [(ADFlow *)self delegate];
+      delegate5 = [(ADFlow *)self delegate];
 
-      if (v13)
+      if (delegate5)
       {
-        v10 = [(ADFlow *)self delegate];
-        [v10 didFailOnFrame:v7 input:@"Monocular V2 null output returned" message:-22976 error:a4];
+        delegate2 = [(ADFlow *)self delegate];
+        [delegate2 didFailOnFrame:v7 input:@"Monocular V2 null output returned" message:-22976 error:timestamp];
         goto LABEL_11;
       }
     }
   }
 }
 
-- (ADMonocularV2Flow)initWithExecutor:(id)a3
+- (ADMonocularV2Flow)initWithExecutor:(id)executor
 {
-  v5 = a3;
+  executorCopy = executor;
   v9.receiver = self;
   v9.super_class = ADMonocularV2Flow;
   v6 = [(ADMonocularV2Flow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_executor, a3);
+    objc_storeStrong(&v6->_executor, executor);
   }
 
   return v7;

@@ -79,16 +79,16 @@ void __43__NEIPCWrapper_initWithSession_identifier___block_invoke_2(uint64_t a1,
 
 - (void)cancel
 {
-  if (a1)
+  if (self)
   {
     v2 = wrapperMap;
     objc_sync_enter(v2);
     v3 = wrapperMap;
-    v5 = objc_getProperty(a1, v4, 32, 1);
+    v5 = objc_getProperty(self, v4, 32, 1);
     [v3 removeObjectForKey:v5];
 
     objc_sync_exit(v2);
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
     v6 = obj[3];
     obj[3] = 0;

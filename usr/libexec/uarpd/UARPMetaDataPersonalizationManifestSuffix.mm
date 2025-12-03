@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationManifestSuffix
 - (UARPMetaDataPersonalizationManifestSuffix)init;
-- (UARPMetaDataPersonalizationManifestSuffix)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationManifestSuffix)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationManifestSuffix)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationManifestSuffix)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationManifestSuffix)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationManifestSuffix)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationManifestSuffix *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataPersonalizationManifestSuffix;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     manifestSuffix = v7->_manifestSuffix;
     v7->_manifestSuffix = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataPersonalizationManifestSuffix)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationManifestSuffix)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationManifestSuffix *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     manifestSuffix = v6->_manifestSuffix;
     v6->_manifestSuffix = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataPersonalizationManifestSuffix *)self manifestSuffix];
+  manifestSuffix = [(UARPMetaDataPersonalizationManifestSuffix *)self manifestSuffix];
   v6.receiver = self;
   v6.super_class = UARPMetaDataPersonalizationManifestSuffix;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:manifestSuffix];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataPersonalizationManifestSuffix *)self manifestSuffix];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  manifestSuffix = [(UARPMetaDataPersonalizationManifestSuffix *)self manifestSuffix];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, manifestSuffix];
 
   return v5;
 }

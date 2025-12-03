@@ -1,36 +1,36 @@
 @interface _INPBPlayMediaIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBPlayMediaIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPlayMediaIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPlayMediaIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"nowPlayingInfo"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  nowPlayingInfo = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
+  dictionaryRepresentation = [nowPlayingInfo dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"nowPlayingInfo"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
-    v6 = [v4 nowPlayingInfo];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    nowPlayingInfo = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
+    nowPlayingInfo2 = [equalCopy nowPlayingInfo];
+    v7 = nowPlayingInfo2;
+    if ((nowPlayingInfo != 0) != (nowPlayingInfo2 == 0))
     {
-      v8 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
-      if (!v8)
+      nowPlayingInfo3 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
+      if (!nowPlayingInfo3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
-      v11 = [v4 nowPlayingInfo];
-      v12 = [v10 isEqual:v11];
+      v9 = nowPlayingInfo3;
+      nowPlayingInfo4 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
+      nowPlayingInfo5 = [equalCopy nowPlayingInfo];
+      v12 = [nowPlayingInfo4 isEqual:nowPlayingInfo5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPlayMediaIntentResponse allocWithZone:](_INPBPlayMediaIntentResponse init];
-  v6 = [(_INPBDictionary *)self->_nowPlayingInfo copyWithZone:a3];
+  v6 = [(_INPBDictionary *)self->_nowPlayingInfo copyWithZone:zone];
   [(_INPBPlayMediaIntentResponse *)v5 setNowPlayingInfo:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPlayMediaIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBPlayMediaIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPlayMediaIntentResponse)initWithCoder:(id)a3
+- (_INPBPlayMediaIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPlayMediaIntentResponse *)self initWithData:v6];
+    self = [(_INPBPlayMediaIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
+  toCopy = to;
+  nowPlayingInfo = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
 
-  if (v4)
+  if (nowPlayingInfo)
   {
-    v5 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
+    nowPlayingInfo2 = [(_INPBPlayMediaIntentResponse *)self nowPlayingInfo];
     PBDataWriterWriteSubmessage();
   }
 }

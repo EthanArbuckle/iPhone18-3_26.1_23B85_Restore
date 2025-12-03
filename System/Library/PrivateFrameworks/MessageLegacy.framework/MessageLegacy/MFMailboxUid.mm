@@ -1,25 +1,25 @@
 @interface MFMailboxUid
-+ (id)fileURLForMailboxURL:(id)a3;
-+ (id)specialNameForType:(int)a3;
++ (id)fileURLForMailboxURL:(id)l;
++ (id)specialNameForType:(int)type;
 - (BOOL)hasChildren;
-- (BOOL)isDescendantOfMailbox:(id)a3;
+- (BOOL)isDescendantOfMailbox:(id)mailbox;
 - (BOOL)isNotesMailboxUid;
 - (BOOL)isOutgoingMailboxUid;
 - (BOOL)isSentMailboxUid;
 - (BOOL)isSpecialMailboxUid;
 - (BOOL)isStandardizedMailboxUid;
-- (BOOL)setChildren:(id)a3;
+- (BOOL)setChildren:(id)children;
 - (BOOL)shouldRestoreMessagesAfterFailedDelete;
-- (BOOL)userInfoBoolForKey:(id)a3;
+- (BOOL)userInfoBoolForKey:(id)key;
 - (MFInvocationQueue)attachmentDownloadQueue;
 - (MFMailboxUid)init;
-- (MFMailboxUid)initWithAccount:(id)a3;
+- (MFMailboxUid)initWithAccount:(id)account;
 - (NSString)ef_publicDescription;
 - (double)suggestionsLostMessageSearchTimestamp;
 - (id)URL;
 - (id)URLString;
 - (id)URLStringNonNil;
-- (id)URLStringWithAccount:(id)a3;
+- (id)URLStringWithAccount:(id)account;
 - (id)_dictionaryRepresentation;
 - (id)_loadUserInfo;
 - (id)_mutableChildren;
@@ -28,11 +28,11 @@
 - (id)accountDisplayName;
 - (id)accountRelativePath;
 - (id)ancestralAccount;
-- (id)childAtIndex:(unint64_t)a3;
-- (id)childWithExtraAttribute:(id)a3;
+- (id)childAtIndex:(unint64_t)index;
+- (id)childWithExtraAttribute:(id)attribute;
 - (id)criterion;
 - (id)depthFirstEnumerator;
-- (id)descendantWithExtraAttribute:(id)a3;
+- (id)descendantWithExtraAttribute:(id)attribute;
 - (id)displayName;
 - (id)displayNameUsingSpecialNames;
 - (id)fullPath;
@@ -40,8 +40,8 @@
 - (id)mutableCopyOfChildren;
 - (id)name;
 - (id)oldURLString;
-- (id)pathRelativeToMailbox:(id)a3;
-- (id)pathRelativeToMailboxForDisplay:(id)a3;
+- (id)pathRelativeToMailbox:(id)mailbox;
+- (id)pathRelativeToMailboxForDisplay:(id)display;
 - (id)realFullPath;
 - (id)representedAccount;
 - (id)rootMailbox;
@@ -50,37 +50,37 @@
 - (id)topMailbox;
 - (id)userInfoDictionary;
 - (id)userInfoForSerialization;
-- (id)userInfoObjectForKey:(id)a3;
-- (int64_t)indexToInsertChildMailboxUid:(id)a3;
+- (id)userInfoObjectForKey:(id)key;
+- (int64_t)indexToInsertChildMailboxUid:(id)uid;
 - (int64_t)statusCountDelta;
-- (unint64_t)indexOfChild:(id)a3;
+- (unint64_t)indexOfChild:(id)child;
 - (unint64_t)numberOfChildren;
 - (unint64_t)numberOfDescendants;
 - (unint64_t)serverUnreadOnlyOnServerCount;
 - (unint64_t)suggestionsLostMessageSearchResultCount;
 - (unsigned)mailboxID;
-- (void)addToPostOrderTraversal:(id)a3;
+- (void)addToPostOrderTraversal:(id)traversal;
 - (void)dealloc;
 - (void)flushCriteria;
 - (void)invalidate;
-- (void)removeChild:(id)a3;
+- (void)removeChild:(id)child;
 - (void)saveUserInfo;
-- (void)setCriterion:(id)a3;
-- (void)setLastViewedMessageID:(id)a3;
-- (void)setName:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setRepresentedAccount:(id)a3;
-- (void)setUserInfoBool:(BOOL)a3 forKey:(id)a4;
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4;
-- (void)setUserInfoWithDictionary:(id)a3;
+- (void)setCriterion:(id)criterion;
+- (void)setLastViewedMessageID:(id)d;
+- (void)setName:(id)name;
+- (void)setParent:(id)parent;
+- (void)setRepresentedAccount:(id)account;
+- (void)setUserInfoBool:(BOOL)bool forKey:(id)key;
+- (void)setUserInfoObject:(id)object forKey:(id)key;
+- (void)setUserInfoWithDictionary:(id)dictionary;
 - (void)sortChildren;
-- (void)updateMostRecentStatusCount:(unint64_t)a3;
-- (void)updateSuggestionsLostMessageSearchResultCount:(unint64_t)a3;
+- (void)updateMostRecentStatusCount:(unint64_t)count;
+- (void)updateSuggestionsLostMessageSearchResultCount:(unint64_t)count;
 @end
 
 @implementation MFMailboxUid
 
-+ (id)fileURLForMailboxURL:(id)a3
++ (id)fileURLForMailboxURL:(id)l
 {
   v4 = [MailAccount accountWithURL:?];
   result = [objc_msgSend(-[MailAccount path](v4 "path")];
@@ -127,12 +127,12 @@
   return v2;
 }
 
-- (MFMailboxUid)initWithAccount:(id)a3
+- (MFMailboxUid)initWithAccount:(id)account
 {
   v4 = [(MFMailboxUid *)self init];
   if (v4)
   {
-    v4->_account = [MEMORY[0x277D24FC0] weakReferenceWithObject:a3];
+    v4->_account = [MEMORY[0x277D24FC0] weakReferenceWithObject:account];
     v4->_attributes = 18;
   }
 
@@ -142,14 +142,14 @@
 - (id)_dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(MFMailboxUid *)self attributes];
+  attributes = [(MFMailboxUid *)self attributes];
   v4 = MEMORY[0x277CBEB38];
-  v5 = [(MFMailboxUid *)self name];
-  v6 = [v4 dictionaryWithObjectsAndKeys:{v5, @"MailboxName", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInt:", v3), @"MailboxAttributes", 0}];
-  if ((v3 & 1) == 0)
+  name = [(MFMailboxUid *)self name];
+  v6 = [v4 dictionaryWithObjectsAndKeys:{name, @"MailboxName", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInt:", attributes), @"MailboxAttributes", 0}];
+  if ((attributes & 1) == 0)
   {
-    v7 = [(MFMailboxUid *)self children];
-    v8 = [v7 count];
+    children = [(MFMailboxUid *)self children];
+    v8 = [children count];
     if (v8)
     {
       v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v8];
@@ -157,7 +157,7 @@
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         v11 = v10;
@@ -169,14 +169,14 @@
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(children);
             }
 
             [v9 addObject:{objc_msgSend(*(*(&v17 + 1) + 8 * v13++), "dictionaryRepresentation")}];
           }
 
           while (v11 != v13);
-          v11 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v11 = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v11);
@@ -186,10 +186,10 @@
     }
   }
 
-  v14 = [(MFMailboxUid *)self extraAttributes];
-  if (v14)
+  extraAttributes = [(MFMailboxUid *)self extraAttributes];
+  if (extraAttributes)
   {
-    [v6 setObject:v14 forKeyedSubscript:@"MailboxExtraAttributes"];
+    [v6 setObject:extraAttributes forKeyedSubscript:@"MailboxExtraAttributes"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -199,25 +199,25 @@
 - (id)displayName
 {
   [(MFMailboxUid *)self mf_lock];
-  v3 = [(MailAccount *)self->_representedAccount displayName];
+  displayName = [(MailAccount *)self->_representedAccount displayName];
   [(MFMailboxUid *)self mf_unlock];
-  if (v3 && ![v3 isEqualToString:&stru_2869ED3E0])
+  if (displayName && ![displayName isEqualToString:&stru_2869ED3E0])
   {
-    return v3;
+    return displayName;
   }
 
-  v4 = [(MFMailboxUid *)self account];
+  account = [(MFMailboxUid *)self account];
   if ((self->_attributes & 0x10) != 0)
   {
 
-    return [v4 displayName];
+    return [account displayName];
   }
 
-  else if (v4)
+  else if (account)
   {
     pathComponent = self->_pathComponent;
 
-    return [v4 _pathComponentForUidName:pathComponent];
+    return [account _pathComponentForUidName:pathComponent];
   }
 
   else
@@ -230,15 +230,15 @@
 {
   if ((self->_attributes & 0x10) != 0)
   {
-    v6 = [(MFMailboxUid *)self account];
+    account = [(MFMailboxUid *)self account];
 
-    return [v6 displayName];
+    return [account displayName];
   }
 
   else
   {
-    v3 = [(MFWeakReferenceHolder *)self->_parent retainedReference];
-    if (v3)
+    retainedReference = [(MFWeakReferenceHolder *)self->_parent retainedReference];
+    if (retainedReference)
     {
       pathComponent = self->_pathComponent;
 
@@ -255,13 +255,13 @@
   }
 }
 
-+ (id)specialNameForType:(int)a3
++ (id)specialNameForType:(int)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         v3 = @"SENT_MESSAGES_SPECIAL_MAILBOX_NAME";
         v4 = @"Sent";
@@ -276,14 +276,14 @@
       return MFLookupLocalizedString(v3, v4, 0);
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v3 = @"OUTBOX_SPECIAL_MAILBOX_NAME";
       v4 = @"Outbox";
       return MFLookupLocalizedString(v3, v4, 0);
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       v3 = @"INBOX_SPECIAL_MAILBOX_NAME";
       v4 = @"Inbox";
@@ -293,21 +293,21 @@
     return 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"JUNK_SPECIAL_MAILBOX_NAME";
     v4 = @"Junk";
     return MFLookupLocalizedString(v3, v4, 0);
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"ARCHIVE_SPECIAL_MAILBOX_NAME";
     v4 = @"Archive";
     return MFLookupLocalizedString(v3, v4, 0);
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     return 0;
   }
@@ -319,11 +319,11 @@
 
 - (id)displayNameUsingSpecialNames
 {
-  v3 = [(MFMailboxUid *)self type];
+  type = [(MFMailboxUid *)self type];
   result = [-[MFMailboxUid account](self "account")];
   if (!result)
   {
-    result = [objc_opt_class() specialNameForType:v3];
+    result = [objc_opt_class() specialNameForType:type];
     if (!result)
     {
 
@@ -334,13 +334,13 @@
   return result;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (([a3 isEqual:self->_pathComponent] & 1) == 0)
+  if (([name isEqual:self->_pathComponent] & 1) == 0)
   {
     [(MFMailboxUid *)self mf_lock];
 
-    self->_pathComponent = a3;
+    self->_pathComponent = name;
     self->_realFullPath = 0;
     if ([(MFMailboxUid *)self URLString])
     {
@@ -354,37 +354,37 @@
 
 - (id)accountDisplayName
 {
-  v2 = [(MFMailboxUid *)self representedAccount];
+  representedAccount = [(MFMailboxUid *)self representedAccount];
 
-  return [v2 displayName];
+  return [representedAccount displayName];
 }
 
 - (unint64_t)serverUnreadOnlyOnServerCount
 {
   v3 = [-[MFMailboxUid account](self "account")];
-  v4 = [(MFMailboxUid *)self URLString];
+  uRLString = [(MFMailboxUid *)self URLString];
 
-  return [v3 serverUnreadOnlyOnServerCountForMailbox:v4];
+  return [v3 serverUnreadOnlyOnServerCountForMailbox:uRLString];
 }
 
 - (int64_t)statusCountDelta
 {
   v3 = [-[MFMailboxUid account](self "account")];
-  v4 = [(MFMailboxUid *)self URLString];
+  uRLString = [(MFMailboxUid *)self URLString];
 
-  return [v3 statusCountDeltaForMailbox:v4];
+  return [v3 statusCountDeltaForMailbox:uRLString];
 }
 
-- (void)updateMostRecentStatusCount:(unint64_t)a3
+- (void)updateMostRecentStatusCount:(unint64_t)count
 {
   v5 = [-[MFMailboxUid account](self "account")];
-  v6 = [(MFMailboxUid *)self URLString];
-  if ([v5 mostRecentStatusCountForMailbox:v6] != a3)
+  uRLString = [(MFMailboxUid *)self URLString];
+  if ([v5 mostRecentStatusCountForMailbox:uRLString] != count)
   {
-    [v5 setMostRecentStatusCount:a3 forMailbox:v6];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    [v5 setMostRecentStatusCount:count forMailbox:uRLString];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v7 postNotificationName:@"MailboxUserInfoDidChange" object:self];
+    [defaultCenter postNotificationName:@"MailboxUserInfoDidChange" object:self];
   }
 }
 
@@ -463,50 +463,50 @@
   return v6;
 }
 
-- (id)childAtIndex:(unint64_t)a3
+- (id)childAtIndex:(unint64_t)index
 {
   [(MFMailboxUid *)self mf_lock];
-  v5 = [(NSMutableArray *)self->_children objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->_children objectAtIndex:index];
   [(MFMailboxUid *)self mf_unlock];
   return v5;
 }
 
-- (unint64_t)indexOfChild:(id)a3
+- (unint64_t)indexOfChild:(id)child
 {
   [(MFMailboxUid *)self mf_lock];
-  v5 = [(NSMutableArray *)self->_children indexOfObject:a3];
+  v5 = [(NSMutableArray *)self->_children indexOfObject:child];
   [(MFMailboxUid *)self mf_unlock];
   return v5;
 }
 
-- (id)childWithExtraAttribute:(id)a3
+- (id)childWithExtraAttribute:(id)attribute
 {
-  result = [a3 length];
+  result = [attribute length];
   if (result)
   {
 
-    return _MFChildWithPredicate(self, mailboxHasExtraAttribute, a3);
+    return _MFChildWithPredicate(self, mailboxHasExtraAttribute, attribute);
   }
 
   return result;
 }
 
-- (id)descendantWithExtraAttribute:(id)a3
+- (id)descendantWithExtraAttribute:(id)attribute
 {
-  if (![a3 length])
+  if (![attribute length])
   {
     return 0;
   }
 
   [(MFMailboxUid *)self mf_lock];
-  v5 = [(MFMailboxUid *)self depthFirstEnumerator];
+  depthFirstEnumerator = [(MFMailboxUid *)self depthFirstEnumerator];
   do
   {
-    v6 = [v5 nextObject];
-    v7 = v6;
+    nextObject = [depthFirstEnumerator nextObject];
+    v7 = nextObject;
   }
 
-  while (v6 && ![objc_msgSend(v6 "extraAttributes")]);
+  while (nextObject && ![objc_msgSend(nextObject "extraAttributes")]);
   [(MFMailboxUid *)self mf_unlock];
   return v7;
 }
@@ -530,28 +530,28 @@
   return result;
 }
 
-- (BOOL)setChildren:(id)a3
+- (BOOL)setChildren:(id)children
 {
   v32 = *MEMORY[0x277D85DE8];
   [(MFMailboxUid *)self mf_lock];
   if ([(MFMailboxUid *)self isValid])
   {
-    v5 = [(MFMailboxUid *)self mutableCopyOfChildren];
+    mutableCopyOfChildren = [(MFMailboxUid *)self mutableCopyOfChildren];
   }
 
   else
   {
-    v5 = 0;
+    mutableCopyOfChildren = 0;
   }
 
   [(NSMutableArray *)self->_children removeAllObjects];
-  if ([a3 count])
+  if ([children count])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v6 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v6)
     {
       v7 = v6;
@@ -562,42 +562,42 @@
         {
           if (*v28 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(children);
           }
 
           bindParentAndChild(self, *(*(&v27 + 1) + 8 * i));
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v7 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v7);
     }
 
-    if (!v5 || ([v5 isEqualToArray:a3] & 1) == 0)
+    if (!mutableCopyOfChildren || ([mutableCopyOfChildren isEqualToArray:children] & 1) == 0)
     {
       v10 = 1;
       goto LABEL_18;
     }
   }
 
-  else if (v5)
+  else if (mutableCopyOfChildren)
   {
-    v10 = [v5 count] != 0;
+    v10 = [mutableCopyOfChildren count] != 0;
     goto LABEL_18;
   }
 
   v10 = 0;
 LABEL_18:
   [(MFMailboxUid *)self mf_unlock];
-  if ([v5 count])
+  if ([mutableCopyOfChildren count])
   {
     v24 = v10;
-    v11 = [v5 arrayByApplyingSelector:sel_URLStringNonNil];
-    v25 = [v5 arrayByApplyingSelector:sel_fullPathNonNil];
+    v11 = [mutableCopyOfChildren arrayByApplyingSelector:sel_URLStringNonNil];
+    v25 = [mutableCopyOfChildren arrayByApplyingSelector:sel_fullPathNonNil];
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v13 = [v5 count];
+    v13 = [mutableCopyOfChildren count];
     if (v13)
     {
       v14 = v13;
@@ -605,7 +605,7 @@ LABEL_18:
       v16 = *MEMORY[0x277CBEEE8];
       do
       {
-        v17 = [v5 objectAtIndex:v15];
+        v17 = [mutableCopyOfChildren objectAtIndex:v15];
         if (![v17 parent])
         {
           v18 = [v11 objectAtIndex:v15];
@@ -652,19 +652,19 @@ LABEL_18:
   [(MFMailboxUid *)self mf_unlock];
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
   [(MFMailboxUid *)self mf_lock];
-  [(NSMutableArray *)self->_children removeObject:a3];
+  [(NSMutableArray *)self->_children removeObject:child];
 
   [(MFMailboxUid *)self mf_unlock];
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if ([(MFMailboxUid *)self parent]!= a3)
+  if ([(MFMailboxUid *)self parent]!= parent)
   {
-    bindParentAndChild(a3, &self->super.isa);
+    bindParentAndChild(parent, &self->super.isa);
     [(MFMailboxUid *)self mf_lock];
     if ([(MFMailboxUid *)self URLString])
     {
@@ -685,14 +685,14 @@ LABEL_18:
   [(MFMailboxUid *)self mf_unlock];
 }
 
-- (void)setRepresentedAccount:(id)a3
+- (void)setRepresentedAccount:(id)account
 {
   [(MFMailboxUid *)self mf_lock];
   representedAccount = self->_representedAccount;
-  if (representedAccount != a3)
+  if (representedAccount != account)
   {
 
-    self->_representedAccount = a3;
+    self->_representedAccount = account;
   }
 
   [(MFMailboxUid *)self mf_unlock];
@@ -704,15 +704,15 @@ LABEL_18:
   representedAccount = self->_representedAccount;
   if (representedAccount)
   {
-    v4 = representedAccount;
+    account = representedAccount;
   }
 
   else
   {
-    v4 = [(MFMailboxUid *)self account];
+    account = [(MFMailboxUid *)self account];
   }
 
-  v5 = v4;
+  v5 = account;
   [(MFMailboxUid *)self mf_unlock];
   return v5;
 }
@@ -721,12 +721,12 @@ LABEL_18:
 {
   do
   {
-    v2 = self;
+    selfCopy = self;
     self = [(MFMailboxUid *)self parent];
   }
 
   while (self);
-  return v2;
+  return selfCopy;
 }
 
 - (id)rootMailbox
@@ -755,9 +755,9 @@ LABEL_18:
 
 - (void)invalidate
 {
-  v3 = [(MFMailboxUid *)self rootMailbox];
+  rootMailbox = [(MFMailboxUid *)self rootMailbox];
   [(MFMailboxUid *)self saveUserInfo];
-  if (v3 == self)
+  if (rootMailbox == self)
   {
 
     self->_account = 0;
@@ -765,12 +765,12 @@ LABEL_18:
   }
 
   [-[MFMailboxUid parent](self "parent")];
-  if (v3)
+  if (rootMailbox)
   {
-    v4 = [(MFMailboxUid *)self URLString];
-    if (v4)
+    uRLString = [(MFMailboxUid *)self URLString];
+    if (uRLString)
     {
-      v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v4 forKey:@"URLString"];
+      v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:uRLString forKey:@"URLString"];
     }
 
     else
@@ -778,40 +778,40 @@ LABEL_18:
       v5 = 0;
     }
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v6 postNotificationName:@"MailboxUidDidBecomeInvalidNotification" object:self userInfo:v5];
+    [defaultCenter postNotificationName:@"MailboxUidDidBecomeInvalidNotification" object:self userInfo:v5];
   }
 }
 
 - (BOOL)isStandardizedMailboxUid
 {
-  v2 = [(MFMailboxUid *)self type];
+  type = [(MFMailboxUid *)self type];
 
-  return [MFMailboxUid isStandardizedMailboxUidType:v2];
+  return [MFMailboxUid isStandardizedMailboxUidType:type];
 }
 
 - (BOOL)isSpecialMailboxUid
 {
-  v3 = [(MFMailboxUid *)self account];
+  account = [(MFMailboxUid *)self account];
 
-  return [v3 isSpecialMailbox:self];
+  return [account isSpecialMailbox:self];
 }
 
 - (BOOL)isSentMailboxUid
 {
   v3 = objc_opt_class();
-  v4 = [(MFMailboxUid *)self type];
+  type = [(MFMailboxUid *)self type];
 
-  return [v3 isSentMailboxType:v4];
+  return [v3 isSentMailboxType:type];
 }
 
 - (BOOL)isOutgoingMailboxUid
 {
-  v2 = [(MFMailboxUid *)self type];
+  type = [(MFMailboxUid *)self type];
   v3 = objc_opt_class();
 
-  return [v3 isOutgoingMailboxType:v2];
+  return [v3 isOutgoingMailboxType:type];
 }
 
 - (BOOL)isNotesMailboxUid
@@ -819,8 +819,8 @@ LABEL_18:
   v3 = [-[MFMailboxUid name](self "name")];
   if (v3)
   {
-    v4 = [(MFMailboxUid *)self parent];
-    LOBYTE(v3) = v4 == [-[MFMailboxUid account](self "account")];
+    parent = [(MFMailboxUid *)self parent];
+    LOBYTE(v3) = parent == [-[MFMailboxUid account](self "account")];
   }
 
   return v3;
@@ -828,22 +828,22 @@ LABEL_18:
 
 - (id)accountRelativePath
 {
-  v3 = [(MFMailboxUid *)self account];
-  v4 = [v3 _mailboxPathPrefix];
+  account = [(MFMailboxUid *)self account];
+  _mailboxPathPrefix = [account _mailboxPathPrefix];
   [(MFMailboxUid *)self mf_lock];
-  v5 = _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, v3, 0, &stru_2869ED3E0, v4, 0, 0);
+  v5 = _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, account, 0, &stru_2869ED3E0, _mailboxPathPrefix, 0, 0);
   [(MFMailboxUid *)self mf_unlock];
   return v5;
 }
 
 - (id)fullPath
 {
-  v3 = [(MFMailboxUid *)self account];
-  v4 = [v3 path];
-  v5 = [v3 mailboxPathExtension];
-  v6 = [v3 _mailboxPathPrefix];
+  account = [(MFMailboxUid *)self account];
+  path = [account path];
+  mailboxPathExtension = [account mailboxPathExtension];
+  _mailboxPathPrefix = [account _mailboxPathPrefix];
   [(MFMailboxUid *)self mf_lock];
-  v7 = _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, v3, 0, v4, v6, v5, 0);
+  v7 = _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, account, 0, path, _mailboxPathPrefix, mailboxPathExtension, 0);
   [(MFMailboxUid *)self mf_unlock];
   return v7;
 }
@@ -871,52 +871,52 @@ LABEL_18:
 
 - (id)tildeAbbreviatedPath
 {
-  v3 = [(MFMailboxUid *)self account];
-  v4 = [v3 tildeAbbreviatedPath];
-  v5 = [v3 mailboxPathExtension];
-  v6 = [v3 _mailboxPathPrefix];
+  account = [(MFMailboxUid *)self account];
+  tildeAbbreviatedPath = [account tildeAbbreviatedPath];
+  mailboxPathExtension = [account mailboxPathExtension];
+  _mailboxPathPrefix = [account _mailboxPathPrefix];
   [(MFMailboxUid *)self mf_lock];
-  v7 = _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, v3, 0, v4, v6, v5, 0);
+  v7 = _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, account, 0, tildeAbbreviatedPath, _mailboxPathPrefix, mailboxPathExtension, 0);
   [(MFMailboxUid *)self mf_unlock];
   return v7;
 }
 
-- (id)pathRelativeToMailbox:(id)a3
+- (id)pathRelativeToMailbox:(id)mailbox
 {
-  if (!a3)
+  if (!mailbox)
   {
     return 0;
   }
 
-  v5 = [(MFMailboxUid *)self account];
+  account = [(MFMailboxUid *)self account];
 
-  return _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, v5, a3, &stru_2869ED3E0, 0, 0, 0);
+  return _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, account, mailbox, &stru_2869ED3E0, 0, 0, 0);
 }
 
-- (id)pathRelativeToMailboxForDisplay:(id)a3
+- (id)pathRelativeToMailboxForDisplay:(id)display
 {
-  if (!a3)
+  if (!display)
   {
     return 0;
   }
 
-  v5 = [(MFMailboxUid *)self account];
+  account = [(MFMailboxUid *)self account];
 
-  return _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, v5, a3, &stru_2869ED3E0, 0, 0, 1);
+  return _stringByAppendingPathComponentsUsingSpecialDisplayNames(self, account, display, &stru_2869ED3E0, 0, 0, 1);
 }
 
 - (id)URL
 {
-  v3 = [(MFMailboxUid *)self account];
-  v4 = [(MFMailboxUid *)self accountRelativePath];
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v3, @"Account", v4, @"RelativePath", 0}];
+  account = [(MFMailboxUid *)self account];
+  accountRelativePath = [(MFMailboxUid *)self accountRelativePath];
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{account, @"Account", accountRelativePath, @"RelativePath", 0}];
 
   return [MailAccount URLForInfo:v5];
 }
 
-- (id)URLStringWithAccount:(id)a3
+- (id)URLStringWithAccount:(id)account
 {
-  v3 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{a3, @"Account", -[MFMailboxUid accountRelativePath](self, "accountRelativePath"), @"RelativePath", 0}];
+  v3 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{account, @"Account", -[MFMailboxUid accountRelativePath](self, "accountRelativePath"), @"RelativePath", 0}];
   v4 = [MailAccount URLForInfo:v3];
 
   return [v4 absoluteString];
@@ -925,9 +925,9 @@ LABEL_18:
 - (id)oldURLString
 {
   v3 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v4 = [(MFMailboxUid *)self ancestralAccount];
-  v5 = [(MFMailboxUid *)self accountRelativePath];
-  v6 = [v3 initWithObjectsAndKeys:{v4, @"Account", v5, @"RelativePath", objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1), @"IncludeDefaultSecurePortNumber", 0}];
+  ancestralAccount = [(MFMailboxUid *)self ancestralAccount];
+  accountRelativePath = [(MFMailboxUid *)self accountRelativePath];
+  v6 = [v3 initWithObjectsAndKeys:{ancestralAccount, @"Account", accountRelativePath, @"RelativePath", objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1), @"IncludeDefaultSecurePortNumber", 0}];
   v7 = [MailAccount URLForInfo:v6];
 
   return [v7 absoluteString];
@@ -935,10 +935,10 @@ LABEL_18:
 
 - (id)URLString
 {
-  v2 = [(MFMailboxUid *)self criterion];
-  if ([v2 criterionType] == 22)
+  criterion = [(MFMailboxUid *)self criterion];
+  if ([criterion criterionType] == 22)
   {
-    v3 = [objc_msgSend(v2 "expression")];
+    v3 = [objc_msgSend(criterion "expression")];
   }
 
   else
@@ -954,8 +954,8 @@ LABEL_18:
   result = self->_mailboxID;
   if (result == -1)
   {
-    v4 = [(MFMailboxUid *)self URLString];
-    if ([v4 length])
+    uRLString = [(MFMailboxUid *)self URLString];
+    if ([uRLString length])
     {
       result = [objc_msgSend(-[MFMailboxUid account](self "account")];
       self->_mailboxID = result;
@@ -981,47 +981,47 @@ LABEL_18:
   return result;
 }
 
-- (int64_t)indexToInsertChildMailboxUid:(id)a3
+- (int64_t)indexToInsertChildMailboxUid:(id)uid
 {
-  if (-[MFMailboxUid childWithName:](self, "childWithName:", [a3 displayName]))
+  if (-[MFMailboxUid childWithName:](self, "childWithName:", [uid displayName]))
   {
     return -1;
   }
 
-  v6 = [(MFMailboxUid *)self mutableCopyOfChildren];
-  if (!v6)
+  mutableCopyOfChildren = [(MFMailboxUid *)self mutableCopyOfChildren];
+  if (!mutableCopyOfChildren)
   {
     return -1;
   }
 
-  v7 = v6;
+  v7 = mutableCopyOfChildren;
   [(MFMailboxUid *)self mf_lock];
   v9.length = [v7 count];
   v9.location = 0;
-  v8 = CFArrayBSearchValues(v7, v9, a3, _MFCompareMailboxUids, 0);
+  v8 = CFArrayBSearchValues(v7, v9, uid, _MFCompareMailboxUids, 0);
   [(MFMailboxUid *)self mf_unlock];
 
   return v8;
 }
 
-- (BOOL)isDescendantOfMailbox:(id)a3
+- (BOOL)isDescendantOfMailbox:(id)mailbox
 {
   if (self)
   {
-    v4 = self;
+    selfCopy = self;
     do
     {
-      v5 = [(MFMailboxUid *)v4 parent];
-      LOBYTE(self) = v4 == a3;
-      if (v4 == a3)
+      parent = [(MFMailboxUid *)selfCopy parent];
+      LOBYTE(self) = selfCopy == mailbox;
+      if (selfCopy == mailbox)
       {
         break;
       }
 
-      v4 = v5;
+      selfCopy = parent;
     }
 
-    while (v5);
+    while (parent);
   }
 
   return self;
@@ -1066,34 +1066,34 @@ LABEL_18:
   return result;
 }
 
-- (id)userInfoObjectForKey:(id)a3
+- (id)userInfoObjectForKey:(id)key
 {
   [(MFMailboxUid *)self mf_lock];
   userInfo = self->_userInfo;
   if (!userInfo)
   {
     [(MFMailboxUid *)self mf_unlock];
-    v6 = [(MFMailboxUid *)self _loadUserInfo];
-    if (v6 && [(MFMailboxUid *)self mergeWithUserInfo:v6])
+    _loadUserInfo = [(MFMailboxUid *)self _loadUserInfo];
+    if (_loadUserInfo && [(MFMailboxUid *)self mergeWithUserInfo:_loadUserInfo])
     {
-      [v6 setObject:@"YES" forKey:@"IsDirty"];
+      [_loadUserInfo setObject:@"YES" forKey:@"IsDirty"];
     }
 
     [(MFMailboxUid *)self mf_lock];
     userInfo = self->_userInfo;
     if (!userInfo)
     {
-      userInfo = v6;
+      userInfo = _loadUserInfo;
       self->_userInfo = userInfo;
     }
   }
 
-  v7 = [(NSMutableDictionary *)userInfo objectForKey:a3];
+  v7 = [(NSMutableDictionary *)userInfo objectForKey:key];
   [(MFMailboxUid *)self mf_unlock];
   return v7;
 }
 
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4
+- (void)setUserInfoObject:(id)object forKey:(id)key
 {
   [(MFMailboxUid *)self mf_lock];
   userInfo = self->_userInfo;
@@ -1105,21 +1105,21 @@ LABEL_18:
   else
   {
     [(MFMailboxUid *)self mf_unlock];
-    v9 = [(MFMailboxUid *)self _loadUserInfo];
-    v8 = [(MFMailboxUid *)self mergeWithUserInfo:v9];
+    _loadUserInfo = [(MFMailboxUid *)self _loadUserInfo];
+    v8 = [(MFMailboxUid *)self mergeWithUserInfo:_loadUserInfo];
     [(MFMailboxUid *)self mf_lock];
     userInfo = self->_userInfo;
     if (!userInfo)
     {
-      userInfo = v9;
+      userInfo = _loadUserInfo;
       self->_userInfo = userInfo;
     }
   }
 
-  v10 = [(NSMutableDictionary *)userInfo objectForKey:a4];
-  if (!v10 || ([v10 isEqual:a3] & 1) == 0)
+  v10 = [(NSMutableDictionary *)userInfo objectForKey:key];
+  if (!v10 || ([v10 isEqual:object] & 1) == 0)
   {
-    [(NSMutableDictionary *)self->_userInfo setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self->_userInfo setObject:object forKey:key];
     goto LABEL_10;
   }
 
@@ -1132,9 +1132,9 @@ LABEL_10:
   [(MFMailboxUid *)self mf_unlock];
 }
 
-- (BOOL)userInfoBoolForKey:(id)a3
+- (BOOL)userInfoBoolForKey:(id)key
 {
-  v3 = [(MFMailboxUid *)self userInfoObjectForKey:a3];
+  v3 = [(MFMailboxUid *)self userInfoObjectForKey:key];
   if (v3)
   {
 
@@ -1144,11 +1144,11 @@ LABEL_10:
   return v3;
 }
 
-- (void)setUserInfoBool:(BOOL)a3 forKey:(id)a4
+- (void)setUserInfoBool:(BOOL)bool forKey:(id)key
 {
   v6 = NSStringFromBOOL();
 
-  [(MFMailboxUid *)self setUserInfoObject:v6 forKey:a4];
+  [(MFMailboxUid *)self setUserInfoObject:v6 forKey:key];
 }
 
 - (void)saveUserInfo
@@ -1159,10 +1159,10 @@ LABEL_10:
     if ([(NSMutableDictionary *)self->_userInfo objectForKey:@"IsDirty"])
     {
       [(NSMutableDictionary *)self->_userInfo removeObjectForKey:@"IsDirty"];
-      v3 = [(MFMailboxUid *)self fullPath];
-      if (v3)
+      fullPath = [(MFMailboxUid *)self fullPath];
+      if (fullPath)
       {
-        v4 = v3;
+        v4 = fullPath;
         if (([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) == 0)
         {
           [v4 mf_makeDirectoryWithMode:448];
@@ -1188,20 +1188,20 @@ LABEL_10:
   return v3;
 }
 
-- (void)setUserInfoWithDictionary:(id)a3
+- (void)setUserInfoWithDictionary:(id)dictionary
 {
-  v5 = [a3 keyEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  keyEnumerator = [dictionary keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject2 = nextObject;
     do
     {
-      -[MFMailboxUid setUserInfoObject:forKey:](self, "setUserInfoObject:forKey:", [a3 objectForKey:v7], v7);
-      v7 = [v5 nextObject];
+      -[MFMailboxUid setUserInfoObject:forKey:](self, "setUserInfoObject:forKey:", [dictionary objectForKey:nextObject2], nextObject2);
+      nextObject2 = [keyEnumerator nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
   }
 }
 
@@ -1273,13 +1273,13 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCriterion:(id)a3
+- (void)setCriterion:(id)criterion
 {
-  if (self->_criterion != a3)
+  if (self->_criterion != criterion)
   {
     [(MFMailboxUid *)self mf_lock];
 
-    self->_criterion = a3;
+    self->_criterion = criterion;
 
     [(MFMailboxUid *)self mf_unlock];
   }
@@ -1299,20 +1299,20 @@ LABEL_10:
 
 - (BOOL)shouldRestoreMessagesAfterFailedDelete
 {
-  v2 = [(MFMailboxUid *)self account];
+  account = [(MFMailboxUid *)self account];
 
-  return [v2 shouldRestoreMessagesAfterFailedDelete];
+  return [account shouldRestoreMessagesAfterFailedDelete];
 }
 
-- (void)setLastViewedMessageID:(id)a3
+- (void)setLastViewedMessageID:(id)d
 {
-  [(MFMailboxUid *)self setUserInfoObject:a3 forKey:@"LastViewedMessageInMailbox"];
-  v4 = [MEMORY[0x277CBEAA8] date];
+  [(MFMailboxUid *)self setUserInfoObject:d forKey:@"LastViewedMessageInMailbox"];
+  date = [MEMORY[0x277CBEAA8] date];
 
-  [(MFMailboxUid *)self setUserInfoObject:v4 forKey:@"LastViewedMessageInMailboxDate"];
+  [(MFMailboxUid *)self setUserInfoObject:date forKey:@"LastViewedMessageInMailboxDate"];
 }
 
-- (void)addToPostOrderTraversal:(id)a3
+- (void)addToPostOrderTraversal:(id)traversal
 {
   v16 = *MEMORY[0x277D85DE8];
   [(MFMailboxUid *)self mf_lock];
@@ -1335,7 +1335,7 @@ LABEL_10:
           objc_enumerationMutation(children);
         }
 
-        [*(*(&v11 + 1) + 8 * i) addToPostOrderTraversal:a3];
+        [*(*(&v11 + 1) + 8 * i) addToPostOrderTraversal:traversal];
       }
 
       v7 = [(NSMutableArray *)children countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1345,7 +1345,7 @@ LABEL_10:
   }
 
   [(MFMailboxUid *)self mf_unlock];
-  [a3 addObject:self];
+  [traversal addObject:self];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -1364,9 +1364,9 @@ LABEL_10:
   return result;
 }
 
-- (void)updateSuggestionsLostMessageSearchResultCount:(unint64_t)a3
+- (void)updateSuggestionsLostMessageSearchResultCount:(unint64_t)count
 {
-  -[MFMailboxUid setUserInfoObject:forKey:](self, "setUserInfoObject:forKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3], @"suggestionsLostMessageSearchResultCount");
+  -[MFMailboxUid setUserInfoObject:forKey:](self, "setUserInfoObject:forKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count], @"suggestionsLostMessageSearchResultCount");
   v4 = MEMORY[0x277CCABB0];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   -[MFMailboxUid setUserInfoObject:forKey:](self, "setUserInfoObject:forKey:", [v4 numberWithDouble:?], @"suggestionsLostMessageSearchTimestamp");

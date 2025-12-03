@@ -1,5 +1,5 @@
 @interface AddUpNextQueueShareSheetActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
@@ -37,10 +37,10 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = sub_20C13CC74();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_20C0045F0(v4);
 
   return v6 & 1;
@@ -48,7 +48,7 @@
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C001D88();
 }
 

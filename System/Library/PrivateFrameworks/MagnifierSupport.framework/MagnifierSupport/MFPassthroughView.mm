@@ -1,13 +1,13 @@
 @interface MFPassthroughView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC16MagnifierSupport17MFPassthroughView)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport17MFPassthroughView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC16MagnifierSupport17MFPassthroughView)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport17MFPassthroughView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation MFPassthroughView
 
-- (_TtC16MagnifierSupport17MFPassthroughView)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport17MFPassthroughView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport17MFPassthroughView_enabled) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport17MFPassthroughView_heightOfPanAreaAboveDrawer) = 0x403E000000000000;
@@ -16,30 +16,30 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_257DD2A10(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_257DD2A10(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_257DD2C74(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_257DD2C74(event, x, y);
 
   return v10;
 }
 
-- (_TtC16MagnifierSupport17MFPassthroughView)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport17MFPassthroughView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

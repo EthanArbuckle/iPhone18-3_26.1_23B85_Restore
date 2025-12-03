@@ -3,16 +3,16 @@
 - (BOOL)_validateBackoff;
 - (BackoffCounter)init;
 - (NSError)errorAuthenticationFailedWithBackoff;
-- (id)_dateFromUptime:(id)a3;
+- (id)_dateFromUptime:(id)uptime;
 - (id)actionFailure;
 - (id)actionFailureWithBackoffResult;
 - (void)_computeRetryTime;
-- (void)_saveDefault:(id)a3 forKey:(id)a4;
+- (void)_saveDefault:(id)default forKey:(id)key;
 - (void)_saveDefaults;
-- (void)actionBackoffWithReply:(id)a3;
-- (void)actionFailureWithReply:(id)a3;
+- (void)actionBackoffWithReply:(id)reply;
+- (void)actionFailureWithReply:(id)reply;
 - (void)actionSuccess;
-- (void)currentBackoffErrorWithReply:(id)a3;
+- (void)currentBackoffErrorWithReply:(id)reply;
 @end
 
 @implementation BackoffCounter
@@ -65,13 +65,13 @@
       }
 
       v14 = +[DaemonUtils sharedInstance];
-      v15 = [v14 serverQueue];
+      serverQueue = [v14 serverQueue];
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_1374;
       handler[3] = &unk_1C3C0;
       v20 = v2;
-      v16 = notify_register_dispatch("com.apple.mobile.keybagd.lock_status", &unk_209F8, v15, handler);
+      v16 = notify_register_dispatch("com.apple.mobile.keybagd.lock_status", &unk_209F8, serverQueue, handler);
 
       if (v16)
       {
@@ -91,11 +91,11 @@
   return v2;
 }
 
-- (id)_dateFromUptime:(id)a3
+- (id)_dateFromUptime:(id)uptime
 {
-  if (a3)
+  if (uptime)
   {
-    v4 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", ([a3 longValue] - sub_12D8()));
+    v4 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", ([uptime longValue] - sub_12D8()));
   }
 
   else
@@ -124,11 +124,11 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       failures = self->_failures;
-      v6 = [(BackoffCounter *)self _retryTime];
+      _retryTime = [(BackoffCounter *)self _retryTime];
       v9 = 67109378;
       *v10 = failures;
       *&v10[4] = 2114;
-      *&v10[6] = v6;
+      *&v10[6] = _retryTime;
       _os_log_impl(&def_13158, v4, OS_LOG_TYPE_DEFAULT, "failures: %d, retryTime: %{public}@", &v9, 0x12u);
     }
 
@@ -137,9 +137,9 @@
     [(BackoffCounter *)self _saveDefaults];
   }
 
-  v7 = [(BackoffCounter *)self errorAuthenticationFailedWithBackoff];
+  errorAuthenticationFailedWithBackoff = [(BackoffCounter *)self errorAuthenticationFailedWithBackoff];
 
-  return v7;
+  return errorAuthenticationFailedWithBackoff;
 }
 
 - (id)actionFailureWithBackoffResult
@@ -150,7 +150,7 @@
     v7 = 136315394;
     v8 = "[BackoffCounter actionFailureWithBackoffResult]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&def_13158, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
   }
 
@@ -165,9 +165,9 @@
     self->_failures = failures;
   }
 
-  v5 = [(BackoffCounter *)self actionFailure];
+  actionFailure = [(BackoffCounter *)self actionFailure];
 
-  return v5;
+  return actionFailure;
 }
 
 - (void)actionSuccess
@@ -188,11 +188,11 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       failures = self->_failures;
-      v6 = [(BackoffCounter *)self _retryTime];
+      _retryTime = [(BackoffCounter *)self _retryTime];
       v8 = 67109378;
       *v9 = failures;
       *&v9[4] = 2114;
-      *&v9[6] = v6;
+      *&v9[6] = _retryTime;
       _os_log_impl(&def_13158, v4, OS_LOG_TYPE_DEFAULT, "failures: %d, retryTime: %{public}@", &v8, 0x12u);
     }
 
@@ -204,25 +204,25 @@
   }
 }
 
-- (void)actionFailureWithReply:(id)a3
+- (void)actionFailureWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(BackoffCounter *)self actionFailure];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  actionFailure = [(BackoffCounter *)self actionFailure];
+  (*(reply + 2))(replyCopy, actionFailure);
 }
 
-- (void)actionBackoffWithReply:(id)a3
+- (void)actionBackoffWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(BackoffCounter *)self actionFailureWithBackoffResult];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  actionFailureWithBackoffResult = [(BackoffCounter *)self actionFailureWithBackoffResult];
+  (*(reply + 2))(replyCopy, actionFailureWithBackoffResult);
 }
 
-- (void)currentBackoffErrorWithReply:(id)a3
+- (void)currentBackoffErrorWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(BackoffCounter *)self errorAuthenticationFailedWithBackoff];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  errorAuthenticationFailedWithBackoff = [(BackoffCounter *)self errorAuthenticationFailedWithBackoff];
+  (*(reply + 2))(replyCopy, errorAuthenticationFailedWithBackoff);
 }
 
 - (void)_computeRetryTime
@@ -262,13 +262,13 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     failures = self->_failures;
-    v5 = [(BackoffCounter *)self _retryTime];
+    _retryTime = [(BackoffCounter *)self _retryTime];
     v11 = 136315906;
     v12 = "[BackoffCounter _validateBackoff]";
     v13 = 1024;
     *v14 = failures;
     *&v14[4] = 2114;
-    *&v14[6] = v5;
+    *&v14[6] = _retryTime;
     *&v14[14] = 2112;
     *&v14[16] = self;
     _os_log_impl(&def_13158, v3, OS_LOG_TYPE_DEFAULT, "%s failures: %d, retryTime: %{public}@ on %@", &v11, 0x26u);
@@ -320,15 +320,15 @@
     if (v6 && ([v6 doubleValue], v8 > 0.0))
     {
       [v7 doubleValue];
-      v9 = [NSDate dateWithTimeIntervalSinceNow:?];
+      _retryTime = [NSDate dateWithTimeIntervalSinceNow:?];
     }
 
     else
     {
-      v9 = 0;
+      _retryTime = 0;
     }
 
-    if (!v9)
+    if (!_retryTime)
     {
       goto LABEL_14;
     }
@@ -337,7 +337,7 @@ LABEL_12:
     v20[0] = NSDebugDescriptionErrorKey;
     v20[1] = LAPasswordRetryTime;
     v21[0] = @"Passcode backoff";
-    v21[1] = v9;
+    v21[1] = _retryTime;
     v10 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
     v11 = [LAErrorHelper errorWithCode:-1 userInfo:v10];
 
@@ -346,8 +346,8 @@ LABEL_12:
 
   if ([(BackoffCounter *)self _validateBackoff])
   {
-    v9 = [(BackoffCounter *)self _retryTime];
-    if (v9)
+    _retryTime = [(BackoffCounter *)self _retryTime];
+    if (_retryTime)
     {
       goto LABEL_12;
     }
@@ -355,7 +355,7 @@ LABEL_12:
 
   else
   {
-    v9 = 0;
+    _retryTime = 0;
   }
 
 LABEL_14:
@@ -369,24 +369,24 @@ LABEL_15:
     v16 = 2114;
     v17 = v11;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&def_13158, v12, OS_LOG_TYPE_DEFAULT, "%s -> %{public}@ on %@", &v14, 0x20u);
   }
 
   return v11;
 }
 
-- (void)_saveDefault:(id)a3 forKey:(id)a4
+- (void)_saveDefault:(id)default forKey:(id)key
 {
   defaults = self->_defaults;
-  if (a3)
+  if (default)
   {
-    [(NSUserDefaults *)defaults setObject:a3 forKey:a4];
+    [(NSUserDefaults *)defaults setObject:default forKey:key];
   }
 
   else
   {
-    [(NSUserDefaults *)defaults removeObjectForKey:a4];
+    [(NSUserDefaults *)defaults removeObjectForKey:key];
   }
 }
 
@@ -396,15 +396,15 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     failures = self->_failures;
-    v5 = [(BackoffCounter *)self _retryTime];
+    _retryTime = [(BackoffCounter *)self _retryTime];
     v10 = 136315906;
     v11 = "[BackoffCounter _saveDefaults]";
     v12 = 1024;
     v13 = failures;
     v14 = 2114;
-    v15 = v5;
+    v15 = _retryTime;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&def_13158, v3, OS_LOG_TYPE_DEFAULT, "%s failures: %d, retryTime: %{public}@ on %@", &v10, 0x26u);
   }
 
@@ -421,8 +421,8 @@ LABEL_15:
   }
 
   v8 = self->_defaults;
-  v9 = [(BackoffCounter *)self _retryTime];
-  [(NSUserDefaults *)v8 setObject:v9 forKey:@"retryTime"];
+  _retryTime2 = [(BackoffCounter *)self _retryTime];
+  [(NSUserDefaults *)v8 setObject:_retryTime2 forKey:@"retryTime"];
 
   [(NSUserDefaults *)self->_defaults synchronize];
 }

@@ -1,40 +1,40 @@
 @interface _VideosExtrasGridHeaderView
-- (_VideosExtrasGridHeaderView)initWithFrame:(CGRect)a3;
-- (void)configureForImage:(id)a3 title:(id)a4 subtitle:(id)a5 style:(id)a6;
+- (_VideosExtrasGridHeaderView)initWithFrame:(CGRect)frame;
+- (void)configureForImage:(id)image title:(id)title subtitle:(id)subtitle style:(id)style;
 @end
 
 @implementation _VideosExtrasGridHeaderView
 
-- (_VideosExtrasGridHeaderView)initWithFrame:(CGRect)a3
+- (_VideosExtrasGridHeaderView)initWithFrame:(CGRect)frame
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = _VideosExtrasGridHeaderView;
-  v3 = [(_VideosExtrasGridHeaderView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_VideosExtrasGridHeaderView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(_VideosExtrasGridHeaderView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [objc_alloc(MEMORY[0x1E69B0870]) initForAutolayout];
+    initForAutolayout = [objc_alloc(MEMORY[0x1E69B0870]) initForAutolayout];
     artworkView = v4->_artworkView;
-    v4->_artworkView = v5;
+    v4->_artworkView = initForAutolayout;
 
     [(_VideosExtrasGridHeaderView *)v4 addSubview:v4->_artworkView];
-    v7 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout2 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     titleLabel = v4->_titleLabel;
-    v4->_titleLabel = v7;
+    v4->_titleLabel = initForAutolayout2;
 
     [(UILabel *)v4->_titleLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
     [(_VideosExtrasGridHeaderView *)v4 addSubview:v4->_titleLabel];
-    v9 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout3 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     subtitleLabel = v4->_subtitleLabel;
-    v4->_subtitleLabel = v9;
+    v4->_subtitleLabel = initForAutolayout3;
 
     [(UILabel *)v4->_subtitleLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
     [(_VideosExtrasGridHeaderView *)v4 addSubview:v4->_subtitleLabel];
-    v11 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
+    initForAutolayout4 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
     bottomLabelSpacer = v4->_bottomLabelSpacer;
-    v4->_bottomLabelSpacer = v11;
+    v4->_bottomLabelSpacer = initForAutolayout4;
 
     [(_VideosExtrasGridHeaderView *)v4 addSubview:v4->_bottomLabelSpacer];
     v13 = [MEMORY[0x1E696ACD8] constraintsBySizingView:v4->_artworkView toSize:{50.0, 50.0}];
@@ -54,76 +54,76 @@
     textLeadingConstraints = v4->_textLeadingConstraints;
     v4->_textLeadingConstraints = v22;
 
-    v24 = [MEMORY[0x1E695DF70] array];
-    [v24 addObjectsFromArray:v4->_artworkSizeConstraints];
-    [v24 addObject:v15];
-    [v24 addObject:v16];
-    [v24 addObject:v21];
-    [v24 addObject:v17];
-    [v24 addObject:v18];
-    [v24 addObject:v19];
-    [v24 addObject:v20];
-    [(_VideosExtrasGridHeaderView *)v4 addConstraints:v24];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:v4->_artworkSizeConstraints];
+    [array addObject:v15];
+    [array addObject:v16];
+    [array addObject:v21];
+    [array addObject:v17];
+    [array addObject:v18];
+    [array addObject:v19];
+    [array addObject:v20];
+    [(_VideosExtrasGridHeaderView *)v4 addConstraints:array];
   }
 
   return v4;
 }
 
-- (void)configureForImage:(id)a3 title:(id)a4 subtitle:(id)a5 style:(id)a6
+- (void)configureForImage:(id)image title:(id)title subtitle:(id)subtitle style:(id)style
 {
   v121 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  v104 = v12;
-  if (v11)
+  imageCopy = image;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  styleCopy = style;
+  v14 = styleCopy;
+  v104 = subtitleCopy;
+  if (titleCopy)
   {
-    v15 = [v13 titleColor];
-    [(UILabel *)self->_titleLabel setTextColor:v15];
+    titleColor = [styleCopy titleColor];
+    [(UILabel *)self->_titleLabel setTextColor:titleColor];
 
     v16 = MEMORY[0x1E69DB880];
-    v17 = [v14 titleDefaultFontAttributes];
-    v18 = [v16 fontDescriptorWithFontAttributes:v17];
+    titleDefaultFontAttributes = [v14 titleDefaultFontAttributes];
+    v18 = [v16 fontDescriptorWithFontAttributes:titleDefaultFontAttributes];
 
     titleLabel = self->_titleLabel;
-    v20 = [v14 titleTextStyle];
-    [(UILabel *)titleLabel configureForIKTextElement:v11 fontDescriptor:v18 textStyle:v20];
+    titleTextStyle = [v14 titleTextStyle];
+    [(UILabel *)titleLabel configureForIKTextElement:titleCopy fontDescriptor:v18 textStyle:titleTextStyle];
   }
 
-  v102 = v11;
-  if (v12)
+  v102 = titleCopy;
+  if (subtitleCopy)
   {
-    v21 = [v14 subtitleColor];
-    [(UILabel *)self->_subtitleLabel setTextColor:v21];
+    subtitleColor = [v14 subtitleColor];
+    [(UILabel *)self->_subtitleLabel setTextColor:subtitleColor];
 
     v22 = MEMORY[0x1E69DB880];
-    v23 = [v14 subtitleDefaultFontAttributes];
-    v24 = [v22 fontDescriptorWithFontAttributes:v23];
+    subtitleDefaultFontAttributes = [v14 subtitleDefaultFontAttributes];
+    v24 = [v22 fontDescriptorWithFontAttributes:subtitleDefaultFontAttributes];
 
     subtitleLabel = self->_subtitleLabel;
-    v26 = [v14 subtitleTextStyle];
-    [(UILabel *)subtitleLabel configureForIKTextElement:v12 fontDescriptor:v24 textStyle:v26];
+    subtitleTextStyle = [v14 subtitleTextStyle];
+    [(UILabel *)subtitleLabel configureForIKTextElement:subtitleCopy fontDescriptor:v24 textStyle:subtitleTextStyle];
   }
 
   v27 = 0.0;
   v28 = 10.0;
-  if (v10 && [v14 showsImage])
+  if (imageCopy && [v14 showsImage])
   {
-    v29 = [v10 placeholderURL];
-    v30 = [MEMORY[0x1E69DCAB8] imageForPlaceholderURL:v29];
+    placeholderURL = [imageCopy placeholderURL];
+    v30 = [MEMORY[0x1E69DCAB8] imageForPlaceholderURL:placeholderURL];
     [(MPUArtworkView *)self->_artworkView setPlaceholderImage:v30];
-    v31 = [v10 artworkCatalog];
+    artworkCatalog = [imageCopy artworkCatalog];
     v27 = 50.0;
-    [v31 setFittingSize:{50.0, 50.0}];
+    [artworkCatalog setFittingSize:{50.0, 50.0}];
     artworkView = self->_artworkView;
     v113[0] = MEMORY[0x1E69E9820];
     v113[1] = 3221225472;
     v113[2] = __70___VideosExtrasGridHeaderView_configureForImage_title_subtitle_style___block_invoke;
     v113[3] = &unk_1E8730490;
     v113[4] = self;
-    [v31 setDestination:artworkView configurationBlock:v113];
+    [artworkCatalog setDestination:artworkView configurationBlock:v113];
 
     v28 = 15.0;
   }
@@ -184,34 +184,34 @@
     while (v40);
   }
 
-  v43 = [(UILabel *)self->_titleLabel attributedText];
-  v103 = v10;
-  if ([v43 length])
+  attributedText = [(UILabel *)self->_titleLabel attributedText];
+  v103 = imageCopy;
+  if ([attributedText length])
   {
   }
 
   else
   {
-    v44 = [(UILabel *)self->_titleLabel text];
-    v45 = [v44 length];
+    text = [(UILabel *)self->_titleLabel text];
+    v45 = [text length];
 
     if (!v45)
     {
       v46 = self->_subtitleLabel;
-      v47 = self;
+      selfCopy = self;
       [v14 subtitleLineHeight];
       v49 = v97;
-      v50 = [v14 subtitleTextStyle];
+      subtitleTextStyle2 = [v14 subtitleTextStyle];
       v51 = 3;
       goto LABEL_26;
     }
   }
 
   v46 = self->_titleLabel;
-  v47 = self->_titleLabel;
+  selfCopy = self->_titleLabel;
   [v14 titleLineHeight];
   v49 = v48;
-  v50 = [v14 titleTextStyle];
+  subtitleTextStyle2 = [v14 titleTextStyle];
   v51 = 11;
 LABEL_26:
   topLabelConstraint = self->_topLabelConstraint;
@@ -220,9 +220,9 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  v53 = [(MPUContentSizeLayoutConstraint *)topLabelConstraint firstItem];
+  firstItem = [(MPUContentSizeLayoutConstraint *)topLabelConstraint firstItem];
 
-  if (v53 != v46)
+  if (firstItem != v46)
   {
     v54 = MEMORY[0x1E696ACD8];
     v118 = self->_topLabelConstraint;
@@ -237,7 +237,7 @@ LABEL_26:
   if (!v57)
   {
 LABEL_30:
-    v58 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:v46 relation:0 toView:self attribute:3 withTextStyle:v50 multiplier:1.0 nonStandardLeading:v49];
+    v58 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:v46 relation:0 toView:self attribute:3 withTextStyle:subtitleTextStyle2 multiplier:1.0 nonStandardLeading:v49];
     v59 = self->_topLabelConstraint;
     self->_topLabelConstraint = v58;
 
@@ -249,18 +249,18 @@ LABEL_30:
     v57 = self->_topLabelConstraint;
   }
 
-  [(MPUContentSizeLayoutConstraint *)v57 setTextStyle:v50, v46];
+  [(MPUContentSizeLayoutConstraint *)v57 setTextStyle:subtitleTextStyle2, v46];
   [(MPUContentSizeLayoutConstraint *)self->_topLabelConstraint setDefaultSizeConstant:v49];
   subtitleBaselineConstraint = self->_subtitleBaselineConstraint;
   if (subtitleBaselineConstraint)
   {
-    v63 = [(MPUContentSizeLayoutConstraint *)subtitleBaselineConstraint secondItem];
-    v64 = v63;
-    if (v63 == v47)
+    secondItem = [(MPUContentSizeLayoutConstraint *)subtitleBaselineConstraint secondItem];
+    v64 = secondItem;
+    if (secondItem == selfCopy)
     {
-      v65 = [(MPUContentSizeLayoutConstraint *)self->_subtitleBaselineConstraint secondAttribute];
+      secondAttribute = [(MPUContentSizeLayoutConstraint *)self->_subtitleBaselineConstraint secondAttribute];
 
-      if (v65 == v51)
+      if (secondAttribute == v51)
       {
         goto LABEL_36;
       }
@@ -283,51 +283,51 @@ LABEL_36:
 
   v67 = MEMORY[0x1E69AD980];
   v68 = self->_subtitleLabel;
-  v69 = [v14 subtitleTextStyle];
+  subtitleTextStyle3 = [v14 subtitleTextStyle];
   [v14 subtitleLineHeight];
-  v71 = [v67 constraintWithAutoupdatingBaselineOfView:v68 relation:0 toView:v47 attribute:v51 withTextStyle:v69 multiplier:1.0 nonStandardLeading:v70];
+  v71 = [v67 constraintWithAutoupdatingBaselineOfView:v68 relation:0 toView:selfCopy attribute:v51 withTextStyle:subtitleTextStyle3 multiplier:1.0 nonStandardLeading:v70];
   v72 = self->_subtitleBaselineConstraint;
   self->_subtitleBaselineConstraint = v71;
 
   [(_VideosExtrasGridHeaderView *)self addConstraint:self->_subtitleBaselineConstraint];
 LABEL_38:
-  v73 = [v14 subtitleTextStyle];
-  [(MPUContentSizeLayoutConstraint *)self->_subtitleBaselineConstraint setTextStyle:v73];
+  subtitleTextStyle4 = [v14 subtitleTextStyle];
+  [(MPUContentSizeLayoutConstraint *)self->_subtitleBaselineConstraint setTextStyle:subtitleTextStyle4];
 
   [v14 subtitleLineHeight];
   [(MPUContentSizeLayoutConstraint *)self->_subtitleBaselineConstraint setDefaultSizeConstant:?];
-  v74 = [(UILabel *)self->_subtitleLabel attributedText];
-  if ([v74 length])
+  attributedText2 = [(UILabel *)self->_subtitleLabel attributedText];
+  if ([attributedText2 length])
   {
 
 LABEL_41:
     v77 = self->_subtitleLabel;
-    v78 = [v14 subtitleTextStyle];
+    subtitleTextStyle5 = [v14 subtitleTextStyle];
     v79 = v102;
     goto LABEL_42;
   }
 
-  v75 = [(UILabel *)self->_subtitleLabel text];
-  v76 = [v75 length];
+  text2 = [(UILabel *)self->_subtitleLabel text];
+  v76 = [text2 length];
 
   if (v76)
   {
     goto LABEL_41;
   }
 
-  v98 = [(UILabel *)self->_titleLabel attributedText];
-  if ([v98 length])
+  attributedText3 = [(UILabel *)self->_titleLabel attributedText];
+  if ([attributedText3 length])
   {
 
     v79 = v102;
 LABEL_54:
     v77 = self->_titleLabel;
-    v78 = [v14 titleTextStyle];
+    subtitleTextStyle5 = [v14 titleTextStyle];
     goto LABEL_42;
   }
 
-  v99 = [(UILabel *)self->_titleLabel text];
-  v100 = [v99 length];
+  text3 = [(UILabel *)self->_titleLabel text];
+  v100 = [text3 length];
 
   v79 = v102;
   if (v100)
@@ -336,7 +336,7 @@ LABEL_54:
   }
 
   v77 = 0;
-  v78 = 0;
+  subtitleTextStyle5 = 0;
 LABEL_42:
   bottomLabelSpacerHeight = self->_bottomLabelSpacerHeight;
   if (!bottomLabelSpacerHeight)
@@ -344,7 +344,7 @@ LABEL_42:
     v81 = MEMORY[0x1E69AD980];
     bottomLabelSpacer = self->_bottomLabelSpacer;
     [v14 bottomLabelDescender];
-    v84 = [v81 contentSizeAutoupdatingConstraintWithItem:bottomLabelSpacer attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:v78 textStyle:1.0 defaultSizeConstant:v83];
+    v84 = [v81 contentSizeAutoupdatingConstraintWithItem:bottomLabelSpacer attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:subtitleTextStyle5 textStyle:1.0 defaultSizeConstant:v83];
     v85 = self->_bottomLabelSpacerHeight;
     self->_bottomLabelSpacerHeight = v84;
 
@@ -356,7 +356,7 @@ LABEL_42:
     bottomLabelSpacerHeight = self->_bottomLabelSpacerHeight;
   }
 
-  [(MPUContentSizeLayoutConstraint *)bottomLabelSpacerHeight setTextStyle:v78];
+  [(MPUContentSizeLayoutConstraint *)bottomLabelSpacerHeight setTextStyle:subtitleTextStyle5];
   [v14 bottomLabelDescender];
   [(MPUContentSizeLayoutConstraint *)self->_bottomLabelSpacerHeight setDefaultSizeConstant:?];
   bottomLabelConstraint = self->_bottomLabelConstraint;
@@ -365,9 +365,9 @@ LABEL_42:
     goto LABEL_48;
   }
 
-  v89 = [(NSLayoutConstraint *)bottomLabelConstraint secondItem];
+  secondItem2 = [(NSLayoutConstraint *)bottomLabelConstraint secondItem];
 
-  if (v89 != v77)
+  if (secondItem2 != v77)
   {
     v90 = MEMORY[0x1E696ACD8];
     v115 = self->_bottomLabelConstraint;

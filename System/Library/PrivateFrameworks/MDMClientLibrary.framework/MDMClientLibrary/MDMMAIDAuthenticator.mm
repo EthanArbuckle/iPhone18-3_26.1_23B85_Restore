@@ -1,33 +1,33 @@
 @interface MDMMAIDAuthenticator
-- (BOOL)authenticateRequest:(id)a3 error:(id *)a4;
-- (BOOL)prepareTask:(id)a3 error:(id *)a4;
-- (MDMMAIDAuthenticator)initWithRMAccountID:(id)a3;
+- (BOOL)authenticateRequest:(id)request error:(id *)error;
+- (BOOL)prepareTask:(id)task error:(id *)error;
+- (MDMMAIDAuthenticator)initWithRMAccountID:(id)d;
 - (id)_appleIDContext;
 @end
 
 @implementation MDMMAIDAuthenticator
 
-- (MDMMAIDAuthenticator)initWithRMAccountID:(id)a3
+- (MDMMAIDAuthenticator)initWithRMAccountID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MDMMAIDAuthenticator;
   v6 = [(MDMMAIDAuthenticator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rmAccountID, a3);
+    objc_storeStrong(&v6->_rmAccountID, d);
   }
 
   return v7;
 }
 
-- (BOOL)authenticateRequest:(id)a3 error:(id *)a4
+- (BOOL)authenticateRequest:(id)request error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(MDMMAIDAuthenticator *)self rmAccountID];
-  v7 = [MDMAccountUtilities maidPropertiesForRMAccountID:v6];
+  requestCopy = request;
+  rmAccountID = [(MDMMAIDAuthenticator *)self rmAccountID];
+  v7 = [MDMAccountUtilities maidPropertiesForRMAccountID:rmAccountID];
 
   v8 = MEMORY[0x277CBEB18];
   v9 = v7;
@@ -43,10 +43,10 @@
   v12 = [v11 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
   v13 = [v12 componentsJoinedByString:{@", "}];
 
-  [v5 setValue:v13 forHTTPHeaderField:*MEMORY[0x277D03340]];
-  [v5 ak_addDeviceUDIDHeader];
-  [v5 ak_addClientInfoHeader];
-  [v5 ak_addDeviceSerialNumberHeader];
+  [requestCopy setValue:v13 forHTTPHeaderField:*MEMORY[0x277D03340]];
+  [requestCopy ak_addDeviceUDIDHeader];
+  [requestCopy ak_addClientInfoHeader];
+  [requestCopy ak_addDeviceSerialNumberHeader];
   v14 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03370]];
   v15 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03388]];
   v16 = v15;
@@ -61,7 +61,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      stringValue = v17;
     }
 
     else
@@ -69,7 +69,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v17 stringValue];
+        stringValue = [v17 stringValue];
       }
 
       else
@@ -77,7 +77,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [coerceIntoString_dateFormatter stringFromDate:v17];
+          stringValue = [coerceIntoString_dateFormatter stringFromDate:v17];
         }
 
         else
@@ -92,12 +92,12 @@
           {
             [v17 description];
           }
-          v18 = ;
+          stringValue = ;
         }
       }
     }
 
-    v20 = v18;
+    v20 = stringValue;
 
     v21 = v14;
     if (coerceIntoString_onceToken != -1)
@@ -108,7 +108,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      stringValue2 = v21;
     }
 
     else
@@ -116,7 +116,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [v21 stringValue];
+        stringValue2 = [v21 stringValue];
       }
 
       else
@@ -124,7 +124,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [coerceIntoString_dateFormatter stringFromDate:v21];
+          stringValue2 = [coerceIntoString_dateFormatter stringFromDate:v21];
         }
 
         else
@@ -139,14 +139,14 @@
           {
             [v21 description];
           }
-          v22 = ;
+          stringValue2 = ;
         }
       }
     }
 
-    v23 = v22;
+    v23 = stringValue2;
 
-    [v5 ak_addAuthorizationHeaderWithServiceToken:v20 forAltDSID:v23];
+    [requestCopy ak_addAuthorizationHeaderWithServiceToken:v20 forAltDSID:v23];
   }
 
   else
@@ -177,7 +177,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = v27;
+      stringValue3 = v27;
     }
 
     else
@@ -185,7 +185,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = [v27 stringValue];
+        stringValue3 = [v27 stringValue];
       }
 
       else
@@ -193,7 +193,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v28 = [coerceIntoString_dateFormatter stringFromDate:v27];
+          stringValue3 = [coerceIntoString_dateFormatter stringFromDate:v27];
         }
 
         else
@@ -208,12 +208,12 @@
           {
             [v27 description];
           }
-          v28 = ;
+          stringValue3 = ;
         }
       }
     }
 
-    v30 = v28;
+    v30 = stringValue3;
 
     v31 = v26;
     if (coerceIntoString_onceToken != -1)
@@ -224,7 +224,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = v31;
+      stringValue4 = v31;
     }
 
     else
@@ -232,7 +232,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = [v31 stringValue];
+        stringValue4 = [v31 stringValue];
       }
 
       else
@@ -240,7 +240,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v32 = [coerceIntoString_dateFormatter stringFromDate:v31];
+          stringValue4 = [coerceIntoString_dateFormatter stringFromDate:v31];
         }
 
         else
@@ -255,18 +255,18 @@
           {
             [v31 description];
           }
-          v32 = ;
+          stringValue4 = ;
         }
       }
     }
 
-    v33 = v32;
+    v33 = stringValue4;
 
     v34 = [v39 stringWithFormat:@"%@:%@", v30, v33];
 
     v35 = [v34 dataUsingEncoding:4];
     v36 = [v35 base64EncodedStringWithOptions:0];
-    [v5 setValue:v36 forHTTPHeaderField:*MEMORY[0x277D03360]];
+    [requestCopy setValue:v36 forHTTPHeaderField:*MEMORY[0x277D03360]];
   }
 
   else
@@ -286,13 +286,13 @@
   return 1;
 }
 
-- (BOOL)prepareTask:(id)a3 error:(id *)a4
+- (BOOL)prepareTask:(id)task error:(id *)error
 {
-  v5 = a3;
+  taskCopy = task;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(MDMMAIDAuthenticator *)self _appleIDContext];
-    [v5 _setAppleIDContext:v6];
+    _appleIDContext = [(MDMMAIDAuthenticator *)self _appleIDContext];
+    [taskCopy _setAppleIDContext:_appleIDContext];
   }
 
   return 1;

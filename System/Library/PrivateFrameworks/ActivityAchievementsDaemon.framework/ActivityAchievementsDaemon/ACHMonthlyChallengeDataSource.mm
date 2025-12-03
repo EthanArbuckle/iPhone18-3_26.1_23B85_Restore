@@ -1,72 +1,72 @@
 @interface ACHMonthlyChallengeDataSource
-- (ACHMonthlyChallengeDataSource)initWithActivitySummaryIterator:(id)a3 workoutClient:(id)a4;
-- (double)_dailyAverageValueForMonthlyChallengeWithDailyTargetValue:(double)a3 andDateComponentInterval:(id)a4;
-- (double)_numberOfDaysWithQuantity:(id)a3 overThreshold:(double)a4 forDateComponentInterval:(id)a5 error:(id *)a6;
-- (double)caloriesDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (double)exerciseMinutesDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (double)moveTimeDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (double)valueForMonthlyChallengeType:(unint64_t)a3 forDateComponentInterval:(id)a4 calendar:(id)a5 error:(id *)a6;
-- (double)walkingRunningDistanceDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (id)_inclusiveDateIntervalFor:(id)a3 andDateComponentInterval:(id)a4;
-- (int64_t)currentStreakOfType:(unint64_t)a3 duringDateComponentInterval:(id)a4 error:(id *)a5;
-- (int64_t)longestStreakOfType:(unint64_t)a3 duringDateComponentInterval:(id)a4 error:(id *)a5;
-- (int64_t)numberOfAllRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (int64_t)numberOfCompletedWorkoutsOfType:(unint64_t)a3 andLocation:(unint64_t)a4 duringDateInterval:(id)a5 error:(id *)a6;
-- (int64_t)numberOfDaysDoublingExerciseGoalDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (int64_t)numberOfDaysDoublingMoveGoalDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (int64_t)numberOfExerciseRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (int64_t)numberOfMoveRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (int64_t)numberOfStandRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4;
-- (int64_t)numberOfWorkoutsCompletedDuringDateInterval:(id)a3 error:(id *)a4;
-- (void)_getCurrentAndLongestStreakForStreakType:(unint64_t)a3 duringDateComponentInterval:(id)a4 completion:(id)a5;
+- (ACHMonthlyChallengeDataSource)initWithActivitySummaryIterator:(id)iterator workoutClient:(id)client;
+- (double)_dailyAverageValueForMonthlyChallengeWithDailyTargetValue:(double)value andDateComponentInterval:(id)interval;
+- (double)_numberOfDaysWithQuantity:(id)quantity overThreshold:(double)threshold forDateComponentInterval:(id)interval error:(id *)error;
+- (double)caloriesDuringDateComponentInterval:(id)interval error:(id *)error;
+- (double)exerciseMinutesDuringDateComponentInterval:(id)interval error:(id *)error;
+- (double)moveTimeDuringDateComponentInterval:(id)interval error:(id *)error;
+- (double)valueForMonthlyChallengeType:(unint64_t)type forDateComponentInterval:(id)interval calendar:(id)calendar error:(id *)error;
+- (double)walkingRunningDistanceDuringDateComponentInterval:(id)interval error:(id *)error;
+- (id)_inclusiveDateIntervalFor:(id)for andDateComponentInterval:(id)interval;
+- (int64_t)currentStreakOfType:(unint64_t)type duringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)longestStreakOfType:(unint64_t)type duringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfAllRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfCompletedWorkoutsOfType:(unint64_t)type andLocation:(unint64_t)location duringDateInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfDaysDoublingExerciseGoalDuringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfDaysDoublingMoveGoalDuringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfExerciseRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfMoveRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfStandRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error;
+- (int64_t)numberOfWorkoutsCompletedDuringDateInterval:(id)interval error:(id *)error;
+- (void)_getCurrentAndLongestStreakForStreakType:(unint64_t)type duringDateComponentInterval:(id)interval completion:(id)completion;
 @end
 
 @implementation ACHMonthlyChallengeDataSource
 
-- (ACHMonthlyChallengeDataSource)initWithActivitySummaryIterator:(id)a3 workoutClient:(id)a4
+- (ACHMonthlyChallengeDataSource)initWithActivitySummaryIterator:(id)iterator workoutClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  iteratorCopy = iterator;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = ACHMonthlyChallengeDataSource;
   v9 = [(ACHMonthlyChallengeDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activitySummaryIterator, a3);
-    objc_storeStrong(&v10->_workoutClient, a4);
+    objc_storeStrong(&v9->_activitySummaryIterator, iterator);
+    objc_storeStrong(&v10->_workoutClient, client);
   }
 
   return v10;
 }
 
-- (double)valueForMonthlyChallengeType:(unint64_t)a3 forDateComponentInterval:(id)a4 calendar:(id)a5 error:(id *)a6
+- (double)valueForMonthlyChallengeType:(unint64_t)type forDateComponentInterval:(id)interval calendar:(id)calendar error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  switch(a3)
+  intervalCopy = interval;
+  calendarCopy = calendar;
+  switch(type)
   {
     case 1uLL:
-      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfAllRingsClosedDuringDateComponentInterval:v10 error:a6];
+      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfAllRingsClosedDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_20;
     case 2uLL:
-      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfMoveRingsClosedDuringDateComponentInterval:v10 error:a6];
+      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfMoveRingsClosedDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_20;
     case 3uLL:
-      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfExerciseRingsClosedDuringDateComponentInterval:v10 error:a6];
+      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfExerciseRingsClosedDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_20;
     case 4uLL:
-      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfStandRingsClosedDuringDateComponentInterval:v10 error:a6];
+      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfStandRingsClosedDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_20;
     case 5uLL:
-      [(ACHMonthlyChallengeDataSource *)self caloriesDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self caloriesDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_18;
     case 6uLL:
-      [(ACHMonthlyChallengeDataSource *)self exerciseMinutesDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self exerciseMinutesDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_18;
     case 7uLL:
-      v17 = [(ACHMonthlyChallengeDataSource *)self _inclusiveDateIntervalFor:v11 andDateComponentInterval:v10];
-      v14 = [(ACHMonthlyChallengeDataSource *)self numberOfWorkoutsCompletedDuringDateInterval:v17 error:a6];
+      v17 = [(ACHMonthlyChallengeDataSource *)self _inclusiveDateIntervalFor:calendarCopy andDateComponentInterval:intervalCopy];
+      v14 = [(ACHMonthlyChallengeDataSource *)self numberOfWorkoutsCompletedDuringDateInterval:v17 error:error];
 
       break;
     case 8uLL:
@@ -81,41 +81,41 @@
     case 0x11uLL:
     case 0x12uLL:
     case 0x13uLL:
-      v12 = [(ACHMonthlyChallengeDataSource *)self _inclusiveDateIntervalFor:v11 andDateComponentInterval:v10];
+      v12 = [(ACHMonthlyChallengeDataSource *)self _inclusiveDateIntervalFor:calendarCopy andDateComponentInterval:intervalCopy];
       v13 = ACHWorkoutActivityTypeForMonthlyChallengeType();
-      v14 = [(ACHMonthlyChallengeDataSource *)self numberOfCompletedWorkoutsOfType:v13 andLocation:ACHWorkoutLocationTypeForMonthlyChallengeType() duringDateInterval:v12 error:a6];
+      v14 = [(ACHMonthlyChallengeDataSource *)self numberOfCompletedWorkoutsOfType:v13 andLocation:ACHWorkoutLocationTypeForMonthlyChallengeType() duringDateInterval:v12 error:error];
 
       break;
     case 0x14uLL:
-      [(ACHMonthlyChallengeDataSource *)self walkingRunningDistanceDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self walkingRunningDistanceDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_18;
     case 0x15uLL:
-      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfDaysDoublingMoveGoalDuringDateComponentInterval:v10 error:a6];
+      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfDaysDoublingMoveGoalDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_20;
     case 0x16uLL:
-      [(ACHMonthlyChallengeDataSource *)self moveTimeDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self moveTimeDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_18;
     case 0x17uLL:
-      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfDaysDoublingExerciseGoalDuringDateComponentInterval:v10 error:a6];
+      v15 = [(ACHMonthlyChallengeDataSource *)self numberOfDaysDoublingExerciseGoalDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_20;
     case 0x18uLL:
-      v15 = [(ACHMonthlyChallengeDataSource *)self currentStreakOfType:0 duringDateComponentInterval:v10 error:a6];
+      v15 = [(ACHMonthlyChallengeDataSource *)self currentStreakOfType:0 duringDateComponentInterval:intervalCopy error:error];
 LABEL_20:
       v14 = v15;
       break;
     case 0x19uLL:
-      [(ACHMonthlyChallengeDataSource *)self caloriesDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self caloriesDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_17;
     case 0x1AuLL:
-      [(ACHMonthlyChallengeDataSource *)self exerciseMinutesDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self exerciseMinutesDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_17;
     case 0x1BuLL:
-      [(ACHMonthlyChallengeDataSource *)self walkingRunningDistanceDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self walkingRunningDistanceDuringDateComponentInterval:intervalCopy error:error];
       goto LABEL_17;
     case 0x1CuLL:
-      [(ACHMonthlyChallengeDataSource *)self moveTimeDuringDateComponentInterval:v10 error:a6];
+      [(ACHMonthlyChallengeDataSource *)self moveTimeDuringDateComponentInterval:intervalCopy error:error];
 LABEL_17:
-      [(ACHMonthlyChallengeDataSource *)self _dailyAverageValueForMonthlyChallengeWithDailyTargetValue:v10 andDateComponentInterval:?];
+      [(ACHMonthlyChallengeDataSource *)self _dailyAverageValueForMonthlyChallengeWithDailyTargetValue:intervalCopy andDateComponentInterval:?];
 LABEL_18:
       v14 = v16;
       break;
@@ -127,21 +127,21 @@ LABEL_18:
   return v14;
 }
 
-- (double)_dailyAverageValueForMonthlyChallengeWithDailyTargetValue:(double)a3 andDateComponentInterval:(id)a4
+- (double)_dailyAverageValueForMonthlyChallengeWithDailyTargetValue:(double)value andDateComponentInterval:(id)interval
 {
-  v5 = a4;
-  v6 = [v5 endDateComponents];
-  v7 = [v6 day];
-  v8 = [v5 startDateComponents];
+  intervalCopy = interval;
+  endDateComponents = [intervalCopy endDateComponents];
+  v7 = [endDateComponents day];
+  startDateComponents = [intervalCopy startDateComponents];
 
-  v9 = v7 - [v8 day] + 1;
-  return a3 / v9;
+  v9 = v7 - [startDateComponents day] + 1;
+  return value / v9;
 }
 
-- (double)caloriesDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (double)caloriesDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  intervalCopy = interval;
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -152,29 +152,29 @@ LABEL_18:
   v22 = __Block_byref_object_copy__28;
   v23 = __Block_byref_object_dispose__28;
   v24 = 0;
-  v8 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__ACHMonthlyChallengeDataSource_caloriesDuringDateComponentInterval_error___block_invoke;
   v16[3] = &unk_278492AD0;
   v18 = &v25;
-  v9 = v7;
+  v9 = kilocalorieUnit;
   v17 = v9;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__ACHMonthlyChallengeDataSource_caloriesDuringDateComponentInterval_error___block_invoke_2;
   v15[3] = &unk_278490958;
   v15[4] = &v19;
-  [v8 enumerateActivitySummariesForDateComponentInterval:v6 handler:v16 errorHandler:v15];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v16 errorHandler:v15];
 
   v10 = v20[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -201,10 +201,10 @@ void __75__ACHMonthlyChallengeDataSource_caloriesDuringDateComponentInterval_err
   }
 }
 
-- (double)moveTimeDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (double)moveTimeDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCDAB0] minuteUnit];
+  intervalCopy = interval;
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -215,29 +215,29 @@ void __75__ACHMonthlyChallengeDataSource_caloriesDuringDateComponentInterval_err
   v22 = __Block_byref_object_copy__28;
   v23 = __Block_byref_object_dispose__28;
   v24 = 0;
-  v8 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__ACHMonthlyChallengeDataSource_moveTimeDuringDateComponentInterval_error___block_invoke;
   v16[3] = &unk_278492AD0;
   v18 = &v25;
-  v9 = v7;
+  v9 = minuteUnit;
   v17 = v9;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__ACHMonthlyChallengeDataSource_moveTimeDuringDateComponentInterval_error___block_invoke_2;
   v15[3] = &unk_278490958;
   v15[4] = &v19;
-  [v8 enumerateActivitySummariesForDateComponentInterval:v6 handler:v16 errorHandler:v15];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v16 errorHandler:v15];
 
   v10 = v20[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -264,10 +264,10 @@ void __75__ACHMonthlyChallengeDataSource_moveTimeDuringDateComponentInterval_err
   }
 }
 
-- (double)exerciseMinutesDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (double)exerciseMinutesDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCDAB0] minuteUnit];
+  intervalCopy = interval;
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -278,29 +278,29 @@ void __75__ACHMonthlyChallengeDataSource_moveTimeDuringDateComponentInterval_err
   v22 = __Block_byref_object_copy__28;
   v23 = __Block_byref_object_dispose__28;
   v24 = 0;
-  v8 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __82__ACHMonthlyChallengeDataSource_exerciseMinutesDuringDateComponentInterval_error___block_invoke;
   v16[3] = &unk_278492AD0;
   v18 = &v25;
-  v9 = v7;
+  v9 = minuteUnit;
   v17 = v9;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __82__ACHMonthlyChallengeDataSource_exerciseMinutesDuringDateComponentInterval_error___block_invoke_2;
   v15[3] = &unk_278490958;
   v15[4] = &v19;
-  [v8 enumerateActivitySummariesForDateComponentInterval:v6 handler:v16 errorHandler:v15];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v16 errorHandler:v15];
 
   v10 = v20[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -327,10 +327,10 @@ void __82__ACHMonthlyChallengeDataSource_exerciseMinutesDuringDateComponentInter
   }
 }
 
-- (double)walkingRunningDistanceDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (double)walkingRunningDistanceDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCDAB0] meterUnit];
+  intervalCopy = interval;
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -341,29 +341,29 @@ void __82__ACHMonthlyChallengeDataSource_exerciseMinutesDuringDateComponentInter
   v22 = __Block_byref_object_copy__28;
   v23 = __Block_byref_object_dispose__28;
   v24 = 0;
-  v8 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __89__ACHMonthlyChallengeDataSource_walkingRunningDistanceDuringDateComponentInterval_error___block_invoke;
   v16[3] = &unk_278492AD0;
   v18 = &v25;
-  v9 = v7;
+  v9 = meterUnit;
   v17 = v9;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__ACHMonthlyChallengeDataSource_walkingRunningDistanceDuringDateComponentInterval_error___block_invoke_2;
   v15[3] = &unk_278490958;
   v15[4] = &v19;
-  [v8 enumerateActivitySummariesForDateComponentInterval:v6 handler:v16 errorHandler:v15];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v16 errorHandler:v15];
 
   v10 = v20[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -390,9 +390,9 @@ void __89__ACHMonthlyChallengeDataSource_walkingRunningDistanceDuringDateCompone
   }
 }
 
-- (int64_t)numberOfMoveRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (int64_t)numberOfMoveRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -403,7 +403,7 @@ void __89__ACHMonthlyChallengeDataSource_walkingRunningDistanceDuringDateCompone
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v7 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __90__ACHMonthlyChallengeDataSource_numberOfMoveRingsClosedDuringDateComponentInterval_error___block_invoke;
@@ -414,16 +414,16 @@ void __89__ACHMonthlyChallengeDataSource_walkingRunningDistanceDuringDateCompone
   v13[2] = __90__ACHMonthlyChallengeDataSource_numberOfMoveRingsClosedDuringDateComponentInterval_error___block_invoke_2;
   v13[3] = &unk_278490958;
   v13[4] = &v15;
-  [v7 enumerateActivitySummariesForDateComponentInterval:v6 handler:v14 errorHandler:v13];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v14 errorHandler:v13];
 
   v8 = v16[5];
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -457,9 +457,9 @@ uint64_t __90__ACHMonthlyChallengeDataSource_numberOfMoveRingsClosedDuringDateCo
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (int64_t)numberOfExerciseRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (int64_t)numberOfExerciseRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -470,7 +470,7 @@ uint64_t __90__ACHMonthlyChallengeDataSource_numberOfMoveRingsClosedDuringDateCo
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v7 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __94__ACHMonthlyChallengeDataSource_numberOfExerciseRingsClosedDuringDateComponentInterval_error___block_invoke;
@@ -481,16 +481,16 @@ uint64_t __90__ACHMonthlyChallengeDataSource_numberOfMoveRingsClosedDuringDateCo
   v13[2] = __94__ACHMonthlyChallengeDataSource_numberOfExerciseRingsClosedDuringDateComponentInterval_error___block_invoke_2;
   v13[3] = &unk_278490958;
   v13[4] = &v15;
-  [v7 enumerateActivitySummariesForDateComponentInterval:v6 handler:v14 errorHandler:v13];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v14 errorHandler:v13];
 
   v8 = v16[5];
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -519,9 +519,9 @@ void __94__ACHMonthlyChallengeDataSource_numberOfExerciseRingsClosedDuringDateCo
   }
 }
 
-- (int64_t)numberOfStandRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (int64_t)numberOfStandRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -532,7 +532,7 @@ void __94__ACHMonthlyChallengeDataSource_numberOfExerciseRingsClosedDuringDateCo
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v7 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__ACHMonthlyChallengeDataSource_numberOfStandRingsClosedDuringDateComponentInterval_error___block_invoke;
@@ -543,16 +543,16 @@ void __94__ACHMonthlyChallengeDataSource_numberOfExerciseRingsClosedDuringDateCo
   v13[2] = __91__ACHMonthlyChallengeDataSource_numberOfStandRingsClosedDuringDateComponentInterval_error___block_invoke_2;
   v13[3] = &unk_278490958;
   v13[4] = &v15;
-  [v7 enumerateActivitySummariesForDateComponentInterval:v6 handler:v14 errorHandler:v13];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v14 errorHandler:v13];
 
   v8 = v16[5];
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -581,9 +581,9 @@ void __91__ACHMonthlyChallengeDataSource_numberOfStandRingsClosedDuringDateCompo
   }
 }
 
-- (int64_t)numberOfAllRingsClosedDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (int64_t)numberOfAllRingsClosedDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -594,7 +594,7 @@ void __91__ACHMonthlyChallengeDataSource_numberOfStandRingsClosedDuringDateCompo
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v7 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __89__ACHMonthlyChallengeDataSource_numberOfAllRingsClosedDuringDateComponentInterval_error___block_invoke;
@@ -605,16 +605,16 @@ void __91__ACHMonthlyChallengeDataSource_numberOfStandRingsClosedDuringDateCompo
   v13[2] = __89__ACHMonthlyChallengeDataSource_numberOfAllRingsClosedDuringDateComponentInterval_error___block_invoke_2;
   v13[3] = &unk_278490958;
   v13[4] = &v15;
-  [v7 enumerateActivitySummariesForDateComponentInterval:v6 handler:v14 errorHandler:v13];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v14 errorHandler:v13];
 
   v8 = v16[5];
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -656,9 +656,9 @@ void __89__ACHMonthlyChallengeDataSource_numberOfAllRingsClosedDuringDateCompone
   }
 }
 
-- (int64_t)numberOfDaysDoublingMoveGoalDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (int64_t)numberOfDaysDoublingMoveGoalDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -669,7 +669,7 @@ void __89__ACHMonthlyChallengeDataSource_numberOfAllRingsClosedDuringDateCompone
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v7 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __95__ACHMonthlyChallengeDataSource_numberOfDaysDoublingMoveGoalDuringDateComponentInterval_error___block_invoke;
@@ -680,16 +680,16 @@ void __89__ACHMonthlyChallengeDataSource_numberOfAllRingsClosedDuringDateCompone
   v13[2] = __95__ACHMonthlyChallengeDataSource_numberOfDaysDoublingMoveGoalDuringDateComponentInterval_error___block_invoke_2;
   v13[3] = &unk_278490958;
   v13[4] = &v15;
-  [v7 enumerateActivitySummariesForDateComponentInterval:v6 handler:v14 errorHandler:v13];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v14 errorHandler:v13];
 
   v8 = v16[5];
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -723,9 +723,9 @@ uint64_t __95__ACHMonthlyChallengeDataSource_numberOfDaysDoublingMoveGoalDuringD
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (int64_t)numberOfDaysDoublingExerciseGoalDuringDateComponentInterval:(id)a3 error:(id *)a4
+- (int64_t)numberOfDaysDoublingExerciseGoalDuringDateComponentInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -736,7 +736,7 @@ uint64_t __95__ACHMonthlyChallengeDataSource_numberOfDaysDoublingMoveGoalDuringD
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v7 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __99__ACHMonthlyChallengeDataSource_numberOfDaysDoublingExerciseGoalDuringDateComponentInterval_error___block_invoke;
@@ -747,16 +747,16 @@ uint64_t __95__ACHMonthlyChallengeDataSource_numberOfDaysDoublingMoveGoalDuringD
   v13[2] = __99__ACHMonthlyChallengeDataSource_numberOfDaysDoublingExerciseGoalDuringDateComponentInterval_error___block_invoke_2;
   v13[3] = &unk_278490958;
   v13[4] = &v15;
-  [v7 enumerateActivitySummariesForDateComponentInterval:v6 handler:v14 errorHandler:v13];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v14 errorHandler:v13];
 
   v8 = v16[5];
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -785,27 +785,27 @@ void __99__ACHMonthlyChallengeDataSource_numberOfDaysDoublingExerciseGoalDuringD
   }
 }
 
-- (int64_t)numberOfWorkoutsCompletedDuringDateInterval:(id)a3 error:(id *)a4
+- (int64_t)numberOfWorkoutsCompletedDuringDateInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHMonthlyChallengeDataSource *)self workoutClient];
-  v8 = [v7 numberOfWorkoutsWithDuration:v6 containedInInterval:a4 error:300.0];
+  intervalCopy = interval;
+  workoutClient = [(ACHMonthlyChallengeDataSource *)self workoutClient];
+  v8 = [workoutClient numberOfWorkoutsWithDuration:intervalCopy containedInInterval:error error:300.0];
 
   return v8;
 }
 
-- (int64_t)numberOfCompletedWorkoutsOfType:(unint64_t)a3 andLocation:(unint64_t)a4 duringDateInterval:(id)a5 error:(id *)a6
+- (int64_t)numberOfCompletedWorkoutsOfType:(unint64_t)type andLocation:(unint64_t)location duringDateInterval:(id)interval error:(id *)error
 {
-  v10 = a5;
-  v11 = [(ACHMonthlyChallengeDataSource *)self workoutClient];
-  v12 = [v11 numberOfFirstPartyWorkoutsWithDuration:a3 withType:a4 andLocation:v10 containedInInterval:a6 error:300.0];
+  intervalCopy = interval;
+  workoutClient = [(ACHMonthlyChallengeDataSource *)self workoutClient];
+  v12 = [workoutClient numberOfFirstPartyWorkoutsWithDuration:type withType:location andLocation:intervalCopy containedInInterval:error error:300.0];
 
   return v12;
 }
 
-- (int64_t)longestStreakOfType:(unint64_t)a3 duringDateComponentInterval:(id)a4 error:(id *)a5
+- (int64_t)longestStreakOfType:(unint64_t)type duringDateComponentInterval:(id)interval error:(id *)error
 {
-  v8 = a4;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -822,15 +822,15 @@ void __99__ACHMonthlyChallengeDataSource_numberOfDaysDoublingExerciseGoalDuringD
   v14[3] = &unk_278492AF8;
   v14[4] = &v15;
   v14[5] = &v21;
-  [(ACHMonthlyChallengeDataSource *)self _getCurrentAndLongestStreakForStreakType:a3 duringDateComponentInterval:v8 completion:v14];
+  [(ACHMonthlyChallengeDataSource *)self _getCurrentAndLongestStreakForStreakType:type duringDateComponentInterval:intervalCopy completion:v14];
   v9 = v16[5];
   v10 = v9;
   if (v9)
   {
-    if (a5)
+    if (error)
     {
       v11 = v9;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -853,9 +853,9 @@ void __87__ACHMonthlyChallengeDataSource_longestStreakOfType_duringDateComponent
   *(*(*(a1 + 40) + 8) + 24) = a3;
 }
 
-- (int64_t)currentStreakOfType:(unint64_t)a3 duringDateComponentInterval:(id)a4 error:(id *)a5
+- (int64_t)currentStreakOfType:(unint64_t)type duringDateComponentInterval:(id)interval error:(id *)error
 {
-  v8 = a4;
+  intervalCopy = interval;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -872,15 +872,15 @@ void __87__ACHMonthlyChallengeDataSource_longestStreakOfType_duringDateComponent
   v14[3] = &unk_278492AF8;
   v14[4] = &v15;
   v14[5] = &v21;
-  [(ACHMonthlyChallengeDataSource *)self _getCurrentAndLongestStreakForStreakType:a3 duringDateComponentInterval:v8 completion:v14];
+  [(ACHMonthlyChallengeDataSource *)self _getCurrentAndLongestStreakForStreakType:type duringDateComponentInterval:intervalCopy completion:v14];
   v9 = v16[5];
   v10 = v9;
   if (v9)
   {
-    if (a5)
+    if (error)
     {
       v11 = v9;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -903,10 +903,10 @@ void __87__ACHMonthlyChallengeDataSource_currentStreakOfType_duringDateComponent
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)_getCurrentAndLongestStreakForStreakType:(unint64_t)a3 duringDateComponentInterval:(id)a4 completion:(id)a5
+- (void)_getCurrentAndLongestStreakForStreakType:(unint64_t)type duringDateComponentInterval:(id)interval completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  intervalCopy = interval;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -921,22 +921,22 @@ void __87__ACHMonthlyChallengeDataSource_currentStreakOfType_duringDateComponent
   v16 = __Block_byref_object_copy__28;
   v17 = __Block_byref_object_dispose__28;
   v18 = 0;
-  v10 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __113__ACHMonthlyChallengeDataSource__getCurrentAndLongestStreakForStreakType_duringDateComponentInterval_completion___block_invoke;
   v12[3] = &unk_278492B20;
   v12[5] = &v19;
-  v12[6] = a3;
+  v12[6] = type;
   v12[4] = &v23;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __113__ACHMonthlyChallengeDataSource__getCurrentAndLongestStreakForStreakType_duringDateComponentInterval_completion___block_invoke_2;
   v11[3] = &unk_278490958;
   v11[4] = &v13;
-  [v10 enumerateActivitySummariesForDateComponentInterval:v8 handler:v12 errorHandler:v11];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v12 errorHandler:v11];
 
-  (*(v9 + 2))(v9, *(v24 + 6), *(v20 + 6), v14[5]);
+  (*(completionCopy + 2))(completionCopy, *(v24 + 6), *(v20 + 6), v14[5]);
   _Block_object_dispose(&v13, 8);
 
   _Block_object_dispose(&v19, 8);
@@ -1002,10 +1002,10 @@ LABEL_9:
 LABEL_15:
 }
 
-- (double)_numberOfDaysWithQuantity:(id)a3 overThreshold:(double)a4 forDateComponentInterval:(id)a5 error:(id *)a6
+- (double)_numberOfDaysWithQuantity:(id)quantity overThreshold:(double)threshold forDateComponentInterval:(id)interval error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  quantityCopy = quantity;
+  intervalCopy = interval;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -1016,13 +1016,13 @@ LABEL_15:
   v27 = __Block_byref_object_copy__28;
   v28 = __Block_byref_object_dispose__28;
   v29 = 0;
-  v12 = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeDataSource *)self activitySummaryIterator];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __104__ACHMonthlyChallengeDataSource__numberOfDaysWithQuantity_overThreshold_forDateComponentInterval_error___block_invoke;
   v20[3] = &unk_278492B68;
-  v13 = v10;
-  v23 = a4;
+  v13 = quantityCopy;
+  thresholdCopy = threshold;
   v21 = v13;
   v22 = &v30;
   v19[0] = MEMORY[0x277D85DD0];
@@ -1030,16 +1030,16 @@ LABEL_15:
   v19[2] = __104__ACHMonthlyChallengeDataSource__numberOfDaysWithQuantity_overThreshold_forDateComponentInterval_error___block_invoke_2;
   v19[3] = &unk_278490958;
   v19[4] = &v24;
-  [v12 enumerateActivitySummariesForDateComponentInterval:v11 handler:v20 errorHandler:v19];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:intervalCopy handler:v20 errorHandler:v19];
 
   v14 = v25[5];
   v15 = v14;
   if (v14)
   {
-    if (a6)
+    if (error)
     {
       v16 = v14;
-      *a6 = v15;
+      *error = v15;
     }
 
     else
@@ -1072,20 +1072,20 @@ void __104__ACHMonthlyChallengeDataSource__numberOfDaysWithQuantity_overThreshol
   }
 }
 
-- (id)_inclusiveDateIntervalFor:(id)a3 andDateComponentInterval:(id)a4
+- (id)_inclusiveDateIntervalFor:(id)for andDateComponentInterval:(id)interval
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 startDateComponents];
-  v8 = [v6 dateFromComponents:v7];
-  v9 = [v6 startOfDayForDate:v8];
+  intervalCopy = interval;
+  forCopy = for;
+  startDateComponents = [intervalCopy startDateComponents];
+  v8 = [forCopy dateFromComponents:startDateComponents];
+  v9 = [forCopy startOfDayForDate:v8];
 
-  v10 = [v5 endDateComponents];
+  endDateComponents = [intervalCopy endDateComponents];
 
-  v11 = [v6 dateFromComponents:v10];
-  v12 = [v6 startOfDayForDate:v11];
+  v11 = [forCopy dateFromComponents:endDateComponents];
+  v12 = [forCopy startOfDayForDate:v11];
 
-  v13 = [v6 hk_dateByAddingDays:1 toDate:v12];
+  v13 = [forCopy hk_dateByAddingDays:1 toDate:v12];
 
   v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v13];
 

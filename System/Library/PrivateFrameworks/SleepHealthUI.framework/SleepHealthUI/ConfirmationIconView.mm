@@ -1,10 +1,10 @@
 @interface ConfirmationIconView
-- (_TtC13SleepHealthUIP33_3DB6600DA0668F5E054B253ECFD47B8E20ConfirmationIconView)initWithCoder:(id)a3;
+- (_TtC13SleepHealthUIP33_3DB6600DA0668F5E054B253ECFD47B8E20ConfirmationIconView)initWithCoder:(id)coder;
 @end
 
 @implementation ConfirmationIconView
 
-- (_TtC13SleepHealthUIP33_3DB6600DA0668F5E054B253ECFD47B8E20ConfirmationIconView)initWithCoder:(id)a3
+- (_TtC13SleepHealthUIP33_3DB6600DA0668F5E054B253ECFD47B8E20ConfirmationIconView)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

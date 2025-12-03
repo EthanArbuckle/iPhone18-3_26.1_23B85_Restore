@@ -1,13 +1,13 @@
 @interface ATXCandidateRelevanceModelFeaturizer
-- (void)observeContext:(id)a3 candidate:(id)a4;
+- (void)observeContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCandidateRelevanceModelFeaturizer
 
-- (void)observeContext:(id)a3 candidate:(id)a4
+- (void)observeContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  candidateCopy = candidate;
   __break(1u);
 }
 

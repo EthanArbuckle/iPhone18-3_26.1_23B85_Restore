@@ -1,22 +1,22 @@
 @interface SKTermsPageViewController
-- (SKTermsPageViewController)initWithTerms:(id)a3;
+- (SKTermsPageViewController)initWithTerms:(id)terms;
 - (SKTermsPageViewControllerDelegate)delegate;
-- (id)_markupTermsWithHTML:(id)a3;
-- (void)_buttonAccept:(id)a3;
-- (void)_dismissViewControllerAnimated:(BOOL)a3;
-- (void)_dismissViewControllerAnimated:(BOOL)a3 withAcceptance:(BOOL)a4;
+- (id)_markupTermsWithHTML:(id)l;
+- (void)_buttonAccept:(id)accept;
+- (void)_dismissViewControllerAnimated:(BOOL)animated;
+- (void)_dismissViewControllerAnimated:(BOOL)animated withAcceptance:(BOOL)acceptance;
 - (void)_loadSubviews;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
 @end
 
 @implementation SKTermsPageViewController
 
-- (SKTermsPageViewController)initWithTerms:(id)a3
+- (SKTermsPageViewController)initWithTerms:(id)terms
 {
-  v4 = a3;
-  if (v4)
+  termsCopy = terms;
+  if (termsCopy)
   {
     v10.receiver = self;
     v10.super_class = SKTermsPageViewController;
@@ -24,7 +24,7 @@
     v6 = v5;
     if (v5)
     {
-      v7 = [(SKTermsPageViewController *)v5 _markupTermsWithHTML:v4];
+      v7 = [(SKTermsPageViewController *)v5 _markupTermsWithHTML:termsCopy];
       terms = v6->_terms;
       v6->_terms = v7;
     }
@@ -41,8 +41,8 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SKTermsPageViewController *)self view];
-  [v3 bounds];
+  view = [(SKTermsPageViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -69,8 +69,8 @@
     v20 = *(MEMORY[0x1E695F058] + 24);
   }
 
-  v21 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v21 statusBarFrame];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] statusBarFrame];
   Height = CGRectGetHeight(v39);
   v40.origin.x = v14;
   v40.origin.y = v16;
@@ -101,16 +101,16 @@
   if (terms)
   {
     webview = self->_webview;
-    v30 = [MEMORY[0x1E696AAE8] mainBundle];
-    v31 = [v30 resourceURL];
-    v32 = [(WKWebView *)webview loadHTMLString:terms baseURL:v31];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    resourceURL = [mainBundle resourceURL];
+    v32 = [(WKWebView *)webview loadHTMLString:terms baseURL:resourceURL];
   }
 
   [(UINavigationBar *)self->_navbar frame];
   v33 = CGRectGetHeight(v41);
   [(UIToolbar *)self->_toolbar frame];
   v34 = CGRectGetHeight(v42);
-  v37 = [(WKWebView *)self->_webview scrollView];
+  scrollView = [(WKWebView *)self->_webview scrollView];
   v43.origin.x = v5;
   v43.origin.y = v36;
   v43.size.width = v9;
@@ -120,21 +120,21 @@
   v44.origin.y = v36;
   v44.size.width = v9;
   v44.size.height = v11;
-  [v37 setFrame:{v5, v33, Width, CGRectGetHeight(v44) - v33 - v34}];
+  [scrollView setFrame:{v5, v33, Width, CGRectGetHeight(v44) - v33 - v34}];
 }
 
 - (void)viewDidLoad
 {
-  v3 = [(SKTermsPageViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SKTermsPageViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5.receiver = self;
   v5.super_class = SKTermsPageViewController;
   [(SKTermsPageViewController *)&v5 viewDidLoad];
 }
 
-- (void)_buttonAccept:(id)a3
+- (void)_buttonAccept:(id)accept
 {
   v4 = MEMORY[0x1E69DC650];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -163,14 +163,14 @@
   [(SKTermsPageViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_dismissViewControllerAnimated:(BOOL)a3
+- (void)_dismissViewControllerAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__SKTermsPageViewController__dismissViewControllerAnimated___block_invoke;
   v3[3] = &unk_1E7B27980;
   v3[4] = self;
-  [(SKTermsPageViewController *)self dismissViewControllerAnimated:a3 completion:v3];
+  [(SKTermsPageViewController *)self dismissViewControllerAnimated:animated completion:v3];
 }
 
 void __60__SKTermsPageViewController__dismissViewControllerAnimated___block_invoke(uint64_t a1)
@@ -185,15 +185,15 @@ void __60__SKTermsPageViewController__dismissViewControllerAnimated___block_invo
   }
 }
 
-- (void)_dismissViewControllerAnimated:(BOOL)a3 withAcceptance:(BOOL)a4
+- (void)_dismissViewControllerAnimated:(BOOL)animated withAcceptance:(BOOL)acceptance
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__SKTermsPageViewController__dismissViewControllerAnimated_withAcceptance___block_invoke;
   v4[3] = &unk_1E7B27F08;
   v4[4] = self;
-  v5 = a4;
-  [(SKTermsPageViewController *)self dismissViewControllerAnimated:a3 completion:v4];
+  acceptanceCopy = acceptance;
+  [(SKTermsPageViewController *)self dismissViewControllerAnimated:animated completion:v4];
 }
 
 void __75__SKTermsPageViewController__dismissViewControllerAnimated_withAcceptance___block_invoke(uint64_t a1)
@@ -218,8 +218,8 @@ void __75__SKTermsPageViewController__dismissViewControllerAnimated_withAcceptan
   v7 = *(MEMORY[0x1E695F058] + 24);
   v8 = [v3 initWithFrame:{*MEMORY[0x1E695F058], v5, v6, v7}];
   v34 = objc_alloc_init(MEMORY[0x1E69853A8]);
-  v9 = [v34 preferences];
-  [v9 setTextInteractionEnabled:0];
+  preferences = [v34 preferences];
+  [preferences setTextInteractionEnabled:0];
 
   v10 = [objc_alloc(MEMORY[0x1E69853A0]) initWithFrame:v34 configuration:{v4, v5, v6, v7}];
   webview = self->_webview;
@@ -229,11 +229,11 @@ void __75__SKTermsPageViewController__dismissViewControllerAnimated_withAcceptan
   [(WKWebView *)self->_webview setAllowsLinkPreview:0];
   [(WKWebView *)self->_webview setOpaque:0];
   v12 = self->_webview;
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [(WKWebView *)v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(WKWebView *)v12 setBackgroundColor:clearColor];
 
-  v14 = [(WKWebView *)self->_webview scrollView];
-  [v14 _setShowsBackgroundShadow:0];
+  scrollView = [(WKWebView *)self->_webview scrollView];
+  [scrollView _setShowsBackgroundShadow:0];
 
   [v8 addSubview:self->_webview];
   v15 = [objc_alloc(MEMORY[0x1E69DCCC0]) initWithFrame:{v4, v5, v6, v7}];
@@ -275,16 +275,16 @@ void __75__SKTermsPageViewController__dismissViewControllerAnimated_withAcceptan
   [(SKTermsPageViewController *)self setView:v8];
 }
 
-- (id)_markupTermsWithHTML:(id)a3
+- (id)_markupTermsWithHTML:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = a3;
+    lCopy = l;
     v5 = [v3 stringWithFormat:@"<style type=text/css> p.p1 {background-color: transparent color:#4C566C;text-shadow: white 0px 1px 1px; font-family: Helvetica; font-size: 9pt; } </style>"];;
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<html><head>%@</head><body><p class=p1>%@</p></body></html>", v5, v4];
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<html><head>%@</head><body><p class=p1>%@</p></body></html>", v5, lCopy];
 
-    v7 = [v6 stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+    v7 = [lCopy stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
   }
 
   else
@@ -295,10 +295,10 @@ void __75__SKTermsPageViewController__dismissViewControllerAnimated_withAcceptan
   return v7;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v6 = a5;
-  v6[2](v6, [a4 navigationType] != 0);
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, [action navigationType] != 0);
 }
 
 - (SKTermsPageViewControllerDelegate)delegate

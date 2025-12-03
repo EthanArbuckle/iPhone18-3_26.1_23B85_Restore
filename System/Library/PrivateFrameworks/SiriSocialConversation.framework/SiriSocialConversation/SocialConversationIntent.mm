@@ -1,13 +1,13 @@
 @interface SocialConversationIntent
-- (SocialConversationIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (SocialConversationIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (SocialConversationIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (SocialConversationIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation SocialConversationIntent
 
-- (SocialConversationIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (SocialConversationIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_26907606C();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SocialConversationIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return SocialConversationIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (SocialConversationIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (SocialConversationIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_26907606C();
   sub_26907606C();
-  if (a5)
+  if (name)
   {
     sub_26907601C();
   }

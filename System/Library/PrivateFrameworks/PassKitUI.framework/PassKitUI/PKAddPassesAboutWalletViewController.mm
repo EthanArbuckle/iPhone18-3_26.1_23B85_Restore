@@ -1,5 +1,5 @@
 @interface PKAddPassesAboutWalletViewController
-- (id)amendLabel:(id)a3;
+- (id)amendLabel:(id)label;
 - (void)_setUpConstraints;
 - (void)_setUpDoneButton;
 - (void)_setUpDoneButtonConstraints;
@@ -45,12 +45,12 @@
 
 - (void)_setUpView
 {
-  v3 = [(PKAddPassesAboutWalletViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKAddPassesAboutWalletViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(PKAddPassesAboutWalletViewController *)self view];
-  [v5 setFrame:{0.0, 0.0, 540.0, 700.0}];
+  view2 = [(PKAddPassesAboutWalletViewController *)self view];
+  [view2 setFrame:{0.0, 0.0, 540.0, 700.0}];
 }
 
 - (void)_setUpStackView
@@ -78,8 +78,8 @@
 
   [(UIScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIScrollView *)self->_scrollView setClipsToBounds:1];
-  v5 = [(PKAddPassesAboutWalletViewController *)self view];
-  [v5 addSubview:self->_scrollView];
+  view = [(PKAddPassesAboutWalletViewController *)self view];
+  [view addSubview:self->_scrollView];
 }
 
 - (void)_setUpImageView
@@ -201,22 +201,22 @@
   v6 = PKLocalizedString(&cfstr_Done.isa);
   [(UIButton *)v5 setTitle:v6 forState:0];
 
-  v7 = [(UIButton *)self->_doneButton titleLabel];
+  titleLabel = [(UIButton *)self->_doneButton titleLabel];
   v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD40], *MEMORY[0x1E69DDC38]);
-  [v7 setFont:v8];
+  [titleLabel setFont:v8];
 
-  v9 = [(UIButton *)self->_doneButton titleLabel];
-  [v9 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [(UIButton *)self->_doneButton titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
   [(UIButton *)self->_doneButton _setCornerRadius:14.0];
   v10 = self->_doneButton;
-  v11 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(UIButton *)v10 setBackgroundColor:v11];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(UIButton *)v10 setBackgroundColor:systemBlueColor];
 
   [(UIButton *)self->_doneButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_doneButton addTarget:self action:sel_dismissViewController forControlEvents:64];
-  v12 = [(PKAddPassesAboutWalletViewController *)self view];
-  [v12 addSubview:self->_doneButton];
+  view = [(PKAddPassesAboutWalletViewController *)self view];
+  [view addSubview:self->_doneButton];
 }
 
 - (void)_setUpConstraints
@@ -238,25 +238,25 @@
 {
   v20[5] = *MEMORY[0x1E69E9840];
   v13 = MEMORY[0x1E696ACD8];
-  v19 = [(UIStackView *)self->_stackView topAnchor];
-  v18 = [(UIScrollView *)self->_scrollView topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(UIScrollView *)self->_scrollView topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v17;
-  v16 = [(UIStackView *)self->_stackView leadingAnchor];
-  v15 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[1] = v14;
-  v3 = [(UIStackView *)self->_stackView trailingAnchor];
-  v4 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[2] = v5;
-  v6 = [(UIStackView *)self->_stackView bottomAnchor];
-  v7 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[3] = v8;
-  v9 = [(UIStackView *)self->_stackView widthAnchor];
-  v10 = [(UIScrollView *)self->_scrollView widthAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  widthAnchor = [(UIStackView *)self->_stackView widthAnchor];
+  widthAnchor2 = [(UIScrollView *)self->_scrollView widthAnchor];
+  v11 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v20[4] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:5];
   [v13 activateConstraints:v12];
@@ -265,23 +265,23 @@
 - (void)_setUpScrollViewConstraints
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PKAddPassesAboutWalletViewController *)self view];
+  view = [(PKAddPassesAboutWalletViewController *)self view];
   v13 = MEMORY[0x1E696ACD8];
-  v17 = [(UIScrollView *)self->_scrollView topAnchor];
-  v16 = [v3 topAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[0] = v15;
-  v14 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v4 = [(UIButton *)self->_doneButton topAnchor];
-  v5 = [v14 constraintEqualToAnchor:v4];
+  bottomAnchor = [(UIScrollView *)self->_scrollView bottomAnchor];
+  topAnchor3 = [(UIButton *)self->_doneButton topAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v18[1] = v5;
-  v6 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v7 = [v3 leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:44.0];
+  leadingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:44.0];
   v18[2] = v8;
-  v9 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v10 = [v3 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:-44.0];
+  trailingAnchor = [(UIScrollView *)self->_scrollView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-44.0];
   v18[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:4];
   [v13 activateConstraints:v12];
@@ -291,16 +291,16 @@
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(UIImageView *)self->_imageView topAnchor];
-  v5 = [(UIScrollView *)self->_scrollView topAnchor];
-  v6 = [(PKAddPassesAboutWalletViewController *)self view];
-  [v6 frame];
-  v8 = [v4 constraintEqualToAnchor:v5 constant:v7 * 0.09];
-  v9 = [(UIImageView *)self->_imageView widthAnchor];
-  v10 = [v9 constraintEqualToConstant:300.0];
+  topAnchor = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor2 = [(UIScrollView *)self->_scrollView topAnchor];
+  view = [(PKAddPassesAboutWalletViewController *)self view];
+  [view frame];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v7 * 0.09];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:300.0];
   v14[1] = v10;
-  v11 = [(UIImageView *)self->_imageView heightAnchor];
-  v12 = [v11 constraintEqualToConstant:95.0];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  v12 = [heightAnchor constraintEqualToConstant:95.0];
   v14[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
   [v3 activateConstraints:v13];
@@ -310,34 +310,34 @@
 {
   v17[4] = *MEMORY[0x1E69E9840];
   v13 = MEMORY[0x1E696ACD8];
-  v16 = [(UIButton *)self->_doneButton widthAnchor];
-  v15 = [v16 constraintEqualToConstant:274.0];
+  widthAnchor = [(UIButton *)self->_doneButton widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:274.0];
   v17[0] = v15;
-  v14 = [(UIButton *)self->_doneButton heightAnchor];
-  v3 = [v14 constraintEqualToConstant:40.0];
+  heightAnchor = [(UIButton *)self->_doneButton heightAnchor];
+  v3 = [heightAnchor constraintEqualToConstant:40.0];
   v17[1] = v3;
-  v4 = [(UIButton *)self->_doneButton centerXAnchor];
-  v5 = [(PKAddPassesAboutWalletViewController *)self view];
-  v6 = [v5 centerXAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  centerXAnchor = [(UIButton *)self->_doneButton centerXAnchor];
+  view = [(PKAddPassesAboutWalletViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v17[2] = v7;
-  v8 = [(UIButton *)self->_doneButton bottomAnchor];
-  v9 = [(PKAddPassesAboutWalletViewController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:-34.0];
+  bottomAnchor = [(UIButton *)self->_doneButton bottomAnchor];
+  view2 = [(PKAddPassesAboutWalletViewController *)self view];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-34.0];
   v17[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
   [v13 activateConstraints:v12];
 }
 
-- (id)amendLabel:(id)a3
+- (id)amendLabel:(id)label
 {
-  v3 = a3;
-  [v3 setTextAlignment:1];
-  [v3 setNumberOfLines:0];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  labelCopy = label;
+  [labelCopy setTextAlignment:1];
+  [labelCopy setNumberOfLines:0];
+  [labelCopy setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  return v3;
+  return labelCopy;
 }
 
 @end

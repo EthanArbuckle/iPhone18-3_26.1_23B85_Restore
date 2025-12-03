@@ -1,96 +1,96 @@
 @interface ASUSQLiteEntity
-+ (id)_aggregateValueForProperty:(void *)a3 function:(void *)a4 predicate:(void *)a5 onConnection:;
-+ (id)allOnConnection:(id)a3 predicate:(id)a4;
-+ (id)anyOnConnection:(id)a3 predicate:(id)a4;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)memoryEntityForPersistentID:(int64_t)a3 withProperties:(id)a4 usingConnection:(id)a5;
-+ (id)queryOnConnection:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirections:(id)a6 entityClass:(Class)a7;
-+ (id)sumForProperty:(id)a3 predicate:(id)a4 onConnection:(id)a5;
-+ (uint64_t)_insertValues:(void *)a3 intoTable:(uint64_t)a4 withPersistentID:(void *)a5 onConnection:;
-- (ASUSQLiteEntity)initWithPersistentID:(int64_t)a3 onConnection:(id)a4;
-- (ASUSQLiteEntity)initWithPropertyValues:(id)a3 onConnection:(id)a4;
-- (BOOL)BOOLValueForProperty:(id)a3;
++ (id)_aggregateValueForProperty:(void *)property function:(void *)function predicate:(void *)predicate onConnection:;
++ (id)allOnConnection:(id)connection predicate:(id)predicate;
++ (id)anyOnConnection:(id)connection predicate:(id)predicate;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)memoryEntityForPersistentID:(int64_t)d withProperties:(id)properties usingConnection:(id)connection;
++ (id)queryOnConnection:(id)connection predicate:(id)predicate orderingProperties:(id)properties orderingDirections:(id)directions entityClass:(Class)class;
++ (id)sumForProperty:(id)property predicate:(id)predicate onConnection:(id)connection;
++ (uint64_t)_insertValues:(void *)values intoTable:(uint64_t)table withPersistentID:(void *)d onConnection:;
+- (ASUSQLiteEntity)initWithPersistentID:(int64_t)d onConnection:(id)connection;
+- (ASUSQLiteEntity)initWithPropertyValues:(id)values onConnection:(id)connection;
+- (BOOL)BOOLValueForProperty:(id)property;
 - (BOOL)deleteFromDatabase;
 - (BOOL)existsInDatabase;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValuesWithDictionary:(id)a3;
-- (id)_copyTableClusteredValuesWithValues:(uint64_t)a1;
-- (id)dictValueForProperty:(id)a3;
-- (id)errorValueForProperty:(id)a3;
-- (id)getValuesForProperties:(id)a3;
-- (id)numberValueForProperty:(id)a3;
-- (id)stringValueForProperty:(id)a3;
-- (id)urlValueForProperty:(id)a3;
-- (id)uuidValueForProperty:(id)a3;
-- (id)valueForProperty:(id)a3;
-- (int64_t)integerValueForProperty:(id)a3;
-- (uint64_t)_deleteRowFromTable:(void *)a3 usingColumn:;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValuesWithDictionary:(id)dictionary;
+- (id)_copyTableClusteredValuesWithValues:(uint64_t)values;
+- (id)dictValueForProperty:(id)property;
+- (id)errorValueForProperty:(id)property;
+- (id)getValuesForProperties:(id)properties;
+- (id)numberValueForProperty:(id)property;
+- (id)stringValueForProperty:(id)property;
+- (id)urlValueForProperty:(id)property;
+- (id)uuidValueForProperty:(id)property;
+- (id)valueForProperty:(id)property;
+- (int64_t)integerValueForProperty:(id)property;
+- (uint64_t)_deleteRowFromTable:(void *)table usingColumn:;
 @end
 
 @implementation ASUSQLiteEntity
 
-+ (id)memoryEntityForPersistentID:(int64_t)a3 withProperties:(id)a4 usingConnection:(id)a5
++ (id)memoryEntityForPersistentID:(int64_t)d withProperties:(id)properties usingConnection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 memoryEntityClass];
-  v11 = v10;
-  if (!v8)
+  propertiesCopy = properties;
+  connectionCopy = connection;
+  memoryEntityClass = [self memoryEntityClass];
+  v11 = memoryEntityClass;
+  if (!propertiesCopy)
   {
-    v8 = [(objc_class *)v10 defaultProperties];
+    propertiesCopy = [(objc_class *)memoryEntityClass defaultProperties];
   }
 
-  v12 = [[a1 alloc] initWithPersistentID:a3 onConnection:v9];
+  v12 = [[self alloc] initWithPersistentID:d onConnection:connectionCopy];
 
-  v13 = [[v11 alloc] initWithDatabaseEntity:v12 properties:v8];
+  v13 = [[v11 alloc] initWithDatabaseEntity:v12 properties:propertiesCopy];
 
   return v13;
 }
 
-- (ASUSQLiteEntity)initWithPersistentID:(int64_t)a3 onConnection:(id)a4
+- (ASUSQLiteEntity)initWithPersistentID:(int64_t)d onConnection:(id)connection
 {
-  v7 = a4;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = ASUSQLiteEntity;
   v8 = [(ASUSQLiteEntity *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a4);
-    v9->_persistentID = a3;
+    objc_storeStrong(&v8->_connection, connection);
+    v9->_persistentID = d;
   }
 
   return v9;
 }
 
-- (ASUSQLiteEntity)initWithPropertyValues:(id)a3 onConnection:(id)a4
+- (ASUSQLiteEntity)initWithPropertyValues:(id)values onConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"ROWID"];
+  connectionCopy = connection;
+  valuesCopy = values;
+  v8 = [valuesCopy objectForKey:@"ROWID"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
     v11 = CFUUIDCreate(0);
-    v10 = *&CFUUIDGetUUIDBytes(v11);
+    longLongValue = *&CFUUIDGetUUIDBytes(v11);
     CFRelease(v11);
   }
 
-  v12 = [(ASUSQLiteEntity *)self _copyTableClusteredValuesWithValues:v7];
+  v12 = [(ASUSQLiteEntity *)self _copyTableClusteredValuesWithValues:valuesCopy];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__ASUSQLiteEntity_initWithPropertyValues_onConnection___block_invoke;
   v17[3] = &unk_278C978C0;
-  v19 = v6;
-  v20 = v10;
+  v19 = connectionCopy;
+  v20 = longLongValue;
   v18 = v12;
-  v13 = v6;
+  v13 = connectionCopy;
   v14 = v12;
   if (([v13 performTransaction:v17 error:0] & 1) == 0)
   {
@@ -98,14 +98,14 @@
     self = 0;
   }
 
-  v15 = [(ASUSQLiteEntity *)self initWithPersistentID:v10 onConnection:v13];
+  v15 = [(ASUSQLiteEntity *)self initWithPersistentID:longLongValue onConnection:v13];
 
   return v15;
 }
 
-- (id)_copyTableClusteredValuesWithValues:(uint64_t)a1
+- (id)_copyTableClusteredValuesWithValues:(uint64_t)values
 {
-  if (!a1)
+  if (!values)
   {
     return 0;
   }
@@ -114,16 +114,16 @@
   v3 = a2;
   v4 = objc_alloc_init(v2);
   v5 = objc_opt_class();
-  v6 = [v5 databaseTable];
+  databaseTable = [v5 databaseTable];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke;
   v12[3] = &unk_278C97AC0;
   v15 = v5;
-  v13 = v6;
+  v13 = databaseTable;
   v7 = v4;
   v14 = v7;
-  v8 = v6;
+  v8 = databaseTable;
   [v3 enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v14;
@@ -166,17 +166,17 @@ uint64_t __55__ASUSQLiteEntity_initWithPropertyValues_onConnection___block_invok
   return result;
 }
 
-+ (uint64_t)_insertValues:(void *)a3 intoTable:(uint64_t)a4 withPersistentID:(void *)a5 onConnection:
++ (uint64_t)_insertValues:(void *)values intoTable:(uint64_t)table withPersistentID:(void *)d onConnection:
 {
   v52 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a5;
+  valuesCopy = values;
+  dCopy = d;
   v10 = objc_opt_self();
   v11 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"INSERT OR REPLACE INTO "];
-  [v11 appendString:v8];
+  [v11 appendString:valuesCopy];
   objc_msgSend(v11, "appendString:", @" (");
-  v12 = [v10 foreignKeyColumnForTable:v8];
+  v12 = [v10 foreignKeyColumnForTable:valuesCopy];
   v13 = v12;
   if (v12)
   {
@@ -254,11 +254,11 @@ uint64_t __55__ASUSQLiteEntity_initWithPropertyValues_onConnection___block_invok
   v34[1] = 3221225472;
   v34[2] = __73__ASUSQLiteEntity__insertValues_intoTable_withPersistentID_onConnection___block_invoke;
   v34[3] = &unk_278C97A98;
-  v36 = a4;
+  tableCopy = table;
   v37 = 0;
   v25 = v21;
   v35 = v25;
-  v26 = [v9 executeStatement:v11 error:&v37 bindings:v34];
+  v26 = [dCopy executeStatement:v11 error:&v37 bindings:v34];
   v27 = v37;
   if (v27)
   {
@@ -279,24 +279,24 @@ uint64_t __55__ASUSQLiteEntity_initWithPropertyValues_onConnection___block_invok
   return v26;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 joinClauseForProperty:v4];
+  propertyCopy = property;
+  v5 = [self joinClauseForProperty:propertyCopy];
 
   if (v5)
   {
-    v6 = v4;
+    propertyCopy = propertyCopy;
   }
 
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [a1 databaseTable];
-    v6 = [v7 stringWithFormat:@"%@.%@", v8, v4];
+    databaseTable = [self databaseTable];
+    propertyCopy = [v7 stringWithFormat:@"%@.%@", databaseTable, propertyCopy];
   }
 
-  return v6;
+  return propertyCopy;
 }
 
 - (BOOL)deleteFromDatabase
@@ -310,13 +310,13 @@ uint64_t __55__ASUSQLiteEntity_initWithPropertyValues_onConnection___block_invok
   v4 = [(ASUSQLiteConnection *)connection performTransaction:v9 error:0];
   if (v4)
   {
-    v5 = [(ASUSQLiteEntity *)self persistentID];
+    persistentID = [(ASUSQLiteEntity *)self persistentID];
     v6 = dispatch_get_global_queue(21, 0);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __37__ASUSQLiteEntity_deleteFromDatabase__block_invoke_2;
     v8[3] = &__block_descriptor_40_e5_v8__0l;
-    v8[4] = v5;
+    v8[4] = persistentID;
     dispatch_async(v6, v8);
   }
 
@@ -399,26 +399,26 @@ LABEL_14:
   return v16;
 }
 
-- (uint64_t)_deleteRowFromTable:(void *)a3 usingColumn:
+- (uint64_t)_deleteRowFromTable:(void *)table usingColumn:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = a3;
+    tableCopy = table;
     v7 = a2;
-    v8 = [[v5 alloc] initWithFormat:@"DELETE FROM %@ WHERE %@ = ?;", v7, v6];
+    tableCopy = [[v5 alloc] initWithFormat:@"DELETE FROM %@ WHERE %@ = ?;", v7, tableCopy];
 
-    v9 = *(v3 + 8);
+    v9 = *(selfCopy + 8);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __51__ASUSQLiteEntity__deleteRowFromTable_usingColumn___block_invoke;
     v11[3] = &unk_278C97AE8;
-    v11[4] = v3;
-    v3 = [v9 executeStatement:v8 error:0 bindings:v11];
+    v11[4] = selfCopy;
+    selfCopy = [v9 executeStatement:tableCopy error:0 bindings:v11];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __37__ASUSQLiteEntity_deleteFromDatabase__block_invoke_2(uint64_t a1)
@@ -441,8 +441,8 @@ void __37__ASUSQLiteEntity_deleteFromDatabase__block_invoke_2(uint64_t a1)
   v11 = 0x2020000000;
   v12 = 0;
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [objc_opt_class() databaseTable];
-  v5 = [v3 initWithFormat:@"SELECT 1 FROM %@ WHERE %@ = ? LIMIT 1;", v4, @"ROWID"];
+  databaseTable = [objc_opt_class() databaseTable];
+  v5 = [v3 initWithFormat:@"SELECT 1 FROM %@ WHERE %@ = ? LIMIT 1;", databaseTable, @"ROWID"];
 
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
@@ -468,22 +468,22 @@ void __35__ASUSQLiteEntity_existsInDatabase__block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (id)getValuesForProperties:(id)a3
+- (id)getValuesForProperties:(id)properties
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] == 1 && (objc_msgSend(v4, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"ROWID"), v5, v6))
+  propertiesCopy = properties;
+  if ([propertiesCopy count] == 1 && (objc_msgSend(propertiesCopy, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"ROWID"), v5, v6))
   {
     v38 = @"ROWID";
-    v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_persistentID];
-    v39[0] = v7;
+    databaseTable = [MEMORY[0x277CCABB0] numberWithLongLong:self->_persistentID];
+    v39[0] = databaseTable;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
   }
 
   else
   {
     v9 = objc_opt_class();
-    v7 = [v9 databaseTable];
+    databaseTable = [v9 databaseTable];
     v10 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"SELECT "];
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v33[0] = MEMORY[0x277D85DD0];
@@ -495,9 +495,9 @@ void __35__ASUSQLiteEntity_existsInDatabase__block_invoke(uint64_t a1, void *a2)
     v34 = v12;
     v13 = v11;
     v35 = v13;
-    [v4 enumerateObjectsUsingBlock:v33];
+    [propertiesCopy enumerateObjectsUsingBlock:v33];
     [v12 appendString:@" FROM "];
-    [v12 appendString:v7];
+    [v12 appendString:databaseTable];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -529,16 +529,16 @@ void __35__ASUSQLiteEntity_existsInDatabase__block_invoke(uint64_t a1, void *a2)
     }
 
     [v12 appendString:@" WHERE "];
-    [v12 appendString:v7];
+    [v12 appendString:databaseTable];
     [v12 appendString:@".ROWID = ?;"];
-    v20 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v20 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
     connection = self->_connection;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __42__ASUSQLiteEntity_getValuesForProperties___block_invoke_2;
     v26[3] = &unk_278C979D0;
     v26[4] = self;
-    v27 = v4;
+    v27 = propertiesCopy;
     v22 = v20;
     v28 = v22;
     [(ASUSQLiteConnection *)connection executeQuery:v12 withResults:v26];
@@ -612,21 +612,21 @@ void __42__ASUSQLiteEntity_getValuesForProperties___block_invoke_4(uint64_t a1, 
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   v8 = objc_alloc(MEMORY[0x277CBEAC0]);
   v9 = v8;
-  if (v6)
+  if (valueCopy)
   {
-    v10 = [v8 initWithObjectsAndKeys:{v6, v7, 0}];
+    v10 = [v8 initWithObjectsAndKeys:{valueCopy, propertyCopy, 0}];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB68] null];
-    v10 = [v9 initWithObjectsAndKeys:{v11, v7, 0}];
+    null = [MEMORY[0x277CBEB68] null];
+    v10 = [v9 initWithObjectsAndKeys:{null, propertyCopy, 0}];
   }
 
   v12 = [(ASUSQLiteEntity *)self setValuesWithDictionary:v10];
@@ -634,22 +634,22 @@ void __42__ASUSQLiteEntity_getValuesForProperties___block_invoke_4(uint64_t a1, 
   return v12;
 }
 
-- (BOOL)setValuesWithDictionary:(id)a3
+- (BOOL)setValuesWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_class();
-  v6 = [v5 databaseTable];
+  databaseTable = [v5 databaseTable];
   connection = self->_connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__ASUSQLiteEntity_setValuesWithDictionary___block_invoke;
   v11[3] = &unk_278C97A70;
   v11[4] = self;
-  v12 = v4;
-  v13 = v6;
+  v12 = dictionaryCopy;
+  v13 = databaseTable;
   v14 = v5;
-  v8 = v6;
-  v9 = v4;
+  v8 = databaseTable;
+  v9 = dictionaryCopy;
   LOBYTE(v5) = [(ASUSQLiteConnection *)connection performTransaction:v11 error:0];
 
   return v5;
@@ -837,15 +837,15 @@ void __43__ASUSQLiteEntity_setValuesWithDictionary___block_invoke_5(uint64_t a1,
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  propertyCopy = property;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v11 count:1];
-  v7 = [(ASUSQLiteEntity *)self getValuesForProperties:v6, v11, v12];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  propertyCopy2 = property;
+  v6 = [v4 arrayWithObjects:&propertyCopy count:1];
+  v7 = [(ASUSQLiteEntity *)self getValuesForProperties:v6, propertyCopy, v12];
+  v8 = [v7 objectForKeyedSubscript:propertyCopy2];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -927,17 +927,17 @@ void __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke(id
   }
 }
 
-- (BOOL)BOOLValueForProperty:(id)a3
+- (BOOL)BOOLValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self numberValueForProperty:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(ASUSQLiteEntity *)self numberValueForProperty:property];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)dictValueForProperty:(id)a3
+- (id)dictValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self valueForProperty:a3];
+  v3 = [(ASUSQLiteEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -954,9 +954,9 @@ void __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke(id
   return v4;
 }
 
-- (id)errorValueForProperty:(id)a3
+- (id)errorValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self valueForProperty:a3];
+  v3 = [(ASUSQLiteEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -971,17 +971,17 @@ void __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke(id
   return v4;
 }
 
-- (int64_t)integerValueForProperty:(id)a3
+- (int64_t)integerValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self numberValueForProperty:a3];
-  v4 = [v3 integerValue];
+  v3 = [(ASUSQLiteEntity *)self numberValueForProperty:property];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)numberValueForProperty:(id)a3
+- (id)numberValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self valueForProperty:a3];
+  v3 = [(ASUSQLiteEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -998,9 +998,9 @@ void __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke(id
   return v4;
 }
 
-- (id)stringValueForProperty:(id)a3
+- (id)stringValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self valueForProperty:a3];
+  v3 = [(ASUSQLiteEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1017,9 +1017,9 @@ void __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke(id
   return v4;
 }
 
-- (id)uuidValueForProperty:(id)a3
+- (id)uuidValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self valueForProperty:a3];
+  v3 = [(ASUSQLiteEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1036,9 +1036,9 @@ void __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke(id
   return v4;
 }
 
-- (id)urlValueForProperty:(id)a3
+- (id)urlValueForProperty:(id)property
 {
-  v3 = [(ASUSQLiteEntity *)self valueForProperty:a3];
+  v3 = [(ASUSQLiteEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1055,24 +1055,24 @@ void __55__ASUSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke(id
   return v4;
 }
 
-+ (id)anyOnConnection:(id)a3 predicate:(id)a4
++ (id)anyOnConnection:(id)connection predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  predicateCopy = predicate;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
   v21 = 0;
-  v8 = [a1 queryOnConnection:v6 predicate:v7];
+  v8 = [self queryOnConnection:connectionCopy predicate:predicateCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__ASUSQLiteEntity_ASUSQLiteQuery__anyOnConnection_predicate___block_invoke;
   v12[3] = &unk_278C97E68;
   v14 = &v16;
-  v15 = a1;
-  v9 = v6;
+  selfCopy = self;
+  v9 = connectionCopy;
   v13 = v9;
   [v8 enumeratePersistentIDsUsingBlock:v12];
   v10 = v17[5];
@@ -1092,23 +1092,23 @@ void __61__ASUSQLiteEntity_ASUSQLiteQuery__anyOnConnection_predicate___block_inv
   *a4 = 1;
 }
 
-+ (id)allOnConnection:(id)a3 predicate:(id)a4
++ (id)allOnConnection:(id)connection predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  predicateCopy = predicate;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
   v21 = objc_opt_new();
-  v8 = [a1 queryOnConnection:v6 predicate:v7];
+  v8 = [self queryOnConnection:connectionCopy predicate:predicateCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__ASUSQLiteEntity_ASUSQLiteQuery__allOnConnection_predicate___block_invoke;
   v12[3] = &unk_278C97E68;
-  v15 = a1;
-  v9 = v6;
+  selfCopy = self;
+  v9 = connectionCopy;
   v13 = v9;
   v14 = &v16;
   [v8 enumeratePersistentIDsUsingBlock:v12];
@@ -1125,13 +1125,13 @@ void __61__ASUSQLiteEntity_ASUSQLiteQuery__allOnConnection_predicate___block_inv
   [*(*(*(a1 + 40) + 8) + 40) addObject:v3];
 }
 
-+ (id)_aggregateValueForProperty:(void *)a3 function:(void *)a4 predicate:(void *)a5 onConnection:
++ (id)_aggregateValueForProperty:(void *)property function:(void *)function predicate:(void *)predicate onConnection:
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  propertyCopy = property;
+  functionCopy = function;
+  predicateCopy = predicate;
   v12 = objc_opt_self();
   v28 = 0;
   v29 = &v28;
@@ -1150,10 +1150,10 @@ void __61__ASUSQLiteEntity_ASUSQLiteQuery__allOnConnection_predicate___block_inv
     v14 = 0;
   }
 
-  [(ASUSQLiteQueryDescriptor *)v14 setPredicate:v10];
+  [(ASUSQLiteQueryDescriptor *)v14 setPredicate:functionCopy];
   v15 = objc_alloc(MEMORY[0x277CCACA8]);
   v16 = [v12 disambiguatedSQLForProperty:v8];
-  v17 = [v15 initWithFormat:@"%@(%@)", v9, v16];
+  v17 = [v15 initWithFormat:@"%@(%@)", propertyCopy, v16];
 
   v34[0] = v8;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
@@ -1167,7 +1167,7 @@ void __61__ASUSQLiteEntity_ASUSQLiteQuery__allOnConnection_predicate___block_inv
   v21 = v14;
   v26 = v21;
   v27 = &v28;
-  [v11 executeQuery:v20 withResults:v25];
+  [predicateCopy executeQuery:v20 withResults:v25];
   v22 = v29[5];
 
   _Block_object_dispose(&v28, 8);
@@ -1176,9 +1176,9 @@ void __61__ASUSQLiteEntity_ASUSQLiteQuery__allOnConnection_predicate___block_inv
   return v22;
 }
 
-+ (id)sumForProperty:(id)a3 predicate:(id)a4 onConnection:(id)a5
++ (id)sumForProperty:(id)property predicate:(id)predicate onConnection:(id)connection
 {
-  v5 = [(ASUSQLiteEntity *)a1 _aggregateValueForProperty:a3 function:@"SUM" predicate:a4 onConnection:a5];
+  v5 = [(ASUSQLiteEntity *)self _aggregateValueForProperty:property function:@"SUM" predicate:predicate onConnection:connection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1195,19 +1195,19 @@ void __61__ASUSQLiteEntity_ASUSQLiteQuery__allOnConnection_predicate___block_inv
   return v6;
 }
 
-+ (id)queryOnConnection:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirections:(id)a6 entityClass:(Class)a7
++ (id)queryOnConnection:(id)connection predicate:(id)predicate orderingProperties:(id)properties orderingDirections:(id)directions entityClass:(Class)class
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[ASUSQLiteQueryDescriptor alloc] initWithEntityClass:a7 memoryEntityClass:[(objc_class *)a7 memoryEntityClass]];
-  [(ASUSQLiteQueryDescriptor *)v15 setOrderingProperties:v12];
+  directionsCopy = directions;
+  propertiesCopy = properties;
+  predicateCopy = predicate;
+  connectionCopy = connection;
+  v15 = [[ASUSQLiteQueryDescriptor alloc] initWithEntityClass:class memoryEntityClass:[(objc_class *)class memoryEntityClass]];
+  [(ASUSQLiteQueryDescriptor *)v15 setOrderingProperties:propertiesCopy];
 
-  [(ASUSQLiteQueryDescriptor *)v15 setOrderingDirections:v11];
-  [(ASUSQLiteQueryDescriptor *)v15 setPredicate:v13];
+  [(ASUSQLiteQueryDescriptor *)v15 setOrderingDirections:directionsCopy];
+  [(ASUSQLiteQueryDescriptor *)v15 setPredicate:predicateCopy];
 
-  v16 = [[ASUSQLiteQuery alloc] initOnConnection:v14 descriptor:v15];
+  v16 = [[ASUSQLiteQuery alloc] initOnConnection:connectionCopy descriptor:v15];
 
   return v16;
 }

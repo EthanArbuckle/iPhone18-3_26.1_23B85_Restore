@@ -1,57 +1,57 @@
 @interface _INPBSetRadioStationIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetRadioStationIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetRadioStationIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsRadioType:(id)a3;
+- (int)StringAsRadioType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRadioType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRadioType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetRadioStationIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSetRadioStationIntent *)self channel];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"channel"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  channel = [(_INPBSetRadioStationIntent *)self channel];
+  dictionaryRepresentation = [channel dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"channel"];
 
-  v6 = [(_INPBSetRadioStationIntent *)self frequency];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"frequency"];
+  frequency = [(_INPBSetRadioStationIntent *)self frequency];
+  dictionaryRepresentation2 = [frequency dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"frequency"];
 
-  v8 = [(_INPBSetRadioStationIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetRadioStationIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
-  v10 = [(_INPBSetRadioStationIntent *)self presetNumber];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"presetNumber"];
+  presetNumber = [(_INPBSetRadioStationIntent *)self presetNumber];
+  dictionaryRepresentation4 = [presetNumber dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"presetNumber"];
 
   if ([(_INPBSetRadioStationIntent *)self hasRadioType])
   {
-    v12 = [(_INPBSetRadioStationIntent *)self radioType];
-    if ((v12 - 1) >= 5)
+    radioType = [(_INPBSetRadioStationIntent *)self radioType];
+    if ((radioType - 1) >= 5)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", radioType];
     }
 
     else
     {
-      v13 = off_1E7283260[(v12 - 1)];
+      v13 = off_1E7283260[(radioType - 1)];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"radioType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"radioType"];
   }
 
-  v14 = [(_INPBSetRadioStationIntent *)self stationName];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"stationName"];
+  stationName = [(_INPBSetRadioStationIntent *)self stationName];
+  dictionaryRepresentation5 = [stationName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"stationName"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -73,28 +73,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(_INPBString *)self->_stationName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_INPBSetRadioStationIntent *)self channel];
-  v6 = [v4 channel];
-  if ((v5 != 0) == (v6 == 0))
+  channel = [(_INPBSetRadioStationIntent *)self channel];
+  channel2 = [equalCopy channel];
+  if ((channel != 0) == (channel2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(_INPBSetRadioStationIntent *)self channel];
-  if (v7)
+  channel3 = [(_INPBSetRadioStationIntent *)self channel];
+  if (channel3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetRadioStationIntent *)self channel];
-    v10 = [v4 channel];
-    v11 = [v9 isEqual:v10];
+    v8 = channel3;
+    channel4 = [(_INPBSetRadioStationIntent *)self channel];
+    channel5 = [equalCopy channel];
+    v11 = [channel4 isEqual:channel5];
 
     if (!v11)
     {
@@ -106,20 +106,20 @@
   {
   }
 
-  v5 = [(_INPBSetRadioStationIntent *)self frequency];
-  v6 = [v4 frequency];
-  if ((v5 != 0) == (v6 == 0))
+  channel = [(_INPBSetRadioStationIntent *)self frequency];
+  channel2 = [equalCopy frequency];
+  if ((channel != 0) == (channel2 == 0))
   {
     goto LABEL_30;
   }
 
-  v12 = [(_INPBSetRadioStationIntent *)self frequency];
-  if (v12)
+  frequency = [(_INPBSetRadioStationIntent *)self frequency];
+  if (frequency)
   {
-    v13 = v12;
-    v14 = [(_INPBSetRadioStationIntent *)self frequency];
-    v15 = [v4 frequency];
-    v16 = [v14 isEqual:v15];
+    v13 = frequency;
+    frequency2 = [(_INPBSetRadioStationIntent *)self frequency];
+    frequency3 = [equalCopy frequency];
+    v16 = [frequency2 isEqual:frequency3];
 
     if (!v16)
     {
@@ -131,20 +131,20 @@
   {
   }
 
-  v5 = [(_INPBSetRadioStationIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  channel = [(_INPBSetRadioStationIntent *)self intentMetadata];
+  channel2 = [equalCopy intentMetadata];
+  if ((channel != 0) == (channel2 == 0))
   {
     goto LABEL_30;
   }
 
-  v17 = [(_INPBSetRadioStationIntent *)self intentMetadata];
-  if (v17)
+  intentMetadata = [(_INPBSetRadioStationIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v18 = v17;
-    v19 = [(_INPBSetRadioStationIntent *)self intentMetadata];
-    v20 = [v4 intentMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMetadata;
+    intentMetadata2 = [(_INPBSetRadioStationIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v21 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v21)
     {
@@ -156,20 +156,20 @@
   {
   }
 
-  v5 = [(_INPBSetRadioStationIntent *)self presetNumber];
-  v6 = [v4 presetNumber];
-  if ((v5 != 0) == (v6 == 0))
+  channel = [(_INPBSetRadioStationIntent *)self presetNumber];
+  channel2 = [equalCopy presetNumber];
+  if ((channel != 0) == (channel2 == 0))
   {
     goto LABEL_30;
   }
 
-  v22 = [(_INPBSetRadioStationIntent *)self presetNumber];
-  if (v22)
+  presetNumber = [(_INPBSetRadioStationIntent *)self presetNumber];
+  if (presetNumber)
   {
-    v23 = v22;
-    v24 = [(_INPBSetRadioStationIntent *)self presetNumber];
-    v25 = [v4 presetNumber];
-    v26 = [v24 isEqual:v25];
+    v23 = presetNumber;
+    presetNumber2 = [(_INPBSetRadioStationIntent *)self presetNumber];
+    presetNumber3 = [equalCopy presetNumber];
+    v26 = [presetNumber2 isEqual:presetNumber3];
 
     if (!v26)
     {
@@ -181,30 +181,30 @@
   {
   }
 
-  v27 = [(_INPBSetRadioStationIntent *)self hasRadioType];
-  if (v27 != [v4 hasRadioType])
+  hasRadioType = [(_INPBSetRadioStationIntent *)self hasRadioType];
+  if (hasRadioType != [equalCopy hasRadioType])
   {
     goto LABEL_31;
   }
 
   if ([(_INPBSetRadioStationIntent *)self hasRadioType])
   {
-    if ([v4 hasRadioType])
+    if ([equalCopy hasRadioType])
     {
       radioType = self->_radioType;
-      if (radioType != [v4 radioType])
+      if (radioType != [equalCopy radioType])
       {
         goto LABEL_31;
       }
     }
   }
 
-  v5 = [(_INPBSetRadioStationIntent *)self stationName];
-  v6 = [v4 stationName];
-  if ((v5 != 0) != (v6 == 0))
+  channel = [(_INPBSetRadioStationIntent *)self stationName];
+  channel2 = [equalCopy stationName];
+  if ((channel != 0) != (channel2 == 0))
   {
-    v29 = [(_INPBSetRadioStationIntent *)self stationName];
-    if (!v29)
+    stationName = [(_INPBSetRadioStationIntent *)self stationName];
+    if (!stationName)
     {
 
 LABEL_34:
@@ -212,10 +212,10 @@ LABEL_34:
       goto LABEL_32;
     }
 
-    v30 = v29;
-    v31 = [(_INPBSetRadioStationIntent *)self stationName];
-    v32 = [v4 stationName];
-    v33 = [v31 isEqual:v32];
+    v30 = stationName;
+    stationName2 = [(_INPBSetRadioStationIntent *)self stationName];
+    stationName3 = [equalCopy stationName];
+    v33 = [stationName2 isEqual:stationName3];
 
     if (v33)
     {
@@ -235,19 +235,19 @@ LABEL_32:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetRadioStationIntent allocWithZone:](_INPBSetRadioStationIntent init];
-  v6 = [(_INPBString *)self->_channel copyWithZone:a3];
+  v6 = [(_INPBString *)self->_channel copyWithZone:zone];
   [(_INPBSetRadioStationIntent *)v5 setChannel:v6];
 
-  v7 = [(_INPBDouble *)self->_frequency copyWithZone:a3];
+  v7 = [(_INPBDouble *)self->_frequency copyWithZone:zone];
   [(_INPBSetRadioStationIntent *)v5 setFrequency:v7];
 
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetRadioStationIntent *)v5 setIntentMetadata:v8];
 
-  v9 = [(_INPBInteger *)self->_presetNumber copyWithZone:a3];
+  v9 = [(_INPBInteger *)self->_presetNumber copyWithZone:zone];
   [(_INPBSetRadioStationIntent *)v5 setPresetNumber:v9];
 
   if ([(_INPBSetRadioStationIntent *)self hasRadioType])
@@ -255,68 +255,68 @@ LABEL_32:
     [(_INPBSetRadioStationIntent *)v5 setRadioType:[(_INPBSetRadioStationIntent *)self radioType]];
   }
 
-  v10 = [(_INPBString *)self->_stationName copyWithZone:a3];
+  v10 = [(_INPBString *)self->_stationName copyWithZone:zone];
   [(_INPBSetRadioStationIntent *)v5 setStationName:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetRadioStationIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetRadioStationIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetRadioStationIntent)initWithCoder:(id)a3
+- (_INPBSetRadioStationIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetRadioStationIntent *)self initWithData:v6];
+    self = [(_INPBSetRadioStationIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
-  v4 = [(_INPBSetRadioStationIntent *)self channel];
+  toCopy = to;
+  channel = [(_INPBSetRadioStationIntent *)self channel];
 
-  if (v4)
+  if (channel)
   {
-    v5 = [(_INPBSetRadioStationIntent *)self channel];
+    channel2 = [(_INPBSetRadioStationIntent *)self channel];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBSetRadioStationIntent *)self frequency];
+  frequency = [(_INPBSetRadioStationIntent *)self frequency];
 
-  if (v6)
+  if (frequency)
   {
-    v7 = [(_INPBSetRadioStationIntent *)self frequency];
+    frequency2 = [(_INPBSetRadioStationIntent *)self frequency];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBSetRadioStationIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetRadioStationIntent *)self intentMetadata];
 
-  if (v8)
+  if (intentMetadata)
   {
-    v9 = [(_INPBSetRadioStationIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetRadioStationIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBSetRadioStationIntent *)self presetNumber];
+  presetNumber = [(_INPBSetRadioStationIntent *)self presetNumber];
 
-  if (v10)
+  if (presetNumber)
   {
-    v11 = [(_INPBSetRadioStationIntent *)self presetNumber];
+    presetNumber2 = [(_INPBSetRadioStationIntent *)self presetNumber];
     PBDataWriterWriteSubmessage();
   }
 
@@ -326,42 +326,42 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v13 = [(_INPBSetRadioStationIntent *)self stationName];
+  stationName = [(_INPBSetRadioStationIntent *)self stationName];
 
-  v14 = v16;
-  if (v13)
+  v14 = toCopy;
+  if (stationName)
   {
-    v15 = [(_INPBSetRadioStationIntent *)self stationName];
+    stationName2 = [(_INPBSetRadioStationIntent *)self stationName];
     PBDataWriterWriteSubmessage();
 
-    v14 = v16;
+    v14 = toCopy;
   }
 }
 
-- (int)StringAsRadioType:(id)a3
+- (int)StringAsRadioType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AM"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"AM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FM"])
+  else if ([typeCopy isEqualToString:@"FM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HD"])
+  else if ([typeCopy isEqualToString:@"HD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SATELLITE"])
+  else if ([typeCopy isEqualToString:@"SATELLITE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DAB"])
+  else if ([typeCopy isEqualToString:@"DAB"])
   {
     v4 = 5;
   }
@@ -374,10 +374,10 @@ LABEL_32:
   return v4;
 }
 
-- (void)setRadioType:(int)a3
+- (void)setRadioType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -385,7 +385,7 @@ LABEL_32:
   else
   {
     *&self->_has = has | 1;
-    self->_radioType = a3;
+    self->_radioType = type;
   }
 }
 

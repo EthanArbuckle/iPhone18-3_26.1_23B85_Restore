@@ -1,31 +1,31 @@
 @interface SBContinuousExposeIdentifierSlideModifier
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBContinuousExposeIdentifierSlideModifier)initWithContinuousExposeIdentifier:(id)a3 previousContinuousExposeIdentifiersInSwitcher:(id)a4 previousContinuousExposeIdentifiersInStrip:(id)a5 direction:(unint64_t)a6;
-- (double)scaleForIndex:(unint64_t)a3;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBContinuousExposeIdentifierSlideModifier)initWithContinuousExposeIdentifier:(id)identifier previousContinuousExposeIdentifiersInSwitcher:(id)switcher previousContinuousExposeIdentifiersInStrip:(id)strip direction:(unint64_t)direction;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_beginAnimation;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleContinuousExposeIdentifiersChangedEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (void)_performBlockWithIdentifiersInSwitcher:(id)a3 identifiersInStrip:(id)a4 block:(id)a5;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleContinuousExposeIdentifiersChangedEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (void)_performBlockWithIdentifiersInSwitcher:(id)switcher identifiersInStrip:(id)strip block:(id)block;
 @end
 
 @implementation SBContinuousExposeIdentifierSlideModifier
 
-- (SBContinuousExposeIdentifierSlideModifier)initWithContinuousExposeIdentifier:(id)a3 previousContinuousExposeIdentifiersInSwitcher:(id)a4 previousContinuousExposeIdentifiersInStrip:(id)a5 direction:(unint64_t)a6
+- (SBContinuousExposeIdentifierSlideModifier)initWithContinuousExposeIdentifier:(id)identifier previousContinuousExposeIdentifiersInSwitcher:(id)switcher previousContinuousExposeIdentifiersInStrip:(id)strip direction:(unint64_t)direction
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  switcherCopy = switcher;
+  stripCopy = strip;
   v25.receiver = self;
   v25.super_class = SBContinuousExposeIdentifierSlideModifier;
   v14 = [(SBSwitcherModifier *)&v25 init];
   if (v14)
   {
-    if (v11)
+    if (identifierCopy)
     {
-      if (v12)
+      if (switcherCopy)
       {
         goto LABEL_4;
       }
@@ -34,29 +34,29 @@
     else
     {
       [SBContinuousExposeIdentifierSlideModifier initWithContinuousExposeIdentifier:a2 previousContinuousExposeIdentifiersInSwitcher:v14 previousContinuousExposeIdentifiersInStrip:? direction:?];
-      if (v12)
+      if (switcherCopy)
       {
 LABEL_4:
-        if (v13)
+        if (stripCopy)
         {
 LABEL_5:
-          v15 = [v11 copy];
+          v15 = [identifierCopy copy];
           continuousExposeIdentifier = v14->_continuousExposeIdentifier;
           v14->_continuousExposeIdentifier = v15;
 
-          v17 = [v12 copy];
+          v17 = [switcherCopy copy];
           previousContinuousExposeIdentifiersInSwitcher = v14->_previousContinuousExposeIdentifiersInSwitcher;
           v14->_previousContinuousExposeIdentifiersInSwitcher = v17;
 
-          v19 = [v13 copy];
+          v19 = [stripCopy copy];
           previousContinuousExposeIdentifiersInStrip = v14->_previousContinuousExposeIdentifiersInStrip;
           v14->_previousContinuousExposeIdentifiersInStrip = v19;
 
-          v14->_direction = a6;
-          v21 = [MEMORY[0x277CCAD78] UUID];
-          v22 = [v21 UUIDString];
+          v14->_direction = direction;
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
           uniqueAnimationIdentifier = v14->_uniqueAnimationIdentifier;
-          v14->_uniqueAnimationIdentifier = v22;
+          v14->_uniqueAnimationIdentifier = uUIDString;
 
           goto LABEL_6;
         }
@@ -68,7 +68,7 @@ LABEL_9:
     }
 
     [SBContinuousExposeIdentifierSlideModifier initWithContinuousExposeIdentifier:a2 previousContinuousExposeIdentifiersInSwitcher:v14 previousContinuousExposeIdentifiersInStrip:? direction:?];
-    if (v13)
+    if (stripCopy)
     {
       goto LABEL_5;
     }
@@ -81,7 +81,7 @@ LABEL_6:
   return v14;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v38.receiver = self;
   v38.super_class = SBContinuousExposeIdentifierSlideModifier;
@@ -90,29 +90,29 @@ LABEL_6:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBContinuousExposeIdentifierSlideModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeIdentifierSlideModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
-  v15 = [v14 continuousExposeIdentifier];
-  if (![v15 isEqualToString:self->_continuousExposeIdentifier])
+  continuousExposeIdentifier = [v14 continuousExposeIdentifier];
+  if (![continuousExposeIdentifier isEqualToString:self->_continuousExposeIdentifier])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v16 = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
-  v17 = [v16 isOrContainsAppLayout:v14];
+  appLayoutOnStage = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
+  v17 = [appLayoutOnStage isOrContainsAppLayout:v14];
 
   if ((v17 & 1) == 0)
   {
     if (self->_isWaitingToPrepareLayout && !self->_direction)
     {
 LABEL_8:
-      v15 = [(SBSwitcherModifier *)self windowingConfiguration];
-      [v15 stripWidth];
+      continuousExposeIdentifier = [(SBSwitcherModifier *)self windowingConfiguration];
+      [continuousExposeIdentifier stripWidth];
       v21 = v20;
-      [v15 screenEdgePadding];
+      [continuousExposeIdentifier screenEdgePadding];
       v23 = v22;
       if (([(SBContinuousExposeIdentifierSlideModifier *)self isRTLEnabled]& 1) != 0)
       {
@@ -144,7 +144,7 @@ LABEL_8:
       v31[2] = __59__SBContinuousExposeIdentifierSlideModifier_frameForIndex___block_invoke;
       v31[3] = &unk_2783AA618;
       v31[5] = &v32;
-      v31[6] = a3;
+      v31[6] = index;
       v31[4] = self;
       [(SBContinuousExposeIdentifierSlideModifier *)self _performBlockWithIdentifiersInSwitcher:previousContinuousExposeIdentifiersInSwitcher identifiersInStrip:previousContinuousExposeIdentifiersInStrip block:v31];
       v8 = v33[5];
@@ -182,21 +182,21 @@ id __59__SBContinuousExposeIdentifierSlideModifier_frameForIndex___block_invoke(
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
   v25.receiver = self;
   v25.super_class = SBContinuousExposeIdentifierSlideModifier;
   [(SBContinuousExposeIdentifierSlideModifier *)&v25 anchorPointForIndex:?];
   v6 = v5;
   v8 = v7;
-  v9 = [(SBContinuousExposeIdentifierSlideModifier *)self appLayouts];
-  v10 = [v9 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeIdentifierSlideModifier *)self appLayouts];
+  v10 = [appLayouts objectAtIndex:index];
 
-  v11 = [v10 continuousExposeIdentifier];
-  if ([v11 isEqualToString:self->_continuousExposeIdentifier])
+  continuousExposeIdentifier = [v10 continuousExposeIdentifier];
+  if ([continuousExposeIdentifier isEqualToString:self->_continuousExposeIdentifier])
   {
-    v12 = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
-    v13 = [v12 isOrContainsAppLayout:v10];
+    appLayoutOnStage = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
+    v13 = [appLayoutOnStage isOrContainsAppLayout:v10];
 
     if ((v13 & 1) == 0 && (!self->_isWaitingToPrepareLayout || self->_direction) && self->_isWaitingToBeginAnimation && self->_direction == 1)
     {
@@ -213,7 +213,7 @@ id __59__SBContinuousExposeIdentifierSlideModifier_frameForIndex___block_invoke(
       v18[2] = __65__SBContinuousExposeIdentifierSlideModifier_anchorPointForIndex___block_invoke;
       v18[3] = &unk_2783AA618;
       v18[5] = &v19;
-      v18[6] = a3;
+      v18[6] = index;
       v18[4] = self;
       [(SBContinuousExposeIdentifierSlideModifier *)self _performBlockWithIdentifiersInSwitcher:previousContinuousExposeIdentifiersInSwitcher identifiersInStrip:previousContinuousExposeIdentifiersInStrip block:v18];
       v6 = v20[4];
@@ -245,20 +245,20 @@ id __65__SBContinuousExposeIdentifierSlideModifier_anchorPointForIndex___block_i
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v20.receiver = self;
   v20.super_class = SBContinuousExposeIdentifierSlideModifier;
   [(SBContinuousExposeIdentifierSlideModifier *)&v20 scaleForIndex:?];
   v6 = v5;
-  v7 = [(SBContinuousExposeIdentifierSlideModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeIdentifierSlideModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
-  v9 = [v8 continuousExposeIdentifier];
-  if ([v9 isEqualToString:self->_continuousExposeIdentifier])
+  continuousExposeIdentifier = [v8 continuousExposeIdentifier];
+  if ([continuousExposeIdentifier isEqualToString:self->_continuousExposeIdentifier])
   {
-    v10 = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
-    v11 = [v10 isOrContainsAppLayout:v8];
+    appLayoutOnStage = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
+    v11 = [appLayoutOnStage isOrContainsAppLayout:v8];
 
     if ((v11 & 1) == 0 && (!self->_isWaitingToPrepareLayout || self->_direction) && self->_isWaitingToBeginAnimation && self->_direction == 1)
     {
@@ -273,7 +273,7 @@ id __65__SBContinuousExposeIdentifierSlideModifier_anchorPointForIndex___block_i
       v15[2] = __59__SBContinuousExposeIdentifierSlideModifier_scaleForIndex___block_invoke;
       v15[3] = &unk_2783AA618;
       v15[5] = &v16;
-      v15[6] = a3;
+      v15[6] = index;
       v15[4] = self;
       [(SBContinuousExposeIdentifierSlideModifier *)self _performBlockWithIdentifiersInSwitcher:previousContinuousExposeIdentifiersInSwitcher identifiersInStrip:previousContinuousExposeIdentifiersInStrip block:v15];
       v6 = v17[3];
@@ -298,40 +298,40 @@ id __59__SBContinuousExposeIdentifierSlideModifier_scaleForIndex___block_invoke(
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   v48.receiver = self;
   v48.super_class = SBContinuousExposeIdentifierSlideModifier;
-  [(SBContinuousExposeIdentifierSlideModifier *)&v48 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+  [(SBContinuousExposeIdentifierSlideModifier *)&v48 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v9 continuousExposeIdentifier];
-  if (![v18 isEqualToString:self->_continuousExposeIdentifier])
+  continuousExposeIdentifier = [layoutCopy continuousExposeIdentifier];
+  if (![continuousExposeIdentifier isEqualToString:self->_continuousExposeIdentifier])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v19 = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
-  v20 = [v19 isOrContainsAppLayout:v9];
+  appLayoutOnStage = [(SBContinuousExposeIdentifierSlideModifier *)self appLayoutOnStage];
+  v20 = [appLayoutOnStage isOrContainsAppLayout:layoutCopy];
 
   if ((v20 & 1) == 0)
   {
     if (self->_isWaitingToPrepareLayout && !self->_direction)
     {
 LABEL_8:
-      v18 = [(SBSwitcherModifier *)self windowingConfiguration];
-      [v18 stripWidth];
+      continuousExposeIdentifier = [(SBSwitcherModifier *)self windowingConfiguration];
+      [continuousExposeIdentifier stripWidth];
       v24 = v23;
-      [v18 screenEdgePadding];
+      [continuousExposeIdentifier screenEdgePadding];
       v26 = v25;
       if (([(SBContinuousExposeIdentifierSlideModifier *)self isRTLEnabled]& 1) != 0)
       {
@@ -367,8 +367,8 @@ LABEL_8:
       v39 = y;
       v40 = width;
       v41 = height;
-      v35 = v9;
-      v36 = self;
+      v35 = layoutCopy;
+      selfCopy = self;
       [(SBContinuousExposeIdentifierSlideModifier *)self _performBlockWithIdentifiersInSwitcher:previousContinuousExposeIdentifiersInSwitcher identifiersInStrip:previousContinuousExposeIdentifiersInStrip block:v34];
       v13 = v43[5];
       v15 = v43[6];
@@ -406,11 +406,11 @@ id __90__SBContinuousExposeIdentifierSlideModifier_adjustedSpaceAccessoryViewFra
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_isWaitingToBeginAnimation || [v4 switcherLayoutElementType] || (-[SBContinuousExposeIdentifierSlideModifier appLayoutOnStage](self, "appLayoutOnStage"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", v5), v6, (v7 & 1) != 0))
+  elementCopy = element;
+  v5 = elementCopy;
+  if (!self->_isWaitingToBeginAnimation || [elementCopy switcherLayoutElementType] || (-[SBContinuousExposeIdentifierSlideModifier appLayoutOnStage](self, "appLayoutOnStage"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", v5), v6, (v7 & 1) != 0))
   {
     v14.receiver = self;
     v14.super_class = SBContinuousExposeIdentifierSlideModifier;
@@ -425,24 +425,24 @@ id __90__SBContinuousExposeIdentifierSlideModifier_adjustedSpaceAccessoryViewFra
     v8 = [v10 mutableCopy];
 
     [v8 setLayoutUpdateMode:3];
-    v11 = [(SBContinuousExposeIdentifierSlideModifier *)self switcherSettings];
-    v12 = [v11 windowingSettings];
-    v13 = [v12 appToAppLayoutSettings];
-    [v8 setLayoutSettings:v13];
+    switcherSettings = [(SBContinuousExposeIdentifierSlideModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    appToAppLayoutSettings = [windowingSettings appToAppLayoutSettings];
+    [v8 setLayoutSettings:appToAppLayoutSettings];
   }
 
   return v8;
 }
 
-- (id)handleContinuousExposeIdentifiersChangedEvent:(id)a3
+- (id)handleContinuousExposeIdentifiersChangedEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = SBContinuousExposeIdentifierSlideModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v14 handleContinuousExposeIdentifiersChangedEvent:v4];
-  v6 = [v4 isAnimated];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v14 handleContinuousExposeIdentifiersChangedEvent:eventCopy];
+  isAnimated = [eventCopy isAnimated];
 
-  if (v6)
+  if (isAnimated)
   {
     direction = self->_direction;
     if (direction == 1)
@@ -452,19 +452,19 @@ id __90__SBContinuousExposeIdentifierSlideModifier_adjustedSpaceAccessoryViewFra
         goto LABEL_10;
       }
 
-      v8 = [(SBContinuousExposeIdentifierSlideModifier *)self _beginAnimation];
-      v12 = SBAppendSwitcherModifierResponse(v8, v5);
+      _beginAnimation = [(SBContinuousExposeIdentifierSlideModifier *)self _beginAnimation];
+      v12 = SBAppendSwitcherModifierResponse(_beginAnimation, v5);
       goto LABEL_9;
     }
 
     if (!direction && !self->_isWaitingToPrepareLayout && !self->_isWaitingToBeginAnimation)
     {
-      v8 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-      v9 = SBAppendSwitcherModifierResponse(v8, v5);
+      _beginAnimation = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
+      v9 = SBAppendSwitcherModifierResponse(_beginAnimation, v5);
 
       v10 = [SBTimerEventSwitcherEventResponse alloc];
-      v11 = [(SBContinuousExposeIdentifierSlideModifier *)self _waitingToPrepareLayoutReason];
-      v5 = [(SBTimerEventSwitcherEventResponse *)v10 initWithDelay:0 validator:v11 reason:0.0];
+      _waitingToPrepareLayoutReason = [(SBContinuousExposeIdentifierSlideModifier *)self _waitingToPrepareLayoutReason];
+      v5 = [(SBTimerEventSwitcherEventResponse *)v10 initWithDelay:0 validator:_waitingToPrepareLayoutReason reason:0.0];
 
       v12 = SBAppendSwitcherModifierResponse(v5, v9);
 
@@ -480,26 +480,26 @@ LABEL_10:
   return v5;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBContinuousExposeIdentifierSlideModifier;
-  v5 = [(SBSwitcherModifier *)&v15 handleTimerEvent:v4];
-  if (!self->_direction && self->_isWaitingToPrepareLayout && ([v4 reason], v6 = objc_claimAutoreleasedReturnValue(), -[SBContinuousExposeIdentifierSlideModifier _waitingToPrepareLayoutReason](self, "_waitingToPrepareLayoutReason"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqualToString:", v7), v7, v6, v8))
+  v5 = [(SBSwitcherModifier *)&v15 handleTimerEvent:eventCopy];
+  if (!self->_direction && self->_isWaitingToPrepareLayout && ([eventCopy reason], v6 = objc_claimAutoreleasedReturnValue(), -[SBContinuousExposeIdentifierSlideModifier _waitingToPrepareLayoutReason](self, "_waitingToPrepareLayoutReason"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqualToString:", v7), v7, v6, v8))
   {
     self->_isWaitingToPrepareLayout = 0;
-    v9 = [(SBContinuousExposeIdentifierSlideModifier *)self _beginAnimation];
-    v10 = SBAppendSwitcherModifierResponse(v9, v5);
+    _beginAnimation = [(SBContinuousExposeIdentifierSlideModifier *)self _beginAnimation];
+    v10 = SBAppendSwitcherModifierResponse(_beginAnimation, v5);
 
     v5 = v10;
   }
 
   else if (self->_isWaitingToBeginAnimation)
   {
-    v11 = [v4 reason];
-    v12 = [(SBContinuousExposeIdentifierSlideModifier *)self _waitingToAnimateReason];
-    v13 = [v11 isEqualToString:v12];
+    reason = [eventCopy reason];
+    _waitingToAnimateReason = [(SBContinuousExposeIdentifierSlideModifier *)self _waitingToAnimateReason];
+    v13 = [reason isEqualToString:_waitingToAnimateReason];
 
     if (v13)
     {
@@ -514,15 +514,15 @@ LABEL_10:
 - (id)_beginAnimation
 {
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:12 updateMode:3];
-  v4 = [(SBContinuousExposeIdentifierSlideModifier *)self switcherSettings];
-  v5 = [v4 windowingSettings];
-  v6 = [v5 appToAppLayoutSettings];
-  [v6 response];
+  switcherSettings = [(SBContinuousExposeIdentifierSlideModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  appToAppLayoutSettings = [windowingSettings appToAppLayoutSettings];
+  [appToAppLayoutSettings response];
   v8 = v7 * 0.5;
 
   v9 = [SBTimerEventSwitcherEventResponse alloc];
-  v10 = [(SBContinuousExposeIdentifierSlideModifier *)self _waitingToAnimateReason];
-  v11 = [(SBTimerEventSwitcherEventResponse *)v9 initWithDelay:0 validator:v10 reason:v8];
+  _waitingToAnimateReason = [(SBContinuousExposeIdentifierSlideModifier *)self _waitingToAnimateReason];
+  v11 = [(SBTimerEventSwitcherEventResponse *)v9 initWithDelay:0 validator:_waitingToAnimateReason reason:v8];
 
   v12 = SBAppendSwitcherModifierResponse(v11, v3);
 
@@ -531,14 +531,14 @@ LABEL_10:
   return v12;
 }
 
-- (void)_performBlockWithIdentifiersInSwitcher:(id)a3 identifiersInStrip:(id)a4 block:(id)a5
+- (void)_performBlockWithIdentifiersInSwitcher:(id)switcher identifiersInStrip:(id)strip block:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SBOverrideContinuousExposeIdentifiersSwitcherModifier alloc] initWithContinuousExposeIdentifiersInSwitcher:v10 continuousExposeIdentifiersInStrip:v9];
+  blockCopy = block;
+  stripCopy = strip;
+  switcherCopy = switcher;
+  v11 = [[SBOverrideContinuousExposeIdentifiersSwitcherModifier alloc] initWithContinuousExposeIdentifiersInSwitcher:switcherCopy continuousExposeIdentifiersInStrip:stripCopy];
 
-  [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v11 usingBlock:v8];
+  [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v11 usingBlock:blockCopy];
 }
 
 - (void)initWithContinuousExposeIdentifier:(uint64_t)a1 previousContinuousExposeIdentifiersInSwitcher:(uint64_t)a2 previousContinuousExposeIdentifiersInStrip:direction:.cold.1(uint64_t a1, uint64_t a2)

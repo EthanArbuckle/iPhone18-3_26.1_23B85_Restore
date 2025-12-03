@@ -1,18 +1,18 @@
 @interface VLFVIOSessionFusedLocationMonitor
 - (BOOL)shouldDisableVIOSession;
 - (NSString)description;
-- (VLFVIOSessionFusedLocationMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VLFVIOSessionFusedLocationMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
+- (void)locationManager:(id)manager didUpdateLocation:(id)location;
+- (void)session:(id)session didChangeState:(unint64_t)state;
 @end
 
 @implementation VLFVIOSessionFusedLocationMonitor
 
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4
+- (void)locationManager:(id)manager didUpdateLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -24,7 +24,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v19 = 136316418;
-        v20 = "[VLFVIOSessionFusedLocationMonitor locationManager:didUpdateLocation:]";
+        selfCopy2 = "[VLFVIOSessionFusedLocationMonitor locationManager:didUpdateLocation:]";
         v21 = 2080;
         v22 = "VLFVIOSessionFusedLocationMonitor.m";
         v23 = 1024;
@@ -45,7 +45,7 @@
         {
           v18 = +[NSThread callStackSymbols];
           v19 = 138412290;
-          v20 = v18;
+          selfCopy2 = v18;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
         }
       }
@@ -56,34 +56,34 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v19 = 134349315;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2113;
-    v22 = v7;
+    v22 = locationCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "[%{public}p] Got location update: %{private}@", &v19, 0x16u);
   }
 
-  if (([v7 isCoordinateFused] & 1) == 0)
+  if (([locationCopy isCoordinateFused] & 1) == 0)
   {
     v12 = sub_100EAEF14();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v19 = 134349056;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Location update is no longer fused; disabling VIO session", &v19, 0xCu);
     }
 
-    v13 = [(VIOSessionMonitor *)self stateManager];
-    [v13 recordSessionDisableEvent:7];
+    stateManager = [(VIOSessionMonitor *)self stateManager];
+    [stateManager recordSessionDisableEvent:7];
 
-    v14 = [(VIOSessionMonitor *)self session];
-    [v14 _removeObserver:self];
+    session = [(VIOSessionMonitor *)self session];
+    [session _removeObserver:self];
 
     v15 = +[VLFLocationManager sharedLocationManager];
     [v15 removeObserver:self];
   }
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -91,7 +91,7 @@
   block[2] = sub_100EAF054;
   block[3] = &unk_10165FBC0;
   objc_copyWeak(v6, &location);
-  v6[1] = a4;
+  v6[1] = state;
   dispatch_async(&_dispatch_main_q, block);
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
@@ -100,11 +100,11 @@
 - (BOOL)shouldDisableVIOSession
 {
   v2 = +[VLFLocationManager sharedLocationManager];
-  v3 = [v2 lastLocation];
+  lastLocation = [v2 lastLocation];
 
-  if (v3)
+  if (lastLocation)
   {
-    v4 = [v3 isCoordinateFused] ^ 1;
+    v4 = [lastLocation isCoordinateFused] ^ 1;
   }
 
   else
@@ -120,10 +120,10 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = +[VLFLocationManager sharedLocationManager];
-  v6 = [v5 lastLocation];
-  v7 = [v6 isCoordinateFused];
+  lastLocation = [v5 lastLocation];
+  isCoordinateFused = [lastLocation isCoordinateFused];
   v8 = @"NO";
-  if (v7)
+  if (isCoordinateFused)
   {
     v8 = @"YES";
   }
@@ -141,14 +141,14 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
   }
 
-  v6 = [(VIOSessionMonitor *)self session];
-  [v6 _removeObserver:self];
+  session = [(VIOSessionMonitor *)self session];
+  [session _removeObserver:self];
 
   v7 = +[VLFLocationManager sharedLocationManager];
   [v7 removeObserver:self];
@@ -158,11 +158,11 @@
   [(VLFVIOSessionFusedLocationMonitor *)&v8 dealloc];
 }
 
-- (VLFVIOSessionFusedLocationMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VLFVIOSessionFusedLocationMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v23.receiver = self;
   v23.super_class = VLFVIOSessionFusedLocationMonitor;
-  v4 = [(VIOSessionMonitor *)&v23 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v23 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_100EAEF14();
@@ -177,10 +177,10 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Enabling %@", buf, 0x16u);
     }
 
-    v8 = [(VIOSessionMonitor *)v4 configuration];
-    v9 = [v8 isVLF];
+    configuration = [(VIOSessionMonitor *)v4 configuration];
+    isVLF = [configuration isVLF];
 
-    if (!v9)
+    if (!isVLF)
     {
       [(VIOSessionMonitor *)v4 setEnabled:0];
       v14 = sub_100EAEF14();
@@ -201,8 +201,8 @@ LABEL_15:
       return v4;
     }
 
-    v10 = [(VIOSessionMonitor *)v4 session];
-    v11 = [v10 configuration];
+    session = [(VIOSessionMonitor *)v4 session];
+    configuration2 = [session configuration];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -236,13 +236,13 @@ LABEL_11:
     {
     }
 
-    v19 = [(VIOSessionMonitor *)v4 session];
-    [v19 _addObserver:v4];
+    session2 = [(VIOSessionMonitor *)v4 session];
+    [session2 _addObserver:v4];
 
-    v20 = [(VIOSessionMonitor *)v4 session];
-    v21 = [v20 state];
+    session3 = [(VIOSessionMonitor *)v4 session];
+    state = [session3 state];
 
-    if (v21 == 1)
+    if (state == 1)
     {
       v14 = +[VLFLocationManager sharedLocationManager];
       [v14 addObserver:v4];

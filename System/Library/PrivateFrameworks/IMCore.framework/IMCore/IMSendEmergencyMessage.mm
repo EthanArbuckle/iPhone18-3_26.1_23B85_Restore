@@ -1,11 +1,11 @@
 @interface IMSendEmergencyMessage
 - (IMSendEmergencyMessage)init;
-- (IMSendEmergencyMessage)initWithDaemon:(id)a3;
+- (IMSendEmergencyMessage)initWithDaemon:(id)daemon;
 - (void)daemonConnectionLost;
 - (void)daemonControllerDidDisconnect;
 - (void)dealloc;
 - (void)locationUpdateSent;
-- (void)sendEmergencyQuestionnaire:(id)a3;
+- (void)sendEmergencyQuestionnaire:(id)questionnaire;
 - (void)setUpConnectionToDaemaon;
 @end
 
@@ -53,9 +53,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)sendEmergencyQuestionnaire:(id)a3
+- (void)sendEmergencyQuestionnaire:(id)questionnaire
 {
-  v4 = a3;
+  questionnaireCopy = questionnaire;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -67,7 +67,7 @@ LABEL_9:
   }
 
   v8 = objc_msgSend_remoteDaemon(self->_daemon, v5, v6);
-  objc_msgSend_sendEmergencyQuestionnaire_(v8, v9, v4);
+  objc_msgSend_sendEmergencyQuestionnaire_(v8, v9, questionnaireCopy);
 }
 
 - (void)locationUpdateSent
@@ -86,16 +86,16 @@ LABEL_9:
   objc_msgSend_locationUpdateSent(v6, v7, v8);
 }
 
-- (IMSendEmergencyMessage)initWithDaemon:(id)a3
+- (IMSendEmergencyMessage)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v11.receiver = self;
   v11.super_class = IMSendEmergencyMessage;
   v5 = [(IMSendEmergencyMessage *)&v11 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDaemon_(v5, v6, v4);
+    objc_msgSend_setDaemon_(v5, v6, daemonCopy);
     objc_msgSend_setUpConnectionToDaemaon(v7, v8, v9);
   }
 

@@ -1,20 +1,20 @@
 @interface IPTenseDetector
-+ (int64_t)tenseOfString:(id)a3 languageID:(id)a4;
++ (int64_t)tenseOfString:(id)string languageID:(id)d;
 @end
 
 @implementation IPTenseDetector
 
-+ (int64_t)tenseOfString:(id)a3 languageID:(id)a4
++ (int64_t)tenseOfString:(id)string languageID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 hasPrefix:@"zh"])
+  stringCopy = string;
+  dCopy = d;
+  if (![dCopy hasPrefix:@"zh"])
   {
-    if ([v6 hasPrefix:@"ja"])
+    if ([dCopy hasPrefix:@"ja"])
     {
-      if (([v5 containsString:@"だった"] & 1) == 0 && (objc_msgSend(v5, "containsString:", @"でした") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"ました") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"あった") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"いた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"した") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"おられた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"くれた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"された") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"されてた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"されていた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"した") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"ました") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"していた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"してた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"とった") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"なった") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"会った") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"入った") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"出た") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"出られた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"思った") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"終えた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"終わった") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"行った") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"見せた") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"見た") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"かった") & 1) == 0)
+      if (([stringCopy containsString:@"だった"] & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"でした") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"ました") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"あった") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"いた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"した") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"おられた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"くれた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"された") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"されてた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"されていた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"した") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"ました") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"していた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"してた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"とった") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"なった") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"会った") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"入った") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"出た") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"出られた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"思った") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"終えた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"終わった") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"行った") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"見せた") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"見た") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"かった") & 1) == 0)
       {
-        if ([v5 containsString:@"です"] & 1) != 0 || (objc_msgSend(v5, "containsString:", @"にしてます"))
+        if ([stringCopy containsString:@"です"] & 1) != 0 || (objc_msgSend(stringCopy, "containsString:", @"にしてます"))
         {
           goto LABEL_8;
         }
@@ -30,7 +30,7 @@ LABEL_38:
 
     if (tenseOfString_languageID__onceToken == -1)
     {
-      if (!v5)
+      if (!stringCopy)
       {
         goto LABEL_48;
       }
@@ -39,17 +39,17 @@ LABEL_38:
     else
     {
       +[IPTenseDetector tenseOfString:languageID:];
-      if (!v5)
+      if (!stringCopy)
       {
         goto LABEL_48;
       }
     }
 
-    if ([v5 length])
+    if ([stringCopy length])
     {
       v8 = tenseOfString_languageID__tagger;
       objc_sync_enter(v8);
-      [tenseOfString_languageID__tagger setString:v5];
+      [tenseOfString_languageID__tagger setString:stringCopy];
       v23 = 0;
       v24 = &v23;
       v25 = 0x2020000000;
@@ -65,13 +65,13 @@ LABEL_38:
       v19[2] = 0x2020000000;
       v20 = 0;
       v9 = tenseOfString_languageID__tagger;
-      v10 = [v5 length];
+      v10 = [stringCopy length];
       v11 = *MEMORY[0x277CCAEC8];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __44__IPTenseDetector_tenseOfString_languageID___block_invoke_180;
       v14[3] = &unk_278F22EA0;
-      v15 = v5;
+      v15 = stringCopy;
       v16 = v21;
       v17 = v19;
       v18 = &v23;
@@ -93,12 +93,12 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if ([v5 containsString:@"了"] & 1) != 0 || (objc_msgSend(v5, "containsString:", @"过节") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"过") & 1) != 0 || (objc_msgSend(v5, "containsString:", @"過節") & 1) == 0 && (objc_msgSend(v5, "containsString:", @"過"))
+  if ([stringCopy containsString:@"了"] & 1) != 0 || (objc_msgSend(stringCopy, "containsString:", @"过节") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"过") & 1) != 0 || (objc_msgSend(stringCopy, "containsString:", @"過節") & 1) == 0 && (objc_msgSend(stringCopy, "containsString:", @"過"))
   {
     goto LABEL_38;
   }
 
-  if ([v5 containsString:@"将"])
+  if ([stringCopy containsString:@"将"])
   {
 LABEL_8:
     v7 = 2;
@@ -107,7 +107,7 @@ LABEL_8:
 
   v12 = @"要";
 LABEL_44:
-  if ([v5 containsString:v12])
+  if ([stringCopy containsString:v12])
   {
     v7 = 2;
   }

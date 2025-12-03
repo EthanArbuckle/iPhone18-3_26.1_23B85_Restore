@@ -1,70 +1,70 @@
 @interface KNMacUILayout
-+ (id)uiLayoutFromArchive:(const void *)a3 unarchiver:(id)a4 context:(id)a5;
++ (id)uiLayoutFromArchive:(const void *)archive unarchiver:(id)unarchiver context:(id)context;
 - (BOOL)currentViewModeSupportsActivityStream;
-- (BOOL)isEqual:(id)a3;
-- (id)archivedUILayoutInContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)archivedUILayoutInContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)inspectorPaneHiddenState;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation KNMacUILayout
 
-- (id)archivedUILayoutInContext:(id)a3
+- (id)archivedUILayoutInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [KNMacArchivedUILayout alloc];
-  v7 = objc_msgSend_initWithUILayout_context_(v5, v6, self, v4);
+  v7 = objc_msgSend_initWithUILayout_context_(v5, v6, self, contextCopy);
 
   return v7;
 }
 
-+ (id)uiLayoutFromArchive:(const void *)a3 unarchiver:(id)a4 context:(id)a5
++ (id)uiLayoutFromArchive:(const void *)archive unarchiver:(id)unarchiver context:(id)context
 {
   v6 = objc_alloc_init(KNMacMutableUILayout);
   v8 = v6;
-  v9 = *(a3 + 4);
+  v9 = *(archive + 4);
   if ((v9 & 2) != 0)
   {
-    objc_msgSend_setShowingSidebar_(v6, v7, *(a3 + 28));
-    v9 = *(a3 + 4);
+    objc_msgSend_setShowingSidebar_(v6, v7, *(archive + 28));
+    v9 = *(archive + 4);
   }
 
   if (v9)
   {
-    objc_msgSend_setSidebarViewMode_(v8, v7, *(a3 + 6) != 0);
+    objc_msgSend_setSidebarViewMode_(v8, v7, *(archive + 6) != 0);
   }
 
-  v10 = *(a3 + 4);
+  v10 = *(archive + 4);
   if ((v10 & 4) != 0)
   {
-    objc_msgSend_setShowingPresenterNotes_(v8, v7, *(a3 + 29));
-    v10 = *(a3 + 4);
+    objc_msgSend_setShowingPresenterNotes_(v8, v7, *(archive + 29));
+    v10 = *(archive + 4);
   }
 
   if ((v10 & 8) != 0)
   {
-    objc_msgSend_setShowingLightTable_(v8, v7, *(a3 + 30));
-    v10 = *(a3 + 4);
+    objc_msgSend_setShowingLightTable_(v8, v7, *(archive + 30));
+    v10 = *(archive + 4);
   }
 
   if ((v10 & 0x400) != 0)
   {
-    objc_msgSend_setShowingInspectorPane_(v8, v7, *(a3 + 40));
-    v10 = *(a3 + 4);
+    objc_msgSend_setShowingInspectorPane_(v8, v7, *(archive + 40));
+    v10 = *(archive + 4);
   }
 
   if ((v10 & 0x40) != 0)
   {
-    objc_msgSend_setInspectorPaneAutoHidden_(v8, v7, *(a3 + 36));
-    v10 = *(a3 + 4);
+    objc_msgSend_setInspectorPaneAutoHidden_(v8, v7, *(archive + 36));
+    v10 = *(archive + 4);
   }
 
   if ((v10 & 0x20) != 0)
   {
-    v11 = *(a3 + 8);
+    v11 = *(archive + 8);
     if (v11 == 2)
     {
       objc_msgSend_setInspectorPaneViewMode_(v8, v7, 2);
@@ -76,53 +76,53 @@
     }
   }
 
-  v12 = *(a3 + 4);
+  v12 = *(archive + 4);
   if ((v12 & 0x10) != 0)
   {
-    objc_msgSend_setShowingTemplateSlides_(v8, v7, *(a3 + 31));
-    v12 = *(a3 + 4);
+    objc_msgSend_setShowingTemplateSlides_(v8, v7, *(archive + 31));
+    v12 = *(archive + 4);
   }
 
   if ((v12 & 0x80) != 0)
   {
-    objc_msgSend_setShowingElementList_(v8, v7, *(a3 + 37));
-    v12 = *(a3 + 4);
+    objc_msgSend_setShowingElementList_(v8, v7, *(archive + 37));
+    v12 = *(archive + 4);
   }
 
   if ((v12 & 0x100) != 0)
   {
-    objc_msgSend_setShowingActivityStream_(v8, v7, *(a3 + 38));
-    v12 = *(a3 + 4);
+    objc_msgSend_setShowingActivityStream_(v8, v7, *(archive + 38));
+    v12 = *(archive + 4);
   }
 
   if ((v12 & 0x200) != 0)
   {
-    objc_msgSend_setActivityStreamWasShown_(v8, v7, *(a3 + 39));
+    objc_msgSend_setActivityStreamWasShown_(v8, v7, *(archive + 39));
   }
 
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  isShowingSidebar = objc_msgSend_isShowingSidebar(self, a2, a3, a4);
-  *(a3 + 4) |= 2u;
-  *(a3 + 28) = isShowingSidebar;
+  isShowingSidebar = objc_msgSend_isShowingSidebar(self, a2, archive, archiver);
+  *(archive + 4) |= 2u;
+  *(archive + 28) = isShowingSidebar;
   v9 = objc_msgSend_sidebarViewMode(self, v7, v8) != 0;
-  *(a3 + 4) |= 1u;
-  *(a3 + 6) = v9;
+  *(archive + 4) |= 1u;
+  *(archive + 6) = v9;
   isShowingPresenterNotes = objc_msgSend_isShowingPresenterNotes(self, v10, v11);
-  *(a3 + 4) |= 4u;
-  *(a3 + 29) = isShowingPresenterNotes;
+  *(archive + 4) |= 4u;
+  *(archive + 29) = isShowingPresenterNotes;
   isShowingLightTable = objc_msgSend_isShowingLightTable(self, v13, v14);
-  *(a3 + 4) |= 8u;
-  *(a3 + 30) = isShowingLightTable;
+  *(archive + 4) |= 8u;
+  *(archive + 30) = isShowingLightTable;
   v18 = objc_msgSend_showingInspectorPane(self, v16, v17);
-  *(a3 + 4) |= 0x400u;
-  *(a3 + 40) = v18;
+  *(archive + 4) |= 0x400u;
+  *(archive + 40) = v18;
   v21 = objc_msgSend_inspectorPaneAutoHidden(self, v19, v20);
-  *(a3 + 4) |= 0x40u;
-  *(a3 + 36) = v21;
+  *(archive + 4) |= 0x40u;
+  *(archive + 36) = v21;
   v24 = objc_msgSend_inspectorPaneViewMode(self, v22, v23);
   if (v24 == 2)
   {
@@ -134,20 +134,20 @@
     v27 = v24 == 1;
   }
 
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 8) = v27;
+  *(archive + 4) |= 0x20u;
+  *(archive + 8) = v27;
   isShowingTemplateSlides = objc_msgSend_isShowingTemplateSlides(self, v25, v26);
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 31) = isShowingTemplateSlides;
+  *(archive + 4) |= 0x10u;
+  *(archive + 31) = isShowingTemplateSlides;
   isShowingElementList = objc_msgSend_isShowingElementList(self, v29, v30);
-  *(a3 + 4) |= 0x80u;
-  *(a3 + 37) = isShowingElementList;
+  *(archive + 4) |= 0x80u;
+  *(archive + 37) = isShowingElementList;
   isShowingActivityStream = objc_msgSend_isShowingActivityStream(self, v32, v33);
-  *(a3 + 4) |= 0x100u;
-  *(a3 + 38) = isShowingActivityStream;
+  *(archive + 4) |= 0x100u;
+  *(archive + 38) = isShowingActivityStream;
   v37 = objc_msgSend_activityStreamWasShown(self, v35, v36);
-  *(a3 + 4) |= 0x200u;
-  *(a3 + 39) = v37;
+  *(archive + 4) |= 0x200u;
+  *(archive + 39) = v37;
 }
 
 - (BOOL)currentViewModeSupportsActivityStream
@@ -163,13 +163,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     isShowingSidebar = objc_msgSend_isShowingSidebar(self, v6, v7);
     if (isShowingSidebar == objc_msgSend_isShowingSidebar(v5, v9, v10) && (isShowingNavigatorViewInSidebar = objc_msgSend_p_isShowingNavigatorViewInSidebar(self, v11, v12), isShowingNavigatorViewInSidebar == objc_msgSend_p_isShowingNavigatorViewInSidebar(v5, v14, v15)) && (isShowingPresenterNotes = objc_msgSend_isShowingPresenterNotes(self, v16, v17), isShowingPresenterNotes == objc_msgSend_isShowingPresenterNotes(v5, v19, v20)) && (isShowingLightTable = objc_msgSend_isShowingLightTable(self, v21, v22), isShowingLightTable == objc_msgSend_isShowingLightTable(v5, v24, v25)) && (v28 = objc_msgSend_inspectorPaneHiddenState(self, v26, v27), v28 == objc_msgSend_inspectorPaneHiddenState(v5, v29, v30)) && (v33 = objc_msgSend_inspectorPaneViewMode(self, v31, v32), v33 == objc_msgSend_inspectorPaneViewMode(v5, v34, v35)) && (isShowingTemplateSlides = objc_msgSend_isShowingTemplateSlides(self, v36, v37), isShowingTemplateSlides == objc_msgSend_isShowingTemplateSlides(v5, v39, v40)) && (isShowingElementList = objc_msgSend_isShowingElementList(self, v41, v42), isShowingElementList == objc_msgSend_isShowingElementList(v5, v44, v45)) && (isShowingActivityStream = objc_msgSend_isShowingActivityStream(self, v46, v47), isShowingActivityStream == objc_msgSend_isShowingActivityStream(v5, v49, v50)))
     {
@@ -257,9 +257,9 @@
   return v22 | v37 | v39;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNMacUILayout, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNMacUILayout, a2, zone);
   result = objc_msgSend_init(v4, v5, v6);
   *(result + 10) = self->_showingSidebar;
   *(result + 11) = self->_showingNavigatorViewInSidebar;
@@ -275,9 +275,9 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNMacMutableUILayout, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNMacMutableUILayout, a2, zone);
   v7 = objc_msgSend_init(v4, v5, v6);
   isShowingSidebar = objc_msgSend_isShowingSidebar(self, v8, v9);
   objc_msgSend_setShowingSidebar_(v7, v11, isShowingSidebar);

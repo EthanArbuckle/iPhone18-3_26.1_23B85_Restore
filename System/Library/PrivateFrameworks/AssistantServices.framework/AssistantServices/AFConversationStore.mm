@@ -1,9 +1,9 @@
 @interface AFConversationStore
 - (AFConversationStore)init;
-- (void)_registerConversation:(id)a3 withIdentifier:(id)a4;
-- (void)fetchConversationWithIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)removeConversationWithIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)saveConversation:(id)a3 withIdentifier:(id)a4 completionBlock:(id)a5;
+- (void)_registerConversation:(id)conversation withIdentifier:(id)identifier;
+- (void)fetchConversationWithIdentifier:(id)identifier completionBlock:(id)block;
+- (void)removeConversationWithIdentifier:(id)identifier completionBlock:(id)block;
+- (void)saveConversation:(id)conversation withIdentifier:(id)identifier completionBlock:(id)block;
 @end
 
 @implementation AFConversationStore
@@ -15,9 +15,9 @@
   v2 = [(AFConversationStore *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     conversationsByIdentifier = v2->_conversationsByIdentifier;
-    v2->_conversationsByIdentifier = v3;
+    v2->_conversationsByIdentifier = dictionary;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("AFConversationStore", v5);
@@ -28,20 +28,20 @@
   return v2;
 }
 
-- (void)removeConversationWithIdentifier:(id)a3 completionBlock:(id)a4
+- (void)removeConversationWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__AFConversationStore_removeConversationWithIdentifier_completionBlock___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -63,20 +63,20 @@ void __72__AFConversationStore_removeConversationWithIdentifier_completionBlock_
   }
 }
 
-- (void)fetchConversationWithIdentifier:(id)a3 completionBlock:(id)a4
+- (void)fetchConversationWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__AFConversationStore_fetchConversationWithIdentifier_completionBlock___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -156,23 +156,23 @@ void __71__AFConversationStore_fetchConversationWithIdentifier_completionBlock__
   }
 }
 
-- (void)saveConversation:(id)a3 withIdentifier:(id)a4 completionBlock:(id)a5
+- (void)saveConversation:(id)conversation withIdentifier:(id)identifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
+  blockCopy = block;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__AFConversationStore_saveConversation_withIdentifier_completionBlock___block_invoke;
   v15[3] = &unk_1E73479F0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = conversationCopy;
+  v17 = identifierCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = identifierCopy;
+  v14 = conversationCopy;
   dispatch_async(queue, v15);
 }
 
@@ -242,12 +242,12 @@ void __71__AFConversationStore_saveConversation_withIdentifier_completionBlock__
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerConversation:(id)a3 withIdentifier:(id)a4
+- (void)_registerConversation:(id)conversation withIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AFConversationStore *)self _conversationsByIdentifier];
-  [v8 setObject:v7 forKey:v6];
+  identifierCopy = identifier;
+  conversationCopy = conversation;
+  _conversationsByIdentifier = [(AFConversationStore *)self _conversationsByIdentifier];
+  [_conversationsByIdentifier setObject:conversationCopy forKey:identifierCopy];
 }
 
 @end

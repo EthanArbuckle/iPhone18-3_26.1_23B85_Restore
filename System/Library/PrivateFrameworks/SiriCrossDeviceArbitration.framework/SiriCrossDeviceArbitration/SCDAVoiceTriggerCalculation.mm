@@ -1,18 +1,18 @@
 @interface SCDAVoiceTriggerCalculation
-+ (id)_adjustRecord:(id)a3 withBoostAdjust:(int)a4 constantGoodness:(int)a5 oldRecord:(id)a6 evaluator:(id)a7 device:(id)a8;
-+ (id)_changeNewRecord:(id)a3 tiebreakerIfIdenticalToOldRecord:(id)a4;
++ (id)_adjustRecord:(id)record withBoostAdjust:(int)adjust constantGoodness:(int)goodness oldRecord:(id)oldRecord evaluator:(id)evaluator device:(id)device;
++ (id)_changeNewRecord:(id)record tiebreakerIfIdenticalToOldRecord:(id)oldRecord;
 @end
 
 @implementation SCDAVoiceTriggerCalculation
 
-+ (id)_changeNewRecord:(id)a3 tiebreakerIfIdenticalToOldRecord:(id)a4
++ (id)_changeNewRecord:(id)record tiebreakerIfIdenticalToOldRecord:(id)oldRecord
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 hasEqualAdvertisementData:v5])
+  recordCopy = record;
+  oldRecordCopy = oldRecord;
+  if ([oldRecordCopy hasEqualAdvertisementData:recordCopy])
   {
-    [v5 generateTiebreaker];
+    [recordCopy generateTiebreaker];
     v7 = SCDALogContextCore;
     if (!os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
     {
@@ -20,15 +20,15 @@
     }
 
     v8 = v7;
-    v9 = [v6 recordType];
-    if (v9 > 0x14)
+    recordType = [oldRecordCopy recordType];
+    if (recordType > 0x14)
     {
       v10 = @"(unknown)";
     }
 
     else
     {
-      v10 = off_1E85D38E0[v9];
+      v10 = off_1E85D38E0[recordType];
     }
 
     v14 = v10;
@@ -37,7 +37,7 @@
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
-    v23 = v6;
+    v23 = oldRecordCopy;
     v15 = "%s #scda Voice trigger with active record (%@), using original with adjusted TB: %@";
   }
 
@@ -50,15 +50,15 @@
     }
 
     v8 = v11;
-    v12 = [v6 recordType];
-    if (v12 > 0x14)
+    recordType2 = [oldRecordCopy recordType];
+    if (recordType2 > 0x14)
     {
       v13 = @"(unknown)";
     }
 
     else
     {
-      v13 = off_1E85D38E0[v12];
+      v13 = off_1E85D38E0[recordType2];
     }
 
     v14 = v13;
@@ -67,7 +67,7 @@
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
-    v23 = v6;
+    v23 = oldRecordCopy;
     v15 = "%s #scda Voice trigger with active record (%@), using new record: %@";
   }
 
@@ -76,27 +76,27 @@
 LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return recordCopy;
 }
 
-+ (id)_adjustRecord:(id)a3 withBoostAdjust:(int)a4 constantGoodness:(int)a5 oldRecord:(id)a6 evaluator:(id)a7 device:(id)a8
++ (id)_adjustRecord:(id)record withBoostAdjust:(int)adjust constantGoodness:(int)goodness oldRecord:(id)oldRecord evaluator:(id)evaluator device:(id)device
 {
   v40 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = [v16 deviceAdjust_DEPRECATED];
-  if ([v15 deviceAdjustTrialEnabled])
+  recordCopy = record;
+  oldRecordCopy = oldRecord;
+  evaluatorCopy = evaluator;
+  deviceCopy = device;
+  deviceAdjust_DEPRECATED = [deviceCopy deviceAdjust_DEPRECATED];
+  if ([evaluatorCopy deviceAdjustTrialEnabled])
   {
-    v17 = [v15 deviceAdjustTrialValue];
+    deviceAdjust_DEPRECATED = [evaluatorCopy deviceAdjustTrialValue];
     v18 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
     {
       v28 = 136315394;
       v29 = "+[SCDAVoiceTriggerCalculation _adjustRecord:withBoostAdjust:constantGoodness:oldRecord:evaluator:device:]";
       v30 = 1024;
-      LODWORD(v31) = v17;
+      LODWORD(v31) = deviceAdjust_DEPRECATED;
       _os_log_impl(&dword_1DA758000, v18, OS_LOG_TYPE_INFO, "%s #scda Using Trial defined Device Adjust Value: %du", &v28, 0x12u);
     }
   }
@@ -105,26 +105,26 @@ LABEL_13:
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
     v20 = v19;
-    v21 = [v16 deviceClassName];
-    v22 = [v16 productTypeName];
-    v23 = [v13 rawAudioGoodnessScore];
+    deviceClassName = [deviceCopy deviceClassName];
+    productTypeName = [deviceCopy productTypeName];
+    rawAudioGoodnessScore = [recordCopy rawAudioGoodnessScore];
     v28 = 136316418;
     v29 = "+[SCDAVoiceTriggerCalculation _adjustRecord:withBoostAdjust:constantGoodness:oldRecord:evaluator:device:]";
     v30 = 2112;
-    v31 = v21;
+    v31 = deviceClassName;
     v32 = 2112;
-    v33 = v22;
+    v33 = productTypeName;
     v34 = 1024;
-    v35 = v17;
+    v35 = deviceAdjust_DEPRECATED;
     v36 = 1024;
-    v37 = a4;
+    adjustCopy = adjust;
     v38 = 1024;
-    v39 = v23;
+    v39 = rawAudioGoodnessScore;
     _os_log_impl(&dword_1DA758000, v20, OS_LOG_TYPE_INFO, "%s #scda BTLE device class: %@ (%@) detected, deviceAdjust: %d incomingAdjustment %d, original rawAudioGoodnessScore: %d", &v28, 0x32u);
   }
 
-  [v13 adjustByAdding:(v17 + a4)];
-  if (a5 <= 0xFF)
+  [recordCopy adjustByAdding:(deviceAdjust_DEPRECATED + adjust)];
+  if (goodness <= 0xFF)
   {
     v24 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_ERROR))
@@ -132,14 +132,14 @@ LABEL_13:
       v28 = 136315394;
       v29 = "+[SCDAVoiceTriggerCalculation _adjustRecord:withBoostAdjust:constantGoodness:oldRecord:evaluator:device:]";
       v30 = 1024;
-      LODWORD(v31) = a5;
+      LODWORD(v31) = goodness;
       _os_log_error_impl(&dword_1DA758000, v24, OS_LOG_TYPE_ERROR, "%s #scda BTLE overriding to constant goodness %d", &v28, 0x12u);
     }
 
-    [v13 setRawAudioGoodnessScore:0 withBump:a5];
+    [recordCopy setRawAudioGoodnessScore:0 withBump:goodness];
   }
 
-  v25 = [SCDAVoiceTriggerCalculation _changeNewRecord:v13 tiebreakerIfIdenticalToOldRecord:v14];
+  v25 = [SCDAVoiceTriggerCalculation _changeNewRecord:recordCopy tiebreakerIfIdenticalToOldRecord:oldRecordCopy];
 
   v26 = *MEMORY[0x1E69E9840];
 

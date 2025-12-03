@@ -1,28 +1,28 @@
 @interface HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria
-- (HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria)initWithV1FeatureAvailabilityManager:(id)a3;
-- (int64_t)isBackgroundDeliverySupportedWithError:(id *)a3;
+- (HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria)initWithV1FeatureAvailabilityManager:(id)manager;
+- (int64_t)isBackgroundDeliverySupportedWithError:(id *)error;
 @end
 
 @implementation HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria
 
-- (HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria)initWithV1FeatureAvailabilityManager:(id)a3
+- (HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria)initWithV1FeatureAvailabilityManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria;
   v6 = [(HDHRIrregularRhythmNotificationsAutomaticUpgradeCriteria *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_v1FeatureAvailabilityManager, a3);
+    objc_storeStrong(&v6->_v1FeatureAvailabilityManager, manager);
   }
 
   return v7;
 }
 
-- (int64_t)isBackgroundDeliverySupportedWithError:(id *)a3
+- (int64_t)isBackgroundDeliverySupportedWithError:(id *)error
 {
-  v3 = [(HDFeatureAvailabilityExtension *)self->_v1FeatureAvailabilityManager onboardedCountryCodeSupportedStateWithError:a3];
+  v3 = [(HDFeatureAvailabilityExtension *)self->_v1FeatureAvailabilityManager onboardedCountryCodeSupportedStateWithError:error];
   v4 = v3;
   if (v3)
   {

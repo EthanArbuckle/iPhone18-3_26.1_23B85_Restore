@@ -1,5 +1,5 @@
 @interface AchievementCardCollectionViewCell
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E072248();
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24E072F6C(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_24E072F6C(contextCopy, coordinatorCopy);
 }
 
 @end

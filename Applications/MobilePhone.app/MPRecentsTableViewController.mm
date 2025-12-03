@@ -1,7 +1,7 @@
 @interface MPRecentsTableViewController
 - (BOOL)canDisplaySearchBarPopover;
 - (BOOL)canPerformTableViewUpdates;
-- (BOOL)isRecentCallContactInFavorites:(id)a3;
+- (BOOL)isRecentCallContactInFavorites:(id)favorites;
 - (BOOL)shouldNavigationControllerPresentLargeTitles;
 - (BOOL)shouldSnapshot;
 - (BOOL)tapTargets;
@@ -9,9 +9,9 @@
 - (CoreTelephonyClient)ctClient;
 - (MPRecentsDetailPresenter)recentsDetailPresenter;
 - (MPRecentsTableViewController)init;
-- (MPRecentsTableViewController)initWithCoder:(id)a3;
-- (MPRecentsTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (MPRecentsTableViewController)initWithRecentsController:(id)a3;
+- (MPRecentsTableViewController)initWithCoder:(id)coder;
+- (MPRecentsTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (MPRecentsTableViewController)initWithRecentsController:(id)controller;
 - (MPRecentsUnknownCallersViewController)unknownCallersViewController;
 - (MPSearchViewController)searchResultsController;
 - (NSArray)indexPathsForMissedCalls;
@@ -20,7 +20,7 @@
 - (PHContactsSearchResultsRanker)ranker;
 - (UIBarButtonItem)clearButtonItem;
 - (UIBarButtonItem)doneButtonItem;
-- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3 isEditing:(BOOL)a4;
+- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category isEditing:(BOOL)editing;
 - (UISearchController)searchController;
 - (UISegmentedControl)tableViewDisplayModeSegmentedControl;
 - (UITableView)tableView;
@@ -28,114 +28,114 @@
 - (_TtC11MobilePhone19RecentsCallServices)callServices;
 - (_TtC11MobilePhone25FaceTimeSpamReportManager)spamReport;
 - (_UIContentUnavailableView)contentUnavailableView;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)_indexPathsForCallsWithStatus:(unsigned int)a3 includeUnknown:(BOOL)a4;
-- (id)callsWithValidHandles:(id)a3;
-- (id)contactViewControllerForRecentCall:(id)a3;
-- (id)contactViewControllerForRecentCall:(id)a3 contact:(id)a4;
-- (id)contactsForRecentCall:(id)a3;
-- (id)contactsForRecentCallForAvatar:(id)a3;
-- (id)fetchCarrierBundleValue:(id)a3 context:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)_indexPathsForCallsWithStatus:(unsigned int)status includeUnknown:(BOOL)unknown;
+- (id)callsWithValidHandles:(id)handles;
+- (id)contactViewControllerForRecentCall:(id)call;
+- (id)contactViewControllerForRecentCall:(id)call contact:(id)contact;
+- (id)contactsForRecentCall:(id)call;
+- (id)contactsForRecentCallForAvatar:(id)avatar;
+- (id)fetchCarrierBundleValue:(id)value context:(id)context;
 - (id)fetchSubscriptionsInUse;
 - (id)indexPathsForRecentCalls;
 - (id)makePersonalNicknameMenuView;
-- (id)multipleContactsBlockViewControllerForRecentCall:(id)a3;
-- (id)multipleContactsViewControllerForRecentCall:(id)a3;
+- (id)multipleContactsBlockViewControllerForRecentCall:(id)call;
+- (id)multipleContactsViewControllerForRecentCall:(id)call;
 - (id)nicknameEditButtonItem;
 - (id)personalizedCarrierString;
-- (id)recentCallAtTableViewIndex:(int64_t)a3;
+- (id)recentCallAtTableViewIndex:(int64_t)index;
 - (id)recentsCellConfigurator;
-- (id)reportSwipeActionForCall:(id)a3;
+- (id)reportSwipeActionForCall:(id)call;
 - (id)searchControllersForDifferentSections;
 - (id)searchResultsControllerProvider;
 - (id)tabBarIconName;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)unknownContactForRecentCall:(id)a3;
-- (int64_t)avatarCardController:(id)a3 presentationResultForLocation:(CGPoint)a4;
-- (int64_t)configureCardController:(id)a3 presentationResultForIndex:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)unknownContactForRecentCall:(id)call;
+- (int64_t)avatarCardController:(id)controller presentationResultForLocation:(CGPoint)location;
+- (int64_t)configureCardController:(id)controller presentationResultForIndex:(id)index;
 - (int64_t)rowCountForCurrentTableMode;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_showCarrierVoiceCallReportAlertForCall:(id)a3;
-- (void)animateSearchResultsController:(BOOL)a3;
-- (void)appResumed:(id)a3;
-- (void)appSuspended:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)clearButtonAction:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_showCarrierVoiceCallReportAlertForCall:(id)call;
+- (void)animateSearchResultsController:(BOOL)controller;
+- (void)appResumed:(id)resumed;
+- (void)appSuspended:(id)suspended;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)clearButtonAction:(id)action;
 - (void)commonInit;
 - (void)configureSearch;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action;
 - (void)contentSizeCategoryDidChange;
-- (void)controller:(id)a3 didCompleteClassificationRequest:(id)a4 withResponse:(id)a5;
+- (void)controller:(id)controller didCompleteClassificationRequest:(id)request withResponse:(id)response;
 - (void)dealloc;
-- (void)didPresentSearchController:(id)a3;
+- (void)didPresentSearchController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)didSelectSuggestedSearchWithToken:(id)a3;
-- (void)dismissUnknownCallersViewController:(id)a3;
-- (void)donateTipsEventSignalsForRecentCall:(id)a3;
-- (void)handleShowDetailsURLForUniqueID:(id)a3;
-- (void)handleShowDetailsURLForUniqueID:(id)a3 withContinuingSearchText:(id)a4;
-- (void)handleUIAccessibilityDarkerSystemColorsStatusDidChangeNotification:(id)a3;
-- (void)handleURL:(id)a3;
+- (void)didSelectSuggestedSearchWithToken:(id)token;
+- (void)dismissUnknownCallersViewController:(id)controller;
+- (void)donateTipsEventSignalsForRecentCall:(id)call;
+- (void)handleShowDetailsURLForUniqueID:(id)d;
+- (void)handleShowDetailsURLForUniqueID:(id)d withContinuingSearchText:(id)text;
+- (void)handleUIAccessibilityDarkerSystemColorsStatusDidChangeNotification:(id)notification;
+- (void)handleURL:(id)l;
 - (void)loadView;
 - (void)makeUIForDefaultPNG;
-- (void)performBatchUpdates:(id)a3 completion:(id)a4;
-- (void)phoneApplicationDidChangeTabBarSelection:(id)a3;
-- (void)placeCallWithRecentCall:(id)a3;
-- (void)presentBlockAllAlertFor:(id)a3;
-- (void)presentBlockUnknownParticipantsFor:(id)a3;
+- (void)performBatchUpdates:(id)updates completion:(id)completion;
+- (void)phoneApplicationDidChangeTabBarSelection:(id)selection;
+- (void)placeCallWithRecentCall:(id)call;
+- (void)presentBlockAllAlertFor:(id)for;
+- (void)presentBlockUnknownParticipantsFor:(id)for;
 - (void)presentCNSharedProfileOnboardingController;
-- (void)presentFaceTimeSpamReportAlertFor:(id)a3;
-- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)a3;
-- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)a3;
+- (void)presentFaceTimeSpamReportAlertFor:(id)for;
+- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)for;
+- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)for;
 - (void)presentUnknownCallersViewController;
-- (void)pushVoicemailMessageDetailsViewControllerForMessage:(id)a3;
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4;
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4;
-- (void)recentsController:(id)a3 didCompleteFetchingCalls:(id)a4;
-- (void)recentsController:(id)a3 didUpdateCalls:(id)a4;
-- (void)recentsControllerDidChangeMessages:(id)a3;
-- (void)reconfiguringCellsForCalls:(id)a3;
+- (void)pushVoicemailMessageDetailsViewControllerForMessage:(id)message;
+- (void)recentsController:(id)controller didChangeCalls:(id)calls;
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count;
+- (void)recentsController:(id)controller didCompleteFetchingCalls:(id)calls;
+- (void)recentsController:(id)controller didUpdateCalls:(id)calls;
+- (void)recentsControllerDidChangeMessages:(id)messages;
+- (void)reconfiguringCellsForCalls:(id)calls;
 - (void)refreshView;
 - (void)reloadDataSource;
-- (void)reloadDataSourceForCalls:(id)a3;
+- (void)reloadDataSourceForCalls:(id)calls;
 - (void)reloadTableView;
 - (void)removeAllRecentCalls;
-- (void)removeRecentCallsAtIndexPaths:(id)a3;
+- (void)removeRecentCallsAtIndexPaths:(id)paths;
 - (void)savePreferences;
 - (void)searchControllerBeginDragging;
-- (void)selectedSegmentDidChangeForSender:(id)a3;
-- (void)setContentUnavailable:(BOOL)a3 animated:(BOOL)a4;
-- (void)setContentUnavailableViewTitle:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNavigationItemsForEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setRecentCalls:(id)a3;
-- (void)setTableViewDisplayMode:(int64_t)a3;
-- (void)showRecentCallDetailsViewControllerForRecentCall:(id)a3;
-- (void)showRecentCallDetailsViewControllerForRecentCall:(id)a3 animated:(BOOL)a4;
-- (void)showRecentCallDetailsViewControllerForRecentCall:(id)a3 navigationController:(id)a4 animated:(BOOL)a5;
-- (void)showReportingExtensionForCall:(id)a3;
-- (void)startSearchingForText:(id)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)selectedSegmentDidChangeForSender:(id)sender;
+- (void)setContentUnavailable:(BOOL)unavailable animated:(BOOL)animated;
+- (void)setContentUnavailableViewTitle:(id)title;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setNavigationItemsForEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setRecentCalls:(id)calls;
+- (void)setTableViewDisplayMode:(int64_t)mode;
+- (void)showRecentCallDetailsViewControllerForRecentCall:(id)call;
+- (void)showRecentCallDetailsViewControllerForRecentCall:(id)call animated:(BOOL)animated;
+- (void)showRecentCallDetailsViewControllerForRecentCall:(id)call navigationController:(id)controller animated:(BOOL)animated;
+- (void)showReportingExtensionForCall:(id)call;
+- (void)startSearchingForText:(id)text;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)tipKitStartObservation;
 - (void)tipKitStopObservation;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)unknownCallersViewControllerDidRequestEnable:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)unknownCallersViewControllerDidRequestEnable:(id)enable;
 - (void)updateLargeTitleInsets;
 - (void)updateNavigationItemsForEditing;
-- (void)updateSearchBarLayoutMarginsPresentingSearchResults:(BOOL)a3;
+- (void)updateSearchBarLayoutMarginsPresentingSearchResults:(BOOL)results;
 - (void)updateTabBarItem;
-- (void)updateTabBarItemWithCount:(unint64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateTabBarItemWithCount:(unint64_t)count;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation MPRecentsTableViewController
@@ -148,38 +148,38 @@
   return v3;
 }
 
-- (void)handleShowDetailsURLForUniqueID:(id)a3
+- (void)handleShowDetailsURLForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(CHManager);
-  v6 = [CHRecentCall predicateForCallsWithUniqueID:v4];
+  v6 = [CHRecentCall predicateForCallsWithUniqueID:dCopy];
   v7 = [v5 callsWithPredicate:v6 limit:0 offset:0 batchSize:0];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
   v9 = PHDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v4;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = firstObject;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "handleShowDetailsURLForUniqueID: %@ found recent call %@", &v15, 0x16u);
   }
 
-  if (v8)
+  if (firstObject)
   {
-    v10 = [(MPRecentsTableViewController *)self navigationController];
-    v11 = [v10 visibleViewController];
+    navigationController = [(MPRecentsTableViewController *)self navigationController];
+    visibleViewController = [navigationController visibleViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [(MPRecentsTableViewController *)self navigationController];
-      v14 = [v13 popViewControllerAnimated:0];
+      navigationController2 = [(MPRecentsTableViewController *)self navigationController];
+      v14 = [navigationController2 popViewControllerAnimated:0];
     }
 
-    [(MPRecentsTableViewController *)self showRecentCallDetailsViewControllerForRecentCall:v8 animated:1];
+    [(MPRecentsTableViewController *)self showRecentCallDetailsViewControllerForRecentCall:firstObject animated:1];
   }
 }
 
@@ -190,30 +190,30 @@
   return 0;
 }
 
-- (MPRecentsTableViewController)initWithCoder:(id)a3
+- (MPRecentsTableViewController)initWithCoder:(id)coder
 {
   [(MPRecentsTableViewController *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (MPRecentsTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MPRecentsTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(MPRecentsTableViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(MPRecentsTableViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }
 
-- (MPRecentsTableViewController)initWithRecentsController:(id)a3
+- (MPRecentsTableViewController)initWithRecentsController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = MPRecentsTableViewController;
   v6 = [(PhoneViewController *)&v15 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recentsController, a3);
+    objc_storeStrong(&v6->_recentsController, controller);
     [(PHRecentsController *)v7->_recentsController addDelegate:v7 queue:&_dispatch_main_q];
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v7 selector:"handleUIAccessibilityDarkerSystemColorsStatusDidChangeNotification:" name:UIAccessibilityDarkerSystemColorsStatusDidChangeNotification object:0];
@@ -253,8 +253,8 @@
   v10 = objc_alloc_init(MPCNMeCardSharingSettingsViewControllerObserver);
   [(MPRecentsTableViewController *)self setMeCardSharingSettingsViewControllerObserver:v10];
   v7 = +[TUCallCenter sharedInstance];
-  v8 = [v7 contactStore];
-  v9 = [CNAvatarViewControllerSettings settingsWithContactStore:v8 threeDTouchEnabled:1];
+  contactStore = [v7 contactStore];
+  v9 = [CNAvatarViewControllerSettings settingsWithContactStore:contactStore threeDTouchEnabled:1];
   [(MPRecentsTableViewController *)self setAvatarViewControllerSettings:v9];
 
   [(MPRecentsTableViewController *)self updateTabBarItem];
@@ -277,8 +277,8 @@
 
 - (void)dealloc
 {
-  v3 = [(MPRecentsTableViewController *)self dataSourcePrefetchingOperationQueue];
-  [v3 cancelAllOperations];
+  dataSourcePrefetchingOperationQueue = [(MPRecentsTableViewController *)self dataSourcePrefetchingOperationQueue];
+  [dataSourcePrefetchingOperationQueue cancelAllOperations];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -298,20 +298,20 @@
     self->_tableView = v4;
 
     [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(MPRecentsTableViewController *)self view];
-    [v6 addSubview:self->_tableView];
+    view = [(MPRecentsTableViewController *)self view];
+    [view addSubview:self->_tableView];
 
-    v7 = [(MPRecentsTableViewController *)self view];
+    view2 = [(MPRecentsTableViewController *)self view];
     v8 = self->_tableView;
-    v9 = [(MPRecentsTableViewController *)self view];
-    v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:7 relatedBy:0 toItem:v9 attribute:7 multiplier:1.0 constant:0.0];
-    [v7 addConstraint:v10];
+    view3 = [(MPRecentsTableViewController *)self view];
+    v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:7 relatedBy:0 toItem:view3 attribute:7 multiplier:1.0 constant:0.0];
+    [view2 addConstraint:v10];
 
-    v11 = [(MPRecentsTableViewController *)self view];
+    view4 = [(MPRecentsTableViewController *)self view];
     v12 = self->_tableView;
-    v13 = [(MPRecentsTableViewController *)self view];
-    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:8 relatedBy:0 toItem:v13 attribute:8 multiplier:1.0 constant:0.0];
-    [v11 addConstraint:v14];
+    view5 = [(MPRecentsTableViewController *)self view];
+    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:8 relatedBy:0 toItem:view5 attribute:8 multiplier:1.0 constant:0.0];
+    [view4 addConstraint:v14];
 
     tableView = self->_tableView;
   }
@@ -349,14 +349,14 @@
   v7.receiver = self;
   v7.super_class = MPRecentsTableViewController;
   [(MPRecentsTableViewController *)&v7 loadView];
-  v3 = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
-  [v3 addTarget:self action:"selectedSegmentDidChangeForSender:" forControlEvents:4096];
-  v4 = [(MPRecentsTableViewController *)self navigationItem];
-  [v4 setTitleView:v3];
+  tableViewDisplayModeSegmentedControl = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
+  [tableViewDisplayModeSegmentedControl addTarget:self action:"selectedSegmentDidChangeForSender:" forControlEvents:4096];
+  navigationItem = [(MPRecentsTableViewController *)self navigationItem];
+  [navigationItem setTitleView:tableViewDisplayModeSegmentedControl];
 
-  v5 = [(MPRecentsTableViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setPrefersLargeTitles:1];
+  navigationController = [(MPRecentsTableViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
   if (+[UIApplication shouldMakeUIForDefaultPNG])
   {
@@ -370,73 +370,73 @@
   v49.super_class = MPRecentsTableViewController;
   [(MPRecentsTableViewController *)&v49 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(MPRecentsTableViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(MPRecentsTableViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(MPRecentsTableViewController *)self navigationItem];
-  [v5 setHidesSearchBarWhenScrolling:0];
+  navigationItem = [(MPRecentsTableViewController *)self navigationItem];
+  [navigationItem setHidesSearchBarWhenScrolling:0];
 
-  v6 = [(MPRecentsTableViewController *)self tableView];
-  [v6 setDataSource:self];
+  tableView = [(MPRecentsTableViewController *)self tableView];
+  [tableView setDataSource:self];
 
-  v7 = [(MPRecentsTableViewController *)self tableView];
-  [v7 setDelegate:self];
+  tableView2 = [(MPRecentsTableViewController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v8 = [(MPRecentsTableViewController *)self tableView];
-  [v8 registerClass:-[MPRecentsTableViewController tableViewCellClass](self forCellReuseIdentifier:{"tableViewCellClass"), @"MPRecentsTableViewCell"}];
+  tableView3 = [(MPRecentsTableViewController *)self tableView];
+  [tableView3 registerClass:-[MPRecentsTableViewController tableViewCellClass](self forCellReuseIdentifier:{"tableViewCellClass"), @"MPRecentsTableViewCell"}];
 
-  v9 = [(MPRecentsTableViewController *)self tableView];
-  [v9 setRowHeight:UITableViewAutomaticDimension];
+  tableView4 = [(MPRecentsTableViewController *)self tableView];
+  [tableView4 setRowHeight:UITableViewAutomaticDimension];
 
-  v10 = [(MPRecentsTableViewController *)self featureFlags];
-  LODWORD(v4) = [v10 phoneRecentsAvatarsEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  LODWORD(view) = [featureFlags phoneRecentsAvatarsEnabled];
 
-  if (v4)
+  if (view)
   {
-    v11 = [(MPRecentsTableViewController *)self tableView];
-    [v11 setSeparatorInsetReference:1];
+    tableView5 = [(MPRecentsTableViewController *)self tableView];
+    [tableView5 setSeparatorInsetReference:1];
   }
 
-  v12 = [(MPRecentsTableViewController *)self tableViewCellClass];
-  v13 = [(MPRecentsTableViewController *)self traitCollection];
-  v14 = [v13 preferredContentSizeCategory];
-  [(objc_class *)v12 separatorInsetForContentSizeCategory:v14 isEditing:[(MPRecentsTableViewController *)self isEditing]];
+  tableViewCellClass = [(MPRecentsTableViewController *)self tableViewCellClass];
+  traitCollection = [(MPRecentsTableViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [(objc_class *)tableViewCellClass separatorInsetForContentSizeCategory:preferredContentSizeCategory isEditing:[(MPRecentsTableViewController *)self isEditing]];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(MPRecentsTableViewController *)self tableView];
-  [v23 setSeparatorInset:{v16, v18, v20, v22}];
+  tableView6 = [(MPRecentsTableViewController *)self tableView];
+  [tableView6 setSeparatorInset:{v16, v18, v20, v22}];
 
   v24 = +[NSBundle mainBundle];
   v25 = [v24 localizedStringForKey:@"NO_RECENTS" value:&stru_10028F310 table:@"PHRecents"];
   [(MPRecentsTableViewController *)self setContentUnavailableViewTitle:v25];
 
-  v26 = [(MPRecentsTableViewController *)self tableViewDisplayMode];
-  v27 = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
-  [v27 setSelectedSegmentIndex:v26];
+  tableViewDisplayMode = [(MPRecentsTableViewController *)self tableViewDisplayMode];
+  tableViewDisplayModeSegmentedControl = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
+  [tableViewDisplayModeSegmentedControl setSelectedSegmentIndex:tableViewDisplayMode];
 
-  v28 = [(MPRecentsTableViewController *)self avatarCardController];
-  [v28 setDelegate:self];
+  avatarCardController = [(MPRecentsTableViewController *)self avatarCardController];
+  [avatarCardController setDelegate:self];
 
-  v29 = [(MPRecentsTableViewController *)self view];
-  v30 = [(MPRecentsTableViewController *)self avatarCardController];
-  [v30 setSourceView:v29];
+  view2 = [(MPRecentsTableViewController *)self view];
+  avatarCardController2 = [(MPRecentsTableViewController *)self avatarCardController];
+  [avatarCardController2 setSourceView:view2];
 
-  v31 = [(MPRecentsTableViewController *)self featureFlags];
-  LOBYTE(v30) = [v31 increaseCallHistoryEnabled];
+  featureFlags2 = [(MPRecentsTableViewController *)self featureFlags];
+  LOBYTE(avatarCardController2) = [featureFlags2 increaseCallHistoryEnabled];
 
-  if ((v30 & 1) == 0)
+  if ((avatarCardController2 & 1) == 0)
   {
-    v32 = [(MPRecentsTableViewController *)self tableView];
-    [(PhoneViewController *)self _loadOffsetDefaultForKey:@"RecentsOffsetKey" withScrollView:v32];
+    tableView7 = [(MPRecentsTableViewController *)self tableView];
+    [(PhoneViewController *)self _loadOffsetDefaultForKey:@"RecentsOffsetKey" withScrollView:tableView7];
   }
 
   [(MPRecentsTableViewController *)self updateLargeTitleInsets];
   v33 = objc_alloc_init(TUFeatureFlags);
-  v34 = [v33 nameAndPhotoEnabledC3];
+  nameAndPhotoEnabledC3 = [v33 nameAndPhotoEnabledC3];
 
-  if (v34)
+  if (nameAndPhotoEnabledC3)
   {
     v35 = PHDefaultLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -447,38 +447,38 @@
 
     v36 = [CNSharedProfileOnboardingController alloc];
     v37 = +[TUCallCenter sharedInstance];
-    v38 = [v37 contactStore];
-    v39 = [v36 initWithContactStore:v38];
+    contactStore = [v37 contactStore];
+    v39 = [v36 initWithContactStore:contactStore];
     [(MPRecentsTableViewController *)self setOnboardingController:v39];
 
-    v40 = [(MPRecentsTableViewController *)self onboardingController];
-    [v40 presentOnboardingFlowIfNeededForMode:1 fromViewController:self];
+    onboardingController = [(MPRecentsTableViewController *)self onboardingController];
+    [onboardingController presentOnboardingFlowIfNeededForMode:1 fromViewController:self];
   }
 
   v41 = +[NSNotificationCenter defaultCenter];
   [v41 addObserver:self selector:"updateNavigationItemsForEditing" name:UIApplicationWillEnterForegroundNotification object:0];
 
-  v42 = [(MPRecentsTableViewController *)self featureFlags];
-  v43 = [v42 callHistorySearchEnabled];
+  featureFlags3 = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags3 callHistorySearchEnabled];
 
-  if (v43)
+  if (callHistorySearchEnabled)
   {
     [(MPRecentsTableViewController *)self configureSearch];
-    v44 = [(MPRecentsTableViewController *)self recentsController];
-    [v44 checkRecentMissedCallCount];
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
+    [recentsController checkRecentMissedCallCount];
 
-    v45 = [(MPRecentsTableViewController *)self searchController];
-    -[MPRecentsTableViewController updateSearchBarLayoutMarginsPresentingSearchResults:](self, "updateSearchBarLayoutMarginsPresentingSearchResults:", [v45 isActive]);
+    searchController = [(MPRecentsTableViewController *)self searchController];
+    -[MPRecentsTableViewController updateSearchBarLayoutMarginsPresentingSearchResults:](self, "updateSearchBarLayoutMarginsPresentingSearchResults:", [searchController isActive]);
   }
 
   v46 = objc_opt_new();
-  v47 = [(MPRecentsTableViewController *)self tabBarItem];
-  [v47 setStandardAppearance:v46];
+  tabBarItem = [(MPRecentsTableViewController *)self tabBarItem];
+  [tabBarItem setStandardAppearance:v46];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v15.receiver = self;
   v15.super_class = MPRecentsTableViewController;
   [(MPRecentsTableViewController *)&v15 viewWillAppear:?];
@@ -493,10 +493,10 @@
     [(MPRecentsTableViewController *)self reloadDataSource];
   }
 
-  v6 = [(MPRecentsTableViewController *)self shouldNavigationControllerPresentLargeTitles];
-  v7 = [(MPRecentsTableViewController *)self navigationItem];
-  v8 = v7;
-  if (v6)
+  shouldNavigationControllerPresentLargeTitles = [(MPRecentsTableViewController *)self shouldNavigationControllerPresentLargeTitles];
+  navigationItem = [(MPRecentsTableViewController *)self navigationItem];
+  v8 = navigationItem;
+  if (shouldNavigationControllerPresentLargeTitles)
   {
     v9 = 1;
   }
@@ -506,32 +506,32 @@
     v9 = 2;
   }
 
-  [v7 setLargeTitleDisplayMode:v9];
+  [navigationItem setLargeTitleDisplayMode:v9];
 
-  [(MPRecentsTableViewController *)self setNavigationItemsForEditing:[(MPRecentsTableViewController *)self isEditing] animated:v3];
-  v10 = [(MPRecentsTableViewController *)self navigationItem];
-  v11 = [v10 navigationBar];
-  [v11 sizeToFit];
+  [(MPRecentsTableViewController *)self setNavigationItemsForEditing:[(MPRecentsTableViewController *)self isEditing] animated:appearCopy];
+  navigationItem2 = [(MPRecentsTableViewController *)self navigationItem];
+  navigationBar = [navigationItem2 navigationBar];
+  [navigationBar sizeToFit];
 
-  v12 = [(MPRecentsTableViewController *)self pendingSearchText];
-  v13 = [v12 length];
+  pendingSearchText = [(MPRecentsTableViewController *)self pendingSearchText];
+  v13 = [pendingSearchText length];
 
   if (v13)
   {
-    v14 = [(MPRecentsTableViewController *)self pendingSearchText];
-    [(MPRecentsTableViewController *)self startSearchingForText:v14];
+    pendingSearchText2 = [(MPRecentsTableViewController *)self pendingSearchText];
+    [(MPRecentsTableViewController *)self startSearchingForText:pendingSearchText2];
 
     [(MPRecentsTableViewController *)self setPendingSearchText:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = MPRecentsTableViewController;
-  [(PhoneViewController *)&v11 viewDidAppear:a3];
-  v4 = [(MPRecentsTableViewController *)self navigationItem];
-  [v4 setHidesSearchBarWhenScrolling:1];
+  [(PhoneViewController *)&v11 viewDidAppear:appear];
+  navigationItem = [(MPRecentsTableViewController *)self navigationItem];
+  [navigationItem setHidesSearchBarWhenScrolling:1];
 
   if ([(MPRecentsTableViewController *)self pendingSearchControllerActivation])
   {
@@ -602,20 +602,20 @@ void __46__MPRecentsTableViewController_viewDidAppear___block_invoke_3(uint64_t 
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MPRecentsTableViewController *)self tableView];
-  [v11 setDirectionalLayoutMargins:{v4, v6, v8, v10}];
+  tableView = [(MPRecentsTableViewController *)self tableView];
+  [tableView setDirectionalLayoutMargins:{v4, v6, v8, v10}];
 
-  v12 = [(MPRecentsTableViewController *)self searchController];
-  -[MPRecentsTableViewController updateSearchBarLayoutMarginsPresentingSearchResults:](self, "updateSearchBarLayoutMarginsPresentingSearchResults:", [v12 isActive]);
+  searchController = [(MPRecentsTableViewController *)self searchController];
+  -[MPRecentsTableViewController updateSearchBarLayoutMarginsPresentingSearchResults:](self, "updateSearchBarLayoutMarginsPresentingSearchResults:", [searchController isActive]);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MPRecentsTableViewController;
-  [(MPRecentsTableViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(MPRecentsTableViewController *)self recentsController];
-  [v4 markRecentCallsAsRead];
+  [(MPRecentsTableViewController *)&v6 viewWillDisappear:disappear];
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
+  [recentsController markRecentCallsAsRead];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"PhoneApplicationDidChangeTabBarSelectionNotification" object:0];
@@ -626,16 +626,16 @@ void __46__MPRecentsTableViewController_viewDidAppear___block_invoke_3(uint64_t 
   [TPTipsHelper updateCanDisplayCallHistorySearchTip:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = MPRecentsTableViewController;
   [(MPRecentsTableViewController *)&v8 viewDidDisappear:?];
-  v5 = [(MPRecentsTableViewController *)self tableView];
-  v6 = [(MPRecentsTableViewController *)self tableView];
-  v7 = [v6 indexPathForSelectedRow];
-  [v5 deselectRowAtIndexPath:v7 animated:v3];
+  tableView = [(MPRecentsTableViewController *)self tableView];
+  tableView2 = [(MPRecentsTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:disappearCopy];
 
   if ([(MPRecentsTableViewController *)self isEditing])
   {
@@ -643,29 +643,29 @@ void __46__MPRecentsTableViewController_viewDidAppear___block_invoke_3(uint64_t 
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v22.receiver = self;
   v22.super_class = MPRecentsTableViewController;
   [MPRecentsTableViewController setEditing:"setEditing:animated:" animated:?];
-  v7 = [(MPRecentsTableViewController *)self tableView];
-  [v7 setEditing:v5 animated:v4];
+  tableView = [(MPRecentsTableViewController *)self tableView];
+  [tableView setEditing:editingCopy animated:animatedCopy];
 
-  v8 = [(MPRecentsTableViewController *)self tableViewCellClass];
-  v9 = [(MPRecentsTableViewController *)self traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
-  [(objc_class *)v8 separatorInsetForContentSizeCategory:v10 isEditing:v5];
+  tableViewCellClass = [(MPRecentsTableViewController *)self tableViewCellClass];
+  traitCollection = [(MPRecentsTableViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [(objc_class *)tableViewCellClass separatorInsetForContentSizeCategory:preferredContentSizeCategory isEditing:editingCopy];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(MPRecentsTableViewController *)self tableView];
-  [v19 setSeparatorInset:{v12, v14, v16, v18}];
+  tableView2 = [(MPRecentsTableViewController *)self tableView];
+  [tableView2 setSeparatorInset:{v12, v14, v16, v18}];
 
-  [(MPRecentsTableViewController *)self setNavigationItemsForEditing:v5 animated:v4];
-  if (!v5 && [(MPRecentsTableViewController *)self dataSourceNeedsReload])
+  [(MPRecentsTableViewController *)self setNavigationItemsForEditing:editingCopy animated:animatedCopy];
+  if (!editingCopy && [(MPRecentsTableViewController *)self dataSourceNeedsReload])
   {
     v20 = PHDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -678,37 +678,37 @@ void __46__MPRecentsTableViewController_viewDidAppear___block_invoke_3(uint64_t 
   }
 }
 
-- (void)setContentUnavailable:(BOOL)a3 animated:(BOOL)a4
+- (void)setContentUnavailable:(BOOL)unavailable animated:(BOOL)animated
 {
-  if (self->_contentUnavailable != a3)
+  if (self->_contentUnavailable != unavailable)
   {
     v19 = v7;
     v20 = v6;
     v21 = v4;
     v22 = v5;
-    v8 = a3;
-    self->_contentUnavailable = a3;
-    if (self->_contentUnavailableView || a3)
+    unavailableCopy = unavailable;
+    self->_contentUnavailable = unavailable;
+    if (self->_contentUnavailableView || unavailable)
     {
-      v11 = a4;
+      animatedCopy = animated;
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = __63__MPRecentsTableViewController_setContentUnavailable_animated___block_invoke;
       v17[3] = &unk_100285418;
-      v18 = a3;
+      unavailableCopy2 = unavailable;
       v17[4] = self;
       v12 = objc_retainBlock(v17);
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = __63__MPRecentsTableViewController_setContentUnavailable_animated___block_invoke_2;
       v15[3] = &unk_100285120;
-      v16 = v8;
+      v16 = unavailableCopy;
       v15[4] = self;
       v13 = objc_retainBlock(v15);
-      v14 = [(MPRecentsTableViewController *)self tableView];
-      [v14 setHidden:v8];
+      tableView = [(MPRecentsTableViewController *)self tableView];
+      [tableView setHidden:unavailableCopy];
 
-      if (v11)
+      if (animatedCopy)
       {
         [UIView animateWithDuration:4 delay:v13 options:v12 animations:0.300000012 completion:0.0];
       }
@@ -755,11 +755,11 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
 
 - (BOOL)shouldNavigationControllerPresentLargeTitles
 {
-  v3 = [(MPRecentsTableViewController *)self recentCalls];
-  if (v3)
+  recentCalls = [(MPRecentsTableViewController *)self recentCalls];
+  if (recentCalls)
   {
-    v4 = [(MPRecentsTableViewController *)self recentCalls];
-    v5 = [v4 count] != 0;
+    recentCalls2 = [(MPRecentsTableViewController *)self recentCalls];
+    v5 = [recentCalls2 count] != 0;
   }
 
   else
@@ -772,9 +772,9 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
 
 - (void)updateNavigationItemsForEditing
 {
-  v3 = [(MPRecentsTableViewController *)self isEditing];
+  isEditing = [(MPRecentsTableViewController *)self isEditing];
 
-  [(MPRecentsTableViewController *)self setNavigationItemsForEditing:v3 animated:0];
+  [(MPRecentsTableViewController *)self setNavigationItemsForEditing:isEditing animated:0];
 }
 
 - (void)savePreferences
@@ -782,17 +782,17 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
   v3 = [NSNumber numberWithInteger:[(MPRecentsTableViewController *)self tableViewDisplayMode]];
   PHPreferencesSetValueInDomain();
 
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  if (([v5 increaseCallHistoryEnabled] & 1) == 0 && -[MPRecentsTableViewController isViewLoaded](self, "isViewLoaded"))
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  if (([featureFlags increaseCallHistoryEnabled] & 1) == 0 && -[MPRecentsTableViewController isViewLoaded](self, "isViewLoaded"))
   {
-    v4 = [(MPRecentsTableViewController *)self tableView];
+    tableView = [(MPRecentsTableViewController *)self tableView];
 
-    if (!v4)
+    if (!tableView)
     {
       return;
     }
 
-    v5 = [(MPRecentsTableViewController *)self tableView];
+    featureFlags = [(MPRecentsTableViewController *)self tableView];
     [(PhoneViewController *)self _saveOffsetDefaultForKey:@"RecentsOffsetKey" withScrollView:?];
   }
 }
@@ -804,19 +804,19 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
     return 0;
   }
 
-  v4 = [(MPRecentsTableViewController *)self navigationController];
-  v5 = [v4 visibleViewController];
-  v3 = v5 == self;
+  navigationController = [(MPRecentsTableViewController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
+  v3 = visibleViewController == self;
 
   return v3;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = [a3 scheme];
-  v5 = [v4 lowercaseString];
+  scheme = [l scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v5 isEqualToString:@"mobilephone-unknowncallerstip"])
+  if ([lowercaseString isEqualToString:@"mobilephone-unknowncallerstip"])
   {
     [(MPRecentsTableViewController *)self presentUnknownCallersViewController];
   }
@@ -824,30 +824,30 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
 
 - (BOOL)tapTargets
 {
-  v2 = [(MPRecentsTableViewController *)self featureFlags];
-  v3 = [v2 recentsCallTapTargetsEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  recentsCallTapTargetsEnabled = [featureFlags recentsCallTapTargetsEnabled];
 
-  return v3;
+  return recentsCallTapTargetsEnabled;
 }
 
 - (UISearchController)searchController
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 callHistorySearchEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v4)
+  if (callHistorySearchEnabled)
   {
     searchController = self->_searchController;
     if (!searchController)
     {
       v6 = [UISearchController alloc];
-      v7 = [(MPRecentsTableViewController *)self searchResultsController];
-      v8 = [v6 initWithSearchResultsController:v7];
+      searchResultsController = [(MPRecentsTableViewController *)self searchResultsController];
+      v8 = [v6 initWithSearchResultsController:searchResultsController];
       v9 = self->_searchController;
       self->_searchController = v8;
 
-      v10 = [(MPRecentsTableViewController *)self searchResultsController];
-      [(UISearchController *)self->_searchController setSearchResultsUpdater:v10];
+      searchResultsController2 = [(MPRecentsTableViewController *)self searchResultsController];
+      [(UISearchController *)self->_searchController setSearchResultsUpdater:searchResultsController2];
 
       [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
       [(UISearchController *)self->_searchController setDelegate:self];
@@ -867,10 +867,10 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
 
 - (MPSearchViewController)searchResultsController
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 callHistorySearchEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v4)
+  if (callHistorySearchEnabled)
   {
     searchResultsController = self->_searchResultsController;
     if (!searchResultsController)
@@ -880,11 +880,11 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
       self->_searchResultsController = v6;
 
       [(MPSearchViewController *)self->_searchResultsController setDelegate:self];
-      v8 = [(MPRecentsTableViewController *)self searchResultsControllerProvider];
-      [(MPSearchViewController *)self->_searchResultsController setSearchControllerProvider:v8];
+      searchResultsControllerProvider = [(MPRecentsTableViewController *)self searchResultsControllerProvider];
+      [(MPSearchViewController *)self->_searchResultsController setSearchControllerProvider:searchResultsControllerProvider];
 
-      v9 = [(MPRecentsTableViewController *)self navigationController];
-      [(MPSearchViewController *)self->_searchResultsController setHostingNavigationController:v9];
+      navigationController = [(MPRecentsTableViewController *)self navigationController];
+      [(MPSearchViewController *)self->_searchResultsController setHostingNavigationController:navigationController];
 
       searchResultsController = self->_searchResultsController;
     }
@@ -902,56 +902,56 @@ void __63__MPRecentsTableViewController_setContentUnavailable_animated___block_i
 
 - (id)searchControllersForDifferentSections
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 callHistorySearchEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v4)
+  if (callHistorySearchEnabled)
   {
     v35 = objc_alloc_init(NSMutableArray);
     v5 = objc_alloc_init(MPSuggestionsSearchTableViewController);
     [v5 setSuggestionsDelegate:self];
     v6 = [MPSuggestionsSearchController alloc];
     v7 = +[PHApplicationServices sharedInstance];
-    v8 = [v7 callProviderManager];
+    callProviderManager = [v7 callProviderManager];
     v38 = v5;
-    v9 = [v6 initWithTableViewController:v5 callProviderManager:v8];
+    v9 = [v6 initWithTableViewController:v5 callProviderManager:callProviderManager];
 
     v37 = v9;
     [v35 addObject:v9];
-    v10 = [(MPRecentsTableViewController *)self recentsController];
-    v11 = [v10 callHistoryControllerCoalescingStrategy];
-    v12 = [(MPRecentsTableViewController *)self recentsController];
-    v13 = +[TUCallHistoryController callHistoryControllerWithCoalescingStrategy:options:](TUCallHistoryController, "callHistoryControllerWithCoalescingStrategy:options:", v11, [v12 callHistoryControllerOptions]);
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
+    callHistoryControllerCoalescingStrategy = [recentsController callHistoryControllerCoalescingStrategy];
+    recentsController2 = [(MPRecentsTableViewController *)self recentsController];
+    v13 = +[TUCallHistoryController callHistoryControllerWithCoalescingStrategy:options:](TUCallHistoryController, "callHistoryControllerWithCoalescingStrategy:options:", callHistoryControllerCoalescingStrategy, [recentsController2 callHistoryControllerOptions]);
 
     [v13 boostQualityOfService];
     v14 = [PHRecentsController alloc];
-    v34 = [(MPRecentsTableViewController *)self recentsController];
-    v15 = [v34 callProviderManager];
-    v16 = [(MPRecentsTableViewController *)self recentsController];
-    v17 = [v16 contactStore];
-    v18 = [(MPRecentsTableViewController *)self recentsController];
-    v19 = [v18 suggestedContactStore];
-    v20 = [(MPRecentsTableViewController *)self recentsController];
-    v21 = [v20 metadataCache];
+    recentsController3 = [(MPRecentsTableViewController *)self recentsController];
+    callProviderManager2 = [recentsController3 callProviderManager];
+    recentsController4 = [(MPRecentsTableViewController *)self recentsController];
+    contactStore = [recentsController4 contactStore];
+    recentsController5 = [(MPRecentsTableViewController *)self recentsController];
+    suggestedContactStore = [recentsController5 suggestedContactStore];
+    recentsController6 = [(MPRecentsTableViewController *)self recentsController];
+    metadataCache = [recentsController6 metadataCache];
     v36 = v13;
-    v22 = [(PHRecentsController *)v14 initWithCallHistoryController:v13 callProviderManager:v15 contactStore:v17 suggestedContactStore:v19 metadataCache:v21];
+    v22 = [(PHRecentsController *)v14 initWithCallHistoryController:v13 callProviderManager:callProviderManager2 contactStore:contactStore suggestedContactStore:suggestedContactStore metadataCache:metadataCache];
 
     v23 = v35;
     v24 = [[MPCallsSearchController alloc] initWithRecentsController:v22 searchResultsController:self->_searchResultsController];
     [v35 addObject:v24];
-    v25 = [(MPRecentsTableViewController *)self featureFlags];
-    LODWORD(v19) = [v25 voicemailSearchEnabled];
+    featureFlags2 = [(MPRecentsTableViewController *)self featureFlags];
+    LODWORD(suggestedContactStore) = [featureFlags2 voicemailSearchEnabled];
 
-    if (v19)
+    if (suggestedContactStore)
     {
-      v26 = [(MPRecentsTableViewController *)self navigationController];
+      navigationController = [(MPRecentsTableViewController *)self navigationController];
       v27 = +[(PHApplicationServices *)MPApplicationServices];
-      v28 = [v27 voicemailController];
-      [v26 setVoicemailController:v28];
+      voicemailController = [v27 voicemailController];
+      [navigationController setVoicemailController:voicemailController];
 
       v29 = [MPVoicemailsSearchController alloc];
-      v30 = [v27 voicemailController];
-      v31 = [(MPVoicemailsSearchController *)v29 initWithNavigationController:v26 voicemailController:v30];
+      voicemailController2 = [v27 voicemailController];
+      v31 = [(MPVoicemailsSearchController *)v29 initWithNavigationController:navigationController voicemailController:voicemailController2];
 
       [v35 addObject:v31];
     }
@@ -1019,23 +1019,23 @@ TUCallProviderManager *__cdecl __69__MPRecentsTableViewController_searchControll
 
 - (void)configureSearch
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 callHistorySearchEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v4)
+  if (callHistorySearchEnabled)
   {
-    v5 = [(MPRecentsTableViewController *)self searchController];
-    v6 = [v5 searchBar];
-    [v6 sizeToFit];
+    searchController = [(MPRecentsTableViewController *)self searchController];
+    searchBar = [searchController searchBar];
+    [searchBar sizeToFit];
 
     v7 = +[UIColor linkColor];
-    v8 = [(MPRecentsTableViewController *)self searchController];
-    v9 = [v8 searchBar];
-    [v9 setTintColor:v7];
+    searchController2 = [(MPRecentsTableViewController *)self searchController];
+    searchBar2 = [searchController2 searchBar];
+    [searchBar2 setTintColor:v7];
 
-    v11 = [(MPRecentsTableViewController *)self searchController];
-    v10 = [(MPRecentsTableViewController *)self navigationItem];
-    [v10 setSearchController:v11];
+    searchController3 = [(MPRecentsTableViewController *)self searchController];
+    navigationItem = [(MPRecentsTableViewController *)self navigationItem];
+    [navigationItem setSearchController:searchController3];
   }
 }
 
@@ -1073,23 +1073,23 @@ id __63__MPRecentsTableViewController_searchResultsControllerProvider__block_inv
   return v4;
 }
 
-- (void)updateSearchBarLayoutMarginsPresentingSearchResults:(BOOL)a3
+- (void)updateSearchBarLayoutMarginsPresentingSearchResults:(BOOL)results
 {
-  v3 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 callHistorySearchEnabled];
+  resultsCopy = results;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v6)
+  if (callHistorySearchEnabled)
   {
-    v7 = [(MPRecentsTableViewController *)self view];
-    [v7 layoutMargins];
+    view = [(MPRecentsTableViewController *)self view];
+    [view layoutMargins];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = !v3;
-    if (v3)
+    v16 = !resultsCopy;
+    if (resultsCopy)
     {
       v17 = 10;
     }
@@ -1104,25 +1104,25 @@ id __63__MPRecentsTableViewController_searchResultsControllerProvider__block_inv
       v13 = 0.0;
     }
 
-    v19 = [(MPRecentsTableViewController *)self searchController];
-    v18 = [v19 searchBar];
-    [v18 _setOverrideContentInsets:v17 forRectEdges:{v9, v11, v13, v15}];
+    searchController = [(MPRecentsTableViewController *)self searchController];
+    searchBar = [searchController searchBar];
+    [searchBar _setOverrideContentInsets:v17 forRectEdges:{v9, v11, v13, v15}];
   }
 }
 
 - (id)recentsCellConfigurator
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 useSharedRecentsViewModel];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v4)
+  if (useSharedRecentsViewModel)
   {
     v29[0] = 0;
     v29[1] = v29;
     v29[2] = 0x3032000000;
     v29[3] = __Block_byref_object_copy__3;
     v29[4] = __Block_byref_object_dispose__3;
-    v30 = [(MPRecentsTableViewController *)self callServices];
+    callServices = [(MPRecentsTableViewController *)self callServices];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = __55__MPRecentsTableViewController_recentsCellConfigurator__block_invoke;
@@ -1141,20 +1141,20 @@ id __63__MPRecentsTableViewController_searchResultsControllerProvider__block_inv
     {
       v23 = v5;
       v8 = [MPContactsService alloc];
-      v9 = [(MPRecentsTableViewController *)self recentsController];
-      v24 = [(MPContactsService *)v8 initWithDataProvider:v9];
+      recentsController = [(MPRecentsTableViewController *)self recentsController];
+      v24 = [(MPContactsService *)v8 initWithDataProvider:recentsController];
 
       v10 = [MPReportFlowPresenter alloc];
-      v11 = [(MPRecentsTableViewController *)self callReportingViewModel];
-      v22 = [(MPReportFlowPresenter *)v10 initWithCallReportingViewModel:v11 alertPresentingViewController:self contactsService:v24];
+      callReportingViewModel = [(MPRecentsTableViewController *)self callReportingViewModel];
+      v22 = [(MPReportFlowPresenter *)v10 initWithCallReportingViewModel:callReportingViewModel alertPresentingViewController:self contactsService:v24];
 
       v12 = [MPRecentsCellConfigurator alloc];
-      v13 = [(MPRecentsTableViewController *)self tableView];
-      v14 = [(MPRecentsTableViewController *)self recentsController];
-      v15 = [(MPRecentsTableViewController *)self featureFlags];
-      v16 = [(MPRecentsTableViewController *)self tapTargets];
-      v17 = [(MPRecentsTableViewController *)self callReportingViewModel];
-      v18 = [(MPRecentsCellConfigurator *)v12 initWithTableView:v13 recentsController:v14 featureFlags:v15 tapTargets:v16 callReportingViewModel:v17 reportFlowPresenter:v22 contactsService:v24 avatarViewControllerSettings:0 placeCallAction:v23 removeCallsAtIndexPaths:v6 presentingViewController:self];
+      tableView = [(MPRecentsTableViewController *)self tableView];
+      recentsController2 = [(MPRecentsTableViewController *)self recentsController];
+      featureFlags2 = [(MPRecentsTableViewController *)self featureFlags];
+      tapTargets = [(MPRecentsTableViewController *)self tapTargets];
+      callReportingViewModel2 = [(MPRecentsTableViewController *)self callReportingViewModel];
+      v18 = [(MPRecentsCellConfigurator *)v12 initWithTableView:tableView recentsController:recentsController2 featureFlags:featureFlags2 tapTargets:tapTargets callReportingViewModel:callReportingViewModel2 reportFlowPresenter:v22 contactsService:v24 avatarViewControllerSettings:0 placeCallAction:v23 removeCallsAtIndexPaths:v6 presentingViewController:self];
       v19 = self->_cellConfigurator;
       self->_cellConfigurator = v18;
 
@@ -1191,19 +1191,19 @@ void __55__MPRecentsTableViewController_recentsCellConfigurator__block_invoke_2(
 
 - (_TtC11MobilePhone19RecentsCallServices)callServices
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 useSharedRecentsViewModel];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v4)
+  if (useSharedRecentsViewModel)
   {
     callServices = self->_callServices;
     if (!callServices)
     {
       v6 = [_TtC11MobilePhone19RecentsCallServices alloc];
-      v7 = [(MPRecentsTableViewController *)self featureFlags];
-      v8 = [v7 groupConversations];
-      v9 = [(MPRecentsTableViewController *)self recentsController];
-      v10 = [(RecentsCallServices *)v6 initWithGroupConversationsEnabled:v8 recentsCallServicesDialer:v9];
+      featureFlags2 = [(MPRecentsTableViewController *)self featureFlags];
+      groupConversations = [featureFlags2 groupConversations];
+      recentsController = [(MPRecentsTableViewController *)self recentsController];
+      v10 = [(RecentsCallServices *)v6 initWithGroupConversationsEnabled:groupConversations recentsCallServicesDialer:recentsController];
       v11 = self->_callServices;
       self->_callServices = v10;
 
@@ -1223,18 +1223,18 @@ void __55__MPRecentsTableViewController_recentsCellConfigurator__block_invoke_2(
 
 - (MPRecentsDetailPresenter)recentsDetailPresenter
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 useSharedRecentsViewModel];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v4)
+  if (useSharedRecentsViewModel)
   {
     recentsDetailPresenter = self->_recentsDetailPresenter;
     if (!recentsDetailPresenter)
     {
       v6 = [MPRecentsDetailPresenter alloc];
-      v7 = [(MPRecentsTableViewController *)self recentsController];
-      v8 = [(MPRecentsTableViewController *)self callReportingViewModel];
-      v9 = [(MPRecentsDetailPresenter *)v6 initWithRecentsController:v7 callReportingViewModel:v8];
+      recentsController = [(MPRecentsTableViewController *)self recentsController];
+      callReportingViewModel = [(MPRecentsTableViewController *)self callReportingViewModel];
+      v9 = [(MPRecentsDetailPresenter *)v6 initWithRecentsController:recentsController callReportingViewModel:callReportingViewModel];
       v10 = self->_recentsDetailPresenter;
       self->_recentsDetailPresenter = v9;
 
@@ -1255,14 +1255,14 @@ void __55__MPRecentsTableViewController_recentsCellConfigurator__block_invoke_2(
 - (id)indexPathsForRecentCalls
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MPRecentsTableViewController *)self recentCalls];
+  recentCalls = [(MPRecentsTableViewController *)self recentCalls];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __56__MPRecentsTableViewController_indexPathsForRecentCalls__block_invoke;
   v8[3] = &unk_1002862E8;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [recentCalls enumerateObjectsUsingBlock:v8];
 
   v6 = [v5 copy];
 
@@ -1276,19 +1276,19 @@ void __56__MPRecentsTableViewController_indexPathsForRecentCalls__block_invoke(u
   [v3 addObject:v4];
 }
 
-- (id)_indexPathsForCallsWithStatus:(unsigned int)a3 includeUnknown:(BOOL)a4
+- (id)_indexPathsForCallsWithStatus:(unsigned int)status includeUnknown:(BOOL)unknown
 {
   v7 = +[NSMutableArray array];
-  v8 = [(MPRecentsTableViewController *)self recentCalls];
+  recentCalls = [(MPRecentsTableViewController *)self recentCalls];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = __77__MPRecentsTableViewController__indexPathsForCallsWithStatus_includeUnknown___block_invoke;
   v15 = &unk_100286310;
-  v17 = a3;
-  v18 = a4;
+  statusCopy = status;
+  unknownCopy = unknown;
   v16 = v7;
   v9 = v7;
-  [v8 enumerateObjectsUsingBlock:&v12];
+  [recentCalls enumerateObjectsUsingBlock:&v12];
 
   v10 = [v9 copy];
 
@@ -1338,125 +1338,125 @@ void __77__MPRecentsTableViewController__indexPathsForCallsWithStatus_includeUnk
 
 - (int64_t)rowCountForCurrentTableMode
 {
-  v3 = [(MPRecentsTableViewController *)self recentCalls];
-  v4 = [v3 count];
+  recentCalls = [(MPRecentsTableViewController *)self recentCalls];
+  v4 = [recentCalls count];
 
   if ([(MPRecentsTableViewController *)self tableViewDisplayMode]== 1)
   {
-    v5 = [(MPRecentsTableViewController *)self indexPathsForMissedCalls];
-    v4 = [v5 count];
+    indexPathsForMissedCalls = [(MPRecentsTableViewController *)self indexPathsForMissedCalls];
+    v4 = [indexPathsForMissedCalls count];
   }
 
   return v4;
 }
 
-- (id)recentCallAtTableViewIndex:(int64_t)a3
+- (id)recentCallAtTableViewIndex:(int64_t)index
 {
-  v5 = [(MPRecentsTableViewController *)self tableViewDisplayMode];
-  if (v5 == 1)
+  tableViewDisplayMode = [(MPRecentsTableViewController *)self tableViewDisplayMode];
+  if (tableViewDisplayMode == 1)
   {
-    if (a3 < 0 || (-[MPRecentsTableViewController indexPathsForMissedCalls](self, "indexPathsForMissedCalls"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 <= a3))
+    if (index < 0 || (-[MPRecentsTableViewController indexPathsForMissedCalls](self, "indexPathsForMissedCalls"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 <= index))
     {
-      a3 = 0x7FFFFFFFFFFFFFFFLL;
+      index = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v8 = [(MPRecentsTableViewController *)self indexPathsForMissedCalls];
-      v9 = [v8 objectAtIndex:a3];
+      indexPathsForMissedCalls = [(MPRecentsTableViewController *)self indexPathsForMissedCalls];
+      v9 = [indexPathsForMissedCalls objectAtIndex:index];
 
-      a3 = [v9 row];
+      index = [v9 row];
     }
   }
 
-  else if (v5)
+  else if (tableViewDisplayMode)
   {
-    a3 = 0x7FFFFFFFFFFFFFFFLL;
+    index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = [(MPRecentsTableViewController *)self recentCalls];
-  v11 = [v10 count];
+  recentCalls = [(MPRecentsTableViewController *)self recentCalls];
+  v11 = [recentCalls count];
 
   v12 = 0;
-  if ((a3 & 0x8000000000000000) == 0 && a3 < v11)
+  if ((index & 0x8000000000000000) == 0 && index < v11)
   {
-    v13 = [(MPRecentsTableViewController *)self recentCalls];
-    v12 = [v13 objectAtIndexedSubscript:a3];
+    recentCalls2 = [(MPRecentsTableViewController *)self recentCalls];
+    v12 = [recentCalls2 objectAtIndexedSubscript:index];
   }
 
   return v12;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPRecentsTableViewController *)self featureFlags];
-  v9 = [v8 useSharedRecentsViewModel];
+  viewCopy = view;
+  pathCopy = path;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v9)
+  if (useSharedRecentsViewModel)
   {
-    v10 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [v7 row]);
-    v11 = [(MPRecentsTableViewController *)self cellConfigurator];
-    v12 = [v11 cellForRowAtIndexPath:v7 withRecentCall:v10];
+    v10 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [pathCopy row]);
+    cellConfigurator = [(MPRecentsTableViewController *)self cellConfigurator];
+    v12 = [cellConfigurator cellForRowAtIndexPath:pathCopy withRecentCall:v10];
 
     goto LABEL_23;
   }
 
-  v12 = [v6 dequeueReusableCellWithIdentifier:@"MPRecentsTableViewCell" forIndexPath:v7];
-  v10 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [v7 row]);
-  v13 = [(MPRecentsTableViewController *)self featureFlags];
-  v14 = [v13 phoneRecentsAvatarsEnabled];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"MPRecentsTableViewCell" forIndexPath:pathCopy];
+  v10 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [pathCopy row]);
+  featureFlags2 = [(MPRecentsTableViewController *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags2 phoneRecentsAvatarsEnabled];
 
-  if (v14)
+  if (phoneRecentsAvatarsEnabled)
   {
-    v15 = [v12 avatarViewController];
+    avatarViewController = [v12 avatarViewController];
 
-    if (!v15)
+    if (!avatarViewController)
     {
       v16 = [CNAvatarViewController alloc];
-      v17 = [(MPRecentsTableViewController *)self avatarViewControllerSettings];
-      v18 = [v16 initWithSettings:v17];
+      avatarViewControllerSettings = [(MPRecentsTableViewController *)self avatarViewControllerSettings];
+      v18 = [v16 initWithSettings:avatarViewControllerSettings];
 
       [v18 setObjectViewControllerDelegate:self];
       [v12 setAvatarViewController:v18];
-      v19 = [v12 avatarViewController];
-      v20 = [v19 view];
+      avatarViewController2 = [v12 avatarViewController];
+      view = [avatarViewController2 view];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v22 = [v12 avatarViewController];
-        v23 = [v22 view];
+        avatarViewController3 = [v12 avatarViewController];
+        view2 = [avatarViewController3 view];
 
-        [v23 setAllowStaleRendering:1];
+        [view2 setAllowStaleRendering:1];
       }
     }
 
     v24 = [(MPRecentsTableViewController *)self contactsForRecentCallForAvatar:v10];
-    v25 = [v12 avatarViewController];
-    [v25 setContacts:v24];
+    avatarViewController4 = [v12 avatarViewController];
+    [avatarViewController4 setContacts:v24];
 
-    v26 = [v12 avatarViewController];
-    v27 = [v26 view];
+    avatarViewController5 = [v12 avatarViewController];
+    view3 = [avatarViewController5 view];
     objc_opt_class();
     v28 = objc_opt_isKindOfClass();
 
     if (v28)
     {
-      v29 = [v12 avatarViewController];
-      v30 = [v29 view];
+      avatarViewController6 = [v12 avatarViewController];
+      view4 = [avatarViewController6 view];
 
-      v31 = [v10 uniqueId];
-      [v30 setContextToken:v31];
+      uniqueId = [v10 uniqueId];
+      [view4 setContextToken:uniqueId];
     }
   }
 
   if (v10)
   {
-    v32 = [(MPRecentsTableViewController *)self recentsController];
-    v33 = [v32 itemForRecentCall:v10 presentationStyle:0];
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
+    v33 = [recentsController itemForRecentCall:v10 presentationStyle:0];
 
     if (objc_opt_respondsToSelector())
     {
@@ -1466,8 +1466,8 @@ void __77__MPRecentsTableViewController__indexPathsForCallsWithStatus_includeUnk
     [v12 configureWithRecentsItem:v33 recentCall:v10];
     if ([(MPRecentsTableViewController *)self tapTargets])
     {
-      v34 = [v10 validRemoteParticipantHandles];
-      v35 = [v34 count] != 0;
+      validRemoteParticipantHandles = [v10 validRemoteParticipantHandles];
+      v35 = [validRemoteParticipantHandles count] != 0;
 
       [v12 enableCallButton:v35];
       if (objc_opt_respondsToSelector())
@@ -1486,34 +1486,34 @@ void __77__MPRecentsTableViewController__indexPathsForCallsWithStatus_includeUnk
       }
     }
 
-    v36 = [(MPRecentsTableViewController *)self featureFlags];
-    v37 = [v36 increaseCallHistoryEnabled];
+    featureFlags3 = [(MPRecentsTableViewController *)self featureFlags];
+    increaseCallHistoryEnabled = [featureFlags3 increaseCallHistoryEnabled];
 
-    if (!v37)
+    if (!increaseCallHistoryEnabled)
     {
       goto LABEL_22;
     }
 
-    v38 = [v7 row];
-    v39 = [(MPRecentsTableViewController *)self tableViewDisplayMode];
-    if (v39 == 1)
+    v38 = [pathCopy row];
+    tableViewDisplayMode = [(MPRecentsTableViewController *)self tableViewDisplayMode];
+    if (tableViewDisplayMode == 1)
     {
-      v40 = [(MPRecentsTableViewController *)self recentsController];
-      v41 = [(MPRecentsTableViewController *)self indexPathsForMissedCalls];
-      [v40 loadOlderCallsIfNecessaryForRemainingRowCount:{objc_msgSend(v41, "count") - v38}];
+      recentsController2 = [(MPRecentsTableViewController *)self recentsController];
+      indexPathsForMissedCalls = [(MPRecentsTableViewController *)self indexPathsForMissedCalls];
+      [recentsController2 loadOlderCallsIfNecessaryForRemainingRowCount:{objc_msgSend(indexPathsForMissedCalls, "count") - v38}];
     }
 
     else
     {
-      if (v39)
+      if (tableViewDisplayMode)
       {
 LABEL_22:
 
         goto LABEL_23;
       }
 
-      v40 = [(MPRecentsTableViewController *)self recentsController];
-      [v40 continuousScrollingReachedIndexPath:v38];
+      recentsController2 = [(MPRecentsTableViewController *)self recentsController];
+      [recentsController2 continuousScrollingReachedIndexPath:v38];
     }
 
     goto LABEL_22;
@@ -1535,9 +1535,9 @@ void __64__MPRecentsTableViewController_tableView_cellForRowAtIndexPath___block_
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MPRecentsTableViewController *)self rowCountForCurrentTableMode:a3];
+  v4 = [(MPRecentsTableViewController *)self rowCountForCurrentTableMode:view];
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1547,29 +1547,29 @@ void __64__MPRecentsTableViewController_tableView_cellForRowAtIndexPath___block_
   return v4;
 }
 
-- (void)placeCallWithRecentCall:(id)a3
+- (void)placeCallWithRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 useSharedRecentsViewModel];
+  callCopy = call;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v6)
+  if (useSharedRecentsViewModel)
   {
-    v7 = [(MPRecentsTableViewController *)self callServices];
-    [v7 placeCallWithRecentCall:v4];
+    callServices = [(MPRecentsTableViewController *)self callServices];
+    [callServices placeCallWithRecentCall:callCopy];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (v4)
+  if (callCopy)
   {
-    v7 = objc_alloc_init(TUFeatureFlags);
-    v8 = [v7 groupConversations];
-    v9 = [v4 validRemoteParticipantHandles];
-    v10 = [v9 count];
+    callServices = objc_alloc_init(TUFeatureFlags);
+    groupConversations = [callServices groupConversations];
+    validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+    v10 = [validRemoteParticipantHandles count];
     v11 = v10;
-    if (v8)
+    if (groupConversations)
     {
       if (v10 <= 1)
       {
@@ -1577,20 +1577,20 @@ LABEL_14:
 
       else
       {
-        v12 = [v4 serviceProvider];
-        v13 = [v12 isEqualToString:kCHServiceProviderFaceTime];
+        serviceProvider = [callCopy serviceProvider];
+        v13 = [serviceProvider isEqualToString:kCHServiceProviderFaceTime];
 
         if (v13)
         {
-          v14 = [(MPRecentsTableViewController *)self recentsController];
-          [v14 performJoinRequestForRecentCall:v4];
+          recentsController = [(MPRecentsTableViewController *)self recentsController];
+          [recentsController performJoinRequestForRecentCall:callCopy];
 
           goto LABEL_14;
         }
       }
 
-      v17 = [(MPRecentsTableViewController *)self recentsController];
-      [v17 performDialRequestForRecentCall:v4];
+      recentsController2 = [(MPRecentsTableViewController *)self recentsController];
+      [recentsController2 performDialRequestForRecentCall:callCopy];
 
       v18 = dispatch_get_global_queue(-32768, 0);
       block[0] = _NSConcreteStackBlock;
@@ -1598,7 +1598,7 @@ LABEL_14:
       block[2] = __56__MPRecentsTableViewController_placeCallWithRecentCall___block_invoke;
       block[3] = &unk_1002852E0;
       block[4] = self;
-      v24 = v4;
+      v24 = callCopy;
       dispatch_async(v18, block);
 
       v19 = v24;
@@ -1607,16 +1607,16 @@ LABEL_14:
     else
     {
 
-      v15 = [(MPRecentsTableViewController *)self recentsController];
-      v16 = v15;
+      recentsController3 = [(MPRecentsTableViewController *)self recentsController];
+      v16 = recentsController3;
       if (v11 >= 2)
       {
-        [v15 performJoinRequestForRecentCall:v4];
+        [recentsController3 performJoinRequestForRecentCall:callCopy];
 
         goto LABEL_14;
       }
 
-      [v15 performDialRequestForRecentCall:v4];
+      [recentsController3 performDialRequestForRecentCall:callCopy];
 
       v20 = dispatch_get_global_queue(-32768, 0);
       v21[0] = _NSConcreteStackBlock;
@@ -1624,7 +1624,7 @@ LABEL_14:
       v21[2] = __56__MPRecentsTableViewController_placeCallWithRecentCall___block_invoke_2;
       v21[3] = &unk_1002852E0;
       v21[4] = self;
-      v22 = v4;
+      v22 = callCopy;
       dispatch_async(v20, v21);
 
       v19 = v22;
@@ -1636,11 +1636,11 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [v6 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [pathCopy row]);
   if ([(MPRecentsTableViewController *)self tapTargets])
   {
     if (v7)
@@ -1650,22 +1650,22 @@ LABEL_15:
 
     else
     {
-      [v8 deselectRowAtIndexPath:v6 animated:0];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
     }
   }
 
   else
   {
-    [v8 deselectRowAtIndexPath:v6 animated:0];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
     [(MPRecentsTableViewController *)self placeCallWithRecentCall:v7];
   }
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [v6 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [pathCopy row]);
   if (v7)
   {
     [(MPRecentsTableViewController *)self showRecentCallDetailsViewControllerForRecentCall:v7 animated:1];
@@ -1673,24 +1673,24 @@ LABEL_15:
 
   else
   {
-    [v8 deselectRowAtIndexPath:v6 animated:0];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = objc_alloc_init(NSMutableArray);
   objc_initWeak(&location, self);
-  v9 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [v7 row]);
-  v10 = [(MPRecentsTableViewController *)self featureFlags];
-  v11 = [v10 useSharedRecentsViewModel];
+  v9 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [pathCopy row]);
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v11)
+  if (useSharedRecentsViewModel)
   {
-    v12 = [(MPRecentsTableViewController *)self cellConfigurator];
-    v13 = [v12 trailingSwipeActionsConfigurationForRowAt:v7 recentCall:v9];
+    cellConfigurator = [(MPRecentsTableViewController *)self cellConfigurator];
+    v13 = [cellConfigurator trailingSwipeActionsConfigurationForRowAt:pathCopy recentCall:v9];
   }
 
   else
@@ -1702,7 +1702,7 @@ LABEL_15:
     v21[2] = __93__MPRecentsTableViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
     v21[3] = &unk_100286338;
     objc_copyWeak(&v23, &location);
-    v22 = v7;
+    v22 = pathCopy;
     v16 = [UIContextualAction contextualActionWithStyle:1 title:v15 handler:v21];
 
     v17 = [UIImage systemImageNamed:@"trash.fill"];
@@ -1741,13 +1741,13 @@ void __93__MPRecentsTableViewController_tableView_trailingSwipeActionsConfigurat
   }
 }
 
-- (void)showReportingExtensionForCall:(id)a3
+- (void)showReportingExtensionForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 useSharedRecentsViewModel];
+  callCopy = call;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v6)
+  if (useSharedRecentsViewModel)
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1757,9 +1757,9 @@ void __93__MPRecentsTableViewController_tableView_trailingSwipeActionsConfigurat
   }
 
   v8 = [ILCallCommunication alloc];
-  v9 = [v4 callerId];
-  v10 = [v4 date];
-  v11 = [v8 initWithSender:v9 dateReceived:v10];
+  callerId = [callCopy callerId];
+  date = [callCopy date];
+  v11 = [v8 initWithSender:callerId dateReceived:date];
 
   v12 = [ILCallClassificationRequest alloc];
   v31 = v11;
@@ -1767,32 +1767,32 @@ void __93__MPRecentsTableViewController_tableView_trailingSwipeActionsConfigurat
   v14 = [v12 initWithCallCommunications:v13];
 
   v15 = [ILClassificationUIExtensionHostViewController alloc];
-  v16 = [v4 callerId];
-  v17 = [v4 isoCountryCode];
-  v18 = [v15 initUnactivatedVCWithRequest:v14 sender:v16 isoCountryCode:v17];
+  callerId2 = [callCopy callerId];
+  isoCountryCode = [callCopy isoCountryCode];
+  v18 = [v15 initUnactivatedVCWithRequest:v14 sender:callerId2 isoCountryCode:isoCountryCode];
   [(MPRecentsTableViewController *)self setClassificationViewController:v18];
 
-  v19 = [(MPRecentsTableViewController *)self classificationViewController];
-  [v19 setDelegate:self];
+  classificationViewController = [(MPRecentsTableViewController *)self classificationViewController];
+  [classificationViewController setDelegate:self];
 
-  v20 = [(MPRecentsTableViewController *)self classificationViewController];
+  classificationViewController2 = [(MPRecentsTableViewController *)self classificationViewController];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = __62__MPRecentsTableViewController_showReportingExtensionForCall___block_invoke;
   v25[3] = &unk_100285C08;
   v26 = v11;
-  v27 = v4;
-  v28 = self;
-  v21 = v4;
+  v27 = callCopy;
+  selfCopy = self;
+  v21 = callCopy;
   v22 = v11;
-  [v20 activateExtensionWithCompletion:v25];
+  [classificationViewController2 activateExtensionWithCompletion:v25];
 
   v23 = PHDefaultLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(MPRecentsTableViewController *)self classificationViewController];
+    classificationViewController3 = [(MPRecentsTableViewController *)self classificationViewController];
     *buf = 138412290;
-    v30 = v24;
+    v30 = classificationViewController3;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Created classification view controller: %@, waiting for ready", buf, 0xCu);
   }
 }
@@ -1827,17 +1827,17 @@ void __62__MPRecentsTableViewController_showReportingExtensionForCall___block_in
   }
 }
 
-- (void)controller:(id)a3 didCompleteClassificationRequest:(id)a4 withResponse:(id)a5
+- (void)controller:(id)controller didCompleteClassificationRequest:(id)request withResponse:(id)response
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __89__MPRecentsTableViewController_controller_didCompleteClassificationRequest_withResponse___block_invoke;
   block[3] = &unk_1002853E8;
   block[4] = self;
-  v9 = a4;
-  v10 = a5;
-  v6 = v10;
-  v7 = v9;
+  requestCopy = request;
+  responseCopy = response;
+  v6 = responseCopy;
+  v7 = requestCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -1868,19 +1868,19 @@ void __89__MPRecentsTableViewController_controller_didCompleteClassificationRequ
   }
 }
 
-- (void)handleUIAccessibilityDarkerSystemColorsStatusDidChangeNotification:(id)a3
+- (void)handleUIAccessibilityDarkerSystemColorsStatusDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v9, 0x16u);
   }
 
@@ -1889,22 +1889,22 @@ void __89__MPRecentsTableViewController_controller_didCompleteClassificationRequ
 
 - (void)searchControllerBeginDragging
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 callHistorySearchEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v4)
+  if (callHistorySearchEnabled)
   {
-    v6 = [(MPRecentsTableViewController *)self searchController];
-    v5 = [v6 searchBar];
-    [v5 resignFirstResponder];
+    searchController = [(MPRecentsTableViewController *)self searchController];
+    searchBar = [searchController searchBar];
+    [searchBar resignFirstResponder];
   }
 }
 
-- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3 isEditing:(BOOL)a4
+- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category isEditing:(BOOL)editing
 {
-  v4 = a4;
-  v5 = a3;
-  [objc_opt_class() separatorInsetsFor:v5 isEditing:v4];
+  editingCopy = editing;
+  categoryCopy = category;
+  [objc_opt_class() separatorInsetsFor:categoryCopy isEditing:editingCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1921,38 +1921,38 @@ void __89__MPRecentsTableViewController_controller_didCompleteClassificationRequ
   return result;
 }
 
-- (void)appSuspended:(id)a3
+- (void)appSuspended:(id)suspended
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [suspendedCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v9, 0x16u);
   }
 
   self->_didEnterSuspended = 1;
 }
 
-- (void)appResumed:(id)a3
+- (void)appResumed:(id)resumed
 {
-  v4 = a3;
+  resumedCopy = resumed;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [resumedCopy name];
     v10 = 138412546;
     v11 = v6;
     v12 = 2112;
-    v13 = v8;
+    v13 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v10, 0x16u);
   }
 
@@ -1970,58 +1970,58 @@ void __89__MPRecentsTableViewController_controller_didCompleteClassificationRequ
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [backgroundCopy name];
     v14 = 138412546;
     v15 = v6;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v14, 0x16u);
   }
 
-  v9 = [(MPRecentsTableViewController *)self tabBarController];
-  v10 = [v9 selectedViewController];
-  v11 = [v10 childViewControllers];
-  v12 = [v11 firstObject];
+  tabBarController = [(MPRecentsTableViewController *)self tabBarController];
+  selectedViewController = [tabBarController selectedViewController];
+  childViewControllers = [selectedViewController childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  if (v12 == self)
+  if (firstObject == self)
   {
-    v13 = [(MPRecentsTableViewController *)self recentsController];
-    [v13 markRecentCallsAsRead];
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
+    [recentsController markRecentCallsAsRead];
   }
 }
 
-- (void)phoneApplicationDidChangeTabBarSelection:(id)a3
+- (void)phoneApplicationDidChangeTabBarSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [selectionCopy name];
     v13 = 138412546;
     v14 = v6;
     v15 = 2112;
-    v16 = v8;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v13, 0x16u);
   }
 
-  v9 = [v4 object];
-  v10 = [(MPRecentsTableViewController *)v9 tabBarController];
-  v11 = [(MPRecentsTableViewController *)self tabBarController];
+  object = [selectionCopy object];
+  tabBarController = [(MPRecentsTableViewController *)object tabBarController];
+  tabBarController2 = [(MPRecentsTableViewController *)self tabBarController];
 
-  if (v9 != self && v10 == v11)
+  if (object != self && tabBarController == tabBarController2)
   {
-    v12 = [(MPRecentsTableViewController *)self recentsController];
-    [v12 markRecentCallsAsRead];
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
+    [recentsController markRecentCallsAsRead];
   }
 }
 
@@ -2202,40 +2202,40 @@ void __54__MPRecentsTableViewController_nicknameEditButtonItem__block_invoke_3(u
     self->_contentUnavailableView = v4;
 
     [(_UIContentUnavailableView *)self->_contentUnavailableView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(MPRecentsTableViewController *)self tableView];
-    v7 = [v6 backgroundColor];
-    [(_UIContentUnavailableView *)self->_contentUnavailableView setBackgroundColor:v7];
+    tableView = [(MPRecentsTableViewController *)self tableView];
+    backgroundColor = [tableView backgroundColor];
+    [(_UIContentUnavailableView *)self->_contentUnavailableView setBackgroundColor:backgroundColor];
 
-    v8 = [(MPRecentsTableViewController *)self view];
-    [v8 addSubview:self->_contentUnavailableView];
+    view = [(MPRecentsTableViewController *)self view];
+    [view addSubview:self->_contentUnavailableView];
 
     v9 = self->_contentUnavailableView;
-    v10 = [(MPRecentsTableViewController *)self view];
-    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:9 relatedBy:0 toItem:v10 attribute:9 multiplier:1.0 constant:0.0];
+    view2 = [(MPRecentsTableViewController *)self view];
+    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:9 relatedBy:0 toItem:view2 attribute:9 multiplier:1.0 constant:0.0];
 
-    v12 = [(MPRecentsTableViewController *)self view];
-    [v12 addConstraint:v11];
+    view3 = [(MPRecentsTableViewController *)self view];
+    [view3 addConstraint:v11];
 
     v13 = self->_contentUnavailableView;
-    v14 = [(MPRecentsTableViewController *)self view];
-    v15 = [NSLayoutConstraint constraintWithItem:v13 attribute:10 relatedBy:0 toItem:v14 attribute:10 multiplier:1.0 constant:0.0];
+    view4 = [(MPRecentsTableViewController *)self view];
+    v15 = [NSLayoutConstraint constraintWithItem:v13 attribute:10 relatedBy:0 toItem:view4 attribute:10 multiplier:1.0 constant:0.0];
 
-    v16 = [(MPRecentsTableViewController *)self view];
-    [v16 addConstraint:v15];
+    view5 = [(MPRecentsTableViewController *)self view];
+    [view5 addConstraint:v15];
 
     v17 = self->_contentUnavailableView;
-    v18 = [(MPRecentsTableViewController *)self view];
-    v19 = [NSLayoutConstraint constraintWithItem:v17 attribute:8 relatedBy:0 toItem:v18 attribute:8 multiplier:1.0 constant:0.0];
+    view6 = [(MPRecentsTableViewController *)self view];
+    v19 = [NSLayoutConstraint constraintWithItem:v17 attribute:8 relatedBy:0 toItem:view6 attribute:8 multiplier:1.0 constant:0.0];
 
-    v20 = [(MPRecentsTableViewController *)self view];
-    [v20 addConstraint:v19];
+    view7 = [(MPRecentsTableViewController *)self view];
+    [view7 addConstraint:v19];
 
     v21 = self->_contentUnavailableView;
-    v22 = [(MPRecentsTableViewController *)self view];
-    v23 = [NSLayoutConstraint constraintWithItem:v21 attribute:7 relatedBy:0 toItem:v22 attribute:7 multiplier:1.0 constant:0.0];
+    view8 = [(MPRecentsTableViewController *)self view];
+    v23 = [NSLayoutConstraint constraintWithItem:v21 attribute:7 relatedBy:0 toItem:view8 attribute:7 multiplier:1.0 constant:0.0];
 
-    v24 = [(MPRecentsTableViewController *)self view];
-    [v24 addConstraint:v23];
+    view9 = [(MPRecentsTableViewController *)self view];
+    [view9 addConstraint:v23];
 
     contentUnavailableView = self->_contentUnavailableView;
   }
@@ -2243,12 +2243,12 @@ void __54__MPRecentsTableViewController_nicknameEditButtonItem__block_invoke_3(u
   return contentUnavailableView;
 }
 
-- (void)setContentUnavailableViewTitle:(id)a3
+- (void)setContentUnavailableViewTitle:(id)title
 {
-  v6 = a3;
-  if (self->_contentUnavailableViewTitle != v6)
+  titleCopy = title;
+  if (self->_contentUnavailableViewTitle != titleCopy)
   {
-    objc_storeStrong(&self->_contentUnavailableViewTitle, a3);
+    objc_storeStrong(&self->_contentUnavailableViewTitle, title);
     contentUnavailableView = self->_contentUnavailableView;
     if (contentUnavailableView)
     {
@@ -2273,39 +2273,39 @@ void __54__MPRecentsTableViewController_nicknameEditButtonItem__block_invoke_3(u
   return dataSourcePrefetchingOperationQueue;
 }
 
-- (void)setRecentCalls:(id)a3
+- (void)setRecentCalls:(id)calls
 {
-  v5 = a3;
-  if (self->_recentCalls != v5)
+  callsCopy = calls;
+  if (self->_recentCalls != callsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_recentCalls, a3);
+    v6 = callsCopy;
+    objc_storeStrong(&self->_recentCalls, calls);
     [(MPRecentsTableViewController *)self setIndexPathsForMissedCalls:0];
     [(MPRecentsTableViewController *)self setIndexPathsForNormalCalls:0];
-    v5 = v6;
+    callsCopy = v6;
   }
 }
 
-- (void)setTableViewDisplayMode:(int64_t)a3
+- (void)setTableViewDisplayMode:(int64_t)mode
 {
-  if (self->_tableViewDisplayMode != a3)
+  if (self->_tableViewDisplayMode != mode)
   {
     [(MPRecentsTableViewController *)self setEditing:0 animated:0];
-    self->_tableViewDisplayMode = a3;
-    v5 = [(MPRecentsTableViewController *)self junkListViewController];
-    v6 = [v5 view];
-    [v6 setAlpha:0.0];
+    self->_tableViewDisplayMode = mode;
+    junkListViewController = [(MPRecentsTableViewController *)self junkListViewController];
+    view = [junkListViewController view];
+    [view setAlpha:0.0];
 
-    v7 = [(MPRecentsTableViewController *)self tableView];
-    [v7 setAlpha:1.0];
+    tableView = [(MPRecentsTableViewController *)self tableView];
+    [tableView setAlpha:1.0];
 
-    if ([(MPRecentsTableViewController *)self tableViewConfiguredDisplayMode]!= a3)
+    if ([(MPRecentsTableViewController *)self tableViewConfiguredDisplayMode]!= mode)
     {
-      [(MPRecentsTableViewController *)self setTableViewConfiguredDisplayMode:a3];
-      v8 = [(MPRecentsTableViewController *)self indexPathsForNormalCalls];
-      v9 = [(MPRecentsTableViewController *)self tableView];
-      v10 = [v9 indexPathForSelectedRow];
-      [v9 deselectRowAtIndexPath:v10 animated:0];
+      [(MPRecentsTableViewController *)self setTableViewConfiguredDisplayMode:mode];
+      indexPathsForNormalCalls = [(MPRecentsTableViewController *)self indexPathsForNormalCalls];
+      tableView2 = [(MPRecentsTableViewController *)self tableView];
+      indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+      [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
       +[CATransaction begin];
       v17[0] = _NSConcreteStackBlock;
@@ -2313,7 +2313,7 @@ void __54__MPRecentsTableViewController_nicknameEditButtonItem__block_invoke_3(u
       v17[2] = __56__MPRecentsTableViewController_setTableViewDisplayMode___block_invoke;
       v17[3] = &unk_1002852E0;
       v17[4] = self;
-      v11 = v9;
+      v11 = tableView2;
       v18 = v11;
       [CATransaction setCompletionBlock:v17];
       v14[0] = _NSConcreteStackBlock;
@@ -2322,8 +2322,8 @@ void __54__MPRecentsTableViewController_nicknameEditButtonItem__block_invoke_3(u
       v14[3] = &unk_1002863B0;
       v14[4] = self;
       v15 = v11;
-      v16 = v8;
-      v12 = v8;
+      v16 = indexPathsForNormalCalls;
+      v12 = indexPathsForNormalCalls;
       v13 = v11;
       [(MPRecentsTableViewController *)self performBatchUpdates:v14 completion:0];
       +[CATransaction commit];
@@ -2400,33 +2400,33 @@ id __56__MPRecentsTableViewController_setTableViewDisplayMode___block_invoke_2(i
 
 - (void)updateLargeTitleInsets
 {
-  v3 = [(MPRecentsTableViewController *)self featureFlags];
-  v4 = [v3 phoneRecentsAvatarsEnabled];
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((phoneRecentsAvatarsEnabled & 1) == 0)
   {
-    v5 = [(MPRecentsTableViewController *)self navigationItem];
-    [v5 largeTitleInsets];
+    navigationItem = [(MPRecentsTableViewController *)self navigationItem];
+    [navigationItem largeTitleInsets];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(MPRecentsTableViewController *)self tableViewCellClass];
-    v13 = [(MPRecentsTableViewController *)self traitCollection];
-    v14 = [v13 preferredContentSizeCategory];
-    [(objc_class *)v12 leftTitleSeparatorInsetForContentSizeCategory:v14];
+    tableViewCellClass = [(MPRecentsTableViewController *)self tableViewCellClass];
+    traitCollection = [(MPRecentsTableViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    [(objc_class *)tableViewCellClass leftTitleSeparatorInsetForContentSizeCategory:preferredContentSizeCategory];
     v16 = v15;
 
-    v17 = [(MPRecentsTableViewController *)self navigationItem];
-    [v17 setLargeTitleInsets:{v7, v16, v9, v11}];
+    navigationItem2 = [(MPRecentsTableViewController *)self navigationItem];
+    [navigationItem2 setLargeTitleInsets:{v7, v16, v9, v11}];
 
-    v19 = [(MPRecentsTableViewController *)self navigationItem];
-    v18 = [v19 navigationBar];
-    [v18 setNeedsLayout];
+    navigationItem3 = [(MPRecentsTableViewController *)self navigationItem];
+    navigationBar = [navigationItem3 navigationBar];
+    [navigationBar setNeedsLayout];
   }
 }
 
-- (void)clearButtonAction:(id)a3
+- (void)clearButtonAction:(id)action
 {
   v4 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
   v5 = +[NSBundle mainBundle];
@@ -2447,15 +2447,15 @@ id __56__MPRecentsTableViewController_setTableViewDisplayMode___block_invoke_2(i
   [(MPRecentsTableViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)selectedSegmentDidChangeForSender:(id)a3
+- (void)selectedSegmentDidChangeForSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
+  senderCopy = sender;
+  tableViewDisplayModeSegmentedControl = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
 
-  if (v5 == v4)
+  if (tableViewDisplayModeSegmentedControl == senderCopy)
   {
-    v6 = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
-    v7 = [v6 selectedSegmentIndex] != 0;
+    tableViewDisplayModeSegmentedControl2 = [(MPRecentsTableViewController *)self tableViewDisplayModeSegmentedControl];
+    v7 = [tableViewDisplayModeSegmentedControl2 selectedSegmentIndex] != 0;
 
     [(MPRecentsTableViewController *)self setTableViewDisplayMode:v7];
   }
@@ -2463,8 +2463,8 @@ id __56__MPRecentsTableViewController_setTableViewDisplayMode___block_invoke_2(i
 
 - (void)removeAllRecentCalls
 {
-  v3 = [(MPRecentsTableViewController *)self recentCalls];
-  [v3 removeAllObjects];
+  recentCalls = [(MPRecentsTableViewController *)self recentCalls];
+  [recentCalls removeAllObjects];
 
   [(MPRecentsTableViewController *)self setIndexPathsForMissedCalls:0];
   [(MPRecentsTableViewController *)self setIndexPathsForNormalCalls:0];
@@ -2475,23 +2475,23 @@ id __56__MPRecentsTableViewController_setTableViewDisplayMode___block_invoke_2(i
   v11[3] = &unk_100284FD0;
   v11[4] = self;
   [CATransaction setCompletionBlock:v11];
-  v4 = [(MPRecentsTableViewController *)self recentCalls];
-  v5 = [v4 count];
+  recentCalls2 = [(MPRecentsTableViewController *)self recentCalls];
+  v5 = [recentCalls2 count];
 
   if (!v5)
   {
-    v6 = [(MPRecentsTableViewController *)self tableView];
-    [v6 beginUpdates];
+    tableView = [(MPRecentsTableViewController *)self tableView];
+    [tableView beginUpdates];
 
     v7 = [NSIndexSet indexSetWithIndex:0];
-    v8 = [(MPRecentsTableViewController *)self tableView];
-    [v8 deleteSections:v7 withRowAnimation:100];
+    tableView2 = [(MPRecentsTableViewController *)self tableView];
+    [tableView2 deleteSections:v7 withRowAnimation:100];
 
-    v9 = [(MPRecentsTableViewController *)self tableView];
-    [v9 insertSections:v7 withRowAnimation:100];
+    tableView3 = [(MPRecentsTableViewController *)self tableView];
+    [tableView3 insertSections:v7 withRowAnimation:100];
 
-    v10 = [(MPRecentsTableViewController *)self tableView];
-    [v10 endUpdates];
+    tableView4 = [(MPRecentsTableViewController *)self tableView];
+    [tableView4 endUpdates];
   }
 
   +[CATransaction commit];
@@ -2505,16 +2505,16 @@ void __52__MPRecentsTableViewController_removeAllRecentCalls__block_invoke(uint6
   [v2 deleteAllRecentCalls];
 }
 
-- (void)removeRecentCallsAtIndexPaths:(id)a3
+- (void)removeRecentCallsAtIndexPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   +[NSMutableArray array];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __62__MPRecentsTableViewController_removeRecentCallsAtIndexPaths___block_invoke;
   v9[3] = &unk_1002863B0;
   v9[4] = self;
-  v11 = v10 = v4;
+  v11 = v10 = pathsCopy;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __62__MPRecentsTableViewController_removeRecentCallsAtIndexPaths___block_invoke_288;
@@ -2522,7 +2522,7 @@ void __52__MPRecentsTableViewController_removeAllRecentCalls__block_invoke(uint6
   v7[4] = self;
   v8 = v11;
   v5 = v11;
-  v6 = v4;
+  v6 = pathsCopy;
   [(MPRecentsTableViewController *)self performBatchUpdates:v9 completion:v7];
 }
 
@@ -2805,18 +2805,18 @@ void __62__MPRecentsTableViewController_removeRecentCallsAtIndexPaths___block_in
   }
 }
 
-- (id)contactViewControllerForRecentCall:(id)a3
+- (id)contactViewControllerForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self recentsController];
+  callCopy = call;
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
   v6 = +[PHContactViewController descriptorForRequiredKeys];
   v13 = v6;
   v7 = [NSArray arrayWithObjects:&v13 count:1];
-  v8 = [v5 contactForRecentCall:v4 keyDescriptors:v7];
+  v8 = [recentsController contactForRecentCall:callCopy keyDescriptors:v7];
 
   if (v8 || (v8 = objc_alloc_init(CNContact)) != 0)
   {
-    v9 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:v4 contact:v8];
+    v9 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:callCopy contact:v8];
   }
 
   else
@@ -2824,16 +2824,16 @@ void __62__MPRecentsTableViewController_removeRecentCallsAtIndexPaths___block_in
     v9 = 0;
   }
 
-  v10 = [v4 imageURL];
-  if (v10)
+  imageURL = [callCopy imageURL];
+  if (imageURL)
   {
   }
 
   else
   {
-    v11 = [v4 identityExtension];
+    identityExtension = [callCopy identityExtension];
 
-    if (!v11)
+    if (!identityExtension)
     {
       goto LABEL_8;
     }
@@ -2845,58 +2845,58 @@ LABEL_8:
   return v9;
 }
 
-- (id)contactViewControllerForRecentCall:(id)a3 contact:(id)a4
+- (id)contactViewControllerForRecentCall:(id)call contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contactIdentifier];
-  if ([v8 length])
+  callCopy = call;
+  contactCopy = contact;
+  contactIdentifier = [callCopy contactIdentifier];
+  if ([contactIdentifier length])
   {
-    v9 = [(MPRecentsTableViewController *)self recentsController];
-    v10 = [v9 fetchContactForContactCardDisplay:v7];
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
+    v10 = [recentsController fetchContactForContactCardDisplay:contactCopy];
 
     v11 = [PHContactViewController viewControllerForContact:v10];
     [v11 setShouldShowLinkedContacts:1];
-    v7 = v10;
+    contactCopy = v10;
   }
 
   else
   {
-    v11 = [PHContactViewController viewControllerForUnknownContact:v7];
+    v11 = [PHContactViewController viewControllerForUnknownContact:contactCopy];
   }
 
-  v12 = [v6 validRemoteParticipantHandles];
-  v13 = [v12 anyObject];
-  v14 = [v13 value];
-  v15 = [v14 length];
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  anyObject = [validRemoteParticipantHandles anyObject];
+  value = [anyObject value];
+  v15 = [value length];
 
   if (v15)
   {
-    v16 = [(MPRecentsTableViewController *)self callReportingViewModel];
-    v17 = [v16 shouldShowContactBlockReportButtonForCall:v6];
+    callReportingViewModel = [(MPRecentsTableViewController *)self callReportingViewModel];
+    v17 = [callReportingViewModel shouldShowContactBlockReportButtonForCall:callCopy];
 
-    v18 = [v11 actions];
+    actions = [v11 actions];
     v19 = 128;
     if (v17)
     {
       v19 = 2048;
     }
 
-    [v11 setActions:v18 | v19];
+    [v11 setActions:actions | v19];
     v20 = +[CNContactStore suggestedContactStore];
     [v11 setContactStore:v20];
 
-    [v11 setRecentCall:v6];
+    [v11 setRecentCall:callCopy];
   }
 
   else
   {
     [v11 setAllowsActions:0];
     [v11 setAllowsEditing:0];
-    v21 = [v6 callerIdIsBlocked];
+    callerIdIsBlocked = [callCopy callerIdIsBlocked];
     v22 = +[NSBundle mainBundle];
     v23 = v22;
-    if (v21)
+    if (callerIdIsBlocked)
     {
       v24 = @"NO_CALLER_ID";
     }
@@ -2910,47 +2910,47 @@ LABEL_8:
     [v11 setAlternateName:v25];
   }
 
-  v26 = [(MPRecentsTableViewController *)self recentsController];
-  v27 = [v26 itemForRecentCall:v6 presentationStyle:1];
+  recentsController2 = [(MPRecentsTableViewController *)self recentsController];
+  v27 = [recentsController2 itemForRecentCall:callCopy presentationStyle:1];
 
   v28 = objc_alloc_init(MPRecentsContactHeaderViewController);
-  [(MPRecentsContactHeaderViewController *)v28 setRecentCall:v6];
+  [(MPRecentsContactHeaderViewController *)v28 setRecentCall:callCopy];
   [(MPRecentsContactHeaderViewController *)v28 setRecentsItem:v27];
   [v11 setContactHeaderViewController:v28];
 
   return v11;
 }
 
-- (int64_t)avatarCardController:(id)a3 presentationResultForLocation:(CGPoint)a4
+- (int64_t)avatarCardController:(id)controller presentationResultForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(MPRecentsTableViewController *)self tableView];
-  if ([v8 isDecelerating])
+  y = location.y;
+  x = location.x;
+  controllerCopy = controller;
+  tableView = [(MPRecentsTableViewController *)self tableView];
+  if ([tableView isDecelerating])
   {
     goto LABEL_2;
   }
 
-  v10 = [(MPRecentsTableViewController *)self tableView];
-  if ([v10 isDragging])
+  tableView2 = [(MPRecentsTableViewController *)self tableView];
+  if ([tableView2 isDragging])
   {
     v9 = 1;
     goto LABEL_9;
   }
 
-  v11 = [(MPRecentsTableViewController *)self tableView];
-  v12 = [v11 isEditing];
+  tableView3 = [(MPRecentsTableViewController *)self tableView];
+  isEditing = [tableView3 isEditing];
 
-  if ((v12 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
-    v13 = [(MPRecentsTableViewController *)self tableView];
-    v14 = [(MPRecentsTableViewController *)self view];
-    v15 = [(MPRecentsTableViewController *)self tableView];
-    [v14 convertPoint:v15 toView:{x, y}];
-    v8 = [v13 indexPathForRowAtPoint:?];
+    tableView4 = [(MPRecentsTableViewController *)self tableView];
+    view = [(MPRecentsTableViewController *)self view];
+    tableView5 = [(MPRecentsTableViewController *)self tableView];
+    [view convertPoint:tableView5 toView:{x, y}];
+    tableView = [tableView4 indexPathForRowAtPoint:?];
 
-    if (!v8)
+    if (!tableView)
     {
 LABEL_2:
       v9 = 1;
@@ -2959,21 +2959,21 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v16 = [(MPRecentsTableViewController *)self tableView];
-    v10 = [v16 cellForRowAtIndexPath:v8];
+    tableView6 = [(MPRecentsTableViewController *)self tableView];
+    tableView2 = [tableView6 cellForRowAtIndexPath:tableView];
 
-    [v7 setHighlightView:v10];
-    v17 = [(MPRecentsTableViewController *)self tableView];
-    [v10 frame];
+    [controllerCopy setHighlightView:tableView2];
+    tableView7 = [(MPRecentsTableViewController *)self tableView];
+    [tableView2 frame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [v7 sourceView];
-    [v17 convertRect:v26 toView:{v19, v21, v23, v25}];
-    [v7 setSourceRect:?];
+    sourceView = [controllerCopy sourceView];
+    [tableView7 convertRect:sourceView toView:{v19, v21, v23, v25}];
+    [controllerCopy setSourceRect:?];
 
-    v9 = [(MPRecentsTableViewController *)self configureCardController:v7 presentationResultForIndex:v8];
+    v9 = [(MPRecentsTableViewController *)self configureCardController:controllerCopy presentationResultForIndex:tableView];
 LABEL_9:
 
     goto LABEL_10;
@@ -2985,51 +2985,51 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)configureCardController:(id)a3 presentationResultForIndex:(id)a4
+- (int64_t)configureCardController:(id)controller presentationResultForIndex:(id)index
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  controllerCopy = controller;
+  indexCopy = index;
+  v8 = indexCopy;
+  if (indexCopy)
   {
-    v9 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [v7 row]);
-    v10 = [(MPRecentsTableViewController *)self featureFlags];
-    v11 = [v10 useSharedRecentsViewModel];
+    v9 = -[MPRecentsTableViewController recentCallAtTableViewIndex:](self, "recentCallAtTableViewIndex:", [indexCopy row]);
+    featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+    useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-    if (v11)
+    if (useSharedRecentsViewModel)
     {
-      v12 = [(MPRecentsTableViewController *)self cellConfigurator];
-      v13 = [v12 configureCardController:v6 presentationResultForRecentCall:v9];
+      cellConfigurator = [(MPRecentsTableViewController *)self cellConfigurator];
+      v13 = [cellConfigurator configureCardController:controllerCopy presentationResultForRecentCall:v9];
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v14 = [(MPRecentsTableViewController *)self recentsController];
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
     v15 = +[CNAvatarCardController descriptorForRequiredKeys];
     v27 = v15;
     v16 = [NSArray arrayWithObjects:&v27 count:1];
-    v12 = [v14 contactForRecentCall:v9 keyDescriptors:v16];
+    cellConfigurator = [recentsController contactForRecentCall:v9 keyDescriptors:v16];
 
-    if (!v12)
+    if (!cellConfigurator)
     {
       v13 = 2;
       goto LABEL_14;
     }
 
-    [v6 setContact:v12];
-    v17 = [v12 phoneNumbers];
-    v18 = [v9 identityExtension];
-    if (v18 && (v19 = v18, v20 = [v17 count], v19, v20 == 1))
+    [controllerCopy setContact:cellConfigurator];
+    phoneNumbers = [cellConfigurator phoneNumbers];
+    identityExtension = [v9 identityExtension];
+    if (identityExtension && (v19 = identityExtension, v20 = [phoneNumbers count], v19, v20 == 1))
     {
-      v21 = [v17 firstObject];
-      v22 = [v21 value];
-      v23 = [v22 formattedInternationalStringValue];
-      if (!v23)
+      firstObject = [phoneNumbers firstObject];
+      value = [firstObject value];
+      formattedInternationalStringValue = [value formattedInternationalStringValue];
+      if (!formattedInternationalStringValue)
       {
-        v24 = [v21 value];
-        v25 = [v24 stringValue];
-        [v6 setMessage:v25];
+        value2 = [firstObject value];
+        stringValue = [value2 stringValue];
+        [controllerCopy setMessage:stringValue];
 
 LABEL_12:
         v13 = 0;
@@ -3039,12 +3039,12 @@ LABEL_12:
 
     else
     {
-      v21 = [(MPRecentsTableViewController *)self recentsController];
-      v22 = [v21 itemForRecentCall:v9];
-      v23 = [v22 localizedSubtitle];
+      firstObject = [(MPRecentsTableViewController *)self recentsController];
+      value = [firstObject itemForRecentCall:v9];
+      formattedInternationalStringValue = [value localizedSubtitle];
     }
 
-    [v6 setMessage:v23];
+    [controllerCopy setMessage:formattedInternationalStringValue];
     goto LABEL_12;
   }
 
@@ -3054,9 +3054,9 @@ LABEL_15:
   return v13;
 }
 
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -3074,37 +3074,37 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "viewController is PHContactViewController", v10, 2u);
     }
 
-    v8 = [v5 recentCall];
-    v9 = [(MPRecentsTableViewController *)self callReportingViewModel];
-    [v9 reportWithCall:v8];
+    recentCall = [controllerCopy recentCall];
+    callReportingViewModel = [(MPRecentsTableViewController *)self callReportingViewModel];
+    [callReportingViewModel reportWithCall:recentCall];
   }
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v15 = a3;
-  v6 = a4;
-  if (!v6)
+  controllerCopy = controller;
+  contactCopy = contact;
+  if (!contactCopy)
   {
     goto LABEL_7;
   }
 
-  v7 = [v15 contact];
-  if (v7 != v6)
+  contact = [controllerCopy contact];
+  if (contact != contactCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v15 recentCall];
-      if (v7)
+      contact = [controllerCopy recentCall];
+      if (contact)
       {
-        v9 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:v7 contact:v6];
+        v9 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:contact contact:contactCopy];
         v10 = v9;
         if (v9)
         {
-          [v9 setContact:v6];
+          [v9 setContact:contactCopy];
           v11 = 0;
 LABEL_11:
           +[TPTipsHelper donateEventSavedNumber];
@@ -3133,27 +3133,27 @@ LABEL_7:
 LABEL_12:
 
 LABEL_13:
-  v12 = [(MPRecentsTableViewController *)self navigationController];
-  v13 = [v12 popViewControllerAnimated:v11];
+  navigationController = [(MPRecentsTableViewController *)self navigationController];
+  v13 = [navigationController popViewControllerAnimated:v11];
 
   if (v10)
   {
-    v14 = [(MPRecentsTableViewController *)self navigationController];
-    [v14 pushViewController:v10 animated:v11];
+    navigationController2 = [(MPRecentsTableViewController *)self navigationController];
+    [navigationController2 pushViewController:v10 animated:v11];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v18.receiver = self;
   v18.super_class = MPRecentsTableViewController;
-  [(MPRecentsTableViewController *)&v18 traitCollectionDidChange:v4];
-  v5 = [(MPRecentsTableViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  [(MPRecentsTableViewController *)&v18 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MPRecentsTableViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v7 = [v4 userInterfaceStyle];
-  if (v6 && v7 != v6 && [(MPRecentsTableViewController *)self contentUnavailable])
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle && userInterfaceStyle2 != userInterfaceStyle && [(MPRecentsTableViewController *)self contentUnavailable])
   {
     [(MPRecentsTableViewController *)self setContentUnavailable:0];
     [(MPRecentsTableViewController *)self setContentUnavailableView:0];
@@ -3161,18 +3161,18 @@ LABEL_13:
   }
 
   [(MPRecentsTableViewController *)self updateLargeTitleInsets];
-  v8 = [(MPRecentsTableViewController *)self tableView];
-  v9 = [v8 tableHeaderView];
-  if (!v9)
+  tableView = [(MPRecentsTableViewController *)self tableView];
+  tableHeaderView = [tableView tableHeaderView];
+  if (!tableHeaderView)
   {
     goto LABEL_12;
   }
 
-  v10 = v9;
-  v11 = [v4 preferredContentSizeCategory];
-  v12 = [(MPRecentsTableViewController *)self traitCollection];
-  v13 = [v12 preferredContentSizeCategory];
-  if (v11 == v13)
+  v10 = tableHeaderView;
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+  traitCollection2 = [(MPRecentsTableViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  if (preferredContentSizeCategory == preferredContentSizeCategory2)
   {
 LABEL_11:
 
@@ -3180,18 +3180,18 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v14 = [v4 preferredContentSizeCategory];
-  v15 = v14;
-  if (v14 == UIContentSizeCategoryUnspecified)
+  preferredContentSizeCategory3 = [changeCopy preferredContentSizeCategory];
+  v15 = preferredContentSizeCategory3;
+  if (preferredContentSizeCategory3 == UIContentSizeCategoryUnspecified)
   {
 
     goto LABEL_11;
   }
 
-  v16 = [(MPRecentsTableViewController *)self traitCollection];
-  v17 = [v16 preferredContentSizeCategory];
+  traitCollection3 = [(MPRecentsTableViewController *)self traitCollection];
+  preferredContentSizeCategory4 = [traitCollection3 preferredContentSizeCategory];
 
-  if (v17 != UIContentSizeCategoryUnspecified)
+  if (preferredContentSizeCategory4 != UIContentSizeCategoryUnspecified)
   {
     [(MPRecentsTableViewController *)self refreshTableHeaderView];
   }
@@ -3199,9 +3199,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v4 = [(MPRecentsTableViewController *)self tableViewCellClass:a3];
+  v4 = [(MPRecentsTableViewController *)self tableViewCellClass:view];
 
   [(objc_class *)v4 minimumRowHeight];
   return result;
@@ -3209,13 +3209,13 @@ LABEL_13:
 
 - (void)makeUIForDefaultPNG
 {
-  v4 = [(MPRecentsTableViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:0];
-  [v4 setRightBarButtonItem:0];
+  navigationItem = [(MPRecentsTableViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
+  [navigationItem setRightBarButtonItem:0];
   [(MPRecentsTableViewController *)self setContentUnavailableViewTitle:0];
   [(MPRecentsTableViewController *)self setTabBarItem:0];
-  v3 = [(MPRecentsTableViewController *)self tableView];
-  [v3 setHidden:1];
+  tableView = [(MPRecentsTableViewController *)self tableView];
+  [tableView setHidden:1];
 
   [(MPRecentsTableViewController *)self setTitle:0];
 }
@@ -3229,19 +3229,19 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Asked to reload data source", v6, 2u);
   }
 
-  v4 = [(MPRecentsTableViewController *)self recentsController];
-  v5 = [v4 recentCalls];
-  [(MPRecentsTableViewController *)self reloadDataSourceForCalls:v5];
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
+  recentCalls = [recentsController recentCalls];
+  [(MPRecentsTableViewController *)self reloadDataSourceForCalls:recentCalls];
 }
 
-- (void)reloadDataSourceForCalls:(id)a3
+- (void)reloadDataSourceForCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = [v4 count];
+    v10 = [callsCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Asked to reload data source for %lu calls", buf, 0xCu);
   }
 
@@ -3251,8 +3251,8 @@ LABEL_13:
   v7[2] = __57__MPRecentsTableViewController_reloadDataSourceForCalls___block_invoke;
   v7[3] = &unk_100285C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callsCopy;
+  v6 = callsCopy;
   [(MPRecentsTableViewController *)self performBatchUpdates:v7 completion:0];
 }
 
@@ -3286,10 +3286,10 @@ id __57__MPRecentsTableViewController_reloadDataSourceForCalls___block_invoke(ui
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Reloading table view", v9, 2u);
     }
 
-    v5 = [(MPRecentsTableViewController *)self view];
-    v6 = [v5 window];
+    view = [(MPRecentsTableViewController *)self view];
+    window = [view window];
 
-    if (!v6)
+    if (!window)
     {
       v7 = PHDefaultLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -3298,8 +3298,8 @@ id __57__MPRecentsTableViewController_reloadDataSourceForCalls___block_invoke(ui
       }
     }
 
-    v8 = [(MPRecentsTableViewController *)self tableView];
-    [v8 reloadData];
+    tableView = [(MPRecentsTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -3326,23 +3326,23 @@ id __57__MPRecentsTableViewController_reloadDataSourceForCalls___block_invoke(ui
   }
 }
 
-- (void)setNavigationItemsForEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setNavigationItemsForEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(MPRecentsTableViewController *)self navigationItem];
+  animatedCopy = animated;
+  navigationItem = [(MPRecentsTableViewController *)self navigationItem];
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v6;
+    v20 = navigationItem;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Current nav item: %@", &v19, 0xCu);
   }
 
   v8 = PHDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MPRecentsTableViewController *)self featureFlags];
-    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 nameAndPhotoEnabled]);
+    featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [featureFlags nameAndPhotoEnabled]);
     v11 = [NSNumber numberWithInteger:[(MPRecentsTableViewController *)self rowCountForCurrentTableMode]];
     v12 = [NSNumber numberWithBool:[(MPRecentsTableViewController *)self isEditing]];
     v19 = 138412802;
@@ -3354,41 +3354,41 @@ id __57__MPRecentsTableViewController_reloadDataSourceForCalls___block_invoke(ui
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating nav item buttons based on SNAP: %@, rowcount: %@, editing: %@", &v19, 0x20u);
   }
 
-  if (v6 && [(MPRecentsTableViewController *)self isViewLoaded])
+  if (navigationItem && [(MPRecentsTableViewController *)self isViewLoaded])
   {
     if ([(MPRecentsTableViewController *)self isEditing])
     {
-      v13 = [(MPRecentsTableViewController *)self clearButtonItem];
+      clearButtonItem = [(MPRecentsTableViewController *)self clearButtonItem];
     }
 
     else
     {
-      v13 = 0;
+      clearButtonItem = 0;
     }
 
     if ([(MPRecentsTableViewController *)self rowCountForCurrentTableMode]>= 1 && [(MPRecentsTableViewController *)self isEditing])
     {
-      v14 = [(MPRecentsTableViewController *)self doneButtonItem];
+      doneButtonItem = [(MPRecentsTableViewController *)self doneButtonItem];
     }
 
     else
     {
-      v14 = [(MPRecentsTableViewController *)self nicknameEditButtonItem];
+      doneButtonItem = [(MPRecentsTableViewController *)self nicknameEditButtonItem];
     }
 
-    v15 = v14;
-    v16 = [v6 leftBarButtonItem];
+    v15 = doneButtonItem;
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-    if (v16 != v15)
+    if (leftBarButtonItem != v15)
     {
-      [v6 setLeftBarButtonItem:v15 animated:v4];
+      [navigationItem setLeftBarButtonItem:v15 animated:animatedCopy];
     }
 
-    v17 = [v6 rightBarButtonItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (v17 != v13)
+    if (rightBarButtonItem != clearButtonItem)
     {
-      [v6 setRightBarButtonItem:v13 animated:v4];
+      [navigationItem setRightBarButtonItem:clearButtonItem animated:animatedCopy];
     }
 
     v18 = PHDefaultLog();
@@ -3397,23 +3397,23 @@ id __57__MPRecentsTableViewController_reloadDataSourceForCalls___block_invoke(ui
       v19 = 138412546;
       v20 = v15;
       v21 = 2112;
-      v22 = v13;
+      v22 = clearButtonItem;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Set nav item buttons to leftBarButtonItem: %@, rightBarButtonItem: %@", &v19, 0x16u);
     }
   }
 }
 
-- (void)showRecentCallDetailsViewControllerForRecentCall:(id)a3
+- (void)showRecentCallDetailsViewControllerForRecentCall:(id)call
 {
-  v9 = a3;
-  v4 = [(MPRecentsTableViewController *)self callReportingViewModel];
-  if ([v4 atLeastOneUnknownCallerInRecentCall:v9])
+  callCopy = call;
+  callReportingViewModel = [(MPRecentsTableViewController *)self callReportingViewModel];
+  if ([callReportingViewModel atLeastOneUnknownCallerInRecentCall:callCopy])
   {
-    v5 = [v9 isIncoming];
+    isIncoming = [callCopy isIncoming];
 
-    if (v5)
+    if (isIncoming)
     {
-      v6 = [(MPRecentsTableViewController *)self multipleContactsBlockViewControllerForRecentCall:v9];
+      v6 = [(MPRecentsTableViewController *)self multipleContactsBlockViewControllerForRecentCall:callCopy];
       goto LABEL_6;
     }
   }
@@ -3422,51 +3422,51 @@ id __57__MPRecentsTableViewController_reloadDataSourceForCalls___block_invoke(ui
   {
   }
 
-  v6 = [(MPRecentsTableViewController *)self multipleContactsViewControllerForRecentCall:v9];
+  v6 = [(MPRecentsTableViewController *)self multipleContactsViewControllerForRecentCall:callCopy];
 LABEL_6:
   v7 = v6;
   if (v6)
   {
-    v8 = [(MPRecentsTableViewController *)self navigationController];
-    [v8 pushViewController:v7 animated:1];
+    navigationController = [(MPRecentsTableViewController *)self navigationController];
+    [navigationController pushViewController:v7 animated:1];
   }
 }
 
-- (void)showRecentCallDetailsViewControllerForRecentCall:(id)a3 animated:(BOOL)a4
+- (void)showRecentCallDetailsViewControllerForRecentCall:(id)call animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MPRecentsTableViewController *)self featureFlags];
-  v8 = [v7 useSharedRecentsViewModel];
+  animatedCopy = animated;
+  callCopy = call;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v8)
+  if (useSharedRecentsViewModel)
   {
-    v9 = [(MPRecentsTableViewController *)self recentsDetailPresenter];
-    v10 = [(MPRecentsTableViewController *)self navigationController];
-    [v9 showRecentCallDetailsViewControllerFor:v6 from:v10];
+    recentsDetailPresenter = [(MPRecentsTableViewController *)self recentsDetailPresenter];
+    navigationController = [(MPRecentsTableViewController *)self navigationController];
+    [recentsDetailPresenter showRecentCallDetailsViewControllerFor:callCopy from:navigationController];
   }
 
   else
   {
     [TPTipsHelper updateCanDisplayCallHistorySearchTip:0];
-    v11 = [v6 validRemoteParticipantHandles];
-    v12 = [v11 count];
+    validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+    v12 = [validRemoteParticipantHandles count];
 
     if (v12 < 2)
     {
-      v13 = [v6 contactIdentifier];
-      v14 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:v6];
-      if (v13 && [v13 length])
+      contactIdentifier = [callCopy contactIdentifier];
+      v14 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:callCopy];
+      if (contactIdentifier && [contactIdentifier length])
       {
         [v14 setDelegate:self];
-        v15 = [(MPRecentsTableViewController *)self navigationController];
-        [v15 pushViewController:v14 animated:v4];
+        navigationController2 = [(MPRecentsTableViewController *)self navigationController];
+        [navigationController2 pushViewController:v14 animated:animatedCopy];
       }
 
       else
       {
-        v16 = [v6 callerId];
-        v17 = v6;
+        callerId = [callCopy callerId];
+        v17 = callCopy;
         v18 = v14;
         TUMapItemForDestinationID();
       }
@@ -3474,7 +3474,7 @@ LABEL_6:
 
     else
     {
-      [(MPRecentsTableViewController *)self showRecentCallDetailsViewControllerForRecentCall:v6];
+      [(MPRecentsTableViewController *)self showRecentCallDetailsViewControllerForRecentCall:callCopy];
     }
   }
 }
@@ -3519,43 +3519,43 @@ void __90__MPRecentsTableViewController_showRecentCallDetailsViewControllerForRe
   [v11 pushViewController:v5 animated:*(a1 + 56)];
 }
 
-- (void)showRecentCallDetailsViewControllerForRecentCall:(id)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)showRecentCallDetailsViewControllerForRecentCall:(id)call navigationController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MPRecentsTableViewController *)self featureFlags];
-  v11 = [v10 callHistorySearchEnabled];
+  animatedCopy = animated;
+  callCopy = call;
+  controllerCopy = controller;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v11)
+  if (callHistorySearchEnabled)
   {
     [TPTipsHelper updateCanDisplayCallHistorySearchTip:0];
-    v12 = [v8 validRemoteParticipantHandles];
-    v13 = [v12 count];
+    validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+    v13 = [validRemoteParticipantHandles count];
 
     if (v13 < 2)
     {
-      v14 = [v8 contactIdentifier];
-      v15 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:v8];
-      if (v14 && [v14 length])
+      contactIdentifier = [callCopy contactIdentifier];
+      v15 = [(MPRecentsTableViewController *)self contactViewControllerForRecentCall:callCopy];
+      if (contactIdentifier && [contactIdentifier length])
       {
         [v15 setDelegate:self];
-        [v9 pushViewController:v15 animated:v5];
+        [controllerCopy pushViewController:v15 animated:animatedCopy];
       }
 
       else
       {
-        v16 = [v8 callerId];
-        v17 = v8;
+        callerId = [callCopy callerId];
+        v17 = callCopy;
         v18 = v15;
-        v19 = v9;
+        v19 = controllerCopy;
         TUMapItemForDestinationID();
       }
     }
 
     else
     {
-      [(MPRecentsTableViewController *)self showRecentCallDetailsViewControllerForRecentCall:v8];
+      [(MPRecentsTableViewController *)self showRecentCallDetailsViewControllerForRecentCall:callCopy];
     }
   }
 }
@@ -3599,15 +3599,15 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   [*(a1 + 56) pushViewController:v5 animated:*(a1 + 64)];
 }
 
-- (id)multipleContactsViewControllerForRecentCall:(id)a3
+- (id)multipleContactsViewControllerForRecentCall:(id)call
 {
-  v4 = a3;
-  v30 = self;
-  v5 = [(MPRecentsTableViewController *)self recentsController];
+  callCopy = call;
+  selfCopy = self;
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
   v6 = +[PHContactViewController descriptorForRequiredKeys];
   v38 = v6;
   v7 = [NSArray arrayWithObjects:&v38 count:1];
-  v8 = [v5 contactByHandleForRecentCall:v4 keyDescriptors:v7];
+  v8 = [recentsController contactByHandleForRecentCall:callCopy keyDescriptors:v7];
 
   v9 = objc_alloc_init(NSMutableArray);
   v10 = objc_alloc_init(NSMutableArray);
@@ -3615,14 +3615,14 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v31 = v4;
-  v11 = [v4 validRemoteParticipantHandles];
-  v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v31 = callCopy;
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v12 = [validRemoteParticipantHandles countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v34;
-    v28 = v11;
+    v28 = validRemoteParticipantHandles;
     v29 = v10;
     v27 = *v34;
     do
@@ -3631,20 +3631,20 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
       {
         if (*v34 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(validRemoteParticipantHandles);
         }
 
         v16 = *(*(&v33 + 1) + 8 * i);
         v17 = [v8 objectForKeyedSubscript:{v16, v27}];
         if (!v17)
         {
-          v18 = [v16 tuHandle];
-          if (v18)
+          tuHandle = [v16 tuHandle];
+          if (tuHandle)
           {
-            v32 = [v31 isoCountryCode];
-            v19 = [(MPRecentsTableViewController *)v30 recentsController];
-            v20 = [v19 metadataCache];
-            [CNMutableContact contactForHandle:v18 isoCountryCode:v32 metadataCache:v20];
+            isoCountryCode = [v31 isoCountryCode];
+            recentsController2 = [(MPRecentsTableViewController *)selfCopy recentsController];
+            metadataCache = [recentsController2 metadataCache];
+            [CNMutableContact contactForHandle:tuHandle isoCountryCode:isoCountryCode metadataCache:metadataCache];
             v21 = v13;
             v22 = v9;
             v24 = v23 = v8;
@@ -3655,7 +3655,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
             v13 = v21;
 
             v14 = v27;
-            v11 = v28;
+            validRemoteParticipantHandles = v28;
 
             v10 = v29;
           }
@@ -3670,7 +3670,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
         [v10 addObject:v16];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v13 = [validRemoteParticipantHandles countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v13);
@@ -3689,18 +3689,18 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   return v25;
 }
 
-- (id)multipleContactsBlockViewControllerForRecentCall:(id)a3
+- (id)multipleContactsBlockViewControllerForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self contactsForRecentCall:v4];
+  callCopy = call;
+  v5 = [(MPRecentsTableViewController *)self contactsForRecentCall:callCopy];
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [(MPRecentsTableViewController *)self unknownContactForRecentCall:v4];
+  v7 = [(MPRecentsTableViewController *)self unknownContactForRecentCall:callCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v4 validRemoteParticipantHandles];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v9 = [validRemoteParticipantHandles countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3711,13 +3711,13 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(validRemoteParticipantHandles);
         }
 
         [v6 addObject:*(*(&v20 + 1) + 8 * i)];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [validRemoteParticipantHandles countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -3725,11 +3725,11 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
 
   if (v5)
   {
-    v13 = [(CallReportingViewModel *)self->_callReportingViewModel isInitiatorUnknownForCall:v4];
-    v14 = [(CallReportingViewModel *)self->_callReportingViewModel allUnknownContactInRecentCall:v4];
-    v15 = !v14 && [(CallReportingViewModel *)self->_callReportingViewModel atLeastOneUnknownCallerInRecentCall:v4];
+    v13 = [(CallReportingViewModel *)self->_callReportingViewModel isInitiatorUnknownForCall:callCopy];
+    v14 = [(CallReportingViewModel *)self->_callReportingViewModel allUnknownContactInRecentCall:callCopy];
+    v15 = !v14 && [(CallReportingViewModel *)self->_callReportingViewModel atLeastOneUnknownCallerInRecentCall:callCopy];
     v17 = objc_alloc_init(_TtC11MobilePhone25FaceTimeSpamReportManager);
-    v18 = [[PHContactsReportAndBlockTableViewModel alloc] initWithShouldShowBlockAll:v14 shouldShowReportInitiator:v13 shouldShowBlockUnknown:v15 recentCall:v4 reportSpammer:v17];
+    v18 = [[PHContactsReportAndBlockTableViewModel alloc] initWithShouldShowBlockAll:v14 shouldShowReportInitiator:v13 shouldShowBlockUnknown:v15 recentCall:callCopy reportSpammer:v17];
     v16 = [[PHContactsAndBlockTableViewController alloc] initWithContactArray:v5 unknownContacts:v7 contactHandles:v6 tableViewModel:v18];
   }
 
@@ -3741,24 +3741,24 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   return v16;
 }
 
-- (id)unknownContactForRecentCall:(id)a3
+- (id)unknownContactForRecentCall:(id)call
 {
-  v4 = a3;
-  v25 = self;
-  v5 = [(MPRecentsTableViewController *)self recentsController];
+  callCopy = call;
+  selfCopy = self;
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
   v6 = +[PHContactViewController descriptorForRequiredKeys];
   v33 = v6;
   v7 = [NSArray arrayWithObjects:&v33 count:1];
-  v8 = [v5 contactByHandleForRecentCall:v4 keyDescriptors:v7];
+  v8 = [recentsController contactByHandleForRecentCall:callCopy keyDescriptors:v7];
 
   v26 = objc_alloc_init(NSMutableArray);
-  v27 = v4;
+  v27 = callCopy;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v4 validRemoteParticipantHandles];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v10 = [validRemoteParticipantHandles countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3770,26 +3770,26 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(validRemoteParticipantHandles);
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
         v15 = [v8 objectForKeyedSubscript:{v14, v24}];
         if (!v15)
         {
-          v16 = [v14 tuHandle];
-          if (v16)
+          tuHandle = [v14 tuHandle];
+          if (tuHandle)
           {
-            v17 = [v27 isoCountryCode];
-            v18 = [(MPRecentsTableViewController *)v25 recentsController];
-            [v18 metadataCache];
-            v20 = v19 = v9;
-            [CNMutableContact contactForHandle:v16 isoCountryCode:v17 metadataCache:v20];
+            isoCountryCode = [v27 isoCountryCode];
+            recentsController2 = [(MPRecentsTableViewController *)selfCopy recentsController];
+            [recentsController2 metadataCache];
+            v20 = v19 = validRemoteParticipantHandles;
+            [CNMutableContact contactForHandle:tuHandle isoCountryCode:isoCountryCode metadataCache:v20];
             v22 = v21 = v8;
             v15 = [v22 copy];
 
             v8 = v21;
-            v9 = v19;
+            validRemoteParticipantHandles = v19;
             v12 = v24;
 
             [v26 addObject:v15];
@@ -3802,7 +3802,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v11 = [validRemoteParticipantHandles countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v11);
@@ -3811,15 +3811,15 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   return v26;
 }
 
-- (id)contactsForRecentCall:(id)a3
+- (id)contactsForRecentCall:(id)call
 {
-  v4 = a3;
-  v29 = self;
-  v5 = [(MPRecentsTableViewController *)self recentsController];
+  callCopy = call;
+  selfCopy = self;
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
   v6 = +[PHContactViewController descriptorForRequiredKeys];
   v37 = v6;
   v7 = [NSArray arrayWithObjects:&v37 count:1];
-  v8 = [v5 contactByHandleForRecentCall:v4 keyDescriptors:v7];
+  v8 = [recentsController contactByHandleForRecentCall:callCopy keyDescriptors:v7];
 
   v9 = objc_alloc_init(NSMutableArray);
   v10 = objc_alloc_init(NSMutableArray);
@@ -3827,14 +3827,14 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v30 = v4;
-  v11 = [v4 validRemoteParticipantHandles];
-  v12 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v30 = callCopy;
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v12 = [validRemoteParticipantHandles countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v33;
-    v27 = v11;
+    v27 = validRemoteParticipantHandles;
     v28 = v10;
     v26 = *v33;
     do
@@ -3843,20 +3843,20 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
       {
         if (*v33 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(validRemoteParticipantHandles);
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
         v17 = [v8 objectForKeyedSubscript:{v16, v26}];
         if (!v17)
         {
-          v18 = [v16 tuHandle];
-          if (v18)
+          tuHandle = [v16 tuHandle];
+          if (tuHandle)
           {
-            v31 = [v30 isoCountryCode];
-            v19 = [(MPRecentsTableViewController *)v29 recentsController];
-            v20 = [v19 metadataCache];
-            [CNMutableContact contactForHandle:v18 isoCountryCode:v31 metadataCache:v20];
+            isoCountryCode = [v30 isoCountryCode];
+            recentsController2 = [(MPRecentsTableViewController *)selfCopy recentsController];
+            metadataCache = [recentsController2 metadataCache];
+            [CNMutableContact contactForHandle:tuHandle isoCountryCode:isoCountryCode metadataCache:metadataCache];
             v21 = v13;
             v22 = v9;
             v24 = v23 = v8;
@@ -3867,7 +3867,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
             v13 = v21;
 
             v14 = v26;
-            v11 = v27;
+            validRemoteParticipantHandles = v27;
 
             v10 = v28;
           }
@@ -3882,7 +3882,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
         [v10 addObject:v16];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v13 = [validRemoteParticipantHandles countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v13);
@@ -3891,19 +3891,19 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   return v9;
 }
 
-- (id)contactsForRecentCallForAvatar:(id)a3
+- (id)contactsForRecentCallForAvatar:(id)avatar
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self recentsController];
-  v6 = [v5 contactByHandleForRecentCall:v4 keyDescriptors:&__NSArray0__struct];
+  avatarCopy = avatar;
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
+  v6 = [recentsController contactByHandleForRecentCall:avatarCopy keyDescriptors:&__NSArray0__struct];
 
   v7 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v4 validRemoteParticipantHandles];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  validRemoteParticipantHandles = [avatarCopy validRemoteParticipantHandles];
+  v9 = [validRemoteParticipantHandles countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3914,7 +3914,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(validRemoteParticipantHandles);
         }
 
         v13 = [v6 objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i)];
@@ -3926,7 +3926,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
         [v7 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [validRemoteParticipantHandles countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -3943,15 +3943,15 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
 
 - (void)updateTabBarItem
 {
-  v3 = [(MPRecentsTableViewController *)self recentsController];
-  -[MPRecentsTableViewController updateTabBarItemWithCount:](self, "updateTabBarItemWithCount:", [v3 unreadCallCount]);
+  recentsController = [(MPRecentsTableViewController *)self recentsController];
+  -[MPRecentsTableViewController updateTabBarItemWithCount:](self, "updateTabBarItemWithCount:", [recentsController unreadCallCount]);
 }
 
-- (void)updateTabBarItemWithCount:(unint64_t)a3
+- (void)updateTabBarItemWithCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
-    v4 = [NSString stringWithFormat:@"%lu", a3];
+    v4 = [NSString stringWithFormat:@"%lu", count];
   }
 
   else
@@ -3967,8 +3967,8 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting tab bar item badge value to %@", buf, 0xCu);
   }
 
-  v6 = [(MPRecentsTableViewController *)self tabBarItem];
-  [v6 setBadgeValue:v4];
+  tabBarItem = [(MPRecentsTableViewController *)self tabBarItem];
+  [tabBarItem setBadgeValue:v4];
 }
 
 - (MPRecentsUnknownCallersViewController)unknownCallersViewController
@@ -3996,23 +3996,23 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
 - (void)presentUnknownCallersViewController
 {
   v3 = [UINavigationController alloc];
-  v4 = [(MPRecentsTableViewController *)self unknownCallersViewController];
-  v5 = [v3 initWithRootViewController:v4];
+  unknownCallersViewController = [(MPRecentsTableViewController *)self unknownCallersViewController];
+  v5 = [v3 initWithRootViewController:unknownCallersViewController];
 
   [(MPRecentsTableViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)dismissUnknownCallersViewController:(id)a3
+- (void)dismissUnknownCallersViewController:(id)controller
 {
-  if (self->_unknownCallersViewController == a3)
+  if (self->_unknownCallersViewController == controller)
   {
-    [a3 dismissViewControllerAnimated:1 completion:0];
+    [controller dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)unknownCallersViewControllerDidRequestEnable:(id)a3
+- (void)unknownCallersViewControllerDidRequestEnable:(id)enable
 {
-  [(MPRecentsTableViewController *)self dismissUnknownCallersViewController:a3];
+  [(MPRecentsTableViewController *)self dismissUnknownCallersViewController:enable];
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -4027,9 +4027,9 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
   +[TPTipsHelper donateEventKnownCallersDone];
 }
 
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4
+- (void)recentsController:(id)controller didChangeCalls:(id)calls
 {
-  v5 = a4;
+  callsCopy = calls;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -4052,7 +4052,7 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Synchronizing recents table view with recents data source", buf, 2u);
   }
 
-  v9 = [(MPRecentsTableViewController *)self callsWithValidHandles:v5];
+  v9 = [(MPRecentsTableViewController *)self callsWithValidHandles:callsCopy];
   if ([(MPRecentsTableViewController *)self tableViewDisplayMode]== 1)
   {
     v10 = [NSPredicate predicateWithBlock:&__block_literal_global_328];
@@ -4061,23 +4061,23 @@ void __111__MPRecentsTableViewController_showRecentCallDetailsViewControllerForR
     v9 = v11;
   }
 
-  v12 = [(MPRecentsTableViewController *)self featureFlags];
-  if (([v12 phoneRecentsAvatarsEnabled] & 1) == 0)
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  if (([featureFlags phoneRecentsAvatarsEnabled] & 1) == 0)
   {
 
     goto LABEL_14;
   }
 
-  v13 = [(MPRecentsTableViewController *)self recentCalls];
-  v14 = [v13 isEqualToArray:v9];
+  recentCalls = [(MPRecentsTableViewController *)self recentCalls];
+  v14 = [recentCalls isEqualToArray:v9];
 
   if (!v14)
   {
 LABEL_14:
-    v15 = [(MPRecentsTableViewController *)self recentsController];
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
     v16 = objc_opt_class();
-    v17 = [(MPRecentsTableViewController *)self recentCalls];
-    v18 = [v16 indexPathsToInsertIntoCachedRecentCalls:v17 fromBackingRecentCalls:v9];
+    recentCalls2 = [(MPRecentsTableViewController *)self recentCalls];
+    v18 = [v16 indexPathsToInsertIntoCachedRecentCalls:recentCalls2 fromBackingRecentCalls:v9];
 
     v19 = [v18 count];
     v20 = PHDefaultLog();
@@ -4114,7 +4114,7 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Reloading data source", buf, 2u);
       }
 
-      [(MPRecentsTableViewController *)self reloadDataSourceForCalls:v5];
+      [(MPRecentsTableViewController *)self reloadDataSourceForCalls:callsCopy];
     }
 
     goto LABEL_22;
@@ -4125,7 +4125,7 @@ LABEL_22:
   delegate = self->_delegate;
   if (delegate)
   {
-    [(MPRecentsTableViewControllerDelegate *)delegate tableViewController:self didChangeCalls:v5];
+    [(MPRecentsTableViewControllerDelegate *)delegate tableViewController:self didChangeCalls:callsCopy];
   }
 
 LABEL_25:
@@ -4151,13 +4151,13 @@ id __65__MPRecentsTableViewController_recentsController_didChangeCalls___block_i
   return [v1 setContentUnavailable:v2 animated:0];
 }
 
-- (void)recentsController:(id)a3 didUpdateCalls:(id)a4
+- (void)recentsController:(id)controller didUpdateCalls:(id)calls
 {
-  v5 = a4;
-  v6 = [(MPRecentsTableViewController *)self featureFlags];
-  v7 = [v6 phoneRecentsAvatarsEnabled];
+  callsCopy = calls;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
-  if (v7)
+  if (phoneRecentsAvatarsEnabled)
   {
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4167,7 +4167,7 @@ id __65__MPRecentsTableViewController_recentsController_didChangeCalls___block_i
       v15 = 138412546;
       v16 = v9;
       v17 = 2048;
-      v18 = [v5 count];
+      v18 = [callsCopy count];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ is handling recent calls update for calls count : %lu", &v15, 0x16u);
     }
 
@@ -4180,7 +4180,7 @@ id __65__MPRecentsTableViewController_recentsController_didChangeCalls___block_i
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Synchronizing recents table view with recents data source", &v15, 2u);
       }
 
-      v12 = [(MPRecentsTableViewController *)self callsWithValidHandles:v5];
+      v12 = [(MPRecentsTableViewController *)self callsWithValidHandles:callsCopy];
       if ([(MPRecentsTableViewController *)self tableViewDisplayMode]== 1)
       {
         v13 = [NSPredicate predicateWithBlock:&__block_literal_global_331];
@@ -4199,50 +4199,50 @@ id __65__MPRecentsTableViewController_recentsController_didChangeCalls___block_i
   }
 }
 
-- (void)recentsController:(id)a3 didCompleteFetchingCalls:(id)a4
+- (void)recentsController:(id)controller didCompleteFetchingCalls:(id)calls
 {
-  v8 = a4;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 callHistorySearchEnabled];
+  callsCopy = calls;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v6)
+  if (callHistorySearchEnabled)
   {
     delegate = self->_delegate;
     if (delegate)
     {
-      [(MPRecentsTableViewControllerDelegate *)delegate tableViewController:self didChangeCalls:v8];
+      [(MPRecentsTableViewControllerDelegate *)delegate tableViewController:self didChangeCalls:callsCopy];
     }
   }
 }
 
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count
 {
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(MPRecentsTableViewController *)self tabBarItem];
-    v10 = [v9 badgeValue];
+    tabBarItem = [(MPRecentsTableViewController *)self tabBarItem];
+    badgeValue = [tabBarItem badgeValue];
     v11 = 138412802;
     v12 = v7;
     v13 = 2112;
-    v14 = v10;
+    v14 = badgeValue;
     v15 = 2048;
-    v16 = a4;
+    countCopy = count;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is handling unread call count change from %@ to %lu", &v11, 0x20u);
   }
 
-  [(MPRecentsTableViewController *)self updateTabBarItemWithCount:a4];
+  [(MPRecentsTableViewController *)self updateTabBarItemWithCount:count];
 }
 
-- (void)recentsControllerDidChangeMessages:(id)a3
+- (void)recentsControllerDidChangeMessages:(id)messages
 {
-  v5 = a3;
+  messagesCopy = messages;
   if ([(MPRecentsTableViewController *)self isViewLoaded]&& ([(MPRecentsTableViewController *)self isEditing]& 1) == 0)
   {
-    v4 = [v5 recentCalls];
-    [(MPRecentsTableViewController *)self reloadDataSourceForCalls:v4];
+    recentCalls = [messagesCopy recentCalls];
+    [(MPRecentsTableViewController *)self reloadDataSourceForCalls:recentCalls];
   }
 
   else
@@ -4251,19 +4251,19 @@ id __65__MPRecentsTableViewController_recentsController_didChangeCalls___block_i
   }
 }
 
-- (void)reconfiguringCellsForCalls:(id)a3
+- (void)reconfiguringCellsForCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 phoneRecentsAvatarsEnabled];
+  callsCopy = calls;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
-  if (v6)
+  if (phoneRecentsAvatarsEnabled)
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v12 = [v4 count];
+      v12 = [callsCopy count];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "reconfiguringCellsForCalls: %lu", buf, 0xCu);
     }
 
@@ -4271,8 +4271,8 @@ id __65__MPRecentsTableViewController_recentsController_didChangeCalls___block_i
     v8[1] = 3221225472;
     v8[2] = __59__MPRecentsTableViewController_reconfiguringCellsForCalls___block_invoke;
     v8[3] = &unk_100285C58;
-    v9 = v4;
-    v10 = self;
+    v9 = callsCopy;
+    selfCopy = self;
     [(MPRecentsTableViewController *)self performBatchUpdates:v8 completion:0];
   }
 }
@@ -4336,12 +4336,12 @@ void __59__MPRecentsTableViewController_reconfiguringCellsForCalls___block_invok
 
 - (BOOL)canPerformTableViewUpdates
 {
-  v3 = [(MPRecentsTableViewController *)self view];
-  if (v3 && [(MPRecentsTableViewController *)self isViewLoaded])
+  view = [(MPRecentsTableViewController *)self view];
+  if (view && [(MPRecentsTableViewController *)self isViewLoaded])
   {
-    v4 = [(MPRecentsTableViewController *)self view];
-    v5 = [v4 window];
-    v6 = v5 != 0;
+    view2 = [(MPRecentsTableViewController *)self view];
+    window = [view2 window];
+    v6 = window != 0;
   }
 
   else
@@ -4352,10 +4352,10 @@ void __59__MPRecentsTableViewController_reconfiguringCellsForCalls___block_invok
   return v6;
 }
 
-- (void)performBatchUpdates:(id)a3 completion:(id)a4
+- (void)performBatchUpdates:(id)updates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  completionCopy = completion;
   if (![(MPRecentsTableViewController *)self canPerformTableViewUpdates])
   {
     v8 = PHDefaultLog();
@@ -4366,16 +4366,16 @@ void __59__MPRecentsTableViewController_reconfiguringCellsForCalls___block_invok
     }
 
     [(MPRecentsTableViewController *)self setDataSourceNeedsReload:1];
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
-  v9 = [(MPRecentsTableViewController *)self dataSourceNeedsReload];
+  dataSourceNeedsReload = [(MPRecentsTableViewController *)self dataSourceNeedsReload];
   v10 = PHDefaultLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (dataSourceNeedsReload)
   {
     if (v11)
     {
@@ -4383,19 +4383,19 @@ void __59__MPRecentsTableViewController_reconfiguringCellsForCalls___block_invok
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "performBatchUpdates: Data source already needs a reload. Performing the reload instead", buf, 2u);
     }
 
-    v6[2](v6, 0);
-    v12 = [(MPRecentsTableViewController *)self recentsController];
-    v13 = [v12 recentCalls];
-    v14 = [(MPRecentsTableViewController *)self callsWithValidHandles:v13];
+    updatesCopy[2](updatesCopy, 0);
+    recentsController = [(MPRecentsTableViewController *)self recentsController];
+    recentCalls = [recentsController recentCalls];
+    v14 = [(MPRecentsTableViewController *)self callsWithValidHandles:recentCalls];
     v15 = [v14 mutableCopy];
     [(MPRecentsTableViewController *)self setRecentCalls:v15];
 
-    v16 = [(MPRecentsTableViewController *)self tableView];
-    [v16 reloadData];
+    tableView = [(MPRecentsTableViewController *)self tableView];
+    [tableView reloadData];
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -4407,23 +4407,23 @@ void __59__MPRecentsTableViewController_reconfiguringCellsForCalls___block_invok
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "performBatchUpdates: Performing the batch update", buf, 2u);
     }
 
-    v17 = [(MPRecentsTableViewController *)self tableView];
+    tableView2 = [(MPRecentsTableViewController *)self tableView];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = __63__MPRecentsTableViewController_performBatchUpdates_completion___block_invoke;
     v18[3] = &unk_100285590;
-    v19 = v6;
-    [v17 performBatchUpdates:v18 completion:v7];
+    v19 = updatesCopy;
+    [tableView2 performBatchUpdates:v18 completion:completionCopy];
   }
 
   [(MPRecentsTableViewController *)self setDataSourceNeedsReload:0];
 }
 
-- (id)callsWithValidHandles:(id)a3
+- (id)callsWithValidHandles:(id)handles
 {
-  v3 = a3;
+  handlesCopy = handles;
   v4 = [NSPredicate predicateWithBlock:&__block_literal_global_334];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [handlesCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
@@ -4448,48 +4448,48 @@ BOOL __54__MPRecentsTableViewController_callsWithValidHandles___block_invoke(id 
   return v6;
 }
 
-- (void)pushVoicemailMessageDetailsViewControllerForMessage:(id)a3
+- (void)pushVoicemailMessageDetailsViewControllerForMessage:(id)message
 {
-  v9 = a3;
-  v4 = [(MPRecentsTableViewController *)self navigationController];
+  messageCopy = message;
+  navigationController = [(MPRecentsTableViewController *)self navigationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = navigationController;
     v6 = [PHVoicemailMessageDetailViewController alloc];
-    v7 = [v5 voicemailController];
-    v8 = [(PHVoicemailMessageDetailViewController *)v6 initWithMessage:v9 navigationController:v5 voicemailController:v7];
+    voicemailController = [v5 voicemailController];
+    v8 = [(PHVoicemailMessageDetailViewController *)v6 initWithMessage:messageCopy navigationController:v5 voicemailController:voicemailController];
 
     [(PHVoicemailMessageDetailViewController *)v8 setDelegate:self];
     [v5 pushViewController:v8 animated:1];
   }
 }
 
-- (void)donateTipsEventSignalsForRecentCall:(id)a3
+- (void)donateTipsEventSignalsForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 useSharedRecentsViewModel];
+  callCopy = call;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v6)
+  if (useSharedRecentsViewModel)
   {
     v7 = objc_opt_new();
-    [v7 donateTipsEventSignalsForRecentCall:v4 completion:&__block_literal_global_339];
+    [v7 donateTipsEventSignalsForRecentCall:callCopy completion:&__block_literal_global_339];
     goto LABEL_25;
   }
 
-  v8 = [v4 contactIdentifier];
-  v7 = v8;
-  v9 = v8 && [v8 length];
+  contactIdentifier = [callCopy contactIdentifier];
+  v7 = contactIdentifier;
+  v9 = contactIdentifier && [contactIdentifier length];
   v10 = PHPreferencesGetValueInDomain();
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v12 = objc_alloc_init(CHManager);
     if (v9)
     {
-      if (![(MPRecentsTableViewController *)self isRecentCallContactInFavorites:v4])
+      if (![(MPRecentsTableViewController *)self isRecentCallContactInFavorites:callCopy])
       {
         v13 = objc_alloc_init(NSDateComponents);
         [v13 setDay:-30];
@@ -4531,8 +4531,8 @@ LABEL_18:
 
     else
     {
-      v20 = [v4 callerIdForDisplay];
-      v21 = [NSPredicate predicateWithFormat:@"callerIdForDisplay == %@", v20];
+      callerIdForDisplay = [callCopy callerIdForDisplay];
+      v21 = [NSPredicate predicateWithFormat:@"callerIdForDisplay == %@", callerIdForDisplay];
       v22 = [v12 countCallsWithPredicate:v21];
 
       if (v22 >= 3)
@@ -4555,13 +4555,13 @@ LABEL_24:
 LABEL_25:
 }
 
-- (BOOL)isRecentCallContactInFavorites:(id)a3
+- (BOOL)isRecentCallContactInFavorites:(id)favorites
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 useSharedRecentsViewModel];
+  favoritesCopy = favorites;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v6)
+  if (useSharedRecentsViewModel)
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -4570,22 +4570,22 @@ LABEL_25:
     }
   }
 
-  v8 = [v4 contactIdentifier];
-  v9 = v8;
-  if (v8 && [v8 length])
+  contactIdentifier = [favoritesCopy contactIdentifier];
+  v9 = contactIdentifier;
+  if (contactIdentifier && [contactIdentifier length])
   {
     v10 = +[(PHApplicationServices *)MPApplicationServices];
-    v11 = [v10 favoritesController];
+    favoritesController = [v10 favoritesController];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v11 favoritesEntries];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    favoritesEntries = [favoritesController favoritesEntries];
+    v13 = [favoritesEntries countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
-      v21 = v11;
+      v21 = favoritesController;
       v14 = *v23;
       while (2)
       {
@@ -4593,13 +4593,13 @@ LABEL_25:
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(favoritesEntries);
           }
 
-          v16 = [*(*(&v22 + 1) + 8 * i) contactProperty];
-          v17 = [v16 contact];
-          v18 = [v17 identifier];
-          v19 = [v18 isEqualToString:v9];
+          contactProperty = [*(*(&v22 + 1) + 8 * i) contactProperty];
+          contact = [contactProperty contact];
+          identifier = [contact identifier];
+          v19 = [identifier isEqualToString:v9];
 
           if (v19)
           {
@@ -4608,7 +4608,7 @@ LABEL_25:
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [favoritesEntries countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v13)
         {
           continue;
@@ -4618,7 +4618,7 @@ LABEL_25:
       }
 
 LABEL_18:
-      v11 = v21;
+      favoritesController = v21;
     }
   }
 
@@ -4633,9 +4633,9 @@ LABEL_18:
 - (void)presentCNSharedProfileOnboardingController
 {
   v3 = objc_alloc_init(TUFeatureFlags);
-  v4 = [v3 nameAndPhotoEnabledC3];
+  nameAndPhotoEnabledC3 = [v3 nameAndPhotoEnabledC3];
 
-  if (v4)
+  if (nameAndPhotoEnabledC3)
   {
     v5 = PHDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4647,12 +4647,12 @@ LABEL_18:
     [(MPRecentsTableViewController *)self dismissViewControllerAnimated:0 completion:0];
     v6 = [CNSharedProfileOnboardingController alloc];
     v7 = +[TUCallCenter sharedInstance];
-    v8 = [v7 contactStore];
-    v9 = [v6 initWithContactStore:v8];
+    contactStore = [v7 contactStore];
+    v9 = [v6 initWithContactStore:contactStore];
     [(MPRecentsTableViewController *)self setOnboardingController:v9];
 
-    v10 = [(MPRecentsTableViewController *)self onboardingController];
-    [v10 startOnboardingOrEditForMode:1 fromViewController:self];
+    onboardingController = [(MPRecentsTableViewController *)self onboardingController];
+    [onboardingController startOnboardingOrEditForMode:1 fromViewController:self];
   }
 }
 
@@ -4690,10 +4690,10 @@ LABEL_18:
 
   v6 = v5;
   _Block_object_dispose(&v23, 8);
-  v7 = [v5 sharedInstance];
-  v8 = [v7 subscriptionsInUse];
+  sharedInstance = [v5 sharedInstance];
+  subscriptionsInUse = [sharedInstance subscriptionsInUse];
 
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v9 = [subscriptionsInUse countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v9)
   {
     v11 = *v20;
@@ -4705,7 +4705,7 @@ LABEL_18:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subscriptionsInUse);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -4714,9 +4714,9 @@ LABEL_18:
           v14 = PHDefaultLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v13 uuid];
+            uuid = [v13 uuid];
             LODWORD(buf) = v18;
-            *(&buf + 4) = v15;
+            *(&buf + 4) = uuid;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Subscription: %@ is hidden", &buf, 0xCu);
           }
         }
@@ -4727,7 +4727,7 @@ LABEL_18:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v9 = [subscriptionsInUse countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v9);
@@ -4738,13 +4738,13 @@ LABEL_18:
   return v16;
 }
 
-- (id)fetchCarrierBundleValue:(id)a3 context:(id)a4
+- (id)fetchCarrierBundleValue:(id)value context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPRecentsTableViewController *)self ctClient];
+  valueCopy = value;
+  contextCopy = context;
+  ctClient = [(MPRecentsTableViewController *)self ctClient];
   v13 = 0;
-  v9 = [v8 context:v7 getCarrierBundleValue:v6 error:&v13];
+  v9 = [ctClient context:contextCopy getCarrierBundleValue:valueCopy error:&v13];
 
   v10 = v13;
   if (v10)
@@ -4763,13 +4763,13 @@ LABEL_18:
 
 - (id)personalizedCarrierString
 {
-  v3 = [(MPRecentsTableViewController *)self fetchSubscriptionsInUse];
+  fetchSubscriptionsInUse = [(MPRecentsTableViewController *)self fetchSubscriptionsInUse];
   v4 = objc_alloc_init(NSMutableSet);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = fetchSubscriptionsInUse;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -4802,24 +4802,24 @@ LABEL_18:
     while (v7);
   }
 
-  v13 = [v4 allObjects];
-  if ([v13 count] == 1)
+  allObjects = [v4 allObjects];
+  if ([allObjects count] == 1)
   {
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"BRANDED_CALLING_SINGLE_CARRIER_TIPS_TEXT" value:&stru_10028F310 table:@"PHRecents"];
-    v16 = [v13 objectAtIndexedSubscript:0];
+    v16 = [allObjects objectAtIndexedSubscript:0];
     v17 = [NSString stringWithFormat:v15, v16];
 LABEL_16:
 
     goto LABEL_18;
   }
 
-  if ([v13 count] == 2)
+  if ([allObjects count] == 2)
   {
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"BRANDED_CALLING_TWO_CARRIER_TIPS_TEXT" value:&stru_10028F310 table:@"PHRecents"];
-    v16 = [v13 objectAtIndexedSubscript:0];
-    v18 = [v13 objectAtIndexedSubscript:1];
+    v16 = [allObjects objectAtIndexedSubscript:0];
+    v18 = [allObjects objectAtIndexedSubscript:1];
     v17 = [NSString stringWithFormat:v15, v16, v18, v20];
 
     goto LABEL_16;
@@ -4831,17 +4831,17 @@ LABEL_18:
   return v17;
 }
 
-- (id)reportSwipeActionForCall:(id)a3
+- (id)reportSwipeActionForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   objc_initWeak(&location, self);
-  v5 = [(MPRecentsTableViewController *)self callReportingViewModel];
-  v6 = [v5 shouldShowReportActionForCall:v4];
+  callReportingViewModel = [(MPRecentsTableViewController *)self callReportingViewModel];
+  v6 = [callReportingViewModel shouldShowReportActionForCall:callCopy];
 
   if (v6)
   {
-    v7 = [(MPRecentsTableViewController *)self callReportingViewModel];
-    v8 = [v7 reportingFlowForCall:v4];
+    callReportingViewModel2 = [(MPRecentsTableViewController *)self callReportingViewModel];
+    v8 = [callReportingViewModel2 reportingFlowForCall:callCopy];
 
     if (v8 == 6)
     {
@@ -4857,8 +4857,8 @@ LABEL_18:
 
     else
     {
-      v11 = [(MPRecentsTableViewController *)self callReportingViewModel];
-      v9 = [v11 reportActionTitleOfFlow:v8];
+      callReportingViewModel3 = [(MPRecentsTableViewController *)self callReportingViewModel];
+      v9 = [callReportingViewModel3 reportActionTitleOfFlow:v8];
 
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -4866,14 +4866,14 @@ LABEL_18:
       v16[3] = &unk_1002864F0;
       objc_copyWeak(v18, &location);
       v18[1] = v8;
-      v17 = v4;
+      v17 = callCopy;
       v10 = [UIContextualAction contextualActionWithStyle:0 title:v9 handler:v16];
       v12 = +[UIColor orangeColor];
       [v10 setBackgroundColor:v12];
 
-      v13 = [(MPRecentsTableViewController *)self callReportingViewModel];
-      v14 = [v13 reportActionImage];
-      [v10 setImage:v14];
+      callReportingViewModel4 = [(MPRecentsTableViewController *)self callReportingViewModel];
+      reportActionImage = [callReportingViewModel4 reportActionImage];
+      [v10 setImage:reportActionImage];
 
       [v10 setAccessibilityIdentifier:@"ReportAction"];
       objc_destroyWeak(v18);
@@ -4974,13 +4974,13 @@ void __57__MPRecentsTableViewController_reportSwipeActionForCall___block_invoke(
   v5[2](v5, 1);
 }
 
-- (void)_showCarrierVoiceCallReportAlertForCall:(id)a3
+- (void)_showCarrierVoiceCallReportAlertForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 useSharedRecentsViewModel];
+  callCopy = call;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  useSharedRecentsViewModel = [featureFlags useSharedRecentsViewModel];
 
-  if (v6)
+  if (useSharedRecentsViewModel)
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -4989,12 +4989,12 @@ void __57__MPRecentsTableViewController_reportSwipeActionForCall___block_invoke(
     }
   }
 
-  v8 = [(MPRecentsTableViewController *)self callReportingViewModel];
-  v9 = [v8 getCarrierNameOfCallForCall:v4];
+  callReportingViewModel = [(MPRecentsTableViewController *)self callReportingViewModel];
+  v9 = [callReportingViewModel getCarrierNameOfCallForCall:callCopy];
 
-  v10 = [(MPRecentsTableViewController *)self callReportingViewModel];
+  callReportingViewModel2 = [(MPRecentsTableViewController *)self callReportingViewModel];
   v31 = v9;
-  v11 = [v10 getCarrierSpamReportAlertTitleWithCarrierName:v9];
+  v11 = [callReportingViewModel2 getCarrierSpamReportAlertTitleWithCarrierName:v9];
 
   v12 = [UIAlertController alertControllerWithTitle:v11 message:0 preferredStyle:0];
   v13 = +[NSBundle mainBundle];
@@ -5004,7 +5004,7 @@ void __57__MPRecentsTableViewController_reportSwipeActionForCall___block_invoke(
   v36[2] = __72__MPRecentsTableViewController__showCarrierVoiceCallReportAlertForCall___block_invoke;
   v36[3] = &unk_100285E58;
   v36[4] = self;
-  v15 = v4;
+  v15 = callCopy;
   v37 = v15;
   v16 = [UIAlertAction actionWithTitle:v14 style:2 handler:v36];
   [v12 addAction:v16];
@@ -5033,13 +5033,13 @@ void __57__MPRecentsTableViewController_reportSwipeActionForCall___block_invoke(
   v24 = [UIAlertAction actionWithTitle:v22 style:1 handler:v32];
   [v12 addAction:v24];
 
-  v25 = [v12 popoverPresentationController];
-  [v25 setPermittedArrowDirections:1];
+  popoverPresentationController = [v12 popoverPresentationController];
+  [popoverPresentationController setPermittedArrowDirections:1];
 
-  v26 = [v12 popoverPresentationController];
+  popoverPresentationController2 = [v12 popoverPresentationController];
   WeakRetained = objc_loadWeakRetained(&self->_alertPresentingViewController);
-  v28 = [WeakRetained view];
-  [v26 setSourceView:v28];
+  view = [WeakRetained view];
+  [popoverPresentationController2 setSourceView:view];
 
   v29 = objc_loadWeakRetained(&self->_alertPresentingViewController);
   if (v29)
@@ -5102,94 +5102,94 @@ void __72__MPRecentsTableViewController__showCarrierVoiceCallReportAlertForCall_
   return WeakRetained;
 }
 
-- (void)handleShowDetailsURLForUniqueID:(id)a3 withContinuingSearchText:(id)a4
+- (void)handleShowDetailsURLForUniqueID:(id)d withContinuingSearchText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPRecentsTableViewController *)self featureFlags];
-  v9 = [v8 callHistorySearchEnabled];
+  dCopy = d;
+  textCopy = text;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v9)
+  if (callHistorySearchEnabled)
   {
     v10 = PHDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = dCopy;
       v13 = 2112;
-      v14 = v7;
+      v14 = textCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Showing details for uniqueID: %@ and setting searchText as: %@", &v11, 0x16u);
     }
 
-    [(MPRecentsTableViewController *)self setPendingSearchText:v7];
-    [(MPRecentsTableViewController *)self handleShowDetailsURLForUniqueID:v6];
+    [(MPRecentsTableViewController *)self setPendingSearchText:textCopy];
+    [(MPRecentsTableViewController *)self handleShowDetailsURLForUniqueID:dCopy];
   }
 }
 
-- (void)startSearchingForText:(id)a3
+- (void)startSearchingForText:(id)text
 {
-  v4 = a3;
-  v5 = [(MPRecentsTableViewController *)self featureFlags];
-  v6 = [v5 callHistorySearchEnabled];
+  textCopy = text;
+  featureFlags = [(MPRecentsTableViewController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v6)
+  if (callHistorySearchEnabled)
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v4;
+      v23 = textCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Starting search for text: %@", &v22, 0xCu);
     }
 
     if (-[MPRecentsTableViewController isViewLoaded](self, "isViewLoaded") && (-[MPRecentsTableViewController view](self, "view"), v8 = objc_claimAutoreleasedReturnValue(), [v8 window], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
     {
-      v10 = [(MPRecentsTableViewController *)self searchController];
-      v11 = [v10 isActive];
+      searchController = [(MPRecentsTableViewController *)self searchController];
+      isActive = [searchController isActive];
 
-      if (v11)
+      if (isActive)
       {
-        v12 = [(MPRecentsTableViewController *)self searchController];
-        v13 = [v12 searchBar];
-        [v13 setText:v4];
+        searchController2 = [(MPRecentsTableViewController *)self searchController];
+        searchBar = [searchController2 searchBar];
+        [searchBar setText:textCopy];
 
-        v14 = [(MPRecentsTableViewController *)self searchResultsController];
-        v15 = [(MPRecentsTableViewController *)self searchController];
-        [v14 updateSearchResultsForSearchController:v15];
+        searchResultsController = [(MPRecentsTableViewController *)self searchResultsController];
+        searchController3 = [(MPRecentsTableViewController *)self searchController];
+        [searchResultsController updateSearchResultsForSearchController:searchController3];
       }
 
       else
       {
-        [(MPRecentsTableViewController *)self setPendingSearchText:v4];
-        v14 = [(MPRecentsTableViewController *)self searchController];
-        [v14 setActive:1];
+        [(MPRecentsTableViewController *)self setPendingSearchText:textCopy];
+        searchResultsController = [(MPRecentsTableViewController *)self searchController];
+        [searchResultsController setActive:1];
       }
 
-      v20 = [(MPRecentsTableViewController *)self searchController];
-      v21 = [v20 searchBar];
-      [v21 becomeFirstResponder];
+      searchController4 = [(MPRecentsTableViewController *)self searchController];
+      searchBar2 = [searchController4 searchBar];
+      [searchBar2 becomeFirstResponder];
     }
 
     else
     {
-      v16 = [(MPRecentsTableViewController *)self searchController];
-      v17 = [v16 searchBar];
-      [v17 setText:v4];
+      searchController5 = [(MPRecentsTableViewController *)self searchController];
+      searchBar3 = [searchController5 searchBar];
+      [searchBar3 setText:textCopy];
 
-      v18 = [(MPRecentsTableViewController *)self searchResultsController];
-      v19 = [(MPRecentsTableViewController *)self searchController];
-      [v18 updateSearchResultsForSearchController:v19];
+      searchResultsController2 = [(MPRecentsTableViewController *)self searchResultsController];
+      searchController6 = [(MPRecentsTableViewController *)self searchController];
+      [searchResultsController2 updateSearchResultsForSearchController:searchController6];
 
       [(MPRecentsTableViewController *)self setPendingSearchControllerActivation:1];
     }
   }
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(MPRecentsTableViewController *)self updateSearchBarLayoutMarginsPresentingSearchResults:1];
-  [v4 setShowsSearchResultsController:1];
+  [controllerCopy setShowsSearchResultsController:1];
 
   [(MPRecentsTableViewController *)self animateSearchResultsController:0];
   [(MPRecentsTableViewController *)self dismissPopover];
@@ -5197,16 +5197,16 @@ void __72__MPRecentsTableViewController__showCarrierVoiceCallReportAlertForCall_
   +[TPTipsHelper donateEventSearchedCallHistory];
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v8 = a3;
-  v4 = [(MPRecentsTableViewController *)self pendingSearchText];
+  controllerCopy = controller;
+  pendingSearchText = [(MPRecentsTableViewController *)self pendingSearchText];
 
-  if (v4)
+  if (pendingSearchText)
   {
-    v5 = [(MPRecentsTableViewController *)self pendingSearchText];
-    v6 = [v8 searchBar];
-    [v6 setText:v5];
+    pendingSearchText2 = [(MPRecentsTableViewController *)self pendingSearchText];
+    searchBar = [controllerCopy searchBar];
+    [searchBar setText:pendingSearchText2];
 
     [(MPRecentsTableViewController *)self setPendingSearchText:0];
   }
@@ -5215,45 +5215,45 @@ void __72__MPRecentsTableViewController__showCarrierVoiceCallReportAlertForCall_
   [v7 logSearchBarTap];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   [(MPRecentsTableViewController *)self updateSearchBarLayoutMarginsPresentingSearchResults:0];
 
   [(MPRecentsTableViewController *)self animateSearchResultsController:1];
 }
 
-- (void)animateSearchResultsController:(BOOL)a3
+- (void)animateSearchResultsController:(BOOL)controller
 {
-  if (a3)
+  if (controller)
   {
-    v4 = [(MPRecentsTableViewController *)self searchResultsController];
-    v5 = [v4 view];
+    searchResultsController = [(MPRecentsTableViewController *)self searchResultsController];
+    view = [searchResultsController view];
 
-    v6 = [(MPRecentsTableViewController *)self tableView];
+    tableView = [(MPRecentsTableViewController *)self tableView];
   }
 
   else
   {
-    v5 = [(MPRecentsTableViewController *)self tableView];
-    v7 = [(MPRecentsTableViewController *)self searchResultsController];
-    v6 = [v7 view];
+    view = [(MPRecentsTableViewController *)self tableView];
+    searchResultsController2 = [(MPRecentsTableViewController *)self searchResultsController];
+    tableView = [searchResultsController2 view];
   }
 
-  [v6 setAlpha:0.0];
+  [tableView setAlpha:0.0];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __71__MPRecentsTableViewController_Search__animateSearchResultsController___block_invoke;
   v14[3] = &unk_100284FD0;
-  v15 = v5;
+  v15 = view;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __71__MPRecentsTableViewController_Search__animateSearchResultsController___block_invoke_2;
   v10[3] = &unk_100286518;
   v12 = v15;
   v13 = 0x3FC999999999999ALL;
-  v11 = v6;
+  v11 = tableView;
   v8 = v15;
-  v9 = v6;
+  v9 = tableView;
   [UIView animateWithDuration:0x10000 delay:v14 options:v10 animations:0.2 completion:0.0];
 }
 
@@ -5273,33 +5273,33 @@ void __71__MPRecentsTableViewController_Search__animateSearchResultsController__
   [UIView animateWithDuration:v5 animations:v3 completion:v2];
 }
 
-- (void)didSelectSuggestedSearchWithToken:(id)a3
+- (void)didSelectSuggestedSearchWithToken:(id)token
 {
-  v4 = a3;
-  v5 = self;
-  MPRecentsTableViewController.didSelectSuggestedSearch(token:)(v4);
+  tokenCopy = token;
+  selfCopy = self;
+  MPRecentsTableViewController.didSelectSuggestedSearch(token:)(tokenCopy);
 }
 
 - (void)tipKitStartObservation
 {
-  v2 = self;
+  selfCopy = self;
   MPRecentsTableViewController.tipKitStartObservation()();
 }
 
 - (void)tipKitStopObservation
 {
-  v2 = self;
-  [(MPRecentsTableViewController *)v2 dismissPopover];
+  selfCopy = self;
+  [(MPRecentsTableViewController *)selfCopy dismissPopover];
   type metadata accessor for TPTipsHelper();
   static TPTipsHelper.taskQueue.getter();
-  *(swift_allocObject() + 16) = v2;
-  v3 = v2;
+  *(swift_allocObject() + 16) = selfCopy;
+  v3 = selfCopy;
   dispatch thunk of TaskQueue.async(_:)();
 }
 
 - (BOOL)canDisplaySearchBarPopover
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MPRecentsTableViewController.canDisplaySearchBarPopover()();
 
   return v3;
@@ -5308,45 +5308,45 @@ void __71__MPRecentsTableViewController_Search__animateSearchResultsController__
 - (id)makePersonalNicknameMenuView
 {
   v3 = objc_allocWithZone(type metadata accessor for PersonalNicknameMenuView());
-  v4 = self;
+  selfCopy = self;
   v5 = PersonalNicknameMenuView.init(displayContext:personalNicknameMenuViewDelegate:)(1, self, &protocol witness table for MPRecentsTableViewController);
 
   return v5;
 }
 
-- (void)presentFaceTimeSpamReportAlertFor:(id)a3
+- (void)presentFaceTimeSpamReportAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  MPRecentsTableViewController.presentFaceTimeSpamReportAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  MPRecentsTableViewController.presentFaceTimeSpamReportAlert(for:)(forCopy);
 }
 
-- (void)presentBlockAllAlertFor:(id)a3
+- (void)presentBlockAllAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  MPRecentsTableViewController.presentBlockAllAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  MPRecentsTableViewController.presentBlockAllAlert(for:)(forCopy);
 }
 
-- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)a3
+- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  MPRecentsTableViewController.presentFaceTimeSpamReportAndBlockAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  MPRecentsTableViewController.presentFaceTimeSpamReportAndBlockAlert(for:)(forCopy);
 }
 
-- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)a3
+- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  MPRecentsTableViewController.presentGroupFaceTimeSpamReportAndBlockAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  MPRecentsTableViewController.presentGroupFaceTimeSpamReportAndBlockAlert(for:)(forCopy);
 }
 
-- (void)presentBlockUnknownParticipantsFor:(id)a3
+- (void)presentBlockUnknownParticipantsFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  MPRecentsTableViewController.presentBlockUnknownParticipants(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  MPRecentsTableViewController.presentBlockUnknownParticipants(for:)(forCopy);
 }
 
 - (void)tableView:(uint64_t)a1 numberOfRowsInSection:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

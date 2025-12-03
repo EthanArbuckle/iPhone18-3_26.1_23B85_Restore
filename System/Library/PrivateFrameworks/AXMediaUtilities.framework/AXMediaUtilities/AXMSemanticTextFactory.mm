@@ -1,18 +1,18 @@
 @interface AXMSemanticTextFactory
-- (BOOL)_string:(id)a3 containsOnlyCharactersFrom:(id)a4;
-- (BOOL)_textExistsInLexicon:(id)a3 withLocale:(id)a4;
+- (BOOL)_string:(id)_string containsOnlyCharactersFrom:(id)from;
+- (BOOL)_textExistsInLexicon:(id)lexicon withLocale:(id)locale;
 - (NLTagger)tagger;
 - (NSDataDetector)dataDetector;
 - (NSMutableDictionary)cachedLexicons;
 - (NSMutableDictionary)compiledPatterns;
 - (NSNumberFormatter)numberFormatter;
-- (_LXLexicon)_lexiconForLocale:(id)a3;
-- (id)_preprocessedText:(id)a3;
-- (id)semanticTextForText:(id)a3 withLocale:(id)a4;
-- (void)_applyCustomPatterns:(id)a3;
-- (void)_applyDataDetectors:(id)a3;
-- (void)_applyNaturalLanguageTokens:(id)a3;
-- (void)_performSemanticAnalysis:(id)a3;
+- (_LXLexicon)_lexiconForLocale:(id)locale;
+- (id)_preprocessedText:(id)text;
+- (id)semanticTextForText:(id)text withLocale:(id)locale;
+- (void)_applyCustomPatterns:(id)patterns;
+- (void)_applyDataDetectors:(id)detectors;
+- (void)_applyNaturalLanguageTokens:(id)tokens;
+- (void)_performSemanticAnalysis:(id)analysis;
 @end
 
 @implementation AXMSemanticTextFactory
@@ -45,9 +45,9 @@
   cachedLexicons = self->_cachedLexicons;
   if (!cachedLexicons)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_cachedLexicons;
-    self->_cachedLexicons = v4;
+    self->_cachedLexicons = dictionary;
 
     cachedLexicons = self->_cachedLexicons;
   }
@@ -76,9 +76,9 @@
   compiledPatterns = self->_compiledPatterns;
   if (!compiledPatterns)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_compiledPatterns;
-    self->_compiledPatterns = v4;
+    self->_compiledPatterns = dictionary;
 
     v20 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v19 = [v20 URLForResource:@"SemanticTextPatterns" withExtension:@"plist"];
@@ -167,27 +167,27 @@
   return dataDetector;
 }
 
-- (id)semanticTextForText:(id)a3 withLocale:(id)a4
+- (id)semanticTextForText:(id)text withLocale:(id)locale
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  textCopy = text;
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v7 = [MEMORY[0x1E695DF58] currentLocale];
+    localeCopy = [MEMORY[0x1E695DF58] currentLocale];
   }
 
   v8 = AXMediaLogTextProcessing();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = textCopy;
     _os_log_impl(&dword_1AE37B000, v8, OS_LOG_TYPE_DEFAULT, "input text: %@", &v13, 0xCu);
   }
 
   v9 = [AXMSemanticText alloc];
-  v10 = [(AXMSemanticTextFactory *)self _preprocessedText:v6];
-  v11 = [(AXMSemanticText *)v9 initWithText:v10 locale:v7];
+  v10 = [(AXMSemanticTextFactory *)self _preprocessedText:textCopy];
+  v11 = [(AXMSemanticText *)v9 initWithText:v10 locale:localeCopy];
 
   [(AXMSemanticTextFactory *)self _applyNaturalLanguageTokens:v11];
   [(AXMSemanticTextFactory *)self _applyDataDetectors:v11];
@@ -197,21 +197,21 @@
   return v11;
 }
 
-- (id)_preprocessedText:(id)a3
+- (id)_preprocessedText:(id)text
 {
-  v3 = a3;
-  if (![v3 length] || (objc_msgSend(v3, "rangeOfComposedCharacterSequenceAtIndex:", 0), v4 == 1) && objc_msgSend(v3, "characterAtIndex:", 0) == 0xFFFF)
+  textCopy = text;
+  if (![textCopy length] || (objc_msgSend(textCopy, "rangeOfComposedCharacterSequenceAtIndex:", 0), v4 == 1) && objc_msgSend(textCopy, "characterAtIndex:", 0) == 0xFFFF)
   {
     v11 = &stru_1F23EA908;
   }
 
   else
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 1}];
-    v6 = [MEMORY[0x1E696AD48] alphanumericCharacterSet];
-    v7 = [v6 invertedSet];
+    v5 = [textCopy substringFromIndex:{objc_msgSend(textCopy, "length") - 1}];
+    alphanumericCharacterSet = [MEMORY[0x1E696AD48] alphanumericCharacterSet];
+    invertedSet = [alphanumericCharacterSet invertedSet];
 
-    v8 = [v3 stringByTrimmingCharactersInSet:v7];
+    v8 = [textCopy stringByTrimmingCharactersInSet:invertedSet];
     if ([(__CFString *)v8 length])
     {
       v9 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@".?"];
@@ -236,22 +236,22 @@
   return v11;
 }
 
-- (BOOL)_string:(id)a3 containsOnlyCharactersFrom:(id)a4
+- (BOOL)_string:(id)_string containsOnlyCharactersFrom:(id)from
 {
-  v5 = a3;
-  v6 = [a4 invertedSet];
-  v7 = [v5 rangeOfCharacterFromSet:v6];
+  _stringCopy = _string;
+  invertedSet = [from invertedSet];
+  v7 = [_stringCopy rangeOfCharacterFromSet:invertedSet];
 
   return v7 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_applyNaturalLanguageTokens:(id)a3
+- (void)_applyNaturalLanguageTokens:(id)tokens
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 preprocessedText];
-  v6 = [(AXMSemanticTextFactory *)self tagger];
-  [v6 setString:v5];
+  tokensCopy = tokens;
+  preprocessedText = [tokensCopy preprocessedText];
+  tagger = [(AXMSemanticTextFactory *)self tagger];
+  [tagger setString:preprocessedText];
 
   v7 = *MEMORY[0x1E69779D0];
   v8 = AXMediaLogTextProcessing();
@@ -262,17 +262,17 @@
     _os_log_impl(&dword_1AE37B000, v8, OS_LOG_TYPE_DEFAULT, "will enumerate tags for scheme: %@. options: all", buf, 0xCu);
   }
 
-  v9 = [(AXMSemanticTextFactory *)self tagger];
-  v10 = [v4 textRange];
+  tagger2 = [(AXMSemanticTextFactory *)self tagger];
+  textRange = [tokensCopy textRange];
   v12 = v11;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __54__AXMSemanticTextFactory__applyNaturalLanguageTokens___block_invoke;
   v18 = &unk_1E7A1DE18;
-  v19 = v4;
-  v20 = self;
-  v13 = v4;
-  [v9 enumerateTagsInRange:v10 unit:v12 scheme:0 options:v7 usingBlock:{32, &v15}];
+  v19 = tokensCopy;
+  selfCopy = self;
+  v13 = tokensCopy;
+  [tagger2 enumerateTagsInRange:textRange unit:v12 scheme:0 options:v7 usingBlock:{32, &v15}];
 
   v14 = [(AXMSemanticTextFactory *)self tagger:v15];
   [v14 setString:0];
@@ -428,20 +428,20 @@ LABEL_11:
 LABEL_6:
 }
 
-- (void)_applyDataDetectors:(id)a3
+- (void)_applyDataDetectors:(id)detectors
 {
-  v4 = a3;
-  v5 = [(AXMSemanticTextFactory *)self dataDetector];
-  v6 = [v4 preprocessedText];
-  v7 = [v4 textRange];
+  detectorsCopy = detectors;
+  dataDetector = [(AXMSemanticTextFactory *)self dataDetector];
+  preprocessedText = [detectorsCopy preprocessedText];
+  textRange = [detectorsCopy textRange];
   v9 = v8;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__AXMSemanticTextFactory__applyDataDetectors___block_invoke;
   v11[3] = &unk_1E7A1DE40;
-  v12 = v4;
-  v10 = v4;
-  [v5 enumerateMatchesInString:v6 options:0 range:v7 usingBlock:{v9, v11}];
+  v12 = detectorsCopy;
+  v10 = detectorsCopy;
+  [dataDetector enumerateMatchesInString:preprocessedText options:0 range:textRange usingBlock:{v9, v11}];
 }
 
 void __46__AXMSemanticTextFactory__applyDataDetectors___block_invoke(uint64_t a1, void *a2)
@@ -497,18 +497,18 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_applyCustomPatterns:(id)a3
+- (void)_applyCustomPatterns:(id)patterns
 {
-  v4 = a3;
-  v5 = [(AXMSemanticTextFactory *)self compiledPatterns];
+  patternsCopy = patterns;
+  compiledPatterns = [(AXMSemanticTextFactory *)self compiledPatterns];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke;
   v7[3] = &unk_1E7A1DE90;
-  v8 = v4;
+  v8 = patternsCopy;
   v9 = 0;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v6 = patternsCopy;
+  [compiledPatterns enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -544,14 +544,14 @@ uint64_t __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke_2(uint
   return result;
 }
 
-- (void)_performSemanticAnalysis:(id)a3
+- (void)_performSemanticAnalysis:(id)analysis
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v33 = v3;
-  v5 = [v3 makeCursor];
-  if (([v5 isFinished] & 1) == 0)
+  analysisCopy = analysis;
+  string = [MEMORY[0x1E696AD60] string];
+  v33 = analysisCopy;
+  makeCursor = [analysisCopy makeCursor];
+  if (([makeCursor isFinished] & 1) == 0)
   {
     v32 = *MEMORY[0x1E696A250];
     v31 = *MEMORY[0x1E696A580];
@@ -560,26 +560,26 @@ uint64_t __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke_2(uint
       v8 = AXMediaLogTextProcessing();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v5 remainingRange];
-        [v5 remainingRange];
+        remainingRange = [makeCursor remainingRange];
+        [makeCursor remainingRange];
         v11 = v10;
-        v12 = [v5 isOtherWord];
-        v13 = [v5 isInLexicon];
-        v14 = [v5 isWhitespace];
+        isOtherWord = [makeCursor isOtherWord];
+        isInLexicon = [makeCursor isInLexicon];
+        isWhitespace = [makeCursor isWhitespace];
         *buf = 134219008;
-        v50 = v9;
+        v50 = remainingRange;
         v51 = 2048;
         v52 = v11;
         v53 = 2048;
-        v54 = v12;
+        v54 = isOtherWord;
         v55 = 2048;
-        v56 = v13;
+        v56 = isInLexicon;
         v57 = 2048;
-        v58 = v14;
+        v58 = isWhitespace;
         _os_log_impl(&dword_1AE37B000, v8, OS_LOG_TYPE_DEFAULT, "remaining:[%ld %ld] word:%ld lexicon:%ld whitespace:%ld", buf, 0x34u);
       }
 
-      if ([v5 isCustomPattern])
+      if ([makeCursor isCustomPattern])
       {
         v45 = 0;
         v46 = 0;
@@ -587,17 +587,17 @@ uint64_t __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke_2(uint
         v16 = &v45;
         v17 = &v46;
         v18 = &v45;
-        v19 = v5;
+        v19 = makeCursor;
         v20 = @"CustomPattern";
         goto LABEL_16;
       }
 
-      if ([v5 isDataDetector])
+      if ([makeCursor isDataDetector])
       {
         break;
       }
 
-      if (([v5 isWhitespace] & 1) != 0 || objc_msgSend(v5, "isSentenceTerminator"))
+      if (([makeCursor isWhitespace] & 1) != 0 || objc_msgSend(makeCursor, "isSentenceTerminator"))
       {
         v41 = 0;
         v42 = 0;
@@ -608,7 +608,7 @@ uint64_t __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke_2(uint
         goto LABEL_15;
       }
 
-      if ([v5 isPunctuation])
+      if ([makeCursor isPunctuation])
       {
         v39 = 0;
         v40 = 0;
@@ -619,7 +619,7 @@ uint64_t __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke_2(uint
         goto LABEL_15;
       }
 
-      if ([v5 isProperNoun])
+      if ([makeCursor isProperNoun])
       {
         v37 = 0;
         v38 = 0;
@@ -630,9 +630,9 @@ uint64_t __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke_2(uint
         goto LABEL_15;
       }
 
-      if ([v5 isOtherWord])
+      if ([makeCursor isOtherWord])
       {
-        if ([v5 isInLexicon])
+        if ([makeCursor isInLexicon])
         {
           v35 = 0;
           v36 = 0;
@@ -641,7 +641,7 @@ uint64_t __47__AXMSemanticTextFactory__applyCustomPatterns___block_invoke_2(uint
           v17 = &v36;
           v18 = &v35;
 LABEL_15:
-          v19 = v5;
+          v19 = makeCursor;
           v20 = @"NLPToken";
 LABEL_16:
           [v19 processAttribute:v20 getSubstring:v17 advanceCursor:1 markAsSemanticError:0 error:v18];
@@ -649,14 +649,14 @@ LABEL_16:
           v22 = *v16;
           if (v21)
           {
-            [v4 appendString:v21];
+            [string appendString:v21];
           }
 
           goto LABEL_18;
         }
 
         v34 = 0;
-        [v5 processAttribute:@"NLPToken" getSubstring:0 advanceCursor:1 markAsSemanticError:1 error:&v34];
+        [makeCursor processAttribute:@"NLPToken" getSubstring:0 advanceCursor:1 markAsSemanticError:1 error:&v34];
         v22 = v34;
       }
 
@@ -665,9 +665,9 @@ LABEL_16:
         v30 = MEMORY[0x1E696ABC0];
         v47 = v31;
         v23 = MEMORY[0x1E696AEC0];
-        v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "remainingRange")}];
+        v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(makeCursor, "remainingRange")}];
         v25 = MEMORY[0x1E696AD98];
-        [v5 remainingRange];
+        [makeCursor remainingRange];
         v27 = [v25 numberWithUnsignedInteger:v26];
         v28 = [v23 stringWithFormat:@"Failed to match current cursor position. remaining:[%@ %@]", v24, v27];
         v48 = v28;
@@ -678,10 +678,10 @@ LABEL_16:
 LABEL_18:
       if (v22)
       {
-        [v5 markCurrentIndexAsSemanticErrorAndAdvanceCursor];
+        [makeCursor markCurrentIndexAsSemanticErrorAndAdvanceCursor];
       }
 
-      if ([v5 isFinished])
+      if ([makeCursor isFinished])
       {
         goto LABEL_2;
       }
@@ -693,30 +693,30 @@ LABEL_18:
     v16 = &v43;
     v17 = &v44;
     v18 = &v43;
-    v19 = v5;
+    v19 = makeCursor;
     v20 = @"DataDetector";
     goto LABEL_16;
   }
 
 LABEL_2:
-  [v33 setTransformedSpeechText:v4];
+  [v33 setTransformedSpeechText:string];
   v6 = AXMediaLogTextProcessing();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v33 isSemanticallyComplete];
+    isSemanticallyComplete = [v33 isSemanticallyComplete];
     *buf = 134218242;
-    v50 = v7;
+    v50 = isSemanticallyComplete;
     v51 = 2112;
-    v52 = v4;
+    v52 = string;
     _os_log_impl(&dword_1AE37B000, v6, OS_LOG_TYPE_DEFAULT, "semanticallyComplete:%ld speechText: '%@'", buf, 0x16u);
   }
 }
 
-- (BOOL)_textExistsInLexicon:(id)a3 withLocale:(id)a4
+- (BOOL)_textExistsInLexicon:(id)lexicon withLocale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(AXMSemanticTextFactory *)self _lexiconForLocale:v7])
+  lexiconCopy = lexicon;
+  localeCopy = locale;
+  if ([(AXMSemanticTextFactory *)self _lexiconForLocale:localeCopy])
   {
     v10 = 0;
     v11 = &v10;
@@ -767,36 +767,36 @@ void __58__AXMSemanticTextFactory__textExistsInLexicon_withLocale___block_invoke
   ++*(*(*(a1 + 32) + 8) + 24);
 }
 
-- (_LXLexicon)_lexiconForLocale:(id)a3
+- (_LXLexicon)_lexiconForLocale:(id)locale
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
+    localeCopy = [MEMORY[0x1E695DF58] currentLocale];
   }
 
-  v5 = [(AXMSemanticTextFactory *)self cachedLexicons];
-  v6 = [v5 objectForKey:v4];
+  cachedLexicons = [(AXMSemanticTextFactory *)self cachedLexicons];
+  v6 = [cachedLexicons objectForKey:localeCopy];
 
-  if (!v6 && v4)
+  if (!v6 && localeCopy)
   {
     v7 = AXMediaLogTextProcessing();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 languageCode];
-      v9 = [v4 localeIdentifier];
+      languageCode = [localeCopy languageCode];
+      localeIdentifier = [localeCopy localeIdentifier];
       *buf = 138412802;
-      *&buf[4] = v4;
+      *&buf[4] = localeCopy;
       v31 = 2112;
-      v32 = v8;
+      v32 = languageCode;
       v33 = 2112;
-      v34 = v9;
+      v34 = localeIdentifier;
       _os_log_impl(&dword_1AE37B000, v7, OS_LOG_TYPE_DEFAULT, "Creating new lexicon for locale (an expensive operation): %@ (language: %@) (id: %@)", buf, 0x20u);
     }
 
     v28 = *MEMORY[0x1E69ABFE8];
-    v29 = v4;
+    v29 = localeCopy;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     *buf = 0;
     v11 = LXLexiconCreate();
@@ -817,8 +817,8 @@ void __58__AXMSemanticTextFactory__textExistsInLexicon_withLocale___block_invoke
 
     else
     {
-      v12 = [(AXMSemanticTextFactory *)self cachedLexicons];
-      [v12 setObject:v6 forKey:v4];
+      cachedLexicons2 = [(AXMSemanticTextFactory *)self cachedLexicons];
+      [cachedLexicons2 setObject:v6 forKey:localeCopy];
     }
 
     CFRelease(v6);
@@ -830,7 +830,7 @@ LABEL_14:
     v20 = AXMediaLogTextProcessing();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [(AXMSemanticTextFactory *)v4 _lexiconForLocale:v20, v21, v22, v23, v24, v25, v26];
+      [(AXMSemanticTextFactory *)localeCopy _lexiconForLocale:v20, v21, v22, v23, v24, v25, v26];
     }
   }
 

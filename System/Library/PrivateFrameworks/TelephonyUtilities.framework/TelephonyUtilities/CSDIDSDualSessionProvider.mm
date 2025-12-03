@@ -1,7 +1,7 @@
 @interface CSDIDSDualSessionProvider
 - (BOOL)isAudioEnabled;
 - (BOOL)shouldUseSocketForTransport;
-- (CSDIDSDualSessionProvider)initWithSession:(id)a3 queue:(id)a4;
+- (CSDIDSDualSessionProvider)initWithSession:(id)session queue:(id)queue;
 - (CSDIDSDualSessionProviderDelegate)delegate;
 - (NSString)UUID;
 - (NSString)description;
@@ -10,38 +10,38 @@
 - (int64_t)invitationTimeout;
 - (unint64_t)initialLinkType;
 - (unsigned)endedReason;
-- (void)acceptInvitationWithData:(id)a3;
-- (void)cancelInvitationWithData:(id)a3;
-- (void)declineInvitationWithData:(id)a3;
+- (void)acceptInvitationWithData:(id)data;
+- (void)cancelInvitationWithData:(id)data;
+- (void)declineInvitationWithData:(id)data;
 - (void)end;
 - (void)reconnectSession;
-- (void)sendData:(id)a3;
-- (void)sendData:(id)a3 toDestinations:(id)a4;
-- (void)session:(id)a3 didReceiveReport:(id)a4;
-- (void)session:(id)a3 receivedInvitationAcceptFromID:(id)a4 withData:(id)a5;
-- (void)session:(id)a3 receivedInvitationCancelFromID:(id)a4 withData:(id)a5;
-- (void)session:(id)a3 receivedInvitationDeclineFromID:(id)a4 withData:(id)a5;
-- (void)session:(id)a3 receivedSessionMessageFromID:(id)a4 withData:(id)a5;
-- (void)sessionStarted:(id)a3;
-- (void)setInvitationTimeout:(int64_t)a3;
-- (void)setPreferences:(id)a3;
-- (void)setStreamPreferences:(id)a3;
+- (void)sendData:(id)data;
+- (void)sendData:(id)data toDestinations:(id)destinations;
+- (void)session:(id)session didReceiveReport:(id)report;
+- (void)session:(id)session receivedInvitationAcceptFromID:(id)d withData:(id)data;
+- (void)session:(id)session receivedInvitationCancelFromID:(id)d withData:(id)data;
+- (void)session:(id)session receivedInvitationDeclineFromID:(id)d withData:(id)data;
+- (void)session:(id)session receivedSessionMessageFromID:(id)d withData:(id)data;
+- (void)sessionStarted:(id)started;
+- (void)setInvitationTimeout:(int64_t)timeout;
+- (void)setPreferences:(id)preferences;
+- (void)setStreamPreferences:(id)preferences;
 @end
 
 @implementation CSDIDSDualSessionProvider
 
-- (CSDIDSDualSessionProvider)initWithSession:(id)a3 queue:(id)a4
+- (CSDIDSDualSessionProvider)initWithSession:(id)session queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = CSDIDSDualSessionProvider;
   v9 = [(CSDIDSDualSessionProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    [(IDSSession *)v10->_session setDelegate:v10 queue:v8];
+    objc_storeStrong(&v9->_session, session);
+    [(IDSSession *)v10->_session setDelegate:v10 queue:queueCopy];
   }
 
   return v10;
@@ -49,208 +49,208 @@
 
 - (NSString)description
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 description];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  v3 = [session description];
 
   return v3;
 }
 
 - (unsigned)endedReason
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 sessionEndedReason];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  sessionEndedReason = [session sessionEndedReason];
 
-  return v3;
+  return sessionEndedReason;
 }
 
 - (NSString)UUID
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 sessionID];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  sessionID = [session sessionID];
 
-  return v3;
+  return sessionID;
 }
 
 - (BOOL)shouldUseSocketForTransport
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 shouldUseSocketForTransport];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  shouldUseSocketForTransport = [session shouldUseSocketForTransport];
 
-  return v3;
+  return shouldUseSocketForTransport;
 }
 
 - (int)socket
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 socket];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  socket = [session socket];
 
-  return v3;
+  return socket;
 }
 
 - (NSString)destination
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 destination];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  destination = [session destination];
 
-  return v3;
+  return destination;
 }
 
 - (unint64_t)initialLinkType
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 initialLinkType];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  initialLinkType = [session initialLinkType];
 
-  return v3;
+  return initialLinkType;
 }
 
 - (BOOL)isAudioEnabled
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 isAudioEnabled];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  isAudioEnabled = [session isAudioEnabled];
 
-  return v3;
+  return isAudioEnabled;
 }
 
 - (int64_t)invitationTimeout
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  v3 = [v2 invitationTimeOut];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  invitationTimeOut = [session invitationTimeOut];
 
-  return v3;
+  return invitationTimeOut;
 }
 
-- (void)setInvitationTimeout:(int64_t)a3
+- (void)setInvitationTimeout:(int64_t)timeout
 {
-  v4 = [(CSDIDSDualSessionProvider *)self session];
-  [v4 setInvitationTimeOut:a3];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session setInvitationTimeOut:timeout];
 }
 
-- (void)setPreferences:(id)a3
+- (void)setPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = preferencesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "preferences: %@", &v7, 0xCu);
   }
 
-  v6 = [(CSDIDSDualSessionProvider *)self session];
-  [v6 setPreferences:v4];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session setPreferences:preferencesCopy];
 }
 
-- (void)setStreamPreferences:(id)a3
+- (void)setStreamPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = preferencesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "streamPreferences: %@", &v7, 0xCu);
   }
 
-  v6 = [(CSDIDSDualSessionProvider *)self session];
-  [v6 setStreamPreferences:v4];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session setStreamPreferences:preferencesCopy];
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
-  v5 = [(CSDIDSDualSessionProvider *)self session];
-  [v5 sendSessionMessage:v4];
+  dataCopy = data;
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session sendSessionMessage:dataCopy];
 }
 
-- (void)sendData:(id)a3 toDestinations:(id)a4
+- (void)sendData:(id)data toDestinations:(id)destinations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDIDSDualSessionProvider *)self session];
-  [v8 sendSessionMessage:v7 toDestinations:v6];
+  destinationsCopy = destinations;
+  dataCopy = data;
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session sendSessionMessage:dataCopy toDestinations:destinationsCopy];
 }
 
-- (void)acceptInvitationWithData:(id)a3
+- (void)acceptInvitationWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(CSDIDSDualSessionProvider *)self session];
-  [v5 acceptInvitationWithData:v4];
+  dataCopy = data;
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session acceptInvitationWithData:dataCopy];
 }
 
-- (void)cancelInvitationWithData:(id)a3
+- (void)cancelInvitationWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(CSDIDSDualSessionProvider *)self session];
-  [v5 cancelInvitationWithData:v4];
+  dataCopy = data;
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session cancelInvitationWithData:dataCopy];
 }
 
-- (void)declineInvitationWithData:(id)a3
+- (void)declineInvitationWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(CSDIDSDualSessionProvider *)self session];
-  [v5 declineInvitationWithData:v4];
+  dataCopy = data;
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session declineInvitationWithData:dataCopy];
 }
 
 - (void)reconnectSession
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  [v2 reconnectSession];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session reconnectSession];
 }
 
 - (void)end
 {
-  v2 = [(CSDIDSDualSessionProvider *)self session];
-  [v2 endSession];
+  session = [(CSDIDSDualSessionProvider *)self session];
+  [session endSession];
 }
 
-- (void)sessionStarted:(id)a3
+- (void)sessionStarted:(id)started
 {
-  v4 = [(CSDIDSDualSessionProvider *)self delegate];
-  [v4 sessionProviderStarted:self];
+  delegate = [(CSDIDSDualSessionProvider *)self delegate];
+  [delegate sessionProviderStarted:self];
 }
 
-- (void)session:(id)a3 didReceiveReport:(id)a4
+- (void)session:(id)session didReceiveReport:(id)report
 {
-  v5 = a4;
-  v6 = a3;
+  reportCopy = report;
+  sessionCopy = session;
   v7 = [NSUUID alloc];
-  v8 = [v6 sessionID];
+  sessionID = [sessionCopy sessionID];
 
-  v10 = [v7 initWithUUIDString:v8];
+  v10 = [v7 initWithUUIDString:sessionID];
   v9 = +[CSDReportingController sharedInstance];
-  [v9 idsReportsReceived:v5 forSessionWithUUID:v10];
+  [v9 idsReportsReceived:reportCopy forSessionWithUUID:v10];
 }
 
-- (void)session:(id)a3 receivedSessionMessageFromID:(id)a4 withData:(id)a5
+- (void)session:(id)session receivedSessionMessageFromID:(id)d withData:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSDIDSDualSessionProvider *)self delegate];
-  [v9 sessionProvider:self receivedSessionMessageFromID:v8 withData:v7];
+  dataCopy = data;
+  dCopy = d;
+  delegate = [(CSDIDSDualSessionProvider *)self delegate];
+  [delegate sessionProvider:self receivedSessionMessageFromID:dCopy withData:dataCopy];
 }
 
-- (void)session:(id)a3 receivedInvitationAcceptFromID:(id)a4 withData:(id)a5
+- (void)session:(id)session receivedInvitationAcceptFromID:(id)d withData:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSDIDSDualSessionProvider *)self delegate];
-  [v9 sessionProvider:self receivedInvitationAcceptFromID:v8 withData:v7];
+  dataCopy = data;
+  dCopy = d;
+  delegate = [(CSDIDSDualSessionProvider *)self delegate];
+  [delegate sessionProvider:self receivedInvitationAcceptFromID:dCopy withData:dataCopy];
 }
 
-- (void)session:(id)a3 receivedInvitationCancelFromID:(id)a4 withData:(id)a5
+- (void)session:(id)session receivedInvitationCancelFromID:(id)d withData:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSDIDSDualSessionProvider *)self delegate];
-  [v9 sessionProvider:self receivedInvitationCancelFromID:v8 withData:v7];
+  dataCopy = data;
+  dCopy = d;
+  delegate = [(CSDIDSDualSessionProvider *)self delegate];
+  [delegate sessionProvider:self receivedInvitationCancelFromID:dCopy withData:dataCopy];
 }
 
-- (void)session:(id)a3 receivedInvitationDeclineFromID:(id)a4 withData:(id)a5
+- (void)session:(id)session receivedInvitationDeclineFromID:(id)d withData:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSDIDSDualSessionProvider *)self delegate];
-  [v9 sessionProvider:self receivedInvitationDeclineFromID:v8 withData:v7];
+  dataCopy = data;
+  dCopy = d;
+  delegate = [(CSDIDSDualSessionProvider *)self delegate];
+  [delegate sessionProvider:self receivedInvitationDeclineFromID:dCopy withData:dataCopy];
 }
 
 - (CSDIDSDualSessionProviderDelegate)delegate

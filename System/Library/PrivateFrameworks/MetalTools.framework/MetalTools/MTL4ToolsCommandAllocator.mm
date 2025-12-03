@@ -1,38 +1,38 @@
 @interface MTL4ToolsCommandAllocator
-- (MTL4ToolsCommandAllocator)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsCommandAllocator)initWithBaseObject:(id)object parent:(id)parent;
 - (unint64_t)allocatedSize;
-- (void)addResetHandler:(id)a3;
+- (void)addResetHandler:(id)handler;
 - (void)reset;
 @end
 
 @implementation MTL4ToolsCommandAllocator
 
-- (MTL4ToolsCommandAllocator)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsCommandAllocator)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsCommandAllocator;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (unint64_t)allocatedSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocatedSize];
+  return [baseObject allocatedSize];
 }
 
 - (void)reset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 reset];
+  [baseObject reset];
 }
 
-- (void)addResetHandler:(id)a3
+- (void)addResetHandler:(id)handler
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 addResetHandler:a3];
+  [baseObject addResetHandler:handler];
 }
 
 @end

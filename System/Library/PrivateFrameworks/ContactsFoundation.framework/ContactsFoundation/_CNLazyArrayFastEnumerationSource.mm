@@ -1,21 +1,21 @@
 @interface _CNLazyArrayFastEnumerationSource
-- (_CNLazyArrayFastEnumerationSource)initWithFastEnumeration:(id)a3;
+- (_CNLazyArrayFastEnumerationSource)initWithFastEnumeration:(id)enumeration;
 - (id)nextObject;
 - (void)fillBuffer;
 @end
 
 @implementation _CNLazyArrayFastEnumerationSource
 
-- (_CNLazyArrayFastEnumerationSource)initWithFastEnumeration:(id)a3
+- (_CNLazyArrayFastEnumerationSource)initWithFastEnumeration:(id)enumeration
 {
-  v5 = a3;
+  enumerationCopy = enumeration;
   v10.receiver = self;
   v10.super_class = _CNLazyArrayFastEnumerationSource;
   v6 = [(_CNLazyArrayFastEnumerationSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fastEnumeration, a3);
+    objc_storeStrong(&v6->_fastEnumeration, enumeration);
     v7->_state.state = 0;
     v7->_firstCall = 1;
     v7->_count = 0;

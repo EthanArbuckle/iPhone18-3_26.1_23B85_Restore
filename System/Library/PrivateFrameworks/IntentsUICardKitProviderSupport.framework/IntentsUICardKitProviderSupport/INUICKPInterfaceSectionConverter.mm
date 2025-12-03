@@ -1,21 +1,21 @@
 @interface INUICKPInterfaceSectionConverter
-+ (id)_interactionMatchingCardSection:(id)a3 inCard:(id)a4;
-+ (id)generateInterfaceSectionsFromCard:(id)a3;
-+ (unint64_t)_intrinsicInteractiveBehaviorForCardSection:(id)a3;
++ (id)_interactionMatchingCardSection:(id)section inCard:(id)card;
++ (id)generateInterfaceSectionsFromCard:(id)card;
++ (unint64_t)_intrinsicInteractiveBehaviorForCardSection:(id)section;
 @end
 
 @implementation INUICKPInterfaceSectionConverter
 
-+ (id)generateInterfaceSectionsFromCard:(id)a3
++ (id)generateInterfaceSectionsFromCard:(id)card
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cardCopy = card;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v4 cardSections];
+  obj = [cardCopy cardSections];
   v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -33,7 +33,7 @@
         v10 = *(*(&v18 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [a1 _interactionMatchingCardSection:v10 inCard:v4];
+          v11 = [self _interactionMatchingCardSection:v10 inCard:cardCopy];
           v12 = [v10 parametersForInteraction:v11];
         }
 
@@ -42,7 +42,7 @@
           v12 = 0;
         }
 
-        v13 = -[INUICKPCardInterfaceSection initWithInteractiveBehavior:parameters:]([INUICKPCardInterfaceSection alloc], "initWithInteractiveBehavior:parameters:", [a1 _intrinsicInteractiveBehaviorForCardSection:v10], v12);
+        v13 = -[INUICKPCardInterfaceSection initWithInteractiveBehavior:parameters:]([INUICKPCardInterfaceSection alloc], "initWithInteractiveBehavior:parameters:", [self _intrinsicInteractiveBehaviorForCardSection:v10], v12);
         [(INUICKPCardInterfaceSection *)v13 setCardSection:v10];
         [v5 addObject:v13];
       }
@@ -59,34 +59,34 @@
   return v14;
 }
 
-+ (id)_interactionMatchingCardSection:(id)a3 inCard:(id)a4
++ (id)_interactionMatchingCardSection:(id)section inCard:(id)card
 {
-  v4 = [a4 interactions];
-  v5 = [v4 anyObject];
+  interactions = [card interactions];
+  anyObject = [interactions anyObject];
 
-  return v5;
+  return anyObject;
 }
 
-+ (unint64_t)_intrinsicInteractiveBehaviorForCardSection:(id)a3
++ (unint64_t)_intrinsicInteractiveBehaviorForCardSection:(id)section
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_opt_class() inuickp_interactiveBehaviorPrecedenceOrder];
-  v21 = [v4 count];
-  v5 = [v3 inuickp_intrinsicInteractiveBehavior];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
-  v22 = v4;
-  v7 = [v4 indexOfObject:v6];
+  sectionCopy = section;
+  inuickp_interactiveBehaviorPrecedenceOrder = [objc_opt_class() inuickp_interactiveBehaviorPrecedenceOrder];
+  v21 = [inuickp_interactiveBehaviorPrecedenceOrder count];
+  inuickp_intrinsicInteractiveBehavior = [sectionCopy inuickp_intrinsicInteractiveBehavior];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:inuickp_intrinsicInteractiveBehavior];
+  v22 = inuickp_interactiveBehaviorPrecedenceOrder;
+  v7 = [inuickp_interactiveBehaviorPrecedenceOrder indexOfObject:v6];
 
   if (objc_opt_respondsToSelector())
   {
-    v20 = v3;
-    v8 = [v3 actionCommands];
+    v20 = sectionCopy;
+    actionCommands = [sectionCopy actionCommands];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v9 = [actionCommands countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -98,36 +98,36 @@
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(actionCommands);
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v14 inuickp_intrinsicInteractiveBehavior];
-            v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
+            inuickp_intrinsicInteractiveBehavior2 = [v14 inuickp_intrinsicInteractiveBehavior];
+            v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:inuickp_intrinsicInteractiveBehavior2];
             v17 = v21 - [v22 indexOfObject:v16];
 
             if (v17 > v11)
             {
               v11 = v17;
-              v5 = v15;
+              inuickp_intrinsicInteractiveBehavior = inuickp_intrinsicInteractiveBehavior2;
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [actionCommands countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v10);
     }
 
-    v3 = v20;
+    sectionCopy = v20;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v5;
+  return inuickp_intrinsicInteractiveBehavior;
 }
 
 @end

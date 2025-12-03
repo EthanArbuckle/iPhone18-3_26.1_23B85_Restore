@@ -1,19 +1,19 @@
 @interface ShareViewController
-- (_TtC15ConversationKit19ShareViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC15ConversationKit19ShareViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ShareViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  ShareViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  ShareViewController.viewDidAppear(_:)(appear);
 }
 
-- (_TtC15ConversationKit19ShareViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit19ShareViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -25,8 +25,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return ShareViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return ShareViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

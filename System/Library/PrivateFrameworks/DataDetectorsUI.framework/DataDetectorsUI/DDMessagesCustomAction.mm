@@ -1,15 +1,15 @@
 @interface DDMessagesCustomAction
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
 - (id)localizedName;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDMessagesCustomAction
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  HasType = a4;
-  if (a4)
+  HasType = result;
+  if (result)
   {
     v5 = +[DDDetectionController messagesActionHandler];
     if (v5)
@@ -37,7 +37,7 @@
   return v6;
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
   v9 = *MEMORY[0x277D85DE8];
   if (self->super._result)

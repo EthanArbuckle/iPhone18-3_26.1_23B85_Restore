@@ -1,54 +1,54 @@
 @interface TSPMutableLargeNumberArray
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation TSPMutableLargeNumberArray
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276AA1738, off_2812FC248[80]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276AA1738, off_2812FC248[80]);
 
-  objc_msgSend_saveToMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_276AA1558;
   v9[3] = &unk_27A6E2898;
-  v10 = v6;
-  v11 = self;
-  v7 = v6;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v9);
+  v10 = archiverCopy;
+  selfCopy = self;
+  v7 = archiverCopy;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, message, v9);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812FC248[80]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812FC248[80]);
 
-  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_276AA16F4;
   v9[3] = &unk_27A6E46B8;
-  v10 = v6;
-  v11 = self;
-  v7 = v6;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v9);
+  v10 = unarchiverCopy;
+  selfCopy = self;
+  v7 = unarchiverCopy;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, message, v9);
 }
 
 @end

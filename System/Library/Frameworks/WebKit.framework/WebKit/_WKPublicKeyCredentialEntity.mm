@@ -1,11 +1,11 @@
 @interface _WKPublicKeyCredentialEntity
-- (_WKPublicKeyCredentialEntity)initWithName:(id)a3;
+- (_WKPublicKeyCredentialEntity)initWithName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation _WKPublicKeyCredentialEntity
 
-- (_WKPublicKeyCredentialEntity)initWithName:(id)a3
+- (_WKPublicKeyCredentialEntity)initWithName:(id)name
 {
   v7.receiver = self;
   v7.super_class = _WKPublicKeyCredentialEntity;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    [(_WKPublicKeyCredentialEntity *)v4 setName:a3];
+    [(_WKPublicKeyCredentialEntity *)v4 setName:name];
   }
 
   return v5;

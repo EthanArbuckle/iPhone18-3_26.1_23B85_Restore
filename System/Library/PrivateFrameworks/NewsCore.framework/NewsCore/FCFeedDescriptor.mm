@@ -1,14 +1,14 @@
 @interface FCFeedDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSubscribedToWithSubscriptionController:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSubscribedToWithSubscriptionController:(id)controller;
 - (FCFeedDescriptor)init;
-- (FCFeedDescriptor)initWithIdentifier:(id)a3;
+- (FCFeedDescriptor)initWithIdentifier:(id)identifier;
 - (NSString)description;
 - (NSString)name;
-- (id)fetchOperationForHeadlinesWithIDs:(id)a3 context:(id)a4;
-- (id)latestHeadlineResultsWithContext:(id)a3;
-- (id)streamOfHeadlinesWithIDs:(id)a3 context:(id)a4 cachedOnly:(BOOL)a5 maxCachedAge:(double)a6;
-- (id)streamOfLatestHeadlinesWithContext:(id)a3;
+- (id)fetchOperationForHeadlinesWithIDs:(id)ds context:(id)context;
+- (id)latestHeadlineResultsWithContext:(id)context;
+- (id)streamOfHeadlinesWithIDs:(id)ds context:(id)context cachedOnly:(BOOL)only maxCachedAge:(double)age;
+- (id)streamOfLatestHeadlinesWithContext:(id)context;
 - (int64_t)feedSortMethod;
 - (unint64_t)feedFilterOptions;
 - (unint64_t)hash;
@@ -42,11 +42,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCFeedDescriptor)initWithIdentifier:(id)a3
+- (FCFeedDescriptor)initWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier != nil"];
     *buf = 136315906;
@@ -66,9 +66,9 @@
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (identifierCopy)
     {
-      v7 = [v4 copy];
+      v7 = [identifierCopy copy];
       identifier = v6->_identifier;
       v6->_identifier = v7;
     }
@@ -84,15 +84,15 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -110,9 +110,9 @@
 
   if (v6)
   {
-    v7 = [(FCFeedDescriptor *)self identifier];
-    v8 = [v6 identifier];
-    v9 = [v7 isEqualToString:v8];
+    identifier = [(FCFeedDescriptor *)self identifier];
+    identifier2 = [v6 identifier];
+    v9 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -125,8 +125,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FCFeedDescriptor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(FCFeedDescriptor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -134,21 +134,21 @@
 - (NSString)description
 {
   v3 = [FCDescription descriptionWithObject:self];
-  v4 = [(FCFeedDescriptor *)self name];
-  [v3 addField:@"name" value:v4];
+  name = [(FCFeedDescriptor *)self name];
+  [v3 addField:@"name" value:name];
 
-  v5 = [(FCFeedDescriptor *)self identifier];
-  [v3 addField:@"identifier" value:v5];
+  identifier = [(FCFeedDescriptor *)self identifier];
+  [v3 addField:@"identifier" value:identifier];
 
   v6 = NSStringFromFCFeedDescriptorConfiguration([(FCFeedDescriptor *)self feedConfiguration]);
   [v3 addField:@"feedConfiguration" value:v6];
 
-  v7 = [(FCFeedDescriptor *)self alternativeFeedDescriptor];
-  [v3 addField:@"alternativeFeedDescriptor" object:v7];
+  alternativeFeedDescriptor = [(FCFeedDescriptor *)self alternativeFeedDescriptor];
+  [v3 addField:@"alternativeFeedDescriptor" object:alternativeFeedDescriptor];
 
-  v8 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v8;
+  return descriptionString;
 }
 
 - (NSString)name
@@ -177,10 +177,10 @@
   objc_exception_throw(v6);
 }
 
-- (BOOL)isSubscribedToWithSubscriptionController:(id)a3
+- (BOOL)isSubscribedToWithSubscriptionController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   if ([(FCFeedDescriptor *)self isSubscribable])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -262,12 +262,12 @@
   objc_exception_throw(v6);
 }
 
-- (id)streamOfHeadlinesWithIDs:(id)a3 context:(id)a4 cachedOnly:(BOOL)a5 maxCachedAge:(double)a6
+- (id)streamOfHeadlinesWithIDs:(id)ds context:(id)context cachedOnly:(BOOL)only maxCachedAge:(double)age
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  contextCopy = context;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "context"];
     *buf = 136315906;
@@ -281,17 +281,17 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v12 = [[FCArrayStream alloc] initWithArray:v10];
+  v12 = [[FCArrayStream alloc] initWithArray:dsCopy];
   v13 = [FCTransformedResultsStream alloc];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __77__FCFeedDescriptor_streamOfHeadlinesWithIDs_context_cachedOnly_maxCachedAge___block_invoke;
   v19[3] = &unk_1E7C3A1B0;
   v19[4] = self;
-  v20 = v11;
-  v22 = a5;
-  v21 = a6;
-  v14 = v11;
+  v20 = contextCopy;
+  onlyCopy = only;
+  ageCopy = age;
+  v14 = contextCopy;
   v15 = [(FCTransformedResultsStream *)v13 initWithStream:v12 asyncTransformBlock:v19];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -346,12 +346,12 @@ void __77__FCFeedDescriptor_streamOfHeadlinesWithIDs_context_cachedOnly_maxCache
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)fetchOperationForHeadlinesWithIDs:(id)a3 context:(id)a4
+- (id)fetchOperationForHeadlinesWithIDs:(id)ds context:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  contextCopy = context;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "context"];
     *buf = 136315906;
@@ -365,18 +365,18 @@ void __77__FCFeedDescriptor_streamOfHeadlinesWithIDs_context_cachedOnly_maxCache
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v7 = [v6 articleController];
-  v8 = [v7 headlinesFetchOperationForArticleIDs:v5];
+  articleController = [contextCopy articleController];
+  v8 = [articleController headlinesFetchOperationForArticleIDs:dsCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)streamOfLatestHeadlinesWithContext:(id)a3
+- (id)streamOfLatestHeadlinesWithContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -400,11 +400,11 @@ void __77__FCFeedDescriptor_streamOfHeadlinesWithIDs_context_cachedOnly_maxCache
   objc_exception_throw(v8);
 }
 
-- (id)latestHeadlineResultsWithContext:(id)a3
+- (id)latestHeadlineResultsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [FCStreamingResults alloc];
-  v6 = [(FCFeedDescriptor *)self streamOfLatestHeadlinesWithContext:v4];
+  v6 = [(FCFeedDescriptor *)self streamOfLatestHeadlinesWithContext:contextCopy];
 
   v7 = [(FCStreamingResults *)v5 initWithStream:v6];
 

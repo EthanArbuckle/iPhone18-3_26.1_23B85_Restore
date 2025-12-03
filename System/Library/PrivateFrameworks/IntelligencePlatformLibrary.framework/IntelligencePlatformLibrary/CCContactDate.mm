@@ -1,27 +1,27 @@
 @interface CCContactDate
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCContactDate)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCContactDate)initWithLabel:(id)a3 year:(id)a4 month:(id)a5 day:(id)a6 error:(id *)a7;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCContactDate)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCContactDate)initWithLabel:(id)label year:(id)year month:(id)month day:(id)day error:(id *)error;
 - (NSString)label;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCContactDate
 
-- (CCContactDate)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCContactDate)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"label"];
-    v10 = [v6 objectForKeyedSubscript:@"year"];
-    v11 = [v6 objectForKeyedSubscript:@"month"];
-    v12 = [v6 objectForKeyedSubscript:@"day"];
-    v13 = [[CCContactDate alloc] initWithLabel:v9 year:v10 month:v11 day:v12 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"label"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"year"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"month"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"day"];
+    v13 = [[CCContactDate alloc] initWithLabel:v9 year:v10 month:v11 day:v12 error:error];
   }
 
   else
@@ -38,8 +38,8 @@
   v3 = objc_opt_new();
   if (self->_label)
   {
-    v4 = [(CCContactDate *)self label];
-    [v3 setObject:v4 forKeyedSubscript:@"label"];
+    label = [(CCContactDate *)self label];
+    [v3 setObject:label forKeyedSubscript:@"label"];
   }
 
   if (self->_hasYear)
@@ -65,13 +65,13 @@
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v4 = a4;
-  v14 = a3;
+  typeCopy = type;
+  blockCopy = block;
   if (self->_label)
   {
-    switch(v4)
+    switch(typeCopy)
     {
       case 19701:
         v6 = 19713;
@@ -87,7 +87,7 @@
     }
 
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_label];
-    v14[2](v14, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
 LABEL_9:
@@ -96,7 +96,7 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  switch(v4)
+  switch(typeCopy)
   {
     case 19701:
       v8 = 19734;
@@ -112,7 +112,7 @@ LABEL_9:
   }
 
   v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v8 uint32Value:self->_year];
-  v14[2](v14, v9);
+  blockCopy[2](blockCopy, v9);
 
 LABEL_17:
   if (!self->_hasMonth)
@@ -120,7 +120,7 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  switch(v4)
+  switch(typeCopy)
   {
     case 19701:
       v10 = 19735;
@@ -136,7 +136,7 @@ LABEL_17:
   }
 
   v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v10 uint32Value:self->_month];
-  v14[2](v14, v11);
+  blockCopy[2](blockCopy, v11);
 
 LABEL_25:
   if (!self->_hasDay)
@@ -144,7 +144,7 @@ LABEL_25:
     goto LABEL_33;
   }
 
-  switch(v4)
+  switch(typeCopy)
   {
     case 19701:
       v12 = 19736;
@@ -160,7 +160,7 @@ LABEL_25:
   }
 
   v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v12 uint32Value:self->_day];
-  v14[2](v14, v13);
+  blockCopy[2](blockCopy, v13);
 
 LABEL_33:
 }
@@ -172,10 +172,10 @@ LABEL_33:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -186,7 +186,7 @@ LABEL_33:
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v55 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -417,14 +417,14 @@ LABEL_62:
       {
         v45 = objc_opt_class();
         NSStringFromClass(v45);
-        v46 = a4;
-        v48 = v47 = v6;
+        errorCopy = error;
+        v48 = v47 = dataCopy;
         v49 = *&v7[*v10];
         v11 = CCSkipFieldErrorForMessage();
 
-        v6 = v47;
-        a4 = v46;
-        self = v55;
+        dataCopy = v47;
+        error = errorCopy;
+        self = selfCopy;
       }
 
 LABEL_64:
@@ -464,14 +464,14 @@ LABEL_71:
   return v53;
 }
 
-- (CCContactDate)initWithLabel:(id)a3 year:(id)a4 month:(id)a5 day:(id)a6 error:(id *)a7
+- (CCContactDate)initWithLabel:(id)label year:(id)year month:(id)month day:(id)day error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  labelCopy = label;
+  yearCopy = year;
+  monthCopy = month;
+  dayCopy = day;
   v16 = objc_opt_new();
-  if (v12)
+  if (labelCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -490,7 +490,7 @@ LABEL_71:
   }
 
   v19 = 0x1E696A000uLL;
-  if (v13)
+  if (yearCopy)
   {
     objc_opt_class();
     v20 = CCValidateIsInstanceOfExpectedClass();
@@ -501,10 +501,10 @@ LABEL_71:
       goto LABEL_17;
     }
 
-    [v13 unsignedIntValue];
+    [yearCopy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
     v19 = 0x1E696A000;
-    if (!v14)
+    if (!monthCopy)
     {
       goto LABEL_8;
     }
@@ -513,11 +513,11 @@ LABEL_71:
   else
   {
     v21 = v18;
-    if (!v14)
+    if (!monthCopy)
     {
 LABEL_8:
       v18 = v21;
-      if (!v15)
+      if (!dayCopy)
       {
         goto LABEL_15;
       }
@@ -531,7 +531,7 @@ LABEL_13:
 
       if (v25)
       {
-        [v15 unsignedIntValue];
+        [dayCopy unsignedIntValue];
         CCPBDataWriterWriteUint32Field();
         v18 = v21;
         goto LABEL_15;
@@ -539,7 +539,7 @@ LABEL_13:
 
 LABEL_17:
       CCSetError();
-      v27 = 0;
+      selfCopy = 0;
       v18 = v21;
       goto LABEL_18;
     }
@@ -554,26 +554,26 @@ LABEL_17:
   {
 LABEL_16:
     CCSetError();
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
-  [v14 unsignedIntValue];
+  [monthCopy unsignedIntValue];
   CCPBDataWriterWriteUint32Field();
   v19 = 0x1E696A000uLL;
-  if (v15)
+  if (dayCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_15:
-  v26 = [v16 immutableData];
-  self = [(CCItemMessage *)self initWithData:v26 error:a7];
+  immutableData = [v16 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v27 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v27;
+  return selfCopy;
 }
 
 @end

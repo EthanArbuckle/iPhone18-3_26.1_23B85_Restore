@@ -1,12 +1,12 @@
 @interface PUAvalancheReviewCollectionViewLayout
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3;
-- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)a3 visibleItemFrame:(CGRect)a4 atIndexPath:(id)a5;
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change;
+- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)frame visibleItemFrame:(CGRect)itemFrame atIndexPath:(id)path;
 - (UIOffset)sharingBadgeOffset;
-- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)setZoomingCellIndexPath:(id)a3;
+- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)attributes;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)setZoomingCellIndexPath:(id)path;
 @end
 
 @implementation PUAvalancheReviewCollectionViewLayout
@@ -20,18 +20,18 @@
   return result;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  kindCopy = kind;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = PUAvalancheReviewCollectionViewLayout;
-  v8 = [(PUAvalancheReviewCollectionViewLayout *)&v11 layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:v7];
+  v8 = [(PUAvalancheReviewCollectionViewLayout *)&v11 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
   if (!v8)
   {
-    if ([v6 isEqualToString:@"PUAvalancheReviewBadgeKind"])
+    if ([kindCopy isEqualToString:@"PUAvalancheReviewBadgeKind"])
     {
-      v9 = [(PUAvalancheReviewCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v7];
+      v9 = [(PUAvalancheReviewCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
       v8 = [(PUAvalancheReviewCollectionViewLayout *)self _badgeLayoutAttributesForItemLayoutAttributes:v9];
     }
 
@@ -44,25 +44,25 @@
   return v8;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = PUAvalancheReviewCollectionViewLayout;
-  v4 = a3;
-  v5 = [(PUHorizontalCollectionViewLayout *)&v9 layoutAttributesForItemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(PUHorizontalCollectionViewLayout *)&v9 layoutAttributesForItemAtIndexPath:pathCopy];
   v6 = [(PUAvalancheReviewCollectionViewLayout *)self zoomingCellIndexPath:v9.receiver];
-  v7 = [v4 isEqual:v6];
+  v7 = [pathCopy isEqual:v6];
 
   [v5 setHidden:v7];
 
   return v5;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v14.receiver = self;
   v14.super_class = PUAvalancheReviewCollectionViewLayout;
-  v4 = [(PUHorizontalCollectionViewLayout *)&v14 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PUHorizontalCollectionViewLayout *)&v14 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = [v4 mutableCopy];
 
   v6 = [v5 count];
@@ -72,9 +72,9 @@
     for (i = 0; i != v7; ++i)
     {
       v9 = [v5 objectAtIndexedSubscript:i];
-      v10 = [v9 indexPath];
-      v11 = [(PUAvalancheReviewCollectionViewLayout *)self zoomingCellIndexPath];
-      [v9 setHidden:{objc_msgSend(v10, "isEqual:", v11)}];
+      indexPath = [v9 indexPath];
+      zoomingCellIndexPath = [(PUAvalancheReviewCollectionViewLayout *)self zoomingCellIndexPath];
+      [v9 setHidden:{objc_msgSend(indexPath, "isEqual:", zoomingCellIndexPath)}];
 
       v12 = [(PUAvalancheReviewCollectionViewLayout *)self _badgeLayoutAttributesForItemLayoutAttributes:v9];
       [v5 addObject:v12];
@@ -84,11 +84,11 @@
   return v5;
 }
 
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = [(PUAvalancheReviewCollectionViewLayout *)self collectionView:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  v5 = [(PUAvalancheReviewCollectionViewLayout *)self collectionView:change.origin.x];
   [v5 bounds];
   v7 = v6;
   v9 = v8;
@@ -96,19 +96,19 @@
   return v9 != height || v7 != width;
 }
 
-- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)a3
+- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 indexPath];
-  v6 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" withIndexPath:v5];
-  v7 = [(PUAvalancheReviewCollectionViewLayout *)self collectionView];
-  [v7 bounds];
+  attributesCopy = attributes;
+  indexPath = [attributesCopy indexPath];
+  v6 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" withIndexPath:indexPath];
+  collectionView = [(PUAvalancheReviewCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v4 frame];
+  [attributesCopy frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -145,39 +145,39 @@
 
   else
   {
-    v29 = [v6 indexPath];
-    v30 = [(PUAvalancheReviewCollectionViewLayout *)self zoomingCellIndexPath];
-    v28 = [v29 isEqual:v30];
+    indexPath2 = [v6 indexPath];
+    zoomingCellIndexPath = [(PUAvalancheReviewCollectionViewLayout *)self zoomingCellIndexPath];
+    v28 = [indexPath2 isEqual:zoomingCellIndexPath];
   }
 
   [v6 setHidden:v28];
-  [(PUAvalancheReviewCollectionViewLayout *)self _floatingSelectionBadgeFrameForItemFrame:v5 visibleItemFrame:v17 atIndexPath:v19, v21, v23, x, y, width, height];
+  [(PUAvalancheReviewCollectionViewLayout *)self _floatingSelectionBadgeFrameForItemFrame:indexPath visibleItemFrame:v17 atIndexPath:v19, v21, v23, x, y, width, height];
   [v6 setFrame:?];
-  [v6 setZIndex:{objc_msgSend(v4, "zIndex") + 1}];
+  [v6 setZIndex:{objc_msgSend(attributesCopy, "zIndex") + 1}];
   [v6 setAlpha:1.0];
 
   return v6;
 }
 
-- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)a3 visibleItemFrame:(CGRect)a4 atIndexPath:(id)a5
+- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)frame visibleItemFrame:(CGRect)itemFrame atIndexPath:(id)path
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  v42 = a3.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v41 = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  v11 = a5;
+  width = itemFrame.size.width;
+  height = itemFrame.size.height;
+  v42 = frame.size.height;
+  y = itemFrame.origin.y;
+  x = itemFrame.origin.x;
+  v6 = frame.size.height;
+  v7 = frame.size.width;
+  v41 = frame.size.width;
+  v8 = frame.origin.y;
+  v9 = frame.origin.x;
+  pathCopy = path;
   [(PUAvalancheReviewCollectionViewLayout *)self sharingBadgeOffset];
   v13 = v12;
-  v14 = [(PUAvalancheReviewCollectionViewLayout *)self collectionView];
-  v15 = [(PUHorizontalCollectionViewLayout *)self delegate];
+  collectionView = [(PUAvalancheReviewCollectionViewLayout *)self collectionView];
+  delegate = [(PUHorizontalCollectionViewLayout *)self delegate];
   v39 = v9;
-  [v15 layout:self collectionView:v14 selectionBadgeFrameForItemFrame:v11 atIndexPath:{v9, v8, v7, v6}];
+  [delegate layout:self collectionView:collectionView selectionBadgeFrameForItemFrame:pathCopy atIndexPath:{v9, v8, v7, v6}];
   v17 = v16;
   v19 = v18;
   v40 = v20;
@@ -267,15 +267,15 @@
   return result;
 }
 
-- (void)setZoomingCellIndexPath:(id)a3
+- (void)setZoomingCellIndexPath:(id)path
 {
-  v5 = a3;
-  if (self->_zoomingCellIndexPath != v5)
+  pathCopy = path;
+  if (self->_zoomingCellIndexPath != pathCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_zoomingCellIndexPath, a3);
+    v6 = pathCopy;
+    objc_storeStrong(&self->_zoomingCellIndexPath, path);
     [(PUAvalancheReviewCollectionViewLayout *)self invalidateLayout];
-    v5 = v6;
+    pathCopy = v6;
   }
 }
 

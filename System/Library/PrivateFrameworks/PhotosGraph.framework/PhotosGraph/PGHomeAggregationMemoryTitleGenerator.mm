@@ -1,17 +1,17 @@
 @interface PGHomeAggregationMemoryTitleGenerator
-- (PGHomeAggregationMemoryTitleGenerator)initWithMomentNodes:(id)a3 titleGenerationContext:(id)a4;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (PGHomeAggregationMemoryTitleGenerator)initWithMomentNodes:(id)nodes titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGHomeAggregationMemoryTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v17 = objc_opt_new();
   [v17 setAllowedFormats:8];
-  v5 = [(PGTitleGenerator *)self momentNodes];
-  [v17 setMomentNodes:v5];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  [v17 setMomentNodes:momentNodes];
 
   v6 = [PGTimeTitleUtility timeTitleWithOptions:v17];
   v7 = MEMORY[0x277CCACA8];
@@ -24,19 +24,19 @@
   v12 = [PGTitle titleWithString:v11 category:4];
   v13 = objc_opt_new();
   [v13 setAllowedFormats:4];
-  v14 = [(PGTitleGenerator *)self momentNodes];
-  [v13 setMomentNodes:v14];
+  momentNodes2 = [(PGTitleGenerator *)self momentNodes];
+  [v13 setMomentNodes:momentNodes2];
 
   v15 = [PGTimeTitleUtility timeTitleWithOptions:v13];
   v16 = [PGTitle titleWithString:v15 category:5];
-  v4[2](v4, v12, v16);
+  resultCopy[2](resultCopy, v12, v16);
 }
 
-- (PGHomeAggregationMemoryTitleGenerator)initWithMomentNodes:(id)a3 titleGenerationContext:(id)a4
+- (PGHomeAggregationMemoryTitleGenerator)initWithMomentNodes:(id)nodes titleGenerationContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = PGHomeAggregationMemoryTitleGenerator;
-  return [(PGTitleGenerator *)&v5 initWithMomentNodes:a3 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:a4];
+  return [(PGTitleGenerator *)&v5 initWithMomentNodes:nodes referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:context];
 }
 
 @end

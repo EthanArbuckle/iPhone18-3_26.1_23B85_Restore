@@ -1,8 +1,8 @@
 @interface UARPUpdaterServiceAFU
 - (UARPUpdaterServiceAFU)init;
-- (void)getIsBusyStatusWithReply:(id)a3;
-- (void)getMatchingServicesListWithReply:(id)a3;
-- (void)ioKitRuleMatched:(id)a3;
+- (void)getIsBusyStatusWithReply:(id)reply;
+- (void)getMatchingServicesListWithReply:(id)reply;
+- (void)ioKitRuleMatched:(id)matched;
 @end
 
 @implementation UARPUpdaterServiceAFU
@@ -31,13 +31,13 @@
   return v2;
 }
 
-- (void)getMatchingServicesListWithReply:(id)a3
+- (void)getMatchingServicesListWithReply:(id)reply
 {
-  v19 = a3;
+  replyCopy = reply;
   v3 = objc_opt_new();
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 infoDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"MatchingDevices"];
+  infoDictionary = [v4 infoDictionary];
+  v6 = [infoDictionary objectForKeyedSubscript:@"MatchingDevices"];
 
   v23 = 0u;
   v24 = 0u;
@@ -84,34 +84,34 @@
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: replied %@ ", buf, 0x16u);
   }
 
-  v19[2](v19, v3);
+  replyCopy[2](replyCopy, v3);
 }
 
-- (void)ioKitRuleMatched:(id)a3
+- (void)ioKitRuleMatched:(id)matched
 {
-  v4 = a3;
+  matchedCopy = matched;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v20 = "[UARPUpdaterServiceAFU ioKitRuleMatched:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = matchedCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: %@", buf, 0x16u);
   }
 
   v6 = +[UARPUpdaterServiceAFUPreferences sharedInstance];
-  v7 = [v6 overriddenFirmwareAssetDirectoryURL];
+  overriddenFirmwareAssetDirectoryURL = [v6 overriddenFirmwareAssetDirectoryURL];
 
   v8 = [AppleFirmwareUpdateController alloc];
-  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 registryEntryID]);
-  v10 = [v7 path];
-  v11 = [v8 initWithRegistryEntryID:v9 fwAssetDirectory:v10];
+  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [matchedCopy registryEntryID]);
+  path = [overriddenFirmwareAssetDirectoryURL path];
+  v11 = [v8 initWithRegistryEntryID:v9 fwAssetDirectory:path];
 
   if (v11)
   {
-    v12 = [(UARPUpdaterServiceAFU *)self controllers];
-    [v12 addObject:v11];
+    controllers = [(UARPUpdaterServiceAFU *)self controllers];
+    [controllers addObject:v11];
 
     serialQueue = self->_serialQueue;
     block[0] = _NSConcreteStackBlock;
@@ -119,8 +119,8 @@
     block[2] = sub_1000013E4;
     block[3] = &unk_100004270;
     v16 = v11;
-    v17 = self;
-    v18 = v4;
+    selfCopy = self;
+    v18 = matchedCopy;
     dispatch_async(serialQueue, block);
   }
 
@@ -129,18 +129,18 @@
     v14 = self->_log;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_100001BB0(v4, v14);
+      sub_100001BB0(matchedCopy, v14);
     }
   }
 }
 
-- (void)getIsBusyStatusWithReply:(id)a3
+- (void)getIsBusyStatusWithReply:(id)reply
 {
-  v6 = a3;
-  v4 = [(UARPUpdaterServiceAFU *)self controllers];
-  v5 = [v4 count] != 0;
+  replyCopy = reply;
+  controllers = [(UARPUpdaterServiceAFU *)self controllers];
+  v5 = [controllers count] != 0;
 
-  v6[2](v6, v5);
+  replyCopy[2](replyCopy, v5);
 }
 
 @end

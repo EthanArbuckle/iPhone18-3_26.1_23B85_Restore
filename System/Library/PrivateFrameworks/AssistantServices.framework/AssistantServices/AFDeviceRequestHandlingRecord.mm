@@ -1,16 +1,16 @@
 @interface AFDeviceRequestHandlingRecord
-+ (id)newWithBuilder:(id)a3;
-- (AFDeviceRequestHandlingRecord)initWithBuilder:(id)a3;
-- (AFDeviceRequestHandlingRecord)initWithCoder:(id)a3;
-- (AFDeviceRequestHandlingRecord)initWithDictionaryRepresentation:(id)a3;
-- (AFDeviceRequestHandlingRecord)initWithRequestID:(id)a3 deviceRoles:(unint64_t)a4;
-- (AFDeviceRequestHandlingRecord)initWithSerializedBackingStore:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFDeviceRequestHandlingRecord)initWithBuilder:(id)builder;
+- (AFDeviceRequestHandlingRecord)initWithCoder:(id)coder;
+- (AFDeviceRequestHandlingRecord)initWithDictionaryRepresentation:(id)representation;
+- (AFDeviceRequestHandlingRecord)initWithRequestID:(id)d deviceRoles:(unint64_t)roles;
+- (AFDeviceRequestHandlingRecord)initWithSerializedBackingStore:(id)store;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDeviceRequestHandlingRecord
@@ -33,12 +33,12 @@
   return v7;
 }
 
-- (AFDeviceRequestHandlingRecord)initWithDictionaryRepresentation:(id)a3
+- (AFDeviceRequestHandlingRecord)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"requestID"];
+    representationCopy = representation;
+    v5 = [representationCopy objectForKey:@"requestID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       v6 = 0;
     }
 
-    v8 = [v4 objectForKey:@"deviceRoles"];
+    v8 = [representationCopy objectForKey:@"deviceRoles"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -64,42 +64,42 @@
     }
 
     self = [(AFDeviceRequestHandlingRecord *)self initWithRequestID:v6 deviceRoles:v9];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestID = self->_requestID;
-  v5 = a3;
-  [v5 encodeObject:requestID forKey:@"AFDeviceRequestHandlingRecord::requestID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestID forKey:@"AFDeviceRequestHandlingRecord::requestID"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_deviceRoles];
-  [v5 encodeObject:v6 forKey:@"AFDeviceRequestHandlingRecord::deviceRoles"];
+  [coderCopy encodeObject:v6 forKey:@"AFDeviceRequestHandlingRecord::deviceRoles"];
 }
 
-- (AFDeviceRequestHandlingRecord)initWithCoder:(id)a3
+- (AFDeviceRequestHandlingRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceRequestHandlingRecord::requestID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceRequestHandlingRecord::deviceRoles"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceRequestHandlingRecord::requestID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceRequestHandlingRecord::deviceRoles"];
 
-  v7 = [v6 unsignedIntegerValue];
-  v8 = [(AFDeviceRequestHandlingRecord *)self initWithRequestID:v5 deviceRoles:v7];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  v8 = [(AFDeviceRequestHandlingRecord *)self initWithRequestID:v5 deviceRoles:unsignedIntegerValue];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -109,13 +109,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       deviceRoles = self->_deviceRoles;
       if (deviceRoles == [(AFDeviceRequestHandlingRecord *)v5 deviceRoles])
       {
-        v7 = [(AFDeviceRequestHandlingRecord *)v5 requestID];
+        requestID = [(AFDeviceRequestHandlingRecord *)v5 requestID];
         requestID = self->_requestID;
-        v9 = requestID == v7 || [(NSString *)requestID isEqual:v7];
+        v9 = requestID == requestID || [(NSString *)requestID isEqual:requestID];
       }
 
       else
@@ -142,7 +142,7 @@
   return v5 ^ v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v11.receiver = self;
@@ -156,16 +156,16 @@
   return v9;
 }
 
-- (AFDeviceRequestHandlingRecord)initWithRequestID:(id)a3 deviceRoles:(unint64_t)a4
+- (AFDeviceRequestHandlingRecord)initWithRequestID:(id)d deviceRoles:(unint64_t)roles
 {
-  v6 = a3;
+  dCopy = d;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__AFDeviceRequestHandlingRecord_initWithRequestID_deviceRoles___block_invoke;
   v10[3] = &unk_1E73437F0;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
+  v11 = dCopy;
+  rolesCopy = roles;
+  v7 = dCopy;
   v8 = [(AFDeviceRequestHandlingRecord *)self initWithBuilder:v10];
 
   return v8;
@@ -179,21 +179,21 @@ void __63__AFDeviceRequestHandlingRecord_initWithRequestID_deviceRoles___block_i
   [v4 setDeviceRoles:*(a1 + 40)];
 }
 
-- (AFDeviceRequestHandlingRecord)initWithBuilder:(id)a3
+- (AFDeviceRequestHandlingRecord)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFDeviceRequestHandlingRecord;
   v5 = [(AFDeviceRequestHandlingRecord *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFDeviceRequestHandlingRecordMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFDeviceRequestHandlingRecordMutation *)v7 isDirty])
     {
-      v8 = [(_AFDeviceRequestHandlingRecordMutation *)v7 getRequestID];
-      v9 = [v8 copy];
+      getRequestID = [(_AFDeviceRequestHandlingRecordMutation *)v7 getRequestID];
+      v9 = [getRequestID copy];
       requestID = v6->_requestID;
       v6->_requestID = v9;
 
@@ -204,26 +204,26 @@ void __63__AFDeviceRequestHandlingRecord_initWithRequestID_deviceRoles___block_i
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFDeviceRequestHandlingRecordMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFDeviceRequestHandlingRecordMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFDeviceRequestHandlingRecord);
-      v7 = [(_AFDeviceRequestHandlingRecordMutation *)v5 getRequestID];
-      v8 = [v7 copy];
+      getRequestID = [(_AFDeviceRequestHandlingRecordMutation *)v5 getRequestID];
+      v8 = [getRequestID copy];
       requestID = v6->_requestID;
       v6->_requestID = v8;
 
@@ -244,15 +244,15 @@ void __63__AFDeviceRequestHandlingRecord_initWithRequestID_deviceRoles___block_i
   return v6;
 }
 
-- (AFDeviceRequestHandlingRecord)initWithSerializedBackingStore:(id)a3
+- (AFDeviceRequestHandlingRecord)initWithSerializedBackingStore:(id)store
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(AFDeviceRequestHandlingRecord *)self initWithDictionaryRepresentation:v4];
-    v5 = self;
+    self = [(AFDeviceRequestHandlingRecord *)self initWithDictionaryRepresentation:storeCopy];
+    selfCopy = self;
   }
 
   else
@@ -263,15 +263,15 @@ void __63__AFDeviceRequestHandlingRecord_initWithRequestID_deviceRoles___block_i
       v9 = 136315394;
       v10 = "[AFDeviceRequestHandlingRecord(ContextSnapshot) initWithSerializedBackingStore:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = storeCopy;
       _os_log_error_impl(&dword_1912FE000, v6, OS_LOG_TYPE_ERROR, "%s #hal serializedBackingStore is of unexpected type or is nil: %@", &v9, 0x16u);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v5;
+  return selfCopy;
 }
 
 @end

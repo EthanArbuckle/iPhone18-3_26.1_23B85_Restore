@@ -1,18 +1,18 @@
 @interface MusicKit_SoftLinking_MPLibraryAddStatusObserver
-- (MusicKit_SoftLinking_MPLibraryAddStatusObserver)initWithIdentifyingModelObject:(id)a3;
+- (MusicKit_SoftLinking_MPLibraryAddStatusObserver)initWithIdentifyingModelObject:(id)object;
 - (MusicKit_SoftLinking_MPModelObject)identifyingModelObject;
-- (int64_t)_libraryAddStatusFromUnderlyingStatus:(int64_t)a3;
+- (int64_t)_libraryAddStatusFromUnderlyingStatus:(int64_t)status;
 - (int64_t)currentStatus;
-- (void)_handleUpdatedUnderlyingLibraryAddStatus:(int64_t)a3;
-- (void)calculateDetailedAddStatusWithIdentifyingModelObject:(id)a3 children:(id)a4;
-- (void)setIdentifyingModelObject:(id)a3;
+- (void)_handleUpdatedUnderlyingLibraryAddStatus:(int64_t)status;
+- (void)calculateDetailedAddStatusWithIdentifyingModelObject:(id)object children:(id)children;
+- (void)setIdentifyingModelObject:(id)object;
 @end
 
 @implementation MusicKit_SoftLinking_MPLibraryAddStatusObserver
 
-- (MusicKit_SoftLinking_MPLibraryAddStatusObserver)initWithIdentifyingModelObject:(id)a3
+- (MusicKit_SoftLinking_MPLibraryAddStatusObserver)initWithIdentifyingModelObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v28.receiver = self;
   v28.super_class = MusicKit_SoftLinking_MPLibraryAddStatusObserver;
   v5 = [(MusicKit_SoftLinking_MPLibraryAddStatusObserver *)&v28 init];
@@ -30,7 +30,7 @@
     v19[2] = __82__MusicKit_SoftLinking_MPLibraryAddStatusObserver_initWithIdentifyingModelObject___block_invoke;
     v19[3] = &unk_1E84C3998;
     v21 = &v22;
-    v7 = v4;
+    v7 = objectCopy;
     v20 = v7;
     [MPModelObjectClass_0 performWithoutEnforcement:v19];
     v30 = 0;
@@ -57,8 +57,8 @@
 
     v12 = v5->_underlyingLibraryAddStatusObserver;
     v13 = v23;
-    v14 = [v7 _underlyingModelObject];
-    [(MPLibraryAddStatusObserver *)v12 setConfiguration:*(v13 + 8) | (*(v13 + 36) << 32) identifyingModelObject:v14];
+    _underlyingModelObject = [v7 _underlyingModelObject];
+    [(MPLibraryAddStatusObserver *)v12 setConfiguration:*(v13 + 8) | (*(v13 + 36) << 32) identifyingModelObject:_underlyingModelObject];
 
     objc_initWeak(location, v5);
     v15 = v5->_underlyingLibraryAddStatusObserver;
@@ -80,15 +80,15 @@
 - (MusicKit_SoftLinking_MPModelObject)identifyingModelObject
 {
   v3 = objc_alloc(MEMORY[0x1E6977640]);
-  v4 = [(MPLibraryAddStatusObserver *)self->_underlyingLibraryAddStatusObserver identifyingModelObject];
-  v5 = [v3 initWithUnderlyingModelObject:v4];
+  identifyingModelObject = [(MPLibraryAddStatusObserver *)self->_underlyingLibraryAddStatusObserver identifyingModelObject];
+  v5 = [v3 initWithUnderlyingModelObject:identifyingModelObject];
 
   return v5;
 }
 
-- (void)setIdentifyingModelObject:(id)a3
+- (void)setIdentifyingModelObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2810000000;
@@ -101,43 +101,43 @@
   v10[2] = __77__MusicKit_SoftLinking_MPLibraryAddStatusObserver_setIdentifyingModelObject___block_invoke;
   v10[3] = &unk_1E84C3998;
   v12 = &v13;
-  v6 = v4;
+  v6 = objectCopy;
   v11 = v6;
   [MPModelObjectClass_0 performWithoutEnforcement:v10];
   underlyingLibraryAddStatusObserver = self->_underlyingLibraryAddStatusObserver;
   v8 = v14;
-  v9 = [v6 _underlyingModelObject];
-  [(MPLibraryAddStatusObserver *)underlyingLibraryAddStatusObserver setConfiguration:*(v8 + 8) | (*(v8 + 36) << 32) identifyingModelObject:v9];
+  _underlyingModelObject = [v6 _underlyingModelObject];
+  [(MPLibraryAddStatusObserver *)underlyingLibraryAddStatusObserver setConfiguration:*(v8 + 8) | (*(v8 + 36) << 32) identifyingModelObject:_underlyingModelObject];
 
   _Block_object_dispose(&v13, 8);
 }
 
 - (int64_t)currentStatus
 {
-  v3 = [(MPLibraryAddStatusObserver *)self->_underlyingLibraryAddStatusObserver currentStatus];
+  currentStatus = [(MPLibraryAddStatusObserver *)self->_underlyingLibraryAddStatusObserver currentStatus];
 
-  return [(MusicKit_SoftLinking_MPLibraryAddStatusObserver *)self _libraryAddStatusFromUnderlyingStatus:v3];
+  return [(MusicKit_SoftLinking_MPLibraryAddStatusObserver *)self _libraryAddStatusFromUnderlyingStatus:currentStatus];
 }
 
-- (void)calculateDetailedAddStatusWithIdentifyingModelObject:(id)a3 children:(id)a4
+- (void)calculateDetailedAddStatusWithIdentifyingModelObject:(id)object children:(id)children
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v32 = a4;
+  objectCopy = object;
+  childrenCopy = children;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2810000000;
   v50 = &unk_1D5749B1F;
   v51 = 0;
   v52 = 0;
-  v7 = [v6 _underlyingModelObject];
+  _underlyingModelObject = [objectCopy _underlyingModelObject];
   MPModelObjectClass_0 = getMPModelObjectClass_0();
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __113__MusicKit_SoftLinking_MPLibraryAddStatusObserver_calculateDetailedAddStatusWithIdentifyingModelObject_children___block_invoke;
   v44[3] = &unk_1E84C3998;
   v46 = &v47;
-  v9 = v7;
+  v9 = _underlyingModelObject;
   v45 = v9;
   [MPModelObjectClass_0 performWithoutEnforcement:v44];
   v40 = 0;
@@ -167,12 +167,12 @@
   if ((isKindOfClass & 1) != 0 && (v41[3] & 1) == 0)
   {
     v30 = v9;
-    v31 = v6;
+    v31 = objectCopy;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v14 = v32;
+    v14 = childrenCopy;
     v15 = [v14 countByEnumeratingWithState:&v36 objects:v62 count:16];
     if (v15)
     {
@@ -186,7 +186,7 @@
             objc_enumerationMutation(v14);
           }
 
-          v18 = [*(*(&v36 + 1) + 8 * i) _underlyingModelObject];
+          _underlyingModelObject2 = [*(*(&v36 + 1) + 8 * i) _underlyingModelObject];
           v58 = 0;
           v59 = &v58;
           v60 = 0x2050000000;
@@ -213,7 +213,7 @@
             v33[2] = __113__MusicKit_SoftLinking_MPLibraryAddStatusObserver_calculateDetailedAddStatusWithIdentifyingModelObject_children___block_invoke_2;
             v33[3] = &unk_1E84C3998;
             v35 = &v40;
-            v22 = v18;
+            v22 = _underlyingModelObject2;
             v34 = v22;
             [v21 performWithoutEnforcement:v33];
             LOBYTE(v21) = *(v41 + 24);
@@ -239,7 +239,7 @@
 LABEL_18:
 
     v13 = v41;
-    v6 = v31;
+    objectCopy = v31;
     v9 = v30;
   }
 
@@ -264,8 +264,8 @@ LABEL_18:
   }
 
   underlyingLibraryAddStatusObserver = self->_underlyingLibraryAddStatusObserver;
-  v28 = [v6 _underlyingModelObject];
-  [(MPLibraryAddStatusObserver *)underlyingLibraryAddStatusObserver setConfiguration:*(v23 + 8) | (v23[36] << 32) identifyingModelObject:v28];
+  _underlyingModelObject3 = [objectCopy _underlyingModelObject];
+  [(MPLibraryAddStatusObserver *)underlyingLibraryAddStatusObserver setConfiguration:*(v23 + 8) | (v23[36] << 32) identifyingModelObject:_underlyingModelObject3];
 
   _Block_object_dispose(&v40, 8);
   _Block_object_dispose(&v47, 8);
@@ -273,9 +273,9 @@ LABEL_18:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleUpdatedUnderlyingLibraryAddStatus:(int64_t)a3
+- (void)_handleUpdatedUnderlyingLibraryAddStatus:(int64_t)status
 {
-  [(MusicKit_SoftLinking_MPLibraryAddStatusObserver *)self _libraryAddStatusFromUnderlyingStatus:a3];
+  [(MusicKit_SoftLinking_MPLibraryAddStatusObserver *)self _libraryAddStatusFromUnderlyingStatus:status];
   statusBlock = self->_statusBlock;
   if (statusBlock)
   {
@@ -285,16 +285,16 @@ LABEL_18:
   }
 }
 
-- (int64_t)_libraryAddStatusFromUnderlyingStatus:(int64_t)a3
+- (int64_t)_libraryAddStatusFromUnderlyingStatus:(int64_t)status
 {
-  if ((a3 - 1) >= 0xA)
+  if ((status - 1) >= 0xA)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 

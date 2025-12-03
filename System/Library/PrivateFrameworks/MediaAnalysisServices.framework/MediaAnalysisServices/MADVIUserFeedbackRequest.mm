@@ -1,48 +1,48 @@
 @interface MADVIUserFeedbackRequest
-- (MADVIUserFeedbackRequest)initWithCoder:(id)a3;
-- (MADVIUserFeedbackRequest)initWithUserFeedbackPayload:(id)a3 sfReportData:(id)a4 reportIdentifier:(id)a5;
+- (MADVIUserFeedbackRequest)initWithCoder:(id)coder;
+- (MADVIUserFeedbackRequest)initWithUserFeedbackPayload:(id)payload sfReportData:(id)data reportIdentifier:(id)identifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIUserFeedbackRequest
 
-- (MADVIUserFeedbackRequest)initWithUserFeedbackPayload:(id)a3 sfReportData:(id)a4 reportIdentifier:(id)a5
+- (MADVIUserFeedbackRequest)initWithUserFeedbackPayload:(id)payload sfReportData:(id)data reportIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  payloadCopy = payload;
+  dataCopy = data;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = MADVIUserFeedbackRequest;
   v12 = [(MADVIUserFeedbackRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userFeedbackPayload, a3);
-    objc_storeStrong(&v13->_sfReportData, a4);
-    objc_storeStrong(&v13->_reportIdentifier, a5);
+    objc_storeStrong(&v12->_userFeedbackPayload, payload);
+    objc_storeStrong(&v13->_sfReportData, data);
+    objc_storeStrong(&v13->_reportIdentifier, identifier);
   }
 
   return v13;
 }
 
-- (MADVIUserFeedbackRequest)initWithCoder:(id)a3
+- (MADVIUserFeedbackRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MADVIUserFeedbackRequest;
-  v5 = [(MADRequest *)&v13 initWithCoder:v4];
+  v5 = [(MADRequest *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserFeedbackPayload"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserFeedbackPayload"];
     userFeedbackPayload = v5->_userFeedbackPayload;
     v5->_userFeedbackPayload = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SFReportData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SFReportData"];
     sfReportData = v5->_sfReportData;
     v5->_sfReportData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReportIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReportIdentifier"];
     reportIdentifier = v5->_reportIdentifier;
     v5->_reportIdentifier = v10;
   }
@@ -50,34 +50,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVIUserFeedbackRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_userFeedbackPayload forKey:{@"UserFeedbackPayload", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_sfReportData forKey:@"SFReportData"];
-  [v4 encodeObject:self->_reportIdentifier forKey:@"ReportIdentifier"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_userFeedbackPayload forKey:{@"UserFeedbackPayload", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_sfReportData forKey:@"SFReportData"];
+  [coderCopy encodeObject:self->_reportIdentifier forKey:@"ReportIdentifier"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"userFeedbackPayload: %@, ", self->_userFeedbackPayload];
-  [v3 appendFormat:@"sfReportData: %@, ", self->_sfReportData];
-  [v3 appendFormat:@"reportIdentifier: %@, ", self->_reportIdentifier];
-  v6 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  [string appendFormat:@"userFeedbackPayload: %@, ", self->_userFeedbackPayload];
+  [string appendFormat:@"sfReportData: %@, ", self->_sfReportData];
+  [string appendFormat:@"reportIdentifier: %@, ", self->_reportIdentifier];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

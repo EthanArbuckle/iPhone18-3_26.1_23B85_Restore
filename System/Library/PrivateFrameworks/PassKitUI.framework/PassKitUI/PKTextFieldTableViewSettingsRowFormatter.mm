@@ -1,6 +1,6 @@
 @interface PKTextFieldTableViewSettingsRowFormatter
-- (BOOL)isEqual:(id)a3;
-- (id)submissionValueFromFormattedInput:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)submissionValueFromFormattedInput:(id)input;
 - (unint64_t)hash;
 @end
 
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = PKEqualObjects();
   }
@@ -37,19 +37,19 @@
   return v6;
 }
 
-- (id)submissionValueFromFormattedInput:(id)a3
+- (id)submissionValueFromFormattedInput:(id)input
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  inputCopy = input;
+  if ([inputCopy length])
   {
-    v5 = [v4 copy];
+    v5 = [inputCopy copy];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PKTextFieldTableViewSettingsRowFormatter *)self formatPaddingCharacters];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    formatPaddingCharacters = [(PKTextFieldTableViewSettingsRowFormatter *)self formatPaddingCharacters];
+    v7 = [formatPaddingCharacters countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -62,7 +62,7 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(formatPaddingCharacters);
           }
 
           v5 = [v11 stringByReplacingOccurrencesOfString:*(*(&v13 + 1) + 8 * v10) withString:&stru_1F3BD7330];
@@ -72,7 +72,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [formatPaddingCharacters countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);

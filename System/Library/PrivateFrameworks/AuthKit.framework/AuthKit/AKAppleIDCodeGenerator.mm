@@ -1,14 +1,14 @@
 @interface AKAppleIDCodeGenerator
-+ (id)generateLoginCode:(id *)a3;
++ (id)generateLoginCode:(id *)code;
 @end
 
 @implementation AKAppleIDCodeGenerator
 
-+ (id)generateLoginCode:(id *)a3
++ (id)generateLoginCode:(id *)code
 {
-  v21 = a1;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  codeCopy = code;
   v18 = 0;
   v17 = +[AKActiveAnisetteDSIDFetcher activeAnisettDSIDFromLastKnownIDMSEnvironment];
   sub_100271CF4(v17, &v18);
@@ -26,11 +26,11 @@
     }
 
     objc_storeStrong(&location, 0);
-    if (v19)
+    if (codeCopy)
     {
       v9 = [NSError ak_wrappedAnisetteError:v16];
       v4 = v9;
-      *v19 = v9;
+      *codeCopy = v9;
     }
 
     v22 = 0;

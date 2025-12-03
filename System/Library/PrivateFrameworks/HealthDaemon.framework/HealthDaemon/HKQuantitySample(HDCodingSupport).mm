@@ -9,61 +9,61 @@
 
 - (HDCodableQuantitySample)codableRepresentationForSync
 {
-  v2 = [a1 codableQuantitySample];
+  codableQuantitySample = [self codableQuantitySample];
 
-  if (v2)
+  if (codableQuantitySample)
   {
-    v3 = [a1 codableQuantitySample];
+    codableQuantitySample2 = [self codableQuantitySample];
   }
 
   else
   {
-    v3 = objc_alloc_init(HDCodableQuantitySample);
-    v12.receiver = a1;
+    codableQuantitySample2 = objc_alloc_init(HDCodableQuantitySample);
+    v12.receiver = self;
     v12.super_class = &off_283D38020;
     v4 = objc_msgSendSuper2(&v12, sel_codableRepresentationForSync);
-    [(HDCodableQuantitySample *)v3 setSample:v4];
+    [(HDCodableQuantitySample *)codableQuantitySample2 setSample:v4];
 
-    v5 = [a1 quantity];
-    v6 = [a1 quantityType];
-    v7 = [v6 canonicalUnit];
+    quantity = [self quantity];
+    quantityType = [self quantityType];
+    canonicalUnit = [quantityType canonicalUnit];
 
-    v8 = [v5 _unit];
-    v9 = v8;
-    if (v5 && v7)
+    _unit = [quantity _unit];
+    v9 = _unit;
+    if (quantity && canonicalUnit)
     {
-      if ([v8 isEqual:v7])
+      if ([_unit isEqual:canonicalUnit])
       {
-        [v5 doubleValueForUnit:v7];
-        [(HDCodableQuantitySample *)v3 setValueInCanonicalUnit:?];
+        [quantity doubleValueForUnit:canonicalUnit];
+        [(HDCodableQuantitySample *)codableQuantitySample2 setValueInCanonicalUnit:?];
       }
 
       else
       {
-        v10 = [v9 unitString];
-        [(HDCodableQuantitySample *)v3 setOriginalUnitString:v10];
+        unitString = [v9 unitString];
+        [(HDCodableQuantitySample *)codableQuantitySample2 setOriginalUnitString:unitString];
 
-        [v5 doubleValueForUnit:v9];
-        [(HDCodableQuantitySample *)v3 setValueInOriginalUnit:?];
+        [quantity doubleValueForUnit:v9];
+        [(HDCodableQuantitySample *)codableQuantitySample2 setValueInOriginalUnit:?];
       }
     }
 
-    -[HDCodableQuantitySample setFrozen:](v3, "setFrozen:", [a1 _frozen]);
+    -[HDCodableQuantitySample setFrozen:](codableQuantitySample2, "setFrozen:", [self _frozen]);
   }
 
-  return v3;
+  return codableQuantitySample2;
 }
 
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addQuantitySamples:v5];
+    [v4 addQuantitySamples:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -74,8 +74,8 @@
   {
     v4 = v3;
     v5 = MEMORY[0x277CCD720];
-    v6 = [v4 sample];
-    v7 = [v5 dataTypeWithCode:{objc_msgSend(v6, "dataType")}];
+    sample = [v4 sample];
+    v7 = [v5 dataTypeWithCode:{objc_msgSend(sample, "dataType")}];
 
     v8 = [objc_alloc(objc_msgSend(v7 "dataObjectClass"))];
     if ([v4 applyToObject:v8])
@@ -112,15 +112,15 @@
 + (id)migrateCodableObject:()HDCodingSupport
 {
   v3 = a3;
-  v4 = [v3 sample];
-  if ([v4 dataType] == 69)
+  sample = [v3 sample];
+  if ([sample dataType] == 69)
   {
     v5 = objc_alloc_init(HDCodableCategorySample);
-    v6 = [v4 copy];
+    v6 = [sample copy];
     [(HDCodableCategorySample *)v5 setSample:v6];
 
-    v7 = [(HDCodableCategorySample *)v5 sample];
-    [v7 setDataType:70];
+    sample2 = [(HDCodableCategorySample *)v5 sample];
+    [sample2 setDataType:70];
 
     [v3 valueInCanonicalUnit];
     [(HDCodableCategorySample *)v5 setValue:v8 == 1.0];

@@ -1,49 +1,49 @@
 @interface _TVRoundButton
-+ (id)_buttonContentWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 blurEnabled:(BOOL)a5;
-- (_TVRoundButton)initWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 blurEnabled:(BOOL)a5;
-- (void)_imageViewDidLoadImage:(id)a3;
-- (void)_updateBackgroundColorForState:(unint64_t)a3;
-- (void)_updateFloaingViewFocusState:(BOOL)a3 coordinator:(id)a4;
++ (id)_buttonContentWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style blurEnabled:(BOOL)enabled;
+- (_TVRoundButton)initWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style blurEnabled:(BOOL)enabled;
+- (void)_imageViewDidLoadImage:(id)image;
+- (void)_updateBackgroundColorForState:(unint64_t)state;
+- (void)_updateFloaingViewFocusState:(BOOL)state coordinator:(id)coordinator;
 - (void)_updateFloatingViewFocusStateIfNeeded;
-- (void)_updateFocusStateWithCoordinator:(id)a3;
+- (void)_updateFocusStateWithCoordinator:(id)coordinator;
 - (void)_updateImageMask;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setImageView:(id)a3;
-- (void)setShouldPunchThroughImage:(BOOL)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setImageView:(id)view;
+- (void)setShouldPunchThroughImage:(BOOL)image;
 @end
 
 @implementation _TVRoundButton
 
-+ (id)_buttonContentWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 blurEnabled:(BOOL)a5
++ (id)_buttonContentWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style blurEnabled:(BOOL)enabled
 {
-  v5 = [(TVButtonContent *)[_TVRoundButtonContent alloc] initWithFrame:a4 blurEffectStyle:a5 blurEnabled:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(TVButtonContent *)[_TVRoundButtonContent alloc] initWithFrame:style blurEffectStyle:enabled blurEnabled:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return v5;
 }
 
-- (_TVRoundButton)initWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 blurEnabled:(BOOL)a5
+- (_TVRoundButton)initWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style blurEnabled:(BOOL)enabled
 {
   v12.receiver = self;
   v12.super_class = _TVRoundButton;
-  v5 = [(TVButton *)&v12 initWithFrame:a4 blurEffectStyle:a5 blurEnabled:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(TVButton *)&v12 initWithFrame:style blurEffectStyle:enabled blurEnabled:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     v5->_shouldPunchThroughImage = 0;
-    v7 = [(TVButton *)v5 floatingView];
-    [v7 setUseShadowImage:0];
+    floatingView = [(TVButton *)v5 floatingView];
+    [floatingView setUseShadowImage:0];
 
-    v8 = [(TVButton *)v6 floatingView];
-    [v8 setShadowVerticalOffset:12.0];
+    floatingView2 = [(TVButton *)v6 floatingView];
+    [floatingView2 setShadowVerticalOffset:12.0];
 
-    v9 = [(TVButton *)v6 floatingView];
-    [v9 setShadowRadius:5.0];
+    floatingView3 = [(TVButton *)v6 floatingView];
+    [floatingView3 setShadowRadius:5.0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v6 selector:sel__imageViewDidLoadImage_ name:@"TVMLImageViewImageDidLoadNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__imageViewDidLoadImage_ name:@"TVMLImageViewImageDidLoadNotification" object:0];
   }
 
   return v6;
@@ -51,8 +51,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _TVRoundButton;
@@ -78,33 +78,33 @@
   [(TVButton *)&v17 setCornerRadius:v7];
   if (fabs(-(floor(v5 * 0.5) - v5 * 0.5)) <= 2.22044605e-16)
   {
-    v8 = [(TVButton *)self floatingView];
-    [v8 center];
+    floatingView = [(TVButton *)self floatingView];
+    [floatingView center];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(TVButton *)self floatingView];
-    [v13 setCenter:{v10, v12 + -0.5}];
+    floatingView2 = [(TVButton *)self floatingView];
+    [floatingView2 setCenter:{v10, v12 + -0.5}];
   }
 
   imageMask = self->_imageMask;
-  v15 = [(TVButton *)self buttonContent];
-  v16 = [(TVButton *)self imageView];
-  [v15 _frameForImageView:v16];
+  buttonContent = [(TVButton *)self buttonContent];
+  imageView = [(TVButton *)self imageView];
+  [buttonContent _frameForImageView:imageView];
   [(CALayer *)imageMask setFrame:?];
 
   [(_TVRoundButton *)self _updateFloatingViewFocusStateIfNeeded];
 }
 
-- (void)setShouldPunchThroughImage:(BOOL)a3
+- (void)setShouldPunchThroughImage:(BOOL)image
 {
-  if (self->_shouldPunchThroughImage != a3)
+  if (self->_shouldPunchThroughImage != image)
   {
-    self->_shouldPunchThroughImage = a3;
-    v4 = [(TVButton *)self imageView];
-    v5 = [v4 image];
+    self->_shouldPunchThroughImage = image;
+    imageView = [(TVButton *)self imageView];
+    image = [imageView image];
 
-    if (v5)
+    if (image)
     {
 
       [(_TVRoundButton *)self _updateImageMask];
@@ -112,26 +112,26 @@
   }
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
   v6.receiver = self;
   v6.super_class = _TVRoundButton;
-  [(TVButton *)&v6 setImageView:a3];
-  v4 = [(TVButton *)self imageView];
-  v5 = [v4 image];
+  [(TVButton *)&v6 setImageView:view];
+  imageView = [(TVButton *)self imageView];
+  image = [imageView image];
 
-  if (v5)
+  if (image)
   {
     [(_TVRoundButton *)self _updateImageMask];
   }
 }
 
-- (void)_imageViewDidLoadImage:(id)a3
+- (void)_imageViewDidLoadImage:(id)image
 {
-  v4 = [a3 object];
-  v5 = [(TVButton *)self imageView];
+  object = [image object];
+  imageView = [(TVButton *)self imageView];
 
-  if (v4 == v5)
+  if (object == imageView)
   {
 
     [(_TVRoundButton *)self _updateImageMask];
@@ -141,66 +141,66 @@
 - (void)_updateImageMask
 {
   [(CALayer *)self->_imageMask removeFromSuperlayer];
-  v3 = [(TVButton *)self overlayView];
-  [v3 setHidden:1];
+  overlayView = [(TVButton *)self overlayView];
+  [overlayView setHidden:1];
 
   if ([(_TVRoundButton *)self shouldPunchThroughImage])
   {
-    v4 = [(TVButton *)self imageView];
-    v5 = [v4 image];
+    imageView = [(TVButton *)self imageView];
+    image = [imageView image];
 
-    if (v5)
+    if (image)
     {
-      v6 = [(TVButton *)self imageView];
-      v7 = [v6 image];
-      v8 = [MEMORY[0x277D75348] blackColor];
-      v9 = [v7 _flatImageWithColor:v8];
+      imageView2 = [(TVButton *)self imageView];
+      image2 = [imageView2 image];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v9 = [image2 _flatImageWithColor:blackColor];
 
-      v10 = [MEMORY[0x277CD9ED0] layer];
+      layer = [MEMORY[0x277CD9ED0] layer];
       imageMask = self->_imageMask;
-      self->_imageMask = v10;
+      self->_imageMask = layer;
 
       [(CALayer *)self->_imageMask setCompositingFilter:*MEMORY[0x277CDA310]];
-      v12 = [(TVButton *)self overlayView];
-      v13 = [v12 layer];
-      [v13 addSublayer:self->_imageMask];
+      overlayView2 = [(TVButton *)self overlayView];
+      layer2 = [overlayView2 layer];
+      [layer2 addSublayer:self->_imageMask];
 
       -[CALayer setContents:](self->_imageMask, "setContents:", [v9 CGImage]);
-      v14 = [(TVButton *)self imageView];
-      [v14 frame];
+      imageView3 = [(TVButton *)self imageView];
+      [imageView3 frame];
       [(CALayer *)self->_imageMask setFrame:?];
     }
   }
 
-  v15 = [(_TVRoundButton *)self state];
+  state = [(_TVRoundButton *)self state];
 
-  [(_TVRoundButton *)self _updateBackgroundColorForState:v15];
+  [(_TVRoundButton *)self _updateBackgroundColorForState:state];
 }
 
-- (void)_updateBackgroundColorForState:(unint64_t)a3
+- (void)_updateBackgroundColorForState:(unint64_t)state
 {
   v11.receiver = self;
   v11.super_class = _TVRoundButton;
-  [(TVButton *)&v11 _updateBackgroundColorForState:a3];
+  [(TVButton *)&v11 _updateBackgroundColorForState:state];
   if ([(_TVRoundButton *)self shouldPunchThroughImage])
   {
-    v4 = [(TVButton *)self imageView];
-    v5 = [v4 image];
+    imageView = [(TVButton *)self imageView];
+    image = [imageView image];
 
-    if (v5)
+    if (image)
     {
-      v6 = [(TVButton *)self floatingView];
-      [v6 setBackgroundColor:0 forState:8];
+      floatingView = [(TVButton *)self floatingView];
+      [floatingView setBackgroundColor:0 forState:8];
 
-      v7 = [(TVButton *)self floatingView];
-      [v7 setBackgroundColor:0 forState:1];
+      floatingView2 = [(TVButton *)self floatingView];
+      [floatingView2 setBackgroundColor:0 forState:1];
 
-      v8 = [(TVButton *)self overlayView];
-      v9 = [(TVButton *)self highlightColor];
-      [v8 setBackgroundColor:v9];
+      overlayView = [(TVButton *)self overlayView];
+      highlightColor = [(TVButton *)self highlightColor];
+      [overlayView setBackgroundColor:highlightColor];
 
-      v10 = [(TVButton *)self overlayView];
-      [v10 setHidden:0];
+      overlayView2 = [(TVButton *)self overlayView];
+      [overlayView2 setHidden:0];
     }
   }
 }
@@ -213,20 +213,20 @@
   [(_TVRoundButton *)self _updateFloatingViewFocusStateIfNeeded];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _TVRoundButton;
-  [(_TVRoundButton *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_TVRoundButton *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_TVRoundButton *)self _updateFloatingViewFocusStateIfNeeded];
 }
 
 - (void)_updateFloatingViewFocusStateIfNeeded
 {
-  v3 = [(_TVRoundButton *)self window];
-  if (v3)
+  window = [(_TVRoundButton *)self window];
+  if (window)
   {
-    v4 = v3;
+    v4 = window;
     [(_TVRoundButton *)self bounds];
     v6 = v5;
     v8 = v7;
@@ -249,12 +249,12 @@
   }
 }
 
-- (void)_updateFloaingViewFocusState:(BOOL)a3 coordinator:(id)a4
+- (void)_updateFloaingViewFocusState:(BOOL)state coordinator:(id)coordinator
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_TVRoundButton *)self window];
-  if (!v7 || ((v8 = v7, [(_TVRoundButton *)self bounds], v10 = v9, v12 = v11, v13 = *MEMORY[0x277CBF3A8], v14 = *(MEMORY[0x277CBF3A8] + 8), v8, v10 == v13) ? (v15 = v12 == v14) : (v15 = 0), v15))
+  stateCopy = state;
+  coordinatorCopy = coordinator;
+  window = [(_TVRoundButton *)self window];
+  if (!window || ((v8 = window, [(_TVRoundButton *)self bounds], v10 = v9, v12 = v11, v13 = *MEMORY[0x277CBF3A8], v14 = *(MEMORY[0x277CBF3A8] + 8), v8, v10 == v13) ? (v15 = v12 == v14) : (v15 = 0), v15))
   {
     objc_initWeak(&location, self);
     v21[0] = MEMORY[0x277D85DD0];
@@ -262,8 +262,8 @@
     v21[2] = __59___TVRoundButton__updateFloaingViewFocusState_coordinator___block_invoke;
     v21[3] = &unk_279D6FC18;
     objc_copyWeak(&v23, &location);
-    v24 = v4;
-    v22 = v6;
+    v24 = stateCopy;
+    v22 = coordinatorCopy;
     v19 = [v21 copy];
     updateFloatingViewFocusStateBlock = self->_updateFloatingViewFocusStateBlock;
     self->_updateFloatingViewFocusStateBlock = v19;
@@ -274,9 +274,9 @@
 
   else
   {
-    v16 = [(TVButton *)self floatingView];
-    v17 = v16;
-    if (v4)
+    floatingView = [(TVButton *)self floatingView];
+    v17 = floatingView;
+    if (stateCopy)
     {
       v18 = 8;
     }
@@ -286,25 +286,25 @@
       v18 = 0;
     }
 
-    [v16 setControlState:v18 withAnimationCoordinator:v6];
+    [floatingView setControlState:v18 withAnimationCoordinator:coordinatorCopy];
   }
 }
 
-- (void)_updateFocusStateWithCoordinator:(id)a3
+- (void)_updateFocusStateWithCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = _TVRoundButton;
-  [(TVButton *)&v8 _updateFocusStateWithCoordinator:a3];
-  v4 = [(_TVRoundButton *)self isFocused];
-  v5 = [(TVButton *)self imageView];
-  v6 = [(_TVRoundButton *)self shouldPunchThroughImage];
+  [(TVButton *)&v8 _updateFocusStateWithCoordinator:coordinator];
+  isFocused = [(_TVRoundButton *)self isFocused];
+  imageView = [(TVButton *)self imageView];
+  shouldPunchThroughImage = [(_TVRoundButton *)self shouldPunchThroughImage];
   v7 = 1.0;
-  if ((v6 & v4) != 0)
+  if ((shouldPunchThroughImage & isFocused) != 0)
   {
     v7 = 0.0;
   }
 
-  [v5 setAlpha:v7];
+  [imageView setAlpha:v7];
 }
 
 @end

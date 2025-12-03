@@ -1,12 +1,12 @@
 @interface _ShieldView.Coordinator
-- (void)shieldViewUnlockButtonPressed:(id)a3;
+- (void)shieldViewUnlockButtonPressed:(id)pressed;
 @end
 
 @implementation _ShieldView.Coordinator
 
-- (void)shieldViewUnlockButtonPressed:(id)a3
+- (void)shieldViewUnlockButtonPressed:(id)pressed
 {
-  v3 = self;
+  selfCopy = self;
   sub_1BE04BE04();
 }
 

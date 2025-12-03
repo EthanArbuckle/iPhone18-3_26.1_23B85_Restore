@@ -1,20 +1,20 @@
 @interface ICQAppsSyncingToDrive
-- (ICQAppsSyncingToDrive)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
+- (ICQAppsSyncingToDrive)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation ICQAppsSyncingToDrive
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ICQAppsSyncingToDrive;
   v5 = [(ICQAppsSyncingToDrive *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"apps"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"apps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,17 +45,17 @@ void __44__ICQAppsSyncingToDrive_initFromDictionary___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQAppsSyncingToDrive);
   [(ICQAppsSyncingToDrive *)v4 setApps:self->_apps];
   return v4;
 }
 
-- (ICQAppsSyncingToDrive)initWithCoder:(id)a3
+- (ICQAppsSyncingToDrive)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ICQAppsSyncingToDrive;
   v5 = [(ICQAppsSyncingToDrive *)&v13 init];
@@ -67,7 +67,7 @@ void __44__ICQAppsSyncingToDrive_initFromDictionary___block_invoke(uint64_t a1, 
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"apps"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"apps"];
     apps = v5->_apps;
     v5->_apps = v9;
   }

@@ -1,29 +1,29 @@
 @interface AKSignaturesController
 - (AKController)controller;
-- (AKSignaturesController)initWithController:(id)a3;
+- (AKSignaturesController)initWithController:(id)controller;
 - (AKSignaturesControllerDelegate)delegate;
 - (void)_continueToCreateSignature;
 - (void)_continueToManageSignatures;
 - (void)_notifyDidSelectSignature;
 - (void)presentSignaturesViewController;
-- (void)signatureCreationControllerDidCreateSignature:(id)a3;
-- (void)signaturesViewControllerContinueToCreateSignature:(id)a3;
-- (void)signaturesViewControllerDidCancel:(id)a3;
-- (void)signaturesViewControllerDidSelectSignature:(id)a3;
+- (void)signatureCreationControllerDidCreateSignature:(id)signature;
+- (void)signaturesViewControllerContinueToCreateSignature:(id)signature;
+- (void)signaturesViewControllerDidCancel:(id)cancel;
+- (void)signaturesViewControllerDidSelectSignature:(id)signature;
 @end
 
 @implementation AKSignaturesController
 
-- (AKSignaturesController)initWithController:(id)a3
+- (AKSignaturesController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKSignaturesController;
   v5 = [(AKSignaturesController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AKSignaturesController *)v5 setController:v4];
+    [(AKSignaturesController *)v5 setController:controllerCopy];
   }
 
   return v6;
@@ -31,47 +31,47 @@
 
 - (void)presentSignaturesViewController
 {
-  v3 = [(AKSignaturesController *)self controller];
-  v4 = [v3 signatureModelController];
-  v5 = [v4 signatures];
-  v6 = [v5 count];
+  controller = [(AKSignaturesController *)self controller];
+  signatureModelController = [controller signatureModelController];
+  signatures = [signatureModelController signatures];
+  v6 = [signatures count];
 
   if (v6)
   {
-    v7 = [[AKSignaturesViewController_iOS alloc] initWithController:v3];
+    v7 = [[AKSignaturesViewController_iOS alloc] initWithController:controller];
     [(AKSignaturesController *)self setSignaturesAlertViewController:v7];
 
-    v8 = [(AKSignaturesController *)self signaturesAlertViewController];
-    [v8 setDelegate:self];
+    signaturesAlertViewController = [(AKSignaturesController *)self signaturesAlertViewController];
+    [signaturesAlertViewController setDelegate:self];
 
-    v9 = [(AKSignaturesController *)self signaturesAlertViewController];
-    [v9 setPresentedInAlert:1];
+    signaturesAlertViewController2 = [(AKSignaturesController *)self signaturesAlertViewController];
+    [signaturesAlertViewController2 setPresentedInAlert:1];
 
-    v10 = [(AKSignaturesController *)self signaturesAlertViewController];
-    [v10 setShowsNavigationBar:0];
+    signaturesAlertViewController3 = [(AKSignaturesController *)self signaturesAlertViewController];
+    [signaturesAlertViewController3 setShowsNavigationBar:0];
 
-    v11 = [(AKSignaturesController *)self signaturesAlertViewController];
-    [v11 setAllowsEdits:0];
+    signaturesAlertViewController4 = [(AKSignaturesController *)self signaturesAlertViewController];
+    [signaturesAlertViewController4 setAllowsEdits:0];
 
-    v12 = [MEMORY[0x277D75348] clearColor];
-    v13 = [(AKSignaturesController *)self signaturesAlertViewController];
-    [v13 setTableBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    signaturesAlertViewController5 = [(AKSignaturesController *)self signaturesAlertViewController];
+    [signaturesAlertViewController5 setTableBackgroundColor:clearColor];
 
     v14 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
     [v14 setModalPresentationStyle:7];
-    v15 = [v14 popoverPresentationController];
-    [v15 setDelegate:self];
+    popoverPresentationController = [v14 popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
 
-    v16 = [v14 popoverPresentationController];
-    [v16 setPermittedArrowDirections:2];
+    popoverPresentationController2 = [v14 popoverPresentationController];
+    [popoverPresentationController2 setPermittedArrowDirections:2];
 
-    v17 = [(AKSignaturesController *)self presentationContext];
-    v18 = [v17 sourceView];
-    v19 = [v14 popoverPresentationController];
-    [v19 setSourceView:v18];
+    presentationContext = [(AKSignaturesController *)self presentationContext];
+    sourceView = [presentationContext sourceView];
+    popoverPresentationController3 = [v14 popoverPresentationController];
+    [popoverPresentationController3 setSourceView:sourceView];
 
-    v20 = [(AKSignaturesController *)self signaturesAlertViewController];
-    [v14 setContentViewController:v20];
+    signaturesAlertViewController6 = [(AKSignaturesController *)self signaturesAlertViewController];
+    [v14 setContentViewController:signaturesAlertViewController6];
 
     v21 = MEMORY[0x277D750F8];
     v22 = +[AKController akBundle];
@@ -95,9 +95,9 @@
     v28 = [v25 actionWithTitle:v27 style:1 handler:v31];
     [v14 addAction:v28];
 
-    v29 = [(AKSignaturesController *)self presentationContext];
-    v30 = [v29 presentingViewController];
-    [v30 presentViewController:v14 animated:1 completion:0];
+    presentationContext2 = [(AKSignaturesController *)self presentationContext];
+    presentingViewController = [presentationContext2 presentingViewController];
+    [presentingViewController presentViewController:v14 animated:1 completion:0];
   }
 
   else
@@ -109,121 +109,121 @@
 - (void)_continueToManageSignatures
 {
   v3 = [AKSignaturesViewController_iOS alloc];
-  v4 = [(AKSignaturesController *)self controller];
-  v5 = [(AKSignaturesViewController_iOS *)v3 initWithController:v4];
+  controller = [(AKSignaturesController *)self controller];
+  v5 = [(AKSignaturesViewController_iOS *)v3 initWithController:controller];
   [(AKSignaturesController *)self setSignaturesSheetViewController:v5];
 
-  v6 = [(AKSignaturesController *)self signaturesSheetViewController];
-  [v6 setDelegate:self];
+  signaturesSheetViewController = [(AKSignaturesController *)self signaturesSheetViewController];
+  [signaturesSheetViewController setDelegate:self];
 
-  v7 = [(AKSignaturesController *)self signaturesSheetViewController];
-  [v7 setModalPresentationStyle:2];
+  signaturesSheetViewController2 = [(AKSignaturesController *)self signaturesSheetViewController];
+  [signaturesSheetViewController2 setModalPresentationStyle:2];
 
-  v8 = [(AKSignaturesController *)self signaturesSheetViewController];
-  [v8 setModalInPresentation:1];
+  signaturesSheetViewController3 = [(AKSignaturesController *)self signaturesSheetViewController];
+  [signaturesSheetViewController3 setModalInPresentation:1];
 
-  v9 = [(AKSignaturesController *)self signaturesSheetViewController];
-  [v9 setShowsNavigationBar:1];
+  signaturesSheetViewController4 = [(AKSignaturesController *)self signaturesSheetViewController];
+  [signaturesSheetViewController4 setShowsNavigationBar:1];
 
-  v10 = [(AKSignaturesController *)self signaturesSheetViewController];
-  [v10 setPresentedInAlert:0];
+  signaturesSheetViewController5 = [(AKSignaturesController *)self signaturesSheetViewController];
+  [signaturesSheetViewController5 setPresentedInAlert:0];
 
-  v11 = [(AKSignaturesController *)self signaturesSheetViewController];
-  [v11 setAllowsEdits:1];
+  signaturesSheetViewController6 = [(AKSignaturesController *)self signaturesSheetViewController];
+  [signaturesSheetViewController6 setAllowsEdits:1];
 
-  v14 = [(AKSignaturesController *)self presentationContext];
-  v12 = [v14 presentingViewController];
-  v13 = [(AKSignaturesController *)self signaturesSheetViewController];
-  [v12 presentViewController:v13 animated:1 completion:0];
+  presentationContext = [(AKSignaturesController *)self presentationContext];
+  presentingViewController = [presentationContext presentingViewController];
+  signaturesSheetViewController7 = [(AKSignaturesController *)self signaturesSheetViewController];
+  [presentingViewController presentViewController:signaturesSheetViewController7 animated:1 completion:0];
 }
 
-- (void)signaturesViewControllerDidCancel:(id)a3
+- (void)signaturesViewControllerDidCancel:(id)cancel
 {
-  v4 = [(AKSignaturesController *)self signaturesSheetViewController];
+  signaturesSheetViewController = [(AKSignaturesController *)self signaturesSheetViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_23F46EB74;
   v5[3] = &unk_278C7B540;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [signaturesSheetViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
-- (void)signaturesViewControllerDidSelectSignature:(id)a3
+- (void)signaturesViewControllerDidSelectSignature:(id)signature
 {
-  v4 = [(AKSignaturesController *)self signaturesAlertViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  signaturesAlertViewController = [(AKSignaturesController *)self signaturesAlertViewController];
+  [signaturesAlertViewController dismissViewControllerAnimated:1 completion:0];
 
   [(AKSignaturesController *)self _notifyDidSelectSignature];
 }
 
-- (void)signaturesViewControllerContinueToCreateSignature:(id)a3
+- (void)signaturesViewControllerContinueToCreateSignature:(id)signature
 {
-  v4 = [(AKSignaturesController *)self signaturesSheetViewController];
+  signaturesSheetViewController = [(AKSignaturesController *)self signaturesSheetViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_23F46EC5C;
   v5[3] = &unk_278C7B540;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [signaturesSheetViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
 - (void)_continueToCreateSignature
 {
   v3 = [AKSignatureCreationViewController_iOS alloc];
-  v4 = [(AKSignaturesController *)self controller];
-  v5 = [(AKSignatureCreationViewController_iOS *)v3 initWithController:v4];
+  controller = [(AKSignaturesController *)self controller];
+  v5 = [(AKSignatureCreationViewController_iOS *)v3 initWithController:controller];
   [(AKSignaturesController *)self setSignaturesCreationViewController:v5];
 
-  v6 = [(AKSignaturesController *)self signaturesCreationViewController];
-  [v6 setDelegate:self];
+  signaturesCreationViewController = [(AKSignaturesController *)self signaturesCreationViewController];
+  [signaturesCreationViewController setDelegate:self];
 
-  v7 = [(AKSignaturesController *)self signaturesCreationViewController];
-  [v7 setModalTransitionStyle:0];
+  signaturesCreationViewController2 = [(AKSignaturesController *)self signaturesCreationViewController];
+  [signaturesCreationViewController2 setModalTransitionStyle:0];
 
-  v8 = [(AKSignaturesController *)self signaturesCreationViewController];
-  [v8 setModalPresentationStyle:2];
+  signaturesCreationViewController3 = [(AKSignaturesController *)self signaturesCreationViewController];
+  [signaturesCreationViewController3 setModalPresentationStyle:2];
 
-  v9 = [(AKSignaturesController *)self signaturesCreationViewController];
-  [v9 setModalInPresentation:1];
+  signaturesCreationViewController4 = [(AKSignaturesController *)self signaturesCreationViewController];
+  [signaturesCreationViewController4 setModalInPresentation:1];
 
-  v10 = [(AKSignaturesController *)self signaturesCreationViewController];
-  v11 = [v10 popoverPresentationController];
-  [v11 setDelegate:self];
+  signaturesCreationViewController5 = [(AKSignaturesController *)self signaturesCreationViewController];
+  popoverPresentationController = [signaturesCreationViewController5 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
 
-  v14 = [(AKSignaturesController *)self presentationContext];
-  v12 = [v14 presentingViewController];
-  v13 = [(AKSignaturesController *)self signaturesCreationViewController];
-  [v12 presentViewController:v13 animated:1 completion:0];
+  presentationContext = [(AKSignaturesController *)self presentationContext];
+  presentingViewController = [presentationContext presentingViewController];
+  signaturesCreationViewController6 = [(AKSignaturesController *)self signaturesCreationViewController];
+  [presentingViewController presentViewController:signaturesCreationViewController6 animated:1 completion:0];
 }
 
-- (void)signatureCreationControllerDidCreateSignature:(id)a3
+- (void)signatureCreationControllerDidCreateSignature:(id)signature
 {
-  v4 = [(AKSignaturesController *)self signaturesCreationViewController];
+  signaturesCreationViewController = [(AKSignaturesController *)self signaturesCreationViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_23F46EE9C;
   v5[3] = &unk_278C7B540;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [signaturesCreationViewController dismissViewControllerAnimated:1 completion:v5];
 
   [(AKSignaturesController *)self _notifyDidSelectSignature];
 }
 
 - (void)_notifyDidSelectSignature
 {
-  v3 = [(AKSignaturesController *)self controller];
-  v4 = [v3 signatureModelController];
-  v8 = [v4 selectedSignature];
+  controller = [(AKSignaturesController *)self controller];
+  signatureModelController = [controller signatureModelController];
+  selectedSignature = [signatureModelController selectedSignature];
 
   v5 = objc_alloc_init(AKSignatureAnnotation);
-  [(AKSignatureAnnotation *)v5 setSignature:v8];
-  [v8 pathBounds];
+  [(AKSignatureAnnotation *)v5 setSignature:selectedSignature];
+  [selectedSignature pathBounds];
   [(AKSignatureAnnotation *)v5 setRectangle:0.0, 0.0];
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [(AKSignatureAnnotation *)v5 setStrokeColor:v6];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(AKSignatureAnnotation *)v5 setStrokeColor:blackColor];
 
-  v7 = [(AKSignaturesController *)self delegate];
-  [v7 signaturesController:self didSelectSignatureWithAnnotation:v5];
+  delegate = [(AKSignaturesController *)self delegate];
+  [delegate signaturesController:self didSelectSignatureWithAnnotation:v5];
 }
 
 - (AKController)controller

@@ -1,23 +1,23 @@
 @interface PNPersonPromoterEvaluation
-+ (BOOL)createDirectoryIfNotExitAtURL:(id)a3;
-+ (BOOL)exportPhotoLibrary:(id)a3 toURL:(id)a4 forPeople:(id)a5 error:(id *)a6;
-+ (BOOL)exportPhotoLibrary:(id)a3 toURL:(id)a4 forPeopleType:(unint64_t)a5 error:(id *)a6;
-+ (id)_peopleClustersDictionaryForPeople:(id)a3 withPhotoLibrary:(id)a4;
-+ (id)openPhotoLibraryAtURL:(id)a3;
-+ (void)peopleClusteringWithParameter:(id)a3 photoLibrary:(id)a4 directoryURL:(id)a5 delegate:(id)a6;
++ (BOOL)createDirectoryIfNotExitAtURL:(id)l;
++ (BOOL)exportPhotoLibrary:(id)library toURL:(id)l forPeople:(id)people error:(id *)error;
++ (BOOL)exportPhotoLibrary:(id)library toURL:(id)l forPeopleType:(unint64_t)type error:(id *)error;
++ (id)_peopleClustersDictionaryForPeople:(id)people withPhotoLibrary:(id)library;
++ (id)openPhotoLibraryAtURL:(id)l;
++ (void)peopleClusteringWithParameter:(id)parameter photoLibrary:(id)library directoryURL:(id)l delegate:(id)delegate;
 @end
 
 @implementation PNPersonPromoterEvaluation
 
-+ (BOOL)exportPhotoLibrary:(id)a3 toURL:(id)a4 forPeople:(id)a5 error:(id *)a6
++ (BOOL)exportPhotoLibrary:(id)library toURL:(id)l forPeople:(id)people error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  libraryCopy = library;
+  lCopy = l;
+  peopleCopy = people;
   v13 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v14 = [v11 URLByDeletingLastPathComponent];
-  v15 = [v14 path];
-  v16 = [v13 fileExistsAtPath:v15];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
+  v16 = [v13 fileExistsAtPath:path];
 
   if (v16)
   {
@@ -27,19 +27,19 @@
   else
   {
     v25 = 0;
-    [v13 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&v25];
+    [v13 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
     v17 = v25;
   }
 
-  v18 = [objc_alloc(MEMORY[0x1E695DFC0]) initWithURL:v11 append:0];
+  v18 = [objc_alloc(MEMORY[0x1E695DFC0]) initWithURL:lCopy append:0];
   v19 = v18;
   if (v17 || !v18)
   {
-    if (a6)
+    if (error)
     {
       v23 = v17;
       v22 = 0;
-      *a6 = v17;
+      *error = v17;
     }
 
     else
@@ -51,30 +51,30 @@
   else
   {
     [v18 open];
-    v20 = [a1 _peopleClustersDictionaryForPeople:v12 withPhotoLibrary:v10];
-    v21 = [MEMORY[0x1E696AE40] writePropertyList:v20 toStream:v19 format:100 options:0 error:a6];
+    v20 = [self _peopleClustersDictionaryForPeople:peopleCopy withPhotoLibrary:libraryCopy];
+    v21 = [MEMORY[0x1E696AE40] writePropertyList:v20 toStream:v19 format:100 options:0 error:error];
     v22 = v21 != 0;
     [v19 close];
     if (!v21)
     {
-      [v13 removeItemAtURL:v11 error:0];
+      [v13 removeItemAtURL:lCopy error:0];
     }
   }
 
   return v22;
 }
 
-+ (id)_peopleClustersDictionaryForPeople:(id)a3 withPhotoLibrary:(id)a4
++ (id)_peopleClustersDictionaryForPeople:(id)people withPhotoLibrary:(id)library
 {
   v89 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v61 = a4;
-  v53 = [MEMORY[0x1E695DF90] dictionary];
+  peopleCopy = people;
+  libraryCopy = library;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v5;
+  obj = peopleCopy;
   v54 = [obj countByEnumeratingWithState:&v72 objects:v88 count:16];
   if (v54)
   {
@@ -93,7 +93,7 @@
         v7 = *(*(&v72 + 1) + 8 * v6);
         context = objc_autoreleasePoolPush();
         v57 = v7;
-        v8 = [v61 pn_fetchFacesForPerson:v7];
+        v8 = [libraryCopy pn_fetchFacesForPerson:v7];
         v59 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
         v68 = 0u;
         v69 = 0u;
@@ -114,49 +114,49 @@
               }
 
               v10 = *(*(&v68 + 1) + 8 * i);
-              v11 = [v10 localIdentifier];
-              v86 = v11;
+              localIdentifier = [v10 localIdentifier];
+              v86 = localIdentifier;
               v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
-              v13 = [v61 pn_fetchAssetsForFaceLocalIdentifiers:v12];
-              v14 = [v13 fetchedObjects];
-              v15 = [v14 firstObject];
+              v13 = [libraryCopy pn_fetchAssetsForFaceLocalIdentifiers:v12];
+              fetchedObjects = [v13 fetchedObjects];
+              firstObject = [fetchedObjects firstObject];
 
-              v16 = [v15 cloudIdentifier];
-              if ([v16 length])
+              cloudIdentifier = [firstObject cloudIdentifier];
+              if ([cloudIdentifier length])
               {
-                [v15 cloudIdentifier];
+                [firstObject cloudIdentifier];
               }
 
               else
               {
-                [v15 localIdentifier];
+                [firstObject localIdentifier];
               }
               v17 = ;
 
               v18 = [MEMORY[0x1E6978630] uuidFromLocalIdentifier:v17];
               if (v17)
               {
-                v19 = [v15 pixelWidth];
-                v20 = [v15 pixelHeight];
-                if (v19 <= v20)
+                pixelWidth = [firstObject pixelWidth];
+                pixelHeight = [firstObject pixelHeight];
+                if (pixelWidth <= pixelHeight)
                 {
-                  v21 = v20;
+                  v21 = pixelHeight;
                 }
 
                 else
                 {
-                  v21 = v19;
+                  v21 = pixelWidth;
                 }
 
                 v22 = v21;
                 v85[0] = v18;
                 v84[0] = @"id";
                 v84[1] = @"filename";
-                v23 = [v15 filename];
-                v65 = v23;
-                if (v23)
+                filename = [firstObject filename];
+                v65 = filename;
+                if (filename)
                 {
-                  v24 = v23;
+                  v24 = filename;
                 }
 
                 else
@@ -166,13 +166,13 @@
 
                 v85[1] = v24;
                 v84[2] = @"originalFilename";
-                v25 = [v15 originalFilename];
+                originalFilename = [firstObject originalFilename];
                 v66 = v18;
                 v67 = v17;
-                v26 = v25;
-                if (v25)
+                v26 = originalFilename;
+                if (originalFilename)
                 {
-                  v27 = v25;
+                  v27 = originalFilename;
                 }
 
                 else
@@ -199,12 +199,12 @@
                 v84[6] = @"centerX";
                 v32 = MEMORY[0x1E696AD98];
                 [v10 centerX];
-                v34 = [v32 numberWithDouble:{v33 * objc_msgSend(v15, "pixelWidth")}];
+                v34 = [v32 numberWithDouble:{v33 * objc_msgSend(firstObject, "pixelWidth")}];
                 v85[6] = v34;
                 v84[7] = @"centerY";
                 v35 = MEMORY[0x1E696AD98];
                 [v10 centerY];
-                v37 = [v35 numberWithDouble:{v36 * objc_msgSend(v15, "pixelHeight")}];
+                v37 = [v35 numberWithDouble:{v36 * objc_msgSend(firstObject, "pixelHeight")}];
                 v85[7] = v37;
                 v84[8] = @"size";
                 v38 = MEMORY[0x1E696AD98];
@@ -212,10 +212,10 @@
                 v40 = [v38 numberWithDouble:v39 * v22];
                 v85[8] = v40;
                 v84[9] = @"pixelWidth";
-                v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "pixelWidth")}];
+                v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(firstObject, "pixelWidth")}];
                 v85[9] = v41;
                 v84[10] = @"pixelHeight";
-                v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "pixelHeight")}];
+                v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(firstObject, "pixelHeight")}];
                 v85[10] = v42;
                 v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v85 forKeys:v84 count:11];
 
@@ -227,14 +227,14 @@
 
               else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
-                v44 = [v10 localIdentifier];
-                v45 = [v57 localIdentifier];
+                localIdentifier2 = [v10 localIdentifier];
+                localIdentifier3 = [v57 localIdentifier];
                 *buf = 138412802;
-                v79 = v15;
+                v79 = firstObject;
                 v80 = 2112;
-                v81 = v44;
+                v81 = localIdentifier2;
                 v82 = 2112;
-                v83 = v45;
+                v83 = localIdentifier3;
                 _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "No identifier for asset: %@, face identifier: %@, person identifier: %@", buf, 0x20u);
               }
             }
@@ -245,8 +245,8 @@
           while (v62);
         }
 
-        v46 = [v57 anonymizedName];
-        if ([v46 length])
+        anonymizedName = [v57 anonymizedName];
+        if ([anonymizedName length])
         {
           [v57 anonymizedName];
         }
@@ -263,7 +263,7 @@
         v77[0] = v48;
         v77[1] = v59;
         v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:2];
-        [v53 setObject:v49 forKeyedSubscript:v47];
+        [dictionary setObject:v49 forKeyedSubscript:v47];
 
         objc_autoreleasePoolPop(context);
         v6 = v56 + 1;
@@ -276,17 +276,17 @@
     while (v54);
   }
 
-  return v53;
+  return dictionary;
 }
 
-+ (BOOL)exportPhotoLibrary:(id)a3 toURL:(id)a4 forPeopleType:(unint64_t)a5 error:(id *)a6
++ (BOOL)exportPhotoLibrary:(id)library toURL:(id)l forPeopleType:(unint64_t)type error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  libraryCopy = library;
+  lCopy = l;
   v12 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v13 = [v11 URLByDeletingLastPathComponent];
-  v14 = [v13 path];
-  v15 = [v12 fileExistsAtPath:v14];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
+  v15 = [v12 fileExistsAtPath:path];
 
   if (v15)
   {
@@ -296,19 +296,19 @@
   else
   {
     v25 = 0;
-    [v12 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v25];
+    [v12 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
     v16 = v25;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DFC0]) initWithURL:v11 append:0];
+  v17 = [objc_alloc(MEMORY[0x1E695DFC0]) initWithURL:lCopy append:0];
   v18 = v17;
   if (v16 || !v17)
   {
-    if (a6)
+    if (error)
     {
       v23 = v16;
       v22 = 0;
-      *a6 = v16;
+      *error = v16;
     }
 
     else
@@ -320,28 +320,28 @@
   else
   {
     [v17 open];
-    v19 = [v10 pn_fetchPersonsWithType:a5];
-    v20 = [a1 _peopleClustersDictionaryForPeople:v19 withPhotoLibrary:v10];
-    v21 = [MEMORY[0x1E696AE40] writePropertyList:v20 toStream:v18 format:100 options:0 error:a6];
+    v19 = [libraryCopy pn_fetchPersonsWithType:type];
+    v20 = [self _peopleClustersDictionaryForPeople:v19 withPhotoLibrary:libraryCopy];
+    v21 = [MEMORY[0x1E696AE40] writePropertyList:v20 toStream:v18 format:100 options:0 error:error];
     v22 = v21 != 0;
     [v18 close];
     if (!v21)
     {
-      [v12 removeItemAtURL:v11 error:0];
+      [v12 removeItemAtURL:lCopy error:0];
     }
   }
 
   return v22;
 }
 
-+ (BOOL)createDirectoryIfNotExitAtURL:(id)a3
++ (BOOL)createDirectoryIfNotExitAtURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(MEMORY[0x1E696AC08]);
   v11 = 0;
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v11];
+  path = [lCopy path];
+  v6 = [v4 fileExistsAtPath:path isDirectory:&v11];
 
   if (v6)
   {
@@ -365,7 +365,7 @@
   else
   {
     v10 = 0;
-    v7 = [v4 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+    v7 = [v4 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v10];
     v8 = v10;
     if ((v7 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -378,30 +378,30 @@
   return v7 & 1;
 }
 
-+ (void)peopleClusteringWithParameter:(id)a3 photoLibrary:(id)a4 directoryURL:(id)a5 delegate:(id)a6
++ (void)peopleClusteringWithParameter:(id)parameter photoLibrary:(id)library directoryURL:(id)l delegate:(id)delegate
 {
   v74 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v61 = a1;
-  v62 = a6;
-  if ([a1 createDirectoryIfNotExitAtURL:v12])
+  parameterCopy = parameter;
+  libraryCopy = library;
+  lCopy = l;
+  selfCopy = self;
+  delegateCopy = delegate;
+  if ([self createDirectoryIfNotExitAtURL:lCopy])
   {
     v13 = objc_opt_new();
     [v13 setDateFormat:@"yyyyMMdd_HHmmss"];
-    v14 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v58 = v13;
-    v60 = [v13 stringFromDate:v14];
+    v60 = [v13 stringFromDate:date];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = [[PNPersonClusterManager alloc] initWithPhotoLibrary:v11];
-    v17 = [v12 URLByAppendingPathComponent:@"Baseline_FaceGroup.plist"];
+    v16 = [[PNPersonClusterManager alloc] initWithPhotoLibrary:libraryCopy];
+    v17 = [lCopy URLByAppendingPathComponent:@"Baseline_FaceGroup.plist"];
     v69 = 0;
     v18 = [v17 checkResourceIsReachableAndReturnError:&v69];
     v19 = v69;
     v20 = v19;
-    v59 = v11;
+    v59 = libraryCopy;
     if (v18)
     {
       v21 = v19;
@@ -417,7 +417,7 @@
       }
 
       v68 = v20;
-      v22 = [v61 exportPhotoLibrary:v16 toURL:v17 forPeopleType:0 error:&v68];
+      v22 = [selfCopy exportPhotoLibrary:v16 toURL:v17 forPeopleType:0 error:&v68];
       v21 = v68;
 
       if ((v22 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -428,7 +428,7 @@
       }
     }
 
-    v23 = [v12 URLByAppendingPathComponent:@"Baseline_verified.plist"];
+    v23 = [lCopy URLByAppendingPathComponent:@"Baseline_verified.plist"];
 
     v67 = v21;
     v24 = [v23 checkResourceIsReachableAndReturnError:&v67];
@@ -449,7 +449,7 @@
       }
 
       v66 = v25;
-      v27 = [v61 exportPhotoLibrary:v16 toURL:v23 forPeopleType:1 error:&v66];
+      v27 = [selfCopy exportPhotoLibrary:v16 toURL:v23 forPeopleType:1 error:&v66];
       v26 = v66;
 
       if ((v27 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -460,14 +460,14 @@
       }
     }
 
-    v11 = v59;
+    libraryCopy = v59;
 
     objc_autoreleasePoolPop(v15);
-    if ([v10 isValid])
+    if ([parameterCopy isValid])
     {
-      [v10 startValue];
+      [parameterCopy startValue];
       v29 = v28;
-      [v10 endValue];
+      [parameterCopy endValue];
       if (v29 <= v30)
       {
         v31 = MEMORY[0x1E69E9C10];
@@ -476,35 +476,35 @@
           context = objc_autoreleasePoolPush();
           v32 = objc_alloc_init(PNPersonPromoterProfile);
           v33 = objc_alloc_init(PNPersonDeduperProfile);
-          v34 = [v10 name];
-          NSSelectorFromString(v34);
+          name = [parameterCopy name];
+          NSSelectorFromString(name);
 
           if (objc_opt_respondsToSelector())
           {
             v35 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-            v36 = [v10 name];
-            [(PNPersonDeduperProfile *)v33 setValue:v35 forKey:v36];
+            name2 = [parameterCopy name];
+            [(PNPersonDeduperProfile *)v33 setValue:v35 forKey:name2];
           }
 
-          v37 = [[PNPersonPromoter alloc] initWithPhotoLibrary:v11 andDelegate:v62];
+          v37 = [[PNPersonPromoter alloc] initWithPhotoLibrary:libraryCopy andDelegate:delegateCopy];
           [(PNPersonPromoter *)v37 setPromoterProfile:v32];
           [(PNPersonPromoter *)v37 setDeduperProfile:v33];
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v38 = [v10 name];
+            name3 = [parameterCopy name];
             *buf = 138412546;
-            v71 = v38;
+            v71 = name3;
             v72 = 2048;
             v73 = v29;
             _os_log_impl(&dword_1C6F5C000, v31, OS_LOG_TYPE_DEFAULT, "Running promoter with %@ = %lf...", buf, 0x16u);
           }
 
           v39 = [(PNPersonPromoter *)v37 evaluatePersonPromoterWithUpdateBlock:&__block_literal_global_1333];
-          v40 = [(PNPersonPromoter *)v37 personClusterManager];
+          personClusterManager = [(PNPersonPromoter *)v37 personClusterManager];
           v41 = MEMORY[0x1E696AEC0];
-          v42 = v10;
-          v43 = [v10 name];
-          v44 = [v41 stringWithFormat:@"%@_%.2f/Graph_%@_verified.plist", v43, *&v29, v60];
+          v42 = parameterCopy;
+          name4 = [parameterCopy name];
+          v44 = [v41 stringWithFormat:@"%@_%.2f/Graph_%@_verified.plist", name4, *&v29, v60];
 
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
@@ -513,10 +513,10 @@
             _os_log_impl(&dword_1C6F5C000, v31, OS_LOG_TYPE_DEFAULT, "Exporting %@...", buf, 0xCu);
           }
 
-          v45 = v12;
-          v46 = [v12 URLByAppendingPathComponent:v44];
+          v45 = lCopy;
+          v46 = [lCopy URLByAppendingPathComponent:v44];
           v65 = 0;
-          [v61 exportPhotoLibrary:v40 toURL:v46 forPeopleType:1 error:&v65];
+          [selfCopy exportPhotoLibrary:personClusterManager toURL:v46 forPeopleType:1 error:&v65];
           v47 = v65;
 
           if (v47 && os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -532,9 +532,9 @@
           [v42 incrementValue];
           v29 = v29 + v48;
           [v42 endValue];
-          v11 = v59;
-          v12 = v45;
-          v10 = v42;
+          libraryCopy = v59;
+          lCopy = v45;
+          parameterCopy = v42;
         }
 
         while (v29 <= v49);
@@ -544,7 +544,7 @@
     else
     {
       v50 = objc_autoreleasePoolPush();
-      v51 = [[PNPersonPromoter alloc] initWithPhotoLibrary:v59 andDelegate:v62];
+      v51 = [[PNPersonPromoter alloc] initWithPhotoLibrary:v59 andDelegate:delegateCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -552,7 +552,7 @@
       }
 
       v52 = [(PNPersonPromoter *)v51 evaluatePersonPromoterWithUpdateBlock:&__block_literal_global_246];
-      v53 = [(PNPersonPromoter *)v51 personClusterManager];
+      personClusterManager2 = [(PNPersonPromoter *)v51 personClusterManager];
       v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Graph_%@_verified.plist", v60];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -561,10 +561,10 @@
         _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Exporting %@...", buf, 0xCu);
       }
 
-      v55 = v12;
-      v56 = [v12 URLByAppendingPathComponent:v54];
+      v55 = lCopy;
+      v56 = [lCopy URLByAppendingPathComponent:v54];
       v64 = 0;
-      [v61 exportPhotoLibrary:v53 toURL:v56 forPeople:v52 error:&v64];
+      [selfCopy exportPhotoLibrary:personClusterManager2 toURL:v56 forPeople:v52 error:&v64];
       v57 = v64;
 
       if (v57 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -577,16 +577,16 @@
       }
 
       objc_autoreleasePoolPop(v50);
-      v12 = v55;
+      lCopy = v55;
     }
   }
 }
 
-+ (id)openPhotoLibraryAtURL:(id)a3
++ (id)openPhotoLibraryAtURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E69789A8]) initWithPhotoLibraryURL:v3];
+  lCopy = l;
+  v4 = [objc_alloc(MEMORY[0x1E69789A8]) initWithPhotoLibraryURL:lCopy];
   if ([v4 isSystemPhotoLibrary])
   {
     v15 = 0;
@@ -597,7 +597,7 @@
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v3;
+        v17 = lCopy;
         v7 = MEMORY[0x1E69E9C10];
         v8 = "Using system library at %@";
 LABEL_8:
@@ -630,7 +630,7 @@ LABEL_18:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v3;
+        v17 = lCopy;
         v7 = MEMORY[0x1E69E9C10];
         v8 = "Using library at %@";
         goto LABEL_8;

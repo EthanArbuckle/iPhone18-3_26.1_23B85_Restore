@@ -1,10 +1,10 @@
 @interface WKWebAllowDenyPolicyListener
-- (WKWebAllowDenyPolicyListener)initWithCompletionHandler:(void *)a3;
+- (WKWebAllowDenyPolicyListener)initWithCompletionHandler:(void *)handler;
 @end
 
 @implementation WKWebAllowDenyPolicyListener
 
-- (WKWebAllowDenyPolicyListener)initWithCompletionHandler:(void *)a3
+- (WKWebAllowDenyPolicyListener)initWithCompletionHandler:(void *)handler
 {
   v9.receiver = self;
   v9.super_class = WKWebAllowDenyPolicyListener;
@@ -12,8 +12,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *a3;
-    *a3 = 0;
+    v6 = *handler;
+    *handler = 0;
     ptr = v4->_completionHandler.m_callableWrapper.__ptr_;
     v5->_completionHandler.m_callableWrapper.__ptr_ = v6;
     if (ptr)

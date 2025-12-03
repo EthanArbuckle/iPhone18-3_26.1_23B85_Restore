@@ -1,74 +1,74 @@
 @interface CLKComplicationTemplateGraphicRectangularLargeText
-+ (id)templateWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5;
-+ (id)templateWithHeaderTextProvider:(id)a3 bodyTextProvider:(id)a4;
-- (CLKComplicationTemplateGraphicRectangularLargeText)initWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5;
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
++ (id)templateWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider;
++ (id)templateWithHeaderTextProvider:(id)provider bodyTextProvider:(id)textProvider;
+- (CLKComplicationTemplateGraphicRectangularLargeText)initWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicRectangularLargeText
 
-- (CLKComplicationTemplateGraphicRectangularLargeText)initWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5
+- (CLKComplicationTemplateGraphicRectangularLargeText)initWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  textProviderCopy = textProvider;
+  bodyTextProviderCopy = bodyTextProvider;
   v14.receiver = self;
   v14.super_class = CLKComplicationTemplateGraphicRectangularLargeText;
-  v11 = [(CLKComplicationTemplate *)&v14 initPrivate];
-  v12 = v11;
-  if (v11)
+  initPrivate = [(CLKComplicationTemplate *)&v14 initPrivate];
+  v12 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicRectangularLargeText *)v11 setHeaderImageProvider:v8];
-    [(CLKComplicationTemplateGraphicRectangularLargeText *)v12 setHeaderTextProvider:v9];
-    [(CLKComplicationTemplateGraphicRectangularLargeText *)v12 setBodyTextProvider:v10];
+    [(CLKComplicationTemplateGraphicRectangularLargeText *)initPrivate setHeaderImageProvider:providerCopy];
+    [(CLKComplicationTemplateGraphicRectangularLargeText *)v12 setHeaderTextProvider:textProviderCopy];
+    [(CLKComplicationTemplateGraphicRectangularLargeText *)v12 setBodyTextProvider:bodyTextProviderCopy];
   }
 
   return v12;
 }
 
-+ (id)templateWithHeaderTextProvider:(id)a3 bodyTextProvider:(id)a4
++ (id)templateWithHeaderTextProvider:(id)provider bodyTextProvider:(id)textProvider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithHeaderTextProvider:v7 bodyTextProvider:v6];
+  textProviderCopy = textProvider;
+  providerCopy = provider;
+  v8 = [[self alloc] initWithHeaderTextProvider:providerCopy bodyTextProvider:textProviderCopy];
 
   return v8;
 }
 
-+ (id)templateWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5
++ (id)templateWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithHeaderImageProvider:v10 headerTextProvider:v9 bodyTextProvider:v8];
+  bodyTextProviderCopy = bodyTextProvider;
+  textProviderCopy = textProvider;
+  providerCopy = provider;
+  v11 = [[self alloc] initWithHeaderImageProvider:providerCopy headerTextProvider:textProviderCopy bodyTextProvider:bodyTextProviderCopy];
 
   return v11;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"headerTextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"headerTextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"bodyTextProvider", 0, 1, &v4);
+    blockCopy[2](blockCopy, @"bodyTextProvider", 0, 1, &v4);
   }
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __100__CLKComplicationTemplateGraphicRectangularLargeText__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __100__CLKComplicationTemplateGraphicRectangularLargeText__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91CE8;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter_1558[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize_1559];
-  v4[2](v4, @"headerImageProvider", 1, 1, v10, 6, &v11, v9, v9, v8, v8, 0.0);
+  blockCopy[2](blockCopy, @"headerImageProvider", 1, 1, v10, 6, &v11, v9, v9, v8, v8, 0.0);
 }
 
 uint64_t __100__CLKComplicationTemplateGraphicRectangularLargeText__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

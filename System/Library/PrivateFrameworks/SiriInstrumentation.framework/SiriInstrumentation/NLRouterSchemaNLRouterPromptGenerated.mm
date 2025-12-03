@@ -1,30 +1,30 @@
 @interface NLRouterSchemaNLRouterPromptGenerated
-- (BOOL)isEqual:(id)a3;
-- (NLRouterSchemaNLRouterPromptGenerated)initWithDictionary:(id)a3;
-- (NLRouterSchemaNLRouterPromptGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLRouterSchemaNLRouterPromptGenerated)initWithDictionary:(id)dictionary;
+- (NLRouterSchemaNLRouterPromptGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addComponents:(id)a3;
-- (void)addDroppedComponents:(id)a3;
-- (void)setHasEstimatedSizeInTokens:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addComponents:(id)components;
+- (void)addDroppedComponents:(id)components;
+- (void)setHasEstimatedSizeInTokens:(BOOL)tokens;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLRouterSchemaNLRouterPromptGenerated
 
-- (NLRouterSchemaNLRouterPromptGenerated)initWithDictionary:(id)a3
+- (NLRouterSchemaNLRouterPromptGenerated)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = NLRouterSchemaNLRouterPromptGenerated;
   v5 = [(NLRouterSchemaNLRouterPromptGenerated *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"components"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"components"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       v6 = v7;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"droppedComponents"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"droppedComponents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,14 +116,14 @@
       v6 = v27;
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"totalSizeInTokens"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"totalSizeInTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterPromptGenerated setTotalSizeInTokens:](v5, "setTotalSizeInTokens:", [v23 unsignedIntValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"estimatedSizeInTokens"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"estimatedSizeInTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,30 +136,30 @@
   return v5;
 }
 
-- (NLRouterSchemaNLRouterPromptGenerated)initWithJSON:(id)a3
+- (NLRouterSchemaNLRouterPromptGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLRouterSchemaNLRouterPromptGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLRouterSchemaNLRouterPromptGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLRouterSchemaNLRouterPromptGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -173,10 +173,10 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_components count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -196,16 +196,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -215,12 +215,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"components"];
+    [dictionary setObject:array forKeyedSubscript:@"components"];
   }
 
   if ([(NSArray *)self->_droppedComponents count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -240,16 +240,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -259,14 +259,14 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"droppedComponents"];
+    [dictionary setObject:array2 forKeyedSubscript:@"droppedComponents"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLRouterSchemaNLRouterPromptGenerated estimatedSizeInTokens](self, "estimatedSizeInTokens")}];
-    [v3 setObject:v21 forKeyedSubscript:@"estimatedSizeInTokens"];
+    [dictionary setObject:v21 forKeyedSubscript:@"estimatedSizeInTokens"];
 
     has = self->_has;
   }
@@ -274,12 +274,12 @@
   if (has)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLRouterSchemaNLRouterPromptGenerated totalSizeInTokens](self, "totalSizeInTokens")}];
-    [v3 setObject:v22 forKeyedSubscript:@"totalSizeInTokens"];
+    [dictionary setObject:v22 forKeyedSubscript:@"totalSizeInTokens"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v24];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v24];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -310,28 +310,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLRouterSchemaNLRouterPromptGenerated *)self components];
-  v6 = [v4 components];
-  if ((v5 != 0) == (v6 == 0))
+  components = [(NLRouterSchemaNLRouterPromptGenerated *)self components];
+  components2 = [equalCopy components];
+  if ((components != 0) == (components2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLRouterSchemaNLRouterPromptGenerated *)self components];
-  if (v7)
+  components3 = [(NLRouterSchemaNLRouterPromptGenerated *)self components];
+  if (components3)
   {
-    v8 = v7;
-    v9 = [(NLRouterSchemaNLRouterPromptGenerated *)self components];
-    v10 = [v4 components];
-    v11 = [v9 isEqual:v10];
+    v8 = components3;
+    components4 = [(NLRouterSchemaNLRouterPromptGenerated *)self components];
+    components5 = [equalCopy components];
+    v11 = [components4 isEqual:components5];
 
     if (!v11)
     {
@@ -343,22 +343,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
-  v6 = [v4 droppedComponents];
-  if ((v5 != 0) == (v6 == 0))
+  components = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
+  components2 = [equalCopy droppedComponents];
+  if ((components != 0) == (components2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
-  if (v12)
+  droppedComponents = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
+  if (droppedComponents)
   {
-    v13 = v12;
-    v14 = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
-    v15 = [v4 droppedComponents];
-    v16 = [v14 isEqual:v15];
+    v13 = droppedComponents;
+    droppedComponents2 = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
+    droppedComponents3 = [equalCopy droppedComponents];
+    v16 = [droppedComponents2 isEqual:droppedComponents3];
 
     if (!v16)
     {
@@ -371,25 +371,25 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[32];
+  v20 = equalCopy[32];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       totalSizeInTokens = self->_totalSizeInTokens;
-      if (totalSizeInTokens != [v4 totalSizeInTokens])
+      if (totalSizeInTokens != [equalCopy totalSizeInTokens])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[32];
+      v20 = equalCopy[32];
     }
 
     v22 = (*&has >> 1) & 1;
     if (v22 == ((v20 >> 1) & 1))
     {
-      if (!v22 || (estimatedSizeInTokens = self->_estimatedSizeInTokens, estimatedSizeInTokens == [v4 estimatedSizeInTokens]))
+      if (!v22 || (estimatedSizeInTokens = self->_estimatedSizeInTokens, estimatedSizeInTokens == [equalCopy estimatedSizeInTokens]))
       {
         v17 = 1;
         goto LABEL_13;
@@ -404,10 +404,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -477,9 +477,9 @@ LABEL_13:
   }
 }
 
-- (void)setHasEstimatedSizeInTokens:(BOOL)a3
+- (void)setHasEstimatedSizeInTokens:(BOOL)tokens
 {
-  if (a3)
+  if (tokens)
   {
     v3 = 2;
   }
@@ -492,54 +492,54 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addDroppedComponents:(id)a3
+- (void)addDroppedComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   droppedComponents = self->_droppedComponents;
-  v8 = v4;
+  v8 = componentsCopy;
   if (!droppedComponents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_droppedComponents;
-    self->_droppedComponents = v6;
+    self->_droppedComponents = array;
 
-    v4 = v8;
+    componentsCopy = v8;
     droppedComponents = self->_droppedComponents;
   }
 
-  [(NSArray *)droppedComponents addObject:v4];
+  [(NSArray *)droppedComponents addObject:componentsCopy];
 }
 
-- (void)addComponents:(id)a3
+- (void)addComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   components = self->_components;
-  v8 = v4;
+  v8 = componentsCopy;
   if (!components)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_components;
-    self->_components = v6;
+    self->_components = array;
 
-    v4 = v8;
+    componentsCopy = v8;
     components = self->_components;
   }
 
-  [(NSArray *)components addObject:v4];
+  [(NSArray *)components addObject:componentsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NLRouterSchemaNLRouterPromptGenerated;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLRouterSchemaNLRouterPromptGenerated *)self components:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLRouterSchemaNLRouterPromptGenerated *)self setComponents:v7];
 
-  v8 = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  droppedComponents = [(NLRouterSchemaNLRouterPromptGenerated *)self droppedComponents];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:droppedComponents underConditions:policyCopy];
 
   [(NLRouterSchemaNLRouterPromptGenerated *)self setDroppedComponents:v9];
 

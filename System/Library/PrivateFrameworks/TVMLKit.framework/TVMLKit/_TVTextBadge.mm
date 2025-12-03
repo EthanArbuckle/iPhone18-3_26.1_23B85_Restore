@@ -1,19 +1,19 @@
 @interface _TVTextBadge
-+ (id)textBadgeViewWithElement:(id)a3 existingView:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)drawRect:(CGRect)a3;
++ (id)textBadgeViewWithElement:(id)element existingView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _TVTextBadge
 
-+ (id)textBadgeViewWithElement:(id)a3 existingView:(id)a4
++ (id)textBadgeViewWithElement:(id)element existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = viewCopy;
   }
 
   else
@@ -23,30 +23,30 @@
   }
 
   v9 = v7;
-  v10 = [v6 style];
-  v11 = [v10 tv_backgroundColor];
-  v12 = [v11 color];
-  [(_TVTextBadge *)v9 setBackgroundColor:v12];
+  style = [elementCopy style];
+  tv_backgroundColor = [style tv_backgroundColor];
+  color = [tv_backgroundColor color];
+  [(_TVTextBadge *)v9 setBackgroundColor:color];
 
-  v13 = [v6 tv_attributedString];
-  [(_TVTextBadge *)v9 setText:v13];
-  v14 = [v6 attributes];
-  v15 = [v14 objectForKeyedSubscript:@"type"];
+  tv_attributedString = [elementCopy tv_attributedString];
+  [(_TVTextBadge *)v9 setText:tv_attributedString];
+  attributes = [elementCopy attributes];
+  v15 = [attributes objectForKeyedSubscript:@"type"];
   [(_TVTextBadge *)v9 setType:v15];
 
-  v16 = [v6 style];
-  v17 = [v16 tv_tintColor];
-  v18 = [v17 color];
-  [(_TVTextBadge *)v9 setTintColor:v18];
+  style2 = [elementCopy style];
+  tv_tintColor = [style2 tv_tintColor];
+  color2 = [tv_tintColor color];
+  [(_TVTextBadge *)v9 setTintColor:color2];
 
   v30 = TVCornerRadiiZero;
   v31 = *&qword_26CE880D8;
-  [TVMLUtilities _cornerRadiiFromElement:v6 cornerRadii:&v30 circle:0];
+  [TVMLUtilities _cornerRadiiFromElement:elementCopy cornerRadii:&v30 circle:0];
   [TVCornerUtilities radiusFromCornerRadii:v30, v31];
   [(_TVTextBadge *)v9 setCornerRadius:?];
-  v19 = [v6 style];
+  style3 = [elementCopy style];
 
-  [v19 tv_borderWidths];
+  [style3 tv_borderWidths];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -64,10 +64,10 @@
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIView *)self tv_padding:a3.width];
+  width = fits.width;
+  [(UIView *)self tv_padding:fits.width];
   v8 = v7;
   v9 = v5;
   v11 = v10;
@@ -82,8 +82,8 @@
     v13 = width - v5 - v6;
   }
 
-  v14 = [(_TVTextBadge *)self text];
-  [v14 boundingRectWithSize:2 options:0 context:{v13, 0.0}];
+  text = [(_TVTextBadge *)self text];
+  [text boundingRectWithSize:2 options:0 context:{v13, 0.0}];
   v21 = CGRectIntegral(v20);
   v15 = v21.size.width;
   height = v21.size.height;
@@ -95,12 +95,12 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UIView *)self tv_padding];
   v9 = v8;
   v11 = v10;
@@ -112,14 +112,14 @@
     [(UIColor *)self->_tintColor set];
     [v13 fill];
     CGContextSetBlendMode(CurrentContext, kCGBlendModeDestinationOut);
-    v14 = [(_TVTextBadge *)self text];
-    [v14 drawAtPoint:{v11, v9}];
+    text = [(_TVTextBadge *)self text];
+    [text drawAtPoint:{v11, v9}];
   }
 
   else
   {
-    v15 = [(_TVTextBadge *)self text];
-    [v15 drawAtPoint:{v11, v9}];
+    text2 = [(_TVTextBadge *)self text];
+    [text2 drawAtPoint:{v11, v9}];
 
     v13 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:1.0 cornerRadius:{1.0, width + -2.0, height + -2.0, self->_cornerRadius}];
     [(UIColor *)self->_tintColor set];

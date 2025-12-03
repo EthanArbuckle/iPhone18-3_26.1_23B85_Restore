@@ -1,32 +1,32 @@
 @interface AppStoreOverlayCoordinator
-- (void)storeOverlay:(id)a3 didFailToLoadWithError:(id)a4;
-- (void)storeOverlay:(id)a3 didFinishDismissal:(id)a4;
-- (void)storeOverlay:(id)a3 didFinishPresentation:(id)a4;
+- (void)storeOverlay:(id)overlay didFailToLoadWithError:(id)error;
+- (void)storeOverlay:(id)overlay didFinishDismissal:(id)dismissal;
+- (void)storeOverlay:(id)overlay didFinishPresentation:(id)presentation;
 @end
 
 @implementation AppStoreOverlayCoordinator
 
-- (void)storeOverlay:(id)a3 didFinishPresentation:(id)a4
+- (void)storeOverlay:(id)overlay didFinishPresentation:(id)presentation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  overlayCopy = overlay;
+  presentationCopy = presentation;
+  selfCopy = self;
   sub_23BA186C0();
 }
 
-- (void)storeOverlay:(id)a3 didFailToLoadWithError:(id)a4
+- (void)storeOverlay:(id)overlay didFailToLoadWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  overlayCopy = overlay;
+  errorCopy = error;
+  selfCopy = self;
   sub_23BA18864();
 }
 
-- (void)storeOverlay:(id)a3 didFinishDismissal:(id)a4
+- (void)storeOverlay:(id)overlay didFinishDismissal:(id)dismissal
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  overlayCopy = overlay;
+  dismissalCopy = dismissal;
+  selfCopy = self;
   sub_23BA18864();
 }
 

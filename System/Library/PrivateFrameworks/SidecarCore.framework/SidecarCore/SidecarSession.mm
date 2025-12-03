@@ -1,20 +1,20 @@
 @interface SidecarSession
 - (SidecarSession)init;
-- (SidecarSession)initWithRemote:(id)a3 device:(id)a4 dataLink:(int)a5 service:(id)a6 error:(id *)a7;
-- (SidecarSession)initWithService:(id)a3 device:(id)a4;
+- (SidecarSession)initWithRemote:(id)remote device:(id)device dataLink:(int)link service:(id)service error:(id *)error;
+- (SidecarSession)initWithService:(id)service device:(id)device;
 - (SidecarSessionDelegate)delegate;
 - (id)description;
-- (void)_closeWithError:(id)a3;
-- (void)closeWithError:(id)a3 completion:(id)a4;
-- (void)connectWithTransport:(int64_t)a3 reconnectToSession:(id)a4;
+- (void)_closeWithError:(id)error;
+- (void)closeWithError:(id)error completion:(id)completion;
+- (void)connectWithTransport:(int64_t)transport reconnectToSession:(id)session;
 - (void)dealloc;
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5;
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7;
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5;
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7;
-- (void)sendMessage:(id)a3 completion:(id)a4;
-- (void)setStreamSuspended:(BOOL)a3 completion:(id)a4;
-- (void)timeSyncWithCompletion:(id)a3;
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier;
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion;
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier;
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion;
+- (void)sendMessage:(id)message completion:(id)completion;
+- (void)setStreamSuspended:(BOOL)suspended completion:(id)completion;
+- (void)timeSyncWithCompletion:(id)completion;
 @end
 
 @implementation SidecarSession
@@ -26,23 +26,23 @@
   return WeakRetained;
 }
 
-- (void)setStreamSuspended:(BOOL)a3 completion:(id)a4
+- (void)setStreamSuspended:(BOOL)suspended completion:(id)completion
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   v8 = SidecarCoreLogSubsystem(OS_LOG_TYPE_ERROR);
   v9 = v8;
   if (v8 && os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v13 = @"false";
-    if (v4)
+    if (suspendedCopy)
     {
       v13 = @"true";
     }
 
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v13;
     _os_log_impl(&dword_26604C000, v9, OS_LOG_TYPE_ERROR, "%{public}@: setting the session suspended (%@)", buf, 0x16u);
@@ -53,11 +53,11 @@
   v14[1] = 3221225472;
   v14[2] = __48__SidecarSession_setStreamSuspended_completion___block_invoke;
   v14[3] = &unk_279BC3408;
-  v15 = v7;
+  v15 = completionCopy;
   v16 = a2;
   v14[4] = self;
-  v17 = v4;
-  v11 = v7;
+  v17 = suspendedCopy;
+  v11 = completionCopy;
   dispatch_async(v10, v14);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -72,18 +72,18 @@ void __48__SidecarSession_setStreamSuspended_completion___block_invoke(uint64_t 
   [v4 relaySession:v3 setStreamSuspended:*(a1 + 56) completion:v5];
 }
 
-- (void)timeSyncWithCompletion:(id)a3
+- (void)timeSyncWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = SidecarQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SidecarSession_timeSyncWithCompletion___block_invoke;
   block[3] = &unk_279BC33E0;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = completionCopy;
   dispatch_async(v6, block);
 }
 
@@ -141,10 +141,10 @@ void __41__SidecarSession_timeSyncWithCompletion___block_invoke_3(uint64_t a1, u
   dispatch_async(v6, v8);
 }
 
-- (void)closeWithError:(id)a3 completion:(id)a4
+- (void)closeWithError:(id)error completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   if (SidecarSessionSetState(self, 3))
   {
     v9 = SidecarQueue();
@@ -154,8 +154,8 @@ void __41__SidecarSession_timeSyncWithCompletion___block_invoke_3(uint64_t a1, u
     v10[3] = &unk_279BC3340;
     v10[4] = self;
     v13 = a2;
-    v12 = v8;
-    v11 = v7;
+    v12 = completionCopy;
+    v11 = errorCopy;
     dispatch_async(v9, v10);
   }
 }
@@ -169,21 +169,21 @@ void __44__SidecarSession_closeWithError_completion___block_invoke(uint64_t a1)
   [v4 relaySessionClose:v3 error:*(a1 + 40) completion:v5];
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v9 = SidecarQueue();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __41__SidecarSession_sendMessage_completion___block_invoke;
   v12[3] = &unk_279BC3340;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = messageCopy;
+  v10 = messageCopy;
+  v11 = completionCopy;
   dispatch_async(v9, v12);
 }
 
@@ -208,9 +208,9 @@ void __41__SidecarSession_sendMessage_completion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)connectWithTransport:(int64_t)a3 reconnectToSession:(id)a4
+- (void)connectWithTransport:(int64_t)transport reconnectToSession:(id)session
 {
-  v7 = a4;
+  sessionCopy = session;
   if (SidecarSessionSetState(self, 1))
   {
     v8 = SidecarQueue();
@@ -218,11 +218,11 @@ void __41__SidecarSession_sendMessage_completion___block_invoke(uint64_t a1)
     v10[1] = 3221225472;
     v10[2] = __58__SidecarSession_connectWithTransport_reconnectToSession___block_invoke;
     v10[3] = &unk_279BC3318;
-    v12 = a3;
+    transportCopy = transport;
     v13 = a2;
     v10[4] = self;
-    v11 = v7;
-    v9 = v7;
+    v11 = sessionCopy;
+    v9 = sessionCopy;
     dispatch_async(v8, v10);
   }
 
@@ -290,13 +290,13 @@ void __58__SidecarSession_connectWithTransport_reconnectToSession___block_invoke
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (SidecarSessionSetState(self, 3))
   {
-    v4 = [(SidecarSession *)self delegate];
-    [v4 sidecarSession:self closedWithError:v5];
+    delegate = [(SidecarSession *)self delegate];
+    [delegate sidecarSession:self closedWithError:errorCopy];
   }
 }
 
@@ -346,13 +346,13 @@ void __58__SidecarSession_connectWithTransport_reconnectToSession___block_invoke
   v6 = atomic_load(&self->_state);
   if (v6 >= 1)
   {
-    v7 = [(SidecarSession *)self uuid];
+    uuid = [(SidecarSession *)self uuid];
     v8 = SidecarQueue();
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __25__SidecarSession_dealloc__block_invoke;
     block[3] = &unk_279BC3670;
-    block[4] = v7;
+    block[4] = uuid;
     dispatch_async(v8, block);
   }
 
@@ -400,19 +400,19 @@ void __25__SidecarSession_dealloc__block_invoke_2(uint64_t a1, void *a2)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (SidecarSession)initWithService:(id)a3 device:(id)a4
+- (SidecarSession)initWithService:(id)service device:(id)device
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = SidecarSession;
   v9 = [(SidecarSession *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a4);
-    objc_storeStrong(&v10->_service, a3);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_service, service);
     v11 = v10;
     v21 = 0;
     v22 = &v21;
@@ -450,12 +450,12 @@ void __25__SidecarSession_dealloc__block_invoke_2(uint64_t a1, void *a2)
   return v10;
 }
 
-- (SidecarSession)initWithRemote:(id)a3 device:(id)a4 dataLink:(int)a5 service:(id)a6 error:(id *)a7
+- (SidecarSession)initWithRemote:(id)remote device:(id)device dataLink:(int)link service:(id)service error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  remoteCopy = remote;
+  deviceCopy = device;
+  serviceCopy = service;
   v34.receiver = self;
   v34.super_class = SidecarSession;
   v16 = [(SidecarSession *)&v34 init];
@@ -468,18 +468,18 @@ LABEL_8:
 
   v35 = 0;
   v36 = 0;
-  [v13 getUUIDBytes:&v35];
+  [remoteCopy getUUIDBytes:&v35];
   v17 = bswap32(v35);
-  v18 = [SidecarService serviceWithIdentifier:v15];
+  v18 = [SidecarService serviceWithIdentifier:serviceCopy];
   if (v18)
   {
     v19 = v18;
-    objc_storeStrong(&v16->_device, a4);
+    objc_storeStrong(&v16->_device, device);
     service = v16->_service;
     v16->_service = v19;
     v21 = v19;
 
-    v16->_dataLink = a5;
+    v16->_dataLink = link;
     v16->_handle = v17;
     *(v16 + 64) |= 1u;
     v22 = dispatch_get_global_queue(21, 0);
@@ -487,19 +487,19 @@ LABEL_8:
     v16->_queue = v22;
 
     v24 = 3;
-    if (a5 == 4)
+    if (link == 4)
     {
       v24 = 1;
     }
 
     v25 = 2;
-    if ((a5 & 0xFFFFFFFE) != 8)
+    if ((link & 0xFFFFFFFE) != 8)
     {
       v25 = v24;
     }
 
     v16->_transport = v25;
-    objc_storeStrong(&v16->_uuid, a3);
+    objc_storeStrong(&v16->_uuid, remote);
     SidecarSessionSetState(v16, 2);
     v35 = MEMORY[0x277D85DD0];
     v36 = 3221225472;
@@ -515,15 +515,15 @@ LABEL_8:
 
   v28 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SidecarErrorDomain" code:-103 userInfo:0];
   v29 = v28;
-  if (a7)
+  if (error)
   {
     v30 = v28;
-    *a7 = v29;
+    *error = v29;
   }
 
   v31 = SidecarRelayProxyAsync(0, &__block_literal_global_47);
   [v31 relaySessionClose:v17 error:v29 completion:&__block_literal_global_47];
-  [v31 relaySessionDealloc:v13 completion:&__block_literal_global_47];
+  [v31 relaySessionDealloc:remoteCopy completion:&__block_literal_global_47];
 
   v27 = 0;
 LABEL_12:
@@ -577,20 +577,20 @@ void __63__SidecarSession_initWithRemote_device_dataLink_service_error___block_i
   objc_exception_throw(v7);
 }
 
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v10 = SidecarQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SidecarSession_SidecarStreamsInternal__openStreamForType_flags_identifier___block_invoke;
   block[3] = &unk_279BC3838;
   v14 = a2;
-  v15 = a3;
-  v16 = a4;
+  typeCopy = type;
+  flagsCopy = flags;
   block[4] = self;
-  v13 = v9;
-  v11 = v9;
+  v13 = identifierCopy;
+  v11 = identifierCopy;
   dispatch_async(v10, block);
 }
 
@@ -617,24 +617,24 @@ void __77__SidecarSession_SidecarStreamsInternal__openStreamForType_flags_identi
   }
 }
 
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion
 {
-  v13 = a5;
-  v14 = a7;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v15 = SidecarQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__SidecarSession_SidecarStreamsInternal__openStreamForType_flags_identifier_processUniqueID_completion___block_invoke;
   block[3] = &unk_279BC37E8;
-  v20 = v14;
+  v20 = completionCopy;
   v21 = a2;
-  v22 = a3;
-  v23 = a4;
+  typeCopy = type;
+  flagsCopy = flags;
   block[4] = self;
-  v19 = v13;
-  v24 = a6;
-  v16 = v13;
-  v17 = v14;
+  v19 = identifierCopy;
+  dCopy = d;
+  v16 = identifierCopy;
+  v17 = completionCopy;
   dispatch_async(v15, block);
 }
 
@@ -666,20 +666,20 @@ void __104__SidecarSession_SidecarStreamsInternal__openStreamForType_flags_ident
   [v5 relaySession:v3 connectStreamType:v6 flags:v7 identifier:v9 processUniqueID:v8 completion:v13];
 }
 
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v10 = SidecarQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__SidecarSession_SidecarStreamsInternal__listenForStreamType_flags_identifier___block_invoke;
   block[3] = &unk_279BC3838;
   v14 = a2;
-  v15 = a3;
-  v16 = a4;
+  typeCopy = type;
+  flagsCopy = flags;
   block[4] = self;
-  v13 = v9;
-  v11 = v9;
+  v13 = identifierCopy;
+  v11 = identifierCopy;
   dispatch_async(v10, block);
 }
 
@@ -706,24 +706,24 @@ void __79__SidecarSession_SidecarStreamsInternal__listenForStreamType_flags_iden
   }
 }
 
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion
 {
-  v13 = a5;
-  v14 = a7;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v15 = SidecarQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __106__SidecarSession_SidecarStreamsInternal__listenForStreamType_flags_identifier_processUniqueID_completion___block_invoke;
   block[3] = &unk_279BC37E8;
-  v20 = v14;
+  v20 = completionCopy;
   v21 = a2;
-  v22 = a3;
-  v23 = a4;
+  typeCopy = type;
+  flagsCopy = flags;
   block[4] = self;
-  v19 = v13;
-  v24 = a6;
-  v16 = v13;
-  v17 = v14;
+  v19 = identifierCopy;
+  dCopy = d;
+  v16 = identifierCopy;
+  v17 = completionCopy;
   dispatch_async(v15, block);
 }
 

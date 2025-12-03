@@ -1,52 +1,52 @@
 @interface QLWKWebItemViewController
-+ (BOOL)_shouldDisableJavaScriptForContentType:(id)a3;
++ (BOOL)_shouldDisableJavaScriptForContentType:(id)type;
 - (BOOL)canPinchToDismiss;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4;
-- (CGSize)scrubView:(id)a3 pageSizeAtIndex:(unint64_t)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer;
+- (CGSize)scrubView:(id)view pageSizeAtIndex:(unint64_t)index;
 - (id)_renderer;
-- (id)_thumbnailAtIndex:(unint64_t)a3;
+- (id)_thumbnailAtIndex:(unint64_t)index;
 - (id)scrubView;
 - (unint64_t)currentPageNumber;
-- (void)_addThumbnailToCache:(id)a3 atIndex:(unint64_t)a4;
-- (void)_hideScrubberIfNeeded:(BOOL)a3;
+- (void)_addThumbnailToCache:(id)cache atIndex:(unint64_t)index;
+- (void)_hideScrubberIfNeeded:(BOOL)needed;
 - (void)_prepareThumbnailView;
 - (void)_registerRemoteProxy;
-- (void)_scrollToPage:(int64_t)a3;
-- (void)_showScrubberIfNeeded:(BOOL)a3 reloadThumbnails:(BOOL)a4;
-- (void)_updateConstraintConstants:(BOOL)a3;
-- (void)_webViewDidRequestPasswordForQuickLookDocument:(id)a3;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_scrollToPage:(int64_t)page;
+- (void)_showScrubberIfNeeded:(BOOL)needed reloadThumbnails:(BOOL)thumbnails;
+- (void)_updateConstraintConstants:(BOOL)constants;
+- (void)_webViewDidRequestPasswordForQuickLookDocument:(id)document;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 - (void)loadView;
-- (void)numberOfPagesWithSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)pdfDataForPageAtIndex:(int64_t)a3 withCompletionHandler:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrubView:(id)a3 thumbnailForPage:(int64_t)a4 size:(CGSize)a5 withCompletionBlock:(id)a6;
-- (void)transitionDidStart:(BOOL)a3;
-- (void)transitionWillFinish:(BOOL)a3 didComplete:(BOOL)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)numberOfPagesWithSize:(CGSize)size completionHandler:(id)handler;
+- (void)pdfDataForPageAtIndex:(int64_t)index withCompletionHandler:(id)handler;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrubView:(id)view thumbnailForPage:(int64_t)page size:(CGSize)size withCompletionBlock:(id)block;
+- (void)transitionDidStart:(BOOL)start;
+- (void)transitionWillFinish:(BOOL)finish didComplete:(BOOL)complete;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation QLWKWebItemViewController
 
 - (void)dealloc
 {
-  v3 = [(QLWKWebItemViewController *)self generatedDocument];
+  generatedDocument = [(QLWKWebItemViewController *)self generatedDocument];
 
-  if (v3)
+  if (generatedDocument)
   {
     v4 = MEMORY[0x277D43EC0];
-    v5 = [(QLWKWebItemViewController *)self generatedDocument];
-    [v4 unregisterPreview:v5];
+    generatedDocument2 = [(QLWKWebItemViewController *)self generatedDocument];
+    [v4 unregisterPreview:generatedDocument2];
   }
 
   v6.receiver = self;
@@ -76,77 +76,77 @@
     [v6 _setObjectsForBundleParametersWithDictionary:v8];
 
     v9 = objc_alloc(MEMORY[0x277CE3858]);
-    v10 = [(QLItemViewController *)self presentingDelegate];
-    v11 = [v10 hostApplicationBundleIdentifier];
-    v12 = [v9 ql_initWithForegroundPriorityAndSourceBundleIdentifier:v11];
+    presentingDelegate = [(QLItemViewController *)self presentingDelegate];
+    hostApplicationBundleIdentifier = [presentingDelegate hostApplicationBundleIdentifier];
+    v12 = [v9 ql_initWithForegroundPriorityAndSourceBundleIdentifier:hostApplicationBundleIdentifier];
 
     [v12 setProcessPool:v6];
     v13 = [[QLWKURLSchemeHandlerProxy alloc] initWithHandler:self];
-    v14 = [MEMORY[0x277D43ED8] protocolScheme];
-    [v12 setURLSchemeHandler:v13 forURLScheme:v14];
+    protocolScheme = [MEMORY[0x277D43ED8] protocolScheme];
+    [v12 setURLSchemeHandler:v13 forURLScheme:protocolScheme];
 
     v15 = [[QLWKURLSchemeHandlerProxy alloc] initWithHandler:self];
-    v16 = [MEMORY[0x277D43EB8] protocolScheme];
-    [v12 setURLSchemeHandler:v15 forURLScheme:v16];
+    protocolScheme2 = [MEMORY[0x277D43EB8] protocolScheme];
+    [v12 setURLSchemeHandler:v15 forURLScheme:protocolScheme2];
 
     if ([QLWKWebItemViewController _shouldDisableJavaScriptForContentType:self->_previewContentType])
     {
-      v17 = [v12 defaultWebpagePreferences];
-      [v17 setAllowsContentJavaScript:0];
+      defaultWebpagePreferences = [v12 defaultWebpagePreferences];
+      [defaultWebpagePreferences setAllowsContentJavaScript:0];
 
       v18 = [MEMORY[0x277CBEB98] set];
       [v12 _setAllowedNetworkHosts:v18];
     }
 
     v19 = objc_alloc(MEMORY[0x277CE3850]);
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v21 = [v19 initWithFrame:v12 configuration:?];
     webView = self->_webView;
     self->_webView = v21;
 
     [(WKWebView *)self->_webView setNavigationDelegate:self];
-    v23 = [(WKWebView *)self->_webView scrollView];
-    [v23 setDelegate:self];
+    scrollView = [(WKWebView *)self->_webView scrollView];
+    [scrollView setDelegate:self];
 
     [(WKWebView *)self->_webView setAccessibilityIdentifier:@"QLWKWebViewControllerWkWebViewAccessibilityIdentifier"];
     [(WKWebView *)self->_webView setAllowsLinkPreview:0];
     [(QLWKWebItemViewController *)self _registerRemoteProxy];
-    v24 = [(QLWKWebItemViewController *)self view];
-    [v24 addSubview:self->_webView];
+    view = [(QLWKWebItemViewController *)self view];
+    [view addSubview:self->_webView];
 
-    v25 = [(QLWKWebItemViewController *)self scrollView];
-    [v25 setContentInsetAdjustmentBehavior:2];
+    scrollView2 = [(QLWKWebItemViewController *)self scrollView];
+    [scrollView2 setContentInsetAdjustmentBehavior:2];
 
     [(WKWebView *)self->_webView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v26 = [(WKWebView *)self->_webView leftAnchor];
-    v27 = [(QLWKWebItemViewController *)self view];
-    v28 = [v27 leftAnchor];
-    v29 = [(QLItemViewController *)self appearance];
-    [v29 peripheryInsets];
-    v31 = [v26 constraintEqualToAnchor:v28 constant:v30];
-    v32 = [v31 ql_activatedConstraint];
+    leftAnchor = [(WKWebView *)self->_webView leftAnchor];
+    view2 = [(QLWKWebItemViewController *)self view];
+    leftAnchor2 = [view2 leftAnchor];
+    appearance = [(QLItemViewController *)self appearance];
+    [appearance peripheryInsets];
+    v31 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v30];
+    ql_activatedConstraint = [v31 ql_activatedConstraint];
     leftConstraint = self->_leftConstraint;
-    self->_leftConstraint = v32;
+    self->_leftConstraint = ql_activatedConstraint;
 
-    v34 = [(QLWKWebItemViewController *)self view];
-    v35 = [v34 rightAnchor];
-    v36 = [(WKWebView *)self->_webView rightAnchor];
-    v37 = [(QLItemViewController *)self appearance];
-    [v37 peripheryInsets];
-    v39 = [v35 constraintEqualToAnchor:v36 constant:v38];
-    v40 = [v39 ql_activatedConstraint];
+    view3 = [(QLWKWebItemViewController *)self view];
+    rightAnchor = [view3 rightAnchor];
+    rightAnchor2 = [(WKWebView *)self->_webView rightAnchor];
+    appearance2 = [(QLItemViewController *)self appearance];
+    [appearance2 peripheryInsets];
+    v39 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v38];
+    ql_activatedConstraint2 = [v39 ql_activatedConstraint];
     rightConstraint = self->_rightConstraint;
-    self->_rightConstraint = v40;
+    self->_rightConstraint = ql_activatedConstraint2;
 
-    v42 = [(QLWKWebItemViewController *)self view];
+    view4 = [(QLWKWebItemViewController *)self view];
     v43 = MEMORY[0x277CCAAD0];
     v44 = self->_webView;
     v50 = @"webView";
     v51 = v44;
     v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
     v46 = [v43 constraintsWithVisualFormat:@"V:|[webView]|" options:0 metrics:0 views:v45];
-    [v42 addConstraints:v46];
+    [view4 addConstraints:v46];
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -164,8 +164,8 @@
     [(QLScrubView *)self->_scrubView setDataSource:self];
     [(QLScrubView *)self->_scrubView setDelegate:self];
     [(QLScrubView *)self->_scrubView setHidden:1];
-    v6 = [(QLItemViewController *)self appearance];
-    [v6 topInset];
+    appearance = [(QLItemViewController *)self appearance];
+    [appearance topInset];
     [(QLScrubView *)self->_scrubView setTopOffset:?];
 
     [(QLScrubView *)self->_scrubView reloadThumbnails];
@@ -177,27 +177,27 @@
 
 - (void)_registerRemoteProxy
 {
-  v9 = [(WKWebView *)self->_webView _remoteObjectRegistry];
+  _remoteObjectRegistry = [(WKWebView *)self->_webView _remoteObjectRegistry];
   v3 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_284DCECB8];
-  v4 = [v9 remoteObjectProxyWithInterface:v3];
+  v4 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v3];
   thumbnailGenerator = self->_thumbnailGenerator;
   self->_thumbnailGenerator = v4;
 
   v6 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_284DCED18];
-  v7 = [v9 remoteObjectProxyWithInterface:v6];
+  v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
   paginator = self->_paginator;
   self->_paginator = v7;
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v23 = a3;
-  v8 = a5;
-  v9 = [a4 contentType];
+  contentsCopy = contents;
+  handlerCopy = handler;
+  contentType = [context contentType];
   previewContentType = self->_previewContentType;
-  self->_previewContentType = v9;
+  self->_previewContentType = contentType;
 
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(handlerCopy);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v11;
 
@@ -214,30 +214,30 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [(QLWKWebItemViewController *)self webView];
-    v18 = [v17 loadFileURL:v23 allowingReadAccessToURL:v23];
+    webView = [(QLWKWebItemViewController *)self webView];
+    v18 = [webView loadFileURL:contentsCopy allowingReadAccessToURL:contentsCopy];
   }
 
   else
   {
     v19 = MEMORY[0x277D43EC0];
-    v17 = v23;
-    [v19 registerPreview:v17];
-    v20 = [(QLWKWebItemViewController *)self webView];
-    v21 = [v17 previewRequest];
-    v22 = [v20 loadRequest:v21];
+    webView = contentsCopy;
+    [v19 registerPreview:webView];
+    webView2 = [(QLWKWebItemViewController *)self webView];
+    previewRequest = [webView previewRequest];
+    v22 = [webView2 loadRequest:previewRequest];
 
-    [(QLWKWebItemViewController *)self setGeneratedDocument:v17];
+    [(QLWKWebItemViewController *)self setGeneratedDocument:webView];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(QLWKWebItemViewController *)self view];
-  [v8 frame];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  view = [(QLWKWebItemViewController *)self view];
+  [view frame];
   v10 = v9 != height;
 
   v13[0] = MEMORY[0x277D85DD0];
@@ -251,10 +251,10 @@
   v12[2] = __80__QLWKWebItemViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v12[3] = &unk_278B57208;
   v12[4] = self;
-  [v7 animateAlongsideTransition:v13 completion:v12];
+  [coordinatorCopy animateAlongsideTransition:v13 completion:v12];
   v11.receiver = self;
   v11.super_class = QLWKWebItemViewController;
-  [(QLWKWebItemViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(QLWKWebItemViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __80__QLWKWebItemViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -267,23 +267,23 @@ void __80__QLWKWebItemViewController_viewWillTransitionToSize_withTransitionCoor
   [v4 setContentOffset:{v2, v3}];
 }
 
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
+  touchCopy = touch;
   v22.receiver = self;
   v22.super_class = QLWKWebItemViewController;
-  v7 = [(QLItemViewController *)&v22 shouldAcceptTouch:v6 ofGestureRecognizer:a4];
+  v7 = [(QLItemViewController *)&v22 shouldAcceptTouch:touchCopy ofGestureRecognizer:recognizer];
   v8 = MEMORY[0x277D43F90];
-  v9 = [(QLItemViewController *)self context];
-  v10 = [v9 contentType];
-  LODWORD(v8) = [v8 isSpreadSheetDocumentType:v10];
+  context = [(QLItemViewController *)self context];
+  contentType = [context contentType];
+  LODWORD(v8) = [v8 isSpreadSheetDocumentType:contentType];
 
   if (v8)
   {
-    [v6 locationInView:self->_webView];
+    [touchCopy locationInView:self->_webView];
     v12 = v11;
-    v13 = [(QLItemViewController *)self appearance];
-    [v13 topInset];
+    appearance = [(QLItemViewController *)self appearance];
+    [appearance topInset];
     v15 = v12 - v14 >= 55.0;
 
     if ((v15 & v7 & 1) == 0)
@@ -299,18 +299,18 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v17 = [v6 view];
-  if (v17)
+  view = [touchCopy view];
+  if (view)
   {
-    v18 = v17;
+    superview = view;
     do
     {
-      v19 = v18;
+      v19 = superview;
       scrubView = self->_scrubView;
-      v18 = [(QLScrubView *)v18 superview];
+      superview = [(QLScrubView *)superview superview];
     }
 
-    while (v18 && v19 != scrubView);
+    while (superview && v19 != scrubView);
     v16 = v19 != scrubView;
   }
 
@@ -324,10 +324,10 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = a3;
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -347,11 +347,11 @@ LABEL_11:
 
 - (BOOL)canPinchToDismiss
 {
-  v3 = [(WKWebView *)self->_webView scrollView];
-  [v3 zoomScale];
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  [scrollView zoomScale];
   v5 = floor(v4 * 1000.0);
-  v6 = [(WKWebView *)self->_webView scrollView];
-  [v6 minimumZoomScale];
+  scrollView2 = [(WKWebView *)self->_webView scrollView];
+  [scrollView2 minimumZoomScale];
   v8 = v5 <= floor(v7 * 1000.0);
 
   return v8;
@@ -371,8 +371,8 @@ LABEL_11:
     v6 = self->_renderer;
     self->_renderer = v5;
 
-    v7 = [(WKWebView *)self->_webView _webViewPrintFormatter];
-    [(UIPrintPageRenderer *)self->_renderer addPrintFormatter:v7 startingAtPageAtIndex:0];
+    _webViewPrintFormatter = [(WKWebView *)self->_webView _webViewPrintFormatter];
+    [(UIPrintPageRenderer *)self->_renderer addPrintFormatter:_webViewPrintFormatter startingAtPageAtIndex:0];
     v3 = self->_renderer;
   }
 
@@ -400,35 +400,35 @@ uint64_t __50__QLWKWebItemViewController__prepareThumbnailView__block_invoke(uin
   return QLRunInMainThread();
 }
 
-- (void)_showScrubberIfNeeded:(BOOL)a3 reloadThumbnails:(BOOL)a4
+- (void)_showScrubberIfNeeded:(BOOL)needed reloadThumbnails:(BOOL)thumbnails
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(QLWKWebItemViewController *)self traitCollection];
-  if ([v7 horizontalSizeClass] == 2)
+  thumbnailsCopy = thumbnails;
+  neededCopy = needed;
+  traitCollection = [(QLWKWebItemViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
   }
 
   else
   {
-    v8 = [(QLItemViewController *)self appearance];
-    v9 = [v8 presentationMode];
+    appearance = [(QLItemViewController *)self appearance];
+    presentationMode = [appearance presentationMode];
 
-    if (v9 == 4)
+    if (presentationMode == 4)
     {
       return;
     }
   }
 
-  v10 = [(QLWKWebItemViewController *)self scrubView];
-  v11 = v10;
-  if (v10)
+  scrubView = [(QLWKWebItemViewController *)self scrubView];
+  v11 = scrubView;
+  if (scrubView)
   {
-    if ([v10 isHidden])
+    if ([scrubView isHidden])
     {
-      v12 = [v11 superview];
+      superview = [v11 superview];
 
-      if (!v12)
+      if (!superview)
       {
         v13 = MEMORY[0x277D75D18];
         v19[0] = MEMORY[0x277D85DD0];
@@ -440,7 +440,7 @@ uint64_t __50__QLWKWebItemViewController__prepareThumbnailView__block_invoke(uin
         [v13 performWithoutAnimation:v19];
       }
 
-      if (v4)
+      if (thumbnailsCopy)
       {
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
@@ -452,8 +452,8 @@ uint64_t __50__QLWKWebItemViewController__prepareThumbnailView__block_invoke(uin
 
       [v11 selectPageNumber:{-[QLWKWebItemViewController currentPageNumber](self, "currentPageNumber")}];
       [v11 setHidden:0];
-      v14 = [(QLWKWebItemViewController *)self view];
-      [v14 setNeedsLayout];
+      view = [(QLWKWebItemViewController *)self view];
+      [view setNeedsLayout];
 
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
@@ -462,7 +462,7 @@ uint64_t __50__QLWKWebItemViewController__prepareThumbnailView__block_invoke(uin
       aBlock[4] = self;
       v15 = _Block_copy(aBlock);
       v16 = v15;
-      if (v5)
+      if (neededCopy)
       {
         [MEMORY[0x277D75D18] animateWithDuration:v15 animations:0 completion:0.2];
       }
@@ -473,7 +473,7 @@ uint64_t __50__QLWKWebItemViewController__prepareThumbnailView__block_invoke(uin
       }
     }
 
-    else if (v4)
+    else if (thumbnailsCopy)
     {
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
@@ -547,19 +547,19 @@ void __68__QLWKWebItemViewController__showScrubberIfNeeded_reloadThumbnails___bl
 - (unint64_t)currentPageNumber
 {
   p_pageSize = &self->_pageSize;
-  v4 = [(WKWebView *)self->_webView scrollView];
-  [v4 zoomScale];
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  [scrollView zoomScale];
   height = p_pageSize->height;
-  v6 = [(WKWebView *)self->_webView scrollView];
-  [v6 zoomScale];
+  scrollView2 = [(WKWebView *)self->_webView scrollView];
+  [scrollView2 zoomScale];
   v8 = v7;
 
-  v9 = [(WKWebView *)self->_webView scrollView];
-  [v9 frame];
+  scrollView3 = [(WKWebView *)self->_webView scrollView];
+  [scrollView3 frame];
   v11 = v10;
 
-  v12 = [(WKWebView *)self->_webView scrollView];
-  [v12 contentOffset];
+  scrollView4 = [(WKWebView *)self->_webView scrollView];
+  [scrollView4 contentOffset];
   v14 = v13;
 
   result = self->_thumbnailCount;
@@ -571,15 +571,15 @@ void __68__QLWKWebItemViewController__showScrubberIfNeeded_reloadThumbnails___bl
   return result;
 }
 
-- (void)_hideScrubberIfNeeded:(BOOL)a3
+- (void)_hideScrubberIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v5 = self->_scrubView;
   v6 = v5;
   if (v5 && ([(QLScrubView *)v5 isHidden]& 1) == 0)
   {
-    v7 = [(QLWKWebItemViewController *)self view];
-    [v7 setNeedsLayout];
+    view = [(QLWKWebItemViewController *)self view];
+    [view setNeedsLayout];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -593,7 +593,7 @@ void __68__QLWKWebItemViewController__showScrubberIfNeeded_reloadThumbnails___bl
     v13 = &unk_278B571B8;
     v14 = v6;
     v9 = _Block_copy(&v10);
-    if (v3)
+    if (neededCopy)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v8 animations:v9 completion:{0.2, v10, v11, v12, v13}];
     }
@@ -614,9 +614,9 @@ void __51__QLWKWebItemViewController__hideScrubberIfNeeded___block_invoke(uint64
   [v2 layoutIfNeeded];
 }
 
-- (void)_scrollToPage:(int64_t)a3
+- (void)_scrollToPage:(int64_t)page
 {
-  if (a3)
+  if (page)
   {
     paginator = self->_paginator;
     v12[0] = MEMORY[0x277D85DD0];
@@ -624,20 +624,20 @@ void __51__QLWKWebItemViewController__hideScrubberIfNeeded___block_invoke(uint64
     v12[2] = __43__QLWKWebItemViewController__scrollToPage___block_invoke;
     v12[3] = &unk_278B57A08;
     v12[4] = self;
-    [(QLWebKitPaginator *)paginator boundsForPageAtIndex:a3 withCompletionBlock:v12];
+    [(QLWebKitPaginator *)paginator boundsForPageAtIndex:page withCompletionBlock:v12];
   }
 
   else
   {
-    v5 = [(WKWebView *)self->_webView scrollView];
-    [v5 contentOffset];
+    scrollView = [(WKWebView *)self->_webView scrollView];
+    [scrollView contentOffset];
     v7 = v6;
-    v8 = [(QLItemViewController *)self appearance];
-    [v8 topInset];
+    appearance = [(QLItemViewController *)self appearance];
+    [appearance topInset];
     v10 = -v9;
 
-    v11 = [(WKWebView *)self->_webView scrollView];
-    [v11 setContentOffset:0 animated:{v7, v10}];
+    scrollView2 = [(WKWebView *)self->_webView scrollView];
+    [scrollView2 setContentOffset:0 animated:{v7, v10}];
   }
 }
 
@@ -701,31 +701,31 @@ void __43__QLWKWebItemViewController__scrollToPage___block_invoke_2(uint64_t a1)
   [v31 setContentOffset:0 animated:{v22, v9}];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a5, a3, a4);
+    completionHandler[2](completionHandler, error, view, navigation);
     v7 = self->_completionHandler;
     self->_completionHandler = 0;
   }
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a5, a3, a4);
+    completionHandler[2](completionHandler, error, view, navigation);
     v7 = self->_completionHandler;
     self->_completionHandler = 0;
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  [(QLWKWebItemViewController *)self _prepareThumbnailView:a3];
+  [(QLWKWebItemViewController *)self _prepareThumbnailView:view];
   paginator = self->_paginator;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -751,18 +751,18 @@ uint64_t __57__QLWKWebItemViewController_webView_didFinishNavigation___block_inv
   return result;
 }
 
-- (void)_webViewDidRequestPasswordForQuickLookDocument:(id)a3
+- (void)_webViewDidRequestPasswordForQuickLookDocument:(id)document
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, 0, a3);
+    completionHandler[2](completionHandler, 0, document);
     v5 = self->_completionHandler;
     self->_completionHandler = 0;
   }
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.quicklook.WKWebItemViewController" code:1 userInfo:0];
   completionHandler = self->_completionHandler;
@@ -780,14 +780,14 @@ uint64_t __57__QLWKWebItemViewController_webView_didFinishNavigation___block_inv
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if ([v7 navigationType] || (objc_msgSend(v7, "request"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "URL"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isSpringboardHandledURL"), v10, v9, !v11))
+  actionCopy = action;
+  handlerCopy = handler;
+  if ([actionCopy navigationType] || (objc_msgSend(actionCopy, "request"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "URL"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isSpringboardHandledURL"), v10, v9, !v11))
   {
-    v8[2](v8, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -803,36 +803,36 @@ uint64_t __57__QLWKWebItemViewController_webView_didFinishNavigation___block_inv
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v7 request];
-      v16 = [v15 URL];
+      request = [actionCopy request];
+      v16 = [request URL];
       v21 = 138412290;
       v22 = v16;
       _os_log_impl(&dword_23A714000, v14, OS_LOG_TYPE_DEFAULT, "Forwarding URL to client from web preview: %@ #AnyItemViewController", &v21, 0xCu);
     }
 
-    v8[2](v8, 0);
-    v17 = [(QLItemViewController *)self delegate];
-    v18 = [v7 request];
-    v19 = [v18 URL];
-    [v17 previewItemViewController:self wantsToOpenURL:v19];
+    handlerCopy[2](handlerCopy, 0);
+    delegate = [(QLItemViewController *)self delegate];
+    request2 = [actionCopy request];
+    v19 = [request2 URL];
+    [delegate previewItemViewController:self wantsToOpenURL:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CCAD30] sharedSession];
-  v7 = [v5 request];
+  taskCopy = task;
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+  request = [taskCopy request];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __56__QLWKWebItemViewController_webView_startURLSchemeTask___block_invoke;
   v13 = &unk_278B57A30;
-  v14 = v5;
-  v15 = self;
-  v8 = v5;
-  v9 = [v6 dataTaskWithRequest:v7 completionHandler:&v10];
+  v14 = taskCopy;
+  selfCopy = self;
+  v8 = taskCopy;
+  v9 = [mEMORY[0x277CCAD30] dataTaskWithRequest:request completionHandler:&v10];
 
   [(QLWKWebItemViewController *)self setGeneratedDocumentURLSessionTask:v9, v10, v11, v12, v13];
   [v9 resume];
@@ -857,22 +857,22 @@ void __56__QLWKWebItemViewController_webView_startURLSchemeTask___block_invoke(u
   [*(a1 + 40) setGeneratedDocumentURLSessionTask:0];
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
-  v4 = [(QLWKWebItemViewController *)self generatedDocumentURLSessionTask:a3];
+  v4 = [(QLWKWebItemViewController *)self generatedDocumentURLSessionTask:view];
   [v4 cancel];
 }
 
-- (void)scrubView:(id)a3 thumbnailForPage:(int64_t)a4 size:(CGSize)a5 withCompletionBlock:(id)a6
+- (void)scrubView:(id)view thumbnailForPage:(int64_t)page size:(CGSize)size withCompletionBlock:(id)block
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a6;
-  v13 = [(QLWKWebItemViewController *)self _thumbnailAtIndex:a4];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  blockCopy = block;
+  v13 = [(QLWKWebItemViewController *)self _thumbnailAtIndex:page];
   if (v13)
   {
-    v12[2](v12, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   else
@@ -885,9 +885,9 @@ void __56__QLWKWebItemViewController_webView_startURLSchemeTask___block_invoke(u
     v16[2] = __81__QLWKWebItemViewController_scrubView_thumbnailForPage_size_withCompletionBlock___block_invoke;
     v16[3] = &unk_278B57A58;
     objc_copyWeak(v18, &location);
-    v18[1] = a4;
-    v17 = v12;
-    [(QLWebKitThumbnailGenerator *)thumbnailGenerator thumbnailForPage:a4 size:v15 withCompletionBlock:v16];
+    v18[1] = page;
+    v17 = blockCopy;
+    [(QLWebKitThumbnailGenerator *)thumbnailGenerator thumbnailForPage:page size:v15 withCompletionBlock:v16];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -928,7 +928,7 @@ void __81__QLWKWebItemViewController_scrubView_thumbnailForPage_size_withComplet
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (CGSize)scrubView:(id)a3 pageSizeAtIndex:(unint64_t)a4
+- (CGSize)scrubView:(id)view pageSizeAtIndex:(unint64_t)index
 {
   width = self->_thumbnailSize.width;
   height = self->_thumbnailSize.height;
@@ -937,12 +937,12 @@ void __81__QLWKWebItemViewController_scrubView_thumbnailForPage_size_withComplet
   return result;
 }
 
-- (id)_thumbnailAtIndex:(unint64_t)a3
+- (id)_thumbnailAtIndex:(unint64_t)index
 {
   v5 = self->_indexToThumbnailsCache;
   objc_sync_enter(v5);
   indexToThumbnailsCache = self->_indexToThumbnailsCache;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v8 = [(NSCache *)indexToThumbnailsCache objectForKey:v7];
 
   objc_sync_exit(v5);
@@ -950,22 +950,22 @@ void __81__QLWKWebItemViewController_scrubView_thumbnailForPage_size_withComplet
   return v8;
 }
 
-- (void)_addThumbnailToCache:(id)a3 atIndex:(unint64_t)a4
+- (void)_addThumbnailToCache:(id)cache atIndex:(unint64_t)index
 {
-  v9 = a3;
+  cacheCopy = cache;
   v6 = self->_indexToThumbnailsCache;
   objc_sync_enter(v6);
   indexToThumbnailsCache = self->_indexToThumbnailsCache;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSCache *)indexToThumbnailsCache setObject:v9 forKey:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  [(NSCache *)indexToThumbnailsCache setObject:cacheCopy forKey:v8];
 
   objc_sync_exit(v6);
 }
 
-- (void)numberOfPagesWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)numberOfPagesWithSize:(CGSize)size completionHandler:(id)handler
 {
-  v5 = a4;
-  v4 = v5;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   QLRunInMainThreadSync();
 }
 
@@ -990,10 +990,10 @@ void __69__QLWKWebItemViewController_numberOfPagesWithSize_completionHandler___b
   (*(v15 + 16))(v15, [v16 numberOfPages]);
 }
 
-- (void)pdfDataForPageAtIndex:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)pdfDataForPageAtIndex:(int64_t)index withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v4 = v5;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   QLRunInMainThreadSync();
 }
 
@@ -1023,48 +1023,48 @@ void __73__QLWKWebItemViewController_pdfDataForPageAtIndex_withCompletionHandler
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(QLWKWebItemViewController *)self currentPageNumber];
+  currentPageNumber = [(QLWKWebItemViewController *)self currentPageNumber];
   if (([(QLScrubView *)self->_scrubView isHidden]& 1) == 0)
   {
     scrubView = self->_scrubView;
 
-    [(QLScrubView *)scrubView selectPageNumber:v4];
+    [(QLScrubView *)scrubView selectPageNumber:currentPageNumber];
   }
 }
 
-- (void)transitionDidStart:(BOOL)a3
+- (void)transitionDidStart:(BOOL)start
 {
-  if (!a3)
+  if (!start)
   {
     [(QLWKWebItemViewController *)self _hideScrubberIfNeeded:1];
   }
 }
 
-- (void)transitionWillFinish:(BOOL)a3 didComplete:(BOOL)a4
+- (void)transitionWillFinish:(BOOL)finish didComplete:(BOOL)complete
 {
-  if (!a3 && !a4)
+  if (!finish && !complete)
   {
     [(QLWKWebItemViewController *)self _updateScrubberVisibilityAnimated:1];
   }
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(QLWKWebItemViewController *)self view];
-  [v8 endEditing:0];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  view = [(QLWKWebItemViewController *)self view];
+  [view endEditing:0];
 
   v9.receiver = self;
   v9.super_class = QLWKWebItemViewController;
-  [(QLItemViewController *)&v9 buttonPressedWithIdentifier:v7 completionHandler:v6];
+  [(QLItemViewController *)&v9 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)_updateConstraintConstants:(BOOL)a3
+- (void)_updateConstraintConstants:(BOOL)constants
 {
-  v3 = a3;
+  constantsCopy = constants;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__QLWKWebItemViewController__updateConstraintConstants___block_invoke;
@@ -1072,7 +1072,7 @@ void __73__QLWKWebItemViewController_pdfDataForPageAtIndex_withCompletionHandler
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (v3)
+  if (constantsCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v4 animations:0.2];
   }
@@ -1097,17 +1097,17 @@ void __56__QLWKWebItemViewController__updateConstraintConstants___block_invoke(u
   [v6 setNeedsLayout];
 }
 
-+ (BOOL)_shouldDisableJavaScriptForContentType:(id)a3
++ (BOOL)_shouldDisableJavaScriptForContentType:(id)type
 {
-  v3 = a3;
-  if ([MEMORY[0x277D43F90] isIWorkDocumentType:v3])
+  typeCopy = type;
+  if ([MEMORY[0x277D43F90] isIWorkDocumentType:typeCopy])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D43F90] isOfficeDocumentType:v3] ^ 1;
+    v4 = [MEMORY[0x277D43F90] isOfficeDocumentType:typeCopy] ^ 1;
   }
 
   return v4;

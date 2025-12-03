@@ -1,16 +1,16 @@
 @interface __NSBundleTables
 + (id)bundleTables;
 - (__NSBundleTables)init;
-- (id)_addBundleLocked:(uint64_t)a3 forPath:(uint64_t)a4 withType:(uint64_t)a5 forClass:(int)a6 isImmortal:;
-- (id)addBundle:(uint64_t)a3 forPath:(uint64_t)a4 withType:(uint64_t)a5 forClass:(int)a6 isImmortal:;
-- (id)addBundleIfNeeded:(uint64_t)a3 forPath:(uint64_t)a4 withType:(int)a5 isImmortal:;
+- (id)_addBundleLocked:(uint64_t)locked forPath:(uint64_t)path withType:(uint64_t)type forClass:(int)class isImmortal:;
+- (id)addBundle:(uint64_t)bundle forPath:(uint64_t)path withType:(uint64_t)type forClass:(int)class isImmortal:;
+- (id)addBundleIfNeeded:(uint64_t)needed forPath:(uint64_t)path withType:(int)type isImmortal:;
 - (id)bundleForClass:(id *)result;
 - (id)bundleForPath:(id *)result;
 - (uint64_t)addStaticFrameworkBundles:(uint64_t)result;
 - (uint64_t)allBundles;
 - (uint64_t)allFrameworks;
 - (uint64_t)loadedBundles;
-- (uint64_t)removeBundle:(uint64_t)a3 forPath:(uint64_t)a4 type:;
+- (uint64_t)removeBundle:(uint64_t)bundle forPath:(uint64_t)path type:;
 - (void)dealloc;
 @end
 
@@ -76,7 +76,7 @@
   [(__NSBundleTables *)&v3 dealloc];
 }
 
-- (uint64_t)removeBundle:(uint64_t)a3 forPath:(uint64_t)a4 type:
+- (uint64_t)removeBundle:(uint64_t)bundle forPath:(uint64_t)path type:
 {
   if (!result)
   {
@@ -85,12 +85,12 @@
 
   v7 = result;
   [*(result + 8) lock];
-  if (a3 && [*(v7 + 40) objectForKey:a3])
+  if (bundle && [*(v7 + 40) objectForKey:bundle])
   {
-    [*(v7 + 40) removeObjectForKey:a3];
+    [*(v7 + 40) removeObjectForKey:bundle];
   }
 
-  switch(a4)
+  switch(path)
   {
     case 0x10000:
       goto LABEL_8;
@@ -133,13 +133,13 @@ LABEL_9:
   return result;
 }
 
-- (id)addBundleIfNeeded:(uint64_t)a3 forPath:(uint64_t)a4 withType:(int)a5 isImmortal:
+- (id)addBundleIfNeeded:(uint64_t)needed forPath:(uint64_t)path withType:(int)type isImmortal:
 {
   if (result)
   {
     v9 = result;
     [result[1] lock];
-    v10 = [v9[5] objectForKey:a3];
+    v10 = [v9[5] objectForKey:needed];
     if (v10)
     {
       v11 = v10;
@@ -150,7 +150,7 @@ LABEL_9:
 
     else
     {
-      v12 = [(__NSBundleTables *)v9 _addBundleLocked:a2 forPath:a3 withType:a4 forClass:0 isImmortal:a5];
+      v12 = [(__NSBundleTables *)v9 _addBundleLocked:a2 forPath:needed withType:path forClass:0 isImmortal:type];
       [v9[1] unlock];
       return v12;
     }
@@ -159,12 +159,12 @@ LABEL_9:
   return result;
 }
 
-- (id)_addBundleLocked:(uint64_t)a3 forPath:(uint64_t)a4 withType:(uint64_t)a5 forClass:(int)a6 isImmortal:
+- (id)_addBundleLocked:(uint64_t)locked forPath:(uint64_t)path withType:(uint64_t)type forClass:(int)class isImmortal:
 {
   if (result)
   {
     v10 = result;
-    v11 = __ROR8__(a4 - 0x10000, 16);
+    v11 = __ROR8__(path - 0x10000, 16);
     if (v11 > 1)
     {
       if (v11 == 2)
@@ -179,12 +179,12 @@ LABEL_10:
         }
 
 LABEL_12:
-        if (a3)
+        if (locked)
         {
-          result = [v10[5] objectForKey:a3];
+          result = [v10[5] objectForKey:locked];
           if (result)
           {
-            if (!a5)
+            if (!type)
             {
               goto LABEL_15;
             }
@@ -193,11 +193,11 @@ LABEL_12:
           }
 
           v15 = a2;
-          [v10[5] setObject:a2 forKey:a3];
+          [v10[5] setObject:a2 forKey:locked];
         }
 
         result = 0;
-        if (!a5)
+        if (!type)
         {
 LABEL_15:
           if (result)
@@ -209,17 +209,17 @@ LABEL_15:
         }
 
 LABEL_19:
-        result = [v10[6] objectForKey:a5];
+        result = [v10[6] objectForKey:type];
         if (result)
         {
           return result;
         }
 
         v16 = a2;
-        [v10[6] setObject:a2 forKey:a5];
+        [v10[6] setObject:a2 forKey:type];
         result = 0;
 LABEL_21:
-        if (a6)
+        if (class)
         {
           [v10[7] addPointer:a2];
           return 0;
@@ -254,13 +254,13 @@ LABEL_21:
   return result;
 }
 
-- (id)addBundle:(uint64_t)a3 forPath:(uint64_t)a4 withType:(uint64_t)a5 forClass:(int)a6 isImmortal:
+- (id)addBundle:(uint64_t)bundle forPath:(uint64_t)path withType:(uint64_t)type forClass:(int)class isImmortal:
 {
   if (result)
   {
     v11 = result;
     [result[1] lock];
-    v12 = [(__NSBundleTables *)v11 _addBundleLocked:a2 forPath:a3 withType:a4 forClass:a5 isImmortal:a6];
+    v12 = [(__NSBundleTables *)v11 _addBundleLocked:a2 forPath:bundle withType:path forClass:type isImmortal:class];
     [v11[1] unlock];
     return v12;
   }

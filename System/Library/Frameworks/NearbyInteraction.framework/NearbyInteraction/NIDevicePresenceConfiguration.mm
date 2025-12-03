@@ -1,69 +1,69 @@
 @interface NIDevicePresenceConfiguration
-+ (BOOL)_validateRegionPredicates:(id)a3 outer:(id)a4;
-+ (const)_NIDevicePresenceMonitoringOptionToString:(unint64_t)a3;
-+ (float)_radiusFromDevicePresencePreset:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (NIDevicePresenceConfiguration)initWithCoder:(id)a3;
-- (NIDevicePresenceConfiguration)initWithDiscoveryToken:(id)a3 regions:(id)a4 preferredUpdateRate:(int64_t)a5 error:(id *)a6;
-- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)a3 outerBoundary:(id)a4 error:(id *)a5;
-- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)a3 outerBoundary:(id)a4 monitoringOption:(unint64_t)a5 allowedDevices:(unint64_t)a6 error:(id *)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)_validateRegionPredicates:(id)predicates outer:(id)outer;
++ (const)_NIDevicePresenceMonitoringOptionToString:(unint64_t)string;
++ (float)_radiusFromDevicePresencePreset:(int64_t)preset;
+- (BOOL)isEqual:(id)equal;
+- (NIDevicePresenceConfiguration)initWithCoder:(id)coder;
+- (NIDevicePresenceConfiguration)initWithDiscoveryToken:(id)token regions:(id)regions preferredUpdateRate:(int64_t)rate error:(id *)error;
+- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)boundary outerBoundary:(id)outerBoundary error:(id *)error;
+- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)boundary outerBoundary:(id)outerBoundary monitoringOption:(unint64_t)option allowedDevices:(unint64_t)devices error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIDevicePresenceConfiguration
 
-- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)a3 outerBoundary:(id)a4 error:(id *)a5
+- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)boundary outerBoundary:(id)outerBoundary error:(id *)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  boundaryCopy = boundary;
+  outerBoundaryCopy = outerBoundary;
   v22.receiver = self;
   v22.super_class = NIDevicePresenceConfiguration;
-  v10 = [(NIConfiguration *)&v22 initInternal];
-  if (!v10)
+  initInternal = [(NIConfiguration *)&v22 initInternal];
+  if (!initInternal)
   {
     goto LABEL_6;
   }
 
-  v11 = [v8 copy];
-  v12 = v10[7];
-  v10[7] = v11;
+  v11 = [boundaryCopy copy];
+  v12 = initInternal[7];
+  initInternal[7] = v11;
 
-  v13 = [v9 copy];
-  v14 = v10[8];
-  v10[8] = v13;
+  v13 = [outerBoundaryCopy copy];
+  v14 = initInternal[8];
+  initInternal[8] = v13;
 
-  v10[5] = 1;
-  v10[6] = 2;
-  if (!v9)
+  initInternal[5] = 1;
+  initInternal[6] = 2;
+  if (!outerBoundaryCopy)
   {
     v15 = [[NIRegionPredicate alloc] initWithName:@"default-max-sensor-region" devicePresencePreset:5];
-    v16 = v10[8];
-    v10[8] = v15;
+    v16 = initInternal[8];
+    initInternal[8] = v15;
   }
 
-  v23[0] = v10[7];
-  v23[1] = v10[8];
+  v23[0] = initInternal[7];
+  v23[1] = initInternal[8];
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
-  v18 = v10[9];
-  v10[9] = v17;
+  v18 = initInternal[9];
+  initInternal[9] = v17;
 
-  if ([NIDevicePresenceConfiguration _validateRegionPredicates:v10[7] outer:v10[8]])
+  if ([NIDevicePresenceConfiguration _validateRegionPredicates:initInternal[7] outer:initInternal[8]])
   {
-    *(v10 + 32) = 0;
+    *(initInternal + 32) = 0;
 LABEL_6:
-    v19 = v10;
+    v19 = initInternal;
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     NIInternalErrorWithCodeAndUserInfo(-10013, 0);
-    *a5 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -77,41 +77,41 @@ LABEL_10:
   return v19;
 }
 
-- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)a3 outerBoundary:(id)a4 monitoringOption:(unint64_t)a5 allowedDevices:(unint64_t)a6 error:(id *)a7
+- (NIDevicePresenceConfiguration)initWithInnerBoundary:(id)boundary outerBoundary:(id)outerBoundary monitoringOption:(unint64_t)option allowedDevices:(unint64_t)devices error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = [objc_alloc(objc_opt_class()) initWithInnerBoundary:v12 outerBoundary:v13 error:a7];
+  boundaryCopy = boundary;
+  outerBoundaryCopy = outerBoundary;
+  v14 = [objc_alloc(objc_opt_class()) initWithInnerBoundary:boundaryCopy outerBoundary:outerBoundaryCopy error:error];
 
   if (v14)
   {
-    v14->_allowedDevices = a6;
-    v14->_monitoringOption = a5;
+    v14->_allowedDevices = devices;
+    v14->_monitoringOption = option;
   }
 
   return v14;
 }
 
-- (NIDevicePresenceConfiguration)initWithDiscoveryToken:(id)a3 regions:(id)a4 preferredUpdateRate:(int64_t)a5 error:(id *)a6
+- (NIDevicePresenceConfiguration)initWithDiscoveryToken:(id)token regions:(id)regions preferredUpdateRate:(int64_t)rate error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  tokenCopy = token;
+  regionsCopy = regions;
   v13 = objc_alloc(objc_opt_class());
-  v14 = [v12 firstObject];
-  v15 = [v12 lastObject];
-  v16 = [v13 initWithInnerBoundary:v14 outerBoundary:v15 error:a6];
+  firstObject = [regionsCopy firstObject];
+  lastObject = [regionsCopy lastObject];
+  v16 = [v13 initWithInnerBoundary:firstObject outerBoundary:lastObject error:error];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_token, a3);
+    objc_storeStrong(&v16->_token, token);
     v16->_allowedDevices = 2;
     v16->_monitoringOption = 1;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v17 = v12;
+    v17 = regionsCopy;
     v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v18)
     {
@@ -126,7 +126,7 @@ LABEL_10:
             objc_enumerationMutation(v17);
           }
 
-          [*(*(&v25 + 1) + 8 * v20++) setPreferredUpdateRate:{a5, v25}];
+          [*(*(&v25 + 1) + 8 * v20++) setPreferredUpdateRate:{rate, v25}];
         }
 
         while (v18 != v20);
@@ -145,7 +145,7 @@ LABEL_10:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = NIDevicePresenceConfiguration;
@@ -153,79 +153,79 @@ LABEL_10:
   [v5 setAllowedDevices:self->_allowedDevices];
   [v5 setMonitoringOption:self->_monitoringOption];
   [v5 setCameraAssistanceEnabled:self->_cameraAssistanceEnabled];
-  v6 = [(NIRegionPredicate *)self->_innerBoundary copyWithZone:a3];
+  v6 = [(NIRegionPredicate *)self->_innerBoundary copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NIRegionPredicate *)self->_outerBoundary copyWithZone:a3];
+  v8 = [(NIRegionPredicate *)self->_outerBoundary copyWithZone:zone];
   v9 = v5[8];
   v5[8] = v8;
 
-  v10 = [(NSArray *)self->_monitoredRegions copyWithZone:a3];
+  v10 = [(NSArray *)self->_monitoredRegions copyWithZone:zone];
   v11 = v5[9];
   v5[9] = v10;
 
-  v12 = [(NIDiscoveryToken *)self->_token copyWithZone:a3];
+  v12 = [(NIDiscoveryToken *)self->_token copyWithZone:zone];
   v13 = v5[10];
   v5[10] = v12;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NIDevicePresenceConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_innerBoundary forKey:@"innerboundary"];
-  [v4 encodeObject:self->_outerBoundary forKey:@"outerboundary"];
-  [v4 encodeObject:self->_monitoredRegions forKey:@"monitoredRegions"];
-  [v4 encodeObject:self->_token forKey:@"token"];
-  [v4 encodeInteger:self->_allowedDevices forKey:@"allowedDevices"];
-  [v4 encodeInteger:self->_monitoringOption forKey:@"monitoringOption"];
-  [v4 encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_innerBoundary forKey:@"innerboundary"];
+  [coderCopy encodeObject:self->_outerBoundary forKey:@"outerboundary"];
+  [coderCopy encodeObject:self->_monitoredRegions forKey:@"monitoredRegions"];
+  [coderCopy encodeObject:self->_token forKey:@"token"];
+  [coderCopy encodeInteger:self->_allowedDevices forKey:@"allowedDevices"];
+  [coderCopy encodeInteger:self->_monitoringOption forKey:@"monitoringOption"];
+  [coderCopy encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
 }
 
-- (NIDevicePresenceConfiguration)initWithCoder:(id)a3
+- (NIDevicePresenceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = NIDevicePresenceConfiguration;
-  v5 = [(NIConfiguration *)&v18 initWithCoder:v4];
+  v5 = [(NIConfiguration *)&v18 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"monitoredRegions"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"monitoredRegions"];
   monitoredRegions = v5->_monitoredRegions;
   v5->_monitoredRegions = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"innerboundary"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"innerboundary"];
   innerBoundary = v5->_innerBoundary;
   v5->_innerBoundary = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outerboundary"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outerboundary"];
   outerBoundary = v5->_outerBoundary;
   v5->_outerBoundary = v10;
 
-  v12 = [v4 decodeIntegerForKey:@"allowedDevices"];
+  v12 = [coderCopy decodeIntegerForKey:@"allowedDevices"];
   if (![NIInternalUtils isIntValidRelationshipSpecifier:v12])
   {
     goto LABEL_5;
   }
 
   v5->_allowedDevices = v12;
-  v13 = [v4 decodeIntegerForKey:@"monitoringOption"];
+  v13 = [coderCopy decodeIntegerForKey:@"monitoringOption"];
   if ((v13 - 1) < 3)
   {
     v5->_monitoringOption = v13;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
     token = v5->_token;
     v5->_token = v14;
 
-    v5->_cameraAssistanceEnabled = [v4 decodeBoolForKey:@"cameraAssistanceEnabled"];
+    v5->_cameraAssistanceEnabled = [coderCopy decodeBoolForKey:@"cameraAssistanceEnabled"];
     v16 = v5;
   }
 
@@ -238,13 +238,13 @@ LABEL_5:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -253,14 +253,14 @@ LABEL_5:
 
     else
     {
-      v7 = [(NIDevicePresenceConfiguration *)v5 innerBoundary];
-      v8 = [v7 isEqual:self->_innerBoundary];
+      innerBoundary = [(NIDevicePresenceConfiguration *)v5 innerBoundary];
+      v8 = [innerBoundary isEqual:self->_innerBoundary];
 
-      v9 = [(NIDevicePresenceConfiguration *)v6 outerBoundary];
-      v10 = [v9 isEqual:self->_outerBoundary];
+      outerBoundary = [(NIDevicePresenceConfiguration *)v6 outerBoundary];
+      v10 = [outerBoundary isEqual:self->_outerBoundary];
 
-      v11 = [(NIDevicePresenceConfiguration *)v6 outerBoundary];
-      if (v11)
+      outerBoundary2 = [(NIDevicePresenceConfiguration *)v6 outerBoundary];
+      if (outerBoundary2)
       {
         v12 = 0;
       }
@@ -270,30 +270,30 @@ LABEL_5:
         v12 = self->_outerBoundary == 0;
       }
 
-      v14 = [(NIDevicePresenceConfiguration *)v6 monitoredRegions];
-      v15 = [v14 isEqualToArray:self->_monitoredRegions];
+      monitoredRegions = [(NIDevicePresenceConfiguration *)v6 monitoredRegions];
+      v15 = [monitoredRegions isEqualToArray:self->_monitoredRegions];
 
-      v25 = [(NIDevicePresenceConfiguration *)v6 allowedDevices];
+      allowedDevices = [(NIDevicePresenceConfiguration *)v6 allowedDevices];
       v26 = v15;
       allowedDevices = self->_allowedDevices;
-      v17 = [(NIDevicePresenceConfiguration *)v6 monitoringOption];
+      monitoringOption = [(NIDevicePresenceConfiguration *)v6 monitoringOption];
       monitoringOption = self->_monitoringOption;
-      v19 = [(NIDevicePresenceConfiguration *)v6 token];
+      token = [(NIDevicePresenceConfiguration *)v6 token];
       token = self->_token;
 
-      v20 = [(NIDevicePresenceConfiguration *)v6 isCameraAssistanceEnabled];
+      isCameraAssistanceEnabled = [(NIDevicePresenceConfiguration *)v6 isCameraAssistanceEnabled];
       v21 = v8 & (v10 | v12);
-      if (v25 != allowedDevices)
+      if (allowedDevices != allowedDevices)
       {
         v21 = 0;
       }
 
-      if (v17 != monitoringOption)
+      if (monitoringOption != monitoringOption)
       {
         v21 = 0;
       }
 
-      v13 = (v21 & v26) == 1 && v19 == token && v20 == self->_cameraAssistanceEnabled;
+      v13 = (v21 & v26) == 1 && token == token && isCameraAssistanceEnabled == self->_cameraAssistanceEnabled;
     }
   }
 
@@ -319,8 +319,8 @@ LABEL_5:
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIDevicePresenceConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIDevicePresenceConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }
@@ -345,15 +345,15 @@ LABEL_5:
   return [v3 stringWithFormat:@"<innerboundary: %@, outerboundary: %@, allowedDevices: %s, monitoringOption: %s>, isCameraAssistanceEnabled: %s", innerBoundary, outerBoundary, v6, v7, v8];
 }
 
-+ (BOOL)_validateRegionPredicates:(id)a3 outer:(id)a4
++ (BOOL)_validateRegionPredicates:(id)predicates outer:(id)outer
 {
-  v5 = a3;
-  v6 = a4;
-  if ([NIDevicePresenceConfiguration _validateRegionIsPreset:v5]&& [NIDevicePresenceConfiguration _validateRegionIsPreset:v6])
+  predicatesCopy = predicates;
+  outerCopy = outer;
+  if ([NIDevicePresenceConfiguration _validateRegionIsPreset:predicatesCopy]&& [NIDevicePresenceConfiguration _validateRegionIsPreset:outerCopy])
   {
-    +[NIDevicePresenceConfiguration _radiusFromDevicePresencePreset:](NIDevicePresenceConfiguration, "_radiusFromDevicePresencePreset:", [v6 devicePresencePreset]);
+    +[NIDevicePresenceConfiguration _radiusFromDevicePresencePreset:](NIDevicePresenceConfiguration, "_radiusFromDevicePresencePreset:", [outerCopy devicePresencePreset]);
     v8 = v7;
-    +[NIDevicePresenceConfiguration _radiusFromDevicePresencePreset:](NIDevicePresenceConfiguration, "_radiusFromDevicePresencePreset:", [v5 devicePresencePreset]);
+    +[NIDevicePresenceConfiguration _radiusFromDevicePresencePreset:](NIDevicePresenceConfiguration, "_radiusFromDevicePresencePreset:", [predicatesCopy devicePresencePreset]);
     v10 = v8 >= v9;
   }
 
@@ -365,29 +365,29 @@ LABEL_5:
   return v10;
 }
 
-+ (float)_radiusFromDevicePresencePreset:(int64_t)a3
++ (float)_radiusFromDevicePresencePreset:(int64_t)preset
 {
-  if ((a3 - 1) > 7)
+  if ((preset - 1) > 7)
   {
     return 3.4028e38;
   }
 
   else
   {
-    return flt_1BAC84908[a3 - 1];
+    return flt_1BAC84908[preset - 1];
   }
 }
 
-+ (const)_NIDevicePresenceMonitoringOptionToString:(unint64_t)a3
++ (const)_NIDevicePresenceMonitoringOptionToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return "N/A";
   }
 
   else
   {
-    return off_1E7F14128[a3 - 1];
+    return off_1E7F14128[string - 1];
   }
 }
 

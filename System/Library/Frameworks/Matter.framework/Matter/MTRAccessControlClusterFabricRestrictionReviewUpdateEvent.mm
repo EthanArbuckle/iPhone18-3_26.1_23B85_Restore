@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterFabricRestrictionReviewUpdateEvent
 - (MTRAccessControlClusterFabricRestrictionReviewUpdateEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent);
-  v5 = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self token];
-  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setToken:v5];
+  token = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self token];
+  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setToken:token];
 
-  v6 = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self instruction];
-  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setInstruction:v6];
+  instruction = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self instruction];
+  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setInstruction:instruction];
 
-  v7 = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self arlRequestFlowUrl];
-  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setArlRequestFlowUrl:v7];
+  arlRequestFlowUrl = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self arlRequestFlowUrl];
+  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setArlRequestFlowUrl:arlRequestFlowUrl];
 
-  v8 = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self fabricIndex];
-  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)self fabricIndex];
+  [(MTRAccessControlClusterFabricRestrictionReviewUpdateEvent *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

@@ -3,13 +3,13 @@
 - (BOOL)isWhitePointAdaptationEnabled;
 - (SBHarmonyController)init;
 - (SBHarmonySettings)harmonySettings;
-- (float)whitePointAdaptationStrengthForWhitePointAdaptivityStyle:(int64_t)a3;
+- (float)whitePointAdaptationStrengthForWhitePointAdaptivityStyle:(int64_t)style;
 - (int64_t)whitePointAdaptivityStyle;
-- (void)setWhitePointAdaptationEnabled:(BOOL)a3;
-- (void)setWhitePointAdaptationStrength:(float)a3 forWhitePointAdaptivityStyle:(int64_t)a4;
-- (void)setWhitePointAdaptivityStyle:(int64_t)a3 animationSettings:(id)a4;
-- (void)setWhitePointAdaptivityStyleWithStyles:(id)a3 animationSettings:(id)a4;
-- (void)transitionFromWhitePointAdaptivityStyleWithStyles:(id)a3 toWhitePointAdaptivityStyleWithStyles:(id)a4 fromPercentage:(double)a5 toPercentage:(double)a6 animationSettings:(id)a7;
+- (void)setWhitePointAdaptationEnabled:(BOOL)enabled;
+- (void)setWhitePointAdaptationStrength:(float)strength forWhitePointAdaptivityStyle:(int64_t)style;
+- (void)setWhitePointAdaptivityStyle:(int64_t)style animationSettings:(id)settings;
+- (void)setWhitePointAdaptivityStyleWithStyles:(id)styles animationSettings:(id)settings;
+- (void)transitionFromWhitePointAdaptivityStyleWithStyles:(id)styles toWhitePointAdaptivityStyleWithStyles:(id)withStyles fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings;
 @end
 
 @implementation SBHarmonyController
@@ -31,9 +31,9 @@
   harmonySettings = self->_harmonySettings;
   if (!harmonySettings)
   {
-    v4 = [(PTSettings *)[SBHarmonySettings alloc] initWithDefaultValues];
+    initWithDefaultValues = [(PTSettings *)[SBHarmonySettings alloc] initWithDefaultValues];
     v5 = self->_harmonySettings;
-    self->_harmonySettings = v4;
+    self->_harmonySettings = initWithDefaultValues;
 
     harmonySettings = self->_harmonySettings;
   }
@@ -71,25 +71,25 @@ void __37__SBHarmonyController_sharedInstance__block_invoke()
 
 - (BOOL)isWhitePointAdaptationEnabled
 {
-  v3 = [(SBHarmonyController *)self supportsWhitePointAdaptation];
-  if (v3)
+  supportsWhitePointAdaptation = [(SBHarmonyController *)self supportsWhitePointAdaptation];
+  if (supportsWhitePointAdaptation)
   {
-    v4 = [(SBHarmonyController *)self _adaptationClient];
-    v5 = [v4 getEnabled];
+    _adaptationClient = [(SBHarmonyController *)self _adaptationClient];
+    getEnabled = [_adaptationClient getEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(supportsWhitePointAdaptation) = getEnabled;
   }
 
-  return v3;
+  return supportsWhitePointAdaptation;
 }
 
-- (void)setWhitePointAdaptationEnabled:(BOOL)a3
+- (void)setWhitePointAdaptationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(SBHarmonyController *)self supportsWhitePointAdaptation])
   {
-    v5 = [(SBHarmonyController *)self _adaptationClient];
-    [v5 setEnabled:v3];
+    _adaptationClient = [(SBHarmonyController *)self _adaptationClient];
+    [_adaptationClient setEnabled:enabledCopy];
   }
 }
 
@@ -100,15 +100,15 @@ void __37__SBHarmonyController_sharedInstance__block_invoke()
     return -1;
   }
 
-  v3 = [(SBHarmonyController *)self _adaptationClient];
-  v4 = SBWhitePointAdaptivityStyleForAdaptationMode([v3 getAdaptationMode]);
+  _adaptationClient = [(SBHarmonyController *)self _adaptationClient];
+  v4 = SBWhitePointAdaptivityStyleForAdaptationMode([_adaptationClient getAdaptationMode]);
 
   return v4;
 }
 
-- (void)setWhitePointAdaptivityStyle:(int64_t)a3 animationSettings:(id)a4
+- (void)setWhitePointAdaptivityStyle:(int64_t)style animationSettings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   if ([(SBHarmonyController *)self supportsWhitePointAdaptation])
   {
     v13[0] = MEMORY[0x277D85DD0];
@@ -116,8 +116,8 @@ void __37__SBHarmonyController_sharedInstance__block_invoke()
     v13[2] = __70__SBHarmonyController_setWhitePointAdaptivityStyle_animationSettings___block_invoke;
     v13[3] = &unk_2783AB2A8;
     v13[4] = self;
-    v15 = a3;
-    v7 = v6;
+    styleCopy = style;
+    v7 = settingsCopy;
     v14 = v7;
     v8 = MEMORY[0x223D6F7F0](v13);
     [v7 delay];
@@ -159,20 +159,20 @@ void __70__SBHarmonyController_setWhitePointAdaptivityStyle_animationSettings___
   [v6 setAdaptationMode:v4 withPeriod:v5];
 }
 
-- (void)setWhitePointAdaptivityStyleWithStyles:(id)a3 animationSettings:(id)a4
+- (void)setWhitePointAdaptivityStyleWithStyles:(id)styles animationSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  stylesCopy = styles;
+  settingsCopy = settings;
   if ([(SBHarmonyController *)self supportsWhitePointAdaptation])
   {
-    v8 = [v6 count];
+    v8 = [stylesCopy count];
     if (v8)
     {
       v9 = v8;
       if (v8 == 1)
       {
-        v10 = [v6 firstObject];
-        -[SBHarmonyController setWhitePointAdaptivityStyle:animationSettings:](self, "setWhitePointAdaptivityStyle:animationSettings:", [v10 integerValue], v7);
+        firstObject = [stylesCopy firstObject];
+        -[SBHarmonyController setWhitePointAdaptivityStyle:animationSettings:](self, "setWhitePointAdaptivityStyle:animationSettings:", [firstObject integerValue], settingsCopy);
       }
 
       else
@@ -184,11 +184,11 @@ void __70__SBHarmonyController_setWhitePointAdaptivityStyle_animationSettings___
         v28 = malloc_type_malloc(4 * v8, 0x100004052888210uLL);
         do
         {
-          v12 = [v6 objectAtIndexedSubscript:v11];
-          v13 = [v12 integerValue];
-          if (v13 < 5)
+          v12 = [stylesCopy objectAtIndexedSubscript:v11];
+          integerValue = [v12 integerValue];
+          if (integerValue < 5)
           {
-            v14 = v13 + 1;
+            v14 = integerValue + 1;
           }
 
           else
@@ -209,7 +209,7 @@ void __70__SBHarmonyController_setWhitePointAdaptivityStyle_animationSettings___
         v21[4] = self;
         v23 = &v25;
         v24 = v9;
-        v15 = v7;
+        v15 = settingsCopy;
         v22 = v15;
         v16 = MEMORY[0x223D6F7F0](v21);
         [v15 delay];
@@ -248,15 +248,15 @@ void __80__SBHarmonyController_setWhitePointAdaptivityStyleWithStyles_animationS
   *(*(*(a1 + 48) + 8) + 24) = 0;
 }
 
-- (void)transitionFromWhitePointAdaptivityStyleWithStyles:(id)a3 toWhitePointAdaptivityStyleWithStyles:(id)a4 fromPercentage:(double)a5 toPercentage:(double)a6 animationSettings:(id)a7
+- (void)transitionFromWhitePointAdaptivityStyleWithStyles:(id)styles toWhitePointAdaptivityStyleWithStyles:(id)withStyles fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  stylesCopy = styles;
+  withStylesCopy = withStyles;
+  settingsCopy = settings;
   if ([(SBHarmonyController *)self supportsWhitePointAdaptation])
   {
-    v14 = [v11 count];
-    v15 = [v12 count];
+    v14 = [stylesCopy count];
+    v15 = [withStylesCopy count];
     if (v14 | v15)
     {
       v16 = v15;
@@ -275,11 +275,11 @@ void __80__SBHarmonyController_setWhitePointAdaptivityStyleWithStyles_animationS
         v45[3] = v17;
         do
         {
-          v19 = [v11 objectAtIndexedSubscript:v18];
-          v20 = [v19 integerValue];
-          if (v20 < 5)
+          v19 = [stylesCopy objectAtIndexedSubscript:v18];
+          integerValue = [v19 integerValue];
+          if (integerValue < 5)
           {
-            v21 = v20 + 1;
+            v21 = integerValue + 1;
           }
 
           else
@@ -302,11 +302,11 @@ void __80__SBHarmonyController_setWhitePointAdaptivityStyleWithStyles_animationS
         v41[3] = v22;
         do
         {
-          v24 = [v12 objectAtIndexedSubscript:v23];
-          v25 = [v24 integerValue];
-          if (v25 < 5)
+          v24 = [withStylesCopy objectAtIndexedSubscript:v23];
+          integerValue2 = [v24 integerValue];
+          if (integerValue2 < 5)
           {
-            v26 = v25 + 1;
+            v26 = integerValue2 + 1;
           }
 
           else
@@ -331,8 +331,8 @@ void __80__SBHarmonyController_setWhitePointAdaptivityStyleWithStyles_animationS
       v36 = &v40;
       v37 = v14;
       v38 = v16;
-      v39 = a6;
-      v27 = v13;
+      toPercentageCopy = toPercentage;
+      v27 = settingsCopy;
       v34 = v27;
       v28 = MEMORY[0x223D6F7F0](v33);
       [v27 delay];
@@ -384,7 +384,7 @@ void __157__SBHarmonyController_transitionFromWhitePointAdaptivityStyleWithStyle
   }
 }
 
-- (float)whitePointAdaptationStrengthForWhitePointAdaptivityStyle:(int64_t)a3
+- (float)whitePointAdaptationStrengthForWhitePointAdaptivityStyle:(int64_t)style
 {
   *(&v14 + 1) = *MEMORY[0x277D85DE8];
   if (![(SBHarmonyController *)self supportsWhitePointAdaptation])
@@ -392,8 +392,8 @@ void __157__SBHarmonyController_transitionFromWhitePointAdaptivityStyleWithStyle
     return NAN;
   }
 
-  v5 = [(SBHarmonyController *)self _adaptationClient];
-  v6 = [v5 getStrengths:v11 nStrengths:6];
+  _adaptationClient = [(SBHarmonyController *)self _adaptationClient];
+  v6 = [_adaptationClient getStrengths:v11 nStrengths:6];
 
   if (!v6)
   {
@@ -402,22 +402,22 @@ void __157__SBHarmonyController_transitionFromWhitePointAdaptivityStyleWithStyle
 
   v7 = &v14 + 1;
   v8 = &v12;
-  if (a3 != 4)
+  if (style != 4)
   {
     v7 = v11;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     v7 = &v14;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v7 = &v13 + 1;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v9 = &v13;
   }
@@ -427,12 +427,12 @@ void __157__SBHarmonyController_transitionFromWhitePointAdaptivityStyleWithStyle
     v9 = v11;
   }
 
-  if (a3)
+  if (style)
   {
     v8 = v9;
   }
 
-  if (a3 > 1)
+  if (style > 1)
   {
     v8 = v7;
   }
@@ -440,14 +440,14 @@ void __157__SBHarmonyController_transitionFromWhitePointAdaptivityStyleWithStyle
   return *v8;
 }
 
-- (void)setWhitePointAdaptationStrength:(float)a3 forWhitePointAdaptivityStyle:(int64_t)a4
+- (void)setWhitePointAdaptationStrength:(float)strength forWhitePointAdaptivityStyle:(int64_t)style
 {
-  v9 = a3;
+  strengthCopy = strength;
   if ([(SBHarmonyController *)self supportsWhitePointAdaptation])
   {
-    if (a4 < 5)
+    if (style < 5)
     {
-      v6 = a4 + 1;
+      v6 = style + 1;
     }
 
     else
@@ -456,8 +456,8 @@ void __157__SBHarmonyController_transitionFromWhitePointAdaptivityStyleWithStyle
     }
 
     v8 = v6;
-    v7 = [(SBHarmonyController *)self _adaptationClient];
-    [v7 overrideStrengths:&v9 forModes:&v8 nModes:1];
+    _adaptationClient = [(SBHarmonyController *)self _adaptationClient];
+    [_adaptationClient overrideStrengths:&strengthCopy forModes:&v8 nModes:1];
   }
 }
 

@@ -1,87 +1,87 @@
 @interface CXChannel
 + (NSSet)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChannel:(id)a3;
-- (BOOL)isEquivalentToChannel:(id)a3;
-- (CXChannel)initWithChannel:(id)a3;
-- (CXChannel)initWithCoder:(id)a3;
-- (CXChannel)initWithUUID:(id)a3 transmissionMode:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChannel:(id)channel;
+- (BOOL)isEquivalentToChannel:(id)channel;
+- (CXChannel)initWithChannel:(id)channel;
+- (CXChannel)initWithCoder:(id)coder;
+- (CXChannel)initWithUUID:(id)d transmissionMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CXChannel
 
-- (CXChannel)initWithUUID:(id)a3 transmissionMode:(int64_t)a4
+- (CXChannel)initWithUUID:(id)d transmissionMode:(int64_t)mode
 {
-  v7 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CXChannel;
   v8 = [(CXChannel *)&v10 init];
   if (v8)
   {
-    if (!v7)
+    if (!dCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannel initWithUUID:transmissionMode:]", @"UUID"}];
     }
 
-    v8->_transmissionMode = a4;
-    objc_storeStrong(&v8->_UUID, a3);
+    v8->_transmissionMode = mode;
+    objc_storeStrong(&v8->_UUID, d);
   }
 
   return v8;
 }
 
-- (CXChannel)initWithChannel:(id)a3
+- (CXChannel)initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v8.receiver = self;
   v8.super_class = CXChannel;
   v5 = [(CXChannel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_localizedName, *(v4 + 2));
-    v6->_transmissionMode = *(v4 + 3);
-    objc_storeStrong(&v6->_UUID, *(v4 + 1));
+    objc_storeStrong(&v5->_localizedName, *(channelCopy + 2));
+    v6->_transmissionMode = *(channelCopy + 3);
+    objc_storeStrong(&v6->_UUID, *(channelCopy + 1));
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToChannel:(id)a3
+- (BOOL)isEqualToChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(CXChannel *)self localizedName];
-  v6 = [v4 localizedName];
-  if (v6)
+  channelCopy = channel;
+  localizedName = [(CXChannel *)self localizedName];
+  localizedName2 = [channelCopy localizedName];
+  if (localizedName2)
   {
-    if (([v5 isEqualToString:v6] & 1) == 0)
+    if (([localizedName isEqualToString:localizedName2] & 1) == 0)
     {
       goto LABEL_7;
     }
   }
 
-  else if (v5)
+  else if (localizedName)
   {
 LABEL_7:
     v10 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(CXChannel *)self transmissionMode];
-  if (v7 != [v4 transmissionMode])
+  transmissionMode = [(CXChannel *)self transmissionMode];
+  if (transmissionMode != [channelCopy transmissionMode])
   {
     goto LABEL_7;
   }
 
-  v8 = [(CXChannel *)self UUID];
-  v9 = [v4 UUID];
-  v10 = [v8 isEqual:v9];
+  uUID = [(CXChannel *)self UUID];
+  uUID2 = [channelCopy UUID];
+  v10 = [uUID isEqual:uUID2];
 
 LABEL_8:
   return v10;
@@ -91,8 +91,8 @@ LABEL_8:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CXChannel *)self UUID];
-  v6 = [v3 stringWithFormat:@"<%@ %p UUID=%@>", v4, self, v5];
+  uUID = [(CXChannel *)self UUID];
+  v6 = [v3 stringWithFormat:@"<%@ %p UUID=%@>", v4, self, uUID];
 
   return v6;
 }
@@ -100,25 +100,25 @@ LABEL_8:
 - (id)debugDescription
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CXChannel *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(CXChannel *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
   [v3 appendFormat:@", "];
-  v5 = [(CXChannel *)self localizedName];
-  [v3 appendFormat:@" localizedName=%@", v5];
+  localizedName = [(CXChannel *)self localizedName];
+  [v3 appendFormat:@" localizedName=%@", localizedName];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_transmissionMode);
-  v7 = [(CXChannel *)self transmissionMode];
+  transmissionMode = [(CXChannel *)self transmissionMode];
   objc_opt_self();
-  if (v7 > 2)
+  if (transmissionMode > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_1E7C07250[v7];
+    v8 = off_1E7C07250[transmissionMode];
   }
 
   [v3 appendFormat:@" %@=%@", v6, v8];
@@ -128,35 +128,35 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXChannel *)self isEqualToChannel:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXChannel *)self isEqualToChannel:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CXChannel *)self localizedName];
-  v4 = [v3 hash];
-  v5 = [(CXChannel *)self transmissionMode];
-  v6 = [(CXChannel *)self UUID];
-  [v6 hash];
-  v14 = CXHash(4uLL, v7, v8, v9, v10, v11, v12, v13, v4, v5);
+  localizedName = [(CXChannel *)self localizedName];
+  v4 = [localizedName hash];
+  transmissionMode = [(CXChannel *)self transmissionMode];
+  uUID = [(CXChannel *)self UUID];
+  [uUID hash];
+  v14 = CXHash(4uLL, v7, v8, v9, v10, v11, v12, v13, v4, transmissionMode);
 
   return v14;
 }
 
-- (BOOL)isEquivalentToChannel:(id)a3
+- (BOOL)isEquivalentToChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(CXChannel *)self UUID];
-  v6 = [v4 UUID];
+  channelCopy = channel;
+  uUID = [(CXChannel *)self UUID];
+  uUID2 = [channelCopy UUID];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(channelCopy) = [uUID isEqual:uUID2];
+  return channelCopy;
 }
 
 + (NSSet)unarchivedObjectClasses
@@ -168,19 +168,19 @@ LABEL_8:
   return [v2 setWithObjects:{v3, v4, v5, objc_opt_class(), 0}];
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }
 
-- (CXChannel)initWithCoder:(id)a3
+- (CXChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CXChannel;
   v5 = [(CXChannel *)&v16 init];
@@ -188,16 +188,16 @@ LABEL_8:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_localizedName);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     localizedName = v5->_localizedName;
     v5->_localizedName = v8;
 
     v10 = NSStringFromSelector(sel_transmissionMode);
-    v5->_transmissionMode = [v4 decodeIntegerForKey:v10];
+    v5->_transmissionMode = [coderCopy decodeIntegerForKey:v10];
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_UUID);
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
     UUID = v5->_UUID;
     v5->_UUID = v13;
   }
@@ -205,25 +205,25 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXChannel *)self localizedName];
+  coderCopy = coder;
+  localizedName = [(CXChannel *)self localizedName];
   v6 = NSStringFromSelector(sel_localizedName);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:localizedName forKey:v6];
 
-  v7 = [(CXChannel *)self transmissionMode];
+  transmissionMode = [(CXChannel *)self transmissionMode];
   v8 = NSStringFromSelector(sel_transmissionMode);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:transmissionMode forKey:v8];
 
-  v10 = [(CXChannel *)self UUID];
+  uUID = [(CXChannel *)self UUID];
   v9 = NSStringFromSelector(sel_UUID);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:uUID forKey:v9];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CXChannel allocWithZone:a3];
+  v4 = [CXChannel allocWithZone:zone];
 
   return [(CXChannel *)v4 initWithChannel:self];
 }

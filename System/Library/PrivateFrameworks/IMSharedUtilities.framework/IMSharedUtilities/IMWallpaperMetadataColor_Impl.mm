@@ -1,21 +1,21 @@
 @interface IMWallpaperMetadataColor_Impl
 - (IMWallpaperMetadataColor_Impl)init;
-- (IMWallpaperMetadataColor_Impl)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IMWallpaperMetadataColor_Impl)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMWallpaperMetadataColor_Impl
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A88B7218(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1A88B7218(coderCopy);
 }
 
-- (IMWallpaperMetadataColor_Impl)initWithCoder:(id)a3
+- (IMWallpaperMetadataColor_Impl)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1A88B7E88();
 
   return v4;

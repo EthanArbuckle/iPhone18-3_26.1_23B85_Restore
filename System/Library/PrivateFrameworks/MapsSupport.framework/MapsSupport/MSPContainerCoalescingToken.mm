@@ -1,6 +1,6 @@
 @interface MSPContainerCoalescingToken
 - (MSPContainerCoalescingToken)init;
-- (MSPContainerCoalescingToken)initWithContainerOwner:(id)a3 context:(id)a4;
+- (MSPContainerCoalescingToken)initWithContainerOwner:(id)owner context:(id)context;
 - (void)dealloc;
 - (void)endCoalescingEdits;
 @end
@@ -14,18 +14,18 @@
   return result;
 }
 
-- (MSPContainerCoalescingToken)initWithContainerOwner:(id)a3 context:(id)a4
+- (MSPContainerCoalescingToken)initWithContainerOwner:(id)owner context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = MSPContainerCoalescingToken;
   v8 = [(MSPContainerCoalescingToken *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_container, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_container, ownerCopy);
+    v10 = [contextCopy copy];
     context = v9->_context;
     v9->_context = v10;
   }

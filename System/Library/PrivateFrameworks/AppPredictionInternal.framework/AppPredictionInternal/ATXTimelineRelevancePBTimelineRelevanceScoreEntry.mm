@@ -1,24 +1,24 @@
 @interface ATXTimelineRelevancePBTimelineRelevanceScoreEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSuggestionMappingReason:(id)a3;
+- (int)StringAsSuggestionMappingReason:(id)reason;
 - (int)suggestionMappingReason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRelevanceScore:(BOOL)a3;
-- (void)setHasSuggestionMappingReason:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRelevanceScore:(BOOL)score;
+- (void)setHasSuggestionMappingReason:(BOOL)reason;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXTimelineRelevancePBTimelineRelevanceScoreEntry
 
-- (void)setHasRelevanceScore:(BOOL)a3
+- (void)setHasRelevanceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)setHasSuggestionMappingReason:(BOOL)a3
+- (void)setHasSuggestionMappingReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -74,40 +74,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsSuggestionMappingReason:(id)a3
+- (int)StringAsSuggestionMappingReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ReasonCoalescedWithPreviousSuggestion"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"ReasonCoalescedWithPreviousSuggestion"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ReasonNewInfoSuggestion"])
+  else if ([reasonCopy isEqualToString:@"ReasonNewInfoSuggestion"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ReasonPreviousSuggestionWasTrimmed"])
+  else if ([reasonCopy isEqualToString:@"ReasonPreviousSuggestionWasTrimmed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ReasonNilRelevance"])
+  else if ([reasonCopy isEqualToString:@"ReasonNilRelevance"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ReasonNonPositiveRelevanceScore"])
+  else if ([reasonCopy isEqualToString:@"ReasonNonPositiveRelevanceScore"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ReasonEndDateOfPreviousSuggestionWasSet"])
+  else if ([reasonCopy isEqualToString:@"ReasonEndDateOfPreviousSuggestionWasSet"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ReasonUnknown"])
+  else if ([reasonCopy isEqualToString:@"ReasonUnknown"])
   {
     v4 = 6;
   }
@@ -126,20 +126,20 @@
   v8.receiver = self;
   v8.super_class = ATXTimelineRelevancePBTimelineRelevanceScoreEntry;
   v4 = [(ATXTimelineRelevancePBTimelineRelevanceScoreEntry *)&v8 description];
-  v5 = [(ATXTimelineRelevancePBTimelineRelevanceScoreEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXTimelineRelevancePBTimelineRelevanceScoreEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_relevanceScore];
-    [v3 setObject:v9 forKey:@"relevanceScore"];
+    [dictionary setObject:v9 forKey:@"relevanceScore"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -160,20 +160,20 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_duration];
-  [v3 setObject:v10 forKey:@"duration"];
+  [dictionary setObject:v10 forKey:@"duration"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
   }
 
 LABEL_5:
   suggestionID = self->_suggestionID;
   if (suggestionID)
   {
-    [v3 setObject:suggestionID forKey:@"suggestionID"];
+    [dictionary setObject:suggestionID forKey:@"suggestionID"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -189,15 +189,15 @@ LABEL_5:
       v8 = off_27859FDC8[suggestionMappingReason];
     }
 
-    [v3 setObject:v8 forKey:@"suggestionMappingReason"];
+    [dictionary setObject:v8 forKey:@"suggestionMappingReason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -243,14 +243,14 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_relevanceScore;
-    *(v4 + 44) |= 2u;
+    toCopy[2] = *&self->_relevanceScore;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -269,33 +269,33 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[1] = self->_duration;
-  *(v4 + 44) |= 1u;
+  toCopy[1] = self->_duration;
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[3] = self->_timestamp;
-    *(v4 + 44) |= 4u;
+    toCopy[3] = self->_timestamp;
+    *(toCopy + 44) |= 4u;
   }
 
 LABEL_5:
   if (self->_suggestionID)
   {
-    v6 = v4;
-    [v4 setSuggestionID:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSuggestionID:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 10) = self->_suggestionMappingReason;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 10) = self->_suggestionMappingReason;
+    *(toCopy + 44) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -330,7 +330,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_suggestionID copyWithZone:a3];
+  v8 = [(NSString *)self->_suggestionID copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
@@ -343,57 +343,57 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_relevanceScore != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_relevanceScore != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   suggestionID = self->_suggestionID;
-  if (suggestionID | *(v4 + 4))
+  if (suggestionID | *(equalCopy + 4))
   {
     if (![(NSString *)suggestionID isEqual:?])
     {
@@ -405,10 +405,10 @@ LABEL_24:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 44) & 8) == 0;
+  v8 = (*(equalCopy + 44) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_suggestionMappingReason != *(v4 + 10))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_suggestionMappingReason != *(equalCopy + 10))
     {
       goto LABEL_24;
     }
@@ -492,15 +492,15 @@ LABEL_14:
   return v9 ^ v5 ^ v10 ^ v12 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_relevanceScore = *(v4 + 2);
+    self->_relevanceScore = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -513,31 +513,31 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 1) == 0)
+  else if ((*(fromCopy + 44) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_duration = *(v4 + 1);
+  self->_duration = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 4) != 0)
+  if ((*(fromCopy + 44) & 4) != 0)
   {
 LABEL_4:
-    self->_timestamp = *(v4 + 3);
+    self->_timestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ATXTimelineRelevancePBTimelineRelevanceScoreEntry *)self setSuggestionID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 44) & 8) != 0)
+  if ((*(fromCopy + 44) & 8) != 0)
   {
-    self->_suggestionMappingReason = *(v4 + 10);
+    self->_suggestionMappingReason = *(fromCopy + 10);
     *&self->_has |= 8u;
   }
 }

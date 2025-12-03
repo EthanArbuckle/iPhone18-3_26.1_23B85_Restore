@@ -1,21 +1,21 @@
 @interface PXPhotosLensControl
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PXPhotosLensControl)init;
 - (PXPhotosLensControlDelegate)delegate;
 - (UIColor)contentBackgroundColor;
-- (void)_handleSegmentedControlAction:(id)a3;
+- (void)_handleSegmentedControlAction:(id)action;
 - (void)_updateSegmentedControl;
 - (void)_updateSegments;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setContentBackgroundColor:(id)a3;
-- (void)setDefaultTextColor:(id)a3;
-- (void)setEnabledItems:(id)a3;
-- (void)setHideSymbols:(BOOL)a3;
-- (void)setItems:(id)a3;
-- (void)setSelectedItem:(id)a3;
-- (void)setShrinkLevel:(int64_t)a3;
+- (void)setBackdropGroupName:(id)name;
+- (void)setContentBackgroundColor:(id)color;
+- (void)setDefaultTextColor:(id)color;
+- (void)setEnabledItems:(id)items;
+- (void)setHideSymbols:(BOOL)symbols;
+- (void)setItems:(id)items;
+- (void)setSelectedItem:(id)item;
+- (void)setShrinkLevel:(int64_t)level;
 @end
 
 @implementation PXPhotosLensControl
@@ -27,19 +27,19 @@
   return WeakRetained;
 }
 
-- (void)_handleSegmentedControlAction:(id)a3
+- (void)_handleSegmentedControlAction:(id)action
 {
-  v4 = [(PXPhotosLensControl *)self items];
-  v10 = [v4 objectAtIndexedSubscript:{-[_PXPhotosLensSegmentedControl selectedSegmentIndex](self->_segmentedControl, "selectedSegmentIndex")}];
+  items = [(PXPhotosLensControl *)self items];
+  v10 = [items objectAtIndexedSubscript:{-[_PXPhotosLensSegmentedControl selectedSegmentIndex](self->_segmentedControl, "selectedSegmentIndex")}];
 
-  v5 = [(PXPhotosLensControl *)self selectedItem];
-  if (v10 == v5)
+  selectedItem = [(PXPhotosLensControl *)self selectedItem];
+  if (v10 == selectedItem)
   {
   }
 
   else
   {
-    v6 = [v10 isEqual:v5];
+    v6 = [v10 isEqual:selectedItem];
 
     if (!v6)
     {
@@ -50,13 +50,13 @@
 
   if ([(_PXPhotosLensSegmentedControl *)self->_segmentedControl lastTouchRemainedOnSelectedSegment])
   {
-    v7 = [(PXPhotosLensControl *)self delegate];
+    delegate = [(PXPhotosLensControl *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(PXPhotosLensControl *)self delegate];
-      [v9 photosLensControl:self didTapOnAlreadySelectedItem:v10];
+      delegate2 = [(PXPhotosLensControl *)self delegate];
+      [delegate2 photosLensControl:self didTapOnAlreadySelectedItem:v10];
     }
   }
 
@@ -66,11 +66,11 @@ LABEL_8:
 - (void)_updateSegmentedControl
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v3 = [(PXPhotosLensControl *)self shrinkLevel];
-  v4 = v3;
-  if (v3 <= 1)
+  shrinkLevel = [(PXPhotosLensControl *)self shrinkLevel];
+  v4 = shrinkLevel;
+  if (shrinkLevel <= 1)
   {
-    if (v3 > 1)
+    if (shrinkLevel > 1)
     {
       goto LABEL_27;
     }
@@ -80,12 +80,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v3 == 2 || v3 == 3)
+  if (shrinkLevel == 2 || shrinkLevel == 3)
   {
     goto LABEL_7;
   }
 
-  if (v3 == 4)
+  if (shrinkLevel == 4)
   {
     v5 = MEMORY[0x277D76968];
 LABEL_8:
@@ -98,10 +98,10 @@ LABEL_27:
   v6 = *MEMORY[0x277D76968];
   v7 = 13.0 - (v4 - 4);
 LABEL_9:
-  v8 = [(PXPhotosLensControl *)self traitCollection];
+  traitCollection = [(PXPhotosLensControl *)self traitCollection];
   v9 = MEMORY[0x277D74300];
-  v10 = [v8 preferredContentSizeCategory];
-  v11 = [v9 px_preferredFontForTextStyle:v6 preferredContentSizeCategory:v10 maxContentSizeCategory:*MEMORY[0x277D76820] withSymbolicTraits:2];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v11 = [v9 px_preferredFontForTextStyle:v6 preferredContentSizeCategory:preferredContentSizeCategory maxContentSizeCategory:*MEMORY[0x277D76820] withSymbolicTraits:2];
 
   if (v7 > 0.0)
   {
@@ -110,39 +110,39 @@ LABEL_9:
     v11 = v12;
   }
 
-  v13 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v14 = MEMORY[0x21CEE04B0]();
-  v41 = v8;
-  if (!v14 || v13 == 1)
+  v41 = traitCollection;
+  if (!v14 || userInterfaceIdiom == 1)
   {
-    v15 = [(PXPhotosLensControl *)self defaultTextColor];
-    if (v14 && v13 == 1)
+    defaultTextColor = [(PXPhotosLensControl *)self defaultTextColor];
+    if (v14 && userInterfaceIdiom == 1)
     {
-      v16 = [MEMORY[0x277D75348] labelColor];
+      labelColor = [MEMORY[0x277D75348] labelColor];
     }
 
     else
     {
-      v16 = [MEMORY[0x277D75348] whiteColor];
+      labelColor = [MEMORY[0x277D75348] whiteColor];
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x277D75348] labelColor];
-    v16 = [MEMORY[0x277D75348] systemBlueColor];
+    defaultTextColor = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] systemBlueColor];
   }
 
-  v17 = v16;
-  v18 = [v15 colorWithAlphaComponent:0.3];
+  v17 = labelColor;
+  v18 = [defaultTextColor colorWithAlphaComponent:0.3];
   segmentedControl = self->_segmentedControl;
   v21 = *MEMORY[0x277D740C0];
   v55[0] = *MEMORY[0x277D740A8];
   v20 = v55[0];
   v55[1] = v21;
   v56[0] = v11;
-  v56[1] = v15;
-  v40 = v15;
+  v56[1] = defaultTextColor;
+  v40 = defaultTextColor;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:2];
   [(_PXPhotosLensSegmentedControl *)segmentedControl setTitleTextAttributes:v22 forState:0];
 
@@ -167,33 +167,33 @@ LABEL_9:
     v27 = [MEMORY[0x277D75210] effectWithStyle:1202];
     [(UIVisualEffectView *)self->_backgroundEffectView setEffect:v27];
 
-    v28 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-    v29 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
-    [v29 setBackgroundColor:v28];
+    tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+    contentView = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+    [contentView setBackgroundColor:tertiarySystemFillColor];
   }
 
   *&self->_padding.top = xmmword_21AC7D630;
   *&self->_padding.bottom = xmmword_21AC7D630;
   self->_minimumInterTextSpacing = 16.0;
   self->_intrinsicSize = *MEMORY[0x277CBF3A8];
-  v30 = [(PXPhotosLensControl *)self hideSymbols];
-  v31 = [(PXPhotosLensControl *)self items];
+  hideSymbols = [(PXPhotosLensControl *)self hideSymbols];
+  items = [(PXPhotosLensControl *)self items];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __46__PXPhotosLensControl__updateSegmentedControl__block_invoke;
   v42[3] = &unk_278297F88;
-  v46 = v30;
+  v46 = hideSymbols;
   v32 = v6;
   v43 = v32;
-  v44 = self;
+  selfCopy = self;
   v33 = v11;
   v45 = v33;
-  [v31 enumerateObjectsUsingBlock:v42];
+  [items enumerateObjectsUsingBlock:v42];
   v34 = fmax(self->_intrinsicSize.height + self->_padding.top + self->_padding.bottom, 44.0);
   self->_intrinsicSize.width = self->_intrinsicSize.width + self->_padding.left + self->_padding.right - self->_minimumInterTextSpacing;
   self->_intrinsicSize.height = v34;
-  v35 = [(PXPhotosLensControl *)self selectedItem];
-  v36 = [v31 indexOfObject:v35];
+  selectedItem = [(PXPhotosLensControl *)self selectedItem];
+  v36 = [items indexOfObject:selectedItem];
 
   if ((v36 & 0x8000000000000000) != 0 || v36 >= [(_PXPhotosLensSegmentedControl *)self->_segmentedControl numberOfSegments])
   {
@@ -201,11 +201,11 @@ LABEL_9:
     v37 = v41;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      v39 = [(PXPhotosLensControl *)self selectedItem];
+      selectedItem2 = [(PXPhotosLensControl *)self selectedItem];
       *buf = 138412546;
-      v48 = v39;
+      v48 = selectedItem2;
       v49 = 2112;
-      v50 = v31;
+      v50 = items;
       _os_log_error_impl(&dword_21ABF3000, v38, OS_LOG_TYPE_ERROR, "item %@ not found in %@", buf, 0x16u);
     }
   }
@@ -281,12 +281,12 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
   [(PXPhotosLensControl *)self _invalidateSegmentedControl];
 }
 
-- (void)setDefaultTextColor:(id)a3
+- (void)setDefaultTextColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   v5 = self->_defaultTextColor;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == colorCopy)
   {
   }
 
@@ -296,62 +296,62 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_defaultTextColor, a3);
+      objc_storeStrong(&self->_defaultTextColor, color);
       [(PXPhotosLensControl *)self _invalidateSegmentedControl];
     }
   }
 }
 
-- (void)setHideSymbols:(BOOL)a3
+- (void)setHideSymbols:(BOOL)symbols
 {
-  if (self->_hideSymbols != a3)
+  if (self->_hideSymbols != symbols)
   {
-    self->_hideSymbols = a3;
+    self->_hideSymbols = symbols;
     [(PXPhotosLensControl *)self _invalidateSegmentedControl];
   }
 }
 
-- (void)setSelectedItem:(id)a3
+- (void)setSelectedItem:(id)item
 {
-  v13 = a3;
+  itemCopy = item;
   v6 = self->_selectedItem;
   v7 = v6;
-  if (v6 == v13)
+  if (v6 == itemCopy)
   {
   }
 
   else
   {
-    v8 = [(PXPhotosLensControlItem *)v6 isEqual:v13];
+    v8 = [(PXPhotosLensControlItem *)v6 isEqual:itemCopy];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(PXPhotosLensControl *)self items];
-      v10 = [v9 containsObject:v13];
+      items = [(PXPhotosLensControl *)self items];
+      v10 = [items containsObject:itemCopy];
 
       if ((v10 & 1) == 0)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"PXPhotosLensControl.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"[self.items containsObject:selectedItem]"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLensControl.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"[self.items containsObject:selectedItem]"}];
       }
 
-      objc_storeStrong(&self->_selectedItem, a3);
-      v11 = [(PXPhotosLensControl *)self delegate];
-      [v11 photosLensControl:self didSelectItem:v13];
+      objc_storeStrong(&self->_selectedItem, item);
+      delegate = [(PXPhotosLensControl *)self delegate];
+      [delegate photosLensControl:self didSelectItem:itemCopy];
 
       [(PXPhotosLensControl *)self _invalidateSegmentedControl];
     }
   }
 }
 
-- (void)setEnabledItems:(id)a3
+- (void)setEnabledItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   enabledItems = self->_enabledItems;
-  if (enabledItems != v4)
+  if (enabledItems != itemsCopy)
   {
-    v8 = v4;
-    if (([(NSArray *)enabledItems isEqual:v4]& 1) == 0)
+    v8 = itemsCopy;
+    if (([(NSArray *)enabledItems isEqual:itemsCopy]& 1) == 0)
     {
       v6 = [(NSArray *)v8 copy];
       v7 = self->_enabledItems;
@@ -364,14 +364,14 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   items = self->_items;
-  if (items != v4)
+  if (items != itemsCopy)
   {
-    v9 = v4;
-    if (([(NSArray *)items isEqual:v4]& 1) == 0)
+    v9 = itemsCopy;
+    if (([(NSArray *)items isEqual:itemsCopy]& 1) == 0)
     {
       v6 = [(NSArray *)v9 count];
       if (v6 > [(NSArray *)self->_items count])
@@ -391,11 +391,11 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setShrinkLevel:(int64_t)a3
+- (void)setShrinkLevel:(int64_t)level
 {
-  if (self->_shrinkLevel != a3)
+  if (self->_shrinkLevel != level)
   {
-    self->_shrinkLevel = a3;
+    self->_shrinkLevel = level;
     [(PXPhotosLensControl *)self _updateSegmentedControl];
   }
 }
@@ -438,9 +438,9 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
   [(_PXPhotosLensSegmentedControl *)self->_segmentedControl setBounds:v4, v6, v8, v10];
   PXRectGetCenter();
   [(_PXPhotosLensSegmentedControl *)self->_segmentedControl setCenter:?];
-  v14 = [(PXPhotosLensControl *)self items];
-  v15 = [(PXPhotosLensControl *)self enabledItems];
-  v16 = [v14 count];
+  items = [(PXPhotosLensControl *)self items];
+  enabledItems = [(PXPhotosLensControl *)self enabledItems];
+  v16 = [items count];
   minimumInterTextSpacing = self->_minimumInterTextSpacing;
   v25 = v16;
   v18 = (v16 - 1);
@@ -453,8 +453,8 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
     do
     {
       [(_PXPhotosLensSegmentedControl *)self->_segmentedControl setWidth:v21 forSegmentAtIndex:self->_padding.right + round(v22 * (v21 + 1)) - round(v22 * v21) + self->_padding.left + self->_textSizes[v20].width];
-      v23 = [v14 objectAtIndexedSubscript:v21];
-      v24 = [v15 containsObject:v23];
+      v23 = [items objectAtIndexedSubscript:v21];
+      v24 = [enabledItems containsObject:v23];
 
       [(_PXPhotosLensSegmentedControl *)self->_segmentedControl setEnabled:v24 forSegmentAtIndex:v21];
       ++v20;
@@ -467,14 +467,14 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
   [(_PXPhotosLensSegmentedControl *)self->_segmentedControl _setInterSegmentSpacing:v19 - self->_padding.left - self->_padding.right];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PXUpdater *)self->_updater updateIfNeeded:a3.width];
+  width = fits.width;
+  [(PXUpdater *)self->_updater updateIfNeeded:fits.width];
   v6 = self->_intrinsicSize.width;
   height = self->_intrinsicSize.height;
-  v7 = [(PXPhotosLensControl *)self items];
-  v8 = [v7 count];
+  items = [(PXPhotosLensControl *)self items];
+  v8 = [items count];
 
   if (width > self->_intrinsicSize.width && v8 >= 2)
   {
@@ -499,23 +499,23 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
 
 - (UIColor)contentBackgroundColor
 {
-  v2 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
-  v3 = [v2 backgroundColor];
+  contentView = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+  backgroundColor = [contentView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setContentBackgroundColor:(id)a3
+- (void)setContentBackgroundColor:(id)color
 {
   backgroundEffectView = self->_backgroundEffectView;
-  v4 = a3;
-  v5 = [(UIVisualEffectView *)backgroundEffectView contentView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  contentView = [(UIVisualEffectView *)backgroundEffectView contentView];
+  [contentView setBackgroundColor:colorCopy];
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   [(UIVisualEffectView *)self->_backgroundEffectView _setGroupName:v4];
 }
 
@@ -542,9 +542,9 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
     v2->_items = v4;
 
     objc_storeStrong(&v2->_enabledItems, v2->_items);
-    v6 = [(NSArray *)v2->_items firstObject];
+    firstObject = [(NSArray *)v2->_items firstObject];
     selectedItem = v2->_selectedItem;
-    v2->_selectedItem = v6;
+    v2->_selectedItem = firstObject;
 
     if ((MEMORY[0x21CEE04B0]() & 1) == 0)
     {
@@ -558,9 +558,9 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
     }
 
     v2->_textSizes = malloc_type_calloc([(NSArray *)v2->_items count], 0x10uLL, 0x1000040451B5BE8uLL);
-    v12 = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
     defaultTextColor = v2->_defaultTextColor;
-    v2->_defaultTextColor = v12;
+    v2->_defaultTextColor = secondaryLabelColor;
 
     v14 = objc_alloc_init(_PXPhotosLensSegmentedControl);
     segmentedControl = v2->_segmentedControl;
@@ -575,11 +575,11 @@ void __46__PXPhotosLensControl__updateSegmentedControl__block_invoke(uint64_t a1
 
     [(PXUpdater *)v2->_updater addUpdateSelector:sel__updateSegments needsUpdate:1];
     [(PXUpdater *)v2->_updater addUpdateSelector:sel__updateSegmentedControl needsUpdate:1];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v2 selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
-    v19 = [(PXPhotosLensControl *)v2 layer];
-    [v19 setAllowsGroupOpacity:0];
+    layer = [(PXPhotosLensControl *)v2 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v2;

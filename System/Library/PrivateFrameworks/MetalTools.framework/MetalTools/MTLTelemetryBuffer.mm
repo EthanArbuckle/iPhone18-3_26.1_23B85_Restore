@@ -1,23 +1,23 @@
 @interface MTLTelemetryBuffer
-- (MTLTelemetryBuffer)initWithBuffer:(id)a3 device:(id)a4 bytes:(const void *)a5 options:(unint64_t)a6;
-- (MTLTelemetryBuffer)initWithBuffer:(id)a3 device:(id)a4 options:(unint64_t)a5;
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5;
-- (void)accumBufferDistribution:(id)a3 options:(unint64_t)a4;
+- (MTLTelemetryBuffer)initWithBuffer:(id)buffer device:(id)device bytes:(const void *)bytes options:(unint64_t)options;
+- (MTLTelemetryBuffer)initWithBuffer:(id)buffer device:(id)device options:(unint64_t)options;
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
+- (void)accumBufferDistribution:(id)distribution options:(unint64_t)options;
 @end
 
 @implementation MTLTelemetryBuffer
 
-- (void)accumBufferDistribution:(id)a3 options:(unint64_t)a4
+- (void)accumBufferDistribution:(id)distribution options:(unint64_t)options
 {
-  if ([a3 enableTelemetry])
+  if ([distribution enableTelemetry])
   {
-    v6 = *(a3 + 91);
+    v6 = *(distribution + 91);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__MTLTelemetryBuffer_accumBufferDistribution_options___block_invoke;
     v7[3] = &unk_2787B4928;
-    v7[4] = a3;
+    v7[4] = distribution;
     v7[5] = self;
     dispatch_sync(v6, v7);
   }
@@ -57,41 +57,41 @@ LABEL_9:
   return result;
 }
 
-- (MTLTelemetryBuffer)initWithBuffer:(id)a3 device:(id)a4 options:(unint64_t)a5
+- (MTLTelemetryBuffer)initWithBuffer:(id)buffer device:(id)device options:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = MTLTelemetryBuffer;
-  v7 = [(MTLToolsResource *)&v10 initWithBaseObject:a3 parent:?];
+  v7 = [(MTLToolsResource *)&v10 initWithBaseObject:buffer parent:?];
   v8 = v7;
   if (v7)
   {
-    [(MTLTelemetryBuffer *)v7 accumBufferDistribution:a4 options:a5];
+    [(MTLTelemetryBuffer *)v7 accumBufferDistribution:device options:options];
   }
 
   return v8;
 }
 
-- (MTLTelemetryBuffer)initWithBuffer:(id)a3 device:(id)a4 bytes:(const void *)a5 options:(unint64_t)a6
+- (MTLTelemetryBuffer)initWithBuffer:(id)buffer device:(id)device bytes:(const void *)bytes options:(unint64_t)options
 {
   v11.receiver = self;
   v11.super_class = MTLTelemetryBuffer;
-  v8 = [(MTLToolsResource *)&v11 initWithBaseObject:a3 parent:a4, a5];
-  v9 = v8;
-  if (v8)
+  bytes = [(MTLToolsResource *)&v11 initWithBaseObject:buffer parent:device, bytes];
+  v9 = bytes;
+  if (bytes)
   {
-    [(MTLTelemetryBuffer *)v8 accumBufferDistribution:a4 options:a6];
+    [(MTLTelemetryBuffer *)bytes accumBufferDistribution:device options:options];
   }
 
   return v9;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v10 = result;
-    v11 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] buffer:self descriptor:a3 offset:a4 bytesPerRow:a5];
+    v11 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] buffer:self descriptor:descriptor offset:offset bytesPerRow:row];
 
     return v11;
   }
@@ -99,13 +99,13 @@ LABEL_9:
   return result;
 }
 
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v11 = result;
-    v12 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] buffer:self descriptor:a3 offset:a4 bytesPerRow:a5];
+    v12 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] buffer:self descriptor:descriptor offset:offset bytesPerRow:row];
 
     return v12;
   }

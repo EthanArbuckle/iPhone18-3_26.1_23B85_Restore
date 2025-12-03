@@ -1,14 +1,14 @@
 @interface MIBUCertHelper
 + (BOOL)SUCertPresent;
-+ (__SecKey)suCertKeyFromData:(id)a3 isSEPKey:(BOOL)a4 error:(id *)a5;
-+ (id)_getCertDataFromPath:(id)a3 error:(id *)a4;
-+ (id)_pandoraCertificates:(id *)a3;
-+ (id)_parseDERCertificates:(id)a3 error:(id *)a4;
-+ (id)certificatesFromData:(id)a3 error:(id *)a4;
-+ (id)pandoraCertsData:(id *)a3;
-+ (void)deleteSUCert:(id *)a3;
-+ (void)readSUIdentityWithCompletion:(id)a3;
-+ (void)trustCertificatesWithCompletion:(id)a3;
++ (__SecKey)suCertKeyFromData:(id)data isSEPKey:(BOOL)key error:(id *)error;
++ (id)_getCertDataFromPath:(id)path error:(id *)error;
++ (id)_pandoraCertificates:(id *)certificates;
++ (id)_parseDERCertificates:(id)certificates error:(id *)error;
++ (id)certificatesFromData:(id)data error:(id *)error;
++ (id)pandoraCertsData:(id *)data;
++ (void)deleteSUCert:(id *)cert;
++ (void)readSUIdentityWithCompletion:(id)completion;
++ (void)trustCertificatesWithCompletion:(id)completion;
 @end
 
 @implementation MIBUCertHelper
@@ -98,9 +98,9 @@
   return v5;
 }
 
-+ (void)trustCertificatesWithCompletion:(id)a3
++ (void)trustCertificatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!os_variant_has_internal_content())
   {
     v9 = 0;
@@ -112,12 +112,12 @@
   }
 
   v5 = +[MIBUTestPreferences sharedInstance];
-  v6 = [v5 iseTrustCertPaths];
+  iseTrustCertPaths = [v5 iseTrustCertPaths];
 
-  if (v6)
+  if (iseTrustCertPaths)
   {
     v7 = +[MIBUTestPreferences sharedInstance];
-    v30 = [v7 iseTrustCertPaths];
+    iseTrustCertPaths2 = [v7 iseTrustCertPaths];
 
     if (qword_1000B84A8[0] != -1)
     {
@@ -128,24 +128,24 @@
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v40 = v30;
+      v40 = iseTrustCertPaths2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Overriding ISE trust certificate paths to: %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v30 = 0;
+    iseTrustCertPaths2 = 0;
   }
 
   v13 = +[MIBUTestPreferences sharedInstance];
-  v14 = [v13 iseTrustCertName];
+  iseTrustCertName = [v13 iseTrustCertName];
 
-  if (!v14)
+  if (!iseTrustCertName)
   {
     v12 = @"retail-wifi-cert.apple.com";
-    v11 = v30;
-    if (!v30)
+    v11 = iseTrustCertPaths2;
+    if (!iseTrustCertPaths2)
     {
       goto LABEL_27;
     }
@@ -154,7 +154,7 @@
   }
 
   v15 = +[MIBUTestPreferences sharedInstance];
-  v16 = [v15 iseTrustCertName];
+  iseTrustCertName2 = [v15 iseTrustCertName];
 
   if (qword_1000B84A8[0] != -1)
   {
@@ -162,11 +162,11 @@
   }
 
   v17 = qword_1000B84A0;
-  v11 = v30;
+  v11 = iseTrustCertPaths2;
   if (!os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = v16;
-    if (!v30)
+    v12 = iseTrustCertName2;
+    if (!iseTrustCertPaths2)
     {
       goto LABEL_27;
     }
@@ -175,14 +175,14 @@
   }
 
   *buf = 138543362;
-  v40 = v16;
-  v12 = v16;
+  v40 = iseTrustCertName2;
+  v12 = iseTrustCertName2;
   _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Overriding ISE trust certificate name to: %{public}@", buf, 0xCu);
-  if (v30)
+  if (iseTrustCertPaths2)
   {
 LABEL_16:
     v28 = v12;
-    v29 = v4;
+    v29 = completionCopy;
     v31 = objc_opt_new();
     v34 = 0u;
     v35 = 0u;
@@ -210,7 +210,7 @@ LABEL_16:
 
           v25 = *(*(&v34 + 1) + 8 * v22);
           v33 = 0;
-          v9 = [a1 _getCertDataFromPath:v25 error:{&v33, v28, v29}];
+          v9 = [self _getCertDataFromPath:v25 error:{&v33, v28, v29}];
           v26 = v33;
 
           if (v26)
@@ -221,12 +221,12 @@ LABEL_34:
 
             v27 = 0;
             v12 = v28;
-            v4 = v29;
+            completionCopy = v29;
             goto LABEL_32;
           }
 
           v32 = 0;
-          v10 = [a1 _parseDERCertificates:v9 error:&v32];
+          v10 = [self _parseDERCertificates:v9 error:&v32];
           v26 = v32;
 
           if (v26)
@@ -257,8 +257,8 @@ LABEL_34:
       v9 = 0;
     }
 
-    v4 = v29;
-    v11 = v30;
+    completionCopy = v29;
+    v11 = iseTrustCertPaths2;
     v12 = v28;
     if (!v28)
     {
@@ -285,14 +285,14 @@ LABEL_28:
   v26 = 0;
   v27 = 0;
 LABEL_32:
-  v4[2](v4, v31, v27, v26);
+  completionCopy[2](completionCopy, v31, v27, v26);
 }
 
-+ (__SecKey)suCertKeyFromData:(id)a3 isSEPKey:(BOOL)a4 error:(id *)a5
++ (__SecKey)suCertKeyFromData:(id)data isSEPKey:(BOOL)key error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   error = 0;
-  if (!os_variant_has_internal_content() || a4)
+  if (!os_variant_has_internal_content() || key)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -315,7 +315,7 @@ LABEL_32:
       v36[1] = kSecAttrTokenIDAppleKeyStore;
       v35[2] = kSecAttrTokenOID;
       v35[3] = kSecAttrAccessControl;
-      v36[2] = v7;
+      v36[2] = dataCopy;
       v36[3] = v18;
       v16 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:4];
       v14 = SecKeyCreateWithData(+[NSData data], v16, &error);
@@ -361,7 +361,7 @@ LABEL_32:
     v38[0] = kSecAttrKeyTypeRSA;
     v38[1] = kSecAttrKeyClassPrivate;
     v9 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:2];
-    v14 = SecKeyCreateWithData(v7, v9, &error);
+    v14 = SecKeyCreateWithData(dataCopy, v9, &error);
     if (!v14 || error)
     {
       v32 = 0;
@@ -377,24 +377,24 @@ LABEL_32:
     v16 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v27 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v14;
 }
 
-+ (id)certificatesFromData:(id)a3 error:(id *)a4
++ (id)certificatesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = dataCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -433,16 +433,16 @@ LABEL_32:
 
 LABEL_11:
 
-  if (a4)
+  if (error)
   {
     v17 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v6;
 }
 
-+ (void)deleteSUCert:(id *)a3
++ (void)deleteSUCert:(id *)cert
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -505,7 +505,7 @@ LABEL_11:
               _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to delete %{public}@ with error: %{public}@", buf, 0x16u);
             }
 
-            sub_100016130(a3, 50331650, v15, @"Failed to delete %@", v17, v18, v19, v20, v10);
+            sub_100016130(cert, 50331650, v15, @"Failed to delete %@", v17, v18, v19, v20, v10);
           }
 
           v7 = v15;
@@ -543,42 +543,42 @@ LABEL_11:
   }
 }
 
-+ (id)_getCertDataFromPath:(id)a3 error:(id *)a4
++ (id)_getCertDataFromPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  v7 = [v6 fileExistsAtPath:pathCopy];
 
   if (v7)
   {
-    v8 = [[NSData alloc] initWithContentsOfFile:v5];
+    v8 = [[NSData alloc] initWithContentsOfFile:pathCopy];
     if (!v8)
     {
-      sub_1000597D8(v5, a4);
+      sub_1000597D8(pathCopy, error);
     }
   }
 
   else
   {
-    sub_1000596E8(v5, a4);
+    sub_1000596E8(pathCopy, error);
     v8 = 0;
   }
 
   return v8;
 }
 
-+ (id)_pandoraCertificates:(id *)a3
++ (id)_pandoraCertificates:(id *)certificates
 {
   v4 = objc_alloc_init(NSMutableArray);
   if (os_variant_has_internal_content())
   {
     v5 = +[MIBUTestPreferences sharedInstance];
-    v6 = [v5 usePandoraNonProdCerts];
+    usePandoraNonProdCerts = [v5 usePandoraNonProdCerts];
   }
 
   else
   {
-    v6 = 0;
+    usePandoraNonProdCerts = 0;
   }
 
   if (qword_1000B84A8[0] != -1)
@@ -590,7 +590,7 @@ LABEL_11:
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"Prod";
-    if (v6)
+    if (usePandoraNonProdCerts)
     {
       v8 = @"Non-Prod";
     }
@@ -601,7 +601,7 @@ LABEL_11:
   }
 
   v9 = [NSData alloc];
-  if (v6)
+  if (usePandoraNonProdCerts)
   {
     v10 = aBeginCertifica_0;
   }
@@ -611,7 +611,7 @@ LABEL_11:
     v10 = aBeginCertifica;
   }
 
-  if (v6)
+  if (usePandoraNonProdCerts)
   {
     v11 = aBeginCertifica_2;
   }
@@ -622,7 +622,7 @@ LABEL_11:
   }
 
   v12 = &unk_1000B70DC;
-  if (v6)
+  if (usePandoraNonProdCerts)
   {
     v13 = &unk_1000B6D74;
   }
@@ -646,31 +646,31 @@ LABEL_11:
 
   else
   {
-    sub_100016130(a3, 50331651, 0, @"Failed to create certificate from PEM data", v17, v18, v19, v20, *v26);
+    sub_100016130(certificates, 50331651, 0, @"Failed to create certificate from PEM data", v17, v18, v19, v20, *v26);
     v24 = 0;
   }
 
   return v24;
 }
 
-+ (void)readSUIdentityWithCompletion:(id)a3
++ (void)readSUIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!os_variant_has_internal_content())
   {
-    v8 = @"/private/var/hardware/factory/su/su0-cert.der";
+    factorySUCertPath2 = @"/private/var/hardware/factory/su/su0-cert.der";
 LABEL_14:
-    v13 = @"/private/var/hardware/factory/su/su0-key.der";
+    factorySUKeyPath2 = @"/private/var/hardware/factory/su/su0-key.der";
     goto LABEL_15;
   }
 
   v5 = +[MIBUTestPreferences sharedInstance];
-  v6 = [v5 factorySUCertPath];
+  factorySUCertPath = [v5 factorySUCertPath];
 
-  if (v6)
+  if (factorySUCertPath)
   {
     v7 = +[MIBUTestPreferences sharedInstance];
-    v8 = [v7 factorySUCertPath];
+    factorySUCertPath2 = [v7 factorySUCertPath];
 
     if (qword_1000B84A8[0] != -1)
     {
@@ -681,26 +681,26 @@ LABEL_14:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v8;
+      v25 = factorySUCertPath2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Overriding SU certificate path to %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v8 = @"/private/var/hardware/factory/su/su0-cert.der";
+    factorySUCertPath2 = @"/private/var/hardware/factory/su/su0-cert.der";
   }
 
   v10 = +[MIBUTestPreferences sharedInstance];
-  v11 = [v10 factorySUKeyPath];
+  factorySUKeyPath = [v10 factorySUKeyPath];
 
-  if (!v11)
+  if (!factorySUKeyPath)
   {
     goto LABEL_14;
   }
 
   v12 = +[MIBUTestPreferences sharedInstance];
-  v13 = [v12 factorySUKeyPath];
+  factorySUKeyPath2 = [v12 factorySUKeyPath];
 
   if (qword_1000B84A8[0] != -1)
   {
@@ -711,13 +711,13 @@ LABEL_14:
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v13;
+    v25 = factorySUKeyPath2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Overriding SU key path to %{public}@", buf, 0xCu);
   }
 
 LABEL_15:
   v23 = 0;
-  v15 = [a1 _getCertDataFromPath:v8 error:&v23];
+  v15 = [self _getCertDataFromPath:factorySUCertPath2 error:&v23];
   v16 = v23;
   if (v16)
   {
@@ -729,7 +729,7 @@ LABEL_15:
   else
   {
     v22 = 0;
-    v17 = [a1 _parseDERCertificates:v15 error:&v22];
+    v17 = [self _parseDERCertificates:v15 error:&v22];
     v18 = v22;
     if (v18)
     {
@@ -740,15 +740,15 @@ LABEL_15:
     else
     {
       v21 = 0;
-      v19 = [a1 _getCertDataFromPath:v13 error:&v21];
+      v19 = [self _getCertDataFromPath:factorySUKeyPath2 error:&v21];
       v20 = v21;
     }
   }
 
-  v4[2](v4, v17, v19, v20);
+  completionCopy[2](completionCopy, v17, v19, v20);
 }
 
-+ (id)pandoraCertsData:(id *)a3
++ (id)pandoraCertsData:(id *)data
 {
   v13 = 0;
   v4 = [MIBUCertHelper _pandoraCertificates:&v13];
@@ -756,11 +756,11 @@ LABEL_15:
   if (v5)
   {
     v6 = 0;
-    if (a3)
+    if (data)
     {
 LABEL_6:
       v10 = v5;
-      *a3 = v5;
+      *data = v5;
     }
   }
 
@@ -783,7 +783,7 @@ LABEL_6:
       while (v7 < [v4 count]);
     }
 
-    if (a3)
+    if (data)
     {
       goto LABEL_6;
     }
@@ -794,16 +794,16 @@ LABEL_6:
   return v11;
 }
 
-+ (id)_parseDERCertificates:(id)a3 error:(id *)a4
++ (id)_parseDERCertificates:(id)certificates error:(id *)error
 {
-  v5 = a3;
+  certificatesCopy = certificates;
   memset(v18, 0, sizeof(v18));
   v17 = 0;
-  v6 = [v5 bytes];
-  v7 = CTParseCertificateSet(v6, [v5 length] + v6, v18, 3, &v17);
+  bytes = [certificatesCopy bytes];
+  v7 = CTParseCertificateSet(bytes, [certificatesCopy length] + bytes, v18, 3, &v17);
   if (v7 || !v17)
   {
-    sub_100016130(a4, 50331648, 0, @"Failed to parse certificate set: 0x%08x", v8, v9, v10, v11, v7);
+    sub_100016130(error, 50331648, 0, @"Failed to parse certificate set: 0x%08x", v8, v9, v10, v11, v7);
     v12 = 0;
   }
 

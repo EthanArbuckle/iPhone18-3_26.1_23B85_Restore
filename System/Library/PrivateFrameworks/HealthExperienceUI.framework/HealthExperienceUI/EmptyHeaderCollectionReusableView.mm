@@ -1,16 +1,16 @@
 @interface EmptyHeaderCollectionReusableView
-- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation EmptyHeaderCollectionReusableView
 
-- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView_item;
   v9 = type metadata accessor for EmptyHeaderCollectionReusableView();
   *v8 = 0u;
@@ -21,7 +21,7 @@
   return [(EmptyHeaderCollectionReusableView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC18HealthExperienceUI33EmptyHeaderCollectionReusableView_item;
   *v4 = 0u;
@@ -29,8 +29,8 @@
   *(v4 + 4) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for EmptyHeaderCollectionReusableView();
-  v5 = a3;
-  v6 = [(EmptyHeaderCollectionReusableView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(EmptyHeaderCollectionReusableView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

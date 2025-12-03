@@ -7,11 +7,11 @@
 + (id)_splitKeyboardLayoutHints
 {
   v2 = TextInputUIBundle();
-  v3 = [v2 bundlePath];
+  bundlePath = [v2 bundlePath];
 
-  v4 = [v3 stringByAppendingPathComponent:@"UIKBSplitRowHints.plist"];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  v4 = [bundlePath stringByAppendingPathComponent:@"UIKBSplitRowHints.plist"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (v6)
   {

@@ -1,29 +1,29 @@
 @interface GSRemoveAdditionSpec
-+ (id)GSRemoveAdditionSpecWithAdditionDictionary:(id)a3;
-+ (id)calculateSpecForAdditionRemovalUnderPath:(id)a3;
-- (GSRemoveAdditionSpec)initWithAdditionDictionary:(id)a3;
++ (id)GSRemoveAdditionSpecWithAdditionDictionary:(id)dictionary;
++ (id)calculateSpecForAdditionRemovalUnderPath:(id)path;
+- (GSRemoveAdditionSpec)initWithAdditionDictionary:(id)dictionary;
 @end
 
 @implementation GSRemoveAdditionSpec
 
-- (GSRemoveAdditionSpec)initWithAdditionDictionary:(id)a3
+- (GSRemoveAdditionSpec)initWithAdditionDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = GSRemoveAdditionSpec;
   v5 = [(GSRemoveAdditionSpec *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"u"];
-    v7 = [v6 lastPathComponent];
+    v6 = [dictionaryCopy objectForKey:@"u"];
+    lastPathComponent = [v6 lastPathComponent];
     name = v5->_name;
-    v5->_name = v7;
+    v5->_name = lastPathComponent;
 
-    v9 = [v4 objectForKey:@"ns"];
+    v9 = [dictionaryCopy objectForKey:@"ns"];
     nameSpace = v5->_nameSpace;
     v5->_nameSpace = v9;
 
-    v11 = [v4 objectForKey:@"sID"];
+    v11 = [dictionaryCopy objectForKey:@"sID"];
     storageID = v5->_storageID;
     v5->_storageID = v11;
   }
@@ -31,22 +31,22 @@
   return v5;
 }
 
-+ (id)GSRemoveAdditionSpecWithAdditionDictionary:(id)a3
++ (id)GSRemoveAdditionSpecWithAdditionDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[GSRemoveAdditionSpec alloc] initWithAdditionDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[GSRemoveAdditionSpec alloc] initWithAdditionDictionary:dictionaryCopy];
 
   return v4;
 }
 
-+ (id)calculateSpecForAdditionRemovalUnderPath:(id)a3
++ (id)calculateSpecForAdditionRemovalUnderPath:(id)path
 {
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  pathCopy = path;
+  v4 = [pathCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v4)
   {
     v5 = v4;
@@ -59,7 +59,7 @@
       {
         if (*v36 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathCopy);
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
@@ -131,7 +131,7 @@ LABEL_29:
         v7 = &MKBDeviceFormattedForContentProtection_ptr;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v5 = [pathCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
       if (v5)
       {
         continue;
@@ -141,12 +141,12 @@ LABEL_29:
     }
   }
 
-  v18 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  v18 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(pathCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = v3;
+  v19 = pathCopy;
   v20 = [v19 countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v20)
   {

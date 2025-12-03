@@ -1,5 +1,5 @@
 @interface CPLFileWatcher
-- (CPLFileWatcher)initWithFileURL:(id)a3 name:(id)a4 ownerIdentifier:(id)a5 delegate:(id)a6 queue:(id)a7;
+- (CPLFileWatcher)initWithFileURL:(id)l name:(id)name ownerIdentifier:(id)identifier delegate:(id)delegate queue:(id)queue;
 - (CPLFileWatcherDelegate)delegate;
 - (id)_redactedPath;
 - (id)description;
@@ -26,8 +26,8 @@
 - (id)redactedDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CPLFileWatcher *)self _redactedPath];
-  v5 = [v3 initWithFormat:@"<%@ '%@' for %@>", v4, self->_name, self->_ownerIdentifier];
+  _redactedPath = [(CPLFileWatcher *)self _redactedPath];
+  v5 = [v3 initWithFormat:@"<%@ '%@' for %@>", _redactedPath, self->_name, self->_ownerIdentifier];
 
   return v5;
 }
@@ -35,9 +35,9 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(NSURL *)self->_fileURL path];
-  v5 = [v4 stringByAbbreviatingWithTildeInPath];
-  v6 = [v3 initWithFormat:@"<%@ '%@' for %@>", v5, self->_name, self->_ownerIdentifier];
+  path = [(NSURL *)self->_fileURL path];
+  stringByAbbreviatingWithTildeInPath = [path stringByAbbreviatingWithTildeInPath];
+  v6 = [v3 initWithFormat:@"<%@ '%@' for %@>", stringByAbbreviatingWithTildeInPath, self->_name, self->_ownerIdentifier];
 
   return v6;
 }
@@ -51,12 +51,12 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       ownerIdentifier = self->_ownerIdentifier;
-      v5 = [(CPLFileWatcher *)self _redactedPath];
+      _redactedPath = [(CPLFileWatcher *)self _redactedPath];
       name = self->_name;
       *buf = 138412802;
       v11 = ownerIdentifier;
       v12 = 2112;
-      v13 = v5;
+      v13 = _redactedPath;
       v14 = 2112;
       v15 = name;
       _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEFAULT, "%@: Stopping watching %@ (%@)", buf, 0x20u);
@@ -100,12 +100,12 @@ void *__30__CPLFileWatcher_stopWatching__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       ownerIdentifier = self->_ownerIdentifier;
-      v5 = [(CPLFileWatcher *)self _redactedPath];
+      _redactedPath = [(CPLFileWatcher *)self _redactedPath];
       name = self->_name;
       *buf = 138412802;
       v11 = ownerIdentifier;
       v12 = 2112;
-      v13 = v5;
+      v13 = _redactedPath;
       v14 = 2112;
       v15 = name;
       _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEFAULT, "%@: Starting watching %@ (%@)", buf, 0x20u);
@@ -191,15 +191,15 @@ LABEL_9:
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLFileWatcher.m"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:122 description:@"Parent source should be nil here"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:122 description:@"Parent source should be nil here"];
 
     abort();
   }
 
-  v3 = [(NSURL *)self->_fileURL URLByDeletingLastPathComponent];
-  v4 = open([v3 fileSystemRepresentation], 0x8000);
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_fileURL URLByDeletingLastPathComponent];
+  v4 = open([uRLByDeletingLastPathComponent fileSystemRepresentation], 0x8000);
 
   if ((v4 & 0x80000000) == 0)
   {
@@ -290,9 +290,9 @@ LABEL_12:
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLFileWatcher.m"];
-    [v13 handleFailureInMethod:a2 object:self file:v14 lineNumber:102 description:@"Node source should not be nil here"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v14 lineNumber:102 description:@"Node source should not be nil here"];
 
     abort();
   }
@@ -307,11 +307,11 @@ LABEL_12:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         ownerIdentifier = self->_ownerIdentifier;
-        v9 = [(CPLFileWatcher *)self _redactedPath];
+        _redactedPath = [(CPLFileWatcher *)self _redactedPath];
         v17.st_dev = 138543618;
         *&v17.st_mode = ownerIdentifier;
         WORD2(v17.st_ino) = 2114;
-        *(&v17.st_ino + 6) = v9;
+        *(&v17.st_ino + 6) = _redactedPath;
         _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ has been deleted but immediately recreated", &v17, 0x16u);
       }
     }
@@ -328,9 +328,9 @@ LABEL_12:
         v5 = __CPLFileWatcherOSLogDomain();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [(NSURL *)self->_fileURL path];
+          path = [(NSURL *)self->_fileURL path];
           v15 = 138412290;
-          v16 = v6;
+          v16 = path;
           _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "%@ has changed", &v15, 0xCu);
         }
       }
@@ -369,9 +369,9 @@ LABEL_12:
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLFileWatcher.m"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:64 description:@"Node source should be nil here"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:64 description:@"Node source should be nil here"];
 
     abort();
   }
@@ -457,9 +457,9 @@ void __36__CPLFileWatcher__startWatchingNode__block_invoke(uint64_t a1)
       }
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLFileWatcher.m"];
-    [v10 handleFailureInMethod:a2 object:self file:v11 lineNumber:52 description:@"Node source should not be nil here"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v11 lineNumber:52 description:@"Node source should not be nil here"];
 
     abort();
   }
@@ -473,10 +473,10 @@ void __36__CPLFileWatcher__startWatchingNode__block_invoke(uint64_t a1)
       v3 = __CPLFileWatcherOSLogDomain();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
-        v4 = [(NSURL *)self->_fileURL path];
+        path = [(NSURL *)self->_fileURL path];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v12 = 138412546;
-        v13 = v4;
+        v13 = path;
         v14 = 2112;
         v15 = WeakRetained;
         _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEFAULT, "%@ has been deleted - informing %@", &v12, 0x16u);
@@ -496,41 +496,41 @@ void __36__CPLFileWatcher__startWatchingNode__block_invoke(uint64_t a1)
   fileURL = self->_fileURL;
   if (has_internal_content)
   {
-    v5 = [(NSURL *)fileURL path];
-    v6 = [v5 stringByAbbreviatingWithTildeInPath];
+    path = [(NSURL *)fileURL path];
+    stringByAbbreviatingWithTildeInPath = [path stringByAbbreviatingWithTildeInPath];
   }
 
   else
   {
-    v6 = [(NSURL *)fileURL lastPathComponent];
+    stringByAbbreviatingWithTildeInPath = [(NSURL *)fileURL lastPathComponent];
   }
 
-  return v6;
+  return stringByAbbreviatingWithTildeInPath;
 }
 
-- (CPLFileWatcher)initWithFileURL:(id)a3 name:(id)a4 ownerIdentifier:(id)a5 delegate:(id)a6 queue:(id)a7
+- (CPLFileWatcher)initWithFileURL:(id)l name:(id)name ownerIdentifier:(id)identifier delegate:(id)delegate queue:(id)queue
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  nameCopy = name;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = CPLFileWatcher;
   v17 = [(CPLFileWatcher *)&v25 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [lCopy copy];
     fileURL = v17->_fileURL;
     v17->_fileURL = v18;
 
-    objc_storeWeak(&v17->_delegate, v15);
-    objc_storeStrong(&v17->_queue, a7);
-    v20 = [v13 copy];
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v17->_queue, queue);
+    v20 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v20;
 
-    v22 = [v14 copy];
+    v22 = [identifierCopy copy];
     ownerIdentifier = v17->_ownerIdentifier;
     v17->_ownerIdentifier = v22;
   }

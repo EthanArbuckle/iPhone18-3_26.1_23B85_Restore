@@ -1,29 +1,29 @@
 @interface CCDatabaseInsertBuilder
-- (BOOL)_setError:(id *)a3 withCode:(int64_t)a4;
-- (CCDatabaseInsertBuilder)initWithTableName:(id)a3 columnNames:(id)a4;
-- (id)buildWithError:(id *)a3;
-- (void)setColumnValues:(id)a3;
-- (void)setReturningColumns:(id)a3;
+- (BOOL)_setError:(id *)error withCode:(int64_t)code;
+- (CCDatabaseInsertBuilder)initWithTableName:(id)name columnNames:(id)names;
+- (id)buildWithError:(id *)error;
+- (void)setColumnValues:(id)values;
+- (void)setReturningColumns:(id)columns;
 @end
 
 @implementation CCDatabaseInsertBuilder
 
-- (CCDatabaseInsertBuilder)initWithTableName:(id)a3 columnNames:(id)a4
+- (CCDatabaseInsertBuilder)initWithTableName:(id)name columnNames:(id)names
 {
-  v6 = a4;
+  namesCopy = names;
   v14.receiver = self;
   v14.super_class = CCDatabaseInsertBuilder;
-  v7 = [(CCDatabaseCommandBuilder *)&v14 initWithTableName:a3];
+  v7 = [(CCDatabaseCommandBuilder *)&v14 initWithTableName:name];
   if (!v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [v6 count];
+  v8 = [namesCopy count];
   v7->_numberOfColumns = v8;
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [namesCopy copy];
     columnNames = v7->_columnNames;
     v7->_columnNames = v9;
 
@@ -44,20 +44,20 @@ LABEL_8:
   return v11;
 }
 
-- (id)buildWithError:(id *)a3
+- (id)buildWithError:(id *)error
 {
   numberOfColumns = self->_numberOfColumns;
   if (numberOfColumns == [(NSArray *)self->_columnValues count])
   {
-    v6 = [(CCDatabaseCommandBuilder *)self tableName];
-    v7 = [CCSQLCommandGenerator insertCommandStringWithTableName:v6 columnNames:self->_columnNames returningColumns:self->_returningColumns onConflict:self->_onConflict];
+    tableName = [(CCDatabaseCommandBuilder *)self tableName];
+    v7 = [CCSQLCommandGenerator insertCommandStringWithTableName:tableName columnNames:self->_columnNames returningColumns:self->_returningColumns onConflict:self->_onConflict];
 
     v8 = [(CCDatabaseCommand *)[CCDatabaseInsert alloc] initWithCommandString:v7 parameters:self->_columnValues];
   }
 
   else
   {
-    [(CCDatabaseInsertBuilder *)self _setError:a3 withCode:1];
+    [(CCDatabaseInsertBuilder *)self _setError:error withCode:1];
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -70,32 +70,32 @@ LABEL_8:
   return v8;
 }
 
-- (void)setColumnValues:(id)a3
+- (void)setColumnValues:(id)values
 {
-  v4 = [a3 copy];
+  v4 = [values copy];
   columnValues = self->_columnValues;
   self->_columnValues = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setReturningColumns:(id)a3
+- (void)setReturningColumns:(id)columns
 {
-  v4 = [a3 copy];
+  v4 = [columns copy];
   returningColumns = self->_returningColumns;
   self->_returningColumns = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)_setError:(id *)a3 withCode:(int64_t)a4
+- (BOOL)_setError:(id *)error withCode:(int64_t)code
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CascadeSets.DatabaseInsert" code:a4 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CascadeSets.DatabaseInsert" code:code userInfo:0];
   }
 
-  return a3 != 0;
+  return error != 0;
 }
 
 @end

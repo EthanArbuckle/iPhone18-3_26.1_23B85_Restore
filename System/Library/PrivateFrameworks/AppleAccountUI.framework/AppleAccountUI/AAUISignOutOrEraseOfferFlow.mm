@@ -1,24 +1,24 @@
 @interface AAUISignOutOrEraseOfferFlow
-- (AAUISignOutOrEraseOfferFlow)initWithNavController:(id)a3 presentingController:(id)a4 account:(id)a5 dataclassActionsStore:(id)a6;
-- (void)beginFlowWithInvoker:(id)a3;
+- (AAUISignOutOrEraseOfferFlow)initWithNavController:(id)controller presentingController:(id)presentingController account:(id)account dataclassActionsStore:(id)store;
+- (void)beginFlowWithInvoker:(id)invoker;
 @end
 
 @implementation AAUISignOutOrEraseOfferFlow
 
-- (AAUISignOutOrEraseOfferFlow)initWithNavController:(id)a3 presentingController:(id)a4 account:(id)a5 dataclassActionsStore:(id)a6
+- (AAUISignOutOrEraseOfferFlow)initWithNavController:(id)controller presentingController:(id)presentingController account:(id)account dataclassActionsStore:(id)store
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
-  MEMORY[0x1E69E5928](a6);
-  return SignOutOrEraseOfferFlow.init(navController:presentingController:account:dataclassActionsStore:)(a3, a4, a5, a6);
+  MEMORY[0x1E69E5928](controller);
+  MEMORY[0x1E69E5928](presentingController);
+  MEMORY[0x1E69E5928](account);
+  MEMORY[0x1E69E5928](store);
+  return SignOutOrEraseOfferFlow.init(navController:presentingController:account:dataclassActionsStore:)(controller, presentingController, account, store);
 }
 
-- (void)beginFlowWithInvoker:(id)a3
+- (void)beginFlowWithInvoker:(id)invoker
 {
   swift_unknownObjectRetain();
   MEMORY[0x1E69E5928](self);
-  sub_1C5579AE8(a3);
+  sub_1C5579AE8(invoker);
   MEMORY[0x1E69E5920](self);
   swift_unknownObjectRelease();
 }

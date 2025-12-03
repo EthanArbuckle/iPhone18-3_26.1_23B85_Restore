@@ -1,10 +1,10 @@
 @interface MPSCNNLocalContrastNormalizationGradient
 - (MPSCNNLocalContrastNormalizationGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSCNNLocalContrastNormalizationGradient)initWithDevice:(id)a3;
+- (MPSCNNLocalContrastNormalizationGradient)initWithDevice:(id)device;
 - (MPSCNNLocalContrastNormalizationGradient)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNLocalContrastNormalizationGradient
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (MPSCNNLocalContrastNormalizationGradient)initWithDevice:(id)a3
+- (MPSCNNLocalContrastNormalizationGradient)initWithDevice:(id)device
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -87,31 +87,31 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v47.receiver = self;
   v47.super_class = MPSCNNLocalContrastNormalizationGradient;
   [(MPSCNNGradientKernel *)&v47 encodeWithCoder:?];
   *&v5 = self->_alpha;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSCNNLocalContrastNormalizationGradient.alpha", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSCNNLocalContrastNormalizationGradient.alpha", v7, v8, v9, v10, v11, v5);
   *&v12 = self->_beta;
-  objc_msgSend_encodeFloat_forKey_(a3, v13, @"MPSCNNLocalContrastNormalizationGradient.beta", v14, v15, v16, v17, v18, v12);
+  objc_msgSend_encodeFloat_forKey_(coder, v13, @"MPSCNNLocalContrastNormalizationGradient.beta", v14, v15, v16, v17, v18, v12);
   *&v19 = self->_delta;
-  objc_msgSend_encodeFloat_forKey_(a3, v20, @"MPSCNNLocalContrastNormalizationGradient.delta", v21, v22, v23, v24, v25, v19);
+  objc_msgSend_encodeFloat_forKey_(coder, v20, @"MPSCNNLocalContrastNormalizationGradient.delta", v21, v22, v23, v24, v25, v19);
   *&v26 = self->_p0;
-  objc_msgSend_encodeFloat_forKey_(a3, v27, @"MPSCNNLocalContrastNormalizationGradient.p0", v28, v29, v30, v31, v32, v26);
+  objc_msgSend_encodeFloat_forKey_(coder, v27, @"MPSCNNLocalContrastNormalizationGradient.p0", v28, v29, v30, v31, v32, v26);
   *&v33 = self->_pm;
-  objc_msgSend_encodeFloat_forKey_(a3, v34, @"MPSCNNLocalContrastNormalizationGradient.pm", v35, v36, v37, v38, v39, v33);
+  objc_msgSend_encodeFloat_forKey_(coder, v34, @"MPSCNNLocalContrastNormalizationGradient.pm", v35, v36, v37, v38, v39, v33);
   *&v40 = self->_ps;
-  objc_msgSend_encodeFloat_forKey_(a3, v41, @"MPSCNNLocalContrastNormalizationGradient.ps", v42, v43, v44, v45, v46, v40);
+  objc_msgSend_encodeFloat_forKey_(coder, v41, @"MPSCNNLocalContrastNormalizationGradient.ps", v42, v43, v44, v45, v46, v40);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNLocalContrastNormalizationGradient;
-  result = [(MPSCNNGradientKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNGradientKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 108) = LODWORD(self->_alpha);

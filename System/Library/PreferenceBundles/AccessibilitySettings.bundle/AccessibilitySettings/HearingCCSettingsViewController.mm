@@ -1,21 +1,21 @@
 @interface HearingCCSettingsViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (HearingCCSettingsViewController)init;
-- (id)_identifierAtIndexPath:(id)a3;
-- (id)_identifiersInSection:(unint64_t)a3;
-- (id)_specifierNameForOption:(unint64_t)a3;
-- (id)_specifiersForIdentifiers:(id)a3;
+- (id)_identifierAtIndexPath:(id)path;
+- (id)_identifiersInSection:(unint64_t)section;
+- (id)_specifierNameForOption:(unint64_t)option;
+- (id)_specifiersForIdentifiers:(id)identifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (unint64_t)_indexForInsertingItemWithIdentifier:(id)a3 intoArray:(id)a4;
-- (void)_includedIdentifierAtIndexPath:(id)a3;
-- (void)_moreIdentifierAtIndexPath:(id)a3;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (unint64_t)_indexForInsertingItemWithIdentifier:(id)identifier intoArray:(id)array;
+- (void)_includedIdentifierAtIndexPath:(id)path;
+- (void)_moreIdentifierAtIndexPath:(id)path;
 - (void)_repopulateModuleData;
 - (void)_saveState;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
@@ -62,11 +62,11 @@
     v7 = [PSSpecifier groupSpecifierWithName:v6];
     [(HearingCCSettingsViewController *)self setIncludedModulesGroupSpecifier:v7];
 
-    v8 = [(HearingCCSettingsViewController *)self includedModulesGroupSpecifier];
-    [v5 addObject:v8];
+    includedModulesGroupSpecifier = [(HearingCCSettingsViewController *)self includedModulesGroupSpecifier];
+    [v5 addObject:includedModulesGroupSpecifier];
 
-    v9 = [(HearingCCSettingsViewController *)self includedIdentifiers];
-    v10 = [(HearingCCSettingsViewController *)self _specifiersForIdentifiers:v9];
+    includedIdentifiers = [(HearingCCSettingsViewController *)self includedIdentifiers];
+    v10 = [(HearingCCSettingsViewController *)self _specifiersForIdentifiers:includedIdentifiers];
     [v5 addObjectsFromArray:v10];
 
     [(HearingCCSettingsViewController *)self setMoreSectionIndex:1];
@@ -74,11 +74,11 @@
     v12 = [PSSpecifier groupSpecifierWithName:v11];
     [(HearingCCSettingsViewController *)self setMoreModulesGroupSpecifier:v12];
 
-    v13 = [(HearingCCSettingsViewController *)self moreModulesGroupSpecifier];
-    [v5 addObject:v13];
+    moreModulesGroupSpecifier = [(HearingCCSettingsViewController *)self moreModulesGroupSpecifier];
+    [v5 addObject:moreModulesGroupSpecifier];
 
-    v14 = [(HearingCCSettingsViewController *)self moreIdentifiers];
-    v15 = [(HearingCCSettingsViewController *)self _specifiersForIdentifiers:v14];
+    moreIdentifiers = [(HearingCCSettingsViewController *)self moreIdentifiers];
+    v15 = [(HearingCCSettingsViewController *)self _specifiersForIdentifiers:moreIdentifiers];
     [v5 addObjectsFromArray:v15];
 
     v16 = *&self->super.AXUISettingsListController_opaque[v3];
@@ -94,8 +94,8 @@
 {
   v3 = [NSArray arrayWithObjects:&off_27A548, &off_27A560, &off_27A578, &off_27A590, &off_27A5A8, &off_27A5C0, 0];
   v4 = +[HUHearingSettings sharedInstance];
-  v5 = [v4 hearingControlCenterOrder];
-  v6 = [v5 mutableCopy];
+  hearingControlCenterOrder = [v4 hearingControlCenterOrder];
+  v6 = [hearingControlCenterOrder mutableCopy];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -123,68 +123,68 @@ void __56__HearingCCSettingsViewController__repopulateModuleData__block_invoke(u
   }
 }
 
-- (id)_identifiersInSection:(unint64_t)a3
+- (id)_identifiersInSection:(unint64_t)section
 {
-  if ([(HearingCCSettingsViewController *)self includedSectionIndex]== a3)
+  if ([(HearingCCSettingsViewController *)self includedSectionIndex]== section)
   {
-    v5 = [(HearingCCSettingsViewController *)self includedIdentifiers];
+    includedIdentifiers = [(HearingCCSettingsViewController *)self includedIdentifiers];
   }
 
-  else if ([(HearingCCSettingsViewController *)self moreSectionIndex]== a3)
+  else if ([(HearingCCSettingsViewController *)self moreSectionIndex]== section)
   {
-    v5 = [(HearingCCSettingsViewController *)self moreIdentifiers];
+    includedIdentifiers = [(HearingCCSettingsViewController *)self moreIdentifiers];
   }
 
   else
   {
-    v5 = 0;
+    includedIdentifiers = 0;
   }
 
-  return v5;
+  return includedIdentifiers;
 }
 
-- (id)_identifierAtIndexPath:(id)a3
+- (id)_identifierAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  v7 = [(HearingCCSettingsViewController *)self _identifiersInSection:v5];
+  v7 = [(HearingCCSettingsViewController *)self _identifiersInSection:section];
   v8 = [v7 objectAtIndex:v6];
 
   return v8;
 }
 
-- (unint64_t)_indexForInsertingItemWithIdentifier:(id)a3 intoArray:(id)a4
+- (unint64_t)_indexForInsertingItemWithIdentifier:(id)identifier intoArray:(id)array
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 indexOfObject:v6 inSortedRange:0 options:objc_msgSend(v5 usingComparator:{"count"), 1024, &__block_literal_global_41}];
+  arrayCopy = array;
+  identifierCopy = identifier;
+  v7 = [arrayCopy indexOfObject:identifierCopy inSortedRange:0 options:objc_msgSend(arrayCopy usingComparator:{"count"), 1024, &__block_literal_global_41}];
 
   return v7;
 }
 
-- (void)_includedIdentifierAtIndexPath:(id)a3
+- (void)_includedIdentifierAtIndexPath:(id)path
 {
-  v4 = a3;
-  v16 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:v4];
-  v5 = [(HearingCCSettingsViewController *)self includedIdentifiers];
-  v6 = [v5 count];
+  pathCopy = path;
+  v16 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:pathCopy];
+  includedIdentifiers = [(HearingCCSettingsViewController *)self includedIdentifiers];
+  v6 = [includedIdentifiers count];
 
-  v7 = [(HearingCCSettingsViewController *)self moreModulesGroupSpecifier];
-  v8 = [(HearingCCSettingsViewController *)self indexOfSpecifier:v7];
-  v9 = [v4 row];
+  moreModulesGroupSpecifier = [(HearingCCSettingsViewController *)self moreModulesGroupSpecifier];
+  v8 = [(HearingCCSettingsViewController *)self indexOfSpecifier:moreModulesGroupSpecifier];
+  v9 = [pathCopy row];
 
   v10 = &v9[v8];
-  v11 = [(HearingCCSettingsViewController *)self includedModulesGroupSpecifier];
-  v12 = [(HearingCCSettingsViewController *)self indexOfSpecifier:v11]+ v6;
+  includedModulesGroupSpecifier = [(HearingCCSettingsViewController *)self includedModulesGroupSpecifier];
+  v12 = [(HearingCCSettingsViewController *)self indexOfSpecifier:includedModulesGroupSpecifier]+ v6;
 
   v13 = [(HearingCCSettingsViewController *)self specifierAtIndex:v10 + 1];
-  v14 = [(HearingCCSettingsViewController *)self moreIdentifiers];
-  [v14 removeObject:v16];
+  moreIdentifiers = [(HearingCCSettingsViewController *)self moreIdentifiers];
+  [moreIdentifiers removeObject:v16];
 
-  v15 = [(HearingCCSettingsViewController *)self includedIdentifiers];
-  [v15 insertObject:v16 atIndex:v6];
+  includedIdentifiers2 = [(HearingCCSettingsViewController *)self includedIdentifiers];
+  [includedIdentifiers2 insertObject:v16 atIndex:v6];
 
   [(HearingCCSettingsViewController *)self beginUpdates];
   [(HearingCCSettingsViewController *)self removeSpecifierAtIndex:v10 + 1 animated:1];
@@ -193,29 +193,29 @@ void __56__HearingCCSettingsViewController__repopulateModuleData__block_invoke(u
   [(HearingCCSettingsViewController *)self _saveState];
 }
 
-- (void)_moreIdentifierAtIndexPath:(id)a3
+- (void)_moreIdentifierAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:v4];
-  v6 = [(HearingCCSettingsViewController *)self moreIdentifiers];
-  v7 = [(HearingCCSettingsViewController *)self _indexForInsertingItemWithIdentifier:v5 intoArray:v6];
+  pathCopy = path;
+  v5 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:pathCopy];
+  moreIdentifiers = [(HearingCCSettingsViewController *)self moreIdentifiers];
+  v7 = [(HearingCCSettingsViewController *)self _indexForInsertingItemWithIdentifier:v5 intoArray:moreIdentifiers];
 
-  v8 = [(HearingCCSettingsViewController *)self includedModulesGroupSpecifier];
-  v9 = [(HearingCCSettingsViewController *)self indexOfSpecifier:v8];
-  v10 = [v4 row];
+  includedModulesGroupSpecifier = [(HearingCCSettingsViewController *)self includedModulesGroupSpecifier];
+  v9 = [(HearingCCSettingsViewController *)self indexOfSpecifier:includedModulesGroupSpecifier];
+  v10 = [pathCopy row];
 
   v11 = v10 + v9 + 1;
-  v12 = [(HearingCCSettingsViewController *)self moreModulesGroupSpecifier];
-  v13 = [(HearingCCSettingsViewController *)self indexOfSpecifier:v12]+ v7;
+  moreModulesGroupSpecifier = [(HearingCCSettingsViewController *)self moreModulesGroupSpecifier];
+  v13 = [(HearingCCSettingsViewController *)self indexOfSpecifier:moreModulesGroupSpecifier]+ v7;
 
   v14 = [(HearingCCSettingsViewController *)self specifierAtIndex:v11];
-  v15 = [(HearingCCSettingsViewController *)self includedIdentifiers];
-  [v15 removeObject:v5];
+  includedIdentifiers = [(HearingCCSettingsViewController *)self includedIdentifiers];
+  [includedIdentifiers removeObject:v5];
 
-  v16 = [(HearingCCSettingsViewController *)self moreIdentifiers];
-  [v16 insertObject:v5 atIndex:v7];
+  moreIdentifiers2 = [(HearingCCSettingsViewController *)self moreIdentifiers];
+  [moreIdentifiers2 insertObject:v5 atIndex:v7];
 
-  v17 = [(HearingCCSettingsViewController *)self table];
+  table = [(HearingCCSettingsViewController *)self table];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __62__HearingCCSettingsViewController__moreIdentifierAtIndexPath___block_invoke;
@@ -230,7 +230,7 @@ void __56__HearingCCSettingsViewController__repopulateModuleData__block_invoke(u
   v20 = v14;
   v21 = v13;
   v18 = v14;
-  [v17 performBatchUpdates:v22 completion:v19];
+  [table performBatchUpdates:v22 completion:v19];
 }
 
 id __62__HearingCCSettingsViewController__moreIdentifierAtIndexPath___block_invoke_2(uint64_t a1)
@@ -241,9 +241,9 @@ id __62__HearingCCSettingsViewController__moreIdentifierAtIndexPath___block_invo
   return [v2 _saveState];
 }
 
-- (id)_specifiersForIdentifiers:(id)a3
+- (id)_specifiersForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __61__HearingCCSettingsViewController__specifiersForIdentifiers___block_invoke;
@@ -251,7 +251,7 @@ id __62__HearingCCSettingsViewController__moreIdentifierAtIndexPath___block_invo
   v9[4] = self;
   v5 = objc_alloc_init(NSMutableArray);
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [identifiersCopy enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -266,10 +266,10 @@ void __61__HearingCCSettingsViewController__specifiersForIdentifiers___block_inv
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_specifierNameForOption:(unint64_t)a3
+- (id)_specifierNameForOption:(unint64_t)option
 {
   v3 = 0;
-  v4 = __ROR8__(a3 - 24, 1);
+  v4 = __ROR8__(option - 24, 1);
   if (v4 > 3)
   {
     if (v4 == 4)
@@ -293,8 +293,8 @@ void __61__HearingCCSettingsViewController__specifiersForIdentifiers___block_inv
 
 - (void)_saveState
 {
-  v2 = [(HearingCCSettingsViewController *)self includedIdentifiers];
-  v4 = [v2 mutableCopy];
+  includedIdentifiers = [(HearingCCSettingsViewController *)self includedIdentifiers];
+  v4 = [includedIdentifiers mutableCopy];
 
   [v4 insertObject:&off_27A560 atIndex:0];
   [v4 insertObject:&off_27A548 atIndex:0];
@@ -302,47 +302,47 @@ void __61__HearingCCSettingsViewController__specifiersForIdentifiers___block_inv
   [v3 setHearingControlCenterOrder:v4];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 == [(HearingCCSettingsViewController *)self includedSectionIndex])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(HearingCCSettingsViewController *)self includedSectionIndex])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 section];
-    v7 = v8 == [(HearingCCSettingsViewController *)self moreSectionIndex];
+    section2 = [pathCopy section];
+    v7 = section2 == [(HearingCCSettingsViewController *)self moreSectionIndex];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
-  v8 = a4;
-  v13 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:v8];
-  v9 = [v8 section];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  v13 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v10 = [(HearingCCSettingsViewController *)self _identifiersInSection:v9];
+  v10 = [(HearingCCSettingsViewController *)self _identifiersInSection:section];
   [v10 removeObject:v13];
-  v11 = -[HearingCCSettingsViewController _identifiersInSection:](self, "_identifiersInSection:", [v7 section]);
-  v12 = [v7 row];
+  v11 = -[HearingCCSettingsViewController _identifiersInSection:](self, "_identifiersInSection:", [indexPathCopy section]);
+  v12 = [indexPathCopy row];
 
   [v11 insertObject:v13 atIndex:v12];
   [(HearingCCSettingsViewController *)self reloadSpecifiers];
   [(HearingCCSettingsViewController *)self _saveState];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == [(HearingCCSettingsViewController *)self includedSectionIndex])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(HearingCCSettingsViewController *)self includedSectionIndex])
   {
     v9 = 0;
   }
@@ -351,65 +351,65 @@ void __61__HearingCCSettingsViewController__specifiersForIdentifiers___block_inv
   {
     v11.receiver = self;
     v11.super_class = HearingCCSettingsViewController;
-    v9 = [(HearingCCSettingsViewController *)&v11 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v9 = [(HearingCCSettingsViewController *)&v11 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v9;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v8 = a5;
-  if (v8)
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (a4 == 1)
+    if (style == 1)
     {
-      [(HearingCCSettingsViewController *)self _moreIdentifierAtIndexPath:v8];
+      [(HearingCCSettingsViewController *)self _moreIdentifierAtIndexPath:pathCopy];
     }
 
-    else if (a4 == 2)
+    else if (style == 2)
     {
-      [(HearingCCSettingsViewController *)self _includedIdentifierAtIndexPath:v8];
+      [(HearingCCSettingsViewController *)self _includedIdentifierAtIndexPath:pathCopy];
     }
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 == [(HearingCCSettingsViewController *)self includedSectionIndex])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(HearingCCSettingsViewController *)self includedSectionIndex])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 section];
-    v7 = 2 * (v8 == [(HearingCCSettingsViewController *)self moreSectionIndex]);
+    section2 = [pathCopy section];
+    v7 = 2 * (section2 == [(HearingCCSettingsViewController *)self moreSectionIndex]);
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 section];
-  if (v9 >= [(HearingCCSettingsViewController *)self includedSectionIndex])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  section = [indexPathCopy section];
+  if (section >= [(HearingCCSettingsViewController *)self includedSectionIndex])
   {
-    v12 = [v8 section];
-    v10 = v8;
-    if (v12 < [(HearingCCSettingsViewController *)self moreSectionIndex])
+    section2 = [indexPathCopy section];
+    v10 = indexPathCopy;
+    if (section2 < [(HearingCCSettingsViewController *)self moreSectionIndex])
     {
       goto LABEL_6;
     }
 
-    v11 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:v7];
-    v13 = [(HearingCCSettingsViewController *)self moreIdentifiers];
-    v14 = [(HearingCCSettingsViewController *)self _indexForInsertingItemWithIdentifier:v11 intoArray:v13];
+    v11 = [(HearingCCSettingsViewController *)self _identifierAtIndexPath:pathCopy];
+    moreIdentifiers = [(HearingCCSettingsViewController *)self moreIdentifiers];
+    v14 = [(HearingCCSettingsViewController *)self _indexForInsertingItemWithIdentifier:v11 intoArray:moreIdentifiers];
 
     v10 = [NSIndexPath indexPathForRow:v14 inSection:[(HearingCCSettingsViewController *)self moreSectionIndex]];
   }
@@ -417,7 +417,7 @@ void __61__HearingCCSettingsViewController__specifiersForIdentifiers___block_inv
   else
   {
     v10 = [NSIndexPath indexPathForRow:0 inSection:[(HearingCCSettingsViewController *)self includedSectionIndex]];
-    v11 = v8;
+    v11 = indexPathCopy;
   }
 
 LABEL_6:

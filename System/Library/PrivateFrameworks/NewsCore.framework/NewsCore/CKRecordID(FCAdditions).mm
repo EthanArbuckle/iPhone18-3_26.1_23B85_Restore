@@ -10,7 +10,7 @@
   v4 = a3;
   if ([v4 length] && objc_msgSend(v4, "length") < 0x100)
   {
-    v5 = [a1 initWithRecordName:v4];
+    v5 = [self initWithRecordName:v4];
   }
 
   else

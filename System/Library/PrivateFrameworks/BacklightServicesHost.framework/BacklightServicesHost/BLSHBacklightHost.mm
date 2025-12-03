@@ -1,7 +1,7 @@
 @interface BLSHBacklightHost
 + (id)sharedBacklightHost;
-+ (void)registerSharedBacklightHost:(id)a3;
-+ (void)registerSharedBacklightHostForTest:(id)a3;
++ (void)registerSharedBacklightHost:(id)host;
++ (void)registerSharedBacklightHostForTest:(id)test;
 + (void)sharedBacklightHost;
 @end
 
@@ -20,11 +20,11 @@
   return v3;
 }
 
-+ (void)registerSharedBacklightHost:(id)a3
++ (void)registerSharedBacklightHost:(id)host
 {
-  v5 = a3;
+  hostCopy = host;
   os_unfair_lock_lock(&_classLock_1);
-  if (!v5)
+  if (!hostCopy)
   {
     [BLSHBacklightHost registerSharedBacklightHost:a2];
   }
@@ -34,14 +34,14 @@
     [BLSHBacklightHost registerSharedBacklightHost:a2];
   }
 
-  _sharedBacklightHost = v5;
+  _sharedBacklightHost = hostCopy;
 
   os_unfair_lock_unlock(&_classLock_1);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__BLSHBacklightHost_registerSharedBacklightHost___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (registerSharedBacklightHost__onceToken != -1)
   {
     dispatch_once(&registerSharedBacklightHost__onceToken, block);
@@ -56,12 +56,12 @@ void __49__BLSHBacklightHost_registerSharedBacklightHost___block_invoke(uint64_t
   CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, _springboardDidFinishStartup, @"com.apple.springboard.finishedstartup", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-+ (void)registerSharedBacklightHostForTest:(id)a3
++ (void)registerSharedBacklightHostForTest:(id)test
 {
-  v3 = a3;
+  testCopy = test;
   os_unfair_lock_lock(&_classLock_1);
   v4 = _sharedBacklightHost;
-  _sharedBacklightHost = v3;
+  _sharedBacklightHost = testCopy;
 
   os_unfair_lock_unlock(&_classLock_1);
 }
@@ -105,7 +105,7 @@ void __49__BLSHBacklightHost_registerSharedBacklightHost___block_invoke(uint64_t
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_0();

@@ -1,16 +1,16 @@
 @interface _UIEditMenuPresentationServer
 + (id)sharedPresentationServer;
-- (CGRect)_editMenuPresentation:(id)a3 targetRectForConfiguration:(id)a4;
+- (CGRect)_editMenuPresentation:(id)presentation targetRectForConfiguration:(id)configuration;
 - (_UIEditMenuPresentationServer)init;
-- (void)_editMenuPresentation:(id)a3 didSelectMenuLeaf:(id)a4 completion:(id)a5;
-- (void)_editMenuPresentation:(id)a3 preparedMenuForDisplay:(id)a4 completion:(id)a5;
-- (void)_editMenuPresentation:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)_editMenuPresentation:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)_sendLifecycleEvent:(int64_t)a3 forMenuWithIdentifier:(id)a4;
-- (void)dismissEditMenuForIdentifier:(id)a3 hideReason:(int64_t)a4;
-- (void)presentEditMenuWithConfiguration:(id)a3 originContext:(id)a4 inDisplayDelegate:(id)a5 forConnection:(id)a6;
-- (void)replaceEditMenuForIdentifier:(id)a3 updatedMenu:(id)a4 reason:(int64_t)a5;
-- (void)updateUserInterfaceStyleForMenuWithIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4;
+- (void)_editMenuPresentation:(id)presentation didSelectMenuLeaf:(id)leaf completion:(id)completion;
+- (void)_editMenuPresentation:(id)presentation preparedMenuForDisplay:(id)display completion:(id)completion;
+- (void)_editMenuPresentation:(id)presentation willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)_editMenuPresentation:(id)presentation willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)_sendLifecycleEvent:(int64_t)event forMenuWithIdentifier:(id)identifier;
+- (void)dismissEditMenuForIdentifier:(id)identifier hideReason:(int64_t)reason;
+- (void)presentEditMenuWithConfiguration:(id)configuration originContext:(id)context inDisplayDelegate:(id)delegate forConnection:(id)connection;
+- (void)replaceEditMenuForIdentifier:(id)identifier updatedMenu:(id)menu reason:(int64_t)reason;
+- (void)updateUserInterfaceStyleForMenuWithIdentifier:(id)identifier userInterfaceStyle:(int64_t)style;
 @end
 
 @implementation _UIEditMenuPresentationServer
@@ -52,85 +52,85 @@
   return v2;
 }
 
-- (void)presentEditMenuWithConfiguration:(id)a3 originContext:(id)a4 inDisplayDelegate:(id)a5 forConnection:(id)a6
+- (void)presentEditMenuWithConfiguration:(id)configuration originContext:(id)context inDisplayDelegate:(id)delegate forConnection:(id)connection
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v21 = [v13 identifier];
-  v14 = [(_UIEditMenuPresentationServer *)self configurations];
-  [v14 setObject:v13 forKey:v21];
+  connectionCopy = connection;
+  delegateCopy = delegate;
+  contextCopy = context;
+  configurationCopy = configuration;
+  identifier = [configurationCopy identifier];
+  configurations = [(_UIEditMenuPresentationServer *)self configurations];
+  [configurations setObject:configurationCopy forKey:identifier];
 
-  v15 = [(_UIEditMenuPresentationServer *)self connections];
-  [v15 setObject:v10 forKey:v21];
+  connections = [(_UIEditMenuPresentationServer *)self connections];
+  [connections setObject:connectionCopy forKey:identifier];
 
   v16 = [_UIEditMenuOverlayUIServerPresentation alloc];
-  v17 = [v11 rootViewController];
-  v18 = [v17 view];
-  v19 = [(_UIEditMenuPresentation *)v16 initWithDelegate:self sourceView:v18];
+  rootViewController = [delegateCopy rootViewController];
+  view = [rootViewController view];
+  v19 = [(_UIEditMenuPresentation *)v16 initWithDelegate:self sourceView:view];
 
-  -[_UIEditMenuPresentation setEnforcesMenuControllerLifecycle:](v19, "setEnforcesMenuControllerLifecycle:", [v13 enforcesMenuControllerLifecycle]);
-  [(_UIEditMenuOverlayUIServerPresentation *)v19 displayMenuForConfiguration:v13 originContext:v12 inDisplayDelegate:v11];
+  -[_UIEditMenuPresentation setEnforcesMenuControllerLifecycle:](v19, "setEnforcesMenuControllerLifecycle:", [configurationCopy enforcesMenuControllerLifecycle]);
+  [(_UIEditMenuOverlayUIServerPresentation *)v19 displayMenuForConfiguration:configurationCopy originContext:contextCopy inDisplayDelegate:delegateCopy];
 
-  v20 = [(_UIEditMenuPresentationServer *)self presentations];
-  [v20 setObject:v19 forKey:v21];
+  presentations = [(_UIEditMenuPresentationServer *)self presentations];
+  [presentations setObject:v19 forKey:identifier];
 }
 
-- (void)dismissEditMenuForIdentifier:(id)a3 hideReason:(int64_t)a4
+- (void)dismissEditMenuForIdentifier:(id)identifier hideReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(_UIEditMenuPresentationServer *)self presentations];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  presentations = [(_UIEditMenuPresentationServer *)self presentations];
+  v8 = [presentations objectForKeyedSubscript:identifierCopy];
 
-  [v8 hideMenuWithReason:a4];
+  [v8 hideMenuWithReason:reason];
 }
 
-- (void)replaceEditMenuForIdentifier:(id)a3 updatedMenu:(id)a4 reason:(int64_t)a5
+- (void)replaceEditMenuForIdentifier:(id)identifier updatedMenu:(id)menu reason:(int64_t)reason
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_UIEditMenuPresentationServer *)self presentations];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  menuCopy = menu;
+  identifierCopy = identifier;
+  presentations = [(_UIEditMenuPresentationServer *)self presentations];
+  v11 = [presentations objectForKeyedSubscript:identifierCopy];
 
-  [v11 replaceVisibleMenuWithMenu:v8 reason:a5];
+  [v11 replaceVisibleMenuWithMenu:menuCopy reason:reason];
 }
 
-- (void)updateUserInterfaceStyleForMenuWithIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4
+- (void)updateUserInterfaceStyleForMenuWithIdentifier:(id)identifier userInterfaceStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(_UIEditMenuPresentationServer *)self presentations];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  presentations = [(_UIEditMenuPresentationServer *)self presentations];
+  v8 = [presentations objectForKeyedSubscript:identifierCopy];
 
-  [v8 setUserInterfaceStyle:a4];
+  [v8 setUserInterfaceStyle:style];
 }
 
-- (void)_sendLifecycleEvent:(int64_t)a3 forMenuWithIdentifier:(id)a4
+- (void)_sendLifecycleEvent:(int64_t)event forMenuWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v9 = [[_UIOEditMenuLifecycleEventUpdateAction alloc] initWithMenuIdentifier:v6 event:a3];
-  v7 = [(_UIEditMenuPresentationServer *)self connections];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v9 = [[_UIOEditMenuLifecycleEventUpdateAction alloc] initWithMenuIdentifier:identifierCopy event:event];
+  connections = [(_UIEditMenuPresentationServer *)self connections];
+  v8 = [connections objectForKeyedSubscript:identifierCopy];
 
   [v8 sendAction:v9];
 }
 
-- (void)_editMenuPresentation:(id)a3 didSelectMenuLeaf:(id)a4 completion:(id)a5
+- (void)_editMenuPresentation:(id)presentation didSelectMenuLeaf:(id)leaf completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 presentationConfiguration];
-  v11 = [v10 identifier];
+  leafCopy = leaf;
+  completionCopy = completion;
+  presentationConfiguration = [presentation presentationConfiguration];
+  identifier = [presentationConfiguration identifier];
 
-  v12 = [(_UIEditMenuPresentationServer *)self connections];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  connections = [(_UIEditMenuPresentationServer *)self connections];
+  v13 = [connections objectForKeyedSubscript:identifier];
 
-  v14 = v8;
+  v14 = leafCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84___UIEditMenuPresentationServer__editMenuPresentation_didSelectMenuLeaf_completion___block_invoke;
   aBlock[3] = &unk_1E711FEC8;
-  v15 = v9;
+  v15 = completionCopy;
   v25 = v15;
   v16 = v13;
   v24 = v16;
@@ -154,46 +154,46 @@
   }
 }
 
-- (void)_editMenuPresentation:(id)a3 preparedMenuForDisplay:(id)a4 completion:(id)a5
+- (void)_editMenuPresentation:(id)presentation preparedMenuForDisplay:(id)display completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 presentationConfiguration];
-  v11 = [v10 identifier];
+  completionCopy = completion;
+  displayCopy = display;
+  presentationConfiguration = [presentation presentationConfiguration];
+  identifier = [presentationConfiguration identifier];
 
-  v12 = [(_UIEditMenuPresentationServer *)self connections];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  connections = [(_UIEditMenuPresentationServer *)self connections];
+  v13 = [connections objectForKeyedSubscript:identifier];
 
   v14 = [_UIOMenuPreparationAction alloc];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __89___UIEditMenuPresentationServer__editMenuPresentation_preparedMenuForDisplay_completion___block_invoke;
   v17[3] = &unk_1E711FF18;
-  v18 = v8;
-  v15 = v8;
-  v16 = [(_UIOMenuPreparationAction *)v14 initWithMenu:v9 responseHandler:v17];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  v16 = [(_UIOMenuPreparationAction *)v14 initWithMenu:displayCopy responseHandler:v17];
 
   [v13 sendAction:v16];
 }
 
-- (CGRect)_editMenuPresentation:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)_editMenuPresentation:(id)presentation targetRectForConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [v6 presentationConfiguration];
-  if (!v7)
+  presentationCopy = presentation;
+  presentationConfiguration = [presentationCopy presentationConfiguration];
+  if (!presentationConfiguration)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIEditMenuPresentationServer.m" lineNumber:163 description:@"Cannot present a menu without a presentation configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEditMenuPresentationServer.m" lineNumber:163 description:@"Cannot present a menu without a presentation configuration"];
   }
 
-  v8 = [v6 originContext];
-  v9 = [v6 sourceView];
+  originContext = [presentationCopy originContext];
+  sourceView = [presentationCopy sourceView];
 
-  [v8 translatedReferencePointForDestinationView:v9];
+  [originContext translatedReferencePointForDestinationView:sourceView];
   v11 = v10;
   v13 = v12;
 
-  [v7 sourceRect];
+  [presentationConfiguration sourceRect];
   v15 = v14;
   v17 = v16;
 
@@ -208,38 +208,38 @@
   return result;
 }
 
-- (void)_editMenuPresentation:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)_editMenuPresentation:(id)presentation willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = [a3 presentationConfiguration];
-  v9 = [v8 identifier];
+  animatorCopy = animator;
+  presentationConfiguration = [presentation presentationConfiguration];
+  identifier = [presentationConfiguration identifier];
 
-  [(_UIEditMenuPresentationServer *)self _sendLifecycleEvent:0 forMenuWithIdentifier:v9];
+  [(_UIEditMenuPresentationServer *)self _sendLifecycleEvent:0 forMenuWithIdentifier:identifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96___UIEditMenuPresentationServer__editMenuPresentation_willPresentMenuForConfiguration_animator___block_invoke;
   v11[3] = &unk_1E70F35B8;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
-  [v7 addCompletion:v11];
+  v12 = identifier;
+  v10 = identifier;
+  [animatorCopy addCompletion:v11];
 }
 
-- (void)_editMenuPresentation:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)_editMenuPresentation:(id)presentation willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = [a3 presentationConfiguration];
-  v9 = [v8 identifier];
+  animatorCopy = animator;
+  presentationConfiguration = [presentation presentationConfiguration];
+  identifier = [presentationConfiguration identifier];
 
-  [(_UIEditMenuPresentationServer *)self _sendLifecycleEvent:2 forMenuWithIdentifier:v9];
+  [(_UIEditMenuPresentationServer *)self _sendLifecycleEvent:2 forMenuWithIdentifier:identifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96___UIEditMenuPresentationServer__editMenuPresentation_willDismissMenuForConfiguration_animator___block_invoke;
   v11[3] = &unk_1E70F35B8;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
-  [v7 addCompletion:v11];
+  v12 = identifier;
+  v10 = identifier;
+  [animatorCopy addCompletion:v11];
 }
 
 @end

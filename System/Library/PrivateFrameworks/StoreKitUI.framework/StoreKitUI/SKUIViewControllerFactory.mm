@@ -14,13 +14,13 @@
 
   v8.receiver = self;
   v8.super_class = SKUIViewControllerFactory;
-  v3 = [(SUViewControllerFactory *)&v8 newPlaceholderViewController];
+  newPlaceholderViewController = [(SUViewControllerFactory *)&v8 newPlaceholderViewController];
   v4 = MEMORY[0x277D7FDD8];
-  v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v6 = [v4 gradientWithColor:v5];
-  [v3 setDefaultBackgroundGradient:v6];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  v6 = [v4 gradientWithColor:systemBackgroundColor];
+  [newPlaceholderViewController setDefaultBackgroundGradient:v6];
 
-  return v3;
+  return newPlaceholderViewController;
 }
 
 - (void)newPlaceholderViewController

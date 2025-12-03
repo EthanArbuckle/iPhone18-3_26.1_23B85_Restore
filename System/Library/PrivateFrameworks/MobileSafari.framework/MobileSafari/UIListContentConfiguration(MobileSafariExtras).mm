@@ -6,10 +6,10 @@
 
 - (uint64_t)safari_usesWhiteText
 {
-  v1 = [a1 textProperties];
-  v2 = [v1 resolvedColor];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [v2 isEqual:v3];
+  textProperties = [self textProperties];
+  resolvedColor = [textProperties resolvedColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v4 = [resolvedColor isEqual:whiteColor];
 
   return v4;
 }

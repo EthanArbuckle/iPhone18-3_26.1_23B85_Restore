@@ -3,19 +3,19 @@
 - (NSArray)leechedLocations;
 - (NavdLocationLeecher)init;
 - (id)lastLeechedLocation;
-- (void)_handleLeechedLocation:(id)a3;
-- (void)_handleShiftedCoordinate:(id)a3 fromClientLocation:(id *)a4;
-- (void)_notifyObserversAboutError:(id)a3;
-- (void)_notifyObserversAboutLocation:(id)a3;
+- (void)_handleLeechedLocation:(id)location;
+- (void)_handleShiftedCoordinate:(id)coordinate fromClientLocation:(id *)location;
+- (void)_notifyObserversAboutError:(id)error;
+- (void)_notifyObserversAboutLocation:(id)location;
 - (void)_notifyObserversAboutPrecision;
 - (void)_pruneLeachedLocations;
-- (void)_recordLeechedLocation:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)locationProvider:(id)a3 didChangeCoarseMode:(BOOL)a4;
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4;
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4;
+- (void)_recordLeechedLocation:(id)location;
+- (void)addObserver:(id)observer;
+- (void)locationProvider:(id)provider didChangeCoarseMode:(BOOL)mode;
+- (void)locationProvider:(id)provider didReceiveError:(id)error;
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location;
 - (void)pauseLeeching;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resumeLeeching;
 - (void)startLeeching;
 - (void)stopLeeching;
@@ -23,10 +23,10 @@
 
 @implementation NavdLocationLeecher
 
-- (void)locationProvider:(id)a3 didChangeCoarseMode:(BOOL)a4
+- (void)locationProvider:(id)provider didChangeCoarseMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
+  modeCopy = mode;
+  providerCopy = provider;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -34,7 +34,7 @@
     v9 = NSStringFromClass(v8);
     v10 = v9;
     v11 = @"disabled";
-    if (v4)
+    if (modeCopy)
     {
       v11 = @"enabled";
     }
@@ -52,17 +52,17 @@
   v13[1] = 3221225472;
   v13[2] = sub_10058A2F4;
   v13[3] = &unk_101661368;
-  v15 = v4;
+  v15 = modeCopy;
   objc_copyWeak(&v14, buf);
   dispatch_async(serialQueue, v13);
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 }
 
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4
+- (void)locationProvider:(id)provider didReceiveError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  errorCopy = error;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -71,7 +71,7 @@
     *buf = 138478083;
     v17 = v10;
     v18 = 2113;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{private}@ failed while leeching with error: %{private}@", buf, 0x16u);
   }
 
@@ -82,17 +82,17 @@
   v13[2] = sub_10058A4FC;
   v13[3] = &unk_101661340;
   objc_copyWeak(&v15, buf);
-  v14 = v7;
-  v12 = v7;
+  v14 = errorCopy;
+  v12 = errorCopy;
   dispatch_async(serialQueue, v13);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   if ([(NavdLocationLeecher *)self coarseModeEnabled])
   {
     v6 = GEOFindOrCreateLog();
@@ -124,7 +124,7 @@ LABEL_7:
       v16[2] = sub_10058A760;
       v16[3] = &unk_101661340;
       objc_copyWeak(&v18, buf);
-      v17 = v5;
+      v17 = locationCopy;
       dispatch_async(serialQueue, v16);
 
       objc_destroyWeak(&v18);
@@ -150,17 +150,17 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_handleShiftedCoordinate:(id)a3 fromClientLocation:(id *)a4
+- (void)_handleShiftedCoordinate:(id)coordinate fromClientLocation:(id *)location
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if (vabdd_f64(a3.var0, *(&a4->var0 + 1)) >= 0.00000000999999994 || vabdd_f64(a3.var1, *(&a4->var1.var0 + 4)) >= 0.00000000999999994)
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  if (vabdd_f64(coordinate.var0, *(&location->var0 + 1)) >= 0.00000000999999994 || vabdd_f64(coordinate.var1, *(&location->var1.var0 + 4)) >= 0.00000000999999994)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = *(&a4->var0 + 1);
-      v10 = *(&a4->var1.var0 + 4);
+      v9 = *(&location->var0 + 1);
+      v10 = *(&location->var1.var0 + 4);
       *v17 = 134284289;
       *&v17[4] = var0;
       *&v17[12] = 2049;
@@ -174,19 +174,19 @@ LABEL_10:
   }
 
   v11 = [CLLocation alloc];
-  var13 = a4->var13;
-  v22 = *&a4->var11;
+  var13 = location->var13;
+  v22 = *&location->var11;
   v23 = var13;
-  v24[0] = *&a4->var14;
-  *(v24 + 12) = *&a4->var16;
-  v13 = *&a4->var5;
-  v18 = *&a4->var3;
+  v24[0] = *&location->var14;
+  *(v24 + 12) = *&location->var16;
+  v13 = *&location->var5;
+  v18 = *&location->var3;
   v19 = v13;
-  v14 = *&a4->var9;
-  v20 = *&a4->var7;
+  v14 = *&location->var9;
+  v20 = *&location->var7;
   v21 = v14;
-  v15 = *&a4->var1.var1;
-  *v17 = *&a4->var0;
+  v15 = *&location->var1.var1;
+  *v17 = *&location->var0;
   *&v17[16] = v15;
   v16 = [v11 initWithClientLocation:v17];
   [(NavdLocationLeecher *)self _recordLeechedLocation:v16];
@@ -196,12 +196,12 @@ LABEL_10:
   }
 }
 
-- (void)_handleLeechedLocation:(id)a3
+- (void)_handleLeechedLocation:(id)location
 {
-  v4 = a3;
-  [v4 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v6 = v5;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v8 = v7;
   v32 = 0u;
   memset(v33, 0, 28);
@@ -212,14 +212,14 @@ LABEL_10:
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  if (v4)
+  if (locationCopy)
   {
-    [v4 clientLocation];
+    [locationCopy clientLocation];
   }
 
   objc_initWeak(&location, self);
   locationShifter = self->_locationShifter;
-  [v4 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v11 = v10;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -286,9 +286,9 @@ LABEL_10:
   }
 }
 
-- (void)_notifyObserversAboutError:(id)a3
+- (void)_notifyObserversAboutError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -309,7 +309,7 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) locationLeecher:self errorLeechingLocation:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) locationLeecher:self errorLeechingLocation:{errorCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -321,9 +321,9 @@ LABEL_10:
   }
 }
 
-- (void)_notifyObserversAboutLocation:(id)a3
+- (void)_notifyObserversAboutLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -344,7 +344,7 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) locationLeecher:self receivedLocation:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) locationLeecher:self receivedLocation:{locationCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -356,31 +356,31 @@ LABEL_10:
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10058B07C;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10058B120;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -408,30 +408,30 @@ LABEL_10:
 
 - (id)lastLeechedLocation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CLLocation *)v2->_lastLeechedLocation copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(CLLocation *)selfCopy->_lastLeechedLocation copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_recordLeechedLocation:(id)a3
+- (void)_recordLeechedLocation:(id)location
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  objc_storeStrong(&v6->_lastLeechedLocation, a3);
-  objc_sync_exit(v6);
+  locationCopy = location;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_lastLeechedLocation, location);
+  objc_sync_exit(selfCopy);
 
-  serialQueue = v6->_serialQueue;
+  serialQueue = selfCopy->_serialQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10058B3C4;
   v9[3] = &unk_101661A90;
-  v10 = v5;
-  v11 = v6;
-  v8 = v5;
+  v10 = locationCopy;
+  v11 = selfCopy;
+  v8 = locationCopy;
   dispatch_async(serialQueue, v9);
 }
 
@@ -451,8 +451,8 @@ LABEL_10:
       while (1)
       {
         v9 = [(NSMutableArray *)self->_leechedLocations objectAtIndexedSubscript:v5];
-        v10 = [v9 timestamp];
-        [v10 timeIntervalSinceNow];
+        timestamp = [v9 timestamp];
+        [timestamp timeIntervalSinceNow];
         v12 = -v11;
         v13 = *v7;
 

@@ -1,17 +1,17 @@
 @interface CAInterAppAudioSwitcherView
 - (BOOL)isHostConnected;
-- (CAInterAppAudioSwitcherView)initWithCoder:(id)a3;
-- (CAInterAppAudioSwitcherView)initWithFrame:(CGRect)a3;
+- (CAInterAppAudioSwitcherView)initWithCoder:(id)coder;
+- (CAInterAppAudioSwitcherView)initWithFrame:(CGRect)frame;
 - (void)appHasGoneForeground;
-- (void)audioUnitPropertyChangedListener:(void *)a3 unit:(OpaqueAudioComponentInstance *)a4 propID:(unsigned int)a5 scope:(unsigned int)a6 element:(unsigned int)a7;
-- (void)changePage:(id)a3;
+- (void)audioUnitPropertyChangedListener:(void *)listener unit:(OpaqueAudioComponentInstance *)unit propID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element;
+- (void)changePage:(id)page;
 - (void)didMoveToSuperview;
 - (void)initialize;
 - (void)layoutSubviews;
-- (void)nodePressed:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)nodePressed:(id)pressed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeFromSuperview;
-- (void)scrollViewDidEndDecelerating:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
 - (void)setOutputAudioUnit:(AudioUnit)au;
 - (void)setShowingAppNames:(BOOL)showingAppNames;
 - (void)startTimer;
@@ -34,19 +34,19 @@
   [(CAInterAppAudioSwitcherView *)self addSubview:self->nodeView];
   [(CAIAANodeContainer *)self->nodeView addObserver:self forKeyPath:@"numPages" options:1 context:0];
   [(CAIAANodeContainer *)self->nodeView setDelegate:self];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_appHasGoneInBackground name:*MEMORY[0x277D76660] object:0];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_appHasGoneInBackground name:*MEMORY[0x277D76660] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = *MEMORY[0x277D76758];
 
-  [v8 addObserver:self selector:sel_appHasGoneForeground name:v9 object:0];
+  [defaultCenter2 addObserver:self selector:sel_appHasGoneForeground name:v9 object:0];
 }
 
-- (CAInterAppAudioSwitcherView)initWithFrame:(CGRect)a3
+- (CAInterAppAudioSwitcherView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAInterAppAudioSwitcherView;
-  v3 = [(CAInterAppAudioSwitcherView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAInterAppAudioSwitcherView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,11 +56,11 @@
   return v4;
 }
 
-- (CAInterAppAudioSwitcherView)initWithCoder:(id)a3
+- (CAInterAppAudioSwitcherView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CAInterAppAudioSwitcherView;
-  v3 = [(CAInterAppAudioSwitcherView *)&v6 initWithCoder:a3];
+  v3 = [(CAInterAppAudioSwitcherView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -147,8 +147,8 @@
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(CAIAANodeContainer *)self->nodeView subviews];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subviews = [(CAIAANodeContainer *)self->nodeView subviews];
+    v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -160,7 +160,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subviews);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
@@ -174,7 +174,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -228,9 +228,9 @@
   v14.super_class = CAInterAppAudioSwitcherView;
   [(CAInterAppAudioSwitcherView *)&v14 layoutSubviews];
   [(CAIAANodeContainer *)self->nodeView layoutSubviews];
-  v3 = [(CAIAANodeContainer *)self->nodeView numPages];
+  numPages = [(CAIAANodeContainer *)self->nodeView numPages];
   pageControl = self->pageControl;
-  if (v3 < 2)
+  if (numPages < 2)
   {
     if (pageControl)
     {
@@ -259,39 +259,39 @@
   }
 }
 
-- (void)changePage:(id)a3
+- (void)changePage:(id)page
 {
   if (self->nodeView)
   {
-    v4 = [(UIPageControl *)self->pageControl currentPage];
+    currentPage = [(UIPageControl *)self->pageControl currentPage];
     [(CAIAANodeContainer *)self->nodeView frame];
     nodeView = self->nodeView;
 
-    [(CAIAANodeContainer *)nodeView setContentOffset:1 animated:v5 * v4, 0.0];
+    [(CAIAANodeContainer *)nodeView setContentOffset:1 animated:v5 * currentPage, 0.0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"numPages", a4, a5, a6}])
+  if ([path isEqualToString:{@"numPages", object, change, context}])
   {
     nodeView = self->nodeView;
-    if (nodeView == a4)
+    if (nodeView == object)
     {
-      v9 = [(CAIAANodeContainer *)nodeView numPages];
+      numPages = [(CAIAANodeContainer *)nodeView numPages];
       pageControl = self->pageControl;
 
-      [(UIPageControl *)pageControl setNumberOfPages:v9];
+      [(UIPageControl *)pageControl setNumberOfPages:numPages];
     }
   }
 }
 
-- (void)nodePressed:(id)a3
+- (void)nodePressed:(id)pressed
 {
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [a3 url];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v5 = [pressed url];
 
-  [v4 openURL:v5];
+  [mEMORY[0x277D75128] openURL:v5];
 }
 
 - (void)appHasGoneForeground
@@ -321,20 +321,20 @@
   return self->isHostConnected;
 }
 
-- (void)audioUnitPropertyChangedListener:(void *)a3 unit:(OpaqueAudioComponentInstance *)a4 propID:(unsigned int)a5 scope:(unsigned int)a6 element:(unsigned int)a7
+- (void)audioUnitPropertyChangedListener:(void *)listener unit:(OpaqueAudioComponentInstance *)unit propID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element
 {
-  if (a5 == 101)
+  if (d == 101)
   {
-    [(CAInterAppAudioSwitcherView *)self updateInfo:a3];
+    [(CAInterAppAudioSwitcherView *)self updateInfo:listener];
   }
 }
 
 - (void)updateInfo
 {
-  v3 = [(CAInterAppAudioSwitcherView *)self isHostConnected];
-  self->isHostConnected = v3;
+  isHostConnected = [(CAInterAppAudioSwitcherView *)self isHostConnected];
+  self->isHostConnected = isHostConnected;
   info = self->info;
-  if (v3)
+  if (isHostConnected)
   {
     if (info)
     {
@@ -357,13 +357,13 @@
   [(CAInterAppAudioSwitcherView *)self updateNodeList];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->pageControl)
   {
-    [a3 contentOffset];
+    [decelerating contentOffset];
     v6 = v5;
-    [a3 contentSize];
+    [decelerating contentSize];
     *&v7 = v6 / v7;
     v8 = llroundf(*&v7);
     pageControl = self->pageControl;

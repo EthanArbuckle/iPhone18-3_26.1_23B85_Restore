@@ -1,16 +1,16 @@
 @interface MontrealNNModelWeight
-- (MontrealNNModelWeight)initWithDictionary:(id)a3 quantization:(id)a4 jsonDir:(id)a5;
-- (MontrealNNModelWeight)initWithName:(id)a3 index:(id)a4 dimension:(id)a5;
-- (MontrealNNModelWeight)initWithName:(id)a3 index:(id)a4 dimension:(id)a5 weightData:(id)a6;
-- (MontrealNNModelWeight)initWithName:(id)a3 index:(id)a4 dimension:(id)a5 weightValues:(id)a6;
+- (MontrealNNModelWeight)initWithDictionary:(id)dictionary quantization:(id)quantization jsonDir:(id)dir;
+- (MontrealNNModelWeight)initWithName:(id)name index:(id)index dimension:(id)dimension;
+- (MontrealNNModelWeight)initWithName:(id)name index:(id)index dimension:(id)dimension weightData:(id)data;
+- (MontrealNNModelWeight)initWithName:(id)name index:(id)index dimension:(id)dimension weightValues:(id)values;
 - (id)checkForValidity;
-- (id)createConvertArrayToData:(id)a3 quantization:(id)a4;
+- (id)createConvertArrayToData:(id)data quantization:(id)quantization;
 - (id)createDataContainer;
-- (id)createflattenWeightsFile:(id)a3;
-- (id)createflattenWeightsHierarchy:(id)a3;
+- (id)createflattenWeightsFile:(id)file;
+- (id)createflattenWeightsHierarchy:(id)hierarchy;
 - (id)jsonDescription;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)generateJSONAtPath:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)generateJSONAtPath:(id)path;
 @end
 
 @implementation MontrealNNModelWeight
@@ -34,36 +34,36 @@
   return self;
 }
 
-- (MontrealNNModelWeight)initWithName:(id)a3 index:(id)a4 dimension:(id)a5
+- (MontrealNNModelWeight)initWithName:(id)name index:(id)index dimension:(id)dimension
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  indexCopy = index;
+  dimensionCopy = dimension;
   v15.receiver = self;
   v15.super_class = MontrealNNModelWeight;
   v12 = [(MontrealNNModelWeight *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_index, a4);
-    objc_storeStrong(&v13->_dimension, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_index, index);
+    objc_storeStrong(&v13->_dimension, dimension);
   }
 
   return v13;
 }
 
-- (MontrealNNModelWeight)initWithName:(id)a3 index:(id)a4 dimension:(id)a5 weightData:(id)a6
+- (MontrealNNModelWeight)initWithName:(id)name index:(id)index dimension:(id)dimension weightData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v15 = objc_msgSend_initWithName_index_dimension_(self, v14, v10, v11, v12);
+  nameCopy = name;
+  indexCopy = index;
+  dimensionCopy = dimension;
+  dataCopy = data;
+  v15 = objc_msgSend_initWithName_index_dimension_(self, v14, nameCopy, indexCopy, dimensionCopy);
   v19 = v15;
   if (v15)
   {
-    objc_storeStrong((v15 + 40), a6);
+    objc_storeStrong((v15 + 40), data);
   }
 
   v20 = objc_msgSend_checkForValidity(v19, v16, v17, v18);
@@ -71,17 +71,17 @@
   return v20;
 }
 
-- (MontrealNNModelWeight)initWithName:(id)a3 index:(id)a4 dimension:(id)a5 weightValues:(id)a6
+- (MontrealNNModelWeight)initWithName:(id)name index:(id)index dimension:(id)dimension weightValues:(id)values
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v15 = objc_msgSend_initWithName_index_dimension_(self, v14, v10, v11, v12);
+  nameCopy = name;
+  indexCopy = index;
+  dimensionCopy = dimension;
+  valuesCopy = values;
+  v15 = objc_msgSend_initWithName_index_dimension_(self, v14, nameCopy, indexCopy, dimensionCopy);
   v19 = v15;
   if (v15)
   {
-    objc_storeStrong((v15 + 32), a6);
+    objc_storeStrong((v15 + 32), values);
   }
 
   v20 = objc_msgSend_checkForValidity(v19, v16, v17, v18);
@@ -89,30 +89,30 @@
   return v20;
 }
 
-- (MontrealNNModelWeight)initWithDictionary:(id)a3 quantization:(id)a4 jsonDir:(id)a5
+- (MontrealNNModelWeight)initWithDictionary:(id)dictionary quantization:(id)quantization jsonDir:(id)dir
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  quantizationCopy = quantization;
+  dirCopy = dir;
   v27.receiver = self;
   v27.super_class = MontrealNNModelWeight;
   v14 = [(MontrealNNModelWeight *)&v27 init];
   if (v14)
   {
-    v15 = objc_msgSend_exMRL_stringForKey_(v8, v11, off_1EB013410, v13);
+    v15 = objc_msgSend_exMRL_stringForKey_(dictionaryCopy, v11, off_1EB013410, v13);
     name = v14->_name;
     v14->_name = v15;
 
-    v19 = objc_msgSend_exMRL_arrayForKey_(v8, v17, off_1EB013408, v18);
+    v19 = objc_msgSend_exMRL_arrayForKey_(dictionaryCopy, v17, off_1EB013408, v18);
     dimension = v14->_dimension;
     v14->_dimension = v19;
 
-    v23 = objc_msgSend_exMRL_numberForKey_(v8, v21, off_1EB013400, v22);
+    v23 = objc_msgSend_exMRL_numberForKey_(dictionaryCopy, v21, off_1EB013400, v22);
     index = v14->_index;
     v14->_index = v23;
 
-    objc_storeStrong(&v14->_quantization, a4);
-    objc_storeStrong(&v14->_jsonDir, a5);
+    objc_storeStrong(&v14->_quantization, quantization);
+    objc_storeStrong(&v14->_jsonDir, dir);
   }
 
   v25 = objc_msgSend_checkForValidity(v14, v11, v12, v13);
@@ -120,19 +120,19 @@
   return v25;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v29 = a3;
-  v6 = a4;
+  descriptionCopy = description;
+  indentCopy = indent;
   v10 = objc_msgSend_name(self, v7, v8, v9);
-  objc_msgSend_appendFormat_(v29, v11, @"\r %@ Name = %@ ", v12, v6, v10);
+  objc_msgSend_appendFormat_(descriptionCopy, v11, @"\r %@ Name = %@ ", v12, indentCopy, v10);
 
   v16 = objc_msgSend_index(self, v13, v14, v15);
-  objc_msgSend_appendFormat_(v29, v17, @"\r %@ Index = %@ ", v18, v6, v16);
+  objc_msgSend_appendFormat_(descriptionCopy, v17, @"\r %@ Index = %@ ", v18, indentCopy, v16);
 
   v22 = objc_msgSend_dimension(self, v19, v20, v21);
   v26 = objc_msgSend_exMRL_numberArrayDescription(v22, v23, v24, v25);
-  objc_msgSend_appendFormat_(v29, v27, @"\r %@ Dimension = %@ ", v28, v6, v26);
+  objc_msgSend_appendFormat_(descriptionCopy, v27, @"\r %@ Dimension = %@ ", v28, indentCopy, v26);
 }
 
 - (id)jsonDescription
@@ -152,9 +152,9 @@
   return v24;
 }
 
-- (void)generateJSONAtPath:(id)a3
+- (void)generateJSONAtPath:(id)path
 {
-  v67 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_jsonDir(self, v4, v5, v6);
 
   if (v7)
@@ -169,7 +169,7 @@
     v24 = MEMORY[0x1E695DFF8];
     v25 = MEMORY[0x1E696AEC0];
     v29 = objc_msgSend_index(self, v26, v27, v28);
-    v32 = objc_msgSend_stringWithFormat_(v25, v30, @"%@/%@.json", v31, v67, v29);
+    v32 = objc_msgSend_stringWithFormat_(v25, v30, @"%@/%@.json", v31, pathCopy, v29);
     v35 = objc_msgSend_fileURLWithPath_(v24, v33, v32, v34);
 
     v39 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v36, v37, v38);
@@ -196,7 +196,7 @@
 
     v59 = MEMORY[0x1E696AEC0];
     v35 = objc_msgSend_index(self, v60, v61, v62);
-    v65 = objc_msgSend_stringWithFormat_(v59, v63, @"%@/%@.json", v64, v67, v35);
+    v65 = objc_msgSend_stringWithFormat_(v59, v63, @"%@/%@.json", v64, pathCopy, v35);
     objc_msgSend_writeToFile_atomically_(v23, v66, v65, 1);
   }
 }
@@ -241,25 +241,25 @@
   return v54;
 }
 
-- (id)createflattenWeightsFile:(id)a3
+- (id)createflattenWeightsFile:(id)file
 {
-  v5 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, a3, v3);
+  v5 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, file, v3);
   v7 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v6, v5, 0, 0);
   v10 = objc_msgSend_createflattenWeightsHierarchy_(self, v8, v7, v9);
 
   return v10;
 }
 
-- (id)createflattenWeightsHierarchy:(id)a3
+- (id)createflattenWeightsHierarchy:(id)hierarchy
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hierarchyCopy = hierarchy;
   v8 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v4;
+  v9 = hierarchyCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v26, v30, 16);
   if (v11)
   {
@@ -306,13 +306,13 @@ LABEL_13:
   return v24;
 }
 
-- (id)createConvertArrayToData:(id)a3 quantization:(id)a4
+- (id)createConvertArrayToData:(id)data quantization:(id)quantization
 {
   v79 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  quantizationCopy = quantization;
   sub_19D43B130(&v73, 4);
-  v10 = objc_msgSend_count(v5, v7, v8, v9);
+  v10 = objc_msgSend_count(dataCopy, v7, v8, v9);
   if (v10)
   {
     if (!(v10 >> 62))
@@ -327,7 +327,7 @@ LABEL_13:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v11 = v5;
+  v11 = dataCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v69, v78, 16);
   if (v16)
   {
@@ -358,8 +358,8 @@ LABEL_13:
     while (v16);
   }
 
-  v25 = objc_msgSend_weightStorage(v6, v22, v23, v24);
-  v29 = objc_msgSend_weightStorageRange(v6, v26, v27, v28);
+  v25 = objc_msgSend_weightStorage(quantizationCopy, v22, v23, v24);
+  v29 = objc_msgSend_weightStorageRange(quantizationCopy, v26, v27, v28);
   if (objc_msgSend_isEqualToString_(v25, v30, off_1EB013628, v31))
   {
     v35 = objc_msgSend_count(v11, v32, v33, v34);

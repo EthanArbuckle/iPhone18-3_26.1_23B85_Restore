@@ -3,9 +3,9 @@
 - (AMUIPosterSwitcherModel)init;
 - (NSArray)posterConfigurations;
 - (PRSPosterConfiguration)activeConfiguration;
-- (void)_setActiveConfiguration:(id)a3;
-- (void)_setPosterConfigurations:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_setActiveConfiguration:(id)configuration;
+- (void)_setPosterConfigurations:(id)configurations;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __41__AMUIPosterSwitcherModel_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -126,11 +126,11 @@ void __31__AMUIPosterSwitcherModel_init__block_invoke_2(uint64_t a1, uint64_t a2
   return v3;
 }
 
-- (void)_setPosterConfigurations:(id)a3
+- (void)_setPosterConfigurations:(id)configurations
 {
-  v4 = a3;
+  configurationsCopy = configurations;
   os_unfair_lock_lock(&self->_stateLock);
-  v5 = [v4 copy];
+  v5 = [configurationsCopy copy];
 
   posterConfigurations = self->_posterConfigurations;
   self->_posterConfigurations = v5;
@@ -192,17 +192,17 @@ void __52__AMUIPosterSwitcherModel__setPosterConfigurations___block_invoke(uint6
   return v3;
 }
 
-- (void)_setActiveConfiguration:(id)a3
+- (void)_setActiveConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_stateLock);
-  if (self->_activeConfiguration != v5)
+  if (self->_activeConfiguration != configurationCopy)
   {
-    objc_storeStrong(&self->_activeConfiguration, a3);
+    objc_storeStrong(&self->_activeConfiguration, configuration);
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
-  v6 = v5;
+  v6 = configurationCopy;
   BSDispatchMain();
 }
 
@@ -248,22 +248,22 @@ void __51__AMUIPosterSwitcherModel__setActiveConfiguration___block_invoke(uint64
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 @end

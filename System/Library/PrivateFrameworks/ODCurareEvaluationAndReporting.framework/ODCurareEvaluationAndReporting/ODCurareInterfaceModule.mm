@@ -1,25 +1,25 @@
 @interface ODCurareInterfaceModule
-- (BOOL)evaluateModelsWithEvaluationModels:(id)a3 error:(id *)a4;
-- (BOOL)personalizeModelsWithPersonalizableModels:(id)a3 personalizationPolicy:(id)a4 error:(id *)a5;
-- (ODCurareInterfaceModule)initWithBundleIdentifier:(id)a3 evaluationInstance:(id)a4 personalizationInstance:(id)a5 pruningPolicy:(id)a6 error:(id *)a7;
-- (id)getSelectedModelWithDefaultModel:(id)a3 selectionPolicy:(id)a4 error:(id *)a5;
-- (void)generateCAReportAndReturnError:(id *)a3;
+- (BOOL)evaluateModelsWithEvaluationModels:(id)models error:(id *)error;
+- (BOOL)personalizeModelsWithPersonalizableModels:(id)models personalizationPolicy:(id)policy error:(id *)error;
+- (ODCurareInterfaceModule)initWithBundleIdentifier:(id)identifier evaluationInstance:(id)instance personalizationInstance:(id)personalizationInstance pruningPolicy:(id)policy error:(id *)error;
+- (id)getSelectedModelWithDefaultModel:(id)model selectionPolicy:(id)policy error:(id *)error;
+- (void)generateCAReportAndReturnError:(id *)error;
 @end
 
 @implementation ODCurareInterfaceModule
 
-- (ODCurareInterfaceModule)initWithBundleIdentifier:(id)a3 evaluationInstance:(id)a4 personalizationInstance:(id)a5 pruningPolicy:(id)a6 error:(id *)a7
+- (ODCurareInterfaceModule)initWithBundleIdentifier:(id)identifier evaluationInstance:(id)instance personalizationInstance:(id)personalizationInstance pruningPolicy:(id)policy error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  instanceCopy = instance;
+  personalizationInstanceCopy = personalizationInstance;
+  policyCopy = policy;
   v20.receiver = self;
   v20.super_class = ODCurareInterfaceModule;
   v16 = [(ODCurareInterfaceModule *)&v20 init];
   if (v16)
   {
-    v17 = [[ODCurareInterfaceModuleInternal alloc] initWithBundleIdentifier:v12 evaluationInstance:v13 personalizationInstance:v14 pruningPolicy:v15 error:a7];
+    v17 = [[ODCurareInterfaceModuleInternal alloc] initWithBundleIdentifier:identifierCopy evaluationInstance:instanceCopy personalizationInstance:personalizationInstanceCopy pruningPolicy:policyCopy error:error];
     underlyingObject = v16->_underlyingObject;
     v16->_underlyingObject = v17;
   }
@@ -27,41 +27,41 @@
   return v16;
 }
 
-- (BOOL)evaluateModelsWithEvaluationModels:(id)a3 error:(id *)a4
+- (BOOL)evaluateModelsWithEvaluationModels:(id)models error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ODCurareInterfaceModule *)self underlyingObject];
-  v8 = [v7 evaluateModelsWithEvaluationModels:v6 error:a4];
+  modelsCopy = models;
+  underlyingObject = [(ODCurareInterfaceModule *)self underlyingObject];
+  v8 = [underlyingObject evaluateModelsWithEvaluationModels:modelsCopy error:error];
 
-  LOBYTE(v7) = [v8 BOOLValue];
-  return v7;
+  LOBYTE(underlyingObject) = [v8 BOOLValue];
+  return underlyingObject;
 }
 
-- (BOOL)personalizeModelsWithPersonalizableModels:(id)a3 personalizationPolicy:(id)a4 error:(id *)a5
+- (BOOL)personalizeModelsWithPersonalizableModels:(id)models personalizationPolicy:(id)policy error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ODCurareInterfaceModule *)self underlyingObject];
-  v11 = [v10 personalizeModelsWithPersonalizableModels:v9 personalizationPolicy:v8 error:a5];
+  policyCopy = policy;
+  modelsCopy = models;
+  underlyingObject = [(ODCurareInterfaceModule *)self underlyingObject];
+  v11 = [underlyingObject personalizeModelsWithPersonalizableModels:modelsCopy personalizationPolicy:policyCopy error:error];
 
-  LOBYTE(v9) = [v11 BOOLValue];
-  return v9;
+  LOBYTE(modelsCopy) = [v11 BOOLValue];
+  return modelsCopy;
 }
 
-- (id)getSelectedModelWithDefaultModel:(id)a3 selectionPolicy:(id)a4 error:(id *)a5
+- (id)getSelectedModelWithDefaultModel:(id)model selectionPolicy:(id)policy error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ODCurareInterfaceModule *)self underlyingObject];
-  v11 = [v10 getSelectedModelWithDefaultModel:v9 selectionPolicy:v8 error:a5];
+  policyCopy = policy;
+  modelCopy = model;
+  underlyingObject = [(ODCurareInterfaceModule *)self underlyingObject];
+  v11 = [underlyingObject getSelectedModelWithDefaultModel:modelCopy selectionPolicy:policyCopy error:error];
 
   return v11;
 }
 
-- (void)generateCAReportAndReturnError:(id *)a3
+- (void)generateCAReportAndReturnError:(id *)error
 {
-  v4 = [(ODCurareInterfaceModule *)self underlyingObject];
-  [v4 generateCAReportAndReturnError:a3];
+  underlyingObject = [(ODCurareInterfaceModule *)self underlyingObject];
+  [underlyingObject generateCAReportAndReturnError:error];
 }
 
 @end

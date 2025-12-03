@@ -1,17 +1,17 @@
 @interface _UIFeedbackButtonBehavior
-+ (id)buttonBehaviorWithStyle:(int64_t)a3 coordinateSpace:(id)a4;
++ (id)buttonBehaviorWithStyle:(int64_t)style coordinateSpace:(id)space;
 @end
 
 @implementation _UIFeedbackButtonBehavior
 
-+ (id)buttonBehaviorWithStyle:(int64_t)a3 coordinateSpace:(id)a4
++ (id)buttonBehaviorWithStyle:(int64_t)style coordinateSpace:(id)space
 {
-  v7 = a4;
+  spaceCopy = space;
   _UIIsPrivateMainBundle();
   if (dyld_program_sdk_at_least())
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"_UIButtonFeedbackGenerator.m" lineNumber:177 description:@"Use of _UIFeedbackButtonBehavior methods have been deprecated since iOS 10 and will be removed in a future version. Update to view-based _UIFeedbackButtonGenerator methods."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonFeedbackGenerator.m" lineNumber:177 description:@"Use of _UIFeedbackButtonBehavior methods have been deprecated since iOS 10 and will be removed in a future version. Update to view-based _UIFeedbackButtonGenerator methods."];
   }
 
   else if (os_variant_has_internal_diagnostics())
@@ -34,7 +34,7 @@
     }
   }
 
-  v10 = [[a1 alloc] initWithStyle:a3 coordinateSpace:v7];
+  v10 = [[self alloc] initWithStyle:style coordinateSpace:spaceCopy];
 
   return v10;
 }

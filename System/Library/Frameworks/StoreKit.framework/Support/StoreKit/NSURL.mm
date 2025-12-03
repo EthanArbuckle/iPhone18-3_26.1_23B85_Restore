@@ -1,7 +1,7 @@
 @interface NSURL
 - (NSString)lib_sanitizedFilePath;
-- (id)lib_URLByAppendingPathComponents:(id)a3;
-- (id)lib_URLByAppendingQueryDictionary:(id)a3;
+- (id)lib_URLByAppendingPathComponents:(id)components;
+- (id)lib_URLByAppendingQueryDictionary:(id)dictionary;
 - (id)lib_URLByStrippingQuery;
 - (id)lib_queryDictionary;
 @end
@@ -12,15 +12,15 @@
 {
   if ([(NSURL *)self isFileURL])
   {
-    v3 = [(NSURL *)self path];
+    path = [(NSURL *)self path];
   }
 
   else
   {
-    v3 = 0;
+    path = 0;
   }
 
-  return v3;
+  return path;
 }
 
 - (id)lib_queryDictionary
@@ -31,8 +31,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 queryItems];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  queryItems = [v4 queryItems];
+  v6 = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -43,19 +43,19 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(queryItems);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v10 value];
-        if (v11)
+        name = [v10 name];
+        value = [v10 value];
+        if (name)
         {
-          [v3 setObject:v12 forKeyedSubscript:v11];
+          [v3 setObject:value forKeyedSubscript:name];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -66,46 +66,46 @@
   return v13;
 }
 
-- (id)lib_URLByAppendingPathComponents:(id)a3
+- (id)lib_URLByAppendingPathComponents:(id)components
 {
-  v4 = a3;
-  if ([v4 count])
+  componentsCopy = components;
+  if ([componentsCopy count])
   {
-    v5 = [v4 count];
-    v6 = [v4 firstObject];
+    v5 = [componentsCopy count];
+    firstObject = [componentsCopy firstObject];
     if (v5 == 1)
     {
-      v7 = [(NSURL *)self URLByAppendingPathComponent:v6 isDirectory:0];
+      selfCopy = [(NSURL *)self URLByAppendingPathComponent:firstObject isDirectory:0];
     }
 
     else
     {
-      v8 = [(NSURL *)self URLByAppendingPathComponent:v6 isDirectory:1];
+      v8 = [(NSURL *)self URLByAppendingPathComponent:firstObject isDirectory:1];
 
-      v9 = [v4 subarrayWithRange:{1, objc_msgSend(v4, "count") - 1}];
-      v7 = [v8 lib_URLByAppendingPathComponents:v9];
+      v9 = [componentsCopy subarrayWithRange:{1, objc_msgSend(componentsCopy, "count") - 1}];
+      selfCopy = [v8 lib_URLByAppendingPathComponents:v9];
     }
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)lib_URLByAppendingQueryDictionary:(id)a3
+- (id)lib_URLByAppendingQueryDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = self;
-  v27 = v4;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  v27 = dictionaryCopy;
+  if ([dictionaryCopy count])
   {
     v6 = +[NSMutableString string];
-    v25 = v5;
-    v7 = [(NSURL *)v5 absoluteString];
-    v8 = [v7 componentsSeparatedByString:@"?"];
+    v25 = selfCopy;
+    absoluteString = [(NSURL *)selfCopy absoluteString];
+    v8 = [absoluteString componentsSeparatedByString:@"?"];
 
     v24 = [v8 objectAtIndexedSubscript:0];
     if ([v8 count] >= 2)
@@ -177,10 +177,10 @@
       v21 = v24;
     }
 
-    v5 = [NSURL URLWithString:v21];
+    selfCopy = [NSURL URLWithString:v21];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)lib_URLByStrippingQuery

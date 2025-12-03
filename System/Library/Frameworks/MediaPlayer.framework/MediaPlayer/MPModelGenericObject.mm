@@ -1,6 +1,6 @@
 @interface MPModelGenericObject
-+ (id)genericObjectWithModelObject:(id)a3;
-+ (id)relationshipKeyForGenericObjectType:(int64_t)a3;
++ (id)genericObjectWithModelObject:(id)object;
++ (id)relationshipKeyForGenericObjectType:(int64_t)type;
 + (id)requiredStoreLibraryPersonalizationProperties;
 + (void)__MPModelRelationshipGenericAlbum__MAPPING_MISSING__;
 + (void)__MPModelRelationshipGenericArtist__MAPPING_MISSING__;
@@ -23,17 +23,17 @@
 + (void)__MPModelRelationshipGenericTVEpisode__MAPPING_MISSING__;
 + (void)__MPModelRelationshipGenericTVSeason__MAPPING_MISSING__;
 + (void)__MPModelRelationshipGenericTVShow__MAPPING_MISSING__;
-- (MPModelGenericObject)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
+- (MPModelGenericObject)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
 - (id)anyObject;
 - (id)artworkCatalog;
-- (id)copyWithIdentifiers:(id)a3 block:(id)a4;
-- (id)copyWithIdentifiers:(id)a3 propertySet:(id)a4;
+- (id)copyWithIdentifiers:(id)identifiers block:(id)block;
+- (id)copyWithIdentifiers:(id)identifiers propertySet:(id)set;
 - (id)flattenedGenericObject;
 - (id)humanDescription;
 - (id)identifiers;
 - (id)mediaItemPropertyValues;
-- (id)mergeWithObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)mergeWithObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
 - (int64_t)type;
 @end
@@ -261,72 +261,72 @@ void __28__MPModelGenericObject_type__block_invoke(uint64_t a1)
   switch([(MPModelGenericObject *)self type])
   {
     case 1:
-      v3 = [(MPModelGenericObject *)self song];
+      song = [(MPModelGenericObject *)self song];
       goto LABEL_23;
     case 2:
-      v3 = [(MPModelGenericObject *)self album];
+      song = [(MPModelGenericObject *)self album];
       goto LABEL_23;
     case 3:
-      v3 = [(MPModelGenericObject *)self artist];
+      song = [(MPModelGenericObject *)self artist];
       goto LABEL_23;
     case 4:
-      v3 = [(MPModelGenericObject *)self playlist];
+      song = [(MPModelGenericObject *)self playlist];
       goto LABEL_23;
     case 5:
-      v3 = [(MPModelGenericObject *)self playlistEntry];
+      song = [(MPModelGenericObject *)self playlistEntry];
       goto LABEL_23;
     case 6:
-      v3 = [(MPModelGenericObject *)self tvEpisode];
+      song = [(MPModelGenericObject *)self tvEpisode];
       goto LABEL_23;
     case 7:
-      v3 = [(MPModelGenericObject *)self season];
+      song = [(MPModelGenericObject *)self season];
       goto LABEL_23;
     case 8:
-      v3 = [(MPModelGenericObject *)self show];
+      song = [(MPModelGenericObject *)self show];
       goto LABEL_23;
     case 9:
-      v3 = [(MPModelGenericObject *)self movie];
+      song = [(MPModelGenericObject *)self movie];
       goto LABEL_23;
     case 10:
-      v3 = [(MPModelGenericObject *)self mediaClip];
+      song = [(MPModelGenericObject *)self mediaClip];
       goto LABEL_23;
     case 11:
-      v3 = [(MPModelGenericObject *)self podcast];
+      song = [(MPModelGenericObject *)self podcast];
       goto LABEL_23;
     case 12:
-      v3 = [(MPModelGenericObject *)self podcastEpisode];
+      song = [(MPModelGenericObject *)self podcastEpisode];
       goto LABEL_23;
     case 13:
-      v3 = [(MPModelGenericObject *)self radioStation];
+      song = [(MPModelGenericObject *)self radioStation];
       goto LABEL_23;
     case 14:
-      v3 = [(MPModelGenericObject *)self composer];
+      song = [(MPModelGenericObject *)self composer];
       goto LABEL_23;
     case 15:
-      v3 = [(MPModelGenericObject *)self genre];
+      song = [(MPModelGenericObject *)self genre];
       goto LABEL_23;
     case 16:
-      v3 = [(MPModelGenericObject *)self curator];
+      song = [(MPModelGenericObject *)self curator];
       goto LABEL_23;
     case 17:
-      v3 = [(MPModelGenericObject *)self socialPerson];
+      song = [(MPModelGenericObject *)self socialPerson];
       goto LABEL_23;
     case 18:
-      v3 = [(MPModelGenericObject *)self radioStationEvent];
+      song = [(MPModelGenericObject *)self radioStationEvent];
       goto LABEL_23;
     case 19:
-      v3 = [(MPModelGenericObject *)self recordLabel];
+      song = [(MPModelGenericObject *)self recordLabel];
       goto LABEL_23;
     case 20:
-      v3 = [(MPModelGenericObject *)self creditsArtist];
+      song = [(MPModelGenericObject *)self creditsArtist];
       goto LABEL_23;
     case 21:
-      v3 = [(MPModelGenericObject *)self group];
+      song = [(MPModelGenericObject *)self group];
 LABEL_23:
-      v4 = v3;
-      v5 = [v3 identifiers];
+      v4 = song;
+      identifiers = [song identifiers];
 
-      if (!v5)
+      if (!identifiers)
       {
         goto LABEL_24;
       }
@@ -336,10 +336,10 @@ LABEL_23:
 LABEL_24:
       v7.receiver = self;
       v7.super_class = MPModelGenericObject;
-      v5 = [(MPModelObject *)&v7 identifiers];
+      identifiers = [(MPModelObject *)&v7 identifiers];
 LABEL_25:
 
-      return v5;
+      return identifiers;
   }
 }
 
@@ -1132,47 +1132,47 @@ LABEL_32:
 
 - (id)mediaItemPropertyValues
 {
-  v3 = [(MPModelGenericObject *)self type];
-  v4 = 0;
-  if (v3 > 5)
+  type = [(MPModelGenericObject *)self type];
+  mediaItemPropertyValues = 0;
+  if (type > 5)
   {
-    if (v3 == 6)
+    if (type == 6)
     {
-      v5 = [(MPModelGenericObject *)self tvEpisode];
+      tvEpisode = [(MPModelGenericObject *)self tvEpisode];
     }
 
     else
     {
-      if (v3 != 9)
+      if (type != 9)
       {
         goto LABEL_11;
       }
 
-      v5 = [(MPModelGenericObject *)self movie];
+      tvEpisode = [(MPModelGenericObject *)self movie];
     }
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
-    v5 = [(MPModelGenericObject *)self song];
+    tvEpisode = [(MPModelGenericObject *)self song];
   }
 
   else
   {
-    if (v3 != 5)
+    if (type != 5)
     {
       goto LABEL_11;
     }
 
-    v5 = [(MPModelGenericObject *)self playlistEntry];
+    tvEpisode = [(MPModelGenericObject *)self playlistEntry];
   }
 
-  v6 = v5;
-  v4 = [v5 mediaItemPropertyValues];
+  v6 = tvEpisode;
+  mediaItemPropertyValues = [tvEpisode mediaItemPropertyValues];
 
 LABEL_11:
 
-  return v4;
+  return mediaItemPropertyValues;
 }
 
 - (id)artworkCatalog
@@ -1181,62 +1181,62 @@ LABEL_11:
   switch([(MPModelGenericObject *)self type])
   {
     case 1:
-      v4 = [(MPModelGenericObject *)self song];
+      song = [(MPModelGenericObject *)self song];
       goto LABEL_19;
     case 2:
-      v4 = [(MPModelGenericObject *)self album];
+      song = [(MPModelGenericObject *)self album];
       goto LABEL_19;
     case 3:
-      v4 = [(MPModelGenericObject *)self artist];
+      song = [(MPModelGenericObject *)self artist];
       goto LABEL_19;
     case 4:
-      v4 = [(MPModelGenericObject *)self playlist];
+      song = [(MPModelGenericObject *)self playlist];
       goto LABEL_19;
     case 6:
-      v4 = [(MPModelGenericObject *)self tvEpisode];
+      song = [(MPModelGenericObject *)self tvEpisode];
       goto LABEL_19;
     case 7:
-      v4 = [(MPModelGenericObject *)self season];
+      song = [(MPModelGenericObject *)self season];
       goto LABEL_19;
     case 8:
-      v4 = [(MPModelGenericObject *)self show];
+      song = [(MPModelGenericObject *)self show];
       goto LABEL_19;
     case 9:
-      v4 = [(MPModelGenericObject *)self movie];
+      song = [(MPModelGenericObject *)self movie];
       goto LABEL_19;
     case 10:
-      v5 = [(MPModelGenericObject *)self mediaClip];
-      v6 = [v5 previewArtworkCatalog];
+      mediaClip = [(MPModelGenericObject *)self mediaClip];
+      previewArtworkCatalog = [mediaClip previewArtworkCatalog];
       goto LABEL_20;
     case 11:
-      v4 = [(MPModelGenericObject *)self podcast];
+      song = [(MPModelGenericObject *)self podcast];
       goto LABEL_19;
     case 12:
-      v4 = [(MPModelGenericObject *)self podcastEpisode];
+      song = [(MPModelGenericObject *)self podcastEpisode];
       goto LABEL_19;
     case 13:
-      v4 = [(MPModelGenericObject *)self radioStation];
+      song = [(MPModelGenericObject *)self radioStation];
       goto LABEL_19;
     case 15:
-      v4 = [(MPModelGenericObject *)self genre];
+      song = [(MPModelGenericObject *)self genre];
       goto LABEL_19;
     case 16:
-      v5 = [(MPModelGenericObject *)self curator];
-      v6 = [v5 editorialArtworkCatalog];
+      mediaClip = [(MPModelGenericObject *)self curator];
+      previewArtworkCatalog = [mediaClip editorialArtworkCatalog];
       goto LABEL_20;
     case 18:
-      v4 = [(MPModelGenericObject *)self radioStationEvent];
+      song = [(MPModelGenericObject *)self radioStationEvent];
       goto LABEL_19;
     case 19:
-      v4 = [(MPModelGenericObject *)self recordLabel];
+      song = [(MPModelGenericObject *)self recordLabel];
       goto LABEL_19;
     case 20:
-      v4 = [(MPModelGenericObject *)self creditsArtist];
+      song = [(MPModelGenericObject *)self creditsArtist];
 LABEL_19:
-      v5 = v4;
-      v6 = [v4 artworkCatalog];
+      mediaClip = song;
+      previewArtworkCatalog = [song artworkCatalog];
 LABEL_20:
-      v3 = v6;
+      v3 = previewArtworkCatalog;
 
       break;
     default:
@@ -1249,44 +1249,44 @@ LABEL_20:
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MPModelGenericObject *)self anyObject];
-  v5 = [v4 humanDescription];
-  v6 = v5;
-  if (v5)
+  anyObject = [(MPModelGenericObject *)self anyObject];
+  humanDescription = [anyObject humanDescription];
+  v6 = humanDescription;
+  if (humanDescription)
   {
-    v7 = [v3 stringWithFormat:@"generic %@", v5];
+    v7 = [v3 stringWithFormat:@"generic %@", humanDescription];
   }
 
   else
   {
-    v8 = [(MPModelGenericObject *)self identifiers];
-    v9 = [v8 humanDescription];
-    v7 = [v3 stringWithFormat:@"generic %@", v9];
+    identifiers = [(MPModelGenericObject *)self identifiers];
+    humanDescription2 = [identifiers humanDescription];
+    v7 = [v3 stringWithFormat:@"generic %@", humanDescription2];
   }
 
   return v7;
 }
 
-- (id)mergeWithObject:(id)a3
+- (id)mergeWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = objc_opt_class();
-    [v23 handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:277 description:{@"MPModelObject mergeWithObject: called with a different object class: %@ %@", v24, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:277 description:{@"MPModelObject mergeWithObject: called with a different object class: %@ %@", v24, objc_opt_class()}];
   }
 
-  v6 = v5;
-  v7 = [(MPModelGenericObject *)self anyObject];
-  v8 = [v6 anyObject];
-  v9 = v8;
-  if (!(v7 | v8))
+  v6 = objectCopy;
+  anyObject = [(MPModelGenericObject *)self anyObject];
+  anyObject2 = [v6 anyObject];
+  v9 = anyObject2;
+  if (!(anyObject | anyObject2))
   {
-    v10 = [(MPModelGenericObject *)self identifiers];
-    v11 = [v6 identifiers];
-    v12 = [v10 unionSet:v11];
+    identifiers = [(MPModelGenericObject *)self identifiers];
+    identifiers2 = [v6 identifiers];
+    v12 = [identifiers unionSet:identifiers2];
 
     v13 = [(MPModelObject *)[MPModelGenericObject alloc] initWithIdentifiers:v12];
 LABEL_5:
@@ -1294,36 +1294,36 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  if (!v7 || v8)
+  if (!anyObject || anyObject2)
   {
-    if (v7 || !v8)
+    if (anyObject || !anyObject2)
     {
-      v22 = [(MPModelGenericObject *)self type];
-      if (v22 != [v6 type])
+      type = [(MPModelGenericObject *)self type];
+      if (type != [v6 type])
       {
-        v25 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v25 handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:297 description:{@"MPModelObject mergeWithObject: called with a different generic relationship type: %@ %@", self, v6}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:297 description:{@"MPModelObject mergeWithObject: called with a different generic relationship type: %@ %@", self, v6}];
       }
 
-      v12 = [v7 mergeWithObject:v9];
+      v12 = [anyObject mergeWithObject:v9];
       v13 = [MPModelGenericObject genericObjectWithModelObject:v12];
       goto LABEL_5;
     }
 
-    v18 = [(MPModelGenericObject *)self identifiers];
-    v19 = [v6 identifiers];
-    v12 = [v18 unionSet:v19];
+    identifiers3 = [(MPModelGenericObject *)self identifiers];
+    identifiers4 = [v6 identifiers];
+    v12 = [identifiers3 unionSet:identifiers4];
 
     v17 = v9;
   }
 
   else
   {
-    v15 = [(MPModelGenericObject *)self identifiers];
-    v16 = [v6 identifiers];
-    v12 = [v15 unionSet:v16];
+    identifiers5 = [(MPModelGenericObject *)self identifiers];
+    identifiers6 = [v6 identifiers];
+    v12 = [identifiers5 unionSet:identifiers6];
 
-    v17 = v7;
+    v17 = anyObject;
   }
 
   v20 = [v17 copyWithIdentifiers:v12];
@@ -1334,51 +1334,51 @@ LABEL_13:
   return v14;
 }
 
-- (id)copyWithIdentifiers:(id)a3 propertySet:(id)a4
+- (id)copyWithIdentifiers:(id)identifiers propertySet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPModelGenericObject *)self anyObject];
-  v9 = [(MPModelGenericObject *)self type];
+  identifiersCopy = identifiers;
+  setCopy = set;
+  anyObject = [(MPModelGenericObject *)self anyObject];
+  type = [(MPModelGenericObject *)self type];
   v10 = +[MPPropertySet emptyPropertySet];
-  if (v9)
+  if (type)
   {
-    v11 = [v7 relationships];
+    relationships = [setCopy relationships];
     v12 = [MPModelGenericObject relationshipKeyForGenericObjectType:[(MPModelGenericObject *)self type]];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    v13 = [relationships objectForKeyedSubscript:v12];
 
     v10 = v13;
   }
 
   if (v10)
   {
-    v14 = [v8 copyWithIdentifiers:v6 propertySet:v10];
+    v14 = [anyObject copyWithIdentifiers:identifiersCopy propertySet:v10];
     v15 = [MPModelGenericObject genericObjectWithModelObject:v14];
   }
 
   else
   {
-    v15 = [(MPModelObject *)[MPModelGenericObject alloc] initWithIdentifiers:v6 block:&__block_literal_global_219];
+    v15 = [(MPModelObject *)[MPModelGenericObject alloc] initWithIdentifiers:identifiersCopy block:&__block_literal_global_219];
   }
 
   return v15;
 }
 
-- (id)copyWithIdentifiers:(id)a3 block:(id)a4
+- (id)copyWithIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPModelGenericObject *)self anyObject];
-  if (v8)
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  anyObject = [(MPModelGenericObject *)self anyObject];
+  if (anyObject)
   {
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __50__MPModelGenericObject_copyWithIdentifiers_block___block_invoke_2;
     v19 = &unk_1E767A2D0;
     v9 = &v20;
-    v20 = v7;
-    v10 = v7;
-    v11 = [v8 copyWithIdentifiers:v6 block:&v16];
+    v20 = blockCopy;
+    v10 = blockCopy;
+    v11 = [anyObject copyWithIdentifiers:identifiersCopy block:&v16];
     v12 = [MPModelGenericObject genericObjectWithModelObject:v11, v16, v17, v18, v19];
   }
 
@@ -1390,9 +1390,9 @@ LABEL_13:
     v21[2] = __50__MPModelGenericObject_copyWithIdentifiers_block___block_invoke;
     v21[3] = &unk_1E767A2D0;
     v9 = &v22;
-    v22 = v7;
-    v14 = v7;
-    v12 = [(MPModelObject *)v13 initWithIdentifiers:v6 block:v21];
+    v22 = blockCopy;
+    v14 = blockCopy;
+    v12 = [(MPModelObject *)v13 initWithIdentifiers:identifiersCopy block:v21];
   }
 
   return v12;
@@ -1400,209 +1400,209 @@ LABEL_13:
 
 + (void)__MPModelRelationshipGenericGroup__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:327 description:@"Translator was missing mapping for MPModelRelationshipGenericGroup"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:327 description:@"Translator was missing mapping for MPModelRelationshipGenericGroup"];
 }
 
 + (void)__MPModelRelationshipGenericCreditsArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:326 description:@"Translator was missing mapping for MPModelRelationshipGenericCreditsArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:326 description:@"Translator was missing mapping for MPModelRelationshipGenericCreditsArtist"];
 }
 
 + (void)__MPModelRelationshipGenericRecordLabel__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:325 description:@"Translator was missing mapping for MPModelRelationshipGenericRecordLabel"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:325 description:@"Translator was missing mapping for MPModelRelationshipGenericRecordLabel"];
 }
 
 + (void)__MPModelRelationshipGenericSocialPerson__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:324 description:@"Translator was missing mapping for MPModelRelationshipGenericSocialPerson"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:324 description:@"Translator was missing mapping for MPModelRelationshipGenericSocialPerson"];
 }
 
 + (void)__MPModelRelationshipGenericCurator__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:323 description:@"Translator was missing mapping for MPModelRelationshipGenericCurator"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:323 description:@"Translator was missing mapping for MPModelRelationshipGenericCurator"];
 }
 
 + (void)__MPModelRelationshipGenericGenre__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:322 description:@"Translator was missing mapping for MPModelRelationshipGenericGenre"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:322 description:@"Translator was missing mapping for MPModelRelationshipGenericGenre"];
 }
 
 + (void)__MPModelRelationshipGenericComposer__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:321 description:@"Translator was missing mapping for MPModelRelationshipGenericComposer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:321 description:@"Translator was missing mapping for MPModelRelationshipGenericComposer"];
 }
 
 + (void)__MPModelRelationshipGenericRadioStationEvent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:320 description:@"Translator was missing mapping for MPModelRelationshipGenericRadioStationEvent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:320 description:@"Translator was missing mapping for MPModelRelationshipGenericRadioStationEvent"];
 }
 
 + (void)__MPModelRelationshipGenericRadioStation__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:319 description:@"Translator was missing mapping for MPModelRelationshipGenericRadioStation"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:319 description:@"Translator was missing mapping for MPModelRelationshipGenericRadioStation"];
 }
 
 + (void)__MPModelRelationshipGenericPodcastEpisode__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:318 description:@"Translator was missing mapping for MPModelRelationshipGenericPodcastEpisode"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:318 description:@"Translator was missing mapping for MPModelRelationshipGenericPodcastEpisode"];
 }
 
 + (void)__MPModelRelationshipGenericPodcast__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:317 description:@"Translator was missing mapping for MPModelRelationshipGenericPodcast"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:317 description:@"Translator was missing mapping for MPModelRelationshipGenericPodcast"];
 }
 
 + (void)__MPModelRelationshipGenericMediaClip__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:316 description:@"Translator was missing mapping for MPModelRelationshipGenericMediaClip"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:316 description:@"Translator was missing mapping for MPModelRelationshipGenericMediaClip"];
 }
 
 + (void)__MPModelRelationshipGenericMovie__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:315 description:@"Translator was missing mapping for MPModelRelationshipGenericMovie"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:315 description:@"Translator was missing mapping for MPModelRelationshipGenericMovie"];
 }
 
 + (void)__MPModelRelationshipGenericTVShow__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:314 description:@"Translator was missing mapping for MPModelRelationshipGenericTVShow"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:314 description:@"Translator was missing mapping for MPModelRelationshipGenericTVShow"];
 }
 
 + (void)__MPModelRelationshipGenericTVSeason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:313 description:@"Translator was missing mapping for MPModelRelationshipGenericTVSeason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:313 description:@"Translator was missing mapping for MPModelRelationshipGenericTVSeason"];
 }
 
 + (void)__MPModelRelationshipGenericTVEpisode__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:312 description:@"Translator was missing mapping for MPModelRelationshipGenericTVEpisode"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:312 description:@"Translator was missing mapping for MPModelRelationshipGenericTVEpisode"];
 }
 
 + (void)__MPModelRelationshipGenericPlaylistEntry__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:311 description:@"Translator was missing mapping for MPModelRelationshipGenericPlaylistEntry"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:311 description:@"Translator was missing mapping for MPModelRelationshipGenericPlaylistEntry"];
 }
 
 + (void)__MPModelRelationshipGenericPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:310 description:@"Translator was missing mapping for MPModelRelationshipGenericPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:310 description:@"Translator was missing mapping for MPModelRelationshipGenericPlaylist"];
 }
 
 + (void)__MPModelRelationshipGenericArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:309 description:@"Translator was missing mapping for MPModelRelationshipGenericArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:309 description:@"Translator was missing mapping for MPModelRelationshipGenericArtist"];
 }
 
 + (void)__MPModelRelationshipGenericAlbum__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:308 description:@"Translator was missing mapping for MPModelRelationshipGenericAlbum"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:308 description:@"Translator was missing mapping for MPModelRelationshipGenericAlbum"];
 }
 
 + (void)__MPModelRelationshipGenericSong__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:307 description:@"Translator was missing mapping for MPModelRelationshipGenericSong"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:307 description:@"Translator was missing mapping for MPModelRelationshipGenericSong"];
 }
 
-+ (id)genericObjectWithModelObject:(id)a3
++ (id)genericObjectWithModelObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = [MPModelGenericObject alloc], [v3 identifiers], v6 = objc_claimAutoreleasedReturnValue(), v84[0] = MEMORY[0x1E69E9820], v84[1] = 3221225472, v84[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke, v84[3] = &unk_1E767E6E0, v85 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v5, "initWithIdentifiers:block:", v6, v84), v6, v85, !v4))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = [MPModelGenericObject alloc], [objectCopy identifiers], v6 = objc_claimAutoreleasedReturnValue(), v84[0] = MEMORY[0x1E69E9820], v84[1] = 3221225472, v84[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke, v84[3] = &unk_1E767E6E0, v85 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v5, "initWithIdentifiers:block:", v6, v84), v6, v85, !v4))
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || (v7 = [MPModelGenericObject alloc], [v3 identifiers], v8 = objc_claimAutoreleasedReturnValue(), v82[0] = MEMORY[0x1E69E9820], v82[1] = 3221225472, v82[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_2, v82[3] = &unk_1E767E6E0, v83 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v7, "initWithIdentifiers:block:", v8, v82), v8, v83, !v4))
+      if ((objc_opt_isKindOfClass() & 1) == 0 || (v7 = [MPModelGenericObject alloc], [objectCopy identifiers], v8 = objc_claimAutoreleasedReturnValue(), v82[0] = MEMORY[0x1E69E9820], v82[1] = 3221225472, v82[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_2, v82[3] = &unk_1E767E6E0, v83 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v7, "initWithIdentifiers:block:", v8, v82), v8, v83, !v4))
       {
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = [MPModelGenericObject alloc], [v3 identifiers], v10 = objc_claimAutoreleasedReturnValue(), v80[0] = MEMORY[0x1E69E9820], v80[1] = 3221225472, v80[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_3, v80[3] = &unk_1E767E6E0, v81 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v9, "initWithIdentifiers:block:", v10, v80), v10, v81, !v4))
+        if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = [MPModelGenericObject alloc], [objectCopy identifiers], v10 = objc_claimAutoreleasedReturnValue(), v80[0] = MEMORY[0x1E69E9820], v80[1] = 3221225472, v80[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_3, v80[3] = &unk_1E767E6E0, v81 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v9, "initWithIdentifiers:block:", v10, v80), v10, v81, !v4))
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || (v11 = [MPModelGenericObject alloc], [v3 identifiers], v12 = objc_claimAutoreleasedReturnValue(), v78[0] = MEMORY[0x1E69E9820], v78[1] = 3221225472, v78[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_4, v78[3] = &unk_1E767E6E0, v79 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v11, "initWithIdentifiers:block:", v12, v78), v12, v79, !v4))
+          if ((objc_opt_isKindOfClass() & 1) == 0 || (v11 = [MPModelGenericObject alloc], [objectCopy identifiers], v12 = objc_claimAutoreleasedReturnValue(), v78[0] = MEMORY[0x1E69E9820], v78[1] = 3221225472, v78[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_4, v78[3] = &unk_1E767E6E0, v79 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v11, "initWithIdentifiers:block:", v12, v78), v12, v79, !v4))
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || (v13 = [MPModelGenericObject alloc], [v3 identifiers], v14 = objc_claimAutoreleasedReturnValue(), v76[0] = MEMORY[0x1E69E9820], v76[1] = 3221225472, v76[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_5, v76[3] = &unk_1E767E6E0, v77 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v13, "initWithIdentifiers:block:", v14, v76), v14, v77, !v4))
+            if ((objc_opt_isKindOfClass() & 1) == 0 || (v13 = [MPModelGenericObject alloc], [objectCopy identifiers], v14 = objc_claimAutoreleasedReturnValue(), v76[0] = MEMORY[0x1E69E9820], v76[1] = 3221225472, v76[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_5, v76[3] = &unk_1E767E6E0, v77 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v13, "initWithIdentifiers:block:", v14, v76), v14, v77, !v4))
             {
               objc_opt_class();
-              if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = [MPModelGenericObject alloc], [v3 identifiers], v16 = objc_claimAutoreleasedReturnValue(), v74[0] = MEMORY[0x1E69E9820], v74[1] = 3221225472, v74[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_6, v74[3] = &unk_1E767E6E0, v75 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v15, "initWithIdentifiers:block:", v16, v74), v16, v75, !v4))
+              if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = [MPModelGenericObject alloc], [objectCopy identifiers], v16 = objc_claimAutoreleasedReturnValue(), v74[0] = MEMORY[0x1E69E9820], v74[1] = 3221225472, v74[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_6, v74[3] = &unk_1E767E6E0, v75 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v15, "initWithIdentifiers:block:", v16, v74), v16, v75, !v4))
               {
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) == 0 || (v17 = [MPModelGenericObject alloc], [v3 identifiers], v18 = objc_claimAutoreleasedReturnValue(), v72[0] = MEMORY[0x1E69E9820], v72[1] = 3221225472, v72[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_7, v72[3] = &unk_1E767E6E0, v73 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v17, "initWithIdentifiers:block:", v18, v72), v18, v73, !v4))
+                if ((objc_opt_isKindOfClass() & 1) == 0 || (v17 = [MPModelGenericObject alloc], [objectCopy identifiers], v18 = objc_claimAutoreleasedReturnValue(), v72[0] = MEMORY[0x1E69E9820], v72[1] = 3221225472, v72[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_7, v72[3] = &unk_1E767E6E0, v73 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v17, "initWithIdentifiers:block:", v18, v72), v18, v73, !v4))
                 {
                   objc_opt_class();
-                  if ((objc_opt_isKindOfClass() & 1) == 0 || (v19 = [MPModelGenericObject alloc], [v3 identifiers], v20 = objc_claimAutoreleasedReturnValue(), v70[0] = MEMORY[0x1E69E9820], v70[1] = 3221225472, v70[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_8, v70[3] = &unk_1E767E6E0, v71 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v19, "initWithIdentifiers:block:", v20, v70), v20, v71, !v4))
+                  if ((objc_opt_isKindOfClass() & 1) == 0 || (v19 = [MPModelGenericObject alloc], [objectCopy identifiers], v20 = objc_claimAutoreleasedReturnValue(), v70[0] = MEMORY[0x1E69E9820], v70[1] = 3221225472, v70[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_8, v70[3] = &unk_1E767E6E0, v71 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v19, "initWithIdentifiers:block:", v20, v70), v20, v71, !v4))
                   {
                     objc_opt_class();
-                    if ((objc_opt_isKindOfClass() & 1) == 0 || (v21 = [MPModelGenericObject alloc], [v3 identifiers], v22 = objc_claimAutoreleasedReturnValue(), v68[0] = MEMORY[0x1E69E9820], v68[1] = 3221225472, v68[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_9, v68[3] = &unk_1E767E6E0, v69 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v21, "initWithIdentifiers:block:", v22, v68), v22, v69, !v4))
+                    if ((objc_opt_isKindOfClass() & 1) == 0 || (v21 = [MPModelGenericObject alloc], [objectCopy identifiers], v22 = objc_claimAutoreleasedReturnValue(), v68[0] = MEMORY[0x1E69E9820], v68[1] = 3221225472, v68[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_9, v68[3] = &unk_1E767E6E0, v69 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v21, "initWithIdentifiers:block:", v22, v68), v22, v69, !v4))
                     {
                       objc_opt_class();
-                      if ((objc_opt_isKindOfClass() & 1) == 0 || (v23 = [MPModelGenericObject alloc], [v3 identifiers], v24 = objc_claimAutoreleasedReturnValue(), v66[0] = MEMORY[0x1E69E9820], v66[1] = 3221225472, v66[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_10, v66[3] = &unk_1E767E6E0, v67 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v23, "initWithIdentifiers:block:", v24, v66), v24, v67, !v4))
+                      if ((objc_opt_isKindOfClass() & 1) == 0 || (v23 = [MPModelGenericObject alloc], [objectCopy identifiers], v24 = objc_claimAutoreleasedReturnValue(), v66[0] = MEMORY[0x1E69E9820], v66[1] = 3221225472, v66[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_10, v66[3] = &unk_1E767E6E0, v67 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v23, "initWithIdentifiers:block:", v24, v66), v24, v67, !v4))
                       {
                         objc_opt_class();
-                        if ((objc_opt_isKindOfClass() & 1) == 0 || (v25 = [MPModelGenericObject alloc], [v3 identifiers], v26 = objc_claimAutoreleasedReturnValue(), v64[0] = MEMORY[0x1E69E9820], v64[1] = 3221225472, v64[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_11, v64[3] = &unk_1E767E6E0, v65 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v25, "initWithIdentifiers:block:", v26, v64), v26, v65, !v4))
+                        if ((objc_opt_isKindOfClass() & 1) == 0 || (v25 = [MPModelGenericObject alloc], [objectCopy identifiers], v26 = objc_claimAutoreleasedReturnValue(), v64[0] = MEMORY[0x1E69E9820], v64[1] = 3221225472, v64[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_11, v64[3] = &unk_1E767E6E0, v65 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v25, "initWithIdentifiers:block:", v26, v64), v26, v65, !v4))
                         {
                           objc_opt_class();
-                          if ((objc_opt_isKindOfClass() & 1) == 0 || (v27 = [MPModelGenericObject alloc], [v3 identifiers], v28 = objc_claimAutoreleasedReturnValue(), v62[0] = MEMORY[0x1E69E9820], v62[1] = 3221225472, v62[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_12, v62[3] = &unk_1E767E6E0, v63 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v27, "initWithIdentifiers:block:", v28, v62), v28, v63, !v4))
+                          if ((objc_opt_isKindOfClass() & 1) == 0 || (v27 = [MPModelGenericObject alloc], [objectCopy identifiers], v28 = objc_claimAutoreleasedReturnValue(), v62[0] = MEMORY[0x1E69E9820], v62[1] = 3221225472, v62[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_12, v62[3] = &unk_1E767E6E0, v63 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v27, "initWithIdentifiers:block:", v28, v62), v28, v63, !v4))
                           {
                             objc_opt_class();
-                            if ((objc_opt_isKindOfClass() & 1) == 0 || (v29 = [MPModelGenericObject alloc], [v3 identifiers], v30 = objc_claimAutoreleasedReturnValue(), v60[0] = MEMORY[0x1E69E9820], v60[1] = 3221225472, v60[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_13, v60[3] = &unk_1E767E6E0, v61 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v29, "initWithIdentifiers:block:", v30, v60), v30, v61, !v4))
+                            if ((objc_opt_isKindOfClass() & 1) == 0 || (v29 = [MPModelGenericObject alloc], [objectCopy identifiers], v30 = objc_claimAutoreleasedReturnValue(), v60[0] = MEMORY[0x1E69E9820], v60[1] = 3221225472, v60[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_13, v60[3] = &unk_1E767E6E0, v61 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v29, "initWithIdentifiers:block:", v30, v60), v30, v61, !v4))
                             {
                               objc_opt_class();
-                              if ((objc_opt_isKindOfClass() & 1) == 0 || (v31 = [MPModelGenericObject alloc], [v3 identifiers], v32 = objc_claimAutoreleasedReturnValue(), v58[0] = MEMORY[0x1E69E9820], v58[1] = 3221225472, v58[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_14, v58[3] = &unk_1E767E6E0, v59 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v31, "initWithIdentifiers:block:", v32, v58), v32, v59, !v4))
+                              if ((objc_opt_isKindOfClass() & 1) == 0 || (v31 = [MPModelGenericObject alloc], [objectCopy identifiers], v32 = objc_claimAutoreleasedReturnValue(), v58[0] = MEMORY[0x1E69E9820], v58[1] = 3221225472, v58[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_14, v58[3] = &unk_1E767E6E0, v59 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v31, "initWithIdentifiers:block:", v32, v58), v32, v59, !v4))
                               {
                                 objc_opt_class();
-                                if ((objc_opt_isKindOfClass() & 1) == 0 || (v33 = [MPModelGenericObject alloc], [v3 identifiers], v34 = objc_claimAutoreleasedReturnValue(), v56[0] = MEMORY[0x1E69E9820], v56[1] = 3221225472, v56[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_15, v56[3] = &unk_1E767E6E0, v57 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v33, "initWithIdentifiers:block:", v34, v56), v34, v57, !v4))
+                                if ((objc_opt_isKindOfClass() & 1) == 0 || (v33 = [MPModelGenericObject alloc], [objectCopy identifiers], v34 = objc_claimAutoreleasedReturnValue(), v56[0] = MEMORY[0x1E69E9820], v56[1] = 3221225472, v56[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_15, v56[3] = &unk_1E767E6E0, v57 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v33, "initWithIdentifiers:block:", v34, v56), v34, v57, !v4))
                                 {
                                   objc_opt_class();
-                                  if ((objc_opt_isKindOfClass() & 1) == 0 || (v35 = [MPModelGenericObject alloc], [v3 identifiers], v36 = objc_claimAutoreleasedReturnValue(), v54[0] = MEMORY[0x1E69E9820], v54[1] = 3221225472, v54[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_16, v54[3] = &unk_1E767E6E0, v55 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v35, "initWithIdentifiers:block:", v36, v54), v36, v55, !v4))
+                                  if ((objc_opt_isKindOfClass() & 1) == 0 || (v35 = [MPModelGenericObject alloc], [objectCopy identifiers], v36 = objc_claimAutoreleasedReturnValue(), v54[0] = MEMORY[0x1E69E9820], v54[1] = 3221225472, v54[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_16, v54[3] = &unk_1E767E6E0, v55 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v35, "initWithIdentifiers:block:", v36, v54), v36, v55, !v4))
                                   {
                                     objc_opt_class();
-                                    if ((objc_opt_isKindOfClass() & 1) == 0 || (v37 = [MPModelGenericObject alloc], [v3 identifiers], v38 = objc_claimAutoreleasedReturnValue(), v52[0] = MEMORY[0x1E69E9820], v52[1] = 3221225472, v52[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_17, v52[3] = &unk_1E767E6E0, v53 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v37, "initWithIdentifiers:block:", v38, v52), v38, v53, !v4))
+                                    if ((objc_opt_isKindOfClass() & 1) == 0 || (v37 = [MPModelGenericObject alloc], [objectCopy identifiers], v38 = objc_claimAutoreleasedReturnValue(), v52[0] = MEMORY[0x1E69E9820], v52[1] = 3221225472, v52[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_17, v52[3] = &unk_1E767E6E0, v53 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v37, "initWithIdentifiers:block:", v38, v52), v38, v53, !v4))
                                     {
                                       objc_opt_class();
-                                      if ((objc_opt_isKindOfClass() & 1) == 0 || (v39 = [MPModelGenericObject alloc], [v3 identifiers], v40 = objc_claimAutoreleasedReturnValue(), v50[0] = MEMORY[0x1E69E9820], v50[1] = 3221225472, v50[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_18, v50[3] = &unk_1E767E6E0, v51 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v39, "initWithIdentifiers:block:", v40, v50), v40, v51, !v4))
+                                      if ((objc_opt_isKindOfClass() & 1) == 0 || (v39 = [MPModelGenericObject alloc], [objectCopy identifiers], v40 = objc_claimAutoreleasedReturnValue(), v50[0] = MEMORY[0x1E69E9820], v50[1] = 3221225472, v50[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_18, v50[3] = &unk_1E767E6E0, v51 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v39, "initWithIdentifiers:block:", v40, v50), v40, v51, !v4))
                                       {
                                         objc_opt_class();
-                                        if ((objc_opt_isKindOfClass() & 1) == 0 || (v41 = [MPModelGenericObject alloc], [v3 identifiers], v42 = objc_claimAutoreleasedReturnValue(), v48[0] = MEMORY[0x1E69E9820], v48[1] = 3221225472, v48[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_19, v48[3] = &unk_1E767E6E0, v49 = v3, v4 = -[MPModelObject initWithIdentifiers:block:](v41, "initWithIdentifiers:block:", v42, v48), v42, v49, !v4))
+                                        if ((objc_opt_isKindOfClass() & 1) == 0 || (v41 = [MPModelGenericObject alloc], [objectCopy identifiers], v42 = objc_claimAutoreleasedReturnValue(), v48[0] = MEMORY[0x1E69E9820], v48[1] = 3221225472, v48[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_19, v48[3] = &unk_1E767E6E0, v49 = objectCopy, v4 = -[MPModelObject initWithIdentifiers:block:](v41, "initWithIdentifiers:block:", v42, v48), v42, v49, !v4))
                                         {
                                           objc_opt_class();
                                           if (objc_opt_isKindOfClass())
                                           {
                                             v43 = [MPModelGenericObject alloc];
-                                            v44 = [v3 identifiers];
+                                            identifiers = [objectCopy identifiers];
                                             v46[0] = MEMORY[0x1E69E9820];
                                             v46[1] = 3221225472;
                                             v46[2] = __53__MPModelGenericObject_genericObjectWithModelObject___block_invoke_20;
                                             v46[3] = &unk_1E767E6E0;
-                                            v47 = v3;
-                                            v4 = [(MPModelObject *)v43 initWithIdentifiers:v44 block:v46];
+                                            v47 = objectCopy;
+                                            v4 = [(MPModelObject *)v43 initWithIdentifiers:identifiers block:v46];
                                           }
 
                                           else
@@ -1633,14 +1633,14 @@ LABEL_13:
   return v4;
 }
 
-+ (id)relationshipKeyForGenericObjectType:(int64_t)a3
++ (id)relationshipKeyForGenericObjectType:(int64_t)type
 {
   result = @"MPModelRelationshipGenericAlbum";
-  switch(a3)
+  switch(type)
   {
     case 0:
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:185 description:@"Cannot provide relationship key for unknown generic object type."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:185 description:@"Cannot provide relationship key for unknown generic object type."];
 
       goto LABEL_3;
     case 1:
@@ -1707,8 +1707,8 @@ LABEL_13:
       break;
     default:
 LABEL_3:
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:a1 file:@"MPModelGenericObject.m" lineNumber:187 description:{@"Unsupported generic object type: %ld", a3}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPModelGenericObject.m" lineNumber:187 description:{@"Unsupported generic object type: %ld", type}];
 
       result = 0;
       break;
@@ -1717,11 +1717,11 @@ LABEL_3:
   return result;
 }
 
-- (MPModelGenericObject)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (MPModelGenericObject)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MPModelGenericObject *)self anyObject];
-  v6 = [v5 objectWithStoreLibraryPersonalizationRelativeModelObject:v4];
+  objectCopy = object;
+  anyObject = [(MPModelGenericObject *)self anyObject];
+  v6 = [anyObject objectWithStoreLibraryPersonalizationRelativeModelObject:objectCopy];
   v7 = [MPModelGenericObject genericObjectWithModelObject:v6];
 
   return v7;
@@ -1729,33 +1729,33 @@ LABEL_3:
 
 - (id)relativeModelObjectForStoreLibraryPersonalization
 {
-  v3 = [(MPModelGenericObject *)self type];
+  type = [(MPModelGenericObject *)self type];
   v4 = 0;
-  if (v3 <= 4)
+  if (type <= 4)
   {
-    if (v3 <= 2)
+    if (type <= 2)
     {
-      if (v3 == 1)
+      if (type == 1)
       {
-        v5 = [(MPModelGenericObject *)self song];
-        v6 = [v5 relativeModelObjectForStoreLibraryPersonalization];
+        song = [(MPModelGenericObject *)self song];
+        relativeModelObjectForStoreLibraryPersonalization = [song relativeModelObjectForStoreLibraryPersonalization];
       }
 
       else
       {
-        if (v3 != 2)
+        if (type != 2)
         {
           goto LABEL_20;
         }
 
-        v5 = [(MPModelGenericObject *)self album];
-        v6 = [v5 relativeModelObjectForStoreLibraryPersonalization];
+        song = [(MPModelGenericObject *)self album];
+        relativeModelObjectForStoreLibraryPersonalization = [song relativeModelObjectForStoreLibraryPersonalization];
       }
 
       goto LABEL_19;
     }
 
-    if (v3 == 3)
+    if (type == 3)
     {
       [(MPModelGenericObject *)self artist];
     }
@@ -1768,9 +1768,9 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  if (v3 <= 6)
+  if (type <= 6)
   {
-    if (v3 == 5)
+    if (type == 5)
     {
       [(MPModelGenericObject *)self playlistEntry];
     }
@@ -1780,48 +1780,48 @@ LABEL_3:
       [(MPModelGenericObject *)self tvEpisode];
     }
 
-    v5 = LABEL_9:;
-    v6 = [v5 relativeModelObjectForStoreLibraryPersonalization];
+    song = LABEL_9:;
+    relativeModelObjectForStoreLibraryPersonalization = [song relativeModelObjectForStoreLibraryPersonalization];
     goto LABEL_19;
   }
 
-  if (v3 == 7)
+  if (type == 7)
   {
-    v5 = [(MPModelGenericObject *)self season];
-    v6 = [v5 relativeModelObjectForStoreLibraryPersonalization];
+    song = [(MPModelGenericObject *)self season];
+    relativeModelObjectForStoreLibraryPersonalization = [song relativeModelObjectForStoreLibraryPersonalization];
   }
 
   else
   {
-    if (v3 != 9)
+    if (type != 9)
     {
       goto LABEL_20;
     }
 
-    v5 = [(MPModelGenericObject *)self movie];
-    v6 = [v5 relativeModelObjectForStoreLibraryPersonalization];
+    song = [(MPModelGenericObject *)self movie];
+    relativeModelObjectForStoreLibraryPersonalization = [song relativeModelObjectForStoreLibraryPersonalization];
   }
 
 LABEL_19:
-  v4 = v6;
+  v4 = relativeModelObjectForStoreLibraryPersonalization;
 
 LABEL_20:
 
   return v4;
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = [a3 relationships];
-  v5 = [(MPModelGenericObject *)self type];
-  if (v5 > 4)
+  relationships = [properties relationships];
+  type = [(MPModelGenericObject *)self type];
+  if (type > 4)
   {
-    if (v5 > 6)
+    if (type > 6)
     {
-      if (v5 == 7)
+      if (type == 7)
       {
-        v6 = [(MPModelGenericObject *)self season];
-        v7 = [v4 objectForKey:@"MPModelRelationshipGenericTVSeason"];
+        season = [(MPModelGenericObject *)self season];
+        v7 = [relationships objectForKey:@"MPModelRelationshipGenericTVSeason"];
         v8 = v7;
         if (!v7)
         {
@@ -1831,13 +1831,13 @@ LABEL_20:
 
       else
       {
-        if (v5 != 9)
+        if (type != 9)
         {
           goto LABEL_36;
         }
 
-        v6 = [(MPModelGenericObject *)self movie];
-        v7 = [v4 objectForKey:@"MPModelRelationshipGenericMovie"];
+        season = [(MPModelGenericObject *)self movie];
+        v7 = [relationships objectForKey:@"MPModelRelationshipGenericMovie"];
         v8 = v7;
         if (!v7)
         {
@@ -1846,10 +1846,10 @@ LABEL_20:
       }
     }
 
-    else if (v5 == 5)
+    else if (type == 5)
     {
-      v6 = [(MPModelGenericObject *)self playlistEntry];
-      v7 = [v4 objectForKey:@"MPModelRelationshipGenericPlaylistEntry"];
+      season = [(MPModelGenericObject *)self playlistEntry];
+      v7 = [relationships objectForKey:@"MPModelRelationshipGenericPlaylistEntry"];
       v8 = v7;
       if (!v7)
       {
@@ -1859,8 +1859,8 @@ LABEL_20:
 
     else
     {
-      v6 = [(MPModelGenericObject *)self tvEpisode];
-      v7 = [v4 objectForKey:@"MPModelRelationshipGenericTVEpisode"];
+      season = [(MPModelGenericObject *)self tvEpisode];
+      v7 = [relationships objectForKey:@"MPModelRelationshipGenericTVEpisode"];
       v8 = v7;
       if (!v7)
       {
@@ -1869,12 +1869,12 @@ LABEL_20:
     }
   }
 
-  else if (v5 > 2)
+  else if (type > 2)
   {
-    if (v5 == 3)
+    if (type == 3)
     {
-      v6 = [(MPModelGenericObject *)self artist];
-      v7 = [v4 objectForKey:@"MPModelRelationshipGenericArtist"];
+      season = [(MPModelGenericObject *)self artist];
+      v7 = [relationships objectForKey:@"MPModelRelationshipGenericArtist"];
       v8 = v7;
       if (!v7)
       {
@@ -1884,8 +1884,8 @@ LABEL_20:
 
     else
     {
-      v6 = [(MPModelGenericObject *)self playlist];
-      v7 = [v4 objectForKey:@"MPModelRelationshipGenericPlaylist"];
+      season = [(MPModelGenericObject *)self playlist];
+      v7 = [relationships objectForKey:@"MPModelRelationshipGenericPlaylist"];
       v8 = v7;
       if (!v7)
       {
@@ -1896,12 +1896,12 @@ LABEL_20:
 
   else
   {
-    if (v5 != 1)
+    if (type != 1)
     {
-      if (v5 == 2)
+      if (type == 2)
       {
-        v6 = [(MPModelGenericObject *)self album];
-        v7 = [v4 objectForKey:@"MPModelRelationshipGenericAlbum"];
+        season = [(MPModelGenericObject *)self album];
+        v7 = [relationships objectForKey:@"MPModelRelationshipGenericAlbum"];
         v8 = v7;
         if (!v7)
         {
@@ -1916,8 +1916,8 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v6 = [(MPModelGenericObject *)self song];
-    v7 = [v4 objectForKey:@"MPModelRelationshipGenericSong"];
+    season = [(MPModelGenericObject *)self song];
+    v7 = [relationships objectForKey:@"MPModelRelationshipGenericSong"];
     v8 = v7;
     if (!v7)
     {
@@ -1926,7 +1926,7 @@ LABEL_36:
   }
 
 LABEL_33:
-  v9 = [v6 personalizationScopedPropertiesForProperties:v8];
+  v9 = [season personalizationScopedPropertiesForProperties:v8];
   if (!v7)
   {
 

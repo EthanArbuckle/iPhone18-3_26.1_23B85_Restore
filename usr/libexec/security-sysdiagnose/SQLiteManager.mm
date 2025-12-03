@@ -1,15 +1,15 @@
 @interface SQLiteManager
-+ (id)executeQuery:(id)a3 onDatabaseAtPath:(id)a4;
++ (id)executeQuery:(id)query onDatabaseAtPath:(id)path;
 @end
 
 @implementation SQLiteManager
 
-+ (id)executeQuery:(id)a3 onDatabaseAtPath:(id)a4
++ (id)executeQuery:(id)query onDatabaseAtPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  queryCopy = query;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (!queryCopy)
   {
     v10 = @"\nError: SQL query should not be null \n";
 LABEL_7:
@@ -20,7 +20,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!pathCopy)
   {
     v10 = @"\nError: DB Path should not be null \n";
     goto LABEL_7;
@@ -37,7 +37,7 @@ LABEL_7:
 
   else
   {
-    if (sqlite3_prepare_v2(ppDb, [v5 UTF8String], -1, &ppStmt, 0))
+    if (sqlite3_prepare_v2(ppDb, [queryCopy UTF8String], -1, &ppStmt, 0))
     {
       v13 = [NSString stringWithFormat:@"\nError: Failed to prepare statement %s \n", sqlite3_errmsg(ppDb)];
       [v13 writeToStdErr];

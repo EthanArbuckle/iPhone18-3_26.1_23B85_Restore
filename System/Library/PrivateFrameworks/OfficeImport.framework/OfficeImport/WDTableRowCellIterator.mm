@@ -1,14 +1,14 @@
 @interface WDTableRowCellIterator
-- (id)childIteratorFrom:(id)a3;
+- (id)childIteratorFrom:(id)from;
 @end
 
 @implementation WDTableRowCellIterator
 
-- (id)childIteratorFrom:(id)a3
+- (id)childIteratorFrom:(id)from
 {
-  v3 = [a3 cellIterator];
+  cellIterator = [from cellIterator];
 
-  return v3;
+  return cellIterator;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface DMFOSUpdate
-+ (id)productKeyFromBuild:(id)a3;
-- (id)initWithDescriptor:(id)a3;
++ (id)productKeyFromBuild:(id)build;
+- (id)initWithDescriptor:(id)descriptor;
 @end
 
 @implementation DMFOSUpdate
 
-+ (id)productKeyFromBuild:(id)a3
++ (id)productKeyFromBuild:(id)build
 {
-  v3 = &stru_1000D0428;
-  if (a3)
+  buildCopy = &stru_1000D0428;
+  if (build)
   {
-    v3 = a3;
+    buildCopy = build;
   }
 
-  return [NSString stringWithFormat:@"%@%@", @"iOSUpdate", v3];
+  return [NSString stringWithFormat:@"%@%@", @"iOSUpdate", buildCopy];
 }
 
-- (id)initWithDescriptor:(id)a3
+- (id)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 productBuildVersion];
+  descriptorCopy = descriptor;
+  productBuildVersion = [descriptorCopy productBuildVersion];
 
-  if (v5)
+  if (productBuildVersion)
   {
-    v5 = [v4 productBuildVersion];
-    v6 = [objc_opt_class() productKeyFromBuild:v5];
+    productBuildVersion = [descriptorCopy productBuildVersion];
+    v6 = [objc_opt_class() productKeyFromBuild:productBuildVersion];
   }
 
   else
@@ -33,36 +33,36 @@
   }
 
   v21 = v6;
-  v7 = [v4 updateType];
-  v20 = [v4 isSplatOnly];
-  v8 = [v5 copy];
-  v9 = v4;
+  updateType = [descriptorCopy updateType];
+  isSplatOnly = [descriptorCopy isSplatOnly];
+  v8 = [productBuildVersion copy];
+  v9 = descriptorCopy;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 productVersionExtra];
+    productVersionExtra = [v9 productVersionExtra];
   }
 
   else
   {
-    v11 = [v9 isSplatOnly];
+    isSplatOnly2 = [v9 isSplatOnly];
 
     v12 = @"(?)";
-    if (!v11)
+    if (!isSplatOnly2)
     {
       v12 = 0;
     }
 
-    v10 = v12;
+    productVersionExtra = v12;
   }
 
-  v13 = v7 == 3;
-  v14 = [v9 humanReadableUpdateName];
-  v15 = [v9 productSystemName];
-  v16 = [v9 productVersion];
-  BYTE3(v19) = v20;
+  v13 = updateType == 3;
+  humanReadableUpdateName = [v9 humanReadableUpdateName];
+  productSystemName = [v9 productSystemName];
+  productVersion = [v9 productVersion];
+  BYTE3(v19) = isSplatOnly;
   *(&v19 + 1) = 1;
   LOBYTE(v19) = v13;
-  v17 = -[DMFOSUpdate initWithProductKey:humanReadableName:productName:version:build:downloadSize:installSize:isCritical:restartRequired:allowsInstallLater:isSplat:supplementalBuild:supplementalVersionExtra:](self, "initWithProductKey:humanReadableName:productName:version:build:downloadSize:installSize:isCritical:restartRequired:allowsInstallLater:isSplat:supplementalBuild:supplementalVersionExtra:", v21, v14, v15, v16, v5, [v9 downloadSize], objc_msgSend(v9, "installationSize"), v19, v8, v10);
+  v17 = -[DMFOSUpdate initWithProductKey:humanReadableName:productName:version:build:downloadSize:installSize:isCritical:restartRequired:allowsInstallLater:isSplat:supplementalBuild:supplementalVersionExtra:](self, "initWithProductKey:humanReadableName:productName:version:build:downloadSize:installSize:isCritical:restartRequired:allowsInstallLater:isSplat:supplementalBuild:supplementalVersionExtra:", v21, humanReadableUpdateName, productSystemName, productVersion, productBuildVersion, [v9 downloadSize], objc_msgSend(v9, "installationSize"), v19, v8, productVersionExtra);
 
   return v17;
 }

@@ -1,18 +1,18 @@
 @interface CAMExposureBiasSliderThumb
-- (CAMExposureBiasSliderThumb)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_interpolatedValueWithMin:(double)a3 mid:(double)a4 max:(double)a5;
-- (void)drawRect:(CGRect)a3;
-- (void)setNormalizedExposureValue:(float)a3;
+- (CAMExposureBiasSliderThumb)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_interpolatedValueWithMin:(double)min mid:(double)mid max:(double)max;
+- (void)drawRect:(CGRect)rect;
+- (void)setNormalizedExposureValue:(float)value;
 @end
 
 @implementation CAMExposureBiasSliderThumb
 
-- (CAMExposureBiasSliderThumb)initWithFrame:(CGRect)a3
+- (CAMExposureBiasSliderThumb)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMExposureBiasSliderThumb;
-  v3 = [(CAMExposureBiasSliderThumb *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMExposureBiasSliderThumb *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,18 +22,18 @@
   return v4;
 }
 
-- (void)setNormalizedExposureValue:(float)a3
+- (void)setNormalizedExposureValue:(float)value
 {
-  if (self->_normalizedExposureValue != a3)
+  if (self->_normalizedExposureValue != value)
   {
-    self->_normalizedExposureValue = a3;
+    self->_normalizedExposureValue = value;
     [(CAMExposureBiasSliderThumb *)self setNeedsDisplay];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CAMExposureBiasSliderThumb *)self _sunRadius:a3.width];
+  [(CAMExposureBiasSliderThumb *)self _sunRadius:fits.width];
   [(CAMExposureBiasSliderThumb *)self _sunRaySpacing];
   [(CAMExposureBiasSliderThumb *)self _sunRayLength];
   UICeilToViewScale();
@@ -44,9 +44,9 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(CAMExposureBiasSliderThumb *)self bounds:a3.origin.x];
+  [(CAMExposureBiasSliderThumb *)self bounds:rect.origin.x];
   x = v24.origin.x;
   y = v24.origin.y;
   width = v24.size.width;
@@ -58,8 +58,8 @@
   v25.size.height = height;
   MidY = CGRectGetMidY(v25);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v22 = [(CAMExposureBiasSliderThumb *)self tintColor];
-  [v22 set];
+  tintColor = [(CAMExposureBiasSliderThumb *)self tintColor];
+  [tintColor set];
   [(CAMExposureBiasSliderThumb *)self _sunRadius];
   v12 = v11;
   CGContextBeginPath(CurrentContext);
@@ -90,18 +90,18 @@
   CGContextStrokePath(CurrentContext);
 }
 
-- (double)_interpolatedValueWithMin:(double)a3 mid:(double)a4 max:(double)a5
+- (double)_interpolatedValueWithMin:(double)min mid:(double)mid max:(double)max
 {
   normalizedExposureValue = self->_normalizedExposureValue;
   v6 = normalizedExposureValue;
   if (normalizedExposureValue >= 0.5)
   {
-    return a4 + (v6 + -0.5 + v6 + -0.5) * (a5 - a4);
+    return mid + (v6 + -0.5 + v6 + -0.5) * (max - mid);
   }
 
   else
   {
-    return a3 + (v6 + v6) * (a4 - a3);
+    return min + (v6 + v6) * (mid - min);
   }
 }
 

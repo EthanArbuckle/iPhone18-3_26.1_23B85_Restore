@@ -1,18 +1,18 @@
 @interface BKHIDTouchSensitiveButtonScanningController
-- (BKHIDTouchSensitiveButtonScanningController)initWithContext:(id)a3;
-- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)a3;
-- (int64_t)setPersistentProperties:(id)a3 forServicesMatchingDescriptor:(id)a4;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
-- (void)serviceDidDisappear:(id)a3;
-- (void)setScanningActive:(BOOL)a3 buttonIdentifier:(int64_t)a4 forPID:(int)a5;
+- (BKHIDTouchSensitiveButtonScanningController)initWithContext:(id)context;
+- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)descriptor;
+- (int64_t)setPersistentProperties:(id)properties forServicesMatchingDescriptor:(id)descriptor;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
+- (void)serviceDidDisappear:(id)disappear;
+- (void)setScanningActive:(BOOL)active buttonIdentifier:(int64_t)identifier forPID:(int)d;
 @end
 
 @implementation BKHIDTouchSensitiveButtonScanningController
 
-- (int64_t)setPersistentProperties:(id)a3 forServicesMatchingDescriptor:(id)a4
+- (int64_t)setPersistentProperties:(id)properties forServicesMatchingDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  descriptorCopy = descriptor;
   [NSSet setWithObject:@"HalfPressThresholdModifier"];
   v18 = 0;
   v19 = &v18;
@@ -24,14 +24,14 @@
   v8 = v15 = &unk_1000FB650;
   v16 = v8;
   v17 = &v18;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v12];
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:&v12];
   if (*(v19 + 24) == 1)
   {
     v9 = sub_1000526D8();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v23 = v6;
+      v23 = propertiesCopy;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "BKHIDTouchSensitiveButton disallowed persistent properties: %{public}@", buf, 0xCu);
     }
 
@@ -41,7 +41,7 @@
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableSet *)self->_lock_services makeObjectsPerformSelector:"asyncSetProperties:" withObject:v6, v12, v13, v14, v15];
+    [(NSMutableSet *)self->_lock_services makeObjectsPerformSelector:"asyncSetProperties:" withObject:propertiesCopy, v12, v13, v14, v15];
     os_unfair_lock_unlock(&self->_lock);
     v10 = 2;
   }
@@ -50,26 +50,26 @@
   return v10;
 }
 
-- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)a3
+- (BOOL)handlesPersistentPropertiesForSenderDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [v3 primaryPage] == 65280 && objc_msgSend(v3, "primaryUsage") == 102;
+  descriptorCopy = descriptor;
+  v4 = [descriptorCopy primaryPage] == 65280 && objc_msgSend(descriptorCopy, "primaryUsage") == 102;
 
   return v4;
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_services removeObject:v4];
+  [(NSMutableSet *)self->_lock_services removeObject:disappearCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
-  v5 = a4;
+  matchCopy = match;
   os_unfair_lock_lock(&self->_lock);
   lock_services = self->_lock_services;
   if (!lock_services)
@@ -81,7 +81,7 @@
     lock_services = self->_lock_services;
   }
 
-  [(NSMutableSet *)lock_services addObjectsFromArray:v5];
+  [(NSMutableSet *)lock_services addObjectsFromArray:matchCopy];
   v9 = [BKSHIDEventSenderDescriptor build:&stru_1000FA318];
   v10 = +[BKIOHIDServicePersistentPropertyController touchSensitiveButtonServicePersistentPropertyController];
   v11 = [v10 allPersistentPropertiesForServicesMatchingDescriptor:v9];
@@ -96,7 +96,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v5;
+  v12 = matchCopy;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
@@ -130,27 +130,27 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setScanningActive:(BOOL)a3 buttonIdentifier:(int64_t)a4 forPID:(int)a5
+- (void)setScanningActive:(BOOL)active buttonIdentifier:(int64_t)identifier forPID:(int)d
 {
-  v7 = a3;
+  activeCopy = active;
   os_unfair_lock_lock(&self->_lock);
   v9 = sub_100008528();
   v10 = v9;
-  if (a4 == 1)
+  if (identifier == 1)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromBKSHIDTouchSensitiveButtonIdentifier();
       *buf = 67109634;
-      v20 = v7;
+      identifierCopy = activeCopy;
       v21 = 2114;
       v22 = v11;
       v23 = 1024;
-      v24 = a5;
+      dCopy = d;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "setScanningActive:%{BOOL}u button:%{public}@ pid:%d", buf, 0x18u);
     }
 
-    if (v7 && !self->_lock_activeCameraButtonScanningPIDs)
+    if (activeCopy && !self->_lock_activeCameraButtonScanningPIDs)
     {
       v12 = objc_alloc_init(NSMutableIndexSet);
       lock_activeCameraButtonScanningPIDs = self->_lock_activeCameraButtonScanningPIDs;
@@ -165,9 +165,9 @@
     v16[1] = 3221225472;
     v16[2] = sub_10001C024;
     v16[3] = &unk_1000FA6C8;
-    v18 = v7;
+    v18 = activeCopy;
     v16[4] = self;
-    v17 = a5;
+    dCopy2 = d;
     sub_10001B610(self, v16);
   }
 
@@ -176,7 +176,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v20 = a4;
+      identifierCopy = identifier;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "setScanningActive: unsupported touch button identifier: %d", buf, 8u);
     }
   }
@@ -184,9 +184,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BKHIDTouchSensitiveButtonScanningController)initWithContext:(id)a3
+- (BKHIDTouchSensitiveButtonScanningController)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = BKHIDTouchSensitiveButtonScanningController;
   v5 = [(BKHIDTouchSensitiveButtonScanningController *)&v15 init];
@@ -199,8 +199,8 @@
     v6->_queue = v7;
 
     v9 = [BKIOHIDServiceMatcher alloc];
-    v10 = [v4 serviceMatcherDataProvider];
-    v11 = [v9 initWithUsagePage:65280 usage:102 builtIn:1 dataProvider:v10];
+    serviceMatcherDataProvider = [contextCopy serviceMatcherDataProvider];
+    v11 = [v9 initWithUsagePage:65280 usage:102 builtIn:1 dataProvider:serviceMatcherDataProvider];
     serviceMatcher = v6->_serviceMatcher;
     v6->_serviceMatcher = v11;
 

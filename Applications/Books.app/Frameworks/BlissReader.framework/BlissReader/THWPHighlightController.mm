@@ -1,92 +1,92 @@
 @interface THWPHighlightController
 + (void)dismissActivePopoverEditor;
-+ (void)p_forgetActivePopover:(id)a3;
-+ (void)p_hideAndReleasePopover:(id)a3;
-- (BOOL)editorController:(id)a3 isRightArrowEnabledForAnnotation:(id)a4;
-- (BOOL)needsToRedrawForVisibleBounds:(CGRect)a3;
-- (BOOL)ownsMarginNote:(id)a3;
++ (void)p_forgetActivePopover:(id)popover;
++ (void)p_hideAndReleasePopover:(id)popover;
+- (BOOL)editorController:(id)controller isRightArrowEnabledForAnnotation:(id)annotation;
+- (BOOL)needsToRedrawForVisibleBounds:(CGRect)bounds;
+- (BOOL)ownsMarginNote:(id)note;
 - (BOOL)p_isCompactHeight;
 - (BOOL)p_isCompactWidth;
-- (BOOL)p_setLineProperties:(id)a3 fromRange:(_NSRange)a4 isUnderline:(BOOL)a5;
-- (BOOL)p_shouldDrawMarginNoteForCachedCachedAnnotation:(id)a3;
-- (BOOL)p_updateHighlight:(id)a3 toRange:(_NSRange)a4 rect:(CGRect)a5;
+- (BOOL)p_setLineProperties:(id)properties fromRange:(_NSRange)range isUnderline:(BOOL)underline;
+- (BOOL)p_shouldDrawMarginNoteForCachedCachedAnnotation:(id)annotation;
+- (BOOL)p_updateHighlight:(id)highlight toRange:(_NSRange)range rect:(CGRect)rect;
 - (BOOL)shouldAllowHighlights;
-- (BOOL)shouldBeginDragHighlightAtPoint:(CGPoint)a3;
+- (BOOL)shouldBeginDragHighlightAtPoint:(CGPoint)point;
 - (CGPoint)dragStartPoint;
-- (CGRect)canvasRectForAnnotation:(id)a3;
-- (CGRect)highlightRectForAnnotation:(id)a3;
-- (CGRect)p_marginNotePresentationRectForCachedAnnotation:(id)a3;
-- (CGRect)p_repRectForHighlight:(_NSRange)a3;
-- (CGRect)p_repRectForHighlight:(_NSRange)a3 lineHasAttachment:(BOOL)a4;
-- (CGRect)p_repRectForPoint:(CGPoint)a3;
-- (THWPHighlightController)initWithParentRep:(id)a3;
-- (_NSRange)p_rangeOfHighlight:(id)a3;
-- (_NSRange)p_trimHighlightRange:(_NSRange)a3;
+- (CGRect)canvasRectForAnnotation:(id)annotation;
+- (CGRect)highlightRectForAnnotation:(id)annotation;
+- (CGRect)p_marginNotePresentationRectForCachedAnnotation:(id)annotation;
+- (CGRect)p_repRectForHighlight:(_NSRange)highlight;
+- (CGRect)p_repRectForHighlight:(_NSRange)highlight lineHasAttachment:(BOOL)attachment;
+- (CGRect)p_repRectForPoint:(CGPoint)point;
+- (THWPHighlightController)initWithParentRep:(id)rep;
+- (_NSRange)p_rangeOfHighlight:(id)highlight;
+- (_NSRange)p_trimHighlightRange:(_NSRange)range;
 - (_NSRange)rangeOfInterest;
-- (_NSRange)selectionRangeForStartPoint:(CGPoint)a3 currentPoint:(CGPoint)a4;
-- (id)annotationAtUnscaledPoint:(CGPoint)a3;
+- (_NSRange)selectionRangeForStartPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint;
+- (id)annotationAtUnscaledPoint:(CGPoint)point;
 - (id)annotationController;
-- (id)annotationEditorForAnnotation:(id)a3;
-- (id)annotationEditorForAnnotation:(id)a3 editsOnLaunch:(BOOL)a4;
-- (id)annotationForRange:(_NSRange)a3;
-- (id)annotationsForRange:(_NSRange)a3;
-- (id)editMenuForHighlightAtPoint:(CGPoint)a3;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)highlightAtCanvasPoint:(CGPoint)a3;
-- (id)highlightLayersInCanvasUnscaledRect:(CGRect)a3 scale:(double)a4;
+- (id)annotationEditorForAnnotation:(id)annotation;
+- (id)annotationEditorForAnnotation:(id)annotation editsOnLaunch:(BOOL)launch;
+- (id)annotationForRange:(_NSRange)range;
+- (id)annotationsForRange:(_NSRange)range;
+- (id)editMenuForHighlightAtPoint:(CGPoint)point;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)highlightAtCanvasPoint:(CGPoint)point;
+- (id)highlightLayersInCanvasUnscaledRect:(CGRect)rect scale:(double)scale;
 - (id)p_annotationSource;
-- (id)p_annotationsAtRepPoint:(CGPoint)a3;
-- (id)p_annotationsInRepRect:(CGRect)a3;
-- (id)p_cachedAnnotationForAnnotation:(id)a3;
-- (id)p_drawHighlightLine:(id)a3 forAnnotation:(id)a4 scale:(double)a5;
-- (id)p_editMenuForAnnotationUUID:(id)a3;
-- (id)p_highlightFromAnnotation:(id)a3 range:(_NSRange)a4 rect:(CGRect)a5;
-- (id)p_highlightLineFromLineSelection:(id)a3 isUnderline:(BOOL)a4;
-- (int)p_blendModeForCachedAnnotation:(id)a3;
+- (id)p_annotationsAtRepPoint:(CGPoint)point;
+- (id)p_annotationsInRepRect:(CGRect)rect;
+- (id)p_cachedAnnotationForAnnotation:(id)annotation;
+- (id)p_drawHighlightLine:(id)line forAnnotation:(id)annotation scale:(double)scale;
+- (id)p_editMenuForAnnotationUUID:(id)d;
+- (id)p_highlightFromAnnotation:(id)annotation range:(_NSRange)range rect:(CGRect)rect;
+- (id)p_highlightLineFromLineSelection:(id)selection isUnderline:(BOOL)underline;
+- (int)p_blendModeForCachedAnnotation:(id)annotation;
 - (int64_t)pageTheme;
-- (void)beginDragHighlightAtPoint:(CGPoint)a3;
-- (void)createHighlightForSelectionWithCurrentThemeWithCompletion:(id)a3;
-- (void)createHighlightForSelectionWithStyle:(int)a3;
+- (void)beginDragHighlightAtPoint:(CGPoint)point;
+- (void)createHighlightForSelectionWithCurrentThemeWithCompletion:(id)completion;
+- (void)createHighlightForSelectionWithStyle:(int)style;
 - (void)dealloc;
-- (void)didHideAnnotationEditor:(id)a3;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)editorController:(id)a3 deleteAnnotation:(id)a4;
-- (void)editorController:(id)a3 editedAnnotation:(id)a4 toText:(id)a5;
-- (void)editorController:(id)a3 setTheme:(id)a4 forAnnotation:(id)a5;
-- (void)editorController:(id)a3 showEditMenuForAnnotation:(id)a4;
-- (void)endDragHighlightAtPoint:(CGPoint)a3 accept:(BOOL)a4;
+- (void)didHideAnnotationEditor:(id)editor;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)editorController:(id)controller deleteAnnotation:(id)annotation;
+- (void)editorController:(id)controller editedAnnotation:(id)annotation toText:(id)text;
+- (void)editorController:(id)controller setTheme:(id)theme forAnnotation:(id)annotation;
+- (void)editorController:(id)controller showEditMenuForAnnotation:(id)annotation;
+- (void)endDragHighlightAtPoint:(CGPoint)point accept:(BOOL)accept;
 - (void)hidePopoverEditor;
-- (void)moveDragHighlightToPoint:(CGPoint)a3;
-- (void)p_addHighlight:(id)a3 forCachedAnnotation:(id)a4;
+- (void)moveDragHighlightToPoint:(CGPoint)point;
+- (void)p_addHighlight:(id)highlight forCachedAnnotation:(id)annotation;
 - (void)p_clearAnnotationCache;
-- (void)p_drawMarginNoteIfNeeded:(id)a3;
-- (void)p_removeCachedAnnotation:(id)a3;
-- (void)p_removeHighlightForCachedAnnotation:(id)a3;
-- (void)p_removeNoteForCachedAnnotation:(id)a3;
-- (void)p_showEditor:(id)a3 forRange:(_NSRange)a4;
-- (void)p_showEditorForHighlight:(id)a3;
-- (void)p_showHighlightEditorForCachedAnnotation:(id)a3;
-- (void)p_showHighlightMenuForCachedAnnotation:(id)a3;
-- (void)p_showMenuForHighlight:(id)a3;
-- (void)p_updateMarginNoteForCachedAnnotation:(id)a3;
-- (void)p_updateMarginNoteForHighlight:(id)a3;
-- (void)parentWillBeRemovedFromCanvas:(id)a3;
-- (void)setStyleOfExistingHighlight:(id)a3 to:(int)a4;
-- (void)showHighlightEditorForAnnotation:(id)a3;
-- (void)showHighlightEditorForHighlightAtPoint:(CGPoint)a3;
-- (void)showHighlightMenuForAnnotation:(id)a3;
-- (void)showHighlightMenuForHighlightAtPoint:(CGPoint)a3;
-- (void)showNoteEditorForAnnotation:(id)a3;
-- (void)showNoteEditorForAnnotation:(id)a3 editsOnLaunch:(BOOL)a4;
-- (void)showNoteEditorForMarginNote:(id)a3;
+- (void)p_drawMarginNoteIfNeeded:(id)needed;
+- (void)p_removeCachedAnnotation:(id)annotation;
+- (void)p_removeHighlightForCachedAnnotation:(id)annotation;
+- (void)p_removeNoteForCachedAnnotation:(id)annotation;
+- (void)p_showEditor:(id)editor forRange:(_NSRange)range;
+- (void)p_showEditorForHighlight:(id)highlight;
+- (void)p_showHighlightEditorForCachedAnnotation:(id)annotation;
+- (void)p_showHighlightMenuForCachedAnnotation:(id)annotation;
+- (void)p_showMenuForHighlight:(id)highlight;
+- (void)p_updateMarginNoteForCachedAnnotation:(id)annotation;
+- (void)p_updateMarginNoteForHighlight:(id)highlight;
+- (void)parentWillBeRemovedFromCanvas:(id)canvas;
+- (void)setStyleOfExistingHighlight:(id)highlight to:(int)to;
+- (void)showHighlightEditorForAnnotation:(id)annotation;
+- (void)showHighlightEditorForHighlightAtPoint:(CGPoint)point;
+- (void)showHighlightMenuForAnnotation:(id)annotation;
+- (void)showHighlightMenuForHighlightAtPoint:(CGPoint)point;
+- (void)showNoteEditorForAnnotation:(id)annotation;
+- (void)showNoteEditorForAnnotation:(id)annotation editsOnLaunch:(BOOL)launch;
+- (void)showNoteEditorForMarginNote:(id)note;
 - (void)updateCachedAnnotations;
 - (void)updateFromLayout;
-- (void)willHideAnnotationEditor:(id)a3;
+- (void)willHideAnnotationEditor:(id)editor;
 @end
 
 @implementation THWPHighlightController
 
-- (THWPHighlightController)initWithParentRep:(id)a3
+- (THWPHighlightController)initWithParentRep:(id)rep
 {
   v7.receiver = self;
   v7.super_class = THWPHighlightController;
@@ -94,7 +94,7 @@
   v5 = v4;
   if (v4)
   {
-    [(THWPHighlightController *)v4 setParentRep:a3];
+    [(THWPHighlightController *)v4 setParentRep:rep];
     [(THWPHighlightController *)v5 setAnnotationCache:+[NSMutableDictionary dictionary]];
     [(THWPHighlightController *)v5 setHighlightColorEditorController:0];
     [(THWPHighlightController *)v5 setNoteEditorController:0];
@@ -104,13 +104,13 @@
   return v5;
 }
 
-+ (void)p_hideAndReleasePopover:(id)a3
++ (void)p_hideAndReleasePopover:(id)popover
 {
-  [a1 p_forgetActivePopover:?];
-  if ([a3 isViewLoaded] && objc_msgSend(objc_msgSend(a3, "view"), "superview"))
+  [self p_forgetActivePopover:?];
+  if ([popover isViewLoaded] && objc_msgSend(objc_msgSend(popover, "view"), "superview"))
   {
-    [a3 hide];
-    [objc_msgSend(a3 "view")];
+    [popover hide];
+    [objc_msgSend(popover "view")];
   }
 }
 
@@ -145,7 +145,7 @@
   [(THWPHighlightController *)&v5 dealloc];
 }
 
-- (void)parentWillBeRemovedFromCanvas:(id)a3
+- (void)parentWillBeRemovedFromCanvas:(id)canvas
 {
   [(THWPHighlightController *)self setParentRep:0];
 
@@ -174,11 +174,11 @@
   return self->mAnnotationsController;
 }
 
-- (void)p_removeHighlightForCachedAnnotation:(id)a3
+- (void)p_removeHighlightForCachedAnnotation:(id)annotation
 {
-  [a3 setHighlight:0];
+  [annotation setHighlight:0];
 
-  [(THWPHighlightController *)self p_removeNoteForCachedAnnotation:a3];
+  [(THWPHighlightController *)self p_removeNoteForCachedAnnotation:annotation];
 }
 
 - (id)p_annotationSource
@@ -209,15 +209,15 @@
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v2 = [(THWPHighlightController *)self annotationCache];
+    annotationCache = [(THWPHighlightController *)self annotationCache];
     v3 = +[NSMutableDictionary dictionary];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v4 = [(THWPHighlightController *)self p_annotationSource];
-    v5 = [(THWPHighlightController *)self rangeOfInterest];
-    v7 = [v4 annotationsForRange:{v5, v6}];
+    p_annotationSource = [(THWPHighlightController *)self p_annotationSource];
+    rangeOfInterest = [(THWPHighlightController *)self rangeOfInterest];
+    v7 = [p_annotationSource annotationsForRange:{rangeOfInterest, v6}];
     v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (!v8)
     {
@@ -237,9 +237,9 @@
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [(NSMutableDictionary *)v2 objectForKey:[(THAnnotation *)v11 annotationUuid]];
-        v13 = [(THAnnotation *)v11 annotationStorageRange];
-        if (&v13[v14] <= [-[THWPRep storage](-[THWPHighlightController parentRep](self "parentRep")])
+        v12 = [(NSMutableDictionary *)annotationCache objectForKey:[(THAnnotation *)v11 annotationUuid]];
+        annotationStorageRange = [(THAnnotation *)v11 annotationStorageRange];
+        if (&annotationStorageRange[v14] <= [-[THWPRep storage](-[THWPHighlightController parentRep](self "parentRep")])
         {
           if (v12)
           {
@@ -268,7 +268,7 @@ LABEL_16:
       if (!v8)
       {
 LABEL_25:
-        v15 = [(NSMutableDictionary *)v2 count];
+        v15 = [(NSMutableDictionary *)annotationCache count];
         v16 = (v15 != [v3 count]) | v22;
         [(THWPHighlightController *)self setAnnotationCache:v3];
         v23 = v16;
@@ -276,8 +276,8 @@ LABEL_25:
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v17 = [(NSMutableDictionary *)v2 allKeys];
-        v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        allKeys = [(NSMutableDictionary *)annotationCache allKeys];
+        v18 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v18)
         {
           v19 = *v26;
@@ -287,17 +287,17 @@ LABEL_25:
             {
               if (*v26 != v19)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(allKeys);
               }
 
               v21 = *(*(&v25 + 1) + 8 * j);
               if (![v3 objectForKey:v21])
               {
-                [(THWPHighlightController *)self p_removeHighlightForCachedAnnotation:[(NSMutableDictionary *)v2 objectForKey:v21]];
+                [(THWPHighlightController *)self p_removeHighlightForCachedAnnotation:[(NSMutableDictionary *)annotationCache objectForKey:v21]];
               }
             }
 
-            v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v18 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v18);
@@ -319,14 +319,14 @@ LABEL_25:
 
 - (void)p_clearAnnotationCache
 {
-  v3 = [(THWPHighlightController *)self annotationCache];
+  annotationCache = [(THWPHighlightController *)self annotationCache];
   [(THWPHighlightController *)self setAnnotationCache:0];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(NSMutableDictionary *)v3 allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)annotationCache allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -338,7 +338,7 @@ LABEL_25:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [(THWPHighlightController *)self p_removeHighlightForCachedAnnotation:*(*(&v9 + 1) + 8 * v8)];
@@ -346,57 +346,57 @@ LABEL_25:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (_NSRange)p_trimHighlightRange:(_NSRange)a3
+- (_NSRange)p_trimHighlightRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(THWPRep *)[(THWPHighlightController *)self parentRep] storage];
+  length = range.length;
+  location = range.location;
+  storage = [(THWPRep *)[(THWPHighlightController *)self parentRep] storage];
   v6.location = location;
   v6.length = length;
 
-  v7 = THTrimHighlightRange(v5, v6);
+  v7 = THTrimHighlightRange(storage, v6);
   result.length = v8;
   result.location = v7;
   return result;
 }
 
-- (id)p_cachedAnnotationForAnnotation:(id)a3
+- (id)p_cachedAnnotationForAnnotation:(id)annotation
 {
-  v4 = [(THWPHighlightController *)self annotationCache];
-  v5 = [a3 annotationUuid];
+  annotationCache = [(THWPHighlightController *)self annotationCache];
+  annotationUuid = [annotation annotationUuid];
 
-  return [(NSMutableDictionary *)v4 objectForKey:v5];
+  return [(NSMutableDictionary *)annotationCache objectForKey:annotationUuid];
 }
 
-- (void)p_removeCachedAnnotation:(id)a3
+- (void)p_removeCachedAnnotation:(id)annotation
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THWPHighlightController *)self p_removeHighlightForCachedAnnotation:a3];
-  v5 = [(THWPHighlightController *)self annotationCache];
-  v6 = [objc_msgSend(a3 "annotation")];
+  [(THWPHighlightController *)self p_removeHighlightForCachedAnnotation:annotation];
+  annotationCache = [(THWPHighlightController *)self annotationCache];
+  v6 = [objc_msgSend(annotation "annotation")];
 
-  [(NSMutableDictionary *)v5 removeObjectForKey:v6];
+  [(NSMutableDictionary *)annotationCache removeObjectForKey:v6];
 }
 
-- (CGRect)p_repRectForHighlight:(_NSRange)a3 lineHasAttachment:(BOOL)a4
+- (CGRect)p_repRectForHighlight:(_NSRange)highlight lineHasAttachment:(BOOL)attachment
 {
-  length = a3.length;
-  location = a3.location;
-  [(THWPRep *)[(THWPHighlightController *)self parentRep] rectForHighlight:a3.location lineHasAttachment:a3.length, a4];
+  length = highlight.length;
+  location = highlight.location;
+  [(THWPRep *)[(THWPHighlightController *)self parentRep] rectForHighlight:highlight.location lineHasAttachment:highlight.length, attachment];
   v11 = v10;
   v13 = v12;
-  if (!a4)
+  if (!attachment)
   {
     v14 = [(THWPHighlightController *)self parentRep:0];
     if (v14)
@@ -417,11 +417,11 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)p_repRectForHighlight:(_NSRange)a3
+- (CGRect)p_repRectForHighlight:(_NSRange)highlight
 {
-  length = a3.length;
-  location = a3.location;
-  if (!a3.length)
+  length = highlight.length;
+  location = highlight.location;
+  if (!highlight.length)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -446,11 +446,11 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)p_setLineProperties:(id)a3 fromRange:(_NSRange)a4 isUnderline:(BOOL)a5
+- (BOOL)p_setLineProperties:(id)properties fromRange:(_NSRange)range isUnderline:(BOOL)underline
 {
-  length = a4.length;
-  location = a4.location;
-  if (!a4.length)
+  length = range.length;
+  location = range.location;
+  if (!range.length)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler currentHandler];
   }
@@ -490,10 +490,10 @@ LABEL_25:
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  [a3 currentLineRect];
+  [properties currentLineRect];
   v33 = TSDNearlyEqualRects();
-  [a3 setFullLineRect:{v18, v20, v22, v24}];
-  [a3 setCurrentLineRect:{v26, v28, v30, v32}];
+  [properties setFullLineRect:{v18, v20, v22, v24}];
+  [properties setCurrentLineRect:{v26, v28, v30, v32}];
   v34 = [v9 lineFragmentAtIndex:v12];
   if (v34)
   {
@@ -507,39 +507,39 @@ LABEL_25:
   }
 
   v11 = v33 ^ 1;
-  [a3 setBaseline:v35];
+  [properties setBaseline:v35];
   v36 = 1.0;
   if (v16)
   {
-    [a3 baseline];
+    [properties baseline];
     v38 = v37;
     v46.origin.x = v26;
     v46.origin.y = v28;
     v46.size.width = v30;
     v46.size.height = v32;
-    if (v38 < CGRectGetMinY(v46) || ([a3 baseline], v40 = v39, v47.origin.x = v26, v47.origin.y = v28, v47.size.width = v30, v47.size.height = v32, v40 > CGRectGetMaxY(v47)))
+    if (v38 < CGRectGetMinY(v46) || ([properties baseline], v40 = v39, v47.origin.x = v26, v47.origin.y = v28, v47.size.width = v30, v47.size.height = v32, v40 > CGRectGetMaxY(v47)))
     {
       v48.origin.x = v26;
       v48.origin.y = v28;
       v48.size.width = v30;
       v48.size.height = v32;
       v41 = CGRectGetMaxY(v48) + -4.0;
-      [a3 baseline];
+      [properties baseline];
       v36 = v41 - v42 + 1.0;
     }
   }
 
-  [a3 setUnderlineOffset:v36];
-  [a3 setContentLayer:{+[THHighlightContentLayer layer](THHighlightContentLayer, "layer")}];
-  [objc_msgSend(a3 "contentLayer")];
+  [properties setUnderlineOffset:v36];
+  [properties setContentLayer:{+[THHighlightContentLayer layer](THHighlightContentLayer, "layer")}];
+  [objc_msgSend(properties "contentLayer")];
   return v11;
 }
 
-- (id)p_highlightLineFromLineSelection:(id)a3 isUnderline:(BOOL)a4
+- (id)p_highlightLineFromLineSelection:(id)selection isUnderline:(BOOL)underline
 {
-  v4 = a4;
-  v6 = [a3 range];
-  v8 = [(THWPHighlightController *)self p_trimHighlightRange:v6, v7];
+  underlineCopy = underline;
+  range = [selection range];
+  v8 = [(THWPHighlightController *)self p_trimHighlightRange:range, v7];
   if (!v9)
   {
     return 0;
@@ -548,18 +548,18 @@ LABEL_25:
   v10 = v8;
   v11 = v9;
   v12 = objc_alloc_init(THHighlightLine);
-  [(THWPHighlightController *)self p_setLineProperties:v12 fromRange:v10 isUnderline:v11, v4];
+  [(THWPHighlightController *)self p_setLineProperties:v12 fromRange:v10 isUnderline:v11, underlineCopy];
   return v12;
 }
 
-- (id)p_highlightFromAnnotation:(id)a3 range:(_NSRange)a4 rect:(CGRect)a5
+- (id)p_highlightFromAnnotation:(id)annotation range:(_NSRange)range rect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  length = a4.length;
-  location = a4.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
   v13 = objc_alloc_init(THHighlight);
   v14 = objc_alloc_init(NSMutableArray);
   v15 = [(THWPRep *)[(THWPHighlightController *)self parentRep] lineSelectionsForSelection:[TSWPSelection selectionWithRange:location, length]];
@@ -582,7 +582,7 @@ LABEL_25:
           objc_enumerationMutation(v15);
         }
 
-        v20 = -[THWPHighlightController p_highlightLineFromLineSelection:isUnderline:](self, "p_highlightLineFromLineSelection:isUnderline:", *(*(&v23 + 1) + 8 * v19), [a3 annotationIsUnderline]);
+        v20 = -[THWPHighlightController p_highlightLineFromLineSelection:isUnderline:](self, "p_highlightLineFromLineSelection:isUnderline:", *(*(&v23 + 1) + 8 * v19), [annotation annotationIsUnderline]);
         if (v20)
         {
           v21 = v20;
@@ -608,26 +608,26 @@ LABEL_25:
   }
 
   [(THHighlight *)v13 setLines:v14];
-  [(THHighlight *)v13 setAnnotation:a3];
+  [(THHighlight *)v13 setAnnotation:annotation];
 
   return v13;
 }
 
-- (void)p_addHighlight:(id)a3 forCachedAnnotation:(id)a4
+- (void)p_addHighlight:(id)highlight forCachedAnnotation:(id)annotation
 {
-  [(THWPHighlightController *)self p_removeHighlightForCachedAnnotation:a4];
-  [a4 setHighlight:a3];
+  [(THWPHighlightController *)self p_removeHighlightForCachedAnnotation:annotation];
+  [annotation setHighlight:highlight];
 
-  [(THWPHighlightController *)self p_drawMarginNoteIfNeeded:a4];
+  [(THWPHighlightController *)self p_drawMarginNoteIfNeeded:annotation];
 }
 
-- (BOOL)p_updateHighlight:(id)a3 toRange:(_NSRange)a4 rect:(CGRect)a5
+- (BOOL)p_updateHighlight:(id)highlight toRange:(_NSRange)range rect:(CGRect)rect
 {
-  rect2 = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = [(THWPHighlightController *)self p_trimHighlightRange:a4.location, a4.length];
+  rect2 = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = [(THWPHighlightController *)self p_trimHighlightRange:range.location, range.length];
   v12 = [(THWPRep *)[(THWPHighlightController *)self parentRep] lineSelectionsForSelection:[TSWPSelection selectionWithRange:v10, v11]];
   v50 = +[NSMutableArray array];
   v58 = 0u;
@@ -645,7 +645,7 @@ LABEL_25:
   v15 = 0;
   v16 = *v59;
   v48 = *v59;
-  v49 = a3;
+  highlightCopy = highlight;
   do
   {
     for (i = 0; i != v14; i = i + 1)
@@ -656,8 +656,8 @@ LABEL_25:
       }
 
       v18 = *(*(&v58 + 1) + 8 * i);
-      v19 = [v18 range];
-      v21 = [(THWPHighlightController *)self p_trimHighlightRange:v19, v20];
+      range = [v18 range];
+      v21 = [(THWPHighlightController *)self p_trimHighlightRange:range, v20];
       if (v22)
       {
         [(THWPHighlightController *)self p_repRectForHighlight:v21, v22];
@@ -672,13 +672,13 @@ LABEL_25:
         if (CGRectIntersectsRect(v64, v66))
         {
           v51 = v15;
-          v27 = [objc_msgSend(a3 "annotation")];
+          v27 = [objc_msgSend(highlight "annotation")];
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v28 = [a3 lines];
-          v29 = [v28 countByEnumeratingWithState:&v54 objects:v62 count:16];
+          lines = [highlight lines];
+          v29 = [lines countByEnumeratingWithState:&v54 objects:v62 count:16];
           if (v29)
           {
             v30 = v29;
@@ -689,7 +689,7 @@ LABEL_10:
             {
               if (*v55 != v31)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(lines);
               }
 
               v33 = *(*(&v54 + 1) + 8 * v32);
@@ -712,7 +712,7 @@ LABEL_10:
 
               if (v30 == ++v32)
               {
-                v30 = [v28 countByEnumeratingWithState:&v54 objects:v62 count:16];
+                v30 = [lines countByEnumeratingWithState:&v54 objects:v62 count:16];
                 if (v30)
                 {
                   goto LABEL_10;
@@ -722,8 +722,8 @@ LABEL_10:
               }
             }
 
-            v42 = [v18 range];
-            v44 = [(THWPHighlightController *)self p_setLineProperties:v33 fromRange:v42 isUnderline:v43, v27];
+            range2 = [v18 range];
+            v44 = [(THWPHighlightController *)self p_setLineProperties:v33 fromRange:range2 isUnderline:v43, v27];
             if (!v33)
             {
               goto LABEL_20;
@@ -741,7 +741,7 @@ LABEL_20:
 
           v16 = v48;
           [v50 addObject:v33];
-          a3 = v49;
+          highlight = highlightCopy;
         }
       }
     }
@@ -752,15 +752,15 @@ LABEL_20:
   while (v14);
   if (v15)
   {
-    [a3 setLines:v50];
+    [highlight setLines:v50];
   }
 
   else
   {
 LABEL_26:
     v45 = [v50 count];
-    v46 = [objc_msgSend(a3 "lines")];
-    [a3 setLines:v50];
+    v46 = [objc_msgSend(highlight "lines")];
+    [highlight setLines:v50];
     if (v45 == v46)
     {
       return 0;
@@ -768,15 +768,15 @@ LABEL_26:
   }
 
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
-  [(THWPHighlightController *)self p_updateMarginNoteForHighlight:a3];
+  [(THWPHighlightController *)self p_updateMarginNoteForHighlight:highlight];
   return 1;
 }
 
-- (BOOL)needsToRedrawForVisibleBounds:(CGRect)a3
+- (BOOL)needsToRedrawForVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalRectFromUnscaledCanvas:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalRectFromUnscaledCanvas:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v37 = CGRectInset(v36, width * -0.5, height * -0.5);
   x = v37.origin.x;
   y = v37.origin.y;
@@ -792,13 +792,13 @@ LABEL_26:
     return 0;
   }
 
-  v10 = [(THWPHighlightController *)self annotationCache];
+  annotationCache = [(THWPHighlightController *)self annotationCache];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [(NSMutableDictionary *)v10 allValues];
-  v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  allValues = [(NSMutableDictionary *)annotationCache allValues];
+  v12 = [allValues countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
   {
     v13 = v12;
@@ -809,7 +809,7 @@ LABEL_26:
       {
         if (*v32 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
@@ -819,7 +819,7 @@ LABEL_26:
         v22 = v21;
         v24 = v23;
         v26 = v25;
-        v27 = [v16 highlight];
+        highlight = [v16 highlight];
         v39.origin.x = x;
         v39.origin.y = y;
         v39.size.width = v8;
@@ -828,14 +828,14 @@ LABEL_26:
         v41.origin.y = v22;
         v41.size.width = v24;
         v41.size.height = v26;
-        if (CGRectIntersectsRect(v39, v41) && v27 == 0)
+        if (CGRectIntersectsRect(v39, v41) && highlight == 0)
         {
           v29 = 1;
           goto LABEL_16;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v13)
       {
         continue;
@@ -851,9 +851,9 @@ LABEL_16:
   return v29;
 }
 
-- (id)p_drawHighlightLine:(id)a3 forAnnotation:(id)a4 scale:(double)a5
+- (id)p_drawHighlightLine:(id)line forAnnotation:(id)annotation scale:(double)scale
 {
-  v8 = [(THWPHighlightController *)self pageTheme];
+  pageTheme = [(THWPHighlightController *)self pageTheme];
   objc_opt_class();
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   v9 = TSUDynamicCast();
@@ -863,22 +863,22 @@ LABEL_16:
     v10 = [objc_msgSend(v9 "themeProvider")];
   }
 
-  v11 = [objc_msgSend(a4 "annotation")];
-  v12 = [objc_msgSend(+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme themeForAnnotationStyle:v11 pageTheme:v8 isUnderline:{v11 == 6), "highlightColor"), "CGColor"}];
+  v11 = [objc_msgSend(annotation "annotation")];
+  v12 = [objc_msgSend(+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme themeForAnnotationStyle:v11 pageTheme:pageTheme isUnderline:{v11 == 6), "highlightColor"), "CGColor"}];
   [-[THWPRep canvas](-[THWPHighlightController parentRep](self "parentRep")];
   v14 = v13;
-  [a3 currentLineRect];
+  [line currentLineRect];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [a3 baseline];
+  [line baseline];
   v50 = v23;
   memset(&v52, 0, sizeof(v52));
-  v24 = [(THWPHighlightController *)self parentRep];
-  if (v24)
+  parentRep = [(THWPHighlightController *)self parentRep];
+  if (parentRep)
   {
-    [(THWPRep *)v24 transformToConvertNaturalToLayerRelative];
+    [(THWPRep *)parentRep transformToConvertNaturalToLayerRelative];
     b = v52.b;
     d = v52.d;
     ty = v52.ty;
@@ -913,7 +913,7 @@ LABEL_16:
   MaxY = CGRectGetMaxY(v55);
   if (v11 == 6)
   {
-    [a3 underlineOffset];
+    [line underlineOffset];
     TSDRoundForScale();
     v36 = v35;
     v37 = 2.0;
@@ -922,7 +922,7 @@ LABEL_16:
       v37 = 1.5;
     }
 
-    v38 = ceil(v14 * (v37 * a5)) / v14;
+    v38 = ceil(v14 * (v37 * scale)) / v14;
   }
 
   else
@@ -942,45 +942,45 @@ LABEL_16:
   TSDRoundedRectForScale();
   v43 = v42;
   v45 = v44;
-  v46 = [a3 contentLayer];
-  [v46 setHidden:0];
-  [v46 setFrame:{v43, v36, v45, v38}];
+  contentLayer = [line contentLayer];
+  [contentLayer setHidden:0];
+  [contentLayer setFrame:{v43, v36, v45, v38}];
   LODWORD(v47) = 1.0;
-  [v46 setOpacity:v47];
-  [v46 setBackgroundColor:v10];
-  [v46 setHighlightColor:v12];
-  [v46 setBlendMode:{-[THWPHighlightController p_blendModeForCachedAnnotation:](self, "p_blendModeForCachedAnnotation:", a4)}];
-  [v46 setNeedsDisplay];
-  return v46;
+  [contentLayer setOpacity:v47];
+  [contentLayer setBackgroundColor:v10];
+  [contentLayer setHighlightColor:v12];
+  [contentLayer setBlendMode:{-[THWPHighlightController p_blendModeForCachedAnnotation:](self, "p_blendModeForCachedAnnotation:", annotation)}];
+  [contentLayer setNeedsDisplay];
+  return contentLayer;
 }
 
-- (int)p_blendModeForCachedAnnotation:(id)a3
+- (int)p_blendModeForCachedAnnotation:(id)annotation
 {
   objc_opt_class();
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   v5 = TSUDynamicCast();
-  if (![v5 themeProvider] || objc_msgSend(objc_msgSend(a3, "annotation"), "annotationStyle") == 6)
+  if (![v5 themeProvider] || objc_msgSend(objc_msgSend(annotation, "annotation"), "annotationStyle") == 6)
   {
     return 0;
   }
 
-  v7 = [v5 themeProvider];
+  themeProvider = [v5 themeProvider];
 
-  return [v7 annotationBlendMode];
+  return [themeProvider annotationBlendMode];
 }
 
-- (id)p_annotationsAtRepPoint:(CGPoint)a3
+- (id)p_annotationsAtRepPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v34 = +[NSMutableArray array];
-  v36 = self;
+  selfCopy = self;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v32 = [(THWPHighlightController *)self annotationCache];
-  obj = [(NSMutableDictionary *)v32 allValues];
+  annotationCache = [(THWPHighlightController *)self annotationCache];
+  obj = [(NSMutableDictionary *)annotationCache allValues];
   v37 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v37)
   {
@@ -1003,8 +1003,8 @@ LABEL_16:
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v10 = [(THWPRep *)[(THWPHighlightController *)v36 parentRep] columns];
-        v11 = [v10 countByEnumeratingWithState:&v44 objects:v53 count:16];
+        columns = [(THWPRep *)[(THWPHighlightController *)selfCopy parentRep] columns];
+        v11 = [columns countByEnumeratingWithState:&v44 objects:v53 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1015,7 +1015,7 @@ LABEL_16:
             {
               if (*v45 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(columns);
               }
 
               v15 = *(*(&v44 + 1) + 8 * i);
@@ -1027,8 +1027,8 @@ LABEL_16:
               v41 = 0u;
               v42 = 0u;
               v43 = 0u;
-              v20 = [(TSWPSelection *)v9 range];
-              v22 = [v15 rectsForSelectionRange:v20 selectionType:v21 forParagraphMode:-[TSWPSelection type](v9 includeRuby:{"type"), 0, 0}];
+              range = [(TSWPSelection *)v9 range];
+              v22 = [v15 rectsForSelectionRange:range selectionType:v21 forParagraphMode:-[TSWPSelection type](v9 includeRuby:{"type"), 0, 0}];
               v23 = [v22 countByEnumeratingWithState:&v40 objects:v52 count:16];
               if (v23)
               {
@@ -1078,7 +1078,7 @@ LABEL_16:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v44 objects:v53 count:16];
+            v12 = [columns countByEnumeratingWithState:&v44 objects:v53 count:16];
             if (v12)
             {
               continue;
@@ -1102,20 +1102,20 @@ LABEL_23:
   return v34;
 }
 
-- (id)p_annotationsInRepRect:(CGRect)a3
+- (id)p_annotationsInRepRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = +[NSMutableArray array];
-  v9 = [(THWPHighlightController *)self annotationCache];
+  annotationCache = [(THWPHighlightController *)self annotationCache];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(NSMutableDictionary *)v9 allValues];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allValues = [(NSMutableDictionary *)annotationCache allValues];
+  v11 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1126,7 +1126,7 @@ LABEL_23:
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
@@ -1146,7 +1146,7 @@ LABEL_23:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v12);
@@ -1155,12 +1155,12 @@ LABEL_23:
   return v8;
 }
 
-- (id)highlightLayersInCanvasUnscaledRect:(CGRect)a3 scale:(double)a4
+- (id)highlightLayersInCanvasUnscaledRect:(CGRect)rect scale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = +[NSMutableArray array];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalRectFromUnscaledCanvas:x, y, width, height];
   v46 = CGRectInset(v45, -width, -height);
@@ -1188,10 +1188,10 @@ LABEL_23:
 
         v16 = *(*(&v39 + 1) + 8 * i);
         v17 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:v16];
-        v18 = [v17 highlight];
-        if (v18)
+        highlight = [v17 highlight];
+        if (highlight)
         {
-          v19 = v18;
+          v19 = highlight;
           v20 = [objc_msgSend(v17 "annotation")];
           [(THWPHighlightController *)self p_updateHighlight:v19 toRange:v20 rect:v21, v11, v12, v13, v14];
           [(THWPHighlightController *)self p_updateMarginNoteForCachedAnnotation:v17];
@@ -1199,8 +1199,8 @@ LABEL_23:
 
         else
         {
-          v22 = [v16 annotationStorageRange];
-          v19 = [(THWPHighlightController *)self p_highlightFromAnnotation:v16 range:v22 rect:v23, v11, v12, v13, v14];
+          annotationStorageRange = [v16 annotationStorageRange];
+          v19 = [(THWPHighlightController *)self p_highlightFromAnnotation:v16 range:annotationStorageRange rect:v23, v11, v12, v13, v14];
           [(THWPHighlightController *)self p_addHighlight:v19 forCachedAnnotation:v17];
         }
 
@@ -1208,8 +1208,8 @@ LABEL_23:
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v24 = [v19 lines];
-        v25 = [v24 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        lines = [v19 lines];
+        v25 = [lines countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v25)
         {
           v26 = v25;
@@ -1220,13 +1220,13 @@ LABEL_23:
             {
               if (*v36 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(lines);
               }
 
               v29 = *(*(&v35 + 1) + 8 * j);
               if ([v29 contentLayer])
               {
-                v30 = [(THWPHighlightController *)self p_drawHighlightLine:v29 forAnnotation:v17 scale:a4];
+                v30 = [(THWPHighlightController *)self p_drawHighlightLine:v29 forAnnotation:v17 scale:scale];
                 if (v30)
                 {
                   [v10 addObject:v30];
@@ -1234,7 +1234,7 @@ LABEL_23:
               }
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            v26 = [lines countByEnumeratingWithState:&v35 objects:v43 count:16];
           }
 
           while (v26);
@@ -1262,21 +1262,21 @@ LABEL_23:
     return 4;
   }
 
-  v4 = [v3 themeProvider];
+  themeProvider = [v3 themeProvider];
 
-  return [v4 annotationPageTheme];
+  return [themeProvider annotationPageTheme];
 }
 
 - (void)updateFromLayout
 {
   [(THMarginNotesController *)[(THWPHighlightController *)self marginNotesController] setPageTheme:[(THWPHighlightController *)self pageTheme]];
-  v3 = [(THWPHighlightController *)self annotationCache];
+  annotationCache = [(THWPHighlightController *)self annotationCache];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)v3 allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)annotationCache allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1288,7 +1288,7 @@ LABEL_23:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [(THWPHighlightController *)self p_updateMarginNoteForCachedAnnotation:*(*(&v9 + 1) + 8 * v8)];
@@ -1296,7 +1296,7 @@ LABEL_23:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1305,20 +1305,20 @@ LABEL_23:
 
 - (_NSRange)rangeOfInterest
 {
-  v2 = [(THWPHighlightController *)self parentRep];
+  parentRep = [(THWPHighlightController *)self parentRep];
 
-  v3 = [(THWPRep *)v2 range];
+  range = [(THWPRep *)parentRep range];
   result.length = v4;
-  result.location = v3;
+  result.location = range;
   return result;
 }
 
-- (_NSRange)selectionRangeForStartPoint:(CGPoint)a3 currentPoint:(CGPoint)a4
+- (_NSRange)selectionRangeForStartPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = currentPoint.y;
+  x = currentPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   v9 = [-[THWPRep storage](-[THWPHighlightController parentRep](self "parentRep")];
   if (!v9)
   {
@@ -1326,22 +1326,22 @@ LABEL_23:
     goto LABEL_38;
   }
 
-  v10 = [(THWPHighlightController *)self parentRep];
+  parentRep = [(THWPHighlightController *)self parentRep];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalPointFromUnscaledCanvas:v7, v6];
-  [(THWPRep *)v10 pinToNaturalBounds:1 andLastLineFragment:?];
+  [(THWPRep *)parentRep pinToNaturalBounds:1 andLastLineFragment:?];
   v12 = v11;
   v14 = v13;
-  v15 = [(THWPHighlightController *)self parentRep];
+  parentRep2 = [(THWPHighlightController *)self parentRep];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalPointFromUnscaledCanvas:x, y];
-  [(THWPRep *)v15 pinToNaturalBounds:1 andLastLineFragment:?];
+  [(THWPRep *)parentRep2 pinToNaturalBounds:1 andLastLineFragment:?];
   v17 = v16;
   v19 = v18;
   v20 = [(THWPRep *)[(THWPHighlightController *)self parentRep] charIndexFromPoint:1 allowPastBreak:0 isAtEndOfLine:v12, v14];
   v21 = [(THWPRep *)[(THWPHighlightController *)self parentRep] charIndexFromPoint:1 allowPastBreak:0 isAtEndOfLine:v17, v19];
-  v22 = [(THWPHighlightController *)self parentRep];
+  parentRep3 = [(THWPHighlightController *)self parentRep];
   if (v20 >= v21)
   {
-    v26 = [(THWPRep *)v22 charIndexFromPoint:1 allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:0 leadingEdge:v17, v19];
+    v26 = [(THWPRep *)parentRep3 charIndexFromPoint:1 allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:0 leadingEdge:v17, v19];
     v23 = v26;
     if (v20)
     {
@@ -1368,7 +1368,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v23 = [(THWPRep *)v22 charIndexFromPoint:1 allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:0 leadingEdge:v12, v14];
+  v23 = [(THWPRep *)parentRep3 charIndexFromPoint:1 allowPastBreak:0 allowNotFound:0 pastCenterGoesToNextChar:0 isAtEndOfLine:0 leadingEdge:v12, v14];
   v24 = v21 - 1;
   if (v23)
   {
@@ -1447,15 +1447,15 @@ LABEL_38:
   return result;
 }
 
-- (CGRect)p_repRectForPoint:(CGPoint)a3
+- (CGRect)p_repRectForPoint:(CGPoint)point
 {
-  v4 = [(THWPHighlightController *)self selectionRangeForStartPoint:a3.x currentPoint:a3.y, a3.x, a3.y];
+  v4 = [(THWPHighlightController *)self selectionRangeForStartPoint:point.x currentPoint:point.y, point.x, point.y];
   v6 = [(THWPRep *)[(THWPHighlightController *)self parentRep] lineSelectionsForSelection:[TSWPSelection selectionWithRange:v4, v5]];
   v7 = [v6 count];
   if (v7 && (v8 = v7, v9 = [v6 objectAtIndex:0], objc_msgSend(v9, "range"), v10))
   {
-    v11 = [v9 range];
-    [(THWPHighlightController *)self p_repRectForHighlight:v11, v12];
+    range = [v9 range];
+    [(THWPHighlightController *)self p_repRectForHighlight:range, v12];
     x = v13;
     y = v15;
     width = v17;
@@ -1518,10 +1518,10 @@ LABEL_38:
   return v2;
 }
 
-- (BOOL)shouldBeginDragHighlightAtPoint:(CGPoint)a3
+- (BOOL)shouldBeginDragHighlightAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(THWPHighlightController *)self shouldAllowHighlights])
   {
     return 0;
@@ -1551,10 +1551,10 @@ LABEL_38:
   return CGRectContainsPoint(v20, *&v15);
 }
 
-- (void)beginDragHighlightAtPoint:(CGPoint)a3
+- (void)beginDragHighlightAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   v6 = [(THWPHighlightController *)self selectionRangeForStartPoint:x currentPoint:y, x, y];
   v8 = [-[THWPHighlightController annotationController](self "annotationController")];
@@ -1565,43 +1565,43 @@ LABEL_38:
   [(THWPHighlightController *)self setDragStartPoint:x, y];
 }
 
-- (id)highlightAtCanvasPoint:(CGPoint)a3
+- (id)highlightAtCanvasPoint:(CGPoint)point
 {
-  [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalPointFromUnscaledCanvas:a3.x, a3.y];
+  [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalPointFromUnscaledCanvas:point.x, point.y];
   v4 = -[THWPHighlightController p_cachedAnnotationForAnnotation:](self, "p_cachedAnnotationForAnnotation:", [+[THAnnotationCache annotationsOrderedForVisualStacking:](THAnnotationCache annotationsOrderedForVisualStacking:{-[THWPHighlightController p_annotationsAtRepPoint:](self, "p_annotationsAtRepPoint:")), "lastObject"}]);
 
   return [v4 highlight];
 }
 
-- (id)annotationAtUnscaledPoint:(CGPoint)a3
+- (id)annotationAtUnscaledPoint:(CGPoint)point
 {
-  v3 = [(THWPHighlightController *)self highlightAtCanvasPoint:a3.x, a3.y];
+  v3 = [(THWPHighlightController *)self highlightAtCanvasPoint:point.x, point.y];
 
   return [v3 annotation];
 }
 
-- (id)annotationForRange:(_NSRange)a3
+- (id)annotationForRange:(_NSRange)range
 {
-  v3 = [THAnnotationCache annotationsOrderedForVisualStacking:[(THWPAnnotationSource *)self->mAnnotationSource annotationsForRange:a3.location, a3.length]];
+  v3 = [THAnnotationCache annotationsOrderedForVisualStacking:[(THWPAnnotationSource *)self->mAnnotationSource annotationsForRange:range.location, range.length]];
 
   return [v3 lastObject];
 }
 
-- (id)annotationsForRange:(_NSRange)a3
+- (id)annotationsForRange:(_NSRange)range
 {
-  v3 = [(THWPAnnotationSource *)self->mAnnotationSource annotationsForRange:a3.location, a3.length];
+  v3 = [(THWPAnnotationSource *)self->mAnnotationSource annotationsForRange:range.location, range.length];
 
   return [THAnnotationCache annotationsOrderedForVisualStacking:v3];
 }
 
-- (_NSRange)p_rangeOfHighlight:(id)a3
+- (_NSRange)p_rangeOfHighlight:(id)highlight
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)[(THWPHighlightController *)self annotationCache] allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)[(THWPHighlightController *)self annotationCache] allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1612,18 +1612,18 @@ LABEL_38:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 highlight] == a3)
+        if ([v9 highlight] == highlight)
         {
           v10 = [objc_msgSend(v9 "annotation")];
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1642,7 +1642,7 @@ LABEL_11:
   return result;
 }
 
-- (void)moveDragHighlightToPoint:(CGPoint)a3
+- (void)moveDragHighlightToPoint:(CGPoint)point
 {
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   if (![(THWPHighlightController *)self currentDragAnnotation])
@@ -1657,24 +1657,24 @@ LABEL_11:
   if ([(THAnnotation *)[(THWPHighlightController *)self currentDragAnnotation] annotationStorageRange]!= v6 || v9 != v8)
   {
     -[THWPHighlightController setCurrentDragAnnotation:](self, "setCurrentDragAnnotation:", [-[THWPHighlightController annotationController](self "annotationController")]);
-    v10 = [(THWPHighlightController *)self currentDragAnnotation];
+    currentDragAnnotation = [(THWPHighlightController *)self currentDragAnnotation];
     mAnnotationSource = self->mAnnotationSource;
 
-    [(THWPAnnotationSource *)mAnnotationSource setTemporaryAnnotation:v10];
+    [(THWPAnnotationSource *)mAnnotationSource setTemporaryAnnotation:currentDragAnnotation];
   }
 }
 
-- (void)endDragHighlightAtPoint:(CGPoint)a3 accept:(BOOL)a4
+- (void)endDragHighlightAtPoint:(CGPoint)point accept:(BOOL)accept
 {
-  if (a4 && [(THWPHighlightController *)self currentDragAnnotation:a3.x])
+  if (accept && [(THWPHighlightController *)self currentDragAnnotation:point.x])
   {
-    v5 = [(THWPHighlightController *)self annotationController];
-    v6 = [(THWPRep *)[(THWPHighlightController *)self parentRep] storage];
-    v7 = [(THAnnotation *)[(THWPHighlightController *)self currentDragAnnotation] annotationStorageRange];
-    [v5 addAnnotationForStorage:v6 range:v7 contentNode:v8 style:-[THWPRep storageContentNode](-[THWPHighlightController parentRep](self undoContext:{"parentRep"), "storageContentNode"), objc_msgSend(-[THWPHighlightController annotationController](self, "annotationController"), "currentAnnotationStyle"), 0}];
+    annotationController = [(THWPHighlightController *)self annotationController];
+    storage = [(THWPRep *)[(THWPHighlightController *)self parentRep] storage];
+    annotationStorageRange = [(THAnnotation *)[(THWPHighlightController *)self currentDragAnnotation] annotationStorageRange];
+    [annotationController addAnnotationForStorage:storage range:annotationStorageRange contentNode:v8 style:-[THWPRep storageContentNode](-[THWPHighlightController parentRep](self undoContext:{"parentRep"), "storageContentNode"), objc_msgSend(-[THWPHighlightController annotationController](self, "annotationController"), "currentAnnotationStyle"), 0}];
   }
 
-  [(THWPHighlightController *)self setTrackingDrag:0, a3.x, a3.y];
+  [(THWPHighlightController *)self setTrackingDrag:0, point.x, point.y];
   [(THWPHighlightController *)self setCurrentDragAnnotation:0];
   mAnnotationSource = self->mAnnotationSource;
 
@@ -1690,7 +1690,7 @@ LABEL_11:
   }
 }
 
-- (CGRect)highlightRectForAnnotation:(id)a3
+- (CGRect)highlightRectForAnnotation:(id)annotation
 {
   v3 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:TSUProtocolCast()];
   x = CGRectZero.origin.x;
@@ -1701,8 +1701,8 @@ LABEL_11:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [objc_msgSend(v3 highlight];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  highlight = [objc_msgSend(v3 highlight];
+  v9 = [highlight countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1714,7 +1714,7 @@ LABEL_11:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(highlight);
         }
 
         v13 = *(*(&v23 + 1) + 8 * v12);
@@ -1741,7 +1741,7 @@ LABEL_11:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [highlight countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
@@ -1758,22 +1758,22 @@ LABEL_11:
   return result;
 }
 
-- (void)p_showEditor:(id)a3 forRange:(_NSRange)a4
+- (void)p_showEditor:(id)editor forRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8 = [objc_msgSend(objc_msgSend(-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] popoverPresentationRectForRange:location, length];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalRectToUnscaledCanvas:v9, v10, v11, v12];
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   [objc_msgSend(-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
-  [a3 presentFromRect:v8 view:?];
-  qword_5677F0 = a3;
+  [editor presentFromRect:v8 view:?];
+  qword_5677F0 = editor;
 }
 
-+ (void)p_forgetActivePopover:(id)a3
++ (void)p_forgetActivePopover:(id)popover
 {
-  if (qword_5677F0 == a3)
+  if (qword_5677F0 == popover)
   {
     qword_5677F0 = 0;
   }
@@ -1784,17 +1784,17 @@ LABEL_11:
   [objc_opt_class() p_forgetActivePopover:{-[THWPHighlightController noteEditorController](self, "noteEditorController")}];
   [objc_opt_class() p_forgetActivePopover:{-[THWPHighlightController highlightColorEditorController](self, "highlightColorEditorController")}];
   [(AEAnnotationEditor *)[(THWPHighlightController *)self noteEditorController] hide];
-  v3 = [(THWPHighlightController *)self highlightColorEditorController];
+  highlightColorEditorController = [(THWPHighlightController *)self highlightColorEditorController];
 
-  [(AEHighlightColorEditorController *)v3 hide];
+  [(AEHighlightColorEditorController *)highlightColorEditorController hide];
 }
 
-- (void)p_showHighlightEditorForCachedAnnotation:(id)a3
+- (void)p_showHighlightEditorForCachedAnnotation:(id)annotation
 {
   objc_opt_class();
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   v5 = TSUDynamicCast();
-  if (a3)
+  if (annotation)
   {
     v6 = v5;
     if (([v5 showingExpandedWidgetView] & 1) == 0)
@@ -1812,28 +1812,28 @@ LABEL_11:
 
       [v10 setPageTheme:v7];
       [v10 setDelegate:self];
-      [v10 setAnnotation:{objc_msgSend(a3, "annotation")}];
-      [v10 setAnnotationTheme:{objc_msgSend(objc_msgSend(a3, "annotation"), "theme")}];
+      [v10 setAnnotation:{objc_msgSend(annotation, "annotation")}];
+      [v10 setAnnotationTheme:{objc_msgSend(objc_msgSend(annotation, "annotation"), "theme")}];
       [v6 addChildViewController:v10];
-      v8 = [objc_msgSend(a3 "annotation")];
+      v8 = [objc_msgSend(annotation "annotation")];
       [(THWPHighlightController *)self p_showEditor:v10 forRange:v8, v9];
       [(THWPHighlightController *)self setHighlightColorEditorController:v10];
     }
   }
 }
 
-- (CGRect)canvasRectForAnnotation:(id)a3
+- (CGRect)canvasRectForAnnotation:(id)annotation
 {
-  v4 = [a3 annotationStorageRange];
-  [(THWPRep *)[(THWPHighlightController *)self parentRep] popoverPresentationRectForRange:v4, v5];
+  annotationStorageRange = [annotation annotationStorageRange];
+  [(THWPRep *)[(THWPHighlightController *)self parentRep] popoverPresentationRectForRange:annotationStorageRange, v5];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalRectToUnscaledCanvas:v6, v7, v8, v9];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
+  interactiveCanvasController = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
 
-  [v18 convertUnscaledToBoundsRect:{v11, v13, v15, v17}];
+  [interactiveCanvasController convertUnscaledToBoundsRect:{v11, v13, v15, v17}];
   result.size.height = v22;
   result.size.width = v21;
   result.origin.y = v20;
@@ -1841,27 +1841,27 @@ LABEL_11:
   return result;
 }
 
-- (void)p_showHighlightMenuForCachedAnnotation:(id)a3
+- (void)p_showHighlightMenuForCachedAnnotation:(id)annotation
 {
   v5 = [objc_msgSend(objc_msgSend(-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
-  v6 = [objc_msgSend(a3 "annotation")];
+  v6 = [objc_msgSend(annotation "annotation")];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] popoverPresentationRectForRange:v6, v7];
   [(THWPRep *)[(THWPHighlightController *)self parentRep] convertNaturalRectToUnscaledCanvas:v8, v9, v10, v11];
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   [objc_msgSend(-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   y = v25.origin.y;
   MidX = CGRectGetMidX(v25);
-  v22 = -[THHighlightMenuInteraction initWithAnnotationUUID:delegate:]([THHighlightMenuInteraction alloc], "initWithAnnotationUUID:delegate:", [objc_msgSend(a3 "annotation")], self);
+  v22 = -[THHighlightMenuInteraction initWithAnnotationUUID:delegate:]([THHighlightMenuInteraction alloc], "initWithAnnotationUUID:delegate:", [objc_msgSend(annotation "annotation")], self);
   [v5 addInteraction:v22];
   v23 = [UIEditMenuConfiguration configurationWithIdentifier:@"com.apple.iBooks.HighlightMenu" sourcePoint:MidX, y];
 
   [(THHighlightMenuInteraction *)v22 presentEditMenuWithConfiguration:v23];
 }
 
-- (id)p_editMenuForAnnotationUUID:(id)a3
+- (id)p_editMenuForAnnotationUUID:(id)d
 {
-  v5 = [(THWPHighlightController *)self annotationController];
-  v6 = [v5 annotationWithUuid:a3];
+  annotationController = [(THWPHighlightController *)self annotationController];
+  v6 = [annotationController annotationWithUuid:d];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_B7000;
@@ -1869,13 +1869,13 @@ LABEL_11:
   v21[4] = v6;
   v24 = +[UIAction actionWithTitle:image:identifier:handler:](UIAction, "actionWithTitle:image:identifier:handler:", [THBundle() localizedStringForKey:@"Copy" value:&stru_471858 table:0], +[UIImage systemImageNamed:](UIImage, "systemImageNamed:", @"doc.on.doc"), 0, v21);
   v14 = [UIMenu menuWithTitle:&stru_471858 image:0 identifier:@"com.apple.iBooks.EditMenuGroup" options:17 children:[NSArray arrayWithObjects:&v24 count:1]];
-  v7 = [_TtC8BookCore23BECustomViewMenuElement createHighlightMenuElementFor:4 annotationUUID:a3 delegate:self];
+  v7 = [_TtC8BookCore23BECustomViewMenuElement createHighlightMenuElementFor:4 annotationUUID:d delegate:self];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_B7068;
   v20[3] = &unk_45CE90;
   v20[4] = v6;
-  v20[5] = v5;
+  v20[5] = annotationController;
   v20[6] = self;
   v8 = +[UIAction actionWithTitle:image:identifier:handler:](UIAction, "actionWithTitle:image:identifier:handler:", [THBundle() localizedStringForKey:@"Remove" value:&stru_471858 table:0], +[UIImage systemImageNamed:](UIImage, "systemImageNamed:", @"trash"), 0, v20);
   [(UIAction *)v8 setAttributes:2];
@@ -1926,15 +1926,15 @@ LABEL_11:
   return [UIMenu menuWithTitle:&stru_471858 image:0 identifier:0 options:17 children:[NSArray arrayWithObjects:v22 count:3]];
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)
   {
-    v7 = [v6 annotationUUID];
+    annotationUUID = [v6 annotationUUID];
 
-    return [(THWPHighlightController *)self p_editMenuForAnnotationUUID:v7];
+    return [(THWPHighlightController *)self p_editMenuForAnnotationUUID:annotationUUID];
   }
 
   else
@@ -1949,25 +1949,25 @@ LABEL_11:
   }
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [a3 view];
+  view = [interaction view];
 
-  [v6 removeInteraction:a3];
+  [view removeInteraction:interaction];
 }
 
-- (void)createHighlightForSelectionWithCurrentThemeWithCompletion:(id)a3
+- (void)createHighlightForSelectionWithCurrentThemeWithCompletion:(id)completion
 {
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-  if (a3)
+  if (completion)
   {
-    v4 = *(a3 + 2);
+    v4 = *(completion + 2);
 
-    v4(a3, 0);
+    v4(completion, 0);
   }
 }
 
-- (void)createHighlightForSelectionWithStyle:(int)a3
+- (void)createHighlightForSelectionWithStyle:(int)style
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THWPHighlightController createHighlightForSelectionWithStyle:]"];
@@ -1976,24 +1976,24 @@ LABEL_11:
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:1447 description:@"THWPHighlightController createHighlightForSelectionWithStyle: not implemented"];
 }
 
-- (void)setStyleOfExistingHighlight:(id)a3 to:(int)a4
+- (void)setStyleOfExistingHighlight:(id)highlight to:(int)to
 {
-  v4 = *&a4;
-  v7 = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
+  v4 = *&to;
+  interactiveCanvasController = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
   objc_opt_class();
-  [v7 beginEditingRep:{-[THWPHighlightController parentRep](self, "parentRep")}];
+  [interactiveCanvasController beginEditingRep:{-[THWPHighlightController parentRep](self, "parentRep")}];
   if (TSUDynamicCast())
   {
-    v8 = [(THWPHighlightController *)self annotationController];
-    v9 = [v8 annotationWithUuid:a3];
+    annotationController = [(THWPHighlightController *)self annotationController];
+    v9 = [annotationController annotationWithUuid:highlight];
     if (![(THWPHighlightController *)self p_cachedAnnotationForAnnotation:v9])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    [v8 modifyAnnotation:v9 withStyle:v4 undoContext:0];
+    [annotationController modifyAnnotation:v9 withStyle:v4 undoContext:0];
 
-    [v8 setCurrentAnnotationStyle:v4];
+    [annotationController setCurrentAnnotationStyle:v4];
   }
 
   else
@@ -2006,63 +2006,63 @@ LABEL_11:
   }
 }
 
-- (void)p_showEditorForHighlight:(id)a3
+- (void)p_showEditorForHighlight:(id)highlight
 {
-  [a3 annotation];
+  [highlight annotation];
   v4 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:TSUProtocolCast()];
 
   [(THWPHighlightController *)self p_showHighlightEditorForCachedAnnotation:v4];
 }
 
-- (void)p_showMenuForHighlight:(id)a3
+- (void)p_showMenuForHighlight:(id)highlight
 {
-  [a3 annotation];
+  [highlight annotation];
   v4 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:TSUProtocolCast()];
 
   [(THWPHighlightController *)self p_showHighlightMenuForCachedAnnotation:v4];
 }
 
-- (void)showHighlightEditorForAnnotation:(id)a3
+- (void)showHighlightEditorForAnnotation:(id)annotation
 {
   v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:TSUProtocolCast()];
   if (!v5)
   {
     [(THWPHighlightController *)self updateCachedAnnotations];
-    v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:a3];
+    v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:annotation];
   }
 
   [(THWPHighlightController *)self p_showHighlightEditorForCachedAnnotation:v5];
 }
 
-- (void)showHighlightMenuForAnnotation:(id)a3
+- (void)showHighlightMenuForAnnotation:(id)annotation
 {
   v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:TSUProtocolCast()];
   if (!v5)
   {
     [(THWPHighlightController *)self updateCachedAnnotations];
-    v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:a3];
+    v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:annotation];
   }
 
   [(THWPHighlightController *)self p_showHighlightMenuForCachedAnnotation:v5];
 }
 
-- (void)showHighlightEditorForHighlightAtPoint:(CGPoint)a3
+- (void)showHighlightEditorForHighlightAtPoint:(CGPoint)point
 {
-  v4 = [(THWPHighlightController *)self highlightAtCanvasPoint:a3.x, a3.y];
+  v4 = [(THWPHighlightController *)self highlightAtCanvasPoint:point.x, point.y];
 
   [(THWPHighlightController *)self p_showEditorForHighlight:v4];
 }
 
-- (void)showHighlightMenuForHighlightAtPoint:(CGPoint)a3
+- (void)showHighlightMenuForHighlightAtPoint:(CGPoint)point
 {
-  v4 = [(THWPHighlightController *)self highlightAtCanvasPoint:a3.x, a3.y];
+  v4 = [(THWPHighlightController *)self highlightAtCanvasPoint:point.x, point.y];
 
   [(THWPHighlightController *)self p_showMenuForHighlight:v4];
 }
 
-- (id)editMenuForHighlightAtPoint:(CGPoint)a3
+- (id)editMenuForHighlightAtPoint:(CGPoint)point
 {
-  result = [(THWPHighlightController *)self highlightAtCanvasPoint:a3.x, a3.y];
+  result = [(THWPHighlightController *)self highlightAtCanvasPoint:point.x, point.y];
   if (result)
   {
     v5 = [objc_msgSend(result "annotation")];
@@ -2073,36 +2073,36 @@ LABEL_11:
   return result;
 }
 
-- (void)p_removeNoteForCachedAnnotation:(id)a3
+- (void)p_removeNoteForCachedAnnotation:(id)annotation
 {
-  if (a3)
+  if (annotation)
   {
-    v5 = [a3 marginNote];
-    if (v5)
+    marginNote = [annotation marginNote];
+    if (marginNote)
     {
-      [(THMarginNotesController *)[(THWPHighlightController *)self marginNotesController] removeMarginNote:v5];
+      [(THMarginNotesController *)[(THWPHighlightController *)self marginNotesController] removeMarginNote:marginNote];
 
-      [a3 setMarginNote:0];
+      [annotation setMarginNote:0];
     }
   }
 }
 
-- (BOOL)p_shouldDrawMarginNoteForCachedCachedAnnotation:(id)a3
+- (BOOL)p_shouldDrawMarginNoteForCachedCachedAnnotation:(id)annotation
 {
-  v5 = [objc_msgSend(a3 "annotation")];
+  v5 = [objc_msgSend(annotation "annotation")];
   if (v5)
   {
-    v6 = [objc_msgSend(a3 "annotation")];
+    v6 = [objc_msgSend(annotation "annotation")];
     LOBYTE(v5) = v6 >= [(THWPRep *)[(THWPHighlightController *)self parentRep] range];
   }
 
   return v5;
 }
 
-- (CGRect)p_marginNotePresentationRectForCachedAnnotation:(id)a3
+- (CGRect)p_marginNotePresentationRectForCachedAnnotation:(id)annotation
 {
-  v5 = [a3 highlight];
-  if (v5 && (v6 = v5, [objc_msgSend(v5 "lines")]))
+  highlight = [annotation highlight];
+  if (highlight && (v6 = highlight, [objc_msgSend(highlight "lines")]))
   {
     v7 = [objc_msgSend(v6 "lines")];
     if ([-[THWPRep columns](-[THWPHighlightController parentRep](self "parentRep")] == &dword_0 + 1)
@@ -2119,9 +2119,9 @@ LABEL_11:
 
   else
   {
-    v12 = [(THWPHighlightController *)self parentRep];
-    v13 = [objc_msgSend(a3 "annotation")];
-    [(THWPRep *)v12 popoverPresentationRectForRange:v13, v14];
+    parentRep = [(THWPHighlightController *)self parentRep];
+    v13 = [objc_msgSend(annotation "annotation")];
+    [(THWPRep *)parentRep popoverPresentationRectForRange:v13, v14];
   }
 
   result.size.height = v10;
@@ -2131,7 +2131,7 @@ LABEL_11:
   return result;
 }
 
-- (void)p_drawMarginNoteIfNeeded:(id)a3
+- (void)p_drawMarginNoteIfNeeded:(id)needed
 {
   if (![(THWPHighlightController *)self p_shouldDrawMarginNoteForCachedCachedAnnotation:?])
   {
@@ -2142,9 +2142,9 @@ LABEL_11:
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  [(THWPHighlightController *)self p_marginNotePresentationRectForCachedAnnotation:a3];
+  [(THWPHighlightController *)self p_marginNotePresentationRectForCachedAnnotation:needed];
   v13 = [-[THWPRep marginNotesOwner](-[THWPHighlightController parentRep](self "parentRep")];
-  [a3 setMarginNote:v13];
+  [needed setMarginNote:v13];
   objc_opt_class();
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   v14 = TSUDynamicCast();
@@ -2152,9 +2152,9 @@ LABEL_11:
   {
     if (([v14 inFlowMode] & 1) != 0 || objc_msgSend(objc_msgSend(v14, "documentRoot"), "isEPUB"))
     {
-      v15 = [v14 configuration];
+      configuration = [v14 configuration];
       [-[THWPRep canvas](-[THWPHighlightController parentRep](self "parentRep")];
-      [v15 noteEdgeInsetsAtScale:?];
+      [configuration noteEdgeInsetsAtScale:?];
       top = v16;
       left = v17;
       bottom = v18;
@@ -2164,9 +2164,9 @@ LABEL_11:
     if (v13)
     {
 LABEL_7:
-      v20 = [(THWPHighlightController *)self marginNotesController];
+      marginNotesController = [(THWPHighlightController *)self marginNotesController];
 
-      [(THMarginNotesController *)v20 addMarginNote:v13 edgeInsets:top, left, bottom, right];
+      [(THMarginNotesController *)marginNotesController addMarginNote:v13 edgeInsets:top, left, bottom, right];
     }
   }
 
@@ -2187,9 +2187,9 @@ LABEL_7:
     v24 = v23;
     bottom = v25;
     v27 = v26;
-    v28 = [v14 inFlowMode];
+    inFlowMode = [v14 inFlowMode];
     v29 = -0.0;
-    if (v28)
+    if (inFlowMode)
     {
       v30 = v24;
     }
@@ -2200,7 +2200,7 @@ LABEL_7:
     }
 
     left = v21 + v30;
-    if (v28)
+    if (inFlowMode)
     {
       v29 = v27;
     }
@@ -2213,16 +2213,16 @@ LABEL_7:
   }
 }
 
-- (void)p_updateMarginNoteForCachedAnnotation:(id)a3
+- (void)p_updateMarginNoteForCachedAnnotation:(id)annotation
 {
   [(THWPHighlightController *)self p_removeNoteForCachedAnnotation:?];
 
-  [(THWPHighlightController *)self p_drawMarginNoteIfNeeded:a3];
+  [(THWPHighlightController *)self p_drawMarginNoteIfNeeded:annotation];
 }
 
-- (void)p_updateMarginNoteForHighlight:(id)a3
+- (void)p_updateMarginNoteForHighlight:(id)highlight
 {
-  [a3 annotation];
+  [highlight annotation];
   v4 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:TSUProtocolCast()];
   if (v4)
   {
@@ -2231,20 +2231,20 @@ LABEL_7:
   }
 }
 
-- (id)annotationEditorForAnnotation:(id)a3
+- (id)annotationEditorForAnnotation:(id)annotation
 {
-  v5 = [objc_msgSend(a3 "annotationNote")] == 0;
+  v5 = [objc_msgSend(annotation "annotationNote")] == 0;
 
-  return [(THWPHighlightController *)self annotationEditorForAnnotation:a3 editsOnLaunch:v5];
+  return [(THWPHighlightController *)self annotationEditorForAnnotation:annotation editsOnLaunch:v5];
 }
 
-- (id)annotationEditorForAnnotation:(id)a3 editsOnLaunch:(BOOL)a4
+- (id)annotationEditorForAnnotation:(id)annotation editsOnLaunch:(BOOL)launch
 {
-  v4 = a4;
+  launchCopy = launch;
   objc_opt_class();
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   v7 = TSUDynamicCast();
-  v8 = [v7 annotationController];
+  annotationController = [v7 annotationController];
   if ([(THWPHighlightController *)self p_alwaysShowSheetNoteEditor])
   {
     v9 = AENoteFullscreenEditorController_ptr;
@@ -2260,25 +2260,25 @@ LABEL_7:
   }
 
   v10 = objc_alloc_init(*v9);
-  [v10 setAnnotation:a3];
-  if (v4)
+  [v10 setAnnotation:annotation];
+  if (launchCopy)
   {
-    v11 = [v8 canModifyAnnotations];
+    canModifyAnnotations = [annotationController canModifyAnnotations];
   }
 
   else
   {
-    v11 = 0;
+    canModifyAnnotations = 0;
   }
 
-  [v10 setEditsOnLaunch:v11];
+  [v10 setEditsOnLaunch:canModifyAnnotations];
   [v10 setDelegate:self];
   objc_opt_class();
   [v7 themeProvider];
-  v12 = [BUDynamicCast() themeIdentifier];
-  if (v12)
+  themeIdentifier = [BUDynamicCast() themeIdentifier];
+  if (themeIdentifier)
   {
-    v13 = v12;
+    v13 = themeIdentifier;
   }
 
   else
@@ -2287,21 +2287,21 @@ LABEL_7:
   }
 
   [v10 setTheme:{+[IMThemePage themeWithIdentifier:](IMThemePage, "themeWithIdentifier:", v13)}];
-  [v10 setAnnotationTheme:{+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", objc_msgSend(a3, "annotationStyle"), -[THWPHighlightController pageTheme](self, "pageTheme"), objc_msgSend(a3, "annotationIsUnderline"))}];
+  [v10 setAnnotationTheme:{+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", objc_msgSend(annotation, "annotationStyle"), -[THWPHighlightController pageTheme](self, "pageTheme"), objc_msgSend(annotation, "annotationIsUnderline"))}];
   objc_opt_class();
   [objc_msgSend(objc_msgSend(BUDynamicCast() "noteEditorViewController")];
 
   return v10;
 }
 
-- (void)showNoteEditorForAnnotation:(id)a3 editsOnLaunch:(BOOL)a4
+- (void)showNoteEditorForAnnotation:(id)annotation editsOnLaunch:(BOOL)launch
 {
-  v4 = a4;
+  launchCopy = launch;
   objc_opt_class();
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
   if (([TSUDynamicCast() showingExpandedWidgetView] & 1) == 0)
   {
-    v7 = [(THWPHighlightController *)self annotationEditorForAnnotation:a3 editsOnLaunch:v4];
+    v7 = [(THWPHighlightController *)self annotationEditorForAnnotation:annotation editsOnLaunch:launchCopy];
     [(THWPHighlightController *)self setNoteEditorController:v7];
     if ([(THWPHighlightController *)self p_isCompactWidth]|| [(THWPHighlightController *)self p_isCompactHeight]|| [(THWPHighlightController *)self p_alwaysShowSheetNoteEditor])
     {
@@ -2328,36 +2328,36 @@ LABEL_7:
         sub_29D044();
       }
 
-      v13 = [a3 annotationStorageRange];
+      annotationStorageRange = [annotation annotationStorageRange];
 
-      [(THWPHighlightController *)self p_showEditor:v11 forRange:v13, v12];
+      [(THWPHighlightController *)self p_showEditor:v11 forRange:annotationStorageRange, v12];
     }
   }
 }
 
-- (void)showNoteEditorForAnnotation:(id)a3
+- (void)showNoteEditorForAnnotation:(id)annotation
 {
-  v5 = [objc_msgSend(a3 "annotationNote")] == 0;
+  v5 = [objc_msgSend(annotation "annotationNote")] == 0;
 
-  [(THWPHighlightController *)self showNoteEditorForAnnotation:a3 editsOnLaunch:v5];
+  [(THWPHighlightController *)self showNoteEditorForAnnotation:annotation editsOnLaunch:v5];
 }
 
-- (void)showNoteEditorForMarginNote:(id)a3
+- (void)showNoteEditorForMarginNote:(id)note
 {
-  [a3 annotation];
+  [note annotation];
   v4 = TSUProtocolCast();
 
   [(THWPHighlightController *)self showNoteEditorForAnnotation:v4];
 }
 
-- (BOOL)ownsMarginNote:(id)a3
+- (BOOL)ownsMarginNote:(id)note
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMutableDictionary *)[(THWPHighlightController *)self annotationCache] allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)[(THWPHighlightController *)self annotationCache] allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2369,10 +2369,10 @@ LABEL_7:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v8) marginNote] == a3)
+        if ([*(*(&v10 + 1) + 8 * v8) marginNote] == note)
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -2382,7 +2382,7 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       v6 = v5;
       if (v5)
       {
@@ -2396,32 +2396,32 @@ LABEL_7:
   return v5;
 }
 
-- (void)editorController:(id)a3 editedAnnotation:(id)a4 toText:(id)a5
+- (void)editorController:(id)controller editedAnnotation:(id)annotation toText:(id)text
 {
   objc_opt_class();
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
-  v8 = [TSUDynamicCast() annotationController];
-  if ([a5 length])
+  annotationController = [TSUDynamicCast() annotationController];
+  if ([text length])
   {
-    v9 = a5;
+    textCopy = text;
   }
 
   else
   {
-    v9 = 0;
+    textCopy = 0;
   }
 
-  [v8 modifyAnnotation:a4 withNoteText:v9 undoContext:0];
+  [annotationController modifyAnnotation:annotation withNoteText:textCopy undoContext:0];
 }
 
-- (void)editorController:(id)a3 setTheme:(id)a4 forAnnotation:(id)a5
+- (void)editorController:(id)controller setTheme:(id)theme forAnnotation:(id)annotation
 {
-  if ([(THWPHighlightController *)self p_cachedAnnotationForAnnotation:a5])
+  if ([(THWPHighlightController *)self p_cachedAnnotationForAnnotation:annotation])
   {
-    if (a4)
+    if (theme)
     {
 LABEL_3:
-      v9 = [a4 annotationStyle];
+      annotationStyle = [theme annotationStyle];
       goto LABEL_6;
     }
   }
@@ -2429,37 +2429,37 @@ LABEL_3:
   else
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a4)
+    if (theme)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = 0;
+  annotationStyle = 0;
 LABEL_6:
-  if ([a4 isUnderline])
+  if ([theme isUnderline])
   {
     v10 = 6;
   }
 
   else
   {
-    v10 = v9;
+    v10 = annotationStyle;
   }
 
-  v11 = [(THWPHighlightController *)self annotationController];
-  v12 = [v11 modifyAnnotation:a5 withStyle:v10 undoContext:0];
+  annotationController = [(THWPHighlightController *)self annotationController];
+  v12 = [annotationController modifyAnnotation:annotation withStyle:v10 undoContext:0];
   if (v12)
   {
-    [a3 setAnnotation:v12];
+    [controller setAnnotation:v12];
   }
 
-  [v11 setCurrentAnnotationStyle:v10];
+  [annotationController setCurrentAnnotationStyle:v10];
 }
 
-- (void)editorController:(id)a3 deleteAnnotation:(id)a4
+- (void)editorController:(id)controller deleteAnnotation:(id)annotation
 {
-  v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:a4];
+  v5 = [(THWPHighlightController *)self p_cachedAnnotationForAnnotation:annotation];
   if (v5)
   {
     v6 = v5;
@@ -2468,16 +2468,16 @@ LABEL_6:
   }
 }
 
-- (void)editorController:(id)a3 showEditMenuForAnnotation:(id)a4
+- (void)editorController:(id)controller showEditMenuForAnnotation:(id)annotation
 {
-  v6 = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
+  interactiveCanvasController = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
   objc_opt_class();
-  [TSUDynamicCast() setITunesMobileContext:a4];
+  [TSUDynamicCast() setITunesMobileContext:annotation];
   objc_opt_class();
-  [v6 beginEditingRep:{-[THWPHighlightController parentRep](self, "parentRep")}];
+  [interactiveCanvasController beginEditingRep:{-[THWPHighlightController parentRep](self, "parentRep")}];
   v7 = TSUDynamicCast();
-  v8 = [a4 annotationStorageRange];
-  v10 = [TSWPSelection selectionWithRange:v8, v9];
+  annotationStorageRange = [annotation annotationStorageRange];
+  v10 = [TSWPSelection selectionWithRange:annotationStorageRange, v9];
 
   [v7 setSelection:v10];
 }
@@ -2500,20 +2500,20 @@ LABEL_6:
   return [v2 isCompactHeight];
 }
 
-- (BOOL)editorController:(id)a3 isRightArrowEnabledForAnnotation:(id)a4
+- (BOOL)editorController:(id)controller isRightArrowEnabledForAnnotation:(id)annotation
 {
-  v6 = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
+  interactiveCanvasController = [(THWPRep *)[(THWPHighlightController *)self parentRep] interactiveCanvasController];
   objc_opt_class();
   v7 = TSUDynamicCast();
-  [v7 setITunesMobileContext:a4];
+  [v7 setITunesMobileContext:annotation];
   objc_opt_class();
-  [v6 beginEditingRep:{-[THWPHighlightController parentRep](self, "parentRep")}];
+  [interactiveCanvasController beginEditingRep:{-[THWPHighlightController parentRep](self, "parentRep")}];
   v8 = TSUDynamicCast();
   if (v8)
   {
     v9 = v8;
-    v10 = [a4 annotationStorageRange];
-    v12 = [v9 willShowMenuForSelection:{+[TSWPSelection selectionWithRange:](TSWPSelection, "selectionWithRange:", v10, v11)}];
+    annotationStorageRange = [annotation annotationStorageRange];
+    v12 = [v9 willShowMenuForSelection:{+[TSWPSelection selectionWithRange:](TSWPSelection, "selectionWithRange:", annotationStorageRange, v11)}];
   }
 
   else
@@ -2525,28 +2525,28 @@ LABEL_6:
   return v12;
 }
 
-- (void)willHideAnnotationEditor:(id)a3
+- (void)willHideAnnotationEditor:(id)editor
 {
-  if (qword_5677F0 == a3)
+  if (qword_5677F0 == editor)
   {
     qword_5677F0 = 0;
   }
 
   [-[THWPRep interactiveCanvasController](-[THWPHighlightController parentRep](self "parentRep")];
-  v4 = [(THWPRep *)[(THWPHighlightController *)self parentRep] layout];
+  layout = [(THWPRep *)[(THWPHighlightController *)self parentRep] layout];
 
-  [v4 validate];
+  [layout validate];
 }
 
-- (void)didHideAnnotationEditor:(id)a3
+- (void)didHideAnnotationEditor:(id)editor
 {
-  if ([(THWPHighlightController *)self noteEditorController]== a3)
+  if ([(THWPHighlightController *)self noteEditorController]== editor)
   {
     [(AEAnnotationEditor *)[(THWPHighlightController *)self noteEditorController] setDelegate:0];
     [(THWPHighlightController *)self setNoteEditorController:0];
   }
 
-  else if ([(THWPHighlightController *)self highlightColorEditorController]== a3)
+  else if ([(THWPHighlightController *)self highlightColorEditorController]== editor)
   {
     [(AEHighlightColorEditorController *)[(THWPHighlightController *)self highlightColorEditorController] removeFromParentViewController];
     [-[AEHighlightColorEditorController view](-[THWPHighlightController highlightColorEditorController](self "highlightColorEditorController")];

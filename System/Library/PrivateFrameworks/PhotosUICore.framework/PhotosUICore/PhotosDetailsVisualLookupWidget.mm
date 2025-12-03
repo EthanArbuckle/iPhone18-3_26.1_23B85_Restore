@@ -3,9 +3,9 @@
 - (PXPhotosDetailsContext)context;
 - (PXWidgetInteractionDelegate)widgetInteractionDelegate;
 - (_TtC12PhotosUICore31PhotosDetailsVisualLookupWidget)init;
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3;
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width;
 - (int64_t)contentLayoutStyle;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation PhotosDetailsVisualLookupWidget
@@ -20,17 +20,17 @@
 
 - (PXPhotosDetailsContext)context
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4110EF8();
 
   return v3;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A429A2B8(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1A429A2B8(contextCopy);
 }
 
 - (NSString)snappableWidgetIdentifier
@@ -42,15 +42,15 @@
 
 - (int64_t)contentLayoutStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A429AA64();
 
   return v3;
 }
 
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1A429AFF8();
 
   return v4;

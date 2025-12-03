@@ -1,12 +1,12 @@
 @interface SBUIAccessorySceneManager
 + (id)sharedInstance;
 - (id)_init;
-- (id)registerAccessoryScene:(id)a3;
-- (id)registerPrimaryScene:(id)a3;
-- (void)_configureInitialSettingsForContinuityScene:(id)a3;
-- (void)_primarySceneDidUpdateSettings:(id)a3 transitionContext:(id)a4;
-- (void)_updateAccessoryScene:(id)a3 followingPrimaryScene:(id)a4 transitionContext:(id)a5;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (id)registerAccessoryScene:(id)scene;
+- (id)registerPrimaryScene:(id)scene;
+- (void)_configureInitialSettingsForContinuityScene:(id)scene;
+- (void)_primarySceneDidUpdateSettings:(id)settings transitionContext:(id)context;
+- (void)_updateAccessoryScene:(id)scene followingPrimaryScene:(id)primaryScene transitionContext:(id)context;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation SBUIAccessorySceneManager
@@ -53,41 +53,41 @@ uint64_t __43__SBUIAccessorySceneManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)registerAccessoryScene:(id)a3
+- (id)registerAccessoryScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = objc_alloc(MEMORY[0x1E698E778]);
-  v6 = [v4 identityToken];
-  v7 = [v6 stringRepresentation];
+  identityToken = [sceneCopy identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __52__SBUIAccessorySceneManager_registerAccessoryScene___block_invoke;
   v21[3] = &unk_1E789EAE0;
   v21[4] = self;
-  v8 = v4;
+  v8 = sceneCopy;
   v22 = v8;
-  v9 = [v5 initWithIdentifier:v7 forReason:@"accessory scene registration" invalidationBlock:v21];
+  v9 = [v5 initWithIdentifier:stringRepresentation forReason:@"accessory scene registration" invalidationBlock:v21];
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [v8 settings];
-  v11 = [v10 displayIdentity];
+  settings = [v8 settings];
+  displayIdentity = [settings displayIdentity];
 
   lock_primaryScenes = self->_lock_primaryScenes;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __52__SBUIAccessorySceneManager_registerAccessoryScene___block_invoke_2;
   v19[3] = &unk_1E789EB08;
-  v13 = v11;
+  v13 = displayIdentity;
   v20 = v13;
   v14 = [(NSMutableArray *)lock_primaryScenes bs_firstObjectPassingTest:v19];
   [(NSMutableArray *)self->_lock_accessoryScenes addObject:v8];
   os_unfair_lock_unlock(&self->_lock);
-  v15 = [v8 settings];
-  v16 = [v15 displayIdentity];
-  v17 = [v16 isContinuityDisplay];
+  settings2 = [v8 settings];
+  displayIdentity2 = [settings2 displayIdentity];
+  isContinuityDisplay = [displayIdentity2 isContinuityDisplay];
 
-  if (v17)
+  if (isContinuityDisplay)
   {
     [(SBUIAccessorySceneManager *)self _configureInitialSettingsForContinuityScene:v8];
   }
@@ -119,31 +119,31 @@ uint64_t __52__SBUIAccessorySceneManager_registerAccessoryScene___block_invoke_2
   return v5;
 }
 
-- (id)registerPrimaryScene:(id)a3
+- (id)registerPrimaryScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = objc_alloc(MEMORY[0x1E698E778]);
-  v6 = [v4 identityToken];
-  v7 = [v6 stringRepresentation];
+  identityToken = [sceneCopy identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __50__SBUIAccessorySceneManager_registerPrimaryScene___block_invoke;
   v17 = &unk_1E789EAE0;
-  v18 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = sceneCopy;
   v19 = v8;
-  v9 = [v5 initWithIdentifier:v7 forReason:@"primary scene registration" invalidationBlock:&v14];
+  v9 = [v5 initWithIdentifier:stringRepresentation forReason:@"primary scene registration" invalidationBlock:&v14];
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_lock_primaryScenes addObject:v8, v14, v15, v16, v17, v18];
+  [(NSMutableArray *)self->_lock_primaryScenes addObject:v8, v14, v15, v16, v17, selfCopy];
   os_unfair_lock_unlock(&self->_lock);
   [v8 addObserver:self];
-  v10 = [v8 settings];
-  v11 = [v10 displayIdentity];
-  v12 = [v11 isContinuityDisplay];
+  settings = [v8 settings];
+  displayIdentity = [settings displayIdentity];
+  isContinuityDisplay = [displayIdentity isContinuityDisplay];
 
-  if (v12)
+  if (isContinuityDisplay)
   {
     [(SBUIAccessorySceneManager *)self _configureInitialSettingsForContinuityScene:v8];
   }
@@ -164,25 +164,25 @@ uint64_t __50__SBUIAccessorySceneManager_registerPrimaryScene___block_invoke(uin
   return [v2 removeObserver:v3];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = [a4 transitionContext];
-  [(SBUIAccessorySceneManager *)self _primarySceneDidUpdateSettings:v6 transitionContext:v7];
+  sceneCopy = scene;
+  transitionContext = [settings transitionContext];
+  [(SBUIAccessorySceneManager *)self _primarySceneDidUpdateSettings:sceneCopy transitionContext:transitionContext];
 }
 
-- (void)_primarySceneDidUpdateSettings:(id)a3 transitionContext:(id)a4
+- (void)_primarySceneDidUpdateSettings:(id)settings transitionContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v21 = a4;
+  settingsCopy = settings;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   v7 = [(NSMutableArray *)self->_lock_accessoryScenes copy];
-  v8 = self;
+  selfCopy = self;
   os_unfair_lock_unlock(&self->_lock);
-  v20 = v6;
-  v9 = [v6 settings];
-  v10 = [v9 displayIdentity];
+  v20 = settingsCopy;
+  settings = [settingsCopy settings];
+  displayIdentity = [settings displayIdentity];
 
   v24 = 0u;
   v25 = 0u;
@@ -204,13 +204,13 @@ uint64_t __50__SBUIAccessorySceneManager_registerPrimaryScene___block_invoke(uin
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [v16 settings];
-        v18 = [v17 displayIdentity];
-        v19 = [v10 isEqual:v18];
+        settings2 = [v16 settings];
+        displayIdentity2 = [settings2 displayIdentity];
+        v19 = [displayIdentity isEqual:displayIdentity2];
 
         if (v19)
         {
-          [(SBUIAccessorySceneManager *)v8 _updateAccessoryScene:v16 followingPrimaryScene:v20 transitionContext:v21];
+          [(SBUIAccessorySceneManager *)selfCopy _updateAccessoryScene:v16 followingPrimaryScene:v20 transitionContext:contextCopy];
         }
       }
 
@@ -221,15 +221,15 @@ uint64_t __50__SBUIAccessorySceneManager_registerPrimaryScene___block_invoke(uin
   }
 }
 
-- (void)_configureInitialSettingsForContinuityScene:(id)a3
+- (void)_configureInitialSettingsForContinuityScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __73__SBUIAccessorySceneManager__configureInitialSettingsForContinuityScene___block_invoke;
   v5[3] = &unk_1E789EB30;
-  v6 = v3;
-  v4 = v3;
+  v6 = sceneCopy;
+  v4 = sceneCopy;
   [v4 updateSettings:v5];
 }
 
@@ -252,47 +252,47 @@ void __73__SBUIAccessorySceneManager__configureInitialSettingsForContinuityScene
   [v6 setSystemShellHostingSpaceIdentifier:v7];
 }
 
-- (void)_updateAccessoryScene:(id)a3 followingPrimaryScene:(id)a4 transitionContext:(id)a5
+- (void)_updateAccessoryScene:(id)scene followingPrimaryScene:(id)primaryScene transitionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v32 = a5;
-  v9 = [v8 uiSettings];
-  v10 = [v9 userInterfaceStyle];
+  sceneCopy = scene;
+  primarySceneCopy = primaryScene;
+  contextCopy = context;
+  uiSettings = [primarySceneCopy uiSettings];
+  userInterfaceStyle = [uiSettings userInterfaceStyle];
 
-  v11 = [v8 uiSettings];
-  v12 = [v11 cornerRadiusConfiguration];
+  uiSettings2 = [primarySceneCopy uiSettings];
+  cornerRadiusConfiguration = [uiSettings2 cornerRadiusConfiguration];
 
-  v13 = [v8 renderingEnvironment];
-  v14 = [v13 systemDisplayIdentifier];
+  renderingEnvironment = [primarySceneCopy renderingEnvironment];
+  systemDisplayIdentifier = [renderingEnvironment systemDisplayIdentifier];
 
-  v15 = [v8 systemShellHostingEnvironment];
-  v16 = [v15 systemShellHostingSpaceIdentifier];
+  systemShellHostingEnvironment = [primarySceneCopy systemShellHostingEnvironment];
+  systemShellHostingSpaceIdentifier = [systemShellHostingEnvironment systemShellHostingSpaceIdentifier];
 
-  v17 = [v8 renderingEnvironment];
-  LOBYTE(v15) = [v17 isCapturingContentForAdditionalRenderingDestination];
+  renderingEnvironment2 = [primarySceneCopy renderingEnvironment];
+  LOBYTE(systemShellHostingEnvironment) = [renderingEnvironment2 isCapturingContentForAdditionalRenderingDestination];
 
-  v18 = [v8 settings];
-  v19 = [v18 displayConfiguration];
-  v20 = [v19 hardwareIdentifier];
+  settings = [primarySceneCopy settings];
+  displayConfiguration = [settings displayConfiguration];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __91__SBUIAccessorySceneManager__updateAccessoryScene_followingPrimaryScene_transitionContext___block_invoke;
   v38[3] = &unk_1E789EB58;
-  v45 = v10;
-  v21 = v12;
+  v45 = userInterfaceStyle;
+  v21 = cornerRadiusConfiguration;
   v39 = v21;
-  v22 = v7;
+  v22 = sceneCopy;
   v40 = v22;
-  v23 = v14;
+  v23 = systemDisplayIdentifier;
   v41 = v23;
-  v24 = v16;
+  v24 = systemShellHostingSpaceIdentifier;
   v42 = v24;
-  v25 = v8;
+  v25 = primarySceneCopy;
   v43 = v25;
-  v46 = v15;
-  v26 = v20;
+  v46 = systemShellHostingEnvironment;
+  v26 = hardwareIdentifier;
   v44 = v26;
   v27 = MEMORY[0x1AC58E960](v38);
   if ([v22 isActive])
@@ -303,8 +303,8 @@ void __73__SBUIAccessorySceneManager__configureInitialSettingsForContinuityScene
     v35[3] = &unk_1E789EB80;
     v28 = &v37;
     v37 = v27;
-    v29 = v32;
-    v36 = v32;
+    v29 = contextCopy;
+    v36 = contextCopy;
     v30 = v27;
     [v22 performUpdate:v35];
   }
@@ -319,7 +319,7 @@ void __73__SBUIAccessorySceneManager__configureInitialSettingsForContinuityScene
     v34 = v27;
     v31 = v27;
     [v22 updateSettings:v33];
-    v29 = v32;
+    v29 = contextCopy;
   }
 }
 

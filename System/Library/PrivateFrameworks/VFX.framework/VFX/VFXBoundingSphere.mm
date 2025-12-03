@@ -1,6 +1,6 @@
 @interface VFXBoundingSphere
 - (id)centerValue;
-- (void)setCenterValue:(id)a3;
+- (void)setCenterValue:(id)value;
 @end
 
 @implementation VFXBoundingSphere
@@ -22,15 +22,15 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setCenterValue:(id)a3
+- (void)setCenterValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v28 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v27 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
 
   objc_msgSend_setCenter_(self, v24, v25, v26, COERCE_DOUBLE(__PAIR64__(v27, v28)));

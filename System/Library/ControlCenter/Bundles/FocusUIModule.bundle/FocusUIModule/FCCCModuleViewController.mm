@@ -3,75 +3,75 @@
 - (FCCCModuleViewControllerDelegate)delegate;
 - (NSArray)requiredVisualStyleCategories;
 - (id)_effectiveTitle;
-- (id)_imageForActivity:(id)a3;
-- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)a3;
+- (id)_imageForActivity:(id)activity;
+- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)appearance;
 - (void)_configureInitialUseViewIfNecessary;
 - (void)_configureRoundButtonIfNecessary;
 - (void)_configureTemplateViewIfNecessary;
 - (void)_invalidateInitialUseView;
 - (void)_invalidateRoundButton;
-- (void)_setRequestingInitialUseView:(BOOL)a3;
-- (void)_updateTitle:(id)a3 on:(BOOL)a4 animated:(BOOL)a5;
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingProvider:(id)a5;
-- (void)addButtonAction:(id)a3;
-- (void)removeButtonAction:(id)a3;
-- (void)setActiveActivity:(id)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContinuousCornerRadius:(double)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3 withTransitionCoordinator:(id)a4;
-- (void)setGridSizeClass:(int64_t)a3;
-- (void)setResizing:(BOOL)a3;
-- (void)setSuggestedActivity:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)_setRequestingInitialUseView:(BOOL)view;
+- (void)_updateTitle:(id)title on:(BOOL)on animated:(BOOL)animated;
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingProvider:(id)outgoingProvider;
+- (void)addButtonAction:(id)action;
+- (void)removeButtonAction:(id)action;
+- (void)setActiveActivity:(id)activity;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContinuousCornerRadius:(double)radius;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setExpanded:(BOOL)expanded withTransitionCoordinator:(id)coordinator;
+- (void)setGridSizeClass:(int64_t)class;
+- (void)setResizing:(BOOL)resizing;
+- (void)setSuggestedActivity:(id)activity;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation FCCCModuleViewController
 
-- (void)setSuggestedActivity:(id)a3
+- (void)setSuggestedActivity:(id)activity
 {
-  v6 = a3;
+  activityCopy = activity;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_suggestedActivity, a3);
+    objc_storeStrong(&self->_suggestedActivity, activity);
     if (!self->_activeActivity)
     {
       [(FCCCModuleViewController *)self _invalidateRoundButton];
-      v5 = [(FCCCModuleViewController *)self viewIfLoaded];
-      [v5 setNeedsLayout];
+      viewIfLoaded = [(FCCCModuleViewController *)self viewIfLoaded];
+      [viewIfLoaded setNeedsLayout];
     }
   }
 }
 
-- (void)setActiveActivity:(id)a3
+- (void)setActiveActivity:(id)activity
 {
-  v7 = a3;
+  activityCopy = activity;
   if ((BSEqualObjects() & 1) == 0)
   {
     v5 = self->_activeActivity;
-    objc_storeStrong(&self->_activeActivity, a3);
+    objc_storeStrong(&self->_activeActivity, activity);
     if ((v5 || (BSEqualObjects() & 1) == 0) && (self->_activeActivity || (BSEqualObjects() & 1) == 0))
     {
       [(FCCCModuleViewController *)self _invalidateRoundButton];
     }
 
-    v6 = [(FCCCModuleViewController *)self viewIfLoaded];
-    [v6 setNeedsLayout];
+    viewIfLoaded = [(FCCCModuleViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v7 = a3;
+  metricsCopy = metrics;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contentMetrics, a3);
-    [(CCUIControlTemplateView *)self->_templateView setContentMetrics:v7];
+    objc_storeStrong(&self->_contentMetrics, metrics);
+    [(CCUIControlTemplateView *)self->_templateView setContentMetrics:metricsCopy];
     roundButton = self->_roundButton;
-    if (v7)
+    if (metricsCopy)
     {
-      [v7 symbolScaleFactor];
+      [metricsCopy symbolScaleFactor];
     }
 
     else
@@ -83,55 +83,55 @@
   }
 }
 
-- (void)setResizing:(BOOL)a3
+- (void)setResizing:(BOOL)resizing
 {
-  if (self->_resizing != a3)
+  if (self->_resizing != resizing)
   {
-    self->_resizing = a3;
+    self->_resizing = resizing;
     [(CCUIControlTemplateView *)self->_templateView setResizing:?];
   }
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
-  if (self->_gridSizeClass != a3)
+  if (self->_gridSizeClass != class)
   {
-    self->_gridSizeClass = a3;
+    self->_gridSizeClass = class;
     [(CCUIControlTemplateView *)self->_templateView setGridSizeClass:?];
   }
 }
 
-- (void)setContinuousCornerRadius:(double)a3
+- (void)setContinuousCornerRadius:(double)radius
 {
-  if (self->_continuousCornerRadius != a3)
+  if (self->_continuousCornerRadius != radius)
   {
-    self->_continuousCornerRadius = a3;
+    self->_continuousCornerRadius = radius;
     [(CCUIControlTemplateView *)self->_templateView setContinuousCornerRadius:?];
   }
 }
 
-- (void)addButtonAction:(id)a3
+- (void)addButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   buttonActions = self->_buttonActions;
-  v8 = v4;
+  v8 = actionCopy;
   if (!buttonActions)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_buttonActions;
     self->_buttonActions = v6;
 
-    v4 = v8;
+    actionCopy = v8;
     buttonActions = self->_buttonActions;
   }
 
-  [(NSMutableArray *)buttonActions addObject:v4];
+  [(NSMutableArray *)buttonActions addObject:actionCopy];
   [(CCUIRoundButton *)self->_roundButton addAction:v8 forControlEvents:64];
 }
 
-- (void)removeButtonAction:(id)a3
+- (void)removeButtonAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   [(NSMutableArray *)self->_buttonActions removeObject:?];
   if (![(NSMutableArray *)self->_buttonActions count])
   {
@@ -139,7 +139,7 @@
     self->_buttonActions = 0;
   }
 
-  [(CCUIRoundButton *)self->_roundButton removeAction:v5 forControlEvents:64];
+  [(CCUIRoundButton *)self->_roundButton removeAction:actionCopy forControlEvents:64];
 }
 
 - (void)viewWillLayoutSubviews
@@ -150,8 +150,8 @@
   [(FCCCModuleViewController *)self _configureTemplateViewIfNecessary];
   if (![(FCCCModuleViewController *)self isExpanded])
   {
-    v3 = [(FCCCModuleViewController *)self view];
-    [v3 bounds];
+    view = [(FCCCModuleViewController *)self view];
+    [view bounds];
     self->_compactBounds.origin.x = v4;
     self->_compactBounds.origin.y = v5;
     self->_compactBounds.size.width = v6;
@@ -225,35 +225,35 @@
   }
 
   v17 = roundButton != 0;
-  v18 = [(FCCCModuleViewController *)self _effectiveTitle];
-  [(FCCCModuleViewController *)self _updateTitle:v18 on:self->_activeActivity != 0 animated:v17];
+  _effectiveTitle = [(FCCCModuleViewController *)self _effectiveTitle];
+  [(FCCCModuleViewController *)self _updateTitle:_effectiveTitle on:self->_activeActivity != 0 animated:v17];
 }
 
 - (NSArray)requiredVisualStyleCategories
 {
   v3 = [NSMutableSet setWithObject:&off_C880];
-  v4 = [(CCUIRoundButton *)self->_roundButton requiredVisualStyleCategories];
-  [v3 addObjectsFromArray:v4];
+  requiredVisualStyleCategories = [(CCUIRoundButton *)self->_roundButton requiredVisualStyleCategories];
+  [v3 addObjectsFromArray:requiredVisualStyleCategories];
 
-  v5 = [(CCUIControlTemplateView *)self->_templateView requiredVisualStyleCategories];
-  [v3 addObjectsFromArray:v5];
+  requiredVisualStyleCategories2 = [(CCUIControlTemplateView *)self->_templateView requiredVisualStyleCategories];
+  [v3 addObjectsFromArray:requiredVisualStyleCategories2];
 
-  v6 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v16 = a3;
-  v6 = [(FCCCModuleViewController *)self requiredVisualStyleCategories];
-  v7 = [NSNumber numberWithInteger:a4];
-  v8 = [v6 containsObject:v7];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(FCCCModuleViewController *)self requiredVisualStyleCategories];
+  v7 = [NSNumber numberWithInteger:category];
+  v8 = [requiredVisualStyleCategories containsObject:v7];
 
   if (v8)
   {
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
-    v10 = [NSNumber numberWithInteger:a4];
+    v10 = [NSNumber numberWithInteger:category];
     v11 = [(NSMutableDictionary *)categoriesToVisualStylingProviders objectForKey:v10];
 
     v12 = self->_categoriesToVisualStylingProviders;
@@ -266,17 +266,17 @@
       v12 = self->_categoriesToVisualStylingProviders;
     }
 
-    v15 = [NSNumber numberWithInteger:a4];
-    [(NSMutableDictionary *)v12 setObject:v16 forKey:v15];
+    v15 = [NSNumber numberWithInteger:category];
+    [(NSMutableDictionary *)v12 setObject:providerCopy forKey:v15];
 
-    [(FCCCModuleViewController *)self _visualStylingProvider:v16 didChangeForCategory:a4 outgoingProvider:v11];
+    [(FCCCModuleViewController *)self _visualStylingProvider:providerCopy didChangeForCategory:category outgoingProvider:v11];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
   v3 = 2;
-  if (!a3)
+  if (!expanded)
   {
     v3 = 0;
   }
@@ -284,12 +284,12 @@
   self->_expansionState = v3;
 }
 
-- (void)setExpanded:(BOOL)a3 withTransitionCoordinator:(id)a4
+- (void)setExpanded:(BOOL)expanded withTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v6 = a4;
+  expandedCopy = expanded;
+  coordinatorCopy = coordinator;
   v7 = 3;
-  if (v4)
+  if (expandedCopy)
   {
     v7 = 1;
   }
@@ -301,8 +301,8 @@
   v8[2] = sub_4A10;
   v8[3] = &unk_C578;
   objc_copyWeak(&v9, &location);
-  v10 = v4;
-  [v6 animateAlongsideTransition:0 completion:v8];
+  v10 = expandedCopy;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -315,8 +315,8 @@
     roundButton = self->_roundButton;
     self->_roundButton = 0;
 
-    v4 = [(FCCCModuleViewController *)self viewIfLoaded];
-    [v4 setNeedsLayout];
+    viewIfLoaded = [(FCCCModuleViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
@@ -333,7 +333,7 @@
       v6[1] = 3221225472;
       v6[2] = sub_4BD0;
       v7 = v6[3] = &unk_C3E8;
-      v8 = self;
+      selfCopy = self;
       v5 = v7;
       [UIView performWithoutAnimation:v6];
     }
@@ -441,8 +441,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v23 = [(CCUIRoundButton *)self->_roundButton requiredVisualStyleCategories];
-    v24 = [v23 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    requiredVisualStyleCategories = [(CCUIRoundButton *)self->_roundButton requiredVisualStyleCategories];
+    v24 = [requiredVisualStyleCategories countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v24)
     {
       v25 = v24;
@@ -453,7 +453,7 @@
         {
           if (*v35 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
           v28 = *(*(&v34 + 1) + 8 * j);
@@ -462,7 +462,7 @@
           -[CCUIRoundButton setVisualStylingProvider:forCategory:](v29, "setVisualStylingProvider:forCategory:", v30, [v28 integerValue]);
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v25 = [requiredVisualStyleCategories countByEnumeratingWithState:&v34 objects:v42 count:16];
       }
 
       while (v25);
@@ -474,19 +474,19 @@
 
 - (BOOL)_isRequestingInitialUseView
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isRequestingInitialUseView = v2->_isRequestingInitialUseView;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRequestingInitialUseView = selfCopy->_isRequestingInitialUseView;
+  objc_sync_exit(selfCopy);
 
   return isRequestingInitialUseView;
 }
 
-- (void)_setRequestingInitialUseView:(BOOL)a3
+- (void)_setRequestingInitialUseView:(BOOL)view
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_isRequestingInitialUseView = a3;
+  obj->_isRequestingInitialUseView = view;
   objc_sync_exit(obj);
 }
 
@@ -519,15 +519,15 @@
   }
 }
 
-- (void)_updateTitle:(id)a3 on:(BOOL)a4 animated:(BOOL)a5
+- (void)_updateTitle:(id)title on:(BOOL)on animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a3;
+  animatedCopy = animated;
+  titleCopy = title;
   if ([(FCCCModuleViewController *)self isViewLoaded])
   {
-    if (v5)
+    if (animatedCopy)
     {
-      v5 = self->_expansionState == 0;
+      animatedCopy = self->_expansionState == 0;
     }
 
     templateView = self->_templateView;
@@ -535,8 +535,8 @@
     v9[1] = 3221225472;
     v9[2] = sub_5690;
     v9[3] = &unk_C5C8;
-    v10 = v7;
-    [(CCUIControlTemplateView *)templateView updateProperties:v9 animated:v5];
+    v10 = titleCopy;
+    [(CCUIControlTemplateView *)templateView updateProperties:v9 animated:animatedCopy];
   }
 }
 
@@ -544,52 +544,52 @@
 {
   if (self->_activeActivity)
   {
-    v2 = [(FCActivityDescribing *)self->_activeActivity activityDisplayName];
+    activityDisplayName = [(FCActivityDescribing *)self->_activeActivity activityDisplayName];
   }
 
   else
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v2 = [v3 localizedStringForKey:@"MODULE_DEFAULT_TITLE" value:&stru_C7C8 table:0];
+    activityDisplayName = [v3 localizedStringForKey:@"MODULE_DEFAULT_TITLE" value:&stru_C7C8 table:0];
   }
 
-  return v2;
+  return activityDisplayName;
 }
 
-- (id)_imageForActivity:(id)a3
+- (id)_imageForActivity:(id)activity
 {
-  v3 = [a3 activitySymbolImageName];
+  activitySymbolImageName = [activity activitySymbolImageName];
   v4 = [UIImageSymbolConfiguration configurationWithPointSize:20.0];
-  v5 = [UIImage _systemImageNamed:v3 withConfiguration:v4];
+  v5 = [UIImage _systemImageNamed:activitySymbolImageName withConfiguration:v4];
 
   return v5;
 }
 
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingProvider:(id)outgoingProvider
 {
-  v13 = a3;
-  v7 = [(CCUIRoundButton *)self->_roundButton requiredVisualStyleCategories];
-  v8 = [NSNumber numberWithInteger:a4];
-  v9 = [v7 containsObject:v8];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(CCUIRoundButton *)self->_roundButton requiredVisualStyleCategories];
+  v8 = [NSNumber numberWithInteger:category];
+  v9 = [requiredVisualStyleCategories containsObject:v8];
 
   if (v9)
   {
-    [(CCUIRoundButton *)self->_roundButton setVisualStylingProvider:v13 forCategory:a4];
+    [(CCUIRoundButton *)self->_roundButton setVisualStylingProvider:providerCopy forCategory:category];
   }
 
-  v10 = [(CCUIControlTemplateView *)self->_templateView requiredVisualStyleCategories];
-  v11 = [NSNumber numberWithInteger:a4];
-  v12 = [v10 containsObject:v11];
+  requiredVisualStyleCategories2 = [(CCUIControlTemplateView *)self->_templateView requiredVisualStyleCategories];
+  v11 = [NSNumber numberWithInteger:category];
+  v12 = [requiredVisualStyleCategories2 containsObject:v11];
 
   if (v12)
   {
-    [(CCUIControlTemplateView *)self->_templateView setVisualStylingProvider:v13 forCategory:a4];
+    [(CCUIControlTemplateView *)self->_templateView setVisualStylingProvider:providerCopy forCategory:category];
   }
 }
 
-- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)a3
+- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)appearance
 {
-  if (a3)
+  if (appearance)
   {
     return 1;
   }

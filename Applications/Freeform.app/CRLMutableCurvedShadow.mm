@@ -1,46 +1,46 @@
 @interface CRLMutableCurvedShadow
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAngle:(double)a3;
-- (void)setColor:(id)a3;
-- (void)setOffset:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setRadius:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAngle:(double)angle;
+- (void)setColor:(id)color;
+- (void)setOffset:(double)offset;
+- (void)setOpacity:(double)opacity;
+- (void)setRadius:(double)radius;
 @end
 
 @implementation CRLMutableCurvedShadow
 
-- (void)setAngle:(double)a3
+- (void)setAngle:(double)angle
 {
-  sub_1001208E0(a3);
+  sub_1001208E0(angle);
 
   [(CRLShadow *)self i_setAngle:?];
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
-  [(CRLCurvedShadow *)self clampOffset:a3];
+  [(CRLCurvedShadow *)self clampOffset:offset];
 
   [(CRLShadow *)self i_setOffset:?];
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  [(CRLShadow *)self clampRadius:a3];
+  [(CRLShadow *)self clampRadius:radius];
 
   [(CRLShadow *)self i_setRadius:?];
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
-  [(CRLShadow *)self clampOpacity:a3];
+  [(CRLShadow *)self clampOpacity:opacity];
 
   [(CRLShadow *)self i_setOpacity:?];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -69,12 +69,12 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:34 isFatal:0 description:"invalid nil value for '%{public}s'", "color"];
   }
 
-  [(CRLShadow *)self i_setColor:v4];
+  [(CRLShadow *)self i_setColor:colorCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRLCurvedShadow allocWithZone:a3];
+  v4 = [CRLCurvedShadow allocWithZone:zone];
   [(CRLShadow *)self offset];
   v6 = v5;
   [(CRLShadow *)self angle];
@@ -85,8 +85,8 @@
   v12 = v11;
   [(CRLShadow *)self opacity];
   v14 = v13;
-  v15 = [(CRLShadow *)self color];
-  v16 = [(CRLCurvedShadow *)v4 initWithOffset:v15 angle:[(CRLShadow *)self isEnabled] radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
+  color = [(CRLShadow *)self color];
+  v16 = [(CRLCurvedShadow *)v4 initWithOffset:color angle:[(CRLShadow *)self isEnabled] radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
 
   return v16;
 }

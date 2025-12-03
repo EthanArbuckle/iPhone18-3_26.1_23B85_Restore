@@ -1,12 +1,12 @@
 @interface AllRefinementsOpenAtCell
 + (NSString)reuseIdentifier;
 - (id)dateSelectionHandler;
-- (void)datePickedValueChanged:(id)a3;
-- (void)datePickerTapped:(id)a3;
-- (void)setDateSelectionHandler:(id)a3;
-- (void)shouldEnableControl:(BOOL)a3;
+- (void)datePickedValueChanged:(id)changed;
+- (void)datePickerTapped:(id)tapped;
+- (void)setDateSelectionHandler:(id)handler;
+- (void)shouldEnableControl:(BOOL)control;
 - (void)updateForSizeClassChange;
-- (void)updatedContentsWithTime:(double)a3 displayName:(id)a4 openAtSelected:(BOOL)a5;
+- (void)updatedContentsWithTime:(double)time displayName:(id)name openAtSelected:(BOOL)selected;
 @end
 
 @implementation AllRefinementsOpenAtCell
@@ -43,9 +43,9 @@
   return v3;
 }
 
-- (void)setDateSelectionHandler:(id)a3
+- (void)setDateSelectionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -63,42 +63,42 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps24AllRefinementsOpenAtCell_dateSelectionHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
-- (void)updatedContentsWithTime:(double)a3 displayName:(id)a4 openAtSelected:(BOOL)a5
+- (void)updatedContentsWithTime:(double)time displayName:(id)name openAtSelected:(BOOL)selected
 {
-  v5 = a5;
+  selectedCopy = selected;
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
-  sub_1005444B4(a3, v8, v10, v5);
+  selfCopy = self;
+  sub_1005444B4(time, v8, v10, selectedCopy);
 }
 
-- (void)datePickedValueChanged:(id)a3
+- (void)datePickedValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_100544820(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_100544820(changedCopy);
 }
 
-- (void)datePickerTapped:(id)a3
+- (void)datePickerTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_100544890(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_100544890(tappedCopy);
 }
 
-- (void)shouldEnableControl:(BOOL)a3
+- (void)shouldEnableControl:(BOOL)control
 {
-  v3 = a3;
-  v6 = self;
+  controlCopy = control;
+  selfCopy = self;
   v4 = sub_1005436D4();
-  [v4 setEnabled:v3];
+  [v4 setEnabled:controlCopy];
 
   v5 = sub_100543770();
-  [v5 setUserInteractionEnabled:v3];
+  [v5 setUserInteractionEnabled:controlCopy];
 }
 
 - (void)updateForSizeClassChange
@@ -111,7 +111,7 @@
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = self;
+  selfCopy = self;
   static UIListContentConfiguration.cell()();
   v12 = sub_1005436D4();
   UIListContentConfiguration.textProperties.getter();

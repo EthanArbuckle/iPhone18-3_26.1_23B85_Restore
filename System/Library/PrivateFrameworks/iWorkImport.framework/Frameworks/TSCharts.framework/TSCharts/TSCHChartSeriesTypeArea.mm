@@ -3,7 +3,7 @@
 - (id)elementBuilder;
 - (id)g_genericToSpecificPropertyMapArea;
 - (id)userInterfaceName;
-- (unsigned)filterChartLabelPosition:(unsigned int)a3;
+- (unsigned)filterChartLabelPosition:(unsigned int)position;
 @end
 
 @implementation TSCHChartSeriesTypeArea
@@ -28,12 +28,12 @@
   return v2;
 }
 
-- (unsigned)filterChartLabelPosition:(unsigned int)a3
+- (unsigned)filterChartLabelPosition:(unsigned int)position
 {
-  v3 = a3 & 0xFFFFFFBC;
-  if ((~a3 & 0xC) == 0)
+  v3 = position & 0xFFFFFFBC;
+  if ((~position & 0xC) == 0)
   {
-    v3 = a3 & 0xFFFFFFB4;
+    v3 = position & 0xFFFFFFB4;
   }
 
   if ((~v3 & 0x30) != 0)

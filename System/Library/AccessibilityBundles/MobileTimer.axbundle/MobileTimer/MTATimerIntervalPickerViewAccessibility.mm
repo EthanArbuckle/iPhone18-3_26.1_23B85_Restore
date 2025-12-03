@@ -1,23 +1,23 @@
 @interface MTATimerIntervalPickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MTATimerIntervalPickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTATimerIntervalPickerCell"];
-  [v3 validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"pickerView:viewForRow:forComponent:reusingView:" withFullSignature:{"@", "@", "q", "q", "@", 0}];
-  [v3 validateClass:@"MTATimerIntervalPickerView" hasInstanceVariable:@"_timePicker" withType:"UIPickerView"];
-  [v3 validateClass:@"MTATimerIntervalPickerCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"_hoursStringForHour:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"_minutesStringForMinutes:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"_secondsStringForSeconds:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"MTATimerIntervalPickerView" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTATimerIntervalPickerCell"];
+  [validationsCopy validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"pickerView:viewForRow:forComponent:reusingView:" withFullSignature:{"@", "@", "q", "q", "@", 0}];
+  [validationsCopy validateClass:@"MTATimerIntervalPickerView" hasInstanceVariable:@"_timePicker" withType:"UIPickerView"];
+  [validationsCopy validateClass:@"MTATimerIntervalPickerCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"_hoursStringForHour:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"_minutesStringForMinutes:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"MTATimerIntervalPickerView" hasInstanceMethod:@"_secondsStringForSeconds:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"MTATimerIntervalPickerView" isKindOfClass:@"UIControl"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -36,13 +36,13 @@
   return v4;
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v10 = a3;
-  v11 = a6;
+  viewCopy = view;
+  reusingViewCopy = reusingView;
   v32.receiver = self;
   v32.super_class = MTATimerIntervalPickerViewAccessibility;
-  v12 = [(MTATimerIntervalPickerViewAccessibility *)&v32 pickerView:v10 viewForRow:a4 forComponent:a5 reusingView:v11];
+  v12 = [(MTATimerIntervalPickerViewAccessibility *)&v32 pickerView:viewCopy viewForRow:row forComponent:component reusingView:reusingViewCopy];
   MEMORY[0x29C2E1AE0](@"MTATimerIntervalPickerCell");
   if (objc_opt_isKindOfClass())
   {
@@ -64,8 +64,8 @@
     v25 = 0;
     AXPerformSafeBlock();
     v15 = MEMORY[0x29EDBA0F8];
-    v16 = [v14 string];
-    v17 = [v15 stringWithFormat:@"%@ %@", v16, v27[5]];
+    string = [v14 string];
+    v17 = [v15 stringWithFormat:@"%@ %@", string, v27[5]];
 
     [v12 setAccessibilityLabel:v17];
     v18 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, v21[5], v17}];

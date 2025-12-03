@@ -11,7 +11,7 @@
 - (id)tzDateToDateInGMT:()DataAccessUtils
 {
   v4 = a3;
-  v5 = [a1 dateWithCalendarFormat:0 timeZone:0];
+  v5 = [self dateWithCalendarFormat:0 timeZone:0];
   v6 = [v5 tzDateToDateInGMT:v4];
 
   return v6;
@@ -20,7 +20,7 @@
 - (id)gmtDateToDateInTimeZone:()DataAccessUtils
 {
   v4 = a3;
-  v5 = [a1 dateWithCalendarFormat:0 timeZone:0];
+  v5 = [self dateWithCalendarFormat:0 timeZone:0];
   v6 = [v5 gmtDateToDateInTimeZone:v4];
 
   return v6;
@@ -28,26 +28,26 @@
 
 - (id)nearestMidnight
 {
-  v1 = [a1 dateWithCalendarFormat:0 timeZone:0];
-  v2 = [v1 nearestMidnight];
+  v1 = [self dateWithCalendarFormat:0 timeZone:0];
+  nearestMidnight = [v1 nearestMidnight];
 
-  return v2;
+  return nearestMidnight;
 }
 
 - (uint64_t)isGMTMidnight
 {
-  v1 = [a1 dateWithCalendarFormat:0 timeZone:0];
-  v2 = [v1 isGMTMidnight];
+  v1 = [self dateWithCalendarFormat:0 timeZone:0];
+  isGMTMidnight = [v1 isGMTMidnight];
 
-  return v2;
+  return isGMTMidnight;
 }
 
 - (id)gmtMidnight
 {
-  v1 = [a1 dateWithCalendarFormat:0 timeZone:0];
-  v2 = [v1 gmtMidnight];
+  v1 = [self dateWithCalendarFormat:0 timeZone:0];
+  gmtMidnight = [v1 gmtMidnight];
 
-  return v2;
+  return gmtMidnight;
 }
 
 @end

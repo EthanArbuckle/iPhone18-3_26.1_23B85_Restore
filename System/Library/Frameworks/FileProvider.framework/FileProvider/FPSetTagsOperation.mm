@@ -1,55 +1,55 @@
 @interface FPSetTagsOperation
-- (FPSetTagsOperation)initWithItems:(id)a3 tagsLists:(id)a4;
+- (FPSetTagsOperation)initWithItems:(id)items tagsLists:(id)lists;
 - (id)fp_prettyDescription;
-- (id)replicateForItems:(id)a3;
-- (unint64_t)transformItem:(id)a3 atIndex:(unint64_t)a4;
+- (id)replicateForItems:(id)items;
+- (unint64_t)transformItem:(id)item atIndex:(unint64_t)index;
 @end
 
 @implementation FPSetTagsOperation
 
-- (FPSetTagsOperation)initWithItems:(id)a3 tagsLists:(id)a4
+- (FPSetTagsOperation)initWithItems:(id)items tagsLists:(id)lists
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  listsCopy = lists;
   v12.receiver = self;
   v12.super_class = FPSetTagsOperation;
-  v8 = [(FPTransformOperation *)&v12 initWithItemsOfDifferentProviders:v6 action:0];
+  v8 = [(FPTransformOperation *)&v12 initWithItemsOfDifferentProviders:itemsCopy action:0];
   if (v8)
   {
-    v9 = [v6 count];
-    if (v9 != [v7 count])
+    v9 = [itemsCopy count];
+    if (v9 != [listsCopy count])
     {
-      v10 = [v6 count];
-      if (v10 != [v7 count])
+      v10 = [itemsCopy count];
+      if (v10 != [listsCopy count])
       {
-        [FPSetTagsOperation initWithItems:v6 tagsLists:v7];
+        [FPSetTagsOperation initWithItems:itemsCopy tagsLists:listsCopy];
       }
     }
 
-    objc_storeStrong(&v8->_tagsLists, a4);
+    objc_storeStrong(&v8->_tagsLists, lists);
     [(FPActionOperation *)v8 setSetupRemoteOperationService:1];
   }
 
   return v8;
 }
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [FPSetTagsOperation alloc];
-  v6 = [(FPTransformOperation *)self items];
-  v7 = [v6 fp_pickItemsFromArray:self->_tagsLists correspondingToIndexesOfItemsInArray:v4];
-  v8 = [(FPSetTagsOperation *)v5 initWithItems:v4 tagsLists:v7];
+  items = [(FPTransformOperation *)self items];
+  v7 = [items fp_pickItemsFromArray:self->_tagsLists correspondingToIndexesOfItemsInArray:itemsCopy];
+  v8 = [(FPSetTagsOperation *)v5 initWithItems:itemsCopy tagsLists:v7];
 
   return v8;
 }
 
-- (unint64_t)transformItem:(id)a3 atIndex:(unint64_t)a4
+- (unint64_t)transformItem:(id)item atIndex:(unint64_t)index
 {
   tagsLists = self->_tagsLists;
-  v6 = a3;
-  v7 = [(NSArray *)tagsLists objectAtIndex:a4];
-  [v6 setTags:v7];
+  itemCopy = item;
+  v7 = [(NSArray *)tagsLists objectAtIndex:index];
+  [itemCopy setTags:v7];
 
   return 16;
 }
@@ -57,9 +57,9 @@
 - (id)fp_prettyDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FPTransformOperation *)self items];
-  v5 = [v4 fp_itemIdentifiers];
-  v6 = FPAbbreviatedArrayDescription(v5);
+  items = [(FPTransformOperation *)self items];
+  fp_itemIdentifiers = [items fp_itemIdentifiers];
+  v6 = FPAbbreviatedArrayDescription(fp_itemIdentifiers);
   v7 = FPAbbreviatedArrayDescription(self->_tagsLists);
   v8 = [v3 stringWithFormat:@"tag items %@ with tags %@", v6, v7];
 

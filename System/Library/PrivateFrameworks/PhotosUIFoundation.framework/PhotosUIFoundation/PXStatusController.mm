@@ -1,12 +1,12 @@
 @interface PXStatusController
 - (PXStatusController)init;
 - (PXStatusControllerDelegate)delegate;
-- (void)_handleButtonAction:(id)a3;
+- (void)_handleButtonAction:(id)action;
 - (void)_updateButtonTitle;
 - (void)_updateMessage;
 - (void)_updateTitle;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setViewModel:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation PXStatusController
@@ -18,14 +18,14 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
+  changeCopy = change;
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (PXStatusViewModelObservationContext == a5)
+  observableCopy = observable;
+  if (PXStatusViewModelObservationContext == context)
   {
-    if ((v6 & 2) == 0)
+    if ((changeCopy & 2) == 0)
     {
       goto LABEL_4;
     }
@@ -33,35 +33,35 @@
     goto LABEL_3;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PXStatusController.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"context == PXStatusViewModelObservationContext"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStatusController.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"context == PXStatusViewModelObservationContext"}];
 
-  if ((v6 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
 LABEL_3:
     [(PXStatusController *)self _updateTitle];
   }
 
 LABEL_4:
-  if ((v6 & 0xC) != 0)
+  if ((changeCopy & 0xC) != 0)
   {
     [(PXStatusController *)self _updateMessage];
   }
 
-  if ((v6 & 0x10) == 0 || ([(PXStatusController *)self confirmationAlertToken], v10 = objc_claimAutoreleasedReturnValue(), [(PXStatusController *)self _updateButtonTitle], !v10))
+  if ((changeCopy & 0x10) == 0 || ([(PXStatusController *)self confirmationAlertToken], v10 = objc_claimAutoreleasedReturnValue(), [(PXStatusController *)self _updateButtonTitle], !v10))
   {
-    if ((v6 & 0xE0) == 0)
+    if ((changeCopy & 0xE0) == 0)
     {
       goto LABEL_14;
     }
 
-    v11 = [(PXStatusController *)self confirmationAlertToken];
-    if (!v11)
+    confirmationAlertToken = [(PXStatusController *)self confirmationAlertToken];
+    if (!confirmationAlertToken)
     {
       goto LABEL_14;
     }
 
-    v10 = v11;
+    v10 = confirmationAlertToken;
   }
 
   [(PXStatusController *)self setConfirmationAlertToken:0];
@@ -74,35 +74,35 @@ LABEL_4:
     _os_log_impl(&dword_1B3F73000, v12, OS_LOG_TYPE_DEFAULT, "Status View: Auto-dismiss alert for replaced action (%{public}@)", buf, 0xCu);
   }
 
-  v14 = [(PXStatusController *)self delegate];
-  v15 = [v14 presentationEnvironmentForStatusController:self];
+  delegate = [(PXStatusController *)self delegate];
+  v15 = [delegate presentationEnvironmentForStatusController:self];
 
   [v15 dismissAlertWithToken:v10 completionHandler:0];
 LABEL_14:
 }
 
-- (void)_handleButtonAction:(id)a3
+- (void)_handleButtonAction:(id)action
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXStatusViewModel *)self->_viewModel action];
+  actionCopy = action;
+  action = [(PXStatusViewModel *)self->_viewModel action];
   v6 = PXUserStatusUIGetLog();
-  v7 = v6;
-  if (v5)
+  actionConfirmationAlertTitle = v6;
+  if (action)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       viewModel = self->_viewModel;
       *buf = 138543362;
       v33 = viewModel;
-      _os_log_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_DEFAULT, "Status View: User invoked un-pause action (%{public}@)", buf, 0xCu);
+      _os_log_impl(&dword_1B3F73000, actionConfirmationAlertTitle, OS_LOG_TYPE_DEFAULT, "Status View: User invoked un-pause action (%{public}@)", buf, 0xCu);
     }
 
-    v7 = [(PXStatusViewModel *)self->_viewModel actionConfirmationAlertTitle];
-    v9 = [(PXStatusViewModel *)self->_viewModel actionConfirmationAlertButtonTitle];
+    actionConfirmationAlertTitle = [(PXStatusViewModel *)self->_viewModel actionConfirmationAlertTitle];
+    actionConfirmationAlertButtonTitle = [(PXStatusViewModel *)self->_viewModel actionConfirmationAlertButtonTitle];
     v10 = PXUserStatusUIGetLog();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v7 && v9)
+    if (actionConfirmationAlertTitle && actionConfirmationAlertButtonTitle)
     {
       if (v11)
       {
@@ -114,20 +114,20 @@ LABEL_14:
 
       objc_initWeak(&location, self);
       objc_initWeak(&from, self->_viewModel);
-      v13 = [(PXStatusController *)self delegate];
-      v14 = [v13 presentationEnvironmentForStatusController:self];
+      delegate = [(PXStatusController *)self delegate];
+      v14 = [delegate presentationEnvironmentForStatusController:self];
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __42__PXStatusController__handleButtonAction___block_invoke;
       v22[3] = &unk_1E7BB61F0;
-      v23 = v7;
-      v24 = self;
-      v25 = v4;
-      v26 = v9;
+      v23 = actionConfirmationAlertTitle;
+      selfCopy = self;
+      v25 = actionCopy;
+      v26 = actionConfirmationAlertButtonTitle;
       objc_copyWeak(&v28, &from);
       objc_copyWeak(&v29, &location);
-      v27 = v5;
+      v27 = action;
       v15 = [v14 presentAlertWithConfigurationHandler:v22];
       v16 = PXUserStatusUIGetLog();
       v17 = v16;
@@ -172,7 +172,7 @@ LABEL_14:
         _os_log_impl(&dword_1B3F73000, v10, OS_LOG_TYPE_DEFAULT, "Status View: Invoking action without confirmation (%{public}@)", buf, 0xCu);
       }
 
-      v5[2](v5);
+      action[2](action);
     }
   }
 
@@ -181,7 +181,7 @@ LABEL_14:
     v19 = self->_viewModel;
     *buf = 138543362;
     v33 = v19;
-    _os_log_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_ERROR, "Status View: No action for button (%{public}@)", buf, 0xCu);
+    _os_log_impl(&dword_1B3F73000, actionConfirmationAlertTitle, OS_LOG_TYPE_ERROR, "Status View: No action for button (%{public}@)", buf, 0xCu);
   }
 }
 
@@ -267,15 +267,15 @@ void __42__PXStatusController__handleButtonAction___block_invoke_20(uint64_t a1)
 
 - (void)_updateButtonTitle
 {
-  v3 = [(PXStatusViewModel *)self->_viewModel actionTitle];
-  v4 = [v3 length];
-  v5 = [(PXStatusController *)self configuration];
-  v6 = [v5 buttonProperties];
-  v7 = [v6 configuration];
-  v8 = v7;
+  actionTitle = [(PXStatusViewModel *)self->_viewModel actionTitle];
+  v4 = [actionTitle length];
+  configuration = [(PXStatusController *)self configuration];
+  buttonProperties = [configuration buttonProperties];
+  configuration2 = [buttonProperties configuration];
+  v8 = configuration2;
   if (v4)
   {
-    [v7 setTitle:v3];
+    [configuration2 setTitle:actionTitle];
 
     objc_initWeak(&location, self);
     v9 = MEMORY[0x1E69DC628];
@@ -286,8 +286,8 @@ void __42__PXStatusController__handleButtonAction___block_invoke_20(uint64_t a1)
     objc_copyWeak(&v21, &location);
     v10 = [v9 actionWithHandler:&v17];
     v11 = [(PXStatusController *)self configuration:v17];
-    v12 = [v11 buttonProperties];
-    [v12 setPrimaryAction:v10];
+    buttonProperties2 = [v11 buttonProperties];
+    [buttonProperties2 setPrimaryAction:v10];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -295,16 +295,16 @@ void __42__PXStatusController__handleButtonAction___block_invoke_20(uint64_t a1)
 
   else
   {
-    [v7 setTitle:0];
+    [configuration2 setTitle:0];
 
-    v13 = [(PXStatusController *)self configuration];
-    v14 = [v13 buttonProperties];
-    [v14 setPrimaryAction:0];
+    configuration3 = [(PXStatusController *)self configuration];
+    buttonProperties3 = [configuration3 buttonProperties];
+    [buttonProperties3 setPrimaryAction:0];
   }
 
-  v15 = [(PXStatusController *)self delegate];
-  v16 = [(PXStatusController *)self configuration];
-  [v15 statusController:self configurationDidChange:v16];
+  delegate = [(PXStatusController *)self delegate];
+  configuration4 = [(PXStatusController *)self configuration];
+  [delegate statusController:self configurationDidChange:configuration4];
 }
 
 void __40__PXStatusController__updateButtonTitle__block_invoke(uint64_t a1, void *a2)
@@ -318,34 +318,34 @@ void __40__PXStatusController__updateButtonTitle__block_invoke(uint64_t a1, void
 
 - (void)_updateMessage
 {
-  v9 = [(PXStatusViewModel *)self->_viewModel message];
-  v3 = [(PXStatusController *)self viewModel];
-  v4 = [v3 attributedMessage];
+  message = [(PXStatusViewModel *)self->_viewModel message];
+  viewModel = [(PXStatusController *)self viewModel];
+  attributedMessage = [viewModel attributedMessage];
 
-  if (v4)
+  if (attributedMessage)
   {
-    v5 = [(PXStatusViewModel *)self->_viewModel attributedMessage];
-    v6 = [(PXStatusController *)self configuration];
-    [v6 setSecondaryAttributedText:v5];
+    attributedMessage2 = [(PXStatusViewModel *)self->_viewModel attributedMessage];
+    configuration = [(PXStatusController *)self configuration];
+    [configuration setSecondaryAttributedText:attributedMessage2];
   }
 
   else
   {
-    v5 = [(PXStatusController *)self configuration];
-    [v5 setSecondaryText:v9];
+    attributedMessage2 = [(PXStatusController *)self configuration];
+    [attributedMessage2 setSecondaryText:message];
   }
 
-  v7 = [(PXStatusController *)self delegate];
-  v8 = [(PXStatusController *)self configuration];
-  [v7 statusController:self configurationDidChange:v8];
+  delegate = [(PXStatusController *)self delegate];
+  configuration2 = [(PXStatusController *)self configuration];
+  [delegate statusController:self configurationDidChange:configuration2];
 }
 
 - (void)_updateTitle
 {
-  v7 = [(PXStatusViewModel *)self->_viewModel title];
-  if ([v7 length])
+  title = [(PXStatusViewModel *)self->_viewModel title];
+  if ([title length])
   {
-    v3 = v7;
+    v3 = title;
   }
 
   else
@@ -353,25 +353,25 @@ void __40__PXStatusController__updateButtonTitle__block_invoke(uint64_t a1, void
     v3 = 0;
   }
 
-  v4 = [(PXStatusController *)self configuration];
-  [v4 setText:v3];
+  configuration = [(PXStatusController *)self configuration];
+  [configuration setText:v3];
 
-  v5 = [(PXStatusController *)self delegate];
-  v6 = [(PXStatusController *)self configuration];
-  [v5 statusController:self configurationDidChange:v6];
+  delegate = [(PXStatusController *)self delegate];
+  configuration2 = [(PXStatusController *)self configuration];
+  [delegate statusController:self configurationDidChange:configuration2];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStatusController.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStatusController.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
   }
 
   viewModel = self->_viewModel;
-  v8 = v6;
+  v8 = modelCopy;
   v11 = v8;
   if (viewModel == v8)
   {
@@ -384,7 +384,7 @@ void __40__PXStatusController__updateButtonTitle__block_invoke(uint64_t a1, void
     if ((v9 & 1) == 0)
     {
       [(PXObservable *)self->_viewModel unregisterChangeObserver:self context:PXStatusViewModelObservationContext];
-      objc_storeStrong(&self->_viewModel, a3);
+      objc_storeStrong(&self->_viewModel, model);
       [(PXObservable *)self->_viewModel registerChangeObserver:self context:PXStatusViewModelObservationContext];
       [(PXStatusController *)self _updateTitle];
       [(PXStatusController *)self _updateMessage];
@@ -412,9 +412,9 @@ void __40__PXStatusController__updateButtonTitle__block_invoke(uint64_t a1, void
     v10 = &stru_1F2B87EE0;
     [(PXStatusViewModel *)v5 performChanges:v9];
     [(PXObservable *)v2->_viewModel registerChangeObserver:v2 context:PXStatusViewModelObservationContext];
-    v6 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+    emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
     configuration = v2->_configuration;
-    v2->_configuration = v6;
+    v2->_configuration = emptyConfiguration;
   }
 
   return v2;

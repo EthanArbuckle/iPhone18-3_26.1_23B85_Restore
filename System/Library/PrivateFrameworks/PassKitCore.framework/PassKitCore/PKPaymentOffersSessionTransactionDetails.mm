@@ -1,51 +1,51 @@
 @interface PKPaymentOffersSessionTransactionDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOffersSessionTransactionDetails)initWithCoder:(id)a3;
-- (PKPaymentOffersSessionTransactionDetails)initWithTransaction:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOffersSessionTransactionDetails)initWithCoder:(id)coder;
+- (PKPaymentOffersSessionTransactionDetails)initWithTransaction:(id)transaction;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOffersSessionTransactionDetails
 
-- (PKPaymentOffersSessionTransactionDetails)initWithTransaction:(id)a3
+- (PKPaymentOffersSessionTransactionDetails)initWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v23.receiver = self;
   v23.super_class = PKPaymentOffersSessionTransactionDetails;
   v5 = [(PKPaymentOffersSessionTransactionDetails *)&v23 init];
   if (v5)
   {
-    v6 = [v4 serviceIdentifier];
+    serviceIdentifier = [transactionCopy serviceIdentifier];
     serviceIdentifier = v5->_serviceIdentifier;
-    v5->_serviceIdentifier = v6;
+    v5->_serviceIdentifier = serviceIdentifier;
 
-    v8 = [v4 transactionDate];
+    transactionDate = [transactionCopy transactionDate];
     timestamp = v5->_timestamp;
-    v5->_timestamp = v8;
+    v5->_timestamp = transactionDate;
 
-    v10 = [v4 paymentHash];
+    paymentHash = [transactionCopy paymentHash];
     paymentHash = v5->_paymentHash;
-    v5->_paymentHash = v10;
+    v5->_paymentHash = paymentHash;
 
-    v12 = [v4 merchant];
-    v13 = [v12 name];
+    merchant = [transactionCopy merchant];
+    name = [merchant name];
     merchantName = v5->_merchantName;
-    v5->_merchantName = v13;
+    v5->_merchantName = name;
 
-    v15 = [v4 transactionSourceIdentifier];
+    transactionSourceIdentifier = [transactionCopy transactionSourceIdentifier];
     transactionSourceIdentifier = v5->_transactionSourceIdentifier;
-    v5->_transactionSourceIdentifier = v15;
+    v5->_transactionSourceIdentifier = transactionSourceIdentifier;
 
-    v17 = [v4 amount];
-    v18 = [v4 currencyCode];
-    v19 = v18;
-    if (v17 && v18)
+    amount = [transactionCopy amount];
+    currencyCode = [transactionCopy currencyCode];
+    v19 = currencyCode;
+    if (amount && currencyCode)
     {
-      v20 = PKCurrencyAmountCreate(v17, v18, 0);
+      v20 = PKCurrencyAmountCreate(amount, currencyCode, 0);
       currencyAmount = v5->_currencyAmount;
       v5->_currencyAmount = v20;
     }
@@ -63,24 +63,24 @@
 
   [v3 setObject:self->_paymentHash forKeyedSubscript:@"paymentHash"];
   [v3 setObject:self->_merchantName forKeyedSubscript:@"merchantName"];
-  v5 = [(PKCurrencyAmount *)self->_currencyAmount dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"currencyAmount"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_currencyAmount dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"currencyAmount"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -254,35 +254,35 @@ LABEL_41:
   return v3;
 }
 
-- (PKPaymentOffersSessionTransactionDetails)initWithCoder:(id)a3
+- (PKPaymentOffersSessionTransactionDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKPaymentOffersSessionTransactionDetails;
   v5 = [(PKPaymentOffersSessionTransactionDetails *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
     serviceIdentifier = v5->_serviceIdentifier;
     v5->_serviceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
     paymentHash = v5->_paymentHash;
     v5->_paymentHash = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
     merchantName = v5->_merchantName;
     v5->_merchantName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
     currencyAmount = v5->_currencyAmount;
     v5->_currencyAmount = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifier = v5->_transactionSourceIdentifier;
     v5->_transactionSourceIdentifier = v16;
   }
@@ -290,42 +290,42 @@ LABEL_41:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceIdentifier = self->_serviceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:serviceIdentifier forKey:@"serviceIdentifier"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_paymentHash forKey:@"paymentHash"];
-  [v5 encodeObject:self->_merchantName forKey:@"merchantName"];
-  [v5 encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
-  [v5 encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serviceIdentifier forKey:@"serviceIdentifier"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_paymentHash forKey:@"paymentHash"];
+  [coderCopy encodeObject:self->_merchantName forKey:@"merchantName"];
+  [coderCopy encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
+  [coderCopy encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOffersSessionTransactionDetails allocWithZone:](PKPaymentOffersSessionTransactionDetails init];
-  v6 = [(NSString *)self->_serviceIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_serviceIdentifier copyWithZone:zone];
   serviceIdentifier = v5->_serviceIdentifier;
   v5->_serviceIdentifier = v6;
 
-  v8 = [(NSDate *)self->_timestamp copyWithZone:a3];
+  v8 = [(NSDate *)self->_timestamp copyWithZone:zone];
   timestamp = v5->_timestamp;
   v5->_timestamp = v8;
 
-  v10 = [(NSString *)self->_paymentHash copyWithZone:a3];
+  v10 = [(NSString *)self->_paymentHash copyWithZone:zone];
   paymentHash = v5->_paymentHash;
   v5->_paymentHash = v10;
 
-  v12 = [(NSString *)self->_merchantName copyWithZone:a3];
+  v12 = [(NSString *)self->_merchantName copyWithZone:zone];
   merchantName = v5->_merchantName;
   v5->_merchantName = v12;
 
-  v14 = [(PKCurrencyAmount *)self->_currencyAmount copyWithZone:a3];
+  v14 = [(PKCurrencyAmount *)self->_currencyAmount copyWithZone:zone];
   currencyAmount = v5->_currencyAmount;
   v5->_currencyAmount = v14;
 
-  v16 = [(NSString *)self->_transactionSourceIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_transactionSourceIdentifier copyWithZone:zone];
   transactionSourceIdentifier = v5->_transactionSourceIdentifier;
   v5->_transactionSourceIdentifier = v16;
 

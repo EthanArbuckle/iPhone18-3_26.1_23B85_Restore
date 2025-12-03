@@ -1,123 +1,123 @@
 @interface HKGraphViewController
-- (BOOL)graphViewPointSelectionDifferentiatesSeriesGroups:(id)a3;
-- (HKGraphViewController)initWithGraphView:(id)a3 dateZoom:(int64_t)a4;
+- (BOOL)graphViewPointSelectionDifferentiatesSeriesGroups:(id)groups;
+- (HKGraphViewController)initWithGraphView:(id)view dateZoom:(int64_t)zoom;
 - (HKGraphViewControllerDelegate)delegate;
 - (HKGraphViewDelegate)graphViewDelegateProxy;
-- (id)graphView:(id)a3 graphSeriesForZoom:(int64_t)a4 stackOffset:(int64_t)a5;
-- (id)seriesSelectionLineColorForGraphView:(id)a3;
-- (id)stackedSeriesGroupHeightsForGraphView:(id)a3;
-- (int64_t)primarySeriesGroupIndexForGraphView:(id)a3;
-- (int64_t)stackCountForGraphView:(id)a3;
-- (void)graphView:(id)a3 didFinishUserScrollingToValueRange:(id)a4;
-- (void)graphView:(id)a3 didUpdateFromDateZoom:(int64_t)a4 toDateZoom:(int64_t)a5 newVisibleRange:(id)a6;
-- (void)graphView:(id)a3 didUpdateLegendViewsWithTopLegendFrame:(CGRect)a4;
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4;
-- (void)graphView:(id)a3 didUpdateSeries:(id)a4 newDataArrived:(BOOL)a5 changeContext:(int64_t)a6;
-- (void)graphView:(id)a3 didUpdateVisibleValueRange:(id)a4 changeContext:(int64_t)a5;
-- (void)graphView:(id)a3 didUpdateYAxisWidth:(double)a4 toWidth:(double)a5;
-- (void)graphView:(id)a3 startupTime:(int64_t)a4;
-- (void)graphViewDidBeginSelection:(id)a3;
-- (void)graphViewDidEndSelection:(id)a3;
-- (void)graphViewDidTapYAxis:(id)a3;
-- (void)graphViewExternalSelectionEnd:(id)a3;
-- (void)graphViewRenderedView:(id)a3;
-- (void)graphViewSizeChanged:(id)a3;
+- (id)graphView:(id)view graphSeriesForZoom:(int64_t)zoom stackOffset:(int64_t)offset;
+- (id)seriesSelectionLineColorForGraphView:(id)view;
+- (id)stackedSeriesGroupHeightsForGraphView:(id)view;
+- (int64_t)primarySeriesGroupIndexForGraphView:(id)view;
+- (int64_t)stackCountForGraphView:(id)view;
+- (void)graphView:(id)view didFinishUserScrollingToValueRange:(id)range;
+- (void)graphView:(id)view didUpdateFromDateZoom:(int64_t)zoom toDateZoom:(int64_t)dateZoom newVisibleRange:(id)range;
+- (void)graphView:(id)view didUpdateLegendViewsWithTopLegendFrame:(CGRect)frame;
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point;
+- (void)graphView:(id)view didUpdateSeries:(id)series newDataArrived:(BOOL)arrived changeContext:(int64_t)context;
+- (void)graphView:(id)view didUpdateVisibleValueRange:(id)range changeContext:(int64_t)context;
+- (void)graphView:(id)view didUpdateYAxisWidth:(double)width toWidth:(double)toWidth;
+- (void)graphView:(id)view startupTime:(int64_t)time;
+- (void)graphViewDidBeginSelection:(id)selection;
+- (void)graphViewDidEndSelection:(id)selection;
+- (void)graphViewDidTapYAxis:(id)axis;
+- (void)graphViewExternalSelectionEnd:(id)end;
+- (void)graphViewRenderedView:(id)view;
+- (void)graphViewSizeChanged:(id)changed;
 @end
 
 @implementation HKGraphViewController
 
-- (HKGraphViewController)initWithGraphView:(id)a3 dateZoom:(int64_t)a4
+- (HKGraphViewController)initWithGraphView:(id)view dateZoom:(int64_t)zoom
 {
-  v7 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = HKGraphViewController;
   v8 = [(HKGraphViewController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_graphView, a3);
+    objc_storeStrong(&v8->_graphView, view);
     [(HKGraphView *)v9->_graphView setDelegate:v9];
     objc_storeWeak(&v9->_graphViewDelegateProxy, 0);
-    v9->_dateZoom = a4;
+    v9->_dateZoom = zoom;
   }
 
   return v9;
 }
 
-- (BOOL)graphViewPointSelectionDifferentiatesSeriesGroups:(id)a3
+- (BOOL)graphViewPointSelectionDifferentiatesSeriesGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  v6 = [WeakRetained graphViewPointSelectionDifferentiatesSeriesGroups:v4];
+  v6 = [WeakRetained graphViewPointSelectionDifferentiatesSeriesGroups:groupsCopy];
 
   return v6;
 }
 
-- (void)graphViewDidBeginSelection:(id)a3
+- (void)graphViewDidBeginSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphViewDidBeginSelection:v4];
+  [WeakRetained graphViewDidBeginSelection:selectionCopy];
 }
 
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point
 {
-  v6 = a4;
-  v7 = a3;
+  pointCopy = point;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v7 didUpdateSelectedPoint:v6];
+  [WeakRetained graphView:viewCopy didUpdateSelectedPoint:pointCopy];
 }
 
-- (void)graphViewDidEndSelection:(id)a3
+- (void)graphViewDidEndSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphViewDidEndSelection:v4];
+  [WeakRetained graphViewDidEndSelection:selectionCopy];
 }
 
-- (void)graphView:(id)a3 didUpdateFromDateZoom:(int64_t)a4 toDateZoom:(int64_t)a5 newVisibleRange:(id)a6
+- (void)graphView:(id)view didUpdateFromDateZoom:(int64_t)zoom toDateZoom:(int64_t)dateZoom newVisibleRange:(id)range
 {
-  v10 = a6;
-  v11 = a3;
+  rangeCopy = range;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v11 didUpdateFromDateZoom:a4 toDateZoom:a5 newVisibleRange:v10];
+  [WeakRetained graphView:viewCopy didUpdateFromDateZoom:zoom toDateZoom:dateZoom newVisibleRange:rangeCopy];
 }
 
-- (void)graphView:(id)a3 didUpdateVisibleValueRange:(id)a4 changeContext:(int64_t)a5
+- (void)graphView:(id)view didUpdateVisibleValueRange:(id)range changeContext:(int64_t)context
 {
-  v8 = a4;
-  v9 = a3;
+  rangeCopy = range;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v9 didUpdateVisibleValueRange:v8 changeContext:a5];
+  [WeakRetained graphView:viewCopy didUpdateVisibleValueRange:rangeCopy changeContext:context];
 }
 
-- (void)graphView:(id)a3 didFinishUserScrollingToValueRange:(id)a4
+- (void)graphView:(id)view didFinishUserScrollingToValueRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
+  rangeCopy = range;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v7 didFinishUserScrollingToValueRange:v6];
+  [WeakRetained graphView:viewCopy didFinishUserScrollingToValueRange:rangeCopy];
 }
 
-- (int64_t)stackCountForGraphView:(id)a3
+- (int64_t)stackCountForGraphView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  v6 = [WeakRetained stackCountForGraphView:v4];
+  v6 = [WeakRetained stackCountForGraphView:viewCopy];
 
   return v6;
 }
 
-- (int64_t)primarySeriesGroupIndexForGraphView:(id)a3
+- (int64_t)primarySeriesGroupIndexForGraphView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-    v8 = [v7 primarySeriesGroupIndexForGraphView:v4];
+    v8 = [v7 primarySeriesGroupIndexForGraphView:viewCopy];
   }
 
   else
@@ -128,16 +128,16 @@
   return v8;
 }
 
-- (id)stackedSeriesGroupHeightsForGraphView:(id)a3
+- (id)stackedSeriesGroupHeightsForGraphView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-    v8 = [v7 stackedSeriesGroupHeightsForGraphView:v4];
+    v8 = [v7 stackedSeriesGroupHeightsForGraphView:viewCopy];
   }
 
   else
@@ -148,84 +148,84 @@
   return v8;
 }
 
-- (id)graphView:(id)a3 graphSeriesForZoom:(int64_t)a4 stackOffset:(int64_t)a5
+- (id)graphView:(id)view graphSeriesForZoom:(int64_t)zoom stackOffset:(int64_t)offset
 {
-  v8 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  v10 = [WeakRetained graphView:v8 graphSeriesForZoom:a4 stackOffset:a5];
+  v10 = [WeakRetained graphView:viewCopy graphSeriesForZoom:zoom stackOffset:offset];
 
   return v10;
 }
 
-- (void)graphViewSizeChanged:(id)a3
+- (void)graphViewSizeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphViewSizeChanged:v4];
+  [WeakRetained graphViewSizeChanged:changedCopy];
 }
 
-- (void)graphView:(id)a3 didUpdateYAxisWidth:(double)a4 toWidth:(double)a5
+- (void)graphView:(id)view didUpdateYAxisWidth:(double)width toWidth:(double)toWidth
 {
-  v8 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v8 didUpdateYAxisWidth:a4 toWidth:a5];
+  [WeakRetained graphView:viewCopy didUpdateYAxisWidth:width toWidth:toWidth];
 }
 
-- (void)graphView:(id)a3 didUpdateSeries:(id)a4 newDataArrived:(BOOL)a5 changeContext:(int64_t)a6
+- (void)graphView:(id)view didUpdateSeries:(id)series newDataArrived:(BOOL)arrived changeContext:(int64_t)context
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
+  arrivedCopy = arrived;
+  seriesCopy = series;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v11 didUpdateSeries:v10 newDataArrived:v7 changeContext:a6];
+  [WeakRetained graphView:viewCopy didUpdateSeries:seriesCopy newDataArrived:arrivedCopy changeContext:context];
 }
 
-- (id)seriesSelectionLineColorForGraphView:(id)a3
+- (id)seriesSelectionLineColorForGraphView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  v6 = [WeakRetained seriesSelectionLineColorForGraphView:v4];
+  v6 = [WeakRetained seriesSelectionLineColorForGraphView:viewCopy];
 
   return v6;
 }
 
-- (void)graphView:(id)a3 didUpdateLegendViewsWithTopLegendFrame:(CGRect)a4
+- (void)graphView:(id)view didUpdateLegendViewsWithTopLegendFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v9 didUpdateLegendViewsWithTopLegendFrame:{x, y, width, height}];
+  [WeakRetained graphView:viewCopy didUpdateLegendViewsWithTopLegendFrame:{x, y, width, height}];
 }
 
-- (void)graphViewDidTapYAxis:(id)a3
+- (void)graphViewDidTapYAxis:(id)axis
 {
-  v4 = a3;
+  axisCopy = axis;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphViewDidTapYAxis:v4];
+  [WeakRetained graphViewDidTapYAxis:axisCopy];
 }
 
-- (void)graphView:(id)a3 startupTime:(int64_t)a4
+- (void)graphView:(id)view startupTime:(int64_t)time
 {
-  v6 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphView:v6 startupTime:a4];
+  [WeakRetained graphView:viewCopy startupTime:time];
 }
 
-- (void)graphViewExternalSelectionEnd:(id)a3
+- (void)graphViewExternalSelectionEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphViewExternalSelectionEnd:v4];
+  [WeakRetained graphViewExternalSelectionEnd:endCopy];
 }
 
-- (void)graphViewRenderedView:(id)a3
+- (void)graphViewRenderedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_graphViewDelegateProxy);
-  [WeakRetained graphViewRenderedView:v4];
+  [WeakRetained graphViewRenderedView:viewCopy];
 }
 
 - (HKGraphViewDelegate)graphViewDelegateProxy

@@ -1,28 +1,28 @@
 @interface WFEvernoteAppendAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (id)titleSearch;
-- (void)performSearch:(id)a3 inNotebook:(id)a4 maxResults:(unint64_t)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)uploadNoteWithContent:(id)a3 toNotebook:(id)a4;
+- (void)performSearch:(id)search inNotebook:(id)notebook maxResults:(unint64_t)results;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)uploadNoteWithContent:(id)content toNotebook:(id)notebook;
 @end
 
 @implementation WFEvernoteAppendAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to append %2$@ to an Evernote note?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to append content to an Evernote note?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
@@ -36,17 +36,17 @@
   return [(WFEvernoteAppendAction *)self parameterValueForKey:@"WFEvernoteNotesTitleSearch" ofClass:v3];
 }
 
-- (void)uploadNoteWithContent:(id)a3 toNotebook:(id)a4
+- (void)uploadNoteWithContent:(id)content toNotebook:(id)notebook
 {
-  v6 = a4;
+  notebookCopy = notebook;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__WFEvernoteAppendAction_uploadNoteWithContent_toNotebook___block_invoke;
   v8[3] = &unk_278C1BA58;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [WFEvernoteContentItem createNoteWithContent:a3 completionHandler:v8];
+  v9 = notebookCopy;
+  v7 = notebookCopy;
+  [WFEvernoteContentItem createNoteWithContent:content completionHandler:v8];
 }
 
 void __59__WFEvernoteAppendAction_uploadNoteWithContent_toNotebook___block_invoke(uint64_t a1, void *a2)
@@ -89,19 +89,19 @@ void __59__WFEvernoteAppendAction_uploadNoteWithContent_toNotebook___block_invok
   [*(a1 + 32) finishRunningWithError:v9];
 }
 
-- (void)performSearch:(id)a3 inNotebook:(id)a4 maxResults:(unint64_t)a5
+- (void)performSearch:(id)search inNotebook:(id)notebook maxResults:(unint64_t)results
 {
-  v8 = a4;
-  v9 = a3;
+  notebookCopy = notebook;
+  searchCopy = search;
   v10 = +[WFEvernoteAccessResource evernoteSession];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__WFEvernoteAppendAction_performSearch_inNotebook_maxResults___block_invoke;
   v12[3] = &unk_278C21150;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [v10 findNotesWithSearch:v9 inNotebook:v11 orScope:1 sortOrder:2 maxResults:a5 completion:v12];
+  v13 = notebookCopy;
+  v11 = notebookCopy;
+  [v10 findNotesWithSearch:searchCopy inNotebook:v11 orScope:1 sortOrder:2 maxResults:results completion:v12];
 }
 
 void __62__WFEvernoteAppendAction_performSearch_inNotebook_maxResults___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -288,15 +288,15 @@ void __62__WFEvernoteAppendAction_performSearch_inNotebook_maxResults___block_in
   [v6 finishRunningWithError:v9];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = [(WFEvernoteAppendAction *)self parameterValueForKey:@"WFEvernoteNotesNotebookName" ofClass:objc_opt_class()];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(WFEvernoteAppendAction *)self titleSearch];
-  v7 = [v5 stringWithFormat:@"intitle:%@", v6];
+  titleSearch = [(WFEvernoteAppendAction *)self titleSearch];
+  v7 = [v5 stringWithFormat:@"intitle:%@", titleSearch];
 
-  v8 = [(WFEvernoteAppendAction *)self titleSearch];
-  if ([v8 length])
+  titleSearch2 = [(WFEvernoteAppendAction *)self titleSearch];
+  if ([titleSearch2 length])
   {
     v9 = [ENNoteSearch noteSearchWithSearchString:v7];
   }
@@ -314,7 +314,7 @@ void __62__WFEvernoteAppendAction_performSearch_inNotebook_maxResults___block_in
     v11[2] = __53__WFEvernoteAppendAction_runAsynchronouslyWithInput___block_invoke;
     v11[3] = &unk_278C221D0;
     v12 = v4;
-    v13 = self;
+    selfCopy = self;
     v14 = v9;
     [v10 listNotebooksWithCompletion:v11];
   }

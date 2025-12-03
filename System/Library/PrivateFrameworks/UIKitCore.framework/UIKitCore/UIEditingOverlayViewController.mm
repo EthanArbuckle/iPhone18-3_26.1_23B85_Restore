@@ -11,12 +11,12 @@
 
 - (void)loadView
 {
-  v3 = [(UIViewController *)self presentingViewController];
-  if (v3)
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  if (presentingViewController)
   {
-    v4 = [(UIViewController *)self presentingViewController];
-    v5 = [v4 view];
-    [v5 bounds];
+    presentingViewController2 = [(UIViewController *)self presentingViewController];
+    view = [presentingViewController2 view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -46,34 +46,34 @@
 
 - (void)_addInteractions
 {
-  v3 = [(UIViewController *)self traitCollection];
-  if ([(UIUndoGestureInteraction *)v3 userInterfaceIdiom]!= 3)
+  traitCollection = [(UIViewController *)self traitCollection];
+  if ([(UIUndoGestureInteraction *)traitCollection userInterfaceIdiom]!= 3)
   {
-    v4 = [(UIEditingOverlayViewController *)self undoInteraction];
+    undoInteraction = [(UIEditingOverlayViewController *)self undoInteraction];
 
-    if (v4)
+    if (undoInteraction)
     {
       goto LABEL_5;
     }
 
-    v3 = objc_alloc_init(UIUndoGestureInteraction);
-    [(UIEditingOverlayViewController *)self setUndoInteraction:v3];
+    traitCollection = objc_alloc_init(UIUndoGestureInteraction);
+    [(UIEditingOverlayViewController *)self setUndoInteraction:traitCollection];
   }
 
 LABEL_5:
-  v5 = [(UIEditingOverlayViewController *)self undoInteraction];
+  undoInteraction2 = [(UIEditingOverlayViewController *)self undoInteraction];
 
-  if (v5)
+  if (undoInteraction2)
   {
-    v6 = [(UIViewController *)self view];
-    v7 = [(UIEditingOverlayViewController *)self undoInteraction];
-    [v6 addInteraction:v7];
+    view = [(UIViewController *)self view];
+    undoInteraction3 = [(UIEditingOverlayViewController *)self undoInteraction];
+    [view addInteraction:undoInteraction3];
   }
 
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 _supportsPencil];
+  _supportsPencil = [v8 _supportsPencil];
 
-  if (v9)
+  if (_supportsPencil)
   {
     v10 = [_UIActionWhenIdle actionWhenIdleWithTarget:self selector:sel__addPencilTextInputInteraction object:0];
     [(UIEditingOverlayViewController *)self setAddPencilTextInputInteractionAction:v10];
@@ -82,13 +82,13 @@ LABEL_5:
 
 - (void)_addPencilTextInputInteraction
 {
-  v3 = [(UIEditingOverlayViewController *)self addPencilTextInputInteractionAction];
-  [v3 invalidate];
+  addPencilTextInputInteractionAction = [(UIEditingOverlayViewController *)self addPencilTextInputInteractionAction];
+  [addPencilTextInputInteractionAction invalidate];
 
   [(UIEditingOverlayViewController *)self setAddPencilTextInputInteractionAction:0];
-  v4 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
+  pencilTextInputInteraction = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
 
-  if (!v4)
+  if (!pencilTextInputInteraction)
   {
     v14 = 0;
     v15 = &v14;
@@ -112,13 +112,13 @@ LABEL_5:
     [(UIEditingOverlayViewController *)self setPencilTextInputInteraction:v7];
   }
 
-  v8 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
+  pencilTextInputInteraction2 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
 
-  if (v8)
+  if (pencilTextInputInteraction2)
   {
-    v9 = [(UIViewController *)self view];
-    v10 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
-    [v9 addInteraction:v10];
+    view = [(UIViewController *)self view];
+    pencilTextInputInteraction3 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
+    [view addInteraction:pencilTextInputInteraction3];
   }
 
   v11 = +[UIKeyboard suppressionPolicyDelegate];
@@ -132,47 +132,47 @@ LABEL_5:
 
 - (void)_removeInteractions
 {
-  v3 = [(UIEditingOverlayViewController *)self undoInteraction];
+  undoInteraction = [(UIEditingOverlayViewController *)self undoInteraction];
 
-  if (v3)
+  if (undoInteraction)
   {
-    v4 = [(UIViewController *)self view];
-    v5 = [(UIEditingOverlayViewController *)self undoInteraction];
-    [v4 removeInteraction:v5];
+    view = [(UIViewController *)self view];
+    undoInteraction2 = [(UIEditingOverlayViewController *)self undoInteraction];
+    [view removeInteraction:undoInteraction2];
   }
 
-  v6 = [(UIEditingOverlayViewController *)self addPencilTextInputInteractionAction];
-  [v6 invalidate];
+  addPencilTextInputInteractionAction = [(UIEditingOverlayViewController *)self addPencilTextInputInteractionAction];
+  [addPencilTextInputInteractionAction invalidate];
 
   [(UIEditingOverlayViewController *)self setAddPencilTextInputInteractionAction:0];
-  v7 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
+  pencilTextInputInteraction = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
 
-  if (v7)
+  if (pencilTextInputInteraction)
   {
-    v9 = [(UIViewController *)self view];
-    v8 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
-    [v9 removeInteraction:v8];
+    view2 = [(UIViewController *)self view];
+    pencilTextInputInteraction2 = [(UIEditingOverlayViewController *)self pencilTextInputInteraction];
+    [view2 removeInteraction:pencilTextInputInteraction2];
   }
 }
 
 - (void)updateEditingOverlayContainer
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(UIViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 _isTextEffectsWindow];
+  view = [(UIViewController *)self view];
+  window = [view window];
+  _isTextEffectsWindow = [window _isTextEffectsWindow];
 
-  v6 = [(UIViewController *)self view];
-  v7 = [v6 window];
-  v8 = v7;
-  if (v5)
+  view2 = [(UIViewController *)self view];
+  window2 = [view2 window];
+  v8 = window2;
+  if (_isTextEffectsWindow)
   {
-    [v7 actualSceneBounds];
+    [window2 actualSceneBounds];
   }
 
   else
   {
-    [v7 _sceneBounds];
+    [window2 _sceneBounds];
   }
 
   v13 = v9;
@@ -184,10 +184,10 @@ LABEL_5:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v17 = [(UIViewController *)self view];
-  v18 = [v17 interactions];
+  view3 = [(UIViewController *)self view];
+  interactions = [view3 interactions];
 
-  v19 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v19 = [interactions countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v19)
   {
     v20 = v19;
@@ -198,7 +198,7 @@ LABEL_5:
       {
         if (*v25 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(interactions);
         }
 
         v23 = *(*(&v24 + 1) + 8 * i);
@@ -208,7 +208,7 @@ LABEL_5:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v20 = [interactions countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v20);

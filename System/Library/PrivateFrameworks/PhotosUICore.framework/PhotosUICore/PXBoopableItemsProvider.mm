@@ -1,13 +1,13 @@
 @interface PXBoopableItemsProvider
 - (PXBoopableItemsProvider)init;
-- (void)setAssets:(id)a3;
+- (void)setAssets:(id)assets;
 @end
 
 @implementation PXBoopableItemsProvider
 
-- (void)setAssets:(id)a3
+- (void)setAssets:(id)assets
 {
-  v4 = [a3 copy];
+  v4 = [assets copy];
   [(PXBoopableItemsProvider_Swift *)self->_boopableItemsProvider setAssets:v4];
 }
 

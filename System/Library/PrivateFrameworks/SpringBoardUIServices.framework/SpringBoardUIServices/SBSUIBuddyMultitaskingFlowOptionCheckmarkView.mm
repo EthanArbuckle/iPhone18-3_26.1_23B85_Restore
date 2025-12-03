@@ -1,16 +1,16 @@
 @interface SBSUIBuddyMultitaskingFlowOptionCheckmarkView
-- (SBSUIBuddyMultitaskingFlowOptionCheckmarkView)initWithFrame:(CGRect)a3;
-- (void)setSelected:(BOOL)a3;
+- (SBSUIBuddyMultitaskingFlowOptionCheckmarkView)initWithFrame:(CGRect)frame;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SBSUIBuddyMultitaskingFlowOptionCheckmarkView
 
-- (SBSUIBuddyMultitaskingFlowOptionCheckmarkView)initWithFrame:(CGRect)a3
+- (SBSUIBuddyMultitaskingFlowOptionCheckmarkView)initWithFrame:(CGRect)frame
 {
   v54[1] = *MEMORY[0x1E69E9840];
   v53.receiver = self;
   v53.super_class = SBSUIBuddyMultitaskingFlowOptionCheckmarkView;
-  v3 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)&v53 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)&v53 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -41,8 +41,8 @@
     v18 = v3->_circleImageView;
     v19 = MEMORY[0x1E69DCAB8];
     v20 = MEMORY[0x1E69DCAD8];
-    v21 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    v54[0] = v21;
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v54[0] = tertiaryLabelColor;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
     v23 = [v20 configurationWithPaletteColors:v22];
     v24 = [v19 systemImageNamed:@"circle" withConfiguration:v23];
@@ -54,60 +54,60 @@
     [(UIImageView *)v25 setPreferredSymbolConfiguration:v26];
 
     [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 addSubview:v3->_circleImageView];
-    v27 = [MEMORY[0x1E695DF70] array];
-    v28 = [(UIImageView *)v3->_checkmarkImageView leadingAnchor];
-    v29 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 leadingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
-    [v27 addObject:v30];
+    array = [MEMORY[0x1E695DF70] array];
+    leadingAnchor = [(UIImageView *)v3->_checkmarkImageView leadingAnchor];
+    leadingAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v30];
 
-    v31 = [(UIImageView *)v3->_checkmarkImageView trailingAnchor];
-    v32 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 trailingAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
-    [v27 addObject:v33];
+    trailingAnchor = [(UIImageView *)v3->_checkmarkImageView trailingAnchor];
+    trailingAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v33];
 
-    v34 = [(UIImageView *)v3->_checkmarkImageView topAnchor];
-    v35 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 topAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
-    [v27 addObject:v36];
+    topAnchor = [(UIImageView *)v3->_checkmarkImageView topAnchor];
+    topAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v36];
 
-    v37 = [(UIImageView *)v3->_checkmarkImageView bottomAnchor];
-    v38 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 bottomAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
-    [v27 addObject:v39];
+    bottomAnchor = [(UIImageView *)v3->_checkmarkImageView bottomAnchor];
+    bottomAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v39];
 
-    v40 = [(UIImageView *)v3->_circleImageView leadingAnchor];
-    v41 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 leadingAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
-    [v27 addObject:v42];
+    leadingAnchor3 = [(UIImageView *)v3->_circleImageView leadingAnchor];
+    leadingAnchor4 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 leadingAnchor];
+    v42 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    [array addObject:v42];
 
-    v43 = [(UIImageView *)v3->_circleImageView trailingAnchor];
-    v44 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 trailingAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
-    [v27 addObject:v45];
+    trailingAnchor3 = [(UIImageView *)v3->_circleImageView trailingAnchor];
+    trailingAnchor4 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 trailingAnchor];
+    v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+    [array addObject:v45];
 
-    v46 = [(UIImageView *)v3->_circleImageView topAnchor];
-    v47 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 topAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
-    [v27 addObject:v48];
+    topAnchor3 = [(UIImageView *)v3->_circleImageView topAnchor];
+    topAnchor4 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 topAnchor];
+    v48 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+    [array addObject:v48];
 
-    v49 = [(UIImageView *)v3->_circleImageView bottomAnchor];
-    v50 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 bottomAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
-    [v27 addObject:v51];
+    bottomAnchor3 = [(UIImageView *)v3->_circleImageView bottomAnchor];
+    bottomAnchor4 = [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)v3 bottomAnchor];
+    v51 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array addObject:v51];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v27];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   return v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     checkmarkImageView = self->_checkmarkImageView;
-    if (a3)
+    if (selected)
     {
       v5 = 1.0;
     }

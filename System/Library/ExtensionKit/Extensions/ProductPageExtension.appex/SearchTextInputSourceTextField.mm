@@ -1,39 +1,39 @@
 @interface SearchTextInputSourceTextField
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (_TtC20ProductPageExtension30SearchTextInputSourceTextField)init;
-- (void)textFieldDidChangeSelection:(id)a3;
-- (void)textFieldDidEdit:(id)a3;
+- (void)textFieldDidChangeSelection:(id)selection;
+- (void)textFieldDidEdit:(id)edit;
 @end
 
 @implementation SearchTextInputSourceTextField
 
-- (void)textFieldDidEdit:(id)a3
+- (void)textFieldDidEdit:(id)edit
 {
-  v3 = self;
-  sub_100467240(v3);
+  selfCopy = self;
+  sub_100467240(selfCopy);
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
+  length = range.length;
   sub_10076FF9C();
-  v8 = a3;
-  v9 = self;
-  LOBYTE(length) = sub_100467568(v8, v10, length);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_100467568(fieldCopy, v10, length);
 
   return length & 1;
 }
 
-- (void)textFieldDidChangeSelection:(id)a3
+- (void)textFieldDidChangeSelection:(id)selection
 {
   swift_getObjectType();
   v4 = swift_conformsToProtocol2();
-  if (v4 && a3)
+  if (v4 && selection)
   {
     v5 = v4;
     ObjectType = swift_getObjectType();
     v7 = *(v5 + 16);
-    v8 = a3;
+    selectionCopy = selection;
     v7(0, 0, ObjectType, v5);
   }
 }

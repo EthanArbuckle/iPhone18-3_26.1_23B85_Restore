@@ -1,14 +1,14 @@
 @interface VNOperationPointsProvider
-- (BOOL)isEqual:(id)a3;
-- (VNOperationPointsProvider)initWithOperationPoints:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNOperationPointsProvider)initWithOperationPoints:(id)points;
 @end
 
 @implementation VNOperationPointsProvider
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -18,7 +18,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(VNOperationPointsProvider *)self operationPointsAndReturnError:0];
       v7 = [(VNOperationPointsProvider *)v5 operationPointsAndReturnError:0];
 
@@ -34,17 +34,17 @@
   return v8;
 }
 
-- (VNOperationPointsProvider)initWithOperationPoints:(id)a3
+- (VNOperationPointsProvider)initWithOperationPoints:(id)points
 {
-  v5 = a3;
-  [VNError VNAssert:v5 != 0 log:@"operation points object must be allocated before calling this method"];
+  pointsCopy = points;
+  [VNError VNAssert:pointsCopy != 0 log:@"operation points object must be allocated before calling this method"];
   v9.receiver = self;
   v9.super_class = VNOperationPointsProvider;
   v6 = [(VNOperationPointsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operationPoints, a3);
+    objc_storeStrong(&v6->_operationPoints, points);
   }
 
   return v7;

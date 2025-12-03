@@ -10,31 +10,31 @@
 - (void)setAb_textAttributes:()ABUIAdditions
 {
   v4 = a3;
-  v5 = [a1 titleLabel];
-  [v5 setAb_textAttributes:v4];
+  titleLabel = [self titleLabel];
+  [titleLabel setAb_textAttributes:v4];
 }
 
 - (id)ab_textAttributes
 {
-  v1 = [a1 titleLabel];
-  v2 = [v1 ab_textAttributes];
+  titleLabel = [self titleLabel];
+  ab_textAttributes = [titleLabel ab_textAttributes];
 
-  return v2;
+  return ab_textAttributes;
 }
 
 - (void)setAb_text:()ABUIAdditions
 {
   v4 = a3;
-  v5 = [a1 titleLabel];
-  [v5 setText:v4];
+  titleLabel = [self titleLabel];
+  [titleLabel setText:v4];
 }
 
 - (id)ab_text
 {
-  v1 = [a1 titleLabel];
-  v2 = [v1 text];
+  titleLabel = [self titleLabel];
+  text = [titleLabel text];
 
-  return v2;
+  return text;
 }
 
 @end

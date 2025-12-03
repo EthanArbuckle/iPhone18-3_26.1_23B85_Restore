@@ -49,7 +49,7 @@
     v19[1] = 3221225472;
     v19[2] = __75__NSPropertyListSerialization_TSUtility__tsu_processLocalizedPropertyList___block_invoke;
     v19[3] = &__block_descriptor_40_e15_v32__0_8_16_B24l;
-    v19[4] = a1;
+    v19[4] = self;
     [v5 enumerateKeysAndObjectsUsingBlock:v19];
     if (v6)
     {
@@ -92,7 +92,7 @@ LABEL_17:
             objc_enumerationMutation(v10);
           }
 
-          [a1 tsu_processLocalizedPropertyList:*(*(&v15 + 1) + 8 * v14++)];
+          [self tsu_processLocalizedPropertyList:*(*(&v15 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
@@ -119,8 +119,8 @@ LABEL_18:
     [v9 handleFailureInFunction:v10 file:v11 lineNumber:73 description:@"Need mutable containers to process a localizable property list"];
   }
 
-  v12 = [a1 tsu_propertyListWithContentsOfURL:v8 options:a4 error:a5];
-  [a1 tsu_processLocalizedPropertyList:v12];
+  v12 = [self tsu_propertyListWithContentsOfURL:v8 options:a4 error:a5];
+  [self tsu_processLocalizedPropertyList:v12];
 
   return v12;
 }

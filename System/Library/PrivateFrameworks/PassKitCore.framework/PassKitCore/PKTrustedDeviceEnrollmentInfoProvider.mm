@@ -1,7 +1,7 @@
 @interface PKTrustedDeviceEnrollmentInfoProvider
 - (PKTrustedDeviceEnrollmentInfoProvider)init;
-- (void)trustedDeviceEnrollmentInfoWithCompletion:(id)a3;
-- (void)trustedDeviceEnrollmentSignatureForDevice:(unint64_t)a3 accountDSID:(id)a4 sessionData:(id)a5 completion:(id)a6;
+- (void)trustedDeviceEnrollmentInfoWithCompletion:(id)completion;
+- (void)trustedDeviceEnrollmentSignatureForDevice:(unint64_t)device accountDSID:(id)d sessionData:(id)data completion:(id)completion;
 @end
 
 @implementation PKTrustedDeviceEnrollmentInfoProvider
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (void)trustedDeviceEnrollmentInfoWithCompletion:(id)a3
+- (void)trustedDeviceEnrollmentInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __83__PKTrustedDeviceEnrollmentInfoProvider_trustedDeviceEnrollmentInfoWithCompletion___block_invoke;
     v10[3] = &unk_1E79C44A0;
-    v6 = v4;
+    v6 = completionCopy;
     v10[4] = self;
     v11 = v6;
     v7 = [(PKTrustedDeviceEnrollmentInfoProvider *)self _remoteObjectProxyWithFailureHandler:v10];
@@ -77,21 +77,21 @@ void __83__PKTrustedDeviceEnrollmentInfoProvider_trustedDeviceEnrollmentInfoWith
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 }
 
-- (void)trustedDeviceEnrollmentSignatureForDevice:(unint64_t)a3 accountDSID:(id)a4 sessionData:(id)a5 completion:(id)a6
+- (void)trustedDeviceEnrollmentSignatureForDevice:(unint64_t)device accountDSID:(id)d sessionData:(id)data completion:(id)completion
 {
-  v10 = a6;
-  v11 = v10;
-  if (v10)
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __118__PKTrustedDeviceEnrollmentInfoProvider_trustedDeviceEnrollmentSignatureForDevice_accountDSID_sessionData_completion___block_invoke;
     v18[3] = &unk_1E79C4860;
-    v12 = v10;
+    v12 = completionCopy;
     v18[4] = self;
     v19 = v12;
-    v13 = a5;
-    v14 = a4;
+    dataCopy = data;
+    dCopy = d;
     v15 = [(PKTrustedDeviceEnrollmentInfoProvider *)self _remoteObjectProxyWithErrorHandler:v18];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -99,7 +99,7 @@ void __83__PKTrustedDeviceEnrollmentInfoProvider_trustedDeviceEnrollmentInfoWith
     v16[3] = &unk_1E79D84B8;
     v16[4] = self;
     v17 = v12;
-    [v15 trustedDeviceEnrollmentSignatureForDevice:a3 accountDSID:v14 sessionData:v13 handler:v16];
+    [v15 trustedDeviceEnrollmentSignatureForDevice:device accountDSID:dCopy sessionData:dataCopy handler:v16];
   }
 }
 

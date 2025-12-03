@@ -1,20 +1,20 @@
 @interface ArcadePayoutMetricsHandler
-- (BOOL)isCandidateAppMetadata:(id)a3;
-- (BOOL)isCandidateAppProxy:(id)a3 isMetadataLookup:(BOOL)a4;
+- (BOOL)isCandidateAppMetadata:(id)metadata;
+- (BOOL)isCandidateAppProxy:(id)proxy isMetadataLookup:(BOOL)lookup;
 - (BOOL)shouldCollectMetrics;
-- (id)_activeAccountIDForAppEvent:(id)a3 withAccountEvents:(id)a4;
-- (id)_qualifiedEventsForWeekStartingWithDate:(id)a3;
+- (id)_activeAccountIDForAppEvent:(id)event withAccountEvents:(id)events;
+- (id)_qualifiedEventsForWeekStartingWithDate:(id)date;
 - (id)logKey;
-- (void)recordLaunches:(id)a3;
+- (void)recordLaunches:(id)launches;
 @end
 
 @implementation ArcadePayoutMetricsHandler
 
-- (BOOL)isCandidateAppMetadata:(id)a3
+- (BOOL)isCandidateAppMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && sub_100382758(v3))
+  metadataCopy = metadata;
+  v4 = metadataCopy;
+  if (metadataCopy && sub_100382758(metadataCopy))
   {
     v5 = sub_100382710(v4) ^ 1;
   }
@@ -27,11 +27,11 @@
   return v5;
 }
 
-- (BOOL)isCandidateAppProxy:(id)a3 isMetadataLookup:(BOOL)a4
+- (BOOL)isCandidateAppProxy:(id)proxy isMetadataLookup:(BOOL)lookup
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 && ([v4[15] isPlaceholder] & 1) == 0 && sub_1003D2BDC(v5) && !sub_1003D2404(v5);
+  proxyCopy = proxy;
+  v5 = proxyCopy;
+  v6 = proxyCopy && ([proxyCopy[15] isPlaceholder] & 1) == 0 && sub_1003D2BDC(v5) && !sub_1003D2404(v5);
 
   return v6;
 }
@@ -52,12 +52,12 @@
   return logKey;
 }
 
-- (void)recordLaunches:(id)a3
+- (void)recordLaunches:(id)launches
 {
-  v4 = a3;
+  launchesCopy = launches;
   v5 = +[BagService appstoredService];
-  v6 = [v5 lastBag];
-  v98 = [v6 integerForKey:@"ocelot-payout-qualifying-duration-seconds" defaultValue:60];
+  lastBag = [v5 lastBag];
+  v98 = [lastBag integerForKey:@"ocelot-payout-qualifying-duration-seconds" defaultValue:60];
 
   v7 = sub_1001E5E74();
   sub_1001E6814(v7);
@@ -69,7 +69,7 @@
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  obj = v4;
+  obj = launchesCopy;
   v9 = [obj countByEnumeratingWithState:&v117 objects:v131 count:16];
   if (v9)
   {
@@ -77,7 +77,7 @@
     v102 = *v118;
     v92 = v8;
     v87 = v7;
-    v88 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -134,7 +134,7 @@ LABEL_13:
               if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
               {
                 v19 = v18;
-                v20 = [(ArcadePayoutMetricsHandler *)self logKey];
+                logKey = [(ArcadePayoutMetricsHandler *)self logKey];
                 if (v105)
                 {
                   v21 = *(v105 + 40);
@@ -150,7 +150,7 @@ LABEL_13:
                 }
 
                 *buf = 138412802;
-                v122 = v20;
+                v122 = logKey;
                 v123 = 2114;
                 v124 = v21;
                 v125 = 2048;
@@ -222,12 +222,12 @@ LABEL_13:
               v41 = ASDLogHandleForCategory();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
               {
-                v42 = [(ArcadePayoutMetricsHandler *)self logKey];
+                logKey2 = [(ArcadePayoutMetricsHandler *)self logKey];
                 v43 = sub_1002526A4(v101);
-                v44 = [v30 allObjects];
-                v45 = [v44 componentsJoinedByString:{@", "}];
+                allObjects = [v30 allObjects];
+                v45 = [allObjects componentsJoinedByString:{@", "}];
                 *buf = 138412802;
-                v122 = v42;
+                v122 = logKey2;
                 v123 = 2114;
                 v124 = v43;
                 v125 = 2114;
@@ -312,14 +312,14 @@ LABEL_13:
                 {
                   v64 = ASDLogHandleForCategory();
                   v7 = v87;
-                  self = v88;
+                  self = selfCopy;
                   v17 = v103;
                   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                   {
-                    v65 = [(ArcadePayoutMetricsHandler *)v88 logKey];
+                    logKey3 = [(ArcadePayoutMetricsHandler *)selfCopy logKey];
                     v66 = [v50 componentsJoinedByString:@", "];
                     *buf = 138412546;
-                    v122 = v65;
+                    v122 = logKey3;
                     v123 = 2114;
                     v124 = v66;
                     _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "[%@] Qualified for week are now: [%{public}@]", buf, 0x16u);
@@ -329,7 +329,7 @@ LABEL_13:
                 else
                 {
                   v7 = v87;
-                  self = v88;
+                  self = selfCopy;
                   v17 = v103;
                 }
 
@@ -341,7 +341,7 @@ LABEL_13:
                 v78 = ASDLogHandleForCategory();
                 if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
                 {
-                  v79 = [(ArcadePayoutMetricsHandler *)self logKey];
+                  logKey4 = [(ArcadePayoutMetricsHandler *)self logKey];
                   v80 = v105;
                   if (v105)
                   {
@@ -350,7 +350,7 @@ LABEL_13:
 
                   v81 = v80;
                   *buf = 138412802;
-                  v122 = v79;
+                  v122 = logKey4;
                   v123 = 2114;
                   v124 = v81;
                   v125 = 2114;
@@ -369,18 +369,18 @@ LABEL_13:
                 }
 
                 sub_10023E000(log, v18, @"week_start_time");
-                v82 = [v97 stringValue];
-                sub_10023E000(log, v82, @"account_id");
+                stringValue = [v97 stringValue];
+                sub_10023E000(log, stringValue, @"account_id");
 
                 [v50 addObject:v53];
                 [v89 addObject:log];
                 v78 = ASDLogHandleForCategory();
                 if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
                 {
-                  v83 = [(ArcadePayoutMetricsHandler *)self logKey];
+                  logKey5 = [(ArcadePayoutMetricsHandler *)self logKey];
                   [v18 timeIntervalSince1970];
                   *buf = 138413058;
-                  v122 = v83;
+                  v122 = logKey5;
                   v123 = 2114;
                   v124 = v53;
                   v125 = 2114;
@@ -401,7 +401,7 @@ LABEL_13:
               if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
               {
                 v70 = v46;
-                v71 = [(ArcadePayoutMetricsHandler *)self logKey];
+                logKey6 = [(ArcadePayoutMetricsHandler *)self logKey];
                 v18 = v101;
                 if (v105)
                 {
@@ -431,7 +431,7 @@ LABEL_13:
                 }
 
                 *buf = 138412802;
-                v122 = v71;
+                v122 = logKey6;
                 v123 = 2114;
                 v124 = v77;
                 v125 = 2048;
@@ -457,7 +457,7 @@ LABEL_13:
             v10 = v95;
             if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
             {
-              v67 = [(ArcadePayoutMetricsHandler *)self logKey];
+              logKey7 = [(ArcadePayoutMetricsHandler *)self logKey];
               v68 = v105;
               if (v105)
               {
@@ -466,7 +466,7 @@ LABEL_13:
 
               v69 = v68;
               *buf = 138412546;
-              v122 = v67;
+              v122 = logKey7;
               v123 = 2112;
               v124 = v69;
               _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[%@] [%@] Could not find the week start date", buf, 0x16u);
@@ -484,7 +484,7 @@ LABEL_13:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
             v24 = v18;
-            v25 = [(ArcadePayoutMetricsHandler *)self logKey];
+            logKey8 = [(ArcadePayoutMetricsHandler *)self logKey];
             v26 = v105;
             if (v105)
             {
@@ -493,7 +493,7 @@ LABEL_13:
 
             v27 = v26;
             *buf = 138412546;
-            v122 = v25;
+            v122 = logKey8;
             v123 = 2114;
             v124 = v27;
             _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "[%@] [%{public}@] Skipping non arcade launch event", buf, 0x16u);
@@ -524,7 +524,7 @@ LABEL_80:
     v106[2] = sub_1002A6C74;
     v106[3] = &unk_10051C838;
     v107 = v89;
-    v108 = self;
+    selfCopy2 = self;
     [v86 modifyUsingTransaction:v106];
   }
 }
@@ -540,22 +540,22 @@ LABEL_80:
   else
   {
     v4 = +[BagService appstoredService];
-    v5 = [v4 lastBag];
-    v3 = [v5 BOOLForKey:@"arcade-payout-enabled" defaultValue:1];
+    lastBag = [v4 lastBag];
+    v3 = [lastBag BOOLForKey:@"arcade-payout-enabled" defaultValue:1];
   }
 
   return v3;
 }
 
-- (id)_activeAccountIDForAppEvent:(id)a3 withAccountEvents:(id)a4
+- (id)_activeAccountIDForAppEvent:(id)event withAccountEvents:(id)events
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  eventCopy = event;
+  eventsCopy = events;
+  if (eventsCopy)
   {
-    if (v6)
+    if (eventCopy)
     {
-      v8 = v6[3];
+      v8 = eventCopy[3];
     }
 
     else
@@ -567,9 +567,9 @@ LABEL_80:
     [v9 timeIntervalSinceReferenceDate];
     v11 = v10;
 
-    if (v6)
+    if (eventCopy)
     {
-      v12 = v6[2];
+      v12 = eventCopy[2];
     }
 
     else
@@ -585,7 +585,7 @@ LABEL_80:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v16 = v7;
+    v16 = eventsCopy;
     v18 = [v16 countByEnumeratingWithState:&v34 objects:v44 count:16];
     if (v18)
     {
@@ -616,10 +616,10 @@ LABEL_25:
                 v25 = ASDLogHandleForCategory();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
                 {
-                  v26 = [(ArcadePayoutMetricsHandler *)self logKey];
-                  if (v6)
+                  logKey = [(ArcadePayoutMetricsHandler *)self logKey];
+                  if (eventCopy)
                   {
-                    v27 = v6[5];
+                    v27 = eventCopy[5];
                   }
 
                   else
@@ -629,7 +629,7 @@ LABEL_25:
 
                   v28 = v27;
                   *buf = 138412802;
-                  v39 = v26;
+                  v39 = logKey;
                   v40 = 2114;
                   v41 = v28;
                   v42 = 2114;
@@ -669,10 +669,10 @@ LABEL_25:
     v16 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v30 = [(ArcadePayoutMetricsHandler *)self logKey];
-      if (v6)
+      logKey2 = [(ArcadePayoutMetricsHandler *)self logKey];
+      if (eventCopy)
       {
-        v31 = v6[5];
+        v31 = eventCopy[5];
       }
 
       else
@@ -682,7 +682,7 @@ LABEL_25:
 
       v32 = v31;
       *buf = 138412546;
-      v39 = v30;
+      v39 = logKey2;
       v40 = 2114;
       v41 = v32;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "[%@] [%{public}@] Unable to find launch account for event due to no active accounts", buf, 0x16u);
@@ -696,19 +696,19 @@ LABEL_31:
   return v18;
 }
 
-- (id)_qualifiedEventsForWeekStartingWithDate:(id)a3
+- (id)_qualifiedEventsForWeekStartingWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v6 = [NSNumber numberWithDouble:?];
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ArcadePayoutMetricsHandler *)self logKey];
-    v9 = sub_1002526A4(v4);
+    logKey = [(ArcadePayoutMetricsHandler *)self logKey];
+    v9 = sub_1002526A4(dateCopy);
     *buf = 138412546;
-    v21 = v8;
+    v21 = logKey;
     v22 = 2114;
     v23 = v9;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@] Looking for qualified in with week: %{public}@", buf, 0x16u);
@@ -721,7 +721,7 @@ LABEL_31:
   v16[2] = sub_1002A735C;
   v16[3] = &unk_100520820;
   v17 = v10;
-  v18 = self;
+  selfCopy = self;
   v19 = v5;
   v12 = v5;
   v13 = v10;

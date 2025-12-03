@@ -1,75 +1,75 @@
 @interface PPPBMusicDataCollectionRecord
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAlgorithm:(BOOL)a3;
-- (void)setHasMediaType:(BOOL)a3;
-- (void)setHasSecondsFromUnixEpoch:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAlgorithm:(BOOL)algorithm;
+- (void)setHasMediaType:(BOOL)type;
+- (void)setHasSecondsFromUnixEpoch:(BOOL)epoch;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBMusicDataCollectionRecord
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 68) & 0x10) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 68) & 0x10) != 0)
   {
-    self->_type = *(v4 + 16);
+    self->_type = *(fromCopy + 16);
     *&self->_has |= 0x10u;
   }
 
-  v7 = v4;
-  if (*(v4 + 4))
+  v7 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PPPBMusicDataCollectionRecord *)self setLabel:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 2) != 0)
   {
-    self->_secondsFromUnixEpoch = *(v4 + 2);
+    self->_secondsFromUnixEpoch = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
   }
 
   if (v5)
   {
-    self->_quantizedScore = *(v4 + 1);
+    self->_quantizedScore = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PPPBMusicDataCollectionRecord *)self setSourceBundleId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PPPBMusicDataCollectionRecord *)self setMediaId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(fromCopy + 68);
   if ((v6 & 8) != 0)
   {
-    self->_mediaType = *(v4 + 12);
+    self->_mediaType = *(fromCopy + 12);
     *&self->_has |= 8u;
-    v6 = *(v4 + 68);
+    v6 = *(fromCopy + 68);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_algorithm = *(v4 + 6);
+    self->_algorithm = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 }
@@ -180,31 +180,31 @@ LABEL_22:
   return v4 ^ v3 ^ v7 ^ v11 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
   has = self->_has;
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 68) & 0x10) == 0 || self->_type != *(v4 + 16))
+    if ((*(equalCopy + 68) & 0x10) == 0 || self->_type != *(equalCopy + 16))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 68) & 0x10) != 0)
+  else if ((*(equalCopy + 68) & 0x10) != 0)
   {
     goto LABEL_33;
   }
 
   label = self->_label;
-  if (label | *(v4 + 4))
+  if (label | *(equalCopy + 4))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -214,12 +214,12 @@ LABEL_33:
     }
 
     has = self->_has;
-    v6 = *(v4 + 68);
+    v6 = *(equalCopy + 68);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_secondsFromUnixEpoch != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_secondsFromUnixEpoch != *(equalCopy + 2))
     {
       goto LABEL_33;
     }
@@ -232,7 +232,7 @@ LABEL_33:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_quantizedScore != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_quantizedScore != *(equalCopy + 1))
     {
       goto LABEL_33;
     }
@@ -244,13 +244,13 @@ LABEL_33:
   }
 
   sourceBundleId = self->_sourceBundleId;
-  if (sourceBundleId | *(v4 + 7) && ![(NSString *)sourceBundleId isEqual:?])
+  if (sourceBundleId | *(equalCopy + 7) && ![(NSString *)sourceBundleId isEqual:?])
   {
     goto LABEL_33;
   }
 
   mediaId = self->_mediaId;
-  if (mediaId | *(v4 + 5))
+  if (mediaId | *(equalCopy + 5))
   {
     if (![(NSString *)mediaId isEqual:?])
     {
@@ -260,21 +260,21 @@ LABEL_33:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 68) & 8) == 0 || self->_mediaType != *(v4 + 12))
+    if ((*(equalCopy + 68) & 8) == 0 || self->_mediaType != *(equalCopy + 12))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 68) & 8) != 0)
+  else if ((*(equalCopy + 68) & 8) != 0)
   {
     goto LABEL_33;
   }
 
-  v10 = (*(v4 + 68) & 4) == 0;
+  v10 = (*(equalCopy + 68) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_algorithm != *(v4 + 6))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_algorithm != *(equalCopy + 6))
     {
       goto LABEL_33;
     }
@@ -287,9 +287,9 @@ LABEL_34:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -297,7 +297,7 @@ LABEL_34:
     *(v5 + 68) |= 0x10u;
   }
 
-  v7 = [(NSString *)self->_label copyWithZone:a3];
+  v7 = [(NSString *)self->_label copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -315,11 +315,11 @@ LABEL_34:
     *(v6 + 68) |= 1u;
   }
 
-  v10 = [(NSString *)self->_sourceBundleId copyWithZone:a3];
+  v10 = [(NSString *)self->_sourceBundleId copyWithZone:zone];
   v11 = *(v6 + 56);
   *(v6 + 56) = v10;
 
-  v12 = [(NSString *)self->_mediaId copyWithZone:a3];
+  v12 = [(NSString *)self->_mediaId copyWithZone:zone];
   v13 = *(v6 + 40);
   *(v6 + 40) = v12;
 
@@ -340,66 +340,66 @@ LABEL_34:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[16] = self->_type;
-    *(v4 + 68) |= 0x10u;
+    toCopy[16] = self->_type;
+    *(toCopy + 68) |= 0x10u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_label)
   {
-    [v4 setLabel:?];
-    v4 = v7;
+    [toCopy setLabel:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_secondsFromUnixEpoch;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 2) = *&self->_secondsFromUnixEpoch;
+    *(toCopy + 68) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_quantizedScore;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 1) = *&self->_quantizedScore;
+    *(toCopy + 68) |= 1u;
   }
 
   if (self->_sourceBundleId)
   {
     [v7 setSourceBundleId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_mediaId)
   {
     [v7 setMediaId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    v4[12] = self->_mediaType;
-    *(v4 + 68) |= 8u;
+    toCopy[12] = self->_mediaType;
+    *(toCopy + 68) |= 8u;
     v6 = self->_has;
   }
 
   if ((v6 & 4) != 0)
   {
-    v4[6] = self->_algorithm;
-    *(v4 + 68) |= 4u;
+    toCopy[6] = self->_algorithm;
+    *(toCopy + 68) |= 4u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
     type = self->_type;
@@ -452,24 +452,24 @@ LABEL_34:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_type];
-    [v3 setObject:v4 forKey:@"type"];
+    [dictionary setObject:v4 forKey:@"type"];
   }
 
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_secondsFromUnixEpoch];
-    [v3 setObject:v7 forKey:@"secondsFromUnixEpoch"];
+    [dictionary setObject:v7 forKey:@"secondsFromUnixEpoch"];
 
     has = self->_has;
   }
@@ -477,26 +477,26 @@ LABEL_34:
   if (has)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_quantizedScore];
-    [v3 setObject:v8 forKey:@"quantizedScore"];
+    [dictionary setObject:v8 forKey:@"quantizedScore"];
   }
 
   sourceBundleId = self->_sourceBundleId;
   if (sourceBundleId)
   {
-    [v3 setObject:sourceBundleId forKey:@"sourceBundleId"];
+    [dictionary setObject:sourceBundleId forKey:@"sourceBundleId"];
   }
 
   mediaId = self->_mediaId;
   if (mediaId)
   {
-    [v3 setObject:mediaId forKey:@"mediaId"];
+    [dictionary setObject:mediaId forKey:@"mediaId"];
   }
 
   v11 = self->_has;
   if ((v11 & 8) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithInt:self->_mediaType];
-    [v3 setObject:v12 forKey:@"mediaType"];
+    [dictionary setObject:v12 forKey:@"mediaType"];
 
     v11 = self->_has;
   }
@@ -504,10 +504,10 @@ LABEL_34:
   if ((v11 & 4) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithInt:self->_algorithm];
-    [v3 setObject:v13 forKey:@"algorithm"];
+    [dictionary setObject:v13 forKey:@"algorithm"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -516,15 +516,15 @@ LABEL_34:
   v8.receiver = self;
   v8.super_class = PPPBMusicDataCollectionRecord;
   v4 = [(PPPBMusicDataCollectionRecord *)&v8 description];
-  v5 = [(PPPBMusicDataCollectionRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBMusicDataCollectionRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasAlgorithm:(BOOL)a3
+- (void)setHasAlgorithm:(BOOL)algorithm
 {
-  if (a3)
+  if (algorithm)
   {
     v3 = 4;
   }
@@ -537,9 +537,9 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMediaType:(BOOL)a3
+- (void)setHasMediaType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -552,9 +552,9 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSecondsFromUnixEpoch:(BOOL)a3
+- (void)setHasSecondsFromUnixEpoch:(BOOL)epoch
 {
-  if (a3)
+  if (epoch)
   {
     v3 = 2;
   }
@@ -567,9 +567,9 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }

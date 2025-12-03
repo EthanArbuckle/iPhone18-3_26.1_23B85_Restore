@@ -1,22 +1,22 @@
 @interface GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder
-- (GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder)initWithDictionaryRepresentation:(id)a3 error:(id *)a4;
+- (GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder)initWithDictionaryRepresentation:(id)representation error:(id *)error;
 - (id)build;
 - (void)build;
-- (void)initializeWithModel:(id)a3;
+- (void)initializeWithModel:(id)model;
 - (void)reset;
 @end
 
 @implementation GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder
 
-- (void)initializeWithModel:(id)a3
+- (void)initializeWithModel:(id)model
 {
   v6.receiver = self;
   v6.super_class = GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder;
-  v4 = a3;
-  [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v6 initializeWithModel:v4];
-  v5 = [v4 motorName];
+  modelCopy = model;
+  [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v6 initializeWithModel:modelCopy];
+  motorName = [modelCopy motorName];
 
-  [(GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder *)self setMotorName:v5];
+  [(GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder *)self setMotorName:motorName];
 }
 
 - (void)reset
@@ -31,27 +31,27 @@
 {
   v9.receiver = self;
   v9.super_class = GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder;
-  v4 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v9 build];
-  v5 = [(GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder *)self motorName];
-  if (!v5)
+  build = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v9 build];
+  motorName = [(GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder *)self motorName];
+  if (!motorName)
   {
     [(GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder *)a2 build];
   }
 
-  v6 = [v5 copy];
-  v7 = v4[1];
-  v4[1] = v6;
+  v6 = [motorName copy];
+  v7 = build[1];
+  build[1] = v6;
 
-  return v4;
+  return build;
 }
 
-- (GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder)initWithDictionaryRepresentation:(id)a3 error:(id *)a4
+- (GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder)initWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  representationCopy = representation;
   v18.receiver = self;
   v18.super_class = GCGenericDeviceDataRumbleMotorValueExpressionModelBuilder;
-  v7 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v18 initWithDictionaryRepresentation:v6 error:a4];
+  v7 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v18 initWithDictionaryRepresentation:representationCopy error:error];
   if (!v7)
   {
 LABEL_8:
@@ -60,21 +60,21 @@ LABEL_8:
   }
 
   v17 = 0;
-  v8 = [v6 gc_requiredObjectForKey:@"MotorName" ofClass:objc_opt_class() error:&v17];
+  v8 = [representationCopy gc_requiredObjectForKey:@"MotorName" ofClass:objc_opt_class() error:&v17];
   v9 = v17;
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v19[0] = *MEMORY[0x1E696A578];
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", objc_msgSend(objc_opt_class(), "modelClass")];
       v20[0] = v14;
       v19[1] = *MEMORY[0x1E696A588];
-      v15 = [v9 localizedFailureReason];
-      v20[1] = v15;
+      localizedFailureReason = [v9 localizedFailureReason];
+      v20[1] = localizedFailureReason;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-      *a4 = [(NSError *)v13 gc_modelError:v16 userInfo:?];
+      *error = [(NSError *)v13 gc_modelError:v16 userInfo:?];
     }
 
     goto LABEL_8;
@@ -91,8 +91,8 @@ LABEL_4:
 
 - (void)build
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GCGenericDeviceDataRumbleMotorValueExpressionModel.m" lineNumber:89 description:@"'motorName' can not be nil"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GCGenericDeviceDataRumbleMotorValueExpressionModel.m" lineNumber:89 description:@"'motorName' can not be nil"];
 }
 
 @end

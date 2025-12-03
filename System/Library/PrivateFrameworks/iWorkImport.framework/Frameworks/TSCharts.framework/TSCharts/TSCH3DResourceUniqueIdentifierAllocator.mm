@@ -6,10 +6,10 @@
 
 + (unint64_t)allocateResourceUniqueIdentifier
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = qword_280A46B28++;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = v3 + 1;
   if (v3 == -1)

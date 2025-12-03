@@ -2,20 +2,20 @@
 + (UIEdgeInsets)contentViewInsets;
 + (double)arrowBase;
 + (double)arrowHeight;
-+ (double)effectiveBottomRadiusForView:(id)a3;
-- (SFUIShareSheetPopoverBackgroundView)initWithCoder:(id)a3;
++ (double)effectiveBottomRadiusForView:(id)view;
+- (SFUIShareSheetPopoverBackgroundView)initWithCoder:(id)coder;
 - (double)arrowOffset;
 - (unint64_t)arrowDirection;
-- (void)setArrowDirection:(unint64_t)a3;
-- (void)setArrowOffset:(double)a3;
+- (void)setArrowDirection:(unint64_t)direction;
+- (void)setArrowOffset:(double)offset;
 @end
 
 @implementation SFUIShareSheetPopoverBackgroundView
 
-- (SFUIShareSheetPopoverBackgroundView)initWithCoder:(id)a3
+- (SFUIShareSheetPopoverBackgroundView)initWithCoder:(id)coder
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](coder);
   SFUIShareSheetPopoverBackgroundView.init(coder:)();
 }
 
@@ -54,7 +54,7 @@
   return v5;
 }
 
-- (void)setArrowDirection:(unint64_t)a3
+- (void)setArrowDirection:(unint64_t)direction
 {
   swift_getObjectType();
   MEMORY[0x1E69E5928](self);
@@ -71,7 +71,7 @@
   return v5;
 }
 
-- (void)setArrowOffset:(double)a3
+- (void)setArrowOffset:(double)offset
 {
   swift_getObjectType();
   MEMORY[0x1E69E5928](self);
@@ -79,13 +79,13 @@
   MEMORY[0x1E69E5920](self);
 }
 
-+ (double)effectiveBottomRadiusForView:(id)a3
++ (double)effectiveBottomRadiusForView:(id)view
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](view);
   swift_getObjCClassMetadata();
-  v5 = static SFUIShareSheetPopoverBackgroundView.effectiveBottomRadius(view:)(a3);
-  MEMORY[0x1E69E5920](a3);
+  v5 = static SFUIShareSheetPopoverBackgroundView.effectiveBottomRadius(view:)(view);
+  MEMORY[0x1E69E5920](view);
   return v5;
 }
 

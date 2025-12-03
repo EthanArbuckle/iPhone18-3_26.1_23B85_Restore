@@ -1,8 +1,8 @@
 @interface PFDayOfWeekSchedule
 + (PFDayOfWeekSchedule)firstDayOfWeek;
-- (BOOL)shouldExecuteOn:(id)a3 previousExecution:(id)a4;
+- (BOOL)shouldExecuteOn:(id)on previousExecution:(id)execution;
 - (PFDayOfWeekSchedule)init;
-- (PFDayOfWeekSchedule)initWithDayOfWeek:(int64_t)a3 calendar:(id)a4;
+- (PFDayOfWeekSchedule)initWithDayOfWeek:(int64_t)week calendar:(id)calendar;
 @end
 
 @implementation PFDayOfWeekSchedule
@@ -34,7 +34,7 @@
   return v14;
 }
 
-- (PFDayOfWeekSchedule)initWithDayOfWeek:(int64_t)a3 calendar:(id)a4
+- (PFDayOfWeekSchedule)initWithDayOfWeek:(int64_t)week calendar:(id)calendar
 {
   v6 = sub_1D9176FDC();
   v7 = *(v6 - 8);
@@ -42,7 +42,7 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D9176F8C();
-  *(&self->super.isa + OBJC_IVAR___PFDayOfWeekSchedule_dayOfWeek) = a3;
+  *(&self->super.isa + OBJC_IVAR___PFDayOfWeekSchedule_dayOfWeek) = week;
   (*(v7 + 16))(self + OBJC_IVAR___PFDayOfWeekSchedule_calendar, v10, v6);
   v11 = type metadata accessor for DayOfWeekSchedule();
   v14.receiver = self;
@@ -52,7 +52,7 @@
   return v12;
 }
 
-- (BOOL)shouldExecuteOn:(id)a3 previousExecution:(id)a4
+- (BOOL)shouldExecuteOn:(id)on previousExecution:(id)execution
 {
   v6 = sub_1D9176FBC();
   v7 = *(v6 - 8);
@@ -69,7 +69,7 @@
   MEMORY[0x1EEE9AC00](v15);
   v19 = &v25 - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D9176DFC();
-  if (a4)
+  if (execution)
   {
     sub_1D9176DFC();
     v20 = 0;
@@ -82,12 +82,12 @@
 
   (*(v16 + 56))(v14, v20, 1, v15);
   (*(v7 + 104))(v10, *MEMORY[0x1E6969AB0], v6);
-  v21 = self;
+  selfCopy = self;
   v22 = sub_1D9176FCC();
   (*(v7 + 8))(v10, v6);
   sub_1D8CF5EF8(v14);
   (*(v16 + 8))(v19, v15);
-  v23 = *(&v21->super.isa + OBJC_IVAR___PFDayOfWeekSchedule_dayOfWeek);
+  v23 = *(&selfCopy->super.isa + OBJC_IVAR___PFDayOfWeekSchedule_dayOfWeek);
 
   return v22 == v23;
 }

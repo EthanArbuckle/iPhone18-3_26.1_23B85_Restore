@@ -1,29 +1,29 @@
 @interface HMDMediaGroupsLocalDataStorage
 + (id)logCategory;
-- (HMDMediaGroupsLocalDataStorage)initWithIdentifier:(id)a3 backupSender:(id)a4;
+- (HMDMediaGroupsLocalDataStorage)initWithIdentifier:(id)identifier backupSender:(id)sender;
 - (HMDMediaGroupsLocalDataStorageDataSource)dataSource;
 - (NSArray)groups;
 - (id)allParticipantAccessoryUUIDs;
-- (id)associatedGroupIdentifierForParticipantAccessoryUUID:(id)a3;
-- (id)associatedGroupsWithGroupIdentifier:(id)a3;
-- (id)backupGroupsForParticipantAccessoryUUID:(id)a3;
-- (id)groupWithIdentifier:(id)a3;
+- (id)associatedGroupIdentifierForParticipantAccessoryUUID:(id)d;
+- (id)associatedGroupsWithGroupIdentifier:(id)identifier;
+- (id)backupGroupsForParticipantAccessoryUUID:(id)d;
+- (id)groupWithIdentifier:(id)identifier;
 - (id)logIdentifier;
 - (id)nullSentinelUUID;
-- (id)receiverForParticipantAccessoryUUID:(id)a3;
-- (id)routerForParticipantAccessoryUUID:(id)a3;
-- (void)addBackedUpGroup:(id)a3;
-- (void)addBackedUpGroups:(id)a3;
+- (id)receiverForParticipantAccessoryUUID:(id)d;
+- (id)routerForParticipantAccessoryUUID:(id)d;
+- (void)addBackedUpGroup:(id)group;
+- (void)addBackedUpGroups:(id)groups;
 - (void)backupData;
 - (void)clearCachedData;
-- (void)clearCachedDataForParticipantAccessoryUUID:(id)a3;
-- (void)removeAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)a3;
-- (void)removeGroupWithIdentifier:(id)a3;
-- (void)setParticipantAccessoryUUID:(id)a3 associatedGroupIdentifier:(id)a4;
-- (void)unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:(id)a3;
-- (void)updateGroup:(id)a3;
-- (void)updateGroup:(id)a3 participantAccessoryUUIDs:(id)a4;
-- (void)updateUsingParticipantAccessoryUUID:(id)a3 associatedGroupIdentifier:(id)a4 backedUpGroupData:(id)a5;
+- (void)clearCachedDataForParticipantAccessoryUUID:(id)d;
+- (void)removeAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)d;
+- (void)removeGroupWithIdentifier:(id)identifier;
+- (void)setParticipantAccessoryUUID:(id)d associatedGroupIdentifier:(id)identifier;
+- (void)unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:(id)identifier;
+- (void)updateGroup:(id)group;
+- (void)updateGroup:(id)group participantAccessoryUUIDs:(id)ds;
+- (void)updateUsingParticipantAccessoryUUID:(id)d associatedGroupIdentifier:(id)identifier backedUpGroupData:(id)data;
 @end
 
 @implementation HMDMediaGroupsLocalDataStorage
@@ -37,27 +37,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaGroupsLocalDataStorage *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDMediaGroupsLocalDataStorage *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)receiverForParticipantAccessoryUUID:(id)a3
+- (id)receiverForParticipantAccessoryUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaGroupsLocalDataStorage *)self dataSource];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  dataSource = [(HMDMediaGroupsLocalDataStorage *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 receiverForParticipantAccessoryUUID:v4 mediaGroupsLocalDataStorage:self];
+    v7 = [dataSource receiverForParticipantAccessoryUUID:dCopy mediaGroupsLocalDataStorage:self];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -65,7 +65,7 @@
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Failed to get receiver for participant accessory UUID: %@ due to no data source", &v14, 0x16u);
     }
 
@@ -78,21 +78,21 @@
   return v7;
 }
 
-- (id)routerForParticipantAccessoryUUID:(id)a3
+- (id)routerForParticipantAccessoryUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaGroupsLocalDataStorage *)self dataSource];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  dataSource = [(HMDMediaGroupsLocalDataStorage *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 routerForParticipantAccessoryUUID:v4 mediaGroupsLocalDataStorage:self];
+    v7 = [dataSource routerForParticipantAccessoryUUID:dCopy mediaGroupsLocalDataStorage:self];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -100,7 +100,7 @@
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Failed to get router for participant accessory UUID: %@ due to no data source", &v14, 0x16u);
     }
 
@@ -113,12 +113,12 @@
   return v7;
 }
 
-- (void)removeGroupWithIdentifier:(id)a3
+- (void)removeGroupWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -126,25 +126,25 @@
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Remove group with identifier: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDMediaGroupsLocalDataStorage *)v6 unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:v4];
+  [(HMDMediaGroupsLocalDataStorage *)selfCopy unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:identifierCopy];
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)v6->_groups removeObjectForKey:v4];
-  os_unfair_lock_unlock(&v6->_lock);
+  [(NSMutableDictionary *)selfCopy->_groups removeObjectForKey:identifierCopy];
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateGroup:(id)a3
+- (void)updateGroup:(id)group
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -152,35 +152,35 @@
     v12 = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = groupCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Update group: %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  groups = v6->_groups;
-  v10 = [v4 identifier];
-  [(NSMutableDictionary *)groups setObject:v4 forKey:v10];
+  groups = selfCopy->_groups;
+  identifier = [groupCopy identifier];
+  [(NSMutableDictionary *)groups setObject:groupCopy forKey:identifier];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBackedUpGroup:(id)a3
+- (void)addBackedUpGroup:(id)group
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock_with_options();
   groups = self->_groups;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)groups objectForKey:v6];
+  identifier = [groupCopy identifier];
+  v7 = [(NSMutableDictionary *)groups objectForKey:identifier];
 
   if (v7)
   {
     os_unfair_lock_unlock(&self->_lock);
-    v8 = [v7 isEqual:v4];
+    v8 = [v7 isEqual:groupCopy];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
     if (v8)
@@ -191,7 +191,7 @@
         v20 = 138543618;
         v21 = v13;
         v22 = 2112;
-        v23 = v4;
+        v23 = groupCopy;
         _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Already added backed up group: %@", &v20, 0x16u);
       }
     }
@@ -202,7 +202,7 @@
       v20 = 138543874;
       v21 = v18;
       v22 = 2112;
-      v23 = v4;
+      v23 = groupCopy;
       v24 = 2112;
       v25 = v7;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Dropping backed up group: %@ existing group: %@", &v20, 0x20u);
@@ -212,12 +212,12 @@
   else
   {
     v14 = self->_groups;
-    v15 = [v4 identifier];
-    [(NSMutableDictionary *)v14 setObject:v4 forKey:v15];
+    identifier2 = [groupCopy identifier];
+    [(NSMutableDictionary *)v14 setObject:groupCopy forKey:identifier2];
 
     os_unfair_lock_unlock(&self->_lock);
     v9 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -225,7 +225,7 @@
       v20 = 138543618;
       v21 = v17;
       v22 = 2112;
-      v23 = v4;
+      v23 = groupCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Added backed up group: %@", &v20, 0x16u);
     }
   }
@@ -234,21 +234,21 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBackedUpGroups:(id)a3
+- (void)addBackedUpGroups:(id)groups
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__HMDMediaGroupsLocalDataStorage_addBackedUpGroups___block_invoke;
   v3[3] = &unk_279729370;
   v3[4] = self;
-  [a3 na_each:v3];
+  [groups na_each:v3];
 }
 
-- (id)groupWithIdentifier:(id)a3
+- (id)groupWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_groups objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_groups objectForKey:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
@@ -257,19 +257,19 @@
 - (NSArray)groups
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_groups allValues];
+  allValues = [(NSMutableDictionary *)self->_groups allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (void)setParticipantAccessoryUUID:(id)a3 associatedGroupIdentifier:(id)a4
+- (void)setParticipantAccessoryUUID:(id)d associatedGroupIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -277,27 +277,27 @@
     v15 = 138543874;
     v16 = v11;
     v17 = 2112;
-    v18 = v6;
+    v18 = dCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Setting participant accessory uuid: %@ associated group identifier: %@", &v15, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
   os_unfair_lock_lock_with_options();
-  participantAccessoryUUIDToAssociatedGroupIdentifier = v9->_participantAccessoryUUIDToAssociatedGroupIdentifier;
-  v13 = v7;
-  if (!v7)
+  participantAccessoryUUIDToAssociatedGroupIdentifier = selfCopy->_participantAccessoryUUIDToAssociatedGroupIdentifier;
+  nullSentinelUUID = identifierCopy;
+  if (!identifierCopy)
   {
-    v13 = [(HMDMediaGroupsLocalDataStorage *)v9 nullSentinelUUID];
+    nullSentinelUUID = [(HMDMediaGroupsLocalDataStorage *)selfCopy nullSentinelUUID];
   }
 
-  [(NSMutableDictionary *)participantAccessoryUUIDToAssociatedGroupIdentifier setObject:v13 forKey:v6];
-  if (!v7)
+  [(NSMutableDictionary *)participantAccessoryUUIDToAssociatedGroupIdentifier setObject:nullSentinelUUID forKey:dCopy];
+  if (!identifierCopy)
   {
   }
 
-  os_unfair_lock_unlock(&v9->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -309,12 +309,12 @@
   return v2;
 }
 
-- (void)unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:(id)a3
+- (void)unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -322,23 +322,23 @@
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Unsetting participant accessory uuids with associated group identifier: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v9 = [(NSMutableDictionary *)v6->_participantAccessoryUUIDToAssociatedGroupIdentifier allKeys];
+  allKeys = [(NSMutableDictionary *)selfCopy->_participantAccessoryUUIDToAssociatedGroupIdentifier allKeys];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __94__HMDMediaGroupsLocalDataStorage_unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier___block_invoke;
   v12[3] = &unk_279729328;
-  v12[4] = v6;
-  v10 = v4;
+  v12[4] = selfCopy;
+  v10 = identifierCopy;
   v13 = v10;
-  [v9 na_each:v12];
+  [allKeys na_each:v12];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v11 = *MEMORY[0x277D85DE8];
 }
 
@@ -355,13 +355,13 @@ void __94__HMDMediaGroupsLocalDataStorage_unsetParticipantAccessoryUUIDsWithAsso
   }
 }
 
-- (id)associatedGroupIdentifierForParticipantAccessoryUUID:(id)a3
+- (id)associatedGroupIdentifierForParticipantAccessoryUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_participantAccessoryUUIDToAssociatedGroupIdentifier objectForKey:v4];
-  v6 = [(HMDMediaGroupsLocalDataStorage *)self nullSentinelUUID];
-  if ([v5 hmf_isEqualToUUID:v6])
+  v5 = [(NSMutableDictionary *)self->_participantAccessoryUUIDToAssociatedGroupIdentifier objectForKey:dCopy];
+  nullSentinelUUID = [(HMDMediaGroupsLocalDataStorage *)self nullSentinelUUID];
+  if ([v5 hmf_isEqualToUUID:nullSentinelUUID])
   {
     v7 = 0;
   }
@@ -378,56 +378,56 @@ void __94__HMDMediaGroupsLocalDataStorage_unsetParticipantAccessoryUUIDsWithAsso
   return v8;
 }
 
-- (void)removeAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)a3
+- (void)removeAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_participantAccessoryUUIDToAssociatedGroupIdentifier removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_participantAccessoryUUIDToAssociatedGroupIdentifier removeObjectForKey:dCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (id)allParticipantAccessoryUUIDs
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_participantAccessoryUUIDToAssociatedGroupIdentifier allKeys];
+  allKeys = [(NSMutableDictionary *)self->_participantAccessoryUUIDToAssociatedGroupIdentifier allKeys];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
-- (void)clearCachedDataForParticipantAccessoryUUID:(id)a3
+- (void)clearCachedDataForParticipantAccessoryUUID:(id)d
 {
-  v4 = a3;
-  [(HMDMediaGroupsLocalDataStorage *)self removeAssociatedGroupIdentifierForParticipantAccessoryUUID:v4];
-  v5 = [(HMDMediaGroupsLocalDataStorage *)self backupDataSender];
-  [v5 clearCachedDataForParticipantAccessoryUUID:v4];
+  dCopy = d;
+  [(HMDMediaGroupsLocalDataStorage *)self removeAssociatedGroupIdentifierForParticipantAccessoryUUID:dCopy];
+  backupDataSender = [(HMDMediaGroupsLocalDataStorage *)self backupDataSender];
+  [backupDataSender clearCachedDataForParticipantAccessoryUUID:dCopy];
 }
 
 - (void)clearCachedData
 {
   os_unfair_lock_lock_with_options();
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   groups = self->_groups;
-  self->_groups = v3;
+  self->_groups = dictionary;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   participantAccessoryUUIDToAssociatedGroupIdentifier = self->_participantAccessoryUUIDToAssociatedGroupIdentifier;
-  self->_participantAccessoryUUIDToAssociatedGroupIdentifier = v5;
+  self->_participantAccessoryUUIDToAssociatedGroupIdentifier = dictionary2;
 
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [(HMDMediaGroupsLocalDataStorage *)self backupDataSender];
-  [v7 clearCachedData];
+  backupDataSender = [(HMDMediaGroupsLocalDataStorage *)self backupDataSender];
+  [backupDataSender clearCachedData];
 }
 
-- (id)associatedGroupsWithGroupIdentifier:(id)a3
+- (id)associatedGroupsWithGroupIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaGroupsLocalDataStorage *)self groups];
-  v6 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  groups = [(HMDMediaGroupsLocalDataStorage *)self groups];
+  v6 = [groups mutableCopy];
 
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  if (v4)
+  if (identifierCopy)
   {
     v8 = MEMORY[0x277D85DD0];
     while (1)
@@ -436,7 +436,7 @@ void __94__HMDMediaGroupsLocalDataStorage_unsetParticipantAccessoryUUIDsWithAsso
       v18[1] = 3221225472;
       v18[2] = __70__HMDMediaGroupsLocalDataStorage_associatedGroupsWithGroupIdentifier___block_invoke;
       v18[3] = &unk_27972E038;
-      v9 = v4;
+      v9 = identifierCopy;
       v19 = v9;
       v10 = [v6 na_firstObjectPassingTest:v18];
       if (!v10)
@@ -447,16 +447,16 @@ void __94__HMDMediaGroupsLocalDataStorage_unsetParticipantAccessoryUUIDsWithAsso
       v11 = v10;
       [v6 removeObject:v10];
       [v7 addObject:v11];
-      v4 = [v11 associatedGroupIdentifier];
+      identifierCopy = [v11 associatedGroupIdentifier];
 
-      if (!v4)
+      if (!identifierCopy)
       {
         goto LABEL_9;
       }
     }
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -487,9 +487,9 @@ uint64_t __70__HMDMediaGroupsLocalDataStorage_associatedGroupsWithGroupIdentifie
   return v4;
 }
 
-- (id)backupGroupsForParticipantAccessoryUUID:(id)a3
+- (id)backupGroupsForParticipantAccessoryUUID:(id)d
 {
-  v4 = [(HMDMediaGroupsLocalDataStorage *)self associatedGroupIdentifierForParticipantAccessoryUUID:a3];
+  v4 = [(HMDMediaGroupsLocalDataStorage *)self associatedGroupIdentifierForParticipantAccessoryUUID:d];
   if (v4)
   {
     v5 = [(HMDMediaGroupsLocalDataStorage *)self associatedGroupsWithGroupIdentifier:v4];
@@ -507,13 +507,13 @@ uint64_t __70__HMDMediaGroupsLocalDataStorage_associatedGroupsWithGroupIdentifie
 
 - (void)backupData
 {
-  v3 = [(HMDMediaGroupsLocalDataStorage *)self allParticipantAccessoryUUIDs];
+  allParticipantAccessoryUUIDs = [(HMDMediaGroupsLocalDataStorage *)self allParticipantAccessoryUUIDs];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__HMDMediaGroupsLocalDataStorage_backupData__block_invoke;
   v4[3] = &unk_27972ADE8;
   v4[4] = self;
-  [v3 na_each:v4];
+  [allParticipantAccessoryUUIDs na_each:v4];
 }
 
 void __44__HMDMediaGroupsLocalDataStorage_backupData__block_invoke(uint64_t a1, void *a2)
@@ -524,13 +524,13 @@ void __44__HMDMediaGroupsLocalDataStorage_backupData__block_invoke(uint64_t a1, 
   [v4 sendBackupToParticipantAccessoryUUID:v3];
 }
 
-- (void)updateGroup:(id)a3 participantAccessoryUUIDs:(id)a4
+- (void)updateGroup:(id)group participantAccessoryUUIDs:(id)ds
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  dsCopy = ds;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -538,25 +538,25 @@ void __44__HMDMediaGroupsLocalDataStorage_backupData__block_invoke(uint64_t a1, 
     *buf = 138543874;
     v22 = v11;
     v23 = 2112;
-    v24 = v6;
+    v24 = groupCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = dsCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating using group: %@ participant accessory uuids: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v6 identifier];
-  [(HMDMediaGroupsLocalDataStorage *)v9 unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:v12];
+  identifier = [groupCopy identifier];
+  [(HMDMediaGroupsLocalDataStorage *)selfCopy unsetParticipantAccessoryUUIDsWithAssociatedGroupIdentifier:identifier];
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __72__HMDMediaGroupsLocalDataStorage_updateGroup_participantAccessoryUUIDs___block_invoke;
   v18 = &unk_279729328;
-  v19 = v9;
-  v20 = v6;
-  v13 = v6;
-  [v7 na_each:&v15];
-  [(HMDMediaGroupsLocalDataStorage *)v9 updateGroup:v13, v15, v16, v17, v18, v19];
+  v19 = selfCopy;
+  v20 = groupCopy;
+  v13 = groupCopy;
+  [dsCopy na_each:&v15];
+  [(HMDMediaGroupsLocalDataStorage *)selfCopy updateGroup:v13, v15, v16, v17, v18, v19];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -570,48 +570,48 @@ void __72__HMDMediaGroupsLocalDataStorage_updateGroup_participantAccessoryUUIDs_
   [v2 setParticipantAccessoryUUID:v4 associatedGroupIdentifier:v5];
 }
 
-- (void)updateUsingParticipantAccessoryUUID:(id)a3 associatedGroupIdentifier:(id)a4 backedUpGroupData:(id)a5
+- (void)updateUsingParticipantAccessoryUUID:(id)d associatedGroupIdentifier:(id)identifier backedUpGroupData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "count")}];
     v24 = 138544130;
     v25 = v14;
     v26 = 2112;
-    v27 = v8;
+    v27 = dCopy;
     v28 = 2112;
-    v29 = v9;
+    v29 = identifierCopy;
     v30 = 2112;
     v31 = v15;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Updating using participant accessory uuid: %@ associated group identifier: %@ backup data count: %@", &v24, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [MEMORY[0x277CD1BA0] groupsWithProtoBufferData:v10];
+  v16 = [MEMORY[0x277CD1BA0] groupsWithProtoBufferData:dataCopy];
   v17 = [v16 count];
-  if (v17 == [v10 count])
+  if (v17 == [dataCopy count])
   {
-    [(HMDMediaGroupsLocalDataStorage *)v12 setParticipantAccessoryUUID:v8 associatedGroupIdentifier:v9];
-    [(HMDMediaGroupsLocalDataStorage *)v12 addBackedUpGroups:v16];
+    [(HMDMediaGroupsLocalDataStorage *)selfCopy setParticipantAccessoryUUID:dCopy associatedGroupIdentifier:identifierCopy];
+    [(HMDMediaGroupsLocalDataStorage *)selfCopy addBackedUpGroups:v16];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v12;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+      v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "count")}];
       v24 = 138543874;
       v25 = v21;
       v26 = 2112;
@@ -627,10 +627,10 @@ void __72__HMDMediaGroupsLocalDataStorage_updateGroup_participantAccessoryUUIDs_
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMediaGroupsLocalDataStorage)initWithIdentifier:(id)a3 backupSender:(id)a4
+- (HMDMediaGroupsLocalDataStorage)initWithIdentifier:(id)identifier backupSender:(id)sender
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  senderCopy = sender;
   v16.receiver = self;
   v16.super_class = HMDMediaGroupsLocalDataStorage;
   v9 = [(HMDMediaGroupsLocalDataStorage *)&v16 init];
@@ -638,15 +638,15 @@ void __72__HMDMediaGroupsLocalDataStorage_updateGroup_participantAccessoryUUIDs_
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_backupDataSender, a4);
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_backupDataSender, sender);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     groups = v10->_groups;
-    v10->_groups = v11;
+    v10->_groups = dictionary;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     participantAccessoryUUIDToAssociatedGroupIdentifier = v10->_participantAccessoryUUIDToAssociatedGroupIdentifier;
-    v10->_participantAccessoryUUIDToAssociatedGroupIdentifier = v13;
+    v10->_participantAccessoryUUIDToAssociatedGroupIdentifier = dictionary2;
   }
 
   return v10;

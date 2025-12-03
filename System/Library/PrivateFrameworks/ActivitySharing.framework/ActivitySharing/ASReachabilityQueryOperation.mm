@@ -2,7 +2,7 @@
 - (ASReachabilityQueryOperation)init;
 - (ASReachabilityStatusCache)statusCache;
 - (void)_queryTimedOut;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
 - (void)finish;
 - (void)start;
 @end
@@ -85,9 +85,9 @@
     v16 = [v15 predicateWithBlock:v53];
     v17 = [(NSSet *)v14 filteredSetUsingPredicate:v16];
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     rawIDSDestinationToOriginalDestination = self->_rawIDSDestinationToOriginalDestination;
-    self->_rawIDSDestinationToOriginalDestination = v18;
+    self->_rawIDSDestinationToOriginalDestination = dictionary;
 
     v20 = [MEMORY[0x277CBEB58] set];
     v49 = 0u;
@@ -138,10 +138,10 @@
         _os_log_impl(&dword_23E4FA000, v30, OS_LOG_TYPE_DEFAULT, "Reachability: Querying %lu destinations", buf, 0xCu);
       }
 
-      v32 = [MEMORY[0x277CCABD8] currentQueue];
-      v33 = [v32 underlyingQueue];
+      currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+      underlyingQueue = [currentQueue underlyingQueue];
 
-      v34 = [objc_alloc(MEMORY[0x277D186D8]) initWithService:self->_serviceIdentifier delegate:self queue:v33];
+      v34 = [objc_alloc(MEMORY[0x277D186D8]) initWithService:self->_serviceIdentifier delegate:self queue:underlyingQueue];
       batchQueryController = self->_batchQueryController;
       self->_batchQueryController = v34;
 
@@ -150,10 +150,10 @@
       self->_remainingDestinations = v36;
 
       v38 = self->_batchQueryController;
-      v39 = [v20 allObjects];
-      [(IDSBatchIDQueryController *)v38 setDestinations:v39];
+      allObjects = [v20 allObjects];
+      [(IDSBatchIDQueryController *)v38 setDestinations:allObjects];
 
-      v40 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v33);
+      v40 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, underlyingQueue);
       timer = self->timer;
       self->timer = v40;
 
@@ -246,33 +246,33 @@ void __37__ASReachabilityQueryOperation_start__block_invoke_18(uint64_t a1)
   [(ASReachabilityQueryOperation *)self finish];
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ASReachabilityQueryOperation *)self serviceIdentifier];
-  v11 = [v9 isEqualToString:v10];
+  statusCopy = status;
+  serviceCopy = service;
+  serviceIdentifier = [(ASReachabilityQueryOperation *)self serviceIdentifier];
+  v11 = [serviceCopy isEqualToString:serviceIdentifier];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+    v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(statusCopy, "count")}];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __95__ASReachabilityQueryOperation_batchQueryController_updatedDestinationsStatus_onService_error___block_invoke;
     v22 = &unk_278C46578;
-    v23 = self;
+    selfCopy = self;
     v13 = v12;
     v24 = v13;
-    [v8 enumerateKeysAndObjectsUsingBlock:&v19];
-    [(NSMutableDictionary *)self->_results addEntriesFromDictionary:v13, v19, v20, v21, v22, v23];
+    [statusCopy enumerateKeysAndObjectsUsingBlock:&v19];
+    [(NSMutableDictionary *)self->_results addEntriesFromDictionary:v13, v19, v20, v21, v22, selfCopy];
     WeakRetained = objc_loadWeakRetained(&self->_statusCache);
     [WeakRetained addStatusesByDestination:v13];
 
     (*(self->_updateHandler + 2))();
     remainingDestinations = self->_remainingDestinations;
     v16 = MEMORY[0x277CBEB98];
-    v17 = [v13 allKeys];
-    v18 = [v16 setWithArray:v17];
+    allKeys = [v13 allKeys];
+    v18 = [v16 setWithArray:allKeys];
     [(NSMutableSet *)remainingDestinations minusSet:v18];
 
     if (![(NSMutableSet *)self->_remainingDestinations count])

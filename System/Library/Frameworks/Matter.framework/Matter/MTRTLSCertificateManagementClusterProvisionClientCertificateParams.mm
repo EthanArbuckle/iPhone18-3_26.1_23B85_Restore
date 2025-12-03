@@ -1,8 +1,8 @@
 @interface MTRTLSCertificateManagementClusterProvisionClientCertificateParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRTLSCertificateManagementClusterProvisionClientCertificateParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,13 +19,13 @@
     ccdid = v2->_ccdid;
     v2->_ccdid = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     clientCertificate = v3->_clientCertificate;
-    v3->_clientCertificate = v5;
+    v3->_clientCertificate = data;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     intermediateCertificates = v3->_intermediateCertificates;
-    v3->_intermediateCertificates = v7;
+    v3->_intermediateCertificates = array;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -37,23 +37,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSCertificateManagementClusterProvisionClientCertificateParams);
-  v5 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self ccdid];
-  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setCcdid:v5];
+  ccdid = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self ccdid];
+  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setCcdid:ccdid];
 
-  v6 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self clientCertificate];
-  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setClientCertificate:v6];
+  clientCertificate = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self clientCertificate];
+  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setClientCertificate:clientCertificate];
 
-  v7 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self intermediateCertificates];
-  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setIntermediateCertificates:v7];
+  intermediateCertificates = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self intermediateCertificates];
+  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setIntermediateCertificates:intermediateCertificates];
 
-  v8 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self timedInvokeTimeoutMs];
-  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self timedInvokeTimeoutMs];
+  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self serverSideProcessingTimeout];
-  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self serverSideProcessingTimeout];
+  [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -70,25 +70,25 @@
   return v8;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v30 = *MEMORY[0x277D85DE8];
-  v22 = 0;
+  unsignedShortValue = 0;
   v23 = 0u;
   v24 = 0u;
   v21[0] = 0;
   v21[1] = 0;
   v20 = v21;
-  v5 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self ccdid];
-  v22 = [v5 unsignedShortValue];
+  ccdid = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self ccdid];
+  unsignedShortValue = [ccdid unsignedShortValue];
 
-  v6 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self clientCertificate];
-  v7 = v6;
-  sub_238DB6950(buf, [v6 bytes], objc_msgSend(v6, "length"));
+  clientCertificate = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self clientCertificate];
+  v7 = clientCertificate;
+  sub_238DB6950(buf, [clientCertificate bytes], objc_msgSend(clientCertificate, "length"));
 
   v23 = *buf;
-  v8 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self intermediateCertificates];
-  v9 = [v8 count] == 0;
+  intermediateCertificates = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self intermediateCertificates];
+  v9 = [intermediateCertificates count] == 0;
 
   if (!v9)
   {
@@ -106,7 +106,7 @@
     v29 = 0;
     sub_238EA16C4(&v26, &v19, 0);
     sub_2393C7BF0(buf, &v26, 0xFFFFFFFF);
-    v10 = sub_238F2E498(&v22, buf, 0x100uLL);
+    v10 = sub_238F2E498(&unsignedShortValue, buf, 0x100uLL);
     v12 = v10;
     if (v10 || (v10 = sub_238DD2EFC(buf, &v19), v12 = v10, v10))
     {
@@ -115,8 +115,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v19);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v19);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v18;
       v12 = v10;
     }
@@ -145,19 +145,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRTLSCertificateManagementClusterProvisionClientCertificateParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -168,7 +168,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xA7CB00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

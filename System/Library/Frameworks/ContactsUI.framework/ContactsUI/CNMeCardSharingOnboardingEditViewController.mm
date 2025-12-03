@@ -1,42 +1,42 @@
 @interface CNMeCardSharingOnboardingEditViewController
 + (id)descriptorForRequiredKeys;
 + (id)headerText;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CNMeCardSharingOnboardingEditViewController)initWithContactStore:(id)a3 contact:(id)a4 nameProvider:(id)a5 avatarRecord:(id)a6;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CNMeCardSharingOnboardingEditViewController)initWithContactStore:(id)store contact:(id)contact nameProvider:(id)provider avatarRecord:(id)record;
 - (CNMeCardSharingOnboardingEditViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)confirmButtonTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)textFieldForIndex:(int64_t)a3;
-- (int64_t)contactImageSourceForType:(unint64_t)a3;
-- (void)adjustInsetsForKeyboardOverlap:(double)a3;
-- (void)avatarCarouselViewControllerDidTapPhotoPickerCell:(id)a3;
-- (void)avatarCarouselViewControllerDidUpdateCenterMostItem:(id)a3;
-- (void)avatarEditingManager:(id)a3 didFinishWithProviderItem:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)textFieldForIndex:(int64_t)index;
+- (int64_t)contactImageSourceForType:(unint64_t)type;
+- (void)adjustInsetsForKeyboardOverlap:(double)overlap;
+- (void)avatarCarouselViewControllerDidTapPhotoPickerCell:(id)cell;
+- (void)avatarCarouselViewControllerDidUpdateCenterMostItem:(id)item;
+- (void)avatarEditingManager:(id)manager didFinishWithProviderItem:(id)item;
 - (void)dealloc;
-- (void)familyNameDidChange:(id)a3;
-- (void)finishOnboardingWithDidSaveToMeContact:(BOOL)a3;
-- (void)finishOnboardingWithProviderItem:(id)a3;
-- (void)givenNameDidChange:(id)a3;
+- (void)familyNameDidChange:(id)change;
+- (void)finishOnboardingWithDidSaveToMeContact:(BOOL)contact;
+- (void)finishOnboardingWithProviderItem:(id)item;
+- (void)givenNameDidChange:(id)change;
 - (void)handleConfirmButtonTapped;
-- (void)keyboardWillShow:(id)a3;
-- (void)notifyDelegateWithContactImage:(id)a3 didSaveToMeContact:(BOOL)a4;
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5;
-- (void)photoPickerDidCancel:(id)a3;
-- (void)photoPickerVariantListController:(id)a3 didSelectProviderItem:(id)a4;
-- (void)photoPickerVariantListControllerDidCancel:(id)a3;
-- (void)presentErrorAlertForEmptyPhotoIfNeededWithCompletion:(id)a3;
-- (void)presentPhotoPickerVariantListForItem:(id)a3 FromViewController:(id)a4;
+- (void)keyboardWillShow:(id)show;
+- (void)notifyDelegateWithContactImage:(id)image didSaveToMeContact:(BOOL)contact;
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image;
+- (void)photoPickerDidCancel:(id)cancel;
+- (void)photoPickerVariantListController:(id)controller didSelectProviderItem:(id)item;
+- (void)photoPickerVariantListControllerDidCancel:(id)cancel;
+- (void)presentErrorAlertForEmptyPhotoIfNeededWithCompletion:(id)completion;
+- (void)presentPhotoPickerVariantListForItem:(id)item FromViewController:(id)controller;
 - (void)promptForSavingToMeCard;
 - (void)saveDraftContact;
-- (void)showAvatarPosePickerFromItem:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)showAvatarPosePickerFromItem:(id)item;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)updateAvatarCarouselContactName;
-- (void)updateContact:(id)a3 withImagePropertiesFromContact:(id)a4;
+- (void)updateContact:(id)contact withImagePropertiesFromContact:(id)fromContact;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNMeCardSharingOnboardingEditViewController
@@ -48,26 +48,26 @@
   return WeakRetained;
 }
 
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  pickerCopy = picker;
+  contactCopy = contact;
+  imageCopy = image;
+  if (contactCopy)
   {
-    [(CNMeCardSharingOnboardingEditViewController *)self updateContact:self->_editingContact withImagePropertiesFromContact:v8];
-    [(CNMeCardSharingOnboardingEditViewController *)self updateContact:self->_avatarCarouselEditingContact withImagePropertiesFromContact:v8];
+    [(CNMeCardSharingOnboardingEditViewController *)self updateContact:self->_editingContact withImagePropertiesFromContact:contactCopy];
+    [(CNMeCardSharingOnboardingEditViewController *)self updateContact:self->_avatarCarouselEditingContact withImagePropertiesFromContact:contactCopy];
   }
 
-  if ([v9 source] == 1 || !objc_msgSend(v9, "source"))
+  if ([imageCopy source] == 1 || !objc_msgSend(imageCopy, "source"))
   {
-    v10 = [v9 variant];
+    variant = [imageCopy variant];
 
-    if (v10)
+    if (variant)
     {
       v11 = objc_alloc(MEMORY[0x1E69BDC50]);
-      v12 = [v9 variant];
-      v13 = [v11 initWithColorName:v12];
+      variant2 = [imageCopy variant];
+      v13 = [v11 initWithColorName:variant2];
       [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController setMonogramColor:v13];
     }
 
@@ -78,24 +78,24 @@
   }
 
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController reloadForUpdatedContactPhoto];
-  v14 = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
-  [v14 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)photoPickerDidCancel:(id)a3
+- (void)photoPickerDidCancel:(id)cancel
 {
-  v3 = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)avatarCarouselViewControllerDidUpdateCenterMostItem:(id)a3
+- (void)avatarCarouselViewControllerDidUpdateCenterMostItem:(id)item
 {
-  v5 = [a3 imageProvider];
-  v4 = [(CNMeCardSharingOnboardingViewController *)self confirmButton];
-  [v4 setEnabled:v5 != 0];
+  imageProvider = [item imageProvider];
+  confirmButton = [(CNMeCardSharingOnboardingViewController *)self confirmButton];
+  [confirmButton setEnabled:imageProvider != 0];
 }
 
-- (void)avatarCarouselViewControllerDidTapPhotoPickerCell:(id)a3
+- (void)avatarCarouselViewControllerDidTapPhotoPickerCell:(id)cell
 {
   v4 = [CNPhotoPickerViewController alloc];
   avatarCarouselEditingContact = self->_avatarCarouselEditingContact;
@@ -112,16 +112,16 @@
   self->_photoPickerViewController = v8;
   v12 = v8;
 
-  v13 = [(CNMeCardSharingOnboardingEditViewController *)self view];
-  v14 = [v13 window];
-  [v14 endEditing:1];
+  view = [(CNMeCardSharingOnboardingEditViewController *)self view];
+  window = [view window];
+  [window endEditing:1];
 
   v15 = [CNPhotoPickerViewController navigationControllerForPicker:v12];
 
   [(CNMeCardSharingOnboardingEditViewController *)self presentViewController:v15 animated:1 completion:0];
 }
 
-- (id)textFieldForIndex:(int64_t)a3
+- (id)textFieldForIndex:(int64_t)index
 {
   v10[2] = *MEMORY[0x1E69E9840];
   if (self->_nameOrder == 2)
@@ -140,12 +140,12 @@
 
   p_givenNameField[1] = *(&self->super.super.super.super.super.super.super.isa + *v4);
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:? count:?];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  v7 = [v6 objectAtIndexedSubscript:index];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v4 = CNContactsUIBundle();
   v5 = [v4 localizedStringForKey:@"SHARING_ONBOARDING_DISPLAY_NAME" value:&stru_1F0CE7398 table:@"Localized"];
@@ -153,22 +153,22 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [a3 cellForRowAtIndexPath:a4];
-  v4 = [v5 textField];
-  [v4 becomeFirstResponder];
+  v5 = [view cellForRowAtIndexPath:path];
+  textField = [v5 textField];
+  [textField becomeFirstResponder];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CNMeCardSharingTextFieldTableViewCell cellIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
   [v9 setSelectionStyle:0];
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v11 = [(CNMeCardSharingOnboardingEditViewController *)self textFieldForIndex:v10];
   [v9 setTextField:v11];
@@ -176,9 +176,9 @@
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(UITextField *)self->_givenNameField font:a3];
+  v4 = [(UITextField *)self->_givenNameField font:view];
   [v4 lineHeight];
   v6 = v5 + 10.0;
 
@@ -191,15 +191,15 @@
   return result;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [(UITextField *)self->_givenNameField text];
+  text = [(UITextField *)self->_givenNameField text];
   editingGivenName = self->_editingGivenName;
-  self->_editingGivenName = v4;
+  self->_editingGivenName = text;
 
-  v6 = [(UITextField *)self->_familyNameField text];
+  text2 = [(UITextField *)self->_familyNameField text];
   editingFamilyName = self->_editingFamilyName;
-  self->_editingFamilyName = v6;
+  self->_editingFamilyName = text2;
 
   [(CNMeCardSharingOnboardingEditViewController *)self updateAvatarCarouselContactName];
   avatarCarouselViewController = self->_avatarCarouselViewController;
@@ -207,12 +207,12 @@
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)avatarCarouselViewController reloadForUpdatedMonogram];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = v4;
+  returnCopy = return;
+  v5 = returnCopy;
   nameOrder = self->_nameOrder;
-  if ((nameOrder != 2 || self->_familyNameField == v4) && self->_givenNameField == v4)
+  if ((nameOrder != 2 || self->_familyNameField == returnCopy) && self->_givenNameField == returnCopy)
   {
     if (nameOrder == 2)
     {
@@ -229,72 +229,72 @@
 
   else
   {
-    [(UITextField *)v4 resignFirstResponder];
+    [(UITextField *)returnCopy resignFirstResponder];
   }
 
   return 0;
 }
 
-- (void)adjustInsetsForKeyboardOverlap:(double)a3
+- (void)adjustInsetsForKeyboardOverlap:(double)overlap
 {
-  v5 = [(OBTableWelcomeController *)self scrollView];
-  [v5 contentInset];
+  scrollView = [(OBTableWelcomeController *)self scrollView];
+  [scrollView contentInset];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  if (v11 != a3)
+  if (v11 != overlap)
   {
-    v14 = [(OBTableWelcomeController *)self scrollView];
-    [v14 setContentInset:{v7, v9, a3, v13}];
+    scrollView2 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView2 setContentInset:{v7, v9, overlap, v13}];
 
-    v15 = [(OBTableWelcomeController *)self scrollView];
-    [v15 setScrollIndicatorInsets:{v7, v9, a3, v13}];
+    scrollView3 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView3 setScrollIndicatorInsets:{v7, v9, overlap, v13}];
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v59 = [(CNMeCardSharingOnboardingEditViewController *)self view];
-  v14 = [v59 window];
-  [v14 convertRect:0 fromWindow:{v7, v9, v11, v13}];
+  view = [(CNMeCardSharingOnboardingEditViewController *)self view];
+  window = [view window];
+  [window convertRect:0 fromWindow:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v59 convertRect:0 fromView:{v16, v18, v20, v22}];
+  [view convertRect:0 fromView:{v16, v18, v20, v22}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  [v59 bounds];
+  [view bounds];
   v64.origin.x = v24;
   v64.origin.y = v26;
   v64.size.width = v28;
   v64.size.height = v30;
   v62 = CGRectIntersection(v61, v64);
   Height = CGRectGetHeight(v62);
-  v31 = [(OBTableWelcomeController *)self scrollView];
-  [v31 frame];
+  scrollView = [(OBTableWelcomeController *)self scrollView];
+  [scrollView frame];
   v33 = v32;
-  v34 = [(OBTableWelcomeController *)self scrollView];
-  [v34 frame];
+  scrollView2 = [(OBTableWelcomeController *)self scrollView];
+  [scrollView2 frame];
   v36 = v35;
-  v37 = [(OBTableWelcomeController *)self scrollView];
-  [v37 contentSize];
+  scrollView3 = [(OBTableWelcomeController *)self scrollView];
+  [scrollView3 contentSize];
   v39 = v38;
-  v40 = [(OBTableWelcomeController *)self scrollView];
-  [v40 contentSize];
+  scrollView4 = [(OBTableWelcomeController *)self scrollView];
+  [scrollView4 contentSize];
   v42 = v41;
 
   v63.origin.x = v24;
@@ -308,76 +308,76 @@
   if (CGRectIntersectsRect(v63, v65))
   {
     [(CNMeCardSharingOnboardingEditViewController *)self adjustInsetsForKeyboardOverlap:Height];
-    v43 = [(OBTableWelcomeController *)self scrollView];
-    [v43 frame];
+    scrollView5 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView5 frame];
     v45 = Height - v44;
 
-    v46 = [(OBTableWelcomeController *)self scrollView];
-    [v46 frame];
+    scrollView6 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView6 frame];
     v48 = v45 + v47;
-    v49 = [(OBTableWelcomeController *)self scrollView];
-    [v49 contentSize];
+    scrollView7 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView7 contentSize];
     v51 = v50;
 
     if (v48 > v51)
     {
-      v52 = [(OBTableWelcomeController *)self scrollView];
-      [v52 contentSize];
+      scrollView8 = [(OBTableWelcomeController *)self scrollView];
+      [scrollView8 contentSize];
       v54 = v53;
-      v55 = [(OBTableWelcomeController *)self scrollView];
-      [v55 frame];
+      scrollView9 = [(OBTableWelcomeController *)self scrollView];
+      [scrollView9 frame];
       v45 = v54 - (v56 - Height);
     }
 
-    v57 = [(OBTableWelcomeController *)self scrollView];
-    [v57 setContentOffset:{0.0, v45}];
+    scrollView10 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView10 setContentOffset:{0.0, v45}];
   }
 }
 
-- (void)updateContact:(id)a3 withImagePropertiesFromContact:(id)a4
+- (void)updateContact:(id)contact withImagePropertiesFromContact:(id)fromContact
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 imageData];
-  [v6 setImageData:v7];
+  fromContactCopy = fromContact;
+  contactCopy = contact;
+  imageData = [fromContactCopy imageData];
+  [contactCopy setImageData:imageData];
 
-  [v5 cropRect];
-  [v6 setCropRect:?];
-  v8 = [v5 thumbnailImageData];
-  [v6 setThumbnailImageData:v8];
+  [fromContactCopy cropRect];
+  [contactCopy setCropRect:?];
+  thumbnailImageData = [fromContactCopy thumbnailImageData];
+  [contactCopy setThumbnailImageData:thumbnailImageData];
 
-  v9 = [v5 fullscreenImageData];
-  [v6 setFullscreenImageData:v9];
+  fullscreenImageData = [fromContactCopy fullscreenImageData];
+  [contactCopy setFullscreenImageData:fullscreenImageData];
 
-  v10 = [v5 preferredLikenessSource];
-  [v6 setPreferredLikenessSource:v10];
+  preferredLikenessSource = [fromContactCopy preferredLikenessSource];
+  [contactCopy setPreferredLikenessSource:preferredLikenessSource];
 
-  v11 = [v5 imageType];
-  [v6 setImageType:v11];
+  imageType = [fromContactCopy imageType];
+  [contactCopy setImageType:imageType];
 
-  v12 = [v5 imageHash];
-  [v6 setImageHash:v12];
+  imageHash = [fromContactCopy imageHash];
+  [contactCopy setImageHash:imageHash];
 
-  v13 = [v5 memojiMetadata];
+  memojiMetadata = [fromContactCopy memojiMetadata];
 
-  [v6 setMemojiMetadata:v13];
+  [contactCopy setMemojiMetadata:memojiMetadata];
 }
 
-- (void)photoPickerVariantListController:(id)a3 didSelectProviderItem:(id)a4
+- (void)photoPickerVariantListController:(id)controller didSelectProviderItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
-  v10 = [(CNMeCardSharingOnboardingEditViewController *)v8 presentingViewController];
+  controllerCopy = controller;
+  itemCopy = item;
+  v8 = controllerCopy;
+  presentedViewController = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
+  presentingViewController = [(CNMeCardSharingOnboardingEditViewController *)v8 presentingViewController];
 
-  v11 = v8;
-  if (v9 == v10)
+  selfCopy = v8;
+  if (presentedViewController == presentingViewController)
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  [v7 updateContact:self->_editingContact];
+  [itemCopy updateContact:self->_editingContact];
   [(CNMeCardSharingOnboardingEditViewController *)self updateContact:self->_avatarCarouselEditingContact withImagePropertiesFromContact:self->_editingContact];
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController reloadForUpdatedContactPhoto];
   v12[0] = MEMORY[0x1E69E9820];
@@ -385,43 +385,43 @@
   v12[2] = __102__CNMeCardSharingOnboardingEditViewController_photoPickerVariantListController_didSelectProviderItem___block_invoke;
   v12[3] = &unk_1E74E6A88;
   v12[4] = self;
-  [(CNMeCardSharingOnboardingEditViewController *)v11 dismissViewControllerAnimated:1 completion:v12];
+  [(CNMeCardSharingOnboardingEditViewController *)selfCopy dismissViewControllerAnimated:1 completion:v12];
 }
 
-- (void)photoPickerVariantListControllerDidCancel:(id)a3
+- (void)photoPickerVariantListControllerDidCancel:(id)cancel
 {
-  v3 = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CNMeCardSharingOnboardingEditViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentPhotoPickerVariantListForItem:(id)a3 FromViewController:(id)a4
+- (void)presentPhotoPickerVariantListForItem:(id)item FromViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v14 = [[CNPhotoPickerVariantListController alloc] initWithVariantsManager:self->_variantsManager originalItem:v7];
+  controllerCopy = controller;
+  itemCopy = item;
+  v14 = [[CNPhotoPickerVariantListController alloc] initWithVariantsManager:self->_variantsManager originalItem:itemCopy];
 
   [(CNPhotoPickerVariantListController *)v14 setDelegate:self];
-  v8 = [(CNMeCardSharingOnboardingEditViewController *)self view];
-  v9 = [v8 backgroundColor];
-  v10 = [(CNPhotoPickerVariantListController *)v14 view];
-  [v10 setBackgroundColor:v9];
+  view = [(CNMeCardSharingOnboardingEditViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  view2 = [(CNPhotoPickerVariantListController *)v14 view];
+  [view2 setBackgroundColor:backgroundColor];
 
   v11 = [[CNPortraitOnlyNavigationController alloc] initWithRootViewController:v14];
-  v12 = [MEMORY[0x1E69DC938] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(CNPortraitOnlyNavigationController *)v11 setModalPresentationStyle:2 * ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)];
-  [v6 presentViewController:v11 animated:1 completion:0];
+  [(CNPortraitOnlyNavigationController *)v11 setModalPresentationStyle:2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)];
+  [controllerCopy presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)avatarEditingManager:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)avatarEditingManager:(id)manager didFinishWithProviderItem:(id)item
 {
-  v8 = a4;
-  if (v8)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = [a3 viewController];
-    v7 = [v6 navigationController];
-    [(CNMeCardSharingOnboardingEditViewController *)self presentPhotoPickerVariantListForItem:v8 FromViewController:v7];
+    viewController = [manager viewController];
+    navigationController = [viewController navigationController];
+    [(CNMeCardSharingOnboardingEditViewController *)self presentPhotoPickerVariantListForItem:itemCopy FromViewController:navigationController];
   }
 
   else
@@ -430,9 +430,9 @@
   }
 }
 
-- (void)showAvatarPosePickerFromItem:(id)a3
+- (void)showAvatarPosePickerFromItem:(id)item
 {
-  v18 = a3;
+  itemCopy = item;
   if (!self->_variantsManager)
   {
     v4 = objc_alloc_init(CNPhotoPickerVariantsManager);
@@ -443,53 +443,53 @@
   if (+[CNPhotoPickerCapabilities allowsAvatarUI])
   {
     v6 = [CNAvatarEditingManager alloc];
-    v7 = [v18 avatarRecord];
-    v8 = [(CNAvatarEditingManager *)v6 initWithAvatarRecord:v7 variantsManager:self->_variantsManager];
+    avatarRecord = [itemCopy avatarRecord];
+    v8 = [(CNAvatarEditingManager *)v6 initWithAvatarRecord:avatarRecord variantsManager:self->_variantsManager];
 
     [(CNAvatarEditingManager *)v8 setDelegate:self];
-    [(CNAvatarEditingManager *)v8 setOriginalItem:v18];
+    [(CNAvatarEditingManager *)v8 setOriginalItem:itemCopy];
     posePicker = self->_posePicker;
     self->_posePicker = v8;
     v10 = v8;
 
-    v11 = [(CNMeCardSharingOnboardingEditViewController *)self view];
-    v12 = [v11 backgroundColor];
-    v13 = [(CNAvatarEditingManager *)v10 viewController];
-    v14 = [v13 view];
-    [v14 setBackgroundColor:v12];
+    view = [(CNMeCardSharingOnboardingEditViewController *)self view];
+    backgroundColor = [view backgroundColor];
+    viewController = [(CNAvatarEditingManager *)v10 viewController];
+    view2 = [viewController view];
+    [view2 setBackgroundColor:backgroundColor];
 
     v15 = [CNPortraitOnlyNavigationController alloc];
-    v16 = [(CNAvatarEditingManager *)v10 viewController];
+    viewController2 = [(CNAvatarEditingManager *)v10 viewController];
 
-    v17 = [(CNPortraitOnlyNavigationController *)v15 initWithRootViewController:v16];
+    v17 = [(CNPortraitOnlyNavigationController *)v15 initWithRootViewController:viewController2];
     [(CNPortraitOnlyNavigationController *)v17 setModalPresentationStyle:0];
     [(CNMeCardSharingOnboardingEditViewController *)self presentViewController:v17 animated:1 completion:0];
   }
 }
 
-- (void)notifyDelegateWithContactImage:(id)a3 didSaveToMeContact:(BOOL)a4
+- (void)notifyDelegateWithContactImage:(id)image didSaveToMeContact:(BOOL)contact
 {
-  v4 = a4;
-  v6 = a3;
+  contactCopy = contact;
+  imageCopy = image;
   v7 = [CNMeCardSharingResult alloc];
   editingGivenName = self->_editingGivenName;
   editingFamilyName = self->_editingFamilyName;
-  v10 = [v6 resizedContactImageForMeCardSharing];
-  v11 = [(CNMutableContact *)self->_editingContact wallpaper];
-  v12 = [(CNMutableContact *)self->_editingContact watchWallpaperImageData];
-  v13 = [(CNMeCardSharingResult *)v7 initWithGivenName:editingGivenName familyName:editingFamilyName contactImage:v10 wallpaper:v11 watchWallpaperImageData:v12 didSaveImageToMeCard:v4];
+  resizedContactImageForMeCardSharing = [imageCopy resizedContactImageForMeCardSharing];
+  wallpaper = [(CNMutableContact *)self->_editingContact wallpaper];
+  watchWallpaperImageData = [(CNMutableContact *)self->_editingContact watchWallpaperImageData];
+  v13 = [(CNMeCardSharingResult *)v7 initWithGivenName:editingGivenName familyName:editingFamilyName contactImage:resizedContactImageForMeCardSharing wallpaper:wallpaper watchWallpaperImageData:watchWallpaperImageData didSaveImageToMeCard:contactCopy];
 
   logger = self->_logger;
   v15 = [(CNMeCardSharingResult *)v13 description];
   [(CNSharingProfileLogger *)logger logOnboardingReturningSharingResultWithDescription:v15];
 
-  v16 = [(CNMeCardSharingResult *)v13 contactImage];
-  v17 = [v16 imageData];
-  v18 = [v17 length];
+  contactImage = [(CNMeCardSharingResult *)v13 contactImage];
+  imageData = [contactImage imageData];
+  v18 = [imageData length];
 
   if (!v18)
   {
-    if ([v6 source] != 1 || (objc_msgSend(v6, "variant"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
+    if ([imageCopy source] != 1 || (objc_msgSend(imageCopy, "variant"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
     {
       [(CNSharingProfileLogger *)self->_logger logOnboardingReturningEmptyImage];
       v21[0] = MEMORY[0x1E69E9820];
@@ -518,9 +518,9 @@ void __97__CNMeCardSharingOnboardingEditViewController_notifyDelegateWithContact
   [WeakRetained meCardSharingOnboardingEditController:*(a1 + 32) didFinishWithOnboardingResult:*(a1 + 40)];
 }
 
-- (void)presentErrorAlertForEmptyPhotoIfNeededWithCompletion:(id)a3
+- (void)presentErrorAlertForEmptyPhotoIfNeededWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if ([MEMORY[0x1E695CD58] nameAndPhotoSharingDebugUIEnabled])
   {
     v4 = MEMORY[0x1E69DC650];
@@ -537,47 +537,47 @@ void __97__CNMeCardSharingOnboardingEditViewController_notifyDelegateWithContact
     v14[1] = 3221225472;
     v14[2] = __100__CNMeCardSharingOnboardingEditViewController_presentErrorAlertForEmptyPhotoIfNeededWithCompletion___block_invoke;
     v14[3] = &unk_1E74E5C98;
-    v15 = v3;
+    v15 = completionCopy;
     v13 = [v10 actionWithTitle:v12 style:0 handler:v14];
     [v9 addAction:v13];
   }
 
   else
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)finishOnboardingWithDidSaveToMeContact:(BOOL)a3
+- (void)finishOnboardingWithDidSaveToMeContact:(BOOL)contact
 {
-  v3 = a3;
-  v5 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController selectedItem];
-  v6 = [v5 imageType];
-  v7 = [v5 cachedImage];
-  v8 = v7;
-  if (!v7)
+  contactCopy = contact;
+  selectedItem = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController selectedItem];
+  imageType = [selectedItem imageType];
+  cachedImage = [selectedItem cachedImage];
+  v8 = cachedImage;
+  if (!cachedImage)
   {
-    v12 = [v5 imageProvider];
+    imageProvider = [selectedItem imageProvider];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __86__CNMeCardSharingOnboardingEditViewController_finishOnboardingWithDidSaveToMeContact___block_invoke;
     v13[3] = &unk_1E74E5C70;
     v13[4] = self;
-    v13[5] = v6;
-    v14 = v3;
-    (v12)[2](v12, v13);
+    v13[5] = imageType;
+    v14 = contactCopy;
+    (imageProvider)[2](imageProvider, v13);
     goto LABEL_5;
   }
 
-  v9 = UIImagePNGRepresentation(v7);
+  v9 = UIImagePNGRepresentation(cachedImage);
   v10 = objc_alloc(MEMORY[0x1E695CD88]);
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [v10 initWithImageData:v9 cropRect:v11 lastUsedDate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  date = [MEMORY[0x1E695DF00] date];
+  imageProvider = [v10 initWithImageData:v9 cropRect:date lastUsedDate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
-  [v12 setSource:{-[CNMeCardSharingOnboardingEditViewController contactImageSourceForType:](self, "contactImageSourceForType:", v6)}];
-  if (v12)
+  [imageProvider setSource:{-[CNMeCardSharingOnboardingEditViewController contactImageSourceForType:](self, "contactImageSourceForType:", imageType)}];
+  if (imageProvider)
   {
-    [(CNMeCardSharingOnboardingEditViewController *)self notifyDelegateWithContactImage:v12 didSaveToMeContact:v3];
+    [(CNMeCardSharingOnboardingEditViewController *)self notifyDelegateWithContactImage:imageProvider didSaveToMeContact:contactCopy];
 LABEL_5:
   }
 }
@@ -593,16 +593,16 @@ void __86__CNMeCardSharingOnboardingEditViewController_finishOnboardingWithDidSa
   [*(a1 + 32) notifyDelegateWithContactImage:v5 didSaveToMeContact:*(a1 + 48)];
 }
 
-- (int64_t)contactImageSourceForType:(unint64_t)a3
+- (int64_t)contactImageSourceForType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_199E43F20[a3 - 1];
+    return qword_199E43F20[type - 1];
   }
 }
 
@@ -637,17 +637,17 @@ void __86__CNMeCardSharingOnboardingEditViewController_finishOnboardingWithDidSa
   v16 = [v13 actionWithTitle:v15 style:1 handler:v20];
   [v8 addAction:v16];
 
-  v17 = self;
-  v18 = [(CNMeCardSharingOnboardingEditViewController *)v17 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [(CNMeCardSharingOnboardingEditViewController *)selfCopy presentedViewController];
 
-  if (v18)
+  if (presentedViewController)
   {
-    v19 = [(CNMeCardSharingOnboardingEditViewController *)v17 presentedViewController];
+    presentedViewController2 = [(CNMeCardSharingOnboardingEditViewController *)selfCopy presentedViewController];
 
-    v17 = v19;
+    selfCopy = presentedViewController2;
   }
 
-  [(CNMeCardSharingOnboardingEditViewController *)v17 presentViewController:v8 animated:1 completion:0];
+  [(CNMeCardSharingOnboardingEditViewController *)selfCopy presentViewController:v8 animated:1 completion:0];
 }
 
 uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCard__block_invoke(uint64_t a1)
@@ -658,15 +658,15 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
   return [v2 finishOnboardingWithDidSaveToMeContact:1];
 }
 
-- (void)finishOnboardingWithProviderItem:(id)a3
+- (void)finishOnboardingWithProviderItem:(id)item
 {
-  v7 = a3;
-  v4 = [v7 cachedImage];
+  itemCopy = item;
+  cachedImage = [itemCopy cachedImage];
 
-  if (v4 && [v7 imageType] == 2)
+  if (cachedImage && [itemCopy imageType] == 2)
   {
-    v5 = [v7 cachedImage];
-    v6 = UIImagePNGRepresentation(v5);
+    cachedImage2 = [itemCopy cachedImage];
+    v6 = UIImagePNGRepresentation(cachedImage2);
     [(CNMutableContact *)self->_editingContact setImageData:v6];
 
     [(CNMutableContact *)self->_editingContact updateImageInfoWithType:2];
@@ -677,25 +677,25 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
 
 - (void)handleConfirmButtonTapped
 {
-  v3 = [(UITextField *)self->_givenNameField text];
-  v4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  text = [(UITextField *)self->_givenNameField text];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v5 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v6 = [(UITextField *)self->_familyNameField text];
-  v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  text2 = [(UITextField *)self->_familyNameField text];
+  whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v8 = [text2 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
   objc_storeStrong(&self->_editingGivenName, v5);
   objc_storeStrong(&self->_editingFamilyName, v8);
   [(CNMeCardSharingOnboardingEditViewController *)self updateAvatarCarouselContactName];
-  v9 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController selectedItem];
-  if ([v9 imageType] == 3 && objc_msgSend(v9, "shouldShowVariants"))
+  selectedItem = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController selectedItem];
+  if ([selectedItem imageType] == 3 && objc_msgSend(selectedItem, "shouldShowVariants"))
   {
     v10 = +[CNUIContactsEnvironment currentEnvironment];
-    v11 = [v10 defaultSchedulerProvider];
+    defaultSchedulerProvider = [v10 defaultSchedulerProvider];
 
-    v12 = [v11 newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerAnimojiProvider.renderingQueue"];
-    v13 = [v11 mainThreadScheduler];
+    v12 = [defaultSchedulerProvider newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerAnimojiProvider.renderingQueue"];
+    mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -733,14 +733,14 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
 
     v18 = v17;
     _Block_object_dispose(&v26, 8);
-    v19 = [v17 gridThumbnailScope];
-    v20 = [[CNPhotoPickerAnimojiProviderItem alloc] initWithAvatarRecord:self->_avatarRecord imageProvider:v16 renderingScope:v19 renderingQueue:v12 callbackQueue:v13];
+    gridThumbnailScope = [v17 gridThumbnailScope];
+    v20 = [[CNPhotoPickerAnimojiProviderItem alloc] initWithAvatarRecord:self->_avatarRecord imageProvider:v16 renderingScope:gridThumbnailScope renderingQueue:v12 callbackQueue:mainThreadScheduler];
     [(CNMeCardSharingOnboardingEditViewController *)self showAvatarPosePickerFromItem:v20];
   }
 
   else
   {
-    [(CNMeCardSharingOnboardingEditViewController *)self finishOnboardingWithProviderItem:v9];
+    [(CNMeCardSharingOnboardingEditViewController *)self finishOnboardingWithProviderItem:selectedItem];
   }
 }
 
@@ -752,11 +752,11 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
   return v3;
 }
 
-- (void)familyNameDidChange:(id)a3
+- (void)familyNameDidChange:(id)change
 {
-  v4 = [a3 text];
+  text = [change text];
   editingFamilyName = self->_editingFamilyName;
-  self->_editingFamilyName = v4;
+  self->_editingFamilyName = text;
 
   [(CNMeCardSharingOnboardingEditViewController *)self updateAvatarCarouselContactName];
   avatarCarouselViewController = self->_avatarCarouselViewController;
@@ -764,11 +764,11 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)avatarCarouselViewController reloadForUpdatedMonogram];
 }
 
-- (void)givenNameDidChange:(id)a3
+- (void)givenNameDidChange:(id)change
 {
-  v4 = [a3 text];
+  text = [change text];
   editingGivenName = self->_editingGivenName;
-  self->_editingGivenName = v4;
+  self->_editingGivenName = text;
 
   [(CNMeCardSharingOnboardingEditViewController *)self updateAvatarCarouselContactName];
   avatarCarouselViewController = self->_avatarCarouselViewController;
@@ -800,12 +800,12 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
   }
 
   logger = self->_logger;
-  v6 = [(CNMutableContact *)v4 identifier];
-  [(CNSharingProfileLogger *)logger logOnboardingSavingContact:v6];
+  identifier = [(CNMutableContact *)v4 identifier];
+  [(CNSharingProfileLogger *)logger logOnboardingSavingContact:identifier];
 
-  v7 = [(CNMeCardSharingOnboardingEditViewController *)self contactStore];
+  contactStore = [(CNMeCardSharingOnboardingEditViewController *)self contactStore];
   v20 = 0;
-  v8 = [v7 executeSaveRequest:v3 error:&v20];
+  v8 = [contactStore executeSaveRequest:v3 error:&v20];
   v9 = v20;
 
   if (v8)
@@ -818,10 +818,10 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
     }
 
     [(CNSharingProfileLogger *)v10 logSettingsSettingMeContact];
-    v11 = [(CNMeCardSharingOnboardingEditViewController *)self contactStore];
+    contactStore2 = [(CNMeCardSharingOnboardingEditViewController *)self contactStore];
     v19 = 0;
-    v12 = [v11 setMeContact:v4 error:&v19];
-    v13 = v19;
+    v12 = [contactStore2 setMeContact:v4 error:&v19];
+    localizedDescription2 = v19;
 
     if (v12)
     {
@@ -836,18 +836,18 @@ uint64_t __70__CNMeCardSharingOnboardingEditViewController_promptForSavingToMeCa
     else
     {
       v17 = self->_logger;
-      v18 = [v13 localizedDescription];
-      [(CNSharingProfileLogger *)v17 logOnboardingErrorSettingMeContactWithDescription:v18];
+      localizedDescription = [localizedDescription2 localizedDescription];
+      [(CNSharingProfileLogger *)v17 logOnboardingErrorSettingMeContactWithDescription:localizedDescription];
 
-      v13 = v18;
+      localizedDescription2 = localizedDescription;
     }
   }
 
   else
   {
     v16 = self->_logger;
-    v13 = [v9 localizedDescription];
-    [(CNSharingProfileLogger *)v16 logOnboardingErrorSavingContactWithDescription:v13];
+    localizedDescription2 = [v9 localizedDescription];
+    [(CNSharingProfileLogger *)v16 logOnboardingErrorSavingContactWithDescription:localizedDescription2];
   }
 
 LABEL_13:
@@ -862,15 +862,15 @@ LABEL_13:
   [(CNMutableContact *)avatarCarouselEditingContact setFamilyName:editingFamilyName];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CNMeCardSharingOnboardingEditViewController;
-  [(OBTableWelcomeController *)&v6 viewWillAppear:a3];
-  v4 = [(CNMeCardSharingOnboardingEditViewController *)self view];
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
+  [(OBTableWelcomeController *)&v6 viewWillAppear:appear];
+  view = [(CNMeCardSharingOnboardingEditViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v5 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController scrollToItemAtIndex:0 animated:0];
   }
@@ -881,45 +881,45 @@ LABEL_13:
   v46.receiver = self;
   v46.super_class = CNMeCardSharingOnboardingEditViewController;
   [(CNMeCardSharingOnboardingViewController *)&v46 viewDidLoad];
-  v3 = [(OBTableWelcomeController *)self scrollView];
-  [v3 setKeyboardDismissMode:2];
+  scrollView = [(OBTableWelcomeController *)self scrollView];
+  [scrollView setKeyboardDismissMode:2];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
+  tableView = [(OBTableWelcomeController *)self tableView];
   v5 = objc_opt_class();
   v6 = +[CNMeCardSharingTextFieldTableViewCell cellIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v6];
+  [tableView registerClass:v5 forCellReuseIdentifier:v6];
 
   v7 = [[CNMeCardSharingOnboardingAvatarCarouselViewController alloc] initWithContact:self->_avatarCarouselEditingContact avatarRecord:self->_avatarRecord logger:self->_logger];
   avatarCarouselViewController = self->_avatarCarouselViewController;
   self->_avatarCarouselViewController = v7;
 
-  v9 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController view];
-  [v9 setAutoresizingMask:2];
+  view = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController view];
+  [view setAutoresizingMask:2];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 bounds];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 bounds];
   Width = CGRectGetWidth(v47);
-  v12 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController view];
-  [v12 setFrame:{0.0, 0.0, Width, 220.0}];
+  view2 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController view];
+  [view2 setFrame:{0.0, 0.0, Width, 220.0}];
 
   [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController setDelegate:self];
-  v13 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController view];
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setTableHeaderView:v13];
+  view3 = [(CNMeCardSharingOnboardingAvatarCarouselViewController *)self->_avatarCarouselViewController view];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setTableHeaderView:view3];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 setDelegate:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDelegate:self];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setDataSource:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDataSource:self];
 
-  v17 = [(CNMeCardSharingNameProvider *)self->_nameProvider givenName];
+  givenName = [(CNMeCardSharingNameProvider *)self->_nameProvider givenName];
   editingGivenName = self->_editingGivenName;
-  self->_editingGivenName = v17;
+  self->_editingGivenName = givenName;
 
-  v19 = [(CNMeCardSharingNameProvider *)self->_nameProvider familyName];
+  familyName = [(CNMeCardSharingNameProvider *)self->_nameProvider familyName];
   editingFamilyName = self->_editingFamilyName;
-  self->_editingFamilyName = v19;
+  self->_editingFamilyName = familyName;
 
   v21 = objc_alloc(MEMORY[0x1E69DD0B0]);
   v22 = *MEMORY[0x1E695F058];
@@ -930,8 +930,8 @@ LABEL_13:
   givenNameField = self->_givenNameField;
   self->_givenNameField = v26;
 
-  v28 = [(CNMeCardSharingNameProvider *)self->_nameProvider givenName];
-  [(UITextField *)self->_givenNameField setText:v28];
+  givenName2 = [(CNMeCardSharingNameProvider *)self->_nameProvider givenName];
+  [(UITextField *)self->_givenNameField setText:givenName2];
 
   v29 = CNContactsUIBundle();
   v30 = [v29 localizedStringForKey:@"SHARING_GIVEN_NAME_PLACEHOLDER" value:&stru_1F0CE7398 table:@"Localized"];
@@ -949,8 +949,8 @@ LABEL_13:
   familyNameField = self->_familyNameField;
   self->_familyNameField = v33;
 
-  v35 = [(CNMeCardSharingNameProvider *)self->_nameProvider familyName];
-  [(UITextField *)self->_familyNameField setText:v35];
+  familyName2 = [(CNMeCardSharingNameProvider *)self->_nameProvider familyName];
+  [(UITextField *)self->_familyNameField setText:familyName2];
 
   v36 = CNContactsUIBundle();
   v37 = [v36 localizedStringForKey:@"SHARING_FAMILY_NAME_PLACEHOLDER" value:&stru_1F0CE7398 table:@"Localized"];
@@ -963,61 +963,61 @@ LABEL_13:
   [(UITextField *)self->_familyNameField setAutocorrectionType:1];
   [(UITextField *)self->_familyNameField addTarget:self action:sel_familyNameDidChange_ forControlEvents:0x20000];
   [(UITextField *)self->_familyNameField setDelegate:self];
-  v39 = [(OBTableWelcomeController *)self tableView];
-  [v39 setKeyboardDismissMode:2];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setKeyboardDismissMode:2];
 
   v40 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v41 = [(CNMeCardSharingNameProvider *)self->_nameProvider givenName];
-  [v40 setGivenName:v41];
+  givenName3 = [(CNMeCardSharingNameProvider *)self->_nameProvider givenName];
+  [v40 setGivenName:givenName3];
 
-  v42 = [(CNMeCardSharingNameProvider *)self->_nameProvider familyName];
-  [v40 setFamilyName:v42];
+  familyName3 = [(CNMeCardSharingNameProvider *)self->_nameProvider familyName];
+  [v40 setFamilyName:familyName3];
 
   self->_nameOrder = [MEMORY[0x1E696ADF8] _nameOrderWithOverridesForComponents:v40 options:0];
-  v43 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v43 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v44 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v44 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
 
-  v45 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v45 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNMeCardSharingOnboardingEditViewController;
   [(CNMeCardSharingOnboardingEditViewController *)&v4 dealloc];
 }
 
-- (CNMeCardSharingOnboardingEditViewController)initWithContactStore:(id)a3 contact:(id)a4 nameProvider:(id)a5 avatarRecord:(id)a6
+- (CNMeCardSharingOnboardingEditViewController)initWithContactStore:(id)store contact:(id)contact nameProvider:(id)provider avatarRecord:(id)record
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [objc_opt_class() headerText];
+  storeCopy = store;
+  contactCopy = contact;
+  providerCopy = provider;
+  recordCopy = record;
+  headerText = [objc_opt_class() headerText];
   v33.receiver = self;
   v33.super_class = CNMeCardSharingOnboardingEditViewController;
-  v16 = [(OBTableWelcomeController *)&v33 initWithTitle:v15 detailText:0 icon:0 adoptTableViewScrollView:0];
+  v16 = [(OBTableWelcomeController *)&v33 initWithTitle:headerText detailText:0 icon:0 adoptTableViewScrollView:0];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_contactStore, a3);
-    objc_storeStrong(&v16->_contact, a4);
-    objc_storeStrong(&v16->_nameProvider, a5);
-    objc_storeStrong(&v16->_avatarRecord, a6);
-    if (v12)
+    objc_storeStrong(&v16->_contactStore, store);
+    objc_storeStrong(&v16->_contact, contact);
+    objc_storeStrong(&v16->_nameProvider, provider);
+    objc_storeStrong(&v16->_avatarRecord, record);
+    if (contactCopy)
     {
-      v17 = [v12 mutableCopy];
+      v17 = [contactCopy mutableCopy];
       editingContact = v16->_editingContact;
       v16->_editingContact = v17;
 
-      v19 = [v12 mutableCopy];
+      v19 = [contactCopy mutableCopy];
       avatarCarouselEditingContact = v16->_avatarCarouselEditingContact;
       v16->_avatarCarouselEditingContact = v19;
     }
@@ -1035,11 +1035,11 @@ LABEL_13:
       v16->_shouldSetAsMeContact = 1;
     }
 
-    v25 = [v13 givenName];
-    [(CNMutableContact *)v16->_avatarCarouselEditingContact setGivenName:v25];
+    givenName = [providerCopy givenName];
+    [(CNMutableContact *)v16->_avatarCarouselEditingContact setGivenName:givenName];
 
-    v26 = [v13 familyName];
-    [(CNMutableContact *)v16->_avatarCarouselEditingContact setFamilyName:v26];
+    familyName = [providerCopy familyName];
+    [(CNMutableContact *)v16->_avatarCarouselEditingContact setFamilyName:familyName];
 
     v27 = +[CNMeCardSharingPickerLayoutAttributes layoutAttributesForBuddy];
     layoutAttributes = v16->_layoutAttributes;

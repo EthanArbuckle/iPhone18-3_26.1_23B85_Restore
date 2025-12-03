@@ -1,30 +1,30 @@
 @interface PUCachedMapTable
-- (id)_cachedObjectsCreateIfNeeded:(BOOL)a3;
-- (id)_mapTableCreateIfNeeded:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_cachedObjectsCreateIfNeeded:(BOOL)needed;
+- (id)_mapTableCreateIfNeeded:(BOOL)needed;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)_initialCapacity;
 - (unint64_t)accurateCount;
-- (void)_objectWasRecentlyUsed:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)_objectWasRecentlyUsed:(id)used;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation PUCachedMapTable
 
-- (void)_objectWasRecentlyUsed:(id)a3
+- (void)_objectWasRecentlyUsed:(id)used
 {
-  v4 = a3;
-  if (v4)
+  usedCopy = used;
+  if (usedCopy)
   {
-    v8 = v4;
+    v8 = usedCopy;
     v5 = [(PUCachedMapTable *)self _cachedObjectsCreateIfNeeded:1];
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
 
-    if (v6 != v8)
+    if (lastObject != v8)
     {
       if ([v5 containsObject:v8])
       {
@@ -32,23 +32,23 @@
       }
 
       [v5 addObject:v8];
-      v7 = [(PUCachedMapTable *)self cacheCountLimit];
-      if ([v5 count] > v7)
+      cacheCountLimit = [(PUCachedMapTable *)self cacheCountLimit];
+      if ([v5 count] > cacheCountLimit)
       {
-        [v5 removeObjectsInRange:{0, objc_msgSend(v5, "count") - v7}];
+        [v5 removeObjectsInRange:{0, objc_msgSend(v5, "count") - cacheCountLimit}];
       }
     }
 
-    v4 = v8;
+    usedCopy = v8;
   }
 }
 
 - (unint64_t)_initialCapacity
 {
-  v2 = [(PUCachedMapTable *)self cacheCountLimit];
-  if (2 * v2)
+  cacheCountLimit = [(PUCachedMapTable *)self cacheCountLimit];
+  if (2 * cacheCountLimit)
   {
-    return 2 * v2;
+    return 2 * cacheCountLimit;
   }
 
   else
@@ -57,7 +57,7 @@
   }
 }
 
-- (id)_cachedObjectsCreateIfNeeded:(BOOL)a3
+- (id)_cachedObjectsCreateIfNeeded:(BOOL)needed
 {
   cachedObjects = self->__cachedObjects;
   if (cachedObjects)
@@ -67,12 +67,12 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{-[PUCachedMapTable _initialCapacity](self, "_initialCapacity", a3)}];
+    v6 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{-[PUCachedMapTable _initialCapacity](self, "_initialCapacity", needed)}];
     v7 = self->__cachedObjects;
     self->__cachedObjects = v6;
 
@@ -82,7 +82,7 @@
   return cachedObjects;
 }
 
-- (id)_mapTableCreateIfNeeded:(BOOL)a3
+- (id)_mapTableCreateIfNeeded:(BOOL)needed
 {
   mapTable = self->__mapTable;
   if (mapTable)
@@ -92,7 +92,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -110,38 +110,38 @@
 - (id)keyEnumerator
 {
   v2 = [(PUCachedMapTable *)self _mapTableCreateIfNeeded:1];
-  v3 = [v2 keyEnumerator];
+  keyEnumerator = [v2 keyEnumerator];
 
-  return v3;
+  return keyEnumerator;
 }
 
 - (void)removeAllObjects
 {
-  v3 = [(PUCachedMapTable *)self _mapTable];
-  [v3 removeAllObjects];
+  _mapTable = [(PUCachedMapTable *)self _mapTable];
+  [_mapTable removeAllObjects];
 
-  v4 = [(PUCachedMapTable *)self _cachedObjects];
-  [v4 removeAllObjects];
+  _cachedObjects = [(PUCachedMapTable *)self _cachedObjects];
+  [_cachedObjects removeAllObjects];
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUCachedMapTable.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCachedMapTable.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
-  v6 = [(PUCachedMapTable *)self _mapTable];
+  _mapTable = [(PUCachedMapTable *)self _mapTable];
   v20 = 0;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v6 keyEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  keyEnumerator = [_mapTable keyEnumerator];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -152,14 +152,14 @@ LABEL_5:
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v12 = *(*(&v16 + 1) + 8 * v11);
-      v13 = [v6 objectForKey:v12];
+      v13 = [_mapTable objectForKey:v12];
       if (v13)
       {
-        v5[2](v5, v12, v13, &v20);
+        blockCopy[2](blockCopy, v12, v13, &v20);
       }
 
       v14 = v20;
@@ -171,7 +171,7 @@ LABEL_5:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v9 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v9)
         {
           goto LABEL_5;
@@ -183,37 +183,37 @@ LABEL_5:
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v8 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v7 = [(PUCachedMapTable *)self _mapTableCreateIfNeeded:1];
-  [v7 setObject:v8 forKey:v6];
+  [v7 setObject:objectCopy forKey:keyCopy];
 
-  [(PUCachedMapTable *)self _objectWasRecentlyUsed:v8];
+  [(PUCachedMapTable *)self _objectWasRecentlyUsed:objectCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v8 = a3;
-  v4 = [(PUCachedMapTable *)self _mapTable];
-  v5 = [v4 objectForKey:v8];
+  keyCopy = key;
+  _mapTable = [(PUCachedMapTable *)self _mapTable];
+  v5 = [_mapTable objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [(PUCachedMapTable *)self _cachedObjects];
-    [v6 removeObject:v5];
+    _cachedObjects = [(PUCachedMapTable *)self _cachedObjects];
+    [_cachedObjects removeObject:v5];
   }
 
-  v7 = [(PUCachedMapTable *)self _mapTable];
-  [v7 removeObjectForKey:v8];
+  _mapTable2 = [(PUCachedMapTable *)self _mapTable];
+  [_mapTable2 removeObjectForKey:keyCopy];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PUCachedMapTable *)self _mapTable];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  _mapTable = [(PUCachedMapTable *)self _mapTable];
+  v6 = [_mapTable objectForKey:keyCopy];
 
   [(PUCachedMapTable *)self _objectWasRecentlyUsed:v6];
 
@@ -227,9 +227,9 @@ LABEL_5:
   v12 = 0u;
   v13 = 0u;
   v2 = [(PUCachedMapTable *)self _mapTable:0];
-  v3 = [v2 keyEnumerator];
+  keyEnumerator = [v2 keyEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -242,7 +242,7 @@ LABEL_5:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         --v8;
@@ -250,7 +250,7 @@ LABEL_5:
 
       while (v8);
       v6 += v5;
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -264,18 +264,18 @@ LABEL_5:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
   {
-    v5 = [(PUCachedMapTable *)self _mapTable];
-    v6 = [v5 copy];
+    _mapTable = [(PUCachedMapTable *)self _mapTable];
+    v6 = [_mapTable copy];
     v7 = v4[2];
     v4[2] = v6;
 
-    v8 = [(PUCachedMapTable *)self _cachedObjects];
-    v9 = [v8 mutableCopy];
+    _cachedObjects = [(PUCachedMapTable *)self _cachedObjects];
+    v9 = [_cachedObjects mutableCopy];
     v10 = v4[3];
     v4[3] = v9;
   }

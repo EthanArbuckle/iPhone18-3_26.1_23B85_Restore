@@ -1,23 +1,23 @@
 @interface WFComposeViewSizing
-+ (CGSize)drawerSizeFromParentSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4 traitCollection:(id)a5;
-+ (CGSize)sizeForRequestType:(unint64_t)a3 parentSize:(CGSize)a4 safeAreaInsets:(UIEdgeInsets)a5 traitCollection:(id)a6;
-+ (CGSize)workflowViewSizeFromParentSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4 traitCollection:(id)a5;
-+ (UIEdgeInsets)moduleHorizontalInsetWithTraitCollection:(id)a3 safeAreaInsets:(UIEdgeInsets)a4;
-+ (double)constrainMaximumContentWidth:(double)a3 toSize:(CGSize)a4 traitCollection:(id)a5;
-+ (double)moduleWidthForViewSize:(CGSize)a3 maximumContentWidth:(double)a4 maximumModuleWidth:(double)a5 traitCollection:(id)a6 safeAreaInsets:(UIEdgeInsets)a7;
++ (CGSize)drawerSizeFromParentSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection;
++ (CGSize)sizeForRequestType:(unint64_t)type parentSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection;
++ (CGSize)workflowViewSizeFromParentSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection;
++ (UIEdgeInsets)moduleHorizontalInsetWithTraitCollection:(id)collection safeAreaInsets:(UIEdgeInsets)insets;
++ (double)constrainMaximumContentWidth:(double)width toSize:(CGSize)size traitCollection:(id)collection;
++ (double)moduleWidthForViewSize:(CGSize)size maximumContentWidth:(double)width maximumModuleWidth:(double)moduleWidth traitCollection:(id)collection safeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation WFComposeViewSizing
 
-+ (CGSize)sizeForRequestType:(unint64_t)a3 parentSize:(CGSize)a4 safeAreaInsets:(UIEdgeInsets)a5 traitCollection:(id)a6
++ (CGSize)sizeForRequestType:(unint64_t)type parentSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection
 {
-  right = a5.right;
-  left = a5.left;
-  height = a4.height;
-  width = a4.width;
-  v11 = a4.width - a5.left - a5.right;
-  v12 = a6;
-  v13 = dbl_2746606C0[[v12 userInterfaceIdiom] == 1];
+  right = insets.right;
+  left = insets.left;
+  height = size.height;
+  width = size.width;
+  v11 = size.width - insets.left - insets.right;
+  collectionCopy = collection;
+  v13 = dbl_2746606C0[[collectionCopy userInterfaceIdiom] == 1];
   v14 = 320.0;
   if (v11 < 700.0)
   {
@@ -55,9 +55,9 @@
     v17 = v15;
   }
 
-  v18 = [v12 horizontalSizeClass];
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
 
-  if (v18 == 1)
+  if (horizontalSizeClass == 1)
   {
     v19 = width;
   }
@@ -67,15 +67,15 @@
     v19 = v17;
   }
 
-  if (a3)
+  if (type)
   {
     v20 = v11 - v17;
-    if (v18 == 1)
+    if (horizontalSizeClass == 1)
     {
       v20 = width;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v19 = v20;
     }
@@ -88,10 +88,10 @@
 
   if (v19 < width)
   {
-    v21 = [MEMORY[0x277CFC248] sharedContext];
-    v22 = [v21 shouldReverseLayoutDirection];
+    mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
+    shouldReverseLayoutDirection = [mEMORY[0x277CFC248] shouldReverseLayoutDirection];
 
-    if (v22)
+    if (shouldReverseLayoutDirection)
     {
       v23 = left;
     }
@@ -120,43 +120,43 @@
   return result;
 }
 
-+ (CGSize)workflowViewSizeFromParentSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4 traitCollection:(id)a5
++ (CGSize)workflowViewSizeFromParentSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection
 {
-  [a1 sizeForRequestType:1 parentSize:a5 safeAreaInsets:a3.width traitCollection:{a3.height, a4.top, a4.left, a4.bottom, a4.right}];
+  [self sizeForRequestType:1 parentSize:collection safeAreaInsets:size.width traitCollection:{size.height, insets.top, insets.left, insets.bottom, insets.right}];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-+ (CGSize)drawerSizeFromParentSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4 traitCollection:(id)a5
++ (CGSize)drawerSizeFromParentSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection
 {
-  [a1 sizeForRequestType:0 parentSize:a5 safeAreaInsets:a3.width traitCollection:{a3.height, a4.top, a4.left, a4.bottom, a4.right}];
+  [self sizeForRequestType:0 parentSize:collection safeAreaInsets:size.width traitCollection:{size.height, insets.top, insets.left, insets.bottom, insets.right}];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-+ (double)constrainMaximumContentWidth:(double)a3 toSize:(CGSize)a4 traitCollection:(id)a5
++ (double)constrainMaximumContentWidth:(double)width toSize:(CGSize)size traitCollection:(id)collection
 {
-  width = a4.width;
-  v7 = a5;
-  v8 = [v7 userInterfaceIdiom];
+  width = size.width;
+  collectionCopy = collection;
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
   if (width >= 1300.0)
   {
-    v9 = v8;
-    if ([v7 horizontalSizeClass] == 2)
+    v9 = userInterfaceIdiom;
+    if ([collectionCopy horizontalSizeClass] == 2)
     {
-      a3 = width * dbl_2746606D0[v9 == 1];
+      width = width * dbl_2746606D0[v9 == 1];
     }
   }
 
-  return a3;
+  return width;
 }
 
-+ (UIEdgeInsets)moduleHorizontalInsetWithTraitCollection:(id)a3 safeAreaInsets:(UIEdgeInsets)a4
++ (UIEdgeInsets)moduleHorizontalInsetWithTraitCollection:(id)collection safeAreaInsets:(UIEdgeInsets)insets
 {
-  v4 = a4.left + 20.0;
-  v5 = a4.right + 20.0;
+  v4 = insets.left + 20.0;
+  v5 = insets.right + 20.0;
   v6 = 0.0;
   v7 = 0.0;
   result.right = v5;
@@ -166,26 +166,26 @@
   return result;
 }
 
-+ (double)moduleWidthForViewSize:(CGSize)a3 maximumContentWidth:(double)a4 maximumModuleWidth:(double)a5 traitCollection:(id)a6 safeAreaInsets:(UIEdgeInsets)a7
++ (double)moduleWidthForViewSize:(CGSize)size maximumContentWidth:(double)width maximumModuleWidth:(double)moduleWidth traitCollection:(id)collection safeAreaInsets:(UIEdgeInsets)insets
 {
-  if (a4 <= 0.0 || a3.width <= a4)
+  if (width <= 0.0 || size.width <= width)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a4;
+    width = width;
   }
 
-  [a1 moduleHorizontalInsetWithTraitCollection:a6 safeAreaInsets:{a7.top, a7.left, a7.bottom, a7.right}];
-  v12 = width - v10 - v11;
-  if (v12 > a5 && a5 > 0.0)
+  [self moduleHorizontalInsetWithTraitCollection:collection safeAreaInsets:{insets.top, insets.left, insets.bottom, insets.right}];
+  moduleWidthCopy = width - v10 - v11;
+  if (moduleWidthCopy > moduleWidth && moduleWidth > 0.0)
   {
-    v12 = a5;
+    moduleWidthCopy = moduleWidth;
   }
 
-  return fmax(v12, 0.0);
+  return fmax(moduleWidthCopy, 0.0);
 }
 
 @end

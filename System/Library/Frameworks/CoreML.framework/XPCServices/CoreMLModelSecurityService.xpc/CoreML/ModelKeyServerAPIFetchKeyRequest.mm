@@ -1,12 +1,12 @@
 @interface ModelKeyServerAPIFetchKeyRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ModelKeyServerAPIFetchKeyRequest
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = ModelKeyServerAPIFetchKeyRequest;
   v3 = [(ModelKeyServerAPIFetchKeyRequest *)&v7 description];
-  v4 = [(ModelKeyServerAPIFetchKeyRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ModelKeyServerAPIFetchKeyRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -53,77 +53,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_keyId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_teamId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_signedKeyRequest)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     rawRequest = self->_rawRequest;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_keyId)
   {
-    [v4 setKeyId:?];
-    v4 = v5;
+    [toCopy setKeyId:?];
+    toCopy = v5;
   }
 
   if (self->_teamId)
   {
     [v5 setTeamId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_signedKeyRequest)
   {
     [v5 setSignedKeyRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[32] = self->_rawRequest;
-    v4[36] |= 1u;
+    toCopy[32] = self->_rawRequest;
+    toCopy[36] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_keyId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_keyId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_teamId copyWithZone:a3];
+  v8 = [(NSString *)self->_teamId copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_signedKeyRequest copyWithZone:a3];
+  v10 = [(NSData *)self->_signedKeyRequest copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -136,16 +136,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   keyId = self->_keyId;
-  if (keyId | *(v4 + 1))
+  if (keyId | *(equalCopy + 1))
   {
     if (![(NSString *)keyId isEqual:?])
     {
@@ -154,7 +154,7 @@
   }
 
   teamId = self->_teamId;
-  if (teamId | *(v4 + 3))
+  if (teamId | *(equalCopy + 3))
   {
     if (![(NSString *)teamId isEqual:?])
     {
@@ -163,7 +163,7 @@
   }
 
   signedKeyRequest = self->_signedKeyRequest;
-  if (signedKeyRequest | *(v4 + 2))
+  if (signedKeyRequest | *(equalCopy + 2))
   {
     if (![(NSData *)signedKeyRequest isEqual:?])
     {
@@ -171,10 +171,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
 LABEL_10:
       v8 = 0;
@@ -183,13 +183,13 @@ LABEL_10:
 
     if (self->_rawRequest)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_10;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_10;
     }
@@ -220,31 +220,31 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(ModelKeyServerAPIFetchKeyRequest *)self setKeyId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ModelKeyServerAPIFetchKeyRequest *)self setTeamId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ModelKeyServerAPIFetchKeyRequest *)self setSignedKeyRequest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[36])
+  if (fromCopy[36])
   {
-    self->_rawRequest = v4[32];
+    self->_rawRequest = fromCopy[32];
     *&self->_has |= 1u;
   }
 }

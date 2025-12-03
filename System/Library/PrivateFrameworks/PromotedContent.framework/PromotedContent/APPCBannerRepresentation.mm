@@ -1,5 +1,5 @@
 @interface APPCBannerRepresentation
-- (APPCBannerRepresentation)initWithIdentifier:(id)a3 adType:(int64_t)a4 desiredPosition:(int64_t)a5 privacyMarkerPosition:(int64_t)a6 privacyMarkerType:(int64_t)a7 adSize:(CGSize)a8 tapAction:(id)a9 adTag:(id)a10 outstreamVideoInfo:(id)a11 adamIdentifier:(id)a12 tapActionTemplateType:(int64_t)a13 adPolicyData:(id)a14;
+- (APPCBannerRepresentation)initWithIdentifier:(id)identifier adType:(int64_t)type desiredPosition:(int64_t)position privacyMarkerPosition:(int64_t)markerPosition privacyMarkerType:(int64_t)markerType adSize:(CGSize)size tapAction:(id)action adTag:(id)self0 outstreamVideoInfo:(id)self1 adamIdentifier:(id)self2 tapActionTemplateType:(int64_t)self3 adPolicyData:(id)self4;
 - (NSString)adTag;
 @end
 
@@ -23,24 +23,24 @@
   return v4;
 }
 
-- (APPCBannerRepresentation)initWithIdentifier:(id)a3 adType:(int64_t)a4 desiredPosition:(int64_t)a5 privacyMarkerPosition:(int64_t)a6 privacyMarkerType:(int64_t)a7 adSize:(CGSize)a8 tapAction:(id)a9 adTag:(id)a10 outstreamVideoInfo:(id)a11 adamIdentifier:(id)a12 tapActionTemplateType:(int64_t)a13 adPolicyData:(id)a14
+- (APPCBannerRepresentation)initWithIdentifier:(id)identifier adType:(int64_t)type desiredPosition:(int64_t)position privacyMarkerPosition:(int64_t)markerPosition privacyMarkerType:(int64_t)markerType adSize:(CGSize)size tapAction:(id)action adTag:(id)self0 outstreamVideoInfo:(id)self1 adamIdentifier:(id)self2 tapActionTemplateType:(int64_t)self3 adPolicyData:(id)self4
 {
-  height = a8.height;
-  width = a8.width;
-  v34 = self;
-  v35 = a7;
-  v32 = a5;
-  v33 = a6;
-  v31 = a4;
-  v17 = a10;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  markerTypeCopy = markerType;
+  positionCopy = position;
+  markerPositionCopy = markerPosition;
+  typeCopy = type;
+  tagCopy = tag;
   v18 = sub_1C1B945F8();
   v19 = *(*(v18 - 8) + 64);
   MEMORY[0x1EEE9AC00](v18 - 8);
   v21 = &v30 - ((v20 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1B945D8();
-  if (a10)
+  if (tag)
   {
-    v17 = sub_1C1B94D88();
+    tagCopy = sub_1C1B94D88();
     v23 = v22;
   }
 
@@ -49,11 +49,11 @@
     v23 = 0;
   }
 
-  v24 = a9;
-  v25 = a11;
-  v26 = a12;
-  v27 = a14;
-  v28 = sub_1C1B085DC(v21, v31, v32, v33, v35, a9, v17, v23, width, height, a11, a12, a13, a14);
+  actionCopy = action;
+  infoCopy = info;
+  adamIdentifierCopy = adamIdentifier;
+  dataCopy = data;
+  v28 = sub_1C1B085DC(v21, typeCopy, positionCopy, markerPositionCopy, markerTypeCopy, action, tagCopy, v23, width, height, info, adamIdentifier, templateType, data);
 
   return v28;
 }

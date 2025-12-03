@@ -1,61 +1,61 @@
 @interface HLPHelpItem
-- (HLPHelpItem)initWithDictionary:(id)a3 helpBookURL:(id)a4 serverType:(int64_t)a5;
+- (HLPHelpItem)initWithDictionary:(id)dictionary helpBookURL:(id)l serverType:(int64_t)type;
 - (HLPHelpItem)parent;
 - (NSString)decodedName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)decodedNameString;
 @end
 
 @implementation HLPHelpItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(HLPHelpItem *)self name];
-  [v4 setName:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  name = [(HLPHelpItem *)self name];
+  [v4 setName:name];
 
-  v6 = [(HLPHelpItem *)self identifier];
-  [v4 setIdentifier:v6];
+  identifier = [(HLPHelpItem *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v7 = [(HLPHelpItem *)self parent];
-  [v4 setParent:v7];
+  parent = [(HLPHelpItem *)self parent];
+  [v4 setParent:parent];
 
   [v4 setLevel:{-[HLPHelpItem level](self, "level")}];
-  v8 = [(HLPHelpItem *)self iconURL];
-  [v4 setIconURL:v8];
+  iconURL = [(HLPHelpItem *)self iconURL];
+  [v4 setIconURL:iconURL];
 
   return v4;
 }
 
-- (HLPHelpItem)initWithDictionary:(id)a3 helpBookURL:(id)a4 serverType:(int64_t)a5
+- (HLPHelpItem)initWithDictionary:(id)dictionary helpBookURL:(id)l serverType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = HLPHelpItem;
   v10 = [(HLPHelpItem *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    v10->_serverType = a5;
-    if (a5)
+    v10->_serverType = type;
+    if (type)
     {
-      v12 = [v8 objectForKeyedSubscript:@"title"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"title"];
       name = v11->_name;
       v11->_name = v12;
     }
 
     else
     {
-      v14 = [v8 objectForKeyedSubscript:@"name"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"name"];
       v15 = v11->_name;
       v11->_name = v14;
 
-      name = [v8 objectForKeyedSubscript:@"icon"];
+      name = [dictionaryCopy objectForKeyedSubscript:@"icon"];
       if ([name length])
       {
-        v16 = [v9 URLByAppendingPathComponent:name];
+        v16 = [lCopy URLByAppendingPathComponent:name];
         iconURL = v11->_iconURL;
         v11->_iconURL = v16;
       }
@@ -73,9 +73,9 @@
     decodedName = self->_decodedName;
     if (!decodedName)
     {
-      v5 = [(HLPHelpItem *)self decodedNameString];
+      decodedNameString = [(HLPHelpItem *)self decodedNameString];
       v6 = self->_decodedName;
-      self->_decodedName = v5;
+      self->_decodedName = decodedNameString;
 
       decodedName = self->_decodedName;
     }
@@ -103,13 +103,13 @@
     v13[1] = &unk_28647D170;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
     v7 = [objc_alloc(MEMORY[0x277CCA898]) initWithData:v3 options:v6 documentAttributes:0 error:0];
-    v8 = [v7 string];
+    string = [v7 string];
 
-    if (v8)
+    if (string)
     {
-      v9 = [v7 string];
+      string2 = [v7 string];
 
-      v2 = v9;
+      v2 = string2;
     }
   }
 
@@ -121,14 +121,14 @@
 - (id)debugDescription
 {
   v3 = [MEMORY[0x277CCAB68] stringWithString:&stru_2864756F0];
-  v4 = [(HLPHelpItem *)self identifier];
-  [v3 appendFormat:@"identifier: %@\n", v4];
+  identifier = [(HLPHelpItem *)self identifier];
+  [v3 appendFormat:@"identifier: %@\n", identifier];
 
-  v5 = [(HLPHelpItem *)self parent];
-  [v3 appendFormat:@"parent: %@\n", v5];
+  parent = [(HLPHelpItem *)self parent];
+  [v3 appendFormat:@"parent: %@\n", parent];
 
-  v6 = [(HLPHelpItem *)self name];
-  [v3 appendFormat:@"name: %@\n", v6];
+  name = [(HLPHelpItem *)self name];
+  [v3 appendFormat:@"name: %@\n", name];
 
   [v3 appendFormat:@"level: %ld\n", -[HLPHelpItem level](self, "level")];
 

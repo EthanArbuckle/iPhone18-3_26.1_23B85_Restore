@@ -1,24 +1,24 @@
 @interface NTKLeghornHandsView
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_handsViewLayoutConstantsForDevice:(id)a3;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_handsViewLayoutConstantsForDevice:(id)device;
 - (id)hourHandConfiguration;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)minuteHandConfiguration;
 - (void)_applyPalette;
-- (void)setPalette:(id)a3;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKLeghornHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = NTKLeghornHandsView;
-  return [(NTKAnalogHandsView *)&v4 initForDevice:a3];
+  return [(NTKAnalogHandsView *)&v4 initForDevice:device];
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
 
   MEMORY[0x2821F9670](v3);
 }
@@ -99,9 +99,9 @@
   return v19;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_handsViewLayoutConstantsForDevice:(id)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_handsViewLayoutConstantsForDevice:(id)device
 {
-  v3 = sub_23BED92A8(self, a3);
+  v3 = sub_23BED92A8(self, device);
   result.var3 = v6;
   result.var2 = v5;
   result.var1 = v4;

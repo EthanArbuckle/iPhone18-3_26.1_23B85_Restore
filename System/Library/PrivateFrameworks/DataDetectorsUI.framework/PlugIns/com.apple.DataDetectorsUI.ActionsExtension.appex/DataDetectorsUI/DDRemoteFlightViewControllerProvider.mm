@@ -1,16 +1,16 @@
 @interface DDRemoteFlightViewControllerProvider
-- (void)createViewControllerWithCompletionHandler:(id)a3;
+- (void)createViewControllerWithCompletionHandler:(id)handler;
 @end
 
 @implementation DDRemoteFlightViewControllerProvider
 
-- (void)createViewControllerWithCompletionHandler:(id)a3
+- (void)createViewControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_flightViewController)
   {
-    (*(v4 + 2))(v4);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 
   else
@@ -19,8 +19,8 @@
     flightViewController = self->_flightViewController;
     self->_flightViewController = v6;
 
-    v8 = [(DDRemoteFlightViewControllerProvider *)self actionContext];
-    [v8 result];
+    actionContext = [(DDRemoteFlightViewControllerProvider *)self actionContext];
+    [actionContext result];
     Type = DDResultGetType();
     v10 = CFStringCompare(Type, DDBinderFlightInformationKey, 0);
 
@@ -30,23 +30,23 @@
       goto LABEL_4;
     }
 
-    v12 = [(DDRemoteFlightViewControllerProvider *)self actionContext];
-    [v12 result];
+    actionContext2 = [(DDRemoteFlightViewControllerProvider *)self actionContext];
+    [actionContext2 result];
     DDResultGetSubresultWithType();
 
-    v13 = [(DDRemoteFlightViewControllerProvider *)self actionContext];
-    [v13 result];
+    actionContext3 = [(DDRemoteFlightViewControllerProvider *)self actionContext];
+    [actionContext3 result];
     DDResultGetSubresultWithType();
 
     v11 = DDResultGetValue();
-    v14 = [DDResultGetValue() integerValue];
+    integerValue = [DDResultGetValue() integerValue];
     if (!v11)
     {
       goto LABEL_4;
     }
 
-    v15 = v14;
-    if (v14)
+    v15 = integerValue;
+    if (integerValue)
     {
       v16 = +[NSDate date];
       v17 = [FUFlightFactory flightFactoryClassWithProvider:FUFactoryProvider_Default];

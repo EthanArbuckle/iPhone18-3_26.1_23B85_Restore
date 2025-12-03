@@ -1,39 +1,39 @@
 @interface CALNNotificationRequest
-+ (id)requestWithIdentifier:(id)a3 content:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequest:(id)a3;
-- (CALNNotificationRequest)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 content:(id)a4;
++ (id)requestWithIdentifier:(id)identifier content:(id)content;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequest:(id)request;
+- (CALNNotificationRequest)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier content:(id)content;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CALNNotificationRequest
 
-+ (id)requestWithIdentifier:(id)a3 content:(id)a4
++ (id)requestWithIdentifier:(id)identifier content:(id)content
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CALNNotificationRequest alloc] _initWithIdentifier:v6 content:v5];
+  contentCopy = content;
+  identifierCopy = identifier;
+  v7 = [[CALNNotificationRequest alloc] _initWithIdentifier:identifierCopy content:contentCopy];
 
   return v7;
 }
 
-- (id)_initWithIdentifier:(id)a3 content:(id)a4
+- (id)_initWithIdentifier:(id)identifier content:(id)content
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contentCopy = content;
   v14.receiver = self;
   v14.super_class = CALNNotificationRequest;
   v8 = [(CALNNotificationRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [contentCopy copy];
     content = v8->_content;
     v8->_content = v9;
 
-    v11 = [v6 copy];
+    v11 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v11;
   }
@@ -43,40 +43,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CALNNotificationRequest *)self content];
-  v4 = [v3 hash];
-  v5 = [(CALNNotificationRequest *)self identifier];
-  v6 = [v5 hash];
+  content = [(CALNNotificationRequest *)self content];
+  v4 = [content hash];
+  identifier = [(CALNNotificationRequest *)self identifier];
+  v6 = [identifier hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationRequest *)self isEqualToRequest:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationRequest *)self isEqualToRequest:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
-  v4 = a3;
-  if (self == v4)
+  requestCopy = request;
+  if (self == requestCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(CALNNotificationRequest *)self identifier];
-    v6 = [(CALNNotificationRequest *)v4 identifier];
+    identifier = [(CALNNotificationRequest *)self identifier];
+    identifier2 = [(CALNNotificationRequest *)requestCopy identifier];
     v7 = CalEqualStrings();
 
     if (v7)
     {
-      v8 = [(CALNNotificationRequest *)self content];
-      v9 = [(CALNNotificationRequest *)v4 content];
+      content = [(CALNNotificationRequest *)self content];
+      content2 = [(CALNNotificationRequest *)requestCopy content];
       v10 = CalEqualObjects();
     }
 
@@ -93,28 +93,28 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CALNNotificationRequest *)self identifier];
-  v6 = [(CALNNotificationRequest *)self content];
-  v7 = [v3 stringWithFormat:@"<%@: %p>(identifier = %@, content = %@)", v4, self, v5, v6];
+  identifier = [(CALNNotificationRequest *)self identifier];
+  content = [(CALNNotificationRequest *)self content];
+  v7 = [v3 stringWithFormat:@"<%@: %p>(identifier = %@, content = %@)", v4, self, identifier, content];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CALNNotificationRequest *)self content];
-  [v4 encodeObject:v5 forKey:@"content"];
+  coderCopy = coder;
+  content = [(CALNNotificationRequest *)self content];
+  [coderCopy encodeObject:content forKey:@"content"];
 
-  v6 = [(CALNNotificationRequest *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(CALNNotificationRequest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (CALNNotificationRequest)initWithCoder:(id)a3
+- (CALNNotificationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"content"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"content"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v7 = [(CALNNotificationRequest *)self _initWithIdentifier:v6 content:v5];
   return v7;

@@ -2,7 +2,7 @@
 + (id)activityLogFile;
 + (id)containerBaseURL;
 - (id)readStoredLog;
-- (void)storeLog:(id)a3;
+- (void)storeLog:(id)log;
 @end
 
 @implementation ESADefaultStorageProvider
@@ -30,8 +30,8 @@
 
 + (id)activityLogFile
 {
-  v2 = [a1 containerBaseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"sbd-operation-log.plist"];
+  containerBaseURL = [self containerBaseURL];
+  v3 = [containerBaseURL URLByAppendingPathComponent:@"sbd-operation-log.plist"];
 
   return v3;
 }
@@ -75,8 +75,8 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v11 = objc_opt_class();
-        v12 = [v6 activities];
-        v13 = [v12 count];
+        activities = [v6 activities];
+        v13 = [activities count];
         *buf = 138412546;
         v18 = v11;
         v19 = 2048;
@@ -104,26 +104,26 @@
   return v10;
 }
 
-- (void)storeLog:(id)a3
+- (void)storeLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = +[ESADefaultStorageProvider activityLogFile];
   v5 = CloudServicesLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
-    v7 = [v3 activities];
+    activities = [logCopy activities];
     *buf = 138412802;
     v21 = v6;
     v22 = 2048;
-    v23 = [v7 count];
+    v23 = [activities count];
     v24 = 2112;
     v25 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@: Attempting to write %lu activity logs to %@", buf, 0x20u);
   }
 
   v19 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v19];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:logCopy requiringSecureCoding:1 error:&v19];
   v9 = v19;
   v10 = v9;
   if (v8)
@@ -139,8 +139,8 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v15 = objc_opt_class();
-        v16 = [v3 activities];
-        v17 = [v16 count];
+        activities2 = [logCopy activities];
+        v17 = [activities2 count];
         *buf = 138412546;
         v21 = v15;
         v22 = 2048;

@@ -1,36 +1,36 @@
 @interface TPSTipsByCollectionViewController
 - (TPSTipsByCollectionViewControllerDelegate)contentDelegate;
-- (id)collectionIDForTipID:(id)a3;
-- (void)appController:(id)a3 loadingContent:(BOOL)a4;
-- (void)appControllerContentUpdated:(id)a3;
+- (id)collectionIDForTipID:(id)d;
+- (void)appController:(id)controller loadingContent:(BOOL)content;
+- (void)appControllerContentUpdated:(id)updated;
 - (void)dealloc;
 - (void)reloadContentIfNeeded;
 - (void)resetTips;
-- (void)setPendingReload:(BOOL)a3;
+- (void)setPendingReload:(BOOL)reload;
 - (void)showError;
 - (void)updateContent;
 - (void)updateTipsForCurrentCollection;
-- (void)updateTitleTextForCollection:(id)a3;
-- (void)updateWithCollectionID:(id)a3 tipID:(id)a4;
+- (void)updateTitleTextForCollection:(id)collection;
+- (void)updateWithCollectionID:(id)d tipID:(id)iD;
 @end
 
 @implementation TPSTipsByCollectionViewController
 
 - (void)dealloc
 {
-  v3 = [(TPSAppViewController *)self appController];
-  [v3 removeDelegate:self];
+  appController = [(TPSAppViewController *)self appController];
+  [appController removeDelegate:self];
 
   v4.receiver = self;
   v4.super_class = TPSTipsByCollectionViewController;
   [(TPSTipsViewController *)&v4 dealloc];
 }
 
-- (void)setPendingReload:(BOOL)a3
+- (void)setPendingReload:(BOOL)reload
 {
-  if (self->_pendingReload != a3)
+  if (self->_pendingReload != reload)
   {
-    self->_pendingReload = a3;
+    self->_pendingReload = reload;
     [(TPSTipsByCollectionViewController *)self reloadContentIfNeeded];
   }
 }
@@ -47,34 +47,34 @@
 
 - (void)updateContent
 {
-  v3 = [(TPSAppViewController *)self appController];
-  v4 = [v3 collections];
-  v5 = [v4 count];
+  appController = [(TPSAppViewController *)self appController];
+  collections = [appController collections];
+  v5 = [collections count];
 
   if (v5)
   {
 LABEL_2:
-    v6 = [(TPSAppViewController *)self appController];
-    [(TPSTipsByCollectionViewController *)self appControllerContentUpdated:v6];
+    appController2 = [(TPSAppViewController *)self appController];
+    [(TPSTipsByCollectionViewController *)self appControllerContentUpdated:appController2];
 
 LABEL_3:
-    v7 = [(TPSAppViewController *)self appController];
-    [(TPSTipsByCollectionViewController *)self appController:v7 loadingContent:0];
+    appController3 = [(TPSAppViewController *)self appController];
+    [(TPSTipsByCollectionViewController *)self appController:appController3 loadingContent:0];
 
     [(TPSTipsByCollectionViewController *)self reloadContentIfNeeded];
     return;
   }
 
-  v8 = [(TPSAppViewController *)self appController];
-  v9 = [v8 updatingContent];
+  appController4 = [(TPSAppViewController *)self appController];
+  updatingContent = [appController4 updatingContent];
 
-  v10 = [(TPSAppViewController *)self appController];
-  v12 = v10;
-  if (!v9)
+  appController5 = [(TPSAppViewController *)self appController];
+  v12 = appController5;
+  if (!updatingContent)
   {
-    v11 = [v10 featuredCollection];
+    featuredCollection = [appController5 featuredCollection];
 
-    if (!v11)
+    if (!featuredCollection)
     {
       goto LABEL_3;
     }
@@ -82,40 +82,40 @@ LABEL_3:
     goto LABEL_2;
   }
 
-  [(TPSTipsByCollectionViewController *)self appController:v10 loadingContent:1];
+  [(TPSTipsByCollectionViewController *)self appController:appController5 loadingContent:1];
 }
 
 - (void)updateTipsForCurrentCollection
 {
   [(TPSTipsByCollectionViewController *)self resetTips];
-  v3 = [(TPSTipsViewController *)self tips];
-  v4 = [v3 count];
+  tips = [(TPSTipsViewController *)self tips];
+  v4 = [tips count];
 
   if (v4)
   {
-    v5 = [(TPSTipsViewController *)self currentTip];
-    v12 = [v5 identifier];
+    currentTip = [(TPSTipsViewController *)self currentTip];
+    identifier = [currentTip identifier];
 
-    v6 = [(TPSAppViewController *)self appController];
-    v7 = [v6 tipForIdentifier:v12];
+    appController = [(TPSAppViewController *)self appController];
+    firstObject = [appController tipForIdentifier:identifier];
 
-    if (!v7)
+    if (!firstObject)
     {
-      v8 = [(TPSTipsViewController *)self tips];
-      v7 = [v8 firstObject];
+      tips2 = [(TPSTipsViewController *)self tips];
+      firstObject = [tips2 firstObject];
     }
 
-    [(TPSTipsViewController *)self setCurrentTip:v7];
-    v9 = [(TPSTipsViewController *)self currentTip];
-    [(TPSTipsViewController *)self updatePageControlToTip:v9];
+    [(TPSTipsViewController *)self setCurrentTip:firstObject];
+    currentTip2 = [(TPSTipsViewController *)self currentTip];
+    [(TPSTipsViewController *)self updatePageControlToTip:currentTip2];
   }
 
   else
   {
-    v10 = [(TPSAppViewController *)self appController];
-    v11 = [v10 updatingContent];
+    appController2 = [(TPSAppViewController *)self appController];
+    updatingContent = [appController2 updatingContent];
 
-    if ((v11 & 1) == 0)
+    if ((updatingContent & 1) == 0)
     {
 
       [(TPSTipsByCollectionViewController *)self showError];
@@ -125,70 +125,70 @@ LABEL_3:
 
 - (void)showError
 {
-  v3 = [(TPSAppViewController *)self appController];
-  v4 = [v3 updatingContent];
+  appController = [(TPSAppViewController *)self appController];
+  updatingContent = [appController updatingContent];
 
-  if ((v4 & 1) == 0)
+  if ((updatingContent & 1) == 0)
   {
-    v6 = [(TPSAppViewController *)self appController];
-    v5 = [v6 lastFetchError];
-    [(TPSTipsViewController *)self showErrorView:v5];
+    appController2 = [(TPSAppViewController *)self appController];
+    lastFetchError = [appController2 lastFetchError];
+    [(TPSTipsViewController *)self showErrorView:lastFetchError];
   }
 }
 
-- (void)updateWithCollectionID:(id)a3 tipID:(id)a4
+- (void)updateWithCollectionID:(id)d tipID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  dCopy = d;
+  iDCopy = iD;
+  if (![dCopy length])
   {
-    v8 = [(TPSAppViewController *)self appController];
-    v9 = [v8 collectionIdentifierForTipIdentifier:v7];
+    appController = [(TPSAppViewController *)self appController];
+    v9 = [appController collectionIdentifierForTipIdentifier:iDCopy];
 
-    v6 = v9;
+    dCopy = v9;
   }
 
-  v10 = [(TPSAppViewController *)self appController];
-  v11 = [v10 collectionForIdentifier:v6];
+  appController2 = [(TPSAppViewController *)self appController];
+  v11 = [appController2 collectionForIdentifier:dCopy];
 
-  if (([v6 isEqualToString:@"Unknown"] & 1) == 0)
+  if (([dCopy isEqualToString:@"Unknown"] & 1) == 0)
   {
     [(TPSTipsByCollectionViewController *)self updateTitleTextForCollection:v11];
   }
 
   if (![(TPSAppViewController *)self viewWillAppear])
   {
-    objc_storeStrong(&self->_pendingCollectionID, v6);
-    v14 = v7;
+    objc_storeStrong(&self->_pendingCollectionID, dCopy);
+    v14 = iDCopy;
     pendingTipID = self->_pendingTipID;
     self->_pendingTipID = v14;
-    v42 = v6;
+    v42 = dCopy;
 LABEL_41:
 
     goto LABEL_42;
   }
 
-  v12 = [(TPSAppViewController *)self appController];
-  if ([v12 updatingContent])
+  appController3 = [(TPSAppViewController *)self appController];
+  if ([appController3 updatingContent])
   {
-    v13 = 0;
+    contentHasLoaded = 0;
   }
 
   else
   {
-    v16 = [(TPSAppViewController *)self appController];
-    v13 = [v16 contentHasLoaded];
+    appController4 = [(TPSAppViewController *)self appController];
+    contentHasLoaded = [appController4 contentHasLoaded];
   }
 
-  v17 = [(TPSTipsViewController *)self collectionID];
-  v18 = [v17 isEqualToString:v6];
+  collectionID = [(TPSTipsViewController *)self collectionID];
+  v18 = [collectionID isEqualToString:dCopy];
 
   if ((v18 & 1) == 0)
   {
-    v19 = v6;
-    if (!((v11 != 0) | v13 & 1))
+    v19 = dCopy;
+    if (!((v11 != 0) | contentHasLoaded & 1))
     {
-      objc_storeStrong(&self->_pendingCollectionID, v6);
+      objc_storeStrong(&self->_pendingCollectionID, dCopy);
       v19 = 0;
     }
 
@@ -199,13 +199,13 @@ LABEL_41:
     [(TPSTipsViewController *)self setCurrentTip:0];
   }
 
-  if (v13)
+  if (contentHasLoaded)
   {
     [(TPSTipsViewController *)self removeErrorView];
   }
 
-  v21 = [(TPSTipsViewController *)self collectionID];
-  if ([v21 isEqualToString:@"Unknown"])
+  collectionID2 = [(TPSTipsViewController *)self collectionID];
+  if ([collectionID2 isEqualToString:@"Unknown"])
   {
 
     goto LABEL_23;
@@ -226,25 +226,25 @@ LABEL_22:
   }
 
 LABEL_23:
-  v23 = [v7 length];
-  v24 = [(TPSTipsViewController *)self currentTip];
-  v25 = v24;
+  v23 = [iDCopy length];
+  currentTip = [(TPSTipsViewController *)self currentTip];
+  v25 = currentTip;
   if (v23)
   {
-    v26 = [v24 identifier];
-    v27 = [v26 isEqualToString:v7];
+    identifier = [currentTip identifier];
+    v27 = [identifier isEqualToString:iDCopy];
 
     if (v27)
     {
       goto LABEL_33;
     }
 
-    v28 = [(TPSTipsViewController *)self tipForTipID:v7];
-    if (!v28)
+    firstObject = [(TPSTipsViewController *)self tipForTipID:iDCopy];
+    if (!firstObject)
     {
-      objc_storeStrong(&self->_pendingTipID, a4);
-      v29 = [(TPSTipsViewController *)self tips];
-      v30 = [v29 count];
+      objc_storeStrong(&self->_pendingTipID, iD);
+      tips = [(TPSTipsViewController *)self tips];
+      v30 = [tips count];
 
       if (!v30)
       {
@@ -255,40 +255,40 @@ LABEL_23:
     }
 
 LABEL_31:
-    [(TPSTipsViewController *)self setCurrentTip:v28];
+    [(TPSTipsViewController *)self setCurrentTip:firstObject];
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  if (!v24)
+  if (!currentTip)
   {
     goto LABEL_30;
   }
 
-  v31 = [(TPSTipsViewController *)self tips];
-  v32 = [(TPSTipsViewController *)self currentTip];
-  v33 = [v31 indexOfObject:v32];
+  tips2 = [(TPSTipsViewController *)self tips];
+  currentTip2 = [(TPSTipsViewController *)self currentTip];
+  v33 = [tips2 indexOfObject:currentTip2];
 
   if (v33 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_30:
-    v34 = [(TPSTipsViewController *)self tips];
-    v28 = [v34 firstObject];
+    tips3 = [(TPSTipsViewController *)self tips];
+    firstObject = [tips3 firstObject];
 
     goto LABEL_31;
   }
 
 LABEL_33:
-  v35 = [(TPSTipsViewController *)self currentTip];
-  [(TPSTipsViewController *)self updatePageControlToTip:v35];
+  currentTip3 = [(TPSTipsViewController *)self currentTip];
+  [(TPSTipsViewController *)self updatePageControlToTip:currentTip3];
 
   [(TPSTipsViewController *)self ensureCurrentTipVisible];
-  v36 = [(TPSTipsViewController *)self currentTip];
-  if (!v36)
+  currentTip4 = [(TPSTipsViewController *)self currentTip];
+  if (!currentTip4)
   {
-    v37 = [(TPSTipsViewController *)self tips];
-    v38 = ([v37 count] == 0) & v13;
+    tips4 = [(TPSTipsViewController *)self tips];
+    v38 = ([tips4 count] == 0) & contentHasLoaded;
 
     if (v38 != 1)
     {
@@ -298,14 +298,14 @@ LABEL_33:
     pendingCollectionID = self->_pendingCollectionID;
     self->_pendingCollectionID = 0;
 
-    v36 = self->_pendingTipID;
+    currentTip4 = self->_pendingTipID;
     self->_pendingTipID = 0;
   }
 
 LABEL_37:
-  v40 = [(TPSTipsViewController *)self collectionID];
-  v41 = v40;
-  if (!v40)
+  collectionID3 = [(TPSTipsViewController *)self collectionID];
+  v41 = collectionID3;
+  if (!collectionID3)
   {
     v41 = self->_pendingCollectionID;
   }
@@ -322,26 +322,26 @@ LABEL_37:
 LABEL_42:
 }
 
-- (id)collectionIDForTipID:(id)a3
+- (id)collectionIDForTipID:(id)d
 {
-  v4 = [(TPSAppViewController *)self appController];
-  v5 = [v4 tipForIdentifier:self->_pendingTipID];
+  appController = [(TPSAppViewController *)self appController];
+  v5 = [appController tipForIdentifier:self->_pendingTipID];
 
   v6 = +[TPSCommonDefines sharedInstance];
-  v7 = [v5 collectionIdentifiers];
-  v8 = [v6 collectionIdentifierToUseForCollectionIdentifiers:v7];
+  collectionIdentifiers = [v5 collectionIdentifiers];
+  v8 = [v6 collectionIdentifierToUseForCollectionIdentifiers:collectionIdentifiers];
 
   return v8;
 }
 
-- (void)appControllerContentUpdated:(id)a3
+- (void)appControllerContentUpdated:(id)updated
 {
   v20 = self->_currentCollectionFirstTipID;
-  v4 = [(TPSTipsViewController *)self tips];
-  v5 = [v4 firstObject];
-  v6 = [v5 identifier];
+  tips = [(TPSTipsViewController *)self tips];
+  firstObject = [tips firstObject];
+  identifier = [firstObject identifier];
   currentCollectionFirstTipID = self->_currentCollectionFirstTipID;
-  self->_currentCollectionFirstTipID = v6;
+  self->_currentCollectionFirstTipID = identifier;
 
   if (self->_pendingTipID)
   {
@@ -360,19 +360,19 @@ LABEL_42:
 
   if ([(NSString *)self->_pendingCollectionID isEqualToString:@"Unknown"])
   {
-    v9 = [(TPSTipsViewController *)self collectionID];
+    collectionID = [(TPSTipsViewController *)self collectionID];
 
-    if (!v9)
+    if (!collectionID)
     {
       pendingTipID = self->_pendingTipID;
-      v11 = pendingTipID;
+      identifier2 = pendingTipID;
       if (!pendingTipID)
       {
-        v9 = [(TPSTipsViewController *)self currentTip];
-        v11 = [v9 identifier];
+        collectionID = [(TPSTipsViewController *)self currentTip];
+        identifier2 = [collectionID identifier];
       }
 
-      v12 = [(TPSTipsByCollectionViewController *)self collectionIDForTipID:v11];
+      v12 = [(TPSTipsByCollectionViewController *)self collectionIDForTipID:identifier2];
       pendingCollectionID = self->_pendingCollectionID;
       self->_pendingCollectionID = v12;
 
@@ -387,8 +387,8 @@ LABEL_42:
   {
     if (!v14)
     {
-      v15 = [(TPSTipsViewController *)self collectionID];
-      [(TPSTipsByCollectionViewController *)self updateWithCollectionID:v15 tipID:self->_pendingTipID];
+      collectionID2 = [(TPSTipsViewController *)self collectionID];
+      [(TPSTipsByCollectionViewController *)self updateWithCollectionID:collectionID2 tipID:self->_pendingTipID];
 
 LABEL_18:
       v16 = self->_pendingTipID;
@@ -409,45 +409,45 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v18 = [(TPSAppViewController *)self appController];
-  v19 = [(TPSTipsViewController *)self collectionID];
-  v17 = [v18 collectionForIdentifier:v19];
+  appController = [(TPSAppViewController *)self appController];
+  collectionID3 = [(TPSTipsViewController *)self collectionID];
+  v17 = [appController collectionForIdentifier:collectionID3];
 
   [(TPSTipsByCollectionViewController *)self updateTitleTextForCollection:v17];
   [(TPSTipsByCollectionViewController *)self updateTipsForCurrentCollection];
 LABEL_19:
 }
 
-- (void)updateTitleTextForCollection:(id)a3
+- (void)updateTitleTextForCollection:(id)collection
 {
-  v7 = a3;
-  v4 = [v7 shortTitle];
-  if (!v4)
+  collectionCopy = collection;
+  shortTitle = [collectionCopy shortTitle];
+  if (!shortTitle)
   {
-    v5 = [v7 title];
-    if (v5)
+    title = [collectionCopy title];
+    if (title)
     {
-      v4 = v5;
+      shortTitle = title;
     }
 
     else
     {
-      v4 = &stru_1000A4A50;
+      shortTitle = &stru_1000A4A50;
     }
   }
 
-  [(TPSTipsViewController *)self setTitleText:v4];
-  v6 = [(TPSTipsViewController *)self titleText];
-  [(TPSTipsViewController *)self updateNavigationTitle:v6];
+  [(TPSTipsViewController *)self setTitleText:shortTitle];
+  titleText = [(TPSTipsViewController *)self titleText];
+  [(TPSTipsViewController *)self updateNavigationTitle:titleText];
 }
 
-- (void)appController:(id)a3 loadingContent:(BOOL)a4
+- (void)appController:(id)controller loadingContent:(BOOL)content
 {
-  if (a4)
+  if (content)
   {
     [(TPSTipsViewController *)self removeErrorView];
-    v5 = [(TPSTipsViewController *)self tips];
-    v6 = [v5 count];
+    tips = [(TPSTipsViewController *)self tips];
+    v6 = [tips count];
 
     if (!v6)
     {
@@ -459,30 +459,30 @@ LABEL_19:
   else
   {
     [(TPSViewController *)self setLoading:0];
-    v7 = [(TPSTipsViewController *)self tips];
-    v8 = [v7 count];
+    tips2 = [(TPSTipsViewController *)self tips];
+    v8 = [tips2 count];
 
     if (v8)
     {
       [(TPSTipsViewController *)self removeErrorView];
-      v9 = [(TPSTipsViewController *)self currentTip];
-      [(TPSTipsViewController *)self updatePageControlToTip:v9];
+      currentTip = [(TPSTipsViewController *)self currentTip];
+      [(TPSTipsViewController *)self updatePageControlToTip:currentTip];
     }
 
     else
     {
-      v10 = [(TPSAppViewController *)self appController];
-      v9 = [v10 lastFetchError];
+      appController = [(TPSAppViewController *)self appController];
+      currentTip = [appController lastFetchError];
 
-      [(TPSTipsViewController *)self showErrorView:v9];
+      [(TPSTipsViewController *)self showErrorView:currentTip];
       v11 = +[TPSLogger default];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(TPSTipsViewController *)self collectionID];
+        collectionID = [(TPSTipsViewController *)self collectionID];
         v15 = 138412546;
-        v16 = v12;
+        v16 = collectionID;
         v17 = 2112;
-        v18 = v9;
+        v18 = currentTip;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Tips feed %@ load failed with error %@", &v15, 0x16u);
       }
     }
@@ -499,17 +499,17 @@ LABEL_19:
 {
   if ([(NSString *)self->_pendingCollectionID length]&& ![(NSString *)self->_pendingCollectionID isEqualToString:@"Unknown"])
   {
-    v3 = self->_pendingCollectionID;
+    collectionID = self->_pendingCollectionID;
   }
 
   else
   {
-    v3 = [(TPSTipsViewController *)self collectionID];
+    collectionID = [(TPSTipsViewController *)self collectionID];
   }
 
-  v10 = v3;
-  v4 = [(TPSTipsByCollectionViewController *)self contentDelegate];
-  v5 = [v4 tipsByCollectionViewController:self tipsForCollectionID:v10];
+  v10 = collectionID;
+  contentDelegate = [(TPSTipsByCollectionViewController *)self contentDelegate];
+  v5 = [contentDelegate tipsByCollectionViewController:self tipsForCollectionID:v10];
 
   if (v5)
   {
@@ -520,15 +520,15 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v7 = [(TPSAppViewController *)self appController];
-  v5 = [v7 tipsForCollectionIdentifier:v10];
+  appController = [(TPSAppViewController *)self appController];
+  v5 = [appController tipsForCollectionIdentifier:v10];
 
   if (!self->_currentCollectionFirstTipID)
   {
     currentCollectionFirstTipID = [v5 firstObject];
-    v8 = [currentCollectionFirstTipID identifier];
+    identifier = [currentCollectionFirstTipID identifier];
     v9 = self->_currentCollectionFirstTipID;
-    self->_currentCollectionFirstTipID = v8;
+    self->_currentCollectionFirstTipID = identifier;
 
     goto LABEL_7;
   }

@@ -1,10 +1,10 @@
 @interface RDDataAccessREMStoreProvider
-- (BOOL)rd_isPersonIDSaltInitiallyNilError:(id)a3;
-- (id)rd_base64EncodedHMACStringFromString:(id)a3 usingPersonIDSalt:(id)a4;
-- (id)rd_observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)a3 successHandler:(id)a4 errorHandler:(id)a5;
+- (BOOL)rd_isPersonIDSaltInitiallyNilError:(id)error;
+- (id)rd_base64EncodedHMACStringFromString:(id)string usingPersonIDSalt:(id)salt;
+- (id)rd_observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)queue successHandler:(id)handler errorHandler:(id)errorHandler;
 - (id)rem_saveRequestForDataAccess;
 - (id)rem_storeForDataAccess;
-- (void)rd_unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)a3;
+- (void)rd_unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)changes;
 @end
 
 @implementation RDDataAccessREMStoreProvider
@@ -34,22 +34,22 @@
   return v5;
 }
 
-- (id)rd_observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)a3 successHandler:(id)a4 errorHandler:(id)a5
+- (id)rd_observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)queue successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v7 = _Block_copy(a4);
-  v8 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
+  v8 = _Block_copy(errorHandler);
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
   v10 = swift_allocObject();
   *(v10 + 16) = v8;
-  v11 = a3;
+  queueCopy = queue;
 
-  v12 = sub_10075BCA8(v11, sub_10075CA8C, v9, sub_10075CAE4, v10);
+  v12 = sub_10075BCA8(queueCopy, sub_10075CA8C, v9, sub_10075CAE4, v10);
 
   return v12;
 }
 
-- (void)rd_unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)a3
+- (void)rd_unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)changes
 {
   type metadata accessor for RDAccountPersonIDSaltObserver();
   v4 = swift_dynamicCastClass();
@@ -80,10 +80,10 @@
   }
 }
 
-- (BOOL)rd_isPersonIDSaltInitiallyNilError:(id)a3
+- (BOOL)rd_isPersonIDSaltInitiallyNilError:(id)error
 {
   sub_1000060C8(0, &qword_100945FC0, NSObject_ptr);
-  v4 = a3;
+  errorCopy = error;
   v5 = _convertErrorToNSError(_:)();
   if (qword_1009365C0 != -1)
   {
@@ -95,10 +95,10 @@
   return v6 & 1;
 }
 
-- (id)rd_base64EncodedHMACStringFromString:(id)a3 usingPersonIDSalt:(id)a4
+- (id)rd_base64EncodedHMACStringFromString:(id)string usingPersonIDSalt:(id)salt
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = a4;
+  saltCopy = salt;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 

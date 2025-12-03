@@ -1,30 +1,30 @@
 @interface CSLPRFReturnToClockCustomGroup
-- (BOOL)specifierIsWithinGroup:(id)a3;
+- (BOOL)specifierIsWithinGroup:(id)group;
 - (CSLPRFReturnToClockCustomDelegate)delegate;
-- (CSLPRFReturnToClockCustomGroup)initWithDelegate:(id)a3 custom:(BOOL)a4 header:(id)a5 footer:(id)a6;
+- (CSLPRFReturnToClockCustomGroup)initWithDelegate:(id)delegate custom:(BOOL)custom header:(id)header footer:(id)footer;
 - (NSArray)specifiers;
-- (void)setSelectedSpecifier:(id)a3;
-- (void)specifierSelected:(id)a3;
+- (void)setSelectedSpecifier:(id)specifier;
+- (void)specifierSelected:(id)selected;
 @end
 
 @implementation CSLPRFReturnToClockCustomGroup
 
-- (CSLPRFReturnToClockCustomGroup)initWithDelegate:(id)a3 custom:(BOOL)a4 header:(id)a5 footer:(id)a6
+- (CSLPRFReturnToClockCustomGroup)initWithDelegate:(id)delegate custom:(BOOL)custom header:(id)header footer:(id)footer
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  delegateCopy = delegate;
+  headerCopy = header;
+  footerCopy = footer;
   v18.receiver = self;
   v18.super_class = CSLPRFReturnToClockCustomGroup;
   v13 = [(CSLPRFReturnToClockCustomGroup *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v10);
-    v14->_custom = a4;
-    if (v11)
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_custom = custom;
+    if (headerCopy)
     {
-      v15 = v11;
+      v15 = headerCopy;
     }
 
     else
@@ -33,9 +33,9 @@
     }
 
     objc_storeStrong(&v14->_header, v15);
-    if (v12)
+    if (footerCopy)
     {
-      v16 = v12;
+      v16 = footerCopy;
     }
 
     else
@@ -88,9 +88,9 @@
   return v14;
 }
 
-- (void)setSelectedSpecifier:(id)a3
+- (void)setSelectedSpecifier:(id)specifier
 {
-  [(PSSpecifier *)self->_groupSpecifier setProperty:a3 forKey:PSRadioGroupCheckedSpecifierKey];
+  [(PSSpecifier *)self->_groupSpecifier setProperty:specifier forKey:PSRadioGroupCheckedSpecifierKey];
   groupSpecifier = self->_groupSpecifier;
   if (self->_custom)
   {
@@ -108,30 +108,30 @@
   [WeakRetained reloadSpecifier:self->_groupSpecifier animated:0];
 }
 
-- (BOOL)specifierIsWithinGroup:(id)a3
+- (BOOL)specifierIsWithinGroup:(id)group
 {
-  v3 = [a3 propertyForKey:@"kCSLPRFReturnToClockCustomSetting"];
-  v4 = [v3 BOOLValue];
+  v3 = [group propertyForKey:@"kCSLPRFReturnToClockCustomSetting"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)specifierSelected:(id)a3
+- (void)specifierSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   v5 = cslprf_sessions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = selectedCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "specifier selected %@", &v10, 0xCu);
   }
 
-  if ([(CSLPRFReturnToClockCustomGroup *)self specifierIsWithinGroup:v4])
+  if ([(CSLPRFReturnToClockCustomGroup *)self specifierIsWithinGroup:selectedCopy])
   {
-    [(CSLPRFReturnToClockCustomGroup *)self setSelectedSpecifier:v4];
-    v6 = [v4 propertyForKey:PSValueKey];
-    v7 = [v6 BOOLValue];
+    [(CSLPRFReturnToClockCustomGroup *)self setSelectedSpecifier:selectedCopy];
+    v6 = [selectedCopy propertyForKey:PSValueKey];
+    bOOLValue = [v6 BOOLValue];
     v8 = cslprf_sessions_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -140,11 +140,11 @@
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "specifier is within custom group value %@", &v10, 0xCu);
     }
 
-    if (self->_custom != v7)
+    if (self->_custom != bOOLValue)
     {
-      self->_custom = v7;
+      self->_custom = bOOLValue;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained customReturnToClockDidChange:v7];
+      [WeakRetained customReturnToClockDidChange:bOOLValue];
     }
   }
 }

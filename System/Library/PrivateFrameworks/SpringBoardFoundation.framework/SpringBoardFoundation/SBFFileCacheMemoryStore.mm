@@ -1,6 +1,6 @@
 @interface SBFFileCacheMemoryStore
 - (NSString)description;
-- (void)fileCache:(id)a3 storeFileWrapper:(id)a4;
+- (void)fileCache:(id)cache storeFileWrapper:(id)wrapper;
 @end
 
 @implementation SBFFileCacheMemoryStore
@@ -9,24 +9,24 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_fileWrappers withName:@"fileWrappers"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)fileCache:(id)a3 storeFileWrapper:(id)a4
+- (void)fileCache:(id)cache storeFileWrapper:(id)wrapper
 {
-  v12 = a3;
-  v7 = a4;
-  if (!v7)
+  cacheCopy = cache;
+  wrapperCopy = wrapper;
+  if (!wrapperCopy)
   {
     [SBFFileCacheMemoryStore fileCache:a2 storeFileWrapper:self];
   }
 
-  v8 = [v7 filename];
-  if (!v8)
+  filename = [wrapperCopy filename];
+  if (!filename)
   {
-    v8 = [v7 preferredFilename];
+    filename = [wrapperCopy preferredFilename];
   }
 
   fileWrappers = self->_fileWrappers;
@@ -39,7 +39,7 @@
     fileWrappers = self->_fileWrappers;
   }
 
-  [(NSMutableDictionary *)fileWrappers setObject:v7 forKey:v8];
+  [(NSMutableDictionary *)fileWrappers setObject:wrapperCopy forKey:filename];
 }
 
 - (void)fileCache:(uint64_t)a1 storeFileWrapper:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

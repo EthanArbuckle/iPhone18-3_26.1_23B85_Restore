@@ -6,12 +6,12 @@
 
 - (HKBloodPressureDataProviderCurrentValue)dataProviderValue
 {
-  v2 = [a1 correlationType];
-  v3 = [v2 code];
+  correlationType = [self correlationType];
+  code = [correlationType code];
 
-  if (v3 == 80)
+  if (code == 80)
   {
-    v4 = [[HKBloodPressureDataProviderCurrentValue alloc] initWithCorrelation:a1];
+    v4 = [[HKBloodPressureDataProviderCurrentValue alloc] initWithCorrelation:self];
   }
 
   else

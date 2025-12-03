@@ -1,16 +1,16 @@
 @interface PGRelationshipAgeAnalyzer
-- (PGRelationshipAgeAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipAgeAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipAgeAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  aBlock = a3;
+  aBlock = block;
   WeakRetained = objc_loadWeakRetained(&self->_processor);
-  v5 = [WeakRetained graph];
+  graph = [WeakRetained graph];
   v6 = _Block_copy(aBlock);
   v43 = 0;
   v44 = &v43;
@@ -33,31 +33,31 @@
 
   else
   {
-    v9 = [v5 meNode];
-    v10 = v9;
-    if (v9)
+    meNode = [graph meNode];
+    v10 = meNode;
+    if (meNode)
     {
-      v11 = [v9 ageCategory];
+      ageCategory = [meNode ageCategory];
     }
 
     else
     {
-      v11 = 0;
+      ageCategory = 0;
     }
 
-    v12 = [WeakRetained relationshipAnalyzerPropertiesByPersonLocalIdentifier];
-    v13 = [v12 count];
+    relationshipAnalyzerPropertiesByPersonLocalIdentifier = [WeakRetained relationshipAnalyzerPropertiesByPersonLocalIdentifier];
+    v13 = [relationshipAnalyzerPropertiesByPersonLocalIdentifier count];
 
-    if (v13 && v11)
+    if (v13 && ageCategory)
     {
       buf = 0;
       *&v51 = &buf;
       *(&v51 + 1) = 0x2020000000;
       v52 = 0;
-      v14 = [WeakRetained relationshipAnalyzerPropertiesByPersonLocalIdentifier];
-      v25 = [v14 allKeys];
+      relationshipAnalyzerPropertiesByPersonLocalIdentifier2 = [WeakRetained relationshipAnalyzerPropertiesByPersonLocalIdentifier];
+      allKeys = [relationshipAnalyzerPropertiesByPersonLocalIdentifier2 allKeys];
       v15 = [PGGraphPersonNodeCollection personNodesForArrayOfLocalIdentifiers:"personNodesForArrayOfLocalIdentifiers:inGraph:" inGraph:?];
-      v16 = [v15 personNodeByLocalIdentifier];
+      personNodeByLocalIdentifier = [v15 personNodeByLocalIdentifier];
       v17 = 1.0 / v13;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -70,18 +70,18 @@
       p_buf = &buf;
       v35 = &v43;
       v37 = v17;
-      v19 = v16;
+      v19 = personNodeByLocalIdentifier;
       v31 = v19;
-      v38 = v11;
-      [v14 enumerateKeysAndObjectsUsingBlock:v30];
-      if ((v11 - 3) <= 2)
+      v38 = ageCategory;
+      [relationshipAnalyzerPropertiesByPersonLocalIdentifier2 enumerateKeysAndObjectsUsingBlock:v30];
+      if ((ageCategory - 3) <= 2)
       {
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __58__PGRelationshipAgeAnalyzer_runAnalysisWithProgressBlock___block_invoke_2;
         v28[3] = &unk_278882580;
-        v29 = v14;
-        [PGImportantEntitiesChildrenProcessor processUserChildrenInGraph:v5 progressBlock:aBlock withProcessInferredChildNodeClosure:v28];
+        v29 = relationshipAnalyzerPropertiesByPersonLocalIdentifier2;
+        [PGImportantEntitiesChildrenProcessor processUserChildrenInGraph:graph progressBlock:aBlock withProcessInferredChildNodeClosure:v28];
       }
 
       if (v6)
@@ -199,16 +199,16 @@ void __58__PGRelationshipAgeAnalyzer_runAnalysisWithProgressBlock___block_invoke
   }
 }
 
-- (PGRelationshipAgeAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipAgeAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipAgeAnalyzer;
   v5 = [(PGRelationshipAgeAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

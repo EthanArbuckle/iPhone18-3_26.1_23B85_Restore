@@ -17,7 +17,7 @@
 - (NSArray)participants
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC29FindMyPeopleDigitalSeparation21DSPeopleSharedResouce_dsFriends);
-  v3 = self;
+  selfCopy = self;
   sub_7C84(v2);
 
   sub_5BC4(&unk_11A30, &qword_9430);

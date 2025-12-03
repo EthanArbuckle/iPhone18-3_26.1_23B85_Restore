@@ -1,16 +1,16 @@
 @interface TSWPColumnStyle
-+ (float)defaultFloatValueForProperty:(int)a3;
-+ (id)defaultStyleWithContext:(id)a3;
-+ (id)defaultValueForProperty:(int)a3;
++ (float)defaultFloatValueForProperty:(int)property;
++ (id)defaultStyleWithContext:(id)context;
++ (id)defaultValueForProperty:(int)property;
 + (id)properties;
 + (id)propertiesAllowingNSNull;
-+ (int)defaultIntValueForProperty:(int)a3;
++ (int)defaultIntValueForProperty:(int)property;
 - (BOOL)equalWidth;
 - (CGSize)adjustedInsets;
 - (TSWPPadding)layoutMargins;
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
 - (unint64_t)columnCount;
 @end
 
@@ -50,9 +50,9 @@ TSSPropertySet *__43__TSWPColumnStyle_propertiesAllowingNSNull__block_invoke()
   return result;
 }
 
-+ (int)defaultIntValueForProperty:(int)a3
++ (int)defaultIntValueForProperty:(int)property
 {
-  if (a3 == 151)
+  if (property == 151)
   {
     v3 = 1;
   }
@@ -62,17 +62,17 @@ TSSPropertySet *__43__TSWPColumnStyle_propertiesAllowingNSNull__block_invoke()
     v3 = 0x80000000;
   }
 
-  if (a3 == 152)
+  if (property == 152)
   {
     v3 = 0;
   }
 
-  if (a3 == 153)
+  if (property == 153)
   {
     v3 = 0;
   }
 
-  if (a3 == 149)
+  if (property == 149)
   {
     v4 = 0;
   }
@@ -82,12 +82,12 @@ TSSPropertySet *__43__TSWPColumnStyle_propertiesAllowingNSNull__block_invoke()
     v4 = 0x80000000;
   }
 
-  if (a3 == 44)
+  if (property == 44)
   {
     v4 = 0;
   }
 
-  if (a3 <= 150)
+  if (property <= 150)
   {
     return v4;
   }
@@ -98,10 +98,10 @@ TSSPropertySet *__43__TSWPColumnStyle_propertiesAllowingNSNull__block_invoke()
   }
 }
 
-+ (float)defaultFloatValueForProperty:(int)a3
++ (float)defaultFloatValueForProperty:(int)property
 {
   result = INFINITY;
-  if (a3 == 147)
+  if (property == 147)
   {
     return 0.0;
   }
@@ -109,15 +109,15 @@ TSSPropertySet *__43__TSWPColumnStyle_propertiesAllowingNSNull__block_invoke()
   return result;
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  if (a3 == 145 || a3 == 146)
+  if (property == 145 || property == 146)
   {
 
     return +[TSWPPadding padding];
   }
 
-  else if (a3 == 148)
+  else if (property == 148)
   {
 
     return +[TSWPColumns columns];
@@ -127,16 +127,16 @@ TSSPropertySet *__43__TSWPColumnStyle_propertiesAllowingNSNull__block_invoke()
   {
     v7 = v3;
     v8 = v4;
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___TSWPColumnStyle;
     return objc_msgSendSuper2(&v6, sel_defaultValueForProperty_);
   }
 }
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [v4 initWithContext:a3 name:objc_msgSend(TSWPBundle() overridePropertyMap:"localizedStringForKey:value:table:" isVariation:{@"None", &stru_287D36338, @"TSText", 0, 0}];
+  v5 = [v4 initWithContext:context name:objc_msgSend(TSWPBundle() overridePropertyMap:"localizedStringForKey:value:table:" isVariation:{@"None", &stru_287D36338, @"TSText", 0, 0}];
 
   return v5;
 }
@@ -191,27 +191,27 @@ TSSPropertySet *__43__TSWPColumnStyle_propertiesAllowingNSNull__block_invoke()
   return result;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
   v6 = [(TSSStyle *)self valueForProperty:148];
 
-  [v6 widthForColumnIndex:a3 bodyWidth:a4];
+  [v6 widthForColumnIndex:index bodyWidth:width];
   return result;
 }
 
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
   v6 = [(TSSStyle *)self valueForProperty:148];
 
-  [v6 gapForColumnIndex:a3 bodyWidth:a4];
+  [v6 gapForColumnIndex:index bodyWidth:width];
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
   v10 = [(TSSStyle *)self valueForProperty:148];
 
-  [v10 positionForColumnIndex:a3 bodyWidth:a5 outWidth:a6 outGap:a4];
+  [v10 positionForColumnIndex:index bodyWidth:outWidth outWidth:gap outGap:width];
   return result;
 }
 

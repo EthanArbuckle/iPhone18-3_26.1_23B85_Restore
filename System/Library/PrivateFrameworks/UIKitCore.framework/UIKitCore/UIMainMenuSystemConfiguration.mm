@@ -1,8 +1,8 @@
 @interface UIMainMenuSystemConfiguration
 + (UIMainMenuSystemConfiguration)_compatibilityConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIMainMenuSystemConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -16,9 +16,9 @@
   v2 = [(UIMainMenuSystemConfiguration *)&v6 init];
   if (v2)
   {
-    v3 = [[UIMenuSystemFindElementGroupConfiguration alloc] _init];
+    _init = [[UIMenuSystemFindElementGroupConfiguration alloc] _init];
     findingConfiguration = v2->_findingConfiguration;
-    v2->_findingConfiguration = v3;
+    v2->_findingConfiguration = _init;
   }
 
   return v2;
@@ -49,8 +49,8 @@
   }
 
   [v2 setFindingPreference:v4];
-  v5 = [v2 findingConfiguration];
-  [v5 setStyle:3];
+  findingConfiguration = [v2 findingConfiguration];
+  [findingConfiguration setStyle:3];
 
   [v2 setTextFormattingPreference:2];
   [v2 setInspectorPreference:1];
@@ -72,10 +72,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -87,7 +87,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       v9 = self->_newScenePreference == v7->_newScenePreference && self->_documentPreference == v7->_documentPreference && self->_printingPreference == v7->_printingPreference && self->_findingPreference == v7->_findingPreference && _deferringTokenEqualToToken(self->_findingConfiguration, v7->_findingConfiguration) && self->_toolbarPreference == v8->_toolbarPreference && self->_sidebarPreference == v8->_sidebarPreference && self->_inspectorPreference == v8->_inspectorPreference && self->_textFormattingPreference == v8->_textFormattingPreference;
     }
@@ -110,7 +110,7 @@
   return *&veor_s8(*v4.i8, *&vextq_s8(v4, v4, 8uLL)) ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v4[1] = self->_newScenePreference;
@@ -156,9 +156,9 @@
   v12 = _UIMenuSystemElementGroupPreferenceDescription(self->_textFormattingPreference);
   [v3 appendString:v12 withName:@"_textFormattingPreference"];
 
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 @end

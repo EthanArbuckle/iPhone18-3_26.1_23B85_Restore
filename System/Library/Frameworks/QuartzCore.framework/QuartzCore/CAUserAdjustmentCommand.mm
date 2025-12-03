@@ -1,16 +1,16 @@
 @interface CAUserAdjustmentCommand
-- (BOOL)transformWhitePointByXDelta:(double)a3 yDelta:(double)a4 luminanceScale:(double)a5;
-- (CAUserAdjustmentCommand)initWithUserAdjustment:(id)a3 autoLuminanceBoost:(float)a4;
+- (BOOL)transformWhitePointByXDelta:(double)delta yDelta:(double)yDelta luminanceScale:(double)scale;
+- (CAUserAdjustmentCommand)initWithUserAdjustment:(id)adjustment autoLuminanceBoost:(float)boost;
 - (void)dealloc;
 @end
 
 @implementation CAUserAdjustmentCommand
 
-- (BOOL)transformWhitePointByXDelta:(double)a3 yDelta:(double)a4 luminanceScale:(double)a5
+- (BOOL)transformWhitePointByXDelta:(double)delta yDelta:(double)yDelta luminanceScale:(double)scale
 {
   [(CAUserAdjustment *)self->_userAdjustment xDelta];
-  v10 = v9 + a3;
-  if (v10 >= self->_minXDelta + -0.000001 && v10 <= self->_maxXDelta + 0.000001 && ([(CAUserAdjustment *)self->_userAdjustment yDelta], v12 = v11 + a4, v12 >= self->_minYDelta + -0.000001) && v12 <= self->_maxYDelta + 0.000001 && ([(CAUserAdjustment *)self->_userAdjustment luminanceScale], v14 = v13 * a5, v14 <= self->_maxLuminanceScale + 0.000001))
+  v10 = v9 + delta;
+  if (v10 >= self->_minXDelta + -0.000001 && v10 <= self->_maxXDelta + 0.000001 && ([(CAUserAdjustment *)self->_userAdjustment yDelta], v12 = v11 + yDelta, v12 >= self->_minYDelta + -0.000001) && v12 <= self->_maxYDelta + 0.000001 && ([(CAUserAdjustment *)self->_userAdjustment luminanceScale], v14 = v13 * scale, v14 <= self->_maxLuminanceScale + 0.000001))
   {
     v15 = [[CAUserAdjustment alloc] initWithXDelta:v10 yDelta:v12 luminanceScale:v14];
     if (v15)
@@ -39,7 +39,7 @@
   [(CAUserAdjustmentCommand *)&v3 dealloc];
 }
 
-- (CAUserAdjustmentCommand)initWithUserAdjustment:(id)a3 autoLuminanceBoost:(float)a4
+- (CAUserAdjustmentCommand)initWithUserAdjustment:(id)adjustment autoLuminanceBoost:(float)boost
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -51,24 +51,24 @@
     *(v6 + 8) = xmmword_183E214D0;
     *(v6 + 24) = xmmword_183E214D0;
     *(v6 + 5) = 0x3FED70A3D70A3D71;
-    v8 = 1.128 / a4;
-    if ((1.128 / a4) > 1.08)
+    v8 = 1.128 / boost;
+    if ((1.128 / boost) > 1.08)
     {
       v8 = 1.08;
     }
 
     *(v6 + 6) = v8;
-    if (a3)
+    if (adjustment)
     {
-      v9 = a3;
+      adjustmentCopy = adjustment;
     }
 
     else
     {
-      v9 = [[CAUserAdjustment alloc] initWithXDelta:0.0 yDelta:0.0 luminanceScale:1.0];
+      adjustmentCopy = [[CAUserAdjustment alloc] initWithXDelta:0.0 yDelta:0.0 luminanceScale:1.0];
     }
 
-    v7->_userAdjustment = v9;
+    v7->_userAdjustment = adjustmentCopy;
   }
 
   return v7;

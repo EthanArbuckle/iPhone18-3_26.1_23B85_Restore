@@ -1,7 +1,7 @@
 @interface SARestaurantRestaurant
 - (NSArray)timeComponentsForOpenings;
-- (id)_ma_makeReservationPunchOutForSelectedOpeningIndex:(unint64_t)a3;
-- (id)_ma_reservationInfoWithDelegate:(id)a3;
+- (id)_ma_makeReservationPunchOutForSelectedOpeningIndex:(unint64_t)index;
+- (id)_ma_reservationInfoWithDelegate:(id)delegate;
 @end
 
 @implementation SARestaurantRestaurant
@@ -9,12 +9,12 @@
 - (NSArray)timeComponentsForOpenings
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(SARestaurantRestaurant *)self openings];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  openings = [(SARestaurantRestaurant *)self openings];
+  v5 = [v3 initWithCapacity:{objc_msgSend(openings, "count")}];
 
   v6 = +[NSDateFormatter _ma_sharedDateFormatter];
   [v6 setLocalizedDateFormatFromTemplate:@"jmm"];
-  v7 = [(SARestaurantRestaurant *)self openings];
+  openings2 = [(SARestaurantRestaurant *)self openings];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_3F78;
@@ -23,7 +23,7 @@
   v8 = v5;
   v15 = v8;
   v9 = v6;
-  [v7 enumerateObjectsUsingBlock:v13];
+  [openings2 enumerateObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -31,35 +31,35 @@
   return v8;
 }
 
-- (id)_ma_makeReservationPunchOutForSelectedOpeningIndex:(unint64_t)a3
+- (id)_ma_makeReservationPunchOutForSelectedOpeningIndex:(unint64_t)index
 {
-  v4 = [(SARestaurantRestaurant *)self openings];
-  if ([v4 count] <= a3)
+  openings = [(SARestaurantRestaurant *)self openings];
+  if ([openings count] <= index)
   {
-    v6 = +[SAUIAppPunchOut openTableAppPunchOut];
+    makeReservationPunchOut = +[SAUIAppPunchOut openTableAppPunchOut];
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
-    v6 = [v5 makeReservationPunchOut];
+    v5 = [openings objectAtIndex:index];
+    makeReservationPunchOut = [v5 makeReservationPunchOut];
   }
 
-  return v6;
+  return makeReservationPunchOut;
 }
 
-- (id)_ma_reservationInfoWithDelegate:(id)a3
+- (id)_ma_reservationInfoWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SARestaurantRestaurant *)self makeReservationPunchOuts];
-  v6 = [v5 count];
+  delegateCopy = delegate;
+  makeReservationPunchOuts = [(SARestaurantRestaurant *)self makeReservationPunchOuts];
+  v6 = [makeReservationPunchOuts count];
 
   if (v6)
   {
-    v7 = [(SARestaurantRestaurant *)self timeComponentsForOpenings];
+    timeComponentsForOpenings = [(SARestaurantRestaurant *)self timeComponentsForOpenings];
     v8 = +[UIImage _ma_openTableLogoImage];
     v9 = +[NSString _ma_openTableDisplayName];
-    v10 = [[_MKPlaceReservationInfo alloc] initWithOpenTimes:v7 attributionProviderName:v9 providerLogoImage:v8 delegate:v4];
+    v10 = [[_MKPlaceReservationInfo alloc] initWithOpenTimes:timeComponentsForOpenings attributionProviderName:v9 providerLogoImage:v8 delegate:delegateCopy];
   }
 
   else

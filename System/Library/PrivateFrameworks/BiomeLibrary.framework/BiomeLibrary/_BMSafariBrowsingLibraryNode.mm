@@ -2,25 +2,25 @@
 + (id)Assistant;
 + (id)configurationForAssistant;
 + (id)storeConfigurationForAssistant;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSafariBrowsingLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Assistant"])
+  if ([name isEqualToString:@"Assistant"])
   {
-    v4 = [a1 Assistant];
+    assistant = [self Assistant];
   }
 
   else
   {
-    v4 = 0;
+    assistant = 0;
   }
 
-  return v4;
+  return assistant;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForAssistant
 {
-  v3 = [a1 storeConfigurationForAssistant];
-  v4 = [a1 syncPolicyForAssistant];
+  storeConfigurationForAssistant = [self storeConfigurationForAssistant];
+  syncPolicyForAssistant = [self syncPolicyForAssistant];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"02833708-122B-4CA4-9F4A-0116AF97B9DE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Safari.Browsing.Assistant" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobilesafari" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Safari.Browsing.Assistant" eventClass:objc_opt_class() storeConfig:storeConfigurationForAssistant syncPolicy:syncPolicyForAssistant legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobilesafari" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)Assistant
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAssistant];
+  configurationForAssistant = [self configurationForAssistant];
   v3 = +[BMSafariBrowsingAssistant columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Safari.Browsing.Assistant" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Safari.Browsing.Assistant" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Safari.Browsing.Assistant" schema:v9 configuration:configurationForAssistant];
 
   v11 = *MEMORY[0x1E69E9840];
 

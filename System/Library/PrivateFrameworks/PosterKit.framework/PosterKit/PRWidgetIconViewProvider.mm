@@ -1,37 +1,37 @@
 @interface PRWidgetIconViewProvider
-- (BOOL)isIconViewRecycled:(id)a3;
-- (PRWidgetIconViewProvider)initWithRecycledViewsContainerProvider:(id)a3 widgetInteractionDisabled:(BOOL)a4 useMaterialBackground:(BOOL)a5;
+- (BOOL)isIconViewRecycled:(id)recycled;
+- (PRWidgetIconViewProvider)initWithRecycledViewsContainerProvider:(id)provider widgetInteractionDisabled:(BOOL)disabled useMaterialBackground:(BOOL)background;
 - (SBHRecycledViewsContainerProviding)recycledViewsContainerProvider;
-- (id)customImageViewControllerForIconView:(id)a3;
-- (id)dequeueReusableIconViewOfClass:(Class)a3;
-- (id)dragItemsForIconView:(id)a3;
-- (id)iconView:(id)a3 dragPreviewForItem:(id)a4 session:(id)a5 previewParameters:(id)a6;
+- (id)customImageViewControllerForIconView:(id)view;
+- (id)dequeueReusableIconViewOfClass:(Class)class;
+- (id)dragItemsForIconView:(id)view;
+- (id)iconView:(id)view dragPreviewForItem:(id)item session:(id)session previewParameters:(id)parameters;
 - (id)iconViewMap;
-- (id)recycledViewsContainerProviderForViewMap:(id)a3;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
-- (void)iconView:(id)a3 didChangeCustomImageViewController:(id)a4;
-- (void)iconView:(id)a3 didEndDragSession:(id)a4 withOperation:(unint64_t)a5;
-- (void)iconView:(id)a3 dragLiftAnimationDidChangeDirection:(int64_t)a4;
-- (void)iconView:(id)a3 item:(id)a4 willAnimateDragCancelWithAnimator:(id)a5;
-- (void)iconView:(id)a3 willAnimateDragLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)iconViewWillBeginDrag:(id)a3 session:(id)a4;
-- (void)recycleIconView:(id)a3;
+- (id)recycledViewsContainerProviderForViewMap:(id)map;
+- (void)configureIconView:(id)view forIcon:(id)icon;
+- (void)iconView:(id)view didChangeCustomImageViewController:(id)controller;
+- (void)iconView:(id)view didEndDragSession:(id)session withOperation:(unint64_t)operation;
+- (void)iconView:(id)view dragLiftAnimationDidChangeDirection:(int64_t)direction;
+- (void)iconView:(id)view item:(id)item willAnimateDragCancelWithAnimator:(id)animator;
+- (void)iconView:(id)view willAnimateDragLiftWithAnimator:(id)animator session:(id)session;
+- (void)iconViewWillBeginDrag:(id)drag session:(id)session;
+- (void)recycleIconView:(id)view;
 @end
 
 @implementation PRWidgetIconViewProvider
 
-- (PRWidgetIconViewProvider)initWithRecycledViewsContainerProvider:(id)a3 widgetInteractionDisabled:(BOOL)a4 useMaterialBackground:(BOOL)a5
+- (PRWidgetIconViewProvider)initWithRecycledViewsContainerProvider:(id)provider widgetInteractionDisabled:(BOOL)disabled useMaterialBackground:(BOOL)background
 {
-  v8 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = PRWidgetIconViewProvider;
   v9 = [(PRWidgetIconViewProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_recycledViewsContainerProvider, v8);
-    v10->_widgetInteractionDisabled = a4;
-    v10->_useMaterialBackground = a5;
+    objc_storeWeak(&v9->_recycledViewsContainerProvider, providerCopy);
+    v10->_widgetInteractionDisabled = disabled;
+    v10->_useMaterialBackground = background;
   }
 
   return v10;
@@ -52,20 +52,20 @@
   return iconViewMap;
 }
 
-- (id)dequeueReusableIconViewOfClass:(Class)a3
+- (id)dequeueReusableIconViewOfClass:(Class)class
 {
-  v4 = [(PRWidgetIconViewProvider *)self iconViewMap];
-  v5 = [v4 dequeueReusableViewOfClass:a3];
+  iconViewMap = [(PRWidgetIconViewProvider *)self iconViewMap];
+  v5 = [iconViewMap dequeueReusableViewOfClass:class];
 
   return v5;
 }
 
-- (void)recycleIconView:(id)a3
+- (void)recycleIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 customIconImageViewController];
+  viewCopy = view;
+  customIconImageViewController = [viewCopy customIconImageViewController];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = customIconImageViewController;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -87,40 +87,40 @@
   v9 = v8;
 
   [v9 invalidate];
-  [v4 setIcon:0];
-  v10 = [(PRWidgetIconViewProvider *)self iconViewMap];
-  [v10 recycleView:v4];
+  [viewCopy setIcon:0];
+  iconViewMap = [(PRWidgetIconViewProvider *)self iconViewMap];
+  [iconViewMap recycleView:viewCopy];
 }
 
-- (BOOL)isIconViewRecycled:(id)a3
+- (BOOL)isIconViewRecycled:(id)recycled
 {
-  v4 = a3;
-  v5 = [(PRWidgetIconViewProvider *)self iconViewMap];
-  v6 = [v5 isViewRecycled:v4];
+  recycledCopy = recycled;
+  iconViewMap = [(PRWidgetIconViewProvider *)self iconViewMap];
+  v6 = [iconViewMap isViewRecycled:recycledCopy];
 
   return v6;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v5 = a3;
-  [v5 setAllowsEditingAnimation:0];
-  [v5 setDelegate:self];
-  [v5 addObserver:self];
+  viewCopy = view;
+  [viewCopy setAllowsEditingAnimation:0];
+  [viewCopy setDelegate:self];
+  [viewCopy addObserver:self];
 }
 
-- (id)recycledViewsContainerProviderForViewMap:(id)a3
+- (id)recycledViewsContainerProviderForViewMap:(id)map
 {
   WeakRetained = objc_loadWeakRetained(&self->_recycledViewsContainerProvider);
 
   return WeakRetained;
 }
 
-- (id)customImageViewControllerForIconView:(id)a3
+- (id)customImageViewControllerForIconView:(id)view
 {
-  v4 = [a3 icon];
+  icon = [view icon];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = icon;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -141,72 +141,72 @@
 
   v8 = v7;
 
-  v9 = [v8 activeWidget];
-  v10 = [v9 kind];
-  v11 = [v9 extensionBundleIdentifier];
-  v12 = [v9 containerBundleIdentifier];
-  v13 = [v8 gridSizeClass];
+  activeWidget = [v8 activeWidget];
+  kind = [activeWidget kind];
+  extensionBundleIdentifier = [activeWidget extensionBundleIdentifier];
+  containerBundleIdentifier = [activeWidget containerBundleIdentifier];
+  gridSizeClass = [v8 gridSizeClass];
 
-  v38 = v12;
-  v14 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionBundleIdentifier:v11 containerBundleIdentifier:v12 kind:v10 family:PRWidgetFamilyForIconGridSizeClass(v13) intent:0];
+  v38 = containerBundleIdentifier;
+  v14 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier kind:kind family:PRWidgetFamilyForIconGridSizeClass(gridSizeClass) intent:0];
   v15 = [PRComplicationDescriptor alloc];
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v16 UUIDString];
-  v18 = [(PRComplicationDescriptor *)v15 initWithUniqueIdentifier:v17 widget:v14];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v18 = [(PRComplicationDescriptor *)v15 initWithUniqueIdentifier:uUIDString widget:v14];
 
   if (v18)
   {
-    v36 = v11;
-    v37 = v10;
+    v36 = extensionBundleIdentifier;
+    v37 = kind;
     v19 = [[PRWidgetIconViewController alloc] initWithComplicationDescriptor:v18 contentType:1];
     [(PRWidgetIconViewController *)v19 setBackgroundHidden:0];
     [(PRWidgetIconViewController *)v19 setWidgetInteractionDisabled:[(PRWidgetIconViewProvider *)self isWidgetInteractionDisabled]];
     [(PRWidgetIconViewController *)v19 setUseMaterialBackground:[(PRWidgetIconViewProvider *)self useMaterialBackground]];
     v20 = objc_alloc(MEMORY[0x1E6994428]);
-    v21 = [MEMORY[0x1E69DC888] darkGrayColor];
-    v22 = [v21 BSColor];
-    v23 = [v20 initWithPrimaryTintColor:0 secondaryTintColor:v22 filterStyle:2 fallbackFilterStyle:2 fraction:1.0];
+    darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+    bSColor = [darkGrayColor BSColor];
+    v23 = [v20 initWithPrimaryTintColor:0 secondaryTintColor:bSColor filterStyle:2 fallbackFilterStyle:2 fraction:1.0];
 
-    v24 = [(PRWidgetIconViewController *)v19 widgetHostViewController];
-    [v24 setTintParameters:v23];
+    widgetHostViewController = [(PRWidgetIconViewController *)v19 widgetHostViewController];
+    [widgetHostViewController setTintParameters:v23];
 
-    v25 = [(PRComplicationDescriptor *)v18 widget];
+    widget = [(PRComplicationDescriptor *)v18 widget];
     v26 = PRSharedWidgetExtensionProvider();
-    v27 = [v26 widgetDescriptorForWidget:v25];
+    v27 = [v26 widgetDescriptorForWidget:widget];
 
-    v28 = [v27 intentType];
-    if (v28)
+    intentType = [v27 intentType];
+    if (intentType)
     {
-      v29 = v28;
-      v30 = [v25 intent];
+      v29 = intentType;
+      intent = [widget intent];
 
-      if (!v30)
+      if (!intent)
       {
-        v31 = [v27 defaultIntent];
-        if (v31)
+        defaultIntent = [v27 defaultIntent];
+        if (defaultIntent)
         {
-          v32 = [(PRWidgetIconViewController *)v19 widgetHostViewController];
-          [v25 widgetByReplacingIntent:v31];
-          v33 = v35 = v31;
+          widgetHostViewController2 = [(PRWidgetIconViewController *)v19 widgetHostViewController];
+          [widget widgetByReplacingIntent:defaultIntent];
+          v33 = v35 = defaultIntent;
           [(PRComplicationDescriptor *)v18 setWidget:v33];
-          [v32 setWidget:v33];
+          [widgetHostViewController2 setWidget:v33];
 
-          v31 = v35;
+          defaultIntent = v35;
         }
 
         else
         {
-          v32 = PRLogCommon();
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+          widgetHostViewController2 = PRLogCommon();
+          if (os_log_type_enabled(widgetHostViewController2, OS_LOG_TYPE_ERROR))
           {
-            [(PRWidgetIconViewProvider *)v25 customImageViewControllerForIconView:v32];
+            [(PRWidgetIconViewProvider *)widget customImageViewControllerForIconView:widgetHostViewController2];
           }
         }
       }
     }
 
-    v11 = v36;
-    v10 = v37;
+    extensionBundleIdentifier = v36;
+    kind = v37;
   }
 
   else
@@ -217,11 +217,11 @@
   return v19;
 }
 
-- (id)dragItemsForIconView:(id)a3
+- (id)dragItemsForIconView:(id)view
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 icon];
+  viewCopy = view;
+  icon = [viewCopy icon];
   v5 = SBHIconDragItemWithIconAndIconView();
 
   v8[0] = v5;
@@ -230,53 +230,53 @@
   return v6;
 }
 
-- (void)iconViewWillBeginDrag:(id)a3 session:(id)a4
+- (void)iconViewWillBeginDrag:(id)drag session:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PRWidgetIconViewProvider *)self dragManager];
-  [v8 iconViewWillBeginDrag:v7 session:v6];
+  sessionCopy = session;
+  dragCopy = drag;
+  dragManager = [(PRWidgetIconViewProvider *)self dragManager];
+  [dragManager iconViewWillBeginDrag:dragCopy session:sessionCopy];
 }
 
-- (void)iconView:(id)a3 willAnimateDragLiftWithAnimator:(id)a4 session:(id)a5
+- (void)iconView:(id)view willAnimateDragLiftWithAnimator:(id)animator session:(id)session
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PRWidgetIconViewProvider *)self dragManager];
-  [v11 iconView:v10 willAnimateDragLiftWithAnimator:v9 session:v8];
+  sessionCopy = session;
+  animatorCopy = animator;
+  viewCopy = view;
+  dragManager = [(PRWidgetIconViewProvider *)self dragManager];
+  [dragManager iconView:viewCopy willAnimateDragLiftWithAnimator:animatorCopy session:sessionCopy];
 }
 
-- (void)iconView:(id)a3 dragLiftAnimationDidChangeDirection:(int64_t)a4
+- (void)iconView:(id)view dragLiftAnimationDidChangeDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(PRWidgetIconViewProvider *)self dragManager];
-  [v7 iconView:v6 dragLiftAnimationDidChangeDirection:a4];
+  viewCopy = view;
+  dragManager = [(PRWidgetIconViewProvider *)self dragManager];
+  [dragManager iconView:viewCopy dragLiftAnimationDidChangeDirection:direction];
 }
 
-- (void)iconView:(id)a3 item:(id)a4 willAnimateDragCancelWithAnimator:(id)a5
+- (void)iconView:(id)view item:(id)item willAnimateDragCancelWithAnimator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PRWidgetIconViewProvider *)self dragManager];
-  [v11 iconView:v10 item:v9 willAnimateDragCancelWithAnimator:v8];
+  animatorCopy = animator;
+  itemCopy = item;
+  viewCopy = view;
+  dragManager = [(PRWidgetIconViewProvider *)self dragManager];
+  [dragManager iconView:viewCopy item:itemCopy willAnimateDragCancelWithAnimator:animatorCopy];
 }
 
-- (void)iconView:(id)a3 didEndDragSession:(id)a4 withOperation:(unint64_t)a5
+- (void)iconView:(id)view didEndDragSession:(id)session withOperation:(unint64_t)operation
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PRWidgetIconViewProvider *)self dragManager];
-  [v10 iconView:v9 didEndDragSession:v8 withOperation:a5];
+  sessionCopy = session;
+  viewCopy = view;
+  dragManager = [(PRWidgetIconViewProvider *)self dragManager];
+  [dragManager iconView:viewCopy didEndDragSession:sessionCopy withOperation:operation];
 }
 
-- (id)iconView:(id)a3 dragPreviewForItem:(id)a4 session:(id)a5 previewParameters:(id)a6
+- (id)iconView:(id)view dragPreviewForItem:(id)item session:(id)session previewParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = [v6 customIconImageViewController];
+  viewCopy = view;
+  customIconImageViewController = [viewCopy customIconImageViewController];
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = customIconImageViewController;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -297,19 +297,19 @@
 
   v11 = v10;
 
-  v12 = [v11 widgetHostViewController];
+  widgetHostViewController = [v11 widgetHostViewController];
 
-  v13 = [[PRComplicationDragPreviewView alloc] initWithWidgetHostViewController:v12];
+  v13 = [[PRComplicationDragPreviewView alloc] initWithWidgetHostViewController:widgetHostViewController];
   v14 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v15 = [MEMORY[0x1E69DC888] clearColor];
-  [v14 setBackgroundColor:v15];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v14 setBackgroundColor:clearColor];
 
   v16 = objc_alloc_init(MEMORY[0x1E69DC728]);
   [v14 setShadowPath:v16];
 
-  v17 = [v6 customIconImageViewController];
-  v18 = [v17 view];
-  [v18 frame];
+  customIconImageViewController2 = [viewCopy customIconImageViewController];
+  view = [customIconImageViewController2 view];
+  [view frame];
   BSRectGetCenter();
   v20 = v19;
   v22 = v21;
@@ -319,18 +319,18 @@
   v28[0] = *MEMORY[0x1E695EFD0];
   v28[1] = v24;
   v28[2] = *(MEMORY[0x1E695EFD0] + 32);
-  v25 = [v23 initWithContainer:v6 center:v28 transform:{v20, v22}];
+  v25 = [v23 initWithContainer:viewCopy center:v28 transform:{v20, v22}];
 
   v26 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v13 parameters:v14 target:v25];
 
   return v26;
 }
 
-- (void)iconView:(id)a3 didChangeCustomImageViewController:(id)a4
+- (void)iconView:(id)view didChangeCustomImageViewController:(id)controller
 {
-  v4 = a4;
+  controllerCopy = controller;
   v5 = objc_opt_self();
-  v8 = v4;
+  v8 = controllerCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

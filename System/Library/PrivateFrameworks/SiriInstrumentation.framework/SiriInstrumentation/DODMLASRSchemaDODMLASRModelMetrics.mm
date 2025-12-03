@@ -1,33 +1,33 @@
 @interface DODMLASRSchemaDODMLASRModelMetrics
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRModelMetrics)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRModelMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRModelMetrics)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRModelMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConversionDurationInMs:(BOOL)a3;
-- (void)setHasModelTrainingStatusCode:(BOOL)a3;
-- (void)setHasNgramOrder:(BOOL)a3;
-- (void)setHasNumFiniteStateTransducerArcs:(BOOL)a3;
-- (void)setHasNumFiniteStateTransducerStates:(BOOL)a3;
-- (void)setHasOptimizationDurationInMs:(BOOL)a3;
-- (void)setHasResidualAdaptationWeight:(BOOL)a3;
-- (void)setHasTotalDurationInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConversionDurationInMs:(BOOL)ms;
+- (void)setHasModelTrainingStatusCode:(BOOL)code;
+- (void)setHasNgramOrder:(BOOL)order;
+- (void)setHasNumFiniteStateTransducerArcs:(BOOL)arcs;
+- (void)setHasNumFiniteStateTransducerStates:(BOOL)states;
+- (void)setHasOptimizationDurationInMs:(BOOL)ms;
+- (void)setHasResidualAdaptationWeight:(BOOL)weight;
+- (void)setHasTotalDurationInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRModelMetrics
 
-- (DODMLASRSchemaDODMLASRModelMetrics)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRModelMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = DODMLASRSchemaDODMLASRModelMetrics;
   v5 = [(DODMLASRSchemaDODMLASRModelMetrics *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"configName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"configName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,21 +35,21 @@
       [(DODMLASRSchemaDODMLASRModelMetrics *)v5 setConfigName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"trainingDurationInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"trainingDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRModelMetrics setTrainingDurationInMs:](v5, "setTrainingDurationInMs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"conversionDurationInMs"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"conversionDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRModelMetrics setConversionDurationInMs:](v5, "setConversionDurationInMs:", [v9 unsignedLongLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"optimizationDurationInMs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"optimizationDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,21 +57,21 @@
     }
 
     v20 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"totalDurationInMs"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"totalDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRModelMetrics setTotalDurationInMs:](v5, "setTotalDurationInMs:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"ngramOrder"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"ngramOrder"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRModelMetrics setNgramOrder:](v5, "setNgramOrder:", [v12 unsignedIntValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"residualAdaptationWeight"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"residualAdaptationWeight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
 
     v21 = v9;
     v22 = v8;
-    v14 = [v4 objectForKeyedSubscript:@"modelTrainingStatusCode"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"modelTrainingStatusCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,14 +89,14 @@
     }
 
     v15 = v6;
-    v16 = [v4 objectForKeyedSubscript:@"numFiniteStateTransducerArcs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"numFiniteStateTransducerArcs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRModelMetrics setNumFiniteStateTransducerArcs:](v5, "setNumFiniteStateTransducerArcs:", [v16 unsignedIntValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"numFiniteStateTransducerStates"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numFiniteStateTransducerStates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,30 +109,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRModelMetrics)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRModelMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRModelMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRModelMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRModelMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -145,19 +145,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_configName)
   {
-    v4 = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"configName"];
+    configName = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
+    v5 = [configName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"configName"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRModelMetrics conversionDurationInMs](self, "conversionDurationInMs")}];
-    [v3 setObject:v9 forKeyedSubscript:@"conversionDurationInMs"];
+    [dictionary setObject:v9 forKeyedSubscript:@"conversionDurationInMs"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -178,7 +178,7 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRModelMetrics modelTrainingStatusCode](self, "modelTrainingStatusCode")}];
-  [v3 setObject:v10 forKeyedSubscript:@"modelTrainingStatusCode"];
+  [dictionary setObject:v10 forKeyedSubscript:@"modelTrainingStatusCode"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -194,7 +194,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRModelMetrics ngramOrder](self, "ngramOrder")}];
-  [v3 setObject:v11 forKeyedSubscript:@"ngramOrder"];
+  [dictionary setObject:v11 forKeyedSubscript:@"ngramOrder"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -210,7 +210,7 @@ LABEL_7:
 
 LABEL_19:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRModelMetrics numFiniteStateTransducerArcs](self, "numFiniteStateTransducerArcs")}];
-  [v3 setObject:v12 forKeyedSubscript:@"numFiniteStateTransducerArcs"];
+  [dictionary setObject:v12 forKeyedSubscript:@"numFiniteStateTransducerArcs"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -226,7 +226,7 @@ LABEL_8:
 
 LABEL_20:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRModelMetrics numFiniteStateTransducerStates](self, "numFiniteStateTransducerStates")}];
-  [v3 setObject:v13 forKeyedSubscript:@"numFiniteStateTransducerStates"];
+  [dictionary setObject:v13 forKeyedSubscript:@"numFiniteStateTransducerStates"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -242,7 +242,7 @@ LABEL_9:
 
 LABEL_21:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRModelMetrics optimizationDurationInMs](self, "optimizationDurationInMs")}];
-  [v3 setObject:v14 forKeyedSubscript:@"optimizationDurationInMs"];
+  [dictionary setObject:v14 forKeyedSubscript:@"optimizationDurationInMs"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -260,7 +260,7 @@ LABEL_22:
   v15 = MEMORY[0x1E696AD98];
   [(DODMLASRSchemaDODMLASRModelMetrics *)self residualAdaptationWeight];
   v16 = [v15 numberWithFloat:?];
-  [v3 setObject:v16 forKeyedSubscript:@"residualAdaptationWeight"];
+  [dictionary setObject:v16 forKeyedSubscript:@"residualAdaptationWeight"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -276,19 +276,19 @@ LABEL_11:
 
 LABEL_23:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRModelMetrics totalDurationInMs](self, "totalDurationInMs")}];
-  [v3 setObject:v17 forKeyedSubscript:@"totalDurationInMs"];
+  [dictionary setObject:v17 forKeyedSubscript:@"totalDurationInMs"];
 
   if (*&self->_has)
   {
 LABEL_12:
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRModelMetrics trainingDurationInMs](self, "trainingDurationInMs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"trainingDurationInMs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"trainingDurationInMs"];
   }
 
 LABEL_13:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -440,30 +440,30 @@ LABEL_21:
   return v7 ^ v3 ^ v8 ^ v9 ^ v10 ^ v11 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
-  v6 = [v4 configName];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  configName = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
+  configName2 = [equalCopy configName];
+  v7 = configName2;
+  if ((configName != 0) == (configName2 == 0))
   {
 
     goto LABEL_44;
   }
 
-  v8 = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
-  if (v8)
+  configName3 = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
+  if (configName3)
   {
-    v9 = v8;
-    v10 = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
-    v11 = [v4 configName];
-    v12 = [v10 isEqual:v11];
+    v9 = configName3;
+    configName4 = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
+    configName5 = [equalCopy configName];
+    v12 = [configName4 isEqual:configName5];
 
     if (!v12)
     {
@@ -476,7 +476,7 @@ LABEL_21:
   }
 
   has = self->_has;
-  v14 = v4[34];
+  v14 = equalCopy[34];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_44:
@@ -487,13 +487,13 @@ LABEL_44:
   if (*&has)
   {
     trainingDurationInMs = self->_trainingDurationInMs;
-    if (trainingDurationInMs != [v4 trainingDurationInMs])
+    if (trainingDurationInMs != [equalCopy trainingDurationInMs])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -505,13 +505,13 @@ LABEL_44:
   if (v16)
   {
     conversionDurationInMs = self->_conversionDurationInMs;
-    if (conversionDurationInMs != [v4 conversionDurationInMs])
+    if (conversionDurationInMs != [equalCopy conversionDurationInMs])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -523,13 +523,13 @@ LABEL_44:
   if (v18)
   {
     optimizationDurationInMs = self->_optimizationDurationInMs;
-    if (optimizationDurationInMs != [v4 optimizationDurationInMs])
+    if (optimizationDurationInMs != [equalCopy optimizationDurationInMs])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v20 = (*&has >> 3) & 1;
@@ -541,13 +541,13 @@ LABEL_44:
   if (v20)
   {
     totalDurationInMs = self->_totalDurationInMs;
-    if (totalDurationInMs != [v4 totalDurationInMs])
+    if (totalDurationInMs != [equalCopy totalDurationInMs])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v22 = (*&has >> 4) & 1;
@@ -559,13 +559,13 @@ LABEL_44:
   if (v22)
   {
     ngramOrder = self->_ngramOrder;
-    if (ngramOrder != [v4 ngramOrder])
+    if (ngramOrder != [equalCopy ngramOrder])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v24 = (*&has >> 5) & 1;
@@ -577,14 +577,14 @@ LABEL_44:
   if (v24)
   {
     residualAdaptationWeight = self->_residualAdaptationWeight;
-    [v4 residualAdaptationWeight];
+    [equalCopy residualAdaptationWeight];
     if (residualAdaptationWeight != v26)
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v27 = (*&has >> 6) & 1;
@@ -596,13 +596,13 @@ LABEL_44:
   if (v27)
   {
     modelTrainingStatusCode = self->_modelTrainingStatusCode;
-    if (modelTrainingStatusCode != [v4 modelTrainingStatusCode])
+    if (modelTrainingStatusCode != [equalCopy modelTrainingStatusCode])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v29 = (*&has >> 7) & 1;
@@ -614,10 +614,10 @@ LABEL_44:
   if (v29)
   {
     numFiniteStateTransducerArcs = self->_numFiniteStateTransducerArcs;
-    if (numFiniteStateTransducerArcs == [v4 numFiniteStateTransducerArcs])
+    if (numFiniteStateTransducerArcs == [equalCopy numFiniteStateTransducerArcs])
     {
       has = self->_has;
-      v14 = v4[34];
+      v14 = equalCopy[34];
       goto LABEL_40;
     }
 
@@ -634,7 +634,7 @@ LABEL_40:
   if (v31)
   {
     numFiniteStateTransducerStates = self->_numFiniteStateTransducerStates;
-    if (numFiniteStateTransducerStates != [v4 numFiniteStateTransducerStates])
+    if (numFiniteStateTransducerStates != [equalCopy numFiniteStateTransducerStates])
     {
       goto LABEL_44;
     }
@@ -646,12 +646,12 @@ LABEL_45:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
+  toCopy = to;
+  configName = [(DODMLASRSchemaDODMLASRModelMetrics *)self configName];
 
-  if (v4)
+  if (configName)
   {
     PBDataWriterWriteStringField();
   }
@@ -663,11 +663,11 @@ LABEL_45:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v6 = v7;
+    v6 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -687,7 +687,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteUint64Field();
-  v6 = v7;
+  v6 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -702,7 +702,7 @@ LABEL_8:
 
 LABEL_19:
   PBDataWriterWriteUint64Field();
-  v6 = v7;
+  v6 = toCopy;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -717,7 +717,7 @@ LABEL_9:
 
 LABEL_20:
   PBDataWriterWriteUint32Field();
-  v6 = v7;
+  v6 = toCopy;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -732,7 +732,7 @@ LABEL_10:
 
 LABEL_21:
   PBDataWriterWriteFloatField();
-  v6 = v7;
+  v6 = toCopy;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -747,7 +747,7 @@ LABEL_11:
 
 LABEL_22:
   PBDataWriterWriteUint32Field();
-  v6 = v7;
+  v6 = toCopy;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -762,20 +762,20 @@ LABEL_12:
 
 LABEL_23:
   PBDataWriterWriteUint32Field();
-  v6 = v7;
+  v6 = toCopy;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_13:
     PBDataWriterWriteUint32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 
 LABEL_14:
 }
 
-- (void)setHasNumFiniteStateTransducerStates:(BOOL)a3
+- (void)setHasNumFiniteStateTransducerStates:(BOOL)states
 {
-  if (a3)
+  if (states)
   {
     v3 = 256;
   }
@@ -788,9 +788,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumFiniteStateTransducerArcs:(BOOL)a3
+- (void)setHasNumFiniteStateTransducerArcs:(BOOL)arcs
 {
-  if (a3)
+  if (arcs)
   {
     v3 = 128;
   }
@@ -803,9 +803,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasModelTrainingStatusCode:(BOOL)a3
+- (void)setHasModelTrainingStatusCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 64;
   }
@@ -818,9 +818,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasResidualAdaptationWeight:(BOOL)a3
+- (void)setHasResidualAdaptationWeight:(BOOL)weight
 {
-  if (a3)
+  if (weight)
   {
     v3 = 32;
   }
@@ -833,9 +833,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNgramOrder:(BOOL)a3
+- (void)setHasNgramOrder:(BOOL)order
 {
-  if (a3)
+  if (order)
   {
     v3 = 16;
   }
@@ -848,9 +848,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTotalDurationInMs:(BOOL)a3
+- (void)setHasTotalDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -863,9 +863,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasOptimizationDurationInMs:(BOOL)a3
+- (void)setHasOptimizationDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -878,9 +878,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasConversionDurationInMs:(BOOL)a3
+- (void)setHasConversionDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }

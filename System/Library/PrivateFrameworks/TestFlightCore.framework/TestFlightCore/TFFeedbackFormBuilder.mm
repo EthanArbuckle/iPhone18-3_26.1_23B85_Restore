@@ -1,23 +1,23 @@
 @interface TFFeedbackFormBuilder
-- (id)_buildEmailGroupWithDeveloperName:(id)a3 prefilledEmail:(id)a4;
-- (id)_buildUserFeedbackGroupWithContext:(unint64_t)a3 hasScreenshots:(BOOL)a4;
-- (id)_feedbackCommentPlaceholderStringForContext:(unint64_t)a3;
-- (id)buildFormForContext:(unint64_t)a3 withDeveloperName:(id)a4 prefilledEmail:(id)a5 hasScreenshots:(BOOL)a6;
+- (id)_buildEmailGroupWithDeveloperName:(id)name prefilledEmail:(id)email;
+- (id)_buildUserFeedbackGroupWithContext:(unint64_t)context hasScreenshots:(BOOL)screenshots;
+- (id)_feedbackCommentPlaceholderStringForContext:(unint64_t)context;
+- (id)buildFormForContext:(unint64_t)context withDeveloperName:(id)name prefilledEmail:(id)email hasScreenshots:(BOOL)screenshots;
 @end
 
 @implementation TFFeedbackFormBuilder
 
-- (id)buildFormForContext:(unint64_t)a3 withDeveloperName:(id)a4 prefilledEmail:(id)a5 hasScreenshots:(BOOL)a6
+- (id)buildFormForContext:(unint64_t)context withDeveloperName:(id)name prefilledEmail:(id)email hasScreenshots:(BOOL)screenshots
 {
-  v6 = a6;
+  screenshotsCopy = screenshots;
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v12 = a4;
+  emailCopy = email;
+  nameCopy = name;
   v13 = [[v10 alloc] initWithCapacity:2];
-  v14 = [(TFFeedbackFormBuilder *)self _buildEmailGroupWithDeveloperName:v12 prefilledEmail:v11];
+  v14 = [(TFFeedbackFormBuilder *)self _buildEmailGroupWithDeveloperName:nameCopy prefilledEmail:emailCopy];
 
   [v13 addObject:v14];
-  v15 = [(TFFeedbackFormBuilder *)self _buildUserFeedbackGroupWithContext:a3 hasScreenshots:v6];
+  v15 = [(TFFeedbackFormBuilder *)self _buildUserFeedbackGroupWithContext:context hasScreenshots:screenshotsCopy];
   [v13 addObject:v15];
   v16 = [TFFeedbackForm alloc];
   v17 = TFLocalizedString(@"FEEDBACK_NAVIGATION_TITLE");
@@ -26,18 +26,18 @@
   return v18;
 }
 
-- (id)_buildEmailGroupWithDeveloperName:(id)a3 prefilledEmail:(id)a4
+- (id)_buildEmailGroupWithDeveloperName:(id)name prefilledEmail:(id)email
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  emailCopy = email;
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
   v8 = TFLocalizedString(@"FEEDBACK_FORM_ENTRY_EMAIL_FOOTER_LEARN_MORE");
-  if (!v6)
+  if (!emailCopy)
   {
-    if (v5)
+    if (nameCopy)
     {
-      v12 = [v5 length] != 0;
+      v12 = [nameCopy length] != 0;
       goto LABEL_12;
     }
 
@@ -46,9 +46,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v9 = [v6 length];
+  v9 = [emailCopy length];
   v10 = v9;
-  if (!v5)
+  if (!nameCopy)
   {
     if (v9)
     {
@@ -58,7 +58,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [v5 length];
+  v11 = [nameCopy length];
   v12 = v11 != 0;
   if (!v10)
   {
@@ -72,7 +72,7 @@ LABEL_12:
     if (v12)
     {
       v18 = TFLocalizedString(@"FEEDBACK_FORM_ENTRY_DEVELOPER_FOOTER");
-      [MEMORY[0x277CCACA8] stringWithFormat:v18, v5, v8];
+      [MEMORY[0x277CCACA8] stringWithFormat:v18, nameCopy, v8];
     }
 
     else
@@ -89,12 +89,12 @@ LABEL_12:
   {
 LABEL_9:
     v13 = TFLocalizedString(@"FEEDBACK_FORM_ENTRY_EMAIL_FOOTER");
-    [MEMORY[0x277CCACA8] stringWithFormat:v13, v6, v8, v27];
+    [MEMORY[0x277CCACA8] stringWithFormat:v13, emailCopy, v8, v27];
     goto LABEL_10;
   }
 
   v13 = TFLocalizedString(@"FEEDBACK_FORM_ENTRY_DEVELOPER_EMAIL_FOOTER");
-  [MEMORY[0x277CCACA8] stringWithFormat:v13, v5, v6, v8];
+  [MEMORY[0x277CCACA8] stringWithFormat:v13, nameCopy, emailCopy, v8];
   v14 = LABEL_10:;
   v15 = 0;
 LABEL_16:
@@ -118,14 +118,14 @@ LABEL_16:
   return v24;
 }
 
-- (id)_buildUserFeedbackGroupWithContext:(unint64_t)a3 hasScreenshots:(BOOL)a4
+- (id)_buildUserFeedbackGroupWithContext:(unint64_t)context hasScreenshots:(BOOL)screenshots
 {
-  v4 = a4;
+  screenshotsCopy = screenshots;
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-  v8 = [(TFFeedbackFormBuilder *)self _feedbackCommentPlaceholderStringForContext:a3];
+  v8 = [(TFFeedbackFormBuilder *)self _feedbackCommentPlaceholderStringForContext:context];
   v9 = [[TFFeedbackEntryLongText alloc] initWithIdentifier:@"b" title:0 placeholder:v8];
   [v7 addObject:v9];
-  if (v4)
+  if (screenshotsCopy)
   {
     v10 = [[TFFeedbackEntryImageCollection alloc] initWithIdentifier:@"c" title:0];
     [v7 addObject:v10];
@@ -136,9 +136,9 @@ LABEL_16:
   return v11;
 }
 
-- (id)_feedbackCommentPlaceholderStringForContext:(unint64_t)a3
+- (id)_feedbackCommentPlaceholderStringForContext:(unint64_t)context
 {
-  if (a3 == 2)
+  if (context == 2)
   {
     v3 = @"FEEDBACK_FORM_ENTRY_COMMENTS_CRASH_PLACEHOLDER";
   }

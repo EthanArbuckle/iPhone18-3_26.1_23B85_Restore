@@ -1,28 +1,28 @@
 @interface SBDashBoardHostableWorkspaceEntity
-- (BOOL)isEqual:(id)a3;
-- (SBDashBoardHostableWorkspaceEntity)initWithBundleIdentifier:(id)a3 hostableEntity:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (SBDashBoardHostableWorkspaceEntity)initWithBundleIdentifier:(id)identifier hostableEntity:(id)entity;
 - (id)_generator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBDashBoardHostableWorkspaceEntity
 
-- (SBDashBoardHostableWorkspaceEntity)initWithBundleIdentifier:(id)a3 hostableEntity:(id)a4
+- (SBDashBoardHostableWorkspaceEntity)initWithBundleIdentifier:(id)identifier hostableEntity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"DashBoardHostableEntity-%@", v6];
+  identifierCopy = identifier;
+  entityCopy = entity;
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"DashBoardHostableEntity-%@", identifierCopy];
   v13.receiver = self;
   v13.super_class = SBDashBoardHostableWorkspaceEntity;
-  v9 = [(SBWorkspaceEntity *)&v13 initWithIdentifier:v8 displayChangeSettings:0];
+  v9 = [(SBWorkspaceEntity *)&v13 initWithIdentifier:identifierCopy displayChangeSettings:0];
 
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v10;
 
-    objc_storeStrong(&v9->_hostableEntity, a4);
+    objc_storeStrong(&v9->_hostableEntity, entity);
   }
 
   return v9;
@@ -55,11 +55,11 @@ id __48__SBDashBoardHostableWorkspaceEntity__generator__block_invoke(uint64_t a1
   return v1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -98,11 +98,11 @@ id __48__SBDashBoardHostableWorkspaceEntity__generator__block_invoke(uint64_t a1
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SBDashBoardHostableWorkspaceEntity;
-  v4 = [(SBWorkspaceEntity *)&v8 copyWithZone:a3];
+  v4 = [(SBWorkspaceEntity *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_bundleIdentifier copy];
   v6 = *(v4 + 5);
   *(v4 + 5) = v5;

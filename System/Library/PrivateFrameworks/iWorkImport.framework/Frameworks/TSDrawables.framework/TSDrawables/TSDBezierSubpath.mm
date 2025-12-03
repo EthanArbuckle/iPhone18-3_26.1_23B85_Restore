@@ -5,32 +5,32 @@
 - (BOOL)hasSelectedNode;
 - (BOOL)isCircular;
 - (BOOL)isRectangular;
-- (BOOL)shouldChangePathToOpen:(int64_t)a3;
+- (BOOL)shouldChangePathToOpen:(int64_t)open;
 - (CGRect)nodeBounds;
 - (TSDBezierNode)firstNode;
 - (TSDBezierNode)lastNode;
 - (TSDBezierSubpath)init;
 - (TSUBezierPath)bezierPath;
-- (double)distanceToPoint:(CGPoint)a3 elementIndex:(unint64_t *)a4 tValue:(double *)a5 threshold:(double)a6;
-- (id)bezierNodeUnderPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)distanceToPoint:(CGPoint)point elementIndex:(unint64_t *)index tValue:(double *)value threshold:(double)threshold;
+- (id)bezierNodeUnderPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)nodeAfterNode:(id)a3;
-- (id)nodePriorToNode:(id)a3;
-- (id)splitEdgeAtIndex:(unint64_t)a3 atPercentage:(double)a4;
-- (void)addNodesToArray:(id)a3;
-- (void)appendToBezierPath:(id)a3 selectedNodesOnly:(BOOL)a4 fromIndex:(unint64_t)a5 closed:(BOOL)a6;
+- (id)nodeAfterNode:(id)node;
+- (id)nodePriorToNode:(id)node;
+- (id)splitEdgeAtIndex:(unint64_t)index atPercentage:(double)percentage;
+- (void)addNodesToArray:(id)array;
+- (void)appendToBezierPath:(id)path selectedNodesOnly:(BOOL)only fromIndex:(unint64_t)index closed:(BOOL)closed;
 - (void)convertToHobby;
 - (void)deleteSelectedNodes;
 - (void)deselectAllNodes;
-- (void)offsetSelectedEdgesByDelta:(CGPoint)a3;
-- (void)offsetSelectedNodesByDelta:(CGPoint)a3;
+- (void)offsetSelectedEdgesByDelta:(CGPoint)delta;
+- (void)offsetSelectedNodesByDelta:(CGPoint)delta;
 - (void)reverseDirection;
 - (void)selectAllNodes;
-- (void)setNodes:(id)a3;
+- (void)setNodes:(id)nodes;
 - (void)sharpenAllNodes;
-- (void)smoothNode:(id)a3;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)smoothNode:(id)node;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 - (void)updateReflectedState;
 @end
 
@@ -51,7 +51,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = objc_alloc(MEMORY[0x277CBEA60]);
@@ -84,9 +84,9 @@
   return v8;
 }
 
-- (void)setNodes:(id)a3
+- (void)setNodes:(id)nodes
 {
-  v4 = objc_msgSend_mutableCopy(a3, a2, a3);
+  v4 = objc_msgSend_mutableCopy(nodes, a2, nodes);
   mNodes = self->mNodes;
   self->mNodes = v4;
 }
@@ -212,11 +212,11 @@ LABEL_23:
   return v4;
 }
 
-- (void)appendToBezierPath:(id)a3 selectedNodesOnly:(BOOL)a4 fromIndex:(unint64_t)a5 closed:(BOOL)a6
+- (void)appendToBezierPath:(id)path selectedNodesOnly:(BOOL)only fromIndex:(unint64_t)index closed:(BOOL)closed
 {
-  v6 = a6;
-  v8 = a4;
-  v63 = a3;
+  closedCopy = closed;
+  onlyCopy = only;
+  pathCopy = path;
   v12 = objc_msgSend_nodes(self, v10, v11);
   v15 = objc_msgSend_count(v12, v13, v14);
 
@@ -225,26 +225,26 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (a5)
+  if (index)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = v6;
+    v18 = closedCopy;
   }
 
   v19 = objc_msgSend_nodes(self, v16, v17);
-  v21 = objc_msgSend_objectAtIndexedSubscript_(v19, v20, a5);
+  v21 = objc_msgSend_objectAtIndexedSubscript_(v19, v20, index);
 
   objc_msgSend_nodePoint(v21, v22, v23);
   v25 = v24;
   v27 = v26;
-  objc_msgSend_moveToPoint_(v63, v28, v29);
+  objc_msgSend_moveToPoint_(pathCopy, v28, v29);
   v32 = 0;
-  v33 = v15 + v6;
-  v34 = a5 + 1;
+  v33 = v15 + closedCopy;
+  v34 = index + 1;
   while (1)
   {
     v35 = v21;
@@ -261,7 +261,7 @@ LABEL_23:
     objc_msgSend_nodePoint(v21, v40, v41);
     v25 = v44;
     v27 = v45;
-    if (!v8 || objc_msgSend_isSelected(v35, v42, v43) && objc_msgSend_isSelected(v21, v46, v47))
+    if (!onlyCopy || objc_msgSend_isSelected(v35, v42, v43) && objc_msgSend_isSelected(v21, v46, v47))
     {
       objc_msgSend_outControlPoint(v35, v42, v43);
       v49 = v48;
@@ -271,16 +271,16 @@ LABEL_23:
       v59 = v58;
       if (v32)
       {
-        objc_msgSend_moveToPoint_(v63, v54, v55, v37, v36);
+        objc_msgSend_moveToPoint_(pathCopy, v54, v55, v37, v36);
       }
 
       if (TSUNearlyEqualPoints())
       {
         v61 = TSUNearlyEqualPoints();
-        v62 = v63;
+        v62 = pathCopy;
         if (v61)
         {
-          objc_msgSend_lineToPoint_(v63, v63, v60, v25, v27);
+          objc_msgSend_lineToPoint_(pathCopy, pathCopy, v60, v25, v27);
 LABEL_18:
           v32 = 0;
           goto LABEL_19;
@@ -289,7 +289,7 @@ LABEL_18:
 
       else
       {
-        v62 = v63;
+        v62 = pathCopy;
       }
 
       objc_msgSend_curveToPoint_controlPoint1_controlPoint2_(v62, v62, v60, v25, v27, v49, v51, v57, v59);
@@ -310,7 +310,7 @@ LABEL_19:
 
   if (v18)
   {
-    objc_msgSend_closePath(v63, v30, v31);
+    objc_msgSend_closePath(pathCopy, v30, v31);
   }
 
 LABEL_24:
@@ -347,14 +347,14 @@ LABEL_24:
   objc_msgSend_setNodes_(self, v11, v7);
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = objc_msgSend_nodes(self, a2, a3);
+  v4 = objc_msgSend_nodes(self, a2, transform);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v14, v18, 16);
   if (v6)
   {
@@ -371,10 +371,10 @@ LABEL_24:
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = *&a3->c;
-        v13[0] = *&a3->a;
+        v12 = *&transform->c;
+        v13[0] = *&transform->a;
         v13[1] = v12;
-        v13[2] = *&a3->tx;
+        v13[2] = *&transform->tx;
         objc_msgSend_transformUsingAffineTransform_(v11, v7, v13);
         ++v10;
       }
@@ -387,11 +387,11 @@ LABEL_24:
   }
 }
 
-- (id)nodePriorToNode:(id)a3
+- (id)nodePriorToNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v7 = objc_msgSend_nodes(self, v5, v6);
-  v9 = objc_msgSend_indexOfObject_(v7, v8, v4);
+  v9 = objc_msgSend_indexOfObject_(v7, v8, nodeCopy);
 
   if (v9 >= 1)
   {
@@ -416,11 +416,11 @@ LABEL_6:
   return v17;
 }
 
-- (id)nodeAfterNode:(id)a3
+- (id)nodeAfterNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v7 = objc_msgSend_nodes(self, v5, v6);
-  v9 = objc_msgSend_indexOfObject_(v7, v8, v4);
+  v9 = objc_msgSend_indexOfObject_(v7, v8, nodeCopy);
 
   v10 = v9 + 1;
   v13 = objc_msgSend_nodes(self, v11, v12);
@@ -475,7 +475,7 @@ LABEL_7:
   return v8;
 }
 
-- (void)offsetSelectedNodesByDelta:(CGPoint)a3
+- (void)offsetSelectedNodesByDelta:(CGPoint)delta
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -513,7 +513,7 @@ LABEL_7:
   }
 }
 
-- (void)offsetSelectedEdgesByDelta:(CGPoint)a3
+- (void)offsetSelectedEdgesByDelta:(CGPoint)delta
 {
   v5 = objc_msgSend_nodes(self, a2, v3);
   v28 = objc_msgSend_objectEnumerator(v5, v6, v7);
@@ -612,12 +612,12 @@ LABEL_7:
   return v11 != 0;
 }
 
-- (BOOL)shouldChangePathToOpen:(int64_t)a3
+- (BOOL)shouldChangePathToOpen:(int64_t)open
 {
-  v5 = objc_msgSend_nodes(self, a2, a3);
+  v5 = objc_msgSend_nodes(self, a2, open);
   v8 = objc_msgSend_count(v5, v6, v7);
 
-  if (a3 != 3 || v8 != 2 || !objc_msgSend_isClosed(self, v9, v10))
+  if (open != 3 || v8 != 2 || !objc_msgSend_isClosed(self, v9, v10))
   {
     return 0;
   }
@@ -745,10 +745,10 @@ LABEL_10:
   }
 }
 
-- (double)distanceToPoint:(CGPoint)a3 elementIndex:(unint64_t *)a4 tValue:(double *)a5 threshold:(double)a6
+- (double)distanceToPoint:(CGPoint)point elementIndex:(unint64_t *)index tValue:(double *)value threshold:(double)threshold
 {
   v72 = *MEMORY[0x277D85DE8];
-  v10 = objc_msgSend_nodes(self, a2, a4);
+  v10 = objc_msgSend_nodes(self, a2, index);
   v13 = objc_msgSend_count(v10, v11, v12);
 
   if (!v13)
@@ -764,13 +764,13 @@ LABEL_10:
   v26 = v13 + self->mClosed;
   v27 = 0.0;
   v28 = 1.79769313e308;
-  v60 = a5;
-  if (v26 < 2 || (v29 = v23, v30 = v24, v31 = a6 * a6, v32 = 1.79769313e308, v61 = a6 * a6, a6 * a6 >= 1.79769313e308))
+  valueCopy = value;
+  if (v26 < 2 || (v29 = v23, v30 = v24, v31 = threshold * threshold, v32 = 1.79769313e308, v61 = threshold * threshold, threshold * threshold >= 1.79769313e308))
   {
     v33 = v18;
     v57 = 0;
 LABEL_19:
-    if (!a4)
+    if (!index)
     {
       goto LABEL_21;
     }
@@ -786,7 +786,7 @@ LABEL_19:
     {
       v63 = v28;
       v64 = v27;
-      v35 = objc_msgSend_nodes(self, v21, v22, v32, v31, v60);
+      v35 = objc_msgSend_nodes(self, v21, v22, v32, v31, valueCopy);
       v37 = objc_msgSend_objectAtIndexedSubscript_(v35, v36, (v34 - 1) % v13);
 
       objc_msgSend_nodePoint(v37, v38, v39);
@@ -818,7 +818,7 @@ LABEL_19:
         v69 = v55;
         v70 = v41;
         v71 = v43;
-        v27 = sub_2766675CC(&v65, a3.x, a3.y, 1.0);
+        v27 = sub_2766675CC(&v65, point.x, point.y, 1.0);
         TSDPointOnCurve(&v65, v27);
       }
 
@@ -859,17 +859,17 @@ LABEL_19:
     }
 
     v57 = v33;
-    if (!a4)
+    if (!index)
     {
       goto LABEL_21;
     }
   }
 
-  *a4 = v25;
+  *index = v25;
 LABEL_21:
-  if (v60)
+  if (valueCopy)
   {
-    *v60 = v27;
+    *valueCopy = v27;
   }
 
   v58 = sqrt(v28);
@@ -877,11 +877,11 @@ LABEL_21:
   return v58;
 }
 
-- (id)bezierNodeUnderPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6
+- (id)bezierNodeUnderPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = objc_msgSend_nodes(self, a2, a4);
+  y = point.y;
+  x = point.x;
+  v11 = objc_msgSend_nodes(self, a2, transform);
   v14 = objc_msgSend_objectEnumerator(v11, v12, v13);
 
   v17 = 0;
@@ -895,11 +895,11 @@ LABEL_21:
       break;
     }
 
-    v20 = *&a4->c;
-    v23[0] = *&a4->a;
+    v20 = *&transform->c;
+    v23[0] = *&transform->a;
     v23[1] = v20;
-    v23[2] = *&a4->tx;
-    if (objc_msgSend_underPoint_withTransform_andTolerance_returningType_(v17, v19, v23, a6, x, y, a5))
+    v23[2] = *&transform->tx;
+    if (objc_msgSend_underPoint_withTransform_andTolerance_returningType_(v17, v19, v23, type, x, y, tolerance))
     {
       v21 = v17;
       break;
@@ -982,23 +982,23 @@ LABEL_21:
   objc_msgSend_makeObjectsPerformSelector_(v4, v3, sel_collapse);
 }
 
-- (void)smoothNode:(id)a3
+- (void)smoothNode:(id)node
 {
-  v51 = a3;
-  v5 = objc_msgSend_nodePriorToNode_(self, v4, v51);
-  v7 = objc_msgSend_nodeAfterNode_(self, v6, v51);
+  nodeCopy = node;
+  v5 = objc_msgSend_nodePriorToNode_(self, v4, nodeCopy);
+  v7 = objc_msgSend_nodeAfterNode_(self, v6, nodeCopy);
   v10 = v7;
   if (v5)
   {
     objc_msgSend_nodePoint(v5, v8, v9);
-    objc_msgSend_nodePoint(v51, v11, v12);
+    objc_msgSend_nodePoint(nodeCopy, v11, v12);
     TSUSubtractPoints();
     if (!v10)
     {
-      objc_msgSend_nodePoint(v51, v8, v9);
+      objc_msgSend_nodePoint(nodeCopy, v8, v9);
       TSUMultiplyPointScalar();
       TSUAddPoints();
-      objc_msgSend_setInControlPoint_(v51, v13, v14);
+      objc_msgSend_setInControlPoint_(nodeCopy, v13, v14);
       goto LABEL_17;
     }
   }
@@ -1009,39 +1009,39 @@ LABEL_21:
   }
 
   objc_msgSend_nodePoint(v10, v8, v9);
-  objc_msgSend_nodePoint(v51, v15, v16);
+  objc_msgSend_nodePoint(nodeCopy, v15, v16);
   TSUSubtractPoints();
   if (v5)
   {
     if ((TSUNearlyEqualPoints() & 1) == 0 && (TSUNearlyEqualPoints() & 1) == 0)
     {
-      objc_msgSend_inControlPoint(v51, v19, v20);
-      objc_msgSend_nodePoint(v51, v21, v22);
+      objc_msgSend_inControlPoint(nodeCopy, v19, v20);
+      objc_msgSend_nodePoint(nodeCopy, v21, v22);
       if (TSUNearlyEqualPoints())
       {
-        objc_msgSend_nodePoint(v51, v23, v24);
+        objc_msgSend_nodePoint(nodeCopy, v23, v24);
         TSUMultiplyPointScalar();
         TSUAddPoints();
-        objc_msgSend_setInControlPoint_(v51, v25, v26);
+        objc_msgSend_setInControlPoint_(nodeCopy, v25, v26);
       }
 
-      objc_msgSend_outControlPoint(v51, v23, v24);
-      objc_msgSend_nodePoint(v51, v27, v28);
+      objc_msgSend_outControlPoint(nodeCopy, v23, v24);
+      objc_msgSend_nodePoint(nodeCopy, v27, v28);
       if (TSUNearlyEqualPoints())
       {
-        objc_msgSend_nodePoint(v51, v29, v30);
+        objc_msgSend_nodePoint(nodeCopy, v29, v30);
         TSUMultiplyPointScalar();
         TSUAddPoints();
-        objc_msgSend_setOutControlPoint_(v51, v31, v32);
+        objc_msgSend_setOutControlPoint_(nodeCopy, v31, v32);
       }
 
-      objc_msgSend_inControlPoint(v51, v29, v30);
-      objc_msgSend_nodePoint(v51, v33, v34);
+      objc_msgSend_inControlPoint(nodeCopy, v29, v30);
+      objc_msgSend_nodePoint(nodeCopy, v33, v34);
       TSUSubtractPoints();
       TSUPointLength();
       TSUMultiplyPointScalar();
-      objc_msgSend_nodePoint(v51, v35, v36);
-      objc_msgSend_outControlPoint(v51, v37, v38);
+      objc_msgSend_nodePoint(nodeCopy, v35, v36);
+      objc_msgSend_outControlPoint(nodeCopy, v37, v38);
       TSUSubtractPoints();
       TSUPointLength();
       TSUMultiplyPointScalar();
@@ -1062,24 +1062,24 @@ LABEL_21:
 
       TSUDotPoints();
       TSUDotPoints();
-      objc_msgSend_nodePoint(v51, v42, v43);
+      objc_msgSend_nodePoint(nodeCopy, v42, v43);
       TSUMultiplyPointScalar();
       TSUAddPoints();
-      objc_msgSend_setInControlPoint_(v51, v44, v45);
-      objc_msgSend_nodePoint(v51, v46, v47);
+      objc_msgSend_setInControlPoint_(nodeCopy, v44, v45);
+      objc_msgSend_nodePoint(nodeCopy, v46, v47);
       TSUMultiplyPointScalar();
       TSUAddPoints();
-      objc_msgSend_setOutControlPoint_(v51, v48, v49);
-      objc_msgSend_setReflectedState_(v51, v50, 1);
+      objc_msgSend_setOutControlPoint_(nodeCopy, v48, v49);
+      objc_msgSend_setReflectedState_(nodeCopy, v50, 1);
     }
   }
 
   else
   {
-    objc_msgSend_nodePoint(v51, v17, v18);
+    objc_msgSend_nodePoint(nodeCopy, v17, v18);
     TSUMultiplyPointScalar();
     TSUAddPoints();
-    objc_msgSend_setOutControlPoint_(v51, v40, v41);
+    objc_msgSend_setOutControlPoint_(nodeCopy, v40, v41);
   }
 
 LABEL_17:
@@ -1113,24 +1113,24 @@ LABEL_17:
   return v6;
 }
 
-- (void)addNodesToArray:(id)a3
+- (void)addNodesToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v8 = objc_msgSend_nodes(self, v5, v6);
-  objc_msgSend_addObjectsFromArray_(v4, v7, v8);
+  objc_msgSend_addObjectsFromArray_(arrayCopy, v7, v8);
 }
 
-- (id)splitEdgeAtIndex:(unint64_t)a3 atPercentage:(double)a4
+- (id)splitEdgeAtIndex:(unint64_t)index atPercentage:(double)percentage
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_nodes(self, a2, a3);
-  v8 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, a3);
+  v6 = objc_msgSend_nodes(self, a2, index);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, index);
 
   v11 = objc_msgSend_nodes(self, v9, v10);
-  v12 = a3 + 1;
+  v12 = index + 1;
   v15 = objc_msgSend_nodes(self, v13, v14);
   v18 = objc_msgSend_count(v15, v16, v17);
-  v20 = objc_msgSend_objectAtIndexedSubscript_(v11, v19, (a3 + 1) % v18);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(v11, v19, (index + 1) % v18);
 
   objc_msgSend_nodePoint(v8, v21, v22);
   v75.f64[0] = v23;
@@ -1154,7 +1154,7 @@ LABEL_17:
     v79 = v40;
   }
 
-  v41 = TSDPointOnCurve(&v75, a4);
+  v41 = TSDPointOnCurve(&v75, percentage);
   v44 = objc_msgSend_bezierNodeWithPoint_(TSDBezierNode, v42, v43, v41);
   objc_msgSend_setReflectedState_(v44, v45, 2);
   objc_msgSend_setType_(v44, v46, 3);
@@ -1163,8 +1163,8 @@ LABEL_17:
 
   objc_msgSend_insertObject_atIndex_(v52, v53, v44, v12);
   objc_msgSend_setNodes_(self, v54, v52);
-  sub_276667338(&v75, v70, 0.0, a4);
-  sub_276667338(&v75, v65, a4, 1.0);
+  sub_276667338(&v75, v70, 0.0, percentage);
+  sub_276667338(&v75, v65, percentage, 1.0);
   objc_msgSend_setOutControlPoint_(v8, v55, v56, v71, v72);
   objc_msgSend_setInControlPoint_(v44, v57, v58, v73, v74);
   objc_msgSend_setOutControlPoint_(v44, v59, v60, v66, v67);

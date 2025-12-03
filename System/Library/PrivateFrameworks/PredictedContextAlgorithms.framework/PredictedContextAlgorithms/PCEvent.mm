@@ -1,50 +1,50 @@
 @interface PCEvent
-+ (id)describeCategory:(unint64_t)a3;
-+ (id)describeProvider:(unint64_t)a3;
-+ (id)formatDate:(id)a3;
++ (id)describeCategory:(unint64_t)category;
++ (id)describeProvider:(unint64_t)provider;
++ (id)formatDate:(id)date;
 + (id)standardDateFormat;
-- (BOOL)isEqual:(id)a3;
-- (PCEvent)initWithCoder:(id)a3;
-- (PCEvent)initWithEventIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 creationDate:(id)a6 provider:(unint64_t)a7 category:(unint64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (PCEvent)initWithCoder:(id)coder;
+- (PCEvent)initWithEventIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate provider:(unint64_t)provider category:(unint64_t)category;
 - (double)duration;
 - (id)copy;
 - (id)describeCategory;
 - (id)describeProvider;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initSubEvent;
 @end
 
 @implementation PCEvent
 
-- (PCEvent)initWithEventIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 creationDate:(id)a6 provider:(unint64_t)a7 category:(unint64_t)a8
+- (PCEvent)initWithEventIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate provider:(unint64_t)provider category:(unint64_t)category
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  creationDateCopy = creationDate;
   v28.receiver = self;
   v28.super_class = PCEvent;
   v19 = [(PCEvent *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_eventIdentifier, a3);
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_eventIdentifier, identifier);
+    v21 = [dateCopy copy];
     startDate = v20->_startDate;
     v20->_startDate = v21;
 
-    v23 = [v17 copy];
+    v23 = [endDateCopy copy];
     endDate = v20->_endDate;
     v20->_endDate = v23;
 
-    v25 = [v18 copy];
+    v25 = [creationDateCopy copy];
     creationDate = v20->_creationDate;
     v20->_creationDate = v25;
 
-    v20->_provider = a7;
-    v20->_category = a8;
+    v20->_provider = provider;
+    v20->_category = category;
     [(PCEvent *)v20 initSubEvent];
   }
 
@@ -78,28 +78,28 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)describeProvider:(unint64_t)a3
++ (id)describeProvider:(unint64_t)provider
 {
-  if (a3 > 2)
+  if (provider > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E83B8260[a3];
+    return off_1E83B8260[provider];
   }
 }
 
-+ (id)describeCategory:(unint64_t)a3
++ (id)describeCategory:(unint64_t)category
 {
   v3 = @"Unknown Category";
-  if (a3 == 1)
+  if (category == 1)
   {
     v3 = @"Visit";
   }
 
-  if (a3 == 2)
+  if (category == 2)
   {
     return @"Workout";
   }
@@ -112,16 +112,16 @@
 
 - (id)describeCategory
 {
-  v2 = [(PCEvent *)self category];
+  category = [(PCEvent *)self category];
 
-  return [PCEvent describeCategory:v2];
+  return [PCEvent describeCategory:category];
 }
 
 - (id)describeProvider
 {
-  v2 = [(PCEvent *)self provider];
+  provider = [(PCEvent *)self provider];
 
-  return [PCEvent describeProvider:v2];
+  return [PCEvent describeProvider:provider];
 }
 
 + (id)standardDateFormat
@@ -148,13 +148,13 @@ uint64_t __29__PCEvent_standardDateFormat__block_invoke()
   return [v2 setTimeStyle:3];
 }
 
-+ (id)formatDate:(id)a3
++ (id)formatDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = a3;
+    dateCopy = date;
     v4 = +[PCEvent standardDateFormat];
-    v5 = [v4 stringFromDate:v3];
+    v5 = [v4 stringFromDate:dateCopy];
   }
 
   else
@@ -167,8 +167,8 @@ uint64_t __29__PCEvent_standardDateFormat__block_invoke()
 
 - (id)description
 {
-  v3 = [(PCEvent *)self category];
-  if (v3 == 2)
+  category = [(PCEvent *)self category];
+  if (category == 2)
   {
     workoutEvent = self->_workoutEvent;
     if (workoutEvent)
@@ -181,7 +181,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (v3 == 1)
+  if (category == 1)
   {
     workoutEvent = self->_routineEvent;
     if (workoutEvent)
@@ -197,29 +197,29 @@ LABEL_4:
   v5 = @"no other details";
 LABEL_8:
   v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v6 = [(PCEvent *)self eventIdentifier];
-  v15 = [(PCEvent *)self identifierFromProvider];
-  v19 = [(PCEvent *)self startDate];
-  v7 = [PCEvent formatDate:v19];
-  v16 = [(PCEvent *)self endDate];
-  v8 = [PCEvent formatDate:v16];
-  v9 = [(PCEvent *)self creationDate];
-  v10 = [PCEvent formatDate:v9];
-  v11 = [(PCEvent *)self timeZone];
-  v12 = [(PCEvent *)self describeProvider];
-  v13 = [(PCEvent *)self describeCategory];
-  v18 = [v17 initWithFormat:@"<PCEvent eventIdentifier, %@, identifierFromProvider, %@, startDate, %@, endDate, %@, creationDate, %@, timeZone, %@, provider, %@, category, %@, details, %@, >", v6, v15, v7, v8, v10, v11, v12, v13, v5];
+  eventIdentifier = [(PCEvent *)self eventIdentifier];
+  identifierFromProvider = [(PCEvent *)self identifierFromProvider];
+  startDate = [(PCEvent *)self startDate];
+  v7 = [PCEvent formatDate:startDate];
+  endDate = [(PCEvent *)self endDate];
+  v8 = [PCEvent formatDate:endDate];
+  creationDate = [(PCEvent *)self creationDate];
+  v10 = [PCEvent formatDate:creationDate];
+  timeZone = [(PCEvent *)self timeZone];
+  describeProvider = [(PCEvent *)self describeProvider];
+  describeCategory = [(PCEvent *)self describeCategory];
+  v18 = [v17 initWithFormat:@"<PCEvent eventIdentifier, %@, identifierFromProvider, %@, startDate, %@, endDate, %@, creationDate, %@, timeZone, %@, provider, %@, category, %@, details, %@, >", eventIdentifier, identifierFromProvider, v7, v8, v10, timeZone, describeProvider, describeCategory, v5];
 
   return v18;
 }
 
-- (PCEvent)initWithCoder:(id)a3
+- (PCEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   v9 = v8;
   if (v5)
   {
@@ -233,54 +233,54 @@ LABEL_8:
 
   if (v10 || v6 == 0 || v7 == 0)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v14 = -[PCEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](self, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v5, v6, v7, v8, [v4 decodeIntegerForKey:@"provider"], objc_msgSend(v4, "decodeIntegerForKey:", @"category"));
+    v14 = -[PCEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](self, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v5, v6, v7, v8, [coderCopy decodeIntegerForKey:@"provider"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"category"));
     v15 = v14;
     if (v14)
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifierFromProvider"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifierFromProvider"];
       identifierFromProvider = v15->_identifierFromProvider;
       v15->_identifierFromProvider = v16;
 
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routineEvent"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routineEvent"];
       routineEvent = v15->_routineEvent;
       v15->_routineEvent = v18;
 
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workoutEvent"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workoutEvent"];
       workoutEvent = v15->_workoutEvent;
       v15->_workoutEvent = v20;
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventIdentifier = self->_eventIdentifier;
-  v5 = a3;
-  [v5 encodeObject:eventIdentifier forKey:@"eventIdentifier"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeInteger:self->_provider forKey:@"provider"];
-  [v5 encodeInteger:self->_category forKey:@"category"];
-  [v5 encodeObject:self->_identifierFromProvider forKey:@"identifierFromProvider"];
-  [v5 encodeObject:self->_routineEvent forKey:@"routineEvent"];
-  [v5 encodeObject:self->_workoutEvent forKey:@"workoutEvent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventIdentifier forKey:@"eventIdentifier"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeInteger:self->_provider forKey:@"provider"];
+  [coderCopy encodeInteger:self->_category forKey:@"category"];
+  [coderCopy encodeObject:self->_identifierFromProvider forKey:@"identifierFromProvider"];
+  [coderCopy encodeObject:self->_routineEvent forKey:@"routineEvent"];
+  [coderCopy encodeObject:self->_workoutEvent forKey:@"workoutEvent"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PCEvent *)self eventIdentifier];
-  v3 = [v2 hash];
+  eventIdentifier = [(PCEvent *)self eventIdentifier];
+  v3 = [eventIdentifier hash];
 
   return v3;
 }
@@ -288,11 +288,11 @@ LABEL_8:
 - (id)copy
 {
   v3 = [PCEvent alloc];
-  v4 = [(PCEvent *)self eventIdentifier];
-  v5 = [(PCEvent *)self startDate];
-  v6 = [(PCEvent *)self endDate];
-  v7 = [(PCEvent *)self creationDate];
-  v8 = [(PCEvent *)v3 initWithEventIdentifier:v4 startDate:v5 endDate:v6 creationDate:v7 provider:[(PCEvent *)self provider] category:[(PCEvent *)self category]];
+  eventIdentifier = [(PCEvent *)self eventIdentifier];
+  startDate = [(PCEvent *)self startDate];
+  endDate = [(PCEvent *)self endDate];
+  creationDate = [(PCEvent *)self creationDate];
+  v8 = [(PCEvent *)v3 initWithEventIdentifier:eventIdentifier startDate:startDate endDate:endDate creationDate:creationDate provider:[(PCEvent *)self provider] category:[(PCEvent *)self category]];
 
   objc_storeStrong((v8 + 72), self->_identifierFromProvider);
   v9 = [(PCEventVisit *)self->_routineEvent copy];
@@ -306,31 +306,31 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(PCEvent *)self eventIdentifier];
-        if (v8 || ([(PCEvent *)v7 eventIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        eventIdentifier = [(PCEvent *)self eventIdentifier];
+        if (eventIdentifier || ([(PCEvent *)v7 eventIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(PCEvent *)self eventIdentifier];
-          v10 = [(PCEvent *)v7 eventIdentifier];
-          v11 = [v9 isEqual:v10];
+          eventIdentifier2 = [(PCEvent *)self eventIdentifier];
+          eventIdentifier3 = [(PCEvent *)v7 eventIdentifier];
+          v11 = [eventIdentifier2 isEqual:eventIdentifier3];
 
-          if (v8)
+          if (eventIdentifier)
           {
 LABEL_12:
 
@@ -357,9 +357,9 @@ LABEL_13:
 
 - (double)duration
 {
-  v3 = [(PCEvent *)self endDate];
-  v4 = [(PCEvent *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(PCEvent *)self endDate];
+  startDate = [(PCEvent *)self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v6 = v5;
 
   return v6;

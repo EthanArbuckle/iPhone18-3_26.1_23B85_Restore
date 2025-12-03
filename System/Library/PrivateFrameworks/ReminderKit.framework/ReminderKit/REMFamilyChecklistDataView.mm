@@ -1,56 +1,56 @@
 @interface REMFamilyChecklistDataView
-- (REMFamilyChecklistDataView)initWithStore:(id)a3;
-- (id)fetchFamilyGroceryListEligibilityForFamilyChecklistWithLocale:(id)a3 error:(id *)a4;
-- (id)fetchSharedGroceryListsWithCommonSharees:(id)a3 error:(id *)a4;
+- (REMFamilyChecklistDataView)initWithStore:(id)store;
+- (id)fetchFamilyGroceryListEligibilityForFamilyChecklistWithLocale:(id)locale error:(id *)error;
+- (id)fetchSharedGroceryListsWithCommonSharees:(id)sharees error:(id *)error;
 @end
 
 @implementation REMFamilyChecklistDataView
 
-- (REMFamilyChecklistDataView)initWithStore:(id)a3
+- (REMFamilyChecklistDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMFamilyChecklistDataView;
   v6 = [(REMFamilyChecklistDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchSharedGroceryListsWithCommonSharees:(id)a3 error:(id *)a4
+- (id)fetchSharedGroceryListsWithCommonSharees:(id)sharees error:(id *)error
 {
-  v6 = a3;
-  v7 = [[REMFamilyChecklistDataViewInvocation_fetchSharedGroceryLists alloc] initWithCommonSharees:v6];
+  shareesCopy = sharees;
+  v7 = [[REMFamilyChecklistDataViewInvocation_fetchSharedGroceryLists alloc] initWithCommonSharees:shareesCopy];
 
-  v8 = [(REMFamilyChecklistDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  store = [(REMFamilyChecklistDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 sharedGroceryListsWithCommonSharees];
+  sharedGroceryListsWithCommonSharees = [v11 sharedGroceryListsWithCommonSharees];
 
-  return v12;
+  return sharedGroceryListsWithCommonSharees;
 }
 
-- (id)fetchFamilyGroceryListEligibilityForFamilyChecklistWithLocale:(id)a3 error:(id *)a4
+- (id)fetchFamilyGroceryListEligibilityForFamilyChecklistWithLocale:(id)locale error:(id *)error
 {
-  v6 = a3;
+  localeCopy = locale;
   v7 = [REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility alloc];
-  v8 = [v6 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v9 = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)v7 initWithLocaleIdentifier:v8];
-  v10 = [(REMFamilyChecklistDataView *)self store];
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  v9 = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)v7 initWithLocaleIdentifier:localeIdentifier];
+  store = [(REMFamilyChecklistDataView *)self store];
+  v11 = [store resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 familyGroceryListEligibility];
+  familyGroceryListEligibility = [v13 familyGroceryListEligibility];
 
-  return v14;
+  return familyGroceryListEligibility;
 }
 
 @end

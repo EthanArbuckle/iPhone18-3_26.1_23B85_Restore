@@ -1,43 +1,43 @@
 @interface MTLDebugBlitCommandEncoder
-- (MTLDebugBlitCommandEncoder)initWithBlitCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5;
+- (MTLDebugBlitCommandEncoder)initWithBlitCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor;
 - (id).cxx_construct;
 - (void)_setDefaults;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7;
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4;
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size;
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture;
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)endEncoding;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8;
-- (void)generateMipmapsForTexture:(id)a3;
-- (void)internalValidateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)invalidateCompressedTexture:(id)a3;
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForCPUAccess:(id)a3;
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForGPUAccess:(id)a3;
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6;
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6;
-- (void)updateFence:(id)a3;
-- (void)validateCopyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)validateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)validateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12 move:(BOOL)a13;
-- (void)validateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceSize:(id *)a6 toTexture:(id)a7 destinationSlice:(unint64_t)a8 destinationLevel:(unint64_t)a9 options:(unint64_t)a10 sliceCount:(unint64_t)a11 levelCount:(unint64_t)a12;
-- (void)validateTextureAccess:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6;
-- (void)waitForFence:(id)a3;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format;
+- (void)generateMipmapsForTexture:(id)texture;
+- (void)internalValidateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)invalidateCompressedTexture:(id)texture;
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForCPUAccess:(id)access;
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForGPUAccess:(id)access;
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset;
+- (void)updateFence:(id)fence;
+- (void)validateCopyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)validateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)validateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2 move:(BOOL)self3;
+- (void)validateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel options:(unint64_t)self0 sliceCount:(unint64_t)self1 levelCount:(unint64_t)self2;
+- (void)validateTextureAccess:(id)access region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation MTLDebugBlitCommandEncoder
@@ -84,21 +84,21 @@
   p_updatedFences->__start_ = v7;
 }
 
-- (MTLDebugBlitCommandEncoder)initWithBlitCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5
+- (MTLDebugBlitCommandEncoder)initWithBlitCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = MTLDebugBlitCommandEncoder;
-  v7 = [MTLToolsBlitCommandEncoder initWithBlitCommandEncoder:sel_initWithBlitCommandEncoder_parent_descriptor_ parent:a3 descriptor:?];
+  v7 = [MTLToolsBlitCommandEncoder initWithBlitCommandEncoder:sel_initWithBlitCommandEncoder_parent_descriptor_ parent:encoder descriptor:?];
   v8 = v7;
   if (v7)
   {
-    v7->_commandBuffer = a4;
+    v7->_commandBuffer = buffer;
     [(MTLDebugBlitCommandEncoder *)v7 _setDefaults];
-    if (a5)
+    if (descriptor)
     {
       for (i = 0; i != 4; ++i)
       {
-        -[MTLDebugCommandBuffer addObject:retained:purgeable:](v8->_commandBuffer, "addObject:retained:purgeable:", [objc_msgSend(objc_msgSend(a5 "sampleBufferAttachments")], 1, 0);
+        -[MTLDebugCommandBuffer addObject:retained:purgeable:](v8->_commandBuffer, "addObject:retained:purgeable:", [objc_msgSend(objc_msgSend(descriptor "sampleBufferAttachments")], 1, 0);
       }
     }
   }
@@ -161,17 +161,17 @@ LABEL_8:
   }
 }
 
-- (void)internalValidateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)internalValidateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v18 = a12;
+  sliceCopy2 = options;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if ((~a12 & 3) == 0)
+  if ((~options & 3) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  _MTLDebugValidateBlitOption(a12 & 0xFFFFFFFF9FFFFFFFLL);
+  _MTLDebugValidateBlitOption(options & 0xFFFFFFFF9FFFFFFFLL);
   if (*(&self->hasEndEncoding + 4))
   {
     _MTLMessageContextPush_();
@@ -179,34 +179,34 @@ LABEL_8:
 
   v19 = &selRef_loadTexture_slice_level_size_bytesPerRow_bytesPerImage_dstOrigin_handle_handleOffset_;
   v20 = &OBJC_IVAR___MTLToolsObject__device;
-  if (!a3)
+  if (!texture)
   {
     goto LABEL_167;
   }
 
-  if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+  if (([texture conformsToProtocol:&unk_28423C818] & 1) == 0)
   {
     goto LABEL_164;
   }
 
   while (1)
   {
-    if (![a3 conformsToProtocol:{*(v19 + 376), var0, var1, var2, v82}])
+    if (![texture conformsToProtocol:{*(v19 + 376), var0, var1, var2, v82}])
     {
       goto LABEL_11;
     }
 
     device = self->super.super.super._device;
-    if (device != [a3 device])
+    if (device != [texture device])
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 storageMode] == 3)
+    if ([texture storageMode] == 3)
     {
 LABEL_167:
       _MTLMessageContextPush_();
-      if (!a8)
+      if (!toTexture)
       {
         goto LABEL_168;
       }
@@ -215,43 +215,43 @@ LABEL_167:
     else
     {
 LABEL_11:
-      if (!a8)
+      if (!toTexture)
       {
         goto LABEL_168;
       }
     }
 
-    if (([a8 conformsToProtocol:*(v19 + 376)] & 1) == 0)
+    if (([toTexture conformsToProtocol:*(v19 + 376)] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a8 conformsToProtocol:*(v19 + 376)])
+    if ([toTexture conformsToProtocol:*(v19 + 376)])
     {
       v19 = self->super.super.super._device;
-      if (v19 != [a8 device])
+      if (v19 != [toTexture device])
       {
         _MTLMessageContextPush_();
       }
 
-      if ([a8 storageMode] == 3)
+      if ([toTexture storageMode] == 3)
       {
 LABEL_168:
         _MTLMessageContextPush_();
       }
     }
 
-    if (!(a7->var1 * a7->var0 * a7->var2))
+    if (!(size->var1 * size->var0 * size->var2))
     {
-      var2 = a7->var2;
+      var2 = size->var2;
       v82 = 0;
-      var0 = a7->var0;
-      var1 = a7->var1;
+      var0 = size->var0;
+      var1 = size->var1;
       _MTLMessageContextPush_();
     }
 
     _MTLMessageContextEnd();
-    if (a3)
+    if (texture)
     {
       break;
     }
@@ -261,30 +261,30 @@ LABEL_164:
     _MTLMessageContextPush_();
   }
 
-  if (a8)
+  if (toTexture)
   {
-    v20 = a7->var0;
-    device = a7->var1;
-    v85 = a7;
-    v19 = a7->var2;
+    v20 = size->var0;
+    device = size->var1;
+    sizeCopy = size;
+    v19 = size->var2;
     [(MTLToolsObject *)self device];
     _MTLMessageContextBegin_();
-    validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] protectionOptions], a3, a8, @"texture");
-    v87 = a8 + 72;
-    v21 = [a3 pixelFormat];
-    v83 = a3 + 72;
-    if (v21 != [a8 pixelFormat])
+    validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] protectionOptions], texture, toTexture, @"texture");
+    v87 = toTexture + 72;
+    pixelFormat = [texture pixelFormat];
+    v83 = texture + 72;
+    if (pixelFormat != [toTexture pixelFormat])
     {
-      v22 = *(a3 + 20);
-      v23 = (a3 + 72);
-      if (((v22 & 0x20) == 0 || (*(a8 + 80) & 0x20) == 0) && ((v22 & 0x40) == 0 || (*(a8 + 80) & 0x40) == 0))
+      v22 = *(texture + 20);
+      v23 = (texture + 72);
+      if (((v22 & 0x20) == 0 || (*(toTexture + 80) & 0x20) == 0) && ((v22 & 0x40) == 0 || (*(toTexture + 80) & 0x40) == 0))
       {
-        v24 = (a3 + 72);
+        v24 = (texture + 72);
         if ((v22 & 0x20) == 0)
         {
-          if ((*(a8 + 80) & 0x20) != 0)
+          if ((*(toTexture + 80) & 0x20) != 0)
           {
-            v24 = (a8 + 72);
+            v24 = (toTexture + 72);
           }
 
           else
@@ -293,13 +293,13 @@ LABEL_164:
           }
         }
 
-        v25 = (a3 + 72);
-        v18 = a4;
+        v25 = (texture + 72);
+        sliceCopy2 = slice;
         if ((v22 & 0x40) == 0)
         {
-          if ((*(a8 + 80) & 0x40) != 0)
+          if ((*(toTexture + 80) & 0x40) != 0)
           {
-            v25 = (a8 + 72);
+            v25 = (toTexture + 72);
           }
 
           else
@@ -312,7 +312,7 @@ LABEL_164:
         {
           if (!v25 || v24 == v25)
           {
-            v26 = v23 == v24 ? a8 + 72 : a3 + 72;
+            v26 = v23 == v24 ? toTexture + 72 : texture + 72;
             if ((v26[9] & 4) == 0)
             {
               v27 = v24[3];
@@ -324,8 +324,8 @@ LABEL_164:
               if (v27 == *(v26 + 3))
               {
 LABEL_71:
-                v37 = [a3 sampleCount];
-                if (v37 == [a8 sampleCount])
+                sampleCount = [texture sampleCount];
+                if (sampleCount == [toTexture sampleCount])
                 {
                   goto LABEL_72;
                 }
@@ -346,12 +346,12 @@ LABEL_70:
         {
           if (v23 == v25)
           {
-            v28 = a8 + 72;
+            v28 = toTexture + 72;
           }
 
           else
           {
-            v28 = a3 + 72;
+            v28 = texture + 72;
           }
 
           if ((v28[9] & 4) == 0 && *(v28 + 3) == 1)
@@ -362,14 +362,14 @@ LABEL_70:
           goto LABEL_70;
         }
 
-        v29 = *(a3 + 11);
-        v30 = *(a8 + 11);
-        v31 = *(a8 + 20);
+        v29 = *(texture + 11);
+        v30 = *(toTexture + 11);
+        v31 = *(toTexture + 20);
         if ((v22 & 0x400) == 0)
         {
           if ((v31 & 0x400) != 0)
           {
-            v32 = (a8 + 72);
+            v32 = (toTexture + 72);
           }
 
           else
@@ -380,7 +380,7 @@ LABEL_70:
           goto LABEL_61;
         }
 
-        v32 = (a3 + 72);
+        v32 = (texture + 72);
         if ((v31 & 0x400) == 0)
         {
 LABEL_61:
@@ -388,12 +388,12 @@ LABEL_61:
           {
             if (v23 == v32)
             {
-              v33 = a8 + 72;
+              v33 = toTexture + 72;
             }
 
             else
             {
-              v33 = a3 + 72;
+              v33 = texture + 72;
             }
 
             if (*(v33 + 3) == v32[3])
@@ -430,7 +430,7 @@ LABEL_61:
         goto LABEL_70;
       }
 
-      if (*(a3 + 11) != *(a8 + 11))
+      if (*(texture + 11) != *(toTexture + 11))
       {
         var0 = *v23;
         var1 = *v87;
@@ -438,7 +438,7 @@ LABEL_61:
       }
     }
 
-    v18 = a4;
+    sliceCopy2 = slice;
     goto LABEL_71;
   }
 
@@ -446,68 +446,68 @@ LABEL_61:
 LABEL_166:
   [MTLDebugBlitCommandEncoder internalValidateCopyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:];
 LABEL_72:
-  if ([a3 isFramebufferOnly])
+  if ([texture isFramebufferOnly])
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a8 isFramebufferOnly])
+  if ([toTexture isFramebufferOnly])
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 mipmapLevelCount] <= a5)
+  if ([texture mipmapLevelCount] <= level)
   {
-    v45 = a5;
-    var1 = [a3 mipmapLevelCount];
+    levelCopy = level;
+    var1 = [texture mipmapLevelCount];
     _MTLMessageContextPush_();
   }
 
-  v38 = [a3 numFaces];
-  if ([a3 arrayLength] * v38 <= v18)
+  numFaces = [texture numFaces];
+  if ([texture arrayLength] * numFaces <= sliceCopy2)
   {
     [MTLDebugBlitCommandEncoder internalValidateCopyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:];
   }
 
-  if ([a8 mipmapLevelCount] <= a10)
+  if ([toTexture mipmapLevelCount] <= destinationLevel)
   {
-    v46 = a10;
-    v62 = [a8 mipmapLevelCount];
+    destinationLevelCopy = destinationLevel;
+    mipmapLevelCount = [toTexture mipmapLevelCount];
     _MTLMessageContextPush_();
   }
 
   v84 = v19;
-  v39 = [a8 numFaces];
-  if ([a8 arrayLength] * v39 <= a9)
+  numFaces2 = [toTexture numFaces];
+  if ([toTexture arrayLength] * numFaces2 <= destinationSlice)
   {
     [MTLDebugBlitCommandEncoder internalValidateCopyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:];
   }
 
   _MTLMessageContextEnd();
   v40 = self->super.super.super._device;
-  [a3 pixelFormat];
-  [a3 width];
-  [a3 height];
-  [a3 depth];
-  [a3 sampleCount];
+  [texture pixelFormat];
+  [texture width];
+  [texture height];
+  [texture depth];
+  [texture sampleCount];
   MTLGetTextureLevelInfoForDeviceWithOptions();
   v41 = self->super.super.super._device;
-  [a8 pixelFormat];
-  [a8 width];
-  [a8 height];
-  [a8 depth];
-  [a8 sampleCount];
+  [toTexture pixelFormat];
+  [toTexture width];
+  [toTexture height];
+  [toTexture depth];
+  [toTexture sampleCount];
   MTLGetTextureLevelInfoForDeviceWithOptions();
-  v100 = *&a6->var0;
-  v101 = a6->var2;
-  v97 = *&v85->var0;
-  v99 = v85->var2;
+  v100 = *&origin->var0;
+  v101 = origin->var2;
+  v97 = *&sizeCopy->var0;
+  v99 = sizeCopy->var2;
   v89 = *v83;
   v91 = *(v83 + 1);
   v93 = *(v83 + 2);
   v95 = *(v83 + 6);
   _MTLAdjustMTLSize();
-  v98 = *a11;
+  v98 = *destinationOrigin;
   v90 = *v87;
   v92 = *(v87 + 1);
   v94 = *(v87 + 2);
@@ -515,7 +515,7 @@ LABEL_72:
   _MTLAdjustMTLSize();
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  v42 = a6->var0;
+  v42 = origin->var0;
   if ((v83[9] & 4) != 0)
   {
     if (v42)
@@ -523,15 +523,15 @@ LABEL_72:
       _MTLMessageContextPush_();
     }
 
-    if (a6->var1)
+    if (origin->var1)
     {
-      v56 = a6->var1;
+      v56 = origin->var1;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var2)
+    if (origin->var2)
     {
-      v57 = a6->var2;
+      v57 = origin->var2;
 LABEL_170:
       _MTLMessageContextPush_();
     }
@@ -539,25 +539,25 @@ LABEL_170:
 
   else
   {
-    if (v85->var0 + v42)
+    if (sizeCopy->var0 + v42)
     {
       _MTLMessageContextPush_();
     }
 
-    if (v85->var1 + a6->var1)
+    if (sizeCopy->var1 + origin->var1)
     {
-      v55 = v85->var1 + a6->var1;
+      v55 = sizeCopy->var1 + origin->var1;
       _MTLMessageContextPush_();
     }
 
-    if (v85->var2 + a6->var2)
+    if (sizeCopy->var2 + origin->var2)
     {
-      v47 = v85->var2 + a6->var2;
+      v47 = sizeCopy->var2 + origin->var2;
       goto LABEL_170;
     }
   }
 
-  v43 = a11->var0;
+  v43 = destinationOrigin->var0;
   if ((v87[9] & 4) != 0)
   {
     if (v43)
@@ -565,15 +565,15 @@ LABEL_170:
       _MTLMessageContextPush_();
     }
 
-    if (a11->var1)
+    if (destinationOrigin->var1)
     {
-      v59 = a11->var1;
+      v59 = destinationOrigin->var1;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var2)
+    if (destinationOrigin->var2)
     {
-      v60 = a11->var2;
+      v60 = destinationOrigin->var2;
 LABEL_172:
       _MTLMessageContextPush_();
     }
@@ -586,34 +586,34 @@ LABEL_172:
       _MTLMessageContextPush_();
     }
 
-    if (a11->var1 + device)
+    if (destinationOrigin->var1 + device)
     {
-      v58 = a11->var1 + device;
+      v58 = destinationOrigin->var1 + device;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var2 + v84)
+    if (destinationOrigin->var2 + v84)
     {
-      v48 = a11->var2 + v84;
+      v48 = destinationOrigin->var2 + v84;
       goto LABEL_172;
     }
   }
 
   if ((v83[9] & 4) != 0)
   {
-    if (a6->var0 % *(v83 + 4))
+    if (origin->var0 % *(v83 + 4))
     {
       v63 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var1 % *(v83 + 5))
+    if (origin->var1 % *(v83 + 5))
     {
       v64 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var2 % *(v83 + 6))
+    if (origin->var2 % *(v83 + 6))
     {
       v65 = *v83;
       _MTLMessageContextPush_();
@@ -640,19 +640,19 @@ LABEL_172:
 
   if ((v87[9] & 4) != 0)
   {
-    if (a11->var0 % *(v87 + 4))
+    if (destinationOrigin->var0 % *(v87 + 4))
     {
       v69 = *v87;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var1 % *(v87 + 5))
+    if (destinationOrigin->var1 % *(v87 + 5))
     {
       v70 = *v87;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var2 % *(v87 + 6))
+    if (destinationOrigin->var2 % *(v87 + 6))
     {
       v71 = *v87;
       _MTLMessageContextPush_();
@@ -679,55 +679,55 @@ LABEL_172:
 
   if ((v83[9] & 0x20) != 0 || (v87[9] & 0x20) != 0)
   {
-    if (a6->var0)
+    if (origin->var0)
     {
       v49 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var1)
+    if (origin->var1)
     {
       v50 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var2)
+    if (origin->var2)
     {
       v51 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (v85->var0)
+    if (sizeCopy->var0)
     {
       v76 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (v85->var1)
+    if (sizeCopy->var1)
     {
       v77 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (v85->var2)
+    if (sizeCopy->var2)
     {
       v78 = *v83;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var0)
+    if (destinationOrigin->var0)
     {
       v52 = *v87;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var1)
+    if (destinationOrigin->var1)
     {
       v53 = *v87;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var2)
+    if (destinationOrigin->var2)
     {
       v54 = *v87;
       _MTLMessageContextPush_();
@@ -755,35 +755,35 @@ LABEL_172:
   _MTLMessageContextEnd();
 }
 
-- (void)validateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12 move:(BOOL)a13
+- (void)validateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2 move:(BOOL)self3
 {
-  v17 = *a6;
-  v16 = *a7;
-  v15 = *a11;
-  [(MTLDebugBlitCommandEncoder *)self internalValidateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v17 sourceSize:&v16 toTexture:a9 destinationSlice:a10 destinationLevel:&v15 destinationOrigin:a12 options:?];
+  v17 = *origin;
+  v16 = *size;
+  v15 = *destinationOrigin;
+  [(MTLDebugBlitCommandEncoder *)self internalValidateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v17 sourceSize:&v16 toTexture:destinationSlice destinationSlice:destinationLevel destinationLevel:&v15 destinationOrigin:options options:?];
   v17.var2 = 0;
-  *&v17.var0 = a3;
+  *&v17.var0 = texture;
   v16.var2 = 0;
-  *&v16.var0 = a8;
-  validateResourceAliasing(&v17, &v16, a13);
+  *&v16.var0 = toTexture;
+  validateResourceAliasing(&v17, &v16, move);
 }
 
-- (void)validateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceSize:(id *)a6 toTexture:(id)a7 destinationSlice:(unint64_t)a8 destinationLevel:(unint64_t)a9 options:(unint64_t)a10 sliceCount:(unint64_t)a11 levelCount:(unint64_t)a12
+- (void)validateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel options:(unint64_t)self0 sliceCount:(unint64_t)self1 levelCount:(unint64_t)self2
 {
-  v14 = a5;
+  levelCopy = level;
   v23 = 0uLL;
   v24[0] = 0;
-  v21 = *&a6->var0;
-  v22[0] = a6->var2;
+  v21 = *&size->var0;
+  v22[0] = size->var2;
   v19 = 0uLL;
   v20 = 0;
-  [(MTLDebugBlitCommandEncoder *)self internalValidateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v23 sourceSize:&v21 toTexture:a7 destinationSlice:a8 destinationLevel:a9 destinationOrigin:&v19 options:a10];
-  *&v23 = ResourceIdentity::UnwindTexture(a3, a4, a11, v14, a12, v24, v24 + 1);
-  DWORD2(v23) = [a3 usage];
-  HIDWORD(v23) = [a3 bufferBytesPerRow];
-  *&v21 = ResourceIdentity::UnwindTexture(a7, a8, a11, a9, a12, v22, v22 + 1);
-  DWORD2(v21) = [a7 usage];
-  HIDWORD(v21) = [a7 bufferBytesPerRow];
+  [(MTLDebugBlitCommandEncoder *)self internalValidateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v23 sourceSize:&v21 toTexture:toTexture destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v19 options:options];
+  *&v23 = ResourceIdentity::UnwindTexture(texture, slice, count, levelCopy, levelCount, v24, v24 + 1);
+  DWORD2(v23) = [texture usage];
+  HIDWORD(v23) = [texture bufferBytesPerRow];
+  *&v21 = ResourceIdentity::UnwindTexture(toTexture, destinationSlice, count, destinationLevel, levelCount, v22, v22 + 1);
+  DWORD2(v21) = [toTexture usage];
+  HIDWORD(v21) = [toTexture bufferBytesPerRow];
   v19 = v23;
   v20 = v24[0];
   v17 = v21;
@@ -791,64 +791,64 @@ LABEL_172:
   validateResourceAliasing(&v19, &v17, 1);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v24 = *a6;
-  v23 = *a7;
-  v22 = *a11;
+  v24 = *origin;
+  v23 = *size;
+  v22 = *destinationOrigin;
   LOBYTE(v20) = 0;
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v24 sourceSize:&v23 toTexture:a9 destinationSlice:a10 destinationLevel:&v22 destinationOrigin:0 options:v20 move:?];
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v24 sourceSize:&v23 toTexture:destinationSlice destinationSlice:destinationLevel destinationLevel:&v22 destinationOrigin:0 options:v20 move:?];
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a8 retained:1 purgeable:1];
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v24 = *a6;
-  v23 = *a7;
-  v19 = [a8 baseObject];
-  v22 = *a11;
-  [v17 copyFromTexture:v18 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v24 sourceSize:&v23 toTexture:v19 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v22];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:toTexture retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v24 = *origin;
+  v23 = *size;
+  baseObject3 = [toTexture baseObject];
+  v22 = *destinationOrigin;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v24 sourceSize:&v23 toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v22];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  if ((a12 & 0x20000000) == 0)
+  if ((options & 0x20000000) == 0)
   {
-    v40 = a12 & 0xFFFFFFFF9FFFFFFFLL;
-    v42 = *&a6->var0;
-    *&v43 = a6->var2;
-    v47 = *a7;
-    v46 = *a11;
+    v40 = options & 0xFFFFFFFF9FFFFFFFLL;
+    v42 = *&origin->var0;
+    *&v43 = origin->var2;
+    v47 = *size;
+    v46 = *destinationOrigin;
     LOBYTE(v37) = 0;
-    [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v42 sourceSize:&v47 toTexture:a8 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v46 options:a12 move:v37];
-    v18 = (a3 + 72);
-    v19 = a8;
-    v20 = a8 + 72;
+    [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v42 sourceSize:&v47 toTexture:toTexture destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v46 options:options move:v37];
+    v18 = (texture + 72);
+    toTextureCopy = toTexture;
+    v20 = toTexture + 72;
     v45 = 0;
     v43 = 0u;
     v44 = 0u;
     v42 = 0u;
     [(MTLToolsObject *)self device];
     _MTLMessageContextBegin_();
-    v21 = *(a3 + 20);
+    v21 = *(texture + 20);
     if ((~v21 & 0x60) == 0 && (~*(v20 + 2) & 0x60) == 0)
     {
       [(__CFString *)_MTLDebugBlitOptionString(v40) cStringUsingEncoding:4];
       v31 = *v18;
       v36 = *v20;
       _MTLMessageContextPush_();
-      v21 = *(a3 + 20);
+      v21 = *(texture + 20);
     }
 
-    if ((a12 & 1) != 0 && (v21 & 0x20) == 0)
+    if ((options & 1) != 0 && (v21 & 0x20) == 0)
     {
       [(__CFString *)_MTLDebugBlitOptionString(v40) cStringUsingEncoding:4];
       v32 = *v18;
       _MTLMessageContextPush_();
-      v21 = *(a3 + 20);
+      v21 = *(texture + 20);
     }
 
-    if ((a12 & 2) != 0 && (v21 & 0x40) == 0)
+    if ((options & 2) != 0 && (v21 & 0x40) == 0)
     {
       [(__CFString *)_MTLDebugBlitOptionString(v40) cStringUsingEncoding:4];
       v33 = *v18;
@@ -856,9 +856,9 @@ LABEL_172:
     }
 
     v22 = *(v20 + 2);
-    if (a12)
+    if (options)
     {
-      v23 = a5;
+      levelCopy2 = level;
       if ((v22 & 0x20) == 0)
       {
         [(__CFString *)_MTLDebugBlitOptionString(v40) cStringUsingEncoding:4];
@@ -867,7 +867,7 @@ LABEL_172:
         v22 = *(v20 + 2);
       }
 
-      if ((a12 & 2) == 0)
+      if ((options & 2) == 0)
       {
         goto LABEL_17;
       }
@@ -875,21 +875,21 @@ LABEL_172:
 
     else
     {
-      v23 = a5;
-      if ((a12 & 2) == 0)
+      levelCopy2 = level;
+      if ((options & 2) == 0)
       {
 LABEL_17:
         _MTLMessageContextEnd();
         *(&self->hasEndEncoding + 3) = 1;
-        [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-        [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:v19 retained:1 purgeable:1];
-        v24 = [(MTLToolsObject *)self baseObject];
-        v25 = [a3 baseObject];
-        v47 = *a6;
-        v46 = *a7;
-        v26 = [v19 baseObject];
-        v41 = *a11;
-        [v24 copyFromTexture:v25 sourceSlice:a4 sourceLevel:v23 sourceOrigin:&v47 sourceSize:&v46 toTexture:v26 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v41 options:v40];
+        [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+        [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:toTextureCopy retained:1 purgeable:1];
+        baseObject = [(MTLToolsObject *)self baseObject];
+        baseObject2 = [texture baseObject];
+        v47 = *origin;
+        v46 = *size;
+        baseObject3 = [toTextureCopy baseObject];
+        v41 = *destinationOrigin;
+        [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:levelCopy2 sourceOrigin:&v47 sourceSize:&v46 toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v41 options:v40];
         return;
       }
     }
@@ -904,24 +904,24 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v42 = *&a6->var0;
-  *&v43 = a6->var2;
-  v47 = *a7;
-  v46 = *a11;
+  v42 = *&origin->var0;
+  *&v43 = origin->var2;
+  v47 = *size;
+  v46 = *destinationOrigin;
   LOBYTE(v37) = 0;
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v42 sourceSize:&v47 toTexture:a8 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v46 options:a12 move:v37];
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v42 sourceSize:&v47 toTexture:toTexture destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v46 options:options move:v37];
   *(&self->hasEndEncoding + 3) = 1;
-  v28 = [(MTLToolsObject *)self baseObject];
-  v29 = [a3 baseObject];
-  v42 = *&a6->var0;
-  *&v43 = a6->var2;
-  v47 = *a7;
-  v30 = [a8 baseObject];
-  v46 = *a11;
-  [v28 copyFromTexture:v29 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v42 sourceSize:&v47 toTexture:v30 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v46 options:a12 & 0xFFFFFFFF9FFFFFFFLL];
+  baseObject4 = [(MTLToolsObject *)self baseObject];
+  baseObject5 = [texture baseObject];
+  v42 = *&origin->var0;
+  *&v43 = origin->var2;
+  v47 = *size;
+  baseObject6 = [toTexture baseObject];
+  v46 = *destinationOrigin;
+  [baseObject4 copyFromTexture:baseObject5 sourceSlice:slice sourceLevel:level sourceOrigin:&v42 sourceSize:&v47 toTexture:baseObject6 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v46 options:options & 0xFFFFFFFF9FFFFFFFLL];
 }
 
-- (void)validateCopyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)validateCopyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
   v65 = 0;
   v63 = 0u;
@@ -929,72 +929,72 @@ LABEL_17:
   v62 = 0u;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if ((~a12 & 3) == 0)
+  if ((~options & 3) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  _MTLDebugValidateBlitOption(a12 & 0xFFFFFFFF9FFFFFFFLL);
+  _MTLDebugValidateBlitOption(options & 0xFFFFFFFF9FFFFFFFLL);
   if (*(&self->hasEndEncoding + 4))
   {
     _MTLMessageContextPush_();
   }
 
-  v16 = &OBJC_IVAR___MTLToolsObject__device;
-  if (!a3)
+  depth = &OBJC_IVAR___MTLToolsObject__device;
+  if (!buffer)
   {
     goto LABEL_65;
   }
 
-  v17 = &selRef_loadTexture_slice_level_size_bytesPerRow_bytesPerImage_dstOrigin_handle_handleOffset_;
-  if (([a3 conformsToProtocol:&unk_284222E68] & 1) == 0)
+  originCopy = &selRef_loadTexture_slice_level_size_bytesPerRow_bytesPerImage_dstOrigin_handle_handleOffset_;
+  if (([buffer conformsToProtocol:&unk_284222E68] & 1) == 0)
   {
     goto LABEL_63;
   }
 
   while (1)
   {
-    if ([a3 conformsToProtocol:{v17[15].var0, var0}] && (v18 = *(&self->super.super.super.super.isa + *v16), v18 != objc_msgSend(a3, "device")))
+    if ([buffer conformsToProtocol:{originCopy[15].var0, var0}] && (v18 = *(&self->super.super.super.super.isa + *depth), v18 != objc_msgSend(buffer, "device")))
     {
 LABEL_65:
       _MTLMessageContextPush_();
-      if (!a8)
+      if (!texture)
       {
         goto LABEL_66;
       }
     }
 
-    else if (!a8)
+    else if (!texture)
     {
       goto LABEL_66;
     }
 
-    if (([a8 conformsToProtocol:&unk_28423C818] & 1) == 0)
+    if (([texture conformsToProtocol:&unk_28423C818] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a8 conformsToProtocol:&unk_28423C818])
+    if ([texture conformsToProtocol:&unk_28423C818])
     {
-      v19 = *(&self->super.super.super.super.isa + *v16);
-      if (v19 != [a8 device])
+      v19 = *(&self->super.super.super.super.isa + *depth);
+      if (v19 != [texture device])
       {
         _MTLMessageContextPush_();
       }
 
-      if ([a8 storageMode] == 3)
+      if ([texture storageMode] == 3)
       {
 LABEL_66:
         _MTLMessageContextPush_();
       }
     }
 
-    if (!(a7->var1 * a7->var0 * a7->var2))
+    if (!(size->var1 * size->var0 * size->var2))
     {
-      var2 = a7->var2;
+      var2 = size->var2;
       v32 = 0;
-      var0 = a7->var0;
-      var1 = a7->var1;
+      var0 = size->var0;
+      var1 = size->var1;
       _MTLMessageContextPush_();
     }
 
@@ -1005,23 +1005,23 @@ LABEL_66:
     v62 = 0u;
     [(MTLToolsObject *)self device];
     _MTLMessageContextBegin_();
-    validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] protectionOptions], a3, a8, @"buffer");
-    if ([a8 isFramebufferOnly])
+    validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] protectionOptions], buffer, texture, @"buffer");
+    if ([texture isFramebufferOnly])
     {
       _MTLMessageContextPush_();
     }
 
-    v35 = a3;
-    v17 = a11;
-    if ([a8 mipmapLevelCount] <= a10)
+    bufferCopy = buffer;
+    originCopy = origin;
+    if ([texture mipmapLevelCount] <= level)
     {
-      v27 = a10;
-      var1 = [a8 mipmapLevelCount];
+      levelCopy = level;
+      var1 = [texture mipmapLevelCount];
       _MTLMessageContextPush_();
     }
 
-    v20 = [a8 numFaces];
-    if ([a8 arrayLength] * v20 <= a9)
+    numFaces = [texture numFaces];
+    if ([texture arrayLength] * numFaces <= slice)
     {
       [MTLDebugBlitCommandEncoder internalValidateCopyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:];
     }
@@ -1034,13 +1034,13 @@ LABEL_66:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v36 = *v16;
+    v36 = *depth;
     v21 = *(&self->super.super.super.super.isa + v36);
-    [a8 pixelFormat];
-    a3 = [a8 width];
-    [a8 height];
-    v16 = [a8 depth];
-    [a8 sampleCount];
+    [texture pixelFormat];
+    buffer = [texture width];
+    [texture height];
+    depth = [texture depth];
+    [texture sampleCount];
     MTLGetTextureLevelInfoForDeviceWithOptions();
     v65 = 0;
     v63 = 0u;
@@ -1048,29 +1048,29 @@ LABEL_66:
     v62 = 0u;
     [(MTLToolsObject *)self device];
     _MTLMessageContextBegin_();
-    if (a7->var0 + a11->var0)
+    if (size->var0 + origin->var0)
     {
-      var0 = a7->var0 + a11->var0;
+      var0 = size->var0 + origin->var0;
       var1 = 0;
       _MTLMessageContextPush_();
     }
 
-    if (a7->var1 + a11->var1 > *(&v55 + 1))
+    if (size->var1 + origin->var1 > *(&v55 + 1))
     {
-      var0 = a7->var1 + a11->var1;
+      var0 = size->var1 + origin->var1;
       var1 = *(&v55 + 1);
       _MTLMessageContextPush_();
     }
 
-    if (a7->var2 + a11->var2 > v56)
+    if (size->var2 + origin->var2 > v56)
     {
-      var0 = a7->var2 + a11->var2;
+      var0 = size->var2 + origin->var2;
       var1 = v56;
       _MTLMessageContextPush_();
     }
 
     _MTLMessageContextEnd();
-    if (a8)
+    if (texture)
     {
       break;
     }
@@ -1080,13 +1080,13 @@ LABEL_63:
     _MTLMessageContextPush_();
   }
 
-  v22 = (a8 + 72);
+  v22 = (texture + 72);
   v52 = 0;
   v53 = 0;
   v54 = 0;
-  v51 = *a11;
-  v49 = *&a7->var0;
-  v50 = a7->var2;
+  v51 = *origin;
+  v49 = *&size->var0;
+  v50 = size->var2;
   v46 = v59;
   v47 = v60;
   v48 = v61;
@@ -1094,11 +1094,11 @@ LABEL_63:
   v43 = v56;
   v44 = v57;
   v45 = v58;
-  v23 = *(a8 + 88);
-  v38 = *(a8 + 72);
+  v23 = *(texture + 88);
+  textureCopy = *(texture + 72);
   v39 = v23;
-  v40 = *(a8 + 104);
-  v41 = *(a8 + 15);
+  v40 = *(texture + 104);
+  v41 = *(texture + 15);
   _MTLAdjustMTLSize();
   v62 = 0u;
   v63 = 0u;
@@ -1108,9 +1108,9 @@ LABEL_63:
   _MTLMessageContextBegin_();
   if (*(&v59 + 1))
   {
-    if (a4 % *(&v59 + 1))
+    if (offset % *(&v59 + 1))
     {
-      var0 = a4;
+      var0 = offset;
       var1 = *(&v59 + 1);
       _MTLMessageContextPush_();
     }
@@ -1121,65 +1121,65 @@ LABEL_63:
     [MTLDebugBlitCommandEncoder validateCopyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:];
   }
 
-  if ((*(a8 + 81) & 4) != 0)
+  if ((*(texture + 81) & 4) != 0)
   {
-    if (a11->var0 % *(a8 + 13))
+    if (origin->var0 % *(texture + 13))
     {
       var1 = *v22;
-      var2 = *(a8 + 13);
-      var0 = a11->var0;
+      var2 = *(texture + 13);
+      var0 = origin->var0;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var1 % *(a8 + 14))
+    if (origin->var1 % *(texture + 14))
     {
       var1 = *v22;
-      var2 = *(a8 + 14);
-      var0 = a11->var1;
+      var2 = *(texture + 14);
+      var0 = origin->var1;
       _MTLMessageContextPush_();
     }
 
-    if (a11->var2 % *(a8 + 15))
+    if (origin->var2 % *(texture + 15))
     {
       var1 = *v22;
-      var2 = *(a8 + 15);
-      var0 = a11->var2;
+      var2 = *(texture + 15);
+      var0 = origin->var2;
       _MTLMessageContextPush_();
     }
 
-    if (v52 % *(a8 + 13))
+    if (v52 % *(texture + 13))
     {
       var1 = *v22;
-      var2 = *(a8 + 13);
+      var2 = *(texture + 13);
       var0 = v52;
       _MTLMessageContextPush_();
     }
 
-    if (v53 % *(a8 + 14))
+    if (v53 % *(texture + 14))
     {
       var1 = *v22;
-      var2 = *(a8 + 14);
+      var2 = *(texture + 14);
       var0 = v53;
       _MTLMessageContextPush_();
     }
 
-    if (v54 % *(a8 + 15))
+    if (v54 % *(texture + 15))
     {
       var1 = *v22;
-      var2 = *(a8 + 15);
+      var2 = *(texture + 15);
       var0 = v54;
       _MTLMessageContextPush_();
     }
 
-    if ((*(a8 + 81) & 0x20) != 0)
+    if ((*(texture + 81) & 0x20) != 0)
     {
-      if ((a12 & 4) == 0)
+      if ((options & 4) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if ((a12 & 4) != 0)
+    else if ((options & 4) != 0)
     {
 LABEL_67:
       var0 = *v22;
@@ -1202,95 +1202,95 @@ LABEL_67:
   v42 = 0u;
   v43 = 0u;
   v24 = *(&self->super.super.super.super.isa + v36);
-  [a8 pixelFormat];
-  [a8 sampleCount];
+  [texture pixelFormat];
+  [texture sampleCount];
   MTLGetTextureLevelInfoForDeviceWithOptions();
-  v25 = -a5 - a6 + a4;
-  if (v25 > [v35 length])
+  v25 = -row - image + offset;
+  if (v25 > [bufferCopy length])
   {
-    v28 = v25 + *(&v44 + 1) * a6;
-    v30 = [v35 length];
+    imageCopy = v25 + *(&v44 + 1) * image;
+    v30 = [bufferCopy length];
     _MTLMessageContextPush_();
   }
 
-  if (a5 % *(&v59 + 1))
+  if (row % *(&v59 + 1))
   {
-    v28 = a5;
+    imageCopy = row;
     v30 = *(&v59 + 1);
     _MTLMessageContextPush_();
   }
 
-  if (a6 % *(&v59 + 1))
+  if (image % *(&v59 + 1))
   {
-    v28 = a6;
+    imageCopy = image;
     v30 = *(&v59 + 1);
     _MTLMessageContextPush_();
   }
 
-  if ([a8 textureType] != 9 && a5 > *(&v59 + 1) * _MTLDebugFindMaxTextureWidth(*(&self->super.super.super.super.isa + v36), a8))
+  if ([texture textureType] != 9 && row > *(&v59 + 1) * _MTLDebugFindMaxTextureWidth(*(&self->super.super.super.super.isa + v36), texture))
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
   *&v43 = 0;
-  v42 = v35;
+  v42 = bufferCopy;
   *&v39 = 0;
-  v38 = a8;
-  validateResourceAliasing(&v42, &v38, 0);
+  textureCopy = texture;
+  validateResourceAliasing(&v42, &textureCopy, 0);
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v23 = *a7;
-  v22 = *a11;
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromBuffer:a3 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v23 toTexture:a9 destinationSlice:a10 destinationLevel:&v22 destinationOrigin:0 options:?];
-  if ((~*(a8 + 20) & 0x60) == 0)
+  v23 = *size;
+  v22 = *origin;
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromBuffer:buffer sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v23 toTexture:slice destinationSlice:level destinationLevel:&v22 destinationOrigin:0 options:?];
+  if ((~*(texture + 20) & 0x60) == 0)
   {
-    v20 = *(a8 + 9);
+    v20 = *(texture + 9);
     MTLReportFailure();
   }
 
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1, v20];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a8 retained:1 purgeable:1];
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v23 = *a7;
-  v19 = [a8 baseObject];
-  v22 = *a11;
-  [v17 copyFromBuffer:v18 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v23 toTexture:v19 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v22];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1, v20];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  v23 = *size;
+  baseObject3 = [texture baseObject];
+  v22 = *origin;
+  [baseObject copyFromBuffer:baseObject2 sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v23 toTexture:baseObject3 destinationSlice:slice destinationLevel:level destinationOrigin:&v22];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v16 = a12 & 0xFFFFFFFF9FFFFFFFLL;
-  v29 = *&a7->var0;
-  *&v30 = a7->var2;
-  v33 = *a11;
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromBuffer:a3 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v29 toTexture:a9 destinationSlice:a10 destinationLevel:&v33 destinationOrigin:a12 options:?];
-  v17 = (a8 + 72);
+  v16 = options & 0xFFFFFFFF9FFFFFFFLL;
+  v29 = *&size->var0;
+  *&v30 = size->var2;
+  v33 = *origin;
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromBuffer:buffer sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v29 toTexture:slice destinationSlice:level destinationLevel:&v33 destinationOrigin:options options:?];
+  v17 = (texture + 72);
   v32 = 0;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  v18 = *(a8 + 20);
-  if ((a12 & 1) != 0 && (v18 & 0x20) == 0)
+  v18 = *(texture + 20);
+  if ((options & 1) != 0 && (v18 & 0x20) == 0)
   {
     [(__CFString *)_MTLDebugBlitOptionString(v16) cStringUsingEncoding:4];
     v22 = *v17;
     _MTLMessageContextPush_();
-    v18 = *(a8 + 20);
+    v18 = *(texture + 20);
   }
 
-  if ((a12 & 2) != 0 && (v18 & 0x40) == 0)
+  if ((options & 2) != 0 && (v18 & 0x40) == 0)
   {
     [(__CFString *)_MTLDebugBlitOptionString(v16) cStringUsingEncoding:4];
     v23 = *v17;
     _MTLMessageContextPush_();
-    v18 = *(a8 + 20);
+    v18 = *(texture + 20);
   }
 
   if ((v18 & 0x20) != 0 && !v16 && (v18 & 0x40) != 0)
@@ -1302,66 +1302,66 @@ LABEL_67:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a8 retained:1 purgeable:1];
-  v19 = [(MTLToolsObject *)self baseObject];
-  v20 = [a3 baseObject];
-  v33 = *a7;
-  v21 = [a8 baseObject];
-  v28 = *a11;
-  [v19 copyFromBuffer:v20 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v33 toTexture:v21 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v28 options:v16];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  v33 = *size;
+  baseObject3 = [texture baseObject];
+  v28 = *origin;
+  [baseObject copyFromBuffer:baseObject2 sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v33 toTexture:baseObject3 destinationSlice:slice destinationLevel:level destinationOrigin:&v28 options:v16];
 }
 
-- (void)validateCopyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)validateCopyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
-  v18 = self;
+  selfCopy = self;
   v68 = 0;
   v66 = 0u;
   v67 = 0u;
   v65 = 0u;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if ((~a12 & 3) == 0)
+  if ((~options & 3) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  _MTLDebugValidateBlitOption(a12 & 0xFFFFFFFF9FFFFFFFLL);
-  if (*(&v18->hasEndEncoding + 4))
+  _MTLDebugValidateBlitOption(options & 0xFFFFFFFF9FFFFFFFLL);
+  if (*(&selfCopy->hasEndEncoding + 4))
   {
     _MTLMessageContextPush_();
   }
 
-  v19 = &OBJC_IVAR___MTLToolsObject__device;
-  if (!a3)
+  depth = &OBJC_IVAR___MTLToolsObject__device;
+  if (!texture)
   {
     goto LABEL_71;
   }
 
   v20 = &selRef_loadTexture_slice_level_size_bytesPerRow_bytesPerImage_dstOrigin_handle_handleOffset_;
-  if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+  if (([texture conformsToProtocol:&unk_28423C818] & 1) == 0)
   {
     goto LABEL_69;
   }
 
   while (1)
   {
-    if (![a3 conformsToProtocol:v20[47]])
+    if (![texture conformsToProtocol:v20[47]])
     {
       goto LABEL_11;
     }
 
-    v21 = *(&v18->super.super.super.super.isa + *v19);
-    if (v21 != [a3 device])
+    v21 = *(&selfCopy->super.super.super.super.isa + *depth);
+    if (v21 != [texture device])
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 storageMode] == 3)
+    if ([texture storageMode] == 3)
     {
 LABEL_71:
       _MTLMessageContextPush_();
-      if (!a8)
+      if (!buffer)
       {
         goto LABEL_72;
       }
@@ -1370,33 +1370,33 @@ LABEL_71:
     else
     {
 LABEL_11:
-      if (!a8)
+      if (!buffer)
       {
         goto LABEL_72;
       }
     }
 
-    if (([a8 conformsToProtocol:&unk_284222E68] & 1) == 0)
+    if (([buffer conformsToProtocol:&unk_284222E68] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a8 conformsToProtocol:&unk_284222E68])
+    if ([buffer conformsToProtocol:&unk_284222E68])
     {
-      v22 = *(&v18->super.super.super.super.isa + *v19);
-      if (v22 != [a8 device])
+      v22 = *(&selfCopy->super.super.super.super.isa + *depth);
+      if (v22 != [buffer device])
       {
 LABEL_72:
         _MTLMessageContextPush_();
       }
     }
 
-    if (!(a7->var1 * a7->var0 * a7->var2))
+    if (!(size->var1 * size->var0 * size->var2))
     {
-      var2 = a7->var2;
+      var2 = size->var2;
       v37 = 0;
-      var0 = a7->var0;
-      var1 = a7->var1;
+      var0 = size->var0;
+      var1 = size->var1;
       _MTLMessageContextPush_();
     }
 
@@ -1405,24 +1405,24 @@ LABEL_72:
     v66 = 0u;
     v67 = 0u;
     v65 = 0u;
-    [(MTLToolsObject *)v18 device];
+    [(MTLToolsObject *)selfCopy device];
     _MTLMessageContextBegin_();
-    validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)v18 commandBuffer] protectionOptions], a3, a8, @"texture");
-    if ([a3 isFramebufferOnly])
+    validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)selfCopy commandBuffer] protectionOptions], texture, buffer, @"texture");
+    if ([texture isFramebufferOnly])
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 mipmapLevelCount] <= a5)
+    if ([texture mipmapLevelCount] <= level)
     {
-      v32 = a5;
-      var1 = [a3 mipmapLevelCount];
+      levelCopy = level;
+      var1 = [texture mipmapLevelCount];
       _MTLMessageContextPush_();
     }
 
-    v38 = a8;
-    v23 = [a3 numFaces];
-    if ([a3 arrayLength] * v23 <= a4)
+    bufferCopy = buffer;
+    numFaces = [texture numFaces];
+    if ([texture arrayLength] * numFaces <= slice)
     {
       [MTLDebugBlitCommandEncoder internalValidateCopyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:];
     }
@@ -1435,16 +1435,16 @@ LABEL_72:
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v39 = *v19;
-    a4 = *(&v18->super.super.super.super.isa + v39);
-    a8 = [a3 pixelFormat];
-    [a3 width];
-    v20 = v18;
-    v18 = [a3 height];
-    v19 = [a3 depth];
-    [a3 sampleCount];
+    v39 = *depth;
+    slice = *(&selfCopy->super.super.super.super.isa + v39);
+    buffer = [texture pixelFormat];
+    [texture width];
+    v20 = selfCopy;
+    selfCopy = [texture height];
+    depth = [texture depth];
+    [texture sampleCount];
     MTLGetTextureLevelInfoForDeviceWithOptions();
-    if (a3)
+    if (texture)
     {
       break;
     }
@@ -1454,26 +1454,26 @@ LABEL_69:
     _MTLMessageContextPush_();
   }
 
-  v24 = (a3 + 72);
+  v24 = (texture + 72);
   v55 = 0;
   v56 = 0;
   v57 = 0;
-  v53 = *&a6->var0;
-  v54 = a6->var2;
-  v51 = *&a7->var0;
-  v52 = a7->var2;
+  v53 = *&origin->var0;
+  v54 = origin->var2;
+  v51 = *&size->var0;
+  v52 = size->var2;
   v48 = v62;
   v49 = v63;
   v50 = v64;
-  v44 = v58;
+  textureCopy = v58;
   v45 = v59;
   v46 = v60;
   v47 = v61;
-  v25 = *(a3 + 88);
-  v40 = *(a3 + 72);
+  v25 = *(texture + 88);
+  v40 = *(texture + 72);
   v41 = v25;
-  v42 = *(a3 + 104);
-  v43 = *(a3 + 15);
+  v42 = *(texture + 104);
+  v43 = *(texture + 15);
   _MTLAdjustMTLSize();
   v65 = 0u;
   v66 = 0u;
@@ -1481,8 +1481,8 @@ LABEL_69:
   v68 = 0;
   [v20 device];
   _MTLMessageContextBegin_();
-  v26 = a6->var0;
-  if ((*(a3 + 81) & 4) != 0)
+  v26 = origin->var0;
+  if ((*(texture + 81) & 4) != 0)
   {
     v28 = v55 + v26;
     if (v28 > v61)
@@ -1492,16 +1492,16 @@ LABEL_69:
       _MTLMessageContextPush_();
     }
 
-    if (v56 + a6->var1 > *(&v61 + 1))
+    if (v56 + origin->var1 > *(&v61 + 1))
     {
-      var0 = v56 + a6->var1;
+      var0 = v56 + origin->var1;
       var1 = *(&v61 + 1);
       _MTLMessageContextPush_();
     }
 
-    if (v57 + a6->var2 > v62)
+    if (v57 + origin->var2 > v62)
     {
-      var0 = v57 + a6->var2;
+      var0 = v57 + origin->var2;
       var1 = v62;
 LABEL_74:
       _MTLMessageContextPush_();
@@ -1510,7 +1510,7 @@ LABEL_74:
 
   else
   {
-    v27 = a7->var0 + v26;
+    v27 = size->var0 + v26;
     if (v27 > v58)
     {
       var0 = v27;
@@ -1518,16 +1518,16 @@ LABEL_74:
       _MTLMessageContextPush_();
     }
 
-    if (a7->var1 + a6->var1 > *(&v58 + 1))
+    if (size->var1 + origin->var1 > *(&v58 + 1))
     {
-      var0 = a7->var1 + a6->var1;
+      var0 = size->var1 + origin->var1;
       var1 = *(&v58 + 1);
       _MTLMessageContextPush_();
     }
 
-    if (a7->var2 + a6->var2 > v59)
+    if (size->var2 + origin->var2 > v59)
     {
-      var0 = a7->var2 + a6->var2;
+      var0 = size->var2 + origin->var2;
       var1 = v59;
       goto LABEL_74;
     }
@@ -1535,9 +1535,9 @@ LABEL_74:
 
   if (*(&v62 + 1))
   {
-    if (a9 % *(&v62 + 1))
+    if (offset % *(&v62 + 1))
     {
-      var0 = a9;
+      var0 = offset;
       var1 = *(&v62 + 1);
       _MTLMessageContextPush_();
     }
@@ -1548,65 +1548,65 @@ LABEL_74:
     [MTLDebugBlitCommandEncoder validateCopyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:options:];
   }
 
-  if ((*(a3 + 81) & 4) != 0)
+  if ((*(texture + 81) & 4) != 0)
   {
-    if (a6->var0 % *(a3 + 13))
+    if (origin->var0 % *(texture + 13))
     {
       var1 = *v24;
-      var2 = *(a3 + 13);
-      var0 = a6->var0;
+      var2 = *(texture + 13);
+      var0 = origin->var0;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var1 % *(a3 + 14))
+    if (origin->var1 % *(texture + 14))
     {
       var1 = *v24;
-      var2 = *(a3 + 14);
-      var0 = a6->var1;
+      var2 = *(texture + 14);
+      var0 = origin->var1;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var2 % *(a3 + 15))
+    if (origin->var2 % *(texture + 15))
     {
       var1 = *v24;
-      var2 = *(a3 + 15);
-      var0 = a6->var2;
+      var2 = *(texture + 15);
+      var0 = origin->var2;
       _MTLMessageContextPush_();
     }
 
-    if (v55 % *(a3 + 13))
+    if (v55 % *(texture + 13))
     {
       var1 = *v24;
-      var2 = *(a3 + 13);
+      var2 = *(texture + 13);
       var0 = v55;
       _MTLMessageContextPush_();
     }
 
-    if (v56 % *(a3 + 14))
+    if (v56 % *(texture + 14))
     {
       var1 = *v24;
-      var2 = *(a3 + 14);
+      var2 = *(texture + 14);
       var0 = v56;
       _MTLMessageContextPush_();
     }
 
-    if (v57 % *(a3 + 15))
+    if (v57 % *(texture + 15))
     {
       var1 = *v24;
-      var2 = *(a3 + 15);
+      var2 = *(texture + 15);
       var0 = v57;
       _MTLMessageContextPush_();
     }
 
-    if ((*(a3 + 81) & 0x20) != 0)
+    if ((*(texture + 81) & 0x20) != 0)
     {
-      if ((a12 & 4) == 0)
+      if ((options & 4) == 0)
       {
         goto LABEL_75;
       }
     }
 
-    else if ((a12 & 4) != 0)
+    else if ((options & 4) != 0)
     {
 LABEL_75:
       var0 = *v24;
@@ -1626,98 +1626,98 @@ LABEL_75:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v44 = 0u;
+  textureCopy = 0u;
   v45 = 0u;
   v29 = *(v20 + v39);
-  [a3 pixelFormat];
-  [a3 sampleCount];
+  [texture pixelFormat];
+  [texture sampleCount];
   MTLGetTextureLevelInfoForDeviceWithOptions();
-  v30 = -a10 - a11 + a9;
-  if (v30 > [v38 length])
+  v30 = -row - image + offset;
+  if (v30 > [bufferCopy length])
   {
-    v33 = v30 + *(&v46 + 1) * a11;
-    v35 = [v38 length];
+    imageCopy = v30 + *(&v46 + 1) * image;
+    v35 = [bufferCopy length];
     _MTLMessageContextPush_();
   }
 
-  if (a10 % *(&v62 + 1))
+  if (row % *(&v62 + 1))
   {
     _MTLMessageContextPush_();
-    v33 = a10;
+    imageCopy = row;
     v35 = *(&v62 + 1);
     _MTLMessageContextPush_();
   }
 
-  if (a11 % *(&v62 + 1))
+  if (image % *(&v62 + 1))
   {
-    v33 = a11;
+    imageCopy = image;
     v35 = *(&v62 + 1);
     _MTLMessageContextPush_();
   }
 
-  if ([a3 textureType] != 9 && a10 > *(&v62 + 1) * _MTLDebugFindMaxTextureWidth(*(v20 + v39), a3))
+  if ([texture textureType] != 9 && row > *(&v62 + 1) * _MTLDebugFindMaxTextureWidth(*(v20 + v39), texture))
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
   *&v45 = 0;
-  v44 = a3;
+  textureCopy = texture;
   *&v41 = 0;
-  v40 = v38;
-  validateResourceAliasing(&v44, &v40, 0);
+  v40 = bufferCopy;
+  validateResourceAliasing(&textureCopy, &v40, 0);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1
 {
-  v22 = *a6;
-  v21 = *a7;
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v22 sourceSize:&v21 toBuffer:a9 destinationOffset:a10 destinationBytesPerRow:a11 destinationBytesPerImage:0 options:?];
-  if ((~*(a3 + 20) & 0x60) == 0)
+  v22 = *origin;
+  v21 = *size;
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v22 sourceSize:&v21 toBuffer:offset destinationOffset:row destinationBytesPerRow:image destinationBytesPerImage:0 options:?];
+  if ((~*(texture + 20) & 0x60) == 0)
   {
-    v19 = *(a3 + 9);
+    v19 = *(texture + 9);
     MTLReportFailure();
   }
 
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1, v19];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a8 retained:1 purgeable:1];
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v22 = *a6;
-  v21 = *a7;
-  [v17 copyFromTexture:v18 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v22 sourceSize:&v21 toBuffer:objc_msgSend(a8 destinationOffset:"baseObject") destinationBytesPerRow:a9 destinationBytesPerImage:{a10, a11}];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1, v19];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v22 = *origin;
+  v21 = *size;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v22 sourceSize:&v21 toBuffer:objc_msgSend(buffer destinationOffset:"baseObject") destinationBytesPerRow:offset destinationBytesPerImage:{row, image}];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
-  v17 = a12 & 0xFFFFFFFF9FFFFFFFLL;
-  v29 = *&a6->var0;
-  *&v30 = a6->var2;
-  v33 = *a7;
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v29 sourceSize:&v33 toBuffer:a9 destinationOffset:a10 destinationBytesPerRow:a11 destinationBytesPerImage:a12 options:?];
-  v18 = (a3 + 72);
+  v17 = options & 0xFFFFFFFF9FFFFFFFLL;
+  v29 = *&origin->var0;
+  *&v30 = origin->var2;
+  v33 = *size;
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v29 sourceSize:&v33 toBuffer:offset destinationOffset:row destinationBytesPerRow:image destinationBytesPerImage:options options:?];
+  v18 = (texture + 72);
   v32 = 0;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  v19 = *(a3 + 20);
-  if ((a12 & 1) != 0 && (v19 & 0x20) == 0)
+  v19 = *(texture + 20);
+  if ((options & 1) != 0 && (v19 & 0x20) == 0)
   {
     [(__CFString *)_MTLDebugBlitOptionString(v17) cStringUsingEncoding:4];
     v22 = *v18;
     _MTLMessageContextPush_();
-    v19 = *(a3 + 20);
+    v19 = *(texture + 20);
   }
 
-  if ((a12 & 2) != 0 && (v19 & 0x40) == 0)
+  if ((options & 2) != 0 && (v19 & 0x40) == 0)
   {
     [(__CFString *)_MTLDebugBlitOptionString(v17) cStringUsingEncoding:4];
     v23 = *v18;
     _MTLMessageContextPush_();
-    v19 = *(a3 + 20);
+    v19 = *(texture + 20);
   }
 
   if ((v19 & 0x20) != 0 && !v17 && (v19 & 0x40) != 0)
@@ -1729,26 +1729,26 @@ LABEL_75:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a8 retained:1 purgeable:1];
-  v20 = [(MTLToolsObject *)self baseObject];
-  v21 = [a3 baseObject];
-  v33 = *a6;
-  v27 = *&a7->var0;
-  var2 = a7->var2;
-  [v20 copyFromTexture:v21 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v33 sourceSize:&v27 toBuffer:objc_msgSend(a8 destinationOffset:"baseObject") destinationBytesPerRow:a9 destinationBytesPerImage:a10 options:{a11, v17}];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v33 = *origin;
+  v27 = *&size->var0;
+  var2 = size->var2;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v33 sourceSize:&v27 toBuffer:objc_msgSend(buffer destinationOffset:"baseObject") destinationBytesPerRow:offset destinationBytesPerImage:row options:{image, v17}];
 }
 
-- (void)generateMipmapsForTexture:(id)a3
+- (void)generateMipmapsForTexture:(id)texture
 {
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!texture)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+  if (([texture conformsToProtocol:&unk_28423C818] & 1) == 0)
   {
     goto LABEL_17;
   }
@@ -1756,23 +1756,23 @@ LABEL_75:
   while (1)
   {
     device = self->super.super.super._device;
-    if (device != [a3 device])
+    if (device != [texture device])
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 storageMode] == 3)
+    if ([texture storageMode] == 3)
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 mipmapLevelCount] <= 1)
+    if ([texture mipmapLevelCount] <= 1)
     {
-      [MTLDebugBlitCommandEncoder generateMipmapsForTexture:a3];
+      [MTLDebugBlitCommandEncoder generateMipmapsForTexture:texture];
     }
 
-    v6 = (a3 + 72);
-    v7 = *(a3 + 20);
+    v6 = (texture + 72);
+    v7 = *(texture + 20);
     if ((v7 & 0x10) != 0)
     {
       if ((v7 & 4) != 0)
@@ -1785,8 +1785,8 @@ LABEL_75:
     {
       v8 = *v6;
       _MTLMessageContextPush_();
-      v6 = (a3 + 72);
-      if ((*(a3 + 20) & 4) != 0)
+      v6 = (texture + 72);
+      if ((*(texture + 20) & 4) != 0)
       {
         goto LABEL_12;
       }
@@ -1801,7 +1801,7 @@ LABEL_12:
     }
 
     _MTLMessageContextEnd();
-    if (a3)
+    if (texture)
     {
       break;
     }
@@ -1812,11 +1812,11 @@ LABEL_17:
   }
 
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size
 {
   v21 = 0;
   v19 = 0u;
@@ -1829,16 +1829,16 @@ LABEL_17:
     _MTLMessageContextPush_();
   }
 
-  if (a3)
+  if (buffer)
   {
-    if (([a3 conformsToProtocol:&unk_284222E68] & 1) == 0)
+    if (([buffer conformsToProtocol:&unk_284222E68] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
-    if (![a3 conformsToProtocol:&unk_284222E68] || (device = self->super.super.super._device, device == objc_msgSend(a3, "device")))
+    if (![buffer conformsToProtocol:&unk_284222E68] || (device = self->super.super.super._device, device == objc_msgSend(buffer, "device")))
     {
-      if (a5)
+      if (toBuffer)
       {
         goto LABEL_9;
       }
@@ -1850,21 +1850,21 @@ LABEL_22:
   }
 
   _MTLMessageContextPush_();
-  if (!a5)
+  if (!toBuffer)
   {
     goto LABEL_22;
   }
 
 LABEL_9:
-  if (([a5 conformsToProtocol:&unk_284222E68] & 1) == 0)
+  if (([toBuffer conformsToProtocol:&unk_284222E68] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a5 conformsToProtocol:&unk_284222E68])
+  if ([toBuffer conformsToProtocol:&unk_284222E68])
   {
     v14 = self->super.super.super._device;
-    if (v14 != [a5 device])
+    if (v14 != [toBuffer device])
     {
       goto LABEL_22;
     }
@@ -1878,15 +1878,15 @@ LABEL_13:
   v18 = 0u;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (a7 + a4 > [objc_msgSend(a3 "baseObject")])
+  if (size + offset > [objc_msgSend(buffer "baseObject")])
   {
     [MTLDebugBlitCommandEncoder copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:];
   }
 
-  if (a7 + a6 > [objc_msgSend(a5 "baseObject")])
+  if (size + destinationOffset > [objc_msgSend(toBuffer "baseObject")])
   {
     [MTLDebugBlitCommandEncoder copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:];
-    if (a7)
+    if (size)
     {
       goto LABEL_17;
     }
@@ -1897,37 +1897,37 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (!a7)
+  if (!size)
   {
     goto LABEL_20;
   }
 
 LABEL_17:
-  validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] protectionOptions], a3, a5, @"buffer");
+  validateBlitProtectionOptions([(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] protectionOptions], buffer, toBuffer, @"buffer");
   _MTLMessageContextEnd();
   v17[1] = 0;
   v17[2] = 0;
   v16[2] = 0;
-  v17[0] = a3;
-  v16[0] = a5;
+  v17[0] = buffer;
+  v16[0] = toBuffer;
   v16[1] = 0;
   validateResourceAliasing(v17, v16, 1);
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a5 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:toBuffer retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
-  v5 = a3;
-  std::deque<objc_object *>::push_back(&self->updatedFences.__map_.__first_, &v5);
+  fenceCopy = fence;
+  std::deque<objc_object *>::push_back(&self->updatedFences.__map_.__first_, &fenceCopy);
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:0];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:fence retained:1 purgeable:0];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   p_updatedFences = &self->updatedFences;
   size = self->updatedFences.__size_;
@@ -1937,7 +1937,7 @@ LABEL_17:
     v8 = 1;
     do
     {
-      if ((*(p_updatedFences->__map_.var0 + (((p_updatedFences->__start_ + v7) >> 6) & 0x3FFFFFFFFFFFFF8)))[(p_updatedFences->__start_ + v7) & 0x1FF] == a3)
+      if ((*(p_updatedFences->__map_.var0 + (((p_updatedFences->__start_ + v7) >> 6) & 0x3FFFFFFFFFFFFF8)))[(p_updatedFences->__start_ + v7) & 0x1FF] == fence)
       {
         MTLReportFailure();
         size = p_updatedFences->__size_;
@@ -1950,11 +1950,11 @@ LABEL_17:
   }
 
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:0];
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:fence retained:1 purgeable:0];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [fence baseObject];
 
-  [v10 waitForFence:v11];
+  [baseObject waitForFence:baseObject2];
 }
 
 - (void)endEncoding
@@ -1971,118 +1971,118 @@ LABEL_17:
 
   *(&self->hasEndEncoding + 2) = 1;
   *(&self->hasEndEncoding + 4) = 1;
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v3 endEncoding];
+  [baseObject endEncoding];
 }
 
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  if (([a3 isSparse] & 1) == 0)
+  if (([counters isSparse] & 1) == 0)
   {
     [MTLDebugBlitCommandEncoder resetTextureAccessCounters:region:mipLevel:slice:];
   }
 
-  v11 = *&a4->var0.var2;
-  v15 = *&a4->var0.var0;
+  v11 = *&region->var0.var2;
+  v15 = *&region->var0.var0;
   v16 = v11;
-  v17 = *&a4->var1.var1;
-  [(MTLDebugBlitCommandEncoder *)self validateTextureAccess:a3 region:&v15 mipLevel:a5 slice:a6];
-  v12 = [(MTLToolsObject *)self baseObject];
-  v13 = [a3 baseObject];
-  v14 = *&a4->var0.var2;
-  v15 = *&a4->var0.var0;
+  v17 = *&region->var1.var1;
+  [(MTLDebugBlitCommandEncoder *)self validateTextureAccess:counters region:&v15 mipLevel:level slice:slice];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [counters baseObject];
+  v14 = *&region->var0.var2;
+  v15 = *&region->var0.var0;
   v16 = v14;
-  v17 = *&a4->var1.var1;
-  [v12 resetTextureAccessCounters:v13 region:&v15 mipLevel:a5 slice:a6];
+  v17 = *&region->var1.var1;
+  [baseObject resetTextureAccessCounters:baseObject2 region:&v15 mipLevel:level slice:slice];
 }
 
-- (void)validateTextureAccess:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6
+- (void)validateTextureAccess:(id)access region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  v10 = self;
+  selfCopy = self;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  v11 = [a3 arrayLength];
-  v12 = [a3 textureType];
+  arrayLength = [access arrayLength];
+  textureType = [access textureType];
   v13 = 6;
-  if ((v12 - 5) >= 2)
+  if ((textureType - 5) >= 2)
   {
     v13 = 1;
   }
 
-  if (v13 * v11 <= a6)
+  if (v13 * arrayLength <= slice)
   {
-    v28 = a6;
-    v31 = [a3 arrayLength];
+    sliceCopy = slice;
+    arrayLength2 = [access arrayLength];
     _MTLMessageContextPush_();
   }
 
-  v14 = [a3 mipmapLevelCount] - 1;
-  if (v14 >= [a3 firstMipmapInTail])
+  v14 = [access mipmapLevelCount] - 1;
+  if (v14 >= [access firstMipmapInTail])
   {
-    v15 = [a3 firstMipmapInTail];
+    firstMipmapInTail = [access firstMipmapInTail];
   }
 
   else
   {
-    v15 = [a3 mipmapLevelCount] - 1;
+    firstMipmapInTail = [access mipmapLevelCount] - 1;
   }
 
-  if (v15 < a5)
+  if (firstMipmapInTail < level)
   {
-    [MTLDebugBlitCommandEncoder validateTextureAccess:a3 region:? mipLevel:? slice:?];
+    [MTLDebugBlitCommandEncoder validateTextureAccess:access region:? mipLevel:? slice:?];
   }
 
   _MTLMessageContextEnd();
-  v16 = *(v10 + 24);
-  [a3 pixelFormat];
-  [a3 width];
-  [a3 height];
-  [a3 depth];
-  [a3 sampleCount];
+  v16 = *(selfCopy + 24);
+  [access pixelFormat];
+  [access width];
+  [access height];
+  [access depth];
+  [access sampleCount];
   MTLGetTextureLevelInfoForDeviceWithOptions();
-  if (a3)
+  if (access)
   {
-    if ([a3 placementSparsePageSize])
+    if ([access placementSparsePageSize])
     {
-      v17 = [a3 device];
-      v18 = [a3 textureType];
-      v19 = [a3 pixelFormat];
-      v20 = [a3 sampleCount];
-      v21 = [a3 placementSparsePageSize];
-      if (v17)
+      device = [access device];
+      textureType2 = [access textureType];
+      pixelFormat = [access pixelFormat];
+      sampleCount = [access sampleCount];
+      placementSparsePageSize = [access placementSparsePageSize];
+      if (device)
       {
-        [v17 sparseTileSizeWithTextureType:v18 pixelFormat:v19 sampleCount:v20 sparsePageSize:v21];
+        [device sparseTileSizeWithTextureType:textureType2 pixelFormat:pixelFormat sampleCount:sampleCount sparsePageSize:placementSparsePageSize];
 LABEL_16:
         v25 = v32;
-        v17 = v33;
-        a3 = v34;
+        device = v33;
+        access = v34;
         goto LABEL_18;
       }
     }
 
     else
     {
-      v17 = [a3 device];
-      v22 = [a3 textureType];
-      v23 = [a3 pixelFormat];
-      v24 = [a3 sampleCount];
-      if (v17)
+      device = [access device];
+      textureType3 = [access textureType];
+      pixelFormat2 = [access pixelFormat];
+      sampleCount2 = [access sampleCount];
+      if (device)
       {
-        [v17 sparseTileSizeWithTextureType:v22 pixelFormat:v23 sampleCount:v24];
+        [device sparseTileSizeWithTextureType:textureType3 pixelFormat:pixelFormat2 sampleCount:sampleCount2];
         goto LABEL_16;
       }
     }
 
-    a3 = 0;
+    access = 0;
     v25 = 0;
 LABEL_18:
-    [v10 device];
+    [selfCopy device];
     _MTLMessageContextBegin_();
     v26 = (v25 - 1) / v25;
-    v16 = a3 - 1;
-    v10 = (v17 - 1) / v17;
-    if (a4->var1.var0 + a4->var0.var0 <= v26)
+    v16 = access - 1;
+    selfCopy = (device - 1) / device;
+    if (region->var1.var0 + region->var0.var0 <= v26)
     {
       goto LABEL_19;
     }
@@ -2094,38 +2094,38 @@ LABEL_18:
 LABEL_25:
   _MTLMessageContextPush_();
 LABEL_19:
-  v27 = v16 / a3;
-  if (a4->var1.var1 + a4->var0.var1 > v10)
+  v27 = v16 / access;
+  if (region->var1.var1 + region->var0.var1 > selfCopy)
   {
-    v29 = a4->var1.var1 + a4->var0.var1;
+    v29 = region->var1.var1 + region->var0.var1;
     _MTLMessageContextPush_();
   }
 
-  if (a4->var1.var2 + a4->var0.var2 > v27)
+  if (region->var1.var2 + region->var0.var2 > v27)
   {
-    v30 = a4->var1.var2 + a4->var0.var2;
+    v30 = region->var1.var2 + region->var0.var2;
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3
+- (void)optimizeContentsForGPUAccess:(id)access
 {
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!access)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+  if (([access conformsToProtocol:&unk_28423C818] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   device = self->super.super.super._device;
-  if (device != [a3 device])
+  if (device != [access device])
   {
     _MTLMessageContextPush_();
   }
@@ -2137,39 +2137,39 @@ LABEL_19:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:access retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!access)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+  if (([access conformsToProtocol:&unk_28423C818] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   device = self->super.super.super._device;
-  if (device != [a3 device])
+  if (device != [access device])
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 mipmapLevelCount] <= a5)
+  if ([access mipmapLevelCount] <= level)
   {
-    v11 = a5;
-    v12 = [a3 mipmapLevelCount];
+    levelCopy = level;
+    mipmapLevelCount = [access mipmapLevelCount];
     _MTLMessageContextPush_();
   }
 
-  v10 = [a3 numFaces];
-  if ([a3 arrayLength] * v10 <= a4)
+  numFaces = [access numFaces];
+  if ([access arrayLength] * numFaces <= slice)
   {
     [MTLDebugBlitCommandEncoder optimizeContentsForGPUAccess:slice:level:];
   }
@@ -2181,26 +2181,26 @@ LABEL_19:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:access retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3
+- (void)optimizeContentsForCPUAccess:(id)access
 {
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!access)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+  if (([access conformsToProtocol:&unk_28423C818] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   device = self->super.super.super._device;
-  if (device != [a3 device])
+  if (device != [access device])
   {
     _MTLMessageContextPush_();
   }
@@ -2212,39 +2212,39 @@ LABEL_19:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:access retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!access)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+  if (([access conformsToProtocol:&unk_28423C818] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   device = self->super.super.super._device;
-  if (device != [a3 device])
+  if (device != [access device])
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 mipmapLevelCount] <= a5)
+  if ([access mipmapLevelCount] <= level)
   {
-    v11 = a5;
-    v12 = [a3 mipmapLevelCount];
+    levelCopy = level;
+    mipmapLevelCount = [access mipmapLevelCount];
     _MTLMessageContextPush_();
   }
 
-  v10 = [a3 numFaces];
-  if ([a3 arrayLength] * v10 <= a4)
+  numFaces = [access numFaces];
+  if ([access arrayLength] * numFaces <= slice)
   {
     [MTLDebugBlitCommandEncoder optimizeContentsForGPUAccess:slice:level:];
   }
@@ -2256,15 +2256,15 @@ LABEL_19:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:access retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v62.length = [a3 size];
+  length = range.length;
+  location = range.location;
+  v62.length = [buffer size];
   v60.location = location;
   v60.length = length;
   v62.location = 0;
@@ -2272,26 +2272,26 @@ LABEL_19:
   if (v8.location != location || v8.length != length)
   {
     v51 = length;
-    v52 = [a3 size];
+    v52 = [buffer size];
     v50 = location;
     MTLReportFailure();
   }
 
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1, v50, v51, v52];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1, v50, v51, v52];
   [-[MTLToolsObject baseObject](self "baseObject")];
   __p = 0;
   v58 = 0;
   v59 = 0;
-  v10 = [a3 optimizedRangeList];
+  optimizedRangeList = [buffer optimizedRangeList];
   v11 = 0;
   __src = 0;
   v55 = 0;
   v56 = 0;
-  while (v11 < [v10 count])
+  while (v11 < [optimizedRangeList count])
   {
-    v12 = [objc_msgSend(v10 objectAtIndexedSubscript:{v11), "rangeValue"}];
+    v12 = [objc_msgSend(optimizedRangeList objectAtIndexedSubscript:{v11), "rangeValue"}];
     v14 = v13;
-    v61.location = [objc_msgSend(v10 objectAtIndexedSubscript:{v11), "rangeValue"}];
+    v61.location = [objc_msgSend(optimizedRangeList objectAtIndexedSubscript:{v11), "rangeValue"}];
     v63.location = location;
     v63.length = length;
     v15 = NSIntersectionRange(v61, v63);
@@ -2442,7 +2442,7 @@ LABEL_19:
     v46 = 0;
     do
     {
-      [v10 removeObjectAtIndex:v45 + v44[v46++]];
+      [optimizedRangeList removeObjectAtIndex:v45 + v44[v46++]];
       v44 = __p;
       --v45;
     }
@@ -2457,7 +2457,7 @@ LABEL_19:
     v49 = 0;
     do
     {
-      [v10 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRange:", *&v47[v48], *&v47[v48 + 8])}];
+      [optimizedRangeList addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRange:", *&v47[v48], *&v47[v48 + 8])}];
       ++v49;
       v47 = __src;
       v48 += 16;
@@ -2479,35 +2479,35 @@ LABEL_19:
   }
 }
 
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (([a3 conformsToProtocol:&unk_28421F578] & 1) == 0)
+  if (([buffer conformsToProtocol:&unk_28421F578] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a5 conformsToProtocol:&unk_28421F578] & 1) == 0)
+  if (([destination conformsToProtocol:&unk_28421F578] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a5 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:destination retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  v20.length = [a3 size];
+  v20.length = [buffer size];
   v18.location = location;
   v18.length = length;
   v20.location = 0;
@@ -2515,28 +2515,28 @@ LABEL_19:
   if (v8.location != location || v8.length != length)
   {
     v16 = length;
-    v17 = [a3 size];
+    v17 = [buffer size];
     v15 = location;
     _MTLMessageContextPush_();
   }
 
-  v9 = [a3 optimizedRangeList];
-  if (![v9 count])
+  optimizedRangeList = [buffer optimizedRangeList];
+  if (![optimizedRangeList count])
   {
     _MTLMessageContextEnd();
 LABEL_21:
-    [v9 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRange:", location, length)}];
+    [optimizedRangeList addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRange:", location, length)}];
     goto LABEL_22;
   }
 
   v10 = 0;
   do
   {
-    v12 = [objc_msgSend(v9 objectAtIndexedSubscript:{v10), "rangeValue"}] == location && v11 == length;
+    v12 = [objc_msgSend(optimizedRangeList objectAtIndexedSubscript:{v10), "rangeValue"}] == location && v11 == length;
     v13 = v12;
     if (!v12)
     {
-      v19.location = [objc_msgSend(v9 objectAtIndexedSubscript:{v10), "rangeValue"}];
+      v19.location = [objc_msgSend(optimizedRangeList objectAtIndexedSubscript:{v10), "rangeValue"}];
       v21.location = location;
       v21.length = length;
       if (NSIntersectionRange(v19, v21).length)
@@ -2545,7 +2545,7 @@ LABEL_21:
       }
     }
 
-    if (++v10 >= [v9 count])
+    if (++v10 >= [optimizedRangeList count])
     {
       v14 = 1;
     }
@@ -2564,11 +2564,11 @@ LABEL_21:
   }
 
 LABEL_22:
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length
 {
   v39 = 0;
   v37 = 0u;
@@ -2579,13 +2579,13 @@ LABEL_22:
   if (*(&self->hasEndEncoding + 4))
   {
     _MTLMessageContextPush_();
-    if (a7)
+    if (bytes)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a7)
+  else if (bytes)
   {
     goto LABEL_3;
   }
@@ -2596,7 +2596,7 @@ LABEL_3:
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
-  validateTextureRegion(self->super.super.super._device, a3, a4, a5, a6, &v32);
+  validateTextureRegion(self->super.super.super._device, texture, level, slice, region, &v32);
   if ((BYTE8(v32) & 0x61) == 1)
   {
     if ((WORD4(v32) & 0x2000) == 0)
@@ -2615,7 +2615,7 @@ LABEL_3:
     }
   }
 
-  v24 = a5;
+  sliceCopy = slice;
   v31 = 0;
   v29 = 0u;
   v30 = 0u;
@@ -2624,70 +2624,70 @@ LABEL_3:
   v25 = 0u;
   v26 = 0u;
   v16 = self->super.super.super._device;
-  [a3 pixelFormat];
-  [a3 width];
-  [a3 height];
-  [a3 depth];
-  [a3 sampleCount];
+  [texture pixelFormat];
+  [texture width];
+  [texture height];
+  [texture depth];
+  [texture sampleCount];
   MTLGetTextureLevelInfoForDeviceWithOptions();
-  if (a6->var0.var0)
+  if (region->var0.var0)
   {
     _MTLMessageContextPush_();
   }
 
-  if (a6->var0.var1)
+  if (region->var0.var1)
   {
     _MTLMessageContextPush_();
   }
 
-  a5 = v24;
-  if (a6->var0.var2)
+  slice = sliceCopy;
+  if (region->var0.var2)
   {
     _MTLMessageContextPush_();
   }
 
-  if (a6->var1.var0 != v25)
+  if (region->var1.var0 != v25)
   {
-    var0 = a6->var1.var0;
+    var0 = region->var1.var0;
     _MTLMessageContextPush_();
   }
 
-  if (a6->var1.var1 != *(&v25 + 1))
+  if (region->var1.var1 != *(&v25 + 1))
   {
-    var1 = a6->var1.var1;
+    var1 = region->var1.var1;
     _MTLMessageContextPush_();
   }
 
-  if (a6->var1.var2 != v26)
+  if (region->var1.var2 != v26)
   {
-    var2 = a6->var1.var2;
+    var2 = region->var1.var2;
     _MTLMessageContextPush_();
   }
 
 LABEL_17:
-  if (*(&v33 + 1) > a8)
+  if (*(&v33 + 1) > length)
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v19 = *&a6->var0.var2;
-  v25 = *&a6->var0.var0;
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v19 = *&region->var0.var2;
+  v25 = *&region->var0.var0;
   v26 = v19;
-  v27 = *&a6->var1.var1;
-  [v17 fillTexture:v18 level:a4 slice:a5 region:&v25 bytes:a7 length:a8];
+  v27 = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:&v25 bytes:bytes length:length];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
   v26 = 0;
   v24 = 0u;
   v25 = 0u;
@@ -2701,7 +2701,7 @@ LABEL_17:
 
   v22 = 0;
   memset(v21, 0, sizeof(v21));
-  validateTextureRegion(self->super.super.super._device, a3, a4, a5, a6, v21);
+  validateTextureRegion(self->super.super.super._device, texture, level, slice, region, v21);
   if ((WORD4(v21[0]) & 0x461) != 1)
   {
     _MTLMessageContextPush_();
@@ -2709,22 +2709,22 @@ LABEL_17:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v19 = *&a6->var0.var2;
-  v20[0] = *&a6->var0.var0;
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v19 = *&region->var0.var2;
+  v20[0] = *&region->var0.var0;
   v20[1] = v19;
-  v20[2] = *&a6->var1.var1;
-  [v17 fillTexture:v18 level:a4 slice:a5 region:v20 color:{var0, var1, var2, var3}];
+  v20[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v20 color:{var0, var1, var2, var3}];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
   v31 = 0;
   v29 = 0u;
   v30 = 0u;
@@ -2740,7 +2740,7 @@ LABEL_17:
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
-  validateTextureRegion(self->super.super.super._device, a3, a4, a5, a6, &v24);
+  validateTextureRegion(self->super.super.super._device, texture, level, slice, region, &v24);
   v23 = 0;
   memset(&v22[3], 0, 48);
   [(MTLToolsObject *)self->super.super.super._device baseObject];
@@ -2753,17 +2753,17 @@ LABEL_17:
 
   _MTLMessageContextEnd();
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  v19 = [(MTLToolsObject *)self baseObject];
-  v20 = [a3 baseObject];
-  v21 = *&a6->var0.var2;
-  v22[0] = *&a6->var0.var0;
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v21 = *&region->var0.var2;
+  v22[0] = *&region->var0.var0;
   v22[1] = v21;
-  v22[2] = *&a6->var1.var1;
-  [v19 fillTexture:v20 level:a4 slice:a5 region:v22 color:a8 pixelFormat:var0, var1, var2, var3];
+  v22[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v22 color:format pixelFormat:var0, var1, var2, var3];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
   v54 = 0;
   v52 = 0u;
@@ -2771,12 +2771,12 @@ LABEL_17:
   v51 = 0u;
   device = self->super.super.super._device;
   _MTLMessageContextBegin_();
-  if (!a9)
+  if (!count)
   {
     _MTLMessageContextPush_();
   }
 
-  if (!a10)
+  if (!levelCount)
   {
     _MTLMessageContextPush_();
   }
@@ -2789,11 +2789,11 @@ LABEL_17:
   v44 = 0u;
   v45 = 0u;
   v14 = self->super.super.super._device;
-  [a3 pixelFormat];
-  [a3 width];
-  [a3 height];
-  [a3 depth];
-  [a3 sampleCount];
+  [texture pixelFormat];
+  [texture width];
+  [texture height];
+  [texture depth];
+  [texture sampleCount];
   MTLGetTextureLevelInfoForDevice();
   v43 = 0;
   v41 = 0u;
@@ -2803,111 +2803,111 @@ LABEL_17:
   v37 = 0u;
   v38 = 0u;
   v15 = self->super.super.super._device;
-  [a6 pixelFormat];
-  [a6 width];
-  [a6 height];
-  [a6 depth];
-  [a6 sampleCount];
+  [toTexture pixelFormat];
+  [toTexture width];
+  [toTexture height];
+  [toTexture depth];
+  [toTexture sampleCount];
   MTLGetTextureLevelInfoForDevice();
-  v30 = [a3 numFaces];
-  v31 = [a6 numFaces];
-  if (a10 + a5 > [a3 mipmapLevelCount])
+  numFaces = [texture numFaces];
+  numFaces2 = [toTexture numFaces];
+  if (levelCount + level > [texture mipmapLevelCount])
   {
-    v21 = a10;
-    v25 = [a3 mipmapLevelCount];
-    v17 = a5;
+    levelCountCopy = levelCount;
+    mipmapLevelCount = [texture mipmapLevelCount];
+    levelCopy = level;
     _MTLMessageContextPush_();
   }
 
-  if (a10 + a8 > [a6 mipmapLevelCount])
+  if (levelCount + destinationLevel > [toTexture mipmapLevelCount])
   {
-    v22 = a10;
-    v26 = [a6 mipmapLevelCount];
-    v18 = a8;
+    levelCountCopy2 = levelCount;
+    mipmapLevelCount2 = [toTexture mipmapLevelCount];
+    destinationLevelCopy = destinationLevel;
     _MTLMessageContextPush_();
   }
 
-  if (a9 + a4 > [a3 arrayLength] * v30)
+  if (count + slice > [texture arrayLength] * numFaces)
   {
-    v27 = [a3 arrayLength];
-    v29 = v30;
-    v19 = a4;
-    v23 = a9;
+    arrayLength = [texture arrayLength];
+    v29 = numFaces;
+    sliceCopy = slice;
+    countCopy = count;
     _MTLMessageContextPush_();
   }
 
-  if (a9 + a7 > [a6 arrayLength] * v31)
+  if (count + destinationSlice > [toTexture arrayLength] * numFaces2)
   {
-    [a6 arrayLength];
+    [toTexture arrayLength];
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
   memset(v36, 0, sizeof(v36));
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceSize:v36 toTexture:a6 destinationSlice:a7 destinationLevel:a8 options:0 sliceCount:a9 levelCount:a10];
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:texture sourceSlice:slice sourceLevel:level sourceSize:v36 toTexture:toTexture destinationSlice:destinationSlice destinationLevel:destinationLevel options:0 sliceCount:count levelCount:levelCount];
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a6 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:toTexture retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture
 {
-  v6 = [a3 width];
-  v7 = [a3 height];
-  v8 = [a3 depth];
-  v77 = v8;
-  v78 = v7;
-  v9 = [a4 width];
-  v10 = [a4 height];
-  v11 = [a4 depth];
+  width = [texture width];
+  height = [texture height];
+  depth = [texture depth];
+  v77 = depth;
+  v78 = height;
+  width2 = [toTexture width];
+  height2 = [toTexture height];
+  depth2 = [toTexture depth];
   v12 = 0;
-  v75 = v11;
-  v76 = v10;
+  v75 = depth2;
+  v76 = height2;
   v13 = &v76;
   v14 = &v75;
   v15 = &v76;
   v16 = &v75;
-  v17 = v8 > v11;
-  if (v8 <= v11)
+  v17 = depth > depth2;
+  if (depth <= depth2)
   {
-    v18 = v11;
+    v18 = depth2;
   }
 
   else
   {
-    v18 = v8;
+    v18 = depth;
   }
 
-  if (v8 <= v11)
+  if (depth <= depth2)
   {
-    v19 = v10;
+    v19 = height2;
   }
 
   else
   {
-    v19 = v7;
+    v19 = height;
   }
 
   if (v17)
   {
-    v20 = v9;
+    v20 = width2;
   }
 
   else
   {
-    v20 = v6;
+    v20 = width;
   }
 
   if (v17)
   {
-    v21 = v6;
+    v21 = width;
   }
 
   else
   {
     v16 = &v77;
-    v21 = v9;
+    v21 = width2;
   }
 
   v22 = v17;
@@ -2916,48 +2916,48 @@ LABEL_17:
     v15 = &v78;
   }
 
-  if (v7 <= v10)
+  if (height <= height2)
   {
     v23 = v18;
   }
 
   else
   {
-    v23 = v8;
+    v23 = depth;
   }
 
-  if (v7 <= v10)
+  if (height <= height2)
   {
     v24 = v19;
   }
 
   else
   {
-    v24 = v7;
+    v24 = height;
   }
 
-  if (v7 <= v10)
+  if (height <= height2)
   {
     v25 = v20;
   }
 
   else
   {
-    v25 = v9;
+    v25 = width2;
   }
 
-  if (v7 <= v10)
+  if (height <= height2)
   {
     v26 = v22;
   }
 
   else
   {
-    v21 = v6;
+    v21 = width;
     v26 = 1;
   }
 
-  if (v7 <= v10)
+  if (height <= height2)
   {
     v27 = v16;
   }
@@ -2967,7 +2967,7 @@ LABEL_17:
     v27 = &v75;
   }
 
-  if (v7 <= v10)
+  if (height <= height2)
   {
     v28 = v15;
   }
@@ -2977,59 +2977,59 @@ LABEL_17:
     v28 = &v76;
   }
 
-  if (v6 <= v9)
+  if (width <= width2)
   {
     v29 = v23;
   }
 
   else
   {
-    v29 = v8;
+    v29 = depth;
   }
 
-  if (v6 <= v9)
+  if (width <= width2)
   {
     v30 = v24;
   }
 
   else
   {
-    v30 = v7;
+    v30 = height;
   }
 
-  if (v6 <= v9)
+  if (width <= width2)
   {
     v31 = v25;
   }
 
   else
   {
-    v31 = v9;
+    v31 = width2;
   }
 
-  if (v6 <= v9)
+  if (width <= width2)
   {
     v13 = v28;
   }
 
   v32 = *v13;
-  if (v6 <= v9)
+  if (width <= width2)
   {
     v33 = v21;
   }
 
   else
   {
-    v33 = v6;
+    v33 = width;
   }
 
-  if (v6 <= v9)
+  if (width <= width2)
   {
     v14 = v27;
   }
 
   v34 = *v14;
-  if (v6 <= v9)
+  if (width <= width2)
   {
     v35 = v26;
   }
@@ -3076,11 +3076,11 @@ LABEL_17:
   v68 = 0u;
   v69 = 0u;
   device = self->super.super.super._device;
-  [a4 pixelFormat];
-  [a4 width];
-  [a4 height];
-  [a4 depth];
-  [a4 sampleCount];
+  [toTexture pixelFormat];
+  [toTexture width];
+  [toTexture height];
+  [toTexture depth];
+  [toTexture sampleCount];
   MTLGetTextureLevelInfoForDevice();
   v67 = 0;
   v65 = 0u;
@@ -3090,11 +3090,11 @@ LABEL_17:
   v63 = 0u;
   v61 = 0u;
   v38 = self->super.super.super._device;
-  [a3 pixelFormat];
-  [a3 width];
-  [a3 height];
-  [a3 depth];
-  [a3 sampleCount];
+  [texture pixelFormat];
+  [texture width];
+  [texture height];
+  [texture depth];
+  [texture sampleCount];
   MTLGetTextureLevelInfoForDevice();
   v60 = 0;
   v58 = 0u;
@@ -3103,20 +3103,20 @@ LABEL_17:
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
   _MTLMessageContextEnd();
-  v39 = [a3 arrayLength];
-  v40 = [a3 numFaces];
-  v41 = [a4 arrayLength];
-  v42 = [a4 numFaces];
-  v43 = [a3 mipmapLevelCount] - v53;
-  v44 = [a4 mipmapLevelCount] - v37;
+  arrayLength = [texture arrayLength];
+  numFaces = [texture numFaces];
+  arrayLength2 = [toTexture arrayLength];
+  numFaces2 = [toTexture numFaces];
+  v43 = [texture mipmapLevelCount] - v53;
+  v44 = [toTexture mipmapLevelCount] - v37;
   if (v43 >= v44)
   {
-    v45 = a4;
+    textureCopy = toTexture;
   }
 
   else
   {
-    v45 = a3;
+    textureCopy = texture;
   }
 
   if (v43 >= v44)
@@ -3129,75 +3129,75 @@ LABEL_17:
     v46 = v53;
   }
 
-  v47 = [v45 mipmapLevelCount];
-  v48 = v40 * v39;
-  if (v40 * v39 >= (v42 * v41))
+  mipmapLevelCount = [textureCopy mipmapLevelCount];
+  v48 = numFaces * arrayLength;
+  if (numFaces * arrayLength >= (numFaces2 * arrayLength2))
   {
-    v48 = v42 * v41;
+    v48 = numFaces2 * arrayLength2;
   }
 
   memset(v56, 0, sizeof(v56));
-  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:a3 sourceSlice:0 sourceLevel:v53 sourceSize:v56 toTexture:a4 destinationSlice:0 destinationLevel:v37 options:0 sliceCount:v48 levelCount:v47 - v46];
+  [(MTLDebugBlitCommandEncoder *)self validateCopyFromTexture:texture sourceSlice:0 sourceLevel:v53 sourceSize:v56 toTexture:toTexture destinationSlice:0 destinationLevel:v37 options:0 sliceCount:v48 levelCount:mipmapLevelCount - v46];
   *(&self->hasEndEncoding + 3) = 1;
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:1];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a4 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:texture retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:toTexture retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!counters)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a3 conformsToProtocol:&unk_2842206E8] & 1) == 0)
+  if (([counters conformsToProtocol:&unk_2842206E8] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if (([a5 conformsToProtocol:&unk_284222E68] & 1) == 0)
+  if (([buffer conformsToProtocol:&unk_284222E68] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   device = self->super.super.super._device;
-  if (device != [a3 device])
+  if (device != [counters device])
   {
     _MTLMessageContextPush_();
   }
 
   v13 = self->super.super.super._device;
-  if (v13 != [a5 device])
+  if (v13 != [buffer device])
   {
     _MTLMessageContextPush_();
   }
 
-  v14 = [(MTLToolsDevice *)self->super.super.super._device minConstantBufferAlignmentBytes];
-  if (a6 % v14)
+  minConstantBufferAlignmentBytes = [(MTLToolsDevice *)self->super.super.super._device minConstantBufferAlignmentBytes];
+  if (offset % minConstantBufferAlignmentBytes)
   {
-    v15 = a6;
-    v16 = v14;
+    offsetCopy = offset;
+    v16 = minConstantBufferAlignmentBytes;
     _MTLMessageContextPush_();
   }
 
-  if (location + length > [a3 sampleCount])
+  if (location + length > [counters sampleCount])
   {
-    [a3 sampleCount];
+    [counters sampleCount];
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a3 retained:1 purgeable:0];
-  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:a5 retained:1 purgeable:1];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:counters retained:1 purgeable:0];
+  [(MTLDebugCommandBuffer *)self->_commandBuffer addObject:buffer retained:1 purgeable:1];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)invalidateCompressedTexture:(id)a3
+- (void)invalidateCompressedTexture:(id)texture
 {
   v11 = 0;
   v9 = 0u;
@@ -3205,7 +3205,7 @@ LABEL_17:
   v8 = 0u;
   device = self->super.super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!texture)
   {
     _MTLMessageContextPush_();
   }
@@ -3219,7 +3219,7 @@ LABEL_17:
     }
 
     v6 = self->super.super.super._device;
-    if (v6 != [a3 device])
+    if (v6 != [texture device])
     {
       _MTLMessageContextPush_();
     }
@@ -3228,10 +3228,10 @@ LABEL_17:
   _MTLMessageContextEnd();
   v7.receiver = self;
   v7.super_class = MTLDebugBlitCommandEncoder;
-  [(MTLToolsBlitCommandEncoder *)&v7 invalidateCompressedTexture:a3];
+  [(MTLToolsBlitCommandEncoder *)&v7 invalidateCompressedTexture:texture];
 }
 
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level
 {
   v18 = 0;
   v16 = 0u;
@@ -3239,7 +3239,7 @@ LABEL_17:
   v15 = 0u;
   device = self->super.super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!texture)
   {
     _MTLMessageContextPush_();
   }
@@ -3253,20 +3253,20 @@ LABEL_17:
     }
 
     v10 = self->super.super.super._device;
-    if (v10 != [a3 device])
+    if (v10 != [texture device])
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 mipmapLevelCount] <= a5)
+    if ([texture mipmapLevelCount] <= level)
     {
-      v12 = a5;
-      v13 = [a3 mipmapLevelCount];
+      levelCopy = level;
+      mipmapLevelCount = [texture mipmapLevelCount];
       _MTLMessageContextPush_();
     }
 
-    v11 = [a3 numFaces];
-    if ([a3 arrayLength] * v11 <= a4)
+    numFaces = [texture numFaces];
+    if ([texture arrayLength] * numFaces <= slice)
     {
       [MTLDebugBlitCommandEncoder optimizeContentsForGPUAccess:slice:level:];
     }
@@ -3275,34 +3275,34 @@ LABEL_17:
   _MTLMessageContextEnd();
   v14.receiver = self;
   v14.super_class = MTLDebugBlitCommandEncoder;
-  [(MTLToolsBlitCommandEncoder *)&v14 invalidateCompressedTexture:a3 slice:a4 level:a5];
+  [(MTLToolsBlitCommandEncoder *)&v14 invalidateCompressedTexture:texture slice:slice level:level];
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   if (*(&self->hasEndEncoding + 4))
   {
     [MTLDebugBlitCommandEncoder barrierAfterQueueStages:beforeStages:];
   }
 
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 barrierAfterQueueStages:a3 beforeStages:a4];
+  [baseObject barrierAfterQueueStages:stages beforeStages:beforeStages];
 }
 
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v9 = a4.var1;
-  v10 = a4.var0;
+  var1 = destinationSlice.var1;
+  var0 = destinationSlice.var0;
+  v9 = slice.var1;
+  v10 = slice.var0;
   v17 = 0;
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
   device = self->super.super.super._device;
   _MTLMessageContextBegin_();
-  verifyCopyFromTensorToTensor(&v14, a3, v10, v9, a5, var0, var1);
+  verifyCopyFromTensorToTensor(&v14, tensor, v10, v9, toTensor, var0, var1);
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self baseObject];
 }

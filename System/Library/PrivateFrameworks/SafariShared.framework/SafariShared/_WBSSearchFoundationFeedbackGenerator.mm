@@ -1,10 +1,10 @@
 @interface _WBSSearchFoundationFeedbackGenerator
 - (_WBSSearchFoundationFeedbackGenerator)init;
 - (void)_commitPreviousSectionIfNecessary;
-- (void)didAddItem:(id)a3 hidingOutrankedResults:(id)a4 hidingDuplicateResults:(id)a5;
+- (void)didAddItem:(id)item hidingOutrankedResults:(id)results hidingDuplicateResults:(id)duplicateResults;
 - (void)didBeginRanking;
-- (void)didBeginSectionWithBundleIdentifier:(id)a3;
-- (void)didEncounterHiddenSiriSuggestedSite:(id)a3 hideReason:(int)a4;
+- (void)didBeginSectionWithBundleIdentifier:(id)identifier;
+- (void)didEncounterHiddenSiriSuggestedSite:(id)site hideReason:(int)reason;
 - (void)didEndRanking;
 - (void)removeAllSectionsAndItems;
 @end
@@ -18,13 +18,13 @@
   v2 = [(_WBSSearchFoundationFeedbackGenerator *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sectionRankingFeedbackObjects = v2->_sectionRankingFeedbackObjects;
-    v2->_sectionRankingFeedbackObjects = v3;
+    v2->_sectionRankingFeedbackObjects = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     currentSectionResultRankingFeedbackObjects = v2->_currentSectionResultRankingFeedbackObjects;
-    v2->_currentSectionResultRankingFeedbackObjects = v5;
+    v2->_currentSectionResultRankingFeedbackObjects = array2;
 
     v7 = v2;
   }
@@ -34,9 +34,9 @@
 
 - (void)didBeginRanking
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   rankingStartDate = self->_rankingStartDate;
-  self->_rankingStartDate = v3;
+  self->_rankingStartDate = date;
 }
 
 - (void)didEndRanking
@@ -71,7 +71,7 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = self;
+  selfCopy = self;
   obj = self->_sectionRankingFeedbackObjects;
   v27 = [(NSMutableArray *)obj countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v27)
@@ -93,8 +93,8 @@
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v11 = [v10 results];
-        v12 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        results = [v10 results];
+        v12 = [results countByEnumeratingWithState:&v29 objects:v38 count:16];
         if (v12)
         {
           v13 = v12;
@@ -105,18 +105,18 @@
             {
               if (*v30 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(results);
               }
 
-              v16 = [*(*(&v29 + 1) + 8 * i) result];
+              result = [*(*(&v29 + 1) + 8 * i) result];
               if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
               {
-                [v16 setThirdPartyNavigationIntentScore:v7];
-                [v16 setThirdPartyQueryCompletionMatched:v8];
+                [result setThirdPartyNavigationIntentScore:v7];
+                [result setThirdPartyQueryCompletionMatched:v8];
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
+            v13 = [results countByEnumeratingWithState:&v29 objects:v38 count:16];
           }
 
           while (v13);
@@ -133,25 +133,25 @@
   }
 
   v17 = objc_alloc(MEMORY[0x1E69CA340]);
-  sectionRankingFeedbackObjects = v24->_sectionRankingFeedbackObjects;
-  [(NSDate *)v24->_rankingStartDate timeIntervalSinceNow];
+  sectionRankingFeedbackObjects = selfCopy->_sectionRankingFeedbackObjects;
+  [(NSDate *)selfCopy->_rankingStartDate timeIntervalSinceNow];
   v20 = [v17 initWithSections:sectionRankingFeedbackObjects blendingDuration:-v19];
-  rankingFeedback = v24->_rankingFeedback;
-  v24->_rankingFeedback = v20;
+  rankingFeedback = selfCopy->_rankingFeedback;
+  selfCopy->_rankingFeedback = v20;
 
-  if (v24->_hiddenSiriSuggestedWebsite)
+  if (selfCopy->_hiddenSiriSuggestedWebsite)
   {
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      [(SFSearchResult *)v24->_hiddenSiriSuggestedWebsite setThirdPartyNavigationIntentScore:v7];
-      [(SFSearchResult *)v24->_hiddenSiriSuggestedWebsite setThirdPartyQueryCompletionMatched:v8];
+      [(SFSearchResult *)selfCopy->_hiddenSiriSuggestedWebsite setThirdPartyNavigationIntentScore:v7];
+      [(SFSearchResult *)selfCopy->_hiddenSiriSuggestedWebsite setThirdPartyQueryCompletionMatched:v8];
     }
 
-    hiddenSiriSuggestedWebsite = v24->_hiddenSiriSuggestedWebsite;
+    hiddenSiriSuggestedWebsite = selfCopy->_hiddenSiriSuggestedWebsite;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&hiddenSiriSuggestedWebsite count:1];
-    [(SFRankingFeedback *)v24->_rankingFeedback setHiddenResults:v22];
+    [(SFRankingFeedback *)selfCopy->_rankingFeedback setHiddenResults:v22];
 
-    v23 = v24->_hiddenSiriSuggestedWebsite;
+    v23 = selfCopy->_hiddenSiriSuggestedWebsite;
   }
 
   else
@@ -159,48 +159,48 @@
     v23 = 0;
   }
 
-  v24->_hiddenSiriSuggestedWebsite = 0;
+  selfCopy->_hiddenSiriSuggestedWebsite = 0;
 }
 
-- (void)didBeginSectionWithBundleIdentifier:(id)a3
+- (void)didBeginSectionWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(_WBSSearchFoundationFeedbackGenerator *)self _commitPreviousSectionIfNecessary];
   currentSectionBundleIdentifier = self->_currentSectionBundleIdentifier;
-  self->_currentSectionBundleIdentifier = v4;
+  self->_currentSectionBundleIdentifier = identifierCopy;
 }
 
-- (void)didEncounterHiddenSiriSuggestedSite:(id)a3 hideReason:(int)a4
+- (void)didEncounterHiddenSiriSuggestedSite:(id)site hideReason:(int)reason
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&reason;
+  siteCopy = site;
   v8 = objc_alloc_init(MEMORY[0x1E69CA3C0]);
   [v8 setHideReason:v4];
-  [v6 setSafariAttributes:v8];
+  [siteCopy setSafariAttributes:v8];
   hiddenSiriSuggestedWebsite = self->_hiddenSiriSuggestedWebsite;
-  self->_hiddenSiriSuggestedWebsite = v6;
+  self->_hiddenSiriSuggestedWebsite = siteCopy;
 }
 
-- (void)didAddItem:(id)a3 hidingOutrankedResults:(id)a4 hidingDuplicateResults:(id)a5
+- (void)didAddItem:(id)item hidingOutrankedResults:(id)results hidingDuplicateResults:(id)duplicateResults
 {
-  v17 = a4;
-  v8 = a5;
-  v9 = [a3 sfSearchResultValue];
-  v10 = v9;
-  if (v9)
+  resultsCopy = results;
+  duplicateResultsCopy = duplicateResults;
+  sfSearchResultValue = [item sfSearchResultValue];
+  v10 = sfSearchResultValue;
+  if (sfSearchResultValue)
   {
-    v11 = [v9 copy];
-    v12 = [v10 sectionBundleIdentifier];
-    currentSectionBundleIdentifier = v12;
-    if (!v12)
+    v11 = [sfSearchResultValue copy];
+    sectionBundleIdentifier = [v10 sectionBundleIdentifier];
+    currentSectionBundleIdentifier = sectionBundleIdentifier;
+    if (!sectionBundleIdentifier)
     {
       currentSectionBundleIdentifier = self->_currentSectionBundleIdentifier;
     }
 
     [v11 setSectionBundleIdentifier:currentSectionBundleIdentifier];
 
-    v14 = [v17 safari_mapObjectsUsingBlock:&__block_literal_global_0];
-    v15 = [v8 safari_mapObjectsUsingBlock:&__block_literal_global_93];
+    v14 = [resultsCopy safari_mapObjectsUsingBlock:&__block_literal_global_0];
+    v15 = [duplicateResultsCopy safari_mapObjectsUsingBlock:&__block_literal_global_93];
     v16 = [objc_alloc(MEMORY[0x1E69CA388]) initWithResult:v11 hiddenResults:v14 duplicateResults:v15 localResultPosition:{-[NSMutableArray count](self->_currentSectionResultRankingFeedbackObjects, "count")}];
     if (v16)
     {

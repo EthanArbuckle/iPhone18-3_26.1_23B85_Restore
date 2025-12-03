@@ -1,10 +1,10 @@
 @interface ParmesanButtonTrayContentView
-- (_TtC30NTKParmesanFaceBundleCompanion29ParmesanButtonTrayContentView)initWithCoder:(id)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion29ParmesanButtonTrayContentView)initWithCoder:(id)coder;
 @end
 
 @implementation ParmesanButtonTrayContentView
 
-- (_TtC30NTKParmesanFaceBundleCompanion29ParmesanButtonTrayContentView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion29ParmesanButtonTrayContentView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion29ParmesanButtonTrayContentView_primaryAction);
   *v3 = 0;

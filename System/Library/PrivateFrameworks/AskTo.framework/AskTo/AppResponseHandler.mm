@@ -1,7 +1,7 @@
 @interface AppResponseHandler
 - (_TtC5AskTo18AppResponseHandler)init;
 - (void)notifyApplicationDidFinishLaunching;
-- (void)processIncomingResponses:(id)a3;
+- (void)processIncomingResponses:(id)responses;
 @end
 
 @implementation AppResponseHandler
@@ -9,14 +9,14 @@
 - (void)notifyApplicationDidFinishLaunching
 {
   *(&self->super.isa + OBJC_IVAR____TtC5AskTo18AppResponseHandler_applicationIsReadyForResponses) = 1;
-  v2 = self;
+  selfCopy = self;
   sub_2258D56CC();
 }
 
-- (void)processIncomingResponses:(id)a3
+- (void)processIncomingResponses:(id)responses
 {
   v4 = sub_2258E0DE0();
-  v5 = self;
+  selfCopy = self;
   sub_2258D61C0(v4);
 }
 

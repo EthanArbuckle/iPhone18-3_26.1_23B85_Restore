@@ -4,10 +4,10 @@
 + (id)fetchDeviceData;
 + (id)fetchWRMMetrics;
 + (void)fetch;
-- (BOOL)knownCollectionType:(Class)a3;
+- (BOOL)knownCollectionType:(Class)type;
 - (NPTMetadataCollector)init;
-- (NPTMetadataCollector)initWithCollectorTypes:(id)a3;
-- (void)startCollectingWithCompletion:(id)a3;
+- (NPTMetadataCollector)initWithCollectorTypes:(id)types;
+- (void)startCollectingWithCompletion:(id)completion;
 - (void)stopCollecting;
 @end
 
@@ -17,18 +17,18 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [a1 fetchDeviceData];
-  v6 = [a1 fetchCellularData];
-  [v4 addEntriesFromDictionary:v5];
-  [v4 addEntriesFromDictionary:v6];
+  fetchDeviceData = [self fetchDeviceData];
+  fetchCellularData = [self fetchCellularData];
+  [v4 addEntriesFromDictionary:fetchDeviceData];
+  [v4 addEntriesFromDictionary:fetchCellularData];
   [v3 setValue:v4 forKey:@"metadata"];
-  v7 = [MEMORY[0x277D7BB68] sharedClient];
+  mEMORY[0x277D7BB68] = [MEMORY[0x277D7BB68] sharedClient];
   v36 = 0;
-  v8 = [v7 queryStatusForPeer:0 error:&v36];
+  v8 = [mEMORY[0x277D7BB68] queryStatusForPeer:0 error:&v36];
   v9 = v36;
   v10 = objc_alloc_init(MEMORY[0x277D02B18]);
   [v10 activate];
-  v11 = [v10 currentKnownNetworkProfile];
+  currentKnownNetworkProfile = [v10 currentKnownNetworkProfile];
   if (objc_opt_respondsToSelector())
   {
     v12 = [v10 CCA];
@@ -37,10 +37,10 @@
   }
 
   [v10 invalidate];
-  if (v11)
+  if (currentKnownNetworkProfile)
   {
-    v14 = [v11 dictionary];
-    [v4 addEntriesFromDictionary:v14];
+    dictionary = [currentKnownNetworkProfile dictionary];
+    [v4 addEntriesFromDictionary:dictionary];
   }
 
   if (v9)
@@ -56,60 +56,60 @@
 
   else
   {
-    v35 = v5;
-    v17 = [v8 wifi];
+    v35 = fetchDeviceData;
+    wifi = [v8 wifi];
 
-    if (v17)
+    if (wifi)
     {
-      v18 = [v8 wifi];
-      v19 = [v18 dictionary];
-      [v4 addEntriesFromDictionary:v19];
+      wifi2 = [v8 wifi];
+      dictionary2 = [wifi2 dictionary];
+      [v4 addEntriesFromDictionary:dictionary2];
     }
 
-    v20 = [v8 bluetooth];
+    bluetooth = [v8 bluetooth];
 
-    if (v20)
+    if (bluetooth)
     {
-      v21 = [v8 bluetooth];
-      v22 = [v21 dictionary];
-      [v4 addEntriesFromDictionary:v22];
+      bluetooth2 = [v8 bluetooth];
+      dictionary3 = [bluetooth2 dictionary];
+      [v4 addEntriesFromDictionary:dictionary3];
     }
 
-    v23 = [v8 awdl];
-    if (v23)
+    awdl = [v8 awdl];
+    if (awdl)
     {
-      v24 = v23;
+      v24 = awdl;
       has_internal_content = os_variant_has_internal_content();
 
       if (has_internal_content)
       {
-        v26 = [v8 awdl];
-        v27 = [v26 dictionary];
-        [v4 addEntriesFromDictionary:v27];
+        awdl2 = [v8 awdl];
+        dictionary4 = [awdl2 dictionary];
+        [v4 addEntriesFromDictionary:dictionary4];
       }
     }
 
-    v28 = [v8 network];
+    network = [v8 network];
 
-    if (v28)
+    if (network)
     {
-      v29 = [v8 network];
-      v30 = [v29 dictionary];
-      [v4 addEntriesFromDictionary:v30];
+      network2 = [v8 network];
+      dictionary5 = [network2 dictionary];
+      [v4 addEntriesFromDictionary:dictionary5];
     }
 
-    v31 = [v8 power];
+    power = [v8 power];
 
-    if (v31)
+    if (power)
     {
-      v32 = [v8 power];
-      v33 = [v32 dictionary];
-      [v4 addEntriesFromDictionary:v33];
+      power2 = [v8 power];
+      dictionary6 = [power2 dictionary];
+      [v4 addEntriesFromDictionary:dictionary6];
     }
 
     [v3 setValue:v4 forKey:@"metadata"];
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
-    v5 = v35;
+    fetchDeviceData = v35;
   }
 
   return v16;
@@ -133,10 +133,10 @@
   return v4;
 }
 
-- (NPTMetadataCollector)initWithCollectorTypes:(id)a3
+- (NPTMetadataCollector)initWithCollectorTypes:(id)types
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(NPTMetadataCollector *)self setCollectors:v5];
 
@@ -148,7 +148,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = typesCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -166,9 +166,9 @@
         v12 = *(*(&v17 + 1) + 8 * i);
         if ([(NPTMetadataCollector *)self knownCollectionType:v12, v17])
         {
-          v13 = [(NPTMetadataCollector *)self collectors];
+          collectors = [(NPTMetadataCollector *)self collectors];
           v14 = objc_alloc_init(v12);
-          [v13 addObject:v14];
+          [collectors addObject:v14];
         }
       }
 
@@ -182,31 +182,31 @@
   return self;
 }
 
-- (BOOL)knownCollectionType:(Class)a3
+- (BOOL)knownCollectionType:(Class)type
 {
   v4 = objc_opt_class();
   if (v4)
   {
 
-    LOBYTE(v4) = [(objc_class *)a3 conformsToProtocol:&unk_2848D1670];
+    LOBYTE(v4) = [(objc_class *)type conformsToProtocol:&unk_2848D1670];
   }
 
   return v4;
 }
 
-- (void)startCollectingWithCompletion:(id)a3
+- (void)startCollectingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(NPTMetadataCollector *)self setIsCollectingMetadata:1];
-  v5 = [(NPTMetadataCollector *)self backgroundQueue];
+  backgroundQueue = [(NPTMetadataCollector *)self backgroundQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NPTMetadataCollector_startCollectingWithCompletion___block_invoke;
   v7[3] = &unk_2789D3C70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(backgroundQueue, v7);
 }
 
 void __54__NPTMetadataCollector_startCollectingWithCompletion___block_invoke(uint64_t a1)
@@ -530,13 +530,13 @@ void __54__NPTMetadataCollector_startCollectingWithCompletion___block_invoke_2(u
 - (void)stopCollecting
 {
   [(NPTMetadataCollector *)self setIsCollectingMetadata:0];
-  v3 = [(NPTMetadataCollector *)self backgroundQueue];
+  backgroundQueue = [(NPTMetadataCollector *)self backgroundQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__NPTMetadataCollector_stopCollecting__block_invoke;
   block[3] = &unk_2789D3DF8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(backgroundQueue, block);
 }
 
 uint64_t __38__NPTMetadataCollector_stopCollecting__block_invoke(uint64_t a1)
@@ -583,8 +583,8 @@ uint64_t __38__NPTMetadataCollector_stopCollecting__block_invoke(uint64_t a1)
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v3 = objc_alloc_init(NPTCellularCollector);
-  v4 = [(NPTCellularCollector *)v3 wrmBasebandMetrics];
-  [v2 addEntriesFromDictionary:v4];
+  wrmBasebandMetrics = [(NPTCellularCollector *)v3 wrmBasebandMetrics];
+  [v2 addEntriesFromDictionary:wrmBasebandMetrics];
 
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v2];
 
@@ -685,8 +685,8 @@ uint64_t __38__NPTMetadataCollector_stopCollecting__block_invoke(uint64_t a1)
   v7 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v5, v7);
   [(NPTCellularCollector *)v4 stopCollecting:v11];
-  v8 = [(NPTCellularCollector *)v4 fetchCellularTPutEstimates];
-  [v6 addEntriesFromDictionary:v8];
+  fetchCellularTPutEstimates = [(NPTCellularCollector *)v4 fetchCellularTPutEstimates];
+  [v6 addEntriesFromDictionary:fetchCellularTPutEstimates];
 
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v6];
 
@@ -704,9 +704,9 @@ intptr_t __41__NPTMetadataCollector_fetchCellularData__block_invoke(uint64_t a1,
 + (void)fetch
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v5 = 138543362;
-  v6 = v3;
+  v6 = localizedDescription;
   _os_log_error_impl(&dword_233421000, a2, OS_LOG_TYPE_ERROR, "Failed to create W5Status: %{public}@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];

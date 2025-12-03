@@ -1,76 +1,76 @@
 @interface TargetedSpringLoadedBlinkEffect
 - (CALayer)blinkLayer;
-- (TargetedSpringLoadedBlinkEffect)initWithTargetView:(id)a3;
+- (TargetedSpringLoadedBlinkEffect)initWithTargetView:(id)view;
 - (UIView)targetView;
 - (id)blinkAnimation;
-- (void)_prepareLayer:(id)a3 forView:(id)a4;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)_prepareLayer:(id)layer forView:(id)view;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation TargetedSpringLoadedBlinkEffect
 
-- (TargetedSpringLoadedBlinkEffect)initWithTargetView:(id)a3
+- (TargetedSpringLoadedBlinkEffect)initWithTargetView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = TargetedSpringLoadedBlinkEffect;
   v5 = [(TargetedSpringLoadedBlinkEffect *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_targetView, v4);
+    objc_storeWeak(&v5->_targetView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v11 = a4;
-  v5 = [(TargetedSpringLoadedBlinkEffect *)self blinkLayer];
-  v6 = [(TargetedSpringLoadedBlinkEffect *)self targetView];
-  if (v6)
+  contextCopy = context;
+  blinkLayer = [(TargetedSpringLoadedBlinkEffect *)self blinkLayer];
+  targetView = [(TargetedSpringLoadedBlinkEffect *)self targetView];
+  if (targetView)
   {
-    v7 = [v11 state];
-    if (v7 > 1)
+    state = [contextCopy state];
+    if (state > 1)
     {
-      if (v7 == 2)
+      if (state == 2)
       {
-        v9 = [v5 superlayer];
+        superlayer = [blinkLayer superlayer];
 
-        if (!v9)
+        if (!superlayer)
         {
-          [(TargetedSpringLoadedBlinkEffect *)self _prepareLayer:v5 forView:v6];
-          v10 = [v6 layer];
-          [v10 addSublayer:v5];
+          [(TargetedSpringLoadedBlinkEffect *)self _prepareLayer:blinkLayer forView:targetView];
+          layer = [targetView layer];
+          [layer addSublayer:blinkLayer];
         }
 
         blinkLayer = [(TargetedSpringLoadedBlinkEffect *)self blinkAnimation];
-        [v5 addAnimation:blinkLayer forKey:@"targetedBlinkAnimation"];
+        [blinkLayer addAnimation:blinkLayer forKey:@"targetedBlinkAnimation"];
         goto LABEL_9;
       }
 
-      if (v7 != 3)
+      if (state != 3)
       {
         goto LABEL_10;
       }
     }
 
-    else if (v7)
+    else if (state)
     {
-      if (v7 != 1)
+      if (state != 1)
       {
         goto LABEL_10;
       }
 
-      [(TargetedSpringLoadedBlinkEffect *)self _prepareLayer:v5 forView:v6];
-      blinkLayer = [v6 layer];
-      [blinkLayer addSublayer:v5];
+      [(TargetedSpringLoadedBlinkEffect *)self _prepareLayer:blinkLayer forView:targetView];
+      blinkLayer = [targetView layer];
+      [blinkLayer addSublayer:blinkLayer];
       goto LABEL_9;
     }
   }
 
-  [v5 removeFromSuperlayer];
+  [blinkLayer removeFromSuperlayer];
   blinkLayer = self->_blinkLayer;
   self->_blinkLayer = 0;
 LABEL_9:
@@ -78,18 +78,18 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_prepareLayer:(id)a3 forView:(id)a4
+- (void)_prepareLayer:(id)layer forView:(id)view
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v5 layer];
-  [v5 bounds];
-  [v8 setFrame:?];
-  v7 = [v6 cornerCurve];
-  [v8 setCornerCurve:v7];
+  layerCopy = layer;
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [viewCopy bounds];
+  [layerCopy setFrame:?];
+  cornerCurve = [layer cornerCurve];
+  [layerCopy setCornerCurve:cornerCurve];
 
-  [v6 cornerRadius];
-  [v8 setCornerRadius:?];
+  [layer cornerRadius];
+  [layerCopy setCornerRadius:?];
 }
 
 - (CALayer)blinkLayer

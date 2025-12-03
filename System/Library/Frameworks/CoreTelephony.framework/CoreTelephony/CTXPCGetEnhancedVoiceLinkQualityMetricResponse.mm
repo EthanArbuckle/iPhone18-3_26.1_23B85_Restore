@@ -1,17 +1,17 @@
 @interface CTXPCGetEnhancedVoiceLinkQualityMetricResponse
 + (id)allowedClassesForArguments;
 - (CTEnhancedLinkQualityMetric)linkQuality;
-- (CTXPCGetEnhancedVoiceLinkQualityMetricResponse)initWithEnhancedLinkQualityMetric:(id)a3;
+- (CTXPCGetEnhancedVoiceLinkQualityMetricResponse)initWithEnhancedLinkQualityMetric:(id)metric;
 @end
 
 @implementation CTXPCGetEnhancedVoiceLinkQualityMetricResponse
 
-- (CTXPCGetEnhancedVoiceLinkQualityMetricResponse)initWithEnhancedLinkQualityMetric:(id)a3
+- (CTXPCGetEnhancedVoiceLinkQualityMetricResponse)initWithEnhancedLinkQualityMetric:(id)metric
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metricCopy = metric;
   v10 = @"linkQuality";
-  v11[0] = v4;
+  v11[0] = metricCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetEnhancedVoiceLinkQualityMetricResponse;
@@ -23,8 +23,8 @@
 
 - (CTEnhancedLinkQualityMetric)linkQuality
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"linkQuality"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"linkQuality"];
   v4 = CTThrowingCastIfClass<CTEnhancedLinkQualityMetric>(v3);
 
   return v4;
@@ -32,7 +32,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCGetEnhancedVoiceLinkQualityMetricResponse;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

@@ -1,12 +1,12 @@
 @interface OKActionBindingMotion
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingMotion)init;
-- (OKActionBindingMotion)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingMotion)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handleLongPress:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)handleLongPress:(id)press;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -39,20 +39,20 @@
   return result;
 }
 
-- (OKActionBindingMotion)initWithSettings:(id)a3
+- (OKActionBindingMotion)initWithSettings:(id)settings
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingMotion;
   v4 = [(OKActionBinding *)&v9 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"numberOfTouchesRequired"];
+    v5 = [settings objectForKey:@"numberOfTouchesRequired"];
     if (v5)
     {
       v4->_numberOfTouchesRequired = [v5 unsignedIntegerValue];
     }
 
-    v6 = [a3 objectForKey:@"motionInterval"];
+    v6 = [settings objectForKey:@"motionInterval"];
     if (v6)
     {
       [v6 doubleValue];
@@ -108,11 +108,11 @@
   [(OKActionBinding *)&v8 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingMotion;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -126,7 +126,7 @@
 + (id)supportedSettings
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKActionBindingMotion;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v10[0] = @"numberOfTouchesRequired";
@@ -146,14 +146,14 @@
   return v2;
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v7 = [(OKActionBindingProxy *)self scope];
+  scope = [(OKActionBindingProxy *)self scope];
   result = 0;
-  if (([a3 scope] & v7) != 0)
+  if (([action scope] & scope) != 0)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (a4 || [a3 touchCount] == self->_numberOfTouchesRequired))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (agnostic || [action touchCount] == self->_numberOfTouchesRequired))
     {
       return 1;
     }
@@ -162,13 +162,13 @@
   return result;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
-  v4 = a4;
+  scopeCopy = scope;
   v33.receiver = self;
   v33.super_class = OKActionBindingMotion;
   [OKActionBindingProxy loadForResponder:sel_loadForResponder_scope_ scope:?];
-  if (v4)
+  if (scopeCopy)
   {
     if ([(OKActionBindingMotion *)self numberOfTouchesRequired])
     {
@@ -180,10 +180,10 @@
       [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setNumberOfTapsRequired:0];
       [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setMinimumPressDuration:0.25];
       [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setAllowableMovement:0.0];
-      v8 = [a3 actionView];
-      if (v8)
+      actionView = [responder actionView];
+      if (actionView)
       {
-        [v8 addGestureRecognizer:self->_longPressGestureRecognizer];
+        [actionView addGestureRecognizer:self->_longPressGestureRecognizer];
       }
     }
 
@@ -519,9 +519,9 @@ uint64_t __48__OKActionBindingMotion_loadForResponder_scope___block_invoke_2(uin
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
     [(OKActionBindingMotion *)self setMotionAttitudeReference:[(CMDeviceMotion *)[(CMMotionManager *)self->_motionManager deviceMotion] attitude]];
     v5 = 0;
@@ -529,20 +529,20 @@ uint64_t __48__OKActionBindingMotion_loadForResponder_scope___block_invoke_2(uin
     self->_shouldForwardMotion = 1;
   }
 
-  else if ([a3 state] == 2)
+  else if ([press state] == 2)
   {
     v5 = 1;
     v6 = 2;
   }
 
-  else if ([a3 state] == 3)
+  else if ([press state] == 3)
   {
     v5 = 0;
     self->_shouldForwardMotion = 0;
     v6 = 3;
   }
 
-  else if ([a3 state] == 5 || objc_msgSend(a3, "state") == 4)
+  else if ([press state] == 5 || objc_msgSend(press, "state") == 4)
   {
     self->_shouldForwardMotion = 0;
     motionAttitudeReference = self->_motionAttitudeReference;
@@ -567,7 +567,7 @@ uint64_t __48__OKActionBindingMotion_loadForResponder_scope___block_invoke_2(uin
     v6 = 0;
   }
 
-  [(OKActionBindingProxy *)self locationForActionFromGesture:a3];
+  [(OKActionBindingProxy *)self locationForActionFromGesture:press];
   self->_lastLocation.x = v8;
   self->_lastLocation.y = v9;
   if ((v5 & 1) == 0)

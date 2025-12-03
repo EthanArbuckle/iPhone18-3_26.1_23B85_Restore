@@ -1,17 +1,17 @@
 @interface FindMyHandler
 - (BOOL)isThisDesignatedFMFDevice;
-- (void)queryFMFStatusWithCompletion:(id)a3;
+- (void)queryFMFStatusWithCompletion:(id)completion;
 @end
 
 @implementation FindMyHandler
 
-- (void)queryFMFStatusWithCompletion:(id)a3
+- (void)queryFMFStatusWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

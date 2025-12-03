@@ -1,26 +1,26 @@
 @interface HFTriggerItem
 - (HFServiceActionItemProvider)serviceActionItemProvider;
 - (HFTriggerItem)init;
-- (HFTriggerItem)initWithHome:(id)a3 trigger:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createRichIconDescriptors:(id)a3 options:(id)a4;
-- (id)translateToRichIconDescriptors:(id)a3 basedOnActionItems:(id)a4;
+- (HFTriggerItem)initWithHome:(id)home trigger:(id)trigger;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createRichIconDescriptors:(id)descriptors options:(id)options;
+- (id)translateToRichIconDescriptors:(id)descriptors basedOnActionItems:(id)items;
 @end
 
 @implementation HFTriggerItem
 
-- (HFTriggerItem)initWithHome:(id)a3 trigger:(id)a4
+- (HFTriggerItem)initWithHome:(id)home trigger:(id)trigger
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  triggerCopy = trigger;
   v13.receiver = self;
   v13.super_class = HFTriggerItem;
   v9 = [(HFTriggerItem *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_trigger, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_trigger, trigger);
     serviceActionItemProvider = v10->_serviceActionItemProvider;
     v10->_serviceActionItemProvider = 0;
 
@@ -32,8 +32,8 @@
 
 - (HFTriggerItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFTriggerItem.m" lineNumber:55 description:@"Use -initWithHome:trigger:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTriggerItem.m" lineNumber:55 description:@"Use -initWithHome:trigger:"];
 
   return 0;
 }
@@ -42,15 +42,15 @@
 {
   if (!self->_serviceActionItemProvider && [(HFTriggerItem *)self usesRichIconDescriptors])
   {
-    v3 = [(HFTriggerItem *)self trigger];
-    v4 = [v3 actionSets];
-    v5 = [v4 na_firstObjectPassingTest:&__block_literal_global_143];
+    trigger = [(HFTriggerItem *)self trigger];
+    actionSets = [trigger actionSets];
+    v5 = [actionSets na_firstObjectPassingTest:&__block_literal_global_143];
 
     if (v5)
     {
       v6 = [HFServiceActionItemProvider alloc];
-      v7 = [(HFTriggerItem *)self home];
-      v8 = [(HFServiceActionItemProvider *)v6 initWithHome:v7 actionSet:v5];
+      home = [(HFTriggerItem *)self home];
+      v8 = [(HFServiceActionItemProvider *)v6 initWithHome:home actionSet:v5];
       serviceActionItemProvider = self->_serviceActionItemProvider;
       self->_serviceActionItemProvider = v8;
     }
@@ -61,34 +61,34 @@
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFTriggerItem *)self trigger];
+  optionsCopy = options;
+  trigger = [(HFTriggerItem *)self trigger];
 
-  if (!v5)
+  if (!trigger)
   {
     NSLog(&cfstr_TriggerMustBeS.isa);
   }
 
-  v6 = [(HFTriggerItem *)self trigger];
+  trigger2 = [(HFTriggerItem *)self trigger];
 
-  if (v6)
+  if (trigger2)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __45__HFTriggerItem__subclass_updateWithOptions___block_invoke;
     v16[3] = &unk_277DF9660;
-    v7 = v4;
+    v7 = optionsCopy;
     v17 = v7;
-    v18 = self;
+    selfCopy = self;
     v8 = __45__HFTriggerItem__subclass_updateWithOptions___block_invoke(v16);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __45__HFTriggerItem__subclass_updateWithOptions___block_invoke_22;
     v13[3] = &unk_277DFD8C0;
     v14 = v7;
-    v15 = self;
+    selfCopy2 = self;
     v9 = [v8 flatMap:v13];
   }
 
@@ -227,33 +227,33 @@ id __45__HFTriggerItem__subclass_updateWithOptions___block_invoke_2(uint64_t a1,
   return v5;
 }
 
-- (id)createRichIconDescriptors:(id)a3 options:(id)a4
+- (id)createRichIconDescriptors:(id)descriptors options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  optionsCopy = options;
   if ([(HFTriggerItem *)self usesRichIconDescriptors]&& ([(HFTriggerItem *)self serviceActionItemProvider], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(HFTriggerItem *)self serviceActionItemProvider];
-    v10 = [v9 reloadItems];
+    serviceActionItemProvider = [(HFTriggerItem *)self serviceActionItemProvider];
+    reloadItems = [serviceActionItemProvider reloadItems];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __51__HFTriggerItem_createRichIconDescriptors_options___block_invoke;
     v16[3] = &unk_277DFD910;
     v16[4] = self;
-    v17 = v7;
-    v11 = [v10 flatMap:v16];
+    v17 = optionsCopy;
+    v11 = [reloadItems flatMap:v16];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __51__HFTriggerItem_createRichIconDescriptors_options___block_invoke_3;
     v14[3] = &unk_277DFA5C0;
     v14[4] = self;
-    v15 = v6;
+    v15 = descriptorsCopy;
     v12 = [v11 flatMap:v14];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D2C900] futureWithResult:v6];
+    v12 = [MEMORY[0x277D2C900] futureWithResult:descriptorsCopy];
   }
 
   return v12;
@@ -289,11 +289,11 @@ id __51__HFTriggerItem_createRichIconDescriptors_options___block_invoke_3(uint64
   return v6;
 }
 
-- (id)translateToRichIconDescriptors:(id)a3 basedOnActionItems:(id)a4
+- (id)translateToRichIconDescriptors:(id)descriptors basedOnActionItems:(id)items
 {
   v5 = MEMORY[0x277CBEB40];
-  v6 = a4;
-  v7 = a3;
+  itemsCopy = items;
+  descriptorsCopy = descriptors;
   v8 = objc_alloc_init(v5);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -301,13 +301,13 @@ id __51__HFTriggerItem_createRichIconDescriptors_options___block_invoke_3(uint64
   v21[3] = &unk_277DFD938;
   v22 = v8;
   v9 = v8;
-  [v7 na_each:v21];
-  v10 = [v7 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_37_4];
+  [descriptorsCopy na_each:v21];
+  v10 = [descriptorsCopy na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_37_4];
 
-  v11 = [v6 na_map:&__block_literal_global_40_4];
+  v11 = [itemsCopy na_map:&__block_literal_global_40_4];
 
   v12 = [v11 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_98_0];
-  v13 = [v9 array];
+  array = [v9 array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67__HFTriggerItem_translateToRichIconDescriptors_basedOnActionItems___block_invoke_5;
@@ -316,7 +316,7 @@ id __51__HFTriggerItem_createRichIconDescriptors_options___block_invoke_3(uint64
   v20 = v10;
   v14 = v10;
   v15 = v12;
-  v16 = [v13 na_flatMap:v18];
+  v16 = [array na_flatMap:v18];
 
   return v16;
 }

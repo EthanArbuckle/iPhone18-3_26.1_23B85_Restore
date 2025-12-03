@@ -1,18 +1,18 @@
 @interface SGWords
-+ (id)normalizeLowercaseWord:(id)a3;
-+ (id)normalizeWord:(id)a3;
++ (id)normalizeLowercaseWord:(id)word;
++ (id)normalizeWord:(id)word;
 @end
 
 @implementation SGWords
 
-+ (id)normalizeLowercaseWord:(id)a3
++ (id)normalizeLowercaseWord:(id)word
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  wordCopy = word;
+  v6 = wordCopy;
+  if (!wordCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"SGWords.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"word"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGWords.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"word"}];
 
     if (isLowercaseAscii(0))
     {
@@ -45,7 +45,7 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  if ((isLowercaseAscii(v5) & 1) == 0)
+  if ((isLowercaseAscii(wordCopy) & 1) == 0)
   {
     goto LABEL_5;
   }
@@ -57,19 +57,19 @@ LABEL_11:
   return v7;
 }
 
-+ (id)normalizeWord:(id)a3
++ (id)normalizeWord:(id)word
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  wordCopy = word;
+  v6 = wordCopy;
+  if (!wordCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"SGWords.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"word"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGWords.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"word"}];
 
-    v5 = 0;
+    wordCopy = 0;
   }
 
-  if (isLowercaseAscii(v5))
+  if (isLowercaseAscii(wordCopy))
   {
 LABEL_4:
     v7 = v6;
@@ -212,14 +212,14 @@ LABEL_19:
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = [v6 lowercaseString];
+  lowercaseString = [v6 lowercaseString];
   objc_autoreleasePoolPop(v27);
 
-  if (!isLowercaseAscii(v28))
+  if (!isLowercaseAscii(lowercaseString))
   {
-    if (canTurnIntoAscii(v28))
+    if (canTurnIntoAscii(lowercaseString))
     {
-      v31 = fastPathLatinToAsciiTransformation(v28);
+      v31 = fastPathLatinToAsciiTransformation(lowercaseString);
       v32 = v31;
       if (v31)
       {
@@ -242,9 +242,9 @@ LABEL_19:
     goto LABEL_52;
   }
 
-  v7 = v28;
+  v7 = lowercaseString;
 LABEL_51:
-  v28 = v7;
+  lowercaseString = v7;
   v29 = v7;
 LABEL_52:
 

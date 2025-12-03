@@ -1,7 +1,7 @@
 @interface UARPMetaDataHostDeploymentRuleCountry
 - (UARPMetaDataHostDeploymentRuleCountry)init;
-- (UARPMetaDataHostDeploymentRuleCountry)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataHostDeploymentRuleCountry)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataHostDeploymentRuleCountry)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataHostDeploymentRuleCountry)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (UARPMetaDataHostDeploymentRuleCountry)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataHostDeploymentRuleCountry)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataHostDeploymentRuleCountry *)self init];
   if (!v6)
   {
@@ -41,7 +41,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v7 = v5;
+  v7 = valueCopy;
   v8 = [v7 objectForKeyedSubscript:@"Country"];
   countryCode = v6->_countryCode;
   v6->_countryCode = v8;
@@ -99,21 +99,21 @@ LABEL_15:
   return v18;
 }
 
-- (UARPMetaDataHostDeploymentRuleCountry)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataHostDeploymentRuleCountry)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataHostDeploymentRuleCountry *)self init];
   if (v6)
   {
-    if (a3 != 6)
+    if (length != 6)
     {
       v14 = 0;
       goto LABEL_6;
     }
 
-    v6->_untilYear = uarpNtohs(*a4);
-    v6->_untilMonth = *(a4 + 2);
-    v6->_untilDay = *(a4 + 3);
-    v7 = [NSString stringWithFormat:@"%c%c", *(a4 + 4), *(a4 + 5)];
+    v6->_untilYear = uarpNtohs(*value);
+    v6->_untilMonth = *(value + 2);
+    v6->_untilDay = *(value + 3);
+    v7 = [NSString stringWithFormat:@"%c%c", *(value + 4), *(value + 5)];
     countryCode = v6->_countryCode;
     v6->_countryCode = v7;
 
@@ -138,9 +138,9 @@ LABEL_6:
   untilDay = self->_untilDay;
   untilMonth = self->_untilMonth;
   v9 = untilDay;
-  v4 = [(NSString *)self->_countryCode UTF8String];
-  v10 = *v4;
-  v11 = v4[1];
+  uTF8String = [(NSString *)self->_countryCode UTF8String];
+  v10 = *uTF8String;
+  v11 = uTF8String[1];
   v5 = [NSData dataWithBytes:&v7 length:6];
 
   return v5;
@@ -150,10 +150,10 @@ LABEL_6:
 {
   v3 = objc_opt_new();
   [v3 setDateFormat:@"yyyy-MM-dd"];
-  v4 = [(UARPMetaData *)self tlvName];
+  tlvName = [(UARPMetaData *)self tlvName];
   countryCode = self->_countryCode;
   v6 = [v3 stringFromDate:self->_untilDate];
-  v7 = [NSString stringWithFormat:@"<%@: %@ until %@>", v4, countryCode, v6];
+  v7 = [NSString stringWithFormat:@"<%@: %@ until %@>", tlvName, countryCode, v6];
 
   return v7;
 }

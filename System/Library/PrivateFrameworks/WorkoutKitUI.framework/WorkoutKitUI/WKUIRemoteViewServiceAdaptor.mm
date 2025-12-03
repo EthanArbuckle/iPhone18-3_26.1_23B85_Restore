@@ -1,7 +1,7 @@
 @interface WKUIRemoteViewServiceAdaptor
 - (WKUIRemoteViewServiceAdaptor)init;
-- (void)dismissRemoteViewControllerOnHostController:(id)a3;
-- (void)presentRemoteViewControllerOnHostController:(id)a3 workoutPlanData:(id)a4 dismissHandler:(id)a5 completionHandler:(id)a6;
+- (void)dismissRemoteViewControllerOnHostController:(id)controller;
+- (void)presentRemoteViewControllerOnHostController:(id)controller workoutPlanData:(id)data dismissHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation WKUIRemoteViewServiceAdaptor
@@ -27,32 +27,32 @@
   return v5;
 }
 
-- (void)presentRemoteViewControllerOnHostController:(id)a3 workoutPlanData:(id)a4 dismissHandler:(id)a5 completionHandler:(id)a6
+- (void)presentRemoteViewControllerOnHostController:(id)controller workoutPlanData:(id)data dismissHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, data);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, handler);
   v9 = 0;
-  objc_storeStrong(&v9, a6);
-  [(WorkoutRemoteViewServiceAdaptor *)v13->_viewServiceAdaptor presentRemoteViewControllerOn:location[0] with:v11 dismissCompletion:v10 completion:v9];
+  objc_storeStrong(&v9, completionHandler);
+  [(WorkoutRemoteViewServiceAdaptor *)selfCopy->_viewServiceAdaptor presentRemoteViewControllerOn:location[0] with:v11 dismissCompletion:v10 completion:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissRemoteViewControllerOnHostController:(id)a3
+- (void)dismissRemoteViewControllerOnHostController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(WorkoutRemoteViewServiceAdaptor *)v4->_viewServiceAdaptor dismissRemoteViewControllerOn:location[0]];
+  objc_storeStrong(location, controller);
+  [(WorkoutRemoteViewServiceAdaptor *)selfCopy->_viewServiceAdaptor dismissRemoteViewControllerOn:location[0]];
   objc_storeStrong(location, 0);
 }
 

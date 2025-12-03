@@ -1,7 +1,7 @@
 @interface ButtonActivityPickerItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC11WorkoutCore24ButtonActivityPickerItem)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11WorkoutCore24ButtonActivityPickerItem_title);
   v3 = *&self->type[OBJC_IVAR____TtC11WorkoutCore24ButtonActivityPickerItem_title];
@@ -37,18 +37,18 @@
   MEMORY[0x20F2E7FF0](0);
   v3 = *(&self->super.isa + OBJC_IVAR____TtC11WorkoutCore24ButtonActivityPickerItem_title);
   v4 = *&self->type[OBJC_IVAR____TtC11WorkoutCore24ButtonActivityPickerItem_title];
-  v5 = self;
+  selfCopy = self;
   String.hash(into:)();
   v6 = Hasher.finalize()();
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -57,7 +57,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ButtonActivityPickerItem.isEqual(_:)(v8);

@@ -2,26 +2,26 @@
 - (BLOperation)init;
 - (BLOperationDelegate)delegate;
 - (BLOperationProgress)progress;
-- (BOOL)runSubOperation:(id)a3 onQueue:(id)a4 error:(id *)a5;
-- (BOOL)runSubOperation:(id)a3 returningError:(id *)a4;
+- (BOOL)runSubOperation:(id)operation onQueue:(id)queue error:(id *)error;
+- (BOOL)runSubOperation:(id)operation returningError:(id *)error;
 - (BOOL)shouldMessageMainThread;
 - (BOOL)stopRunLoop;
 - (int)runRunLoopUntilStopped;
-- (void)_addSubOperation:(id)a3;
+- (void)_addSubOperation:(id)operation;
 - (void)_failAfterException;
-- (void)_main:(BOOL)a3;
-- (void)_sendErrorToDelegate:(id)a3;
+- (void)_main:(BOOL)_main;
+- (void)_sendErrorToDelegate:(id)delegate;
 - (void)_sendSuccessToDelegate;
 - (void)_sendWillStartToDelegate;
 - (void)cancel;
-- (void)delegateDispatch:(id)a3;
+- (void)delegateDispatch:(id)dispatch;
 - (void)dispatchCompletionBlock;
 - (void)main;
 - (void)run;
-- (void)run:(BOOL)a3;
+- (void)run:(BOOL)run;
 - (void)sendProgressToDelegate;
-- (void)setDelegate:(id)a3;
-- (void)setShouldMessageMainThread:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setShouldMessageMainThread:(BOOL)thread;
 @end
 
 @implementation BLOperation
@@ -74,60 +74,60 @@
   return v5;
 }
 
-- (BOOL)runSubOperation:(id)a3 returningError:(id *)a4
+- (BOOL)runSubOperation:(id)operation returningError:(id *)error
 {
-  v6 = a3;
-  if (([v6 isCancelled] & 1) == 0)
+  operationCopy = operation;
+  if (([operationCopy isCancelled] & 1) == 0)
   {
-    [v6 setParentOperation:self];
+    [operationCopy setParentOperation:self];
     [(BLOperation *)self lock];
-    [(BLOperation *)self _addSubOperation:v6];
+    [(BLOperation *)self _addSubOperation:operationCopy];
     [(BLOperation *)self unlock];
-    [v6 main];
-    [v6 dispatchCompletionBlock];
-    [v6 setParentOperation:0];
+    [operationCopy main];
+    [operationCopy dispatchCompletionBlock];
+    [operationCopy setParentOperation:0];
     [(BLOperation *)self lock];
-    [(BLOperation *)self _removeSubOperation:v6];
+    [(BLOperation *)self _removeSubOperation:operationCopy];
     [(BLOperation *)self unlock];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [v6 error];
+    *error = [operationCopy error];
   }
 
-  v7 = [v6 success];
+  success = [operationCopy success];
 
-  return v7;
+  return success;
 }
 
-- (BOOL)runSubOperation:(id)a3 onQueue:(id)a4 error:(id *)a5
+- (BOOL)runSubOperation:(id)operation onQueue:(id)queue error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isCancelled] & 1) == 0)
+  operationCopy = operation;
+  queueCopy = queue;
+  if (([operationCopy isCancelled] & 1) == 0)
   {
-    [v8 setParentOperation:self];
+    [operationCopy setParentOperation:self];
     [(BLOperation *)self lock];
-    [(BLOperation *)self _addSubOperation:v8];
+    [(BLOperation *)self _addSubOperation:operationCopy];
     [(BLOperation *)self unlock];
-    v10 = [NSArray arrayWithObject:v8];
-    [v9 addOperations:v10 waitUntilFinished:1];
+    v10 = [NSArray arrayWithObject:operationCopy];
+    [queueCopy addOperations:v10 waitUntilFinished:1];
 
-    [v8 setParentOperation:0];
+    [operationCopy setParentOperation:0];
     [(BLOperation *)self lock];
-    [(BLOperation *)self _removeSubOperation:v8];
+    [(BLOperation *)self _removeSubOperation:operationCopy];
     [(BLOperation *)self unlock];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [v8 error];
+    *error = [operationCopy error];
   }
 
-  v11 = [v8 success];
+  success = [operationCopy success];
 
-  return v11;
+  return success;
 }
 
 - (BOOL)stopRunLoop
@@ -172,20 +172,20 @@
     }
   }
 
-  v9 = [(BLOperation *)self operationRunLoop];
-  v10 = v9;
-  v11 = v9 != 0;
-  if (v9)
+  operationRunLoop = [(BLOperation *)self operationRunLoop];
+  v10 = operationRunLoop;
+  v11 = operationRunLoop != 0;
+  if (operationRunLoop)
   {
-    v12 = [v9 getCFRunLoop];
+    getCFRunLoop = [operationRunLoop getCFRunLoop];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000671CC;
     block[3] = &unk_10011CFE8;
     block[4] = self;
-    CFRunLoopPerformBlock(v12, kCFRunLoopDefaultMode, block);
-    CFRunLoopWakeUp(v12);
-    CFRunLoopStop(v12);
+    CFRunLoopPerformBlock(getCFRunLoop, kCFRunLoopDefaultMode, block);
+    CFRunLoopWakeUp(getCFRunLoop);
+    CFRunLoopStop(getCFRunLoop);
     v11 = 1;
   }
 
@@ -203,19 +203,19 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(BLOperation *)self lock];
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   [(BLOperation *)self unlock];
 }
 
-- (void)setShouldMessageMainThread:(BOOL)a3
+- (void)setShouldMessageMainThread:(BOOL)thread
 {
   [(BLOperation *)self lock];
-  self->_shouldMessageMainThread = a3;
+  self->_shouldMessageMainThread = thread;
 
   [(BLOperation *)self unlock];
 }
@@ -284,30 +284,30 @@ LABEL_12:
   }
 }
 
-- (void)delegateDispatch:(id)a3
+- (void)delegateDispatch:(id)dispatch
 {
-  v4 = a3;
+  dispatchCopy = dispatch;
   if ([(BLOperation *)self shouldMessageMainThread])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000677F0;
     block[3] = &unk_10011D180;
-    v6 = v4;
+    v6 = dispatchCopy;
     dispatch_sync(&_dispatch_main_q, block);
   }
 
   else
   {
-    v4[2](v4);
+    dispatchCopy[2](dispatchCopy);
   }
 }
 
 - (void)dispatchCompletionBlock
 {
-  v3 = [(BLOperation *)self completionBlock];
+  completionBlock = [(BLOperation *)self completionBlock];
 
-  if (v3)
+  if (completionBlock)
   {
     v4 = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
@@ -319,9 +319,9 @@ LABEL_12:
   }
 }
 
-- (void)run:(BOOL)a3
+- (void)run:(BOOL)run
 {
-  if (!a3)
+  if (!run)
   {
     [(BLOperation *)self run];
   }
@@ -329,7 +329,7 @@ LABEL_12:
 
 - (void)sendProgressToDelegate
 {
-  v3 = [(BLOperation *)self delegate];
+  delegate = [(BLOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     [(BLOperation *)self lock];
@@ -339,53 +339,53 @@ LABEL_12:
     v6[1] = 3221225472;
     v6[2] = sub_1000679FC;
     v6[3] = &unk_10011D0C8;
-    v7 = v3;
-    v8 = self;
+    v7 = delegate;
+    selfCopy = self;
     v9 = v4;
     v5 = v4;
     [(BLOperation *)self delegateDispatch:v6];
   }
 }
 
-- (void)_addSubOperation:(id)a3
+- (void)_addSubOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   subOperations = self->_subOperations;
-  v8 = v4;
+  v8 = operationCopy;
   if (!subOperations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_subOperations;
     self->_subOperations = v6;
 
-    v4 = v8;
+    operationCopy = v8;
     subOperations = self->_subOperations;
   }
 
-  [(NSMutableArray *)subOperations addObject:v4];
+  [(NSMutableArray *)subOperations addObject:operationCopy];
 }
 
 - (void)_failAfterException
 {
-  v3 = [(BLOperation *)self error];
-  if (!v3)
+  error = [(BLOperation *)self error];
+  if (!error)
   {
     v4 = sub_1000A8F44(0, 0, 0);
     [(BLOperation *)self setError:v4];
-    v3 = v4;
+    error = v4;
   }
 
-  v5 = v3;
-  [(BLOperation *)self _sendErrorToDelegate:v3];
+  v5 = error;
+  [(BLOperation *)self _sendErrorToDelegate:error];
 }
 
-- (void)_main:(BOOL)a3
+- (void)_main:(BOOL)_main
 {
-  v3 = a3;
+  _mainCopy = _main;
   v5 = +[NSRunLoop currentRunLoop];
   [(BLOperation *)self setOperationRunLoop:v5];
 
-  v6 = [(BLOperation *)self delegate];
+  delegate = [(BLOperation *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
@@ -401,7 +401,7 @@ LABEL_12:
   }
 
   [(BLOperation *)self _sendWillStartToDelegate];
-  [(BLOperation *)self run:v3];
+  [(BLOperation *)self run:_mainCopy];
   if ([(BLOperation *)self success])
   {
     if (v7)
@@ -418,8 +418,8 @@ LABEL_12:
 
   else
   {
-    v10 = [(BLOperation *)self error];
-    [(BLOperation *)self _sendErrorToDelegate:v10];
+    error = [(BLOperation *)self error];
+    [(BLOperation *)self _sendErrorToDelegate:error];
   }
 
   [(BLOperation *)self lock];
@@ -431,49 +431,49 @@ LABEL_12:
   [(BLOperation *)self setOperationRunLoop:0];
 }
 
-- (void)_sendErrorToDelegate:(id)a3
+- (void)_sendErrorToDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(BLOperation *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(BLOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100067D88;
     v6[3] = &unk_10011D0C8;
-    v7 = v5;
-    v8 = self;
-    v9 = v4;
+    v7 = delegate;
+    selfCopy = self;
+    v9 = delegateCopy;
     [(BLOperation *)self delegateDispatch:v6];
   }
 }
 
 - (void)_sendSuccessToDelegate
 {
-  v3 = [(BLOperation *)self delegate];
+  delegate = [(BLOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_100067E40;
     v4[3] = &unk_10011D1A8;
-    v5 = v3;
-    v6 = self;
+    v5 = delegate;
+    selfCopy = self;
     [(BLOperation *)self delegateDispatch:v4];
   }
 }
 
 - (void)_sendWillStartToDelegate
 {
-  v3 = [(BLOperation *)self delegate];
+  delegate = [(BLOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_100067EF4;
     v4[3] = &unk_10011D1A8;
-    v5 = v3;
-    v6 = self;
+    v5 = delegate;
+    selfCopy = self;
     [(BLOperation *)self delegateDispatch:v4];
   }
 }

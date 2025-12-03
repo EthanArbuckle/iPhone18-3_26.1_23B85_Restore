@@ -1,15 +1,15 @@
 @interface BKBookControllerAccessibility
-- (void)scrubValueChanged:(id)a3;
+- (void)scrubValueChanged:(id)changed;
 @end
 
 @implementation BKBookControllerAccessibility
 
-- (void)scrubValueChanged:(id)a3
+- (void)scrubValueChanged:(id)changed
 {
   v5.receiver = self;
   v5.super_class = BKBookControllerAccessibility;
-  v3 = a3;
-  [(BKBookControllerAccessibility *)&v5 scrubValueChanged:v3];
+  changedCopy = changed;
+  [(BKBookControllerAccessibility *)&v5 scrubValueChanged:changedCopy];
   NSClassFromString(@"BKScrubberControl");
   isKindOfClass = objc_opt_isKindOfClass();
 

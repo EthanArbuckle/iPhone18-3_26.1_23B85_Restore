@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (_GCHIDEventDeliveryMonitor)init;
 - (void)dealloc;
-- (void)observer:(id)a3 deliveryChainDidUpdate:(id)a4;
+- (void)observer:(id)observer deliveryChainDidUpdate:(id)update;
 @end
 
 @implementation _GCHIDEventDeliveryMonitor
@@ -27,9 +27,9 @@
   v2 = [(_GCHIDEventDeliveryMonitor *)&v17 init];
   v2->_deferringTarget = 0;
   v3 = objc_alloc(MEMORY[0x1E698E3A8]);
-  v4 = [MEMORY[0x1E698E3C8] nullDisplay];
-  v5 = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
-  v6 = [v3 initWithDisplay:v4 environment:v5];
+  nullDisplay = [MEMORY[0x1E698E3C8] nullDisplay];
+  keyboardFocusEnvironment = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
+  v6 = [v3 initWithDisplay:nullDisplay environment:keyboardFocusEnvironment];
   deliveryChain = v2->_deliveryChain;
   v2->_deliveryChain = v6;
 
@@ -67,19 +67,19 @@
   [(_GCHIDEventDeliveryMonitor *)&v3 dealloc];
 }
 
-- (void)observer:(id)a3 deliveryChainDidUpdate:(id)a4
+- (void)observer:(id)observer deliveryChainDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 deferringPath];
-  if (![v8 count])
+  observerCopy = observer;
+  updateCopy = update;
+  deferringPath = [updateCopy deferringPath];
+  if (![deferringPath count])
   {
     v10 = 0;
     goto LABEL_5;
   }
 
-  v9 = [v8 lastObject];
-  v10 = [v9 pid];
+  lastObject = [deferringPath lastObject];
+  v10 = [lastObject pid];
 
   if (v10 <= 0)
   {

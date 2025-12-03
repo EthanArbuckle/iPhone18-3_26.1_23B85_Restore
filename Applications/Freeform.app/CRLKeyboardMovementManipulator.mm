@@ -1,15 +1,15 @@
 @interface CRLKeyboardMovementManipulator
-- (CRLKeyboardMovementManipulator)initWithInteractiveCanvasController:(id)a3;
-- (double)p_movementFactorInPixelSpace:(int64_t)a3;
-- (void)duplicateSelectionMovingByDelta:(CGPoint)a3;
-- (void)moveSelectionByDelta:(CGPoint)a3;
+- (CRLKeyboardMovementManipulator)initWithInteractiveCanvasController:(id)controller;
+- (double)p_movementFactorInPixelSpace:(int64_t)space;
+- (void)duplicateSelectionMovingByDelta:(CGPoint)delta;
+- (void)moveSelectionByDelta:(CGPoint)delta;
 @end
 
 @implementation CRLKeyboardMovementManipulator
 
-- (CRLKeyboardMovementManipulator)initWithInteractiveCanvasController:(id)a3
+- (CRLKeyboardMovementManipulator)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CRLKeyboardMovementManipulator;
   v5 = [(CRLKeyboardMovementManipulator *)&v9 init];
@@ -17,27 +17,27 @@
   if (v5)
   {
     mTracker = v5->mTracker;
-    v5->mICC = v4;
+    v5->mICC = controllerCopy;
     v5->mTracker = 0;
   }
 
   return v6;
 }
 
-- (double)p_movementFactorInPixelSpace:(int64_t)a3
+- (double)p_movementFactorInPixelSpace:(int64_t)space
 {
-  v3 = a3;
+  spaceCopy = space;
   [(CRLInteractiveCanvasController *)self->mICC viewScale];
-  return v3 / v4;
+  return spaceCopy / v4;
 }
 
-- (void)moveSelectionByDelta:(CGPoint)a3
+- (void)moveSelectionByDelta:(CGPoint)delta
 {
   v4 = +[NSMutableSet set];
-  v5 = [(CRLInteractiveCanvasController *)self->mICC selectionModelTranslator];
-  v6 = [(CRLInteractiveCanvasController *)self->mICC editorController];
-  v7 = [v6 selectionPath];
-  v8 = [v5 unlockedBoardItemsForSelectionPath:v7];
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self->mICC selectionModelTranslator];
+  editorController = [(CRLInteractiveCanvasController *)self->mICC editorController];
+  selectionPath = [editorController selectionPath];
+  v8 = [selectionModelTranslator unlockedBoardItemsForSelectionPath:selectionPath];
 
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -64,17 +64,17 @@
         }
 
         v18 = [(CRLInteractiveCanvasController *)self->mICC repForInfo:*(*(&v57 + 1) + 8 * v17)];
-        v19 = [v18 layout];
-        if ([v19 isDraggable])
+        layout = [v18 layout];
+        if ([layout isDraggable])
         {
-          v20 = [(CRLInteractiveCanvasController *)self->mICC isInDynamicOperation];
+          isInDynamicOperation = [(CRLInteractiveCanvasController *)self->mICC isInDynamicOperation];
 
-          if ((v20 & 1) == 0)
+          if ((isInDynamicOperation & 1) == 0)
           {
             v21 = [v4 count];
-            v22 = [v18 layout];
-            v23 = [v22 geometryInRoot];
-            [v23 frame];
+            layout2 = [v18 layout];
+            geometryInRoot = [layout2 geometryInRoot];
+            [geometryInRoot frame];
             v25 = v24;
             v27 = v26;
             v29 = v28;
@@ -121,19 +121,19 @@
   if ([v4 count])
   {
     v32 = [CRLCanvasRepDragTracker alloc];
-    v33 = [v4 anyObject];
-    v34 = [(CRLCanvasRepDragTracker *)v32 initWithRep:v33];
+    anyObject = [v4 anyObject];
+    v34 = [(CRLCanvasRepDragTracker *)v32 initWithRep:anyObject];
     mTracker = self->mTracker;
     self->mTracker = v34;
 
     [(CRLCanvasRepDragTracker *)self->mTracker setShowDragHUD:0];
     [(CRLCanvasRepDragTracker *)self->mTracker setShouldSnapToGuides:0];
     [(CRLCanvasRepDragTracker *)self->mTracker setIsArrowkeyDrivenTracking:1];
-    v36 = [(CRLInteractiveCanvasController *)self->mICC tmCoordinator];
-    [v36 registerTrackerManipulator:self];
-    [v36 takeControlWithTrackerManipulator:self];
-    v37 = [(CRLInteractiveCanvasController *)self->mICC dynamicOperationController];
-    [(CRLCanvasRepDragTracker *)self->mTracker addUnscaledDragDelta:0 roundDeltaToViewScale:a3.x, a3.y];
+    tmCoordinator = [(CRLInteractiveCanvasController *)self->mICC tmCoordinator];
+    [tmCoordinator registerTrackerManipulator:self];
+    [tmCoordinator takeControlWithTrackerManipulator:self];
+    dynamicOperationController = [(CRLInteractiveCanvasController *)self->mICC dynamicOperationController];
+    [(CRLCanvasRepDragTracker *)self->mTracker addUnscaledDragDelta:0 roundDeltaToViewScale:delta.x, delta.y];
     v38 = sub_100120414(x, y, width, height);
     v40 = v39;
     [(CRLInteractiveCanvasController *)self->mICC convertUnscaledToBoundsPoint:?];
@@ -141,36 +141,36 @@
     v44 = v43;
     [(CRLCanvasRepDragTracker *)self->mTracker setLogicalDragPoint:?];
     [(CRLCanvasRepDragTracker *)self->mTracker setActualDragPoint:v42, v44];
-    [v37 beginOperation];
-    v45 = [(CRLInteractiveCanvasController *)self->mICC commandController];
+    [dynamicOperationController beginOperation];
+    commandController = [(CRLInteractiveCanvasController *)self->mICC commandController];
     v46 = [CRLCanvasCommandSelectionBehavior alloc];
-    v47 = [(CRLInteractiveCanvasController *)self->mICC canvasEditor];
-    v48 = [(CRLInteractiveCanvasController *)self->mICC editorController];
-    v49 = [v48 selectionPath];
-    v50 = [(CRLCanvasCommandSelectionBehavior *)v46 initWithCanvasEditor:v47 type:2 selectionPath:v49 selectionFlags:4];
+    canvasEditor = [(CRLInteractiveCanvasController *)self->mICC canvasEditor];
+    editorController2 = [(CRLInteractiveCanvasController *)self->mICC editorController];
+    selectionPath2 = [editorController2 selectionPath];
+    v50 = [(CRLCanvasCommandSelectionBehavior *)v46 initWithCanvasEditor:canvasEditor type:2 selectionPath:selectionPath2 selectionFlags:4];
 
-    [v45 openGroupWithSelectionBehavior:v50];
-    [v37 startTransformingReps:v4];
-    [(CRLInteractiveCanvasController *)self->mICC convertUnscaledToBoundsPoint:sub_10011F334(v38, v40, a3.x)];
+    [commandController openGroupWithSelectionBehavior:v50];
+    [dynamicOperationController startTransformingReps:v4];
+    [(CRLInteractiveCanvasController *)self->mICC convertUnscaledToBoundsPoint:sub_10011F334(v38, v40, delta.x)];
     v52 = v51;
     v54 = v53;
     [(CRLCanvasRepDragTracker *)self->mTracker setLogicalDragPoint:?];
     [(CRLCanvasRepDragTracker *)self->mTracker setActualDragPoint:v52, v54];
-    [v37 handleTrackerManipulator:self];
-    [v45 closeGroup];
+    [dynamicOperationController handleTrackerManipulator:self];
+    [commandController closeGroup];
     v55 = self->mTracker;
     self->mTracker = 0;
   }
 }
 
-- (void)duplicateSelectionMovingByDelta:(CGPoint)a3
+- (void)duplicateSelectionMovingByDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLInteractiveCanvasController *)self->mICC selectionModelTranslator];
-  v7 = [(CRLInteractiveCanvasController *)self->mICC editorController];
-  v8 = [v7 selectionPath];
-  v9 = [v6 unlockedBoardItemsForSelectionPath:v8];
+  y = delta.y;
+  x = delta.x;
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self->mICC selectionModelTranslator];
+  editorController = [(CRLInteractiveCanvasController *)self->mICC editorController];
+  selectionPath = [editorController selectionPath];
+  v9 = [selectionModelTranslator unlockedBoardItemsForSelectionPath:selectionPath];
 
   v51 = 0u;
   v52 = 0u;
@@ -178,7 +178,7 @@
   v50 = 0u;
   v10 = v9;
   v11 = [v10 countByEnumeratingWithState:&v49 objects:v53 count:16];
-  v12 = v10;
+  canvasEditor = v10;
   if (!v11)
   {
     goto LABEL_25;
@@ -197,10 +197,10 @@
       }
 
       v17 = [(CRLInteractiveCanvasController *)self->mICC repForInfo:*(*(&v49 + 1) + 8 * i)];
-      v18 = [v17 layout];
-      v19 = [v18 isDraggable];
+      layout = [v17 layout];
+      isDraggable = [layout isDraggable];
 
-      v14 += v19;
+      v14 += isDraggable;
     }
 
     v13 = [v10 countByEnumeratingWithState:&v49 objects:v53 count:16];
@@ -210,18 +210,18 @@
 
   if (v14)
   {
-    v12 = [(CRLInteractiveCanvasController *)self->mICC canvasEditor];
-    v20 = [(CRLInteractiveCanvasController *)self->mICC commandController];
-    [v20 openGroup];
-    [v20 enableProgressiveEnqueuingInCurrentGroup];
+    canvasEditor = [(CRLInteractiveCanvasController *)self->mICC canvasEditor];
+    commandController = [(CRLInteractiveCanvasController *)self->mICC commandController];
+    [commandController openGroup];
+    [commandController enableProgressiveEnqueuingInCurrentGroup];
     v21 = +[NSBundle mainBundle];
     v22 = [v21 localizedStringForKey:@"Duplicate" value:0 table:@"UndoStrings"];
-    v47 = v20;
-    [v20 setCurrentGroupActionString:v22];
+    v47 = commandController;
+    [commandController setCurrentGroupActionString:v22];
 
     v23 = [CRLPasteboard pasteboardWithName:@"com.apple.freeform.Canvas.CRLCanvasRepNoPositionOffsetPasteboardName" create:1];
-    v24 = [(CRLInteractiveCanvasController *)self->mICC editorController];
-    v25 = [v24 editorForEditAction:"copy:" withSender:0];
+    editorController2 = [(CRLInteractiveCanvasController *)self->mICC editorController];
+    v25 = [editorController2 editorForEditAction:"copy:" withSender:0];
     v48 = v25;
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -254,19 +254,19 @@
       v32 = NSStringFromClass(v31);
       [CRLAssertionHandler handleFailureInFunction:v29 file:v30 lineNumber:143 isFatal:0 description:"Editor (%{public}@) responds to copy: but not copyForKeyboardMovementDuplicationToPasteboard:. Falling back to canvas editor.", v32];
 
-      v25 = v12;
+      v25 = canvasEditor;
     }
 
     [v25 copyForKeyboardMovementDuplicationToPasteboard:v23];
-    v33 = [v24 selectionPath];
-    v34 = [v33 mostSpecificSelectionOfClass:objc_opt_class()];
+    selectionPath2 = [editorController2 selectionPath];
+    v34 = [selectionPath2 mostSpecificSelectionOfClass:objc_opt_class()];
     if (v34)
     {
       v35 = v34;
-      v36 = [v33 indexForSelection:v34];
+      v36 = [selectionPath2 indexForSelection:v34];
       v37 = objc_opt_class();
-      v46 = v24;
-      [v24 currentEditors];
+      v46 = editorController2;
+      [editorController2 currentEditors];
       v39 = v38 = v23;
       v40 = [v39 objectAtIndexedSubscript:v36];
       v41 = sub_100013F00(v37, v40);
@@ -276,11 +276,11 @@
       {
         v42 = [v41 pasteNativeInfosFromPasteboard:v38];
 
-        v24 = v46;
+        editorController2 = v46;
 LABEL_24:
         v43 = [NSSet setWithArray:v42];
-        v44 = [v12 selectionPathWithInfos:v43];
-        [v24 setSelectionPath:v44];
+        v44 = [canvasEditor selectionPathWithInfos:v43];
+        [editorController2 setSelectionPath:v44];
 
         [(CRLInteractiveCanvasController *)self->mICC layoutIfNeeded];
         [(CRLKeyboardMovementManipulator *)self moveSelectionByDelta:x, y];
@@ -292,10 +292,10 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v24 = v46;
+      editorController2 = v46;
     }
 
-    v42 = [v12 pasteNativeInfosFromPasteboard:v23 allowImageReplacement:0];
+    v42 = [canvasEditor pasteNativeInfosFromPasteboard:v23 allowImageReplacement:0];
     goto LABEL_24;
   }
 

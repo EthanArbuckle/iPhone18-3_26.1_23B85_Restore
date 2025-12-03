@@ -1,34 +1,34 @@
 @interface FPDDownloadOperation
-+ (BOOL)_validateInfo:(id)a3;
-- (FPDDownloadOperation)initWithActionInfo:(id)a3 request:(id)a4 server:(id)a5;
-- (void)_finishedDownloadingLocator:(id)a3 withError:(id)a4;
-- (void)_setupCreatedItemForRoot:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
++ (BOOL)_validateInfo:(id)info;
+- (FPDDownloadOperation)initWithActionInfo:(id)info request:(id)request server:(id)server;
+- (void)_finishedDownloadingLocator:(id)locator withError:(id)error;
+- (void)_setupCreatedItemForRoot:(id)root;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
-- (void)sendPastUpdatesToClient:(id)a3;
+- (void)sendPastUpdatesToClient:(id)client;
 @end
 
 @implementation FPDDownloadOperation
 
-+ (BOOL)_validateInfo:(id)a3
++ (BOOL)_validateInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (FPDDownloadOperation)initWithActionInfo:(id)a3 request:(id)a4 server:(id)a5
+- (FPDDownloadOperation)initWithActionInfo:(id)info request:(id)request server:(id)server
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([FPDDownloadOperation _validateInfo:v8])
+  infoCopy = info;
+  requestCopy = request;
+  serverCopy = server;
+  if ([FPDDownloadOperation _validateInfo:infoCopy])
   {
     v21.receiver = self;
     v21.super_class = FPDDownloadOperation;
-    v11 = [(FPDActionOperation *)&v21 initWithActionInfo:v8 request:v9 server:v10];
+    v11 = [(FPDActionOperation *)&v21 initWithActionInfo:infoCopy request:requestCopy server:serverCopy];
     if (v11)
     {
       v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -37,32 +37,32 @@
       v11->_queue = v13;
 
       v15 = [FPDCoordinator alloc];
-      v16 = [(FPDActionOperation *)v11 manager];
-      v17 = [(FPDCoordinator *)v15 initWithExtensionManager:v16 callbackQueue:v11->_queue];
+      manager = [(FPDActionOperation *)v11 manager];
+      v17 = [(FPDCoordinator *)v15 initWithExtensionManager:manager callbackQueue:v11->_queue];
       coordinator = v11->_coordinator;
       v11->_coordinator = v17;
     }
 
     self = v11;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  resultCopy = result;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  [(FPDActionOperation *)self setError:v6];
+  [(FPDActionOperation *)self setError:errorCopy];
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -71,15 +71,15 @@
 
   v10.receiver = self;
   v10.super_class = FPDDownloadOperation;
-  [(FPDActionOperation *)&v10 finishWithResult:v7 error:v6];
+  [(FPDActionOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)sendPastUpdatesToClient:(id)a3
+- (void)sendPastUpdatesToClient:(id)client
 {
   v28 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v4);
+  clientCopy = client;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   section = __fp_create_section();
   v5 = fp_current_or_default_log();
@@ -103,15 +103,15 @@
   {
     if ([(FPDActionOperation *)self hasFinishedPreflight])
     {
-      [v21 remoteOperationProgressesAreReady];
+      [clientCopy remoteOperationProgressesAreReady];
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v7 = [(FPDActionOperation *)self createdItemByRoot];
-      v8 = [v7 allKeys];
+      createdItemByRoot = [(FPDActionOperation *)self createdItemByRoot];
+      allKeys = [createdItemByRoot allKeys];
 
-      v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v9)
       {
         v10 = *v23;
@@ -122,34 +122,34 @@
           {
             if (*v23 != v10)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allKeys);
             }
 
             v12 = *(*(&v22 + 1) + 8 * v11);
-            v13 = [(FPDActionOperation *)self createdItemByRoot];
-            v14 = [v13 objectForKeyedSubscript:v12];
+            createdItemByRoot2 = [(FPDActionOperation *)self createdItemByRoot];
+            v14 = [createdItemByRoot2 objectForKeyedSubscript:v12];
 
-            v15 = [(FPDActionOperation *)self completedRoots];
-            v16 = [v15 containsObject:v12];
+            completedRoots = [(FPDActionOperation *)self completedRoots];
+            v16 = [completedRoots containsObject:v12];
 
-            v17 = [(FPDActionOperation *)self errorsByRoot];
-            v18 = [v17 objectForKeyedSubscript:v12];
+            errorsByRoot = [(FPDActionOperation *)self errorsByRoot];
+            v18 = [errorsByRoot objectForKeyedSubscript:v12];
 
             if (v16)
             {
-              [v21 remoteOperationCompletedRoot:v12 resultingItem:v14 error:v18 completion:&__block_literal_global_8];
+              [clientCopy remoteOperationCompletedRoot:v12 resultingItem:v14 error:v18 completion:&__block_literal_global_8];
             }
 
             else if (v14)
             {
-              [v21 remoteOperationCreatedRoot:v12 resultingItem:v14 completion:&__block_literal_global_7];
+              [clientCopy remoteOperationCreatedRoot:v12 resultingItem:v14 completion:&__block_literal_global_7];
             }
 
             ++v11;
           }
 
           while (v9 != v11);
-          v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+          v9 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
         }
 
         while (v9);
@@ -162,7 +162,7 @@
       [FPDMoveOperation sendPastUpdatesToClient:];
     }
 
-    [v21 remoteOperationFinishedSendingPastUpdates];
+    [clientCopy remoteOperationFinishedSendingPastUpdates];
   }
 
   __fp_leave_section_Debug();
@@ -170,18 +170,18 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setupCreatedItemForRoot:(id)a3
+- (void)_setupCreatedItemForRoot:(id)root
 {
-  v4 = a3;
-  v5 = [(FPOperation *)self callbackQueue];
+  rootCopy = root;
+  callbackQueue = [(FPOperation *)self callbackQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__FPDDownloadOperation__setupCreatedItemForRoot___block_invoke;
   v7[3] = &unk_1E83BE158;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = rootCopy;
+  selfCopy = self;
+  v6 = rootCopy;
+  dispatch_async(callbackQueue, v7);
 }
 
 void __49__FPDDownloadOperation__setupCreatedItemForRoot___block_invoke(uint64_t a1)
@@ -205,21 +205,21 @@ void __49__FPDDownloadOperation__setupCreatedItemForRoot___block_invoke(uint64_t
   [v5 forAllClients:v6];
 }
 
-- (void)_finishedDownloadingLocator:(id)a3 withError:(id)a4
+- (void)_finishedDownloadingLocator:(id)locator withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPOperation *)self callbackQueue];
+  locatorCopy = locator;
+  errorCopy = error;
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__FPDDownloadOperation__finishedDownloadingLocator_withError___block_invoke;
   block[3] = &unk_1E83BDE60;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = errorCopy;
+  v13 = locatorCopy;
+  selfCopy = self;
+  v9 = locatorCopy;
+  v10 = errorCopy;
+  dispatch_async(callbackQueue, block);
 }
 
 void __62__FPDDownloadOperation__finishedDownloadingLocator_withError___block_invoke(id *a1)
@@ -266,7 +266,7 @@ void __62__FPDDownloadOperation__finishedDownloadingLocator_withError___block_in
 - (void)main
 {
   v4 = @"no";
-  if (a1)
+  if (self)
   {
     v4 = @"yes";
   }

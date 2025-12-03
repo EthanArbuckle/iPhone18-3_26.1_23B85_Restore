@@ -1,37 +1,37 @@
 @interface MSComposeBundlePageController
-- (MSComposeBundlePageController)initWithPlugIn:(id)a3 contextController:(id)a4;
+- (MSComposeBundlePageController)initWithPlugIn:(id)in contextController:(id)controller;
 - (WKWebProcessPlugIn)plugIn;
 - (id)_linkGeneratorProxy;
-- (id)createRichLink:(id)a3;
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7;
-- (void)changeQuoteLevelBy:(int64_t)a3 withUndoActionName:(id)a4;
-- (void)enableSmartReply:(BOOL)a3;
-- (void)initializeBodyField:(id)a3;
+- (id)createRichLink:(id)link;
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response;
+- (void)changeQuoteLevelBy:(int64_t)by withUndoActionName:(id)name;
+- (void)enableSmartReply:(BOOL)reply;
+- (void)initializeBodyField:(id)field;
 - (void)initializeGlobalObject;
-- (void)insertRichLinkWithURL:(id)a3 completionHandler:(id)a4;
-- (void)insertString:(id)a3;
+- (void)insertRichLinkWithURL:(id)l completionHandler:(id)handler;
+- (void)insertString:(id)string;
 - (void)invalidate;
-- (void)performBodyFieldMethodOnPage:(id)a3 withArguments:(id)a4;
-- (void)performOnPage:(id)a3;
+- (void)performBodyFieldMethodOnPage:(id)page withArguments:(id)arguments;
+- (void)performOnPage:(id)page;
 - (void)resumePerformOnPage;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world;
 @end
 
 @implementation MSComposeBundlePageController
 
-- (MSComposeBundlePageController)initWithPlugIn:(id)a3 contextController:(id)a4
+- (MSComposeBundlePageController)initWithPlugIn:(id)in contextController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = MSComposeBundlePageController;
   v8 = [(MSComposeBundlePageController *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_plugIn, v6);
-    objc_storeStrong(&v9->_controller, a4);
+    objc_storeWeak(&v8->_plugIn, inCopy);
+    objc_storeStrong(&v9->_controller, controller);
     v9->_performOnPageSuspendCount = 1;
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     blocksToPerformOnPage = v9->_blocksToPerformOnPage;
@@ -60,10 +60,10 @@
   self->_webContentProcessTransaction = 0;
 }
 
-- (void)performOnPage:(id)a3
+- (void)performOnPage:(id)page
 {
-  v4 = a3;
-  v7 = v4;
+  pageCopy = page;
+  v7 = pageCopy;
   if (self->_performOnPageSuspendCount)
   {
     blocksToPerformOnPage = self->_blocksToPerformOnPage;
@@ -74,7 +74,7 @@
   else
   {
     self->_performOnPageSuspendCount = 1;
-    (*(v4 + 2))();
+    (*(pageCopy + 2))();
     [(MSComposeBundlePageController *)self resumePerformOnPage];
   }
 }
@@ -87,13 +87,13 @@
   {
     do
     {
-      v4 = [(NSMutableArray *)self->_blocksToPerformOnPage firstObject];
-      if (!v4)
+      firstObject = [(NSMutableArray *)self->_blocksToPerformOnPage firstObject];
+      if (!firstObject)
       {
         break;
       }
 
-      v5 = v4;
+      v5 = firstObject;
       [(NSMutableArray *)self->_blocksToPerformOnPage removeObjectAtIndex:0];
       ++self->_performOnPageSuspendCount;
       v5[2](v5);
@@ -106,19 +106,19 @@
   }
 }
 
-- (void)performBodyFieldMethodOnPage:(id)a3 withArguments:(id)a4
+- (void)performBodyFieldMethodOnPage:(id)page withArguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  pageCopy = page;
+  argumentsCopy = arguments;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__MSComposeBundlePageController_performBodyFieldMethodOnPage_withArguments___block_invoke;
   v10[3] = &unk_27985D6A0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = pageCopy;
+  v12 = argumentsCopy;
+  v8 = argumentsCopy;
+  v9 = pageCopy;
   [(MSComposeBundlePageController *)self performOnPage:v10];
 }
 
@@ -127,10 +127,10 @@
   linkGeneratorProxy = self->_linkGeneratorProxy;
   if (!linkGeneratorProxy)
   {
-    v4 = [(MSComposeBundlePageController *)self controller];
-    v5 = [v4 _remoteObjectRegistry];
+    controller = [(MSComposeBundlePageController *)self controller];
+    _remoteObjectRegistry = [controller _remoteObjectRegistry];
     v6 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_2869394A8];
-    v7 = [v5 remoteObjectProxyWithInterface:v6];
+    v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
     v8 = self->_linkGeneratorProxy;
     self->_linkGeneratorProxy = v7;
 
@@ -140,20 +140,20 @@
   return linkGeneratorProxy;
 }
 
-- (id)createRichLink:(id)a3
+- (id)createRichLink:(id)link
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CD4640] currentContext];
-  v6 = [v5 objectForKeyedSubscript:@"Promise"];
+  linkCopy = link;
+  currentContext = [MEMORY[0x277CD4640] currentContext];
+  v6 = [currentContext objectForKeyedSubscript:@"Promise"];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__MSComposeBundlePageController_createRichLink___block_invoke;
   v14[3] = &unk_27985D6F0;
-  v7 = v4;
+  v7 = linkCopy;
   v15 = v7;
-  v16 = self;
-  v8 = v5;
+  selfCopy = self;
+  v8 = currentContext;
   v17 = v8;
   v9 = MEMORY[0x259C75CA0](v14);
   v18[0] = v9;
@@ -217,19 +217,19 @@ void __48__MSComposeBundlePageController_createRichLink___block_invoke_2(uint64_
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertRichLinkWithURL:(id)a3 completionHandler:(id)a4
+- (void)insertRichLinkWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__MSComposeBundlePageController_insertRichLinkWithURL_completionHandler___block_invoke;
   v10[3] = &unk_27985D740;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   [(MSComposeBundlePageController *)self performOnPage:v10];
 }
 
@@ -266,34 +266,34 @@ uint64_t __73__MSComposeBundlePageController_insertRichLinkWithURL_completionHan
   return [v2 resumePerformOnPage];
 }
 
-- (void)changeQuoteLevelBy:(int64_t)a3 withUndoActionName:(id)a4
+- (void)changeQuoteLevelBy:(int64_t)by withUndoActionName:(id)name
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  nameCopy = name;
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:by];
   v10[0] = v7;
-  v10[1] = v6;
+  v10[1] = nameCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   [(MSComposeBundlePageController *)self performBodyFieldMethodOnPage:@"changeQuoteLevel" withArguments:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertString:(id)a3
+- (void)insertString:(id)string
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7[0] = v4;
+  stringCopy = string;
+  v7[0] = stringCopy;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(MSComposeBundlePageController *)self performBodyFieldMethodOnPage:@"insertString" withArguments:v5];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableSmartReply:(BOOL)a3
+- (void)enableSmartReply:(BOOL)reply
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  self->_isSmartReplyAvailable = a3;
+  self->_isSmartReplyAvailable = reply;
   v4 = [MEMORY[0x277CCABB0] numberWithBool:?];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
@@ -302,33 +302,33 @@ uint64_t __73__MSComposeBundlePageController_insertRichLinkWithURL_completionHan
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 mainFrame];
+  controllerCopy = controller;
+  frameCopy = frame;
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v7 == v6)
+  if (mainFrame == frameCopy)
   {
     [(MSComposeBundlePageController *)self resumePerformOnPage];
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 mainFrame];
-  v12 = v11;
-  if (v11 == v9)
+  controllerCopy = controller;
+  frameCopy = frame;
+  worldCopy = world;
+  mainFrame = [controllerCopy mainFrame];
+  v12 = mainFrame;
+  if (mainFrame == frameCopy)
   {
-    v13 = [MEMORY[0x277CE3848] normalWorld];
+    normalWorld = [MEMORY[0x277CE3848] normalWorld];
 
-    if (v13 == v10)
+    if (normalWorld == worldCopy)
     {
-      v14 = [v9 jsContextForWorld:v10];
+      v14 = [frameCopy jsContextForWorld:worldCopy];
       jsContext = self->_jsContext;
       self->_jsContext = v14;
 
@@ -339,7 +339,7 @@ uint64_t __73__MSComposeBundlePageController_insertRichLinkWithURL_completionHan
       v26[3] = &unk_27985D768;
       objc_copyWeak(&v27, &location);
       [(JSContext *)self->_jsContext setExceptionHandler:v26];
-      v16 = [(JSContext *)self->_jsContext globalObject];
+      globalObject = [(JSContext *)self->_jsContext globalObject];
       v29[0] = @"unhandledrejection";
       v21 = MEMORY[0x277D85DD0];
       v22 = 3221225472;
@@ -349,7 +349,7 @@ uint64_t __73__MSComposeBundlePageController_insertRichLinkWithURL_completionHan
       v17 = MEMORY[0x259C75CA0](&v21);
       v29[1] = v17;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:{2, v21, v22, v23, v24}];
-      v19 = [v16 invokeMethod:@"addEventListener" withArguments:v18];
+      v19 = [globalObject invokeMethod:@"addEventListener" withArguments:v18];
 
       [(MSComposeBundlePageController *)self initializeGlobalObject];
       objc_destroyWeak(&v25);
@@ -412,11 +412,11 @@ void __120__MSComposeBundlePageController_webProcessPlugInBrowserContextControll
   }
 }
 
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response
 {
-  v7 = [(MSComposeBundlePageController *)self willSendRequest:a6, a4, a5];
+  resource = [(MSComposeBundlePageController *)self willSendRequest:request, frame, resource];
 
-  return v7;
+  return resource;
 }
 
 - (void)initializeGlobalObject
@@ -469,15 +469,15 @@ void __120__MSComposeBundlePageController_webProcessPlugInBrowserContextControll
   [(JSContext *)self->_jsContext setObject:&__block_literal_global_143 forKeyedSubscript:@"isInlineGenmojiEnabled"];
   [(JSContext *)self->_jsContext setObject:&__block_literal_global_149 forKeyedSubscript:@"canUseNamedLinks"];
   objc_initWeak(&location, self);
-  v10 = [(MSComposeBundlePageController *)self observerProxy];
+  observerProxy = [(MSComposeBundlePageController *)self observerProxy];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __55__MSComposeBundlePageController_initializeGlobalObject__block_invoke_4;
   v41[3] = &unk_27985D7D8;
   objc_copyWeak(&v42, &location);
-  [v10 composeBodyFieldQuickReplyEnabled:v41];
+  [observerProxy composeBodyFieldQuickReplyEnabled:v41];
 
-  v11 = [(JSContext *)self->_jsContext globalObject];
+  globalObject = [(JSContext *)self->_jsContext globalObject];
   v12 = *MEMORY[0x277CD4618];
   v13 = MEMORY[0x277CBEC38];
   v49[0] = MEMORY[0x277CBEC38];
@@ -492,15 +492,15 @@ void __120__MSComposeBundlePageController_webProcessPlugInBrowserContextControll
   v15 = MEMORY[0x259C75CA0](v39);
   v49[1] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-  [v11 defineProperty:@"isQuickReplyEnabled" descriptor:v16];
+  [globalObject defineProperty:@"isQuickReplyEnabled" descriptor:v16];
 
-  v17 = [(MSComposeBundlePageController *)self observerProxy];
+  observerProxy2 = [(MSComposeBundlePageController *)self observerProxy];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __55__MSComposeBundlePageController_initializeGlobalObject__block_invoke_6;
   v37[3] = &unk_27985D7D8;
   objc_copyWeak(&v38, &location);
-  [v17 composeBodyFieldSmartReplyAvailable:v37];
+  [observerProxy2 composeBodyFieldSmartReplyAvailable:v37];
 
   v46[1] = v14;
   v47[0] = v13;
@@ -513,15 +513,15 @@ void __120__MSComposeBundlePageController_webProcessPlugInBrowserContextControll
   v18 = MEMORY[0x259C75CA0](v35);
   v47[1] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
-  [v11 defineProperty:@"isSmartReplyEnabled" descriptor:v19];
+  [globalObject defineProperty:@"isSmartReplyEnabled" descriptor:v19];
 
-  v20 = [(MSComposeBundlePageController *)self observerProxy];
+  observerProxy3 = [(MSComposeBundlePageController *)self observerProxy];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __55__MSComposeBundlePageController_initializeGlobalObject__block_invoke_8;
   v33[3] = &unk_27985D7D8;
   objc_copyWeak(&v34, &location);
-  [v20 composeBodyFieldAddLinkPreviewsEnabled:v33];
+  [observerProxy3 composeBodyFieldAddLinkPreviewsEnabled:v33];
 
   v44[1] = v14;
   v45[0] = v13;
@@ -534,7 +534,7 @@ void __120__MSComposeBundlePageController_webProcessPlugInBrowserContextControll
   v21 = MEMORY[0x259C75CA0](&v28);
   v45[1] = v21;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:{2, v28, v29, v30, v31}];
-  [v11 defineProperty:@"addLinkPreviewsEnabled" descriptor:v22];
+  [globalObject defineProperty:@"addLinkPreviewsEnabled" descriptor:v22];
 
   [(JSContext *)self->_jsContext setObject:@"[\\n\\r\\s]+" forKeyedSubscript:@"whitespaceRegex"];
   [(JSContext *)self->_jsContext setObject:@"(\\p{Emoji_Presentation}|\\p{Extended_Pictographic})" forKeyedSubscript:@"emojiRegex"];
@@ -651,9 +651,9 @@ uint64_t __55__MSComposeBundlePageController_initializeGlobalObject__block_invok
   return v7;
 }
 
-- (void)initializeBodyField:(id)a3
+- (void)initializeBodyField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
@@ -661,10 +661,10 @@ uint64_t __55__MSComposeBundlePageController_initializeGlobalObject__block_invok
   v10 = &unk_27985D868;
   objc_copyWeak(&v11, &location);
   v5 = MEMORY[0x259C75CA0](&v7);
-  [(JSValue *)v4 setObject:v5 forKeyedSubscript:@"_createRichLink", v7, v8, v9, v10];
+  [(JSValue *)fieldCopy setObject:v5 forKeyedSubscript:@"_createRichLink", v7, v8, v9, v10];
 
   jsBodyField = self->_jsBodyField;
-  self->_jsBodyField = v4;
+  self->_jsBodyField = fieldCopy;
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

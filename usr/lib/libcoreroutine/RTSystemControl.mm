@@ -1,23 +1,23 @@
 @interface RTSystemControl
-+ (id)valueForKey:(id)a3;
-+ (id)valueForMib:(int *)a3 miblen:(int)a4;
-+ (unint64_t)sysctlByName:(id)a3;
++ (id)valueForKey:(id)key;
++ (id)valueForMib:(int *)mib miblen:(int)miblen;
++ (unint64_t)sysctlByName:(id)name;
 @end
 
 @implementation RTSystemControl
 
-+ (id)valueForKey:(id)a3
++ (id)valueForKey:(id)key
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  keyCopy = key;
+  v4 = keyCopy;
+  if (keyCopy)
   {
     v5 = _MergedGlobals_113;
     if (!_MergedGlobals_113)
     {
       _MergedGlobals_113 = 48;
-      sysctlnametomib([v3 UTF8String], dword_2814A7CE0, &_MergedGlobals_113);
+      sysctlnametomib([keyCopy UTF8String], dword_2814A7CE0, &_MergedGlobals_113);
       v5 = _MergedGlobals_113;
     }
 
@@ -40,8 +40,8 @@
     if ((sysctl(dword_2814A7CE0, v5, v15, &v12, 0, 0) & 0x80000000) == 0)
     {
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v15];
-      v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v8 = [v6 stringByTrimmingCharactersInSet:v7];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v8 = [v6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
 LABEL_13:
       goto LABEL_15;
@@ -82,19 +82,19 @@ LABEL_15:
   return v8;
 }
 
-+ (id)valueForMib:(int *)a3 miblen:(int)a4
++ (id)valueForMib:(int *)mib miblen:(int)miblen
 {
   v4 = 0;
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (mib && miblen)
   {
     v9 = 256;
     memset(v12, 0, sizeof(v12));
-    if ((sysctl(a3, a4, v12, &v9, 0, 0) & 0x80000000) == 0)
+    if ((sysctl(mib, miblen, v12, &v9, 0, 0) & 0x80000000) == 0)
     {
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:v12];
-      v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v4 = [v5 stringByTrimmingCharactersInSet:v6];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v4 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
 LABEL_9:
       goto LABEL_10;
@@ -123,11 +123,11 @@ LABEL_10:
   return v4;
 }
 
-+ (unint64_t)sysctlByName:(id)a3
++ (unint64_t)sysctlByName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -140,14 +140,14 @@ LABEL_10:
     }
   }
 
-  if (![v3 length])
+  if (![nameCopy length])
   {
     goto LABEL_12;
   }
 
   *v12 = 0;
   v9 = 8;
-  if (sysctlbyname([v3 UTF8String], v12, &v9, 0, 0) == -1)
+  if (sysctlbyname([nameCopy UTF8String], v12, &v9, 0, 0) == -1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {

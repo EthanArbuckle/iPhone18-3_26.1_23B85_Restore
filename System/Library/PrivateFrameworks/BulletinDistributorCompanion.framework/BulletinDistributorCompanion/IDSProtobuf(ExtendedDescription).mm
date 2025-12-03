@@ -6,12 +6,12 @@
 
 - (id)extendedDescription
 {
-  v2 = [a1 context];
+  context = [self context];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 serviceIdentifier];
-  v5 = [v2 incomingResponseIdentifier];
-  v6 = [v2 outgoingResponseIdentifier];
-  v7 = [v3 stringWithFormat:@"%@ service: %@ incoming ID: %@ outgoing ID: %@", a1, v4, v5, v6];;
+  serviceIdentifier = [context serviceIdentifier];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
+  v7 = [v3 stringWithFormat:@"%@ service: %@ incoming ID: %@ outgoing ID: %@", self, serviceIdentifier, incomingResponseIdentifier, outgoingResponseIdentifier];;
 
   return v7;
 }

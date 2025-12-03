@@ -1,11 +1,11 @@
 @interface NTKFacePigmentSet
-+ (id)facePigmentSetFromProtoBuffer:(id)a3 sharedCollections:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)facePigmentSetFromProtoBuffer:(id)buffer sharedCollections:(id)collections;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)defaultGalleryColors;
-- (id)collectionForSlot:(id)a3;
+- (id)collectionForSlot:(id)slot;
 - (id)pigmentSet;
-- (id)pigmentsFromMostRecentAddableCollectionForSlot:(id)a3;
-- (id)pigmentsFromMostRecentAddableCollectionsForSlot:(id)a3;
+- (id)pigmentsFromMostRecentAddableCollectionForSlot:(id)slot;
+- (id)pigmentsFromMostRecentAddableCollectionsForSlot:(id)slot;
 - (id)protoBuffer;
 - (int64_t)numberOfItemsForAllSlots;
 @end
@@ -14,29 +14,29 @@
 
 - (id)pigmentSet
 {
-  v2 = [(NSDictionary *)self->_collectionBySlots allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSDictionary *)self->_collectionBySlots allValues];
+  firstObject = [allValues firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)collectionForSlot:(id)a3
+- (id)collectionForSlot:(id)slot
 {
-  v4 = a3;
-  if (!v4 || ([(NSDictionary *)self->_collectionBySlots objectForKeyedSubscript:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  slotCopy = slot;
+  if (!slotCopy || ([(NSDictionary *)self->_collectionBySlots objectForKeyedSubscript:slotCopy], (pigmentSet = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(NTKFacePigmentSet *)self pigmentSet];
+    pigmentSet = [(NTKFacePigmentSet *)self pigmentSet];
   }
 
-  return v5;
+  return pigmentSet;
 }
 
 - (NSArray)defaultGalleryColors
 {
-  v2 = [(NTKFacePigmentSet *)self pigmentSet];
-  v3 = [v2 defaultGalleryColors];
+  pigmentSet = [(NTKFacePigmentSet *)self pigmentSet];
+  defaultGalleryColors = [pigmentSet defaultGalleryColors];
 
-  return v3;
+  return defaultGalleryColors;
 }
 
 - (int64_t)numberOfItemsForAllSlots
@@ -45,13 +45,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(NTKFacePigmentSet *)self collectionBySlots];
+  collectionBySlots = [(NTKFacePigmentSet *)self collectionBySlots];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__NTKFacePigmentSet_numberOfItemsForAllSlots__block_invoke;
   v5[3] = &unk_278781A20;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [collectionBySlots enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -65,32 +65,32 @@ uint64_t __45__NTKFacePigmentSet_numberOfItemsForAllSlots__block_invoke(uint64_t
   return result;
 }
 
-- (id)pigmentsFromMostRecentAddableCollectionForSlot:(id)a3
+- (id)pigmentsFromMostRecentAddableCollectionForSlot:(id)slot
 {
   v3 = [(NTKFacePigmentSet *)self collectionForSlot:0];
-  v4 = [v3 pigmentsFromMostRecentAddableCollection];
+  pigmentsFromMostRecentAddableCollection = [v3 pigmentsFromMostRecentAddableCollection];
 
-  return v4;
+  return pigmentsFromMostRecentAddableCollection;
 }
 
-- (id)pigmentsFromMostRecentAddableCollectionsForSlot:(id)a3
+- (id)pigmentsFromMostRecentAddableCollectionsForSlot:(id)slot
 {
   v3 = [(NTKFacePigmentSet *)self collectionForSlot:0];
-  v4 = [v3 pigmentsFromMostRecentAddableCollections];
+  pigmentsFromMostRecentAddableCollections = [v3 pigmentsFromMostRecentAddableCollections];
 
-  return v4;
+  return pigmentsFromMostRecentAddableCollections;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 domain];
-    v7 = [(NTKFacePigmentSet *)self domain];
-    v8 = NTKEqualObjects(v6, v7);
+    v5 = equalCopy;
+    domain = [v5 domain];
+    domain2 = [(NTKFacePigmentSet *)self domain];
+    v8 = NTKEqualObjects(domain, domain2);
 
     if (v8 && (v9 = [v5 numberOfSlots], v9 == -[NTKFacePigmentSet numberOfSlots](self, "numberOfSlots")) && (objc_msgSend(v5, "collectionBySlots"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), -[NTKFacePigmentSet collectionBySlots](self, "collectionBySlots"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v10, v11 == v13))
     {
@@ -98,14 +98,14 @@ uint64_t __45__NTKFacePigmentSet_numberOfItemsForAllSlots__block_invoke(uint64_t
       v19 = &v18;
       v20 = 0x2020000000;
       v21 = 1;
-      v14 = [v5 collectionBySlots];
+      collectionBySlots = [v5 collectionBySlots];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __29__NTKFacePigmentSet_isEqual___block_invoke;
       v17[3] = &unk_278781A48;
       v17[4] = self;
       v17[5] = &v18;
-      [v14 enumerateKeysAndObjectsUsingBlock:v17];
+      [collectionBySlots enumerateKeysAndObjectsUsingBlock:v17];
 
       v15 = *(v19 + 24);
       _Block_object_dispose(&v18, 8);
@@ -141,32 +141,32 @@ void __29__NTKFacePigmentSet_isEqual___block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-+ (id)facePigmentSetFromProtoBuffer:(id)a3 sharedCollections:(id)a4
++ (id)facePigmentSetFromProtoBuffer:(id)buffer sharedCollections:(id)collections
 {
-  v6 = a4;
-  if (a3)
+  collectionsCopy = collections;
+  if (buffer)
   {
-    v7 = a3;
-    v8 = objc_alloc_init(a1);
-    v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v7, "collectionBySlotsCount")}];
-    v10 = [v7 collectionBySlots];
+    bufferCopy = buffer;
+    v8 = objc_alloc_init(self);
+    v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(bufferCopy, "collectionBySlotsCount")}];
+    collectionBySlots = [bufferCopy collectionBySlots];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __69__NTKFacePigmentSet_facePigmentSetFromProtoBuffer_sharedCollections___block_invoke;
     v20 = &unk_278781A70;
-    v21 = v6;
+    v21 = collectionsCopy;
     v11 = v9;
     v22 = v11;
-    [v10 enumerateObjectsUsingBlock:&v17];
+    [collectionBySlots enumerateObjectsUsingBlock:&v17];
 
     v12 = v8[2];
     v8[2] = v11;
     v13 = v11;
 
-    v14 = [v7 domain];
+    domain = [bufferCopy domain];
 
     v15 = v8[1];
-    v8[1] = v14;
+    v8[1] = domain;
   }
 
   else

@@ -1,9 +1,9 @@
 @interface AXUIClientMessenger
-+ (id)clientMessengerWithIdentifier:(id)a3;
++ (id)clientMessengerWithIdentifier:(id)identifier;
 - (AXUIClientMessenger)init;
-- (AXUIClientMessenger)initWithClientIdentifier:(id)a3 connection:(id)a4;
+- (AXUIClientMessenger)initWithClientIdentifier:(id)identifier connection:(id)connection;
 - (id)description;
-- (id)sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 error:(id *)a5;
+- (id)sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier error:(id *)error;
 @end
 
 @implementation AXUIClientMessenger
@@ -13,17 +13,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AXUIClientMessenger *)self clientIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p clientIdentifier = %@>", v5, self, v6];;
+  clientIdentifier = [(AXUIClientMessenger *)self clientIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p clientIdentifier = %@>", v5, self, clientIdentifier];;
 
   return v7;
 }
 
-+ (id)clientMessengerWithIdentifier:(id)a3
++ (id)clientMessengerWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[AXUIServiceManager sharedServiceManager];
-  v5 = [v4 _clientMessengerWithIdentifier:v3];
+  v5 = [v4 _clientMessengerWithIdentifier:identifierCopy];
 
   return v5;
 }
@@ -40,28 +40,28 @@
   return 0;
 }
 
-- (AXUIClientMessenger)initWithClientIdentifier:(id)a3 connection:(id)a4
+- (AXUIClientMessenger)initWithClientIdentifier:(id)identifier connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = AXUIClientMessenger;
   v8 = [(AXUIClientMessenger *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(AXUIClientMessenger *)v8 setClientIdentifier:v6];
-    [(AXUIClientMessenger *)v9 setConnection:v7];
+    [(AXUIClientMessenger *)v8 setClientIdentifier:identifierCopy];
+    [(AXUIClientMessenger *)v9 setConnection:connectionCopy];
   }
 
   return v9;
 }
 
-- (id)sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 error:(id *)a5
+- (id)sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier error:(id *)error
 {
-  v8 = a3;
+  messageCopy = message;
   v9 = +[AXUIServiceManager sharedServiceManager];
-  v10 = [v9 _sendSynchronousMessage:v8 withIdentifier:a4 toClientWithMessenger:self error:a5];
+  v10 = [v9 _sendSynchronousMessage:messageCopy withIdentifier:identifier toClientWithMessenger:self error:error];
 
   return v10;
 }

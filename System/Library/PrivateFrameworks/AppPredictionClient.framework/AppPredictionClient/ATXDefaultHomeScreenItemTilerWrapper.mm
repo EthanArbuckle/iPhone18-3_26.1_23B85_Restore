@@ -1,17 +1,17 @@
 @interface ATXDefaultHomeScreenItemTilerWrapper
-- (ATXDefaultHomeScreenItemTilerWrapper)initWithDefaultStack:(id)a3 defaultWidgetsSmall:(id)a4 defaultWidgetsMedium:(id)a5 defaultWidgetsLarge:(id)a6 defaultWidgetsExtraLarge:(id)a7 widgetFamilyMask:(unint64_t)a8 gridSize:(unint64_t)a9 galleryRequest:(id)a10;
+- (ATXDefaultHomeScreenItemTilerWrapper)initWithDefaultStack:(id)stack defaultWidgetsSmall:(id)small defaultWidgetsMedium:(id)medium defaultWidgetsLarge:(id)large defaultWidgetsExtraLarge:(id)extraLarge widgetFamilyMask:(unint64_t)mask gridSize:(unint64_t)size galleryRequest:(id)self0;
 @end
 
 @implementation ATXDefaultHomeScreenItemTilerWrapper
 
-- (ATXDefaultHomeScreenItemTilerWrapper)initWithDefaultStack:(id)a3 defaultWidgetsSmall:(id)a4 defaultWidgetsMedium:(id)a5 defaultWidgetsLarge:(id)a6 defaultWidgetsExtraLarge:(id)a7 widgetFamilyMask:(unint64_t)a8 gridSize:(unint64_t)a9 galleryRequest:(id)a10
+- (ATXDefaultHomeScreenItemTilerWrapper)initWithDefaultStack:(id)stack defaultWidgetsSmall:(id)small defaultWidgetsMedium:(id)medium defaultWidgetsLarge:(id)large defaultWidgetsExtraLarge:(id)extraLarge widgetFamilyMask:(unint64_t)mask gridSize:(unint64_t)size galleryRequest:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  stackCopy = stack;
+  smallCopy = small;
+  mediumCopy = medium;
+  largeCopy = large;
+  extraLargeCopy = extraLarge;
+  requestCopy = request;
   v32.receiver = self;
   v32.super_class = ATXDefaultHomeScreenItemTilerWrapper;
   v22 = [(ATXDefaultHomeScreenItemTilerWrapper *)&v32 init];
@@ -20,35 +20,35 @@
     goto LABEL_24;
   }
 
-  if (a9 <= 1)
+  if (size <= 1)
   {
-    if (!a9)
+    if (!size)
     {
-      if (v21)
+      if (requestCopy)
       {
-        v28 = [v21 clientIdentity];
-        if ([v28 widgetClient] == 2)
+        clientIdentity = [requestCopy clientIdentity];
+        if ([clientIdentity widgetClient] == 2)
         {
-          v31 = [v21 limit];
-          v29 = [v31 unsignedIntegerValue];
+          limit = [requestCopy limit];
+          unsignedIntegerValue = [limit unsignedIntegerValue];
         }
 
         else
         {
-          v29 = 12;
+          unsignedIntegerValue = 12;
         }
       }
 
       else
       {
-        v29 = 12;
+        unsignedIntegerValue = 12;
       }
 
-      v27 = [[ATXDefaultHomeScreenItemTilerGridSize2 alloc] initWithDefaultStack:v16 defaultWidgetsSmall:v17 defaultWidgetsMedium:v18 defaultWidgetsLarge:v19 defaultWidgetsExtraLarge:v20 widgetFamilyMask:a8 targetNumberOfSuggestions:v29];
+      v27 = [[ATXDefaultHomeScreenItemTilerGridSize2 alloc] initWithDefaultStack:stackCopy defaultWidgetsSmall:smallCopy defaultWidgetsMedium:mediumCopy defaultWidgetsLarge:largeCopy defaultWidgetsExtraLarge:extraLargeCopy widgetFamilyMask:mask targetNumberOfSuggestions:unsignedIntegerValue];
       goto LABEL_22;
     }
 
-    if (a9 != 1)
+    if (size != 1)
     {
       goto LABEL_24;
     }
@@ -57,7 +57,7 @@
     goto LABEL_12;
   }
 
-  switch(a9)
+  switch(size)
   {
     case 2uLL:
       v24 = ATXDefaultHomeScreenItemTilerGridSize4;
@@ -65,7 +65,7 @@ LABEL_12:
       v25 = [v24 alloc];
       v26 = 7;
 LABEL_14:
-      v27 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)v25 initWithDefaultStack:v16 defaultWidgetsSmall:v17 defaultWidgetsMedium:v18 defaultWidgetsLarge:v19 defaultWidgetsExtraLarge:v20 widgetFamilyMask:a8 targetNumberOfSuggestions:v26];
+      v27 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)v25 initWithDefaultStack:stackCopy defaultWidgetsSmall:smallCopy defaultWidgetsMedium:mediumCopy defaultWidgetsLarge:largeCopy defaultWidgetsExtraLarge:extraLargeCopy widgetFamilyMask:mask targetNumberOfSuggestions:v26];
 LABEL_22:
       tiler = v22->_tiler;
       v22->_tiler = v27;

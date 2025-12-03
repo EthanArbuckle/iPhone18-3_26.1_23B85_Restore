@@ -1,31 +1,31 @@
 @interface SFCreateReminderCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCreateReminderCommand)initWithCoder:(id)a3;
-- (SFCreateReminderCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCreateReminderCommand)initWithCoder:(id)coder;
+- (SFCreateReminderCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCreateReminderCommand
 
-- (SFCreateReminderCommand)initWithProtobuf:(id)a3
+- (SFCreateReminderCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFCreateReminderCommand;
   v5 = [(SFCreateReminderCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 reminder];
+    reminder = [protobufCopy reminder];
 
-    if (v6)
+    if (reminder)
     {
       v7 = [SFReminder alloc];
-      v8 = [v4 reminder];
-      v9 = [(SFReminder *)v7 initWithProtobuf:v8];
+      reminder2 = [protobufCopy reminder];
+      v9 = [(SFReminder *)v7 initWithProtobuf:reminder2];
       [(SFCreateReminderCommand *)v5 setReminder:v9];
     }
 
@@ -40,38 +40,38 @@
   v7.receiver = self;
   v7.super_class = SFCreateReminderCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFCreateReminderCommand *)self reminder];
-  v5 = [v4 hash];
+  reminder = [(SFCreateReminderCommand *)self reminder];
+  v5 = [reminder hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFCreateReminderCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFCreateReminderCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFCreateReminderCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFCreateReminderCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFCreateReminderCommand *)self reminder];
-    v7 = [(SFCreateReminderCommand *)v5 reminder];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    reminder = [(SFCreateReminderCommand *)self reminder];
+    reminder2 = [(SFCreateReminderCommand *)v5 reminder];
+    if ((reminder != 0) == (reminder2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFCreateReminderCommand *)self reminder];
-      if (v8)
+      reminder3 = [(SFCreateReminderCommand *)self reminder];
+      if (reminder3)
       {
-        v9 = [(SFCreateReminderCommand *)self reminder];
-        v10 = [(SFCreateReminderCommand *)v5 reminder];
-        v11 = [v9 isEqual:v10];
+        reminder4 = [(SFCreateReminderCommand *)self reminder];
+        reminder5 = [(SFCreateReminderCommand *)v5 reminder];
+        v11 = [reminder4 isEqual:reminder5];
       }
 
       else
@@ -89,13 +89,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFCreateReminderCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFCreateReminderCommand *)self reminder];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  reminder = [(SFCreateReminderCommand *)self reminder];
+  v6 = [reminder copy];
   [v4 setReminder:v6];
 
   return v4;
@@ -104,51 +104,51 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBCreateReminderCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCreateReminderCommand *)v2 jsonData];
+  jsonData = [(_SFPBCreateReminderCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCreateReminderCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCreateReminderCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCreateReminderCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFCreateReminderCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFCreateReminderCommand)initWithCoder:(id)a3
+- (SFCreateReminderCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCreateReminderCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 reminder];
-    [(SFCreateReminderCommand *)v5 setReminder:v9];
+    reminder = [(SFCommand *)v8 reminder];
+    [(SFCreateReminderCommand *)v5 setReminder:reminder];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

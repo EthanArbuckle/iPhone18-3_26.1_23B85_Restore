@@ -1,7 +1,7 @@
 @interface ArticleErrorMessageFactoryProvider
 - (_TtC8StocksUI34ArticleErrorMessageFactoryProvider)init;
 - (id)errorMessageForArticleView;
-- (id)errorMessageForArticleViewWithOfflineReason:(int64_t)a3;
+- (id)errorMessageForArticleViewWithOfflineReason:(int64_t)reason;
 @end
 
 @implementation ArticleErrorMessageFactoryProvider
@@ -16,15 +16,15 @@
 - (id)errorMessageForArticleView
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC8StocksUI34ArticleErrorMessageFactoryProvider_reachability);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22059A068([v2 offlineReason]);
 
   return v4;
 }
 
-- (id)errorMessageForArticleViewWithOfflineReason:(int64_t)a3
+- (id)errorMessageForArticleViewWithOfflineReason:(int64_t)reason
 {
-  v3 = sub_22059A068(a3);
+  v3 = sub_22059A068(reason);
 
   return v3;
 }

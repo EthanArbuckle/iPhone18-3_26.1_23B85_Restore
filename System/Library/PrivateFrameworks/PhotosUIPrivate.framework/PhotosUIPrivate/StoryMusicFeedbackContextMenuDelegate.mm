@@ -1,25 +1,25 @@
 @interface StoryMusicFeedbackContextMenuDelegate
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 @end
 
 @implementation StoryMusicFeedbackContextMenuDelegate
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = sub_1B389FBE4();
 
   return v7;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1B38A0618(v6);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_1B38A0618(interactionCopy);
 
   return v9;
 }

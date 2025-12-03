@@ -1,31 +1,31 @@
 @interface MIOVersionInfo
-- (BOOL)isEqual:(id)a3;
-- (MIOVersionInfo)initWithMajor:(int64_t)a3 minor:(int64_t)a4 patch:(int64_t)a5;
-- (int64_t)compare:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MIOVersionInfo)initWithMajor:(int64_t)major minor:(int64_t)minor patch:(int64_t)patch;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation MIOVersionInfo
 
-- (MIOVersionInfo)initWithMajor:(int64_t)a3 minor:(int64_t)a4 patch:(int64_t)a5
+- (MIOVersionInfo)initWithMajor:(int64_t)major minor:(int64_t)minor patch:(int64_t)patch
 {
   v9.receiver = self;
   v9.super_class = MIOVersionInfo;
   result = [(MIOVersionInfo *)&v9 init];
   if (result)
   {
-    result->_majorVersion = a3;
-    result->_minorVersion = a4;
-    result->_patchVersion = a5;
+    result->_majorVersion = major;
+    result->_minorVersion = minor;
+    result->_patchVersion = patch;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -35,12 +35,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOVersionInfo *)self majorVersion];
-      if (v6 == [(MIOVersionInfo *)v5 majorVersion]&& (v7 = [(MIOVersionInfo *)self minorVersion], v7 == [(MIOVersionInfo *)v5 minorVersion]))
+      v5 = equalCopy;
+      majorVersion = [(MIOVersionInfo *)self majorVersion];
+      if (majorVersion == [(MIOVersionInfo *)v5 majorVersion]&& (v7 = [(MIOVersionInfo *)self minorVersion], v7 == [(MIOVersionInfo *)v5 minorVersion]))
       {
-        v8 = [(MIOVersionInfo *)self patchVersion];
-        v9 = v8 == [(MIOVersionInfo *)v5 patchVersion];
+        patchVersion = [(MIOVersionInfo *)self patchVersion];
+        v9 = patchVersion == [(MIOVersionInfo *)v5 patchVersion];
       }
 
       else
@@ -60,22 +60,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MIOVersionInfo *)self majorVersion];
-  v4 = [(MIOVersionInfo *)self minorVersion]^ v3;
+  majorVersion = [(MIOVersionInfo *)self majorVersion];
+  v4 = [(MIOVersionInfo *)self minorVersion]^ majorVersion;
   return v4 ^ [(MIOVersionInfo *)self patchVersion];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MIOVersionInfo *)self majorVersion];
-  v6 = v5 - [v4 majorVersion];
-  v7 = [(MIOVersionInfo *)self minorVersion];
-  v8 = v7 - [v4 minorVersion];
-  v9 = [(MIOVersionInfo *)self patchVersion];
-  v10 = [v4 patchVersion];
+  compareCopy = compare;
+  majorVersion = [(MIOVersionInfo *)self majorVersion];
+  v6 = majorVersion - [compareCopy majorVersion];
+  minorVersion = [(MIOVersionInfo *)self minorVersion];
+  v8 = minorVersion - [compareCopy minorVersion];
+  patchVersion = [(MIOVersionInfo *)self patchVersion];
+  patchVersion2 = [compareCopy patchVersion];
 
-  v11 = v9 - v10;
+  v11 = patchVersion - patchVersion2;
   v12 = v6 >> 63;
   if (v6 > 0)
   {
@@ -91,7 +91,7 @@
   v14 = v11 < 0;
   v15 = v11 >> 63;
   v16 = 3 * v13 + 9 * v12;
-  if (!v14 && v9 != v10)
+  if (!v14 && patchVersion != patchVersion2)
   {
     ++v16;
   }

@@ -1,58 +1,58 @@
 @interface VCPSoundClassifier300
-- (VCPSoundClassifier300)initWithTrackStart:(id *)a3 resultsKey:(id)a4 resultHandler:(id)a5;
+- (VCPSoundClassifier300)initWithTrackStart:(id *)start resultsKey:(id)key resultHandler:(id)handler;
 - (id)results;
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 classification:(id)a5;
-- (void)request:(id)a3 didProduceResult:(id)a4;
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime classification:(id)classification;
+- (void)request:(id)request didProduceResult:(id)result;
 @end
 
 @implementation VCPSoundClassifier300
 
-- (VCPSoundClassifier300)initWithTrackStart:(id *)a3 resultsKey:(id)a4 resultHandler:(id)a5
+- (VCPSoundClassifier300)initWithTrackStart:(id *)start resultsKey:(id)key resultHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  keyCopy = key;
+  handlerCopy = handler;
+  if (keyCopy)
   {
     v19.receiver = self;
     v19.super_class = VCPSoundClassifier300;
     v11 = [(VCPSoundClassifier300 *)&v19 init];
     if (v11)
     {
-      v12 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       results = v11->_results;
-      v11->_results = v12;
+      v11->_results = array;
 
-      v14 = *&a3->var0;
-      v11->_trackStart.epoch = a3->var3;
+      v14 = *&start->var0;
+      v11->_trackStart.epoch = start->var3;
       *&v11->_trackStart.value = v14;
-      objc_storeStrong(&v11->_resultsKey, a4);
-      v15 = _Block_copy(v10);
+      objc_storeStrong(&v11->_resultsKey, key);
+      v15 = _Block_copy(handlerCopy);
       resultHander = v11->_resultHander;
       v11->_resultHander = v15;
     }
 
     self = v11;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 classification:(id)a5
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime classification:(id)classification
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  classificationCopy = classification;
   memset(&v17, 0, sizeof(v17));
   v14.start = self->_trackStart;
-  rhs = *a3;
+  rhs = *time;
   CMTimeAdd(&start, &v14.start, &rhs);
   v14.start = self->_trackStart;
-  rhs = *a4;
+  rhs = *toTime;
   CMTimeAdd(&end, &v14.start, &rhs);
   CMTimeRangeFromTimeToTime(&v17, &start, &end);
   if ((v17.start.flags & 1) != 0 && (v17.duration.flags & 1) != 0 && !v17.duration.epoch && (v17.duration.value & 0x8000000000000000) == 0)
@@ -67,31 +67,31 @@
     v12 = [(__CFDictionary *)v9 objectForKey:?];
     v19[2] = @"attributes";
     v20[1] = v12;
-    v20[2] = v8;
+    v20[2] = classificationCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
     [(NSMutableArray *)results addObject:v13];
   }
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
   v53 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  resultCopy = result;
+  if (resultCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = self;
-      v33 = v6;
-      v7 = [MEMORY[0x1E695DF90] dictionary];
+      selfCopy = self;
+      v33 = resultCopy;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v8 = [v33 classifications];
-      v9 = [v8 subarrayWithRange:{0, 10}];
+      classifications = [v33 classifications];
+      v9 = [classifications subarrayWithRange:{0, 10}];
 
       v10 = [v9 countByEnumeratingWithState:&v43 objects:v52 count:16];
       if (v10)
@@ -110,8 +110,8 @@
             v14 = MEMORY[0x1E696AD98];
             [v13 confidence];
             v15 = [v14 numberWithDouble:?];
-            v16 = [v13 identifier];
-            [v7 setObject:v15 forKey:v16];
+            identifier = [v13 identifier];
+            [dictionary setObject:v15 forKey:identifier];
           }
 
           v10 = [v9 countByEnumeratingWithState:&v43 objects:v52 count:16];
@@ -133,16 +133,16 @@
       lhs = v40;
       if (CMTimeGetSeconds(&lhs) >= 0.0)
       {
-        [(VCPSoundClassifier300 *)v32 addDetectionFromTime:&v40 toTime:&v39 classification:v7];
-        if (v32->_resultHander)
+        [(VCPSoundClassifier300 *)selfCopy addDetectionFromTime:&v40 toTime:&v39 classification:dictionary];
+        if (selfCopy->_resultHander)
         {
-          v17 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           v37 = 0u;
           v38 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v18 = [v33 classifications];
-          v19 = [v18 countByEnumeratingWithState:&v35 objects:v51 count:16];
+          classifications2 = [v33 classifications];
+          v19 = [classifications2 countByEnumeratingWithState:&v35 objects:v51 count:16];
           if (v19)
           {
             v20 = *v36;
@@ -152,31 +152,31 @@
               {
                 if (*v36 != v20)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(classifications2);
                 }
 
                 v22 = *(*(&v35 + 1) + 8 * j);
-                v23 = [v22 identifier];
-                v24 = v23 == 0;
+                identifier2 = [v22 identifier];
+                v24 = identifier2 == 0;
 
                 if (!v24)
                 {
                   v25 = MEMORY[0x1E696AD98];
                   [v22 confidence];
                   v26 = [v25 numberWithDouble:?];
-                  v27 = [v22 identifier];
-                  [v17 setObject:v26 forKeyedSubscript:v27];
+                  identifier3 = [v22 identifier];
+                  [dictionary2 setObject:v26 forKeyedSubscript:identifier3];
                 }
               }
 
-              v19 = [v18 countByEnumeratingWithState:&v35 objects:v51 count:16];
+              v19 = [classifications2 countByEnumeratingWithState:&v35 objects:v51 count:16];
             }
 
             while (v19);
           }
 
-          resultHander = v32->_resultHander;
-          v50[0] = v17;
+          resultHander = selfCopy->_resultHander;
+          v50[0] = dictionary2;
           v49[0] = @"attributes";
           v49[1] = @"start";
           *&lhs.value = v41;

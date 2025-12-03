@@ -1,16 +1,16 @@
 @interface PXStoryPagedTimeline
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3;
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier;
 - (CGSize)size;
-- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)a3 interpageSpacing:(double)a4;
-- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)a3 keyPage:(id *)a4 spec:(id)a5;
-- (id)clipWithIdentifier:(int64_t)a3;
+- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)timeline interpageSpacing:(double)spacing;
+- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)timeline keyPage:(id *)page spec:(id)spec;
+- (id)clipWithIdentifier:(int64_t)identifier;
 - (id)description;
-- (int64_t)_bestClipIndexForSegmentWithClipInfos:(id *)a3 frames:(const CGRect *)a4 count:(int64_t)a5;
-- (int64_t)_pageIndexAtX:(double)a3;
-- (void)_enumerateSegmentsInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)_transormClips:(id *)a3 frames:(const CGRect *)a4 count:(int64_t)a5 transformHandler:(id)a6 resultHandler:(id)a7;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
+- (int64_t)_bestClipIndexForSegmentWithClipInfos:(id *)infos frames:(const CGRect *)frames count:(int64_t)count;
+- (int64_t)_pageIndexAtX:(double)x;
+- (void)_enumerateSegmentsInRect:(CGRect)rect usingBlock:(id)block;
+- (void)_transormClips:(id *)clips frames:(const CGRect *)frames count:(int64_t)count transformHandler:(id)handler resultHandler:(id)resultHandler;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
 @end
 
 @implementation PXStoryPagedTimeline
@@ -33,9 +33,9 @@
   return self;
 }
 
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier
 {
-  v4 = [(PXStoryDerivedTimeline *)self indexOfSegmentWithIdentifier:a3];
+  v4 = [(PXStoryDerivedTimeline *)self indexOfSegmentWithIdentifier:identifier];
   [(PXStoryPagedTimeline *)self keyPageMix];
   v5 = &v16;
   if (v15 <= 0.5)
@@ -78,9 +78,9 @@
   return result;
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   [(PXStoryDerivedTimeline *)self originalTimeline];
   [objc_claimAutoreleasedReturnValue() size];
   PXRectWithOriginAndSize();
@@ -202,11 +202,11 @@ double __66__PXStoryPagedTimeline_enumerateClipsInTimeRange_rect_usingBlock___bl
   return result;
 }
 
-- (id)clipWithIdentifier:(int64_t)a3
+- (id)clipWithIdentifier:(int64_t)identifier
 {
   v12.receiver = self;
   v12.super_class = PXStoryPagedTimeline;
-  v4 = [(PXStoryDerivedTimeline *)&v12 clipWithIdentifier:a3];
+  v4 = [(PXStoryDerivedTimeline *)&v12 clipWithIdentifier:identifier];
   v5 = v4;
   memset(__src, 0, 512);
   if (v4)
@@ -219,8 +219,8 @@ double __66__PXStoryPagedTimeline_enumerateClipsInTimeRange_rect_usingBlock___bl
     bzero(__src, 0x300uLL);
   }
 
-  v6 = [(PXStoryPagedTimeline *)self clipSizeTranformer];
-  __src[1].receiver = COERCE_ID(v6[2](*&__src[1].receiver, *&__src[1].super_class));
+  clipSizeTranformer = [(PXStoryPagedTimeline *)self clipSizeTranformer];
+  __src[1].receiver = COERCE_ID(clipSizeTranformer[2](*&__src[1].receiver, *&__src[1].super_class));
   __src[1].super_class = v7;
 
   memcpy(v10, __src, sizeof(v10));
@@ -229,27 +229,27 @@ double __66__PXStoryPagedTimeline_enumerateClipsInTimeRange_rect_usingBlock___bl
   return v8;
 }
 
-- (void)_transormClips:(id *)a3 frames:(const CGRect *)a4 count:(int64_t)a5 transformHandler:(id)a6 resultHandler:(id)a7
+- (void)_transormClips:(id *)clips frames:(const CGRect *)frames count:(int64_t)count transformHandler:(id)handler resultHandler:(id)resultHandler
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [(PXStoryPagedTimeline *)self clipSizeTranformer];
-  v15 = [(PXStoryPagedTimeline *)self transformedClipInfosStore];
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  clipSizeTranformer = [(PXStoryPagedTimeline *)self clipSizeTranformer];
+  transformedClipInfosStore = [(PXStoryPagedTimeline *)self transformedClipInfosStore];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __83__PXStoryPagedTimeline__transormClips_frames_count_transformHandler_resultHandler___block_invoke;
   v19[3] = &unk_1E772E408;
   v19[4] = self;
-  v20 = v12;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v21 = v14;
-  v22 = v13;
-  v16 = v13;
-  v17 = v14;
-  v18 = v12;
-  [v15 accessArrayWithElementsCount:a5 accessBlock:v19];
+  v20 = handlerCopy;
+  countCopy = count;
+  framesCopy = frames;
+  clipsCopy = clips;
+  v21 = clipSizeTranformer;
+  v22 = resultHandlerCopy;
+  v16 = resultHandlerCopy;
+  v17 = clipSizeTranformer;
+  v18 = handlerCopy;
+  [transformedClipInfosStore accessArrayWithElementsCount:count accessBlock:v19];
 }
 
 void __83__PXStoryPagedTimeline__transormClips_frames_count_transformHandler_resultHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -304,9 +304,9 @@ uint64_t __83__PXStoryPagedTimeline__transormClips_frames_count_transformHandler
   return v13();
 }
 
-- (int64_t)_bestClipIndexForSegmentWithClipInfos:(id *)a3 frames:(const CGRect *)a4 count:(int64_t)a5
+- (int64_t)_bestClipIndexForSegmentWithClipInfos:(id *)infos frames:(const CGRect *)frames count:(int64_t)count
 {
-  if (a5 < 2)
+  if (count < 2)
   {
     return 0;
   }
@@ -315,9 +315,9 @@ uint64_t __83__PXStoryPagedTimeline__transormClips_frames_count_transformHandler
   v7 = 0;
   v8 = 0;
   v9 = 0;
-  p_size = &a4->size;
+  p_size = &frames->size;
   v11 = 0.0;
-  p_var1 = &a3->var1;
+  p_var1 = &infos->var1;
   v13 = 0.0;
   do
   {
@@ -347,13 +347,13 @@ uint64_t __83__PXStoryPagedTimeline__transormClips_frames_count_transformHandler
       if (v8 <= 1)
       {
         v20 = [(PXStoryPagedTimeline *)self clipWithIdentifier:*(p_var1 - 1)];
-        v21 = [v20 resource];
-        v22 = [v21 px_storyResourceDisplayAsset];
+        resource = [v20 resource];
+        px_storyResourceDisplayAsset = [resource px_storyResourceDisplayAsset];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = v22;
+          v23 = px_storyResourceDisplayAsset;
           [v23 overallAestheticScore];
           v25 = v24;
           [v23 curationScore];
@@ -381,7 +381,7 @@ uint64_t __83__PXStoryPagedTimeline__transormClips_frames_count_transformHandler
     p_var1 += 96;
   }
 
-  while (a5 != v9);
+  while (count != v9);
   if (v8 <= 1)
   {
     return v31;
@@ -393,14 +393,14 @@ uint64_t __83__PXStoryPagedTimeline__transormClips_frames_count_transformHandler
   }
 }
 
-- (void)_enumerateSegmentsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)_enumerateSegmentsInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PXStoryDerivedTimeline *)self originalTimeline];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
@@ -435,11 +435,11 @@ LABEL_11:
 
     else
     {
-      v14 = [v10 identifierForSegmentAtIndex:v11];
+      v14 = [originalTimeline identifierForSegmentAtIndex:v11];
       memset(&v29, 0, sizeof(v29));
-      if (v10)
+      if (originalTimeline)
       {
-        [v10 timeRangeForSegmentWithIdentifier:v14];
+        [originalTimeline timeRangeForSegmentWithIdentifier:v14];
       }
 
       [(PXStoryPagedTimeline *)self frameForSegmentWithIdentifier:v14];
@@ -448,22 +448,22 @@ LABEL_11:
       MinX = CGRectGetMinX(v32);
       memset(&v28, 0, sizeof(v28));
       CGAffineTransformMakeTranslation(&v28, MinX, 0.0);
-      v18 = [(PXStoryDerivedTimeline *)self originalTimeline];
-      [v18 size];
+      originalTimeline2 = [(PXStoryDerivedTimeline *)self originalTimeline];
+      [originalTimeline2 size];
       v20 = v19;
       v22 = v21;
 
       v26 = v28;
       CGAffineTransformScale(&v27, &v26, v15 / v20, v16 / v22);
       v28 = v27;
-      v23 = v9[2];
+      v23 = blockCopy[2];
       v24 = *&v27.tx;
       v27 = v29;
       *&v26.a = *&v28.a;
       *&v26.c = *&v28.c;
       v25 = 0;
       *&v26.tx = v24;
-      v23(v9, v14, &v27, &v26, &v25);
+      v23(blockCopy, v14, &v27, &v26, &v25);
       if (v13 != v11 && (v25 & 1) == 0)
       {
         goto LABEL_11;
@@ -472,13 +472,13 @@ LABEL_11:
   }
 }
 
-- (int64_t)_pageIndexAtX:(double)a3
+- (int64_t)_pageIndexAtX:(double)x
 {
-  v5 = [(PXStoryPagedTimeline *)self spec];
-  [v5 regularPageSize];
+  spec = [(PXStoryPagedTimeline *)self spec];
+  [spec regularPageSize];
   v7 = v6;
-  v8 = [(PXStoryPagedTimeline *)self spec];
-  [v8 regularInterpageSpacing];
+  spec2 = [(PXStoryPagedTimeline *)self spec];
+  [spec2 regularInterpageSpacing];
   v10 = v7 + v9;
 
   [(PXStoryPagedTimeline *)self keyPageMix];
@@ -490,7 +490,7 @@ LABEL_11:
 
   if (!*v11)
   {
-    return (a3 / v10);
+    return (x / v10);
   }
 
   [(PXStoryPagedTimeline *)self keyPageMix];
@@ -500,28 +500,28 @@ LABEL_11:
   y = v27.origin.y;
   width = v27.size.width;
   height = v27.size.height;
-  if (CGRectGetMinX(v27) > a3)
+  if (CGRectGetMinX(v27) > x)
   {
-    return (a3 / v10);
+    return (x / v10);
   }
 
   v28.origin.x = x;
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  if (CGRectGetMaxX(v28) > a3)
+  if (CGRectGetMaxX(v28) > x)
   {
     return [(PXStoryDerivedTimeline *)self indexOfSegmentWithIdentifier:v12];
   }
 
-  v18 = [(PXStoryPagedTimeline *)self spec];
-  [v18 keyPageSize];
+  spec3 = [(PXStoryPagedTimeline *)self spec];
+  [spec3 keyPageSize];
   v20 = v19;
-  v21 = [(PXStoryPagedTimeline *)self spec];
-  [v21 keyInterpageSpacing];
+  spec4 = [(PXStoryPagedTimeline *)self spec];
+  [spec4 keyInterpageSpacing];
   v23 = v20 + v22;
 
-  return ((a3 - v23) / v10) + 1;
+  return ((x - v23) / v10) + 1;
 }
 
 - (id)description
@@ -529,28 +529,28 @@ LABEL_11:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXStoryPagedTimeline *)self numberOfPages];
+  numberOfPages = [(PXStoryPagedTimeline *)self numberOfPages];
   [(PXStoryPagedTimeline *)self size];
   v7 = NSStringFromCGSize(v12);
-  v8 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v9 = [v3 initWithFormat:@"<%@ %p; Pages: %ld; Size: %@; Original Timeline:\n\t%@>", v5, self, v6, v7, v8];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v9 = [v3 initWithFormat:@"<%@ %p; Pages: %ld; Size: %@; Original Timeline:\n\t%@>", v5, self, numberOfPages, v7, originalTimeline];
 
   return v9;
 }
 
-- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)a3 keyPage:(id *)a4 spec:(id)a5
+- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)timeline keyPage:(id *)page spec:(id)spec
 {
-  v8 = a3;
-  v9 = a5;
+  timelineCopy = timeline;
+  specCopy = spec;
   v48.receiver = self;
   v48.super_class = PXStoryPagedTimeline;
-  v10 = [(PXStoryDerivedTimeline *)&v48 initWithOriginalTimeline:v8];
+  v10 = [(PXStoryDerivedTimeline *)&v48 initWithOriginalTimeline:timelineCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_spec, a5);
-    var2 = a4->var2;
-    *&v11->_keyPageMix.firstSegmentIdentifier = *&a4->var0;
+    objc_storeStrong(&v10->_spec, spec);
+    var2 = page->var2;
+    *&v11->_keyPageMix.firstSegmentIdentifier = *&page->var0;
     v11->_keyPageMix.secondSegmentIdentifier = var2;
     *&start.value = PXStoryTimeZero;
     start.epoch = 0;
@@ -562,20 +562,20 @@ LABEL_11:
     *&v11->_timeRange.start.epoch = *&v47.start.epoch;
     *&v11->_timeRange.duration.timescale = v14;
     *&v11->_timeRange.start.value = v13;
-    v15 = [v8 numberOfSegments];
-    v11->_numberOfPages = v15;
-    v16 = (v15 - 1);
-    [v9 regularPageSize];
+    numberOfSegments = [timelineCopy numberOfSegments];
+    v11->_numberOfPages = numberOfSegments;
+    v16 = (numberOfSegments - 1);
+    [specCopy regularPageSize];
     v18 = v17;
-    [v9 regularInterpageSpacing];
+    [specCopy regularInterpageSpacing];
     v20 = v18 + v19;
-    [v9 regularInterpageSpacing];
+    [specCopy regularInterpageSpacing];
     v22 = -(v21 - v16 * v20);
-    [v9 keyPageSize];
+    [specCopy keyPageSize];
     v24 = v23;
-    [v9 keyInterpageSpacing];
+    [specCopy keyInterpageSpacing];
     v11->_size.width = v22 + v24 + v25 * 2.0;
-    [v9 keyPageSize];
+    [specCopy keyPageSize];
     v11->_size.height = v26;
     v27 = [[off_1E7721500 alloc] initWithElementSize:768];
     transformedClipInfosStore = v11->_transformedClipInfosStore;
@@ -599,8 +599,8 @@ LABEL_11:
 
     else
     {
-      v34 = [(PXStoryDerivedTimeline *)v11 originalTimeline];
-      [v34 size];
+      originalTimeline = [(PXStoryDerivedTimeline *)v11 originalTimeline];
+      [originalTimeline size];
       v36 = v35;
       v38 = v37;
 
@@ -623,19 +623,19 @@ LABEL_11:
   return v11;
 }
 
-- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)a3 interpageSpacing:(double)a4
+- (PXStoryPagedTimeline)initWithOriginalTimeline:(id)timeline interpageSpacing:(double)spacing
 {
-  v6 = a3;
+  timelineCopy = timeline;
   v7 = objc_alloc_init(PXStoryPagedTimelineSpec);
-  [(PXStoryPagedTimelineSpec *)v7 setRegularInterpageSpacing:a4];
-  [v6 size];
+  [(PXStoryPagedTimelineSpec *)v7 setRegularInterpageSpacing:spacing];
+  [timelineCopy size];
   [(PXStoryPagedTimelineSpec *)v7 setRegularPageSize:?];
-  [(PXStoryPagedTimelineSpec *)v7 setKeyInterpageSpacing:a4];
-  [v6 size];
+  [(PXStoryPagedTimelineSpec *)v7 setKeyInterpageSpacing:spacing];
+  [timelineCopy size];
   [(PXStoryPagedTimelineSpec *)v7 setKeyPageSize:?];
   [(PXStoryPagedTimelineSpec *)v7 setDisplayOneAssetPerPage:0];
   memset(v10, 0, sizeof(v10));
-  v8 = [(PXStoryPagedTimeline *)self initWithOriginalTimeline:v6 keyPage:v10 spec:v7];
+  v8 = [(PXStoryPagedTimeline *)self initWithOriginalTimeline:timelineCopy keyPage:v10 spec:v7];
 
   return v8;
 }

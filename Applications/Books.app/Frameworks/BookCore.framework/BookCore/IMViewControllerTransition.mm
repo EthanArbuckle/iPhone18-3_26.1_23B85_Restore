@@ -1,25 +1,25 @@
 @interface IMViewControllerTransition
-- (CATransform3D)fillBoundsScaleTransformFromTransform:(SEL)a3 sourceRect:(CATransform3D *)a4;
+- (CATransform3D)fillBoundsScaleTransformFromTransform:(SEL)transform sourceRect:(CATransform3D *)rect;
 - (CGRect)fillBoundsTargetRect;
 - (IMViewControllerTransition)init;
 - (UIImageView)fromViewSnapshot;
 - (UIImageView)toViewSnapshot;
 - (UIView)fromView;
 - (UIView)toView;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)parentView;
-- (int)roleForViewController:(id)a3;
-- (void)_updateParentViewBackgroundColorForToView:(id)a3;
+- (int)roleForViewController:(id)controller;
+- (void)_updateParentViewBackgroundColorForToView:(id)view;
 - (void)beginAppearanceTransition;
 - (void)beginTransition;
 - (void)cleanupTransition;
 - (void)endAppearanceTransition;
 - (void)loadToView;
-- (void)p_setFrame:(CGRect)a3 onViewController:(id)a4;
+- (void)p_setFrame:(CGRect)frame onViewController:(id)controller;
 - (void)performNonAnimatedTransition;
 - (void)prepareTransition;
-- (void)setReverse:(BOOL)a3;
+- (void)setReverse:(BOOL)reverse;
 - (void)transitionDidEnd;
 @end
 
@@ -47,18 +47,18 @@
   v8.receiver = self;
   v8.super_class = IMViewControllerTransition;
   v3 = [(IMViewControllerTransition *)&v8 description];
-  v4 = [(IMViewControllerTransition *)self fromViewController];
-  v5 = [(IMViewControllerTransition *)self toViewController];
-  v6 = [NSString stringWithFormat:@"%@\nfromViewController:%@\ntoViewController:%@", v3, v4, v5];
+  fromViewController = [(IMViewControllerTransition *)self fromViewController];
+  toViewController = [(IMViewControllerTransition *)self toViewController];
+  v6 = [NSString stringWithFormat:@"%@\nfromViewController:%@\ntoViewController:%@", v3, fromViewController, toViewController];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = IMViewControllerTransition;
-  v4 = [(IMTransition *)&v7 copyWithZone:a3];
+  v4 = [(IMTransition *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -78,42 +78,42 @@
   [(IMTransition *)&v2 beginTransition];
 }
 
-- (void)p_setFrame:(CGRect)a3 onViewController:(id)a4
+- (void)p_setFrame:(CGRect)frame onViewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v9 = [(IMTransition *)self parentViewController];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
+  parentViewController = [(IMTransition *)self parentViewController];
   v10 = objc_opt_respondsToSelector();
 
-  if ((v10 & 1) == 0 || (-[IMTransition parentViewController](self, "parentViewController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 setFrameOnViewController:v14 forTransition:self], v11, (v12 & 1) == 0))
+  if ((v10 & 1) == 0 || (-[IMTransition parentViewController](self, "parentViewController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 setFrameOnViewController:controllerCopy forTransition:self], v11, (v12 & 1) == 0))
   {
-    v13 = [v14 view];
-    [v13 setFrame:{x, y, width, height}];
+    view = [controllerCopy view];
+    [view setFrame:{x, y, width, height}];
   }
 }
 
 - (id)parentView
 {
-  v3 = [(IMTransition *)self parentViewController];
+  parentViewController = [(IMTransition *)self parentViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(IMTransition *)self parentViewController];
-    v6 = [v5 containerViewForIMTransition:self];
+    parentViewController2 = [(IMTransition *)self parentViewController];
+    parentView = [parentViewController2 containerViewForIMTransition:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = IMViewControllerTransition;
-    v6 = [(IMTransition *)&v8 parentView];
+    parentView = [(IMTransition *)&v8 parentView];
   }
 
-  return v6;
+  return parentView;
 }
 
 - (void)prepareTransition
@@ -121,129 +121,129 @@
   v67.receiver = self;
   v67.super_class = IMViewControllerTransition;
   [(IMTransition *)&v67 prepareTransition];
-  v3 = [(IMViewControllerTransition *)self fromView];
-  v4 = [v3 superview];
-  v5 = [(IMViewControllerTransition *)self parentView];
+  fromView = [(IMViewControllerTransition *)self fromView];
+  superview = [fromView superview];
+  parentView = [(IMViewControllerTransition *)self parentView];
 
-  if (v4 == v5)
+  if (superview == parentView)
   {
-    v6 = [(IMViewControllerTransition *)self parentView];
-    v7 = [(IMTransition *)self view];
-    v8 = [(IMViewControllerTransition *)self fromView];
-    [v6 insertSubview:v7 aboveSubview:v8];
+    parentView2 = [(IMViewControllerTransition *)self parentView];
+    view = [(IMTransition *)self view];
+    fromView2 = [(IMViewControllerTransition *)self fromView];
+    [parentView2 insertSubview:view aboveSubview:fromView2];
   }
 
   [(IMViewControllerTransition *)self loadToView];
-  v9 = [(IMTransition *)self parentViewController];
+  parentViewController = [(IMTransition *)self parentViewController];
   v10 = objc_opt_respondsToSelector();
 
   if ((v10 & 1) == 0 || (-[IMTransition parentViewController](self, "parentViewController"), v11 = objc_claimAutoreleasedReturnValue(), -[IMTransition view](self, "view"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v11 setFrameOnTransitioningView:v12 forTransition:self], v12, v11, (v13 & 1) == 0))
   {
-    v14 = [(IMViewControllerTransition *)self fromViewController];
-    v15 = [v14 view];
-    [v15 frame];
+    fromViewController = [(IMViewControllerTransition *)self fromViewController];
+    view2 = [fromViewController view];
+    [view2 frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(IMTransition *)self view];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    view3 = [(IMTransition *)self view];
+    [view3 setFrame:{v17, v19, v21, v23}];
   }
 
-  v25 = [(IMTransition *)self parentViewController];
-  v26 = [v25 view];
-  [v26 frame];
+  parentViewController2 = [(IMTransition *)self parentViewController];
+  view4 = [parentViewController2 view];
+  [view4 frame];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  v35 = [(IMTransition *)self view];
-  [v35 setFrame:{v28, v30, v32, v34}];
+  view5 = [(IMTransition *)self view];
+  [view5 setFrame:{v28, v30, v32, v34}];
 
-  v36 = [(IMViewControllerTransition *)self parentView];
-  v37 = [(IMViewControllerTransition *)self fromViewController];
-  v38 = [v37 view];
-  [v38 frame];
+  parentView3 = [(IMViewControllerTransition *)self parentView];
+  fromViewController2 = [(IMViewControllerTransition *)self fromViewController];
+  view6 = [fromViewController2 view];
+  [view6 frame];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  v47 = [(IMTransition *)self view];
-  [v36 convertRect:v47 toView:{v40, v42, v44, v46}];
+  view7 = [(IMTransition *)self view];
+  [parentView3 convertRect:view7 toView:{v40, v42, v44, v46}];
   v49 = v48;
   v51 = v50;
   v53 = v52;
   v55 = v54;
 
-  v56 = [(IMViewControllerTransition *)self fromViewController];
-  [(IMViewControllerTransition *)self p_setFrame:v56 onViewController:v49, v51, v53, v55];
+  fromViewController3 = [(IMViewControllerTransition *)self fromViewController];
+  [(IMViewControllerTransition *)self p_setFrame:fromViewController3 onViewController:v49, v51, v53, v55];
 
-  v57 = [(IMViewControllerTransition *)self toViewController];
-  [(IMViewControllerTransition *)self p_setFrame:v57 onViewController:v49, v51, v53, v55];
+  toViewController = [(IMViewControllerTransition *)self toViewController];
+  [(IMViewControllerTransition *)self p_setFrame:toViewController onViewController:v49, v51, v53, v55];
 
   [(IMViewControllerTransition *)self beginAppearanceTransition];
-  v58 = [(IMViewControllerTransition *)self fromView];
-  v59 = [(IMViewControllerTransition *)self fromViewController];
-  v60 = [v59 view];
+  fromView3 = [(IMViewControllerTransition *)self fromView];
+  fromViewController4 = [(IMViewControllerTransition *)self fromViewController];
+  view8 = [fromViewController4 view];
 
-  if (v58 != v60)
+  if (fromView3 != view8)
   {
-    v61 = [(IMViewControllerTransition *)self fromViewController];
-    v62 = [v61 view];
-    [v62 removeFromSuperview];
+    fromViewController5 = [(IMViewControllerTransition *)self fromViewController];
+    view9 = [fromViewController5 view];
+    [view9 removeFromSuperview];
   }
 
-  v63 = [(IMTransition *)self view];
-  v64 = [(IMViewControllerTransition *)self fromView];
-  [v63 addSubview:v64];
+  view10 = [(IMTransition *)self view];
+  fromView4 = [(IMViewControllerTransition *)self fromView];
+  [view10 addSubview:fromView4];
 
-  v65 = [(IMTransition *)self view];
-  v66 = [(IMViewControllerTransition *)self toView];
-  [v65 addSubview:v66];
+  view11 = [(IMTransition *)self view];
+  toView = [(IMViewControllerTransition *)self toView];
+  [view11 addSubview:toView];
 }
 
 - (void)cleanupTransition
 {
-  v3 = [(IMViewControllerTransition *)self toViewController];
-  v4 = [v3 view];
+  toViewController = [(IMViewControllerTransition *)self toViewController];
+  view = [toViewController view];
 
-  v5 = [(IMViewControllerTransition *)self parentView];
-  v6 = [(IMTransition *)self view];
-  [v6 bounds];
+  parentView = [(IMViewControllerTransition *)self parentView];
+  view2 = [(IMTransition *)self view];
+  [view2 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(IMTransition *)self view];
-  [v5 convertRect:v15 fromView:{v8, v10, v12, v14}];
+  view3 = [(IMTransition *)self view];
+  [parentView convertRect:view3 fromView:{v8, v10, v12, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(IMViewControllerTransition *)self toViewController];
-  [(IMViewControllerTransition *)self p_setFrame:v24 onViewController:v17, v19, v21, v23];
+  toViewController2 = [(IMViewControllerTransition *)self toViewController];
+  [(IMViewControllerTransition *)self p_setFrame:toViewController2 onViewController:v17, v19, v21, v23];
 
   [(UIImageView *)self->_fromViewSnapshot removeFromSuperview];
   [(UIImageView *)self->_toViewSnapshot removeFromSuperview];
-  v25 = [(IMTransition *)self view];
-  v26 = [v25 superview];
-  v27 = [(IMViewControllerTransition *)self parentView];
+  view4 = [(IMTransition *)self view];
+  superview = [view4 superview];
+  parentView2 = [(IMViewControllerTransition *)self parentView];
 
-  v28 = [(IMViewControllerTransition *)self parentView];
-  v29 = v28;
-  if (v26 == v27)
+  parentView3 = [(IMViewControllerTransition *)self parentView];
+  v29 = parentView3;
+  if (superview == parentView2)
   {
-    v30 = [(IMTransition *)self view];
-    [v29 insertSubview:v4 aboveSubview:v30];
+    view5 = [(IMTransition *)self view];
+    [v29 insertSubview:view aboveSubview:view5];
   }
 
   else
   {
-    [v28 addSubview:v4];
+    [parentView3 addSubview:view];
   }
 
-  [(IMViewControllerTransition *)self _updateParentViewBackgroundColorForToView:v4];
+  [(IMViewControllerTransition *)self _updateParentViewBackgroundColorForToView:view];
   v31.receiver = self;
   v31.super_class = IMViewControllerTransition;
   [(IMTransition *)&v31 cleanupTransition];
@@ -252,44 +252,44 @@
 
 - (void)performNonAnimatedTransition
 {
-  v3 = [(IMTransition *)self parentViewController];
-  v4 = [v3 isViewLoaded];
+  parentViewController = [(IMTransition *)self parentViewController];
+  isViewLoaded = [parentViewController isViewLoaded];
 
-  if (v4)
+  if (isViewLoaded)
   {
-    v5 = [(IMViewControllerTransition *)self fromViewController];
-    v6 = [v5 view];
+    fromViewController = [(IMViewControllerTransition *)self fromViewController];
+    view = [fromViewController view];
 
-    v7 = [(IMViewControllerTransition *)self toViewController];
-    v8 = [v7 view];
+    toViewController = [(IMViewControllerTransition *)self toViewController];
+    view2 = [toViewController view];
 
     [(IMViewControllerTransition *)self beginAppearanceTransition];
-    [v6 frame];
+    [view frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(IMViewControllerTransition *)self toViewController];
-    [(IMViewControllerTransition *)self p_setFrame:v17 onViewController:v10, v12, v14, v16];
+    toViewController2 = [(IMViewControllerTransition *)self toViewController];
+    [(IMViewControllerTransition *)self p_setFrame:toViewController2 onViewController:v10, v12, v14, v16];
 
-    v18 = [v6 superview];
-    v19 = [(IMViewControllerTransition *)self parentView];
+    superview = [view superview];
+    parentView = [(IMViewControllerTransition *)self parentView];
 
-    v20 = [(IMViewControllerTransition *)self parentView];
-    v21 = v20;
-    if (v18 == v19)
+    parentView2 = [(IMViewControllerTransition *)self parentView];
+    v21 = parentView2;
+    if (superview == parentView)
     {
-      v22 = [(IMViewControllerTransition *)self parentView];
-      [v21 insertSubview:v8 aboveSubview:v22];
+      parentView3 = [(IMViewControllerTransition *)self parentView];
+      [v21 insertSubview:view2 aboveSubview:parentView3];
     }
 
     else
     {
-      [v20 addSubview:v8];
+      [parentView2 addSubview:view2];
     }
 
-    [(IMViewControllerTransition *)self _updateParentViewBackgroundColorForToView:v8];
-    [v6 removeFromSuperview];
+    [(IMViewControllerTransition *)self _updateParentViewBackgroundColorForToView:view2];
+    [view removeFromSuperview];
     [(IMViewControllerTransition *)self endAppearanceTransition];
   }
 
@@ -309,23 +309,23 @@
   [(IMViewControllerTransition *)self setToViewSnapshot:0];
 }
 
-- (int)roleForViewController:(id)a3
+- (int)roleForViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(IMViewControllerTransition *)self fromViewController];
+    fromViewController = [(IMViewControllerTransition *)self fromViewController];
 
-    if (v5 == v4)
+    if (fromViewController == controllerCopy)
     {
       v7 = 2;
     }
 
     else
     {
-      v6 = [(IMViewControllerTransition *)self toViewController];
+      toViewController = [(IMViewControllerTransition *)self toViewController];
 
-      if (v6 == v4)
+      if (toViewController == controllerCopy)
       {
         v7 = 1;
       }
@@ -334,7 +334,7 @@
       {
         v9.receiver = self;
         v9.super_class = IMViewControllerTransition;
-        v7 = [(IMTransition *)&v9 roleForViewController:v4];
+        v7 = [(IMTransition *)&v9 roleForViewController:controllerCopy];
       }
     }
   }
@@ -349,8 +349,8 @@
 
 - (CGRect)fillBoundsTargetRect
 {
-  v2 = [(IMTransition *)self view];
-  [v2 bounds];
+  view = [(IMTransition *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -367,7 +367,7 @@
   return result;
 }
 
-- (CATransform3D)fillBoundsScaleTransformFromTransform:(SEL)a3 sourceRect:(CATransform3D *)a4
+- (CATransform3D)fillBoundsScaleTransformFromTransform:(SEL)transform sourceRect:(CATransform3D *)rect
 {
   rect = a5.size.height;
   width = a5.size.width;
@@ -402,17 +402,17 @@
   *&retstr->m33 = 0u;
   *&retstr->m41 = 0u;
   *&retstr->m43 = 0u;
-  v18 = *&a4->m33;
-  *&v24.m31 = *&a4->m31;
+  v18 = *&rect->m33;
+  *&v24.m31 = *&rect->m31;
   *&v24.m33 = v18;
-  v19 = *&a4->m43;
-  *&v24.m41 = *&a4->m41;
+  v19 = *&rect->m43;
+  *&v24.m41 = *&rect->m41;
   *&v24.m43 = v19;
-  v20 = *&a4->m13;
-  *&v24.m11 = *&a4->m11;
+  v20 = *&rect->m13;
+  *&v24.m11 = *&rect->m11;
   *&v24.m13 = v20;
-  v21 = *&a4->m23;
-  *&v24.m21 = *&a4->m21;
+  v21 = *&rect->m23;
+  *&v24.m21 = *&rect->m21;
   *&v24.m23 = v21;
   return CATransform3DScale(retstr, &v24, v15, v16 / v17, 1.0);
 }
@@ -421,32 +421,32 @@
 {
   if ([(IMTransition *)self useSnapshots])
   {
-    v3 = [(IMViewControllerTransition *)self fromViewSnapshot];
+    fromViewSnapshot = [(IMViewControllerTransition *)self fromViewSnapshot];
   }
 
   else
   {
-    v4 = [(IMViewControllerTransition *)self fromViewController];
-    v3 = [v4 view];
+    fromViewController = [(IMViewControllerTransition *)self fromViewController];
+    fromViewSnapshot = [fromViewController view];
   }
 
-  return v3;
+  return fromViewSnapshot;
 }
 
 - (UIView)toView
 {
   if ([(IMTransition *)self useSnapshots])
   {
-    v3 = [(IMViewControllerTransition *)self toViewSnapshot];
+    toViewSnapshot = [(IMViewControllerTransition *)self toViewSnapshot];
   }
 
   else
   {
-    v4 = [(IMViewControllerTransition *)self toViewController];
-    v3 = [v4 view];
+    toViewController = [(IMViewControllerTransition *)self toViewController];
+    toViewSnapshot = [toViewController view];
   }
 
-  return v3;
+  return toViewSnapshot;
 }
 
 - (UIImageView)fromViewSnapshot
@@ -454,19 +454,19 @@
   fromViewSnapshot = self->_fromViewSnapshot;
   if (!fromViewSnapshot)
   {
-    v4 = [(IMViewControllerTransition *)self fromViewController];
-    v5 = [v4 view];
-    v6 = [v5 im_snapshotInContext];
+    fromViewController = [(IMViewControllerTransition *)self fromViewController];
+    view = [fromViewController view];
+    im_snapshotInContext = [view im_snapshotInContext];
 
-    if (v6)
+    if (im_snapshotInContext)
     {
-      v7 = [[UIImageView alloc] initWithImage:v6];
+      v7 = [[UIImageView alloc] initWithImage:im_snapshotInContext];
       v8 = self->_fromViewSnapshot;
       self->_fromViewSnapshot = v7;
 
-      v9 = [(IMViewControllerTransition *)self fromViewController];
-      v10 = [v9 view];
-      [v10 frame];
+      fromViewController2 = [(IMViewControllerTransition *)self fromViewController];
+      view2 = [fromViewController2 view];
+      [view2 frame];
       [(UIImageView *)self->_fromViewSnapshot setFrame:?];
     }
 
@@ -481,19 +481,19 @@
   toViewSnapshot = self->_toViewSnapshot;
   if (!toViewSnapshot)
   {
-    v4 = [(IMViewControllerTransition *)self toViewController];
-    v5 = [v4 view];
-    v6 = [v5 im_snapshotInContext];
+    toViewController = [(IMViewControllerTransition *)self toViewController];
+    view = [toViewController view];
+    im_snapshotInContext = [view im_snapshotInContext];
 
-    if (v6)
+    if (im_snapshotInContext)
     {
-      v7 = [[UIImageView alloc] initWithImage:v6];
+      v7 = [[UIImageView alloc] initWithImage:im_snapshotInContext];
       v8 = self->_toViewSnapshot;
       self->_toViewSnapshot = v7;
 
-      v9 = [(IMViewControllerTransition *)self toViewController];
-      v10 = [v9 view];
-      [v10 frame];
+      toViewController2 = [(IMViewControllerTransition *)self toViewController];
+      view2 = [toViewController2 view];
+      [view2 frame];
       [(UIImageView *)self->_toViewSnapshot setFrame:?];
     }
 
@@ -503,14 +503,14 @@
   return toViewSnapshot;
 }
 
-- (void)setReverse:(BOOL)a3
+- (void)setReverse:(BOOL)reverse
 {
-  v3 = a3;
-  v5 = [(IMTransition *)self reverse];
+  reverseCopy = reverse;
+  reverse = [(IMTransition *)self reverse];
   v6.receiver = self;
   v6.super_class = IMViewControllerTransition;
-  [(IMTransition *)&v6 setReverse:v3];
-  if (v5 != [(IMTransition *)self reverse])
+  [(IMTransition *)&v6 setReverse:reverseCopy];
+  if (reverse != [(IMTransition *)self reverse])
   {
     if (self->_toViewSnapshot)
     {
@@ -526,92 +526,92 @@
 
 - (void)loadToView
 {
-  v2 = [(IMViewControllerTransition *)self toViewController];
-  v3 = [v2 view];
+  toViewController = [(IMViewControllerTransition *)self toViewController];
+  view = [toViewController view];
 }
 
 - (void)beginAppearanceTransition
 {
-  v11 = [(IMTransition *)self parentViewController];
-  if ([v11 isViewLoaded])
+  parentViewController = [(IMTransition *)self parentViewController];
+  if ([parentViewController isViewLoaded])
   {
-    v3 = [(IMTransition *)self parentViewController];
-    v4 = [v3 view];
-    v5 = [v4 window];
+    parentViewController2 = [(IMTransition *)self parentViewController];
+    view = [parentViewController2 view];
+    window = [view window];
 
-    if (!v5)
+    if (!window)
     {
       return;
     }
 
-    v6 = [(IMTransition *)self animated];
-    v7 = [(IMTransition *)self parentViewController];
-    v8 = [v7 shouldAutomaticallyForwardAppearanceMethods];
+    animated = [(IMTransition *)self animated];
+    parentViewController3 = [(IMTransition *)self parentViewController];
+    shouldAutomaticallyForwardAppearanceMethods = [parentViewController3 shouldAutomaticallyForwardAppearanceMethods];
 
-    v9 = [(IMViewControllerTransition *)self fromViewController];
-    v10 = v9;
-    if (v8)
+    fromViewController = [(IMViewControllerTransition *)self fromViewController];
+    v10 = fromViewController;
+    if (shouldAutomaticallyForwardAppearanceMethods)
     {
-      [v9 beginAppearanceTransition:0 animated:v6];
+      [fromViewController beginAppearanceTransition:0 animated:animated];
 
-      v11 = [(IMViewControllerTransition *)self toViewController];
-      [v11 beginAppearanceTransition:1 animated:v6];
+      parentViewController = [(IMViewControllerTransition *)self toViewController];
+      [parentViewController beginAppearanceTransition:1 animated:animated];
     }
 
     else
     {
-      [v9 viewWillDisappear:v6];
+      [fromViewController viewWillDisappear:animated];
 
-      v11 = [(IMViewControllerTransition *)self toViewController];
-      [v11 viewWillAppear:v6];
+      parentViewController = [(IMViewControllerTransition *)self toViewController];
+      [parentViewController viewWillAppear:animated];
     }
   }
 }
 
 - (void)endAppearanceTransition
 {
-  v11 = [(IMTransition *)self parentViewController];
-  if ([v11 isViewLoaded])
+  parentViewController = [(IMTransition *)self parentViewController];
+  if ([parentViewController isViewLoaded])
   {
-    v3 = [(IMTransition *)self parentViewController];
-    v4 = [v3 view];
-    v5 = [v4 window];
+    parentViewController2 = [(IMTransition *)self parentViewController];
+    view = [parentViewController2 view];
+    window = [view window];
 
-    if (!v5)
+    if (!window)
     {
       return;
     }
 
-    v6 = [(IMTransition *)self parentViewController];
-    v7 = [v6 shouldAutomaticallyForwardAppearanceMethods];
+    parentViewController3 = [(IMTransition *)self parentViewController];
+    shouldAutomaticallyForwardAppearanceMethods = [parentViewController3 shouldAutomaticallyForwardAppearanceMethods];
 
-    if (v7)
+    if (shouldAutomaticallyForwardAppearanceMethods)
     {
-      v8 = [(IMViewControllerTransition *)self fromViewController];
-      [v8 endAppearanceTransition];
+      fromViewController = [(IMViewControllerTransition *)self fromViewController];
+      [fromViewController endAppearanceTransition];
 
-      v11 = [(IMViewControllerTransition *)self toViewController];
-      [v11 endAppearanceTransition];
+      parentViewController = [(IMViewControllerTransition *)self toViewController];
+      [parentViewController endAppearanceTransition];
     }
 
     else
     {
-      v9 = [(IMTransition *)self animated];
-      v10 = [(IMViewControllerTransition *)self fromViewController];
-      [v10 viewDidDisappear:v9];
+      animated = [(IMTransition *)self animated];
+      fromViewController2 = [(IMViewControllerTransition *)self fromViewController];
+      [fromViewController2 viewDidDisappear:animated];
 
-      v11 = [(IMViewControllerTransition *)self toViewController];
-      [v11 viewDidAppear:v9];
+      parentViewController = [(IMViewControllerTransition *)self toViewController];
+      [parentViewController viewDidAppear:animated];
     }
   }
 }
 
-- (void)_updateParentViewBackgroundColorForToView:(id)a3
+- (void)_updateParentViewBackgroundColorForToView:(id)view
 {
-  v6 = [a3 backgroundColor];
-  v4 = [(IMTransition *)self parentViewController];
-  v5 = [v4 view];
-  [v5 setBackgroundColor:v6];
+  backgroundColor = [view backgroundColor];
+  parentViewController = [(IMTransition *)self parentViewController];
+  view = [parentViewController view];
+  [view setBackgroundColor:backgroundColor];
 }
 
 @end

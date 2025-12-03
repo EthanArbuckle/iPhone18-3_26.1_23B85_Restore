@@ -1,16 +1,16 @@
 @interface CNAvatarPosterPairFingerprint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC10ContactsUI29CNAvatarPosterPairFingerprint)init;
 - (int64_t)hash;
 @end
 
 @implementation CNAvatarPosterPairFingerprint
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_199DFA66C();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_199AC8AF8(v8);
@@ -30,7 +30,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_199AC8E40();
 
   return v3;

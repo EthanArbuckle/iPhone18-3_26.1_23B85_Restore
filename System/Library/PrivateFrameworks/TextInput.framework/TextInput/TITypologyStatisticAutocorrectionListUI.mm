@@ -1,37 +1,37 @@
 @interface TITypologyStatisticAutocorrectionListUI
 - (id)structuredReport;
 - (void)addInputCount;
-- (void)setListUIDisplayed:(BOOL)a3;
-- (void)visitRecordAutocorrections:(id)a3;
-- (void)visitRecordSync:(id)a3;
+- (void)setListUIDisplayed:(BOOL)displayed;
+- (void)visitRecordAutocorrections:(id)autocorrections;
+- (void)visitRecordSync:(id)sync;
 @end
 
 @implementation TITypologyStatisticAutocorrectionListUI
 
-- (void)visitRecordAutocorrections:(id)a3
+- (void)visitRecordAutocorrections:(id)autocorrections
 {
-  v4 = [a3 listUIDisplayed];
+  listUIDisplayed = [autocorrections listUIDisplayed];
 
-  [(TITypologyStatisticAutocorrectionListUI *)self setListUIDisplayed:v4];
+  [(TITypologyStatisticAutocorrectionListUI *)self setListUIDisplayed:listUIDisplayed];
 }
 
-- (void)visitRecordSync:(id)a3
+- (void)visitRecordSync:(id)sync
 {
-  v6 = a3;
-  v4 = [v6 keyboardState];
+  syncCopy = sync;
+  keyboardState = [syncCopy keyboardState];
 
-  if (v4)
+  if (keyboardState)
   {
-    v5 = [v6 keyboardState];
-    -[TITypologyStatisticAutocorrectionListUI setListUIDisplayed:](self, "setListUIDisplayed:", [v5 autocorrectionListUIDisplayed]);
+    keyboardState2 = [syncCopy keyboardState];
+    -[TITypologyStatisticAutocorrectionListUI setListUIDisplayed:](self, "setListUIDisplayed:", [keyboardState2 autocorrectionListUIDisplayed]);
   }
 }
 
-- (void)setListUIDisplayed:(BOOL)a3
+- (void)setListUIDisplayed:(BOOL)displayed
 {
   if (self->_didSetListUIDisplayed)
   {
-    if (a3 && !self->_listUIDisplayed)
+    if (displayed && !self->_listUIDisplayed)
     {
       v3 = &OBJC_IVAR___TITypologyStatisticAutocorrectionListUI__hiddenToDisplayed;
 LABEL_8:
@@ -39,7 +39,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if (self->_listUIDisplayed && !a3)
+    if (self->_listUIDisplayed && !displayed)
     {
       v3 = &OBJC_IVAR___TITypologyStatisticAutocorrectionListUI__displayedToHidden;
       goto LABEL_8;
@@ -48,7 +48,7 @@ LABEL_8:
 
 LABEL_9:
   self->_didSetListUIDisplayed = 1;
-  self->_listUIDisplayed = a3;
+  self->_listUIDisplayed = displayed;
 }
 
 - (void)addInputCount

@@ -1,16 +1,16 @@
 @interface ADClientDPIDManager
-+ (id)DPIDOperationTypeToString:(unint64_t)a3;
++ (id)DPIDOperationTypeToString:(unint64_t)string;
 + (id)sharedInstance;
 - (ADClientDPIDManager)init;
-- (BOOL)canContinueProcessing:(id)a3;
+- (BOOL)canContinueProcessing:(id)processing;
 - (BOOL)canGenerateDPID;
 - (BOOL)devicePersonalizedAdsEnabled;
 - (BOOL)iCloudAccountSubscribed;
 - (BOOL)isLoggedIntoiTunes;
 - (BOOL)isRestrictedByApple;
 - (BOOL)shouldSyncDPID;
-- (id)conformDPIDToUseWithRecord:(id)a3 legacyRecord:(id)a4;
-- (id)containerWithIDString:(id)a3;
+- (id)conformDPIDToUseWithRecord:(id)record legacyRecord:(id)legacyRecord;
+- (id)containerWithIDString:(id)string;
 - (id)generateDPID;
 - (id)insecureContainer;
 - (id)operationQueueLog;
@@ -18,27 +18,27 @@
 - (id)secureContainer;
 - (id)subscriptionIdentifier;
 - (unint64_t)primaryiCloudAccountSecurityLevel;
-- (void)backupFlowForCloudKitWorkAtTime:(id)a3 with:(id)a4;
-- (void)continueReconcileWithAccountStatus:(int64_t)a3 andError:(id)a4 with:(id)a5;
-- (void)createErrorForPrivateDB:(id)a3 completionHandler:(id)a4;
-- (void)fetchDPIDfromiCloud:(id)a3;
-- (void)finishOperation:(unint64_t)a3;
-- (void)handleCloudKitError:(id)a3;
-- (void)handlePushNotification:(id)a3 completionHandler:(id)a4;
-- (void)reconcileDPID:(id)a3;
-- (void)removeDPIDfromiCloud:(id)a3;
-- (void)resetDPID:(id)a3;
-- (void)resetEncryptedZone:(id)a3;
-- (void)resolveAccountVsStoredManateeState:(int64_t)a3 andError:(id)a4 with:(id)a5;
-- (void)retryIfNeeded:(id)a3;
-- (void)saveDPIDtoiCloud:(id)a3 completionHandler:(id)a4;
-- (void)setDPID:(id)a3;
-- (void)setiCloudAccountSubscribed:(BOOL)a3;
+- (void)backupFlowForCloudKitWorkAtTime:(id)time with:(id)with;
+- (void)continueReconcileWithAccountStatus:(int64_t)status andError:(id)error with:(id)with;
+- (void)createErrorForPrivateDB:(id)b completionHandler:(id)handler;
+- (void)fetchDPIDfromiCloud:(id)cloud;
+- (void)finishOperation:(unint64_t)operation;
+- (void)handleCloudKitError:(id)error;
+- (void)handlePushNotification:(id)notification completionHandler:(id)handler;
+- (void)reconcileDPID:(id)d;
+- (void)removeDPIDfromiCloud:(id)cloud;
+- (void)resetDPID:(id)d;
+- (void)resetEncryptedZone:(id)zone;
+- (void)resolveAccountVsStoredManateeState:(int64_t)state andError:(id)error with:(id)with;
+- (void)retryIfNeeded:(id)needed;
+- (void)saveDPIDtoiCloud:(id)cloud completionHandler:(id)handler;
+- (void)setDPID:(id)d;
+- (void)setiCloudAccountSubscribed:(BOOL)subscribed;
 - (void)setupLocalDPID;
-- (void)setupiCloudSubscription:(id)a3;
-- (void)startOperation:(unint64_t)a3;
-- (void)syncDPIDWithiCloud:(id)a3;
-- (void)teardowniCloudSubscription:(id)a3;
+- (void)setupiCloudSubscription:(id)subscription;
+- (void)startOperation:(unint64_t)operation;
+- (void)syncDPIDWithiCloud:(id)cloud;
+- (void)teardowniCloudSubscription:(id)subscription;
 - (void)updateActiveRecordICloudDSID;
 - (void)writeDPIDtoKeychain;
 @end
@@ -64,11 +64,11 @@ uint64_t __37__ADClientDPIDManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)DPIDOperationTypeToString:(unint64_t)a3
++ (id)DPIDOperationTypeToString:(unint64_t)string
 {
-  if (a3 < 0xA)
+  if (string < 0xA)
   {
-    return off_278C58288[a3];
+    return off_278C58288[string];
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE648] format:{@"Unexpected DPIDOperationType.", v3, v4}];
@@ -82,16 +82,16 @@ uint64_t __37__ADClientDPIDManager_sharedInstance__block_invoke()
   v2 = [(ADClientDPIDManager *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277CBBF00];
-    v5 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __27__ADClientDPIDManager_init__block_invoke;
     v20[3] = &unk_278C57E38;
     v6 = v2;
     v21 = v6;
-    v7 = [v3 addObserverForName:v4 object:0 queue:v5 usingBlock:v20];
+    v7 = [defaultCenter addObserverForName:v4 object:0 queue:mainQueue usingBlock:v20];
 
     [(ADClientDPIDManager *)v6 setSandboxEnvironment:0];
     v8 = objc_alloc(MEMORY[0x277CBC5F8]);
@@ -99,13 +99,13 @@ uint64_t __37__ADClientDPIDManager_sharedInstance__block_invoke()
     [(ADClientDPIDManager *)v6 setZoneID:v9];
 
     v10 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v11 = [(ADClientDPIDManager *)v6 zoneID];
-    v12 = [v10 initWithRecordName:@"DPIDRecordID" zoneID:v11];
+    zoneID = [(ADClientDPIDManager *)v6 zoneID];
+    v12 = [v10 initWithRecordName:@"DPIDRecordID" zoneID:zoneID];
     [(ADClientDPIDManager *)v6 setRecordIDLegacy:v12];
 
     v13 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v14 = [(ADClientDPIDManager *)v6 zoneID];
-    v15 = [v13 initWithRecordName:@"DPIDRecordIDForATP" zoneID:v14];
+    zoneID2 = [(ADClientDPIDManager *)v6 zoneID];
+    v15 = [v13 initWithRecordName:@"DPIDRecordIDForATP" zoneID:zoneID2];
     [(ADClientDPIDManager *)v6 setRecordID:v15];
 
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -220,33 +220,33 @@ uint64_t __27__ADClientDPIDManager_init__block_invoke_2_37(uint64_t a1)
 
 - (void)updateActiveRecordICloudDSID
 {
-  v2 = [MEMORY[0x277CE9658] sharedInstance];
-  v3 = [v2 activeDSIDRecord];
-  v11 = [v3 iCloudDSID];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
+  iCloudDSID = [activeDSIDRecord iCloudDSID];
 
-  v4 = [MEMORY[0x277CE9638] sharedInstance];
-  v5 = [v4 iCloudDSID];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  iCloudDSID2 = [mEMORY[0x277CE9638] iCloudDSID];
 
-  if (([v11 isEqualToString:v5] & 1) == 0)
+  if (([iCloudDSID isEqualToString:iCloudDSID2] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Changing the record's iCloud Identifier: %@ => %@", v11, v5];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Changing the record's iCloud Identifier: %@ => %@", iCloudDSID, iCloudDSID2];
     _ADLog();
 
-    v7 = [MEMORY[0x277CE9638] sharedInstance];
-    v8 = [v7 iCloudDSID];
-    v9 = [MEMORY[0x277CE9658] sharedInstance];
-    v10 = [v9 activeDSIDRecord];
-    [v10 setICloudDSID:v8];
+    mEMORY[0x277CE9638]2 = [MEMORY[0x277CE9638] sharedInstance];
+    iCloudDSID3 = [mEMORY[0x277CE9638]2 iCloudDSID];
+    mEMORY[0x277CE9658]2 = [MEMORY[0x277CE9658] sharedInstance];
+    activeDSIDRecord2 = [mEMORY[0x277CE9658]2 activeDSIDRecord];
+    [activeDSIDRecord2 setICloudDSID:iCloudDSID3];
   }
 }
 
-- (BOOL)canContinueProcessing:(id)a3
+- (BOOL)canContinueProcessing:(id)processing
 {
-  v4 = a3;
+  processingCopy = processing;
   if ([(ADClientDPIDManager *)self dpidReconcileState]== 1)
   {
-    v5 = [(ADClientDPIDManager *)self dpidReconcileStartDate];
-    v6 = v5 == v4;
+    dpidReconcileStartDate = [(ADClientDPIDManager *)self dpidReconcileStartDate];
+    v6 = dpidReconcileStartDate == processingCopy;
   }
 
   else
@@ -255,27 +255,27 @@ uint64_t __27__ADClientDPIDManager_init__block_invoke_2_37(uint64_t a1)
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(ADClientDPIDManager *)self dpidReconcileState];
-  v9 = [v4 AD_doubleDateTimeAsString];
-  v10 = [(ADClientDPIDManager *)self dpidReconcileStartDate];
-  v11 = [v10 AD_doubleDateTimeAsString];
-  v12 = v11;
+  dpidReconcileState = [(ADClientDPIDManager *)self dpidReconcileState];
+  aD_doubleDateTimeAsString = [processingCopy AD_doubleDateTimeAsString];
+  dpidReconcileStartDate2 = [(ADClientDPIDManager *)self dpidReconcileStartDate];
+  aD_doubleDateTimeAsString2 = [dpidReconcileStartDate2 AD_doubleDateTimeAsString];
+  v12 = aD_doubleDateTimeAsString2;
   v13 = @"Wont";
   if (v6)
   {
     v13 = @"Will";
   }
 
-  v14 = [v7 stringWithFormat:@"DPID Reconcile state is %lu. Caller started at %@. Current flow started at %@. %@ continue.", v8, v9, v11, v13];
+  v14 = [v7 stringWithFormat:@"DPID Reconcile state is %lu. Caller started at %@. Current flow started at %@. %@ continue.", dpidReconcileState, aD_doubleDateTimeAsString, aD_doubleDateTimeAsString2, v13];
   _ADLog();
 
   return v6;
 }
 
-- (void)reconcileDPID:(id)a3
+- (void)reconcileDPID:(id)d
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting DPID Reconcile."];
   _ADLog();
 
@@ -285,56 +285,56 @@ uint64_t __27__ADClientDPIDManager_init__block_invoke_2_37(uint64_t a1)
   }
 
   [(ADClientDPIDManager *)self startOperation:0];
-  v6 = [MEMORY[0x277CE9658] sharedInstance];
-  v7 = [v6 idForClientType:5];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  v7 = [mEMORY[0x277CE9658] idForClientType:5];
   DPID = self->_DPID;
   self->_DPID = v7;
 
   if ([(ADClientDPIDManager *)self isRestrictedByApple])
   {
-    v9 = [MEMORY[0x277CE96B8] workQueue];
+    workQueue = [MEMORY[0x277CE96B8] workQueue];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __37__ADClientDPIDManager_reconcileDPID___block_invoke;
     v46[3] = &unk_278C57E60;
     v46[4] = self;
-    v47 = v4;
-    [v9 addOperationWithBlock:v46];
+    v47 = dCopy;
+    [workQueue addOperationWithBlock:v46];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CE9658] sharedInstance];
-    v11 = [v10 activeDSIDRecord];
+    mEMORY[0x277CE9658]2 = [MEMORY[0x277CE9658] sharedInstance];
+    activeDSIDRecord = [mEMORY[0x277CE9658]2 activeDSIDRecord];
 
-    v12 = [v11 isDPIDLocal];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"isDPIDLocal flag is %d", v12];
+    isDPIDLocal = [activeDSIDRecord isDPIDLocal];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"isDPIDLocal flag is %d", isDPIDLocal];
     _ADLog();
 
-    if ((v12 & 1) == 0)
+    if ((isDPIDLocal & 1) == 0)
     {
       [(ADClientDPIDManager *)self setDPID:0];
       [(ADClientDPIDManager *)self setupLocalDPID];
     }
 
-    v14 = [MEMORY[0x277CE9630] sharedInstance];
-    [v14 setInteger:1 forKey:@"CKDPIDSyncState"];
+    mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630] setInteger:1 forKey:@"CKDPIDSyncState"];
 
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"We need to sync with iCloud"];
     _ADLog();
 
     if ([(ADClientDPIDManager *)self shouldSyncDPID])
     {
-      v16 = [(ADClientDPIDManager *)self secureContainer];
-      objc_storeStrong(&self->_privateContainer, v16);
-      if (v16)
+      secureContainer = [(ADClientDPIDManager *)self secureContainer];
+      objc_storeStrong(&self->_privateContainer, secureContainer);
+      if (secureContainer)
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID reconcile with iCloud"];
         _ADLog();
 
-        v18 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         self->_dpidReconcileState = 1;
-        objc_storeStrong(&self->_dpidReconcileStartDate, v18);
+        objc_storeStrong(&self->_dpidReconcileStartDate, date);
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Creating the backup DPID flow."];
         _ADLog();
 
@@ -345,9 +345,9 @@ uint64_t __27__ADClientDPIDManager_init__block_invoke_2_37(uint64_t a1)
         block[2] = __37__ADClientDPIDManager_reconcileDPID___block_invoke_4;
         block[3] = &unk_278C57EB0;
         block[4] = self;
-        v22 = v18;
+        v22 = date;
         v39 = v22;
-        v23 = v4;
+        v23 = dCopy;
         v40 = v23;
         dispatch_after(v20, backupFlowQueue, block);
         v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting to wait for the account status."];
@@ -358,10 +358,10 @@ uint64_t __27__ADClientDPIDManager_init__block_invoke_2_37(uint64_t a1)
         v34[2] = __37__ADClientDPIDManager_reconcileDPID___block_invoke_5;
         v34[3] = &unk_278C57F50;
         v35 = v22;
-        v36 = self;
+        selfCopy = self;
         v37 = v23;
         v25 = v22;
-        [v16 accountInfoWithCompletionHandler:v34];
+        [secureContainer accountInfoWithCompletionHandler:v34];
 
         v26 = v39;
       }
@@ -376,15 +376,15 @@ uint64_t __27__ADClientDPIDManager_init__block_invoke_2_37(uint64_t a1)
         v31 = [v28 errorWithDomain:v29 code:9 userInfo:v30];
 
         [(ADClientDPIDManager *)self finishOperation:0];
-        v32 = [MEMORY[0x277CE96B8] workQueue];
+        workQueue2 = [MEMORY[0x277CE96B8] workQueue];
         v41[0] = MEMORY[0x277D85DD0];
         v41[1] = 3221225472;
         v41[2] = __37__ADClientDPIDManager_reconcileDPID___block_invoke_3;
         v41[3] = &unk_278C57E88;
         v42 = v31;
-        v43 = v4;
+        v43 = dCopy;
         v25 = v31;
-        [v32 addOperationWithBlock:v41];
+        [workQueue2 addOperationWithBlock:v41];
 
         v26 = v43;
       }
@@ -392,14 +392,14 @@ uint64_t __27__ADClientDPIDManager_init__block_invoke_2_37(uint64_t a1)
 
     else
     {
-      v27 = [MEMORY[0x277CE96B8] workQueue];
+      workQueue3 = [MEMORY[0x277CE96B8] workQueue];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __37__ADClientDPIDManager_reconcileDPID___block_invoke_2;
       v44[3] = &unk_278C57E60;
       v44[4] = self;
-      v45 = v4;
-      [v27 addOperationWithBlock:v44];
+      v45 = dCopy;
+      [workQueue3 addOperationWithBlock:v44];
     }
   }
 
@@ -569,10 +569,10 @@ uint64_t __37__ADClientDPIDManager_reconcileDPID___block_invoke_8(uint64_t a1)
   return [v3 resolveAccountVsStoredManateeState:v2 andError:v4 with:v5];
 }
 
-- (void)resolveAccountVsStoredManateeState:(int64_t)a3 andError:(id)a4 with:(id)a5
+- (void)resolveAccountVsStoredManateeState:(int64_t)state andError:(id)error with:(id)with
 {
-  v25 = a4;
-  v8 = a5;
+  errorCopy = error;
+  withCopy = with;
   if (self->_isPrivateContainerSecure)
   {
     v9 = @"Container is secure.";
@@ -586,11 +586,11 @@ uint64_t __37__ADClientDPIDManager_reconcileDPID___block_invoke_8(uint64_t a1)
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:v9];
   _ADLog();
 
-  v11 = [MEMORY[0x277CE9658] sharedInstance];
-  v12 = [v11 activeDSIDRecord];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-  v13 = [v12 isDPIDManatee];
-  if (v13)
+  isDPIDManatee = [activeDSIDRecord isDPIDManatee];
+  if (isDPIDManatee)
   {
     v14 = @"DPID was previously stored as Manatee.";
   }
@@ -603,13 +603,13 @@ uint64_t __37__ADClientDPIDManager_reconcileDPID___block_invoke_8(uint64_t a1)
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:v14];
   _ADLog();
 
-  if (self->_isPrivateContainerSecure == v13)
+  if (self->_isPrivateContainerSecure == isDPIDManatee)
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Container type matches DPID type."];
     _ADLog();
 
-    v17 = [MEMORY[0x277CE9658] sharedInstance];
-    v18 = [v17 idForClientType:5];
+    mEMORY[0x277CE9658]2 = [MEMORY[0x277CE9658] sharedInstance];
+    v18 = [mEMORY[0x277CE9658]2 idForClientType:5];
     DPID = self->_DPID;
     self->_DPID = v18;
   }
@@ -624,9 +624,9 @@ uint64_t __37__ADClientDPIDManager_reconcileDPID___block_invoke_8(uint64_t a1)
   }
 
   v21 = MEMORY[0x277CCACA8];
-  v22 = [(ADClientDPIDManager *)self supportsDeviceToDeviceEncryption];
+  supportsDeviceToDeviceEncryption = [(ADClientDPIDManager *)self supportsDeviceToDeviceEncryption];
   v23 = @"NO";
-  if (v22)
+  if (supportsDeviceToDeviceEncryption)
   {
     v23 = @"YES";
   }
@@ -634,24 +634,24 @@ uint64_t __37__ADClientDPIDManager_reconcileDPID___block_invoke_8(uint64_t a1)
   v24 = [v21 stringWithFormat:@"iCloud container supportsDeviceToDeviceEncryption: %@", v23];
   _ADLog();
 
-  [(ADClientDPIDManager *)self continueReconcileWithAccountStatus:a3 andError:v25 with:v8];
+  [(ADClientDPIDManager *)self continueReconcileWithAccountStatus:state andError:errorCopy with:withCopy];
 }
 
-- (void)backupFlowForCloudKitWorkAtTime:(id)a3 with:(id)a4
+- (void)backupFlowForCloudKitWorkAtTime:(id)time with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CE96B8] workQueue];
+  timeCopy = time;
+  withCopy = with;
+  workQueue = [MEMORY[0x277CE96B8] workQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__ADClientDPIDManager_backupFlowForCloudKitWorkAtTime_with___block_invoke;
   v11[3] = &unk_278C57EB0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 addOperationWithBlock:v11];
+  v12 = timeCopy;
+  selfCopy = self;
+  v14 = withCopy;
+  v9 = withCopy;
+  v10 = timeCopy;
+  [workQueue addOperationWithBlock:v11];
 }
 
 void __60__ADClientDPIDManager_backupFlowForCloudKitWorkAtTime_with___block_invoke(uint64_t a1)
@@ -680,18 +680,18 @@ void __60__ADClientDPIDManager_backupFlowForCloudKitWorkAtTime_with___block_invo
   }
 }
 
-- (void)continueReconcileWithAccountStatus:(int64_t)a3 andError:(id)a4 with:(id)a5
+- (void)continueReconcileWithAccountStatus:(int64_t)status andError:(id)error with:(id)with
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 != 1 || v8)
+  errorCopy = error;
+  withCopy = with;
+  if (status != 1 || errorCopy)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID reconcile - iCloud account not available accountStatus %ld", a3];
+    status = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID reconcile - iCloud account not available accountStatus %ld", status];
     _ADLog();
 
     [(ADClientDPIDManager *)self setupLocalDPID];
     [(ADClientDPIDManager *)self setDpidReconcileState:0];
-    if (!v8)
+    if (!errorCopy)
     {
       [(ADClientDPIDManager *)self updateActiveRecordICloudDSID];
     }
@@ -700,9 +700,9 @@ void __60__ADClientDPIDManager_backupFlowForCloudKitWorkAtTime_with___block_invo
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Done reconciling the DPID."];
     _ADLog();
 
-    if (v9)
+    if (withCopy)
     {
-      v9[2](v9, v8);
+      withCopy[2](withCopy, errorCopy);
     }
   }
 
@@ -719,7 +719,7 @@ void __60__ADClientDPIDManager_backupFlowForCloudKitWorkAtTime_with___block_invo
       v16[3] = &unk_278C57F78;
       v16[4] = self;
       v11 = &v17;
-      v17 = v9;
+      v17 = withCopy;
       [(ADClientDPIDManager *)self retryIfNeeded:v16];
     }
 
@@ -734,7 +734,7 @@ void __60__ADClientDPIDManager_backupFlowForCloudKitWorkAtTime_with___block_invo
       v18[3] = &unk_278C57F78;
       v18[4] = self;
       v11 = &v19;
-      v19 = v9;
+      v19 = withCopy;
       [(ADClientDPIDManager *)self setupiCloudSubscription:v18];
     }
 
@@ -813,17 +813,17 @@ uint64_t __72__ADClientDPIDManager_continueReconcileWithAccountStatus_andError_w
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handlePushNotification:(id)a3 completionHandler:(id)a4
+- (void)handlePushNotification:(id)notification completionHandler:(id)handler
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CE96B8] workQueue];
+  handlerCopy = handler;
+  workQueue = [MEMORY[0x277CE96B8] workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__ADClientDPIDManager_handlePushNotification_completionHandler___block_invoke;
   v7[3] = &unk_278C57FC8;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [workQueue addOperationWithBlock:v7];
 }
 
 void __64__ADClientDPIDManager_handlePushNotification_completionHandler___block_invoke(uint64_t a1)
@@ -857,9 +857,9 @@ uint64_t __64__ADClientDPIDManager_handlePushNotification_completionHandler___bl
   return result;
 }
 
-- (void)resetDPID:(id)a3
+- (void)resetDPID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID reset"];
   _ADLog();
 
@@ -868,17 +868,17 @@ uint64_t __64__ADClientDPIDManager_handlePushNotification_completionHandler___bl
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resetting DPID Locally"];
     _ADLog();
 
-    v7 = [(ADClientDPIDManager *)self generateDPID];
-    [(ADClientDPIDManager *)self setDPID:v7];
+    generateDPID = [(ADClientDPIDManager *)self generateDPID];
+    [(ADClientDPIDManager *)self setDPID:generateDPID];
 
     [(ADClientDPIDManager *)self setIsDPIDLocalTo:1];
     if ([(ADClientDPIDManager *)self shouldSyncDPID])
     {
-      v8 = [(ADClientDPIDManager *)self DPID];
-      [(ADClientDPIDManager *)self saveDPIDtoiCloud:v8 completionHandler:0];
+      dPID = [(ADClientDPIDManager *)self DPID];
+      [(ADClientDPIDManager *)self saveDPIDtoiCloud:dPID completionHandler:0];
 
-      v9 = [MEMORY[0x277CE9630] sharedInstance];
-      [v9 setInteger:0 forKey:@"CKDPIDSyncState"];
+      mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+      [mEMORY[0x277CE9630] setInteger:0 forKey:@"CKDPIDSyncState"];
       goto LABEL_9;
     }
 
@@ -899,7 +899,7 @@ uint64_t __64__ADClientDPIDManager_handlePushNotification_completionHandler___bl
       v13[1] = 3221225472;
       v13[2] = __33__ADClientDPIDManager_resetDPID___block_invoke;
       v13[3] = &unk_278C57FA0;
-      v14 = v4;
+      v14 = dCopy;
       [(ADClientDPIDManager *)self removeDPIDfromiCloud:v13];
 
       goto LABEL_11;
@@ -909,13 +909,13 @@ uint64_t __64__ADClientDPIDManager_handlePushNotification_completionHandler___bl
     v12 = @"Not removing DPID from iCloud";
   }
 
-  v9 = [v11 stringWithFormat:v12];
+  mEMORY[0x277CE9630] = [v11 stringWithFormat:v12];
   _ADLog();
 LABEL_9:
 
-  if (v4)
+  if (dCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(dCopy + 2))(dCopy, 0);
   }
 
 LABEL_11:
@@ -934,19 +934,19 @@ uint64_t __33__ADClientDPIDManager_resetDPID___block_invoke(uint64_t a1)
 
 - (BOOL)isLoggedIntoiTunes
 {
-  v2 = [MEMORY[0x277CE9658] sharedInstance];
-  v3 = [v2 activeDSIDRecord];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-  v4 = [v3 DSID];
-  if (v4)
+  dSID = [activeDSIDRecord DSID];
+  if (dSID)
   {
-    v5 = [v3 DSID];
-    v6 = [v5 isEqualToString:@"0"] ^ 1;
+    dSID2 = [activeDSIDRecord DSID];
+    v6 = [dSID2 isEqualToString:@"0"] ^ 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"isLoggedIntoiTunes: DSID is NULL"];
+    dSID2 = [MEMORY[0x277CCACA8] stringWithFormat:@"isLoggedIntoiTunes: DSID is NULL"];
     _ADLog();
     LOBYTE(v6) = 0;
   }
@@ -956,11 +956,11 @@ uint64_t __33__ADClientDPIDManager_resetDPID___block_invoke(uint64_t a1)
 
 - (id)primaryiCloudAccountAltDSID
 {
-  v2 = [MEMORY[0x277CE9638] sharedInstance];
-  v3 = [v2 iCloudAccount];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  iCloudAccount = [mEMORY[0x277CE9638] iCloudAccount];
 
-  v4 = [MEMORY[0x277CF0130] sharedInstance];
-  v5 = [v4 altDSIDForAccount:v3];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  v5 = [mEMORY[0x277CF0130] altDSIDForAccount:iCloudAccount];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Primary account AltDSID %@", v5];
   _ADLog();
 
@@ -969,19 +969,19 @@ uint64_t __33__ADClientDPIDManager_resetDPID___block_invoke(uint64_t a1)
 
 - (unint64_t)primaryiCloudAccountSecurityLevel
 {
-  v2 = [(ADClientDPIDManager *)self primaryiCloudAccountAltDSID];
-  if ([v2 length])
+  primaryiCloudAccountAltDSID = [(ADClientDPIDManager *)self primaryiCloudAccountAltDSID];
+  if ([primaryiCloudAccountAltDSID length])
   {
-    v3 = [MEMORY[0x277CF0130] sharedInstance];
-    v4 = [v3 authKitAccountWithAltDSID:v2];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    v4 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:primaryiCloudAccountAltDSID];
     if (v4)
     {
-      v5 = [v3 securityLevelForAccount:v4];
+      v5 = [mEMORY[0x277CF0130] securityLevelForAccount:v4];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not get account for altDSID %@", v2];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not get account for altDSID %@", primaryiCloudAccountAltDSID];
       _ADLog();
 
       v5 = 0;
@@ -998,28 +998,28 @@ uint64_t __33__ADClientDPIDManager_resetDPID___block_invoke(uint64_t a1)
 
 - (BOOL)isRestrictedByApple
 {
-  v2 = [MEMORY[0x277CE9658] sharedInstance];
-  v3 = [v2 activeDSIDRecord];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-  LOBYTE(v2) = [v3 isRestrictedByApple];
-  return v2;
+  LOBYTE(mEMORY[0x277CE9658]) = [activeDSIDRecord isRestrictedByApple];
+  return mEMORY[0x277CE9658];
 }
 
 - (BOOL)devicePersonalizedAdsEnabled
 {
-  v2 = [MEMORY[0x277CE9638] sharedInstance];
-  v3 = [v2 isPersonalizedAdsEnabled];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  isPersonalizedAdsEnabled = [mEMORY[0x277CE9638] isPersonalizedAdsEnabled];
 
-  return v3;
+  return isPersonalizedAdsEnabled;
 }
 
 - (void)writeDPIDtoKeychain
 {
-  v3 = [MEMORY[0x277CE9658] sharedInstance];
-  v4 = [v3 activeDSIDRecord];
-  v5 = [v4 DSID];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
+  dSID = [activeDSIDRecord DSID];
 
-  if (v5)
+  if (dSID)
   {
     v23 = 0;
     v6 = GetKeychainPropertyListForKey();
@@ -1032,24 +1032,24 @@ uint64_t __33__ADClientDPIDManager_resetDPID___block_invoke(uint64_t a1)
     }
 
     v8 = [v6 mutableCopy];
-    v9 = [(ADClientDPIDManager *)self DPID];
+    dPID = [(ADClientDPIDManager *)self DPID];
 
-    if (v9)
+    if (dPID)
     {
-      v10 = [MEMORY[0x277CE9658] sharedInstance];
+      mEMORY[0x277CE9658]2 = [MEMORY[0x277CE9658] sharedInstance];
       v11 = [MEMORY[0x277CE9648] initWithFlags:4];
-      [v10 setReconcileOperations:v11];
+      [mEMORY[0x277CE9658]2 setReconcileOperations:v11];
 
-      v12 = [MEMORY[0x277CBEB38] dictionary];
-      v13 = [(ADClientDPIDManager *)self DPID];
-      [v12 setObject:v13 forKeyedSubscript:@"ADClientDPIDRecordKey"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      dPID2 = [(ADClientDPIDManager *)self DPID];
+      [dictionary setObject:dPID2 forKeyedSubscript:@"ADClientDPIDRecordKey"];
 
-      [v8 setObject:v12 forKeyedSubscript:v5];
+      [v8 setObject:dictionary forKeyedSubscript:dSID];
     }
 
     else
     {
-      [v8 removeObjectForKey:v5];
+      [v8 removeObjectForKey:dSID];
     }
 
     v22 = 0;
@@ -1059,9 +1059,9 @@ uint64_t __33__ADClientDPIDManager_resetDPID___block_invoke(uint64_t a1)
     if (v15)
     {
       v17 = MEMORY[0x277CCACA8];
-      v18 = [v15 code];
-      v19 = [v16 userInfo];
-      v20 = [v17 stringWithFormat:@"Error serializing property list. Error %lu.\n%@", v18, v19];
+      code = [v15 code];
+      userInfo = [v16 userInfo];
+      v20 = [v17 stringWithFormat:@"Error serializing property list. Error %lu.\n%@", code, userInfo];
       _ADLog();
     }
 
@@ -1075,7 +1075,7 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error writing DPID to keychain: %d", v21];
+      userInfo = [MEMORY[0x277CCACA8] stringWithFormat:@"Error writing DPID to keychain: %d", v21];
       _ADLog();
     }
 
@@ -1087,32 +1087,32 @@ LABEL_13:
 
 - (id)subscriptionIdentifier
 {
-  v3 = [MEMORY[0x277CE9638] sharedInstance];
-  v4 = [v3 iCloudAccountIdentifier];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  iCloudAccountIdentifier = [mEMORY[0x277CE9638] iCloudAccountIdentifier];
 
   if ([(ADClientDPIDManager *)self supportsDeviceToDeviceEncryption])
   {
-    v5 = [v4 stringByAppendingString:@"-secure"];
+    v5 = [iCloudAccountIdentifier stringByAppendingString:@"-secure"];
 
-    v4 = v5;
+    iCloudAccountIdentifier = v5;
   }
 
   if ([(ADClientDPIDManager *)self sandboxEnvironment])
   {
-    v6 = [v4 stringByAppendingString:@"-sandbox"];
+    v6 = [iCloudAccountIdentifier stringByAppendingString:@"-sandbox"];
 
-    v4 = v6;
+    iCloudAccountIdentifier = v6;
   }
 
-  return v4;
+  return iCloudAccountIdentifier;
 }
 
 - (BOOL)iCloudAccountSubscribed
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ADClientDPIDManager *)v2 subscriptionIdentifier];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  subscriptionIdentifier = [(ADClientDPIDManager *)selfCopy subscriptionIdentifier];
+  if (subscriptionIdentifier)
   {
     v12 = 0;
     v4 = ADCopyDataFromKeychain();
@@ -1138,7 +1138,7 @@ LABEL_12:
 
     else if (v6)
     {
-      v9 = [v6 containsObject:v3];
+      v9 = [v6 containsObject:subscriptionIdentifier];
       goto LABEL_11;
     }
 
@@ -1151,17 +1151,17 @@ LABEL_11:
   v9 = 0;
 LABEL_13:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v9;
 }
 
-- (void)setiCloudAccountSubscribed:(BOOL)a3
+- (void)setiCloudAccountSubscribed:(BOOL)subscribed
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ADClientDPIDManager *)v4 subscriptionIdentifier];
-  if (v5)
+  subscribedCopy = subscribed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  subscriptionIdentifier = [(ADClientDPIDManager *)selfCopy subscriptionIdentifier];
+  if (subscriptionIdentifier)
   {
     v23 = 0;
     v6 = ADCopyDataFromKeychain();
@@ -1182,17 +1182,17 @@ LABEL_13:
       }
 
       v12 = v10;
-      if (v3)
+      if (subscribedCopy)
       {
-        if (([v10 containsObject:v5] & 1) == 0)
+        if (([v10 containsObject:subscriptionIdentifier] & 1) == 0)
         {
-          [v12 addObject:v5];
+          [v12 addObject:subscriptionIdentifier];
         }
       }
 
       else
       {
-        [v10 removeObject:v5];
+        [v10 removeObject:subscriptionIdentifier];
       }
     }
 
@@ -1211,9 +1211,9 @@ LABEL_13:
     if (v14)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [v14 code];
-      v18 = [v15 userInfo];
-      v19 = [v16 stringWithFormat:@"Error serializing property list. Error %lu.\n%@", v17, v18];
+      code = [v14 code];
+      userInfo = [v15 userInfo];
+      v19 = [v16 stringWithFormat:@"Error serializing property list. Error %lu.\n%@", code, userInfo];
       _ADLog();
     }
 
@@ -1229,12 +1229,12 @@ LABEL_13:
       {
         [MEMORY[0x277CCACA8] stringWithFormat:@"Added subscribed iCloud account to keychain"];
       }
-      v18 = ;
+      userInfo = ;
       _ADLog();
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)operationQueueLog
@@ -1245,8 +1245,8 @@ LABEL_13:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ADClientDPIDManager *)self operationsInProgress];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  operationsInProgress = [(ADClientDPIDManager *)self operationsInProgress];
+  v5 = [operationsInProgress countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1257,14 +1257,14 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operationsInProgress);
         }
 
         v9 = +[ADClientDPIDManager DPIDOperationTypeToString:](ADClientDPIDManager, "DPIDOperationTypeToString:", [*(*(&v13 + 1) + 8 * i) integerValue]);
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [operationsInProgress countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1277,59 +1277,59 @@ LABEL_13:
   return v10;
 }
 
-- (void)startOperation:(unint64_t)a3
+- (void)startOperation:(unint64_t)operation
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(ADClientDPIDManager *)obj operationsInProgress];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v4 addObject:v5];
+  operationsInProgress = [(ADClientDPIDManager *)obj operationsInProgress];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:operation];
+  [operationsInProgress addObject:v5];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [ADClientDPIDManager DPIDOperationTypeToString:a3];
+  v7 = [ADClientDPIDManager DPIDOperationTypeToString:operation];
   v8 = [v6 stringWithFormat:@"startOperation: %@", v7];
   _ADLog();
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(ADClientDPIDManager *)obj operationQueueLog];
-  v11 = [v9 stringWithFormat:@"    operationsInProgress: %@", v10];
+  operationQueueLog = [(ADClientDPIDManager *)obj operationQueueLog];
+  v11 = [v9 stringWithFormat:@"    operationsInProgress: %@", operationQueueLog];
   _ADLog();
 
   objc_sync_exit(obj);
 }
 
-- (void)finishOperation:(unint64_t)a3
+- (void)finishOperation:(unint64_t)operation
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(ADClientDPIDManager *)obj operationsInProgress];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 containsObject:v5];
+  operationsInProgress = [(ADClientDPIDManager *)obj operationsInProgress];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:operation];
+  v6 = [operationsInProgress containsObject:v5];
 
   if (v6)
   {
-    v7 = [(ADClientDPIDManager *)obj operationsInProgress];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v9 = [v7 indexOfObject:v8];
+    operationsInProgress2 = [(ADClientDPIDManager *)obj operationsInProgress];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:operation];
+    v9 = [operationsInProgress2 indexOfObject:v8];
 
-    v10 = [(ADClientDPIDManager *)obj operationsInProgress];
-    [v10 removeObjectAtIndex:v9];
+    operationsInProgress3 = [(ADClientDPIDManager *)obj operationsInProgress];
+    [operationsInProgress3 removeObjectAtIndex:v9];
 
     v11 = MEMORY[0x277CCACA8];
-    v12 = [ADClientDPIDManager DPIDOperationTypeToString:a3];
+    v12 = [ADClientDPIDManager DPIDOperationTypeToString:operation];
     v13 = [v11 stringWithFormat:@"finishOperation: %@", v12];
     _ADLog();
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(ADClientDPIDManager *)obj operationQueueLog];
-    [v14 stringWithFormat:@"    operationsInProgress: %@", v15];
+    operationQueueLog = [(ADClientDPIDManager *)obj operationQueueLog];
+    [v14 stringWithFormat:@"    operationsInProgress: %@", operationQueueLog];
   }
 
   else
   {
     v17 = MEMORY[0x277CCACA8];
-    v15 = [ADClientDPIDManager DPIDOperationTypeToString:a3];
-    [v17 stringWithFormat:@"******** Attempt to remove operation that wasn't present %@", v15];
+    operationQueueLog = [ADClientDPIDManager DPIDOperationTypeToString:operation];
+    [v17 stringWithFormat:@"******** Attempt to remove operation that wasn't present %@", operationQueueLog];
   }
   v16 = ;
   _ADLog();
@@ -1337,7 +1337,7 @@ LABEL_13:
   objc_sync_exit(obj);
 }
 
-- (id)containerWithIDString:(id)a3
+- (id)containerWithIDString:(id)string
 {
   if (self->_sandboxEnvironment)
   {
@@ -1350,8 +1350,8 @@ LABEL_13:
   }
 
   v4 = MEMORY[0x277CBC220];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContainerIdentifier:v5 environment:v3];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithContainerIdentifier:stringCopy environment:v3];
 
   v7 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v6];
 
@@ -1380,31 +1380,31 @@ LABEL_13:
   return v3;
 }
 
-- (void)setDPID:(id)a3
+- (void)setDPID:(id)d
 {
-  v10 = a3;
+  dCopy = d;
   if (([(NSString *)self->_DPID isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_DPID, a3);
+    objc_storeStrong(&self->_DPID, d);
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Setting DPID to %@.", self->_DPID];
     _ADLog();
 
     [(ADClientDPIDManager *)self writeDPIDtoKeychain];
-    v6 = [MEMORY[0x277CE9658] sharedInstance];
-    v7 = [v6 activeDSIDRecord];
+    mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+    activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-    if (v10)
+    if (dCopy)
     {
-      [v7 setID:v10 forClientType:5];
+      [activeDSIDRecord setID:dCopy forClientType:5];
       if ([(ADClientDPIDManager *)self supportsDeviceToDeviceEncryption])
       {
-        v8 = v7;
+        v8 = activeDSIDRecord;
         v9 = 1;
       }
 
       else
       {
-        v8 = v7;
+        v8 = activeDSIDRecord;
         v9 = 0;
       }
 
@@ -1413,7 +1413,7 @@ LABEL_13:
 
     else
     {
-      [v7 removeIDForClientType:5];
+      [activeDSIDRecord removeIDForClientType:5];
     }
   }
 }
@@ -1423,15 +1423,15 @@ LABEL_13:
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"setupLocalDPID:"];
   _ADLog();
 
-  v4 = [(ADClientDPIDManager *)self canGenerateDPID];
-  v5 = [(ADClientDPIDManager *)self DPID];
-  v6 = v5;
-  if (!v4)
+  canGenerateDPID = [(ADClientDPIDManager *)self canGenerateDPID];
+  dPID = [(ADClientDPIDManager *)self DPID];
+  v6 = dPID;
+  if (!canGenerateDPID)
   {
 
     if (!v6)
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Keeping NULL DPID %@", self->_DPID];
+      mEMORY[0x277CE9630] = [MEMORY[0x277CCACA8] stringWithFormat:@"Keeping NULL DPID %@", self->_DPID];
       _ADLog();
       goto LABEL_10;
     }
@@ -1442,20 +1442,20 @@ LABEL_13:
 
     [(ADClientDPIDManager *)self setIsDPIDLocalTo:0];
 LABEL_8:
-    v17 = [MEMORY[0x277CE9630] sharedInstance];
-    [v17 setInteger:1 forKey:@"CKDPIDSyncState"];
+    mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630] setInteger:1 forKey:@"CKDPIDSyncState"];
     goto LABEL_10;
   }
 
   if (!v6)
   {
     [(ADClientDPIDManager *)self setIsDPIDLocalTo:1];
-    v13 = [(ADClientDPIDManager *)self generateDPID];
-    [(ADClientDPIDManager *)self setDPID:v13];
+    generateDPID = [(ADClientDPIDManager *)self generateDPID];
+    [(ADClientDPIDManager *)self setDPID:generateDPID];
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(ADClientDPIDManager *)self DPID];
-    v16 = [v14 stringWithFormat:@"Storing NEW DPID locally. %@.", v15];
+    dPID2 = [(ADClientDPIDManager *)self DPID];
+    v16 = [v14 stringWithFormat:@"Storing NEW DPID locally. %@.", dPID2];
     _ADLog();
 
     goto LABEL_8;
@@ -1464,17 +1464,17 @@ LABEL_8:
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID %@ Already exists, checking for isDPIDLocal flag", self->_DPID];
   _ADLog();
 
-  v8 = [MEMORY[0x277CE9658] sharedInstance];
-  v17 = [v8 activeDSIDRecord];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  mEMORY[0x277CE9630] = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-  v9 = [v17 isDPIDLocal];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"isDPIDLocal flag is %d", v9];
+  isDPIDLocal = [mEMORY[0x277CE9630] isDPIDLocal];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"isDPIDLocal flag is %d", isDPIDLocal];
   _ADLog();
 
-  if ((v9 & 1) == 0)
+  if ((isDPIDLocal & 1) == 0)
   {
-    v11 = [(ADClientDPIDManager *)self generateDPID];
-    [(ADClientDPIDManager *)self setDPID:v11];
+    generateDPID2 = [(ADClientDPIDManager *)self generateDPID];
+    [(ADClientDPIDManager *)self setDPID:generateDPID2];
 
     [(ADClientDPIDManager *)self setIsDPIDLocalTo:1];
   }
@@ -1484,44 +1484,44 @@ LABEL_10:
 
 - (id)generateDPID
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
-  v4 = [@"DPID-" stringByAppendingString:v3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v4 = [@"DPID-" stringByAppendingString:uUIDString];
 
   return v4;
 }
 
 - (BOOL)shouldSyncDPID
 {
-  v2 = [MEMORY[0x277CE9638] sharedInstance];
-  v3 = [v2 iCloudAccount];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  iCloudAccount = [mEMORY[0x277CE9638] iCloudAccount];
 
-  if (v3)
+  if (iCloudAccount)
   {
-    v4 = [MEMORY[0x277CE9658] sharedInstance];
-    v5 = [v4 activeDSIDRecord];
+    mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+    activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-    v6 = [v5 DSID];
-    v7 = [MEMORY[0x277CE9638] sharedInstance];
-    v8 = [v7 iCloudDSID];
+    dSID = [activeDSIDRecord DSID];
+    mEMORY[0x277CE9638]2 = [MEMORY[0x277CE9638] sharedInstance];
+    iCloudDSID = [mEMORY[0x277CE9638]2 iCloudDSID];
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v8 isEqualToString:v6];
+    v10 = [iCloudDSID isEqualToString:dSID];
     v11 = @"NO";
     if (v10)
     {
       v11 = @"YES";
     }
 
-    v12 = [v9 stringWithFormat:@"\nshouldSyncDPID:\t%@\niCloudDSID:\t%@\niTunesDSID:\t%@\n", v11, v8, v6];
+    v12 = [v9 stringWithFormat:@"\nshouldSyncDPID:\t%@\niCloudDSID:\t%@\niTunesDSID:\t%@\n", v11, iCloudDSID, dSID];
     _ADLog();
 
-    v13 = [v8 isEqualToString:v6];
+    v13 = [iCloudDSID isEqualToString:dSID];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"shouldSyncDPID: No iCloud Account, not syncing"];
+    activeDSIDRecord = [MEMORY[0x277CCACA8] stringWithFormat:@"shouldSyncDPID: No iCloud Account, not syncing"];
     _ADLog();
     v13 = 0;
   }
@@ -1531,12 +1531,12 @@ LABEL_10:
 
 - (BOOL)canGenerateDPID
 {
-  v3 = [(ADClientDPIDManager *)self isLoggedIntoiTunes];
-  v4 = [(ADClientDPIDManager *)self isRestrictedByApple];
-  v5 = [(ADClientDPIDManager *)self devicePersonalizedAdsEnabled];
-  v6 = v5 && !v4;
+  isLoggedIntoiTunes = [(ADClientDPIDManager *)self isLoggedIntoiTunes];
+  isRestrictedByApple = [(ADClientDPIDManager *)self isRestrictedByApple];
+  devicePersonalizedAdsEnabled = [(ADClientDPIDManager *)self devicePersonalizedAdsEnabled];
+  v6 = devicePersonalizedAdsEnabled && !isRestrictedByApple;
   v7 = @"NO";
-  if (v3)
+  if (isLoggedIntoiTunes)
   {
     v8 = @"YES";
   }
@@ -1546,8 +1546,8 @@ LABEL_10:
     v8 = @"NO";
   }
 
-  v9 = v3 & v6;
-  if ((v3 & v6) != 0)
+  v9 = isLoggedIntoiTunes & v6;
+  if ((isLoggedIntoiTunes & v6) != 0)
   {
     v10 = @"YES";
   }
@@ -1557,7 +1557,7 @@ LABEL_10:
     v10 = @"NO";
   }
 
-  if (v4)
+  if (isRestrictedByApple)
   {
     v11 = @"NO";
   }
@@ -1567,7 +1567,7 @@ LABEL_10:
     v11 = @"YES";
   }
 
-  if (v5)
+  if (devicePersonalizedAdsEnabled)
   {
     v7 = @"YES";
   }
@@ -1578,11 +1578,11 @@ LABEL_10:
   return v9;
 }
 
-- (void)retryIfNeeded:(id)a3
+- (void)retryIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE9630] sharedInstance];
-  v6 = [v5 integerForKey:@"CKDPIDSyncState"];
+  neededCopy = needed;
+  mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+  v6 = [mEMORY[0x277CE9630] integerForKey:@"CKDPIDSyncState"];
 
   if (v6 <= 1)
   {
@@ -1595,7 +1595,7 @@ LABEL_10:
       v17[1] = 3221225472;
       v17[2] = __37__ADClientDPIDManager_retryIfNeeded___block_invoke;
       v17[3] = &unk_278C57FA0;
-      v18 = v4;
+      v18 = neededCopy;
       [(ADClientDPIDManager *)self syncDPIDWithiCloud:v17];
       v8 = v18;
       goto LABEL_9;
@@ -1615,7 +1615,7 @@ LABEL_10:
         v13[2] = __37__ADClientDPIDManager_retryIfNeeded___block_invoke_3;
         v13[3] = &unk_278C57FF0;
         v13[4] = self;
-        v14 = v4;
+        v14 = neededCopy;
         [(ADClientDPIDManager *)self fetchDPIDfromiCloud:v13];
         v8 = v14;
         goto LABEL_9;
@@ -1623,8 +1623,8 @@ LABEL_10:
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Retrying DPID Save", objc_opt_class()];
         _ADLog();
 
-        v12 = [(ADClientDPIDManager *)self DPID];
-        [(ADClientDPIDManager *)self saveDPIDtoiCloud:v12 completionHandler:0];
+        dPID = [(ADClientDPIDManager *)self DPID];
+        [(ADClientDPIDManager *)self saveDPIDtoiCloud:dPID completionHandler:0];
 
         break;
       case 4:
@@ -1635,7 +1635,7 @@ LABEL_10:
         v15[1] = 3221225472;
         v15[2] = __37__ADClientDPIDManager_retryIfNeeded___block_invoke_2;
         v15[3] = &unk_278C57FA0;
-        v16 = v4;
+        v16 = neededCopy;
         [(ADClientDPIDManager *)self removeDPIDfromiCloud:v15];
         v8 = v16;
 LABEL_9:
@@ -1644,9 +1644,9 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (neededCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(neededCopy + 2))(neededCopy, 0);
   }
 
 LABEL_13:
@@ -1713,20 +1713,20 @@ void __37__ADClientDPIDManager_retryIfNeeded___block_invoke_3(uint64_t a1, void 
   }
 }
 
-- (void)resetEncryptedZone:(id)a3
+- (void)resetEncryptedZone:(id)zone
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ADClientDPIDManager *)self dpidReconcileStartDate];
+  dpidReconcileStartDate = [(ADClientDPIDManager *)self dpidReconcileStartDate];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Deleting inaccessible encrypted container"];
   _ADLog();
 
-  v6 = [(ADClientDPIDManager *)self privateContainer];
-  v7 = [v6 privateCloudDatabase];
+  privateContainer = [(ADClientDPIDManager *)self privateContainer];
+  privateCloudDatabase = [privateContainer privateCloudDatabase];
 
   [(ADClientDPIDManager *)self startOperation:9];
   v8 = objc_alloc(MEMORY[0x277CBC490]);
-  v9 = [(ADClientDPIDManager *)self zoneID];
-  v20[0] = v9;
+  zoneID = [(ADClientDPIDManager *)self zoneID];
+  v20[0] = zoneID;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v11 = [v8 initWithRecordZonesToSave:0 recordZoneIDsToDelete:v10];
 
@@ -1735,12 +1735,12 @@ void __37__ADClientDPIDManager_retryIfNeeded___block_invoke_3(uint64_t a1, void 
   v15 = 3221225472;
   v16 = __42__ADClientDPIDManager_resetEncryptedZone___block_invoke;
   v17 = &unk_278C58040;
-  v18 = self;
-  v19 = v4;
-  v12 = v4;
+  selfCopy = self;
+  v19 = dpidReconcileStartDate;
+  v12 = dpidReconcileStartDate;
   [v11 setModifyRecordZonesCompletionBlock:&v14];
-  [(ADClientDPIDManager *)self setDpidReconcileState:1, v14, v15, v16, v17, v18];
-  [v7 addOperation:v11];
+  [(ADClientDPIDManager *)self setDpidReconcileState:1, v14, v15, v16, v17, selfCopy];
+  [privateCloudDatabase addOperation:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -1789,23 +1789,23 @@ uint64_t __42__ADClientDPIDManager_resetEncryptedZone___block_invoke_2(uint64_t 
   return [v6 finishOperation:9];
 }
 
-- (void)setupiCloudSubscription:(id)a3
+- (void)setupiCloudSubscription:(id)subscription
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ADClientDPIDManager *)self dpidReconcileStartDate];
+  subscriptionCopy = subscription;
+  dpidReconcileStartDate = [(ADClientDPIDManager *)self dpidReconcileStartDate];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Beginning DPID Subscription Installation"];
   _ADLog();
 
-  v7 = [(ADClientDPIDManager *)self privateContainer];
-  v8 = [v7 privateCloudDatabase];
+  privateContainer = [(ADClientDPIDManager *)self privateContainer];
+  privateCloudDatabase = [privateContainer privateCloudDatabase];
 
-  if (v8)
+  if (privateCloudDatabase)
   {
     [(ADClientDPIDManager *)self startOperation:1];
     v9 = objc_alloc(MEMORY[0x277CBC5E8]);
-    v10 = [(ADClientDPIDManager *)self zoneID];
-    v11 = [v9 initWithZoneID:v10];
+    zoneID = [(ADClientDPIDManager *)self zoneID];
+    v11 = [v9 initWithZoneID:zoneID];
 
     v12 = objc_alloc(MEMORY[0x277CBC490]);
     v25[0] = v11;
@@ -1817,19 +1817,19 @@ uint64_t __42__ADClientDPIDManager_resetEncryptedZone___block_invoke_2(uint64_t 
     v18 = 3221225472;
     v19 = __47__ADClientDPIDManager_setupiCloudSubscription___block_invoke;
     v20 = &unk_278C580B8;
-    v21 = self;
-    v22 = v5;
-    v15 = v8;
+    selfCopy = self;
+    v22 = dpidReconcileStartDate;
+    v15 = privateCloudDatabase;
     v23 = v15;
-    v24 = v4;
+    v24 = subscriptionCopy;
     [v14 setModifyRecordZonesCompletionBlock:&v17];
-    [(ADClientDPIDManager *)self setDpidReconcileState:1, v17, v18, v19, v20, v21];
+    [(ADClientDPIDManager *)self setDpidReconcileState:1, v17, v18, v19, v20, selfCopy];
     [v15 addOperation:v14];
   }
 
   else
   {
-    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to set up iCloud subscription due to missing iCloud container" completionHandler:v4];
+    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to set up iCloud subscription due to missing iCloud container" completionHandler:subscriptionCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1988,16 +1988,16 @@ uint64_t __47__ADClientDPIDManager_setupiCloudSubscription___block_invoke_4(uint
   return result;
 }
 
-- (void)teardowniCloudSubscription:(id)a3
+- (void)teardowniCloudSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Beginning DPID Teardown action"];
   _ADLog();
 
-  v6 = [(ADClientDPIDManager *)self privateContainer];
-  v7 = [v6 privateCloudDatabase];
+  privateContainer = [(ADClientDPIDManager *)self privateContainer];
+  privateCloudDatabase = [privateContainer privateCloudDatabase];
 
-  if (v7)
+  if (privateCloudDatabase)
   {
     [(ADClientDPIDManager *)self startOperation:2];
     v8[0] = MEMORY[0x277D85DD0];
@@ -2005,14 +2005,14 @@ uint64_t __47__ADClientDPIDManager_setupiCloudSubscription___block_invoke_4(uint
     v8[2] = __50__ADClientDPIDManager_teardowniCloudSubscription___block_invoke;
     v8[3] = &unk_278C581A8;
     v8[4] = self;
-    v10 = v4;
-    v9 = v7;
+    v10 = subscriptionCopy;
+    v9 = privateCloudDatabase;
     [v9 fetchAllSubscriptionsWithCompletionHandler:v8];
   }
 
   else
   {
-    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to tear down iCloud subscription due to missing iCloud container" completionHandler:v4];
+    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to tear down iCloud subscription due to missing iCloud container" completionHandler:subscriptionCopy];
   }
 }
 
@@ -2288,40 +2288,40 @@ uint64_t __50__ADClientDPIDManager_teardowniCloudSubscription___block_invoke_8(v
   return result;
 }
 
-- (void)createErrorForPrivateDB:(id)a3 completionHandler:(id)a4
+- (void)createErrorForPrivateDB:(id)b completionHandler:(id)handler
 {
-  v8 = a4;
+  handlerCopy = handler;
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithAdCode:9 andDescription:v6];
+  bCopy = b;
+  v7 = [[v5 alloc] initWithAdCode:9 andDescription:bCopy];
 
   [v7 AD_Log:@"DPIDLogging"];
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v7);
+    handlerCopy[2](handlerCopy, v7);
   }
 }
 
-- (id)conformDPIDToUseWithRecord:(id)a3 legacyRecord:(id)a4
+- (id)conformDPIDToUseWithRecord:(id)record legacyRecord:(id)legacyRecord
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  recordCopy = record;
+  legacyRecordCopy = legacyRecord;
+  v8 = legacyRecordCopy;
+  if (recordCopy)
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v12 = [v9 stringWithFormat:@"[%@] Found a migrated DPID record!", v11];
-    v13 = v6;
+    v13 = recordCopy;
 LABEL_5:
     _ADLog();
 
     v16 = v13;
     if ([(ADClientDPIDManager *)self supportsDeviceToDeviceEncryption])
     {
-      v17 = [v16 encryptedValuesByKey];
-      v18 = [v17 objectForKeyedSubscript:@"DPID"];
+      encryptedValuesByKey = [v16 encryptedValuesByKey];
+      v18 = [encryptedValuesByKey objectForKeyedSubscript:@"DPID"];
 
       [MEMORY[0x277CCACA8] stringWithFormat:@"Reading encrypted DPID %@", v18];
     }
@@ -2336,7 +2336,7 @@ LABEL_5:
   }
 
   v14 = MEMORY[0x277CCACA8];
-  if (v7)
+  if (legacyRecordCopy)
   {
     v15 = objc_opt_class();
     v11 = NSStringFromClass(v15);
@@ -2354,31 +2354,31 @@ LABEL_9:
   return v18;
 }
 
-- (void)fetchDPIDfromiCloud:(id)a3
+- (void)fetchDPIDfromiCloud:(id)cloud
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ADClientDPIDManager *)self dpidReconcileStartDate];
+  cloudCopy = cloud;
+  dpidReconcileStartDate = [(ADClientDPIDManager *)self dpidReconcileStartDate];
   if ([(ADClientDPIDManager *)self devicePersonalizedAdsEnabled])
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempting to fetch the DPID from iCloud."];
     _ADLog();
 
-    v7 = [MEMORY[0x277CE9630] sharedInstance];
-    [v7 setInteger:2 forKey:@"CKDPIDSyncState"];
+    mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630] setInteger:2 forKey:@"CKDPIDSyncState"];
 
     [(ADClientDPIDManager *)self startOperation:5];
-    v8 = [(ADClientDPIDManager *)self privateContainer];
-    v9 = [v8 privateCloudDatabase];
+    privateContainer = [(ADClientDPIDManager *)self privateContainer];
+    privateCloudDatabase = [privateContainer privateCloudDatabase];
 
-    if (v9)
+    if (privateCloudDatabase)
     {
       [(ADClientDPIDManager *)self setDpidReconcileState:1];
       v10 = objc_alloc(MEMORY[0x277CBC3E0]);
-      v11 = [(ADClientDPIDManager *)self recordID];
-      v27[0] = v11;
-      v12 = [(ADClientDPIDManager *)self recordIDLegacy];
-      v27[1] = v12;
+      recordID = [(ADClientDPIDManager *)self recordID];
+      v27[0] = recordID;
+      recordIDLegacy = [(ADClientDPIDManager *)self recordIDLegacy];
+      v27[1] = recordIDLegacy;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
       v14 = [v10 initWithRecordIDs:v13];
 
@@ -2387,11 +2387,11 @@ LABEL_9:
       v19 = 3221225472;
       v20 = __43__ADClientDPIDManager_fetchDPIDfromiCloud___block_invoke_2;
       v21 = &unk_278C581D0;
-      v22 = self;
-      v23 = v5;
-      v24 = v4;
+      selfCopy = self;
+      v23 = dpidReconcileStartDate;
+      v24 = cloudCopy;
       [v14 setFetchRecordsCompletionBlock:&v18];
-      [v9 addOperation:{v14, v18, v19, v20, v21, v22}];
+      [privateCloudDatabase addOperation:{v14, v18, v19, v20, v21, selfCopy}];
     }
 
     else
@@ -2401,7 +2401,7 @@ LABEL_9:
       v25[2] = __43__ADClientDPIDManager_fetchDPIDfromiCloud___block_invoke;
       v25[3] = &unk_278C57F78;
       v25[4] = self;
-      v26 = v4;
+      v26 = cloudCopy;
       [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to fetch iCloud DPID due to missing iCloud container" completionHandler:v25];
     }
   }
@@ -2411,12 +2411,12 @@ LABEL_9:
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"fetchDPIDfromiCloud: Personalized Ads is disabled, not fetching"];
     _ADLog();
 
-    v16 = [MEMORY[0x277CE9630] sharedInstance];
-    [v16 setInteger:0 forKey:@"CKDPIDSyncState"];
+    mEMORY[0x277CE9630]2 = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630]2 setInteger:0 forKey:@"CKDPIDSyncState"];
 
-    if (v4)
+    if (cloudCopy)
     {
-      (*(v4 + 2))(v4, 0, 0, 0);
+      (*(cloudCopy + 2))(cloudCopy, 0, 0, 0);
     }
   }
 
@@ -2557,30 +2557,30 @@ LABEL_26:
   [v19 finishOperation:5];
 }
 
-- (void)removeDPIDfromiCloud:(id)a3
+- (void)removeDPIDfromiCloud:(id)cloud
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cloudCopy = cloud;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Beginning DPID Remove action"];
   _ADLog();
 
-  v6 = [(ADClientDPIDManager *)self privateContainer];
-  v7 = [v6 privateCloudDatabase];
+  privateContainer = [(ADClientDPIDManager *)self privateContainer];
+  privateCloudDatabase = [privateContainer privateCloudDatabase];
 
-  if (v7)
+  if (privateCloudDatabase)
   {
-    v8 = [MEMORY[0x277CE9630] sharedInstance];
-    [v8 setInteger:4 forKey:@"CKDPIDSyncState"];
+    mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630] setInteger:4 forKey:@"CKDPIDSyncState"];
 
     [(ADClientDPIDManager *)self startOperation:8];
-    if (v4)
+    if (cloudCopy)
     {
-      v4[2](v4, 0);
+      cloudCopy[2](cloudCopy, 0);
     }
 
     v9 = objc_alloc(MEMORY[0x277CBC4A0]);
-    v10 = [(ADClientDPIDManager *)self recordID];
-    v15[0] = v10;
+    recordID = [(ADClientDPIDManager *)self recordID];
+    v15[0] = recordID;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v12 = [v9 initWithRecordsToSave:MEMORY[0x277CBEBF8] recordIDsToDelete:v11];
 
@@ -2591,12 +2591,12 @@ LABEL_26:
     v14[3] = &unk_278C58220;
     v14[4] = self;
     [v12 setModifyRecordsCompletionBlock:v14];
-    [v7 addOperation:v12];
+    [privateCloudDatabase addOperation:v12];
   }
 
   else
   {
-    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to remove iCloud DPID due to missing iCloud container" completionHandler:v4];
+    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to remove iCloud DPID due to missing iCloud container" completionHandler:cloudCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2640,22 +2640,22 @@ uint64_t __44__ADClientDPIDManager_removeDPIDfromiCloud___block_invoke_2(uint64_
   return [v5 finishOperation:8];
 }
 
-- (void)handleCloudKitError:(id)a3
+- (void)handleCloudKitError:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 code];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] handleCloudKitError. error code %ld", objc_opt_class(), v5];
+  errorCopy = error;
+  code = [errorCopy code];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] handleCloudKitError. error code %ld", objc_opt_class(), code];
   _ADLog();
 
-  if (v5 == 5008)
+  if (code == 5008)
   {
     v7 = @"We need to wait and try again later because of CKErrorInternalUnsyncedKeychain";
   }
 
   else
   {
-    if (v5 != 5006)
+    if (code != 5006)
     {
       goto LABEL_6;
     }
@@ -2667,9 +2667,9 @@ uint64_t __44__ADClientDPIDManager_removeDPIDfromiCloud___block_invoke_2(uint64_
   _ADLog();
 
 LABEL_6:
-  v9 = [v4 domain];
+  domain = [errorCopy domain];
   v10 = *MEMORY[0x277CBBF50];
-  v11 = [v9 isEqualToString:*MEMORY[0x277CBBF50]];
+  v11 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
   v12 = MEMORY[0x277CCACA8];
   if (v11)
@@ -2677,21 +2677,21 @@ LABEL_6:
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Correctly identified as cloudkit domain"];
     _ADLog();
 
-    if (v5 == 2)
+    if (code == 2)
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Got error code as CKErrorPartialFailure. Need to get the exact reason for partial failure."];
       _ADLog();
 
-      v18 = [v4 userInfo];
-      v19 = [v18 objectForKey:*MEMORY[0x277CBBFB0]];
+      userInfo = [errorCopy userInfo];
+      v19 = [userInfo objectForKey:*MEMORY[0x277CBBFB0]];
 
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
       v31 = v19;
-      v20 = [v19 allValues];
-      v21 = [v20 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      allValues = [v19 allValues];
+      v21 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v21)
       {
         v22 = v21;
@@ -2702,16 +2702,16 @@ LABEL_6:
           {
             if (*v33 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(allValues);
             }
 
             v25 = *(*(&v32 + 1) + 8 * i);
-            v26 = [v25 domain];
-            if ([v26 isEqualToString:v10])
+            domain2 = [v25 domain];
+            if ([domain2 isEqualToString:v10])
             {
-              v27 = [v25 code];
+              code2 = [v25 code];
 
-              if (v27 == 112)
+              if (code2 == 112)
               {
                 v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Found error code as CKErrorPrivateMissingManateeIdentity"];
                 _ADLog();
@@ -2725,14 +2725,14 @@ LABEL_6:
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v32 objects:v36 count:16];
+          v22 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
         }
 
         while (v22);
       }
     }
 
-    else if (v5 == 112)
+    else if (code == 112)
     {
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Got error code as CKErrorPrivateMissingManateeIdentity"];
       _ADLog();
@@ -2747,8 +2747,8 @@ LABEL_23:
 
   else
   {
-    v15 = [v4 domain];
-    v16 = [v12 stringWithFormat:@"Incorrectly identified domain. Domain is %@", v15];
+    domain3 = [errorCopy domain];
+    v16 = [v12 stringWithFormat:@"Incorrectly identified domain. Domain is %@", domain3];
     _ADLog();
   }
 
@@ -2764,41 +2764,41 @@ void __43__ADClientDPIDManager_handleCloudKitError___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)saveDPIDtoiCloud:(id)a3 completionHandler:(id)a4
+- (void)saveDPIDtoiCloud:(id)cloud completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cloudCopy = cloud;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Beginning DPID Save action"];
   _ADLog();
 
-  v9 = [MEMORY[0x277CE9630] sharedInstance];
-  [v9 setInteger:3 forKey:@"CKDPIDSyncState"];
+  mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+  [mEMORY[0x277CE9630] setInteger:3 forKey:@"CKDPIDSyncState"];
 
-  v10 = [(ADClientDPIDManager *)self privateContainer];
-  v11 = [v10 privateCloudDatabase];
+  privateContainer = [(ADClientDPIDManager *)self privateContainer];
+  privateCloudDatabase = [privateContainer privateCloudDatabase];
 
-  if (v11)
+  if (privateCloudDatabase)
   {
     v12 = objc_alloc(MEMORY[0x277CBC5A0]);
-    v13 = [(ADClientDPIDManager *)self recordID];
-    v14 = [v12 initWithRecordType:@"DPIDRecord" recordID:v13];
+    recordID = [(ADClientDPIDManager *)self recordID];
+    v14 = [v12 initWithRecordType:@"DPIDRecord" recordID:recordID];
 
     if ([(ADClientDPIDManager *)self supportsDeviceToDeviceEncryption])
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Writing encrypted DPID %@", v6];
+      cloudCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Writing encrypted DPID %@", cloudCopy];
       _ADLog();
 
-      v16 = [v14 encryptedValuesByKey];
-      [v16 setObject:v6 forKeyedSubscript:@"DPID"];
+      encryptedValuesByKey = [v14 encryptedValuesByKey];
+      [encryptedValuesByKey setObject:cloudCopy forKeyedSubscript:@"DPID"];
     }
 
     else
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Writing unencrypted DPID %@", v6];
+      cloudCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Writing unencrypted DPID %@", cloudCopy];
       _ADLog();
 
-      [v14 setObject:v6 forKeyedSubscript:@"DPID"];
+      [v14 setObject:cloudCopy forKeyedSubscript:@"DPID"];
     }
 
     [(ADClientDPIDManager *)self startOperation:7];
@@ -2814,14 +2814,14 @@ void __43__ADClientDPIDManager_handleCloudKitError___block_invoke(uint64_t a1, u
     v22[2] = __58__ADClientDPIDManager_saveDPIDtoiCloud_completionHandler___block_invoke;
     v22[3] = &unk_278C58268;
     v22[4] = self;
-    v23 = v7;
+    v23 = handlerCopy;
     [v20 setModifyRecordsCompletionBlock:v22];
-    [v11 addOperation:v20];
+    [privateCloudDatabase addOperation:v20];
   }
 
   else
   {
-    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to save iCloud DPID due to missing iCloud container" completionHandler:v7];
+    [(ADClientDPIDManager *)self createErrorForPrivateDB:@"Unable to save iCloud DPID due to missing iCloud container" completionHandler:handlerCopy];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -2879,20 +2879,20 @@ uint64_t __58__ADClientDPIDManager_saveDPIDtoiCloud_completionHandler___block_in
   return result;
 }
 
-- (void)syncDPIDWithiCloud:(id)a3
+- (void)syncDPIDWithiCloud:(id)cloud
 {
-  v4 = a3;
+  cloudCopy = cloud;
   [(ADClientDPIDManager *)self startOperation:4];
-  v5 = [MEMORY[0x277CE9630] sharedInstance];
-  [v5 setInteger:1 forKey:@"CKDPIDSyncState"];
+  mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+  [mEMORY[0x277CE9630] setInteger:1 forKey:@"CKDPIDSyncState"];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ADClientDPIDManager_syncDPIDWithiCloud___block_invoke;
   v7[3] = &unk_278C57FF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cloudCopy;
+  v6 = cloudCopy;
   [(ADClientDPIDManager *)self fetchDPIDfromiCloud:v7];
 }
 

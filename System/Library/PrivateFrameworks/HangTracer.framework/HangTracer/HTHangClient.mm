@@ -1,13 +1,13 @@
 @interface HTHangClient
 + (id)getClient;
-- (BOOL)pingConnectionAsyncAPI:(id *)a3;
-- (BOOL)pingConnectionSyncAPI:(id *)a3;
-- (id)_checkValidXPCDictResponse:(id)a3;
-- (id)_createXPCReplyHandler:(id)a3;
+- (BOOL)pingConnectionAsyncAPI:(id *)i;
+- (BOOL)pingConnectionSyncAPI:(id *)i;
+- (id)_checkValidXPCDictResponse:(id)response;
+- (id)_createXPCReplyHandler:(id)handler;
 - (id)establishHangTracerConnection;
-- (id)sendMessageToHangTracerWithReplySync:(id)a3 error:(id *)a4;
+- (id)sendMessageToHangTracerWithReplySync:(id)sync error:(id *)error;
 - (void)dealloc;
-- (void)sendMessageToHangTracerWithReply:(id)a3 responseHandler:(id)a4;
+- (void)sendMessageToHangTracerWithReply:(id)reply responseHandler:(id)handler;
 @end
 
 @implementation HTHangClient
@@ -19,26 +19,26 @@
   connection = self->_connection;
   self->_connection = v3;
 
-  v5 = [(HTHangClient *)self connection];
+  connection = [(HTHangClient *)self connection];
 
-  if (v5)
+  if (connection)
   {
     v6 = HTConnectionQueue();
     connectionQueue = self->_connectionQueue;
     self->_connectionQueue = v6;
 
-    v8 = [(HTHangClient *)self connectionQueue];
+    connectionQueue = [(HTHangClient *)self connectionQueue];
 
-    if (v8)
+    if (connectionQueue)
     {
       v9 = dispatch_queue_create("com.apple.hangtracer.client-reply", 0);
       replyQueue = self->_replyQueue;
       self->_replyQueue = v9;
 
-      v11 = [(HTHangClient *)self replyQueue];
+      replyQueue = [(HTHangClient *)self replyQueue];
 
       v12 = 0;
-      if (v11)
+      if (replyQueue)
       {
         goto LABEL_8;
       }
@@ -81,7 +81,7 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)pingConnectionAsyncAPI:(id *)a3
+- (BOOL)pingConnectionAsyncAPI:(id *)i
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v5 = dispatch_semaphore_create(0);
@@ -93,7 +93,7 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __39__HTHangClient_pingConnectionAsyncAPI___block_invoke;
   v13[3] = &unk_1E8302088;
-  v16 = a3;
+  iCopy = i;
   v6 = v5;
   v14 = v6;
   v15 = &v17;
@@ -105,10 +105,10 @@ LABEL_8:
   v9 = [[HTHangRequest alloc] initRequest:v8 error:&obj];
   if (obj)
   {
-    if (a3)
+    if (i)
     {
-      objc_storeStrong(a3, obj);
-      LOBYTE(a3) = 0;
+      objc_storeStrong(i, obj);
+      LOBYTE(i) = 0;
     }
   }
 
@@ -116,12 +116,12 @@ LABEL_8:
   {
     [(HTHangClient *)self sendMessageToHangTracerWithReply:v9 responseHandler:v7];
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-    LOBYTE(a3) = *(v18 + 24);
+    LOBYTE(i) = *(v18 + 24);
   }
 
   _Block_object_dispose(&v17, 8);
   v10 = *MEMORY[0x1E69E9840];
-  return a3 & 1;
+  return i & 1;
 }
 
 void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -145,7 +145,7 @@ void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)pingConnectionSyncAPI:(id *)a3
+- (BOOL)pingConnectionSyncAPI:(id *)i
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = @"command";
@@ -155,9 +155,9 @@ void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void 
   v6 = [[HTHangRequest alloc] initRequest:v5 error:&obj];
   if (obj)
   {
-    if (a3)
+    if (i)
     {
-      objc_storeStrong(a3, obj);
+      objc_storeStrong(i, obj);
     }
 
     v7 = 0;
@@ -183,10 +183,10 @@ void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)_checkValidXPCDictResponse:(id)a3
+- (id)_checkValidXPCDictResponse:(id)response
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = MEMORY[0x1CCA730F0]();
   if (v5 == MEMORY[0x1E69E9E80])
   {
@@ -197,9 +197,9 @@ void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void 
   {
     if (v5 == MEMORY[0x1E69E9E98])
     {
-      if (v4 == MEMORY[0x1E69E9E20])
+      if (responseCopy == MEMORY[0x1E69E9E20])
       {
-        v13 = [(HTHangClient *)self connection];
+        connection = [(HTHangClient *)self connection];
         v14 = xpc_connection_copy_invalidation_reason();
 
         v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"received XPC_ERROR_CONNECTION_INVALID connection from HangTracer with reason: %s", v14];
@@ -213,7 +213,7 @@ void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void 
 
       else
       {
-        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected error: %s", xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E28])];
+        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected error: %s", xpc_dictionary_get_string(responseCopy, *MEMORY[0x1E69E9E28])];
         v8 = MEMORY[0x1E696ABC0];
         v20 = *MEMORY[0x1E696A578];
         v21 = v7;
@@ -225,7 +225,7 @@ void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void 
 
     else
     {
-      v6 = MEMORY[0x1CCA72FA0](v4);
+      v6 = MEMORY[0x1CCA72FA0](responseCopy);
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Encountered non-dictionary event: %s", v6];
       free(v6);
       v8 = MEMORY[0x1E696ABC0];
@@ -245,18 +245,18 @@ void __39__HTHangClient_pingConnectionAsyncAPI___block_invoke(uint64_t a1, void 
   return v12;
 }
 
-- (id)_createXPCReplyHandler:(id)a3
+- (id)_createXPCReplyHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39__HTHangClient__createXPCReplyHandler___block_invoke_2;
     v8[3] = &unk_1E83020D0;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     v6 = MEMORY[0x1CCA72C40](v8);
   }
 
@@ -281,26 +281,26 @@ void __39__HTHangClient__createXPCReplyHandler___block_invoke_2(uint64_t a1, voi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)sendMessageToHangTracerWithReply:(id)a3 responseHandler:(id)a4
+- (void)sendMessageToHangTracerWithReply:(id)reply responseHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  replyCopy = reply;
+  handlerCopy = handler;
+  if (replyCopy)
   {
-    v8 = [(HTHangClient *)self _createXPCReplyHandler:v7];
+    v8 = [(HTHangClient *)self _createXPCReplyHandler:handlerCopy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __65__HTHangClient_sendMessageToHangTracerWithReply_responseHandler___block_invoke;
     v15[3] = &unk_1E83020F8;
     v15[4] = self;
-    v17 = v7;
-    v16 = v6;
+    v17 = handlerCopy;
+    v16 = replyCopy;
     v18 = v8;
     v9 = v8;
     v10 = MEMORY[0x1CCA72C40](v15);
-    v11 = [(HTHangClient *)self connectionQueue];
-    dispatch_sync(v11, v10);
+    connectionQueue = [(HTHangClient *)self connectionQueue];
+    dispatch_sync(connectionQueue, v10);
   }
 
   else
@@ -310,9 +310,9 @@ void __39__HTHangClient__createXPCReplyHandler___block_invoke_2(uint64_t a1, voi
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v9 = [v12 errorWithDomain:@"HTHangClientError" code:0 userInfo:v13];
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, v9);
+      (*(handlerCopy + 2))(handlerCopy, 0, v9);
     }
   }
 
@@ -352,9 +352,9 @@ void __65__HTHangClient_sendMessageToHangTracerWithReply_responseHandler___block
   }
 }
 
-- (id)sendMessageToHangTracerWithReplySync:(id)a3 error:(id *)a4
+- (id)sendMessageToHangTracerWithReplySync:(id)sync error:(id *)error
 {
-  v6 = a3;
+  syncCopy = sync;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -366,9 +366,9 @@ void __65__HTHangClient_sendMessageToHangTracerWithReply_responseHandler___block
   v14 = __59__HTHangClient_sendMessageToHangTracerWithReplySync_error___block_invoke;
   v15 = &unk_1E8302120;
   v18 = &v20;
-  v19 = a4;
-  v16 = self;
-  v7 = v6;
+  errorCopy = error;
+  selfCopy = self;
+  v7 = syncCopy;
   v17 = v7;
   v8 = MEMORY[0x1CCA72C40](&v12);
   v9 = [(HTHangClient *)self connectionQueue:v12];
@@ -477,12 +477,12 @@ void __25__HTHangClient_getClient__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(HTHangClient *)self connection];
+  connection = [(HTHangClient *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(HTHangClient *)self connection];
-    xpc_connection_cancel(v4);
+    connection2 = [(HTHangClient *)self connection];
+    xpc_connection_cancel(connection2);
   }
 
   v5.receiver = self;

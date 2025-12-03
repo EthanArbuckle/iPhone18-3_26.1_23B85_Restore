@@ -5,11 +5,11 @@
 - (NSArray)outputMetadataRequirements;
 - (NSString)description;
 - (id)newStorage;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
-- (uint64_t)_executeOnSampleBuffer:(void *)a3 usingStorage:(uint64_t)a4 meanPixel:(uint64_t)a5 withExecutionTime:(uint64_t)a6 completionHandler:;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
+- (uint64_t)_executeOnSampleBuffer:(void *)buffer usingStorage:(uint64_t)storage meanPixel:(uint64_t)pixel withExecutionTime:(uint64_t)time completionHandler:;
 - (void)dealloc;
-- (void)initWithInputRequirement:(void *)a3 orderBufferRequirement:(void *)a4 descriptor:(void *)a5 resourceProvider:(void *)a6 meanPixelCalculator:(uint64_t)a7 operation:;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)initWithInputRequirement:(void *)requirement orderBufferRequirement:(void *)bufferRequirement descriptor:(void *)descriptor resourceProvider:(void *)provider meanPixelCalculator:(uint64_t)calculator operation:;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWInferenceFusionTrackerScalingProvider
@@ -65,13 +65,13 @@
   return v2;
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
@@ -104,9 +104,9 @@
   return -[BWInferenceProviderStorage initWithRequirementsNeedingPixelBuffers:requirementsNeedingPixelBufferPools:](v3, "initWithRequirementsNeedingPixelBuffers:requirementsNeedingPixelBufferPools:", v4, [MEMORY[0x1E695DEC8] arrayWithObjects:&outputRequirement count:1]);
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
-  v12 = [a4 pixelBufferForRequirement:self->_inputRequirement];
+  v12 = [storage pixelBufferForRequirement:self->_inputRequirement];
   if (v12)
   {
     v13 = v12;
@@ -116,11 +116,11 @@
     v17[2] = __125__BWInferenceFusionTrackerScalingProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler___block_invoke;
     v17[3] = &unk_1E7991E98;
     v17[4] = self;
-    v17[5] = a4;
-    v18 = *&a5->var0;
-    var3 = a5->var3;
-    v17[6] = a7;
-    v17[7] = a3;
+    v17[5] = storage;
+    v18 = *&time->var0;
+    var3 = time->var3;
+    v17[6] = handler;
+    v17[7] = buffer;
     [(BWInferenceFusionTrackerMeanPixelCalculator *)meanPixelCalculator asyncMeanPixelForBuffer:v13 completionHandler:v17];
     return 0;
   }
@@ -128,50 +128,50 @@
   else
   {
     v15 = -31711;
-    (*(a7 + 2))(a7, 4294935585, self);
+    (*(handler + 2))(handler, 4294935585, self);
   }
 
   return v15;
 }
 
-- (void)initWithInputRequirement:(void *)a3 orderBufferRequirement:(void *)a4 descriptor:(void *)a5 resourceProvider:(void *)a6 meanPixelCalculator:(uint64_t)a7 operation:
+- (void)initWithInputRequirement:(void *)requirement orderBufferRequirement:(void *)bufferRequirement descriptor:(void *)descriptor resourceProvider:(void *)provider meanPixelCalculator:(uint64_t)calculator operation:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = BWInferenceFusionTrackerScalingProvider;
   v13 = objc_msgSendSuper2(&v21, sel_init);
   if (v13)
   {
     v13[2] = a2;
-    v13[3] = a3;
-    v13[7] = a7;
+    v13[3] = requirement;
+    v13[7] = calculator;
     v14 = objc_alloc_init(BWInferenceVideoFormatRequirements);
-    [a4 size];
+    [bufferRequirement size];
     [(BWVideoFormatRequirements *)v14 setWidth:v15];
-    [a4 size];
+    [bufferRequirement size];
     [(BWVideoFormatRequirements *)v14 setHeight:v16];
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "pixelFormat")}];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(bufferRequirement, "pixelFormat")}];
     -[BWVideoFormatRequirements setSupportedPixelFormats:](v14, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1]);
     [(BWVideoFormatRequirements *)v14 setBytesPerRowAlignment:64];
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BWInferenceFusionTrackerNetworkInput_%lu_%@", a7, objc_msgSend(a4, "name")];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BWInferenceFusionTrackerNetworkInput_%lu_%@", calculator, objc_msgSend(bufferRequirement, "name")];
     v19 = v14;
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
     v13[4] = -[BWInferenceVideoRequirement initWithAttachedMediaKey:videoFormat:]([BWInferenceVideoRequirement alloc], "initWithAttachedMediaKey:videoFormat:", v17, [OUTLINED_FUNCTION_28() formatByResolvingRequirements:?]);
     v13[8] = [objc_alloc(getFTMSRScalerClass()) init];
-    v13[10] = a6;
-    v13[9] = [a5 defaultDeviceMetalContext];
+    v13[10] = provider;
+    v13[9] = [descriptor defaultDeviceMetalContext];
   }
 
   return v13;
 }
 
-- (uint64_t)_executeOnSampleBuffer:(void *)a3 usingStorage:(uint64_t)a4 meanPixel:(uint64_t)a5 withExecutionTime:(uint64_t)a6 completionHandler:
+- (uint64_t)_executeOnSampleBuffer:(void *)buffer usingStorage:(uint64_t)storage meanPixel:(uint64_t)pixel withExecutionTime:(uint64_t)time completionHandler:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -184,15 +184,15 @@
   v10 = CMGetAttachment(target, @"FusionTrackerInput", 0);
   if (v10)
   {
-    v11 = [v10 highPriorityTrackerState];
+    highPriorityTrackerState = [v10 highPriorityTrackerState];
   }
 
   else
   {
-    v11 = 0;
+    highPriorityTrackerState = 0;
   }
 
-  v12 = [a3 pixelBufferForRequirement:a1[2]];
+  v12 = [buffer pixelBufferForRequirement:self[2]];
   if (!v12)
   {
     v21 = 4294935585;
@@ -200,7 +200,7 @@
   }
 
   v13 = v12;
-  v14 = [objc_msgSend(a3 pixelBufferPoolForRequirement:{a1[4]), "newPixelBuffer"}];
+  v14 = [objc_msgSend(buffer pixelBufferPoolForRequirement:{self[4]), "newPixelBuffer"}];
   if (!v14)
   {
     v21 = 4294935553;
@@ -208,11 +208,11 @@
   }
 
   v15 = v14;
-  [a3 setPixelBuffer:v14 forRequirement:a1[4]];
-  if (([v11 completed] & 1) == 0)
+  [buffer setPixelBuffer:v14 forRequirement:self[4]];
+  if (([highPriorityTrackerState completed] & 1) == 0)
   {
     CVPixelBufferLockBaseAddress(v15, 0);
-    v16 = a1[7];
+    v16 = self[7];
     if (v16 == 3)
     {
       v19 = CMGetAttachment(target, @"FusionTrackerInput", 0);
@@ -238,7 +238,7 @@ LABEL_20:
           CFRelease(v15);
           v21 = 4294935580;
 LABEL_21:
-          [v11 abort];
+          [highPriorityTrackerState abort];
           goto LABEL_22;
         }
 
@@ -264,7 +264,7 @@ LABEL_18:
   CFRelease(v15);
   v21 = 0;
 LABEL_22:
-  (*(a6 + 16))(a6, v21, a1);
+  (*(time + 16))(time, v21, self);
   return v21;
 }
 

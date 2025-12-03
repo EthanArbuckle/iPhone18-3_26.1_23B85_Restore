@@ -1,11 +1,11 @@
 @interface MPAnimationTrigger
 + (id)animationTrigger;
 - (MPAnimationTrigger)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setAction:(id)a3;
-- (void)setAnimationAttributes:(id)a3;
-- (void)setAnimationKey:(id)a3;
+- (void)setAction:(id)action;
+- (void)setAnimationAttributes:(id)attributes;
+- (void)setAnimationKey:(id)key;
 @end
 
 @implementation MPAnimationTrigger
@@ -38,17 +38,17 @@
   [(MPAction *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPAnimationTrigger;
-  v4 = [(MPAction *)&v6 copyWithZone:a3];
+  v4 = [(MPAction *)&v6 copyWithZone:zone];
   [v4 setAnimationKey:self->_animationKey];
   [v4 setAnimationAttributes:self->_animationAttributes];
   return v4;
 }
 
-- (void)setAnimationKey:(id)a3
+- (void)setAnimationKey:(id)key
 {
   animationKey = self->_animationKey;
   if (animationKey)
@@ -57,7 +57,7 @@
     self->_animationKey = 0;
   }
 
-  v6 = [a3 copy];
+  v6 = [key copy];
   self->_animationKey = v6;
   action = self->super._action;
   if (action)
@@ -67,7 +67,7 @@
   }
 }
 
-- (void)setAnimationAttributes:(id)a3
+- (void)setAnimationAttributes:(id)attributes
 {
   animationAttributes = self->_animationAttributes;
   if (animationAttributes)
@@ -76,7 +76,7 @@
     self->_animationAttributes = 0;
   }
 
-  v6 = [a3 mutableCopy];
+  v6 = [attributes mutableCopy];
   self->_animationAttributes = v6;
   action = self->super._action;
   if (action)
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   v5.receiver = self;
   v5.super_class = MPAnimationTrigger;
-  [(MPAction *)&v5 setAction:a3];
+  [(MPAction *)&v5 setAction:action];
   action = self->super._action;
   if (action)
   {

@@ -1,30 +1,30 @@
 @interface DBSmartWidgetViewController
-- (BOOL)_shouldUpdateFocusForTouchpadInContext:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)_shouldUpdateFocusForTouchpadInContext:(id)context;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isHighPriority;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (DBSmartWidgetAnimating)animationDelegate;
-- (DBSmartWidgetViewController)initWithEnvironment:(id)a3 engine:(id)a4 animationDelegate:(id)a5;
+- (DBSmartWidgetViewController)initWithEnvironment:(id)environment engine:(id)engine animationDelegate:(id)delegate;
 - (id)_focusHighlightColor;
 - (id)linearFocusItems;
 - (id)preferredFocusEnvironments;
-- (void)_didUpdateFocusForTouchpadInContext:(id)a3;
+- (void)_didUpdateFocusForTouchpadInContext:(id)context;
 - (void)_nextPrediction;
 - (void)_performAction;
 - (void)_previousPrediction;
 - (void)_refresh;
-- (void)_setFocusButtonsEnabled:(BOOL)a3;
+- (void)_setFocusButtonsEnabled:(BOOL)enabled;
 - (void)_setupFocusButtons;
 - (void)_updatePrediction;
 - (void)_updateToMostRecentSuccessfulPrediction;
-- (void)_updateWidgetWithPrediction:(id)a3 predictedSize:(CGSize)a4 operationID:(int64_t)a5 smartWidgetView:(id)a6;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)_updateWidgetWithPrediction:(id)prediction predictedSize:(CGSize)size operationID:(int64_t)d smartWidgetView:(id)view;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)finalizePredictionUpdate;
 - (void)resolveForNoPredictions;
-- (void)setSmartWidgetForeground:(BOOL)a3;
-- (void)setWantsToShowPrediction:(BOOL)a3;
-- (void)smartWidgetEngine:(id)a3 didUpdateCurrentPredictions:(id)a4;
+- (void)setSmartWidgetForeground:(BOOL)foreground;
+- (void)setWantsToShowPrediction:(BOOL)prediction;
+- (void)smartWidgetEngine:(id)engine didUpdateCurrentPredictions:(id)predictions;
 - (void)updateAppearanceForWallpaper;
 - (void)viewDidLoad;
 - (void)widgetViewTapped;
@@ -34,36 +34,36 @@
 
 - (BOOL)isHighPriority
 {
-  v2 = [(DBSmartWidgetViewController *)self engine];
-  v3 = [v2 hasHighPriorityPrediction];
+  engine = [(DBSmartWidgetViewController *)self engine];
+  hasHighPriorityPrediction = [engine hasHighPriorityPrediction];
 
-  return v3;
+  return hasHighPriorityPrediction;
 }
 
-- (DBSmartWidgetViewController)initWithEnvironment:(id)a3 engine:(id)a4 animationDelegate:(id)a5
+- (DBSmartWidgetViewController)initWithEnvironment:(id)environment engine:(id)engine animationDelegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = DBSmartWidgetViewController;
-  v11 = [(DBWidgetViewController *)&v20 initWithEnvironment:a3];
+  v11 = [(DBWidgetViewController *)&v20 initWithEnvironment:environment];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_animationDelegate, v10);
-    [(DBSmartWidgetView *)v12->_widgetView setEngine:v9];
+    objc_storeWeak(&v11->_animationDelegate, delegateCopy);
+    [(DBSmartWidgetView *)v12->_widgetView setEngine:engineCopy];
     v12->_currentPredictionIndex = 0;
     v13 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     spinnerView = v12->_spinnerView;
     v12->_spinnerView = v13;
 
-    v15 = [MEMORY[0x277D75348] _labelColor];
-    [(UIActivityIndicatorView *)v12->_spinnerView setColor:v15];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
+    [(UIActivityIndicatorView *)v12->_spinnerView setColor:_labelColor];
 
     [(UIActivityIndicatorView *)v12->_spinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIActivityIndicatorView *)v12->_spinnerView setHidesWhenStopped:1];
     v12->_usesCarouselStyle = 1;
-    objc_storeStrong(&v12->_engine, a4);
+    objc_storeStrong(&v12->_engine, engine);
     [(DBSmartWidgetViewController *)v12 updateAppearanceForWallpaper];
     objc_initWeak(&location, v12);
     v17[0] = MEMORY[0x277D85DD0];
@@ -93,72 +93,72 @@ void __76__DBSmartWidgetViewController_initWithEnvironment_engine_animationDeleg
   v47.receiver = self;
   v47.super_class = DBSmartWidgetViewController;
   [(DBSmartWidgetViewController *)&v47 viewDidLoad];
-  v3 = [(DBSmartWidgetViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CARAppTodaySmartViewWidget"];
+  view = [(DBSmartWidgetViewController *)self view];
+  [view setAccessibilityIdentifier:@"CARAppTodaySmartViewWidget"];
 
   v4 = objc_opt_new();
   v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__performAction];
   [(DBSmartWidgetViewController *)self setActionRecognizer:v5];
 
-  v6 = [(DBSmartWidgetViewController *)self actionRecognizer];
-  [v6 setDelegate:self];
+  actionRecognizer = [(DBSmartWidgetViewController *)self actionRecognizer];
+  [actionRecognizer setDelegate:self];
 
-  v7 = [(DBWidgetViewController *)self contentView];
-  v8 = [(DBSmartWidgetViewController *)self actionRecognizer];
-  [v7 addGestureRecognizer:v8];
+  contentView = [(DBWidgetViewController *)self contentView];
+  actionRecognizer2 = [(DBSmartWidgetViewController *)self actionRecognizer];
+  [contentView addGestureRecognizer:actionRecognizer2];
 
-  v9 = [(DBSmartWidgetViewController *)self actionRecognizer];
-  [v4 addObject:v9];
+  actionRecognizer3 = [(DBSmartWidgetViewController *)self actionRecognizer];
+  [v4 addObject:actionRecognizer3];
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  LODWORD(v8) = [v10 BOOLForKey:@"CARSmartWidgetDebugGestures"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  LODWORD(actionRecognizer2) = [standardUserDefaults BOOLForKey:@"CARSmartWidgetDebugGestures"];
 
-  if (v8)
+  if (actionRecognizer2)
   {
     v11 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__refresh];
     [(DBSmartWidgetViewController *)self setRefreshRecognizer:v11];
 
-    v12 = [(DBSmartWidgetViewController *)self refreshRecognizer];
-    [v12 setDelegate:self];
+    refreshRecognizer = [(DBSmartWidgetViewController *)self refreshRecognizer];
+    [refreshRecognizer setDelegate:self];
 
-    v13 = [(DBWidgetViewController *)self contentView];
-    v14 = [(DBSmartWidgetViewController *)self refreshRecognizer];
-    [v13 addGestureRecognizer:v14];
+    contentView2 = [(DBWidgetViewController *)self contentView];
+    refreshRecognizer2 = [(DBSmartWidgetViewController *)self refreshRecognizer];
+    [contentView2 addGestureRecognizer:refreshRecognizer2];
 
     v15 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel__previousPrediction];
     [(DBSmartWidgetViewController *)self setPreviousPredictionRecognizer:v15];
 
-    v16 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
-    [v16 setDelegate:self];
+    previousPredictionRecognizer = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
+    [previousPredictionRecognizer setDelegate:self];
 
-    v17 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
-    [v17 setDirection:2];
+    previousPredictionRecognizer2 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
+    [previousPredictionRecognizer2 setDirection:2];
 
-    v18 = [(DBWidgetViewController *)self contentView];
-    v19 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
-    [v18 addGestureRecognizer:v19];
+    contentView3 = [(DBWidgetViewController *)self contentView];
+    previousPredictionRecognizer3 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
+    [contentView3 addGestureRecognizer:previousPredictionRecognizer3];
 
     v20 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel__nextPrediction];
     [(DBSmartWidgetViewController *)self setNextPredictionRecognizer:v20];
 
-    v21 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
-    [v21 setDelegate:self];
+    nextPredictionRecognizer = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
+    [nextPredictionRecognizer setDelegate:self];
 
-    v22 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
-    [v22 setDirection:1];
+    nextPredictionRecognizer2 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
+    [nextPredictionRecognizer2 setDirection:1];
 
-    v23 = [(DBWidgetViewController *)self contentView];
-    v24 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
-    [v23 addGestureRecognizer:v24];
+    contentView4 = [(DBWidgetViewController *)self contentView];
+    nextPredictionRecognizer3 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
+    [contentView4 addGestureRecognizer:nextPredictionRecognizer3];
 
-    v25 = [(DBSmartWidgetViewController *)self actionRecognizer];
-    v49[0] = v25;
-    v26 = [(DBSmartWidgetViewController *)self refreshRecognizer];
-    v49[1] = v26;
-    v27 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
-    v49[2] = v27;
-    v28 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
-    v49[3] = v28;
+    actionRecognizer4 = [(DBSmartWidgetViewController *)self actionRecognizer];
+    v49[0] = actionRecognizer4;
+    refreshRecognizer3 = [(DBSmartWidgetViewController *)self refreshRecognizer];
+    v49[1] = refreshRecognizer3;
+    previousPredictionRecognizer4 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
+    v49[2] = previousPredictionRecognizer4;
+    nextPredictionRecognizer4 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
+    v49[3] = nextPredictionRecognizer4;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
     [v4 addObjectsFromArray:v29];
   }
@@ -166,25 +166,25 @@ void __76__DBSmartWidgetViewController_initWithEnvironment_engine_animationDeleg
   v30 = [MEMORY[0x277CBEB98] setWithArray:v4];
   [(DBSmartWidgetViewController *)self setRecognizers:v30];
 
-  v31 = [(DBWidgetViewController *)self contentView];
-  v32 = [(DBSmartWidgetViewController *)self spinnerView];
-  [v31 addSubview:v32];
+  contentView5 = [(DBWidgetViewController *)self contentView];
+  spinnerView = [(DBSmartWidgetViewController *)self spinnerView];
+  [contentView5 addSubview:spinnerView];
 
-  v33 = [(DBSmartWidgetViewController *)self spinnerView];
-  [v33 startAnimating];
+  spinnerView2 = [(DBSmartWidgetViewController *)self spinnerView];
+  [spinnerView2 startAnimating];
 
   v45 = MEMORY[0x277CCAAD0];
-  v46 = [(DBSmartWidgetViewController *)self spinnerView];
-  v34 = [v46 centerXAnchor];
-  v35 = [(DBWidgetViewController *)self contentView];
-  v36 = [v35 centerXAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  spinnerView3 = [(DBSmartWidgetViewController *)self spinnerView];
+  centerXAnchor = [spinnerView3 centerXAnchor];
+  contentView6 = [(DBWidgetViewController *)self contentView];
+  centerXAnchor2 = [contentView6 centerXAnchor];
+  v37 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v48[0] = v37;
-  v38 = [(DBSmartWidgetViewController *)self spinnerView];
-  v39 = [v38 centerYAnchor];
-  v40 = [(DBWidgetViewController *)self contentView];
-  v41 = [v40 centerYAnchor];
-  [v39 constraintEqualToAnchor:v41];
+  spinnerView4 = [(DBSmartWidgetViewController *)self spinnerView];
+  centerYAnchor = [spinnerView4 centerYAnchor];
+  contentView7 = [(DBWidgetViewController *)self contentView];
+  centerYAnchor2 = [contentView7 centerYAnchor];
+  [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v42 = v44 = v4;
   v48[1] = v42;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
@@ -194,10 +194,10 @@ void __76__DBSmartWidgetViewController_initWithEnvironment_engine_animationDeleg
 - (void)_performAction
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [a1 widgetView];
-  v5 = [v4 prediction];
-  v6 = [v5 primaryActionBlock];
-  if (v6)
+  widgetView = [self widgetView];
+  prediction = [widgetView prediction];
+  primaryActionBlock = [prediction primaryActionBlock];
+  if (primaryActionBlock)
   {
     v7 = @"YES";
   }
@@ -207,12 +207,12 @@ void __76__DBSmartWidgetViewController_initWithEnvironment_engine_animationDeleg
     v7 = @"NO";
   }
 
-  v8 = [a1 widgetView];
-  v9 = [v8 prediction];
+  widgetView2 = [self widgetView];
+  prediction2 = [widgetView2 prediction];
   v10 = 138543618;
   v11 = v7;
   v12 = 2114;
-  v13 = v9;
+  v13 = prediction2;
   _os_log_debug_impl(&dword_248146000, a2, OS_LOG_TYPE_DEBUG, "(ViewController) Performing action: Primary %{public}@ %{public}@", &v10, 0x16u);
 }
 
@@ -224,8 +224,8 @@ void __76__DBSmartWidgetViewController_initWithEnvironment_engine_animationDeleg
     [DBSmartWidgetViewController _refresh];
   }
 
-  v4 = [(DBSmartWidgetViewController *)self engine];
-  [v4 refreshPredictions];
+  engine = [(DBSmartWidgetViewController *)self engine];
+  [engine refreshPredictions];
 }
 
 - (void)_previousPrediction
@@ -252,9 +252,9 @@ void __76__DBSmartWidgetViewController_initWithEnvironment_engine_animationDeleg
   [(DBSmartWidgetViewController *)self _updatePrediction];
 }
 
-- (void)setWantsToShowPrediction:(BOOL)a3
+- (void)setWantsToShowPrediction:(BOOL)prediction
 {
-  if (self->_wantsToShowPrediction != a3)
+  if (self->_wantsToShowPrediction != prediction)
   {
     v5 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -262,16 +262,16 @@ void __76__DBSmartWidgetViewController_initWithEnvironment_engine_animationDeleg
       [DBSmartWidgetViewController setWantsToShowPrediction:];
     }
 
-    self->_wantsToShowPrediction = a3;
+    self->_wantsToShowPrediction = prediction;
   }
 }
 
 - (void)_updatePrediction
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 engine];
-  v4 = [v3 currentPredictions];
-  [v4 count];
+  engine = [self engine];
+  currentPredictions = [engine currentPredictions];
+  [currentPredictions count];
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(&dword_248146000, a2, OS_LOG_TYPE_DEBUG, "[Update Prediction] currentPredictions.count=%ld", v5, 0xCu);
 }
@@ -473,13 +473,13 @@ void __48__DBSmartWidgetViewController__updatePrediction__block_invoke_243(uint6
 - (void)resolveForNoPredictions
 {
   objc_initWeak(&location, self);
-  v3 = [(DBSmartWidgetViewController *)self animationDelegate];
+  animationDelegate = [(DBSmartWidgetViewController *)self animationDelegate];
   v4 = MEMORY[0x277D85DD0];
   v5 = 3221225472;
   v6 = __54__DBSmartWidgetViewController_resolveForNoPredictions__block_invoke;
   v7 = &unk_278F02300;
   objc_copyWeak(&v8, &location);
-  [v3 animateSmartWidget:0 withOldUserInterfaceStyle:0 newUserInterfaceStyle:0 completion:&v4];
+  [animationDelegate animateSmartWidget:0 withOldUserInterfaceStyle:0 newUserInterfaceStyle:0 completion:&v4];
 
   [(DBSmartWidgetViewController *)self finalizePredictionUpdate:v4];
   objc_destroyWeak(&v8);
@@ -527,15 +527,15 @@ uint64_t __70__DBSmartWidgetViewController__updateToMostRecentSuccessfulPredicti
   return v6;
 }
 
-- (void)_updateWidgetWithPrediction:(id)a3 predictedSize:(CGSize)a4 operationID:(int64_t)a5 smartWidgetView:(id)a6
+- (void)_updateWidgetWithPrediction:(id)prediction predictedSize:(CGSize)size operationID:(int64_t)d smartWidgetView:(id)view
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
+  predictionCopy = prediction;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(DBSmartWidgetViewController *)self view];
+    view = [(DBSmartWidgetViewController *)self view];
     v11 = @"Home";
   }
 
@@ -544,7 +544,7 @@ uint64_t __70__DBSmartWidgetViewController__updateToMostRecentSuccessfulPredicti
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(DBSmartWidgetViewController *)self view];
+      view = [(DBSmartWidgetViewController *)self view];
       v11 = @"Calendar";
     }
 
@@ -552,7 +552,7 @@ uint64_t __70__DBSmartWidgetViewController__updateToMostRecentSuccessfulPredicti
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v10 = [(DBSmartWidgetViewController *)self view];
+      view = [(DBSmartWidgetViewController *)self view];
       if (isKindOfClass)
       {
         v11 = @"LiveActivity";
@@ -565,22 +565,22 @@ uint64_t __70__DBSmartWidgetViewController__updateToMostRecentSuccessfulPredicti
     }
   }
 
-  [v10 setAccessibilityValue:v11];
+  [view setAccessibilityValue:v11];
 
-  v13 = [(DBSmartWidgetViewController *)self widgetView];
-  v28 = [v13 overrideUserInterfaceStyle];
+  widgetView = [(DBSmartWidgetViewController *)self widgetView];
+  overrideUserInterfaceStyle = [widgetView overrideUserInterfaceStyle];
 
-  v14 = [v9 overrideUserInterfaceStyle];
-  v15 = [v8 uniqueIdentifier];
-  v16 = [(DBSmartWidgetViewController *)self widgetView];
-  v17 = [v16 prediction];
-  v18 = [v17 uniqueIdentifier];
-  if ([v15 isEqual:v18])
+  overrideUserInterfaceStyle2 = [viewCopy overrideUserInterfaceStyle];
+  uniqueIdentifier = [predictionCopy uniqueIdentifier];
+  widgetView2 = [(DBSmartWidgetViewController *)self widgetView];
+  prediction = [widgetView2 prediction];
+  uniqueIdentifier2 = [prediction uniqueIdentifier];
+  if ([uniqueIdentifier isEqual:uniqueIdentifier2])
   {
-    v19 = [(DBSmartWidgetViewController *)self animationDelegate];
-    v20 = [v19 isSmartWidgetHidden];
+    animationDelegate = [(DBSmartWidgetViewController *)self animationDelegate];
+    isSmartWidgetHidden = [animationDelegate isSmartWidgetHidden];
 
-    if ((v20 & 1) == 0)
+    if ((isSmartWidgetHidden & 1) == 0)
     {
       v21 = DBLogForCategory(9uLL);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -588,8 +588,8 @@ uint64_t __70__DBSmartWidgetViewController__updateToMostRecentSuccessfulPredicti
         [DBSmartWidgetViewController _updateWidgetWithPrediction:predictedSize:operationID:smartWidgetView:];
       }
 
-      v22 = [(DBSmartWidgetViewController *)self widgetView];
-      [v22 setPrediction:v8];
+      widgetView3 = [(DBSmartWidgetViewController *)self widgetView];
+      [widgetView3 setPrediction:predictionCopy];
 
       goto LABEL_17;
     }
@@ -602,28 +602,28 @@ uint64_t __70__DBSmartWidgetViewController__updateToMostRecentSuccessfulPredicti
   v23 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v24 = [v8 uniqueIdentifier];
-    v25 = [v24 UUIDString];
+    uniqueIdentifier3 = [predictionCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier3 UUIDString];
     *buf = 138543362;
-    v34 = v25;
+    v34 = uUIDString;
     _os_log_impl(&dword_248146000, v23, OS_LOG_TYPE_INFO, "[Update Prediction] Widget View prediction %{public}@ prepared", buf, 0xCu);
   }
 
-  v26 = [(DBSmartWidgetViewController *)self spinnerView];
-  [v26 stopAnimating];
+  spinnerView = [(DBSmartWidgetViewController *)self spinnerView];
+  [spinnerView stopAnimating];
 
   objc_initWeak(buf, self);
   [(DBSmartWidgetViewController *)self setReadyToShowPrediction:1];
-  v27 = [(DBSmartWidgetViewController *)self animationDelegate];
+  animationDelegate2 = [(DBSmartWidgetViewController *)self animationDelegate];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __101__DBSmartWidgetViewController__updateWidgetWithPrediction_predictedSize_operationID_smartWidgetView___block_invoke;
   v29[3] = &unk_278F031C0;
   objc_copyWeak(v32, buf);
-  v32[1] = v14;
-  v30 = v8;
-  v31 = v9;
-  [v27 animateSmartWidget:v29 withOldUserInterfaceStyle:v28 newUserInterfaceStyle:v14 completion:0];
+  v32[1] = overrideUserInterfaceStyle2;
+  v30 = predictionCopy;
+  v31 = viewCopy;
+  [animationDelegate2 animateSmartWidget:v29 withOldUserInterfaceStyle:overrideUserInterfaceStyle newUserInterfaceStyle:overrideUserInterfaceStyle2 completion:0];
 
   objc_destroyWeak(v32);
   objc_destroyWeak(buf);
@@ -713,25 +713,25 @@ void __101__DBSmartWidgetViewController__updateWidgetWithPrediction_predictedSiz
 
 - (void)finalizePredictionUpdate
 {
-  v1 = [a1 widgetView];
-  v2 = [v1 prediction];
+  widgetView = [self widgetView];
+  prediction = [widgetView prediction];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_10(&dword_248146000, v3, v4, "Current prediction (ViewController): %{public}@", v5, v6, v7, v8, v9);
 }
 
-- (void)setSmartWidgetForeground:(BOOL)a3
+- (void)setSmartWidgetForeground:(BOOL)foreground
 {
   if (self->_usesCarouselStyle)
   {
     carouselVC = self->_carouselVC;
     if (carouselVC)
     {
-      [(DBSmartWidgetCarousel *)carouselVC setCarouselForeground:a3];
+      [(DBSmartWidgetCarousel *)carouselVC setCarouselForeground:foreground];
     }
   }
 }
 
-- (void)smartWidgetEngine:(id)a3 didUpdateCurrentPredictions:(id)a4
+- (void)smartWidgetEngine:(id)engine didUpdateCurrentPredictions:(id)predictions
 {
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -757,28 +757,28 @@ void __77__DBSmartWidgetViewController_smartWidgetEngine_didUpdateCurrentPredict
   [WeakRetained _updatePrediction];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(DBSmartWidgetViewController *)self recognizers];
-  v7 = [v6 containsObject:v5];
+  recognizerCopy = recognizer;
+  recognizers = [(DBSmartWidgetViewController *)self recognizers];
+  v7 = [recognizers containsObject:recognizerCopy];
 
   return v7 ^ 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
-  if (v6 == v5)
+  recognizerCopy = recognizer;
+  nextPredictionRecognizer = [(DBSmartWidgetViewController *)self nextPredictionRecognizer];
+  if (nextPredictionRecognizer == recognizerCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v7 = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
-    v8 = v7 == v5;
+    previousPredictionRecognizer = [(DBSmartWidgetViewController *)self previousPredictionRecognizer];
+    v8 = previousPredictionRecognizer == recognizerCopy;
   }
 
   return v8;
@@ -786,13 +786,13 @@ void __77__DBSmartWidgetViewController_smartWidgetEngine_didUpdateCurrentPredict
 
 - (id)_focusHighlightColor
 {
-  v2 = [(DBWidgetViewController *)self environment];
-  v3 = [v2 environmentConfiguration];
-  v4 = [v3 wallpaperPreferences];
-  v5 = [v4 currentWallpaper];
+  environment = [(DBWidgetViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
 
-  v6 = [v5 traits];
-  if ([v6 supportsDashboardPlatterMaterials])
+  traits = [currentWallpaper traits];
+  if ([traits supportsDashboardPlatterMaterials])
   {
     [MEMORY[0x277D75348] _carSystemPrimaryColor];
   }
@@ -806,17 +806,17 @@ void __77__DBSmartWidgetViewController_smartWidgetEngine_didUpdateCurrentPredict
   return v7;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetViewController *)self traitCollection];
-  if ([v5 primaryInteractionModel] == 8 && objc_msgSend(v4, "focusHeading") != 16)
+  contextCopy = context;
+  traitCollection = [(DBSmartWidgetViewController *)self traitCollection];
+  if ([traitCollection primaryInteractionModel] == 8 && objc_msgSend(contextCopy, "focusHeading") != 16)
   {
-    v9 = [v4 focusHeading];
+    focusHeading = [contextCopy focusHeading];
 
-    if (v9 != 32)
+    if (focusHeading != 32)
     {
-      v6 = [(DBSmartWidgetViewController *)self _shouldUpdateFocusForTouchpadInContext:v4];
+      v6 = [(DBSmartWidgetViewController *)self _shouldUpdateFocusForTouchpadInContext:contextCopy];
       goto LABEL_5;
     }
   }
@@ -827,27 +827,27 @@ void __77__DBSmartWidgetViewController_smartWidgetEngine_didUpdateCurrentPredict
 
   v10.receiver = self;
   v10.super_class = DBSmartWidgetViewController;
-  v6 = [(DBSmartWidgetViewController *)&v10 shouldUpdateFocusInContext:v4];
+  v6 = [(DBSmartWidgetViewController *)&v10 shouldUpdateFocusInContext:contextCopy];
 LABEL_5:
   v7 = v6;
 
   return v7;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = DBSmartWidgetViewController;
-  [(DBSmartWidgetViewController *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [(DBSmartWidgetViewController *)self traitCollection];
-  if ([v7 primaryInteractionModel] == 8 && objc_msgSend(v6, "focusHeading") != 16)
+  [(DBSmartWidgetViewController *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  traitCollection = [(DBSmartWidgetViewController *)self traitCollection];
+  if ([traitCollection primaryInteractionModel] == 8 && objc_msgSend(contextCopy, "focusHeading") != 16)
   {
-    v8 = [v6 focusHeading];
+    focusHeading = [contextCopy focusHeading];
 
-    if (v8 != 32)
+    if (focusHeading != 32)
     {
-      [(DBSmartWidgetViewController *)self _didUpdateFocusForTouchpadInContext:v6];
+      [(DBSmartWidgetViewController *)self _didUpdateFocusForTouchpadInContext:contextCopy];
     }
   }
 
@@ -858,14 +858,14 @@ LABEL_5:
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(DBSmartWidgetViewController *)self traitCollection];
-  if ([v3 primaryInteractionModel] == 8)
+  traitCollection = [(DBSmartWidgetViewController *)self traitCollection];
+  if ([traitCollection primaryInteractionModel] == 8)
   {
-    v4 = [(DBSmartWidgetViewController *)self idealFocusEnvironments];
+    idealFocusEnvironments = [(DBSmartWidgetViewController *)self idealFocusEnvironments];
 
-    if (v4)
+    if (idealFocusEnvironments)
     {
-      v5 = [(DBSmartWidgetViewController *)self idealFocusEnvironments];
+      idealFocusEnvironments2 = [(DBSmartWidgetViewController *)self idealFocusEnvironments];
       goto LABEL_6;
     }
   }
@@ -876,36 +876,36 @@ LABEL_5:
 
   v7.receiver = self;
   v7.super_class = DBSmartWidgetViewController;
-  v5 = [(DBSmartWidgetViewController *)&v7 preferredFocusEnvironments];
+  idealFocusEnvironments2 = [(DBSmartWidgetViewController *)&v7 preferredFocusEnvironments];
 LABEL_6:
 
-  return v5;
+  return idealFocusEnvironments2;
 }
 
 - (id)linearFocusItems
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [(DBSmartWidgetViewController *)self view];
-  v18[0] = v3;
+  view = [(DBSmartWidgetViewController *)self view];
+  v18[0] = view;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
 
-  v5 = [(DBSmartWidgetViewController *)self widgetView];
-  v6 = [v5 linearFocusItems];
-  v7 = [v6 count];
+  widgetView = [(DBSmartWidgetViewController *)self widgetView];
+  linearFocusItems = [widgetView linearFocusItems];
+  v7 = [linearFocusItems count];
 
   if (v7)
   {
-    v8 = [(DBSmartWidgetViewController *)self widgetView];
-    v9 = [v8 linearFocusItems];
-    v10 = v4;
-    v4 = v8;
+    widgetView2 = [(DBSmartWidgetViewController *)self widgetView];
+    linearFocusItems2 = [widgetView2 linearFocusItems];
+    view2 = v4;
+    v4 = widgetView2;
   }
 
   else
   {
-    v11 = [(DBSmartWidgetViewController *)self carouselVC];
-    v12 = [v11 linearFocusItems];
-    v13 = [v12 count];
+    carouselVC = [(DBSmartWidgetViewController *)self carouselVC];
+    linearFocusItems3 = [carouselVC linearFocusItems];
+    v13 = [linearFocusItems3 count];
 
     if (!v13)
     {
@@ -913,15 +913,15 @@ LABEL_6:
     }
 
     v14 = MEMORY[0x277CBEB18];
-    v15 = [(DBSmartWidgetViewController *)self carouselVC];
-    v16 = [v15 linearFocusItems];
-    v9 = [v14 arrayWithArray:v16];
+    carouselVC2 = [(DBSmartWidgetViewController *)self carouselVC];
+    linearFocusItems4 = [carouselVC2 linearFocusItems];
+    linearFocusItems2 = [v14 arrayWithArray:linearFocusItems4];
 
-    v10 = [(DBSmartWidgetViewController *)self view];
-    [v9 addObject:v10];
+    view2 = [(DBSmartWidgetViewController *)self view];
+    [linearFocusItems2 addObject:view2];
   }
 
-  v4 = v9;
+  v4 = linearFocusItems2;
 LABEL_6:
 
   return v4;
@@ -932,18 +932,18 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = DBSmartWidgetViewController;
   [(DBWidgetViewController *)&v8 widgetViewTapped];
-  v3 = [(DBSmartWidgetViewController *)self carouselVC];
-  [v3 widgetViewTapped];
+  carouselVC = [(DBSmartWidgetViewController *)self carouselVC];
+  [carouselVC widgetViewTapped];
 
   objc_initWeak(&location, self);
-  v4 = [(DBSmartWidgetViewController *)self widgetView];
+  widgetView = [(DBSmartWidgetViewController *)self widgetView];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__DBSmartWidgetViewController_widgetViewTapped__block_invoke;
   v5[3] = &unk_278F02070;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [v4 widgetViewTapped:v5];
+  [widgetView widgetViewTapped:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -961,14 +961,14 @@ uint64_t __47__DBSmartWidgetViewController_widgetViewTapped__block_invoke(uint64
   v5.receiver = self;
   v5.super_class = DBSmartWidgetViewController;
   [(DBWidgetViewController *)&v5 updateAppearanceForWallpaper];
-  v3 = [(DBSmartWidgetViewController *)self widgetView];
-  v4 = [(DBSmartWidgetViewController *)self _focusHighlightColor];
-  [v3 setFocusHighlightColor:v4];
+  widgetView = [(DBSmartWidgetViewController *)self widgetView];
+  _focusHighlightColor = [(DBSmartWidgetViewController *)self _focusHighlightColor];
+  [widgetView setFocusHighlightColor:_focusHighlightColor];
 }
 
-- (BOOL)_shouldUpdateFocusForTouchpadInContext:(id)a3
+- (BOOL)_shouldUpdateFocusForTouchpadInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -978,47 +978,47 @@ uint64_t __47__DBSmartWidgetViewController_widgetViewTapped__block_invoke(uint64
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetViewController _shouldUpdateFocusForTouchpadInContext:v4];
+    [DBSmartWidgetViewController _shouldUpdateFocusForTouchpadInContext:contextCopy];
   }
 
   v7 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetViewController _shouldUpdateFocusForTouchpadInContext:v4];
+    [DBSmartWidgetViewController _shouldUpdateFocusForTouchpadInContext:contextCopy];
   }
 
   v8 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetViewController _shouldUpdateFocusForTouchpadInContext:v4];
+    [DBSmartWidgetViewController _shouldUpdateFocusForTouchpadInContext:contextCopy];
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
   [(DBSmartWidgetViewController *)self lastFocusBlockTime];
   if (v11 - v12 >= 0.1)
   {
-    v14 = [(DBSmartWidgetViewController *)self carouselVC];
-    if (!v14)
+    carouselVC = [(DBSmartWidgetViewController *)self carouselVC];
+    if (!carouselVC)
     {
       goto LABEL_16;
     }
 
-    v15 = v14;
-    v16 = [(DBSmartWidgetViewController *)self carouselVC];
-    v17 = [v16 isShowingDecorations];
+    v15 = carouselVC;
+    carouselVC2 = [(DBSmartWidgetViewController *)self carouselVC];
+    isShowingDecorations = [carouselVC2 isShowingDecorations];
 
-    if (!v17)
+    if (!isShowingDecorations)
     {
       goto LABEL_16;
     }
 
-    v18 = [v4 nextFocusedItem];
-    v19 = [(DBSmartWidgetViewController *)self topFocusButton];
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    topFocusButton = [(DBSmartWidgetViewController *)self topFocusButton];
 
-    if (v18 == v19)
+    if (nextFocusedItem == topFocusButton)
     {
       NSLog(&cfstr_FocusDebugPrev.isa);
       [(DBSmartWidgetCarousel *)self->_carouselVC rotateUp];
@@ -1026,10 +1026,10 @@ uint64_t __47__DBSmartWidgetViewController_widgetViewTapped__block_invoke(uint64
 
     else
     {
-      v20 = [v4 nextFocusedItem];
-      v21 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+      nextFocusedItem2 = [contextCopy nextFocusedItem];
+      bottomFocusButton = [(DBSmartWidgetViewController *)self bottomFocusButton];
 
-      if (v20 != v21)
+      if (nextFocusedItem2 != bottomFocusButton)
       {
 LABEL_16:
         v13 = 1;
@@ -1052,45 +1052,45 @@ LABEL_17:
   return v13;
 }
 
-- (void)_didUpdateFocusForTouchpadInContext:(id)a3
+- (void)_didUpdateFocusForTouchpadInContext:(id)context
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBSmartWidgetViewController *)self carouselVC];
+  contextCopy = context;
+  carouselVC = [(DBSmartWidgetViewController *)self carouselVC];
 
-  if (v5)
+  if (carouselVC)
   {
-    v6 = [(DBSmartWidgetViewController *)self carouselVC];
-    v7 = [v6 linearFocusItems];
+    carouselVC2 = [(DBSmartWidgetViewController *)self carouselVC];
+    linearFocusItems = [carouselVC2 linearFocusItems];
 
-    NSLog(&cfstr_FocusDebugCaro.isa, v7);
-    if ([v7 count])
+    NSLog(&cfstr_FocusDebugCaro.isa, linearFocusItems);
+    if ([linearFocusItems count])
     {
       v8 = 0;
       v9 = 0;
       v10 = 0;
       do
       {
-        v11 = [v7 objectAtIndexedSubscript:v9];
-        v12 = [v4 previouslyFocusedItem];
+        v11 = [linearFocusItems objectAtIndexedSubscript:v9];
+        previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-        if (v11 == v12)
+        if (v11 == previouslyFocusedItem)
         {
-          if (v9 == [v7 count] - 1 || objc_msgSend(v4, "focusHeading") != 8)
+          if (v9 == [linearFocusItems count] - 1 || objc_msgSend(contextCopy, "focusHeading") != 8)
           {
-            if (v9 && [v4 focusHeading] == 4)
+            if (v9 && [contextCopy focusHeading] == 4)
             {
               NSLog(&cfstr_FocusDebugMovi_0.isa);
-              v13 = [v7 objectAtIndexedSubscript:v9 - 1];
-              v23 = v13;
+              view = [linearFocusItems objectAtIndexedSubscript:v9 - 1];
+              v23 = view;
               v14 = &v23;
             }
 
             else
             {
               NSLog(&cfstr_FocusDebugMovi_1.isa);
-              v13 = [(DBSmartWidgetViewController *)self view];
-              v22 = v13;
+              view = [(DBSmartWidgetViewController *)self view];
+              v22 = view;
               v14 = &v22;
             }
           }
@@ -1098,8 +1098,8 @@ LABEL_17:
           else
           {
             NSLog(&cfstr_FocusDebugMovi.isa);
-            v13 = [v7 objectAtIndexedSubscript:v9 + 1];
-            v24[0] = v13;
+            view = [linearFocusItems objectAtIndexedSubscript:v9 + 1];
+            v24[0] = view;
             v14 = v24;
           }
 
@@ -1112,7 +1112,7 @@ LABEL_17:
         ++v9;
       }
 
-      while (v9 < [v7 count]);
+      while (v9 < [linearFocusItems count]);
     }
 
     else
@@ -1121,18 +1121,18 @@ LABEL_17:
       v8 = 0;
     }
 
-    v16 = [v4 nextFocusedItem];
-    v17 = [(DBSmartWidgetViewController *)self view];
-    v18 = v17;
-    if (v16 != v17 || (v8 & 1) != 0)
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    view2 = [(DBSmartWidgetViewController *)self view];
+    v18 = view2;
+    if (nextFocusedItem != view2 || (v8 & 1) != 0)
     {
     }
 
     else
     {
-      v19 = [v7 count];
+      v19 = [linearFocusItems count];
 
-      v20 = v7;
+      v20 = linearFocusItems;
       if (v19)
       {
         goto LABEL_22;
@@ -1158,45 +1158,45 @@ LABEL_24:
   NSLog(&cfstr_FocusDebug.isa);
 }
 
-- (void)_setFocusButtonsEnabled:(BOOL)a3
+- (void)_setFocusButtonsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [(DBSmartWidgetViewController *)self carouselVC];
+    carouselVC = [(DBSmartWidgetViewController *)self carouselVC];
 
-    if (!v4)
+    if (!carouselVC)
     {
       return;
     }
 
-    v5 = [(DBSmartWidgetViewController *)self carouselVC];
-    v9 = [v5 linearFocusItems];
+    carouselVC2 = [(DBSmartWidgetViewController *)self carouselVC];
+    linearFocusItems = [carouselVC2 linearFocusItems];
 
-    if ([v9 count])
+    if ([linearFocusItems count])
     {
-      v6 = [(DBSmartWidgetViewController *)self topFocusButton];
-      [v6 setEnabled:1];
+      topFocusButton = [(DBSmartWidgetViewController *)self topFocusButton];
+      [topFocusButton setEnabled:1];
 
-      v7 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-      [v7 setEnabled:1];
+      bottomFocusButton = [(DBSmartWidgetViewController *)self bottomFocusButton];
+      [bottomFocusButton setEnabled:1];
     }
   }
 
   else
   {
-    v8 = [(DBSmartWidgetViewController *)self topFocusButton];
-    [v8 setEnabled:0];
+    topFocusButton2 = [(DBSmartWidgetViewController *)self topFocusButton];
+    [topFocusButton2 setEnabled:0];
 
-    v9 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    [v9 setEnabled:0];
+    linearFocusItems = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    [linearFocusItems setEnabled:0];
   }
 }
 
 - (void)_setupFocusButtons
 {
   v62[4] = *MEMORY[0x277D85DE8];
-  v3 = [(DBSmartWidgetViewController *)self topFocusButton];
-  if (!v3 || ([(DBSmartWidgetViewController *)self bottomFocusButton], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, !v4))
+  topFocusButton = [(DBSmartWidgetViewController *)self topFocusButton];
+  if (!topFocusButton || ([(DBSmartWidgetViewController *)self bottomFocusButton], v4 = objc_claimAutoreleasedReturnValue(), v4, topFocusButton, !v4))
   {
     objc_initWeak(&location, self);
     v58[0] = MEMORY[0x277D85DD0];
@@ -1204,89 +1204,89 @@ LABEL_24:
     v58[2] = __49__DBSmartWidgetViewController__setupFocusButtons__block_invoke;
     v58[3] = &unk_278F01CF0;
     objc_copyWeak(&v59, &location);
-    v5 = [(DBSmartWidgetViewController *)self carouselVC];
-    [v5 setDecorationsStateChanged:v58];
+    carouselVC = [(DBSmartWidgetViewController *)self carouselVC];
+    [carouselVC setDecorationsStateChanged:v58];
 
     v6 = [MEMORY[0x277D75220] buttonWithType:0];
     [(DBSmartWidgetViewController *)self setTopFocusButton:v6];
 
-    v7 = [MEMORY[0x277D75348] clearColor];
-    v8 = [(DBSmartWidgetViewController *)self topFocusButton];
-    [v8 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    topFocusButton2 = [(DBSmartWidgetViewController *)self topFocusButton];
+    [topFocusButton2 setBackgroundColor:clearColor];
 
-    v9 = [(DBSmartWidgetViewController *)self topFocusButton];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    topFocusButton3 = [(DBSmartWidgetViewController *)self topFocusButton];
+    [topFocusButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(DBSmartWidgetViewController *)self view];
-    v11 = [v10 superview];
-    v12 = [(DBSmartWidgetViewController *)self topFocusButton];
-    [v11 addSubview:v12];
+    view = [(DBSmartWidgetViewController *)self view];
+    superview = [view superview];
+    topFocusButton4 = [(DBSmartWidgetViewController *)self topFocusButton];
+    [superview addSubview:topFocusButton4];
 
-    v13 = [(DBSmartWidgetViewController *)self topFocusButton];
-    [v13 setEnabled:0];
+    topFocusButton5 = [(DBSmartWidgetViewController *)self topFocusButton];
+    [topFocusButton5 setEnabled:0];
 
     v14 = [MEMORY[0x277D75220] buttonWithType:0];
     [(DBSmartWidgetViewController *)self setBottomFocusButton:v14];
 
-    v15 = [MEMORY[0x277D75348] clearColor];
-    v16 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    [v16 setBackgroundColor:v15];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    bottomFocusButton = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    [bottomFocusButton setBackgroundColor:clearColor2];
 
-    v17 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    bottomFocusButton2 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    [bottomFocusButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(DBSmartWidgetViewController *)self view];
-    v19 = [v18 superview];
-    v20 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    [v19 addSubview:v20];
+    view2 = [(DBSmartWidgetViewController *)self view];
+    superview2 = [view2 superview];
+    bottomFocusButton3 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    [superview2 addSubview:bottomFocusButton3];
 
-    v21 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    [v21 setEnabled:0];
+    bottomFocusButton4 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    [bottomFocusButton4 setEnabled:0];
 
     v41 = MEMORY[0x277CCAAD0];
-    v56 = [(DBSmartWidgetViewController *)self topFocusButton];
-    v52 = [v56 leadingAnchor];
-    v54 = [(DBSmartWidgetViewController *)self view];
-    v50 = [v54 leadingAnchor];
-    v48 = [v52 constraintEqualToAnchor:v50];
+    topFocusButton6 = [(DBSmartWidgetViewController *)self topFocusButton];
+    leadingAnchor = [topFocusButton6 leadingAnchor];
+    view3 = [(DBSmartWidgetViewController *)self view];
+    leadingAnchor2 = [view3 leadingAnchor];
+    v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v62[0] = v48;
-    v46 = [(DBSmartWidgetViewController *)self topFocusButton];
-    v44 = [v46 widthAnchor];
-    v42 = [v44 constraintEqualToConstant:1.0];
+    topFocusButton7 = [(DBSmartWidgetViewController *)self topFocusButton];
+    widthAnchor = [topFocusButton7 widthAnchor];
+    v42 = [widthAnchor constraintEqualToConstant:1.0];
     v62[1] = v42;
-    v22 = [(DBSmartWidgetViewController *)self topFocusButton];
-    v23 = [v22 bottomAnchor];
-    v24 = [(DBSmartWidgetViewController *)self view];
-    v25 = [v24 topAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:-2.0];
+    topFocusButton8 = [(DBSmartWidgetViewController *)self topFocusButton];
+    bottomAnchor = [topFocusButton8 bottomAnchor];
+    view4 = [(DBSmartWidgetViewController *)self view];
+    topAnchor = [view4 topAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-2.0];
     v62[2] = v26;
-    v27 = [(DBSmartWidgetViewController *)self topFocusButton];
-    v28 = [v27 heightAnchor];
-    v29 = [v28 constraintEqualToConstant:2.0];
+    topFocusButton9 = [(DBSmartWidgetViewController *)self topFocusButton];
+    heightAnchor = [topFocusButton9 heightAnchor];
+    v29 = [heightAnchor constraintEqualToConstant:2.0];
     v62[3] = v29;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:4];
     [v41 activateConstraints:v30];
 
     v43 = MEMORY[0x277CCAAD0];
-    v57 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    v51 = [v57 leadingAnchor];
-    v55 = [(DBSmartWidgetViewController *)self view];
-    v53 = [v55 leadingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v53];
+    bottomFocusButton5 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    leadingAnchor3 = [bottomFocusButton5 leadingAnchor];
+    view5 = [(DBSmartWidgetViewController *)self view];
+    leadingAnchor4 = [view5 leadingAnchor];
+    v49 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v61[0] = v49;
-    v47 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    v45 = [v47 widthAnchor];
-    v31 = [v45 constraintEqualToConstant:1.0];
+    bottomFocusButton6 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    widthAnchor2 = [bottomFocusButton6 widthAnchor];
+    v31 = [widthAnchor2 constraintEqualToConstant:1.0];
     v61[1] = v31;
-    v32 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    v33 = [v32 topAnchor];
-    v34 = [(DBSmartWidgetViewController *)self view];
-    v35 = [v34 bottomAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35 constant:2.0];
+    bottomFocusButton7 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    topAnchor2 = [bottomFocusButton7 topAnchor];
+    view6 = [(DBSmartWidgetViewController *)self view];
+    bottomAnchor2 = [view6 bottomAnchor];
+    v36 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:2.0];
     v61[2] = v36;
-    v37 = [(DBSmartWidgetViewController *)self bottomFocusButton];
-    v38 = [v37 heightAnchor];
-    v39 = [v38 constraintEqualToConstant:2.0];
+    bottomFocusButton8 = [(DBSmartWidgetViewController *)self bottomFocusButton];
+    heightAnchor2 = [bottomFocusButton8 heightAnchor];
+    v39 = [heightAnchor2 constraintEqualToConstant:2.0];
     v61[3] = v39;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:4];
     [v43 activateConstraints:v40];

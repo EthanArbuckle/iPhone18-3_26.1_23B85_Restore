@@ -3,7 +3,7 @@
 - (RBBundleProperties)targetProperties;
 - (RBEntitlementPossessing)originatorEntitlements;
 - (RBEntitlementPossessing)targetEntitlements;
-- (void)setAssertion:(id)a3;
+- (void)setAssertion:(id)assertion;
 @end
 
 @implementation RBAttributeContext
@@ -16,8 +16,8 @@
     if (targetIdentity)
     {
       bundlePropertiesManager = self->_bundlePropertiesManager;
-      v5 = [(RBProcess *)self->_targetProcess identifier];
-      v6 = [(RBBundlePropertiesManaging *)bundlePropertiesManager propertiesForIdentity:targetIdentity identifier:v5];
+      identifier = [(RBProcess *)self->_targetProcess identifier];
+      v6 = [(RBBundlePropertiesManaging *)bundlePropertiesManager propertiesForIdentity:targetIdentity identifier:identifier];
       targetProperties = self->_targetProperties;
       self->_targetProperties = v6;
     }
@@ -25,7 +25,7 @@
     else
     {
       v8 = objc_alloc_init(RBBundleProperties);
-      v5 = self->_targetProperties;
+      identifier = self->_targetProperties;
       self->_targetProperties = v8;
     }
   }
@@ -35,44 +35,44 @@
   return v9;
 }
 
-- (void)setAssertion:(id)a3
+- (void)setAssertion:(id)assertion
 {
-  v25 = a3;
-  objc_storeStrong(&self->_assertion, a3);
-  v5 = [v25 identifier];
+  assertionCopy = assertion;
+  objc_storeStrong(&self->_assertion, assertion);
+  identifier = [assertionCopy identifier];
   assertionID = self->_assertionID;
-  self->_assertionID = v5;
+  self->_assertionID = identifier;
 
   target = self->_target;
-  v8 = [v25 target];
-  targetEntitlements = v8;
-  if (target == v8)
+  target = [assertionCopy target];
+  targetEntitlements = target;
+  if (target == target)
   {
     goto LABEL_8;
   }
 
-  if (!target || !v8)
+  if (!target || !target)
   {
 
     goto LABEL_7;
   }
 
-  v10 = [(RBConcreteTargeting *)target isEqual:v8];
+  v10 = [(RBConcreteTargeting *)target isEqual:target];
 
   if ((v10 & 1) == 0)
   {
 LABEL_7:
-    v11 = [v25 target];
+    target2 = [assertionCopy target];
     v12 = self->_target;
-    self->_target = v11;
+    self->_target = target2;
 
-    v13 = [(RBConcreteTargeting *)self->_target process];
+    process = [(RBConcreteTargeting *)self->_target process];
     targetProcess = self->_targetProcess;
-    self->_targetProcess = v13;
+    self->_targetProcess = process;
 
-    v15 = [(RBConcreteTargeting *)self->_target identity];
+    identity = [(RBConcreteTargeting *)self->_target identity];
     targetIdentity = self->_targetIdentity;
-    self->_targetIdentity = v15;
+    self->_targetIdentity = identity;
 
     self->_targetIsSystem = [(RBConcreteTargeting *)self->_target isSystem];
     targetProperties = self->_targetProperties;
@@ -84,29 +84,29 @@ LABEL_8:
   }
 
   originatorProcess = self->_originatorProcess;
-  v19 = [v25 originator];
-  originatorEntitlements = v19;
-  if (originatorProcess == v19)
+  originator = [assertionCopy originator];
+  originatorEntitlements = originator;
+  if (originatorProcess == originator)
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if (!originatorProcess || !v19)
+  if (!originatorProcess || !originator)
   {
 
     goto LABEL_15;
   }
 
-  v21 = [(RBProcess *)originatorProcess isEqual:v19];
+  v21 = [(RBProcess *)originatorProcess isEqual:originator];
 
   if ((v21 & 1) == 0)
   {
 LABEL_15:
-    v22 = [v25 originator];
+    originator2 = [assertionCopy originator];
     v23 = self->_originatorProcess;
-    self->_originatorProcess = v22;
+    self->_originatorProcess = originator2;
 
     originatorProperties = self->_originatorProperties;
     self->_originatorProperties = 0;
@@ -149,14 +149,14 @@ LABEL_17:
 {
   if (!self->_originatorProperties)
   {
-    v3 = [(RBProcess *)self->_originatorProcess identity];
+    identity = [(RBProcess *)self->_originatorProcess identity];
 
-    if (v3)
+    if (identity)
     {
       bundlePropertiesManager = self->_bundlePropertiesManager;
-      v5 = [(RBProcess *)self->_originatorProcess identity];
-      v6 = [(RBProcess *)self->_originatorProcess identifier];
-      v7 = [(RBBundlePropertiesManaging *)bundlePropertiesManager propertiesForIdentity:v5 identifier:v6];
+      identity2 = [(RBProcess *)self->_originatorProcess identity];
+      identifier = [(RBProcess *)self->_originatorProcess identifier];
+      v7 = [(RBBundlePropertiesManaging *)bundlePropertiesManager propertiesForIdentity:identity2 identifier:identifier];
       originatorProperties = self->_originatorProperties;
       self->_originatorProperties = v7;
     }
@@ -164,7 +164,7 @@ LABEL_17:
     else
     {
       v9 = objc_alloc_init(RBBundleProperties);
-      v5 = self->_originatorProperties;
+      identity2 = self->_originatorProperties;
       self->_originatorProperties = v9;
     }
   }

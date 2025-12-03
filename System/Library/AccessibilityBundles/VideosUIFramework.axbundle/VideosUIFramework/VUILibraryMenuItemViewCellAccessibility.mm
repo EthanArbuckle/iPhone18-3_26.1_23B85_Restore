@@ -1,24 +1,24 @@
 @interface VUILibraryMenuItemViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation VUILibraryMenuItemViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUILibraryMenuItemViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"VUILibraryMenuItemViewCell" hasProperty:@"titleLabel" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUILibraryMenuItemViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"VUILibraryMenuItemViewCell" hasProperty:@"titleLabel" withType:"@"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(VUILibraryMenuItemViewCellAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

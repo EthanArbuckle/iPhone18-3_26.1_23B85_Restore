@@ -1,35 +1,35 @@
 @interface RTBluePOITileStore
-- (void)_fetchBluePOIMetadataWithHandler:(id)a3;
-- (void)_fetchBluePOITileCountWithHandler:(id)a3;
-- (void)_fetchBluePOITileWithGeoTileKey:(unint64_t)a3 handler:(id)a4;
-- (void)_fetchBluePOITilesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6;
-- (void)_fetchBluePOITilesWithDownloadKeys:(id)a3 handler:(id)a4;
-- (void)_fetchBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4;
-- (void)_purgeBluePOIMetadataWithHandler:(id)a3;
-- (void)_purgeBluePOITilesPredating:(id)a3 handler:(id)a4;
-- (void)_removeBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4;
-- (void)fetchBluePOIMetadataWithHandler:(id)a3;
-- (void)fetchBluePOITileCountWithHandler:(id)a3;
-- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)a3 handler:(id)a4;
-- (void)fetchBluePOITilesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6;
-- (void)fetchBluePOITilesWithDownloadKeys:(id)a3 handler:(id)a4;
-- (void)fetchBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4;
-- (void)purgeBluePOIMetadataWithHandler:(id)a3;
-- (void)purgeBluePOITilesPredating:(id)a3 handler:(id)a4;
-- (void)removeBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4;
-- (void)storeBluePOIMetadata:(id)a3 handler:(id)a4;
-- (void)storeBluePOITiles:(id)a3 handler:(id)a4;
-- (void)updateBluePOIMetadata:(id)a3 handler:(id)a4;
-- (void)updateBluePOITiles:(id)a3 handler:(id)a4;
+- (void)_fetchBluePOIMetadataWithHandler:(id)handler;
+- (void)_fetchBluePOITileCountWithHandler:(id)handler;
+- (void)_fetchBluePOITileWithGeoTileKey:(unint64_t)key handler:(id)handler;
+- (void)_fetchBluePOITilesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler;
+- (void)_fetchBluePOITilesWithDownloadKeys:(id)keys handler:(id)handler;
+- (void)_fetchBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler;
+- (void)_purgeBluePOIMetadataWithHandler:(id)handler;
+- (void)_purgeBluePOITilesPredating:(id)predating handler:(id)handler;
+- (void)_removeBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler;
+- (void)fetchBluePOIMetadataWithHandler:(id)handler;
+- (void)fetchBluePOITileCountWithHandler:(id)handler;
+- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)key handler:(id)handler;
+- (void)fetchBluePOITilesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler;
+- (void)fetchBluePOITilesWithDownloadKeys:(id)keys handler:(id)handler;
+- (void)fetchBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler;
+- (void)purgeBluePOIMetadataWithHandler:(id)handler;
+- (void)purgeBluePOITilesPredating:(id)predating handler:(id)handler;
+- (void)removeBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler;
+- (void)storeBluePOIMetadata:(id)metadata handler:(id)handler;
+- (void)storeBluePOITiles:(id)tiles handler:(id)handler;
+- (void)updateBluePOIMetadata:(id)metadata handler:(id)handler;
+- (void)updateBluePOITiles:(id)tiles handler:(id)handler;
 @end
 
 @implementation RTBluePOITileStore
 
-- (void)_fetchBluePOITileWithGeoTileKey:(unint64_t)a3 handler:(id)a4
+- (void)_fetchBluePOITileWithGeoTileKey:(unint64_t)key handler:(id)handler
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTStore *)self availability]== 2)
     {
@@ -37,9 +37,9 @@
       aBlock[1] = 3221225472;
       aBlock[2] = __62__RTBluePOITileStore__fetchBluePOITileWithGeoTileKey_handler___block_invoke;
       aBlock[3] = &unk_2788CBA78;
-      v18 = a3;
+      keyCopy = key;
       v19 = a2;
-      v8 = v7;
+      v8 = handlerCopy;
       v17 = v8;
       v9 = _Block_copy(aBlock);
       v14[0] = MEMORY[0x277D85DD0];
@@ -61,7 +61,7 @@
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
       v10 = [v11 errorWithDomain:v12 code:5 userInfo:v13];
 
-      (*(v7 + 2))(v7, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
     }
   }
 }
@@ -104,27 +104,27 @@ void __62__RTBluePOITileStore__fetchBluePOITileWithGeoTileKey_handler___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)a3 handler:(id)a4
+- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)key handler:(id)handler
 {
-  v6 = a4;
-  v7 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__RTBluePOITileStore_fetchBluePOITileWithGeoTileKey_handler___block_invoke;
   block[3] = &unk_2788C6300;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  keyCopy = key;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4
+- (void)_fetchBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  keysCopy = keys;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTStore *)self availability]== 2)
     {
@@ -132,9 +132,9 @@ void __62__RTBluePOITileStore__fetchBluePOITileWithGeoTileKey_handler___block_in
       aBlock[1] = 3221225472;
       aBlock[2] = __64__RTBluePOITileStore__fetchBluePOITilesWithGeoTileKeys_handler___block_invoke;
       aBlock[3] = &unk_2788C4FB0;
-      v18 = v7;
+      v18 = keysCopy;
       v20 = a2;
-      v9 = v8;
+      v9 = handlerCopy;
       v19 = v9;
       v10 = _Block_copy(aBlock);
       v15[0] = MEMORY[0x277D85DD0];
@@ -156,7 +156,7 @@ void __62__RTBluePOITileStore__fetchBluePOITileWithGeoTileKey_handler___block_in
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v11 = [v12 errorWithDomain:v13 code:5 userInfo:v14];
 
-      (*(v8 + 2))(v8, 0, v11);
+      (*(handlerCopy + 2))(handlerCopy, 0, v11);
     }
   }
 }
@@ -233,29 +233,29 @@ void __64__RTBluePOITileStore__fetchBluePOITilesWithGeoTileKeys_handler___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4
+- (void)fetchBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  keysCopy = keys;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTBluePOITileStore_fetchBluePOITilesWithGeoTileKeys_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = keysCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = keysCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchBluePOITilesWithDownloadKeys:(id)a3 handler:(id)a4
+- (void)_fetchBluePOITilesWithDownloadKeys:(id)keys handler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  keysCopy = keys;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTStore *)self availability]== 2)
     {
@@ -263,9 +263,9 @@ void __64__RTBluePOITileStore__fetchBluePOITilesWithGeoTileKeys_handler___block_
       aBlock[1] = 3221225472;
       aBlock[2] = __65__RTBluePOITileStore__fetchBluePOITilesWithDownloadKeys_handler___block_invoke;
       aBlock[3] = &unk_2788C4FB0;
-      v18 = v7;
+      v18 = keysCopy;
       v20 = a2;
-      v9 = v8;
+      v9 = handlerCopy;
       v19 = v9;
       v10 = _Block_copy(aBlock);
       v15[0] = MEMORY[0x277D85DD0];
@@ -287,7 +287,7 @@ void __64__RTBluePOITileStore__fetchBluePOITilesWithGeoTileKeys_handler___block_
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v11 = [v12 errorWithDomain:v13 code:5 userInfo:v14];
 
-      (*(v8 + 2))(v8, 0, v11);
+      (*(handlerCopy + 2))(handlerCopy, 0, v11);
     }
   }
 }
@@ -364,30 +364,30 @@ void __65__RTBluePOITileStore__fetchBluePOITilesWithDownloadKeys_handler___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchBluePOITilesWithDownloadKeys:(id)a3 handler:(id)a4
+- (void)fetchBluePOITilesWithDownloadKeys:(id)keys handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  keysCopy = keys;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__RTBluePOITileStore_fetchBluePOITilesWithDownloadKeys_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = keysCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = keysCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchBluePOITilesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6
+- (void)_fetchBluePOITilesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  intervalCopy = interval;
+  limitCopy = limit;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTStore *)self availability]== 2)
     {
@@ -395,11 +395,11 @@ void __65__RTBluePOITileStore__fetchBluePOITilesWithDownloadKeys_handler___block
       aBlock[1] = 3221225472;
       aBlock[2] = __81__RTBluePOITileStore__fetchBluePOITilesWithDateInterval_ascending_limit_handler___block_invoke;
       aBlock[3] = &unk_2788CB788;
-      v23 = v11;
-      v27 = a4;
-      v24 = v12;
+      v23 = intervalCopy;
+      ascendingCopy = ascending;
+      v24 = limitCopy;
       v26 = a2;
-      v14 = v13;
+      v14 = handlerCopy;
       v25 = v14;
       v15 = _Block_copy(aBlock);
       v20[0] = MEMORY[0x277D85DD0];
@@ -421,7 +421,7 @@ void __65__RTBluePOITileStore__fetchBluePOITilesWithDownloadKeys_handler___block
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
       v16 = [v17 errorWithDomain:v18 code:5 userInfo:v19];
 
-      (*(v13 + 2))(v13, 0, v16);
+      (*(handlerCopy + 2))(handlerCopy, 0, v16);
     }
   }
 }
@@ -527,36 +527,36 @@ void __81__RTBluePOITileStore__fetchBluePOITilesWithDateInterval_ascending_limit
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchBluePOITilesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6
+- (void)fetchBluePOITilesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  limitCopy = limit;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__RTBluePOITileStore_fetchBluePOITilesWithDateInterval_ascending_limit_handler___block_invoke;
   block[3] = &unk_2788C6440;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = intervalCopy;
+  ascendingCopy = ascending;
+  v19 = limitCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = limitCopy;
+  v16 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchBluePOITileCountWithHandler:(id)a3
+- (void)_fetchBluePOITileCountWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__RTBluePOITileStore__fetchBluePOITileCountWithHandler___block_invoke;
   aBlock[3] = &unk_2788CB7D8;
   v13 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x277D85DD0];
@@ -600,28 +600,28 @@ void __56__RTBluePOITileStore__fetchBluePOITileCountWithHandler___block_invoke(u
   (*(v9 + 16))(v9, v10, v6);
 }
 
-- (void)fetchBluePOITileCountWithHandler:(id)a3
+- (void)fetchBluePOITileCountWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__RTBluePOITileStore_fetchBluePOITileCountWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)storeBluePOITiles:(id)a3 handler:(id)a4
+- (void)storeBluePOITiles:(id)tiles handler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tilesCopy = tiles;
+  handlerCopy = handler;
   if ([(RTStore *)self availability]== 2)
   {
-    [(RTStore *)self storeWritableObjects:v6 handler:v7];
+    [(RTStore *)self storeWritableObjects:tilesCopy handler:handlerCopy];
   }
 
   else
@@ -633,18 +633,18 @@ void __56__RTBluePOITileStore__fetchBluePOITileCountWithHandler___block_invoke(u
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v11 = [v8 errorWithDomain:v9 code:5 userInfo:v10];
 
-    v7[2](v7, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (void)updateBluePOITiles:(id)a3 handler:(id)a4
+- (void)updateBluePOITiles:(id)tiles handler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tilesCopy = tiles;
+  handlerCopy = handler;
   if ([(RTStore *)self availability]== 2)
   {
-    [(RTStore *)self updateWritableObjects:v6 handler:v7];
+    [(RTStore *)self updateWritableObjects:tilesCopy handler:handlerCopy];
   }
 
   else
@@ -656,41 +656,41 @@ void __56__RTBluePOITileStore__fetchBluePOITileCountWithHandler___block_invoke(u
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v11 = [v8 errorWithDomain:v9 code:5 userInfo:v10];
 
-    v7[2](v7, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (void)removeBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4
+- (void)removeBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  keysCopy = keys;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__RTBluePOITileStore_removeBluePOITilesWithGeoTileKeys_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = keysCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = keysCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_removeBluePOITilesWithGeoTileKeys:(id)a3 handler:(id)a4
+- (void)_removeBluePOITilesWithGeoTileKeys:(id)keys handler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  keysCopy = keys;
+  handlerCopy = handler;
+  if ([keysCopy count])
   {
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __65__RTBluePOITileStore__removeBluePOITilesWithGeoTileKeys_handler___block_invoke;
     v17 = &unk_2788C4F38;
-    v18 = v6;
-    v19 = self;
-    v8 = v7;
+    v18 = keysCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v20 = v8;
     v9 = _Block_copy(&v14);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8, v14, v15, v16, v17];
@@ -701,7 +701,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D01448];
@@ -709,7 +709,7 @@ LABEL_5:
     v22[0] = @"requires valid tiles.";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v13 = [v11 errorWithDomain:v12 code:7 userInfo:v10];
-    (*(v7 + 2))(v7, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
 
     goto LABEL_5;
   }
@@ -733,11 +733,11 @@ void __65__RTBluePOITileStore__removeBluePOITilesWithGeoTileKeys_handler___block
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)_purgeBluePOITilesPredating:(id)a3 handler:(id)a4
+- (void)_purgeBluePOITilesPredating:(id)predating handler:(id)handler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predatingCopy = predating;
+  handlerCopy = handler;
   if ([(RTStore *)self availability]== 2)
   {
     v14 = @"date";
@@ -746,7 +746,7 @@ void __65__RTBluePOITileStore__removeBluePOITilesWithGeoTileKeys_handler___block
     v15 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
-    [(RTStore *)self purgePredating:v6 predicateMappings:v9 handler:v7];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
   }
 
   else
@@ -758,36 +758,36 @@ void __65__RTBluePOITileStore__removeBluePOITilesWithGeoTileKeys_handler___block
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v9 = [v10 errorWithDomain:v11 code:5 userInfo:v12];
 
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
-- (void)purgeBluePOITilesPredating:(id)a3 handler:(id)a4
+- (void)purgeBluePOITilesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__RTBluePOITileStore_purgeBluePOITilesPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeBluePOIMetadataWithHandler:(id)a3
+- (void)_purgeBluePOIMetadataWithHandler:(id)handler
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(RTStore *)self availability]== 2)
   {
     v9 = objc_opt_class();
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
-    [(RTStore *)self removeAll:v5 handler:v4];
+    [(RTStore *)self removeAll:v5 handler:handlerCopy];
   }
 
   else
@@ -799,43 +799,43 @@ void __65__RTBluePOITileStore__removeBluePOITilesWithGeoTileKeys_handler___block
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v5 = [v6 errorWithDomain:v7 code:5 userInfo:v8];
 
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, v5);
   }
 }
 
-- (void)purgeBluePOIMetadataWithHandler:(id)a3
+- (void)purgeBluePOIMetadataWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__RTBluePOITileStore_purgeBluePOIMetadataWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)fetchBluePOIMetadataWithHandler:(id)a3
+- (void)fetchBluePOIMetadataWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__RTBluePOITileStore_fetchBluePOIMetadataWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchBluePOIMetadataWithHandler:(id)a3
+- (void)_fetchBluePOIMetadataWithHandler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTStore *)self availability]== 2)
     {
@@ -844,7 +844,7 @@ void __65__RTBluePOITileStore__removeBluePOITilesWithGeoTileKeys_handler___block
       aBlock[2] = __55__RTBluePOITileStore__fetchBluePOIMetadataWithHandler___block_invoke;
       aBlock[3] = &unk_2788CB7D8;
       v16 = a2;
-      v6 = v5;
+      v6 = handlerCopy;
       v15 = v6;
       v7 = _Block_copy(aBlock);
       v12[0] = MEMORY[0x277D85DD0];
@@ -866,7 +866,7 @@ void __65__RTBluePOITileStore__removeBluePOITilesWithGeoTileKeys_handler___block
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v8 = [v9 errorWithDomain:v10 code:5 userInfo:v11];
 
-      (*(v5 + 2))(v5, 0, v8);
+      (*(handlerCopy + 2))(handlerCopy, 0, v8);
     }
   }
 }
@@ -906,11 +906,11 @@ void __55__RTBluePOITileStore__fetchBluePOIMetadataWithHandler___block_invoke(ui
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)storeBluePOIMetadata:(id)a3 handler:(id)a4
+- (void)storeBluePOIMetadata:(id)metadata handler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   if ([(RTStore *)self availability]!= 2)
   {
     v9 = MEMORY[0x277CCA9B8];
@@ -924,11 +924,11 @@ LABEL_6:
     v14 = [v11 dictionaryWithObjects:v12 forKeys:v13 count:1];
     v8 = [v9 errorWithDomain:v10 code:5 userInfo:v14];
 
-    v7[2](v7, v8);
+    handlerCopy[2](handlerCopy, v8);
     goto LABEL_7;
   }
 
-  if (!v6)
+  if (!metadataCopy)
   {
     v9 = MEMORY[0x277CCA9B8];
     v10 = *MEMORY[0x277D01448];
@@ -940,22 +940,22 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v15 = v6;
+  v15 = metadataCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
-  [(RTStore *)self storeWritableObjects:v8 handler:v7];
+  [(RTStore *)self storeWritableObjects:v8 handler:handlerCopy];
 LABEL_7:
 }
 
-- (void)updateBluePOIMetadata:(id)a3 handler:(id)a4
+- (void)updateBluePOIMetadata:(id)metadata handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  metadataCopy = metadata;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  handlerCopy = handler;
+  metadataCopy2 = metadata;
+  v9 = [v6 arrayWithObjects:&metadataCopy count:1];
 
-  [(RTStore *)self updateWritableObjects:v9 handler:v7, v10, v11];
+  [(RTStore *)self updateWritableObjects:v9 handler:handlerCopy, metadataCopy, v11];
 }
 
 @end

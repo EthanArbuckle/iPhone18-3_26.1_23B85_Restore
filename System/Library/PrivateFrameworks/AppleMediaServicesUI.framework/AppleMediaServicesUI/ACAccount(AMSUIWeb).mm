@@ -7,13 +7,13 @@
 - (uint64_t)web_matchAccount:()AMSUIWeb
 {
   v6 = a3;
-  v7 = [a1 ams_DSID];
-  v8 = [a1 ams_altDSID];
-  v9 = [a1 username];
-  if (v7)
+  ams_DSID = [self ams_DSID];
+  ams_altDSID = [self ams_altDSID];
+  username = [self username];
+  if (ams_DSID)
   {
-    v3 = [v6 ams_DSID];
-    if ([v3 isEqualToNumber:v7])
+    ams_DSID2 = [v6 ams_DSID];
+    if ([ams_DSID2 isEqualToNumber:ams_DSID])
     {
       v10 = 1;
 LABEL_15:
@@ -22,39 +22,39 @@ LABEL_15:
     }
   }
 
-  if (v8)
+  if (ams_altDSID)
   {
-    v4 = [v6 ams_altDSID];
-    if ([v4 isEqualToString:v8])
+    ams_altDSID2 = [v6 ams_altDSID];
+    if ([ams_altDSID2 isEqualToString:ams_altDSID])
     {
 
       v10 = 1;
       goto LABEL_14;
     }
 
-    if (!v9)
+    if (!username)
     {
       v10 = 0;
       goto LABEL_13;
     }
   }
 
-  else if (!v9)
+  else if (!username)
   {
     v10 = 0;
     goto LABEL_14;
   }
 
-  v11 = [v6 username];
-  v10 = [v11 isEqualToString:v9];
+  username2 = [v6 username];
+  v10 = [username2 isEqualToString:username];
 
-  if (v8)
+  if (ams_altDSID)
   {
 LABEL_13:
   }
 
 LABEL_14:
-  if (v7)
+  if (ams_DSID)
   {
     goto LABEL_15;
   }

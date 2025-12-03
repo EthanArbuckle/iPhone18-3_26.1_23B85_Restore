@@ -1,5 +1,5 @@
 @interface GuidedSearchTokenCell
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000851E0();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000858B4(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1000858B4(attributesCopy);
 }
 
 @end

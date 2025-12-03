@@ -21,8 +21,8 @@
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:10];
   v7.receiver = self;
   v7.super_class = _UISceneHostingSceneSpecification;
-  v4 = [(UIApplicationSceneSpecification *)&v7 defaultExtensions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v7 defaultExtensions];
+  v5 = [v3 arrayByAddingObjectsFromArray:defaultExtensions];
 
   return v5;
 }
@@ -36,8 +36,8 @@
 
   v8.receiver = self;
   v8.super_class = _UISceneHostingSceneSpecification;
-  v5 = [(UIApplicationSceneSpecification *)&v8 finalActionHandlers];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  finalActionHandlers = [(UIApplicationSceneSpecification *)&v8 finalActionHandlers];
+  v6 = [v4 arrayByAddingObjectsFromArray:finalActionHandlers];
 
   return v6;
 }

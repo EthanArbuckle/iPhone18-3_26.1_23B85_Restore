@@ -8,7 +8,7 @@
 - (ICSPreferences)init;
 - (id)domain;
 - (int64_t)moments;
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4;
+- (void)setPreferencesValue:(id)value forKey:(id)key;
 @end
 
 @implementation ICSPreferences
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_1740;
   block[3] = &unk_83E0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_CBE8 != -1)
   {
     dispatch_once(&qword_CBE8, block);
@@ -124,15 +124,15 @@
   return v3;
 }
 
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4
+- (void)setPreferencesValue:(id)value forKey:(id)key
 {
   v10.receiver = self;
   v10.super_class = ICSPreferences;
-  v6 = a4;
-  v7 = a3;
-  [(PHPreferences *)&v10 setPreferencesValue:v7 forKey:v6];
-  v11 = v6;
-  v12 = v7;
+  keyCopy = key;
+  valueCopy = value;
+  [(PHPreferences *)&v10 setPreferencesValue:valueCopy forKey:keyCopy];
+  v11 = keyCopy;
+  v12 = valueCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v9 = +[NSNotificationCenter defaultCenter];
 

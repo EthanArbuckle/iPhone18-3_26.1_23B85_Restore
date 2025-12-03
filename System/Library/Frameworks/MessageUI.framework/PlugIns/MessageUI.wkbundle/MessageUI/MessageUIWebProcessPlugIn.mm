@@ -5,8 +5,8 @@
 - (NSString)defaultComposeFontFamily;
 - (NSString)remoteContentProxySchemePrefix;
 - (double)defaultComposeFontPixelSize;
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4;
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4;
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller;
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation MessageUIWebProcessPlugIn
@@ -28,17 +28,17 @@
 
 - (BOOL)isPad
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"isPad"];
-  v4 = [v3 BOOLValue];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"isPad"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)defaultComposeFontPixelSize
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"defaultComposeFontPixelSize"];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"defaultComposeFontPixelSize"];
   [v3 doubleValue];
   v5 = v4;
 
@@ -47,42 +47,42 @@
 
 - (NSString)defaultComposeFontFamily
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"defaultComposeFontFamily"];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"defaultComposeFontFamily"];
 
   return v3;
 }
 
 - (BOOL)blockRemoteContent
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"showRemoteImages"];
-  v4 = [v3 BOOLValue];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"showRemoteImages"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (NSString)remoteContentProxySchemePrefix
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"remoteContentProxySchemePrefix"];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"remoteContentProxySchemePrefix"];
 
   return v3;
 }
 
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller
 {
-  v6 = a4;
-  v5 = [[ComposeBodyFieldBundleController alloc] initWithPlugIn:self contextController:v6];
-  [(NSMapTable *)self->_fieldControllersByContext setObject:v5 forKey:v6];
+  controllerCopy = controller;
+  v5 = [[ComposeBodyFieldBundleController alloc] initWithPlugIn:self contextController:controllerCopy];
+  [(NSMapTable *)self->_fieldControllersByContext setObject:v5 forKey:controllerCopy];
 }
 
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v5 = [(NSMapTable *)self->_fieldControllersByContext objectForKey:?];
   [v5 invalidate];
-  [(NSMapTable *)self->_fieldControllersByContext removeObjectForKey:v6];
+  [(NSMapTable *)self->_fieldControllersByContext removeObjectForKey:controllerCopy];
 }
 
 @end

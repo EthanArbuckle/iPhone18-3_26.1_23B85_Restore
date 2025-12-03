@@ -1,14 +1,14 @@
 @interface _CDEventIndexerBookmark
-+ (id)baseBookmarkWithVersion:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
-- (_CDEventIndexerBookmark)initWithCoder:(id)a3;
++ (id)baseBookmarkWithVersion:(uint64_t)version;
+- (BOOL)isEqual:(id)equal;
+- (_CDEventIndexerBookmark)initWithCoder:(id)coder;
 - (id)description;
-- (id)initWithEarliestCreationDate:(void *)a3 latestCreationDate:(void *)a4 latestTombstoneDate:(void *)a5 version:;
-- (id)updatedBookmarkWithEarliestCreationDate:(id *)a1;
-- (id)updatedBookmarkWithLatestCreationDate:(id *)a1;
-- (id)updatedBookmarkWithLatestTombstoneDate:(id *)a1;
+- (id)initWithEarliestCreationDate:(void *)date latestCreationDate:(void *)creationDate latestTombstoneDate:(void *)tombstoneDate version:;
+- (id)updatedBookmarkWithEarliestCreationDate:(id *)date;
+- (id)updatedBookmarkWithLatestCreationDate:(id *)date;
+- (id)updatedBookmarkWithLatestTombstoneDate:(id *)date;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDEventIndexerBookmark
@@ -34,52 +34,52 @@
     version = 0;
   }
 
-  v9 = [v3 stringWithFormat:@"<%@ %p> earliest creation date: %@, latest creation date: %@, latest tombstone date: %@, version: %ld", v4, self, v5, v6, v7, version];
+  version = [v3 stringWithFormat:@"<%@ %p> earliest creation date: %@, latest creation date: %@, latest tombstone date: %@, version: %ld", v4, self, v5, v6, v7, version];
 
-  return v9;
+  return version;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v8 encodeObject:self->_earliestCreationDate forKey:@"earliestCreationDate"];
+    [coderCopy encodeObject:self->_earliestCreationDate forKey:@"earliestCreationDate"];
     latestCreationDate = self->_latestCreationDate;
   }
 
   else
   {
-    [(_CDEventIndexerBookmark *)v8 encodeWithCoder:v4];
+    [(_CDEventIndexerBookmark *)coderCopy encodeWithCoder:v4];
     latestCreationDate = 0;
   }
 
-  [v8 encodeObject:latestCreationDate forKey:@"latestCreationDate"];
+  [coderCopy encodeObject:latestCreationDate forKey:@"latestCreationDate"];
   if (self)
   {
-    [v8 encodeObject:self->_latestTombstoneDate forKey:@"latestTombstoneDate"];
+    [coderCopy encodeObject:self->_latestTombstoneDate forKey:@"latestTombstoneDate"];
     version = self->_version;
   }
 
   else
   {
-    [(_CDEventIndexerBookmark *)v8 encodeWithCoder:v6];
+    [(_CDEventIndexerBookmark *)coderCopy encodeWithCoder:v6];
     version = 0;
   }
 
-  [v8 encodeInteger:version forKey:@"version"];
+  [coderCopy encodeInteger:version forKey:@"version"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8.receiver = self, v8.super_class = _CDEventIndexerBookmark, [(_CDEventIndexerBookmark *)&v8 isEqual:v5]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8.receiver = self, v8.super_class = _CDEventIndexerBookmark, [(_CDEventIndexerBookmark *)&v8 isEqual:v5]))
   {
     [(_CDEventIndexerBookmark *)v5 isEqual:&v9];
     v6 = v9;
@@ -93,30 +93,30 @@
   return v6;
 }
 
-- (id)initWithEarliestCreationDate:(void *)a3 latestCreationDate:(void *)a4 latestTombstoneDate:(void *)a5 version:
+- (id)initWithEarliestCreationDate:(void *)date latestCreationDate:(void *)creationDate latestTombstoneDate:(void *)tombstoneDate version:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  if (a1)
+  dateCopy = date;
+  creationDateCopy = creationDate;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = _CDEventIndexerBookmark;
     v13 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v13;
+    self = v13;
     if (v13)
     {
       objc_storeStrong(v13 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
-      a1[4] = a5;
+      objc_storeStrong(self + 2, date);
+      objc_storeStrong(self + 3, creationDate);
+      self[4] = tombstoneDate;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)baseBookmarkWithVersion:(uint64_t)a1
++ (id)baseBookmarkWithVersion:(uint64_t)version
 {
   objc_opt_self();
   [MEMORY[0x1E695DF00] distantPast];
@@ -127,63 +127,63 @@
   return v5;
 }
 
-- (id)updatedBookmarkWithEarliestCreationDate:(id *)a1
+- (id)updatedBookmarkWithEarliestCreationDate:(id *)date
 {
-  v3 = a1;
-  if (a1)
+  dateCopy = date;
+  if (date)
   {
     v4 = a2;
     OUTLINED_FUNCTION_7_10();
     v5 = objc_alloc(objc_opt_class());
-    v6 = v3[2];
-    v7 = v3[3];
-    v8 = v3[4];
+    v6 = dateCopy[2];
+    v7 = dateCopy[3];
+    v8 = dateCopy[4];
     v9 = v6;
-    v3 = [(_CDEventIndexerBookmark *)v5 initWithEarliestCreationDate:v2 latestCreationDate:v9 latestTombstoneDate:v7 version:v8];
+    dateCopy = [(_CDEventIndexerBookmark *)v5 initWithEarliestCreationDate:v2 latestCreationDate:v9 latestTombstoneDate:v7 version:v8];
   }
 
-  return v3;
+  return dateCopy;
 }
 
-- (id)updatedBookmarkWithLatestCreationDate:(id *)a1
+- (id)updatedBookmarkWithLatestCreationDate:(id *)date
 {
-  v3 = a1;
-  if (a1)
+  dateCopy = date;
+  if (date)
   {
     v4 = a2;
     OUTLINED_FUNCTION_7_10();
     v5 = objc_alloc(objc_opt_class());
-    v6 = v3[1];
-    v8 = v3[3];
-    v7 = v3[4];
+    v6 = dateCopy[1];
+    v8 = dateCopy[3];
+    v7 = dateCopy[4];
     v9 = v6;
-    v3 = [(_CDEventIndexerBookmark *)v5 initWithEarliestCreationDate:v9 latestCreationDate:v2 latestTombstoneDate:v8 version:v7];
+    dateCopy = [(_CDEventIndexerBookmark *)v5 initWithEarliestCreationDate:v9 latestCreationDate:v2 latestTombstoneDate:v8 version:v7];
   }
 
-  return v3;
+  return dateCopy;
 }
 
-- (id)updatedBookmarkWithLatestTombstoneDate:(id *)a1
+- (id)updatedBookmarkWithLatestTombstoneDate:(id *)date
 {
-  v3 = a1;
-  if (a1)
+  dateCopy = date;
+  if (date)
   {
     v4 = a2;
     OUTLINED_FUNCTION_7_10();
     v5 = objc_alloc(objc_opt_class());
-    v6 = v3[1];
-    v7 = v3[2];
-    v8 = v3[4];
+    v6 = dateCopy[1];
+    v7 = dateCopy[2];
+    v8 = dateCopy[4];
     v9 = v6;
-    v3 = [(_CDEventIndexerBookmark *)v5 initWithEarliestCreationDate:v9 latestCreationDate:v7 latestTombstoneDate:v2 version:v8];
+    dateCopy = [(_CDEventIndexerBookmark *)v5 initWithEarliestCreationDate:v9 latestCreationDate:v7 latestTombstoneDate:v2 version:v8];
   }
 
-  return v3;
+  return dateCopy;
 }
 
-- (_CDEventIndexerBookmark)initWithCoder:(id)a3
+- (_CDEventIndexerBookmark)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   OUTLINED_FUNCTION_16_0();
   v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"earliestCreationDate"];
   v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"latestCreationDate"];

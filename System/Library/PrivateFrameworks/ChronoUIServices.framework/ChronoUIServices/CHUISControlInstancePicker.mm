@@ -1,12 +1,12 @@
 @interface CHUISControlInstancePicker
 - (CHUISControlIconView)iconView;
-- (CHUISControlInstancePicker)initWithControl:(id)a3;
-- (CHUISControlInstancePicker)initWithControl:(id)a3 contentType:(unint64_t)a4;
+- (CHUISControlInstancePicker)initWithControl:(id)control;
+- (CHUISControlInstancePicker)initWithControl:(id)control contentType:(unint64_t)type;
 - (CHUISControlPickerViewModel)viewModel;
 - (NSArray)options;
 - (UIColor)tintColor;
 - (int64_t)state;
-- (void)setState:(int64_t)a3 completion:(id)a4;
+- (void)setState:(int64_t)state completion:(id)completion;
 @end
 
 @implementation CHUISControlInstancePicker
@@ -26,7 +26,7 @@
 
 - (UIColor)tintColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHUISControlInstancePicker.tintColor.getter();
 
   return v3;
@@ -34,7 +34,7 @@
 
 - (int64_t)state
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHUISControlInstancePicker.state.getter();
 
   return v3;
@@ -42,7 +42,7 @@
 
 - (NSArray)options
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHUISControlInstancePicker.options.getter();
 
   if (v3)
@@ -73,19 +73,19 @@
   return v4;
 }
 
-- (CHUISControlInstancePicker)initWithControl:(id)a3 contentType:(unint64_t)a4
+- (CHUISControlInstancePicker)initWithControl:(id)control contentType:(unint64_t)type
 {
   v7 = objc_allocWithZone(MEMORY[0x1E6994270]);
-  v8 = a3;
-  v9 = [v7 initWithControl:v8 contentType:a4 hostIdentifier:0 configurationIdentifier:0];
+  controlCopy = control;
+  v9 = [v7 initWithControl:controlCopy contentType:type hostIdentifier:0 configurationIdentifier:0];
   v10 = [(CHUISControlInstancePicker *)self initWithInstanceIdentity:v9];
 
   return v10;
 }
 
-- (void)setState:(int64_t)a3 completion:(id)a4
+- (void)setState:(int64_t)state completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -98,12 +98,12 @@
     v7 = 0;
   }
 
-  v8 = self;
-  CHUISControlInstancePicker.setState(_:completion:)(a3, v6, v7);
+  selfCopy = self;
+  CHUISControlInstancePicker.setState(_:completion:)(state, v6, v7);
   sub_1D92E5F4C(v6);
 }
 
-- (CHUISControlInstancePicker)initWithControl:(id)a3
+- (CHUISControlInstancePicker)initWithControl:(id)control
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

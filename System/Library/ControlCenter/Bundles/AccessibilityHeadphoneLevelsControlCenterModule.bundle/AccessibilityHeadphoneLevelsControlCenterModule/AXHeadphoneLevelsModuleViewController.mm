@@ -4,8 +4,8 @@
 - (id)containerViewsForPlatterTreatment;
 - (void)_updateAlphas;
 - (void)headphoneLevelsIconButtonTapped;
-- (void)setPlatterContentAlpha:(double)a3;
-- (void)shortcutDidChangeSize:(id)a3;
+- (void)setPlatterContentAlpha:(double)alpha;
+- (void)shortcutDidChangeSize:(id)size;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -84,9 +84,9 @@
   return v5;
 }
 
-- (void)shortcutDidChangeSize:(id)a3
+- (void)shortcutDidChangeSize:(id)size
 {
-  v5 = objc_msgSend_view(self, a2, a3, v3);
+  v5 = objc_msgSend_view(self, a2, size, v3);
   objc_msgSend_bounds(v5, v6, v7, v8);
   v10 = v9;
   objc_msgSend_preferredExpandedContentHeight(self, v11, v12, v13);
@@ -134,11 +134,11 @@
   return v8;
 }
 
-- (void)setPlatterContentAlpha:(double)a3
+- (void)setPlatterContentAlpha:(double)alpha
 {
-  if (self->_platterContentAlpha != a3)
+  if (self->_platterContentAlpha != alpha)
   {
-    self->_platterContentAlpha = a3;
+    self->_platterContentAlpha = alpha;
     objc_msgSend__updateAlphas(self, a2, v3, v4);
   }
 }

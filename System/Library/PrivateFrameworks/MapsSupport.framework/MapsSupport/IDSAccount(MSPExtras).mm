@@ -7,7 +7,7 @@
 - (id)_msp_validityDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  if ([a1 accountType] == 1)
+  if ([self accountType] == 1)
   {
     v3 = @"YES";
   }
@@ -18,7 +18,7 @@
   }
 
   v4 = v3;
-  if ([a1 isActive])
+  if ([self isActive])
   {
     v5 = @"YES";
   }
@@ -29,7 +29,7 @@
   }
 
   v6 = v5;
-  if ([a1 canSend])
+  if ([self canSend])
   {
     v7 = @"YES";
   }

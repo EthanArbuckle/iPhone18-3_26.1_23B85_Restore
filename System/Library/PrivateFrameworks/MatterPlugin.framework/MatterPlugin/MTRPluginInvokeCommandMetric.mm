@@ -15,14 +15,14 @@ void __189__MTRPluginInvokeCommandMetric_invokeCommandMetricForDevice_homeID_cli
 {
   v13[6] = *MEMORY[0x277D85DE8];
   v12[0] = @"endpointID";
-  v3 = [(MTRPluginInvokeCommandMetric *)self endpointID];
-  v13[0] = v3;
+  endpointID = [(MTRPluginInvokeCommandMetric *)self endpointID];
+  v13[0] = endpointID;
   v12[1] = @"clusterID";
-  v4 = [(MTRPluginInvokeCommandMetric *)self clusterID];
-  v13[1] = v4;
+  clusterID = [(MTRPluginInvokeCommandMetric *)self clusterID];
+  v13[1] = clusterID;
   v12[2] = @"commandID";
-  v5 = [(MTRPluginInvokeCommandMetric *)self commandID];
-  v13[2] = v5;
+  commandID = [(MTRPluginInvokeCommandMetric *)self commandID];
+  v13[2] = commandID;
   v12[3] = @"timedInvoke";
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[MTRPluginInvokeCommandMetric isTimedInvoke](self, "isTimedInvoke")}];
   v13[3] = v6;

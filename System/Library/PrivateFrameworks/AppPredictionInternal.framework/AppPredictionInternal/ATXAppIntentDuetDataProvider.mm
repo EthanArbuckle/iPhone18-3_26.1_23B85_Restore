@@ -1,15 +1,15 @@
 @interface ATXAppIntentDuetDataProvider
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5;
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates;
 @end
 
 @implementation ATXAppIntentDuetDataProvider
 
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates
 {
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = +[_ATXDataStore sharedInstance];
-  v9 = [v8 appIntentDuetEventsForActionsBetweenStartDate:v7 endDate:v6];
+  v9 = [v8 appIntentDuetEventsForActionsBetweenStartDate:dateCopy endDate:endDateCopy];
 
   return v9;
 }

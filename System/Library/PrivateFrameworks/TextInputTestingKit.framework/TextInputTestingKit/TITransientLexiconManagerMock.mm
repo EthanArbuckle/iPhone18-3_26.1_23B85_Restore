@@ -1,33 +1,33 @@
 @interface TITransientLexiconManagerMock
-+ (id)tokenizeEntity:(id)a3;
-- (BOOL)searchForWord:(id)a3;
-- (BOOL)searchForWordCaseInsensitive:(id)a3;
-- (BOOL)searchHelper:(_LXLexicon *)a3 forWord:(__CFString *)a4 caseSensitive:(BOOL)a5;
++ (id)tokenizeEntity:(id)entity;
+- (BOOL)searchForWord:(id)word;
+- (BOOL)searchForWordCaseInsensitive:(id)insensitive;
+- (BOOL)searchHelper:(_LXLexicon *)helper forWord:(__CFString *)word caseSensitive:(BOOL)sensitive;
 - (TITransientLexiconManagerMock)init;
-- (TITransientLexiconManagerMock)initWithTransientData:(id)a3 namedEntities:(id)a4;
-- (_LXLexicon)addressBookLexiconForLocale:(const char *)a3;
-- (_LXLexicon)appNameLexiconForLocale:(const char *)a3;
-- (id)addContactObserver:(id)a3;
-- (void)addEntry:(id)a3 toLexicon:(_LXLexicon *)a4;
+- (TITransientLexiconManagerMock)initWithTransientData:(id)data namedEntities:(id)entities;
+- (_LXLexicon)addressBookLexiconForLocale:(const char *)locale;
+- (_LXLexicon)appNameLexiconForLocale:(const char *)locale;
+- (id)addContactObserver:(id)observer;
+- (void)addEntry:(id)entry toLexicon:(_LXLexicon *)lexicon;
 - (void)dealloc;
 - (void)debugLogEntities;
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5;
-- (void)removeContactObserver:(id)a3;
-- (void)setNewContactCollection:(id)a3;
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style;
+- (void)removeContactObserver:(id)observer;
+- (void)setNewContactCollection:(id)collection;
 @end
 
 @implementation TITransientLexiconManagerMock
 
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style
 {
-  if (a4 == 3)
+  if (type == 3)
   {
     v5 = 60;
   }
 
   else
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       return;
     }
@@ -71,10 +71,10 @@
   }
 }
 
-- (_LXLexicon)appNameLexiconForLocale:(const char *)a3
+- (_LXLexicon)appNameLexiconForLocale:(const char *)locale
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  MEMORY[0x26D6C0670](&v36, a3);
+  MEMORY[0x26D6C0670](&v36, locale);
   if (std::__hash_table<std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>>>::find<KB::String>(self->_appNameLexicons, &v36))
   {
     goto LABEL_36;
@@ -232,10 +232,10 @@ LABEL_36:
   return v23;
 }
 
-- (_LXLexicon)addressBookLexiconForLocale:(const char *)a3
+- (_LXLexicon)addressBookLexiconForLocale:(const char *)locale
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  MEMORY[0x26D6C0670](&v36, a3);
+  MEMORY[0x26D6C0670](&v36, locale);
   if (std::__hash_table<std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>,std::__unordered_map_hasher<KB::String,std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>,std::hash<KB::String>,std::equal_to<KB::String>,true>,std::__unordered_map_equal<KB::String,std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>,std::equal_to<KB::String>,std::hash<KB::String>,true>,std::allocator<std::__hash_value_type<KB::String,std::shared_ptr<KB::AddressBookTrieLoader>>>>::find<KB::String>(self->_addressBookLexicons, &v36))
   {
     goto LABEL_36;
@@ -393,25 +393,25 @@ LABEL_36:
   return v23;
 }
 
-- (BOOL)searchForWordCaseInsensitive:(id)a3
+- (BOOL)searchForWordCaseInsensitive:(id)insensitive
 {
-  v4 = a3;
-  LOBYTE(self) = [(TITransientLexiconManagerMock *)self searchHelper:[(TITransientLexiconManagerMock *)self namedEntityLexicon] forWord:v4 caseSensitive:0];
+  insensitiveCopy = insensitive;
+  LOBYTE(self) = [(TITransientLexiconManagerMock *)self searchHelper:[(TITransientLexiconManagerMock *)self namedEntityLexicon] forWord:insensitiveCopy caseSensitive:0];
 
   return self;
 }
 
-- (BOOL)searchForWord:(id)a3
+- (BOOL)searchForWord:(id)word
 {
-  v4 = a3;
-  LOBYTE(self) = [(TITransientLexiconManagerMock *)self searchHelper:[(TITransientLexiconManagerMock *)self namedEntityLexicon] forWord:v4 caseSensitive:1];
+  wordCopy = word;
+  LOBYTE(self) = [(TITransientLexiconManagerMock *)self searchHelper:[(TITransientLexiconManagerMock *)self namedEntityLexicon] forWord:wordCopy caseSensitive:1];
 
   return self;
 }
 
-- (BOOL)searchHelper:(_LXLexicon *)a3 forWord:(__CFString *)a4 caseSensitive:(BOOL)a5
+- (BOOL)searchHelper:(_LXLexicon *)helper forWord:(__CFString *)word caseSensitive:(BOOL)sensitive
 {
-  if (!a3)
+  if (!helper)
   {
     v11 = 0;
     return v11 & 1;
@@ -425,9 +425,9 @@ LABEL_36:
   v13[1] = 3221225472;
   v13[2] = __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___block_invoke;
   v13[3] = &unk_279DA0630;
-  v14 = a5;
+  sensitiveCopy = sensitive;
   v13[4] = &v15;
-  v13[5] = a4;
+  v13[5] = word;
   v7 = v13;
   v24 = 0;
   v25 = &v24;
@@ -451,7 +451,7 @@ LABEL_36:
   _Block_object_dispose(&v24, 8);
   if (v8)
   {
-    v8(a3, a4, v7);
+    v8(helper, word, v7);
 
     v11 = *(v16 + 24);
     _Block_object_dispose(&v15, 8);
@@ -498,23 +498,23 @@ void __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___bl
   CFRelease(v8);
 }
 
-- (void)removeContactObserver:(id)a3
+- (void)removeContactObserver:(id)observer
 {
   obj = self;
-  v4 = a3;
+  observerCopy = observer;
   objc_sync_enter(obj);
   observers = obj->_observers;
-  v6 = MEMORY[0x26D6C0D70](v4);
+  v6 = MEMORY[0x26D6C0D70](observerCopy);
 
   [(NSMutableArray *)observers removeObjectIdenticalTo:v6];
   objc_sync_exit(obj);
 }
 
-- (void)setNewContactCollection:(id)a3
+- (void)setNewContactCollection:(id)collection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_contactCollection, a3);
+  collectionCopy = collection;
+  objc_storeStrong(&self->_contactCollection, collection);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -546,18 +546,18 @@ void __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___bl
   }
 }
 
-- (id)addContactObserver:(id)a3
+- (id)addContactObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
-  observers = v6->_observers;
+  observerCopy = observer;
+  v5 = [observerCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = selfCopy->_observers;
   v8 = MEMORY[0x26D6C0D70](v5);
   [(NSMutableArray *)observers addObject:v8];
 
-  objc_sync_exit(v6);
-  (v5)[2](v5, v6->_contactCollection);
+  objc_sync_exit(selfCopy);
+  (v5)[2](v5, selfCopy->_contactCollection);
   v9 = MEMORY[0x26D6C0D70](v5);
 
   return v9;
@@ -636,18 +636,18 @@ void __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___bl
   [(TITransientLexiconManagerMock *)&v13 dealloc];
 }
 
-- (TITransientLexiconManagerMock)initWithTransientData:(id)a3 namedEntities:(id)a4
+- (TITransientLexiconManagerMock)initWithTransientData:(id)data namedEntities:(id)entities
 {
   v50 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v7 = a4;
+  dataCopy = data;
+  entitiesCopy = entities;
   v43.receiver = self;
   v43.super_class = TITransientLexiconManagerMock;
   v8 = [(TITransientLexiconManagerMock *)&v43 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contactCollection, a3);
+    objc_storeStrong(&v8->_contactCollection, data);
     v10 = *MEMORY[0x277CBECE8];
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     v12 = getkLXLexiconNameKey();
@@ -701,8 +701,8 @@ void __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___bl
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v19 = v7;
-    v20 = [v19 countByEnumeratingWithState:&v37 objects:v45 count:{16, v32}];
+    v19 = entitiesCopy;
+    v20 = [v19 countByEnumeratingWithState:&v37 objects:v45 count:{16, dataCopy}];
     if (v20)
     {
       v21 = *v38;
@@ -766,9 +766,9 @@ void __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___bl
   return 0;
 }
 
-- (void)addEntry:(id)a3 toLexicon:(_LXLexicon *)a4
+- (void)addEntry:(id)entry toLexicon:(_LXLexicon *)lexicon
 {
-  v5 = a3;
+  entryCopy = entry;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -788,7 +788,7 @@ void __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___bl
     goto LABEL_8;
   }
 
-  v6(a4, v5, 0);
+  v6(lexicon, entryCopy, 0);
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -805,7 +805,7 @@ void __68__TITransientLexiconManagerMock_searchHelper_forWord_caseSensitive___bl
   _Block_object_dispose(&v10, 8);
   if (v8)
   {
-    v8(a4, v5, 1);
+    v8(lexicon, entryCopy, 1);
   }
 
   else
@@ -832,12 +832,12 @@ LABEL_8:
   return 0;
 }
 
-+ (id)tokenizeEntity:(id)a3
++ (id)tokenizeEntity:(id)entity
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [v3 stringByAppendingString:@" "];
+  entityCopy = entity;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [entityCopy stringByAppendingString:@" "];
 
   v6 = [v5 length];
   v7 = [v5 length];
@@ -850,7 +850,7 @@ LABEL_8:
   v11[2] = 3221225472;
   v11[3] = __48__TITransientLexiconManagerMock_tokenizeEntity___block_invoke;
   v11[4] = &unk_279DA0608;
-  v9 = v4;
+  v9 = array;
   v12 = v9;
   LMStreamTokenizerPushBytes();
   LMStreamTokenizerRelease();

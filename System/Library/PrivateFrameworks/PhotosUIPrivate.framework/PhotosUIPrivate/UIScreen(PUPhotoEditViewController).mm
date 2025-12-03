@@ -7,10 +7,10 @@
 - (double)pu_workImageSize
 {
   v15 = *MEMORY[0x1E69E9840];
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
   v5 = v4;
-  [a1 scale];
+  [self scale];
   v7 = v3 * v6;
   v8 = v5 * v6;
   if (v7 >= v8)

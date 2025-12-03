@@ -6,21 +6,21 @@
 
 - (id)ccui_displayName
 {
-  v3 = [(NSBundle *)self objectForInfoDictionaryKey:_kCFBundleDisplayNameKey];
-  if (!v3)
+  bundleIdentifier = [(NSBundle *)self objectForInfoDictionaryKey:_kCFBundleDisplayNameKey];
+  if (!bundleIdentifier)
   {
-    v3 = [(NSBundle *)self objectForInfoDictionaryKey:kCFBundleNameKey];
-    if (!v3)
+    bundleIdentifier = [(NSBundle *)self objectForInfoDictionaryKey:kCFBundleNameKey];
+    if (!bundleIdentifier)
     {
-      v3 = [(NSBundle *)self objectForInfoDictionaryKey:kCFBundleExecutableKey];
-      if (!v3)
+      bundleIdentifier = [(NSBundle *)self objectForInfoDictionaryKey:kCFBundleExecutableKey];
+      if (!bundleIdentifier)
       {
-        v3 = [(NSBundle *)self bundleIdentifier];
+        bundleIdentifier = [(NSBundle *)self bundleIdentifier];
       }
     }
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

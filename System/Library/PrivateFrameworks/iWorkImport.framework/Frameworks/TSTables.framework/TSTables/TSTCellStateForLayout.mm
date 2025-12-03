@@ -6,8 +6,8 @@
 - (TSTCellStateForLayout)init;
 - (TSUCellRect)layoutMergeRange;
 - (UIEdgeInsets)paddingInsets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)p_generateCellContentsAndReturnContents:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)p_generateCellContentsAndReturnContents:(BOOL)contents;
 @end
 
 @implementation TSTCellStateForLayout
@@ -59,10 +59,10 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_init(v9, v10, v11, v12, v13);
   v15 = v14;
   if (v14)
@@ -108,9 +108,9 @@
   return self->_hasContent;
 }
 
-- (id)p_generateCellContentsAndReturnContents:(BOOL)a3
+- (id)p_generateCellContentsAndReturnContents:(BOOL)contents
 {
-  v5 = a3;
+  contentsCopy = contents;
   if (self->_cellContents)
   {
     goto LABEL_17;
@@ -122,7 +122,7 @@
     goto LABEL_17;
   }
 
-  v8 = objc_msgSend_valueType(cell, a2, a3, v3, v4);
+  v8 = objc_msgSend_valueType(cell, a2, contents, v3, v4);
   if (v8 == 6)
   {
     if (objc_msgSend_formatType(self->_cell, v9, v10, v11, v12) == 263)
@@ -175,7 +175,7 @@ LABEL_17:
     v36 = self->_cellContents;
     if (v36)
     {
-      v37 = objc_msgSend_length(v36, a2, a3, v3, v4) != 0;
+      v37 = objc_msgSend_length(v36, a2, contents, v3, v4) != 0;
     }
 
     else
@@ -187,7 +187,7 @@ LABEL_17:
     self->_hasContentIsCached = 1;
   }
 
-  if (v5)
+  if (contentsCopy)
   {
     v38 = self->_cellContents;
   }

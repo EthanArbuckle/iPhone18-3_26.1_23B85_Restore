@@ -1,23 +1,23 @@
 @interface CNiOSABConversions
-+ (CFTypeRef)requiredABPropertyIDSetForKeysToFetch:(uint64_t)a1;
-+ (CNAccount)accountFromABAccount:(uint64_t)a1;
-+ (CNContactMatchInfo)contactMatchInfoFromABMatchMetadataDictionary:(uint64_t)a1;
-+ (id)accountsFromABAccounts:(uint64_t)a1;
-+ (id)arrayByMappingTransform:(id)a3 onCFArray:(__CFArray *)a4;
-+ (id)contactFromABPerson:(void *)a3 keysToConvert:(uint64_t)a4 mutable:;
-+ (id)contactFromABPerson:(void *)a3 uniqueKeysToConvert:(id)a4 mutable:(BOOL)a5;
-+ (id)contactIdentifierFromABPerson:(uint64_t)a1;
++ (CFTypeRef)requiredABPropertyIDSetForKeysToFetch:(uint64_t)fetch;
++ (CNAccount)accountFromABAccount:(uint64_t)account;
++ (CNContactMatchInfo)contactMatchInfoFromABMatchMetadataDictionary:(uint64_t)dictionary;
++ (id)accountsFromABAccounts:(uint64_t)accounts;
++ (id)arrayByMappingTransform:(id)transform onCFArray:(__CFArray *)array;
++ (id)contactFromABPerson:(void *)person keysToConvert:(uint64_t)convert mutable:;
++ (id)contactFromABPerson:(void *)person uniqueKeysToConvert:(id)convert mutable:(BOOL)mutable;
++ (id)contactIdentifierFromABPerson:(uint64_t)person;
 + (id)contactPropertiesByABPropertyID;
-+ (id)containerFromABSource:(int)a3 remote:(int)a4 includeDisabledSources:;
-+ (id)containersFromABSources:(char)a3 remote:(char)a4 includeDisabledSources:;
-+ (id)dateFromABBytes:(char *)a3 length:(unint64_t)a4;
-+ (id)groupFromABGroup:(uint64_t)a1;
-+ (id)groupsFromABGroups:(uint64_t)a1;
-+ (id)numberFromIntegerABBytes:(char *)a3 length:(unint64_t)a4;
++ (id)containerFromABSource:(int)source remote:(int)remote includeDisabledSources:;
++ (id)containersFromABSources:(char)sources remote:(char)remote includeDisabledSources:;
++ (id)dateFromABBytes:(char *)bytes length:(unint64_t)length;
++ (id)groupFromABGroup:(uint64_t)group;
++ (id)groupsFromABGroups:(uint64_t)groups;
++ (id)numberFromIntegerABBytes:(char *)bytes length:(unint64_t)length;
 + (id)os_log;
-+ (id)personToContactTransformWithKeysToFetch:(char)a3 mutable:;
-+ (id)stringFromABBytes:(char *)a3 length:(unint64_t)a4;
-+ (void)updateContact:(id)a3 fromABPerson:(void *)a4 keysToConvert:(id)a5 availableKeyDescriptor:(id *)a6;
++ (id)personToContactTransformWithKeysToFetch:(char)fetch mutable:;
++ (id)stringFromABBytes:(char *)bytes length:(unint64_t)length;
++ (void)updateContact:(id)contact fromABPerson:(void *)person keysToConvert:(id)convert availableKeyDescriptor:(id *)descriptor;
 @end
 
 @implementation CNiOSABConversions
@@ -96,18 +96,18 @@ void __53__CNiOSABConversions_contactPropertiesByABPropertyID__block_invoke()
   return v0;
 }
 
-+ (id)stringFromABBytes:(char *)a3 length:(unint64_t)a4
++ (id)stringFromABBytes:(char *)bytes length:(unint64_t)length
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3 length:a4 encoding:4];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:bytes length:length encoding:4];
 
   return v4;
 }
 
-+ (id)dateFromABBytes:(char *)a3 length:(unint64_t)a4
++ (id)dateFromABBytes:(char *)bytes length:(unint64_t)length
 {
-  if (a4 == 8)
+  if (length == 8)
   {
-    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:*a3];
+    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:*bytes];
   }
 
   else
@@ -119,11 +119,11 @@ void __53__CNiOSABConversions_contactPropertiesByABPropertyID__block_invoke()
   return v4;
 }
 
-+ (id)numberFromIntegerABBytes:(char *)a3 length:(unint64_t)a4
++ (id)numberFromIntegerABBytes:(char *)bytes length:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithInt:*a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithInt:*bytes];
   }
 
   else
@@ -156,24 +156,24 @@ uint64_t __28__CNiOSABConversions_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)contactFromABPerson:(void *)a3 keysToConvert:(uint64_t)a4 mutable:
++ (id)contactFromABPerson:(void *)person keysToConvert:(uint64_t)convert mutable:
 {
-  v6 = a3;
+  personCopy = person;
   v7 = objc_opt_self();
-  v8 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+  v8 = [MEMORY[0x1E695DFD8] setWithArray:personCopy];
 
-  v9 = [v7 contactFromABPerson:a2 uniqueKeysToConvert:v8 mutable:a4];
+  v9 = [v7 contactFromABPerson:a2 uniqueKeysToConvert:v8 mutable:convert];
 
   return v9;
 }
 
-+ (id)contactFromABPerson:(void *)a3 uniqueKeysToConvert:(id)a4 mutable:(BOOL)a5
++ (id)contactFromABPerson:(void *)person uniqueKeysToConvert:(id)convert mutable:(BOOL)mutable
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  convertCopy = convert;
+  v7 = convertCopy;
+  if (person)
   {
-    v10 = v6;
+    v10 = convertCopy;
     v8 = CNResultWithAutoreleasePool();
   }
 
@@ -228,7 +228,7 @@ CNMutableContact *__70__CNiOSABConversions_contactFromABPerson_uniqueKeysToConve
   return v11;
 }
 
-+ (id)contactIdentifierFromABPerson:(uint64_t)a1
++ (id)contactIdentifierFromABPerson:(uint64_t)person
 {
   objc_opt_self();
   if (a2)
@@ -250,7 +250,7 @@ CNMutableContact *__70__CNiOSABConversions_contactFromABPerson_uniqueKeysToConve
   return v4;
 }
 
-+ (id)personToContactTransformWithKeysToFetch:(char)a3 mutable:
++ (id)personToContactTransformWithKeysToFetch:(char)fetch mutable:
 {
   v4 = a2;
   objc_opt_self();
@@ -259,7 +259,7 @@ CNMutableContact *__70__CNiOSABConversions_contactFromABPerson_uniqueKeysToConve
   v11 = __70__CNiOSABConversions_personToContactTransformWithKeysToFetch_mutable___block_invoke;
   v12 = &unk_1E7416160;
   v13 = v4;
-  v14 = a3;
+  fetchCopy = fetch;
   v5 = v4;
   v6 = _Block_copy(&v9);
   v7 = [v6 copy];
@@ -267,24 +267,24 @@ CNMutableContact *__70__CNiOSABConversions_contactFromABPerson_uniqueKeysToConve
   return v7;
 }
 
-+ (void)updateContact:(id)a3 fromABPerson:(void *)a4 keysToConvert:(id)a5 availableKeyDescriptor:(id *)a6
++ (void)updateContact:(id)contact fromABPerson:(void *)person keysToConvert:(id)convert availableKeyDescriptor:(id *)descriptor
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (a4)
+  contactCopy = contact;
+  convertCopy = convert;
+  if (person)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __86__CNiOSABConversions_updateContact_fromABPerson_keysToConvert_availableKeyDescriptor___block_invoke;
     aBlock[3] = &unk_1E7416188;
-    v42 = v10;
-    v43 = a4;
+    v42 = contactCopy;
+    personCopy = person;
     v12 = _Block_copy(aBlock);
-    if (v11)
+    if (convertCopy)
     {
-      v26 = a6;
-      v29 = v10;
+      descriptorCopy = descriptor;
+      v29 = contactCopy;
       v13 = objc_opt_new();
       v14 = +[CN writableAlwaysFetchedProperties];
       v38[0] = MEMORY[0x1E69E9820];
@@ -294,16 +294,16 @@ CNMutableContact *__70__CNiOSABConversions_contactFromABPerson_uniqueKeysToConve
       v27 = v12;
       v15 = v12;
       v40 = v15;
-      v16 = v13;
-      v39 = v16;
+      os_log2 = v13;
+      v39 = os_log2;
       [v14 enumerateObjectsUsingBlock:v38];
 
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v28 = v11;
-      v17 = v11;
+      v28 = convertCopy;
+      v17 = convertCopy;
       v18 = [v17 countByEnumeratingWithState:&v34 objects:v46 count:16];
       if (!v18)
       {
@@ -333,9 +333,9 @@ LABEL_13:
             v30[2] = __86__CNiOSABConversions_updateContact_fromABPerson_keysToConvert_availableKeyDescriptor___block_invoke_3;
             v30[3] = &unk_1E74161D8;
             v30[4] = v22;
-            v33 = a1;
+            selfCopy = self;
             v32 = v15;
-            v31 = v16;
+            v31 = os_log2;
             [v22 _cn_executeGetterForRepresentedKeys:v30];
 
             goto LABEL_14;
@@ -348,12 +348,12 @@ LABEL_13:
             goto LABEL_13;
           }
 
-          v24 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+          os_log = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
           {
             *buf = 138543362;
             v45 = v22;
-            _os_log_impl(&dword_1954A0000, v24, OS_LOG_TYPE_INFO, "Found a key descriptor non conforming to the expected protocol, ignoring: %{public}@", buf, 0xCu);
+            _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_INFO, "Found a key descriptor non conforming to the expected protocol, ignoring: %{public}@", buf, 0xCu);
           }
 
 LABEL_14:
@@ -367,24 +367,24 @@ LABEL_14:
         {
 LABEL_21:
 
-          if (v26)
+          if (descriptorCopy)
           {
-            *v26 = [v16 copy];
+            *descriptorCopy = [os_log2 copy];
           }
 
-          v11 = v28;
-          v10 = v29;
+          convertCopy = v28;
+          contactCopy = v29;
           v12 = v27;
           goto LABEL_26;
         }
       }
     }
 
-    v16 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1954A0000, v16, OS_LOG_TYPE_INFO, "Keys to convert should have been non null, not fetching anything", buf, 2u);
+      _os_log_impl(&dword_1954A0000, os_log2, OS_LOG_TYPE_INFO, "Keys to convert should have been non null, not fetching anything", buf, 2u);
     }
 
 LABEL_26:
@@ -487,7 +487,7 @@ id __86__CNiOSABConversions_updateContact_fromABPerson_keysToConvert_availableKe
   return v7;
 }
 
-+ (id)groupFromABGroup:(uint64_t)a1
++ (id)groupFromABGroup:(uint64_t)group
 {
   objc_opt_self();
   if (a2)
@@ -560,7 +560,7 @@ id __86__CNiOSABConversions_updateContact_fromABPerson_keysToConvert_availableKe
   return a2;
 }
 
-+ (id)groupsFromABGroups:(uint64_t)a1
++ (id)groupsFromABGroups:(uint64_t)groups
 {
   v3 = objc_opt_self();
   v6[0] = MEMORY[0x1E69E9820];
@@ -573,13 +573,13 @@ id __86__CNiOSABConversions_updateContact_fromABPerson_keysToConvert_availableKe
   return v4;
 }
 
-+ (id)containerFromABSource:(int)a3 remote:(int)a4 includeDisabledSources:
++ (id)containerFromABSource:(int)source remote:(int)remote includeDisabledSources:
 {
   v23 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   if (a2)
   {
-    if (ABSourceIsRemote() != a3 || (!ABRecordGetIntValue() ? (v7 = a4 == 0) : (v7 = 0), v7))
+    if (ABSourceIsRemote() != source || (!ABRecordGetIntValue() ? (v7 = remote == 0) : (v7 = 0), v7))
     {
       a2 = 0;
     }
@@ -637,7 +637,7 @@ LABEL_18:
   return a2;
 }
 
-+ (id)containersFromABSources:(char)a3 remote:(char)a4 includeDisabledSources:
++ (id)containersFromABSources:(char)sources remote:(char)remote includeDisabledSources:
 {
   v7 = objc_opt_self();
   v10[0] = MEMORY[0x1E69E9820];
@@ -645,14 +645,14 @@ LABEL_18:
   v10[2] = __76__CNiOSABConversions_containersFromABSources_remote_includeDisabledSources___block_invoke;
   v10[3] = &__block_descriptor_42_e9__16__0_v8l;
   v10[4] = v7;
-  v11 = a3;
-  v12 = a4;
+  sourcesCopy = sources;
+  remoteCopy = remote;
   v8 = [v7 arrayByMappingTransform:v10 onCFArray:a2];
 
   return v8;
 }
 
-+ (CNAccount)accountFromABAccount:(uint64_t)a1
++ (CNAccount)accountFromABAccount:(uint64_t)account
 {
   objc_opt_self();
   if (a2)
@@ -680,7 +680,7 @@ LABEL_18:
   return a2;
 }
 
-+ (id)accountsFromABAccounts:(uint64_t)a1
++ (id)accountsFromABAccounts:(uint64_t)accounts
 {
   v3 = objc_opt_self();
   v6[0] = MEMORY[0x1E69E9820];
@@ -693,7 +693,7 @@ LABEL_18:
   return v4;
 }
 
-+ (CNContactMatchInfo)contactMatchInfoFromABMatchMetadataDictionary:(uint64_t)a1
++ (CNContactMatchInfo)contactMatchInfoFromABMatchMetadataDictionary:(uint64_t)dictionary
 {
   v2 = a2;
   objc_opt_self();
@@ -708,7 +708,7 @@ LABEL_18:
   v5 = [v2 objectForKey:*MEMORY[0x1E698A0E8]];
   if ([(NSMapTable *)v5 count])
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = +[CNiOSABConversions contactPropertiesByABPropertyID];
     memset(&enumerator, 0, sizeof(enumerator));
     NSEnumerateMapTable(&enumerator, v5);
@@ -725,13 +725,13 @@ LABEL_18:
         v11 = [v10 key];
         if (v11)
         {
-          [v6 setValue:value forKey:v11];
+          [dictionary setValue:value forKey:v11];
         }
       }
     }
 
     NSEndMapTableEnumeration(&enumerator);
-    [(CNContactMatchInfo *)v3 setMatchedProperties:v6];
+    [(CNContactMatchInfo *)v3 setMatchedProperties:dictionary];
   }
 
   v12 = [v2 objectForKey:*MEMORY[0x1E698A0E0]];
@@ -772,19 +772,19 @@ void __68__CNiOSABConversions_contactMatchInfoFromABMatchMetadataDictionary___bl
   }
 }
 
-+ (id)arrayByMappingTransform:(id)a3 onCFArray:(__CFArray *)a4
++ (id)arrayByMappingTransform:(id)transform onCFArray:(__CFArray *)array
 {
-  v5 = a3;
-  if (a4)
+  transformCopy = transform;
+  if (array)
   {
-    Count = CFArrayGetCount(a4);
+    Count = CFArrayGetCount(array);
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:Count];
     if (Count >= 1)
     {
       for (i = 0; i != Count; ++i)
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a4, i);
-        v10 = v5[2](v5, ValueAtIndex);
+        ValueAtIndex = CFArrayGetValueAtIndex(array, i);
+        v10 = transformCopy[2](transformCopy, ValueAtIndex);
         if (v10)
         {
           [v7 addObject:v10];
@@ -792,13 +792,13 @@ void __68__CNiOSABConversions_contactMatchInfoFromABMatchMetadataDictionary___bl
       }
     }
 
-    a4 = [v7 copy];
+    array = [v7 copy];
   }
 
-  return a4;
+  return array;
 }
 
-+ (CFTypeRef)requiredABPropertyIDSetForKeysToFetch:(uint64_t)a1
++ (CFTypeRef)requiredABPropertyIDSetForKeysToFetch:(uint64_t)fetch
 {
   v26 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -825,20 +825,20 @@ void __68__CNiOSABConversions_contactMatchInfoFromABMatchMetadataDictionary___bl
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 _cn_requiredKeys];
-        v11 = [v10 mutableCopy];
+        _cn_requiredKeys = [v9 _cn_requiredKeys];
+        v11 = [_cn_requiredKeys mutableCopy];
 
-        v12 = [v9 _cn_optionalKeys];
-        [v11 unionKeyVector:v12];
+        _cn_optionalKeys = [v9 _cn_optionalKeys];
+        [v11 unionKeyVector:_cn_optionalKeys];
 
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v9 _cn_unauthorizedKeys];
+          _cn_unauthorizedKeys = [v9 _cn_unauthorizedKeys];
 
-          if (v13)
+          if (_cn_unauthorizedKeys)
           {
-            v14 = [v9 _cn_unauthorizedKeys];
-            [v11 minusKeyVector:v14];
+            _cn_unauthorizedKeys2 = [v9 _cn_unauthorizedKeys];
+            [v11 minusKeyVector:_cn_unauthorizedKeys2];
           }
         }
 

@@ -1,32 +1,32 @@
 @interface SecJWSEncoder
-- (BOOL)appendPaddedToData:(id)a3 ptr:(const char *)a4 len:(unint64_t)a5 expected:(unint64_t)a6;
+- (BOOL)appendPaddedToData:(id)data ptr:(const char *)ptr len:(unint64_t)len expected:(unint64_t)expected;
 - (SecJWSEncoder)init;
-- (SecJWSEncoder)initWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4;
-- (id)base64URLEncodedStringRepresentationWithData:(id)a3;
-- (id)base64URLEncodedStringRepresentationWithDictionary:(id)a3;
-- (id)compactJSONStringRepresentationWithDictionary:(id)a3;
+- (SecJWSEncoder)initWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey;
+- (id)base64URLEncodedStringRepresentationWithData:(id)data;
+- (id)base64URLEncodedStringRepresentationWithDictionary:(id)dictionary;
+- (id)compactJSONStringRepresentationWithDictionary:(id)dictionary;
 - (id)createKeyPair;
-- (id)encodedJWSWithPayload:(id)a3 kid:(id)a4 nonce:(id)a5 url:(id)a6 error:(id *)a7;
+- (id)encodedJWSWithPayload:(id)payload kid:(id)kid nonce:(id)nonce url:(id)url error:(id *)error;
 - (id)jwkPublicKey;
-- (id)signatureWithProtectedHeader:(id)a3 payload:(id)a4;
+- (id)signatureWithProtectedHeader:(id)header payload:(id)payload;
 - (void)dealloc;
 @end
 
 @implementation SecJWSEncoder
 
-- (id)compactJSONStringRepresentationWithDictionary:(id)a3
+- (id)compactJSONStringRepresentationWithDictionary:(id)dictionary
 {
   v6 = 0;
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:10 error:&v6];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:10 error:&v6];
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:objc_msgSend(v3 length:"bytes") encoding:{objc_msgSend(v3, "length"), 4}];
 
   return v4;
 }
 
-- (id)base64URLEncodedStringRepresentationWithDictionary:(id)a3
+- (id)base64URLEncodedStringRepresentationWithDictionary:(id)dictionary
 {
   v9 = 0;
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:10 error:&v9];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:10 error:&v9];
   v4 = [v3 base64EncodedStringWithOptions:0];
   v5 = [v4 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
@@ -52,9 +52,9 @@ LABEL_6:
   return v7;
 }
 
-- (id)base64URLEncodedStringRepresentationWithData:(id)a3
+- (id)base64URLEncodedStringRepresentationWithData:(id)data
 {
-  v3 = [a3 base64EncodedStringWithOptions:0];
+  v3 = [data base64EncodedStringWithOptions:0];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
@@ -79,41 +79,41 @@ LABEL_6:
   return v6;
 }
 
-- (id)encodedJWSWithPayload:(id)a3 kid:(id)a4 nonce:(id)a5 url:(id)a6 error:(id *)a7
+- (id)encodedJWSWithPayload:(id)payload kid:(id)kid nonce:(id)nonce url:(id)url error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  payloadCopy = payload;
+  kidCopy = kid;
+  nonceCopy = nonce;
+  urlCopy = url;
   if (self->_privateKey && self->_publicKey)
   {
-    v16 = 0;
+    createKeyPair = 0;
   }
 
   else
   {
-    v16 = [(SecJWSEncoder *)self createKeyPair];
+    createKeyPair = [(SecJWSEncoder *)self createKeyPair];
   }
 
   v17 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
   [v17 setObject:@"ES256" forKeyedSubscript:@"alg"];
-  if (v13)
+  if (kidCopy)
   {
-    [v17 setObject:v13 forKeyedSubscript:@"kid"];
+    [v17 setObject:kidCopy forKeyedSubscript:@"kid"];
   }
 
   else
   {
-    v18 = [(SecJWSEncoder *)self jwkPublicKey];
-    [v17 setObject:v18 forKeyedSubscript:@"jwk"];
+    jwkPublicKey = [(SecJWSEncoder *)self jwkPublicKey];
+    [v17 setObject:jwkPublicKey forKeyedSubscript:@"jwk"];
   }
 
-  [v17 setObject:v14 forKeyedSubscript:@"nonce"];
-  [v17 setObject:v15 forKeyedSubscript:@"url"];
-  if (v16)
+  [v17 setObject:nonceCopy forKeyedSubscript:@"nonce"];
+  [v17 setObject:urlCopy forKeyedSubscript:@"url"];
+  if (createKeyPair)
   {
     v19 = 0;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -121,10 +121,10 @@ LABEL_6:
 
   else
   {
-    v25 = v12;
-    if (v12)
+    v25 = payloadCopy;
+    if (payloadCopy)
     {
-      v22 = [(SecJWSEncoder *)self base64URLEncodedStringRepresentationWithDictionary:v12];
+      v22 = [(SecJWSEncoder *)self base64URLEncodedStringRepresentationWithDictionary:payloadCopy];
     }
 
     else
@@ -141,25 +141,25 @@ LABEL_6:
     [v19 appendFormat:@"signature:%@", v24];
     [v19 appendString:@"}"];
 
-    v12 = v25;
-    if (!a7)
+    payloadCopy = v25;
+    if (!error)
     {
       goto LABEL_11;
     }
   }
 
-  v20 = v16;
-  *a7 = v16;
+  v20 = createKeyPair;
+  *error = createKeyPair;
 LABEL_11:
 
   return v19;
 }
 
-- (id)signatureWithProtectedHeader:(id)a3 payload:(id)a4
+- (id)signatureWithProtectedHeader:(id)header payload:(id)payload
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", a3, a4];
-  v6 = [v5 dataUsingEncoding:4];
+  payload = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", header, payload];
+  v6 = [payload dataUsingEncoding:4];
 
   error = 0;
   v7 = SecKeyCreateSignature(self->_privateKey, @"algid:sign:ECDSA:message-X962:SHA256", v6, &error);
@@ -261,34 +261,34 @@ LABEL_26:
   return v13;
 }
 
-- (BOOL)appendPaddedToData:(id)a3 ptr:(const char *)a4 len:(unint64_t)a5 expected:(unint64_t)a6
+- (BOOL)appendPaddedToData:(id)data ptr:(const char *)ptr len:(unint64_t)len expected:(unint64_t)expected
 {
-  v9 = a3;
-  v10 = a6 - a5;
-  if (a6 >= a5)
+  dataCopy = data;
+  v10 = expected - len;
+  if (expected >= len)
   {
-    if (a6 > a5)
+    if (expected > len)
     {
       v16 = 0;
       do
       {
-        [v9 appendBytes:&v16 length:1];
+        [dataCopy appendBytes:&v16 length:1];
         --v10;
       }
 
       while (v10);
     }
 
-    a6 = a5;
+    expected = len;
     goto LABEL_13;
   }
 
-  if (!*a4)
+  if (!*ptr)
   {
     do
     {
-      v11 = *++a4;
-      --a5;
+      v11 = *++ptr;
+      --len;
       if (v11)
       {
         v12 = 0;
@@ -296,18 +296,18 @@ LABEL_26:
 
       else
       {
-        v12 = a5 > a6;
+        v12 = len > expected;
       }
     }
 
     while (v12);
   }
 
-  if (a5 == a6)
+  if (len == expected)
   {
 LABEL_13:
-    v14 = [MEMORY[0x1E695DEF0] dataWithBytes:a4 length:a6];
-    [v9 appendData:v14];
+    v14 = [MEMORY[0x1E695DEF0] dataWithBytes:ptr length:expected];
+    [dataCopy appendData:v14];
 
     v13 = 1;
     goto LABEL_14;
@@ -327,19 +327,19 @@ LABEL_14:
   if (v3)
   {
     v4 = v3;
-    v5 = [(__CFData *)v4 bytes];
-    v6 = [(__CFData *)v4 length]< 0x41 || v5 == 0;
-    if (v6 || *v5 != 4)
+    bytes = [(__CFData *)v4 bytes];
+    v6 = [(__CFData *)v4 length]< 0x41 || bytes == 0;
+    if (v6 || *bytes != 4)
     {
       v14 = 0;
     }
 
     else
     {
-      v7 = v5 + 1;
+      v7 = bytes + 1;
       v8 = [(__CFData *)v4 length]- 1;
       v9 = [(__CFData *)v4 length];
-      v10 = [MEMORY[0x1E695DEF0] dataWithBytes:v5 + 1 length:v8 >> 1];
+      v10 = [MEMORY[0x1E695DEF0] dataWithBytes:bytes + 1 length:v8 >> 1];
       v11 = [MEMORY[0x1E695DEF0] dataWithBytes:&v7[v8 >> 1] length:v9 + ~(v8 >> 1)];
       v12 = [(SecJWSEncoder *)self base64URLEncodedStringRepresentationWithData:v10];
       v13 = [(SecJWSEncoder *)self base64URLEncodedStringRepresentationWithData:v11];
@@ -456,15 +456,15 @@ LABEL_12:
   [(SecJWSEncoder *)&v5 dealloc];
 }
 
-- (SecJWSEncoder)initWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4
+- (SecJWSEncoder)initWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey
 {
   v7.receiver = self;
   v7.super_class = SecJWSEncoder;
   result = [(SecJWSEncoder *)&v7 init];
   if (result)
   {
-    result->_publicKey = a3;
-    result->_privateKey = a4;
+    result->_publicKey = key;
+    result->_privateKey = privateKey;
   }
 
   return result;

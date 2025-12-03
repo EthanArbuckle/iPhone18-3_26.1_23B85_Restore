@@ -2,101 +2,101 @@
 - (BOOL)canUpdateTrayLayout;
 - (BOOL)isRunningOnCarPlay;
 - (MKMapView)mainMKMapView;
-- (MapsAppTest)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (MapsAppTest)initWithApplication:(id)application testName:(id)name options:(id)options;
 - (NSArray)serialSubTests;
 - (PPTTestCoordinatorProtocol)testCoordinator;
 - (VKMapView)mainVKMapView;
-- (void)_presentDirectionDetailsWithCompletion:(id)a3;
-- (void)_presentDismissTrayTestWithCount:(unint64_t)a3 numberOfRounds:(unint64_t)a4 latencySubTestName:(id)a5 animationSubTestName:(id)a6 presenter:(id)a7 completion:(id)a8;
-- (void)_presentDismissTrayTestWithLatencySubTestName:(id)a3 animationSubTestName:(id)a4 presenter:(id)a5 completion:(id)a6;
-- (void)_resizingTestWithCount:(unint64_t)a3 numbeorOfRounds:(unint64_t)a4 latencySubTestName:(id)a5 animationSubTestName:(id)a6 completion:(id)a7;
-- (void)_resizingTrayWithLatencySubTestName:(id)a3 animationSubTestName:(id)a4 completion:(id)a5;
-- (void)_updateTrayLayout:(unint64_t)a3 animated:(BOOL)a4 latencySubTestName:(id)a5 animationSubTestName:(id)a6 completion:(id)a7;
-- (void)addFullyDrawnCallback:(id)a3;
-- (void)cleanup:(BOOL)a3;
-- (void)didEndGEOPPTTest_Manifest:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_ForcedUpdate:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_GetResourceManifest:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_HandleMessage:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_ResetActiveTileGroup:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_SetActiveTileGroup:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_SetManifestToken:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_SetupConnection:(id)a3;
-- (void)didEndGEOPPTTest_Manifest_Update:(id)a3;
+- (void)_presentDirectionDetailsWithCompletion:(id)completion;
+- (void)_presentDismissTrayTestWithCount:(unint64_t)count numberOfRounds:(unint64_t)rounds latencySubTestName:(id)name animationSubTestName:(id)testName presenter:(id)presenter completion:(id)completion;
+- (void)_presentDismissTrayTestWithLatencySubTestName:(id)name animationSubTestName:(id)testName presenter:(id)presenter completion:(id)completion;
+- (void)_resizingTestWithCount:(unint64_t)count numbeorOfRounds:(unint64_t)rounds latencySubTestName:(id)name animationSubTestName:(id)testName completion:(id)completion;
+- (void)_resizingTrayWithLatencySubTestName:(id)name animationSubTestName:(id)testName completion:(id)completion;
+- (void)_updateTrayLayout:(unint64_t)layout animated:(BOOL)animated latencySubTestName:(id)name animationSubTestName:(id)testName completion:(id)completion;
+- (void)addFullyDrawnCallback:(id)callback;
+- (void)cleanup:(BOOL)cleanup;
+- (void)didEndGEOPPTTest_Manifest:(id)manifest;
+- (void)didEndGEOPPTTest_Manifest_ForcedUpdate:(id)update;
+- (void)didEndGEOPPTTest_Manifest_GetResourceManifest:(id)manifest;
+- (void)didEndGEOPPTTest_Manifest_HandleMessage:(id)message;
+- (void)didEndGEOPPTTest_Manifest_ResetActiveTileGroup:(id)group;
+- (void)didEndGEOPPTTest_Manifest_SetActiveTileGroup:(id)group;
+- (void)didEndGEOPPTTest_Manifest_SetManifestToken:(id)token;
+- (void)didEndGEOPPTTest_Manifest_SetupConnection:(id)connection;
+- (void)didEndGEOPPTTest_Manifest_Update:(id)update;
 - (void)didTearDownForVKTest;
-- (void)dismissTrayWithAssertTrayType:(int64_t)a3 completion:(id)a4;
-- (void)dismissTrayWithSubtestName:(id)a3 completion:(id)a4;
+- (void)dismissTrayWithAssertTrayType:(int64_t)type completion:(id)completion;
+- (void)dismissTrayWithSubtestName:(id)name completion:(id)completion;
 - (void)failedTest;
-- (void)failedTestWithReason:(id)a3;
-- (void)finishedSerialSubTest:(id)a3;
-- (void)finishedSubTest:(id)a3;
-- (void)finishedTestWithExtraResults:(id)a3;
-- (void)onFullyDrawn:(id)a3;
-- (void)popToRootTrayWithCompletion:(id)a3;
-- (void)presentDismissTrayTestAndSubTestsWithPrefix:(id)a3 presenter:(id)a4 completion:(id)a5;
+- (void)failedTestWithReason:(id)reason;
+- (void)finishedSerialSubTest:(id)test;
+- (void)finishedSubTest:(id)test;
+- (void)finishedTestWithExtraResults:(id)results;
+- (void)onFullyDrawn:(id)drawn;
+- (void)popToRootTrayWithCompletion:(id)completion;
+- (void)presentDismissTrayTestAndSubTestsWithPrefix:(id)prefix presenter:(id)presenter completion:(id)completion;
 - (void)registerGEOManifestSubtests;
-- (void)resizingTestAndSubTestsWithPrefix:(id)a3 completion:(id)a4;
-- (void)rotateDeviceWithCompletion:(id)a3;
-- (void)rotateDeviceWithSubtestName:(id)a3 completion:(id)a4;
-- (void)runSerialSubTestAtIndex:(unint64_t)a3;
+- (void)resizingTestAndSubTestsWithPrefix:(id)prefix completion:(id)completion;
+- (void)rotateDeviceWithCompletion:(id)completion;
+- (void)rotateDeviceWithSubtestName:(id)name completion:(id)completion;
+- (void)runSerialSubTestAtIndex:(unint64_t)index;
 - (void)setupForVKTest;
-- (void)setupForVKTestWithMapView:(id)a3;
-- (void)setupFullyDrawnNotification:(SEL)a3;
-- (void)startedSerialSubTest:(id)a3;
-- (void)startedSubTest:(id)a3;
-- (void)startedSubTest:(id)a3 withMetrics:(id)a4;
+- (void)setupForVKTestWithMapView:(id)view;
+- (void)setupFullyDrawnNotification:(SEL)notification;
+- (void)startedSerialSubTest:(id)test;
+- (void)startedSubTest:(id)test;
+- (void)startedSubTest:(id)test withMetrics:(id)metrics;
 - (void)startedTest;
-- (void)switchToMapType:(unint64_t)a3;
-- (void)switchToViewMode:(int64_t)a3;
-- (void)updateTrayLayout:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)updateTrayLayout:(unint64_t)a3 withSubtestName:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)vkMapViewFullyDrawn:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_ForcedUpdate:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_GetResourceManifest:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_HandleMessage:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_ResetActiveTileGroup:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_SetActiveTileGroup:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_SetManifestToken:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_SetupConnection:(id)a3;
-- (void)willBeginGEOPPTTest_Manifest_Update:(id)a3;
+- (void)switchToMapType:(unint64_t)type;
+- (void)switchToViewMode:(int64_t)mode;
+- (void)updateTrayLayout:(unint64_t)layout animated:(BOOL)animated completion:(id)completion;
+- (void)updateTrayLayout:(unint64_t)layout withSubtestName:(id)name animated:(BOOL)animated completion:(id)completion;
+- (void)vkMapViewFullyDrawn:(id)drawn;
+- (void)willBeginGEOPPTTest_Manifest:(id)manifest;
+- (void)willBeginGEOPPTTest_Manifest_ForcedUpdate:(id)update;
+- (void)willBeginGEOPPTTest_Manifest_GetResourceManifest:(id)manifest;
+- (void)willBeginGEOPPTTest_Manifest_HandleMessage:(id)message;
+- (void)willBeginGEOPPTTest_Manifest_ResetActiveTileGroup:(id)group;
+- (void)willBeginGEOPPTTest_Manifest_SetActiveTileGroup:(id)group;
+- (void)willBeginGEOPPTTest_Manifest_SetManifestToken:(id)token;
+- (void)willBeginGEOPPTTest_Manifest_SetupConnection:(id)connection;
+- (void)willBeginGEOPPTTest_Manifest_Update:(id)update;
 - (void)willSetupForVKTest;
 @end
 
 @implementation MapsAppTest
 
-- (void)_presentDirectionDetailsWithCompletion:(id)a3
+- (void)_presentDirectionDetailsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10058A014;
   v7[3] = &unk_101655DA8;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v8 = v5;
   [PPTNotificationCenter addOnceObserverForName:@"PPTTestTrayDidPresentNotification" object:0 usingBlock:v7];
-  v6 = [(MapsAppTest *)self testCoordinator];
-  [v6 pptTestPresentDirectionsDetails];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestPresentDirectionsDetails];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)rotateDeviceWithCompletion:(id)a3
+- (void)rotateDeviceWithCompletion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100C8D610;
   v10[3] = &unk_10164FAC0;
-  v3 = a3;
-  v11 = v3;
+  completionCopy = completion;
+  v11 = completionCopy;
   [PPTNotificationCenter addOnceObserverForName:@"PPTTestOrientationDidRotateNotification" object:0 usingBlock:v10];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 orientation];
+  orientation = [v4 orientation];
 
-  if ((v5 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     v6 = +[UIApplication sharedApplication];
     v7 = v6;
@@ -105,7 +105,7 @@
     goto LABEL_5;
   }
 
-  if ((v5 - 1) <= 1)
+  if ((orientation - 1) <= 1)
   {
     v6 = +[UIApplication sharedApplication];
     v7 = v6;
@@ -116,43 +116,43 @@ LABEL_5:
   }
 }
 
-- (void)rotateDeviceWithSubtestName:(id)a3 completion:(id)a4
+- (void)rotateDeviceWithSubtestName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(MapsAppTest *)self startedSubTest:v6];
+  nameCopy = name;
+  completionCopy = completion;
+  [(MapsAppTest *)self startedSubTest:nameCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100C8D700;
   v10[3] = &unk_1016605F8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = nameCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = nameCopy;
   [(MapsAppTest *)self rotateDeviceWithCompletion:v10];
 }
 
-- (void)popToRootTrayWithCompletion:(id)a3
+- (void)popToRootTrayWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MapsAppTest *)self testCoordinator];
-  v6 = [v5 pptTestIsTrayType:2];
+  completionCopy = completion;
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  v6 = [testCoordinator pptTestIsTrayType:2];
 
   if (v6)
   {
     if (![(MapsAppTest *)self isRunningOnCarPlay])
     {
-      v7 = [(MapsAppTest *)self testCoordinator];
-      [v7 pptTestSearchCancel];
+      testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator2 pptTestSearchCancel];
     }
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100C8D8A8;
     v13[3] = &unk_101661760;
-    v14 = v4;
-    v8 = v4;
+    v14 = completionCopy;
+    v8 = completionCopy;
     [(MapsAppTest *)self updateTrayLayout:1 animated:1 completion:v13];
     v9 = v14;
   }
@@ -164,49 +164,49 @@ LABEL_5:
     v11[2] = sub_100C8D8C0;
     v11[3] = &unk_101661090;
     v11[4] = self;
-    v12 = v4;
-    v10 = v4;
+    v12 = completionCopy;
+    v10 = completionCopy;
     [(MapsAppTest *)self dismissTrayWithAssertTrayType:0 completion:v11];
     v9 = v12;
   }
 }
 
-- (void)dismissTrayWithAssertTrayType:(int64_t)a3 completion:(id)a4
+- (void)dismissTrayWithAssertTrayType:(int64_t)type completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100C8D9A0;
   v8[3] = &unk_10164FAC0;
-  v9 = a4;
-  v6 = v9;
+  completionCopy = completion;
+  v6 = completionCopy;
   [PPTNotificationCenter addOnceObserverForName:@"PPTTestTrayDidDismissNotification" object:0 usingBlock:v8];
-  v7 = [(MapsAppTest *)self testCoordinator];
-  [v7 pptTestDismissTrayAnimated:1 assertTrayType:a3];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestDismissTrayAnimated:1 assertTrayType:type];
 }
 
-- (void)dismissTrayWithSubtestName:(id)a3 completion:(id)a4
+- (void)dismissTrayWithSubtestName:(id)name completion:(id)completion
 {
-  v5 = a3;
-  [(MapsAppTest *)self startedSubTest:v5];
+  nameCopy = name;
+  [(MapsAppTest *)self startedSubTest:nameCopy];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100C8DA68;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = nameCopy;
+  v6 = nameCopy;
   [(MapsAppTest *)self dismissTrayWithCompletion:v7];
 }
 
-- (void)_presentDismissTrayTestWithLatencySubTestName:(id)a3 animationSubTestName:(id)a4 presenter:(id)a5 completion:(id)a6
+- (void)_presentDismissTrayTestWithLatencySubTestName:(id)name animationSubTestName:(id)testName presenter:(id)presenter completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 length])
+  nameCopy = name;
+  testNameCopy = testName;
+  presenterCopy = presenter;
+  completionCopy = completion;
+  if ([nameCopy length])
   {
-    v14 = [v11 length] != 0;
+    v14 = [testNameCopy length] != 0;
   }
 
   else
@@ -220,11 +220,11 @@ LABEL_5:
   v22[3] = &unk_10164FB38;
   v26 = v14;
   v22[4] = self;
-  v15 = v11;
+  v15 = testNameCopy;
   v23 = v15;
-  v16 = v10;
+  v16 = nameCopy;
   v24 = v16;
-  v17 = v13;
+  v17 = completionCopy;
   v25 = v17;
   [PPTNotificationCenter addOnceObserverForName:@"PPTTestTrayDidPresentNotification" object:0 usingBlock:v22];
   if (v14)
@@ -241,47 +241,47 @@ LABEL_5:
     [v18 installCACommitCompletionBlock:v19];
   }
 
-  if (v12)
+  if (presenterCopy)
   {
-    v12[2](v12);
+    presenterCopy[2](presenterCopy);
   }
 }
 
-- (void)_presentDismissTrayTestWithCount:(unint64_t)a3 numberOfRounds:(unint64_t)a4 latencySubTestName:(id)a5 animationSubTestName:(id)a6 presenter:(id)a7 completion:(id)a8
+- (void)_presentDismissTrayTestWithCount:(unint64_t)count numberOfRounds:(unint64_t)rounds latencySubTestName:(id)name animationSubTestName:(id)testName presenter:(id)presenter completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100C8E108;
   v15[3] = &unk_10164FAE8;
-  v21 = a3 + 1;
-  v22 = a4;
-  v16 = self;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v11 = v20;
-  v12 = v19;
-  v13 = v18;
-  v14 = v17;
-  [(MapsAppTest *)v16 _presentDismissTrayTestWithLatencySubTestName:v14 animationSubTestName:v13 presenter:v12 completion:v15];
+  v21 = count + 1;
+  roundsCopy = rounds;
+  selfCopy = self;
+  nameCopy = name;
+  testNameCopy = testName;
+  presenterCopy = presenter;
+  completionCopy = completion;
+  v11 = completionCopy;
+  v12 = presenterCopy;
+  v13 = testNameCopy;
+  v14 = nameCopy;
+  [(MapsAppTest *)selfCopy _presentDismissTrayTestWithLatencySubTestName:v14 animationSubTestName:v13 presenter:v12 completion:v15];
 }
 
-- (void)presentDismissTrayTestAndSubTestsWithPrefix:(id)a3 presenter:(id)a4 completion:(id)a5
+- (void)presentDismissTrayTestAndSubTestsWithPrefix:(id)prefix presenter:(id)presenter completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [v10 stringByAppendingString:@"_Latency"];
-  v11 = [v10 stringByAppendingString:@"_Animation"];
+  completionCopy = completion;
+  presenterCopy = presenter;
+  prefixCopy = prefix;
+  v12 = [prefixCopy stringByAppendingString:@"_Latency"];
+  v11 = [prefixCopy stringByAppendingString:@"_Animation"];
 
-  [(MapsAppTest *)self _presentDismissTrayTestWithNumberOfRounds:10 latencySubTestName:v12 animationSubTestName:v11 presenter:v9 completion:v8];
+  [(MapsAppTest *)self _presentDismissTrayTestWithNumberOfRounds:10 latencySubTestName:v12 animationSubTestName:v11 presenter:presenterCopy completion:completionCopy];
 }
 
-- (void)updateTrayLayout:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateTrayLayout:(unint64_t)layout animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9 = +[UIDevice currentDevice];
   if ([v9 userInterfaceIdiom] == 5)
   {
@@ -289,49 +289,49 @@ LABEL_5:
 
   else
   {
-    v10 = [(MapsAppTest *)self testCoordinator];
-    v11 = [v10 pptTestCanUpdateTrayLayout];
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    pptTestCanUpdateTrayLayout = [testCoordinator pptTestCanUpdateTrayLayout];
 
-    if (v11)
+    if (pptTestCanUpdateTrayLayout)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100C8E37C;
       v13[3] = &unk_10164FAC0;
-      v14 = v8;
+      v14 = completionCopy;
       [PPTNotificationCenter addOnceObserverForName:@"PPTTestTrayLayoutDidUpdateNotification" object:0 usingBlock:v13];
-      v12 = [(MapsAppTest *)self testCoordinator];
-      [v12 pptTestUpdateTrayLayout:a3 animated:v5];
+      testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator2 pptTestUpdateTrayLayout:layout animated:animatedCopy];
 
       goto LABEL_7;
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_7:
 }
 
-- (void)_updateTrayLayout:(unint64_t)a3 animated:(BOOL)a4 latencySubTestName:(id)a5 animationSubTestName:(id)a6 completion:(id)a7
+- (void)_updateTrayLayout:(unint64_t)layout animated:(BOOL)animated latencySubTestName:(id)name animationSubTestName:(id)testName completion:(id)completion
 {
-  v9 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if ([v12 length] && objc_msgSend(v13, "length"))
+  animatedCopy = animated;
+  nameCopy = name;
+  testNameCopy = testName;
+  completionCopy = completion;
+  if ([nameCopy length] && objc_msgSend(testNameCopy, "length"))
   {
-    [(MapsAppTest *)self startedSubTest:v12];
+    [(MapsAppTest *)self startedSubTest:nameCopy];
     v15 = UIApp;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100C8E538;
     v23[3] = &unk_101661A40;
     v23[4] = self;
-    v24 = v12;
-    v25 = v13;
+    v24 = nameCopy;
+    v25 = testNameCopy;
     [v15 installCACommitCompletionBlock:v23];
 
     v16 = 1;
@@ -348,102 +348,102 @@ LABEL_7:
   v19[3] = &unk_101661068;
   v22 = v16;
   v19[4] = self;
-  v20 = v13;
-  v21 = v14;
-  v17 = v14;
-  v18 = v13;
-  [(MapsAppTest *)self updateTrayLayout:a3 animated:v9 completion:v19];
+  v20 = testNameCopy;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = testNameCopy;
+  [(MapsAppTest *)self updateTrayLayout:layout animated:animatedCopy completion:v19];
 }
 
-- (void)updateTrayLayout:(unint64_t)a3 withSubtestName:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)updateTrayLayout:(unint64_t)layout withSubtestName:(id)name animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  [(MapsAppTest *)self startedSubTest:v10];
+  animatedCopy = animated;
+  nameCopy = name;
+  completionCopy = completion;
+  [(MapsAppTest *)self startedSubTest:nameCopy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100C8E6C4;
   v14[3] = &unk_1016605F8;
   v14[4] = self;
-  v15 = v10;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
-  [(MapsAppTest *)self updateTrayLayout:a3 animated:v7 completion:v14];
+  v15 = nameCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = nameCopy;
+  [(MapsAppTest *)self updateTrayLayout:layout animated:animatedCopy completion:v14];
 }
 
 - (BOOL)canUpdateTrayLayout
 {
-  v2 = [(MapsAppTest *)self testCoordinator];
-  v3 = [v2 pptTestCanUpdateTrayLayout];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestCanUpdateTrayLayout = [testCoordinator pptTestCanUpdateTrayLayout];
 
-  return v3;
+  return pptTestCanUpdateTrayLayout;
 }
 
-- (void)_resizingTrayWithLatencySubTestName:(id)a3 animationSubTestName:(id)a4 completion:(id)a5
+- (void)_resizingTrayWithLatencySubTestName:(id)name animationSubTestName:(id)testName completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100C8E844;
   v10[3] = &unk_101660380;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v14;
-  v8 = v13;
-  v9 = v12;
-  [(MapsAppTest *)v11 _updateTrayLayout:0 animated:1 latencySubTestName:v9 animationSubTestName:v8 completion:v10];
+  selfCopy = self;
+  nameCopy = name;
+  testNameCopy = testName;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = testNameCopy;
+  v9 = nameCopy;
+  [(MapsAppTest *)selfCopy _updateTrayLayout:0 animated:1 latencySubTestName:v9 animationSubTestName:v8 completion:v10];
 }
 
-- (void)_resizingTestWithCount:(unint64_t)a3 numbeorOfRounds:(unint64_t)a4 latencySubTestName:(id)a5 animationSubTestName:(id)a6 completion:(id)a7
+- (void)_resizingTestWithCount:(unint64_t)count numbeorOfRounds:(unint64_t)rounds latencySubTestName:(id)name animationSubTestName:(id)testName completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100C8ED90;
   v12[3] = &unk_10164FA98;
-  v17 = a3 + 1;
-  v18 = a4;
-  v13 = self;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v9 = v16;
-  v10 = v15;
-  v11 = v14;
-  [(MapsAppTest *)v13 _resizingTrayWithLatencySubTestName:v11 animationSubTestName:v10 completion:v12];
+  v17 = count + 1;
+  roundsCopy = rounds;
+  selfCopy = self;
+  nameCopy = name;
+  testNameCopy = testName;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = testNameCopy;
+  v11 = nameCopy;
+  [(MapsAppTest *)selfCopy _resizingTrayWithLatencySubTestName:v11 animationSubTestName:v10 completion:v12];
 }
 
-- (void)resizingTestAndSubTestsWithPrefix:(id)a3 completion:(id)a4
+- (void)resizingTestAndSubTestsWithPrefix:(id)prefix completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 stringByAppendingString:@"_Latency"];
-  v8 = [v7 stringByAppendingString:@"_Animation"];
+  completionCopy = completion;
+  prefixCopy = prefix;
+  v9 = [prefixCopy stringByAppendingString:@"_Latency"];
+  v8 = [prefixCopy stringByAppendingString:@"_Animation"];
 
-  [(MapsAppTest *)self _resizingTestWithNumberOfRounds:10 latencySubTestName:v9 animationSubTestName:v8 completion:v6];
+  [(MapsAppTest *)self _resizingTestWithNumberOfRounds:10 latencySubTestName:v9 animationSubTestName:v8 completion:completionCopy];
 }
 
 - (PPTTestCoordinatorProtocol)testCoordinator
 {
-  v3 = objc_getAssociatedObject(self, &unk_10195EDF0);
-  if (!v3)
+  testCoordinator = objc_getAssociatedObject(self, &unk_10195EDF0);
+  if (!testCoordinator)
   {
     v4 = +[UIApplication sharedMapsDelegate];
-    v3 = [v4 testCoordinator];
+    testCoordinator = [v4 testCoordinator];
 
-    objc_setAssociatedObject(self, &unk_10195EDF0, v3, 1);
+    objc_setAssociatedObject(self, &unk_10195EDF0, testCoordinator, 1);
   }
 
-  return v3;
+  return testCoordinator;
 }
 
 - (BOOL)isRunningOnCarPlay
 {
-  v2 = [(MapsAppTest *)self mainMKMapView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom] == 3;
+  mainMKMapView = [(MapsAppTest *)self mainMKMapView];
+  traitCollection = [mainMKMapView traitCollection];
+  v4 = [traitCollection userInterfaceIdiom] == 3;
 
   return v4;
 }
@@ -452,8 +452,8 @@ LABEL_7:
 {
   if ([(MapsAppTest *)self isRunningOnCarPlay])
   {
-    v3 = [(MapsAppTest *)self testCoordinator];
-    [v3 setChromeHidden:0];
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator setChromeHidden:0];
   }
 }
 
@@ -461,32 +461,32 @@ LABEL_7:
 {
   if ([(MapsAppTest *)self isRunningOnCarPlay])
   {
-    v3 = [(MapsAppTest *)self mainMKMapView];
-    [v3 setUserTrackingMode:0 animated:0];
+    mainMKMapView = [(MapsAppTest *)self mainMKMapView];
+    [mainMKMapView setUserTrackingMode:0 animated:0];
 
-    v4 = [(MapsAppTest *)self testCoordinator];
-    [v4 setChromeHidden:1];
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator setChromeHidden:1];
   }
 }
 
-- (void)switchToViewMode:(int64_t)a3
+- (void)switchToViewMode:(int64_t)mode
 {
-  v4 = [(MapsAppTest *)self testCoordinator];
-  [v4 setPPTTestViewMode:a3 animated:1];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator setPPTTestViewMode:mode animated:1];
 }
 
-- (void)switchToMapType:(unint64_t)a3
+- (void)switchToMapType:(unint64_t)type
 {
-  v4 = [(MapsAppTest *)self testCoordinator];
-  if (a3 <= 2)
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v5 = 2;
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v5 = 1;
       goto LABEL_13;
@@ -495,7 +495,7 @@ LABEL_7:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
         v5 = 6;
@@ -511,28 +511,28 @@ LABEL_7:
 
   v5 = 0;
 LABEL_13:
-  v6 = v4;
-  [v4 setPPTTestViewMode:v5 animated:1];
+  v6 = testCoordinator;
+  [testCoordinator setPPTTestViewMode:v5 animated:1];
 }
 
 - (VKMapView)mainVKMapView
 {
-  v2 = [(MapsAppTest *)self testCoordinator];
-  v3 = [v2 mapViewForPPTTest];
-  v4 = [v3 _mapLayer];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  mapViewForPPTTest = [testCoordinator mapViewForPPTTest];
+  _mapLayer = [mapViewForPPTTest _mapLayer];
 
-  return v4;
+  return _mapLayer;
 }
 
 - (MKMapView)mainMKMapView
 {
-  v2 = [(MapsAppTest *)self testCoordinator];
-  v3 = [v2 mapViewForPPTTest];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  mapViewForPPTTest = [testCoordinator mapViewForPPTTest];
 
-  return v3;
+  return mapViewForPPTTest;
 }
 
-- (void)didEndGEOPPTTest_Manifest_HandleMessage:(id)a3
+- (void)didEndGEOPPTTest_Manifest_HandleMessage:(id)message
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -542,7 +542,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_HandleMessage:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_HandleMessage:(id)message
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -552,7 +552,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest_ResetActiveTileGroup:(id)a3
+- (void)didEndGEOPPTTest_Manifest_ResetActiveTileGroup:(id)group
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -562,7 +562,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_ResetActiveTileGroup:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_ResetActiveTileGroup:(id)group
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -572,7 +572,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest_SetActiveTileGroup:(id)a3
+- (void)didEndGEOPPTTest_Manifest_SetActiveTileGroup:(id)group
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -582,7 +582,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_SetActiveTileGroup:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_SetActiveTileGroup:(id)group
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -592,7 +592,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest_SetManifestToken:(id)a3
+- (void)didEndGEOPPTTest_Manifest_SetManifestToken:(id)token
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -602,7 +602,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_SetManifestToken:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_SetManifestToken:(id)token
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -612,7 +612,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest_GetResourceManifest:(id)a3
+- (void)didEndGEOPPTTest_Manifest_GetResourceManifest:(id)manifest
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -622,7 +622,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_GetResourceManifest:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_GetResourceManifest:(id)manifest
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -632,7 +632,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest_ForcedUpdate:(id)a3
+- (void)didEndGEOPPTTest_Manifest_ForcedUpdate:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -642,7 +642,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_ForcedUpdate:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_ForcedUpdate:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -652,7 +652,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest_Update:(id)a3
+- (void)didEndGEOPPTTest_Manifest_Update:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -662,7 +662,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_Update:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_Update:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -672,7 +672,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest_SetupConnection:(id)a3
+- (void)didEndGEOPPTTest_Manifest_SetupConnection:(id)connection
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -682,7 +682,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest_SetupConnection:(id)a3
+- (void)willBeginGEOPPTTest_Manifest_SetupConnection:(id)connection
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -692,7 +692,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_Manifest:(id)a3
+- (void)didEndGEOPPTTest_Manifest:(id)manifest
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -702,7 +702,7 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_Manifest:(id)a3
+- (void)willBeginGEOPPTTest_Manifest:(id)manifest
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -798,17 +798,17 @@ LABEL_13:
 
 - (void)setupForVKTest
 {
-  v3 = [(MapsAppTest *)self mainVKMapView];
-  [(MapsAppTest *)self setupForVKTestWithMapView:v3];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [(MapsAppTest *)self setupForVKTestWithMapView:mainVKMapView];
 }
 
-- (void)setupForVKTestWithMapView:(id)a3
+- (void)setupForVKTestWithMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MapsAppTest *)self willSetupForVKTest];
-  v5 = [(MapsAppTest *)self options];
+  options = [(MapsAppTest *)self options];
   v10 = 0uLL;
-  [v5 _mapstest_getSelectedFeatures:&v10 disabled:&v10 + 8];
+  [options _mapstest_getSelectedFeatures:&v10 disabled:&v10 + 8];
   v6 = *(&v10 + 1);
   if (v10 != 0)
   {
@@ -820,69 +820,69 @@ LABEL_13:
 
     if (((v6 | v10) & 0x80) != 0)
     {
-      [v4 setTrafficEnabled:(v6 & 0x80) == 0];
+      [viewCopy setTrafficEnabled:(v6 & 0x80) == 0];
       v6 = *(&v10 + 1);
     }
 
-    [v4 setDisablePolygons:(v6 >> 3) & 1];
-    [v4 setDisableRoads:(*(&v10 + 1) >> 1) & 1];
-    [v4 setDisableLabels:(*(&v10 + 1) >> 2) & 1];
-    [v4 setDisableBuildingFootprints:(*(&v10 + 1) >> 4) & 1];
-    [v4 setDisableRasters:(*(&v10 + 1) >> 5) & 1];
-    [v4 setDisableGrid:(*(&v10 + 1) >> 6) & 1];
-    [v4 setDisableTransitLines:(*(&v10 + 1) >> 8) & 1];
+    [viewCopy setDisablePolygons:(v6 >> 3) & 1];
+    [viewCopy setDisableRoads:(*(&v10 + 1) >> 1) & 1];
+    [viewCopy setDisableLabels:(*(&v10 + 1) >> 2) & 1];
+    [viewCopy setDisableBuildingFootprints:(*(&v10 + 1) >> 4) & 1];
+    [viewCopy setDisableRasters:(*(&v10 + 1) >> 5) & 1];
+    [viewCopy setDisableGrid:(*(&v10 + 1) >> 6) & 1];
+    [viewCopy setDisableTransitLines:(*(&v10 + 1) >> 8) & 1];
   }
 
-  if ([v5 _mapstest_hasMapType])
+  if ([options _mapstest_hasMapType])
   {
-    [v5 _mapstest_hasViewMode];
+    [options _mapstest_hasViewMode];
   }
 
-  if ([v5 _mapstest_hasViewMode])
+  if ([options _mapstest_hasViewMode])
   {
-    -[MapsAppTest switchToViewMode:](self, "switchToViewMode:", [v5 _mapstest_viewMode]);
+    -[MapsAppTest switchToViewMode:](self, "switchToViewMode:", [options _mapstest_viewMode]);
   }
 
   else
   {
-    -[MapsAppTest switchToMapType:](self, "switchToMapType:", [v5 _mapstest_mapType]);
+    -[MapsAppTest switchToMapType:](self, "switchToMapType:", [options _mapstest_mapType]);
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"selectedFeatureId"];
+  v7 = [options objectForKeyedSubscript:@"selectedFeatureId"];
   if (v7)
   {
     v8 = [NSScanner scannerWithString:v7];
     v9 = 0;
     [v8 scanUnsignedLongLong:&v9];
-    [v4 setSelectedFeatureId:v9];
+    [viewCopy setSelectedFeatureId:v9];
   }
 
   else
   {
-    [v4 deselectFeatureId];
+    [viewCopy deselectFeatureId];
   }
 }
 
-- (void)setupFullyDrawnNotification:(SEL)a3
+- (void)setupFullyDrawnNotification:(SEL)notification
 {
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 addObserver:self selector:a3 name:VKMapViewDidBecomeFullyDrawnNotification object:0];
+  [v5 addObserver:self selector:notification name:VKMapViewDidBecomeFullyDrawnNotification object:0];
 }
 
-- (void)addFullyDrawnCallback:(id)a3
+- (void)addFullyDrawnCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = sub_100798744();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     *buf = 138412290;
     v13 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Adding FullyDrawnCallback: %@", buf, 0xCu);
   }
 
   fullyDrawnCallbacks = self->_fullyDrawnCallbacks;
-  v8 = [v4 copy];
+  v8 = [callbackCopy copy];
   v9 = objc_retainBlock(v8);
   [(NSMutableArray *)fullyDrawnCallbacks addObject:v9];
 
@@ -895,13 +895,13 @@ LABEL_13:
   dispatch_after(v10, &_dispatch_main_q, block);
 }
 
-- (void)vkMapViewFullyDrawn:(id)a3
+- (void)vkMapViewFullyDrawn:(id)drawn
 {
-  v5 = a3;
-  if (!v5)
+  drawnCopy = drawn;
+  if (!drawnCopy)
   {
-    v3 = [(MapsAppTest *)self mainVKMapView];
-    if ([v3 isFullyDrawn])
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    if ([mainVKMapView isFullyDrawn])
     {
 
 LABEL_10:
@@ -914,18 +914,18 @@ LABEL_10:
         v15 = v11;
         do
         {
-          v12 = [(NSMutableArray *)self->_fullyDrawnCallbacks firstObject];
+          firstObject = [(NSMutableArray *)self->_fullyDrawnCallbacks firstObject];
           [(NSMutableArray *)self->_fullyDrawnCallbacks removeObjectAtIndex:0];
           v13 = sub_100798744();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
-            v14 = objc_retainBlock(v12);
+            v14 = objc_retainBlock(firstObject);
             *buf = v15;
             v17 = v14;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Invoking callback: %@", buf, 0xCu);
           }
 
-          v12[2](v12);
+          firstObject[2](firstObject);
         }
 
         while ([(NSMutableArray *)self->_fullyDrawnCallbacks count]);
@@ -935,13 +935,13 @@ LABEL_10:
     }
   }
 
-  v6 = [(MapsAppTest *)self mainVKMapView];
+  mainVKMapView2 = [(MapsAppTest *)self mainVKMapView];
 
-  if (!v5)
+  if (!drawnCopy)
   {
   }
 
-  if (v6 == v5)
+  if (mainVKMapView2 == drawnCopy)
   {
     goto LABEL_10;
   }
@@ -949,33 +949,33 @@ LABEL_10:
   v7 = sub_100798744();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(MapsAppTest *)self mainVKMapView];
-    v9 = [(MapsAppTest *)self mainVKMapView];
+    mainVKMapView3 = [(MapsAppTest *)self mainVKMapView];
+    mainVKMapView4 = [(MapsAppTest *)self mainVKMapView];
     *buf = 138412802;
-    v17 = v5;
+    v17 = drawnCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = mainVKMapView3;
     v20 = 1024;
-    v21 = [v9 isFullyDrawn];
+    isFullyDrawn = [mainVKMapView4 isFullyDrawn];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "vkMapViewFullyDrawn: but not calling back! mapView: %@ mainVKMapView: %@ isFullyDrawn: %d", buf, 0x1Cu);
   }
 
 LABEL_15:
 }
 
-- (void)onFullyDrawn:(id)a3
+- (void)onFullyDrawn:(id)drawn
 {
-  v4 = a3;
-  v5 = [v4 object];
-  if (!v5)
+  drawnCopy = drawn;
+  object = [drawnCopy object];
+  if (!object)
   {
-    v5 = [(MapsAppTest *)self mainVKMapView];
+    object = [(MapsAppTest *)self mainVKMapView];
   }
 
-  v6 = [v5 isFullyDrawn];
+  isFullyDrawn = [object isFullyDrawn];
   v7 = sub_100798744();
   v8 = v7;
-  if (v6)
+  if (isFullyDrawn)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -983,7 +983,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "onFullyDrawn:", &v9, 2u);
     }
 
-    [(MapsAppTest *)self vkMapViewFullyDrawn:v5];
+    [(MapsAppTest *)self vkMapViewFullyDrawn:object];
   }
 
   else
@@ -991,22 +991,22 @@ LABEL_15:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = drawnCopy;
       v11 = 1024;
-      v12 = [v5 isFullyDrawn];
+      isFullyDrawn2 = [object isFullyDrawn];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "onFullyDrawn is called when mapView is not fully drawn. Notification: %@, [mapView isFullyDrawn] : %d", &v9, 0x12u);
     }
   }
 }
 
-- (void)runSerialSubTestAtIndex:(unint64_t)a3
+- (void)runSerialSubTestAtIndex:(unint64_t)index
 {
-  v15 = [(MapsAppTest *)self serialSubTests];
-  v5 = [v15 count] > a3;
-  v6 = v15;
+  serialSubTests = [(MapsAppTest *)self serialSubTests];
+  v5 = [serialSubTests count] > index;
+  v6 = serialSubTests;
   if (v5)
   {
-    v7 = [v15 objectAtIndexedSubscript:a3];
+    v7 = [serialSubTests objectAtIndexedSubscript:index];
     v8 = [v7 objectForKeyedSubscript:@"selector"];
     v9 = NSSelectorFromString(v8);
 
@@ -1027,30 +1027,30 @@ LABEL_15:
         v11 = v12;
       }
 
-      v13 = [(MapsAppTest *)self mainVKMapView];
+      mainVKMapView = [(MapsAppTest *)self mainVKMapView];
       self->_currentSubTestStartTime = CACurrentMediaTime();
       [(MapsAppTest *)self startedSerialSubTest:v11];
-      [v13 enableTestStatistics];
+      [mainVKMapView enableTestStatistics];
       v14 = [v7 objectForKeyedSubscript:@"options"];
       [(MapsAppTest *)self performSelector:v9 withObject:v14];
     }
 
-    v6 = v15;
+    v6 = serialSubTests;
   }
 }
 
 - (NSArray)serialSubTests
 {
-  v2 = [(MapsAppTest *)self options];
-  v3 = [v2 _mapstest_serialSubTests];
+  options = [(MapsAppTest *)self options];
+  _mapstest_serialSubTests = [options _mapstest_serialSubTests];
 
-  return v3;
+  return _mapstest_serialSubTests;
 }
 
-- (void)failedTestWithReason:(id)a3
+- (void)failedTestWithReason:(id)reason
 {
-  v4 = a3;
-  [(MapsAppTesting *)self->_app failedTest:self->_testName withFailure:v4];
+  reasonCopy = reason;
+  [(MapsAppTesting *)self->_app failedTest:self->_testName withFailure:reasonCopy];
   v5 = sub_100798744();
   if (os_signpost_enabled(v5))
   {
@@ -1058,7 +1058,7 @@ LABEL_15:
     v7 = 138412546;
     v8 = testName;
     v9 = 2112;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "test", "testName=%@ status=failed reason=%@", &v7, 0x16u);
   }
 }
@@ -1076,21 +1076,21 @@ LABEL_15:
   }
 }
 
-- (void)finishedTestWithExtraResults:(id)a3
+- (void)finishedTestWithExtraResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
   v14 = @"tilegroup";
   v6 = +[GEOResourceManifestManager modernManager];
-  v7 = [v6 activeTileGroup];
-  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v7 identifier]);
+  activeTileGroup = [v6 activeTileGroup];
+  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [activeTileGroup identifier]);
   v15 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   [(NSMutableDictionary *)results addEntriesFromDictionary:v9];
 
-  if (v4)
+  if (resultsCopy)
   {
-    [(NSMutableDictionary *)self->_results addEntriesFromDictionary:v4];
+    [(NSMutableDictionary *)self->_results addEntriesFromDictionary:resultsCopy];
   }
 
   [(MapsAppTesting *)self->_app finishedTest:self->_testName extraResults:self->_results];
@@ -1104,32 +1104,32 @@ LABEL_15:
   }
 }
 
-- (void)finishedSerialSubTest:(id)a3
+- (void)finishedSerialSubTest:(id)test
 {
-  v20 = a3;
+  testCopy = test;
   [MapsAppTesting finishedSubTest:"finishedSubTest:forTest:" forTest:?];
   v4 = sub_100798744();
   if (os_signpost_enabled(v4))
   {
     *buf = 138412290;
-    v27 = v20;
+    v27 = testCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v4, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "subTest", "testName=%@", buf, 0xCu);
   }
 
-  v5 = [(MapsAppTest *)self mainVKMapView];
-  [v5 disableTestStatistics];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView disableTestStatistics];
 
-  v6 = [(MapsAppTest *)self mainVKMapView];
-  v7 = [v6 testStatistics];
+  mainVKMapView2 = [(MapsAppTest *)self mainVKMapView];
+  testStatistics = [mainVKMapView2 testStatistics];
 
-  v8 = [(MapsAppTest *)self mainVKMapView];
-  [v8 resetTestStatistics];
+  mainVKMapView3 = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView3 resetTestStatistics];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = testStatistics;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -1146,9 +1146,9 @@ LABEL_15:
 
         v14 = *(*(&v21 + 1) + 8 * i);
         v15 = [v9 objectForKeyedSubscript:v14];
-        v16 = [(MapsAppTest *)self results];
-        v17 = [NSString stringWithFormat:@"%@:%@", v20, v14];
-        [v16 setObject:v15 forKeyedSubscript:v17];
+        results = [(MapsAppTest *)self results];
+        v17 = [NSString stringWithFormat:@"%@:%@", testCopy, v14];
+        [results setObject:v15 forKeyedSubscript:v17];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1157,8 +1157,8 @@ LABEL_15:
     while (v11);
   }
 
-  v18 = [(MapsAppTest *)self serialSubTests];
-  if ([v18 count] && (currentSubTestIndex = self->_currentSubTestIndex, currentSubTestIndex < objc_msgSend(v18, "count") - 1))
+  serialSubTests = [(MapsAppTest *)self serialSubTests];
+  if ([serialSubTests count] && (currentSubTestIndex = self->_currentSubTestIndex, currentSubTestIndex < objc_msgSend(serialSubTests, "count") - 1))
   {
     ++self->_currentSubTestIndex;
     [(MapsAppTest *)self runSerialSubTestAtIndex:?];
@@ -1170,60 +1170,60 @@ LABEL_15:
   }
 }
 
-- (void)finishedSubTest:(id)a3
+- (void)finishedSubTest:(id)test
 {
-  v4 = a3;
-  [(MapsAppTesting *)self->_app finishedSubTest:v4 forTest:self->_testName];
+  testCopy = test;
+  [(MapsAppTesting *)self->_app finishedSubTest:testCopy forTest:self->_testName];
   v5 = sub_100798744();
   if (os_signpost_enabled(v5))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = testCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "subTest", "testName=%@", &v6, 0xCu);
   }
 }
 
-- (void)startedSubTest:(id)a3 withMetrics:(id)a4
+- (void)startedSubTest:(id)test withMetrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  metricsCopy = metrics;
   v8 = sub_100798744();
   if (os_signpost_enabled(v8))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = testCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "subTest", "testName=%@", &v9, 0xCu);
   }
 
-  [(MapsAppTesting *)self->_app startedSubTest:v6 forTest:self->_testName withMetrics:v7];
+  [(MapsAppTesting *)self->_app startedSubTest:testCopy forTest:self->_testName withMetrics:metricsCopy];
 }
 
-- (void)startedSerialSubTest:(id)a3
+- (void)startedSerialSubTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = sub_100798744();
   if (os_signpost_enabled(v5))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = testCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "subTest", "testName=%@", &v6, 0xCu);
   }
 
-  [(MapsAppTesting *)self->_app startedSubTest:v4 forTest:self->_testName];
+  [(MapsAppTesting *)self->_app startedSubTest:testCopy forTest:self->_testName];
 }
 
-- (void)startedSubTest:(id)a3
+- (void)startedSubTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = sub_100798744();
   if (os_signpost_enabled(v5))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = testCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "subTest", "testName=%@", &v6, 0xCu);
   }
 
-  [(MapsAppTesting *)self->_app startedSubTest:v4 forTest:self->_testName];
+  [(MapsAppTesting *)self->_app startedSubTest:testCopy forTest:self->_testName];
 }
 
 - (void)startedTest
@@ -1240,7 +1240,7 @@ LABEL_15:
   [(MapsAppTesting *)self->_app startedTest:self->_testName];
 }
 
-- (void)cleanup:(BOOL)a3
+- (void)cleanup:(BOOL)cleanup
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -1254,12 +1254,12 @@ LABEL_15:
   [(MapsAppTest *)self didTearDownForVKTest];
 }
 
-- (MapsAppTest)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTest)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 length])
+  applicationCopy = application;
+  nameCopy = name;
+  optionsCopy = options;
+  if ([nameCopy length])
   {
     v24.receiver = self;
     v24.super_class = MapsAppTest;
@@ -1267,12 +1267,12 @@ LABEL_15:
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_app, a3);
-      v14 = [v10 copy];
+      objc_storeStrong(&v12->_app, application);
+      v14 = [nameCopy copy];
       testName = v13->_testName;
       v13->_testName = v14;
 
-      v16 = [v11 copy];
+      v16 = [optionsCopy copy];
       options = v13->_options;
       v13->_options = v16;
 
@@ -1286,15 +1286,15 @@ LABEL_15:
     }
 
     self = v13;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 @end

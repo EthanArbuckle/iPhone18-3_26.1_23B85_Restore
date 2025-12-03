@@ -3,15 +3,15 @@
 - (BOOL)_isHomeAppInstalled;
 - (HFHomeAppInstallController)init;
 - (LSApplicationProxy)appProxy;
-- (id)downloadHomeAppWithUpdateBlock:(id)a3;
+- (id)downloadHomeAppWithUpdateBlock:(id)block;
 - (int64_t)status;
 - (void)_cleanup;
-- (void)_dispatchStatusUpdate:(int64_t)a3;
-- (void)applicationsDidFailToInstall:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
-- (void)request:(id)a3 didCompleteWithError:(id)a4;
+- (void)_dispatchStatusUpdate:(int64_t)update;
+- (void)applicationsDidFailToInstall:(id)install;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillInstall:(id)install;
+- (void)request:(id)request didCompleteWithError:(id)error;
 @end
 
 @implementation HFHomeAppInstallController
@@ -42,8 +42,8 @@ void __44__HFHomeAppInstallController_sharedInstance__block_invoke_2()
   v2 = [(HFHomeAppInstallController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v3 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
     v4 = objc_opt_new();
     statusUpdaters = v2->_statusUpdaters;
@@ -57,11 +57,11 @@ void __44__HFHomeAppInstallController_sharedInstance__block_invoke_2()
 
 - (BOOL)_isHomeAppInstalled
 {
-  v2 = [(HFHomeAppInstallController *)self appProxy];
-  v3 = [v2 appState];
-  v4 = [v3 isInstalled];
+  appProxy = [(HFHomeAppInstallController *)self appProxy];
+  appState = [appProxy appState];
+  isInstalled = [appState isInstalled];
 
-  return v4;
+  return isInstalled;
 }
 
 - (int64_t)status
@@ -74,26 +74,26 @@ void __44__HFHomeAppInstallController_sharedInstance__block_invoke_2()
   return [(HFHomeAppInstallController *)self lastReportedStatus];
 }
 
-- (id)downloadHomeAppWithUpdateBlock:(id)a3
+- (id)downloadHomeAppWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(HFHomeAppInstallController *)self _isHomeAppInstalled])
   {
-    v5 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
-    v6 = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
-    if (!v6 || (v7 = v6, -[HFHomeAppInstallController activeHomeAppDownloadFuture](self, "activeHomeAppDownloadFuture"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isFinished], v8, v7, (v9 & 1) != 0))
+    activeHomeAppDownloadFuture = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
+    if (!activeHomeAppDownloadFuture || (v7 = activeHomeAppDownloadFuture, -[HFHomeAppInstallController activeHomeAppDownloadFuture](self, "activeHomeAppDownloadFuture"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isFinished], v8, v7, (v9 & 1) != 0))
     {
-      v10 = [(HFHomeAppInstallController *)self statusUpdaters];
-      [v10 removeAllObjects];
+      statusUpdaters = [(HFHomeAppInstallController *)self statusUpdaters];
+      [statusUpdaters removeAllObjects];
 
-      v11 = [(HFHomeAppInstallController *)self statusUpdaters];
-      v12 = [v4 copy];
+      statusUpdaters2 = [(HFHomeAppInstallController *)self statusUpdaters];
+      v12 = [blockCopy copy];
       v13 = _Block_copy(v12);
-      [v11 na_safeAddObject:v13];
+      [statusUpdaters2 na_safeAddObject:v13];
 
       v14 = objc_opt_new();
       [(HFHomeAppInstallController *)self setActiveHomeAppDownloadFuture:v14];
@@ -103,29 +103,29 @@ void __44__HFHomeAppInstallController_sharedInstance__block_invoke_2()
       v17 = [v15 initWithBundleID:v16];
       [(HFHomeAppInstallController *)self setRequest:v17];
 
-      v18 = [(HFHomeAppInstallController *)self request];
-      [v18 setUserInitiated:1];
+      request = [(HFHomeAppInstallController *)self request];
+      [request setUserInitiated:1];
 
       [(HFHomeAppInstallController *)self _dispatchStatusUpdate:1];
       objc_initWeak(&location, self);
-      v19 = [(HFHomeAppInstallController *)self request];
+      request2 = [(HFHomeAppInstallController *)self request];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __61__HFHomeAppInstallController_downloadHomeAppWithUpdateBlock___block_invoke;
       v29[3] = &unk_277DF3860;
       objc_copyWeak(&v30, &location);
-      [v19 startWithErrorHandler:v29];
+      [request2 startWithErrorHandler:v29];
 
-      v20 = [(HFHomeAppInstallController *)self request];
-      [v20 setObserver:self];
+      request3 = [(HFHomeAppInstallController *)self request];
+      [request3 setObserver:self];
 
-      v21 = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
+      activeHomeAppDownloadFuture2 = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __61__HFHomeAppInstallController_downloadHomeAppWithUpdateBlock___block_invoke_3;
       v27[3] = &unk_277DFBE68;
       objc_copyWeak(&v28, &location);
-      v22 = [v21 addCompletionBlock:v27];
+      v22 = [activeHomeAppDownloadFuture2 addCompletionBlock:v27];
       objc_destroyWeak(&v28);
 
       objc_destroyWeak(&v30);
@@ -133,15 +133,15 @@ void __44__HFHomeAppInstallController_sharedInstance__block_invoke_2()
       goto LABEL_8;
     }
 
-    v23 = [(HFHomeAppInstallController *)self statusUpdaters];
-    v24 = [v4 copy];
+    statusUpdaters3 = [(HFHomeAppInstallController *)self statusUpdaters];
+    v24 = [blockCopy copy];
     v25 = _Block_copy(v24);
-    [v23 na_safeAddObject:v25];
+    [statusUpdaters3 na_safeAddObject:v25];
 
-    v5 = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
+    futureWithNoResult = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
   }
 
-  v22 = v5;
+  v22 = futureWithNoResult;
 LABEL_8:
 
   return v22;
@@ -198,12 +198,12 @@ void __61__HFHomeAppInstallController_downloadHomeAppWithUpdateBlock___block_inv
   return v4;
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
-  v4 = a3;
-  v5 = [(HFHomeAppInstallController *)self appProxy];
-  v6 = [v5 bundleIdentifier];
-  v7 = HFAppProxiesContainsAppProxyWithIdentifier(v4, v6);
+  installCopy = install;
+  appProxy = [(HFHomeAppInstallController *)self appProxy];
+  bundleIdentifier = [appProxy bundleIdentifier];
+  v7 = HFAppProxiesContainsAppProxyWithIdentifier(installCopy, bundleIdentifier);
 
   if (v7)
   {
@@ -212,43 +212,43 @@ void __61__HFHomeAppInstallController_downloadHomeAppWithUpdateBlock___block_inv
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
-  v5 = [(HFHomeAppInstallController *)self appProxy];
-  v6 = [v5 bundleIdentifier];
-  v7 = HFAppProxiesContainsAppProxyWithIdentifier(v4, v6);
+  installCopy = install;
+  appProxy = [(HFHomeAppInstallController *)self appProxy];
+  bundleIdentifier = [appProxy bundleIdentifier];
+  v7 = HFAppProxiesContainsAppProxyWithIdentifier(installCopy, bundleIdentifier);
 
   if (v7)
   {
-    v8 = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
+    activeHomeAppDownloadFuture = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__HFHomeAppInstallController_applicationsDidInstall___block_invoke;
     block[3] = &unk_277DF3D38;
-    v11 = v8;
-    v9 = v8;
+    v11 = activeHomeAppDownloadFuture;
+    v9 = activeHomeAppDownloadFuture;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)applicationsDidFailToInstall:(id)a3
+- (void)applicationsDidFailToInstall:(id)install
 {
-  v4 = a3;
-  v5 = [(HFHomeAppInstallController *)self appProxy];
-  v6 = [v5 bundleIdentifier];
-  v7 = HFAppProxiesContainsAppProxyWithIdentifier(v4, v6);
+  installCopy = install;
+  appProxy = [(HFHomeAppInstallController *)self appProxy];
+  bundleIdentifier = [appProxy bundleIdentifier];
+  v7 = HFAppProxiesContainsAppProxyWithIdentifier(installCopy, bundleIdentifier);
 
   if (v7)
   {
     [(HFHomeAppInstallController *)self _dispatchStatusUpdate:-1];
-    v8 = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
+    activeHomeAppDownloadFuture = [(HFHomeAppInstallController *)self activeHomeAppDownloadFuture];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__HFHomeAppInstallController_applicationsDidFailToInstall___block_invoke;
     block[3] = &unk_277DF3D38;
-    v11 = v8;
-    v9 = v8;
+    v11 = activeHomeAppDownloadFuture;
+    v9 = activeHomeAppDownloadFuture;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -260,12 +260,12 @@ void __59__HFHomeAppInstallController_applicationsDidFailToInstall___block_invok
   [v1 finishWithError:v2];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
-  v5 = [(HFHomeAppInstallController *)self appProxy];
-  v6 = [v5 bundleIdentifier];
-  v7 = HFAppProxiesContainsAppProxyWithIdentifier(v4, v6);
+  uninstallCopy = uninstall;
+  appProxy = [(HFHomeAppInstallController *)self appProxy];
+  bundleIdentifier = [appProxy bundleIdentifier];
+  v7 = HFAppProxiesContainsAppProxyWithIdentifier(uninstallCopy, bundleIdentifier);
 
   if (v7)
   {
@@ -274,20 +274,20 @@ void __59__HFHomeAppInstallController_applicationsDidFailToInstall___block_invok
   }
 }
 
-- (void)request:(id)a3 didCompleteWithError:(id)a4
+- (void)request:(id)request didCompleteWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFHomeAppInstallController *)self request];
+  errorCopy = error;
+  requestCopy = request;
+  request = [(HFHomeAppInstallController *)self request];
 
-  if (v8 == v7)
+  if (request == requestCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59__HFHomeAppInstallController_request_didCompleteWithError___block_invoke;
     v9[3] = &unk_277DF3370;
-    v10 = v6;
-    v11 = self;
+    v10 = errorCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v9);
   }
 }
@@ -308,7 +308,7 @@ void __59__HFHomeAppInstallController_request_didCompleteWithError___block_invok
   }
 }
 
-- (void)_dispatchStatusUpdate:(int64_t)a3
+- (void)_dispatchStatusUpdate:(int64_t)update
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -316,7 +316,7 @@ void __59__HFHomeAppInstallController_request_didCompleteWithError___block_invok
   aBlock[2] = __52__HFHomeAppInstallController__dispatchStatusUpdate___block_invoke;
   aBlock[3] = &unk_277DFBF08;
   objc_copyWeak(v6, &location);
-  v6[1] = a3;
+  v6[1] = update;
   v4 = _Block_copy(aBlock);
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
@@ -379,12 +379,12 @@ void __52__HFHomeAppInstallController__dispatchStatusUpdate___block_invoke(uint6
 - (void)_cleanup
 {
   [(HFHomeAppInstallController *)self setActiveHomeAppDownloadFuture:0];
-  v3 = [(HFHomeAppInstallController *)self request];
-  [v3 setObserver:0];
+  request = [(HFHomeAppInstallController *)self request];
+  [request setObserver:0];
 
   [(HFHomeAppInstallController *)self setRequest:0];
-  v4 = [(HFHomeAppInstallController *)self statusUpdaters];
-  [v4 removeAllObjects];
+  statusUpdaters = [(HFHomeAppInstallController *)self statusUpdaters];
+  [statusUpdaters removeAllObjects];
 
   v5 = [(HFHomeAppInstallController *)self _isHomeAppInstalled]- 1;
 

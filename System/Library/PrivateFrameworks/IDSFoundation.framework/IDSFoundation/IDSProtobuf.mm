@@ -1,40 +1,40 @@
 @interface IDSProtobuf
-+ (id)keyRepresentationForType:(unsigned __int16)a3 isResponse:(BOOL)a4;
++ (id)keyRepresentationForType:(unsigned __int16)type isResponse:(BOOL)response;
 - (BOOL)isResponse;
 - (IDSMessageContext)context;
 - (IDSProtobuf)init;
-- (IDSProtobuf)initWithCoder:(id)a3;
-- (IDSProtobuf)initWithDictionary:(id)a3;
-- (IDSProtobuf)initWithProtobufData:(id)a3 type:(unsigned __int16)a4 isResponse:(BOOL)a5;
+- (IDSProtobuf)initWithCoder:(id)coder;
+- (IDSProtobuf)initWithDictionary:(id)dictionary;
+- (IDSProtobuf)initWithProtobufData:(id)data type:(unsigned __int16)type isResponse:(BOOL)response;
 - (NSData)data;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)dictionaryRepresentationWithUncompressedData;
 - (unsigned)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContext:(id)a3;
-- (void)setData:(id)a3;
-- (void)setIsResponse:(BOOL)a3;
-- (void)setType:(unsigned __int16)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContext:(id)context;
+- (void)setData:(id)data;
+- (void)setIsResponse:(BOOL)response;
+- (void)setType:(unsigned __int16)type;
 @end
 
 @implementation IDSProtobuf
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_sync_exit(selfCopy);
 
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = IDSProtobuf;
   [(IDSProtobuf *)&v3 dealloc];
 }
 
-+ (id)keyRepresentationForType:(unsigned __int16)a3 isResponse:(BOOL)a4
++ (id)keyRepresentationForType:(unsigned __int16)type isResponse:(BOOL)response
 {
-  if (a4)
+  if (response)
   {
     v4 = 0x10000;
   }
@@ -44,25 +44,25 @@
     v4 = 0;
   }
 
-  return [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4 | a3];
+  return [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4 | type];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSProtobuf *)self type];
-  v5 = [(IDSProtobuf *)self isResponse];
-  v6 = [(IDSProtobuf *)self data];
-  v7 = [v3 stringWithFormat:@"IDSProtobuf %p type %d isResponse %d data length %lu", self, v4, v5, objc_msgSend(v6, "length")];
+  type = [(IDSProtobuf *)self type];
+  isResponse = [(IDSProtobuf *)self isResponse];
+  data = [(IDSProtobuf *)self data];
+  v7 = [v3 stringWithFormat:@"IDSProtobuf %p type %d isResponse %d data length %lu", self, type, isResponse, objc_msgSend(data, "length")];
 
   return v7;
 }
 
-- (IDSProtobuf)initWithProtobufData:(id)a3 type:(unsigned __int16)a4 isResponse:(BOOL)a5
+- (IDSProtobuf)initWithProtobufData:(id)data type:(unsigned __int16)type isResponse:(BOOL)response
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  responseCopy = response;
+  typeCopy = type;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = IDSProtobuf;
   v9 = [(IDSProtobuf *)&v18 init];
@@ -75,19 +75,19 @@
     v13 = v11[1];
     v11[1] = v12;
 
-    v14 = v8;
+    v14 = dataCopy;
     if (v14)
     {
       CFDictionarySetValue(v11[1], @"IDSProtoBufDataKey", v14);
     }
 
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v6];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
     if (v15)
     {
       CFDictionarySetValue(v11[1], @"IDSProtoBufTypeKey", v15);
     }
 
-    v16 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v16 = [MEMORY[0x1E696AD98] numberWithBool:responseCopy];
     if (v16)
     {
       CFDictionarySetValue(v11[1], @"IDSProtoBufIsResponseKey", v16);
@@ -99,10 +99,10 @@
   return v10;
 }
 
-- (IDSProtobuf)initWithDictionary:(id)a3
+- (IDSProtobuf)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v12.receiver = self;
     v12.super_class = IDSProtobuf;
@@ -112,7 +112,7 @@
     {
       v7 = v5;
       objc_sync_enter(v7);
-      v8 = [v4 mutableCopy];
+      v8 = [dictionaryCopy mutableCopy];
       protoBufParams = v7->_protoBufParams;
       v7->_protoBufParams = v8;
 
@@ -120,15 +120,15 @@
     }
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (IDSProtobuf)init
@@ -153,53 +153,53 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_protoBufParams mutableCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_protoBufParams mutableCopy];
   [v3 removeObjectForKey:@"IDSProtoBufMessageContextKey"];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)dictionaryRepresentationWithUncompressedData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_protoBufParams mutableCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_protoBufParams mutableCopy];
   [v3 removeObjectForKey:@"IDSProtoBufMessageContextKey"];
-  [v3 setObject:v2->_uncompressedData forKey:@"IDSProtoBufDataKey"];
-  objc_sync_exit(v2);
+  [v3 setObject:selfCopy->_uncompressedData forKey:@"IDSProtoBufDataKey"];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_protoBufParams setObject:v5 forKey:@"IDSProtoBufDataKey"];
-  objc_sync_exit(v4);
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_protoBufParams setObject:dataCopy forKey:@"IDSProtoBufDataKey"];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSData)data
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_protoBufParams objectForKey:@"IDSProtoBufDataKey"];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_protoBufParams objectForKey:@"IDSProtoBufDataKey"];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setType:(unsigned __int16)a3
+- (void)setType:(unsigned __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   obj = self;
   objc_sync_enter(obj);
   protoBufParams = obj->_protoBufParams;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
   [(NSMutableDictionary *)protoBufParams setObject:v5 forKey:@"IDSProtoBufTypeKey"];
 
   objc_sync_exit(obj);
@@ -207,22 +207,22 @@
 
 - (unsigned)type
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_protoBufParams objectForKey:@"IDSProtoBufTypeKey"];
-  v4 = [v3 unsignedIntegerValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_protoBufParams objectForKey:@"IDSProtoBufTypeKey"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  objc_sync_exit(v2);
-  return v4;
+  objc_sync_exit(selfCopy);
+  return unsignedIntegerValue;
 }
 
-- (void)setIsResponse:(BOOL)a3
+- (void)setIsResponse:(BOOL)response
 {
-  v3 = a3;
+  responseCopy = response;
   obj = self;
   objc_sync_enter(obj);
   protoBufParams = obj->_protoBufParams;
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:responseCopy];
   [(NSMutableDictionary *)protoBufParams setObject:v5 forKey:@"IDSProtoBufIsResponseKey"];
 
   objc_sync_exit(obj);
@@ -230,34 +230,34 @@
 
 - (BOOL)isResponse
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_protoBufParams objectForKey:@"IDSProtoBufIsResponseKey"];
-  v4 = [v3 BOOLValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_protoBufParams objectForKey:@"IDSProtoBufIsResponseKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  objc_sync_exit(v2);
-  return v4;
+  objc_sync_exit(selfCopy);
+  return bOOLValue;
 }
 
 - (IDSMessageContext)context
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_protoBufParams objectForKey:@"IDSProtoBufMessageContextKey"];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_protoBufParams objectForKey:@"IDSProtoBufMessageContextKey"];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  protoBufParams = v4->_protoBufParams;
-  if (v6)
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  protoBufParams = selfCopy->_protoBufParams;
+  if (contextCopy)
   {
-    [(NSMutableDictionary *)protoBufParams setObject:v6 forKey:@"IDSProtoBufMessageContextKey"];
+    [(NSMutableDictionary *)protoBufParams setObject:contextCopy forKey:@"IDSProtoBufMessageContextKey"];
   }
 
   else
@@ -265,21 +265,21 @@
     [(NSMutableDictionary *)protoBufParams removeObjectForKey:@"IDSProtoBufMessageContextKey"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 encodeObject:v4->_protoBufParams forKey:@"protobufparams"];
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_protoBufParams forKey:@"protobufparams"];
+  objc_sync_exit(selfCopy);
 }
 
-- (IDSProtobuf)initWithCoder:(id)a3
+- (IDSProtobuf)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = IDSProtobuf;
   v5 = [(IDSProtobuf *)&v11 init];
@@ -288,7 +288,7 @@
   {
     v7 = v5;
     objc_sync_enter(v7);
-    v8 = [v4 decodeObjectForKey:@"protobufparams"];
+    v8 = [coderCopy decodeObjectForKey:@"protobufparams"];
     protoBufParams = v7->_protoBufParams;
     v7->_protoBufParams = v8;
 

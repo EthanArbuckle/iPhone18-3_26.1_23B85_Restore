@@ -1,53 +1,53 @@
 @interface PKCreditAccountPaymentDetailsViewController
 - (BOOL)_showRecurringDay;
 - (BOOL)_showRecurringDetailsAmount;
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (PKCreditAccountPaymentDetailsViewController)initWithAccount:(id)a3 payment:(id)a4 paymentWebService:(id)a5 overrideViewStyle:(unint64_t)a6;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (PKCreditAccountPaymentDetailsViewController)initWithAccount:(id)account payment:(id)payment paymentWebService:(id)service overrideViewStyle:(unint64_t)style;
 - (PKCreditAccountPaymentDetailsViewControllerDelegate)delegate;
-- (id)_cancelPaymentCellForTableView:(id)a3;
+- (id)_cancelPaymentCellForTableView:(id)view;
 - (id)_cancellationDateForPayment;
 - (id)_hyperlinkFooterView;
-- (id)_modifyPaymentCellForTableView:(id)a3;
+- (id)_modifyPaymentCellForTableView:(id)view;
 - (id)_paymentAmountToDisplay;
 - (id)_stringForPaymentFrequency;
 - (id)_stringForPaymentPreset;
-- (id)_tableView:(id)a3 paymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)a4;
-- (id)_tableView:(id)a3 recurringPaymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)a4;
-- (id)_tableView:(id)a3 recurringPaymentStatusCellForRowAtIndexPath:(id)a4;
-- (id)_tableView:(id)a3 recurringPaymentUpcomingPaymentCellForPaymentDetailsRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)_tableView:(id)view paymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)path;
+- (id)_tableView:(id)view recurringPaymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)path;
+- (id)_tableView:(id)view recurringPaymentStatusCellForRowAtIndexPath:(id)path;
+- (id)_tableView:(id)view recurringPaymentUpcomingPaymentCellForPaymentDetailsRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (int64_t)_numberOfRecurringPaymentDetailsRows;
-- (int64_t)_recurringPaymentDetailsRowTypeForRowAtIndex:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_applyDetailViewStylingToCell:(id)a3;
-- (void)_cancelButtonPressed:(id)a3;
-- (void)_cancelPayment:(unint64_t)a3;
-- (void)_cancelPaymentSelected:(unint64_t)a3 sourceView:(id)a4;
+- (int64_t)_recurringPaymentDetailsRowTypeForRowAtIndex:(int64_t)index;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_applyDetailViewStylingToCell:(id)cell;
+- (void)_cancelButtonPressed:(id)pressed;
+- (void)_cancelPayment:(unint64_t)payment;
+- (void)_cancelPaymentSelected:(unint64_t)selected sourceView:(id)view;
 - (void)_computeRecurringDetailsRowMap;
-- (void)_configureDeletePaymentCell:(id)a3;
-- (void)_configureDismissCell:(id)a3;
-- (void)_configureLinkCell:(id)a3;
+- (void)_configureDeletePaymentCell:(id)cell;
+- (void)_configureDismissCell:(id)cell;
+- (void)_configureLinkCell:(id)cell;
 - (void)_modifyPaymentSelected;
-- (void)_reportEventForPassIfNecessary:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_reportEventForPassIfNecessary:(id)necessary;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKCreditAccountPaymentDetailsViewController
 
-- (PKCreditAccountPaymentDetailsViewController)initWithAccount:(id)a3 payment:(id)a4 paymentWebService:(id)a5 overrideViewStyle:(unint64_t)a6
+- (PKCreditAccountPaymentDetailsViewController)initWithAccount:(id)account payment:(id)payment paymentWebService:(id)service overrideViewStyle:(unint64_t)style
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  accountCopy = account;
+  paymentCopy = payment;
+  serviceCopy = service;
   v62.receiver = self;
   v62.super_class = PKCreditAccountPaymentDetailsViewController;
   v14 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v62, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior], 5);
@@ -57,25 +57,25 @@
     goto LABEL_20;
   }
 
-  v16 = v11;
-  v17 = v12;
-  objc_storeStrong(&v14->_account, a3);
+  v16 = accountCopy;
+  v17 = paymentCopy;
+  objc_storeStrong(&v14->_account, account);
   v15->_featureIdentifier = [v16 feature];
-  objc_storeStrong(&v15->_payment, a4);
+  objc_storeStrong(&v15->_payment, payment);
   v61 = v16;
-  v18 = [v16 creditDetails];
-  v19 = [v18 accountSummary];
-  v20 = [v19 paymentDueDate];
+  creditDetails = [v16 creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  paymentDueDate = [accountSummary paymentDueDate];
   paymentDueDate = v15->_paymentDueDate;
-  v15->_paymentDueDate = v20;
+  v15->_paymentDueDate = paymentDueDate;
 
-  v22 = [(PKAccountPayment *)v15->_payment scheduleDetails];
-  v23 = [v22 preset];
+  scheduleDetails = [(PKAccountPayment *)v15->_payment scheduleDetails];
+  preset = [scheduleDetails preset];
 
-  v24 = [(PKAccountPayment *)v15->_payment isRecurring];
+  isRecurring = [(PKAccountPayment *)v15->_payment isRecurring];
   v25 = [(PKAccountPayment *)v15->_payment isOnHoldForAccount:v15->_account];
   v26 = [(PKAccountPayment *)v15->_payment isBeforeNextCycleForAccount:v15->_account];
-  if (v24)
+  if (isRecurring)
   {
     v27 = [(PKAccountPayment *)v15->_payment state]== 4;
   }
@@ -85,7 +85,7 @@
     v27 = 0;
   }
 
-  v28 = v23 & 0xFFFFFFFFFFFFFFFELL;
+  v28 = preset & 0xFFFFFFFFFFFFFFFELL;
   v15->_isFailedRecurringPayment = v27;
   if ([(PKAccountPayment *)v15->_payment willSkipFirstPaymentForAccount:v15->_account])
   {
@@ -97,7 +97,7 @@
   {
     isFailedRecurringPayment = v15->_isFailedRecurringPayment;
     v15->_showStatusSection = isFailedRecurringPayment;
-    v29 = v24 & !isFailedRecurringPayment;
+    v29 = isRecurring & !isFailedRecurringPayment;
   }
 
   v15->_showUpcomingPaymentSection = v29;
@@ -111,37 +111,37 @@
     v31 = 0;
   }
 
-  v12 = v17;
+  paymentCopy = v17;
   v15->_isPaymentAmountPending = v31;
-  objc_storeStrong(&v15->_paymentWebService, a5);
-  v15->_viewStyle = a6;
-  v32 = [(PKAccount *)v15->_account creditDetails];
-  v33 = [v32 currencyCode];
+  objc_storeStrong(&v15->_paymentWebService, service);
+  v15->_viewStyle = style;
+  creditDetails2 = [(PKAccount *)v15->_account creditDetails];
+  currencyCode = [creditDetails2 currencyCode];
   v34 = PKMutableNumberFormatterForCurrencyCode();
   currencyFormatter = v15->_currencyFormatter;
   v15->_currencyFormatter = v34;
 
-  v11 = v61;
-  v36 = [v61 creditDetails];
-  v37 = [v36 productTimeZone];
+  accountCopy = v61;
+  creditDetails3 = [v61 creditDetails];
+  productTimeZone = [creditDetails3 productTimeZone];
 
   v38 = objc_alloc_init(MEMORY[0x1E696AB78]);
   productDateFormatter = v15->_productDateFormatter;
   v15->_productDateFormatter = v38;
 
-  [(NSDateFormatter *)v15->_productDateFormatter setTimeZone:v37];
+  [(NSDateFormatter *)v15->_productDateFormatter setTimeZone:productTimeZone];
   [(NSDateFormatter *)v15->_productDateFormatter setLocalizedDateFormatFromTemplate:@"M/d/yyyy"];
-  if ([v12 isRecurring])
+  if ([paymentCopy isRecurring])
   {
     v40 = objc_alloc_init(MEMORY[0x1E696AB78]);
     productDayFormatter = v15->_productDayFormatter;
     v15->_productDayFormatter = v40;
 
-    [(NSDateFormatter *)v15->_productDayFormatter setTimeZone:v37];
-    v42 = [v12 scheduleDetails];
-    v43 = [v42 frequency];
+    [(NSDateFormatter *)v15->_productDayFormatter setTimeZone:productTimeZone];
+    scheduleDetails2 = [paymentCopy scheduleDetails];
+    frequency = [scheduleDetails2 frequency];
 
-    if ((v43 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    if ((frequency & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
       v44 = @"EEEE";
 LABEL_16:
@@ -149,7 +149,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (v43 == 6)
+    if (frequency == 6)
     {
       v44 = @"d";
       goto LABEL_16;
@@ -162,8 +162,8 @@ LABEL_17:
   v15->_localTimeFormatter = v45;
 
   v47 = v15->_localTimeFormatter;
-  v48 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [(NSDateFormatter *)v47 setLocale:v48];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [(NSDateFormatter *)v47 setLocale:autoupdatingCurrentLocale];
 
   [(NSDateFormatter *)v15->_localTimeFormatter setLocalizedDateFormatFromTemplate:@"j:mm a z"];
   v49 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -171,28 +171,28 @@ LABEL_17:
   v15->_localCancellationDateFormatter = v49;
 
   v51 = v15->_localCancellationDateFormatter;
-  v52 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [(NSDateFormatter *)v51 setLocale:v52];
+  autoupdatingCurrentLocale2 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [(NSDateFormatter *)v51 setLocale:autoupdatingCurrentLocale2];
 
   [(NSDateFormatter *)v15->_localCancellationDateFormatter setLocalizedDateFormatFromTemplate:@"MMMM d"];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v53 = [(PKCreditAccountPaymentDetailsViewController *)v15 navigationItem];
-    [v53 pkui_setupScrollEdgeChromelessAppearance];
-    [v53 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+    navigationItem = [(PKCreditAccountPaymentDetailsViewController *)v15 navigationItem];
+    [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+    [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
   }
 
   v54 = objc_alloc_init(MEMORY[0x1E696AB78]);
   productPaymentMonthFormatter = v15->_productPaymentMonthFormatter;
   v15->_productPaymentMonthFormatter = v54;
 
-  [(NSDateFormatter *)v15->_productPaymentMonthFormatter setTimeZone:v37];
+  [(NSDateFormatter *)v15->_productPaymentMonthFormatter setTimeZone:productTimeZone];
   [(NSDateFormatter *)v15->_productPaymentMonthFormatter setLocalizedDateFormatFromTemplate:@"MMMM"];
   v56 = objc_alloc_init(MEMORY[0x1E696AB78]);
   productPaymentDateFormatter = v15->_productPaymentDateFormatter;
   v15->_productPaymentDateFormatter = v56;
 
-  [(NSDateFormatter *)v15->_productPaymentDateFormatter setTimeZone:v37];
+  [(NSDateFormatter *)v15->_productPaymentDateFormatter setTimeZone:productTimeZone];
   [(NSDateFormatter *)v15->_productPaymentDateFormatter setLocalizedDateFormatFromTemplate:@"MMMM d"];
   v58 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   localizedDayNumberFormatter = v15->_localizedDayNumberFormatter;
@@ -209,39 +209,39 @@ LABEL_20:
   v28.receiver = self;
   v28.super_class = PKCreditAccountPaymentDetailsViewController;
   [(PKSectionTableViewController *)&v28 viewDidLoad];
-  v3 = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"LinkCellReuseIdentifier"];
+  tableView = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"LinkCellReuseIdentifier"];
   v4 = objc_opt_class();
   v5 = [(PKCreditAccountPaymentDetailsViewController *)self _reuseIdentifierForSection:0];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
   v6 = objc_opt_class();
   v7 = [(PKCreditAccountPaymentDetailsViewController *)self _reuseIdentifierForSection:3];
-  [v3 registerClass:v6 forCellReuseIdentifier:v7];
+  [tableView registerClass:v6 forCellReuseIdentifier:v7];
 
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v3 setEstimatedRowHeight:50.0];
-  v8 = [(PKCreditAccountPaymentDetailsViewController *)self navigationController];
-  v9 = [v8 viewControllers];
-  v10 = [v9 firstObject];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView setEstimatedRowHeight:50.0];
+  navigationController = [(PKCreditAccountPaymentDetailsViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
   v11 = PKEqualObjects();
 
   if (v11)
   {
     v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonPressed_];
-    v13 = [(PKCreditAccountPaymentDetailsViewController *)self navigationItem];
-    [v13 setLeftBarButtonItem:v12];
+    navigationItem = [(PKCreditAccountPaymentDetailsViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v12];
   }
 
   viewStyle = self->_viewStyle;
   if (viewStyle == 2)
   {
-    v23 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v3 setBackgroundColor:v23];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [tableView setBackgroundColor:systemBackgroundColor];
 
-    v15 = [v3 backgroundView];
-    v24 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v15 setBackgroundColor:v24];
+    backgroundView = [tableView backgroundView];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [backgroundView setBackgroundColor:systemBackgroundColor2];
 
 LABEL_10:
     goto LABEL_11;
@@ -249,24 +249,24 @@ LABEL_10:
 
   if (viewStyle == 1)
   {
-    v15 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v16 = [v15 backgroundColor];
-    [v3 setBackgroundColor:v16];
+    backgroundView = PKBridgeAppearanceGetAppearanceSpecifier();
+    backgroundColor = [backgroundView backgroundColor];
+    [tableView setBackgroundColor:backgroundColor];
 
-    v17 = [v3 backgroundView];
-    v18 = [v15 backgroundColor];
-    [v17 setBackgroundColor:v18];
+    backgroundView2 = [tableView backgroundView];
+    backgroundColor2 = [backgroundView backgroundColor];
+    [backgroundView2 setBackgroundColor:backgroundColor2];
 
-    v19 = [v15 tableViewSeparatorColor];
-    [v3 setSeparatorColor:v19];
+    tableViewSeparatorColor = [backgroundView tableViewSeparatorColor];
+    [tableView setSeparatorColor:tableViewSeparatorColor];
 
-    v20 = [v15 tintColor];
-    [v3 setSectionIndexColor:v20];
+    tintColor = [backgroundView tintColor];
+    [tableView setSectionIndexColor:tintColor];
 
-    v21 = [v15 foregroundColor];
-    [v3 setSectionIndexBackgroundColor:v21];
+    foregroundColor = [backgroundView foregroundColor];
+    [tableView setSectionIndexBackgroundColor:foregroundColor];
 
-    if ([v15 hasDarkAppearance])
+    if ([backgroundView hasDarkAppearance])
     {
       v22 = 2;
     }
@@ -276,38 +276,38 @@ LABEL_10:
       v22 = 0;
     }
 
-    [v3 setIndicatorStyle:v22];
+    [tableView setIndicatorStyle:v22];
     goto LABEL_10;
   }
 
 LABEL_11:
   [(PKAccountPayment *)self->_payment isRecurring];
-  v25 = [(PKCreditAccountPaymentDetailsViewController *)self navigationItem];
+  navigationItem2 = [(PKCreditAccountPaymentDetailsViewController *)self navigationItem];
   v26 = PKLocalizedFeatureString();
-  [v25 setTitle:v26];
+  [navigationItem2 setTitle:v26];
 
-  v27 = [(PKCreditAccountPaymentDetailsViewController *)self view];
-  [v27 setAccessibilityIdentifier:*MEMORY[0x1E69B9A28]];
+  view = [(PKCreditAccountPaymentDetailsViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9A28]];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKCreditAccountPaymentDetailsViewController;
-  [(PKCreditAccountPaymentDetailsViewController *)&v5 viewDidAppear:a3];
+  [(PKCreditAccountPaymentDetailsViewController *)&v5 viewDidAppear:appear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA818];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(PKCreditAccountPaymentDetailsViewController *)self _reportEventForPassIfNecessary:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKCreditAccountPaymentDetailsViewController;
-  [(PKCreditAccountPaymentDetailsViewController *)&v5 viewDidDisappear:a3];
+  [(PKCreditAccountPaymentDetailsViewController *)&v5 viewDidDisappear:disappear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA820];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
@@ -321,9 +321,9 @@ LABEL_11:
   [(PKCreditAccountPaymentDetailsViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
-    v4 = [(PKCreditAccountPaymentDetailsViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
+    navigationItem = [(PKCreditAccountPaymentDetailsViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
@@ -369,23 +369,23 @@ LABEL_11:
   }
 }
 
-- (int64_t)_recurringPaymentDetailsRowTypeForRowAtIndex:(int64_t)a3
+- (int64_t)_recurringPaymentDetailsRowTypeForRowAtIndex:(int64_t)index
 {
   recurringDetailsRowMap = self->_recurringDetailsRowMap;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v5 = [(NSDictionary *)recurringDetailsRowMap objectForKeyedSubscript:v4];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 6;
+    integerValue = 6;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (int64_t)_numberOfRecurringPaymentDetailsRows
@@ -410,26 +410,26 @@ LABEL_11:
 
 - (BOOL)_showRecurringDetailsAmount
 {
-  v2 = [(PKAccountPayment *)self->_payment scheduleDetails];
-  v3 = [v2 preset] == 1;
+  scheduleDetails = [(PKAccountPayment *)self->_payment scheduleDetails];
+  v3 = [scheduleDetails preset] == 1;
 
   return v3;
 }
 
 - (BOOL)_showRecurringDay
 {
-  v2 = [(PKAccountPayment *)self->_payment scheduleDetails];
-  v3 = [v2 frequency];
+  scheduleDetails = [(PKAccountPayment *)self->_payment scheduleDetails];
+  frequency = [scheduleDetails frequency];
 
-  return (v3 - 4) < 3;
+  return (frequency - 4) < 3;
 }
 
 - (id)_stringForPaymentPreset
 {
-  v2 = [(PKAccountPayment *)self->_payment scheduleDetails];
-  v3 = [v2 preset];
+  scheduleDetails = [(PKAccountPayment *)self->_payment scheduleDetails];
+  preset = [scheduleDetails preset];
 
-  if ((v3 - 1) > 2)
+  if ((preset - 1) > 2)
   {
     v4 = 0;
   }
@@ -444,10 +444,10 @@ LABEL_11:
 
 - (id)_stringForPaymentFrequency
 {
-  v2 = [(PKAccountPayment *)self->_payment scheduleDetails];
-  v3 = [v2 frequency];
+  scheduleDetails = [(PKAccountPayment *)self->_payment scheduleDetails];
+  frequency = [scheduleDetails frequency];
 
-  if ((v3 - 4) > 3)
+  if ((frequency - 4) > 3)
   {
     v4 = 0;
   }
@@ -462,39 +462,39 @@ LABEL_11:
 
 - (id)_paymentAmountToDisplay
 {
-  v3 = [(PKAccountPayment *)self->_payment scheduleDetails];
-  v4 = [v3 preset];
+  scheduleDetails = [(PKAccountPayment *)self->_payment scheduleDetails];
+  preset = [scheduleDetails preset];
 
-  v5 = [MEMORY[0x1E696AB90] zero];
-  v6 = [(PKAccount *)self->_account creditDetails];
-  v7 = [v6 accountSummary];
+  zero = [MEMORY[0x1E696AB90] zero];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
 
   if (!self->_isPaymentAmountPending)
   {
-    switch(v4)
+    switch(preset)
     {
       case 3:
-        v12 = [v7 remainingStatementBalance];
+        remainingStatementBalance = [accountSummary remainingStatementBalance];
         break;
       case 2:
-        v12 = [v7 remainingMinimumPayment];
+        remainingStatementBalance = [accountSummary remainingMinimumPayment];
         break;
       case 1:
-        v8 = [v7 adjustedBalance];
-        v9 = [(PKAccountPayment *)self->_payment currencyAmount];
-        v10 = [v9 amount];
+        adjustedBalance = [accountSummary adjustedBalance];
+        currencyAmount = [(PKAccountPayment *)self->_payment currencyAmount];
+        amount = [currencyAmount amount];
 
-        if ([v5 compare:v8] == -1)
+        if ([zero compare:adjustedBalance] == -1)
         {
-          v11 = v10;
+          zero2 = amount;
         }
 
         else
         {
-          v11 = [MEMORY[0x1E696AB90] zero];
+          zero2 = [MEMORY[0x1E696AB90] zero];
         }
 
-        v13 = v11;
+        v13 = zero2;
 
         if (!v13)
         {
@@ -509,8 +509,8 @@ LABEL_10:
         goto LABEL_13;
     }
 
-    v13 = v12;
-    if (v12)
+    v13 = remainingStatementBalance;
+    if (remainingStatementBalance)
     {
       goto LABEL_10;
     }
@@ -523,31 +523,31 @@ LABEL_14:
   return v14;
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
-  v4 = [(PKCreditAccountPaymentDetailsViewController *)self presentingViewController];
-  v6 = v4;
-  if (v4)
+  presentingViewController = [(PKCreditAccountPaymentDetailsViewController *)self presentingViewController];
+  v6 = presentingViewController;
+  if (presentingViewController)
   {
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v5 = [(PKCreditAccountPaymentDetailsViewController *)self navigationController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(PKCreditAccountPaymentDetailsViewController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (id)_cancellationDateForPayment
 {
-  v3 = [(PKAccount *)self->_account creditDetails];
-  v4 = [v3 productTimeZone];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
 
-  v5 = [(PKAccountPayment *)self->_payment paymentDate];
-  if (v5)
+  paymentDate = [(PKAccountPayment *)self->_payment paymentDate];
+  if (paymentDate)
   {
-    v6 = v4 == 0;
+    v6 = productTimeZone == 0;
   }
 
   else
@@ -564,8 +564,8 @@ LABEL_14:
   {
     v7 = objc_alloc(MEMORY[0x1E695DEE8]);
     v8 = [v7 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-    [v8 setTimeZone:v4];
-    v9 = [v8 components:28 fromDate:v5];
+    [v8 setTimeZone:productTimeZone];
+    v9 = [v8 components:28 fromDate:paymentDate];
     v10 = [v8 dateFromComponents:v9];
     v11 = [v10 dateByAddingTimeInterval:-60.0];
   }
@@ -604,8 +604,8 @@ LABEL_14:
     {
       v12 = self->_hyperlinkFooterView;
       v13 = PKBridgeAppearanceGetAppearanceSpecifier();
-      v14 = [v13 footerHyperlinkColor];
-      [(PKFooterHyperlinkView *)v12 setLinkTextColor:v14];
+      footerHyperlinkColor = [v13 footerHyperlinkColor];
+      [(PKFooterHyperlinkView *)v12 setLinkTextColor:footerHyperlinkColor];
     }
 
     objc_destroyWeak(&v18);
@@ -672,21 +672,21 @@ void __67__PKCreditAccountPaymentDetailsViewController__hyperlinkFooterView__blo
   }
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
   v4 = 0;
-  if (a3 > 1)
+  if (section > 1)
   {
-    if (a3 == 2)
+    if (section == 2)
     {
       v7 = 1234;
     }
 
     else
     {
-      if (a3 != 3)
+      if (section != 3)
       {
-        if (a3 == 4)
+        if (section == 4)
         {
           v4 = [(PKAccountPayment *)self->_payment state]== 1 && !self->_isFailedRecurringPayment;
         }
@@ -701,13 +701,13 @@ void __67__PKCreditAccountPaymentDetailsViewController__hyperlinkFooterView__blo
     return v4 & 1;
   }
 
-  if (!a3)
+  if (!section)
   {
     v4 = [(PKAccountPayment *)self->_payment isRecurring]^ 1;
     return v4 & 1;
   }
 
-  if (a3 != 1)
+  if (section != 1)
   {
     return v4 & 1;
   }
@@ -717,15 +717,15 @@ void __67__PKCreditAccountPaymentDetailsViewController__hyperlinkFooterView__blo
   return [(PKAccountPayment *)payment isRecurring];
 }
 
-- (void)_applyDetailViewStylingToCell:(id)a3
+- (void)_applyDetailViewStylingToCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   viewStyle = self->_viewStyle;
   if (viewStyle == 2)
   {
-    v14 = v4;
-    v12 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v14 setBackgroundColor:v12];
+    v14 = cellCopy;
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [v14 setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   else
@@ -735,37 +735,37 @@ void __67__PKCreditAccountPaymentDetailsViewController__hyperlinkFooterView__blo
       goto LABEL_6;
     }
 
-    v14 = v4;
-    v6 = [v4 textLabel];
+    v14 = cellCopy;
+    textLabel = [cellCopy textLabel];
     v7 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v8 = [v7 textColor];
-    [v6 setTextColor:v8];
+    textColor = [v7 textColor];
+    [textLabel setTextColor:textColor];
 
-    v9 = [v14 detailTextLabel];
+    detailTextLabel = [v14 detailTextLabel];
     v10 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v11 = [v10 altTextColor];
-    [v9 setTextColor:v11];
+    altTextColor = [v10 altTextColor];
+    [detailTextLabel setTextColor:altTextColor];
 
-    v12 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v13 = [v12 foregroundColor];
-    [v14 setBackgroundColor:v13];
+    secondarySystemBackgroundColor = PKBridgeAppearanceGetAppearanceSpecifier();
+    foregroundColor = [secondarySystemBackgroundColor foregroundColor];
+    [v14 setBackgroundColor:foregroundColor];
   }
 
-  v4 = v14;
+  cellCopy = v14;
 LABEL_6:
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKCreditAccountPaymentDetailsViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKCreditAccountPaymentDetailsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
+  v7 = [pathCopy row];
   switch(v6)
   {
     case 1uLL:
@@ -777,7 +777,7 @@ LABEL_6:
         goto LABEL_6;
       }
 
-      v9 = [v5 row] == 1;
+      v9 = [pathCopy row] == 1;
       break;
     case 4uLL:
       v8 = !self->_cancellingPayment;
@@ -794,9 +794,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(PKSectionTableViewController *)self sectionForIndex:a4]== 2)
+  if ([(PKSectionTableViewController *)self sectionForIndex:section]== 2)
   {
     v4 = PKLocalizedFeatureString();
   }
@@ -809,9 +809,9 @@ LABEL_12:
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (!v5)
   {
     goto LABEL_5;
@@ -826,11 +826,11 @@ LABEL_12:
     }
 
 LABEL_5:
-    v6 = [(PKCreditAccountPaymentDetailsViewController *)self _cancellationDateForPayment];
-    if (v6)
+    _cancellationDateForPayment = [(PKCreditAccountPaymentDetailsViewController *)self _cancellationDateForPayment];
+    if (_cancellationDateForPayment)
     {
-      v7 = [(NSDateFormatter *)self->_localTimeFormatter stringFromDate:v6];
-      v10 = [(NSDateFormatter *)self->_localCancellationDateFormatter stringFromDate:v6];
+      v7 = [(NSDateFormatter *)self->_localTimeFormatter stringFromDate:_cancellationDateForPayment];
+      v10 = [(NSDateFormatter *)self->_localCancellationDateFormatter stringFromDate:_cancellationDateForPayment];
       v8 = PKLocalizedFeatureString();
     }
 
@@ -848,9 +848,9 @@ LABEL_10:
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 == 3)
   {
     if (self->_isFailedRecurringPayment)
@@ -862,19 +862,19 @@ LABEL_10:
   else if (v5 == 4)
   {
 LABEL_3:
-    v6 = [(PKCreditAccountPaymentDetailsViewController *)self _hyperlinkFooterView];
+    _hyperlinkFooterView = [(PKCreditAccountPaymentDetailsViewController *)self _hyperlinkFooterView];
     goto LABEL_6;
   }
 
-  v6 = 0;
+  _hyperlinkFooterView = 0;
 LABEL_6:
 
-  return v6;
+  return _hyperlinkFooterView;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  result = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  result = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (result <= 1)
   {
     if (result)
@@ -921,11 +921,11 @@ LABEL_6:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v9 = 0;
   if (v8 <= 1)
   {
@@ -936,12 +936,12 @@ LABEL_6:
         goto LABEL_13;
       }
 
-      v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:v6 recurringPaymentDetailsCellForPaymentDetailsRowAtIndexPath:v7];
+      v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:viewCopy recurringPaymentDetailsCellForPaymentDetailsRowAtIndexPath:pathCopy];
     }
 
     else
     {
-      v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:v6 paymentDetailsCellForPaymentDetailsRowAtIndexPath:v7];
+      v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:viewCopy paymentDetailsCellForPaymentDetailsRowAtIndexPath:pathCopy];
     }
   }
 
@@ -950,13 +950,13 @@ LABEL_6:
     switch(v8)
     {
       case 2:
-        v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:v6 recurringPaymentUpcomingPaymentCellForPaymentDetailsRowAtIndexPath:v7];
+        v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:viewCopy recurringPaymentUpcomingPaymentCellForPaymentDetailsRowAtIndexPath:pathCopy];
         break;
       case 3:
-        v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:v6 recurringPaymentStatusCellForRowAtIndexPath:v7];
+        v10 = [(PKCreditAccountPaymentDetailsViewController *)self _tableView:viewCopy recurringPaymentStatusCellForRowAtIndexPath:pathCopy];
         break;
       case 4:
-        v10 = [(PKCreditAccountPaymentDetailsViewController *)self _cancelPaymentCellForTableView:v6];
+        v10 = [(PKCreditAccountPaymentDetailsViewController *)self _cancelPaymentCellForTableView:viewCopy];
         break;
       default:
         goto LABEL_13;
@@ -969,34 +969,34 @@ LABEL_13:
   return v9;
 }
 
-- (id)_tableView:(id)a3 paymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)a4
+- (id)_tableView:(id)view paymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = [(PKCreditAccountPaymentDetailsViewController *)self _reuseIdentifierForSection:0];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
-  v10 = [(PKAccountPayment *)self->_payment paymentStatusDate];
-  v11 = v10;
-  if (v10)
+  paymentStatusDate = [(PKAccountPayment *)self->_payment paymentStatusDate];
+  v11 = paymentStatusDate;
+  if (paymentStatusDate)
   {
-    v12 = v10;
+    paymentDate = paymentStatusDate;
   }
 
   else
   {
-    v12 = [(PKAccountPayment *)self->_payment paymentDate];
+    paymentDate = [(PKAccountPayment *)self->_payment paymentDate];
   }
 
-  v13 = v12;
+  v13 = paymentDate;
 
-  v14 = [v6 row];
+  v14 = [pathCopy row];
   switch(v14)
   {
     case 2:
       v15 = PKLocalizedFeatureString();
-      v22 = [(PKAccountPayment *)self->_payment fundingSource];
-      v16 = [v22 displayDescription];
+      fundingSource = [(PKAccountPayment *)self->_payment fundingSource];
+      displayDescription = [fundingSource displayDescription];
 
       v17 = MEMORY[0x1E69B9508];
       v21 = 5;
@@ -1004,15 +1004,15 @@ LABEL_13:
     case 1:
       v15 = PKLocalizedFeatureString();
       currencyFormatter = self->_currencyFormatter;
-      v19 = [(PKAccountPayment *)self->_payment currencyAmount];
-      v20 = [v19 amount];
-      v16 = [(NSNumberFormatter *)currencyFormatter stringFromNumber:v20];
+      currencyAmount = [(PKAccountPayment *)self->_payment currencyAmount];
+      amount = [currencyAmount amount];
+      displayDescription = [(NSNumberFormatter *)currencyFormatter stringFromNumber:amount];
 
       v17 = MEMORY[0x1E69B9448];
       goto LABEL_9;
     case 0:
       v15 = PKLocalizedFeatureString();
-      v16 = [(NSDateFormatter *)self->_productDateFormatter stringFromDate:v13];
+      displayDescription = [(NSDateFormatter *)self->_productDateFormatter stringFromDate:v13];
       v17 = MEMORY[0x1E69B9698];
 LABEL_9:
       v21 = 4;
@@ -1021,31 +1021,31 @@ LABEL_11:
       goto LABEL_13;
   }
 
-  v16 = 0;
+  displayDescription = 0;
   v23 = 0;
   v15 = 0;
   v21 = 4;
 LABEL_13:
-  v24 = [v9 textLabel];
-  [v24 setText:v15];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v15];
 
-  v25 = [v9 detailTextLabel];
-  [v25 setText:v16];
-  [v25 setLineBreakMode:v21];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:displayDescription];
+  [detailTextLabel setLineBreakMode:v21];
   [(PKCreditAccountPaymentDetailsViewController *)self _applyDetailViewStylingToCell:v9];
   PKAccessibilityIDCellSet(v9, v23);
 
   return v9;
 }
 
-- (id)_tableView:(id)a3 recurringPaymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)a4
+- (id)_tableView:(id)view recurringPaymentDetailsCellForPaymentDetailsRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = [(PKCreditAccountPaymentDetailsViewController *)self _reuseIdentifierForSection:0];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
-  v10 = [v7 row];
+  v10 = [pathCopy row];
   v11 = [(PKCreditAccountPaymentDetailsViewController *)self _recurringPaymentDetailsRowTypeForRowAtIndex:v10];
   v12 = 0;
   v13 = 4;
@@ -1056,8 +1056,8 @@ LABEL_13:
       if (v11 == 4)
       {
         v15 = PKLocalizedFeatureString();
-        v31 = [(PKAccountPayment *)self->_payment fundingSource];
-        v14 = [v31 displayDescription];
+        fundingSource = [(PKAccountPayment *)self->_payment fundingSource];
+        displayDescription = [fundingSource displayDescription];
 
         v12 = *MEMORY[0x1E69B9508];
         v13 = 5;
@@ -1065,11 +1065,11 @@ LABEL_13:
 
       else
       {
-        v14 = 0;
+        displayDescription = 0;
         v15 = 0;
         if (v11 == 5)
         {
-          v17 = [(PKCreditAccountPaymentDetailsViewController *)self _modifyPaymentCellForTableView:v6];
+          v17 = [(PKCreditAccountPaymentDetailsViewController *)self _modifyPaymentCellForTableView:viewCopy];
           goto LABEL_17;
         }
       }
@@ -1077,47 +1077,47 @@ LABEL_13:
       goto LABEL_16;
     }
 
-    v18 = [(PKAccountPayment *)self->_payment scheduleDetails];
-    v19 = [v18 frequency];
+    scheduleDetails = [(PKAccountPayment *)self->_payment scheduleDetails];
+    frequency = [scheduleDetails frequency];
 
     v20 = *MEMORY[0x1E69B96A0];
     v21 = v20;
-    if ((v19 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    if ((frequency & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
       v15 = PKLocalizedFeatureString();
       productDayFormatter = self->_productDayFormatter;
-      v23 = [(PKAccountPayment *)self->_payment paymentDate];
-      v14 = [(NSDateFormatter *)productDayFormatter stringFromDate:v23];
+      paymentDate = [(PKAccountPayment *)self->_payment paymentDate];
+      displayDescription = [(NSDateFormatter *)productDayFormatter stringFromDate:paymentDate];
       v24 = MEMORY[0x1E69B9DE8];
     }
 
     else
     {
-      if (v19 != 6)
+      if (frequency != 6)
       {
-        v14 = 0;
+        displayDescription = 0;
         v12 = v20;
         goto LABEL_28;
       }
 
       v15 = PKLocalizedFeatureString();
-      v32 = [(PKAccountPayment *)self->_payment scheduleDetails];
-      v33 = [v32 scheduledDay];
+      scheduleDetails2 = [(PKAccountPayment *)self->_payment scheduleDetails];
+      scheduledDay = [scheduleDetails2 scheduledDay];
 
-      if (v33)
+      if (scheduledDay)
       {
         localizedDayNumberFormatter = self->_localizedDayNumberFormatter;
-        v23 = [MEMORY[0x1E696AD98] numberWithInteger:v33];
-        [(NSNumberFormatter *)localizedDayNumberFormatter stringFromNumber:v23];
+        paymentDate = [MEMORY[0x1E696AD98] numberWithInteger:scheduledDay];
+        [(NSNumberFormatter *)localizedDayNumberFormatter stringFromNumber:paymentDate];
       }
 
       else
       {
         v35 = self->_productDayFormatter;
-        v23 = [(PKAccountPayment *)self->_payment paymentDate];
-        [(NSDateFormatter *)v35 stringFromDate:v23];
+        paymentDate = [(PKAccountPayment *)self->_payment paymentDate];
+        [(NSDateFormatter *)v35 stringFromDate:paymentDate];
       }
-      v14 = ;
+      displayDescription = ;
       v24 = MEMORY[0x1E69B9968];
     }
 
@@ -1135,7 +1135,7 @@ LABEL_28:
   if (!v11)
   {
     v15 = PKLocalizedFeatureString();
-    v14 = [(PKCreditAccountPaymentDetailsViewController *)self _stringForPaymentPreset];
+    displayDescription = [(PKCreditAccountPaymentDetailsViewController *)self _stringForPaymentPreset];
     v16 = MEMORY[0x1E69B9D78];
     goto LABEL_14;
   }
@@ -1144,20 +1144,20 @@ LABEL_28:
   {
     v15 = PKLocalizedFeatureString();
     currencyFormatter = self->_currencyFormatter;
-    v26 = [(PKAccountPayment *)self->_payment currencyAmount];
-    v27 = [v26 amount];
-    v14 = [(NSNumberFormatter *)currencyFormatter stringFromNumber:v27];
+    currencyAmount = [(PKAccountPayment *)self->_payment currencyAmount];
+    amount = [currencyAmount amount];
+    displayDescription = [(NSNumberFormatter *)currencyFormatter stringFromNumber:amount];
 
     v16 = MEMORY[0x1E69B9448];
     goto LABEL_14;
   }
 
-  v14 = 0;
+  displayDescription = 0;
   v15 = 0;
   if (v11 == 2)
   {
     v15 = PKLocalizedFeatureString();
-    v14 = [(PKCreditAccountPaymentDetailsViewController *)self _stringForPaymentFrequency];
+    displayDescription = [(PKCreditAccountPaymentDetailsViewController *)self _stringForPaymentFrequency];
     v16 = MEMORY[0x1E69B9828];
 LABEL_14:
     v12 = *v16;
@@ -1166,12 +1166,12 @@ LABEL_15:
   }
 
 LABEL_16:
-  v28 = [v9 textLabel];
-  [v28 setText:v15];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v15];
 
-  v29 = [v9 detailTextLabel];
-  [v29 setText:v14];
-  [v29 setLineBreakMode:v13];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:displayDescription];
+  [detailTextLabel setLineBreakMode:v13];
   [(PKCreditAccountPaymentDetailsViewController *)self _applyDetailViewStylingToCell:v9];
   PKAccessibilityIDCellSet(v9, v12);
   v17 = v9;
@@ -1181,25 +1181,25 @@ LABEL_17:
   return v17;
 }
 
-- (id)_tableView:(id)a3 recurringPaymentUpcomingPaymentCellForPaymentDetailsRowAtIndexPath:(id)a4
+- (id)_tableView:(id)view recurringPaymentUpcomingPaymentCellForPaymentDetailsRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = [(PKCreditAccountPaymentDetailsViewController *)self _reuseIdentifierForSection:0];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
-  v10 = [v6 row];
+  v10 = [pathCopy row];
   if (v10 == 1)
   {
     v11 = PKLocalizedFeatureString();
-    v12 = [(PKCreditAccountPaymentDetailsViewController *)self _paymentAmountToDisplay];
+    _paymentAmountToDisplay = [(PKCreditAccountPaymentDetailsViewController *)self _paymentAmountToDisplay];
     v16 = MEMORY[0x1E69B9448];
   }
 
   else
   {
     v11 = 0;
-    v12 = 0;
+    _paymentAmountToDisplay = 0;
     v13 = 0;
     if (v10)
     {
@@ -1208,19 +1208,19 @@ LABEL_17:
 
     v11 = PKLocalizedFeatureString();
     productDateFormatter = self->_productDateFormatter;
-    v15 = [(PKAccountPayment *)self->_payment paymentDate];
-    v12 = [(NSDateFormatter *)productDateFormatter stringFromDate:v15];
+    paymentDate = [(PKAccountPayment *)self->_payment paymentDate];
+    _paymentAmountToDisplay = [(NSDateFormatter *)productDateFormatter stringFromDate:paymentDate];
 
     v16 = MEMORY[0x1E69B9698];
   }
 
   v13 = *v16;
 LABEL_6:
-  v17 = [v9 textLabel];
-  [v17 setText:v11];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v11];
 
-  v18 = [v9 detailTextLabel];
-  [v18 setText:v12];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:_paymentAmountToDisplay];
 
   [(PKCreditAccountPaymentDetailsViewController *)self _applyDetailViewStylingToCell:v9];
   PKAccessibilityIDCellSet(v9, v13);
@@ -1228,48 +1228,48 @@ LABEL_6:
   return v9;
 }
 
-- (id)_tableView:(id)a3 recurringPaymentStatusCellForRowAtIndexPath:(id)a4
+- (id)_tableView:(id)view recurringPaymentStatusCellForRowAtIndexPath:(id)path
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([a4 row] == 1)
+  viewCopy = view;
+  if ([path row] == 1)
   {
-    v61 = [v6 dequeueReusableCellWithIdentifier:@"LinkCellReuseIdentifier"];
+    v61 = [viewCopy dequeueReusableCellWithIdentifier:@"LinkCellReuseIdentifier"];
     [(PKCreditAccountPaymentDetailsViewController *)self _configureDismissCell:?];
     goto LABEL_17;
   }
 
   v7 = [(PKCreditAccountPaymentDetailsViewController *)self _reuseIdentifierForSection:3];
-  v56 = v6;
-  v61 = [v6 dequeueReusableCellWithIdentifier:v7];
+  v56 = viewCopy;
+  v61 = [viewCopy dequeueReusableCellWithIdentifier:v7];
 
-  v8 = [(PKAccountPayment *)self->_payment scheduleDetails];
-  [v8 preset];
+  scheduleDetails = [(PKAccountPayment *)self->_payment scheduleDetails];
+  [scheduleDetails preset];
 
   viewStyle = self->_viewStyle;
   if (viewStyle == 1)
   {
     v12 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v13 = [v12 foregroundColor];
-    [v61 setBackgroundColor:v13];
+    foregroundColor = [v12 foregroundColor];
+    [v61 setBackgroundColor:foregroundColor];
 
     v14 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v11 = [v14 textColor];
+    textColor = [v14 textColor];
 
     v15 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v57 = [v15 altTextColor];
+    altTextColor = [v15 altTextColor];
   }
 
   else
   {
     if (viewStyle == 2)
     {
-      v10 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-      [v61 setBackgroundColor:v10];
+      secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+      [v61 setBackgroundColor:secondarySystemBackgroundColor];
     }
 
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    v57 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    textColor = [MEMORY[0x1E69DC888] labelColor];
+    altTextColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
   if (self->_isFailedRecurringPayment)
@@ -1278,18 +1278,18 @@ LABEL_6:
     v58 = PKLocalizedFeatureString();
     v54 = PKLocalizedFeatureString();
     [MEMORY[0x1E69DC888] redColor];
-    v18 = v17 = v11;
+    v18 = paymentDate = textColor;
   }
 
   else
   {
-    v17 = [(PKAccountPayment *)self->_payment paymentDate];
+    paymentDate = [(PKAccountPayment *)self->_payment paymentDate];
     v19 = PKLocalizedFeatureString();
-    [(NSDateFormatter *)self->_productPaymentMonthFormatter stringFromDate:v17];
-    v20 = v59 = v11;
+    [(NSDateFormatter *)self->_productPaymentMonthFormatter stringFromDate:paymentDate];
+    v20 = v59 = textColor;
     v16 = PKStringWithValidatedFormat();
     v21 = PKLocalizedFeatureString();
-    v51 = [(NSDateFormatter *)self->_productPaymentDateFormatter stringFromDate:v17, v20];
+    v51 = [(NSDateFormatter *)self->_productPaymentDateFormatter stringFromDate:paymentDate, v20];
     v54 = PKStringWithValidatedFormat();
 
     v18 = v59;
@@ -1322,8 +1322,8 @@ LABEL_6:
     }
 
 LABEL_15:
-    v6 = v56;
-    v44 = v57;
+    viewCopy = v56;
+    v44 = altTextColor;
     goto LABEL_16;
   }
 
@@ -1340,7 +1340,7 @@ LABEL_15:
   v65[0] = v30;
   v65[1] = v31;
   v64[2] = v26;
-  v65[2] = v57;
+  v65[2] = altTextColor;
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:3];
   v35 = [v32 initWithDictionary:v34];
 
@@ -1370,8 +1370,8 @@ LABEL_13:
   v63[0] = v40;
   v63[1] = v41;
   v62[2] = v52;
-  v44 = v57;
-  v63[2] = v57;
+  v44 = altTextColor;
+  v63[2] = altTextColor;
   v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:3];
   v46 = [v42 initWithDictionary:v45];
 
@@ -1380,13 +1380,13 @@ LABEL_13:
 
   v22 = v39;
   v23 = v40;
-  v6 = v56;
+  viewCopy = v56;
 LABEL_16:
-  v48 = [v61 textLabel];
-  [v48 setAttributedText:v37];
+  textLabel = [v61 textLabel];
+  [textLabel setAttributedText:v37];
 
-  v49 = [v61 textLabel];
-  [v49 setNumberOfLines:0];
+  textLabel2 = [v61 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
   PKAccessibilityIDCellSet(v61, *MEMORY[0x1E69B9CC0]);
 LABEL_17:
@@ -1394,39 +1394,39 @@ LABEL_17:
   return v61;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  [v9 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   switch(v7)
   {
     case 1uLL:
-      if (-[PKCreditAccountPaymentDetailsViewController _recurringPaymentDetailsRowTypeForRowAtIndex:](self, "_recurringPaymentDetailsRowTypeForRowAtIndex:", [v6 row]) == 5)
+      if (-[PKCreditAccountPaymentDetailsViewController _recurringPaymentDetailsRowTypeForRowAtIndex:](self, "_recurringPaymentDetailsRowTypeForRowAtIndex:", [pathCopy row]) == 5)
       {
         [(PKCreditAccountPaymentDetailsViewController *)self _modifyPaymentSelected];
       }
 
       break;
     case 3uLL:
-      if ([v6 row] == 1)
+      if ([pathCopy row] == 1)
       {
         [(PKCreditAccountPaymentDetailsViewController *)self _cancelPayment:3];
       }
 
       break;
     case 4uLL:
-      v8 = [v9 cellForRowAtIndexPath:v6];
+      v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
       [(PKCreditAccountPaymentDetailsViewController *)self _cancelPaymentSelected:4 sourceView:v8];
 
       break;
   }
 }
 
-- (void)_cancelPaymentSelected:(unint64_t)a3 sourceView:(id)a4
+- (void)_cancelPaymentSelected:(unint64_t)selected sourceView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   if (!self->_cancellingPayment)
   {
     objc_initWeak(&location, self);
@@ -1436,8 +1436,8 @@ LABEL_17:
     v9 = PKLocalizedFeatureString();
     v10 = PKLocalizedFeatureString();
     v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v7 message:v8 preferredStyle:{0, v7}];
-    v12 = [v11 popoverPresentationController];
-    [v12 setSourceView:v6];
+    popoverPresentationController = [v11 popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
 
     v13 = MEMORY[0x1E69DC648];
     v17[0] = MEMORY[0x1E69E9820];
@@ -1445,7 +1445,7 @@ LABEL_17:
     v17[2] = __81__PKCreditAccountPaymentDetailsViewController__cancelPaymentSelected_sourceView___block_invoke;
     v17[3] = &unk_1E801BF80;
     objc_copyWeak(v18, &location);
-    v18[1] = a3;
+    v18[1] = selected;
     v14 = [v13 actionWithTitle:v9 style:2 handler:v17];
     [v11 addAction:v14];
 
@@ -1484,59 +1484,59 @@ void __81__PKCreditAccountPaymentDetailsViewController__cancelPaymentSelected_so
   [(PKCreditAccountPaymentDetailsViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)_cancelPaymentCellForTableView:(id)a3
+- (id)_cancelPaymentCellForTableView:(id)view
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"LinkCellReuseIdentifier"];
+  v4 = [view dequeueReusableCellWithIdentifier:@"LinkCellReuseIdentifier"];
   [(PKCreditAccountPaymentDetailsViewController *)self _configureDeletePaymentCell:v4];
   PKAccessibilityIDCellSet(v4, *MEMORY[0x1E69B95A0]);
 
   return v4;
 }
 
-- (id)_modifyPaymentCellForTableView:(id)a3
+- (id)_modifyPaymentCellForTableView:(id)view
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"LinkCellReuseIdentifier"];
+  v4 = [view dequeueReusableCellWithIdentifier:@"LinkCellReuseIdentifier"];
   [(PKCreditAccountPaymentDetailsViewController *)self _configureLinkCell:v4];
   [(PKAccountPayment *)self->_payment isRecurring];
-  v5 = [v4 textLabel];
+  textLabel = [v4 textLabel];
   v6 = PKLocalizedFeatureString();
-  [v5 setText:v6];
+  [textLabel setText:v6];
 
   PKAccessibilityIDCellSet(v4, *MEMORY[0x1E69B9960]);
 
   return v4;
 }
 
-- (void)_configureDeletePaymentCell:(id)a3
+- (void)_configureDeletePaymentCell:(id)cell
 {
-  v12 = a3;
-  v4 = [v12 textLabel];
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
   if (self->_cancellingPayment)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [v5 startAnimating];
-    [v12 setAccessoryView:v5];
-    v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [v4 setTextColor:v6];
+    [cellCopy setAccessoryView:v5];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [textLabel setTextColor:tertiaryLabelColor];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] redColor];
-    [v4 setTextColor:v7];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [textLabel setTextColor:redColor];
 
-    [v12 setAccessoryView:0];
+    [cellCopy setAccessoryView:0];
   }
 
   [(PKAccountPayment *)self->_payment isRecurring];
   v8 = PKLocalizedFeatureString();
-  [v4 setText:v8];
+  [textLabel setText:v8];
 
   viewStyle = self->_viewStyle;
   if (viewStyle == 2)
   {
-    v10 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v12 setBackgroundColor:v10];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [cellCopy setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   else
@@ -1546,45 +1546,45 @@ void __81__PKCreditAccountPaymentDetailsViewController__cancelPaymentSelected_so
       goto LABEL_9;
     }
 
-    v10 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v11 = [v10 foregroundColor];
-    [v12 setBackgroundColor:v11];
+    secondarySystemBackgroundColor = PKBridgeAppearanceGetAppearanceSpecifier();
+    foregroundColor = [secondarySystemBackgroundColor foregroundColor];
+    [cellCopy setBackgroundColor:foregroundColor];
   }
 
 LABEL_9:
-  PKAccessibilityIDCellSet(v12, *MEMORY[0x1E69B95A0]);
+  PKAccessibilityIDCellSet(cellCopy, *MEMORY[0x1E69B95A0]);
 }
 
-- (void)_configureDismissCell:(id)a3
+- (void)_configureDismissCell:(id)cell
 {
-  v13 = a3;
-  v4 = [v13 textLabel];
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
   if (self->_cancellingPayment)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [v5 startAnimating];
-    [v13 setAccessoryView:v5];
-    v6 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [v4 setTextColor:v6];
+    [cellCopy setAccessoryView:v5];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [textLabel setTextColor:systemGrayColor];
   }
 
   else
   {
-    v7 = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
-    v8 = [v7 tintColor];
-    [v4 setTextColor:v8];
+    tableView = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
+    tintColor = [tableView tintColor];
+    [textLabel setTextColor:tintColor];
 
-    [v13 setAccessoryView:0];
+    [cellCopy setAccessoryView:0];
   }
 
   v9 = PKLocalizedFeatureString();
-  [v4 setText:v9];
+  [textLabel setText:v9];
 
   viewStyle = self->_viewStyle;
   if (viewStyle == 2)
   {
-    v11 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v13 setBackgroundColor:v11];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [cellCopy setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   else
@@ -1594,29 +1594,29 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v11 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v12 = [v11 foregroundColor];
-    [v13 setBackgroundColor:v12];
+    secondarySystemBackgroundColor = PKBridgeAppearanceGetAppearanceSpecifier();
+    foregroundColor = [secondarySystemBackgroundColor foregroundColor];
+    [cellCopy setBackgroundColor:foregroundColor];
   }
 
 LABEL_9:
-  PKAccessibilityIDCellSet(v13, *MEMORY[0x1E69B9708]);
+  PKAccessibilityIDCellSet(cellCopy, *MEMORY[0x1E69B9708]);
 }
 
-- (void)_configureLinkCell:(id)a3
+- (void)_configureLinkCell:(id)cell
 {
-  v10 = a3;
-  v4 = [v10 textLabel];
-  v5 = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
-  v6 = [v5 tintColor];
-  [v4 setTextColor:v6];
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
+  tableView = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
+  tintColor = [tableView tintColor];
+  [textLabel setTextColor:tintColor];
 
-  [v10 setAccessoryView:0];
+  [cellCopy setAccessoryView:0];
   viewStyle = self->_viewStyle;
   if (viewStyle == 2)
   {
-    v8 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v10 setBackgroundColor:v8];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [cellCopy setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   else
@@ -1626,54 +1626,54 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    v8 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v9 = [v8 foregroundColor];
-    [v10 setBackgroundColor:v9];
+    secondarySystemBackgroundColor = PKBridgeAppearanceGetAppearanceSpecifier();
+    foregroundColor = [secondarySystemBackgroundColor foregroundColor];
+    [cellCopy setBackgroundColor:foregroundColor];
   }
 
 LABEL_6:
 }
 
-- (void)_cancelPayment:(unint64_t)a3
+- (void)_cancelPayment:(unint64_t)payment
 {
   if (!self->_cancellingPayment)
   {
     self->_cancellingPayment = 1;
     v5 = self->_payment;
-    if (a3 == 4)
+    if (payment == 4)
     {
       v6 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 4)}];
-      v9 = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
-      v8 = [v9 cellForRowAtIndexPath:v6];
+      tableView = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
+      v8 = [tableView cellForRowAtIndexPath:v6];
 
       [(PKCreditAccountPaymentDetailsViewController *)self _configureDeletePaymentCell:v8];
     }
 
     else
     {
-      if (a3 != 3)
+      if (payment != 3)
       {
         v6 = 0;
         goto LABEL_8;
       }
 
       v6 = [MEMORY[0x1E696AC88] indexPathForRow:1 inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 3)}];
-      v7 = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
-      v8 = [v7 cellForRowAtIndexPath:v6];
+      tableView2 = [(PKCreditAccountPaymentDetailsViewController *)self tableView];
+      v8 = [tableView2 cellForRowAtIndexPath:v6];
 
       [(PKCreditAccountPaymentDetailsViewController *)self _configureDismissCell:v8];
     }
 
 LABEL_8:
-    v10 = [(PKAccountPayment *)v5 referenceIdentifier];
+    referenceIdentifier = [(PKAccountPayment *)v5 referenceIdentifier];
     v11 = objc_alloc_init(MEMORY[0x1E69B8480]);
-    v12 = [(PKAccount *)self->_account accountIdentifier];
-    [v11 setAccountIdentifier:v12];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    [v11 setAccountIdentifier:accountIdentifier];
 
-    v13 = [(PKAccount *)self->_account accountBaseURL];
-    [v11 setBaseURL:v13];
+    accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+    [v11 setBaseURL:accountBaseURL];
 
-    [v11 setPaymentReferenceIdentifier:v10];
+    [v11 setPaymentReferenceIdentifier:referenceIdentifier];
     objc_initWeak(&location, self);
     paymentWebService = self->_paymentWebService;
     v17[0] = MEMORY[0x1E69E9820];
@@ -1686,7 +1686,7 @@ LABEL_8:
     v18 = v15;
     v16 = v6;
     v19 = v16;
-    v20[1] = a3;
+    v20[1] = payment;
     [(PKPaymentWebService *)paymentWebService cancelPaymentWithRequest:v11 completion:v17];
 
     objc_destroyWeak(v20);
@@ -1808,13 +1808,13 @@ void __62__PKCreditAccountPaymentDetailsViewController__cancelPayment___block_in
   }
 }
 
-- (void)_reportEventForPassIfNecessary:(id)a3
+- (void)_reportEventForPassIfNecessary:(id)necessary
 {
-  v8 = a3;
+  necessaryCopy = necessary;
   v4 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForAccount:self->_account];
-  if (v8 && v4)
+  if (necessaryCopy && v4)
   {
-    v5 = [v8 mutableCopy];
+    v5 = [necessaryCopy mutableCopy];
     [v5 setObject:*MEMORY[0x1E69BA5A8] forKey:*MEMORY[0x1E69BABE8]];
     v6 = MEMORY[0x1E69B8540];
     v7 = [v5 copy];

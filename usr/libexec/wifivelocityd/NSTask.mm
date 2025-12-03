@@ -1,86 +1,86 @@
 @interface NSTask
-+ (BOOL)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputData:(id)a6 errorData:(id)a7 launchHandler:(id)a8 didLaunch:(BOOL *)a9 error:(id *)a10;
-+ (BOOL)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputFileHandle:(id)a6 errorFileHandle:(id)a7 launchHandler:(id)a8 didLaunch:(BOOL *)a9 error:(id *)a10;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 outputData:(id)a5 reply:(id)a6;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 outputFileHandle:(id)a5 reply:(id)a6;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 outputFilePath:(id)a5 reply:(id)a6;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 reply:(id)a5;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputData:(id)a6 errorData:(id)a7 launchHandler:(id)a8 reply:(id)a9;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputFileHandle:(id)a6 errorFileHandle:(id)a7 launchHandler:(id)a8 reply:(id)a9;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputFilePath:(id)a6 errorFilePath:(id)a7 redirectErrorToOutput:(BOOL)a8 launchHandler:(id)a9 reply:(id)a10;
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 startBlock:(id)a6 updateBlock:(id)a7 endBlock:(id)a8;
++ (BOOL)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputData:(id)data errorData:(id)errorData launchHandler:(id)handler didLaunch:(BOOL *)launch error:(id *)self0;
++ (BOOL)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputFileHandle:(id)handle errorFileHandle:(id)fileHandle launchHandler:(id)handler didLaunch:(BOOL *)launch error:(id *)self0;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments outputData:(id)data reply:(id)reply;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments outputFileHandle:(id)handle reply:(id)reply;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments outputFilePath:(id)filePath reply:(id)reply;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments reply:(id)reply;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputData:(id)data errorData:(id)errorData launchHandler:(id)handler reply:(id)reply;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputFileHandle:(id)handle errorFileHandle:(id)fileHandle launchHandler:(id)handler reply:(id)reply;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputFilePath:(id)filePath errorFilePath:(id)errorFilePath redirectErrorToOutput:(BOOL)output launchHandler:(id)handler reply:(id)self0;
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout startBlock:(id)block updateBlock:(id)updateBlock endBlock:(id)endBlock;
 @end
 
 @implementation NSTask
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 reply:(id)a5
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments reply:(id)reply
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100018FB4;
   v5[3] = &unk_1000E1830;
-  v5[4] = a5;
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:0 outputData:0 errorData:0 launchHandler:v5 reply:10.0];
+  v5[4] = reply;
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:0 outputData:0 errorData:0 launchHandler:v5 reply:10.0];
 }
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 outputData:(id)a5 reply:(id)a6
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments outputData:(id)data reply:(id)reply
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001906C;
   v6[3] = &unk_1000E1830;
-  v6[4] = a6;
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:a5 outputData:0 errorData:0 launchHandler:v6 reply:10.0];
+  v6[4] = reply;
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:data outputData:0 errorData:0 launchHandler:v6 reply:10.0];
 }
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputData:(id)a6 errorData:(id)a7 launchHandler:(id)a8 reply:(id)a9
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputData:(id)data errorData:(id)errorData launchHandler:(id)handler reply:(id)reply
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100019198;
   v11[3] = &unk_1000E1858;
-  v11[4] = a9;
-  v11[5] = a8;
-  v9[4] = a9;
+  v11[4] = reply;
+  v11[5] = handler;
+  v9[4] = reply;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000191D0;
   v10[3] = &unk_1000E1880;
-  v10[4] = a6;
-  v10[5] = a7;
+  v10[4] = data;
+  v10[5] = errorData;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100019228;
   v9[3] = &unk_1000E18A8;
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:v11 startBlock:v10 updateBlock:v9 endBlock:a5];
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:v11 startBlock:v10 updateBlock:v9 endBlock:timeout];
 }
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 outputFilePath:(id)a5 reply:(id)a6
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments outputFilePath:(id)filePath reply:(id)reply
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000192CC;
   v6[3] = &unk_1000E1830;
-  v6[4] = a6;
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:a5 outputFilePath:0 errorFilePath:0 redirectErrorToOutput:0 launchHandler:10.0 reply:v6];
+  v6[4] = reply;
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:filePath outputFilePath:0 errorFilePath:0 redirectErrorToOutput:0 launchHandler:10.0 reply:v6];
 }
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputFilePath:(id)a6 errorFilePath:(id)a7 redirectErrorToOutput:(BOOL)a8 launchHandler:(id)a9 reply:(id)a10
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputFilePath:(id)filePath errorFilePath:(id)errorFilePath redirectErrorToOutput:(BOOL)output launchHandler:(id)handler reply:(id)self0
 {
-  if (a6 | a7)
+  if (filePath | errorFilePath)
   {
-    v14 = a8;
-    v16 = a6;
-    if (a6)
+    outputCopy = output;
+    filePathCopy = filePath;
+    if (filePath)
     {
-      [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:a6, 0];
-      [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v16 attributes:0, 0];
-      v17 = [NSFileHandle fileHandleForUpdatingAtPath:v16];
+      [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:filePath, 0];
+      [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:filePathCopy attributes:0, 0];
+      v17 = [NSFileHandle fileHandleForUpdatingAtPath:filePathCopy];
       if (v17)
       {
         v18 = v17;
-        v16 = 0;
-        if (!a7)
+        filePathCopy = 0;
+        if (!errorFilePath)
         {
           goto LABEL_20;
         }
@@ -98,9 +98,9 @@
         v35 = 1024;
         v36 = 146;
         v37 = 2114;
-        v38 = [a3 lastPathComponent];
+        lastPathComponent = [path lastPathComponent];
         v39 = 2114;
-        v40 = v16;
+        errorFilePathCopy = filePathCopy;
         LODWORD(v25) = 48;
         v24 = &v31;
         _os_log_send_and_compose_impl();
@@ -108,29 +108,29 @@
 
       v29 = NSLocalizedFailureReasonErrorKey;
       v30 = @"W5ResourceErr";
-      v16 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:7 userInfo:[NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1, v24, v25]];
+      filePathCopy = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:7 userInfo:[NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1, v24, v25]];
     }
 
     v18 = 0;
-    if (!a7)
+    if (!errorFilePath)
     {
       goto LABEL_20;
     }
 
 LABEL_13:
-    [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:a7, 0];
-    [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:a7 attributes:0, 0];
-    v20 = [NSFileHandle fileHandleForUpdatingAtPath:a7];
+    [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:errorFilePath, 0];
+    [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:errorFilePath attributes:0, 0];
+    v20 = [NSFileHandle fileHandleForUpdatingAtPath:errorFilePath];
     if (v20)
     {
-      if (!v16)
+      if (!filePathCopy)
       {
 LABEL_21:
         v26[0] = _NSConcreteStackBlock;
         v26[1] = 3221225472;
         v26[2] = sub_10001977C;
         v26[3] = &unk_1000E18D0;
-        if (v14)
+        if (outputCopy)
         {
           v23 = v18;
         }
@@ -142,8 +142,8 @@ LABEL_21:
 
         v26[4] = v18;
         v26[5] = v20;
-        v26[6] = a10;
-        [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:v18 outputFileHandle:v23 errorFileHandle:a9 launchHandler:v26 reply:a5];
+        v26[6] = reply;
+        [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:v18 outputFileHandle:v23 errorFileHandle:handler launchHandler:v26 reply:timeout];
         return;
       }
 
@@ -153,7 +153,7 @@ LABEL_21:
     v21 = sub_100098A04();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [a3 lastPathComponent];
+      lastPathComponent2 = [path lastPathComponent];
       v31 = 136316162;
       v32 = "+[NSTask(WiFiVelocity) runTaskWithLaunchPath:arguments:timeout:outputFilePath:errorFilePath:redirectErrorToOutput:launchHandler:reply:]";
       v33 = 2080;
@@ -161,9 +161,9 @@ LABEL_21:
       v35 = 1024;
       v36 = 160;
       v37 = 2114;
-      v38 = v22;
+      lastPathComponent = lastPathComponent2;
       v39 = 2114;
-      v40 = a7;
+      errorFilePathCopy = errorFilePath;
       LODWORD(v25) = 48;
       v24 = &v31;
       _os_log_send_and_compose_impl();
@@ -171,10 +171,10 @@ LABEL_21:
 
     v27 = NSLocalizedFailureReasonErrorKey;
     v28 = @"W5ResourceErr";
-    v16 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:7 userInfo:[NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1, v24, v25]];
+    filePathCopy = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:7 userInfo:[NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1, v24, v25]];
 LABEL_20:
     v20 = 0;
-    if (!v16)
+    if (!filePathCopy)
     {
       goto LABEL_21;
     }
@@ -182,63 +182,63 @@ LABEL_20:
 LABEL_15:
     [(NSFileHandle *)v18 closeFile];
     [(NSFileHandle *)v20 closeFile];
-    if (a10)
+    if (reply)
     {
-      (*(a10 + 2))(a10, v16, 0);
+      (*(reply + 2))(reply, filePathCopy, 0);
     }
 
     return;
   }
 
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:0 outputData:0 errorData:a9 launchHandler:a10 reply:?];
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:0 outputData:0 errorData:handler launchHandler:reply reply:?];
 }
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 outputFileHandle:(id)a5 reply:(id)a6
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments outputFileHandle:(id)handle reply:(id)reply
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100019874;
   v6[3] = &unk_1000E1830;
-  v6[4] = a6;
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:a5 outputFileHandle:0 errorFileHandle:0 launchHandler:v6 reply:10.0];
+  v6[4] = reply;
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:handle outputFileHandle:0 errorFileHandle:0 launchHandler:v6 reply:10.0];
 }
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputFileHandle:(id)a6 errorFileHandle:(id)a7 launchHandler:(id)a8 reply:(id)a9
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputFileHandle:(id)handle errorFileHandle:(id)fileHandle launchHandler:(id)handler reply:(id)reply
 {
-  if (a6 | a7)
+  if (handle | fileHandle)
   {
-    [a6 seekToEndOfFile];
-    [a7 seekToEndOfFile];
+    [handle seekToEndOfFile];
+    [fileHandle seekToEndOfFile];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100019A50;
     v18[3] = &unk_1000E1858;
-    v18[4] = a9;
-    v18[5] = a8;
-    v16[4] = a9;
+    v18[4] = reply;
+    v18[5] = handler;
+    v16[4] = reply;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100019A88;
     v17[3] = &unk_1000E1880;
-    v17[4] = a6;
-    v17[5] = a7;
+    v17[4] = handle;
+    v17[5] = fileHandle;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100019C90;
     v16[3] = &unk_1000E18A8;
-    [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:v18 startBlock:v17 updateBlock:v16 endBlock:a5];
+    [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:v18 startBlock:v17 updateBlock:v16 endBlock:timeout];
   }
 
   else
   {
 
-    [NSTask runTaskWithLaunchPath:"runTaskWithLaunchPath:arguments:timeout:outputData:errorData:launchHandler:reply:" arguments:a3 timeout:a4 outputData:0 errorData:0 launchHandler:? reply:?];
+    [NSTask runTaskWithLaunchPath:"runTaskWithLaunchPath:arguments:timeout:outputData:errorData:launchHandler:reply:" arguments:path timeout:arguments outputData:0 errorData:0 launchHandler:? reply:?];
   }
 }
 
-+ (void)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 startBlock:(id)a6 updateBlock:(id)a7 endBlock:(id)a8
++ (void)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout startBlock:(id)block updateBlock:(id)updateBlock endBlock:(id)endBlock
 {
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.wifivelocity.task.%@", [a3 lastPathComponent]);
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.wifivelocity.task.%@", [path lastPathComponent]);
   v69[0] = 0;
   v69[1] = v69;
   v69[2] = 0x3052000000;
@@ -282,19 +282,19 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v17 = a3;
-  if ([a3 isEqualToString:@"/bin/sh"])
+  pathCopy = path;
+  if ([path isEqualToString:@"/bin/sh"])
   {
-    v17 = [a4 firstObject];
+    pathCopy = [arguments firstObject];
   }
 
-  if ((([v17 hasPrefix:@"/usr/local/"] & 1) != 0 || objc_msgSend(v17, "hasPrefix:", @"/AppleInternal/")) && (os_variant_allows_internal_security_policies() & 1) == 0)
+  if ((([pathCopy hasPrefix:@"/usr/local/"] & 1) != 0 || objc_msgSend(pathCopy, "hasPrefix:", @"/AppleInternal/")) && (os_variant_allows_internal_security_policies() & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v44 = [v17 UTF8String];
+      uTF8String = [pathCopy UTF8String];
       *buf = 136446210;
-      v77 = v44;
+      v77 = uTF8String;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[wifivelocity] '%{public}s' not allowed on non-internal install variants, will not run task", buf, 0xCu);
     }
 
@@ -305,13 +305,13 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if (!a3 || ![+[NSFileManager isExecutableFileAtPath:"isExecutableFileAtPath:"]
+  if (!path || ![+[NSFileManager isExecutableFileAtPath:"isExecutableFileAtPath:"]
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v43 = [a3 UTF8String];
+      uTF8String2 = [path UTF8String];
       *buf = 136446210;
-      v77 = v43;
+      v77 = uTF8String2;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[wifivelocity] '%{public}s' does not exist, will not run task", buf, 0xCu);
     }
 
@@ -323,10 +323,10 @@ LABEL_33:
   }
 
   v48 = objc_alloc_init(NSTask);
-  [v48 setLaunchPath:a3];
-  if (a4)
+  [v48 setLaunchPath:path];
+  if (arguments)
   {
-    [v48 setArguments:a4];
+    [v48 setArguments:arguments];
   }
 
   *v58 = 0;
@@ -420,7 +420,7 @@ LABEL_28:
   handler[3] = &unk_1000E1920;
   v56 = v58[1];
   handler[7] = v65;
-  handler[6] = a7;
+  handler[6] = updateBlock;
   handler[4] = identifier;
   handler[5] = v48;
   dispatch_source_set_event_handler(v29, handler);
@@ -442,7 +442,7 @@ LABEL_28:
     v52[2] = sub_10001AA8C;
     v52[3] = &unk_1000E1920;
     v53 = HIDWORD(handle);
-    v52[6] = a7;
+    v52[6] = updateBlock;
     v52[7] = v65;
     v52[4] = identifier;
     v52[5] = v48;
@@ -466,9 +466,9 @@ LABEL_28:
     block[28] = v67;
     block[19] = identifier;
     block[20] = v48;
-    block[21] = a3;
-    block[22] = a4;
-    block[25] = a8;
+    block[21] = path;
+    block[22] = arguments;
+    block[25] = endBlock;
     block[26] = &v59;
     block[29] = v69;
     block[23] = v32;
@@ -480,14 +480,14 @@ LABEL_28:
     block[2] = sub_10001B174;
     block[3] = &unk_1000E1A10;
     block[4] = v48;
-    block[5] = a3;
+    block[5] = path;
     block[6] = v32;
     block[7] = v30;
     block[8] = identifier;
-    block[9] = a4;
+    block[9] = arguments;
     block[10] = 0;
-    block[11] = a6;
-    *&block[14] = a5;
+    block[11] = block;
+    *&block[14] = timeout;
     block[12] = v69;
     block[13] = v67;
     dispatch_async(&_dispatch_main_q, block);
@@ -519,11 +519,11 @@ LABEL_34:
   v49[1] = *(v16 + 240);
   v49[2] = sub_10001B83C;
   v49[3] = &unk_1000E1998;
-  v49[4] = a3;
+  v49[4] = path;
   v49[5] = v37;
-  v49[6] = a4;
+  v49[6] = arguments;
   v49[7] = v48;
-  v49[8] = a6;
+  v49[8] = block;
   v49[9] = v69;
   dispatch_async(v42, v49);
   if (identifier)
@@ -538,7 +538,7 @@ LABEL_16:
   _Block_object_dispose(v69, 8);
 }
 
-+ (BOOL)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputData:(id)a6 errorData:(id)a7 launchHandler:(id)a8 didLaunch:(BOOL *)a9 error:(id *)a10
++ (BOOL)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputData:(id)data errorData:(id)errorData launchHandler:(id)handler didLaunch:(BOOL *)launch error:(id *)self0
 {
   v29 = 0;
   v30 = &v29;
@@ -558,7 +558,7 @@ LABEL_16:
   v24[5] = &v29;
   v24[6] = &v25;
   v24[4] = v17;
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:a6 outputData:a7 errorData:a8 launchHandler:v24 reply:a5];
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:data outputData:errorData errorData:handler launchHandler:v24 reply:timeout];
   v18 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v17, v18) >= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -568,18 +568,18 @@ LABEL_16:
   }
 
   v19 = v30[5];
-  if (a9)
+  if (launch)
   {
-    *a9 = *(v26 + 24);
+    *launch = *(v26 + 24);
   }
 
   v20 = v30;
-  if (a10)
+  if (error)
   {
     v21 = v30[5];
     if (v21)
     {
-      *a10 = v21;
+      *error = v21;
     }
   }
 
@@ -589,7 +589,7 @@ LABEL_16:
   return v22;
 }
 
-+ (BOOL)runTaskWithLaunchPath:(id)a3 arguments:(id)a4 timeout:(double)a5 outputFileHandle:(id)a6 errorFileHandle:(id)a7 launchHandler:(id)a8 didLaunch:(BOOL *)a9 error:(id *)a10
++ (BOOL)runTaskWithLaunchPath:(id)path arguments:(id)arguments timeout:(double)timeout outputFileHandle:(id)handle errorFileHandle:(id)fileHandle launchHandler:(id)handler didLaunch:(BOOL *)launch error:(id *)self0
 {
   v29 = 0;
   v30 = &v29;
@@ -609,7 +609,7 @@ LABEL_16:
   v24[5] = &v29;
   v24[6] = &v25;
   v24[4] = v17;
-  [NSTask runTaskWithLaunchPath:a3 arguments:a4 timeout:a6 outputFileHandle:a7 errorFileHandle:a8 launchHandler:v24 reply:a5];
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:handle outputFileHandle:fileHandle errorFileHandle:handler launchHandler:v24 reply:timeout];
   v18 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v17, v18) >= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -619,18 +619,18 @@ LABEL_16:
   }
 
   v19 = v30[5];
-  if (a9)
+  if (launch)
   {
-    *a9 = *(v26 + 24);
+    *launch = *(v26 + 24);
   }
 
   v20 = v30;
-  if (a10)
+  if (error)
   {
     v21 = v30[5];
     if (v21)
     {
-      *a10 = v21;
+      *error = v21;
     }
   }
 

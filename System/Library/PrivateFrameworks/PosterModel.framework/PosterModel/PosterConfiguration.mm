@@ -2,9 +2,9 @@
 - (NSString)descriptorIdentifier;
 - (NSString)role;
 - (_TtC11PosterModel19PosterConfiguration)init;
-- (_TtC11PosterModel19PosterConfiguration)initWithCoder:(id)a3;
+- (_TtC11PosterModel19PosterConfiguration)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PosterConfiguration
@@ -12,7 +12,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC11PosterModel19PosterConfiguration_pathValidityExtension);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -26,9 +26,9 @@
 - (NSString)descriptorIdentifier
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC11PosterModel19PosterConfiguration___path);
-  v3 = self;
-  v4 = [v2 serverIdentity];
-  if (v4 && (v5 = v4, v6 = [v4 descriptorIdentifier], v5, v6))
+  selfCopy = self;
+  serverIdentity = [v2 serverIdentity];
+  if (serverIdentity && (v5 = serverIdentity, v6 = [serverIdentity descriptorIdentifier], v5, v6))
   {
     sub_25EDBC388();
   }
@@ -44,24 +44,24 @@
 
 - (NSString)role
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC11PosterModel19PosterConfiguration___path) role];
+  role = [*(&self->super.isa + OBJC_IVAR____TtC11PosterModel19PosterConfiguration___path) role];
 
-  return v2;
+  return role;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11PosterModel19PosterConfiguration___path);
-  v7 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_25EDBC378();
-  [v7 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 }
 
-- (_TtC11PosterModel19PosterConfiguration)initWithCoder:(id)a3
+- (_TtC11PosterModel19PosterConfiguration)initWithCoder:(id)coder
 {
   sub_25EDB6A10();
-  v4 = a3;
+  coderCopy = coder;
   v5 = sub_25EDBC3E8();
   if (v5)
   {
@@ -69,7 +69,7 @@
     v7 = objc_allocWithZone(type metadata accessor for PosterConfiguration());
     v8 = sub_25EDB6920(v6);
 
-    v4 = v6;
+    coderCopy = v6;
   }
 
   else

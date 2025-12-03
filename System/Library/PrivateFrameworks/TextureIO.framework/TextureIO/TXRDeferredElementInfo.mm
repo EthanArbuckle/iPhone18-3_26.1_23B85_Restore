@@ -1,19 +1,19 @@
 @interface TXRDeferredElementInfo
-- (id)initAsCubemap:(BOOL)a3;
+- (id)initAsCubemap:(BOOL)cubemap;
 @end
 
 @implementation TXRDeferredElementInfo
 
-- (id)initAsCubemap:(BOOL)a3
+- (id)initAsCubemap:(BOOL)cubemap
 {
-  v3 = a3;
+  cubemapCopy = cubemap;
   v13.receiver = self;
   v13.super_class = TXRDeferredElementInfo;
   v4 = [(TXRDeferredElementInfo *)&v13 init];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CBEB18]);
-    if (v3)
+    if (cubemapCopy)
     {
       v6 = 6;
     }
@@ -27,7 +27,7 @@
     faces = v4->_faces;
     v4->_faces = v7;
 
-    if (v3)
+    if (cubemapCopy)
     {
       v9 = 0;
       v10 = 6;

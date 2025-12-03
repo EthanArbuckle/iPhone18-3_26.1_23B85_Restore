@@ -1,10 +1,10 @@
 @interface DMFApplicationPolicyMonitor
 + (NSSet)policyTypes;
-+ (void)createPolicyMonitorWithPolicyChangeHandler:(id)a3 completionHandler:(id)a4;
-- (id)_initWithPolicyChangeHandler:(id)a3 addingRegistration:(BOOL)a4;
-- (id)requestPoliciesForBundleIdentifiers:(id)a3 withError:(id *)a4;
++ (void)createPolicyMonitorWithPolicyChangeHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)_initWithPolicyChangeHandler:(id)handler addingRegistration:(BOOL)registration;
+- (id)requestPoliciesForBundleIdentifiers:(id)identifiers withError:(id *)error;
 - (void)dealloc;
-- (void)requestPoliciesForBundleIdentifiers:(id)a3 completionHandler:(id)a4;
+- (void)requestPoliciesForBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
 @end
 
 @implementation DMFApplicationPolicyMonitor
@@ -37,10 +37,10 @@ void __42__DMFApplicationPolicyMonitor_policyTypes__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithPolicyChangeHandler:(id)a3 addingRegistration:(BOOL)a4
+- (id)_initWithPolicyChangeHandler:(id)handler addingRegistration:(BOOL)registration
 {
-  v4 = a4;
-  v6 = a3;
+  registrationCopy = registration;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = DMFApplicationPolicyMonitor;
   v7 = [(DMFApplicationPolicyMonitor *)&v20 init];
@@ -50,14 +50,14 @@ void __42__DMFApplicationPolicyMonitor_policyTypes__block_invoke()
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    if (v6)
+    if (handlerCopy)
     {
-      v10 = [objc_opt_class() policyTypes];
-      v11 = [[DMFPolicyRegistration alloc] initWithIdentifier:@"dmf.policy.monitor.app" policyTypes:v10 callback:v6];
+      policyTypes = [objc_opt_class() policyTypes];
+      v11 = [[DMFPolicyRegistration alloc] initWithIdentifier:@"dmf.policy.monitor.app" policyTypes:policyTypes callback:handlerCopy];
       registration = v7->_registration;
       v7->_registration = v11;
 
-      if (v4)
+      if (registrationCopy)
       {
         v13 = +[DMFPolicyMonitor policyMonitor];
         v15 = v7->_identifier;
@@ -67,7 +67,7 @@ void __42__DMFApplicationPolicyMonitor_policyTypes__block_invoke()
         v17[2] = __79__DMFApplicationPolicyMonitor__initWithPolicyChangeHandler_addingRegistration___block_invoke;
         v17[3] = &unk_1E8616088;
         v18 = v7;
-        v19 = v10;
+        v19 = policyTypes;
         [v13 addRegistration:v14 forPolicyMonitorIdentifier:v15 completionHandler:v17];
       }
     }
@@ -89,34 +89,34 @@ void __79__DMFApplicationPolicyMonitor__initWithPolicyChangeHandler_addingRegist
   }
 }
 
-+ (void)createPolicyMonitorWithPolicyChangeHandler:(id)a3 completionHandler:(id)a4
++ (void)createPolicyMonitorWithPolicyChangeHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithPolicyChangeHandler:v7 addingRegistration:0];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  v8 = [[self alloc] _initWithPolicyChangeHandler:handlerCopy addingRegistration:0];
 
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __92__DMFApplicationPolicyMonitor_createPolicyMonitorWithPolicyChangeHandler_completionHandler___block_invoke;
   v18 = &unk_1E86160D0;
-  v9 = v6;
+  v9 = completionHandlerCopy;
   v20 = v9;
   v10 = v8;
   v19 = v10;
   v11 = MEMORY[0x1E128DE70](&v15);
   v12 = [DMFPolicyMonitor policyMonitor:v15];
-  if (v7)
+  if (handlerCopy)
   {
-    v13 = [v10 registration];
-    v14 = [v10 identifier];
-    [v12 addRegistration:v13 forPolicyMonitorIdentifier:v14 completionHandler:v11];
+    registration = [v10 registration];
+    identifier = [v10 identifier];
+    [v12 addRegistration:registration forPolicyMonitorIdentifier:identifier completionHandler:v11];
   }
 
   else
   {
-    v13 = [objc_opt_class() policyTypes];
-    v14 = [v13 allObjects];
-    [v12 requestPoliciesForTypes:v14 completionHandler:v11];
+    registration = [objc_opt_class() policyTypes];
+    identifier = [registration allObjects];
+    [v12 requestPoliciesForTypes:identifier completionHandler:v11];
   }
 }
 
@@ -148,21 +148,21 @@ uint64_t __92__DMFApplicationPolicyMonitor_createPolicyMonitorWithPolicyChangeHa
   [(DMFApplicationPolicyMonitor *)&v4 dealloc];
 }
 
-- (id)requestPoliciesForBundleIdentifiers:(id)a3 withError:(id *)a4
+- (id)requestPoliciesForBundleIdentifiers:(id)identifiers withError:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = +[DMFPolicyMonitor policyMonitor];
-  v7 = [v6 requestPoliciesForBundleIdentifiers:v5 withError:a4];
+  v7 = [v6 requestPoliciesForBundleIdentifiers:identifiersCopy withError:error];
 
   return v7;
 }
 
-- (void)requestPoliciesForBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)requestPoliciesForBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
   v7 = +[DMFPolicyMonitor policyMonitor];
-  [v7 requestPoliciesForBundleIdentifiers:v6 completionHandler:v5];
+  [v7 requestPoliciesForBundleIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
 void __79__DMFApplicationPolicyMonitor__initWithPolicyChangeHandler_addingRegistration___block_invoke_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

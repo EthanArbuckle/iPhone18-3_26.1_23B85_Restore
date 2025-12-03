@@ -1,18 +1,18 @@
 @interface AccountsUIModel
 - (_TtP8Settings20SettingsHostProtocol_)settingsHost;
-- (void)accountWasModified:(void *)a3;
-- (void)accountWasRemoved:(id)a3;
-- (void)setSettingsHost:(id)a3;
-- (void)willSelect:(id)a3;
+- (void)accountWasModified:(void *)modified;
+- (void)accountWasRemoved:(id)removed;
+- (void)setSettingsHost:(id)host;
+- (void)willSelect:(id)select;
 @end
 
 @implementation AccountsUIModel
 
-- (void)accountWasModified:(void *)a3
+- (void)accountWasModified:(void *)modified
 {
-  v4 = a3;
-  v5 = a1;
-  sub_23DCE7B80(v4, 0);
+  modifiedCopy = modified;
+  selfCopy = self;
+  sub_23DCE7B80(modifiedCopy, 0);
 }
 
 - (_TtP8Settings20SettingsHostProtocol_)settingsHost
@@ -25,29 +25,29 @@
   return v5;
 }
 
-- (void)setSettingsHost:(id)a3
+- (void)setSettingsHost:(id)host
 {
   v5 = OBJC_IVAR____TtC18AccountsUISettings15AccountsUIModel_settingsHost;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = host;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (void)willSelect:(id)a3
+- (void)willSelect:(id)select
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(select);
   v3[2]();
 
   _Block_release(v3);
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = self;
-  sub_23DCE7B80(v4, 1);
+  removedCopy = removed;
+  selfCopy = self;
+  sub_23DCE7B80(removedCopy, 1);
 }
 
 @end

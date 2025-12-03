@@ -1,38 +1,38 @@
 @interface REHTTPConnection
 - (BOOL)isValid;
 - (BOOL)open;
-- (REHTTPConnection)initWithConnection:(_CFHTTPServerConnection *)a3;
+- (REHTTPConnection)initWithConnection:(_CFHTTPServerConnection *)connection;
 - (REHTTPConnectionDelegate)delegate;
-- (void)_handleCompleteRequest:(id)a3 stream:(id)a4 error:(id)a5;
-- (void)_sendResponse:(id)a3;
+- (void)_handleCompleteRequest:(id)request stream:(id)stream error:(id)error;
+- (void)_sendResponse:(id)response;
 - (void)dealloc;
-- (void)didCompleteResponse:(_CFHTTPServerResponse *)a3 error:(id)a4;
-- (void)didRecieveRequest:(_CFHTTPServerRequest *)a3;
+- (void)didCompleteResponse:(_CFHTTPServerResponse *)response error:(id)error;
+- (void)didRecieveRequest:(_CFHTTPServerRequest *)request;
 - (void)invalidate;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation REHTTPConnection
 
-- (REHTTPConnection)initWithConnection:(_CFHTTPServerConnection *)a3
+- (REHTTPConnection)initWithConnection:(_CFHTTPServerConnection *)connection
 {
   v13.receiver = self;
   v13.super_class = REHTTPConnection;
   v4 = [(REHTTPConnection *)&v13 init];
   if (v4)
   {
-    v4->_connection = CFRetain(a3);
+    v4->_connection = CFRetain(connection);
     v5 = dispatch_queue_create("com.apple.HTTPConnection", 0);
     queue = v4->_queue;
     v4->_queue = v5;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     pendingRequests = v4->_pendingRequests;
-    v4->_pendingRequests = v7;
+    v4->_pendingRequests = strongToStrongObjectsMapTable;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingResponse = v4->_pendingResponse;
-    v4->_pendingResponse = v9;
+    v4->_pendingResponse = array;
 
     [MEMORY[0x277CCAE60] valueWithWeakObject:v4];
     connection = v4->_connection;
@@ -79,29 +79,29 @@
 
 - (BOOL)open
 {
-  v3 = [(REHTTPConnection *)self isValid];
-  if (v3)
+  isValid = [(REHTTPConnection *)self isValid];
+  if (isValid)
   {
     connection = self->_connection;
     queue = self->_queue;
     _CFHTTPServerConnectionSetDispatchQueue();
   }
 
-  return v3;
+  return isValid;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__REHTTPConnection_stream_handleEvent___block_invoke;
   block[3] = &unk_2785FCE98;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = streamCopy;
+  eventCopy = event;
+  v8 = streamCopy;
   dispatch_async(queue, block);
 }
 
@@ -144,32 +144,32 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCompleteRequest:(id)a3 stream:(id)a4 error:(id)a5
+- (void)_handleCompleteRequest:(id)request stream:(id)stream error:(id)error
 {
-  v8 = a3;
+  requestCopy = request;
   v9 = MEMORY[0x277CBEB88];
-  v10 = a4;
-  v11 = [v9 mainRunLoop];
-  [v10 removeFromRunLoop:v11 forMode:*MEMORY[0x277CBE640]];
+  streamCopy = stream;
+  mainRunLoop = [v9 mainRunLoop];
+  [streamCopy removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
-  [v10 close];
-  [(NSMapTable *)self->_pendingRequests removeObjectForKey:v10];
+  [streamCopy close];
+  [(NSMapTable *)self->_pendingRequests removeObjectForKey:streamCopy];
 
-  if (a5)
+  if (error)
   {
-    v12 = [v8 responseWithStatusCode:500];
-    [(REHTTPConnection *)self _sendResponse:v12];
+    delegate = [requestCopy responseWithStatusCode:500];
+    [(REHTTPConnection *)self _sendResponse:delegate];
   }
 
   else
   {
-    v12 = [(REHTTPConnection *)self delegate];
+    delegate = [(REHTTPConnection *)self delegate];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __56__REHTTPConnection__handleCompleteRequest_stream_error___block_invoke;
     v13[3] = &unk_2785FCEC0;
     v13[4] = self;
-    [v12 connection:self didReceiveRequest:v8 completion:v13];
+    [delegate connection:self didReceiveRequest:requestCopy completion:v13];
   }
 }
 
@@ -188,39 +188,39 @@ void __56__REHTTPConnection__handleCompleteRequest_stream_error___block_invoke(u
   dispatch_async(v5, v7);
 }
 
-- (void)_sendResponse:(id)a3
+- (void)_sendResponse:(id)response
 {
   pendingResponse = self->_pendingResponse;
-  v4 = a3;
-  [(NSMutableArray *)pendingResponse addObject:v4];
-  v5 = [v4 response];
+  responseCopy = response;
+  [(NSMutableArray *)pendingResponse addObject:responseCopy];
+  response = [responseCopy response];
 
-  MEMORY[0x28210D150](v5);
+  MEMORY[0x28210D150](response);
 }
 
-- (void)didRecieveRequest:(_CFHTTPServerRequest *)a3
+- (void)didRecieveRequest:(_CFHTTPServerRequest *)request
 {
-  v6 = [[REHTTPRequest alloc] initWithConnect:self request:a3];
-  v4 = [(REHTTPRequest *)v6 stream];
-  [v4 setDelegate:self];
-  [(NSMapTable *)self->_pendingRequests setObject:v6 forKey:v4];
-  if ([v4 streamStatus] == 7)
+  v6 = [[REHTTPRequest alloc] initWithConnect:self request:request];
+  stream = [(REHTTPRequest *)v6 stream];
+  [stream setDelegate:self];
+  [(NSMapTable *)self->_pendingRequests setObject:v6 forKey:stream];
+  if ([stream streamStatus] == 7)
   {
-    [(REHTTPConnection *)self stream:v4 handleEvent:8];
+    [(REHTTPConnection *)self stream:stream handleEvent:8];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v4 scheduleInRunLoop:v5 forMode:*MEMORY[0x277CBE640]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [stream scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
-    [v4 open];
+    [stream open];
   }
 }
 
-- (void)didCompleteResponse:(_CFHTTPServerResponse *)a3 error:(id)a4
+- (void)didCompleteResponse:(_CFHTTPServerResponse *)response error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -231,7 +231,7 @@ void __56__REHTTPConnection__handleCompleteRequest_stream_error___block_invoke(u
   v8[2] = __46__REHTTPConnection_didCompleteResponse_error___block_invoke;
   v8[3] = &unk_2785FCEE8;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = response;
   [(NSMutableArray *)pendingResponse enumerateObjectsUsingBlock:v8];
   if (v10[3] != 0x7FFFFFFFFFFFFFFFLL)
   {

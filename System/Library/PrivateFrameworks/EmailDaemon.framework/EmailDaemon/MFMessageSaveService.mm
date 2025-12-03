@@ -1,17 +1,17 @@
 @interface MFMessageSaveService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 @end
 
 @implementation MFMessageSaveService
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  v10 = a3;
-  v11 = xpc_dictionary_get_value(v10, [_MSMailServiceArguments UTF8String]);
+  messageCopy = message;
+  v11 = xpc_dictionary_get_value(messageCopy, [_MSMailServiceArguments UTF8String]);
   if (!v11)
   {
     v28 = +[NSAssertionHandler currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"MFDeliveryService.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"args"}];
+    [v28 handleFailureInMethod:a2 object:self file:@"MFDeliveryService.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"args"}];
   }
 
   v12 = _CFXPCCreateCFObjectFromXPCObject();
@@ -39,7 +39,7 @@
     v16 = [NSError errorWithDomain:MSMailServiceErrorDomain code:7502 userInfo:0];
 LABEL_12:
     v24 = v16;
-    if (!a6)
+    if (!error)
     {
 LABEL_15:
       v25 = 0;
@@ -49,7 +49,7 @@ LABEL_15:
 LABEL_13:
     v26 = v24;
     v25 = 0;
-    *a6 = v24;
+    *error = v24;
     goto LABEL_16;
   }
 
@@ -58,7 +58,7 @@ LABEL_13:
   {
     v24 = [NSError errorWithDomain:MSMailServiceErrorDomain code:7501 userInfo:0];
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -78,10 +78,10 @@ LABEL_13:
   v21 = v18;
   dispatch_async(v19, block);
 
-  reply = xpc_dictionary_create_reply(v10);
+  reply = xpc_dictionary_create_reply(messageCopy);
   xpc_dictionary_set_BOOL(reply, [MSSaveEmailResultKeySuccess UTF8String], 1);
   v23 = reply;
-  *a5 = reply;
+  *object = reply;
 
   v24 = 0;
   v25 = 1;

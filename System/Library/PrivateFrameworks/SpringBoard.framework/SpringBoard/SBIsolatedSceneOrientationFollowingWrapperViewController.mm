@@ -3,94 +3,94 @@
 - (CGRect)_boundsForOverlayRootView;
 - (SBDeviceApplicationSceneOverlayView)overlayView;
 - (SBIsolatedSceneOrientationFollowingWrapperOrientationDelegate)orientationDelegate;
-- (SBIsolatedSceneOrientationFollowingWrapperViewController)initWithContentViewController:(id)a3 sceneHandle:(id)a4 windowScene:(id)a5 orientationDelegate:(id)a6 rendersWhileLocked:(BOOL)a7;
-- (id)participantAssociatedWindows:(id)a3;
+- (SBIsolatedSceneOrientationFollowingWrapperViewController)initWithContentViewController:(id)controller sceneHandle:(id)handle windowScene:(id)scene orientationDelegate:(id)delegate rendersWhileLocked:(BOOL)locked;
+- (id)participantAssociatedWindows:(id)windows;
 - (int64_t)_hostOrientation;
-- (void)_containerViewWillRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 withAnimationSettings:(id)a5;
-- (void)_updateOrientationResolutionPolicyWithContainerTraitsParticipant:(id)a3;
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5;
-- (void)containerDidUpdateTraitsParticipant:(id)a3;
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4;
+- (void)_containerViewWillRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation withAnimationSettings:(id)settings;
+- (void)_updateOrientationResolutionPolicyWithContainerTraitsParticipant:(id)participant;
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix;
+- (void)containerDidUpdateTraitsParticipant:(id)participant;
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context;
 - (void)loadView;
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBIsolatedSceneOrientationFollowingWrapperViewController
 
-- (SBIsolatedSceneOrientationFollowingWrapperViewController)initWithContentViewController:(id)a3 sceneHandle:(id)a4 windowScene:(id)a5 orientationDelegate:(id)a6 rendersWhileLocked:(BOOL)a7
+- (SBIsolatedSceneOrientationFollowingWrapperViewController)initWithContentViewController:(id)controller sceneHandle:(id)handle windowScene:(id)scene orientationDelegate:(id)delegate rendersWhileLocked:(BOOL)locked
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  controllerCopy = controller;
+  handleCopy = handle;
+  sceneCopy = scene;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = SBIsolatedSceneOrientationFollowingWrapperViewController;
   v17 = [(SBIsolatedSceneOrientationFollowingWrapperViewController *)&v20 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_sceneHandle, a4);
-    objc_storeStrong(&v18->_contentViewController, a3);
-    objc_storeWeak(&v18->_orientationDelegate, v16);
-    v18->_rendersWhileLocked = a7;
-    objc_storeWeak(&v18->_windowScene, v15);
+    objc_storeStrong(&v17->_sceneHandle, handle);
+    objc_storeStrong(&v18->_contentViewController, controller);
+    objc_storeWeak(&v18->_orientationDelegate, delegateCopy);
+    v18->_rendersWhileLocked = locked;
+    objc_storeWeak(&v18->_windowScene, sceneCopy);
   }
 
   return v18;
 }
 
-- (void)containerDidUpdateTraitsParticipant:(id)a3
+- (void)containerDidUpdateTraitsParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_followedParticipant, a3);
+    objc_storeStrong(&self->_followedParticipant, participant);
     self->_initialOrientationHasBeenApplied = 0;
-    [(SBIsolatedSceneOrientationFollowingWrapperViewController *)self _updateOrientationResolutionPolicyWithContainerTraitsParticipant:v5];
+    [(SBIsolatedSceneOrientationFollowingWrapperViewController *)self _updateOrientationResolutionPolicyWithContainerTraitsParticipant:participantCopy];
   }
 }
 
-- (void)_updateOrientationResolutionPolicyWithContainerTraitsParticipant:(id)a3
+- (void)_updateOrientationResolutionPolicyWithContainerTraitsParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v6 = [v5 classicAppPhoneAppRunningOnPad];
+  participantCopy = participant;
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  classicAppPhoneAppRunningOnPad = [application classicAppPhoneAppRunningOnPad];
 
-  if (v6)
+  if (classicAppPhoneAppRunningOnPad)
   {
-    v7 = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientation];
+    resolutionPolicyInfoDeviceOrientation = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientation];
   }
 
   else
   {
     v8 = MEMORY[0x277D734D0];
-    if (v4)
+    if (participantCopy)
     {
-      v9 = [v4 uniqueIdentifier];
-      v10 = [v8 resolutionPolicyInfoForAssociatedParticipantWithUniqueID:v9];
+      uniqueIdentifier = [participantCopy uniqueIdentifier];
+      v10 = [v8 resolutionPolicyInfoForAssociatedParticipantWithUniqueID:uniqueIdentifier];
       traitsOrientationResolutionPolicy = self->_traitsOrientationResolutionPolicy;
       self->_traitsOrientationResolutionPolicy = v10;
 
       goto LABEL_7;
     }
 
-    v7 = [MEMORY[0x277D734D0] resolutionPolicyInfoOrientationBelow];
+    resolutionPolicyInfoDeviceOrientation = [MEMORY[0x277D734D0] resolutionPolicyInfoOrientationBelow];
   }
 
-  v9 = self->_traitsOrientationResolutionPolicy;
-  self->_traitsOrientationResolutionPolicy = v7;
+  uniqueIdentifier = self->_traitsOrientationResolutionPolicy;
+  self->_traitsOrientationResolutionPolicy = resolutionPolicyInfoDeviceOrientation;
 LABEL_7:
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   v13 = WeakRetained;
   if (self->_traitsResolutionPolicySpecifier)
   {
-    v14 = [WeakRetained traitsArbiter];
+    traitsArbiter = [WeakRetained traitsArbiter];
     v15 = objc_alloc(MEMORY[0x277D73498]);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -98,19 +98,19 @@ LABEL_7:
     v20[3] = &unk_2783B5D38;
     v20[4] = self;
     v16 = [v15 initWithBuilder:v20];
-    [v14 setNeedsUpdateArbitrationWithContext:v16];
+    [traitsArbiter setNeedsUpdateArbitrationWithContext:v16];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v17 = [v13 traitsPipelineManager];
+    traitsPipelineManager = [v13 traitsPipelineManager];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __125__SBIsolatedSceneOrientationFollowingWrapperViewController__updateOrientationResolutionPolicyWithContainerTraitsParticipant___block_invoke;
     v21[3] = &unk_2783B0DE8;
     objc_copyWeak(&v22, &location);
-    v18 = [v17 newBlockBasedOrientationPolicySpecifier:v21 forRole:@"SBTraitsParticipantRoleDeviceApplicationSceneViewOverlay"];
+    v18 = [traitsPipelineManager newBlockBasedOrientationPolicySpecifier:v21 forRole:@"SBTraitsParticipantRoleDeviceApplicationSceneViewOverlay"];
     traitsResolutionPolicySpecifier = self->_traitsResolutionPolicySpecifier;
     self->_traitsResolutionPolicySpecifier = v18;
 
@@ -145,8 +145,8 @@ void __125__SBIsolatedSceneOrientationFollowingWrapperViewController__updateOrie
 
 - (void)loadView
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBIsolatedSceneOrientationFollowingWrapperViewController.m" lineNumber:157 description:@"Isolated window scene was not nil"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBIsolatedSceneOrientationFollowingWrapperViewController.m" lineNumber:157 description:@"Isolated window scene was not nil"];
 }
 
 void __68__SBIsolatedSceneOrientationFollowingWrapperViewController_loadView__block_invoke(uint64_t a1, void *a2)
@@ -156,15 +156,15 @@ void __68__SBIsolatedSceneOrientationFollowingWrapperViewController_loadView__bl
   [v2 setAppearanceStyle:2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12.receiver = self;
   v12.super_class = SBIsolatedSceneOrientationFollowingWrapperViewController;
   [(SBIsolatedSceneOrientationFollowingWrapperViewController *)&v12 viewWillAppear:?];
-  v5 = [(SBWindow *)self->_appOverlayWindow rootViewController];
+  rootViewController = [(SBWindow *)self->_appOverlayWindow rootViewController];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = rootViewController;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -185,58 +185,58 @@ void __68__SBIsolatedSceneOrientationFollowingWrapperViewController_loadView__bl
 
   v9 = v8;
 
-  v10 = [v9 view];
-  v11 = [(UIViewController *)self->_contentViewController view];
-  [(UIViewController *)self->_contentViewController beginAppearanceTransition:1 animated:v3];
+  view = [v9 view];
+  view2 = [(UIViewController *)self->_contentViewController view];
+  [(UIViewController *)self->_contentViewController beginAppearanceTransition:1 animated:appearCopy];
   [v9 addChildViewController:self->_contentViewController];
-  [v10 bounds];
-  [v11 setFrame:?];
-  [v9 setOverlayContentView:v11];
+  [view bounds];
+  [view2 setFrame:?];
+  [v9 setOverlayContentView:view2];
   [(UIViewController *)self->_contentViewController didMoveToParentViewController:v9];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBIsolatedSceneOrientationFollowingWrapperViewController;
-  [(SBIsolatedSceneOrientationFollowingWrapperViewController *)&v4 viewDidAppear:a3];
+  [(SBIsolatedSceneOrientationFollowingWrapperViewController *)&v4 viewDidAppear:appear];
   [(UIViewController *)self->_contentViewController endAppearanceTransition];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = SBIsolatedSceneOrientationFollowingWrapperViewController;
   [(SBIsolatedSceneOrientationFollowingWrapperViewController *)&v9 viewWillDisappear:?];
-  v5 = [(UIViewController *)self->_contentViewController parentViewController];
-  v6 = [(SBWindow *)self->_appOverlayWindow rootViewController];
-  v7 = [v5 isEqual:v6];
+  parentViewController = [(UIViewController *)self->_contentViewController parentViewController];
+  rootViewController = [(SBWindow *)self->_appOverlayWindow rootViewController];
+  v7 = [parentViewController isEqual:rootViewController];
 
   if (v7)
   {
     self->_contentViewControllerBeingRemoved = 1;
-    [(UIViewController *)self->_contentViewController beginAppearanceTransition:0 animated:v3];
+    [(UIViewController *)self->_contentViewController beginAppearanceTransition:0 animated:disappearCopy];
     [(UIViewController *)self->_contentViewController willMoveToParentViewController:0];
-    v8 = [(UIViewController *)self->_contentViewController view];
-    [v8 removeFromSuperview];
+    view = [(UIViewController *)self->_contentViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_contentViewController removeFromParentViewController];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v19.receiver = self;
   v19.super_class = SBIsolatedSceneOrientationFollowingWrapperViewController;
-  [(SBIsolatedSceneOrientationFollowingWrapperViewController *)&v19 viewDidDisappear:a3];
+  [(SBIsolatedSceneOrientationFollowingWrapperViewController *)&v19 viewDidDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_isolatedWindowScene);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = [WeakRetained associatedWindowScene];
-    v7 = [v6 accessorySceneProvider];
-    [v7 destroyAccessoryWindowScene:v5];
+    associatedWindowScene = [WeakRetained associatedWindowScene];
+    accessorySceneProvider = [associatedWindowScene accessorySceneProvider];
+    [accessorySceneProvider destroyAccessoryWindowScene:v5];
 
     objc_storeWeak(&self->_isolatedWindowScene, 0);
     [(UIScenePresenter *)self->_scenePresenter invalidate];
@@ -251,9 +251,9 @@ void __68__SBIsolatedSceneOrientationFollowingWrapperViewController_loadView__bl
     if (self->_contentViewControllerBeingRemoved)
     {
       [(UIViewController *)self->_contentViewController endAppearanceTransition];
-      v10 = [(SBWindow *)self->_appOverlayWindow rootViewController];
+      rootViewController = [(SBWindow *)self->_appOverlayWindow rootViewController];
       v11 = objc_opt_class();
-      v12 = v10;
+      v12 = rootViewController;
       if (v11)
       {
         if (objc_opt_isKindOfClass())
@@ -297,11 +297,11 @@ void __68__SBIsolatedSceneOrientationFollowingWrapperViewController_loadView__bl
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = [(SBWindow *)self->_appOverlayWindow rootViewController];
-  v3 = [v2 view];
+  rootViewController = [(SBWindow *)self->_appOverlayWindow rootViewController];
+  view = [rootViewController view];
 
-  [v3 setNeedsLayout];
-  [v3 layoutIfNeeded];
+  [view setNeedsLayout];
+  [view layoutIfNeeded];
 }
 
 - (SBDeviceApplicationSceneOverlayView)overlayView
@@ -312,18 +312,18 @@ void __68__SBIsolatedSceneOrientationFollowingWrapperViewController_loadView__bl
   return containerView;
 }
 
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater
 {
-  v5 = a4;
+  updaterCopy = updater;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __100__SBIsolatedSceneOrientationFollowingWrapperViewController_updatePreferencesForParticipant_updater___block_invoke;
   v6[3] = &unk_2783B0DC0;
   v6[4] = self;
-  [v5 updateOrientationPreferencesWithBlock:v6];
+  [updaterCopy updateOrientationPreferencesWithBlock:v6];
   if ([(TRAOrientationResolutionPolicyInfo *)self->_traitsOrientationResolutionPolicy resolutionPolicy]== 2)
   {
-    [v5 updateZOrderLevelPreferencesWithBlock:&__block_literal_global_41_0];
+    [updaterCopy updateZOrderLevelPreferencesWithBlock:&__block_literal_global_41_0];
   }
 }
 
@@ -346,29 +346,29 @@ void __100__SBIsolatedSceneOrientationFollowingWrapperViewController_updatePrefe
   [v3 setPreferredOrientation:{objc_msgSend(WeakRetained, "preferredInterfaceOrientationForPresentation")}];
 }
 
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context
 {
   if (!self->_initialOrientationHasBeenApplied)
   {
-    -[SBWindow _legacySetRotatableViewOrientation:duration:force:](self->_appOverlayWindow, "_legacySetRotatableViewOrientation:duration:force:", [a3 sbf_currentOrientation], 1, 0.0);
+    -[SBWindow _legacySetRotatableViewOrientation:duration:force:](self->_appOverlayWindow, "_legacySetRotatableViewOrientation:duration:force:", [participant sbf_currentOrientation], 1, 0.0);
     self->_initialOrientationHasBeenApplied = 1;
   }
 }
 
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix
 {
-  v8 = a3;
-  v9 = a4;
+  participantCopy = participant;
+  builderCopy = builder;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __120__SBIsolatedSceneOrientationFollowingWrapperViewController_appendDescriptionForParticipant_withBuilder_multilinePrefix___block_invoke;
   v12[3] = &unk_2783A8ED8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [v10 appendBodySectionWithName:@"Associated Windows" multilinePrefix:a5 block:v12];
+  v13 = participantCopy;
+  v14 = builderCopy;
+  v10 = builderCopy;
+  v11 = participantCopy;
+  [v10 appendBodySectionWithName:@"Associated Windows" multilinePrefix:prefix block:v12];
 }
 
 void __120__SBIsolatedSceneOrientationFollowingWrapperViewController_appendDescriptionForParticipant_withBuilder_multilinePrefix___block_invoke(uint64_t a1)
@@ -427,7 +427,7 @@ void __120__SBIsolatedSceneOrientationFollowingWrapperViewController_appendDescr
   }
 }
 
-- (id)participantAssociatedWindows:(id)a3
+- (id)participantAssociatedWindows:(id)windows
 {
   v5[1] = *MEMORY[0x277D85DE8];
   if (self->_appOverlayWindow)
@@ -444,23 +444,23 @@ void __120__SBIsolatedSceneOrientationFollowingWrapperViewController_appendDescr
   return v3;
 }
 
-- (void)_containerViewWillRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 withAnimationSettings:(id)a5
+- (void)_containerViewWillRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation withAnimationSettings:(id)settings
 {
-  v8 = a5;
-  if ([(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation]== a4)
+  settingsCopy = settings;
+  if ([(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation]== interfaceOrientation)
   {
-    [v8 duration];
-    [SBAnimationUtilities adjustedRotationAnimationDurationForDuration:[(TRAParticipant *)self->_traitsParticipant sbf_previousOrientation] fromOrientation:a4 toOrientation:v7];
-    [(SBWindow *)self->_appOverlayWindow _legacySetRotatableViewOrientation:a4 duration:0 force:?];
+    [settingsCopy duration];
+    [SBAnimationUtilities adjustedRotationAnimationDurationForDuration:[(TRAParticipant *)self->_traitsParticipant sbf_previousOrientation] fromOrientation:interfaceOrientation toOrientation:v7];
+    [(SBWindow *)self->_appOverlayWindow _legacySetRotatableViewOrientation:interfaceOrientation duration:0 force:?];
   }
 }
 
 - (int64_t)_hostOrientation
 {
-  v3 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v4 = [v3 classicAppPhoneAppRunningOnPad];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  classicAppPhoneAppRunningOnPad = [application classicAppPhoneAppRunningOnPad];
 
-  if (v4)
+  if (classicAppPhoneAppRunningOnPad)
   {
     v5 = SBApp;
 
@@ -477,10 +477,10 @@ void __120__SBIsolatedSceneOrientationFollowingWrapperViewController_appendDescr
 
 - (BOOL)_isSceneStatusBarHidden
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
-  v3 = [v2 statusBarHidden];
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
+  statusBarHidden = [statusBarStateProvider statusBarHidden];
 
-  return v3;
+  return statusBarHidden;
 }
 
 - (CGRect)_boundsForOverlayRootView
@@ -489,17 +489,17 @@ void __120__SBIsolatedSceneOrientationFollowingWrapperViewController_appendDescr
   v4 = v3;
   v6 = v5;
   v7 = MEMORY[0x277CBF348];
-  v8 = [(SBIsolatedSceneOrientationFollowingWrapperViewController *)self _hostOrientation];
+  _hostOrientation = [(SBIsolatedSceneOrientationFollowingWrapperViewController *)self _hostOrientation];
   WeakRetained = objc_loadWeakRetained(&self->_orientationDelegate);
   v10 = 1;
   if (([WeakRetained shouldFollowSceneOrientation] & 1) == 0)
   {
-    v10 = ((1 << v8) & ~[WeakRetained supportedInterfaceOrientations]) == 0;
+    v10 = ((1 << _hostOrientation) & ~[WeakRetained supportedInterfaceOrientations]) == 0;
   }
 
   v11 = *v7;
   v12 = v7[1];
-  if ((v8 - 3) < 2 == ([(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation]- 5) < 0xFFFFFFFFFFFFFFFELL && !v10)
+  if ((_hostOrientation - 3) < 2 == ([(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation]- 5) < 0xFFFFFFFFFFFFFFFELL && !v10)
   {
     BSSizeSwap();
     v4 = v13;

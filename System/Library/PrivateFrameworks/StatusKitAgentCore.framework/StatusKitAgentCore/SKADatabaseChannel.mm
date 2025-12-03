@@ -1,66 +1,66 @@
 @interface SKADatabaseChannel
 + (id)logger;
 - (MPStatusKitOutgoingRatchet)currentOutgoingRatchet;
-- (SKADatabaseChannel)initWithChannelToken:(id)a3 channelType:(int64_t)a4 identifier:(id)a5 personal:(BOOL)a6 decommissioned:(BOOL)a7 currentOutgoingRatchetState:(id)a8 dateCreated:(id)a9 statusType:(id)a10 presenceIdentifier:(id)a11 serviceIdentifier:(id)a12 invitedUsers:(id)a13 presenceServerKey:(id)a14 presencePeerKey:(id)a15 presenceMembershipKey:(id)a16;
-- (SKADatabaseChannel)initWithCoreDataChannels:(id)a3;
+- (SKADatabaseChannel)initWithChannelToken:(id)token channelType:(int64_t)type identifier:(id)identifier personal:(BOOL)personal decommissioned:(BOOL)decommissioned currentOutgoingRatchetState:(id)state dateCreated:(id)created statusType:(id)self0 presenceIdentifier:(id)self1 serviceIdentifier:(id)self2 invitedUsers:(id)self3 presenceServerKey:(id)self4 presencePeerKey:(id)self5 presenceMembershipKey:(id)self6;
+- (SKADatabaseChannel)initWithCoreDataChannels:(id)channels;
 @end
 
 @implementation SKADatabaseChannel
 
-- (SKADatabaseChannel)initWithChannelToken:(id)a3 channelType:(int64_t)a4 identifier:(id)a5 personal:(BOOL)a6 decommissioned:(BOOL)a7 currentOutgoingRatchetState:(id)a8 dateCreated:(id)a9 statusType:(id)a10 presenceIdentifier:(id)a11 serviceIdentifier:(id)a12 invitedUsers:(id)a13 presenceServerKey:(id)a14 presencePeerKey:(id)a15 presenceMembershipKey:(id)a16
+- (SKADatabaseChannel)initWithChannelToken:(id)token channelType:(int64_t)type identifier:(id)identifier personal:(BOOL)personal decommissioned:(BOOL)decommissioned currentOutgoingRatchetState:(id)state dateCreated:(id)created statusType:(id)self0 presenceIdentifier:(id)self1 serviceIdentifier:(id)self2 invitedUsers:(id)self3 presenceServerKey:(id)self4 presencePeerKey:(id)self5 presenceMembershipKey:(id)self6
 {
-  v49 = a3;
-  v48 = a5;
-  obj = a8;
-  v46 = a8;
-  v47 = a9;
-  v18 = a10;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
-  v23 = a15;
-  v24 = a16;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  obj = state;
+  stateCopy = state;
+  createdCopy = created;
+  statusTypeCopy = statusType;
+  presenceIdentifierCopy = presenceIdentifier;
+  serviceIdentifierCopy = serviceIdentifier;
+  usersCopy = users;
+  keyCopy = key;
+  peerKeyCopy = peerKey;
+  membershipKeyCopy = membershipKey;
   v50.receiver = self;
   v50.super_class = SKADatabaseChannel;
   v25 = [(SKADatabaseChannel *)&v50 init];
   if (v25)
   {
-    v26 = [v49 copy];
+    v26 = [tokenCopy copy];
     channelToken = v25->_channelToken;
     v25->_channelToken = v26;
 
-    v25->_channelType = a4;
-    v28 = [v48 copy];
+    v25->_channelType = type;
+    v28 = [identifierCopy copy];
     identifier = v25->_identifier;
     v25->_identifier = v28;
 
-    v25->_personal = a6;
-    v25->_decommissioned = a7;
-    v30 = [v47 copy];
+    v25->_personal = personal;
+    v25->_decommissioned = decommissioned;
+    v30 = [createdCopy copy];
     dateChannelCreated = v25->_dateChannelCreated;
     v25->_dateChannelCreated = v30;
 
     objc_storeStrong(&v25->_currentOutgoingRatchetState, obj);
-    v32 = [v18 copy];
+    v32 = [statusTypeCopy copy];
     statusType = v25->_statusType;
     v25->_statusType = v32;
 
-    v34 = [v19 copy];
+    v34 = [presenceIdentifierCopy copy];
     presenceIdentifier = v25->_presenceIdentifier;
     v25->_presenceIdentifier = v34;
 
-    v36 = [v20 copy];
+    v36 = [serviceIdentifierCopy copy];
     serviceIdentifier = v25->_serviceIdentifier;
     v25->_serviceIdentifier = v36;
 
-    v38 = [v21 copy];
+    v38 = [usersCopy copy];
     invitedUsers = v25->_invitedUsers;
     v25->_invitedUsers = v38;
 
-    objc_storeStrong(&v25->_presenceServerKey, a14);
-    objc_storeStrong(&v25->_presencePeerKey, a15);
-    objc_storeStrong(&v25->_presenceMembershipKey, a16);
+    objc_storeStrong(&v25->_presenceServerKey, key);
+    objc_storeStrong(&v25->_presencePeerKey, peerKey);
+    objc_storeStrong(&v25->_presenceMembershipKey, membershipKey);
   }
 
   return v25;
@@ -125,16 +125,16 @@ uint64_t __28__SKADatabaseChannel_logger__block_invoke()
   return v5;
 }
 
-- (SKADatabaseChannel)initWithCoreDataChannels:(id)a3
+- (SKADatabaseChannel)initWithCoreDataChannels:(id)channels
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  channelsCopy = channels;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v3;
+  obj = channelsCopy;
   v5 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v5)
   {
@@ -150,12 +150,12 @@ uint64_t __28__SKADatabaseChannel_logger__block_invoke()
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v39 + 1) + 8 * v8) invitedUsers];
+        invitedUsers = [*(*(&v39 + 1) + 8 * v8) invitedUsers];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v10 = [v9 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v10 = [invitedUsers countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v10)
         {
           v11 = v10;
@@ -167,7 +167,7 @@ uint64_t __28__SKADatabaseChannel_logger__block_invoke()
             {
               if (*v36 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(invitedUsers);
               }
 
               v14 = [[SKADatabaseInvitedUser alloc] initWithCoreDataInvitedUser:*(*(&v35 + 1) + 8 * v13)];
@@ -177,7 +177,7 @@ uint64_t __28__SKADatabaseChannel_logger__block_invoke()
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            v11 = [invitedUsers countByEnumeratingWithState:&v35 objects:v43 count:16];
           }
 
           while (v11);
@@ -193,22 +193,22 @@ uint64_t __28__SKADatabaseChannel_logger__block_invoke()
     while (v6);
   }
 
-  v15 = [obj firstObject];
-  v29 = [v15 channelToken];
-  v31 = [v15 channelType];
-  v30 = [v15 identifier];
-  v28 = [v15 personal];
-  v27 = [v15 decomissioned];
-  v26 = [v15 currentOutgoingRatchetState];
-  v25 = [v15 dateChannelCreated];
-  v24 = [v15 statusType];
-  v23 = [v15 presenceIdentifier];
-  v16 = [v15 serviceIdentifier];
+  firstObject = [obj firstObject];
+  channelToken = [firstObject channelToken];
+  channelType = [firstObject channelType];
+  identifier = [firstObject identifier];
+  personal = [firstObject personal];
+  decomissioned = [firstObject decomissioned];
+  currentOutgoingRatchetState = [firstObject currentOutgoingRatchetState];
+  dateChannelCreated = [firstObject dateChannelCreated];
+  statusType = [firstObject statusType];
+  presenceIdentifier = [firstObject presenceIdentifier];
+  serviceIdentifier = [firstObject serviceIdentifier];
   v17 = [v4 copy];
-  v18 = [v15 serverKey];
-  v19 = [v15 peerKey];
-  v20 = [v15 membershipKey];
-  v33 = [(SKADatabaseChannel *)self initWithChannelToken:v29 channelType:v31 identifier:v30 personal:v28 decommissioned:v27 currentOutgoingRatchetState:v26 dateCreated:v25 statusType:v24 presenceIdentifier:v23 serviceIdentifier:v16 invitedUsers:v17 presenceServerKey:v18 presencePeerKey:v19 presenceMembershipKey:v20];
+  serverKey = [firstObject serverKey];
+  peerKey = [firstObject peerKey];
+  membershipKey = [firstObject membershipKey];
+  v33 = [(SKADatabaseChannel *)self initWithChannelToken:channelToken channelType:channelType identifier:identifier personal:personal decommissioned:decomissioned currentOutgoingRatchetState:currentOutgoingRatchetState dateCreated:dateChannelCreated statusType:statusType presenceIdentifier:presenceIdentifier serviceIdentifier:serviceIdentifier invitedUsers:v17 presenceServerKey:serverKey presencePeerKey:peerKey presenceMembershipKey:membershipKey];
 
   v21 = *MEMORY[0x277D85DE8];
   return v33;

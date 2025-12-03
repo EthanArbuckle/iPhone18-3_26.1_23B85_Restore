@@ -1,16 +1,16 @@
 @interface INCreateNoteIntentResponse
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INCreateNoteIntentResponse)initWithBackingStore:(id)a3;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INCreateNoteIntentResponse)initWithBackingStore:(id)store;
 - (INCreateNoteIntentResponse)initWithCode:(INCreateNoteIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INCreateNoteIntentResponse)initWithCoder:(id)a3;
+- (INCreateNoteIntentResponse)initWithCoder:(id)coder;
 - (INCreateNoteIntentResponseCode)code;
 - (INNote)createdNote;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setCreatedNote:(INNote *)createdNote;
 @end
 
@@ -20,32 +20,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INCreateNoteIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INCreateNoteIntentResponseCodeFailure|INCreateNoteIntentResponseCodeInProgress))
+  code = [(INCreateNoteIntentResponse *)self code];
+  v4 = code;
+  if (code < (INCreateNoteIntentResponseCodeFailure|INCreateNoteIntentResponseCodeInProgress))
   {
-    v5 = off_1E72811B8[v3];
-    v6 = v5;
+    null = off_1E72811B8[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"createdNote";
-  v13[0] = v5;
-  v7 = [(INCreateNoteIntentResponse *)self createdNote];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  createdNote = [(INCreateNoteIntentResponse *)self createdNote];
+  null2 = createdNote;
+  if (!createdNote)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!createdNote)
   {
   }
 
@@ -61,40 +61,40 @@
 - (void)setCreatedNote:(INNote *)createdNote
 {
   v4 = createdNote;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToNote(v4);
 
-  [v5 setCreatedNote:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setCreatedNote:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (INNote)createdNote
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 createdNote];
-  v4 = INIntentSlotValueTransformFromNote(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  createdNote = [_responseMessagePBRepresentation createdNote];
+  v4 = INIntentSlotValueTransformFromNote(createdNote);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INCreateNoteIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INCreateNoteIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INCreateNoteIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INCreateNoteIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INCreateNoteIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INCreateNoteIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INCreateNoteIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INCreateNoteIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INCreateNoteIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INCreateNoteIntentResponseCodeFailure"])
   {
     v5 = 4;
   }
@@ -104,7 +104,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INCreateNoteIntentResponseCodeFailureRequiringAppLaunch"];
+  v6 = [nameCopy isEqualToString:@"INCreateNoteIntentResponseCodeFailureRequiringAppLaunch"];
 
   if (v6)
   {
@@ -119,30 +119,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INCreateNoteIntentResponse *)self code];
-  if ((v2 - 1) > 4)
+  code = [(INCreateNoteIntentResponse *)self code];
+  if ((code - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FDC8[v2 - 1];
+    return qword_18EE5FDC8[code - 1];
   }
 }
 
-- (INCreateNoteIntentResponse)initWithCoder:(id)a3
+- (INCreateNoteIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INCreateNoteIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INCreateNoteIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INCreateNoteIntentResponseCode)code
@@ -152,18 +152,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INCreateNoteIntentResponse)initWithBackingStore:(id)a3
+- (INCreateNoteIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INCreateNoteIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INCreateNoteIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INCreateNoteIntentResponse)initWithCode:(INCreateNoteIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -204,45 +204,45 @@
   return v11;
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 4)
+  if ((code - 1) > 4)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FDB0[a3 - 1];
+    return dword_18EE5FDB0[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

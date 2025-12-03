@@ -1,11 +1,11 @@
 @interface CTBProvisioningConfigurationWrapper
-- (CTBProvisioningConfigurationWrapper)initWithWrapped:(optional<ctb:()set<std:()std:(std:()set<std:()std:(std:()basic_string<char :()std:(std::allocator<char>> *)a6 :char_traits<char> allocator<std::string>> *)a5 :less<std::string> :string :allocator<std::string>> *)a4 :less<std::string> :string :ProvisioningConfiguration> *)a3;
+- (CTBProvisioningConfigurationWrapper)initWithWrapped:(optional<ctb:()set<std:()std:(std:()set<std:()std:(std:()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> allocator<std::string>> *)a5 :less<std::string> :string :allocator<std::string>> *)a4 :less<std::string> :string :ProvisioningConfiguration> *)a3;
 - (id).cxx_construct;
 @end
 
 @implementation CTBProvisioningConfigurationWrapper
 
-- (CTBProvisioningConfigurationWrapper)initWithWrapped:(optional<ctb:()set<std:()std:(std:()set<std:()std:(std:()basic_string<char :()std:(std::allocator<char>> *)a6 :char_traits<char> allocator<std::string>> *)a5 :less<std::string> :string :allocator<std::string>> *)a4 :less<std::string> :string :ProvisioningConfiguration> *)a3
+- (CTBProvisioningConfigurationWrapper)initWithWrapped:(optional<ctb:()set<std:()std:(std:()set<std:()std:(std:()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> allocator<std::string>> *)a5 :less<std::string> :string :allocator<std::string>> *)a4 :less<std::string> :string :ProvisioningConfiguration> *)a3
 {
   v10.receiver = self;
   v10.super_class = CTBProvisioningConfigurationWrapper;

@@ -1,9 +1,9 @@
 @interface InCallControlsCollectionViewController
-- (_TtC15ConversationKit38InCallControlsCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit38InCallControlsCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)blockStatusDidUpdate;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)didTapPTTLeaveChannelButton:(id)a3;
-- (void)handleContentSizeCategoryDidChange:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)didTapPTTLeaveChannelButton:(id)button;
+- (void)handleContentSizeCategoryDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -11,22 +11,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsCollectionViewController.viewDidLoad()();
 }
 
 - (void)blockStatusDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsCollectionViewController.blockStatusDidUpdate()();
 }
 
-- (void)handleContentSizeCategoryDidChange:(id)a3
+- (void)handleContentSizeCategoryDidChange:(id)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation12NotificationVSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (change)
   {
     static Notification._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for Notification();
@@ -40,39 +40,39 @@
   }
 
   __swift_storeEnumTagSinglePayload(v7, v9, 1, v8);
-  v10 = self;
+  selfCopy = self;
   InCallControlsCollectionViewController.handleContentSizeCategoryDidChange(_:)();
 
   outlined destroy of ConversationControlsMoreMenuButtonDelegate?(v7, &_s10Foundation12NotificationVSgMd);
 }
 
-- (_TtC15ConversationKit38InCallControlsCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit38InCallControlsCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   InCallControlsCollectionViewController.init(nibName:bundle:)();
 }
 
-- (void)didTapPTTLeaveChannelButton:(id)a3
+- (void)didTapPTTLeaveChannelButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsCollectionViewController.didTapPTTLeaveChannelButton(_:)(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  InCallControlsCollectionViewController.didTapPTTLeaveChannelButton(_:)(buttonCopy);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   InCallControlsCollectionViewController.collectionView(_:didSelectItemAt:)();
 
   (*(v7 + 8))(v9, v6);

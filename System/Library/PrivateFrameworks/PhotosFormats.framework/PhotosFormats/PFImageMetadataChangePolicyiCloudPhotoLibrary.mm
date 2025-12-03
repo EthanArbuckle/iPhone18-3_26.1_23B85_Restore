@@ -1,24 +1,24 @@
 @interface PFImageMetadataChangePolicyiCloudPhotoLibrary
 + (id)standardPolicy;
-- (id)processMetadata:(id)a3;
+- (id)processMetadata:(id)metadata;
 @end
 
 @implementation PFImageMetadataChangePolicyiCloudPhotoLibrary
 
-- (id)processMetadata:(id)a3
+- (id)processMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [[PFMetadata alloc] initWithImageProperties:v4 contentType:0 timeZoneLookup:0];
-  v6 = [(PFMetadata *)v5 livePhotoPairingIdentifier];
+  metadataCopy = metadata;
+  v5 = [[PFMetadata alloc] initWithImageProperties:metadataCopy contentType:0 timeZoneLookup:0];
+  livePhotoPairingIdentifier = [(PFMetadata *)v5 livePhotoPairingIdentifier];
   v13.receiver = self;
   v13.super_class = PFImageMetadataChangePolicyiCloudPhotoLibrary;
-  v7 = [(PFImageMetadataChangePolicyDefault *)&v13 processMetadata:v4];
+  v7 = [(PFImageMetadataChangePolicyDefault *)&v13 processMetadata:metadataCopy];
 
-  if (v6)
+  if (livePhotoPairingIdentifier)
   {
     v8 = [v7 mutableCopy];
-    v9 = [(PFMetadata *)v5 livePhotoPairingIdentifierMetadataKey];
-    v10 = [PFMetadataUtilities addMakerApplePropertyWithKey:v9 value:v6 toProperties:v8];
+    livePhotoPairingIdentifierMetadataKey = [(PFMetadata *)v5 livePhotoPairingIdentifierMetadataKey];
+    v10 = [PFMetadataUtilities addMakerApplePropertyWithKey:livePhotoPairingIdentifierMetadataKey value:livePhotoPairingIdentifier toProperties:v8];
 
     if (v10)
     {

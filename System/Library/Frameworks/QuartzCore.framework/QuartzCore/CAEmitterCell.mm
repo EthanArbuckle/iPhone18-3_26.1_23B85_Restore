@@ -1,10 +1,10 @@
 @interface CAEmitterCell
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (CAEmitterCell)emitterCell;
 + (id)defaultValueForKey:(NSString *)key;
-+ (void)CAMLParserStartElement:(id)a3;
-- (BOOL)CAMLTypeSupportedForKey:(id)a3;
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4;
++ (void)CAMLParserStartElement:(id)element;
+- (BOOL)CAMLTypeSupportedForKey:(id)key;
+- (BOOL)CA_validateValue:(id)value forKey:(id)key;
 - (BOOL)autoreverses;
 - (BOOL)isEnabled;
 - (BOOL)shouldArchiveValueForKey:(NSString *)key;
@@ -61,68 +61,68 @@
 - (float)repeatCount;
 - (float)speed;
 - (id)contents;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)valueForKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
 - (unsigned)contentsFrameCount;
 - (unsigned)contentsFramesPerRow;
 - (void)CA_prepareRenderValue;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 - (void)setAlphaRange:(float)alphaRange;
 - (void)setAlphaSpeed:(float)alphaSpeed;
-- (void)setAutoreverses:(BOOL)a3;
-- (void)setBeginTime:(double)a3;
+- (void)setAutoreverses:(BOOL)autoreverses;
+- (void)setBeginTime:(double)time;
 - (void)setBirthRate:(float)birthRate;
 - (void)setBlueRange:(float)blueRange;
 - (void)setBlueSpeed:(float)blueSpeed;
 - (void)setColor:(CGColorRef)color;
 - (void)setContents:(id)contents;
-- (void)setContentsFrameCount:(unsigned int)a3;
-- (void)setContentsFrameMode:(id)a3;
-- (void)setContentsFramesPerRow:(unsigned int)a3;
-- (void)setContentsFramesPerSecond:(float)a3;
+- (void)setContentsFrameCount:(unsigned int)count;
+- (void)setContentsFrameMode:(id)mode;
+- (void)setContentsFramesPerRow:(unsigned int)row;
+- (void)setContentsFramesPerSecond:(float)second;
 - (void)setContentsRect:(CGRect)contentsRect;
 - (void)setContentsScale:(CGFloat)contentsScale;
-- (void)setDuration:(double)a3;
+- (void)setDuration:(double)duration;
 - (void)setEmissionLatitude:(CGFloat)emissionLatitude;
 - (void)setEmissionLongitude:(CGFloat)emissionLongitude;
 - (void)setEmissionRange:(CGFloat)emissionRange;
-- (void)setEmitterBehaviors:(id)a3;
+- (void)setEmitterBehaviors:(id)behaviors;
 - (void)setEmitterCells:(NSArray *)emitterCells;
 - (void)setEnabled:(BOOL)enabled;
-- (void)setFillMode:(id)a3;
+- (void)setFillMode:(id)mode;
 - (void)setGreenRange:(float)greenRange;
 - (void)setGreenSpeed:(float)greenSpeed;
 - (void)setLifetime:(float)lifetime;
 - (void)setLifetimeRange:(float)lifetimeRange;
 - (void)setMagnificationFilter:(NSString *)magnificationFilter;
-- (void)setMass:(float)a3;
-- (void)setMassRange:(float)a3;
+- (void)setMass:(float)mass;
+- (void)setMassRange:(float)range;
 - (void)setMinificationFilter:(NSString *)minificationFilter;
 - (void)setMinificationFilterBias:(float)minificationFilterBias;
 - (void)setName:(NSString *)name;
-- (void)setOrientationLatitude:(double)a3;
-- (void)setOrientationLongitude:(double)a3;
-- (void)setOrientationRange:(double)a3;
-- (void)setParticleType:(id)a3;
+- (void)setOrientationLatitude:(double)latitude;
+- (void)setOrientationLongitude:(double)longitude;
+- (void)setOrientationRange:(double)range;
+- (void)setParticleType:(id)type;
 - (void)setRedRange:(float)redRange;
 - (void)setRedSpeed:(float)redSpeed;
-- (void)setRepeatCount:(float)a3;
-- (void)setRepeatDuration:(double)a3;
-- (void)setRotation:(double)a3;
-- (void)setRotationRange:(double)a3;
+- (void)setRepeatCount:(float)count;
+- (void)setRepeatDuration:(double)duration;
+- (void)setRotation:(double)rotation;
+- (void)setRotationRange:(double)range;
 - (void)setScale:(CGFloat)scale;
 - (void)setScaleRange:(CGFloat)scaleRange;
 - (void)setScaleSpeed:(CGFloat)scaleSpeed;
-- (void)setSpeed:(float)a3;
+- (void)setSpeed:(float)speed;
 - (void)setSpin:(CGFloat)spin;
 - (void)setSpinRange:(CGFloat)spinRange;
 - (void)setStyle:(NSDictionary *)style;
-- (void)setTimeOffset:(double)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setTimeOffset:(double)offset;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)setVelocity:(CGFloat)velocity;
 - (void)setVelocityRange:(CGFloat)velocityRange;
 - (void)setXAcceleration:(CGFloat)xAcceleration;
@@ -134,7 +134,7 @@
 
 + (CAEmitterCell)emitterCell
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -194,10 +194,10 @@
       *(v7 + 54) = 1065353216;
     }
 
-    v8 = [(CAEmitterCell *)self name];
-    if (v8)
+    name = [(CAEmitterCell *)self name];
+    if (name)
     {
-      v10 = CA::Render::String::new_string(v8, v9);
+      v10 = CA::Render::String::new_string(name, v9);
       v11 = *(state + 2);
       *(state + 2) = v10;
       if (v11)
@@ -209,11 +209,11 @@
       }
     }
 
-    v12 = [(CAEmitterCell *)self isEnabled];
-    v13 = [(CAEmitterCell *)self particleType];
-    if (v13)
+    isEnabled = [(CAEmitterCell *)self isEnabled];
+    particleType = [(CAEmitterCell *)self particleType];
+    if (particleType)
     {
-      *(state + 16) = CAInternAtom(v13, 0);
+      *(state + 16) = CAInternAtom(particleType, 0);
     }
 
     v14 = CAMediaTimingCopyRenderTiming(self);
@@ -288,12 +288,12 @@
     [(CAEmitterCell *)self spinRange];
     *&v38 = v38;
     *(state + 40) = LODWORD(v38);
-    v39 = [(CAEmitterCell *)self color];
-    if (v39)
+    color = [(CAEmitterCell *)self color];
+    if (color)
     {
       v83 = 0u;
       v84 = 0u;
-      CA_CGColorGetRGBComponents(v39, v6, v83.f64);
+      CA_CGColorGetRGBComponents(color, v6, v83.f64);
       *(state + 164) = vcvt_hight_f32_f64(vcvt_f32_f64(v83), v84);
     }
 
@@ -322,11 +322,11 @@
     *(state + 56) = [(CAEmitterCell *)self contentsFramesPerRow];
     [(CAEmitterCell *)self contentsFramesPerSecond];
     *(state + 57) = v50;
-    v51 = [(CAEmitterCell *)self contents];
-    if (v51)
+    contents = [(CAEmitterCell *)self contents];
+    if (contents)
     {
-      v52 = v51;
-      v53 = CFGetTypeID(v51);
+      v52 = contents;
+      v53 = CFGetTypeID(contents);
       if (v53 == CGImageGetTypeID())
       {
         v54 = CA::Render::copy_image(v52, v6, 0, 0.0, 1.0);
@@ -342,10 +342,10 @@
       }
     }
 
-    v56 = [(CAEmitterCell *)self contentsFrameMode];
-    if (v56)
+    contentsFrameMode = [(CAEmitterCell *)self contentsFrameMode];
+    if (contentsFrameMode)
     {
-      *(state + 17) = CAInternAtom(v56, 0);
+      *(state + 17) = CAInternAtom(contentsFrameMode, 0);
     }
 
     [(CAEmitterCell *)self contentsRect];
@@ -380,22 +380,22 @@
       }
     }
 
-    v71 = [(CAEmitterCell *)self magnificationFilter];
-    if (v71)
+    magnificationFilter = [(CAEmitterCell *)self magnificationFilter];
+    if (magnificationFilter)
     {
-      v12 |= 8 * CA::Render::Layer::image_filter_from_string(v71, 0);
+      isEnabled |= 8 * CA::Render::Layer::image_filter_from_string(magnificationFilter, 0);
     }
 
-    v72 = [(CAEmitterCell *)self minificationFilter];
-    if (v72)
+    minificationFilter = [(CAEmitterCell *)self minificationFilter];
+    if (minificationFilter)
     {
-      v12 |= 2 * CA::Render::Layer::image_filter_from_string(v72, 1);
+      isEnabled |= 2 * CA::Render::Layer::image_filter_from_string(minificationFilter, 1);
     }
 
-    v73 = [(CAEmitterCell *)self emitterCells];
-    if (v73)
+    emitterCells = [(CAEmitterCell *)self emitterCells];
+    if (emitterCells)
     {
-      v74 = CA::Render::copy_render_array(v73, 14);
+      v74 = CA::Render::copy_render_array(emitterCells, 14);
       v75 = *(state + 5);
       if (v75 != v74)
       {
@@ -428,10 +428,10 @@
       }
     }
 
-    v77 = [(CAEmitterCell *)self emitterBehaviors];
-    if (v77)
+    emitterBehaviors = [(CAEmitterCell *)self emitterBehaviors];
+    if (emitterBehaviors)
     {
-      v78 = CA::Render::copy_render_array(v77, 13);
+      v78 = CA::Render::copy_render_array(emitterBehaviors, 13);
       v79 = *(state + 6);
       if (v79 != v78)
       {
@@ -464,7 +464,7 @@
       }
     }
 
-    *(state + 3) |= v12 << 8;
+    *(state + 3) |= isEnabled << 8;
     self->_state = state;
   }
 
@@ -1045,38 +1045,38 @@
   CAEmitterCell_setter(self, 0x2A1, 18, v3);
 }
 
-- (void)setRotationRange:(double)a3
+- (void)setRotationRange:(double)range
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = range;
   CAEmitterCell_setter(self, 0x26A, 18, v3);
 }
 
-- (void)setRotation:(double)a3
+- (void)setRotation:(double)rotation
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = rotation;
   CAEmitterCell_setter(self, 0x268, 18, v3);
 }
 
-- (void)setOrientationRange:(double)a3
+- (void)setOrientationRange:(double)range
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = range;
   CAEmitterCell_setter(self, 0x222, 18, v3);
 }
 
-- (void)setOrientationLongitude:(double)a3
+- (void)setOrientationLongitude:(double)longitude
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = longitude;
   CAEmitterCell_setter(self, 0x221, 18, v3);
 }
 
-- (void)setOrientationLatitude:(double)a3
+- (void)setOrientationLatitude:(double)latitude
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = latitude;
   CAEmitterCell_setter(self, 0x220, 18, v3);
 }
 
@@ -1207,91 +1207,91 @@
   CAEmitterCell_setter(self, 0x20F, 3, v3);
 }
 
-- (void)setFillMode:(id)a3
+- (void)setFillMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = mode;
   CAEmitterCell_setter(self, 0xFA, 3, v3);
 }
 
-- (void)setAutoreverses:(BOOL)a3
+- (void)setAutoreverses:(BOOL)autoreverses
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x38, 7, &v3);
+  autoreversesCopy = autoreverses;
+  CAEmitterCell_setter(self, 0x38, 7, &autoreversesCopy);
 }
 
-- (void)setRepeatDuration:(double)a3
+- (void)setRepeatDuration:(double)duration
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = duration;
   CAEmitterCell_setter(self, 0x25D, 18, v3);
 }
 
-- (void)setRepeatCount:(float)a3
+- (void)setRepeatCount:(float)count
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x25C, 17, &v3);
+  countCopy = count;
+  CAEmitterCell_setter(self, 0x25C, 17, &countCopy);
 }
 
-- (void)setSpeed:(float)a3
+- (void)setSpeed:(float)speed
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x29F, 17, &v3);
+  speedCopy = speed;
+  CAEmitterCell_setter(self, 0x29F, 17, &speedCopy);
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = duration;
   CAEmitterCell_setter(self, 0xD3, 18, v3);
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = offset;
   CAEmitterCell_setter(self, 0x2C1, 18, v3);
 }
 
-- (void)setBeginTime:(double)a3
+- (void)setBeginTime:(double)time
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = time;
   CAEmitterCell_setter(self, 0x41, 18, v3);
 }
 
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4
+- (BOOL)CA_validateValue:(id)value forKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 && ([a4 isEqualToString:@"emitterCells"] || objc_msgSend(a4, "isEqualToString:", @"emitterBehaviors")))
+  if (value && ([key isEqualToString:@"emitterCells"] || objc_msgSend(key, "isEqualToString:", @"emitterBehaviors")))
   {
     objc_opt_class();
 
-    return CAObject_validateArrayOfClass(a3);
+    return CAObject_validateArrayOfClass(value);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CAEmitterCell;
-    return [&v8 CA_validateValue:a3 forKey:a4];
+    return [&v8 CA_validateValue:value forKey:key];
   }
 }
 
-- (BOOL)CAMLTypeSupportedForKey:(id)a3
+- (BOOL)CAMLTypeSupportedForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"contents"])
+  if ([key isEqualToString:@"contents"])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = CAEmitterCell;
-  return [&v6 CAMLTypeSupportedForKey:a3];
+  return [&v6 CAMLTypeSupportedForKey:key];
 }
 
 - (id)debugDescription
@@ -1302,9 +1302,9 @@
     v3 = CA::Transaction::create(self);
   }
 
-  v4 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v5 = objc_opt_class();
-  [(__CFString *)v4 appendFormat:@"<%@:%p; ", NSStringFromClass(v5), self];
+  [(__CFString *)string appendFormat:@"<%@:%p; ", NSStringFromClass(v5), self];
   v6 = *(v3 + 29);
   *(v3 + 29) = v6 + 1;
   if (!v6)
@@ -1315,18 +1315,18 @@
   v7 = self->_attr[0];
   if (v7)
   {
-    CA::AttrList::append_description(*v7, v4);
+    CA::AttrList::append_description(*v7, string);
   }
 
   CA::Transaction::unlock(v3);
-  [(__CFString *)v4 appendString:@">"];
-  return v4;
+  [(__CFString *)string appendString:@">"];
+  return string;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->_state && (([a3 isEqualToString:@"emitterCells"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"emitterBehaviors")))
+  if (self->_state && (([key isEqualToString:@"emitterCells"] & 1) != 0 || objc_msgSend(key, "isEqualToString:", @"emitterBehaviors")))
   {
     state = self->_state;
     if (atomic_fetch_add(state + 2, 0xFFFFFFFF) == 1)
@@ -1339,21 +1339,21 @@
 
   v6.receiver = self;
   v6.super_class = CAEmitterCell;
-  [(CAEmitterCell *)&v6 didChangeValueForKey:a3];
+  [(CAEmitterCell *)&v6 didChangeValueForKey:key];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v10[0] = a3;
+  v10[0] = value;
   v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v6)
   {
     v6 = CA::Transaction::create(self);
   }
 
-  v7 = CAInternAtom(a4, 1);
-  [(CAEmitterCell *)self willChangeValueForKey:a4, v10[0]];
+  v7 = CAInternAtom(key, 1);
+  [(CAEmitterCell *)self willChangeValueForKey:key, v10[0]];
   v8 = *(v6 + 29);
   *(v6 + 29) = v8 + 1;
   if (!v8)
@@ -1375,10 +1375,10 @@
   self->_attr[0] = CA::AttrList::set(v9, v7, 2, v10);
   CA::Transaction::unlock(v6);
 
-  [(CAEmitterCell *)self didChangeValueForKey:a4];
+  [(CAEmitterCell *)self didChangeValueForKey:key];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -1387,7 +1387,7 @@
     v5 = CA::Transaction::create(self);
   }
 
-  v6 = CAInternAtom(a3, 1);
+  v6 = CAInternAtom(key, 1);
   v7 = *(v5 + 29);
   *(v5 + 29) = v7 + 1;
   if (!v7)
@@ -1419,18 +1419,18 @@
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v7 = +[CAEmitterCell superclass];
 
-  CAObject_setValueForKey(self, v7, a3, a4);
+  CAObject_setValueForKey(self, v7, value, key);
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v5 = +[CAEmitterCell superclass];
 
-  return CAObject_valueForKey(self, v5, a3);
+  return CAObject_valueForKey(self, v5, key);
 }
 
 - (BOOL)shouldArchiveValueForKey:(NSString *)key
@@ -1480,11 +1480,11 @@
 
 - (void)CA_prepareRenderValue
 {
-  v2 = [(CAEmitterCell *)self contents];
-  if (v2)
+  contents = [(CAEmitterCell *)self contents];
+  if (contents)
   {
-    v3 = v2;
-    v4 = CFGetTypeID(v2);
+    v3 = contents;
+    v4 = CFGetTypeID(contents);
     if (v4 == CGImageGetTypeID())
     {
       v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -1538,17 +1538,17 @@
   [(CAEmitterCell *)&v9 dealloc];
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = objc_alloc_init(a1);
-  [a3 setElementValue:v4];
+  v4 = objc_alloc_init(self);
+  [element setElementValue:v4];
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
   v4 = objc_opt_class();
 
-  return CAObject_automaticallyNotifiesObserversForKey(v4, a3);
+  return CAObject_automaticallyNotifiesObserversForKey(v4, key);
 }
 
 + (id)defaultValueForKey:(NSString *)key
@@ -1695,7 +1695,7 @@ LABEL_23:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
@@ -1754,59 +1754,59 @@ LABEL_23:
   return v6;
 }
 
-- (void)setContentsFramesPerSecond:(float)a3
+- (void)setContentsFramesPerSecond:(float)second
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x8F, 17, &v3);
+  secondCopy = second;
+  CAEmitterCell_setter(self, 0x8F, 17, &secondCopy);
 }
 
-- (void)setContentsFramesPerRow:(unsigned int)a3
+- (void)setContentsFramesPerRow:(unsigned int)row
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x8E, 12, &v3);
+  rowCopy = row;
+  CAEmitterCell_setter(self, 0x8E, 12, &rowCopy);
 }
 
-- (void)setContentsFrameCount:(unsigned int)a3
+- (void)setContentsFrameCount:(unsigned int)count
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x8C, 12, &v3);
+  countCopy = count;
+  CAEmitterCell_setter(self, 0x8C, 12, &countCopy);
 }
 
-- (void)setContentsFrameMode:(id)a3
+- (void)setContentsFrameMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = mode;
   CAEmitterCell_setter(self, 0x8D, 3, v3);
 }
 
-- (void)setEmitterBehaviors:(id)a3
+- (void)setEmitterBehaviors:(id)behaviors
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = behaviors;
   CAEmitterCell_setter(self, 0xDE, 3, v3);
 }
 
-- (void)setMassRange:(float)a3
+- (void)setMassRange:(float)range
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x1FC, 17, &v3);
+  rangeCopy = range;
+  CAEmitterCell_setter(self, 0x1FC, 17, &rangeCopy);
 }
 
-- (void)setMass:(float)a3
+- (void)setMass:(float)mass
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAEmitterCell_setter(self, 0x1FB, 17, &v3);
+  massCopy = mass;
+  CAEmitterCell_setter(self, 0x1FB, 17, &massCopy);
 }
 
-- (void)setParticleType:(id)a3
+- (void)setParticleType:(id)type
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = type;
   CAEmitterCell_setter(self, 0x229, 3, v3);
 }
 

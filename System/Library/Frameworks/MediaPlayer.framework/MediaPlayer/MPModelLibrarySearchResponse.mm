@@ -1,61 +1,61 @@
 @interface MPModelLibrarySearchResponse
-- (BOOL)hasMoreResultsForSectionAtIndex:(int64_t)a3;
-- (MPModelLibrarySearchResponse)initWithRequest:(id)a3;
-- (int64_t)searchWeightForIndexPath:(id)a3;
+- (BOOL)hasMoreResultsForSectionAtIndex:(int64_t)index;
+- (MPModelLibrarySearchResponse)initWithRequest:(id)request;
+- (int64_t)searchWeightForIndexPath:(id)path;
 - (void)dealloc;
 @end
 
 @implementation MPModelLibrarySearchResponse
 
-- (int64_t)searchWeightForIndexPath:(id)a3
+- (int64_t)searchWeightForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MPModelResponse *)self results];
-  v6 = [v5 dataSource];
-  v7 = [v6 searchWeightForIndexPath:v4];
+  pathCopy = path;
+  results = [(MPModelResponse *)self results];
+  dataSource = [results dataSource];
+  v7 = [dataSource searchWeightForIndexPath:pathCopy];
 
   return v7;
 }
 
-- (BOOL)hasMoreResultsForSectionAtIndex:(int64_t)a3
+- (BOOL)hasMoreResultsForSectionAtIndex:(int64_t)index
 {
-  v4 = [(MPModelResponse *)self results];
-  v5 = [v4 dataSource];
-  LOBYTE(a3) = [v5 hasMoreResultsForSectionAtIndex:a3];
+  results = [(MPModelResponse *)self results];
+  dataSource = [results dataSource];
+  LOBYTE(index) = [dataSource hasMoreResultsForSectionAtIndex:index];
 
-  return a3;
+  return index;
 }
 
 - (void)dealloc
 {
-  v3 = [(MPModelResponse *)self request];
-  v4 = [v3 mediaLibrary];
-  [v4 endGeneratingLibraryChangeNotifications];
+  request = [(MPModelResponse *)self request];
+  mediaLibrary = [request mediaLibrary];
+  [mediaLibrary endGeneratingLibraryChangeNotifications];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = MPModelLibrarySearchResponse;
   [(MPModelLibraryResponse *)&v6 dealloc];
 }
 
-- (MPModelLibrarySearchResponse)initWithRequest:(id)a3
+- (MPModelLibrarySearchResponse)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = MPModelLibrarySearchResponse;
-  v5 = [(MPModelLibraryResponse *)&v9 initWithRequest:v4];
+  v5 = [(MPModelLibraryResponse *)&v9 initWithRequest:requestCopy];
   if (v5)
   {
-    v6 = [v4 mediaLibrary];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDidChangeNotification" object:v6];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDisplayValuesDidChangeNotification" object:v6];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDynamicPropertiesDidChangeNotification" object:v6];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsExplicitContentDidChangeNotification" object:0];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsMusicVideosDidChangeNotification" object:0];
-    [v6 beginGeneratingLibraryChangeNotifications];
+    mediaLibrary = [requestCopy mediaLibrary];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDidChangeNotification" object:mediaLibrary];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDisplayValuesDidChangeNotification" object:mediaLibrary];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDynamicPropertiesDidChangeNotification" object:mediaLibrary];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsExplicitContentDidChangeNotification" object:0];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsMusicVideosDidChangeNotification" object:0];
+    [mediaLibrary beginGeneratingLibraryChangeNotifications];
   }
 
   return v5;

@@ -1,35 +1,35 @@
 @interface HMDIDSActivityMonitor
 + (id)logCategory;
-- (HMDIDSActivityMonitor)initWithActivity:(id)a3 serviceIdentifier:(id)a4;
+- (HMDIDSActivityMonitor)initWithActivity:(id)activity serviceIdentifier:(id)identifier;
 - (NSString)description;
 - (id)logIdentifier;
-- (void)listenWithDelegate:(id)a3;
+- (void)listenWithDelegate:(id)delegate;
 @end
 
 @implementation HMDIDSActivityMonitor
 
 - (id)logIdentifier
 {
-  v2 = [(HMDIDSActivityMonitor *)self activityMonitor];
-  v3 = [v2 activity];
+  activityMonitor = [(HMDIDSActivityMonitor *)self activityMonitor];
+  activity = [activityMonitor activity];
 
-  return v3;
+  return activity;
 }
 
 - (NSString)description
 {
-  v2 = [(HMDIDSActivityMonitor *)self activityMonitor];
-  v3 = [v2 description];
+  activityMonitor = [(HMDIDSActivityMonitor *)self activityMonitor];
+  v3 = [activityMonitor description];
 
   return v3;
 }
 
-- (void)listenWithDelegate:(id)a3
+- (void)listenWithDelegate:(id)delegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -40,25 +40,25 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDIDSActivityMonitor *)v6 activityMonitor];
-  [v9 setDelegate:v4];
+  activityMonitor = [(HMDIDSActivityMonitor *)selfCopy activityMonitor];
+  [activityMonitor setDelegate:delegateCopy];
 
-  v10 = [(HMDIDSActivityMonitor *)v6 activityMonitor];
-  [v10 setListeningForUpdates:1];
+  activityMonitor2 = [(HMDIDSActivityMonitor *)selfCopy activityMonitor];
+  [activityMonitor2 setListeningForUpdates:1];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDIDSActivityMonitor)initWithActivity:(id)a3 serviceIdentifier:(id)a4
+- (HMDIDSActivityMonitor)initWithActivity:(id)activity serviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HMDIDSActivityMonitor;
   v8 = [(HMDIDSActivityMonitor *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277D186D0]) initWithActivity:v6 serviceIdentifier:v7];
+    v9 = [objc_alloc(MEMORY[0x277D186D0]) initWithActivity:activityCopy serviceIdentifier:identifierCopy];
     activityMonitor = v8->_activityMonitor;
     v8->_activityMonitor = v9;
   }

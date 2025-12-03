@@ -3,7 +3,7 @@
 - (BOOL)shouldPerformUpdates;
 - (NSNumber)bridgedTargetedItemID;
 - (NSString)humanReadableReason;
-- (_TtC9appstored14UpdatesContext)initWithReason:(int64_t)a3 requestToken:(id)a4 logKey:(id)a5 callbackHandler:(id)a6 includeMetrics:(BOOL)a7 isVPPLookup:(BOOL)a8 userInitiated:(BOOL)a9 targetedItemID:(id)a10;
+- (_TtC9appstored14UpdatesContext)initWithReason:(int64_t)reason requestToken:(id)token logKey:(id)key callbackHandler:(id)handler includeMetrics:(BOOL)metrics isVPPLookup:(BOOL)lookup userInitiated:(BOOL)initiated targetedItemID:(id)self0;
 - (id)callbackHandler;
 @end
 
@@ -15,7 +15,7 @@
   if (v2 >= 0xA)
   {
     type metadata accessor for LoadSoftwareUpdatesReason(0);
-    v5 = self;
+    selfCopy = self;
     LOBYTE(v3) = _diagnoseUnexpectedEnumCaseValue<A, B>(type:rawValue:)();
     __break(1u);
   }
@@ -34,7 +34,7 @@
   if (v2 >= 0xA)
   {
     type metadata accessor for LoadSoftwareUpdatesReason(0);
-    v5 = self;
+    selfCopy = self;
     LOBYTE(v3) = _diagnoseUnexpectedEnumCaseValue<A, B>(type:rawValue:)();
     __break(1u);
   }
@@ -62,9 +62,9 @@
   return v3;
 }
 
-- (_TtC9appstored14UpdatesContext)initWithReason:(int64_t)a3 requestToken:(id)a4 logKey:(id)a5 callbackHandler:(id)a6 includeMetrics:(BOOL)a7 isVPPLookup:(BOOL)a8 userInitiated:(BOOL)a9 targetedItemID:(id)a10
+- (_TtC9appstored14UpdatesContext)initWithReason:(int64_t)reason requestToken:(id)token logKey:(id)key callbackHandler:(id)handler includeMetrics:(BOOL)metrics isVPPLookup:(BOOL)lookup userInitiated:(BOOL)initiated targetedItemID:(id)self0
 {
-  v13 = _Block_copy(a6);
+  v13 = _Block_copy(handler);
   if (v13)
   {
     v14 = swift_allocObject();
@@ -77,10 +77,10 @@
     v14 = 0;
   }
 
-  v15 = a4;
-  v16 = a5;
-  v17 = a10;
-  v18 = sub_1001713A0(a3, a4, a5, v13, v14, a7, a8, a9, a10);
+  tokenCopy = token;
+  keyCopy = key;
+  dCopy = d;
+  v18 = sub_1001713A0(reason, token, key, v13, v14, metrics, lookup, initiated, d);
 
   sub_100006F8C(v13);
   return v18;
@@ -109,7 +109,7 @@
 
 - (NSString)humanReadableReason
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001704BC();
 
   v3 = String._bridgeToObjectiveC()();

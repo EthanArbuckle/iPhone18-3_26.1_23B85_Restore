@@ -1,35 +1,35 @@
 @interface STUIStatusBarBackgroundActivityItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axBackgroundActivityLabelByBackgroundActivityID:(uint64_t)a1;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axBackgroundActivityLabelByBackgroundActivityID:(uint64_t)d;
 - (id)_axStatusBarModern;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axApplyLabelToBackground;
-- (void)_axSetupIconViewWithUpdateData:(id)a3;
+- (void)_axSetupIconViewWithUpdateData:(id)data;
 @end
 
 @implementation STUIStatusBarBackgroundActivityItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarItemUpdate"];
-  [v3 validateClass:@"STUIStatusBarBackgroundActivityItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
-  [v3 validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarIndicatorItem" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarItemUpdate" hasInstanceMethod:@"data" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STStatusBarData" hasInstanceMethod:@"backgroundActivityEntry" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STStatusBarDataBackgroundActivityEntry" hasInstanceMethod:@"backgroundActivityIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"createDisplayItemForIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"setNeedsUpdate" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"STUIStatusBarPillBackgroundActivityItem" hasInstanceMethod:@"combinedView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarPillBackgroundActivityItem" isKindOfClass:@"STUIStatusBarBackgroundActivityItem"];
-  [v3 validateClass:@"STUIStatusBarPillBackgroundActivityItem" isKindOfClass:@"STUIStatusBarBackgroundActivityItem"];
-  [v3 validateClass:@"STUIStatusBar_Wrapper" isKindOfClass:@"UIStatusBar_Base"];
-  [v3 validateClass:@"UIStatusBar_Base" hasInstanceMethod:@"forceUpdate:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarItemUpdate"];
+  [validationsCopy validateClass:@"STUIStatusBarBackgroundActivityItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
+  [validationsCopy validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorItem" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarItemUpdate" hasInstanceMethod:@"data" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STStatusBarData" hasInstanceMethod:@"backgroundActivityEntry" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataBackgroundActivityEntry" hasInstanceMethod:@"backgroundActivityIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarBackgroundActivityItem" hasInstanceMethod:@"createDisplayItemForIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"setNeedsUpdate" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarPillBackgroundActivityItem" hasInstanceMethod:@"combinedView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarPillBackgroundActivityItem" isKindOfClass:@"STUIStatusBarBackgroundActivityItem"];
+  [validationsCopy validateClass:@"STUIStatusBarPillBackgroundActivityItem" isKindOfClass:@"STUIStatusBarBackgroundActivityItem"];
+  [validationsCopy validateClass:@"STUIStatusBar_Wrapper" isKindOfClass:@"UIStatusBar_Base"];
+  [validationsCopy validateClass:@"UIStatusBar_Base" hasInstanceMethod:@"forceUpdate:" withFullSignature:{"v", "B", 0}];
 }
 
 void __101__STUIStatusBarBackgroundActivityItemAccessibility__axBackgroundActivityLabelByBackgroundActivityID___block_invoke()
@@ -157,7 +157,7 @@ void __101__STUIStatusBarBackgroundActivityItemAccessibility__axBackgroundActivi
 
 - (void)_axApplyLabelToBackground
 {
-  v3 = [a1 safeUIViewForKey:@"backgroundView"];
+  v3 = [self safeUIViewForKey:@"backgroundView"];
   [v3 setAccessibilityLabel:a2];
 }
 
@@ -226,35 +226,35 @@ void __94__STUIStatusBarBackgroundActivityItemAccessibility__accessibilityLoadAc
 
 - (id)_axStatusBarModern
 {
-  v2 = [(STUIStatusBarBackgroundActivityItemAccessibility *)self _axBackgroundView];
-  v3 = [v2 _accessibilityAncestorIsKindOf:MEMORY[0x29ED3ADB0](@"STUIStatusBar_Wrapper")];
+  _axBackgroundView = [(STUIStatusBarBackgroundActivityItemAccessibility *)self _axBackgroundView];
+  v3 = [_axBackgroundView _accessibilityAncestorIsKindOf:MEMORY[0x29ED3ADB0](@"STUIStatusBar_Wrapper")];
 
   return v3;
 }
 
-- (void)_axSetupIconViewWithUpdateData:(id)a3
+- (void)_axSetupIconViewWithUpdateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   MEMORY[0x29ED3ADB0](@"STUIStatusBarPillBackgroundActivityItem");
   if (objc_opt_isKindOfClass())
   {
     v5 = [(STUIStatusBarBackgroundActivityItemAccessibility *)self safeUIViewForKey:@"iconView"];
-    if (v4)
+    if (dataCopy)
     {
-      v6 = [v4 safeValueForKeyPath:@"data.backgroundActivityEntry"];
+      v6 = [dataCopy safeValueForKeyPath:@"data.backgroundActivityEntry"];
       v7 = [v6 safeStringForKey:@"backgroundActivityIdentifier"];
 
       if (([*MEMORY[0x29EDC6E70] isEqualToString:v7] & 1) != 0 || objc_msgSend(*MEMORY[0x29EDC6E78], "isEqualToString:", v7))
       {
-        v8 = [(STUIStatusBarBackgroundActivityItemAccessibility *)self _axBackgroundView];
-        v9 = [(STUIStatusBarBackgroundActivityItemAccessibility *)self _axStatusBarModern];
-        [v9 safeCGRectForKey:@"frame"];
-        if (v8)
+        _axBackgroundView = [(STUIStatusBarBackgroundActivityItemAccessibility *)self _axBackgroundView];
+        _axStatusBarModern = [(STUIStatusBarBackgroundActivityItemAccessibility *)self _axStatusBarModern];
+        [_axStatusBarModern safeCGRectForKey:@"frame"];
+        if (_axBackgroundView)
         {
           v11 = v10;
           if (v10 != 0.0)
           {
-            [v8 frame];
+            [_axBackgroundView frame];
             if (v11 == v12)
             {
               [v5 _setIsAccessibilityElementBlock:&__block_literal_global_523];
@@ -280,33 +280,33 @@ LABEL_11:
   }
 }
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarBackgroundActivityItemAccessibility;
-  v4 = [(STUIStatusBarBackgroundActivityItemAccessibility *)&v6 createDisplayItemForIdentifier:a3];
+  v4 = [(STUIStatusBarBackgroundActivityItemAccessibility *)&v6 createDisplayItemForIdentifier:identifier];
   [(STUIStatusBarBackgroundActivityItemAccessibility *)self _axApplyLabelToBackground];
 
   return v4;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBarBackgroundActivityItemAccessibility;
-  v6 = a3;
-  v7 = [(STUIStatusBarBackgroundActivityItemAccessibility *)&v9 applyUpdate:v6 toDisplayItem:a4];
-  [(STUIStatusBarBackgroundActivityItemAccessibility *)self _accessibilitySetRetainedValue:v6 forKey:@"AccessibilityStatusBarUpdateData", v9.receiver, v9.super_class];
+  updateCopy = update;
+  v7 = [(STUIStatusBarBackgroundActivityItemAccessibility *)&v9 applyUpdate:updateCopy toDisplayItem:item];
+  [(STUIStatusBarBackgroundActivityItemAccessibility *)self _accessibilitySetRetainedValue:updateCopy forKey:@"AccessibilityStatusBarUpdateData", v9.receiver, v9.super_class];
 
   [(STUIStatusBarBackgroundActivityItemAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
   return v7;
 }
 
-- (id)_axBackgroundActivityLabelByBackgroundActivityID:(uint64_t)a1
+- (id)_axBackgroundActivityLabelByBackgroundActivityID:(uint64_t)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
     if (qword_2A19F4620 != -1)
     {

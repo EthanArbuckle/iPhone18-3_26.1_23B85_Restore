@@ -1,20 +1,20 @@
 @interface SBDisplayLinkController
-- (SBDisplayLinkController)initWithCADisplay:(id)a3 backlight:(id)a4;
-- (id)maintainDisplayLinkWhenBacklightIsOffForReason:(id)a3;
+- (SBDisplayLinkController)initWithCADisplay:(id)display backlight:(id)backlight;
+- (id)maintainDisplayLinkWhenBacklightIsOffForReason:(id)reason;
 - (void)_reevaluateForcingFixedRateLinks;
-- (void)backlight:(id)a3 didBlankToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 activeEvents:(id)a6 abortedEvents:(id)a7;
-- (void)backlight:(id)a3 willUnblankToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 forEvents:(id)a6 abortedEvents:(id)a7;
+- (void)backlight:(id)backlight didBlankToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode activeEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)backlight:(id)backlight willUnblankToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode forEvents:(id)events abortedEvents:(id)abortedEvents;
 - (void)invalidate;
 @end
 
 @implementation SBDisplayLinkController
 
-- (SBDisplayLinkController)initWithCADisplay:(id)a3 backlight:(id)a4
+- (SBDisplayLinkController)initWithCADisplay:(id)display backlight:(id)backlight
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  displayCopy = display;
+  backlightCopy = backlight;
+  v10 = displayCopy;
   if (!v10)
   {
     [SBDisplayLinkController initWithCADisplay:a2 backlight:?];
@@ -27,7 +27,7 @@
     [(SBDisplayLinkController *)v11 initWithCADisplay:a2 backlight:self];
   }
 
-  if (!v9)
+  if (!backlightCopy)
   {
     [SBDisplayLinkController initWithCADisplay:a2 backlight:?];
   }
@@ -38,16 +38,16 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_display, a3);
-    objc_storeStrong(&v13->_backlight, a4);
+    objc_storeStrong(&v12->_display, display);
+    objc_storeStrong(&v13->_backlight, backlight);
     if ([(CADisplay *)v13->_display isForceFixedRateLinksEnabled])
     {
       v14 = SBLogBacklight();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(CADisplay *)v13->_display displayId];
+        displayId = [(CADisplay *)v13->_display displayId];
         *buf = 67109120;
-        v19 = v15;
+        v19 = displayId;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "displayLinkController-%i: resetting forceFixedRateLinksEnabled at bootstrap", buf, 8u);
       }
 
@@ -58,10 +58,10 @@
   return v13;
 }
 
-- (id)maintainDisplayLinkWhenBacklightIsOffForReason:(id)a3
+- (id)maintainDisplayLinkWhenBacklightIsOffForReason:(id)reason
 {
   *&v23[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
   if (self->_invalidated)
   {
@@ -76,11 +76,11 @@
   v6 = SBLogBacklight();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CADisplay *)self->_display displayId];
+    displayId = [(CADisplay *)self->_display displayId];
     *buf = 67109378;
-    v21 = v7;
+    v21 = displayId;
     v22 = 2112;
-    *v23 = v5;
+    *v23 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "displayLinkController-%i: taking maintainDisplayLinkWhenBacklightIsOff assertion for %@", buf, 0x12u);
   }
 
@@ -94,11 +94,11 @@
     v8 = SBLogBacklight();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CADisplay *)self->_display displayId];
+      displayId2 = [(CADisplay *)self->_display displayId];
       displayLinkWouldBeOff = self->_displayLinkWouldBeOff;
       v11 = NSStringFromBLSBacklightDisplayMode();
       *buf = 67109634;
-      v21 = v9;
+      v21 = displayId2;
       v22 = 1024;
       *v23 = displayLinkWouldBeOff;
       v23[2] = 2112;
@@ -114,10 +114,10 @@
   v17[1] = 3221225472;
   v17[2] = __74__SBDisplayLinkController_maintainDisplayLinkWhenBacklightIsOffForReason___block_invoke;
   v17[3] = &unk_2783B46E8;
-  v18 = v5;
+  v18 = reasonCopy;
   v19 = a2;
   v17[4] = self;
-  v14 = v5;
+  v14 = reasonCopy;
   v15 = [v12 initWithIdentifier:v13 forReason:v14 invalidationBlock:v17];
 
   return v15;
@@ -177,9 +177,9 @@ void __74__SBDisplayLinkController_maintainDisplayLinkWhenBacklightIsOffForReaso
       v3 = SBLogBacklight();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
-        v4 = [(CADisplay *)self->_display displayId];
+        displayId = [(CADisplay *)self->_display displayId];
         v5[0] = 67109120;
-        v5[1] = v4;
+        v5[1] = displayId;
         _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "displayLinkController-%i: resetting forceFixedRateLinksEnabled", v5, 8u);
       }
 
@@ -199,9 +199,9 @@ void __74__SBDisplayLinkController_maintainDisplayLinkWhenBacklightIsOffForReaso
       v4 = SBLogBacklight();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [(CADisplay *)self->_display displayId];
+        displayId = [(CADisplay *)self->_display displayId];
         v6[0] = 67109376;
-        v6[1] = v5;
+        v6[1] = displayId;
         v7 = 1024;
         v8 = v3;
         _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "displayLinkController-%i: setting forceFixedRateLinksEnabled to %{BOOL}i", v6, 0xEu);
@@ -213,16 +213,16 @@ void __74__SBDisplayLinkController_maintainDisplayLinkWhenBacklightIsOffForReaso
   }
 }
 
-- (void)backlight:(id)a3 willUnblankToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 forEvents:(id)a6 abortedEvents:(id)a7
+- (void)backlight:(id)backlight willUnblankToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode forEvents:(id)events abortedEvents:(id)abortedEvents
 {
   v11 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   v8 = SBLogBacklight();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CADisplay *)self->_display displayId];
+    displayId = [(CADisplay *)self->_display displayId];
     v10[0] = 67109120;
-    v10[1] = v9;
+    v10[1] = displayId;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "displayLinkController-%i: display is unblanking - updating _displayLinkWouldBeOff to false", v10, 8u);
   }
 
@@ -230,16 +230,16 @@ void __74__SBDisplayLinkController_maintainDisplayLinkWhenBacklightIsOffForReaso
   [(SBDisplayLinkController *)self _reevaluateForcingFixedRateLinks];
 }
 
-- (void)backlight:(id)a3 didBlankToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 activeEvents:(id)a6 abortedEvents:(id)a7
+- (void)backlight:(id)backlight didBlankToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode activeEvents:(id)events abortedEvents:(id)abortedEvents
 {
   v11 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   v8 = SBLogBacklight();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CADisplay *)self->_display displayId];
+    displayId = [(CADisplay *)self->_display displayId];
     v10[0] = 67109120;
-    v10[1] = v9;
+    v10[1] = displayId;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "displayLinkController-%i: display is blanking - updating _displayLinkWouldBeOff to true", v10, 8u);
   }
 

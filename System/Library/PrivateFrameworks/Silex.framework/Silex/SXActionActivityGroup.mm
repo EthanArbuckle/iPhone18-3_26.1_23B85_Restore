@@ -1,37 +1,37 @@
 @interface SXActionActivityGroup
-- (SXActionActivityGroup)initWithTitle:(id)a3 sourceView:(id)a4;
-- (void)addActivity:(id)a3;
+- (SXActionActivityGroup)initWithTitle:(id)title sourceView:(id)view;
+- (void)addActivity:(id)activity;
 @end
 
 @implementation SXActionActivityGroup
 
-- (SXActionActivityGroup)initWithTitle:(id)a3 sourceView:(id)a4
+- (SXActionActivityGroup)initWithTitle:(id)title sourceView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = SXActionActivityGroup;
   v9 = [(SXActionActivityGroup *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_sourceView, a4);
-    v11 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_sourceView, view);
+    array = [MEMORY[0x1E695DF70] array];
     activities = v10->_activities;
-    v10->_activities = v11;
+    v10->_activities = array;
   }
 
   return v10;
 }
 
-- (void)addActivity:(id)a3
+- (void)addActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    v4 = a3;
-    v5 = [(SXActionActivityGroup *)self activities];
-    [v5 addObject:v4];
+    activityCopy = activity;
+    activities = [(SXActionActivityGroup *)self activities];
+    [activities addObject:activityCopy];
   }
 }
 

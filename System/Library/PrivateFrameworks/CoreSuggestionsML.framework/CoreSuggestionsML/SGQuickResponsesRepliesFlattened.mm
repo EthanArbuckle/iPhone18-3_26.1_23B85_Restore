@@ -1,21 +1,21 @@
 @interface SGQuickResponsesRepliesFlattened
-+ (id)normalizedReplyTextsSetForArray:(id)a3;
-+ (unint64_t)countReplyTextsForArray:(id)a3;
-- (SGQuickResponsesRepliesFlattened)initWithArray:(id)a3;
++ (id)normalizedReplyTextsSetForArray:(id)array;
++ (unint64_t)countReplyTextsForArray:(id)array;
+- (SGQuickResponsesRepliesFlattened)initWithArray:(id)array;
 - (id)normalizedReplyTextsSet;
-- (id)replyTextForIndex:(unint64_t)a3 position:(unint64_t)a4;
-- (id)replyTextForIndexAndPosition:(id)a3;
-- (id)replyTextsForIndex:(unint64_t)a3;
-- (unint64_t)replyCountForIndex:(unint64_t)a3;
+- (id)replyTextForIndex:(unint64_t)index position:(unint64_t)position;
+- (id)replyTextForIndexAndPosition:(id)position;
+- (id)replyTextsForIndex:(unint64_t)index;
+- (unint64_t)replyCountForIndex:(unint64_t)index;
 @end
 
 @implementation SGQuickResponsesRepliesFlattened
 
-- (SGQuickResponsesRepliesFlattened)initWithArray:(id)a3
+- (SGQuickResponsesRepliesFlattened)initWithArray:(id)array
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  arrayCopy = array;
+  v6 = arrayCopy;
+  if (arrayCopy)
   {
 
     v18.receiver = self;
@@ -24,7 +24,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_replyTexts, a3);
+      objc_storeStrong(&v7->_replyTexts, array);
       v8->_replyTextStringsCount = [SGQuickResponsesRepliesFlattened countReplyTextsForArray:v6];
       v9 = objc_alloc(MEMORY[0x277D425F8]);
       v10 = [SGLazyInit alloc];
@@ -40,7 +40,7 @@
     }
 
     self = v8;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -51,15 +51,15 @@
       _os_log_fault_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "array", buf, 2u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (unint64_t)replyCountForIndex:(unint64_t)a3
+- (unint64_t)replyCountForIndex:(unint64_t)index
 {
-  v5 = [(NSArray *)self->_replyTexts objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)self->_replyTexts objectAtIndexedSubscript:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -71,8 +71,8 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:562 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:562 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
     }
 
     v6 = [v5 count];
@@ -81,9 +81,9 @@
   return v6;
 }
 
-- (id)replyTextsForIndex:(unint64_t)a3
+- (id)replyTextsForIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_replyTexts objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_replyTexts objectAtIndexedSubscript:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -100,28 +100,28 @@
   return v5;
 }
 
-- (id)replyTextForIndexAndPosition:(id)a3
+- (id)replyTextForIndexAndPosition:(id)position
 {
-  v4 = a3;
-  v5 = [v4 first];
-  v6 = [v5 unsignedIntegerValue];
-  v7 = [v4 second];
+  positionCopy = position;
+  first = [positionCopy first];
+  unsignedIntegerValue = [first unsignedIntegerValue];
+  second = [positionCopy second];
 
-  v8 = -[SGQuickResponsesRepliesFlattened replyTextForIndex:position:](self, "replyTextForIndex:position:", v6, [v7 unsignedIntegerValue]);
+  v8 = -[SGQuickResponsesRepliesFlattened replyTextForIndex:position:](self, "replyTextForIndex:position:", unsignedIntegerValue, [second unsignedIntegerValue]);
 
   return v8;
 }
 
-- (id)replyTextForIndex:(unint64_t)a3 position:(unint64_t)a4
+- (id)replyTextForIndex:(unint64_t)index position:(unint64_t)position
 {
-  v7 = [(NSArray *)self->_replyTexts objectAtIndexedSubscript:a3];
+  v7 = [(NSArray *)self->_replyTexts objectAtIndexedSubscript:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (position)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:532 description:{@"Invalid parameter not satisfying: %@", @"position == 0"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:532 description:{@"Invalid parameter not satisfying: %@", @"position == 0"}];
     }
 
     v8 = v7;
@@ -132,11 +132,11 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:535 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:535 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
     }
 
-    v8 = [v7 objectAtIndexedSubscript:a4];
+    v8 = [v7 objectAtIndexedSubscript:position];
   }
 
   v9 = v8;
@@ -175,16 +175,16 @@ uint64_t __59__SGQuickResponsesRepliesFlattened_normalizedReplyTextsSet__block_i
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)normalizedReplyTextsSetForArray:(id)a3
++ (id)normalizedReplyTextsSetForArray:(id)array
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = arrayCopy;
   v5 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v5)
   {
@@ -216,8 +216,8 @@ uint64_t __59__SGQuickResponsesRepliesFlattened_normalizedReplyTextsSet__block_i
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v20 = [MEMORY[0x277CCA890] currentHandler];
-            [v20 handleFailureInMethod:a2 object:a1 file:@"SGQuickResponsesConfig.m" lineNumber:611 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:611 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
           }
 
           v12 = v10;
@@ -271,15 +271,15 @@ uint64_t __59__SGQuickResponsesRepliesFlattened_normalizedReplyTextsSet__block_i
   return v21;
 }
 
-+ (unint64_t)countReplyTextsForArray:(id)a3
++ (unint64_t)countReplyTextsForArray:(id)array
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  arrayCopy = array;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [arrayCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -291,7 +291,7 @@ uint64_t __59__SGQuickResponsesRepliesFlattened_normalizedReplyTextsSet__block_i
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -307,19 +307,19 @@ uint64_t __59__SGQuickResponsesRepliesFlattened_normalizedReplyTextsSet__block_i
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             [MEMORY[0x277CCA890] currentHandler];
-            v16 = a1;
+            selfCopy = self;
             v13 = v12 = a2;
-            [v13 handleFailureInMethod:v12 object:v16 file:@"SGQuickResponsesConfig.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
+            [v13 handleFailureInMethod:v12 object:selfCopy file:@"SGQuickResponsesConfig.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"[obj isKindOfClass:NSArray.class]"}];
 
             a2 = v12;
-            a1 = v16;
+            self = selfCopy;
           }
 
           v8 += [v11 count];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);

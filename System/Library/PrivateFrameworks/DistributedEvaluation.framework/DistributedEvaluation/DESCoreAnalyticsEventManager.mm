@@ -1,36 +1,36 @@
 @interface DESCoreAnalyticsEventManager
-+ (void)sendEventActivityShouldDeferWithActivityID:(id)a3 connectionDuration:(float)a4;
-+ (void)sendEventAttachmentDownloadsBundleID:(id)a3 duration:(float)a4 success:(BOOL)a5 downloadedAttachmentCount:(unint64_t)a6;
-+ (void)sendEventDeferForBundleID:(id)a3 deadlineStr:(id)a4;
-+ (void)sendEventDeleteRecordForBundleID:(id)a3 removedCount:(unint64_t)a4;
-+ (void)sendEventErrorForBundleID:(id)a3 error:(id)a4;
-+ (void)sendEventEvaluationCompletedForBundleID:(id)a3 duration:(float)a4 deferralTime:(float)a5 wasDeferred:(BOOL)a6 success:(BOOL)a7 error:(id)a8;
-+ (void)sendEventEvaluationForBundleID:(id)a3 evaluationID:(id)a4 duration:(float)a5 deferred:(BOOL)a6 success:(BOOL)a7 error:(id)a8 downloadedAttachmentCount:(unint64_t)a9;
-+ (void)sendEventEvaluationSessionFinishForBundleID:(id)a3 success:(BOOL)a4;
-+ (void)sendEventEvaluationSessionStartForBundleID:(id)a3;
-+ (void)sendEventFetchPolicyForBundleID:(id)a3 success:(BOOL)a4;
-+ (void)sendEventMaintenanceWithActivityID:(id)a3 intervalSincePostedEvent:(double)a4 shouldSkip:(BOOL)a5 lockState:(int)a6;
-+ (void)sendEventRecipeExpiredForBundleID:(id)a3 deferralTime:(float)a4;
-+ (void)sendEventRecipeFetchedForBundleID:(id)a3 evaluationID:(id)a4 error:(id)a5;
-+ (void)sendEventRecordsMatchedForBundleID:(id)a3;
-+ (void)sendEventWriteRecordForBundleID:(id)a3;
++ (void)sendEventActivityShouldDeferWithActivityID:(id)d connectionDuration:(float)duration;
++ (void)sendEventAttachmentDownloadsBundleID:(id)d duration:(float)duration success:(BOOL)success downloadedAttachmentCount:(unint64_t)count;
++ (void)sendEventDeferForBundleID:(id)d deadlineStr:(id)str;
++ (void)sendEventDeleteRecordForBundleID:(id)d removedCount:(unint64_t)count;
++ (void)sendEventErrorForBundleID:(id)d error:(id)error;
++ (void)sendEventEvaluationCompletedForBundleID:(id)d duration:(float)duration deferralTime:(float)time wasDeferred:(BOOL)deferred success:(BOOL)success error:(id)error;
++ (void)sendEventEvaluationForBundleID:(id)d evaluationID:(id)iD duration:(float)duration deferred:(BOOL)deferred success:(BOOL)success error:(id)error downloadedAttachmentCount:(unint64_t)count;
++ (void)sendEventEvaluationSessionFinishForBundleID:(id)d success:(BOOL)success;
++ (void)sendEventEvaluationSessionStartForBundleID:(id)d;
++ (void)sendEventFetchPolicyForBundleID:(id)d success:(BOOL)success;
++ (void)sendEventMaintenanceWithActivityID:(id)d intervalSincePostedEvent:(double)event shouldSkip:(BOOL)skip lockState:(int)state;
++ (void)sendEventRecipeExpiredForBundleID:(id)d deferralTime:(float)time;
++ (void)sendEventRecipeFetchedForBundleID:(id)d evaluationID:(id)iD error:(id)error;
++ (void)sendEventRecordsMatchedForBundleID:(id)d;
++ (void)sendEventWriteRecordForBundleID:(id)d;
 @end
 
 @implementation DESCoreAnalyticsEventManager
 
-+ (void)sendEventDeleteRecordForBundleID:(id)a3 removedCount:(unint64_t)a4
++ (void)sendEventDeleteRecordForBundleID:(id)d removedCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [a1 allowEventForBundleID:v6];
-  if (a4 && v7)
+  dCopy = d;
+  v7 = [self allowEventForBundleID:dCopy];
+  if (count && v7)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __78__DESCoreAnalyticsEventManager_sendEventDeleteRecordForBundleID_removedCount___block_invoke;
     v8[3] = &unk_278F84030;
-    v9 = v6;
-    v10 = a4;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.DeleteRecord" eventPayloadBuilder:v8];
+    v9 = dCopy;
+    countCopy = count;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.DeleteRecord" eventPayloadBuilder:v8];
   }
 }
 
@@ -51,17 +51,17 @@ id __78__DESCoreAnalyticsEventManager_sendEventDeleteRecordForBundleID_removedCo
   return v4;
 }
 
-+ (void)sendEventWriteRecordForBundleID:(id)a3
++ (void)sendEventWriteRecordForBundleID:(id)d
 {
-  v4 = a3;
-  if ([a1 allowEventForBundleID:v4])
+  dCopy = d;
+  if ([self allowEventForBundleID:dCopy])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __64__DESCoreAnalyticsEventManager_sendEventWriteRecordForBundleID___block_invoke;
     v5[3] = &unk_278F84058;
-    v6 = v4;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.WriteRecord" eventPayloadBuilder:v5];
+    v6 = dCopy;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.WriteRecord" eventPayloadBuilder:v5];
   }
 }
 
@@ -77,19 +77,19 @@ id __64__DESCoreAnalyticsEventManager_sendEventWriteRecordForBundleID___block_in
   return v2;
 }
 
-+ (void)sendEventMaintenanceWithActivityID:(id)a3 intervalSincePostedEvent:(double)a4 shouldSkip:(BOOL)a5 lockState:(int)a6
++ (void)sendEventMaintenanceWithActivityID:(id)d intervalSincePostedEvent:(double)event shouldSkip:(BOOL)skip lockState:(int)state
 {
-  v10 = a3;
+  dCopy = d;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __113__DESCoreAnalyticsEventManager_sendEventMaintenanceWithActivityID_intervalSincePostedEvent_shouldSkip_lockState___block_invoke;
   v12[3] = &unk_278F84080;
-  v13 = v10;
-  v16 = a5;
-  v14 = a4;
-  v15 = a6;
-  v11 = v10;
-  [a1 _sendCoreAnalyticsEvent:@"com.apple.des.MaintenanceActivity" eventPayloadBuilder:v12];
+  v13 = dCopy;
+  skipCopy = skip;
+  eventCopy = event;
+  stateCopy = state;
+  v11 = dCopy;
+  [self _sendCoreAnalyticsEvent:@"com.apple.des.MaintenanceActivity" eventPayloadBuilder:v12];
 }
 
 id __113__DESCoreAnalyticsEventManager_sendEventMaintenanceWithActivityID_intervalSincePostedEvent_shouldSkip_lockState___block_invoke(uint64_t a1)
@@ -113,17 +113,17 @@ id __113__DESCoreAnalyticsEventManager_sendEventMaintenanceWithActivityID_interv
   return v5;
 }
 
-+ (void)sendEventActivityShouldDeferWithActivityID:(id)a3 connectionDuration:(float)a4
++ (void)sendEventActivityShouldDeferWithActivityID:(id)d connectionDuration:(float)duration
 {
-  v6 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__DESCoreAnalyticsEventManager_sendEventActivityShouldDeferWithActivityID_connectionDuration___block_invoke;
   v8[3] = &unk_278F840A8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
-  [a1 _sendCoreAnalyticsEvent:@"com.apple.des.ActivityShouldDefer" eventPayloadBuilder:v8];
+  v9 = dCopy;
+  durationCopy = duration;
+  v7 = dCopy;
+  [self _sendCoreAnalyticsEvent:@"com.apple.des.ActivityShouldDefer" eventPayloadBuilder:v8];
 }
 
 id __94__DESCoreAnalyticsEventManager_sendEventActivityShouldDeferWithActivityID_connectionDuration___block_invoke(uint64_t a1, double a2)
@@ -143,18 +143,18 @@ id __94__DESCoreAnalyticsEventManager_sendEventActivityShouldDeferWithActivityID
   return v4;
 }
 
-+ (void)sendEventFetchPolicyForBundleID:(id)a3 success:(BOOL)a4
++ (void)sendEventFetchPolicyForBundleID:(id)d success:(BOOL)success
 {
-  v6 = a3;
-  if ([a1 allowEventForBundleID:v6])
+  dCopy = d;
+  if ([self allowEventForBundleID:dCopy])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __72__DESCoreAnalyticsEventManager_sendEventFetchPolicyForBundleID_success___block_invoke;
     v7[3] = &unk_278F840D0;
-    v8 = v6;
-    v9 = a4;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.PolicyFetched" eventPayloadBuilder:v7];
+    v8 = dCopy;
+    successCopy = success;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.PolicyFetched" eventPayloadBuilder:v7];
   }
 }
 
@@ -174,19 +174,19 @@ id __72__DESCoreAnalyticsEventManager_sendEventFetchPolicyForBundleID_success___
   return v3;
 }
 
-+ (void)sendEventErrorForBundleID:(id)a3 error:(id)a4
++ (void)sendEventErrorForBundleID:(id)d error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [a1 allowEventForBundleID:v6])
+  dCopy = d;
+  errorCopy = error;
+  if (errorCopy && [self allowEventForBundleID:dCopy])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__DESCoreAnalyticsEventManager_sendEventErrorForBundleID_error___block_invoke;
     v8[3] = &unk_278F840F8;
-    v9 = v6;
-    v10 = v7;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.Error" eventPayloadBuilder:v8];
+    v9 = dCopy;
+    v10 = errorCopy;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.Error" eventPayloadBuilder:v8];
   }
 }
 
@@ -234,17 +234,17 @@ id __64__DESCoreAnalyticsEventManager_sendEventErrorForBundleID_error___block_in
   return v11;
 }
 
-+ (void)sendEventEvaluationSessionStartForBundleID:(id)a3
++ (void)sendEventEvaluationSessionStartForBundleID:(id)d
 {
-  v4 = a3;
-  if ([a1 allowEventForBundleID:v4])
+  dCopy = d;
+  if ([self allowEventForBundleID:dCopy])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __75__DESCoreAnalyticsEventManager_sendEventEvaluationSessionStartForBundleID___block_invoke;
     v5[3] = &unk_278F84058;
-    v6 = v4;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.EvaluationSessionStart" eventPayloadBuilder:v5];
+    v6 = dCopy;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.EvaluationSessionStart" eventPayloadBuilder:v5];
   }
 }
 
@@ -260,18 +260,18 @@ id __75__DESCoreAnalyticsEventManager_sendEventEvaluationSessionStartForBundleID
   return v2;
 }
 
-+ (void)sendEventEvaluationSessionFinishForBundleID:(id)a3 success:(BOOL)a4
++ (void)sendEventEvaluationSessionFinishForBundleID:(id)d success:(BOOL)success
 {
-  v6 = a3;
-  if ([a1 allowEventForBundleID:v6])
+  dCopy = d;
+  if ([self allowEventForBundleID:dCopy])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __84__DESCoreAnalyticsEventManager_sendEventEvaluationSessionFinishForBundleID_success___block_invoke;
     v7[3] = &unk_278F840D0;
-    v8 = v6;
-    v9 = a4;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.EvaluationSessionFinish" eventPayloadBuilder:v7];
+    v8 = dCopy;
+    successCopy = success;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.EvaluationSessionFinish" eventPayloadBuilder:v7];
   }
 }
 
@@ -291,16 +291,16 @@ id __84__DESCoreAnalyticsEventManager_sendEventEvaluationSessionFinishForBundleI
   return v3;
 }
 
-+ (void)sendEventRecipeExpiredForBundleID:(id)a3 deferralTime:(float)a4
++ (void)sendEventRecipeExpiredForBundleID:(id)d deferralTime:(float)time
 {
-  if ([a1 allowEventForBundleID:a3])
+  if ([self allowEventForBundleID:d])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __79__DESCoreAnalyticsEventManager_sendEventRecipeExpiredForBundleID_deferralTime___block_invoke;
     v6[3] = &__block_descriptor_36_e19___NSDictionary_8__0l;
-    v7 = a4;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.RecipeExpired" eventPayloadBuilder:v6];
+    timeCopy = time;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.RecipeExpired" eventPayloadBuilder:v6];
   }
 }
 
@@ -318,19 +318,19 @@ id __79__DESCoreAnalyticsEventManager_sendEventRecipeExpiredForBundleID_deferral
   return v3;
 }
 
-+ (void)sendEventDeferForBundleID:(id)a3 deadlineStr:(id)a4
++ (void)sendEventDeferForBundleID:(id)d deadlineStr:(id)str
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 allowEventForBundleID:v6])
+  dCopy = d;
+  strCopy = str;
+  if ([self allowEventForBundleID:dCopy])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __70__DESCoreAnalyticsEventManager_sendEventDeferForBundleID_deadlineStr___block_invoke;
     v8[3] = &unk_278F840F8;
-    v9 = v6;
-    v10 = v7;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.DeferredWithDeadline" eventPayloadBuilder:v8];
+    v9 = dCopy;
+    v10 = strCopy;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.DeferredWithDeadline" eventPayloadBuilder:v8];
   }
 }
 
@@ -348,31 +348,31 @@ id __70__DESCoreAnalyticsEventManager_sendEventDeferForBundleID_deadlineStr___bl
   return v2;
 }
 
-+ (void)sendEventEvaluationCompletedForBundleID:(id)a3 duration:(float)a4 deferralTime:(float)a5 wasDeferred:(BOOL)a6 success:(BOOL)a7 error:(id)a8
++ (void)sendEventEvaluationCompletedForBundleID:(id)d duration:(float)duration deferralTime:(float)time wasDeferred:(BOOL)deferred success:(BOOL)success error:(id)error
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a8;
+  successCopy = success;
+  dCopy = d;
+  errorCopy = error;
   v16 = @"com.apple.des.EvaluationCompletedWithError";
-  if (v9)
+  if (successCopy)
   {
     v16 = @"com.apple.des.EvaluationCompletedSuccessfully";
   }
 
   v17 = v16;
-  if ([a1 allowEventForBundleID:v14])
+  if ([self allowEventForBundleID:dCopy])
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __120__DESCoreAnalyticsEventManager_sendEventEvaluationCompletedForBundleID_duration_deferralTime_wasDeferred_success_error___block_invoke;
     v18[3] = &unk_278F84140;
-    v19 = v14;
-    v21 = a4;
-    v22 = a5;
-    v23 = a6;
-    v24 = v9;
-    v20 = v15;
-    [a1 _sendCoreAnalyticsEvent:v17 eventPayloadBuilder:v18];
+    v19 = dCopy;
+    durationCopy = duration;
+    timeCopy = time;
+    deferredCopy = deferred;
+    v24 = successCopy;
+    v20 = errorCopy;
+    [self _sendCoreAnalyticsEvent:v17 eventPayloadBuilder:v18];
   }
 }
 
@@ -424,17 +424,17 @@ id __120__DESCoreAnalyticsEventManager_sendEventEvaluationCompletedForBundleID_d
   return v9;
 }
 
-+ (void)sendEventRecordsMatchedForBundleID:(id)a3
++ (void)sendEventRecordsMatchedForBundleID:(id)d
 {
-  v4 = a3;
-  if ([a1 allowEventForBundleID:v4])
+  dCopy = d;
+  if ([self allowEventForBundleID:dCopy])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __67__DESCoreAnalyticsEventManager_sendEventRecordsMatchedForBundleID___block_invoke;
     v5[3] = &unk_278F84058;
-    v6 = v4;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.RecordsMatched" eventPayloadBuilder:v5];
+    v6 = dCopy;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.RecordsMatched" eventPayloadBuilder:v5];
   }
 }
 
@@ -450,21 +450,21 @@ id __67__DESCoreAnalyticsEventManager_sendEventRecordsMatchedForBundleID___block
   return v2;
 }
 
-+ (void)sendEventRecipeFetchedForBundleID:(id)a3 evaluationID:(id)a4 error:(id)a5
++ (void)sendEventRecipeFetchedForBundleID:(id)d evaluationID:(id)iD error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 allowEventForBundleID:v8])
+  dCopy = d;
+  iDCopy = iD;
+  errorCopy = error;
+  if ([self allowEventForBundleID:dCopy])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __85__DESCoreAnalyticsEventManager_sendEventRecipeFetchedForBundleID_evaluationID_error___block_invoke;
     v11[3] = &unk_278F84168;
-    v12 = v8;
-    v13 = v9;
-    v14 = v10;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.RecipeFetched" eventPayloadBuilder:v11];
+    v12 = dCopy;
+    v13 = iDCopy;
+    v14 = errorCopy;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.RecipeFetched" eventPayloadBuilder:v11];
   }
 }
 
@@ -499,20 +499,20 @@ id __85__DESCoreAnalyticsEventManager_sendEventRecipeFetchedForBundleID_evaluati
   return v4;
 }
 
-+ (void)sendEventAttachmentDownloadsBundleID:(id)a3 duration:(float)a4 success:(BOOL)a5 downloadedAttachmentCount:(unint64_t)a6
++ (void)sendEventAttachmentDownloadsBundleID:(id)d duration:(float)duration success:(BOOL)success downloadedAttachmentCount:(unint64_t)count
 {
-  v10 = a3;
-  if ([a1 allowEventForBundleID:v10])
+  dCopy = d;
+  if ([self allowEventForBundleID:dCopy])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __112__DESCoreAnalyticsEventManager_sendEventAttachmentDownloadsBundleID_duration_success_downloadedAttachmentCount___block_invoke;
     v11[3] = &unk_278F84080;
-    v14 = a4;
-    v15 = a5;
-    v12 = v10;
-    v13 = a6;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.AttachmentDownloads" eventPayloadBuilder:v11];
+    durationCopy = duration;
+    successCopy = success;
+    v12 = dCopy;
+    countCopy = count;
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.AttachmentDownloads" eventPayloadBuilder:v11];
   }
 }
 
@@ -538,28 +538,28 @@ id __112__DESCoreAnalyticsEventManager_sendEventAttachmentDownloadsBundleID_dura
   return v6;
 }
 
-+ (void)sendEventEvaluationForBundleID:(id)a3 evaluationID:(id)a4 duration:(float)a5 deferred:(BOOL)a6 success:(BOOL)a7 error:(id)a8 downloadedAttachmentCount:(unint64_t)a9
++ (void)sendEventEvaluationForBundleID:(id)d evaluationID:(id)iD duration:(float)duration deferred:(BOOL)deferred success:(BOOL)success error:(id)error downloadedAttachmentCount:(unint64_t)count
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  if ([a1 allowEventForBundleID:v16])
+  dCopy = d;
+  iDCopy = iD;
+  errorCopy = error;
+  if ([self allowEventForBundleID:dCopy])
   {
-    if (v18)
+    if (errorCopy)
     {
-      v30 = a9;
+      countCopy = count;
       v19 = MEMORY[0x277CCACA8];
-      v20 = [v18 domain];
-      v21 = [v19 stringWithFormat:@"%@_%ld", v20, objc_msgSend(v18, "code")];
+      domain = [errorCopy domain];
+      v21 = [v19 stringWithFormat:@"%@_%ld", domain, objc_msgSend(errorCopy, "code")];
 
-      v22 = [v18 userInfo];
-      v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [errorCopy userInfo];
+      v23 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
       if (v23)
       {
         v24 = MEMORY[0x277CCACA8];
-        v25 = [v23 domain];
-        v26 = [v24 stringWithFormat:@"%@_%ld", v25, objc_msgSend(v23, "code")];
+        domain2 = [v23 domain];
+        v26 = [v24 stringWithFormat:@"%@_%ld", domain2, objc_msgSend(v23, "code")];
       }
 
       else
@@ -567,7 +567,7 @@ id __112__DESCoreAnalyticsEventManager_sendEventAttachmentDownloadsBundleID_dura
         v26 = 0;
       }
 
-      a9 = v30;
+      count = countCopy;
     }
 
     else
@@ -581,18 +581,18 @@ id __112__DESCoreAnalyticsEventManager_sendEventAttachmentDownloadsBundleID_dura
     v31[1] = 3221225472;
     v31[2] = __134__DESCoreAnalyticsEventManager_sendEventEvaluationForBundleID_evaluationID_duration_deferred_success_error_downloadedAttachmentCount___block_invoke;
     v31[3] = &unk_278F84190;
-    v32 = v16;
-    v38 = a5;
-    v39 = a6;
-    v40 = a7;
+    v32 = dCopy;
+    durationCopy = duration;
+    deferredCopy = deferred;
+    successCopy = success;
     v36 = v27;
-    v37 = a9;
-    v33 = v17;
+    countCopy2 = count;
+    v33 = iDCopy;
     v34 = v21;
     v35 = v26;
     v28 = v26;
     v29 = v21;
-    [a1 _sendCoreAnalyticsEvent:@"com.apple.des.Evaluation" eventPayloadBuilder:v31];
+    [self _sendCoreAnalyticsEvent:@"com.apple.des.Evaluation" eventPayloadBuilder:v31];
   }
 }
 

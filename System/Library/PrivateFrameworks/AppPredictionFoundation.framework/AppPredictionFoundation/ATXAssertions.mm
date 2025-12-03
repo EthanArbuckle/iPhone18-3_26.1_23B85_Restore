@@ -1,27 +1,27 @@
 @interface ATXAssertions
-+ (void)assert:(BOOL)a3 conditionName:(id)a4 withDescriptionString:(id)a5;
-+ (void)parameterAssert:(id)a3 parameterName:(id)a4 descriptionString:(id)a5;
++ (void)assert:(BOOL)assert conditionName:(id)name withDescriptionString:(id)string;
++ (void)parameterAssert:(id)assert parameterName:(id)name descriptionString:(id)string;
 @end
 
 @implementation ATXAssertions
 
-+ (void)parameterAssert:(id)a3 parameterName:(id)a4 descriptionString:(id)a5
++ (void)parameterAssert:(id)assert parameterName:(id)name descriptionString:(id)string
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  stringCopy = string;
   if ([MEMORY[0x277D42590] isInternalBuild])
   {
-    if (!a3)
+    if (!assert)
     {
-      [ATXAssertions parameterAssert:a2 parameterName:a1 descriptionString:?];
+      [ATXAssertions parameterAssert:a2 parameterName:self descriptionString:?];
     }
   }
 
   else
   {
-    if (v10)
+    if (stringCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v10 arguments:&v13];
+      v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:stringCopy arguments:&v13];
       v12 = __atxlog_handle_default();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
@@ -34,17 +34,17 @@
       v11 = __atxlog_handle_default();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
-        [ATXAssertions parameterAssert:v9 parameterName:v11 descriptionString:?];
+        [ATXAssertions parameterAssert:nameCopy parameterName:v11 descriptionString:?];
       }
     }
   }
 }
 
-+ (void)assert:(BOOL)a3 conditionName:(id)a4 withDescriptionString:(id)a5
++ (void)assert:(BOOL)assert conditionName:(id)name withDescriptionString:(id)string
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  nameCopy = name;
+  stringCopy = string;
+  if (!stringCopy)
   {
     if ([MEMORY[0x277D42590] isInternalBuild])
     {
@@ -55,7 +55,7 @@ LABEL_12:
     v14 = __atxlog_handle_default();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
-      [ATXAssertions assert:v9 conditionName:v14 withDescriptionString:?];
+      [ATXAssertions assert:nameCopy conditionName:v14 withDescriptionString:?];
     }
 
     v11 = 0;
@@ -63,7 +63,7 @@ LABEL_12:
   }
 
   v15 = &v16;
-  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v10 arguments:&v16];
+  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:stringCopy arguments:&v16];
   if (([MEMORY[0x277D42590] isInternalBuild] & 1) == 0)
   {
     if (v11)
@@ -82,12 +82,12 @@ LABEL_12:
 
   if (v11)
   {
-    if (!a3)
+    if (!assert)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      v13 = a1;
-      v14 = v12;
-      [v12 handleFailureInMethod:a2 object:v13 file:@"ATXAssertions.m" lineNumber:70 description:@"Condition %@ is unexpectedly false - %@", v9, v11];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      selfCopy = self;
+      v14 = currentHandler;
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"ATXAssertions.m" lineNumber:70 description:@"Condition %@ is unexpectedly false - %@", nameCopy, v11];
 LABEL_15:
 
       goto LABEL_16;
@@ -97,9 +97,9 @@ LABEL_15:
   }
 
 LABEL_7:
-  if (!a3)
+  if (!assert)
   {
-    [(ATXAssertions *)a2 assert:a1 conditionName:v9 withDescriptionString:&v15];
+    [(ATXAssertions *)a2 assert:self conditionName:nameCopy withDescriptionString:&v15];
     v11 = 0;
     v14 = v15;
     goto LABEL_15;

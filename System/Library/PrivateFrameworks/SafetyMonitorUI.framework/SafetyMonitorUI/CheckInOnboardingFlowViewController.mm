@@ -1,12 +1,12 @@
 @interface CheckInOnboardingFlowViewController
-- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithCoder:(id)a3;
-- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithCoder:(id)coder;
+- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation CheckInOnboardingFlowViewController
 
-- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithCoder:(id)a3
+- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController_spinner;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D750E8]) init];
@@ -18,11 +18,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_26468AB58();
 }
 
-- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15SafetyMonitorUI35CheckInOnboardingFlowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

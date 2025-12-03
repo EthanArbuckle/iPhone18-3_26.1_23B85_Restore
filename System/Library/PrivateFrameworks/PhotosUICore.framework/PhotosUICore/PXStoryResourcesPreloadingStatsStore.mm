@@ -1,39 +1,39 @@
 @interface PXStoryResourcesPreloadingStatsStore
 - (double)estimatedLoadingTimeLeft;
 - (float)loadedFraction;
-- (void)_enumerateAllStats:(id)a3;
-- (void)_modifyStatsForPlaybackStyle:(int64_t)a3 withModifier:(id)a4;
-- (void)noteClipWithPlaybackStyle:(int64_t)a3 loadedWithLoadingTime:(double)a4;
-- (void)noteSessionStartedPreloadableClipsCounts:(id *)a3;
+- (void)_enumerateAllStats:(id)stats;
+- (void)_modifyStatsForPlaybackStyle:(int64_t)style withModifier:(id)modifier;
+- (void)noteClipWithPlaybackStyle:(int64_t)style loadedWithLoadingTime:(double)time;
+- (void)noteSessionStartedPreloadableClipsCounts:(id *)counts;
 @end
 
 @implementation PXStoryResourcesPreloadingStatsStore
 
-- (void)_enumerateAllStats:(id)a3
+- (void)_enumerateAllStats:(id)stats
 {
-  v4 = a3 + 16;
-  v5 = *(a3 + 2);
+  v4 = stats + 16;
+  v5 = *(stats + 2);
   v6 = *&self->_imageClipsStats.accumulatedClipsLoadingTime;
   v13 = *&self->_imageClipsStats.preloadableClipsCount;
   v14 = v6;
-  v7 = a3;
-  v5(v7, &v13, 1, v8);
+  statsCopy = stats;
+  v5(statsCopy, &v13, 1, v8);
   v9 = *v4;
   v10 = *&self->_videoClipsStats.accumulatedClipsLoadingTime;
   v13 = *&self->_videoClipsStats.preloadableClipsCount;
   v14 = v10;
-  v9(v7, &v13, 4);
+  v9(statsCopy, &v13, 4);
   v11 = *v4;
   v12 = *&self->_livePhotoClipsStats.accumulatedClipsLoadingTime;
   v13 = *&self->_livePhotoClipsStats.preloadableClipsCount;
   v14 = v12;
-  v11(v7, &v13, 3);
+  v11(statsCopy, &v13, 3);
 }
 
-- (void)_modifyStatsForPlaybackStyle:(int64_t)a3 withModifier:(id)a4
+- (void)_modifyStatsForPlaybackStyle:(int64_t)style withModifier:(id)modifier
 {
-  v7 = a4;
-  switch(a3)
+  modifierCopy = modifier;
+  switch(style)
   {
     case 1:
       v8 = 8;
@@ -45,14 +45,14 @@
       v8 = 72;
       break;
     default:
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloader.m" lineNumber:1066 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloader.m" lineNumber:1066 description:@"Code which should be unreachable has been reached"];
 
       abort();
   }
 
-  v10 = v7;
-  (*(v7 + 2))(v7, self + v8);
+  v10 = modifierCopy;
+  (*(modifierCopy + 2))(modifierCopy, self + v8);
 }
 
 - (double)estimatedLoadingTimeLeft
@@ -62,9 +62,9 @@
   v28 = 0x2020000000;
   v29 = 0;
   v4 = +[PXStorySettings sharedInstance];
-  v5 = [v4 estimateTimeLeftPerPlaybackStyle];
+  estimateTimeLeftPerPlaybackStyle = [v4 estimateTimeLeftPerPlaybackStyle];
 
-  if (v5)
+  if (estimateTimeLeftPerPlaybackStyle)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -202,14 +202,14 @@ uint64_t __54__PXStoryResourcesPreloadingStatsStore_loadedFraction__block_invoke
   return result;
 }
 
-- (void)noteClipWithPlaybackStyle:(int64_t)a3 loadedWithLoadingTime:(double)a4
+- (void)noteClipWithPlaybackStyle:(int64_t)style loadedWithLoadingTime:(double)time
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __88__PXStoryResourcesPreloadingStatsStore_noteClipWithPlaybackStyle_loadedWithLoadingTime___block_invoke;
   v4[3] = &__block_descriptor_40_e16_v16__0____qqdq_8l;
-  *&v4[4] = a4;
-  [(PXStoryResourcesPreloadingStatsStore *)self _modifyStatsForPlaybackStyle:a3 withModifier:v4];
+  *&v4[4] = time;
+  [(PXStoryResourcesPreloadingStatsStore *)self _modifyStatsForPlaybackStyle:style withModifier:v4];
 }
 
 double __88__PXStoryResourcesPreloadingStatsStore_noteClipWithPlaybackStyle_loadedWithLoadingTime___block_invoke(uint64_t a1, uint64_t a2)
@@ -221,25 +221,25 @@ double __88__PXStoryResourcesPreloadingStatsStore_noteClipWithPlaybackStyle_load
   return result;
 }
 
-- (void)noteSessionStartedPreloadableClipsCounts:(id *)a3
+- (void)noteSessionStartedPreloadableClipsCounts:(id *)counts
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __81__PXStoryResourcesPreloadingStatsStore_noteSessionStartedPreloadableClipsCounts___block_invoke;
   v9[3] = &__block_descriptor_56_e16_v16__0____qqdq_8l;
-  v10 = *a3;
+  v10 = *counts;
   [(PXStoryResourcesPreloadingStatsStore *)self _modifyStatsForPlaybackStyle:1 withModifier:v9];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__PXStoryResourcesPreloadingStatsStore_noteSessionStartedPreloadableClipsCounts___block_invoke_2;
   v7[3] = &__block_descriptor_56_e16_v16__0____qqdq_8l;
-  v8 = *a3;
+  v8 = *counts;
   [(PXStoryResourcesPreloadingStatsStore *)self _modifyStatsForPlaybackStyle:4 withModifier:v7];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __81__PXStoryResourcesPreloadingStatsStore_noteSessionStartedPreloadableClipsCounts___block_invoke_3;
   v5[3] = &__block_descriptor_56_e16_v16__0____qqdq_8l;
-  v6 = *a3;
+  v6 = *counts;
   [(PXStoryResourcesPreloadingStatsStore *)self _modifyStatsForPlaybackStyle:3 withModifier:v5];
 }
 

@@ -1,14 +1,14 @@
 @interface PRWidgetSuggestionsView
-- (PRWidgetSuggestionsView)initWithLayoutDelegate:(id)a3 usingSidebarLayout:(BOOL)a4;
+- (PRWidgetSuggestionsView)initWithLayoutDelegate:(id)delegate usingSidebarLayout:(BOOL)layout;
 - (id)_makeLayout;
 @end
 
 @implementation PRWidgetSuggestionsView
 
-- (PRWidgetSuggestionsView)initWithLayoutDelegate:(id)a3 usingSidebarLayout:(BOOL)a4
+- (PRWidgetSuggestionsView)initWithLayoutDelegate:(id)delegate usingSidebarLayout:(BOOL)layout
 {
-  v4 = a4;
-  v6 = a3;
+  layoutCopy = layout;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = PRWidgetSuggestionsView;
   v7 = *MEMORY[0x1E695F058];
@@ -19,35 +19,35 @@
   v12 = v11;
   if (v11)
   {
-    if (v4)
+    if (layoutCopy)
     {
       v13 = [PRSidebarWidgetSuggestionsCollectionViewLayout alloc];
-      v14 = [(PRWidgetSuggestionsView *)v12 traitCollection];
-      [v14 displayScale];
-      v15 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)v13 initWithDisplayScale:?];
+      traitCollection = [(PRWidgetSuggestionsView *)v12 traitCollection];
+      [traitCollection displayScale];
+      _makeLayout = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)v13 initWithDisplayScale:?];
 
-      [(PRSidebarWidgetSuggestionsCollectionViewLayout *)v15 setLayoutDelegate:v6];
+      [(PRSidebarWidgetSuggestionsCollectionViewLayout *)_makeLayout setLayoutDelegate:delegateCopy];
     }
 
     else
     {
-      v15 = [(PRWidgetSuggestionsView *)v11 _makeLayout];
+      _makeLayout = [(PRWidgetSuggestionsView *)v11 _makeLayout];
     }
 
-    v16 = [objc_alloc(MEMORY[0x1E69DC7F0]) initWithFrame:v15 collectionViewLayout:{v7, v8, v9, v10}];
+    v16 = [objc_alloc(MEMORY[0x1E69DC7F0]) initWithFrame:_makeLayout collectionViewLayout:{v7, v8, v9, v10}];
     collectionView = v12->_collectionView;
     v12->_collectionView = v16;
 
     v18 = v12->_collectionView;
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v18 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v18 setBackgroundColor:clearColor];
 
     [(UICollectionView *)v12->_collectionView setShowsVerticalScrollIndicator:0];
     [(UICollectionView *)v12->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PRWidgetSuggestionsView *)v12 addSubview:v12->_collectionView];
     v20 = v12->_collectionView;
-    v21 = [(PRWidgetSuggestionsView *)v12 safeAreaLayoutGuide];
-    v22 = PRPinViewWithinLayoutGuide(v20, v21);
+    safeAreaLayoutGuide = [(PRWidgetSuggestionsView *)v12 safeAreaLayoutGuide];
+    v22 = PRPinViewWithinLayoutGuide(v20, safeAreaLayoutGuide);
   }
 
   return v12;

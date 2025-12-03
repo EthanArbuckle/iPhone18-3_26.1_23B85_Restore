@@ -28,7 +28,7 @@
 - (double)controlCenterAmbiguousActivationMargin;
 - (double)defaultPNGExpirationTime;
 - (double)statusBarAlpha;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)backgroundStyle;
 - (int64_t)compatibilityMode;
 - (int64_t)controlCenterRevealMode;
@@ -54,77 +54,77 @@
 
 - (int64_t)interfaceOrientation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:12];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:12];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)idleTimerDisabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:14];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:14];
 
   return v3;
 }
 
 - (BOOL)homeIndicatorAutoHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:27];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:27];
 
   return v3;
 }
 
 - (unint64_t)screenEdgesDeferringSystemGestures
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:26];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:26];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)statusBarHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:2];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:2];
 
   return v3;
 }
 
 - (int64_t)backgroundStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:20];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:20];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (unsigned)statusBarContextID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4];
-  v4 = [v3 unsignedIntValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (int64_t)statusBarModernStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:35];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:35];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (double)statusBarAlpha
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:36];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:36];
   [v3 doubleValue];
   v5 = v4;
 
@@ -133,58 +133,58 @@
 
 - (FBSDisplayConfigurationRequest)displayConfigurationRequest
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:24];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:24];
 
   return v3;
 }
 
 - (NSData)activationConditionsData
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:38];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:38];
 
   return v3;
 }
 
 - (NSDictionary)statusBarPartStyles
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:34];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:34];
 
   return v3;
 }
 
 - (NSString)sceneTitle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:37];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:37];
 
   return v3;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:13];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:13];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)proximityDetectionModes
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:15];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:15];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (UIEdgeInsets)primaryWindowOverlayInsets
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:19];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:19];
   v12 = UIEdgeInsetsFromString(v3);
   top = v12.top;
   left = v12.left;
@@ -204,74 +204,74 @@
 
 - (int64_t)statusBarStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (_UIPhysicalButtonConfigurationSet)physicalButtonConfigurations
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:46];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:46];
 
   return v3;
 }
 
 - (NSArray)audioCategoriesDisablingVolumeHUD
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:31];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:31];
 
   return v3;
 }
 
 - (BOOL)disablesMirroring
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:33];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:33];
 
   return v3;
 }
 
 - (BOOL)isStatusBarForegroundTransparent
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:3];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:3];
 
   return v3;
 }
 
 - (int64_t)defaultStatusBarStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:5];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:5];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)defaultStatusBarHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:6];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:6];
 
   return v3;
 }
 
 - (NSString)defaultPNGName
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:7];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:7];
 
   return v3;
 }
 
 - (double)defaultPNGExpirationTime
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:8];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:8];
   [v3 doubleValue];
   v5 = v4;
 
@@ -280,33 +280,33 @@
 
 - (int64_t)compatibilityMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:9];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:9];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)deviceOrientationEventsEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:10];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:10];
 
   return v3;
 }
 
 - (BOOL)interfaceOrientationChangesDisabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:11];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:11];
 
   return v3;
 }
 
 - (double)controlCenterAmbiguousActivationMargin
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:16];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:16];
   [v3 doubleValue];
   v5 = v4;
 
@@ -315,103 +315,103 @@
 
 - (int64_t)controlCenterRevealMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:17];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:17];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)notificationCenterRevealMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:18];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:18];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)editingInteractionConfiguration
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:45];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:45];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 1;
+    integerValue = 1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)idleModeVisualEffectsEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:21];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:21];
 
   return v3;
 }
 
 - (int64_t)whitePointAdaptivityStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:22];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:22];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (FBSDisplayMode)requestedDisplayMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:23];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:23];
 
   return v3;
 }
 
 - (BOOL)isReachabilitySupported
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:25];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:25];
 
   return v3;
 }
 
 - (BOOL)wantsExclusiveForeground
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:28];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:28];
 
   return v3;
 }
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:29];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:29];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)visibleMiniAlertCount
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:30];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:30];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (double)brightnessLevel
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:32];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:32];
   [v3 doubleValue];
   v5 = v4;
 
@@ -420,17 +420,17 @@
 
 - (int64_t)sceneActivationBias
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:39];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:39];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (CGRect)screenFocusedFrame
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:40];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:40];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -450,17 +450,17 @@
 
 - (int64_t)preferredPointerLockStatus
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:41];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:41];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (NSArray)multitaskingDragExclusionRects
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42];
   v4 = v3;
   if (v3)
   {
@@ -479,38 +479,38 @@
 
 - (int64_t)playbackControlsState
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:43];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:43];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)containsSearchView
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:47];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:47];
 
   return v3;
 }
 
 - (BOOL)discardSessionOnUserDisconnect
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:44];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:44];
 
   return v3;
 }
 
 - (BOOL)systemInputActive
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:48];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:48];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UIMutableApplicationSceneClientSettings alloc];
 

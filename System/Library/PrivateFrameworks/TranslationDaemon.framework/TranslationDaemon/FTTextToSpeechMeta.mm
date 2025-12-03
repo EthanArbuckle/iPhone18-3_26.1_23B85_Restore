@@ -1,18 +1,18 @@
 @interface FTTextToSpeechMeta
 - (FTQSSVersionInfo)server_info;
-- (FTTextToSpeechMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechMeta *)a4 verify:(BOOL)a5;
+- (FTTextToSpeechMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechMeta *)root verify:(BOOL)verify;
 - (FTTextToSpeechResource)resource;
 - (FTTextToSpeechVoice)voice;
-- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
 @implementation FTTextToSpeechMeta
 
-- (FTTextToSpeechMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechMeta *)a4 verify:(BOOL)a5
+- (FTTextToSpeechMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechMeta *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTextToSpeechMeta;
   v10 = [(FTTextToSpeechMeta *)&v25 init];
@@ -21,35 +21,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -150,26 +150,26 @@ LABEL_13:
   return v3;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
-  v5 = [(FTTextToSpeechMeta *)self voice];
-  v6 = [v5 addObjectToBuffer:a3];
+  selfCopy = self;
+  voice = [(FTTextToSpeechMeta *)self voice];
+  v6 = [voice addObjectToBuffer:buffer];
 
-  v7 = [(FTTextToSpeechMeta *)v4 resource];
-  v8 = [v7 addObjectToBuffer:a3];
+  resource = [(FTTextToSpeechMeta *)selfCopy resource];
+  v8 = [resource addObjectToBuffer:buffer];
 
-  v9 = [(FTTextToSpeechMeta *)v4 server_info];
-  LODWORD(v4) = [v9 addObjectToBuffer:a3];
+  server_info = [(FTTextToSpeechMeta *)selfCopy server_info];
+  LODWORD(selfCopy) = [server_info addObjectToBuffer:buffer];
 
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 10);
-  v11 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v6);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v8);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v4);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 10);
+  v11 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, v6);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v8);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, selfCopy);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v11 + v10);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v11 + v10);
 }
 
 - (id)flatbuffData

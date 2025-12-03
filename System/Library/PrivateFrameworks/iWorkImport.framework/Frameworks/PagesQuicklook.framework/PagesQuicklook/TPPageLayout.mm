@@ -1,15 +1,15 @@
 @interface TPPageLayout
 - (BOOL)textIsVertical;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
-- (Class)repClassForTextLayout:(id)a3;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
+- (Class)repClassForTextLayout:(id)layout;
 - (TPSectionTemplateDrawableProvider)sectionTemplateDrawableProvider;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (id)dependentsOfTextLayout:(id)a3;
-- (id)existingAttachmentLayoutForInfo:(id)a3;
-- (id)layoutsForChildInfo:(id)a3;
-- (id)p_childLayoutInParentLayout:(id)a3 forChildInfo:(id)a4;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (id)dependentsOfTextLayout:(id)layout;
+- (id)existingAttachmentLayoutForInfo:(id)info;
+- (id)layoutsForChildInfo:(id)info;
+- (id)p_childLayoutInParentLayout:(id)layout forChildInfo:(id)info;
 - (unint64_t)pageCount;
 - (unint64_t)pageIndex;
 - (unint64_t)pageNumber;
@@ -18,12 +18,12 @@
 
 @implementation TPPageLayout
 
-- (id)p_childLayoutInParentLayout:(id)a3 forChildInfo:(id)a4
+- (id)p_childLayoutInParentLayout:(id)layout forChildInfo:(id)info
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_275FF976C(self, v7);
+  layoutCopy = layout;
+  infoCopy = info;
+  v8 = sub_275FF976C(self, infoCopy);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -66,9 +66,9 @@
   return v20;
 }
 
-- (id)layoutsForChildInfo:(id)a3
+- (id)layoutsForChildInfo:(id)info
 {
-  v3 = sub_275FF976C(self, a3);
+  v3 = sub_275FF976C(self, info);
   v9 = objc_msgSend_copy(v3, v4, v5, v6, v7, v8);
 
   return v9;
@@ -82,16 +82,16 @@
   return v12;
 }
 
-- (id)existingAttachmentLayoutForInfo:(id)a3
+- (id)existingAttachmentLayoutForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10 = objc_msgSend_layoutController(self, v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_layoutForInfo_childOfLayout_(v10, v11, v12, v13, v14, v15, v4, self);
+  v16 = objc_msgSend_layoutForInfo_childOfLayout_(v10, v11, v12, v13, v14, v15, infoCopy, self);
 
   return v16;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   v3.n128_u64[0] = *MEMORY[0x277CBF3A8];
   v4.n128_u64[0] = *(MEMORY[0x277CBF3A8] + 8);
@@ -103,9 +103,9 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = MEMORY[0x277D81150];
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, v10, "[TPPageLayout autosizedFrameForTextLayout:textSize:]");
   v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageLayout.m");
@@ -126,9 +126,9 @@
   objc_exception_throw(v46);
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v4 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v6, v7, v8, v9, "[TPPageLayout dependentsOfTextLayout:]");
   v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageLayout.m");
@@ -149,9 +149,9 @@
   objc_exception_throw(v45);
 }
 
-- (Class)repClassForTextLayout:(id)a3
+- (Class)repClassForTextLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v4 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v6, v7, v8, v9, "[TPPageLayout repClassForTextLayout:]");
   v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageLayout.m");
@@ -223,7 +223,7 @@
   objc_exception_throw(v42);
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   v3 = *MEMORY[0x277D81428];
   v4 = *(MEMORY[0x277D81428] + 8);
@@ -236,16 +236,16 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a6)
+  if (outWidth)
   {
-    *a6 = a4;
+    *outWidth = width;
   }
 
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;

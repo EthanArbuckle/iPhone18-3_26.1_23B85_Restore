@@ -1,17 +1,17 @@
 @interface HUStatusItemModuleController
-+ (id)_layoutOptionsForEnvironment:(id)a3;
-- (Class)collectionCellClassForItem:(id)a3;
-- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)a3;
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
++ (id)_layoutOptionsForEnvironment:(id)environment;
+- (Class)collectionCellClassForItem:(id)item;
+- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)size;
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment;
+- (unint64_t)didSelectItem:(id)item;
+- (void)configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUStatusItemModuleController
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   objc_opt_isKindOfClass();
 
@@ -20,17 +20,17 @@
   return v4;
 }
 
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [objc_opt_class() _layoutOptionsForEnvironment:v4];
+  environmentCopy = environment;
+  v5 = [objc_opt_class() _layoutOptionsForEnvironment:environmentCopy];
 
   v6 = MEMORY[0x277CFB860];
   v7 = MEMORY[0x277CFB870];
   v8 = MEMORY[0x277CFB840];
-  v9 = [v5 statusCellOptions];
-  [v9 estimatedCellWidth];
+  statusCellOptions = [v5 statusCellOptions];
+  [statusCellOptions estimatedCellWidth];
   v10 = [v8 estimatedDimension:?];
   v11 = [MEMORY[0x277CFB840] fractionalHeightDimension:1.0];
   v12 = [v7 sizeWithWidthDimension:v10 heightDimension:v11];
@@ -38,12 +38,12 @@
 
   v14 = MEMORY[0x277CFB870];
   v15 = MEMORY[0x277CFB840];
-  v16 = [v5 statusCellOptions];
-  [v16 estimatedCellWidth];
+  statusCellOptions2 = [v5 statusCellOptions];
+  [statusCellOptions2 estimatedCellWidth];
   v17 = [v15 estimatedDimension:?];
   v18 = MEMORY[0x277CFB840];
-  v19 = [v5 statusCellOptions];
-  [v19 cellHeight];
+  statusCellOptions3 = [v5 statusCellOptions];
+  [statusCellOptions3 cellHeight];
   v20 = [v18 estimatedDimension:?];
   v21 = [v14 sizeWithWidthDimension:v17 heightDimension:v20];
 
@@ -53,8 +53,8 @@
   v24 = [v22 horizontalGroupWithLayoutSize:v21 subitems:v23];
 
   v25 = [MEMORY[0x277CFB868] sectionWithGroup:v24];
-  v26 = [v5 statusCellOptions];
-  [v26 cellSpacing];
+  statusCellOptions4 = [v5 statusCellOptions];
+  [statusCellOptions4 cellSpacing];
   [v25 setInterGroupSpacing:?];
 
   [v25 setOrthogonalScrollingBehavior:1];
@@ -71,61 +71,61 @@
   return v25;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = HUStatusItemModuleController;
-  [(HUItemModuleController *)&v10 configureCell:v6 forItem:a4];
+  [(HUItemModuleController *)&v10 configureCell:cellCopy forItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(HUStatusItemModuleController *)self cellLayoutOptions];
-    v8 = [v7 statusCellOptions];
-    [v6 setLayoutOptions:v8];
+    cellLayoutOptions = [(HUStatusItemModuleController *)self cellLayoutOptions];
+    statusCellOptions = [cellLayoutOptions statusCellOptions];
+    [cellCopy setLayoutOptions:statusCellOptions];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D756E0] cellConfiguration];
-    [v6 setContentConfiguration:v9];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+    [cellCopy setContentConfiguration:cellConfiguration];
 
-    v7 = [MEMORY[0x277D751C0] clearConfiguration];
-    [v6 setBackgroundConfiguration:v7];
+    cellLayoutOptions = [MEMORY[0x277D751C0] clearConfiguration];
+    [cellCopy setBackgroundConfiguration:cellLayoutOptions];
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = itemCopy;
     if ([v5 supportsInvalidation])
     {
-      v6 = [v5 latestResults];
-      v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D14068]];
-      v8 = [v7 integerValue];
+      latestResults = [v5 latestResults];
+      v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14068]];
+      integerValue = [v7 integerValue];
 
-      v9 = [v5 latestResults];
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D140C8]];
-      v11 = [v10 integerValue];
+      latestResults2 = [v5 latestResults];
+      v10 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D140C8]];
+      integerValue2 = [v10 integerValue];
 
-      v13 = v8 == 2 || v11 == 2;
-      v14 = [(HUItemModuleController *)self module];
-      [v14 updateNeedsInvalidation:v13 forStatusItem:v5];
+      v13 = integerValue == 2 || integerValue2 == 2;
+      module = [(HUItemModuleController *)self module];
+      [module updateNeedsInvalidation:v13 forStatusItem:v5];
     }
   }
 
   return 0;
 }
 
-- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)a3
+- (id)_defaultCellLayoutOptionsForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x277D14CE8] isAMac];
+  height = size.height;
+  width = size.width;
+  isAMac = [MEMORY[0x277D14CE8] isAMac];
   if ([MEMORY[0x277D14CE8] useMacIdiom])
   {
     v6 = &unk_282491310;
@@ -136,38 +136,38 @@
     v6 = 0;
   }
 
-  v7 = [HUGridLayoutOptions defaultOptionsForViewSize:v5 columnStyle:v6 overrideSizeSubclass:width, height];
-  [v7 setStatusHidden:0];
+  height = [HUGridLayoutOptions defaultOptionsForViewSize:isAMac columnStyle:v6 overrideSizeSubclass:width, height];
+  [height setStatusHidden:0];
   v8 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:0];
-  v9 = [v8 preferredContentSizeCategory];
-  [v7 setContentSizeCategory:v9];
+  preferredContentSizeCategory = [v8 preferredContentSizeCategory];
+  [height setContentSizeCategory:preferredContentSizeCategory];
 
-  [v7 setEditing:0];
+  [height setEditing:0];
 
-  return v7;
+  return height;
 }
 
-+ (id)_layoutOptionsForEnvironment:(id)a3
++ (id)_layoutOptionsForEnvironment:(id)environment
 {
   v3 = MEMORY[0x277D14CE8];
-  v4 = a3;
-  v5 = [v3 isAMac];
-  v6 = [MEMORY[0x277D14CE8] useMacIdiom];
+  environmentCopy = environment;
+  isAMac = [v3 isAMac];
+  useMacIdiom = [MEMORY[0x277D14CE8] useMacIdiom];
   v7 = &unk_282491310;
-  if (!v6)
+  if (!useMacIdiom)
   {
     v7 = 0;
   }
 
   v8 = v7;
-  v9 = [v4 container];
-  [v9 effectiveContentSize];
-  v10 = [HUGridLayoutOptions defaultOptionsForViewSize:v5 columnStyle:v8 overrideSizeSubclass:?];
+  container = [environmentCopy container];
+  [container effectiveContentSize];
+  v10 = [HUGridLayoutOptions defaultOptionsForViewSize:isAMac columnStyle:v8 overrideSizeSubclass:?];
 
-  v11 = [v4 traitCollection];
+  traitCollection = [environmentCopy traitCollection];
 
-  v12 = [v11 preferredContentSizeCategory];
-  [v10 setContentSizeCategory:v12];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v10 setContentSizeCategory:preferredContentSizeCategory];
 
   [v10 setSectionLeadingMargin:0.0];
   [v10 setSectionTrailingMargin:0.0];

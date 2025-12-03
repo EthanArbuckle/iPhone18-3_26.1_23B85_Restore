@@ -1,7 +1,7 @@
 @interface IDSDMessageStoreMigrator
 + (id)sharedInstance;
 - (IDSDMessageStoreMigrator)init;
-- (void)_checkAndUpdateDBIfRequiredForClass:(unsigned int)a3;
+- (void)_checkAndUpdateDBIfRequiredForClass:(unsigned int)class;
 @end
 
 @implementation IDSDMessageStoreMigrator
@@ -34,11 +34,11 @@
   return v3;
 }
 
-- (void)_checkAndUpdateDBIfRequiredForClass:(unsigned int)a3
+- (void)_checkAndUpdateDBIfRequiredForClass:(unsigned int)class
 {
-  v3 = [IDSDMessageStore sharedInstanceForDataProtectionClass:*&a3];
-  v4 = [v3 internalMigrationVersionOnDatabase];
-  if (v4 == 100)
+  v3 = [IDSDMessageStore sharedInstanceForDataProtectionClass:*&class];
+  internalMigrationVersionOnDatabase = [v3 internalMigrationVersionOnDatabase];
+  if (internalMigrationVersionOnDatabase == 100)
   {
     v5 = +[IMRGLog liveMigration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -52,14 +52,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v4 <= 99)
+  if (internalMigrationVersionOnDatabase <= 99)
   {
     v6 = +[IDSDAccountController sharedInstance];
     v5 = [v6 accountsOfAdHocType:2];
 
     v7 = +[IDSPairingManager sharedInstance];
-    v8 = [v7 pairedDeviceUniqueID];
-    [v3 markLocalDestinationDeviceUUIDForAccounts:v5 deviceUUID:v8];
+    pairedDeviceUniqueID = [v7 pairedDeviceUniqueID];
+    [v3 markLocalDestinationDeviceUUIDForAccounts:v5 deviceUUID:pairedDeviceUniqueID];
 
     [v3 updateInternalMigrationVersionOnDatabaseWithValue:100];
     v9 = +[IMRGLog liveMigration];

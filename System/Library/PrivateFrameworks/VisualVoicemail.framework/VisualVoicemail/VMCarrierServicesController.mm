@@ -1,72 +1,72 @@
 @interface VMCarrierServicesController
 - (BOOL)isOnline;
-- (BOOL)isRefreshRequestedForAccount:(id)a3 andReset:(BOOL)a4;
+- (BOOL)isRefreshRequestedForAccount:(id)account andReset:(BOOL)reset;
 - (BOOL)isSubscribed;
 - (BOOL)isSyncInProgress;
-- (BOOL)setAccountProperties:(id)a3 properties:(id)a4 error:(id *)a5;
+- (BOOL)setAccountProperties:(id)properties properties:(id)a4 error:(id *)error;
 - (BOOL)wasDeviceRestart;
-- (VMCarrierServicesController)initWithStateRequestController:(id)a3 transcriptionService:(id)a4 telephonyClient:(id)a5 queue:(id)a6;
-- (VMCarrierServicesController)initWithTranscriptionService:(id)a3 queue:(id)a4 telephonyClient:(id)a5;
+- (VMCarrierServicesController)initWithStateRequestController:(id)controller transcriptionService:(id)service telephonyClient:(id)client queue:(id)queue;
+- (VMCarrierServicesController)initWithTranscriptionService:(id)service queue:(id)queue telephonyClient:(id)client;
 - (VMDCarrierAccountDataSource)carrierAccountDataSource;
 - (VVService)defaultService;
 - (id)accountsToRefreshIfNeeded;
-- (id)findContextInfoWithLabelUUID:(id)a3;
-- (id)findContextInfoWithSubscriptionUUID:(id)a3;
-- (id)getServiceInfoForAccountUUID:(id)a3;
+- (id)findContextInfoWithLabelUUID:(id)d;
+- (id)findContextInfoWithSubscriptionUUID:(id)d;
+- (id)getServiceInfoForAccountUUID:(id)d;
 - (id)getStorageUsage;
-- (id)getVoicemailPhoneNumberForAccountUUID_sync:(id)a3;
-- (id)serviceForLabel:(id)a3;
-- (void)_handleSubscriptionStatusChanged:(id)a3;
+- (id)getVoicemailPhoneNumberForAccountUUID_sync:(id)d_sync;
+- (id)serviceForLabel:(id)label;
+- (void)_handleSubscriptionStatusChanged:(id)changed;
 - (void)activeSubscriptionsDidChange;
-- (void)carrierBundleChange:(id)a3;
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4;
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5;
-- (void)createPersonalizedTranscript:(id)a3 completion:(id)a4;
-- (void)createTranscription:(id)a3 transcription:(id)a4 completion:(id)a5;
+- (void)carrierBundleChange:(id)change;
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections;
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info;
+- (void)createPersonalizedTranscript:(id)transcript completion:(id)completion;
+- (void)createTranscription:(id)transcription transcription:(id)a4 completion:(id)completion;
 - (void)dealloc;
-- (void)do_M2A_merge:(id)a3;
+- (void)do_M2A_merge:(id)a_merge;
 - (void)dumpState;
-- (void)executeHandlerForNotificationWithName:(id)a3 userInfo:(id)a4;
-- (void)executeHandlerForVoicemailInfoNotification:(id)a3 userInfo:(id)a4;
-- (void)greetingForAccountUUID:(id)a3 completion:(id)a4;
-- (void)handleNotificationWithName:(id)a3 userInfo:(id)a4;
-- (void)isAccountOnline:(id)a3 completion:(id)a4;
-- (void)isAccountSubscribed:(id)a3 completion:(id)a4;
-- (void)isCallVoicemailSupportedForAccountUUID:(id)a3 completion:(id)a4;
-- (void)isGreetingChangeSupportedForAccountUUID:(id)a3 completion:(id)a4;
-- (void)isPasscodeChangeSupportedForAccountUUID:(id)a3 completion:(id)a4;
-- (void)local_voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4;
-- (void)markRecordsWithIdentifiersAsRead:(id)a3;
-- (void)markRecordsWithUniqueIdentifiersAsRead:(id)a3;
-- (void)maximumGreetingDurationForAccountUUID:(id)a3 completion:(id)a4;
-- (void)maximumPasscodeLengthForAccountUUID:(id)a3 completion:(id)a4;
-- (void)minimumPasscodeLengthForAccountUUID:(id)a3 completion:(id)a4;
-- (void)moveRecordsWithIdentifiersToDeleted:(id)a3;
-- (void)moveRecordsWithIdentifiersToInbox:(id)a3;
-- (void)moveRecordsWithIdentifiersToTrash:(id)a3;
-- (void)moveRecordsWithUniqueIdentifiersToDeleted:(id)a3;
-- (void)moveRecordsWithUniqueIdentifiersToInbox:(id)a3;
-- (void)moveRecordsWithUniqueIdentifiersToTrash:(id)a3;
-- (void)performSynchronousBlock:(id)a3;
-- (void)postSmscAddressAvailable:(id)a3 smsc:(id)a4;
+- (void)executeHandlerForNotificationWithName:(id)name userInfo:(id)info;
+- (void)executeHandlerForVoicemailInfoNotification:(id)notification userInfo:(id)info;
+- (void)greetingForAccountUUID:(id)d completion:(id)completion;
+- (void)handleNotificationWithName:(id)name userInfo:(id)info;
+- (void)isAccountOnline:(id)online completion:(id)completion;
+- (void)isAccountSubscribed:(id)subscribed completion:(id)completion;
+- (void)isCallVoicemailSupportedForAccountUUID:(id)d completion:(id)completion;
+- (void)isGreetingChangeSupportedForAccountUUID:(id)d completion:(id)completion;
+- (void)isPasscodeChangeSupportedForAccountUUID:(id)d completion:(id)completion;
+- (void)local_voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info;
+- (void)markRecordsWithIdentifiersAsRead:(id)read;
+- (void)markRecordsWithUniqueIdentifiersAsRead:(id)read;
+- (void)maximumGreetingDurationForAccountUUID:(id)d completion:(id)completion;
+- (void)maximumPasscodeLengthForAccountUUID:(id)d completion:(id)completion;
+- (void)minimumPasscodeLengthForAccountUUID:(id)d completion:(id)completion;
+- (void)moveRecordsWithIdentifiersToDeleted:(id)deleted;
+- (void)moveRecordsWithIdentifiersToInbox:(id)inbox;
+- (void)moveRecordsWithIdentifiersToTrash:(id)trash;
+- (void)moveRecordsWithUniqueIdentifiersToDeleted:(id)deleted;
+- (void)moveRecordsWithUniqueIdentifiersToInbox:(id)inbox;
+- (void)moveRecordsWithUniqueIdentifiersToTrash:(id)trash;
+- (void)performSynchronousBlock:(id)block;
+- (void)postSmscAddressAvailable:(id)available smsc:(id)smsc;
 - (void)queryAndInitVoicemailServices;
-- (void)remapAccount:(id)a3 toAccount:(id)a4;
-- (void)reportAccount:(id)a3 subscribed:(BOOL)a4;
-- (void)reportTranscriptionProblemForRecord:(void *)a3;
-- (void)reportTranscriptionRatedAccurate:(BOOL)a3 forRecord:(void *)a4;
+- (void)remapAccount:(id)account toAccount:(id)toAccount;
+- (void)reportAccount:(id)account subscribed:(BOOL)subscribed;
+- (void)reportTranscriptionProblemForRecord:(void *)record;
+- (void)reportTranscriptionRatedAccurate:(BOOL)accurate forRecord:(void *)record;
 - (void)resetNetworkSettings;
-- (void)retrieveDataForRecord:(void *)a3;
-- (void)sendStateRequestForAccountUUID:(id)a3;
-- (void)setGreeting:(id)a3 forAccountUUID:(id)a4 completion:(id)a5;
-- (void)setPasscode:(id)a3 forAccountUUID:(id)a4 completion:(id)a5;
+- (void)retrieveDataForRecord:(void *)record;
+- (void)sendStateRequestForAccountUUID:(id)d;
+- (void)setGreeting:(id)greeting forAccountUUID:(id)d completion:(id)completion;
+- (void)setPasscode:(id)passcode forAccountUUID:(id)d completion:(id)completion;
 - (void)start;
-- (void)storageUsageForAccountUUID:(id)a3 completion:(id)a4;
-- (void)subscriberCountryCodeDidChange:(id)a3;
+- (void)storageUsageForAccountUUID:(id)d completion:(id)completion;
+- (void)subscriberCountryCodeDidChange:(id)change;
 - (void)subscriptionDataOnlyDidChange;
 - (void)subscriptionInfoDidChange;
 - (void)synchronize;
-- (void)updateCarrierBundle:(id)a3 service:(id)a4;
-- (void)voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4;
+- (void)updateCarrierBundle:(id)bundle service:(id)service;
+- (void)voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info;
 @end
 
 @implementation VMCarrierServicesController
@@ -158,23 +158,23 @@
   return v5;
 }
 
-- (VMCarrierServicesController)initWithTranscriptionService:(id)a3 queue:(id)a4 telephonyClient:(id)a5
+- (VMCarrierServicesController)initWithTranscriptionService:(id)service queue:(id)queue telephonyClient:(id)client
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[VMCarrierStateRequestController alloc] initWithTelephonyClient:v8];
-  v12 = [(VMCarrierServicesController *)self initWithStateRequestController:v11 transcriptionService:v10 telephonyClient:v8 queue:v9];
+  clientCopy = client;
+  queueCopy = queue;
+  serviceCopy = service;
+  v11 = [[VMCarrierStateRequestController alloc] initWithTelephonyClient:clientCopy];
+  v12 = [(VMCarrierServicesController *)self initWithStateRequestController:v11 transcriptionService:serviceCopy telephonyClient:clientCopy queue:queueCopy];
 
   return v12;
 }
 
-- (VMCarrierServicesController)initWithStateRequestController:(id)a3 transcriptionService:(id)a4 telephonyClient:(id)a5 queue:(id)a6
+- (VMCarrierServicesController)initWithStateRequestController:(id)controller transcriptionService:(id)service telephonyClient:(id)client queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  serviceCopy = service;
+  clientCopy = client;
+  queueCopy = queue;
   v15 = sub_100002850();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -185,22 +185,22 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#I %s%screating VMCarrierServicesController", buf, 0x16u);
   }
 
-  if (!v11)
+  if (!controllerCopy)
   {
     sub_10009D560();
   }
 
-  if (!v12)
+  if (!serviceCopy)
   {
     sub_10009D5D0();
   }
 
-  if (!v13)
+  if (!clientCopy)
   {
     sub_10009D640();
   }
 
-  if (!v14)
+  if (!queueCopy)
   {
     sub_10009D6B0();
   }
@@ -211,20 +211,20 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_queue, a6);
-    dispatch_queue_set_specific(v14, off_10010D3E0, v17, 0);
+    objc_storeStrong(&v16->_queue, queue);
+    dispatch_queue_set_specific(queueCopy, off_10010D3E0, v17, 0);
     v18 = objc_opt_new();
     [(VMCarrierServicesController *)v17 setLabelUUIDToGreetingController:v18];
 
     v19 = objc_opt_new();
     [(VMCarrierServicesController *)v17 setLabelUUIDToService:v19];
 
-    [(VMCarrierServicesController *)v17 setTelephonyClient:v13];
-    v20 = [(VMCarrierServicesController *)v17 telephonyClient];
-    [v20 addDelegate:v17 queue:v14];
+    [(VMCarrierServicesController *)v17 setTelephonyClient:clientCopy];
+    telephonyClient = [(VMCarrierServicesController *)v17 telephonyClient];
+    [telephonyClient addDelegate:v17 queue:queueCopy];
 
-    objc_storeStrong(&v17->_stateRequestController, a3);
-    objc_storeStrong(&v17->_transcriptionService, a4);
+    objc_storeStrong(&v17->_stateRequestController, controller);
+    objc_storeStrong(&v17->_transcriptionService, service);
     v21 = sub_100002850();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -277,8 +277,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sdestroying VMCarrierServicesController", buf, 0x16u);
   }
 
-  v4 = [(VMCarrierServicesController *)self telephonyClient];
-  [v4 removeDelegate:self];
+  telephonyClient = [(VMCarrierServicesController *)self telephonyClient];
+  [telephonyClient removeDelegate:self];
 
   if (self->stateHandle)
   {
@@ -293,7 +293,7 @@
       v14 = 2112;
       v15 = v6;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v7 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s<%@ %p> Removing state dump handler", buf, 0x2Au);
     }
@@ -319,18 +319,18 @@
   dispatch_async(queue, block);
 }
 
-- (id)findContextInfoWithSubscriptionUUID:(id)a3
+- (id)findContextInfoWithSubscriptionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self telephonyClient];
-  v6 = [v5 contexts];
-  v7 = [v6 subscriptions];
+  dCopy = d;
+  telephonyClient = [(VMCarrierServicesController *)self telephonyClient];
+  contexts = [telephonyClient contexts];
+  subscriptions = [contexts subscriptions];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v7;
+  v8 = subscriptions;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -345,8 +345,8 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 uuid];
-        v14 = [v13 isEqual:v4];
+        uuid = [v12 uuid];
+        v14 = [uuid isEqual:dCopy];
 
         if (v14)
         {
@@ -370,18 +370,18 @@ LABEL_11:
   return v9;
 }
 
-- (id)findContextInfoWithLabelUUID:(id)a3
+- (id)findContextInfoWithLabelUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self telephonyClient];
-  v6 = [v5 contexts];
-  v7 = [v6 subscriptions];
+  dCopy = d;
+  telephonyClient = [(VMCarrierServicesController *)self telephonyClient];
+  contexts = [telephonyClient contexts];
+  subscriptions = [contexts subscriptions];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v7;
+  v8 = subscriptions;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -396,9 +396,9 @@ LABEL_11:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 labelID];
-        v14 = [v4 UUIDString];
-        v15 = [v13 isEqual:v14];
+        labelID = [v12 labelID];
+        uUIDString = [dCopy UUIDString];
+        v15 = [labelID isEqual:uUIDString];
 
         if (v15)
         {
@@ -422,10 +422,10 @@ LABEL_11:
   return v9;
 }
 
-- (void)executeHandlerForVoicemailInfoNotification:(id)a3 userInfo:(id)a4
+- (void)executeHandlerForVoicemailInfoNotification:(id)notification userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  infoCopy = info;
   v8 = sub_100002850();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -436,41 +436,41 @@ LABEL_11:
     v16 = 2112;
     v17 = objc_opt_class();
     v18 = 2112;
-    v19 = v6;
+    v19 = notificationCopy;
     v9 = v17;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is executing voicemail info handler for subscription %@", &v12, 0x2Au);
   }
 
-  v10 = [CTVoicemailInfoType voicemailInfoTypeForDictionaryRepresentation:v7];
+  v10 = [CTVoicemailInfoType voicemailInfoTypeForDictionaryRepresentation:infoCopy];
 
-  [(VMCarrierServicesController *)self local_voicemailInfoAvailableNotification:v6 voicemailInfo:v10];
-  v11 = [(VMCarrierServicesController *)self carrierAccountDataSource];
-  [v11 local_voicemailInfoAvailableNotification:v6 voicemailInfo:v10];
+  [(VMCarrierServicesController *)self local_voicemailInfoAvailableNotification:notificationCopy voicemailInfo:v10];
+  carrierAccountDataSource = [(VMCarrierServicesController *)self carrierAccountDataSource];
+  [carrierAccountDataSource local_voicemailInfoAvailableNotification:notificationCopy voicemailInfo:v10];
 }
 
-- (void)executeHandlerForNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)executeHandlerForNotificationWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  nameCopy = name;
+  infoCopy = info;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005BA08;
   block[3] = &unk_1000ED478;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = nameCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = nameCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)handleNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)handleNotificationWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  nameCopy = name;
+  infoCopy = info;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100002850();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -482,24 +482,24 @@ LABEL_11:
     v32 = 2112;
     v33 = objc_opt_class();
     v34 = 2112;
-    v35 = v6;
+    v35 = nameCopy;
     v36 = 2112;
-    v37 = v7;
+    v37 = infoCopy;
     v10 = v33;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is handling notification with name: %@ userInfo: %@", buf, 0x34u);
   }
 
-  if ([v6 isEqualToString:kVVReloadServiceNotification])
+  if ([nameCopy isEqualToString:kVVReloadServiceNotification])
   {
     sub_1000898BC(0, 0);
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [(VMCarrierServicesController *)self labelUUIDToService];
-    v12 = [v11 allValues];
+    labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+    allValues = [labelUUIDToService allValues];
 
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v13 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -511,58 +511,58 @@ LABEL_11:
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues);
           }
 
-          v17 = [*(*(&v23 + 1) + 8 * v16) verifier];
-          [v17 _checkpointDictionaryChanged];
+          verifier = [*(*(&v23 + 1) + 8 * v16) verifier];
+          [verifier _checkpointDictionaryChanged];
 
           v16 = v16 + 1;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v14 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v14);
     }
 
-    v18 = [(VMCarrierServicesController *)self labelUUIDToService];
-    [v18 removeAllObjects];
+    labelUUIDToService2 = [(VMCarrierServicesController *)self labelUUIDToService];
+    [labelUUIDToService2 removeAllObjects];
 
-    v19 = [(VMCarrierServicesController *)self labelUUIDToGreetingController];
-    [v19 removeAllObjects];
+    labelUUIDToGreetingController = [(VMCarrierServicesController *)self labelUUIDToGreetingController];
+    [labelUUIDToGreetingController removeAllObjects];
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:@"com.apple.telephonyutilities.callservicesdaemon.voicemailcallended"])
+  if ([nameCopy isEqualToString:@"com.apple.telephonyutilities.callservicesdaemon.voicemailcallended"])
   {
-    v19 = [(VMCarrierServicesController *)self defaultService];
-    [v19 synchronize:0 reason:@"CallEnded"];
+    labelUUIDToGreetingController = [(VMCarrierServicesController *)self defaultService];
+    [labelUUIDToGreetingController synchronize:0 reason:@"CallEnded"];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (([v6 isEqualToString:@"VVMessageWaitingFallbackNotification"] & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"com.apple.voicemail.changed") & 1) == 0)
+  if (([nameCopy isEqualToString:@"VVMessageWaitingFallbackNotification"] & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"com.apple.voicemail.changed") & 1) == 0)
   {
-    if ([v6 isEqualToString:@"com.apple.commcenter.InternationalRoamingEDGE.changed"])
+    if ([nameCopy isEqualToString:@"com.apple.commcenter.InternationalRoamingEDGE.changed"])
     {
-      v20 = [(VMCarrierServicesController *)self defaultService];
-      v21 = [v20 ignoresRoamingSwitch];
+      defaultService = [(VMCarrierServicesController *)self defaultService];
+      ignoresRoamingSwitch = [defaultService ignoresRoamingSwitch];
 
-      if (v21)
+      if (ignoresRoamingSwitch)
       {
         goto LABEL_15;
       }
 
-      v19 = [(VMCarrierServicesController *)self defaultService];
-      [v19 _dataRoamingStatusChanged];
+      labelUUIDToGreetingController = [(VMCarrierServicesController *)self defaultService];
+      [labelUUIDToGreetingController _dataRoamingStatusChanged];
     }
 
     else
     {
-      if (![v6 isEqualToString:@"kVMVoicemailTranscriptionTaskTranscribeAllVoicemails"])
+      if (![nameCopy isEqualToString:@"kVMVoicemailTranscriptionTaskTranscribeAllVoicemails"])
       {
         goto LABEL_15;
       }
@@ -578,8 +578,8 @@ LABEL_14:
       }
 
       +[VMVoicemailTranscriptionTask resetRetranscriptionTaskState];
-      v19 = [(VMCarrierServicesController *)self transcriptionService];
-      [v19 retranscribeAllVoicemails];
+      labelUUIDToGreetingController = [(VMCarrierServicesController *)self transcriptionService];
+      [labelUUIDToGreetingController retranscribeAllVoicemails];
     }
 
     goto LABEL_14;
@@ -588,9 +588,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_handleSubscriptionStatusChanged:(id)a3
+- (void)_handleSubscriptionStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -601,17 +601,17 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s_handleSubscriptionStatusChanged", &v10, 0x16u);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [changedCopy userInfo];
 
-  if (v6)
+  if (userInfo)
   {
-    v7 = [v6 objectForKey:@"yesno"];
-    v8 = [v6 objectForKey:@"contextInfo"];
+    v7 = [userInfo objectForKey:@"yesno"];
+    v8 = [userInfo objectForKey:@"contextInfo"];
     -[VMCarrierServicesController reportAccount:subscribed:](self, "reportAccount:subscribed:", v8, [v7 BOOLValue]);
 
     if ([v7 isEqual:&__kCFBooleanTrue])
     {
-      v9 = [v6 objectForKey:@"serviceLabelID"];
+      v9 = [userInfo objectForKey:@"serviceLabelID"];
       [(VMCarrierServicesController *)self do_M2A_merge:v9];
     }
   }
@@ -689,9 +689,9 @@ LABEL_15:
 
 - (id)accountsToRefreshIfNeeded
 {
-  v3 = [(VMCarrierServicesController *)self telephonyClient];
-  v4 = [v3 subscriptions];
-  v5 = [v4 count];
+  telephonyClient = [(VMCarrierServicesController *)self telephonyClient];
+  subscriptions = [telephonyClient subscriptions];
+  v5 = [subscriptions count];
 
   if (v5)
   {
@@ -700,10 +700,10 @@ LABEL_15:
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v7 = [(VMCarrierServicesController *)self telephonyClient];
-    v8 = [v7 subscriptions];
+    telephonyClient2 = [(VMCarrierServicesController *)self telephonyClient];
+    subscriptions2 = [telephonyClient2 subscriptions];
 
-    v9 = [v8 countByEnumeratingWithState:&v47 objects:v52 count:16];
+    v9 = [subscriptions2 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v9)
     {
       v10 = v9;
@@ -714,20 +714,20 @@ LABEL_15:
         {
           if (*v48 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subscriptions2);
           }
 
           v13 = *(*(&v47 + 1) + 8 * i);
-          v14 = [v13 labelID];
+          labelID = [v13 labelID];
 
-          if (v14)
+          if (labelID)
           {
-            v15 = [v13 labelID];
-            [v6 addObject:v15];
+            labelID2 = [v13 labelID];
+            [v6 addObject:labelID2];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v47 objects:v52 count:16];
+        v10 = [subscriptions2 countByEnumeratingWithState:&v47 objects:v52 count:16];
       }
 
       while (v10);
@@ -780,11 +780,11 @@ LABEL_33:
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v22 = [(VMCarrierServicesController *)self telephonyClient];
-    v23 = [v22 subscriptions];
+    telephonyClient3 = [(VMCarrierServicesController *)self telephonyClient];
+    subscriptions3 = [telephonyClient3 subscriptions];
 
-    obj = v23;
-    v24 = [v23 countByEnumeratingWithState:&v43 objects:v51 count:16];
+    obj = subscriptions3;
+    v24 = [subscriptions3 countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (!v24)
     {
 LABEL_32:
@@ -806,15 +806,15 @@ LABEL_21:
       }
 
       v28 = *(*(&v43 + 1) + 8 * v27);
-      v29 = [v28 labelID];
-      if (!v29)
+      labelID3 = [v28 labelID];
+      if (!labelID3)
       {
         goto LABEL_30;
       }
 
-      v30 = v29;
-      v31 = [v28 labelID];
-      if ([v20 containsObject:v31])
+      v30 = labelID3;
+      labelID4 = [v28 labelID];
+      if ([v20 containsObject:labelID4])
       {
         [v28 labelID];
         v32 = v21;
@@ -834,8 +834,8 @@ LABEL_21:
       {
       }
 
-      v36 = [v28 labelID];
-      [v21 addObject:v36];
+      labelID5 = [v28 labelID];
+      [v21 addObject:labelID5];
 
 LABEL_30:
       if (v25 == ++v27)
@@ -856,19 +856,19 @@ LABEL_34:
   return v5;
 }
 
-- (BOOL)isRefreshRequestedForAccount:(id)a3 andReset:(BOOL)a4
+- (BOOL)isRefreshRequestedForAccount:(id)account andReset:(BOOL)reset
 {
-  v4 = a4;
-  v5 = [a3 UUIDString];
+  resetCopy = reset;
+  uUIDString = [account UUIDString];
   v6 = +[VMPreferences sharedInstance];
   v7 = [v6 preferencesValueForKey:@"AccountsToRefreshIfNeeded"];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    LODWORD(v8) = [v7 containsObject:v5];
+    LODWORD(v8) = [v7 containsObject:uUIDString];
     if (v8)
     {
-      v9 = !v4;
+      v9 = !resetCopy;
     }
 
     else
@@ -879,7 +879,7 @@ LABEL_34:
     if (!v9)
     {
       v10 = [v7 mutableCopy];
-      [v10 removeObject:v5];
+      [v10 removeObject:uUIDString];
       v11 = +[VMPreferences sharedInstance];
       if ([v10 count])
       {
@@ -901,7 +901,7 @@ LABEL_34:
         v16 = 2080;
         v17 = "";
         v18 = 2112;
-        v19 = v5;
+        v19 = uUIDString;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sMarked account as refreshed: %@", &v14, 0x20u);
       }
 
@@ -919,10 +919,10 @@ LABEL_34:
 
 - (void)queryAndInitVoicemailServices
 {
-  v3 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(VMCarrierServicesController *)self accountsToRefreshIfNeeded];
+  accountsToRefreshIfNeeded = [(VMCarrierServicesController *)self accountsToRefreshIfNeeded];
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -931,23 +931,23 @@ LABEL_34:
     v151 = 2080;
     v152 = "";
     v153 = 2112;
-    v154 = v4;
+    v154 = accountsToRefreshIfNeeded;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sAccounts to refresh if needed: %@", buf, 0x20u);
   }
 
-  v115 = v4;
+  v115 = accountsToRefreshIfNeeded;
 
   v127 = objc_opt_new();
-  v129 = self;
-  v6 = [(VMCarrierServicesController *)self telephonyClient];
-  v7 = [v6 contexts];
+  selfCopy = self;
+  telephonyClient = [(VMCarrierServicesController *)self telephonyClient];
+  contexts = [telephonyClient contexts];
 
   v146 = 0u;
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v116 = v7;
-  obj = [v7 subscriptions];
+  v116 = contexts;
+  obj = [contexts subscriptions];
   v8 = [obj countByEnumeratingWithState:&v144 objects:v162 count:16];
   if (v8)
   {
@@ -964,15 +964,15 @@ LABEL_34:
 
         v12 = *(*(&v144 + 1) + 8 * i);
         v13 = +[NSFileManager defaultManager];
-        v14 = [v12 accountID];
-        v15 = sub_1000855D4(v14);
-        v16 = [v15 path];
-        v17 = [v13 fileExistsAtPath:v16];
+        accountID = [v12 accountID];
+        v15 = sub_1000855D4(accountID);
+        path = [v15 path];
+        v17 = [v13 fileExistsAtPath:path];
 
         if ((v17 & 1) == 0)
         {
-          v18 = [v12 accountID];
-          [v127 addObject:v18];
+          accountID2 = [v12 accountID];
+          [v127 addObject:accountID2];
         }
       }
 
@@ -990,26 +990,26 @@ LABEL_34:
     v151 = 2080;
     v152 = "";
     v153 = 2112;
-    v154 = v7;
+    v154 = contexts;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#I %s%s===> Creating voicemail services for %@", buf, 0x20u);
   }
 
-  v20 = v129;
-  v21 = [(VMCarrierServicesController *)v129 carrierAccountDataSource];
-  [v21 checkUpdateAccounts];
+  v20 = selfCopy;
+  carrierAccountDataSource = [(VMCarrierServicesController *)selfCopy carrierAccountDataSource];
+  [carrierAccountDataSource checkUpdateAccounts];
 
-  v22 = [(VMCarrierServicesController *)v129 carrierAccountDataSource];
-  v23 = [v22 accounts];
+  carrierAccountDataSource2 = [(VMCarrierServicesController *)selfCopy carrierAccountDataSource];
+  accounts = [carrierAccountDataSource2 accounts];
 
-  v24 = [(VMCarrierServicesController *)v129 labelUUIDToService];
-  v114 = [v24 copy];
+  labelUUIDToService = [(VMCarrierServicesController *)selfCopy labelUUIDToService];
+  v114 = [labelUUIDToService copy];
 
   obja = objc_opt_new();
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v126 = v23;
+  v126 = accounts;
   v25 = [v126 countByEnumeratingWithState:&v140 objects:v161 count:16];
   if (v25)
   {
@@ -1027,39 +1027,39 @@ LABEL_34:
         }
 
         v28 = *(*(&v140 + 1) + 8 * v27);
-        v29 = [(VMCarrierServicesController *)v20 telephonyClient];
-        v30 = [v29 contexts];
-        v31 = [v28 UUID];
-        v32 = sub_10005C978(v30, v31);
+        telephonyClient2 = [(VMCarrierServicesController *)v20 telephonyClient];
+        contexts2 = [telephonyClient2 contexts];
+        uUID = [v28 UUID];
+        v32 = sub_10005C978(contexts2, uUID);
 
         v33 = sub_100002850();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v28 UUID];
+          uUID2 = [v28 UUID];
           *buf = 136315906;
           v150 = "";
           v151 = 2080;
           v152 = "";
           v153 = 2112;
-          v154 = v34;
+          v154 = uUID2;
           v155 = 2112;
           v156 = v32;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "#I %s%s==> Creating voicemail service for account UUID %@ with context %@", buf, 0x2Au);
         }
 
-        v35 = [(VMCarrierServicesController *)v20 telephonyClient];
-        v36 = [v35 carrierBundle:v32];
+        telephonyClient3 = [(VMCarrierServicesController *)v20 telephonyClient];
+        v36 = [telephonyClient3 carrierBundle:v32];
 
-        v37 = [v36 serviceNameForSubscription];
-        v38 = v37;
-        if (v37 && ![v37 caseInsensitiveCompare:@"IMAP"])
+        serviceNameForSubscription = [v36 serviceNameForSubscription];
+        v38 = serviceNameForSubscription;
+        if (serviceNameForSubscription && ![serviceNameForSubscription caseInsensitiveCompare:@"IMAP"])
         {
-          v40 = [v28 UUID];
-          [obja addObject:v40];
+          uUID3 = [v28 UUID];
+          [obja addObject:uUID3];
 
-          v41 = [(VMCarrierServicesController *)v20 labelUUIDToService];
-          v42 = [v28 UUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
+          labelUUIDToService2 = [(VMCarrierServicesController *)v20 labelUUIDToService];
+          uUID4 = [v28 UUID];
+          v43 = [labelUUIDToService2 objectForKeyedSubscript:uUID4];
 
           if (v43)
           {
@@ -1078,56 +1078,56 @@ LABEL_34:
 
           else
           {
-            v45 = [(VMCarrierServicesController *)v20 telephonyClient];
-            v46 = [v45 isoCountryCode:v32];
+            telephonyClient4 = [(VMCarrierServicesController *)v20 telephonyClient];
+            v46 = [telephonyClient4 isoCountryCode:v32];
 
-            v47 = [(VMCarrierServicesController *)v20 telephonyClient];
-            v122 = [v47 countryCode:v32];
+            telephonyClient5 = [(VMCarrierServicesController *)v20 telephonyClient];
+            v122 = [telephonyClient5 countryCode:v32];
 
-            v48 = [(VMCarrierServicesController *)v20 telephonyClient];
-            v121 = [v48 networkCode:v32];
+            telephonyClient6 = [(VMCarrierServicesController *)v20 telephonyClient];
+            v121 = [telephonyClient6 networkCode:v32];
 
-            v49 = [(__CFString *)v32 phoneNumber];
+            phoneNumber = [(__CFString *)v32 phoneNumber];
             v123 = v46;
-            v50 = sub_100025188(v49, v46);
+            v50 = sub_100025188(phoneNumber, v46);
 
             if (!v50 || ![v50 length])
             {
               v51 = sub_100002850();
               if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
               {
-                v100 = [v28 UUID];
+                uUID5 = [v28 UUID];
                 *buf = 136315650;
                 v150 = "";
                 v151 = 2080;
                 v152 = "";
                 v153 = 2112;
-                v154 = v100;
+                v154 = uUID5;
                 _os_log_error_impl(&_mh_execute_header, v51, OS_LOG_TYPE_ERROR, "#E %s%sCould not retrieve a normalized telephone number for account %@", buf, 0x20u);
               }
             }
 
             v120 = v36;
-            v52 = [v28 UUID];
-            v53 = [(__CFString *)v32 accountID];
-            v54 = [(VMCarrierServicesController *)v20 telephonyClient];
-            v55 = [(VMCarrierServicesController *)v129 stateRequestController];
-            v56 = [(__CFString *)v32 accountID];
-            LOBYTE(v113) = [v127 containsObject:v56];
+            uUID6 = [v28 UUID];
+            accountID3 = [(__CFString *)v32 accountID];
+            telephonyClient7 = [(VMCarrierServicesController *)v20 telephonyClient];
+            stateRequestController = [(VMCarrierServicesController *)selfCopy stateRequestController];
+            accountID4 = [(__CFString *)v32 accountID];
+            LOBYTE(v113) = [v127 containsObject:accountID4];
             v119 = v50;
-            v57 = [VVService serviceWithLabel:v52 accountIdentifier:v53 phoneNumber:v50 name:v38 isoCountryCode:v123 countryCode:v122 networkCode:v121 contextInfo:v32 telephonyClient:v54 stateRequestController:v55 newAccount:v113, v114, v115];
+            v115 = [VVService serviceWithLabel:uUID6 accountIdentifier:accountID3 phoneNumber:v50 name:v38 isoCountryCode:v123 countryCode:v122 networkCode:v121 contextInfo:v32 telephonyClient:telephonyClient7 stateRequestController:stateRequestController newAccount:v113, v114, v115];
 
-            v58 = v57;
-            v59 = [v28 UUID];
-            LODWORD(v52) = [(VMCarrierServicesController *)v129 isRefreshRequestedForAccount:v59 andReset:1];
+            v58 = v115;
+            uUID7 = [v28 UUID];
+            LODWORD(uUID6) = [(VMCarrierServicesController *)selfCopy isRefreshRequestedForAccount:uUID7 andReset:1];
 
-            if (v52)
+            if (uUID6)
             {
-              [v57 refreshIfNeeded];
+              [v115 refreshIfNeeded];
             }
 
-            v60 = [(VMCarrierServicesController *)v129 transcriptionService];
-            [v57 setTranscriptionService:v60];
+            transcriptionService = [(VMCarrierServicesController *)selfCopy transcriptionService];
+            [v115 setTranscriptionService:transcriptionService];
 
             v61 = sub_100002850();
             if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
@@ -1137,25 +1137,25 @@ LABEL_34:
               v151 = 2080;
               v152 = "";
               v153 = 2112;
-              v154 = v57;
+              v154 = v115;
               v155 = 2112;
               v156 = v32;
               _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "#I %s%sCreated service: %@ for subscription %@", buf, 0x2Au);
             }
 
-            v62 = [[VMVoicemailGreetingController alloc] initWithService:v57];
-            v63 = [(VMCarrierServicesController *)v129 labelUUIDToGreetingController];
-            v64 = [v28 UUID];
-            [v63 setObject:v62 forKeyedSubscript:v64];
+            v62 = [[VMVoicemailGreetingController alloc] initWithService:v115];
+            labelUUIDToGreetingController = [(VMCarrierServicesController *)selfCopy labelUUIDToGreetingController];
+            uUID8 = [v28 UUID];
+            [labelUUIDToGreetingController setObject:v62 forKeyedSubscript:uUID8];
 
-            v65 = [(VMCarrierServicesController *)v129 labelUUIDToService];
-            v66 = [v28 UUID];
-            [v65 setObject:v58 forKeyedSubscript:v66];
+            labelUUIDToService3 = [(VMCarrierServicesController *)selfCopy labelUUIDToService];
+            uUID9 = [v28 UUID];
+            [labelUUIDToService3 setObject:v58 forKeyedSubscript:uUID9];
 
-            v67 = [(VMCarrierServicesController *)v129 telephonyClient];
-            v68 = [(__CFString *)v32 context];
+            telephonyClient8 = [(VMCarrierServicesController *)selfCopy telephonyClient];
+            context = [(__CFString *)v32 context];
             v139 = 0;
-            v69 = [v67 getConnectionAvailability:v68 connectionType:1 error:&v139];
+            v69 = [telephonyClient8 getConnectionAvailability:context connectionType:1 error:&v139];
             v70 = v139;
 
             v71 = sub_100002850();
@@ -1194,10 +1194,10 @@ LABEL_34:
               }
             }
 
-            v73 = [(VMCarrierServicesController *)v129 telephonyClient];
-            v74 = [(__CFString *)v32 context];
+            telephonyClient9 = [(VMCarrierServicesController *)selfCopy telephonyClient];
+            context2 = [(__CFString *)v32 context];
             v138 = v70;
-            v75 = [v73 getConnectionState:v74 connectionType:1 error:&v138];
+            v75 = [telephonyClient9 getConnectionState:context2 connectionType:1 error:&v138];
             v76 = v138;
 
             v77 = sub_100002850();
@@ -1238,17 +1238,17 @@ LABEL_34:
               }
             }
 
-            v79 = [(VMCarrierServicesController *)v129 telephonyClient];
-            v80 = [v79 carrierBundle:v32];
+            telephonyClient10 = [(VMCarrierServicesController *)selfCopy telephonyClient];
+            v80 = [telephonyClient10 carrierBundle:v32];
 
             v117 = v80;
-            v81 = [v80 isServiceSupportedOnInternetForSubscription];
+            isServiceSupportedOnInternetForSubscription = [v80 isServiceSupportedOnInternetForSubscription];
             v82 = sub_100002850();
             if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 136315650;
               v83 = @"NOT supported";
-              if (v81)
+              if (isServiceSupportedOnInternetForSubscription)
               {
                 v83 = @"supported";
               }
@@ -1261,12 +1261,12 @@ LABEL_34:
               _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "#I %s%sRetrieved service availability on Internet: service is %@", buf, 0x20u);
             }
 
-            if (v81 != [v58 isWiFiNetworkSupported])
+            if (isServiceSupportedOnInternetForSubscription != [v58 isWiFiNetworkSupported])
             {
               v84 = sub_100002850();
               if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
               {
-                if (v81)
+                if (isServiceSupportedOnInternetForSubscription)
                 {
                   v85 = @"supported";
                 }
@@ -1276,10 +1276,10 @@ LABEL_34:
                   v85 = @"NOT supported";
                 }
 
-                v86 = [v75 publicNetAllowed];
+                publicNetAllowed = [v75 publicNetAllowed];
                 *buf = 136316418;
                 v87 = @"NO";
-                if (v86)
+                if (publicNetAllowed)
                 {
                   v87 = @"YES";
                 }
@@ -1298,13 +1298,13 @@ LABEL_34:
                 _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEFAULT, "#I %s%sService is %@ on Internet in carrier bundle, but publicNetAllowed is %@ %@ for subscription %@", buf, 0x3Eu);
               }
 
-              [v58 setWiFiNetworkSupported:v81];
+              [v58 setWiFiNetworkSupported:isServiceSupportedOnInternetForSubscription];
             }
 
-            v88 = [(VMCarrierServicesController *)v129 telephonyClient];
-            v89 = [(__CFString *)v32 context];
+            telephonyClient11 = [(VMCarrierServicesController *)selfCopy telephonyClient];
+            context3 = [(__CFString *)v32 context];
             v137 = v76;
-            v90 = [v88 getSmscAddress:v89 error:&v137];
+            v90 = [telephonyClient11 getSmscAddress:context3 error:&v137];
             v91 = v137;
 
             v92 = sub_100002850();
@@ -1343,10 +1343,10 @@ LABEL_34:
               }
             }
 
-            v94 = [(VMCarrierServicesController *)v129 telephonyClient];
-            v95 = [(__CFString *)v32 context];
+            telephonyClient12 = [(VMCarrierServicesController *)selfCopy telephonyClient];
+            context4 = [(__CFString *)v32 context];
             v136 = v91;
-            v96 = [v94 getSmsReadyState:v95 error:&v136];
+            v96 = [telephonyClient12 getSmsReadyState:context4 error:&v136];
             v97 = v136;
 
             v98 = sub_100002850();
@@ -1387,7 +1387,7 @@ LABEL_34:
               }
             }
 
-            v20 = v129;
+            v20 = selfCopy;
           }
 
           v26 = v124;
@@ -1457,11 +1457,11 @@ LABEL_34:
             _os_log_impl(&_mh_execute_header, v107, OS_LOG_TYPE_DEFAULT, "#I %s%sdeleting service %@ for labelUUID %@", buf, 0x2Au);
           }
 
-          v109 = [(VMCarrierServicesController *)v129 labelUUIDToService];
-          [v109 removeObjectForKey:v106];
+          labelUUIDToService4 = [(VMCarrierServicesController *)selfCopy labelUUIDToService];
+          [labelUUIDToService4 removeObjectForKey:v106];
 
-          v110 = [(VMCarrierServicesController *)v129 labelUUIDToGreetingController];
-          [v110 removeObjectForKey:v106];
+          labelUUIDToGreetingController2 = [(VMCarrierServicesController *)selfCopy labelUUIDToGreetingController];
+          [labelUUIDToGreetingController2 removeObjectForKey:v106];
         }
       }
 
@@ -1474,26 +1474,26 @@ LABEL_34:
   v111 = sub_100002850();
   if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
   {
-    v112 = [(VMCarrierServicesController *)v129 labelUUIDToService];
+    labelUUIDToService5 = [(VMCarrierServicesController *)selfCopy labelUUIDToService];
     *buf = 136315650;
     v150 = "";
     v151 = 2080;
     v152 = "";
     v153 = 2112;
-    v154 = v112;
+    v154 = labelUUIDToService5;
     _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "#I %s%slabelUUIDToService: %@", buf, 0x20u);
   }
 }
 
 - (void)synchronize
 {
-  v3 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005DEC4;
   block[3] = &unk_1000EE5B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (VVService)defaultService
@@ -1517,38 +1517,38 @@ LABEL_34:
   return v2;
 }
 
-- (void)reportAccount:(id)a3 subscribed:(BOOL)a4
+- (void)reportAccount:(id)account subscribed:(BOOL)subscribed
 {
-  v6 = a3;
-  v7 = [(VMCarrierServicesController *)self queue];
+  accountCopy = account;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005E38C;
   block[3] = &unk_1000EEEE8;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  subscribedCopy = subscribed;
+  v10 = accountCopy;
+  selfCopy = self;
+  v8 = accountCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)do_M2A_merge:(id)a3
+- (void)do_M2A_merge:(id)a_merge
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self queue];
+  a_mergeCopy = a_merge;
+  queue = [(VMCarrierServicesController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005E57C;
   v7[3] = &unk_1000ED450;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = a_mergeCopy;
+  v6 = a_mergeCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)moveRecordsWithIdentifiersToTrash:(id)a3
+- (void)moveRecordsWithIdentifiersToTrash:(id)trash
 {
-  v4 = a3;
+  trashCopy = trash;
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1557,24 +1557,24 @@ LABEL_34:
     v13 = 2080;
     v14 = "";
     v15 = 2112;
-    v16 = v4;
+    v16 = trashCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sMove records to Trash <identifiers=%@>", buf, 0x20u);
   }
 
-  v6 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005E868;
   v8[3] = &unk_1000ED450;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = trashCopy;
+  selfCopy = self;
+  v7 = trashCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)moveRecordsWithIdentifiersToInbox:(id)a3
+- (void)moveRecordsWithIdentifiersToInbox:(id)inbox
 {
-  v4 = a3;
+  inboxCopy = inbox;
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1583,24 +1583,24 @@ LABEL_34:
     v13 = 2080;
     v14 = "";
     v15 = 2112;
-    v16 = v4;
+    v16 = inboxCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sMove records to Inbox <identifiers=%@>", buf, 0x20u);
   }
 
-  v6 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005ED54;
   v8[3] = &unk_1000ED450;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = inboxCopy;
+  selfCopy = self;
+  v7 = inboxCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)moveRecordsWithIdentifiersToDeleted:(id)a3
+- (void)moveRecordsWithIdentifiersToDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1609,38 +1609,38 @@ LABEL_34:
     v13 = 2080;
     v14 = "";
     v15 = 2112;
-    v16 = v4;
+    v16 = deletedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sMove records to Deleted <identifiers=%@>", buf, 0x20u);
   }
 
-  v6 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005F240;
   v8[3] = &unk_1000ED450;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = deletedCopy;
+  selfCopy = self;
+  v7 = deletedCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)markRecordsWithIdentifiersAsRead:(id)a3
+- (void)markRecordsWithIdentifiersAsRead:(id)read
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self queue];
+  readCopy = read;
+  queue = [(VMCarrierServicesController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005F5FC;
   v7[3] = &unk_1000ED450;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = readCopy;
+  selfCopy = self;
+  v6 = readCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)moveRecordsWithUniqueIdentifiersToTrash:(id)a3
+- (void)moveRecordsWithUniqueIdentifiersToTrash:(id)trash
 {
-  v4 = a3;
+  trashCopy = trash;
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1649,24 +1649,24 @@ LABEL_34:
     v13 = 2080;
     v14 = "";
     v15 = 2112;
-    v16 = v4;
+    v16 = trashCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sMove records to Trash <uuid identifiers=%@>", buf, 0x20u);
   }
 
-  v6 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005FAE8;
   v8[3] = &unk_1000ED450;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = trashCopy;
+  selfCopy = self;
+  v7 = trashCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)moveRecordsWithUniqueIdentifiersToInbox:(id)a3
+- (void)moveRecordsWithUniqueIdentifiersToInbox:(id)inbox
 {
-  v4 = a3;
+  inboxCopy = inbox;
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1675,24 +1675,24 @@ LABEL_34:
     v13 = 2080;
     v14 = "";
     v15 = 2112;
-    v16 = v4;
+    v16 = inboxCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sMove records to Inbox <uuid identifiers=%@>", buf, 0x20u);
   }
 
-  v6 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005FFDC;
   v8[3] = &unk_1000ED450;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = inboxCopy;
+  selfCopy = self;
+  v7 = inboxCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)moveRecordsWithUniqueIdentifiersToDeleted:(id)a3
+- (void)moveRecordsWithUniqueIdentifiersToDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = sub_100002850();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1701,63 +1701,63 @@ LABEL_34:
     v13 = 2080;
     v14 = "";
     v15 = 2112;
-    v16 = v4;
+    v16 = deletedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sMove records to Deleted <uuid identifiers=%@>", buf, 0x20u);
   }
 
-  v6 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000604D0;
   v8[3] = &unk_1000ED450;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = deletedCopy;
+  selfCopy = self;
+  v7 = deletedCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)markRecordsWithUniqueIdentifiersAsRead:(id)a3
+- (void)markRecordsWithUniqueIdentifiersAsRead:(id)read
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self queue];
+  readCopy = read;
+  queue = [(VMCarrierServicesController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100060894;
   v7[3] = &unk_1000ED450;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = readCopy;
+  selfCopy = self;
+  v6 = readCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)remapAccount:(id)a3 toAccount:(id)a4
+- (void)remapAccount:(id)account toAccount:(id)toAccount
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  accountCopy = account;
+  toAccountCopy = toAccount;
+  queue = [(VMCarrierServicesController *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100060D08;
   v11[3] = &unk_1000ED450;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = accountCopy;
+  v13 = toAccountCopy;
+  v9 = toAccountCopy;
+  v10 = accountCopy;
+  dispatch_async(queue, v11);
 }
 
 - (void)resetNetworkSettings
 {
-  v3 = [(VMCarrierServicesController *)self queue];
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100060FD8;
   block[3] = &unk_1000EE5B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (id)serviceForLabel:(id)a3
+- (id)serviceForLabel:(id)label
 {
   v10 = 0;
   v11 = &v10;
@@ -1770,10 +1770,10 @@ LABEL_34:
   v6[2] = sub_100061788;
   v6[3] = &unk_1000EDDA0;
   v9 = &v10;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
-  [(VMCarrierServicesController *)v7 performSynchronousBlock:v6];
+  selfCopy = self;
+  labelCopy = label;
+  v8 = labelCopy;
+  [(VMCarrierServicesController *)selfCopy performSynchronousBlock:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -1781,87 +1781,87 @@ LABEL_34:
   return v4;
 }
 
-- (void)retrieveDataForRecord:(void *)a3
+- (void)retrieveDataForRecord:(void *)record
 {
-  CFRetain(a3);
-  v5 = [(VMCarrierServicesController *)self queue];
+  CFRetain(record);
+  queue = [(VMCarrierServicesController *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100061894;
   v6[3] = &unk_1000EEF10;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = record;
+  dispatch_async(queue, v6);
 }
 
-- (void)reportTranscriptionProblemForRecord:(void *)a3
+- (void)reportTranscriptionProblemForRecord:(void *)record
 {
-  CFRetain(a3);
-  v5 = [(VMCarrierServicesController *)self queue];
+  CFRetain(record);
+  queue = [(VMCarrierServicesController *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000619B4;
   v6[3] = &unk_1000EEF10;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = record;
+  dispatch_async(queue, v6);
 }
 
-- (void)reportTranscriptionRatedAccurate:(BOOL)a3 forRecord:(void *)a4
+- (void)reportTranscriptionRatedAccurate:(BOOL)accurate forRecord:(void *)record
 {
-  CFRetain(a4);
-  v7 = [(VMCarrierServicesController *)self queue];
+  CFRetain(record);
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100061AAC;
   block[3] = &unk_1000EEF38;
-  v9 = a3;
+  accurateCopy = accurate;
   block[4] = self;
-  block[5] = a4;
-  dispatch_async(v7, block);
+  block[5] = record;
+  dispatch_async(queue, block);
 }
 
-- (void)createTranscription:(id)a3 transcription:(id)a4 completion:(id)a5
+- (void)createTranscription:(id)transcription transcription:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  transcriptionCopy = transcription;
   v9 = a4;
-  v10 = a5;
-  v11 = [(VMCarrierServicesController *)self queue];
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100061C00;
   v15[3] = &unk_1000EEF60;
   v15[4] = self;
-  v16 = v8;
+  v16 = transcriptionCopy;
   v17 = v9;
-  v18 = v10;
-  v12 = v10;
+  v18 = completionCopy;
+  v12 = completionCopy;
   v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v14 = transcriptionCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)createPersonalizedTranscript:(id)a3 completion:(id)a4
+- (void)createPersonalizedTranscript:(id)transcript completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  transcriptCopy = transcript;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100061D6C;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = transcriptCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = transcriptCopy;
+  dispatch_async(queue, block);
 }
 
 - (void)subscriptionDataOnlyDidChange
 {
-  v3 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sub_100002850();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1878,8 +1878,8 @@ LABEL_34:
 
 - (void)subscriptionInfoDidChange
 {
-  v2 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v3 = sub_100002850();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1894,8 +1894,8 @@ LABEL_34:
 
 - (void)activeSubscriptionsDidChange
 {
-  v3 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sub_100002850();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1911,11 +1911,11 @@ LABEL_34:
   dispatch_async(&_dispatch_main_q, &stru_1000EEFA8);
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changeCopy = change;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100002850();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1927,30 +1927,30 @@ LABEL_34:
     v18 = 2112;
     v19 = objc_opt_class();
     v20 = 2112;
-    v21 = v4;
+    v21 = changeCopy;
     v7 = v19;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ received carrier bundle change callback for subscription %@", &v14, 0x2Au);
   }
 
   v8 = [NSUUID alloc];
-  v9 = [v4 labelID];
-  v10 = [v8 initWithUUIDString:v9];
+  labelID = [changeCopy labelID];
+  v10 = [v8 initWithUUIDString:labelID];
 
   if (v10)
   {
-    v11 = [(VMCarrierServicesController *)self labelUUIDToService];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+    v12 = [labelUUIDToService objectForKeyedSubscript:v10];
 
     if (v12)
     {
-      v13 = [v12 contextInfo];
-      [(VMCarrierServicesController *)self updateCarrierBundle:v13 service:v12];
+      contextInfo = [v12 contextInfo];
+      [(VMCarrierServicesController *)self updateCarrierBundle:contextInfo service:v12];
     }
 
     else
     {
-      v13 = sub_100002850();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      contextInfo = sub_100002850();
+      if (os_log_type_enabled(contextInfo, OS_LOG_TYPE_ERROR))
       {
         sub_10009D7E8();
       }
@@ -1967,17 +1967,17 @@ LABEL_34:
   }
 }
 
-- (void)updateCarrierBundle:(id)a3 service:(id)a4
+- (void)updateCarrierBundle:(id)bundle service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  bundleCopy = bundle;
+  serviceCopy = service;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(VMCarrierServicesController *)self telephonyClient];
-  v10 = [v9 carrierBundle:v6];
+  telephonyClient = [(VMCarrierServicesController *)self telephonyClient];
+  v10 = [telephonyClient carrierBundle:bundleCopy];
 
-  v11 = [v10 isServiceSupportedOnInternetForSubscription];
+  isServiceSupportedOnInternetForSubscription = [v10 isServiceSupportedOnInternetForSubscription];
   v12 = sub_100002850();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -1988,7 +1988,7 @@ LABEL_34:
     v18 = 2080;
     v19 = "";
     v20 = 2112;
-    if (v11)
+    if (isServiceSupportedOnInternetForSubscription)
     {
       v14 = @"supported";
     }
@@ -1997,21 +1997,21 @@ LABEL_34:
     v22 = 2112;
     v23 = v14;
     v24 = 2112;
-    v25 = v6;
+    v25 = bundleCopy;
     v15 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ updating values from carrier bundle, service on Internet is %@ for subscription %@", &v16, 0x34u);
   }
 
-  [v7 setWiFiNetworkSupported:v11];
-  [v7 _carrierBundleChanged];
+  [serviceCopy setWiFiNetworkSupported:isServiceSupportedOnInternetForSubscription];
+  [serviceCopy _carrierBundleChanged];
 }
 
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v9);
+  availabilityCopy = availability;
+  connectionsCopy = connections;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = sub_100002850();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2024,20 +2024,20 @@ LABEL_34:
     v34 = 2112;
     v35 = v11;
     v36 = 2112;
-    v37 = v7;
+    v37 = availabilityCopy;
     v38 = 2112;
-    v39 = v8;
+    v39 = connectionsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#I %s%sReceived delegate callback %@ %@ %@", buf, 0x34u);
   }
 
   v12 = [NSUUID alloc];
-  v13 = [v7 labelID];
-  v14 = [v12 initWithUUIDString:v13];
+  labelID = [availabilityCopy labelID];
+  v14 = [v12 initWithUUIDString:labelID];
 
   if (v14)
   {
-    v15 = [(VMCarrierServicesController *)self labelUUIDToService];
-    v16 = [v15 objectForKeyedSubscript:v14];
+    labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+    v16 = [labelUUIDToService objectForKeyedSubscript:v14];
 
     if (v16)
     {
@@ -2045,7 +2045,7 @@ LABEL_34:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v17 = v8;
+      v17 = connectionsCopy;
       v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v18)
       {
@@ -2099,14 +2099,14 @@ LABEL_15:
   }
 }
 
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v10);
+  changedCopy = changed;
+  infoCopy = info;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a4 == 1)
+  if (connection == 1)
   {
     v11 = sub_100002850();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2116,24 +2116,24 @@ LABEL_15:
       v20 = 2080;
       v21 = "";
       v22 = 2112;
-      v23 = v9;
+      v23 = infoCopy;
       v24 = 2112;
-      v25 = v8;
+      v25 = changedCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#I %s%sData connection state changed %@ for subscription %@", &v18, 0x2Au);
     }
 
     v12 = [NSUUID alloc];
-    v13 = [v8 labelID];
-    v14 = [v12 initWithUUIDString:v13];
+    labelID = [changedCopy labelID];
+    v14 = [v12 initWithUUIDString:labelID];
 
     if (v14)
     {
-      v15 = [(VMCarrierServicesController *)self labelUUIDToService];
-      v16 = [v15 objectForKeyedSubscript:v14];
+      labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+      v16 = [labelUUIDToService objectForKeyedSubscript:v14];
 
       if (v16)
       {
-        [v16 setWiFiNetworkSupported:{objc_msgSend(v9, "publicNetAllowed")}];
+        [v16 setWiFiNetworkSupported:{objc_msgSend(infoCopy, "publicNetAllowed")}];
       }
 
       else
@@ -2148,12 +2148,12 @@ LABEL_15:
   }
 }
 
-- (void)postSmscAddressAvailable:(id)a3 smsc:(id)a4
+- (void)postSmscAddressAvailable:(id)available smsc:(id)smsc
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  availableCopy = available;
+  smscCopy = smsc;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100002850();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2163,24 +2163,24 @@ LABEL_15:
     v18 = 2080;
     v19 = "";
     v20 = 2112;
-    v21 = v7;
+    v21 = smscCopy;
     v22 = 2112;
-    v23 = v6;
+    v23 = availableCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%sSMSC address is '%@' for subscription %@", &v16, 0x2Au);
   }
 
   v10 = [NSUUID alloc];
-  v11 = [v6 labelID];
-  v12 = [v10 initWithUUIDString:v11];
+  labelID = [availableCopy labelID];
+  v12 = [v10 initWithUUIDString:labelID];
 
   if (v12)
   {
-    v13 = [(VMCarrierServicesController *)self labelUUIDToService];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+    v14 = [labelUUIDToService objectForKeyedSubscript:v12];
 
     if (v14)
     {
-      [v14 setSmscAddress:v7];
+      [v14 setSmscAddress:smscCopy];
     }
 
     else
@@ -2194,11 +2194,11 @@ LABEL_15:
   }
 }
 
-- (void)subscriberCountryCodeDidChange:(id)a3
+- (void)subscriberCountryCodeDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changeCopy = change;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100002850();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2208,17 +2208,17 @@ LABEL_15:
     v9 = 2080;
     v10 = "";
     v11 = 2112;
-    v12 = v4;
+    v12 = changeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#I %s%sISO country code has changed for subscription %@; updating the list of service providers.", &v7, 0x20u);
   }
 
   [(VMCarrierServicesController *)self queryAndInitVoicemailServices];
 }
 
-- (void)voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4
+- (void)voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  infoCopy = info;
   v7 = sub_100002850();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2229,20 +2229,20 @@ LABEL_15:
     v13 = 2112;
     v14 = objc_opt_class();
     v15 = 2112;
-    v16 = v6;
+    v16 = infoCopy;
     v17 = 2112;
-    v18 = v5;
+    v18 = notificationCopy;
     v8 = v14;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is suppressing %@ for %@", &v9, 0x34u);
   }
 }
 
-- (void)local_voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4
+- (void)local_voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  notificationCopy = notification;
+  infoCopy = info;
+  queue = [(VMCarrierServicesController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100002850();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2254,25 +2254,25 @@ LABEL_15:
     *&v17[22] = 2112;
     v18 = objc_opt_class();
     *v19 = 2112;
-    *&v19[2] = v6;
+    *&v19[2] = notificationCopy;
     *&v19[10] = 2112;
-    *&v19[12] = v7;
+    *&v19[12] = infoCopy;
     v10 = v18;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is handling voicemail info available notification delegate callback for subscription %@, voicemail info %@", v17, 0x34u);
   }
 
   v11 = [NSUUID alloc];
-  v12 = [v6 labelID];
-  v13 = [v11 initWithUUIDString:v12];
+  labelID = [notificationCopy labelID];
+  v13 = [v11 initWithUUIDString:labelID];
 
   if (v13)
   {
-    v14 = [(VMCarrierServicesController *)self labelUUIDToService];
-    v15 = [v14 objectForKeyedSubscript:v13];
+    labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+    v15 = [labelUUIDToService objectForKeyedSubscript:v13];
 
     if (v15 || (-[VMCarrierServicesController queryAndInitVoicemailServices](self, "queryAndInitVoicemailServices"), -[VMCarrierServicesController labelUUIDToService](self, "labelUUIDToService"), v16 = objc_claimAutoreleasedReturnValue(), [v16 objectForKeyedSubscript:v13], v15 = objc_claimAutoreleasedReturnValue(), v16, v15))
     {
-      [v15 handleVoicemailInfoUpdate:v7, *v17, *&v17[16], v18, *v19, *&v19[16]];
+      [v15 handleVoicemailInfoUpdate:infoCopy, *v17, *&v17[16], v18, *v19, *&v19[16]];
     }
 
     else
@@ -2286,69 +2286,69 @@ LABEL_15:
   }
 }
 
-- (void)performSynchronousBlock:(id)a3
+- (void)performSynchronousBlock:(id)block
 {
   if (dispatch_get_specific(off_10010D3E0) == self)
   {
-    v6 = *(a3 + 2);
-    v7 = a3;
+    v6 = *(block + 2);
+    blockCopy = block;
     v6();
   }
 
   else
   {
-    v5 = a3;
-    v7 = [(VMCarrierServicesController *)self queue];
-    dispatch_sync(v7, v5);
+    blockCopy2 = block;
+    blockCopy = [(VMCarrierServicesController *)self queue];
+    dispatch_sync(blockCopy, blockCopy2);
   }
 }
 
-- (void)isAccountSubscribed:(id)a3 completion:(id)a4
+- (void)isAccountSubscribed:(id)subscribed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  subscribedCopy = subscribed;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006317C;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = subscribedCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = subscribedCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)isAccountOnline:(id)a3 completion:(id)a4
+- (void)isAccountOnline:(id)online completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  onlineCopy = online;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000633FC;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = onlineCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = onlineCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)getVoicemailPhoneNumberForAccountUUID_sync:(id)a3
+- (id)getVoicemailPhoneNumberForAccountUUID_sync:(id)d_sync
 {
-  v4 = [(VMCarrierServicesController *)self findContextInfoWithLabelUUID:a3];
+  v4 = [(VMCarrierServicesController *)self findContextInfoWithLabelUUID:d_sync];
   if (v4)
   {
-    v5 = [(VMCarrierServicesController *)self telephonyClient];
-    v6 = [v5 carrierBundle:v4];
+    telephonyClient = [(VMCarrierServicesController *)self telephonyClient];
+    v6 = [telephonyClient carrierBundle:v4];
 
     if ([v6 isServiceSupportedForSubscription])
     {
-      v7 = [(VMCarrierServicesController *)self telephonyClient];
-      v8 = [v7 voicemailPhoneNumber:v4];
+      telephonyClient2 = [(VMCarrierServicesController *)self telephonyClient];
+      v8 = [telephonyClient2 voicemailPhoneNumber:v4];
     }
 
     else
@@ -2365,116 +2365,116 @@ LABEL_15:
   return v8;
 }
 
-- (void)isCallVoicemailSupportedForAccountUUID:(id)a3 completion:(id)a4
+- (void)isCallVoicemailSupportedForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100063734;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)isPasscodeChangeSupportedForAccountUUID:(id)a3 completion:(id)a4
+- (void)isPasscodeChangeSupportedForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100063AD0;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)minimumPasscodeLengthForAccountUUID:(id)a3 completion:(id)a4
+- (void)minimumPasscodeLengthForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100063DD8;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)maximumPasscodeLengthForAccountUUID:(id)a3 completion:(id)a4
+- (void)maximumPasscodeLengthForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100064044;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)setPasscode:(id)a3 forAccountUUID:(id)a4 completion:(id)a5
+- (void)setPasscode:(id)passcode forAccountUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VMCarrierServicesController *)self queue];
+  passcodeCopy = passcode;
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000642D8;
   v15[3] = &unk_1000EEF60;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = passcodeCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = passcodeCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)storageUsageForAccountUUID:(id)a3 completion:(id)a4
+- (void)storageUsageForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000645B4;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)sendStateRequestForAccountUUID:(id)a3
+- (void)sendStateRequestForAccountUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self labelUUIDToService];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+  v6 = [labelUUIDToService objectForKeyedSubscript:dCopy];
 
   v7 = sub_100002850();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -2489,7 +2489,7 @@ LABEL_15:
       v13 = 2112;
       v14 = v6;
       v15 = 2112;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#I %s%sCreating STATE request for service %@, accountUUID %@", &v9, 0x2Au);
     }
 
@@ -2505,17 +2505,17 @@ LABEL_15:
       v11 = 2080;
       v12 = "";
       v13 = 2112;
-      v14 = v4;
+      v14 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#W %s%sCould not retrieve service provide for account UUID %@", &v9, 0x20u);
     }
   }
 }
 
-- (id)getServiceInfoForAccountUUID:(id)a3
+- (id)getServiceInfoForAccountUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(VMCarrierServicesController *)self labelUUIDToService];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+  v6 = [labelUUIDToService objectForKeyedSubscript:dCopy];
 
   v7 = sub_100002850();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -2530,11 +2530,11 @@ LABEL_15:
       v15 = 2112;
       v16 = v6;
       v17 = 2112;
-      v18 = v4;
+      v18 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#I %s%sReceiving info for service %@, accountUUID %@", &v11, 0x2Au);
     }
 
-    v9 = [v6 getParameters];
+    getParameters = [v6 getParameters];
   }
 
   else
@@ -2546,19 +2546,19 @@ LABEL_15:
       v13 = 2080;
       v14 = "";
       v15 = 2112;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#W %s%sCould not retrieve service provide for account UUID %@", &v11, 0x20u);
     }
 
-    v9 = 0;
+    getParameters = 0;
   }
 
-  return v9;
+  return getParameters;
 }
 
-- (BOOL)setAccountProperties:(id)a3 properties:(id)a4 error:(id *)a5
+- (BOOL)setAccountProperties:(id)properties properties:(id)a4 error:(id *)error
 {
-  v7 = a3;
+  propertiesCopy = properties;
   v8 = a4;
   v16 = 0;
   v17 = &v16;
@@ -2569,7 +2569,7 @@ LABEL_15:
   v12[2] = sub_100064BE8;
   v12[3] = &unk_1000EEFD0;
   v12[4] = self;
-  v9 = v7;
+  v9 = propertiesCopy;
   v13 = v9;
   v10 = v8;
   v14 = v10;
@@ -2581,75 +2581,75 @@ LABEL_15:
   return self;
 }
 
-- (void)greetingForAccountUUID:(id)a3 completion:(id)a4
+- (void)greetingForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000654B8;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)setGreeting:(id)a3 forAccountUUID:(id)a4 completion:(id)a5
+- (void)setGreeting:(id)greeting forAccountUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VMCarrierServicesController *)self queue];
+  greetingCopy = greeting;
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100065758;
   v15[3] = &unk_1000EEF60;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = greetingCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = greetingCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)isGreetingChangeSupportedForAccountUUID:(id)a3 completion:(id)a4
+- (void)isGreetingChangeSupportedForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000659D0;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)maximumGreetingDurationForAccountUUID:(id)a3 completion:(id)a4
+- (void)maximumGreetingDurationForAccountUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMCarrierServicesController *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(VMCarrierServicesController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100065D80;
   block[3] = &unk_1000EEF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 - (void)dumpState
@@ -2729,11 +2729,11 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#I %s%sProduct name: %@", buf, 0x20u);
   }
 
-  v13 = [(VMCarrierServicesController *)self carrierAccountDataSource];
-  v14 = [v13 accounts];
+  carrierAccountDataSource = [(VMCarrierServicesController *)self carrierAccountDataSource];
+  accounts = [carrierAccountDataSource accounts];
 
-  v63 = v14;
-  v64 = [v14 count];
+  v63 = accounts;
+  v64 = [accounts count];
   v15 = sub_100002850();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -2770,8 +2770,8 @@ LABEL_15:
       v19 = sub_100002850();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v18 UUID];
-        v21 = [v20 UUIDString];
+        uUID = [v18 UUID];
+        uUIDString = [uUID UUIDString];
         *buf = 136315906;
         v67 = "";
         v68 = 2080;
@@ -2779,13 +2779,13 @@ LABEL_15:
         v70 = 2048;
         v71 = i;
         v72 = 2112;
-        v73 = v21;
+        v73 = uUIDString;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#I %s%s[%lu]: %@", buf, 0x2Au);
       }
 
-      v22 = [(VMCarrierServicesController *)self labelUUIDToService];
-      v23 = [v18 UUID];
-      v24 = [v22 objectForKeyedSubscript:v23];
+      labelUUIDToService = [(VMCarrierServicesController *)self labelUUIDToService];
+      uUID2 = [v18 UUID];
+      v24 = [labelUUIDToService objectForKeyedSubscript:uUID2];
 
       v25 = sub_100002850();
       v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
@@ -2793,23 +2793,23 @@ LABEL_15:
       {
         if (v26)
         {
-          v27 = [v24 getServiceObjLogPrefix];
+          getServiceObjLogPrefix = [v24 getServiceObjLogPrefix];
           *buf = 136315650;
           v67 = "";
           v68 = 2080;
           v69 = "";
           v70 = 2080;
-          v71 = v27;
+          v71 = getServiceObjLogPrefix;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "#I %s%s  Service:        [%s]", buf, 0x20u);
         }
 
         v28 = sub_100002850();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v24 isSubscribed];
+          isSubscribed = [v24 isSubscribed];
           *buf = 136315650;
           v30 = @"No";
-          if (v29)
+          if (isSubscribed)
           {
             v30 = @"Yes";
           }
@@ -2825,10 +2825,10 @@ LABEL_15:
         v31 = sub_100002850();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [v24 isOnline];
+          isOnline = [v24 isOnline];
           *buf = 136315650;
           v33 = @"No";
-          if (v32)
+          if (isOnline)
           {
             v33 = @"Yes";
           }
@@ -2857,8 +2857,8 @@ LABEL_15:
         v36 = sub_100002850();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v37 = [v18 UUID];
-          v38 = [(VMCarrierServicesController *)self getVoicemailPhoneNumberForAccountUUID_sync:v37];
+          uUID3 = [v18 UUID];
+          v38 = [(VMCarrierServicesController *)self getVoicemailPhoneNumberForAccountUUID_sync:uUID3];
           *buf = 136315650;
           v67 = "";
           v68 = 2080;
@@ -2897,8 +2897,8 @@ LABEL_15:
         v36 = sub_100002850();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [v18 UUID];
-          v41 = [(VMCarrierServicesController *)self getVoicemailPhoneNumberForAccountUUID_sync:v40];
+          uUID4 = [v18 UUID];
+          v41 = [(VMCarrierServicesController *)self getVoicemailPhoneNumberForAccountUUID_sync:uUID4];
           *buf = 136315650;
           v67 = "";
           v68 = 2080;
@@ -2990,11 +2990,11 @@ LABEL_15:
   v55 = sub_100002850();
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
-    v56 = [v53 BOOLValue];
+    bOOLValue = [v53 BOOLValue];
     v57 = @"Enabled";
     *buf = 136315650;
     v67 = "";
-    if (v56)
+    if (bOOLValue)
     {
       v57 = @"Disabled";
     }

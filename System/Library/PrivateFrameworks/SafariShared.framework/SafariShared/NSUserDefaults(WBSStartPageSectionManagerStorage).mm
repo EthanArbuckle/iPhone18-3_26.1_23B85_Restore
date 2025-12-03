@@ -8,7 +8,7 @@
 
 - (id)startPageSectionDescriptors
 {
-  v1 = [a1 objectForKey:@"StartPageSections"];
+  v1 = [self objectForKey:@"StartPageSections"];
   v6 = 0;
   v2 = [WBSStartPageSectionSerialization decodeSectionsFromData:v1 expectedFormat:0 allowingFallbackFormats:0 error:&v6];
   v3 = v6;
@@ -38,13 +38,13 @@
     }
   }
 
-  [a1 setObject:v4 forKey:@"StartPageSections"];
+  [self setObject:v4 forKey:@"StartPageSections"];
 }
 
 - (void)startPageSectionDescriptors
 {
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_1(&dword_1BB6F3000, v5, v6, "Failed to decode section data: %{public}@", v7, v8, v9, v10, 2u);
 }
 

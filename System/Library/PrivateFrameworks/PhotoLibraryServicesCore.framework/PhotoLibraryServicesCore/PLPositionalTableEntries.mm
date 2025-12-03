@@ -1,18 +1,18 @@
 @interface PLPositionalTableEntries
-- (PLPositionalTableEntries)initWithBuffers:(void *)a3 forIndexes:(id)a4 entryLength:(unint64_t)a5;
+- (PLPositionalTableEntries)initWithBuffers:(void *)buffers forIndexes:(id)indexes entryLength:(unint64_t)length;
 - (void)dealloc;
-- (void)enumerateIndexes:(id)a3;
+- (void)enumerateIndexes:(id)indexes;
 @end
 
 @implementation PLPositionalTableEntries
 
-- (void)enumerateIndexes:(id)a3
+- (void)enumerateIndexes:(id)indexes
 {
-  v5 = a3;
-  if (!v5)
+  indexesCopy = indexes;
+  if (!indexesCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLPositionalTable.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPositionalTable.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v14[0] = 0;
@@ -30,7 +30,7 @@
   v9[3] = &unk_1E7932400;
   v9[4] = self;
   v11 = v13;
-  v7 = v5;
+  v7 = indexesCopy;
   v10 = v7;
   v12 = v14;
   [(NSIndexSet *)readIndexes enumerateRangesUsingBlock:v9];
@@ -99,10 +99,10 @@ uint64_t __45__PLPositionalTableEntries_enumerateIndexes___block_invoke_2(uint64
 {
   if (self->_buffers)
   {
-    v3 = [(NSIndexSet *)self->_readIndexes rangeCount];
-    if (v3)
+    rangeCount = [(NSIndexSet *)self->_readIndexes rangeCount];
+    if (rangeCount)
     {
-      v4 = v3;
+      v4 = rangeCount;
       for (i = 0; i != v4; ++i)
       {
         free(self->_buffers[i]);
@@ -117,9 +117,9 @@ uint64_t __45__PLPositionalTableEntries_enumerateIndexes___block_invoke_2(uint64
   [(PLPositionalTableEntries *)&v6 dealloc];
 }
 
-- (PLPositionalTableEntries)initWithBuffers:(void *)a3 forIndexes:(id)a4 entryLength:(unint64_t)a5
+- (PLPositionalTableEntries)initWithBuffers:(void *)buffers forIndexes:(id)indexes entryLength:(unint64_t)length
 {
-  v10 = a4;
+  indexesCopy = indexes;
   v17.receiver = self;
   v17.super_class = PLPositionalTableEntries;
   v11 = [(PLPositionalTableEntries *)&v17 init];
@@ -128,9 +128,9 @@ uint64_t __45__PLPositionalTableEntries_enumerateIndexes___block_invoke_2(uint64
     goto LABEL_8;
   }
 
-  if (v10)
+  if (indexesCopy)
   {
-    if (a5)
+    if (length)
     {
       goto LABEL_4;
     }
@@ -138,29 +138,29 @@ uint64_t __45__PLPositionalTableEntries_enumerateIndexes___block_invoke_2(uint64
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:v11 file:@"PLPositionalTable.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"indexes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v11 file:@"PLPositionalTable.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"indexes"}];
 
-    if (a5)
+    if (length)
     {
       goto LABEL_4;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:v11 file:@"PLPositionalTable.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"entryLength > 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:v11 file:@"PLPositionalTable.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"entryLength > 0"}];
 
 LABEL_4:
-  v12 = [v10 count];
-  if (!a3 && v12)
+  v12 = [indexesCopy count];
+  if (!buffers && v12)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:v11 file:@"PLPositionalTable.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"indexes.count == 0 || buffers != NULL"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:v11 file:@"PLPositionalTable.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"indexes.count == 0 || buffers != NULL"}];
   }
 
-  objc_storeStrong(&v11->_readIndexes, a4);
-  v11->_entryLength = a5;
-  v11->_buffers = a3;
+  objc_storeStrong(&v11->_readIndexes, indexes);
+  v11->_entryLength = length;
+  v11->_buffers = buffers;
 LABEL_8:
 
   return v11;

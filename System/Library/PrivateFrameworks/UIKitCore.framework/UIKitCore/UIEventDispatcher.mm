@@ -1,20 +1,20 @@
 @interface UIEventDispatcher
-- (UIEventDispatcher)initWithApplication:(id)a3;
-- (void)_installEventRunLoopSources:(uint64_t)a1;
+- (UIEventDispatcher)initWithApplication:(id)application;
+- (void)_installEventRunLoopSources:(uint64_t)sources;
 - (void)dealloc;
-- (void)eventFetcherDidReceiveEvents:(id)a3;
+- (void)eventFetcherDidReceiveEvents:(id)events;
 @end
 
 @implementation UIEventDispatcher
 
-- (UIEventDispatcher)initWithApplication:(id)a3
+- (UIEventDispatcher)initWithApplication:(id)application
 {
   v10.receiver = self;
   v10.super_class = UIEventDispatcher;
   v4 = [(UIEventDispatcher *)&v10 init];
   if (v4)
   {
-    v5 = [[UIEventEnvironment alloc] initWithApplication:a3];
+    v5 = [[UIEventEnvironment alloc] initWithApplication:application];
     mainEnvironment = v4->_mainEnvironment;
     v4->_mainEnvironment = v5;
 
@@ -33,13 +33,13 @@
   return v4;
 }
 
-- (void)_installEventRunLoopSources:(uint64_t)a1
+- (void)_installEventRunLoopSources:(uint64_t)sources
 {
-  if (a1)
+  if (sources)
   {
-    *(a1 + 40) = a2;
-    v4 = *(a1 + 8);
-    *(a1 + 16) = *(v4[1] + 152);
+    *(sources + 40) = a2;
+    v4 = *(sources + 8);
+    *(sources + 16) = *(v4[1] + 152);
     memset(&v8.retain, 0, 64);
     v8.version = 0;
     v8.info = v4;
@@ -52,22 +52,22 @@
     {
       v8.perform = __eventQueueSourceCallback;
       v6 = CFRunLoopSourceCreate(0, -1, &v8);
-      *(a1 + 24) = v6;
+      *(sources + 24) = v6;
       v5 = *MEMORY[0x1E695E8D0];
       CFRunLoopAddSource(a2, v6, *MEMORY[0x1E695E8D0]);
-      CFRelease(*(a1 + 24));
+      CFRelease(*(sources + 24));
     }
 
     v8.perform = __eventFetcherSourceCallback;
-    v8.info = a1;
+    v8.info = sources;
     v7 = CFRunLoopSourceCreate(0, -2, &v8);
-    *(a1 + 32) = v7;
+    *(sources + 32) = v7;
     CFRunLoopAddSource(a2, v7, v5);
-    CFRelease(*(a1 + 32));
+    CFRelease(*(sources + 32));
   }
 }
 
-- (void)eventFetcherDidReceiveEvents:(id)a3
+- (void)eventFetcherDidReceiveEvents:(id)events
 {
   CFRunLoopSourceSignal(self->_collectHIDEventsRunLoopSource);
   runLoop = self->_runLoop;

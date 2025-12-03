@@ -1,52 +1,52 @@
 @interface TSWPImageComposer
-- (TSWPImageComposer)initWithBaseImage:(id)a3 screenScale:(double)a4;
-- (id)overlayImage:(id)a3 usingFrame:(CGRect)a4;
+- (TSWPImageComposer)initWithBaseImage:(id)image screenScale:(double)scale;
+- (id)overlayImage:(id)image usingFrame:(CGRect)frame;
 @end
 
 @implementation TSWPImageComposer
 
-- (TSWPImageComposer)initWithBaseImage:(id)a3 screenScale:(double)a4
+- (TSWPImageComposer)initWithBaseImage:(id)image screenScale:(double)scale
 {
-  v6 = a3;
+  imageCopy = image;
   v18.receiver = self;
   v18.super_class = TSWPImageComposer;
   v9 = [(TSWPImageComposer *)&v18 init];
   if (v9)
   {
-    objc_msgSend_scale(v6, v7, v8);
-    if (v12 != a4)
+    objc_msgSend_scale(imageCopy, v7, v8);
+    if (v12 != scale)
     {
       v13 = MEMORY[0x277D811F8];
-      v14 = objc_msgSend_CGImageForContentsScale_(v6, v10, v11, a4);
+      v14 = objc_msgSend_CGImageForContentsScale_(imageCopy, v10, v11, scale);
       v16 = objc_msgSend_imageWithCGImage_(v13, v15, v14);
 
-      v6 = v16;
+      imageCopy = v16;
     }
 
-    objc_storeStrong(&v9->_baseImage, v6);
-    objc_storeStrong(&v9->_compositedImage, v6);
-    v9->_screenScale = a4;
+    objc_storeStrong(&v9->_baseImage, imageCopy);
+    objc_storeStrong(&v9->_compositedImage, imageCopy);
+    v9->_screenScale = scale;
   }
 
   return v9;
 }
 
-- (id)overlayImage:(id)a3 usingFrame:(CGRect)a4
+- (id)overlayImage:(id)image usingFrame:(CGRect)frame
 {
-  v5 = a3;
+  imageCopy = image;
   if (TSURectIsFinite())
   {
-    objc_msgSend_scale(v5, v6, v7);
+    objc_msgSend_scale(imageCopy, v6, v7);
     v9 = v8;
     objc_msgSend_screenScale(self, v10, v11);
     if (v9 != v14)
     {
       v15 = MEMORY[0x277D811F8];
       objc_msgSend_screenScale(self, v12, v13);
-      v18 = objc_msgSend_CGImageForContentsScale_(v5, v16, v17);
+      v18 = objc_msgSend_CGImageForContentsScale_(imageCopy, v16, v17);
       v20 = objc_msgSend_imageWithCGImage_(v15, v19, v18);
 
-      v5 = v20;
+      imageCopy = v20;
     }
 
     v21 = objc_msgSend_compositedImage(self, v12, v13);
@@ -83,7 +83,7 @@
     CGContextDrawImage(v52, v75, v58);
 
     objc_msgSend_screenScale(self, v59, v60);
-    v63 = objc_msgSend_CGImageForContentsScale_(v5, v61, v62);
+    v63 = objc_msgSend_CGImageForContentsScale_(imageCopy, v61, v62);
     v76.origin.x = v41;
     v76.origin.y = v43;
     v76.size.width = v45;

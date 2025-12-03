@@ -1,14 +1,14 @@
 @interface ICTableAttachmentSelection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeColumns:(id)a3 rows:(id)a4 previousColumns:(id)a5 previousRows:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeColumns:(id)columns rows:(id)rows previousColumns:(id)previousColumns previousRows:(id)previousRows;
 - (BOOL)valid;
 - (ICTableAttachmentSelection)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)selectCellAtColumn:(id)a3 row:(id)a4;
-- (void)selectCellRangeAtColumns:(id)a3 rows:(id)a4;
-- (void)selectColumns:(id)a3;
-- (void)selectRows:(id)a3;
-- (void)setSelectionEqualTo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)selectCellAtColumn:(id)column row:(id)row;
+- (void)selectCellRangeAtColumns:(id)columns rows:(id)rows;
+- (void)selectColumns:(id)columns;
+- (void)selectRows:(id)rows;
+- (void)setSelectionEqualTo:(id)to;
 - (void)unselect;
 @end
 
@@ -36,24 +36,24 @@
 
 - (BOOL)valid
 {
-  v3 = [(ICTableAttachmentSelection *)self type];
+  type = [(ICTableAttachmentSelection *)self type];
   v4 = 0;
-  if (v3 > 1)
+  if (type > 1)
   {
-    switch(v3)
+    switch(type)
     {
       case 2:
-        v7 = [(ICTableAttachmentSelection *)self columns];
+        columns = [(ICTableAttachmentSelection *)self columns];
         break;
       case 3:
-        v7 = [(ICTableAttachmentSelection *)self rows];
+        columns = [(ICTableAttachmentSelection *)self rows];
         break;
       case 4:
-        v5 = [(ICTableAttachmentSelection *)self columns];
-        if ([v5 count])
+        columns2 = [(ICTableAttachmentSelection *)self columns];
+        if ([columns2 count])
         {
-          v6 = [(ICTableAttachmentSelection *)self rows];
-          v4 = [v6 count] != 0;
+          rows = [(ICTableAttachmentSelection *)self rows];
+          v4 = [rows count] != 0;
 LABEL_11:
 
 LABEL_17:
@@ -65,24 +65,24 @@ LABEL_17:
         return v4;
     }
 
-    v8 = v7;
-    v4 = [v7 count] != 0;
+    v8 = columns;
+    v4 = [columns count] != 0;
 
     return v4;
   }
 
-  if (!v3)
+  if (!type)
   {
     return 1;
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
-    v5 = [(ICTableAttachmentSelection *)self columns];
-    if ([v5 count] == 1)
+    columns2 = [(ICTableAttachmentSelection *)self columns];
+    if ([columns2 count] == 1)
     {
-      v6 = [(ICTableAttachmentSelection *)self rows];
-      v4 = [v6 count] == 1;
+      rows = [(ICTableAttachmentSelection *)self rows];
+      v4 = [rows count] == 1;
       goto LABEL_11;
     }
 
@@ -98,15 +98,15 @@ LABEL_16:
 {
   if (![(ICTableAttachmentSelection *)self type])
   {
-    v3 = [(ICTableAttachmentSelection *)self rows];
-    if ([v3 count])
+    rows = [(ICTableAttachmentSelection *)self rows];
+    if ([rows count])
     {
     }
 
     else
     {
-      v4 = [(ICTableAttachmentSelection *)self columns];
-      v5 = [v4 count];
+      columns = [(ICTableAttachmentSelection *)self columns];
+      v5 = [columns count];
 
       if (!v5)
       {
@@ -119,32 +119,32 @@ LABEL_16:
   v6 = MEMORY[0x1E695E0F0];
   [(ICTableAttachmentSelection *)self setColumns:MEMORY[0x1E695E0F0]];
   [(ICTableAttachmentSelection *)self setRows:v6];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
 }
 
-- (void)selectCellAtColumn:(id)a3 row:(id)a4
+- (void)selectCellAtColumn:(id)column row:(id)row
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  columnCopy = column;
+  rowCopy = row;
+  v8 = rowCopy;
+  if (!columnCopy || !rowCopy)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICTableAttachmentSelection selectCellAtColumn:row:]" simulateCrash:1 showAlert:0 format:@"We tried to select a cell without a row or column"];
   }
 
   if ([(ICTableAttachmentSelection *)self type]== 1)
   {
-    v9 = [(ICTableAttachmentSelection *)self rows];
+    rows = [(ICTableAttachmentSelection *)self rows];
     v20[0] = v8;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    if ([v9 isEqualToArray:v10])
+    if ([rows isEqualToArray:v10])
     {
-      v11 = [(ICTableAttachmentSelection *)self columns];
-      v19 = v6;
+      columns = [(ICTableAttachmentSelection *)self columns];
+      v19 = columnCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
-      v13 = [v11 isEqualToArray:v12];
+      v13 = [columns isEqualToArray:v12];
 
       if (v13)
       {
@@ -158,7 +158,7 @@ LABEL_16:
   }
 
   [(ICTableAttachmentSelection *)self setType:1];
-  v18 = v6;
+  v18 = columnCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
   [(ICTableAttachmentSelection *)self setColumns:v14];
 
@@ -166,26 +166,26 @@ LABEL_16:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
   [(ICTableAttachmentSelection *)self setRows:v15];
 
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
 
 LABEL_10:
 }
 
-- (void)selectColumns:(id)a3
+- (void)selectColumns:(id)columns
 {
-  v8 = a3;
+  columnsCopy = columns;
   if ([(ICTableAttachmentSelection *)self type]== 2)
   {
-    v4 = [(ICTableAttachmentSelection *)self rows];
-    if ([v4 count])
+    rows = [(ICTableAttachmentSelection *)self rows];
+    if ([rows count])
     {
     }
 
     else
     {
-      v5 = [(ICTableAttachmentSelection *)self columns];
-      v6 = [v5 isEqualToArray:v8];
+      columns = [(ICTableAttachmentSelection *)self columns];
+      v6 = [columns isEqualToArray:columnsCopy];
 
       if (v6)
       {
@@ -195,28 +195,28 @@ LABEL_10:
   }
 
   [(ICTableAttachmentSelection *)self setType:2];
-  [(ICTableAttachmentSelection *)self setColumns:v8];
+  [(ICTableAttachmentSelection *)self setColumns:columnsCopy];
   [(ICTableAttachmentSelection *)self setRows:MEMORY[0x1E695E0F0]];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
 
 LABEL_6:
 }
 
-- (void)selectRows:(id)a3
+- (void)selectRows:(id)rows
 {
-  v8 = a3;
+  rowsCopy = rows;
   if ([(ICTableAttachmentSelection *)self type]== 3)
   {
-    v4 = [(ICTableAttachmentSelection *)self columns];
-    if ([v4 count])
+    columns = [(ICTableAttachmentSelection *)self columns];
+    if ([columns count])
     {
     }
 
     else
     {
-      v5 = [(ICTableAttachmentSelection *)self rows];
-      v6 = [v5 isEqualToArray:v8];
+      rows = [(ICTableAttachmentSelection *)self rows];
+      v6 = [rows isEqualToArray:rowsCopy];
 
       if (v6)
       {
@@ -227,61 +227,61 @@ LABEL_6:
 
   [(ICTableAttachmentSelection *)self setType:3];
   [(ICTableAttachmentSelection *)self setColumns:MEMORY[0x1E695E0F0]];
-  [(ICTableAttachmentSelection *)self setRows:v8];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
+  [(ICTableAttachmentSelection *)self setRows:rowsCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
 
 LABEL_6:
 }
 
-- (void)selectCellRangeAtColumns:(id)a3 rows:(id)a4
+- (void)selectCellRangeAtColumns:(id)columns rows:(id)rows
 {
-  v11 = a3;
-  v6 = a4;
+  columnsCopy = columns;
+  rowsCopy = rows;
   if ([(ICTableAttachmentSelection *)self type]!= 4)
   {
     goto LABEL_6;
   }
 
-  v7 = [(ICTableAttachmentSelection *)self columns];
-  if (([v7 isEqualToArray:v11] & 1) == 0)
+  columns = [(ICTableAttachmentSelection *)self columns];
+  if (([columns isEqualToArray:columnsCopy] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(ICTableAttachmentSelection *)self rows];
-  v9 = [v8 isEqualToArray:v6];
+  rows = [(ICTableAttachmentSelection *)self rows];
+  v9 = [rows isEqualToArray:rowsCopy];
 
   if ((v9 & 1) == 0)
   {
 LABEL_6:
     [(ICTableAttachmentSelection *)self setType:4];
-    [(ICTableAttachmentSelection *)self setColumns:v11];
-    [(ICTableAttachmentSelection *)self setRows:v6];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
+    [(ICTableAttachmentSelection *)self setColumns:columnsCopy];
+    [(ICTableAttachmentSelection *)self setRows:rowsCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v5 = ICDynamicCast();
-    v6 = [(ICTableAttachmentSelection *)self type];
-    if (v6 == [v5 type])
+    type = [(ICTableAttachmentSelection *)self type];
+    if (type == [v5 type])
     {
-      v7 = [(ICTableAttachmentSelection *)self columns];
-      v8 = [v5 columns];
-      if ([v7 isEqual:v8])
+      columns = [(ICTableAttachmentSelection *)self columns];
+      columns2 = [v5 columns];
+      if ([columns isEqual:columns2])
       {
-        v9 = [(ICTableAttachmentSelection *)self rows];
-        v10 = [v5 rows];
-        v11 = [v9 isEqual:v10];
+        rows = [(ICTableAttachmentSelection *)self rows];
+        rows2 = [v5 rows];
+        v11 = [rows isEqual:rows2];
       }
 
       else
@@ -304,16 +304,16 @@ LABEL_6:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ICTableAttachmentSelection allocWithZone:](ICTableAttachmentSelection init];
   [(ICTableAttachmentSelection *)v5 setType:[(ICTableAttachmentSelection *)self type]];
-  v6 = [(ICTableAttachmentSelection *)self columns];
-  v7 = [v6 copyWithZone:a3];
+  columns = [(ICTableAttachmentSelection *)self columns];
+  v7 = [columns copyWithZone:zone];
   [(ICTableAttachmentSelection *)v5 setColumns:v7];
 
-  v8 = [(ICTableAttachmentSelection *)self rows];
-  v9 = [v8 copyWithZone:a3];
+  rows = [(ICTableAttachmentSelection *)self rows];
+  v9 = [rows copyWithZone:zone];
   [(ICTableAttachmentSelection *)v5 setRows:v9];
 
   [(ICTableAttachmentSelection *)v5 setMoving:[(ICTableAttachmentSelection *)self moving]];
@@ -321,55 +321,55 @@ LABEL_6:
   return v5;
 }
 
-- (void)setSelectionEqualTo:(id)a3
+- (void)setSelectionEqualTo:(id)to
 {
-  v4 = a3;
-  -[ICTableAttachmentSelection setType:](self, "setType:", [v4 type]);
-  v5 = [v4 columns];
-  [(ICTableAttachmentSelection *)self setColumns:v5];
+  toCopy = to;
+  -[ICTableAttachmentSelection setType:](self, "setType:", [toCopy type]);
+  columns = [toCopy columns];
+  [(ICTableAttachmentSelection *)self setColumns:columns];
 
-  v6 = [v4 rows];
-  [(ICTableAttachmentSelection *)self setRows:v6];
+  rows = [toCopy rows];
+  [(ICTableAttachmentSelection *)self setRows:rows];
 
-  -[ICTableAttachmentSelection setMoving:](self, "setMoving:", [v4 moving]);
-  v7 = [v4 draggingText];
+  -[ICTableAttachmentSelection setMoving:](self, "setMoving:", [toCopy moving]);
+  draggingText = [toCopy draggingText];
 
-  [(ICTableAttachmentSelection *)self setDraggingText:v7];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
+  [(ICTableAttachmentSelection *)self setDraggingText:draggingText];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
 }
 
-- (BOOL)removeColumns:(id)a3 rows:(id)a4 previousColumns:(id)a5 previousRows:(id)a6
+- (BOOL)removeColumns:(id)columns rows:(id)rows previousColumns:(id)previousColumns previousRows:(id)previousRows
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v37 = a6;
-  v13 = [(ICTableAttachmentSelection *)self columns];
-  v14 = [(ICTableAttachmentSelection *)self rows];
-  v15 = [MEMORY[0x1E695DF70] arrayWithArray:v13];
-  v16 = [MEMORY[0x1E695DF70] arrayWithArray:v14];
-  [v15 removeObjectsInArray:v10];
-  [v16 removeObjectsInArray:v11];
+  columnsCopy = columns;
+  rowsCopy = rows;
+  previousColumnsCopy = previousColumns;
+  previousRowsCopy = previousRows;
+  columns = [(ICTableAttachmentSelection *)self columns];
+  rows = [(ICTableAttachmentSelection *)self rows];
+  v15 = [MEMORY[0x1E695DF70] arrayWithArray:columns];
+  v16 = [MEMORY[0x1E695DF70] arrayWithArray:rows];
+  [v15 removeObjectsInArray:columnsCopy];
+  [v16 removeObjectsInArray:rowsCopy];
   v17 = [v15 copy];
   [(ICTableAttachmentSelection *)self setColumns:v17];
 
   v18 = [v16 copy];
   [(ICTableAttachmentSelection *)self setRows:v18];
 
-  v19 = [(ICTableAttachmentSelection *)self columns];
-  v20 = [v19 count];
+  columns2 = [(ICTableAttachmentSelection *)self columns];
+  v20 = [columns2 count];
 
   if (!v20)
   {
-    v35 = v12;
-    v21 = [v12 firstObjectCommonWithArray:v10];
+    v35 = previousColumnsCopy;
+    v21 = [previousColumnsCopy firstObjectCommonWithArray:columnsCopy];
     if (!v21)
     {
 LABEL_9:
 
-      v12 = v35;
+      previousColumnsCopy = v35;
       goto LABEL_10;
     }
 
@@ -384,7 +384,7 @@ LABEL_9:
     else
     {
       v23 = [v35 mutableCopy];
-      [v23 removeObjectsInArray:v10];
+      [v23 removeObjectsInArray:columnsCopy];
       if (![v23 count])
       {
 LABEL_8:
@@ -402,33 +402,33 @@ LABEL_8:
   }
 
 LABEL_10:
-  v26 = [(ICTableAttachmentSelection *)self rows];
-  v27 = [v26 count];
+  rows2 = [(ICTableAttachmentSelection *)self rows];
+  v27 = [rows2 count];
 
   if (!v27)
   {
-    v36 = v12;
-    v28 = [v37 firstObjectCommonWithArray:v11];
+    v36 = previousColumnsCopy;
+    v28 = [previousRowsCopy firstObjectCommonWithArray:rowsCopy];
     if (!v28)
     {
 LABEL_18:
 
-      v12 = v36;
+      previousColumnsCopy = v36;
       goto LABEL_19;
     }
 
-    v29 = [v37 indexOfObject:v28];
+    v29 = [previousRowsCopy indexOfObject:v28];
     if (v29)
     {
-      v30 = [v37 objectAtIndexedSubscript:v29 - 1];
+      v30 = [previousRowsCopy objectAtIndexedSubscript:v29 - 1];
       v38 = v30;
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
     }
 
     else
     {
-      v30 = [v37 mutableCopy];
-      [v30 removeObjectsInArray:v11];
+      v30 = [previousRowsCopy mutableCopy];
+      [v30 removeObjectsInArray:rowsCopy];
       if (![v30 count])
       {
 LABEL_17:
@@ -446,11 +446,11 @@ LABEL_17:
   }
 
 LABEL_19:
-  v33 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v33 postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTableAttachmentSelectionDidChangeNotification" object:self];
 
-  LOBYTE(v33) = [(ICTableAttachmentSelection *)self valid];
-  return v33;
+  LOBYTE(defaultCenter) = [(ICTableAttachmentSelection *)self valid];
+  return defaultCenter;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CKLocatingChatItem
 - (BOOL)failed;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (NSString)locationText;
 - (id)description;
 - (id)message;
@@ -16,40 +16,40 @@
   v8.receiver = self;
   v8.super_class = CKLocatingChatItem;
   v4 = [(CKBalloonChatItem *)&v8 description];
-  v5 = [(CKLocatingChatItem *)self locationText];
-  v6 = [v3 stringWithFormat:@"[%@ locationText:%@]", v4, v5];
+  locationText = [(CKLocatingChatItem *)self locationText];
+  v6 = [v3 stringWithFormat:@"[%@ locationText:%@]", v4, locationText];
 
   return v6;
 }
 
 - (BOOL)failed
 {
-  v2 = [(CKLocatingChatItem *)self message];
-  v3 = [v2 error];
-  v4 = v3 != 0;
+  message = [(CKLocatingChatItem *)self message];
+  error = [message error];
+  v4 = error != 0;
 
   return v4;
 }
 
 - (id)time
 {
-  v2 = [(CKLocatingChatItem *)self message];
-  v3 = [v2 time];
+  message = [(CKLocatingChatItem *)self message];
+  time = [message time];
 
-  return v3;
+  return time;
 }
 
 - (id)sender
 {
-  v2 = [(CKLocatingChatItem *)self message];
-  v3 = [v2 sender];
+  message = [(CKLocatingChatItem *)self message];
+  sender = [message sender];
 
-  return v3;
+  return sender;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  v4 = [CKUIBehavior sharedBehaviors:a4];
+  v4 = [CKUIBehavior sharedBehaviors:insets];
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 previewMaxWidth];
   [v4 mapThumbnailFillSizeForWidth:?];
@@ -73,10 +73,10 @@
 
 - (id)message
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 message];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  message = [iMChatItem message];
 
-  return v3;
+  return message;
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface TSDMetalTextureInfo
-+ (id)textureInfoWithCGImage:(CGImage *)a3 forDevice:(id)a4;
-+ (id)textureInfoWithName:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 containsMipmaps:(BOOL)a6;
++ (id)textureInfoWithCGImage:(CGImage *)image forDevice:(id)device;
++ (id)textureInfoWithName:(id)name width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps;
 - (CGSize)size;
-- (TSDMetalTextureInfo)initWithName:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 containsMipmaps:(BOOL)a6;
+- (TSDMetalTextureInfo)initWithName:(id)name width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps;
 - (id)description;
 - (void)teardown;
 @end
 
 @implementation TSDMetalTextureInfo
 
-+ (id)textureInfoWithName:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 containsMipmaps:(BOOL)a6
++ (id)textureInfoWithName:(id)name width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps
 {
-  v6 = a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithName:v9 width:v8 height:v7 containsMipmaps:v6];
+  mipmapsCopy = mipmaps;
+  v7 = *&height;
+  v8 = *&width;
+  nameCopy = name;
+  v10 = [objc_alloc(objc_opt_class()) initWithName:nameCopy width:v8 height:v7 containsMipmaps:mipmapsCopy];
 
   return v10;
 }
 
-+ (id)textureInfoWithCGImage:(CGImage *)a3 forDevice:(id)a4
++ (id)textureInfoWithCGImage:(CGImage *)image forDevice:(id)device
 {
   v5 = MEMORY[0x277CD71F0];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithDevice:v6];
+  deviceCopy = device;
+  v7 = [[v5 alloc] initWithDevice:deviceCopy];
 
   v11 = 0;
-  v8 = [v7 newTextureWithCGImage:a3 options:0 error:&v11];
+  v8 = [v7 newTextureWithCGImage:image options:0 error:&v11];
   v9 = [objc_alloc(objc_opt_class()) initWithName:v8 width:objc_msgSend(v8 height:"width") containsMipmaps:{objc_msgSend(v8, "height"), 0}];
 
   return v9;
 }
 
-- (TSDMetalTextureInfo)initWithName:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 containsMipmaps:(BOOL)a6
+- (TSDMetalTextureInfo)initWithName:(id)name width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps
 {
-  v11 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = TSDMetalTextureInfo;
   v12 = [(TSDMetalTextureInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_containsMipmaps = a6;
-    objc_storeStrong(&v12->_name, a3);
-    v13->_height = a5;
-    v13->_width = a4;
+    v12->_containsMipmaps = mipmaps;
+    objc_storeStrong(&v12->_name, name);
+    v13->_height = height;
+    v13->_width = width;
   }
 
   return v13;

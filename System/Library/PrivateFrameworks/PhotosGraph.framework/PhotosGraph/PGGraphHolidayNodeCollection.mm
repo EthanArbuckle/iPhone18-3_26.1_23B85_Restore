@@ -1,27 +1,27 @@
 @interface PGGraphHolidayNodeCollection
-+ (id)holidayNodesWithCategory:(unint64_t)a3 inGraph:(id)a4;
-+ (id)holidayNodesWithName:(id)a3 inGraph:(id)a4;
-+ (id)holidayNodesWithNames:(id)a3 inGraph:(id)a4;
++ (id)holidayNodesWithCategory:(unint64_t)category inGraph:(id)graph;
++ (id)holidayNodesWithName:(id)name inGraph:(id)graph;
++ (id)holidayNodesWithNames:(id)names inGraph:(id)graph;
 - (NSSet)holidayNames;
 - (NSSet)localizedHolidayNames;
 - (NSSet)localizedHolidaySynonyms;
 - (PGGraphDateNodeCollection)dateNodes;
 - (PGGraphMomentNodeCollection)celebratingMomentNodes;
-- (void)enumerateHolidayNamesUsingBlock:(id)a3;
-- (void)enumerateLocalizedHolidayNamesUsingBlock:(id)a3;
+- (void)enumerateHolidayNamesUsingBlock:(id)block;
+- (void)enumerateLocalizedHolidayNamesUsingBlock:(id)block;
 @end
 
 @implementation PGGraphHolidayNodeCollection
 
-- (void)enumerateLocalizedHolidayNamesUsingBlock:(id)a3
+- (void)enumerateLocalizedHolidayNamesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__PGGraphHolidayNodeCollection_enumerateLocalizedHolidayNamesUsingBlock___block_invoke;
   v6[3] = &unk_278887978;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANodeCollection *)self enumerateStringPropertyValuesForKey:@"name" withBlock:v6];
 }
 
@@ -35,15 +35,15 @@ void __73__PGGraphHolidayNodeCollection_enumerateLocalizedHolidayNamesUsingBlock
   }
 }
 
-- (void)enumerateHolidayNamesUsingBlock:(id)a3
+- (void)enumerateHolidayNamesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__PGGraphHolidayNodeCollection_enumerateHolidayNamesUsingBlock___block_invoke;
   v6[3] = &unk_278887978;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANodeCollection *)self enumerateStringPropertyValuesForKey:@"name" withBlock:v6];
 }
 
@@ -126,8 +126,8 @@ void __44__PGGraphHolidayNodeCollection_holidayNames__block_invoke(uint64_t a1, 
 - (PGGraphDateNodeCollection)dateNodes
 {
   v3 = +[PGGraphHolidayEdge filter];
-  v4 = [v3 inRelation];
-  v5 = [(MANodeCollection *)PGGraphDateNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  inRelation = [v3 inRelation];
+  v5 = [(MANodeCollection *)PGGraphDateNodeCollection nodesRelatedToNodes:self withRelation:inRelation];
 
   return v5;
 }
@@ -135,41 +135,41 @@ void __44__PGGraphHolidayNodeCollection_holidayNames__block_invoke(uint64_t a1, 
 - (PGGraphMomentNodeCollection)celebratingMomentNodes
 {
   v3 = +[PGGraphCelebratingEdge filter];
-  v4 = [v3 inRelation];
+  inRelation = [v3 inRelation];
 
-  v5 = [(MANodeCollection *)PGGraphMomentNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  v5 = [(MANodeCollection *)PGGraphMomentNodeCollection nodesRelatedToNodes:self withRelation:inRelation];
 
   return v5;
 }
 
-+ (id)holidayNodesWithCategory:(unint64_t)a3 inGraph:(id)a4
++ (id)holidayNodesWithCategory:(unint64_t)category inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphHolidayNode holidayNodeFilterWithCategory:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphHolidayNode holidayNodeFilterWithCategory:category];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-+ (id)holidayNodesWithNames:(id)a3 inGraph:(id)a4
++ (id)holidayNodesWithNames:(id)names inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphHolidayNode holidayNodeFilterWithNames:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphHolidayNode holidayNodeFilterWithNames:names];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-+ (id)holidayNodesWithName:(id)a3 inGraph:(id)a4
++ (id)holidayNodesWithName:(id)name inGraph:(id)graph
 {
   v14 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  nameCopy = name;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v13 count:1];
+  graphCopy = graph;
+  nameCopy2 = name;
+  v9 = [v6 arrayWithObjects:&nameCopy count:1];
 
-  v10 = [a1 holidayNodesWithNames:v9 inGraph:{v7, v13, v14}];
+  v10 = [self holidayNodesWithNames:v9 inGraph:{graphCopy, nameCopy, v14}];
 
   v11 = *MEMORY[0x277D85DE8];
 

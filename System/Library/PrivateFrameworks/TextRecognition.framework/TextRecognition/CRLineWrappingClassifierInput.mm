@@ -1,15 +1,15 @@
 @interface CRLineWrappingClassifierInput
-- (CRLineWrappingClassifierInput)initWithFeatures:(id)a3;
+- (CRLineWrappingClassifierInput)initWithFeatures:(id)features;
 @end
 
 @implementation CRLineWrappingClassifierInput
 
-- (CRLineWrappingClassifierInput)initWithFeatures:(id)a3
+- (CRLineWrappingClassifierInput)initWithFeatures:(id)features
 {
-  v5 = a3;
+  featuresCopy = features;
   if (self)
   {
-    objc_storeStrong(&self->_features, a3);
+    objc_storeStrong(&self->_features, features);
   }
 
   return self;

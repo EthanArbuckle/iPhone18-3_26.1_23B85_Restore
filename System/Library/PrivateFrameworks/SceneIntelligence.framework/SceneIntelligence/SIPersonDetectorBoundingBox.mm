@@ -1,16 +1,16 @@
 @interface SIPersonDetectorBoundingBox
 - (CGRect)boundingBox;
-- (SIPersonDetectorBoundingBox)initWithBoundingBox:(CGRect)a3 confidence:(float)a4;
+- (SIPersonDetectorBoundingBox)initWithBoundingBox:(CGRect)box confidence:(float)confidence;
 @end
 
 @implementation SIPersonDetectorBoundingBox
 
-- (SIPersonDetectorBoundingBox)initWithBoundingBox:(CGRect)a3 confidence:(float)a4
+- (SIPersonDetectorBoundingBox)initWithBoundingBox:(CGRect)box confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v13.receiver = self;
   v13.super_class = SIPersonDetectorBoundingBox;
   v9 = [(SIPersonDetectorBoundingBox *)&v13 init];
@@ -21,7 +21,7 @@
     v9->_boundingBox.origin.y = y;
     v9->_boundingBox.size.width = width;
     v9->_boundingBox.size.height = height;
-    v9->_confidence = a4;
+    v9->_confidence = confidence;
     v11 = v9;
   }
 

@@ -1,15 +1,15 @@
 @interface NavdVehicleBluetoothStatus
 - (BOOL)connected;
-- (NavdVehicleBluetoothStatus)initWithCircuitBoard:(id)a3 connectTriggers:(id)a4 disconnectTriggers:(id)a5;
+- (NavdVehicleBluetoothStatus)initWithCircuitBoard:(id)board connectTriggers:(id)triggers disconnectTriggers:(id)disconnectTriggers;
 @end
 
 @implementation NavdVehicleBluetoothStatus
 
-- (NavdVehicleBluetoothStatus)initWithCircuitBoard:(id)a3 connectTriggers:(id)a4 disconnectTriggers:(id)a5
+- (NavdVehicleBluetoothStatus)initWithCircuitBoard:(id)board connectTriggers:(id)triggers disconnectTriggers:(id)disconnectTriggers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  boardCopy = board;
+  triggersCopy = triggers;
+  disconnectTriggersCopy = disconnectTriggers;
   v38.receiver = self;
   v38.super_class = NavdVehicleBluetoothStatus;
   v11 = [(NavdVehicleBluetoothStatus *)&v38 init];
@@ -20,14 +20,14 @@
     v11->_queue = v12;
 
     v14 = [MapsSuggestionsSimpleTrigger alloc];
-    v15 = [(MapsSuggestionsQueue *)v11->_queue innerQueue];
-    v16 = [v14 initWithName:@"CarConnectTrigger" queue:v15];
+    innerQueue = [(MapsSuggestionsQueue *)v11->_queue innerQueue];
+    v16 = [v14 initWithName:@"CarConnectTrigger" queue:innerQueue];
     outOnCarConnectTrigger = v11->_outOnCarConnectTrigger;
     v11->_outOnCarConnectTrigger = v16;
 
     v18 = [MapsSuggestionsSimpleTrigger alloc];
-    v19 = [(MapsSuggestionsQueue *)v11->_queue innerQueue];
-    v20 = [v18 initWithName:@"CarDisconnectTrigger" queue:v19];
+    innerQueue2 = [(MapsSuggestionsQueue *)v11->_queue innerQueue];
+    v20 = [v18 initWithName:@"CarDisconnectTrigger" queue:innerQueue2];
     outOnCarDisconnectTrigger = v11->_outOnCarDisconnectTrigger;
     v11->_outOnCarDisconnectTrigger = v20;
 
@@ -52,11 +52,11 @@
     carDisconnectCondition = v11->_carDisconnectCondition;
     v11->_carDisconnectCondition = v26;
 
-    v28 = sub_1000295D0(v11, v9);
-    v29 = [v8 addCircuit:v28];
+    v28 = sub_1000295D0(v11, triggersCopy);
+    v29 = [boardCopy addCircuit:v28];
 
-    v30 = sub_100029704(v11, v10);
-    v31 = [v8 addCircuit:v30];
+    v30 = sub_100029704(v11, disconnectTriggersCopy);
+    v31 = [boardCopy addCircuit:v30];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(&v36);
@@ -68,10 +68,10 @@
 
 - (BOOL)connected
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  connected = v2->_connected;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connected = selfCopy->_connected;
+  objc_sync_exit(selfCopy);
 
   return connected;
 }

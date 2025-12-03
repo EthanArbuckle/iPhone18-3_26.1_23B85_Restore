@@ -1,18 +1,18 @@
 @interface FRCImageProcessor
-- (BOOL)shouldCropOutputFrame:(__CVBuffer *)a3;
-- (BOOL)shouldScaleBuffer:(__CVBuffer *)a3;
-- (FRCImageProcessor)initWithUsage:(int64_t)a3 normalizationMode:(int64_t)a4;
-- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)a3 useScaler:(BOOL)a4;
+- (BOOL)shouldCropOutputFrame:(__CVBuffer *)frame;
+- (BOOL)shouldScaleBuffer:(__CVBuffer *)buffer;
+- (FRCImageProcessor)initWithUsage:(int64_t)usage normalizationMode:(int64_t)mode;
+- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)buffer useScaler:(BOOL)scaler;
 - (void)allocateNormalizedBuffers;
-- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)a3;
+- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 - (void)releaseNormalizedBuffers;
-- (void)storeColorProperties:(__CVBuffer *)a3;
+- (void)storeColorProperties:(__CVBuffer *)properties;
 @end
 
 @implementation FRCImageProcessor
 
-- (FRCImageProcessor)initWithUsage:(int64_t)a3 normalizationMode:(int64_t)a4
+- (FRCImageProcessor)initWithUsage:(int64_t)usage normalizationMode:(int64_t)mode
 {
   v15.receiver = self;
   v15.super_class = FRCImageProcessor;
@@ -20,10 +20,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->_usage = a3;
+    v6->_usage = usage;
     v6->_inputRotation = 0;
-    FRCGetInputFrameSizeForUsage(a3, &v6->_width, &v6->_height);
-    v8 = [[Normalization alloc] initWithMode:a4];
+    FRCGetInputFrameSizeForUsage(usage, &v6->_width, &v6->_height);
+    v8 = [[Normalization alloc] initWithMode:mode];
     normalization = v7->_normalization;
     v7->_normalization = v8;
 
@@ -87,12 +87,12 @@
   self->_normalizedSecond = 0;
 }
 
-- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)a3
+- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)buffer
 {
-  self->_rgbaPixelFormat = [(FRCImageProcessor *)self rgbaPixelFormatForBuffer:a3 useScaler:1];
-  Width = CVPixelBufferGetWidth(a3);
+  self->_rgbaPixelFormat = [(FRCImageProcessor *)self rgbaPixelFormatForBuffer:buffer useScaler:1];
+  Width = CVPixelBufferGetWidth(buffer);
   v8 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(buffer);
   v7 = Height;
   if (self->_inputScaling)
   {
@@ -120,13 +120,13 @@
   self->_rgbaBuffersAllocated = 1;
 }
 
-- (BOOL)shouldScaleBuffer:(__CVBuffer *)a3
+- (BOOL)shouldScaleBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(buffer);
   v9 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(buffer);
   v8 = Height;
-  if (CVPixelBufferGetPixelFormatType(a3) == 1278226536)
+  if (CVPixelBufferGetPixelFormatType(buffer) == 1278226536)
   {
     Height /= 3uLL;
     v8 = Height;
@@ -152,15 +152,15 @@ uint64_t __72__FRCImageProcessor_preProcessFirstInput_secondInput_waitForComplet
   return kdebug_trace();
 }
 
-- (void)storeColorProperties:(__CVBuffer *)a3
+- (void)storeColorProperties:(__CVBuffer *)properties
 {
   v19[3] = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CC4C00];
-  v6 = CMGetAttachment(a3, *MEMORY[0x277CC4C00], 0);
+  v6 = CMGetAttachment(properties, *MEMORY[0x277CC4C00], 0);
   v7 = *MEMORY[0x277CC4CC0];
-  v8 = CMGetAttachment(a3, *MEMORY[0x277CC4CC0], 0);
+  v8 = CMGetAttachment(properties, *MEMORY[0x277CC4CC0], 0);
   v9 = *MEMORY[0x277CC4D10];
-  v10 = CMGetAttachment(a3, *MEMORY[0x277CC4D10], 0);
+  v10 = CMGetAttachment(properties, *MEMORY[0x277CC4D10], 0);
   if (v6)
   {
     v11 = v8 == 0;
@@ -194,11 +194,11 @@ uint64_t __72__FRCImageProcessor_preProcessFirstInput_secondInput_waitForComplet
   }
 }
 
-- (BOOL)shouldCropOutputFrame:(__CVBuffer *)a3
+- (BOOL)shouldCropOutputFrame:(__CVBuffer *)frame
 {
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(frame);
   v8 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(frame);
   if (Width < Height)
   {
     swapWidthAndHeight(&v8, &Height);
@@ -218,25 +218,25 @@ intptr_t __83__FRCImageProcessor_postProcessNormalizedFrame_output_timeScale_wai
   return result;
 }
 
-- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)a3 useScaler:(BOOL)a4
+- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)buffer useScaler:(BOOL)scaler
 {
-  v4 = a4;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  scalerCopy = scaler;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v7 = CVPixelFormatDescriptionCreateWithPixelFormatType(*MEMORY[0x277CBECE8], PixelFormatType);
   v8 = [(__CFDictionary *)v7 objectForKeyedSubscript:*MEMORY[0x277CC4ED8]];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = [(__CFDictionary *)v7 objectForKeyedSubscript:*MEMORY[0x277CC4F38]];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = CVPixelBufferGetPixelFormatType(a3);
+    v12 = CVPixelBufferGetPixelFormatType(buffer);
   }
 
   else
   {
-    if (v4)
+    if (scalerCopy)
     {
       v13 = 1999843442;
     }
@@ -246,7 +246,7 @@ intptr_t __83__FRCImageProcessor_postProcessNormalizedFrame_output_timeScale_wai
       v13 = 1815162994;
     }
 
-    if (v9 == 10)
+    if (intValue == 10)
     {
       v14 = v13;
     }
@@ -256,7 +256,7 @@ intptr_t __83__FRCImageProcessor_postProcessNormalizedFrame_output_timeScale_wai
       v14 = 1380411457;
     }
 
-    if (v9 == 8)
+    if (intValue == 8)
     {
       v12 = 1111970369;
     }

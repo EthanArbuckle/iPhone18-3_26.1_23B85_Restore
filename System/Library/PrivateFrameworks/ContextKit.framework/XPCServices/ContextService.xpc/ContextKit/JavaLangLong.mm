@@ -1,22 +1,22 @@
 @interface JavaLangLong
-+ (int)compareWithLong:(int64_t)a3 withLong:(int64_t)a4;
-+ (int)signumWithLong:(int64_t)a3;
-+ (int64_t)lowestOneBitWithLong:(int64_t)a3;
-+ (int64_t)reverseBytesWithLong:(int64_t)a3;
-+ (int64_t)reverseWithLong:(int64_t)a3;
-+ (int64_t)rotateLeftWithLong:(int64_t)a3 withInt:(int)a4;
-+ (int64_t)rotateRightWithLong:(int64_t)a3 withInt:(int)a4;
++ (int)compareWithLong:(int64_t)long withLong:(int64_t)withLong;
++ (int)signumWithLong:(int64_t)long;
++ (int64_t)lowestOneBitWithLong:(int64_t)long;
++ (int64_t)reverseBytesWithLong:(int64_t)long;
++ (int64_t)reverseWithLong:(int64_t)long;
++ (int64_t)rotateLeftWithLong:(int64_t)long withInt:(int)int;
++ (int64_t)rotateRightWithLong:(int64_t)long withInt:(int)int;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation JavaLangLong
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -27,7 +27,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 1);
+  v6 = *(id + 1);
   if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001FB1C0();
@@ -44,25 +44,25 @@
   }
 }
 
-+ (int)compareWithLong:(int64_t)a3 withLong:(int64_t)a4
++ (int)compareWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001FB1C0();
   }
 
-  if (a3 < a4)
+  if (long < withLong)
   {
     return -1;
   }
 
   else
   {
-    return a3 != a4;
+    return long != withLong;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -71,7 +71,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -81,82 +81,82 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 1) == self->value_;
+  return *(equal + 1) == self->value_;
 }
 
-+ (int64_t)lowestOneBitWithLong:(int64_t)a3
++ (int64_t)lowestOneBitWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001FB1C0();
   }
 
-  return -a3 & a3;
+  return -long & long;
 }
 
-+ (int64_t)rotateLeftWithLong:(int64_t)a3 withInt:(int)a4
++ (int64_t)rotateLeftWithLong:(int64_t)long withInt:(int)int
 {
-  v4 = a4;
+  intCopy = int;
   if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001FB1C0();
   }
 
-  return __ROR8__(a3, -v4);
+  return __ROR8__(long, -intCopy);
 }
 
-+ (int64_t)rotateRightWithLong:(int64_t)a3 withInt:(int)a4
++ (int64_t)rotateRightWithLong:(int64_t)long withInt:(int)int
 {
-  v4 = a4;
+  intCopy = int;
   if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001FB1C0();
   }
 
-  return __ROR8__(a3, v4);
+  return __ROR8__(long, intCopy);
 }
 
-+ (int64_t)reverseBytesWithLong:(int64_t)a3
-{
-  if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
-  {
-    sub_1001FB1C0();
-  }
-
-  return bswap64(a3);
-}
-
-+ (int64_t)reverseWithLong:(int64_t)a3
++ (int64_t)reverseBytesWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001FB1C0();
   }
 
-  return __rbit64(a3);
+  return bswap64(long);
 }
 
-+ (int)signumWithLong:(int64_t)a3
++ (int64_t)reverseWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001FB1C0();
   }
 
-  if (a3 < 0)
+  return __rbit64(long);
+}
+
++ (int)signumWithLong:(int64_t)long
+{
+  if ((atomic_load_explicit(JavaLangLong__initialized, memory_order_acquire) & 1) == 0)
+  {
+    sub_1001FB1C0();
+  }
+
+  if (long < 0)
   {
     return -1;
   }
 
   else
   {
-    return a3 != 0;
+    return long != 0;
   }
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSClass_arrayType(+[IOSClass longClass](IOSClass "longClass")];
     objc_opt_class();

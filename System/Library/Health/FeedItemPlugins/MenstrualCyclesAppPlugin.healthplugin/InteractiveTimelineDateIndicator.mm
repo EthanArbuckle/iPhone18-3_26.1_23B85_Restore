@@ -1,13 +1,13 @@
 @interface InteractiveTimelineDateIndicator
-- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithFrame:(CGRect)frame;
 - (void)respondToTraitChanges;
 - (void)significantTimeChange;
 @end
 
 @implementation InteractiveTimelineDateIndicator
 
-- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator_alwaysFormatForCurrentYear) = 0;
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator_dateLabel;
@@ -25,18 +25,18 @@
 
 - (void)significantTimeChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E231050();
 }
 
 - (void)respondToTraitChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E2308AC();
   sub_29E23059C();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin32InteractiveTimelineDateIndicator)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

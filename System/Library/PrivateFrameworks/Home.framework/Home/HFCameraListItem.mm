@@ -1,23 +1,23 @@
 @interface HFCameraListItem
 - (HFCameraListItem)init;
-- (HFCameraListItem)initWithHome:(id)a3 room:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFCameraListItem)initWithHome:(id)home room:(id)room;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFCameraListItem
 
-- (HFCameraListItem)initWithHome:(id)a3 room:(id)a4
+- (HFCameraListItem)initWithHome:(id)home room:(id)room
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  roomCopy = room;
   v12.receiver = self;
   v12.super_class = HFCameraListItem;
   v9 = [(HFCameraListItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_room, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_room, room);
   }
 
   return v10;
@@ -25,32 +25,32 @@
 
 - (HFCameraListItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_room_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCameraListItem.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFCameraListItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraListItem.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFCameraListItem init]", v5}];
 
   return 0;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(MEMORY[0x277D2C900]);
   v5 = [HFCameraItemProvider alloc];
-  v6 = [(HFCameraListItem *)self home];
-  v7 = [(HFCameraItemProvider *)v5 initWithHome:v6];
+  home = [(HFCameraListItem *)self home];
+  v7 = [(HFCameraItemProvider *)v5 initWithHome:home];
 
-  v8 = [(HFCameraListItem *)self room];
-  [(HFCameraItemProvider *)v7 setRoom:v8];
+  room = [(HFCameraListItem *)self room];
+  [(HFCameraItemProvider *)v7 setRoom:room];
 
   [(HFCameraItemProvider *)v7 setOnlyShowsFavorites:[(HFCameraListItem *)self onlyShowsFavorites]];
-  v9 = [(HFCameraItemProvider *)v7 reloadItems];
+  reloadItems = [(HFCameraItemProvider *)v7 reloadItems];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __48__HFCameraListItem__subclass_updateWithOptions___block_invoke;
   v19[3] = &unk_277DF2D08;
   v10 = v4;
   v20 = v10;
-  v11 = [v9 addFailureBlock:v19];
+  v11 = [reloadItems addFailureBlock:v19];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __48__HFCameraListItem__subclass_updateWithOptions___block_invoke_2;
@@ -58,7 +58,7 @@
   v17[4] = self;
   v12 = v10;
   v18 = v12;
-  v13 = [v9 addSuccessBlock:v17];
+  v13 = [reloadItems addSuccessBlock:v17];
   v14 = v18;
   v15 = v12;
 

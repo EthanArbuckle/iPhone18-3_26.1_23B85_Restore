@@ -1,21 +1,21 @@
 @interface _UIRefreshControlModernContentView
 - (CGAffineTransform)_bloomedSeedTransform;
 - (CGAffineTransform)_unbloomedSeedTransform;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIRefreshControlModernContentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIRefreshControlModernContentView)initWithFrame:(CGRect)frame;
 - (double)_currentTimeOffset;
 - (double)_maximumSnappingHeightScalingForScrollViewHeight;
 - (double)_percentageShowing;
 - (double)maximumSnappingHeight;
 - (id)_effectiveTintColor;
-- (id)_effectiveTintColorWithAlpha:(double)a3;
+- (id)_effectiveTintColorWithAlpha:(double)alpha;
 - (void)_bloom;
 - (void)_cleanUpAfterRevealing;
 - (void)_goAway;
 - (void)_removeAllAnimations;
 - (void)_resetToRevealingState;
 - (void)_reveal;
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3;
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets;
 - (void)_setBloomedAppearance;
 - (void)_setSpunAppearance;
 - (void)_setUnbloomedAppearance;
@@ -25,12 +25,12 @@
 - (void)_tickDueToProgrammaticRefresh;
 - (void)_unbloom;
 - (void)_updateTimeOffsetOfRelevantLayers;
-- (void)didTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
+- (void)didTransitionFromState:(int64_t)state toState:(int64_t)toState;
 - (void)layoutSubviews;
-- (void)setAttributedTitle:(id)a3;
-- (void)setRefreshControl:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)willTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
+- (void)setAttributedTitle:(id)title;
+- (void)setRefreshControl:(id)control;
+- (void)setTintColor:(id)color;
+- (void)willTransitionFromState:(int64_t)state toState:(int64_t)toState;
 @end
 
 @implementation _UIRefreshControlModernContentView
@@ -49,11 +49,11 @@
 
 - (id)_effectiveTintColor
 {
-  v2 = [(_UIRefreshControlContentView *)self tintColor];
-  v3 = v2;
-  if (v2)
+  tintColor = [(_UIRefreshControlContentView *)self tintColor];
+  v3 = tintColor;
+  if (tintColor)
   {
-    v4 = v2;
+    v4 = tintColor;
   }
 
   else
@@ -85,8 +85,8 @@
 
 - (void)_reveal
 {
-  v3 = [(UIView *)self->_replicatorView layer];
-  [v3 setSpeed:0.0];
+  layer = [(UIView *)self->_replicatorView layer];
+  [layer setSpeed:0.0];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -103,8 +103,8 @@
   {
     [(_UIRefreshControlModernContentView *)self _currentTimeOffset];
     v4 = v3;
-    v5 = [(UIView *)self->_replicatorView layer];
-    [v5 setTimeOffset:v4];
+    layer = [(UIView *)self->_replicatorView layer];
+    [layer setTimeOffset:v4];
   }
 
   textLabel = self->_textLabel;
@@ -115,8 +115,8 @@
 
 - (double)_currentTimeOffset
 {
-  v3 = [(_UIRefreshControlContentView *)self refreshControl];
-  if (!v3 || (v4 = v3, -[_UIRefreshControlContentView refreshControl](self, "refreshControl"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 refreshControlState], v5, v4, result = 0.0, v6 == 1))
+  refreshControl = [(_UIRefreshControlContentView *)self refreshControl];
+  if (!refreshControl || (v4 = refreshControl, -[_UIRefreshControlContentView refreshControl](self, "refreshControl"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 refreshControlState], v5, v4, result = 0.0, v6 == 1))
   {
     [(_UIRefreshControlModernContentView *)self _percentageShowing];
     if (result >= 1.0)
@@ -130,8 +130,8 @@
 
 - (double)_percentageShowing
 {
-  v3 = [(_UIRefreshControlContentView *)self refreshControl];
-  [v3 _visibleHeight];
+  refreshControl = [(_UIRefreshControlContentView *)self refreshControl];
+  [refreshControl _visibleHeight];
   v5 = v4;
 
   [(_UIRefreshControlModernContentView *)self maximumSnappingHeight];
@@ -154,8 +154,8 @@
 
 - (double)_maximumSnappingHeightScalingForScrollViewHeight
 {
-  v2 = [(_UIRefreshControlContentView *)self refreshControl];
-  [v2 _scrollViewHeight];
+  refreshControl = [(_UIRefreshControlContentView *)self refreshControl];
+  [refreshControl _scrollViewHeight];
   v4 = v3;
 
   v5 = 372.0;
@@ -177,11 +177,11 @@
   [UIView performWithoutAnimation:v2];
 }
 
-- (_UIRefreshControlModernContentView)initWithFrame:(CGRect)a3
+- (_UIRefreshControlModernContentView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = _UIRefreshControlModernContentView;
-  v3 = [(UIView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -215,8 +215,8 @@
     seed = v3->_seed;
     v3->_seed = v16;
 
-    v18 = [(UIView *)v3->_seed layer];
-    [v18 setAllowsEdgeAntialiasing:1];
+    layer = [(UIView *)v3->_seed layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -226,8 +226,8 @@
     v23 = v19;
     [UIView performWithoutAnimation:v22];
     [(UIView *)v3->_replicatorView addSubview:v3->_seed];
-    v20 = [(UIView *)v3->_replicatorView layer];
-    [v20 setInstanceCount:8];
+    layer2 = [(UIView *)v3->_replicatorView layer];
+    [layer2 setInstanceCount:8];
 
     [(UIView *)v3->_replicatorContainer addSubview:v3->_replicatorView];
     [(UIView *)v19 addSubview:v3->_replicatorContainer];
@@ -239,55 +239,55 @@
   return v3;
 }
 
-- (void)setRefreshControl:(id)a3
+- (void)setRefreshControl:(id)control
 {
   v11.receiver = self;
   v11.super_class = _UIRefreshControlModernContentView;
-  v4 = a3;
-  [(_UIRefreshControlContentView *)&v11 setRefreshControl:v4];
-  v5 = [v4 _scrollView];
+  controlCopy = control;
+  [(_UIRefreshControlContentView *)&v11 setRefreshControl:controlCopy];
+  _scrollView = [controlCopy _scrollView];
 
-  v6 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
-  v7 = [v6 view];
+  impactFeedbackGenerator = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+  view = [impactFeedbackGenerator view];
 
-  if (v7 != v5)
+  if (view != _scrollView)
   {
     v8 = +[_UIImpactFeedbackGeneratorConfiguration refreshConfiguration];
     v9 = [v8 tweakedConfigurationForClass:objc_opt_class() usage:@"refresh"];
 
-    v10 = [(UIFeedbackGenerator *)[UIImpactFeedbackGenerator alloc] initWithConfiguration:v9 view:v5];
+    v10 = [(UIFeedbackGenerator *)[UIImpactFeedbackGenerator alloc] initWithConfiguration:v9 view:_scrollView];
     [(_UIRefreshControlContentView *)self setImpactFeedbackGenerator:v10];
   }
 }
 
-- (void)willTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (void)willTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
   v8.receiver = self;
   v8.super_class = _UIRefreshControlModernContentView;
   [_UIRefreshControlContentView willTransitionFromState:sel_willTransitionFromState_toState_ toState:?];
-  if (a3 == 6 || a3 != 1 && a4 == 1)
+  if (state == 6 || state != 1 && toState == 1)
   {
     [(_UIRefreshControlModernContentView *)self _resetToRevealingState];
   }
 
-  else if (a4 == 3)
+  else if (toState == 3)
   {
     [(_UIRefreshControlModernContentView *)self _spin];
   }
 
-  v7 = [(UIView *)self->_textLabel layer];
-  [v7 removeAllAnimations];
+  layer = [(UIView *)self->_textLabel layer];
+  [layer removeAllAnimations];
 }
 
-- (void)didTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (void)didTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  if (a4 <= 2)
+  if (toState <= 2)
   {
-    if (a4)
+    if (toState)
     {
-      if (a4 == 1)
+      if (toState == 1)
       {
-        if (a3 != 4)
+        if (state != 4)
         {
           [(_UIRefreshControlModernContentView *)self _updateTimeOffsetOfRelevantLayers];
           goto LABEL_23;
@@ -296,18 +296,18 @@
         goto LABEL_22;
       }
 
-      if (a4 != 2)
+      if (toState != 2)
       {
         goto LABEL_23;
       }
 
-      v7 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
-      v8 = [v7 isActive];
+      impactFeedbackGenerator = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+      isActive = [impactFeedbackGenerator isActive];
 
-      if ((v8 & 1) == 0)
+      if ((isActive & 1) == 0)
       {
-        v9 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
-        [v9 activateWithCompletionBlock:0];
+        impactFeedbackGenerator2 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+        [impactFeedbackGenerator2 activateWithCompletionBlock:0];
       }
 
       [(_UIRefreshControlModernContentView *)self _snappingMagic];
@@ -316,11 +316,11 @@
     goto LABEL_15;
   }
 
-  if (a4 > 4)
+  if (toState > 4)
   {
-    if (a4 == 5)
+    if (toState == 5)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         [(_UIRefreshControlModernContentView *)self _resetToRevealingState];
       }
@@ -328,7 +328,7 @@
       goto LABEL_19;
     }
 
-    if (a4 != 6)
+    if (toState != 6)
     {
       goto LABEL_23;
     }
@@ -338,16 +338,16 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a4 == 3)
+  if (toState == 3)
   {
-    if (!a3)
+    if (!state)
     {
       [(_UIRefreshControlModernContentView *)self _tickDueToProgrammaticRefresh];
       goto LABEL_23;
     }
 
 LABEL_15:
-    if (a3 != 4)
+    if (state != 4)
     {
       goto LABEL_23;
     }
@@ -357,19 +357,19 @@ LABEL_15:
 
   [(_UIRefreshControlModernContentView *)self _goAway];
 LABEL_19:
-  v10 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
-  v11 = [v10 isActive];
+  impactFeedbackGenerator3 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+  isActive2 = [impactFeedbackGenerator3 isActive];
 
-  if (v11)
+  if (isActive2)
   {
-    v12 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
-    [v12 deactivate];
+    impactFeedbackGenerator4 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+    [impactFeedbackGenerator4 deactivate];
   }
 
 LABEL_23:
   v13.receiver = self;
   v13.super_class = _UIRefreshControlModernContentView;
-  [(_UIRefreshControlContentView *)&v13 didTransitionFromState:a3 toState:a4];
+  [(_UIRefreshControlContentView *)&v13 didTransitionFromState:state toState:toState];
 }
 
 - (void)_tickDueToProgrammaticRefresh
@@ -382,16 +382,16 @@ LABEL_23:
 
 - (void)_removeAllAnimations
 {
-  v2 = [(UIView *)self->_replicatorView layer];
-  [v2 removeAllAnimations];
+  layer = [(UIView *)self->_replicatorView layer];
+  [layer removeAllAnimations];
 }
 
 - (void)_cleanUpAfterRevealing
 {
   self->_hasFinishedRevealing = 1;
-  v3 = [(UIView *)self->_replicatorView layer];
+  layer = [(UIView *)self->_replicatorView layer];
   LODWORD(v2) = 1.0;
-  [v3 setSpeed:v2];
+  [layer setSpeed:v2];
 }
 
 - (void)_setSpunAppearance
@@ -399,19 +399,19 @@ LABEL_23:
   replicatorContainer = self->_replicatorContainer;
   CGAffineTransformMakeRotation(&v11, 3.13159265);
   [(UIView *)replicatorContainer setTransform:&v11];
-  v4 = [(UIView *)self->_replicatorView layer];
+  layer = [(UIView *)self->_replicatorView layer];
   LODWORD(v5) = *"\nף=";
-  [v4 setInstanceAlphaOffset:v5];
+  [layer setInstanceAlphaOffset:v5];
 
   os_variant_has_internal_diagnostics();
   v6 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v7 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v7];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v8 = _UISetCurrentFallbackEnvironment(self);
-  v9 = [(UIView *)self->_replicatorView layer];
+  layer2 = [(UIView *)self->_replicatorView layer];
   v10 = [(_UIRefreshControlModernContentView *)self _effectiveTintColorWithAlpha:0.0];
-  [v9 setInstanceColor:{objc_msgSend(v10, "CGColor")}];
+  [layer2 setInstanceColor:{objc_msgSend(v10, "CGColor")}];
 
   _UIRestorePreviousFallbackEnvironment(v8);
   [UITraitCollection setCurrentTraitCollection:v6];
@@ -494,25 +494,25 @@ LABEL_23:
   [UIView _animateUsingSpringWithDuration:196612 delay:v19 options:0 mass:4.0 stiffness:0.0 damping:1.0 initialVelocity:v3 animations:5000.0 completion:0.0];
   [(_UIRefreshControlModernContentView *)self _tick];
   [(_UIRefreshControlModernContentView *)self _bloom];
-  v4 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
-  v5 = [v4 isActive];
+  impactFeedbackGenerator = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+  isActive = [impactFeedbackGenerator isActive];
 
-  if (v5)
+  if (isActive)
   {
-    v6 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+    impactFeedbackGenerator2 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
     [(_UIRefreshControlModernContentView *)self impactIntensity];
     v8 = v7;
-    v9 = [(_UIRefreshControlContentView *)self refreshControl];
-    v10 = [v9 _scrollView];
+    refreshControl = [(_UIRefreshControlContentView *)self refreshControl];
+    _scrollView = [refreshControl _scrollView];
     [(UIView *)self center];
     v12 = v11;
     v14 = v13;
-    v15 = [(UIView *)self superview];
-    [v10 convertPoint:v15 fromView:{v12, v14}];
-    [v6 impactOccurredWithIntensity:v8 atLocation:{v16, v17}];
+    superview = [(UIView *)self superview];
+    [_scrollView convertPoint:superview fromView:{v12, v14}];
+    [impactFeedbackGenerator2 impactOccurredWithIntensity:v8 atLocation:{v16, v17}];
 
-    v18 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
-    [v18 deactivate];
+    impactFeedbackGenerator3 = [(_UIRefreshControlContentView *)self impactFeedbackGenerator];
+    [impactFeedbackGenerator3 deactivate];
   }
 }
 
@@ -538,14 +538,14 @@ LABEL_23:
 
 - (void)_snappingMagic
 {
-  v2 = [(_UIRefreshControlContentView *)self refreshControl];
-  [v2 setRefreshControlState:3];
+  refreshControl = [(_UIRefreshControlContentView *)self refreshControl];
+  [refreshControl setRefreshControlState:3];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIView *)self->_textLabel frame:a3.width];
+  width = fits.width;
+  [(UIView *)self->_textLabel frame:fits.width];
   if (v5 <= 0.0)
   {
     v7 = 60.0;
@@ -563,12 +563,12 @@ LABEL_23:
   return result;
 }
 
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(UIView *)self safeAreaInsets];
   if (self->_horizontallyCenteredFramesNeedUpdate || v8 != left)
   {
@@ -591,25 +591,25 @@ LABEL_7:
   [(UIView *)&v10 _safeAreaInsetsDidChangeFromOldInsets:top, left, bottom, right];
 }
 
-- (id)_effectiveTintColorWithAlpha:(double)a3
+- (id)_effectiveTintColorWithAlpha:(double)alpha
 {
-  v4 = [(_UIRefreshControlModernContentView *)self _effectiveTintColor];
-  v5 = [v4 colorWithAlphaComponent:a3];
+  _effectiveTintColor = [(_UIRefreshControlModernContentView *)self _effectiveTintColor];
+  v5 = [_effectiveTintColor colorWithAlphaComponent:alpha];
 
   return v5;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = _UIRefreshControlModernContentView;
-  [(_UIRefreshControlContentView *)&v4 setTintColor:a3];
+  [(_UIRefreshControlContentView *)&v4 setTintColor:color];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  [(UILabel *)self->_textLabel setAttributedText:a3];
+  [(UILabel *)self->_textLabel setAttributedText:title];
   [(UIView *)self->_textLabel sizeToFit];
   [(UIView *)self setNeedsLayout];
   self->_animationsAreValid = 0;

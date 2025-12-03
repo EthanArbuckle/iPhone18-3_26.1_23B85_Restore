@@ -1,31 +1,31 @@
 @interface MFArchiveOrDeleteMutedThreadMessageRule
-- (BOOL)canExecuteRuleOnMessage:(id)a3;
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4;
+- (BOOL)canExecuteRuleOnMessage:(id)message;
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager;
 @end
 
 @implementation MFArchiveOrDeleteMutedThreadMessageRule
 
-- (BOOL)canExecuteRuleOnMessage:(id)a3
+- (BOOL)canExecuteRuleOnMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = MFArchiveOrDeleteMutedThreadMessageRule;
-  if ([(MFMutedThreadMessageRule *)&v11 canExecuteRuleOnMessage:v4])
+  if ([(MFMutedThreadMessageRule *)&v11 canExecuteRuleOnMessage:messageCopy])
   {
-    v5 = [v4 mailbox];
-    v6 = [v5 mailboxType];
+    mailbox = [messageCopy mailbox];
+    mailboxType = [mailbox mailboxType];
 
-    v7 = [v4 account];
-    v8 = [v7 shouldArchiveByDefault];
+    account = [messageCopy account];
+    shouldArchiveByDefault = [account shouldArchiveByDefault];
 
-    if (v6 == 2)
+    if (mailboxType == 2)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = (v6 != 3) | v8;
+      v9 = (mailboxType != 3) | shouldArchiveByDefault;
     }
   }
 
@@ -37,19 +37,19 @@
   return v9 & 1;
 }
 
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  messagesCopy = messages;
+  managerCopy = manager;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v5 ef_groupBy:&stru_100157E50];
+  v8 = [messagesCopy ef_groupBy:&stru_100157E50];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1000505A8;
   v16 = &unk_100157E98;
   v9 = v7;
   v17 = v9;
-  v10 = v6;
+  v10 = managerCopy;
   v18 = v10;
   [v8 enumerateKeysAndObjectsUsingBlock:&v13];
   if ([v9 count])

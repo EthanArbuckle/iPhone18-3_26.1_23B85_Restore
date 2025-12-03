@@ -1,29 +1,29 @@
 @interface OTEscrowRecordMetadataClientMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSecureBackupMetadataTimestamp:(BOOL)a3;
-- (void)setHasSecureBackupNumericPassphraseLength:(BOOL)a3;
-- (void)setHasSecureBackupUsesComplexPassphrase:(BOOL)a3;
-- (void)setHasSecureBackupUsesNumericPassphrase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSecureBackupMetadataTimestamp:(BOOL)timestamp;
+- (void)setHasSecureBackupNumericPassphraseLength:(BOOL)length;
+- (void)setHasSecureBackupUsesComplexPassphrase:(BOOL)passphrase;
+- (void)setHasSecureBackupUsesNumericPassphrase:(BOOL)passphrase;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTEscrowRecordMetadataClientMetadata
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 104);
+  fromCopy = from;
+  v5 = *(fromCopy + 104);
   if ((v5 & 2) != 0)
   {
-    self->_secureBackupMetadataTimestamp = *(v4 + 2);
+    self->_secureBackupMetadataTimestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 104);
+    v5 = *(fromCopy + 104);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -36,14 +36,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 104) & 4) == 0)
+  else if ((*(fromCopy + 104) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_secureBackupNumericPassphraseLength = *(v4 + 3);
+  self->_secureBackupNumericPassphraseLength = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 104);
+  v5 = *(fromCopy + 104);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -56,62 +56,62 @@ LABEL_4:
   }
 
 LABEL_27:
-  self->_secureBackupUsesComplexPassphrase = *(v4 + 4);
+  self->_secureBackupUsesComplexPassphrase = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 104) & 0x10) != 0)
+  if ((*(fromCopy + 104) & 0x10) != 0)
   {
 LABEL_5:
-    self->_secureBackupUsesNumericPassphrase = *(v4 + 5);
+    self->_secureBackupUsesNumericPassphrase = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
 LABEL_6:
-  v6 = v4;
-  if (*(v4 + 6))
+  v6 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(OTEscrowRecordMetadataClientMetadata *)self setDeviceColor:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(OTEscrowRecordMetadataClientMetadata *)self setDeviceEnclosureColor:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(OTEscrowRecordMetadataClientMetadata *)self setDeviceMid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(OTEscrowRecordMetadataClientMetadata *)self setDeviceModel:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(OTEscrowRecordMetadataClientMetadata *)self setDeviceModelClass:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(OTEscrowRecordMetadataClientMetadata *)self setDeviceModelVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(OTEscrowRecordMetadataClientMetadata *)self setDeviceName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 104))
+  if (*(fromCopy + 104))
   {
-    self->_devicePlatform = *(v4 + 1);
+    self->_devicePlatform = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }
@@ -188,24 +188,24 @@ LABEL_10:
   return v15 ^ v16 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
-  v5 = *(v4 + 104);
+  v5 = *(equalCopy + 104);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_secureBackupMetadataTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_secureBackupMetadataTimestamp != *(equalCopy + 2))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
 LABEL_40:
     v13 = 0;
@@ -214,51 +214,51 @@ LABEL_40:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_secureBackupNumericPassphraseLength != *(v4 + 3))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_secureBackupNumericPassphraseLength != *(equalCopy + 3))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 104) & 8) == 0 || self->_secureBackupUsesComplexPassphrase != *(v4 + 4))
+    if ((*(equalCopy + 104) & 8) == 0 || self->_secureBackupUsesComplexPassphrase != *(equalCopy + 4))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 8) != 0)
+  else if ((*(equalCopy + 104) & 8) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 104) & 0x10) == 0 || self->_secureBackupUsesNumericPassphrase != *(v4 + 5))
+    if ((*(equalCopy + 104) & 0x10) == 0 || self->_secureBackupUsesNumericPassphrase != *(equalCopy + 5))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 0x10) != 0)
+  else if ((*(equalCopy + 104) & 0x10) != 0)
   {
     goto LABEL_40;
   }
 
   deviceColor = self->_deviceColor;
-  if (deviceColor | *(v4 + 6) && ![(NSString *)deviceColor isEqual:?])
+  if (deviceColor | *(equalCopy + 6) && ![(NSString *)deviceColor isEqual:?])
   {
     goto LABEL_40;
   }
 
   deviceEnclosureColor = self->_deviceEnclosureColor;
-  if (deviceEnclosureColor | *(v4 + 7))
+  if (deviceEnclosureColor | *(equalCopy + 7))
   {
     if (![(NSString *)deviceEnclosureColor isEqual:?])
     {
@@ -267,7 +267,7 @@ LABEL_40:
   }
 
   deviceMid = self->_deviceMid;
-  if (deviceMid | *(v4 + 8))
+  if (deviceMid | *(equalCopy + 8))
   {
     if (![(NSString *)deviceMid isEqual:?])
     {
@@ -276,7 +276,7 @@ LABEL_40:
   }
 
   deviceModel = self->_deviceModel;
-  if (deviceModel | *(v4 + 9))
+  if (deviceModel | *(equalCopy + 9))
   {
     if (![(NSString *)deviceModel isEqual:?])
     {
@@ -285,7 +285,7 @@ LABEL_40:
   }
 
   deviceModelClass = self->_deviceModelClass;
-  if (deviceModelClass | *(v4 + 10))
+  if (deviceModelClass | *(equalCopy + 10))
   {
     if (![(NSString *)deviceModelClass isEqual:?])
     {
@@ -294,7 +294,7 @@ LABEL_40:
   }
 
   deviceModelVersion = self->_deviceModelVersion;
-  if (deviceModelVersion | *(v4 + 11))
+  if (deviceModelVersion | *(equalCopy + 11))
   {
     if (![(NSString *)deviceModelVersion isEqual:?])
     {
@@ -303,7 +303,7 @@ LABEL_40:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 12))
+  if (deviceName | *(equalCopy + 12))
   {
     if (![(NSString *)deviceName isEqual:?])
     {
@@ -311,10 +311,10 @@ LABEL_40:
     }
   }
 
-  v13 = (*(v4 + 104) & 1) == 0;
+  v13 = (*(equalCopy + 104) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_devicePlatform != *(v4 + 1))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_devicePlatform != *(equalCopy + 1))
     {
       goto LABEL_40;
     }
@@ -327,9 +327,9 @@ LABEL_41:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -379,31 +379,31 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_deviceColor copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceColor copyWithZone:zone];
   v9 = *(v6 + 48);
   *(v6 + 48) = v8;
 
-  v10 = [(NSString *)self->_deviceEnclosureColor copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceEnclosureColor copyWithZone:zone];
   v11 = *(v6 + 56);
   *(v6 + 56) = v10;
 
-  v12 = [(NSString *)self->_deviceMid copyWithZone:a3];
+  v12 = [(NSString *)self->_deviceMid copyWithZone:zone];
   v13 = *(v6 + 64);
   *(v6 + 64) = v12;
 
-  v14 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v14 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v15 = *(v6 + 72);
   *(v6 + 72) = v14;
 
-  v16 = [(NSString *)self->_deviceModelClass copyWithZone:a3];
+  v16 = [(NSString *)self->_deviceModelClass copyWithZone:zone];
   v17 = *(v6 + 80);
   *(v6 + 80) = v16;
 
-  v18 = [(NSString *)self->_deviceModelVersion copyWithZone:a3];
+  v18 = [(NSString *)self->_deviceModelVersion copyWithZone:zone];
   v19 = *(v6 + 88);
   *(v6 + 88) = v18;
 
-  v20 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v20 = [(NSString *)self->_deviceName copyWithZone:zone];
   v21 = *(v6 + 96);
   *(v6 + 96) = v20;
 
@@ -416,14 +416,14 @@ LABEL_6:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_secureBackupMetadataTimestamp;
-    *(v4 + 104) |= 2u;
+    toCopy[2] = self->_secureBackupMetadataTimestamp;
+    *(toCopy + 104) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -442,8 +442,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_secureBackupNumericPassphraseLength;
-  *(v4 + 104) |= 4u;
+  toCopy[3] = self->_secureBackupNumericPassphraseLength;
+  *(toCopy + 104) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -457,69 +457,69 @@ LABEL_4:
   }
 
 LABEL_27:
-  v4[4] = self->_secureBackupUsesComplexPassphrase;
-  *(v4 + 104) |= 8u;
+  toCopy[4] = self->_secureBackupUsesComplexPassphrase;
+  *(toCopy + 104) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
-    v4[5] = self->_secureBackupUsesNumericPassphrase;
-    *(v4 + 104) |= 0x10u;
+    toCopy[5] = self->_secureBackupUsesNumericPassphrase;
+    *(toCopy + 104) |= 0x10u;
   }
 
 LABEL_6:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_deviceColor)
   {
-    [v4 setDeviceColor:?];
-    v4 = v6;
+    [toCopy setDeviceColor:?];
+    toCopy = v6;
   }
 
   if (self->_deviceEnclosureColor)
   {
     [v6 setDeviceEnclosureColor:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceMid)
   {
     [v6 setDeviceMid:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceModel)
   {
     [v6 setDeviceModel:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceModelClass)
   {
     [v6 setDeviceModelClass:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceModelVersion)
   {
     [v6 setDeviceModelVersion:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceName)
   {
     [v6 setDeviceName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_devicePlatform;
-    *(v4 + 104) |= 1u;
+    toCopy[1] = self->_devicePlatform;
+    *(toCopy + 104) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -612,12 +612,12 @@ LABEL_6:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_secureBackupMetadataTimestamp];
-    [v3 setObject:v15 forKey:@"secure_backup_metadata_timestamp"];
+    [dictionary setObject:v15 forKey:@"secure_backup_metadata_timestamp"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -638,7 +638,7 @@ LABEL_3:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_secureBackupNumericPassphraseLength];
-  [v3 setObject:v16 forKey:@"secure_backup_numeric_passphrase_length"];
+  [dictionary setObject:v16 forKey:@"secure_backup_numeric_passphrase_length"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -654,65 +654,65 @@ LABEL_4:
 
 LABEL_27:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_secureBackupUsesComplexPassphrase];
-  [v3 setObject:v17 forKey:@"secure_backup_uses_complex_passphrase"];
+  [dictionary setObject:v17 forKey:@"secure_backup_uses_complex_passphrase"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_secureBackupUsesNumericPassphrase];
-    [v3 setObject:v5 forKey:@"secure_backup_uses_numeric_passphrase"];
+    [dictionary setObject:v5 forKey:@"secure_backup_uses_numeric_passphrase"];
   }
 
 LABEL_6:
   deviceColor = self->_deviceColor;
   if (deviceColor)
   {
-    [v3 setObject:deviceColor forKey:@"device_color"];
+    [dictionary setObject:deviceColor forKey:@"device_color"];
   }
 
   deviceEnclosureColor = self->_deviceEnclosureColor;
   if (deviceEnclosureColor)
   {
-    [v3 setObject:deviceEnclosureColor forKey:@"device_enclosure_color"];
+    [dictionary setObject:deviceEnclosureColor forKey:@"device_enclosure_color"];
   }
 
   deviceMid = self->_deviceMid;
   if (deviceMid)
   {
-    [v3 setObject:deviceMid forKey:@"device_mid"];
+    [dictionary setObject:deviceMid forKey:@"device_mid"];
   }
 
   deviceModel = self->_deviceModel;
   if (deviceModel)
   {
-    [v3 setObject:deviceModel forKey:@"device_model"];
+    [dictionary setObject:deviceModel forKey:@"device_model"];
   }
 
   deviceModelClass = self->_deviceModelClass;
   if (deviceModelClass)
   {
-    [v3 setObject:deviceModelClass forKey:@"device_model_class"];
+    [dictionary setObject:deviceModelClass forKey:@"device_model_class"];
   }
 
   deviceModelVersion = self->_deviceModelVersion;
   if (deviceModelVersion)
   {
-    [v3 setObject:deviceModelVersion forKey:@"device_model_version"];
+    [dictionary setObject:deviceModelVersion forKey:@"device_model_version"];
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
-    [v3 setObject:deviceName forKey:@"device_name"];
+    [dictionary setObject:deviceName forKey:@"device_name"];
   }
 
   if (*&self->_has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_devicePlatform];
-    [v3 setObject:v13 forKey:@"device_platform"];
+    [dictionary setObject:v13 forKey:@"device_platform"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -721,15 +721,15 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = OTEscrowRecordMetadataClientMetadata;
   v4 = [(OTEscrowRecordMetadataClientMetadata *)&v8 description];
-  v5 = [(OTEscrowRecordMetadataClientMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(OTEscrowRecordMetadataClientMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasSecureBackupUsesNumericPassphrase:(BOOL)a3
+- (void)setHasSecureBackupUsesNumericPassphrase:(BOOL)passphrase
 {
-  if (a3)
+  if (passphrase)
   {
     v3 = 16;
   }
@@ -742,9 +742,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSecureBackupUsesComplexPassphrase:(BOOL)a3
+- (void)setHasSecureBackupUsesComplexPassphrase:(BOOL)passphrase
 {
-  if (a3)
+  if (passphrase)
   {
     v3 = 8;
   }
@@ -757,9 +757,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSecureBackupNumericPassphraseLength:(BOOL)a3
+- (void)setHasSecureBackupNumericPassphraseLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 4;
   }
@@ -772,9 +772,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSecureBackupMetadataTimestamp:(BOOL)a3
+- (void)setHasSecureBackupMetadataTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }

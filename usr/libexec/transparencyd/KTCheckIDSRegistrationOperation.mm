@@ -1,19 +1,19 @@
 @interface KTCheckIDSRegistrationOperation
-+ (BOOL)checkPCSKTSignature:(id)a3 data:(id)a4 signature:(id)a5;
++ (BOOL)checkPCSKTSignature:(id)signature data:(id)data signature:(id)a5;
 - (BOOL)hasRecentlyDoneHSA2Upsell;
 - (KTCheckIDSRegistrationInterface)idsRegistrationInterface;
-- (id)messageForResult:(int64_t)a3;
-- (int64_t)getPriorityIDSResult:(id)a3;
+- (id)messageForResult:(int64_t)result;
+- (int64_t)getPriorityIDSResult:(id)result;
 - (void)groupStart;
-- (void)pokeAndUpdateIDSState:(id)a3 withPublicKey:(id)a4;
-- (void)setCheckIDSError:(int64_t)a3;
+- (void)pokeAndUpdateIDSState:(id)state withPublicKey:(id)key;
+- (void)setCheckIDSError:(int64_t)error;
 @end
 
 @implementation KTCheckIDSRegistrationOperation
 
-+ (BOOL)checkPCSKTSignature:(id)a3 data:(id)a4 signature:(id)a5
++ (BOOL)checkPCSKTSignature:(id)signature data:(id)data signature:(id)a5
 {
-  v6 = a4;
+  dataCopy = data;
   v7 = a5;
   v8 = PCSPublicIdentityCreateWithPublicKeyInfo();
   if (v8)
@@ -36,22 +36,22 @@
   v3 = +[NSDate now];
   v4 = [v3 dateByAddingTimeInterval:-600.0];
 
-  v5 = [(KTCheckIDSRegistrationOperation *)self deps];
-  v6 = [v5 idsAccountTracker];
-  v7 = [v6 timeOfLastUpsell];
-  v8 = [v7 compare:v4] == 1;
+  deps = [(KTCheckIDSRegistrationOperation *)self deps];
+  idsAccountTracker = [deps idsAccountTracker];
+  timeOfLastUpsell = [idsAccountTracker timeOfLastUpsell];
+  v8 = [timeOfLastUpsell compare:v4] == 1;
 
   return v8;
 }
 
-- (void)pokeAndUpdateIDSState:(id)a3 withPublicKey:(id)a4
+- (void)pokeAndUpdateIDSState:(id)state withPublicKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KTCheckIDSRegistrationOperation *)self application];
-  v9 = [TransparencyApplication idsServiceForIdentifier:v8];
+  stateCopy = state;
+  keyCopy = key;
+  application = [(KTCheckIDSRegistrationOperation *)self application];
+  v9 = [TransparencyApplication idsServiceForIdentifier:application];
 
-  v10 = [v6 objectForKeyedSubscript:v9];
+  v10 = [stateCopy objectForKeyedSubscript:v9];
   if ([v10 count])
   {
     v11 = +[NSMutableSet set];
@@ -123,8 +123,8 @@
 
             v45 = @"waitLonger";
 LABEL_77:
-            v50 = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
-            [v50 triggerRegistrationDataNeedsUpdate:v45];
+            idsRegistrationInterface = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
+            [idsRegistrationInterface triggerRegistrationDataNeedsUpdate:v45];
 
             goto LABEL_78;
           }
@@ -151,9 +151,9 @@ LABEL_20:
           }
 
           v24 = v18;
-          v25 = [v20 ktDataForRegistration];
+          ktDataForRegistration = [v20 ktDataForRegistration];
 
-          if (!v25)
+          if (!ktDataForRegistration)
           {
             if (qword_10039CA50 != -1)
             {
@@ -174,9 +174,9 @@ LABEL_20:
             goto LABEL_20;
           }
 
-          v26 = [v20 ktAccountKey];
+          ktAccountKey = [v20 ktAccountKey];
 
-          if (!v26)
+          if (!ktAccountKey)
           {
             if (qword_10039CA50 != -1)
             {
@@ -197,8 +197,8 @@ LABEL_20:
             goto LABEL_20;
           }
 
-          v27 = [v20 ktAccountKey];
-          v28 = [v27 isEqual:v7];
+          ktAccountKey2 = [v20 ktAccountKey];
+          v28 = [ktAccountKey2 isEqual:keyCopy];
 
           if ((v28 & 1) == 0)
           {
@@ -222,24 +222,24 @@ LABEL_20:
             goto LABEL_20;
           }
 
-          v53 = v7;
-          v54 = v6;
+          v53 = keyCopy;
+          v54 = stateCopy;
           v29 = objc_opt_class();
-          v30 = [v20 ktAccountKey];
-          v31 = [v20 ktDataForRegistration];
-          v32 = [v20 deviceSignature];
-          LOBYTE(v29) = [v29 checkPCSKTSignature:v30 data:v31 signature:v32];
+          ktAccountKey3 = [v20 ktAccountKey];
+          ktDataForRegistration2 = [v20 ktDataForRegistration];
+          deviceSignature = [v20 deviceSignature];
+          LOBYTE(v29) = [v29 checkPCSKTSignature:ktAccountKey3 data:ktDataForRegistration2 signature:deviceSignature];
 
           if ((v29 & 1) == 0)
           {
-            v6 = v54;
+            stateCopy = v54;
             v17 = v58;
             if (qword_10039CA50 != -1)
             {
               sub_10025CC1C();
             }
 
-            v7 = v53;
+            keyCopy = v53;
             v18 = v24;
             v39 = v24[331];
             v11 = v59;
@@ -254,21 +254,21 @@ LABEL_20:
             goto LABEL_20;
           }
 
-          v6 = v54;
+          stateCopy = v54;
           v17 = v58;
           if (qword_10039CA50 != -1)
           {
             sub_10025CC44();
           }
 
-          v7 = v53;
+          keyCopy = v53;
           v33 = v24[331];
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
             v34 = v33;
-            v35 = [v20 registrationType];
+            registrationType = [v20 registrationType];
             *buf = v52;
-            LODWORD(v66) = v35;
+            LODWORD(v66) = registrationType;
             _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "IDS returned valid registration, type %d", buf, 8u);
           }
 
@@ -301,8 +301,8 @@ LABEL_21:
             goto LABEL_69;
           }
 
-          v41 = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
-          [v41 notifyIDSRegistrationCorrect];
+          idsRegistrationInterface2 = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
+          [idsRegistrationInterface2 notifyIDSRegistrationCorrect];
 
           [(KTCheckIDSRegistrationOperation *)self setCheckIDSResult:1];
           goto LABEL_80;
@@ -317,9 +317,9 @@ LABEL_69:
       [(KTCheckIDSRegistrationOperation *)self setCheckIDSError:v46];
       if ((v46 - 3) <= 2)
       {
-        v47 = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
+        idsRegistrationInterface3 = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
         v48 = [(KTCheckIDSRegistrationOperation *)self messageForResult:v46];
-        [v47 triggerRegistrationDataNeedsUpdate:v48];
+        [idsRegistrationInterface3 triggerRegistrationDataNeedsUpdate:v48];
       }
     }
 
@@ -362,45 +362,45 @@ LABEL_78:
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "IDS returned no registration states for service %@", buf, 0xCu);
     }
 
-    v43 = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
-    [v43 triggerRegistrationDataNeedsUpdate:@"missing"];
+    idsRegistrationInterface4 = [(KTCheckIDSRegistrationOperation *)self idsRegistrationInterface];
+    [idsRegistrationInterface4 triggerRegistrationDataNeedsUpdate:@"missing"];
 
     [(KTCheckIDSRegistrationOperation *)self setCheckIDSError:2];
   }
 }
 
-- (id)messageForResult:(int64_t)a3
+- (id)messageForResult:(int64_t)result
 {
-  if ((a3 - 3) > 2)
+  if ((result - 3) > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1003283A0 + a3 - 3);
+    return *(&off_1003283A0 + result - 3);
   }
 }
 
-- (int64_t)getPriorityIDSResult:(id)a3
+- (int64_t)getPriorityIDSResult:(id)result
 {
-  v3 = a3;
-  if ([v3 containsObject:&off_10033D038])
+  resultCopy = result;
+  if ([resultCopy containsObject:&off_10033D038])
   {
     v4 = 3;
   }
 
-  else if ([v3 containsObject:&off_10033D020])
+  else if ([resultCopy containsObject:&off_10033D020])
   {
     v4 = 4;
   }
 
-  else if ([v3 containsObject:&off_10033D008])
+  else if ([resultCopy containsObject:&off_10033D008])
   {
     v4 = 5;
   }
 
-  else if ([v3 containsObject:&off_10033CFF0])
+  else if ([resultCopy containsObject:&off_10033CFF0])
   {
     v4 = 2;
   }
@@ -415,9 +415,9 @@ LABEL_78:
 
 - (void)groupStart
 {
-  v3 = [(KTCheckIDSRegistrationOperation *)self pcsOperation];
+  pcsOperation = [(KTCheckIDSRegistrationOperation *)self pcsOperation];
   v16 = 0;
-  v4 = [v3 getCurrentKTPCSIdentity:off_10038B2A0 error:&v16];
+  v4 = [pcsOperation getCurrentKTPCSIdentity:off_10038B2A0 error:&v16];
   v5 = v16;
 
   if (v4)
@@ -427,12 +427,12 @@ LABEL_78:
     v7 = objc_alloc_init(NSOperation);
     [(KTCheckIDSRegistrationOperation *)self setFinishedOp:v7];
 
-    v8 = [(KTCheckIDSRegistrationOperation *)self finishedOp];
-    [(KTGroupOperation *)self dependOnBeforeGroupFinished:v8];
+    finishedOp = [(KTCheckIDSRegistrationOperation *)self finishedOp];
+    [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
     objc_initWeak(&location, self);
-    v9 = [(KTCheckIDSRegistrationOperation *)self deps];
-    v10 = [v9 idsOperations];
+    deps = [(KTCheckIDSRegistrationOperation *)self deps];
+    idsOperations = [deps idsOperations];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001E5060;
@@ -440,7 +440,7 @@ LABEL_78:
     objc_copyWeak(&v14, &location);
     v11 = v6;
     v13 = v11;
-    [v10 getCurrentRegistrationState:0 withCompletion:v12];
+    [idsOperations getCurrentRegistrationState:0 withCompletion:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -452,10 +452,10 @@ LABEL_78:
   }
 }
 
-- (void)setCheckIDSError:(int64_t)a3
+- (void)setCheckIDSError:(int64_t)error
 {
   [(KTCheckIDSRegistrationOperation *)self setCheckIDSResult:?];
-  v6 = [NSError errorWithDomain:@"KTErrorDomainCheckIDS" code:a3 userInfo:0];
+  v6 = [NSError errorWithDomain:@"KTErrorDomainCheckIDS" code:error userInfo:0];
   v5 = [TransparencyError errorWithDomain:kTransparencyErrorServer code:-365 underlyingError:v6 userinfo:0 description:@"CheckIDS failed"];
   [(KTResultOperation *)self setError:v5];
 }

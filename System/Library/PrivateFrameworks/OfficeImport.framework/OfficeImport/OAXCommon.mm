@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[CXNamespace alloc] initWithUri:"http://schemas.openxmlformats.org/drawingml/2006/compatibility"];
     v3 = OAXCompatNamespace;

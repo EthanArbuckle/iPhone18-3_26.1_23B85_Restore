@@ -1,9 +1,9 @@
 @interface TCCDMessageController
 + (id)sharedMessageControllerForCurrentPlatform;
 - (TCCDMessageController)init;
-- (void)_sendMessage:(id)a3 handler:(id)a4;
-- (void)sendMessage:(id)a3 ofType:(id)a4 handler:(id)a5;
-- (void)setIncomingMessageType:(id)a3 handler:(id)a4;
+- (void)_sendMessage:(id)message handler:(id)handler;
+- (void)sendMessage:(id)message ofType:(id)type handler:(id)handler;
+- (void)setIncomingMessageType:(id)type handler:(id)handler;
 @end
 
 @implementation TCCDMessageController
@@ -49,21 +49,21 @@
   return v2;
 }
 
-- (void)setIncomingMessageType:(id)a3 handler:(id)a4
+- (void)setIncomingMessageType:(id)type handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  typeCopy = type;
+  handlerCopy = handler;
+  if (typeCopy)
   {
-    v8 = [(TCCDMessageController *)self queue];
+    queue = [(TCCDMessageController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100014A10;
     block[3] = &unk_1000A5428;
-    v12 = v7;
+    v12 = handlerCopy;
     block[4] = self;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v11 = typeCopy;
+    dispatch_async(queue, block);
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -82,18 +82,18 @@
   }
 }
 
-- (void)sendMessage:(id)a3 ofType:(id)a4 handler:(id)a5
+- (void)sendMessage:(id)message ofType:(id)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  messageCopy = message;
+  typeCopy = type;
+  handlerCopy = handler;
+  if (typeCopy)
   {
-    v11 = [NSMutableDictionary dictionaryWithDictionary:v8];
-    v12 = [v9 copy];
+    v11 = [NSMutableDictionary dictionaryWithDictionary:messageCopy];
+    v12 = [typeCopy copy];
     [v11 setObject:v12 forKeyedSubscript:@"TCCDMessageTypeKey"];
 
-    [(TCCDMessageController *)self _sendMessage:v11 handler:v10];
+    [(TCCDMessageController *)self _sendMessage:v11 handler:handlerCopy];
   }
 
   else if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_ERROR))
@@ -102,7 +102,7 @@
   }
 }
 
-- (void)_sendMessage:(id)a3 handler:(id)a4
+- (void)_sendMessage:(id)message handler:(id)handler
 {
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_ERROR))
   {

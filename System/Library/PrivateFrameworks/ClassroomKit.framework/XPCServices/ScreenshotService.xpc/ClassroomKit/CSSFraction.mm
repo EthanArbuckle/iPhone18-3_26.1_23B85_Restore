@@ -1,14 +1,14 @@
 @interface CSSFraction
-- (CSSFraction)initWithNumerator:(unint64_t)a3 denominator:(unint64_t)a4;
+- (CSSFraction)initWithNumerator:(unint64_t)numerator denominator:(unint64_t)denominator;
 - (CSSFraction)simplifiedFraction;
 - (unint64_t)greatestCommonDivisor;
 @end
 
 @implementation CSSFraction
 
-- (CSSFraction)initWithNumerator:(unint64_t)a3 denominator:(unint64_t)a4
+- (CSSFraction)initWithNumerator:(unint64_t)numerator denominator:(unint64_t)denominator
 {
-  if (!a4)
+  if (!denominator)
   {
     sub_10000618C(a2, self);
   }
@@ -18,8 +18,8 @@
   result = [(CSSFraction *)&v8 init];
   if (result)
   {
-    result->_numerator = a3;
-    result->_denominator = a4;
+    result->_numerator = numerator;
+    result->_denominator = denominator;
   }
 
   return result;
@@ -27,29 +27,29 @@
 
 - (CSSFraction)simplifiedFraction
 {
-  v3 = [(CSSFraction *)self greatestCommonDivisor];
-  v4 = [objc_alloc(objc_opt_class()) initWithNumerator:-[CSSFraction numerator](self denominator:{"numerator") / v3, -[CSSFraction denominator](self, "denominator") / v3}];
+  greatestCommonDivisor = [(CSSFraction *)self greatestCommonDivisor];
+  v4 = [objc_alloc(objc_opt_class()) initWithNumerator:-[CSSFraction numerator](self denominator:{"numerator") / greatestCommonDivisor, -[CSSFraction denominator](self, "denominator") / greatestCommonDivisor}];
 
   return v4;
 }
 
 - (unint64_t)greatestCommonDivisor
 {
-  v3 = [(CSSFraction *)self numerator];
-  v4 = [(CSSFraction *)self denominator];
-  if (!v3)
+  numerator = [(CSSFraction *)self numerator];
+  denominator = [(CSSFraction *)self denominator];
+  if (!numerator)
   {
-    return v4;
+    return denominator;
   }
 
   do
   {
-    v5 = v3;
-    v3 = v4 % v3;
-    v4 = v5;
+    v5 = numerator;
+    numerator = denominator % numerator;
+    denominator = v5;
   }
 
-  while (v3);
+  while (numerator);
   return v5;
 }
 

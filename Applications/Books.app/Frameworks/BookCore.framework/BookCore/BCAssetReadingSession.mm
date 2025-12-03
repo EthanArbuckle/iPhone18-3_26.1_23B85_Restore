@@ -6,12 +6,12 @@
 
 - (id)description
 {
-  v3 = [(BCAssetReadingSession *)self assetID];
-  v4 = [(BCAssetReadingSession *)self sessionID];
-  v5 = [(BCAssetReadingSession *)self timeOpened];
-  v6 = [(BCAssetReadingSession *)self timeClosed];
-  v7 = [(BCAssetReadingSession *)self timeUpdated];
-  v8 = [NSString stringWithFormat:@"<BCAssetReadingSession:  %p> assetID: %@, sessionID: %@, timeOpened: %@, timeClosed: %@, timeUpdated: %@", self, v3, v4, v5, v6, v7];
+  assetID = [(BCAssetReadingSession *)self assetID];
+  sessionID = [(BCAssetReadingSession *)self sessionID];
+  timeOpened = [(BCAssetReadingSession *)self timeOpened];
+  timeClosed = [(BCAssetReadingSession *)self timeClosed];
+  timeUpdated = [(BCAssetReadingSession *)self timeUpdated];
+  v8 = [NSString stringWithFormat:@"<BCAssetReadingSession:  %p> assetID: %@, sessionID: %@, timeOpened: %@, timeClosed: %@, timeUpdated: %@", self, assetID, sessionID, timeOpened, timeClosed, timeUpdated];
 
   return v8;
 }

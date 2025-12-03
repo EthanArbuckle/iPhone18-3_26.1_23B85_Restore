@@ -1,78 +1,78 @@
 @interface CRLGradientFillStop
-+ (id)gradientStopWithColor:(id)a3 fraction:(double)a4;
-+ (id)gradientStopWithColor:(id)a3 fraction:(double)a4 inflection:(double)a5;
-- (BOOL)isEqual:(id)a3;
-- (CRLGradientFillStop)initWithColor:(id)a3 fraction:(double)a4 inflection:(double)a5;
-- (CRLGradientFillStop)initWithGradientStop:(id)a3;
-- (id)gradientStopWithColor:(id)a3;
-- (id)gradientStopWithInflection:(double)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
++ (id)gradientStopWithColor:(id)color fraction:(double)fraction;
++ (id)gradientStopWithColor:(id)color fraction:(double)fraction inflection:(double)inflection;
+- (BOOL)isEqual:(id)equal;
+- (CRLGradientFillStop)initWithColor:(id)color fraction:(double)fraction inflection:(double)inflection;
+- (CRLGradientFillStop)initWithGradientStop:(id)stop;
+- (id)gradientStopWithColor:(id)color;
+- (id)gradientStopWithInflection:(double)inflection;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRLGradientFillStop
 
-- (CRLGradientFillStop)initWithColor:(id)a3 fraction:(double)a4 inflection:(double)a5
+- (CRLGradientFillStop)initWithColor:(id)color fraction:(double)fraction inflection:(double)inflection
 {
-  v8 = a3;
+  colorCopy = color;
   v12.receiver = self;
   v12.super_class = CRLGradientFillStop;
   v9 = [(CRLGradientFillStop *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(CRLGradientFillStop *)v9 p_setColor:v8];
-    [(CRLGradientFillStop *)v10 p_setFraction:a4];
-    [(CRLGradientFillStop *)v10 p_setInflection:a5];
+    [(CRLGradientFillStop *)v9 p_setColor:colorCopy];
+    [(CRLGradientFillStop *)v10 p_setFraction:fraction];
+    [(CRLGradientFillStop *)v10 p_setInflection:inflection];
   }
 
   return v10;
 }
 
-- (CRLGradientFillStop)initWithGradientStop:(id)a3
+- (CRLGradientFillStop)initWithGradientStop:(id)stop
 {
   if (self)
   {
-    v3 = self;
-    v4 = a3;
-    v5 = [v4 color];
-    [v4 fraction];
+    selfCopy = self;
+    stopCopy = stop;
+    color = [stopCopy color];
+    [stopCopy fraction];
     v7 = v6;
-    [v4 inflection];
+    [stopCopy inflection];
     v9 = v8;
 
-    v10 = [(CRLGradientFillStop *)v3 initWithColor:v5 fraction:v7 inflection:v9];
+    v10 = [(CRLGradientFillStop *)selfCopy initWithColor:color fraction:v7 inflection:v9];
     return v10;
   }
 
   return self;
 }
 
-+ (id)gradientStopWithColor:(id)a3 fraction:(double)a4
++ (id)gradientStopWithColor:(id)color fraction:(double)fraction
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithColor:v6 fraction:a4 inflection:0.5];
+  colorCopy = color;
+  v7 = [[self alloc] initWithColor:colorCopy fraction:fraction inflection:0.5];
 
   return v7;
 }
 
-+ (id)gradientStopWithColor:(id)a3 fraction:(double)a4 inflection:(double)a5
++ (id)gradientStopWithColor:(id)color fraction:(double)fraction inflection:(double)inflection
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithColor:v8 fraction:a4 inflection:a5];
+  colorCopy = color;
+  v9 = [[self alloc] initWithColor:colorCopy fraction:fraction inflection:inflection];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6 && ((mFraction = self->mFraction, [v6 fraction], mFraction == v8) || vabdd_f64(mFraction, v8) < fabs(v8 * 0.000000999999997)) && (mColor = self->mColor, objc_msgSend(v6, "color"), v10 = objc_claimAutoreleasedReturnValue(), LODWORD(mColor) = -[CRLColor isEqual:](mColor, "isEqual:", v10), v10, mColor))
   {
@@ -90,35 +90,35 @@
   return v13;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CRLMutableGradientFillStop allocWithZone:a3];
-  v5 = [(CRLGradientFillStop *)self color];
+  v4 = [CRLMutableGradientFillStop allocWithZone:zone];
+  color = [(CRLGradientFillStop *)self color];
   [(CRLGradientFillStop *)self fraction];
   v7 = v6;
   [(CRLGradientFillStop *)self inflection];
-  v9 = [(CRLGradientFillStop *)v4 initWithColor:v5 fraction:v7 inflection:v8];
+  v9 = [(CRLGradientFillStop *)v4 initWithColor:color fraction:v7 inflection:v8];
 
   return v9;
 }
 
-- (id)gradientStopWithColor:(id)a3
+- (id)gradientStopWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_opt_class();
   [(CRLGradientFillStop *)self fraction];
   v7 = v6;
   [(CRLGradientFillStop *)self inflection];
-  v9 = [v5 gradientStopWithColor:v4 fraction:v7 inflection:v8];
+  v9 = [v5 gradientStopWithColor:colorCopy fraction:v7 inflection:v8];
 
   return v9;
 }
 
-- (id)gradientStopWithInflection:(double)a3
+- (id)gradientStopWithInflection:(double)inflection
 {
-  v4 = [(CRLGradientFillStop *)self color];
+  color = [(CRLGradientFillStop *)self color];
   [(CRLGradientFillStop *)self fraction];
-  v5 = [CRLGradientFillStop gradientStopWithColor:"gradientStopWithColor:fraction:inflection:" fraction:v4 inflection:?];
+  v5 = [CRLGradientFillStop gradientStopWithColor:"gradientStopWithColor:fraction:inflection:" fraction:color inflection:?];
 
   return v5;
 }

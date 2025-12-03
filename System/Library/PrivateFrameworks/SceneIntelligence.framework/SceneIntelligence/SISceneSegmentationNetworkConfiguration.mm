@@ -1,6 +1,6 @@
 @interface SISceneSegmentationNetworkConfiguration
 - (SISceneSegmentationNetworkConfiguration)init;
-- (void)setNetworkModeEnum:(int64_t)a3;
+- (void)setNetworkModeEnum:(int64_t)enum;
 @end
 
 @implementation SISceneSegmentationNetworkConfiguration
@@ -30,23 +30,23 @@
   return v3;
 }
 
-- (void)setNetworkModeEnum:(int64_t)a3
+- (void)setNetworkModeEnum:(int64_t)enum
 {
   networkMode = self->super._networkMode;
   v6 = &stru_282F2BE40;
-  if (a3 == 1)
+  if (enum == 1)
   {
     v6 = @"res256x192_rgb_landscape";
   }
 
-  if (a3 == 2)
+  if (enum == 2)
   {
     v6 = @"res192x256_rgb_portrait";
   }
 
   self->super._networkMode = &v6->isa;
 
-  self->_modelConfig = a3;
+  self->_modelConfig = enum;
 }
 
 @end

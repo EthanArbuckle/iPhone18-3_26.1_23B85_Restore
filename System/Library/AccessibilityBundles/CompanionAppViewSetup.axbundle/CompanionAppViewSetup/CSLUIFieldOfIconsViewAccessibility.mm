@@ -1,52 +1,52 @@
 @interface CSLUIFieldOfIconsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityScrollToChild:(id)a3 animated:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityScrollToChild:(id)child animated:(BOOL)animated;
 - (BOOL)accessibilityScrollDownPage;
 - (BOOL)accessibilityScrollUpPage;
 - (CGSize)_accessibilityScrollSize;
-- (Hex)_axHexForIconView:(id)a3;
+- (Hex)_axHexForIconView:(id)view;
 - (id)_accessibilityHitTestSubviews;
 - (id)accessibilityElements;
-- (void)_accessibilityAnnounceUpdatedPositionForElement:(id)a3;
+- (void)_accessibilityAnnounceUpdatedPositionForElement:(id)element;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityMoveElement:(id)a3 left:(BOOL)a4;
-- (void)_accessibilityMoveIconLeft:(id)a3;
-- (void)_accessibilityMoveIconRight:(id)a3;
-- (void)_accessibilityStartJiggleMode:(id)a3;
+- (void)_accessibilityMoveElement:(id)element left:(BOOL)left;
+- (void)_accessibilityMoveIconLeft:(id)left;
+- (void)_accessibilityMoveIconRight:(id)right;
+- (void)_accessibilityStartJiggleMode:(id)mode;
 - (void)_axUpdateIconElements;
-- (void)hexAppGraph:(id)a3 addedNodes:(id)a4 removedNodes:(id)a5 movedNodes:(id)a6;
+- (void)hexAppGraph:(id)graph addedNodes:(id)nodes removedNodes:(id)removedNodes movedNodes:(id)movedNodes;
 @end
 
 @implementation CSLUIFieldOfIconsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"hexAppGraph: addedNodes: removedNodes: movedNodes:" withFullSignature:{"v", "@", "@", "@", "@", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"contentOffsetToCenterHex:" withFullSignature:{"{CGPoint=dd}", "{Hex=ii}", 0}];
-  [v3 validateClass:@"CSLUIIconView" hasInstanceMethod:@"node" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSLHexAppNode" hasInstanceMethod:@"hex" withFullSignature:{"{Hex=ii}", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"setContentOffset:animated:" withFullSignature:{"v", "{CGPoint=dd}", "B", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"setLayout: percentComplete: animated: options:" withFullSignature:{"v", "@", "d", "B", "Q", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"inertialUpdater:willDecelerateWithTarget:" withFullSignature:{"{CGPoint=dd}", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_inertialUpdater" withType:"CSLUIInertialUpdater"];
-  [v3 validateClass:@"CSLUIInertialUpdater" hasInstanceMethod:@"addDragDelta:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_didPanDrag" withType:"B"];
-  [v3 validateClass:@"CSLHexAppGraph" hasInstanceMethod:@"moveNode: toHex: final:" withFullSignature:{"v", "@", "{Hex=ii}", "B", 0}];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_iconGraph" withType:"CSLHexAppGraph"];
-  [v3 validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_actionDelegate" withType:"<CSLUIHexIconActionDelegate>"];
-  [v3 validateProtocol:@"CSLUIHexIconActionDelegate" hasMethod:@"handleLongPress" isInstanceMethod:1 isRequired:1];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"hexAppGraph: addedNodes: removedNodes: movedNodes:" withFullSignature:{"v", "@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"contentOffsetToCenterHex:" withFullSignature:{"{CGPoint=dd}", "{Hex=ii}", 0}];
+  [validationsCopy validateClass:@"CSLUIIconView" hasInstanceMethod:@"node" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSLHexAppNode" hasInstanceMethod:@"hex" withFullSignature:{"{Hex=ii}", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"setContentOffset:animated:" withFullSignature:{"v", "{CGPoint=dd}", "B", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"setLayout: percentComplete: animated: options:" withFullSignature:{"v", "@", "d", "B", "Q", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceMethod:@"inertialUpdater:willDecelerateWithTarget:" withFullSignature:{"{CGPoint=dd}", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_inertialUpdater" withType:"CSLUIInertialUpdater"];
+  [validationsCopy validateClass:@"CSLUIInertialUpdater" hasInstanceMethod:@"addDragDelta:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_didPanDrag" withType:"B"];
+  [validationsCopy validateClass:@"CSLHexAppGraph" hasInstanceMethod:@"moveNode: toHex: final:" withFullSignature:{"v", "@", "{Hex=ii}", "B", 0}];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_iconGraph" withType:"CSLHexAppGraph"];
+  [validationsCopy validateClass:@"CSLUIFieldOfIconsView" hasInstanceVariable:@"_actionDelegate" withType:"<CSLUIHexIconActionDelegate>"];
+  [validationsCopy validateProtocol:@"CSLUIHexIconActionDelegate" hasMethod:@"handleLongPress" isInstanceMethod:1 isRequired:1];
 }
 
-- (BOOL)_accessibilityScrollToChild:(id)a3 animated:(BOOL)a4
+- (BOOL)_accessibilityScrollToChild:(id)child animated:(BOOL)animated
 {
-  v4 = a3;
+  childCopy = child;
   NSSelectorFromString(&cfstr_Node.isa);
   v5 = objc_opt_respondsToSelector();
   if (v5)
   {
-    v7 = v4;
+    v7 = childCopy;
     AXPerformSafeBlock();
   }
 
@@ -81,7 +81,7 @@ uint64_t __75__CSLUIFieldOfIconsViewAccessibility__accessibilityScrollToChild_an
     v14 = 3221225472;
     v15 = __63__CSLUIFieldOfIconsViewAccessibility_accessibilityScrollUpPage__block_invoke;
     v16 = &unk_29F2B4588;
-    v17 = self;
+    selfCopy = self;
     v18 = v3;
     v19 = v4;
   }
@@ -164,9 +164,9 @@ void __65__CSLUIFieldOfIconsViewAccessibility_accessibilityScrollDownPage__block
   [v2 addDragDelta:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (Hex)_axHexForIconView:(id)a3
+- (Hex)_axHexForIconView:(id)view
 {
-  v3 = [a3 safeValueForKey:@"node"];
+  v3 = [view safeValueForKey:@"node"];
   v4 = [v3 safeIvarForKey:@"_hex"];
 
   if (v4)
@@ -186,13 +186,13 @@ void __65__CSLUIFieldOfIconsViewAccessibility_accessibilityScrollDownPage__block
   if (([(CSLUIFieldOfIconsViewAccessibility *)self safeBoolForKey:@"_didPanDrag"]& 1) == 0)
   {
     v3 = [(CSLUIFieldOfIconsViewAccessibility *)self safeValueForKey:@"_iconViewDict"];
-    v4 = [v3 allValues];
+    allValues = [v3 allValues];
     v36[0] = MEMORY[0x29EDCA5F8];
     v36[1] = 3221225472;
     v36[2] = __59__CSLUIFieldOfIconsViewAccessibility__axUpdateIconElements__block_invoke;
     v36[3] = &unk_29F2B45D8;
     v36[4] = self;
-    v5 = [v4 sortedArrayUsingComparator:v36];
+    v5 = [allValues sortedArrayUsingComparator:v36];
 
     v34 = 0u;
     v35 = 0u;
@@ -270,8 +270,8 @@ void __65__CSLUIFieldOfIconsViewAccessibility_accessibilityScrollDownPage__block
 
     v27 = [obj mutableCopy];
     [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilitySetRetainedValue:v27 forKey:@"AccessibilityElementsKey"];
-    v28 = [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilityFirstElementForFocus];
-    [v28 _setAccessibilityServesAsFirstElement:1];
+    _accessibilityFirstElementForFocus = [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilityFirstElementForFocus];
+    [_accessibilityFirstElementForFocus _setAccessibilityServesAsFirstElement:1];
 
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
@@ -338,11 +338,11 @@ uint64_t __59__CSLUIFieldOfIconsViewAccessibility__axUpdateIconElements__block_i
   return v3;
 }
 
-- (void)hexAppGraph:(id)a3 addedNodes:(id)a4 removedNodes:(id)a5 movedNodes:(id)a6
+- (void)hexAppGraph:(id)graph addedNodes:(id)nodes removedNodes:(id)removedNodes movedNodes:(id)movedNodes
 {
   v7.receiver = self;
   v7.super_class = CSLUIFieldOfIconsViewAccessibility;
-  [(CSLUIFieldOfIconsViewAccessibility *)&v7 hexAppGraph:a3 addedNodes:a4 removedNodes:a5 movedNodes:a6];
+  [(CSLUIFieldOfIconsViewAccessibility *)&v7 hexAppGraph:graph addedNodes:nodes removedNodes:removedNodes movedNodes:movedNodes];
   [(CSLUIFieldOfIconsViewAccessibility *)self _axUpdateIconElements];
 }
 
@@ -357,7 +357,7 @@ uint64_t __59__CSLUIFieldOfIconsViewAccessibility__axUpdateIconElements__block_i
 - (id)_accessibilityHitTestSubviews
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -380,10 +380,10 @@ uint64_t __59__CSLUIFieldOfIconsViewAccessibility__axUpdateIconElements__block_i
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) subviews];
-        if (v10)
+        subviews = [*(*(&v13 + 1) + 8 * i) subviews];
+        if (subviews)
         {
-          [v3 addObjectsFromArray:v10];
+          [array addObjectsFromArray:subviews];
         }
       }
 
@@ -395,32 +395,32 @@ uint64_t __59__CSLUIFieldOfIconsViewAccessibility__axUpdateIconElements__block_i
 
   v11 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return array;
 }
 
-- (void)_accessibilityStartJiggleMode:(id)a3
+- (void)_accessibilityStartJiggleMode:(id)mode
 {
   v4 = [(CSLUIFieldOfIconsViewAccessibility *)self safeValueForKey:@"_actionDelegate"];
   v3 = [v4 safeValueForKey:@"handleLongPress"];
 }
 
-- (void)_accessibilityMoveElement:(id)a3 left:(BOOL)a4
+- (void)_accessibilityMoveElement:(id)element left:(BOOL)left
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CSLUIFieldOfIconsViewAccessibility *)self accessibilityElements];
-  v8 = [v7 indexOfObject:v6];
+  leftCopy = left;
+  elementCopy = element;
+  accessibilityElements = [(CSLUIFieldOfIconsViewAccessibility *)self accessibilityElements];
+  v8 = [accessibilityElements indexOfObject:elementCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;
-    if (v8 && v4)
+    if (v8 && leftCopy)
     {
       v10 = v8 - 1;
     }
 
     else
     {
-      if (v4 || v8 >= [v7 count] - 1)
+      if (leftCopy || v8 >= [accessibilityElements count] - 1)
       {
         goto LABEL_10;
       }
@@ -430,8 +430,8 @@ uint64_t __59__CSLUIFieldOfIconsViewAccessibility__axUpdateIconElements__block_i
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v6 safeValueForKey:@"node"];
-      v12 = [v7 objectAtIndex:v10];
+      v11 = [elementCopy safeValueForKey:@"node"];
+      v12 = [accessibilityElements objectAtIndex:v10];
       [(CSLUIFieldOfIconsViewAccessibility *)self _axHexForIconView:v12];
 
       v16 = v11;
@@ -443,8 +443,8 @@ uint64_t __59__CSLUIFieldOfIconsViewAccessibility__axUpdateIconElements__block_i
   }
 
 LABEL_10:
-  [(CSLUIFieldOfIconsViewAccessibility *)self accessibilityScrollToVisibleWithChild:v6];
-  [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilityAnnounceUpdatedPositionForElement:v6];
+  [(CSLUIFieldOfIconsViewAccessibility *)self accessibilityScrollToVisibleWithChild:elementCopy];
+  [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilityAnnounceUpdatedPositionForElement:elementCopy];
 }
 
 void __69__CSLUIFieldOfIconsViewAccessibility__accessibilityMoveElement_left___block_invoke(uint64_t a1)
@@ -453,33 +453,33 @@ void __69__CSLUIFieldOfIconsViewAccessibility__accessibilityMoveElement_left___b
   [v2 moveNode:*(a1 + 40) toHex:*(a1 + 48) final:1];
 }
 
-- (void)_accessibilityMoveIconLeft:(id)a3
+- (void)_accessibilityMoveIconLeft:(id)left
 {
-  v4 = [a3 _accessibilityValueForKey:@"kAXOwningElement"];
+  v4 = [left _accessibilityValueForKey:@"kAXOwningElement"];
   [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilityMoveElement:v4 left:1];
 }
 
-- (void)_accessibilityMoveIconRight:(id)a3
+- (void)_accessibilityMoveIconRight:(id)right
 {
-  v4 = [a3 _accessibilityValueForKey:@"kAXOwningElement"];
+  v4 = [right _accessibilityValueForKey:@"kAXOwningElement"];
   [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilityMoveElement:v4 left:0];
   [(CSLUIFieldOfIconsViewAccessibility *)self accessibilityScrollToVisibleWithChild:v4];
   [(CSLUIFieldOfIconsViewAccessibility *)self _accessibilityAnnounceUpdatedPositionForElement:v4];
 }
 
-- (void)_accessibilityAnnounceUpdatedPositionForElement:(id)a3
+- (void)_accessibilityAnnounceUpdatedPositionForElement:(id)element
 {
-  v4 = a3;
-  v17 = [(CSLUIFieldOfIconsViewAccessibility *)self accessibilityElements];
-  v5 = [v17 indexOfObject:v4];
+  elementCopy = element;
+  accessibilityElements = [(CSLUIFieldOfIconsViewAccessibility *)self accessibilityElements];
+  v5 = [accessibilityElements indexOfObject:elementCopy];
 
-  if (v5 < [v17 count] - 1)
+  if (v5 < [accessibilityElements count] - 1)
   {
     v6 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"app.moved.before");
-    v8 = [v17 objectAtIndex:v5 + 1];
-    v9 = [v8 accessibilityLabel];
-    v10 = [v6 stringWithFormat:v7, v9];
+    v8 = [accessibilityElements objectAtIndex:v5 + 1];
+    accessibilityLabel = [v8 accessibilityLabel];
+    v10 = [v6 stringWithFormat:v7, accessibilityLabel];
 
     if (!v5)
     {
@@ -495,9 +495,9 @@ void __69__CSLUIFieldOfIconsViewAccessibility__accessibilityMoveElement_left___b
 LABEL_5:
     v11 = MEMORY[0x29EDBA0F8];
     v12 = accessibilityLocalizedString(@"app.moved.after");
-    v13 = [v17 objectAtIndex:v5 - 1];
-    v14 = [v13 accessibilityLabel];
-    v5 = [v11 stringWithFormat:v12, v14];
+    v13 = [accessibilityElements objectAtIndex:v5 - 1];
+    accessibilityLabel2 = [v13 accessibilityLabel];
+    v5 = [v11 stringWithFormat:v12, accessibilityLabel2];
   }
 
 LABEL_6:

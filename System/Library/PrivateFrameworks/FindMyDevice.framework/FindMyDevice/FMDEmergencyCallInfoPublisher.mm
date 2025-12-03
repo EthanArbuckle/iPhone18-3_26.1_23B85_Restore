@@ -1,14 +1,14 @@
 @interface FMDEmergencyCallInfoPublisher
-- (FMDEmergencyCallInfoPublisher)initWithConfiguration:(id)a3;
-- (void)publishInfo:(id)a3 completion:(id)a4;
+- (FMDEmergencyCallInfoPublisher)initWithConfiguration:(id)configuration;
+- (void)publishInfo:(id)info completion:(id)completion;
 @end
 
 @implementation FMDEmergencyCallInfoPublisher
 
-- (FMDEmergencyCallInfoPublisher)initWithConfiguration:(id)a3
+- (FMDEmergencyCallInfoPublisher)initWithConfiguration:(id)configuration
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = FMDEmergencyCallInfoPublisher;
   v6 = [(FMDEmergencyCallInfoPublisher *)&v11 init];
@@ -26,22 +26,22 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v5;
+      v13 = configurationCopy;
       _os_log_impl(&dword_1DF650000, v8, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_publisherConfig, a3);
+    objc_storeStrong(&v6->_publisherConfig, configuration);
   }
 
   v9 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (void)publishInfo:(id)a3 completion:(id)a4
+- (void)publishInfo:(id)info completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -51,10 +51,10 @@
   }
 
   v24[0] = @"kFMDEmergencyCallInfoPublisherConfigKey";
-  v9 = [(FMDEmergencyCallInfoPublisher *)self publisherConfig];
+  publisherConfig = [(FMDEmergencyCallInfoPublisher *)self publisherConfig];
   v24[1] = @"kFMDEmergencyCallInfoPublisherInfoKey";
-  v25[0] = v9;
-  v25[1] = v7;
+  v25[0] = publisherConfig;
+  v25[1] = infoCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
   v11 = +[FMNSXPCConnectionCache sharedCache];
@@ -65,10 +65,10 @@
   v22[1] = 3221225472;
   v22[2] = __56__FMDEmergencyCallInfoPublisher_publishInfo_completion___block_invoke;
   v22[3] = &unk_1E86BD0E0;
-  v14 = v6;
+  v14 = completionCopy;
   v23 = v14;
   [v13 addFailureBlock:v22];
-  v15 = [v13 remoteObjectProxy];
+  remoteObjectProxy = [v13 remoteObjectProxy];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __56__FMDEmergencyCallInfoPublisher_publishInfo_completion___block_invoke_4;
@@ -77,7 +77,7 @@
   v21 = v14;
   v16 = v13;
   v17 = v14;
-  [v15 publishInfo:v10 completion:v19];
+  [remoteObjectProxy publishInfo:v10 completion:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }

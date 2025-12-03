@@ -3,11 +3,11 @@
 - (VMPlaybackController)controller;
 - (_TtC10VoiceMemos12VMPlayerItem)init;
 - (double)currentTime;
-- (void)seekToTime:(double)a3 completionHandler:(id)a4;
-- (void)setLooping:(BOOL)a3;
-- (void)setPlayableRangeEndTime:(double)a3;
-- (void)setSpeechIsolatorValue:(float)a3;
-- (void)setTrackVolumes:(id)a3;
+- (void)seekToTime:(double)time completionHandler:(id)handler;
+- (void)setLooping:(BOOL)looping;
+- (void)setPlayableRangeEndTime:(double)time;
+- (void)setSpeechIsolatorValue:(float)value;
+- (void)setTrackVolumes:(id)volumes;
 @end
 
 @implementation VMPlayerItem
@@ -19,9 +19,9 @@
   return Strong;
 }
 
-- (void)seekToTime:(double)a3 completionHandler:(id)a4
+- (void)seekToTime:(double)time completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = v6;
@@ -36,30 +36,30 @@
     v8 = 0;
   }
 
-  v10 = self;
-  sub_100118898(v9, v8, a3);
+  selfCopy = self;
+  sub_100118898(v9, v8, time);
   sub_1000338B4(v9);
 }
 
 - (double)currentTime
 {
-  v2 = self;
+  selfCopy = self;
   sub_100118AE4();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPlayableRangeEndTime:(double)a3
+- (void)setPlayableRangeEndTime:(double)time
 {
-  v4 = self;
-  sub_100118BDC(a3);
+  selfCopy = self;
+  sub_100118BDC(time);
 }
 
-- (void)setLooping:(BOOL)a3
+- (void)setLooping:(BOOL)looping
 {
-  v4 = self;
-  sub_100118D80(a3);
+  selfCopy = self;
+  sub_100118D80(looping);
 }
 
 - (NSArray)trackVolumes
@@ -70,22 +70,22 @@
   return v2.super.isa;
 }
 
-- (void)setTrackVolumes:(id)a3
+- (void)setTrackVolumes:(id)volumes
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100118F1C(v4);
 }
 
-- (void)setSpeechIsolatorValue:(float)a3
+- (void)setSpeechIsolatorValue:(float)value
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos12VMPlayerItem_speechIsolatorValue) = a3;
+  *(self + OBJC_IVAR____TtC10VoiceMemos12VMPlayerItem_speechIsolatorValue) = value;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = self;
-    sub_100118038(a3);
+    selfCopy = self;
+    sub_100118038(value);
   }
 }
 

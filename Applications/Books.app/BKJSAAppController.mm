@@ -1,63 +1,63 @@
 @interface BKJSAAppController
-- (BKJSAAppController)initWithSceneManager:(id)a3 jetActionHandler:(id)a4;
+- (BKJSAAppController)initWithSceneManager:(id)manager jetActionHandler:(id)handler;
 - (BKRootBarCoordinating)rootBarCoordinator;
-- (id)_sceneControllerForTransaction:(id)a3;
-- (unint64_t)signpostBeginWithMetadata:(id)a3;
-- (void)appendFeedsInCards:(id)a3 options:(id)a4;
-- (void)appendFeedsInCards:(id)a3 optionsValue:(id)a4;
-- (void)dismissCardsForSelectedTab:(BOOL)a3 completion:(id)a4;
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)performRawActionModelOnRootBarCurrentViewController:(id)a3 withParentTracker:(id)a4 shouldReportFigaro:(BOOL)a5;
-- (void)presentFeedsInCards:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5 options:(id)a6;
-- (void)presentFeedsInCards:(id)a3 focusedIndexValue:(id)a4 animatedValue:(id)a5 optionsValue:(id)a6;
-- (void)presentFeedsInCards:(id)a3 focusedIndexValue:(id)a4 titleValue:(id)a5 animatedValue:(id)a6 optionsValue:(id)a7;
-- (void)pushViewControllerOnSelectedNavigationController:(id)a3 animated:(BOOL)a4;
-- (void)reloadStandardItemsWithAnimated:(BOOL)a3 completion:(id)a4;
-- (void)requestPrimaryAnalyticsControllerWithCompletionValue:(id)a3;
-- (void)requestPrimarySceneWithCompletionValue:(id)a3;
-- (void)requestRootBarAnalyticsTrackerWithCompletionValue:(id)a3;
-- (void)requestRootBarControllerWithCompletionValue:(id)a3;
-- (void)selectTabWithIdentifier:(id)a3 isUserAction:(BOOL)a4;
-- (void)setScriptDataSource:(id)a3 completion:(id)a4;
-- (void)signpostEndWithSignpostID:(unint64_t)a3 metadata:(id)a4;
-- (void)signpostEventWithMetadata:(id)a3;
-- (void)topViewControllerInSelectedTab:(id)a3;
+- (id)_sceneControllerForTransaction:(id)transaction;
+- (unint64_t)signpostBeginWithMetadata:(id)metadata;
+- (void)appendFeedsInCards:(id)cards options:(id)options;
+- (void)appendFeedsInCards:(id)cards optionsValue:(id)value;
+- (void)dismissCardsForSelectedTab:(BOOL)tab completion:(id)completion;
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)performRawActionModelOnRootBarCurrentViewController:(id)controller withParentTracker:(id)tracker shouldReportFigaro:(BOOL)figaro;
+- (void)presentFeedsInCards:(id)cards focusedIndex:(unint64_t)index animated:(BOOL)animated options:(id)options;
+- (void)presentFeedsInCards:(id)cards focusedIndexValue:(id)value animatedValue:(id)animatedValue optionsValue:(id)optionsValue;
+- (void)presentFeedsInCards:(id)cards focusedIndexValue:(id)value titleValue:(id)titleValue animatedValue:(id)animatedValue optionsValue:(id)optionsValue;
+- (void)pushViewControllerOnSelectedNavigationController:(id)controller animated:(BOOL)animated;
+- (void)reloadStandardItemsWithAnimated:(BOOL)animated completion:(id)completion;
+- (void)requestPrimaryAnalyticsControllerWithCompletionValue:(id)value;
+- (void)requestPrimarySceneWithCompletionValue:(id)value;
+- (void)requestRootBarAnalyticsTrackerWithCompletionValue:(id)value;
+- (void)requestRootBarControllerWithCompletionValue:(id)value;
+- (void)selectTabWithIdentifier:(id)identifier isUserAction:(BOOL)action;
+- (void)setScriptDataSource:(id)source completion:(id)completion;
+- (void)signpostEndWithSignpostID:(unint64_t)d metadata:(id)metadata;
+- (void)signpostEventWithMetadata:(id)metadata;
+- (void)topViewControllerInSelectedTab:(id)tab;
 @end
 
 @implementation BKJSAAppController
 
-- (BKJSAAppController)initWithSceneManager:(id)a3 jetActionHandler:(id)a4
+- (BKJSAAppController)initWithSceneManager:(id)manager jetActionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = BKJSAAppController;
   v9 = [(BKJSAAppController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sceneManager, a3);
-    objc_storeStrong(&v10->_jetActionHandler, a4);
+    objc_storeStrong(&v9->_sceneManager, manager);
+    objc_storeStrong(&v10->_jetActionHandler, handler);
   }
 
   return v10;
 }
 
-- (id)_sceneControllerForTransaction:(id)a3
+- (id)_sceneControllerForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(BKJSAAppController *)self sceneManager];
-  v6 = [v5 defaultSceneControllerForTransaction:v4];
+  transactionCopy = transaction;
+  sceneManager = [(BKJSAAppController *)self sceneManager];
+  v6 = [sceneManager defaultSceneControllerForTransaction:transactionCopy];
 
   return v6;
 }
 
-- (void)presentFeedsInCards:(id)a3 focusedIndexValue:(id)a4 titleValue:(id)a5 animatedValue:(id)a6 optionsValue:(id)a7
+- (void)presentFeedsInCards:(id)cards focusedIndexValue:(id)value titleValue:(id)titleValue animatedValue:(id)animatedValue optionsValue:(id)optionsValue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  cardsCopy = cards;
+  valueCopy = value;
+  animatedValueCopy = animatedValue;
+  optionsValueCopy = optionsValue;
   v15 = JSALog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -66,59 +66,59 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}s", &v21, 0xCu);
   }
 
-  if ([v11 isArray])
+  if ([cardsCopy isArray])
   {
-    v16 = [v11 toArray];
+    toArray = [cardsCopy toArray];
   }
 
   else
   {
-    v16 = 0;
+    toArray = 0;
   }
 
-  if ([v12 isNumber])
+  if ([valueCopy isNumber])
   {
-    v17 = [v12 toNumber];
-    v18 = [v17 unsignedIntegerValue];
-  }
-
-  else
-  {
-    v18 = 0x7FFFFFFFFFFFFFFFLL;
-  }
-
-  if ([v13 isBoolean])
-  {
-    v19 = [v13 toBool];
+    toNumber = [valueCopy toNumber];
+    unsignedIntegerValue = [toNumber unsignedIntegerValue];
   }
 
   else
   {
-    v19 = 1;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if ([v14 isObject])
+  if ([animatedValueCopy isBoolean])
   {
-    v20 = [v14 toDictionary];
+    toBool = [animatedValueCopy toBool];
   }
 
   else
   {
-    v20 = 0;
+    toBool = 1;
   }
 
-  if ([v16 count] > v18)
+  if ([optionsValueCopy isObject])
   {
-    [(BKJSAAppController *)self presentFeedsInCards:v16 focusedIndex:v18 animated:v19 options:v20];
+    toDictionary = [optionsValueCopy toDictionary];
+  }
+
+  else
+  {
+    toDictionary = 0;
+  }
+
+  if ([toArray count] > unsignedIntegerValue)
+  {
+    [(BKJSAAppController *)self presentFeedsInCards:toArray focusedIndex:unsignedIntegerValue animated:toBool options:toDictionary];
   }
 }
 
-- (void)presentFeedsInCards:(id)a3 focusedIndexValue:(id)a4 animatedValue:(id)a5 optionsValue:(id)a6
+- (void)presentFeedsInCards:(id)cards focusedIndexValue:(id)value animatedValue:(id)animatedValue optionsValue:(id)optionsValue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  cardsCopy = cards;
+  valueCopy = value;
+  animatedValueCopy = animatedValue;
+  optionsValueCopy = optionsValue;
   v14 = JSALog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -127,58 +127,58 @@
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s", &v20, 0xCu);
   }
 
-  if ([v10 isArray])
+  if ([cardsCopy isArray])
   {
-    v15 = [v10 toArray];
+    toArray = [cardsCopy toArray];
   }
 
   else
   {
-    v15 = 0;
+    toArray = 0;
   }
 
-  if ([v11 isNumber])
+  if ([valueCopy isNumber])
   {
-    v16 = [v11 toNumber];
-    v17 = [v16 unsignedIntegerValue];
-  }
-
-  else
-  {
-    v17 = 0x7FFFFFFFFFFFFFFFLL;
-  }
-
-  if ([v12 isBoolean])
-  {
-    v18 = [v12 toBool];
+    toNumber = [valueCopy toNumber];
+    unsignedIntegerValue = [toNumber unsignedIntegerValue];
   }
 
   else
   {
-    v18 = 1;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if ([v13 isObject])
+  if ([animatedValueCopy isBoolean])
   {
-    v19 = [v13 toDictionary];
+    toBool = [animatedValueCopy toBool];
   }
 
   else
   {
-    v19 = 0;
+    toBool = 1;
   }
 
-  if ([v15 count] > v17)
+  if ([optionsValueCopy isObject])
   {
-    [(BKJSAAppController *)self presentFeedsInCards:v15 focusedIndex:v17 animated:v18 options:v19];
+    toDictionary = [optionsValueCopy toDictionary];
+  }
+
+  else
+  {
+    toDictionary = 0;
+  }
+
+  if ([toArray count] > unsignedIntegerValue)
+  {
+    [(BKJSAAppController *)self presentFeedsInCards:toArray focusedIndex:unsignedIntegerValue animated:toBool options:toDictionary];
   }
 }
 
-- (void)presentFeedsInCards:(id)a3 focusedIndex:(unint64_t)a4 animated:(BOOL)a5 options:(id)a6
+- (void)presentFeedsInCards:(id)cards focusedIndex:(unint64_t)index animated:(BOOL)animated options:(id)options
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
+  animatedCopy = animated;
+  optionsCopy = options;
+  cardsCopy = cards;
   v12 = JSALog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -187,16 +187,16 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}s", &v16, 0xCu);
   }
 
-  v13 = [v10 objectForKeyedSubscript:BCTransactionOptionsTransactionKey];
+  v13 = [optionsCopy objectForKeyedSubscript:BCTransactionOptionsTransactionKey];
   v14 = [(BKJSAAppController *)self _sceneControllerForTransaction:v13];
-  v15 = [v14 feedCardPresenting];
-  [v15 presentFeedsInCards:v11 focusedIndex:a4 animated:v6 options:v10 completion:0];
+  feedCardPresenting = [v14 feedCardPresenting];
+  [feedCardPresenting presentFeedsInCards:cardsCopy focusedIndex:index animated:animatedCopy options:optionsCopy completion:0];
 }
 
-- (void)appendFeedsInCards:(id)a3 optionsValue:(id)a4
+- (void)appendFeedsInCards:(id)cards optionsValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  cardsCopy = cards;
+  valueCopy = value;
   v8 = JSALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -205,36 +205,36 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s", &v11, 0xCu);
   }
 
-  if ([v6 isArray])
+  if ([cardsCopy isArray])
   {
-    v9 = [v6 toArray];
+    toArray = [cardsCopy toArray];
   }
 
   else
   {
-    v9 = 0;
+    toArray = 0;
   }
 
-  if ([v7 isObject])
+  if ([valueCopy isObject])
   {
-    v10 = [v7 toDictionary];
+    toDictionary = [valueCopy toDictionary];
   }
 
   else
   {
-    v10 = 0;
+    toDictionary = 0;
   }
 
-  if ([v9 count])
+  if ([toArray count])
   {
-    [(BKJSAAppController *)self appendFeedsInCards:v9 options:v10];
+    [(BKJSAAppController *)self appendFeedsInCards:toArray options:toDictionary];
   }
 }
 
-- (void)appendFeedsInCards:(id)a3 options:(id)a4
+- (void)appendFeedsInCards:(id)cards options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  cardsCopy = cards;
   v8 = JSALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -243,24 +243,24 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s", &v12, 0xCu);
   }
 
-  v9 = [v6 objectForKeyedSubscript:BCTransactionOptionsTransactionKey];
+  v9 = [optionsCopy objectForKeyedSubscript:BCTransactionOptionsTransactionKey];
   v10 = [(BKJSAAppController *)self _sceneControllerForTransaction:v9];
-  v11 = [v10 feedCardPresenting];
-  [v11 appendFeedsInCards:v7 options:v6];
+  feedCardPresenting = [v10 feedCardPresenting];
+  [feedCardPresenting appendFeedsInCards:cardsCopy options:optionsCopy];
 }
 
 - (BKRootBarCoordinating)rootBarCoordinator
 {
-  v2 = [(BKJSAAppController *)self sceneManager];
-  v3 = [v2 primarySceneController];
-  v4 = [v3 rootBarCoordinator];
+  sceneManager = [(BKJSAAppController *)self sceneManager];
+  primarySceneController = [sceneManager primarySceneController];
+  rootBarCoordinator = [primarySceneController rootBarCoordinator];
 
-  return v4;
+  return rootBarCoordinator;
 }
 
-- (void)requestRootBarControllerWithCompletionValue:(id)a3
+- (void)requestRootBarControllerWithCompletionValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -274,7 +274,7 @@
   v11[2] = sub_1000EF4C0;
   v11[3] = &unk_100A03440;
   v11[4] = self;
-  v6 = v4;
+  v6 = valueCopy;
   v12 = v6;
   v7 = objc_retainBlock(v11);
   v8 = objc_retainBlock(v7);
@@ -297,9 +297,9 @@
   }
 }
 
-- (void)requestPrimarySceneWithCompletionValue:(id)a3
+- (void)requestPrimarySceneWithCompletionValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -313,7 +313,7 @@
   v11[2] = sub_1000EF8A4;
   v11[3] = &unk_100A03440;
   v11[4] = self;
-  v6 = v4;
+  v6 = valueCopy;
   v12 = v6;
   v7 = objc_retainBlock(v11);
   v8 = objc_retainBlock(v7);
@@ -336,9 +336,9 @@
   }
 }
 
-- (void)requestRootBarAnalyticsTrackerWithCompletionValue:(id)a3
+- (void)requestRootBarAnalyticsTrackerWithCompletionValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -352,7 +352,7 @@
   v11[2] = sub_1000EFC78;
   v11[3] = &unk_100A03440;
   v11[4] = self;
-  v6 = v4;
+  v6 = valueCopy;
   v12 = v6;
   v7 = objc_retainBlock(v11);
   v8 = objc_retainBlock(v7);
@@ -375,9 +375,9 @@
   }
 }
 
-- (void)requestPrimaryAnalyticsControllerWithCompletionValue:(id)a3
+- (void)requestPrimaryAnalyticsControllerWithCompletionValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -390,7 +390,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_1000F005C;
   v9[3] = &unk_100A033C8;
-  v5 = v3;
+  v5 = valueCopy;
   v10 = v5;
   v6 = objc_retainBlock(v9);
   if (v6)
@@ -412,10 +412,10 @@
   }
 }
 
-- (void)setScriptDataSource:(id)a3 completion:(id)a4
+- (void)setScriptDataSource:(id)source completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  sourceCopy = source;
   v8 = JSALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -424,24 +424,24 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v9 = [(BKJSAAppController *)self sceneManager];
+  sceneManager = [(BKJSAAppController *)self sceneManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000F0320;
   v11[3] = &unk_100A033C8;
-  v12 = v6;
-  v10 = v6;
-  [v9 setScriptDataSource:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [sceneManager setScriptDataSource:sourceCopy completion:v11];
 }
 
-- (void)reloadStandardItemsWithAnimated:(BOOL)a3 completion:(id)a4
+- (void)reloadStandardItemsWithAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = JSALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [NSNumber numberWithBool:v4];
+    v8 = [NSNumber numberWithBool:animatedCopy];
     *buf = 136446466;
     v17 = "[BKJSAAppController reloadStandardItemsWithAnimated:completion:]";
     v18 = 2112;
@@ -454,8 +454,8 @@
   v13[2] = sub_1000F05EC;
   v13[3] = &unk_100A03E80;
   v13[4] = self;
-  v15 = v4;
-  v9 = v6;
+  v15 = animatedCopy;
+  v9 = completionCopy;
   v14 = v9;
   v10 = objc_retainBlock(v13);
   if (v10)
@@ -477,14 +477,14 @@
   }
 }
 
-- (void)dismissCardsForSelectedTab:(BOOL)a3 completion:(id)a4
+- (void)dismissCardsForSelectedTab:(BOOL)tab completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  tabCopy = tab;
+  completionCopy = completion;
   v7 = JSALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [NSNumber numberWithBool:v4];
+    v8 = [NSNumber numberWithBool:tabCopy];
     *buf = 136446466;
     v18 = "[BKJSAAppController dismissCardsForSelectedTab:completion:]";
     v19 = 2112;
@@ -498,8 +498,8 @@
   v13[2] = sub_1000F09EC;
   v13[3] = &unk_100A07068;
   objc_copyWeak(&v15, buf);
-  v16 = v4;
-  v9 = v6;
+  v16 = tabCopy;
+  v9 = completionCopy;
   v14 = v9;
   v10 = objc_retainBlock(v13);
   if (v10)
@@ -524,17 +524,17 @@
   objc_destroyWeak(buf);
 }
 
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000F0F84;
   v11[3] = &unk_100A07068;
   objc_copyWeak(&v13, &location);
-  v14 = a3;
-  v7 = v6;
+  animatedCopy = animated;
+  v7 = completionCopy;
   v12 = v7;
   v8 = objc_retainBlock(v11);
   if (v8)
@@ -559,9 +559,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)pushViewControllerOnSelectedNavigationController:(id)a3 animated:(BOOL)a4
+- (void)pushViewControllerOnSelectedNavigationController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = JSALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -575,10 +575,10 @@
   v12[1] = 3221225472;
   v12[2] = sub_1000F16A0;
   v12[3] = &unk_100A07090;
-  v8 = v6;
+  v8 = controllerCopy;
   v13 = v8;
   objc_copyWeak(&v14, buf);
-  v15 = a4;
+  animatedCopy = animated;
   v9 = objc_retainBlock(v12);
   if (v9)
   {
@@ -602,16 +602,16 @@
   objc_destroyWeak(buf);
 }
 
-- (void)selectTabWithIdentifier:(id)a3 isUserAction:(BOOL)a4
+- (void)selectTabWithIdentifier:(id)identifier isUserAction:(BOOL)action
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = JSALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v17 = "[BKJSAAppController selectTabWithIdentifier:isUserAction:]";
     v18 = 2114;
-    v19 = v6;
+    v19 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s identifier=%{public}@", buf, 0x16u);
   }
 
@@ -621,9 +621,9 @@
   v12[2] = sub_1000F1950;
   v12[3] = &unk_100A07068;
   objc_copyWeak(&v14, buf);
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
-  v15 = a4;
+  actionCopy = action;
   v9 = objc_retainBlock(v12);
   if (v9)
   {
@@ -647,9 +647,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)topViewControllerInSelectedTab:(id)a3
+- (void)topViewControllerInSelectedTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -664,7 +664,7 @@
   v10[2] = sub_1000F1BC4;
   v10[3] = &unk_100A070B8;
   objc_copyWeak(&v12, buf);
-  v6 = v4;
+  v6 = tabCopy;
   v11 = v6;
   v7 = objc_retainBlock(v10);
   if (v7)
@@ -689,24 +689,24 @@
   objc_destroyWeak(buf);
 }
 
-- (unint64_t)signpostBeginWithMetadata:(id)a3
+- (unint64_t)signpostBeginWithMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = JSASignpostJS();
   v5 = os_signpost_id_generate(v4);
 
   v6 = +[JSAProcessEnvironment currentEnvironment];
-  v7 = [v6 variant];
+  variant = [v6 variant];
 
   v8 = JSASignpostJS();
   v9 = v8;
   v10 = v5 - 1;
-  if (v7 == 1)
+  if (variant == 1)
   {
     if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
     {
       v13 = 138543362;
-      v14 = v3;
+      v14 = metadataCopy;
       v11 = "%{public}@";
 LABEL_8:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, v5, "JS", v11, &v13, 0xCu);
@@ -716,7 +716,7 @@ LABEL_8:
   else if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     v13 = 138412290;
-    v14 = v3;
+    v14 = metadataCopy;
     v11 = "%@";
     goto LABEL_8;
   }
@@ -724,54 +724,54 @@ LABEL_8:
   return v5;
 }
 
-- (void)signpostEndWithSignpostID:(unint64_t)a3 metadata:(id)a4
+- (void)signpostEndWithSignpostID:(unint64_t)d metadata:(id)metadata
 {
-  v5 = a4;
+  metadataCopy = metadata;
   v6 = +[JSAProcessEnvironment currentEnvironment];
-  v7 = [v6 variant];
+  variant = [v6 variant];
 
   v8 = JSASignpostJS();
   v9 = v8;
-  v10 = a3 - 1;
-  if (v7 == 1)
+  v10 = d - 1;
+  if (variant == 1)
   {
     if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
     {
       v12 = 138543362;
-      v13 = v5;
+      v13 = metadataCopy;
       v11 = "%{public}@";
 LABEL_8:
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_END, a3, "JS", v11, &v12, 0xCu);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_END, d, "JS", v11, &v12, 0xCu);
     }
   }
 
   else if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = metadataCopy;
     v11 = "%@";
     goto LABEL_8;
   }
 }
 
-- (void)signpostEventWithMetadata:(id)a3
+- (void)signpostEventWithMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = JSASignpostJS();
   v5 = os_signpost_id_generate(v4);
 
   v6 = +[JSAProcessEnvironment currentEnvironment];
-  v7 = [v6 variant];
+  variant = [v6 variant];
 
   v8 = JSASignpostJS();
   v9 = v8;
   v10 = v5 - 1;
-  if (v7 == 1)
+  if (variant == 1)
   {
     if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
     {
       v12 = 138543362;
-      v13 = v3;
+      v13 = metadataCopy;
       v11 = "%{public}@";
 LABEL_8:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_EVENT, v5, "JS", v11, &v12, 0xCu);
@@ -781,16 +781,16 @@ LABEL_8:
   else if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     v12 = 138412290;
-    v13 = v3;
+    v13 = metadataCopy;
     v11 = "%@";
     goto LABEL_8;
   }
 }
 
-- (void)performRawActionModelOnRootBarCurrentViewController:(id)a3 withParentTracker:(id)a4 shouldReportFigaro:(BOOL)a5
+- (void)performRawActionModelOnRootBarCurrentViewController:(id)controller withParentTracker:(id)tracker shouldReportFigaro:(BOOL)figaro
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  trackerCopy = tracker;
   v10 = JSALog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -806,11 +806,11 @@ LABEL_8:
   v16[3] = &unk_100A07100;
   objc_copyWeak(&v19, buf);
   v16[4] = self;
-  v11 = v8;
+  v11 = controllerCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = trackerCopy;
   v18 = v12;
-  v20 = a5;
+  figaroCopy = figaro;
   v13 = objc_retainBlock(v16);
   if (v13)
   {

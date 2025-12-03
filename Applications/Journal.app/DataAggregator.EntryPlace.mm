@@ -1,7 +1,7 @@
 @interface DataAggregator.EntryPlace
 - (CLLocationCoordinate2D)coordinate;
 - (_TtCC7Journal14DataAggregator10EntryPlace)init;
-- (int64_t)compareTo:(id)a3;
+- (int64_t)compareTo:(id)to;
 @end
 
 @implementation DataAggregator.EntryPlace
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1001801F4();
   swift_unknownObjectRelease();
 

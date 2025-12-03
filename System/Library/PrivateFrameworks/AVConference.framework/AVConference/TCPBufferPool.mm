@@ -1,9 +1,9 @@
 @interface TCPBufferPool
 - (TCPBufferPool)init;
-- (char)getBufferFromPool:(int)a3;
+- (char)getBufferFromPool:(int)pool;
 - (void)dealloc;
 - (void)monitorBufferPool;
-- (void)returnBufferToPool:(char *)a3;
+- (void)returnBufferToPool:(char *)pool;
 @end
 
 @implementation TCPBufferPool
@@ -81,9 +81,9 @@
   [(TCPBufferPool *)&v5 dealloc];
 }
 
-- (char)getBufferFromPool:(int)a3
+- (char)getBufferFromPool:(int)pool
 {
-  LODWORD(v3) = a3;
+  LODWORD(v3) = pool;
   v31 = *MEMORY[0x1E69E9840];
   _os_nospin_lock_lock();
   avail = self->avail;
@@ -271,7 +271,7 @@ LABEL_40:
   return var0;
 }
 
-- (void)returnBufferToPool:(char *)a3
+- (void)returnBufferToPool:(char *)pool
 {
   _os_nospin_lock_lock();
   avail = self->avail;
@@ -286,16 +286,16 @@ LABEL_40:
     v7 = 1;
   }
 
-  if (v7 || head->var0 == a3)
+  if (v7 || head->var0 == pool)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     do
     {
-      v8 = head;
+      selfCopy = head;
       head = head->var3;
       if (head)
       {
@@ -308,7 +308,7 @@ LABEL_40:
       }
     }
 
-    while (!v9 && head->var0 != a3);
+    while (!v9 && head->var0 != pool);
   }
 
   if (avail == head)
@@ -336,12 +336,12 @@ LABEL_40:
 
     else
     {
-      if (!v8)
+      if (!selfCopy)
       {
-        v8 = self;
+        selfCopy = self;
       }
 
-      v8->head = head->var3;
+      selfCopy->head = head->var3;
       head->var3 = 0;
       self->tail->var3 = head;
       self->tail = head;

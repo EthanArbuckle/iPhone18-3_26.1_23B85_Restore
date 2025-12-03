@@ -1,40 +1,40 @@
 @interface TransitDirectionsCell
-+ (Class)cellClassForListItem:(id)a3;
-+ (Class)collectionCellClassForListItem:(id)a3;
++ (Class)cellClassForListItem:(id)item;
++ (Class)collectionCellClassForListItem:(id)item;
 + (Class)stepViewClass;
-+ (id)cellIdentifierForListItem:(id)a3;
++ (id)cellIdentifierForListItem:(id)item;
 + (id)cellMapping;
 + (id)collectionCellMapping;
-+ (id)dequeueCellForListItem:(id)a3 fromCollectionView:(id)a4 atIndexPath:(id)a5;
-+ (id)dequeueCellForListItem:(id)a3 fromTableView:(id)a4 atIndexPath:(id)a5;
-+ (void)registerCellsForCollectionView:(id)a3;
-+ (void)registerCellsForTableView:(id)a3;
++ (id)dequeueCellForListItem:(id)item fromCollectionView:(id)view atIndexPath:(id)path;
++ (id)dequeueCellForListItem:(id)item fromTableView:(id)view atIndexPath:(id)path;
++ (void)registerCellsForCollectionView:(id)view;
++ (void)registerCellsForTableView:(id)view;
 - (CGRect)_separatorFrame;
-- (TransitDirectionsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TransitDirectionsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setUseLeadingInstructionMarginAsLeadingSeparatorInset:(BOOL)a3;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setUseLeadingInstructionMarginAsLeadingSeparatorInset:(BOOL)inset;
 @end
 
 @implementation TransitDirectionsCell
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = TransitDirectionsCell;
-  [(TransitDirectionsCell *)&v6 setHighlighted:a3 animated:a4];
-  [(TransitDirectionsStepView *)self->_stepView setHighlighted:v4];
+  [(TransitDirectionsCell *)&v6 setHighlighted:highlighted animated:animated];
+  [(TransitDirectionsStepView *)self->_stepView setHighlighted:highlightedCopy];
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = TransitDirectionsCell;
   [(TransitDirectionsCell *)&v6 setAccessoryType:?];
   v5 = 0.0;
-  if (!a3)
+  if (!type)
   {
     v5 = 16.0;
   }
@@ -42,15 +42,15 @@
   [(TransitDirectionsStepView *)self->_stepView _setTrailingGuideToContentViewDistance:v5];
 }
 
-- (void)setUseLeadingInstructionMarginAsLeadingSeparatorInset:(BOOL)a3
+- (void)setUseLeadingInstructionMarginAsLeadingSeparatorInset:(BOOL)inset
 {
-  if (self->_useLeadingInstructionMarginAsLeadingSeparatorInset != a3)
+  if (self->_useLeadingInstructionMarginAsLeadingSeparatorInset != inset)
   {
-    self->_useLeadingInstructionMarginAsLeadingSeparatorInset = a3;
-    v5 = [(TransitDirectionsCell *)self separatorStyle];
-    [(TransitDirectionsCell *)self setSeparatorStyle:(v5 + 1) % 3];
+    self->_useLeadingInstructionMarginAsLeadingSeparatorInset = inset;
+    separatorStyle = [(TransitDirectionsCell *)self separatorStyle];
+    [(TransitDirectionsCell *)self setSeparatorStyle:(separatorStyle + 1) % 3];
 
-    [(TransitDirectionsCell *)self setSeparatorStyle:v5];
+    [(TransitDirectionsCell *)self setSeparatorStyle:separatorStyle];
   }
 }
 
@@ -111,52 +111,52 @@
   [(TransitDirectionsStepView *)self->_stepView prepareForReuse];
 }
 
-- (TransitDirectionsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TransitDirectionsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v32.receiver = self;
   v32.super_class = TransitDirectionsCell;
-  v4 = [(TransitDirectionsCell *)&v32 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TransitDirectionsCell *)&v32 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];
     [(TransitDirectionsCell *)v4 setBackgroundColor:v5];
 
     v6 = +[UIColor clearColor];
-    v7 = [(TransitDirectionsCell *)v4 backgroundView];
-    [v7 setBackgroundColor:v6];
+    backgroundView = [(TransitDirectionsCell *)v4 backgroundView];
+    [backgroundView setBackgroundColor:v6];
 
     v8 = objc_alloc([objc_opt_class() stepViewClass]);
-    v9 = [(TransitDirectionsCell *)v4 contentView];
-    [v9 bounds];
+    contentView = [(TransitDirectionsCell *)v4 contentView];
+    [contentView bounds];
     v10 = [v8 initWithFrame:?];
     stepView = v4->_stepView;
     v4->_stepView = v10;
 
     [(TransitDirectionsStepView *)v4->_stepView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TransitDirectionsStepView *)v4->_stepView setCell:v4];
-    v12 = [(TransitDirectionsCell *)v4 contentView];
-    [v12 addSubview:v4->_stepView];
+    contentView2 = [(TransitDirectionsCell *)v4 contentView];
+    [contentView2 addSubview:v4->_stepView];
 
     v13 = objc_alloc_init(NSMutableArray);
-    v30 = [(TransitDirectionsStepView *)v4->_stepView topAnchor];
-    v31 = [(TransitDirectionsCell *)v4 contentView];
-    v29 = [v31 topAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    topAnchor = [(TransitDirectionsStepView *)v4->_stepView topAnchor];
+    contentView3 = [(TransitDirectionsCell *)v4 contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v33[0] = v28;
-    v26 = [(TransitDirectionsStepView *)v4->_stepView leadingAnchor];
-    v27 = [(TransitDirectionsCell *)v4 contentView];
-    v25 = [v27 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [(TransitDirectionsStepView *)v4->_stepView leadingAnchor];
+    contentView4 = [(TransitDirectionsCell *)v4 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[1] = v24;
-    v23 = [(TransitDirectionsCell *)v4 contentView];
-    v14 = [v23 bottomAnchor];
-    v15 = [(TransitDirectionsStepView *)v4->_stepView bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    contentView5 = [(TransitDirectionsCell *)v4 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    bottomAnchor2 = [(TransitDirectionsStepView *)v4->_stepView bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v33[2] = v16;
-    v17 = [(TransitDirectionsCell *)v4 contentView];
-    v18 = [v17 trailingAnchor];
-    v19 = [(TransitDirectionsStepView *)v4->_stepView trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    contentView6 = [(TransitDirectionsCell *)v4 contentView];
+    trailingAnchor = [contentView6 trailingAnchor];
+    trailingAnchor2 = [(TransitDirectionsStepView *)v4->_stepView trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v33[3] = v20;
     v21 = [NSArray arrayWithObjects:v33 count:4];
     [v13 addObjectsFromArray:v21];
@@ -169,39 +169,39 @@
 
 + (Class)stepViewClass
 {
-  [a1 doesNotRecognizeSelector:a2];
+  [self doesNotRecognizeSelector:a2];
 
   return objc_opt_class();
 }
 
-+ (id)dequeueCellForListItem:(id)a3 fromCollectionView:(id)a4 atIndexPath:(id)a5
++ (id)dequeueCellForListItem:(id)item fromCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 cellIdentifierForListItem:a3];
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  v10 = [self cellIdentifierForListItem:item];
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
   return v11;
 }
 
-+ (void)registerCellsForCollectionView:(id)a3
++ (void)registerCellsForCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 collectionCellMapping];
+  viewCopy = view;
+  collectionCellMapping = [self collectionCellMapping];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100B22C70;
   v7[3] = &unk_10165FF20;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = viewCopy;
+  v6 = viewCopy;
+  [collectionCellMapping enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-+ (Class)collectionCellClassForListItem:(id)a3
++ (Class)collectionCellClassForListItem:(id)item
 {
-  v4 = [a1 cellIdentifierForListItem:a3];
-  v5 = [a1 collectionCellMapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = [self cellIdentifierForListItem:item];
+  collectionCellMapping = [self collectionCellMapping];
+  v6 = [collectionCellMapping objectForKeyedSubscript:v4];
 
   return v6;
 }
@@ -218,39 +218,39 @@
   return v3;
 }
 
-+ (id)dequeueCellForListItem:(id)a3 fromTableView:(id)a4 atIndexPath:(id)a5
++ (id)dequeueCellForListItem:(id)item fromTableView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 cellIdentifierForListItem:a3];
-  v11 = [v9 dequeueReusableCellWithIdentifier:v10 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  v10 = [self cellIdentifierForListItem:item];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
 
   return v11;
 }
 
-+ (void)registerCellsForTableView:(id)a3
++ (void)registerCellsForTableView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 cellMapping];
+  viewCopy = view;
+  cellMapping = [self cellMapping];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100B231D8;
   v7[3] = &unk_10165FF20;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = viewCopy;
+  v6 = viewCopy;
+  [cellMapping enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-+ (id)cellIdentifierForListItem:(id)a3
++ (id)cellIdentifierForListItem:(id)item
 {
-  v3 = a3;
-  switch([v3 type])
+  itemCopy = item;
+  switch([itemCopy type])
   {
     case 0uLL:
     case 1uLL:
       v4 = objc_opt_class();
       v5 = NSStringFromClass(v4);
-      if ([v3 type])
+      if ([itemCopy type])
       {
         v6 = @".Destination";
       }
@@ -290,11 +290,11 @@
   return v7;
 }
 
-+ (Class)cellClassForListItem:(id)a3
++ (Class)cellClassForListItem:(id)item
 {
-  v4 = [a1 cellIdentifierForListItem:a3];
-  v5 = [a1 cellMapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = [self cellIdentifierForListItem:item];
+  cellMapping = [self cellMapping];
+  v6 = [cellMapping objectForKeyedSubscript:v4];
 
   return v6;
 }

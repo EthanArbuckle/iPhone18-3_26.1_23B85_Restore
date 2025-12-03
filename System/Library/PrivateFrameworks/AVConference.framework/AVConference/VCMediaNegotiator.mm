@@ -1,78 +1,78 @@
 @interface VCMediaNegotiator
-+ (BOOL)addMediaConfigurationsToLocalConfiguration:(id)a3 withBlob:(id)a4;
-+ (BOOL)initializeLocalConfiguration:(id)a3 negotiationData:(id)a4 deviceRole:(int)a5 preferredAudioPayload:(int)a6;
-+ (BOOL)validateLocalConfiguration:(id)a3;
-+ (BOOL)validateMultiwayAudioStreamConfigurations:(id)a3;
-+ (BOOL)validateMultiwayVideoStreamConfigurations:(id)a3;
-+ (id)localConfigurationWithData:(id)a3 deviceRole:(int)a4 preferredAudioPayload:(int)a5;
-+ (id)negotiatedFeaturesStringWithLocalFeaturesString:(id)a3 remoteFeaturesString:(id)a4;
-+ (id)negotiationBlobFromData:(id)a3;
-+ (id)newCompressedBlob:(id)a3;
-+ (id)newDecompressedBlob:(id)a3;
-+ (id)streamGroupIDsWithMediaBlob:(id)a3;
-+ (int64_t)preferredCipherSuiteFromSet:(id)a3;
-+ (unsigned)mappedRemoteQualityIndexForQualityIndex:(unsigned int)a3;
-+ (void)dumpBlob:(id)a3 prefix:(id)a4 force:(BOOL)a5;
-- (BOOL)addBandwidthSettingsForMediaBlob:(id)a3 arbiterMode:(unsigned __int8)a4 connectionType:(int)a5 maxBitrate:(unsigned int)a6;
++ (BOOL)addMediaConfigurationsToLocalConfiguration:(id)configuration withBlob:(id)blob;
++ (BOOL)initializeLocalConfiguration:(id)configuration negotiationData:(id)data deviceRole:(int)role preferredAudioPayload:(int)payload;
++ (BOOL)validateLocalConfiguration:(id)configuration;
++ (BOOL)validateMultiwayAudioStreamConfigurations:(id)configurations;
++ (BOOL)validateMultiwayVideoStreamConfigurations:(id)configurations;
++ (id)localConfigurationWithData:(id)data deviceRole:(int)role preferredAudioPayload:(int)payload;
++ (id)negotiatedFeaturesStringWithLocalFeaturesString:(id)string remoteFeaturesString:(id)featuresString;
++ (id)negotiationBlobFromData:(id)data;
++ (id)newCompressedBlob:(id)blob;
++ (id)newDecompressedBlob:(id)blob;
++ (id)streamGroupIDsWithMediaBlob:(id)blob;
++ (int64_t)preferredCipherSuiteFromSet:(id)set;
++ (unsigned)mappedRemoteQualityIndexForQualityIndex:(unsigned int)index;
++ (void)dumpBlob:(id)blob prefix:(id)prefix force:(BOOL)force;
+- (BOOL)addBandwidthSettingsForMediaBlob:(id)blob arbiterMode:(unsigned __int8)mode connectionType:(int)type maxBitrate:(unsigned int)bitrate;
 - (BOOL)isCellular16x9EncodeCapable;
-- (BOOL)isNegotiationModeForScreenShare:(int64_t)a3;
-- (BOOL)isNegotiationModeValid:(int64_t)a3;
-- (BOOL)isVideoStreamSupported:(int)a3;
-- (BOOL)negotiateAudioDTXPayload:(id)a3;
-- (BOOL)negotiateAudioPrimaryPayload:(id)a3 microphoneConfiguration:(id)a4;
-- (BOOL)negotiateAudioREDPayload:(id)a3 microphoneConfiguration:(id)a4;
-- (BOOL)negotiateAudioSettings:(id)a3;
-- (BOOL)negotiateCaptionsWithCaptionsSettings:(id)a3;
-- (BOOL)negotiateFaceTimeSettings:(id)a3;
-- (BOOL)negotiateHDRMode:(id)a3 videoResults:(id)a4;
-- (BOOL)negotiateMediaEncryptionWithRemoteSettings:(id)a3;
-- (BOOL)negotiateMomentsWithMomentsSettings:(id)a3;
-- (BOOL)negotiateMultiwayAudioStreams:(id)a3;
-- (BOOL)negotiateMultiwayVideoStreams:(id)a3;
-- (BOOL)negotiateScreenSettings:(id)a3;
-- (BOOL)negotiateVideoSettings:(id)a3;
-- (BOOL)processParameterSets:(id)a3 videoResults:(id)a4;
-- (BOOL)processPixelFormats:(id)a3 videoResults:(id)a4;
-- (BOOL)processRemoteNegotiationData:(id)a3;
-- (BOOL)processResponseBlob:(id)a3;
-- (BOOL)selectBestScreenRule:(id)a3 preferredPayloadOrder:(id)a4;
-- (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5 localVideoRuleCollection:(id)a6 remoteVideoSettings:(id)a7 negotiatedVideoSettings:(id)a8 isScreen:(BOOL)a9;
-- (BOOL)setUpMediaEncryptionForMediaBlob:(id)a3 isResponse:(BOOL)a4;
-- (BOOL)setupAudioWithNegotiatedSettings:(id)a3;
-- (BOOL)setupBandwidthSettingsForMediaBlob:(id)a3;
-- (BOOL)setupScreenWithNegotiatedSettings:(id)a3;
-- (BOOL)setupVideoWithNegotiatedSettings:(id)a3;
-- (VCMediaNegotiator)initWithLocalSettings:(id)a3;
-- (VCMediaNegotiator)initWithMode:(int64_t)a3 localSettings:(id)a4;
+- (BOOL)isNegotiationModeForScreenShare:(int64_t)share;
+- (BOOL)isNegotiationModeValid:(int64_t)valid;
+- (BOOL)isVideoStreamSupported:(int)supported;
+- (BOOL)negotiateAudioDTXPayload:(id)payload;
+- (BOOL)negotiateAudioPrimaryPayload:(id)payload microphoneConfiguration:(id)configuration;
+- (BOOL)negotiateAudioREDPayload:(id)payload microphoneConfiguration:(id)configuration;
+- (BOOL)negotiateAudioSettings:(id)settings;
+- (BOOL)negotiateCaptionsWithCaptionsSettings:(id)settings;
+- (BOOL)negotiateFaceTimeSettings:(id)settings;
+- (BOOL)negotiateHDRMode:(id)mode videoResults:(id)results;
+- (BOOL)negotiateMediaEncryptionWithRemoteSettings:(id)settings;
+- (BOOL)negotiateMomentsWithMomentsSettings:(id)settings;
+- (BOOL)negotiateMultiwayAudioStreams:(id)streams;
+- (BOOL)negotiateMultiwayVideoStreams:(id)streams;
+- (BOOL)negotiateScreenSettings:(id)settings;
+- (BOOL)negotiateVideoSettings:(id)settings;
+- (BOOL)processParameterSets:(id)sets videoResults:(id)results;
+- (BOOL)processPixelFormats:(id)formats videoResults:(id)results;
+- (BOOL)processRemoteNegotiationData:(id)data;
+- (BOOL)processResponseBlob:(id)blob;
+- (BOOL)selectBestScreenRule:(id)rule preferredPayloadOrder:(id)order;
+- (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)transport payload:(int)payload encodingType:(unsigned __int8)type localVideoRuleCollection:(id)collection remoteVideoSettings:(id)settings negotiatedVideoSettings:(id)videoSettings isScreen:(BOOL)screen;
+- (BOOL)setUpMediaEncryptionForMediaBlob:(id)blob isResponse:(BOOL)response;
+- (BOOL)setupAudioWithNegotiatedSettings:(id)settings;
+- (BOOL)setupBandwidthSettingsForMediaBlob:(id)blob;
+- (BOOL)setupScreenWithNegotiatedSettings:(id)settings;
+- (BOOL)setupVideoWithNegotiatedSettings:(id)settings;
+- (VCMediaNegotiator)initWithLocalSettings:(id)settings;
+- (VCMediaNegotiator)initWithMode:(int64_t)mode localSettings:(id)settings;
 - (id)getPreferredScreenPayloadList;
-- (id)localeWithMediaBlobLanguage:(int)a3;
+- (id)localeWithMediaBlobLanguage:(int)language;
 - (id)negotiationData;
 - (id)newResponseBlob;
-- (id)newStreamConfigFromMultiwayAudioStream:(id)a3;
-- (id)newStreamConfigFromMultiwayVideoStream:(id)a3;
-- (id)newStreamGroupCodecConfigForPayload:(int)a3;
-- (id)selectVideoFeatureString:(id)a3 selectedPayload:(int)a4 videoConfiguration:(id)a5;
-- (int)mediaBlobLanguageWithLocale:(id)a3;
+- (id)newStreamConfigFromMultiwayAudioStream:(id)stream;
+- (id)newStreamConfigFromMultiwayVideoStream:(id)stream;
+- (id)newStreamGroupCodecConfigForPayload:(int)payload;
+- (id)selectVideoFeatureString:(id)string selectedPayload:(int)payload videoConfiguration:(id)configuration;
+- (int)mediaBlobLanguageWithLocale:(id)locale;
 - (void)dealloc;
-- (void)negotiateAudioAllowRecording:(id)a3 microphoneConfiguration:(id)a4;
-- (void)negotiateAudioSecondaryPayloads:(id)a3 microphoneConfiguration:(id)a4;
-- (void)negotiateAudioUseSBR:(id)a3;
-- (void)negotiateRTCPFB:(id)a3 negotiatedVideoSettings:(id)a4;
-- (void)negotiateTilesPerFrame:(id)a3 negotiatedSettings:(id)a4;
+- (void)negotiateAudioAllowRecording:(id)recording microphoneConfiguration:(id)configuration;
+- (void)negotiateAudioSecondaryPayloads:(id)payloads microphoneConfiguration:(id)configuration;
+- (void)negotiateAudioUseSBR:(id)r;
+- (void)negotiateRTCPFB:(id)b negotiatedVideoSettings:(id)settings;
+- (void)negotiateTilesPerFrame:(id)frame negotiatedSettings:(id)settings;
 - (void)negotiationData;
 - (void)newResponseBlob;
-- (void)processCustomResolution:(id)a3 cameraRuleCollections:(id)a4 videoNegotiationSettings:(id)a5;
-- (void)saveRemoteBandwidthSettingsWithMediaBlob:(id)a3;
-- (void)setupCaptionsForMediaBlob:(id)a3;
-- (void)setupFaceTimeSettingsForMediaBlob:(id)a3 isResponse:(BOOL)a4;
-- (void)setupMomentsForMediaBlob:(id)a3;
-- (void)setupMultiwayAudioStreamsForMediaBlob:(id)a3;
-- (void)setupMultiwayVideoStreamsForMediaBlob:(id)a3;
+- (void)processCustomResolution:(id)resolution cameraRuleCollections:(id)collections videoNegotiationSettings:(id)settings;
+- (void)saveRemoteBandwidthSettingsWithMediaBlob:(id)blob;
+- (void)setupCaptionsForMediaBlob:(id)blob;
+- (void)setupFaceTimeSettingsForMediaBlob:(id)blob isResponse:(BOOL)response;
+- (void)setupMomentsForMediaBlob:(id)blob;
+- (void)setupMultiwayAudioStreamsForMediaBlob:(id)blob;
+- (void)setupMultiwayVideoStreamsForMediaBlob:(id)blob;
 @end
 
 @implementation VCMediaNegotiator
 
-- (VCMediaNegotiator)initWithLocalSettings:(id)a3
+- (VCMediaNegotiator)initWithLocalSettings:(id)settings
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -80,7 +80,7 @@
   v4 = [(VCMediaNegotiatorBase *)&v7 initWithLocalSettings:?];
   if (v4)
   {
-    if ([VCMediaNegotiator validateLocalConfiguration:a3])
+    if ([VCMediaNegotiator validateLocalConfiguration:settings])
     {
       v5 = objc_alloc_init(VCMediaNegotiatorResultsCaptions);
       v4->_negotiatedCaptionsSettings = v5;
@@ -104,17 +104,17 @@
   return v4;
 }
 
-- (VCMediaNegotiator)initWithMode:(int64_t)a3 localSettings:(id)a4
+- (VCMediaNegotiator)initWithMode:(int64_t)mode localSettings:(id)settings
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VCMediaNegotiator;
-  v5 = [(VCMediaNegotiatorBase *)&v8 initWithLocalSettings:a4];
+  v5 = [(VCMediaNegotiatorBase *)&v8 initWithLocalSettings:settings];
   v6 = v5;
   if (v5)
   {
-    v5->_negotiationMode = a3;
-    if (![(VCMediaNegotiator *)v5 isNegotiationModeValid:a3])
+    v5->_negotiationMode = mode;
+    if (![(VCMediaNegotiator *)v5 isNegotiationModeValid:mode])
     {
 
       return 0;
@@ -132,21 +132,21 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = [v2 supportedPayloads];
-  v4 = [v3 countByEnumeratingWithState:&v35 objects:v34 count:16];
+  supportedPayloads = [v2 supportedPayloads];
+  v4 = [supportedPayloads countByEnumeratingWithState:&v35 objects:v34 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v36;
     v21 = *v36;
-    v22 = v3;
+    v22 = supportedPayloads;
     do
     {
       for (i = 0; i != v5; ++i)
       {
         if (*v36 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedPayloads);
         }
 
         v8 = [v2 getVideoRulesForTransport:2 payload:objc_msgSend(*(*(&v35 + 1) + 8 * i) encodingType:{"unsignedIntValue", v21), 1}];
@@ -169,8 +169,8 @@
               }
 
               v13 = *(*(&v30 + 1) + 8 * j);
-              v14 = [v13 iWidth];
-              if ([v13 iHeight] * v14 == 130560)
+              iWidth = [v13 iWidth];
+              if ([v13 iHeight] * iWidth == 130560)
               {
                 if (VRTraceGetErrorLogLevelForModule() >= 7)
                 {
@@ -204,7 +204,7 @@
         }
 
         v6 = v21;
-        v3 = v22;
+        supportedPayloads = v22;
       }
 
       v5 = [v22 countByEnumeratingWithState:&v35 objects:v34 count:16];
@@ -237,10 +237,10 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)isNegotiationModeValid:(int64_t)a3
+- (BOOL)isNegotiationModeValid:(int64_t)valid
 {
-  v3 = a3 - 1;
-  if ((a3 - 1) >= 0xF && VRTraceGetErrorLogLevelForModule() >= 3)
+  v3 = valid - 1;
+  if ((valid - 1) >= 0xF && VRTraceGetErrorLogLevelForModule() >= 3)
   {
     VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
@@ -252,9 +252,9 @@ LABEL_19:
   return v3 < 0xF;
 }
 
-- (BOOL)isNegotiationModeForScreenShare:(int64_t)a3
+- (BOOL)isNegotiationModeForScreenShare:(int64_t)share
 {
-  if ((a3 - 1) >= 0xF)
+  if ((share - 1) >= 0xF)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -270,7 +270,7 @@ LABEL_19:
 
   else
   {
-    v3 = 0x953u >> (a3 - 1);
+    v3 = 0x953u >> (share - 1);
   }
 
   return v3 & 1;
@@ -315,7 +315,7 @@ LABEL_19:
     }
 
 LABEL_41:
-    v23 = 0;
+    videoRuleCollections2 = 0;
     v21 = 0;
     v31 = 0;
     v5 = 0;
@@ -372,7 +372,7 @@ LABEL_41:
     }
 
 LABEL_51:
-    v23 = 0;
+    videoRuleCollections2 = 0;
     v21 = 0;
     v31 = 0;
     goto LABEL_60;
@@ -381,26 +381,26 @@ LABEL_51:
   v52 = 0;
 LABEL_10:
   v9 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaConfigurationForMediaType:2];
-  v10 = [v9 videoRuleCollections];
+  videoRuleCollections = [v9 videoRuleCollections];
   v11 = VCMediaStreamSendGroup;
   v12 = &OBJC_IVAR___VCSessionMediaTypeSettings__mediaState;
-  if (v10)
+  if (videoRuleCollections)
   {
-    v13 = v10;
+    v13 = videoRuleCollections;
     v50 = [VCMediaNegotiationBlobVideoSettings alloc];
-    v48 = [v9 ssrc];
-    v46 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings allowRTCPFB];
-    v44 = [v9 videoFeatureStrings];
+    ssrc = [v9 ssrc];
+    allowRTCPFB = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings allowRTCPFB];
+    videoFeatureStrings = [v9 videoFeatureStrings];
     isCellular16x9Capable = self->_isCellular16x9Capable;
-    v14 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
-    v15 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings ltrpEnabled];
-    v16 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings pixelFormats];
-    v17 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings hdrModesSupported];
-    v18 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoWidth];
-    v19 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoHeight];
+    tilesPerVideoFrame = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
+    ltrpEnabled = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings ltrpEnabled];
+    pixelFormats = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings pixelFormats];
+    hdrModesSupported = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings hdrModesSupported];
+    customVideoWidth = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoWidth];
+    customVideoHeight = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoHeight];
     LOBYTE(v37) = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings enableInterleavedEncoding];
-    LOBYTE(v35) = v15;
-    v20 = [(VCMediaNegotiationBlobVideoSettings *)v50 initWithSSRC:v48 allowRTCPFB:v46 videoRuleCollections:v13 featureStrings:v44 isCellular16x9Capable:isCellular16x9Capable tilesPerFrame:v14 ltrpEnabled:v35 pixelFormats:v16 hdrModesSupported:v17 customVideoWidth:__PAIR64__(v19 customVideoHeight:v18) enableInterleavedEncoding:v37];
+    LOBYTE(v35) = ltrpEnabled;
+    v20 = [(VCMediaNegotiationBlobVideoSettings *)v50 initWithSSRC:ssrc allowRTCPFB:allowRTCPFB videoRuleCollections:v13 featureStrings:videoFeatureStrings isCellular16x9Capable:isCellular16x9Capable tilesPerFrame:tilesPerVideoFrame ltrpEnabled:v35 pixelFormats:pixelFormats hdrModesSupported:hdrModesSupported customVideoWidth:__PAIR64__(customVideoHeight customVideoHeight:customVideoWidth) enableInterleavedEncoding:v37];
     if (!v20)
     {
       v3 = VCMediaStreamSendGroup;
@@ -414,7 +414,7 @@ LABEL_10:
         }
       }
 
-      v23 = 0;
+      videoRuleCollections2 = 0;
       v21 = 0;
       goto LABEL_60;
     }
@@ -431,37 +431,37 @@ LABEL_10:
   }
 
   v22 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaConfigurationForMediaType:3];
-  v23 = [v22 videoRuleCollections];
-  if (v23)
+  videoRuleCollections2 = [v22 videoRuleCollections];
+  if (videoRuleCollections2)
   {
     v51 = v21;
     v49 = objc_alloc(&v11[34]);
-    v47 = [v22 ssrc];
-    v45 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings allowRTCPFB];
-    v43 = [v22 videoFeatureStrings];
+    ssrc2 = [v22 ssrc];
+    allowRTCPFB2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings allowRTCPFB];
+    videoFeatureStrings2 = [v22 videoFeatureStrings];
     v41 = *(&self->super.super.isa + v12[93]);
-    v40 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoWidth];
-    v39 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoHeight];
-    v38 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
-    v24 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings ltrpEnabled];
-    v25 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings pixelFormats];
-    v26 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings hdrModesSupported];
-    v27 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings fecEnabled];
-    v28 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings rtxEnabled];
-    v29 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings blackFrameOnClearScreenEnabled];
+    customVideoWidth2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoWidth];
+    customVideoHeight2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoHeight];
+    tilesPerVideoFrame2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
+    ltrpEnabled2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings ltrpEnabled];
+    pixelFormats2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings pixelFormats];
+    hdrModesSupported2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings hdrModesSupported];
+    fecEnabled = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings fecEnabled];
+    rtxEnabled = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings rtxEnabled];
+    blackFrameOnClearScreenEnabled = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings blackFrameOnClearScreenEnabled];
     BYTE3(v37) = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings foveationIsSupported];
-    BYTE2(v37) = v29;
-    BYTE1(v37) = v28;
-    LOBYTE(v37) = v27;
-    LOBYTE(v36) = v24;
-    v30 = [v49 initWithScreenSSRC:v47 allowRTCPFB:v45 videoRuleCollections:v23 featureStrings:v43 isCellular16x9Capable:v41 customVideoWidth:v40 customVideoHeight:__PAIR64__(v38 tilesPerFrame:v39) ltrpEnabled:v36 pixelFormats:v25 hdrModesSupported:v26 fecEnabled:v37 rtxEnabled:? blackFrameOnClearScreenEnabled:? foveationSupported:?];
+    BYTE2(v37) = blackFrameOnClearScreenEnabled;
+    BYTE1(v37) = rtxEnabled;
+    LOBYTE(v37) = fecEnabled;
+    LOBYTE(v36) = ltrpEnabled2;
+    v30 = [v49 initWithScreenSSRC:ssrc2 allowRTCPFB:allowRTCPFB2 videoRuleCollections:videoRuleCollections2 featureStrings:videoFeatureStrings2 isCellular16x9Capable:v41 customVideoWidth:customVideoWidth2 customVideoHeight:__PAIR64__(tilesPerVideoFrame2 tilesPerFrame:customVideoHeight2) ltrpEnabled:v36 pixelFormats:pixelFormats2 hdrModesSupported:hdrModesSupported2 fecEnabled:v37 rtxEnabled:? blackFrameOnClearScreenEnabled:? foveationSupported:?];
     if (!v30)
     {
       v3 = VCMediaStreamSendGroup;
       v31 = v52;
       if (VRTraceGetErrorLogLevelForModule() < 3)
       {
-        v23 = 0;
+        videoRuleCollections2 = 0;
         v33 = 0;
         v21 = v51;
         goto LABEL_61;
@@ -474,11 +474,11 @@ LABEL_10:
         [VCMediaNegotiator negotiationData];
       }
 
-      v23 = 0;
+      videoRuleCollections2 = 0;
       goto LABEL_60;
     }
 
-    v23 = v30;
+    videoRuleCollections2 = v30;
     [(VCMediaNegotiationBlob *)v5 setScreenSettings:v30];
     v3 = VCMediaStreamSendGroup;
     v21 = v51;
@@ -537,10 +537,10 @@ LABEL_61:
   return v33;
 }
 
-- (BOOL)processRemoteNegotiationData:(id)a3
+- (BOOL)processRemoteNegotiationData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  [VCMediaNegotiator dumpBlob:a3 prefix:@"mediablob_invite_remote" force:0];
+  [VCMediaNegotiator dumpBlob:data prefix:@"mediablob_invite_remote" force:0];
   if ([(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings isCaller])
   {
     [VCMediaNegotiator processRemoteNegotiationData:];
@@ -551,7 +551,7 @@ LABEL_45:
     goto LABEL_32;
   }
 
-  v5 = [VCMediaNegotiator newDecompressedBlob:a3];
+  v5 = [VCMediaNegotiator newDecompressedBlob:data];
   if (!v5)
   {
     [VCMediaNegotiator processRemoteNegotiationData:];
@@ -572,15 +572,15 @@ LABEL_45:
   [(VCMediaNegotiatorResults *)self->super._negotiatedSettings setRemoteUserAgent:[(VCMediaNegotiationBlob *)v7 userAgent]];
   [(VCMediaNegotiatorResults *)self->super._negotiatedSettings setRemoteBasebandCodec:[(VCMediaNegotiationBlob *)v7 basebandCodec]];
   [(VCMediaNegotiatorResults *)self->super._negotiatedSettings setRemoteBasebandCodecSampleRate:[(VCMediaNegotiationBlob *)v7 basebandCodecSampleRate]];
-  v8 = [(VCMediaNegotiationBlob *)v7 mediaControlInfoVersion];
-  if (v8 >= 2)
+  mediaControlInfoVersion = [(VCMediaNegotiationBlob *)v7 mediaControlInfoVersion];
+  if (mediaControlInfoVersion >= 2)
   {
     v9 = 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = mediaControlInfoVersion;
   }
 
   [(VCMediaNegotiatorResults *)self->super._negotiatedSettings setMediaControlInfoVersion:v9];
@@ -593,7 +593,7 @@ LABEL_45:
     v11 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(VCMediaNegotiatorResults *)self->super._negotiatedSettings mediaControlInfoVersion];
+      mediaControlInfoVersion2 = [(VCMediaNegotiatorResults *)self->super._negotiatedSettings mediaControlInfoVersion];
       *buf = 136315906;
       *&buf[4] = v10;
       v18 = 2080;
@@ -601,7 +601,7 @@ LABEL_45:
       v20 = 1024;
       v21 = 322;
       v22 = 1024;
-      v23 = v12 == 2;
+      v23 = mediaControlInfoVersion2 == 2;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Load switch after negotiation updatedAFRCHeaderEnabled %d", buf, 0x22u);
     }
   }
@@ -672,7 +672,7 @@ LABEL_32:
   return v13;
 }
 
-+ (id)negotiationBlobFromData:(id)a3
++ (id)negotiationBlobFromData:(id)data
 {
   v3 = [VCMediaNegotiator newDecompressedBlob:?];
   v4 = [[VCMediaNegotiationBlob alloc] initWithData:v3];
@@ -680,10 +680,10 @@ LABEL_32:
   return v4;
 }
 
-+ (id)localConfigurationWithData:(id)a3 deviceRole:(int)a4 preferredAudioPayload:(int)a5
++ (id)localConfigurationWithData:(id)data deviceRole:(int)role preferredAudioPayload:(int)payload
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&payload;
+  v6 = *&role;
   v8 = objc_alloc_init(VCMediaNegotiatorLocalConfiguration);
   if (!v8)
   {
@@ -693,7 +693,7 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (![VCMediaNegotiator initializeLocalConfiguration:v8 negotiationData:a3 deviceRole:v6 preferredAudioPayload:v5])
+  if (![VCMediaNegotiator initializeLocalConfiguration:v8 negotiationData:data deviceRole:v6 preferredAudioPayload:v5])
   {
     +[VCMediaNegotiator localConfigurationWithData:deviceRole:preferredAudioPayload:];
     goto LABEL_7;
@@ -705,53 +705,53 @@ LABEL_4:
   return v9;
 }
 
-+ (BOOL)addMediaConfigurationsToLocalConfiguration:(id)a3 withBlob:(id)a4
++ (BOOL)addMediaConfigurationsToLocalConfiguration:(id)configuration withBlob:(id)blob
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = [a4 videoSettings];
-  v7 = [a4 screenSettings];
-  v8 = [objc_msgSend(a4 "audioSettings")];
+  videoSettings = [blob videoSettings];
+  screenSettings = [blob screenSettings];
+  v8 = [objc_msgSend(blob "audioSettings")];
   if (!v8)
   {
     +[VCMediaNegotiator addMediaConfigurationsToLocalConfiguration:withBlob:];
 LABEL_14:
     v11 = v14;
-    v6 = v15;
+    videoSettings = v15;
     v12 = v16;
     goto LABEL_10;
   }
 
-  [a3 setMediaConfiguration:v8 forMediaType:1];
-  if (!v6)
+  [configuration setMediaConfiguration:v8 forMediaType:1];
+  if (!videoSettings)
   {
     goto LABEL_5;
   }
 
-  v9 = [objc_msgSend(a4 "videoSettings")];
+  v9 = [objc_msgSend(blob "videoSettings")];
   if (!v9)
   {
     +[VCMediaNegotiator addMediaConfigurationsToLocalConfiguration:withBlob:];
     goto LABEL_14;
   }
 
-  v6 = v9;
-  [a3 setMediaConfiguration:v9 forMediaType:2];
+  videoSettings = v9;
+  [configuration setMediaConfiguration:v9 forMediaType:2];
 LABEL_5:
-  if (!v7)
+  if (!screenSettings)
   {
     v11 = 0;
     goto LABEL_9;
   }
 
-  v10 = [objc_msgSend(a4 "screenSettings")];
+  v10 = [objc_msgSend(blob "screenSettings")];
   if (!v10)
   {
-    [(VCMediaNegotiator *)v6 addMediaConfigurationsToLocalConfiguration:&v15 withBlob:&v16];
+    [(VCMediaNegotiator *)videoSettings addMediaConfigurationsToLocalConfiguration:&v15 withBlob:&v16];
     goto LABEL_14;
   }
 
   v11 = v10;
-  [a3 setMediaConfiguration:v10 forMediaType:3];
+  [configuration setMediaConfiguration:v10 forMediaType:3];
 LABEL_9:
   v12 = 1;
 LABEL_10:
@@ -759,12 +759,12 @@ LABEL_10:
   return v12;
 }
 
-+ (BOOL)initializeLocalConfiguration:(id)a3 negotiationData:(id)a4 deviceRole:(int)a5 preferredAudioPayload:(int)a6
++ (BOOL)initializeLocalConfiguration:(id)configuration negotiationData:(id)data deviceRole:(int)role preferredAudioPayload:(int)payload
 {
-  v6 = *&a6;
-  v7 = *&a5;
+  v6 = *&payload;
+  v7 = *&role;
   v64 = *MEMORY[0x1E69E9840];
-  v11 = [VCMediaNegotiator negotiationBlobFromData:a4];
+  v11 = [VCMediaNegotiator negotiationBlobFromData:data];
   if (!v11)
   {
     +[VCMediaNegotiator initializeLocalConfiguration:negotiationData:deviceRole:preferredAudioPayload:];
@@ -772,30 +772,30 @@ LABEL_10:
   }
 
   v12 = v11;
-  v40 = a4;
-  v41 = a1;
-  v13 = [v11 ntpTime];
-  [a3 setDeviceRole:v7];
-  [a3 setPreferredAudioCodec:v6];
-  [a3 setCreationTime:v13];
-  [a3 setMediaControlInfoVersion:{objc_msgSend(v12, "mediaControlInfoVersion")}];
-  [a3 setAllowRTCPFB:{objc_msgSend(objc_msgSend(v12, "videoSettings"), "allowRTCPFB")}];
-  [a3 setIsCaller:1];
-  [a3 setAccessNetworkType:{objc_msgSend(v12, "accessNetworkType")}];
-  [a3 setCustomVideoWidth:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "customVideoWidth")}];
-  [a3 setCustomVideoHeight:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "customVideoHeight")}];
-  [a3 setTilesPerVideoFrame:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "tilesPerFrame")}];
-  [a3 setBlackFrameOnClearScreenEnabled:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "blackFrameOnClearScreenEnabled")}];
-  [a3 setFoveationIsSupported:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "foveationSupported")}];
-  [a3 setBasebandCodec:{objc_msgSend(v12, "basebandCodec")}];
-  [a3 setBasebandCodecSampleRate:{objc_msgSend(v12, "basebandCodecSampleRate")}];
-  [a3 setEnableInterleavedEncoding:{objc_msgSend(objc_msgSend(v12, "videoSettings"), "enableInterleavedEncoding")}];
+  dataCopy = data;
+  selfCopy = self;
+  ntpTime = [v11 ntpTime];
+  [configuration setDeviceRole:v7];
+  [configuration setPreferredAudioCodec:v6];
+  [configuration setCreationTime:ntpTime];
+  [configuration setMediaControlInfoVersion:{objc_msgSend(v12, "mediaControlInfoVersion")}];
+  [configuration setAllowRTCPFB:{objc_msgSend(objc_msgSend(v12, "videoSettings"), "allowRTCPFB")}];
+  [configuration setIsCaller:1];
+  [configuration setAccessNetworkType:{objc_msgSend(v12, "accessNetworkType")}];
+  [configuration setCustomVideoWidth:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "customVideoWidth")}];
+  [configuration setCustomVideoHeight:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "customVideoHeight")}];
+  [configuration setTilesPerVideoFrame:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "tilesPerFrame")}];
+  [configuration setBlackFrameOnClearScreenEnabled:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "blackFrameOnClearScreenEnabled")}];
+  [configuration setFoveationIsSupported:{objc_msgSend(objc_msgSend(v12, "screenSettings"), "foveationSupported")}];
+  [configuration setBasebandCodec:{objc_msgSend(v12, "basebandCodec")}];
+  [configuration setBasebandCodecSampleRate:{objc_msgSend(v12, "basebandCodecSampleRate")}];
+  [configuration setEnableInterleavedEncoding:{objc_msgSend(objc_msgSend(v12, "videoSettings"), "enableInterleavedEncoding")}];
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v14 = [v12 multiwayAudioStreams];
-  v15 = [v14 countByEnumeratingWithState:&v60 objects:v59 count:16];
+  multiwayAudioStreams = [v12 multiwayAudioStreams];
+  v15 = [multiwayAudioStreams countByEnumeratingWithState:&v60 objects:v59 count:16];
   if (v15)
   {
     v16 = v15;
@@ -806,14 +806,14 @@ LABEL_10:
       {
         if (*v61 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(multiwayAudioStreams);
         }
 
-        v19 = [*(*(&v60 + 1) + 8 * i) newMultiwayAudioStream];
-        [a3 addMultiwayAudioStream:v19];
+        newMultiwayAudioStream = [*(*(&v60 + 1) + 8 * i) newMultiwayAudioStream];
+        [configuration addMultiwayAudioStream:newMultiwayAudioStream];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v60 objects:v59 count:16];
+      v16 = [multiwayAudioStreams countByEnumeratingWithState:&v60 objects:v59 count:16];
     }
 
     while (v16);
@@ -823,8 +823,8 @@ LABEL_10:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v20 = [v12 multiwayVideoStreams];
-  v21 = [v20 countByEnumeratingWithState:&v55 objects:v54 count:16];
+  multiwayVideoStreams = [v12 multiwayVideoStreams];
+  v21 = [multiwayVideoStreams countByEnumeratingWithState:&v55 objects:v54 count:16];
   if (v21)
   {
     v22 = v21;
@@ -835,14 +835,14 @@ LABEL_10:
       {
         if (*v56 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(multiwayVideoStreams);
         }
 
-        v25 = [*(*(&v55 + 1) + 8 * j) newMultiwayVideoStream];
-        [a3 addMultiwayVideoStream:v25];
+        newMultiwayVideoStream = [*(*(&v55 + 1) + 8 * j) newMultiwayVideoStream];
+        [configuration addMultiwayVideoStream:newMultiwayVideoStream];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v55 objects:v54 count:16];
+      v22 = [multiwayVideoStreams countByEnumeratingWithState:&v55 objects:v54 count:16];
     }
 
     while (v22);
@@ -853,8 +853,8 @@ LABEL_10:
   v50 = 0u;
   v51 = 0u;
   v42 = v12;
-  v26 = [v12 bandwidthSettings];
-  v27 = [v26 countByEnumeratingWithState:&v50 objects:v49 count:16];
+  bandwidthSettings = [v12 bandwidthSettings];
+  v27 = [bandwidthSettings countByEnumeratingWithState:&v50 objects:v49 count:16];
   if (v27)
   {
     v28 = v27;
@@ -865,15 +865,15 @@ LABEL_10:
       {
         if (*v51 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(bandwidthSettings);
         }
 
-        v31 = [*(*(&v50 + 1) + 8 * k) newBandwidthConfigurations];
+        newBandwidthConfigurations = [*(*(&v50 + 1) + 8 * k) newBandwidthConfigurations];
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v32 = [v31 countByEnumeratingWithState:&v45 objects:v44 count:16];
+        v32 = [newBandwidthConfigurations countByEnumeratingWithState:&v45 objects:v44 count:16];
         if (v32)
         {
           v33 = v32;
@@ -884,46 +884,46 @@ LABEL_10:
             {
               if (*v46 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(newBandwidthConfigurations);
               }
 
-              [a3 addBandwidthConfiguration:*(*(&v45 + 1) + 8 * m)];
+              [configuration addBandwidthConfiguration:*(*(&v45 + 1) + 8 * m)];
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v45 objects:v44 count:16];
+            v33 = [newBandwidthConfigurations countByEnumeratingWithState:&v45 objects:v44 count:16];
           }
 
           while (v33);
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v50 objects:v49 count:16];
+      v28 = [bandwidthSettings countByEnumeratingWithState:&v50 objects:v49 count:16];
     }
 
     while (v28);
   }
 
   v36 = [objc_msgSend(v42 "momentsSettings")];
-  [a3 setMediaRecorderVideoCodecs:v36];
+  [configuration setMediaRecorderVideoCodecs:v36];
 
   v37 = [objc_msgSend(v42 "momentsSettings")];
-  [a3 setMediaRecorderImageTypes:v37];
+  [configuration setMediaRecorderImageTypes:v37];
 
-  v38 = [v42 faceTimeSettings];
-  [a3 setSIPDisabled:{objc_msgSend(v38, "SIPDisabled")}];
-  [a3 setSecureMessagingRequired:{objc_msgSend(v38, "secureMessagingRequired")}];
-  [a3 setFaceTimeSwitches:{objc_msgSend(v38, "switches")}];
-  [a3 setOneToOneModeSupported:{objc_msgSend(v38, "oneToOneModeSupported")}];
-  [a3 setMediaControlInfoFECFeedbackVersion:{objc_msgSend(v38, "mediaControlInfoFECFeedbackVersion")}];
-  [a3 setLinkProbingCapabilityVersion:{objc_msgSend(v38, "linkProbingCapabilityVersion")}];
-  [a3 setMediaEncryptionSettings:{objc_msgSend(objc_msgSend(v42, "encryptionSettings"), "mediaEncryptionSettings")}];
-  if (([v41 addMediaConfigurationsToLocalConfiguration:a3 withBlob:v42] & 1) == 0)
+  faceTimeSettings = [v42 faceTimeSettings];
+  [configuration setSIPDisabled:{objc_msgSend(faceTimeSettings, "SIPDisabled")}];
+  [configuration setSecureMessagingRequired:{objc_msgSend(faceTimeSettings, "secureMessagingRequired")}];
+  [configuration setFaceTimeSwitches:{objc_msgSend(faceTimeSettings, "switches")}];
+  [configuration setOneToOneModeSupported:{objc_msgSend(faceTimeSettings, "oneToOneModeSupported")}];
+  [configuration setMediaControlInfoFECFeedbackVersion:{objc_msgSend(faceTimeSettings, "mediaControlInfoFECFeedbackVersion")}];
+  [configuration setLinkProbingCapabilityVersion:{objc_msgSend(faceTimeSettings, "linkProbingCapabilityVersion")}];
+  [configuration setMediaEncryptionSettings:{objc_msgSend(objc_msgSend(v42, "encryptionSettings"), "mediaEncryptionSettings")}];
+  if (([selfCopy addMediaConfigurationsToLocalConfiguration:configuration withBlob:v42] & 1) == 0)
   {
     +[VCMediaNegotiator initializeLocalConfiguration:negotiationData:deviceRole:preferredAudioPayload:];
     return v43;
   }
 
-  [v42 printWithTitle:@"Cached invite media blob" blobSize:objc_msgSend(v40 logFile:{"length"), objc_msgSend(a3, "callLogFile")}];
+  [v42 printWithTitle:@"Cached invite media blob" blobSize:objc_msgSend(dataCopy logFile:{"length"), objc_msgSend(configuration, "callLogFile")}];
   return 1;
 }
 
@@ -976,16 +976,16 @@ LABEL_49:
   if (self->_negotiationMode == 1)
   {
     [(VCMediaNegotiationBlob *)v5 setAllowDynamicMaxBitrate:0];
-    v6 = 0;
+    supportsDynamicMaxBitrate = 0;
   }
 
   else
   {
     [(VCMediaNegotiationBlob *)v5 setAllowDynamicMaxBitrate:1];
-    v6 = [(VCMediaNegotiatorResults *)self->super._negotiatedSettings supportsDynamicMaxBitrate];
+    supportsDynamicMaxBitrate = [(VCMediaNegotiatorResults *)self->super._negotiatedSettings supportsDynamicMaxBitrate];
   }
 
-  [(VCMediaNegotiationBlob *)v5 setAllowsContentsChangeWithAspectPreservation:v6];
+  [(VCMediaNegotiationBlob *)v5 setAllowsContentsChangeWithAspectPreservation:supportsDynamicMaxBitrate];
   if (![(VCMediaNegotiator *)self setupBandwidthSettingsForMediaBlob:v5])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1012,20 +1012,20 @@ LABEL_23:
     if ([v17 isSupported])
     {
       v58 = [VCMediaNegotiationBlobVideoSettings alloc];
-      v56 = [v18 ssrc];
-      v54 = [v17 isRTCPFBEnabled];
-      v52 = [v17 videoRuleCollections];
-      v50 = [v18 videoFeatureStrings];
+      ssrc = [v18 ssrc];
+      isRTCPFBEnabled = [v17 isRTCPFBEnabled];
+      videoRuleCollections = [v17 videoRuleCollections];
+      videoFeatureStrings = [v18 videoFeatureStrings];
       isCellular16x9Capable = self->_isCellular16x9Capable;
-      v19 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
-      v20 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings ltrpEnabled];
-      v21 = [v17 pixelFormats];
-      v22 = [v17 hdrModesNegotiated];
-      v23 = [v17 customVideoWidth];
-      v24 = [v17 customVideoHeight];
+      tilesPerVideoFrame = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
+      ltrpEnabled = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings ltrpEnabled];
+      pixelFormats = [v17 pixelFormats];
+      hdrModesNegotiated = [v17 hdrModesNegotiated];
+      customVideoWidth = [v17 customVideoWidth];
+      customVideoHeight = [v17 customVideoHeight];
       LOBYTE(v43) = [v17 enableInterleavedEncoding];
-      LOBYTE(v41) = v20;
-      v25 = [(VCMediaNegotiationBlobVideoSettings *)v58 initWithSSRC:v56 allowRTCPFB:v54 videoRuleCollections:v52 featureStrings:v50 isCellular16x9Capable:isCellular16x9Capable tilesPerFrame:v19 ltrpEnabled:v41 pixelFormats:v21 hdrModesSupported:v22 customVideoWidth:__PAIR64__(v24 customVideoHeight:v23) enableInterleavedEncoding:v43];
+      LOBYTE(v41) = ltrpEnabled;
+      v25 = [(VCMediaNegotiationBlobVideoSettings *)v58 initWithSSRC:ssrc allowRTCPFB:isRTCPFBEnabled videoRuleCollections:videoRuleCollections featureStrings:videoFeatureStrings isCellular16x9Capable:isCellular16x9Capable tilesPerFrame:tilesPerVideoFrame ltrpEnabled:v41 pixelFormats:pixelFormats hdrModesSupported:hdrModesNegotiated customVideoWidth:__PAIR64__(customVideoHeight customVideoHeight:customVideoWidth) enableInterleavedEncoding:v43];
       if (!v25)
       {
         v3 = VCMediaStreamSendGroup;
@@ -1059,26 +1059,26 @@ LABEL_23:
     {
       v59 = v26;
       v57 = [VCMediaNegotiationBlobVideoSettings alloc];
-      v55 = [v28 ssrc];
-      v53 = [v27 isRTCPFBEnabled];
-      v51 = [v27 videoRuleCollections];
-      v49 = [v27 featureStrings];
+      ssrc2 = [v28 ssrc];
+      isRTCPFBEnabled2 = [v27 isRTCPFBEnabled];
+      videoRuleCollections2 = [v27 videoRuleCollections];
+      featureStrings = [v27 featureStrings];
       v47 = self->_isCellular16x9Capable;
-      v46 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoWidth];
-      v45 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoHeight];
-      v44 = [v27 tilesPerFrame];
-      v29 = [v27 ltrpEnabled];
-      v30 = [v27 pixelFormats];
-      v31 = [v27 hdrModesNegotiated];
-      v32 = [v27 fecEnabled];
-      v33 = [v27 rtxEnabled];
-      v34 = [v27 blackFrameOnClearScreenEnabled];
+      customVideoWidth2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoWidth];
+      customVideoHeight2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings customVideoHeight];
+      tilesPerFrame = [v27 tilesPerFrame];
+      ltrpEnabled2 = [v27 ltrpEnabled];
+      pixelFormats2 = [v27 pixelFormats];
+      hdrModesNegotiated2 = [v27 hdrModesNegotiated];
+      fecEnabled = [v27 fecEnabled];
+      rtxEnabled = [v27 rtxEnabled];
+      blackFrameOnClearScreenEnabled = [v27 blackFrameOnClearScreenEnabled];
       BYTE3(v43) = [v27 foveationIsSupported];
-      BYTE2(v43) = v34;
-      BYTE1(v43) = v33;
-      LOBYTE(v43) = v32;
-      LOBYTE(v42) = v29;
-      v35 = [VCMediaNegotiationBlobVideoSettings initWithScreenSSRC:v57 allowRTCPFB:"initWithScreenSSRC:allowRTCPFB:videoRuleCollections:featureStrings:isCellular16x9Capable:customVideoWidth:customVideoHeight:tilesPerFrame:ltrpEnabled:pixelFormats:hdrModesSupported:fecEnabled:rtxEnabled:blackFrameOnClearScreenEnabled:foveationSupported:" videoRuleCollections:v55 featureStrings:v53 isCellular16x9Capable:v51 customVideoWidth:v49 customVideoHeight:v47 tilesPerFrame:v46 ltrpEnabled:__PAIR64__(v44 pixelFormats:v45) hdrModesSupported:v42 fecEnabled:v30 rtxEnabled:v31 blackFrameOnClearScreenEnabled:v43 foveationSupported:?];
+      BYTE2(v43) = blackFrameOnClearScreenEnabled;
+      BYTE1(v43) = rtxEnabled;
+      LOBYTE(v43) = fecEnabled;
+      LOBYTE(v42) = ltrpEnabled2;
+      v35 = [VCMediaNegotiationBlobVideoSettings initWithScreenSSRC:v57 allowRTCPFB:"initWithScreenSSRC:allowRTCPFB:videoRuleCollections:featureStrings:isCellular16x9Capable:customVideoWidth:customVideoHeight:tilesPerFrame:ltrpEnabled:pixelFormats:hdrModesSupported:fecEnabled:rtxEnabled:blackFrameOnClearScreenEnabled:foveationSupported:" videoRuleCollections:ssrc2 featureStrings:isRTCPFBEnabled2 isCellular16x9Capable:videoRuleCollections2 customVideoWidth:featureStrings customVideoHeight:v47 tilesPerFrame:customVideoWidth2 ltrpEnabled:__PAIR64__(tilesPerFrame pixelFormats:customVideoHeight2) hdrModesSupported:v42 fecEnabled:pixelFormats2 rtxEnabled:hdrModesNegotiated2 blackFrameOnClearScreenEnabled:v43 foveationSupported:?];
       if (!v35)
       {
         v3 = VCMediaStreamSendGroup;
@@ -1193,8 +1193,8 @@ LABEL_60:
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v11 = [(VCMediaNegotiationBlobAudioSettings *)v7 secondaryPayloads];
-  v12 = [v11 countByEnumeratingWithState:&v62 objects:v61 count:16];
+  secondaryPayloads = [(VCMediaNegotiationBlobAudioSettings *)v7 secondaryPayloads];
+  v12 = [secondaryPayloads countByEnumeratingWithState:&v62 objects:v61 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1205,13 +1205,13 @@ LABEL_60:
       {
         if (*v63 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(secondaryPayloads);
         }
 
         -[VCMediaNegotiatorAudioConfiguration addAudioPayload:isSecondary:](v10, "addAudioPayload:isSecondary:", [*(*(&v62 + 1) + 8 * i) intValue], 1);
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v62 objects:v61 count:16];
+      v13 = [secondaryPayloads countByEnumeratingWithState:&v62 objects:v61 count:16];
     }
 
     while (v13);
@@ -1261,10 +1261,10 @@ LABEL_42:
   return v38;
 }
 
-- (BOOL)processResponseBlob:(id)a3
+- (BOOL)processResponseBlob:(id)blob
 {
   v22 = *MEMORY[0x1E69E9840];
-  [VCMediaNegotiator dumpBlob:a3 prefix:@"mediablob_response_remote" force:0];
+  [VCMediaNegotiator dumpBlob:blob prefix:@"mediablob_response_remote" force:0];
   if (![(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings isCaller])
   {
     [VCMediaNegotiator processResponseBlob:];
@@ -1275,7 +1275,7 @@ LABEL_36:
     goto LABEL_25;
   }
 
-  v5 = [VCMediaNegotiator newDecompressedBlob:a3];
+  v5 = [VCMediaNegotiator newDecompressedBlob:blob];
   if (!v5)
   {
     [VCMediaNegotiator processResponseBlob:];
@@ -1303,7 +1303,7 @@ LABEL_36:
     v9 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(VCMediaNegotiatorResults *)self->super._negotiatedSettings mediaControlInfoVersion];
+      mediaControlInfoVersion = [(VCMediaNegotiatorResults *)self->super._negotiatedSettings mediaControlInfoVersion];
       *buf = 136315906;
       *&buf[4] = v8;
       v16 = 2080;
@@ -1311,7 +1311,7 @@ LABEL_36:
       v18 = 1024;
       v19 = 679;
       v20 = 1024;
-      v21 = v10 == 2;
+      v21 = mediaControlInfoVersion == 2;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Load switch after negotiation updatedAFRCHeaderEnabled %d", buf, 0x22u);
     }
   }
@@ -1371,11 +1371,11 @@ LABEL_25:
   return v11;
 }
 
-+ (id)negotiatedFeaturesStringWithLocalFeaturesString:(id)a3 remoteFeaturesString:(id)a4
++ (id)negotiatedFeaturesStringWithLocalFeaturesString:(id)string remoteFeaturesString:(id)featuresString
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [a3 componentsSeparatedByString:@";"];
-  v6 = [a4 componentsSeparatedByString:@";"];
+  v5 = [string componentsSeparatedByString:@";"];
+  v6 = [featuresString componentsSeparatedByString:@";"];
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   if (!v8)
@@ -1483,14 +1483,14 @@ uint64_t __90__VCMediaNegotiator_negotiatedFeaturesStringWithLocalFeaturesString
   return result;
 }
 
-+ (BOOL)validateMultiwayVideoStreamConfigurations:(id)a3
++ (BOOL)validateMultiwayVideoStreamConfigurations:(id)configurations
 {
   v32 = *MEMORY[0x1E69E9840];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  v4 = [configurations countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1502,7 +1502,7 @@ LABEL_3:
     {
       if (*v29 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(configurations);
       }
 
       v9 = *(*(&v28 + 1) + 8 * v8);
@@ -1527,8 +1527,8 @@ LABEL_20:
           return v11;
         }
 
-        v10 = [v9 ssrc];
-        if (v10 != [v6 ssrc])
+        ssrc = [v9 ssrc];
+        if (ssrc != [v6 ssrc])
         {
           ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
           if (ErrorLogLevelForModule >= 3)
@@ -1548,9 +1548,9 @@ LABEL_20:
             v21 = 1024;
             v22 = 788;
             v23 = 1024;
-            v24 = [v9 ssrc];
+            ssrc2 = [v9 ssrc];
             v25 = 1024;
-            v26 = [v6 ssrc];
+            ssrc3 = [v6 ssrc];
             _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d Substream ssrc[%x] doesn't match its corresponding parent stream[%x]", &v17, 0x28u);
           }
 
@@ -1565,7 +1565,7 @@ LABEL_20:
 
       if (v5 == ++v8)
       {
-        v5 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+        v5 = [configurations countByEnumeratingWithState:&v28 objects:v27 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -1580,14 +1580,14 @@ LABEL_20:
   return v11;
 }
 
-+ (BOOL)validateMultiwayAudioStreamConfigurations:(id)a3
++ (BOOL)validateMultiwayAudioStreamConfigurations:(id)configurations
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v4 = [configurations countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1598,7 +1598,7 @@ LABEL_3:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(configurations);
       }
 
       if ([*(*(&v11 + 1) + 8 * v7) isSubstream])
@@ -1608,7 +1608,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v5 = [configurations countByEnumeratingWithState:&v11 objects:v10 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -1642,24 +1642,24 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)validateLocalConfiguration:(id)a3
++ (BOOL)validateLocalConfiguration:(id)configuration
 {
-  v4 = +[VCMediaNegotiator validateMultiwayVideoStreamConfigurations:](VCMediaNegotiator, "validateMultiwayVideoStreamConfigurations:", [a3 multiwayVideoStreams]);
+  v4 = +[VCMediaNegotiator validateMultiwayVideoStreamConfigurations:](VCMediaNegotiator, "validateMultiwayVideoStreamConfigurations:", [configuration multiwayVideoStreams]);
   if (v4)
   {
-    v5 = [a3 multiwayAudioStreams];
+    multiwayAudioStreams = [configuration multiwayAudioStreams];
 
-    LOBYTE(v4) = [VCMediaNegotiator validateMultiwayAudioStreamConfigurations:v5];
+    LOBYTE(v4) = [VCMediaNegotiator validateMultiwayAudioStreamConfigurations:multiwayAudioStreams];
   }
 
   return v4;
 }
 
-+ (void)dumpBlob:(id)a3 prefix:(id)a4 force:(BOOL)a5
++ (void)dumpBlob:(id)blob prefix:(id)prefix force:(BOOL)force
 {
-  v5 = a5;
+  forceCopy = force;
   v17 = *MEMORY[0x1E69E9840];
-  if ([+[VCDefaults dumpMediaBlob]|| v5 sharedInstance]
+  if ([+[VCDefaults dumpMediaBlob]|| forceCopy sharedInstance]
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -1677,21 +1677,21 @@ LABEL_9:
       }
     }
 
-    v10 = [a4 UTF8String];
+    uTF8String = [prefix UTF8String];
     memset(buf, 170, sizeof(buf));
     __sprintf_chk(buf, 0, 0xCuLL, "%010u", 0);
-    v11 = VRLogfileAlloc(0, buf, v10, ".blob", "com.apple.VideoConference.MediaBlob", 9);
-    VRLogfileWrite(v11, [a3 bytes], objc_msgSend(a3, "length"));
+    v11 = VRLogfileAlloc(0, buf, uTF8String, ".blob", "com.apple.VideoConference.MediaBlob", 9);
+    VRLogfileWrite(v11, [blob bytes], objc_msgSend(blob, "length"));
     VRLogfileFree(&v11);
   }
 }
 
-- (BOOL)addBandwidthSettingsForMediaBlob:(id)a3 arbiterMode:(unsigned __int8)a4 connectionType:(int)a5 maxBitrate:(unsigned int)a6
+- (BOOL)addBandwidthSettingsForMediaBlob:(id)blob arbiterMode:(unsigned __int8)mode connectionType:(int)type maxBitrate:(unsigned int)bitrate
 {
-  v6 = *&a6;
-  v8 = a4;
+  v6 = *&bitrate;
+  modeCopy = mode;
   v38 = *MEMORY[0x1E69E9840];
-  v10 = [VCMediaNegotiationBlobBandwidthSettings bandwidthConfigurationWithArbiterMode:a4 connectionType:*&a5];
+  v10 = [VCMediaNegotiationBlobBandwidthSettings bandwidthConfigurationWithArbiterMode:mode connectionType:*&type];
   if (v10)
   {
     v11 = v10;
@@ -1699,8 +1699,8 @@ LABEL_9:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v12 = [a3 bandwidthSettings];
-    v13 = [v12 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    bandwidthSettings = [blob bandwidthSettings];
+    v13 = [bandwidthSettings countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1711,7 +1711,7 @@ LABEL_9:
         {
           if (*v35 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(bandwidthSettings);
           }
 
           v17 = *(*(&v34 + 1) + 8 * i);
@@ -1731,7 +1731,7 @@ LABEL_9:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v34 objects:v33 count:16];
+        v14 = [bandwidthSettings countByEnumeratingWithState:&v34 objects:v33 count:16];
         if (v14)
         {
           continue;
@@ -1761,9 +1761,9 @@ LABEL_9:
         v27 = 1024;
         v28 = 857;
         v29 = 1024;
-        v30 = a5;
+        typeCopy = type;
         v31 = 1024;
-        v32 = v8;
+        v32 = modeCopy;
         _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to create bandwidth setting: connection type=%d, operating mode=%hhu", &v23, 0x28u);
       }
 
@@ -1783,7 +1783,7 @@ LABEL_9:
       [(VCMediaNegotiationBlobBandwidthSettings *)v19 setConfigurationExtension:[(VCMediaNegotiationBlobBandwidthSettings *)v19 configurationExtension]| v11];
     }
 
-    [a3 addBandwidthSettings:v19];
+    [blob addBandwidthSettings:v19];
 
 LABEL_22:
     LOBYTE(v10) = 1;
@@ -1792,15 +1792,15 @@ LABEL_22:
   return v10;
 }
 
-- (BOOL)setupBandwidthSettingsForMediaBlob:(id)a3
+- (BOOL)setupBandwidthSettingsForMediaBlob:(id)blob
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings bandwidthConfigurations];
-  v6 = [(NSSet *)v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  bandwidthConfigurations = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings bandwidthConfigurations];
+  v6 = [(NSSet *)bandwidthConfigurations countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1811,10 +1811,10 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(bandwidthConfigurations);
       }
 
-      v10 = -[VCMediaNegotiator addBandwidthSettingsForMediaBlob:arbiterMode:connectionType:maxBitrate:](self, "addBandwidthSettingsForMediaBlob:arbiterMode:connectionType:maxBitrate:", a3, [*(*(&v13 + 1) + 8 * v9) mode], objc_msgSend(*(*(&v13 + 1) + 8 * v9), "connectionType"), objc_msgSend(*(*(&v13 + 1) + 8 * v9), "maxBandwidth"));
+      v10 = -[VCMediaNegotiator addBandwidthSettingsForMediaBlob:arbiterMode:connectionType:maxBitrate:](self, "addBandwidthSettingsForMediaBlob:arbiterMode:connectionType:maxBitrate:", blob, [*(*(&v13 + 1) + 8 * v9) mode], objc_msgSend(*(*(&v13 + 1) + 8 * v9), "connectionType"), objc_msgSend(*(*(&v13 + 1) + 8 * v9), "maxBandwidth"));
       if (!v10)
       {
         break;
@@ -1822,7 +1822,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(NSSet *)v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v7 = [(NSSet *)bandwidthConfigurations countByEnumeratingWithState:&v13 objects:v12 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1842,15 +1842,15 @@ LABEL_9:
   return v10;
 }
 
-- (void)saveRemoteBandwidthSettingsWithMediaBlob:(id)a3
+- (void)saveRemoteBandwidthSettingsWithMediaBlob:(id)blob
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 bandwidthSettings];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  bandwidthSettings = [blob bandwidthSettings];
+  v5 = [bandwidthSettings countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1862,29 +1862,29 @@ LABEL_9:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bandwidthSettings);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) newBandwidthConfigurations];
-        [(VCMediaNegotiatorResults *)self->super._negotiatedSettings addBandwidthConfigurations:v9];
+        newBandwidthConfigurations = [*(*(&v11 + 1) + 8 * v8) newBandwidthConfigurations];
+        [(VCMediaNegotiatorResults *)self->super._negotiatedSettings addBandwidthConfigurations:newBandwidthConfigurations];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [bandwidthSettings countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (id)newDecompressedBlob:(id)a3
++ (id)newDecompressedBlob:(id)blob
 {
   v20 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  [a3 bytes];
-  [a3 length];
+  [blob bytes];
+  [blob length];
   if (CompressionUtils_DecompressWithZlib())
   {
     return 0;
@@ -1905,7 +1905,7 @@ LABEL_9:
       v13 = 2080;
       v14 = "+[VCMediaNegotiator newDecompressedBlob:]";
       v15 = 1024;
-      v16 = [a3 length];
+      v16 = [blob length];
       v17 = 1024;
       v18 = 2500;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media blob size %s: %d -> %d bytes", buf, 0x32u);
@@ -1915,12 +1915,12 @@ LABEL_9:
   return [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:__b length:2500];
 }
 
-+ (id)newCompressedBlob:(id)a3
++ (id)newCompressedBlob:(id)blob
 {
   v22 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  [a3 bytes];
-  [a3 length];
+  [blob bytes];
+  [blob length];
   if (CompressionUtils_CompressWithZLib())
   {
     return 0;
@@ -1941,11 +1941,11 @@ LABEL_9:
       v13 = 2080;
       v14 = "+[VCMediaNegotiator newCompressedBlob:]";
       v15 = 1024;
-      v16 = [a3 length];
+      v16 = [blob length];
       v17 = 1024;
       v18 = 2500;
       v19 = 2048;
-      v20 = (2500 / [a3 length]);
+      v20 = (2500 / [blob length]);
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media blob size %s: %d -> %d bytes with ratio %f", buf, 0x3Cu);
     }
   }
@@ -1953,44 +1953,44 @@ LABEL_9:
   return [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:__b length:2500];
 }
 
-- (void)negotiateAudioAllowRecording:(id)a3 microphoneConfiguration:(id)a4
+- (void)negotiateAudioAllowRecording:(id)recording microphoneConfiguration:(id)configuration
 {
   v6 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
-  if ([a4 allowAudioRecording])
+  if ([configuration allowAudioRecording])
   {
-    v7 = [a3 allowAudioRecording];
+    allowAudioRecording = [recording allowAudioRecording];
   }
 
   else
   {
-    v7 = 0;
+    allowAudioRecording = 0;
   }
 
-  [v6 setAllowRecording:v7];
+  [v6 setAllowRecording:allowAudioRecording];
 }
 
-- (void)negotiateAudioUseSBR:(id)a3
+- (void)negotiateAudioUseSBR:(id)r
 {
   v4 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
-  v5 = [a3 useSBR];
+  useSBR = [r useSBR];
 
-  [v4 setUseSBR:v5];
+  [v4 setUseSBR:useSBR];
 }
 
-- (BOOL)negotiateAudioPrimaryPayload:(id)a3 microphoneConfiguration:(id)a4
+- (BOOL)negotiateAudioPrimaryPayload:(id)payload microphoneConfiguration:(id)configuration
 {
   v29 = *MEMORY[0x1E69E9840];
   v7 = +[VCAudioRuleCollection getForcedPayload];
   v8 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
   if (v7 == 128)
   {
-    v9 = [a4 audioPayloads];
+    audioPayloads = [configuration audioPayloads];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [a3 audioPayloads];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v24 count:16];
+    audioPayloads2 = [payload audioPayloads];
+    v11 = [audioPayloads2 countByEnumeratingWithState:&v25 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2002,19 +2002,19 @@ LABEL_9:
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(audioPayloads2);
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [v16 intValue];
-          if (v17 == [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings preferredAudioCodec])
+          intValue = [v16 intValue];
+          if (intValue == [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings preferredAudioCodec])
           {
             v21 = v8;
-            v22 = v17;
+            v22 = intValue;
             goto LABEL_19;
           }
 
-          if ([v9 containsObject:v16])
+          if ([audioPayloads containsObject:v16])
           {
             v18 = [&unk_1F579D218 indexOfObject:v16];
             if (v18 < v14)
@@ -2024,7 +2024,7 @@ LABEL_9:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v24 count:16];
+        v12 = [audioPayloads2 countByEnumeratingWithState:&v25 objects:v24 count:16];
         if (v12)
         {
           continue;
@@ -2044,8 +2044,8 @@ LABEL_9:
 
   else
   {
-    v20 = [a3 audioPayloads];
-    v19 = [v20 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v7)}];
+    audioPayloads3 = [payload audioPayloads];
+    v19 = [audioPayloads3 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v7)}];
     if (v19)
     {
       v21 = v8;
@@ -2059,7 +2059,7 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)negotiateAudioDTXPayload:(id)a3
+- (BOOL)negotiateAudioDTXPayload:(id)payload
 {
   v4 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
   if ([v4 primaryPayload] == 13)
@@ -2067,7 +2067,7 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  if ([objc_msgSend(a3 "audioPayloads")])
+  if ([objc_msgSend(payload "audioPayloads")])
   {
     [v4 setDtxPayload:13];
   }
@@ -2096,17 +2096,17 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)negotiateAudioREDPayload:(id)a3 microphoneConfiguration:(id)a4
+- (BOOL)negotiateAudioREDPayload:(id)payload microphoneConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
   v6 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
-  if ([objc_msgSend(a3 "audioPayloads")] && objc_msgSend(objc_msgSend(a4, "audioPayloads"), "containsObject:", &unk_1F579AB00))
+  if ([objc_msgSend(payload "audioPayloads")] && objc_msgSend(objc_msgSend(configuration, "audioPayloads"), "containsObject:", &unk_1F579AB00))
   {
     [v6 setRedPayload:20];
   }
 
-  v7 = [v6 redPayload];
-  if (v7 == 128 && VRTraceGetErrorLogLevelForModule() >= 7)
+  redPayload = [v6 redPayload];
+  if (redPayload == 128 && VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
     v9 = *MEMORY[0x1E6986650];
@@ -2122,14 +2122,14 @@ LABEL_8:
     }
   }
 
-  return v7 != 128;
+  return redPayload != 128;
 }
 
-- (void)negotiateAudioSecondaryPayloads:(id)a3 microphoneConfiguration:(id)a4
+- (void)negotiateAudioSecondaryPayloads:(id)payloads microphoneConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x1E69E9840];
   v7 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
-  [v7 setAllowSwitching:{objc_msgSend(a4, "allowAudioSwitching")}];
+  [v7 setAllowSwitching:{objc_msgSend(configuration, "allowAudioSwitching")}];
   if (+[VCPayloadUtils isUseCaseWatchContinuity:primaryPayload:](VCPayloadUtils, "isUseCaseWatchContinuity:primaryPayload:", -[VCMediaNegotiatorLocalConfiguration deviceRole](self->super._localSettings, "deviceRole"), [v7 primaryPayload]))
   {
     [v7 setAllowSwitching:0];
@@ -2141,8 +2141,8 @@ LABEL_8:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [a3 audioPayloads];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v17 count:16];
+    audioPayloads = [payloads audioPayloads];
+    v9 = [audioPayloads countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2154,14 +2154,14 @@ LABEL_8:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(audioPayloads);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * v12) intValue];
-          if (v13 != 13 && v13 != 20)
+          intValue = [*(*(&v18 + 1) + 8 * v12) intValue];
+          if (intValue != 13 && intValue != 20)
           {
-            v15 = v13;
-            if ([a4 isSecondaryPayload:v13] && objc_msgSend(a3, "isSecondaryPayload:", v15))
+            v15 = intValue;
+            if ([configuration isSecondaryPayload:intValue] && objc_msgSend(payloads, "isSecondaryPayload:", v15))
             {
               [v7 addSecondaryPayload:v15];
             }
@@ -2171,7 +2171,7 @@ LABEL_8:
         }
 
         while (v10 != v12);
-        v16 = [v8 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v16 = [audioPayloads countByEnumeratingWithState:&v18 objects:v17 count:16];
         v10 = v16;
       }
 
@@ -2182,22 +2182,22 @@ LABEL_8:
   }
 }
 
-- (BOOL)negotiateAudioSettings:(id)a3
+- (BOOL)negotiateAudioSettings:(id)settings
 {
   v5 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
   v6 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaConfigurationForMediaType:1];
-  [v5 setRemoteSSRC:{objc_msgSend(a3, "rtpSSRC")}];
-  [v5 setAudioUnitModel:{objc_msgSend(a3, "audioUnitModel")}];
-  v7 = [a3 newMediaNegotiatorAudioConfiguration];
-  if (v7)
+  [v5 setRemoteSSRC:{objc_msgSend(settings, "rtpSSRC")}];
+  [v5 setAudioUnitModel:{objc_msgSend(settings, "audioUnitModel")}];
+  newMediaNegotiatorAudioConfiguration = [settings newMediaNegotiatorAudioConfiguration];
+  if (newMediaNegotiatorAudioConfiguration)
   {
-    [(VCMediaNegotiator *)self negotiateAudioUseSBR:v7];
-    [(VCMediaNegotiator *)self negotiateAudioAllowRecording:v7 microphoneConfiguration:v6];
-    if ([(VCMediaNegotiator *)self negotiateAudioPrimaryPayload:v7 microphoneConfiguration:v6])
+    [(VCMediaNegotiator *)self negotiateAudioUseSBR:newMediaNegotiatorAudioConfiguration];
+    [(VCMediaNegotiator *)self negotiateAudioAllowRecording:newMediaNegotiatorAudioConfiguration microphoneConfiguration:v6];
+    if ([(VCMediaNegotiator *)self negotiateAudioPrimaryPayload:newMediaNegotiatorAudioConfiguration microphoneConfiguration:v6])
     {
-      [(VCMediaNegotiator *)self negotiateAudioDTXPayload:v7];
-      [(VCMediaNegotiator *)self negotiateAudioREDPayload:v7 microphoneConfiguration:v6];
-      [(VCMediaNegotiator *)self negotiateAudioSecondaryPayloads:v7 microphoneConfiguration:v6];
+      [(VCMediaNegotiator *)self negotiateAudioDTXPayload:newMediaNegotiatorAudioConfiguration];
+      [(VCMediaNegotiator *)self negotiateAudioREDPayload:newMediaNegotiatorAudioConfiguration microphoneConfiguration:v6];
+      [(VCMediaNegotiator *)self negotiateAudioSecondaryPayloads:newMediaNegotiatorAudioConfiguration microphoneConfiguration:v6];
       v8 = 1;
     }
 
@@ -2217,23 +2217,23 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)setupAudioWithNegotiatedSettings:(id)a3
+- (BOOL)setupAudioWithNegotiatedSettings:(id)settings
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a3 newMediaNegotiatorAudioConfiguration];
-  if (v4)
+  newMediaNegotiatorAudioConfiguration = [settings newMediaNegotiatorAudioConfiguration];
+  if (newMediaNegotiatorAudioConfiguration)
   {
     v5 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9B0];
-    [v5 setAllowRecording:{objc_msgSend(v4, "allowAudioRecording")}];
-    [v5 setAudioUnitModel:{objc_msgSend(v4, "audioUnitNumber")}];
-    [v5 setRemoteSSRC:{objc_msgSend(v4, "ssrc")}];
-    [v5 setUseSBR:{objc_msgSend(v4, "useSBR")}];
+    [v5 setAllowRecording:{objc_msgSend(newMediaNegotiatorAudioConfiguration, "allowAudioRecording")}];
+    [v5 setAudioUnitModel:{objc_msgSend(newMediaNegotiatorAudioConfiguration, "audioUnitNumber")}];
+    [v5 setRemoteSSRC:{objc_msgSend(newMediaNegotiatorAudioConfiguration, "ssrc")}];
+    [v5 setUseSBR:{objc_msgSend(newMediaNegotiatorAudioConfiguration, "useSBR")}];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v4 audioPayloads];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    audioPayloads = [newMediaNegotiatorAudioConfiguration audioPayloads];
+    v7 = [audioPayloads countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2245,36 +2245,36 @@ LABEL_8:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(audioPayloads);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) intValue];
-          if ([v4 isSecondaryPayload:v12])
+          intValue = [*(*(&v16 + 1) + 8 * i) intValue];
+          if ([newMediaNegotiatorAudioConfiguration isSecondaryPayload:intValue])
           {
-            if (v12 == 20)
+            if (intValue == 20)
             {
               [v5 setRedPayload:20];
               v9 = 1;
             }
 
-            else if (v12 == 13)
+            else if (intValue == 13)
             {
               [v5 setDtxPayload:13];
             }
 
             else
             {
-              [v5 addSecondaryPayload:v12];
+              [v5 addSecondaryPayload:intValue];
             }
           }
 
           else
           {
-            [v5 setPrimaryPayload:v12];
+            [v5 setPrimaryPayload:intValue];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        v8 = [audioPayloads countByEnumeratingWithState:&v16 objects:v15 count:16];
       }
 
       while (v8);
@@ -2294,7 +2294,7 @@ LABEL_8:
       v13 = 1;
     }
 
-    [v5 setAllowSwitching:{objc_msgSend(objc_msgSend(v4, "audioPayloads"), "count") > v13}];
+    [v5 setAllowSwitching:{objc_msgSend(objc_msgSend(newMediaNegotiatorAudioConfiguration, "audioPayloads"), "count") > v13}];
   }
 
   else
@@ -2302,21 +2302,21 @@ LABEL_8:
     [VCMediaNegotiator setupAudioWithNegotiatedSettings:];
   }
 
-  return v4 != 0;
+  return newMediaNegotiatorAudioConfiguration != 0;
 }
 
-- (id)selectVideoFeatureString:(id)a3 selectedPayload:(int)a4 videoConfiguration:(id)a5
+- (id)selectVideoFeatureString:(id)string selectedPayload:(int)payload videoConfiguration:(id)configuration
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
-  if ([objc_msgSend(a5 "videoFeatureStrings")])
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
+  if ([objc_msgSend(configuration "videoFeatureStrings")])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [a3 videoPayloadCollections];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    videoPayloadCollections = [string videoPayloadCollections];
+    v10 = [videoPayloadCollections countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2327,18 +2327,18 @@ LABEL_8:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(videoPayloadCollections);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          if ([v14 payload] == a4)
+          if ([v14 payload] == payload)
           {
             v15 = [objc_msgSend(v14 "featureString")];
             goto LABEL_12;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v18 count:16];
+        v11 = [videoPayloadCollections countByEnumeratingWithState:&v19 objects:v18 count:16];
         if (v11)
         {
           continue;
@@ -2376,13 +2376,13 @@ LABEL_12:
   }
 }
 
-- (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5 localVideoRuleCollection:(id)a6 remoteVideoSettings:(id)a7 negotiatedVideoSettings:(id)a8 isScreen:(BOOL)a9
+- (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)transport payload:(int)payload encodingType:(unsigned __int8)type localVideoRuleCollection:(id)collection remoteVideoSettings:(id)settings negotiatedVideoSettings:(id)videoSettings isScreen:(BOOL)screen
 {
-  v12 = a5;
-  v13 = *&a4;
-  v14 = a3;
+  typeCopy = type;
+  v13 = *&payload;
+  transportCopy = transport;
   v48 = *MEMORY[0x1E69E9840];
-  v16 = [a7 newVideoRuleCollectionsForScreen:a9 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
+  v16 = [settings newVideoRuleCollectionsForScreen:screen isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
   if (!v16)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -2406,14 +2406,14 @@ LABEL_12:
     v42 = 1024;
     v43 = v13;
     v44 = 1024;
-    v45 = v14;
+    v45 = transportCopy;
     v46 = 1024;
-    v47 = v12;
+    v47 = typeCopy;
     v32 = " [%s] %s:%d Failed to extract the remote video rules for payload=%d transport=%d encoding=%d";
     goto LABEL_34;
   }
 
-  v17 = [a6 getVideoRulesForTransport:v14 payload:v13 encodingType:v12];
+  v17 = [collection getVideoRulesForTransport:transportCopy payload:v13 encodingType:typeCopy];
   if (!v17)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -2437,15 +2437,15 @@ LABEL_12:
     v42 = 1024;
     v43 = v13;
     v44 = 1024;
-    v45 = v14;
+    v45 = transportCopy;
     v46 = 1024;
-    v47 = v12;
+    v47 = typeCopy;
     v32 = " [%s] %s:%d No local video rules for payload=%d transport=%d encoding=%d";
     goto LABEL_34;
   }
 
   v18 = v17;
-  if (v12 == 2)
+  if (typeCopy == 2)
   {
     v19 = 1;
   }
@@ -2455,7 +2455,7 @@ LABEL_12:
     v19 = 2;
   }
 
-  v20 = [v16 getVideoRulesForTransport:v14 payload:v13 encodingType:v19];
+  v20 = [v16 getVideoRulesForTransport:transportCopy payload:v13 encodingType:v19];
   if (!v20)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -2479,14 +2479,14 @@ LABEL_12:
     v42 = 1024;
     v43 = v13;
     v44 = 1024;
-    v45 = v14;
+    v45 = transportCopy;
     v46 = 1024;
-    v47 = v12;
+    v47 = typeCopy;
     v32 = " [%s] %s:%d No remote video rules for payload=%d transport=%d encoding=%d";
     goto LABEL_34;
   }
 
-  if (v12 == 1)
+  if (typeCopy == 1)
   {
     v21 = v18;
   }
@@ -2496,7 +2496,7 @@ LABEL_12:
     v21 = v20;
   }
 
-  if (v12 == 1)
+  if (typeCopy == 1)
   {
     v22 = v20;
   }
@@ -2506,7 +2506,7 @@ LABEL_12:
     v22 = v18;
   }
 
-  v23 = [VCMediaNegotiatorBase negotiateVideoMaxResolutionWithEncodeRules:v21 decodeRules:v22 isEncoder:v12 == 1];
+  v23 = [VCMediaNegotiatorBase negotiateVideoMaxResolutionWithEncodeRules:v21 decodeRules:v22 isEncoder:typeCopy == 1];
   if (!v23)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -2530,9 +2530,9 @@ LABEL_12:
     v42 = 1024;
     v43 = v13;
     v44 = 1024;
-    v45 = v14;
+    v45 = transportCopy;
     v46 = 1024;
-    v47 = v12;
+    v47 = typeCopy;
     v32 = " [%s] %s:%d No matching remote rules for payload=%d transport=%d encoding=%d";
 LABEL_34:
     _os_log_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_DEFAULT, v32, &v36, 0x2Eu);
@@ -2542,10 +2542,10 @@ LABEL_35:
   }
 
   v24 = v23;
-  v25 = [a8 featureStrings];
-  if (![v25 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v13)}])
+  featureStrings = [videoSettings featureStrings];
+  if (![featureStrings objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v13)}])
   {
-    if (a9)
+    if (screen)
     {
       v26 = 3;
     }
@@ -2555,7 +2555,7 @@ LABEL_35:
       v26 = 2;
     }
 
-    v27 = [(VCMediaNegotiator *)self selectVideoFeatureString:a7 selectedPayload:v13 videoConfiguration:[(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaConfigurationForMediaType:v26]];
+    v27 = [(VCMediaNegotiator *)self selectVideoFeatureString:settings selectedPayload:v13 videoConfiguration:[(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaConfigurationForMediaType:v26]];
     if (!v27)
     {
       [VCMediaNegotiator selectBestVideoRuleForTransport:v13 payload:? encodingType:? localVideoRuleCollection:? remoteVideoSettings:? negotiatedVideoSettings:? isScreen:?];
@@ -2563,55 +2563,55 @@ LABEL_35:
       goto LABEL_21;
     }
 
-    [a8 addFeatureString:v27 payload:v13];
+    [videoSettings addFeatureString:v27 payload:v13];
   }
 
-  [a8 addVideoRules:v24 transportType:v14 payload:v13 encodingType:v12];
+  [videoSettings addVideoRules:v24 transportType:transportCopy payload:v13 encodingType:typeCopy];
   v28 = 1;
 LABEL_21:
 
   return v28;
 }
 
-- (void)negotiateRTCPFB:(id)a3 negotiatedVideoSettings:(id)a4
+- (void)negotiateRTCPFB:(id)b negotiatedVideoSettings:(id)settings
 {
   if ([(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings allowRTCPFB])
   {
-    v6 = [a3 allowRTCPFB];
+    allowRTCPFB = [b allowRTCPFB];
   }
 
   else
   {
-    v6 = 0;
+    allowRTCPFB = 0;
   }
 
-  [a4 setIsRTCPFBEnabled:v6];
+  [settings setIsRTCPFBEnabled:allowRTCPFB];
 }
 
-- (void)negotiateTilesPerFrame:(id)a3 negotiatedSettings:(id)a4
+- (void)negotiateTilesPerFrame:(id)frame negotiatedSettings:(id)settings
 {
-  v6 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
-  v7 = [a3 tilesPerFrame];
-  if (v6 >= v7)
+  tilesPerVideoFrame = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings tilesPerVideoFrame];
+  tilesPerFrame = [frame tilesPerFrame];
+  if (tilesPerVideoFrame >= tilesPerFrame)
   {
-    v8 = v7;
+    v8 = tilesPerFrame;
   }
 
   else
   {
-    v8 = v6;
+    v8 = tilesPerVideoFrame;
   }
 
-  [a4 setTilesPerFrame:v8];
+  [settings setTilesPerFrame:v8];
 }
 
-- (BOOL)processPixelFormats:(id)a3 videoResults:(id)a4
+- (BOOL)processPixelFormats:(id)formats videoResults:(id)results
 {
   v6 = [VCMediaNegotiationBlobVideoSettings storePixelFormatsInBitMap:[(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings pixelFormats]];
-  v7 = [a3 pixelFormats];
+  pixelFormats = [formats pixelFormats];
   if (v6)
   {
-    v8 = v7 == 0;
+    v8 = pixelFormats == 0;
   }
 
   else
@@ -2624,12 +2624,12 @@ LABEL_21:
     return 1;
   }
 
-  v9 = v7 & v6;
+  v9 = pixelFormats & v6;
   if (v9)
   {
     if (v9)
     {
-      [a4 addPixelFormatSet:&unk_1F579AB18];
+      [results addPixelFormatSet:&unk_1F579AB18];
       if ((v9 & 2) == 0)
       {
 LABEL_8:
@@ -2647,7 +2647,7 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    [a4 addPixelFormatSet:&unk_1F579AB30];
+    [results addPixelFormatSet:&unk_1F579AB30];
     if ((v9 & 8) == 0)
     {
 LABEL_9:
@@ -2660,7 +2660,7 @@ LABEL_9:
     }
 
 LABEL_17:
-    [a4 addPixelFormatSet:&unk_1F579AB48];
+    [results addPixelFormatSet:&unk_1F579AB48];
     if ((v9 & 0x10) == 0)
     {
 LABEL_10:
@@ -2673,7 +2673,7 @@ LABEL_10:
     }
 
 LABEL_18:
-    [a4 addPixelFormatSet:&unk_1F579AB60];
+    [results addPixelFormatSet:&unk_1F579AB60];
     if ((v9 & 4) == 0)
     {
 LABEL_11:
@@ -2683,12 +2683,12 @@ LABEL_11:
       }
 
 LABEL_12:
-      [a4 addPixelFormatSet:&unk_1F579AB90];
+      [results addPixelFormatSet:&unk_1F579AB90];
       return 1;
     }
 
 LABEL_19:
-    [a4 addPixelFormatSet:&unk_1F579AB78];
+    [results addPixelFormatSet:&unk_1F579AB78];
     if ((v9 & 0x20) == 0)
     {
       return 1;
@@ -2700,13 +2700,13 @@ LABEL_19:
   return 0;
 }
 
-- (BOOL)negotiateHDRMode:(id)a3 videoResults:(id)a4
+- (BOOL)negotiateHDRMode:(id)mode videoResults:(id)results
 {
   v6 = [VCMediaNegotiationBlobVideoSettings hdrModesBitmapWithSupportedModes:[(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings hdrModesSupported]];
-  v7 = [a3 hdrModesSupported];
+  hdrModesSupported = [mode hdrModesSupported];
   if (v6)
   {
-    v8 = v7 == 0;
+    v8 = hdrModesSupported == 0;
   }
 
   else
@@ -2719,12 +2719,12 @@ LABEL_19:
     return 1;
   }
 
-  v9 = v7 & v6;
+  v9 = hdrModesSupported & v6;
   if (v9)
   {
     if (v9)
     {
-      [a4 addNegotiatedHDRMode:&unk_1F579ABA8];
+      [results addNegotiatedHDRMode:&unk_1F579ABA8];
       if ((v9 & 2) == 0)
       {
 LABEL_8:
@@ -2742,7 +2742,7 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    [a4 addNegotiatedHDRMode:&unk_1F579ABC0];
+    [results addNegotiatedHDRMode:&unk_1F579ABC0];
     if ((v9 & 4) == 0)
     {
 LABEL_9:
@@ -2752,12 +2752,12 @@ LABEL_9:
       }
 
 LABEL_10:
-      [a4 addNegotiatedHDRMode:&unk_1F579ABF0];
+      [results addNegotiatedHDRMode:&unk_1F579ABF0];
       return 1;
     }
 
 LABEL_15:
-    [a4 addNegotiatedHDRMode:&unk_1F579ABD8];
+    [results addNegotiatedHDRMode:&unk_1F579ABD8];
     if ((v9 & 8) == 0)
     {
       return 1;
@@ -2769,15 +2769,15 @@ LABEL_15:
   return 0;
 }
 
-- (BOOL)processParameterSets:(id)a3 videoResults:(id)a4
+- (BOOL)processParameterSets:(id)sets videoResults:(id)results
 {
   v21 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 videoPayloadCollections];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  videoPayloadCollections = [sets videoPayloadCollections];
+  v6 = [videoPayloadCollections countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2788,7 +2788,7 @@ LABEL_15:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(videoPayloadCollections);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -2799,8 +2799,8 @@ LABEL_14:
           return v15;
         }
 
-        v11 = [v10 parameterSet];
-        v12 = [v10 parameterSet] & 4 | v11 & 1;
+        parameterSet = [v10 parameterSet];
+        v12 = [v10 parameterSet] & 4 | parameterSet & 1;
         v13 = v12 | ([v10 parameterSet] & 2);
         if (([v10 parameterSet] & 8) != 0)
         {
@@ -2812,10 +2812,10 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        [a4 addParameterSet:objc_msgSend(MEMORY[0x1E696AD98] payload:{"numberWithUnsignedInt:", v13), objc_msgSend(v10, "payload")}];
+        [results addParameterSet:objc_msgSend(MEMORY[0x1E696AD98] payload:{"numberWithUnsignedInt:", v13), objc_msgSend(v10, "payload")}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v7 = [videoPayloadCollections countByEnumeratingWithState:&v17 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -2934,15 +2934,15 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)negotiateVideoSettings:(id)a3
+- (BOOL)negotiateVideoSettings:(id)settings
 {
-  v4 = self;
+  selfCopy = self;
   v70 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9C8];
-  v44 = [-[VCMediaNegotiatorLocalConfiguration mediaConfigurationForMediaType:](v4->super._localSettings mediaConfigurationForMediaType:{2), "videoRuleCollections"}];
+  v44 = [-[VCMediaNegotiatorLocalConfiguration mediaConfigurationForMediaType:](selfCopy->super._localSettings mediaConfigurationForMediaType:{2), "videoRuleCollections"}];
   if ([objc_msgSend(v44 "rules")])
   {
-    v6 = [a3 newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:v4->_isCellular16x9Capable isLocalConfig:0];
+    v6 = [settings newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:selfCopy->_isCellular16x9Capable isLocalConfig:0];
     v7 = v6;
     if (!v6)
     {
@@ -2952,41 +2952,41 @@ LABEL_25:
 
     if ([objc_msgSend(v6 "supportedPayloads")])
     {
-      [v5 setRemoteSSRC:{objc_msgSend(a3, "rtpSSRC")}];
-      if ([(VCMediaNegotiator *)v4 processParameterSets:a3 videoResults:v5])
+      [v5 setRemoteSSRC:{objc_msgSend(settings, "rtpSSRC")}];
+      if ([(VCMediaNegotiator *)selfCopy processParameterSets:settings videoResults:v5])
       {
-        [(VCMediaNegotiator *)v4 negotiateRTCPFB:a3 negotiatedVideoSettings:v5];
-        [(VCMediaNegotiator *)v4 negotiateTilesPerFrame:a3 negotiatedSettings:v5];
-        if ([a3 ltrpEnabled])
+        [(VCMediaNegotiator *)selfCopy negotiateRTCPFB:settings negotiatedVideoSettings:v5];
+        [(VCMediaNegotiator *)selfCopy negotiateTilesPerFrame:settings negotiatedSettings:v5];
+        if ([settings ltrpEnabled])
         {
-          v8 = [(VCMediaNegotiatorLocalConfiguration *)v4->super._localSettings ltrpEnabled];
+          ltrpEnabled = [(VCMediaNegotiatorLocalConfiguration *)selfCopy->super._localSettings ltrpEnabled];
         }
 
         else
         {
-          v8 = 0;
+          ltrpEnabled = 0;
         }
 
-        [v5 setLtrpEnabled:v8];
-        if ([a3 enableInterleavedEncoding])
+        [v5 setLtrpEnabled:ltrpEnabled];
+        if ([settings enableInterleavedEncoding])
         {
-          v14 = [(VCMediaNegotiatorLocalConfiguration *)v4->super._localSettings enableInterleavedEncoding];
+          enableInterleavedEncoding = [(VCMediaNegotiatorLocalConfiguration *)selfCopy->super._localSettings enableInterleavedEncoding];
         }
 
         else
         {
-          v14 = 0;
+          enableInterleavedEncoding = 0;
         }
 
-        [v5 setEnableInterleavedEncoding:v14];
+        [v5 setEnableInterleavedEncoding:enableInterleavedEncoding];
         v43 = +[VCMediaNegotiatorBase getPreferredVideoPayloadList:localSupportedPayloads:mediaType:](VCMediaNegotiator, "getPreferredVideoPayloadList:localSupportedPayloads:mediaType:", [v7 supportedPayloads], objc_msgSend(v44, "supportedPayloads"), 2);
         if ([v43 count])
         {
-          if ([(VCMediaNegotiator *)v4 processPixelFormats:a3 videoResults:v5])
+          if ([(VCMediaNegotiator *)selfCopy processPixelFormats:settings videoResults:v5])
           {
-            if ([(VCMediaNegotiator *)v4 negotiateHDRMode:a3 videoResults:v5])
+            if ([(VCMediaNegotiator *)selfCopy negotiateHDRMode:settings videoResults:v5])
             {
-              v15 = [a3 newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:v4->_isCellular16x9Capable isLocalConfig:0];
+              v15 = [settings newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:selfCopy->_isCellular16x9Capable isLocalConfig:0];
               v39 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
               if ([v44 isEncodeSupported] && objc_msgSend(v15, "isDecodeSupported"))
               {
@@ -2998,7 +2998,7 @@ LABEL_25:
                 [v39 setObject:&unk_1F579A9C8 atIndexedSubscript:{objc_msgSend(v39, "count")}];
               }
 
-              [(VCMediaNegotiator *)v4 processCustomResolution:v5 cameraRuleCollections:v44 videoNegotiationSettings:a3];
+              [(VCMediaNegotiator *)selfCopy processCustomResolution:v5 cameraRuleCollections:v44 videoNegotiationSettings:settings];
 
               v66 = 0u;
               v67 = 0u;
@@ -3012,8 +3012,8 @@ LABEL_25:
                 v34 = v7;
                 do
                 {
-                  v16 = v4;
-                  v17 = a3;
+                  v16 = selfCopy;
+                  settingsCopy = settings;
                   v18 = v5;
                   v19 = 0;
                   do
@@ -3063,7 +3063,7 @@ LABEL_25:
                                 }
 
                                 LOBYTE(v33) = 0;
-                                if (-[VCMediaNegotiator selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:](v16, "selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:", [v20 unsignedIntValue], objc_msgSend(*(*(&v56 + 1) + 8 * j), "unsignedIntValue"), objc_msgSend(v22, "unsignedIntValue"), v44, v17, v18, v33))
+                                if (-[VCMediaNegotiator selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:](v16, "selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:", [v20 unsignedIntValue], objc_msgSend(*(*(&v56 + 1) + 8 * j), "unsignedIntValue"), objc_msgSend(v22, "unsignedIntValue"), v44, settingsCopy, v18, v33))
                                 {
                                   v27 = 1;
                                   goto LABEL_49;
@@ -3097,8 +3097,8 @@ LABEL_49:
                               v29 = *MEMORY[0x1E6986650];
                               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
                               {
-                                v30 = [v20 unsignedIntValue];
-                                v31 = [v22 unsignedIntValue];
+                                unsignedIntValue = [v20 unsignedIntValue];
+                                unsignedIntValue2 = [v22 unsignedIntValue];
                                 *buf = 136316162;
                                 v46 = v28;
                                 v47 = 2080;
@@ -3106,9 +3106,9 @@ LABEL_49:
                                 v49 = 1024;
                                 v50 = 1348;
                                 v51 = 1024;
-                                v52 = v30;
+                                v52 = unsignedIntValue;
                                 v53 = 1024;
-                                v54 = v31;
+                                v54 = unsignedIntValue2;
                                 _os_log_error_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_ERROR, " [%s] %s:%d forceHWI enabled! No match found when select video rules for transport=%d, encoding=%d", buf, 0x28u);
                               }
                             }
@@ -3139,8 +3139,8 @@ LABEL_49:
                   while (v38 + 1 != v36);
                   v5 = v18;
                   v7 = v34;
-                  a3 = v17;
-                  v4 = v16;
+                  settings = settingsCopy;
+                  selfCopy = v16;
                   v36 = [obj countByEnumeratingWithState:&v66 objects:v65 count:16];
                 }
 
@@ -3222,10 +3222,10 @@ LABEL_62:
   return 1;
 }
 
-- (BOOL)setupVideoWithNegotiatedSettings:(id)a3
+- (BOOL)setupVideoWithNegotiatedSettings:(id)settings
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [a3 newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
+  v5 = [settings newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
   if (!v5)
   {
     [VCMediaNegotiator setupVideoWithNegotiatedSettings:];
@@ -3236,38 +3236,38 @@ LABEL_18:
   }
 
   v6 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9C8];
-  [v6 setRemoteSSRC:{objc_msgSend(a3, "rtpSSRC")}];
-  [v6 setIsRTCPFBEnabled:{objc_msgSend(a3, "allowRTCPFB")}];
-  [v6 setTilesPerFrame:{objc_msgSend(a3, "tilesPerFrame")}];
-  [v6 setLtrpEnabled:{objc_msgSend(a3, "ltrpEnabled")}];
-  [v6 setCustomVideoHeight:{objc_msgSend(a3, "customVideoHeight")}];
-  [v6 setCustomVideoWidth:{objc_msgSend(a3, "customVideoWidth")}];
-  [v6 setEnableInterleavedEncoding:{objc_msgSend(a3, "enableInterleavedEncoding")}];
-  if (![(VCMediaNegotiator *)self processPixelFormats:a3 videoResults:v6])
+  [v6 setRemoteSSRC:{objc_msgSend(settings, "rtpSSRC")}];
+  [v6 setIsRTCPFBEnabled:{objc_msgSend(settings, "allowRTCPFB")}];
+  [v6 setTilesPerFrame:{objc_msgSend(settings, "tilesPerFrame")}];
+  [v6 setLtrpEnabled:{objc_msgSend(settings, "ltrpEnabled")}];
+  [v6 setCustomVideoHeight:{objc_msgSend(settings, "customVideoHeight")}];
+  [v6 setCustomVideoWidth:{objc_msgSend(settings, "customVideoWidth")}];
+  [v6 setEnableInterleavedEncoding:{objc_msgSend(settings, "enableInterleavedEncoding")}];
+  if (![(VCMediaNegotiator *)self processPixelFormats:settings videoResults:v6])
   {
     [VCMediaNegotiator setupVideoWithNegotiatedSettings:];
     goto LABEL_18;
   }
 
-  if (![(VCMediaNegotiator *)self negotiateHDRMode:a3 videoResults:v6])
+  if (![(VCMediaNegotiator *)self negotiateHDRMode:settings videoResults:v6])
   {
     [VCMediaNegotiator setupVideoWithNegotiatedSettings:];
     goto LABEL_18;
   }
 
-  if (![(VCMediaNegotiator *)self processParameterSets:a3 videoResults:v6])
+  if (![(VCMediaNegotiator *)self processParameterSets:settings videoResults:v6])
   {
     [VCMediaNegotiator setupVideoWithNegotiatedSettings:];
     goto LABEL_18;
   }
 
-  v7 = [a3 newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
+  v7 = [settings newVideoRuleCollectionsForScreen:0 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [a3 videoPayloadCollections];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  videoPayloadCollections = [settings videoPayloadCollections];
+  v9 = [videoPayloadCollections countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3278,25 +3278,25 @@ LABEL_18:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(videoPayloadCollections);
         }
 
         [v6 addFeatureString:objc_msgSend(*(*(&v19 + 1) + 8 * i) payload:{"featureString"), objc_msgSend(*(*(&v19 + 1) + 8 * i), "payload")}];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v18 count:16];
+      v10 = [videoPayloadCollections countByEnumeratingWithState:&v19 objects:v18 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [v7 rules];
+  rules = [v7 rules];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __54__VCMediaNegotiator_setupVideoWithNegotiatedSettings___block_invoke;
   v16[3] = &unk_1E85F6338;
   v16[4] = v6;
-  [v13 enumerateKeysAndObjectsUsingBlock:v16];
+  [rules enumerateKeysAndObjectsUsingBlock:v16];
   v14 = 1;
   [v6 setIsSupported:1];
 LABEL_13:
@@ -3336,15 +3336,15 @@ uint64_t __54__VCMediaNegotiator_setupVideoWithNegotiatedSettings___block_invoke
   }
 }
 
-- (BOOL)negotiateScreenSettings:(id)a3
+- (BOOL)negotiateScreenSettings:(id)settings
 {
   v66 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9E0];
   v43 = [-[VCMediaNegotiatorLocalConfiguration mediaConfigurationForMediaType:](self->super._localSettings mediaConfigurationForMediaType:{3), "videoRuleCollections"}];
   if ([objc_msgSend(v43 "rules")])
   {
-    v44 = self;
-    v6 = [a3 newVideoRuleCollectionsForScreen:1 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
+    selfCopy = self;
+    v6 = [settings newVideoRuleCollectionsForScreen:1 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
     v7 = v6;
     if (!v6)
     {
@@ -3355,32 +3355,32 @@ uint64_t __54__VCMediaNegotiator_setupVideoWithNegotiatedSettings___block_invoke
 
     if ([objc_msgSend(v6 "supportedPayloads")])
     {
-      [v5 setRemoteSSRC:{objc_msgSend(a3, "rtpSSRC")}];
-      if ([(VCMediaNegotiatorLocalConfiguration *)v44->super._localSettings customVideoHeight]|| [(VCMediaNegotiatorLocalConfiguration *)v44->super._localSettings customVideoWidth])
+      [v5 setRemoteSSRC:{objc_msgSend(settings, "rtpSSRC")}];
+      if ([(VCMediaNegotiatorLocalConfiguration *)selfCopy->super._localSettings customVideoHeight]|| [(VCMediaNegotiatorLocalConfiguration *)selfCopy->super._localSettings customVideoWidth])
       {
-        [v5 setCustomVideoWidth:{-[VCMediaNegotiatorLocalConfiguration customVideoWidth](v44->super._localSettings, "customVideoWidth")}];
-        [v5 setCustomVideoHeight:{-[VCMediaNegotiatorLocalConfiguration customVideoHeight](v44->super._localSettings, "customVideoHeight")}];
+        [v5 setCustomVideoWidth:{-[VCMediaNegotiatorLocalConfiguration customVideoWidth](selfCopy->super._localSettings, "customVideoWidth")}];
+        [v5 setCustomVideoHeight:{-[VCMediaNegotiatorLocalConfiguration customVideoHeight](selfCopy->super._localSettings, "customVideoHeight")}];
       }
 
       v35 = v7;
-      if ([(VCMediaNegotiator *)v44 processParameterSets:a3 videoResults:v5])
+      if ([(VCMediaNegotiator *)selfCopy processParameterSets:settings videoResults:v5])
       {
-        [(VCMediaNegotiator *)v44 negotiateRTCPFB:a3 negotiatedVideoSettings:v5];
-        [(VCMediaNegotiator *)v44 negotiateTilesPerFrame:a3 negotiatedSettings:v5];
-        if ([a3 ltrpEnabled])
+        [(VCMediaNegotiator *)selfCopy negotiateRTCPFB:settings negotiatedVideoSettings:v5];
+        [(VCMediaNegotiator *)selfCopy negotiateTilesPerFrame:settings negotiatedSettings:v5];
+        if ([settings ltrpEnabled])
         {
-          v8 = [(VCMediaNegotiatorLocalConfiguration *)v44->super._localSettings ltrpEnabled];
+          ltrpEnabled = [(VCMediaNegotiatorLocalConfiguration *)selfCopy->super._localSettings ltrpEnabled];
         }
 
         else
         {
-          v8 = 0;
+          ltrpEnabled = 0;
         }
 
-        [v5 setLtrpEnabled:v8];
-        if ([a3 fecEnabled])
+        [v5 setLtrpEnabled:ltrpEnabled];
+        if ([settings fecEnabled])
         {
-          v14 = [(VCMediaNegotiatorResults *)v44->super._negotiatedSettings accessNetworkType]== 2;
+          v14 = [(VCMediaNegotiatorResults *)selfCopy->super._negotiatedSettings accessNetworkType]== 2;
         }
 
         else
@@ -3389,9 +3389,9 @@ uint64_t __54__VCMediaNegotiator_setupVideoWithNegotiatedSettings___block_invoke
         }
 
         [v5 setFecEnabled:v14];
-        if ([a3 rtxEnabled])
+        if ([settings rtxEnabled])
         {
-          v15 = [(VCMediaNegotiatorResults *)v44->super._negotiatedSettings accessNetworkType]== 2 || [(VCMediaNegotiatorResults *)v44->super._negotiatedSettings accessNetworkType]== 1;
+          v15 = [(VCMediaNegotiatorResults *)selfCopy->super._negotiatedSettings accessNetworkType]== 2 || [(VCMediaNegotiatorResults *)selfCopy->super._negotiatedSettings accessNetworkType]== 1;
         }
 
         else
@@ -3400,40 +3400,40 @@ uint64_t __54__VCMediaNegotiator_setupVideoWithNegotiatedSettings___block_invoke
         }
 
         [v5 setRtxEnabled:v15];
-        if ([a3 blackFrameOnClearScreenEnabled])
+        if ([settings blackFrameOnClearScreenEnabled])
         {
-          v16 = [(VCMediaNegotiatorLocalConfiguration *)v44->super._localSettings blackFrameOnClearScreenEnabled];
+          blackFrameOnClearScreenEnabled = [(VCMediaNegotiatorLocalConfiguration *)selfCopy->super._localSettings blackFrameOnClearScreenEnabled];
         }
 
         else
         {
-          v16 = 0;
+          blackFrameOnClearScreenEnabled = 0;
         }
 
-        [v5 setBlackFrameOnClearScreenEnabled:v16];
-        if ([a3 foveationSupported])
+        [v5 setBlackFrameOnClearScreenEnabled:blackFrameOnClearScreenEnabled];
+        if ([settings foveationSupported])
         {
-          v17 = v44;
-          v18 = [(VCMediaNegotiatorLocalConfiguration *)v44->super._localSettings foveationIsSupported];
+          v17 = selfCopy;
+          foveationIsSupported = [(VCMediaNegotiatorLocalConfiguration *)selfCopy->super._localSettings foveationIsSupported];
         }
 
         else
         {
-          v18 = 0;
-          v17 = v44;
+          foveationIsSupported = 0;
+          v17 = selfCopy;
         }
 
-        [v5 setFoveationIsSupported:v18];
+        [v5 setFoveationIsSupported:foveationIsSupported];
         obj = [(VCMediaNegotiator *)v17 getPreferredScreenPayloadList];
         if ([obj count])
         {
-          if ([(VCMediaNegotiator *)v17 processPixelFormats:a3 videoResults:v5])
+          if ([(VCMediaNegotiator *)v17 processPixelFormats:settings videoResults:v5])
           {
-            if ([(VCMediaNegotiator *)v17 negotiateHDRMode:a3 videoResults:v5])
+            if ([(VCMediaNegotiator *)v17 negotiateHDRMode:settings videoResults:v5])
             {
               if ([(VCMediaNegotiator *)v17 isNegotiationModeForScreenShare:v17->_negotiationMode])
               {
-                v39 = [(VCMediaNegotiator *)v17 selectBestScreenRule:a3 preferredPayloadOrder:obj];
+                v39 = [(VCMediaNegotiator *)v17 selectBestScreenRule:settings preferredPayloadOrder:obj];
               }
 
               else
@@ -3490,20 +3490,20 @@ uint64_t __54__VCMediaNegotiator_setupVideoWithNegotiatedSettings___block_invoke
                               {
                                 for (j = 0; j != v24; ++j)
                                 {
-                                  v27 = a3;
+                                  settingsCopy = settings;
                                   if (*v47 != v25)
                                   {
                                     objc_enumerationMutation(obj);
                                   }
 
                                   v28 = *(*(&v46 + 1) + 8 * j);
-                                  v29 = [v20 unsignedIntValue];
-                                  v30 = [v28 unsignedIntValue];
-                                  v31 = [v22 unsignedIntValue];
+                                  unsignedIntValue = [v20 unsignedIntValue];
+                                  unsignedIntValue2 = [v28 unsignedIntValue];
+                                  unsignedIntValue3 = [v22 unsignedIntValue];
                                   LOBYTE(v34) = 1;
-                                  v32 = v29;
-                                  a3 = v27;
-                                  if ([(VCMediaNegotiator *)v44 selectBestVideoRuleForTransport:v32 payload:v30 encodingType:v31 localVideoRuleCollection:v43 remoteVideoSettings:v27 negotiatedVideoSettings:v5 isScreen:v34])
+                                  v32 = unsignedIntValue;
+                                  settings = settingsCopy;
+                                  if ([(VCMediaNegotiator *)selfCopy selectBestVideoRuleForTransport:v32 payload:unsignedIntValue2 encodingType:unsignedIntValue3 localVideoRuleCollection:v43 remoteVideoSettings:settingsCopy negotiatedVideoSettings:v5 isScreen:v34])
                                   {
                                     v39 = 1;
                                     goto LABEL_59;
@@ -3621,10 +3621,10 @@ LABEL_66:
   return 1;
 }
 
-- (BOOL)setupScreenWithNegotiatedSettings:(id)a3
+- (BOOL)setupScreenWithNegotiatedSettings:(id)settings
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [a3 newVideoRuleCollectionsForScreen:1 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
+  v5 = [settings newVideoRuleCollectionsForScreen:1 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
   if (!v5)
   {
     [VCMediaNegotiator setupScreenWithNegotiatedSettings:];
@@ -3635,51 +3635,51 @@ LABEL_21:
   }
 
   v6 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9E0];
-  [v6 setRemoteSSRC:{objc_msgSend(a3, "rtpSSRC")}];
-  [v6 setIsRTCPFBEnabled:{objc_msgSend(a3, "allowRTCPFB")}];
-  [v6 setCustomVideoHeight:{objc_msgSend(a3, "customVideoHeight")}];
-  [v6 setCustomVideoWidth:{objc_msgSend(a3, "customVideoWidth")}];
-  [v6 setTilesPerFrame:{objc_msgSend(a3, "tilesPerFrame")}];
-  [v6 setLtrpEnabled:{objc_msgSend(a3, "ltrpEnabled")}];
-  [v6 setFecEnabled:{objc_msgSend(a3, "fecEnabled")}];
-  [v6 setRtxEnabled:{objc_msgSend(a3, "rtxEnabled")}];
-  if ([a3 hasBlackFrameOnClearScreenEnabled])
+  [v6 setRemoteSSRC:{objc_msgSend(settings, "rtpSSRC")}];
+  [v6 setIsRTCPFBEnabled:{objc_msgSend(settings, "allowRTCPFB")}];
+  [v6 setCustomVideoHeight:{objc_msgSend(settings, "customVideoHeight")}];
+  [v6 setCustomVideoWidth:{objc_msgSend(settings, "customVideoWidth")}];
+  [v6 setTilesPerFrame:{objc_msgSend(settings, "tilesPerFrame")}];
+  [v6 setLtrpEnabled:{objc_msgSend(settings, "ltrpEnabled")}];
+  [v6 setFecEnabled:{objc_msgSend(settings, "fecEnabled")}];
+  [v6 setRtxEnabled:{objc_msgSend(settings, "rtxEnabled")}];
+  if ([settings hasBlackFrameOnClearScreenEnabled])
   {
-    v7 = [a3 blackFrameOnClearScreenEnabled];
+    blackFrameOnClearScreenEnabled = [settings blackFrameOnClearScreenEnabled];
   }
 
   else
   {
-    v7 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings blackFrameOnClearScreenEnabledDefault];
+    blackFrameOnClearScreenEnabled = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings blackFrameOnClearScreenEnabledDefault];
   }
 
-  [v6 setBlackFrameOnClearScreenEnabled:v7];
-  [v6 setFoveationIsSupported:{objc_msgSend(a3, "foveationSupported")}];
-  if (![(VCMediaNegotiator *)self processPixelFormats:a3 videoResults:v6])
+  [v6 setBlackFrameOnClearScreenEnabled:blackFrameOnClearScreenEnabled];
+  [v6 setFoveationIsSupported:{objc_msgSend(settings, "foveationSupported")}];
+  if (![(VCMediaNegotiator *)self processPixelFormats:settings videoResults:v6])
   {
     [VCMediaNegotiator setupScreenWithNegotiatedSettings:];
     goto LABEL_21;
   }
 
-  if (![(VCMediaNegotiator *)self negotiateHDRMode:a3 videoResults:v6])
+  if (![(VCMediaNegotiator *)self negotiateHDRMode:settings videoResults:v6])
   {
     [VCMediaNegotiator setupScreenWithNegotiatedSettings:];
     goto LABEL_21;
   }
 
-  if (![(VCMediaNegotiator *)self processParameterSets:a3 videoResults:v6])
+  if (![(VCMediaNegotiator *)self processParameterSets:settings videoResults:v6])
   {
     [VCMediaNegotiator setupScreenWithNegotiatedSettings:];
     goto LABEL_21;
   }
 
-  v8 = [a3 newVideoRuleCollectionsForScreen:1 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
+  v8 = [settings newVideoRuleCollectionsForScreen:1 isCellular16x9Capable:self->_isCellular16x9Capable isLocalConfig:0];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [a3 videoPayloadCollections];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  videoPayloadCollections = [settings videoPayloadCollections];
+  v10 = [videoPayloadCollections countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3690,25 +3690,25 @@ LABEL_21:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(videoPayloadCollections);
         }
 
         [v6 addFeatureString:objc_msgSend(*(*(&v20 + 1) + 8 * i) payload:{"featureString"), objc_msgSend(*(*(&v20 + 1) + 8 * i), "payload")}];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v11 = [videoPayloadCollections countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [v8 rules];
+  rules = [v8 rules];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __55__VCMediaNegotiator_setupScreenWithNegotiatedSettings___block_invoke;
   v17[3] = &unk_1E85F6338;
   v17[4] = v6;
-  [v14 enumerateKeysAndObjectsUsingBlock:v17];
+  [rules enumerateKeysAndObjectsUsingBlock:v17];
   v15 = 1;
   [v6 setIsSupported:1];
 LABEL_16:
@@ -3735,19 +3735,19 @@ uint64_t __55__VCMediaNegotiator_setupScreenWithNegotiatedSettings___block_invok
   return [v3 addVideoRules:v4 transportType:v5 payload:v6 encodingType:v7];
 }
 
-- (BOOL)selectBestScreenRule:(id)a3 preferredPayloadOrder:(id)a4
+- (BOOL)selectBestScreenRule:(id)rule preferredPayloadOrder:(id)order
 {
   v34 = *MEMORY[0x1E69E9840];
   v22 = [(NSMutableDictionary *)self->super._negotiatedU1MediaSettings objectForKeyedSubscript:&unk_1F579A9E0];
-  v6 = self;
+  selfCopy = self;
   v19 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaConfigurationForMediaType:3];
-  v7 = [v19 videoRuleCollections];
+  videoRuleCollections = [v19 videoRuleCollections];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = a4;
-  v20 = [a4 countByEnumeratingWithState:&v30 objects:v29 count:16];
+  obj = order;
+  v20 = [order countByEnumeratingWithState:&v30 objects:v29 count:16];
   v8 = 0;
   if (v20)
   {
@@ -3764,7 +3764,7 @@ uint64_t __55__VCMediaNegotiator_setupScreenWithNegotiatedSettings___block_invok
 
         v21 = v9;
         v10 = *(*(&v30 + 1) + 8 * v9);
-        [v22 addFeatureString:+[VCMediaNegotiator negotiatedFeaturesStringWithLocalFeaturesString:remoteFeaturesString:](VCMediaNegotiator payload:{"negotiatedFeaturesStringWithLocalFeaturesString:remoteFeaturesString:", objc_msgSend(objc_msgSend(v19, "videoFeatureStrings"), "objectForKeyedSubscript:", v10), -[VCMediaNegotiator selectVideoFeatureString:selectedPayload:videoConfiguration:](v6, "selectVideoFeatureString:selectedPayload:videoConfiguration:", a3, objc_msgSend(v10, "unsignedIntValue"), v19)), objc_msgSend(v10, "unsignedIntValue")}];
+        [v22 addFeatureString:+[VCMediaNegotiator negotiatedFeaturesStringWithLocalFeaturesString:remoteFeaturesString:](VCMediaNegotiator payload:{"negotiatedFeaturesStringWithLocalFeaturesString:remoteFeaturesString:", objc_msgSend(objc_msgSend(v19, "videoFeatureStrings"), "objectForKeyedSubscript:", v10), -[VCMediaNegotiator selectVideoFeatureString:selectedPayload:videoConfiguration:](selfCopy, "selectVideoFeatureString:selectedPayload:videoConfiguration:", rule, objc_msgSend(v10, "unsignedIntValue"), v19)), objc_msgSend(v10, "unsignedIntValue")}];
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
@@ -3784,7 +3784,7 @@ uint64_t __55__VCMediaNegotiator_setupScreenWithNegotiatedSettings___block_invok
               }
 
               LOBYTE(v16) = 1;
-              v8 |= -[VCMediaNegotiator selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:](v6, "selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:", [&unk_1F579A9B0 unsignedIntValue], objc_msgSend(v10, "unsignedIntValue"), objc_msgSend(*(*(&v25 + 1) + 8 * i), "unsignedIntValue"), v7, a3, v22, v16);
+              v8 |= -[VCMediaNegotiator selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:](selfCopy, "selectBestVideoRuleForTransport:payload:encodingType:localVideoRuleCollection:remoteVideoSettings:negotiatedVideoSettings:isScreen:", [&unk_1F579A9B0 unsignedIntValue], objc_msgSend(v10, "unsignedIntValue"), objc_msgSend(*(*(&v25 + 1) + 8 * i), "unsignedIntValue"), videoRuleCollections, rule, v22, v16);
             }
 
             v12 = [&unk_1F579D290 countByEnumeratingWithState:&v25 objects:v24 count:16];
@@ -3806,16 +3806,16 @@ uint64_t __55__VCMediaNegotiator_setupScreenWithNegotiatedSettings___block_invok
   return v8 & 1;
 }
 
-- (void)setupFaceTimeSettingsForMediaBlob:(id)a3 isResponse:(BOOL)a4
+- (void)setupFaceTimeSettingsForMediaBlob:(id)blob isResponse:(BOOL)response
 {
-  v4 = a4;
+  responseCopy = response;
   v27 = objc_alloc_init(VCMediaNegotiationFaceTimeSettings);
-  if (v4)
+  if (responseCopy)
   {
     p_negotiatedFaceTimeSettings = &self->super._negotiatedFaceTimeSettings;
-    v8 = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings SIPDisabled];
-    v9 = v8;
-    if (v8)
+    sIPDisabled = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings SIPDisabled];
+    v9 = sIPDisabled;
+    if (sIPDisabled)
     {
       v10 = 2;
     }
@@ -3825,22 +3825,22 @@ uint64_t __55__VCMediaNegotiator_setupScreenWithNegotiatedSettings___block_invok
       v10 = 0;
     }
 
-    v11 = [*p_negotiatedFaceTimeSettings secureMessagingRequired];
-    v12 = v11;
-    [(VCMediaNegotiationFaceTimeSettings *)v27 setCapabilities:v10 | v11];
-    v13 = [*p_negotiatedFaceTimeSettings faceTimeSwitches];
-    v14 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings faceTimeSwitches]& 2 | v13 & 1;
+    secureMessagingRequired = [*p_negotiatedFaceTimeSettings secureMessagingRequired];
+    v12 = secureMessagingRequired;
+    [(VCMediaNegotiationFaceTimeSettings *)v27 setCapabilities:v10 | secureMessagingRequired];
+    faceTimeSwitches = [*p_negotiatedFaceTimeSettings faceTimeSwitches];
+    v14 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings faceTimeSwitches]& 2 | faceTimeSwitches & 1;
     v15 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings faceTimeSwitches]& 4;
     v16 = v14 | v15 | [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings faceTimeSwitches]& 8;
     v17 = [*p_negotiatedFaceTimeSettings faceTimeSwitches] & 0x10;
     v18 = v17 | [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings faceTimeSwitches]& 0x20;
-    v22 = v16 | v18 | [*p_negotiatedFaceTimeSettings faceTimeSwitches] & 0x40;
+    oneToOneModeSupported = v16 | v18 | [*p_negotiatedFaceTimeSettings faceTimeSwitches] & 0x40;
     v19 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings faceTimeSwitches]& 0x80;
     v20 = v19 | [*p_negotiatedFaceTimeSettings faceTimeSwitches] & 0x100;
     v21 = v20 | [*p_negotiatedFaceTimeSettings faceTimeSwitches] & 0x200;
-    -[VCMediaNegotiationFaceTimeSettings setSwitches:](v27, "setSwitches:", v22 | v21 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x400 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x800 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x1000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x2000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x4000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x8000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x10000 | [*p_negotiatedFaceTimeSettings faceTimeSwitches] & 0x20000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x40000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x80000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x100000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x200000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x400000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x800000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x1000000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x2000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x4000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x8000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x10000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x20000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x40000000);
-    LOBYTE(v22) = [*p_negotiatedFaceTimeSettings oneToOneModeSupported];
-    if ((v22 & 1) == 0)
+    -[VCMediaNegotiationFaceTimeSettings setSwitches:](v27, "setSwitches:", oneToOneModeSupported | v21 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x400 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x800 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x1000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x2000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x4000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x8000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x10000 | [*p_negotiatedFaceTimeSettings faceTimeSwitches] & 0x20000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x40000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x80000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x100000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x200000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x400000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x800000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x1000000 | -[VCMediaNegotiatorLocalConfiguration faceTimeSwitches](self->super._localSettings, "faceTimeSwitches") & 0x2000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x4000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x8000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x10000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x20000000 | objc_msgSend(*p_negotiatedFaceTimeSettings, "faceTimeSwitches") & 0x40000000);
+    LOBYTE(oneToOneModeSupported) = [*p_negotiatedFaceTimeSettings oneToOneModeSupported];
+    if ((oneToOneModeSupported & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -3851,9 +3851,9 @@ LABEL_11:
   }
 
   p_negotiatedFaceTimeSettings = &self->super._localSettings;
-  v23 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings SIPDisabled];
-  v9 = v23;
-  if (v23)
+  sIPDisabled2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings SIPDisabled];
+  v9 = sIPDisabled2;
+  if (sIPDisabled2)
   {
     v24 = 2;
   }
@@ -3863,12 +3863,12 @@ LABEL_11:
     v24 = 0;
   }
 
-  v25 = [*p_negotiatedFaceTimeSettings secureMessagingRequired];
-  v12 = v25;
-  [(VCMediaNegotiationFaceTimeSettings *)v27 setCapabilities:v24 | v25];
+  secureMessagingRequired2 = [*p_negotiatedFaceTimeSettings secureMessagingRequired];
+  v12 = secureMessagingRequired2;
+  [(VCMediaNegotiationFaceTimeSettings *)v27 setCapabilities:v24 | secureMessagingRequired2];
   -[VCMediaNegotiationFaceTimeSettings setSwitches:](v27, "setSwitches:", [*p_negotiatedFaceTimeSettings faceTimeSwitches]);
-  v22 = [*p_negotiatedFaceTimeSettings oneToOneModeSupported];
-  if (v22)
+  oneToOneModeSupported = [*p_negotiatedFaceTimeSettings oneToOneModeSupported];
+  if (oneToOneModeSupported)
   {
     goto LABEL_11;
   }
@@ -3876,21 +3876,21 @@ LABEL_11:
 LABEL_12:
   -[VCMediaNegotiationFaceTimeSettings setMediaControlInfoSubVersion:](v27, "setMediaControlInfoSubVersion:", [*p_negotiatedFaceTimeSettings mediaControlInfoFECFeedbackVersion]);
   [(VCMediaNegotiationFaceTimeSettings *)v27 setLinkProbingCapabilityVersion:[(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings linkProbingCapabilityVersion]];
-  if (v9 || (v12 & 1) != 0 || ([(VCMediaNegotiationFaceTimeSettings *)v27 switches]? (v26 = 1) : (v26 = v22), (v26 & 1) != 0 || [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaControlInfoFECFeedbackVersion]|| [(VCMediaNegotiationFaceTimeSettings *)v27 linkProbingCapabilityVersion]))
+  if (v9 || (v12 & 1) != 0 || ([(VCMediaNegotiationFaceTimeSettings *)v27 switches]? (v26 = 1) : (v26 = oneToOneModeSupported), (v26 & 1) != 0 || [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaControlInfoFECFeedbackVersion]|| [(VCMediaNegotiationFaceTimeSettings *)v27 linkProbingCapabilityVersion]))
   {
-    [a3 setFaceTimeSettings:v27];
+    [blob setFaceTimeSettings:v27];
   }
 }
 
-- (BOOL)negotiateFaceTimeSettings:(id)a3
+- (BOOL)negotiateFaceTimeSettings:(id)settings
 {
   v34 = *MEMORY[0x1E69E9840];
   p_negotiatedFaceTimeSettings = &self->super._negotiatedFaceTimeSettings;
-  if ([a3 hasCapabilities])
+  if ([settings hasCapabilities])
   {
-    -[VCMediaNegotiatorResultsFaceTimeSettings setSIPDisabled:](self->super._negotiatedFaceTimeSettings, "setSIPDisabled:", -[VCMediaNegotiatorLocalConfiguration SIPDisabled](self->super._localSettings, "SIPDisabled") & (([a3 capabilities] & 2) >> 1));
-    v6 = [a3 capabilities];
-    v7 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings secureMessagingRequired]& v6;
+    -[VCMediaNegotiatorResultsFaceTimeSettings setSIPDisabled:](self->super._negotiatedFaceTimeSettings, "setSIPDisabled:", -[VCMediaNegotiatorLocalConfiguration SIPDisabled](self->super._localSettings, "SIPDisabled") & (([settings capabilities] & 2) >> 1));
+    capabilities = [settings capabilities];
+    v7 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings secureMessagingRequired]& capabilities;
   }
 
   else
@@ -3908,7 +3908,7 @@ LABEL_12:
     v11 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings SIPDisabled];
+      sIPDisabled = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings SIPDisabled];
       v26 = 136315906;
       v27 = v10;
       v28 = 2080;
@@ -3916,7 +3916,7 @@ LABEL_12:
       v30 = 1024;
       v31 = 1649;
       v32 = 1024;
-      v33 = v12;
+      v33 = sIPDisabled;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Load switch after negotiation disableSIPEnabled %d", &v26, 0x22u);
     }
   }
@@ -3927,7 +3927,7 @@ LABEL_12:
     v14 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings secureMessagingRequired];
+      secureMessagingRequired = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings secureMessagingRequired];
       v26 = 136315906;
       v27 = v13;
       v28 = 2080;
@@ -3935,37 +3935,37 @@ LABEL_12:
       v30 = 1024;
       v31 = 1650;
       v32 = 1024;
-      v33 = v15;
+      v33 = secureMessagingRequired;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Load switch after negotiation secureMessagingEnabled %d", &v26, 0x22u);
     }
   }
 
-  if ([a3 hasSwitches])
+  if ([settings hasSwitches])
   {
-    v16 = [a3 switches];
+    switches = [settings switches];
   }
 
   else
   {
-    v16 = 0;
+    switches = 0;
   }
 
-  [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings setFaceTimeSwitches:v16];
-  -[VCMediaNegotiatorResultsFaceTimeSettings setRemoteFaceTimeSwitchesAvailable:](self->super._negotiatedFaceTimeSettings, "setRemoteFaceTimeSwitchesAvailable:", [a3 hasSwitches]);
-  v17 = [a3 hasOneToOneModeSupported] && objc_msgSend(a3, "oneToOneModeSupported") && -[VCMediaNegotiatorLocalConfiguration oneToOneModeSupported](self->super._localSettings, "oneToOneModeSupported");
+  [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings setFaceTimeSwitches:switches];
+  -[VCMediaNegotiatorResultsFaceTimeSettings setRemoteFaceTimeSwitchesAvailable:](self->super._negotiatedFaceTimeSettings, "setRemoteFaceTimeSwitchesAvailable:", [settings hasSwitches]);
+  v17 = [settings hasOneToOneModeSupported] && objc_msgSend(settings, "oneToOneModeSupported") && -[VCMediaNegotiatorLocalConfiguration oneToOneModeSupported](self->super._localSettings, "oneToOneModeSupported");
   [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings setOneToOneModeSupported:v17];
-  if ([a3 hasMediaControlInfoSubVersion])
+  if ([settings hasMediaControlInfoSubVersion])
   {
-    v18 = [a3 mediaControlInfoFECFeedbackVersion];
-    v19 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaControlInfoFECFeedbackVersion];
-    if (v18 >= v19)
+    mediaControlInfoFECFeedbackVersion = [settings mediaControlInfoFECFeedbackVersion];
+    mediaControlInfoFECFeedbackVersion2 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaControlInfoFECFeedbackVersion];
+    if (mediaControlInfoFECFeedbackVersion >= mediaControlInfoFECFeedbackVersion2)
     {
-      v20 = v19;
+      v20 = mediaControlInfoFECFeedbackVersion2;
     }
 
     else
     {
-      v20 = v18;
+      v20 = mediaControlInfoFECFeedbackVersion;
     }
   }
 
@@ -3975,20 +3975,20 @@ LABEL_12:
   }
 
   [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings setMediaControlInfoFECFeedbackVersion:v20];
-  v21 = [a3 hasLinkProbingCapabilityVersion];
-  if (v21)
+  hasLinkProbingCapabilityVersion = [settings hasLinkProbingCapabilityVersion];
+  if (hasLinkProbingCapabilityVersion)
   {
-    LOBYTE(v21) = [a3 linkProbingCapabilityVersion];
+    LOBYTE(hasLinkProbingCapabilityVersion) = [settings linkProbingCapabilityVersion];
   }
 
-  [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings setRemoteLinkProbingCapabilityVersion:v21];
+  [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings setRemoteLinkProbingCapabilityVersion:hasLinkProbingCapabilityVersion];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v22 = VRTraceErrorLogLevelToCSTR();
     v23 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings mediaControlInfoFECFeedbackVersion];
+      mediaControlInfoFECFeedbackVersion3 = [(VCMediaNegotiatorResultsFaceTimeSettings *)self->super._negotiatedFaceTimeSettings mediaControlInfoFECFeedbackVersion];
       v26 = 136315906;
       v27 = v22;
       v28 = 2080;
@@ -3996,7 +3996,7 @@ LABEL_12:
       v30 = 1024;
       v31 = 1670;
       v32 = 1024;
-      v33 = v24;
+      v33 = mediaControlInfoFECFeedbackVersion3;
       _os_log_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Load switch after negotiation mediaControlInfoFECFeedbackVersion '%d'", &v26, 0x22u);
     }
   }
@@ -4004,7 +4004,7 @@ LABEL_12:
   return 1;
 }
 
-- (void)setupMomentsForMediaBlob:(id)a3
+- (void)setupMomentsForMediaBlob:(id)blob
 {
   if (![+[VCDefaults momentsUserPreferenceEnabled] sharedInstance]
   {
@@ -4022,15 +4022,15 @@ LABEL_7:
   }
 
   v6 = v5;
-  [a3 setMomentsSettings:v5];
+  [blob setMomentsSettings:v5];
 LABEL_4:
 }
 
-- (BOOL)negotiateMomentsWithMomentsSettings:(id)a3
+- (BOOL)negotiateMomentsWithMomentsSettings:(id)settings
 {
   if ([+[VCDefaults momentsUserPreferenceEnabled] sharedInstance]
   {
-    if ([a3 hasSupportedVideoCodecs] && (objc_msgSend(a3, "supportedVideoCodecs") & 2) != 0 && +[VCHardwareSettings supportsHEVCEncoding](VCHardwareSettings, "supportsHEVCEncoding"))
+    if ([settings hasSupportedVideoCodecs] && (objc_msgSend(settings, "supportedVideoCodecs") & 2) != 0 && +[VCHardwareSettings supportsHEVCEncoding](VCHardwareSettings, "supportsHEVCEncoding"))
     {
       v5 = 100;
     }
@@ -4041,9 +4041,9 @@ LABEL_4:
     }
 
     [(VCMediaNegotiatorResultsMediaRecorder *)self->super._negotiatedMediaRecorderSettings setVideoCodec:v5];
-    v6 = [a3 hasSupportedImageTypes] && (objc_msgSend(a3, "supportedImageTypes") & 2) != 0 && +[VCHardwareSettings supportsHEIFEncoding](VCHardwareSettings, "supportsHEIFEncoding");
+    v6 = [settings hasSupportedImageTypes] && (objc_msgSend(settings, "supportedImageTypes") & 2) != 0 && +[VCHardwareSettings supportsHEIFEncoding](VCHardwareSettings, "supportsHEIFEncoding");
     [(VCMediaNegotiatorResultsMediaRecorder *)self->super._negotiatedMediaRecorderSettings setImageType:v6];
-    -[VCMediaNegotiatorResultsMediaRecorder setCapabilities:](self->super._negotiatedMediaRecorderSettings, "setCapabilities:", +[VCMediaNegotiationBlobMomentsSettings avcMomentsCapabilitiesForMultiwayMomentsCapabilities:](VCMediaNegotiationBlobMomentsSettings, "avcMomentsCapabilitiesForMultiwayMomentsCapabilities:", [a3 multiwayCapabilities]));
+    -[VCMediaNegotiatorResultsMediaRecorder setCapabilities:](self->super._negotiatedMediaRecorderSettings, "setCapabilities:", +[VCMediaNegotiationBlobMomentsSettings avcMomentsCapabilitiesForMultiwayMomentsCapabilities:](VCMediaNegotiationBlobMomentsSettings, "avcMomentsCapabilitiesForMultiwayMomentsCapabilities:", [settings multiwayCapabilities]));
   }
 
   else
@@ -4054,15 +4054,15 @@ LABEL_4:
   return 1;
 }
 
-- (void)setupMultiwayAudioStreamsForMediaBlob:(id)a3
+- (void)setupMultiwayAudioStreamsForMediaBlob:(id)blob
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings multiwayAudioStreams];
-  v5 = [(NSMutableOrderedSet *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  multiwayAudioStreams = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings multiwayAudioStreams];
+  v5 = [(NSMutableOrderedSet *)multiwayAudioStreams countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4074,26 +4074,26 @@ LABEL_4:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(multiwayAudioStreams);
         }
 
         v9 = [[VCMediaNegotiationBlobMultiwayAudioStream alloc] initWithStreamConfig:*(*(&v11 + 1) + 8 * v8)];
-        [a3 addMultiwayAudioStreams:v9];
+        [blob addMultiwayAudioStreams:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [(NSMutableOrderedSet *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [(NSMutableOrderedSet *)multiwayAudioStreams countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)negotiateMultiwayAudioStreams:(id)a3
+- (BOOL)negotiateMultiwayAudioStreams:(id)streams
 {
-  obj = a3;
+  obj = streams;
   v59 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -4147,7 +4147,7 @@ LABEL_11:
         v53 = 2112;
         v54 = v4;
         v55 = 2048;
-        v56 = self;
+        selfCopy2 = self;
         v57 = 2112;
         v58 = obj;
         v7 = " [%s] %s:%d %@(%p) multiwayAudioStreams=%@";
@@ -4192,8 +4192,8 @@ LABEL_11:
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v18 = [v17 payloads];
-          v19 = [v18 countByEnumeratingWithState:&v38 objects:v37 count:16];
+          payloads = [v17 payloads];
+          v19 = [payloads countByEnumeratingWithState:&v38 objects:v37 count:16];
           if (v19)
           {
             v20 = v19;
@@ -4204,7 +4204,7 @@ LABEL_11:
               {
                 if (*v39 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(payloads);
                 }
 
                 if ([*(*(&v38 + 1) + 8 * j) integerValue] != 20)
@@ -4222,7 +4222,7 @@ LABEL_11:
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v38 objects:v37 count:16];
+              v20 = [payloads countByEnumeratingWithState:&v38 objects:v37 count:16];
               if (v20)
               {
                 continue;
@@ -4306,7 +4306,7 @@ LABEL_11:
         v53 = 2112;
         v54 = v25;
         v55 = 2048;
-        v56 = self;
+        selfCopy2 = self;
         v57 = 2112;
         v58 = v12;
         v29 = " [%s] %s:%d %@(%p) negotiated audio streamGroupConfig=%@";
@@ -4335,15 +4335,15 @@ LABEL_46:
   return v26;
 }
 
-- (void)setupMultiwayVideoStreamsForMediaBlob:(id)a3
+- (void)setupMultiwayVideoStreamsForMediaBlob:(id)blob
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings multiwayVideoStreams];
-  v5 = [(NSMutableOrderedSet *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  multiwayVideoStreams = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings multiwayVideoStreams];
+  v5 = [(NSMutableOrderedSet *)multiwayVideoStreams countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4355,38 +4355,38 @@ LABEL_46:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(multiwayVideoStreams);
         }
 
         v9 = [[VCMediaNegotiationBlobMultiwayVideoStream alloc] initWithStreamConfig:*(*(&v11 + 1) + 8 * v8)];
-        [a3 addMultiwayVideoStream:v9];
+        [blob addMultiwayVideoStream:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [(NSMutableOrderedSet *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [(NSMutableOrderedSet *)multiwayVideoStreams countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)isVideoStreamSupported:(int)a3
+- (BOOL)isVideoStreamSupported:(int)supported
 {
-  if (a3 == 128)
+  if (supported == 128)
   {
     return 0;
   }
 
-  v5 = *&a3;
+  v5 = *&supported;
   v6 = +[VCHardwareSettings supportedVideoPayloads];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
 
   return [v6 containsObject:v7];
 }
 
-- (BOOL)negotiateMultiwayVideoStreams:(id)a3
+- (BOOL)negotiateMultiwayVideoStreams:(id)streams
 {
   v89 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -4404,7 +4404,7 @@ LABEL_46:
         v81 = 1024;
         v82 = 1782;
         v83 = 2112;
-        v84 = a3;
+        streamsCopy = streams;
         v8 = " [%s] %s:%d multiwayVideoStreams=%@";
         v9 = v7;
         v10 = 38;
@@ -4439,11 +4439,11 @@ LABEL_11:
         v81 = 1024;
         v82 = 1782;
         v83 = 2112;
-        v84 = v5;
+        streamsCopy = v5;
         v85 = 2048;
-        v86 = self;
+        selfCopy2 = self;
         v87 = 2112;
-        v88 = a3;
+        streamsCopy2 = streams;
         v8 = " [%s] %s:%d %@(%p) multiwayVideoStreams=%@";
         v9 = v12;
         v10 = 58;
@@ -4459,7 +4459,7 @@ LABEL_11:
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v13 = [a3 countByEnumeratingWithState:&v73 objects:v72 count:16];
+    v13 = [streams countByEnumeratingWithState:&v73 objects:v72 count:16];
     if (v13)
     {
       v14 = v13;
@@ -4471,7 +4471,7 @@ LABEL_11:
         {
           if (*v74 != v15)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(streams);
           }
 
           v18 = *(*(&v73 + 1) + 8 * i);
@@ -4500,7 +4500,7 @@ LABEL_11:
           }
         }
 
-        v14 = [a3 countByEnumeratingWithState:&v73 objects:v72 count:16];
+        v14 = [streams countByEnumeratingWithState:&v73 objects:v72 count:16];
       }
 
       while (v14);
@@ -4549,8 +4549,8 @@ LABEL_11:
             v66 = 0u;
             v63 = 0u;
             v64 = 0u;
-            v27 = [v25 payloads];
-            v28 = [v27 countByEnumeratingWithState:&v63 objects:v62 count:16];
+            payloads = [v25 payloads];
+            v28 = [payloads countByEnumeratingWithState:&v63 objects:v62 count:16];
             if (v28)
             {
               v29 = v28;
@@ -4561,7 +4561,7 @@ LABEL_11:
                 {
                   if (*v64 != v30)
                   {
-                    objc_enumerationMutation(v27);
+                    objc_enumerationMutation(payloads);
                   }
 
                   v32 = -[VCMediaNegotiator newStreamGroupCodecConfigForPayload:](self, "newStreamGroupCodecConfigForPayload:", [*(*(&v63 + 1) + 8 * k) integerValue]);
@@ -4590,7 +4590,7 @@ LABEL_11:
                   [v22 addObject:v32];
                 }
 
-                v29 = [v27 countByEnumeratingWithState:&v63 objects:v62 count:16];
+                v29 = [payloads countByEnumeratingWithState:&v63 objects:v62 count:16];
                 if (v29)
                 {
                   continue;
@@ -4676,7 +4676,7 @@ LABEL_58:
             v81 = 1024;
             v82 = 1840;
             v83 = 2112;
-            v84 = v21;
+            streamsCopy = v21;
             v47 = " [%s] %s:%d negotiated video streamGroupConfig=%@";
             v48 = v46;
             v49 = 38;
@@ -4713,11 +4713,11 @@ LABEL_58:
             v81 = 1024;
             v82 = 1840;
             v83 = 2112;
-            v84 = v41;
+            streamsCopy = v41;
             v85 = 2048;
-            v86 = self;
+            selfCopy2 = self;
             v87 = 2112;
-            v88 = v21;
+            streamsCopy2 = v21;
             v47 = " [%s] %s:%d %@(%p) negotiated video streamGroupConfig=%@";
             v48 = v51;
             v49 = 58;
@@ -4768,9 +4768,9 @@ LABEL_76:
   return 1;
 }
 
-- (id)newStreamGroupCodecConfigForPayload:(int)a3
+- (id)newStreamGroupCodecConfigForPayload:(int)payload
 {
-  v3 = *&a3;
+  v3 = *&payload;
   v4 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
   if (!v4)
   {
@@ -4793,19 +4793,19 @@ LABEL_7:
   return v4;
 }
 
-- (id)newStreamConfigFromMultiwayAudioStream:(id)a3
+- (id)newStreamConfigFromMultiwayAudioStream:(id)stream
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(VCMediaNegotiatorStreamGroupStreamConfiguration);
   if (v4)
   {
-    v5 = [a3 newMultiwayAudioStream];
+    newMultiwayAudioStream = [stream newMultiwayAudioStream];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [v5 supportedAudioPayloads];
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v19 count:16];
+    supportedAudioPayloads = [newMultiwayAudioStream supportedAudioPayloads];
+    v7 = [supportedAudioPayloads countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -4816,44 +4816,44 @@ LABEL_7:
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(supportedAudioPayloads);
           }
 
           -[VCMediaNegotiatorStreamGroupStreamConfiguration addPayload:](v4, "addPayload:", [*(*(&v20 + 1) + 8 * i) unsignedIntValue]);
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        v8 = [supportedAudioPayloads countByEnumeratingWithState:&v20 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    -[VCMediaNegotiatorStreamGroupStreamConfiguration setSsrc:](v4, "setSsrc:", [a3 ssrc]);
-    -[VCMediaNegotiatorStreamGroupStreamConfiguration setStreamID:](v4, "setStreamID:", [a3 streamID]);
+    -[VCMediaNegotiatorStreamGroupStreamConfiguration setSsrc:](v4, "setSsrc:", [stream ssrc]);
+    -[VCMediaNegotiatorStreamGroupStreamConfiguration setStreamID:](v4, "setStreamID:", [stream streamID]);
     [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setMetadata:0];
-    -[VCMediaNegotiatorStreamGroupStreamConfiguration setQualityIndex:](v4, "setQualityIndex:", [a3 qualityIndex]);
-    v11 = [a3 hasMaxNetworkBitrate];
-    v12 = 0;
-    if (v11)
+    -[VCMediaNegotiatorStreamGroupStreamConfiguration setQualityIndex:](v4, "setQualityIndex:", [stream qualityIndex]);
+    hasMaxNetworkBitrate = [stream hasMaxNetworkBitrate];
+    maxNetworkBitrate = 0;
+    if (hasMaxNetworkBitrate)
     {
-      v12 = [a3 maxNetworkBitrate];
+      maxNetworkBitrate = [stream maxNetworkBitrate];
     }
 
-    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setMaxNetworkBitrate:v12];
-    if ([a3 hasMaxMediaBitrate])
+    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setMaxNetworkBitrate:maxNetworkBitrate];
+    if ([stream hasMaxMediaBitrate])
     {
-      v13 = [a3 maxMediaBitrate];
+      maxMediaBitrate = [stream maxMediaBitrate];
     }
 
     else
     {
-      v13 = 0;
+      maxMediaBitrate = 0;
     }
 
-    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setMaxMediaBitrate:v13];
-    if ([a3 hasMaxPacketsPerSecond])
+    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setMaxMediaBitrate:maxMediaBitrate];
+    if ([stream hasMaxPacketsPerSecond])
     {
-      [a3 maxPacketsPerSecond];
+      [stream maxPacketsPerSecond];
       v15 = v14;
     }
 
@@ -4863,24 +4863,24 @@ LABEL_7:
     }
 
     [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setMaxPacketsPerSecond:v15];
-    v16 = [a3 hasRepairedStreamID];
-    if (v16)
+    hasRepairedStreamID = [stream hasRepairedStreamID];
+    if (hasRepairedStreamID)
     {
-      LOWORD(v16) = [a3 repairedStreamID];
+      LOWORD(hasRepairedStreamID) = [stream repairedStreamID];
     }
 
-    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setRepairedStreamID:v16];
-    if ([a3 hasRepairedMaxNetworkBitrate])
+    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setRepairedStreamID:hasRepairedStreamID];
+    if ([stream hasRepairedMaxNetworkBitrate])
     {
-      v17 = [a3 repairedMaxNetworkBitrate];
+      repairedMaxNetworkBitrate = [stream repairedMaxNetworkBitrate];
     }
 
     else
     {
-      v17 = 0;
+      repairedMaxNetworkBitrate = 0;
     }
 
-    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setRepairedMaxNetworkBitrate:v17];
+    [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setRepairedMaxNetworkBitrate:repairedMaxNetworkBitrate];
     [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setRtpTimestampRate:24000];
     [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setAudioChannelCount:1];
     [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v4 setCoordinateSystem:0];
@@ -4894,20 +4894,20 @@ LABEL_7:
   return v4;
 }
 
-+ (unsigned)mappedRemoteQualityIndexForQualityIndex:(unsigned int)a3
++ (unsigned)mappedRemoteQualityIndexForQualityIndex:(unsigned int)index
 {
-  if (a3 == 62)
+  if (index == 62)
   {
     return 35;
   }
 
   else
   {
-    return a3;
+    return index;
   }
 }
 
-- (id)newStreamConfigFromMultiwayVideoStream:(id)a3
+- (id)newStreamConfigFromMultiwayVideoStream:(id)stream
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(VCMediaNegotiatorStreamGroupStreamConfiguration);
@@ -4919,19 +4919,19 @@ LABEL_30:
     return 0;
   }
 
-  if ([a3 metadata])
+  if ([stream metadata])
   {
-    [(VCMediaNegotiator *)self newStreamConfigFromMultiwayVideoStream:a3];
+    [(VCMediaNegotiator *)self newStreamConfigFromMultiwayVideoStream:stream];
     goto LABEL_30;
   }
 
-  if ([a3 metadata] >= 2)
+  if ([stream metadata] >= 2)
   {
-    [(VCMediaNegotiator *)self newStreamConfigFromMultiwayVideoStream:a3];
+    [(VCMediaNegotiator *)self newStreamConfigFromMultiwayVideoStream:stream];
     goto LABEL_30;
   }
 
-  v6 = +[VCMediaNegotiationBlobMultiwayVideoStream payloadForVideoPayload:](VCMediaNegotiationBlobMultiwayVideoStream, "payloadForVideoPayload:", [a3 payload]);
+  v6 = +[VCMediaNegotiationBlobMultiwayVideoStream payloadForVideoPayload:](VCMediaNegotiationBlobMultiwayVideoStream, "payloadForVideoPayload:", [stream payload]);
   if (![(VCMediaNegotiator *)self isVideoStreamSupported:v6])
   {
     [VCMediaNegotiator newStreamConfigFromMultiwayVideoStream:?];
@@ -4940,86 +4940,86 @@ LABEL_30:
 
   [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 addPayload:v6];
   v14[0] = 0;
-  if (!+[VCMediaNegotiationBlobMultiwayVideoStream convertVideoFormat:width:height:](VCMediaNegotiationBlobMultiwayVideoStream, "convertVideoFormat:width:height:", [a3 supportedVideoFormats], v14 + 4, v14))
+  if (!+[VCMediaNegotiationBlobMultiwayVideoStream convertVideoFormat:width:height:](VCMediaNegotiationBlobMultiwayVideoStream, "convertVideoFormat:width:height:", [stream supportedVideoFormats], v14 + 4, v14))
   {
-    [(VCMediaNegotiator *)self newStreamConfigFromMultiwayVideoStream:a3];
+    [(VCMediaNegotiator *)self newStreamConfigFromMultiwayVideoStream:stream];
     goto LABEL_30;
   }
 
   [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setResolution:SHIDWORD(v14[0]), SLODWORD(v14[0])];
-  -[VCMediaNegotiatorStreamGroupStreamConfiguration setSsrc:](v5, "setSsrc:", [a3 ssrc]);
-  -[VCMediaNegotiatorStreamGroupStreamConfiguration setStreamID:](v5, "setStreamID:", [a3 streamID]);
-  if ([a3 hasMetadata])
+  -[VCMediaNegotiatorStreamGroupStreamConfiguration setSsrc:](v5, "setSsrc:", [stream ssrc]);
+  -[VCMediaNegotiatorStreamGroupStreamConfiguration setStreamID:](v5, "setStreamID:", [stream streamID]);
+  if ([stream hasMetadata])
   {
-    v7 = [a3 metadata];
+    metadata = [stream metadata];
   }
 
   else
   {
-    v7 = 0;
+    metadata = 0;
   }
 
-  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMetadata:v7];
-  -[VCMediaNegotiatorStreamGroupStreamConfiguration setQualityIndex:](v5, "setQualityIndex:", +[VCMediaNegotiator mappedRemoteQualityIndexForQualityIndex:](VCMediaNegotiator, "mappedRemoteQualityIndexForQualityIndex:", [a3 qualityIndex]));
-  if ([a3 hasMaxNetworkBitrate])
+  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMetadata:metadata];
+  -[VCMediaNegotiatorStreamGroupStreamConfiguration setQualityIndex:](v5, "setQualityIndex:", +[VCMediaNegotiator mappedRemoteQualityIndexForQualityIndex:](VCMediaNegotiator, "mappedRemoteQualityIndexForQualityIndex:", [stream qualityIndex]));
+  if ([stream hasMaxNetworkBitrate])
   {
-    v8 = [a3 maxNetworkBitrate];
+    maxNetworkBitrate = [stream maxNetworkBitrate];
   }
 
   else
   {
-    v8 = 0;
+    maxNetworkBitrate = 0;
   }
 
-  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMaxNetworkBitrate:v8];
-  if ([a3 hasMaxMediaBitrate])
+  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMaxNetworkBitrate:maxNetworkBitrate];
+  if ([stream hasMaxMediaBitrate])
   {
-    v9 = [a3 maxMediaBitrate];
+    maxMediaBitrate = [stream maxMediaBitrate];
   }
 
   else
   {
-    v9 = 0;
+    maxMediaBitrate = 0;
   }
 
-  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMaxMediaBitrate:v9];
-  if ([a3 hasMaxPacketsPerSecond])
+  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMaxMediaBitrate:maxMediaBitrate];
+  if ([stream hasMaxPacketsPerSecond])
   {
-    v10 = [a3 maxPacketsPerSecond];
+    maxPacketsPerSecond = [stream maxPacketsPerSecond];
   }
 
   else
   {
-    v10 = 0;
+    maxPacketsPerSecond = 0;
   }
 
-  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMaxPacketsPerSecond:v10];
-  v11 = [a3 hasRepairedStreamID];
-  if (v11)
+  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setMaxPacketsPerSecond:maxPacketsPerSecond];
+  hasRepairedStreamID = [stream hasRepairedStreamID];
+  if (hasRepairedStreamID)
   {
-    LOWORD(v11) = [a3 repairedStreamID];
+    LOWORD(hasRepairedStreamID) = [stream repairedStreamID];
   }
 
-  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setRepairedStreamID:v11];
-  if ([a3 hasRepairedMaxNetworkBitrate])
+  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setRepairedStreamID:hasRepairedStreamID];
+  if ([stream hasRepairedMaxNetworkBitrate])
   {
-    v12 = [a3 repairedMaxNetworkBitrate];
+    repairedMaxNetworkBitrate = [stream repairedMaxNetworkBitrate];
   }
 
   else
   {
-    v12 = 0;
+    repairedMaxNetworkBitrate = 0;
   }
 
-  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setRepairedMaxNetworkBitrate:v12];
-  -[VCMediaNegotiatorStreamGroupStreamConfiguration setFramerate:](v5, "setFramerate:", [a3 frameRate]);
-  -[VCMediaNegotiatorStreamGroupStreamConfiguration setKeyFrameInterval:](v5, "setKeyFrameInterval:", [a3 keyFrameInterval]);
+  [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setRepairedMaxNetworkBitrate:repairedMaxNetworkBitrate];
+  -[VCMediaNegotiatorStreamGroupStreamConfiguration setFramerate:](v5, "setFramerate:", [stream frameRate]);
+  -[VCMediaNegotiatorStreamGroupStreamConfiguration setKeyFrameInterval:](v5, "setKeyFrameInterval:", [stream keyFrameInterval]);
   [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setRtpTimestampRate:24000];
   [(VCMediaNegotiatorStreamGroupStreamConfiguration *)v5 setCoordinateSystem:3];
   return v5;
 }
 
-- (int)mediaBlobLanguageWithLocale:(id)a3
+- (int)mediaBlobLanguageWithLocale:(id)locale
 {
   v3 = mediaBlobLanguageWithLocale___mapping;
   if (!mediaBlobLanguageWithLocale___mapping)
@@ -5028,7 +5028,7 @@ LABEL_30:
     mediaBlobLanguageWithLocale___mapping = &unk_1F579E648;
   }
 
-  v4 = [v3 objectForKey:{objc_msgSend(a3, "objectForKey:", *MEMORY[0x1E695D9B0])}];
+  v4 = [v3 objectForKey:{objc_msgSend(locale, "objectForKey:", *MEMORY[0x1E695D9B0])}];
   if (v4)
   {
 
@@ -5038,9 +5038,9 @@ LABEL_30:
   return v4;
 }
 
-- (id)localeWithMediaBlobLanguage:(int)a3
+- (id)localeWithMediaBlobLanguage:(int)language
 {
-  v3 = *&a3;
+  v3 = *&language;
   v7[2] = *MEMORY[0x1E69E9840];
   v4 = localeWithMediaBlobLanguage___mapping;
   if (!localeWithMediaBlobLanguage___mapping)
@@ -5056,7 +5056,7 @@ LABEL_30:
   return [v4 objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v3)}];
 }
 
-- (void)setupCaptionsForMediaBlob:(id)a3
+- (void)setupCaptionsForMediaBlob:(id)blob
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -5068,8 +5068,8 @@ LABEL_30:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings captionsSenderLanguages];
-    v8 = [(NSSet *)v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+    captionsSenderLanguages = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings captionsSenderLanguages];
+    v8 = [(NSSet *)captionsSenderLanguages countByEnumeratingWithState:&v17 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -5081,7 +5081,7 @@ LABEL_30:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(captionsSenderLanguages);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
@@ -5105,7 +5105,7 @@ LABEL_30:
           v10 = v14 | v10;
         }
 
-        v9 = [(NSSet *)v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+        v9 = [(NSSet *)captionsSenderLanguages countByEnumeratingWithState:&v17 objects:v16 count:16];
         if (v9)
         {
           continue;
@@ -5120,7 +5120,7 @@ LABEL_30:
       }
     }
 
-    [a3 setCaptionsSettings:v6];
+    [blob setCaptionsSettings:v6];
   }
 
   else
@@ -5131,12 +5131,12 @@ LABEL_30:
 LABEL_16:
 }
 
-- (BOOL)negotiateCaptionsWithCaptionsSettings:(id)a3
+- (BOOL)negotiateCaptionsWithCaptionsSettings:(id)settings
 {
   v20 = *MEMORY[0x1E69E9840];
-  -[VCMediaNegotiatorResultsCaptions setRemoteCanDisplayCaptions:](self->_negotiatedCaptionsSettings, "setRemoteCanDisplayCaptions:", [a3 canDisplayCaptions]);
+  -[VCMediaNegotiatorResultsCaptions setRemoteCanDisplayCaptions:](self->_negotiatedCaptionsSettings, "setRemoteCanDisplayCaptions:", [settings canDisplayCaptions]);
   [(VCMediaNegotiatorResultsCaptions *)self->_negotiatedCaptionsSettings setLocalLanguages:[(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings captionsReceiverLanguages]];
-  if (![a3 hasSenderLanguages])
+  if (![settings hasSenderLanguages])
   {
 LABEL_11:
     LOBYTE(v10) = 1;
@@ -5151,7 +5151,7 @@ LABEL_11:
     do
     {
       v8 = v7;
-      if (([a3 senderLanguages] & v7) != 0)
+      if (([settings senderLanguages] & v7) != 0)
       {
         v9 = [(VCMediaNegotiator *)self localeWithMediaBlobLanguage:v8];
         if (v9)
@@ -5195,7 +5195,7 @@ LABEL_11:
   return v10;
 }
 
-+ (id)streamGroupIDsWithMediaBlob:(id)a3
++ (id)streamGroupIDsWithMediaBlob:(id)blob
 {
   v3 = [VCMediaNegotiator newDecompressedBlob:?];
   if (!v3)
@@ -5237,12 +5237,12 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)setUpMediaEncryptionForMediaBlob:(id)a3 isResponse:(BOOL)a4
+- (BOOL)setUpMediaEncryptionForMediaBlob:(id)blob isResponse:(BOOL)response
 {
-  v4 = a4;
+  responseCopy = response;
   v38 = *MEMORY[0x1E69E9840];
-  v7 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaEncryptionSettings];
-  if (!v7)
+  mediaEncryptionSettings = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaEncryptionSettings];
+  if (!mediaEncryptionSettings)
   {
     if (objc_opt_class() == self)
     {
@@ -5289,14 +5289,14 @@ LABEL_10:
     v34 = 2112;
     v35 = v14;
     v36 = 2048;
-    v37 = self;
+    selfCopy5 = self;
     v19 = " [%s] %s:%d %@(%p) Missing local media encryption settings";
     goto LABEL_67;
   }
 
-  if (!v4)
+  if (!responseCopy)
   {
-    v8 = v7;
+    v8 = mediaEncryptionSettings;
     goto LABEL_11;
   }
 
@@ -5343,18 +5343,18 @@ LABEL_49:
     v34 = 2112;
     v35 = v16;
     v36 = 2048;
-    v37 = self;
+    selfCopy5 = self;
     v19 = " [%s] %s:%d %@(%p) Missing negotiated media encryption settings";
 LABEL_67:
     _os_log_error_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_ERROR, v19, &v28, 0x30u);
     goto LABEL_49;
   }
 
-  v8 = [[VCMediaNegotiatorMediaEncryptionSettings alloc] initWithSendMediaKey:[(VCMediaNegotiatorMediaEncryptionSettings *)v7 sendMediaKey]];
-  v9 = [(VCMediaNegotiatorMediaEncryptionSettings *)self->super._negotiatedMediaEncyptionSettings mediaCipherSuites];
-  if ([(NSSet *)v9 count])
+  v8 = [[VCMediaNegotiatorMediaEncryptionSettings alloc] initWithSendMediaKey:[(VCMediaNegotiatorMediaEncryptionSettings *)mediaEncryptionSettings sendMediaKey]];
+  mediaCipherSuites = [(VCMediaNegotiatorMediaEncryptionSettings *)self->super._negotiatedMediaEncyptionSettings mediaCipherSuites];
+  if ([(NSSet *)mediaCipherSuites count])
   {
-    if ([(NSSet *)v9 count]!= 1)
+    if ([(NSSet *)mediaCipherSuites count]!= 1)
     {
       if (objc_opt_class() == self)
       {
@@ -5395,7 +5395,7 @@ LABEL_67:
           v34 = 2112;
           v35 = v20;
           v36 = 2048;
-          v37 = self;
+          selfCopy5 = self;
           v23 = " [%s] %s:%d %@(%p) Unexpected number of media cipher suites";
           goto LABEL_64;
         }
@@ -5406,13 +5406,13 @@ LABEL_65:
       goto LABEL_13;
     }
 
-    -[VCMediaNegotiatorMediaEncryptionSettings addMediaCipherSuite:](v8, "addMediaCipherSuite:", [-[NSSet anyObject](v9 "anyObject")]);
+    -[VCMediaNegotiatorMediaEncryptionSettings addMediaCipherSuite:](v8, "addMediaCipherSuite:", [-[NSSet anyObject](mediaCipherSuites "anyObject")]);
   }
 
-  v10 = [(VCMediaNegotiatorMediaEncryptionSettings *)self->super._negotiatedMediaEncyptionSettings srtcpCipherSuites];
-  if ([(NSSet *)v10 count])
+  srtcpCipherSuites = [(VCMediaNegotiatorMediaEncryptionSettings *)self->super._negotiatedMediaEncyptionSettings srtcpCipherSuites];
+  if ([(NSSet *)srtcpCipherSuites count])
   {
-    if ([(NSSet *)v10 count]!= 1)
+    if ([(NSSet *)srtcpCipherSuites count]!= 1)
     {
       if (objc_opt_class() == self)
       {
@@ -5453,7 +5453,7 @@ LABEL_65:
           v34 = 2112;
           v35 = v24;
           v36 = 2048;
-          v37 = self;
+          selfCopy5 = self;
           v23 = " [%s] %s:%d %@(%p) Unexpected number of srtcp cipher suites";
           goto LABEL_64;
         }
@@ -5462,7 +5462,7 @@ LABEL_65:
       goto LABEL_65;
     }
 
-    -[VCMediaNegotiatorMediaEncryptionSettings addSRTCPCipherSuite:](v8, "addSRTCPCipherSuite:", [-[NSSet anyObject](v10 "anyObject")]);
+    -[VCMediaNegotiatorMediaEncryptionSettings addSRTCPCipherSuite:](v8, "addSRTCPCipherSuite:", [-[NSSet anyObject](srtcpCipherSuites "anyObject")]);
   }
 
 LABEL_11:
@@ -5508,7 +5508,7 @@ LABEL_11:
         v34 = 2112;
         v35 = v15;
         v36 = 2048;
-        v37 = self;
+        selfCopy5 = self;
         v23 = " [%s] %s:%d %@(%p) Failed to allocate the media encryption blob settings";
 LABEL_64:
         _os_log_error_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_ERROR, v23, &v28, 0x30u);
@@ -5520,17 +5520,17 @@ LABEL_64:
   }
 
   v12 = v11;
-  [a3 setEncryptionSettings:v11];
+  [blob setEncryptionSettings:v11];
 LABEL_13:
 
-  return [a3 encryptionSettings] != 0;
+  return [blob encryptionSettings] != 0;
 }
 
-- (BOOL)negotiateMediaEncryptionWithRemoteSettings:(id)a3
+- (BOOL)negotiateMediaEncryptionWithRemoteSettings:(id)settings
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaEncryptionSettings];
-  if (!v5)
+  mediaEncryptionSettings = [(VCMediaNegotiatorLocalConfiguration *)self->super._localSettings mediaEncryptionSettings];
+  if (!mediaEncryptionSettings)
   {
     if (objc_opt_class() == self)
     {
@@ -5577,13 +5577,13 @@ LABEL_13:
     v35 = 2112;
     v36 = v14;
     v37 = 2048;
-    v38 = self;
+    selfCopy5 = self;
     v21 = " [%s] %s:%d %@(%p) Missing local encryption settings";
     goto LABEL_70;
   }
 
-  v6 = v5;
-  v7 = -[VCMediaNegotiatorMediaEncryptionSettings initWithSendMediaKey:]([VCMediaNegotiatorMediaEncryptionSettings alloc], "initWithSendMediaKey:", [a3 sendMediaKey]);
+  v6 = mediaEncryptionSettings;
+  v7 = -[VCMediaNegotiatorMediaEncryptionSettings initWithSendMediaKey:]([VCMediaNegotiatorMediaEncryptionSettings alloc], "initWithSendMediaKey:", [settings sendMediaKey]);
   if (!v7)
   {
     if (objc_opt_class() == self)
@@ -5626,7 +5626,7 @@ LABEL_53:
     v35 = 2112;
     v36 = v15;
     v37 = 2048;
-    v38 = self;
+    selfCopy5 = self;
     v21 = " [%s] %s:%d %@(%p) Failed to allocate the negotiated media encryption settings";
 LABEL_70:
     _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, v21, &v29, 0x30u);
@@ -5634,10 +5634,10 @@ LABEL_70:
   }
 
   v8 = v7;
-  if (-[NSSet count](-[VCMediaNegotiatorMediaEncryptionSettings mediaCipherSuites](v6, "mediaCipherSuites"), "count") || [objc_msgSend(a3 "mediaCipherSuites")])
+  if (-[NSSet count](-[VCMediaNegotiatorMediaEncryptionSettings mediaCipherSuites](v6, "mediaCipherSuites"), "count") || [objc_msgSend(settings "mediaCipherSuites")])
   {
     v9 = [(NSSet *)[(VCMediaNegotiatorMediaEncryptionSettings *)v6 mediaCipherSuites] mutableCopy];
-    [v9 intersectSet:{objc_msgSend(a3, "mediaCipherSuites")}];
+    [v9 intersectSet:{objc_msgSend(settings, "mediaCipherSuites")}];
     v10 = [VCMediaNegotiator preferredCipherSuiteFromSet:v9];
     if (v10 == -1)
     {
@@ -5680,7 +5680,7 @@ LABEL_70:
             v35 = 2112;
             v36 = v17;
             v37 = 2048;
-            v38 = self;
+            selfCopy5 = self;
             _os_log_error_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to negotiate the SRTP cipher suite", &v29, 0x30u);
           }
         }
@@ -5698,14 +5698,14 @@ LABEL_70:
     v9 = 0;
   }
 
-  if (!-[NSSet count](-[VCMediaNegotiatorMediaEncryptionSettings srtcpCipherSuites](v6, "srtcpCipherSuites"), "count") && ![objc_msgSend(a3 "srtcpCipherSuites")])
+  if (!-[NSSet count](-[VCMediaNegotiatorMediaEncryptionSettings srtcpCipherSuites](v6, "srtcpCipherSuites"), "count") && ![objc_msgSend(settings "srtcpCipherSuites")])
   {
     v11 = 0;
     goto LABEL_11;
   }
 
   v11 = [(NSSet *)[(VCMediaNegotiatorMediaEncryptionSettings *)v6 srtcpCipherSuites] mutableCopy];
-  [v11 intersectSet:{objc_msgSend(a3, "srtcpCipherSuites")}];
+  [v11 intersectSet:{objc_msgSend(settings, "srtcpCipherSuites")}];
   v12 = [VCMediaNegotiator preferredCipherSuiteFromSet:v11];
   if (v12 != -1)
   {
@@ -5756,7 +5756,7 @@ LABEL_11:
           v35 = 2112;
           v36 = v16;
           v37 = 2048;
-          v38 = self;
+          selfCopy5 = self;
           _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) No cipher suite found", &v29, 0x30u);
         }
       }
@@ -5807,7 +5807,7 @@ LABEL_54:
         v35 = 2112;
         v36 = v18;
         v37 = 2048;
-        v38 = self;
+        selfCopy5 = self;
         _os_log_error_impl(&dword_1DB56E000, v28, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to negotiate the SRTCP cipher suite", &v29, 0x30u);
       }
     }
@@ -5818,14 +5818,14 @@ LABEL_13:
   return self->super._negotiatedMediaEncyptionSettings != 0;
 }
 
-+ (int64_t)preferredCipherSuiteFromSet:(id)a3
++ (int64_t)preferredCipherSuiteFromSet:(id)set
 {
-  if ([a3 containsObject:&unk_1F579AC98])
+  if ([set containsObject:&unk_1F579AC98])
   {
     return 7;
   }
 
-  if ([a3 containsObject:&unk_1F579ACB0])
+  if ([set containsObject:&unk_1F579ACB0])
   {
     return 6;
   }
@@ -5833,20 +5833,20 @@ LABEL_13:
   return -1;
 }
 
-- (void)processCustomResolution:(id)a3 cameraRuleCollections:(id)a4 videoNegotiationSettings:(id)a5
+- (void)processCustomResolution:(id)resolution cameraRuleCollections:(id)collections videoNegotiationSettings:(id)settings
 {
   v9[7] = *MEMORY[0x1E69E9840];
   if (self->_negotiationMode == 15)
   {
-    v8 = [a4 rules];
+    rules = [collections rules];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __92__VCMediaNegotiator_processCustomResolution_cameraRuleCollections_videoNegotiationSettings___block_invoke;
     v9[3] = &unk_1E85F8678;
-    v9[4] = a5;
+    v9[4] = settings;
     v9[5] = self;
-    v9[6] = a3;
-    [v8 enumerateKeysAndObjectsUsingBlock:v9];
+    v9[6] = resolution;
+    [rules enumerateKeysAndObjectsUsingBlock:v9];
   }
 }
 

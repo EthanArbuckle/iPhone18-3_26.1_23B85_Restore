@@ -1,35 +1,35 @@
 @interface ColorOptions
-+ (id)colorOptionsWithStarting:(id)a3 success:(id)a4 failed:(id)a5;
++ (id)colorOptionsWithStarting:(id)starting success:(id)success failed:(id)failed;
 - (ColorOptions)init;
-- (ColorOptions)initWithStarting:(id)a3 success:(id)a4 failed:(id)a5;
+- (ColorOptions)initWithStarting:(id)starting success:(id)success failed:(id)failed;
 @end
 
 @implementation ColorOptions
 
-+ (id)colorOptionsWithStarting:(id)a3 success:(id)a4 failed:(id)a5
++ (id)colorOptionsWithStarting:(id)starting success:(id)success failed:(id)failed
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithStarting:v10 success:v9 failed:v8];
+  failedCopy = failed;
+  successCopy = success;
+  startingCopy = starting;
+  v11 = [[self alloc] initWithStarting:startingCopy success:successCopy failed:failedCopy];
 
   return v11;
 }
 
-- (ColorOptions)initWithStarting:(id)a3 success:(id)a4 failed:(id)a5
+- (ColorOptions)initWithStarting:(id)starting success:(id)success failed:(id)failed
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  startingCopy = starting;
+  successCopy = success;
+  failedCopy = failed;
   v15.receiver = self;
   v15.super_class = ColorOptions;
   v12 = [(ColorOptions *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_starting, a3);
-    objc_storeStrong(&v13->_success, a4);
-    objc_storeStrong(&v13->_failed, a5);
+    objc_storeStrong(&v12->_starting, starting);
+    objc_storeStrong(&v13->_success, success);
+    objc_storeStrong(&v13->_failed, failed);
   }
 
   return v13;

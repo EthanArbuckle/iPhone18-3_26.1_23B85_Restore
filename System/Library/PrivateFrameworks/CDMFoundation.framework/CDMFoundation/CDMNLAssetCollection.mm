@@ -1,8 +1,8 @@
 @interface CDMNLAssetCollection
-+ (id)assetCollectionWithAssetPaths:(id)a3 withLanguageCode:(id)a4;
-- (id)_initWithAssetPaths:(id)a3 withLanguageCode:(id)a4;
-- (id)getAssetBundlePathForFactorName:(id)a3;
-- (id)getAssetForFactorName:(id)a3;
++ (id)assetCollectionWithAssetPaths:(id)paths withLanguageCode:(id)code;
+- (id)_initWithAssetPaths:(id)paths withLanguageCode:(id)code;
+- (id)getAssetBundlePathForFactorName:(id)name;
+- (id)getAssetForFactorName:(id)name;
 - (id)getAssetPaths;
 @end
 
@@ -30,16 +30,16 @@
   return assetPaths;
 }
 
-- (id)getAssetBundlePathForFactorName:(id)a3
+- (id)getAssetBundlePathForFactorName:(id)name
 {
   assetPaths = self->_assetPaths;
   if (assetPaths)
   {
-    v4 = [(NSDictionary *)assetPaths objectForKey:a3];
-    v5 = [v4 getAssetPath];
-    if (v5)
+    v4 = [(NSDictionary *)assetPaths objectForKey:name];
+    getAssetPath = [v4 getAssetPath];
+    if (getAssetPath)
     {
-      v6 = [MEMORY[0x1E696AAE8] bundleWithPath:v5];
+      v6 = [MEMORY[0x1E696AAE8] bundleWithPath:getAssetPath];
     }
 
     else
@@ -56,42 +56,42 @@
   return v6;
 }
 
-- (id)getAssetForFactorName:(id)a3
+- (id)getAssetForFactorName:(id)name
 {
   assetPaths = self->_assetPaths;
   if (assetPaths)
   {
-    assetPaths = [assetPaths objectForKey:a3];
+    assetPaths = [assetPaths objectForKey:name];
     v3 = vars8;
   }
 
   return assetPaths;
 }
 
-- (id)_initWithAssetPaths:(id)a3 withLanguageCode:(id)a4
+- (id)_initWithAssetPaths:(id)paths withLanguageCode:(id)code
 {
-  v7 = a3;
-  v8 = a4;
+  pathsCopy = paths;
+  codeCopy = code;
   v13.receiver = self;
   v13.super_class = CDMNLAssetCollection;
   v9 = [(CDMNLAssetCollection *)&v13 init];
   v10 = v9;
-  if (v7)
+  if (pathsCopy)
   {
-    objc_storeStrong(&v9->_assetPaths, a3);
+    objc_storeStrong(&v9->_assetPaths, paths);
   }
 
   languageCode = v10->_languageCode;
-  v10->_languageCode = v8;
+  v10->_languageCode = codeCopy;
 
   return v10;
 }
 
-+ (id)assetCollectionWithAssetPaths:(id)a3 withLanguageCode:(id)a4
++ (id)assetCollectionWithAssetPaths:(id)paths withLanguageCode:(id)code
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CDMNLAssetCollection alloc] _initWithAssetPaths:v6 withLanguageCode:v5];
+  codeCopy = code;
+  pathsCopy = paths;
+  v7 = [[CDMNLAssetCollection alloc] _initWithAssetPaths:pathsCopy withLanguageCode:codeCopy];
 
   return v7;
 }

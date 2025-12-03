@@ -1,13 +1,13 @@
 @interface MSDBAAInterface
 + (id)sharedInstance;
-- (BOOL)addBAAAuthenticationHeadersToRequest:(id)a3 withBody:(id)a4 error:(id *)a5;
-- (BOOL)generateBAACertficate:(id)a3;
-- (__SecKey)lockcrypto_extract_public:(id)a3;
-- (id)certificatesEncodeToBase64:(id)a3 status:(id *)a4;
-- (id)serializeCertificateChain:(id)a3;
-- (id)signDataAndEncodeToBase64:(id)a3 withPrivateKey:(__SecKey *)a4 status:(id *)a5;
-- (void)printAllKeys:(id)a3;
-- (void)writeCertsToDevice:(id)a3;
+- (BOOL)addBAAAuthenticationHeadersToRequest:(id)request withBody:(id)body error:(id *)error;
+- (BOOL)generateBAACertficate:(id)certficate;
+- (__SecKey)lockcrypto_extract_public:(id)lockcrypto_extract_public;
+- (id)certificatesEncodeToBase64:(id)base64 status:(id *)status;
+- (id)serializeCertificateChain:(id)chain;
+- (id)signDataAndEncodeToBase64:(id)base64 withPrivateKey:(__SecKey *)key status:(id *)status;
+- (void)printAllKeys:(id)keys;
+- (void)writeCertsToDevice:(id)device;
 @end
 
 @implementation MSDBAAInterface
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (BOOL)generateBAACertficate:(id)a3
+- (BOOL)generateBAACertficate:(id)certficate
 {
-  v3 = a3;
+  certficateCopy = certficate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -57,7 +57,7 @@
     [v10 setObject:&off_10017B170 forKey:kMAOptionsBAAValidity];
     [v10 setObject:v9 forKey:kMAOptionsBAAOIDSToInclude];
     [v10 setObject:@"DeKOTA-BAA-Cert" forKey:kMAOptionsBAAKeychainLabel];
-    v16 = v3;
+    v16 = certficateCopy;
     v15 = v4;
     DeviceIdentityIssueClientCertificateWithCompletion();
     v11 = dispatch_time(0, 60000000000);
@@ -77,14 +77,14 @@
   return v13 & 1;
 }
 
-- (BOOL)addBAAAuthenticationHeadersToRequest:(id)a3 withBody:(id)a4 error:(id *)a5
+- (BOOL)addBAAAuthenticationHeadersToRequest:(id)request withBody:(id)body error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MSDBAAInterface *)self signDataAndEncodeToBase64:v9 withPrivateKey:[(MSDBAAInterface *)self privateKey] status:a5];
+  requestCopy = request;
+  bodyCopy = body;
+  v10 = [(MSDBAAInterface *)self signDataAndEncodeToBase64:bodyCopy withPrivateKey:[(MSDBAAInterface *)self privateKey] status:error];
 
-  v11 = [(MSDBAAInterface *)self clientCertArray];
-  v12 = [(MSDBAAInterface *)self certificatesEncodeToBase64:v11 status:a5];
+  clientCertArray = [(MSDBAAInterface *)self clientCertArray];
+  v12 = [(MSDBAAInterface *)self certificatesEncodeToBase64:clientCertArray status:error];
 
   if (v10)
   {
@@ -108,14 +108,14 @@
 
   else
   {
-    [v8 setValue:v10 forHTTPHeaderField:@"X-Apple-RM-Signature-Data"];
-    [v8 setValue:v12 forHTTPHeaderField:@"X-Apple-RM-Signature-Certificates"];
+    [requestCopy setValue:v10 forHTTPHeaderField:@"X-Apple-RM-Signature-Data"];
+    [requestCopy setValue:v12 forHTTPHeaderField:@"X-Apple-RM-Signature-Certificates"];
     v15 = sub_100063A54();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v8 allHTTPHeaderFields];
+      allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
       v18 = 138543362;
-      v19 = v16;
+      v19 = allHTTPHeaderFields;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Request header with BAA certificate: %{public}@", &v18, 0xCu);
     }
   }
@@ -123,10 +123,10 @@
   return v14;
 }
 
-- (id)signDataAndEncodeToBase64:(id)a3 withPrivateKey:(__SecKey *)a4 status:(id *)a5
+- (id)signDataAndEncodeToBase64:(id)base64 withPrivateKey:(__SecKey *)key status:(id *)status
 {
   error = 0;
-  v5 = SecKeyCreateSignature(a4, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, a3, &error);
+  v5 = SecKeyCreateSignature(key, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, base64, &error);
   v6 = v5;
   if (v5)
   {
@@ -141,11 +141,11 @@
   return v7;
 }
 
-- (id)certificatesEncodeToBase64:(id)a3 status:(id *)a4
+- (id)certificatesEncodeToBase64:(id)base64 status:(id *)status
 {
-  v4 = [(MSDBAAInterface *)self serializeCertificateChain:a3, a4];
+  status = [(MSDBAAInterface *)self serializeCertificateChain:base64, status];
   v9 = 0;
-  v5 = [NSJSONSerialization dataWithJSONObject:v4 options:0 error:&v9];
+  v5 = [NSJSONSerialization dataWithJSONObject:status options:0 error:&v9];
   v6 = v5;
   if (v5)
   {
@@ -160,15 +160,15 @@
   return v7;
 }
 
-- (id)serializeCertificateChain:(id)a3
+- (id)serializeCertificateChain:(id)chain
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  chainCopy = chain;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [chainCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = chainCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -199,11 +199,11 @@
   return v12;
 }
 
-- (void)writeCertsToDevice:(id)a3
+- (void)writeCertsToDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 objectAtIndex:0];
-  v5 = [v3 objectAtIndex:1];
+  deviceCopy = device;
+  v4 = [deviceCopy objectAtIndex:0];
+  v5 = [deviceCopy objectAtIndex:1];
 
   v7 = SecCertificateCopyData(v4);
   v6 = SecCertificateCopyData(v5);
@@ -211,11 +211,11 @@
   [(__CFData *)v6 writeToFile:@"/tmp/intermediateCertificate" atomically:1];
 }
 
-- (__SecKey)lockcrypto_extract_public:(id)a3
+- (__SecKey)lockcrypto_extract_public:(id)lockcrypto_extract_public
 {
-  v3 = a3;
+  lockcrypto_extract_publicCopy = lockcrypto_extract_public;
   trust = 0;
-  if (v3 && (BasicX509 = SecPolicyCreateBasicX509()) != 0 && !SecTrustCreateWithCertificates(v3, BasicX509, &trust) && (v8 = SecTrustCopyPublicKey(trust)) != 0)
+  if (lockcrypto_extract_publicCopy && (BasicX509 = SecPolicyCreateBasicX509()) != 0 && !SecTrustCreateWithCertificates(lockcrypto_extract_publicCopy, BasicX509, &trust) && (v8 = SecTrustCopyPublicKey(trust)) != 0)
   {
     v6 = v8;
     v9 = sub_100063A54();
@@ -248,9 +248,9 @@
   return v6;
 }
 
-- (void)printAllKeys:(id)a3
+- (void)printAllKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = &IDSSendMessageOptionFireAndForgetKey_ptr;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -259,8 +259,8 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v24 = v4;
-    v6 = v4;
+    v24 = keysCopy;
+    v6 = keysCopy;
     v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v7)
     {
@@ -321,7 +321,7 @@
       while (v17);
     }
 
-    v4 = v24;
+    keysCopy = v24;
   }
 
   else
@@ -333,7 +333,7 @@
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v18 = v4;
+      v18 = keysCopy;
       v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v19)
       {
@@ -371,7 +371,7 @@
 
     else
     {
-      NSLog(@"object:%@", v4);
+      NSLog(@"object:%@", keysCopy);
     }
   }
 }

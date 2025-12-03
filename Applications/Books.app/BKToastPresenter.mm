@@ -1,27 +1,27 @@
 @interface BKToastPresenter
 - (BCAugmentedExperiencePresentingDelegate)presentingDelegate;
 - (BKToastPresenter)init;
-- (BOOL)endPresentation:(id)a3;
+- (BOOL)endPresentation:(id)presentation;
 - (NSString)description;
 - (id)_presentationAnimator;
 - (void)_currentActionComplete;
 - (void)_dismissToast;
-- (void)_expandCompactVCAction:(id)a3;
+- (void)_expandCompactVCAction:(id)action;
 - (void)_performNextAction;
 - (void)_performNextActionIfIdle;
-- (void)_presentInVCAction:(id)a3;
-- (void)_scheduleAction:(id)a3;
+- (void)_presentInVCAction:(id)action;
+- (void)_scheduleAction:(id)action;
 - (void)_setUpSellDataForCurrentAction;
-- (void)bringExperienceViewToFront:(id)a3;
+- (void)bringExperienceViewToFront:(id)front;
 - (void)cancelPreloadPresentation;
 - (void)dealloc;
-- (void)endOfBookCompactViewControllerWantsToCloseAsset:(id)a3 completion:(id)a4;
-- (void)endOfBookCompactViewControllerWantsToDismiss:(id)a3;
-- (void)expandInVC:(id)a3;
-- (void)preloadPresentationInVC:(id)a3 pageProgressionIsRTL:(BOOL)a4 completion:(id)a5;
-- (void)presentInVC:(id)a3 autoExpanded:(BOOL)a4 details:(id)a5;
-- (void)setSuppressingNotifications:(BOOL)a3;
-- (void)setToastViewController:(id)a3;
+- (void)endOfBookCompactViewControllerWantsToCloseAsset:(id)asset completion:(id)completion;
+- (void)endOfBookCompactViewControllerWantsToDismiss:(id)dismiss;
+- (void)expandInVC:(id)c;
+- (void)preloadPresentationInVC:(id)c pageProgressionIsRTL:(BOOL)l completion:(id)completion;
+- (void)presentInVC:(id)c autoExpanded:(BOOL)expanded details:(id)details;
+- (void)setSuppressingNotifications:(BOOL)notifications;
+- (void)setToastViewController:(id)controller;
 @end
 
 @implementation BKToastPresenter
@@ -41,30 +41,30 @@
   return v2;
 }
 
-- (void)setToastViewController:(id)a3
+- (void)setToastViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKToastPresenter *)self toastViewController];
-  v6 = [v5 parentViewController];
+  controllerCopy = controller;
+  toastViewController = [(BKToastPresenter *)self toastViewController];
+  parentViewController = [toastViewController parentViewController];
 
-  if (v6)
+  if (parentViewController)
   {
-    v7 = [(BKToastPresenter *)self toastViewController];
-    [v7 willMoveToParentViewController:0];
+    toastViewController2 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController2 willMoveToParentViewController:0];
 
-    v8 = [(BKToastPresenter *)self toastViewController];
-    [v8 removeFromParentViewController];
+    toastViewController3 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController3 removeFromParentViewController];
 
-    v9 = [(BKToastPresenter *)self toastViewController];
-    v10 = [v9 view];
-    [v10 removeFromSuperview];
+    toastViewController4 = [(BKToastPresenter *)self toastViewController];
+    view = [toastViewController4 view];
+    [view removeFromSuperview];
 
-    v11 = [(BKToastPresenter *)self toastViewController];
-    [v11 didMoveToParentViewController:0];
+    toastViewController5 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController5 didMoveToParentViewController:0];
   }
 
   toastViewController = self->_toastViewController;
-  self->_toastViewController = v4;
+  self->_toastViewController = controllerCopy;
 }
 
 - (void)dealloc
@@ -85,21 +85,21 @@
   [(BKToastPresenter *)&v4 dealloc];
 }
 
-- (void)setSuppressingNotifications:(BOOL)a3
+- (void)setSuppressingNotifications:(BOOL)notifications
 {
-  if (self->_suppressingNotifications != a3)
+  if (self->_suppressingNotifications != notifications)
   {
     v13 = v3;
     v14 = v4;
-    v5 = a3;
-    self->_suppressingNotifications = a3;
+    notificationsCopy = notifications;
+    self->_suppressingNotifications = notifications;
     v6 = +[BKAppDelegate delegate];
-    v7 = [v6 serviceCenter];
-    v8 = [v7 readingActivityService];
+    serviceCenter = [v6 serviceCenter];
+    readingActivityService = [serviceCenter readingActivityService];
 
     v9 = BCAugmentedExperienceLog();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (notificationsCopy)
     {
       if (v10)
       {
@@ -107,7 +107,7 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "BKToastPresenter start suppressing notifications", buf, 2u);
       }
 
-      [v8 suppressNotifications];
+      [readingActivityService suppressNotifications];
     }
 
     else
@@ -118,16 +118,16 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "BKToastPresenter end suppressing notifications", v11, 2u);
       }
 
-      [v8 resumeNotifications];
+      [readingActivityService resumeNotifications];
     }
   }
 }
 
-- (void)presentInVC:(id)a3 autoExpanded:(BOOL)a4 details:(id)a5
+- (void)presentInVC:(id)c autoExpanded:(BOOL)expanded details:(id)details
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  expandedCopy = expanded;
+  cCopy = c;
+  detailsCopy = details;
   v10 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -138,59 +138,59 @@
   v16[0] = @"action";
   v16[1] = @"viewController";
   v17[0] = &off_100A435D8;
-  v17[1] = v8;
+  v17[1] = cCopy;
   v16[2] = @"details";
-  v17[2] = v9;
+  v17[2] = detailsCopy;
   v11 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
   [(BKToastPresenter *)self _scheduleAction:v11];
 
-  if (v6)
+  if (expandedCopy)
   {
     v14[0] = @"action";
     v14[1] = @"viewController";
     v15[0] = &off_100A435F0;
-    v15[1] = v8;
+    v15[1] = cCopy;
     v14[2] = @"details";
-    v15[2] = v9;
+    v15[2] = detailsCopy;
     v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
     [(BKToastPresenter *)self _scheduleAction:v12];
   }
 }
 
-- (void)bringExperienceViewToFront:(id)a3
+- (void)bringExperienceViewToFront:(id)front
 {
-  v9 = a3;
-  v4 = [(BKToastPresenter *)self toastViewController];
-  v5 = [v4 viewIfLoaded];
+  frontCopy = front;
+  toastViewController = [(BKToastPresenter *)self toastViewController];
+  viewIfLoaded = [toastViewController viewIfLoaded];
 
-  v6 = [v5 superview];
-  v7 = [v9 view];
+  superview = [viewIfLoaded superview];
+  view = [frontCopy view];
 
-  if (v6 == v7)
+  if (superview == view)
   {
-    v8 = [v9 view];
-    [v8 bringSubviewToFront:v5];
+    view2 = [frontCopy view];
+    [view2 bringSubviewToFront:viewIfLoaded];
   }
 }
 
-- (void)expandInVC:(id)a3
+- (void)expandInVC:(id)c
 {
   v6[0] = @"action";
   v6[1] = @"viewController";
   v7[0] = &off_100A435F0;
-  v7[1] = a3;
-  v4 = a3;
+  v7[1] = c;
+  cCopy = c;
   v5 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   [(BKToastPresenter *)self _scheduleAction:v5];
 }
 
-- (void)_expandCompactVCAction:(id)a3
+- (void)_expandCompactVCAction:(id)action
 {
-  v4 = [(BKToastPresenter *)self toastViewController];
-  v5 = [v4 isPresentingCard];
+  toastViewController = [(BKToastPresenter *)self toastViewController];
+  isPresentingCard = [toastViewController isPresentingCard];
 
-  if (v5)
+  if (isPresentingCard)
   {
 
     [(BKToastPresenter *)self _currentActionComplete];
@@ -205,13 +205,13 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "BKToastPresenter _expandCompactVCAction", buf, 2u);
     }
 
-    v7 = [(BKToastPresenter *)self toastViewController];
+    toastViewController2 = [(BKToastPresenter *)self toastViewController];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100125B70;
     v8[3] = &unk_100A033C8;
     v8[4] = self;
-    [v7 presentCardWithCompletion:v8];
+    [toastViewController2 presentCardWithCompletion:v8];
   }
 }
 
@@ -225,9 +225,9 @@
   return v4;
 }
 
-- (void)_presentInVCAction:(id)a3
+- (void)_presentInVCAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -235,48 +235,48 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BKToastPresenter _presentInVCAction", buf, 2u);
   }
 
-  v6 = [(BKToastPresenter *)self toastViewController];
-  if (v6 && (v7 = v6, -[BKToastPresenter toastViewController](self, "toastViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 parentViewController], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
+  toastViewController = [(BKToastPresenter *)self toastViewController];
+  if (toastViewController && (v7 = toastViewController, -[BKToastPresenter toastViewController](self, "toastViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 parentViewController], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
   {
     [(BKToastPresenter *)self setSuppressingNotifications:1];
-    v10 = [v4 objectForKeyedSubscript:@"viewController"];
-    v11 = [(BKToastPresenter *)self toastViewController];
-    [v11 toastPresenter:self willPresentToastInViewController:v10];
+    v10 = [actionCopy objectForKeyedSubscript:@"viewController"];
+    toastViewController2 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController2 toastPresenter:self willPresentToastInViewController:v10];
 
-    v12 = [(BKToastPresenter *)self toastViewController];
-    [v12 preferredFrameInViewController:v10 isPresented:0];
+    toastViewController3 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController3 preferredFrameInViewController:v10 isPresented:0];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    v21 = [(BKToastPresenter *)self toastViewController];
-    [v21 preferredFrameInViewController:v10 isPresented:1];
+    toastViewController4 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController4 preferredFrameInViewController:v10 isPresented:1];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
 
-    v30 = [(BKToastPresenter *)self toastViewController];
-    [v10 addChildViewController:v30];
+    toastViewController5 = [(BKToastPresenter *)self toastViewController];
+    [v10 addChildViewController:toastViewController5];
 
-    v31 = [(BKToastPresenter *)self toastViewController];
-    v32 = [v31 view];
-    [v32 setFrame:{v14, v16, v18, v20}];
+    toastViewController6 = [(BKToastPresenter *)self toastViewController];
+    view = [toastViewController6 view];
+    [view setFrame:{v14, v16, v18, v20}];
 
-    v33 = [v10 view];
-    v34 = [(BKToastPresenter *)self toastViewController];
-    v35 = [v34 view];
-    [v33 addSubview:v35];
+    view2 = [v10 view];
+    toastViewController7 = [(BKToastPresenter *)self toastViewController];
+    view3 = [toastViewController7 view];
+    [view2 addSubview:view3];
 
-    v36 = [(BKToastPresenter *)self toastViewController];
-    [v36 didMoveToParentViewController:v10];
+    toastViewController8 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController8 didMoveToParentViewController:v10];
 
-    v37 = [(BKToastPresenter *)self toastViewController];
-    v38 = [v37 view];
-    [v38 layoutIfNeeded];
+    toastViewController9 = [(BKToastPresenter *)self toastViewController];
+    view4 = [toastViewController9 view];
+    [view4 layoutIfNeeded];
 
-    v39 = [(BKToastPresenter *)self _presentationAnimator];
+    _presentationAnimator = [(BKToastPresenter *)self _presentationAnimator];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_100125F5C;
@@ -286,7 +286,7 @@
     v43[6] = v25;
     v43[7] = v27;
     v43[8] = v29;
-    [v39 addAnimations:v43];
+    [_presentationAnimator addAnimations:v43];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_100125FE0;
@@ -294,8 +294,8 @@
     v41[4] = self;
     v42 = v10;
     v40 = v10;
-    [v39 addCompletion:v41];
-    [v39 startAnimation];
+    [_presentationAnimator addCompletion:v41];
+    [_presentationAnimator startAnimation];
     [(BKToastPresenter *)self _setUpSellDataForCurrentAction];
   }
 
@@ -305,9 +305,9 @@
   }
 }
 
-- (BOOL)endPresentation:(id)a3
+- (BOOL)endPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -316,19 +316,19 @@
   }
 
   [(BKToastPresenter *)self setSuppressingNotifications:0];
-  v6 = [(BKToastPresenter *)self toastViewController];
-  v7 = [v6 viewIfLoaded];
+  toastViewController = [(BKToastPresenter *)self toastViewController];
+  viewIfLoaded = [toastViewController viewIfLoaded];
 
-  v8 = [v7 superview];
+  superview = [viewIfLoaded superview];
 
-  if (v8)
+  if (superview)
   {
     v14 = @"action";
     v15 = &off_100A43608;
     v9 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     [(BKToastPresenter *)self _scheduleAction:v9];
 
-    v10 = objc_retainBlock(v4);
+    v10 = objc_retainBlock(presentationCopy);
     v11 = v10;
     if (v10)
     {
@@ -339,18 +339,18 @@
   return 1;
 }
 
-- (void)preloadPresentationInVC:(id)a3 pageProgressionIsRTL:(BOOL)a4 completion:(id)a5
+- (void)preloadPresentationInVC:(id)c pageProgressionIsRTL:(BOOL)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(BKToastPresenter *)self presentingDelegate];
-  v11 = [v10 storeIDForPresenter:self];
+  cCopy = c;
+  completionCopy = completion;
+  presentingDelegate = [(BKToastPresenter *)self presentingDelegate];
+  v11 = [presentingDelegate storeIDForPresenter:self];
 
   v12 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v42 = self;
+    selfCopy3 = self;
     v43 = 2112;
     v44 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@: preloadPresentation (storeID: %@)", buf, 0x16u);
@@ -362,37 +362,37 @@
     v35[1] = 3221225472;
     v35[2] = sub_100126638;
     v35[3] = &unk_100A07FD0;
-    v40 = a4;
+    lCopy = l;
     v36 = v11;
-    v37 = self;
-    v38 = v8;
-    v39 = v9;
+    selfCopy2 = self;
+    v38 = cCopy;
+    v39 = completionCopy;
     v13 = objc_retainBlock(v35);
     v14 = +[BUAccountsProvider sharedProvider];
-    v15 = [v14 isUserSignedInToiTunes];
+    isUserSignedInToiTunes = [v14 isUserSignedInToiTunes];
 
     v16 = +[BUAccountsProvider sharedProvider];
-    v17 = [v16 isUserSignedInToiCloud];
+    isUserSignedInToiCloud = [v16 isUserSignedInToiCloud];
 
     v18 = +[BCSyncUserDefaults isCloudKitSyncOptedIn];
     v19 = v18;
-    if (v15 && v17 && v18)
+    if (isUserSignedInToiTunes && isUserSignedInToiCloud && v18)
     {
       objc_opt_class();
       v20 = +[BCRCDataContainer defaultContainer];
-      v21 = [v20 configs];
-      v22 = [v21 valueForKeyPath:BRCBooksDefaultsKeyEndOfBookExperienceSendAdditionalSeedLimit];
+      configs = [v20 configs];
+      v22 = [configs valueForKeyPath:BRCBooksDefaultsKeyEndOfBookExperienceSendAdditionalSeedLimit];
       v23 = BUDynamicCast();
 
       v24 = +[BKLibraryManager defaultManager];
       if (v23)
       {
-        v25 = [v23 intValue];
+        intValue = [v23 intValue];
       }
 
       else
       {
-        v25 = 100;
+        intValue = 100;
       }
 
       v33[0] = _NSConcreteStackBlock;
@@ -401,7 +401,7 @@
       v33[3] = &unk_100A05E68;
       v33[4] = self;
       v34 = v13;
-      [v24 storeAssetIDsOfWantToReadWithLimit:v25 completion:v33];
+      [v24 storeAssetIDsOfWantToReadWithLimit:intValue completion:v33];
     }
 
     else
@@ -410,7 +410,7 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v30 = @"NO";
-        if (v15)
+        if (isUserSignedInToiTunes)
         {
           v31 = @"YES";
         }
@@ -421,8 +421,8 @@
         }
 
         *buf = 138413058;
-        v42 = self;
-        if (v17)
+        selfCopy3 = self;
+        if (isUserSignedInToiCloud)
         {
           v32 = @"YES";
         }
@@ -460,7 +460,7 @@
       sub_1007906E0(self, v26);
     }
 
-    v27 = objc_retainBlock(v9);
+    v27 = objc_retainBlock(completionCopy);
     v28 = v27;
     if (v27)
     {
@@ -491,27 +491,27 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "BKToastPresenter _dismissToast", buf, 2u);
   }
 
-  v4 = [(BKToastPresenter *)self toastViewController];
-  v5 = [v4 viewIfLoaded];
+  toastViewController = [(BKToastPresenter *)self toastViewController];
+  viewIfLoaded = [toastViewController viewIfLoaded];
 
-  v6 = [v5 superview];
+  superview = [viewIfLoaded superview];
 
-  if (v6)
+  if (superview)
   {
-    v7 = [(BKToastPresenter *)self toastViewController];
-    [v7 toastPresenterWillDismissToast:self];
+    toastViewController2 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController2 toastPresenterWillDismissToast:self];
 
-    v8 = [(BKToastPresenter *)self toastViewController];
-    v9 = [v8 parentViewController];
+    toastViewController3 = [(BKToastPresenter *)self toastViewController];
+    parentViewController = [toastViewController3 parentViewController];
 
-    v10 = [(BKToastPresenter *)self toastViewController];
-    [v10 preferredFrameInViewController:v9 isPresented:0];
+    toastViewController4 = [(BKToastPresenter *)self toastViewController];
+    [toastViewController4 preferredFrameInViewController:parentViewController isPresented:0];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [(BKToastPresenter *)self _presentationAnimator];
+    _presentationAnimator = [(BKToastPresenter *)self _presentationAnimator];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10012732C;
@@ -521,14 +521,14 @@
     v21[6] = v14;
     v21[7] = v16;
     v21[8] = v18;
-    [v19 addAnimations:v21];
+    [_presentationAnimator addAnimations:v21];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1001273B0;
     v20[3] = &unk_100A059D8;
     v20[4] = self;
-    [v19 addCompletion:v20];
-    [v19 startAnimation];
+    [_presentationAnimator addCompletion:v20];
+    [_presentationAnimator startAnimation];
   }
 
   else
@@ -539,53 +539,53 @@
 
 - (void)_setUpSellDataForCurrentAction
 {
-  v3 = [(BKToastPresenter *)self runningAction];
-  v14 = [v3 objectForKeyedSubscript:@"details"];
+  runningAction = [(BKToastPresenter *)self runningAction];
+  v14 = [runningAction objectForKeyedSubscript:@"details"];
 
   if (v14)
   {
     objc_opt_class();
     v4 = [v14 valueForKey:BCAugmentedExperienceLocationKey];
     v5 = BUDynamicCast();
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
     objc_opt_class();
     v7 = [v14 valueForKey:BCAugmentedExperienceLocationVariantKey];
     v8 = BUDynamicCast();
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
 
     objc_opt_class();
     v10 = [v14 valueForKey:BCAugmentedExperienceVariantVersionKey];
     v11 = BUDynamicCast();
 
-    v12 = [[BAUpSellData alloc] initWithLocation:v6 variant:v9 variantVersion:v11];
-    v13 = [(BKToastPresenter *)self cardViewController];
-    [v13 setUpSellData:v12];
+    v12 = [[BAUpSellData alloc] initWithLocation:integerValue variant:integerValue2 variantVersion:v11];
+    cardViewController = [(BKToastPresenter *)self cardViewController];
+    [cardViewController setUpSellData:v12];
   }
 }
 
-- (void)_scheduleAction:(id)a3
+- (void)_scheduleAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BKToastPresenter _scheduleAction: %@", &v7, 0xCu);
   }
 
-  v6 = [(BKToastPresenter *)self pendingActions];
-  [v6 addObject:v4];
+  pendingActions = [(BKToastPresenter *)self pendingActions];
+  [pendingActions addObject:actionCopy];
 
   [(BKToastPresenter *)self _performNextActionIfIdle];
 }
 
 - (void)_performNextActionIfIdle
 {
-  v3 = [(BKToastPresenter *)self runningAction];
+  runningAction = [(BKToastPresenter *)self runningAction];
 
-  if (!v3)
+  if (!runningAction)
   {
 
     [(BKToastPresenter *)self _performNextAction];
@@ -602,53 +602,53 @@
   }
 
   [(BKToastPresenter *)self setRunningAction:0];
-  v4 = [(BKToastPresenter *)self pendingActions];
-  v5 = [v4 count];
+  pendingActions = [(BKToastPresenter *)self pendingActions];
+  v5 = [pendingActions count];
 
   if (v5)
   {
-    v6 = [(BKToastPresenter *)self pendingActions];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    pendingActions2 = [(BKToastPresenter *)self pendingActions];
+    v7 = [pendingActions2 objectAtIndexedSubscript:0];
     [(BKToastPresenter *)self setRunningAction:v7];
 
-    v8 = [(BKToastPresenter *)self pendingActions];
-    [v8 removeObjectAtIndex:0];
+    pendingActions3 = [(BKToastPresenter *)self pendingActions];
+    [pendingActions3 removeObjectAtIndex:0];
 
     v9 = BCAugmentedExperienceLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(BKToastPresenter *)self runningAction];
+      runningAction = [(BKToastPresenter *)self runningAction];
       v15 = 138543362;
-      v16 = v10;
+      v16 = runningAction;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "BKToastPresenter _performNextAction: %{public}@", &v15, 0xCu);
     }
 
-    v11 = [(BKToastPresenter *)self runningAction];
-    v12 = [v11 objectForKeyedSubscript:@"action"];
-    v13 = [v12 integerValue];
+    runningAction2 = [(BKToastPresenter *)self runningAction];
+    v12 = [runningAction2 objectForKeyedSubscript:@"action"];
+    integerValue = [v12 integerValue];
 
-    if (v13 == 2)
+    if (integerValue == 2)
     {
       [(BKToastPresenter *)self _dismissToast];
     }
 
     else
     {
-      if (v13 == 1)
+      if (integerValue == 1)
       {
-        v14 = [(BKToastPresenter *)self runningAction];
-        [(BKToastPresenter *)self _expandCompactVCAction:v14];
+        runningAction3 = [(BKToastPresenter *)self runningAction];
+        [(BKToastPresenter *)self _expandCompactVCAction:runningAction3];
       }
 
       else
       {
-        if (v13)
+        if (integerValue)
         {
           return;
         }
 
-        v14 = [(BKToastPresenter *)self runningAction];
-        [(BKToastPresenter *)self _presentInVCAction:v14];
+        runningAction3 = [(BKToastPresenter *)self runningAction];
+        [(BKToastPresenter *)self _presentInVCAction:runningAction3];
       }
     }
   }
@@ -663,24 +663,24 @@
 
 - (NSString)description
 {
-  v3 = [(BKToastPresenter *)self cardViewController];
-  v4 = [(BKToastPresenter *)self toastViewController];
-  v5 = [NSString stringWithFormat:@"BKToastPresenter(cardVC:%@ toastVC:%@)", v3, v4];
+  cardViewController = [(BKToastPresenter *)self cardViewController];
+  toastViewController = [(BKToastPresenter *)self toastViewController];
+  v5 = [NSString stringWithFormat:@"BKToastPresenter(cardVC:%@ toastVC:%@)", cardViewController, toastViewController];
 
   return v5;
 }
 
-- (void)endOfBookCompactViewControllerWantsToDismiss:(id)a3
+- (void)endOfBookCompactViewControllerWantsToDismiss:(id)dismiss
 {
-  v4 = [(BKToastPresenter *)self presentingDelegate];
-  [v4 presenterWantsToDismiss:self];
+  presentingDelegate = [(BKToastPresenter *)self presentingDelegate];
+  [presentingDelegate presenterWantsToDismiss:self];
 }
 
-- (void)endOfBookCompactViewControllerWantsToCloseAsset:(id)a3 completion:(id)a4
+- (void)endOfBookCompactViewControllerWantsToCloseAsset:(id)asset completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(BKToastPresenter *)self presentingDelegate];
-  [v6 presenterWantsToCloseAsset:self completion:v5];
+  completionCopy = completion;
+  presentingDelegate = [(BKToastPresenter *)self presentingDelegate];
+  [presentingDelegate presenterWantsToCloseAsset:self completion:completionCopy];
 }
 
 - (BCAugmentedExperiencePresentingDelegate)presentingDelegate

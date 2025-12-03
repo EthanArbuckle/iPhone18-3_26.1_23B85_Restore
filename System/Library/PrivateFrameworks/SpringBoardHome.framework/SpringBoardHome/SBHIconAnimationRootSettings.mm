@@ -73,8 +73,8 @@
 
   v28 = [MEMORY[0x1E69C6638] sectionWithRows:v27 title:@"Library Animations"];
   v29 = MEMORY[0x1E69C65E8];
-  v30 = [MEMORY[0x1E69C6640] action];
-  v31 = [v29 rowWithTitle:@"Restore Defaults" action:v30];
+  action = [MEMORY[0x1E69C6640] action];
+  v31 = [v29 rowWithTitle:@"Restore Defaults" action:action];
   v43 = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
 

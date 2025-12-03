@@ -1,43 +1,43 @@
 @interface NCAvatarView
-- (NCAvatarView)initWithBundleIdentifier:(id)a3 communicationContext:(id)a4 pointSize:(double)a5;
+- (NCAvatarView)initWithBundleIdentifier:(id)identifier communicationContext:(id)context pointSize:(double)size;
 - (void)_configureBackgroundMaterialViewIfNecessary;
 - (void)_configureImageViewIfNecessary;
-- (void)_loadImage:(id)a3 needsFormatting:(BOOL)a4 animated:(BOOL)a5;
+- (void)_loadImage:(id)image needsFormatting:(BOOL)formatting animated:(BOOL)animated;
 - (void)_updateAvatarImageIfNecessary;
 - (void)layoutSubviews;
-- (void)setMaterialBacked:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setMaterialBacked:(BOOL)backed;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCAvatarView
 
-- (NCAvatarView)initWithBundleIdentifier:(id)a3 communicationContext:(id)a4 pointSize:(double)a5
+- (NCAvatarView)initWithBundleIdentifier:(id)identifier communicationContext:(id)context pointSize:(double)size
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = NCAvatarView;
   v11 = [(NCAvatarView *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_communicationContext, a4);
-    v12->_pointSize = a5;
-    v13 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v12->_userInterfaceStyle = [v13 userInterfaceStyle];
+    objc_storeStrong(&v11->_communicationContext, context);
+    v12->_pointSize = size;
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    v12->_userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
-    objc_storeStrong(&v12->_bundleIdentifier, a3);
+    objc_storeStrong(&v12->_bundleIdentifier, identifier);
   }
 
   return v12;
 }
 
-- (void)setMaterialBacked:(BOOL)a3
+- (void)setMaterialBacked:(BOOL)backed
 {
-  if (self->_materialBacked != a3)
+  if (self->_materialBacked != backed)
   {
-    self->_materialBacked = a3;
-    if (a3)
+    self->_materialBacked = backed;
+    if (backed)
     {
 
       [(NCAvatarView *)self setNeedsLayout];
@@ -80,17 +80,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = NCAvatarView;
-  [(NCAvatarView *)&v6 traitCollectionDidChange:a3];
-  v4 = [(NCAvatarView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  [(NCAvatarView *)&v6 traitCollectionDidChange:change];
+  traitCollection = [(NCAvatarView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (self->_userInterfaceStyle != v5)
+  if (self->_userInterfaceStyle != userInterfaceStyle)
   {
-    self->_userInterfaceStyle = v5;
+    self->_userInterfaceStyle = userInterfaceStyle;
     self->_avatarImageNeedsUpdate = 1;
     [(NCAvatarView *)self setNeedsLayout];
   }
@@ -107,8 +107,8 @@
     self->_imageView = v4;
 
     v6 = self->_imageView;
-    v7 = [MEMORY[0x277D75348] systemDarkGrayColor];
-    [(UIImageView *)v6 setTintColor:v7];
+    systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
+    [(UIImageView *)v6 setTintColor:systemDarkGrayColor];
 
     [(UIImageView *)self->_imageView setClipsToBounds:1];
     [(NCAvatarView *)self addSubview:self->_imageView];
@@ -120,8 +120,8 @@
 
 - (void)_updateAvatarImageIfNecessary
 {
-  v3 = [(UIImageView *)self->_imageView image];
-  if (v3 && !self->_avatarImageNeedsUpdate)
+  image = [(UIImageView *)self->_imageView image];
+  if (image && !self->_avatarImageNeedsUpdate)
   {
   }
 
@@ -131,13 +131,13 @@
 
     if (!isGeneratingAvatarImage)
     {
-      v5 = [(NCAvatarView *)self traitCollection];
+      traitCollection = [(NCAvatarView *)self traitCollection];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __45__NCAvatarView__updateAvatarImageIfNecessary__block_invoke;
       v14[3] = &unk_278371CA8;
       v14[4] = self;
-      v6 = [v5 traitCollectionByModifyingTraits:v14];
+      v6 = [traitCollection traitCollectionByModifyingTraits:v14];
 
       self->_isGeneratingAvatarImage = 1;
       objc_initWeak(&location, self);
@@ -199,11 +199,11 @@ void __45__NCAvatarView__updateAvatarImageIfNecessary__block_invoke_3(uint64_t a
   }
 }
 
-- (void)_loadImage:(id)a3 needsFormatting:(BOOL)a4 animated:(BOOL)a5
+- (void)_loadImage:(id)image needsFormatting:(BOOL)formatting animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   imageView = self->_imageView;
-  if (a4)
+  if (formatting)
   {
     v8 = 2;
   }
@@ -213,14 +213,14 @@ void __45__NCAvatarView__updateAvatarImageIfNecessary__block_invoke_3(uint64_t a
     v8 = 1;
   }
 
-  v9 = a3;
+  imageCopy = image;
   [(UIImageView *)imageView setContentMode:v8];
-  v10 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  [(UIImageView *)self->_imageView setImage:v9];
+  [(UIImageView *)self->_imageView setImage:imageCopy];
   self->_avatarImageNeedsUpdate = 0;
   v11 = self->_imageView;
-  if (!v5 || v10)
+  if (!animatedCopy || image)
   {
 
     [(UIImageView *)v11 setAlpha:1.0];
@@ -243,13 +243,13 @@ void __45__NCAvatarView__updateAvatarImageIfNecessary__block_invoke_3(uint64_t a
   v21[3] = *MEMORY[0x277D85DE8];
   if (self->_materialBacked && !self->_backgroundMaterialView)
   {
-    v3 = [(NCAvatarView *)self traitCollection];
+    traitCollection = [(NCAvatarView *)self traitCollection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __59__NCAvatarView__configureBackgroundMaterialViewIfNecessary__block_invoke;
     v19[3] = &unk_278371CA8;
     v19[4] = self;
-    v4 = [v3 traitCollectionByModifyingTraits:v19];
+    v4 = [traitCollection traitCollectionByModifyingTraits:v19];
 
     v5 = MEMORY[0x277D26718];
     v6 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:0];

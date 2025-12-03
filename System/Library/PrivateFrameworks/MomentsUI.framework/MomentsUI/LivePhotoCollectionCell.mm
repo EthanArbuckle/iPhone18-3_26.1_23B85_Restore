@@ -1,10 +1,10 @@
 @interface LivePhotoCollectionCell
-- (_TtC9MomentsUI23LivePhotoCollectionCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI23LivePhotoCollectionCell)initWithCoder:(id)coder;
 @end
 
 @implementation LivePhotoCollectionCell
 
-- (_TtC9MomentsUI23LivePhotoCollectionCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI23LivePhotoCollectionCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI23LivePhotoCollectionCell_livePhotoView;
   if (one-time initialization token for empty != -1)

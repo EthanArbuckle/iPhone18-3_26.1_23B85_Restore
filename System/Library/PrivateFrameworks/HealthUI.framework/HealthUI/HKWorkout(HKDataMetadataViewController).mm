@@ -9,7 +9,7 @@
   v6 = a4;
   v7 = MEMORY[0x1E696C378];
   v8 = a3;
-  v9 = [v7 predicateForObjectsFromWorkout:a1];
+  v9 = [v7 predicateForObjectsFromWorkout:self];
   v10 = objc_alloc(MEMORY[0x1E696C668]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;

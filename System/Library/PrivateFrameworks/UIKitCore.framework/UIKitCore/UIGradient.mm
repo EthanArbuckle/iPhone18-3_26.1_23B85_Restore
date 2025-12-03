@@ -1,17 +1,17 @@
 @interface UIGradient
-- (id)initVerticalWithValues:(id *)a3;
+- (id)initVerticalWithValues:(id *)values;
 - (void)dealloc;
-- (void)fillRect:(CGRect)a3;
-- (void)fillRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)fillRect:(CGRect)rect;
+- (void)fillRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation UIGradient
 
-- (id)initVerticalWithValues:(id *)a3
+- (id)initVerticalWithValues:(id *)values
 {
-  v3 = a3;
-  v4 = self;
-  if (!a3)
+  valuesCopy = values;
+  selfCopy = self;
+  if (!values)
   {
     NSLog(&cfstr_UigradientInit.isa, a2);
     goto LABEL_12;
@@ -21,7 +21,7 @@
   do
   {
     v6 = v5 + 1;
-    var4 = a3[v5++].var4;
+    var4 = values[v5++].var4;
   }
 
   while (var4 < 1.0);
@@ -29,55 +29,55 @@
   {
     v11.receiver = self;
     v11.super_class = UIGradient;
-    v4 = [(UIGradient *)&v11 init];
-    if (v4)
+    selfCopy = [(UIGradient *)&v11 init];
+    if (selfCopy)
     {
       v8 = 40 * v6;
       v9 = malloc_type_malloc(v8, 0x10000400A747E1EuLL);
-      v4->_values = v9;
+      selfCopy->_values = v9;
       if (!v9)
       {
         goto LABEL_6;
       }
 
-      memcpy(v9, v3, v8);
+      memcpy(v9, valuesCopy, v8);
     }
 
-    v4 = v4;
-    v3 = v4;
+    selfCopy = selfCopy;
+    valuesCopy = selfCopy;
     goto LABEL_12;
   }
 
   NSLog(&cfstr_UigradientInit_0.isa, a2, 1.0);
 LABEL_6:
-  v3 = 0;
+  valuesCopy = 0;
 LABEL_12:
 
-  return v3;
+  return valuesCopy;
 }
 
-- (void)fillRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)fillRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = self->_height;
   shader = self->_shader;
-  if (a3.size.height == v10)
+  if (rect.size.height == v10)
   {
     if (shader)
     {
 LABEL_10:
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       v16.origin.x = x;
       v16.origin.y = y;
       v16.size.width = width;
       v16.size.height = height;
-      CGContextClipToRect(a4, v16);
-      CGContextTranslateCTM(a4, x, y);
-      CGContextDrawShading(a4, self->_shader);
-      CGContextRestoreGState(a4);
+      CGContextClipToRect(context, v16);
+      CGContextTranslateCTM(context, x, y);
+      CGContextDrawShading(context, self->_shader);
+      CGContextRestoreGState(context);
       return;
     }
   }
@@ -111,12 +111,12 @@ LABEL_10:
   }
 }
 
-- (void)fillRect:(CGRect)a3
+- (void)fillRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {

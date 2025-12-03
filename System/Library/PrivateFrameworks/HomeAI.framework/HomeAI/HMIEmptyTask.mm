@@ -1,18 +1,18 @@
 @interface HMIEmptyTask
-- (HMIEmptyTask)initWithTaskID:(int)a3 duration:(double)a4;
+- (HMIEmptyTask)initWithTaskID:(int)d duration:(double)duration;
 - (void)mainInsideAutoreleasePool;
 @end
 
 @implementation HMIEmptyTask
 
-- (HMIEmptyTask)initWithTaskID:(int)a3 duration:(double)a4
+- (HMIEmptyTask)initWithTaskID:(int)d duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = HMIEmptyTask;
-  result = [(HMITask *)&v6 initWithTaskID:*&a3];
+  result = [(HMITask *)&v6 initWithTaskID:*&d];
   if (result)
   {
-    result->_duration = a4;
+    result->_duration = duration;
   }
 
   return result;
@@ -22,17 +22,17 @@
 {
   *&v24[5] = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMITask *)v4 taskID];
-    [(HMIEmptyTask *)v4 duration];
+    taskID = [(HMITask *)selfCopy taskID];
+    [(HMIEmptyTask *)selfCopy duration];
     *buf = 138543874;
     v20 = v6;
     v21 = 1024;
-    v22 = v7;
+    v22 = taskID;
     v23 = 2048;
     *v24 = v8;
     _os_log_impl(&dword_22D12F000, v5, OS_LOG_TYPE_INFO, "%{public}@TaskID: %u running for %f seconds ...", buf, 0x1Cu);
@@ -43,17 +43,17 @@
   do
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v4;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMITask *)v11 taskID];
+      taskID2 = [(HMITask *)v11 taskID];
       *buf = 138544130;
       ++v9;
       v20 = v13;
       v21 = 1024;
-      v22 = v14;
+      v22 = taskID2;
       v23 = 1024;
       v24[0] = v9;
       LOWORD(v24[1]) = 1024;
@@ -70,8 +70,8 @@
     v15 = MEMORY[0x277CCACC8];
     [(HMIEmptyTask *)v11 duration];
     [v15 sleepForTimeInterval:v16 / 10.0];
-    v17 = [(HMITask *)v11 progressBlock];
-    v17[2](v9 / 10.0);
+    progressBlock = [(HMITask *)v11 progressBlock];
+    progressBlock[2](v9 / 10.0);
   }
 
   while (v9 != 10);

@@ -2,34 +2,34 @@
 + (id)sharedManager;
 - (UpdatesManager_ObjC)init;
 - (void)_handleAccountChangedNotification;
-- (void)autoUpdateEnabled:(id)a3;
-- (void)confirmAgentRequestedUpdateAll:(id)a3;
-- (void)dropAllUpdatesIncludingVPP:(BOOL)a3 completionHandler:(id)a4;
-- (void)getManagedUpdatesWithRequestToken:(id)a3 replyHandler:(id)a4;
-- (void)getUpdateMetadataForBundleID:(id)a3 replyHandler:(id)a4;
-- (void)getUpdatesWithContext:(id)a3;
-- (void)getUpdatesWithRequestToken:(id)a3 replyHandler:(id)a4;
+- (void)autoUpdateEnabled:(id)enabled;
+- (void)confirmAgentRequestedUpdateAll:(id)all;
+- (void)dropAllUpdatesIncludingVPP:(BOOL)p completionHandler:(id)handler;
+- (void)getManagedUpdatesWithRequestToken:(id)token replyHandler:(id)handler;
+- (void)getUpdateMetadataForBundleID:(id)d replyHandler:(id)handler;
+- (void)getUpdatesWithContext:(id)context;
+- (void)getUpdatesWithRequestToken:(id)token replyHandler:(id)handler;
 - (void)hidePendingUpdatesBadge;
-- (void)isTVProviderApp:(unint64_t)a3 withReplyHandler:(id)a4;
-- (void)noteUpdatesStateChangedWithReason:(id)a3 logKey:(id)a4 completionBlock:(id)a5;
+- (void)isTVProviderApp:(unint64_t)app withReplyHandler:(id)handler;
+- (void)noteUpdatesStateChangedWithReason:(id)reason logKey:(id)key completionBlock:(id)block;
 - (void)performBackgroundSoftwareUpdateCheck;
 - (void)performPostRestoreUpdatesCheck;
 - (void)postProcessBackgroundUpdateMetrics;
-- (void)refreshUpdateCountWithRequestToken:(id)a3 replyHandler:(id)a4;
-- (void)refreshUpdateForApp:(int64_t)a3 token:(id)a4 replyHandler:(id)a5;
-- (void)reloadApplicationBadgeWithReason:(id)a3;
-- (void)reloadFromServerInBackgroundWithToken:(id)a3 completionBlock:(id)a4;
-- (void)reloadFromServerWithRequestToken:(id)a3 replyHandler:(id)a4;
-- (void)reloadManagedUpdatesWithRequestToken:(id)a3 replyHandler:(id)a4;
-- (void)reloadUpdatesWithContext:(id)a3;
-- (void)setAutoUpdateEnabled:(BOOL)a3 withReplyHandler:(id)a4;
+- (void)refreshUpdateCountWithRequestToken:(id)token replyHandler:(id)handler;
+- (void)refreshUpdateForApp:(int64_t)app token:(id)token replyHandler:(id)handler;
+- (void)reloadApplicationBadgeWithReason:(id)reason;
+- (void)reloadFromServerInBackgroundWithToken:(id)token completionBlock:(id)block;
+- (void)reloadFromServerWithRequestToken:(id)token replyHandler:(id)handler;
+- (void)reloadManagedUpdatesWithRequestToken:(id)token replyHandler:(id)handler;
+- (void)reloadUpdatesWithContext:(id)context;
+- (void)setAutoUpdateEnabled:(BOOL)enabled withReplyHandler:(id)handler;
 - (void)setupFollowingMigration;
-- (void)showPendingUpdatesBadgeWithRequestToken:(id)a3;
-- (void)updateAllWithOrder:(id)a3 requestToken:(id)a4 replyHandler:(id)a5;
-- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)a3;
-- (void)verifyPendingUpdates:(id)a3 bag:(id)a4;
-- (void)verifyUpdatesFollowingExternalAppInstall:(id)a3;
-- (void)verifyUpdatesForRemovedBundleIDs:(id)a3;
+- (void)showPendingUpdatesBadgeWithRequestToken:(id)token;
+- (void)updateAllWithOrder:(id)order requestToken:(id)token replyHandler:(id)handler;
+- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)handler;
+- (void)verifyPendingUpdates:(id)updates bag:(id)bag;
+- (void)verifyUpdatesFollowingExternalAppInstall:(id)install;
+- (void)verifyUpdatesForRemovedBundleIDs:(id)ds;
 @end
 
 @implementation UpdatesManager_ObjC
@@ -106,45 +106,45 @@
   return v2;
 }
 
-- (void)isTVProviderApp:(unint64_t)a3 withReplyHandler:(id)a4
+- (void)isTVProviderApp:(unint64_t)app withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[BagService appstoredService];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100321C5C;
   v9[3] = &unk_100521FE0;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  appCopy = app;
+  v8 = handlerCopy;
   [v7 recentBagWithCompletionHandler:v9];
 }
 
-- (void)autoUpdateEnabled:(id)a3
+- (void)autoUpdateEnabled:(id)enabled
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v4 = sub_1003D5FC8();
-  (*(a3 + 2))(v5, v4);
+  (*(enabled + 2))(enabledCopy, v4);
 }
 
-- (void)confirmAgentRequestedUpdateAll:(id)a3
+- (void)confirmAgentRequestedUpdateAll:(id)all
 {
   agentRequestedUpdateAll = self->_agentRequestedUpdateAll;
   self->_agentRequestedUpdateAll = 0;
-  (*(a3 + 2))(a3, agentRequestedUpdateAll);
+  (*(all + 2))(all, agentRequestedUpdateAll);
 }
 
-- (void)dropAllUpdatesIncludingVPP:(BOOL)a3 completionHandler:(id)a4
+- (void)dropAllUpdatesIncludingVPP:(BOOL)p completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[NSMutableArray array];
   v7 = sub_1002BB3F0();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100322034;
   v13[3] = &unk_100523368;
-  v15 = a3;
+  pCopy = p;
   v8 = v6;
   v14 = v8;
   [v7 readUsingSession:v13];
@@ -158,71 +158,71 @@
   v10 = v8;
   [v9 modifyUsingTransaction:v11];
 
-  v5[2](v5);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)getManagedUpdatesWithRequestToken:(id)a3 replyHandler:(id)a4
+- (void)getManagedUpdatesWithRequestToken:(id)token replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100322310;
   block[3] = &unk_10051BB18;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = tokenCopy;
+  v9 = handlerCopy;
+  v10 = tokenCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)getUpdatesWithContext:(id)a3
+- (void)getUpdatesWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003227F0;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)getUpdateMetadataForBundleID:(id)a3 replyHandler:(id)a4
+- (void)getUpdateMetadataForBundleID:(id)d replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003228C0;
   block[3] = &unk_10051C078;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)getUpdatesWithRequestToken:(id)a3 replyHandler:(id)a4
+- (void)getUpdatesWithRequestToken:(id)token replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100322B7C;
   block[3] = &unk_10051BB18;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = tokenCopy;
+  v9 = handlerCopy;
+  v10 = tokenCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -237,13 +237,13 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)noteUpdatesStateChangedWithReason:(id)a3 logKey:(id)a4 completionBlock:(id)a5
+- (void)noteUpdatesStateChangedWithReason:(id)reason logKey:(id)key completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  reasonCopy = reason;
+  blockCopy = block;
+  keyCopy = key;
   LOBYTE(v16) = 0;
-  v11 = [[_TtC9appstored14UpdatesContext alloc] initWithReason:0 requestToken:0 logKey:v10 callbackHandler:0 includeMetrics:0 isVPPLookup:0 userInitiated:v16 targetedItemID:0];
+  v11 = [[_TtC9appstored14UpdatesContext alloc] initWithReason:0 requestToken:0 logKey:keyCopy callbackHandler:0 includeMetrics:0 isVPPLookup:0 userInitiated:v16 targetedItemID:0];
 
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -251,12 +251,12 @@
   block[2] = sub_100322E7C;
   block[3] = &unk_10051C7A8;
   block[4] = self;
-  v18 = v8;
+  v18 = reasonCopy;
   v19 = v11;
-  v20 = v9;
-  v13 = v9;
+  v20 = blockCopy;
+  v13 = blockCopy;
   v14 = v11;
-  v15 = v8;
+  v15 = reasonCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -281,7 +281,7 @@
   v7[2] = sub_1003232FC;
   v7[3] = &unk_1005233D8;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
   [v4 upToDateBagOnQueue:dispatchQueue completionHandler:v7];
 }
@@ -297,104 +297,104 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)reloadApplicationBadgeWithReason:(id)a3
+- (void)reloadApplicationBadgeWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003237BC;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)refreshUpdateCountWithRequestToken:(id)a3 replyHandler:(id)a4
+- (void)refreshUpdateCountWithRequestToken:(id)token replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003238DC;
   block[3] = &unk_10051C078;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = tokenCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)refreshUpdateForApp:(int64_t)a3 token:(id)a4 replyHandler:(id)a5
+- (void)refreshUpdateForApp:(int64_t)app token:(id)token replyHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100323B54;
   v13[3] = &unk_100523400;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = tokenCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  appCopy = app;
+  v11 = handlerCopy;
+  v12 = tokenCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)reloadFromServerInBackgroundWithToken:(id)a3 completionBlock:(id)a4
+- (void)reloadFromServerInBackgroundWithToken:(id)token completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  blockCopy = block;
   v8 = +[BagService appstoredService];
   dispatchQueue = self->_dispatchQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100323F7C;
   v12[3] = &unk_100523428;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v15 = blockCopy;
+  v13 = tokenCopy;
+  v10 = blockCopy;
+  v11 = tokenCopy;
   [v8 upToDateBagOnQueue:dispatchQueue completionHandler:v12];
 }
 
-- (void)reloadFromServerWithRequestToken:(id)a3 replyHandler:(id)a4
+- (void)reloadFromServerWithRequestToken:(id)token replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   v8 = +[BagService appstoredService];
   dispatchQueue = self->_dispatchQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1003241B0;
   v12[3] = &unk_100523428;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = tokenCopy;
+  v10 = handlerCopy;
+  v11 = tokenCopy;
   [v8 upToDateBagOnQueue:dispatchQueue completionHandler:v12];
 }
 
-- (void)reloadManagedUpdatesWithRequestToken:(id)a3 replyHandler:(id)a4
+- (void)reloadManagedUpdatesWithRequestToken:(id)token replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  tokenCopy = token;
   LOBYTE(v13) = 0;
-  v8 = [[_TtC9appstored14UpdatesContext alloc] initWithReason:2 requestToken:v7 logKey:0 callbackHandler:v6 includeMetrics:0 isVPPLookup:1 userInitiated:v13 targetedItemID:0];
+  v8 = [[_TtC9appstored14UpdatesContext alloc] initWithReason:2 requestToken:tokenCopy logKey:0 callbackHandler:handlerCopy includeMetrics:0 isVPPLookup:1 userInitiated:v13 targetedItemID:0];
 
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(UpdatesContext *)v8 logKey];
+    logKey = [(UpdatesContext *)v8 logKey];
     *buf = 138412290;
-    v17 = v10;
+    v17 = logKey;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%@] Refreshing from server for reloadManagedUpdates", buf, 0xCu);
   }
 
@@ -409,30 +409,30 @@
   [v11 upToDateBagWithCompletionHandler:v14];
 }
 
-- (void)reloadUpdatesWithContext:(id)a3
+- (void)reloadUpdatesWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[BagService appstoredService];
   dispatchQueue = self->_dispatchQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100324D48;
   v8[3] = &unk_1005233D8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
   [v5 upToDateBagOnQueue:dispatchQueue completionHandler:v8];
 }
 
-- (void)setAutoUpdateEnabled:(BOOL)a3 withReplyHandler:(id)a4
+- (void)setAutoUpdateEnabled:(BOOL)enabled withReplyHandler:(id)handler
 {
-  v4 = a3;
-  v5 = a4;
+  enabledCopy = enabled;
+  handlerCopy = handler;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"disabled";
-    if (v4)
+    if (enabledCopy)
     {
       v7 = @"enabled";
     }
@@ -442,8 +442,8 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting auto updates to %{public}@", &v8, 0xCu);
   }
 
-  sub_1003D61DC(AppDefaultsManager, v4);
-  v5[2](v5);
+  sub_1003D61DC(AppDefaultsManager, enabledCopy);
+  handlerCopy[2](handlerCopy);
 }
 
 - (void)setupFollowingMigration
@@ -455,100 +455,100 @@
   v6[2] = sub_100324FE0;
   v6[3] = &unk_10051B570;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(dispatchQueue, v6);
 }
 
-- (void)showPendingUpdatesBadgeWithRequestToken:(id)a3
+- (void)showPendingUpdatesBadgeWithRequestToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100325444;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = tokenCopy;
+  selfCopy = self;
+  v6 = tokenCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)updateAllWithOrder:(id)a3 requestToken:(id)a4 replyHandler:(id)a5
+- (void)updateAllWithOrder:(id)order requestToken:(id)token replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  orderCopy = order;
+  tokenCopy = token;
+  handlerCopy = handler;
   v11 = +[BagService appstoredService];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100325640;
   v15[3] = &unk_10051C0A0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = orderCopy;
+  v17 = tokenCopy;
+  v18 = handlerCopy;
+  v12 = tokenCopy;
+  v13 = orderCopy;
+  v14 = handlerCopy;
   [v11 upToDateBagWithCompletionHandler:v15];
 }
 
-- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)a3
+- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100325D60;
   v7[3] = &unk_10051B2D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)verifyPendingUpdates:(id)a3 bag:(id)a4
+- (void)verifyPendingUpdates:(id)updates bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  bagCopy = bag;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100326154;
   block[3] = &unk_10051AEE8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = updatesCopy;
+  v13 = bagCopy;
+  selfCopy = self;
+  v9 = bagCopy;
+  v10 = updatesCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)verifyUpdatesFollowingExternalAppInstall:(id)a3
+- (void)verifyUpdatesFollowingExternalAppInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100326524;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = installCopy;
+  selfCopy = self;
+  v6 = installCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)verifyUpdatesForRemovedBundleIDs:(id)a3
+- (void)verifyUpdatesForRemovedBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003267DC;
   block[3] = &unk_10051AF98;
-  v8 = v4;
-  v6 = v4;
+  v8 = dsCopy;
+  v6 = dsCopy;
   dispatch_async(dispatchQueue, block);
 }
 

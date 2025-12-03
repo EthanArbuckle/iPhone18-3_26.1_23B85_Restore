@@ -2,23 +2,23 @@
 - (BOOL)isReadable;
 - (CGDataProvider)newCGDataProvider;
 - (CGImageSource)newCGImageSource;
-- (id)AVAssetWithOptions:(id)a3 forData:(id)a4;
-- (id)AVAssetWithOptions:(id)a3 usingResourceLoaderForData:(id)a4;
-- (id)NSDataWithOptions:(unint64_t)a3;
-- (id)newDataCopyInputStreamProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5;
-- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5;
-- (id)newDataCopyURLProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5;
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8;
+- (id)AVAssetWithOptions:(id)options forData:(id)data;
+- (id)AVAssetWithOptions:(id)options usingResourceLoaderForData:(id)data;
+- (id)NSDataWithOptions:(unint64_t)options;
+- (id)newDataCopyInputStreamProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error;
+- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error;
+- (id)newDataCopyURLProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error;
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error;
 - (unint64_t)encodedLength;
 - (unint64_t)materializedLength;
-- (void)performIOChannelReadWithAccessor:(id)a3;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
 @end
 
 @implementation TSPStreamDataStorage
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v3 = a3;
+  accessorCopy = accessor;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSPStreamDataStorage performIOChannelReadWithAccessor:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPStreamDataStorage.mm");
@@ -38,24 +38,24 @@
   objc_exception_throw(v21);
 }
 
-- (id)newDataCopyURLProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5
+- (id)newDataCopyURLProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  infoCopy = info;
   v10 = [TSPDataCopyProviderConcrete alloc];
   v45 = 0;
-  v12 = objc_msgSend_initWithDocumentURL_error_(v10, v11, v8, &v45);
+  v12 = objc_msgSend_initWithDocumentURL_error_(v10, v11, lCopy, &v45);
   v15 = v45;
   if (v12)
   {
     v16 = objc_msgSend_directory(v12, v13, v14);
-    v44 = v9;
+    v44 = infoCopy;
     v19 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v17, v18);
     v22 = objc_msgSend_UUIDString(v19, v20, v21);
     v24 = objc_msgSend_URLByAppendingPathComponent_(v16, v23, v22);
     objc_msgSend_setURLInternal_(v12, v25, v24);
 
-    v9 = v44;
+    infoCopy = v44;
     if (objc_opt_respondsToSelector())
     {
       v28 = objc_msgSend_URL(v12, v26, v27);
@@ -90,7 +90,7 @@
       {
       }
 
-      v9 = v44;
+      infoCopy = v44;
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40);
     }
   }
@@ -104,22 +104,22 @@
   }
 
 LABEL_13:
-  if (a5)
+  if (error)
   {
     v42 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v12;
 }
 
-- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5
+- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  infoCopy = info;
   v10 = [TSPDataCopyProviderConcrete alloc];
   v62 = 0;
-  v12 = objc_msgSend_initWithDocumentURL_error_(v10, v11, v8, &v62);
+  v12 = objc_msgSend_initWithDocumentURL_error_(v10, v11, lCopy, &v62);
   v13 = v62;
   v16 = objc_msgSend_decryptionInfo(self, v14, v15);
   v19 = objc_msgSend_mutableCryptoInfoCopy(v16, v17, v18);
@@ -132,7 +132,7 @@ LABEL_13:
   }
 
   v23 = objc_msgSend_directory(v12, v20, v21);
-  v58 = v9;
+  v58 = infoCopy;
   v26 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v24, v25);
   v29 = objc_msgSend_UUIDString(v26, v27, v28);
   v31 = objc_msgSend_URLByAppendingPathComponent_(v23, v30, v29);
@@ -183,11 +183,11 @@ LABEL_13:
   {
 LABEL_20:
     v34 = v13;
-    v9 = v58;
+    infoCopy = v58;
     goto LABEL_21;
   }
 
-  v9 = v58;
+  infoCopy = v58;
   v38 = objc_alloc(MEMORY[0x277D811D0]);
   v61 = v13;
   v40 = objc_msgSend_initForReadingURL_error_(v38, v39, v31, &v61);
@@ -212,7 +212,7 @@ LABEL_20:
       ChannelBlock = objc_msgSend_initWithReadChannel_blockInfos_streamReadChannelBlock_(v41, v45, v40, v44, v59);
 
       objc_msgSend_setReadChannelInternal_(v12, v47, ChannelBlock);
-      v9 = v58;
+      infoCopy = v58;
     }
 
     goto LABEL_24;
@@ -234,22 +234,22 @@ LABEL_21:
   }
 
 LABEL_24:
-  if (a5)
+  if (error)
   {
     v53 = v34;
-    *a5 = v34;
+    *error = v34;
   }
 
   return v12;
 }
 
-- (id)newDataCopyInputStreamProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5
+- (id)newDataCopyInputStreamProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  infoCopy = info;
   objc_opt_class();
   v29 = 0;
-  v11 = objc_msgSend_newDataCopyReadChannelProviderWithDocumentURL_encryptionInfo_error_(self, v10, v8, v9, &v29);
+  v11 = objc_msgSend_newDataCopyReadChannelProviderWithDocumentURL_encryptionInfo_error_(self, v10, lCopy, infoCopy, &v29);
   v12 = v29;
   v13 = TSUDynamicCast();
 
@@ -267,10 +267,10 @@ LABEL_24:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v27 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v13;
@@ -324,7 +324,7 @@ LABEL_24:
   return result;
 }
 
-- (id)NSDataWithOptions:(unint64_t)a3
+- (id)NSDataWithOptions:(unint64_t)options
 {
   v6 = 0;
   v7 = &v6;
@@ -344,30 +344,30 @@ LABEL_24:
   return v3;
 }
 
-- (id)AVAssetWithOptions:(id)a3 forData:(id)a4
+- (id)AVAssetWithOptions:(id)options forData:(id)data
 {
-  v4 = objc_msgSend_AVAssetWithOptions_usingResourceLoaderForData_(self, a2, a3, a4);
+  v4 = objc_msgSend_AVAssetWithOptions_usingResourceLoaderForData_(self, a2, options, data);
 
   return v4;
 }
 
-- (id)AVAssetWithOptions:(id)a3 usingResourceLoaderForData:(id)a4
+- (id)AVAssetWithOptions:(id)options usingResourceLoaderForData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  dataCopy = data;
   v9 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v7, v8);
   v12 = objc_msgSend_UUIDString(v9, v10, v11);
 
   v13 = MEMORY[0x277CBEBC0];
-  v16 = objc_msgSend_filename(v6, v14, v15);
-  v19 = objc_msgSend_type(v6, v17, v18);
+  v16 = objc_msgSend_filename(dataCopy, v14, v15);
+  v19 = objc_msgSend_type(dataCopy, v17, v18);
   v21 = objc_msgSend_tsp_iWorkAVAssetURLWithUUID_filename_contentTypeUTI_(v13, v20, v12, v16, v19);
 
-  v23 = objc_msgSend_URLAssetWithURL_options_(MEMORY[0x277CE6650], v22, v21, v5);
+  v23 = objc_msgSend_URLAssetWithURL_options_(MEMORY[0x277CE6650], v22, v21, optionsCopy);
   if (v23)
   {
     v24 = [TSPAVAssetResourceLoaderDelegate alloc];
-    v28 = objc_msgSend_initWithData_(v24, v25, v6);
+    v28 = objc_msgSend_initWithData_(v24, v25, dataCopy);
     if (v28)
     {
       v29 = objc_msgSend_resourceLoader(v23, v26, v27);
@@ -408,7 +408,7 @@ LABEL_24:
   objc_exception_throw(v18);
 }
 
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error
 {
   v8 = [TSPDataStorageWriteResult alloc];
   v10 = objc_msgSend_initWithFilename_encryptionInfo_packageStorageType_encodedLength_isMissingData_changeCount_(v8, v9, &stru_2885C9BB8, 0, 0, 0, 0, 0);

@@ -1,26 +1,26 @@
 @interface VOTLongPressButtonInterceptor
-- (VOTLongPressButtonInterceptor)initWithThreadKey:(id)a3 longPressDelay:(double)a4 longPressHandler:(id)a5;
+- (VOTLongPressButtonInterceptor)initWithThreadKey:(id)key longPressDelay:(double)delay longPressHandler:(id)handler;
 - (void)_timerFired;
-- (void)buttonDownOccurred:(id)a3;
-- (void)buttonUpOccurred:(id)a3;
+- (void)buttonDownOccurred:(id)occurred;
+- (void)buttonUpOccurred:(id)occurred;
 - (void)dealloc;
 @end
 
 @implementation VOTLongPressButtonInterceptor
 
-- (VOTLongPressButtonInterceptor)initWithThreadKey:(id)a3 longPressDelay:(double)a4 longPressHandler:(id)a5
+- (VOTLongPressButtonInterceptor)initWithThreadKey:(id)key longPressDelay:(double)delay longPressHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = VOTLongPressButtonInterceptor;
   v10 = [(VOTLongPressButtonInterceptor *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    *&v10->_timer = a4;
-    [(VOTLongPressButtonInterceptor *)v10 setLongPressHandler:v9];
-    v12 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v11 selector:"_timerFired" threadKey:v8];
+    *&v10->_timer = delay;
+    [(VOTLongPressButtonInterceptor *)v10 setLongPressHandler:handlerCopy];
+    v12 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v11 selector:"_timerFired" threadKey:keyCopy];
     longPressHandler = v11->_longPressHandler;
     v11->_longPressHandler = v12;
   }
@@ -30,64 +30,64 @@
 
 - (void)dealloc
 {
-  v3 = [(VOTLongPressButtonInterceptor *)self timer];
-  [v3 invalidate];
+  timer = [(VOTLongPressButtonInterceptor *)self timer];
+  [timer invalidate];
 
   v4.receiver = self;
   v4.super_class = VOTLongPressButtonInterceptor;
   [(VOTLongPressButtonInterceptor *)&v4 dealloc];
 }
 
-- (void)buttonDownOccurred:(id)a3
+- (void)buttonDownOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v6.receiver = self;
   v6.super_class = VOTLongPressButtonInterceptor;
-  [(VOTButtonInterceptor *)&v6 buttonDownOccurred:v4];
+  [(VOTButtonInterceptor *)&v6 buttonDownOccurred:occurredCopy];
   if (!*(&self->super._listensPassively + 1))
   {
     *(&self->super._listensPassively + 1) = 1;
     if (![(VOTButtonInterceptor *)self listensPassively])
     {
-      [(VOTLongPressButtonInterceptor *)self setPendingDownEvent:v4];
+      [(VOTLongPressButtonInterceptor *)self setPendingDownEvent:occurredCopy];
     }
 
-    v5 = [(VOTLongPressButtonInterceptor *)self timer];
-    [v5 dispatchAfterDelay:*&self->_timer];
+    timer = [(VOTLongPressButtonInterceptor *)self timer];
+    [timer dispatchAfterDelay:*&self->_timer];
   }
 }
 
-- (void)buttonUpOccurred:(id)a3
+- (void)buttonUpOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v9.receiver = self;
   v9.super_class = VOTLongPressButtonInterceptor;
-  [(VOTButtonInterceptor *)&v9 buttonUpOccurred:v4];
+  [(VOTButtonInterceptor *)&v9 buttonUpOccurred:occurredCopy];
   *(&self->super._listensPassively + 1) = 0;
-  v5 = [(VOTLongPressButtonInterceptor *)self timer];
-  [v5 cancel];
+  timer = [(VOTLongPressButtonInterceptor *)self timer];
+  [timer cancel];
 
-  v6 = [(VOTLongPressButtonInterceptor *)self pendingDownEvent];
+  pendingDownEvent = [(VOTLongPressButtonInterceptor *)self pendingDownEvent];
 
-  if (v6)
+  if (pendingDownEvent)
   {
     v7 = +[AXEventTapManager sharedManager];
-    v8 = [(VOTLongPressButtonInterceptor *)self pendingDownEvent];
-    [v7 sendHIDSystemEvent:v8 repostCreatorHIDEvent:1 senderID:0x8000000817319373];
+    pendingDownEvent2 = [(VOTLongPressButtonInterceptor *)self pendingDownEvent];
+    [v7 sendHIDSystemEvent:pendingDownEvent2 repostCreatorHIDEvent:1 senderID:0x8000000817319373];
 
-    [v7 sendHIDSystemEvent:v4 repostCreatorHIDEvent:1 senderID:0x8000000817319373];
+    [v7 sendHIDSystemEvent:occurredCopy repostCreatorHIDEvent:1 senderID:0x8000000817319373];
     [(VOTLongPressButtonInterceptor *)self setPendingDownEvent:0];
   }
 }
 
 - (void)_timerFired
 {
-  v3 = [(VOTLongPressButtonInterceptor *)self longPressHandler];
+  longPressHandler = [(VOTLongPressButtonInterceptor *)self longPressHandler];
 
-  if (v3)
+  if (longPressHandler)
   {
-    v4 = [(VOTLongPressButtonInterceptor *)self longPressHandler];
-    v4[2]();
+    longPressHandler2 = [(VOTLongPressButtonInterceptor *)self longPressHandler];
+    longPressHandler2[2]();
   }
 
   [(VOTLongPressButtonInterceptor *)self setPendingDownEvent:0];

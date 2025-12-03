@@ -1,15 +1,15 @@
 @interface HDCloudSyncHandleMissingManateeIdentityOperation
-- (HDCloudSyncHandleMissingManateeIdentityOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncHandleMissingManateeIdentityOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (void)main;
 @end
 
 @implementation HDCloudSyncHandleMissingManateeIdentityOperation
 
-- (HDCloudSyncHandleMissingManateeIdentityOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncHandleMissingManateeIdentityOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v9.receiver = self;
   v9.super_class = HDCloudSyncHandleMissingManateeIdentityOperation;
-  v4 = [(HDCloudSyncOperation *)&v9 initWithConfiguration:a3 cloudState:0];
+  v4 = [(HDCloudSyncOperation *)&v9 initWithConfiguration:configuration cloudState:0];
   v5 = v4;
   if (v4)
   {
@@ -26,24 +26,24 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v108 = *MEMORY[0x277D85DE8];
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v3 = [(HDCloudSyncOperation *)v2 configuration];
-  v4 = [v3 repository];
-  v5 = [v4 allCKContainers];
+  configuration = [(HDCloudSyncOperation *)selfCopy configuration];
+  repository = [configuration repository];
+  allCKContainers = [repository allCKContainers];
 
-  obj = v5;
-  v65 = [v5 countByEnumeratingWithState:&v74 objects:v104 count:16];
+  obj = allCKContainers;
+  v65 = [allCKContainers countByEnumeratingWithState:&v74 objects:v104 count:16];
   if (v65)
   {
     v64 = *v75;
     v6 = 0x277CBE000uLL;
-    p_isa = &v2->super.super.isa;
+    p_isa = &selfCopy->super.super.isa;
     do
     {
       for (i = 0; i != v65; i = v19 + 1)
@@ -55,23 +55,23 @@
 
         v69 = i;
         v8 = *(*(&v74 + 1) + 8 * i);
-        [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
-        v9 = [(HDCloudSyncOperation *)v2 configuration];
-        v10 = [v9 cachedCloudState];
-        v11 = [v8 containerIdentifier];
-        v12 = [(HDCloudSyncOperation *)v2 configuration];
-        v13 = [v12 repository];
-        v14 = [v13 profileIdentifier];
+        [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
+        configuration2 = [(HDCloudSyncOperation *)selfCopy configuration];
+        cachedCloudState = [configuration2 cachedCloudState];
+        containerIdentifier = [v8 containerIdentifier];
+        configuration3 = [(HDCloudSyncOperation *)selfCopy configuration];
+        repository2 = [configuration3 repository];
+        profileIdentifier = [repository2 profileIdentifier];
         v68 = v8;
-        v15 = HDDatabaseForContainer(v8, v14);
-        v16 = [v15 databaseScope];
+        v15 = HDDatabaseForContainer(v8, profileIdentifier);
+        databaseScope = [v15 databaseScope];
         v86 = 0;
-        v17 = [v10 zoneIdentifiersWithIdentityLossForContainerIdentifier:v11 databaseScope:v16 error:&v86];
+        v17 = [cachedCloudState zoneIdentifiersWithIdentityLossForContainerIdentifier:containerIdentifier databaseScope:databaseScope error:&v86];
         v18 = v86;
 
         if (!v17 && v18)
         {
-          v2 = p_isa;
+          selfCopy = p_isa;
           [p_isa[13] failTaskWithError:v18];
           v20 = v68;
           v19 = v69;
@@ -82,7 +82,7 @@
         {
           _HKInitializeLogging();
           v59 = *MEMORY[0x277CCC328];
-          v2 = p_isa;
+          selfCopy = p_isa;
           v20 = v68;
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEBUG))
           {
@@ -118,14 +118,14 @@
               }
 
               v27 = *(*(&v82 + 1) + 8 * j);
-              v28 = [v27 containerIdentifier];
-              v29 = [v21 objectForKeyedSubscript:v28];
+              containerIdentifier2 = [v27 containerIdentifier];
+              v29 = [v21 objectForKeyedSubscript:containerIdentifier2];
 
               if (!v29)
               {
                 v29 = objc_alloc_init(*(v6 + 2840));
-                v30 = [v27 containerIdentifier];
-                [v21 setObject:v29 forKeyedSubscript:v30];
+                containerIdentifier3 = [v27 containerIdentifier];
+                [v21 setObject:v29 forKeyedSubscript:containerIdentifier3];
               }
 
               [v29 addObject:v27];
@@ -144,7 +144,7 @@
         v78 = 0u;
         v79 = 0u;
         v31 = v21;
-        v2 = p_isa;
+        selfCopy = p_isa;
         v73 = [v31 countByEnumeratingWithState:&v78 objects:v105 count:16];
         if (!v73)
         {
@@ -164,45 +164,45 @@
             }
 
             v33 = *(*(&v78 + 1) + 8 * v32);
-            v34 = [(HDCloudSyncOperation *)v2 configuration];
-            v35 = [v34 repository];
-            v36 = [v35 containerForContainerIdentifier:v33];
+            configuration4 = [(HDCloudSyncOperation *)selfCopy configuration];
+            repository3 = [configuration4 repository];
+            v36 = [repository3 containerForContainerIdentifier:v33];
 
             if (!v36)
             {
               v58 = [MEMORY[0x277CCA9B8] hk_error:723 format:{@"Unable to retrieve container for identifier '%@'", v33}];
-              [(HDCloudSyncOperation *)v2 finishWithSuccess:0 error:v58];
+              [(HDCloudSyncOperation *)selfCopy finishWithSuccess:0 error:v58];
 
               goto LABEL_42;
             }
 
             v37 = [v31 objectForKeyedSubscript:v33];
             v38 = v36;
-            v39 = [(HDCloudSyncOperation *)v2 configuration];
-            v40 = [v39 repository];
-            v41 = [v40 profileIdentifier];
-            v42 = HDDatabaseForContainer(v38, v41);
+            configuration5 = [(HDCloudSyncOperation *)selfCopy configuration];
+            repository4 = [configuration5 repository];
+            profileIdentifier2 = [repository4 profileIdentifier];
+            v42 = HDDatabaseForContainer(v38, profileIdentifier2);
 
-            v43 = [v42 databaseScope];
-            if (v43 != 1)
+            databaseScope2 = [v42 databaseScope];
+            if (databaseScope2 != 1)
             {
-              if (v43 == 3)
+              if (databaseScope2 == 3)
               {
-                v44 = v38;
+                currentHandler = v38;
                 v87 = MEMORY[0x277D85DD0];
                 v88 = 3221225472;
                 v89 = __115__HDCloudSyncHandleMissingManateeIdentityOperation__leaveSharesForLostManateeIdentitiesInZones_container_database___block_invoke;
                 v90 = &unk_27861EAE8;
-                v91 = v2;
+                v91 = selfCopy;
                 v45 = [v37 hk_map:&v87];
                 if ([v45 count])
                 {
-                  [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
+                  [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
                   v54 = [HDCloudSyncModifyRecordsOperation alloc];
-                  v55 = [(HDCloudSyncOperation *)v2 configuration];
-                  v56 = [(HDCloudSyncModifyRecordsOperation *)v54 initWithConfiguration:v55 container:v44 recordsToSave:0 recordIDsToDelete:v45];
+                  configuration6 = [(HDCloudSyncOperation *)selfCopy configuration];
+                  v56 = [(HDCloudSyncModifyRecordsOperation *)v54 initWithConfiguration:configuration6 container:currentHandler recordsToSave:0 recordIDsToDelete:v45];
 
-                  v2 = p_isa;
+                  selfCopy = p_isa;
                   [(HDCloudSyncModifyRecordsOperation *)v56 setMarkAsParticipantNeedsNewInvitationToken:1];
                   v99 = MEMORY[0x277D85DD0];
                   v100 = 3221225472;
@@ -224,38 +224,38 @@
 
               else
               {
-                if (v43 != 2)
+                if (databaseScope2 != 2)
                 {
                   goto LABEL_36;
                 }
 
-                v44 = v37;
+                currentHandler = v37;
                 v45 = v38;
                 v46 = v42;
-                if ([v44 count])
+                if ([currentHandler count])
                 {
                   v87 = MEMORY[0x277D85DD0];
                   v88 = 3221225472;
                   v89 = __115__HDCloudSyncHandleMissingManateeIdentityOperation__deleteZonesForLostManateeIdentitiesInZones_container_database___block_invoke;
                   v90 = &unk_27862EBD0;
-                  v91 = v2;
+                  v91 = selfCopy;
                   v66 = v45;
                   v92 = v66;
                   v93 = v46;
-                  v67 = [v44 hk_map:&v87];
-                  [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
+                  v67 = [currentHandler hk_map:&v87];
+                  [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
                   v47 = [HDCloudSyncModifyRecordZonesOperation alloc];
                   [p_isa configuration];
-                  v48 = v44;
+                  v48 = currentHandler;
                   v49 = v46;
                   v51 = v50 = v45;
                   v52 = v47;
-                  v2 = p_isa;
+                  selfCopy = p_isa;
                   v53 = [(HDCloudSyncModifyRecordZonesOperation *)v52 initWithConfiguration:v51 container:v66 recordZonesToSave:0 recordZoneIDsToDelete:v67];
 
                   v45 = v50;
                   v46 = v49;
-                  v44 = v48;
+                  currentHandler = v48;
                   v6 = 0x277CBE000;
                   v99 = MEMORY[0x277D85DD0];
                   v100 = 3221225472;
@@ -280,8 +280,8 @@
 
             if ([v42 databaseScope] == 1)
             {
-              v44 = [MEMORY[0x277CCA890] currentHandler];
-              [v44 handleFailureInMethod:sel__handleLostManateeIdentitiesForZones_container_ object:v2 file:@"HDCloudSyncHandleMissingManateeIdentityOperation.m" lineNumber:117 description:@"Unable to handle manatee loss in public scope."];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:sel__handleLostManateeIdentitiesForZones_container_ object:selfCopy file:@"HDCloudSyncHandleMissingManateeIdentityOperation.m" lineNumber:117 description:@"Unable to handle manatee loss in public scope."];
 LABEL_34:
             }
 
@@ -298,7 +298,7 @@ LABEL_36:
         while (v57);
 LABEL_40:
 
-        [(HDSynchronousTaskGroup *)v2->_taskGroup finishTask];
+        [(HDSynchronousTaskGroup *)selfCopy->_taskGroup finishTask];
 LABEL_42:
 
         v20 = v68;
@@ -314,7 +314,7 @@ LABEL_46:
     while (v65);
   }
 
-  [(HDSynchronousTaskGroup *)v2->_taskGroup finishTask];
+  [(HDSynchronousTaskGroup *)selfCopy->_taskGroup finishTask];
   v60 = *MEMORY[0x277D85DE8];
 }
 

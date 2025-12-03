@@ -1,21 +1,21 @@
 @interface SBPIPRotationGestureRecognizer
-- (SBPIPRotationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (SBPIPRotationGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (SBPIPSystemGestureRecognizerDelegate)delegate;
 - (void)reset;
-- (void)setDelegate:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SBPIPRotationGestureRecognizer
 
-- (SBPIPRotationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBPIPRotationGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v10.receiver = self;
   v10.super_class = SBPIPRotationGestureRecognizer;
-  v4 = [(SBPIPRotationGestureRecognizer *)&v10 initWithTarget:a3 action:a4];
+  v4 = [(SBPIPRotationGestureRecognizer *)&v10 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -32,36 +32,36 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = SBPIPRotationGestureRecognizer;
-  [(SBPIPRotationGestureRecognizer *)&v3 setDelegate:a3];
+  [(SBPIPRotationGestureRecognizer *)&v3 setDelegate:delegate];
 }
 
 - (SBPIPSystemGestureRecognizerDelegate)delegate
 {
   v4.receiver = self;
   v4.super_class = SBPIPRotationGestureRecognizer;
-  v2 = [(SBPIPRotationGestureRecognizer *)&v4 delegate];
+  delegate = [(SBPIPRotationGestureRecognizer *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  beganCopy = began;
   v17.receiver = self;
   v17.super_class = SBPIPRotationGestureRecognizer;
-  [(SBPIPRotationGestureRecognizer *)&v17 touchesBegan:v6 withEvent:a4];
+  [(SBPIPRotationGestureRecognizer *)&v17 touchesBegan:beganCopy withEvent:event];
   if (self->_maximumNumberOfTouches)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v6;
+    v7 = beganCopy;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v8)
     {
@@ -101,18 +101,18 @@
 LABEL_12:
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cancelledCopy = cancelled;
   v16.receiver = self;
   v16.super_class = SBPIPRotationGestureRecognizer;
-  [(SBPIPRotationGestureRecognizer *)&v16 touchesCancelled:v6 withEvent:a4];
+  [(SBPIPRotationGestureRecognizer *)&v16 touchesCancelled:cancelledCopy withEvent:event];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = cancelledCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
@@ -139,18 +139,18 @@ LABEL_12:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  endedCopy = ended;
   v16.receiver = self;
   v16.super_class = SBPIPRotationGestureRecognizer;
-  [(SBPIPRotationGestureRecognizer *)&v16 touchesEnded:v6 withEvent:a4];
+  [(SBPIPRotationGestureRecognizer *)&v16 touchesEnded:endedCopy withEvent:event];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = endedCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
@@ -177,22 +177,22 @@ LABEL_12:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
+  movedCopy = moved;
   v18.receiver = self;
   v18.super_class = SBPIPRotationGestureRecognizer;
-  [(SBPIPRotationGestureRecognizer *)&v18 touchesMoved:v6 withEvent:a4];
+  [(SBPIPRotationGestureRecognizer *)&v18 touchesMoved:movedCopy withEvent:event];
   if (self->_failsPastHysteresis)
   {
-    v7 = [(SBPIPRotationGestureRecognizer *)self state];
+    state = [(SBPIPRotationGestureRecognizer *)self state];
     if (!self->_achievedMaximumAbsoluteAccumulatedMovement)
     {
-      v8 = SBTotalMovementForMovedTouches(self, v6) + self->_accumulatedMovement.x;
+      v8 = SBTotalMovementForMovedTouches(self, movedCopy) + self->_accumulatedMovement.x;
       v10 = v9 + self->_accumulatedMovement.y;
       self->_accumulatedMovement.x = v8;
       self->_accumulatedMovement.y = v10;
-      if (!v7)
+      if (!state)
       {
         x = self->_maximumAbsoluteAccumulatedMovement.x;
         v15 = x <= 0.0 || v8 < x;
@@ -206,10 +206,10 @@ LABEL_12:
       }
     }
 
-    v11 = [(SBPIPRotationGestureRecognizer *)self delegate];
-    v12 = v11;
-    v13 = self->_achievedMaximumAbsoluteAccumulatedMovement && v7 == 0;
-    if (v13 && [v11 gestureRecognizerShouldFailForMovementPastHysteresis:self])
+    delegate = [(SBPIPRotationGestureRecognizer *)self delegate];
+    v12 = delegate;
+    v13 = self->_achievedMaximumAbsoluteAccumulatedMovement && state == 0;
+    if (v13 && [delegate gestureRecognizerShouldFailForMovementPastHysteresis:self])
     {
       [(SBPIPRotationGestureRecognizer *)self setState:5];
     }

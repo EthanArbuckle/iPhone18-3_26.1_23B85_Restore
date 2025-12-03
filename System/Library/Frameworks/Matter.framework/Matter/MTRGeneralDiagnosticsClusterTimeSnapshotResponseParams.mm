@@ -1,9 +1,9 @@
 @interface MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)init;
-- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams);
-  v5 = [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)self systemTimeMs];
-  [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)v4 setSystemTimeMs:v5];
+  systemTimeMs = [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)self systemTimeMs];
+  [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)v4 setSystemTimeMs:systemTimeMs];
 
-  v6 = [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)self posixTimeMs];
-  [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)v4 setPosixTimeMs:v6];
+  posixTimeMs = [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)self posixTimeMs];
+  [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)v4 setPosixTimeMs:posixTimeMs];
 
   return v4;
 }
@@ -49,9 +49,9 @@
   return v6;
 }
 
-- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams;
   v7 = [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)&v17 init];
@@ -61,7 +61,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:51 commandID:2 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:51 commandID:2 error:error];
   if (v16)
   {
     sub_2393C5AAC(v15);
@@ -84,7 +84,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -95,7 +95,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams;
@@ -103,7 +103,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -119,14 +119,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*struct];
   [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)self setSystemTimeMs:v5];
 
-  if (*(a3 + 16))
+  if (*(struct + 16))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(a3 + 1)];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(struct + 1)];
     [(MTRGeneralDiagnosticsClusterTimeSnapshotResponseParams *)self setPosixTimeMs:v6];
   }
 

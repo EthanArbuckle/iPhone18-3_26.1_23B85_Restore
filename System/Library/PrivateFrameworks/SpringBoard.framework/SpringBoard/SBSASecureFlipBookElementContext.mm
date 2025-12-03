@@ -1,22 +1,22 @@
 @interface SBSASecureFlipBookElementContext
-- (id)copyBySettingClientIdentifier:(id)a3;
-- (id)copyBySettingElementIdentifier:(id)a3;
-- (id)copyBySettingRequestedComponentsToStates:(id)a3;
-- (id)copyBySettingRequestedConfigurationName:(id)a3;
-- (void)_setClientIdentifier:(id)a3;
-- (void)_setElementIdentifier:(id)a3;
-- (void)_setRequestedComponentsToStates:(id)a3;
-- (void)_setRequestedConfigurationName:(id)a3;
+- (id)copyBySettingClientIdentifier:(id)identifier;
+- (id)copyBySettingElementIdentifier:(id)identifier;
+- (id)copyBySettingRequestedComponentsToStates:(id)states;
+- (id)copyBySettingRequestedConfigurationName:(id)name;
+- (void)_setClientIdentifier:(id)identifier;
+- (void)_setElementIdentifier:(id)identifier;
+- (void)_setRequestedComponentsToStates:(id)states;
+- (void)_setRequestedConfigurationName:(id)name;
 @end
 
 @implementation SBSASecureFlipBookElementContext
 
-- (void)_setRequestedConfigurationName:(id)a3
+- (void)_setRequestedConfigurationName:(id)name
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"requestedConfigurationName"];
   }
 
@@ -28,26 +28,26 @@
   }
 }
 
-- (id)copyBySettingRequestedConfigurationName:(id)a3
+- (id)copyBySettingRequestedConfigurationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SBSASecureFlipBookElementContext_copyBySettingRequestedConfigurationName___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = nameCopy;
+  v5 = nameCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setRequestedComponentsToStates:(id)a3
+- (void)_setRequestedComponentsToStates:(id)states
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (states)
   {
-    v5 = [a3 copy];
+    v5 = [states copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"requestedComponentsToStates"];
   }
 
@@ -59,26 +59,26 @@
   }
 }
 
-- (id)copyBySettingRequestedComponentsToStates:(id)a3
+- (id)copyBySettingRequestedComponentsToStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__SBSASecureFlipBookElementContext_copyBySettingRequestedComponentsToStates___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = statesCopy;
+  v5 = statesCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setClientIdentifier:(id)a3
+- (void)_setClientIdentifier:(id)identifier
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"clientIdentifier"];
   }
 
@@ -90,26 +90,26 @@
   }
 }
 
-- (id)copyBySettingClientIdentifier:(id)a3
+- (id)copyBySettingClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SBSASecureFlipBookElementContext_copyBySettingClientIdentifier___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = identifierCopy;
+  v5 = identifierCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setElementIdentifier:(id)a3
+- (void)_setElementIdentifier:(id)identifier
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"elementIdentifier"];
   }
 
@@ -121,15 +121,15 @@
   }
 }
 
-- (id)copyBySettingElementIdentifier:(id)a3
+- (id)copyBySettingElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__SBSASecureFlipBookElementContext_copyBySettingElementIdentifier___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = identifierCopy;
+  v5 = identifierCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;

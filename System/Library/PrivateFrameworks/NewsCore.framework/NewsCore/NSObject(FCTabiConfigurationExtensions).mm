@@ -6,7 +6,7 @@
 
 - (id)indentedDescription
 {
-  v1 = [a1 description];
+  v1 = [self description];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
 
   return v2;

@@ -1,73 +1,73 @@
 @interface FAFamilySetupViewController
 - (BOOL)_isRunningInSettings;
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
-- (FAFamilySetupViewController)initWithAccount:(id)a3 grandSlamSigner:(id)a4 familyEligibilityResponse:(id)a5;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
+- (FAFamilySetupViewController)initWithAccount:(id)account grandSlamSigner:(id)signer familyEligibilityResponse:(id)response;
 - (id)_createCloseButton;
-- (id)_initWithAccount:(id)a3 grandSlamSigner:(id)a4 rootViewController:(id)a5;
+- (id)_initWithAccount:(id)account grandSlamSigner:(id)signer rootViewController:(id)controller;
 - (id)_urlForLaunchingSettings;
-- (id)initTrimmedFlowWithAccount:(id)a3 grandSlamSigner:(id)a4;
-- (void)_closeButtonWasTapped:(id)a3;
+- (id)initTrimmedFlowWithAccount:(id)account grandSlamSigner:(id)signer;
+- (void)_closeButtonWasTapped:(id)tapped;
 - (void)_hideActivitySpinnerInNavigationBar;
 - (void)_loadRemoteUIPages;
 - (void)_remoteUIDidCancel;
 - (void)_sendUserToiTunesSettings;
 - (void)_showActivitySpinnerInNavigationBar;
 - (void)dealloc;
-- (void)familySetupPage:(id)a3 didCompleteWithSuccess:(BOOL)a4;
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4;
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5;
-- (void)remoteUIControllerDidDismiss:(id)a3;
+- (void)familySetupPage:(id)page didCompleteWithSuccess:(BOOL)success;
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response;
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)remoteUIControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation FAFamilySetupViewController
 
-- (FAFamilySetupViewController)initWithAccount:(id)a3 grandSlamSigner:(id)a4 familyEligibilityResponse:(id)a5
+- (FAFamilySetupViewController)initWithAccount:(id)account grandSlamSigner:(id)signer familyEligibilityResponse:(id)response
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  responseCopy = response;
+  signerCopy = signer;
+  accountCopy = account;
   v11 = [FAFamilySetupGetStartedViewController alloc];
-  v12 = [v9 accountStore];
-  v13 = [(FAFamilySetupGetStartedViewController *)v11 initWithAccount:v10 store:v12 familyEligibilityResponse:v8];
+  accountStore = [signerCopy accountStore];
+  v13 = [(FAFamilySetupGetStartedViewController *)v11 initWithAccount:accountCopy store:accountStore familyEligibilityResponse:responseCopy];
 
-  v14 = [(FAFamilySetupViewController *)self _initWithAccount:v10 grandSlamSigner:v9 rootViewController:v13];
+  v14 = [(FAFamilySetupViewController *)self _initWithAccount:accountCopy grandSlamSigner:signerCopy rootViewController:v13];
   return v14;
 }
 
-- (id)initTrimmedFlowWithAccount:(id)a3 grandSlamSigner:(id)a4
+- (id)initTrimmedFlowWithAccount:(id)account grandSlamSigner:(id)signer
 {
-  v6 = a4;
-  v7 = a3;
+  signerCopy = signer;
+  accountCopy = account;
   v8 = [FAFamilySetupOrganizerViewController alloc];
-  v9 = [v6 accountStore];
-  v10 = [(FAFamilySetupOrganizerViewController *)v8 initWithAccount:v7 store:v9];
+  accountStore = [signerCopy accountStore];
+  v10 = [(FAFamilySetupOrganizerViewController *)v8 initWithAccount:accountCopy store:accountStore];
 
-  v11 = [(FAFamilySetupViewController *)self _initWithAccount:v7 grandSlamSigner:v6 rootViewController:v10];
+  v11 = [(FAFamilySetupViewController *)self _initWithAccount:accountCopy grandSlamSigner:signerCopy rootViewController:v10];
   return v11;
 }
 
-- (id)_initWithAccount:(id)a3 grandSlamSigner:(id)a4 rootViewController:(id)a5
+- (id)_initWithAccount:(id)account grandSlamSigner:(id)signer rootViewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  signerCopy = signer;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = FAFamilySetupViewController;
-  v12 = [(FAFamilySetupViewController *)&v18 initWithRootViewController:v11];
+  v12 = [(FAFamilySetupViewController *)&v18 initWithRootViewController:controllerCopy];
   if (v12)
   {
-    [v11 setDelegate:v12];
-    v13 = [v11 navigationItem];
-    v14 = [(FAFamilySetupViewController *)v12 _createCloseButton];
-    [v13 setRightBarButtonItem:v14];
+    [controllerCopy setDelegate:v12];
+    navigationItem = [controllerCopy navigationItem];
+    _createCloseButton = [(FAFamilySetupViewController *)v12 _createCloseButton];
+    [navigationItem setRightBarButtonItem:_createCloseButton];
 
-    objc_storeStrong(&v12->_account, a3);
-    v15 = [v10 accountStore];
+    objc_storeStrong(&v12->_account, account);
+    accountStore = [signerCopy accountStore];
     accountStore = v12->_accountStore;
-    v12->_accountStore = v15;
+    v12->_accountStore = accountStore;
 
-    objc_storeStrong(&v12->_grandSlamSigner, a4);
+    objc_storeStrong(&v12->_grandSlamSigner, signer);
   }
 
   return v12;
@@ -91,18 +91,18 @@
   v5.receiver = self;
   v5.super_class = FAFamilySetupViewController;
   [(AAUIBleachedNavigationController *)&v5 viewDidLoad];
-  v3 = [(FAFamilySetupViewController *)self navigationBar];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  [v3 setTintColor:v4];
+  navigationBar = [(FAFamilySetupViewController *)self navigationBar];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [navigationBar setTintColor:systemBlueColor];
 }
 
-- (void)familySetupPage:(id)a3 didCompleteWithSuccess:(BOOL)a4
+- (void)familySetupPage:(id)page didCompleteWithSuccess:(BOOL)success
 {
-  v9 = a3;
-  if (!a4)
+  pageCopy = page;
+  if (!success)
   {
-    v6 = [(FAFamilySetupViewController *)self delegate];
-    [(FAFamilySetupOrganizerViewController *)v6 familySetupViewController:self didCompleteWithSuccess:0];
+    delegate = [(FAFamilySetupViewController *)self delegate];
+    [(FAFamilySetupOrganizerViewController *)delegate familySetupViewController:self didCompleteWithSuccess:0];
 LABEL_6:
 
     goto LABEL_7;
@@ -113,19 +113,19 @@ LABEL_6:
   {
     if ([(FAFamilySetupViewController *)self _isRunningInSettings])
     {
-      v6 = [[FAFamilySetupOrganizerViewController alloc] initWithAccount:self->_account store:self->_accountStore];
-      [(FAFamilySetupOrganizerViewController *)v6 setDelegate:self];
-      [(FAFamilySetupViewController *)self pushViewController:v6 animated:1];
+      delegate = [[FAFamilySetupOrganizerViewController alloc] initWithAccount:self->_account store:self->_accountStore];
+      [(FAFamilySetupOrganizerViewController *)delegate setDelegate:self];
+      [(FAFamilySetupViewController *)self pushViewController:delegate animated:1];
     }
 
     else
     {
-      v7 = [(FAFamilySetupViewController *)self delegate];
-      [v7 familySetupViewController:self didCompleteWithSuccess:1];
+      delegate2 = [(FAFamilySetupViewController *)self delegate];
+      [delegate2 familySetupViewController:self didCompleteWithSuccess:1];
 
-      v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      v8 = [(FAFamilySetupViewController *)self _urlForLaunchingSettings];
-      [(FAFamilySetupOrganizerViewController *)v6 openSensitiveURL:v8 withOptions:0];
+      delegate = [MEMORY[0x277CC1E80] defaultWorkspace];
+      _urlForLaunchingSettings = [(FAFamilySetupViewController *)self _urlForLaunchingSettings];
+      [(FAFamilySetupOrganizerViewController *)delegate openSensitiveURL:_urlForLaunchingSettings withOptions:0];
     }
 
     goto LABEL_6;
@@ -142,9 +142,9 @@ LABEL_7:
 
 - (BOOL)_isRunningInSettings
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.Preferences"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.Preferences"];
 
   return v4;
 }
@@ -167,10 +167,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)_closeButtonWasTapped:(id)a3
+- (void)_closeButtonWasTapped:(id)tapped
 {
-  v4 = [(FAFamilySetupViewController *)self topViewController];
-  [(FAFamilySetupViewController *)self familySetupPage:v4 didCompleteWithSuccess:0];
+  topViewController = [(FAFamilySetupViewController *)self topViewController];
+  [(FAFamilySetupViewController *)self familySetupPage:topViewController didCompleteWithSuccess:0];
 }
 
 - (void)_showActivitySpinnerInNavigationBar
@@ -189,14 +189,14 @@ LABEL_7:
   {
     [(UIActivityIndicatorView *)self->_spinnerView startAnimating];
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:self->_spinnerView];
-    v9 = [(FAFamilySetupViewController *)self topViewController];
-    v10 = [v9 navigationItem];
+    topViewController = [(FAFamilySetupViewController *)self topViewController];
+    navigationItem = [topViewController navigationItem];
     navigationItemShowingSpinner = self->_navigationItemShowingSpinner;
-    self->_navigationItemShowingSpinner = v10;
+    self->_navigationItemShowingSpinner = navigationItem;
 
-    v12 = [(UINavigationItem *)self->_navigationItemShowingSpinner rightBarButtonItems];
+    rightBarButtonItems = [(UINavigationItem *)self->_navigationItemShowingSpinner rightBarButtonItems];
     originalRightBarButtonItems = self->_originalRightBarButtonItems;
-    self->_originalRightBarButtonItems = v12;
+    self->_originalRightBarButtonItems = rightBarButtonItems;
 
     [(UINavigationItem *)self->_navigationItemShowingSpinner setRightBarButtonItem:v8];
 LABEL_8:
@@ -205,10 +205,10 @@ LABEL_8:
   }
 
   v5 = self->_navigationItemShowingSpinner;
-  v6 = [(FAFamilySetupViewController *)self topViewController];
-  v7 = [v6 navigationItem];
+  topViewController2 = [(FAFamilySetupViewController *)self topViewController];
+  navigationItem2 = [topViewController2 navigationItem];
 
-  if (v5 != v7)
+  if (v5 != navigationItem2)
   {
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -275,13 +275,13 @@ LABEL_8:
 {
   v15 = *MEMORY[0x277D85DE8];
   [(FAFamilySetupViewController *)self _showActivitySpinnerInNavigationBar];
-  v3 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v4 = [v3 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
   v5 = [(AAFamilyRequest *)[FAFamilySetupBuddyMLRequest alloc] initWithGrandSlamSigner:self->_grandSlamSigner];
-  [(FAFamilySetupBuddyMLRequest *)v5 setiTunesAccount:v4];
-  v6 = [(FAFamilySetupBuddyMLRequest *)v5 urlRequest];
-  v7 = [v6 mutableCopy];
+  [(FAFamilySetupBuddyMLRequest *)v5 setiTunesAccount:ams_activeiTunesAccount];
+  urlRequest = [(FAFamilySetupBuddyMLRequest *)v5 urlRequest];
+  v7 = [urlRequest mutableCopy];
   startRemoteUIRequest = self->_startRemoteUIRequest;
   self->_startRemoteUIRequest = v7;
 
@@ -322,32 +322,32 @@ void __49__FAFamilySetupViewController__loadRemoteUIPages__block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally
 {
   v5 = MEMORY[0x277D46210];
-  v6 = a4;
-  v7 = [v5 setupAssistantModalStyle];
-  [v7 applyToObjectModel:v6];
+  modelCopy = model;
+  setupAssistantModalStyle = [v5 setupAssistantModalStyle];
+  [setupAssistantModalStyle applyToObjectModel:modelCopy];
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
-  v7 = a4;
-  objc_storeStrong(&self->_currentRemoteUIRequest, a4);
-  if (self->_startRemoteUIRequest == v7)
+  requestCopy = request;
+  objc_storeStrong(&self->_currentRemoteUIRequest, request);
+  if (self->_startRemoteUIRequest == requestCopy)
   {
     goto LABEL_8;
   }
 
-  v8 = [(NSMutableURLRequest *)v7 URL];
-  v9 = [v8 absoluteString];
-  v10 = [v9 containsString:@"prefs:itunes"];
+  v8 = [(NSMutableURLRequest *)requestCopy URL];
+  absoluteString = [v8 absoluteString];
+  v10 = [absoluteString containsString:@"prefs:itunes"];
 
   if (!v10)
   {
-    v11 = [(NSMutableURLRequest *)v7 URL];
-    v12 = [v11 absoluteString];
-    v13 = [v12 containsString:@"prefs:icloud"];
+    v11 = [(NSMutableURLRequest *)requestCopy URL];
+    absoluteString2 = [v11 absoluteString];
+    v13 = [absoluteString2 containsString:@"prefs:icloud"];
 
     if (v13)
     {
@@ -361,22 +361,22 @@ void __49__FAFamilySetupViewController__loadRemoteUIPages__block_invoke(uint64_t
     block[3] = &unk_2782F29E8;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    [(NSMutableURLRequest *)v7 aa_addBasicAuthorizationHeaderWithAccount:self->_account preferUsingPassword:0];
-    [(NSMutableURLRequest *)v7 aa_addLoggedInAppleIDHeaderWithAccount:self->_account];
-    v15 = [MEMORY[0x277CEC7B8] clientInfoHeader];
-    [(NSMutableURLRequest *)v7 setValue:v15 forHTTPHeaderField:@"X-MMe-Client-Info"];
+    [(NSMutableURLRequest *)requestCopy aa_addBasicAuthorizationHeaderWithAccount:self->_account preferUsingPassword:0];
+    [(NSMutableURLRequest *)requestCopy aa_addLoggedInAppleIDHeaderWithAccount:self->_account];
+    clientInfoHeader = [MEMORY[0x277CEC7B8] clientInfoHeader];
+    [(NSMutableURLRequest *)requestCopy setValue:clientInfoHeader forHTTPHeaderField:@"X-MMe-Client-Info"];
 
-    v16 = [MEMORY[0x277CBEAF8] currentLocale];
-    v17 = [v16 objectForKey:*MEMORY[0x277CBE690]];
-    v18 = [v17 uppercaseString];
-    [(NSMutableURLRequest *)v7 setValue:v18 forHTTPHeaderField:@"X-MMe-Country"];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v17 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+    uppercaseString = [v17 uppercaseString];
+    [(NSMutableURLRequest *)requestCopy setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
-    [(NSMutableURLRequest *)v7 aa_addDeviceInternalDevHeaderIfEnabled];
-    [(NSMutableURLRequest *)v7 aa_addDeviceIDHeader];
-    [(NSMutableURLRequest *)v7 aa_addLocationSharingAllowedHeader];
-    [(AAGrandSlamSigner *)self->_grandSlamSigner signURLRequest:v7 isUserInitiated:1];
+    [(NSMutableURLRequest *)requestCopy aa_addDeviceInternalDevHeaderIfEnabled];
+    [(NSMutableURLRequest *)requestCopy aa_addDeviceIDHeader];
+    [(NSMutableURLRequest *)requestCopy aa_addLocationSharingAllowedHeader];
+    [(AAGrandSlamSigner *)self->_grandSlamSigner signURLRequest:requestCopy isUserInitiated:1];
 LABEL_8:
-    [(NSMutableURLRequest *)v7 setValue:@"true" forHTTPHeaderField:@"X-MMe-Family-Setup"];
+    [(NSMutableURLRequest *)requestCopy setValue:@"true" forHTTPHeaderField:@"X-MMe-Family-Setup"];
     v14 = 1;
     goto LABEL_9;
   }
@@ -389,16 +389,16 @@ LABEL_9:
   return v14;
 }
 
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response
 {
-  v5 = a4;
+  responseCopy = response;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__FAFamilySetupViewController_remoteUIController_didReceiveHTTPResponse___block_invoke;
   block[3] = &unk_2782F29E8;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  if ([v5 statusCode] == 401)
+  if ([responseCopy statusCode] == 401)
   {
     v6 = _AALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -410,7 +410,7 @@ LABEL_9:
     [(ACAccountStore *)self->_accountStore renewCredentialsForAccount:self->_account force:1 reason:0 completion:&__block_literal_global_85];
   }
 
-  else if ([(NSMutableURLRequest *)self->_currentRemoteUIRequest aa_addDeviceProvisioningInfoHeadersWithDSIDFromReponse:v5])
+  else if ([(NSMutableURLRequest *)self->_currentRemoteUIRequest aa_addDeviceProvisioningInfoHeadersWithDSIDFromReponse:responseCopy])
   {
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -458,22 +458,22 @@ void __73__FAFamilySetupViewController_remoteUIController_didReceiveHTTPResponse
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIControllerDidDismiss:(id)a3
+- (void)remoteUIControllerDidDismiss:(id)dismiss
 {
-  v4 = [(FAFamilySetupViewController *)self delegate];
-  [v4 familySetupViewController:self didCompleteWithSuccess:1];
+  delegate = [(FAFamilySetupViewController *)self delegate];
+  [delegate familySetupViewController:self didCompleteWithSuccess:1];
 }
 
 - (void)_remoteUIDidCancel
 {
-  v3 = [(FAFamilySetupViewController *)self delegate];
-  [v3 familySetupViewController:self didCompleteWithSuccess:0];
+  delegate = [(FAFamilySetupViewController *)self delegate];
+  [delegate familySetupViewController:self didCompleteWithSuccess:0];
 }
 
 - (void)_sendUserToiTunesSettings
 {
-  v3 = [(FAFamilySetupViewController *)self delegate];
-  [v3 familySetupViewController:self didCompleteWithSuccess:0];
+  delegate = [(FAFamilySetupViewController *)self delegate];
+  [delegate familySetupViewController:self didCompleteWithSuccess:0];
 
   v4 = dispatch_time(0, 500000000);
   v5 = MEMORY[0x277D85CD0];

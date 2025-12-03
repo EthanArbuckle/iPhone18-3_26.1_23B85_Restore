@@ -1,19 +1,19 @@
 @interface CVNLPTextDecodingConfiguration
-+ (id)defaultCommitActionBehaviorForLocale:(id)a3;
-- (CVNLPTextDecodingConfiguration)initWithCommitActionBehavior:(id)a3;
++ (id)defaultCommitActionBehaviorForLocale:(id)locale;
+- (CVNLPTextDecodingConfiguration)initWithCommitActionBehavior:(id)behavior;
 @end
 
 @implementation CVNLPTextDecodingConfiguration
 
-- (CVNLPTextDecodingConfiguration)initWithCommitActionBehavior:(id)a3
+- (CVNLPTextDecodingConfiguration)initWithCommitActionBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v9.receiver = self;
   v9.super_class = CVNLPTextDecodingConfiguration;
   v5 = [(CVNLPTextDecodingConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x1DA741A60](v4);
+    v6 = MEMORY[0x1DA741A60](behaviorCopy);
     commitActionBlock = v5->_commitActionBlock;
     v5->_commitActionBlock = v6;
   }
@@ -21,10 +21,10 @@
   return v5;
 }
 
-+ (id)defaultCommitActionBehaviorForLocale:(id)a3
++ (id)defaultCommitActionBehaviorForLocale:(id)locale
 {
-  v3 = a3;
-  v7 = objc_msgSend_languageCode(v3, v4, v5, v6);
+  localeCopy = locale;
+  v7 = objc_msgSend_languageCode(localeCopy, v4, v5, v6);
   isEqualToString = objc_msgSend_isEqualToString_(v7, v8, @"zh", v9);
 
   if (isEqualToString)

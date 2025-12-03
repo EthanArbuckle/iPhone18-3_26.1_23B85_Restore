@@ -1,27 +1,27 @@
 @interface NCNotificationManagementCuratedContactMatchSuggestionContentProvider
-- (NCNotificationManagementCuratedContactMatchSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 contactName:(id)a7;
+- (NCNotificationManagementCuratedContactMatchSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate contactName:(id)contactName;
 - (id)auxiliaryOptionActions;
-- (void)handleConfirmAction:(id)a3;
-- (void)handleRejectAction:(id)a3;
+- (void)handleConfirmAction:(id)action;
+- (void)handleRejectAction:(id)action;
 @end
 
 @implementation NCNotificationManagementCuratedContactMatchSuggestionContentProvider
 
-- (NCNotificationManagementCuratedContactMatchSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 contactName:(id)a7
+- (NCNotificationManagementCuratedContactMatchSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate contactName:(id)contactName
 {
-  v12 = a4;
-  v13 = a7;
+  nameCopy = name;
+  contactNameCopy = contactName;
   v20.receiver = self;
   v20.super_class = NCNotificationManagementCuratedContactMatchSuggestionContentProvider;
-  v14 = [(NCNotificationManagementSuggestionContentProvider *)&v20 initWithNotificationRequest:a3 bundleDisplayName:v12 managementDelegate:a5 suggestionDelegate:a6];
+  v14 = [(NCNotificationManagementSuggestionContentProvider *)&v20 initWithNotificationRequest:request bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate];
   if (v14)
   {
     v15 = MEMORY[0x277CCACA8];
     v16 = NCUserNotificationsUIKitFrameworkBundle();
     v17 = [v16 localizedStringForKey:@"NOTIFICATION_REMOTE_MANAGEMENT_CONTACT_SUGGESTION" value:&stru_282FE84F8 table:0];
-    v18 = [v15 stringWithFormat:v17, v13, v12];
+    nameCopy = [v15 stringWithFormat:v17, contactNameCopy, nameCopy];
 
-    [(NCNotificationManagementSuggestionContentProvider *)v14 setAuxiliaryOptionsSummaryText:v18];
+    [(NCNotificationManagementSuggestionContentProvider *)v14 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v14;
@@ -80,24 +80,24 @@ void __94__NCNotificationManagementCuratedContactMatchSuggestionContentProvider_
   [WeakRetained handleRejectAction:v4];
 }
 
-- (void)handleConfirmAction:(id)a3
+- (void)handleConfirmAction:(id)action
 {
-  v6 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v6 notificationManagementContentProvider:self setCuratedContactSuggestionConfirmed:1 request:v4];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self setCuratedContactSuggestionConfirmed:1 request:notificationRequest];
 
-  v5 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v6 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v5];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
-- (void)handleRejectAction:(id)a3
+- (void)handleRejectAction:(id)action
 {
-  v6 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v6 notificationManagementContentProvider:self setCuratedContactSuggestionConfirmed:0 request:v4];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self setCuratedContactSuggestionConfirmed:0 request:notificationRequest];
 
-  v5 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v6 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v5];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
 @end

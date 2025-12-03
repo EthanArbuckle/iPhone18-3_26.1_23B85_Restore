@@ -2,43 +2,43 @@
 - (BOOL)empty;
 - (NSString)name;
 - (RWIProtocolDebuggerLocation)location;
-- (RWIProtocolDebuggerScope)initWithObject:(id)a3 type:(int64_t)a4;
+- (RWIProtocolDebuggerScope)initWithObject:(id)object type:(int64_t)type;
 - (RWIProtocolRuntimeRemoteObject)object;
 - (int64_t)type;
-- (void)setLocation:(id)a3;
-- (void)setName:(id)a3;
-- (void)setObject:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)setLocation:(id)location;
+- (void)setName:(id)name;
+- (void)setObject:(id)object;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation RWIProtocolDebuggerScope
 
-- (RWIProtocolDebuggerScope)initWithObject:(id)a3 type:(int64_t)a4
+- (RWIProtocolDebuggerScope)initWithObject:(id)object type:(int64_t)type
 {
-  v6 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = RWIProtocolDebuggerScope;
   v7 = [(RWIProtocolJSONObject *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!objectCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"object"}];
     }
 
-    [(RWIProtocolDebuggerScope *)v7 setObject:v6];
-    [(RWIProtocolDebuggerScope *)v7 setType:a4];
+    [(RWIProtocolDebuggerScope *)v7 setObject:objectCopy];
+    [(RWIProtocolDebuggerScope *)v7 setType:type];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerScope;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"object"];
+  [(RWIProtocolJSONObject *)&v3 setObject:object forKey:@"object"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)object
@@ -96,7 +96,7 @@
   return v7;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -164,11 +164,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerScope;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -180,11 +180,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerScope;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"location"];
+  [(RWIProtocolJSONObject *)&v3 setObject:location forKey:@"location"];
 }
 
 - (RWIProtocolDebuggerLocation)location

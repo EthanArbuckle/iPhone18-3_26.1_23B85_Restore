@@ -27,15 +27,15 @@
 
 - (id)cmsCoded
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_2856BA9F0;
   v2 = objc_msgSendSuper2(&v8, sel_cmsCoded);
   [v2 setObject:@"UpdateMediaAffinityIntentResponse" forKey:@"class"];
-  v3 = [a1 userActivity];
-  v4 = v3;
-  if (v3)
+  userActivity = [self userActivity];
+  v4 = userActivity;
+  if (userActivity)
   {
-    [v3 cmsCoded];
+    [userActivity cmsCoded];
   }
 
   else
@@ -45,7 +45,7 @@
   v5 = ;
   [v2 setObject:v5 forKey:@"userActivity"];
 
-  v6 = INUpdateMediaAffinityIntentResponseCodeToString([a1 code]);
+  v6 = INUpdateMediaAffinityIntentResponseCodeToString([self code]);
   [v2 setObject:v6 forKey:@"code"];
 
   return v2;

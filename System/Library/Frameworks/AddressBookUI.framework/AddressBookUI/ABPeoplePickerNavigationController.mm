@@ -1,14 +1,14 @@
 @interface ABPeoplePickerNavigationController
-- (ABPeoplePickerNavigationController)initWithAddressBook:(void *)a3;
+- (ABPeoplePickerNavigationController)initWithAddressBook:(void *)book;
 - (BOOL)_allowsAutorotation;
 - (BOOL)_isDelayingPresentation;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (id)contactStore;
 - (id)displayedPropertyKeys;
 - (void)_endDelayingPresentation;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)dealloc;
 - (void)setAddressBook:(ABAddressBookRef)addressBook;
 - (void)setupViewControllers;
@@ -16,7 +16,7 @@
 
 @implementation ABPeoplePickerNavigationController
 
-- (ABPeoplePickerNavigationController)initWithAddressBook:(void *)a3
+- (ABPeoplePickerNavigationController)initWithAddressBook:(void *)book
 {
   v7.receiver = self;
   v7.super_class = ABPeoplePickerNavigationController;
@@ -28,9 +28,9 @@
       NSLog(&cfstr_Abpeoplepicker.isa);
     }
 
-    if (a3)
+    if (book)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(book);
     }
 
     else
@@ -95,9 +95,9 @@
 
 - (id)displayedPropertyKeys
 {
-  v2 = [(ABPeoplePickerNavigationController *)self displayedProperties];
+  displayedProperties = [(ABPeoplePickerNavigationController *)self displayedProperties];
 
-  return [(NSArray *)v2 _cn_map:&__block_literal_global_0];
+  return [(NSArray *)displayedProperties _cn_map:&__block_literal_global_0];
 }
 
 uint64_t __59__ABPeoplePickerNavigationController_displayedPropertyKeys__block_invoke(uint64_t a1, void *a2)
@@ -108,9 +108,9 @@ uint64_t __59__ABPeoplePickerNavigationController_displayedPropertyKeys__block_i
   return [v2 contactPropertyKeyFromPublicABPropertyID:v3];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_contactPicker_didSelectContactProperty_ == a3 || sel_contactPicker_didSelectContact_ == a3)
+  if (sel_contactPicker_didSelectContactProperty_ == selector || sel_contactPicker_didSelectContact_ == selector)
   {
     [(ABPeoplePickerNavigationController *)self peoplePickerDelegate];
     v3 = objc_opt_respondsToSelector();
@@ -130,13 +130,13 @@ uint64_t __59__ABPeoplePickerNavigationController_displayedPropertyKeys__block_i
 {
   v4.receiver = self;
   v4.super_class = ABPeoplePickerNavigationController;
-  v2 = [(ABPeoplePickerNavigationController *)&v4 _allowsAutorotation];
-  if (v2)
+  _allowsAutorotation = [(ABPeoplePickerNavigationController *)&v4 _allowsAutorotation];
+  if (_allowsAutorotation)
   {
-    LOBYTE(v2) = ABAddressBookShouldAllowAutorotation();
+    LOBYTE(_allowsAutorotation) = ABAddressBookShouldAllowAutorotation();
   }
 
-  return v2;
+  return _allowsAutorotation;
 }
 
 - (BOOL)_isDelayingPresentation
@@ -186,47 +186,47 @@ uint64_t __59__ABPeoplePickerNavigationController_displayedPropertyKeys__block_i
 - (id)contactStore
 {
   v2 = MEMORY[0x277CBDAB8];
-  v3 = [(ABPeoplePickerNavigationController *)self addressBook];
+  addressBook = [(ABPeoplePickerNavigationController *)self addressBook];
 
-  return [v2 contactStoreForPublicAddressBook:v3];
+  return [v2 contactStoreForPublicAddressBook:addressBook];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   _CNUILog();
   peoplePickerDelegate = self->_peoplePickerDelegate;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(ABPeoplePickerNavigationController *)self contactStore];
-    if (!v7)
+    contactStore = [(ABPeoplePickerNavigationController *)self contactStore];
+    if (!contactStore)
     {
-      v7 = objc_alloc_init(MEMORY[0x277CBDAB8]);
+      contactStore = objc_alloc_init(MEMORY[0x277CBDAB8]);
     }
 
-    v9 = [(ABPeoplePickerNavigationController *)self addressBook];
-    [self->_peoplePickerDelegate peoplePickerNavigationController:self didSelectPerson:{objc_msgSend(v7, "publicABPersonFromContact:publicAddressBook:", a4, &v9)}];
+    addressBook = [(ABPeoplePickerNavigationController *)self addressBook];
+    [self->_peoplePickerDelegate peoplePickerNavigationController:self didSelectPerson:{objc_msgSend(contactStore, "publicABPersonFromContact:publicAddressBook:", contact, &addressBook)}];
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
   _CNUILog();
   peoplePickerDelegate = self->_peoplePickerDelegate;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(ABPeoplePickerNavigationController *)self contactStore];
-    if (!v7)
+    contactStore = [(ABPeoplePickerNavigationController *)self contactStore];
+    if (!contactStore)
     {
-      v7 = objc_alloc_init(MEMORY[0x277CBDAB8]);
+      contactStore = objc_alloc_init(MEMORY[0x277CBDAB8]);
     }
 
-    v10 = [(ABPeoplePickerNavigationController *)self addressBook];
-    v8 = [v7 publicABPersonFromContact:objc_msgSend(a4 publicAddressBook:{"contact"), &v10}];
-    [self->_peoplePickerDelegate peoplePickerNavigationController:self didSelectPerson:v8 property:objc_msgSend(MEMORY[0x277CBDA58] identifier:{"publicABPropertyIDFromContactPropertyKey:", objc_msgSend(a4, "key")), objc_msgSend(v7, "publicMultiValueIdentifierFromLabeledValue:", objc_msgSend(a4, "labeledValue"))}];
+    addressBook = [(ABPeoplePickerNavigationController *)self addressBook];
+    v8 = [contactStore publicABPersonFromContact:objc_msgSend(property publicAddressBook:{"contact"), &addressBook}];
+    [self->_peoplePickerDelegate peoplePickerNavigationController:self didSelectPerson:v8 property:objc_msgSend(MEMORY[0x277CBDA58] identifier:{"publicABPropertyIDFromContactPropertyKey:", objc_msgSend(property, "key")), objc_msgSend(contactStore, "publicMultiValueIdentifierFromLabeledValue:", objc_msgSend(property, "labeledValue"))}];
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   _CNUILog();
   peoplePickerDelegate = self->_peoplePickerDelegate;

@@ -8,20 +8,20 @@
 
 + (void)start
 {
-  v2 = [getAXMDataSonificationManagerClass() sharedManager];
-  [v2 beginLiveModeSession];
+  sharedManager = [getAXMDataSonificationManagerClass() sharedManager];
+  [sharedManager beginLiveModeSession];
 }
 
 + (void)updateValue:(double)value
 {
-  v4 = [getAXMDataSonificationManagerClass() sharedManager];
-  [v4 setLiveModeValue:value];
+  sharedManager = [getAXMDataSonificationManagerClass() sharedManager];
+  [sharedManager setLiveModeValue:value];
 }
 
 + (void)stop
 {
-  v2 = [getAXMDataSonificationManagerClass() sharedManager];
-  [v2 endLiveModeSession];
+  sharedManager = [getAXMDataSonificationManagerClass() sharedManager];
+  [sharedManager endLiveModeSession];
 }
 
 @end

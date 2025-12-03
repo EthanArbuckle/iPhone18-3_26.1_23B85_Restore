@@ -1,33 +1,33 @@
 @interface RTMapItemProviderCurrentPOI
-- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5 visitStore:(id)a6;
-- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5 visitStore:(id)a6 parameters:(id)a7;
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4;
+- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store visitStore:(id)visitStore;
+- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store visitStore:(id)visitStore parameters:(id)parameters;
+- (id)mapItemsWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation RTMapItemProviderCurrentPOI
 
-- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5 visitStore:(id)a6
+- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store visitStore:(id)visitStore
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[RTMapItemProviderCurrentPOIParameters alloc] initWithDefaultsManager:v13];
-  v15 = [(RTMapItemProviderCurrentPOI *)self initWithDefaultsManager:v13 distanceCalculator:v12 placeInferenceQueryStore:v11 visitStore:v10 parameters:v14];
+  visitStoreCopy = visitStore;
+  storeCopy = store;
+  calculatorCopy = calculator;
+  managerCopy = manager;
+  v14 = [[RTMapItemProviderCurrentPOIParameters alloc] initWithDefaultsManager:managerCopy];
+  v15 = [(RTMapItemProviderCurrentPOI *)self initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy placeInferenceQueryStore:storeCopy visitStore:visitStoreCopy parameters:v14];
 
   return v15;
 }
 
-- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5 visitStore:(id)a6 parameters:(id)a7
+- (RTMapItemProviderCurrentPOI)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store visitStore:(id)visitStore parameters:(id)parameters
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v12)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  storeCopy = store;
+  visitStoreCopy = visitStore;
+  parametersCopy = parameters;
+  v17 = parametersCopy;
+  if (!managerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v13)
+  if (!calculatorCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v14)
+  if (!storeCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -68,7 +68,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v15)
+  if (!visitStoreCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v16)
+  if (!parametersCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -93,19 +93,19 @@ LABEL_22:
 
 LABEL_23:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
   v26.receiver = self;
   v26.super_class = RTMapItemProviderCurrentPOI;
-  v18 = [(RTMapItemProviderBase *)&v26 initWithDefaultsManager:v12 distanceCalculator:v13];
+  v18 = [(RTMapItemProviderBase *)&v26 initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy];
   p_isa = &v18->super.super.isa;
   if (v18)
   {
-    objc_storeStrong(&v18->_placeInferenceQueryStore, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v18->_placeInferenceQueryStore, store);
+    objc_storeStrong(p_isa + 4, visitStore);
+    objc_storeStrong(p_isa + 5, parameters);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v20 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -120,15 +120,15 @@ LABEL_23:
   }
 
   self = p_isa;
-  v22 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v22;
+  return selfCopy;
 }
 
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4
+- (id)mapItemsWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
   v59 = 0;
@@ -144,7 +144,7 @@ LABEL_24:
   v56 = __Block_byref_object_copy__55;
   v57 = __Block_byref_object_dispose__55;
   v58 = 0;
-  v8 = [(RTMapItemProviderCurrentPOI *)self visitStore];
+  visitStore = [(RTMapItemProviderCurrentPOI *)self visitStore];
   v9 = objc_alloc(MEMORY[0x277D01340]);
   v10 = *MEMORY[0x277D01470];
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01470]];
@@ -155,13 +155,13 @@ LABEL_24:
   v47[2] = __57__RTMapItemProviderCurrentPOI_mapItemsWithOptions_error___block_invoke;
   v47[3] = &unk_2788C9720;
   v52 = a2;
-  v14 = v6;
+  v14 = optionsCopy;
   v48 = v14;
   v50 = &v53;
   v15 = v7;
   v49 = v15;
   v51 = &v59;
-  [v8 fetchVisitsWithOptions:v13 handler:v47];
+  [visitStore fetchVisitsWithOptions:v13 handler:v47];
 
   v41 = 0;
   v42 = &v41;
@@ -170,7 +170,7 @@ LABEL_24:
   v45 = __Block_byref_object_dispose__55;
   v46 = 0;
   dispatch_group_enter(v15);
-  v16 = [(RTMapItemProviderCurrentPOI *)self visitStore];
+  visitStore2 = [(RTMapItemProviderCurrentPOI *)self visitStore];
   v17 = objc_alloc(MEMORY[0x277D01340]);
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
   v19 = [MEMORY[0x277CBEB98] setWithObject:&unk_28459DBA8];
@@ -185,10 +185,10 @@ LABEL_24:
   v39 = &v41;
   v22 = v15;
   v36 = v22;
-  v37 = self;
+  selfCopy = self;
   v23 = v32;
   v38 = v23;
-  [v16 fetchVisitsWithOptions:v20 handler:v34];
+  [visitStore2 fetchVisitsWithOptions:v20 handler:v34];
 
   dispatch_group_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
   if (!v54[5] && !v42[5])
@@ -198,32 +198,32 @@ LABEL_24:
       [v23 addObject:?];
     }
 
-    v24 = [v21 location];
-    v29 = [(RTMapItemProviderCurrentPOI *)self parameters];
-    [v29 distanceThreshold];
+    location = [v21 location];
+    parameters = [(RTMapItemProviderCurrentPOI *)self parameters];
+    [parameters distanceThreshold];
     v31 = v30;
 
-    v27 = a4;
-    v26 = [(RTMapItemProviderBase *)self filterInferredMapItems:v23 byDistance:v24 fromLocation:a4 error:v31];
-    if (!a4)
+    errorCopy2 = error;
+    v26 = [(RTMapItemProviderBase *)self filterInferredMapItems:v23 byDistance:location fromLocation:error error:v31];
+    if (!error)
     {
       goto LABEL_6;
     }
 
     v25 = 0;
 LABEL_5:
-    *v27 = v25;
+    *errorCopy2 = v25;
 LABEL_6:
 
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
-    v24 = _RTSafeArray();
+    location = _RTSafeArray();
     v25 = _RTMultiErrorCreate();
     v26 = 0;
-    v27 = a4;
+    errorCopy2 = error;
     goto LABEL_5;
   }
 

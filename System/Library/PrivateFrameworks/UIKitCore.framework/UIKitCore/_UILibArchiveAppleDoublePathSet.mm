@@ -1,10 +1,10 @@
 @interface _UILibArchiveAppleDoublePathSet
-+ (BOOL)isPossibleAppleDoubleByApplyingMatchingHeuristicToItem:(id)a3;
-- (BOOL)isConfirmedExactAppleDoubleItem:(id)a3;
++ (BOOL)isPossibleAppleDoubleByApplyingMatchingHeuristicToItem:(id)item;
+- (BOOL)isConfirmedExactAppleDoubleItem:(id)item;
 - (_UILibArchiveAppleDoublePathSet)init;
-- (id)pathToRealFileIfConfirmedAppleDoubleItem:(id)a3;
-- (void)confirmExactAppleDoubleFilesAppearingAfterRealFilesByPrescanningArchivePath:(id)a3;
-- (void)confirmExactAppleDoubleFilesForItem:(id)a3;
+- (id)pathToRealFileIfConfirmedAppleDoubleItem:(id)item;
+- (void)confirmExactAppleDoubleFilesAppearingAfterRealFilesByPrescanningArchivePath:(id)path;
+- (void)confirmExactAppleDoubleFilesForItem:(id)item;
 @end
 
 @implementation _UILibArchiveAppleDoublePathSet
@@ -28,14 +28,14 @@
   return v2;
 }
 
-- (void)confirmExactAppleDoubleFilesAppearingAfterRealFilesByPrescanningArchivePath:(id)a3
+- (void)confirmExactAppleDoubleFilesAppearingAfterRealFilesByPrescanningArchivePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v5 = [[_UILibArchiveStreamingReader alloc] initForReadingArchivePath:v4];
+  v5 = [[_UILibArchiveStreamingReader alloc] initForReadingArchivePath:pathCopy];
   [v5 setAppleDoubleIdentificationType:0];
   [v5 open];
   v6[0] = MEMORY[0x1E69E9820];
@@ -54,10 +54,10 @@
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)confirmExactAppleDoubleFilesForItem:(id)a3
+- (void)confirmExactAppleDoubleFilesForItem:(id)item
 {
-  v4 = [a3 pathInArchive];
-  v5 = _appleDoublePathForRealPath_DotUnderscore(v4);
+  pathInArchive = [item pathInArchive];
+  v5 = _appleDoublePathForRealPath_DotUnderscore(pathInArchive);
 
   if ([(NSMutableSet *)self->_pathsWithDotUnderscorePrefixedFilenames containsObject:v5])
   {
@@ -65,69 +65,69 @@
   }
 }
 
-- (id)pathToRealFileIfConfirmedAppleDoubleItem:(id)a3
+- (id)pathToRealFileIfConfirmedAppleDoubleItem:(id)item
 {
-  v4 = a3;
-  if ([(_UILibArchiveAppleDoublePathSet *)self isConfirmedExactAppleDoubleItem:v4])
+  itemCopy = item;
+  if ([(_UILibArchiveAppleDoublePathSet *)self isConfirmedExactAppleDoubleItem:itemCopy])
   {
-    v5 = [v4 pathInArchive];
-    v6 = [v5 pathComponents];
-    v7 = [v6 lastObject];
-    v8 = [v7 hasPrefix:@"._"];
+    pathInArchive = [itemCopy pathInArchive];
+    pathComponents = [pathInArchive pathComponents];
+    lastObject = [pathComponents lastObject];
+    v8 = [lastObject hasPrefix:@"._"];
 
     if (v8)
     {
-      v9 = [v6 indexOfObjectPassingTest:&__block_literal_global_174];
-      v10 = [v6 mutableCopy];
+      v9 = [pathComponents indexOfObjectPassingTest:&__block_literal_global_174];
+      v10 = [pathComponents mutableCopy];
       v11 = v10;
       if (v9 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [v10 removeObjectAtIndex:v9];
       }
 
-      v12 = [v11 lastObject];
-      v13 = [v12 substringFromIndex:{objc_msgSend(@"._", "length")}];
+      lastObject2 = [v11 lastObject];
+      v13 = [lastObject2 substringFromIndex:{objc_msgSend(@"._", "length")}];
 
       [v11 removeLastObject];
       [v11 addObject:v13];
       v14 = [v11 componentsJoinedByString:@"/"];
-      v15 = [v14 stringByStandardizingPath];
+      stringByStandardizingPath = [v14 stringByStandardizingPath];
     }
 
     else
     {
-      v15 = 0;
+      stringByStandardizingPath = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    stringByStandardizingPath = 0;
   }
 
-  return v15;
+  return stringByStandardizingPath;
 }
 
-- (BOOL)isConfirmedExactAppleDoubleItem:(id)a3
+- (BOOL)isConfirmedExactAppleDoubleItem:(id)item
 {
   confirmAppleDoublePaths = self->_confirmAppleDoublePaths;
-  v4 = [a3 pathInArchive];
-  LOBYTE(confirmAppleDoublePaths) = [(NSMutableSet *)confirmAppleDoublePaths containsObject:v4];
+  pathInArchive = [item pathInArchive];
+  LOBYTE(confirmAppleDoublePaths) = [(NSMutableSet *)confirmAppleDoublePaths containsObject:pathInArchive];
 
   return confirmAppleDoublePaths;
 }
 
-+ (BOOL)isPossibleAppleDoubleByApplyingMatchingHeuristicToItem:(id)a3
++ (BOOL)isPossibleAppleDoubleByApplyingMatchingHeuristicToItem:(id)item
 {
-  v3 = [a3 pathInArchive];
-  if (_isPossibleAppleDoublePath_MACOSX(v3))
+  pathInArchive = [item pathInArchive];
+  if (_isPossibleAppleDoublePath_MACOSX(pathInArchive))
   {
     isPossibleAppleDoublePath_DotUnderscore = 1;
   }
 
   else
   {
-    isPossibleAppleDoublePath_DotUnderscore = _isPossibleAppleDoublePath_DotUnderscore(v3);
+    isPossibleAppleDoublePath_DotUnderscore = _isPossibleAppleDoublePath_DotUnderscore(pathInArchive);
   }
 
   return isPossibleAppleDoublePath_DotUnderscore;

@@ -13,13 +13,13 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneIndexTerms *)in iterator];
+  iterator = [(OrgApacheLuceneIndexTerms *)in iterator];
   if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10005714C();
   }
 
-  if (v4 == OrgApacheLuceneIndexTermsEnum_EMPTY_)
+  if (iterator == OrgApacheLuceneIndexTermsEnum_EMPTY_)
   {
     if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum__initialized, memory_order_acquire) & 1) == 0)
     {
@@ -34,13 +34,13 @@
     field = self->field_;
     mergeState = self->mergeState_;
     objc_opt_class();
-    if (v4 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (iterator && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
     v7 = [OrgApacheLuceneIndexMappedMultiFields_MappedMultiTermsEnum alloc];
-    sub_1000C33EC(v7, field, mergeState, v4);
+    sub_1000C33EC(v7, field, mergeState, iterator);
 
     return v7;
   }

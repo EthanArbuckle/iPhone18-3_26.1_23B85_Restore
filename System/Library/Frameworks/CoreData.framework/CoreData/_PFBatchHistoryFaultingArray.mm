@@ -1,6 +1,6 @@
 @interface _PFBatchHistoryFaultingArray
 - (id)transaction;
-- (void)_setTransaction:(id)a3;
+- (void)_setTransaction:(id)transaction;
 @end
 
 @implementation _PFBatchHistoryFaultingArray
@@ -15,14 +15,14 @@
   return self->_transaction;
 }
 
-- (void)_setTransaction:(id)a3
+- (void)_setTransaction:(id)transaction
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->super._moc, a2);
   }
 
-  self->_transaction = a3;
+  self->_transaction = transaction;
 }
 
 @end

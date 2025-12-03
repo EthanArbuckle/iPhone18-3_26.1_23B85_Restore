@@ -37,7 +37,7 @@
           v15 = 1;
 LABEL_18:
           v35 = +[NPHCellularBridgeUIManager sharedInstance];
-          v36 = [v35 tinkerFamilyMemberFirstName];
+          tinkerFamilyMemberFirstName = [v35 tinkerFamilyMemberFirstName];
 
           v37 = MEMORY[0x277CCACA8];
           v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -45,13 +45,13 @@ LABEL_18:
           if (v15)
           {
             v40 = [v38 localizedStringForKey:@"NPHCELLULARERROR_NOT_SUPPORTED_BY_CARRIER_MESSAGE_CROSS_CARRIER" value:&stru_285611AE0 table:0];
-            [v37 stringWithFormat:v40, v14, v36];
+            [v37 stringWithFormat:v40, v14, tinkerFamilyMemberFirstName];
           }
 
           else
           {
             v40 = [v38 localizedStringForKey:@"NPHCELLULARERROR_NOT_SUPPORTED_BY_CARRIER_MESSAGE_CROSS_CARRIER_NO_NAME" value:&stru_285611AE0 table:0];
-            [v37 stringWithFormat:v40, v36, v47];
+            [v37 stringWithFormat:v40, tinkerFamilyMemberFirstName, v47];
           }
           v9 = ;
 
@@ -71,15 +71,15 @@ LABEL_18:
 
         if (!v34)
         {
-          v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v9 = [v36 localizedStringForKey:@"NPHCELLULARERROR_NOT_SUPPORTED_BY_CARRIER_MESSAGE_NO_NAME" value:&stru_285611AE0 table:0];
+          tinkerFamilyMemberFirstName = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+          v9 = [tinkerFamilyMemberFirstName localizedStringForKey:@"NPHCELLULARERROR_NOT_SUPPORTED_BY_CARRIER_MESSAGE_NO_NAME" value:&stru_285611AE0 table:0];
           goto LABEL_24;
         }
       }
 
       v41 = MEMORY[0x277CCACA8];
-      v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v42 = [v36 localizedStringForKey:@"NPHCELLULARERROR_NOT_SUPPORTED_BY_CARRIER_MESSAGE" value:&stru_285611AE0 table:0];
+      tinkerFamilyMemberFirstName = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      v42 = [tinkerFamilyMemberFirstName localizedStringForKey:@"NPHCELLULARERROR_NOT_SUPPORTED_BY_CARRIER_MESSAGE" value:&stru_285611AE0 table:0];
       v9 = [v41 stringWithFormat:v42, v14];
 
 LABEL_24:
@@ -146,9 +146,9 @@ LABEL_16:
   v19 = [v18 localizedStringForKey:@"NPHCELLULARERROR_LTE_IMPACTING_SERVICE_TITLE" value:&stru_285611AE0 table:0];
   v10 = [v17 stringWithFormat:v19, v14];
 
-  v20 = [a1 _canControlLTEVoiceOptionsSeparately];
+  _canControlLTEVoiceOptionsSeparately = [self _canControlLTEVoiceOptionsSeparately];
   v21 = @"NPHCELLULARERROR_LTE_IMPACTING_SERVICE_MESSAGE";
-  if (v20)
+  if (_canControlLTEVoiceOptionsSeparately)
   {
     v21 = @"NPHCELLULARERROR_LTE_VOICE_IMPACTING_SERVICE_MESSAGE";
   }
@@ -184,8 +184,8 @@ LABEL_26:
   v73[2] = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a4;
-  v7 = [v5 domain];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CF9680]];
+  domain = [v5 domain];
+  v8 = [domain isEqualToString:*MEMORY[0x277CF9680]];
 
   if (v8)
   {
@@ -304,11 +304,11 @@ LABEL_19:
         goto LABEL_54;
       case 22:
         v26 = [MEMORY[0x277CCA9B8] NPHCellularErrorWithCode:3 forSubscriptionContext:v6];
-        v54 = [v26 userInfo];
-        v14 = [v54 objectForKeyedSubscript:NPHCellularErrorTitleKey];
+        userInfo = [v26 userInfo];
+        v14 = [userInfo objectForKeyedSubscript:NPHCellularErrorTitleKey];
 
-        v27 = [v26 userInfo];
-        v53 = [v27 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
+        userInfo2 = [v26 userInfo];
+        v53 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
         goto LABEL_35;
       case 25:
         v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -318,8 +318,8 @@ LABEL_19:
         {
           v25 = MEMORY[0x277CCACA8];
           v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v27 = [v26 localizedStringForKey:@"CTCELLULARPLANERROR_INVALID_PPR_MESSAGE" value:&stru_285611AE0 table:0];
-          [v25 stringWithFormat:v27, v10, v10];
+          userInfo2 = [v26 localizedStringForKey:@"CTCELLULARPLANERROR_INVALID_PPR_MESSAGE" value:&stru_285611AE0 table:0];
+          [v25 stringWithFormat:userInfo2, v10, v10];
           goto LABEL_33;
         }
 
@@ -411,12 +411,12 @@ LABEL_28:
         v45 = +[NPHCellularBridgeUIManager sharedInstance];
         v46 = [v45 _minMajorWatchOSVersionForSubscription:v6];
 
-        v47 = [MEMORY[0x277D37B48] activeDevice];
-        v48 = [v47 isCellularSeries3];
+        activeDevice = [MEMORY[0x277D37B48] activeDevice];
+        isCellularSeries3 = [activeDevice isCellularSeries3];
 
         v49 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v50 = v49;
-        if (v46 >= 9 && v48)
+        if (v46 >= 9 && isCellularSeries3)
         {
           v14 = [v49 localizedStringForKey:@"CTCELLULARPLANERROR_CANNOT_SOFTWARE_UPDATE_TITLE" value:&stru_285611AE0 table:0];
 
@@ -427,8 +427,8 @@ LABEL_28:
             v26 = v43;
             v44 = @"CTCELLULARPLANERROR_CANNOT_SOFTWARE_UPDATE_MESSAGE";
 LABEL_32:
-            v27 = [v43 localizedStringForKey:v44 value:&stru_285611AE0 table:0];
-            [v42 stringWithFormat:v27, v10, v71];
+            userInfo2 = [v43 localizedStringForKey:v44 value:&stru_285611AE0 table:0];
+            [v42 stringWithFormat:userInfo2, v10, v71];
             v53 = LABEL_33:;
 LABEL_35:
             v13 = v53;
@@ -471,8 +471,8 @@ LABEL_54:
 
   else
   {
-    v19 = [v5 domain];
-    v20 = [v19 isEqualToString:*MEMORY[0x277CCA050]];
+    domain2 = [v5 domain];
+    v20 = [domain2 isEqualToString:*MEMORY[0x277CCA050]];
 
     if (v20 && [v5 code] == 4097)
     {
@@ -520,15 +520,15 @@ LABEL_54:
   v6 = a3;
   v7 = a4;
   v8 = v6;
-  v9 = [v8 domain];
-  if ([v9 isEqualToString:*MEMORY[0x277CF9680]])
+  domain = [v8 domain];
+  if ([domain isEqualToString:*MEMORY[0x277CF9680]])
   {
   }
 
   else
   {
-    v10 = [v8 domain];
-    v11 = [v10 isEqualToString:*MEMORY[0x277CCA050]];
+    domain2 = [v8 domain];
+    v11 = [domain2 isEqualToString:*MEMORY[0x277CCA050]];
 
     v12 = v8;
     if (!v11)
@@ -537,17 +537,17 @@ LABEL_54:
     }
   }
 
-  v13 = [a1 _titleAndMessageDictForError:v8 forSubscriptionContext:v7];
+  v13 = [self _titleAndMessageDictForError:v8 forSubscriptionContext:v7];
   v12 = v8;
   if (v13)
   {
     v14 = objc_opt_new();
-    v15 = [v8 userInfo];
+    userInfo = [v8 userInfo];
 
-    if (v15)
+    if (userInfo)
     {
-      v16 = [v8 userInfo];
-      [v14 addEntriesFromDictionary:v16];
+      userInfo2 = [v8 userInfo];
+      [v14 addEntriesFromDictionary:userInfo2];
     }
 
     v17 = *MEMORY[0x277CCA450];
@@ -586,8 +586,8 @@ LABEL_54:
     }
 
     v25 = MEMORY[0x277CCA9B8];
-    v26 = [v8 domain];
-    v12 = [v25 errorWithDomain:v26 code:objc_msgSend(v8 userInfo:{"code"), v14}];
+    domain3 = [v8 domain];
+    v12 = [v25 errorWithDomain:domain3 code:objc_msgSend(v8 userInfo:{"code"), v14}];
   }
 
 LABEL_16:

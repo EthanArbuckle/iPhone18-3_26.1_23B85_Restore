@@ -1,24 +1,24 @@
 @interface CPLCloudKitSendFeedbackTask
-- (CPLCloudKitSendFeedbackTask)initWithController:(id)a3 messages:(id)a4 completionHandler:(id)a5;
+- (CPLCloudKitSendFeedbackTask)initWithController:(id)controller messages:(id)messages completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitSendFeedbackTask
 
-- (CPLCloudKitSendFeedbackTask)initWithController:(id)a3 messages:(id)a4 completionHandler:(id)a5
+- (CPLCloudKitSendFeedbackTask)initWithController:(id)controller messages:(id)messages completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  messagesCopy = messages;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = CPLCloudKitSendFeedbackTask;
-  v10 = [(CPLCloudKitTransportTask *)&v16 initWithController:a3];
+  v10 = [(CPLCloudKitTransportTask *)&v16 initWithController:controller];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [messagesCopy copy];
     messages = v10->_messages;
     v10->_messages = v11;
 
-    v13 = [v9 copy];
+    v13 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v13;
 
@@ -36,9 +36,9 @@
   if (v3)
   {
     v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](self->_messages, "count")}];
-    v6 = [(CPLCloudKitTransportTask *)self mainScopeIdentifier];
-    v17 = v6;
-    if ([v6 isEqualToString:CPLPrimaryScopeIdentifier])
+    mainScopeIdentifier = [(CPLCloudKitTransportTask *)self mainScopeIdentifier];
+    v17 = mainScopeIdentifier;
+    if ([mainScopeIdentifier isEqualToString:CPLPrimaryScopeIdentifier])
     {
       v7 = 0;
     }
@@ -46,8 +46,8 @@
     else
     {
       v7 = objc_alloc_init(CPLServerFeedbackKeyAndValue);
-      [v7 setKey:{@"mainZone", v6}];
-      [v7 setValue:v6];
+      [v7 setKey:{@"mainZone", mainScopeIdentifier}];
+      [v7 setValue:mainScopeIdentifier];
     }
 
     v21 = 0u;
@@ -69,11 +69,11 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) serverMessage];
-          v14 = v13;
+          serverMessage = [*(*(&v19 + 1) + 8 * i) serverMessage];
+          v14 = serverMessage;
           if (v7)
           {
-            v15 = [v13 copy];
+            v15 = [serverMessage copy];
 
             [v15 addKeysAndValues:v7];
             v14 = v15;

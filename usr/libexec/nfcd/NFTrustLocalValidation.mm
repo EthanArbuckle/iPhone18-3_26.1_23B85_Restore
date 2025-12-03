@@ -1,41 +1,41 @@
 @interface NFTrustLocalValidation
-- (NFTrustLocalValidation)initWithCoder:(id)a3;
+- (NFTrustLocalValidation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTrustLocalValidation
 
-- (NFTrustLocalValidation)initWithCoder:(id)a3
+- (NFTrustLocalValidation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NFTrustLocalValidation;
-  v5 = [(NFTrustObject *)&v7 initWithCoder:v4];
+  v5 = [(NFTrustObject *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_primitiveLocalValidation = [v4 decodeIntForKey:@"primitiveLocalValidation"];
+    v5->_primitiveLocalValidation = [coderCopy decodeIntForKey:@"primitiveLocalValidation"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[NFTrustLocalValidation primitiveLocalValidation](self forKey:{"primitiveLocalValidation"), @"primitiveLocalValidation"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[NFTrustLocalValidation primitiveLocalValidation](self forKey:{"primitiveLocalValidation"), @"primitiveLocalValidation"}];
 }
 
 - (id)description
 {
-  v2 = [(NFTrustLocalValidation *)self primitiveLocalValidation];
+  primitiveLocalValidation = [(NFTrustLocalValidation *)self primitiveLocalValidation];
   v3 = @"PassCode";
-  if (v2 == 2)
+  if (primitiveLocalValidation == 2)
   {
     v3 = @"TouchID";
   }
 
-  if (v2 == 4)
+  if (primitiveLocalValidation == 4)
   {
     return @"FaceID";
   }

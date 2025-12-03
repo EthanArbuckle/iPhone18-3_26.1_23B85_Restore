@@ -1,12 +1,12 @@
 @interface PSResourceStream
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PSResourceStream)init;
-- (PSResourceStream)initWithCoder:(id)a3;
+- (PSResourceStream)initWithCoder:(id)coder;
 - (const)typeDescription;
 - (id)description;
 - (ps_resource_options)options;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSResourceStream
@@ -26,75 +26,75 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeObject:self->_key forKey:@"key"];
-  [v8 encodeBytes:&self->_resourceClass length:8 forKey:@"resourceClass"];
-  [v8 encodeBytes:&self->_options length:16 forKey:@"options"];
-  [v8 encodeInteger:self->_type forKey:@"type"];
-  [v8 encodeInteger:self->_framerate forKey:@"framerate"];
-  [v8 encodeInteger:self->_totalBufferCountHint forKey:@"totalBufferCountHint"];
-  [v8 encodeInteger:self->_reservedForReaderBufferCountHint forKey:@"reservedForReaderBufferCountHint"];
-  [v8 encodeInteger:self->_retainedISPRCCount forKey:@"retainedISPRCCount"];
-  [v8 encodeInteger:self->_provider forKey:@"provider"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_key forKey:@"key"];
+  [coderCopy encodeBytes:&self->_resourceClass length:8 forKey:@"resourceClass"];
+  [coderCopy encodeBytes:&self->_options length:16 forKey:@"options"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_framerate forKey:@"framerate"];
+  [coderCopy encodeInteger:self->_totalBufferCountHint forKey:@"totalBufferCountHint"];
+  [coderCopy encodeInteger:self->_reservedForReaderBufferCountHint forKey:@"reservedForReaderBufferCountHint"];
+  [coderCopy encodeInteger:self->_retainedISPRCCount forKey:@"retainedISPRCCount"];
+  [coderCopy encodeInteger:self->_provider forKey:@"provider"];
   if ([(NSDictionary *)self->_supportedStrides count])
   {
-    [v8 encodeObject:self->_supportedStrides forKey:@"supportedStrides"];
+    [coderCopy encodeObject:self->_supportedStrides forKey:@"supportedStrides"];
   }
 
   defaultStride = self->_defaultStride;
   if (defaultStride)
   {
-    [v8 encodeObject:defaultStride forKey:@"defaultStride"];
+    [coderCopy encodeObject:defaultStride forKey:@"defaultStride"];
   }
 
   baseMSGSyncID = self->_baseMSGSyncID;
   if (baseMSGSyncID)
   {
-    [v8 encodeObject:baseMSGSyncID forKey:@"baseMSGSyncID"];
+    [coderCopy encodeObject:baseMSGSyncID forKey:@"baseMSGSyncID"];
   }
 
   domain = self->_domain;
   if (domain)
   {
-    [v8 encodeObject:domain forKey:@"domain"];
+    [coderCopy encodeObject:domain forKey:@"domain"];
   }
 
   else
   {
     v7 = +[PSStreamDomain mixedDomain];
-    [v8 encodeObject:v7 forKey:@"domain"];
+    [coderCopy encodeObject:v7 forKey:@"domain"];
   }
 }
 
-- (PSResourceStream)initWithCoder:(id)a3
+- (PSResourceStream)initWithCoder:(id)coder
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = PSResourceStream;
   v5 = [(PSResourceStream *)&v38 init];
   if (v5)
   {
     v37 = 0;
-    v6 = v4;
-    v7 = [v4 decodeBytesForKey:@"resourceClass" returnedLength:&v37];
+    v6 = coderCopy;
+    v7 = [coderCopy decodeBytesForKey:@"resourceClass" returnedLength:&v37];
     v36 = 0;
-    v8 = v4;
-    v9 = [v4 decodeBytesForKey:@"options" returnedLength:&v36];
+    v8 = coderCopy;
+    v9 = [coderCopy decodeBytesForKey:@"options" returnedLength:&v36];
     v10 = 0;
     if (v37 == 8 && v36 == 16)
     {
       v11 = v9;
-      obj = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-      v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
-      v12 = [v4 decodeIntegerForKey:@"type"];
-      v13 = [v4 decodeIntegerForKey:@"framerate"];
-      v14 = [v4 decodeIntForKey:@"totalBufferCountHint"];
-      v15 = [v4 decodeIntForKey:@"reservedForReaderBufferCountHint"];
-      v16 = [v4 decodeIntForKey:@"retainedISPRCCount"];
-      v17 = [v4 decodeIntegerForKey:@"provider"];
+      obj = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+      v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+      v12 = [coderCopy decodeIntegerForKey:@"type"];
+      v13 = [coderCopy decodeIntegerForKey:@"framerate"];
+      v14 = [coderCopy decodeIntForKey:@"totalBufferCountHint"];
+      v15 = [coderCopy decodeIntForKey:@"reservedForReaderBufferCountHint"];
+      v16 = [coderCopy decodeIntForKey:@"retainedISPRCCount"];
+      v17 = [coderCopy decodeIntegerForKey:@"provider"];
       objc_storeStrong(&v5->_key, obj);
       objc_storeStrong(&v5->_domain, v35);
       resolvedDomain = v5->_resolvedDomain;
@@ -126,15 +126,15 @@
       v39 = objc_opt_class();
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
       v25 = [v23 setWithArray:v24];
-      v26 = [v4 decodeDictionaryWithKeysOfClasses:v22 objectsOfClasses:v25 forKey:@"supportedStrides"];
+      v26 = [coderCopy decodeDictionaryWithKeysOfClasses:v22 objectsOfClasses:v25 forKey:@"supportedStrides"];
       supportedStrides = v5->_supportedStrides;
       v5->_supportedStrides = v26;
 
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultStride"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultStride"];
       defaultStride = v5->_defaultStride;
       v5->_defaultStride = v28;
 
-      v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseMSGSyncID"];
+      v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseMSGSyncID"];
       baseMSGSyncID = v5->_baseMSGSyncID;
       v5->_baseMSGSyncID = v30;
 
@@ -151,16 +151,16 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v20 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     key = self->_key;
@@ -187,8 +187,8 @@
     if (storage_mode == [(PSResourceStream *)v6 options]&& (type = self->_type, type == [(PSResourceStream *)v6 type]) && (framerate = self->_framerate, framerate == [(PSResourceStream *)v6 framerate]) && (totalBufferCountHint = self->_totalBufferCountHint, totalBufferCountHint == [(PSResourceStream *)v6 totalBufferCountHint]) && (reservedForReaderBufferCountHint = self->_reservedForReaderBufferCountHint, reservedForReaderBufferCountHint == [(PSResourceStream *)v6 reservedForReaderBufferCountHint]) && (retainedISPRCCount = self->_retainedISPRCCount, retainedISPRCCount == [(PSResourceStream *)v6 retainedISPRCCount]))
     {
       baseMSGSyncID = self->_baseMSGSyncID;
-      v19 = [(PSResourceStream *)v6 baseMSGSyncID];
-      v20 = baseMSGSyncID == v19;
+      baseMSGSyncID = [(PSResourceStream *)v6 baseMSGSyncID];
+      v20 = baseMSGSyncID == baseMSGSyncID;
     }
 
     else
@@ -228,15 +228,15 @@ LABEL_16:
 
 - (const)typeDescription
 {
-  v2 = [(PSResourceStream *)self type];
-  if (v2 - 1 > 5)
+  type = [(PSResourceStream *)self type];
+  if (type - 1 > 5)
   {
     return "Unknown";
   }
 
   else
   {
-    return off_279A4E1D0[v2 - 1];
+    return off_279A4E1D0[type - 1];
   }
 }
 

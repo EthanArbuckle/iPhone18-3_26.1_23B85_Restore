@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationECIDData
 - (UARPMetaDataPersonalizationECIDData)init;
-- (UARPMetaDataPersonalizationECIDData)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationECIDData)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationECIDData)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationECIDData)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationECIDData)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationECIDData)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationECIDData *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataPersonalizationECIDData;
-    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:valueCopy];
     ecID = v7->_ecID;
     v7->_ecID = v8;
 
@@ -52,12 +52,12 @@
   return v10;
 }
 
-- (UARPMetaDataPersonalizationECIDData)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationECIDData)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationECIDData *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     ecID = v6->_ecID;
     v6->_ecID = v7;
 
@@ -69,9 +69,9 @@
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataPersonalizationECIDData *)self ecID];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  ecID = [(UARPMetaDataPersonalizationECIDData *)self ecID];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, ecID];
 
   return v5;
 }

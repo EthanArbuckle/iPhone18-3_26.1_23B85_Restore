@@ -1,32 +1,32 @@
 @interface LUILogViewerView
-- (LUILogViewerView)initWithFrame:(CGRect)a3;
+- (LUILogViewerView)initWithFrame:(CGRect)frame;
 - (LUILogViewerViewDelegate)delegate;
-- (id)_createButtonWithTitle:(id)a3 action:(SEL)a4;
+- (id)_createButtonWithTitle:(id)title action:(SEL)action;
 - (id)_createSearchBar;
 - (id)_createSearchResultLabel;
-- (void)_highlightButton:(id)a3 highlight:(BOOL)a4;
+- (void)_highlightButton:(id)button highlight:(BOOL)highlight;
 - (void)_setup;
-- (void)clearButtonTapped:(id)a3;
-- (void)closeButtonTapped:(id)a3;
-- (void)filterButtonTapped:(id)a3;
-- (void)highlightFilterButton:(BOOL)a3;
-- (void)highlightLogButton:(BOOL)a3;
+- (void)clearButtonTapped:(id)tapped;
+- (void)closeButtonTapped:(id)tapped;
+- (void)filterButtonTapped:(id)tapped;
+- (void)highlightFilterButton:(BOOL)button;
+- (void)highlightLogButton:(BOOL)button;
 - (void)layoutSubviews;
-- (void)leftCaretButtonTapped:(id)a3;
-- (void)logButtonTapped:(id)a3;
+- (void)leftCaretButtonTapped:(id)tapped;
+- (void)logButtonTapped:(id)tapped;
 - (void)resetSearchResultLabel;
-- (void)rightCaretButtonTapped:(id)a3;
-- (void)switchClearButtonTitle:(BOOL)a3;
-- (void)updateSearchResultLabelWithTotalResult:(unint64_t)a3 currentIndex:(unint64_t)a4;
+- (void)rightCaretButtonTapped:(id)tapped;
+- (void)switchClearButtonTitle:(BOOL)title;
+- (void)updateSearchResultLabelWithTotalResult:(unint64_t)result currentIndex:(unint64_t)index;
 @end
 
 @implementation LUILogViewerView
 
-- (LUILogViewerView)initWithFrame:(CGRect)a3
+- (LUILogViewerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LUILogViewerView;
-  v3 = [(LUILogViewerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LUILogViewerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,13 +39,13 @@
 - (void)_setup
 {
   v30[7] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] blackColor];
-  v4 = [v3 colorWithAlphaComponent:0.8];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v4 = [blackColor colorWithAlphaComponent:0.8];
   [(LUILogViewerView *)self setBackgroundColor:v4];
 
-  v5 = [(LUILogViewerView *)self _createCloseButton];
+  _createCloseButton = [(LUILogViewerView *)self _createCloseButton];
   closeButton = self->_closeButton;
-  self->_closeButton = v5;
+  self->_closeButton = _createCloseButton;
 
   [(LUILogViewerView *)self addSubview:self->_closeButton];
   v7 = objc_opt_new();
@@ -53,33 +53,33 @@
   self->_contentHolderView = v7;
 
   [(LUILogViewerView *)self addSubview:self->_contentHolderView];
-  v9 = [(LUILogViewerView *)self _createLogButton];
+  _createLogButton = [(LUILogViewerView *)self _createLogButton];
   logButton = self->_logButton;
-  self->_logButton = v9;
+  self->_logButton = _createLogButton;
 
-  v11 = [(LUILogViewerView *)self _createClearButton];
+  _createClearButton = [(LUILogViewerView *)self _createClearButton];
   clearButton = self->_clearButton;
-  self->_clearButton = v11;
+  self->_clearButton = _createClearButton;
 
-  v13 = [(LUILogViewerView *)self _createFilterButton];
+  _createFilterButton = [(LUILogViewerView *)self _createFilterButton];
   filterButton = self->_filterButton;
-  self->_filterButton = v13;
+  self->_filterButton = _createFilterButton;
 
-  v15 = [(LUILogViewerView *)self _createSearchBar];
+  _createSearchBar = [(LUILogViewerView *)self _createSearchBar];
   searchBar = self->_searchBar;
-  self->_searchBar = v15;
+  self->_searchBar = _createSearchBar;
 
-  v17 = [(LUILogViewerView *)self _createSearchResultLabel];
+  _createSearchResultLabel = [(LUILogViewerView *)self _createSearchResultLabel];
   searchResultLabel = self->_searchResultLabel;
-  self->_searchResultLabel = v17;
+  self->_searchResultLabel = _createSearchResultLabel;
 
-  v19 = [(LUILogViewerView *)self _createLeftCaretButton];
+  _createLeftCaretButton = [(LUILogViewerView *)self _createLeftCaretButton];
   leftCaretButton = self->_leftCaretButton;
-  self->_leftCaretButton = v19;
+  self->_leftCaretButton = _createLeftCaretButton;
 
-  v21 = [(LUILogViewerView *)self _createRightCaretButton];
+  _createRightCaretButton = [(LUILogViewerView *)self _createRightCaretButton];
   rightCaretButton = self->_rightCaretButton;
-  self->_rightCaretButton = v21;
+  self->_rightCaretButton = _createRightCaretButton;
 
   v23 = objc_alloc(MEMORY[0x277D75A68]);
   v24 = self->_clearButton;
@@ -110,28 +110,28 @@
   [(LUILogViewerView *)&v10 layoutSubviews];
   [(LUILogViewerView *)self frame];
   v3 = CGRectGetWidth(v11) + -80.0;
-  v4 = [(LUILogViewerView *)self closeButton];
-  [v4 setFrame:{v3, 10.0, 80.0, 30.0}];
+  closeButton = [(LUILogViewerView *)self closeButton];
+  [closeButton setFrame:{v3, 10.0, 80.0, 30.0}];
 
   [(LUILogViewerView *)self frame];
   v5 = CGRectGetWidth(v12) + -20.0;
   [(LUILogViewerView *)self frame];
   v6 = CGRectGetHeight(v13) + -60.0;
-  v7 = [(LUILogViewerView *)self contentHolderView];
-  [v7 setFrame:{10.0, 50.0, v5, v6}];
+  contentHolderView = [(LUILogViewerView *)self contentHolderView];
+  [contentHolderView setFrame:{10.0, 50.0, v5, v6}];
 
   [(LUILogViewerView *)self frame];
   v8 = CGRectGetWidth(v14) + -110.0;
-  v9 = [(LUILogViewerView *)self buttonStack];
-  [v9 setFrame:{10.0, 10.0, v8, 30.0}];
+  buttonStack = [(LUILogViewerView *)self buttonStack];
+  [buttonStack setFrame:{10.0, 10.0, v8, 30.0}];
 }
 
-- (void)switchClearButtonTitle:(BOOL)a3
+- (void)switchClearButtonTitle:(BOOL)title
 {
-  v3 = a3;
-  v4 = [(LUILogViewerView *)self clearButton];
-  v6 = v4;
-  if (v3)
+  titleCopy = title;
+  clearButton = [(LUILogViewerView *)self clearButton];
+  v6 = clearButton;
+  if (titleCopy)
   {
     v5 = @"Clear";
   }
@@ -141,72 +141,72 @@
     v5 = @"Stop";
   }
 
-  [v4 setTitle:v5 forState:0];
+  [clearButton setTitle:v5 forState:0];
 }
 
-- (void)highlightFilterButton:(BOOL)a3
+- (void)highlightFilterButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(LUILogViewerView *)self filterButton];
-  [(LUILogViewerView *)self _highlightButton:v5 highlight:v3];
+  buttonCopy = button;
+  filterButton = [(LUILogViewerView *)self filterButton];
+  [(LUILogViewerView *)self _highlightButton:filterButton highlight:buttonCopy];
 }
 
-- (void)highlightLogButton:(BOOL)a3
+- (void)highlightLogButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(LUILogViewerView *)self logButton];
-  [(LUILogViewerView *)self _highlightButton:v5 highlight:v3];
+  buttonCopy = button;
+  logButton = [(LUILogViewerView *)self logButton];
+  [(LUILogViewerView *)self _highlightButton:logButton highlight:buttonCopy];
 }
 
-- (void)_highlightButton:(id)a3 highlight:(BOOL)a4
+- (void)_highlightButton:(id)button highlight:(BOOL)highlight
 {
-  if (a4)
+  if (highlight)
   {
     v5 = MEMORY[0x277D75348];
-    v6 = a3;
-    v7 = [v5 whiteColor];
-    v8 = [v7 CGColor];
-    v9 = [v6 layer];
-    [v9 setBorderColor:v8];
+    buttonCopy = button;
+    whiteColor = [v5 whiteColor];
+    cGColor = [whiteColor CGColor];
+    layer = [buttonCopy layer];
+    [layer setBorderColor:cGColor];
 
     v10 = 1.0;
   }
 
   else
   {
-    v11 = a3;
+    buttonCopy2 = button;
     v10 = 0.0;
   }
 
-  v12 = [a3 layer];
+  layer2 = [button layer];
 
-  [v12 setBorderWidth:v10];
+  [layer2 setBorderWidth:v10];
 }
 
 - (void)resetSearchResultLabel
 {
-  v2 = [(LUILogViewerView *)self searchResultLabel];
-  [v2 setText:@"0 / 0"];
+  searchResultLabel = [(LUILogViewerView *)self searchResultLabel];
+  [searchResultLabel setText:@"0 / 0"];
 }
 
-- (void)updateSearchResultLabelWithTotalResult:(unint64_t)a3 currentIndex:(unint64_t)a4
+- (void)updateSearchResultLabelWithTotalResult:(unint64_t)result currentIndex:(unint64_t)index
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu / %lu", a4, a3];
-  v5 = [(LUILogViewerView *)self searchResultLabel];
-  [v5 setText:v6];
+  result = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu / %lu", index, result];
+  searchResultLabel = [(LUILogViewerView *)self searchResultLabel];
+  [searchResultLabel setText:result];
 }
 
-- (id)_createButtonWithTitle:(id)a3 action:(SEL)a4
+- (id)_createButtonWithTitle:(id)title action:(SEL)action
 {
   v6 = MEMORY[0x277D75220];
-  v7 = a3;
+  titleCopy = title;
   v8 = [[v6 alloc] initWithFrame:{0.0, 0.0, 0.0, 30.0}];
-  [v8 setTitle:v7 forState:0];
+  [v8 setTitle:titleCopy forState:0];
 
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setTitleColor:v9 forState:0];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v8 setTitleColor:whiteColor forState:0];
 
-  [v8 addTarget:self action:a4 forControlEvents:64];
+  [v8 addTarget:self action:action forControlEvents:64];
   LODWORD(v10) = 1148846080;
   [v8 setContentHuggingPriority:0 forAxis:v10];
 
@@ -216,8 +216,8 @@
 - (id)_createSearchBar
 {
   v2 = [objc_alloc(MEMORY[0x277D759E8]) initWithFrame:{0.0, 0.0, 200.0, 30.0}];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  [v2 setBarTintColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v2 setBarTintColor:whiteColor];
 
   [v2 setPlaceholder:@"Search..."];
   [v2 setAutocapitalizationType:0];
@@ -232,48 +232,48 @@
 {
   v2 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{0.0, 0.0, 0.0, 30.0}];
   [v2 setTextAlignment:1];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  [v2 setTextColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v2 setTextColor:whiteColor];
 
   [v2 setText:@"0 / 0"];
 
   return v2;
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerView *)self delegate];
-  [v4 logViewerViewCloseButtonTapped:self];
+  delegate = [(LUILogViewerView *)self delegate];
+  [delegate logViewerViewCloseButtonTapped:self];
 }
 
-- (void)logButtonTapped:(id)a3
+- (void)logButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerView *)self delegate];
-  [v4 logViewerViewLogButtonTapped:self];
+  delegate = [(LUILogViewerView *)self delegate];
+  [delegate logViewerViewLogButtonTapped:self];
 }
 
-- (void)clearButtonTapped:(id)a3
+- (void)clearButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerView *)self delegate];
-  [v4 logViewerViewClearButtontapped:self];
+  delegate = [(LUILogViewerView *)self delegate];
+  [delegate logViewerViewClearButtontapped:self];
 }
 
-- (void)filterButtonTapped:(id)a3
+- (void)filterButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerView *)self delegate];
-  [v4 logViewerFilterButtonTapped:self];
+  delegate = [(LUILogViewerView *)self delegate];
+  [delegate logViewerFilterButtonTapped:self];
 }
 
-- (void)leftCaretButtonTapped:(id)a3
+- (void)leftCaretButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerView *)self delegate];
-  [v4 logViewerLeftCaretButtonTapped:self];
+  delegate = [(LUILogViewerView *)self delegate];
+  [delegate logViewerLeftCaretButtonTapped:self];
 }
 
-- (void)rightCaretButtonTapped:(id)a3
+- (void)rightCaretButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerView *)self delegate];
-  [v4 logViewerRightCaretButtonTapped:self];
+  delegate = [(LUILogViewerView *)self delegate];
+  [delegate logViewerRightCaretButtonTapped:self];
 }
 
 - (LUILogViewerViewDelegate)delegate

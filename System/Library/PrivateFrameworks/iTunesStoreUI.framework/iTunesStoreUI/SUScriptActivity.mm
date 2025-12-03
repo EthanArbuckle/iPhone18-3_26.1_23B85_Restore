@@ -1,19 +1,19 @@
 @interface SUScriptActivity
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (WebScriptObject)actionFunction;
 - (id)_nativeActivity;
 - (id)scriptAttributeKeys;
-- (void)_performActionFunctionWithItems:(id)a3;
+- (void)_performActionFunctionWithItems:(id)items;
 - (void)dealloc;
-- (void)setActionFunction:(id)a3;
-- (void)setActivityImageWithName:(id)a3;
-- (void)setActivityImageWithURL:(id)a3 scale:(id)a4;
-- (void)setActivityTitle:(id)a3;
-- (void)setActivityType:(id)a3;
+- (void)setActionFunction:(id)function;
+- (void)setActivityImageWithName:(id)name;
+- (void)setActivityImageWithURL:(id)l scale:(id)scale;
+- (void)setActivityTitle:(id)title;
+- (void)setActivityType:(id)type;
 @end
 
 @implementation SUScriptActivity
@@ -30,9 +30,9 @@
 - (WebScriptObject)actionFunction
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUScriptFunction *)self->_actionFunction scriptObject];
+  scriptObject = [(SUScriptFunction *)self->_actionFunction scriptObject];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return scriptObject;
 }
 
 - (NSString)activityTitle
@@ -77,21 +77,21 @@ id __32__SUScriptActivity_activityType__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setActionFunction:(id)a3
+- (void)setActionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    functionCopy = 0;
     v6 = 1;
     goto LABEL_3;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
+  functionCopy = 0;
   v6 = 1;
-  if (!a3 || (isKindOfClass & 1) != 0)
+  if (!function || (isKindOfClass & 1) != 0)
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -104,7 +104,7 @@ LABEL_3:
 
     else
     {
-      v8 = [[SUScriptFunction alloc] initWithScriptObject:v5];
+      v8 = [[SUScriptFunction alloc] initWithScriptObject:functionCopy];
       self->_actionFunction = v8;
       [(SUScriptFunction *)v8 setThisObject:self];
     }
@@ -117,7 +117,7 @@ LABEL_3:
   if (objc_opt_isKindOfClass())
   {
     v6 = 0;
-    v5 = a3;
+    functionCopy = function;
     goto LABEL_3;
   }
 
@@ -126,10 +126,10 @@ LABEL_3:
   [v9 throwException:@"Invalid argument"];
 }
 
-- (void)setActivityTitle:(id)a3
+- (void)setActivityTitle:(id)title
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !title) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -150,10 +150,10 @@ uint64_t __37__SUScriptActivity_setActivityTitle___block_invoke(uint64_t a1)
   return [v2 setActivityTitle:v3];
 }
 
-- (void)setActivityType:(id)a3
+- (void)setActivityType:(id)type
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !type) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -174,10 +174,10 @@ uint64_t __36__SUScriptActivity_setActivityType___block_invoke(uint64_t a1)
   return [v2 setActivityType:v3];
 }
 
-- (void)setActivityImageWithName:(id)a3
+- (void)setActivityImageWithName:(id)name
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !name) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -206,21 +206,21 @@ uint64_t __45__SUScriptActivity_setActivityImageWithName___block_invoke(uint64_t
   return [v2 setActivityImage:v3];
 }
 
-- (void)setActivityImageWithURL:(id)a3 scale:(id)a4
+- (void)setActivityImageWithURL:(id)l scale:(id)scale
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    l = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    scale = 0;
   }
 
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || a4 && (objc_opt_respondsToSelector() & 1) == 0)
+  if (l && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || scale && (objc_opt_respondsToSelector() & 1) == 0)
   {
     v9 = MEMORY[0x1E69E2F88];
 
@@ -229,11 +229,11 @@ uint64_t __45__SUScriptActivity_setActivityImageWithName___block_invoke(uint64_t
 
   else
   {
-    if (a3 && (a3 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3]) != 0)
+    if (l && (l = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l]) != 0)
     {
-      if (a4)
+      if (scale)
       {
-        [a4 floatValue];
+        [scale floatValue];
         v8 = v7;
       }
 
@@ -242,7 +242,7 @@ uint64_t __45__SUScriptActivity_setActivityImageWithName___block_invoke(uint64_t
         [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
       }
 
-      v10 = [(SUScriptObject *)self newImageWithURL:a3 scale:v8];
+      v10 = [(SUScriptObject *)self newImageWithURL:l scale:v8];
     }
 
     else
@@ -264,18 +264,18 @@ uint64_t __50__SUScriptActivity_setActivityImageWithURL_scale___block_invoke(uin
 
 - (id)_nativeActivity
 {
-  v3 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
-  if (!v3)
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  if (!object)
   {
-    v3 = objc_alloc_init(SUActivity);
-    [(SUScriptObject *)self setNativeObject:[(SUScriptNativeObject *)SUScriptActivityNativeObject objectWithNativeObject:v3]];
-    v4 = v3;
+    object = objc_alloc_init(SUActivity);
+    [(SUScriptObject *)self setNativeObject:[(SUScriptNativeObject *)SUScriptActivityNativeObject objectWithNativeObject:object]];
+    v4 = object;
   }
 
-  return v3;
+  return object;
 }
 
-- (void)_performActionFunctionWithItems:(id)a3
+- (void)_performActionFunctionWithItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
   [(SUScriptObject *)self lock];
@@ -288,7 +288,7 @@ uint64_t __50__SUScriptActivity_setActivityImageWithURL_scale___block_invoke(uin
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (!v7)
     {
       goto LABEL_18;
@@ -303,7 +303,7 @@ uint64_t __50__SUScriptActivity_setActivityImageWithURL_scale___block_invoke(uin
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         ImageURL = *(*(&v14 + 1) + 8 * v10);
@@ -337,7 +337,7 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v12 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v12 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
       v8 = v12;
       if (!v12)
       {
@@ -351,27 +351,27 @@ LABEL_18:
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_65 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptActivity;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_49, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_49, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptActivity;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -381,14 +381,14 @@ LABEL_18:
 {
   v4.receiver = self;
   v4.super_class = SUScriptActivity;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_65 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_65 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_49 = sel_setActivityImageWithName_;
     *algn_1EBF3B6E8 = @"setNamedActivityImage";

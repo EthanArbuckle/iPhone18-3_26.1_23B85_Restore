@@ -1,47 +1,47 @@
 @interface PCEmbeddingDistanceCalculator
-+ (double)calculateCircularStandardDeviation:(id)a3 cosValues:(id)a4;
-+ (double)calculateDistanceBetweenEmbedding:(id)a3 andEmbedding:(id)a4 withCluster:(id)a5 withWeights:(id)a6;
-+ (double)calculateDistanceBetweenEmbedding:(id)a3 andEmbedding:(id)a4 withWeights:(id)a5;
-+ (double)calculateDistanceFromFeatures:(id)a3 withWeights:(id)a4 fromEmbedding:(id)a5 toEmbedding:(id)a6;
-+ (double)calculateGeographicalStandardDeviation:(id)a3 longValues:(id)a4;
-+ (double)calculateValidMean:(id)a3;
-+ (double)distanceFromLat1:(double)a3 lon1:(double)a4 toLat2:(double)a5 lon2:(double)a6;
-+ (id)extractFeatureDistancesBetweenEmbedding:(id)a3 andEmbedding:(id)a4;
-+ (id)extractFeatureDistancesBetweenEmbedding:(id)a3 andEmbedding:(id)a4 withCluster:(id)a5;
-+ (void)calculateCircularStandardDeviationsForCluster:(id)a3 fromEmbeddings:(id)a4;
-+ (void)calculateCircularStandardDeviationsForClusters:(id)a3 fromEmbeddings:(id)a4;
-+ (void)extractActivityContextDistances:(id)a3 embedding2:(id)a4 intoFeatureDistances:(id)a5;
-+ (void)extractLocationContextDistances:(id)a3 embedding2:(id)a4 intoFeatureDistances:(id)a5;
-+ (void)extractTimeContextDistances:(id)a3 embedding2:(id)a4 intoFeatureDistances:(id)a5;
++ (double)calculateCircularStandardDeviation:(id)deviation cosValues:(id)values;
++ (double)calculateDistanceBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding withCluster:(id)cluster withWeights:(id)weights;
++ (double)calculateDistanceBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding withWeights:(id)weights;
++ (double)calculateDistanceFromFeatures:(id)features withWeights:(id)weights fromEmbedding:(id)embedding toEmbedding:(id)toEmbedding;
++ (double)calculateGeographicalStandardDeviation:(id)deviation longValues:(id)values;
++ (double)calculateValidMean:(id)mean;
++ (double)distanceFromLat1:(double)lat1 lon1:(double)lon1 toLat2:(double)lat2 lon2:(double)lon2;
++ (id)extractFeatureDistancesBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding;
++ (id)extractFeatureDistancesBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding withCluster:(id)cluster;
++ (void)calculateCircularStandardDeviationsForCluster:(id)cluster fromEmbeddings:(id)embeddings;
++ (void)calculateCircularStandardDeviationsForClusters:(id)clusters fromEmbeddings:(id)embeddings;
++ (void)extractActivityContextDistances:(id)distances embedding2:(id)embedding2 intoFeatureDistances:(id)featureDistances;
++ (void)extractLocationContextDistances:(id)distances embedding2:(id)embedding2 intoFeatureDistances:(id)featureDistances;
++ (void)extractTimeContextDistances:(id)distances embedding2:(id)embedding2 intoFeatureDistances:(id)featureDistances;
 @end
 
 @implementation PCEmbeddingDistanceCalculator
 
-+ (double)calculateDistanceBetweenEmbedding:(id)a3 andEmbedding:(id)a4 withWeights:(id)a5
++ (double)calculateDistanceBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding withWeights:(id)weights
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  embeddingCopy = embedding;
+  andEmbeddingCopy = andEmbedding;
+  weightsCopy = weights;
+  v11 = weightsCopy;
+  if (embeddingCopy && andEmbeddingCopy && weightsCopy)
   {
-    v12 = [v8 bundleIdentifier];
-    v13 = [v9 bundleIdentifier];
-    if ([v12 isEqual:v13])
+    bundleIdentifier = [embeddingCopy bundleIdentifier];
+    bundleIdentifier2 = [andEmbeddingCopy bundleIdentifier];
+    if ([bundleIdentifier isEqual:bundleIdentifier2])
     {
     }
 
     else
     {
-      v19 = [v8 suggestionID];
-      v20 = [v9 suggestionID];
-      v21 = [v19 isEqual:v20];
+      suggestionID = [embeddingCopy suggestionID];
+      suggestionID2 = [andEmbeddingCopy suggestionID];
+      v21 = [suggestionID isEqual:suggestionID2];
 
       if (!v21)
       {
-        v14 = [a1 extractFeatureDistancesBetweenEmbedding:v8 andEmbedding:v9];
-        [a1 calculateDistanceFromFeatures:v14 withWeights:v11 fromEmbedding:v8 toEmbedding:v9];
+        v14 = [self extractFeatureDistancesBetweenEmbedding:embeddingCopy andEmbedding:andEmbeddingCopy];
+        [self calculateDistanceFromFeatures:v14 withWeights:v11 fromEmbedding:embeddingCopy toEmbedding:andEmbeddingCopy];
         v15 = v22;
         v23 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -88,32 +88,32 @@ LABEL_15:
   return v15;
 }
 
-+ (double)calculateDistanceBetweenEmbedding:(id)a3 andEmbedding:(id)a4 withCluster:(id)a5 withWeights:(id)a6
++ (double)calculateDistanceBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding withCluster:(id)cluster withWeights:(id)weights
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10 && v11 && v13)
+  embeddingCopy = embedding;
+  andEmbeddingCopy = andEmbedding;
+  clusterCopy = cluster;
+  weightsCopy = weights;
+  v14 = weightsCopy;
+  if (embeddingCopy && andEmbeddingCopy && weightsCopy)
   {
-    v15 = [v10 bundleIdentifier];
-    v16 = [v11 bundleIdentifier];
-    if ([v15 isEqual:v16])
+    bundleIdentifier = [embeddingCopy bundleIdentifier];
+    bundleIdentifier2 = [andEmbeddingCopy bundleIdentifier];
+    if ([bundleIdentifier isEqual:bundleIdentifier2])
     {
     }
 
     else
     {
-      v22 = [v10 suggestionID];
-      v23 = [v11 suggestionID];
-      v24 = [v22 isEqual:v23];
+      suggestionID = [embeddingCopy suggestionID];
+      suggestionID2 = [andEmbeddingCopy suggestionID];
+      v24 = [suggestionID isEqual:suggestionID2];
 
       if (!v24)
       {
-        v17 = [a1 extractFeatureDistancesBetweenEmbedding:v10 andEmbedding:v11 withCluster:v12];
-        [a1 calculateDistanceFromFeatures:v17 withWeights:v14 fromEmbedding:v10 toEmbedding:v11];
+        v17 = [self extractFeatureDistancesBetweenEmbedding:embeddingCopy andEmbedding:andEmbeddingCopy withCluster:clusterCopy];
+        [self calculateDistanceFromFeatures:v17 withWeights:v14 fromEmbedding:embeddingCopy toEmbedding:andEmbeddingCopy];
         v18 = v25;
         v26 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -160,17 +160,17 @@ LABEL_15:
   return v18;
 }
 
-+ (id)extractFeatureDistancesBetweenEmbedding:(id)a3 andEmbedding:(id)a4
++ (id)extractFeatureDistancesBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  embeddingCopy = embedding;
+  andEmbeddingCopy = andEmbedding;
+  v8 = andEmbeddingCopy;
+  if (embeddingCopy && andEmbeddingCopy)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [a1 extractActivityContextDistances:v6 embedding2:v8 intoFeatureDistances:v9];
-    [a1 extractTimeContextDistances:v6 embedding2:v8 intoFeatureDistances:v9];
-    [a1 extractLocationContextDistances:v6 embedding2:v8 intoFeatureDistances:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [self extractActivityContextDistances:embeddingCopy embedding2:v8 intoFeatureDistances:dictionary];
+    [self extractTimeContextDistances:embeddingCopy embedding2:v8 intoFeatureDistances:dictionary];
+    [self extractLocationContextDistances:embeddingCopy embedding2:v8 intoFeatureDistances:dictionary];
   }
 
   else
@@ -182,40 +182,40 @@ LABEL_15:
       _os_log_impl(&dword_1CEE74000, v10, OS_LOG_TYPE_ERROR, "Invalid embeddings provided to extractFeatureDistancesBetweenEmbedding", v12, 2u);
     }
 
-    v9 = MEMORY[0x1E695E0F8];
+    dictionary = MEMORY[0x1E695E0F8];
   }
 
-  return v9;
+  return dictionary;
 }
 
-+ (id)extractFeatureDistancesBetweenEmbedding:(id)a3 andEmbedding:(id)a4 withCluster:(id)a5
++ (id)extractFeatureDistancesBetweenEmbedding:(id)embedding andEmbedding:(id)andEmbedding withCluster:(id)cluster
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [a1 extractFeatureDistancesBetweenEmbedding:a3 andEmbedding:a4];
+  clusterCopy = cluster;
+  v9 = [self extractFeatureDistancesBetweenEmbedding:embedding andEmbedding:andEmbedding];
   v10 = [v9 mutableCopy];
 
   if (v10)
   {
-    if (v8)
+    if (clusterCopy)
     {
 LABEL_3:
       v11 = MEMORY[0x1E696AD98];
-      [v8 timeOfDayCircularStd];
+      [clusterCopy timeOfDayCircularStd];
       v12 = [v11 numberWithDouble:?];
       [v10 setObject:v12 forKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
 
       v13 = MEMORY[0x1E696AD98];
-      [v8 latLongCircularStd];
+      [clusterCopy latLongCircularStd];
       v14 = [v13 numberWithDouble:?];
       [v10 setObject:v14 forKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
 
       v15 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        [v8 timeOfDayCircularStd];
+        [clusterCopy timeOfDayCircularStd];
         v17 = v16;
-        [v8 latLongCircularStd];
+        [clusterCopy latLongCircularStd];
         v23 = 134218240;
         v24 = v17;
         v25 = 2048;
@@ -237,7 +237,7 @@ LABEL_3:
     }
 
     v10 = objc_opt_new();
-    if (v8)
+    if (clusterCopy)
     {
       goto LABEL_3;
     }
@@ -259,15 +259,15 @@ LABEL_12:
   return v10;
 }
 
-+ (void)extractActivityContextDistances:(id)a3 embedding2:(id)a4 intoFeatureDistances:(id)a5
++ (void)extractActivityContextDistances:(id)distances embedding2:(id)embedding2 intoFeatureDistances:(id)featureDistances
 {
-  v7 = a5;
-  v8 = a4;
-  v17 = [a3 activityContextEmbedding];
-  v9 = [v8 activityContextEmbedding];
+  featureDistancesCopy = featureDistances;
+  embedding2Copy = embedding2;
+  activityContextEmbedding = [distances activityContextEmbedding];
+  activityContextEmbedding2 = [embedding2Copy activityContextEmbedding];
 
-  v10 = [v17 objectForKeyedSubscript:@"activityType"];
-  v11 = [v9 objectForKeyedSubscript:@"activityType"];
+  v10 = [activityContextEmbedding objectForKeyedSubscript:@"activityType"];
+  v11 = [activityContextEmbedding2 objectForKeyedSubscript:@"activityType"];
   v12 = v11;
   v13 = 1.0;
   if (v10)
@@ -291,67 +291,67 @@ LABEL_12:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-  [v7 setObject:v16 forKeyedSubscript:@"embeddingDistWeight_activityType"];
+  [featureDistancesCopy setObject:v16 forKeyedSubscript:@"embeddingDistWeight_activityType"];
 }
 
-+ (void)extractTimeContextDistances:(id)a3 embedding2:(id)a4 intoFeatureDistances:(id)a5
++ (void)extractTimeContextDistances:(id)distances embedding2:(id)embedding2 intoFeatureDistances:(id)featureDistances
 {
-  v72 = a5;
-  v7 = a4;
-  v8 = [a3 timeContextEmbedding];
-  v9 = [v7 timeContextEmbedding];
+  featureDistancesCopy = featureDistances;
+  embedding2Copy = embedding2;
+  timeContextEmbedding = [distances timeContextEmbedding];
+  timeContextEmbedding2 = [embedding2Copy timeContextEmbedding];
 
-  v10 = [v8 objectForKeyedSubscript:@"normalizedDuration"];
+  v10 = [timeContextEmbedding objectForKeyedSubscript:@"normalizedDuration"];
   v11 = 1.0;
   v12 = 1.0;
   if (v10)
   {
     v13 = v10;
-    v14 = [v9 objectForKeyedSubscript:@"normalizedDuration"];
+    v14 = [timeContextEmbedding2 objectForKeyedSubscript:@"normalizedDuration"];
 
     if (v14)
     {
-      v15 = [v9 objectForKeyedSubscript:@"normalizedDuration"];
+      v15 = [timeContextEmbedding2 objectForKeyedSubscript:@"normalizedDuration"];
       [v15 doubleValue];
       v17 = v16;
-      v18 = [v8 objectForKeyedSubscript:@"normalizedDuration"];
+      v18 = [timeContextEmbedding objectForKeyedSubscript:@"normalizedDuration"];
       [v18 doubleValue];
       v12 = vabdd_f64(v17, v19);
     }
   }
 
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-  [v72 setObject:v20 forKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
+  [featureDistancesCopy setObject:v20 forKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
 
-  v21 = [v8 objectForKeyedSubscript:@"timeOfDayCos"];
+  v21 = [timeContextEmbedding objectForKeyedSubscript:@"timeOfDayCos"];
   if (v21)
   {
     v22 = v21;
-    v23 = [v8 objectForKeyedSubscript:@"timeOfDaySin"];
+    v23 = [timeContextEmbedding objectForKeyedSubscript:@"timeOfDaySin"];
     if (v23)
     {
       v24 = v23;
-      v25 = [v9 objectForKeyedSubscript:@"timeOfDayCos"];
+      v25 = [timeContextEmbedding2 objectForKeyedSubscript:@"timeOfDayCos"];
       if (v25)
       {
         v26 = v25;
-        v27 = [v9 objectForKeyedSubscript:@"timeOfDaySin"];
+        v27 = [timeContextEmbedding2 objectForKeyedSubscript:@"timeOfDaySin"];
 
         if (v27)
         {
-          v28 = [v8 objectForKeyedSubscript:@"timeOfDayCos"];
+          v28 = [timeContextEmbedding objectForKeyedSubscript:@"timeOfDayCos"];
           [v28 doubleValue];
           v30 = v29;
 
-          v31 = [v9 objectForKeyedSubscript:@"timeOfDayCos"];
+          v31 = [timeContextEmbedding2 objectForKeyedSubscript:@"timeOfDayCos"];
           [v31 doubleValue];
           v33 = v32;
 
-          v34 = [v8 objectForKeyedSubscript:@"timeOfDaySin"];
+          v34 = [timeContextEmbedding objectForKeyedSubscript:@"timeOfDaySin"];
           [v34 doubleValue];
           v36 = v35;
 
-          v37 = [v9 objectForKeyedSubscript:@"timeOfDaySin"];
+          v37 = [timeContextEmbedding2 objectForKeyedSubscript:@"timeOfDaySin"];
           [v37 doubleValue];
           v39 = v38;
 
@@ -376,9 +376,9 @@ LABEL_12:
 
 LABEL_15:
   v41 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-  [v72 setObject:v41 forKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
+  [featureDistancesCopy setObject:v41 forKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
 
-  v42 = [v8 objectForKeyedSubscript:@"dayOfWeekCos"];
+  v42 = [timeContextEmbedding objectForKeyedSubscript:@"dayOfWeekCos"];
   v43 = 1.0;
   v44 = 1.0;
   if (!v42)
@@ -387,7 +387,7 @@ LABEL_15:
   }
 
   v45 = v42;
-  v46 = [v8 objectForKeyedSubscript:{@"dayOfWeekSin", 1.0}];
+  v46 = [timeContextEmbedding objectForKeyedSubscript:{@"dayOfWeekSin", 1.0}];
   if (!v46)
   {
 LABEL_24:
@@ -397,7 +397,7 @@ LABEL_24:
   }
 
   v47 = v46;
-  v48 = [v9 objectForKeyedSubscript:@"dayOfWeekCos"];
+  v48 = [timeContextEmbedding2 objectForKeyedSubscript:@"dayOfWeekCos"];
   if (!v48)
   {
 
@@ -405,21 +405,21 @@ LABEL_24:
   }
 
   v49 = v48;
-  v50 = [v9 objectForKeyedSubscript:@"dayOfWeekSin"];
+  v50 = [timeContextEmbedding2 objectForKeyedSubscript:@"dayOfWeekSin"];
 
   v44 = 1.0;
   if (v50)
   {
-    v51 = [v8 objectForKeyedSubscript:{@"dayOfWeekCos", 1.0}];
+    v51 = [timeContextEmbedding objectForKeyedSubscript:{@"dayOfWeekCos", 1.0}];
     [v51 doubleValue];
     v53 = v52;
-    v54 = [v9 objectForKeyedSubscript:@"dayOfWeekCos"];
+    v54 = [timeContextEmbedding2 objectForKeyedSubscript:@"dayOfWeekCos"];
     [v54 doubleValue];
     v56 = v55;
-    v57 = [v8 objectForKeyedSubscript:@"dayOfWeekSin"];
+    v57 = [timeContextEmbedding objectForKeyedSubscript:@"dayOfWeekSin"];
     [v57 doubleValue];
     v59 = v58;
-    v60 = [v9 objectForKeyedSubscript:@"dayOfWeekSin"];
+    v60 = [timeContextEmbedding2 objectForKeyedSubscript:@"dayOfWeekSin"];
     [v60 doubleValue];
     v62 = v59 * v61 + v53 * v56;
 
@@ -438,20 +438,20 @@ LABEL_24:
 
 LABEL_25:
   v64 = [MEMORY[0x1E696AD98] numberWithDouble:v44];
-  [v72 setObject:v64 forKeyedSubscript:@"embeddingDistWeight_dayOfWeek"];
+  [featureDistancesCopy setObject:v64 forKeyedSubscript:@"embeddingDistWeight_dayOfWeek"];
 
-  v65 = [v8 objectForKeyedSubscript:@"isWeekend"];
+  v65 = [timeContextEmbedding objectForKeyedSubscript:@"isWeekend"];
   if (v65)
   {
     v66 = v65;
-    v67 = [v9 objectForKeyedSubscript:@"isWeekend"];
+    v67 = [timeContextEmbedding2 objectForKeyedSubscript:@"isWeekend"];
 
     if (v67)
     {
-      v68 = [v8 objectForKeyedSubscript:@"isWeekend"];
-      v69 = [v68 BOOLValue];
-      v70 = [v9 objectForKeyedSubscript:@"isWeekend"];
-      if (v69 != [v70 BOOLValue])
+      v68 = [timeContextEmbedding objectForKeyedSubscript:@"isWeekend"];
+      bOOLValue = [v68 BOOLValue];
+      v70 = [timeContextEmbedding2 objectForKeyedSubscript:@"isWeekend"];
+      if (bOOLValue != [v70 BOOLValue])
       {
         v43 = 1.0;
       }
@@ -464,28 +464,28 @@ LABEL_25:
   }
 
   v71 = [MEMORY[0x1E696AD98] numberWithDouble:v43];
-  [v72 setObject:v71 forKeyedSubscript:@"embeddingDistWeight_isWeekend"];
+  [featureDistancesCopy setObject:v71 forKeyedSubscript:@"embeddingDistWeight_isWeekend"];
 }
 
-+ (void)extractLocationContextDistances:(id)a3 embedding2:(id)a4 intoFeatureDistances:(id)a5
++ (void)extractLocationContextDistances:(id)distances embedding2:(id)embedding2 intoFeatureDistances:(id)featureDistances
 {
-  v48 = a5;
-  v8 = a4;
-  v9 = [a3 locationContextEmbedding];
-  v10 = [v8 locationContextEmbedding];
+  featureDistancesCopy = featureDistances;
+  embedding2Copy = embedding2;
+  locationContextEmbedding = [distances locationContextEmbedding];
+  locationContextEmbedding2 = [embedding2Copy locationContextEmbedding];
 
-  v11 = [v9 objectForKeyedSubscript:@"placeName"];
+  v11 = [locationContextEmbedding objectForKeyedSubscript:@"placeName"];
   v12 = 1.0;
   v13 = 1.0;
   if (v11)
   {
     v14 = v11;
-    v15 = [v10 objectForKeyedSubscript:@"placeName"];
+    v15 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeName"];
 
     if (v15)
     {
-      v16 = [v9 objectForKeyedSubscript:@"placeName"];
-      v17 = [v10 objectForKeyedSubscript:@"placeName"];
+      v16 = [locationContextEmbedding objectForKeyedSubscript:@"placeName"];
+      v17 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeName"];
       if ([v16 isEqualToString:v17])
       {
         v13 = 0.0;
@@ -499,18 +499,18 @@ LABEL_25:
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-  [v48 setObject:v18 forKeyedSubscript:@"embeddingDistWeight_placeName"];
+  [featureDistancesCopy setObject:v18 forKeyedSubscript:@"embeddingDistWeight_placeName"];
 
-  v19 = [v9 objectForKeyedSubscript:@"combinedPlaceType"];
+  v19 = [locationContextEmbedding objectForKeyedSubscript:@"combinedPlaceType"];
   if (v19)
   {
     v20 = v19;
-    v21 = [v10 objectForKeyedSubscript:@"combinedPlaceType"];
+    v21 = [locationContextEmbedding2 objectForKeyedSubscript:@"combinedPlaceType"];
 
     if (v21)
     {
-      v22 = [v9 objectForKeyedSubscript:@"combinedPlaceType"];
-      v23 = [v10 objectForKeyedSubscript:@"combinedPlaceType"];
+      v22 = [locationContextEmbedding objectForKeyedSubscript:@"combinedPlaceType"];
+      v23 = [locationContextEmbedding2 objectForKeyedSubscript:@"combinedPlaceType"];
       if ([v22 isEqualToString:v23])
       {
         v12 = 0.0;
@@ -524,42 +524,42 @@ LABEL_25:
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-  [v48 setObject:v24 forKeyedSubscript:@"embeddingDistWeight_placeType"];
+  [featureDistancesCopy setObject:v24 forKeyedSubscript:@"embeddingDistWeight_placeType"];
 
-  v25 = [v9 objectForKeyedSubscript:@"placeLatitude"];
+  v25 = [locationContextEmbedding objectForKeyedSubscript:@"placeLatitude"];
   v26 = 1.0;
   if (v25)
   {
     v27 = v25;
-    v28 = [v9 objectForKeyedSubscript:@"placeLongitude"];
+    v28 = [locationContextEmbedding objectForKeyedSubscript:@"placeLongitude"];
     if (v28)
     {
       v29 = v28;
-      v30 = [v10 objectForKeyedSubscript:@"placeLatitude"];
+      v30 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLatitude"];
       if (v30)
       {
         v31 = v30;
-        v32 = [v10 objectForKeyedSubscript:@"placeLongitude"];
+        v32 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLongitude"];
 
         if (v32)
         {
-          v33 = [v9 objectForKeyedSubscript:@"placeLatitude"];
+          v33 = [locationContextEmbedding objectForKeyedSubscript:@"placeLatitude"];
           [v33 doubleValue];
           v35 = v34;
 
-          v36 = [v9 objectForKeyedSubscript:@"placeLongitude"];
+          v36 = [locationContextEmbedding objectForKeyedSubscript:@"placeLongitude"];
           [v36 doubleValue];
           v38 = v37;
 
-          v39 = [v10 objectForKeyedSubscript:@"placeLatitude"];
+          v39 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLatitude"];
           [v39 doubleValue];
           v41 = v40;
 
-          v42 = [v10 objectForKeyedSubscript:@"placeLongitude"];
+          v42 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLongitude"];
           [v42 doubleValue];
           v44 = v43;
 
-          [a1 distanceFromLat1:v35 lon1:v38 toLat2:v41 lon2:v44];
+          [self distanceFromLat1:v35 lon1:v38 toLat2:v41 lon2:v44];
           v46 = v45 * 0.00062137;
           if (v46 >= 200.0)
           {
@@ -579,23 +579,23 @@ LABEL_25:
 
 LABEL_22:
   v47 = [MEMORY[0x1E696AD98] numberWithDouble:v26];
-  [v48 setObject:v47 forKeyedSubscript:@"embeddingDistWeight_geoProximity"];
+  [featureDistancesCopy setObject:v47 forKeyedSubscript:@"embeddingDistWeight_geoProximity"];
 }
 
-+ (double)calculateDistanceFromFeatures:(id)a3 withWeights:(id)a4 fromEmbedding:(id)a5 toEmbedding:(id)a6
++ (double)calculateDistanceFromFeatures:(id)features withWeights:(id)weights fromEmbedding:(id)embedding toEmbedding:(id)toEmbedding
 {
   v144 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9 && v10)
+  featuresCopy = features;
+  weightsCopy = weights;
+  embeddingCopy = embedding;
+  toEmbeddingCopy = toEmbedding;
+  if (featuresCopy && weightsCopy)
   {
-    v13 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_activityType"];
+    v13 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_activityType"];
     [v13 doubleValue];
     v15 = v14;
 
-    v16 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_activityType"];
+    v16 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_activityType"];
     [v16 doubleValue];
     if (v17 == 0.0)
     {
@@ -610,23 +610,23 @@ LABEL_22:
     v111 = v15;
     v108 = v18;
     v115 = v15 * v18;
-    v19 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
+    v19 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
     [v19 doubleValue];
     v114 = v20;
 
-    v21 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
+    v21 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
     [v21 doubleValue];
     v113 = v22;
 
-    v23 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_dayOfWeek"];
+    v23 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_dayOfWeek"];
     [v23 doubleValue];
     v25 = v24;
 
-    v26 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_isWeekend"];
+    v26 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_isWeekend"];
     [v26 doubleValue];
     v28 = v27;
 
-    v29 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
+    v29 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
     [v29 doubleValue];
     if (v30 == 0.0)
     {
@@ -638,7 +638,7 @@ LABEL_22:
       v31 = v30;
     }
 
-    v32 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
+    v32 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
     [v32 doubleValue];
     if (v33 == 0.0)
     {
@@ -650,7 +650,7 @@ LABEL_22:
       v34 = v33;
     }
 
-    v35 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_dayOfWeek"];
+    v35 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_dayOfWeek"];
     [v35 doubleValue];
     if (v36 == 0.0)
     {
@@ -662,7 +662,7 @@ LABEL_22:
       v37 = v36;
     }
 
-    v38 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_isWeekend"];
+    v38 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_isWeekend"];
     [v38 doubleValue];
     v40 = 0.2;
     if (v39 == 0.0)
@@ -682,19 +682,19 @@ LABEL_22:
     v102 = v41;
     v103 = v37;
     v42 = v113 * v34 + v31 * v114 + v37 * v25 + v41 * v28;
-    v43 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
+    v43 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
     [v43 doubleValue];
     v45 = v44;
 
-    v46 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
+    v46 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
     [v46 doubleValue];
     v48 = v47;
 
-    v49 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
+    v49 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
     [v49 doubleValue];
     v51 = v50;
 
-    v52 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
+    v52 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
     [v52 doubleValue];
     if (v53 == 0.0)
     {
@@ -706,7 +706,7 @@ LABEL_22:
       v54 = v53;
     }
 
-    v55 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
+    v55 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
     [v55 doubleValue];
     if (v56 == 0.0)
     {
@@ -718,7 +718,7 @@ LABEL_22:
       v57 = v56;
     }
 
-    v58 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
+    v58 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
     [v58 doubleValue];
     if (v59 != 0.0)
     {
@@ -731,7 +731,7 @@ LABEL_22:
     v101 = v54;
     v99 = v40;
     v60 = v48 * v57 + v54 * v45 + v40 * v51;
-    v61 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_activityContext"];
+    v61 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_activityContext"];
     [v61 doubleValue];
     if (v62 == 0.0)
     {
@@ -743,7 +743,7 @@ LABEL_22:
       v63 = v62;
     }
 
-    v64 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_timeContext"];
+    v64 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_timeContext"];
     [v64 doubleValue];
     if (v65 == 0.0)
     {
@@ -755,7 +755,7 @@ LABEL_22:
       v66 = v65;
     }
 
-    v67 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_locationContext"];
+    v67 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_locationContext"];
     [v67 doubleValue];
     if (v68 == 0.0)
     {
@@ -771,19 +771,19 @@ LABEL_22:
     v70 = v42 * v66;
     v71 = v60;
     v72 = v70 + v63 * v115 + v69 * v60;
-    v73 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
+    v73 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
     if (v73)
     {
       v74 = v73;
-      v75 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
+      v75 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
 
       if (v75)
       {
-        v76 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
+        v76 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
         [v76 doubleValue];
         v78 = v77;
 
-        v79 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
+        v79 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_timeOfDayCircularStd"];
         [v79 doubleValue];
         v81 = v80;
 
@@ -801,19 +801,19 @@ LABEL_22:
       }
     }
 
-    v83 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
+    v83 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
     if (v83)
     {
       v84 = v83;
-      v85 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
+      v85 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
 
       if (v85)
       {
-        v86 = [v9 objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
+        v86 = [featuresCopy objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
         [v86 doubleValue];
         v88 = v87;
 
-        v89 = [v10 objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
+        v89 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_latLongCircularStd"];
         [v89 doubleValue];
         v91 = v90;
 
@@ -862,9 +862,9 @@ LABEL_22:
     v94 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
     {
-      [v11 bundleIdentifier];
+      [embeddingCopy bundleIdentifier];
       v95 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      [v12 bundleIdentifier];
+      [toEmbeddingCopy bundleIdentifier];
       v96 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138415618;
       v117 = v95;
@@ -913,19 +913,19 @@ LABEL_22:
   return v72;
 }
 
-+ (double)distanceFromLat1:(double)a3 lon1:(double)a4 toLat2:(double)a5 lon2:(double)a6
++ (double)distanceFromLat1:(double)lat1 lon1:(double)lon1 toLat2:(double)lat2 lon2:(double)lon2
 {
-  if (a4 < 0.0)
+  if (lon1 < 0.0)
   {
-    a4 = a4 + 360.0;
+    lon1 = lon1 + 360.0;
   }
 
-  if (a6 < 0.0)
+  if (lon2 < 0.0)
   {
-    a6 = a6 + 360.0;
+    lon2 = lon2 + 360.0;
   }
 
-  v6 = a6 - a4;
+  v6 = lon2 - lon1;
   if (v6 <= 180.0)
   {
     if (v6 < -180.0)
@@ -939,24 +939,24 @@ LABEL_22:
     v6 = v6 + -360.0;
   }
 
-  v7 = a5 * 0.0174532925;
-  v8 = a3 * 0.0174532925;
+  v7 = lat2 * 0.0174532925;
+  v8 = lat1 * 0.0174532925;
   v9 = v6 * 0.0174532925;
-  v10 = __sincos_stret((a3 * 0.0174532925 + a5 * 0.0174532925) * 0.5);
+  v10 = __sincos_stret((lat1 * 0.0174532925 + lat2 * 0.0174532925) * 0.5);
   v11 = sqrt(v10.__sinval * -0.00669437999 * v10.__sinval + 1.0);
   v12 = (v7 - v8) * (6328350.11 / (v11 * (v11 * v11)));
   return sqrt(v10.__cosval * (6371000.0 / v11) * v9 * (v10.__cosval * (6371000.0 / v11) * v9) + v12 * v12);
 }
 
-+ (void)calculateCircularStandardDeviationsForCluster:(id)a3 fromEmbeddings:(id)a4
++ (void)calculateCircularStandardDeviationsForCluster:(id)cluster fromEmbeddings:(id)embeddings
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7 && [v7 count])
+  clusterCopy = cluster;
+  embeddingsCopy = embeddings;
+  v8 = embeddingsCopy;
+  if (clusterCopy && embeddingsCopy && [embeddingsCopy count])
   {
-    v54 = a1;
+    selfCopy = self;
     v9 = objc_opt_new();
     v64 = 0u;
     v65 = 0u;
@@ -979,18 +979,18 @@ LABEL_22:
           }
 
           v15 = *(*(&v64 + 1) + 8 * i);
-          v16 = [v15 bundleIdentifier];
-          if (v16)
+          bundleIdentifier = [v15 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            v17 = v16;
-            v18 = [v15 bundleIdentifier];
-            v19 = [v18 UUIDString];
+            v17 = bundleIdentifier;
+            bundleIdentifier2 = [v15 bundleIdentifier];
+            uUIDString = [bundleIdentifier2 UUIDString];
 
-            if (v19)
+            if (uUIDString)
             {
-              v20 = [v15 bundleIdentifier];
-              v21 = [v20 UUIDString];
-              [v9 setObject:v15 forKeyedSubscript:v21];
+              bundleIdentifier3 = [v15 bundleIdentifier];
+              uUIDString2 = [bundleIdentifier3 UUIDString];
+              [v9 setObject:v15 forKeyedSubscript:uUIDString2];
             }
           }
         }
@@ -1001,12 +1001,12 @@ LABEL_22:
       while (v12);
     }
 
-    v22 = [v6 clusterMetadata];
-    v23 = [v22 subSuggestionIDsBeforePruning];
+    clusterMetadata = [clusterCopy clusterMetadata];
+    subSuggestionIDsBeforePruning = [clusterMetadata subSuggestionIDsBeforePruning];
 
-    if (v23 && [v23 count])
+    if (subSuggestionIDsBeforePruning && [subSuggestionIDsBeforePruning count])
     {
-      v53 = v6;
+      v53 = clusterCopy;
       v59 = objc_opt_new();
       v57 = objc_opt_new();
       v58 = objc_opt_new();
@@ -1015,8 +1015,8 @@ LABEL_22:
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v51 = v23;
-      v24 = v23;
+      v51 = subSuggestionIDsBeforePruning;
+      v24 = subSuggestionIDsBeforePruning;
       v25 = [v24 countByEnumeratingWithState:&v60 objects:v68 count:16];
       if (v25)
       {
@@ -1035,11 +1035,11 @@ LABEL_22:
             v30 = v29;
             if (v29)
             {
-              v31 = [v29 timeContextEmbedding];
-              v32 = v31;
-              if (v31)
+              timeContextEmbedding = [v29 timeContextEmbedding];
+              v32 = timeContextEmbedding;
+              if (timeContextEmbedding)
               {
-                v33 = [v31 objectForKeyedSubscript:@"timeOfDaySin"];
+                v33 = [timeContextEmbedding objectForKeyedSubscript:@"timeOfDaySin"];
                 v34 = [v32 objectForKeyedSubscript:@"timeOfDayCos"];
                 v35 = v34;
                 if (v33)
@@ -1059,11 +1059,11 @@ LABEL_22:
                 }
               }
 
-              v37 = [v30 locationContextEmbedding];
-              v38 = v37;
-              if (v37)
+              locationContextEmbedding = [v30 locationContextEmbedding];
+              v38 = locationContextEmbedding;
+              if (locationContextEmbedding)
               {
-                v39 = [v37 objectForKeyedSubscript:@"placeLatitude"];
+                v39 = [locationContextEmbedding objectForKeyedSubscript:@"placeLatitude"];
                 v40 = [v38 objectForKeyedSubscript:@"placeLongitude"];
                 v41 = v40;
                 if (v39)
@@ -1100,17 +1100,17 @@ LABEL_22:
         v45 = 0.0;
         if (v46 >= 2)
         {
-          [v54 calculateCircularStandardDeviation:v59 cosValues:{v57, 0.0}];
+          [selfCopy calculateCircularStandardDeviation:v59 cosValues:{v57, 0.0}];
         }
       }
 
-      v6 = v53;
+      clusterCopy = v53;
       [v53 setTimeOfDayCircularStd:{v45, v51}];
       v8 = v55;
-      v23 = v52;
+      subSuggestionIDsBeforePruning = v52;
       if ([v58 count] >= 2 && objc_msgSend(v56, "count") >= 2)
       {
-        [v54 calculateGeographicalStandardDeviation:v58 longValues:v56];
+        [selfCopy calculateGeographicalStandardDeviation:v58 longValues:v56];
         v44 = v47;
       }
 
@@ -1122,14 +1122,14 @@ LABEL_22:
       v48 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
       {
-        v49 = [v6 identifier];
+        identifier = [clusterCopy identifier];
         *buf = 138412290;
-        v70 = v49;
+        v70 = identifier;
         _os_log_impl(&dword_1CEE74000, v48, OS_LOG_TYPE_INFO, "No bundle IDs in cluster %@", buf, 0xCu);
       }
 
-      [v6 setTimeOfDayCircularStd:0.0];
-      [v6 setLatLongCircularStd:0.0];
+      [clusterCopy setTimeOfDayCircularStd:0.0];
+      [clusterCopy setLatLongCircularStd:0.0];
       v8 = v55;
     }
   }
@@ -1147,18 +1147,18 @@ LABEL_22:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)calculateCircularStandardDeviationsForClusters:(id)a3 fromEmbeddings:(id)a4
++ (void)calculateCircularStandardDeviationsForClusters:(id)clusters fromEmbeddings:(id)embeddings
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = [v6 count], v7) && v8 && objc_msgSend(v7, "count"))
+  clustersCopy = clusters;
+  embeddingsCopy = embeddings;
+  if (clustersCopy && (v8 = [clustersCopy count], embeddingsCopy) && v8 && objc_msgSend(embeddingsCopy, "count"))
   {
     v9 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v22 = [v6 count];
+      v22 = [clustersCopy count];
       _os_log_impl(&dword_1CEE74000, v9, OS_LOG_TYPE_INFO, "Computing circular std for %lu clusters", buf, 0xCu);
     }
 
@@ -1166,7 +1166,7 @@ LABEL_22:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = v6;
+    v10 = clustersCopy;
     v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
@@ -1181,7 +1181,7 @@ LABEL_22:
             objc_enumerationMutation(v10);
           }
 
-          [a1 calculateCircularStandardDeviationsForCluster:*(*(&v16 + 1) + 8 * i) fromEmbeddings:{v7, v16}];
+          [self calculateCircularStandardDeviationsForCluster:*(*(&v16 + 1) + 8 * i) fromEmbeddings:{embeddingsCopy, v16}];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1204,41 +1204,41 @@ LABEL_22:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (double)calculateCircularStandardDeviation:(id)a3 cosValues:(id)a4
++ (double)calculateCircularStandardDeviation:(id)deviation cosValues:(id)values
 {
-  v5 = a3;
-  v6 = a4;
+  deviationCopy = deviation;
+  valuesCopy = values;
   v7 = 0.0;
-  if ([v5 count])
+  if ([deviationCopy count])
   {
-    if ([v6 count])
+    if ([valuesCopy count])
     {
-      v8 = [v5 count];
-      if (v8 == [v6 count])
+      v8 = [deviationCopy count];
+      if (v8 == [valuesCopy count])
       {
         v9 = 0.0;
         v10 = 0.0;
-        if ([v5 count])
+        if ([deviationCopy count])
         {
           v11 = 0;
           do
           {
-            v12 = [v5 objectAtIndexedSubscript:v11];
+            v12 = [deviationCopy objectAtIndexedSubscript:v11];
             [v12 doubleValue];
             v9 = v9 + v13;
 
-            v14 = [v6 objectAtIndexedSubscript:v11];
+            v14 = [valuesCopy objectAtIndexedSubscript:v11];
             [v14 doubleValue];
             v10 = v10 + v15;
 
             ++v11;
           }
 
-          while (v11 < [v5 count]);
+          while (v11 < [deviationCopy count]);
         }
 
-        v16 = v9 / [v5 count];
-        v17 = [v6 count];
+        v16 = v9 / [deviationCopy count];
+        v17 = [valuesCopy count];
         v18 = sqrt(log(sqrt(v10 / v17 * (v10 / v17) + v16 * v16)) * -2.0);
         if (fabs(v18) == INFINITY)
         {
@@ -1256,31 +1256,31 @@ LABEL_22:
   return v7;
 }
 
-+ (double)calculateGeographicalStandardDeviation:(id)a3 longValues:(id)a4
++ (double)calculateGeographicalStandardDeviation:(id)deviation longValues:(id)values
 {
-  v5 = a3;
-  v6 = a4;
+  deviationCopy = deviation;
+  valuesCopy = values;
   v7 = 0.0;
-  if ([v5 count])
+  if ([deviationCopy count])
   {
-    if ([v6 count])
+    if ([valuesCopy count])
     {
-      v8 = [v5 count];
-      if (v8 == [v6 count])
+      v8 = [deviationCopy count];
+      if (v8 == [valuesCopy count])
       {
-        v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-        v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-        v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-        if ([v5 count])
+        v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(deviationCopy, "count")}];
+        v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(deviationCopy, "count")}];
+        v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(deviationCopy, "count")}];
+        if ([deviationCopy count])
         {
           v12 = 0;
           do
           {
-            v13 = [v5 objectAtIndexedSubscript:v12];
+            v13 = [deviationCopy objectAtIndexedSubscript:v12];
             [v13 doubleValue];
             v15 = v14 * 0.0174532925;
 
-            v16 = [v6 objectAtIndexedSubscript:v12];
+            v16 = [valuesCopy objectAtIndexedSubscript:v12];
             [v16 doubleValue];
             v18 = v17 * 0.0174532925;
 
@@ -1298,7 +1298,7 @@ LABEL_22:
             ++v12;
           }
 
-          while (v12 < [v5 count]);
+          while (v12 < [deviationCopy count]);
         }
 
         v7 = 0.0;
@@ -1343,13 +1343,13 @@ LABEL_22:
   return v7;
 }
 
-+ (double)calculateValidMean:(id)a3
++ (double)calculateValidMean:(id)mean
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  meanCopy = mean;
+  v4 = meanCopy;
   v5 = 0.0;
-  if (v3 && [v3 count])
+  if (meanCopy && [meanCopy count])
   {
     v21 = 0u;
     v22 = 0u;

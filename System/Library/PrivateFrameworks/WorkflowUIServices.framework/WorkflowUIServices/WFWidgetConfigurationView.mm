@@ -1,11 +1,11 @@
 @interface WFWidgetConfigurationView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGRect)overridingCardViewFrame;
-- (WFWidgetConfigurationView)initWithFrame:(CGRect)a3 preferredCardSize:(CGSize)a4;
+- (WFWidgetConfigurationView)initWithFrame:(CGRect)frame preferredCardSize:(CGSize)size;
 - (void)requestDismissal;
-- (void)setContainerView:(id)a3;
-- (void)setOverridingCardViewFrame:(CGRect)a3;
-- (void)setRemoteViewController:(id)a3;
+- (void)setContainerView:(id)view;
+- (void)setOverridingCardViewFrame:(CGRect)frame;
+- (void)setRemoteViewController:(id)controller;
 @end
 
 @implementation WFWidgetConfigurationView
@@ -23,16 +23,16 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [v5 view];
-  if (v6)
+  touchCopy = touch;
+  view = [touchCopy view];
+  if (view)
   {
-    v7 = [v5 view];
-    v8 = [(WFWidgetConfigurationView *)self containerView];
-    v9 = [v8 cardView];
-    v10 = [v7 isDescendantOfView:v9] ^ 1;
+    view2 = [touchCopy view];
+    containerView = [(WFWidgetConfigurationView *)self containerView];
+    cardView = [containerView cardView];
+    v10 = [view2 isDescendantOfView:cardView] ^ 1;
   }
 
   else
@@ -45,86 +45,86 @@
 
 - (void)requestDismissal
 {
-  v2 = [(WFWidgetConfigurationView *)self containerView];
-  [v2 requestDismissal];
+  containerView = [(WFWidgetConfigurationView *)self containerView];
+  [containerView requestDismissal];
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v4 = a3;
-  v5 = [(WFWidgetConfigurationView *)self containerView];
-  [v5 removeFromSuperview];
+  viewCopy = view;
+  containerView = [(WFWidgetConfigurationView *)self containerView];
+  [containerView removeFromSuperview];
 
   containerView = self->_containerView;
-  self->_containerView = v4;
+  self->_containerView = viewCopy;
 
-  v7 = [(WFWidgetConfigurationView *)self containerView];
-  [v7 setAutoresizingMask:18];
+  containerView2 = [(WFWidgetConfigurationView *)self containerView];
+  [containerView2 setAutoresizingMask:18];
 
   [(WFWidgetConfigurationView *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(WFWidgetConfigurationView *)self containerView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  containerView3 = [(WFWidgetConfigurationView *)self containerView];
+  [containerView3 setFrame:{v9, v11, v13, v15}];
 
   [(WFWidgetConfigurationView *)self overridingCardViewFrame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(WFWidgetConfigurationView *)self containerView];
-  [v25 setConfigurationCardViewFrame:{v18, v20, v22, v24}];
+  containerView4 = [(WFWidgetConfigurationView *)self containerView];
+  [containerView4 setConfigurationCardViewFrame:{v18, v20, v22, v24}];
 
-  v26 = [(WFWidgetConfigurationView *)self containerView];
-  [(WFWidgetConfigurationView *)self addSubview:v26];
+  containerView5 = [(WFWidgetConfigurationView *)self containerView];
+  [(WFWidgetConfigurationView *)self addSubview:containerView5];
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v9 = a3;
-  v5 = [(WFWidgetConfigurationView *)self remoteViewController];
-  v6 = [v5 view];
-  [v6 removeFromSuperview];
+  controllerCopy = controller;
+  remoteViewController = [(WFWidgetConfigurationView *)self remoteViewController];
+  view = [remoteViewController view];
+  [view removeFromSuperview];
 
-  objc_storeStrong(&self->_remoteViewController, a3);
-  if (v9)
+  objc_storeStrong(&self->_remoteViewController, controller);
+  if (controllerCopy)
   {
-    v7 = [v9 view];
+    view2 = [controllerCopy view];
     [(WFWidgetConfigurationView *)self bounds];
-    [v7 setFrame:?];
-    [v7 setAutoresizingMask:18];
+    [view2 setFrame:?];
+    [view2 setAutoresizingMask:18];
     [(WFWidgetConfigurationView *)self overridingCardViewFrame];
-    [v9 setConfigurationCardViewFrame:?];
-    [(WFWidgetConfigurationView *)self insertSubview:v7 atIndex:0];
+    [controllerCopy setConfigurationCardViewFrame:?];
+    [(WFWidgetConfigurationView *)self insertSubview:view2 atIndex:0];
   }
 
-  v8 = [(WFWidgetConfigurationView *)self containerView];
-  [v8 setHidden:v9 != 0];
+  containerView = [(WFWidgetConfigurationView *)self containerView];
+  [containerView setHidden:controllerCopy != 0];
 }
 
-- (void)setOverridingCardViewFrame:(CGRect)a3
+- (void)setOverridingCardViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_overridingCardViewFrame = a3;
-  v8 = [(WFWidgetConfigurationView *)self remoteViewController];
-  [v8 setConfigurationCardViewFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_overridingCardViewFrame = frame;
+  remoteViewController = [(WFWidgetConfigurationView *)self remoteViewController];
+  [remoteViewController setConfigurationCardViewFrame:{x, y, width, height}];
 
-  v9 = [(WFWidgetConfigurationView *)self containerView];
-  [v9 setConfigurationCardViewFrame:{x, y, width, height}];
+  containerView = [(WFWidgetConfigurationView *)self containerView];
+  [containerView setConfigurationCardViewFrame:{x, y, width, height}];
 }
 
-- (WFWidgetConfigurationView)initWithFrame:(CGRect)a3 preferredCardSize:(CGSize)a4
+- (WFWidgetConfigurationView)initWithFrame:(CGRect)frame preferredCardSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = WFWidgetConfigurationView;
-  v6 = [(WFWidgetConfigurationView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(WFWidgetConfigurationView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
@@ -133,8 +133,8 @@
     v8 = *(MEMORY[0x1E695F050] + 16);
     *(v6 + 440) = *MEMORY[0x1E695F050];
     *(v6 + 456) = v8;
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    v10 = [v9 colorWithAlphaComponent:0.01];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v10 = [whiteColor colorWithAlphaComponent:0.01];
     [(WFWidgetConfigurationView *)v7 setBackgroundColor:v10];
 
     v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v7 action:sel_requestDismissal];

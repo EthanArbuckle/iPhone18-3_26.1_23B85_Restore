@@ -2,27 +2,27 @@
 - (MTROperationalCSRInfo)initWithCSRElementsTLV:(MTRTLVBytes)csrElementsTLV attestationSignature:(NSData *)attestationSignature;
 - (MTROperationalCSRInfo)initWithCSRNonce:(NSData *)csrNonce csrElementsTLV:(MTRTLVBytes)csrElementsTLV attestationSignature:(NSData *)attestationSignature;
 - (MTROperationalCSRInfo)initWithCSRResponseParams:(MTROperationalCredentialsClusterCSRResponseParams *)responseParams;
-- (id)_initWithValidatedCSR:(id)a3 csrNonce:(id)a4 csrElementsTLV:(id)a5 attestationSignature:(id)a6;
+- (id)_initWithValidatedCSR:(id)r csrNonce:(id)nonce csrElementsTLV:(id)v attestationSignature:(id)signature;
 @end
 
 @implementation MTROperationalCSRInfo
 
-- (id)_initWithValidatedCSR:(id)a3 csrNonce:(id)a4 csrElementsTLV:(id)a5 attestationSignature:(id)a6
+- (id)_initWithValidatedCSR:(id)r csrNonce:(id)nonce csrElementsTLV:(id)v attestationSignature:(id)signature
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  rCopy = r;
+  nonceCopy = nonce;
+  vCopy = v;
+  signatureCopy = signature;
   v18.receiver = self;
   v18.super_class = MTROperationalCSRInfo;
   v15 = [(MTROperationalCSRInfo *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_csr, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_csr, r);
+    objc_storeStrong(p_isa + 2, nonce);
+    objc_storeStrong(p_isa + 3, v);
+    objc_storeStrong(p_isa + 4, signature);
   }
 
   return p_isa;
@@ -45,7 +45,7 @@
       v15 = [MEMORY[0x277CBEA90] dataWithBytes:v17 length:?];
       self = [(MTROperationalCSRInfo *)self _initWithValidatedCSR:v15 csrNonce:v13 csrElementsTLV:v9 attestationSignature:v10];
 
-      v11 = self;
+      selfCopy = self;
       goto LABEL_3;
     }
 
@@ -62,10 +62,10 @@
     }
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_3:
 
-  return v11;
+  return selfCopy;
 }
 
 - (MTROperationalCSRInfo)initWithCSRElementsTLV:(MTRTLVBytes)csrElementsTLV attestationSignature:(NSData *)attestationSignature
@@ -76,7 +76,7 @@ LABEL_3:
   v12 = 0uLL;
   if (sub_238F399D0(v6, &v13, &v12))
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -85,18 +85,18 @@ LABEL_3:
     v10 = [MEMORY[0x277CBEA90] dataWithBytes:v12 length:?];
     self = [(MTROperationalCSRInfo *)self _initWithValidatedCSR:v9 csrNonce:v10 csrElementsTLV:v6 attestationSignature:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (MTROperationalCSRInfo)initWithCSRResponseParams:(MTROperationalCredentialsClusterCSRResponseParams *)responseParams
 {
   v4 = responseParams;
-  v5 = [(MTROperationalCredentialsClusterCSRResponseParams *)v4 nocsrElements];
-  v6 = [(MTROperationalCredentialsClusterCSRResponseParams *)v4 attestationSignature];
-  v7 = [(MTROperationalCSRInfo *)self initWithCSRElementsTLV:v5 attestationSignature:v6];
+  nocsrElements = [(MTROperationalCredentialsClusterCSRResponseParams *)v4 nocsrElements];
+  attestationSignature = [(MTROperationalCredentialsClusterCSRResponseParams *)v4 attestationSignature];
+  v7 = [(MTROperationalCSRInfo *)self initWithCSRElementsTLV:nocsrElements attestationSignature:attestationSignature];
 
   return v7;
 }

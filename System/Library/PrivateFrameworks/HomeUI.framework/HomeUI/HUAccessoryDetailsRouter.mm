@@ -1,5 +1,5 @@
 @interface HUAccessoryDetailsRouter
-+ (id)detailsViewFor:(id)a3 navigationController:(id)a4 dismiss:(id)a5;
++ (id)detailsViewFor:(id)for navigationController:(id)controller dismiss:(id)dismiss;
 - (HUAccessoryDetailsRouter)init;
 @end
 
@@ -12,9 +12,9 @@
   return [(HUAccessoryDetailsRouter *)&v3 init];
 }
 
-+ (id)detailsViewFor:(id)a3 navigationController:(id)a4 dismiss:(id)a5
++ (id)detailsViewFor:(id)for navigationController:(id)controller dismiss:(id)dismiss
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(dismiss);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -27,9 +27,9 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = _s6HomeUI22AccessoryDetailsRouterC11detailsView3for20navigationController7dismissSo33HUDetailsPresentationDelegateHost_So06UIViewJ0CXcSgSo6HFItemC_So012UINavigationJ0CSgyycSgtFZ_0(v9, a4, v7, v8);
+  forCopy = for;
+  controllerCopy = controller;
+  v11 = _s6HomeUI22AccessoryDetailsRouterC11detailsView3for20navigationController7dismissSo33HUDetailsPresentationDelegateHost_So06UIViewJ0CXcSgSo6HFItemC_So012UINavigationJ0CSgyycSgtFZ_0(forCopy, controller, v7, v8);
   sub_20CEC8164(v7);
 
   return v11;

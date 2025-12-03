@@ -1,42 +1,42 @@
 @interface ATXAnchorModelTrainingDatasetBuilder
-+ (id)_pickTopSamplesFromArray:(id)a3 sampleSize:(unint64_t)a4;
-+ (id)fetchAnchorEvents:(id)a3 startDate:(id)a4 endDate:(id)a5;
++ (id)_pickTopSamplesFromArray:(id)array sampleSize:(unint64_t)size;
++ (id)fetchAnchorEvents:(id)events startDate:(id)date endDate:(id)endDate;
 - (ATXAnchorModelTrainingDatasetBuilder)init;
-- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)a3;
-- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)a3 dataStoreWrapper:(id)a4 harvester:(id)a5;
-- (BOOL)anchorOccurredLongEnoughAgo:(id)a3 anchor:(id)a4;
-- (double)secondsAfterAnchorToCollectPositiveSamples:(id)a3;
-- (id)actionCandidateIdsToTargetForAnchor:(id)a3 excludeCandidateIdsFromActions:(id)a4;
+- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)activity;
+- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)activity dataStoreWrapper:(id)wrapper harvester:(id)harvester;
+- (BOOL)anchorOccurredLongEnoughAgo:(id)ago anchor:(id)anchor;
+- (double)secondsAfterAnchorToCollectPositiveSamples:(id)samples;
+- (id)actionCandidateIdsToTargetForAnchor:(id)anchor excludeCandidateIdsFromActions:(id)actions;
 - (id)anchorsToIncludeInTrainingData;
-- (id)appCandidateIdsToTargetForAnchor:(id)a3 excludeCandidateIdsFromAppLaunches:(id)a4;
-- (id)appLaunchEventsFromNowPlayingStreamForAnchor:(id)a3 anchorOccurrenceDate:(id)a4;
-- (id)candidateIdSetFromAppIntentEvents:(id)a3;
-- (id)candidateIdSetFromAppLaunchDuetEvents:(id)a3;
-- (id)candidateIdSetFromModeEvents:(id)a3;
-- (id)featurizeActionEvent:(id)a3 anchorOccurrenceDate:(id)a4;
-- (id)featurizeAppEvent:(id)a3 anchorOccurrenceDate:(id)a4 eventFeaturizer:(id)a5;
-- (id)featurizeModeEvent:(id)a3 anchorOccurrenceDate:(id)a4 eventFeaturizer:(id)a5;
-- (id)fetchNegativeActionEventsAfterAnchorDate:(id)a3 anchor:(id)a4 positiveActionEvents:(id)a5;
-- (id)fetchNegativeAppEventsAfterAnchorDate:(id)a3 anchor:(id)a4 positiveAppEvents:(id)a5;
-- (id)fetchNegativeModeEventsAfterAnchorDate:(id)a3 anchor:(id)a4 positiveModeEvents:(id)a5;
-- (id)fetchNewAnchorEventsForAnchor:(id)a3;
-- (id)fetchPositiveActionEventsAfterAnchorDate:(id)a3 durationOfAnchorEvent:(double)a4;
-- (id)fetchPositiveAppEventsAfterAnchorDate:(id)a3 durationOfAnchorEvent:(double)a4 anchor:(id)a5;
-- (id)fetchPositiveModeEventsAfterAnchorDate:(id)a3 durationOfAnchorEvent:(double)a4 anchor:(id)a5;
-- (id)modeCandidateIdsToTargetForAnchor:(id)a3 excludeCandidateIdsFromModes:(id)a4;
-- (id)queryStartDateForAnchor:(id)a3;
-- (id)targetedNegativeActionSamplesForAnchor:(id)a3 anchorOccurrenceDate:(id)a4 eventsToExclude:(id)a5;
-- (id)targetedNegativeAppSamplesForAnchor:(id)a3 anchorOccurrenceDate:(id)a4 eventsToExclude:(id)a5;
-- (id)targetedNegativeModeSamplesForAnchor:(id)a3 anchorOccurrenceDate:(id)a4 eventsToExclude:(id)a5;
-- (int64_t)addActionEventsToDatabaseAfterAnchorEvent:(id)a3 anchor:(id)a4;
-- (int64_t)addAppEventsToDatabaseAfterAnchorEvent:(id)a3 anchor:(id)a4;
-- (int64_t)addCandidateTrainingSamplesToDatabaseForAnchor:(id)a3 anchorEvents:(id)a4;
-- (int64_t)addModeEventsToDatabaseAfterAnchorEvent:(id)a3 anchor:(id)a4;
+- (id)appCandidateIdsToTargetForAnchor:(id)anchor excludeCandidateIdsFromAppLaunches:(id)launches;
+- (id)appLaunchEventsFromNowPlayingStreamForAnchor:(id)anchor anchorOccurrenceDate:(id)date;
+- (id)candidateIdSetFromAppIntentEvents:(id)events;
+- (id)candidateIdSetFromAppLaunchDuetEvents:(id)events;
+- (id)candidateIdSetFromModeEvents:(id)events;
+- (id)featurizeActionEvent:(id)event anchorOccurrenceDate:(id)date;
+- (id)featurizeAppEvent:(id)event anchorOccurrenceDate:(id)date eventFeaturizer:(id)featurizer;
+- (id)featurizeModeEvent:(id)event anchorOccurrenceDate:(id)date eventFeaturizer:(id)featurizer;
+- (id)fetchNegativeActionEventsAfterAnchorDate:(id)date anchor:(id)anchor positiveActionEvents:(id)events;
+- (id)fetchNegativeAppEventsAfterAnchorDate:(id)date anchor:(id)anchor positiveAppEvents:(id)events;
+- (id)fetchNegativeModeEventsAfterAnchorDate:(id)date anchor:(id)anchor positiveModeEvents:(id)events;
+- (id)fetchNewAnchorEventsForAnchor:(id)anchor;
+- (id)fetchPositiveActionEventsAfterAnchorDate:(id)date durationOfAnchorEvent:(double)event;
+- (id)fetchPositiveAppEventsAfterAnchorDate:(id)date durationOfAnchorEvent:(double)event anchor:(id)anchor;
+- (id)fetchPositiveModeEventsAfterAnchorDate:(id)date durationOfAnchorEvent:(double)event anchor:(id)anchor;
+- (id)modeCandidateIdsToTargetForAnchor:(id)anchor excludeCandidateIdsFromModes:(id)modes;
+- (id)queryStartDateForAnchor:(id)anchor;
+- (id)targetedNegativeActionSamplesForAnchor:(id)anchor anchorOccurrenceDate:(id)date eventsToExclude:(id)exclude;
+- (id)targetedNegativeAppSamplesForAnchor:(id)anchor anchorOccurrenceDate:(id)date eventsToExclude:(id)exclude;
+- (id)targetedNegativeModeSamplesForAnchor:(id)anchor anchorOccurrenceDate:(id)date eventsToExclude:(id)exclude;
+- (int64_t)addActionEventsToDatabaseAfterAnchorEvent:(id)event anchor:(id)anchor;
+- (int64_t)addAppEventsToDatabaseAfterAnchorEvent:(id)event anchor:(id)anchor;
+- (int64_t)addCandidateTrainingSamplesToDatabaseForAnchor:(id)anchor anchorEvents:(id)events;
+- (int64_t)addModeEventsToDatabaseAfterAnchorEvent:(id)event anchor:(id)anchor;
 - (int64_t)addNewTrainingSamplesToDatabase;
-- (int64_t)addNewTrainingSamplesToDatabaseForAnchor:(id)a3;
-- (int64_t)addNewTrainingSamplesToDatabaseForAnchorEvent:(id)a3 anchor:(id)a4;
+- (int64_t)addNewTrainingSamplesToDatabaseForAnchor:(id)anchor;
+- (int64_t)addNewTrainingSamplesToDatabaseForAnchorEvent:(id)event anchor:(id)anchor;
 - (unint64_t)cleanupDatasetForPrivacyPreservation;
-- (void)addAnchorEventToDatabase:(id)a3 anchor:(id)a4;
+- (void)addAnchorEventToDatabase:(id)database anchor:(id)anchor;
 @end
 
 @implementation ATXAnchorModelTrainingDatasetBuilder
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)a3
+- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(ATXAnchorModelTrainingDatasetBuilder *)self initWithActivity:v4 dataStoreWrapper:v5 harvester:v6];
+  v7 = [(ATXAnchorModelTrainingDatasetBuilder *)self initWithActivity:activityCopy dataStoreWrapper:v5 harvester:v6];
 
   return v7;
 }
 
-- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)a3 dataStoreWrapper:(id)a4 harvester:(id)a5
+- (ATXAnchorModelTrainingDatasetBuilder)initWithActivity:(id)activity dataStoreWrapper:(id)wrapper harvester:(id)harvester
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  activityCopy = activity;
+  wrapperCopy = wrapper;
+  harvesterCopy = harvester;
   v15.receiver = self;
   v15.super_class = ATXAnchorModelTrainingDatasetBuilder;
   v12 = [(ATXAnchorModelTrainingDatasetBuilder *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activity, a3);
-    objc_storeStrong(&v13->_dataStoreWrapper, a4);
-    objc_storeStrong(&v13->_harvester, a5);
+    objc_storeStrong(&v12->_activity, activity);
+    objc_storeStrong(&v13->_dataStoreWrapper, wrapper);
+    objc_storeStrong(&v13->_harvester, harvester);
   }
 
   return v13;
@@ -82,8 +82,8 @@
 - (id)anchorsToIncludeInTrainingData
 {
   v2 = +[ATXAnchorModelHyperParameters sharedInstance];
-  v3 = [v2 enabledAnchors];
-  v4 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_183];
+  enabledAnchors = [v2 enabledAnchors];
+  v4 = [enabledAnchors _pas_mappedArrayWithTransform:&__block_literal_global_183];
 
   return v4;
 }
@@ -107,13 +107,13 @@ id __70__ATXAnchorModelTrainingDatasetBuilder_anchorsToIncludeInTrainingData__bl
     _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_DEFAULT, "AnchorModel: Cleaning up Anchor Model Database for Privacy Preservation...", &v12, 2u);
   }
 
-  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper deleteSamplesThatAreMoreThan28DaysOld];
+  deleteSamplesThatAreMoreThan28DaysOld = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper deleteSamplesThatAreMoreThan28DaysOld];
   v6 = +[_ATXAppIconState sharedInstance];
-  v7 = [v6 allInstalledAppsKnownToSpringBoard];
+  allInstalledAppsKnownToSpringBoard = [v6 allInstalledAppsKnownToSpringBoard];
 
-  if ([v7 count])
+  if ([allInstalledAppsKnownToSpringBoard count])
   {
-    v5 += [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper deleteSamplesForBundleIdsNotInList:v7];
+    deleteSamplesThatAreMoreThan28DaysOld += [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper deleteSamplesForBundleIdsNotInList:allInstalledAppsKnownToSpringBoard];
   }
 
   else
@@ -129,12 +129,12 @@ id __70__ATXAnchorModelTrainingDatasetBuilder_anchorsToIncludeInTrainingData__bl
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = v5;
+    v13 = deleteSamplesThatAreMoreThan28DaysOld;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "AnchorModel: Done cleaning up Anchor Model Database for Privacy Preservation. Deleted %lu samples in total.", &v12, 0xCu);
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v5;
+  return deleteSamplesThatAreMoreThan28DaysOld;
 }
 
 - (int64_t)addNewTrainingSamplesToDatabase
@@ -152,8 +152,8 @@ id __70__ATXAnchorModelTrainingDatasetBuilder_anchorsToIncludeInTrainingData__bl
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self anchorsToIncludeInTrainingData];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  anchorsToIncludeInTrainingData = [(ATXAnchorModelTrainingDatasetBuilder *)self anchorsToIncludeInTrainingData];
+  v6 = [anchorsToIncludeInTrainingData countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -165,7 +165,7 @@ id __70__ATXAnchorModelTrainingDatasetBuilder_anchorsToIncludeInTrainingData__bl
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(anchorsToIncludeInTrainingData);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -184,7 +184,7 @@ id __70__ATXAnchorModelTrainingDatasetBuilder_anchorsToIncludeInTrainingData__bl
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v7 = [anchorsToIncludeInTrainingData countByEnumeratingWithState:&v15 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -205,27 +205,27 @@ LABEL_16:
   return v8;
 }
 
-- (int64_t)addNewTrainingSamplesToDatabaseForAnchor:(id)a3
+- (int64_t)addNewTrainingSamplesToDatabaseForAnchor:(id)anchor
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = anchorCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "[START] ============= \nAnchorModel: Harvesting training data for %@.", &v11, 0xCu);
   }
 
-  v6 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchNewAnchorEventsForAnchor:v4];
-  v7 = [(ATXAnchorModelTrainingDatasetBuilder *)self addCandidateTrainingSamplesToDatabaseForAnchor:v4 anchorEvents:v6];
+  v6 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchNewAnchorEventsForAnchor:anchorCopy];
+  v7 = [(ATXAnchorModelTrainingDatasetBuilder *)self addCandidateTrainingSamplesToDatabaseForAnchor:anchorCopy anchorEvents:v6];
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218242;
     v12 = v7;
     v13 = 2112;
-    v14 = v4;
+    v14 = anchorCopy;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "AnchorModel: Added %ld new samples for %@. \n============= [END]", &v11, 0x16u);
   }
 
@@ -233,16 +233,16 @@ LABEL_16:
   return v7;
 }
 
-- (int64_t)addCandidateTrainingSamplesToDatabaseForAnchor:(id)a3 anchorEvents:(id)a4
+- (int64_t)addCandidateTrainingSamplesToDatabaseForAnchor:(id)anchor anchorEvents:(id)events
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  anchorCopy = anchor;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  eventsCopy = events;
+  v8 = [eventsCopy countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -254,21 +254,21 @@ LABEL_16:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        if ([(ATXAnchorModelTrainingDatasetBuilder *)self shouldCreateTrainingSamplesForAnchorEvent:v13 anchor:v6])
+        if ([(ATXAnchorModelTrainingDatasetBuilder *)self shouldCreateTrainingSamplesForAnchorEvent:v13 anchor:anchorCopy])
         {
-          v10 += [(ATXAnchorModelTrainingDatasetBuilder *)self addNewTrainingSamplesToDatabaseForAnchorEvent:v13 anchor:v6];
+          v10 += [(ATXAnchorModelTrainingDatasetBuilder *)self addNewTrainingSamplesToDatabaseForAnchorEvent:v13 anchor:anchorCopy];
           if ([(ATXBackgroundActivityProtocol *)self->_activity didDefer])
           {
             v16 = __atxlog_handle_anchor();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
-              v25 = v6;
+              v25 = anchorCopy;
               v26 = 2048;
               v27 = v10;
               v28 = 2112;
@@ -295,7 +295,7 @@ LABEL_16:
         objc_autoreleasePoolPop(v14);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v9 = [eventsCopy countByEnumeratingWithState:&v20 objects:v30 count:16];
       if (v9)
       {
         continue;
@@ -316,18 +316,18 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)anchorOccurredLongEnoughAgo:(id)a3 anchor:(id)a4
+- (BOOL)anchorOccurredLongEnoughAgo:(id)ago anchor:(id)anchor
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
+  anchorCopy = anchor;
+  agoCopy = ago;
   [v6 timeIntervalSinceReferenceDate];
   v10 = v9;
-  [(ATXAnchorModelTrainingDatasetBuilder *)self secondsAfterAnchorToCollectPositiveSamples:v7];
+  [(ATXAnchorModelTrainingDatasetBuilder *)self secondsAfterAnchorToCollectPositiveSamples:anchorCopy];
   v12 = v10 - v11;
   v13 = objc_opt_class();
 
-  v14 = [v13 anchorOccurenceDateFromDuetEvent:v8];
+  v14 = [v13 anchorOccurenceDateFromDuetEvent:agoCopy];
 
   [v14 timeIntervalSinceReferenceDate];
   v16 = v15;
@@ -335,43 +335,43 @@ LABEL_19:
   return v16 < v12;
 }
 
-- (id)fetchNewAnchorEventsForAnchor:(id)a3
+- (id)fetchNewAnchorEventsForAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self queryStartDateForAnchor:v4];
+  anchorCopy = anchor;
+  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self queryStartDateForAnchor:anchorCopy];
   v6 = objc_opt_class();
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 fetchAnchorEvents:v4 startDate:v5 endDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [v6 fetchAnchorEvents:anchorCopy startDate:v5 endDate:date];
 
   return v8;
 }
 
-- (int64_t)addNewTrainingSamplesToDatabaseForAnchorEvent:(id)a3 anchor:(id)a4
+- (int64_t)addNewTrainingSamplesToDatabaseForAnchorEvent:(id)event anchor:(id)anchor
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  anchorCopy = anchor;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v6;
+    v15 = eventCopy;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "Adding new training samples based on anchor event %@", &v14, 0xCu);
   }
 
-  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self addActionEventsToDatabaseAfterAnchorEvent:v6 anchor:v7];
-  v10 = [(ATXAnchorModelTrainingDatasetBuilder *)self addAppEventsToDatabaseAfterAnchorEvent:v6 anchor:v7];
-  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self addModeEventsToDatabaseAfterAnchorEvent:v6 anchor:v7];
-  [(ATXAnchorModelTrainingDatasetBuilder *)self addAnchorEventToDatabase:v6 anchor:v7];
+  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self addActionEventsToDatabaseAfterAnchorEvent:eventCopy anchor:anchorCopy];
+  v10 = [(ATXAnchorModelTrainingDatasetBuilder *)self addAppEventsToDatabaseAfterAnchorEvent:eventCopy anchor:anchorCopy];
+  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self addModeEventsToDatabaseAfterAnchorEvent:eventCopy anchor:anchorCopy];
+  [(ATXAnchorModelTrainingDatasetBuilder *)self addAnchorEventToDatabase:eventCopy anchor:anchorCopy];
 
   v12 = *MEMORY[0x277D85DE8];
   return v10 + v9 + v11;
 }
 
-- (void)addAnchorEventToDatabase:(id)a3 anchor:(id)a4
+- (void)addAnchorEventToDatabase:(id)database anchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  anchorCopy = anchor;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -379,22 +379,22 @@ LABEL_19:
   }
 
   v9 = objc_opt_new();
-  v10 = [v9 featurizeAnchorEvent:v6 anchor:v7];
+  v10 = [v9 featurizeAnchorEvent:databaseCopy anchor:anchorCopy];
 
-  [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper updateOrInsertAnchorEvent:v6 anchor:v7 featureMetadata:v10];
+  [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper updateOrInsertAnchorEvent:databaseCopy anchor:anchorCopy featureMetadata:v10];
 }
 
-+ (id)fetchAnchorEvents:(id)a3 startDate:(id)a4 endDate:(id)a5
++ (id)fetchAnchorEvents:(id)events startDate:(id)date endDate:(id)endDate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 earlierDate:v9];
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = [dateCopy earlierDate:endDateCopy];
 
-  if (v10 == v8)
+  if (v10 == dateCopy)
   {
-    v12 = [objc_opt_class() fetchAnchorOccurrencesBetweenStartDate:v8 endDate:v9];
+    v12 = [objc_opt_class() fetchAnchorOccurrencesBetweenStartDate:dateCopy endDate:endDateCopy];
   }
 
   else
@@ -403,9 +403,9 @@ LABEL_19:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v15 = 138412546;
-      v16 = v8;
+      v16 = dateCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = endDateCopy;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_INFO, "Skipping operation to fetch anchor events since the query startDate (%@) occurred on or after the query endDate (%@).", &v15, 0x16u);
     }
 
@@ -417,18 +417,18 @@ LABEL_19:
   return v12;
 }
 
-- (id)queryStartDateForAnchor:(id)a3
+- (id)queryStartDateForAnchor:(id)anchor
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper timestampOfMostRecentRecordedAnchorOccurrenceForAnchor:v4];
+  anchorCopy = anchor;
+  [(ATXAnchorModelDataStoreWrapperProtocol *)self->_dataStoreWrapper timestampOfMostRecentRecordedAnchorOccurrenceForAnchor:anchorCopy];
   if (v5 == 0.0)
   {
     v6 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v4;
+      v13 = anchorCopy;
       v14 = 2048;
       v15 = 1296000;
       _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "When computing the query start date for anchor %@, we were unable to fetch the most recent recorded anchor occurrence timestamp. Starting by adding anchor events that were at most %lu seconds ago.", &v12, 0x16u);
@@ -447,7 +447,7 @@ LABEL_19:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v4;
+    v13 = anchorCopy;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "Query start date for anchor %@ is %@", &v12, 0x16u);
@@ -458,9 +458,9 @@ LABEL_19:
   return v8;
 }
 
-- (double)secondsAfterAnchorToCollectPositiveSamples:(id)a3
+- (double)secondsAfterAnchorToCollectPositiveSamples:(id)samples
 {
-  v3 = a3;
+  samplesCopy = samples;
   [objc_opt_class() secondsOfInfluence];
   v5 = v4;
   v6 = __atxlog_handle_anchor();
@@ -472,17 +472,17 @@ LABEL_19:
   return v5;
 }
 
-+ (id)_pickTopSamplesFromArray:(id)a3 sampleSize:(unint64_t)a4
++ (id)_pickTopSamplesFromArray:(id)array sampleSize:(unint64_t)size
 {
-  v5 = a3;
-  if ([v5 count] <= a4)
+  arrayCopy = array;
+  if ([arrayCopy count] <= size)
   {
-    v6 = v5;
+    v6 = arrayCopy;
   }
 
   else
   {
-    v6 = [v5 subarrayWithRange:{0, a4}];
+    v6 = [arrayCopy subarrayWithRange:{0, size}];
   }
 
   v7 = v6;
@@ -490,22 +490,22 @@ LABEL_19:
   return v7;
 }
 
-- (int64_t)addActionEventsToDatabaseAfterAnchorEvent:(id)a3 anchor:(id)a4
+- (int64_t)addActionEventsToDatabaseAfterAnchorEvent:(id)event anchor:(id)anchor
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v39 = a4;
+  eventCopy = event;
+  anchorCopy = anchor;
   v7 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v6;
+    v51 = eventCopy;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "Adding new action training samples based on anchor event %@", buf, 0xCu);
   }
 
-  v8 = [objc_opt_class() candidateQueryStartDateFromDuetEvent:v6];
-  v9 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:v6];
-  [objc_opt_class() durationOfAnchorEvent:v6];
+  v8 = [objc_opt_class() candidateQueryStartDateFromDuetEvent:eventCopy];
+  v9 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:eventCopy];
+  [objc_opt_class() durationOfAnchorEvent:eventCopy];
   v36 = v8;
   v10 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchPositiveActionEventsAfterAnchorDate:v8 durationOfAnchorEvent:?];
   v11 = [objc_opt_class() _pickTopSamplesFromArray:v10 sampleSize:15];
@@ -519,7 +519,7 @@ LABEL_19:
     _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "Inserting %lu positive action events after the anchor.", buf, 0xCu);
   }
 
-  v14 = v6;
+  v14 = eventCopy;
 
   v46 = 0u;
   v47 = 0u;
@@ -544,7 +544,7 @@ LABEL_19:
         v20 = *(*(&v44 + 1) + 8 * i);
         v21 = objc_autoreleasePoolPush();
         v22 = [(ATXAnchorModelTrainingDatasetBuilder *)self featurizeActionEvent:v20 anchorOccurrenceDate:v9];
-        v17 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedActionToDatabase:v20 featurizedAction:v22 actionOccurred:1 actionEngaged:0 anchorEvent:v14 anchor:v39];
+        v17 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedActionToDatabase:v20 featurizedAction:v22 actionOccurred:1 actionEngaged:0 anchorEvent:v14 anchor:anchorCopy];
 
         objc_autoreleasePoolPop(v21);
       }
@@ -560,7 +560,7 @@ LABEL_19:
     v17 = 0;
   }
 
-  v23 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchNegativeActionEventsAfterAnchorDate:v36 anchor:v39 positiveActionEvents:obj];
+  v23 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchNegativeActionEventsAfterAnchorDate:v36 anchor:anchorCopy positiveActionEvents:obj];
   v24 = [objc_opt_class() _pickTopSamplesFromArray:v23 sampleSize:15];
 
   v25 = __atxlog_handle_anchor();
@@ -594,7 +594,7 @@ LABEL_19:
         v31 = *(*(&v40 + 1) + 8 * j);
         v32 = objc_autoreleasePoolPush();
         v33 = [(ATXAnchorModelTrainingDatasetBuilder *)self featurizeActionEvent:v31 anchorOccurrenceDate:v9];
-        v17 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedActionToDatabase:v31 featurizedAction:v33 actionOccurred:0 actionEngaged:0 anchorEvent:v14 anchor:v39];
+        v17 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedActionToDatabase:v31 featurizedAction:v33 actionOccurred:0 actionEngaged:0 anchorEvent:v14 anchor:anchorCopy];
 
         objc_autoreleasePoolPop(v32);
       }
@@ -609,18 +609,18 @@ LABEL_19:
   return v17;
 }
 
-- (id)fetchPositiveActionEventsAfterAnchorDate:(id)a3 durationOfAnchorEvent:(double)a4
+- (id)fetchPositiveActionEventsAfterAnchorDate:(id)date durationOfAnchorEvent:(double)event
 {
   harvester = self->_harvester;
-  v6 = a3;
-  v7 = [(ATXAnchorModelEventHarvester *)harvester fetchEventsAfterAnchorOccurrenceDate:v6 withDuetDataProviderClass:objc_opt_class() limit:100000 maxSecondsBeforeAnchor:0 maxSecondsAfterAnchor:a4 predicates:0];
+  dateCopy = date;
+  v7 = [(ATXAnchorModelEventHarvester *)harvester fetchEventsAfterAnchorOccurrenceDate:dateCopy withDuetDataProviderClass:objc_opt_class() limit:100000 maxSecondsBeforeAnchor:0 maxSecondsAfterAnchor:event predicates:0];
 
   return v7;
 }
 
-- (id)fetchNegativeActionEventsAfterAnchorDate:(id)a3 anchor:(id)a4 positiveActionEvents:(id)a5
+- (id)fetchNegativeActionEventsAfterAnchorDate:(id)date anchor:(id)anchor positiveActionEvents:(id)events
 {
-  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self targetedNegativeActionSamplesForAnchor:a4 anchorOccurrenceDate:a3 eventsToExclude:a5];
+  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self targetedNegativeActionSamplesForAnchor:anchor anchorOccurrenceDate:date eventsToExclude:events];
   v6 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -630,10 +630,10 @@ LABEL_19:
   return v5;
 }
 
-- (id)targetedNegativeActionSamplesForAnchor:(id)a3 anchorOccurrenceDate:(id)a4 eventsToExclude:(id)a5
+- (id)targetedNegativeActionSamplesForAnchor:(id)anchor anchorOccurrenceDate:(id)date eventsToExclude:(id)exclude
 {
-  v8 = a4;
-  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self actionCandidateIdsToTargetForAnchor:a3 excludeCandidateIdsFromActions:a5];
+  dateCopy = date;
+  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self actionCandidateIdsToTargetForAnchor:anchor excludeCandidateIdsFromActions:exclude];
   v10 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -641,17 +641,17 @@ LABEL_19:
   }
 
   dataStoreWrapper = self->_dataStoreWrapper;
-  v12 = [v9 allObjects];
-  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper appIntentDuetEventsFromCandidateIds:v12 date:v8];
+  allObjects = [v9 allObjects];
+  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper appIntentDuetEventsFromCandidateIds:allObjects date:dateCopy];
 
   return v13;
 }
 
-- (id)actionCandidateIdsToTargetForAnchor:(id)a3 excludeCandidateIdsFromActions:(id)a4
+- (id)actionCandidateIdsToTargetForAnchor:(id)anchor excludeCandidateIdsFromActions:(id)actions
 {
   dataStoreWrapper = self->_dataStoreWrapper;
-  v7 = a4;
-  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper uniqueCandidateIdsThatOccurredAfterAnchor:a3 candidateType:@"action" minOccurrences:3];
+  actionsCopy = actions;
+  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper uniqueCandidateIdsThatOccurredAfterAnchor:anchor candidateType:@"action" minOccurrences:3];
   v9 = [v8 mutableCopy];
 
   v10 = __atxlog_handle_anchor();
@@ -660,23 +660,23 @@ LABEL_19:
     [ATXAnchorModelTrainingDatasetBuilder actionCandidateIdsToTargetForAnchor:v9 excludeCandidateIdsFromActions:?];
   }
 
-  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self candidateIdSetFromAppIntentEvents:v7];
+  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self candidateIdSetFromAppIntentEvents:actionsCopy];
 
   [v9 minusSet:v11];
 
   return v9;
 }
 
-- (id)candidateIdSetFromAppIntentEvents:(id)a3
+- (id)candidateIdSetFromAppIntentEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -710,16 +710,16 @@ LABEL_19:
   return v4;
 }
 
-- (id)candidateIdSetFromAppLaunchDuetEvents:(id)a3
+- (id)candidateIdSetFromAppLaunchDuetEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -753,15 +753,15 @@ LABEL_19:
   return v4;
 }
 
-- (id)featurizeActionEvent:(id)a3 anchorOccurrenceDate:(id)a4
+- (id)featurizeActionEvent:(id)event anchorOccurrenceDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
+  dateCopy = date;
+  eventCopy = event;
   v7 = objc_opt_new();
   [v7 setShouldComputeLaunchHistoryForAppLaunches:0];
   [v7 setShouldComputeLaunchHistoryForActionKeyLaunches:0];
   [v7 setShouldComputeLaunchHistoryForActionUUIDLaunches:1];
-  v8 = [v7 featurizeActionEvent:v6 anchorOccurrenceDate:v5];
+  v8 = [v7 featurizeActionEvent:eventCopy anchorOccurrenceDate:dateCopy];
 
   v9 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -796,24 +796,24 @@ LABEL_19:
   return v8;
 }
 
-- (int64_t)addAppEventsToDatabaseAfterAnchorEvent:(id)a3 anchor:(id)a4
+- (int64_t)addAppEventsToDatabaseAfterAnchorEvent:(id)event anchor:(id)anchor
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v41 = v7;
+  eventCopy = event;
+  anchorCopy = anchor;
+  v8 = eventCopy;
+  v41 = anchorCopy;
   v9 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v53 = v6;
+    v53 = eventCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "Adding new app training samples based on anchor event %@", buf, 0xCu);
   }
 
-  v10 = [objc_opt_class() candidateQueryStartDateFromDuetEvent:v6];
-  v11 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:v6];
-  [objc_opt_class() durationOfAnchorEvent:v6];
+  v10 = [objc_opt_class() candidateQueryStartDateFromDuetEvent:eventCopy];
+  v11 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:eventCopy];
+  [objc_opt_class() durationOfAnchorEvent:eventCopy];
   v38 = v10;
   v12 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchPositiveAppEventsAfterAnchorDate:v10 durationOfAnchorEvent:v41 anchor:?];
   v13 = [objc_opt_class() _pickTopSamplesFromArray:v12 sampleSize:15];
@@ -915,14 +915,14 @@ LABEL_19:
   return v19;
 }
 
-- (id)fetchPositiveAppEventsAfterAnchorDate:(id)a3 durationOfAnchorEvent:(double)a4 anchor:(id)a5
+- (id)fetchPositiveAppEventsAfterAnchorDate:(id)date durationOfAnchorEvent:(double)event anchor:(id)anchor
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dateCopy = date;
   harvester = self->_harvester;
-  v10 = a5;
-  v11 = [(ATXAnchorModelEventHarvester *)harvester fetchAppLaunchEventsAfterAnchorOccurrenceDate:v8 limit:100000 maxSecondsBeforeAnchor:0 maxSecondsAfterAnchor:a4 isIncluded:&__block_literal_global_31_1];
-  v12 = [(ATXAnchorModelTrainingDatasetBuilder *)self appLaunchEventsFromNowPlayingStreamForAnchor:v10 anchorOccurrenceDate:v8];
+  anchorCopy = anchor;
+  v11 = [(ATXAnchorModelEventHarvester *)harvester fetchAppLaunchEventsAfterAnchorOccurrenceDate:dateCopy limit:100000 maxSecondsBeforeAnchor:0 maxSecondsAfterAnchor:event isIncluded:&__block_literal_global_31_1];
+  v12 = [(ATXAnchorModelTrainingDatasetBuilder *)self appLaunchEventsFromNowPlayingStreamForAnchor:anchorCopy anchorOccurrenceDate:dateCopy];
 
   v13 = objc_opt_new();
   [v13 addObjectsFromArray:v11];
@@ -934,8 +934,8 @@ LABEL_19:
   v17 = [v16 mutableCopy];
 
   v18 = MEMORY[0x277CBEAA8];
-  v19 = v8;
-  v20 = [[v18 alloc] initWithTimeInterval:v19 sinceDate:a4];
+  v19 = dateCopy;
+  v20 = [[v18 alloc] initWithTimeInterval:v19 sinceDate:event];
   v21 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v19 endDate:v20];
 
   v26[0] = MEMORY[0x277D85DD0];
@@ -972,19 +972,19 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   return v4;
 }
 
-- (id)appLaunchEventsFromNowPlayingStreamForAnchor:(id)a3 anchorOccurrenceDate:(id)a4
+- (id)appLaunchEventsFromNowPlayingStreamForAnchor:(id)anchor anchorOccurrenceDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dateCopy = date;
   v7 = MEMORY[0x277CBEAA8];
-  v8 = a3;
+  anchorCopy = anchor;
   v9 = [v7 alloc];
-  [(ATXAnchorModelTrainingDatasetBuilder *)self secondsAfterAnchorToCollectPositiveSamples:v8];
+  [(ATXAnchorModelTrainingDatasetBuilder *)self secondsAfterAnchorToCollectPositiveSamples:anchorCopy];
   v11 = v10;
 
-  v12 = [v9 initWithTimeInterval:v6 sinceDate:v11];
+  v12 = [v9 initWithTimeInterval:dateCopy sinceDate:v11];
   v13 = objc_opt_new();
-  v14 = [v13 playbackEventsAfterSecondsOfInactivity:v6 betweenStartDate:v12 endDate:600.0];
+  v14 = [v13 playbackEventsAfterSecondsOfInactivity:dateCopy betweenStartDate:v12 endDate:600.0];
   v15 = [v13 convertNowPlayingEventsToAppLaunchEvents:v14];
   v16 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -999,9 +999,9 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   return v15;
 }
 
-- (id)fetchNegativeAppEventsAfterAnchorDate:(id)a3 anchor:(id)a4 positiveAppEvents:(id)a5
+- (id)fetchNegativeAppEventsAfterAnchorDate:(id)date anchor:(id)anchor positiveAppEvents:(id)events
 {
-  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self targetedNegativeAppSamplesForAnchor:a4 anchorOccurrenceDate:a3 eventsToExclude:a5];
+  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self targetedNegativeAppSamplesForAnchor:anchor anchorOccurrenceDate:date eventsToExclude:events];
   v6 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1011,10 +1011,10 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   return v5;
 }
 
-- (id)targetedNegativeAppSamplesForAnchor:(id)a3 anchorOccurrenceDate:(id)a4 eventsToExclude:(id)a5
+- (id)targetedNegativeAppSamplesForAnchor:(id)anchor anchorOccurrenceDate:(id)date eventsToExclude:(id)exclude
 {
-  v8 = a4;
-  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self appCandidateIdsToTargetForAnchor:a3 excludeCandidateIdsFromAppLaunches:a5];
+  dateCopy = date;
+  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self appCandidateIdsToTargetForAnchor:anchor excludeCandidateIdsFromAppLaunches:exclude];
   v10 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1022,17 +1022,17 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   }
 
   dataStoreWrapper = self->_dataStoreWrapper;
-  v12 = [v9 allObjects];
-  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper appLaunchDuetEventsFromCandidateIds:v12 date:v8];
+  allObjects = [v9 allObjects];
+  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper appLaunchDuetEventsFromCandidateIds:allObjects date:dateCopy];
 
   return v13;
 }
 
-- (id)appCandidateIdsToTargetForAnchor:(id)a3 excludeCandidateIdsFromAppLaunches:(id)a4
+- (id)appCandidateIdsToTargetForAnchor:(id)anchor excludeCandidateIdsFromAppLaunches:(id)launches
 {
   dataStoreWrapper = self->_dataStoreWrapper;
-  v7 = a4;
-  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper uniqueCandidateIdsThatOccurredAfterAnchor:a3 candidateType:@"app" minOccurrences:3];
+  launchesCopy = launches;
+  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper uniqueCandidateIdsThatOccurredAfterAnchor:anchor candidateType:@"app" minOccurrences:3];
   v9 = [v8 mutableCopy];
 
   v10 = __atxlog_handle_anchor();
@@ -1041,24 +1041,24 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
     [ATXAnchorModelTrainingDatasetBuilder actionCandidateIdsToTargetForAnchor:v9 excludeCandidateIdsFromActions:?];
   }
 
-  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self candidateIdSetFromAppLaunchDuetEvents:v7];
+  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self candidateIdSetFromAppLaunchDuetEvents:launchesCopy];
 
   [v9 minusSet:v11];
 
   return v9;
 }
 
-- (id)featurizeAppEvent:(id)a3 anchorOccurrenceDate:(id)a4 eventFeaturizer:(id)a5
+- (id)featurizeAppEvent:(id)event anchorOccurrenceDate:(id)date eventFeaturizer:(id)featurizer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  eventCopy = event;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 arrayWithObjects:&v19 count:1];
+  featurizerCopy = featurizer;
+  dateCopy = date;
+  eventCopy2 = event;
+  v11 = [v7 arrayWithObjects:&eventCopy count:1];
 
-  v12 = [v8 featurizeAppLaunchEvents:v11 anchorOccurrenceDate:{v9, v19, v20}];
+  v12 = [featurizerCopy featurizeAppLaunchEvents:v11 anchorOccurrenceDate:{dateCopy, eventCopy, v20}];
 
   v13 = [v12 objectAtIndexedSubscript:0];
 
@@ -1085,24 +1085,24 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   return v13;
 }
 
-- (int64_t)addModeEventsToDatabaseAfterAnchorEvent:(id)a3 anchor:(id)a4
+- (int64_t)addModeEventsToDatabaseAfterAnchorEvent:(id)event anchor:(id)anchor
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v39 = a4;
+  eventCopy = event;
+  anchorCopy = anchor;
   v7 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v6;
+    v51 = eventCopy;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "Adding new mode training samples based on anchor event %@", buf, 0xCu);
   }
 
-  v8 = [objc_opt_class() candidateQueryStartDateFromDuetEvent:v6];
-  v38 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:v6];
-  [objc_opt_class() durationOfAnchorEvent:v6];
+  v8 = [objc_opt_class() candidateQueryStartDateFromDuetEvent:eventCopy];
+  v38 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:eventCopy];
+  [objc_opt_class() durationOfAnchorEvent:eventCopy];
   v35 = v8;
-  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchPositiveModeEventsAfterAnchorDate:v8 durationOfAnchorEvent:v39 anchor:?];
+  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchPositiveModeEventsAfterAnchorDate:v8 durationOfAnchorEvent:anchorCopy anchor:?];
   v10 = [objc_opt_class() _pickTopSamplesFromArray:v9 sampleSize:15];
 
   v11 = __atxlog_handle_anchor();
@@ -1138,7 +1138,7 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
         v19 = *(*(&v44 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
         v21 = [(ATXAnchorModelTrainingDatasetBuilder *)self featurizeModeEvent:v19 anchorOccurrenceDate:v38 eventFeaturizer:v13];
-        v16 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedModeToDatabase:v19 featurizedMode:v21 modeOccurred:1 modeEngaged:0 anchorEvent:v6 anchor:v39];
+        v16 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedModeToDatabase:v19 featurizedMode:v21 modeOccurred:1 modeEngaged:0 anchorEvent:eventCopy anchor:anchorCopy];
 
         objc_autoreleasePoolPop(v20);
       }
@@ -1154,7 +1154,7 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
     v16 = 0;
   }
 
-  v22 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchNegativeModeEventsAfterAnchorDate:v35 anchor:v39 positiveModeEvents:obj];
+  v22 = [(ATXAnchorModelTrainingDatasetBuilder *)self fetchNegativeModeEventsAfterAnchorDate:v35 anchor:anchorCopy positiveModeEvents:obj];
   v23 = [objc_opt_class() _pickTopSamplesFromArray:v22 sampleSize:15];
 
   v24 = __atxlog_handle_anchor();
@@ -1188,7 +1188,7 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
         v30 = *(*(&v40 + 1) + 8 * j);
         v31 = objc_autoreleasePoolPush();
         v32 = [(ATXAnchorModelTrainingDatasetBuilder *)self featurizeModeEvent:v30 anchorOccurrenceDate:v38 eventFeaturizer:v13];
-        v16 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedModeToDatabase:v30 featurizedMode:v32 modeOccurred:0 modeEngaged:0 anchorEvent:v6 anchor:v39];
+        v16 += [(ATXAnchorModelTrainingDatasetBuilder *)self addFeaturizedModeToDatabase:v30 featurizedMode:v32 modeOccurred:0 modeEngaged:0 anchorEvent:eventCopy anchor:anchorCopy];
 
         objc_autoreleasePoolPop(v31);
       }
@@ -1203,22 +1203,22 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   return v16;
 }
 
-- (id)fetchPositiveModeEventsAfterAnchorDate:(id)a3 durationOfAnchorEvent:(double)a4 anchor:(id)a5
+- (id)fetchPositiveModeEventsAfterAnchorDate:(id)date durationOfAnchorEvent:(double)event anchor:(id)anchor
 {
-  v7 = a3;
+  dateCopy = date;
   v8 = BiomeLibrary();
-  v9 = [v8 UserFocus];
-  v10 = [v9 ComputedMode];
-  v11 = [v10 atx_publisherFromStartDate:v7];
+  userFocus = [v8 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  v11 = [computedMode atx_publisherFromStartDate:dateCopy];
 
-  v12 = [(ATXAnchorModelEventHarvester *)self->_harvester fetchEventsAfterAnchorOccurenceDate:v7 withBiomePublisher:v11 maxSecondsBeforeAnchor:5 maxSecondsAfterAnchor:a4];
+  v12 = [(ATXAnchorModelEventHarvester *)self->_harvester fetchEventsAfterAnchorOccurenceDate:dateCopy withBiomePublisher:v11 maxSecondsBeforeAnchor:5 maxSecondsAfterAnchor:event];
 
   return v12;
 }
 
-- (id)featurizeModeEvent:(id)a3 anchorOccurrenceDate:(id)a4 eventFeaturizer:(id)a5
+- (id)featurizeModeEvent:(id)event anchorOccurrenceDate:(id)date eventFeaturizer:(id)featurizer
 {
-  v5 = [a5 featurizeModeEvent:a3 anchorOccurrenceDate:a4];
+  v5 = [featurizer featurizeModeEvent:event anchorOccurrenceDate:date];
   v6 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1240,9 +1240,9 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   return v5;
 }
 
-- (id)fetchNegativeModeEventsAfterAnchorDate:(id)a3 anchor:(id)a4 positiveModeEvents:(id)a5
+- (id)fetchNegativeModeEventsAfterAnchorDate:(id)date anchor:(id)anchor positiveModeEvents:(id)events
 {
-  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self targetedNegativeModeSamplesForAnchor:a4 anchorOccurrenceDate:a3 eventsToExclude:a5];
+  v5 = [(ATXAnchorModelTrainingDatasetBuilder *)self targetedNegativeModeSamplesForAnchor:anchor anchorOccurrenceDate:date eventsToExclude:events];
   v6 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1252,10 +1252,10 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   return v5;
 }
 
-- (id)targetedNegativeModeSamplesForAnchor:(id)a3 anchorOccurrenceDate:(id)a4 eventsToExclude:(id)a5
+- (id)targetedNegativeModeSamplesForAnchor:(id)anchor anchorOccurrenceDate:(id)date eventsToExclude:(id)exclude
 {
-  v8 = a4;
-  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self modeCandidateIdsToTargetForAnchor:a3 excludeCandidateIdsFromModes:a5];
+  dateCopy = date;
+  v9 = [(ATXAnchorModelTrainingDatasetBuilder *)self modeCandidateIdsToTargetForAnchor:anchor excludeCandidateIdsFromModes:exclude];
   v10 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1263,17 +1263,17 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
   }
 
   dataStoreWrapper = self->_dataStoreWrapper;
-  v12 = [v9 allObjects];
-  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper modeBiomeEventsFromCandidateIds:v12 date:v8];
+  allObjects = [v9 allObjects];
+  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper modeBiomeEventsFromCandidateIds:allObjects date:dateCopy];
 
   return v13;
 }
 
-- (id)modeCandidateIdsToTargetForAnchor:(id)a3 excludeCandidateIdsFromModes:(id)a4
+- (id)modeCandidateIdsToTargetForAnchor:(id)anchor excludeCandidateIdsFromModes:(id)modes
 {
   dataStoreWrapper = self->_dataStoreWrapper;
-  v7 = a4;
-  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper uniqueCandidateIdsThatOccurredAfterAnchor:a3 candidateType:@"mode" minOccurrences:3];
+  modesCopy = modes;
+  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)dataStoreWrapper uniqueCandidateIdsThatOccurredAfterAnchor:anchor candidateType:@"mode" minOccurrences:3];
   v9 = [v8 mutableCopy];
 
   v10 = __atxlog_handle_anchor();
@@ -1282,23 +1282,23 @@ uint64_t __107__ATXAnchorModelTrainingDatasetBuilder_fetchPositiveAppEventsAfter
     [ATXAnchorModelTrainingDatasetBuilder modeCandidateIdsToTargetForAnchor:v9 excludeCandidateIdsFromModes:?];
   }
 
-  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self candidateIdSetFromModeEvents:v7];
+  v11 = [(ATXAnchorModelTrainingDatasetBuilder *)self candidateIdSetFromModeEvents:modesCopy];
 
   [v9 minusSet:v11];
 
   return v9;
 }
 
-- (id)candidateIdSetFromModeEvents:(id)a3
+- (id)candidateIdSetFromModeEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

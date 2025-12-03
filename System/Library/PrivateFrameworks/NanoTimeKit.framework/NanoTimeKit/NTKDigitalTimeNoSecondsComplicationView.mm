@@ -1,5 +1,5 @@
 @interface NTKDigitalTimeNoSecondsComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKDigitalTimeNoSecondsComplicationView)init;
 @end
 
@@ -19,9 +19,9 @@
   return v3;
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

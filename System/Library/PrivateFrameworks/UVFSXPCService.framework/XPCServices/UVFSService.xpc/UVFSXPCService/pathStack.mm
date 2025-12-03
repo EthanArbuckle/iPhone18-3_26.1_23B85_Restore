@@ -30,24 +30,24 @@
 
 - (id)peek
 {
-  v3 = [(NSMutableArray *)self->pathElements count];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->pathElements count];
+  if (lastObject)
   {
-    v3 = [(NSMutableArray *)self->pathElements lastObject];
+    lastObject = [(NSMutableArray *)self->pathElements lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (id)pop
 {
-  v3 = [(pathStack *)self peek];
-  if (v3)
+  peek = [(pathStack *)self peek];
+  if (peek)
   {
-    [(NSMutableArray *)self->pathElements removeObject:v3];
+    [(NSMutableArray *)self->pathElements removeObject:peek];
   }
 
-  return v3;
+  return peek;
 }
 
 - (id)fullPath

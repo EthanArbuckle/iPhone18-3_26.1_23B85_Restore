@@ -1,40 +1,40 @@
 @interface MTSleepModeStateMachineOnState
-- (BOOL)isEqualToState:(id)a3;
-- (MTSleepModeStateMachineOnState)initWithSleepModeEndDate:(id)a3 stateMachine:(id)a4;
-- (void)didEnterWithPreviousState:(id)a3;
+- (BOOL)isEqualToState:(id)state;
+- (MTSleepModeStateMachineOnState)initWithSleepModeEndDate:(id)date stateMachine:(id)machine;
+- (void)didEnterWithPreviousState:(id)state;
 @end
 
 @implementation MTSleepModeStateMachineOnState
 
-- (MTSleepModeStateMachineOnState)initWithSleepModeEndDate:(id)a3 stateMachine:(id)a4
+- (MTSleepModeStateMachineOnState)initWithSleepModeEndDate:(id)date stateMachine:(id)machine
 {
-  v7 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = MTSleepModeStateMachineOnState;
-  v8 = [(MTStateMachineState *)&v11 initWithStateMachine:a4];
+  v8 = [(MTStateMachineState *)&v11 initWithStateMachine:machine];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sleepModeEndDate, a3);
+    objc_storeStrong(&v8->_sleepModeEndDate, date);
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToState:(id)a3
+- (BOOL)isEqualToState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self == stateCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && [(MTSleepModeStateMachineOnState *)v4 isMemberOfClass:objc_opt_class()])
+  else if (stateCopy && [(MTSleepModeStateMachineOnState *)stateCopy isMemberOfClass:objc_opt_class()])
   {
-    v6 = [(MTSleepModeStateMachineOnState *)self sleepModeEndDate];
-    v7 = [(MTSleepModeStateMachineOnState *)v5 sleepModeEndDate];
-    v8 = [v6 isEqualToDate:v7];
+    sleepModeEndDate = [(MTSleepModeStateMachineOnState *)self sleepModeEndDate];
+    sleepModeEndDate2 = [(MTSleepModeStateMachineOnState *)v5 sleepModeEndDate];
+    v8 = [sleepModeEndDate isEqualToDate:sleepModeEndDate2];
   }
 
   else
@@ -45,14 +45,14 @@
   return v8;
 }
 
-- (void)didEnterWithPreviousState:(id)a3
+- (void)didEnterWithPreviousState:(id)state
 {
-  if (![(MTSleepModeStateMachineOnState *)self isEqualToState:a3])
+  if (![(MTSleepModeStateMachineOnState *)self isEqualToState:state])
   {
-    v6 = [(MTStateMachineState *)self stateMachine];
-    v4 = [(MTStateMachineState *)self stateMachine];
-    v5 = [(MTSleepModeStateMachineOnState *)self sleepModeEndDate];
-    [v6 stateMachine:v4 engageSleepModeUntilDate:v5 userEngaged:0];
+    stateMachine = [(MTStateMachineState *)self stateMachine];
+    stateMachine2 = [(MTStateMachineState *)self stateMachine];
+    sleepModeEndDate = [(MTSleepModeStateMachineOnState *)self sleepModeEndDate];
+    [stateMachine stateMachine:stateMachine2 engageSleepModeUntilDate:sleepModeEndDate userEngaged:0];
   }
 }
 

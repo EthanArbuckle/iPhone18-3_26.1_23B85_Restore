@@ -1,16 +1,16 @@
 @interface NotifyMeButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation NotifyMeButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.NotifyMeButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AppStore.NotifyMeButton" hasSwiftField:@"isActive" withSwiftType:"Bool"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.NotifyMeButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AppStore.NotifyMeButton" hasSwiftField:@"isActive" withSwiftType:"Bool"];
 }
 
 - (unint64_t)accessibilityTraits

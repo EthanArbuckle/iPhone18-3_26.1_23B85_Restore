@@ -1,48 +1,48 @@
 @interface UIStackView
-+ (id)_maps_Spacer:(double)a3 visibilityModel:(id)a4;
-+ (id)_maps_StackWithAxis:(int64_t)a3;
-- (id)_maps_deepArrangedSubviewsExcluding:(id)a3;
-- (void)_addArrangedSubview:(id)a3 layoutPriority:(unint64_t)a4;
-- (void)_addArrangedSubview:(id)a3 layoutPriority:(unint64_t)a4 padding:(BannerContentPadding)a5;
-- (void)_configureSpacerIfNeeded:(id)a3 layoutPriority:(unint64_t)a4;
-- (void)_maps_removeArrangedSubview:(id)a3;
-- (void)_maps_setArrangedSubviews:(id)a3;
-- (void)_maps_setArrangedSubviews:(id)a3 animated:(BOOL)a4 completion:(id)a5;
++ (id)_maps_Spacer:(double)spacer visibilityModel:(id)model;
++ (id)_maps_StackWithAxis:(int64_t)axis;
+- (id)_maps_deepArrangedSubviewsExcluding:(id)excluding;
+- (void)_addArrangedSubview:(id)subview layoutPriority:(unint64_t)priority;
+- (void)_addArrangedSubview:(id)subview layoutPriority:(unint64_t)priority padding:(BannerContentPadding)padding;
+- (void)_configureSpacerIfNeeded:(id)needed layoutPriority:(unint64_t)priority;
+- (void)_maps_removeArrangedSubview:(id)subview;
+- (void)_maps_setArrangedSubviews:(id)subviews;
+- (void)_maps_setArrangedSubviews:(id)subviews animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation UIStackView
 
-- (void)_maps_removeArrangedSubview:(id)a3
+- (void)_maps_removeArrangedSubview:(id)subview
 {
-  v6 = a3;
-  if (v6)
+  subviewCopy = subview;
+  if (subviewCopy)
   {
-    v4 = [(UIStackView *)self subviews];
-    v5 = [v4 containsObject:v6];
+    subviews = [(UIStackView *)self subviews];
+    v5 = [subviews containsObject:subviewCopy];
 
     if (v5)
     {
-      [(UIStackView *)self removeArrangedSubview:v6];
-      [v6 removeFromSuperview];
+      [(UIStackView *)self removeArrangedSubview:subviewCopy];
+      [subviewCopy removeFromSuperview];
     }
   }
 }
 
-- (void)_maps_setArrangedSubviews:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_maps_setArrangedSubviews:(id)subviews animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  if (a4)
+  completionCopy = completion;
+  subviewsCopy = subviews;
+  if (animated)
   {
-    v10 = [(UIStackView *)self arrangedSubviews];
-    v11 = [v9 differenceFromArray:v10];
+    arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+    v11 = [subviewsCopy differenceFromArray:arrangedSubviews];
 
     if ([v11 hasChanges])
     {
       v12 = +[GroupAnimation animation];
       [v12 setDuration:UINavigationControllerHideShowBarDuration];
-      v13 = [v11 removals];
-      v14 = [v13 count];
+      removals = [v11 removals];
+      v14 = [removals count];
 
       if (v14)
       {
@@ -51,7 +51,7 @@
         v29[2] = sub_1005FBFC4;
         v29[3] = &unk_101661A90;
         v30 = v11;
-        v31 = self;
+        selfCopy = self;
         [v12 addAnimations:v29];
       }
 
@@ -62,12 +62,12 @@
       v26[1] = 3221225472;
       v26[2] = sub_1005FC0F0;
       v26[3] = &unk_101661A90;
-      v9 = v11;
-      v27 = v9;
-      v28 = self;
+      subviewsCopy = v11;
+      v27 = subviewsCopy;
+      selfCopy2 = self;
       [v15 addPreparation:v26];
-      v16 = [v9 insertions];
-      v17 = [v16 count];
+      insertions = [subviewsCopy insertions];
+      v17 = [insertions count];
 
       if (v17)
       {
@@ -75,13 +75,13 @@
         v24[1] = 3221225472;
         v24[2] = sub_1005FC2F4;
         v24[3] = &unk_101661B18;
-        v25 = v9;
+        v25 = subviewsCopy;
         [v15 addAnimations:v24];
       }
 
-      if (v8)
+      if (completionCopy)
       {
-        [v15 addCompletion:v8];
+        [v15 addCompletion:completionCopy];
       }
 
       v19 = _NSConcreteStackBlock;
@@ -96,25 +96,25 @@
 
     else
     {
-      v9 = v11;
+      subviewsCopy = v11;
     }
   }
 
   else
   {
-    [(UIStackView *)self _maps_setArrangedSubviews:v9];
+    [(UIStackView *)self _maps_setArrangedSubviews:subviewsCopy];
   }
 }
 
-- (void)_maps_setArrangedSubviews:(id)a3
+- (void)_maps_setArrangedSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(UIStackView *)self arrangedSubviews];
-  v6 = [NSMutableArray arrayWithArray:v5];
+  subviewsCopy = subviews;
+  arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+  v6 = [NSMutableArray arrayWithArray:arrangedSubviews];
 
-  if (([v6 isEqualToArray:v4] & 1) == 0)
+  if (([v6 isEqualToArray:subviewsCopy] & 1) == 0)
   {
-    [v6 removeObjectsInArray:v4];
+    [v6 removeObjectsInArray:subviewsCopy];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -147,7 +147,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = v4;
+    v12 = subviewsCopy;
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v13)
     {
@@ -175,16 +175,16 @@
   }
 }
 
-- (id)_maps_deepArrangedSubviewsExcluding:(id)a3
+- (id)_maps_deepArrangedSubviewsExcluding:(id)excluding
 {
-  v4 = a3;
+  excludingCopy = excluding;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(UIStackView *)self arrangedSubviews];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -195,21 +195,21 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 containsObject:v11] & 1) == 0)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ([excludingCopy containsObject:v11] & 1) == 0)
         {
-          v12 = [v11 _maps_deepArrangedSubviews];
-          [v5 addObjectsFromArray:v12];
+          _maps_deepArrangedSubviews = [v11 _maps_deepArrangedSubviews];
+          [v5 addObjectsFromArray:_maps_deepArrangedSubviews];
         }
 
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [arrangedSubviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -220,94 +220,94 @@
   return v13;
 }
 
-- (void)_addArrangedSubview:(id)a3 layoutPriority:(unint64_t)a4 padding:(BannerContentPadding)a5
+- (void)_addArrangedSubview:(id)subview layoutPriority:(unint64_t)priority padding:(BannerContentPadding)padding
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v11 = a3;
+  var1 = padding.var1;
+  var0 = padding.var0;
+  subviewCopy = subview;
   if (var0 != 0.0)
   {
-    v9 = [UIStackView _maps_Spacer:v11 visibilityModel:var0];
+    v9 = [UIStackView _maps_Spacer:subviewCopy visibilityModel:var0];
     [(UIStackView *)self _maps_addArrangedContentHuggingSubview:v9];
   }
 
-  [(UIStackView *)self _addArrangedSubview:v11 layoutPriority:a4];
+  [(UIStackView *)self _addArrangedSubview:subviewCopy layoutPriority:priority];
   if (var1 != 0.0)
   {
-    v10 = [UIStackView _maps_Spacer:v11 visibilityModel:var1];
+    v10 = [UIStackView _maps_Spacer:subviewCopy visibilityModel:var1];
     [(UIStackView *)self _maps_addArrangedContentHuggingSubview:v10];
   }
 }
 
-- (void)_addArrangedSubview:(id)a3 layoutPriority:(unint64_t)a4
+- (void)_addArrangedSubview:(id)subview layoutPriority:(unint64_t)priority
 {
-  v14 = a3;
+  subviewCopy = subview;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIStackView *)self _configureSpacerIfNeeded:v14 layoutPriority:a4];
+    [(UIStackView *)self _configureSpacerIfNeeded:subviewCopy layoutPriority:priority];
   }
 
-  if (a4 == 1)
+  if (priority == 1)
   {
     v7 = 250.0;
   }
 
   else
   {
-    if (a4)
+    if (priority)
     {
       goto LABEL_8;
     }
 
-    [v14 contentHuggingPriorityForAxis:{-[UIStackView axis](self, "axis")}];
+    [subviewCopy contentHuggingPriorityForAxis:{-[UIStackView axis](self, "axis")}];
     v7 = fmaxf(v6, 750.0);
   }
 
-  v8 = [(UIStackView *)self axis];
+  axis = [(UIStackView *)self axis];
   *&v9 = v7;
-  [v14 setContentHuggingPriority:v8 forAxis:v9];
+  [subviewCopy setContentHuggingPriority:axis forAxis:v9];
 LABEL_8:
-  [v14 contentCompressionResistancePriorityForAxis:{-[UIStackView axis](self, "axis")}];
+  [subviewCopy contentCompressionResistancePriorityForAxis:{-[UIStackView axis](self, "axis")}];
   v11 = fmaxf(v10, 750.0);
-  v12 = [(UIStackView *)self axis];
+  axis2 = [(UIStackView *)self axis];
   *&v13 = v11;
-  [v14 setContentCompressionResistancePriority:v12 forAxis:v13];
-  [(UIStackView *)self addArrangedSubview:v14];
+  [subviewCopy setContentCompressionResistancePriority:axis2 forAxis:v13];
+  [(UIStackView *)self addArrangedSubview:subviewCopy];
 }
 
-- (void)_configureSpacerIfNeeded:(id)a3 layoutPriority:(unint64_t)a4
+- (void)_configureSpacerIfNeeded:(id)needed layoutPriority:(unint64_t)priority
 {
-  v9 = a3;
-  if ([v9 axis] == -1)
+  neededCopy = needed;
+  if ([neededCopy axis] == -1)
   {
-    [v9 setAxis:{-[UIStackView axis](self, "axis")}];
+    [neededCopy setAxis:{-[UIStackView axis](self, "axis")}];
     if ([(UIStackView *)self axis]== 1)
     {
-      [v9 heightAnchor];
+      [neededCopy heightAnchor];
     }
 
     else
     {
-      [v9 widthAnchor];
+      [neededCopy widthAnchor];
     }
     v6 = ;
-    if (a4 == 1)
+    if (priority == 1)
     {
-      [v9 minLength];
+      [neededCopy minLength];
       v7 = [v6 constraintGreaterThanOrEqualToConstant:?];
     }
 
     else
     {
-      if (a4)
+      if (priority)
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      [v9 minLength];
+      [neededCopy minLength];
       v7 = [v6 constraintEqualToConstant:?];
     }
 
@@ -320,24 +320,24 @@ LABEL_10:
 LABEL_11:
 }
 
-+ (id)_maps_Spacer:(double)a3 visibilityModel:(id)a4
++ (id)_maps_Spacer:(double)spacer visibilityModel:(id)model
 {
-  v5 = a4;
+  modelCopy = model;
   v6 = [[BannerContentSpacerView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(BannerContentSpacerView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(BannerContentSpacerView *)v6 setMinLength:a3];
-  [(BannerContentVisibilityProxyView *)v6 setVisibilityModel:v5];
+  [(BannerContentSpacerView *)v6 setMinLength:spacer];
+  [(BannerContentVisibilityProxyView *)v6 setVisibilityModel:modelCopy];
 
   return v6;
 }
 
-+ (id)_maps_StackWithAxis:(int64_t)a3
++ (id)_maps_StackWithAxis:(int64_t)axis
 {
   v4 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 setDistribution:0];
   [v4 setAlignment:0];
-  [v4 setAxis:a3];
+  [v4 setAxis:axis];
 
   return v4;
 }

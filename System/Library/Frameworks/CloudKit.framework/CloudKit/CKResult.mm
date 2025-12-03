@@ -1,37 +1,37 @@
 @interface CKResult
-- (BOOL)isEqual:(id)a3;
-- (CKResult)initWithFailure:(id)a3;
-- (CKResult)initWithSuccess:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKResult)initWithFailure:(id)failure;
+- (CKResult)initWithSuccess:(id)success;
 - (unint64_t)hash;
 @end
 
 @implementation CKResult
 
-- (CKResult)initWithSuccess:(id)a3
+- (CKResult)initWithSuccess:(id)success
 {
-  v5 = a3;
+  successCopy = success;
   v9.receiver = self;
   v9.super_class = CKResult;
   v6 = [(CKResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_successValue, a3);
+    objc_storeStrong(&v6->_successValue, success);
   }
 
   return v7;
 }
 
-- (CKResult)initWithFailure:(id)a3
+- (CKResult)initWithFailure:(id)failure
 {
-  v5 = a3;
+  failureCopy = failure;
   v9.receiver = self;
   v9.super_class = CKResult;
   v6 = [(CKResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, failure);
   }
 
   return v7;
@@ -47,10 +47,10 @@
   return v13 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -60,7 +60,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_successValue(self, v6, v7);
       v11 = objc_msgSend_successValue(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);

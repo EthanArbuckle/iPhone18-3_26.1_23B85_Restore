@@ -10,32 +10,32 @@
 - (unint64_t)getSUVolumeUsedSpace;
 - (unint64_t)systemVolumeSize;
 - (unsigned)processSUPurgeableUrgencyResults;
-- (unsigned)runAppSizerWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5 error:(id *)a6;
-- (unsigned)scheduleAppSizerReRun:(unint64_t)a3 mode:(unint64_t)a4;
+- (unsigned)runAppSizerWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options error:(id *)error;
+- (unsigned)scheduleAppSizerReRun:(unint64_t)run mode:(unint64_t)mode;
 - (void)_initiateAsyncNonCachedCDQuery;
 - (void)accountForAppsCacheSize;
-- (void)accountForCDPluginSize:(id)a3;
+- (void)accountForCDPluginSize:(id)size;
 - (void)accountForOVPFile;
 - (void)accountForPurgeableAssets;
 - (void)addSoftwareUpdateBundle;
 - (void)addSoftwareUpdateReserve;
 - (void)calculateDataVolumesSize;
 - (void)calculateDiskSpaceSize;
-- (void)calculateFixedSizes:(BOOL)a3;
+- (void)calculateFixedSizes:(BOOL)sizes;
 - (void)calculateSystemDataSize;
 - (void)calculateSystemVolumeSize;
 - (void)calculateTotalVisibleAppSize;
-- (void)callHandlersWithResults:(id)a3 status:(int64_t)a4 error:(id)a5;
+- (void)callHandlersWithResults:(id)results status:(int64_t)status error:(id)error;
 - (void)getPurgeableDataInfo;
 - (void)populateVendorName;
 - (void)postProcessResults;
-- (void)processAttributionTags:(BOOL)a3;
-- (void)processPurgeableAttributionTags:(BOOL)a3;
+- (void)processAttributionTags:(BOOL)tags;
+- (void)processPurgeableAttributionTags:(BOOL)tags;
 - (void)processSpeculativeDownloadData;
-- (void)sendCacheUsageTelemetryWithBGTask:(id)a3;
-- (void)startProcessingSUPurgeableDataWithBGTask:(id)a3 runMode:(unint64_t)a4;
+- (void)sendCacheUsageTelemetryWithBGTask:(id)task;
+- (void)startProcessingSUPurgeableDataWithBGTask:(id)task runMode:(unint64_t)mode;
 - (void)updateAppSizerResultsWithSUPurgeableUrgencySizes;
-- (void)updateAttributonTagInfoForBundle:(id)a3 purgeableTagSize:(unint64_t)a4 volumePath:(id)a5;
+- (void)updateAttributonTagInfoForBundle:(id)bundle purgeableTagSize:(unint64_t)size volumePath:(id)path;
 @end
 
 @implementation SAVolumeScanner
@@ -87,11 +87,11 @@
 
 - (unint64_t)systemVolumeSize
 {
-  v2 = [(SAVolumeScanner *)self appSizerResults];
-  v3 = [v2 systemApp];
-  v4 = [v3 dataSize];
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+  systemApp = [appSizerResults systemApp];
+  dataSize = [systemApp dataSize];
 
-  return v4;
+  return dataSize;
 }
 
 - (BOOL)isSoftwareUpdateInProgressiOS
@@ -134,10 +134,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(SAVolumeScanner *)self relevantVolumesInfo];
-  v4 = [v3 volumesPaths];
+  relevantVolumesInfo = [(SAVolumeScanner *)self relevantVolumesInfo];
+  volumesPaths = [relevantVolumesInfo volumesPaths];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [volumesPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -148,13 +148,13 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(volumesPaths);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(SAVolumeScanner *)self purgeableRecords];
-        v11 = [v10 SUPurgeableUrgencyData];
-        v12 = [v11 objectForKeyedSubscript:v9];
+        purgeableRecords = [(SAVolumeScanner *)self purgeableRecords];
+        sUPurgeableUrgencyData = [purgeableRecords SUPurgeableUrgencyData];
+        v12 = [sUPurgeableUrgencyData objectForKeyedSubscript:v9];
 
         v13[0] = _NSConcreteStackBlock;
         v13[1] = 3221225472;
@@ -165,7 +165,7 @@
         [v12 enumerateKeysAndObjectsUsingBlock:v13];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [volumesPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -198,7 +198,7 @@
   v18 = 0x2020000000;
   v19 = 0;
   [(SAVolumeScanner *)self setTotalVisibleAppSize:0];
-  v4 = [(SAVolumeScanner *)self appSizerResults];
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100018B0C;
@@ -208,7 +208,7 @@
   v15[6] = &v24;
   v15[7] = &v20;
   v15[8] = &v16;
-  [v4 enumerateAppsDataUsingBlock:v15];
+  [appSizerResults enumerateAppsDataUsingBlock:v15];
 
   v5 = v21[3];
   if (v5 > [(SAVolumeScanner *)self totalHiddenAppSize])
@@ -224,15 +224,15 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v25[3];
-    v9 = [(SAVolumeScanner *)self totalVisibleAppSize];
-    v10 = [(SAVolumeScanner *)self totalHiddenAppSize];
+    totalVisibleAppSize = [(SAVolumeScanner *)self totalVisibleAppSize];
+    totalHiddenAppSize = [(SAVolumeScanner *)self totalHiddenAppSize];
     v11 = v21[3];
     *buf = 134218752;
     v33 = v8;
     v34 = 2048;
-    v35 = v9;
+    v35 = totalVisibleAppSize;
     v36 = 2048;
-    v37 = v10;
+    v37 = totalHiddenAppSize;
     v38 = 2048;
     v39 = v11;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "totalAppSize = %llu, totalVisibleAppSize = %llu, totalHiddenAppSize = %llu, unreportedSize = %llu", buf, 0x2Au);
@@ -268,70 +268,70 @@
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SAVolumeScanner *)self appSizerResults];
-    v6 = [v5 totalCDAvailable];
-    v7 = [(SAVolumeScanner *)self appSizerResults];
-    v8 = [v7 totalPurgeableClones];
+    appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+    totalCDAvailable = [appSizerResults totalCDAvailable];
+    appSizerResults2 = [(SAVolumeScanner *)self appSizerResults];
+    totalPurgeableClones = [appSizerResults2 totalPurgeableClones];
     v40 = 134218240;
-    v41 = v6;
+    v41 = totalCDAvailable;
     v42 = 2048;
-    v43 = v8;
+    v43 = totalPurgeableClones;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "App Sizer totalCDAvailable:%llu purgeableClonesSize: %llu", &v40, 0x16u);
   }
 
-  v9 = [(SAVolumeScanner *)self appSizerResults];
-  v10 = [v9 totalCDAvailable];
-  v11 = [(SAVolumeScanner *)self appSizerResults];
-  [v11 setTotalPurgeableDataSize:v10];
+  appSizerResults3 = [(SAVolumeScanner *)self appSizerResults];
+  totalCDAvailable2 = [appSizerResults3 totalCDAvailable];
+  appSizerResults4 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults4 setTotalPurgeableDataSize:totalCDAvailable2];
 
-  v12 = [(SAVolumeScanner *)self appSizerResults];
-  [v12 initDiskUsedAndCapacity];
+  appSizerResults5 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults5 initDiskUsedAndCapacity];
 
-  v13 = [(SAVolumeScanner *)self appSizerResults];
-  v14 = [v13 diskUsed];
-  v15 = [(SAVolumeScanner *)self appSizerResults];
-  [v15 setAPFSDiskUsed:v14];
+  appSizerResults6 = [(SAVolumeScanner *)self appSizerResults];
+  diskUsed = [appSizerResults6 diskUsed];
+  appSizerResults7 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults7 setAPFSDiskUsed:diskUsed];
 
-  v16 = [(SAVolumeScanner *)self telemetryManager];
-  v17 = [(SAVolumeScanner *)self appSizerResults];
-  v18 = [v17 APFSDiskUsed];
-  v19 = [(SAVolumeScanner *)self appSizerResults];
-  [v16 updateTotalsInfo:v18 totalPurgeable:{objc_msgSend(v19, "totalPurgeableDataSize")}];
+  telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+  appSizerResults8 = [(SAVolumeScanner *)self appSizerResults];
+  aPFSDiskUsed = [appSizerResults8 APFSDiskUsed];
+  appSizerResults9 = [(SAVolumeScanner *)self appSizerResults];
+  [telemetryManager updateTotalsInfo:aPFSDiskUsed totalPurgeable:{objc_msgSend(appSizerResults9, "totalPurgeableDataSize")}];
 
   v20 = SALog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(SAVolumeScanner *)self appSizerResults];
-    v22 = [v21 diskUsed];
-    v23 = [(SAVolumeScanner *)self appSizerResults];
-    v24 = [v23 diskCapacity];
-    v25 = [(SAVolumeScanner *)self softwareUpdateReserve];
-    v26 = [(SAVolumeScanner *)self appSizerResults];
-    v27 = [v26 totalPurgeableDataSize];
+    appSizerResults10 = [(SAVolumeScanner *)self appSizerResults];
+    diskUsed2 = [appSizerResults10 diskUsed];
+    appSizerResults11 = [(SAVolumeScanner *)self appSizerResults];
+    diskCapacity = [appSizerResults11 diskCapacity];
+    softwareUpdateReserve = [(SAVolumeScanner *)self softwareUpdateReserve];
+    appSizerResults12 = [(SAVolumeScanner *)self appSizerResults];
+    totalPurgeableDataSize = [appSizerResults12 totalPurgeableDataSize];
     v40 = 134218752;
-    v41 = v22;
+    v41 = diskUsed2;
     v42 = 2048;
-    v43 = v24;
+    v43 = diskCapacity;
     v44 = 2048;
-    v45 = v25;
+    v45 = softwareUpdateReserve;
     v46 = 2048;
-    v47 = v27;
+    v47 = totalPurgeableDataSize;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "App Sizer diskUsed:%llu diskCapacity:%llu SUR:%llu totalPurgeableDataSize:%llu", &v40, 0x2Au);
   }
 
-  v28 = [(SAVolumeScanner *)self appSizerResults];
-  [v28 setDiskUsed:{-[SAVolumeScanner softwareUpdateReserve](self, "softwareUpdateReserve") + objc_msgSend(v28, "diskUsed")}];
+  appSizerResults13 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults13 setDiskUsed:{-[SAVolumeScanner softwareUpdateReserve](self, "softwareUpdateReserve") + objc_msgSend(appSizerResults13, "diskUsed")}];
 
-  v29 = [(SAVolumeScanner *)self appSizerResults];
-  v30 = [v29 diskUsed];
-  v31 = [(SAVolumeScanner *)self appSizerResults];
-  v32 = [v31 totalPurgeableDataSize];
+  appSizerResults14 = [(SAVolumeScanner *)self appSizerResults];
+  diskUsed3 = [appSizerResults14 diskUsed];
+  appSizerResults15 = [(SAVolumeScanner *)self appSizerResults];
+  totalPurgeableDataSize2 = [appSizerResults15 totalPurgeableDataSize];
 
-  if (v30 >= v32)
+  if (diskUsed3 >= totalPurgeableDataSize2)
   {
-    v34 = [(SAVolumeScanner *)self appSizerResults];
-    v35 = [(SAVolumeScanner *)self appSizerResults];
-    [v34 setDiskUsed:{objc_msgSend(v34, "diskUsed") - objc_msgSend(v35, "totalPurgeableDataSize")}];
+    appSizerResults16 = [(SAVolumeScanner *)self appSizerResults];
+    appSizerResults17 = [(SAVolumeScanner *)self appSizerResults];
+    [appSizerResults16 setDiskUsed:{objc_msgSend(appSizerResults16, "diskUsed") - objc_msgSend(appSizerResults17, "totalPurgeableDataSize")}];
   }
 
   else
@@ -342,17 +342,17 @@
       sub_10003E340(self);
     }
 
-    v34 = [(SAVolumeScanner *)self appSizerResults];
-    [v34 setTotalPurgeableDataSize:0];
+    appSizerResults16 = [(SAVolumeScanner *)self appSizerResults];
+    [appSizerResults16 setTotalPurgeableDataSize:0];
   }
 
-  v36 = [(SAVolumeScanner *)self appSizerResults];
-  v37 = [v36 diskUsed];
-  v38 = [(SAVolumeScanner *)self appSizerResults];
-  [v38 setRawDiskedUsed:v37];
+  appSizerResults18 = [(SAVolumeScanner *)self appSizerResults];
+  diskUsed4 = [appSizerResults18 diskUsed];
+  appSizerResults19 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults19 setRawDiskedUsed:diskUsed4];
 
-  v39 = [(SAVolumeScanner *)self appSizerResults];
-  -[SAVolumeScanner setRawTotalPurgeableDataSize:](self, "setRawTotalPurgeableDataSize:", [v39 totalPurgeableDataSize]);
+  appSizerResults20 = [(SAVolumeScanner *)self appSizerResults];
+  -[SAVolumeScanner setRawTotalPurgeableDataSize:](self, "setRawTotalPurgeableDataSize:", [appSizerResults20 totalPurgeableDataSize]);
 }
 
 - (void)calculateSystemDataSize
@@ -364,41 +364,41 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "START: App Sizer Calculate 'System Data' Size", &v40, 2u);
   }
 
-  v4 = [(SAVolumeScanner *)self appSizerResults];
-  v5 = [v4 rawDiskedUsed];
-  v6 = [(SAVolumeScanner *)self appSizerResults];
-  [v6 setDiskUsed:v5];
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+  rawDiskedUsed = [appSizerResults rawDiskedUsed];
+  appSizerResults2 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults2 setDiskUsed:rawDiskedUsed];
 
-  v7 = [(SAVolumeScanner *)self rawTotalPurgeableDataSize];
-  v8 = [(SAVolumeScanner *)self appSizerResults];
-  [v8 setTotalPurgeableDataSize:v7];
+  rawTotalPurgeableDataSize = [(SAVolumeScanner *)self rawTotalPurgeableDataSize];
+  appSizerResults3 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults3 setTotalPurgeableDataSize:rawTotalPurgeableDataSize];
 
   [(SAVolumeScanner *)self calculateTotalVisibleAppSize];
-  v9 = [(SAVolumeScanner *)self appSizerResults];
-  v10 = [v9 diskUsed];
-  v11 = [(SAVolumeScanner *)self totalVisibleAppSize];
-  v12 = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
-  v13 = v10 - ([(SAVolumeScanner *)self systemVolumeSize]+ v11 + v12);
+  appSizerResults4 = [(SAVolumeScanner *)self appSizerResults];
+  diskUsed = [appSizerResults4 diskUsed];
+  totalVisibleAppSize = [(SAVolumeScanner *)self totalVisibleAppSize];
+  softwareUpdateVolumeUsedSpace = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
+  v13 = diskUsed - ([(SAVolumeScanner *)self systemVolumeSize]+ totalVisibleAppSize + softwareUpdateVolumeUsedSpace);
 
-  v14 = [(SAVolumeScanner *)self appSizerResults];
-  [v14 setRawSystemDataSize:v13];
+  appSizerResults5 = [(SAVolumeScanner *)self appSizerResults];
+  [appSizerResults5 setRawSystemDataSize:v13];
 
   v15 = SALog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(SAVolumeScanner *)self appSizerResults];
-    v17 = [v16 diskUsed];
-    v18 = [(SAVolumeScanner *)self totalVisibleAppSize];
-    v19 = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
-    v20 = [(SAVolumeScanner *)self systemVolumeSize];
+    appSizerResults6 = [(SAVolumeScanner *)self appSizerResults];
+    diskUsed2 = [appSizerResults6 diskUsed];
+    totalVisibleAppSize2 = [(SAVolumeScanner *)self totalVisibleAppSize];
+    softwareUpdateVolumeUsedSpace2 = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
+    systemVolumeSize = [(SAVolumeScanner *)self systemVolumeSize];
     v40 = 134219008;
-    v41 = v17;
+    v41 = diskUsed2;
     v42 = 2048;
-    v43 = v18;
+    v43 = totalVisibleAppSize2;
     v44 = 2048;
-    v45 = v19;
+    v45 = softwareUpdateVolumeUsedSpace2;
     v46 = 2048;
-    v47 = v20;
+    v47 = systemVolumeSize;
     v48 = 2048;
     v49 = v13;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "diskUsed: %llu totalVisibleAppSize: %llu softwareUpdateVolumeSize: %llusystemVolumeSize: %llu systemData: %lld", &v40, 0x34u);
@@ -412,26 +412,26 @@
       sub_10003E400();
     }
 
-    v22 = [(SAVolumeScanner *)self totalVisibleAppSize];
-    v23 = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
-    v24 = [(SAVolumeScanner *)self softwareUpdateReserve];
-    v25 = [(SAVolumeScanner *)self systemVolumeUsedSpace];
-    v26 = [(SAVolumeScanner *)self appSizerResults];
-    v27 = v22 + v23 + v24 + v25 - [v26 diskUsed] + 0x40000000;
+    totalVisibleAppSize3 = [(SAVolumeScanner *)self totalVisibleAppSize];
+    softwareUpdateVolumeUsedSpace3 = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
+    softwareUpdateReserve = [(SAVolumeScanner *)self softwareUpdateReserve];
+    systemVolumeUsedSpace = [(SAVolumeScanner *)self systemVolumeUsedSpace];
+    appSizerResults7 = [(SAVolumeScanner *)self appSizerResults];
+    v27 = totalVisibleAppSize3 + softwareUpdateVolumeUsedSpace3 + softwareUpdateReserve + systemVolumeUsedSpace - [appSizerResults7 diskUsed] + 0x40000000;
 
-    v28 = [(SAVolumeScanner *)self appSizerResults];
-    v29 = [v28 totalPurgeableDataSize];
+    appSizerResults8 = [(SAVolumeScanner *)self appSizerResults];
+    totalPurgeableDataSize = [appSizerResults8 totalPurgeableDataSize];
 
-    if (v27 <= v29)
+    if (v27 <= totalPurgeableDataSize)
     {
-      v31 = [(SAVolumeScanner *)self appSizerResults];
-      v32 = [v31 totalPurgeableDataSize] - v27;
+      appSizerResults9 = [(SAVolumeScanner *)self appSizerResults];
+      v32 = [appSizerResults9 totalPurgeableDataSize] - v27;
 
-      v33 = [(SAVolumeScanner *)self appSizerResults];
-      [v33 setDiskUsed:{objc_msgSend(v33, "diskUsed") + v27}];
+      appSizerResults10 = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults10 setDiskUsed:{objc_msgSend(appSizerResults10, "diskUsed") + v27}];
 
-      v34 = [(SAVolumeScanner *)self appSizerResults];
-      [v34 setTotalPurgeableDataSize:v32];
+      appSizerResults11 = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults11 setTotalPurgeableDataSize:v32];
 
       v30 = SALog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -452,39 +452,39 @@
     v13 = 0x40000000;
   }
 
-  v35 = [(SAVolumeScanner *)self appSizerResults];
-  v36 = [v35 systemDataApp];
+  appSizerResults12 = [(SAVolumeScanner *)self appSizerResults];
+  systemDataApp = [appSizerResults12 systemDataApp];
 
-  [v36 setDataSize:v13];
-  [v36 setFixedSize:0];
+  [systemDataApp setDataSize:v13];
+  [systemDataApp setFixedSize:0];
   v37 = SALog();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [v36 dataSize];
+    dataSize = [systemDataApp dataSize];
     v40 = 134217984;
-    v41 = v38;
+    v41 = dataSize;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "systemData = %llu", &v40, 0xCu);
   }
 
-  v39 = [(SAVolumeScanner *)self telemetryManager];
-  [v39 setSystemDataSize:{objc_msgSend(v36, "dataSize")}];
+  telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+  [telemetryManager setSystemDataSize:{objc_msgSend(systemDataApp, "dataSize")}];
 }
 
-- (void)callHandlersWithResults:(id)a3 status:(int64_t)a4 error:(id)a5
+- (void)callHandlersWithResults:(id)results status:(int64_t)status error:(id)error
 {
-  v7 = a5;
-  v8 = a3;
-  [v8 populateAppsData];
-  [v8 setStatus:a4];
-  [SACallbackManager callAppSizeHandlersWithResults:v8 error:v7];
+  errorCopy = error;
+  resultsCopy = results;
+  [resultsCopy populateAppsData];
+  [resultsCopy setStatus:status];
+  [SACallbackManager callAppSizeHandlersWithResults:resultsCopy error:errorCopy];
 }
 
 - (unsigned)processSUPurgeableUrgencyResults
 {
-  v3 = [(SAVolumeScanner *)self purgeableRecords];
-  v4 = [v3 waitForProcessingSUPurgeableUrgencyFiles];
+  purgeableRecords = [(SAVolumeScanner *)self purgeableRecords];
+  waitForProcessingSUPurgeableUrgencyFiles = [purgeableRecords waitForProcessingSUPurgeableUrgencyFiles];
 
-  if (v4)
+  if (waitForProcessingSUPurgeableUrgencyFiles)
   {
     v5 = SALog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -500,7 +500,7 @@
     [(SAVolumeScanner *)self calculateSystemDataSize];
   }
 
-  return v4;
+  return waitForProcessingSUPurgeableUrgencyFiles;
 }
 
 - (unint64_t)getSUVolumeUsedSpace
@@ -529,30 +529,30 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "START: App Sizer Calculate Software Update Volume Size", &v11, 2u);
   }
 
-  v4 = [(SAVolumeScanner *)self telemetryManager];
-  [v4 startTimeForTimeInfoEntry:10];
+  telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+  [telemetryManager startTimeForTimeInfoEntry:10];
 
-  LODWORD(v4) = [(SAVolumeScanner *)self isSoftwareUpdateInProgressiOS];
-  v5 = [(SAVolumeScanner *)self telemetryManager];
-  [v5 stopTimeForTimeInfoEntry:10];
+  LODWORD(telemetryManager) = [(SAVolumeScanner *)self isSoftwareUpdateInProgressiOS];
+  telemetryManager2 = [(SAVolumeScanner *)self telemetryManager];
+  [telemetryManager2 stopTimeForTimeInfoEntry:10];
 
-  if (v4)
+  if (telemetryManager)
   {
     [(SAVolumeScanner *)self setSoftwareUpdateVolumeUsedSpace:[(SAVolumeScanner *)self getSUVolumeUsedSpace]];
     v6 = objc_opt_new();
     [v6 setDataSize:[(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace]];
-    v7 = [(SAVolumeScanner *)self appSizerResults];
-    [v7 updateBundleIDs:@"com.apple.fakeapp.SoftwareUpdate" withAppSize:v6];
+    appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+    [appSizerResults updateBundleIDs:@"com.apple.fakeapp.SoftwareUpdate" withAppSize:v6];
 
-    v8 = [(SAVolumeScanner *)self telemetryManager];
-    [v8 addValue:-[SAVolumeScanner softwareUpdateVolumeUsedSpace](self forAppInfoEntry:"softwareUpdateVolumeUsedSpace") forBundleIDs:{23, @"com.apple.fakeapp.SoftwareUpdate"}];
+    telemetryManager3 = [(SAVolumeScanner *)self telemetryManager];
+    [telemetryManager3 addValue:-[SAVolumeScanner softwareUpdateVolumeUsedSpace](self forAppInfoEntry:"softwareUpdateVolumeUsedSpace") forBundleIDs:{23, @"com.apple.fakeapp.SoftwareUpdate"}];
 
     v9 = SALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
+      softwareUpdateVolumeUsedSpace = [(SAVolumeScanner *)self softwareUpdateVolumeUsedSpace];
       v11 = 134217984;
-      v12 = v10;
+      v12 = softwareUpdateVolumeUsedSpace;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "softwareUpdateVolumeUsedSpace %llu", &v11, 0xCu);
     }
   }
@@ -597,17 +597,17 @@
     {
       v9 = objc_opt_new();
       [v9 setDataSize:{-[SAVolumeScanner softwareUpdateReserve](self, "softwareUpdateReserve")}];
-      v10 = [(SAVolumeScanner *)self appSizerResults];
-      [v10 addToSystemDetails:-[SAVolumeScanner softwareUpdateReserve](self key:{"softwareUpdateReserve"), @"com.apple.fakeapp.SoftwareUpdateReserve"}];
+      appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults addToSystemDetails:-[SAVolumeScanner softwareUpdateReserve](self key:{"softwareUpdateReserve"), @"com.apple.fakeapp.SoftwareUpdateReserve"}];
 
-      v11 = [(SAVolumeScanner *)self appSizerResults];
-      [v11 updateBundleIDs:@"com.apple.fakeapp.System" withAppSize:v9];
+      appSizerResults2 = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults2 updateBundleIDs:@"com.apple.fakeapp.System" withAppSize:v9];
 
-      v12 = [(SAVolumeScanner *)self telemetryManager];
-      [v12 updateBundleIDs:@"com.apple.fakeapp.System" usedDirStat:0 fixedSize:objc_msgSend(v9 dataSize:"fixedSize") cloneSize:objc_msgSend(v9 purgeableSize:"dataSize") fileCount:{objc_msgSend(v9, "cloneSize"), objc_msgSend(v9, "purgeableSize"), 0}];
+      telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+      [telemetryManager updateBundleIDs:@"com.apple.fakeapp.System" usedDirStat:0 fixedSize:objc_msgSend(v9 dataSize:"fixedSize") cloneSize:objc_msgSend(v9 purgeableSize:"dataSize") fileCount:{objc_msgSend(v9, "cloneSize"), objc_msgSend(v9, "purgeableSize"), 0}];
 
-      v13 = [(SAVolumeScanner *)self telemetryManager];
-      [v13 addValue:objc_msgSend(v7 forAppInfoEntry:"unsignedLongLongValue") forBundleIDs:{23, @"com.apple.fakeapp.SoftwareUpdateReserve"}];
+      telemetryManager2 = [(SAVolumeScanner *)self telemetryManager];
+      [telemetryManager2 addValue:objc_msgSend(v7 forAppInfoEntry:"unsignedLongLongValue") forBundleIDs:{23, @"com.apple.fakeapp.SoftwareUpdateReserve"}];
     }
   }
 
@@ -629,9 +629,9 @@
   }
 }
 
-- (void)processPurgeableAttributionTags:(BOOL)a3
+- (void)processPurgeableAttributionTags:(BOOL)tags
 {
-  v20 = self;
+  selfCopy = self;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -653,9 +653,9 @@
   v31 = sub_100017264;
   v32 = sub_100017274;
   v33 = 0;
-  v5 = [(SAVolumeScanner *)v20 purgeableRecords];
-  v6 = [(SAVolumeScanner *)v20 relevantVolumesInfo];
-  v7 = [v6 volumesPaths];
+  purgeableRecords = [(SAVolumeScanner *)selfCopy purgeableRecords];
+  relevantVolumesInfo = [(SAVolumeScanner *)selfCopy relevantVolumesInfo];
+  volumesPaths = [relevantVolumesInfo volumesPaths];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10001A464;
@@ -663,16 +663,16 @@
   v27[4] = &v38;
   v27[5] = &v34;
   v27[6] = buf;
-  [v5 processPurgeableAttributionTagsOnRelevantVolumes:v7 reply:v27];
+  [purgeableRecords processPurgeableAttributionTagsOnRelevantVolumes:volumesPaths reply:v27];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(SAVolumeScanner *)v20 relevantVolumesInfo];
-  v9 = [v8 volumesPaths];
+  relevantVolumesInfo2 = [(SAVolumeScanner *)selfCopy relevantVolumesInfo];
+  volumesPaths2 = [relevantVolumesInfo2 volumesPaths];
 
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v46 count:16];
+  v10 = [volumesPaths2 countByEnumeratingWithState:&v23 objects:v46 count:16];
   if (v10)
   {
     v11 = *v24;
@@ -682,32 +682,32 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(volumesPaths2);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [*(v29 + 5) objectForKeyedSubscript:{v13, v20}];
+        v14 = [*(v29 + 5) objectForKeyedSubscript:{v13, selfCopy}];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_10001A48C;
         v21[3] = &unk_100065078;
-        v21[4] = v20;
+        v21[4] = selfCopy;
         v21[5] = v13;
-        v22 = a3;
+        tagsCopy = tags;
         [v14 enumerateKeysAndObjectsUsingBlock:v21];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v23 objects:v46 count:16];
+      v10 = [volumesPaths2 countByEnumeratingWithState:&v23 objects:v46 count:16];
     }
 
     while (v10);
   }
 
-  v15 = [(SAVolumeScanner *)v20 telemetryManager];
-  [v15 setValue:v39[3] forTimeInfoEntry:9];
+  telemetryManager = [(SAVolumeScanner *)selfCopy telemetryManager];
+  [telemetryManager setValue:v39[3] forTimeInfoEntry:9];
 
-  v16 = [(SAVolumeScanner *)v20 telemetryManager];
-  [v16 setValue:v35[3] forTotalsInfoEntry:3];
+  telemetryManager2 = [(SAVolumeScanner *)selfCopy telemetryManager];
+  [telemetryManager2 setValue:v35[3] forTotalsInfoEntry:3];
 
   v17 = SALog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -726,14 +726,14 @@
   _Block_object_dispose(&v38, 8);
 }
 
-- (void)updateAttributonTagInfoForBundle:(id)a3 purgeableTagSize:(unint64_t)a4 volumePath:(id)a5
+- (void)updateAttributonTagInfoForBundle:(id)bundle purgeableTagSize:(unint64_t)size volumePath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(SAVolumeScanner *)self appSizerResults];
-  v10 = [v9 attributionTags];
-  v21 = v8;
-  v11 = [v10 objectForKey:v8];
+  bundleCopy = bundle;
+  pathCopy = path;
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+  attributionTags = [appSizerResults attributionTags];
+  v21 = pathCopy;
+  v11 = [attributionTags objectForKey:pathCopy];
 
   v26 = 0u;
   v27 = 0u;
@@ -756,13 +756,13 @@
 
         v16 = *(*(&v24 + 1) + 8 * i);
         v17 = [v16 objectForKey:@"bundleID"];
-        if ([v17 isEqualToString:v7])
+        if ([v17 isEqualToString:bundleCopy])
         {
           v18 = [v16 objectForKey:@"attributionSize"];
-          v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v18 unsignedLongLongValue] - a4);
+          v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v18 unsignedLongLongValue] - size);
           [v16 setObject:v19 forKey:@"attributionSize"];
 
-          v20 = [NSNumber numberWithUnsignedLongLong:a4];
+          v20 = [NSNumber numberWithUnsignedLongLong:size];
           [v16 setObject:v20 forKey:@"purgeableSize"];
         }
       }
@@ -776,20 +776,20 @@
 
 - (BOOL)shouldEnableAttributionTagging
 {
-  v3 = [(SAVolumeScanner *)self telemetryManager];
-  v4 = [v3 getValueForDirStatsTotalsInfoEntry:2];
+  telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+  v4 = [telemetryManager getValueForDirStatsTotalsInfoEntry:2];
 
-  v5 = [(SAVolumeScanner *)self telemetryManager];
-  v6 = [v5 getValueForDirStatsTotalsInfoEntry:3];
+  telemetryManager2 = [(SAVolumeScanner *)self telemetryManager];
+  v6 = [telemetryManager2 getValueForDirStatsTotalsInfoEntry:3];
 
-  v7 = [(SAVolumeScanner *)self telemetryManager];
-  v8 = [v7 getValueForDirStatsTotalsInfoEntry:4];
+  telemetryManager3 = [(SAVolumeScanner *)self telemetryManager];
+  v8 = [telemetryManager3 getValueForDirStatsTotalsInfoEntry:4];
 
-  v9 = [(SAVolumeScanner *)self telemetryManager];
-  v10 = [v9 getValueForDirStatsTotalsInfoEntry:5];
+  telemetryManager4 = [(SAVolumeScanner *)self telemetryManager];
+  v10 = [telemetryManager4 getValueForDirStatsTotalsInfoEntry:5];
 
-  v11 = [(SAVolumeScanner *)self telemetryManager];
-  v12 = [v11 getValueForDirStatsTotalsInfoEntry:6];
+  telemetryManager5 = [(SAVolumeScanner *)self telemetryManager];
+  v12 = [telemetryManager5 getValueForDirStatsTotalsInfoEntry:6];
 
   v13 = SALog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -819,13 +819,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "START: Add vendor-name", buf, 2u);
   }
 
-  v4 = [(SAVolumeScanner *)self appSizerResults];
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001AAD8;
   v5[3] = &unk_1000650A0;
   v5[4] = self;
-  [v4 enumerateAppsDataUsingBlock:v5];
+  [appSizerResults enumerateAppsDataUsingBlock:v5];
 }
 
 - (void)_initiateAsyncNonCachedCDQuery
@@ -843,8 +843,8 @@
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Initiating asynchronous non-cached CD query on the main run", v8, 2u);
       }
 
-      v6 = [(SAVolumeScanner *)self CDClient];
-      [v6 getPurgeableInfoAsync:@"/private/var/mobile" cached:0 completionHandler:0];
+      cDClient = [(SAVolumeScanner *)self CDClient];
+      [cDClient getPurgeableInfoAsync:@"/private/var/mobile" cached:0 completionHandler:0];
 
       [(SAVolumeScanner *)self setQueriedNonCachedPurgeable:1];
       v7 = +[NSDate now];
@@ -884,13 +884,13 @@ LABEL_9:
         v13 = @"cached";
       }
 
-      v14 = [(SAVolumeScanner *)self _isRerun];
+      _isRerun = [(SAVolumeScanner *)self _isRerun];
       v15 = @"main run";
       *buf = 136315650;
       v46 = "[SAVolumeScanner getPurgeableDataInfo]";
       v47 = 2112;
       v48 = v13;
-      if (v14)
+      if (_isRerun)
       {
         v15 = @"re-run";
       }
@@ -903,14 +903,14 @@ LABEL_9:
       }
     }
 
-    v16 = [(SAVolumeScanner *)self CDClient];
+    cDClient = [(SAVolumeScanner *)self CDClient];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_10001B374;
     v30[3] = &unk_1000650C8;
     v30[4] = &v39;
     v30[5] = &v33;
-    [v16 getPurgeableInfo:@"/private/var/mobile" cached:(scanOptions & 0x20000) == 0 timeout:dispatch_time(0 completionHandler:60000000000), v30];
+    [cDClient getPurgeableInfo:@"/private/var/mobile" cached:(scanOptions & 0x20000) == 0 timeout:dispatch_time(0 completionHandler:60000000000), v30];
     goto LABEL_18;
   }
 
@@ -923,13 +923,13 @@ LABEL_9:
   }
 
   v5 = dispatch_time(0, 30000000000);
-  v6 = [(SAVolumeScanner *)self CDClient];
+  cDClient2 = [(SAVolumeScanner *)self CDClient];
   v8 = (v40 + 5);
   v7 = v40[5];
   v9 = (v34 + 5);
   v31 = v34[5];
   obj = v7;
-  [v6 getAsyncPurgeableInfoWithTimeout:v5 results:&obj error:&v31];
+  [cDClient2 getAsyncPurgeableInfoWithTimeout:v5 results:&obj error:&v31];
   objc_storeStrong(v8, obj);
   objc_storeStrong(v9, v31);
 
@@ -949,12 +949,12 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v16 = SALog();
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  cDClient = SALog();
+  if (os_log_type_enabled(cDClient, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v46 = "[SAVolumeScanner getPurgeableDataInfo]";
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: Synchronous purgeable data retrieval successful.", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, cDClient, OS_LOG_TYPE_DEFAULT, "%s: Synchronous purgeable data retrieval successful.", buf, 0xCu);
   }
 
 LABEL_18:
@@ -992,26 +992,26 @@ LABEL_18:
 
     if (v20)
     {
-      v25 = [(SAVolumeScanner *)self appSizerResults];
-      [v25 setTotalCDAvailable:{objc_msgSend(v20, "longLongValue") + objc_msgSend(v25, "totalCDAvailable")}];
+      appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults setTotalCDAvailable:{objc_msgSend(v20, "longLongValue") + objc_msgSend(appSizerResults, "totalCDAvailable")}];
     }
 
     if (v19)
     {
-      v26 = [(SAVolumeScanner *)self appSizerResults];
-      [v26 setTotalPurgeableClones:{objc_msgSend(v19, "longLongValue") + objc_msgSend(v26, "totalPurgeableClones")}];
+      appSizerResults2 = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults2 setTotalPurgeableClones:{objc_msgSend(v19, "longLongValue") + objc_msgSend(appSizerResults2, "totalPurgeableClones")}];
     }
 
     if (v17)
     {
-      v27 = [(SAVolumeScanner *)self appSizerResults];
-      [v27 setTotalCDPluginsSize:{-[NSObject longLongValue](v17, "longLongValue") + objc_msgSend(v27, "totalCDPluginsSize")}];
+      appSizerResults3 = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults3 setTotalCDPluginsSize:{-[NSObject longLongValue](v17, "longLongValue") + objc_msgSend(appSizerResults3, "totalCDPluginsSize")}];
     }
 
     if (v23)
     {
-      v28 = [(SAVolumeScanner *)self appSizerResults];
-      [v28 setTotalCDAppsCacheSize:{objc_msgSend(v23, "longLongValue") + objc_msgSend(v28, "totalCDAppsCacheSize")}];
+      appSizerResults4 = [(SAVolumeScanner *)self appSizerResults];
+      [appSizerResults4 setTotalCDAppsCacheSize:{objc_msgSend(v23, "longLongValue") + objc_msgSend(appSizerResults4, "totalCDAppsCacheSize")}];
     }
 
     v29 = sub_100001AE4(v40[5]);
@@ -1022,16 +1022,16 @@ LABEL_18:
   _Block_object_dispose(&v39, 8);
 }
 
-- (unsigned)scheduleAppSizerReRun:(unint64_t)a3 mode:(unint64_t)a4
+- (unsigned)scheduleAppSizerReRun:(unint64_t)run mode:(unint64_t)mode
 {
-  if ((a3 & 0x1000) == 0)
+  if ((run & 0x1000) == 0)
   {
     return 5;
   }
 
   v8 = +[SACallbackManager handlersCount];
   v5 = 5;
-  if (a4 == 2 && v8 >= 1)
+  if (mode == 2 && v8 >= 1)
   {
     [(NSDate *)self->_startTime timeIntervalSinceNow];
     v10 = -v9;
@@ -1056,8 +1056,8 @@ LABEL_18:
       block[1] = 3221225472;
       block[2] = sub_10001C8F8;
       block[3] = &unk_100065168;
-      v21 = self;
-      v22 = a3;
+      selfCopy = self;
+      runCopy = run;
       v20 = v15;
       v14 = v15;
       dispatch_after(v16, rerunQue, block);
@@ -1080,7 +1080,7 @@ LABEL_18:
   return v5;
 }
 
-- (void)calculateFixedSizes:(BOOL)a3
+- (void)calculateFixedSizes:(BOOL)sizes
 {
   v5 = SALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1092,20 +1092,20 @@ LABEL_18:
   v6 = objc_opt_new();
   v7 = dispatch_group_create();
   v8 = dispatch_get_global_queue(2, 0);
-  v9 = [(SAVolumeScanner *)self appSizerResults];
-  v10 = [v9 appsDataInternal];
-  v11 = [v10 allKeys];
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+  appsDataInternal = [appSizerResults appsDataInternal];
+  allKeys = [appsDataInternal allKeys];
 
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10001CBC0;
   v17 = &unk_100065190;
-  v18 = self;
+  selfCopy = self;
   v19 = v6;
   v20 = +[SASupport getDiskCapacity];
-  v21 = a3;
+  sizesCopy = sizes;
   v12 = v6;
-  [SAUtilities processArrayConcurrently:v11 number:4 queue:v8 group:v7 block:&v14];
+  [SAUtilities processArrayConcurrently:allKeys number:4 queue:v8 group:v7 block:&v14];
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v13 = [(SAVolumeScanner *)self telemetryManager:v14];
   [v13 stopTimeForTimeInfoEntry:5];
@@ -1120,18 +1120,18 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Start: App Sizer account for cache size", buf, 2u);
   }
 
-  v4 = [(SAVolumeScanner *)self appSizerResults];
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001D130;
   v5[3] = &unk_1000650A0;
   v5[4] = self;
-  [v4 enumerateAppsDataUsingBlock:v5];
+  [appSizerResults enumerateAppsDataUsingBlock:v5];
 }
 
-- (void)accountForCDPluginSize:(id)a3
+- (void)accountForCDPluginSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = SALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1140,7 +1140,7 @@ LABEL_18:
   }
 
   v6 = sub_100001D28();
-  if (v4 && v6)
+  if (sizeCopy && v6)
   {
     v41 = 0u;
     v42 = 0u;
@@ -1155,7 +1155,7 @@ LABEL_18:
     }
 
     v31 = *v40;
-    v30 = self;
+    selfCopy = self;
     while (1)
     {
       for (i = 0; i != v32; i = i + 1)
@@ -1167,9 +1167,9 @@ LABEL_18:
 
         v8 = *(*(&v39 + 1) + 8 * i);
         v9 = objc_autoreleasePoolPush();
-        v10 = [(SAVolumeScanner *)self appSizerResults];
-        v11 = [v10 appsDataInternal];
-        v12 = [v11 objectForKey:v8];
+        appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+        appsDataInternal = [appSizerResults appsDataInternal];
+        v12 = [appsDataInternal objectForKey:v8];
 
         if (v12)
         {
@@ -1194,7 +1194,7 @@ LABEL_18:
                   objc_enumerationMutation(v13);
                 }
 
-                v19 = [v4 objectForKeyedSubscript:*(*(&v35 + 1) + 8 * j)];
+                v19 = [sizeCopy objectForKeyedSubscript:*(*(&v35 + 1) + 8 * j)];
                 v16 += [v19 unsignedLongLongValue];
               }
 
@@ -1209,28 +1209,28 @@ LABEL_18:
             v16 = 0;
           }
 
-          self = v30;
-          v20 = [(SAVolumeScanner *)v30 appSizerResults];
-          [v20 updateBundleIDs:v8 fixedSize:0 dataSize:0 cloneSize:0 purgeableSize:v16 cloneFixUpSize:0 physicalSize:0 appCacheSize:0 CDPluginSize:v16];
+          self = selfCopy;
+          appSizerResults2 = [(SAVolumeScanner *)selfCopy appSizerResults];
+          [appSizerResults2 updateBundleIDs:v8 fixedSize:0 dataSize:0 cloneSize:0 purgeableSize:v16 cloneFixUpSize:0 physicalSize:0 appCacheSize:0 CDPluginSize:v16];
 
-          v21 = [(SAVolumeScanner *)v30 telemetryManager];
-          [v21 updateBundleIDs:v8 appCacheSize:0 CDPluginSize:v16];
+          telemetryManager = [(SAVolumeScanner *)selfCopy telemetryManager];
+          [telemetryManager updateBundleIDs:v8 appCacheSize:0 CDPluginSize:v16];
 
           if (v16 <= [v12 dataSize])
           {
             [v12 setDataSize:{objc_msgSend(v12, "dataSize") - v16}];
-            v24 = [(SAVolumeScanner *)v30 telemetryManager];
-            [v24 setValue:objc_msgSend(v12 forAppInfoEntry:"dataSize") forBundleIDs:{23, v8}];
+            telemetryManager2 = [(SAVolumeScanner *)selfCopy telemetryManager];
+            [telemetryManager2 setValue:objc_msgSend(v12 forAppInfoEntry:"dataSize") forBundleIDs:{23, v8}];
 
-            v25 = [(SAVolumeScanner *)v30 appSizerResults];
-            v26 = [v25 appSizeBreakdownList];
+            appSizerResults3 = [(SAVolumeScanner *)selfCopy appSizerResults];
+            appSizeBreakdownList = [appSizerResults3 appSizeBreakdownList];
 
             v9 = v34;
-            if (v26)
+            if (appSizeBreakdownList)
             {
-              v22 = [(SAVolumeScanner *)v30 appSizerResults];
-              v27 = [v22 appSizeBreakdownList];
-              [v27 addPluginSize:v16 bundleIDs:v8];
+              appSizerResults4 = [(SAVolumeScanner *)selfCopy appSizerResults];
+              appSizeBreakdownList2 = [appSizerResults4 appSizeBreakdownList];
+              [appSizeBreakdownList2 addPluginSize:v16 bundleIDs:v8];
 
               goto LABEL_25;
             }
@@ -1238,25 +1238,25 @@ LABEL_18:
 
           else
           {
-            v22 = SALog();
+            appSizerResults4 = SALog();
             v9 = v34;
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(appSizerResults4, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v12 dataSize];
+              dataSize = [v12 dataSize];
               *buf = 138412802;
               v44 = v8;
               v45 = 2048;
               v46 = v16;
               v47 = 2048;
-              v48 = v23;
-              _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Error: %@ cd total plugin size: %llu is greater than existing data size: %llu", buf, 0x20u);
+              v48 = dataSize;
+              _os_log_error_impl(&_mh_execute_header, appSizerResults4, OS_LOG_TYPE_ERROR, "Error: %@ cd total plugin size: %llu is greater than existing data size: %llu", buf, 0x20u);
             }
 
 LABEL_25:
           }
 
-          v28 = [(SAVolumeScanner *)v30 appSizerResults];
-          [v28 setTotalSAFPluginsSize:{objc_msgSend(v28, "totalSAFPluginsSize") + v16}];
+          appSizerResults5 = [(SAVolumeScanner *)selfCopy appSizerResults];
+          [appSizerResults5 setTotalSAFPluginsSize:{objc_msgSend(appSizerResults5, "totalSAFPluginsSize") + v16}];
         }
 
         objc_autoreleasePoolPop(v9);
@@ -1325,10 +1325,10 @@ LABEL_29:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SAVolumeScanner *)self relevantVolumesInfo];
-  v5 = [v4 volumesPaths];
+  relevantVolumesInfo = [(SAVolumeScanner *)self relevantVolumesInfo];
+  volumesPaths = [relevantVolumesInfo volumesPaths];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v6 = [volumesPaths countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1339,7 +1339,7 @@ LABEL_29:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(volumesPaths);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -1354,7 +1354,7 @@ LABEL_29:
         [v11 computeSizeOfVolumeAtURL:v12 options:1 completionHandler:v14];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v7 = [volumesPaths countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v7);
@@ -1369,9 +1369,9 @@ LABEL_29:
   [(SAVolumeScanner *)self accountForOVPFile];
 }
 
-- (void)processAttributionTags:(BOOL)a3
+- (void)processAttributionTags:(BOOL)tags
 {
-  v3 = a3;
+  tagsCopy = tags;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x3032000000;
@@ -1387,12 +1387,12 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Extended dir-stats enabled on half of valid paths, enable attribution tagging", buf, 2u);
     }
 
-    v6 = [(SAVolumeScanner *)self relevantVolumesInfo];
-    v7 = [v6 volumesPaths];
-    [SAAttributionTag enableAttributionTagging:v7];
+    relevantVolumesInfo = [(SAVolumeScanner *)self relevantVolumesInfo];
+    volumesPaths = [relevantVolumesInfo volumesPaths];
+    [SAAttributionTag enableAttributionTagging:volumesPaths];
 
-    v8 = [(SAVolumeScanner *)self telemetryManager];
-    [v8 startTimeForTimeInfoEntry:4];
+    telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+    [telemetryManager startTimeForTimeInfoEntry:4];
 
     v9 = SALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1404,8 +1404,8 @@ LABEL_29:
     v32 = 0u;
     v30 = 0u;
     v29 = 0u;
-    v10 = [(SAVolumeScanner *)self relevantVolumesInfo];
-    obj = [v10 volumesPaths];
+    relevantVolumesInfo2 = [(SAVolumeScanner *)self relevantVolumesInfo];
+    obj = [relevantVolumesInfo2 volumesPaths];
 
     v11 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v11)
@@ -1434,21 +1434,21 @@ LABEL_29:
           v21[3] = &unk_100065258;
           v21[4] = v13;
           v21[5] = self;
-          v22 = v3;
+          v22 = tagsCopy;
           v21[6] = v33;
           v21[7] = buf;
           [SAAttributionTag processAttributionTagsForVol:v13 withBlock:v21];
-          if (v3)
+          if (tagsCopy)
           {
-            v14 = [(SAVolumeScanner *)self appSizerResults];
-            v15 = [v14 attributionTags];
+            appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+            attributionTags = [appSizerResults attributionTags];
 
-            objc_sync_enter(v15);
-            v16 = [(SAVolumeScanner *)self appSizerResults];
-            v17 = [v16 attributionTags];
-            [v17 setObject:*(v24 + 5) forKey:v13];
+            objc_sync_enter(attributionTags);
+            appSizerResults2 = [(SAVolumeScanner *)self appSizerResults];
+            attributionTags2 = [appSizerResults2 attributionTags];
+            [attributionTags2 setObject:*(v24 + 5) forKey:v13];
 
-            objc_sync_exit(v15);
+            objc_sync_exit(attributionTags);
           }
 
           _Block_object_dispose(buf, 8);
@@ -1463,8 +1463,8 @@ LABEL_29:
       while (v11);
     }
 
-    v18 = [(SAVolumeScanner *)self telemetryManager];
-    [v18 stopTimeForTimeInfoEntry:4];
+    telemetryManager2 = [(SAVolumeScanner *)self telemetryManager];
+    [telemetryManager2 stopTimeForTimeInfoEntry:4];
   }
 
   _Block_object_dispose(v33, 8);
@@ -1481,9 +1481,9 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "START: postProcessFiltering", buf, 2u);
     }
 
-    v4 = [(SAVolumeScanner *)self appSizerResults];
-    v5 = [(SAVolumeScanner *)self appPathList];
-    -[SAVolumeScanner setTotalHiddenAppSize:](self, "setTotalHiddenAppSize:", [v4 postProcessFilteringWithAppPathList:v5]);
+    appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+    appPathList = [(SAVolumeScanner *)self appPathList];
+    -[SAVolumeScanner setTotalHiddenAppSize:](self, "setTotalHiddenAppSize:", [appSizerResults postProcessFilteringWithAppPathList:appPathList]);
 
     [(SAVolumeScanner *)self populateVendorName];
     v6 = SALog();
@@ -1493,8 +1493,8 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "START: postProcessMerging", v11, 2u);
     }
 
-    v7 = [(SAVolumeScanner *)self appSizerResults];
-    [v7 postProcessMerging];
+    appSizerResults2 = [(SAVolumeScanner *)self appSizerResults];
+    [appSizerResults2 postProcessMerging];
 
     v8 = SALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1503,8 +1503,8 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "START: zeroSizeAppsFiltering", v10, 2u);
     }
 
-    v9 = [(SAVolumeScanner *)self appSizerResults];
-    [v9 zeroSizeAppsFiltering];
+    appSizerResults3 = [(SAVolumeScanner *)self appSizerResults];
+    [appSizerResults3 zeroSizeAppsFiltering];
   }
 }
 
@@ -1520,9 +1520,9 @@ LABEL_29:
 
   v4 = objc_opt_new();
   [v4 setOptions:1];
-  v5 = [(SAVolumeScanner *)self relevantVolumesInfo];
-  v6 = [(SAVolumeScanner *)self pathList];
-  [v4 analyzeVolumesInfo:v5 pathList:v6 appSizerResults:self->_appSizerResults appSizerTelemetry:self->_telemetryManager shouldStop:{+[SAVolumeScanner shouldForceSDAAbort](SAVolumeScanner, "shouldForceSDAAbort")}];
+  relevantVolumesInfo = [(SAVolumeScanner *)self relevantVolumesInfo];
+  pathList = [(SAVolumeScanner *)self pathList];
+  [v4 analyzeVolumesInfo:relevantVolumesInfo pathList:pathList appSizerResults:self->_appSizerResults appSizerTelemetry:self->_telemetryManager shouldStop:{+[SAVolumeScanner shouldForceSDAAbort](SAVolumeScanner, "shouldForceSDAAbort")}];
 
   v7 = SALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1533,9 +1533,9 @@ LABEL_29:
   }
 }
 
-- (void)sendCacheUsageTelemetryWithBGTask:(id)a3
+- (void)sendCacheUsageTelemetryWithBGTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = SALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1545,31 +1545,31 @@ LABEL_29:
   }
 
   v6 = objc_opt_new();
-  v7 = [(SAVolumeScanner *)self appSizerResults];
-  v8 = [(SAVolumeScanner *)self telemetryManager];
-  v9 = [(SAVolumeScanner *)self appPathList];
-  v10 = [(SAVolumeScanner *)self pathList];
-  [v6 sendCacheUsageTelemetry:v7 telemetryManager:v8 appPathList:v9 pathList:v10 BGTask:v4];
+  appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+  telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+  appPathList = [(SAVolumeScanner *)self appPathList];
+  pathList = [(SAVolumeScanner *)self pathList];
+  [v6 sendCacheUsageTelemetry:appSizerResults telemetryManager:telemetryManager appPathList:appPathList pathList:pathList BGTask:taskCopy];
 }
 
-- (void)startProcessingSUPurgeableDataWithBGTask:(id)a3 runMode:(unint64_t)a4
+- (void)startProcessingSUPurgeableDataWithBGTask:(id)task runMode:(unint64_t)mode
 {
-  v5 = [SAPurgeableRecords newWithBGTask:a3 withRunMode:a4];
+  v5 = [SAPurgeableRecords newWithBGTask:task withRunMode:mode];
   [(SAVolumeScanner *)self setPurgeableRecords:v5];
 
-  v7 = [(SAVolumeScanner *)self purgeableRecords];
-  v6 = [(SAVolumeScanner *)self relevantVolumesInfo];
-  [v7 asyncStartProcessingSUPurgeableUrgencyFiles:v6];
+  purgeableRecords = [(SAVolumeScanner *)self purgeableRecords];
+  relevantVolumesInfo = [(SAVolumeScanner *)self relevantVolumesInfo];
+  [purgeableRecords asyncStartProcessingSUPurgeableUrgencyFiles:relevantVolumesInfo];
 }
 
-- (unsigned)runAppSizerWithRunMode:(unint64_t)a3 BGTask:(id)a4 scanOptions:(unint64_t)a5 error:(id *)a6
+- (unsigned)runAppSizerWithRunMode:(unint64_t)mode BGTask:(id)task scanOptions:(unint64_t)options error:(id *)error
 {
-  v9 = a4;
+  taskCopy = task;
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
   v77 = 0;
-  self->_scanOptions = a5;
+  self->_scanOptions = options;
   v10 = SALog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1584,7 +1584,7 @@ LABEL_29:
     self->_startTime = v11;
   }
 
-  if (v9)
+  if (taskCopy)
   {
     v13 = SALog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1611,32 +1611,32 @@ LABEL_29:
   _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v14, buf, 2u);
 LABEL_11:
 
-  v15 = [(SAVolumeScanner *)self appSizerScan];
+  appSizerScan = [(SAVolumeScanner *)self appSizerScan];
   v73[0] = _NSConcreteStackBlock;
   v73[1] = 3221225472;
   v73[2] = sub_10001F76C;
   v73[3] = &unk_100065280;
   v73[4] = self;
   v73[5] = &v74;
-  [v15 initiatePathsScanWithRunMode:a3 BGTask:v9 scanOptions:a5 replyBlock:v73];
+  [appSizerScan initiatePathsScanWithRunMode:mode BGTask:taskCopy scanOptions:options replyBlock:v73];
 
-  v16 = [(SAVolumeScanner *)self appSizerScan];
-  v17 = [v16 relevantVolumesInfo];
-  [(SAVolumeScanner *)self setRelevantVolumesInfo:v17];
+  appSizerScan2 = [(SAVolumeScanner *)self appSizerScan];
+  relevantVolumesInfo = [appSizerScan2 relevantVolumesInfo];
+  [(SAVolumeScanner *)self setRelevantVolumesInfo:relevantVolumesInfo];
 
-  v18 = [(SAVolumeScanner *)self appSizerScan];
-  v19 = [v18 appPathList];
-  [(SAVolumeScanner *)self setAppPathList:v19];
+  appSizerScan3 = [(SAVolumeScanner *)self appSizerScan];
+  appPathList = [appSizerScan3 appPathList];
+  [(SAVolumeScanner *)self setAppPathList:appPathList];
 
-  v20 = [(SAVolumeScanner *)self appSizerScan];
-  v21 = [v20 pathList];
-  [(SAVolumeScanner *)self setPathList:v21];
+  appSizerScan4 = [(SAVolumeScanner *)self appSizerScan];
+  pathList = [appSizerScan4 pathList];
+  [(SAVolumeScanner *)self setPathList:pathList];
 
   v22 = *(v75 + 24);
   if (v22 == 2)
   {
-    v23 = [(SAVolumeScanner *)self appSizerScan];
-    [v23 resetState:a3];
+    appSizerScan5 = [(SAVolumeScanner *)self appSizerScan];
+    [appSizerScan5 resetState:mode];
 
     v24 = SALog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1650,15 +1650,15 @@ LABEL_11:
 
   if (!v22)
   {
-    v25 = [(SAVolumeScanner *)self appSizerScan];
-    v22 = [v25 shouldDefer:a3 BGTask:v9];
+    appSizerScan6 = [(SAVolumeScanner *)self appSizerScan];
+    v22 = [appSizerScan6 shouldDefer:mode BGTask:taskCopy];
 
     if (v22)
     {
       if (v22 == 2)
       {
-        v26 = [(SAVolumeScanner *)self appSizerScan];
-        [v26 resetState:a3];
+        appSizerScan7 = [(SAVolumeScanner *)self appSizerScan];
+        [appSizerScan7 resetState:mode];
 
         v27 = SALog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1675,21 +1675,21 @@ LABEL_30:
 
     else
     {
-      [(SAVolumeScanner *)self calculateFixedSizes:(a5 >> 5) & 1];
-      if ((a5 & 0x4000) != 0)
+      [(SAVolumeScanner *)self calculateFixedSizes:(options >> 5) & 1];
+      if ((options & 0x4000) != 0)
       {
-        [(SAVolumeScanner *)self startProcessingSUPurgeableDataWithBGTask:v9 runMode:a3];
+        [(SAVolumeScanner *)self startProcessingSUPurgeableDataWithBGTask:taskCopy runMode:mode];
       }
 
-      v28 = [(SAVolumeScanner *)self appSizerScan];
-      v22 = [v28 shouldDefer:a3 BGTask:v9];
+      appSizerScan8 = [(SAVolumeScanner *)self appSizerScan];
+      v22 = [appSizerScan8 shouldDefer:mode BGTask:taskCopy];
 
       if (v22)
       {
         if (v22 == 2)
         {
-          v29 = [(SAVolumeScanner *)self appSizerScan];
-          [v29 resetState:a3];
+          appSizerScan9 = [(SAVolumeScanner *)self appSizerScan];
+          [appSizerScan9 resetState:mode];
 
           v27 = SALog();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1706,16 +1706,16 @@ LABEL_31:
 
       else
       {
-        [(SAVolumeScanner *)self processAttributionTags:(a5 >> 6) & 1];
-        v30 = [(SAVolumeScanner *)self appSizerScan];
-        v22 = [v30 shouldDefer:a3 BGTask:v9];
+        [(SAVolumeScanner *)self processAttributionTags:(options >> 6) & 1];
+        appSizerScan10 = [(SAVolumeScanner *)self appSizerScan];
+        v22 = [appSizerScan10 shouldDefer:mode BGTask:taskCopy];
 
         if (v22)
         {
           if (v22 == 2)
           {
-            v31 = [(SAVolumeScanner *)self appSizerScan];
-            [v31 resetState:a3];
+            appSizerScan11 = [(SAVolumeScanner *)self appSizerScan];
+            [appSizerScan11 resetState:mode];
 
             v27 = SALog();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1730,7 +1730,7 @@ LABEL_31:
 
         else
         {
-          [(SAVolumeScanner *)self processClones:(a5 >> 8) & 1];
+          [(SAVolumeScanner *)self processClones:(options >> 8) & 1];
           [(SAVolumeScanner *)self accountForAppsCacheSize];
           [(SAVolumeScanner *)self accountForPurgeableAssets];
           [(SAVolumeScanner *)self calculateSystemVolumeSize];
@@ -1739,19 +1739,19 @@ LABEL_31:
           [(SAVolumeScanner *)self addSoftwareUpdateBundle];
           [(SAVolumeScanner *)self addSoftwareUpdateReserve];
           [(SAVolumeScanner *)self postProcessResults];
-          v33 = [(SAVolumeScanner *)self appSizerResults];
-          v34 = [(SAVolumeScanner *)self telemetryManager];
-          [SALLMList billLLMsToSystemOn:v33 andTelemetry:v34];
+          appSizerResults = [(SAVolumeScanner *)self appSizerResults];
+          telemetryManager = [(SAVolumeScanner *)self telemetryManager];
+          [SALLMList billLLMsToSystemOn:appSizerResults andTelemetry:telemetryManager];
 
-          v35 = [(SAVolumeScanner *)self telemetryManager];
-          [v35 addValue:-[SAVolumeScanner systemVolumeSize](self forTotalsInfoEntry:{"systemVolumeSize"), 17}];
+          telemetryManager2 = [(SAVolumeScanner *)self telemetryManager];
+          [telemetryManager2 addValue:-[SAVolumeScanner systemVolumeSize](self forTotalsInfoEntry:{"systemVolumeSize"), 17}];
 
           [(SAVolumeScanner *)self calculateDiskSpaceSize];
           [(SAVolumeScanner *)self calculateSystemDataSize];
-          v36 = [(SAVolumeScanner *)self appSizerResults];
-          [v36 updateTimestamp];
+          appSizerResults2 = [(SAVolumeScanner *)self appSizerResults];
+          [appSizerResults2 updateTimestamp];
 
-          if ((a5 & 2) != 0)
+          if ((options & 2) != 0)
           {
             v37 = SALog();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -1760,56 +1760,56 @@ LABEL_31:
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Calling Handlers with intermittent results", buf, 2u);
             }
 
-            v38 = [(SAVolumeScanner *)self appSizerResults];
-            [(SAVolumeScanner *)self callHandlersWithResults:v38 status:1 error:0];
+            appSizerResults3 = [(SAVolumeScanner *)self appSizerResults];
+            [(SAVolumeScanner *)self callHandlersWithResults:appSizerResults3 status:1 error:0];
           }
 
-          if ((a5 & 0x8000) != 0)
+          if ((options & 0x8000) != 0)
           {
-            v39 = [(SAVolumeScanner *)self appSizerResults];
-            [v39 setInternalFlags:{objc_msgSend(v39, "internalFlags") | 1}];
+            appSizerResults4 = [(SAVolumeScanner *)self appSizerResults];
+            [appSizerResults4 setInternalFlags:{objc_msgSend(appSizerResults4, "internalFlags") | 1}];
 
-            [(SAVolumeScanner *)self processPurgeableAttributionTags:(a5 >> 6) & 1];
+            [(SAVolumeScanner *)self processPurgeableAttributionTags:(options >> 6) & 1];
           }
 
-          if ((a5 & 0x80) != 0)
+          if ((options & 0x80) != 0)
           {
             v40 = SALog();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
-              v41 = [(SAVolumeScanner *)self relevantVolumesInfo];
-              v42 = [v41 volumesPaths];
+              relevantVolumesInfo2 = [(SAVolumeScanner *)self relevantVolumesInfo];
+              volumesPaths = [relevantVolumesInfo2 volumesPaths];
               *buf = 138412290;
-              v79 = v42;
+              v79 = volumesPaths;
               _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Collecting FS purgeable data on volumes %@", buf, 0xCu);
             }
 
-            v43 = [(SAVolumeScanner *)self relevantVolumesInfo];
-            v44 = [v43 volumesPaths];
-            v45 = [SASupport getFSPurgeableDataOnVolumes:v44];
-            v46 = [(SAVolumeScanner *)self appSizerResults];
-            [v46 setFSPurgeableData:v45];
+            relevantVolumesInfo3 = [(SAVolumeScanner *)self relevantVolumesInfo];
+            volumesPaths2 = [relevantVolumesInfo3 volumesPaths];
+            v45 = [SASupport getFSPurgeableDataOnVolumes:volumesPaths2];
+            appSizerResults5 = [(SAVolumeScanner *)self appSizerResults];
+            [appSizerResults5 setFSPurgeableData:v45];
           }
 
-          if ((a5 & 4) != 0)
+          if ((options & 4) != 0)
           {
-            v47 = [(SAVolumeScanner *)self appSizerResults];
-            [v47 print];
+            appSizerResults6 = [(SAVolumeScanner *)self appSizerResults];
+            [appSizerResults6 print];
           }
 
-          if ((a5 & 0x4000) != 0)
+          if ((options & 0x4000) != 0)
           {
-            v48 = [(SAVolumeScanner *)self processSUPurgeableUrgencyResults];
-            LOBYTE(v22) = v48;
-            if (v48)
+            processSUPurgeableUrgencyResults = [(SAVolumeScanner *)self processSUPurgeableUrgencyResults];
+            LOBYTE(v22) = processSUPurgeableUrgencyResults;
+            if (processSUPurgeableUrgencyResults)
             {
-              if (v48 != 2)
+              if (processSUPurgeableUrgencyResults != 2)
               {
                 goto LABEL_32;
               }
 
-              v49 = [(SAVolumeScanner *)self appSizerScan];
-              [v49 resetState:a3];
+              appSizerScan12 = [(SAVolumeScanner *)self appSizerScan];
+              [appSizerScan12 resetState:mode];
 
               v27 = SALog();
               if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1822,34 +1822,34 @@ LABEL_31:
             }
           }
 
-          if ((a5 & 8) != 0)
+          if ((options & 8) != 0)
           {
-            v50 = [(SAVolumeScanner *)self telemetryManager];
-            v51 = [v50 dictionaryDescription];
-            v52 = [(SAVolumeScanner *)self appSizerResults];
-            [v52 setReportedTelemetry:v51];
+            telemetryManager3 = [(SAVolumeScanner *)self telemetryManager];
+            dictionaryDescription = [telemetryManager3 dictionaryDescription];
+            appSizerResults7 = [(SAVolumeScanner *)self appSizerResults];
+            [appSizerResults7 setReportedTelemetry:dictionaryDescription];
           }
 
-          v53 = [(SAVolumeScanner *)self appSizerResults];
-          v54 = [v53 appSizeBreakdownList];
+          appSizerResults8 = [(SAVolumeScanner *)self appSizerResults];
+          appSizeBreakdownList = [appSizerResults8 appSizeBreakdownList];
 
-          if (v54)
+          if (appSizeBreakdownList)
           {
-            v55 = [(SAVolumeScanner *)self appSizerResults];
-            v56 = [v55 appSizeBreakdownList];
-            v57 = [v56 generateDictionary];
-            v58 = [(SAVolumeScanner *)self appSizerResults];
-            [v58 setAppsInfo:v57];
+            appSizerResults9 = [(SAVolumeScanner *)self appSizerResults];
+            appSizeBreakdownList2 = [appSizerResults9 appSizeBreakdownList];
+            generateDictionary = [appSizeBreakdownList2 generateDictionary];
+            appSizerResults10 = [(SAVolumeScanner *)self appSizerResults];
+            [appSizerResults10 setAppsInfo:generateDictionary];
           }
 
-          v59 = [(SAVolumeScanner *)self appSizerScan];
-          [v59 resetState:a3];
+          appSizerScan13 = [(SAVolumeScanner *)self appSizerScan];
+          [appSizerScan13 resetState:mode];
 
-          v60 = [(SAVolumeScanner *)self telemetryManager];
-          v61 = [(SAVolumeScanner *)self appPathList];
-          [v60 updateSAFOptionWithPathsList:v61];
+          telemetryManager4 = [(SAVolumeScanner *)self telemetryManager];
+          appPathList2 = [(SAVolumeScanner *)self appPathList];
+          [telemetryManager4 updateSAFOptionWithPathsList:appPathList2];
 
-          if (a5)
+          if (options)
           {
             v62 = SALog();
             if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
@@ -1858,8 +1858,8 @@ LABEL_31:
               _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "START: App Sizer Calling Handlers", buf, 2u);
             }
 
-            v63 = [(SAVolumeScanner *)self appSizerResults];
-            [(SAVolumeScanner *)self callHandlersWithResults:v63 status:0 error:0];
+            appSizerResults11 = [(SAVolumeScanner *)self appSizerResults];
+            [(SAVolumeScanner *)self callHandlersWithResults:appSizerResults11 status:0 error:0];
           }
 
           v64 = SALog();
@@ -1869,19 +1869,19 @@ LABEL_31:
             _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "END: App Sizer", buf, 2u);
           }
 
-          v65 = [(SAVolumeScanner *)self telemetryManager];
-          [v65 stopTimeForTimeInfoEntry:6];
+          telemetryManager5 = [(SAVolumeScanner *)self telemetryManager];
+          [telemetryManager5 stopTimeForTimeInfoEntry:6];
 
-          if ((a5 & 0x200) != 0)
+          if ((options & 0x200) != 0)
           {
-            v66 = [(SAVolumeScanner *)self telemetryManager];
-            [v66 sendTelemetry:v9 != 0];
+            telemetryManager6 = [(SAVolumeScanner *)self telemetryManager];
+            [telemetryManager6 sendTelemetry:taskCopy != 0];
           }
 
-          if ((a5 & 0x800) != 0)
+          if ((options & 0x800) != 0)
           {
-            v67 = [(SAVolumeScanner *)self appSizerScan];
-            v22 = [v67 shouldDefer:a3 BGTask:v9];
+            appSizerScan14 = [(SAVolumeScanner *)self appSizerScan];
+            v22 = [appSizerScan14 shouldDefer:mode BGTask:taskCopy];
 
             if (v22)
             {
@@ -1890,8 +1890,8 @@ LABEL_31:
                 goto LABEL_32;
               }
 
-              v68 = [(SAVolumeScanner *)self appSizerScan];
-              [v68 resetState:a3];
+              appSizerScan15 = [(SAVolumeScanner *)self appSizerScan];
+              [appSizerScan15 resetState:mode];
 
               v27 = SALog();
               if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1906,10 +1906,10 @@ LABEL_31:
             [(SAVolumeScanner *)self processSpeculativeDownloadData];
           }
 
-          if ((a5 & 0x10000) != 0)
+          if ((options & 0x10000) != 0)
           {
-            v69 = [(SAVolumeScanner *)self appSizerScan];
-            v22 = [v69 shouldDefer:a3 BGTask:v9];
+            appSizerScan16 = [(SAVolumeScanner *)self appSizerScan];
+            v22 = [appSizerScan16 shouldDefer:mode BGTask:taskCopy];
 
             if (v22)
             {
@@ -1918,8 +1918,8 @@ LABEL_31:
                 goto LABEL_32;
               }
 
-              v70 = [(SAVolumeScanner *)self appSizerScan];
-              [v70 resetState:a3];
+              appSizerScan17 = [(SAVolumeScanner *)self appSizerScan];
+              [appSizerScan17 resetState:mode];
 
               v27 = SALog();
               if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1931,17 +1931,17 @@ LABEL_31:
               goto LABEL_30;
             }
 
-            [(SAVolumeScanner *)self sendCacheUsageTelemetryWithBGTask:v9];
+            [(SAVolumeScanner *)self sendCacheUsageTelemetryWithBGTask:taskCopy];
           }
 
-          if (v9)
+          if (taskCopy)
           {
-            v71 = [(SAVolumeScanner *)self appSizerResults];
-            v72 = [(SAVolumeScanner *)self telemetryManager];
-            [SAMetricKit sendDataToMetricKit:v71 telemetryManager:v72];
+            appSizerResults12 = [(SAVolumeScanner *)self appSizerResults];
+            telemetryManager7 = [(SAVolumeScanner *)self telemetryManager];
+            [SAMetricKit sendDataToMetricKit:appSizerResults12 telemetryManager:telemetryManager7];
           }
 
-          LOBYTE(v22) = [(SAVolumeScanner *)self scheduleAppSizerReRun:a5 mode:a3];
+          LOBYTE(v22) = [(SAVolumeScanner *)self scheduleAppSizerReRun:options mode:mode];
         }
       }
     }

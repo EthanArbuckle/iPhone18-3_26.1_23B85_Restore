@@ -1,21 +1,21 @@
 @interface _LTSELFLoggingInvocation
-+ (void)userEndedTypingWithInvocationId:(id)a3 payload:(id)a4 localePair:(id)a5 reason:(int64_t)a6;
-- (_LTSELFLoggingInvocation)initWithInvocationId:(id)a3;
-- (void)cancelWithReason:(id)a3 localePair:(id)a4 qssSessionId:(id)a5;
-- (void)endSuccessfullyWithQSSSessionId:(id)a3 localePair:(id)a4;
-- (void)endWithError:(id)a3 localePair:(id)a4 qssSessionId:(id)a5;
-- (void)languageIdentificationCompletedWithInputSource:(int64_t)a3 topLocale:(id)a4 lowConfidenceLocales:(id)a5;
-- (void)sendEventWithPayload:(id)a3 localePair:(id)a4 type:(int64_t)a5;
-- (void)sendUserEndedTypingEventWithPayload:(id)a3 localePair:(id)a4 type:(int64_t)a5;
-- (void)startedWithClientIdentifier:(id)a3;
-- (void)userEndedTypingWithPayload:(id)a3 localePair:(id)a4 reason:(int64_t)a5;
++ (void)userEndedTypingWithInvocationId:(id)id payload:(id)payload localePair:(id)pair reason:(int64_t)reason;
+- (_LTSELFLoggingInvocation)initWithInvocationId:(id)id;
+- (void)cancelWithReason:(id)reason localePair:(id)pair qssSessionId:(id)id;
+- (void)endSuccessfullyWithQSSSessionId:(id)id localePair:(id)pair;
+- (void)endWithError:(id)error localePair:(id)pair qssSessionId:(id)id;
+- (void)languageIdentificationCompletedWithInputSource:(int64_t)source topLocale:(id)locale lowConfidenceLocales:(id)locales;
+- (void)sendEventWithPayload:(id)payload localePair:(id)pair type:(int64_t)type;
+- (void)sendUserEndedTypingEventWithPayload:(id)payload localePair:(id)pair type:(int64_t)type;
+- (void)startedWithClientIdentifier:(id)identifier;
+- (void)userEndedTypingWithPayload:(id)payload localePair:(id)pair reason:(int64_t)reason;
 @end
 
 @implementation _LTSELFLoggingInvocation
 
-- (_LTSELFLoggingInvocation)initWithInvocationId:(id)a3
+- (_LTSELFLoggingInvocation)initWithInvocationId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v10.receiver = self;
   v10.super_class = _LTSELFLoggingInvocation;
   v6 = [(_LTSELFLoggingInvocation *)&v10 init];
@@ -23,17 +23,17 @@
   if (v6)
   {
     v6->_endSent = 0;
-    objc_storeStrong(&v6->_invocationId, a3);
+    objc_storeStrong(&v6->_invocationId, id);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)endSuccessfullyWithQSSSessionId:(id)a3 localePair:(id)a4
+- (void)endSuccessfullyWithQSSSessionId:(id)id localePair:(id)pair
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  pairCopy = pair;
   if (self->_endSent)
   {
     v8 = _LTOSLogSELFLogging();
@@ -46,18 +46,18 @@
   else
   {
     v9 = [[_LTSELFLoggingEventData alloc] initWithType:2 invocationId:self->_invocationId];
-    [(_LTSELFLoggingEventData *)v9 setQssSessionId:v6];
-    [(_LTSELFLoggingEventData *)v9 setTranslationLocalePair:v7];
+    [(_LTSELFLoggingEventData *)v9 setQssSessionId:idCopy];
+    [(_LTSELFLoggingEventData *)v9 setTranslationLocalePair:pairCopy];
     [_LTTranslator selfLoggingEventWithData:v9];
     self->_endSent = 1;
   }
 }
 
-- (void)endWithError:(id)a3 localePair:(id)a4 qssSessionId:(id)a5
+- (void)endWithError:(id)error localePair:(id)pair qssSessionId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  pairCopy = pair;
+  idCopy = id;
   if (self->_endSent)
   {
     v11 = _LTOSLogSELFLogging();
@@ -70,19 +70,19 @@
   else
   {
     v12 = [[_LTSELFLoggingEventData alloc] initWithType:3 invocationId:self->_invocationId];
-    [(_LTSELFLoggingEventData *)v12 setQssSessionId:v10];
-    [(_LTSELFLoggingEventData *)v12 setInvocationEndedError:v8];
-    [(_LTSELFLoggingEventData *)v12 setTranslationLocalePair:v9];
+    [(_LTSELFLoggingEventData *)v12 setQssSessionId:idCopy];
+    [(_LTSELFLoggingEventData *)v12 setInvocationEndedError:errorCopy];
+    [(_LTSELFLoggingEventData *)v12 setTranslationLocalePair:pairCopy];
     [_LTTranslator selfLoggingEventWithData:v12];
     self->_endSent = 1;
   }
 }
 
-- (void)cancelWithReason:(id)a3 localePair:(id)a4 qssSessionId:(id)a5
+- (void)cancelWithReason:(id)reason localePair:(id)pair qssSessionId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  pairCopy = pair;
+  idCopy = id;
   if (self->_endSent)
   {
     v11 = _LTOSLogSELFLogging();
@@ -95,50 +95,50 @@
   else
   {
     v12 = [[_LTSELFLoggingEventData alloc] initWithType:4 invocationId:self->_invocationId];
-    [(_LTSELFLoggingEventData *)v12 setQssSessionId:v10];
-    [(_LTSELFLoggingEventData *)v12 setInvocationCancelledReason:v8];
-    [(_LTSELFLoggingEventData *)v12 setTranslationLocalePair:v9];
+    [(_LTSELFLoggingEventData *)v12 setQssSessionId:idCopy];
+    [(_LTSELFLoggingEventData *)v12 setInvocationCancelledReason:reasonCopy];
+    [(_LTSELFLoggingEventData *)v12 setTranslationLocalePair:pairCopy];
     [_LTTranslator selfLoggingEventWithData:v12];
     self->_endSent = 1;
   }
 }
 
-- (void)userEndedTypingWithPayload:(id)a3 localePair:(id)a4 reason:(int64_t)a5
+- (void)userEndedTypingWithPayload:(id)payload localePair:(id)pair reason:(int64_t)reason
 {
-  if (a5 >= 3)
+  if (reason >= 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = a5 + 5;
+    v5 = reason + 5;
   }
 
-  [(_LTSELFLoggingInvocation *)self sendUserEndedTypingEventWithPayload:a3 localePair:a4 type:v5];
+  [(_LTSELFLoggingInvocation *)self sendUserEndedTypingEventWithPayload:payload localePair:pair type:v5];
 }
 
-- (void)languageIdentificationCompletedWithInputSource:(int64_t)a3 topLocale:(id)a4 lowConfidenceLocales:(id)a5
+- (void)languageIdentificationCompletedWithInputSource:(int64_t)source topLocale:(id)locale lowConfidenceLocales:(id)locales
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[_LTSELFLoggingTranslationLIDData alloc] initWithInvocationId:self->_invocationId inputSource:a3 topLocale:v9 lowConfidenceLocales:v8];
+  localesCopy = locales;
+  localeCopy = locale;
+  v10 = [[_LTSELFLoggingTranslationLIDData alloc] initWithInvocationId:self->_invocationId inputSource:source topLocale:localeCopy lowConfidenceLocales:localesCopy];
 
   [_LTTranslator selfLoggingLanguageIdentificationCompletedWithLIDData:v10];
 }
 
-- (void)sendEventWithPayload:(id)a3 localePair:(id)a4 type:(int64_t)a5
+- (void)sendEventWithPayload:(id)payload localePair:(id)pair type:(int64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_LTSELFLoggingEventData alloc] initWithType:a5 invocationId:self->_invocationId];
-  [(_LTSELFLoggingEventData *)v10 setTranslationPayload:v9];
+  pairCopy = pair;
+  payloadCopy = payload;
+  v10 = [[_LTSELFLoggingEventData alloc] initWithType:type invocationId:self->_invocationId];
+  [(_LTSELFLoggingEventData *)v10 setTranslationPayload:payloadCopy];
 
-  [(_LTSELFLoggingEventData *)v10 setTranslationLocalePair:v8];
+  [(_LTSELFLoggingEventData *)v10 setTranslationLocalePair:pairCopy];
   [_LTTranslator selfLoggingEventWithData:v10];
 }
 
-- (void)sendUserEndedTypingEventWithPayload:(id)a3 localePair:(id)a4 type:(int64_t)a5
+- (void)sendUserEndedTypingEventWithPayload:(id)payload localePair:(id)pair type:(int64_t)type
 {
   if (self->_endSent)
   {
@@ -151,43 +151,43 @@
 
   else
   {
-    [(_LTSELFLoggingInvocation *)self sendEventWithPayload:a3 localePair:a4 type:a5];
+    [(_LTSELFLoggingInvocation *)self sendEventWithPayload:payload localePair:pair type:type];
     self->_endSent = 1;
   }
 }
 
-+ (void)userEndedTypingWithInvocationId:(id)a3 payload:(id)a4 localePair:(id)a5 reason:(int64_t)a6
++ (void)userEndedTypingWithInvocationId:(id)id payload:(id)payload localePair:(id)pair reason:(int64_t)reason
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  pairCopy = pair;
+  payloadCopy = payload;
+  idCopy = id;
   v12 = [_LTSELFLoggingEventData alloc];
-  if (a6 >= 3)
+  if (reason >= 3)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = a6 + 5;
+    v13 = reason + 5;
   }
 
-  v14 = [(_LTSELFLoggingEventData *)v12 initWithType:v13 invocationId:v11];
+  v14 = [(_LTSELFLoggingEventData *)v12 initWithType:v13 invocationId:idCopy];
 
-  [(_LTSELFLoggingEventData *)v14 setTranslationPayload:v10];
-  [(_LTSELFLoggingEventData *)v14 setTranslationLocalePair:v9];
+  [(_LTSELFLoggingEventData *)v14 setTranslationPayload:payloadCopy];
+  [(_LTSELFLoggingEventData *)v14 setTranslationLocalePair:pairCopy];
 
   [_LTTranslator selfLoggingEventWithData:v14];
 }
 
-- (void)startedWithClientIdentifier:(id)a3
+- (void)startedWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [_LTSELFLoggingEventData alloc];
-  v6 = [(_LTSELFLoggingInvocation *)self invocationId];
-  v7 = [(_LTSELFLoggingEventData *)v5 initWithType:10 invocationId:v6];
+  invocationId = [(_LTSELFLoggingInvocation *)self invocationId];
+  v7 = [(_LTSELFLoggingEventData *)v5 initWithType:10 invocationId:invocationId];
 
-  [(_LTSELFLoggingEventData *)v7 setUntrustedClientIdentifier:v4];
+  [(_LTSELFLoggingEventData *)v7 setUntrustedClientIdentifier:identifierCopy];
   [_LTTranslator selfLoggingEventWithData:v7];
 }
 

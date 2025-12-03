@@ -1,20 +1,20 @@
 @interface LNDynamicTerm
-- (BOOL)isEqual:(id)a3;
-- (LNDynamicTerm)initWithTerm:(id)a3 entityIdentifier:(id)a4;
-- (LNDynamicTerm)initWithTerm:(id)a3 entityIdentifierValue:(id)a4 entityTypeName:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNDynamicTerm)initWithTerm:(id)term entityIdentifier:(id)identifier;
+- (LNDynamicTerm)initWithTerm:(id)term entityIdentifierValue:(id)value entityTypeName:(id)name;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation LNDynamicTerm
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -23,10 +23,10 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v7 = [(LNDynamicTerm *)self term];
-    v8 = [(LNDynamicTerm *)v6 term];
-    v9 = v7;
-    v10 = v8;
+    term = [(LNDynamicTerm *)self term];
+    term2 = [(LNDynamicTerm *)v6 term];
+    v9 = term;
+    v10 = term2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -35,8 +35,8 @@ LABEL_15:
     else
     {
       LOBYTE(v12) = 0;
-      v13 = v10;
-      v14 = v9;
+      entityIdentifier2 = v10;
+      entityIdentifier = v9;
       if (!v9 || !v10)
       {
         goto LABEL_13;
@@ -50,9 +50,9 @@ LABEL_15:
       }
     }
 
-    v14 = [(LNDynamicTerm *)self entityIdentifier];
-    v13 = [(LNDynamicTerm *)v6 entityIdentifier];
-    LOBYTE(v12) = [v14 isEqual:v13];
+    entityIdentifier = [(LNDynamicTerm *)self entityIdentifier];
+    entityIdentifier2 = [(LNDynamicTerm *)v6 entityIdentifier];
+    LOBYTE(v12) = [entityIdentifier isEqual:entityIdentifier2];
 LABEL_13:
 
 LABEL_14:
@@ -67,10 +67,10 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(LNDynamicTerm *)self term];
-  v4 = [v3 hash];
-  v5 = [(LNDynamicTerm *)self entityIdentifier];
-  v6 = [v5 hash];
+  term = [(LNDynamicTerm *)self term];
+  v4 = [term hash];
+  entityIdentifier = [(LNDynamicTerm *)self entityIdentifier];
+  v6 = [entityIdentifier hash];
 
   return v6 ^ v4;
 }
@@ -80,33 +80,33 @@ LABEL_16:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNDynamicTerm *)self term];
-  v7 = [(LNDynamicTerm *)self entityIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p, term: %@, entityIdentifier: %@>", v5, self, v6, v7];
+  term = [(LNDynamicTerm *)self term];
+  entityIdentifier = [(LNDynamicTerm *)self entityIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p, term: %@, entityIdentifier: %@>", v5, self, term, entityIdentifier];
 
   return v8;
 }
 
-- (LNDynamicTerm)initWithTerm:(id)a3 entityIdentifierValue:(id)a4 entityTypeName:(id)a5
+- (LNDynamicTerm)initWithTerm:(id)term entityIdentifierValue:(id)value entityTypeName:(id)name
 {
   v8 = MEMORY[0x1E69AC7E0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithTypeIdentifier:v9 instanceIdentifier:v10];
+  nameCopy = name;
+  valueCopy = value;
+  termCopy = term;
+  v12 = [[v8 alloc] initWithTypeIdentifier:nameCopy instanceIdentifier:valueCopy];
 
-  v13 = [(LNDynamicTerm *)self initWithTerm:v11 entityIdentifier:v12];
+  v13 = [(LNDynamicTerm *)self initWithTerm:termCopy entityIdentifier:v12];
   return v13;
 }
 
-- (LNDynamicTerm)initWithTerm:(id)a3 entityIdentifier:(id)a4
+- (LNDynamicTerm)initWithTerm:(id)term entityIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  termCopy = term;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (termCopy)
   {
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -114,8 +114,8 @@ LABEL_16:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"LNDynamicTerm.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"term"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDynamicTerm.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"term"}];
 
     if (v9)
     {
@@ -123,8 +123,8 @@ LABEL_16:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"LNDynamicTerm.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNDynamicTerm.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -132,11 +132,11 @@ LABEL_3:
   v10 = [(LNDynamicTerm *)&v17 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [termCopy copy];
     term = v10->_term;
     v10->_term = v11;
 
-    objc_storeStrong(&v10->_entityIdentifier, a4);
+    objc_storeStrong(&v10->_entityIdentifier, identifier);
     v13 = v10;
   }
 

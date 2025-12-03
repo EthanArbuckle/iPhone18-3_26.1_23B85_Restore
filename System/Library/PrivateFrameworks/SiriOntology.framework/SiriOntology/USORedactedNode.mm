@@ -1,7 +1,7 @@
 @interface USORedactedNode
-- (USORedactedNode)initWithIndex:(int64_t)a3 usoGraph:(void *)a4;
+- (USORedactedNode)initWithIndex:(int64_t)index usoGraph:(void *)graph;
 - (unique_ptr<siri::ontology::UsoGraph,)usoGraph;
-- (void)setUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)a3 :ontology::UsoGraph;
+- (void)setUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)siri :ontology::UsoGraph;
 @end
 
 @implementation USORedactedNode
@@ -14,14 +14,14 @@
   return self;
 }
 
-- (void)setUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)a3 :ontology::UsoGraph
+- (void)setUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)siri :ontology::UsoGraph
 {
-  v3 = *a3.__ptr_;
-  *a3.__ptr_ = 0;
+  v3 = *siri.__ptr_;
+  *siri.__ptr_ = 0;
   std::unique_ptr<siri::ontology::UsoGraph>::reset[abi:ne200100](&self->mUsoGraph, v3);
 }
 
-- (USORedactedNode)initWithIndex:(int64_t)a3 usoGraph:(void *)a4
+- (USORedactedNode)initWithIndex:(int64_t)index usoGraph:(void *)graph
 {
   v10.receiver = self;
   v10.super_class = USORedactedNode;
@@ -29,9 +29,9 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 2) = a3;
-    v8 = *a4;
-    *a4 = 0;
+    *(v6 + 2) = index;
+    v8 = *graph;
+    *graph = 0;
     std::unique_ptr<siri::ontology::UsoGraph>::reset[abi:ne200100](v6 + 1, v8);
   }
 

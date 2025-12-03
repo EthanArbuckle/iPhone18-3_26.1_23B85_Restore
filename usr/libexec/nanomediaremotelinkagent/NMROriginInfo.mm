@@ -1,7 +1,7 @@
 @interface NMROriginInfo
 - (NMROriginInfo)init;
-- (NMROriginInfo)initWithProtobuf:(id)a3;
-- (NMROriginInfo)initWithProtobufData:(id)a3;
+- (NMROriginInfo)initWithProtobuf:(id)protobuf;
+- (NMROriginInfo)initWithProtobufData:(id)data;
 - (NSString)description;
 - (id)protobuf;
 @end
@@ -27,22 +27,22 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(_NMROriginProtobuf *)self->_protobuf uniqueIdentifier];
-  v6 = [(_NMROriginProtobuf *)self->_protobuf displayName];
-  v7 = [NSString stringWithFormat:@"<%@:%p identifier: %d, displayName: %@>", v4, self, v5, v6];
+  uniqueIdentifier = [(_NMROriginProtobuf *)self->_protobuf uniqueIdentifier];
+  displayName = [(_NMROriginProtobuf *)self->_protobuf displayName];
+  v7 = [NSString stringWithFormat:@"<%@:%p identifier: %d, displayName: %@>", v4, self, uniqueIdentifier, displayName];
 
   return v7;
 }
 
-- (NMROriginInfo)initWithProtobuf:(id)a3
+- (NMROriginInfo)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v9.receiver = self;
   v9.super_class = NMROriginInfo;
   v5 = [(NMROriginInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [protobufCopy copy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
   }
@@ -57,15 +57,15 @@
   return v2;
 }
 
-- (NMROriginInfo)initWithProtobufData:(id)a3
+- (NMROriginInfo)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = NMROriginInfo;
   v5 = [(NMROriginInfo *)&v9 init];
   if (v5)
   {
-    v6 = [[_NMROriginProtobuf alloc] initWithData:v4];
+    v6 = [[_NMROriginProtobuf alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
   }

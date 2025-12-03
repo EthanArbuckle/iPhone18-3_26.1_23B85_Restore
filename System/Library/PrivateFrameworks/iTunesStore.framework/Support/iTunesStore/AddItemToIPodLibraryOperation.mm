@@ -1,23 +1,23 @@
 @interface AddItemToIPodLibraryOperation
-- (AddItemToIPodLibraryOperation)initWithIPodLibraryItem:(id)a3;
+- (AddItemToIPodLibraryOperation)initWithIPodLibraryItem:(id)item;
 - (IPodLibraryItem)IPodLibraryItem;
 - (NSNumber)insertedItemPersistentIdentifier;
 - (id)_libraryItem;
-- (void)_setInsertedItemPersistentIdentifier:(int64_t)a3;
+- (void)_setInsertedItemPersistentIdentifier:(int64_t)identifier;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation AddItemToIPodLibraryOperation
 
-- (AddItemToIPodLibraryOperation)initWithIPodLibraryItem:(id)a3
+- (AddItemToIPodLibraryOperation)initWithIPodLibraryItem:(id)item
 {
   v6.receiver = self;
   v6.super_class = AddItemToIPodLibraryOperation;
   v4 = [(AddItemToIPodLibraryOperation *)&v6 init];
   if (v4)
   {
-    v4->_libraryItem = [a3 copy];
+    v4->_libraryItem = [item copy];
   }
 
   return v4;
@@ -49,22 +49,22 @@
 - (void)run
 {
   v13 = 0;
-  v3 = [(AddItemToIPodLibraryOperation *)self _libraryItem];
+  _libraryItem = [(AddItemToIPodLibraryOperation *)self _libraryItem];
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -77,7 +77,7 @@
     v14 = 138412546;
     v15 = objc_opt_class();
     v16 = 2112;
-    v17 = [v3 itemMediaPath];
+    itemMediaPath = [_libraryItem itemMediaPath];
     LODWORD(v12) = 22;
     v11 = &v14;
     v7 = _os_log_send_and_compose_impl();
@@ -91,10 +91,10 @@
     }
   }
 
-  v10 = [+[IPodLibrary deviceIPodLibrary](IPodLibrary deviceIPodLibrary];
-  [(AddItemToIPodLibraryOperation *)self _setInsertedItemPersistentIdentifier:v10];
+  deviceIPodLibrary = [+[IPodLibrary deviceIPodLibrary](IPodLibrary deviceIPodLibrary];
+  [(AddItemToIPodLibraryOperation *)self _setInsertedItemPersistentIdentifier:deviceIPodLibrary];
   [(AddItemToIPodLibraryOperation *)self setError:v13];
-  [(AddItemToIPodLibraryOperation *)self setSuccess:v10 != 0];
+  [(AddItemToIPodLibraryOperation *)self setSuccess:deviceIPodLibrary != 0];
 }
 
 - (id)_libraryItem
@@ -105,11 +105,11 @@
   return v3;
 }
 
-- (void)_setInsertedItemPersistentIdentifier:(int64_t)a3
+- (void)_setInsertedItemPersistentIdentifier:(int64_t)identifier
 {
   [(AddItemToIPodLibraryOperation *)self lock];
 
-  self->_insertedItemPersistentIdentifier = [[NSNumber alloc] initWithLongLong:a3];
+  self->_insertedItemPersistentIdentifier = [[NSNumber alloc] initWithLongLong:identifier];
 
   [(AddItemToIPodLibraryOperation *)self unlock];
 }

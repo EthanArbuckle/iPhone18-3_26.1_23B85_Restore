@@ -1,18 +1,18 @@
 @interface GestureInstructionItemView
 - (BOOL)_usesLargeSize;
-- (CGSize)_descriptionSizeThatFitsSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (GestureInstructionItemView)initWithImageName:(id)a3 title:(id)a4 description:(id)a5;
+- (CGSize)_descriptionSizeThatFitsSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (GestureInstructionItemView)initWithImageName:(id)name title:(id)title description:(id)description;
 - (void)layoutSubviews;
 @end
 
 @implementation GestureInstructionItemView
 
-- (GestureInstructionItemView)initWithImageName:(id)a3 title:(id)a4 description:(id)a5
+- (GestureInstructionItemView)initWithImageName:(id)name title:(id)title description:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  titleCopy = title;
+  descriptionCopy = description;
   v39.receiver = self;
   v39.super_class = GestureInstructionItemView;
   v11 = [(GestureInstructionItemView *)&v39 init];
@@ -20,7 +20,7 @@
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [UIImageView alloc];
-    v14 = [UIImage imageNamed:v8 inBundle:v12];
+    v14 = [UIImage imageNamed:nameCopy inBundle:v12];
     v15 = [v13 initWithImage:v14];
     imageView = v11->_imageView;
     v11->_imageView = v15;
@@ -35,7 +35,7 @@
     titleLabel = v11->_titleLabel;
     v11->_titleLabel = v20;
 
-    [(UILabel *)v11->_titleLabel setText:v9];
+    [(UILabel *)v11->_titleLabel setText:titleCopy];
     v22 = v11->_titleLabel;
     v23 = +[UIColor systemGrayColor];
     [(UILabel *)v22 setTextColor:v23];
@@ -51,7 +51,7 @@
     descriptionLabel = v11->_descriptionLabel;
     v11->_descriptionLabel = v26;
 
-    [(UILabel *)v11->_descriptionLabel setText:v10];
+    [(UILabel *)v11->_descriptionLabel setText:descriptionCopy];
     v28 = v11->_descriptionLabel;
     v29 = +[UIColor whiteColor];
     [(UILabel *)v28 setTextColor:v29];
@@ -64,7 +64,7 @@
     [(UILabel *)v11->_descriptionLabel sizeToFit];
     [(GestureInstructionItemView *)v11 addSubview:v11->_descriptionLabel];
     v32 = +[UIApplication sharedApplication];
-    v33 = [v32 preferredContentSizeCategory];
+    preferredContentSizeCategory = [v32 preferredContentSizeCategory];
     IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
     if (IsAccessibilityContentSizeCategory)
@@ -84,7 +84,7 @@
 - (BOOL)_usesLargeSize
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
   IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
   return IsAccessibilityContentSizeCategory;
@@ -93,9 +93,9 @@
 - (void)layoutSubviews
 {
   v3 = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:[(GestureInstructionItemView *)self semanticContentAttribute]];
-  v4 = [(GestureInstructionItemView *)self _usesLargeSize];
+  _usesLargeSize = [(GestureInstructionItemView *)self _usesLargeSize];
   v5 = 30.0;
-  if (v4)
+  if (_usesLargeSize)
   {
     v5 = 0.0;
     v6 = 0.0;
@@ -131,7 +131,7 @@
   v14 = v10;
   v15 = v11;
   v16 = v12;
-  if (v4)
+  if (_usesLargeSize)
   {
     [(UIImageView *)self->_imageView removeFromSuperview];
   }
@@ -149,8 +149,8 @@
     }
 
     imageView = self->_imageView;
-    v19 = [(UIImageView *)imageView image];
-    [v19 size];
+    image = [(UIImageView *)imageView image];
+    [image size];
     [(UIImageView *)imageView setCenter:v17, v20 * 0.5];
   }
 
@@ -177,10 +177,10 @@
   [(UILabel *)descriptionLabel setFrame:v7, MaxY, v26, v28];
 }
 
-- (CGSize)_descriptionSizeThatFitsSize:(CGSize)a3
+- (CGSize)_descriptionSizeThatFitsSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [(GestureInstructionItemView *)self _usesLargeSize:a3.width];
+  width = size.width;
+  v5 = [(GestureInstructionItemView *)self _usesLargeSize:size.width];
   v6 = 80.0;
   v7 = 0.0;
   if (v5)
@@ -201,10 +201,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_titleLabel frame];
   v7 = v6;
   [(GestureInstructionItemView *)self _descriptionSizeThatFitsSize:width, height];

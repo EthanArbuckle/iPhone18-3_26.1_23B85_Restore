@@ -1,32 +1,32 @@
 @interface CPLPrequeliteTable
-+ (CPLPrequeliteTable)tableWithName:(id)a3;
-- (CPLPrequeliteTable)initWithName:(id)a3;
++ (CPLPrequeliteTable)tableWithName:(id)name;
+- (CPLPrequeliteTable)initWithName:(id)name;
 - (NSString)injectedTableName;
 @end
 
 @implementation CPLPrequeliteTable
 
-+ (CPLPrequeliteTable)tableWithName:(id)a3
++ (CPLPrequeliteTable)tableWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithName:nameCopy];
 
   return v5;
 }
 
-- (CPLPrequeliteTable)initWithName:(id)a3
+- (CPLPrequeliteTable)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = CPLPrequeliteTable;
   v5 = [(CPLPrequeliteTable *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     tableName = v5->_tableName;
     v5->_tableName = v6;
 
-    v8 = [PQLNameInjection nameWithString:v4];
+    v8 = [PQLNameInjection nameWithString:nameCopy];
     injection = v5->_injection;
     v5->_injection = v8;
   }

@@ -1,12 +1,12 @@
 @interface GuidesHomeHeaderViewModel
 - (CGSize)photoSize;
-- (GuidesHomeHeaderViewModel)initWithGuideLocation:(id)a3 featuredGuide:(id)a4 sectionTitle:(id)a5;
+- (GuidesHomeHeaderViewModel)initWithGuideLocation:(id)location featuredGuide:(id)guide sectionTitle:(id)title;
 - (NSAttributedString)collectionLongTitle;
 - (NSAttributedString)collectionTitle;
 - (NSString)guideLocationTitle;
 - (UIColor)backgroundColor;
-- (void)collectionImageForSize:(CGSize)a3 onCompletion:(id)a4;
-- (void)publisherLogoImageWithCompletion:(id)a3;
+- (void)collectionImageForSize:(CGSize)size onCompletion:(id)completion;
+- (void)publisherLogoImageWithCompletion:(id)completion;
 @end
 
 @implementation GuidesHomeHeaderViewModel
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)publisherLogoImageWithCompletion:(id)a3
+- (void)publisherLogoImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(GuidesHomeHeaderViewModel *)self viewModel];
-  [v5 publisherLogoImageWithCompletion:v4];
+  completionCopy = completion;
+  viewModel = [(GuidesHomeHeaderViewModel *)self viewModel];
+  [viewModel publisherLogoImageWithCompletion:completionCopy];
 }
 
 - (NSString)guideLocationTitle
@@ -32,10 +32,10 @@
   guideLocationTitle = self->_guideLocationTitle;
   if (!guideLocationTitle)
   {
-    v4 = [(GuidesHomeHeaderViewModel *)self guideLocation];
-    v5 = [v4 title];
+    guideLocation = [(GuidesHomeHeaderViewModel *)self guideLocation];
+    title = [guideLocation title];
     v6 = self->_guideLocationTitle;
-    self->_guideLocationTitle = v5;
+    self->_guideLocationTitle = title;
 
     guideLocationTitle = self->_guideLocationTitle;
   }
@@ -50,10 +50,10 @@
   collectionLongTitle = self->_collectionLongTitle;
   if (!collectionLongTitle)
   {
-    v4 = [(GuidesHomeHeaderViewModel *)self viewModel];
-    v5 = [v4 collectionLongTitle];
+    viewModel = [(GuidesHomeHeaderViewModel *)self viewModel];
+    collectionLongTitle = [viewModel collectionLongTitle];
     v6 = self->_collectionLongTitle;
-    self->_collectionLongTitle = v5;
+    self->_collectionLongTitle = collectionLongTitle;
 
     collectionLongTitle = self->_collectionLongTitle;
   }
@@ -68,10 +68,10 @@
   collectionTitle = self->_collectionTitle;
   if (!collectionTitle)
   {
-    v4 = [(GuidesHomeHeaderViewModel *)self viewModel];
-    v5 = [v4 collectionTitle];
+    viewModel = [(GuidesHomeHeaderViewModel *)self viewModel];
+    collectionTitle = [viewModel collectionTitle];
     v6 = self->_collectionTitle;
-    self->_collectionTitle = v5;
+    self->_collectionTitle = collectionTitle;
 
     collectionTitle = self->_collectionTitle;
   }
@@ -86,14 +86,14 @@
   backgroundColor = self->_backgroundColor;
   if (!backgroundColor)
   {
-    v4 = [(GuidesHomeHeaderViewModel *)self viewModel];
-    v5 = [v4 backgroundColor];
+    viewModel = [(GuidesHomeHeaderViewModel *)self viewModel];
+    backgroundColor = [viewModel backgroundColor];
     v6 = self->_backgroundColor;
-    self->_backgroundColor = v5;
+    self->_backgroundColor = backgroundColor;
 
     v7 = +[MKPlaceCollectionImageProvider sharedInstance];
-    v8 = [(GuidesHomeHeaderViewModel *)self featuredGuide];
-    v9 = [v7 isJoeColorManuallyCuratedForCuratedCollection:v8];
+    featuredGuide = [(GuidesHomeHeaderViewModel *)self featuredGuide];
+    v9 = [v7 isJoeColorManuallyCuratedForCuratedCollection:featuredGuide];
 
     if ((v9 & 1) == 0)
     {
@@ -113,19 +113,19 @@
   return v15;
 }
 
-- (GuidesHomeHeaderViewModel)initWithGuideLocation:(id)a3 featuredGuide:(id)a4 sectionTitle:(id)a5
+- (GuidesHomeHeaderViewModel)initWithGuideLocation:(id)location featuredGuide:(id)guide sectionTitle:(id)title
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  guideCopy = guide;
+  titleCopy = title;
   v26.receiver = self;
   v26.super_class = GuidesHomeHeaderViewModel;
   v12 = [(GuidesHomeHeaderViewModel *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_featuredGuide, a4);
-    objc_storeStrong(&v13->_guideLocation, a3);
+    objc_storeStrong(&v12->_featuredGuide, guide);
+    objc_storeStrong(&v13->_guideLocation, location);
     v14 = [NSAttributedString alloc];
     v27[0] = NSFontAttributeName;
     v15 = [UIFont systemFontOfSize:11.0];
@@ -135,13 +135,13 @@
     v17 = [v16 colorWithAlphaComponent:0.6];
     v28[1] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
-    v19 = [v14 initWithString:v11 attributes:v18];
+    v19 = [v14 initWithString:titleCopy attributes:v18];
     sectionTitle = v13->_sectionTitle;
     v13->_sectionTitle = v19;
 
     v21 = [MKPlaceCollectionViewModel alloc];
     v22 = +[UIFont system28Bold];
-    v23 = [v21 initWithGEOPlaceCollection:v10 usingSyncCoordinator:0 inContext:9 usingTitleFont:v22];
+    v23 = [v21 initWithGEOPlaceCollection:guideCopy usingSyncCoordinator:0 inContext:9 usingTitleFont:v22];
     viewModel = v13->_viewModel;
     v13->_viewModel = v23;
   }
@@ -149,13 +149,13 @@
   return v13;
 }
 
-- (void)collectionImageForSize:(CGSize)a3 onCompletion:(id)a4
+- (void)collectionImageForSize:(CGSize)size onCompletion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(GuidesHomeHeaderViewModel *)self viewModel];
-  [v8 collectionImageForSize:v7 onCompletion:{width, height}];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  viewModel = [(GuidesHomeHeaderViewModel *)self viewModel];
+  [viewModel collectionImageForSize:completionCopy onCompletion:{width, height}];
 }
 
 @end

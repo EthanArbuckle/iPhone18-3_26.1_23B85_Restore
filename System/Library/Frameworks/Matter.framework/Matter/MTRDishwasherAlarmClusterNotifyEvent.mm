@@ -1,6 +1,6 @@
 @interface MTRDishwasherAlarmClusterNotifyEvent
 - (MTRDishwasherAlarmClusterNotifyEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDishwasherAlarmClusterNotifyEvent);
-  v5 = [(MTRDishwasherAlarmClusterNotifyEvent *)self active];
-  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setActive:v5];
+  active = [(MTRDishwasherAlarmClusterNotifyEvent *)self active];
+  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setActive:active];
 
-  v6 = [(MTRDishwasherAlarmClusterNotifyEvent *)self inactive];
-  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setInactive:v6];
+  inactive = [(MTRDishwasherAlarmClusterNotifyEvent *)self inactive];
+  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setInactive:inactive];
 
-  v7 = [(MTRDishwasherAlarmClusterNotifyEvent *)self state];
-  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setState:v7];
+  state = [(MTRDishwasherAlarmClusterNotifyEvent *)self state];
+  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setState:state];
 
-  v8 = [(MTRDishwasherAlarmClusterNotifyEvent *)self mask];
-  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setMask:v8];
+  mask = [(MTRDishwasherAlarmClusterNotifyEvent *)self mask];
+  [(MTRDishwasherAlarmClusterNotifyEvent *)v4 setMask:mask];
 
   return v4;
 }

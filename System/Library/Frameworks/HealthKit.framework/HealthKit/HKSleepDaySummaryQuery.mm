@@ -1,24 +1,24 @@
 @interface HKSleepDaySummaryQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)morningIndexRange;
-- (HKSleepDaySummaryQuery)initWithMorningIndexRange:(id)a3 ascending:(BOOL)a4 limit:(int64_t)a5 options:(unint64_t)a6 resultsHandler:(id)a7;
-- (void)client_deliverDaySummaries:(id)a3 clearPending:(BOOL)a4 isFinalBatch:(BOOL)a5 queryUUID:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKSleepDaySummaryQuery)initWithMorningIndexRange:(id)range ascending:(BOOL)ascending limit:(int64_t)limit options:(unint64_t)options resultsHandler:(id)handler;
+- (void)client_deliverDaySummaries:(id)summaries clearPending:(BOOL)pending isFinalBatch:(BOOL)batch queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
-- (void)setCacheSettings:(id)a3;
-- (void)setCalendarOverrides:(id)a3;
+- (void)setCacheSettings:(id)settings;
+- (void)setCalendarOverrides:(id)overrides;
 @end
 
 @implementation HKSleepDaySummaryQuery
 
-- (HKSleepDaySummaryQuery)initWithMorningIndexRange:(id)a3 ascending:(BOOL)a4 limit:(int64_t)a5 options:(unint64_t)a6 resultsHandler:(id)a7
+- (HKSleepDaySummaryQuery)initWithMorningIndexRange:(id)range ascending:(BOOL)ascending limit:(int64_t)limit options:(unint64_t)options resultsHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v36 = *MEMORY[0x1E69E9840];
-  v13 = a7;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = HKSleepDaySummaryQuery;
   v14 = [(HKQuery *)&v27 _initWithObjectType:0 predicate:0];
@@ -36,11 +36,11 @@
         v23 = v16;
         v24 = objc_opt_class();
         v26 = v24;
-        v25 = [(HKQuery *)v15 debugIdentifier];
+        debugIdentifier = [(HKQuery *)v15 debugIdentifier];
         *buf = 138544130;
         v29 = v24;
         v30 = 2114;
-        v31 = v25;
+        v31 = debugIdentifier;
         v32 = 2048;
         v33 = var0;
         v34 = 2048;
@@ -49,10 +49,10 @@
       }
     }
 
-    v15->_ascending = a4;
-    v15->_limit = a5;
-    v15->_options = a6;
-    v17 = [v13 copy];
+    v15->_ascending = ascending;
+    v15->_limit = limit;
+    v15->_options = options;
+    v17 = [handlerCopy copy];
     resultsHandler = v15->_resultsHandler;
     v15->_resultsHandler = v17;
 
@@ -67,19 +67,19 @@
   return v15;
 }
 
-- (void)setCacheSettings:(id)a3
+- (void)setCacheSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v6 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__HKSleepDaySummaryQuery_setCacheSettings___block_invoke;
   v8[3] = &unk_1E7378400;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = settingsCopy;
+  v7 = settingsCopy;
+  dispatch_sync(queue, v8);
 }
 
 uint64_t __43__HKSleepDaySummaryQuery_setCacheSettings___block_invoke(uint64_t a1)
@@ -92,19 +92,19 @@ uint64_t __43__HKSleepDaySummaryQuery_setCacheSettings___block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCalendarOverrides:(id)a3
+- (void)setCalendarOverrides:(id)overrides
 {
-  v5 = a3;
+  overridesCopy = overrides;
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v6 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__HKSleepDaySummaryQuery_setCalendarOverrides___block_invoke;
   v8[3] = &unk_1E7378400;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = overridesCopy;
+  v7 = overridesCopy;
+  dispatch_sync(queue, v8);
 }
 
 uint64_t __47__HKSleepDaySummaryQuery_setCalendarOverrides___block_invoke(uint64_t a1)
@@ -117,23 +117,23 @@ uint64_t __47__HKSleepDaySummaryQuery_setCalendarOverrides___block_invoke(uint64
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)client_deliverDaySummaries:(id)a3 clearPending:(BOOL)a4 isFinalBatch:(BOOL)a5 queryUUID:(id)a6
+- (void)client_deliverDaySummaries:(id)summaries clearPending:(BOOL)pending isFinalBatch:(BOOL)batch queryUUID:(id)d
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HKQuery *)self queue];
+  summariesCopy = summaries;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __89__HKSleepDaySummaryQuery_client_deliverDaySummaries_clearPending_isFinalBatch_queryUUID___block_invoke;
   v15[3] = &unk_1E7379FC0;
   v15[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = summariesCopy;
+  pendingCopy = pending;
+  batchCopy = batch;
+  v17 = dCopy;
+  v13 = dCopy;
+  v14 = summariesCopy;
+  dispatch_async(queue, v15);
 }
 
 void __89__HKSleepDaySummaryQuery_client_deliverDaySummaries_clearPending_isFinalBatch_queryUUID___block_invoke(uint64_t a1)
@@ -296,19 +296,19 @@ void __89__HKSleepDaySummaryQuery_client_deliverDaySummaries_clearPending_isFina
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = HKSleepDaySummaryQuery;
-  [(HKQuery *)&v11 queue_populateConfiguration:v4];
-  [v4 setMorningIndexRange:{self->_morningIndexRange.start, self->_morningIndexRange.duration}];
-  [v4 setAscending:self->_ascending];
-  [v4 setLimit:self->_limit];
-  [v4 setOptions:self->_options];
-  [v4 setCacheSettings:self->_cacheSettings];
-  [v4 setCalendarOverrides:self->_calendarOverrides];
+  [(HKQuery *)&v11 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setMorningIndexRange:{self->_morningIndexRange.start, self->_morningIndexRange.duration}];
+  [configurationCopy setAscending:self->_ascending];
+  [configurationCopy setLimit:self->_limit];
+  [configurationCopy setOptions:self->_options];
+  [configurationCopy setCacheSettings:self->_cacheSettings];
+  [configurationCopy setCalendarOverrides:self->_calendarOverrides];
   _HKInitializeLogging();
   v5 = HKLogSleep;
   if (os_log_type_enabled(HKLogSleep, OS_LOG_TYPE_DEFAULT))
@@ -316,73 +316,73 @@ void __89__HKSleepDaySummaryQuery_client_deliverDaySummaries_clearPending_isFina
     v6 = v5;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(HKQuery *)self debugIdentifier];
+    debugIdentifier = [(HKQuery *)self debugIdentifier];
     *buf = 138543874;
     v13 = v7;
     v14 = 2114;
-    v15 = v9;
+    v15 = debugIdentifier;
     v16 = 2114;
-    v17 = v4;
+    v17 = configurationCopy;
     _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Configuration populated: %{public}@", buf, 0x20u);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___HKSleepDaySummaryQuery;
-  v3 = a3;
-  objc_msgSendSuper2(&v7, sel_configureClientInterface_, v3);
+  interfaceCopy = interface;
+  objc_msgSendSuper2(&v7, sel_configureClientInterface_, interfaceCopy);
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0, v7.receiver, v7.super_class}];
-  [v3 setClasses:v6 forSelector:sel_client_deliverDaySummaries_clearPending_isFinalBatch_queryUUID_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v6 forSelector:sel_client_deliverDaySummaries_clearPending_isFinalBatch_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_resultsHandler);
-  v6 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__HKSleepDaySummaryQuery_queue_deliverError___block_invoke;
   block[3] = &unk_1E7376618;
-  v10 = v4;
+  v10 = errorCopy;
   v11 = v5;
   block[4] = self;
-  v7 = v4;
+  v7 = errorCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(clientQueue, block);
 }
 
 - (void)queue_validate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a1;
+  selfCopy = self;
   v4 = objc_opt_class();
   v5 = v4;
-  v6 = [a2 debugIdentifier];
-  v7 = [a2 cacheSettings];
-  v8 = [v7 identifier];
+  debugIdentifier = [a2 debugIdentifier];
+  cacheSettings = [a2 cacheSettings];
+  identifier = [cacheSettings identifier];
   v10 = 138543874;
   v11 = v4;
   v12 = 2114;
-  v13 = v6;
+  v13 = debugIdentifier;
   v14 = 2112;
-  v15 = v8;
-  _os_log_fault_impl(&dword_19197B000, v3, OS_LOG_TYPE_FAULT, "[%{public}@:%{public}@] Not using cached results for query with caching identifier %@ due to unbounded morning index range", &v10, 0x20u);
+  v15 = identifier;
+  _os_log_fault_impl(&dword_19197B000, selfCopy, OS_LOG_TYPE_FAULT, "[%{public}@:%{public}@] Not using cached results for query with caching identifier %@ due to unbounded morning index range", &v10, 0x20u);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKSleepDaySummaryQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }

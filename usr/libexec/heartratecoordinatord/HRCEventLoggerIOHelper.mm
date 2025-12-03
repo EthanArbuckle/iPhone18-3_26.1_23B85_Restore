@@ -1,11 +1,11 @@
 @interface HRCEventLoggerIOHelper
-+ (void)deleteOldFilesInLoggingDirectory:(id)a3 isInternalVariant:(BOOL)a4;
-- (HRCEventLoggerIOHelper)initWithRootDirectory:(id)a3 withQueue:(id)a4 isInternalVariant:(BOOL)a5;
-- (void)_createFileForDate:(id)a3;
++ (void)deleteOldFilesInLoggingDirectory:(id)directory isInternalVariant:(BOOL)variant;
+- (HRCEventLoggerIOHelper)initWithRootDirectory:(id)directory withQueue:(id)queue isInternalVariant:(BOOL)variant;
+- (void)_createFileForDate:(id)date;
 - (void)_writeSegment;
 - (void)flush;
 - (void)flushAndClose;
-- (void)handleEncodedData:(id)a3;
+- (void)handleEncodedData:(id)data;
 - (void)startLogging;
 - (void)stopLogging;
 @end
@@ -38,11 +38,11 @@
   }
 }
 
-+ (void)deleteOldFilesInLoggingDirectory:(id)a3 isInternalVariant:(BOOL)a4
++ (void)deleteOldFilesInLoggingDirectory:(id)directory isInternalVariant:(BOOL)variant
 {
-  v4 = a4;
-  v38 = a3;
-  if (v4)
+  variantCopy = variant;
+  directoryCopy = directory;
+  if (variantCopy)
   {
     v5 = 7;
   }
@@ -63,7 +63,7 @@
   v63 = NSURLAttributeModificationDateKey;
   v37 = [NSArray arrayWithObjects:&v63 count:1];
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 enumeratorAtURL:v38 includingPropertiesForKeys:v37 options:1 errorHandler:0];
+  v8 = [v7 enumeratorAtURL:directoryCopy includingPropertiesForKeys:v37 options:1 errorHandler:0];
 
   v54 = 0u;
   v55 = 0u;
@@ -84,8 +84,8 @@
         }
 
         v12 = *(*(&v52 + 1) + 8 * i);
-        v13 = [v12 pathExtension];
-        v14 = [v13 isEqualToString:@"lp5"];
+        pathExtension = [v12 pathExtension];
+        v14 = [pathExtension isEqualToString:@"lp5"];
 
         if (v14)
         {
@@ -175,9 +175,9 @@
           v35 = sub_10000132C();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
-            v36 = [v32 lastPathComponent];
+            lastPathComponent = [v32 lastPathComponent];
             *buf = 138543362;
-            v57 = v36;
+            v57 = lastPathComponent;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "HRCEventLogger deleted old logging file: %{public}@", buf, 0xCu);
           }
         }
@@ -190,19 +190,19 @@
   }
 }
 
-- (HRCEventLoggerIOHelper)initWithRootDirectory:(id)a3 withQueue:(id)a4 isInternalVariant:(BOOL)a5
+- (HRCEventLoggerIOHelper)initWithRootDirectory:(id)directory withQueue:(id)queue isInternalVariant:(BOOL)variant
 {
-  v8 = a3;
-  v9 = a4;
+  directoryCopy = directory;
+  queueCopy = queue;
   v44.receiver = self;
   v44.super_class = HRCEventLoggerIOHelper;
   v10 = [(HRCEventLoggerIOHelper *)&v44 init];
-  v11 = [v8 URLByAppendingPathComponent:@"EventLogger"];
+  v11 = [directoryCopy URLByAppendingPathComponent:@"EventLogger"];
   v13 = (v10 + 64);
   v12 = *(v10 + 8);
   *(v10 + 8) = v11;
 
-  objc_storeStrong(v10 + 4, a4);
+  objc_storeStrong(v10 + 4, queue);
   v14 = +[NSFileManager defaultManager];
   v15 = *(v10 + 1);
   *(v10 + 1) = v14;
@@ -217,8 +217,8 @@
   }
 
   v18 = *(v10 + 1);
-  v19 = [*(v10 + 8) path];
-  if ([v18 fileExistsAtPath:v19])
+  path = [*(v10 + 8) path];
+  if ([v18 fileExistsAtPath:path])
   {
 
     v20 = 0;
@@ -252,7 +252,7 @@ LABEL_7:
     handler[2] = sub_100004F10;
     handler[3] = &unk_100040778;
     objc_copyWeak(&v40, buf);
-    v41 = a5;
+    variantCopy = variant;
     dispatch_source_set_event_handler(v31, handler);
     dispatch_activate(*(v10 + 3));
     v32 = dispatch_source_create(&_dispatch_source_type_signal, 0xFuLL, 0, *(v10 + 4));
@@ -330,21 +330,21 @@ LABEL_15:
   }
 }
 
-- (void)handleEncodedData:(id)a3
+- (void)handleEncodedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_loggingQueue);
   transaction = self->_transaction;
   os_transaction_needs_more_time();
-  if ([v4 length])
+  if ([dataCopy length])
   {
     v6 = [(NSMutableData *)self->_segment length];
-    if ([v4 length] + v6 > 0x20000)
+    if ([dataCopy length] + v6 > 0x20000)
     {
       [(HRCEventLoggerIOHelper *)self _writeSegment];
     }
 
-    [(NSMutableData *)self->_segment appendData:v4];
+    [(NSMutableData *)self->_segment appendData:dataCopy];
   }
 
   else
@@ -376,24 +376,24 @@ LABEL_15:
   [(HRCEventLoggerIOHelper *)self _createFileForDate:?];
 }
 
-- (void)_createFileForDate:(id)a3
+- (void)_createFileForDate:(id)date
 {
-  v24 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_loggingQueue);
-  [v24 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v5 = [NSString stringWithFormat:@"%.8f.lp5", v4];
   v6 = [(NSURL *)self->_loggingDirectory URLByAppendingPathComponent:v5 isDirectory:0];
-  v7 = [v6 path];
+  path = [v6 path];
   v8 = sub_10000132C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v7;
+    *&buf[4] = path;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "file path created : %{public}@", buf, 0xCu);
   }
 
-  v9 = v7;
-  v10 = open_dprotected_np([v7 UTF8String], 1793, 2, 0, 420);
+  v9 = path;
+  v10 = open_dprotected_np([path UTF8String], 1793, 2, 0, 420);
   if ((v10 & 0x80000000) != 0)
   {
     v11 = sub_10000132C();
@@ -424,8 +424,8 @@ LABEL_15:
     [v12 appendData:v14];
 
     v15 = +[NSTimeZone localTimeZone];
-    v16 = [v15 name];
-    v17 = [v16 dataUsingEncoding:4];
+    name = [v15 name];
+    v17 = [name dataUsingEncoding:4];
     v18 = [v17 mutableCopy];
 
     *buf = 212;

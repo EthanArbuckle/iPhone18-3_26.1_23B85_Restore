@@ -1,15 +1,15 @@
 @interface RCDurationFormatter
-+ (id)_dateTimeFormatTemplateForStyle:(int64_t)a3;
-+ (id)_localizedDateTimeFormatTemplateForStyle:(int64_t)a3;
++ (id)_dateTimeFormatTemplateForStyle:(int64_t)style;
++ (id)_localizedDateTimeFormatTemplateForStyle:(int64_t)style;
 + (id)sharedFormatter;
 - (RCDurationFormatter)init;
-- (RCDurationIntegers)durationIntegersFromDuration:(SEL)a3 byReplacingDigitsWithDigit:(double)a4 style:(int64_t)a5;
-- (RCDurationStrings)durationStringsFromDurationIntegers:(SEL)a3 hideComponentOptions:(RCDurationIntegers *)a4 style:(int64_t)a5 shouldPadMinute:(int64_t)a6;
-- (id)localizedStringFromDurationStrings:(RCDurationStrings *)a3 style:(int64_t)a4;
-- (id)stringFromDuration:(double)a3 hideComponentOptions:(int64_t)a4 style:(int64_t)a5 shouldPadMinute:(BOOL)a6;
-- (id)stringFromDuration:(double)a3 replacingDigitsWithDigit:(unint64_t)a4 style:(int64_t)a5;
+- (RCDurationIntegers)durationIntegersFromDuration:(SEL)duration byReplacingDigitsWithDigit:(double)digit style:(int64_t)style;
+- (RCDurationStrings)durationStringsFromDurationIntegers:(SEL)integers hideComponentOptions:(RCDurationIntegers *)options style:(int64_t)style shouldPadMinute:(int64_t)minute;
+- (id)localizedStringFromDurationStrings:(RCDurationStrings *)strings style:(int64_t)style;
+- (id)stringFromDuration:(double)duration hideComponentOptions:(int64_t)options style:(int64_t)style shouldPadMinute:(BOOL)minute;
+- (id)stringFromDuration:(double)duration replacingDigitsWithDigit:(unint64_t)digit style:(int64_t)style;
 - (void)_onQueueReloadLocalizedFormatStrings;
-- (void)_replaceComponentPlaceholderForType:(unint64_t)a3 withString:(id)a4 inLocalizedDataFormatTemplate:(id)a5;
+- (void)_replaceComponentPlaceholderForType:(unint64_t)type withString:(id)string inLocalizedDataFormatTemplate:(id)template;
 - (void)reloadLocalizedFormatStrings;
 @end
 
@@ -42,15 +42,15 @@ uint64_t __38__RCDurationFormatter_sharedFormatter__block_invoke()
   if (v2)
   {
     objc_initWeak(&location, v2);
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v5 = *MEMORY[0x277CBE620];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __27__RCDurationFormatter_init__block_invoke;
     v13 = &unk_279E443D0;
     objc_copyWeak(&v14, &location);
-    v6 = [v3 addObserverForName:v5 object:0 queue:v4 usingBlock:&v10];
+    v6 = [defaultCenter addObserverForName:v5 object:0 queue:mainQueue usingBlock:&v10];
 
     v7 = dispatch_queue_create(0, 0);
     queue = v2->_queue;
@@ -77,9 +77,9 @@ uint64_t __38__RCDurationFormatter_sharedFormatter__block_invoke()
 
 - (void)_onQueueReloadLocalizedFormatStrings
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   styleToLocalizedDateTimeFormatTemplate = self->_styleToLocalizedDateTimeFormatTemplate;
-  self->_styleToLocalizedDateTimeFormatTemplate = v3;
+  self->_styleToLocalizedDateTimeFormatTemplate = dictionary;
 
   for (i = 0; i != 5; ++i)
   {
@@ -116,9 +116,9 @@ void __27__RCDurationFormatter_init__block_invoke(uint64_t a1)
   [WeakRetained reloadLocalizedFormatStrings];
 }
 
-- (id)stringFromDuration:(double)a3 replacingDigitsWithDigit:(unint64_t)a4 style:(int64_t)a5
+- (id)stringFromDuration:(double)duration replacingDigitsWithDigit:(unint64_t)digit style:(int64_t)style
 {
-  if (a4 >= 0xA)
+  if (digit >= 0xA)
   {
     [RCDurationFormatter stringFromDuration:a2 replacingDigitsWithDigit:self style:?];
   }
@@ -136,9 +136,9 @@ void __27__RCDurationFormatter_init__block_invoke(uint64_t a1)
   block[3] = &unk_279E443F8;
   block[4] = self;
   block[5] = &v13;
-  *&block[6] = a3;
-  block[7] = a4;
-  block[8] = a5;
+  *&block[6] = duration;
+  block[7] = digit;
+  block[8] = style;
   dispatch_sync(queue, block);
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -156,7 +156,7 @@ uint64_t __73__RCDurationFormatter_stringFromDuration_replacingDigitsWithDigit_s
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)stringFromDuration:(double)a3 hideComponentOptions:(int64_t)a4 style:(int64_t)a5 shouldPadMinute:(BOOL)a6
+- (id)stringFromDuration:(double)duration hideComponentOptions:(int64_t)options style:(int64_t)style shouldPadMinute:(BOOL)minute
 {
   v11 = 0;
   v12 = &v11;
@@ -171,10 +171,10 @@ uint64_t __73__RCDurationFormatter_stringFromDuration_replacingDigitsWithDigit_s
   v9[3] = &unk_279E44420;
   v9[4] = self;
   v9[5] = &v11;
-  *&v9[6] = a3;
-  v9[7] = a4;
-  v9[8] = a5;
-  v10 = a6;
+  *&v9[6] = duration;
+  v9[7] = options;
+  v9[8] = style;
+  minuteCopy = minute;
   dispatch_sync(queue, v9);
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -192,20 +192,20 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (RCDurationIntegers)durationIntegersFromDuration:(SEL)a3 byReplacingDigitsWithDigit:(double)a4 style:(int64_t)a5
+- (RCDurationIntegers)durationIntegersFromDuration:(SEL)duration byReplacingDigitsWithDigit:(double)digit style:(int64_t)style
 {
-  v7 = (a4 * 100.0) % 0x64;
-  v8 = a4;
-  v9 = a4 / 0x3C;
+  styleCopy5 = (digit * 100.0) % 0x64;
+  digitCopy = digit;
+  v9 = digit / 0x3C;
   v10 = v9 - 60 * (((v9 * 0x888888888888889uLL) >> 64) >> 1);
   if (a6 != 4)
   {
-    v8 = 0;
+    digitCopy = 0;
   }
 
   if ((a6 - 2) < 2)
   {
-    v8 = a4 % 0x3C;
+    digitCopy = digit % 0x3C;
   }
 
   else
@@ -215,38 +215,38 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
 
   if (a6 >= 2)
   {
-    v11 = 0;
+    styleCopy2 = 0;
   }
 
   else
   {
-    v11 = a4 / 0xE10;
+    styleCopy2 = digit / 0xE10;
   }
 
   if (a6 >= 2)
   {
-    v12 = v9;
+    styleCopy3 = v9;
   }
 
   else
   {
-    v12 = v10;
+    styleCopy3 = v10;
   }
 
   if (a6 >= 2)
   {
-    v13 = v8;
+    styleCopy4 = digitCopy;
   }
 
   else
   {
-    v13 = a4 % 0x3C;
+    styleCopy4 = digit % 0x3C;
   }
 
-  if ((a5 & 0x8000000000000000) == 0)
+  if ((style & 0x8000000000000000) == 0)
   {
     v15 = [@"0" length];
-    v16 = RCNumberOfDigitsInInteger(v11);
+    v16 = RCNumberOfDigitsInInteger(styleCopy2);
     if (v15 <= v16)
     {
       v17 = v16;
@@ -257,15 +257,15 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
       v17 = v15;
     }
 
-    v11 = a5;
+    styleCopy2 = style;
     v18 = v17 - 1;
     if (v18)
     {
       v19 = 10;
-      v11 = a5;
+      styleCopy2 = style;
       do
       {
-        v11 += v19 * a5;
+        styleCopy2 += v19 * style;
         v19 *= 10;
         --v18;
       }
@@ -273,7 +273,7 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
       while (v18);
     }
 
-    v20 = RCNumberOfDigitsInInteger(v12);
+    v20 = RCNumberOfDigitsInInteger(styleCopy3);
     v21 = 2;
     if (v20 > 2)
     {
@@ -282,16 +282,16 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
 
     v22 = v21 - 1;
     v23 = 10;
-    v12 = a5;
+    styleCopy3 = style;
     do
     {
-      v12 += v23 * a5;
+      styleCopy3 += v23 * style;
       v23 *= 10;
       --v22;
     }
 
     while (v22);
-    v24 = RCNumberOfDigitsInInteger(v13);
+    v24 = RCNumberOfDigitsInInteger(styleCopy4);
     v25 = 2;
     if (v24 > 2)
     {
@@ -300,28 +300,28 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
 
     v26 = v25 - 1;
     v27 = 10;
-    v13 = a5;
+    styleCopy4 = style;
     do
     {
-      v13 += v27 * a5;
+      styleCopy4 += v27 * style;
       v27 *= 10;
       --v26;
     }
 
     while (v26);
-    self = RCNumberOfDigitsInInteger(v7);
-    v28 = 2;
+    self = RCNumberOfDigitsInInteger(styleCopy5);
+    selfCopy = 2;
     if (self > 2)
     {
-      v28 = self;
+      selfCopy = self;
     }
 
-    v29 = v28 - 1;
+    v29 = selfCopy - 1;
     v30 = 10;
-    v7 = a5;
+    styleCopy5 = style;
     do
     {
-      v7 += v30 * a5;
+      styleCopy5 += v30 * style;
       v30 *= 10;
       --v29;
     }
@@ -329,22 +329,22 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
     while (v29);
   }
 
-  retstr->var0 = v11;
-  retstr->var1 = v12;
-  retstr->var2 = v13;
-  retstr->var3 = v7;
+  retstr->var0 = styleCopy2;
+  retstr->var1 = styleCopy3;
+  retstr->var2 = styleCopy4;
+  retstr->var3 = styleCopy5;
   return self;
 }
 
-- (RCDurationStrings)durationStringsFromDurationIntegers:(SEL)a3 hideComponentOptions:(RCDurationIntegers *)a4 style:(int64_t)a5 shouldPadMinute:(int64_t)a6
+- (RCDurationStrings)durationStringsFromDurationIntegers:(SEL)integers hideComponentOptions:(RCDurationIntegers *)options style:(int64_t)style shouldPadMinute:(int64_t)minute
 {
-  v8 = a5;
+  styleCopy = style;
   p_defaultFormatter = &self->_defaultFormatter;
   defaultFormatter = self->_defaultFormatter;
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4->var3];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options->var3];
   v15 = [(NSNumberFormatter *)defaultFormatter stringFromNumber:v14];
 
-  if (v8)
+  if (styleCopy)
   {
     v16 = _hiddenComponentStringWithString(v15);
 
@@ -352,33 +352,33 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
   }
 
   v17 = *p_defaultFormatter;
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4->var2];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options->var2];
   v19 = [v17 stringFromNumber:v18];
 
-  if ((v8 & 2) != 0)
+  if ((styleCopy & 2) != 0)
   {
     v20 = _hiddenComponentStringWithString(v19);
 
     v19 = v20;
   }
 
-  if (!a7 && (!a4->var0 || a4->var1 >= 0xA))
+  if (!a7 && (!options->var0 || options->var1 >= 0xA))
   {
     p_defaultFormatter = &self->_nonPaddedHourMinuteFormatter;
   }
 
   v21 = *p_defaultFormatter;
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4->var1];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options->var1];
   v23 = [v21 stringFromNumber:v22];
 
-  if ((v8 & 4) != 0)
+  if ((styleCopy & 4) != 0)
   {
     v24 = _hiddenComponentStringWithString(v23);
 
     v23 = v24;
   }
 
-  if (a6 > 1)
+  if (minute > 1)
   {
     nonPaddedHourMinuteFormatter = 0;
   }
@@ -389,10 +389,10 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
   }
 
   v26 = nonPaddedHourMinuteFormatter;
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4->var0];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options->var0];
   v28 = [(NSNumberFormatter *)v26 stringFromNumber:v27];
 
-  if ((v8 & 8) != 0)
+  if ((styleCopy & 8) != 0)
   {
     v29 = _hiddenComponentStringWithString(v28);
 
@@ -410,39 +410,39 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
   return result;
 }
 
-- (id)localizedStringFromDurationStrings:(RCDurationStrings *)a3 style:(int64_t)a4
+- (id)localizedStringFromDurationStrings:(RCDurationStrings *)strings style:(int64_t)style
 {
   styleToLocalizedDateTimeFormatTemplate = self->_styleToLocalizedDateTimeFormatTemplate;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v8 = [(NSMutableDictionary *)styleToLocalizedDateTimeFormatTemplate objectForKeyedSubscript:v7];
 
   v9 = [v8 mutableCopy];
-  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:0 withString:a3->var0 inLocalizedDataFormatTemplate:v9];
-  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:1 withString:a3->var1 inLocalizedDataFormatTemplate:v9];
-  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:2 withString:a3->var2 inLocalizedDataFormatTemplate:v9];
-  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:3 withString:a3->var3 inLocalizedDataFormatTemplate:v9];
+  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:0 withString:strings->var0 inLocalizedDataFormatTemplate:v9];
+  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:1 withString:strings->var1 inLocalizedDataFormatTemplate:v9];
+  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:2 withString:strings->var2 inLocalizedDataFormatTemplate:v9];
+  [(RCDurationFormatter *)self _replaceComponentPlaceholderForType:3 withString:strings->var3 inLocalizedDataFormatTemplate:v9];
   v10 = [v9 copy];
 
-  __destructor_8_s0_s8_s16_s24(a3);
+  __destructor_8_s0_s8_s16_s24(strings);
 
   return v10;
 }
 
-- (void)_replaceComponentPlaceholderForType:(unint64_t)a3 withString:(id)a4 inLocalizedDataFormatTemplate:(id)a5
+- (void)_replaceComponentPlaceholderForType:(unint64_t)type withString:(id)string inLocalizedDataFormatTemplate:(id)template
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  stringCopy = string;
+  templateCopy = template;
+  if (stringCopy)
   {
-    if (a3 - 1 > 2)
+    if (type - 1 > 2)
     {
       v9 = &unk_2881AE2F0;
     }
 
     else
     {
-      v9 = qword_279E444A8[a3 - 1];
+      v9 = qword_279E444A8[type - 1];
     }
 
     [v9 sortedArrayUsingComparator:&__block_literal_global_23];
@@ -465,9 +465,9 @@ uint64_t __85__RCDurationFormatter_stringFromDuration_hideComponentOptions_style
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
-          if ([v8 containsString:{v15, v17}])
+          if ([templateCopy containsString:{v15, v17}])
           {
-            [v8 replaceOccurrencesOfString:v15 withString:v7 options:0 range:{0, objc_msgSend(v8, "length")}];
+            [templateCopy replaceOccurrencesOfString:v15 withString:stringCopy options:0 range:{0, objc_msgSend(templateCopy, "length")}];
             goto LABEL_15;
           }
         }
@@ -507,17 +507,17 @@ uint64_t __100__RCDurationFormatter__replaceComponentPlaceholderForType_withStri
   return v7;
 }
 
-+ (id)_localizedDateTimeFormatTemplateForStyle:(int64_t)a3
++ (id)_localizedDateTimeFormatTemplateForStyle:(int64_t)style
 {
   v5 = objc_alloc(MEMORY[0x277CBEAF8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v6 localeIdentifier];
-  v8 = [v5 initWithLocaleIdentifier:v7];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v8 = [v5 initWithLocaleIdentifier:localeIdentifier];
 
-  v9 = [a1 _dateTimeFormatTemplateForStyle:a3];
+  v9 = [self _dateTimeFormatTemplateForStyle:style];
   DateFormatFromTemplate = CFDateFormatterCreateDateFormatFromTemplate(*MEMORY[0x277CBECE8], v9, 0, v8);
-  v11 = [v8 localeIdentifier];
-  if ([v11 hasPrefix:@"ee_"] && -[__CFString hasPrefix:](DateFormatFromTemplate, "hasPrefix:", @"'aɖabaƒoƒo' "))
+  localeIdentifier2 = [v8 localeIdentifier];
+  if ([localeIdentifier2 hasPrefix:@"ee_"] && -[__CFString hasPrefix:](DateFormatFromTemplate, "hasPrefix:", @"'aɖabaƒoƒo' "))
   {
     v12 = -[__CFString substringFromIndex:](DateFormatFromTemplate, "substringFromIndex:", [@"'aɖabaƒoƒo' " length]);
 
@@ -527,21 +527,21 @@ uint64_t __100__RCDurationFormatter__replaceComponentPlaceholderForType_withStri
   return DateFormatFromTemplate;
 }
 
-+ (id)_dateTimeFormatTemplateForStyle:(int64_t)a3
++ (id)_dateTimeFormatTemplateForStyle:(int64_t)style
 {
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __55__RCDurationFormatter__dateTimeFormatTemplateForStyle___block_invoke;
   v11 = &__block_descriptor_48_e5_v8__0l;
   v12 = a2;
-  v13 = a1;
+  selfCopy = self;
   if (_dateTimeFormatTemplateForStyle__onceToken != -1)
   {
     dispatch_once(&_dateTimeFormatTemplateForStyle__onceToken, &v8);
   }
 
   v4 = _dateTimeFormatTemplateForStyle__styleToDateTimeFormat;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{a3, v8, v9, v10, v11, v12, v13}];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{style, v8, v9, v10, v11, v12, selfCopy}];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;

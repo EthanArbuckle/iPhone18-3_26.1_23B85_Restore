@@ -1,64 +1,64 @@
 @interface DRSDampeningManager
-+ (BOOL)passesAcceptanceRate:(double)a3;
-+ (BOOL)removeExistingDampeningManagerStateFromManagedObjectContext:(id)a3 errorOut:(id *)a4;
-+ (id)_ON_MOC_QUEUE_existingMOFromContext:(id)a3 errorOut:(id *)a4;
-+ (id)_RMETeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_abcTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_appIntentsServicesTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_backlightServicesTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_coreAnimationTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_coreAudioTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_coreDuetPeopleSuggesterTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_defaultTailspinConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_drmTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_healthkitTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_libtraceTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_mailTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_memoryToolsTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_mssTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_nandGBBTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_newsTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_nonWatchOShangTracerTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4;
-+ (id)_pearlTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_ppsTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_rapidTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_sentryTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_skylightTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_softwareUpdateTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_spotlightTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_watchOS_hangTracerTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4;
-+ (id)_watchdogdTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6;
-+ (id)_workflowResponsivenessDampeningConfiguration:(BOOL)a3;
-+ (id)dampeningManagerFromPersistentContainer:(id)a3 deleteBadState:(BOOL)a4 errorOut:(id *)a5;
++ (BOOL)passesAcceptanceRate:(double)rate;
++ (BOOL)removeExistingDampeningManagerStateFromManagedObjectContext:(id)context errorOut:(id *)out;
++ (id)_ON_MOC_QUEUE_existingMOFromContext:(id)context errorOut:(id *)out;
++ (id)_RMETeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_abcTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_appIntentsServicesTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_backlightServicesTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_coreAnimationTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_coreAudioTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_coreDuetPeopleSuggesterTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_defaultTailspinConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_drmTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_healthkitTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_libtraceTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_mailTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_memoryToolsTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_mssTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_nandGBBTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_newsTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_nonWatchOShangTracerTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed;
++ (id)_pearlTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_ppsTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_rapidTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_sentryTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_skylightTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_softwareUpdateTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_spotlightTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_watchOS_hangTracerTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed;
++ (id)_watchdogdTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform;
++ (id)_workflowResponsivenessDampeningConfiguration:(BOOL)configuration;
++ (id)dampeningManagerFromPersistentContainer:(id)container deleteBadState:(BOOL)state errorOut:(id *)out;
 + (id)defaultResourceConfigurationsForCurrentDevice;
-+ (id)defaultTeamConfigurationForTeamForCurrentDevice:(id)a3 teamConfigurationDirectory:(id)a4;
-+ (id)defaultTeamConfigurationsForCurrentDevice:(id)a3;
++ (id)defaultTeamConfigurationForTeamForCurrentDevice:(id)device teamConfigurationDirectory:(id)directory;
++ (id)defaultTeamConfigurationsForCurrentDevice:(id)device;
 + (unint64_t)defaultTotalCapForCurrentDevice;
-+ (unint64_t)defaultTotalCapForIsInternal:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5;
-- (BOOL)_hasRequestsRecordCountGreaterThanOrEqualToThreshold:(unint64_t)a3 matchingPredicate:(id)a4 inContext:(id)a5 filterToObjectsMatchingClassOfRequest:(id)a6;
-- (BOOL)_passesResourceCap:(id)a3 config:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)_passesResourceHysteresis:(id)a3 config:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)_passesResourceRandomDownsampling:(id)a3 config:(id)a4;
-- (BOOL)_passesSignatureCap:(id)a3 config:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)_passesSignatureHysteresis:(id)a3 config:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)_passesSignatureRandomDownsampling:(id)a3 config:(id)a4;
-- (BOOL)_passesTotalCap:(id)a3 managedObjectContext:(id)a4;
-- (BOOL)_request:(id)a3 passesHysteresis:(double)a4 countCap:(unint64_t)a5 usesSignature:(BOOL)a6 usesRequestClass:(BOOL)a7 managedObjectContext:(id)a8;
-- (BOOL)isEqualToDampeningManager:(id)a3;
-- (BOOL)saveToPersistentContainerWithErrorOut:(id *)a3;
-- (BOOL)writeConfigurationPlistsToDirectory:(id)a3 createDirIfMissing:(BOOL)a4 errorOut:(id *)a5;
-- (DRSDampeningManager)initWithPersistentContainer:(id)a3 enforcementSettings:(id)a4 defaultSignatureConfiguration:(id)a5 totalCap:(unint64_t)a6 teamDampeningConfigDict:(id)a7 resourceDampeningConfigDict:(id)a8;
-- (DRSDampeningManager)initWithPersistentContainer:(id)a3 teamConfigurationDirectory:(id)a4;
-- (id)_ON_MOC_QUEUE_initWith:(id)a3 persistentContainer:(id)a4;
-- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)a3;
-- (id)_predicateForUndampenedRequestsMatchingSignatureOfRequest:(id)a3 afterDate:(id)a4;
-- (id)_resourceConfigurationForRequest:(id)a3;
-- (id)dampeningConfigurationForRequestSignature:(id)a3;
-- (id)dampeningConfigurationForResource:(id)a3;
-- (id)dampeningConfigurationForTeamID:(id)a3 issueCategory:(id)a4;
++ (unint64_t)defaultTotalCapForIsInternal:(BOOL)internal isSeed:(BOOL)seed isCarrier:(BOOL)carrier;
+- (BOOL)_hasRequestsRecordCountGreaterThanOrEqualToThreshold:(unint64_t)threshold matchingPredicate:(id)predicate inContext:(id)context filterToObjectsMatchingClassOfRequest:(id)request;
+- (BOOL)_passesResourceCap:(id)cap config:(id)config managedObjectContext:(id)context;
+- (BOOL)_passesResourceHysteresis:(id)hysteresis config:(id)config managedObjectContext:(id)context;
+- (BOOL)_passesResourceRandomDownsampling:(id)downsampling config:(id)config;
+- (BOOL)_passesSignatureCap:(id)cap config:(id)config managedObjectContext:(id)context;
+- (BOOL)_passesSignatureHysteresis:(id)hysteresis config:(id)config managedObjectContext:(id)context;
+- (BOOL)_passesSignatureRandomDownsampling:(id)downsampling config:(id)config;
+- (BOOL)_passesTotalCap:(id)cap managedObjectContext:(id)context;
+- (BOOL)_request:(id)_request passesHysteresis:(double)hysteresis countCap:(unint64_t)cap usesSignature:(BOOL)signature usesRequestClass:(BOOL)class managedObjectContext:(id)context;
+- (BOOL)isEqualToDampeningManager:(id)manager;
+- (BOOL)saveToPersistentContainerWithErrorOut:(id *)out;
+- (BOOL)writeConfigurationPlistsToDirectory:(id)directory createDirIfMissing:(BOOL)missing errorOut:(id *)out;
+- (DRSDampeningManager)initWithPersistentContainer:(id)container enforcementSettings:(id)settings defaultSignatureConfiguration:(id)configuration totalCap:(unint64_t)cap teamDampeningConfigDict:(id)dict resourceDampeningConfigDict:(id)configDict;
+- (DRSDampeningManager)initWithPersistentContainer:(id)container teamConfigurationDirectory:(id)directory;
+- (id)_ON_MOC_QUEUE_initWith:(id)with persistentContainer:(id)container;
+- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)context;
+- (id)_predicateForUndampenedRequestsMatchingSignatureOfRequest:(id)request afterDate:(id)date;
+- (id)_resourceConfigurationForRequest:(id)request;
+- (id)dampeningConfigurationForRequestSignature:(id)signature;
+- (id)dampeningConfigurationForResource:(id)resource;
+- (id)dampeningConfigurationForTeamID:(id)d issueCategory:(id)category;
 - (id)debugDescription;
 - (id)jsonCompatibleDictRepresentation;
-- (unint64_t)dampeningOutcomeForRequest:(id)a3;
+- (unint64_t)dampeningOutcomeForRequest:(id)request;
 @end
 
 @implementation DRSDampeningManager
@@ -66,47 +66,47 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(DRSDampeningManager *)self enforcementSettings];
-  v5 = [v4 debugDescription];
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  v5 = [enforcementSettings debugDescription];
   v6 = [v3 stringWithFormat:@"Enforcement settings:\n%@\n", v5];
 
-  v7 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+  defaultSignatureConfiguration = [(DRSDampeningManager *)self defaultSignatureConfiguration];
 
-  if (v7)
+  if (defaultSignatureConfiguration)
   {
-    v8 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
-    v9 = [v8 debugDescription];
+    defaultSignatureConfiguration2 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+    v9 = [defaultSignatureConfiguration2 debugDescription];
     [v6 appendFormat:@"Default signature configuration:\n--------------------------\n%@\n", v9];
   }
 
-  v10 = [(DRSDampeningManager *)self teamDampeningConfigDict];
-  v11 = [v10 count];
+  teamDampeningConfigDict = [(DRSDampeningManager *)self teamDampeningConfigDict];
+  v11 = [teamDampeningConfigDict count];
 
   if (v11)
   {
     [v6 appendString:@"Team Dampening Configuration(s):\n**************************\n\n"];
-    v12 = [(DRSDampeningManager *)self teamDampeningConfigDict];
+    teamDampeningConfigDict2 = [(DRSDampeningManager *)self teamDampeningConfigDict];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __39__DRSDampeningManager_debugDescription__block_invoke;
     v20[3] = &unk_27899FE48;
     v21 = v6;
-    [v12 enumerateKeysAndObjectsUsingBlock:v20];
+    [teamDampeningConfigDict2 enumerateKeysAndObjectsUsingBlock:v20];
   }
 
-  v13 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
-  v14 = [v13 count];
+  resourceDampeningConfigDict = [(DRSDampeningManager *)self resourceDampeningConfigDict];
+  v14 = [resourceDampeningConfigDict count];
 
   if (v14)
   {
     [v6 appendString:@"Resource Dampening Configuration(s):\n**************************\n\n"];
-    v15 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
+    resourceDampeningConfigDict2 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __39__DRSDampeningManager_debugDescription__block_invoke_2;
     v18[3] = &unk_27899FDD0;
     v19 = v6;
-    [v15 enumerateKeysAndObjectsUsingBlock:v18];
+    [resourceDampeningConfigDict2 enumerateKeysAndObjectsUsingBlock:v18];
   }
 
   if ([(DRSDampeningManager *)self totalCap]== 0x7FFFFFFF)
@@ -142,13 +142,13 @@ void __39__DRSDampeningManager_debugDescription__block_invoke_2(uint64_t a1, voi
 - (id)jsonCompatibleDictRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(DRSDampeningManager *)self enforcementSettings];
-  v5 = [v4 jsonCompatibleDictRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"EnforcementSettings"];
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  jsonCompatibleDictRepresentation = [enforcementSettings jsonCompatibleDictRepresentation];
+  [v3 setObject:jsonCompatibleDictRepresentation forKeyedSubscript:@"EnforcementSettings"];
 
-  v6 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
-  v7 = [v6 jsonCompatibleDictRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"DefaultSignatureConfig"];
+  defaultSignatureConfiguration = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+  jsonCompatibleDictRepresentation2 = [defaultSignatureConfiguration jsonCompatibleDictRepresentation];
+  [v3 setObject:jsonCompatibleDictRepresentation2 forKeyedSubscript:@"DefaultSignatureConfig"];
 
   if ([(DRSDampeningManager *)self totalCap]== 0x7FFFFFFF)
   {
@@ -161,36 +161,36 @@ void __39__DRSDampeningManager_debugDescription__block_invoke_2(uint64_t a1, voi
     [v3 setObject:v8 forKeyedSubscript:@"TotalCap"];
   }
 
-  v9 = [(DRSDampeningManager *)self teamDampeningConfigDict];
+  teamDampeningConfigDict = [(DRSDampeningManager *)self teamDampeningConfigDict];
 
-  if (v9)
+  if (teamDampeningConfigDict)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v11 = [(DRSDampeningManager *)self teamDampeningConfigDict];
+    teamDampeningConfigDict2 = [(DRSDampeningManager *)self teamDampeningConfigDict];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __55__DRSDampeningManager_jsonCompatibleDictRepresentation__block_invoke;
     v23[3] = &unk_27899FE48;
     v24 = v10;
     v12 = v10;
-    [v11 enumerateKeysAndObjectsUsingBlock:v23];
+    [teamDampeningConfigDict2 enumerateKeysAndObjectsUsingBlock:v23];
 
     [v3 setObject:v12 forKeyedSubscript:@"TeamDampeningConfigurations"];
   }
 
-  v13 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
+  resourceDampeningConfigDict = [(DRSDampeningManager *)self resourceDampeningConfigDict];
 
-  if (v13)
+  if (resourceDampeningConfigDict)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v15 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
+    resourceDampeningConfigDict2 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __55__DRSDampeningManager_jsonCompatibleDictRepresentation__block_invoke_2;
     v21 = &unk_27899FDD0;
     v22 = v14;
     v16 = v14;
-    [v15 enumerateKeysAndObjectsUsingBlock:&v18];
+    [resourceDampeningConfigDict2 enumerateKeysAndObjectsUsingBlock:&v18];
 
     [v3 setObject:v16 forKeyedSubscript:{@"ResourceDampeningConfigurations", v18, v19, v20, v21}];
   }
@@ -212,38 +212,38 @@ void __55__DRSDampeningManager_jsonCompatibleDictRepresentation__block_invoke_2(
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (BOOL)isEqualToDampeningManager:(id)a3
+- (BOOL)isEqualToDampeningManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (!managerCopy)
   {
     goto LABEL_20;
   }
 
-  if (self != v4)
+  if (self != managerCopy)
   {
-    v6 = [(DRSDampeningManager *)self totalCap];
-    if (v6 != [(DRSDampeningManager *)v5 totalCap])
+    totalCap = [(DRSDampeningManager *)self totalCap];
+    if (totalCap != [(DRSDampeningManager *)v5 totalCap])
     {
       goto LABEL_20;
     }
 
-    v7 = [(DRSDampeningManager *)self enforcementSettings];
-    v8 = [(DRSDampeningManager *)v5 enforcementSettings];
-    v9 = [v7 isEqual:v8];
+    enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+    enforcementSettings2 = [(DRSDampeningManager *)v5 enforcementSettings];
+    v9 = [enforcementSettings isEqual:enforcementSettings2];
 
     if (!v9)
     {
       goto LABEL_20;
     }
 
-    v10 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
-    if (v10 && (v11 = v10, [(DRSDampeningManager *)v5 defaultSignatureConfiguration], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+    defaultSignatureConfiguration = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+    if (defaultSignatureConfiguration && (v11 = defaultSignatureConfiguration, [(DRSDampeningManager *)v5 defaultSignatureConfiguration], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
     {
-      v13 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
-      v14 = [(DRSDampeningManager *)v5 defaultSignatureConfiguration];
-      v15 = [v13 isEqualToDampeningConfiguration:v14];
+      defaultSignatureConfiguration2 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+      defaultSignatureConfiguration3 = [(DRSDampeningManager *)v5 defaultSignatureConfiguration];
+      v15 = [defaultSignatureConfiguration2 isEqualToDampeningConfiguration:defaultSignatureConfiguration3];
 
       if ((v15 & 1) == 0)
       {
@@ -253,38 +253,38 @@ void __55__DRSDampeningManager_jsonCompatibleDictRepresentation__block_invoke_2(
 
     else
     {
-      v17 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
-      if (v17)
+      defaultSignatureConfiguration4 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+      if (defaultSignatureConfiguration4)
       {
         goto LABEL_17;
       }
 
-      v18 = [(DRSDampeningManager *)v5 defaultSignatureConfiguration];
+      defaultSignatureConfiguration5 = [(DRSDampeningManager *)v5 defaultSignatureConfiguration];
 
-      if (v18)
+      if (defaultSignatureConfiguration5)
       {
         goto LABEL_20;
       }
     }
 
-    v19 = [(DRSDampeningManager *)self teamDampeningConfigDict];
-    if (v19)
+    teamDampeningConfigDict = [(DRSDampeningManager *)self teamDampeningConfigDict];
+    if (teamDampeningConfigDict)
     {
-      v20 = v19;
-      v21 = [(DRSDampeningManager *)v5 teamDampeningConfigDict];
+      v20 = teamDampeningConfigDict;
+      teamDampeningConfigDict2 = [(DRSDampeningManager *)v5 teamDampeningConfigDict];
 
-      if (v21)
+      if (teamDampeningConfigDict2)
       {
-        v22 = [(DRSDampeningManager *)self teamDampeningConfigDict];
-        v23 = [(DRSDampeningManager *)v5 teamDampeningConfigDict];
-        v24 = [v22 isEqualToDictionary:v23];
+        teamDampeningConfigDict3 = [(DRSDampeningManager *)self teamDampeningConfigDict];
+        teamDampeningConfigDict4 = [(DRSDampeningManager *)v5 teamDampeningConfigDict];
+        v24 = [teamDampeningConfigDict3 isEqualToDictionary:teamDampeningConfigDict4];
 
         if (v24)
         {
 LABEL_15:
-          v25 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
-          v26 = [(DRSDampeningManager *)v5 resourceDampeningConfigDict];
-          v16 = [v25 isEqualToDictionary:v26];
+          resourceDampeningConfigDict = [(DRSDampeningManager *)self resourceDampeningConfigDict];
+          resourceDampeningConfigDict2 = [(DRSDampeningManager *)v5 resourceDampeningConfigDict];
+          v16 = [resourceDampeningConfigDict isEqualToDictionary:resourceDampeningConfigDict2];
 
 LABEL_18:
           goto LABEL_21;
@@ -296,12 +296,12 @@ LABEL_20:
       }
     }
 
-    v17 = [(DRSDampeningManager *)self teamDampeningConfigDict];
-    if (!v17)
+    defaultSignatureConfiguration4 = [(DRSDampeningManager *)self teamDampeningConfigDict];
+    if (!defaultSignatureConfiguration4)
     {
-      v27 = [(DRSDampeningManager *)v5 teamDampeningConfigDict];
+      teamDampeningConfigDict5 = [(DRSDampeningManager *)v5 teamDampeningConfigDict];
 
-      if (!v27)
+      if (!teamDampeningConfigDict5)
       {
         goto LABEL_15;
       }
@@ -310,7 +310,7 @@ LABEL_20:
     }
 
 LABEL_17:
-    v25 = v17;
+    resourceDampeningConfigDict = defaultSignatureConfiguration4;
     v16 = 0;
     goto LABEL_18;
   }
@@ -321,18 +321,18 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)_hasRequestsRecordCountGreaterThanOrEqualToThreshold:(unint64_t)a3 matchingPredicate:(id)a4 inContext:(id)a5 filterToObjectsMatchingClassOfRequest:(id)a6
+- (BOOL)_hasRequestsRecordCountGreaterThanOrEqualToThreshold:(unint64_t)threshold matchingPredicate:(id)predicate inContext:(id)context filterToObjectsMatchingClassOfRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  predicateCopy = predicate;
+  contextCopy = context;
+  requestCopy = request;
+  if (requestCopy)
   {
     v12 = objc_opt_class();
     v26 = 0;
     v13 = &v26;
-    v14 = a3 + 1;
+    v14 = threshold + 1;
     v15 = &v26;
   }
 
@@ -341,23 +341,23 @@ LABEL_21:
     v12 = DRSRequest;
     v25 = 0;
     v13 = &v25;
-    v14 = a3 + 1;
+    v14 = threshold + 1;
     v15 = &v25;
   }
 
-  v16 = [(__objc2_class *)v12 requestCountForFilterPredicate:v9 context:v10 fetchLimit:v14 errorOut:v15, v25, v26];
+  v16 = [(__objc2_class *)v12 requestCountForFilterPredicate:predicateCopy context:contextCopy fetchLimit:v14 errorOut:v15, v25, v26];
   v17 = *v13;
   if (v17)
   {
     v18 = DPLogHandle_DampeningManagerError();
     if (os_signpost_enabled(v18))
     {
-      v19 = [v17 localizedDescription];
-      v20 = v19;
+      localizedDescription = [v17 localizedDescription];
+      v20 = localizedDescription;
       v21 = @"Unknown";
-      if (v19)
+      if (localizedDescription)
       {
-        v21 = v19;
+        v21 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -370,41 +370,41 @@ LABEL_21:
 
   else
   {
-    v22 = v16 >= a3;
+    v22 = v16 >= threshold;
   }
 
   v23 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (DRSDampeningManager)initWithPersistentContainer:(id)a3 enforcementSettings:(id)a4 defaultSignatureConfiguration:(id)a5 totalCap:(unint64_t)a6 teamDampeningConfigDict:(id)a7 resourceDampeningConfigDict:(id)a8
+- (DRSDampeningManager)initWithPersistentContainer:(id)container enforcementSettings:(id)settings defaultSignatureConfiguration:(id)configuration totalCap:(unint64_t)cap teamDampeningConfigDict:(id)dict resourceDampeningConfigDict:(id)configDict
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (v17)
+  containerCopy = container;
+  settingsCopy = settings;
+  configurationCopy = configuration;
+  dictCopy = dict;
+  configDictCopy = configDict;
+  v20 = configDictCopy;
+  if (configurationCopy)
   {
-    v36 = v16;
-    v21 = v15;
-    if (v19 && ([v19 objectForKeyedSubscript:kDRSRequestResourceTailspin], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+    v36 = settingsCopy;
+    v21 = containerCopy;
+    if (configDictCopy && ([configDictCopy objectForKeyedSubscript:kDRSRequestResourceTailspin], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
     {
-      if (a6 != 0x7FFFFFFF && a6)
+      if (cap != 0x7FFFFFFF && cap)
       {
         v37.receiver = self;
         v37.super_class = DRSDampeningManager;
         v28 = [(DRSDampeningManager *)&v37 init];
         v29 = v28;
-        v15 = v21;
+        containerCopy = v21;
         if (v28)
         {
-          objc_storeStrong(&v28->_persistentContainer, a3);
-          objc_storeStrong(&v29->_enforcementSettings, a4);
-          objc_storeStrong(&v29->_defaultSignatureConfiguration, a5);
-          v29->_totalCap = a6;
-          v30 = [v18 mutableCopy];
+          objc_storeStrong(&v28->_persistentContainer, container);
+          objc_storeStrong(&v29->_enforcementSettings, settings);
+          objc_storeStrong(&v29->_defaultSignatureConfiguration, configuration);
+          v29->_totalCap = cap;
+          v30 = [dictCopy mutableCopy];
           teamDampeningConfigDict = v29->_teamDampeningConfigDict;
           v29->_teamDampeningConfigDict = v30;
 
@@ -418,20 +418,20 @@ LABEL_21:
         }
 
         self = v29;
-        v24 = self;
+        selfCopy = self;
       }
 
       else
       {
         v23 = DPLogHandle_DampeningManagerError();
-        v15 = v21;
+        containerCopy = v21;
         if (os_signpost_enabled(v23))
         {
           *buf = 0;
           _os_signpost_emit_with_name_impl(&dword_232906000, v23, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidDampeningManagerInit", "Invalid total cap", buf, 2u);
         }
 
-        v24 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -444,11 +444,11 @@ LABEL_21:
         _os_signpost_emit_with_name_impl(&dword_232906000, v25, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidDampeningManagerInit", "Invalid resource dampening configuration", buf, 2u);
       }
 
-      v24 = 0;
-      v15 = v21;
+      selfCopy = 0;
+      containerCopy = v21;
     }
 
-    v16 = v36;
+    settingsCopy = v36;
   }
 
   else
@@ -460,52 +460,52 @@ LABEL_21:
       _os_signpost_emit_with_name_impl(&dword_232906000, v26, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidDampeningManagerInit", "Invalid default signature configuration", buf, 2u);
     }
 
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (id)_predicateForUndampenedRequestsMatchingSignatureOfRequest:(id)a3 afterDate:(id)a4
+- (id)_predicateForUndampenedRequestsMatchingSignatureOfRequest:(id)request afterDate:(id)date
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = v7;
-  if (v5)
+  dateCopy = date;
+  v8 = dateCopy;
+  if (requestCopy)
   {
-    v9 = [v5 teamID];
-    v10 = [v5 issueCategory];
-    v11 = [v6 predicateWithFormat:@"(requestDate >= %@) AND (requestState < %llu OR requestState > %llu) AND (teamID == %@) AND (issueCategory == %@)", v8, 4096, 4103, v9, v10];
+    teamID = [requestCopy teamID];
+    issueCategory = [requestCopy issueCategory];
+    4103 = [v6 predicateWithFormat:@"(requestDate >= %@) AND (requestState < %llu OR requestState > %llu) AND (teamID == %@) AND (issueCategory == %@)", v8, 4096, 4103, teamID, issueCategory];
 
-    v8 = v9;
+    v8 = teamID;
   }
 
   else
   {
-    v11 = [v6 predicateWithFormat:@"(requestDate >= %@) AND (requestState < %llu OR requestState > %llu)", v7, 4096, 4103];
+    4103 = [v6 predicateWithFormat:@"(requestDate >= %@) AND (requestState < %llu OR requestState > %llu)", dateCopy, 4096, 4103];
   }
 
-  return v11;
+  return 4103;
 }
 
-- (BOOL)_request:(id)a3 passesHysteresis:(double)a4 countCap:(unint64_t)a5 usesSignature:(BOOL)a6 usesRequestClass:(BOOL)a7 managedObjectContext:(id)a8
+- (BOOL)_request:(id)_request passesHysteresis:(double)hysteresis countCap:(unint64_t)cap usesSignature:(BOOL)signature usesRequestClass:(BOOL)class managedObjectContext:(id)context
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a8;
-  if (a4 == 0.0)
+  classCopy = class;
+  signatureCopy = signature;
+  _requestCopy = _request;
+  contextCopy = context;
+  if (hysteresis == 0.0)
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(cap) = 1;
   }
 
-  else if (a5)
+  else if (cap)
   {
-    v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-a4];
-    if (v10)
+    v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-hysteresis];
+    if (signatureCopy)
     {
-      v17 = v14;
+      v17 = _requestCopy;
     }
 
     else
@@ -514,9 +514,9 @@ LABEL_21:
     }
 
     v18 = [(DRSDampeningManager *)self _predicateForUndampenedRequestsMatchingSignatureOfRequest:v17 afterDate:v16];
-    if (v9)
+    if (classCopy)
     {
-      v19 = v14;
+      v19 = _requestCopy;
     }
 
     else
@@ -524,22 +524,22 @@ LABEL_21:
       v19 = 0;
     }
 
-    LODWORD(a5) = ![(DRSDampeningManager *)self _hasRequestsRecordCountGreaterThanOrEqualToThreshold:a5 matchingPredicate:v18 inContext:v15 filterToObjectsMatchingClassOfRequest:v19];
+    LODWORD(cap) = ![(DRSDampeningManager *)self _hasRequestsRecordCountGreaterThanOrEqualToThreshold:cap matchingPredicate:v18 inContext:contextCopy filterToObjectsMatchingClassOfRequest:v19];
   }
 
-  return a5;
+  return cap;
 }
 
-- (BOOL)_passesResourceHysteresis:(id)a3 config:(id)a4 managedObjectContext:(id)a5
+- (BOOL)_passesResourceHysteresis:(id)hysteresis config:(id)config managedObjectContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DRSDampeningManager *)self enforcementSettings];
-  v12 = [v11 enforcesResourceHysteresis];
+  hysteresisCopy = hysteresis;
+  configCopy = config;
+  contextCopy = context;
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  enforcesResourceHysteresis = [enforcementSettings enforcesResourceHysteresis];
 
-  if ((v12 & 1) == 0)
+  if ((enforcesResourceHysteresis & 1) == 0)
   {
     v14 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v14))
@@ -551,33 +551,33 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!configCopy)
   {
     v13 = 1;
     goto LABEL_10;
   }
 
-  [v9 hysteresis];
+  [configCopy hysteresis];
   v13 = 1;
-  if (![(DRSDampeningManager *)self _request:v8 passesHysteresis:1 countCap:0 usesSignature:1 usesRequestClass:v10 managedObjectContext:?])
+  if (![(DRSDampeningManager *)self _request:hysteresisCopy passesHysteresis:1 countCap:0 usesSignature:1 usesRequestClass:contextCopy managedObjectContext:?])
   {
     v14 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v14))
     {
-      v15 = [v8 debugDescription];
-      v16 = [objc_opt_class() requiredSystemResourceName];
-      [v9 hysteresis];
+      v15 = [hysteresisCopy debugDescription];
+      requiredSystemResourceName = [objc_opt_class() requiredSystemResourceName];
+      [configCopy hysteresis];
       v20 = 138543874;
       v21 = v15;
       v22 = 2114;
-      v23 = v16;
+      v23 = requiredSystemResourceName;
       v24 = 2048;
       v25 = v17;
       _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestResourceRejection", "Rejecting %{public}@ due to falling within resource (%{public}@) window of %.1f seconds", &v20, 0x20u);
     }
 
 LABEL_8:
-    v13 = v12 ^ 1;
+    v13 = enforcesResourceHysteresis ^ 1;
   }
 
 LABEL_10:
@@ -586,16 +586,16 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)_passesSignatureHysteresis:(id)a3 config:(id)a4 managedObjectContext:(id)a5
+- (BOOL)_passesSignatureHysteresis:(id)hysteresis config:(id)config managedObjectContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DRSDampeningManager *)self enforcementSettings];
-  v12 = [v11 enforcesSignatureHysteresis];
+  hysteresisCopy = hysteresis;
+  configCopy = config;
+  contextCopy = context;
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  enforcesSignatureHysteresis = [enforcementSettings enforcesSignatureHysteresis];
 
-  if ((v12 & 1) == 0)
+  if ((enforcesSignatureHysteresis & 1) == 0)
   {
     v15 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v15))
@@ -605,17 +605,17 @@ LABEL_10:
     }
 
 LABEL_6:
-    v14 = v12 ^ 1;
+    v14 = enforcesSignatureHysteresis ^ 1;
 
     goto LABEL_7;
   }
 
-  [v9 hysteresis];
+  [configCopy hysteresis];
   if (v13 != 0.0)
   {
-    [v9 hysteresis];
+    [configCopy hysteresis];
     v14 = 1;
-    if ([(DRSDampeningManager *)self _request:v8 passesHysteresis:1 countCap:1 usesSignature:0 usesRequestClass:v10 managedObjectContext:?])
+    if ([(DRSDampeningManager *)self _request:hysteresisCopy passesHysteresis:1 countCap:1 usesSignature:0 usesRequestClass:contextCopy managedObjectContext:?])
     {
       goto LABEL_7;
     }
@@ -623,8 +623,8 @@ LABEL_6:
     v15 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v15))
     {
-      v18 = [v8 debugDescription];
-      [v9 hysteresis];
+      v18 = [hysteresisCopy debugDescription];
+      [configCopy hysteresis];
       v20 = 138543618;
       v21 = v18;
       v22 = 2048;
@@ -642,16 +642,16 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)_passesSignatureCap:(id)a3 config:(id)a4 managedObjectContext:(id)a5
+- (BOOL)_passesSignatureCap:(id)cap config:(id)config managedObjectContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DRSDampeningManager *)self enforcementSettings];
-  v12 = [v11 enforcesSignatureCap];
+  capCopy = cap;
+  configCopy = config;
+  contextCopy = context;
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  enforcesSignatureCap = [enforcementSettings enforcesSignatureCap];
 
-  if ((v12 & 1) == 0)
+  if ((enforcesSignatureCap & 1) == 0)
   {
     v14 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v14))
@@ -661,16 +661,16 @@ LABEL_7:
     }
 
 LABEL_6:
-    v13 = v12 ^ 1;
+    v13 = enforcesSignatureCap ^ 1;
 
     goto LABEL_7;
   }
 
-  if ([v9 countCap] != 0x7FFFFFFF)
+  if ([configCopy countCap] != 0x7FFFFFFF)
   {
     [(DRSDampeningManager *)self _24HoursHysteresis];
     v13 = 1;
-    if (-[DRSDampeningManager _request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:](self, "_request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:", v8, [v9 countCap], 1, 0, v10, v17))
+    if (-[DRSDampeningManager _request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:](self, "_request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:", capCopy, [configCopy countCap], 1, 0, contextCopy, v17))
     {
       goto LABEL_7;
     }
@@ -678,11 +678,11 @@ LABEL_6:
     v14 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v14))
     {
-      v18 = [v8 debugDescription];
+      v18 = [capCopy debugDescription];
       v19 = 138543618;
       v20 = v18;
       v21 = 2048;
-      v22 = [v9 countCap];
+      countCap = [configCopy countCap];
       _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SignatureCapRejection", "Rejecting %{public}@ due to reaching signature cap of %llu within the last 24 hours.", &v19, 0x16u);
     }
 
@@ -696,16 +696,16 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_passesResourceCap:(id)a3 config:(id)a4 managedObjectContext:(id)a5
+- (BOOL)_passesResourceCap:(id)cap config:(id)config managedObjectContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DRSDampeningManager *)self enforcementSettings];
-  v12 = [v11 enforcesResourceCap];
+  capCopy = cap;
+  configCopy = config;
+  contextCopy = context;
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  enforcesResourceCap = [enforcementSettings enforcesResourceCap];
 
-  if ((v12 & 1) == 0)
+  if ((enforcesResourceCap & 1) == 0)
   {
     v14 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v14))
@@ -715,16 +715,16 @@ LABEL_7:
     }
 
 LABEL_6:
-    v13 = v12 ^ 1;
+    v13 = enforcesResourceCap ^ 1;
 
     goto LABEL_7;
   }
 
-  if ([v9 countCap] != 0x7FFFFFFF)
+  if ([configCopy countCap] != 0x7FFFFFFF)
   {
     [(DRSDampeningManager *)self _24HoursHysteresis];
     v13 = 1;
-    if (-[DRSDampeningManager _request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:](self, "_request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:", v8, [v9 countCap], 0, 1, v10, v17))
+    if (-[DRSDampeningManager _request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:](self, "_request:passesHysteresis:countCap:usesSignature:usesRequestClass:managedObjectContext:", capCopy, [configCopy countCap], 0, 1, contextCopy, v17))
     {
       goto LABEL_7;
     }
@@ -732,11 +732,11 @@ LABEL_6:
     v14 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v14))
     {
-      v18 = [v8 debugDescription];
+      v18 = [capCopy debugDescription];
       v19 = 138543618;
       v20 = v18;
       v21 = 2048;
-      v22 = [v9 countCap];
+      countCap = [configCopy countCap];
       _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ResourceCapRejection", "Rejecting %{public}@ due to reaching resource cap of %llu within the last 24 hours.", &v19, 0x16u);
     }
 
@@ -750,15 +750,15 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_passesTotalCap:(id)a3 managedObjectContext:(id)a4
+- (BOOL)_passesTotalCap:(id)cap managedObjectContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DRSDampeningManager *)self enforcementSettings];
-  v9 = [v8 enforcesTotalCap];
+  capCopy = cap;
+  contextCopy = context;
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  enforcesTotalCap = [enforcementSettings enforcesTotalCap];
 
-  if ((v9 & 1) == 0)
+  if ((enforcesTotalCap & 1) == 0)
   {
     v12 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v12))
@@ -771,21 +771,21 @@ LABEL_7:
   }
 
   [(DRSDampeningManager *)self _24HoursHysteresis];
-  if (![(DRSDampeningManager *)self _request:0 passesHysteresis:[(DRSDampeningManager *)self totalCap] countCap:0 usesSignature:0 usesRequestClass:v7 managedObjectContext:v10])
+  if (![(DRSDampeningManager *)self _request:0 passesHysteresis:[(DRSDampeningManager *)self totalCap] countCap:0 usesSignature:0 usesRequestClass:contextCopy managedObjectContext:v10])
   {
     v12 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v12))
     {
-      v13 = [v6 debugDescription];
+      v13 = [capCopy debugDescription];
       v16 = 138543618;
       v17 = v13;
       v18 = 2048;
-      v19 = [(DRSDampeningManager *)self totalCap];
+      totalCap = [(DRSDampeningManager *)self totalCap];
       _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TotalCapRejection", "Rejecting %{public}@ due to reaching cap of %llu within the last 24 hours.", &v16, 0x16u);
     }
 
 LABEL_8:
-    v11 = v9 ^ 1;
+    v11 = enforcesTotalCap ^ 1;
 
     goto LABEL_9;
   }
@@ -797,30 +797,30 @@ LABEL_9:
   return v11;
 }
 
-+ (BOOL)passesAcceptanceRate:(double)a3
++ (BOOL)passesAcceptanceRate:(double)rate
 {
-  if (a3 >= 1.0)
+  if (rate >= 1.0)
   {
     return 1;
   }
 
-  if (a3 <= 0.0)
+  if (rate <= 0.0)
   {
     return 0;
   }
 
-  return a3 * 1000.0 >= arc4random_uniform(0x3E8u);
+  return rate * 1000.0 >= arc4random_uniform(0x3E8u);
 }
 
-- (BOOL)_passesSignatureRandomDownsampling:(id)a3 config:(id)a4
+- (BOOL)_passesSignatureRandomDownsampling:(id)downsampling config:(id)config
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DRSDampeningManager *)self enforcementSettings];
-  v9 = [v8 enforcesSignatureDownsampling];
+  downsamplingCopy = downsampling;
+  configCopy = config;
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  enforcesSignatureDownsampling = [enforcementSettings enforcesSignatureDownsampling];
 
-  if ((v9 & 1) == 0)
+  if ((enforcesSignatureDownsampling & 1) == 0)
   {
     v12 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v12))
@@ -833,14 +833,14 @@ LABEL_9:
   }
 
   v10 = objc_opt_class();
-  [v7 acceptanceRate];
+  [configCopy acceptanceRate];
   if (([v10 passesAcceptanceRate:?] & 1) == 0)
   {
     v12 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v12))
     {
-      v13 = [v6 debugDescription];
-      [v7 acceptanceRate];
+      v13 = [downsamplingCopy debugDescription];
+      [configCopy acceptanceRate];
       v17 = 138543618;
       v18 = v13;
       v19 = 2048;
@@ -849,7 +849,7 @@ LABEL_9:
     }
 
 LABEL_8:
-    v11 = v9 ^ 1;
+    v11 = enforcesSignatureDownsampling ^ 1;
 
     goto LABEL_9;
   }
@@ -861,15 +861,15 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)_passesResourceRandomDownsampling:(id)a3 config:(id)a4
+- (BOOL)_passesResourceRandomDownsampling:(id)downsampling config:(id)config
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DRSDampeningManager *)self enforcementSettings];
-  v9 = [v8 enforcesResourceDownsampling];
+  downsamplingCopy = downsampling;
+  configCopy = config;
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  enforcesResourceDownsampling = [enforcementSettings enforcesResourceDownsampling];
 
-  if ((v9 & 1) == 0)
+  if ((enforcesResourceDownsampling & 1) == 0)
   {
     v12 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v12))
@@ -882,14 +882,14 @@ LABEL_9:
   }
 
   v10 = objc_opt_class();
-  [v7 acceptanceRate];
+  [configCopy acceptanceRate];
   if (([v10 passesAcceptanceRate:?] & 1) == 0)
   {
     v12 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v12))
     {
-      v13 = [v6 debugDescription];
-      [v7 acceptanceRate];
+      v13 = [downsamplingCopy debugDescription];
+      [configCopy acceptanceRate];
       v17 = 138543618;
       v18 = v13;
       v19 = 2048;
@@ -898,7 +898,7 @@ LABEL_9:
     }
 
 LABEL_8:
-    v11 = v9 ^ 1;
+    v11 = enforcesResourceDownsampling ^ 1;
 
     goto LABEL_9;
   }
@@ -910,13 +910,13 @@ LABEL_9:
   return v11;
 }
 
-- (id)dampeningConfigurationForResource:(id)a3
+- (id)dampeningConfigurationForResource:(id)resource
 {
-  if (a3)
+  if (resource)
   {
-    v4 = a3;
-    v5 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    resourceCopy = resource;
+    resourceDampeningConfigDict = [(DRSDampeningManager *)self resourceDampeningConfigDict];
+    v6 = [resourceDampeningConfigDict objectForKeyedSubscript:resourceCopy];
   }
 
   else
@@ -927,40 +927,40 @@ LABEL_9:
   return v6;
 }
 
-- (id)_resourceConfigurationForRequest:(id)a3
+- (id)_resourceConfigurationForRequest:(id)request
 {
-  v4 = [objc_opt_class() requiredSystemResourceName];
-  v5 = [(DRSDampeningManager *)self dampeningConfigurationForResource:v4];
+  requiredSystemResourceName = [objc_opt_class() requiredSystemResourceName];
+  v5 = [(DRSDampeningManager *)self dampeningConfigurationForResource:requiredSystemResourceName];
 
   return v5;
 }
 
-- (unint64_t)dampeningOutcomeForRequest:(id)a3
+- (unint64_t)dampeningOutcomeForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DRSDampeningManager *)self persistentContainer];
+  requestCopy = request;
+  persistentContainer = [(DRSDampeningManager *)self persistentContainer];
 
-  if (v5)
+  if (persistentContainer)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v6 = [(DRSDampeningManager *)self persistentContainer];
-    v7 = [v6 newBackgroundContext];
+    persistentContainer2 = [(DRSDampeningManager *)self persistentContainer];
+    newBackgroundContext = [persistentContainer2 newBackgroundContext];
 
     v8 = objc_autoreleasePoolPush();
-    v9 = [(DRSDampeningManager *)self workQueue];
+    workQueue = [(DRSDampeningManager *)self workQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __50__DRSDampeningManager_dampeningOutcomeForRequest___block_invoke;
     v13[3] = &unk_27899FE70;
     v13[4] = self;
-    v14 = v4;
-    v10 = v7;
+    v14 = requestCopy;
+    v10 = newBackgroundContext;
     v15 = v10;
     v16 = &v17;
-    dispatch_sync(v9, v13);
+    dispatch_sync(workQueue, v13);
 
     objc_autoreleasePoolPop(v8);
     v11 = v18[3];
@@ -1065,15 +1065,15 @@ LABEL_5:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)defaultTotalCapForIsInternal:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5
++ (unint64_t)defaultTotalCapForIsInternal:(BOOL)internal isSeed:(BOOL)seed isCarrier:(BOOL)carrier
 {
   v5 = 20;
-  if (a4 || a5)
+  if (seed || carrier)
   {
     v5 = 50;
   }
 
-  if (a3)
+  if (internal)
   {
     return 100;
   }
@@ -1087,30 +1087,30 @@ LABEL_5:
 + (unint64_t)defaultTotalCapForCurrentDevice
 {
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [a1 defaultTotalCapForIsInternal:objc_msgSend(v3 isSeed:"isInternal") isCarrier:{objc_msgSend(v3, "isSeed"), objc_msgSend(v3, "isCarrier")}];
+  v4 = [self defaultTotalCapForIsInternal:objc_msgSend(v3 isSeed:"isInternal") isCarrier:{objc_msgSend(v3, "isSeed"), objc_msgSend(v3, "isCarrier")}];
 
   return v4;
 }
 
-+ (id)defaultTeamConfigurationForTeamForCurrentDevice:(id)a3 teamConfigurationDirectory:(id)a4
++ (id)defaultTeamConfigurationForTeamForCurrentDevice:(id)device teamConfigurationDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = [a1 defaultTeamConfigurationsForCurrentDevice:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  deviceCopy = device;
+  v7 = [self defaultTeamConfigurationsForCurrentDevice:directory];
+  v8 = [v7 objectForKeyedSubscript:deviceCopy];
 
   return v8;
 }
 
-+ (id)_memoryToolsTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_memoryToolsTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  v6 = a3;
-  if (a3 || a4)
+  configurationCopy = configuration;
+  if (configuration || seed)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v9 = +[DRSDampeningConfiguration memoryToolsDefaultConfiguration];
     [v8 setObject:v9 forKeyedSubscript:kDRSDMMemoryToolsMemgraphDmonThresholdCategory];
 
-    if (v6)
+    if (configurationCopy)
     {
       +[DRSDampeningConfiguration memoryToolsInternalMemgraphOverTimeConfiguration];
     }
@@ -1133,12 +1133,12 @@ LABEL_5:
   return v7;
 }
 
-+ (id)_nonWatchOShangTracerTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4
++ (id)_nonWatchOShangTracerTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed
 {
-  v4 = a4;
-  v5 = a3;
+  seedCopy = seed;
+  configurationCopy = configuration;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (v5)
+  if (configurationCopy)
   {
     v7 = +[DRSDampeningConfiguration hangTracerNonWatchOSInternalDownsamplingConfiguration];
     v8 = +[DRSDampeningConfiguration hangTracerNonWatchOSInternalNoDownsamplingConfiguration];
@@ -1152,7 +1152,7 @@ LABEL_5:
 
   else
   {
-    if (v4)
+    if (seedCopy)
     {
       +[DRSDampeningConfiguration hangTracerNonWatchOSSeedConfiguration];
     }
@@ -1170,9 +1170,9 @@ LABEL_5:
   return v9;
 }
 
-+ (id)_watchOS_hangTracerTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4
++ (id)_watchOS_hangTracerTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed
 {
-  if (a3 || a4)
+  if (configuration || seed)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v6 = +[DRSDampeningConfiguration hangTracerWatchOSInternalOrSeedDownsamplingConfiguration];
@@ -1190,9 +1190,9 @@ LABEL_5:
   return v4;
 }
 
-+ (id)_sentryTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_sentryTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  if (!a5 && (a6 == 2 || a6 == 1 && a3))
+  if (!carrier && (platform == 2 || platform == 1 && configuration))
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = +[DRSDampeningConfiguration sentryAppLaunchConfiguration];
@@ -1209,10 +1209,10 @@ LABEL_5:
   return v8;
 }
 
-+ (id)_coreAudioTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_coreAudioTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  v6 = (a6 - 1) < 4 || a6 == 6;
-  if (v6 && a3)
+  v6 = (platform - 1) < 4 || platform == 6;
+  if (v6 && configuration)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v8 = +[DRSDampeningConfiguration coreAudioOverloadConfiguration];
@@ -1229,33 +1229,33 @@ LABEL_5:
   return v9;
 }
 
-+ (id)_drmTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_drmTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  if (!a5)
+  if (!carrier)
   {
-    v7 = a6;
-    v8 = a3;
+    platformCopy = platform;
+    configurationCopy = configuration;
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    if ((v7 - 1) < 3)
+    if ((platformCopy - 1) < 3)
     {
       goto LABEL_6;
     }
 
-    if (v7 == 4)
+    if (platformCopy == 4)
     {
       goto LABEL_8;
     }
 
-    if (v7 == 6)
+    if (platformCopy == 6)
     {
 LABEL_6:
       v10 = +[DRSDampeningConfiguration drmResourceUsageConfiguration];
       [v9 setObject:v10 forKeyedSubscript:kDRSDMDRMResourceUsageIssueCategory];
 
-      if ((v7 - 1) < 4 || v7 == 6)
+      if ((platformCopy - 1) < 4 || platformCopy == 6)
       {
 LABEL_8:
-        if (v8)
+        if (configurationCopy)
         {
           v11 = +[DRSDampeningConfiguration drmRogueTaskConfiguration];
           [v9 setObject:v11 forKeyedSubscript:kDRSDMDRMRogueTaskIssueCategory];
@@ -1282,27 +1282,27 @@ LABEL_14:
   return v6;
 }
 
-+ (id)_coreAnimationTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_coreAnimationTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
-  if (a6 <= 6u && ((1 << a6) & 0x5C) != 0)
+  if (platform <= 6u && ((1 << platform) & 0x5C) != 0)
   {
-    if (a5)
+    if (carrier)
     {
 LABEL_4:
       v6 = 0;
       goto LABEL_11;
     }
 
-    if (a6 == 2)
+    if (platform == 2)
     {
-      if (!a3 && !a4)
+      if (!configuration && !seed)
       {
         goto LABEL_4;
       }
     }
 
-    else if (!a3)
+    else if (!configuration)
     {
       goto LABEL_4;
     }
@@ -1319,9 +1319,9 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_skylightTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_skylightTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  if ((a3 || a4) && a6 == 1 && !a5)
+  if ((configuration || seed) && platform == 1 && !carrier)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v10 = +[DRSDampeningConfiguration skylightHitchesConfiguration];
@@ -1338,10 +1338,10 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_rapidTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_rapidTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  v6 = (a6 - 1) < 4 || a6 == 6;
-  if (v6 && !a5)
+  v6 = (platform - 1) < 4 || platform == 6;
+  if (v6 && !carrier)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v9 = +[DRSDampeningConfiguration rapidMicroDiagnosticsConfiguration];
@@ -1358,13 +1358,13 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_nandGBBTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_nandGBBTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
-  if (a6 <= 6u && ((1 << a6) & 0x46) != 0)
+  if (platform <= 6u && ((1 << platform) & 0x46) != 0)
   {
     v6 = 0;
-    if (a3 && !a5)
+    if (configuration && !carrier)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v8 = +[DRSDampeningConfiguration nandAutoGBBSweepConfiguration];
@@ -1377,9 +1377,9 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_workflowResponsivenessDampeningConfiguration:(BOOL)a3
++ (id)_workflowResponsivenessDampeningConfiguration:(BOOL)configuration
 {
-  if (a3)
+  if (configuration)
   {
     +[DRSDampeningConfiguration spindumpWorkflowResponsivenessConfiguration_Internal];
   }
@@ -1393,10 +1393,10 @@ LABEL_11:
   return v3;
 }
 
-+ (id)_ppsTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_ppsTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  v6 = (a6 - 1) < 4 || a6 == 6;
-  if (v6 && !a5)
+  v6 = (platform - 1) < 4 || platform == 6;
+  if (v6 && !carrier)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v9 = +[DRSDampeningConfiguration ppsArchiveConfiguration];
@@ -1428,11 +1428,11 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_watchdogdTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_watchdogdTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
-  v7 = (a6 - 1) < 4 || a6 == 6;
-  if (v7 && a3 && !a5)
+  v7 = (platform - 1) < 4 || platform == 6;
+  if (v7 && configuration && !carrier)
   {
     v8 = +[DRSDampeningConfiguration watchdogdDefaultConfiguration];
     v6 = [[DRSTeamDampeningConfiguration alloc] initWithDefaultConfiguration:v8 issueCategoryToConfigurationDict:0];
@@ -1441,27 +1441,27 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_mailTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_mailTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v16[1] = *MEMORY[0x277D85DE8];
-  if (a6 <= 6u && ((1 << a6) & 0x46) != 0)
+  if (platform <= 6u && ((1 << platform) & 0x46) != 0)
   {
-    if (a5)
+    if (carrier)
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = a4;
+      seedCopy = seed;
       v15 = kDRSDMMailSQLQueryPerformanceIssueCategory;
       v9 = +[DRSDampeningConfiguration sqlQueryPerformanceConfiguration];
       v16[0] = v9;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
       v11 = [v10 mutableCopy];
 
-      if (a3 || v7)
+      if (configuration || seedCopy)
       {
         v12 = +[DRSDampeningConfiguration mailIssueCategoryConfiguration];
         [v11 setObject:v12 forKeyedSubscript:kDRSDMMailMessageListIssueCategory];
@@ -1478,10 +1478,10 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_RMETeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_RMETeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if ((a3 || a4) && a6 == 6 && !a5)
+  if ((configuration || seed) && platform == 6 && !carrier)
   {
     v9 = +[DRSDampeningConfiguration RMEIssueCategoryConfiguration];
     v13 = kDRSDMRMEMemoryExceptionIssueCategory;
@@ -1500,10 +1500,10 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_abcTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_abcTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
-  v6 = (a6 - 1) < 4 || a6 == 6;
-  if (v6 && (a3 || a4 || a5))
+  v6 = (platform - 1) < 4 || platform == 6;
+  if (v6 && (configuration || seed || carrier))
   {
     v8 = +[DRSDampeningConfiguration abcDefaultConfiguration];
     v7 = [[DRSTeamDampeningConfiguration alloc] initWithDefaultConfiguration:v8 issueCategoryToConfigurationDict:0];
@@ -1517,11 +1517,11 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_newsTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_newsTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a3 && !a5 && (a6 - 3) >= 0xFFFFFFFE)
+  if (configuration && !carrier && (platform - 3) >= 0xFFFFFFFE)
   {
     v11 = kDRSDMNewsSlowFeedIssueCategory;
     v7 = +[DRSDampeningConfiguration newsConfiguration];
@@ -1536,11 +1536,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_libtraceTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_libtraceTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v13[2] = *MEMORY[0x277D85DE8];
-  if (a3 && !a5)
+  if (configuration && !carrier)
   {
     v12[0] = kDRSDMLibtraceQuarantineIssueCategory;
     v7 = +[DRSDampeningConfiguration libtraceQuarantineConfiguration];
@@ -1558,14 +1558,14 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_spotlightTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_spotlightTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a3 && !a5)
+  if (configuration && !carrier)
   {
     v6 = 0;
-    if (a6 <= 6u && ((1 << a6) & 0x46) != 0)
+    if (platform <= 6u && ((1 << platform) & 0x46) != 0)
     {
       v11 = kDRSDMSpotlightInternalWatchdogIssueCategory;
       v7 = +[DRSDampeningConfiguration spotlightInternalWatchdogConfiguration];
@@ -1581,11 +1581,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_softwareUpdateTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_softwareUpdateTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v12[1] = *MEMORY[0x277D85DE8];
-  if (!a5 && a3 && a6 == 1)
+  if (!carrier && configuration && platform == 1)
   {
     v11 = kDRSDMSoftwareUpdateLogoutInterruptedIssueCategory;
     v7 = +[DRSDampeningConfiguration softwareUpdateLogoutInterruptedConfiguration];
@@ -1600,13 +1600,13 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_appIntentsServicesTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_appIntentsServicesTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a3 && !a5)
+  if (configuration && !carrier)
   {
-    if (a6 == 4 || a6 == 2)
+    if (platform == 4 || platform == 2)
     {
       v11 = kDRSDMAppIntentsServicesSlowActivityCategory;
       v7 = +[DRSDampeningConfiguration appIntentsServicesSlowActivityConfiguration];
@@ -1627,11 +1627,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_coreDuetPeopleSuggesterTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_coreDuetPeopleSuggesterTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v13[2] = *MEMORY[0x277D85DE8];
-  if (!a5 && a3 && a6 == 2)
+  if (!carrier && configuration && platform == 2)
   {
     v12[0] = kDRSDMCoreDuetPeopleSuggesterShareSheetTimeoutCategory;
     v7 = +[DRSDampeningConfiguration shareSheetTimeoutConfiguration];
@@ -1649,11 +1649,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_pearlTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_pearlTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v12[1] = *MEMORY[0x277D85DE8];
-  if (!a5 && a3 && a6 == 2)
+  if (!carrier && configuration && platform == 2)
   {
     v11 = kDRSDMPearlAFileBundleCategory;
     v7 = +[DRSDampeningConfiguration pearlAFileBundleConfiguration];
@@ -1668,12 +1668,12 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_mssTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_mssTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v6 = 0;
-  v7 = (a3 || a4) && !a5;
-  if (v7 && a6 && a6 != 5)
+  v7 = (configuration || seed) && !carrier;
+  if (v7 && platform && platform != 5)
   {
     v13[0] = kDRSDMMicrostackLostMSSInThisDrain;
     v8 = +[DRSDampeningConfiguration mssLostThisDrainConfiguration];
@@ -1691,11 +1691,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_backlightServicesTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_backlightServicesTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a3 && !a5 && (a6 - 4) >= 0xFFFFFFFE)
+  if (configuration && !carrier && (platform - 4) >= 0xFFFFFFFE)
   {
     v11 = kDRSDMBacklightServicesFlipbookHangIssueCategory;
     v7 = +[DRSDampeningConfiguration backlightServicesFlipboookHangConfiguration];
@@ -1710,11 +1710,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_healthkitTeamConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_healthkitTeamConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = 0;
   v13[2] = *MEMORY[0x277D85DE8];
-  if (a3 && !a5 && (a6 - 4) >= 0xFFFFFFFE)
+  if (configuration && !carrier && (platform - 4) >= 0xFFFFFFFE)
   {
     v12[0] = kDRSDMHealthKitSlowWorkoutStartIssueCategory;
     v7 = +[DRSDampeningConfiguration healthKitSlowWorkoutConfiguration];
@@ -1732,13 +1732,13 @@ LABEL_11:
   return v6;
 }
 
-+ (id)defaultTeamConfigurationsForCurrentDevice:(id)a3
++ (id)defaultTeamConfigurationsForCurrentDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[DRSSystemProfile sharedInstance];
   v11 = 0;
-  v6 = [a1 defaultTeamConfigurations:objc_msgSend(v5 isSeed:"isInternal") isCarrier:objc_msgSend(v5 platform:"isSeed") plistDirectoryPath:objc_msgSend(v5 errorOut:{"isCarrier"), objc_msgSend(v5, "platform"), v4, &v11}];
+  v6 = [self defaultTeamConfigurations:objc_msgSend(v5 isSeed:"isInternal") isCarrier:objc_msgSend(v5 platform:"isSeed") plistDirectoryPath:objc_msgSend(v5 errorOut:{"isCarrier"), objc_msgSend(v5, "platform"), deviceCopy, &v11}];
 
   v7 = v11;
   if (v7)
@@ -1757,42 +1757,42 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_defaultTailspinConfiguration:(BOOL)a3 isSeed:(BOOL)a4 isCarrier:(BOOL)a5 platform:(unsigned __int8)a6
++ (id)_defaultTailspinConfiguration:(BOOL)configuration isSeed:(BOOL)seed isCarrier:(BOOL)carrier platform:(unsigned __int8)platform
 {
   v6 = [[DRSDampeningConfiguration alloc] initWithHysteresis:0x7FFFFFFFLL cap:300.0 acceptanceRate:1.0];
 
   return v6;
 }
 
-- (BOOL)writeConfigurationPlistsToDirectory:(id)a3 createDirIfMissing:(BOOL)a4 errorOut:(id *)a5
+- (BOOL)writeConfigurationPlistsToDirectory:(id)directory createDirIfMissing:(BOOL)missing errorOut:(id *)out
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  directoryCopy = directory;
   v44 = 0;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8 isDirectory:&v44];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:directoryCopy isDirectory:&v44];
 
   if (v10)
   {
     if ((v44 & 1) == 0)
     {
-      if (a5)
+      if (out)
       {
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' already exists but it's a file", v8];
-        *a5 = _dampeningManagerError(v11);
+        directoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' already exists but it's a file", directoryCopy];
+        *out = _dampeningManagerError(directoryCopy);
       }
 
-      v12 = DPLogHandle_DampeningManagerError();
-      if (!os_signpost_enabled(v12))
+      jsonCompatibleDictRepresentation = DPLogHandle_DampeningManagerError();
+      if (!os_signpost_enabled(jsonCompatibleDictRepresentation))
       {
         goto LABEL_26;
       }
 
       *buf = 138543362;
-      *&buf[4] = v8;
+      *&buf[4] = directoryCopy;
       v13 = "'%{public}@' exists and is not a directory";
 LABEL_25:
-      _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConfigurationPlistDirWritingError", v13, buf, 0xCu);
+      _os_signpost_emit_with_name_impl(&dword_232906000, jsonCompatibleDictRepresentation, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConfigurationPlistDirWritingError", v13, buf, 0xCu);
 LABEL_26:
       v23 = 0;
       goto LABEL_31;
@@ -1801,30 +1801,30 @@ LABEL_26:
 
   else
   {
-    if (!a4)
+    if (!missing)
     {
-      if (a5)
+      if (out)
       {
-        v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' doesn't exist and we have not been told to create it", v8];
-        *a5 = _dampeningManagerError(v24);
+        directoryCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' doesn't exist and we have not been told to create it", directoryCopy];
+        *out = _dampeningManagerError(directoryCopy2);
       }
 
-      v12 = DPLogHandle_DampeningManagerError();
-      if (!os_signpost_enabled(v12))
+      jsonCompatibleDictRepresentation = DPLogHandle_DampeningManagerError();
+      if (!os_signpost_enabled(jsonCompatibleDictRepresentation))
       {
         goto LABEL_26;
       }
 
       *buf = 138543362;
-      *&buf[4] = v8;
+      *&buf[4] = directoryCopy;
       v13 = "'%{public}@' does not exist and we have not been told to create it";
       goto LABEL_25;
     }
 
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v43 = 0;
-    v15 = [v14 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v43];
-    v12 = v43;
+    v15 = [defaultManager2 createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v43];
+    jsonCompatibleDictRepresentation = v43;
 
     if (!v15)
     {
@@ -1832,17 +1832,17 @@ LABEL_26:
       if (os_signpost_enabled(v28))
       {
         *buf = 138543618;
-        *&buf[4] = v8;
+        *&buf[4] = directoryCopy;
         *&buf[12] = 2114;
-        *&buf[14] = v12;
+        *&buf[14] = jsonCompatibleDictRepresentation;
         _os_signpost_emit_with_name_impl(&dword_232906000, v28, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConfigurationPlistDirCreationError", "Failed to create '%{public}@' due to error: %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (out)
       {
-        v29 = v12;
+        v29 = jsonCompatibleDictRepresentation;
         v23 = 0;
-        *a5 = v12;
+        *out = jsonCompatibleDictRepresentation;
         goto LABEL_31;
       }
 
@@ -1853,13 +1853,13 @@ LABEL_26:
     if (os_signpost_enabled(v16))
     {
       *buf = 138543362;
-      *&buf[4] = v8;
+      *&buf[4] = directoryCopy;
       _os_signpost_emit_with_name_impl(&dword_232906000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConfigurationPlistDirCreation", "Created '%{public}@'", buf, 0xCu);
     }
   }
 
-  v12 = [(DRSDampeningManager *)self jsonCompatibleDictRepresentation];
-  v17 = [v12 objectForKeyedSubscript:@"TeamDampeningConfigurations"];
+  jsonCompatibleDictRepresentation = [(DRSDampeningManager *)self jsonCompatibleDictRepresentation];
+  v17 = [jsonCompatibleDictRepresentation objectForKeyedSubscript:@"TeamDampeningConfigurations"];
   if (v17)
   {
     v39 = 0;
@@ -1880,7 +1880,7 @@ LABEL_26:
     v30[1] = 3221225472;
     v30[2] = __87__DRSDampeningManager_writeConfigurationPlistsToDirectory_createDirIfMissing_errorOut___block_invoke;
     v30[3] = &unk_27899FE98;
-    v31 = v8;
+    v31 = directoryCopy;
     v32 = &v35;
     v33 = &v39;
     v34 = buf;
@@ -1904,9 +1904,9 @@ LABEL_26:
         *(*&buf[8] + 40) = v21;
       }
 
-      if (a5)
+      if (out)
       {
-        *a5 = *(*&buf[8] + 40);
+        *out = *(*&buf[8] + 40);
       }
     }
 
@@ -2003,89 +2003,89 @@ void __87__DRSDampeningManager_writeConfigurationPlistsToDirectory_createDirIfMi
 + (id)defaultResourceConfigurationsForCurrentDevice
 {
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [a1 defaultResourceConfigurations:objc_msgSend(v3 isSeed:"isInternal") isCarrier:objc_msgSend(v3 platform:{"isSeed"), objc_msgSend(v3, "isCarrier"), objc_msgSend(v3, "platform")}];
+  v4 = [self defaultResourceConfigurations:objc_msgSend(v3 isSeed:"isInternal") isCarrier:objc_msgSend(v3 platform:{"isSeed"), objc_msgSend(v3, "isCarrier"), objc_msgSend(v3, "platform")}];
 
   return v4;
 }
 
-- (DRSDampeningManager)initWithPersistentContainer:(id)a3 teamConfigurationDirectory:(id)a4
+- (DRSDampeningManager)initWithPersistentContainer:(id)container teamConfigurationDirectory:(id)directory
 {
-  v6 = a4;
-  v7 = a3;
+  directoryCopy = directory;
+  containerCopy = container;
   v8 = objc_alloc_init(DRSDampeningEnforcementSettings);
-  v9 = [objc_opt_class() defaultResourceConfigurationsForCurrentDevice];
+  defaultResourceConfigurationsForCurrentDevice = [objc_opt_class() defaultResourceConfigurationsForCurrentDevice];
   v10 = +[DRSDampeningConfiguration defaultSignatureDampeningConfiguration];
-  v11 = [objc_opt_class() defaultTotalCapForCurrentDevice];
-  v12 = [objc_opt_class() defaultTeamConfigurationsForCurrentDevice:v6];
+  defaultTotalCapForCurrentDevice = [objc_opt_class() defaultTotalCapForCurrentDevice];
+  v12 = [objc_opt_class() defaultTeamConfigurationsForCurrentDevice:directoryCopy];
 
-  v13 = [(DRSDampeningManager *)self initWithPersistentContainer:v7 enforcementSettings:v8 defaultSignatureConfiguration:v10 totalCap:v11 teamDampeningConfigDict:v12 resourceDampeningConfigDict:v9];
+  v13 = [(DRSDampeningManager *)self initWithPersistentContainer:containerCopy enforcementSettings:v8 defaultSignatureConfiguration:v10 totalCap:defaultTotalCapForCurrentDevice teamDampeningConfigDict:v12 resourceDampeningConfigDict:defaultResourceConfigurationsForCurrentDevice];
   return v13;
 }
 
-- (id)dampeningConfigurationForTeamID:(id)a3 issueCategory:(id)a4
+- (id)dampeningConfigurationForTeamID:(id)d issueCategory:(id)category
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DRSDampeningManager *)self teamDampeningConfigDict];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  categoryCopy = category;
+  dCopy = d;
+  teamDampeningConfigDict = [(DRSDampeningManager *)self teamDampeningConfigDict];
+  v9 = [teamDampeningConfigDict objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    v10 = [v9 configurationForIssueCategory:v6];
+    v10 = [v9 configurationForIssueCategory:categoryCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      defaultSignatureConfiguration = v10;
     }
 
     else
     {
-      v12 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+      defaultSignatureConfiguration = [(DRSDampeningManager *)self defaultSignatureConfiguration];
     }
 
-    v13 = v12;
+    defaultSignatureConfiguration2 = defaultSignatureConfiguration;
   }
 
   else
   {
-    v13 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+    defaultSignatureConfiguration2 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
   }
 
-  return v13;
+  return defaultSignatureConfiguration2;
 }
 
-- (id)dampeningConfigurationForRequestSignature:(id)a3
+- (id)dampeningConfigurationForRequestSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [v4 teamID];
-  v6 = [v4 issueCategory];
+  signatureCopy = signature;
+  teamID = [signatureCopy teamID];
+  issueCategory = [signatureCopy issueCategory];
 
-  v7 = [(DRSDampeningManager *)self dampeningConfigurationForTeamID:v5 issueCategory:v6];
+  v7 = [(DRSDampeningManager *)self dampeningConfigurationForTeamID:teamID issueCategory:issueCategory];
 
   return v7;
 }
 
-+ (id)_ON_MOC_QUEUE_existingMOFromContext:(id)a3 errorOut:(id *)a4
++ (id)_ON_MOC_QUEUE_existingMOFromContext:(id)context errorOut:(id *)out
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBE428];
-  v7 = a3;
-  v8 = [a1 _entityName];
-  v9 = [v6 fetchRequestWithEntityName:v8];
+  contextCopy = context;
+  _entityName = [self _entityName];
+  v9 = [v6 fetchRequestWithEntityName:_entityName];
 
-  v10 = [v7 executeFetchRequest:v9 error:a4];
+  v10 = [contextCopy executeFetchRequest:v9 error:out];
 
-  if (*a4)
+  if (*out)
   {
     v11 = DPLogHandle_CoreDataError();
     if (os_signpost_enabled(v11))
     {
-      v12 = [*a4 localizedDescription];
-      v13 = v12;
+      localizedDescription = [*out localizedDescription];
+      v13 = localizedDescription;
       v14 = @"Unknown";
-      if (v12)
+      if (localizedDescription)
       {
-        v14 = v12;
+        v14 = localizedDescription;
       }
 
       v18 = 138543362;
@@ -2106,9 +2106,9 @@ void __87__DRSDampeningManager_writeConfigurationPlistsToDirectory_createDirIfMi
   return v15;
 }
 
-+ (BOOL)removeExistingDampeningManagerStateFromManagedObjectContext:(id)a3 errorOut:(id *)a4
++ (BOOL)removeExistingDampeningManagerStateFromManagedObjectContext:(id)context errorOut:(id *)out
 {
-  v5 = a3;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -2123,8 +2123,8 @@ void __87__DRSDampeningManager_writeConfigurationPlistsToDirectory_createDirIfMi
   v9[1] = 3221225472;
   v9[2] = __92__DRSDampeningManager_removeExistingDampeningManagerStateFromManagedObjectContext_errorOut___block_invoke;
   v9[3] = &unk_27899F4A0;
-  v13 = a1;
-  v6 = v5;
+  selfCopy = self;
+  v6 = contextCopy;
   v10 = v6;
   v11 = v14;
   v12 = &v16;
@@ -2198,11 +2198,11 @@ LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)dampeningManagerFromPersistentContainer:(id)a3 deleteBadState:(BOOL)a4 errorOut:(id *)a5
++ (id)dampeningManagerFromPersistentContainer:(id)container deleteBadState:(BOOL)state errorOut:(id *)out
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 newBackgroundContext];
+  stateCopy = state;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -2226,15 +2226,15 @@ LABEL_13:
   v18[2] = __87__DRSDampeningManager_dampeningManagerFromPersistentContainer_deleteBadState_errorOut___block_invoke;
   v18[3] = &unk_27899FEC0;
   v21 = &v31;
-  v24 = a1;
-  v10 = v9;
+  selfCopy = self;
+  v10 = newBackgroundContext;
   v19 = v10;
   v22 = &v25;
   v23 = &v37;
-  v11 = v8;
+  v11 = containerCopy;
   v20 = v11;
   [v10 performBlockAndWait:v18];
-  if (v6 && v26[5] && [v32[5] count])
+  if (stateCopy && v26[5] && [v32[5] count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -2246,9 +2246,9 @@ LABEL_13:
     [v15 performBlockAndWait:v14];
   }
 
-  if (a5)
+  if (out)
   {
-    *a5 = v26[5];
+    *out = v26[5];
   }
 
   v12 = v38[5];
@@ -2433,19 +2433,19 @@ void __87__DRSDampeningManager_dampeningManagerFromPersistentContainer_deleteBad
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_ON_MOC_QUEUE_initWith:(id)a3 persistentContainer:(id)a4
+- (id)_ON_MOC_QUEUE_initWith:(id)with persistentContainer:(id)container
 {
-  v34 = self;
+  selfCopy = self;
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v35 = a4;
+  withCopy = with;
+  containerCopy = container;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [v5 teamConfigurations];
-  v8 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  teamConfigurations = [withCopy teamConfigurations];
+  v8 = [teamConfigurations countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2456,31 +2456,31 @@ void __87__DRSDampeningManager_dampeningManagerFromPersistentContainer_deleteBad
       {
         if (*v42 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(teamConfigurations);
         }
 
         v12 = *(*(&v41 + 1) + 8 * i);
-        v13 = [[DRSTeamDampeningConfiguration alloc] _initWithTeamDampeningConfigMO_ON_MOC_QUEUE:v12, v34];
-        if (!v13)
+        selfCopy = [[DRSTeamDampeningConfiguration alloc] _initWithTeamDampeningConfigMO_ON_MOC_QUEUE:v12, selfCopy];
+        if (!selfCopy)
         {
-          v16 = DPLogHandle_DampeningManagerError();
-          if (os_signpost_enabled(v16))
+          resourceConfigurations = DPLogHandle_DampeningManagerError();
+          if (os_signpost_enabled(resourceConfigurations))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_232906000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningManagerMORestoreFailure", "Failed to initialize dampening manager from persistence", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_232906000, resourceConfigurations, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningManagerMORestoreFailure", "Failed to initialize dampening manager from persistence", buf, 2u);
           }
 
           v31 = 0;
-          v25 = v35;
+          v25 = containerCopy;
           goto LABEL_29;
         }
 
-        v14 = v13;
-        v15 = [v12 teamID];
-        [v6 setObject:v14 forKeyedSubscript:v15];
+        v14 = selfCopy;
+        teamID = [v12 teamID];
+        [v6 setObject:v14 forKeyedSubscript:teamID];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v9 = [teamConfigurations countByEnumeratingWithState:&v41 objects:v46 count:16];
       if (v9)
       {
         continue;
@@ -2496,13 +2496,13 @@ void __87__DRSDampeningManager_dampeningManagerFromPersistentContainer_deleteBad
     v6 = 0;
   }
 
-  v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
+  teamConfigurations = objc_alloc_init(MEMORY[0x277CBEB38]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v16 = [v5 resourceConfigurations];
-  v17 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
+  resourceConfigurations = [withCopy resourceConfigurations];
+  v17 = [resourceConfigurations countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2513,7 +2513,7 @@ void __87__DRSDampeningManager_dampeningManagerFromPersistentContainer_deleteBad
       {
         if (*v37 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(resourceConfigurations);
         }
 
         v21 = *(*(&v36 + 1) + 8 * j);
@@ -2528,16 +2528,16 @@ void __87__DRSDampeningManager_dampeningManagerFromPersistentContainer_deleteBad
           }
 
           v31 = 0;
-          v25 = v35;
+          v25 = containerCopy;
           goto LABEL_28;
         }
 
         v23 = v22;
-        v24 = [v21 identifier];
-        [v7 setObject:v23 forKeyedSubscript:v24];
+        identifier = [v21 identifier];
+        [teamConfigurations setObject:v23 forKeyedSubscript:identifier];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      v18 = [resourceConfigurations countByEnumeratingWithState:&v36 objects:v45 count:16];
       if (v18)
       {
         continue;
@@ -2547,22 +2547,22 @@ void __87__DRSDampeningManager_dampeningManagerFromPersistentContainer_deleteBad
     }
   }
 
-  if (![v7 count])
+  if (![teamConfigurations count])
   {
 
-    v7 = 0;
+    teamConfigurations = 0;
   }
 
-  v25 = v35;
+  v25 = containerCopy;
   v26 = [DRSDampeningConfiguration alloc];
-  v27 = [v5 defaultSignatureConfiguration];
-  v16 = [(DRSDampeningConfiguration *)v26 _initWithMO_ON_MOC_QUEUE:v27];
+  defaultSignatureConfiguration = [withCopy defaultSignatureConfiguration];
+  resourceConfigurations = [(DRSDampeningConfiguration *)v26 _initWithMO_ON_MOC_QUEUE:defaultSignatureConfiguration];
 
   v28 = [DRSDampeningEnforcementSettings alloc];
-  v29 = [v5 enforcementSettings];
-  v30 = [(DRSDampeningEnforcementSettings *)v28 initWithMO:v29];
+  enforcementSettings = [withCopy enforcementSettings];
+  v30 = [(DRSDampeningEnforcementSettings *)v28 initWithMO:enforcementSettings];
 
-  v31 = -[DRSDampeningManager initWithPersistentContainer:enforcementSettings:defaultSignatureConfiguration:totalCap:teamDampeningConfigDict:resourceDampeningConfigDict:](v34, "initWithPersistentContainer:enforcementSettings:defaultSignatureConfiguration:totalCap:teamDampeningConfigDict:resourceDampeningConfigDict:", v35, v30, v16, [v5 totalCap], v6, v7);
+  v31 = -[DRSDampeningManager initWithPersistentContainer:enforcementSettings:defaultSignatureConfiguration:totalCap:teamDampeningConfigDict:resourceDampeningConfigDict:](selfCopy, "initWithPersistentContainer:enforcementSettings:defaultSignatureConfiguration:totalCap:teamDampeningConfigDict:resourceDampeningConfigDict:", containerCopy, v30, resourceConfigurations, [withCopy totalCap], v6, teamConfigurations);
 LABEL_28:
 
 LABEL_29:
@@ -2571,16 +2571,16 @@ LABEL_29:
   return v31;
 }
 
-- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)a3
+- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)context
 {
-  v4 = a3;
-  v5 = [[DRSDampeningManagerMO alloc] initWithContext:v4];
-  v6 = [(DRSDampeningManager *)self defaultSignatureConfiguration];
-  v7 = [v6 _ON_MOC_QUEUE_moRepresentationInContext:v4 identifier:@"DEFAULT_CONFIGURATION"];
+  contextCopy = context;
+  v5 = [[DRSDampeningManagerMO alloc] initWithContext:contextCopy];
+  defaultSignatureConfiguration = [(DRSDampeningManager *)self defaultSignatureConfiguration];
+  v7 = [defaultSignatureConfiguration _ON_MOC_QUEUE_moRepresentationInContext:contextCopy identifier:@"DEFAULT_CONFIGURATION"];
   [(DRSDampeningManagerMO *)v5 setDefaultSignatureConfiguration:v7];
 
-  v8 = [(DRSDampeningManager *)self enforcementSettings];
-  v9 = [v8 _moRepresentation:v4];
+  enforcementSettings = [(DRSDampeningManager *)self enforcementSettings];
+  v9 = [enforcementSettings _moRepresentation:contextCopy];
   [(DRSDampeningManagerMO *)v5 setEnforcementSettings:v9];
 
   [(DRSDampeningManagerMO *)v5 setTotalCap:[(DRSDampeningManager *)self totalCap]];
@@ -2588,17 +2588,17 @@ LABEL_29:
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v10 = [(DRSDampeningManager *)self teamDampeningConfigDict];
+  teamDampeningConfigDict = [(DRSDampeningManager *)self teamDampeningConfigDict];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __63__DRSDampeningManager__ON_MOC_QUEUE_moRepresentationInContext___block_invoke;
   v21[3] = &unk_27899FF10;
-  v11 = v4;
+  v11 = contextCopy;
   v22 = v11;
   v24 = &v25;
   v12 = v5;
   v23 = v12;
-  [v10 enumerateKeysAndObjectsUsingBlock:v21];
+  [teamDampeningConfigDict enumerateKeysAndObjectsUsingBlock:v21];
 
   if (v26[3])
   {
@@ -2607,7 +2607,7 @@ LABEL_29:
 
   else
   {
-    v14 = [(DRSDampeningManager *)self resourceDampeningConfigDict];
+    resourceDampeningConfigDict = [(DRSDampeningManager *)self resourceDampeningConfigDict];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __63__DRSDampeningManager__ON_MOC_QUEUE_moRepresentationInContext___block_invoke_560;
@@ -2616,7 +2616,7 @@ LABEL_29:
     v20 = &v25;
     v15 = v12;
     v19 = v15;
-    [v14 enumerateKeysAndObjectsUsingBlock:v17];
+    [resourceDampeningConfigDict enumerateKeysAndObjectsUsingBlock:v17];
 
     if (v26[3])
     {
@@ -2670,17 +2670,17 @@ void __63__DRSDampeningManager__ON_MOC_QUEUE_moRepresentationInContext___block_i
   }
 }
 
-- (BOOL)saveToPersistentContainerWithErrorOut:(id *)a3
+- (BOOL)saveToPersistentContainerWithErrorOut:(id *)out
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = [(DRSDampeningManager *)self persistentContainer];
+  persistentContainer = [(DRSDampeningManager *)self persistentContainer];
 
-  if (v5)
+  if (persistentContainer)
   {
-    v6 = [(DRSDampeningManager *)self persistentContainer];
-    v7 = [v6 newBackgroundContext];
+    persistentContainer2 = [(DRSDampeningManager *)self persistentContainer];
+    newBackgroundContext = [persistentContainer2 newBackgroundContext];
 
-    if ([objc_opt_class() removeExistingDampeningManagerStateFromManagedObjectContext:v7 errorOut:a3])
+    if ([objc_opt_class() removeExistingDampeningManagerStateFromManagedObjectContext:newBackgroundContext errorOut:out])
     {
       v22 = 0;
       v23 = &v22;
@@ -2697,11 +2697,11 @@ void __63__DRSDampeningManager__ON_MOC_QUEUE_moRepresentationInContext___block_i
       v12[2] = __61__DRSDampeningManager_saveToPersistentContainerWithErrorOut___block_invoke;
       v12[3] = &unk_27899ED80;
       v12[4] = self;
-      v7 = v7;
-      v13 = v7;
+      newBackgroundContext = newBackgroundContext;
+      v13 = newBackgroundContext;
       v14 = &v16;
       v15 = &v22;
-      [v7 performBlockAndWait:v12];
+      [newBackgroundContext performBlockAndWait:v12];
       v8 = *(v23 + 24);
       if (v8)
       {
@@ -2712,9 +2712,9 @@ void __63__DRSDampeningManager__ON_MOC_QUEUE_moRepresentationInContext___block_i
       {
         DPLogHandle_CoreDataError();
 
-        if (a3)
+        if (out)
         {
-          *a3 = v17[5];
+          *out = v17[5];
         }
       }
 
@@ -2730,7 +2730,7 @@ void __63__DRSDampeningManager__ON_MOC_QUEUE_moRepresentationInContext___block_i
 
   else
   {
-    if (!a3)
+    if (!out)
     {
       v8 = 0;
       goto LABEL_12;
@@ -2739,9 +2739,9 @@ void __63__DRSDampeningManager__ON_MOC_QUEUE_moRepresentationInContext___block_i
     v9 = MEMORY[0x277CCA9B8];
     v26 = *MEMORY[0x277CCA450];
     v27[0] = @"Tried to save a dampening manager with no persistent containter";
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    [v9 errorWithDomain:@"DiagnosticPipelinePersistenceError" code:0 userInfo:v7];
-    *a3 = v8 = 0;
+    newBackgroundContext = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
+    [v9 errorWithDomain:@"DiagnosticPipelinePersistenceError" code:0 userInfo:newBackgroundContext];
+    *out = v8 = 0;
   }
 
 LABEL_12:

@@ -1,6 +1,6 @@
 @interface NPKProtoPrewarmCreateShareForPassIdentifierResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -13,34 +13,34 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPrewarmCreateShareForPassIdentifierResponse;
   v4 = [(NPKProtoPrewarmCreateShareForPassIdentifierResponse *)&v8 description];
-  v5 = [(NPKProtoPrewarmCreateShareForPassIdentifierResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPrewarmCreateShareForPassIdentifierResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-  [v3 setObject:v4 forKey:@"success"];
+  [dictionary setObject:v4 forKey:@"success"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = self->_success;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = self->_success == v4[8];
+    v5 = self->_success == equalCopy[8];
   }
 
   else

@@ -1,43 +1,43 @@
 @interface CKPinnedConversationTapbackBubble
-+ (CGRect)largeTailBalloonFrameForSize:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5;
-+ (CGRect)smallTailBalloonFrameForSize:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5;
-+ (CGRect)tapbackBalloonFrameForSize:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5;
-+ (CGSize)largeTailBalloonSizeForSize:(CGSize)a3;
-+ (CGSize)sizeThatFits:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5;
-+ (CGSize)smallTailBalloonSizeForSize:(CGSize)a3;
-+ (CGSize)tapbackBalloonSizeForSize:(CGSize)a3;
-+ (char)colorTypeForTapBack:(int64_t)a3;
-+ (id)tapBackBubblePathForSize:(CGSize)a3 tapbackBalloonFrame:(CGRect)a4 flipHorizontally:(BOOL)a5 flipVertically:(BOOL)a6;
++ (CGRect)largeTailBalloonFrameForSize:(CGSize)size flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically;
++ (CGRect)smallTailBalloonFrameForSize:(CGSize)size flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically;
++ (CGRect)tapbackBalloonFrameForSize:(CGSize)size flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically;
++ (CGSize)largeTailBalloonSizeForSize:(CGSize)size;
++ (CGSize)sizeThatFits:(CGSize)fits flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically;
++ (CGSize)smallTailBalloonSizeForSize:(CGSize)size;
++ (CGSize)tapbackBalloonSizeForSize:(CGSize)size;
++ (char)colorTypeForTapBack:(int64_t)back;
++ (id)tapBackBubblePathForSize:(CGSize)size tapbackBalloonFrame:(CGRect)frame flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically;
 - (CGPoint)originationPoint;
 - (CGPoint)tailAttachmentPoint;
 - (CGSize)parentAvatarViewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKPinnedConversationActivityItemViewDelegate)activityItemViewDelegate;
-- (CKPinnedConversationTapbackBubble)initWithActivityItem:(id)a3;
+- (CKPinnedConversationTapbackBubble)initWithActivityItem:(id)item;
 - (int64_t)acknowledgmentType;
 - (void)_updateAcknowledgmentType;
 - (void)_updateUserInterfaceStyles;
-- (void)configureWithTapback:(id)a3;
+- (void)configureWithTapback:(id)tapback;
 - (void)layoutSubviews;
-- (void)setAcknowledgmentType:(int64_t)a3;
-- (void)setActivityItem:(id)a3;
-- (void)setOriginationDirection:(int64_t)a3;
-- (void)setPreferredTailAttachmentPointXCoordinate:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAcknowledgmentType:(int64_t)type;
+- (void)setActivityItem:(id)item;
+- (void)setOriginationDirection:(int64_t)direction;
+- (void)setPreferredTailAttachmentPointXCoordinate:(double)coordinate;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKPinnedConversationTapbackBubble
 
-- (CKPinnedConversationTapbackBubble)initWithActivityItem:(id)a3
+- (CKPinnedConversationTapbackBubble)initWithActivityItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v23.receiver = self;
   v23.super_class = CKPinnedConversationTapbackBubble;
   v6 = [(CKPinnedConversationTapbackBubble *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tapbackActivityItem, a3);
+    objc_storeStrong(&v6->_tapbackActivityItem, item);
     v8 = [[CKPinnedConversationActivityItemViewShadowLayer alloc] initWithShadowType:0];
     broadShadowLayer = v7->_broadShadowLayer;
     v7->_broadShadowLayer = v8;
@@ -56,21 +56,21 @@
 
     [(CKPinnedConversationActivityItemViewBackdropLayer *)v7->_backdropLayer setMask:v7->_backdropMaskShapeLayer];
     [(CKPinnedConversationTapbackBubble *)v7 _updateUserInterfaceStyles];
-    v16 = [(CKPinnedConversationTapbackBubble *)v7 layer];
-    [v16 addSublayer:v7->_broadShadowLayer];
+    layer = [(CKPinnedConversationTapbackBubble *)v7 layer];
+    [layer addSublayer:v7->_broadShadowLayer];
 
-    v17 = [(CKPinnedConversationTapbackBubble *)v7 layer];
-    [v17 addSublayer:v7->_tightShadowLayer];
+    layer2 = [(CKPinnedConversationTapbackBubble *)v7 layer];
+    [layer2 addSublayer:v7->_tightShadowLayer];
 
-    v18 = [(CKPinnedConversationTapbackBubble *)v7 layer];
-    [v18 addSublayer:v7->_backdropLayer];
+    layer3 = [(CKPinnedConversationTapbackBubble *)v7 layer];
+    [layer3 addSublayer:v7->_backdropLayer];
 
     v19 = objc_alloc(MEMORY[0x1E69DD250]);
     v20 = [v19 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(CKPinnedConversationTapbackBubble *)v7 setTapbackContainerView:v20];
 
-    v21 = [(CKPinnedConversationTapbackBubble *)v7 tapbackContainerView];
-    [(CKPinnedConversationTapbackBubble *)v7 addSubview:v21];
+    tapbackContainerView = [(CKPinnedConversationTapbackBubble *)v7 tapbackContainerView];
+    [(CKPinnedConversationTapbackBubble *)v7 addSubview:tapbackContainerView];
 
     [(CKPinnedConversationTapbackBubble *)v7 _updateAcknowledgmentType];
   }
@@ -101,50 +101,50 @@
   v20 = v19;
   v22 = v21;
   v23 = [objc_opt_class() tapBackBubblePathForSize:-[CKPinnedConversationTapbackBubble flipHorizontally](self tapbackBalloonFrame:"flipHorizontally") flipHorizontally:-[CKPinnedConversationTapbackBubble flipVertically](self flipVertically:{"flipVertically"), v12, v14, v15, v17, v19, v21}];
-  v24 = [v23 CGPath];
-  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:v24];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setShadowPath:v24];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_tightShadowLayer setShadowPath:v24];
-  v25 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
-  [v25 setFrame:{v16, v18, v20, v22}];
+  cGPath = [v23 CGPath];
+  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:cGPath];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setShadowPath:cGPath];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_tightShadowLayer setShadowPath:cGPath];
+  tapbackContainerView = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
+  [tapbackContainerView setFrame:{v16, v18, v20, v22}];
 }
 
-+ (id)tapBackBubblePathForSize:(CGSize)a3 tapbackBalloonFrame:(CGRect)a4 flipHorizontally:(BOOL)a5 flipVertically:(BOOL)a6
++ (id)tapBackBubblePathForSize:(CGSize)size tapbackBalloonFrame:(CGRect)frame flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.height;
-  v13 = a3.width;
-  v14 = [MEMORY[0x1E69DC728] bezierPath];
+  verticallyCopy = vertically;
+  horizontallyCopy = horizontally;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = size.height;
+  v13 = size.width;
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   v15 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{x, y, width, height}];
-  [v14 appendPath:v15];
-  [objc_opt_class() largeTailBalloonFrameForSize:v7 flipHorizontally:v6 flipVertically:{v13, v12}];
+  [bezierPath appendPath:v15];
+  [objc_opt_class() largeTailBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{v13, v12}];
   v16 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:?];
-  [v14 appendPath:v16];
-  [objc_opt_class() smallTailBalloonFrameForSize:v7 flipHorizontally:v6 flipVertically:{v13, v12}];
+  [bezierPath appendPath:v16];
+  [objc_opt_class() smallTailBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{v13, v12}];
   v17 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:?];
-  [v14 appendPath:v17];
+  [bezierPath appendPath:v17];
 
-  return v14;
+  return bezierPath;
 }
 
-- (void)setAcknowledgmentType:(int64_t)a3
+- (void)setAcknowledgmentType:(int64_t)type
 {
-  v5 = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
-  if (!v5 || (v6 = v5, -[CKPinnedConversationTapbackBubble tapbackGlyph](self, "tapbackGlyph"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 acknowledgmentType], v7, v6, v8 != a3))
+  tapbackGlyph = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
+  if (!tapbackGlyph || (v6 = tapbackGlyph, -[CKPinnedConversationTapbackBubble tapbackGlyph](self, "tapbackGlyph"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 acknowledgmentType], v7, v6, v8 != type))
   {
-    v9 = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
-    [v9 removeFromSuperview];
+    tapbackGlyph2 = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
+    [tapbackGlyph2 removeFromSuperview];
 
-    v10 = +[CKAcknowledgmentGlyphView glyphViewForAcknowledgmentType:glyphColor:](CKAcknowledgmentGlyphView, "glyphViewForAcknowledgmentType:glyphColor:", a3, [objc_opt_class() colorTypeForTapBack:a3]);
+    v10 = +[CKAcknowledgmentGlyphView glyphViewForAcknowledgmentType:glyphColor:](CKAcknowledgmentGlyphView, "glyphViewForAcknowledgmentType:glyphColor:", type, [objc_opt_class() colorTypeForTapBack:type]);
     [(CKPinnedConversationTapbackBubble *)self setTapbackGlyph:v10];
 
-    v11 = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
-    [(CKPinnedConversationTapbackBubble *)self addSubview:v11];
+    tapbackGlyph3 = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
+    [(CKPinnedConversationTapbackBubble *)self addSubview:tapbackGlyph3];
 
     [(CKPinnedConversationTapbackBubble *)self setNeedsLayout];
   }
@@ -152,32 +152,32 @@
 
 - (int64_t)acknowledgmentType
 {
-  v2 = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
-  v3 = [v2 acknowledgmentType];
+  tapbackGlyph = [(CKPinnedConversationTapbackBubble *)self tapbackGlyph];
+  acknowledgmentType = [tapbackGlyph acknowledgmentType];
 
-  return v3;
+  return acknowledgmentType;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = objc_opt_class();
-  v7 = [(CKPinnedConversationTapbackBubble *)self flipHorizontally];
-  v8 = [(CKPinnedConversationTapbackBubble *)self flipVertically];
+  flipHorizontally = [(CKPinnedConversationTapbackBubble *)self flipHorizontally];
+  flipVertically = [(CKPinnedConversationTapbackBubble *)self flipVertically];
 
-  [v6 sizeThatFits:v7 flipHorizontally:v8 flipVertically:{width, height}];
+  [v6 sizeThatFits:flipHorizontally flipHorizontally:flipVertically flipVertically:{width, height}];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5
++ (CGSize)sizeThatFits:(CGSize)fits flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.height;
-  width = a3.width;
+  verticallyCopy = vertically;
+  horizontallyCopy = horizontally;
+  height = fits.height;
+  width = fits.width;
   v9 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD28] addingSymbolicTraits:0 options:1];
   v10 = [MEMORY[0x1E69DB878] fontWithDescriptor:v9 size:0.0];
   [v10 lineHeight];
@@ -187,12 +187,12 @@
     height = v12;
   }
 
-  [objc_opt_class() tapbackBalloonFrameForSize:v6 flipHorizontally:v5 flipVertically:{width, height}];
+  [objc_opt_class() tapbackBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{width, height}];
   v51 = v14;
   v52 = v13;
   v54 = v15;
   v42 = v16;
-  [objc_opt_class() largeTailBalloonFrameForSize:v6 flipHorizontally:v5 flipVertically:{width, height}];
+  [objc_opt_class() largeTailBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{width, height}];
   v18 = v17;
   v47 = v19;
   v48 = v17;
@@ -200,7 +200,7 @@
   v22 = v21;
   v46 = v21;
   v53 = v23;
-  [objc_opt_class() smallTailBalloonFrameForSize:v6 flipHorizontally:v5 flipVertically:{width, height}];
+  [objc_opt_class() smallTailBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{width, height}];
   y = v56.origin.y;
   rect = v56.size.width;
   v50 = v56.size.height;
@@ -314,33 +314,33 @@
   return result;
 }
 
-+ (char)colorTypeForTapBack:(int64_t)a3
++ (char)colorTypeForTapBack:(int64_t)back
 {
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 messageAcknowledgmentPinnedColor];
+  theme = [v4 theme];
+  messageAcknowledgmentPinnedColor = [theme messageAcknowledgmentPinnedColor];
 
-  if (a3 == 2000)
+  if (back == 2000)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 messageAcknowledgmentRedColor];
+    theme2 = [v7 theme];
+    messageAcknowledgmentRedColor = [theme2 messageAcknowledgmentRedColor];
 
-    v6 = v9;
+    messageAcknowledgmentPinnedColor = messageAcknowledgmentRedColor;
   }
 
   v10 = +[CKUIBehavior sharedBehaviors];
-  v11 = [v10 theme];
-  v12 = [v11 ckAcknowledgementColorTypeForColor:v6];
+  theme3 = [v10 theme];
+  v12 = [theme3 ckAcknowledgementColorTypeForColor:messageAcknowledgmentPinnedColor];
 
   return v12;
 }
 
-+ (CGSize)tapbackBalloonSizeForSize:(CGSize)a3
++ (CGSize)tapbackBalloonSizeForSize:(CGSize)size
 {
-  v3 = a3.width / a3.height;
-  v4 = a3.width * 0.914285714;
-  v5 = a3.height * 0.8;
+  v3 = size.width / size.height;
+  v4 = size.width * 0.914285714;
+  v5 = size.height * 0.8;
   if (v3 > 0.875)
   {
     v4 = v5;
@@ -352,9 +352,9 @@
   return result;
 }
 
-+ (CGSize)largeTailBalloonSizeForSize:(CGSize)a3
++ (CGSize)largeTailBalloonSizeForSize:(CGSize)size
 {
-  [a1 tapbackBalloonSizeForSize:{a3.width, a3.height}];
+  [self tapbackBalloonSizeForSize:{size.width, size.height}];
   v4 = v3 * 0.375;
   v5 = v4;
   result.height = v5;
@@ -362,9 +362,9 @@
   return result;
 }
 
-+ (CGSize)smallTailBalloonSizeForSize:(CGSize)a3
++ (CGSize)smallTailBalloonSizeForSize:(CGSize)size
 {
-  [a1 largeTailBalloonSizeForSize:{a3.width, a3.height}];
+  [self largeTailBalloonSizeForSize:{size.width, size.height}];
   v4 = v3 * 0.5;
   v5 = v4;
   result.height = v5;
@@ -372,22 +372,22 @@
   return result;
 }
 
-+ (CGRect)tapbackBalloonFrameForSize:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5
++ (CGRect)tapbackBalloonFrameForSize:(CGSize)size flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.height;
-  [a1 tapbackBalloonSizeForSize:a3.width];
+  verticallyCopy = vertically;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  [self tapbackBalloonSizeForSize:size.width];
   v9 = v8;
   v11 = v10;
   v12 = v8 * 0.09375;
   v13 = 0.0;
-  if (v6)
+  if (horizontallyCopy)
   {
     v12 = 0.0;
   }
 
-  if (v5)
+  if (verticallyCopy)
   {
     v13 = height - v11;
   }
@@ -399,22 +399,22 @@
   return result;
 }
 
-+ (CGRect)largeTailBalloonFrameForSize:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5
++ (CGRect)largeTailBalloonFrameForSize:(CGSize)size flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.height;
-  width = a3.width;
-  [a1 largeTailBalloonSizeForSize:?];
+  verticallyCopy = vertically;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
+  [self largeTailBalloonSizeForSize:?];
   v11 = v10;
   v13 = v12;
-  [a1 tapbackBalloonFrameForSize:v6 flipHorizontally:v5 flipVertically:{width, height}];
+  [self tapbackBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{width, height}];
   v18 = v14;
   v19 = v15;
   v20 = v16;
   v21 = v17;
   v22 = v16 * 0.09375;
-  if (v6)
+  if (horizontallyCopy)
   {
     v23 = CGRectGetMaxX(*&v14) - (v11 - v22);
   }
@@ -429,7 +429,7 @@
   v26 = v19;
   v27 = v20;
   v28 = v21;
-  if (v5)
+  if (verticallyCopy)
   {
     v29 = CGRectGetMaxY(*&v25) - v24 - v13;
   }
@@ -449,27 +449,27 @@
   return result;
 }
 
-+ (CGRect)smallTailBalloonFrameForSize:(CGSize)a3 flipHorizontally:(BOOL)a4 flipVertically:(BOOL)a5
++ (CGRect)smallTailBalloonFrameForSize:(CGSize)size flipHorizontally:(BOOL)horizontally flipVertically:(BOOL)vertically
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.height;
-  width = a3.width;
-  [a1 smallTailBalloonSizeForSize:?];
+  verticallyCopy = vertically;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
+  [self smallTailBalloonSizeForSize:?];
   v11 = v10;
   v13 = v12;
-  [a1 largeTailBalloonFrameForSize:v6 flipHorizontally:v5 flipVertically:{width, height}];
+  [self largeTailBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  [a1 tapbackBalloonFrameForSize:v6 flipHorizontally:v5 flipVertically:{width, height}];
+  [self tapbackBalloonFrameForSize:horizontallyCopy flipHorizontally:verticallyCopy flipVertically:{width, height}];
   v23 = v22 * 0.03125;
   v24 = v15;
   v25 = v17;
   v26 = v19;
   v27 = v21;
-  if (v6)
+  if (horizontallyCopy)
   {
     v28 = CGRectGetMinX(*&v24) - (v11 - v23);
   }
@@ -483,7 +483,7 @@
   v30 = v17;
   v31 = v19;
   v32 = v21;
-  if (v5)
+  if (verticallyCopy)
   {
     v33 = CGRectGetMinY(*&v29) - (v13 - v23);
   }
@@ -503,31 +503,31 @@
   return result;
 }
 
-- (void)setActivityItem:(id)a3
+- (void)setActivityItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_tapbackActivityItem, a3);
+    objc_storeStrong(&self->_tapbackActivityItem, item);
     [(CKPinnedConversationTapbackBubble *)self _updateAcknowledgmentType];
   }
 }
 
-- (void)setPreferredTailAttachmentPointXCoordinate:(double)a3
+- (void)setPreferredTailAttachmentPointXCoordinate:(double)coordinate
 {
-  if (self->_preferredTailAttachmentPointXCoordinate != a3)
+  if (self->_preferredTailAttachmentPointXCoordinate != coordinate)
   {
-    self->_preferredTailAttachmentPointXCoordinate = a3;
+    self->_preferredTailAttachmentPointXCoordinate = coordinate;
     [(CKPinnedConversationTapbackBubble *)self setNeedsLayout];
   }
 }
 
-- (void)setOriginationDirection:(int64_t)a3
+- (void)setOriginationDirection:(int64_t)direction
 {
-  if (self->_originationDirection != a3)
+  if (self->_originationDirection != direction)
   {
-    self->_originationDirection = a3;
+    self->_originationDirection = direction;
     [(CKPinnedConversationTapbackBubble *)self setNeedsLayout];
   }
 }
@@ -542,12 +542,12 @@
   width = v20.size.width;
   height = v20.size.height;
   MidX = CGRectGetMidX(v20);
-  v11 = [(CKPinnedConversationTapbackBubble *)self flipVertically];
+  flipVertically = [(CKPinnedConversationTapbackBubble *)self flipVertically];
   v12 = x;
   v13 = y;
   v14 = width;
   v15 = height;
-  if (v11)
+  if (flipVertically)
   {
     MaxY = CGRectGetMaxY(*&v12);
   }
@@ -566,79 +566,79 @@
 
 - (void)_updateAcknowledgmentType
 {
-  v3 = [(CKPinnedConversationTapbackBubbleActivityItem *)self->_tapbackActivityItem message];
-  v4 = [v3 tapback];
+  message = [(CKPinnedConversationTapbackBubbleActivityItem *)self->_tapbackActivityItem message];
+  tapback = [message tapback];
 
-  [(CKPinnedConversationTapbackBubble *)self configureWithTapback:v4];
+  [(CKPinnedConversationTapbackBubble *)self configureWithTapback:tapback];
 }
 
-- (void)configureWithTapback:(id)a3
+- (void)configureWithTapback:(id)tapback
 {
-  v32 = a3;
-  v4 = [(CKPinnedConversationTapbackBubble *)self displayedTapback];
-  if (([v4 isEqual:v32] & 1) == 0)
+  tapbackCopy = tapback;
+  displayedTapback = [(CKPinnedConversationTapbackBubble *)self displayedTapback];
+  if (([displayedTapback isEqual:tapbackCopy] & 1) == 0)
   {
-    v5 = [(CKPinnedConversationTapbackBubble *)self tapbackView];
-    [v5 removeFromSuperview];
+    tapbackView = [(CKPinnedConversationTapbackBubble *)self tapbackView];
+    [tapbackView removeFromSuperview];
 
-    v6 = [CKTapbackViewUtils viewFor:v32 isSelected:0];
+    v6 = [CKTapbackViewUtils viewFor:tapbackCopy isSelected:0];
     [(CKPinnedConversationTapbackBubble *)self setTapbackView:v6];
     [v6 platterEdgeInsets];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [(CKPinnedConversationTapbackBubble *)self setDisplayedTapback:v32];
-    v15 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
-    [v15 addSubview:v6];
+    [(CKPinnedConversationTapbackBubble *)self setDisplayedTapback:tapbackCopy];
+    tapbackContainerView = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
+    [tapbackContainerView addSubview:v6];
 
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [v6 topAnchor];
-    v17 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
-    v18 = [v17 topAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:v8];
+    topAnchor = [v6 topAnchor];
+    tapbackContainerView2 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
+    topAnchor2 = [tapbackContainerView2 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v8];
     [v19 setActive:1];
 
-    v20 = [v6 leadingAnchor];
-    v21 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
-    v22 = [v21 leadingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22 constant:v10];
+    leadingAnchor = [v6 leadingAnchor];
+    tapbackContainerView3 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
+    leadingAnchor2 = [tapbackContainerView3 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v10];
     [v23 setActive:1];
 
-    v24 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
-    v25 = [v24 bottomAnchor];
-    v26 = [v6 bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:v12];
+    tapbackContainerView4 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
+    bottomAnchor = [tapbackContainerView4 bottomAnchor];
+    bottomAnchor2 = [v6 bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v12];
     [v27 setActive:1];
 
-    v28 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
-    v29 = [v28 trailingAnchor];
-    v30 = [v6 trailingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:v14];
+    tapbackContainerView5 = [(CKPinnedConversationTapbackBubble *)self tapbackContainerView];
+    trailingAnchor = [tapbackContainerView5 trailingAnchor];
+    trailingAnchor2 = [v6 trailingAnchor];
+    v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v14];
     [v31 setActive:1];
 
     [(CKPinnedConversationTapbackBubble *)self setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKPinnedConversationTapbackBubble;
-  [(CKPinnedConversationTapbackBubble *)&v4 traitCollectionDidChange:a3];
+  [(CKPinnedConversationTapbackBubble *)&v4 traitCollectionDidChange:change];
   [(CKPinnedConversationTapbackBubble *)self _updateUserInterfaceStyles];
 }
 
 - (void)_updateUserInterfaceStyles
 {
-  v3 = [(CKPinnedConversationTapbackBubble *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(CKPinnedConversationTapbackBubble *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  [(CKPinnedConversationActivityItemViewBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:v4];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:v4];
+  [(CKPinnedConversationActivityItemViewBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:userInterfaceStyle];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:userInterfaceStyle];
   tightShadowLayer = self->_tightShadowLayer;
 
-  [(CKPinnedConversationActivityItemViewShadowLayer *)tightShadowLayer setUserInterfaceStyle:v4];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)tightShadowLayer setUserInterfaceStyle:userInterfaceStyle];
 }
 
 - (CKPinnedConversationActivityItemViewDelegate)activityItemViewDelegate

@@ -1,5 +1,5 @@
 @interface SUScriptSegmentedControlNativeObject
-- (void)_valueChanged:(id)a3;
+- (void)_valueChanged:(id)changed;
 - (void)destroyNativeObject;
 - (void)setupNativeObject;
 @end
@@ -22,11 +22,11 @@
   [(SUScriptNativeObject *)&v3 setupNativeObject];
 }
 
-- (void)_valueChanged:(id)a3
+- (void)_valueChanged:(id)changed
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"valuechange"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"valuechange"];
 }
 
 @end

@@ -3,7 +3,7 @@
 - (BOOL)isRemoteAccessDeviceReachable;
 - (BOOL)isShortActionOperation;
 - (BOOL)supportsMultiPartResponse;
-- (HMDHAPAccessoryTaskContext)initWithIdentifier:(id)a3 operationType:(int64_t)a4 home:(id)a5 sourceType:(unint64_t)a6 biomeSource:(unint64_t)a7 requestMessage:(id)a8 name:(id)a9;
+- (HMDHAPAccessoryTaskContext)initWithIdentifier:(id)identifier operationType:(int64_t)type home:(id)home sourceType:(unint64_t)sourceType biomeSource:(unint64_t)source requestMessage:(id)message name:(id)name;
 - (HMDHome)home;
 - (HMDUser)user;
 - (id)clientIdentifier;
@@ -14,7 +14,7 @@
 - (id)requestMessageName;
 - (id)workQueue;
 - (int64_t)qualityOfService;
-- (void)dispatchMessage:(id)a3 delegateDevice:(id)a4;
+- (void)dispatchMessage:(id)message delegateDevice:(id)device;
 @end
 
 @implementation HMDHAPAccessoryTaskContext
@@ -28,63 +28,63 @@
 
 - (HMDUser)user
 {
-  v3 = [(HMDHAPAccessoryTaskContext *)self home];
-  v4 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  home = [(HMDHAPAccessoryTaskContext *)self home];
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
 
-  if (v4)
+  if (requestMessage)
   {
-    if (v3)
+    if (home)
     {
-      v5 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-      v6 = [v5 userForHome:v3];
+      requestMessage2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+      currentUser = [requestMessage2 userForHome:home];
     }
 
     else
     {
-      v6 = 0;
+      currentUser = 0;
     }
   }
 
   else
   {
-    v6 = [v3 currentUser];
+    currentUser = [home currentUser];
   }
 
-  return v6;
+  return currentUser;
 }
 
-- (void)dispatchMessage:(id)a3 delegateDevice:(id)a4
+- (void)dispatchMessage:(id)message delegateDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(HMDHAPAccessoryTaskContext *)self home];
-  v8 = [(HMDHAPAccessoryTaskContext *)self homeUniqueIdentifier];
-  v9 = [(HMDHAPAccessoryTaskContext *)self workQueue];
-  [v10 redispatchToResidentMessage:v7 target:v8 responseQueue:v9 viaDevice:v6];
+  deviceCopy = device;
+  messageCopy = message;
+  home = [(HMDHAPAccessoryTaskContext *)self home];
+  homeUniqueIdentifier = [(HMDHAPAccessoryTaskContext *)self homeUniqueIdentifier];
+  workQueue = [(HMDHAPAccessoryTaskContext *)self workQueue];
+  [home redispatchToResidentMessage:messageCopy target:homeUniqueIdentifier responseQueue:workQueue viaDevice:deviceCopy];
 }
 
 - (BOOL)isComplete
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v3 = [v2 responseHandler];
-  v4 = v3 == 0;
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  responseHandler = [requestMessage responseHandler];
+  v4 = responseHandler == 0;
 
   return v4;
 }
 
 - (id)requestMessageName
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v3 = [v2 name];
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  name = [requestMessage name];
 
-  return v3;
+  return name;
 }
 
 - (BOOL)supportsMultiPartResponse
 {
   v6 = 0;
-  v2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v3 = [v2 BOOLForKey:@"kMultiPartResponseKey" keyPresent:&v6];
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  v3 = [requestMessage BOOLForKey:@"kMultiPartResponseKey" keyPresent:&v6];
   v4 = v6;
 
   return v3 & v4;
@@ -92,19 +92,19 @@
 
 - (BOOL)isRemoteAccessDeviceReachable
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self home];
-  v3 = [v2 isRemoteAccessDeviceReachable];
+  home = [(HMDHAPAccessoryTaskContext *)self home];
+  isRemoteAccessDeviceReachable = [home isRemoteAccessDeviceReachable];
 
-  return v3;
+  return isRemoteAccessDeviceReachable;
 }
 
 - (BOOL)isShortActionOperation
 {
-  v3 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v4 = [v3 uuidForKey:*MEMORY[0x277CD2050]];
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  v4 = [requestMessage uuidForKey:*MEMORY[0x277CD2050]];
 
-  v5 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v6 = [v5 BOOLForKey:*MEMORY[0x277CD2678]];
+  requestMessage2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  v6 = [requestMessage2 BOOLForKey:*MEMORY[0x277CD2678]];
   if (v4)
   {
     v7 = 1;
@@ -120,50 +120,50 @@
 
 - (int64_t)qualityOfService
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v3 = [v2 qualityOfService];
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  qualityOfService = [requestMessage qualityOfService];
 
-  return v3;
+  return qualityOfService;
 }
 
 - (id)clientIdentifier
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v3 = [v2 clientIdentifier];
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  clientIdentifier = [requestMessage clientIdentifier];
 
-  return v3;
+  return clientIdentifier;
 }
 
 - (id)requestMessageIdentifier
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self requestMessage];
-  v3 = [v2 identifier];
+  requestMessage = [(HMDHAPAccessoryTaskContext *)self requestMessage];
+  identifier = [requestMessage identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)homeMessageDestination
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self home];
-  v3 = [v2 messageDestination];
+  home = [(HMDHAPAccessoryTaskContext *)self home];
+  messageDestination = [home messageDestination];
 
-  return v3;
+  return messageDestination;
 }
 
 - (id)homeUniqueIdentifier
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self home];
-  v3 = [v2 uuid];
+  home = [(HMDHAPAccessoryTaskContext *)self home];
+  uuid = [home uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (id)workQueue
 {
-  v2 = [(HMDHAPAccessoryTaskContext *)self home];
-  v3 = [v2 workQueue];
+  home = [(HMDHAPAccessoryTaskContext *)self home];
+  workQueue = [home workQueue];
 
-  return v3;
+  return workQueue;
 }
 
 - (id)operationName
@@ -181,25 +181,25 @@
   return v2;
 }
 
-- (HMDHAPAccessoryTaskContext)initWithIdentifier:(id)a3 operationType:(int64_t)a4 home:(id)a5 sourceType:(unint64_t)a6 biomeSource:(unint64_t)a7 requestMessage:(id)a8 name:(id)a9
+- (HMDHAPAccessoryTaskContext)initWithIdentifier:(id)identifier operationType:(int64_t)type home:(id)home sourceType:(unint64_t)sourceType biomeSource:(unint64_t)source requestMessage:(id)message name:(id)name
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
+  identifierCopy = identifier;
+  homeCopy = home;
+  messageCopy = message;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = HMDHAPAccessoryTaskContext;
   v20 = [(HMDHAPAccessoryTaskContext *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_home, v17);
-    objc_storeStrong(&v21->_identifier, a3);
-    v21->_operationType = a4;
-    v21->_sourceType = a6;
-    v21->_biomeSource = a7;
-    objc_storeStrong(&v21->_requestMessage, a8);
-    v22 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v19];
+    objc_storeWeak(&v20->_home, homeCopy);
+    objc_storeStrong(&v21->_identifier, identifier);
+    v21->_operationType = type;
+    v21->_sourceType = sourceType;
+    v21->_biomeSource = source;
+    objc_storeStrong(&v21->_requestMessage, message);
+    v22 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:nameCopy];
     activity = v21->_activity;
     v21->_activity = v22;
 

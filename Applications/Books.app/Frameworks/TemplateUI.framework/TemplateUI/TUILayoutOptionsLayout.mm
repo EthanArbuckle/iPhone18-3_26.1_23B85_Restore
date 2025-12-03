@@ -1,11 +1,11 @@
 @interface TUILayoutOptionsLayout
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth;
-- (id)computedBoundsChildrenWithFlags:(unint64_t)a3;
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6;
+- (id)computedBoundsChildrenWithFlags:(unint64_t)flags;
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
 - (void)computeLayout;
-- (void)onChildInvalidate:(id)a3;
-- (void)onChildInvalidateIntrinsicSize:(id)a3;
+- (void)onChildInvalidate:(id)invalidate;
+- (void)onChildInvalidateIntrinsicSize:(id)size;
 - (void)onChildrenUpdated;
 - (void)onInvalidate;
 @end
@@ -21,15 +21,15 @@
   self->_chosenChild = 0;
 }
 
-- (void)onChildInvalidate:(id)a3
+- (void)onChildInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   chosenChild = self->_chosenChild;
-  v9 = v4;
-  if (chosenChild != v4)
+  v9 = invalidateCopy;
+  if (chosenChild != invalidateCopy)
   {
-    v6 = [(TUILayout *)self children];
-    v7 = [v6 indexOfObjectIdenticalTo:v9];
+    children = [(TUILayout *)self children];
+    v7 = [children indexOfObjectIdenticalTo:v9];
     chosenIndex = self->_chosenIndex;
 
     if (v7 >= chosenIndex)
@@ -56,18 +56,18 @@ LABEL_5:
   self->_chosenIndex = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)onChildInvalidateIntrinsicSize:(id)a3
+- (void)onChildInvalidateIntrinsicSize:(id)size
 {
   v5.receiver = self;
   v5.super_class = TUILayoutOptionsLayout;
-  [(TUILayout *)&v5 onChildInvalidateIntrinsicSize:a3];
+  [(TUILayout *)&v5 onChildInvalidateIntrinsicSize:size];
   chosenChild = self->_chosenChild;
   self->_chosenChild = 0;
 
   self->_chosenIndex = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)computedBoundsChildrenWithFlags:(unint64_t)a3
+- (id)computedBoundsChildrenWithFlags:(unint64_t)flags
 {
   if (self->_chosenChild)
   {
@@ -85,20 +85,20 @@ LABEL_5:
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 validatedIntrinsicWidthConsideringSpecified];
-  return v5;
+  validatedIntrinsicWidthConsideringSpecified = [firstObject validatedIntrinsicWidthConsideringSpecified];
+  return validatedIntrinsicWidthConsideringSpecified;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 validatedIntrinsicHeightConsideringSpecified];
-  return v5;
+  validatedIntrinsicHeightConsideringSpecified = [firstObject validatedIntrinsicHeightConsideringSpecified];
+  return validatedIntrinsicHeightConsideringSpecified;
 }
 
 - (void)computeLayout
@@ -106,20 +106,20 @@ LABEL_5:
   chosenChild = self->_chosenChild;
   if (!chosenChild)
   {
-    v4 = [(TUILayout *)self children];
+    children = [(TUILayout *)self children];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_7D574;
     v7[3] = &unk_260448;
     v7[4] = self;
-    [v4 enumerateObjectsUsingBlock:v7];
-    if (!self->_chosenChild && [v4 count])
+    [children enumerateObjectsUsingBlock:v7];
+    if (!self->_chosenChild && [children count])
     {
-      v5 = [v4 lastObject];
+      lastObject = [children lastObject];
       v6 = self->_chosenChild;
-      self->_chosenChild = v5;
+      self->_chosenChild = lastObject;
 
-      self->_chosenIndex = [v4 count] - 1;
+      self->_chosenIndex = [children count] - 1;
     }
 
     chosenChild = self->_chosenChild;
@@ -130,19 +130,19 @@ LABEL_5:
   [(TUILayout *)self setComputedNaturalSize:?];
 }
 
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
   if (self->_chosenChild)
   {
     chosenChild = self->_chosenChild;
-    v10 = a6;
-    v11 = a4;
+    modelsCopy = models;
+    contextCopy = context;
     v12 = [NSArray arrayWithObjects:&chosenChild count:1];
-    v13 = *&a5->c;
-    v14[0] = *&a5->a;
+    v13 = *&transform->c;
+    v14[0] = *&transform->a;
     v14[1] = v13;
-    v14[2] = *&a5->tx;
-    [(TUILayout *)self appendChilden:v12 renderModelCompatibleWithKind:a3 context:v11 transform:v14 toModels:v10];
+    v14[2] = *&transform->tx;
+    [(TUILayout *)self appendChilden:v12 renderModelCompatibleWithKind:kind context:contextCopy transform:v14 toModels:modelsCopy];
   }
 }
 

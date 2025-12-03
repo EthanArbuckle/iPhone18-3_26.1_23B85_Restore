@@ -1,19 +1,19 @@
 @interface CPMessageListItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CPListTemplate)listTemplate;
-- (CPMessageListItem)initWithCoder:(id)a3;
+- (CPMessageListItem)initWithCoder:(id)coder;
 - (CPMessageListItem)initWithConversationIdentifier:(NSString *)conversationIdentifier text:(NSString *)text leadingConfiguration:(CPMessageListItemLeadingConfiguration *)leadingConfiguration trailingConfiguration:(CPMessageListItemTrailingConfiguration *)trailingConfiguration detailText:(NSString *)detailText trailingText:(NSString *)trailingText;
 - (CPMessageListItem)initWithFullName:(NSString *)fullName phoneOrEmailAddress:(NSString *)phoneOrEmailAddress leadingConfiguration:(CPMessageListItemLeadingConfiguration *)leadingConfiguration trailingConfiguration:(CPMessageListItemTrailingConfiguration *)trailingConfiguration detailText:(NSString *)detailText trailingText:(NSString *)trailingText;
 - (NSString)description;
 - (UIImage)leadingDetailTextImage;
 - (unint64_t)hash;
 - (void)_setNeedsUpdate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setConversationIdentifier:(NSString *)conversationIdentifier;
 - (void)setDetailText:(NSString *)detailText;
 - (void)setEnabled:(BOOL)enabled;
 - (void)setLeadingConfiguration:(CPMessageListItemLeadingConfiguration *)leadingConfiguration;
-- (void)setLeadingDetailTextImage:(id)a3;
+- (void)setLeadingDetailTextImage:(id)image;
 - (void)setPhoneOrEmailAddress:(NSString *)phoneOrEmailAddress;
 - (void)setText:(NSString *)text;
 - (void)setTrailingConfiguration:(CPMessageListItemTrailingConfiguration *)trailingConfiguration;
@@ -28,10 +28,10 @@
   v10.receiver = self;
   v10.super_class = CPMessageListItem;
   v4 = [(CPMessageListItem *)&v10 description];
-  v5 = [(CPMessageListItem *)self identifier];
-  v6 = [(CPMessageListItem *)self conversationIdentifier];
-  v7 = [(CPMessageListItem *)self text];
-  v8 = [v3 stringWithFormat:@"%@: {identifier: %@, conversationIdentifier: %@, text: %@, detailText: %@, trailingText: %@, leadingConfiguration: %@, trailingConfiguration: %@}", v4, v5, v6, v7, self->_detailText, self->_trailingText, self->_leadingConfiguration, self->_trailingConfiguration];
+  identifier = [(CPMessageListItem *)self identifier];
+  conversationIdentifier = [(CPMessageListItem *)self conversationIdentifier];
+  text = [(CPMessageListItem *)self text];
+  v8 = [v3 stringWithFormat:@"%@: {identifier: %@, conversationIdentifier: %@, text: %@, detailText: %@, trailingText: %@, leadingConfiguration: %@, trailingConfiguration: %@}", v4, identifier, conversationIdentifier, text, self->_detailText, self->_trailingText, self->_leadingConfiguration, self->_trailingConfiguration];
 
   return v8;
 }
@@ -49,9 +49,9 @@
   v18 = [(CPMessageListItem *)&v25 init];
   if (v18)
   {
-    v19 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v18->_identifier;
-    v18->_identifier = v19;
+    v18->_identifier = uUID;
 
     objc_storeStrong(&v18->_text, text);
     objc_storeStrong(&v18->_conversationIdentifier, conversationIdentifier);
@@ -78,9 +78,9 @@
   v18 = [(CPMessageListItem *)&v25 init];
   if (v18)
   {
-    v19 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v18->_identifier;
-    v18->_identifier = v19;
+    v18->_identifier = uUID;
 
     objc_storeStrong(&v18->_text, fullName);
     objc_storeStrong(&v18->_phoneOrEmailAddress, phoneOrEmailAddress);
@@ -94,48 +94,48 @@
   return v18;
 }
 
-- (CPMessageListItem)initWithCoder:(id)a3
+- (CPMessageListItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CPMessageListItem;
   v5 = [(CPMessageListItem *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTextKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTextKey"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemConversationIdentifierKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemConversationIdentifierKey"];
     conversationIdentifier = v5->_conversationIdentifier;
     v5->_conversationIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemPhoneOrEmailKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemPhoneOrEmailKey"];
     phoneOrEmailAddress = v5->_phoneOrEmailAddress;
     v5->_phoneOrEmailAddress = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemLeadingConfigurationKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemLeadingConfigurationKey"];
     leadingConfiguration = v5->_leadingConfiguration;
     v5->_leadingConfiguration = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTrailingConfigurationKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTrailingConfigurationKey"];
     trailingConfiguration = v5->_trailingConfiguration;
     v5->_trailingConfiguration = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemDetailTextKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemDetailTextKey"];
     detailText = v5->_detailText;
     v5->_detailText = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTrailingTextKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTrailingTextKey"];
     trailingText = v5->_trailingText;
     v5->_trailingText = v20;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"kCPMessageListItemEnabledKey"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemLeadingDetailTextImageSetKey"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"kCPMessageListItemEnabledKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemLeadingDetailTextImageSetKey"];
     leadingDetailTextImageSet = v5->_leadingDetailTextImageSet;
     v5->_leadingDetailTextImageSet = v22;
   }
@@ -143,59 +143,59 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPMessageListItem *)self text];
-  [v4 encodeObject:v5 forKey:@"kCPMessageListItemTextKey"];
+  coderCopy = coder;
+  text = [(CPMessageListItem *)self text];
+  [coderCopy encodeObject:text forKey:@"kCPMessageListItemTextKey"];
 
-  v6 = [(CPMessageListItem *)self identifier];
-  [v4 encodeObject:v6 forKey:@"kCPMessageListItemIdentifierKey"];
+  identifier = [(CPMessageListItem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPMessageListItemIdentifierKey"];
 
-  v7 = [(CPMessageListItem *)self conversationIdentifier];
-  [v4 encodeObject:v7 forKey:@"kCPMessageListItemConversationIdentifierKey"];
+  conversationIdentifier = [(CPMessageListItem *)self conversationIdentifier];
+  [coderCopy encodeObject:conversationIdentifier forKey:@"kCPMessageListItemConversationIdentifierKey"];
 
-  v8 = [(CPMessageListItem *)self phoneOrEmailAddress];
-  [v4 encodeObject:v8 forKey:@"kCPMessageListItemPhoneOrEmailKey"];
+  phoneOrEmailAddress = [(CPMessageListItem *)self phoneOrEmailAddress];
+  [coderCopy encodeObject:phoneOrEmailAddress forKey:@"kCPMessageListItemPhoneOrEmailKey"];
 
-  v9 = [(CPMessageListItem *)self leadingConfiguration];
-  [v4 encodeObject:v9 forKey:@"kCPMessageListItemLeadingConfigurationKey"];
+  leadingConfiguration = [(CPMessageListItem *)self leadingConfiguration];
+  [coderCopy encodeObject:leadingConfiguration forKey:@"kCPMessageListItemLeadingConfigurationKey"];
 
-  v10 = [(CPMessageListItem *)self trailingConfiguration];
-  [v4 encodeObject:v10 forKey:@"kCPMessageListItemTrailingConfigurationKey"];
+  trailingConfiguration = [(CPMessageListItem *)self trailingConfiguration];
+  [coderCopy encodeObject:trailingConfiguration forKey:@"kCPMessageListItemTrailingConfigurationKey"];
 
-  v11 = [(CPMessageListItem *)self detailText];
-  [v4 encodeObject:v11 forKey:@"kCPMessageListItemDetailTextKey"];
+  detailText = [(CPMessageListItem *)self detailText];
+  [coderCopy encodeObject:detailText forKey:@"kCPMessageListItemDetailTextKey"];
 
-  v12 = [(CPMessageListItem *)self trailingText];
-  [v4 encodeObject:v12 forKey:@"kCPMessageListItemTrailingTextKey"];
+  trailingText = [(CPMessageListItem *)self trailingText];
+  [coderCopy encodeObject:trailingText forKey:@"kCPMessageListItemTrailingTextKey"];
 
-  [v4 encodeBool:-[CPMessageListItem isEnabled](self forKey:{"isEnabled"), @"kCPMessageListItemEnabledKey"}];
-  v13 = [(CPMessageListItem *)self leadingDetailTextImageSet];
-  [v4 encodeObject:v13 forKey:@"kCPMessageListItemLeadingDetailTextImageSetKey"];
+  [coderCopy encodeBool:-[CPMessageListItem isEnabled](self forKey:{"isEnabled"), @"kCPMessageListItemEnabledKey"}];
+  leadingDetailTextImageSet = [(CPMessageListItem *)self leadingDetailTextImageSet];
+  [coderCopy encodeObject:leadingDetailTextImageSet forKey:@"kCPMessageListItemLeadingDetailTextImageSetKey"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CPMessageListItem *)self text];
-  v4 = [v3 hash];
-  v5 = [(CPMessageListItem *)self conversationIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CPMessageListItem *)self identifier];
-  v8 = [v7 hash];
+  text = [(CPMessageListItem *)self text];
+  v4 = [text hash];
+  conversationIdentifier = [(CPMessageListItem *)self conversationIdentifier];
+  v6 = [conversationIdentifier hash] ^ v4;
+  identifier = [(CPMessageListItem *)self identifier];
+  v8 = [identifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 conversationIdentifier];
-    v6 = [(CPMessageListItem *)self conversationIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    conversationIdentifier = [equalCopy conversationIdentifier];
+    conversationIdentifier2 = [(CPMessageListItem *)self conversationIdentifier];
+    v7 = [conversationIdentifier isEqualToString:conversationIdentifier2];
   }
 
   else
@@ -217,8 +217,8 @@
 
 - (void)_setNeedsUpdate
 {
-  v3 = [(CPMessageListItem *)self listTemplate];
-  [v3 _setItemNeedsUpdate:self];
+  listTemplate = [(CPMessageListItem *)self listTemplate];
+  [listTemplate _setItemNeedsUpdate:self];
 }
 
 - (void)setConversationIdentifier:(NSString *)conversationIdentifier
@@ -285,33 +285,33 @@
   }
 }
 
-- (void)setLeadingDetailTextImage:(id)a3
+- (void)setLeadingDetailTextImage:(id)image
 {
-  v7 = a3;
-  v4 = [(CPImageSet *)self->_leadingDetailTextImageSet image];
+  imageCopy = image;
+  image = [(CPImageSet *)self->_leadingDetailTextImageSet image];
 
-  v5 = v7;
-  if (v4 != v7)
+  v5 = imageCopy;
+  if (image != imageCopy)
   {
-    if (v7)
+    if (imageCopy)
     {
-      v5 = [[CPImageSet alloc] initWithImage:v7 treatmentBlock:&__block_literal_global_114];
+      v5 = [[CPImageSet alloc] initWithImage:imageCopy treatmentBlock:&__block_literal_global_114];
     }
 
     leadingDetailTextImageSet = self->_leadingDetailTextImageSet;
     self->_leadingDetailTextImageSet = v5;
 
     [(CPMessageListItem *)self _setNeedsUpdate];
-    v5 = v7;
+    v5 = imageCopy;
   }
 }
 
 - (UIImage)leadingDetailTextImage
 {
-  v2 = [(CPMessageListItem *)self leadingDetailTextImageSet];
-  v3 = [v2 image];
+  leadingDetailTextImageSet = [(CPMessageListItem *)self leadingDetailTextImageSet];
+  image = [leadingDetailTextImageSet image];
 
-  return v3;
+  return image;
 }
 
 - (CPListTemplate)listTemplate

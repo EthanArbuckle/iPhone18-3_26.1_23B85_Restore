@@ -1,182 +1,182 @@
 @interface JavaUtilAbstractMap
-- (BOOL)containsKeyWithId:(id)a3;
-- (BOOL)containsValueWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (BOOL)containsValueWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)clone;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)keySet;
-- (id)removeWithId:(id)a3;
+- (id)removeWithId:(id)id;
 - (id)values;
 - (int)size;
 - (unint64_t)hash;
 - (void)clear;
 - (void)dealloc;
-- (void)putAllWithJavaUtilMap:(id)a3;
+- (void)putAllWithJavaUtilMap:(id)map;
 @end
 
 @implementation JavaUtilAbstractMap
 
 - (void)clear
 {
-  v2 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v2)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet)
   {
     JreThrowNullPointerException();
   }
 
-  [v2 clear];
+  [entrySet clear];
 }
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
-  v4 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v4)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet)
   {
     goto LABEL_13;
   }
 
-  v5 = [v4 iterator];
-  v6 = v5;
-  if (a3)
+  iterator = [entrySet iterator];
+  v6 = iterator;
+  if (id)
   {
-    if (v5)
+    if (iterator)
     {
       do
       {
-        v7 = [v6 hasNext];
-        if ((v7 & 1) == 0)
+        hasNext = [v6 hasNext];
+        if ((hasNext & 1) == 0)
         {
           break;
         }
 
-        v8 = [v6 next];
-        if (!v8)
+        next = [v6 next];
+        if (!next)
         {
           goto LABEL_13;
         }
       }
 
-      while (([a3 isEqual:{objc_msgSend(v8, "getKey")}] & 1) == 0);
-      return v7;
+      while (([id isEqual:{objc_msgSend(next, "getKey")}] & 1) == 0);
+      return hasNext;
     }
 
 LABEL_13:
     JreThrowNullPointerException();
   }
 
-  if (!v5)
+  if (!iterator)
   {
     goto LABEL_13;
   }
 
   do
   {
-    v7 = [v6 hasNext];
-    if ((v7 & 1) == 0)
+    hasNext = [v6 hasNext];
+    if ((hasNext & 1) == 0)
     {
       break;
     }
 
-    v9 = [v6 next];
-    if (!v9)
+    next2 = [v6 next];
+    if (!next2)
     {
       goto LABEL_13;
     }
   }
 
-  while ([v9 getKey]);
-  return v7;
+  while ([next2 getKey]);
+  return hasNext;
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
-  v4 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v4)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet)
   {
     goto LABEL_13;
   }
 
-  v5 = [v4 iterator];
-  v6 = v5;
-  if (a3)
+  iterator = [entrySet iterator];
+  v6 = iterator;
+  if (id)
   {
-    if (v5)
+    if (iterator)
     {
       do
       {
-        v7 = [v6 hasNext];
-        if ((v7 & 1) == 0)
+        hasNext = [v6 hasNext];
+        if ((hasNext & 1) == 0)
         {
           break;
         }
 
-        v8 = [v6 next];
-        if (!v8)
+        next = [v6 next];
+        if (!next)
         {
           goto LABEL_13;
         }
       }
 
-      while (([a3 isEqual:{objc_msgSend(v8, "getValue")}] & 1) == 0);
-      return v7;
+      while (([id isEqual:{objc_msgSend(next, "getValue")}] & 1) == 0);
+      return hasNext;
     }
 
 LABEL_13:
     JreThrowNullPointerException();
   }
 
-  if (!v5)
+  if (!iterator)
   {
     goto LABEL_13;
   }
 
   do
   {
-    v7 = [v6 hasNext];
-    if ((v7 & 1) == 0)
+    hasNext = [v6 hasNext];
+    if ((hasNext & 1) == 0)
     {
       break;
     }
 
-    v9 = [v6 next];
-    if (!v9)
+    next2 = [v6 next];
+    if (!next2)
     {
       goto LABEL_13;
     }
   }
 
-  while ([v9 getValue]);
-  return v7;
+  while ([next2 getValue]);
+  return hasNext;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_21;
   }
 
-  v5 = [JavaUtilMap_class_() isInstance:a3];
+  v5 = [JavaUtilMap_class_() isInstance:equal];
   if (!v5)
   {
     return v5;
   }
 
   v6 = JavaUtilMap_class_();
-  if (!a3)
+  if (!equal)
   {
     [(JavaUtilAbstractMap *)self size];
     JreThrowNullPointerException();
   }
 
-  if (([v6 isInstance:a3] & 1) == 0)
+  if (([v6 isInstance:equal] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
   v7 = [(JavaUtilAbstractMap *)self size];
-  if (v7 != [a3 size])
+  if (v7 != [equal size])
   {
 LABEL_26:
     LOBYTE(v5) = 0;
@@ -187,14 +187,14 @@ LABEL_26:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(JavaUtilAbstractMap *)self entrySet];
-  v9 = v8;
-  if (!v8)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  v9 = entrySet;
+  if (!entrySet)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [entrySet countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v10)
   {
 LABEL_21:
@@ -218,19 +218,19 @@ LABEL_21:
         JreThrowNullPointerException();
       }
 
-      v14 = [*(*(&v18 + 1) + 8 * i) getKey];
-      v15 = [v13 getValue];
-      v16 = [a3 getWithId:v14];
-      if (v15)
+      getKey = [*(*(&v18 + 1) + 8 * i) getKey];
+      getValue = [v13 getValue];
+      v16 = [equal getWithId:getKey];
+      if (getValue)
       {
-        v5 = [v15 isEqual:v16];
+        v5 = [getValue isEqual:v16];
         if (!v5)
         {
           return v5;
         }
       }
 
-      else if (v16 || ([a3 containsKeyWithId:v14] & 1) == 0)
+      else if (v16 || ([equal containsKeyWithId:getKey] & 1) == 0)
       {
         goto LABEL_26;
       }
@@ -244,30 +244,30 @@ LABEL_21:
   return v5;
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  v4 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v4)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet)
   {
     goto LABEL_16;
   }
 
-  v5 = [v4 iterator];
-  v6 = v5;
-  if (a3)
+  iterator = [entrySet iterator];
+  v6 = iterator;
+  if (id)
   {
-    if (v5)
+    if (iterator)
     {
       while (([v6 hasNext] & 1) != 0)
       {
-        v7 = [v6 next];
-        if (!v7)
+        next = [v6 next];
+        if (!next)
         {
           goto LABEL_16;
         }
 
-        v8 = v7;
-        if ([a3 isEqual:{objc_msgSend(v7, "getKey")}])
+        v8 = next;
+        if ([id isEqual:{objc_msgSend(next, "getKey")}])
         {
           goto LABEL_12;
         }
@@ -280,21 +280,21 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  if (!v5)
+  if (!iterator)
   {
     goto LABEL_16;
   }
 
   while (([v6 hasNext] & 1) != 0)
   {
-    v9 = [v6 next];
-    if (!v9)
+    next2 = [v6 next];
+    if (!next2)
     {
       goto LABEL_16;
     }
 
-    v8 = v9;
-    if (![v9 getKey])
+    v8 = next2;
+    if (![next2 getKey])
     {
 LABEL_12:
 
@@ -307,8 +307,8 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v2 || (v3 = [v2 iterator]) == 0)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet || (v3 = [entrySet iterator]) == 0)
   {
 LABEL_9:
     JreThrowNullPointerException();
@@ -323,13 +323,13 @@ LABEL_9:
   v5 = 0;
   do
   {
-    v6 = [v4 next];
-    if (!v6)
+    next = [v4 next];
+    if (!next)
     {
       goto LABEL_9;
     }
 
-    v5 += [v6 hash];
+    v5 += [next hash];
   }
 
   while (([v4 hasNext] & 1) != 0);
@@ -352,13 +352,13 @@ LABEL_9:
   return result;
 }
 
-- (void)putAllWithJavaUtilMap:(id)a3
+- (void)putAllWithJavaUtilMap:(id)map
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  if (!a3 || (v4 = [a3 entrySet]) == 0)
+  if (!map || (v4 = [map entrySet]) == 0)
   {
 LABEL_12:
     JreThrowNullPointerException();
@@ -395,30 +395,30 @@ LABEL_12:
   }
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
-  v4 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v4)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet)
   {
     goto LABEL_16;
   }
 
-  v5 = [v4 iterator];
-  v6 = v5;
-  if (a3)
+  iterator = [entrySet iterator];
+  v6 = iterator;
+  if (id)
   {
-    if (v5)
+    if (iterator)
     {
       while (([v6 hasNext] & 1) != 0)
       {
-        v7 = [v6 next];
-        if (!v7)
+        next = [v6 next];
+        if (!next)
         {
           goto LABEL_16;
         }
 
-        v8 = v7;
-        if ([a3 isEqual:{objc_msgSend(v7, "getKey")}])
+        v8 = next;
+        if ([id isEqual:{objc_msgSend(next, "getKey")}])
         {
           goto LABEL_12;
         }
@@ -431,21 +431,21 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  if (!v5)
+  if (!iterator)
   {
     goto LABEL_16;
   }
 
   while (([v6 hasNext] & 1) != 0)
   {
-    v9 = [v6 next];
-    if (!v9)
+    next2 = [v6 next];
+    if (!next2)
     {
       goto LABEL_16;
     }
 
-    v8 = v9;
-    if (![v9 getKey])
+    v8 = next2;
+    if (![next2 getKey])
     {
 LABEL_12:
       [v6 remove];
@@ -459,13 +459,13 @@ LABEL_12:
 
 - (int)size
 {
-  v2 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v2)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 size];
+  return [entrySet size];
 }
 
 - (NSString)description
@@ -477,8 +477,8 @@ LABEL_12:
 
   v4 = new_JavaLangStringBuilder_initWithInt_(28 * [(JavaUtilAbstractMap *)self size]);
   [(JavaLangStringBuilder *)v4 appendWithChar:123];
-  v5 = [(JavaUtilAbstractMap *)self entrySet];
-  if (!v5 || (v6 = [v5 iterator]) == 0)
+  entrySet = [(JavaUtilAbstractMap *)self entrySet];
+  if (!entrySet || (v6 = [entrySet iterator]) == 0)
   {
 LABEL_19:
     JreThrowNullPointerException();
@@ -489,34 +489,34 @@ LABEL_19:
   {
     do
     {
-      v8 = [v7 next];
-      if (!v8)
+      next = [v7 next];
+      if (!next)
       {
         goto LABEL_19;
       }
 
-      v9 = v8;
-      v10 = [v8 getKey];
-      if (v10 == self)
+      v9 = next;
+      getKey = [next getKey];
+      if (getKey == self)
       {
         [(JavaLangStringBuilder *)v4 appendWithNSString:@"(this Map)"];
       }
 
       else
       {
-        [(JavaLangStringBuilder *)v4 appendWithId:v10];
+        [(JavaLangStringBuilder *)v4 appendWithId:getKey];
       }
 
       [(JavaLangStringBuilder *)v4 appendWithChar:61];
-      v11 = [v9 getValue];
-      if (v11 == self)
+      getValue = [v9 getValue];
+      if (getValue == self)
       {
         [(JavaLangStringBuilder *)v4 appendWithNSString:@"(this Map)"];
       }
 
       else
       {
-        [(JavaLangStringBuilder *)v4 appendWithId:v11];
+        [(JavaLangStringBuilder *)v4 appendWithId:getValue];
       }
 
       if ([v7 hasNext])
@@ -553,9 +553,9 @@ LABEL_19:
 {
   v4.receiver = self;
   v4.super_class = JavaUtilAbstractMap;
-  v2 = [(JavaUtilAbstractMap *)&v4 clone];
+  clone = [(JavaUtilAbstractMap *)&v4 clone];
   objc_opt_class();
-  if (!v2)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -565,9 +565,9 @@ LABEL_19:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(v2 + 1, 0);
-  JreStrongAssign(v2 + 2, 0);
-  return v2;
+  JreStrongAssign(clone + 1, 0);
+  JreStrongAssign(clone + 2, 0);
+  return clone;
 }
 
 - (void)dealloc

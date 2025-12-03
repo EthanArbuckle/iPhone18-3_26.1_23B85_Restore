@@ -1,10 +1,10 @@
 @interface UIDictationTipInsertionHandler
 - (UIDictationTipHandlerDelegate)delegate;
-- (UIDictationTipInsertionHandler)initWithDelegate:(id)a3;
+- (UIDictationTipInsertionHandler)initWithDelegate:(id)delegate;
 - (void)finalizeRecordedText;
-- (void)recordDictationTipText:(id)a3;
+- (void)recordDictationTipText:(id)text;
 - (void)resetHandler;
-- (void)startRecodingText:(id)a3;
+- (void)startRecodingText:(id)text;
 @end
 
 @implementation UIDictationTipInsertionHandler
@@ -21,16 +21,16 @@
   [(UIDelayedAction *)finalizeAction cancel];
 }
 
-- (UIDictationTipInsertionHandler)initWithDelegate:(id)a3
+- (UIDictationTipInsertionHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = UIDictationTipInsertionHandler;
   v5 = [(UIDictationTipInsertionHandler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(UIDictationTipInsertionHandler *)v5 setDelegate:v4];
+    [(UIDictationTipInsertionHandler *)v5 setDelegate:delegateCopy];
     v7 = [[UIDelayedAction alloc] initWithTarget:v6 action:sel_finalizeRecordedText userInfo:0 delay:1.0];
     finalizeAction = v6->_finalizeAction;
     v6->_finalizeAction = v7;
@@ -52,9 +52,9 @@
 
   else
   {
-    v4 = [(NSMutableString *)self->_insertionText _containsEmojiOnly];
+    _containsEmojiOnly = [(NSMutableString *)self->_insertionText _containsEmojiOnly];
 
-    if ((v4 & 1) == 0)
+    if ((_containsEmojiOnly & 1) == 0)
     {
       goto LABEL_5;
     }
@@ -66,14 +66,14 @@
 
   v15 = v12;
 LABEL_5:
-  v13 = [(UIDictationTipInsertionHandler *)self delegate];
+  delegate = [(UIDictationTipInsertionHandler *)self delegate];
   v14 = _UILocalizedString(@"Dictation Insertion Tip Title", @"Title of the Insertion tip", @"Insert Text");
-  [v13 finalizeTextWithTipType:2 title:v14 andTipDescription:v15];
+  [delegate finalizeTextWithTipType:2 title:v14 andTipDescription:v15];
 }
 
-- (void)recordDictationTipText:(id)a3
+- (void)recordDictationTipText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained getDictationTipSignaled] == 2)
   {
@@ -82,7 +82,7 @@ LABEL_5:
     if (textRecorderStatus != 2)
     {
       [(UIDelayedAction *)self->_finalizeAction unschedule];
-      [(NSMutableString *)self->_insertionText appendString:v6];
+      [(NSMutableString *)self->_insertionText appendString:textCopy];
       self->_textRecorderStatus = 1;
       [(UIDelayedAction *)self->_finalizeAction touch];
     }
@@ -93,16 +93,16 @@ LABEL_5:
   }
 }
 
-- (void)startRecodingText:(id)a3
+- (void)startRecodingText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained getDictationTipSignaled];
+  getDictationTipSignaled = [WeakRetained getDictationTipSignaled];
 
-  if (v5 == 2)
+  if (getDictationTipSignaled == 2)
   {
     [(UIDictationTipInsertionHandler *)self resetHandler];
-    [(UIDictationTipInsertionHandler *)self recordDictationTipText:v6];
+    [(UIDictationTipInsertionHandler *)self recordDictationTipText:textCopy];
   }
 }
 

@@ -1,33 +1,33 @@
 @interface WBSFormAutoFillParsecDomainPolicyProvider
-- (WBSFormAutoFillParsecDomainPolicyProvider)initWithFeedbackAllowList:(id)a3;
-- (void)autoFillFeedbackProcessor:(id)a3 determineWhetherToSendFeedbackForDomain:(id)a4 resultHandler:(id)a5;
-- (void)getLastPolicyRetrievalURLStringWithResultHandler:(id)a3;
-- (void)setPoliciesWithJSONData:(id)a3 retrievalURLString:(id)a4;
+- (WBSFormAutoFillParsecDomainPolicyProvider)initWithFeedbackAllowList:(id)list;
+- (void)autoFillFeedbackProcessor:(id)processor determineWhetherToSendFeedbackForDomain:(id)domain resultHandler:(id)handler;
+- (void)getLastPolicyRetrievalURLStringWithResultHandler:(id)handler;
+- (void)setPoliciesWithJSONData:(id)data retrievalURLString:(id)string;
 @end
 
 @implementation WBSFormAutoFillParsecDomainPolicyProvider
 
-- (WBSFormAutoFillParsecDomainPolicyProvider)initWithFeedbackAllowList:(id)a3
+- (WBSFormAutoFillParsecDomainPolicyProvider)initWithFeedbackAllowList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v10.receiver = self;
   v10.super_class = WBSFormAutoFillParsecDomainPolicyProvider;
   v6 = [(WBSFormAutoFillParsecDomainPolicyProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feedbackAllowList, a3);
+    objc_storeStrong(&v6->_feedbackAllowList, list);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setPoliciesWithJSONData:(id)a3 retrievalURLString:(id)a4
+- (void)setPoliciesWithJSONData:(id)data retrievalURLString:(id)string
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [v6 copy];
+  stringCopy = string;
+  v7 = [data copy];
+  v8 = [stringCopy copy];
 
   feedbackAllowList = self->_feedbackAllowList;
   v12[0] = MEMORY[0x1E69E9820];
@@ -36,7 +36,7 @@
   v12[3] = &unk_1E7FC5A50;
   v13 = v8;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v10 = v7;
   v11 = v8;
   [(WBSCrowdsourcedFeedbackAllowList *)feedbackAllowList getLastAllowListRetrievalURLStringWithCompletionHandler:v12];
@@ -78,16 +78,16 @@ void __88__WBSFormAutoFillParsecDomainPolicyProvider_setPoliciesWithJSONData_ret
   }
 }
 
-- (void)getLastPolicyRetrievalURLStringWithResultHandler:(id)a3
+- (void)getLastPolicyRetrievalURLStringWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   feedbackAllowList = self->_feedbackAllowList;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__WBSFormAutoFillParsecDomainPolicyProvider_getLastPolicyRetrievalURLStringWithResultHandler___block_invoke;
   v7[3] = &unk_1E7FC5A78;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSCrowdsourcedFeedbackAllowList *)feedbackAllowList getLastAllowListRetrievalURLStringWithCompletionHandler:v7];
 }
 
@@ -105,17 +105,17 @@ void __94__WBSFormAutoFillParsecDomainPolicyProvider_getLastPolicyRetrievalURLSt
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)autoFillFeedbackProcessor:(id)a3 determineWhetherToSendFeedbackForDomain:(id)a4 resultHandler:(id)a5
+- (void)autoFillFeedbackProcessor:(id)processor determineWhetherToSendFeedbackForDomain:(id)domain resultHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   feedbackAllowList = self->_feedbackAllowList;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __125__WBSFormAutoFillParsecDomainPolicyProvider_autoFillFeedbackProcessor_determineWhetherToSendFeedbackForDomain_resultHandler___block_invoke;
   v10[3] = &unk_1E7FC5AA0;
-  v11 = v7;
-  v9 = v7;
-  [(WBSCrowdsourcedFeedbackAllowList *)feedbackAllowList getAllowListStatusForDomain:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(WBSCrowdsourcedFeedbackAllowList *)feedbackAllowList getAllowListStatusForDomain:domain completionHandler:v10];
 }
 
 uint64_t __125__WBSFormAutoFillParsecDomainPolicyProvider_autoFillFeedbackProcessor_determineWhetherToSendFeedbackForDomain_resultHandler___block_invoke(uint64_t result, unint64_t a2)

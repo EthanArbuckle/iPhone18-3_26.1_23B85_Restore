@@ -3,12 +3,12 @@
 - (BOOL)isBuddySetupDone;
 - (BOOL)isMigrationDone;
 - (DeviceUtility)init;
-- (id)createTimer:(unsigned int)a3 repeat:(BOOL)a4 callback:(id)a5;
+- (id)createTimer:(unsigned int)timer repeat:(BOOL)repeat callback:(id)callback;
 - (id)getLocalProductType;
-- (id)getRemoteProductType:(id)a3;
-- (id)getRemoteUDID:(id)a3;
-- (id)queryFromLockdown:(id)a3 key:(id)a4;
-- (void)cancelTimer:(id)a3;
+- (id)getRemoteProductType:(id)type;
+- (id)getRemoteUDID:(id)d;
+- (id)queryFromLockdown:(id)lockdown key:(id)key;
+- (void)cancelTimer:(id)timer;
 @end
 
 @implementation DeviceUtility
@@ -39,10 +39,10 @@
   return v3;
 }
 
-- (id)queryFromLockdown:(id)a3 key:(id)a4
+- (id)queryFromLockdown:(id)lockdown key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  lockdownCopy = lockdown;
+  keyCopy = key;
   if (lockdown_connect())
   {
     v8 = 3;
@@ -57,9 +57,9 @@
       sleep(1u);
       if (!--v8)
       {
-        v10 = [NSString stringWithFormat:@"Failed to read lockdown %@ domain", v6];
-        v11 = [(MDRBaseObject *)self logger];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        lockdownCopy = [NSString stringWithFormat:@"Failed to read lockdown %@ domain", lockdownCopy];
+        logger = [(MDRBaseObject *)self logger];
+        if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
         {
           sub_100012F30();
         }
@@ -74,8 +74,8 @@
   else
   {
     v12 = [NSString stringWithFormat:@"Failed to connect to lockdown daemon"];
-    v13 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_100012F30();
     }
@@ -92,12 +92,12 @@
   if (v3)
   {
     v4 = [NSString stringWithFormat:@"Read PurpleBuddy status: %@", v3];
-    v5 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v15 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
     v6 = [v3 objectForKeyedSubscript:@"SetupDone"];
@@ -122,8 +122,8 @@
   else
   {
     v11 = [NSString stringWithFormat:@"Failed to read PurpleBuddy status"];
-    v12 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_100012FA4();
     }
@@ -140,36 +140,36 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
     v6 = "NO";
-    if (v5)
+    if (bOOLValue)
     {
       v6 = "YES";
     }
 
     v7 = [NSString stringWithFormat:@"Read Migration Done: %s", v6];
-    v8 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v11 = v7;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 
   else
   {
     v7 = [NSString stringWithFormat:@"Failed to read Migration status"];
-    v8 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100013018();
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)getLocalProductType
@@ -190,7 +190,7 @@
   return v2;
 }
 
-- (id)getRemoteProductType:(id)a3
+- (id)getRemoteProductType:(id)type
 {
   v3 = remote_device_copy_property();
   v4 = v3;
@@ -218,7 +218,7 @@
   return v6;
 }
 
-- (id)getRemoteUDID:(id)a3
+- (id)getRemoteUDID:(id)d
 {
   v3 = remote_device_copy_property();
   v4 = v3;
@@ -235,18 +235,18 @@
   return v6;
 }
 
-- (id)createTimer:(unsigned int)a3 repeat:(BOOL)a4 callback:(id)a5
+- (id)createTimer:(unsigned int)timer repeat:(BOOL)repeat callback:(id)callback
 {
-  v5 = a4;
-  v8 = a5;
+  repeatCopy = repeat;
+  callbackCopy = callback;
   v9 = dispatch_get_global_queue(0, 0);
   v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v9);
 
   if (v10)
   {
-    v11 = 1000000000 * a3;
+    v11 = 1000000000 * timer;
     v12 = dispatch_time(0, v11);
-    if (v5)
+    if (repeatCopy)
     {
       v13 = v11;
     }
@@ -263,8 +263,8 @@
     handler[3] = &unk_100020960;
     v14 = v10;
     v35 = v14;
-    v36 = self;
-    v37 = v8;
+    selfCopy = self;
+    v37 = callbackCopy;
     dispatch_source_set_event_handler(v14, handler);
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
@@ -272,14 +272,14 @@
     v31 = &unk_100020918;
     v15 = v14;
     v32 = v15;
-    v33 = self;
+    selfCopy2 = self;
     dispatch_source_set_cancel_handler(v15, &v28);
     dispatch_resume(v15);
     v16 = [NSString stringWithFormat:@"Timer %p started", v15, v28, v29, v30, v31];
-    v17 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
     {
-      sub_10001308C(v16, v17, v18, v19, v20, v21, v22, v23);
+      sub_10001308C(v16, logger, v18, v19, v20, v21, v22, v23);
     }
 
     v24 = v15;
@@ -289,8 +289,8 @@
   else
   {
     v25 = [NSString stringWithFormat:@"Failed to create a timer!"];
-    v26 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_1000130F8();
     }
@@ -299,11 +299,11 @@
   return v10;
 }
 
-- (void)cancelTimer:(id)a3
+- (void)cancelTimer:(id)timer
 {
-  if (a3)
+  if (timer)
   {
-    dispatch_source_cancel(a3);
+    dispatch_source_cancel(timer);
   }
 }
 

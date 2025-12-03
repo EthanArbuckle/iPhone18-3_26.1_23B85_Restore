@@ -1,7 +1,7 @@
 @interface PUVideoPlayerViewInvertColorsAccessibility
-- (void)_accessibilityForceInvertColorsUpdateFlagForSuperview:(id)a3;
+- (void)_accessibilityForceInvertColorsUpdateFlagForSuperview:(id)superview;
 - (void)layoutSubviews;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PUVideoPlayerViewInvertColorsAccessibility
@@ -13,47 +13,47 @@
   [(PUVideoPlayerViewInvertColorsAccessibility *)&v5 layoutSubviews];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 superview];
-  [(PUVideoPlayerViewInvertColorsAccessibility *)self _accessibilityForceInvertColorsUpdateFlagForSuperview:v4];
+  superview = [v3 superview];
+  [(PUVideoPlayerViewInvertColorsAccessibility *)self _accessibilityForceInvertColorsUpdateFlagForSuperview:superview];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = PUVideoPlayerViewInvertColorsAccessibility;
-  v4 = a3;
-  [(PUVideoPlayerViewInvertColorsAccessibility *)&v5 willMoveToSuperview:v4];
-  [(PUVideoPlayerViewInvertColorsAccessibility *)self _accessibilityForceInvertColorsUpdateFlagForSuperview:v4, v5.receiver, v5.super_class];
+  superviewCopy = superview;
+  [(PUVideoPlayerViewInvertColorsAccessibility *)&v5 willMoveToSuperview:superviewCopy];
+  [(PUVideoPlayerViewInvertColorsAccessibility *)self _accessibilityForceInvertColorsUpdateFlagForSuperview:superviewCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_accessibilityForceInvertColorsUpdateFlagForSuperview:(id)a3
+- (void)_accessibilityForceInvertColorsUpdateFlagForSuperview:(id)superview
 {
-  v4 = a3;
-  if (v4)
+  superviewCopy = superview;
+  if (superviewCopy)
   {
-    v5 = v4;
+    v5 = superviewCopy;
     do
     {
-      v6 = [v5 accessibilityIgnoresInvertColors];
-      if (v6)
+      accessibilityIgnoresInvertColors = [v5 accessibilityIgnoresInvertColors];
+      if (accessibilityIgnoresInvertColors)
       {
         break;
       }
 
-      v7 = [v5 superview];
+      superview = [v5 superview];
 
-      v5 = v7;
+      v5 = superview;
     }
 
-    while (v7);
+    while (superview);
   }
 
   else
   {
-    v6 = 0;
+    accessibilityIgnoresInvertColors = 0;
   }
 
-  [(PUVideoPlayerViewInvertColorsAccessibility *)self _setAncestorIgnoresInvertColors:v6];
+  [(PUVideoPlayerViewInvertColorsAccessibility *)self _setAncestorIgnoresInvertColors:accessibilityIgnoresInvertColors];
 
   [AXInvertColorsAppHelper toggleInvertColors:self];
 }

@@ -8,8 +8,8 @@
 - (void)_sheetInteractionDraggingDidEnd
 {
   v4 = +[SHSheetDraggingEvent eventForDraggingDidEnd];
-  v3 = [(SUISNavigationController *)self sheetInteractionDelegate];
-  [v3 sheetInteractionController:self didReceiveDraggingEvent:v4];
+  sheetInteractionDelegate = [(SUISNavigationController *)self sheetInteractionDelegate];
+  [sheetInteractionDelegate sheetInteractionController:self didReceiveDraggingEvent:v4];
 }
 
 - (SUISSheetInteractionControllerDelegate)sheetInteractionDelegate

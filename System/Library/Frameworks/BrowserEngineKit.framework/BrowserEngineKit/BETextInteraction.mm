@@ -3,12 +3,12 @@
 - (BETextInteractionDelegate)delegate;
 - (UIView)view;
 - (id)beTextInput;
-- (void)didMoveToView:(id)a3;
-- (void)selectionBoundaryAdjustedToPoint:(CGPoint)a3 touchPhase:(int64_t)a4 flags:(unint64_t)a5;
-- (void)selectionChangedWithGestureAtPoint:(CGPoint)a3 gesture:(int64_t)a4 state:(int64_t)a5 flags:(unint64_t)a6;
-- (void)selectionDidChange:(id)a3;
-- (void)selectionWillChange:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)selectionBoundaryAdjustedToPoint:(CGPoint)point touchPhase:(int64_t)phase flags:(unint64_t)flags;
+- (void)selectionChangedWithGestureAtPoint:(CGPoint)point gesture:(int64_t)gesture state:(int64_t)state flags:(unint64_t)flags;
+- (void)selectionDidChange:(id)change;
+- (void)selectionWillChange:(id)change;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation BETextInteraction
@@ -55,64 +55,64 @@
   return v5;
 }
 
-- (void)selectionChangedWithGestureAtPoint:(CGPoint)a3 gesture:(int64_t)a4 state:(int64_t)a5 flags:(unint64_t)a6
+- (void)selectionChangedWithGestureAtPoint:(CGPoint)point gesture:(int64_t)gesture state:(int64_t)state flags:(unint64_t)flags
 {
   interaction = self->_interaction;
-  if ((a4 - 1) > 0xD)
+  if ((gesture - 1) > 0xD)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = qword_19D520750[a4 - 1];
+    v7 = qword_19D520750[gesture - 1];
   }
 
-  [(UIAsyncTextInteraction *)interaction selectionChangedWithGestureAt:v7 withGesture:a5 withState:a6 & 7 withFlags:a3.x, a3.y];
+  [(UIAsyncTextInteraction *)interaction selectionChangedWithGestureAt:v7 withGesture:state withState:flags & 7 withFlags:point.x, point.y];
 }
 
-- (void)selectionBoundaryAdjustedToPoint:(CGPoint)a3 touchPhase:(int64_t)a4 flags:(unint64_t)a5
+- (void)selectionBoundaryAdjustedToPoint:(CGPoint)point touchPhase:(int64_t)phase flags:(unint64_t)flags
 {
   interaction = self->_interaction;
-  if (a4 >= 5)
+  if (phase >= 5)
   {
-    a4 = 5;
+    phase = 5;
   }
 
-  [(UIAsyncTextInteraction *)interaction selectionChangedWithTouchAt:a4 withSelectionTouch:a5 & 7 withFlags:a3.x, a3.y];
+  [(UIAsyncTextInteraction *)interaction selectionChangedWithTouchAt:phase withSelectionTouch:flags & 7 withFlags:point.x, point.y];
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained removeInteraction:self->_interaction];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_view, v4);
-  [v4 addInteraction:self->_interaction];
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
+  [viewCopy addInteraction:self->_interaction];
 }
 
-- (void)selectionWillChange:(id)a3
+- (void)selectionWillChange:(id)change
 {
-  v4 = [(BETextInteraction *)self delegate];
-  [v4 systemWillChangeSelectionForInteraction:self];
+  delegate = [(BETextInteraction *)self delegate];
+  [delegate systemWillChangeSelectionForInteraction:self];
 
-  v6 = [(BETextInteraction *)self beTextInput];
-  v5 = [v6 asyncInputDelegate];
-  [v5 selectionWillChangeForTextInput:v6];
+  beTextInput = [(BETextInteraction *)self beTextInput];
+  asyncInputDelegate = [beTextInput asyncInputDelegate];
+  [asyncInputDelegate selectionWillChangeForTextInput:beTextInput];
 }
 
-- (void)selectionDidChange:(id)a3
+- (void)selectionDidChange:(id)change
 {
-  v6 = [(BETextInteraction *)self beTextInput];
-  v4 = [v6 asyncInputDelegate];
-  [v4 selectionDidChangeForTextInput:v6];
+  beTextInput = [(BETextInteraction *)self beTextInput];
+  asyncInputDelegate = [beTextInput asyncInputDelegate];
+  [asyncInputDelegate selectionDidChangeForTextInput:beTextInput];
 
-  v5 = [(BETextInteraction *)self delegate];
-  [v5 systemDidChangeSelectionForInteraction:self];
+  delegate = [(BETextInteraction *)self delegate];
+  [delegate systemDidChangeSelectionForInteraction:self];
 }
 
 - (BETextInteractionDelegate)delegate

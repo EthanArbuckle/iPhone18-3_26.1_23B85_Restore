@@ -1,10 +1,10 @@
 @interface TTRIQuickBarInputAssistentButtonsController
-- (void)barButtonAction:(id)a3;
+- (void)barButtonAction:(id)action;
 @end
 
 @implementation TTRIQuickBarInputAssistentButtonsController
 
-- (void)barButtonAction:(id)a3
+- (void)barButtonAction:(id)action
 {
   swift_unknownObjectRetain();
 

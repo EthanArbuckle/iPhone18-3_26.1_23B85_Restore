@@ -1,23 +1,23 @@
 @interface PHCollectionShareDeleteRequest
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4;
-- (PHCollectionShareDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4;
-- (void)encodeToXPCDict:(id)a3;
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error;
+- (PHCollectionShareDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library;
+- (void)encodeToXPCDict:(id)dict;
 @end
 
 @implementation PHCollectionShareDeleteRequest
 
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PHCollectionShareDeleteRequest *)self operation];
-  if (v6 > 1)
+  objectCopy = object;
+  operation = [(PHCollectionShareDeleteRequest *)self operation];
+  if (operation > 1)
   {
-    if (v6 == 2)
+    if (operation == 2)
     {
       v10 = 0;
-      v7 = [v5 incrementallyDeleteAndSaveWithError:&v10];
+      v7 = [objectCopy incrementallyDeleteAndSaveWithError:&v10];
       v8 = v10;
       if ((v7 & 1) == 0)
       {
@@ -31,23 +31,23 @@
       }
     }
 
-    else if (v6 == 3)
+    else if (operation == 3)
     {
-      [v5 unsubscribeWithCompletionHandler:&__block_literal_global_50069];
+      [objectCopy unsubscribeWithCompletionHandler:&__block_literal_global_50069];
     }
   }
 
-  else if (v6)
+  else if (operation)
   {
-    if (v6 == 1)
+    if (operation == 1)
     {
-      [v5 untrash];
+      [objectCopy untrash];
     }
   }
 
   else
   {
-    [v5 trash];
+    [objectCopy trash];
   }
 }
 
@@ -64,46 +64,46 @@ void __67__PHCollectionShareDeleteRequest_deleteManagedObject_photoLibrary___blo
   }
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
   v5.receiver = self;
   v5.super_class = PHCollectionShareDeleteRequest;
-  v4 = a3;
-  [(PHObjectDeleteRequest *)&v5 encodeToXPCDict:v4];
-  xpc_dictionary_set_int64(v4, "deleteOperation", self->_operation);
-  xpc_dictionary_set_BOOL(v4, "photosctlExpungeOverride", self->_photosctlExpungeOverride);
+  dictCopy = dict;
+  [(PHObjectDeleteRequest *)&v5 encodeToXPCDict:dictCopy];
+  xpc_dictionary_set_int64(dictCopy, "deleteOperation", self->_operation);
+  xpc_dictionary_set_BOOL(dictCopy, "photosctlExpungeOverride", self->_photosctlExpungeOverride);
 }
 
-- (PHCollectionShareDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHCollectionShareDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
+  dictCopy = dict;
   v11.receiver = self;
   v11.super_class = PHCollectionShareDeleteRequest;
-  v9 = [(PHObjectDeleteRequest *)&v11 initWithXPCDict:v8 request:a4 clientAuthorization:a5];
+  v9 = [(PHObjectDeleteRequest *)&v11 initWithXPCDict:dictCopy request:request clientAuthorization:authorization];
   if (v9)
   {
-    v9->_operation = xpc_dictionary_get_int64(v8, "deleteOperation");
-    v9->_photosctlExpungeOverride = xpc_dictionary_get_BOOL(v8, "photosctlExpungeOverride");
+    v9->_operation = xpc_dictionary_get_int64(dictCopy, "deleteOperation");
+    v9->_photosctlExpungeOverride = xpc_dictionary_get_BOOL(dictCopy, "photosctlExpungeOverride");
   }
 
   return v9;
 }
 
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = PHCollectionShareDeleteRequest;
   v20 = 0;
-  v7 = [(PHObjectDeleteRequest *)&v19 validateForDeleteManagedObject:v6 error:&v20];
+  v7 = [(PHObjectDeleteRequest *)&v19 validateForDeleteManagedObject:objectCopy error:&v20];
   v8 = v20;
   if (!v7)
   {
     goto LABEL_12;
   }
 
-  if (!-[PHCollectionShareDeleteRequest operation](self, "operation") && [v6 trashedState] == 1)
+  if (!-[PHCollectionShareDeleteRequest operation](self, "operation") && [objectCopy trashedState] == 1)
   {
     v9 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A578];
@@ -118,11 +118,11 @@ LABEL_11:
 
     v8 = v16;
 LABEL_12:
-    if (a4)
+    if (error)
     {
       v17 = v8;
       v14 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -133,7 +133,7 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (-[PHCollectionShareDeleteRequest operation](self, "operation") == 1 && ![v6 trashedState])
+  if (-[PHCollectionShareDeleteRequest operation](self, "operation") == 1 && ![objectCopy trashedState])
   {
     v9 = MEMORY[0x1E696ABC0];
     v21 = *MEMORY[0x1E696A578];

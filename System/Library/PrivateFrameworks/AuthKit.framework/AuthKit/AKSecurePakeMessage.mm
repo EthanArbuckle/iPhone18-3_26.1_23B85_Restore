@@ -1,61 +1,61 @@
 @interface AKSecurePakeMessage
-+ (id)securePakeMessageFromData:(id)a3 error:(id *)a4;
-+ (id)securePakeMessageFromPayload:(id)a3 error:(id *)a4;
-+ (id)securePakeMessageFromPush:(id)a3 error:(id *)a4;
-+ (int64_t)_securePakeMessageStepFromPayload:(id)a3;
-- (AKSecurePakeMessage)initWithSessionID:(id)a3 altDSID:(id)a4 messageStep:(int64_t)a5 pakeData:(id)a6 clientData:(id)a7 serverData:(id)a8 clientError:(unint64_t)a9 transactionID:(id)a10 devicePushToken:(id)a11 encryptedCode:(id)a12 pushMessage:(id)a13;
++ (id)securePakeMessageFromData:(id)data error:(id *)error;
++ (id)securePakeMessageFromPayload:(id)payload error:(id *)error;
++ (id)securePakeMessageFromPush:(id)push error:(id *)error;
++ (int64_t)_securePakeMessageStepFromPayload:(id)payload;
+- (AKSecurePakeMessage)initWithSessionID:(id)d altDSID:(id)iD messageStep:(int64_t)step pakeData:(id)data clientData:(id)clientData serverData:(id)serverData clientError:(unint64_t)error transactionID:(id)self0 devicePushToken:(id)self1 encryptedCode:(id)self2 pushMessage:(id)self3;
 - (id)debugDescription;
-- (id)payloadWithError:(id *)a3;
+- (id)payloadWithError:(id *)error;
 @end
 
 @implementation AKSecurePakeMessage
 
-- (AKSecurePakeMessage)initWithSessionID:(id)a3 altDSID:(id)a4 messageStep:(int64_t)a5 pakeData:(id)a6 clientData:(id)a7 serverData:(id)a8 clientError:(unint64_t)a9 transactionID:(id)a10 devicePushToken:(id)a11 encryptedCode:(id)a12 pushMessage:(id)a13
+- (AKSecurePakeMessage)initWithSessionID:(id)d altDSID:(id)iD messageStep:(int64_t)step pakeData:(id)data clientData:(id)clientData serverData:(id)serverData clientError:(unint64_t)error transactionID:(id)self0 devicePushToken:(id)self1 encryptedCode:(id)self2 pushMessage:(id)self3
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  v30 = a5;
+  objc_storeStrong(&v31, iD);
+  stepCopy = step;
   v29 = 0;
-  objc_storeStrong(&v29, a6);
+  objc_storeStrong(&v29, data);
   v28 = 0;
-  objc_storeStrong(&v28, a7);
+  objc_storeStrong(&v28, clientData);
   v27 = 0;
-  objc_storeStrong(&v27, a8);
-  v26 = a9;
+  objc_storeStrong(&v27, serverData);
+  errorCopy = error;
   v25 = 0;
-  objc_storeStrong(&v25, a10);
+  objc_storeStrong(&v25, transactionID);
   v24 = 0;
-  objc_storeStrong(&v24, a11);
+  objc_storeStrong(&v24, token);
   v23 = 0;
-  objc_storeStrong(&v23, a12);
+  objc_storeStrong(&v23, code);
   v22 = 0;
-  objc_storeStrong(&v22, a13);
-  v13 = v33;
-  v33 = 0;
+  objc_storeStrong(&v22, message);
+  v13 = selfCopy;
+  selfCopy = 0;
   v21.receiver = v13;
   v21.super_class = AKSecurePakeMessage;
-  v33 = [(AKSecurePakeMessage *)&v21 init];
-  objc_storeStrong(&v33, v33);
-  if (v33)
+  selfCopy = [(AKSecurePakeMessage *)&v21 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v33->_sessionID, location[0]);
-    objc_storeStrong(&v33->_altDSID, v31);
-    v33->_messageStep = v30;
-    objc_storeStrong(&v33->_pakeData, v29);
-    objc_storeStrong(&v33->_clientData, v28);
-    objc_storeStrong(&v33->_serverData, v27);
-    v33->_clientError = v26;
-    objc_storeStrong(&v33->_transactionID, v25);
-    objc_storeStrong(&v33->_devicePushToken, v24);
-    objc_storeStrong(&v33->_encryptedCode, v23);
-    objc_storeStrong(&v33->_pushMessage, v22);
+    objc_storeStrong(&selfCopy->_sessionID, location[0]);
+    objc_storeStrong(&selfCopy->_altDSID, v31);
+    selfCopy->_messageStep = stepCopy;
+    objc_storeStrong(&selfCopy->_pakeData, v29);
+    objc_storeStrong(&selfCopy->_clientData, v28);
+    objc_storeStrong(&selfCopy->_serverData, v27);
+    selfCopy->_clientError = errorCopy;
+    objc_storeStrong(&selfCopy->_transactionID, v25);
+    objc_storeStrong(&selfCopy->_devicePushToken, v24);
+    objc_storeStrong(&selfCopy->_encryptedCode, v23);
+    objc_storeStrong(&selfCopy->_pushMessage, v22);
   }
 
-  v15 = _objc_retain(v33);
+  v15 = _objc_retain(selfCopy);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v24, 0);
@@ -65,17 +65,17 @@
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v33, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v15;
 }
 
-+ (id)securePakeMessageFromPayload:(id)a3 error:(id *)a4
++ (id)securePakeMessageFromPayload:(id)payload error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v90 = a4;
+  objc_storeStrong(location, payload);
+  errorCopy = error;
   v49 = objc_opt_class();
   v50 = [location[0] objectForKeyedSubscript:@"sessionUUID"];
   v51 = sub_1001A2F38(v49, v50);
@@ -237,7 +237,7 @@
     v23 = v63;
   }
 
-  v21 = [v23 integerValue];
+  integerValue = [v23 integerValue];
   if (v62)
   {
     _objc_release(v63);
@@ -250,7 +250,7 @@
 
   _objc_release(v28);
   _objc_release(v27);
-  v66 = v21;
+  v66 = integerValue;
   v16 = objc_opt_class();
   v17 = [location[0] objectForKeyedSubscript:@"txnid"];
   v61 = sub_1001A2F38(v16, v17);
@@ -330,11 +330,11 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v90)
+    if (errorCopy)
     {
       v13 = [NSError ak_errorWithCode:-7125];
       v10 = v13;
-      *v90 = v13;
+      *errorCopy = v13;
     }
 
     v92 = 0;
@@ -357,28 +357,28 @@
   return v11;
 }
 
-+ (id)securePakeMessageFromData:(id)a3 error:(id *)a4
++ (id)securePakeMessageFromData:(id)data error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-+ (id)securePakeMessageFromPush:(id)a3 error:(id *)a4
++ (id)securePakeMessageFromPush:(id)push error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, push);
+  errorCopy = error;
   if ([location[0] command] == 2300)
   {
-    v7 = [location[0] userInfo];
+    userInfo = [location[0] userInfo];
     v10 = [AKSecurePakeMessage securePakeMessageFromPayload:"securePakeMessageFromPayload:error:" error:?];
-    _objc_release(v7);
+    _objc_release(userInfo);
     if (v10)
     {
       objc_storeStrong(v10 + 12, location[0]);
@@ -400,11 +400,11 @@
     }
 
     objc_storeStrong(&v13, 0);
-    if (v14)
+    if (errorCopy)
     {
       v8 = [NSError ak_errorWithCode:-7001];
       v4 = v8;
-      *v14 = v8;
+      *errorCopy = v8;
     }
 
     v16 = 0;
@@ -417,12 +417,12 @@
   return v5;
 }
 
-+ (int64_t)_securePakeMessageStepFromPayload:(id)a3
++ (int64_t)_securePakeMessageStepFromPayload:(id)payload
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v11 = objc_opt_class();
   v12 = [location[0] objectForKeyedSubscript:@"nextStep"];
   v13 = sub_1001A2F38(v11, v12);
@@ -516,86 +516,86 @@
   return v26;
 }
 
-- (id)payloadWithError:(id *)a3
+- (id)payloadWithError:(id *)error
 {
-  v34 = self;
+  selfCopy = self;
   v33[2] = a2;
-  v33[1] = a3;
+  v33[1] = error;
   v33[0] = [NSMutableDictionary dictionaryWithCapacity:10];
-  v4 = [(AKSecurePakeMessage *)v34 sessionID];
+  sessionID = [(AKSecurePakeMessage *)selfCopy sessionID];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v4);
-  v5 = [(AKSecurePakeMessage *)v34 sessionID];
+  _objc_release(sessionID);
+  sessionID2 = [(AKSecurePakeMessage *)selfCopy sessionID];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v5);
-  v6 = [(AKSecurePakeMessage *)v34 altDSID];
+  _objc_release(sessionID2);
+  altDSID = [(AKSecurePakeMessage *)selfCopy altDSID];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v6);
-  v8 = [NSNumber numberWithInteger:[(AKSecurePakeMessage *)v34 messageStep]+ 1];
-  v7 = [(NSNumber *)v8 stringValue];
+  _objc_release(altDSID);
+  v8 = [NSNumber numberWithInteger:[(AKSecurePakeMessage *)selfCopy messageStep]+ 1];
+  stringValue = [(NSNumber *)v8 stringValue];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v7);
+  _objc_release(stringValue);
   _objc_release(v8);
-  v10 = [NSNumber numberWithInteger:[(AKSecurePakeMessage *)v34 messageStep]];
-  v9 = [(NSNumber *)v10 stringValue];
+  v10 = [NSNumber numberWithInteger:[(AKSecurePakeMessage *)selfCopy messageStep]];
+  stringValue2 = [(NSNumber *)v10 stringValue];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v9);
+  _objc_release(stringValue2);
   _objc_release(v10);
-  v12 = [(AKSecurePakeMessage *)v34 pakeData];
-  v11 = [(NSData *)v12 base64EncodedStringWithOptions:?];
+  pakeData = [(AKSecurePakeMessage *)selfCopy pakeData];
+  v11 = [(NSData *)pakeData base64EncodedStringWithOptions:?];
   [v33[0] setObject:? forKeyedSubscript:?];
   _objc_release(v11);
-  _objc_release(v12);
-  v14 = [(AKSecurePakeMessage *)v34 pakeData];
-  v13 = [(NSData *)v14 base64EncodedStringWithOptions:0];
+  _objc_release(pakeData);
+  pakeData2 = [(AKSecurePakeMessage *)selfCopy pakeData];
+  v13 = [(NSData *)pakeData2 base64EncodedStringWithOptions:0];
   [v33[0] setObject:? forKeyedSubscript:?];
   _objc_release(v13);
-  _objc_release(v14);
-  v16 = [(AKSecurePakeMessage *)v34 clientData];
-  v15 = [(NSData *)v16 base64EncodedStringWithOptions:0];
+  _objc_release(pakeData2);
+  clientData = [(AKSecurePakeMessage *)selfCopy clientData];
+  v15 = [(NSData *)clientData base64EncodedStringWithOptions:0];
   [v33[0] setObject:? forKeyedSubscript:?];
   _objc_release(v15);
-  _objc_release(v16);
-  v18 = [(AKSecurePakeMessage *)v34 clientData];
-  v17 = [(NSData *)v18 base64EncodedStringWithOptions:0];
+  _objc_release(clientData);
+  clientData2 = [(AKSecurePakeMessage *)selfCopy clientData];
+  v17 = [(NSData *)clientData2 base64EncodedStringWithOptions:0];
   [v33[0] setObject:? forKeyedSubscript:?];
   _objc_release(v17);
-  _objc_release(v18);
-  v19 = [(AKSecurePakeMessage *)v34 serverData];
+  _objc_release(clientData2);
+  serverData = [(AKSecurePakeMessage *)selfCopy serverData];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v19);
-  v20 = [(AKSecurePakeMessage *)v34 serverData];
+  _objc_release(serverData);
+  serverData2 = [(AKSecurePakeMessage *)selfCopy serverData];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v20);
-  v22 = [NSNumber numberWithUnsignedInteger:[(AKSecurePakeMessage *)v34 clientError]];
-  v21 = [(NSNumber *)v22 stringValue];
+  _objc_release(serverData2);
+  v22 = [NSNumber numberWithUnsignedInteger:[(AKSecurePakeMessage *)selfCopy clientError]];
+  stringValue3 = [(NSNumber *)v22 stringValue];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v21);
+  _objc_release(stringValue3);
   _objc_release(v22);
-  v24 = [NSNumber numberWithUnsignedInteger:[(AKSecurePakeMessage *)v34 clientError]];
-  v23 = [(NSNumber *)v24 stringValue];
+  v24 = [NSNumber numberWithUnsignedInteger:[(AKSecurePakeMessage *)selfCopy clientError]];
+  stringValue4 = [(NSNumber *)v24 stringValue];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v23);
+  _objc_release(stringValue4);
   _objc_release(v24);
-  v25 = [(AKSecurePakeMessage *)v34 transactionID];
+  transactionID = [(AKSecurePakeMessage *)selfCopy transactionID];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v25);
-  v26 = [(AKSecurePakeMessage *)v34 devicePushToken];
+  _objc_release(transactionID);
+  devicePushToken = [(AKSecurePakeMessage *)selfCopy devicePushToken];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v26);
-  v27 = [(AKSecurePakeMessage *)v34 devicePushToken];
+  _objc_release(devicePushToken);
+  devicePushToken2 = [(AKSecurePakeMessage *)selfCopy devicePushToken];
   [v33[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v27);
-  v29 = [(AKSecurePakeMessage *)v34 encryptedCode];
-  v28 = [(NSData *)v29 base64EncodedStringWithOptions:0];
+  _objc_release(devicePushToken2);
+  encryptedCode = [(AKSecurePakeMessage *)selfCopy encryptedCode];
+  v28 = [(NSData *)encryptedCode base64EncodedStringWithOptions:0];
   [v33[0] setObject:? forKeyedSubscript:?];
   _objc_release(v28);
-  _objc_release(v29);
-  v31 = [(AKSecurePakeMessage *)v34 salt];
-  v30 = [(NSData *)v31 base64EncodedStringWithOptions:0];
+  _objc_release(encryptedCode);
+  salt = [(AKSecurePakeMessage *)selfCopy salt];
+  v30 = [(NSData *)salt base64EncodedStringWithOptions:0];
   [v33[0] setObject:? forKeyedSubscript:?];
   _objc_release(v30);
-  _objc_release(v31);
+  _objc_release(salt);
   v32 = [v33[0] copy];
   objc_storeStrong(v33, 0);
 

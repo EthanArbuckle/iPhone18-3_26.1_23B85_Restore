@@ -1,23 +1,23 @@
 @interface PKPaymentRewrapResponseBase
-- (PKPaymentRewrapResponseBase)initWithData:(id)a3;
+- (PKPaymentRewrapResponseBase)initWithData:(id)data;
 @end
 
 @implementation PKPaymentRewrapResponseBase
 
-- (PKPaymentRewrapResponseBase)initWithData:(id)a3
+- (PKPaymentRewrapResponseBase)initWithData:(id)data
 {
   v53 = *MEMORY[0x1E69E9840];
   v48.receiver = self;
   v48.super_class = PKPaymentRewrapResponseBase;
-  v3 = [(PKWebServiceResponse *)&v48 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v48 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      p_super = [v5 objectForKey:@"header"];
+      p_super = [jSONObject objectForKey:@"header"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -27,14 +27,14 @@
       }
 
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v10 = [v5 objectForKey:@"data"];
+      v10 = [jSONObject objectForKey:@"data"];
       [v9 safelySetObject:v10 forKey:@"data"];
 
       [v9 safelySetObject:p_super forKey:@"header"];
-      v11 = [v5 objectForKey:@"signature"];
+      v11 = [jSONObject objectForKey:@"signature"];
       [v9 safelySetObject:v11 forKey:@"signature"];
 
-      v12 = [v5 objectForKey:@"version"];
+      v12 = [jSONObject objectForKey:@"version"];
       [v9 safelySetObject:v12 forKey:@"version"];
 
       v47 = 0;
@@ -60,11 +60,11 @@
         }
       }
 
-      v24 = [v5 PKStringForKey:@"primaryAccountNumberSuffix"];
+      v24 = [jSONObject PKStringForKey:@"primaryAccountNumberSuffix"];
       primaryAccountNumberSuffix = v4->_primaryAccountNumberSuffix;
       v4->_primaryAccountNumberSuffix = v24;
 
-      v26 = [v5 PKDictionaryForKey:@"account"];
+      v26 = [jSONObject PKDictionaryForKey:@"account"];
       if (v26)
       {
         v27 = [[PKAccount alloc] initWithDictionary:v26];
@@ -72,13 +72,13 @@
         v4->_account = v27;
       }
 
-      v29 = [v5 PKDictionaryForKey:@"redemption"];
+      v29 = [jSONObject PKDictionaryForKey:@"redemption"];
       if (v29)
       {
         v43 = [PKPaymentRewardsRedemption alloc];
         v30 = [v29 PKStringForKey:@"identifier"];
         [v29 PKStringForKey:@"balanceIdentifier"];
-        v44 = v5;
+        v44 = jSONObject;
         v31 = v45 = v14;
         [v29 PKStringForKey:@"status"];
         v32 = v46 = v13;
@@ -94,18 +94,18 @@
         v4->_redemption = v38;
 
         v13 = v46;
-        v5 = v44;
+        jSONObject = v44;
         v14 = v45;
       }
 
-      v40 = [v5 PKURLForKey:@"issuerInstallmentManagementURL"];
+      v40 = [jSONObject PKURLForKey:@"issuerInstallmentManagementURL"];
       issuerInstallmentManagementURL = v4->_issuerInstallmentManagementURL;
       v4->_issuerInstallmentManagementURL = v40;
     }
 
     else
     {
-      if (v5 || ![objc_opt_class() jsonDataOptional])
+      if (jSONObject || ![objc_opt_class() jsonDataOptional])
       {
         v16 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))

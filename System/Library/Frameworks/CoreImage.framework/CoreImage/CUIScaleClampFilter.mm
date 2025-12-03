@@ -35,7 +35,7 @@
     v5 = fmin(fmax(v3, 0.01), 100.0);
     if (v5 != 0.0)
     {
-      v6 = [(CUIScaleClampFilter *)self _kernel];
+      _kernel = [(CUIScaleClampFilter *)self _kernel];
       [(CIImage *)self->inputImage extent];
       v8 = v7;
       v10 = v9;
@@ -43,7 +43,7 @@
       v14 = v13;
       v15[0] = self->inputImage;
       v15[1] = [MEMORY[0x1E696AD98] numberWithDouble:v5];
-      return [v6 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v15, 2), v8, v10, v12, v14}];
+      return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v15, 2), v8, v10, v12, v14}];
     }
   }
 

@@ -1,21 +1,21 @@
 @interface MULockScreenCoordinator
-- (MULockScreenCoordinator)initWithPasscodeProvider:(id)a3;
-- (void)performActionIfSuccessfullyAuthenticated:(id)a3;
+- (MULockScreenCoordinator)initWithPasscodeProvider:(id)provider;
+- (void)performActionIfSuccessfullyAuthenticated:(id)authenticated;
 @end
 
 @implementation MULockScreenCoordinator
 
-- (void)performActionIfSuccessfullyAuthenticated:(id)a3
+- (void)performActionIfSuccessfullyAuthenticated:(id)authenticated
 {
-  v4 = a3;
-  if (v4)
+  authenticatedCopy = authenticated;
+  if (authenticatedCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __68__MULockScreenCoordinator_performActionIfSuccessfullyAuthenticated___block_invoke;
     v5[3] = &unk_1E8219650;
-    v6 = v4;
+    v6 = authenticatedCopy;
     objc_copyWeak(&v7, &location);
     [MapsUIUtilities checkDeviceLockStatusWithCompletion:v5];
     objc_destroyWeak(&v7);
@@ -61,15 +61,15 @@ uint64_t __68__MULockScreenCoordinator_performActionIfSuccessfullyAuthenticated_
   return result;
 }
 
-- (MULockScreenCoordinator)initWithPasscodeProvider:(id)a3
+- (MULockScreenCoordinator)initWithPasscodeProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = MULockScreenCoordinator;
   v5 = [(MULockScreenCoordinator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providerCopy copy];
     passcodeProvider = v5->_passcodeProvider;
     v5->_passcodeProvider = v6;
   }

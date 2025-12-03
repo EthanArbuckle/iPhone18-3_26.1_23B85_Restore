@@ -1,16 +1,16 @@
 @interface NTKRichComplicationCornerUtilities
-+ (CGAffineTransform)transformForState:(SEL)a3 position:(int64_t)a4 device:(int64_t)a5;
-+ (UIEdgeInsets)_keylinePaddingForPosition:(int64_t)a3 conentSize:(CGSize)a4 forDevice:(id)a5 narrowTopSlots:(BOOL)a6;
-+ (id)keylineViewForPosition:(int64_t)a3 forDevice:(id)a4 narrowTopSlots:(BOOL)a5;
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3;
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8;
++ (CGAffineTransform)transformForState:(SEL)state position:(int64_t)position device:(int64_t)device;
++ (UIEdgeInsets)_keylinePaddingForPosition:(int64_t)position conentSize:(CGSize)size forDevice:(id)device narrowTopSlots:(BOOL)slots;
++ (id)keylineViewForPosition:(int64_t)position forDevice:(id)device narrowTopSlots:(BOOL)slots;
++ (id)viewWithLegacyComplicationType:(unint64_t)type;
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction;
 @end
 
 @implementation NTKRichComplicationCornerUtilities
 
-+ (CGAffineTransform)transformForState:(SEL)a3 position:(int64_t)a4 device:(int64_t)a5
++ (CGAffineTransform)transformForState:(SEL)state position:(int64_t)position device:(int64_t)device
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((position & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v19 = 0;
     v17 = 0u;
@@ -18,24 +18,24 @@
     ___LayoutConstants_block_invoke_33(a6, &v17);
     v8 = *MEMORY[0x277CBF348];
     v9 = *(MEMORY[0x277CBF348] + 8);
-    if (a5 > 1)
+    if (device > 1)
     {
-      if (a5 == 2)
+      if (device == 2)
       {
         v9 = *&v18;
         v8 = -*(&v17 + 1);
       }
 
-      else if (a5 == 3)
+      else if (device == 3)
       {
         v8 = *(&v17 + 1);
         v9 = *&v18;
       }
     }
 
-    else if (a5)
+    else if (device)
     {
-      if (a5 == 1)
+      if (device == 1)
       {
         v8 = *(&v17 + 1);
         v9 = -*&v18;
@@ -76,11 +76,11 @@
   return result;
 }
 
-+ (id)keylineViewForPosition:(int64_t)a3 forDevice:(id)a4 narrowTopSlots:(BOOL)a5
++ (id)keylineViewForPosition:(int64_t)position forDevice:(id)device narrowTopSlots:(BOOL)slots
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a1 keylineImageForPosition:a3 filled:0 forDevice:v8 narrowTopSlots:v5];
+  slotsCopy = slots;
+  deviceCopy = device;
+  v9 = [self keylineImageForPosition:position filled:0 forDevice:deviceCopy narrowTopSlots:slotsCopy];
   v10 = v9;
   if (v9)
   {
@@ -89,9 +89,9 @@
     v14[1] = 3221225472;
     v14[2] = __86__NTKRichComplicationCornerUtilities_keylineViewForPosition_forDevice_narrowTopSlots___block_invoke;
     v14[3] = &unk_278782938;
-    v16 = a1;
-    v17 = a3;
-    v15 = v8;
+    selfCopy = self;
+    positionCopy = position;
+    v15 = deviceCopy;
     v12 = [NTKKeylineTouchable touchableWithHandler:v14];
     [v11 setTouchable:v12];
   }
@@ -135,19 +135,19 @@ uint64_t __86__NTKRichComplicationCornerUtilities_keylineViewForPosition_forDevi
   return v18;
 }
 
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = a4;
+  forwardCopy = forward;
+  viewCopy = view;
+  laterViewCopy = laterView;
   memset(&v28, 0, sizeof(v28));
-  if (a6 == 1)
+  if (type == 1)
   {
     v16 = *(MEMORY[0x277CBF2C0] + 16);
     *&v28.a = *MEMORY[0x277CBF2C0];
     *&v28.c = v16;
     *&v28.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if (v9)
+    if (forwardCopy)
     {
 LABEL_5:
       v13 = MEMORY[0x277CBF2C0];
@@ -157,19 +157,19 @@ LABEL_5:
       *&v27.tx = *(MEMORY[0x277CBF2C0] + 32);
       v26 = v28;
       v25 = v28;
-      v15 = v12;
+      v15 = laterViewCopy;
       goto LABEL_8;
     }
   }
 
   else
   {
-    if (!a6)
+    if (!type)
     {
       CGAffineTransformMakeScale(&v28, 0.9, 0.9);
     }
 
-    if (v9)
+    if (forwardCopy)
     {
       goto LABEL_5;
     }
@@ -184,14 +184,14 @@ LABEL_5:
   *&v25.c = v17;
   *&v25.tx = *&v26.tx;
   v13 = &v28;
-  v15 = v11;
+  v15 = viewCopy;
 LABEL_8:
   v18 = *&v13->c;
   v22 = *&v13->a;
   v23 = v18;
   v24 = *&v13->tx;
   v19 = v15;
-  if (a6 == 1)
+  if (type == 1)
   {
     CDTemplicateComplicationShouldPerformFullFade();
   }
@@ -199,30 +199,30 @@ LABEL_8:
   CLKCompressFraction();
   CLKCompressFraction();
   CLKInterpolateBetweenFloatsClipped();
-  [v11 setAlpha:?];
+  [viewCopy setAlpha:?];
   CLKInterpolateBetweenTransform();
   v21[0] = v21[1];
-  [v11 setTransform:v21];
+  [viewCopy setTransform:v21];
   CLKInterpolateBetweenFloatsClipped();
-  [v12 setAlpha:?];
+  [laterViewCopy setAlpha:?];
   v21[0] = v26;
   CLKInterpolateBetweenTransform();
   v21[0] = v20;
-  [v12 setTransform:v21];
+  [laterViewCopy setTransform:v21];
 }
 
-+ (UIEdgeInsets)_keylinePaddingForPosition:(int64_t)a3 conentSize:(CGSize)a4 forDevice:(id)a5 narrowTopSlots:(BOOL)a6
++ (UIEdgeInsets)_keylinePaddingForPosition:(int64_t)position conentSize:(CGSize)size forDevice:(id)device narrowTopSlots:(BOOL)slots
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = [a1 keylineImageForPosition:a3 filled:0 forDevice:a5 narrowTopSlots:a6];
+  height = size.height;
+  width = size.width;
+  v9 = [self keylineImageForPosition:position filled:0 forDevice:device narrowTopSlots:slots];
   [v9 size];
   v11 = v10;
   v13 = v12;
 
-  if (a3 > 1)
+  if (position > 1)
   {
-    if (a3 == 2)
+    if (position == 2)
     {
       v14 = v13 - height;
       v17 = v11 - width;
@@ -231,7 +231,7 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    if (a3 == 3)
+    if (position == 3)
     {
       v14 = v13 - height;
       v15 = v11 - width;
@@ -242,7 +242,7 @@ LABEL_8:
 
   else
   {
-    if (!a3)
+    if (!position)
     {
       v16 = v13 - height;
       v17 = v11 - width;
@@ -251,7 +251,7 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    if (a3 == 1)
+    if (position == 1)
     {
       v15 = v11 - width;
       v16 = v13 - height;
@@ -269,9 +269,9 @@ LABEL_11:
   return result;
 }
 
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3
++ (id)viewWithLegacyComplicationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v5 = 0;
   }

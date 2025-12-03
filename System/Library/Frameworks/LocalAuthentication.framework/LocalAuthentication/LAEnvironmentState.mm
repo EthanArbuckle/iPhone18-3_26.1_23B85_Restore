@@ -1,43 +1,43 @@
 @interface LAEnvironmentState
-- (BOOL)isEqual:(id)a3;
-- (LAEnvironmentState)initWithCoreState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LAEnvironmentState)initWithCoreState:(id)state;
 - (NSArray)allMechanisms;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation LAEnvironmentState
 
-- (LAEnvironmentState)initWithCoreState:(id)a3
+- (LAEnvironmentState)initWithCoreState:(id)state
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stateCopy = state;
   v34.receiver = self;
   v34.super_class = LAEnvironmentState;
   v6 = [(LAEnvironmentState *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coreState, a3);
-    v8 = [v5 biometry];
-    if ([v8 biometryType])
+    objc_storeStrong(&v6->_coreState, state);
+    biometry = [stateCopy biometry];
+    if ([biometry biometryType])
     {
       v9 = [LAEnvironmentMechanismBiometry alloc];
-      v10 = [v5 biometry];
-      v11 = [(LAEnvironmentMechanismBiometry *)v9 initWithCoreMechanism:v10];
+      biometry2 = [stateCopy biometry];
+      v11 = [(LAEnvironmentMechanismBiometry *)v9 initWithCoreMechanism:biometry2];
       biometry = v7->_biometry;
       v7->_biometry = v11;
     }
 
     else
     {
-      v10 = v7->_biometry;
+      biometry2 = v7->_biometry;
       v7->_biometry = 0;
     }
 
     v13 = [LAEnvironmentMechanismUserPassword alloc];
-    v14 = [v5 userPassword];
-    v15 = [(LAEnvironmentMechanismUserPassword *)v13 initWithCoreMechanism:v14];
+    userPassword = [stateCopy userPassword];
+    v15 = [(LAEnvironmentMechanismUserPassword *)v13 initWithCoreMechanism:userPassword];
     userPassword = v7->_userPassword;
     v7->_userPassword = v15;
 
@@ -49,8 +49,8 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v19 = [v5 companions];
-    v20 = [v19 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    companions = [stateCopy companions];
+    v20 = [companions countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v20)
     {
       v21 = v20;
@@ -62,7 +62,7 @@
         {
           if (*v31 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(companions);
           }
 
           v24 = v7->_companions;
@@ -75,7 +75,7 @@
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v21 = [companions countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v21);
@@ -86,19 +86,19 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [LAEnvironmentState alloc];
-  v5 = [(LAEnvironmentState *)self coreState];
-  v6 = [(LAEnvironmentState *)v4 initWithCoreState:v5];
+  coreState = [(LAEnvironmentState *)self coreState];
+  v6 = [(LAEnvironmentState *)v4 initWithCoreState:coreState];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -108,19 +108,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(LAEnvironmentState *)self biometry];
-      v7 = [(LAEnvironmentState *)v5 biometry];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      biometry = [(LAEnvironmentState *)self biometry];
+      biometry2 = [(LAEnvironmentState *)v5 biometry];
+      v8 = biometry2;
+      if (biometry == biometry2)
       {
       }
 
       else
       {
-        v9 = [(LAEnvironmentState *)self biometry];
-        v10 = [(LAEnvironmentState *)v5 biometry];
-        v11 = [v9 isEqual:v10];
+        biometry3 = [(LAEnvironmentState *)self biometry];
+        biometry4 = [(LAEnvironmentState *)v5 biometry];
+        v11 = [biometry3 isEqual:biometry4];
 
         if (!v11)
         {
@@ -128,18 +128,18 @@
         }
       }
 
-      v13 = [(LAEnvironmentState *)self userPassword];
-      v14 = [(LAEnvironmentState *)v5 userPassword];
-      v15 = v14;
-      if (v13 == v14)
+      userPassword = [(LAEnvironmentState *)self userPassword];
+      userPassword2 = [(LAEnvironmentState *)v5 userPassword];
+      v15 = userPassword2;
+      if (userPassword == userPassword2)
       {
       }
 
       else
       {
-        v16 = [(LAEnvironmentState *)self userPassword];
-        v17 = [(LAEnvironmentState *)v5 userPassword];
-        v18 = [v16 isEqual:v17];
+        userPassword3 = [(LAEnvironmentState *)self userPassword];
+        userPassword4 = [(LAEnvironmentState *)v5 userPassword];
+        v18 = [userPassword3 isEqual:userPassword4];
 
         if (!v18)
         {
@@ -151,18 +151,18 @@ LABEL_17:
         }
       }
 
-      v19 = [(LAEnvironmentState *)self companions];
-      v20 = [(LAEnvironmentState *)v5 companions];
-      if (v19 == v20)
+      companions = [(LAEnvironmentState *)self companions];
+      companions2 = [(LAEnvironmentState *)v5 companions];
+      if (companions == companions2)
       {
         v12 = 1;
       }
 
       else
       {
-        v21 = [(LAEnvironmentState *)self companions];
-        v22 = [(LAEnvironmentState *)v5 companions];
-        v12 = [v21 isEqualToArray:v22];
+        companions3 = [(LAEnvironmentState *)self companions];
+        companions4 = [(LAEnvironmentState *)v5 companions];
+        v12 = [companions3 isEqualToArray:companions4];
       }
 
       goto LABEL_17;
@@ -180,8 +180,8 @@ LABEL_18:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(LAEnvironmentState *)self allMechanisms];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  allMechanisms = [(LAEnvironmentState *)self allMechanisms];
+  v6 = [allMechanisms componentsJoinedByString:{@", "}];
   v7 = [v3 stringWithFormat:@"<%@ %p %@>", v4, self, v6];;
 
   return v7;
@@ -190,29 +190,29 @@ LABEL_18:
 - (NSArray)allMechanisms
 {
   v3 = objc_opt_new();
-  v4 = [(LAEnvironmentState *)self biometry];
+  biometry = [(LAEnvironmentState *)self biometry];
 
-  if (v4)
+  if (biometry)
   {
-    v5 = [(LAEnvironmentState *)self biometry];
-    [v3 addObject:v5];
+    biometry2 = [(LAEnvironmentState *)self biometry];
+    [v3 addObject:biometry2];
   }
 
-  v6 = [(LAEnvironmentState *)self userPassword];
+  userPassword = [(LAEnvironmentState *)self userPassword];
 
-  if (v6)
+  if (userPassword)
   {
-    v7 = [(LAEnvironmentState *)self userPassword];
-    [v3 addObject:v7];
+    userPassword2 = [(LAEnvironmentState *)self userPassword];
+    [v3 addObject:userPassword2];
   }
 
-  v8 = [(LAEnvironmentState *)self companions];
-  v9 = [v8 count];
+  companions = [(LAEnvironmentState *)self companions];
+  v9 = [companions count];
 
   if (v9)
   {
-    v10 = [(LAEnvironmentState *)self companions];
-    [v3 addObjectsFromArray:v10];
+    companions2 = [(LAEnvironmentState *)self companions];
+    [v3 addObjectsFromArray:companions2];
   }
 
   return v3;

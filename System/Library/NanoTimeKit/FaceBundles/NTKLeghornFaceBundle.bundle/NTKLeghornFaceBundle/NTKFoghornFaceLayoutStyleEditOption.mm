@@ -1,35 +1,35 @@
 @interface NTKFoghornFaceLayoutStyleEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKFoghornFaceLayoutStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 5)
+  if (value > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_278BA1560[a3];
+    return off_278BA1560[value];
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 5)
+  if (value > 5)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = objc_msgSend_stringByAppendingString_(@"EDIT_OPTION_LABEL_FOGHORN_STYLE_", a2, v5, off_278BA1590[a3], a4);
+    v6 = objc_msgSend_stringByAppendingString_(@"EDIT_OPTION_LABEL_FOGHORN_STYLE_", a2, v5, off_278BA1590[value], device);
   }
 
   return v6;

@@ -1,10 +1,10 @@
 @interface RETextureLoaderASTCHelper
-+ (int64_t)isASTCHDRData:(id)a3 textureType:(unint64_t)a4 error:(id *)a5;
++ (int64_t)isASTCHDRData:(id)data textureType:(unint64_t)type error:(id *)error;
 @end
 
 @implementation RETextureLoaderASTCHelper
 
-+ (int64_t)isASTCHDRData:(id)a3 textureType:(unint64_t)a4 error:(id *)a5
++ (int64_t)isASTCHDRData:(id)data textureType:(unint64_t)type error:(id *)error
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v14 = 0;
@@ -16,10 +16,10 @@
   v13[2] = __61__RETextureLoaderASTCHelper_isASTCHDRData_textureType_error___block_invoke;
   v13[3] = &unk_1E8721610;
   v13[4] = &v14;
-  v13[5] = a4;
-  [a3 enumerateByteRangesUsingBlock:v13];
+  v13[5] = type;
+  [data enumerateByteRangesUsingBlock:v13];
   v6 = v15;
-  if (a5 && v15[3] == -1)
+  if (error && v15[3] == -1)
   {
     v7 = *MEMORY[0x1E696A578];
     v18[0] = @"MTKTextureLoaderErrorKey";
@@ -30,7 +30,7 @@
     v9 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTKTextureLoaderErrorDomain" code:-1 userInfo:v8];
 
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
     v6 = v15;
   }
 

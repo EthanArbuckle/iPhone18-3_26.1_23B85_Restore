@@ -1,34 +1,34 @@
 @interface KPFDocumentFactory
-+ (id)createDocumentWithKPFBundle:(id)a3 drmContext:(id)a4;
++ (id)createDocumentWithKPFBundle:(id)bundle drmContext:(id)context;
 @end
 
 @implementation KPFDocumentFactory
 
-+ (id)createDocumentWithKPFBundle:(id)a3 drmContext:(id)a4
++ (id)createDocumentWithKPFBundle:(id)bundle drmContext:(id)context
 {
-  v6 = [a3 pathForResource:@"header" ofType:@"json"];
+  v6 = [bundle pathForResource:@"header" ofType:@"json"];
   v7 = v6;
   if (v6)
   {
     v8 = v6;
-    if (a4)
+    if (context)
     {
 LABEL_3:
-      v9 = [a4 dataWithContentsOfFile:v8 error:0];
+      v9 = [context dataWithContentsOfFile:v8 error:0];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v10 = [a3 pathForResource:@"kpf" ofType:@"json"];
+    v10 = [bundle pathForResource:@"kpf" ofType:@"json"];
     if (!v10)
     {
-      v10 = [a3 pathForResource:&stru_471858 ofType:@"json"];
+      v10 = [bundle pathForResource:&stru_471858 ofType:@"json"];
     }
 
     v8 = v10;
-    if (a4)
+    if (context)
     {
       goto LABEL_3;
     }
@@ -54,7 +54,7 @@ LABEL_8:
     v14 = off_459678;
   }
 
-  v15 = [objc_alloc(*v14) initWithKPFBundle:a3 kpfDictionary:v11 drmContext:a4];
+  v15 = [objc_alloc(*v14) initWithKPFBundle:bundle kpfDictionary:v11 drmContext:context];
   [v15 setIsLegacy:v13];
   return v15;
 }

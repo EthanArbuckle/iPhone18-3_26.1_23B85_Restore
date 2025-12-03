@@ -1,27 +1,27 @@
 @interface WFDisplayPickerParameter
 - (NSArray)displays;
-- (WFDisplayPickerParameter)initWithDefinition:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
+- (WFDisplayPickerParameter)initWithDefinition:(id)definition;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation WFDisplayPickerParameter
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  if (stateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 value];
-    v8 = [v7 name];
+    value = [stateCopy value];
+    name = [value name];
   }
 
   else
   {
-    v8 = 0;
+    name = 0;
   }
 
-  return v8;
+  return name;
 }
 
 - (NSArray)displays
@@ -36,11 +36,11 @@
   return displays;
 }
 
-- (WFDisplayPickerParameter)initWithDefinition:(id)a3
+- (WFDisplayPickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFDisplayPickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

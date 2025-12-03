@@ -4,7 +4,7 @@
 - (void)dealloc;
 - (void)setColorSpace:(NSString *)colorSpace;
 - (void)setLightType:(MDLLightType)lightType;
-- (void)setTransform:(id)a3;
+- (void)setTransform:(id)transform;
 @end
 
 @implementation MDLLight
@@ -84,24 +84,24 @@
   self->_light->var3 = v3;
 }
 
-- (void)setTransform:(id)a3
+- (void)setTransform:(id)transform
 {
-  v5 = a3;
+  transformCopy = transform;
   v6.receiver = self;
   v6.super_class = MDLLight;
-  [(MDLObject *)&v6 setTransform:v5];
+  [(MDLObject *)&v6 setTransform:transformCopy];
   if (self->_light)
   {
-    objc_storeStrong(&self->_light->var2, a3);
+    objc_storeStrong(&self->_light->var2, transform);
   }
 }
 
 - (__n128)position
 {
-  v6 = objc_msgSend_transform(a1, a2, a3);
+  v6 = objc_msgSend_transform(self, a2, a3);
   if (v6)
   {
-    v7 = objc_msgSend_transform(a1, v4, v5);
+    v7 = objc_msgSend_transform(self, v4, v5);
     objc_msgSend_matrix(v7, v8, v9);
     v12 = v10;
   }

@@ -1,39 +1,39 @@
 @interface FCNewsletter
-- (BOOL)isEqual:(id)a3;
-- (FCNewsletter)initWithCoder:(id)a3;
-- (FCNewsletter)initWithIdentifier:(id)a3 enrollment:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (FCNewsletter)initWithCoder:(id)coder;
+- (FCNewsletter)initWithIdentifier:(id)identifier enrollment:(int64_t)enrollment;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCNewsletter
 
-- (FCNewsletter)initWithIdentifier:(id)a3 enrollment:(int64_t)a4
+- (FCNewsletter)initWithIdentifier:(id)identifier enrollment:(int64_t)enrollment
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = FCNewsletter;
   v8 = [(FCNewsletter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_enrollment = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_enrollment = enrollment;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -51,12 +51,12 @@
 
   if (v6)
   {
-    v7 = [(FCNewsletter *)self identifier];
-    v8 = [v6 identifier];
-    if (v7 == v8)
+    identifier = [(FCNewsletter *)self identifier];
+    identifier2 = [v6 identifier];
+    if (identifier == identifier2)
     {
-      v10 = [(FCNewsletter *)self enrollment];
-      v9 = v10 == [v6 enrollment];
+      enrollment = [(FCNewsletter *)self enrollment];
+      v9 = enrollment == [v6 enrollment];
     }
 
     else
@@ -75,8 +75,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FCNewsletter *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(FCNewsletter *)self identifier];
+  v4 = [identifier hash];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FCNewsletter enrollment](self, "enrollment")}];
   v6 = [v5 hash];
 
@@ -86,33 +86,33 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FCNewsletter *)self identifier];
-  v5 = [v3 stringWithFormat:@"<FCNewsletter: identifier=%@, enrollment=%ld>", v4, -[FCNewsletter enrollment](self, "enrollment")];
+  identifier = [(FCNewsletter *)self identifier];
+  v5 = [v3 stringWithFormat:@"<FCNewsletter: identifier=%@, enrollment=%ld>", identifier, -[FCNewsletter enrollment](self, "enrollment")];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(FCNewsletter *)self identifier];
+  coderCopy = coder;
+  identifier = [(FCNewsletter *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(FCNewsletter *)self identifier];
-    [v9 encodeObject:v5 forKey:@"identifier"];
+    identifier2 = [(FCNewsletter *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"identifier"];
   }
 
   if ([(FCNewsletter *)self enrollment])
   {
-    v6 = [(FCNewsletter *)self enrollment];
+    enrollment = [(FCNewsletter *)self enrollment];
     v7 = @"UNKNOWN";
-    if (v6 == 2)
+    if (enrollment == 2)
     {
       v7 = @"SUBSCRIBED";
     }
 
-    if (v6 == 1)
+    if (enrollment == 1)
     {
       v8 = @"UNSUBSCRIBED";
     }
@@ -122,15 +122,15 @@
       v8 = v7;
     }
 
-    [v9 encodeObject:v8 forKey:@"enrollment"];
+    [coderCopy encodeObject:v8 forKey:@"enrollment"];
   }
 }
 
-- (FCNewsletter)initWithCoder:(id)a3
+- (FCNewsletter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enrollment"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enrollment"];
 
   if ([v6 isEqualToString:@"UNSUBSCRIBED"])
   {

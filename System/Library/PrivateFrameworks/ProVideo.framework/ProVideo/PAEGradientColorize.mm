@@ -1,18 +1,18 @@
 @interface PAEGradientColorize
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEGradientColorize)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEGradientColorize)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEGradientColorize
 
-- (PAEGradientColorize)initWithAPIManager:(id)a3
+- (PAEGradientColorize)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGradientColorize;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -62,7 +62,7 @@
   return v6;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E548];
@@ -83,26 +83,26 @@
     return 0;
   }
 
-  v43 = [v12 versionAtCreation];
+  versionAtCreation = [v12 versionAtCreation];
   v17 = HGRectMake4i(0, 0, 0x100u, 1u);
   v19 = v18;
   v20 = HGObject::operator new(0x80uLL);
   HGBitmap::HGBitmap(v20, v17, v19, 28);
-  [v10 getGradientSamples:*(v20 + 10) numSamples:256 depth:4 fromParm:2989 atFxTime:a5->var0.var1];
+  [v10 getGradientSamples:*(v20 + 10) numSamples:256 depth:4 fromParm:2989 atFxTime:info->var0.var1];
   v50 = 0.0;
-  [v9 getFloatValue:&v50 fromParm:2 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v50 fromParm:2 atFxTime:info->var0.var1];
   v50 = v50 / 6.28318531;
   v49 = 0.0;
-  [v9 getFloatValue:&v49 fromParm:3 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v49 fromParm:3 atFxTime:info->var0.var1];
   v48 = 0;
-  [v9 getIntValue:&v48 fromParm:4 atFxTime:a5->var0.var1];
+  [v9 getIntValue:&v48 fromParm:4 atFxTime:info->var0.var1];
   v47 = 0;
-  [v9 getIntValue:&v47 fromParm:5 atFxTime:a5->var0.var1];
+  [v9 getIntValue:&v47 fromParm:5 atFxTime:info->var0.var1];
   v46 = 0.0;
-  [v9 getFloatValue:&v46 fromParm:6 atFxTime:a5->var0.var1];
-  [v9 mixAmountAtTime:a5->var0.var1];
+  [v9 getFloatValue:&v46 fromParm:6 atFxTime:info->var0.var1];
+  [v9 mixAmountAtTime:info->var0.var1];
   v22 = v21;
-  v23 = [objc_msgSend(v11 colorMatrixFromDesiredRGBToYCbCrAtTime:{a5->var0.var1), "matrix"}];
+  v23 = [objc_msgSend(v11 colorMatrixFromDesiredRGBToYCbCrAtTime:{info->var0.var1), "matrix"}];
   v24 = v23;
   if (v47 > 1)
   {
@@ -151,11 +151,11 @@ LABEL_22:
 LABEL_24:
   v30 = v49;
   v29 = v50;
-  if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", a5->var0.var1) && [a4 imageType] == 3)
+  if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", info->var0.var1) && [input imageType] == 3)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -186,7 +186,7 @@ LABEL_24:
     v39 = v24[2];
     (*(*v31 + 96))(v31, 5, 0.0, v37, v38, v39);
     v40.n128_u32[0] = 1.0;
-    if (v43 >= 2)
+    if (versionAtCreation >= 2)
     {
       v40.n128_f32[0] = 0.0;
     }
@@ -198,7 +198,7 @@ LABEL_24:
     (*(*v31 + 120))(v31, 1, v41);
     v44 = v31;
     (*(*v31 + 16))(v31);
-    [a3 setHeliumRef:&v44];
+    [output setHeliumRef:&v44];
     if (v44)
     {
       (*(*v44 + 24))(v44);
@@ -227,15 +227,15 @@ LABEL_24:
   return v16;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

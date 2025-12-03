@@ -1,12 +1,12 @@
 @interface AMSupportOSURLConnectionDelegate
 - (AMSupportOSURLConnectionDelegate)init;
-- (AMSupportOSURLConnectionDelegate)initWithData:(id)a3 Options:(id)a4;
-- (id)waitForResponseOrError:(id *)a3;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4;
-- (void)connectionDidFinishLoading:(id)a3;
+- (AMSupportOSURLConnectionDelegate)initWithData:(id)data Options:(id)options;
+- (id)waitForResponseOrError:(id *)error;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge;
+- (void)connectionDidFinishLoading:(id)loading;
 - (void)dealloc;
 @end
 
@@ -19,10 +19,10 @@
   return [(AMSupportOSURLConnectionDelegate *)self initWithData:v3 Options:0];
 }
 
-- (AMSupportOSURLConnectionDelegate)initWithData:(id)a3 Options:(id)a4
+- (AMSupportOSURLConnectionDelegate)initWithData:(id)data Options:(id)options
 {
   v17 = *MEMORY[0x29EDCA608];
-  AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate initWithData:Options:]", "init-ing delegate with data=%@ options=%@", a4, v4, v5, v6, v7, a3);
+  AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate initWithData:Options:]", "init-ing delegate with data=%@ options=%@", options, v4, v5, v6, v7, data);
   v16.receiver = self;
   v16.super_class = AMSupportOSURLConnectionDelegate;
   v11 = [(AMSupportOSURLConnectionDelegate *)&v16 init];
@@ -30,11 +30,11 @@
   if (v11)
   {
     v11->requestComplete = 0;
-    v11->options = a4;
+    v11->options = options;
     v12->response = 0;
-    v13 = a3;
-    v12->_data = v13;
-    [(NSMutableData *)v13 setLength:0];
+    dataCopy = data;
+    v12->_data = dataCopy;
+    [(NSMutableData *)dataCopy setLength:0];
   }
 
   v14 = *MEMORY[0x29EDCA608];
@@ -56,7 +56,7 @@
   v8 = *MEMORY[0x29EDCA608];
 }
 
-- (id)waitForResponseOrError:(id *)a3
+- (id)waitForResponseOrError:(id *)error
 {
   v5 = *MEMORY[0x29EDB8CC0];
   do
@@ -66,42 +66,42 @@
       break;
     }
 
-    v6 = [MEMORY[0x29EDB8E48] currentRunLoop];
+    currentRunLoop = [MEMORY[0x29EDB8E48] currentRunLoop];
   }
 
-  while (([v6 runMode:v5 beforeDate:{objc_msgSend(MEMORY[0x29EDB8DB0], "distantFuture")}] & 1) != 0);
+  while (([currentRunLoop runMode:v5 beforeDate:{objc_msgSend(MEMORY[0x29EDB8DB0], "distantFuture")}] & 1) != 0);
   error = self->_error;
   if (!error)
   {
     return self->response;
   }
 
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v8 = error;
+  errorCopy = error;
   result = 0;
-  *a3 = v8;
+  *error = errorCopy;
   return result;
 }
 
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge
 {
   keys[1] = *MEMORY[0x29EDCA608];
-  v6 = [objc_msgSend(a4 protectionSpace];
-  AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Authentication challenge received.  Method: %@", v7, v8, v9, v10, v11, v6);
-  if ([a4 previousFailureCount] >= 1)
+  protectionSpace = [objc_msgSend(challenge protectionSpace];
+  AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Authentication challenge received.  Method: %@", v7, v8, v9, v10, v11, protectionSpace);
+  if ([challenge previousFailureCount] >= 1)
   {
-    [objc_msgSend(a4 "sender")];
+    [objc_msgSend(challenge "sender")];
     v17 = *MEMORY[0x29EDCA608];
 
     AMSupportLogInternal(3, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Multiple challenge failures.  Aborting.", v12, v13, v14, v15, v16, v113);
     return;
   }
 
-  if ([v6 isEqual:*MEMORY[0x29EDB84E0]] && -[NSDictionary objectForKey:](self->options, "objectForKey:", @"ClientIdentity"))
+  if ([protectionSpace isEqual:*MEMORY[0x29EDB84E0]] && -[NSDictionary objectForKey:](self->options, "objectForKey:", @"ClientIdentity"))
   {
     AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Received client certificate challenge.", v18, v19, v20, v21, v22, v97);
     v23 = [(NSDictionary *)self->options objectForKey:@"ClientIdentity"];
@@ -133,7 +133,7 @@
       CFRelease(certificateRef);
       v58 = [MEMORY[0x29EDB8508] credentialWithIdentity:Value certificates:v57 persistence:2];
       CFRelease(v57);
-      [objc_msgSend(a4 "sender")];
+      [objc_msgSend(challenge "sender")];
       AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Returned credentials for challenge.", v59, v60, v61, v62, v63, v99);
 LABEL_41:
       v95 = *MEMORY[0x29EDCA608];
@@ -141,24 +141,24 @@ LABEL_41:
     }
 
     AMSupportLogInternal(3, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Unable to import client identity, aborting challenge.", v35, v36, v37, v38, v39, v98);
-    v40 = [a4 sender];
-    v41 = a4;
+    sender = [challenge sender];
+    challengeCopy = challenge;
 LABEL_40:
-    [v40 cancelAuthenticationChallenge:v41];
+    [sender cancelAuthenticationChallenge:challengeCopy];
     goto LABEL_41;
   }
 
-  if ([v6 isEqual:*MEMORY[0x29EDB84E8]])
+  if ([protectionSpace isEqual:*MEMORY[0x29EDB84E8]])
   {
     v42 = [(NSDictionary *)self->options objectForKey:@"DisableSSLValidation"];
     if ([v42 isEqual:{objc_msgSend(MEMORY[0x29EDBA070], "numberWithBool:", 1)}])
     {
       AMSupportLogInternal(6, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "SSL validation disabled.  Attempting to continue without authentication.", v43, v44, v45, v46, v47, v97);
-      v48 = [a4 sender];
-      v49 = [MEMORY[0x29EDB8508] credentialForTrust:{objc_msgSend(objc_msgSend(a4, "protectionSpace"), "serverTrust")}];
+      sender2 = [challenge sender];
+      v49 = [MEMORY[0x29EDB8508] credentialForTrust:{objc_msgSend(objc_msgSend(challenge, "protectionSpace"), "serverTrust")}];
       v50 = *MEMORY[0x29EDCA608];
 
-      [v48 useCredential:v49 forAuthenticationChallenge:a4];
+      [sender2 useCredential:v49 forAuthenticationChallenge:challenge];
       return;
     }
 
@@ -170,7 +170,7 @@ LABEL_40:
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v52 = [(NSDictionary *)self->options objectForKey:@"TrustedServerCAs"];
-      v101 = a4;
+      challengeCopy2 = challenge;
       if ((isKindOfClass & 1) == 0)
       {
         objc_opt_class();
@@ -230,7 +230,7 @@ LABEL_40:
         while (v66);
       }
 
-      v78 = [objc_msgSend(v101 "protectionSpace")];
+      v78 = [objc_msgSend(challengeCopy2 "protectionSpace")];
       LODWORD(items) = 0;
       AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Attempting trust evaluate", v79, v80, v81, v82, v83, v97);
       v89 = AMSupportX509ChainEvaluateTrust(v78, v64, &items, v84, v85, v86, v87, v88);
@@ -244,54 +244,54 @@ LABEL_40:
         if (items == 4 || items == 1)
         {
           AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "Trust evaluation succeeded, proceeding..", v90, v91, v92, v93, v94, v100);
-          v96 = [v101 sender];
-          [v96 useCredential:objc_msgSend(MEMORY[0x29EDB8508] forAuthenticationChallenge:{"credentialForTrust:", v78), v101}];
+          sender3 = [challengeCopy2 sender];
+          [sender3 useCredential:objc_msgSend(MEMORY[0x29EDB8508] forAuthenticationChallenge:{"credentialForTrust:", v78), challengeCopy2}];
           goto LABEL_41;
         }
 
         AMSupportLogInternal(4, "[AMSupportOSURLConnectionDelegate connection:willSendRequestForAuthenticationChallenge:]", "trust evaluation did not result in okay to proceed (result=%d)", v90, v91, v92, v93, v94, items);
       }
 
-      v40 = [v101 sender];
-      v41 = v101;
+      sender = [challengeCopy2 sender];
+      challengeCopy = challengeCopy2;
       goto LABEL_40;
     }
   }
 
-  v53 = [a4 sender];
+  sender4 = [challenge sender];
   v54 = *MEMORY[0x29EDCA608];
 
-  [v53 performDefaultHandlingForAuthenticationChallenge:a4];
+  [sender4 performDefaultHandlingForAuthenticationChallenge:challenge];
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
-  v5 = a4;
-  self->response = v5;
-  AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:didReceiveResponse:]", "Received response from URL: %@", v6, v7, v8, v9, v10, v5);
+  responseCopy = response;
+  self->response = responseCopy;
+  AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:didReceiveResponse:]", "Received response from URL: %@", v6, v7, v8, v9, v10, responseCopy);
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
-  v6 = [a4 length];
+  v6 = [data length];
   AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connection:didReceiveData:]", "Receiving %d bytes of data from URL", v7, v8, v9, v10, v11, v6);
   data = self->_data;
 
-  [(NSMutableData *)data appendData:a4];
+  [(NSMutableData *)data appendData:data];
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
   v4 = [(NSMutableData *)self->_data length];
   AMSupportLogInternal(7, "[AMSupportOSURLConnectionDelegate connectionDidFinishLoading:]", "Finished loading URL.  Total bytes: %d", v5, v6, v7, v8, v9, v4);
   self->requestComplete = 1;
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  v4 = a4;
-  self->_error = a4;
-  AMSupportLogInternal(3, "[AMSupportOSURLConnectionDelegate connection:didFailWithError:]", "Connection error %@ for URL", v6, v7, v8, v9, v10, v4);
+  errorCopy = error;
+  self->_error = error;
+  AMSupportLogInternal(3, "[AMSupportOSURLConnectionDelegate connection:didFailWithError:]", "Connection error %@ for URL", v6, v7, v8, v9, v10, errorCopy);
   self->requestComplete = 1;
 }
 

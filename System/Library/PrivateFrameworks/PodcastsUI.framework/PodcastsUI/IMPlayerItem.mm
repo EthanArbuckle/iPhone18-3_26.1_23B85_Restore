@@ -1,13 +1,13 @@
 @interface IMPlayerItem
 - (AVURLAsset)asset;
-- (BOOL)hasChapterArtworkAtTime:(double)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasChapterArtworkAtTime:(double)time;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocal;
 - (BOOL)isShareable;
 - (BOOL)isStreamable;
 - (BOOL)isVideo;
 - (IMPlayerItem)init;
-- (IMPlayerItem)initWithUrl:(id)a3;
+- (IMPlayerItem)initWithUrl:(id)url;
 - (IMPlayerManifest)manifest;
 - (MPNowPlayingContentItem)contentItem;
 - (NSArray)chapters;
@@ -15,36 +15,36 @@
 - (NSArray)timeChapters;
 - (NSManagedObjectID)episodeObjectID;
 - (double)duration;
-- (id)chapterAtTime:(double)a3;
+- (id)chapterAtTime:(double)time;
 - (id)externalMetadata;
-- (id)retrieveChapterArtworkAtTime:(double)a3;
+- (id)retrieveChapterArtworkAtTime:(double)time;
 - (id)streamUrl;
 - (unint64_t)hash;
 - (void)cleanupAfterError;
 - (void)invalidateAsset;
 - (void)loadChapters;
-- (void)populateContentItem:(id)a3;
+- (void)populateContentItem:(id)item;
 - (void)recreateContentItem;
 - (void)reset;
-- (void)retrieveArtwork:(id)a3 withSize:(CGSize)a4 atTime:(double)a5;
-- (void)setAsset:(id)a3;
-- (void)setEpisodeObjectID:(id)a3;
-- (void)setInstanceIdentifier:(id)a3;
-- (void)setPlayhead:(double)a3;
-- (void)updateActivity:(id)a3;
-- (void)updateTranscriptInformation:(id)a3 transcriptSource:(id)a4;
+- (void)retrieveArtwork:(id)artwork withSize:(CGSize)size atTime:(double)time;
+- (void)setAsset:(id)asset;
+- (void)setEpisodeObjectID:(id)d;
+- (void)setInstanceIdentifier:(id)identifier;
+- (void)setPlayhead:(double)playhead;
+- (void)updateActivity:(id)activity;
+- (void)updateTranscriptInformation:(id)information transcriptSource:(id)source;
 @end
 
 @implementation IMPlayerItem
 
-- (IMPlayerItem)initWithUrl:(id)a3
+- (IMPlayerItem)initWithUrl:(id)url
 {
-  v5 = a3;
+  urlCopy = url;
   v6 = [(IMPlayerItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, url);
     v7->_objectIDLock._os_unfair_lock_opaque = 0;
   }
 
@@ -65,9 +65,9 @@
     chapterLoadingQueue = v3->_chapterLoadingQueue;
     v3->_chapterLoadingQueue = v4;
 
-    v6 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     instanceIdentifier = v3->_instanceIdentifier;
-    v3->_instanceIdentifier = v6;
+    v3->_instanceIdentifier = uUID;
 
     [(IMPlayerItem *)v3 setAreChaptersLoaded:0];
   }
@@ -79,19 +79,19 @@
 {
   if ([(IMPlayerItem *)self isAssetLoaded])
   {
-    v3 = [(IMPlayerItem *)self asset];
-    v6 = [v3 cacheKey];
+    asset = [(IMPlayerItem *)self asset];
+    cacheKey = [asset cacheKey];
 
-    v4 = [(IMPlayerItem *)self asset];
-    v5 = [v4 assetCache];
+    asset2 = [(IMPlayerItem *)self asset];
+    assetCache = [asset2 assetCache];
 
-    if (v6)
+    if (cacheKey)
     {
       NSClassFromString(&cfstr_Avmanagedasset.isa);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v5 removeEntryForKey:v6];
+        [assetCache removeEntryForKey:cacheKey];
       }
     }
 
@@ -106,30 +106,30 @@
   [(IMPlayerItem *)self setAsset:v3];
 }
 
-- (void)setInstanceIdentifier:(id)a3
+- (void)setInstanceIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_instanceIdentifier, a3);
+  objc_storeStrong(&self->_instanceIdentifier, identifier);
 
   [(IMPlayerItem *)self setContentItem:0];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IMPlayerItem *)self instanceIdentifier];
-  v3 = [v2 hash];
+  instanceIdentifier = [(IMPlayerItem *)self instanceIdentifier];
+  v3 = [instanceIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 instanceIdentifier];
-    v6 = [(IMPlayerItem *)self instanceIdentifier];
-    v7 = [v5 isEqual:v6];
+    instanceIdentifier = [equalCopy instanceIdentifier];
+    instanceIdentifier2 = [(IMPlayerItem *)self instanceIdentifier];
+    v7 = [instanceIdentifier isEqual:instanceIdentifier2];
   }
 
   else
@@ -154,15 +154,15 @@
   return asset;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   asset = self->_asset;
   p_asset = &self->_asset;
-  v8 = v5;
-  if (([v5 isEqual:asset] & 1) == 0)
+  v8 = assetCopy;
+  if (([assetCopy isEqual:asset] & 1) == 0)
   {
-    objc_storeStrong(p_asset, a3);
+    objc_storeStrong(p_asset, asset);
   }
 }
 
@@ -173,19 +173,19 @@
     return self->_duration;
   }
 
-  v3 = [(IMPlayerItem *)self asset];
-  v4 = [v3 statusOfValueForKey:@"duration" error:0];
+  asset = [(IMPlayerItem *)self asset];
+  v4 = [asset statusOfValueForKey:@"duration" error:0];
 
   if (v4 != 2)
   {
     return self->_duration;
   }
 
-  v5 = [(IMPlayerItem *)self asset];
-  v6 = v5;
-  if (v5)
+  asset2 = [(IMPlayerItem *)self asset];
+  v6 = asset2;
+  if (asset2)
   {
-    [v5 duration];
+    [asset2 duration];
   }
 
   else
@@ -198,12 +198,12 @@
   return Seconds;
 }
 
-- (void)setPlayhead:(double)a3
+- (void)setPlayhead:(double)playhead
 {
-  self->_playhead = a3;
-  v5 = [(IMPlayerItem *)self manifest];
-  v4 = [v5 activity];
-  [(IMPlayerItem *)self updateActivity:v4];
+  self->_playhead = playhead;
+  manifest = [(IMPlayerItem *)self manifest];
+  activity = [manifest activity];
+  [(IMPlayerItem *)self updateActivity:activity];
 }
 
 - (void)invalidateAsset
@@ -217,8 +217,8 @@
 {
   if (self->_asset && (-[IMPlayerItem asset](self, "asset"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 statusOfValueForKey:@"tracks" error:0], v3, v4 == 2))
   {
-    v5 = [(IMPlayerItem *)self asset];
-    v6 = [v5 tracksWithMediaCharacteristic:*MEMORY[0x277CE5E40]];
+    asset = [(IMPlayerItem *)self asset];
+    v6 = [asset tracksWithMediaCharacteristic:*MEMORY[0x277CE5E40]];
 
     if ([v6 count])
     {
@@ -249,8 +249,8 @@
 
   else
   {
-    v4 = [v2 scheme];
-    v3 = [v4 isEqualToString:@"ipod-library"];
+    scheme = [v2 scheme];
+    v3 = [scheme isEqualToString:@"ipod-library"];
   }
 
   return v3;
@@ -258,24 +258,24 @@
 
 - (BOOL)isShareable
 {
-  v3 = [(IMPlayerItem *)self episode];
-  if ([v3 isShareable])
+  episode = [(IMPlayerItem *)self episode];
+  if ([episode isShareable])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(IMPlayerItem *)self episodeShareUrl];
-    if (v5)
+    episodeShareUrl = [(IMPlayerItem *)self episodeShareUrl];
+    if (episodeShareUrl)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(IMPlayerItem *)self podcastFeedUrl];
-      v4 = v6 != 0;
+      podcastFeedUrl = [(IMPlayerItem *)self podcastFeedUrl];
+      v4 = podcastFeedUrl != 0;
     }
   }
 
@@ -299,7 +299,7 @@
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__2;
     v18 = __Block_byref_object_dispose__2;
-    v19 = [(IMPlayerItem *)self episode];
+    episode = [(IMPlayerItem *)self episode];
     v3 = v15[5];
     if (v3)
     {
@@ -309,14 +309,14 @@
       v11 = __Block_byref_object_copy__2;
       v12 = __Block_byref_object_dispose__2;
       v13 = 0;
-      v4 = [v3 managedObjectContext];
+      managedObjectContext = [v3 managedObjectContext];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __25__IMPlayerItem_streamUrl__block_invoke;
       v7[3] = &unk_2782BE1B8;
       v7[4] = &v14;
       v7[5] = &v8;
-      [v4 performBlockAndWait:v7];
+      [managedObjectContext performBlockAndWait:v7];
       v5 = v9[5];
 
       _Block_object_dispose(&v8, 8);
@@ -355,28 +355,28 @@ void __25__IMPlayerItem_streamUrl__block_invoke(uint64_t a1)
 
 - (id)externalMetadata
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(IMPlayerItem *)self title];
-  if ([v4 length])
+  array = [MEMORY[0x277CBEB18] array];
+  title = [(IMPlayerItem *)self title];
+  if ([title length])
   {
     v5 = objc_alloc_init(MEMORY[0x277CE6558]);
     [v5 setIdentifier:*MEMORY[0x277CE5EF0]];
     [v5 setExtendedLanguageTag:@"und"];
-    [v5 setValue:v4];
-    [v3 addObject:v5];
+    [v5 setValue:title];
+    [array addObject:v5];
   }
 
-  v6 = [(IMPlayerItem *)self author];
-  if ([v6 length])
+  author = [(IMPlayerItem *)self author];
+  if ([author length])
   {
     v7 = objc_alloc_init(MEMORY[0x277CE6558]);
     [v7 setIdentifier:*MEMORY[0x277CE5F90]];
     [v7 setExtendedLanguageTag:@"und"];
-    [v7 setValue:v6];
-    [v3 addObject:v7];
+    [v7 setValue:author];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
 - (MPNowPlayingContentItem)contentItem
@@ -394,20 +394,20 @@ void __25__IMPlayerItem_streamUrl__block_invoke(uint64_t a1)
 - (void)recreateContentItem
 {
   v3 = objc_alloc(MEMORY[0x277CD5FE0]);
-  v4 = [(IMPlayerItem *)self contentItemIdentifier];
-  v5 = [v3 initWithIdentifier:v4];
+  contentItemIdentifier = [(IMPlayerItem *)self contentItemIdentifier];
+  v5 = [v3 initWithIdentifier:contentItemIdentifier];
   contentItem = self->_contentItem;
   self->_contentItem = v5;
 
   [(IMPlayerItem *)self updateContentItem];
 }
 
-- (void)setEpisodeObjectID:(id)a3
+- (void)setEpisodeObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_objectIDLock);
   episodeObjectID = self->_episodeObjectID;
-  self->_episodeObjectID = v4;
+  self->_episodeObjectID = dCopy;
 
   os_unfair_lock_unlock(&self->_objectIDLock);
 }
@@ -421,68 +421,68 @@ void __25__IMPlayerItem_streamUrl__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)updateActivity:(id)a3
+- (void)updateActivity:(id)activity
 {
-  v8 = a3;
-  v4 = [(IMPlayerItem *)self title];
-  [v8 setTitle:v4];
+  activityCopy = activity;
+  title = [(IMPlayerItem *)self title];
+  [activityCopy setTitle:title];
 
-  v5 = [(IMPlayerItem *)self album];
-  [v8 _setSubtitle:v5];
+  album = [(IMPlayerItem *)self album];
+  [activityCopy _setSubtitle:album];
 
-  v6 = [(IMPlayerItem *)self title];
-  [v8 setItemTitle:v6];
+  title2 = [(IMPlayerItem *)self title];
+  [activityCopy setItemTitle:title2];
 
-  v7 = [(IMPlayerItem *)self album];
-  [v8 setContainerTitle:v7];
+  album2 = [(IMPlayerItem *)self album];
+  [activityCopy setContainerTitle:album2];
 
   [(IMPlayerItem *)self playhead];
-  [v8 setCurrentTime:?];
+  [activityCopy setCurrentTime:?];
 }
 
-- (BOOL)hasChapterArtworkAtTime:(double)a3
+- (BOOL)hasChapterArtworkAtTime:(double)time
 {
-  v3 = [(IMPlayerItem *)self chapterAtTime:a3];
-  v4 = [v3 artworkData];
-  v5 = v4 != 0;
+  v3 = [(IMPlayerItem *)self chapterAtTime:time];
+  artworkData = [v3 artworkData];
+  v5 = artworkData != 0;
 
   return v5;
 }
 
-- (id)retrieveChapterArtworkAtTime:(double)a3
+- (id)retrieveChapterArtworkAtTime:(double)time
 {
-  v3 = [(IMPlayerItem *)self chapterAtTime:a3];
-  v4 = [v3 artwork];
+  v3 = [(IMPlayerItem *)self chapterAtTime:time];
+  artwork = [v3 artwork];
 
-  return v4;
+  return artwork;
 }
 
-- (void)retrieveArtwork:(id)a3 withSize:(CGSize)a4 atTime:(double)a5
+- (void)retrieveArtwork:(id)artwork withSize:(CGSize)size atTime:(double)time
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [(IMPlayerItem *)self retrieveChapterArtworkAtTime:a5];
+  height = size.height;
+  width = size.width;
+  artworkCopy = artwork;
+  v10 = [(IMPlayerItem *)self retrieveChapterArtworkAtTime:time];
   v11 = v10;
   if (v10)
   {
-    v9[2](v9, v10);
+    artworkCopy[2](artworkCopy, v10);
   }
 
   else
   {
-    [(IMPlayerItem *)self retrieveArtwork:v9 withSize:width, height];
+    [(IMPlayerItem *)self retrieveArtwork:artworkCopy withSize:width, height];
   }
 }
 
-- (id)chapterAtTime:(double)a3
+- (id)chapterAtTime:(double)time
 {
-  v5 = [(IMPlayerItem *)self metadataChapters];
+  metadataChapters = [(IMPlayerItem *)self metadataChapters];
 
-  if (v5 && (-[IMPlayerItem metadataChapters](self, "metadataChapters"), v6 = objc_claimAutoreleasedReturnValue(), v11[0] = MEMORY[0x277D85DD0], v11[1] = 3221225472, v11[2] = __30__IMPlayerItem_chapterAtTime___block_invoke, v11[3] = &__block_descriptor_40_e36_B32__0__IMPlayerChapterInfo_8Q16_B24l, *&v11[4] = a3, v7 = [v6 indexOfObjectPassingTest:v11], v6, v7 != 0x7FFFFFFFFFFFFFFFLL))
+  if (metadataChapters && (-[IMPlayerItem metadataChapters](self, "metadataChapters"), v6 = objc_claimAutoreleasedReturnValue(), v11[0] = MEMORY[0x277D85DD0], v11[1] = 3221225472, v11[2] = __30__IMPlayerItem_chapterAtTime___block_invoke, v11[3] = &__block_descriptor_40_e36_B32__0__IMPlayerChapterInfo_8Q16_B24l, *&v11[4] = time, v7 = [v6 indexOfObjectPassingTest:v11], v6, v7 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = [(IMPlayerItem *)self metadataChapters];
-    v8 = [v9 objectAtIndex:v7];
+    metadataChapters2 = [(IMPlayerItem *)self metadataChapters];
+    v8 = [metadataChapters2 objectAtIndex:v7];
   }
 
   else
@@ -528,18 +528,18 @@ BOOL __30__IMPlayerItem_chapterAtTime___block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)timeChapters
 {
-  v2 = [(IMPlayerItem *)self chapters];
+  chapters = [(IMPlayerItem *)self chapters];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_2];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [chapters filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
 - (NSArray)metadataChapters
 {
-  v2 = [(IMPlayerItem *)self chapters];
+  chapters = [(IMPlayerItem *)self chapters];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_37];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [chapters filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -549,20 +549,20 @@ BOOL __30__IMPlayerItem_chapterAtTime___block_invoke(uint64_t a1, void *a2)
   if (![(IMPlayerItem *)self areChaptersLoaded]&& ![(IMPlayerItem *)self areChaptersLoading])
   {
     v3 = [(IMPlayerItem *)self url];
-    v4 = [v3 pathExtension];
-    v5 = [v4 lowercaseString];
+    pathExtension = [v3 pathExtension];
+    lowercaseString = [pathExtension lowercaseString];
 
-    if ([&unk_282CCBC40 containsObject:v5])
+    if ([&unk_282CCBC40 containsObject:lowercaseString])
     {
       [(IMPlayerItem *)self setAreChaptersLoading:1];
-      v6 = [(IMPlayerItem *)self asset];
+      asset = [(IMPlayerItem *)self asset];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __28__IMPlayerItem_loadChapters__block_invoke;
       v8[3] = &unk_2782BDD68;
-      v9 = v6;
-      v10 = self;
-      v7 = v6;
+      v9 = asset;
+      selfCopy = self;
+      v7 = asset;
       [v7 loadValuesAsynchronouslyForKeys:&unk_282CCBC58 completionHandler:v8];
     }
   }
@@ -1168,16 +1168,16 @@ void __28__IMPlayerItem_loadChapters__block_invoke_8(uint64_t a1)
   [v2 postNotificationName:@"IMMediaItemDidLoadChaptersNotification" object:*(a1 + 32)];
 }
 
-- (void)updateTranscriptInformation:(id)a3 transcriptSource:(id)a4
+- (void)updateTranscriptInformation:(id)information transcriptSource:(id)source
 {
-  objc_storeStrong(&self->_transcriptIdentifier, a3);
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MPNowPlayingContentItem *)self->_contentItem userInfo];
-  v10 = [v9 mutableCopy];
+  objc_storeStrong(&self->_transcriptIdentifier, information);
+  informationCopy = information;
+  sourceCopy = source;
+  userInfo = [(MPNowPlayingContentItem *)self->_contentItem userInfo];
+  v10 = [userInfo mutableCopy];
 
   [v10 setObject:self->_transcriptIdentifier forKeyedSubscript:*MEMORY[0x277CD5C88]];
-  [v10 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD5C90]];
+  [v10 setObject:sourceCopy forKeyedSubscript:*MEMORY[0x277CD5C90]];
 
   [(MPNowPlayingContentItem *)self->_contentItem setUserInfo:v10];
 }
@@ -1189,11 +1189,11 @@ void __28__IMPlayerItem_loadChapters__block_invoke_8(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)populateContentItem:(id)a3
+- (void)populateContentItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  IMPlayerItem.populateContentItem(_:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  IMPlayerItem.populateContentItem(_:)(itemCopy);
 }
 
 @end

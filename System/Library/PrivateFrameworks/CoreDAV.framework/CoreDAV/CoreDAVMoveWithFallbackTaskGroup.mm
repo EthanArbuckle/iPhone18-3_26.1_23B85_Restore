@@ -1,32 +1,32 @@
 @interface CoreDAVMoveWithFallbackTaskGroup
-- (CoreDAVMoveWithFallbackTaskGroup)initWithSourceURL:(id)a3 destinationURL:(id)a4 AccountInfoProvider:(id)a5 taskManager:(id)a6;
+- (CoreDAVMoveWithFallbackTaskGroup)initWithSourceURL:(id)l destinationURL:(id)rL AccountInfoProvider:(id)provider taskManager:(id)manager;
 - (id)description;
-- (void)_completedMoveTask:(id)a3;
-- (void)_completedPutTask:(id)a3;
+- (void)_completedMoveTask:(id)task;
+- (void)_completedPutTask:(id)task;
 - (void)startTaskGroup;
 @end
 
 @implementation CoreDAVMoveWithFallbackTaskGroup
 
-- (CoreDAVMoveWithFallbackTaskGroup)initWithSourceURL:(id)a3 destinationURL:(id)a4 AccountInfoProvider:(id)a5 taskManager:(id)a6
+- (CoreDAVMoveWithFallbackTaskGroup)initWithSourceURL:(id)l destinationURL:(id)rL AccountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  providerCopy = provider;
+  managerCopy = manager;
   v25.receiver = self;
   v25.super_class = CoreDAVMoveWithFallbackTaskGroup;
-  v15 = [(CoreDAVTaskGroup *)&v25 initWithAccountInfoProvider:v13 taskManager:v14];
+  v15 = [(CoreDAVTaskGroup *)&v25 initWithAccountInfoProvider:providerCopy taskManager:managerCopy];
   if (v15)
   {
-    if (v11 && ([v11 CDVRawPath], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v17))
+    if (lCopy && ([lCopy CDVRawPath], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v17))
     {
-      if (v12 && ([v12 CDVRawPath], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "length"), v18, v19))
+      if (rLCopy && ([rLCopy CDVRawPath], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "length"), v18, v19))
       {
-        if (![v11 isEqual:v12])
+        if (![lCopy isEqual:rLCopy])
         {
-          objc_storeStrong(&v15->_sourceURL, a3);
-          objc_storeStrong(&v15->_destinationURL, a4);
+          objc_storeStrong(&v15->_sourceURL, l);
+          objc_storeStrong(&v15->_destinationURL, rL);
           goto LABEL_8;
         }
 
@@ -84,13 +84,13 @@ LABEL_8:
   }
 
   v6 = [CoreDAVMoveTask alloc];
-  v7 = [(CoreDAVMoveWithFallbackTaskGroup *)self sourceURL];
-  v8 = [(CoreDAVMoveWithFallbackTaskGroup *)self destinationURL];
-  v9 = [(CoreDAVCopyOrMoveTask *)v6 initWithSourceURL:v7 destinationURL:v8 andOverwrite:[(CoreDAVMoveWithFallbackTaskGroup *)self overwrite]];
+  sourceURL = [(CoreDAVMoveWithFallbackTaskGroup *)self sourceURL];
+  destinationURL = [(CoreDAVMoveWithFallbackTaskGroup *)self destinationURL];
+  v9 = [(CoreDAVCopyOrMoveTask *)v6 initWithSourceURL:sourceURL destinationURL:destinationURL andOverwrite:[(CoreDAVMoveWithFallbackTaskGroup *)self overwrite]];
 
   [(CoreDAVMoveTask *)v9 setPreviousETag:self->_previousETag];
-  v10 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [(CoreDAVTask *)v9 setAccountInfoProvider:v10];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [(CoreDAVTask *)v9 setAccountInfoProvider:accountInfoProvider];
 
   [(CoreDAVTask *)v9 setTimeoutInterval:self->super._timeoutInterval];
   objc_initWeak(buf, v9);
@@ -99,11 +99,11 @@ LABEL_8:
   v14 = __50__CoreDAVMoveWithFallbackTaskGroup_startTaskGroup__block_invoke;
   v15 = &unk_278E30F68;
   objc_copyWeak(&v17, buf);
-  v16 = self;
+  selfCopy = self;
   [(CoreDAVTask *)v9 setCompletionBlock:&v12];
   [(NSMutableSet *)self->super._outstandingTasks addObject:v9, v12, v13, v14, v15];
-  v11 = [(CoreDAVTaskGroup *)self taskManager];
-  [v11 submitQueuedCoreDAVTask:v9];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v9];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -124,16 +124,16 @@ uint64_t __50__CoreDAVMoveWithFallbackTaskGroup_startTaskGroup__block_invoke(uin
   return MEMORY[0x2821F96F8](WeakRetained, v3);
 }
 
-- (void)_completedMoveTask:(id)a3
+- (void)_completedMoveTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 error];
-  v6 = v5;
-  if (!v5)
+  taskCopy = task;
+  error = [taskCopy error];
+  v6 = error;
+  if (!error)
   {
-    v9 = [v4 responseHeaders];
+    responseHeaders = [taskCopy responseHeaders];
     responseHeaders = self->_responseHeaders;
-    self->_responseHeaders = v9;
+    self->_responseHeaders = responseHeaders;
 
     [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:0 delegateCallbackBlock:0];
     v11 = +[CoreDAVLogging sharedLogging];
@@ -150,18 +150,18 @@ uint64_t __50__CoreDAVMoveWithFallbackTaskGroup_startTaskGroup__block_invoke(uin
     goto LABEL_18;
   }
 
-  v7 = [v5 domain];
-  if ([v7 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
+  domain = [error domain];
+  if ([domain isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
   {
-    v8 = [v6 code];
+    code = [v6 code];
   }
 
   else
   {
-    v8 = 0;
+    code = 0;
   }
 
-  if (!self->_useFallback || (v8 - 403) >= 3 && v8 != 501)
+  if (!self->_useFallback || (code - 403) >= 3 && code != 501)
   {
     [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v6 delegateCallbackBlock:0];
     v11 = +[CoreDAVLogging sharedLogging];
@@ -202,11 +202,11 @@ LABEL_19:
   v23 = __55__CoreDAVMoveWithFallbackTaskGroup__completedMoveTask___block_invoke;
   v24 = &unk_278E30F68;
   objc_copyWeak(&v26, buf);
-  v25 = self;
+  selfCopy = self;
   [(CoreDAVTask *)v11 setCompletionBlock:&v21];
   [(NSMutableSet *)self->super._outstandingTasks addObject:v11, v21, v22, v23, v24];
-  v19 = [(CoreDAVTaskGroup *)self taskManager];
-  [v19 submitQueuedCoreDAVTask:v11];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v11];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(buf);
@@ -228,16 +228,16 @@ uint64_t __55__CoreDAVMoveWithFallbackTaskGroup__completedMoveTask___block_invok
   return MEMORY[0x2821F96F8](WeakRetained, v3);
 }
 
-- (void)_completedPutTask:(id)a3
+- (void)_completedPutTask:(id)task
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 error];
+  taskCopy = task;
+  error = [taskCopy error];
   v6 = +[CoreDAVLogging sharedLogging];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
   v8 = [v6 logHandleForAccountInfoProvider:WeakRetained];
 
-  if (v5)
+  if (error)
   {
     if (v8 && os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -245,7 +245,7 @@ uint64_t __55__CoreDAVMoveWithFallbackTaskGroup__completedMoveTask___block_invok
       _os_log_impl(&dword_2452FB000, v8, OS_LOG_TYPE_INFO, "[move] Move PUT failed", buf, 2u);
     }
 
-    [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v5 delegateCallbackBlock:0];
+    [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:error delegateCallbackBlock:0];
   }
 
   else
@@ -265,16 +265,16 @@ uint64_t __55__CoreDAVMoveWithFallbackTaskGroup__completedMoveTask___block_invok
       v12 = v11;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v4 responseHeaders];
+        responseHeaders = [taskCopy responseHeaders];
         *buf = 138412290;
-        v27 = v13;
+        v27 = responseHeaders;
         _os_log_impl(&dword_2452FB000, v12, OS_LOG_TYPE_INFO, "[move] PUT Responses are: %@", buf, 0xCu);
       }
     }
 
-    v14 = [v4 nextETag];
+    nextETag = [taskCopy nextETag];
     nextETag = self->_nextETag;
-    self->_nextETag = v14;
+    self->_nextETag = nextETag;
 
     v16 = [(CoreDAVTask *)[CoreDAVDeleteTask alloc] initWithURL:self->_sourceURL];
     v17 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -286,11 +286,11 @@ uint64_t __55__CoreDAVMoveWithFallbackTaskGroup__completedMoveTask___block_invok
     v22 = __54__CoreDAVMoveWithFallbackTaskGroup__completedPutTask___block_invoke;
     v23 = &unk_278E30F68;
     objc_copyWeak(&v25, buf);
-    v24 = self;
+    selfCopy = self;
     [(CoreDAVTask *)v16 setCompletionBlock:&v20];
     [(NSMutableSet *)self->super._outstandingTasks addObject:v16, v20, v21, v22, v23];
-    v18 = [(CoreDAVTaskGroup *)self taskManager];
-    [v18 submitQueuedCoreDAVTask:v16];
+    taskManager = [(CoreDAVTaskGroup *)self taskManager];
+    [taskManager submitQueuedCoreDAVTask:v16];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);

@@ -1,18 +1,18 @@
 @interface SBWaitForSceneContentAvailableTransaction
-- (SBWaitForSceneContentAvailableTransaction)initWithSceneHandle:(id)a3 manualListener:(BOOL)a4;
+- (SBWaitForSceneContentAvailableTransaction)initWithSceneHandle:(id)handle manualListener:(BOOL)listener;
 - (void)_begin;
 - (void)_didComplete;
-- (void)_noteSceneContentReadinessDidChange:(BOOL)a3;
+- (void)_noteSceneContentReadinessDidChange:(BOOL)change;
 - (void)dealloc;
-- (void)noteSceneContentIsReady:(BOOL)a3;
+- (void)noteSceneContentIsReady:(BOOL)ready;
 @end
 
 @implementation SBWaitForSceneContentAvailableTransaction
 
-- (SBWaitForSceneContentAvailableTransaction)initWithSceneHandle:(id)a3 manualListener:(BOOL)a4
+- (SBWaitForSceneContentAvailableTransaction)initWithSceneHandle:(id)handle manualListener:(BOOL)listener
 {
-  v8 = a3;
-  if (!v8)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [SBWaitForSceneContentAvailableTransaction initWithSceneHandle:a2 manualListener:self];
   }
@@ -23,9 +23,9 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sceneHandle, a3);
-    v10->_manualListener = a4;
-    v10->_isContentStateReady = [v8 isContentReady];
+    objc_storeStrong(&v9->_sceneHandle, handle);
+    v10->_manualListener = listener;
+    v10->_isContentStateReady = [handleCopy isContentReady];
     if (!v10->_manualListener)
     {
       [(SBSceneHandle *)v10->_sceneHandle addObserver:v10];
@@ -43,15 +43,15 @@
   [(SBWaitForSceneContentAvailableTransaction *)&v3 dealloc];
 }
 
-- (void)noteSceneContentIsReady:(BOOL)a3
+- (void)noteSceneContentIsReady:(BOOL)ready
 {
   if (self->_manualListener)
   {
-    v3 = a3;
+    readyCopy = ready;
     if (([(SBWaitForSceneContentAvailableTransaction *)self isComplete]& 1) == 0)
     {
 
-      [(SBWaitForSceneContentAvailableTransaction *)self _noteSceneContentReadinessDidChange:v3];
+      [(SBWaitForSceneContentAvailableTransaction *)self _noteSceneContentReadinessDidChange:readyCopy];
     }
   }
 }
@@ -76,12 +76,12 @@
   [(SBWaitForSceneContentAvailableTransaction *)&v3 _didComplete];
 }
 
-- (void)_noteSceneContentReadinessDidChange:(BOOL)a3
+- (void)_noteSceneContentReadinessDidChange:(BOOL)change
 {
-  if (self->_isContentStateReady != a3)
+  if (self->_isContentStateReady != change)
   {
-    self->_isContentStateReady = a3;
-    if (a3)
+    self->_isContentStateReady = change;
+    if (change)
     {
       [(SBWaitForSceneContentAvailableTransaction *)self evaluateMilestone:@"SBWaitForSceneContentAvailableMilestone" withEvaluator:&__block_literal_global_220];
     }

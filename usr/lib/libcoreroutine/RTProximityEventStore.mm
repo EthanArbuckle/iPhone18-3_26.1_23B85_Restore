@@ -1,50 +1,50 @@
 @interface RTProximityEventStore
-- (id)_getPredicateForEventIDs:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_deleteProximityEventWithUUID:(id)a3 handler:(id)a4;
-- (void)_fetchProximityEventsFromDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)_fetchProximityEventsFromEventIDs:(id)a3 handler:(id)a4;
-- (void)_purgeProximityEventsPredating:(id)a3 handler:(id)a4;
-- (void)_storeProximityEvent:(id)a3 handler:(id)a4;
-- (void)clearWithHandler:(id)a3;
-- (void)deleteProximityEventWithUUID:(id)a3 handler:(id)a4;
-- (void)fetchProximityEventsFromDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)fetchProximityEventsFromEventIDs:(id)a3 handler:(id)a4;
-- (void)purgeProximityEventsPredating:(id)a3 handler:(id)a4;
-- (void)storeProximityEvent:(id)a3 handler:(id)a4;
+- (id)_getPredicateForEventIDs:(id)ds;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_deleteProximityEventWithUUID:(id)d handler:(id)handler;
+- (void)_fetchProximityEventsFromDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)_fetchProximityEventsFromEventIDs:(id)ds handler:(id)handler;
+- (void)_purgeProximityEventsPredating:(id)predating handler:(id)handler;
+- (void)_storeProximityEvent:(id)event handler:(id)handler;
+- (void)clearWithHandler:(id)handler;
+- (void)deleteProximityEventWithUUID:(id)d handler:(id)handler;
+- (void)fetchProximityEventsFromDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)fetchProximityEventsFromEventIDs:(id)ds handler:(id)handler;
+- (void)purgeProximityEventsPredating:(id)predating handler:(id)handler;
+- (void)storeProximityEvent:(id)event handler:(id)handler;
 @end
 
 @implementation RTProximityEventStore
 
-- (void)fetchProximityEventsFromDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchProximityEventsFromDate:(id)date endDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__RTProximityEventStore_fetchProximityEventsFromDate_endDate_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_fetchProximityEventsFromDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)_fetchProximityEventsFromDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (dateCopy)
   {
-    if (v10)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -62,10 +62,10 @@
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate (in %s:%d)", buf, 0x12u);
     }
 
-    if (v10)
+    if (endDateCopy)
     {
 LABEL_3:
-      if (v11)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -84,7 +84,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
 LABEL_11:
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -99,19 +99,19 @@ LABEL_11:
   }
 
 LABEL_14:
-  if ([v9 compare:v10] == 1)
+  if ([dateCopy compare:endDateCopy] == 1)
   {
     v15 = MEMORY[0x277CCA9B8];
     v16 = *MEMORY[0x277D01448];
     v34 = *MEMORY[0x277CCA450];
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v9 getFormattedDateString];
-    v19 = [v10 getFormattedDateString];
-    v20 = [v17 stringWithFormat:@"startDate, %@, endDate, %@", v18, v19];
+    getFormattedDateString = [dateCopy getFormattedDateString];
+    getFormattedDateString2 = [endDateCopy getFormattedDateString];
+    v20 = [v17 stringWithFormat:@"startDate, %@, endDate, %@", getFormattedDateString, getFormattedDateString2];
     v35 = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v22 = [v15 errorWithDomain:v16 code:7 userInfo:v21];
-    v11[2](v11, MEMORY[0x277CBEBF8], v22);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v22);
   }
 
   else
@@ -121,11 +121,11 @@ LABEL_14:
     aBlock[1] = 3221225472;
     aBlock[2] = __71__RTProximityEventStore__fetchProximityEventsFromDate_endDate_handler___block_invoke;
     aBlock[3] = &unk_2788CB520;
-    v29 = v10;
-    v30 = v9;
-    v31 = self;
+    v29 = endDateCopy;
+    v30 = dateCopy;
+    selfCopy = self;
     v33 = a2;
-    v24 = v11;
+    v24 = handlerCopy;
     v32 = v24;
     v25 = _Block_copy(aBlock);
     v26[0] = MEMORY[0x277D85DD0];
@@ -219,32 +219,32 @@ void __71__RTProximityEventStore__fetchProximityEventsFromDate_endDate_handler__
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchProximityEventsFromEventIDs:(id)a3 handler:(id)a4
+- (void)fetchProximityEventsFromEventIDs:(id)ds handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dsCopy = ds;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTProximityEventStore_fetchProximityEventsFromEventIDs_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchProximityEventsFromEventIDs:(id)a3 handler:(id)a4
+- (void)_fetchProximityEventsFromEventIDs:(id)ds handler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dsCopy = ds;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (dsCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -277,7 +277,7 @@ LABEL_7:
   }
 
 LABEL_10:
-  if ([v7 count])
+  if ([dsCopy count])
   {
     v12 = objc_autoreleasePoolPush();
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -285,7 +285,7 @@ LABEL_10:
     aBlock[2] = __67__RTProximityEventStore__fetchProximityEventsFromEventIDs_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
     aBlock[4] = self;
-    v22 = v7;
+    v22 = dsCopy;
     v24 = a2;
     v13 = v9;
     v23 = v13;
@@ -392,17 +392,17 @@ void __67__RTProximityEventStore__fetchProximityEventsFromEventIDs_handler___blo
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_getPredicateForEventIDs:(id)a3
+- (id)_getPredicateForEventIDs:(id)ds
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dsCopy = ds;
   context = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -439,77 +439,77 @@ void __67__RTProximityEventStore__fetchProximityEventsFromEventIDs_handler___blo
   return v13;
 }
 
-- (void)storeProximityEvent:(id)a3 handler:(id)a4
+- (void)storeProximityEvent:(id)event handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  eventCopy = event;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__RTProximityEventStore_storeProximityEvent_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storeProximityEvent:(id)a3 handler:(id)a4
+- (void)_storeProximityEvent:(id)event handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  eventCopy = event;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  handlerCopy = handler;
+  eventCopy2 = event;
+  v9 = [v6 arrayWithObjects:&eventCopy count:1];
 
-  [(RTStore *)self storeWritableObjects:v9 handler:v7, v10, v11];
+  [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy, eventCopy, v11];
 }
 
-- (void)clearWithHandler:(id)a3
+- (void)clearWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)deleteProximityEventWithUUID:(id)a3 handler:(id)a4
+- (void)deleteProximityEventWithUUID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RTProximityEventStore_deleteProximityEventWithUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteProximityEventWithUUID:(id)a3 handler:(id)a4
+- (void)_deleteProximityEventWithUUID:(id)d handler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v6)
+    if (dCopy)
     {
       v14 = MEMORY[0x277D85DD0];
       v15 = 3221225472;
       v16 = __63__RTProximityEventStore__deleteProximityEventWithUUID_handler___block_invoke;
       v17 = &unk_2788C4F38;
-      v18 = v6;
-      v19 = self;
-      v8 = v7;
+      v18 = dCopy;
+      selfCopy = self;
+      v8 = handlerCopy;
       v20 = v8;
       v9 = _Block_copy(&v14);
       [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8, v14, v15, v16, v17];
@@ -525,7 +525,7 @@ void __67__RTProximityEventStore__fetchProximityEventsFromEventIDs_handler___blo
       v22[0] = @"requires valid proximity event UUID.";
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v13 = [v11 errorWithDomain:v12 code:0 userInfo:v10];
-      (*(v7 + 2))(v7, v13);
+      (*(handlerCopy + 2))(handlerCopy, v13);
     }
   }
 }
@@ -546,38 +546,38 @@ void __63__RTProximityEventStore__deleteProximityEventWithUUID_handler___block_i
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)purgeProximityEventsPredating:(id)a3 handler:(id)a4
+- (void)purgeProximityEventsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTProximityEventStore_purgeProximityEventsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeProximityEventsPredating:(id)a3 handler:(id)a4
+- (void)_purgeProximityEventsPredating:(id)predating handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"endDate";
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  predatingCopy = predating;
   v10 = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   v12[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v9 handler:v6];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -587,10 +587,10 @@ void __63__RTProximityEventStore__deleteProximityEventWithUUID_handler___block_i
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

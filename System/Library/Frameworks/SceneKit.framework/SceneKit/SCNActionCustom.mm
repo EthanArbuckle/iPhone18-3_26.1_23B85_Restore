@@ -1,11 +1,11 @@
 @interface SCNActionCustom
-+ (id)customActionWithDuration:(double)a3 actionBlock:(id)a4;
++ (id)customActionWithDuration:(double)duration actionBlock:(id)block;
 - (SCNActionCustom)init;
-- (SCNActionCustom)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionCustom)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionCustom
@@ -29,11 +29,11 @@
   [(SCNAction *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNActionCustom;
-  [(SCNAction *)&v4 encodeWithCoder:a3];
+  [(SCNAction *)&v4 encodeWithCoder:coder];
   v3 = scn_default_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
@@ -41,7 +41,7 @@
   }
 }
 
-- (SCNActionCustom)initWithCoder:(id)a3
+- (SCNActionCustom)initWithCoder:(id)coder
 {
   v4 = scn_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -52,29 +52,29 @@
   return [(SCNActionCustom *)self init];
 }
 
-+ (id)customActionWithDuration:(double)a3 actionBlock:(id)a4
++ (id)customActionWithDuration:(double)duration actionBlock:(id)block
 {
   v6 = objc_alloc_init(SCNActionCustom);
-  v7 = [(SCNAction *)v6 caction];
-  *(v7 + 144) = _Block_copy(a4);
-  v8 = 1.79769313e308;
-  if (fabs(a3) != INFINITY)
+  caction = [(SCNAction *)v6 caction];
+  *(caction + 144) = _Block_copy(block);
+  durationCopy = 1.79769313e308;
+  if (fabs(duration) != INFINITY)
   {
-    v8 = a3;
+    durationCopy = duration;
   }
 
-  [(SCNAction *)v6 setDuration:v8];
+  [(SCNAction *)v6 setDuration:durationCopy];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SCNActionCustom;
-  v4 = [(SCNAction *)&v8 copyWithZone:a3];
-  v5 = [(SCNAction *)self caction];
-  v6 = [v4 caction];
-  *(v6 + 144) = _Block_copy(v5[1].var0);
+  v4 = [(SCNAction *)&v8 copyWithZone:zone];
+  caction = [(SCNAction *)self caction];
+  caction2 = [v4 caction];
+  *(caction2 + 144) = _Block_copy(caction[1].var0);
   return v4;
 }
 

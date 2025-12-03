@@ -1,18 +1,18 @@
 @interface AWDCountersJoinerS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)attachFailLatencyHistogramAtIndex:(unint64_t)a3;
-- (unsigned)attachLatencyHistogramAtIndex:(unint64_t)a3;
-- (unsigned)joinerFailLatencyHistogramAtIndex:(unint64_t)a3;
-- (unsigned)joinerLatencyHistogramAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)attachFailLatencyHistogramAtIndex:(unint64_t)index;
+- (unsigned)attachLatencyHistogramAtIndex:(unint64_t)index;
+- (unsigned)joinerFailLatencyHistogramAtIndex:(unint64_t)index;
+- (unsigned)joinerLatencyHistogramAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasJoinSuccessRate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasJoinSuccessRate:(BOOL)rate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCountersJoinerS
@@ -28,9 +28,9 @@
   [(AWDCountersJoinerS *)&v3 dealloc];
 }
 
-- (void)setHasJoinSuccessRate:(BOOL)a3
+- (void)setHasJoinSuccessRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 2;
   }
@@ -43,60 +43,60 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)attachLatencyHistogramAtIndex:(unint64_t)a3
+- (unsigned)attachLatencyHistogramAtIndex:(unint64_t)index
 {
   p_attachLatencyHistograms = &self->_attachLatencyHistograms;
   count = self->_attachLatencyHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_attachLatencyHistograms->list[a3];
+  return p_attachLatencyHistograms->list[index];
 }
 
-- (unsigned)joinerLatencyHistogramAtIndex:(unint64_t)a3
+- (unsigned)joinerLatencyHistogramAtIndex:(unint64_t)index
 {
   p_joinerLatencyHistograms = &self->_joinerLatencyHistograms;
   count = self->_joinerLatencyHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_joinerLatencyHistograms->list[a3];
+  return p_joinerLatencyHistograms->list[index];
 }
 
-- (unsigned)attachFailLatencyHistogramAtIndex:(unint64_t)a3
+- (unsigned)attachFailLatencyHistogramAtIndex:(unint64_t)index
 {
   p_attachFailLatencyHistograms = &self->_attachFailLatencyHistograms;
   count = self->_attachFailLatencyHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_attachFailLatencyHistograms->list[a3];
+  return p_attachFailLatencyHistograms->list[index];
 }
 
-- (unsigned)joinerFailLatencyHistogramAtIndex:(unint64_t)a3
+- (unsigned)joinerFailLatencyHistogramAtIndex:(unint64_t)index
 {
   p_joinerFailLatencyHistograms = &self->_joinerFailLatencyHistograms;
   count = self->_joinerFailLatencyHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_joinerFailLatencyHistograms->list[a3];
+  return p_joinerFailLatencyHistograms->list[index];
 }
 
 - (id)description
@@ -104,8 +104,8 @@
   v7.receiver = self;
   v7.super_class = AWDCountersJoinerS;
   v3 = [(AWDCountersJoinerS *)&v7 description];
-  v4 = [(AWDCountersJoinerS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDCountersJoinerS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -144,15 +144,15 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v17 = v4;
+  toCopy = to;
+  v17 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     joinSuccessRate = self->_joinSuccessRate;
     PBDataWriterWriteFloatField();
-    v4 = v17;
+    toCopy = v17;
     if ((*&self->_has & 1) == 0)
     {
 LABEL_3:
@@ -173,7 +173,7 @@ LABEL_3:
 
   joinAttempts = self->_joinAttempts;
   PBDataWriterWriteUint32Field();
-  v4 = v17;
+  toCopy = v17;
   p_attachLatencyHistograms = &self->_attachLatencyHistograms;
   if (!self->_attachLatencyHistograms.count)
   {
@@ -186,7 +186,7 @@ LABEL_7:
   {
     v9 = p_attachLatencyHistograms->list[v8];
     PBDataWriterWriteUint32Field();
-    v4 = v17;
+    toCopy = v17;
     ++v8;
   }
 
@@ -199,7 +199,7 @@ LABEL_9:
     {
       v11 = self->_joinerLatencyHistograms.list[v10];
       PBDataWriterWriteUint32Field();
-      v4 = v17;
+      toCopy = v17;
       ++v10;
     }
 
@@ -213,7 +213,7 @@ LABEL_9:
     {
       v13 = self->_attachFailLatencyHistograms.list[v12];
       PBDataWriterWriteUint32Field();
-      v4 = v17;
+      toCopy = v17;
       ++v12;
     }
 
@@ -228,7 +228,7 @@ LABEL_9:
     {
       v16 = p_joinerFailLatencyHistograms->list[v15];
       PBDataWriterWriteUint32Field();
-      v4 = v17;
+      toCopy = v17;
       ++v15;
     }
 
@@ -236,9 +236,9 @@ LABEL_9:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) == 0)
   {
     if ((*&self->_has & 1) == 0)
@@ -247,9 +247,9 @@ LABEL_9:
     }
 
 LABEL_6:
-    v4[26] = self->_joinAttempts;
-    *(v4 + 112) |= 1u;
-    v17 = v4;
+    toCopy[26] = self->_joinAttempts;
+    *(toCopy + 112) |= 1u;
+    v17 = toCopy;
     if (![(AWDCountersJoinerS *)self attachLatencyHistogramsCount])
     {
       goto LABEL_10;
@@ -258,15 +258,15 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4[27] = LODWORD(self->_joinSuccessRate);
-  *(v4 + 112) |= 2u;
+  toCopy[27] = LODWORD(self->_joinSuccessRate);
+  *(toCopy + 112) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v17 = v4;
+  v17 = toCopy;
   if (![(AWDCountersJoinerS *)self attachLatencyHistogramsCount])
   {
     goto LABEL_10;
@@ -274,10 +274,10 @@ LABEL_3:
 
 LABEL_7:
   [v17 clearAttachLatencyHistograms];
-  v5 = [(AWDCountersJoinerS *)self attachLatencyHistogramsCount];
-  if (v5)
+  attachLatencyHistogramsCount = [(AWDCountersJoinerS *)self attachLatencyHistogramsCount];
+  if (attachLatencyHistogramsCount)
   {
-    v6 = v5;
+    v6 = attachLatencyHistogramsCount;
     for (i = 0; i != v6; ++i)
     {
       [v17 addAttachLatencyHistogram:{-[AWDCountersJoinerS attachLatencyHistogramAtIndex:](self, "attachLatencyHistogramAtIndex:", i)}];
@@ -288,10 +288,10 @@ LABEL_10:
   if ([(AWDCountersJoinerS *)self joinerLatencyHistogramsCount])
   {
     [v17 clearJoinerLatencyHistograms];
-    v8 = [(AWDCountersJoinerS *)self joinerLatencyHistogramsCount];
-    if (v8)
+    joinerLatencyHistogramsCount = [(AWDCountersJoinerS *)self joinerLatencyHistogramsCount];
+    if (joinerLatencyHistogramsCount)
     {
-      v9 = v8;
+      v9 = joinerLatencyHistogramsCount;
       for (j = 0; j != v9; ++j)
       {
         [v17 addJoinerLatencyHistogram:{-[AWDCountersJoinerS joinerLatencyHistogramAtIndex:](self, "joinerLatencyHistogramAtIndex:", j)}];
@@ -302,10 +302,10 @@ LABEL_10:
   if ([(AWDCountersJoinerS *)self attachFailLatencyHistogramsCount])
   {
     [v17 clearAttachFailLatencyHistograms];
-    v11 = [(AWDCountersJoinerS *)self attachFailLatencyHistogramsCount];
-    if (v11)
+    attachFailLatencyHistogramsCount = [(AWDCountersJoinerS *)self attachFailLatencyHistogramsCount];
+    if (attachFailLatencyHistogramsCount)
     {
-      v12 = v11;
+      v12 = attachFailLatencyHistogramsCount;
       for (k = 0; k != v12; ++k)
       {
         [v17 addAttachFailLatencyHistogram:{-[AWDCountersJoinerS attachFailLatencyHistogramAtIndex:](self, "attachFailLatencyHistogramAtIndex:", k)}];
@@ -316,10 +316,10 @@ LABEL_10:
   if ([(AWDCountersJoinerS *)self joinerFailLatencyHistogramsCount])
   {
     [v17 clearJoinerFailLatencyHistograms];
-    v14 = [(AWDCountersJoinerS *)self joinerFailLatencyHistogramsCount];
-    if (v14)
+    joinerFailLatencyHistogramsCount = [(AWDCountersJoinerS *)self joinerFailLatencyHistogramsCount];
+    if (joinerFailLatencyHistogramsCount)
     {
-      v15 = v14;
+      v15 = joinerFailLatencyHistogramsCount;
       for (m = 0; m != v15; ++m)
       {
         [v17 addJoinerFailLatencyHistogram:{-[AWDCountersJoinerS joinerFailLatencyHistogramAtIndex:](self, "joinerFailLatencyHistogramAtIndex:", m)}];
@@ -328,9 +328,9 @@ LABEL_10:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 2) != 0)
@@ -353,37 +353,37 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = *(v4 + 112);
+  v5 = *(equalCopy + 112);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 112) & 2) == 0 || self->_joinSuccessRate != *(v4 + 27))
+    if ((*(equalCopy + 112) & 2) == 0 || self->_joinSuccessRate != *(equalCopy + 27))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 112) & 2) != 0)
+  else if ((*(equalCopy + 112) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_joinAttempts != *(v4 + 26))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_joinAttempts != *(equalCopy + 26))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
     goto LABEL_16;
   }
@@ -451,19 +451,19 @@ LABEL_16:
   return v11 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 112) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 112) & 2) != 0)
   {
-    self->_joinSuccessRate = *(v4 + 27);
+    self->_joinSuccessRate = *(fromCopy + 27);
     *&self->_has |= 2u;
-    if ((*(v4 + 112) & 1) == 0)
+    if ((*(fromCopy + 112) & 1) == 0)
     {
 LABEL_3:
-      v17 = v4;
-      v5 = [v4 attachLatencyHistogramsCount];
-      if (!v5)
+      v17 = fromCopy;
+      attachLatencyHistogramsCount = [fromCopy attachLatencyHistogramsCount];
+      if (!attachLatencyHistogramsCount)
       {
         goto LABEL_9;
       }
@@ -472,52 +472,52 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 112) & 1) == 0)
+  else if ((*(fromCopy + 112) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_joinAttempts = *(v4 + 26);
+  self->_joinAttempts = *(fromCopy + 26);
   *&self->_has |= 1u;
-  v17 = v4;
-  v5 = [v4 attachLatencyHistogramsCount];
-  if (!v5)
+  v17 = fromCopy;
+  attachLatencyHistogramsCount = [fromCopy attachLatencyHistogramsCount];
+  if (!attachLatencyHistogramsCount)
   {
     goto LABEL_9;
   }
 
 LABEL_7:
-  v6 = v5;
+  v6 = attachLatencyHistogramsCount;
   for (i = 0; i != v6; ++i)
   {
     -[AWDCountersJoinerS addAttachLatencyHistogram:](self, "addAttachLatencyHistogram:", [v17 attachLatencyHistogramAtIndex:i]);
   }
 
 LABEL_9:
-  v8 = [v17 joinerLatencyHistogramsCount];
-  if (v8)
+  joinerLatencyHistogramsCount = [v17 joinerLatencyHistogramsCount];
+  if (joinerLatencyHistogramsCount)
   {
-    v9 = v8;
+    v9 = joinerLatencyHistogramsCount;
     for (j = 0; j != v9; ++j)
     {
       -[AWDCountersJoinerS addJoinerLatencyHistogram:](self, "addJoinerLatencyHistogram:", [v17 joinerLatencyHistogramAtIndex:j]);
     }
   }
 
-  v11 = [v17 attachFailLatencyHistogramsCount];
-  if (v11)
+  attachFailLatencyHistogramsCount = [v17 attachFailLatencyHistogramsCount];
+  if (attachFailLatencyHistogramsCount)
   {
-    v12 = v11;
+    v12 = attachFailLatencyHistogramsCount;
     for (k = 0; k != v12; ++k)
     {
       -[AWDCountersJoinerS addAttachFailLatencyHistogram:](self, "addAttachFailLatencyHistogram:", [v17 attachFailLatencyHistogramAtIndex:k]);
     }
   }
 
-  v14 = [v17 joinerFailLatencyHistogramsCount];
-  if (v14)
+  joinerFailLatencyHistogramsCount = [v17 joinerFailLatencyHistogramsCount];
+  if (joinerFailLatencyHistogramsCount)
   {
-    v15 = v14;
+    v15 = joinerFailLatencyHistogramsCount;
     for (m = 0; m != v15; ++m)
     {
       -[AWDCountersJoinerS addJoinerFailLatencyHistogram:](self, "addJoinerFailLatencyHistogram:", [v17 joinerFailLatencyHistogramAtIndex:m]);

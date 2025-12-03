@@ -1,21 +1,21 @@
 @interface FedStatsPluginBiomeStreamPruner
 + (id)sharedInstance;
-+ (void)pruneBiomeStream:(id)a3 forNamespace:(id)a4 eventsPassingTest:(id)a5;
-- (FedStatsPluginBiomeStreamPruner)initWithBiomeStreamAssociation:(id)a3;
++ (void)pruneBiomeStream:(id)stream forNamespace:(id)namespace eventsPassingTest:(id)test;
+- (FedStatsPluginBiomeStreamPruner)initWithBiomeStreamAssociation:(id)association;
 @end
 
 @implementation FedStatsPluginBiomeStreamPruner
 
-- (FedStatsPluginBiomeStreamPruner)initWithBiomeStreamAssociation:(id)a3
+- (FedStatsPluginBiomeStreamPruner)initWithBiomeStreamAssociation:(id)association
 {
-  v5 = a3;
+  associationCopy = association;
   v9.receiver = self;
   v9.super_class = FedStatsPluginBiomeStreamPruner;
   v6 = [(FedStatsPluginBiomeStreamPruner *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_biomeStreamAssociation, a3);
+    objc_storeStrong(&v6->_biomeStreamAssociation, association);
   }
 
   return v7;
@@ -291,25 +291,25 @@ LABEL_59:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)pruneBiomeStream:(id)a3 forNamespace:(id)a4 eventsPassingTest:(id)a5
++ (void)pruneBiomeStream:(id)stream forNamespace:(id)namespace eventsPassingTest:(id)test
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  streamCopy = stream;
+  namespaceCopy = namespace;
+  testCopy = test;
   v10 = +[FedStatsPluginBiomeStreamPruner sharedInstance];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 biomeStreamAssociation];
-    v13 = [v12 objectForKey:v8];
+    biomeStreamAssociation = [v10 biomeStreamAssociation];
+    v13 = [biomeStreamAssociation objectForKey:namespaceCopy];
 
     if (v13)
     {
-      if (([v13 containsObject:v7]& 1) != 0)
+      if (([v13 containsObject:streamCopy]& 1) != 0)
       {
         v14 = BiomeLibrary();
         v25 = 0;
-        v15 = [v14 streamWithIdentifier:v7 error:&v25];
+        v15 = [v14 streamWithIdentifier:streamCopy error:&v25];
         v16 = v25;
 
         if (v15)
@@ -318,14 +318,14 @@ LABEL_59:
           v24[0] = &v23;
           v24[1] = 0x2020000000;
           v24[2] = 0;
-          v17 = [v15 pruner];
+          pruner = [v15 pruner];
           v20[0] = MEMORY[0x277D85DD0];
           v20[1] = 3221225472;
           v20[2] = __83__FedStatsPluginBiomeStreamPruner_pruneBiomeStream_forNamespace_eventsPassingTest___block_invoke;
           v20[3] = &unk_278FF7900;
-          v21 = v9;
+          v21 = testCopy;
           v22 = &v23;
-          [v17 deleteWithPolicy:@"fedstats-pruner" eventsPassingTest:v20];
+          [pruner deleteWithPolicy:@"fedstats-pruner" eventsPassingTest:v20];
 
           v18 = +[FedStatsPluginLog logger];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -341,7 +341,7 @@ LABEL_59:
           v19 = +[FedStatsPluginLog logger];
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            [FedStatsPluginBiomeStreamPruner pruneBiomeStream:v7 forNamespace:? eventsPassingTest:?];
+            [FedStatsPluginBiomeStreamPruner pruneBiomeStream:streamCopy forNamespace:? eventsPassingTest:?];
           }
         }
       }
@@ -351,7 +351,7 @@ LABEL_59:
         v16 = +[FedStatsPluginLog logger];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          [FedStatsPluginBiomeStreamPruner pruneBiomeStream:v7 forNamespace:? eventsPassingTest:?];
+          [FedStatsPluginBiomeStreamPruner pruneBiomeStream:streamCopy forNamespace:? eventsPassingTest:?];
         }
       }
     }
@@ -361,7 +361,7 @@ LABEL_59:
       v16 = +[FedStatsPluginLog logger];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        [FedStatsPluginBiomeStreamPruner pruneBiomeStream:v8 forNamespace:v16 eventsPassingTest:?];
+        [FedStatsPluginBiomeStreamPruner pruneBiomeStream:namespaceCopy forNamespace:v16 eventsPassingTest:?];
       }
     }
   }

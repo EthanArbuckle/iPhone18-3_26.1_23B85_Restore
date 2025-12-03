@@ -1,6 +1,6 @@
 @interface JSSubscriptionStatusCoordinator
 - (JSValue)subscriptionStatus;
-- (id)fetch:(id)a3;
+- (id)fetch:(id)fetch;
 - (void)refreshSubscriptionStatus;
 @end
 
@@ -8,7 +8,7 @@
 
 - (JSValue)subscriptionStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2166F3BE4();
 
   return v3;
@@ -16,14 +16,14 @@
 
 - (void)refreshSubscriptionStatus
 {
-  v2 = self;
+  selfCopy = self;
   sub_216BBA280();
 }
 
-- (id)fetch:(id)a3
+- (id)fetch:(id)fetch
 {
-  v4 = a3;
-  v5 = self;
+  fetchCopy = fetch;
+  selfCopy = self;
   v6 = sub_216BBA2F4();
 
   return v6;

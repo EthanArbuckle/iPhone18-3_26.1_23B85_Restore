@@ -1,14 +1,14 @@
 @interface _UISheetPresentationControllerConfiguration
 + (_UISheetPresentationControllerConfiguration)_fullScreenConfiguration;
-- (BOOL)_isEqual:(id)a3 onlyCheckPropertiesRequiringFencing:(BOOL)a4;
+- (BOOL)_isEqual:(id)equal onlyCheckPropertiesRequiringFencing:(BOOL)fencing;
 - (CGRect)_hostParentFullHeightUntransformedFrameForDepthLevel;
 - (CGRect)_hostParentStackAlignmentFrame;
 - (NSString)description;
 - (_UISheetPresentationControllerConfiguration)init;
-- (_UISheetPresentationControllerConfiguration)initWithBSXPCCoder:(id)a3;
-- (_UISheetPresentationControllerConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UISheetPresentationControllerConfiguration)initWithBSXPCCoder:(id)coder;
+- (_UISheetPresentationControllerConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UISheetPresentationControllerConfiguration
@@ -66,38 +66,38 @@
   return v2;
 }
 
-- (BOOL)_isEqual:(id)a3 onlyCheckPropertiesRequiringFencing:(BOOL)a4
+- (BOOL)_isEqual:(id)equal onlyCheckPropertiesRequiringFencing:(BOOL)fencing
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(_UISheetPresentationControllerConfiguration *)self _shouldScaleDownBehindDescendantSheets];
-    if (v8 == [v7 _shouldScaleDownBehindDescendantSheets] && (v9 = -[_UISheetPresentationControllerConfiguration _peeksWhenFloating](self, "_peeksWhenFloating"), v9 == objc_msgSend(v7, "_peeksWhenFloating")) && (v10 = -[_UISheetPresentationControllerConfiguration _wantsFullScreen](self, "_wantsFullScreen"), v10 == objc_msgSend(v7, "_wantsFullScreen")) && (v11 = -[_UISheetPresentationControllerConfiguration _wantsBottomAttached](self, "_wantsBottomAttached"), v11 == objc_msgSend(v7, "_wantsBottomAttached")) && (v12 = -[_UISheetPresentationControllerConfiguration _wantsEdgeAttachedInCompactHeight](self, "_wantsEdgeAttachedInCompactHeight"), v12 == objc_msgSend(v7, "_wantsEdgeAttachedInCompactHeight")) && (v13 = -[_UISheetPresentationControllerConfiguration _widthFollowsPreferredContentSizeWhenEdgeAttached](self, "_widthFollowsPreferredContentSizeWhenEdgeAttached"), v13 == objc_msgSend(v7, "_widthFollowsPreferredContentSizeWhenEdgeAttached")) && (v14 = -[_UISheetPresentationControllerConfiguration _prefersGrabberVisible](self, "_prefersGrabberVisible"), v14 == objc_msgSend(v7, "_prefersGrabberVisible")) && (-[_UISheetPresentationControllerConfiguration _grabberTopSpacing](self, "_grabberTopSpacing"), v16 = v15, objc_msgSend(v7, "_grabberTopSpacing"), v16 == v17) && (-[_UISheetPresentationControllerConfiguration _additionalMinimumTopInset](self, "_additionalMinimumTopInset"), v19 = v18, objc_msgSend(v7, "_additionalMinimumTopInset"), v19 == v20) && (v21 = -[_UISheetPresentationControllerConfiguration _insetsPresentedViewForGrabber](self, "_insetsPresentedViewForGrabber"), v21 == objc_msgSend(v7, "_insetsPresentedViewForGrabber")) && (v22 = -[_UISheetPresentationControllerConfiguration _mode](self, "_mode"), v22 == objc_msgSend(v7, "_mode")) && (-[_UISheetPresentationControllerConfiguration _cornerRadiusForPresentationAndDismissal](self, "_cornerRadiusForPresentationAndDismissal"), v24 = v23, objc_msgSend(v7, "_cornerRadiusForPresentationAndDismissal"), v24 == v25) && (-[_UISheetPresentationControllerConfiguration _preferredCornerRadius](self, "_preferredCornerRadius"), v27 = v26, objc_msgSend(v7, "_preferredCornerRadius"), v27 == v28) && (-[_UISheetPresentationControllerConfiguration _preferredShadowOpacity](self, "_preferredShadowOpacity"), v30 = v29, objc_msgSend(v7, "_preferredShadowOpacity"), v30 == v31) && (-[_UISheetPresentationControllerConfiguration _shadowRadius](self, "_shadowRadius"), v33 = v32, objc_msgSend(v7, "_shadowRadius"), v33 == v34))
+    v7 = equalCopy;
+    _shouldScaleDownBehindDescendantSheets = [(_UISheetPresentationControllerConfiguration *)self _shouldScaleDownBehindDescendantSheets];
+    if (_shouldScaleDownBehindDescendantSheets == [v7 _shouldScaleDownBehindDescendantSheets] && (v9 = -[_UISheetPresentationControllerConfiguration _peeksWhenFloating](self, "_peeksWhenFloating"), v9 == objc_msgSend(v7, "_peeksWhenFloating")) && (v10 = -[_UISheetPresentationControllerConfiguration _wantsFullScreen](self, "_wantsFullScreen"), v10 == objc_msgSend(v7, "_wantsFullScreen")) && (v11 = -[_UISheetPresentationControllerConfiguration _wantsBottomAttached](self, "_wantsBottomAttached"), v11 == objc_msgSend(v7, "_wantsBottomAttached")) && (v12 = -[_UISheetPresentationControllerConfiguration _wantsEdgeAttachedInCompactHeight](self, "_wantsEdgeAttachedInCompactHeight"), v12 == objc_msgSend(v7, "_wantsEdgeAttachedInCompactHeight")) && (v13 = -[_UISheetPresentationControllerConfiguration _widthFollowsPreferredContentSizeWhenEdgeAttached](self, "_widthFollowsPreferredContentSizeWhenEdgeAttached"), v13 == objc_msgSend(v7, "_widthFollowsPreferredContentSizeWhenEdgeAttached")) && (v14 = -[_UISheetPresentationControllerConfiguration _prefersGrabberVisible](self, "_prefersGrabberVisible"), v14 == objc_msgSend(v7, "_prefersGrabberVisible")) && (-[_UISheetPresentationControllerConfiguration _grabberTopSpacing](self, "_grabberTopSpacing"), v16 = v15, objc_msgSend(v7, "_grabberTopSpacing"), v16 == v17) && (-[_UISheetPresentationControllerConfiguration _additionalMinimumTopInset](self, "_additionalMinimumTopInset"), v19 = v18, objc_msgSend(v7, "_additionalMinimumTopInset"), v19 == v20) && (v21 = -[_UISheetPresentationControllerConfiguration _insetsPresentedViewForGrabber](self, "_insetsPresentedViewForGrabber"), v21 == objc_msgSend(v7, "_insetsPresentedViewForGrabber")) && (v22 = -[_UISheetPresentationControllerConfiguration _mode](self, "_mode"), v22 == objc_msgSend(v7, "_mode")) && (-[_UISheetPresentationControllerConfiguration _cornerRadiusForPresentationAndDismissal](self, "_cornerRadiusForPresentationAndDismissal"), v24 = v23, objc_msgSend(v7, "_cornerRadiusForPresentationAndDismissal"), v24 == v25) && (-[_UISheetPresentationControllerConfiguration _preferredCornerRadius](self, "_preferredCornerRadius"), v27 = v26, objc_msgSend(v7, "_preferredCornerRadius"), v27 == v28) && (-[_UISheetPresentationControllerConfiguration _preferredShadowOpacity](self, "_preferredShadowOpacity"), v30 = v29, objc_msgSend(v7, "_preferredShadowOpacity"), v30 == v31) && (-[_UISheetPresentationControllerConfiguration _shadowRadius](self, "_shadowRadius"), v33 = v32, objc_msgSend(v7, "_shadowRadius"), v33 == v34))
     {
-      v35 = [(_UISheetPresentationControllerConfiguration *)self _detents];
-      v36 = [v7 _detents];
-      if ([v35 isEqual:v36])
+      _detents = [(_UISheetPresentationControllerConfiguration *)self _detents];
+      _detents2 = [v7 _detents];
+      if ([_detents isEqual:_detents2])
       {
-        v37 = [(_UISheetPresentationControllerConfiguration *)self _selectedDetentIdentifier];
-        v38 = [v7 _selectedDetentIdentifier];
-        if (_deferringTokenEqualToToken(v37, v38))
+        _selectedDetentIdentifier = [(_UISheetPresentationControllerConfiguration *)self _selectedDetentIdentifier];
+        _selectedDetentIdentifier2 = [v7 _selectedDetentIdentifier];
+        if (_deferringTokenEqualToToken(_selectedDetentIdentifier, _selectedDetentIdentifier2))
         {
-          v39 = [(_UISheetPresentationControllerConfiguration *)self _standardAppearance];
-          v40 = [v7 _standardAppearance];
-          v79 = v39;
-          if (_deferringTokenEqualToToken(v39, v40))
+          _standardAppearance = [(_UISheetPresentationControllerConfiguration *)self _standardAppearance];
+          _standardAppearance2 = [v7 _standardAppearance];
+          v79 = _standardAppearance;
+          if (_deferringTokenEqualToToken(_standardAppearance, _standardAppearance2))
           {
-            v41 = [(_UISheetPresentationControllerConfiguration *)self _edgeAttachedCompactHeightAppearance];
-            v77 = [v7 _edgeAttachedCompactHeightAppearance];
-            v78 = v41;
-            if (_deferringTokenEqualToToken(v41, v77))
+            _edgeAttachedCompactHeightAppearance = [(_UISheetPresentationControllerConfiguration *)self _edgeAttachedCompactHeightAppearance];
+            _edgeAttachedCompactHeightAppearance2 = [v7 _edgeAttachedCompactHeightAppearance];
+            v78 = _edgeAttachedCompactHeightAppearance;
+            if (_deferringTokenEqualToToken(_edgeAttachedCompactHeightAppearance, _edgeAttachedCompactHeightAppearance2))
             {
-              v42 = [(_UISheetPresentationControllerConfiguration *)self _floatingAppearance];
-              v75 = [v7 _floatingAppearance];
-              v76 = v42;
-              if (_deferringTokenEqualToToken(v42, v75) && (v43 = -[_UISheetPresentationControllerConfiguration _detentDirectionWhenFloating](self, "_detentDirectionWhenFloating"), v43 == [v7 _detentDirectionWhenFloating]) && (v44 = -[_UISheetPresentationControllerConfiguration _prefersScrollingResizesWhenDetentDirectionIsDown](self, "_prefersScrollingResizesWhenDetentDirectionIsDown"), v44 == objc_msgSend(v7, "_prefersScrollingResizesWhenDetentDirectionIsDown")) && (v45 = -[_UISheetPresentationControllerConfiguration _prefersScrollingExpandsToLargerDetentWhenScrolledToEdge](self, "_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"), v45 == objc_msgSend(v7, "_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge")) && (-[_UISheetPresentationControllerConfiguration _hostParentStackAlignmentFrame](self, "_hostParentStackAlignmentFrame"), v47 = v46, v49 = v48, v51 = v50, v53 = v52, objc_msgSend(v7, "_hostParentStackAlignmentFrame"), v82.origin.x = v54, v82.origin.y = v55, v82.size.width = v56, v82.size.height = v57, v80.origin.x = v47, v80.origin.y = v49, v80.size.width = v51, v80.size.height = v53, CGRectEqualToRect(v80, v82)))
+              _floatingAppearance = [(_UISheetPresentationControllerConfiguration *)self _floatingAppearance];
+              _floatingAppearance2 = [v7 _floatingAppearance];
+              v76 = _floatingAppearance;
+              if (_deferringTokenEqualToToken(_floatingAppearance, _floatingAppearance2) && (v43 = -[_UISheetPresentationControllerConfiguration _detentDirectionWhenFloating](self, "_detentDirectionWhenFloating"), v43 == [v7 _detentDirectionWhenFloating]) && (v44 = -[_UISheetPresentationControllerConfiguration _prefersScrollingResizesWhenDetentDirectionIsDown](self, "_prefersScrollingResizesWhenDetentDirectionIsDown"), v44 == objc_msgSend(v7, "_prefersScrollingResizesWhenDetentDirectionIsDown")) && (v45 = -[_UISheetPresentationControllerConfiguration _prefersScrollingExpandsToLargerDetentWhenScrolledToEdge](self, "_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"), v45 == objc_msgSend(v7, "_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge")) && (-[_UISheetPresentationControllerConfiguration _hostParentStackAlignmentFrame](self, "_hostParentStackAlignmentFrame"), v47 = v46, v49 = v48, v51 = v50, v53 = v52, objc_msgSend(v7, "_hostParentStackAlignmentFrame"), v82.origin.x = v54, v82.origin.y = v55, v82.size.width = v56, v82.size.height = v57, v80.origin.x = v47, v80.origin.y = v49, v80.size.width = v51, v80.size.height = v53, CGRectEqualToRect(v80, v82)))
               {
                 [(_UISheetPresentationControllerConfiguration *)self _hostParentFullHeightUntransformedFrameForDepthLevel];
                 v59 = v58;
@@ -145,7 +145,7 @@
         v70 = 0;
       }
 
-      if (a4)
+      if (fencing)
       {
         goto LABEL_31;
       }
@@ -154,7 +154,7 @@
     else
     {
       v70 = 0;
-      if (a4)
+      if (fencing)
       {
 LABEL_31:
 
@@ -241,69 +241,69 @@ LABEL_32:
   return v22;
 }
 
-- (_UISheetPresentationControllerConfiguration)initWithCoder:(id)a3
+- (_UISheetPresentationControllerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = _UISheetPresentationControllerConfiguration;
   v5 = [(_UISheetPresentationControllerConfiguration *)&v35 init];
   if (v5)
   {
-    v5->__shouldScaleDownBehindDescendantSheets = [v4 decodeBoolForKey:@"_shouldScaleDownBehindDescendantSheets"];
-    v5->__peeksWhenFloating = [v4 decodeBoolForKey:@"_peeksWhenFloating"];
-    v5->__wantsFullScreen = [v4 decodeBoolForKey:@"_wantsFullScreen"];
-    v5->__wantsBottomAttached = [v4 decodeBoolForKey:@"_wantsBottomAttached"];
-    v5->__wantsEdgeAttachedInCompactHeight = [v4 decodeBoolForKey:@"_wantsEdgeAttachedInCompactHeight"];
-    v5->__widthFollowsPreferredContentSizeWhenEdgeAttached = [v4 decodeBoolForKey:@"_widthFollowsPreferredContentSizeWhenEdgeAttached"];
-    v5->__prefersGrabberVisible = [v4 decodeBoolForKey:@"_prefersGrabberVisible"];
-    [v4 decodeDoubleForKey:@"_grabberTopSpacing"];
+    v5->__shouldScaleDownBehindDescendantSheets = [coderCopy decodeBoolForKey:@"_shouldScaleDownBehindDescendantSheets"];
+    v5->__peeksWhenFloating = [coderCopy decodeBoolForKey:@"_peeksWhenFloating"];
+    v5->__wantsFullScreen = [coderCopy decodeBoolForKey:@"_wantsFullScreen"];
+    v5->__wantsBottomAttached = [coderCopy decodeBoolForKey:@"_wantsBottomAttached"];
+    v5->__wantsEdgeAttachedInCompactHeight = [coderCopy decodeBoolForKey:@"_wantsEdgeAttachedInCompactHeight"];
+    v5->__widthFollowsPreferredContentSizeWhenEdgeAttached = [coderCopy decodeBoolForKey:@"_widthFollowsPreferredContentSizeWhenEdgeAttached"];
+    v5->__prefersGrabberVisible = [coderCopy decodeBoolForKey:@"_prefersGrabberVisible"];
+    [coderCopy decodeDoubleForKey:@"_grabberTopSpacing"];
     v5->__grabberTopSpacing = v6;
-    [v4 decodeDoubleForKey:@"_additionalMinimumTopInset"];
+    [coderCopy decodeDoubleForKey:@"_additionalMinimumTopInset"];
     v5->__additionalMinimumTopInset = v7;
-    v5->__insetsPresentedViewForGrabber = [v4 decodeBoolForKey:@"_insetsPresentedViewForGrabber"];
-    v5->__mode = [v4 decodeIntegerForKey:@"_mode"];
-    [v4 decodeDoubleForKey:@"_cornerRadiusForPresentationAndDismissal"];
+    v5->__insetsPresentedViewForGrabber = [coderCopy decodeBoolForKey:@"_insetsPresentedViewForGrabber"];
+    v5->__mode = [coderCopy decodeIntegerForKey:@"_mode"];
+    [coderCopy decodeDoubleForKey:@"_cornerRadiusForPresentationAndDismissal"];
     v5->__cornerRadiusForPresentationAndDismissal = v8;
-    [v4 decodeDoubleForKey:@"_preferredCornerRadius"];
+    [coderCopy decodeDoubleForKey:@"_preferredCornerRadius"];
     v5->__preferredCornerRadius = v9;
-    [v4 decodeDoubleForKey:@"_preferredShadowOpacity"];
+    [coderCopy decodeDoubleForKey:@"_preferredShadowOpacity"];
     v5->__preferredShadowOpacity = v10;
-    [v4 decodeDoubleForKey:@"_shadowRadius"];
+    [coderCopy decodeDoubleForKey:@"_shadowRadius"];
     v5->__shadowRadius = v11;
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_detents"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_detents"];
     detents = v5->__detents;
     v5->__detents = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_selectedDetentIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_selectedDetentIdentifier"];
     selectedDetentIdentifier = v5->__selectedDetentIdentifier;
     v5->__selectedDetentIdentifier = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_standardAppearance"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_standardAppearance"];
     standardAppearance = v5->__standardAppearance;
     v5->__standardAppearance = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_edgeAttachedCompactHeightAppearance"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_edgeAttachedCompactHeightAppearance"];
     edgeAttachedCompactHeightAppearance = v5->__edgeAttachedCompactHeightAppearance;
     v5->__edgeAttachedCompactHeightAppearance = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_floatingAppearance"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_floatingAppearance"];
     floatingAppearance = v5->__floatingAppearance;
     v5->__floatingAppearance = v23;
 
-    v5->__detentDirectionWhenFloating = [v4 decodeIntegerForKey:@"_detentDirectionWhenFloating"];
-    v5->__prefersScrollingResizesWhenDetentDirectionIsDown = [v4 decodeBoolForKey:@"_prefersScrollingResizesWhenDetentDirectionIsDown"];
-    v5->__prefersScrollingExpandsToLargerDetentWhenScrolledToEdge = [v4 decodeBoolForKey:@"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"];
-    [v4 decodeDoubleForKey:@"_hostParentDepthLevel"];
+    v5->__detentDirectionWhenFloating = [coderCopy decodeIntegerForKey:@"_detentDirectionWhenFloating"];
+    v5->__prefersScrollingResizesWhenDetentDirectionIsDown = [coderCopy decodeBoolForKey:@"_prefersScrollingResizesWhenDetentDirectionIsDown"];
+    v5->__prefersScrollingExpandsToLargerDetentWhenScrolledToEdge = [coderCopy decodeBoolForKey:@"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"];
+    [coderCopy decodeDoubleForKey:@"_hostParentDepthLevel"];
     v5->__hostParentDepthLevel = v25;
-    [v4 decodeCGRectForKey:@"_hostParentStackAlignmentFrame"];
+    [coderCopy decodeCGRectForKey:@"_hostParentStackAlignmentFrame"];
     v5->__hostParentStackAlignmentFrame.origin.x = v26;
     v5->__hostParentStackAlignmentFrame.origin.y = v27;
     v5->__hostParentStackAlignmentFrame.size.width = v28;
     v5->__hostParentStackAlignmentFrame.size.height = v29;
-    [v4 decodeCGRectForKey:@"_hostParentFullHeightUntransformedFrameForDepthLevel"];
+    [coderCopy decodeCGRectForKey:@"_hostParentFullHeightUntransformedFrameForDepthLevel"];
     v5->__hostParentFullHeightUntransformedFrameForDepthLevel.origin.x = v30;
     v5->__hostParentFullHeightUntransformedFrameForDepthLevel.origin.y = v31;
     v5->__hostParentFullHeightUntransformedFrameForDepthLevel.size.width = v32;
@@ -313,67 +313,67 @@ LABEL_32:
   return v5;
 }
 
-- (_UISheetPresentationControllerConfiguration)initWithBSXPCCoder:(id)a3
+- (_UISheetPresentationControllerConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = _UISheetPresentationControllerConfiguration;
   v5 = [(_UISheetPresentationControllerConfiguration *)&v33 init];
   if (v5)
   {
-    v5->__shouldScaleDownBehindDescendantSheets = [v4 decodeBoolForKey:@"_shouldScaleDownBehindDescendantSheets"];
-    v5->__peeksWhenFloating = [v4 decodeBoolForKey:@"_peeksWhenFloating"];
-    v5->__wantsFullScreen = [v4 decodeBoolForKey:@"_wantsFullScreen"];
-    v5->__wantsBottomAttached = [v4 decodeBoolForKey:@"_wantsBottomAttached"];
-    v5->__wantsEdgeAttachedInCompactHeight = [v4 decodeBoolForKey:@"_wantsEdgeAttachedInCompactHeight"];
-    v5->__widthFollowsPreferredContentSizeWhenEdgeAttached = [v4 decodeBoolForKey:@"_widthFollowsPreferredContentSizeWhenEdgeAttached"];
-    v5->__prefersGrabberVisible = [v4 decodeBoolForKey:@"_prefersGrabberVisible"];
-    [v4 decodeDoubleForKey:@"_grabberTopSpacing"];
+    v5->__shouldScaleDownBehindDescendantSheets = [coderCopy decodeBoolForKey:@"_shouldScaleDownBehindDescendantSheets"];
+    v5->__peeksWhenFloating = [coderCopy decodeBoolForKey:@"_peeksWhenFloating"];
+    v5->__wantsFullScreen = [coderCopy decodeBoolForKey:@"_wantsFullScreen"];
+    v5->__wantsBottomAttached = [coderCopy decodeBoolForKey:@"_wantsBottomAttached"];
+    v5->__wantsEdgeAttachedInCompactHeight = [coderCopy decodeBoolForKey:@"_wantsEdgeAttachedInCompactHeight"];
+    v5->__widthFollowsPreferredContentSizeWhenEdgeAttached = [coderCopy decodeBoolForKey:@"_widthFollowsPreferredContentSizeWhenEdgeAttached"];
+    v5->__prefersGrabberVisible = [coderCopy decodeBoolForKey:@"_prefersGrabberVisible"];
+    [coderCopy decodeDoubleForKey:@"_grabberTopSpacing"];
     v5->__grabberTopSpacing = v6;
-    [v4 decodeDoubleForKey:@"_additionalMinimumTopInset"];
+    [coderCopy decodeDoubleForKey:@"_additionalMinimumTopInset"];
     v5->__additionalMinimumTopInset = v7;
-    v5->__insetsPresentedViewForGrabber = [v4 decodeBoolForKey:@"_insetsPresentedViewForGrabber"];
-    v5->__mode = [v4 decodeInt64ForKey:@"_mode"];
-    [v4 decodeDoubleForKey:@"_cornerRadiusForPresentationAndDismissal"];
+    v5->__insetsPresentedViewForGrabber = [coderCopy decodeBoolForKey:@"_insetsPresentedViewForGrabber"];
+    v5->__mode = [coderCopy decodeInt64ForKey:@"_mode"];
+    [coderCopy decodeDoubleForKey:@"_cornerRadiusForPresentationAndDismissal"];
     v5->__cornerRadiusForPresentationAndDismissal = v8;
-    [v4 decodeDoubleForKey:@"_preferredCornerRadius"];
+    [coderCopy decodeDoubleForKey:@"_preferredCornerRadius"];
     v5->__preferredCornerRadius = v9;
-    [v4 decodeDoubleForKey:@"_preferredShadowOpacity"];
+    [coderCopy decodeDoubleForKey:@"_preferredShadowOpacity"];
     v5->__preferredShadowOpacity = v10;
-    [v4 decodeDoubleForKey:@"_shadowRadius"];
+    [coderCopy decodeDoubleForKey:@"_shadowRadius"];
     v5->__shadowRadius = v11;
     v12 = objc_opt_class();
-    v13 = [v4 decodeCollectionOfClass:v12 containingClass:objc_opt_class() forKey:@"_detents"];
+    v13 = [coderCopy decodeCollectionOfClass:v12 containingClass:objc_opt_class() forKey:@"_detents"];
     detents = v5->__detents;
     v5->__detents = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_selectedDetentIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_selectedDetentIdentifier"];
     selectedDetentIdentifier = v5->__selectedDetentIdentifier;
     v5->__selectedDetentIdentifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_standardAppearance"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_standardAppearance"];
     standardAppearance = v5->__standardAppearance;
     v5->__standardAppearance = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_edgeAttachedCompactHeightAppearance"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_edgeAttachedCompactHeightAppearance"];
     edgeAttachedCompactHeightAppearance = v5->__edgeAttachedCompactHeightAppearance;
     v5->__edgeAttachedCompactHeightAppearance = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_floatingAppearance"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_floatingAppearance"];
     floatingAppearance = v5->__floatingAppearance;
     v5->__floatingAppearance = v21;
 
-    v5->__detentDirectionWhenFloating = [v4 decodeInt64ForKey:@"_detentDirectionWhenFloating"];
-    v5->__prefersScrollingResizesWhenDetentDirectionIsDown = [v4 decodeBoolForKey:@"_prefersScrollingResizesWhenDetentDirectionIsDown"];
-    v5->__prefersScrollingExpandsToLargerDetentWhenScrolledToEdge = [v4 decodeBoolForKey:@"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"];
-    [v4 decodeDoubleForKey:@"_hostParentDepthLevel"];
+    v5->__detentDirectionWhenFloating = [coderCopy decodeInt64ForKey:@"_detentDirectionWhenFloating"];
+    v5->__prefersScrollingResizesWhenDetentDirectionIsDown = [coderCopy decodeBoolForKey:@"_prefersScrollingResizesWhenDetentDirectionIsDown"];
+    v5->__prefersScrollingExpandsToLargerDetentWhenScrolledToEdge = [coderCopy decodeBoolForKey:@"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"];
+    [coderCopy decodeDoubleForKey:@"_hostParentDepthLevel"];
     v5->__hostParentDepthLevel = v23;
-    [v4 decodeCGRectForKey:@"_hostParentStackAlignmentFrame"];
+    [coderCopy decodeCGRectForKey:@"_hostParentStackAlignmentFrame"];
     v5->__hostParentStackAlignmentFrame.origin.x = v24;
     v5->__hostParentStackAlignmentFrame.origin.y = v25;
     v5->__hostParentStackAlignmentFrame.size.width = v26;
     v5->__hostParentStackAlignmentFrame.size.height = v27;
-    [v4 decodeCGRectForKey:@"_hostParentFullHeightUntransformedFrameForDepthLevel"];
+    [coderCopy decodeCGRectForKey:@"_hostParentFullHeightUntransformedFrameForDepthLevel"];
     v5->__hostParentFullHeightUntransformedFrameForDepthLevel.origin.x = v28;
     v5->__hostParentFullHeightUntransformedFrameForDepthLevel.origin.y = v29;
     v5->__hostParentFullHeightUntransformedFrameForDepthLevel.size.width = v30;
@@ -383,104 +383,104 @@ LABEL_32:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _shouldScaleDownBehindDescendantSheets](self forKey:{"_shouldScaleDownBehindDescendantSheets"), @"_shouldScaleDownBehindDescendantSheets"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _peeksWhenFloating](self forKey:{"_peeksWhenFloating"), @"_peeksWhenFloating"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _wantsFullScreen](self forKey:{"_wantsFullScreen"), @"_wantsFullScreen"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _wantsBottomAttached](self forKey:{"_wantsBottomAttached"), @"_wantsBottomAttached"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _wantsEdgeAttachedInCompactHeight](self forKey:{"_wantsEdgeAttachedInCompactHeight"), @"_wantsEdgeAttachedInCompactHeight"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _widthFollowsPreferredContentSizeWhenEdgeAttached](self forKey:{"_widthFollowsPreferredContentSizeWhenEdgeAttached"), @"_widthFollowsPreferredContentSizeWhenEdgeAttached"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _prefersGrabberVisible](self forKey:{"_prefersGrabberVisible"), @"_prefersGrabberVisible"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _shouldScaleDownBehindDescendantSheets](self forKey:{"_shouldScaleDownBehindDescendantSheets"), @"_shouldScaleDownBehindDescendantSheets"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _peeksWhenFloating](self forKey:{"_peeksWhenFloating"), @"_peeksWhenFloating"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _wantsFullScreen](self forKey:{"_wantsFullScreen"), @"_wantsFullScreen"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _wantsBottomAttached](self forKey:{"_wantsBottomAttached"), @"_wantsBottomAttached"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _wantsEdgeAttachedInCompactHeight](self forKey:{"_wantsEdgeAttachedInCompactHeight"), @"_wantsEdgeAttachedInCompactHeight"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _widthFollowsPreferredContentSizeWhenEdgeAttached](self forKey:{"_widthFollowsPreferredContentSizeWhenEdgeAttached"), @"_widthFollowsPreferredContentSizeWhenEdgeAttached"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _prefersGrabberVisible](self forKey:{"_prefersGrabberVisible"), @"_prefersGrabberVisible"}];
   [(_UISheetPresentationControllerConfiguration *)self _grabberTopSpacing];
-  [v9 encodeDouble:@"_grabberTopSpacing" forKey:?];
+  [coderCopy encodeDouble:@"_grabberTopSpacing" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _additionalMinimumTopInset];
-  [v9 encodeDouble:@"_additionalMinimumTopInset" forKey:?];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _insetsPresentedViewForGrabber](self forKey:{"_insetsPresentedViewForGrabber"), @"_insetsPresentedViewForGrabber"}];
-  [v9 encodeInteger:-[_UISheetPresentationControllerConfiguration _mode](self forKey:{"_mode"), @"_mode"}];
+  [coderCopy encodeDouble:@"_additionalMinimumTopInset" forKey:?];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _insetsPresentedViewForGrabber](self forKey:{"_insetsPresentedViewForGrabber"), @"_insetsPresentedViewForGrabber"}];
+  [coderCopy encodeInteger:-[_UISheetPresentationControllerConfiguration _mode](self forKey:{"_mode"), @"_mode"}];
   [(_UISheetPresentationControllerConfiguration *)self _cornerRadiusForPresentationAndDismissal];
-  [v9 encodeDouble:@"_cornerRadiusForPresentationAndDismissal" forKey:?];
+  [coderCopy encodeDouble:@"_cornerRadiusForPresentationAndDismissal" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _preferredCornerRadius];
-  [v9 encodeDouble:@"_preferredCornerRadius" forKey:?];
+  [coderCopy encodeDouble:@"_preferredCornerRadius" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _preferredShadowOpacity];
-  [v9 encodeDouble:@"_preferredShadowOpacity" forKey:?];
+  [coderCopy encodeDouble:@"_preferredShadowOpacity" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _shadowRadius];
-  [v9 encodeDouble:@"_shadowRadius" forKey:?];
-  v4 = [(_UISheetPresentationControllerConfiguration *)self _detents];
-  [v9 encodeObject:v4 forKey:@"_detents"];
+  [coderCopy encodeDouble:@"_shadowRadius" forKey:?];
+  _detents = [(_UISheetPresentationControllerConfiguration *)self _detents];
+  [coderCopy encodeObject:_detents forKey:@"_detents"];
 
-  v5 = [(_UISheetPresentationControllerConfiguration *)self _selectedDetentIdentifier];
-  [v9 encodeObject:v5 forKey:@"_selectedDetentIdentifier"];
+  _selectedDetentIdentifier = [(_UISheetPresentationControllerConfiguration *)self _selectedDetentIdentifier];
+  [coderCopy encodeObject:_selectedDetentIdentifier forKey:@"_selectedDetentIdentifier"];
 
-  v6 = [(_UISheetPresentationControllerConfiguration *)self _standardAppearance];
-  [v9 encodeObject:v6 forKey:@"_standardAppearance"];
+  _standardAppearance = [(_UISheetPresentationControllerConfiguration *)self _standardAppearance];
+  [coderCopy encodeObject:_standardAppearance forKey:@"_standardAppearance"];
 
-  v7 = [(_UISheetPresentationControllerConfiguration *)self _edgeAttachedCompactHeightAppearance];
-  [v9 encodeObject:v7 forKey:@"_edgeAttachedCompactHeightAppearance"];
+  _edgeAttachedCompactHeightAppearance = [(_UISheetPresentationControllerConfiguration *)self _edgeAttachedCompactHeightAppearance];
+  [coderCopy encodeObject:_edgeAttachedCompactHeightAppearance forKey:@"_edgeAttachedCompactHeightAppearance"];
 
-  v8 = [(_UISheetPresentationControllerConfiguration *)self _floatingAppearance];
-  [v9 encodeObject:v8 forKey:@"_floatingAppearance"];
+  _floatingAppearance = [(_UISheetPresentationControllerConfiguration *)self _floatingAppearance];
+  [coderCopy encodeObject:_floatingAppearance forKey:@"_floatingAppearance"];
 
-  [v9 encodeInteger:-[_UISheetPresentationControllerConfiguration _detentDirectionWhenFloating](self forKey:{"_detentDirectionWhenFloating"), @"_detentDirectionWhenFloating"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingResizesWhenDetentDirectionIsDown](self forKey:{"_prefersScrollingResizesWhenDetentDirectionIsDown"), @"_prefersScrollingResizesWhenDetentDirectionIsDown"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingExpandsToLargerDetentWhenScrolledToEdge](self forKey:{"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"), @"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"}];
+  [coderCopy encodeInteger:-[_UISheetPresentationControllerConfiguration _detentDirectionWhenFloating](self forKey:{"_detentDirectionWhenFloating"), @"_detentDirectionWhenFloating"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingResizesWhenDetentDirectionIsDown](self forKey:{"_prefersScrollingResizesWhenDetentDirectionIsDown"), @"_prefersScrollingResizesWhenDetentDirectionIsDown"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingExpandsToLargerDetentWhenScrolledToEdge](self forKey:{"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"), @"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"}];
   [(_UISheetPresentationControllerConfiguration *)self _hostParentDepthLevel];
-  [v9 encodeDouble:@"_hostParentDepthLevel" forKey:?];
+  [coderCopy encodeDouble:@"_hostParentDepthLevel" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _hostParentStackAlignmentFrame];
-  [v9 encodeCGRect:@"_hostParentStackAlignmentFrame" forKey:?];
+  [coderCopy encodeCGRect:@"_hostParentStackAlignmentFrame" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _hostParentFullHeightUntransformedFrameForDepthLevel];
-  [v9 encodeCGRect:@"_hostParentFullHeightUntransformedFrameForDepthLevel" forKey:?];
+  [coderCopy encodeCGRect:@"_hostParentFullHeightUntransformedFrameForDepthLevel" forKey:?];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _shouldScaleDownBehindDescendantSheets](self forKey:{"_shouldScaleDownBehindDescendantSheets"), @"_shouldScaleDownBehindDescendantSheets"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _peeksWhenFloating](self forKey:{"_peeksWhenFloating"), @"_peeksWhenFloating"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _wantsFullScreen](self forKey:{"_wantsFullScreen"), @"_wantsFullScreen"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _wantsBottomAttached](self forKey:{"_wantsBottomAttached"), @"_wantsBottomAttached"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _wantsEdgeAttachedInCompactHeight](self forKey:{"_wantsEdgeAttachedInCompactHeight"), @"_wantsEdgeAttachedInCompactHeight"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _widthFollowsPreferredContentSizeWhenEdgeAttached](self forKey:{"_widthFollowsPreferredContentSizeWhenEdgeAttached"), @"_widthFollowsPreferredContentSizeWhenEdgeAttached"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _prefersGrabberVisible](self forKey:{"_prefersGrabberVisible"), @"_prefersGrabberVisible"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _shouldScaleDownBehindDescendantSheets](self forKey:{"_shouldScaleDownBehindDescendantSheets"), @"_shouldScaleDownBehindDescendantSheets"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _peeksWhenFloating](self forKey:{"_peeksWhenFloating"), @"_peeksWhenFloating"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _wantsFullScreen](self forKey:{"_wantsFullScreen"), @"_wantsFullScreen"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _wantsBottomAttached](self forKey:{"_wantsBottomAttached"), @"_wantsBottomAttached"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _wantsEdgeAttachedInCompactHeight](self forKey:{"_wantsEdgeAttachedInCompactHeight"), @"_wantsEdgeAttachedInCompactHeight"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _widthFollowsPreferredContentSizeWhenEdgeAttached](self forKey:{"_widthFollowsPreferredContentSizeWhenEdgeAttached"), @"_widthFollowsPreferredContentSizeWhenEdgeAttached"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _prefersGrabberVisible](self forKey:{"_prefersGrabberVisible"), @"_prefersGrabberVisible"}];
   [(_UISheetPresentationControllerConfiguration *)self _grabberTopSpacing];
-  [v9 encodeDouble:@"_grabberTopSpacing" forKey:?];
+  [coderCopy encodeDouble:@"_grabberTopSpacing" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _additionalMinimumTopInset];
-  [v9 encodeDouble:@"_additionalMinimumTopInset" forKey:?];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _insetsPresentedViewForGrabber](self forKey:{"_insetsPresentedViewForGrabber"), @"_insetsPresentedViewForGrabber"}];
-  [v9 encodeInt64:-[_UISheetPresentationControllerConfiguration _mode](self forKey:{"_mode"), @"_mode"}];
+  [coderCopy encodeDouble:@"_additionalMinimumTopInset" forKey:?];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _insetsPresentedViewForGrabber](self forKey:{"_insetsPresentedViewForGrabber"), @"_insetsPresentedViewForGrabber"}];
+  [coderCopy encodeInt64:-[_UISheetPresentationControllerConfiguration _mode](self forKey:{"_mode"), @"_mode"}];
   [(_UISheetPresentationControllerConfiguration *)self _cornerRadiusForPresentationAndDismissal];
-  [v9 encodeDouble:@"_cornerRadiusForPresentationAndDismissal" forKey:?];
+  [coderCopy encodeDouble:@"_cornerRadiusForPresentationAndDismissal" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _preferredCornerRadius];
-  [v9 encodeDouble:@"_preferredCornerRadius" forKey:?];
+  [coderCopy encodeDouble:@"_preferredCornerRadius" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _preferredShadowOpacity];
-  [v9 encodeDouble:@"_preferredShadowOpacity" forKey:?];
+  [coderCopy encodeDouble:@"_preferredShadowOpacity" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _shadowRadius];
-  [v9 encodeDouble:@"_shadowRadius" forKey:?];
-  v4 = [(_UISheetPresentationControllerConfiguration *)self _detents];
-  [v9 encodeCollection:v4 forKey:@"_detents"];
+  [coderCopy encodeDouble:@"_shadowRadius" forKey:?];
+  _detents = [(_UISheetPresentationControllerConfiguration *)self _detents];
+  [coderCopy encodeCollection:_detents forKey:@"_detents"];
 
-  v5 = [(_UISheetPresentationControllerConfiguration *)self _selectedDetentIdentifier];
-  [v9 encodeObject:v5 forKey:@"_selectedDetentIdentifier"];
+  _selectedDetentIdentifier = [(_UISheetPresentationControllerConfiguration *)self _selectedDetentIdentifier];
+  [coderCopy encodeObject:_selectedDetentIdentifier forKey:@"_selectedDetentIdentifier"];
 
-  v6 = [(_UISheetPresentationControllerConfiguration *)self _standardAppearance];
-  [v9 encodeObject:v6 forKey:@"_standardAppearance"];
+  _standardAppearance = [(_UISheetPresentationControllerConfiguration *)self _standardAppearance];
+  [coderCopy encodeObject:_standardAppearance forKey:@"_standardAppearance"];
 
-  v7 = [(_UISheetPresentationControllerConfiguration *)self _edgeAttachedCompactHeightAppearance];
-  [v9 encodeObject:v7 forKey:@"_edgeAttachedCompactHeightAppearance"];
+  _edgeAttachedCompactHeightAppearance = [(_UISheetPresentationControllerConfiguration *)self _edgeAttachedCompactHeightAppearance];
+  [coderCopy encodeObject:_edgeAttachedCompactHeightAppearance forKey:@"_edgeAttachedCompactHeightAppearance"];
 
-  v8 = [(_UISheetPresentationControllerConfiguration *)self _floatingAppearance];
-  [v9 encodeObject:v8 forKey:@"_floatingAppearance"];
+  _floatingAppearance = [(_UISheetPresentationControllerConfiguration *)self _floatingAppearance];
+  [coderCopy encodeObject:_floatingAppearance forKey:@"_floatingAppearance"];
 
-  [v9 encodeInt64:-[_UISheetPresentationControllerConfiguration _detentDirectionWhenFloating](self forKey:{"_detentDirectionWhenFloating"), @"_detentDirectionWhenFloating"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingResizesWhenDetentDirectionIsDown](self forKey:{"_prefersScrollingResizesWhenDetentDirectionIsDown"), @"_prefersScrollingResizesWhenDetentDirectionIsDown"}];
-  [v9 encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingExpandsToLargerDetentWhenScrolledToEdge](self forKey:{"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"), @"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"}];
+  [coderCopy encodeInt64:-[_UISheetPresentationControllerConfiguration _detentDirectionWhenFloating](self forKey:{"_detentDirectionWhenFloating"), @"_detentDirectionWhenFloating"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingResizesWhenDetentDirectionIsDown](self forKey:{"_prefersScrollingResizesWhenDetentDirectionIsDown"), @"_prefersScrollingResizesWhenDetentDirectionIsDown"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerConfiguration _prefersScrollingExpandsToLargerDetentWhenScrolledToEdge](self forKey:{"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"), @"_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge"}];
   [(_UISheetPresentationControllerConfiguration *)self _hostParentDepthLevel];
-  [v9 encodeDouble:@"_hostParentDepthLevel" forKey:?];
+  [coderCopy encodeDouble:@"_hostParentDepthLevel" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _hostParentStackAlignmentFrame];
-  [v9 encodeCGRect:@"_hostParentStackAlignmentFrame" forKey:?];
+  [coderCopy encodeCGRect:@"_hostParentStackAlignmentFrame" forKey:?];
   [(_UISheetPresentationControllerConfiguration *)self _hostParentFullHeightUntransformedFrameForDepthLevel];
-  [v9 encodeCGRect:@"_hostParentFullHeightUntransformedFrameForDepthLevel" forKey:?];
+  [coderCopy encodeCGRect:@"_hostParentFullHeightUntransformedFrameForDepthLevel" forKey:?];
 }
 
 - (CGRect)_hostParentStackAlignmentFrame

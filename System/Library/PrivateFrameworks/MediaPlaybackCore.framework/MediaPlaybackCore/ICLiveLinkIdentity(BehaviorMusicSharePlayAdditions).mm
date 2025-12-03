@@ -24,23 +24,23 @@
     v4 = 0;
   }
 
-  v6 = [a1 externalIdentifier];
+  externalIdentifier = [self externalIdentifier];
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v5, v6, 24);
+    objc_setProperty_nonatomic_copy(v4, v5, externalIdentifier, 24);
   }
 
-  v7 = [a1 identifier];
-  v9 = [v7 UUIDString];
+  identifier = [self identifier];
+  uUIDString = [identifier UUIDString];
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v8, v9, 32);
+    objc_setProperty_nonatomic_copy(v4, v8, uUIDString, 32);
   }
 
-  v10 = [a1 serverID];
+  serverID = [self serverID];
   if (v4)
   {
-    v4[5] = v10;
+    v4[5] = serverID;
   }
 
   return v4;

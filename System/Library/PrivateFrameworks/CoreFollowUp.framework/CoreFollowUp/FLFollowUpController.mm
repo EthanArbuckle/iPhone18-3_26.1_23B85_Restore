@@ -1,70 +1,70 @@
 @interface FLFollowUpController
-- (BOOL)clearNotificationForItem:(id)a3 error:(id *)a4;
-- (BOOL)clearPendingFollowUpItems:(id *)a3;
-- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)postFollowUpItem:(id)a3 error:(id *)a4;
-- (FLFollowUpController)initWithClientIdentifier:(id)a3;
-- (FLFollowUpController)initWithClientIdentifier:(id)a3 machServiceName:(id)a4 delegate:(id)a5;
-- (FLFollowUpController)initWithClientIdentifier:(id)a3 xpcEndpoint:(id)a4;
+- (BOOL)clearNotificationForItem:(id)item error:(id *)error;
+- (BOOL)clearPendingFollowUpItems:(id *)items;
+- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)postFollowUpItem:(id)item error:(id *)error;
+- (FLFollowUpController)initWithClientIdentifier:(id)identifier;
+- (FLFollowUpController)initWithClientIdentifier:(id)identifier machServiceName:(id)name delegate:(id)delegate;
+- (FLFollowUpController)initWithClientIdentifier:(id)identifier xpcEndpoint:(id)endpoint;
 - (FLFollowUpControllerDelegate)delegate;
-- (id)pendingFollowUpItems:(id *)a3;
-- (unint64_t)countOfPendingFollowUpItems:(id *)a3;
-- (void)_didActivateHSA2LoginNotification:(id)a3;
-- (void)_postHSA2LoginCode:(id)a3 withNotification:(id)a4 completion:(id)a5;
-- (void)_postHSA2LoginNotification:(id)a3 completion:(id)a4;
-- (void)_postHSA2PasswordChangeForAppleID:(id)a3 completion:(id)a4;
-- (void)_postHSA2PasswordResetNotification:(id)a3 completion:(id)a4;
-- (void)_tearDownHSA2LoginNotificationWithPushMessageID:(id)a3;
-- (void)clearPendingFollowUpItemsWithCompletion:(id)a3;
-- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 completion:(id)a4;
-- (void)countOfPendingFollowUpItemsWithCompletion:(id)a3;
-- (void)pendingFollowUpItemsWithCompletion:(id)a3;
-- (void)postFollowUpItem:(id)a3 completion:(id)a4;
+- (id)pendingFollowUpItems:(id *)items;
+- (unint64_t)countOfPendingFollowUpItems:(id *)items;
+- (void)_didActivateHSA2LoginNotification:(id)notification;
+- (void)_postHSA2LoginCode:(id)code withNotification:(id)notification completion:(id)completion;
+- (void)_postHSA2LoginNotification:(id)notification completion:(id)completion;
+- (void)_postHSA2PasswordChangeForAppleID:(id)d completion:(id)completion;
+- (void)_postHSA2PasswordResetNotification:(id)notification completion:(id)completion;
+- (void)_tearDownHSA2LoginNotificationWithPushMessageID:(id)d;
+- (void)clearPendingFollowUpItemsWithCompletion:(id)completion;
+- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers completion:(id)completion;
+- (void)countOfPendingFollowUpItemsWithCompletion:(id)completion;
+- (void)pendingFollowUpItemsWithCompletion:(id)completion;
+- (void)postFollowUpItem:(id)item completion:(id)completion;
 - (void)updateBadgesForTimer;
 @end
 
 @implementation FLFollowUpController
 
-- (FLFollowUpController)initWithClientIdentifier:(id)a3 xpcEndpoint:(id)a4
+- (FLFollowUpController)initWithClientIdentifier:(id)identifier xpcEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = [(FLFollowUpController *)self initWithClientIdentifier:a3];
+  endpointCopy = endpoint;
+  v7 = [(FLFollowUpController *)self initWithClientIdentifier:identifier];
   if (v7)
   {
     v8 = +[FLDaemon sharedInstance];
-    [v8 setDaemonXPCEndpoint:v6];
+    [v8 setDaemonXPCEndpoint:endpointCopy];
   }
 
   return v7;
 }
 
-- (FLFollowUpController)initWithClientIdentifier:(id)a3
+- (FLFollowUpController)initWithClientIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FLFollowUpController;
   v6 = [(FLFollowUpController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientIdentifier, a3);
+    objc_storeStrong(&v6->_clientIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (FLFollowUpController)initWithClientIdentifier:(id)a3 machServiceName:(id)a4 delegate:(id)a5
+- (FLFollowUpController)initWithClientIdentifier:(id)identifier machServiceName:(id)name delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FLFollowUpController *)self initWithClientIdentifier:a3];
+  nameCopy = name;
+  delegateCopy = delegate;
+  v11 = [(FLFollowUpController *)self initWithClientIdentifier:identifier];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_machServiceName, a4);
-    objc_storeWeak(&v12->_delegate, v10);
-    if (v10)
+    objc_storeStrong(&v11->_machServiceName, name);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    if (delegateCopy)
     {
       if (v12->_machServiceName)
       {
@@ -81,10 +81,10 @@
   return v12;
 }
 
-- (BOOL)postFollowUpItem:(id)a3 error:(id *)a4
+- (BOOL)postFollowUpItem:(id)item error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   v7 = _os_activity_create(&dword_22E696000, "followup/posting-item", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -109,7 +109,7 @@
 
   if (self->_clientIdentifier)
   {
-    [v6 setClientIdentifier:?];
+    [itemCopy setClientIdentifier:?];
   }
 
   Current = CFAbsoluteTimeGetCurrent();
@@ -117,12 +117,12 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = itemCopy;
     _os_log_impl(&dword_22E696000, v11, OS_LOG_TYPE_DEFAULT, "Asking daemon server to post follow up item: %@", buf, 0xCu);
   }
 
-  v12 = [v6 title];
-  v13 = v12 == 0;
+  title = [itemCopy title];
+  v13 = title == 0;
 
   if (v13)
   {
@@ -140,10 +140,10 @@
   *&v18[6] = Current;
   v18[4] = &v26;
   v18[5] = &v20;
-  [v9 postFollowUpItem:v6 completion:v18];
-  if (a4)
+  [v9 postFollowUpItem:itemCopy completion:v18];
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v15 = *(v27 + 24);
@@ -196,7 +196,7 @@ void __47__FLFollowUpController_postFollowUpItem_error___block_invoke_2(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)countOfPendingFollowUpItems:(id *)a3
+- (unint64_t)countOfPendingFollowUpItems:(id *)items
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22E696000, "followup/counting-pending-items", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -238,9 +238,9 @@ void __47__FLFollowUpController_postFollowUpItem_error___block_invoke_2(uint64_t
   v14[4] = &v22;
   v14[5] = &v16;
   [v7 countOfPendingFollowUpItemsForClientIdentifier:v10 completion:v14];
-  if (a3)
+  if (items)
   {
-    *a3 = v17[5];
+    *items = v17[5];
   }
 
   v11 = v23[3];
@@ -290,7 +290,7 @@ void __52__FLFollowUpController_countOfPendingFollowUpItems___block_invoke_5(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pendingFollowUpItems:(id *)a3
+- (id)pendingFollowUpItems:(id *)items
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22E696000, "followup/reading-pending-items", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -334,9 +334,9 @@ void __52__FLFollowUpController_countOfPendingFollowUpItems___block_invoke_5(uin
   v14[4] = &v22;
   v14[5] = &v16;
   [v7 pendingFollowUpItemsForClientIdentifier:v10 completion:v14];
-  if (a3)
+  if (items)
   {
-    *a3 = v17[5];
+    *items = v17[5];
   }
 
   v11 = v23[5];
@@ -391,7 +391,7 @@ void __45__FLFollowUpController_pendingFollowUpItems___block_invoke_7(uint64_t a
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearPendingFollowUpItems:(id *)a3
+- (BOOL)clearPendingFollowUpItems:(id *)items
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22E696000, "followup/clearing-pending-items", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -433,9 +433,9 @@ void __45__FLFollowUpController_pendingFollowUpItems___block_invoke_7(uint64_t a
   v14[4] = &v22;
   v14[5] = &v16;
   [v7 clearPendingFollowUpItemsForClientIdentifier:v10 completion:v14];
-  if (a3)
+  if (items)
   {
-    *a3 = v17[5];
+    *items = v17[5];
   }
 
   v11 = *(v23 + 24);
@@ -485,10 +485,10 @@ void __50__FLFollowUpController_clearPendingFollowUpItems___block_invoke_9(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -514,7 +514,7 @@ void __50__FLFollowUpController_clearPendingFollowUpItems___block_invoke_9(uint6
     *buf = 138412546;
     v28 = clientIdentifier;
     v29 = 2112;
-    v30 = v6;
+    v30 = identifiersCopy;
     _os_log_impl(&dword_22E696000, v9, OS_LOG_TYPE_DEFAULT, "Asking daemon server to clear pending items with identifier: %@, uniqueIdentifiers: %@", buf, 0x16u);
   }
 
@@ -525,10 +525,10 @@ void __50__FLFollowUpController_clearPendingFollowUpItems___block_invoke_9(uint6
   v15[3] = &unk_278852A30;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v8 clearPendingFollowUpItemsForClientIdentifier:v11 uniqueIdentifiers:v6 completion:v15];
-  if (a4)
+  [v8 clearPendingFollowUpItemsForClientIdentifier:v11 uniqueIdentifiers:identifiersCopy completion:v15];
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v12 = *(v24 + 24);
@@ -577,10 +577,10 @@ void __77__FLFollowUpController_clearPendingFollowUpItemsWithUniqueIdentifiers_e
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearNotificationForItem:(id)a3 error:(id *)a4
+- (BOOL)clearNotificationForItem:(id)item error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v6 = _os_activity_create(&dword_22E696000, "followup/clearing-notification", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -607,7 +607,7 @@ void __77__FLFollowUpController_clearPendingFollowUpItemsWithUniqueIdentifiers_e
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v5;
+    v27 = itemCopy;
     _os_log_impl(&dword_22E696000, v9, OS_LOG_TYPE_DEFAULT, "Asking daemon server to clear notifications for item: %@", buf, 0xCu);
   }
 
@@ -617,10 +617,10 @@ void __77__FLFollowUpController_clearPendingFollowUpItemsWithUniqueIdentifiers_e
   v13[3] = &unk_278852A30;
   v13[4] = &v21;
   v13[5] = &v15;
-  [v8 clearNotificationForItem:v5 completion:v13];
-  if (a4)
+  [v8 clearNotificationForItem:itemCopy completion:v13];
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v10 = *(v22 + 24);
@@ -670,36 +670,36 @@ void __55__FLFollowUpController_clearNotificationForItem_error___block_invoke_11
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postFollowUpItem:(id)a3 completion:(id)a4
+- (void)postFollowUpItem:(id)item completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v8 = +[FLDaemon sharedInstance];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __52__FLFollowUpController_postFollowUpItem_completion___block_invoke;
   v18[3] = &unk_278852A58;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v10 = [v8 daemonWithErrorHandler:v18];
 
   if (self->_clientIdentifier)
   {
-    [v6 setClientIdentifier:?];
+    [itemCopy setClientIdentifier:?];
   }
 
   v11 = _FLLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v6;
+    v21 = itemCopy;
     _os_log_impl(&dword_22E696000, v11, OS_LOG_TYPE_DEFAULT, "Asking daemon server to post follow up item: %@", buf, 0xCu);
   }
 
-  v12 = [v6 title];
+  title = [itemCopy title];
 
-  if (!v12)
+  if (!title)
   {
     v13 = _FLLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -714,7 +714,7 @@ void __55__FLFollowUpController_clearNotificationForItem_error___block_invoke_11
   v16[3] = &unk_278852A80;
   v17 = v9;
   v14 = v9;
-  [v10 postFollowUpItem:v6 completion:v16];
+  [v10 postFollowUpItem:itemCopy completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -755,16 +755,16 @@ void __52__FLFollowUpController_postFollowUpItem_completion___block_invoke_12(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)countOfPendingFollowUpItemsWithCompletion:(id)a3
+- (void)countOfPendingFollowUpItemsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[FLDaemon sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__FLFollowUpController_countOfPendingFollowUpItemsWithCompletion___block_invoke;
   v15[3] = &unk_278852A58;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   v7 = [v5 daemonWithErrorHandler:v15];
 
@@ -825,16 +825,16 @@ void __66__FLFollowUpController_countOfPendingFollowUpItemsWithCompletion___bloc
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pendingFollowUpItemsWithCompletion:(id)a3
+- (void)pendingFollowUpItemsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[FLDaemon sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__FLFollowUpController_pendingFollowUpItemsWithCompletion___block_invoke;
   v15[3] = &unk_278852A58;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   v7 = [v5 daemonWithErrorHandler:v15];
 
@@ -895,16 +895,16 @@ void __59__FLFollowUpController_pendingFollowUpItemsWithCompletion___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearPendingFollowUpItemsWithCompletion:(id)a3
+- (void)clearPendingFollowUpItemsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[FLDaemon sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__FLFollowUpController_clearPendingFollowUpItemsWithCompletion___block_invoke;
   v15[3] = &unk_278852A58;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   v7 = [v5 daemonWithErrorHandler:v15];
 
@@ -965,17 +965,17 @@ void __64__FLFollowUpController_clearPendingFollowUpItemsWithCompletion___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 completion:(id)a4
+- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = +[FLDaemon sharedInstance];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__FLFollowUpController_clearPendingFollowUpItemsWithUniqueIdentifiers_completion___block_invoke;
   v18[3] = &unk_278852A58;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v10 = [v8 daemonWithErrorHandler:v18];
 
@@ -986,7 +986,7 @@ void __64__FLFollowUpController_clearPendingFollowUpItemsWithCompletion___block_
     *buf = 138412546;
     v21 = clientIdentifier;
     v22 = 2112;
-    v23 = v6;
+    v23 = identifiersCopy;
     _os_log_impl(&dword_22E696000, v11, OS_LOG_TYPE_DEFAULT, "Asking daemon server to clear pending items with identifier: %@, uniqueIdentifiers: %@", buf, 0x16u);
   }
 
@@ -997,7 +997,7 @@ void __64__FLFollowUpController_clearPendingFollowUpItemsWithCompletion___block_
   v16[3] = &unk_278852A80;
   v17 = v9;
   v14 = v9;
-  [v10 clearPendingFollowUpItemsForClientIdentifier:v13 uniqueIdentifiers:v6 completion:v16];
+  [v10 clearPendingFollowUpItemsForClientIdentifier:v13 uniqueIdentifiers:identifiersCopy completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1063,17 +1063,17 @@ void __44__FLFollowUpController_updateBadgesForTimer__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_postHSA2LoginNotification:(id)a3 completion:(id)a4
+- (void)_postHSA2LoginNotification:(id)notification completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  completionCopy = completion;
   v7 = +[FLDaemon sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__FLFollowUpController__postHSA2LoginNotification_completion___block_invoke;
   v15[3] = &unk_278852A58;
-  v8 = v6;
+  v8 = completionCopy;
   v16 = v8;
   v9 = [v7 daemonWithErrorHandler:v15];
 
@@ -1081,7 +1081,7 @@ void __44__FLFollowUpController_updateBadgesForTimer__block_invoke(uint64_t a1, 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = notificationCopy;
     _os_log_impl(&dword_22E696000, v10, OS_LOG_TYPE_DEFAULT, "Asking daemon server to post HSA2 login notification: %@", buf, 0xCu);
   }
 
@@ -1091,7 +1091,7 @@ void __44__FLFollowUpController_updateBadgesForTimer__block_invoke(uint64_t a1, 
   v13[3] = &unk_278852AA8;
   v14 = v8;
   v11 = v8;
-  [v9 postHSA2LoginNotification:v5 completion:v13];
+  [v9 postHSA2LoginNotification:notificationCopy completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1131,17 +1131,17 @@ void __62__FLFollowUpController__postHSA2LoginNotification_completion___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postHSA2PasswordChangeForAppleID:(id)a3 completion:(id)a4
+- (void)_postHSA2PasswordChangeForAppleID:(id)d completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = +[FLDaemon sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__FLFollowUpController__postHSA2PasswordChangeForAppleID_completion___block_invoke;
   v15[3] = &unk_278852A58;
-  v8 = v6;
+  v8 = completionCopy;
   v16 = v8;
   v9 = [v7 daemonWithErrorHandler:v15];
 
@@ -1149,7 +1149,7 @@ void __62__FLFollowUpController__postHSA2LoginNotification_completion___block_in
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = dCopy;
     _os_log_impl(&dword_22E696000, v10, OS_LOG_TYPE_DEFAULT, "Asking daemon server to post HSA2 password change notification for Apple ID: %@", buf, 0xCu);
   }
 
@@ -1159,7 +1159,7 @@ void __62__FLFollowUpController__postHSA2LoginNotification_completion___block_in
   v13[3] = &unk_278852AA8;
   v14 = v8;
   v11 = v8;
-  [v9 postHSA2PasswordChangeForAppleID:v5 completion:v13];
+  [v9 postHSA2PasswordChangeForAppleID:dCopy completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1199,12 +1199,12 @@ void __69__FLFollowUpController__postHSA2PasswordChangeForAppleID_completion___b
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postHSA2LoginCode:(id)a3 withNotification:(id)a4 completion:(id)a5
+- (void)_postHSA2LoginCode:(id)code withNotification:(id)notification completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  codeCopy = code;
+  notificationCopy = notification;
+  completionCopy = completion;
   v10 = +[FLDaemon sharedInstance];
   v11 = [v10 daemonWithErrorHandler:&__block_literal_global_20];
 
@@ -1212,9 +1212,9 @@ void __69__FLFollowUpController__postHSA2PasswordChangeForAppleID_completion___b
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v18 = v7;
+    v18 = codeCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = notificationCopy;
     _os_log_impl(&dword_22E696000, v12, OS_LOG_TYPE_DEFAULT, "Asking daemon server to post HSA2 login code notification with number: %{private}@, notification: %@", buf, 0x16u);
   }
 
@@ -1222,9 +1222,9 @@ void __69__FLFollowUpController__postHSA2PasswordChangeForAppleID_completion___b
   v15[1] = 3221225472;
   v15[2] = __71__FLFollowUpController__postHSA2LoginCode_withNotification_completion___block_invoke_21;
   v15[3] = &unk_278852AA8;
-  v16 = v9;
-  v13 = v9;
-  [v11 postHSA2LoginCode:v7 withNotification:v8 completion:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [v11 postHSA2LoginCode:codeCopy withNotification:notificationCopy completion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1262,10 +1262,10 @@ void __71__FLFollowUpController__postHSA2LoginCode_withNotification_completion__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tearDownHSA2LoginNotificationWithPushMessageID:(id)a3
+- (void)_tearDownHSA2LoginNotificationWithPushMessageID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = +[FLDaemon sharedInstance];
   v5 = [v4 daemonWithErrorHandler:&__block_literal_global_23];
 
@@ -1273,11 +1273,11 @@ void __71__FLFollowUpController__postHSA2LoginCode_withNotification_completion__
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = dCopy;
     _os_log_impl(&dword_22E696000, v6, OS_LOG_TYPE_DEFAULT, "Tearing down HSA2 login notification with identifier: %@", &v8, 0xCu);
   }
 
-  [v5 tearDownHSA2LoginNotificationWithPushMessageID:v3];
+  [v5 tearDownHSA2LoginNotificationWithPushMessageID:dCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1291,17 +1291,17 @@ void __72__FLFollowUpController__tearDownHSA2LoginNotificationWithPushMessageID_
   }
 }
 
-- (void)_postHSA2PasswordResetNotification:(id)a3 completion:(id)a4
+- (void)_postHSA2PasswordResetNotification:(id)notification completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  completionCopy = completion;
   v7 = +[FLDaemon sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__FLFollowUpController__postHSA2PasswordResetNotification_completion___block_invoke;
   v15[3] = &unk_278852A58;
-  v8 = v6;
+  v8 = completionCopy;
   v16 = v8;
   v9 = [v7 daemonWithErrorHandler:v15];
 
@@ -1309,7 +1309,7 @@ void __72__FLFollowUpController__tearDownHSA2LoginNotificationWithPushMessageID_
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = notificationCopy;
     _os_log_impl(&dword_22E696000, v10, OS_LOG_TYPE_DEFAULT, "Asking daemon server to post HSA2 password reset notification: %@", buf, 0xCu);
   }
 
@@ -1319,7 +1319,7 @@ void __72__FLFollowUpController__tearDownHSA2LoginNotificationWithPushMessageID_
   v13[3] = &unk_278852A80;
   v14 = v8;
   v11 = v8;
-  [v9 postHSA2PasswordResetNotification:v5 completion:v13];
+  [v9 postHSA2PasswordResetNotification:notificationCopy completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1360,10 +1360,10 @@ void __70__FLFollowUpController__postHSA2PasswordResetNotification_completion___
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didActivateHSA2LoginNotification:(id)a3
+- (void)_didActivateHSA2LoginNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[FLDaemon sharedInstance];
   v5 = [v4 daemonWithErrorHandler:&__block_literal_global_26];
 
@@ -1371,11 +1371,11 @@ void __70__FLFollowUpController__postHSA2PasswordResetNotification_completion___
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = notificationCopy;
     _os_log_impl(&dword_22E696000, v6, OS_LOG_TYPE_DEFAULT, "Notifying daemon of HSA2 login notification activation: %@", &v8, 0xCu);
   }
 
-  [v5 didActivateHSA2LoginNotificationNotification:v3];
+  [v5 didActivateHSA2LoginNotificationNotification:notificationCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1389,16 +1389,16 @@ void __58__FLFollowUpController__didActivateHSA2LoginNotification___block_invoke
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x277CCAE90];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_28433BE80];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v6 setExportedObject:WeakRetained];
+  [connectionCopy setExportedObject:WeakRetained];
 
-  [v6 resume];
+  [connectionCopy resume];
   return 1;
 }
 

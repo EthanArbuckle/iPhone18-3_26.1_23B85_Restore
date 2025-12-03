@@ -1,24 +1,24 @@
 @interface PKExpressGlyphView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_updateGlyphViewAnimated:(uint64_t)a1;
-- (void)glyphView:(id)a3 revealingCheckmark:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_updateGlyphViewAnimated:(uint64_t)animated;
+- (void)glyphView:(id)view revealingCheckmark:(BOOL)checkmark;
 - (void)layoutSubviews;
 @end
 
 @implementation PKExpressGlyphView
 
-- (void)_updateGlyphViewAnimated:(uint64_t)a1
+- (void)_updateGlyphViewAnimated:(uint64_t)animated
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = [a1 traitCollection];
-  v5 = *(a1 + 408);
+  traitCollection = [animated traitCollection];
+  v5 = *(animated + 408);
   if (v5 == 2)
   {
-    [*(a1 + 432) setColorMode:3 animated:a2];
+    [*(animated + 432) setColorMode:3 animated:a2];
     v9 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
     v10 = MEMORY[0x1E69DD1B8];
-    v23[0] = v4;
+    v23[0] = traitCollection;
     v23[1] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v12 = [v10 traitCollectionWithTraitsFromCollections:v11];
@@ -52,8 +52,8 @@
     v8 = 0;
   }
 
-  objc_initWeak(&location, a1);
-  v15 = *(a1 + 432);
+  objc_initWeak(&location, animated);
+  v15 = *(animated + 432);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __47__PKExpressGlyphView__updateGlyphViewAnimated___block_invoke;
@@ -66,8 +66,8 @@
   v17[3] = &unk_1E8010A10;
   v16 = v8;
   v18 = v16;
-  v19 = a1;
-  PKUIPerformWithEffectiveTraitCollection(v4, v17);
+  animatedCopy = animated;
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v17);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -82,9 +82,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = fmin(fmin(a3.width, a3.height), self->_maximumLength);
+  v3 = fmin(fmin(fits.width, fits.height), self->_maximumLength);
   v4 = v3;
   result.height = v4;
   result.width = v3;
@@ -184,11 +184,11 @@ void __47__PKExpressGlyphView__updateGlyphViewAnimated___block_invoke_2(uint64_t
   [v4 setCustomImage:v6 withAlignmentEdgeInsets:?];
 }
 
-- (void)glyphView:(id)a3 revealingCheckmark:(BOOL)a4
+- (void)glyphView:(id)view revealingCheckmark:(BOOL)checkmark
 {
-  v4 = a4;
+  checkmarkCopy = checkmark;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained expressGlyphView:self revealingCheckmarkAnimated:v4];
+  [WeakRetained expressGlyphView:self revealingCheckmarkAnimated:checkmarkCopy];
 }
 
 @end

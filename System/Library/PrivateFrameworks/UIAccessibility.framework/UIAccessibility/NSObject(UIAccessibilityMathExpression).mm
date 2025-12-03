@@ -13,20 +13,20 @@
   if (isKindOfClass)
   {
     v5 = [[UIAccessibilityMathViewController alloc] initWithMathDictionary:v3];
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
-    v7 = [v6 accessibilityPresentingViewController];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    accessibilityPresentingViewController = [mEMORY[0x1E69DC668] accessibilityPresentingViewController];
 
-    v8 = [v7 presentedViewController];
-    if (v8)
+    presentedViewController = [accessibilityPresentingViewController presentedViewController];
+    if (presentedViewController)
     {
-      v9 = v8;
+      v9 = presentedViewController;
       v20 = v5;
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = [v8 viewControllers];
-      v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      viewControllers = [presentedViewController viewControllers];
+      v11 = [viewControllers countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v11)
       {
         v12 = v11;
@@ -37,11 +37,11 @@
           {
             if (*v22 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(viewControllers);
             }
 
-            v15 = [*(*(&v21 + 1) + 8 * i) mathDictionary];
-            v16 = [v15 isEqualToDictionary:v3];
+            mathDictionary = [*(*(&v21 + 1) + 8 * i) mathDictionary];
+            v16 = [mathDictionary isEqualToDictionary:v3];
 
             if (v16)
             {
@@ -52,7 +52,7 @@
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v12 = [viewControllers countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v12)
           {
             continue;
@@ -70,10 +70,10 @@
     {
       v9 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithNavigationBarClass:objc_opt_class() toolbarClass:0];
       [v9 pushViewController:v5 animated:0];
-      v17 = [MEMORY[0x1E69DC668] sharedApplication];
-      v18 = [v17 accessibilityPresentingViewController];
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      accessibilityPresentingViewController2 = [mEMORY[0x1E69DC668]2 accessibilityPresentingViewController];
 
-      [v18 presentViewController:v9 animated:1 completion:0];
+      [accessibilityPresentingViewController2 presentViewController:v9 animated:1 completion:0];
     }
 
 LABEL_14:

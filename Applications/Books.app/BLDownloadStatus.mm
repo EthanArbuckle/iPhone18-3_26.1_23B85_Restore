@@ -6,28 +6,28 @@
 
 - (id)bk_assetIdentifier
 {
-  v3 = [(BLDownloadStatus *)self storeID];
-  v4 = [v3 stringValue];
+  storeID = [(BLDownloadStatus *)self storeID];
+  stringValue = [storeID stringValue];
 
-  if (![v4 length])
+  if (![stringValue length])
   {
-    v5 = [(BLDownloadStatus *)self permLink];
-    v6 = [NSURL URLWithString:v5];
+    permLink = [(BLDownloadStatus *)self permLink];
+    v6 = [NSURL URLWithString:permLink];
 
     if (v6)
     {
-      v7 = [v6 identifierFromPermlink];
+      identifierFromPermlink = [v6 identifierFromPermlink];
     }
 
     else
     {
-      v7 = 0;
+      identifierFromPermlink = 0;
     }
 
-    v4 = v7;
+    stringValue = identifierFromPermlink;
   }
 
-  return v4;
+  return stringValue;
 }
 
 @end

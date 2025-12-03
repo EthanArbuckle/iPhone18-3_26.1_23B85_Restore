@@ -13,9 +13,9 @@
   v28 = *MEMORY[0x277D85DE8];
   v9 = a5;
   v10 = a6;
-  v11 = [v10 fileSystemRepresentation];
-  v12 = [v9 UTF8String];
-  v13 = getxattr(v11, v12, 0, 0, 0, 0);
+  fileSystemRepresentation = [v10 fileSystemRepresentation];
+  uTF8String = [v9 UTF8String];
+  v13 = getxattr(fileSystemRepresentation, uTF8String, 0, 0, 0, 0);
   if (v13 >= a4)
   {
     v14 = a4;
@@ -47,7 +47,7 @@
 
   if (v14)
   {
-    v17 = getxattr(v11, v12, a3, v14, 0, 0);
+    v17 = getxattr(fileSystemRepresentation, uTF8String, a3, v14, 0, 0);
   }
 
   else
@@ -63,26 +63,26 @@
 {
   v10 = a6;
   v11 = a5;
-  v12 = [a6 fileSystemRepresentation];
-  v13 = [v11 UTF8String];
+  fileSystemRepresentation = [a6 fileSystemRepresentation];
+  uTF8String = [v11 UTF8String];
 
-  return setxattr(v12, v13, a3, a4, 0, 0);
+  return setxattr(fileSystemRepresentation, uTF8String, a3, a4, 0, 0);
 }
 
 - (uint64_t)_gkRemoveXattrNamed:()GKCachingAdditions path:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a4 fileSystemRepresentation];
-  v9 = [v7 UTF8String];
+  fileSystemRepresentation = [a4 fileSystemRepresentation];
+  uTF8String = [v7 UTF8String];
 
-  return removexattr(v8, v9, 0);
+  return removexattr(fileSystemRepresentation, uTF8String, 0);
 }
 
 - (double)_gkExpirationIntervalOfFileAtPath:()GKCachingAdditions
 {
   v4 = -1.0;
-  if ([a1 _gkReadXattrBytes:&v4 count:8 withName:@"gamekit-cache-expiration" path:a3] < 1)
+  if ([self _gkReadXattrBytes:&v4 count:8 withName:@"gamekit-cache-expiration" path:a3] < 1)
   {
     return 0.0;
   }
@@ -96,9 +96,9 @@
 - (void)_gkSetExpirationInterval:()GKCachingAdditions ofFileAtPath:
 {
   v5 = a4;
-  v7 = CFAbsoluteTimeGetCurrent() + a1;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  [v6 _gkWriteXattrBytes:&v7 count:8 withName:@"gamekit-cache-expiration" path:v5];
+  v7 = CFAbsoluteTimeGetCurrent() + self;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager _gkWriteXattrBytes:&v7 count:8 withName:@"gamekit-cache-expiration" path:v5];
 }
 
 @end

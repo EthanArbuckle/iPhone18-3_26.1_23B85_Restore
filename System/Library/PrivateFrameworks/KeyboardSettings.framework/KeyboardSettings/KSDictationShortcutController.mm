@@ -1,8 +1,8 @@
 @interface KSDictationShortcutController
-+ (id)attributedTitleForDictationShortcutValue:(int64_t)a3;
++ (id)attributedTitleForDictationShortcutValue:(int64_t)value;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updatePreferenceForParent;
 @end
 
@@ -18,15 +18,15 @@
     v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"DICTATION_SHORTCUT_EXPLANATION", &stru_28679E3A8, @"Dictation"}];
     [v5 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
     [v3 addObject:v5];
-    v6 = [(KSDictationShortcutController *)self specifier];
-    [v6 setProperty:&unk_2867A4E48 forKey:*MEMORY[0x277D3FEF0]];
+    specifier = [(KSDictationShortcutController *)self specifier];
+    [specifier setProperty:&unk_2867A4E48 forKey:*MEMORY[0x277D3FEF0]];
     v7 = [objc_msgSend(MEMORY[0x277D6F470] "sharedPreferencesController")];
     if (v7)
     {
       v8 = v7;
-      v9 = [(KSDictationShortcutController *)self specifier];
+      specifier2 = [(KSDictationShortcutController *)self specifier];
       v10 = *MEMORY[0x277D401A8];
-      [v9 setProperty:v8 forKey:*MEMORY[0x277D401A8]];
+      [specifier2 setProperty:v8 forKey:*MEMORY[0x277D401A8]];
     }
 
     else
@@ -53,18 +53,18 @@
   return v3;
 }
 
-+ (id)attributedTitleForDictationShortcutValue:(int64_t)a3
++ (id)attributedTitleForDictationShortcutValue:(int64_t)value
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = @"noshortcut";
   v6 = @"NO_SHORTCUT";
-  if (a3 == 1)
+  if (value == 1)
   {
     v6 = @"Command";
     v5 = @"command";
   }
 
-  if (a3)
+  if (value)
   {
     v7 = v6;
   }
@@ -74,7 +74,7 @@
     v7 = @"Control";
   }
 
-  if (a3)
+  if (value)
   {
     v8 = v5;
   }
@@ -89,12 +89,12 @@
   return [KSKeyboardListController attributedTitleForSymbolName:v8 cellTitle:v9];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = KSDictationShortcutController;
-  v6 = [(KSDictationShortcutController *)&v14 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(KSDictationShortcutController *)self specifierAtIndexPath:a4];
+  v6 = [(KSDictationShortcutController *)&v14 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(KSDictationShortcutController *)self specifierAtIndexPath:path];
   v8 = [v7 propertyForKey:*MEMORY[0x277D40170]];
   if (v8)
   {
@@ -106,22 +106,22 @@
     [objc_msgSend(v6 "titleLabel")];
   }
 
-  v9 = [(KSDictationShortcutController *)self specifier];
+  specifier = [(KSDictationShortcutController *)self specifier];
   v10 = *MEMORY[0x277D401A8];
-  v11 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
+  v11 = [specifier propertyForKey:*MEMORY[0x277D401A8]];
   if (!v11)
   {
-    v12 = [(KSDictationShortcutController *)self specifier];
-    v11 = [v12 propertyForKey:*MEMORY[0x277D3FEF0]];
+    specifier2 = [(KSDictationShortcutController *)self specifier];
+    v11 = [specifier2 propertyForKey:*MEMORY[0x277D3FEF0]];
   }
 
   [v6 setChecked:{objc_msgSend(objc_msgSend(v7, "propertyForKey:", v10), "isEqualToNumber:", v11)}];
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = [(KSDictationShortcutController *)self specifierAtIndexPath:a4];
+  v7 = [(KSDictationShortcutController *)self specifierAtIndexPath:path];
   v8 = *MEMORY[0x277D401A8];
   v9 = [v7 propertyForKey:*MEMORY[0x277D401A8]];
   [-[KSDictationShortcutController specifier](self "specifier")];
@@ -130,16 +130,16 @@
   [(KSDictationShortcutController *)self reloadSpecifiers];
   [(KSDictationShortcutController *)self updatePreferenceForParent];
 
-  [a3 deselectRowAtIndexPath:a4 animated:1];
+  [view deselectRowAtIndexPath:path animated:1];
 }
 
 - (void)updatePreferenceForParent
 {
-  v2 = [(KSDictationShortcutController *)self parentController];
+  parentController = [(KSDictationShortcutController *)self parentController];
   if (objc_opt_respondsToSelector())
   {
 
-    [v2 setNeedsReloadSpecifiers:1];
+    [parentController setNeedsReloadSpecifiers:1];
   }
 }
 

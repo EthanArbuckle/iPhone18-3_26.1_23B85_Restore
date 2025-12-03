@@ -1,8 +1,8 @@
 @interface TTRIDatePickerTableCell
 - (UIDatePicker)datePicker;
-- (_TtC15RemindersUICore23TTRIDatePickerTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15RemindersUICore23TTRIDatePickerTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
-- (void)datePickerDoubleTapped:(id)a3;
+- (void)datePickerDoubleTapped:(id)tapped;
 - (void)updateConstraints;
 @end
 
@@ -10,13 +10,13 @@
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   TTRIDatePickerTableCell.awakeFromNib()();
 }
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   TTRIDatePickerTableCell.updateConstraints()();
 }
 
@@ -27,11 +27,11 @@
   return Strong;
 }
 
-- (void)datePickerDoubleTapped:(id)a3
+- (void)datePickerDoubleTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -40,7 +40,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_21D720998();
@@ -48,11 +48,11 @@
   sub_21D0CF7E0(v6, &qword_27CE5C690);
 }
 
-- (_TtC15RemindersUICore23TTRIDatePickerTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15RemindersUICore23TTRIDatePickerTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_21DBFA16C();
+    identifier = sub_21DBFA16C();
     v6 = v5;
   }
 
@@ -61,7 +61,7 @@
     v6 = 0;
   }
 
-  return TTRIDatePickerTableCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return TTRIDatePickerTableCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface LNTypeDisplayRepresentation
-- (BOOL)isEqual:(id)a3;
-- (LNTypeDisplayRepresentation)initWithCoder:(id)a3;
-- (LNTypeDisplayRepresentation)initWithName:(id)a3 numericFormat:(id)a4 synonyms:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNTypeDisplayRepresentation)initWithCoder:(id)coder;
+- (LNTypeDisplayRepresentation)initWithName:(id)name numericFormat:(id)format synonyms:(id)synonyms;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNTypeDisplayRepresentation
@@ -14,21 +14,21 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNTypeDisplayRepresentation *)self name];
-  v7 = [(LNTypeDisplayRepresentation *)self numericFormat];
-  v8 = [(LNTypeDisplayRepresentation *)self synonyms];
-  v9 = [v3 stringWithFormat:@"<%@: %p, name: %@, numericFormat: %@>, synonyms: %@>", v5, self, v6, v7, v8];
+  name = [(LNTypeDisplayRepresentation *)self name];
+  numericFormat = [(LNTypeDisplayRepresentation *)self numericFormat];
+  synonyms = [(LNTypeDisplayRepresentation *)self synonyms];
+  v9 = [v3 stringWithFormat:@"<%@: %p, name: %@, numericFormat: %@>, synonyms: %@>", v5, self, name, numericFormat, synonyms];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -37,10 +37,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNTypeDisplayRepresentation *)self name];
-    v8 = [(LNTypeDisplayRepresentation *)v6 name];
-    v9 = v7;
-    v10 = v8;
+    name = [(LNTypeDisplayRepresentation *)self name];
+    name2 = [(LNTypeDisplayRepresentation *)v6 name];
+    v9 = name;
+    v10 = name2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -67,10 +67,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNTypeDisplayRepresentation *)self numericFormat];
-    v17 = [(LNTypeDisplayRepresentation *)v6 numericFormat];
-    v14 = v16;
-    v18 = v17;
+    numericFormat = [(LNTypeDisplayRepresentation *)self numericFormat];
+    numericFormat2 = [(LNTypeDisplayRepresentation *)v6 numericFormat];
+    v14 = numericFormat;
+    v18 = numericFormat2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -97,10 +97,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNTypeDisplayRepresentation *)self synonyms];
-    v22 = [(LNTypeDisplayRepresentation *)v6 synonyms];
-    v20 = v21;
-    v23 = v22;
+    synonyms = [(LNTypeDisplayRepresentation *)self synonyms];
+    synonyms2 = [(LNTypeDisplayRepresentation *)v6 synonyms];
+    v20 = synonyms;
+    v23 = synonyms2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -127,62 +127,62 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNTypeDisplayRepresentation *)self name];
-  v4 = [v3 hash];
-  v5 = [(LNTypeDisplayRepresentation *)self numericFormat];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNTypeDisplayRepresentation *)self synonyms];
-  v8 = [v7 hash];
+  name = [(LNTypeDisplayRepresentation *)self name];
+  v4 = [name hash];
+  numericFormat = [(LNTypeDisplayRepresentation *)self numericFormat];
+  v6 = [numericFormat hash] ^ v4;
+  synonyms = [(LNTypeDisplayRepresentation *)self synonyms];
+  v8 = [synonyms hash];
 
   return v6 ^ v8;
 }
 
-- (LNTypeDisplayRepresentation)initWithCoder:(id)a3
+- (LNTypeDisplayRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numericFormat"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numericFormat"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"synonyms"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"synonyms"];
 
   if (v5)
   {
     self = [(LNTypeDisplayRepresentation *)self initWithName:v5 numericFormat:v6 synonyms:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNTypeDisplayRepresentation *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(LNTypeDisplayRepresentation *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(LNTypeDisplayRepresentation *)self numericFormat];
-  [v4 encodeObject:v6 forKey:@"numericFormat"];
+  numericFormat = [(LNTypeDisplayRepresentation *)self numericFormat];
+  [coderCopy encodeObject:numericFormat forKey:@"numericFormat"];
 
-  v7 = [(LNTypeDisplayRepresentation *)self synonyms];
-  [v4 encodeObject:v7 forKey:@"synonyms"];
+  synonyms = [(LNTypeDisplayRepresentation *)self synonyms];
+  [coderCopy encodeObject:synonyms forKey:@"synonyms"];
 }
 
-- (LNTypeDisplayRepresentation)initWithName:(id)a3 numericFormat:(id)a4 synonyms:(id)a5
+- (LNTypeDisplayRepresentation)initWithName:(id)name numericFormat:(id)format synonyms:(id)synonyms
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  nameCopy = name;
+  formatCopy = format;
+  synonymsCopy = synonyms;
+  if (!nameCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNTypeDisplayRepresentation.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNTypeDisplayRepresentation.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v22.receiver = self;
@@ -190,15 +190,15 @@ LABEL_28:
   v12 = [(LNTypeDisplayRepresentation *)&v22 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v15 = [v10 copy];
+    v15 = [formatCopy copy];
     numericFormat = v12->_numericFormat;
     v12->_numericFormat = v15;
 
-    v17 = [v11 copy];
+    v17 = [synonymsCopy copy];
     synonyms = v12->_synonyms;
     v12->_synonyms = v17;
 

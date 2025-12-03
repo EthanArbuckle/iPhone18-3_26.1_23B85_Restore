@@ -3,11 +3,11 @@
 + (void)initialize;
 - (BOOL)_isInBiometryLockout;
 - (BOOL)_isLocked;
-- (id)startFeedbackWithQueryId:(unint64_t)a3;
+- (id)startFeedbackWithQueryId:(unint64_t)id;
 - (id)unsafeSections;
 - (void)_sendRankingFeedback;
-- (void)addApplicationResultsFromPredictionResponse:(id)a3 toSection:(id)a4 queryIdent:(unint64_t)a5;
-- (void)endFeedbackWithStartSearchFeedback:(id)a3;
+- (void)addApplicationResultsFromPredictionResponse:(id)response toSection:(id)section queryIdent:(unint64_t)ident;
+- (void)endFeedbackWithStartSearchFeedback:(id)feedback;
 - (void)start;
 @end
 
@@ -48,9 +48,9 @@
 
 - (BOOL)_isInBiometryLockout
 {
-  v2 = [(SPQueryTask *)self query];
-  v3 = [v2 queryContext];
-  v4 = [v3 deviceAuthenticationState] == 2;
+  query = [(SPQueryTask *)self query];
+  queryContext = [query queryContext];
+  v4 = [queryContext deviceAuthenticationState] == 2;
 
   return v4;
 }
@@ -99,9 +99,9 @@ void __23__SPZKWQueryTask_start__block_invoke(uint64_t a1, dispatch_qos_class_t 
 
 - (BOOL)_isLocked
 {
-  v2 = [(SPQueryTask *)self query];
-  v3 = [v2 queryContext];
-  v4 = [v3 deviceAuthenticationState] != 0;
+  query = [(SPQueryTask *)self query];
+  queryContext = [query queryContext];
+  v4 = [queryContext deviceAuthenticationState] != 0;
 
   return v4;
 }
@@ -233,12 +233,12 @@ LABEL_21:
 - (void)_sendRankingFeedback
 {
   v31 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SPQueryTask *)v2 mutableSections];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mutableSections = [(SPQueryTask *)selfCopy mutableSections];
+  v4 = [mutableSections copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v20 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -265,8 +265,8 @@ LABEL_21:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v9 = [v7 results];
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        results = [v7 results];
+        v10 = [results countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v10)
         {
           v11 = *v22;
@@ -277,7 +277,7 @@ LABEL_21:
             {
               if (*v22 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(results);
               }
 
               v13 = [objc_alloc(MEMORY[0x277D4C580]) initWithResult:*(*(&v21 + 1) + 8 * v12) hiddenResults:0 duplicateResults:0 localResultPosition:0];
@@ -287,7 +287,7 @@ LABEL_21:
             }
 
             while (v10 != v12);
-            v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v10 = [results countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v10);
@@ -307,16 +307,16 @@ LABEL_21:
   }
 
   v15 = [objc_alloc(MEMORY[0x277D4C568]) initWithSections:v20 blendingDuration:0.0];
-  v16 = [MEMORY[0x277D4BEB0] sharedManager];
-  [v16 didRankSections:v15];
+  mEMORY[0x277D4BEB0] = [MEMORY[0x277D4BEB0] sharedManager];
+  [mEMORY[0x277D4BEB0] didRankSections:v15];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addApplicationResultsFromPredictionResponse:(id)a3 toSection:(id)a4 queryIdent:(unint64_t)a5
+- (void)addApplicationResultsFromPredictionResponse:(id)response toSection:(id)section queryIdent:(unint64_t)ident
 {
-  v8 = a3;
-  v9 = a4;
+  responseCopy = response;
+  sectionCopy = section;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -325,12 +325,12 @@ LABEL_21:
   v11[1] = 3221225472;
   v11[2] = __83__SPZKWQueryTask_addApplicationResultsFromPredictionResponse_toSection_queryIdent___block_invoke;
   v11[3] = &unk_279CFEA48;
-  v15 = a5;
-  v10 = v9;
-  v13 = self;
+  identCopy = ident;
+  v10 = sectionCopy;
+  selfCopy = self;
   v14 = v16;
   v12 = v10;
-  [v8 enumerateAtxSearchResults:v11];
+  [responseCopy enumerateAtxSearchResults:v11];
 
   _Block_object_dispose(v16, 8);
 }
@@ -356,23 +356,23 @@ uint64_t __83__SPZKWQueryTask_addApplicationResultsFromPredictionResponse_toSect
   return result;
 }
 
-- (id)startFeedbackWithQueryId:(unint64_t)a3
+- (id)startFeedbackWithQueryId:(unint64_t)id
 {
-  v3 = [objc_alloc(MEMORY[0x277D4C658]) initWithInput:&stru_287C35638 triggerEvent:9 searchType:1 indexType:3 queryId:a3];
-  v4 = [MEMORY[0x277D4BEB0] sharedManager];
-  [v4 didStartSearch:v3];
+  v3 = [objc_alloc(MEMORY[0x277D4C658]) initWithInput:&stru_287C35638 triggerEvent:9 searchType:1 indexType:3 queryId:id];
+  mEMORY[0x277D4BEB0] = [MEMORY[0x277D4BEB0] sharedManager];
+  [mEMORY[0x277D4BEB0] didStartSearch:v3];
 
   return v3;
 }
 
-- (void)endFeedbackWithStartSearchFeedback:(id)a3
+- (void)endFeedbackWithStartSearchFeedback:(id)feedback
 {
   v3 = MEMORY[0x277D4C348];
-  v4 = a3;
-  v6 = [[v3 alloc] initWithStartSearch:v4];
+  feedbackCopy = feedback;
+  v6 = [[v3 alloc] initWithStartSearch:feedbackCopy];
 
-  v5 = [MEMORY[0x277D4BEB0] sharedManager];
-  [v5 didEndSearch:v6];
+  mEMORY[0x277D4BEB0] = [MEMORY[0x277D4BEB0] sharedManager];
+  [mEMORY[0x277D4BEB0] didEndSearch:v6];
 }
 
 void __23__SPZKWQueryTask_start__block_invoke_105(uint64_t a1)
@@ -812,8 +812,8 @@ void __23__SPZKWQueryTask_start__block_invoke_118(uint64_t a1, void *a2, void *a
 
 - (id)unsafeSections
 {
-  v2 = [(SPQueryTask *)self mutableSections];
-  v3 = [v2 copy];
+  mutableSections = [(SPQueryTask *)self mutableSections];
+  v3 = [mutableSections copy];
 
   return v3;
 }

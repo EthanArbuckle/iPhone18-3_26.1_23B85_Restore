@@ -1,25 +1,25 @@
 @interface DMFFetchRestrictionsResultObject
-- (DMFFetchRestrictionsResultObject)initWithCoder:(id)a3;
-- (DMFFetchRestrictionsResultObject)initWithRestrictions:(id)a3;
+- (DMFFetchRestrictionsResultObject)initWithCoder:(id)coder;
+- (DMFFetchRestrictionsResultObject)initWithRestrictions:(id)restrictions;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchRestrictionsResultObject
 
-- (DMFFetchRestrictionsResultObject)initWithRestrictions:(id)a3
+- (DMFFetchRestrictionsResultObject)initWithRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   v11.receiver = self;
   v11.super_class = DMFFetchRestrictionsResultObject;
   v5 = [(CATTaskResultObject *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [restrictionsCopy copy];
     globalRestrictions = v5->_globalRestrictions;
     v5->_globalRestrictions = v6;
 
-    v8 = [v4 copy];
+    v8 = [restrictionsCopy copy];
     restrictions = v5->_restrictions;
     v5->_restrictions = v8;
   }
@@ -27,12 +27,12 @@
   return v5;
 }
 
-- (DMFFetchRestrictionsResultObject)initWithCoder:(id)a3
+- (DMFFetchRestrictionsResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = DMFFetchRestrictionsResultObject;
-  v5 = [(CATTaskResultObject *)&v35 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v35 initWithCoder:coderCopy];
   if (v5)
   {
     v33 = MEMORY[0x1E695DFD8];
@@ -47,7 +47,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v33 setWithObjects:{v31, v29, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"globalRestrictions"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"globalRestrictions"];
     globalRestrictions = v5->_globalRestrictions;
     v5->_globalRestrictions = v15;
 
@@ -63,7 +63,7 @@
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v34 setWithObjects:{v32, v30, v17, v18, v19, v20, v21, v22, v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"restrictions"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"restrictions"];
     restrictions = v5->_restrictions;
     v5->_restrictions = v26;
   }
@@ -71,25 +71,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DMFFetchRestrictionsResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v7 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchRestrictionsResultObject *)self globalRestrictions:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"globalRestrictions"];
+  [coderCopy encodeObject:v5 forKey:@"globalRestrictions"];
 
-  v6 = [(DMFFetchRestrictionsResultObject *)self restrictions];
-  [v4 encodeObject:v6 forKey:@"restrictions"];
+  restrictions = [(DMFFetchRestrictionsResultObject *)self restrictions];
+  [coderCopy encodeObject:restrictions forKey:@"restrictions"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(DMFFetchRestrictionsResultObject *)self restrictions];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  restrictions = [(DMFFetchRestrictionsResultObject *)self restrictions];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, restrictions];
 
   return v6;
 }

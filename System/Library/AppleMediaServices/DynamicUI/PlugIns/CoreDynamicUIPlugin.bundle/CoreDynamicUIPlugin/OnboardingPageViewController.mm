@@ -1,5 +1,5 @@
 @interface OnboardingPageViewController
-- (_TtC19CoreDynamicUIPlugin28OnboardingPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19CoreDynamicUIPlugin28OnboardingPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_4EF70();
 }
 
-- (_TtC19CoreDynamicUIPlugin28OnboardingPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19CoreDynamicUIPlugin28OnboardingPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_8F5F4();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_4FC84();
 }
 

@@ -1,39 +1,39 @@
 @interface BMMLSEShareSheetFeedback
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMLSEShareSheetFeedback)initWithIdentifier:(id)a3 engagementType:(int)a4 engagementIdentifier:(id)a5 visiblePeopleSuggestionCount:(id)a6 visibleAppSuggestionCount:(id)a7 airdropPeopleSuggestionShown:(id)a8 inferenceSource:(int)a9 trialIdentifier:(id)a10 timeouts:(id)a11 productInsights:(id)a12;
-- (BMMLSEShareSheetFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMLSEShareSheetFeedback)initWithIdentifier:(id)identifier engagementType:(int)type engagementIdentifier:(id)engagementIdentifier visiblePeopleSuggestionCount:(id)count visibleAppSuggestionCount:(id)suggestionCount airdropPeopleSuggestionShown:(id)shown inferenceSource:(int)source trialIdentifier:(id)self0 timeouts:(id)self1 productInsights:(id)self2;
+- (BMMLSEShareSheetFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_timeoutsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMLSEShareSheetFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMLSEShareSheetFeedback *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMMLSEShareSheetFeedback *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMMLSEShareSheetFeedback *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMMLSEShareSheetFeedback *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -41,21 +41,21 @@
       }
     }
 
-    v13 = [(BMMLSEShareSheetFeedback *)self engagementType];
-    if (v13 == [v5 engagementType])
+    engagementType = [(BMMLSEShareSheetFeedback *)self engagementType];
+    if (engagementType == [v5 engagementType])
     {
-      v14 = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
-      v15 = [v5 engagementIdentifier];
-      v16 = v15;
-      if (v14 == v15)
+      engagementIdentifier = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
+      engagementIdentifier2 = [v5 engagementIdentifier];
+      v16 = engagementIdentifier2;
+      if (engagementIdentifier == engagementIdentifier2)
       {
       }
 
       else
       {
-        v17 = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
-        v18 = [v5 engagementIdentifier];
-        v19 = [v17 isEqual:v18];
+        engagementIdentifier3 = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
+        engagementIdentifier4 = [v5 engagementIdentifier];
+        v19 = [engagementIdentifier3 isEqual:engagementIdentifier4];
 
         if (!v19)
         {
@@ -75,8 +75,8 @@
           goto LABEL_34;
         }
 
-        v20 = [(BMMLSEShareSheetFeedback *)self visiblePeopleSuggestionCount];
-        if (v20 != [v5 visiblePeopleSuggestionCount])
+        visiblePeopleSuggestionCount = [(BMMLSEShareSheetFeedback *)self visiblePeopleSuggestionCount];
+        if (visiblePeopleSuggestionCount != [v5 visiblePeopleSuggestionCount])
         {
           goto LABEL_34;
         }
@@ -94,8 +94,8 @@
           goto LABEL_34;
         }
 
-        v21 = [(BMMLSEShareSheetFeedback *)self visibleAppSuggestionCount];
-        if (v21 != [v5 visibleAppSuggestionCount])
+        visibleAppSuggestionCount = [(BMMLSEShareSheetFeedback *)self visibleAppSuggestionCount];
+        if (visibleAppSuggestionCount != [v5 visibleAppSuggestionCount])
         {
           goto LABEL_34;
         }
@@ -113,31 +113,31 @@
           goto LABEL_34;
         }
 
-        v22 = [(BMMLSEShareSheetFeedback *)self airdropPeopleSuggestionShown];
-        if (v22 != [v5 airdropPeopleSuggestionShown])
+        airdropPeopleSuggestionShown = [(BMMLSEShareSheetFeedback *)self airdropPeopleSuggestionShown];
+        if (airdropPeopleSuggestionShown != [v5 airdropPeopleSuggestionShown])
         {
           goto LABEL_34;
         }
       }
 
-      v23 = [(BMMLSEShareSheetFeedback *)self inferenceSource];
-      if (v23 != [v5 inferenceSource])
+      inferenceSource = [(BMMLSEShareSheetFeedback *)self inferenceSource];
+      if (inferenceSource != [v5 inferenceSource])
       {
         goto LABEL_34;
       }
 
-      v24 = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
-      v25 = [v5 trialIdentifier];
-      v26 = v25;
-      if (v24 == v25)
+      trialIdentifier = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
+      trialIdentifier2 = [v5 trialIdentifier];
+      v26 = trialIdentifier2;
+      if (trialIdentifier == trialIdentifier2)
       {
       }
 
       else
       {
-        v27 = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
-        v28 = [v5 trialIdentifier];
-        v29 = [v27 isEqual:v28];
+        trialIdentifier3 = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
+        trialIdentifier4 = [v5 trialIdentifier];
+        v29 = [trialIdentifier3 isEqual:trialIdentifier4];
 
         if (!v29)
         {
@@ -145,18 +145,18 @@
         }
       }
 
-      v30 = [(BMMLSEShareSheetFeedback *)self timeouts];
-      v31 = [v5 timeouts];
-      v32 = v31;
-      if (v30 == v31)
+      timeouts = [(BMMLSEShareSheetFeedback *)self timeouts];
+      timeouts2 = [v5 timeouts];
+      v32 = timeouts2;
+      if (timeouts == timeouts2)
       {
       }
 
       else
       {
-        v33 = [(BMMLSEShareSheetFeedback *)self timeouts];
-        v34 = [v5 timeouts];
-        v35 = [v33 isEqual:v34];
+        timeouts3 = [(BMMLSEShareSheetFeedback *)self timeouts];
+        timeouts4 = [v5 timeouts];
+        v35 = [timeouts3 isEqual:timeouts4];
 
         if (!v35)
         {
@@ -164,18 +164,18 @@
         }
       }
 
-      v37 = [(BMMLSEShareSheetFeedback *)self productInsights];
-      v38 = [v5 productInsights];
-      if (v37 == v38)
+      productInsights = [(BMMLSEShareSheetFeedback *)self productInsights];
+      productInsights2 = [v5 productInsights];
+      if (productInsights == productInsights2)
       {
         v12 = 1;
       }
 
       else
       {
-        v39 = [(BMMLSEShareSheetFeedback *)self productInsights];
-        v40 = [v5 productInsights];
-        v12 = [v39 isEqual:v40];
+        productInsights3 = [(BMMLSEShareSheetFeedback *)self productInsights];
+        productInsights4 = [v5 productInsights];
+        v12 = [productInsights3 isEqual:productInsights4];
       }
 
       goto LABEL_35;
@@ -197,9 +197,9 @@ LABEL_36:
 - (id)jsonDictionary
 {
   v40[10] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMLSEShareSheetFeedback *)self identifier];
+  identifier = [(BMMLSEShareSheetFeedback *)self identifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMLSEShareSheetFeedback engagementType](self, "engagementType")}];
-  v5 = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
+  engagementIdentifier = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
   if ([(BMMLSEShareSheetFeedback *)self hasVisiblePeopleSuggestionCount])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSEShareSheetFeedback visiblePeopleSuggestionCount](self, "visiblePeopleSuggestionCount")}];
@@ -231,108 +231,108 @@ LABEL_36:
   }
 
   v38 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMLSEShareSheetFeedback inferenceSource](self, "inferenceSource")}];
-  v9 = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
-  v10 = [v9 jsonDictionary];
+  trialIdentifier = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
+  jsonDictionary = [trialIdentifier jsonDictionary];
 
-  v11 = [(BMMLSEShareSheetFeedback *)self _timeoutsJSONArray];
-  v12 = [(BMMLSEShareSheetFeedback *)self productInsights];
-  v13 = [v12 jsonDictionary];
+  _timeoutsJSONArray = [(BMMLSEShareSheetFeedback *)self _timeoutsJSONArray];
+  productInsights = [(BMMLSEShareSheetFeedback *)self productInsights];
+  jsonDictionary2 = [productInsights jsonDictionary];
 
   v39[0] = @"identifier";
-  v14 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v14;
-  v40[0] = v14;
+  v32 = null;
+  v40[0] = null;
   v39[1] = @"engagementType";
-  v15 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v15;
-  v40[1] = v15;
+  v31 = null2;
+  v40[1] = null2;
   v39[2] = @"engagementIdentifier";
-  v16 = v5;
-  if (!v5)
+  null3 = engagementIdentifier;
+  if (!engagementIdentifier)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v3;
-  v30 = v16;
-  v40[2] = v16;
+  v37 = identifier;
+  v30 = null3;
+  v40[2] = null3;
   v39[3] = @"visiblePeopleSuggestionCount";
-  v17 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v36 = v4;
-  v29 = v17;
-  v40[3] = v17;
+  v29 = null4;
+  v40[3] = null4;
   v39[4] = @"visibleAppSuggestionCount";
-  v18 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v5;
-  v28 = v18;
-  v40[4] = v18;
+  v35 = engagementIdentifier;
+  v28 = null5;
+  v40[4] = null5;
   v39[5] = @"airdropPeopleSuggestionShown";
-  v19 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v34 = v6;
-  v40[5] = v19;
+  v40[5] = null6;
   v39[6] = @"inferenceSource";
-  v20 = v38;
+  null7 = v38;
   if (!v38)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = v7;
-  v40[6] = v20;
+  v40[6] = null7;
   v39[7] = @"trialIdentifier";
-  v22 = v10;
-  if (!v10)
+  null8 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v8;
-  v40[7] = v22;
+  v40[7] = null8;
   v39[8] = @"timeouts";
-  v24 = v11;
-  if (!v11)
+  null9 = _timeoutsJSONArray;
+  if (!_timeoutsJSONArray)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[8] = v24;
+  v40[8] = null9;
   v39[9] = @"productInsights";
-  v25 = v13;
-  if (!v13)
+  null10 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[9] = v25;
+  v40[9] = null10;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:10];
-  if (v13)
+  if (jsonDictionary2)
   {
-    if (v11)
+    if (_timeoutsJSONArray)
     {
       goto LABEL_32;
     }
@@ -341,14 +341,14 @@ LABEL_36:
   else
   {
 
-    if (v11)
+    if (_timeoutsJSONArray)
     {
       goto LABEL_32;
     }
   }
 
 LABEL_32:
-  if (!v10)
+  if (!jsonDictionary)
   {
   }
 
@@ -412,8 +412,8 @@ LABEL_45:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMLSEShareSheetFeedback *)self timeouts];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  timeouts = [(BMMLSEShareSheetFeedback *)self timeouts];
+  v5 = [timeouts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -424,14 +424,14 @@ LABEL_45:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeouts);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [timeouts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -442,18 +442,18 @@ LABEL_45:
   return v3;
 }
 
-- (BMMLSEShareSheetFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMLSEShareSheetFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v172[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
-  v139 = self;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
+  selfCopy = self;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v15 = objc_alloc(MEMORY[0x1E696ABC0]);
         v16 = *MEMORY[0x1E698F240];
@@ -471,7 +471,7 @@ LABEL_45:
         v23 = [v22 initWithDomain:v16 code:2 userInfo:v21];
         v8 = 0;
         v24 = 0;
-        *a4 = v23;
+        *error = v23;
         goto LABEL_108;
       }
 
@@ -488,7 +488,7 @@ LABEL_45:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"engagementType"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"engagementType"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -504,22 +504,22 @@ LABEL_45:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v57 = objc_alloc(MEMORY[0x1E696ABC0]);
           v58 = v8;
           v59 = *MEMORY[0x1E698F240];
           v169 = *MEMORY[0x1E696A578];
-          v60 = a4;
-          a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"engagementType"];
-          v170 = a4;
-          v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v170 forKeys:&v169 count:1];
+          errorCopy = error;
+          error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"engagementType"];
+          errorCopy2 = error;
+          v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy2 forKeys:&v169 count:1];
           v62 = v59;
           v8 = v58;
           v63 = [v57 initWithDomain:v62 code:2 userInfo:v61];
           v20 = 0;
           v24 = 0;
-          *v60 = v63;
+          *errorCopy = v63;
           v7 = v28;
           v9 = v27;
           v10 = v61;
@@ -542,20 +542,20 @@ LABEL_45:
     v135 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"engagementIdentifier"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"engagementIdentifier"];
   v136 = v8;
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v29 = v9;
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
         v167 = *MEMORY[0x1E696A578];
-        v32 = a4;
+        errorCopy3 = error;
         v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"engagementIdentifier"];
         v168 = v33;
         v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v168 forKeys:&v167 count:1];
@@ -563,9 +563,9 @@ LABEL_45:
         v9 = v29;
         v36 = v31;
         v12 = v33;
-        a4 = 0;
+        error = 0;
         v24 = 0;
-        *v32 = [v35 initWithDomain:v36 code:2 userInfo:v34];
+        *errorCopy3 = [v35 initWithDomain:v36 code:2 userInfo:v34];
         v20 = v135;
         goto LABEL_106;
       }
@@ -575,25 +575,25 @@ LABEL_45:
       goto LABEL_107;
     }
 
-    v133 = a4;
-    a4 = v10;
+    errorCopy5 = error;
+    error = v10;
   }
 
   else
   {
-    v133 = a4;
-    a4 = 0;
+    errorCopy5 = error;
+    error = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"visiblePeopleSuggestionCount"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"visiblePeopleSuggestionCount"];
   v132 = v9;
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = v133;
-      if (v133)
+      v12 = errorCopy5;
+      if (errorCopy5)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v124 = v10;
@@ -608,7 +608,7 @@ LABEL_45:
         v40 = v38;
         v10 = v124;
         v24 = 0;
-        *v133 = [v39 initWithDomain:v40 code:2 userInfo:v13];
+        *errorCopy5 = [v39 initWithDomain:v40 code:2 userInfo:v13];
         v12 = 0;
         v20 = v135;
         goto LABEL_105;
@@ -630,15 +630,15 @@ LABEL_45:
     v12 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"visibleAppSuggestionCount"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"visibleAppSuggestionCount"];
   v140 = v13;
-  v131 = a4;
+  errorCopy6 = error;
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!v133)
+      if (!errorCopy5)
       {
         v134 = 0;
         v24 = 0;
@@ -665,7 +665,7 @@ LABEL_45:
       v129 = v46;
       v134 = 0;
       v24 = 0;
-      *v133 = [v47 initWithDomain:v48 code:2 userInfo:?];
+      *errorCopy5 = [v47 initWithDomain:v48 code:2 userInfo:?];
 LABEL_114:
       v20 = v135;
       v34 = v130;
@@ -680,7 +680,7 @@ LABEL_114:
     v134 = 0;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"airdropPeopleSuggestionShown"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"airdropPeopleSuggestionShown"];
   v127 = v12;
   v129 = v14;
   if (!v14)
@@ -698,7 +698,7 @@ LABEL_114:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v133)
+    if (errorCopy5)
     {
       v49 = objc_alloc(MEMORY[0x1E696ABC0]);
       v50 = v12;
@@ -718,7 +718,7 @@ LABEL_114:
       v126 = v54;
       v14 = 0;
       v24 = 0;
-      *v133 = [v55 initWithDomain:v56 code:2 userInfo:?];
+      *errorCopy5 = [v55 initWithDomain:v56 code:2 userInfo:?];
       v20 = v135;
       v34 = v130;
       goto LABEL_103;
@@ -731,7 +731,7 @@ LABEL_114:
 
   v14 = v14;
 LABEL_33:
-  v25 = [v6 objectForKeyedSubscript:@"inferenceSource"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"inferenceSource"];
   v126 = v25;
   if (v25 && (v26 = v25, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -746,7 +746,7 @@ LABEL_33:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v133)
+        if (errorCopy5)
         {
           v104 = objc_alloc(MEMORY[0x1E696ABC0]);
           v105 = *MEMORY[0x1E698F240];
@@ -759,7 +759,7 @@ LABEL_33:
           v108 = [v104 initWithDomain:v107 code:2 userInfo:v106];
           v128 = 0;
           v24 = 0;
-          *v133 = v108;
+          *errorCopy5 = v108;
           v20 = v135;
           goto LABEL_100;
         }
@@ -780,7 +780,7 @@ LABEL_33:
     v128 = 0;
   }
 
-  v64 = [v6 objectForKeyedSubscript:@"trialIdentifier"];
+  v64 = [dictionaryCopy objectForKeyedSubscript:@"trialIdentifier"];
   if (v64)
   {
     objc_opt_class();
@@ -796,7 +796,7 @@ LABEL_33:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v133)
+        if (errorCopy5)
         {
           v84 = objc_alloc(MEMORY[0x1E696ABC0]);
           v138 = *MEMORY[0x1E698F240];
@@ -807,7 +807,7 @@ LABEL_33:
           v86 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v158 forKeys:&v157 count:1];
           v87 = v84;
           v9 = v132;
-          *v133 = [v87 initWithDomain:v138 code:2 userInfo:v86];
+          *errorCopy5 = [v87 initWithDomain:v138 code:2 userInfo:v86];
 
           v24 = 0;
           v82 = v85;
@@ -827,10 +827,10 @@ LABEL_33:
       v83 = v147;
       if (v83)
       {
-        if (v133)
+        if (errorCopy5)
         {
           v83 = v83;
-          *v133 = v83;
+          *errorCopy5 = v83;
         }
 
         v24 = 0;
@@ -852,11 +852,11 @@ LABEL_33:
     v122 = v14;
   }
 
-  v65 = [v6 objectForKeyedSubscript:@"timeouts"];
-  v66 = [MEMORY[0x1E695DFB0] null];
-  v67 = [v65 isEqual:v66];
+  v65 = [dictionaryCopy objectForKeyedSubscript:@"timeouts"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v67 = [v65 isEqual:null];
 
-  v123 = v6;
+  v123 = dictionaryCopy;
   if (v67)
   {
     v120 = v64;
@@ -872,7 +872,7 @@ LABEL_33:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v133)
+        if (errorCopy5)
         {
           v98 = objc_alloc(MEMORY[0x1E696ABC0]);
           v99 = *MEMORY[0x1E698F240];
@@ -883,7 +883,7 @@ LABEL_33:
           v100 = v99;
           v13 = v140;
           v24 = 0;
-          *v133 = [v98 initWithDomain:v100 code:2 userInfo:v92];
+          *errorCopy5 = [v98 initWithDomain:v100 code:2 userInfo:v92];
           v20 = v135;
           v82 = v119;
           goto LABEL_98;
@@ -929,7 +929,7 @@ LABEL_33:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v133)
+        if (errorCopy5)
         {
           v88 = objc_alloc(MEMORY[0x1E696ABC0]);
           v89 = *MEMORY[0x1E698F240];
@@ -939,7 +939,7 @@ LABEL_33:
           v90 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v153 forKeys:&v152 count:1];
           v91 = v88;
           v13 = v140;
-          *v133 = [v91 initWithDomain:v89 code:2 userInfo:v90];
+          *errorCopy5 = [v91 initWithDomain:v89 code:2 userInfo:v90];
 
           v24 = 0;
           v92 = v65;
@@ -963,7 +963,7 @@ LABEL_125:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v133)
+        if (errorCopy5)
         {
           v93 = objc_alloc(MEMORY[0x1E696ABC0]);
           v94 = *MEMORY[0x1E698F240];
@@ -971,7 +971,7 @@ LABEL_125:
           v73 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"timeouts"];
           v151 = v73;
           v95 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v151 forKeys:&v150 count:1];
-          *v133 = [v93 initWithDomain:v94 code:2 userInfo:v95];
+          *errorCopy5 = [v93 initWithDomain:v94 code:2 userInfo:v95];
 
           v24 = 0;
           v92 = v65;
@@ -999,10 +999,10 @@ LABEL_125:
       {
         v96 = v76;
         v10 = v125;
-        if (v133)
+        if (errorCopy5)
         {
           v97 = v76;
-          *v133 = v96;
+          *errorCopy5 = v96;
         }
 
         v24 = 0;
@@ -1074,10 +1074,10 @@ LABEL_71:
     v20 = v135;
     if (v109)
     {
-      if (v133)
+      if (errorCopy5)
       {
         v109 = v109;
-        *v133 = v109;
+        *errorCopy5 = v109;
       }
 
       v24 = 0;
@@ -1090,11 +1090,11 @@ LABEL_71:
     v81 = v127;
     v79 = v128;
 LABEL_96:
-    v101 = [v20 intValue];
+    intValue = [v20 intValue];
     v128 = v79;
     LODWORD(v112) = [v79 intValue];
-    v24 = [(BMMLSEShareSheetFeedback *)v139 initWithIdentifier:v80 engagementType:v101 engagementIdentifier:v131 visiblePeopleSuggestionCount:v81 visibleAppSuggestionCount:v134 airdropPeopleSuggestionShown:v122 inferenceSource:v112 trialIdentifier:v64 timeouts:v137 productInsights:v73];
-    v139 = v24;
+    v24 = [(BMMLSEShareSheetFeedback *)selfCopy initWithIdentifier:v80 engagementType:intValue engagementIdentifier:errorCopy6 visiblePeopleSuggestionCount:v81 visibleAppSuggestionCount:v134 airdropPeopleSuggestionShown:v122 inferenceSource:v112 trialIdentifier:v64 timeouts:v137 productInsights:v73];
+    selfCopy = v24;
     v13 = v140;
     v82 = v119;
     v92 = v117;
@@ -1102,7 +1102,7 @@ LABEL_96:
   }
 
   v20 = v135;
-  if (v133)
+  if (errorCopy5)
   {
     v116 = objc_alloc(MEMORY[0x1E696ABC0]);
     v110 = *MEMORY[0x1E698F240];
@@ -1111,7 +1111,7 @@ LABEL_96:
     v73 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"productInsights"];
     v149 = v73;
     v111 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v149 forKeys:&v148 count:1];
-    *v133 = [v116 initWithDomain:v110 code:2 userInfo:v111];
+    *errorCopy5 = [v116 initWithDomain:v110 code:2 userInfo:v111];
 
     v24 = 0;
     goto LABEL_89;
@@ -1124,7 +1124,7 @@ LABEL_96:
   v92 = v117;
 LABEL_98:
 
-  v6 = v123;
+  dictionaryCopy = v123;
   v9 = v132;
 LABEL_99:
 
@@ -1138,7 +1138,7 @@ LABEL_102:
 LABEL_103:
 
 LABEL_104:
-  a4 = v131;
+  error = errorCopy6;
 LABEL_105:
 
 LABEL_106:
@@ -1156,15 +1156,15 @@ LABEL_109:
 {
   v3 = objc_opt_new();
   [(BMMLSEShareSheetFeedback *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -1201,7 +1201,7 @@ LABEL_109:
   {
     v21 = 0;
     PBDataWriterPlaceMark();
-    [(BMMLSEShareSheetFeedbackTrialIdentifier *)self->_trialIdentifier writeTo:v4];
+    [(BMMLSEShareSheetFeedbackTrialIdentifier *)self->_trialIdentifier writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1228,7 +1228,7 @@ LABEL_109:
         v15 = *(*(&v17 + 1) + 8 * v14);
         v21 = 0;
         PBDataWriterPlaceMark();
-        [v15 writeTo:{v4, v17}];
+        [v15 writeTo:{toCopy, v17}];
         PBDataWriterRecallMark();
         ++v14;
       }
@@ -1244,16 +1244,16 @@ LABEL_109:
   {
     v21 = 0;
     PBDataWriterPlaceMark();
-    [(BMPeopleSuggesterEventLevelMetrics *)self->_productInsights writeTo:v4];
+    [(BMPeopleSuggesterEventLevelMetrics *)self->_productInsights writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v65.receiver = self;
   v65.super_class = BMMLSEShareSheetFeedback;
   v5 = [(BMEventBase *)&v65 init];
@@ -1263,12 +1263,12 @@ LABEL_109:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_112;
       }
@@ -1279,18 +1279,18 @@ LABEL_109:
       while (1)
       {
         LOBYTE(v66) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v66 & 0x7F) << v8;
@@ -1308,9 +1308,9 @@ LABEL_109:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_112;
       }
@@ -1339,18 +1339,18 @@ LABEL_72:
             while (1)
             {
               LOBYTE(v66) = 0;
-              v29 = [v4 position] + 1;
-              if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+              v29 = [fromCopy position] + 1;
+              if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
               {
-                v31 = [v4 data];
-                [v31 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v28 |= (v66 & 0x7F) << v26;
@@ -1367,7 +1367,7 @@ LABEL_72:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v28 > 7)
+            if (([fromCopy hasError] & 1) != 0 || v28 > 7)
             {
 LABEL_93:
               LODWORD(v28) = 0;
@@ -1396,18 +1396,18 @@ LABEL_99:
               while (1)
               {
                 LOBYTE(v66) = 0;
-                v52 = [v4 position] + 1;
-                if (v52 >= [v4 position] && (v53 = objc_msgSend(v4, "position") + 1, v53 <= objc_msgSend(v4, "length")))
+                v52 = [fromCopy position] + 1;
+                if (v52 >= [fromCopy position] && (v53 = objc_msgSend(fromCopy, "position") + 1, v53 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v54 = [v4 data];
-                  [v54 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+                  data3 = [fromCopy data];
+                  [data3 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v51 |= (v66 & 0x7F) << v49;
@@ -1425,7 +1425,7 @@ LABEL_99:
                 }
               }
 
-              if ([v4 hasError])
+              if ([fromCopy hasError])
               {
                 v23 = 0;
               }
@@ -1446,18 +1446,18 @@ LABEL_109:
               while (1)
               {
                 LOBYTE(v66) = 0;
-                v20 = [v4 position] + 1;
-                if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+                v20 = [fromCopy position] + 1;
+                if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v22 = [v4 data];
-                  [v22 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+                  data4 = [fromCopy data];
+                  [data4 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v19 |= (v66 & 0x7F) << v17;
@@ -1475,7 +1475,7 @@ LABEL_109:
                 }
               }
 
-              if ([v4 hasError])
+              if ([fromCopy hasError])
               {
                 v23 = 0;
               }
@@ -1505,7 +1505,7 @@ LABEL_110:
       {
         v66 = 0;
         v67 = 0;
-        if (!PBReaderPlaceMark() || (v24 = [[BMMLSEShareSheetFeedbackTrialIdentifier alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v24 = [[BMMLSEShareSheetFeedbackTrialIdentifier alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_116:
 
@@ -1527,7 +1527,7 @@ LABEL_116:
             goto LABEL_116;
           }
 
-          v24 = [[BMPeopleSuggesterEventLevelMetrics alloc] initByReadFrom:v4];
+          v24 = [[BMPeopleSuggesterEventLevelMetrics alloc] initByReadFrom:fromCopy];
           if (!v24)
           {
             goto LABEL_116;
@@ -1552,7 +1552,7 @@ LABEL_76:
         goto LABEL_116;
       }
 
-      v55 = [[BMMLSEShareSheetFeedbackTimeout alloc] initByReadFrom:v4];
+      v55 = [[BMMLSEShareSheetFeedbackTimeout alloc] initByReadFrom:fromCopy];
       if (!v55)
       {
         goto LABEL_116;
@@ -1563,8 +1563,8 @@ LABEL_76:
       PBReaderRecallMark();
 
 LABEL_111:
-      v59 = [v4 position];
-      if (v59 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_112;
       }
@@ -1579,18 +1579,18 @@ LABEL_111:
       while (1)
       {
         LOBYTE(v66) = 0;
-        v43 = [v4 position] + 1;
-        if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+        v43 = [fromCopy position] + 1;
+        if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
         {
-          v45 = [v4 data];
-          [v45 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+          data5 = [fromCopy data];
+          [data5 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v42 |= (v66 & 0x7F) << v40;
@@ -1608,7 +1608,7 @@ LABEL_111:
         }
       }
 
-      v46 = (v42 != 0) & ~[v4 hasError];
+      v46 = (v42 != 0) & ~[fromCopy hasError];
 LABEL_101:
       v5->_airdropPeopleSuggestionShown = v46;
       goto LABEL_111;
@@ -1622,18 +1622,18 @@ LABEL_101:
       while (1)
       {
         LOBYTE(v66) = 0;
-        v35 = [v4 position] + 1;
-        if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+        v35 = [fromCopy position] + 1;
+        if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
         {
-          v37 = [v4 data];
-          [v37 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+          data6 = [fromCopy data];
+          [data6 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v28 |= (v66 & 0x7F) << v33;
@@ -1650,7 +1650,7 @@ LABEL_101:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v28 > 2)
+      if (([fromCopy hasError] & 1) != 0 || v28 > 2)
       {
 LABEL_97:
         LODWORD(v28) = 0;
@@ -1674,8 +1674,8 @@ LABEL_112:
   timeouts = v5->_timeouts;
   v5->_timeouts = v60;
 
-  v62 = [v4 hasError];
-  if (v62)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_113:
     v63 = 0;
@@ -1693,70 +1693,70 @@ LABEL_114:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v13 = [(BMMLSEShareSheetFeedback *)self identifier];
+  identifier = [(BMMLSEShareSheetFeedback *)self identifier];
   v3 = BMMLSEShareSheetFeedbackEngagementTypeAsString([(BMMLSEShareSheetFeedback *)self engagementType]);
-  v4 = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
+  engagementIdentifier = [(BMMLSEShareSheetFeedback *)self engagementIdentifier];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSEShareSheetFeedback visiblePeopleSuggestionCount](self, "visiblePeopleSuggestionCount")}];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSEShareSheetFeedback visibleAppSuggestionCount](self, "visibleAppSuggestionCount")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMLSEShareSheetFeedback airdropPeopleSuggestionShown](self, "airdropPeopleSuggestionShown")}];
   v8 = BMMLSEShareSheetFeedbackInferenceSourceAsString([(BMMLSEShareSheetFeedback *)self inferenceSource]);
-  v9 = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
-  v10 = [(BMMLSEShareSheetFeedback *)self timeouts];
-  v11 = [(BMMLSEShareSheetFeedback *)self productInsights];
-  v15 = [v14 initWithFormat:@"BMMLSEShareSheetFeedback with identifier: %@, engagementType: %@, engagementIdentifier: %@, visiblePeopleSuggestionCount: %@, visibleAppSuggestionCount: %@, airdropPeopleSuggestionShown: %@, inferenceSource: %@, trialIdentifier: %@, timeouts: %@, productInsights: %@", v13, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  trialIdentifier = [(BMMLSEShareSheetFeedback *)self trialIdentifier];
+  timeouts = [(BMMLSEShareSheetFeedback *)self timeouts];
+  productInsights = [(BMMLSEShareSheetFeedback *)self productInsights];
+  v15 = [v14 initWithFormat:@"BMMLSEShareSheetFeedback with identifier: %@, engagementType: %@, engagementIdentifier: %@, visiblePeopleSuggestionCount: %@, visibleAppSuggestionCount: %@, airdropPeopleSuggestionShown: %@, inferenceSource: %@, trialIdentifier: %@, timeouts: %@, productInsights: %@", identifier, v3, engagementIdentifier, v5, v6, v7, v8, trialIdentifier, timeouts, productInsights];
 
   return v15;
 }
 
-- (BMMLSEShareSheetFeedback)initWithIdentifier:(id)a3 engagementType:(int)a4 engagementIdentifier:(id)a5 visiblePeopleSuggestionCount:(id)a6 visibleAppSuggestionCount:(id)a7 airdropPeopleSuggestionShown:(id)a8 inferenceSource:(int)a9 trialIdentifier:(id)a10 timeouts:(id)a11 productInsights:(id)a12
+- (BMMLSEShareSheetFeedback)initWithIdentifier:(id)identifier engagementType:(int)type engagementIdentifier:(id)engagementIdentifier visiblePeopleSuggestionCount:(id)count visibleAppSuggestionCount:(id)suggestionCount airdropPeopleSuggestionShown:(id)shown inferenceSource:(int)source trialIdentifier:(id)self0 timeouts:(id)self1 productInsights:(id)self2
 {
-  v30 = a3;
-  v29 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v28 = a10;
-  v27 = a11;
-  v26 = a12;
+  identifierCopy = identifier;
+  engagementIdentifierCopy = engagementIdentifier;
+  countCopy = count;
+  suggestionCountCopy = suggestionCount;
+  shownCopy = shown;
+  trialIdentifierCopy = trialIdentifier;
+  timeoutsCopy = timeouts;
+  insightsCopy = insights;
   v31.receiver = self;
   v31.super_class = BMMLSEShareSheetFeedback;
   v22 = [(BMEventBase *)&v31 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v22->_identifier, a3);
-    v22->_engagementType = a4;
-    objc_storeStrong(&v22->_engagementIdentifier, a5);
-    if (v19)
+    objc_storeStrong(&v22->_identifier, identifier);
+    v22->_engagementType = type;
+    objc_storeStrong(&v22->_engagementIdentifier, engagementIdentifier);
+    if (countCopy)
     {
       v22->_hasVisiblePeopleSuggestionCount = 1;
-      v23 = [v19 unsignedIntValue];
+      unsignedIntValue = [countCopy unsignedIntValue];
     }
 
     else
     {
-      v23 = 0;
+      unsignedIntValue = 0;
       v22->_hasVisiblePeopleSuggestionCount = 0;
     }
 
-    v22->_visiblePeopleSuggestionCount = v23;
-    if (v20)
+    v22->_visiblePeopleSuggestionCount = unsignedIntValue;
+    if (suggestionCountCopy)
     {
       v22->_hasVisibleAppSuggestionCount = 1;
-      v24 = [v20 unsignedIntValue];
+      unsignedIntValue2 = [suggestionCountCopy unsignedIntValue];
     }
 
     else
     {
-      v24 = 0;
+      unsignedIntValue2 = 0;
       v22->_hasVisibleAppSuggestionCount = 0;
     }
 
-    v22->_visibleAppSuggestionCount = v24;
-    if (v21)
+    v22->_visibleAppSuggestionCount = unsignedIntValue2;
+    if (shownCopy)
     {
       v22->_hasAirdropPeopleSuggestionShown = 1;
-      v22->_airdropPeopleSuggestionShown = [v21 BOOLValue];
+      v22->_airdropPeopleSuggestionShown = [shownCopy BOOLValue];
     }
 
     else
@@ -1765,10 +1765,10 @@ LABEL_114:
       v22->_airdropPeopleSuggestionShown = 0;
     }
 
-    v22->_inferenceSource = a9;
-    objc_storeStrong(&v22->_trialIdentifier, a10);
-    objc_storeStrong(&v22->_timeouts, a11);
-    objc_storeStrong(&v22->_productInsights, a12);
+    v22->_inferenceSource = source;
+    objc_storeStrong(&v22->_trialIdentifier, trialIdentifier);
+    objc_storeStrong(&v22->_timeouts, timeouts);
+    objc_storeStrong(&v22->_productInsights, insights);
   }
 
   return v22;
@@ -1863,9 +1863,9 @@ id __35__BMMLSEShareSheetFeedback_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1873,8 +1873,8 @@ id __35__BMMLSEShareSheetFeedback_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMLSEShareSheetFeedback alloc] initByReadFrom:v7];
     v4 = v8;

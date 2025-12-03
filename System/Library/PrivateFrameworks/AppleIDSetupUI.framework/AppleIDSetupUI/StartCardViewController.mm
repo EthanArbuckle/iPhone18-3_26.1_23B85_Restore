@@ -1,5 +1,5 @@
 @interface StartCardViewController
-- (_TtC14AppleIDSetupUI23StartCardViewController)initWithContentView:(id)a3;
+- (_TtC14AppleIDSetupUI23StartCardViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_240A1DB68();
 }
 
-- (_TtC14AppleIDSetupUI23StartCardViewController)initWithContentView:(id)a3
+- (_TtC14AppleIDSetupUI23StartCardViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

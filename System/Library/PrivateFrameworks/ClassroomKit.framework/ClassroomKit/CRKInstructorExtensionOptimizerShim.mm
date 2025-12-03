@@ -1,27 +1,27 @@
 @interface CRKInstructorExtensionOptimizerShim
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)didAcceptAdminTransport:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)didAcceptAdminTransport:(id)transport;
 @end
 
 @implementation CRKInstructorExtensionOptimizerShim
 
-- (void)didAcceptAdminTransport:(id)a3
+- (void)didAcceptAdminTransport:(id)transport
 {
-  v3 = a3;
+  transportCopy = transport;
   v4 = _CRKLogGeneral_3();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CRKInstructorExtensionOptimizerShim *)v3 didAcceptAdminTransport:v4];
+    [(CRKInstructorExtensionOptimizerShim *)transportCopy didAcceptAdminTransport:v4];
   }
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = _CRKLogGeneral_3();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CRKInstructorExtensionOptimizerShim *)v3 beginRequestWithExtensionContext:v4];
+    [(CRKInstructorExtensionOptimizerShim *)contextCopy beginRequestWithExtensionContext:v4];
   }
 }
 

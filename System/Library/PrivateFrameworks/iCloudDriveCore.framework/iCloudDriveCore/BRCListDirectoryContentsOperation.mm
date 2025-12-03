@@ -1,13 +1,13 @@
 @interface BRCListDirectoryContentsOperation
-- (void)_cursorWasUpdated:(id)a3 subResourcesOp:(id)a4;
+- (void)_cursorWasUpdated:(id)updated subResourcesOp:(id)op;
 - (void)_scheduleQueryOp;
-- (void)_waitForFlushAndRescheduleApplyIfNecessaryWithError:(id)a3;
-- (void)addDirectoryListCompletionBlock:(id)a3;
-- (void)addPreFlushDirectoryListCompletionBlock:(id)a3;
-- (void)beginObservingChangesWithDelegate:(id)a3;
-- (void)cancelToBeReplacedByOperation:(id)a3;
-- (void)endObservingChangesWithDelegate:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)_waitForFlushAndRescheduleApplyIfNecessaryWithError:(id)error;
+- (void)addDirectoryListCompletionBlock:(id)block;
+- (void)addPreFlushDirectoryListCompletionBlock:(id)block;
+- (void)beginObservingChangesWithDelegate:(id)delegate;
+- (void)cancelToBeReplacedByOperation:(id)operation;
+- (void)endObservingChangesWithDelegate:(id)delegate;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
@@ -118,15 +118,15 @@ uint64_t __53__BRCListDirectoryContentsOperation__scheduleQueryOp__block_invoke_
   v11.receiver = self;
   v11.super_class = BRCListDirectoryContentsOperation;
   [(BRCAutoCancelOperation *)&v11 main];
-  v3 = [(BRCServerZone *)self->_serverZone changeState];
-  v4 = [v3 changeToken];
-  if (v4)
+  changeState = [(BRCServerZone *)self->_serverZone changeState];
+  changeToken = [changeState changeToken];
+  if (changeToken)
   {
     goto LABEL_4;
   }
 
-  v4 = [(BRCServerZone *)self->_serverZone mangledID];
-  v5 = [BRCUserDefaults defaultsForMangledID:v4];
+  changeToken = [(BRCServerZone *)self->_serverZone mangledID];
+  v5 = [BRCUserDefaults defaultsForMangledID:changeToken];
   if ([v5 allowsDirectoryListBeforeInitialChangeToken])
   {
 
@@ -134,10 +134,10 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [(BRCServerZone *)self->_serverZone clientZone];
-  v9 = [v8 isSyncBlockedBecauseAppNotInstalled];
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  isSyncBlockedBecauseAppNotInstalled = [clientZone isSyncBlockedBecauseAppNotInstalled];
 
-  if ((v9 & 1) == 0)
+  if ((isSyncBlockedBecauseAppNotInstalled & 1) == 0)
   {
     v10 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22 description:@"Can't list changes when we haven't synced down"];
     [(_BRCOperation *)self completedWithResult:0 error:v10];
@@ -164,17 +164,17 @@ LABEL_5:
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginObservingChangesWithDelegate:(id)a3
+- (void)beginObservingChangesWithDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    if (![(NSHashTable *)self->_delegates containsObject:v4])
+    if (![(NSHashTable *)self->_delegates containsObject:delegateCopy])
     {
       v5.receiver = self;
       v5.super_class = BRCListDirectoryContentsOperation;
       [(BRCAutoCancelOperation *)&v5 beginObservingChanges];
-      [(NSHashTable *)self->_delegates addObject:v4];
+      [(NSHashTable *)self->_delegates addObject:delegateCopy];
     }
   }
 
@@ -187,29 +187,29 @@ LABEL_5:
   }
 }
 
-- (void)endObservingChangesWithDelegate:(id)a3
+- (void)endObservingChangesWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = BRCListDirectoryContentsOperation;
-  v4 = a3;
+  delegateCopy = delegate;
   [(BRCAutoCancelOperation *)&v5 endObservingChanges];
-  [(NSHashTable *)self->_delegates removeObject:v4, v5.receiver, v5.super_class];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)cancelToBeReplacedByOperation:(id)a3
+- (void)cancelToBeReplacedByOperation:(id)operation
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v6 = [(BRCListDirectoryContentsOperation *)v5 dependencies];
-    v7 = [v6 countByEnumeratingWithState:&v42 objects:v49 count:16];
+    dependencies = [(BRCListDirectoryContentsOperation *)selfCopy dependencies];
+    v7 = [dependencies countByEnumeratingWithState:&v42 objects:v49 count:16];
     if (v7)
     {
       v8 = *v43;
@@ -219,31 +219,31 @@ LABEL_5:
         {
           if (*v43 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dependencies);
           }
 
-          [v4 addDependency:*(*(&v42 + 1) + 8 * i)];
+          [operationCopy addDependency:*(*(&v42 + 1) + 8 * i)];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v42 objects:v49 count:16];
+        v7 = [dependencies countByEnumeratingWithState:&v42 objects:v49 count:16];
       }
 
       while (v7);
     }
 
-    v10 = v5->_delegates;
-    delegates = v5->_delegates;
-    v5->_delegates = 0;
+    v10 = selfCopy->_delegates;
+    delegates = selfCopy->_delegates;
+    selfCopy->_delegates = 0;
 
-    v12 = v5->_listCompletionBlocks;
-    v13 = v5->_preFlushListCompletionBlocks;
-    listCompletionBlocks = v5->_listCompletionBlocks;
-    v5->_listCompletionBlocks = 0;
+    v12 = selfCopy->_listCompletionBlocks;
+    v13 = selfCopy->_preFlushListCompletionBlocks;
+    listCompletionBlocks = selfCopy->_listCompletionBlocks;
+    selfCopy->_listCompletionBlocks = 0;
 
-    preFlushListCompletionBlocks = v5->_preFlushListCompletionBlocks;
-    v5->_preFlushListCompletionBlocks = 0;
+    preFlushListCompletionBlocks = selfCopy->_preFlushListCompletionBlocks;
+    selfCopy->_preFlushListCompletionBlocks = 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -263,8 +263,8 @@ LABEL_5:
           }
 
           v20 = *(*(&v38 + 1) + 8 * j);
-          [v4 beginObservingChangesWithDelegate:v20];
-          [v20 listOperation:v5 wasReplacedByOperation:v4];
+          [operationCopy beginObservingChangesWithDelegate:v20];
+          [v20 listOperation:selfCopy wasReplacedByOperation:operationCopy];
         }
 
         v17 = [(NSHashTable *)v16 countByEnumeratingWithState:&v38 objects:v48 count:16];
@@ -273,9 +273,9 @@ LABEL_5:
       while (v17);
     }
 
-    if (v5->_hasNilDelegate)
+    if (selfCopy->_hasNilDelegate)
     {
-      [v4 beginObservingChangesWithDelegate:0];
+      [operationCopy beginObservingChangesWithDelegate:0];
     }
 
     v36 = 0u;
@@ -296,7 +296,7 @@ LABEL_5:
             objc_enumerationMutation(v21);
           }
 
-          [v4 addDirectoryListCompletionBlock:*(*(&v34 + 1) + 8 * k)];
+          [operationCopy addDirectoryListCompletionBlock:*(*(&v34 + 1) + 8 * k)];
         }
 
         v22 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v34 objects:v47 count:16];
@@ -323,7 +323,7 @@ LABEL_5:
             objc_enumerationMutation(v25);
           }
 
-          [v4 addPreFlushDirectoryListCompletionBlock:{*(*(&v30 + 1) + 8 * m), v30}];
+          [operationCopy addPreFlushDirectoryListCompletionBlock:{*(*(&v30 + 1) + 8 * m), v30}];
         }
 
         v26 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v30 objects:v46 count:16];
@@ -332,10 +332,10 @@ LABEL_5:
       while (v26);
     }
 
-    [(_BRCOperation *)v5 cancel];
-    if ([(_BRCOperation *)v5 isExecuting])
+    [(_BRCOperation *)selfCopy cancel];
+    if ([(_BRCOperation *)selfCopy isExecuting])
     {
-      [v4 addDependency:v5];
+      [operationCopy addDependency:selfCopy];
     }
   }
 
@@ -347,43 +347,43 @@ LABEL_5:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cursorWasUpdated:(id)a3 subResourcesOp:(id)a4
+- (void)_cursorWasUpdated:(id)updated subResourcesOp:(id)op
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 error];
+  updatedCopy = updated;
+  opCopy = op;
+  error = [opCopy error];
 
-  if (!v8 || ([v7 error], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "brc_checkErrorsFromCloudKit:", &__block_literal_global_9), v9, (v10 & 1) == 0))
+  if (!error || ([opCopy error], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "brc_checkErrorsFromCloudKit:", &__block_literal_global_9), v9, (v10 & 1) == 0))
   {
     v11 = brc_bread_crumbs();
     v12 = brc_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [(BRCListDirectoryContentsOperation *)self name];
+      name = [(BRCListDirectoryContentsOperation *)self name];
       v20 = 138412802;
-      v21 = v19;
+      v21 = name;
       v22 = 2112;
-      v23 = v6;
+      v23 = updatedCopy;
       v24 = 2112;
       v25 = v11;
       _os_log_debug_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ finished listing batch with cursor %@%@", &v20, 0x20u);
     }
 
-    if (([v7 saveRecordsWithQueryCursor:v6] & 1) == 0)
+    if (([opCopy saveRecordsWithQueryCursor:updatedCopy] & 1) == 0)
     {
-      v13 = [v7 error];
+      error2 = [opCopy error];
 
-      if (!v13)
+      if (!error2)
       {
         serverZone = self->_serverZone;
-        v15 = [v7 pendingChangesStream];
-        v16 = [v7 queryFinishedServerTruthCallback];
-        v17 = [v7 queryFinishedClientTruthCallback];
-        [(BRCServerZone *)serverZone failedListingDirectoryChanges:v15 serverTruthCallback:v16 clientTruthCallback:v17 folderItemID:self->_itemID];
+        pendingChangesStream = [opCopy pendingChangesStream];
+        queryFinishedServerTruthCallback = [opCopy queryFinishedServerTruthCallback];
+        queryFinishedClientTruthCallback = [opCopy queryFinishedClientTruthCallback];
+        [(BRCServerZone *)serverZone failedListingDirectoryChanges:pendingChangesStream serverTruthCallback:queryFinishedServerTruthCallback clientTruthCallback:queryFinishedClientTruthCallback folderItemID:self->_itemID];
 
-        [v7 setQueryFinishedServerTruthCallback:0];
-        [v7 setQueryFinishedClientTruthCallback:0];
+        [opCopy setQueryFinishedServerTruthCallback:0];
+        [opCopy setQueryFinishedClientTruthCallback:0];
       }
     }
   }
@@ -550,24 +550,24 @@ void __53__BRCListDirectoryContentsOperation__scheduleQueryOp__block_invoke_2_11
   }
 }
 
-- (void)_waitForFlushAndRescheduleApplyIfNecessaryWithError:(id)a3
+- (void)_waitForFlushAndRescheduleApplyIfNecessaryWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = self->_serverZone;
-  v6 = [(BRCServerZone *)v5 clientZone];
-  v7 = [v6 db];
-  v8 = [v7 serialQueue];
+  clientZone = [(BRCServerZone *)v5 clientZone];
+  v7 = [clientZone db];
+  serialQueue = [v7 serialQueue];
 
-  if (v8)
+  if (serialQueue)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__BRCListDirectoryContentsOperation__waitForFlushAndRescheduleApplyIfNecessaryWithError___block_invoke;
     block[3] = &unk_2784FF4A0;
-    v10 = v6;
-    v11 = self;
-    v12 = v4;
-    dispatch_async(v8, block);
+    v10 = clientZone;
+    selfCopy = self;
+    v12 = errorCopy;
+    dispatch_async(serialQueue, block);
   }
 }
 
@@ -690,12 +690,12 @@ void __89__BRCListDirectoryContentsOperation__waitForFlushAndRescheduleApplyIfNe
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7 && [(_BRCOperation *)self nonDiscretionary])
+  resultCopy = result;
+  errorCopy = error;
+  if (!errorCopy && [(_BRCOperation *)self nonDiscretionary])
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
@@ -706,12 +706,12 @@ void __89__BRCListDirectoryContentsOperation__waitForFlushAndRescheduleApplyIfNe
 
     [(_BRCOperation *)self executionTimeInSec];
     v10 = [AppTelemetryTimeSeriesEvent newQBSOperationPrformanceEventWithTime:@"BRCListDirectoryContentsOperation" type:self->_recordsFetched recordsFetched:self->_recordsFetchedTotalMetadataSize recordsFetchedTotalMetadataSize:self->_xattrsFetchedTotalSize xattrsFetchedTotalSize:?];
-    v11 = [(BRCSessionContext *)self->super.super._sessionContext analyticsReporter];
-    [v11 postReportForDefaultSubCategoryWithCategory:11 telemetryTimeEvent:v10];
+    analyticsReporter = [(BRCSessionContext *)self->super.super._sessionContext analyticsReporter];
+    [analyticsReporter postReportForDefaultSubCategoryWithCategory:11 telemetryTimeEvent:v10];
   }
 
-  v12 = [v7 userInfo];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+  userInfo = [errorCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
   v14 = [v13 objectForKeyedSubscript:self->_recordID];
   if ([v14 brc_isCloudKitUnknownItemError])
   {
@@ -721,24 +721,24 @@ void __89__BRCListDirectoryContentsOperation__waitForFlushAndRescheduleApplyIfNe
 
     else
     {
-      v15 = [(BRCItemID *)self->_itemID isNonDesktopRoot];
+      isNonDesktopRoot = [(BRCItemID *)self->_itemID isNonDesktopRoot];
 
-      if (!v15)
+      if (!isNonDesktopRoot)
       {
         goto LABEL_13;
       }
     }
 
-    v16 = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
-    v17 = [v16 serialQueue];
+    clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
+    serialQueue = [clientReadWriteDatabaseFacade serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__BRCListDirectoryContentsOperation_finishWithResult_error___block_invoke;
     block[3] = &unk_2784FF478;
     block[4] = self;
-    v33 = v16;
-    v12 = v16;
-    dispatch_sync(v17, block);
+    v33 = clientReadWriteDatabaseFacade;
+    userInfo = clientReadWriteDatabaseFacade;
+    dispatch_sync(serialQueue, block);
 
     sessionContext = self->super.super._sessionContext;
     v31[0] = MEMORY[0x277D85DD0];
@@ -748,7 +748,7 @@ void __89__BRCListDirectoryContentsOperation__waitForFlushAndRescheduleApplyIfNe
     v31[4] = self;
     [(BRCSessionContext *)sessionContext performSyncOnServerReadWriteDatabaseSerialQueue:v31];
 
-    v7 = 0;
+    errorCopy = 0;
   }
 
   else
@@ -758,12 +758,12 @@ void __89__BRCListDirectoryContentsOperation__waitForFlushAndRescheduleApplyIfNe
 LABEL_13:
   v30.receiver = self;
   v30.super_class = BRCListDirectoryContentsOperation;
-  [(_BRCOperation *)&v30 finishWithResult:v6 error:v7];
-  v19 = self;
-  objc_sync_enter(v19);
-  v20 = [(NSMutableArray *)v19->_preFlushListCompletionBlocks copy];
-  [(NSMutableArray *)v19->_preFlushListCompletionBlocks removeAllObjects];
-  objc_sync_exit(v19);
+  [(_BRCOperation *)&v30 finishWithResult:resultCopy error:errorCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v20 = [(NSMutableArray *)selfCopy->_preFlushListCompletionBlocks copy];
+  [(NSMutableArray *)selfCopy->_preFlushListCompletionBlocks removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v28 = 0u;
   v29 = 0u;
@@ -792,7 +792,7 @@ LABEL_13:
     while (v22);
   }
 
-  [(BRCListDirectoryContentsOperation *)v19 _waitForFlushAndRescheduleApplyIfNecessaryWithError:v7, v26];
+  [(BRCListDirectoryContentsOperation *)selfCopy _waitForFlushAndRescheduleApplyIfNecessaryWithError:errorCopy, v26];
   v25 = *MEMORY[0x277D85DE8];
 }
 
@@ -832,31 +832,31 @@ void __60__BRCListDirectoryContentsOperation_finishWithResult_error___block_invo
   [v4 saveServerZone:*(*(a1 + 32) + 520)];
 }
 
-- (void)addDirectoryListCompletionBlock:(id)a3
+- (void)addDirectoryListCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  listCompletionBlocks = v5->_listCompletionBlocks;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listCompletionBlocks = selfCopy->_listCompletionBlocks;
   if (listCompletionBlocks)
   {
-    v7 = MEMORY[0x22AA4A310](v4);
+    v7 = MEMORY[0x22AA4A310](blockCopy);
     [(NSMutableArray *)listCompletionBlocks addObject:v7];
   }
 
   else
   {
-    v8 = [(_BRCOperation *)v5 callbackQueue];
+    callbackQueue = [(_BRCOperation *)selfCopy callbackQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__BRCListDirectoryContentsOperation_addDirectoryListCompletionBlock___block_invoke;
     v9[3] = &unk_2784FFBC8;
-    v9[4] = v5;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v9[4] = selfCopy;
+    v10 = blockCopy;
+    dispatch_async(callbackQueue, v9);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __69__BRCListDirectoryContentsOperation_addDirectoryListCompletionBlock___block_invoke(uint64_t a1)
@@ -866,30 +866,30 @@ void __69__BRCListDirectoryContentsOperation_addDirectoryListCompletionBlock___b
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)addPreFlushDirectoryListCompletionBlock:(id)a3
+- (void)addPreFlushDirectoryListCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  preFlushListCompletionBlocks = v5->_preFlushListCompletionBlocks;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  preFlushListCompletionBlocks = selfCopy->_preFlushListCompletionBlocks;
   if (!preFlushListCompletionBlocks)
   {
-    v7 = [(_BRCOperation *)v5 callbackQueue];
+    callbackQueue = [(_BRCOperation *)selfCopy callbackQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __77__BRCListDirectoryContentsOperation_addPreFlushDirectoryListCompletionBlock___block_invoke;
     v9[3] = &unk_2784FFBC8;
-    v9[4] = v5;
-    v10 = v4;
-    dispatch_async(v7, v9);
+    v9[4] = selfCopy;
+    v10 = blockCopy;
+    dispatch_async(callbackQueue, v9);
 
-    preFlushListCompletionBlocks = v5->_preFlushListCompletionBlocks;
+    preFlushListCompletionBlocks = selfCopy->_preFlushListCompletionBlocks;
   }
 
-  v8 = MEMORY[0x22AA4A310](v4);
+  v8 = MEMORY[0x22AA4A310](blockCopy);
   [(NSMutableArray *)preFlushListCompletionBlocks addObject:v8];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __77__BRCListDirectoryContentsOperation_addPreFlushDirectoryListCompletionBlock___block_invoke(uint64_t a1)

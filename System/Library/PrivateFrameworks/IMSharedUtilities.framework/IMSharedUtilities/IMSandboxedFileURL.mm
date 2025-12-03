@@ -1,14 +1,14 @@
 @interface IMSandboxedFileURL
-- (IMSandboxedFileURL)initWithFileURL:(id)a3;
-- (IMSandboxedFileURL)initWithFileURL:(id)a3 destinationProcessPID:(int)a4;
+- (IMSandboxedFileURL)initWithFileURL:(id)l;
+- (IMSandboxedFileURL)initWithFileURL:(id)l destinationProcessPID:(int)d;
 - (NSURL)securityScopedResourceURL;
-- (char)_sandboxExtensionForAuditToken:(id *)a3;
-- (char)_sandboxExtensionForPID:(int)a3;
+- (char)_sandboxExtensionForAuditToken:(id *)token;
+- (char)_sandboxExtensionForPID:(int)d;
 @end
 
 @implementation IMSandboxedFileURL
 
-- (IMSandboxedFileURL)initWithFileURL:(id)a3
+- (IMSandboxedFileURL)initWithFileURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = IMSandboxedFileURL;
@@ -16,22 +16,22 @@
   v5 = v4;
   if (v4)
   {
-    [(IMSandboxedResource *)v4 setResource:a3];
+    [(IMSandboxedResource *)v4 setResource:l];
   }
 
   return v5;
 }
 
-- (IMSandboxedFileURL)initWithFileURL:(id)a3 destinationProcessPID:(int)a4
+- (IMSandboxedFileURL)initWithFileURL:(id)l destinationProcessPID:(int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   v9.receiver = self;
   v9.super_class = IMSandboxedFileURL;
   v6 = [(IMSandboxedFileURL *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(IMSandboxedResource *)v6 setResource:a3];
+    [(IMSandboxedResource *)v6 setResource:l];
     [(IMSandboxedResource *)v7 authorizeForPID:v4];
   }
 
@@ -40,12 +40,12 @@
 
 - (NSURL)securityScopedResourceURL
 {
-  v3 = [(IMSandboxedResource *)self sandboxExtension];
-  v4 = [(NSString *)v3 length];
+  sandboxExtension = [(IMSandboxedResource *)self sandboxExtension];
+  v4 = [(NSString *)sandboxExtension length];
   result = [(IMSandboxedResource *)self resource];
   if (v4)
   {
-    MEMORY[0x1AC570E10](result, [(NSString *)v3 dataUsingEncoding:4]);
+    MEMORY[0x1AC570E10](result, [(NSString *)sandboxExtension dataUsingEncoding:4]);
     [(IMSandboxedResource *)self setSandboxExtension:0];
 
     return [(IMSandboxedResource *)self resource];
@@ -54,11 +54,11 @@
   return result;
 }
 
-- (char)_sandboxExtensionForPID:(int)a3
+- (char)_sandboxExtensionForPID:(int)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [(IMSandboxedResource *)self resource];
-  if (!v4)
+  resource = [(IMSandboxedResource *)self resource];
+  if (!resource)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -72,14 +72,14 @@
     }
 
     v13 = 138412290;
-    v14 = self;
+    selfCopy2 = self;
     v9 = "Unable to authorize protected resource (resource is nil) for %@";
     v10 = v12;
     v11 = 12;
     goto LABEL_9;
   }
 
-  v5 = [objc_msgSend(v4 "path")];
+  v5 = [objc_msgSend(resource "path")];
   result = sandbox_extension_issue_file_to_process_by_pid();
   if (result)
   {
@@ -93,7 +93,7 @@
     {
       v8 = *__error();
       v13 = 138412802;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2080;
       v16 = v5;
       v17 = 1024;
@@ -109,11 +109,11 @@ LABEL_9:
   return 0;
 }
 
-- (char)_sandboxExtensionForAuditToken:(id *)a3
+- (char)_sandboxExtensionForAuditToken:(id *)token
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [(IMSandboxedResource *)self resource];
-  if (!v5)
+  resource = [(IMSandboxedResource *)self resource];
+  if (!resource)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -134,9 +134,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = [objc_msgSend(v5 "path")];
-  v7 = *&a3->var0[4];
-  *v15 = *a3->var0;
+  v6 = [objc_msgSend(resource "path")];
+  v7 = *&token->var0[4];
+  *v15 = *token->var0;
   *&v15[16] = v7;
   result = sandbox_extension_issue_file_to_process();
   if (result)

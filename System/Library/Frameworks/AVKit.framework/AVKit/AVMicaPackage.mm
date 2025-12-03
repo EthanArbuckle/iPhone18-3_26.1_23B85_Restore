@@ -1,24 +1,24 @@
 @interface AVMicaPackage
 + (NSDictionary)classSubstitions;
-+ (void)asynchronouslyPrepareMicaPackageWithName:(id)a3 layoutDirection:(int64_t)a4 completion:(id)a5;
-- (AVMicaPackage)initWithPackageName:(id)a3 layoutDirection:(int64_t)a4;
++ (void)asynchronouslyPrepareMicaPackageWithName:(id)name layoutDirection:(int64_t)direction completion:(id)completion;
+- (AVMicaPackage)initWithPackageName:(id)name layoutDirection:(int64_t)direction;
 - (CALayer)rootLayer;
 - (CGSize)targetSize;
 - (CGSize)unscaledSize;
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4;
-- (id)_recursivelyFindSublayerWithName:(id)a3 rootLayer:(id)a4;
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name;
+- (id)_recursivelyFindSublayerWithName:(id)name rootLayer:(id)layer;
 - (id)availableStates;
-- (id)availableStatesOnLayer:(id)a3;
-- (id)sublayerWithName:(id)a3;
+- (id)availableStatesOnLayer:(id)layer;
+- (id)sublayerWithName:(id)name;
 - (void)_loadRootLayerIfNeeded;
-- (void)_recursivelyRemoveCompositingFiltersWithName:(id)a3 rootLayer:(id)a4;
-- (void)_recursivelySetFillColor:(CGColor *)a3 rootLayer:(id)a4;
-- (void)_setState:(id)a3;
-- (void)removeCompositingFiltersWithName:(id)a3;
-- (void)setState:(id)a3 color:(CGColor *)a4;
-- (void)setTargetSize:(CGSize)a3;
-- (void)transitionToStateWithName:(id)a3;
-- (void)transitionToStateWithName:(id)a3 onLayer:(id)a4;
+- (void)_recursivelyRemoveCompositingFiltersWithName:(id)name rootLayer:(id)layer;
+- (void)_recursivelySetFillColor:(CGColor *)color rootLayer:(id)layer;
+- (void)_setState:(id)state;
+- (void)removeCompositingFiltersWithName:(id)name;
+- (void)setState:(id)state color:(CGColor *)color;
+- (void)setTargetSize:(CGSize)size;
+- (void)transitionToStateWithName:(id)name;
+- (void)transitionToStateWithName:(id)name onLayer:(id)layer;
 @end
 
 @implementation AVMicaPackage
@@ -46,24 +46,24 @@
   v27 = *MEMORY[0x1E69E9840];
   if (!self->_rootLayer)
   {
-    v3 = [(AVMicaPackage *)self packageName];
-    v4 = [(AVMicaPackage *)self packageName];
-    if ([v4 isEqualToString:@"VolumeGlyph"])
+    packageName = [(AVMicaPackage *)self packageName];
+    packageName2 = [(AVMicaPackage *)self packageName];
+    if ([packageName2 isEqualToString:@"VolumeGlyph"])
     {
-      v5 = [(AVMicaPackage *)self layoutDirection];
+      layoutDirection = [(AVMicaPackage *)self layoutDirection];
 
-      if (v5 != 1)
+      if (layoutDirection != 1)
       {
         goto LABEL_6;
       }
 
-      [v3 stringByAppendingString:@"-RTL"];
-      v3 = v4 = v3;
+      [packageName stringByAppendingString:@"-RTL"];
+      packageName = packageName2 = packageName;
     }
 
 LABEL_6:
     v6 = AVBundle();
-    v7 = [v6 URLForResource:v3 withExtension:@"caml"];
+    v7 = [v6 URLForResource:packageName withExtension:@"caml"];
 
     if (!v7)
     {
@@ -71,7 +71,7 @@ LABEL_6:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v25 = 138412290;
-        v26 = v3;
+        v26 = packageName;
         _os_log_error_impl(&dword_18B49C000, v18, OS_LOG_TYPE_ERROR, "Unexpectedly missing URL for CAML file. %@", &v25, 0xCu);
       }
 
@@ -85,12 +85,12 @@ LABEL_6:
       [MEMORY[0x1E6979518] activateBackground:1];
     }
 
-    v8 = [MEMORY[0x1E69793B0] parser];
-    [v8 setDelegate:self];
-    [v8 parseContentsOfURL:v7];
-    v9 = [v8 result];
+    parser = [MEMORY[0x1E69793B0] parser];
+    [parser setDelegate:self];
+    [parser parseContentsOfURL:v7];
+    result = [parser result];
     rootLayer = self->_rootLayer;
-    self->_rootLayer = v9;
+    self->_rootLayer = result;
 
     if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
@@ -105,8 +105,8 @@ LABEL_6:
     [(CALayer *)self->_rootLayer bounds];
     self->_unscaledSize.width = v13;
     self->_unscaledSize.height = v14;
-    v15 = [(AVMicaPackage *)self packageName];
-    v16 = [v15 isEqualToString:@"VolumeGlyph"];
+    packageName3 = [(AVMicaPackage *)self packageName];
+    v16 = [packageName3 isEqualToString:@"VolumeGlyph"];
 
     if (v16)
     {
@@ -115,8 +115,8 @@ LABEL_6:
 
     else
     {
-      v19 = [(AVMicaPackage *)self packageName];
-      v20 = [v19 isEqualToString:@"AVRoutePickerViewCircularAirPlayGlyph"];
+      packageName4 = [(AVMicaPackage *)self packageName];
+      v20 = [packageName4 isEqualToString:@"AVRoutePickerViewCircularAirPlayGlyph"];
 
       if (!v20)
       {
@@ -138,29 +138,29 @@ LABEL_22:
   }
 }
 
-- (id)sublayerWithName:(id)a3
+- (id)sublayerWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(AVMicaPackage *)self rootLayer];
-  v6 = [(AVMicaPackage *)self _recursivelyFindSublayerWithName:v4 rootLayer:v5];
+  nameCopy = name;
+  rootLayer = [(AVMicaPackage *)self rootLayer];
+  v6 = [(AVMicaPackage *)self _recursivelyFindSublayerWithName:nameCopy rootLayer:rootLayer];
 
   return v6;
 }
 
-- (id)availableStatesOnLayer:(id)a3
+- (id)availableStatesOnLayer:(id)layer
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
-  v6 = [v4 states];
+  layerCopy = layer;
+  array = [v3 array];
+  states = [layerCopy states];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__AVMicaPackage_availableStatesOnLayer___block_invoke;
   v9[3] = &unk_1E7209398;
-  v7 = v5;
+  v7 = array;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [states enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -174,37 +174,37 @@ void __40__AVMicaPackage_availableStatesOnLayer___block_invoke(uint64_t a1, void
 
 - (id)availableStates
 {
-  v3 = [(AVMicaPackage *)self rootLayer];
-  v4 = [(AVMicaPackage *)self availableStatesOnLayer:v3];
+  rootLayer = [(AVMicaPackage *)self rootLayer];
+  v4 = [(AVMicaPackage *)self availableStatesOnLayer:rootLayer];
 
   return v4;
 }
 
-- (void)transitionToStateWithName:(id)a3 onLayer:(id)a4
+- (void)transitionToStateWithName:(id)name onLayer:(id)layer
 {
-  v6 = a4;
-  v9 = [v6 stateWithName:a3];
-  v7 = [(AVMicaPackage *)self stateController];
+  layerCopy = layer;
+  v9 = [layerCopy stateWithName:name];
+  stateController = [(AVMicaPackage *)self stateController];
   LODWORD(v8) = 1.0;
-  [v7 setState:v9 ofLayer:v6 transitionSpeed:v8];
+  [stateController setState:v9 ofLayer:layerCopy transitionSpeed:v8];
 }
 
-- (void)transitionToStateWithName:(id)a3
+- (void)transitionToStateWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(AVMicaPackage *)self rootLayer];
-  [(AVMicaPackage *)self transitionToStateWithName:v4 onLayer:v5];
+  nameCopy = name;
+  rootLayer = [(AVMicaPackage *)self rootLayer];
+  [(AVMicaPackage *)self transitionToStateWithName:nameCopy onLayer:rootLayer];
 }
 
-- (void)_recursivelyRemoveCompositingFiltersWithName:(id)a3 rootLayer:(id)a4
+- (void)_recursivelyRemoveCompositingFiltersWithName:(id)name rootLayer:(id)layer
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [a4 sublayers];
+  obj = [layer sublayers];
   v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -220,15 +220,15 @@ void __40__AVMicaPackage_availableStatesOnLayer___block_invoke(uint64_t a1, void
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 compositingFilter];
+        compositingFilter = [v11 compositingFilter];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v14 = [v11 compositingFilter];
-          v15 = [v14 name];
-          v16 = [v15 isEqualToString:v6];
+          compositingFilter2 = [v11 compositingFilter];
+          name = [compositingFilter2 name];
+          v16 = [name isEqualToString:nameCopy];
 
           if (v16)
           {
@@ -236,7 +236,7 @@ void __40__AVMicaPackage_availableStatesOnLayer___block_invoke(uint64_t a1, void
           }
         }
 
-        [(AVMicaPackage *)self _recursivelyRemoveCompositingFiltersWithName:v6 rootLayer:v11];
+        [(AVMicaPackage *)self _recursivelyRemoveCompositingFiltersWithName:nameCopy rootLayer:v11];
       }
 
       v8 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -246,15 +246,15 @@ void __40__AVMicaPackage_availableStatesOnLayer___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_recursivelySetFillColor:(CGColor *)a3 rootLayer:(id)a4
+- (void)_recursivelySetFillColor:(CGColor *)color rootLayer:(id)layer
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 sublayers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sublayers = [layer sublayers];
+  v7 = [sublayers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -266,57 +266,57 @@ void __40__AVMicaPackage_availableStatesOnLayer___block_invoke(uint64_t a1, void
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sublayers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v11 setFillColor:a3];
+          [v11 setFillColor:color];
         }
 
-        [(AVMicaPackage *)self _recursivelySetFillColor:a3 rootLayer:v11];
+        [(AVMicaPackage *)self _recursivelySetFillColor:color rootLayer:v11];
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [sublayers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)_recursivelyFindSublayerWithName:(id)a3 rootLayer:(id)a4
+- (id)_recursivelyFindSublayerWithName:(id)name rootLayer:(id)layer
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  layerCopy = layer;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__25553;
   v20 = __Block_byref_object_dispose__25554;
   v21 = 0;
-  v8 = [v7 name];
-  v9 = [v8 isEqualToString:v6];
+  name = [layerCopy name];
+  v9 = [name isEqualToString:nameCopy];
 
   if (v9)
   {
-    objc_storeStrong(v17 + 5, a4);
+    objc_storeStrong(v17 + 5, layer);
   }
 
   else
   {
-    v10 = [v7 sublayers];
+    sublayers = [layerCopy sublayers];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __60__AVMicaPackage__recursivelyFindSublayerWithName_rootLayer___block_invoke;
     v13[3] = &unk_1E7209370;
     v15 = &v16;
     v13[4] = self;
-    v14 = v6;
-    [v10 enumerateObjectsUsingBlock:v13];
+    v14 = nameCopy;
+    [sublayers enumerateObjectsUsingBlock:v13];
   }
 
   v11 = v17[5];
@@ -338,62 +338,62 @@ void __60__AVMicaPackage__recursivelyFindSublayerWithName_rootLayer___block_invo
   }
 }
 
-- (void)_setState:(id)a3
+- (void)_setState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   if (![(NSString *)self->_state isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [stateCopy copy];
     state = self->_state;
     self->_state = v4;
 
-    [(AVMicaPackage *)self transitionToStateWithName:v6];
+    [(AVMicaPackage *)self transitionToStateWithName:stateCopy];
   }
 }
 
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name
 {
-  v4 = a4;
-  v5 = [objc_opt_class() classSubstitions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  classSubstitions = [objc_opt_class() classSubstitions];
+  v6 = [classSubstitions objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (void)removeCompositingFiltersWithName:(id)a3
+- (void)removeCompositingFiltersWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(AVMicaPackage *)self rootLayer];
-  [(AVMicaPackage *)self _recursivelyRemoveCompositingFiltersWithName:v4 rootLayer:v5];
+  nameCopy = name;
+  rootLayer = [(AVMicaPackage *)self rootLayer];
+  [(AVMicaPackage *)self _recursivelyRemoveCompositingFiltersWithName:nameCopy rootLayer:rootLayer];
 }
 
-- (void)setState:(id)a3 color:(CGColor *)a4
+- (void)setState:(id)state color:(CGColor *)color
 {
-  v7 = a3;
-  if (([v7 isEqualToString:@"on"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"off"))
+  stateCopy = state;
+  if (([stateCopy isEqualToString:@"on"] & 1) != 0 || objc_msgSend(stateCopy, "isEqualToString:", @"off"))
   {
     [(AVMicaPackage *)self _setState:0];
   }
 
-  [(AVMicaPackage *)self _setState:v7];
-  if (a4)
+  [(AVMicaPackage *)self _setState:stateCopy];
+  if (color)
   {
-    v6 = [(AVMicaPackage *)self rootLayer];
-    [(AVMicaPackage *)self _recursivelySetFillColor:a4 rootLayer:v6];
+    rootLayer = [(AVMicaPackage *)self rootLayer];
+    [(AVMicaPackage *)self _recursivelySetFillColor:color rootLayer:rootLayer];
   }
 }
 
-- (void)setTargetSize:(CGSize)a3
+- (void)setTargetSize:(CGSize)size
 {
-  if (self->_targetSize.width != a3.width || self->_targetSize.height != a3.height)
+  if (self->_targetSize.width != size.width || self->_targetSize.height != size.height)
   {
     v14 = v6;
     v15 = v5;
     v16 = v3;
     v17 = v4;
-    self->_targetSize = a3;
-    v9 = a3.width / self->_unscaledSize.width;
-    v10 = a3.height / self->_unscaledSize.height;
+    self->_targetSize = size;
+    v9 = size.width / self->_unscaledSize.width;
+    v10 = size.height / self->_unscaledSize.height;
     if (v9 >= v10)
     {
       v11 = v10;
@@ -406,9 +406,9 @@ void __60__AVMicaPackage__recursivelyFindSublayerWithName_rootLayer___block_invo
 
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v12 = [(AVMicaPackage *)self rootLayer];
+    rootLayer = [(AVMicaPackage *)self rootLayer];
     CATransform3DMakeScale(&v13, v11, -v11, 1.0);
-    [v12 setTransform:&v13];
+    [rootLayer setTransform:&v13];
 
     [MEMORY[0x1E6979518] commit];
   }
@@ -422,17 +422,17 @@ void __60__AVMicaPackage__recursivelyFindSublayerWithName_rootLayer___block_invo
   return rootLayer;
 }
 
-- (AVMicaPackage)initWithPackageName:(id)a3 layoutDirection:(int64_t)a4
+- (AVMicaPackage)initWithPackageName:(id)name layoutDirection:(int64_t)direction
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = AVMicaPackage;
   v8 = [(AVMicaPackage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_packageName, a3);
-    v9->_layoutDirection = a4;
+    objc_storeStrong(&v8->_packageName, name);
+    v9->_layoutDirection = direction;
   }
 
   return v9;
@@ -480,10 +480,10 @@ void __33__AVMicaPackage_classSubstitions__block_invoke()
   classSubstitions__substitutions = v0;
 }
 
-+ (void)asynchronouslyPrepareMicaPackageWithName:(id)a3 layoutDirection:(int64_t)a4 completion:(id)a5
++ (void)asynchronouslyPrepareMicaPackageWithName:(id)name layoutDirection:(int64_t)direction completion:(id)completion
 {
-  v7 = a3;
-  v8 = [a5 copy];
+  nameCopy = name;
+  v8 = [completion copy];
   if (asynchronouslyPrepareMicaPackageWithName_layoutDirection_completion__onceToken != -1)
   {
     dispatch_once(&asynchronouslyPrepareMicaPackageWithName_layoutDirection_completion__onceToken, &__block_literal_global_25611);
@@ -495,10 +495,10 @@ void __33__AVMicaPackage_classSubstitions__block_invoke()
   block[2] = __85__AVMicaPackage_asynchronouslyPrepareMicaPackageWithName_layoutDirection_completion___block_invoke_2;
   block[3] = &unk_1E7209348;
   v14 = v8;
-  v15 = a4;
-  v13 = v7;
+  directionCopy = direction;
+  v13 = nameCopy;
   v10 = v8;
-  v11 = v7;
+  v11 = nameCopy;
   dispatch_async(v9, block);
 }
 

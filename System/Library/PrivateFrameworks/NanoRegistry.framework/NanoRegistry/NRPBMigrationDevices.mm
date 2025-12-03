@@ -1,32 +1,32 @@
 @interface NRPBMigrationDevices
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addDevices:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDevices:(id)devices;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBMigrationDevices
 
-- (void)addDevices:(id)a3
+- (void)addDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   devices = self->_devices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!devices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_devices;
     self->_devices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     devices = self->_devices;
   }
 
-  [(NSMutableArray *)devices addObject:v4];
+  [(NSMutableArray *)devices addObject:devicesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = NRPBMigrationDevices;
   v4 = [(NRPBMigrationDevices *)&v8 description];
-  v5 = [(NRPBMigrationDevices *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBMigrationDevices *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_devices count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_devices, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -77,24 +77,24 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"devices"];
+    [dictionary setObject:v4 forKey:@"devices"];
   }
 
   phoneUDIDHash = self->_phoneUDIDHash;
   if (phoneUDIDHash)
   {
-    [v3 setObject:phoneUDIDHash forKey:@"phoneUDIDHash"];
+    [dictionary setObject:phoneUDIDHash forKey:@"phoneUDIDHash"];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -135,34 +135,34 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(NRPBMigrationDevices *)self devicesCount])
   {
-    [v8 clearDevices];
-    v4 = [(NRPBMigrationDevices *)self devicesCount];
-    if (v4)
+    [toCopy clearDevices];
+    devicesCount = [(NRPBMigrationDevices *)self devicesCount];
+    if (devicesCount)
     {
-      v5 = v4;
+      v5 = devicesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NRPBMigrationDevices *)self devicesAtIndex:i];
-        [v8 addDevices:v7];
+        [toCopy addDevices:v7];
       }
     }
   }
 
   if (self->_phoneUDIDHash)
   {
-    [v8 setPhoneUDIDHash:?];
+    [toCopy setPhoneUDIDHash:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{a3, v16}];
+        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{zone, v16}];
         [v5 addDevices:v11];
 
         ++v10;
@@ -196,7 +196,7 @@
     while (v8);
   }
 
-  v12 = [(NSData *)self->_phoneUDIDHash copyWithZone:a3];
+  v12 = [(NSData *)self->_phoneUDIDHash copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -204,13 +204,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((devices = self->_devices, !(devices | v4[1])) || -[NSMutableArray isEqual:](devices, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((devices = self->_devices, !(devices | equalCopy[1])) || -[NSMutableArray isEqual:](devices, "isEqual:")))
   {
     phoneUDIDHash = self->_phoneUDIDHash;
-    if (phoneUDIDHash | v4[2])
+    if (phoneUDIDHash | equalCopy[2])
     {
       v7 = [(NSData *)phoneUDIDHash isEqual:?];
     }
@@ -229,15 +229,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -261,7 +261,7 @@
     while (v7);
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NRPBMigrationDevices *)self setPhoneUDIDHash:?];
   }

@@ -1,18 +1,18 @@
 @interface AppBadgeController
 + (OS_os_log)log;
-- (AppBadgeController)initWithMessagePersistence:(id)a3 hookRegistry:(id)a4 mailboxProvider:(id)a5 focusController:(id)a6 bucketBarController:(id)a7;
-- (id)_enabledAndExcludedMailboxesExcludingAccountIDs:(id)a3;
+- (AppBadgeController)initWithMessagePersistence:(id)persistence hookRegistry:(id)registry mailboxProvider:(id)provider focusController:(id)controller bucketBarController:(id)barController;
+- (id)_enabledAndExcludedMailboxesExcludingAccountIDs:(id)ds;
 - (id)_excludedAccountIdentifiersByCurrentFocus;
 - (void)_createCountQueryPredicateFromNotificationTopics;
-- (void)_nts_getAccountsExcludedFromUnreadCount:(id *)a3 includeUnreadVIPs:(BOOL *)a4 includeUnreadNotifiedThreads:(BOOL *)a5 includeUnreadPrimaries:(BOOL *)a6;
-- (void)_startObservingCountPredicate:(id)a3 serverCountMailboxScope:(id)a4;
-- (void)bucketBarConfigurationControllerRequiresReload:(id)a3;
-- (void)countDidChange:(int64_t)a3 acknowledgementToken:(id)a4;
-- (void)currentFocusChanged:(id)a3;
+- (void)_nts_getAccountsExcludedFromUnreadCount:(id *)count includeUnreadVIPs:(BOOL *)ps includeUnreadNotifiedThreads:(BOOL *)threads includeUnreadPrimaries:(BOOL *)primaries;
+- (void)_startObservingCountPredicate:(id)predicate serverCountMailboxScope:(id)scope;
+- (void)bucketBarConfigurationControllerRequiresReload:(id)reload;
+- (void)countDidChange:(int64_t)change acknowledgementToken:(id)token;
+- (void)currentFocusChanged:(id)changed;
 - (void)dealloc;
-- (void)mailboxListChanged:(id)a3;
-- (void)setBadgeCount:(int64_t)a3;
-- (void)userNotificationCenterSettingsDidChange:(id)a3;
+- (void)mailboxListChanged:(id)changed;
+- (void)setBadgeCount:(int64_t)count;
+- (void)userNotificationCenterSettingsDidChange:(id)change;
 @end
 
 @implementation AppBadgeController
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_100007410;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001854B8 != -1)
   {
     dispatch_once(&qword_1001854B8, block);
@@ -34,22 +34,22 @@
   return v2;
 }
 
-- (AppBadgeController)initWithMessagePersistence:(id)a3 hookRegistry:(id)a4 mailboxProvider:(id)a5 focusController:(id)a6 bucketBarController:(id)a7
+- (AppBadgeController)initWithMessagePersistence:(id)persistence hookRegistry:(id)registry mailboxProvider:(id)provider focusController:(id)controller bucketBarController:(id)barController
 {
-  v13 = a3;
-  v35 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  persistenceCopy = persistence;
+  registryCopy = registry;
+  providerCopy = provider;
+  controllerCopy = controller;
+  barControllerCopy = barController;
   v36.receiver = self;
   v36.super_class = AppBadgeController;
   v17 = [(AppBadgeController *)&v36 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_messagePersistence, a3);
-    objc_storeStrong(&v18->_hookRegistry, a4);
-    objc_storeStrong(&v18->_mailboxProvider, a5);
+    objc_storeStrong(&v17->_messagePersistence, persistence);
+    objc_storeStrong(&v18->_hookRegistry, registry);
+    objc_storeStrong(&v18->_mailboxProvider, provider);
     v18->_oldBadgeCount = 0x7FFFFFFFFFFFFFFFLL;
     v19 = [UNUserNotificationCenter alloc];
     v20 = [v19 initWithBundleIdentifier:kMFMobileMailBundleIdentifier];
@@ -69,12 +69,12 @@
     mailboxObserverID = v18->_mailboxObserverID;
     v18->_mailboxObserverID = v29;
 
-    objc_storeStrong(&v18->_bucketBarController, a7);
-    [v16 addConfigurationObserver:v18];
-    v31 = [v13 mailboxPersistence];
-    [v31 addChangeObserver:v18 withIdentifier:v18->_mailboxObserverID];
+    objc_storeStrong(&v18->_bucketBarController, barController);
+    [barControllerCopy addConfigurationObserver:v18];
+    mailboxPersistence = [persistenceCopy mailboxPersistence];
+    [mailboxPersistence addChangeObserver:v18 withIdentifier:v18->_mailboxObserverID];
 
-    v32 = [v15 addObserver:v18 currentFocus:&v18->_currentFocus];
+    v32 = [controllerCopy addObserver:v18 currentFocus:&v18->_currentFocus];
     focusObservationToken = v18->_focusObservationToken;
     v18->_focusObservationToken = v32;
   }
@@ -84,8 +84,8 @@
 
 - (void)dealloc
 {
-  v3 = [(EDMessagePersistence *)self->_messagePersistence mailboxPersistence];
-  [v3 removeChangeObserverWithIdentifier:self->_mailboxObserverID];
+  mailboxPersistence = [(EDMessagePersistence *)self->_messagePersistence mailboxPersistence];
+  [mailboxPersistence removeChangeObserverWithIdentifier:self->_mailboxObserverID];
 
   [(MSBucketBarConfigurationController *)self->_bucketBarController removeConfigurationObserver:self];
   [(EDMessageCountQueryHandler *)self->_queryHandler cancel];
@@ -94,7 +94,7 @@
   [(AppBadgeController *)&v4 dealloc];
 }
 
-- (void)_nts_getAccountsExcludedFromUnreadCount:(id *)a3 includeUnreadVIPs:(BOOL *)a4 includeUnreadNotifiedThreads:(BOOL *)a5 includeUnreadPrimaries:(BOOL *)a6
+- (void)_nts_getAccountsExcludedFromUnreadCount:(id *)count includeUnreadVIPs:(BOOL *)ps includeUnreadNotifiedThreads:(BOOL *)threads includeUnreadPrimaries:(BOOL *)primaries
 {
   v11 = +[NSMutableSet set];
   v29 = 0;
@@ -109,7 +109,7 @@
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v12 = [(AppBadgeController *)self notificationSettingsByTopic];
+  notificationSettingsByTopic = [(AppBadgeController *)self notificationSettingsByTopic];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100007998;
@@ -119,25 +119,25 @@
   v20 = &v21;
   v13 = v11;
   v17 = v13;
-  [v12 enumerateKeysAndObjectsUsingBlock:v16];
+  [notificationSettingsByTopic enumerateKeysAndObjectsUsingBlock:v16];
 
-  if (a3)
+  if (count)
   {
     v14 = v13;
-    *a3 = v13;
+    *count = v13;
   }
 
-  if (a4)
+  if (ps)
   {
-    *a4 = *(v30 + 24);
+    *ps = *(v30 + 24);
   }
 
-  if (a5)
+  if (threads)
   {
-    *a5 = *(v26 + 24);
+    *threads = *(v26 + 24);
   }
 
-  if (a6)
+  if (primaries)
   {
     if (EMBlackPearlIsFeatureEnabled())
     {
@@ -149,7 +149,7 @@
       v15 = 0;
     }
 
-    *a6 = v15;
+    *primaries = v15;
   }
 
   _Block_object_dispose(&v21, 8);
@@ -157,9 +157,9 @@
   _Block_object_dispose(&v29, 8);
 }
 
-- (id)_enabledAndExcludedMailboxesExcludingAccountIDs:(id)a3
+- (id)_enabledAndExcludedMailboxesExcludingAccountIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[NSMutableSet set];
   v5 = +[NSMutableSet set];
   v19 = 0u;
@@ -181,11 +181,11 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 primaryMailboxUid];
-        if (v11)
+        primaryMailboxUid = [v10 primaryMailboxUid];
+        if (primaryMailboxUid)
         {
-          v12 = [v10 uniqueID];
-          v13 = [v3 containsObject:v12];
+          uniqueID = [v10 uniqueID];
+          v13 = [dsCopy containsObject:uniqueID];
 
           if (v13)
           {
@@ -197,7 +197,7 @@
             v14 = v4;
           }
 
-          [v14 addObject:v11];
+          [v14 addObject:primaryMailboxUid];
         }
       }
 
@@ -212,14 +212,14 @@
   return v15;
 }
 
-- (void)setBadgeCount:(int64_t)a3
+- (void)setBadgeCount:(int64_t)count
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100007D38;
   v3[3] = &unk_100156360;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = count;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
@@ -230,18 +230,18 @@
   v57 = 0;
   [(AppBadgeController *)self _nts_getAccountsExcludedFromUnreadCount:&v57 includeUnreadVIPs:&v59 + 1 includeUnreadNotifiedThreads:&v59 includeUnreadPrimaries:&v58];
   v3 = v57;
-  v4 = [(AppBadgeController *)self _excludedAccountIdentifiersByCurrentFocus];
-  v48 = [v3 setByAddingObjectsFromSet:v4];
+  _excludedAccountIdentifiersByCurrentFocus = [(AppBadgeController *)self _excludedAccountIdentifiersByCurrentFocus];
+  v48 = [v3 setByAddingObjectsFromSet:_excludedAccountIdentifiersByCurrentFocus];
 
   v51 = [(AppBadgeController *)self _enabledAndExcludedMailboxesExcludingAccountIDs:v48];
-  v50 = [(AppBadgeController *)self mailboxProvider];
-  v5 = [v51 first];
-  v6 = [v5 allObjects];
-  v7 = [v50 mailboxesFromLegacyMailboxes:v6];
+  mailboxProvider = [(AppBadgeController *)self mailboxProvider];
+  first = [v51 first];
+  allObjects = [first allObjects];
+  v7 = [mailboxProvider mailboxesFromLegacyMailboxes:allObjects];
 
-  v8 = [v51 second];
-  v9 = [v8 allObjects];
-  v49 = [v50 mailboxesFromLegacyMailboxes:v9];
+  second = [v51 second];
+  allObjects2 = [second allObjects];
+  v49 = [mailboxProvider mailboxesFromLegacyMailboxes:allObjects2];
 
   v45 = objc_alloc_init(NSMutableArray);
   v47 = objc_alloc_init(NSMutableArray);
@@ -297,15 +297,15 @@
 
     if ((v59 & 0x100) != 0 || (v59 & 1) != 0 || v58 == 1)
     {
-      v19 = [(AppBadgeController *)self currentFocus];
-      v20 = v19;
-      if (v19)
+      currentFocus = [(AppBadgeController *)self currentFocus];
+      v20 = currentFocus;
+      if (currentFocus)
       {
         v52[0] = _NSConcreteStackBlock;
         v52[1] = 3221225472;
         v52[2] = sub_100008AB8;
         v52[3] = &unk_1001563B0;
-        v53 = v19;
+        v53 = currentFocus;
         v21 = [v49 ef_filter:v52];
       }
 
@@ -426,10 +426,10 @@
 
 - (id)_excludedAccountIdentifiersByCurrentFocus
 {
-  v2 = [(AppBadgeController *)self currentFocus];
-  v3 = [v2 focusedAccountIdentifiers];
+  currentFocus = [(AppBadgeController *)self currentFocus];
+  focusedAccountIdentifiers = [currentFocus focusedAccountIdentifiers];
 
-  if ([v3 count])
+  if ([focusedAccountIdentifiers count])
   {
     v4 = objc_alloc_init(NSMutableSet);
     v13 = 0u;
@@ -450,10 +450,10 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) identifier];
-          if (v9 && ([v3 containsObject:v9] & 1) == 0)
+          identifier = [*(*(&v11 + 1) + 8 * i) identifier];
+          if (identifier && ([focusedAccountIdentifiers containsObject:identifier] & 1) == 0)
           {
-            [v4 addObject:v9];
+            [v4 addObject:identifier];
           }
         }
 
@@ -472,92 +472,92 @@
   return v4;
 }
 
-- (void)_startObservingCountPredicate:(id)a3 serverCountMailboxScope:(id)a4
+- (void)_startObservingCountPredicate:(id)predicate serverCountMailboxScope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:v6 sortDescriptors:&__NSArray0__struct queryOptions:0 label:@"App badge"];
-  v9 = [(AppBadgeController *)self query];
-  v10 = [v8 isEqual:v9];
+  predicateCopy = predicate;
+  scopeCopy = scope;
+  v8 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:predicateCopy sortDescriptors:&__NSArray0__struct queryOptions:0 label:@"App badge"];
+  query = [(AppBadgeController *)self query];
+  v10 = [v8 isEqual:query];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(AppBadgeController *)self queryHandler];
-    [v11 cancel];
+    queryHandler = [(AppBadgeController *)self queryHandler];
+    [queryHandler cancel];
 
     v12 = +[AppBadgeController log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v6;
+      v18 = predicateCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating app badge with predicate %@", &v17, 0xCu);
     }
 
     v13 = [EDMessageCountQueryHandler alloc];
-    v14 = [(AppBadgeController *)self messagePersistence];
-    v15 = [(AppBadgeController *)self hookRegistry];
-    v16 = [v13 initWithQuery:v8 serverCountMailboxScope:v7 messagePersistence:v14 hookRegistry:v15 observer:self];
+    messagePersistence = [(AppBadgeController *)self messagePersistence];
+    hookRegistry = [(AppBadgeController *)self hookRegistry];
+    v16 = [v13 initWithQuery:v8 serverCountMailboxScope:scopeCopy messagePersistence:messagePersistence hookRegistry:hookRegistry observer:self];
     [(AppBadgeController *)self setQueryHandler:v16];
 
     [(AppBadgeController *)self setQuery:v8];
   }
 }
 
-- (void)userNotificationCenterSettingsDidChange:(id)a3
+- (void)userNotificationCenterSettingsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(AppBadgeController *)self scheduler];
+  changeCopy = change;
+  scheduler = [(AppBadgeController *)self scheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009090;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v6 = v4;
+  v6 = changeCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [scheduler performBlock:v7];
 }
 
-- (void)countDidChange:(int64_t)a3 acknowledgementToken:(id)a4
+- (void)countDidChange:(int64_t)change acknowledgementToken:(id)token
 {
-  v6 = a4;
-  [v6 invoke];
-  [(AppBadgeController *)self setBadgeCount:a3];
+  tokenCopy = token;
+  [tokenCopy invoke];
+  [(AppBadgeController *)self setBadgeCount:change];
 }
 
-- (void)mailboxListChanged:(id)a3
+- (void)mailboxListChanged:(id)changed
 {
-  v4 = [(AppBadgeController *)self scheduler];
+  scheduler = [(AppBadgeController *)self scheduler];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100009218;
   v5[3] = &unk_100156400;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [scheduler performBlock:v5];
 }
 
-- (void)currentFocusChanged:(id)a3
+- (void)currentFocusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(AppBadgeController *)self scheduler];
+  changedCopy = changed;
+  scheduler = [(AppBadgeController *)self scheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000092FC;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v6 = v4;
+  v6 = changedCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [scheduler performBlock:v7];
 }
 
-- (void)bucketBarConfigurationControllerRequiresReload:(id)a3
+- (void)bucketBarConfigurationControllerRequiresReload:(id)reload
 {
-  v4 = [(AppBadgeController *)self scheduler];
+  scheduler = [(AppBadgeController *)self scheduler];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100009474;
   v5[3] = &unk_100156400;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [scheduler performBlock:v5];
 }
 
 @end

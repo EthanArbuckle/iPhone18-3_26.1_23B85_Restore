@@ -1,24 +1,24 @@
 @interface _UIPreviewTransitionDelegate
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)interactionControllerForPresentation:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)interactionControllerForPresentation:(id)presentation;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 @end
 
 @implementation _UIPreviewTransitionDelegate
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_UIPreviewTransitionDelegate *)self interactionProgressForPresentation];
-  v8 = [[_UIPreviewTransitionController alloc] initWithInteractionProgress:v7 targetPresentationPhase:2];
+  controllerCopy = controller;
+  interactionProgressForPresentation = [(_UIPreviewTransitionDelegate *)self interactionProgressForPresentation];
+  v8 = [[_UIPreviewTransitionController alloc] initWithInteractionProgress:interactionProgressForPresentation targetPresentationPhase:2];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v10 = [(_UIPreviewTransitionDelegate *)self feedbackGenerator];
+  feedbackGenerator = [(_UIPreviewTransitionDelegate *)self feedbackGenerator];
 
   if (has_internal_diagnostics)
   {
-    if (v10)
+    if (feedbackGenerator)
     {
       goto LABEL_3;
     }
@@ -40,7 +40,7 @@ LABEL_12:
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!feedbackGenerator)
   {
     v18 = *(__UILogGetCategoryCachedImpl("Assert", &animationControllerForPresentedController_presentingController_sourceController____s_category) + 8);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -56,14 +56,14 @@ LABEL_12:
   }
 
 LABEL_3:
-  v11 = [(_UIPreviewTransitionDelegate *)self feedbackGenerator];
-  [(_UIPreviewTransitionController *)v8 setFeedbackGenerator:v11];
+  feedbackGenerator2 = [(_UIPreviewTransitionDelegate *)self feedbackGenerator];
+  [(_UIPreviewTransitionController *)v8 setFeedbackGenerator:feedbackGenerator2];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __112___UIPreviewTransitionDelegate_animationControllerForPresentedController_presentingController_sourceController___block_invoke;
   v26[3] = &unk_1E70F3590;
-  v27 = v6;
+  v27 = controllerCopy;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __112___UIPreviewTransitionDelegate_animationControllerForPresentedController_presentingController_sourceController___block_invoke_2;
@@ -87,15 +87,15 @@ LABEL_3:
   return v8;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = [[_UIPreviewTransitionController alloc] initWithInteractionProgress:0 targetPresentationPhase:5];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74___UIPreviewTransitionDelegate_animationControllerForDismissedController___block_invoke;
   v9[3] = &unk_1E70F3590;
-  v10 = v3;
+  v10 = controllerCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74___UIPreviewTransitionDelegate_animationControllerForDismissedController___block_invoke_2;
@@ -107,33 +107,33 @@ LABEL_3:
   return v4;
 }
 
-- (id)interactionControllerForPresentation:(id)a3
+- (id)interactionControllerForPresentation:(id)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 interactionProgress];
+    interactionProgress = [presentationCopy interactionProgress];
 
-    if (v4)
+    if (interactionProgress)
     {
-      v4 = v3;
+      interactionProgress = presentationCopy;
     }
   }
 
   else
   {
-    v4 = 0;
+    interactionProgress = 0;
   }
 
-  return v4;
+  return interactionProgress;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_UIPreviewPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[_UIPreviewPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }

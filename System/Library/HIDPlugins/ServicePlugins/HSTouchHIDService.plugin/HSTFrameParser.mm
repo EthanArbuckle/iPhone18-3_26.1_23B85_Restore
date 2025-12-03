@@ -1,42 +1,42 @@
 @interface HSTFrameParser
-- (BOOL)_handleContactFrame:(id)a3;
-- (BOOL)_handleDriverExternalMessageFrame:(id)a3;
-- (BOOL)_handleDriverNotificationFrame:(id)a3;
-- (BOOL)_handleFirmwareEventFrame:(id)a3;
-- (BOOL)_handlePointerFrame:(id)a3;
-- (BOOL)_handleTimestampSyncFrame:(id)a3;
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (BOOL)unpackFrame29Contact:(UnpackedContact *)a3 fromData:(id)a4 withByteOffset:(unsigned __int8)a5;
-- (BOOL)unpackFrame29Header:(UnpackedHeader *)a3 fromData:(id)a4;
-- (BOOL)unpackFrame31Contact:(UnpackedContact *)a3 fromData:(id)a4 withByteOffset:(unsigned __int8)a5;
-- (BOOL)unpackFrame31Header:(UnpackedHeader *)a3 fromData:(id)a4;
-- (HSTFrameParser)initWithConfig:(const Config *)a3;
-- (id)contactFrameFromData:(id)a3;
-- (id)parseContactFrame29:(id)a3;
-- (id)parseContactFrame31:(id)a3;
-- (id)parseContactFrame44:(id)a3;
-- (id)parseContactFrame75:(id)a3;
-- (id)parseRelativePointerFrame82:(id)a3;
-- (id)pointerFrameFromData:(id)a3;
-- (unsigned)_driverToHSTNotification:(const DriverNotificationHeader *)a3;
-- (unsigned)_driverToHSTNotificationWithContext:(const DriverNotification *)a3;
-- (unsigned)_driverUserSpaceToHSTNotification:(const DriverNotification *)a3;
-- (unsigned)_firmwareToHSTNotification:(unsigned __int8)a3;
-- (unsigned)majorRadiusFromCode:(unsigned __int8)a3;
-- (unsigned)minorRadiusFromCode:(unsigned __int8)a3;
-- (unsigned)zforceFromCode:(unsigned __int8)a3;
-- (unsigned)zsignalFromCode:(unsigned __int8)a3;
-- (void)_handleDebugStateEvent:(id)a3;
-- (void)_handleFrame:(id)a3;
-- (void)_handleResetEvent:(id)a3;
-- (void)handleConsume:(id)a3;
-- (void)sanitizeContactFrame:(id)a3;
+- (BOOL)_handleContactFrame:(id)frame;
+- (BOOL)_handleDriverExternalMessageFrame:(id)frame;
+- (BOOL)_handleDriverNotificationFrame:(id)frame;
+- (BOOL)_handleFirmwareEventFrame:(id)frame;
+- (BOOL)_handlePointerFrame:(id)frame;
+- (BOOL)_handleTimestampSyncFrame:(id)frame;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (BOOL)unpackFrame29Contact:(UnpackedContact *)contact fromData:(id)data withByteOffset:(unsigned __int8)offset;
+- (BOOL)unpackFrame29Header:(UnpackedHeader *)header fromData:(id)data;
+- (BOOL)unpackFrame31Contact:(UnpackedContact *)contact fromData:(id)data withByteOffset:(unsigned __int8)offset;
+- (BOOL)unpackFrame31Header:(UnpackedHeader *)header fromData:(id)data;
+- (HSTFrameParser)initWithConfig:(const Config *)config;
+- (id)contactFrameFromData:(id)data;
+- (id)parseContactFrame29:(id)frame29;
+- (id)parseContactFrame31:(id)frame31;
+- (id)parseContactFrame44:(id)frame44;
+- (id)parseContactFrame75:(id)frame75;
+- (id)parseRelativePointerFrame82:(id)frame82;
+- (id)pointerFrameFromData:(id)data;
+- (unsigned)_driverToHSTNotification:(const DriverNotificationHeader *)notification;
+- (unsigned)_driverToHSTNotificationWithContext:(const DriverNotification *)context;
+- (unsigned)_driverUserSpaceToHSTNotification:(const DriverNotification *)notification;
+- (unsigned)_firmwareToHSTNotification:(unsigned __int8)notification;
+- (unsigned)majorRadiusFromCode:(unsigned __int8)code;
+- (unsigned)minorRadiusFromCode:(unsigned __int8)code;
+- (unsigned)zforceFromCode:(unsigned __int8)code;
+- (unsigned)zsignalFromCode:(unsigned __int8)code;
+- (void)_handleDebugStateEvent:(id)event;
+- (void)_handleFrame:(id)frame;
+- (void)_handleResetEvent:(id)event;
+- (void)handleConsume:(id)consume;
+- (void)sanitizeContactFrame:(id)frame;
 @end
 
 @implementation HSTFrameParser
 
-- (HSTFrameParser)initWithConfig:(const Config *)a3
+- (HSTFrameParser)initWithConfig:(const Config *)config
 {
   v9.receiver = self;
   v9.super_class = HSTFrameParser;
@@ -44,8 +44,8 @@
   v5 = v4;
   if (v4)
   {
-    sensorSize = a3->sensorSize;
-    v4->_config.surfaceCoordinates = a3->surfaceCoordinates;
+    sensorSize = config->sensorSize;
+    v4->_config.surfaceCoordinates = config->surfaceCoordinates;
     v4->_config.sensorSize = sensorSize;
     v4->_lastFWTimestamp = 0;
     v4->_lastFrameNumber = 0;
@@ -56,11 +56,11 @@
   return v5;
 }
 
-- (id)parseContactFrame29:(id)a3
+- (id)parseContactFrame29:(id)frame29
 {
-  v6 = a3;
-  v24 = v6;
-  if (!v6)
+  frame29Copy = frame29;
+  v24 = frame29Copy;
+  if (!frame29Copy)
   {
     v23 = +[NSAssertionHandler currentHandler];
     [v23 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"data"}];
@@ -68,7 +68,7 @@
 
   *(v27 + 7) = 0xAAAAAAAAAAAAAAAALL;
   v27[0] = 0xAAAAAAAAAAAAAAAALL;
-  if (![(HSTFrameParser *)self unpackFrame29Header:v27 fromData:v6])
+  if (![(HSTFrameParser *)self unpackFrame29Header:v27 fromData:frame29Copy])
   {
     v20 = 0;
     goto LABEL_20;
@@ -76,7 +76,7 @@
 
   v7 = objc_opt_new();
   *(v7 + 24) = self->_lastFrameNumber + 1;
-  objc_storeStrong((v7 + 8), a3);
+  objc_storeStrong((v7 + 8), frame29);
   *(v7 + 32) = 1000 * *(v27 + 6);
   v8 = (self->_config.surfaceCoordinates.right - self->_config.surfaceCoordinates.left) | ((self->_config.surfaceCoordinates.top - self->_config.surfaceCoordinates.bottom) << 32);
   if ((*(v7 + 80) & 1) == 0)
@@ -106,7 +106,7 @@ LABEL_14:
   {
     *v25 = 0xAAAAAAAAAAAAAAAALL;
     *v26 = 0xAAAAAAAAAAAAAAAALL;
-    if ([(HSTFrameParser *)self unpackFrame29Contact:v25 fromData:v6 withByteOffset:(8 * v11) & 0xF8 | 6u])
+    if ([(HSTFrameParser *)self unpackFrame29Contact:v25 fromData:frame29Copy withByteOffset:(8 * v11) & 0xF8 | 6u])
     {
       break;
     }
@@ -142,7 +142,7 @@ LABEL_13:
     v19 = vcvtd_n_f64_s32(contactDensityFromRadii(v17, v14, v15, 620, 440), 8uLL);
     v13[7].f32[0] = v19;
     v13[1] = 0;
-    v6 = v24;
+    frame29Copy = v24;
     goto LABEL_13;
   }
 
@@ -166,18 +166,18 @@ LABEL_20:
   return v20;
 }
 
-- (id)parseContactFrame31:(id)a3
+- (id)parseContactFrame31:(id)frame31
 {
-  v6 = a3;
-  v24 = v6;
-  if (!v6)
+  frame31Copy = frame31;
+  v24 = frame31Copy;
+  if (!frame31Copy)
   {
     v23 = +[NSAssertionHandler currentHandler];
     [v23 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
   memset(v26, 170, 12);
-  if (![(HSTFrameParser *)self unpackFrame31Header:v26 fromData:v6])
+  if (![(HSTFrameParser *)self unpackFrame31Header:v26 fromData:frame31Copy])
   {
     v20 = 0;
     goto LABEL_20;
@@ -185,7 +185,7 @@ LABEL_20:
 
   v7 = objc_opt_new();
   *(v7 + 24) = self->_lastFrameNumber + 1;
-  objc_storeStrong((v7 + 8), a3);
+  objc_storeStrong((v7 + 8), frame31);
   *(v7 + 44) |= BYTE2(v26[0]);
   *(v7 + 32) = 1000 * *(v26 + 3);
   v8 = (self->_config.surfaceCoordinates.right - self->_config.surfaceCoordinates.left) | ((self->_config.surfaceCoordinates.top - self->_config.surfaceCoordinates.bottom) << 32);
@@ -215,7 +215,7 @@ LABEL_14:
   while (1)
   {
     memset(v25, 170, 18);
-    if ([(HSTFrameParser *)self unpackFrame31Contact:v25 fromData:v6 withByteOffset:(9 * v11 + 4)])
+    if ([(HSTFrameParser *)self unpackFrame31Contact:v25 fromData:frame31Copy withByteOffset:(9 * v11 + 4)])
     {
       break;
     }
@@ -252,7 +252,7 @@ LABEL_13:
     v13[7].f32[0] = v19;
     v13[4].i32[1] = v25[8];
     v13[1] = 0;
-    v6 = v24;
+    frame31Copy = v24;
     goto LABEL_13;
   }
 
@@ -276,23 +276,23 @@ LABEL_20:
   return v20;
 }
 
-- (id)parseContactFrame44:(id)a3
+- (id)parseContactFrame44:(id)frame44
 {
-  v6 = a3;
-  if (!v6)
+  frame44Copy = frame44;
+  if (!frame44Copy)
   {
     v25 = +[NSAssertionHandler currentHandler];
     [v25 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  v7 = [v6 bytes];
-  v8 = [v6 length];
-  if (v8 < 0x12 || (*v7 & 0xFE) != 0x44)
+  bytes = [frame44Copy bytes];
+  v8 = [frame44Copy length];
+  if (v8 < 0x12 || (*bytes & 0xFE) != 0x44)
   {
     goto LABEL_26;
   }
 
-  v9 = *(v7 + 2);
+  v9 = *(bytes + 2);
   if (v8 < v9)
   {
     memset(__b, 170, sizeof(__b));
@@ -307,7 +307,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (*(v7 + 16) >= 0x21uLL)
+  if (*(bytes + 16) >= 0x21uLL)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -319,7 +319,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (*(v7 + 17) <= 0x13uLL)
+  if (*(bytes + 17) <= 0x13uLL)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -331,8 +331,8 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v10 = v7[7];
-  if (v8 != (v10 + v9 + *(v7 + 17) * *(v7 + 16)))
+  v10 = bytes[7];
+  if (v8 != (v10 + v9 + *(bytes + 17) * *(bytes + 16)))
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -344,7 +344,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (v7[7] && v10 != 2 * self->_config.sensorSize.height * self->_config.sensorSize.width)
+  if (bytes[7] && v10 != 2 * self->_config.sensorSize.height * self->_config.sensorSize.width)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -358,21 +358,21 @@ LABEL_26:
 
   *(__dst + 3) = 0;
   __dst[0] = 0;
-  memcpy(__dst, v7 + 9, v9 - 18);
+  memcpy(__dst, bytes + 9, v9 - 18);
   v11 = objc_opt_new();
-  objc_storeStrong((v11 + 8), a3);
-  *(v11 + 24) = *(v7 + 1);
-  *(v11 + 32) = 1000 * *(v7 + 1);
+  objc_storeStrong((v11 + 8), frame44);
+  *(v11 + 24) = *(bytes + 1);
+  *(v11 + 32) = 1000 * *(bytes + 1);
   *(v11 + 40) = HIWORD(__dst[0]);
-  std::vector<HSTPipeline::Contact>::resize((v11 + 48), *(v7 + 16));
-  if (*(v7 + 16))
+  std::vector<HSTPipeline::Contact>::resize((v11 + 48), *(bytes + 16));
+  if (*(bytes + 16))
   {
     v12 = 0;
     v13 = 0;
     while (1)
     {
-      v14 = *(v7 + 17);
-      v15 = v7 + *(v7 + 2) + v7[7] + v13 * v14;
+      v14 = *(bytes + 17);
+      v15 = bytes + *(bytes + 2) + bytes[7] + v13 * v14;
       v16 = *v15;
       if (v16 > 0x1F)
       {
@@ -400,7 +400,7 @@ LABEL_26:
       *(v17 + 56) = LODWORD(v18.f64[0]);
       ++v13;
       v12 += 64;
-      if (v13 >= *(v7 + 16))
+      if (v13 >= *(bytes + 16))
       {
         goto LABEL_30;
       }
@@ -419,9 +419,9 @@ LABEL_30:
     }
 
     *(v11 + 72) = v22;
-    if (v7[7])
+    if (bytes[7])
     {
-      v23 = *(v7 + 2);
+      v23 = *(bytes + 2);
       v24 = *(v11 + 104);
       *(v11 + 88) = self->_config.sensorSize;
       *(v11 + 96) = v23;
@@ -439,24 +439,24 @@ LABEL_27:
   return v20;
 }
 
-- (id)parseContactFrame75:(id)a3
+- (id)parseContactFrame75:(id)frame75
 {
-  v6 = a3;
-  if (!v6)
+  frame75Copy = frame75;
+  if (!frame75Copy)
   {
     v31 = +[NSAssertionHandler currentHandler];
     [v31 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  bytes = [frame75Copy bytes];
+  v8 = [frame75Copy length];
   v9 = v8;
-  if (v8 < 0x20 || *v7 != 117)
+  if (v8 < 0x20 || *bytes != 117)
   {
     goto LABEL_26;
   }
 
-  v10 = *(v7 + 2);
+  v10 = *(bytes + 2);
   if (v8 < v10)
   {
     memset(__b, 170, sizeof(__b));
@@ -471,7 +471,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v11 = *(v7 + 22);
+  v11 = *(bytes + 22);
   if (v11 >= 0x21)
   {
     memset(__b, 170, sizeof(__b));
@@ -485,7 +485,7 @@ LABEL_26:
   }
 
   v12 = 30 * v11;
-  if (v12 != v7[8])
+  if (v12 != bytes[8])
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -494,14 +494,14 @@ LABEL_26:
       [HSTFrameParser parseContactFrame75:];
     }
 
-    v10 = *(v7 + 2);
-    v12 = 30 * *(v7 + 22);
+    v10 = *(bytes + 2);
+    v12 = 30 * *(bytes + 22);
   }
 
-  v13 = (v7 + 7);
-  v14 = v10 + v7[7];
-  v15 = v7[9];
-  if (v9 != (v14 + v15 + v7[10] + v12))
+  v13 = (bytes + 7);
+  v14 = v10 + bytes[7];
+  v15 = bytes[9];
+  if (v9 != (v14 + v15 + bytes[10] + v12))
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -513,7 +513,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (v7[9] && (v7[5] & 0x40) == 0 && v15 != 2 * self->_config.sensorSize.height * self->_config.sensorSize.width)
+  if (bytes[9] && (bytes[5] & 0x40) == 0 && v15 != 2 * self->_config.sensorSize.height * self->_config.sensorSize.width)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -526,19 +526,19 @@ LABEL_26:
   }
 
   v16 = objc_opt_new();
-  objc_storeStrong((v16 + 8), a3);
-  *(v16 + 24) = *(v7 + 1);
-  *(v16 + 32) = 1000 * *(v7 + 1);
-  *(v16 + 40) = *(v7 + 6);
-  *(v16 + 44) = v7[6];
-  std::vector<HSTPipeline::Contact>::resize((v16 + 48), *(v7 + 22));
-  if (*(v7 + 22))
+  objc_storeStrong((v16 + 8), frame75);
+  *(v16 + 24) = *(bytes + 1);
+  *(v16 + 32) = 1000 * *(bytes + 1);
+  *(v16 + 40) = *(bytes + 6);
+  *(v16 + 44) = bytes[6];
+  std::vector<HSTPipeline::Contact>::resize((v16 + 48), *(bytes + 22));
+  if (*(bytes + 22))
   {
     v19 = 0;
     v20 = 0;
     while (1)
     {
-      v21 = &v13[*(v7 + 2) + v7[7]];
+      v21 = &v13[*(bytes + 2) + bytes[7]];
       v22 = *(v21 - 14);
       if (v22 > 0x1F)
       {
@@ -566,7 +566,7 @@ LABEL_26:
       ++v20;
       v13 += 30;
       v19 += 64;
-      if (v20 >= *(v7 + 22))
+      if (v20 >= *(bytes + 22))
       {
         goto LABEL_30;
       }
@@ -585,9 +585,9 @@ LABEL_30:
     }
 
     *(v16 + 72) = v27;
-    if (v7[9])
+    if (bytes[9])
     {
-      v28 = *(v7 + 2);
+      v28 = *(bytes + 2);
       v29 = *(v16 + 104);
       *(v16 + 88) = self->_config.sensorSize;
       *(v16 + 96) = v28;
@@ -597,7 +597,7 @@ LABEL_30:
       }
     }
 
-    v30 = *(v7 + 23);
+    v30 = *(bytes + 23);
     if ((*(v16 + 128) & 1) == 0)
     {
       *(v16 + 128) = 1;
@@ -612,32 +612,32 @@ LABEL_27:
   return v25;
 }
 
-- (id)parseRelativePointerFrame82:(id)a3
+- (id)parseRelativePointerFrame82:(id)frame82
 {
-  v5 = a3;
-  if (!v5)
+  frame82Copy = frame82;
+  if (!frame82Copy)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:355 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  v6 = [v5 bytes];
-  if ([v5 length] >= 0x20 && *v6 == 130)
+  bytes = [frame82Copy bytes];
+  if ([frame82Copy length] >= 0x20 && *bytes == 130)
   {
     v7 = objc_opt_new();
     v8 = v7;
-    *(v7 + 24) = *(v6 + 1);
+    *(v7 + 24) = *(bytes + 1);
     if (!*(v7 + 24))
     {
       *(v7 + 24) = 400;
     }
 
-    *(v7 + 32) = *(v6 + 1);
-    v9 = *(v6 + 3);
-    *(v7 + 36) = *(v6 + 2);
+    *(v7 + 32) = *(bytes + 1);
+    v9 = *(bytes + 3);
+    *(v7 + 36) = *(bytes + 2);
     *(v7 + 40) = v9;
-    v10 = *(v6 + 5);
-    *(v7 + 52) = *(v6 + 4);
+    v10 = *(bytes + 5);
+    *(v7 + 52) = *(bytes + 4);
     *(v7 + 48) = v10;
   }
 
@@ -649,19 +649,19 @@ LABEL_27:
   return v8;
 }
 
-- (id)contactFrameFromData:(id)a3
+- (id)contactFrameFromData:(id)data
 {
-  v4 = a3;
-  v5 = [(HSTFrameParser *)self parseContactFrame29:v4];
+  dataCopy = data;
+  v5 = [(HSTFrameParser *)self parseContactFrame29:dataCopy];
   if (!v5)
   {
-    v5 = [(HSTFrameParser *)self parseContactFrame31:v4];
+    v5 = [(HSTFrameParser *)self parseContactFrame31:dataCopy];
     if (!v5)
     {
-      v5 = [(HSTFrameParser *)self parseContactFrame44:v4];
+      v5 = [(HSTFrameParser *)self parseContactFrame44:dataCopy];
       if (!v5)
       {
-        v5 = [(HSTFrameParser *)self parseContactFrame75:v4];
+        v5 = [(HSTFrameParser *)self parseContactFrame75:dataCopy];
       }
     }
   }
@@ -669,9 +669,9 @@ LABEL_27:
   return v5;
 }
 
-- (id)pointerFrameFromData:(id)a3
+- (id)pointerFrameFromData:(id)data
 {
-  v3 = [(HSTFrameParser *)self parseRelativePointerFrame82:a3];
+  v3 = [(HSTFrameParser *)self parseRelativePointerFrame82:data];
   v4 = v3;
   if (v3)
   {
@@ -681,16 +681,16 @@ LABEL_27:
   return v4;
 }
 
-- (void)sanitizeContactFrame:(id)a3
+- (void)sanitizeContactFrame:(id)frame
 {
-  v4 = a3;
-  v5 = v4;
-  v49 = v4;
-  if (v4)
+  frameCopy = frame;
+  v5 = frameCopy;
+  v49 = frameCopy;
+  if (frameCopy)
   {
     memset(__src, 0, 24);
-    v6 = v4[6];
-    v7 = v4[7];
+    v6 = frameCopy[6];
+    v7 = frameCopy[7];
     if (v6 != v7)
     {
       v8 = 0;
@@ -946,16 +946,16 @@ LABEL_30:
   }
 }
 
-- (BOOL)_handleContactFrame:(id)a3
+- (BOOL)_handleContactFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:471 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
   }
 
-  if (v5[1])
+  if (frameCopy[1])
   {
     v6 = [(HSTFrameParser *)self contactFrameFromData:?];
     v7 = v6 != 0;
@@ -976,16 +976,16 @@ LABEL_30:
   return v7;
 }
 
-- (BOOL)_handlePointerFrame:(id)a3
+- (BOOL)_handlePointerFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
   }
 
-  if (v5[1])
+  if (frameCopy[1])
   {
     v6 = [(HSTFrameParser *)self pointerFrameFromData:?];
     v7 = v6 != 0;
@@ -1005,13 +1005,13 @@ LABEL_30:
   return v7;
 }
 
-- (unsigned)_firmwareToHSTNotification:(unsigned __int8)a3
+- (unsigned)_firmwareToHSTNotification:(unsigned __int8)notification
 {
-  if (a3 > 31)
+  if (notification > 31)
   {
-    if (a3 != 32)
+    if (notification != 32)
     {
-      if (a3 == 33)
+      if (notification == 33)
       {
         return 10;
       }
@@ -1024,9 +1024,9 @@ LABEL_30:
 
   else
   {
-    if (a3 != 1)
+    if (notification != 1)
     {
-      if (a3 == 2)
+      if (notification == 2)
       {
         return 8;
       }
@@ -1038,36 +1038,36 @@ LABEL_30:
   }
 }
 
-- (BOOL)_handleFirmwareEventFrame:(id)a3
+- (BOOL)_handleFirmwareEventFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v29 = +[NSAssertionHandler currentHandler];
     [v29 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:531 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
   }
 
-  v6 = v5[1];
+  v6 = frameCopy[1];
   if (v6)
   {
-    v7 = [v6 bytes];
-    v8 = [v5[1] length];
-    if (v8 >= 2 && *v7 == 96)
+    bytes = [v6 bytes];
+    v8 = [frameCopy[1] length];
+    if (v8 >= 2 && *bytes == 96)
     {
       v37.receiver = self;
       v37.super_class = HSTFrameParser;
-      [(HSStage *)&v37 handleConsume:v5];
+      [(HSStage *)&v37 handleConsume:frameCopy];
       v9 = MTLoggingPlugin();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = v7[1];
+        v10 = bytes[1];
         *buf = 67109120;
         *&buf[4] = v10;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Firmware event received: %x", buf, 8u);
       }
 
       v11 = objc_opt_new();
-      [v11 setNotification:{-[HSTFrameParser _firmwareToHSTNotification:](self, "_firmwareToHSTNotification:", v7[1])}];
+      [v11 setNotification:{-[HSTFrameParser _firmwareToHSTNotification:](self, "_firmwareToHSTNotification:", bytes[1])}];
       v36.receiver = self;
       v36.super_class = HSTFrameParser;
       [(HSStage *)&v36 handleConsume:v11];
@@ -1111,11 +1111,11 @@ LABEL_30:
         goto LABEL_10;
       }
 
-      v18 = v7[2];
+      v18 = bytes[2];
       v14 = v18 & 8;
       if (v18 <= 2)
       {
-        if (!v7[2])
+        if (!bytes[2])
         {
 LABEL_34:
           if (v8 < 7)
@@ -1123,7 +1123,7 @@ LABEL_34:
             goto LABEL_45;
           }
 
-          v21 = (10 * *(v7 + 3) - self->_config.surfaceCoordinates.left) | ((10 * *(v7 + 5) - self->_config.surfaceCoordinates.bottom) << 32);
+          v21 = (10 * *(bytes + 3) - self->_config.surfaceCoordinates.left) | ((10 * *(bytes + 5) - self->_config.surfaceCoordinates.bottom) << 32);
           v22 = &OBJC_IVAR___HSTWakeSystemEvent_tapPosition;
           goto LABEL_36;
         }
@@ -1138,7 +1138,7 @@ LABEL_32:
               goto LABEL_45;
             }
 
-            v21 = (10 * *(v7 + 3) - self->_config.surfaceCoordinates.left) | ((10 * *(v7 + 5) - self->_config.surfaceCoordinates.bottom) << 32);
+            v21 = (10 * *(bytes + 3) - self->_config.surfaceCoordinates.left) | ((10 * *(bytes + 5) - self->_config.surfaceCoordinates.bottom) << 32);
             v22 = &OBJC_IVAR___HSTWakeSystemEvent_longPressPosition;
 LABEL_36:
             v23 = v12 + *v22;
@@ -1172,7 +1172,7 @@ LABEL_57:
 
           else
           {
-            v24 = v7[7];
+            v24 = bytes[7];
             if (v24 != 1)
             {
               v28 = MTLoggingPlugin();
@@ -1186,9 +1186,9 @@ LABEL_57:
 
             if (v8 > 0x1E)
             {
-              v25 = v7[8];
-              v26 = *(v7 + 9);
-              v27 = [NSData dataWithBytes:v7 + 13 length:v8 - 13];
+              v25 = bytes[8];
+              v26 = *(bytes + 9);
+              v27 = [NSData dataWithBytes:bytes + 13 length:v8 - 13];
               v28 = [(HSTFrameParser *)self contactFrameFromData:v27];
 
               if (v28)
@@ -1222,7 +1222,7 @@ LABEL_55:
 
       else
       {
-        if (v7[2] <= 8u)
+        if (bytes[2] <= 8u)
         {
           if (v18 == 3)
           {
@@ -1233,7 +1233,7 @@ LABEL_10:
               goto LABEL_45;
             }
 
-            v21 = (10 * *(v7 + 3) - self->_config.surfaceCoordinates.left) | ((10 * *(v7 + 5) - self->_config.surfaceCoordinates.bottom) << 32);
+            v21 = (10 * *(bytes + 3) - self->_config.surfaceCoordinates.left) | ((10 * *(bytes + 5) - self->_config.surfaceCoordinates.bottom) << 32);
             v23 = v12 + 44;
             if ((*(v12 + 52) & 1) == 0)
             {
@@ -1265,7 +1265,7 @@ LABEL_10:
 
       if (v8 >= 7)
       {
-        *(v12 + 28) = v7[3] | 0x100;
+        *(v12 + 28) = bytes[3] | 0x100;
       }
 
       goto LABEL_45;
@@ -1278,9 +1278,9 @@ LABEL_12:
   return v15;
 }
 
-- (unsigned)_driverUserSpaceToHSTNotification:(const DriverNotification *)a3
+- (unsigned)_driverUserSpaceToHSTNotification:(const DriverNotification *)notification
 {
-  var2 = a3->var2;
+  var2 = notification->var2;
   if (var2 == 27)
   {
     v4 = 13;
@@ -1302,22 +1302,22 @@ LABEL_12:
   }
 }
 
-- (unsigned)_driverToHSTNotification:(const DriverNotificationHeader *)a3
+- (unsigned)_driverToHSTNotification:(const DriverNotificationHeader *)notification
 {
-  if (a3->var1 - 2 > 0xE)
+  if (notification->var1 - 2 > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return word_D849E[(a3->var1 - 2)];
+    return word_D849E[(notification->var1 - 2)];
   }
 }
 
-- (unsigned)_driverToHSTNotificationWithContext:(const DriverNotification *)a3
+- (unsigned)_driverToHSTNotificationWithContext:(const DriverNotification *)context
 {
-  if (a3->var1)
+  if (context->var1)
   {
     return [(HSTFrameParser *)self _driverToHSTNotification:?];
   }
@@ -1328,25 +1328,25 @@ LABEL_12:
   }
 }
 
-- (BOOL)_handleDriverNotificationFrame:(id)a3
+- (BOOL)_handleDriverNotificationFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:700 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
   }
 
-  v6 = v5[1];
+  v6 = frameCopy[1];
   if (v6)
   {
     v7 = HSTFrameParserTypes::ReportCast<HSTPipeline::FirmwareInterface::InputReport::DriverNotificationHeader>(v6);
     if (v7)
     {
-      v8 = HSTFrameParserTypes::ReportCast<HSTPipeline::FirmwareInterface::InputReport::DriverNotification>(v5[1]);
+      v8 = HSTFrameParserTypes::ReportCast<HSTPipeline::FirmwareInterface::InputReport::DriverNotification>(frameCopy[1]);
       v23.receiver = self;
       v23.super_class = HSTFrameParser;
-      [(HSStage *)&v23 handleConsume:v5];
+      [(HSStage *)&v23 handleConsume:frameCopy];
       if (v8)
       {
         v9 = MTLoggingPlugin();
@@ -1437,17 +1437,17 @@ LABEL_22:
   return v10;
 }
 
-- (BOOL)_handleDriverExternalMessageFrame:(id)a3
+- (BOOL)_handleDriverExternalMessageFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:767 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
   }
 
-  v6 = v5[1];
-  if (v6 && (v7 = [v6 bytes], v8 = objc_msgSend(v5[1], "length"), v9 = v8 - 6, v8 >= 6) && *v7 == 83 && (v17.receiver = self, v17.super_class = HSTFrameParser, -[HSStage handleConsume:](&v17, "handleConsume:", v5), (v7[1] & 0xFE) == 2) && v9 >= *(v7 + 1))
+  v6 = frameCopy[1];
+  if (v6 && (v7 = [v6 bytes], v8 = objc_msgSend(frameCopy[1], "length"), v9 = v8 - 6, v8 >= 6) && *v7 == 83 && (v17.receiver = self, v17.super_class = HSTFrameParser, -[HSStage handleConsume:](&v17, "handleConsume:", frameCopy), (v7[1] & 0xFE) == 2) && v9 >= *(v7 + 1))
   {
     v12 = MTLoggingPlugin();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1474,16 +1474,16 @@ LABEL_22:
   return v10;
 }
 
-- (BOOL)_handleTimestampSyncFrame:(id)a3
+- (BOOL)_handleTimestampSyncFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"HSTFrameParser.mm" lineNumber:808 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
   }
 
-  v6 = v5[1];
+  v6 = frameCopy[1];
   if (v6 && (v7 = HSTFrameParserTypes::ReportCast<HSTPipeline::FirmwareInterface::InputReport::TimestampSync>(v6)) != 0 && v7[1] == 255)
   {
     v10 = *(v7 + 12);
@@ -1529,37 +1529,37 @@ LABEL_22:
   return v8;
 }
 
-- (void)_handleFrame:(id)a3
+- (void)_handleFrame:(id)frame
 {
-  v4 = a3;
-  if (![(HSTFrameParser *)self _handleContactFrame:v4]&& ![(HSTFrameParser *)self _handlePointerFrame:v4]&& ![(HSTFrameParser *)self _handleFirmwareEventFrame:v4]&& ![(HSTFrameParser *)self _handleDriverNotificationFrame:v4]&& ![(HSTFrameParser *)self _handleDriverExternalMessageFrame:v4]&& ![(HSTFrameParser *)self _handleTimestampSyncFrame:v4])
+  frameCopy = frame;
+  if (![(HSTFrameParser *)self _handleContactFrame:frameCopy]&& ![(HSTFrameParser *)self _handlePointerFrame:frameCopy]&& ![(HSTFrameParser *)self _handleFirmwareEventFrame:frameCopy]&& ![(HSTFrameParser *)self _handleDriverNotificationFrame:frameCopy]&& ![(HSTFrameParser *)self _handleDriverExternalMessageFrame:frameCopy]&& ![(HSTFrameParser *)self _handleTimestampSyncFrame:frameCopy])
   {
     v5.receiver = self;
     v5.super_class = HSTFrameParser;
-    [(HSStage *)&v5 handleConsume:v4];
+    [(HSStage *)&v5 handleConsume:frameCopy];
   }
 }
 
-- (void)_handleResetEvent:(id)a3
+- (void)_handleResetEvent:(id)event
 {
   self->_inRangeContacts.__first_ = 0;
   self->_lastFWTimestamp = 0;
   v3.receiver = self;
   v3.super_class = HSTFrameParser;
-  [(HSStage *)&v3 handleConsume:a3];
+  [(HSStage *)&v3 handleConsume:event];
 }
 
-- (void)_handleDebugStateEvent:(id)a3
+- (void)_handleDebugStateEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v9 = +[NSAssertionHandler currentHandler];
     v10 = [NSString stringWithUTF8String:"[HSTFrameParser _handleDebugStateEvent:]"];
     [v9 handleFailureInFunction:v10 file:@"HSTFrameParser.mm" lineNumber:877 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  *(v4 + 16) = 1;
+  *(eventCopy + 16) = 1;
   v12[0] = @"Stage";
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -1569,19 +1569,19 @@ LABEL_22:
   v13[1] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-  [*(v4 + 3) addObject:v8];
+  [*(eventCopy + 3) addObject:v8];
   v11.receiver = self;
   v11.super_class = HSTFrameParser;
-  [(HSStage *)&v11 handleConsume:v4];
+  [(HSStage *)&v11 handleConsume:eventCopy];
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -1591,12 +1591,12 @@ LABEL_22:
 
   if (v5)
   {
-    [(HSTFrameParser *)self _handleFrame:v4];
+    [(HSTFrameParser *)self _handleFrame:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1642,26 +1642,26 @@ LABEL_22:
   }
 }
 
-- (unsigned)majorRadiusFromCode:(unsigned __int8)a3
+- (unsigned)majorRadiusFromCode:(unsigned __int8)code
 {
-  if (a3)
+  if (code)
   {
-    if (a3 > 0x31u)
+    if (code > 0x31u)
     {
-      if (a3 > 0xA9u)
+      if (code > 0xA9u)
       {
-        return (((((a3 << 10) - 169984) * ((a3 << 10) - 169984)) >> 12) + 958464) >> 10;
+        return (((((code << 10) - 169984) * ((code << 10) - 169984)) >> 12) + 958464) >> 10;
       }
 
       else
       {
-        LODWORD(v3) = ((a3 << 21) + 629145600) >> 20;
+        LODWORD(v3) = ((code << 21) + 629145600) >> 20;
       }
     }
 
     else
     {
-      LODWORD(v3) = (((0xFFFFFFFD8 * ((((a3 << 10) - 76800) * ((a3 << 10) - 76800)) >> 10)) >> 10) + 742400) >> 10;
+      LODWORD(v3) = (((0xFFFFFFFD8 * ((((code << 10) - 76800) * ((code << 10) - 76800)) >> 10)) >> 10) + 742400) >> 10;
     }
   }
 
@@ -1673,26 +1673,26 @@ LABEL_22:
   return v3;
 }
 
-- (unsigned)minorRadiusFromCode:(unsigned __int8)a3
+- (unsigned)minorRadiusFromCode:(unsigned __int8)code
 {
-  if (a3)
+  if (code)
   {
-    if (a3 > 0x31u)
+    if (code > 0x31u)
     {
-      if (a3 > 0x95u)
+      if (code > 0x95u)
       {
-        return (((87 * ((((a3 << 10) - 141552) * ((a3 << 10) - 141552)) >> 10)) >> 10) + 807152) >> 10;
+        return (((87 * ((((code << 10) - 141552) * ((code << 10) - 141552)) >> 10)) >> 10) + 807152) >> 10;
       }
 
       else
       {
-        LODWORD(v3) = ((a3 << 21) + 524288000) >> 20;
+        LODWORD(v3) = ((code << 21) + 524288000) >> 20;
       }
     }
 
     else
     {
-      LODWORD(v3) = (((0xFFFFFFFD8 * ((((a3 << 10) - 76800) * ((a3 << 10) - 76800)) >> 10)) >> 10) + 640000) >> 10;
+      LODWORD(v3) = (((0xFFFFFFFD8 * ((((code << 10) - 76800) * ((code << 10) - 76800)) >> 10)) >> 10) + 640000) >> 10;
     }
   }
 
@@ -1704,18 +1704,18 @@ LABEL_22:
   return v3;
 }
 
-- (unsigned)zsignalFromCode:(unsigned __int8)a3
+- (unsigned)zsignalFromCode:(unsigned __int8)code
 {
-  if (a3)
+  if (code)
   {
-    if (a3 > 0x95u)
+    if (code > 0x95u)
     {
-      return (((138 * ((((a3 << 10) - 114670) * ((a3 << 10) - 114670)) >> 10)) >> 10) + 1373544) >> 10;
+      return (((138 * ((((code << 10) - 114670) * ((code << 10) - 114670)) >> 10)) >> 10) + 1373544) >> 10;
     }
 
     else
     {
-      LODWORD(v3) = (10485 * a3) >> 10;
+      LODWORD(v3) = (10485 * code) >> 10;
     }
   }
 
@@ -1727,18 +1727,18 @@ LABEL_22:
   return v3;
 }
 
-- (unsigned)zforceFromCode:(unsigned __int8)a3
+- (unsigned)zforceFromCode:(unsigned __int8)code
 {
-  if (a3)
+  if (code)
   {
-    if ((a3 & 0x80) != 0)
+    if ((code & 0x80) != 0)
     {
-      return (((((a3 << 10) - 98939) * ((a3 << 10) - 98939)) >> 15) + 230011) >> 10;
+      return (((((code << 10) - 98939) * ((code << 10) - 98939)) >> 15) + 230011) >> 10;
     }
 
     else
     {
-      LOWORD(v3) = 2 * (a3 & 0x7F);
+      LOWORD(v3) = 2 * (code & 0x7F);
     }
   }
 
@@ -1750,35 +1750,35 @@ LABEL_22:
   return v3;
 }
 
-- (BOOL)unpackFrame29Header:(UnpackedHeader *)a3 fromData:(id)a4
+- (BOOL)unpackFrame29Header:(UnpackedHeader *)header fromData:(id)data
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (header)
   {
-    if (v6)
+    if (dataCopy)
     {
-      v8 = [v6 bytes];
-      if ([v7 length] >= 6 && *v8 == 41)
+      bytes = [dataCopy bytes];
+      if ([v7 length] >= 6 && *bytes == 41)
       {
-        a3->var0 = 41;
-        v9 = (v8[3] >> 2) & 3;
-        v10 = v8[1] | (v9 << 8);
-        *&a3->var1 = v10;
-        v11 = (v8[3] >> 4) & 3;
-        v12 = v8[2] | (v11 << 8);
-        *(&a3->var2 + 1) = v12;
-        *(&a3->var2 + 3) = v8[3] & 3;
-        v13 = (v8[3] >> 6) | (4 * v8[4]) | (v8[5] << 10);
-        *(&a3->var2 + 4) = v13;
+        header->var0 = 41;
+        v9 = (bytes[3] >> 2) & 3;
+        v10 = bytes[1] | (v9 << 8);
+        *&header->var1 = v10;
+        v11 = (bytes[3] >> 4) & 3;
+        v12 = bytes[2] | (v11 << 8);
+        *(&header->var2 + 1) = v12;
+        *(&header->var2 + 3) = bytes[3] & 3;
+        v13 = (bytes[3] >> 6) | (4 * bytes[4]) | (bytes[5] << 10);
+        *(&header->var2 + 4) = v13;
         if (v9 >= 2)
         {
-          *&a3->var1 = v10 | 0xFC00;
+          *&header->var1 = v10 | 0xFC00;
         }
 
         if (v11 >= 2)
         {
-          *(&a3->var2 + 1) = v12 | 0xFC00;
+          *(&header->var2 + 1) = v12 | 0xFC00;
         }
 
         v14 = self->_lastFWTimestamp / 1000;
@@ -1789,9 +1789,9 @@ LABEL_22:
           v16 += 0x40000;
         }
 
-        *(&a3->var2 + 4) = v16;
+        *(&header->var2 + 4) = v16;
         v17 = [v7 length];
-        BYTE6(a3->var3) = (v17 - 6) >> 3;
+        BYTE6(header->var3) = (v17 - 6) >> 3;
         if (((v17 + 250) & 7) == 0)
         {
           v18 = 1;
@@ -1834,34 +1834,34 @@ LABEL_19:
   return v18;
 }
 
-- (BOOL)unpackFrame29Contact:(UnpackedContact *)a3 fromData:(id)a4 withByteOffset:(unsigned __int8)a5
+- (BOOL)unpackFrame29Contact:(UnpackedContact *)contact fromData:(id)data withByteOffset:(unsigned __int8)offset
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = v8;
-  if (a3)
+  offsetCopy = offset;
+  dataCopy = data;
+  v9 = dataCopy;
+  if (contact)
   {
-    if (v8)
+    if (dataCopy)
     {
-      if (v5 + 8 <= [v8 length])
+      if (offsetCopy + 8 <= [dataCopy length])
       {
         *__b = 0xAAAAAAAAAAAAAAAALL;
         [v9 getBytes:__b range:?];
         v12 = __b[1];
-        a3->var0 = __b[0] | ((__b[1] & 0xF) << 8);
-        a3->var1 = (v12 >> 4) | (16 * __b[2]);
-        a3->var2 = [(HSTFrameParser *)self majorRadiusFromCode:__b[3]];
-        a3->var3 = [(HSTFrameParser *)self minorRadiusFromCode:__b[4]];
+        contact->var0 = __b[0] | ((__b[1] & 0xF) << 8);
+        contact->var1 = (v12 >> 4) | (16 * __b[2]);
+        contact->var2 = [(HSTFrameParser *)self majorRadiusFromCode:__b[3]];
+        contact->var3 = [(HSTFrameParser *)self minorRadiusFromCode:__b[4]];
         v13 = *&__b[5];
-        a3->var4 = 32 * (__b[5] & 0x3F);
-        a3->var5 = (v13 >> 6) & 0xF;
-        *(&a3->var5 + 1) = (v13 >> 1) & 0x7E00;
+        contact->var4 = 32 * (__b[5] & 0x3F);
+        contact->var5 = (v13 >> 6) & 0xF;
+        *(&contact->var5 + 1) = (v13 >> 1) & 0x7E00;
         v14 = __b[7];
-        HIBYTE(a3->var6) = __b[7] & 0xF;
-        a3->var7 = (v14 >> 4) & 7;
-        a3->var8 = v14 >> 7;
-        a3->var0 = (16 * a3->var0) >> 3;
-        a3->var1 = ((16 * a3->var1) >> 3) + 4095;
+        HIBYTE(contact->var6) = __b[7] & 0xF;
+        contact->var7 = (v14 >> 4) & 7;
+        contact->var8 = v14 >> 7;
+        contact->var0 = (16 * contact->var0) >> 3;
+        contact->var1 = ((16 * contact->var1) >> 3) + 4095;
         v10 = 1;
         goto LABEL_11;
       }
@@ -1901,22 +1901,22 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)unpackFrame31Header:(UnpackedHeader *)a3 fromData:(id)a4
+- (BOOL)unpackFrame31Header:(UnpackedHeader *)header fromData:(id)data
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (header)
   {
-    if (v6)
+    if (dataCopy)
     {
-      v8 = [v6 bytes];
-      if ([v7 length] >= 4 && *v8 == 49)
+      bytes = [dataCopy bytes];
+      if ([v7 length] >= 4 && *bytes == 49)
       {
-        a3->var0 = 49;
-        a3->var1 = v8[1] & 1;
-        a3->var2 = (v8[1] & 4) != 0;
-        v9 = (v8[1] >> 3) | (32 * v8[2]) | (v8[3] << 13);
-        *(&a3->var2 + 1) = v9;
+        header->var0 = 49;
+        header->var1 = bytes[1] & 1;
+        header->var2 = (bytes[1] & 4) != 0;
+        v9 = (bytes[1] >> 3) | (32 * bytes[2]) | (bytes[3] << 13);
+        *(&header->var2 + 1) = v9;
         v10 = self->_lastFWTimestamp / 1000;
         v11 = v10 & 0x1FFFFF;
         v12 = v10 & 0xFFFFFFFFFFE00000 | v9;
@@ -1930,9 +1930,9 @@ LABEL_11:
           v13 = v12 + 0x200000;
         }
 
-        *(&a3->var2 + 1) = v13;
+        *(&header->var2 + 1) = v13;
         v14 = [v7 length];
-        BYTE3(a3->var3) = (v14 - 4) / 9u;
+        BYTE3(header->var3) = (v14 - 4) / 9u;
         if (!((v14 - 4) % 9u))
         {
           v15 = 1;
@@ -1975,12 +1975,12 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)unpackFrame31Contact:(UnpackedContact *)a3 fromData:(id)a4 withByteOffset:(unsigned __int8)a5
+- (BOOL)unpackFrame31Contact:(UnpackedContact *)contact fromData:(id)data withByteOffset:(unsigned __int8)offset
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = v8;
-  if (!a3)
+  offsetCopy = offset;
+  dataCopy = data;
+  v9 = dataCopy;
+  if (!contact)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -1992,7 +1992,7 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -2004,7 +2004,7 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (v5 + 9 > [v8 length])
+  if (offsetCopy + 9 > [dataCopy length])
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);
@@ -2022,55 +2022,55 @@ LABEL_10:
   LOBYTE(__b[1]) = -86;
   [v9 getBytes:__b range:?];
   v12 = BYTE1(__b[0]);
-  a3->var0 = LOBYTE(__b[0]) | ((BYTE1(__b[0]) & 0x1F) << 8);
-  a3->var1 = (8 * BYTE2(__b[0])) & 0xE7FF | ((BYTE3(__b[0]) & 3) << 11) | (v12 >> 5);
-  a3->var2 = [(HSTFrameParser *)self majorRadiusFromCode:BYTE4(__b[0])];
-  a3->var3 = [(HSTFrameParser *)self minorRadiusFromCode:BYTE5(__b[0])];
-  a3->var4 = [(HSTFrameParser *)self zsignalFromCode:BYTE6(__b[0])];
+  contact->var0 = LOBYTE(__b[0]) | ((BYTE1(__b[0]) & 0x1F) << 8);
+  contact->var1 = (8 * BYTE2(__b[0])) & 0xE7FF | ((BYTE3(__b[0]) & 3) << 11) | (v12 >> 5);
+  contact->var2 = [(HSTFrameParser *)self majorRadiusFromCode:BYTE4(__b[0])];
+  contact->var3 = [(HSTFrameParser *)self minorRadiusFromCode:BYTE5(__b[0])];
+  contact->var4 = [(HSTFrameParser *)self zsignalFromCode:BYTE6(__b[0])];
   v13 = LOBYTE(__b[1]);
-  a3->var5 = __b[1] & 0xF;
-  *(&a3->var5 + 1) = v13 >> 5;
+  contact->var5 = __b[1] & 0xF;
+  *(&contact->var5 + 1) = v13 >> 5;
   v14 = BYTE3(__b[0]);
-  HIBYTE(a3->var6) = (BYTE3(__b[0]) >> 2) & 7;
-  a3->var7 = v14 >> 5;
-  a3->var8 = (v13 & 0x10) != 0;
-  *&a3->var9 = [(HSTFrameParser *)self zforceFromCode:HIBYTE(__b[0])];
-  a3->var0 = (8 * a3->var0) >> 2;
-  a3->var1 = ((8 * a3->var1) >> 2) + 5000;
-  if (HIBYTE(a3->var6) == 7)
+  HIBYTE(contact->var6) = (BYTE3(__b[0]) >> 2) & 7;
+  contact->var7 = v14 >> 5;
+  contact->var8 = (v13 & 0x10) != 0;
+  *&contact->var9 = [(HSTFrameParser *)self zforceFromCode:HIBYTE(__b[0])];
+  contact->var0 = (8 * contact->var0) >> 2;
+  contact->var1 = ((8 * contact->var1) >> 2) + 5000;
+  if (HIBYTE(contact->var6) == 7)
   {
-    HIBYTE(a3->var6) = 12;
+    HIBYTE(contact->var6) = 12;
   }
 
-  *(&a3->var5 + 1) <<= 12;
+  *(&contact->var5 + 1) <<= 12;
   v10 = 1;
 LABEL_11:
 
   return v10;
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  HSUtil::Encoder::encodeCodable<HSTPipeline::SurfaceCoordinates>(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115>::Key, &self->_config);
-  HSUtil::Encoder::encodeCodable<HSTPipeline::SensorSize>(a3, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)110,(char)115,(char)111,(char)114,(char)83,(char)105,(char)122,(char)101>::Key, &self->_config.sensorSize);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)105,(char)110,(char)82,(char)97,(char)110,(char)103,(char)101,(char)67,(char)111,(char)110,(char)116,(char)97,(char)99,(char)116,(char)115>::Key, self->_inRangeContacts.__first_);
-  if (!*a3)
+  HSUtil::Encoder::encodeCodable<HSTPipeline::SurfaceCoordinates>(encode, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115>::Key, &self->_config);
+  HSUtil::Encoder::encodeCodable<HSTPipeline::SensorSize>(encode, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)110,(char)115,(char)111,(char)114,(char)83,(char)105,(char)122,(char)101>::Key, &self->_config.sensorSize);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)105,(char)110,(char)82,(char)97,(char)110,(char)103,(char)101,(char)67,(char)111,(char)110,(char)116,(char)97,(char)99,(char)116,(char)115>::Key, self->_inRangeContacts.__first_);
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -2079,8 +2079,8 @@ LABEL_11:
   v11 = v5;
   v12 = v5;
   v10 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v10);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v10);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrameParser.mm", __b);

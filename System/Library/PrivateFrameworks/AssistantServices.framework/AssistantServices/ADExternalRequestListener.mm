@@ -1,6 +1,6 @@
 @interface ADExternalRequestListener
 - (ADExternalRequestListener)init;
-- (ADExternalRequestListener)initWithInstanceContext:(id)a3;
+- (ADExternalRequestListener)initWithInstanceContext:(id)context;
 - (void)listen;
 @end
 
@@ -21,17 +21,17 @@
   xpc_connection_resume(v8);
 }
 
-- (ADExternalRequestListener)initWithInstanceContext:(id)a3
+- (ADExternalRequestListener)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ADExternalRequestListener;
   v5 = [(ADExternalRequestListener *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (contextCopy)
     {
-      v6 = v4;
+      v6 = contextCopy;
     }
 
     else

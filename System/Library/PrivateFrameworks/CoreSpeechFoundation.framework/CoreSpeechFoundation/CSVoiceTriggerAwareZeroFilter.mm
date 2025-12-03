@@ -2,8 +2,8 @@
 - (CSVoiceTriggerAwareZeroFilter)init;
 - (CSVoiceTriggerAwareZeroFilterDelegate)delegate;
 - (void)flush;
-- (void)processBuffer:(id)a3 atTime:(unint64_t)a4;
-- (void)resetWithSampleRate:(float)a3 containsVoiceTrigger:(BOOL)a4 voiceTriggerInfo:(id)a5;
+- (void)processBuffer:(id)buffer atTime:(unint64_t)time;
+- (void)resetWithSampleRate:(float)rate containsVoiceTrigger:(BOOL)trigger voiceTriggerInfo:(id)info;
 @end
 
 @implementation CSVoiceTriggerAwareZeroFilter
@@ -28,17 +28,17 @@
   }
 }
 
-- (void)processBuffer:(id)a3 atTime:(unint64_t)a4
+- (void)processBuffer:(id)buffer atTime:(unint64_t)time
 {
-  v6 = a3;
-  v7 = [v6 length];
+  bufferCopy = buffer;
+  v7 = [bufferCopy length];
   v8 = v7 >> 1;
   vtEndInSampleCount = self->_vtEndInSampleCount;
   numSamplesProcessed = self->_numSamplesProcessed;
   v11 = vtEndInSampleCount - numSamplesProcessed;
   if (vtEndInSampleCount < numSamplesProcessed)
   {
-    v12 = v6;
+    v12 = bufferCopy;
     self->_numSamplesProcessed += v8;
     if (!v12)
     {
@@ -60,7 +60,7 @@
 
   if (v13)
   {
-    v14 = [MEMORY[0x1E695DEF0] dataWithBytes:objc_msgSend(v6 length:{"bytes"), 2 * v13}];
+    v14 = [MEMORY[0x1E695DEF0] dataWithBytes:objc_msgSend(bufferCopy length:{"bytes"), 2 * v13}];
   }
 
   else
@@ -76,19 +76,19 @@
 
   else
   {
-    v12 = [MEMORY[0x1E695DEF0] dataWithBytes:objc_msgSend(v6 length:{"bytes") + 2 * v13, 2 * (v8 - v13)}];
+    v12 = [MEMORY[0x1E695DEF0] dataWithBytes:objc_msgSend(bufferCopy length:{"bytes") + 2 * v13, 2 * (v8 - v13)}];
     +[CSFTimeUtils getHostClockFrequency];
-    v16 = (a4 + v13 * (v15 / self->_sampleRate));
+    v16 = (time + v13 * (v15 / self->_sampleRate));
   }
 
   self->_numSamplesProcessed += v8;
   if (v14)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained zeroFilter:self zeroFilteredBufferAvailable:v14 atHostTime:a4];
+    [WeakRetained zeroFilter:self zeroFilteredBufferAvailable:v14 atHostTime:time];
   }
 
-  a4 = v16;
+  time = v16;
   if (v12)
   {
 LABEL_16:
@@ -96,7 +96,7 @@ LABEL_16:
     if (zeroFilter)
     {
       v24 = 0;
-      v19 = [(CSAudioZeroFilter *)zeroFilter filterZerosInAudioPacket:v12 atBufferHostTime:a4 filteredPacket:&v24];
+      v19 = [(CSAudioZeroFilter *)zeroFilter filterZerosInAudioPacket:v12 atBufferHostTime:time filteredPacket:&v24];
       v20 = v24;
       v21 = v20;
       if (v20 && [v20 length])
@@ -109,26 +109,26 @@ LABEL_16:
     else
     {
       v23 = objc_loadWeakRetained(&self->_delegate);
-      [v23 zeroFilter:self zeroFilteredBufferAvailable:v12 atHostTime:a4];
+      [v23 zeroFilter:self zeroFilteredBufferAvailable:v12 atHostTime:time];
     }
   }
 
 LABEL_22:
 }
 
-- (void)resetWithSampleRate:(float)a3 containsVoiceTrigger:(BOOL)a4 voiceTriggerInfo:(id)a5
+- (void)resetWithSampleRate:(float)rate containsVoiceTrigger:(BOOL)trigger voiceTriggerInfo:(id)info
 {
-  v5 = a4;
+  triggerCopy = trigger;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  infoCopy = info;
   self->_vtEndInSampleCount = 0;
-  self->_sampleRate = a3;
+  self->_sampleRate = rate;
   self->_numSamplesProcessed = 0;
-  v9 = ((+[CSConfig zeroFilterWindowSizeInMs]/ 1000.0) * a3);
+  v9 = ((+[CSConfig zeroFilterWindowSizeInMs]/ 1000.0) * rate);
   +[CSFTimeUtils getHostClockFrequency];
-  v10 = a3;
+  rateCopy = rate;
   v11 = CSLogContextFacilityCoreSpeech;
-  v13 = v12 / a3;
+  v13 = v12 / rate;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
   {
     v22 = 136315650;
@@ -144,15 +144,15 @@ LABEL_22:
   zeroFilter = self->_zeroFilter;
   self->_zeroFilter = v14;
 
-  if (v8)
+  if (infoCopy)
   {
-    if (v5)
+    if (triggerCopy)
     {
-      v16 = [v8 objectForKeyedSubscript:@"triggerEndSeconds"];
+      v16 = [infoCopy objectForKeyedSubscript:@"triggerEndSeconds"];
       [v16 floatValue];
       v18 = v17;
 
-      self->_vtEndInSampleCount = (v10 * v18);
+      self->_vtEndInSampleCount = (rateCopy * v18);
       v19 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
       {
@@ -160,11 +160,11 @@ LABEL_22:
         v22 = 136315906;
         v23 = "[CSVoiceTriggerAwareZeroFilter resetWithSampleRate:containsVoiceTrigger:voiceTriggerInfo:]";
         v24 = 2050;
-        v25 = (v10 * v18);
+        v25 = (rateCopy * v18);
         v26 = 2050;
         v27 = *&numSamplesProcessed;
         v28 = 2114;
-        v29 = v8;
+        v29 = infoCopy;
         _os_log_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_INFO, "%s _vtEndInSampleCount:%{public}ld, _numSamplesProcessed: %{public}ld, voiceTriggerInfo: %{public}@", &v22, 0x2Au);
       }
     }

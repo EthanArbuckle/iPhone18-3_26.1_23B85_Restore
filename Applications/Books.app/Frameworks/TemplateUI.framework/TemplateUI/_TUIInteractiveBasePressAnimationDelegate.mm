@@ -1,19 +1,19 @@
 @interface _TUIInteractiveBasePressAnimationDelegate
-- (_TUIInteractiveBasePressAnimationDelegate)initWithCompletion:(id)a3;
+- (_TUIInteractiveBasePressAnimationDelegate)initWithCompletion:(id)completion;
 - (void)_decrementCount;
 @end
 
 @implementation _TUIInteractiveBasePressAnimationDelegate
 
-- (_TUIInteractiveBasePressAnimationDelegate)initWithCompletion:(id)a3
+- (_TUIInteractiveBasePressAnimationDelegate)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = _TUIInteractiveBasePressAnimationDelegate;
   v5 = [(_TUIInteractiveBasePressAnimationDelegate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     completion = v5->_completion;
     v5->_completion = v6;
   }

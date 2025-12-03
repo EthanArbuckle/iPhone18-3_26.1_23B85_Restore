@@ -1,20 +1,20 @@
 @interface PLBatteryUIResponseTypeBatteryBreakdownBLD
-- (void)populateBLDKeysWithEnergyEntries:(id)a3;
+- (void)populateBLDKeysWithEnergyEntries:(id)entries;
 @end
 
 @implementation PLBatteryUIResponseTypeBatteryBreakdownBLD
 
-- (void)populateBLDKeysWithEnergyEntries:(id)a3
+- (void)populateBLDKeysWithEnergyEntries:(id)entries
 {
   v78 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v64 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v61 = v3;
-  obj = [v3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v61 = entriesCopy;
+  obj = [entriesCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v65 = [obj countByEnumeratingWithState:&v73 objects:v77 count:16];
   if (v65)
   {
@@ -224,7 +224,7 @@
 
         v59 = [v54 numberWithDouble:v58];
         [v5 setObject:v59 forKeyedSubscript:@"BLDEnergyBGLocation"];
-        [v64 addObject:v5];
+        [array addObject:v5];
       }
 
       v65 = [obj countByEnumeratingWithState:&v73 objects:v77 count:16];
@@ -233,7 +233,7 @@
     while (v65);
   }
 
-  [v61 setObject:v64 forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  [v61 setObject:array forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v60 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,178 +1,178 @@
 @interface AGXG18PFamilyRenderContext
-- (AGXG18PFamilyRenderContext)initWithCommandBuffer:(id)a3 descriptor:(id)a4 subEncoderIndex:(unint64_t)a5 framebuffer:(void *)a6;
-- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)a3 startIndex:(unsigned int)a4 endIndex:(unsigned int)a5 dm:(unsigned int)a6;
-- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)a3 vertexStartIndex:(unsigned int)a4 vertexEndIndex:(unsigned int)a5 fragmentStartIndex:(unsigned int)a6 fragmentEndIndex:(unsigned int)a7;
-- (void)addSplitHandler:(id)a3;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4;
+- (AGXG18PFamilyRenderContext)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor subEncoderIndex:(unint64_t)index framebuffer:(void *)framebuffer;
+- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)buffer startIndex:(unsigned int)index endIndex:(unsigned int)endIndex dm:(unsigned int)dm;
+- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)buffer vertexStartIndex:(unsigned int)index vertexEndIndex:(unsigned int)endIndex fragmentStartIndex:(unsigned int)startIndex fragmentEndIndex:(unsigned int)fragmentEndIndex;
+- (void)addSplitHandler:(id)handler;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
 - (void)dealloc;
-- (void)deferredEndEncoding:(id)a3;
+- (void)deferredEndEncoding:(id)encoding;
 - (void)destroyImpl;
-- (void)dispatchThreadsPerTile:(id *)a3;
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4;
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4 withRenderTargetArrayIndex:(unsigned int)a5;
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4 withRenderTargetArrayIndex:(unsigned int)a5 withCondition:(int64_t)a6;
-- (void)dispatchThreadsPerTile:(id *)a3 withCondition:(int64_t)a4;
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9;
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8;
-- (void)drawMeshThreadgroups:(id *)a3;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7;
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
+- (void)dispatchThreadsPerTile:(id *)tile;
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region;
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region withRenderTargetArrayIndex:(unsigned int)index;
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region withRenderTargetArrayIndex:(unsigned int)index withCondition:(int64_t)condition;
+- (void)dispatchThreadsPerTile:(id *)tile withCondition:(int64_t)condition;
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset;
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawMeshThreadgroups:(id *)threadgroups;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
 - (void)endEncoding;
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5;
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset;
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index;
 - (void)resetTileCondition;
-- (void)setAlphaTestReferenceValue:(float)a3;
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-- (void)setColorAttachmentMap:(id)a3;
-- (void)setColorResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 atIndex:(unint64_t)a7;
-- (void)setColorResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 yInvert:(BOOL)a7 atIndex:(unint64_t)a8;
-- (void)setCullMode:(unint64_t)a3;
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5;
+- (void)setAlphaTestReferenceValue:(float)value;
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+- (void)setColorAttachmentMap:(id)map;
+- (void)setColorResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level atIndex:(unint64_t)index;
+- (void)setColorResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level yInvert:(BOOL)invert atIndex:(unint64_t)index;
+- (void)setCullMode:(unint64_t)mode;
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp;
 - (void)setDepthCleared;
-- (void)setDepthClipMode:(unint64_t)a3;
-- (void)setDepthResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6;
-- (void)setDepthResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 yInvert:(BOOL)a7;
-- (void)setDepthStencilState:(id)a3;
-- (void)setDepthStoreAction:(unint64_t)a3;
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4;
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6;
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setFrontFacingWinding:(unint64_t)a3;
-- (void)setLineWidth:(float)a3;
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setMeshSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMeshSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setMeshSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setMeshSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setMeshVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setObjectSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObjectSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setObjectSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setObjectSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setObjectVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setPointSize:(float)a3;
-- (void)setPrimitiveRestartEnabled:(BOOL)a3;
-- (void)setPrimitiveRestartEnabled:(BOOL)a3 index:(unint64_t)a4;
-- (void)setProvokingVertexMode:(unint64_t)a3;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4;
+- (void)setDepthClipMode:(unint64_t)mode;
+- (void)setDepthResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level;
+- (void)setDepthResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level yInvert:(BOOL)invert;
+- (void)setDepthStencilState:(id)state;
+- (void)setDepthStoreAction:(unint64_t)action;
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound;
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex;
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setFrontFacingWinding:(unint64_t)winding;
+- (void)setLineWidth:(float)width;
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setMeshBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setMeshSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setMeshSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setMeshSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setMeshSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setMeshVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setMeshVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setObjectSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setObjectSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setObjectSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setObjectSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setObjectVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setObjectVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setPointSize:(float)size;
+- (void)setPrimitiveRestartEnabled:(BOOL)enabled;
+- (void)setPrimitiveRestartEnabled:(BOOL)enabled index:(unint64_t)index;
+- (void)setProvokingVertexMode:(unint64_t)mode;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setScissorRects:(id *)rects count:(unint64_t)count;
 - (void)setStencilCleared;
-- (void)setStencilFrontReferenceValue:(unsigned int)a3 backReferenceValue:(unsigned int)a4;
-- (void)setStencilReferenceValue:(unsigned int)a3;
-- (void)setStencilResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6;
-- (void)setStencilResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 yInvert:(BOOL)a7;
-- (void)setStencilStoreAction:(unint64_t)a3;
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5;
-- (void)setTessellationFactorScale:(float)a3;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setTileSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTileSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setTileSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setTileSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setToolsDispatchBufferSPI:(unint64_t)a3 atIndex:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)setTriangleFillMode:(unint64_t)a3;
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexAmplificationMode:(unint64_t)a3 value:(unint64_t)a4;
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setVertexBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setViewport:(id *)a3;
-- (void)setViewportTransformEnabled:(BOOL)a3;
-- (void)setViewports:(id *)a3 count:(unint64_t)a4;
-- (void)setVisibilityResultMode:(unint64_t)a3 offset:(unint64_t)a4;
-- (void)updateFence:(id)a3 afterStages:(unint64_t)a4;
-- (void)useHeap:(id)a3;
-- (void)useHeap:(id)a3 stages:(unint64_t)a4;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6;
-- (void)waitForFence:(id)a3 beforeStages:(unint64_t)a4;
+- (void)setStencilFrontReferenceValue:(unsigned int)value backReferenceValue:(unsigned int)referenceValue;
+- (void)setStencilReferenceValue:(unsigned int)value;
+- (void)setStencilResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level;
+- (void)setStencilResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level yInvert:(BOOL)invert;
+- (void)setStencilStoreAction:(unint64_t)action;
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride;
+- (void)setTessellationFactorScale:(float)scale;
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setTileSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setTileSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setTileSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setTileSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setToolsDispatchBufferSPI:(unint64_t)i atIndex:(unint64_t)index stages:(unint64_t)stages;
+- (void)setTriangleFillMode:(unint64_t)mode;
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setVertexAmplificationMode:(unint64_t)mode value:(unint64_t)value;
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setViewport:(id *)viewport;
+- (void)setViewportTransformEnabled:(BOOL)enabled;
+- (void)setViewports:(id *)viewports count:(unint64_t)count;
+- (void)setVisibilityResultMode:(unint64_t)mode offset:(unint64_t)offset;
+- (void)updateFence:(id)fence afterStages:(unint64_t)stages;
+- (void)useHeap:(id)heap;
+- (void)useHeap:(id)heap stages:(unint64_t)stages;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResource:(id)resource usage:(unint64_t)usage stages:(unint64_t)stages;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages;
+- (void)waitForFence:(id)fence beforeStages:(unint64_t)stages;
 @end
 
 @implementation AGXG18PFamilyRenderContext
 
-- (void)setColorAttachmentMap:(id)a3
+- (void)setColorAttachmentMap:(id)map
 {
   impl = self->_impl;
-  if (a3)
+  if (map)
   {
-    impl[79376] = [a3 getPhysicalIndexForLogicalIndex:0];
-    impl[79377] = [a3 getPhysicalIndexForLogicalIndex:1];
-    impl[79378] = [a3 getPhysicalIndexForLogicalIndex:2];
-    impl[79379] = [a3 getPhysicalIndexForLogicalIndex:3];
-    impl[79380] = [a3 getPhysicalIndexForLogicalIndex:4];
-    impl[79381] = [a3 getPhysicalIndexForLogicalIndex:5];
-    impl[79382] = [a3 getPhysicalIndexForLogicalIndex:6];
-    v5 = [a3 getPhysicalIndexForLogicalIndex:7];
+    impl[79376] = [map getPhysicalIndexForLogicalIndex:0];
+    impl[79377] = [map getPhysicalIndexForLogicalIndex:1];
+    impl[79378] = [map getPhysicalIndexForLogicalIndex:2];
+    impl[79379] = [map getPhysicalIndexForLogicalIndex:3];
+    impl[79380] = [map getPhysicalIndexForLogicalIndex:4];
+    impl[79381] = [map getPhysicalIndexForLogicalIndex:5];
+    impl[79382] = [map getPhysicalIndexForLogicalIndex:6];
+    v5 = [map getPhysicalIndexForLogicalIndex:7];
   }
 
   else
@@ -188,32 +188,32 @@
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::updateVirtualMapping(impl, 0, 1);
 }
 
-- (void)setToolsDispatchBufferSPI:(unint64_t)a3 atIndex:(unint64_t)a4 stages:(unint64_t)a5
+- (void)setToolsDispatchBufferSPI:(unint64_t)i atIndex:(unint64_t)index stages:(unint64_t)stages
 {
-  v5 = a5;
-  if (a5)
+  stagesCopy = stages;
+  if (stages)
   {
     impl = self->_impl;
-    if ((a4 + 67) > 0x1E)
+    if ((index + 67) > 0x1E)
     {
-      v12 = impl[6137] + 8 * (a4 + 36);
-      *(v12 + 40) = a3;
+      v12 = impl[6137] + 8 * (index + 36);
+      *(v12 + 40) = i;
       v11 = (v12 + 352);
     }
 
     else
     {
-      v10 = (impl[6136] + 8 * (a4 + 67));
-      *v10 = a3;
+      v10 = (impl[6136] + 8 * (index + 67));
+      *v10 = i;
       v11 = v10 + 31;
     }
 
     *v11 = 0;
     *(impl + 54136) = 1;
-    if ((a5 & 2) == 0)
+    if ((stages & 2) == 0)
     {
 LABEL_3:
-      if ((a5 & 4) == 0)
+      if ((stages & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -222,32 +222,32 @@ LABEL_3:
     }
   }
 
-  else if ((a5 & 2) == 0)
+  else if ((stages & 2) == 0)
   {
     goto LABEL_3;
   }
 
   v13 = self->_impl;
-  if ((a4 + 67) > 0x1E)
+  if ((index + 67) > 0x1E)
   {
-    v16 = v13[9130] + 8 * (a4 + 36);
-    *(v16 + 48) = a3;
+    v16 = v13[9130] + 8 * (index + 36);
+    *(v16 + 48) = i;
     v15 = (v16 + 360);
   }
 
   else
   {
-    v14 = (v13[9129] + 8 * (a4 + 67));
-    *v14 = a3;
+    v14 = (v13[9129] + 8 * (index + 67));
+    *v14 = i;
     v15 = v14 + 31;
   }
 
   *v15 = 0;
   *(v13 + 78080) = 1;
-  if ((a5 & 4) == 0)
+  if ((stages & 4) == 0)
   {
 LABEL_4:
-    if ((a5 & 8) == 0)
+    if ((stages & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -257,28 +257,28 @@ LABEL_4:
 
 LABEL_15:
   v17 = self->_impl;
-  if ((a4 + 67) > 0x1E)
+  if ((index + 67) > 0x1E)
   {
     v20 = v17[2694];
-    v21 = v20 + 8 * (a4 + 36);
-    *(v21 + 48) = a3;
+    v21 = v20 + 8 * (index + 36);
+    *(v21 + 48) = i;
     v19 = (v21 + 360);
   }
 
   else
   {
-    v18 = (v17[2693] + 8 * (a4 + 67));
-    *v18 = a3;
+    v18 = (v17[2693] + 8 * (index + 67));
+    *v18 = i;
     v19 = v18 + 31;
     v20 = v17[2694];
   }
 
   *v19 = 0;
-  *(v20 + 8 * a4 + 816) = a3;
-  if ((a5 & 8) == 0)
+  *(v20 + 8 * index + 816) = i;
+  if ((stages & 8) == 0)
   {
 LABEL_5:
-    if ((a5 & 0x10) == 0)
+    if ((stages & 0x10) == 0)
     {
       return;
     }
@@ -296,8 +296,8 @@ LABEL_19:
     v27[3495] = v23;
   }
 
-  (*(*v23 + 152))(v23, a3, a4);
-  if ((v5 & 0x10) != 0)
+  (*(*v23 + 152))(v23, i, index);
+  if ((stagesCopy & 0x10) != 0)
   {
 LABEL_22:
     v24 = self->_impl;
@@ -314,29 +314,29 @@ LABEL_22:
   }
 }
 
-- (void)setMeshSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setMeshSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
   impl = self->_impl;
   v10 = impl[3495];
   if (v10)
   {
-    length_low = LODWORD(a6.length);
-    if (LODWORD(a6.length))
+    length_low = LODWORD(range.length);
+    if (LODWORD(range.length))
     {
 LABEL_3:
       v12 = *(v10 + 8);
-      location = a6.location;
+      location = range.location;
       do
       {
-        if (*a3)
+        if (*states)
         {
-          v16 = *a5;
-          v17 = *a4;
+          v16 = *maxClamps;
+          v17 = *clamps;
           v18 = v12[234];
           v19 = *(v18 + 848);
-          v20 = *a3 + 48;
-          v22 = *(*a3 + 4);
-          v21 = *(*a3 + 5);
+          v20 = *states + 48;
+          v22 = *(*states + 4);
+          v21 = *(*states + 5);
           v30[0] = *v20;
           v30[1] = v22;
           v30[2] = v21;
@@ -413,10 +413,10 @@ LABEL_7:
         v12 = *(v10 + 8);
         v12[(location > 0x3F) + 9790] |= 1 << location;
         v12[9810] |= 0x4000000uLL;
-        ++a4;
-        ++a5;
+        ++clamps;
+        ++maxClamps;
         ++location;
-        ++a3;
+        ++states;
         --length_low;
       }
 
@@ -426,10 +426,10 @@ LABEL_7:
 
   else
   {
-    v27 = a6.location;
-    length = a6.length;
+    v27 = range.location;
+    length = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    LODWORD(a6.location) = v27;
+    LODWORD(range.location) = v27;
     v10 = v29;
     impl[3495] = v29;
     length_low = length;
@@ -440,40 +440,40 @@ LABEL_7:
   }
 }
 
-- (void)setMeshSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setMeshSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v6 = a6;
-  v7 = a3;
+  indexCopy = index;
+  stateCopy2 = state;
   impl = self->_impl;
   v9 = impl[3495];
   if (!v9)
   {
-    v10 = a5;
-    v11 = a4;
+    maxClampCopy = maxClamp;
+    clampCopy = clamp;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v7 = a3;
-    a4 = v11;
-    a5 = v10;
+    stateCopy2 = state;
+    clamp = clampCopy;
+    maxClamp = maxClampCopy;
     impl[3495] = v9;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setMeshProgramSamplerWithLODOverride(v9, v7, v6, a4, a5);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setMeshProgramSamplerWithLODOverride(v9, stateCopy2, indexCopy, clamp, maxClamp);
 }
 
-- (void)setMeshSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setMeshSamplerStates:(const void *)states withRange:(_NSRange)range
 {
   impl = self->_impl;
   v6 = impl[3495];
   if (v6)
   {
-    length_low = LODWORD(a4.length);
-    if (LODWORD(a4.length))
+    length_low = LODWORD(range.length);
+    if (LODWORD(range.length))
     {
 LABEL_3:
       v8 = *(v6 + 8);
-      for (i = a4.location; ; ++i)
+      for (i = range.location; ; ++i)
       {
-        v12 = *a3;
+        v12 = *states;
         if (*(v8 + 1896))
         {
           MTLResourceListAddResource();
@@ -499,7 +499,7 @@ LABEL_7:
         v8 = *(v6 + 8);
         *(v8 + 8 * (i > 0x3F) + 78320) |= 1 << i;
         *(v8 + 78480) |= 0x4000000uLL;
-        ++a3;
+        ++states;
         if (!--length_low)
         {
           return;
@@ -521,10 +521,10 @@ LABEL_5:
 
   else
   {
-    location = a4.location;
-    LODWORD(length_low) = a4.length;
+    location = range.location;
+    LODWORD(length_low) = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    LODWORD(a4.location) = location;
+    LODWORD(range.location) = location;
     v6 = v16;
     impl[3495] = v16;
     length_low = length_low;
@@ -535,9 +535,9 @@ LABEL_5:
   }
 }
 
-- (void)setMeshSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setMeshSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   impl = self->_impl;
   v7 = impl[3495];
   if (!v7)
@@ -552,9 +552,9 @@ LABEL_5:
     MTLResourceListAddResource();
   }
 
-  if (a3)
+  if (state)
   {
-    v8 = *(a3 + 15);
+    v8 = *(state + 15);
   }
 
   else
@@ -562,12 +562,12 @@ LABEL_5:
     v8 = 0;
   }
 
-  v9 = 32 * v4;
+  v9 = 32 * indexCopy;
   *(*(v7 + 42696) + v9 + 16888) = v8;
   v10 = *(v7 + 42696);
   if ((~*(v10 + 16880 + v9 + 8) & 0x6000000000000000) != 0)
   {
-    if (!a3)
+    if (!state)
     {
       v11 = 0;
       goto LABEL_13;
@@ -576,32 +576,32 @@ LABEL_5:
 
   else
   {
-    *(v10 + 16880 + 32 * v4 + 16) = *(a3 + 8);
+    *(v10 + 16880 + 32 * indexCopy + 16) = *(state + 8);
     v10 = *(v7 + 42696);
   }
 
-  v11 = a3 + 48;
-  if (*(a3 + 36))
+  v11 = state + 48;
+  if (*(state + 36))
   {
-    v11 = *(a3 + 36);
+    v11 = *(state + 36);
   }
 
 LABEL_13:
-  *(v10 + 32 * v4 + 16880) = v11;
+  *(v10 + 32 * indexCopy + 16880) = v11;
   v12 = *(v7 + 8);
-  *(v12 + 8 * ((v4 & 0xFFFFFFC0) != 0) + 78320) |= 1 << v4;
+  *(v12 + 8 * ((indexCopy & 0xFFFFFFC0) != 0) + 78320) |= 1 << indexCopy;
   *(v12 + 78480) |= 0x4000000uLL;
 }
 
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range
 {
-  location = a4.location;
+  location = range.location;
   impl = self->_impl;
   v7 = impl[3495];
   if (v7)
   {
-    length_low = LODWORD(a4.length);
-    if (!LODWORD(a4.length))
+    length_low = LODWORD(range.length);
+    if (!LODWORD(range.length))
     {
       return;
     }
@@ -609,7 +609,7 @@ LABEL_13:
 
   else
   {
-    length = a4.length;
+    length = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
     v11 = length;
     v7 = v12;
@@ -623,7 +623,7 @@ LABEL_13:
 
   do
   {
-    v9 = *a3++;
+    v9 = *textures++;
     AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>,true>(v7, v9, location++, v7 + 24048);
     --length_low;
   }
@@ -631,31 +631,31 @@ LABEL_13:
   while (length_low);
 }
 
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
+  indexCopy = index;
+  textureCopy2 = texture;
   impl = self->_impl;
   v7 = impl[3495];
   if (!v7)
   {
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v5 = a3;
+    textureCopy2 = texture;
     impl[3495] = v7;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>,true>(v7, v5, v4, v7 + 24048);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>,true>(v7, textureCopy2, indexCopy, v7 + 24048);
 }
 
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  location = a5.location;
+  location = range.location;
   impl = self->_impl;
   v9 = impl[3495];
   if (v9)
   {
-    length_low = LODWORD(a5.length);
-    if (!LODWORD(a5.length))
+    length_low = LODWORD(range.length);
+    if (!LODWORD(range.length))
     {
       return;
     }
@@ -663,7 +663,7 @@ LABEL_13:
 
   else
   {
-    length = a5.length;
+    length = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
     v15 = length;
     v9 = v16;
@@ -677,9 +677,9 @@ LABEL_13:
 
   do
   {
-    v12 = *a3++;
+    v12 = *buffers++;
     v11 = v12;
-    v13 = *a4++;
+    v13 = *offsets++;
     AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setBuffer<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v9, v11, v13, location++, v9 + 24048);
     --length_low;
   }
@@ -687,86 +687,86 @@ LABEL_13:
   while (length_low);
 }
 
-- (void)setMeshBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setMeshBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   impl = self->_impl;
   v5 = impl[3495];
   if (!v5)
   {
-    v14 = a4;
-    v15 = a3;
+    indexCopy = index;
+    offsetCopy = offset;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    a3 = v15;
-    LODWORD(a4) = v14;
+    offset = offsetCopy;
+    LODWORD(index) = indexCopy;
     impl[3495] = v5;
   }
 
-  v6 = &v5[a4];
+  v6 = &v5[index];
   v7 = v6[5828];
   v8 = v5[1];
   v9 = v6[5898];
-  v10 = v7 + a3;
-  if (a4 >= 0x1F)
+  v10 = v7 + offset;
+  if (index >= 0x1F)
   {
-    v13 = v5[5338] + 8 * (a4 - 31);
+    v13 = v5[5338] + 8 * (index - 31);
     *(v13 + 40) = v10;
-    *(v13 + 352) = v9 + a3;
+    *(v13 + 352) = v9 + offset;
   }
 
   else
   {
     v11 = v5[5337];
-    v12 = v11 + 8 * a4;
+    v12 = v11 + 8 * index;
     *v12 = v10;
-    *(v12 + 248) = v9 + a3;
-    *(v12 + 17640) = *(v11 + 4 * a4 + 17516);
+    *(v12 + 248) = v9 + offset;
+    *(v12 + 17640) = *(v11 + 4 * index + 17516);
   }
 
-  *(v8 + 8 * (a4 > 0x3F) + 78288) |= 1 << a4;
+  *(v8 + 8 * (index > 0x3F) + 78288) |= 1 << index;
   *(v8 + 78480) |= 0x4000000uLL;
 }
 
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v5 = a5;
-  v7 = a3;
+  indexCopy = index;
+  bufferCopy2 = buffer;
   impl = self->_impl;
   v9 = impl[3495];
   if (!v9)
   {
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v7 = a3;
+    bufferCopy2 = buffer;
     impl[3495] = v9;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setBuffer<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v9, v7, a4, v5, v9 + 24048);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setBuffer<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v9, bufferCopy2, offset, indexCopy, v9 + 24048);
 }
 
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   impl = self->_impl;
   v8 = impl[3495];
   if (!v8)
   {
-    v23 = a3;
+    bytesCopy = bytes;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    a3 = v23;
+    bytes = bytesCopy;
     v8 = v24;
     impl[3495] = v24;
   }
 
   v9 = v8[1];
-  v10 = (a4 + 15) | 0xF;
+  v10 = (length + 15) | 0xF;
   v11 = v9[21] + v10;
   if (v11 <= v9[20])
   {
     goto LABEL_4;
   }
 
-  v25 = a3;
+  bytesCopy2 = bytes;
   v26 = AGX::DataBufferAllocator<44ul>::growNoInline(v9 + 3, 3, 0);
-  a3 = v25;
+  bytes = bytesCopy2;
   if (v26)
   {
     v11 = v9[21] + v10;
@@ -782,79 +782,79 @@ LABEL_4:
   v12 = v8[1];
   v13 = ((*(v12 + 168) + 15) & 0xFFFFFFFFFFFFFFF0);
   v14 = &v13[*(v12 + 184)];
-  *(v12 + 168) = &v13[(a4 + 15) & 0xFFFFFFFFFFFFFFF0];
-  memcpy(v13, a3, a4);
+  *(v12 + 168) = &v13[(length + 15) & 0xFFFFFFFFFFFFFFF0];
+  memcpy(v13, bytes, length);
   v15 = v8[1];
   v16 = *(*(v15 + 48) + 224);
   v17 = *MEMORY[0x29EDC5638];
-  v18 = v5 & 0x3F;
-  if (v5 < 0x23)
+  v18 = indexCopy & 0x3F;
+  if (indexCopy < 0x23)
   {
     v8[v18 + 5793] = 0;
   }
 
   v19 = v16 + v17;
-  *(v15 + 8 * (v5 > 0x3F) + 78288) |= 1 << v18;
+  *(v15 + 8 * (indexCopy > 0x3F) + 78288) |= 1 << v18;
   *(v15 + 78480) |= 0x4000000uLL;
-  if (v5 >= 0x1F)
+  if (indexCopy >= 0x1F)
   {
-    *(v8[5338] + 8 * (v5 - 31) + 40) = v14;
-    v8[v5 + 5339] = v19;
+    *(v8[5338] + 8 * (indexCopy - 31) + 40) = v14;
+    v8[indexCopy + 5339] = v19;
   }
 
   else
   {
     v20 = v8[5337];
-    v21 = v5 & 0x1F;
+    v21 = indexCopy & 0x1F;
     v22 = v20 + v21 * 8;
     v8[v21 + 5339] = v19;
-    *(v20 + 4 * (v5 & 0x1F) + 17516) = a4;
+    *(v20 + 4 * (indexCopy & 0x1F) + 17516) = length;
     *v22 = v14;
-    *(v22 + 17640) = a4;
+    *(v22 + 17640) = length;
     *(v22 + 17644) = v14 >> 8;
   }
 }
 
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   impl = self->_impl;
   v5 = impl[3495];
   if (!v5)
   {
-    v6 = a3;
-    v7 = a4;
+    lengthCopy = length;
+    indexCopy = index;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    LODWORD(a4) = v7;
-    LODWORD(a3) = v6;
+    LODWORD(index) = indexCopy;
+    LODWORD(length) = lengthCopy;
     impl[3495] = v5;
   }
 
-  *(*(v5 + 19000) + 4 * a4 + 804) = a3;
+  *(*(v5 + 19000) + 4 * index + 804) = length;
 }
 
-- (void)setObjectSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setObjectSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
   impl = self->_impl;
   v10 = impl[3495];
   if (v10)
   {
-    length_low = LODWORD(a6.length);
-    if (LODWORD(a6.length))
+    length_low = LODWORD(range.length);
+    if (LODWORD(range.length))
     {
 LABEL_3:
       v12 = *(v10 + 8);
-      location = a6.location;
+      location = range.location;
       do
       {
-        if (*a3)
+        if (*states)
         {
-          v16 = *a5;
-          v17 = *a4;
+          v16 = *maxClamps;
+          v17 = *clamps;
           v18 = v12[234];
           v19 = *(v18 + 848);
-          v20 = *a3 + 48;
-          v22 = *(*a3 + 4);
-          v21 = *(*a3 + 5);
+          v20 = *states + 48;
+          v22 = *(*states + 4);
+          v21 = *(*states + 5);
           v30[0] = *v20;
           v30[1] = v22;
           v30[2] = v21;
@@ -931,10 +931,10 @@ LABEL_7:
         v12 = *(v10 + 8);
         v12[(location > 0x3F) + 9778] |= 1 << location;
         v12[9810] |= 0x10000uLL;
-        ++a4;
-        ++a5;
+        ++clamps;
+        ++maxClamps;
         ++location;
-        ++a3;
+        ++states;
         --length_low;
       }
 
@@ -944,10 +944,10 @@ LABEL_7:
 
   else
   {
-    v27 = a6.location;
-    length = a6.length;
+    v27 = range.location;
+    length = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    LODWORD(a6.location) = v27;
+    LODWORD(range.location) = v27;
     v10 = v29;
     impl[3495] = v29;
     length_low = length;
@@ -958,40 +958,40 @@ LABEL_7:
   }
 }
 
-- (void)setObjectSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setObjectSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v6 = a6;
-  v7 = a3;
+  indexCopy = index;
+  stateCopy2 = state;
   impl = self->_impl;
   v9 = impl[3495];
   if (!v9)
   {
-    v10 = a5;
-    v11 = a4;
+    maxClampCopy = maxClamp;
+    clampCopy = clamp;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v7 = a3;
-    a4 = v11;
-    a5 = v10;
+    stateCopy2 = state;
+    clamp = clampCopy;
+    maxClamp = maxClampCopy;
     impl[3495] = v9;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setObjectProgramSamplerWithLODOverride(v9, v7, v6, a4, a5);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setObjectProgramSamplerWithLODOverride(v9, stateCopy2, indexCopy, clamp, maxClamp);
 }
 
-- (void)setObjectSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setObjectSamplerStates:(const void *)states withRange:(_NSRange)range
 {
   impl = self->_impl;
   v6 = impl[3495];
   if (v6)
   {
-    length_low = LODWORD(a4.length);
-    if (LODWORD(a4.length))
+    length_low = LODWORD(range.length);
+    if (LODWORD(range.length))
     {
 LABEL_3:
       v8 = *(v6 + 8);
-      for (i = a4.location; ; ++i)
+      for (i = range.location; ; ++i)
       {
-        v12 = *a3;
+        v12 = *states;
         if (*(v8 + 1896))
         {
           MTLResourceListAddResource();
@@ -1017,7 +1017,7 @@ LABEL_7:
         v8 = *(v6 + 8);
         *(v8 + 8 * (i > 0x3F) + 78224) |= 1 << i;
         *(v8 + 78480) |= 0x10000uLL;
-        ++a3;
+        ++states;
         if (!--length_low)
         {
           return;
@@ -1039,10 +1039,10 @@ LABEL_5:
 
   else
   {
-    location = a4.location;
-    LODWORD(length_low) = a4.length;
+    location = range.location;
+    LODWORD(length_low) = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    LODWORD(a4.location) = location;
+    LODWORD(range.location) = location;
     v6 = v16;
     impl[3495] = v16;
     length_low = length_low;
@@ -1053,9 +1053,9 @@ LABEL_5:
   }
 }
 
-- (void)setObjectSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setObjectSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   impl = self->_impl;
   v7 = impl[3495];
   if (!v7)
@@ -1070,9 +1070,9 @@ LABEL_5:
     MTLResourceListAddResource();
   }
 
-  if (a3)
+  if (state)
   {
-    v8 = *(a3 + 15);
+    v8 = *(state + 15);
   }
 
   else
@@ -1080,12 +1080,12 @@ LABEL_5:
     v8 = 0;
   }
 
-  v9 = 32 * v4;
+  v9 = 32 * indexCopy;
   *(*(v7 + 18992) + v9 + 16888) = v8;
   v10 = *(v7 + 18992);
   if ((~*(v10 + 16880 + v9 + 8) & 0x6000000000000000) != 0)
   {
-    if (!a3)
+    if (!state)
     {
       v11 = 0;
       goto LABEL_13;
@@ -1094,32 +1094,32 @@ LABEL_5:
 
   else
   {
-    *(v10 + 16880 + 32 * v4 + 16) = *(a3 + 8);
+    *(v10 + 16880 + 32 * indexCopy + 16) = *(state + 8);
     v10 = *(v7 + 18992);
   }
 
-  v11 = a3 + 48;
-  if (*(a3 + 36))
+  v11 = state + 48;
+  if (*(state + 36))
   {
-    v11 = *(a3 + 36);
+    v11 = *(state + 36);
   }
 
 LABEL_13:
-  *(v10 + 32 * v4 + 16880) = v11;
+  *(v10 + 32 * indexCopy + 16880) = v11;
   v12 = *(v7 + 8);
-  *(v12 + 8 * ((v4 & 0xFFFFFFC0) != 0) + 78224) |= 1 << v4;
+  *(v12 + 8 * ((indexCopy & 0xFFFFFFC0) != 0) + 78224) |= 1 << indexCopy;
   *(v12 + 78480) |= 0x10000uLL;
 }
 
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range
 {
-  location = a4.location;
+  location = range.location;
   impl = self->_impl;
   v7 = impl[3495];
   if (v7)
   {
-    length_low = LODWORD(a4.length);
-    if (!LODWORD(a4.length))
+    length_low = LODWORD(range.length);
+    if (!LODWORD(range.length))
     {
       return;
     }
@@ -1127,7 +1127,7 @@ LABEL_13:
 
   else
   {
-    length = a4.length;
+    length = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
     v11 = length;
     v7 = v12;
@@ -1141,7 +1141,7 @@ LABEL_13:
 
   do
   {
-    v9 = *a3++;
+    v9 = *textures++;
     AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>,true>(v7, v9, location++, v7 + 72);
     --length_low;
   }
@@ -1149,31 +1149,31 @@ LABEL_13:
   while (length_low);
 }
 
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
+  indexCopy = index;
+  textureCopy2 = texture;
   impl = self->_impl;
   v7 = impl[3495];
   if (!v7)
   {
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v5 = a3;
+    textureCopy2 = texture;
     impl[3495] = v7;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>,true>(v7, v5, v4, v7 + 72);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>,true>(v7, textureCopy2, indexCopy, v7 + 72);
 }
 
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  location = a5.location;
+  location = range.location;
   impl = self->_impl;
   v9 = impl[3495];
   if (v9)
   {
-    length_low = LODWORD(a5.length);
-    if (!LODWORD(a5.length))
+    length_low = LODWORD(range.length);
+    if (!LODWORD(range.length))
     {
       return;
     }
@@ -1181,7 +1181,7 @@ LABEL_13:
 
   else
   {
-    length = a5.length;
+    length = range.length;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
     v15 = length;
     v9 = v16;
@@ -1195,9 +1195,9 @@ LABEL_13:
 
   do
   {
-    v12 = *a3++;
+    v12 = *buffers++;
     v11 = v12;
-    v13 = *a4++;
+    v13 = *offsets++;
     AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setBuffer<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v9, v11, v13, location++, v9 + 72);
     --length_low;
   }
@@ -1205,86 +1205,86 @@ LABEL_13:
   while (length_low);
 }
 
-- (void)setObjectBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   impl = self->_impl;
   v5 = impl[3495];
   if (!v5)
   {
-    v14 = a4;
-    v15 = a3;
+    indexCopy = index;
+    offsetCopy = offset;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    a3 = v15;
-    LODWORD(a4) = v14;
+    offset = offsetCopy;
+    LODWORD(index) = indexCopy;
     impl[3495] = v5;
   }
 
   v6 = v5[1];
-  v7 = &v5[a4];
+  v7 = &v5[index];
   v8 = v7[2865];
   v9 = v7[2935];
-  v10 = v8 + a3;
-  if (a4 >= 0x1F)
+  v10 = v8 + offset;
+  if (index >= 0x1F)
   {
-    v13 = v5[2375] + 8 * (a4 - 31);
+    v13 = v5[2375] + 8 * (index - 31);
     *(v13 + 40) = v10;
-    *(v13 + 352) = v9 + a3;
+    *(v13 + 352) = v9 + offset;
   }
 
   else
   {
     v11 = v5[2374];
-    v12 = v11 + 8 * a4;
+    v12 = v11 + 8 * index;
     *v12 = v10;
-    *(v12 + 248) = v9 + a3;
-    *(v12 + 17640) = *(v11 + 4 * a4 + 17516);
+    *(v12 + 248) = v9 + offset;
+    *(v12 + 17640) = *(v11 + 4 * index + 17516);
   }
 
-  *(v6 + 8 * (a4 > 0x3F) + 78192) |= 1 << a4;
+  *(v6 + 8 * (index > 0x3F) + 78192) |= 1 << index;
   *(v6 + 78480) |= 0x10000uLL;
 }
 
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v5 = a5;
-  v7 = a3;
+  indexCopy = index;
+  bufferCopy2 = buffer;
   impl = self->_impl;
   v9 = impl[3495];
   if (!v9)
   {
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v7 = a3;
+    bufferCopy2 = buffer;
     impl[3495] = v9;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setBuffer<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v9, v7, a4, v5, v9 + 72);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setBuffer<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v9, bufferCopy2, offset, indexCopy, v9 + 72);
 }
 
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   impl = self->_impl;
   v8 = impl[3495];
   if (!v8)
   {
-    v23 = a3;
+    bytesCopy = bytes;
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    a3 = v23;
+    bytes = bytesCopy;
     v8 = v24;
     impl[3495] = v24;
   }
 
   v9 = v8[1];
-  v10 = (a4 + 15) | 0xF;
+  v10 = (length + 15) | 0xF;
   v11 = v9[21] + v10;
   if (v11 <= v9[20])
   {
     goto LABEL_4;
   }
 
-  v25 = a3;
+  bytesCopy2 = bytes;
   v26 = AGX::DataBufferAllocator<44ul>::growNoInline(v9 + 3, 3, 0);
-  a3 = v25;
+  bytes = bytesCopy2;
   if (v26)
   {
     v11 = v9[21] + v10;
@@ -1300,44 +1300,44 @@ LABEL_4:
   v12 = v8[1];
   v13 = ((*(v12 + 168) + 15) & 0xFFFFFFFFFFFFFFF0);
   v14 = &v13[*(v12 + 184)];
-  *(v12 + 168) = &v13[(a4 + 15) & 0xFFFFFFFFFFFFFFF0];
-  memcpy(v13, a3, a4);
+  *(v12 + 168) = &v13[(length + 15) & 0xFFFFFFFFFFFFFFF0];
+  memcpy(v13, bytes, length);
   v15 = v8[1];
   v16 = *(*(v15 + 48) + 224);
   v17 = *MEMORY[0x29EDC5638];
-  v18 = v5 & 0x3F;
-  if (v5 < 0x23)
+  v18 = indexCopy & 0x3F;
+  if (indexCopy < 0x23)
   {
     v8[v18 + 2830] = 0;
   }
 
   v19 = v16 + v17;
-  *(v15 + 8 * (v5 > 0x3F) + 78192) |= 1 << v18;
+  *(v15 + 8 * (indexCopy > 0x3F) + 78192) |= 1 << v18;
   *(v15 + 78480) |= 0x10000uLL;
-  if (v5 >= 0x1F)
+  if (indexCopy >= 0x1F)
   {
-    *(v8[2375] + 8 * (v5 - 31) + 40) = v14;
-    v8[v5 + 2376] = v19;
+    *(v8[2375] + 8 * (indexCopy - 31) + 40) = v14;
+    v8[indexCopy + 2376] = v19;
   }
 
   else
   {
     v20 = v8[2374];
-    v21 = v5 & 0x1F;
+    v21 = indexCopy & 0x1F;
     v22 = v20 + v21 * 8;
     *v22 = v14;
-    *(v20 + 4 * (v5 & 0x1F) + 17516) = a4;
+    *(v20 + 4 * (indexCopy & 0x1F) + 17516) = length;
     v8[v21 + 2376] = v19;
-    *(v22 + 17640) = a4;
+    *(v22 + 17640) = length;
     *(v22 + 17644) = v14 >> 8;
   }
 }
 
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   impl = self->_impl;
-  v12 = *a5;
-  v11 = *a6;
+  v12 = *threadgroup;
+  v11 = *meshThreadgroup;
   v7 = impl[3495];
   if (v7)
   {
@@ -1360,16 +1360,16 @@ LABEL_4:
     impl[9933] |= 1 << v10;
     v14 = v12;
     v13 = v11;
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::drawMeshThreadgroupsWithIndirectBuffer(v7, a3, a4, &v14, &v13);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::drawMeshThreadgroupsWithIndirectBuffer(v7, buffer, offset, &v14, &v13);
   }
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   impl = self->_impl;
-  v12 = *a3;
-  v11 = *a4;
-  v10 = *a5;
+  v12 = *threads;
+  v11 = *threadgroup;
+  v10 = *meshThreadgroup;
   v6 = impl[3495];
   if (v6)
   {
@@ -1397,12 +1397,12 @@ LABEL_4:
   }
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   impl = self->_impl;
-  v12 = *a3;
-  v11 = *a4;
-  v10 = *a5;
+  v12 = *threadgroups;
+  v11 = *threadgroup;
+  v10 = *meshThreadgroup;
   v6 = impl[3495];
   if (v6)
   {
@@ -1430,7 +1430,7 @@ LABEL_4:
   }
 }
 
-- (void)drawMeshThreadgroups:(id *)a3
+- (void)drawMeshThreadgroups:(id *)threadgroups
 {
   v3 = *(self->_impl + 3495);
   if (v3)
@@ -1440,7 +1440,7 @@ LABEL_4:
     v6 = *(v4 + 880);
     v7 = *(v4 + 884);
     v8 = *(v4 + 892);
-    v11 = *a3;
+    v11 = *threadgroups;
     v10[0] = v5;
     v10[1] = HIDWORD(v5);
     v10[2] = v6;
@@ -1451,13 +1451,13 @@ LABEL_4:
   }
 }
 
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v7 = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
+  indexCopy = index;
+  requiresRaytracingEmulation = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
   impl = self->_impl;
   v9 = impl[3495];
-  if (v7)
+  if (requiresRaytracingEmulation)
   {
     if (!v9)
     {
@@ -1465,7 +1465,7 @@ LABEL_4:
       impl[3495] = v9;
     }
 
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>,AGXG18PFamilyRayTracingAccelerationStructureSW>(v9, a3, v4, v9 + 24048);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>,AGXG18PFamilyRayTracingAccelerationStructureSW>(v9, structure, indexCopy, v9 + 24048);
   }
 
   else
@@ -1476,17 +1476,17 @@ LABEL_4:
       impl[3495] = v9;
     }
 
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>,AGXG18PFamilyRayTracingAccelerationStructure>(v9, a3, v4, v9 + 24048);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>,AGXG18PFamilyRayTracingAccelerationStructure>(v9, structure, indexCopy, v9 + 24048);
   }
 }
 
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v7 = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
+  indexCopy = index;
+  requiresRaytracingEmulation = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
   impl = self->_impl;
   v9 = impl[3495];
-  if (v7)
+  if (requiresRaytracingEmulation)
   {
     if (!v9)
     {
@@ -1494,7 +1494,7 @@ LABEL_4:
       impl[3495] = v9;
     }
 
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>,AGXG18PFamilyRayTracingAccelerationStructureSW>(v9, a3, v4, v9 + 72);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>,AGXG18PFamilyRayTracingAccelerationStructureSW>(v9, structure, indexCopy, v9 + 72);
   }
 
   else
@@ -1505,43 +1505,43 @@ LABEL_4:
       impl[3495] = v9;
     }
 
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>,AGXG18PFamilyRayTracingAccelerationStructure>(v9, a3, v4, v9 + 72);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAccelerationStructure<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>,AGXG18PFamilyRayTracingAccelerationStructure>(v9, structure, indexCopy, v9 + 72);
   }
 }
 
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v7 = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
+  indexCopy = index;
+  requiresRaytracingEmulation = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
   impl = self->_impl;
-  if (!v7)
+  if (!requiresRaytracingEmulation)
   {
-    if (v4 <= 0x22)
+    if (indexCopy <= 0x22)
     {
-      impl[(v4 & 0x3F) + 3149] = 0;
+      impl[(indexCopy & 0x3F) + 3149] = 0;
     }
 
-    if (a3)
+    if (structure)
     {
-      v9 = *(a3 + 90);
-      if (v4 <= 0x1E)
+      v9 = *(structure + 90);
+      if (indexCopy <= 0x1E)
       {
         goto LABEL_6;
       }
 
 LABEL_11:
-      v11 = (impl[2694] + 8 * (v4 - 31) + 48);
-      v10 = v4;
+      v11 = (impl[2694] + 8 * (indexCopy - 31) + 48);
+      v10 = indexCopy;
       goto LABEL_12;
     }
 
 LABEL_14:
-    if (v4 >= 0x1F)
+    if (indexCopy >= 0x1F)
     {
-      v37 = impl[2694] + 8 * (v4 - 31);
+      v37 = impl[2694] + 8 * (indexCopy - 31);
       *(v37 + 48) = 0;
       *(v37 + 360) = 0;
-      v38 = &impl[v4];
+      v38 = &impl[indexCopy];
       v38[3184] = 0;
       v38[3254] = 0;
     }
@@ -1549,52 +1549,52 @@ LABEL_14:
     else
     {
       v20 = impl[2693];
-      v21 = v4 & 0x1F;
+      v21 = indexCopy & 0x1F;
       v22 = (v20 + v21 * 8);
       *v22 = 0;
       v22[31] = 0;
       v23 = &impl[v21];
       v23[3184] = 0;
       v23[3254] = 0;
-      *(v20 + 4 * (v4 & 0x1F) + 17516) = 0;
+      *(v20 + 4 * (indexCopy & 0x1F) + 17516) = 0;
       v22[2205] = 0;
     }
 
     return;
   }
 
-  if (v4 <= 0x22)
+  if (indexCopy <= 0x22)
   {
-    impl[(v4 & 0x3F) + 3149] = 0;
+    impl[(indexCopy & 0x3F) + 3149] = 0;
   }
 
-  if (!a3)
+  if (!structure)
   {
     goto LABEL_14;
   }
 
-  v9 = *(a3 + 84);
-  if (v4 > 0x1E)
+  v9 = *(structure + 84);
+  if (indexCopy > 0x1E)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
-  v10 = v4 & 0x1F;
+  v10 = indexCopy & 0x1F;
   v11 = (impl[2693] + 8 * v10);
 LABEL_12:
   *v11 = v9;
-  v12 = [a3 buffer];
+  buffer = [structure buffer];
   v13 = MEMORY[0x29EDC5638];
-  v14 = *(v12 + *MEMORY[0x29EDC5638] + 8);
-  v15 = *([a3 buffer] + *v13 + 24);
-  v16 = *([a3 buffer] + *v13 + 16);
+  v14 = *(buffer + *MEMORY[0x29EDC5638] + 8);
+  v15 = *([structure buffer] + *v13 + 24);
+  v16 = *([structure buffer] + *v13 + 16);
   v17 = &impl[v10];
   v17[3184] = v14;
   v17[3254] = v15;
-  if (v4 >= 0x1F)
+  if (indexCopy >= 0x1F)
   {
-    *(impl[2694] + 8 * (v4 - 31) + 360) = v15;
+    *(impl[2694] + 8 * (indexCopy - 31) + 360) = v15;
   }
 
   else
@@ -1607,8 +1607,8 @@ LABEL_12:
     *(v19 + 17644) = v14 >> 8;
   }
 
-  v24 = [a3 buffer];
-  v17[2695] = v24 + *v13;
+  buffer2 = [structure buffer];
+  v17[2695] = buffer2 + *v13;
   v25 = impl[336];
   v26 = v25[2].i64[1];
   if (*(v26 + 480) != 1)
@@ -1623,7 +1623,7 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  v29 = v24 + *v13;
+  v29 = buffer2 + *v13;
   if ((*(v29 + 23) & 0x10) != 0)
   {
     v29 = *v29;
@@ -1688,10 +1688,10 @@ LABEL_26:
   v30 = (*(v40 + 10) >> v41) & 1;
   v35 = (*(v40 + 14) >> v41) & 1;
 LABEL_27:
-  v36 = (v26 + 8 * (v4 > 0x3F));
-  v36[4] = v36[4] & ~(1 << v4) | (v30 << v4);
-  v36[24] = v36[24] & ~(1 << v4) | (v35 << v4);
-  v36[44] &= ~(1 << v4);
+  v36 = (v26 + 8 * (indexCopy > 0x3F));
+  v36[4] = v36[4] & ~(1 << indexCopy) | (v30 << indexCopy);
+  v36[24] = v36[24] & ~(1 << indexCopy) | (v35 << indexCopy);
+  v36[44] &= ~(1 << indexCopy);
   if (impl[337])
   {
 
@@ -1699,48 +1699,48 @@ LABEL_27:
   }
 }
 
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v7 = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
+  indexCopy = index;
+  requiresRaytracingEmulation = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
   impl = self->_impl;
   v9 = impl + 9129;
-  if (!v7)
+  if (!requiresRaytracingEmulation)
   {
-    if (v4 <= 0x22)
+    if (indexCopy <= 0x22)
     {
-      impl[(v4 & 0x3F) + 9725] = 0;
+      impl[(indexCopy & 0x3F) + 9725] = 0;
     }
 
-    if (!a3)
+    if (!structure)
     {
       goto LABEL_12;
     }
 
-    if (v4 > 0x1E)
+    if (indexCopy > 0x1E)
     {
-      v13 = (impl[9130] + 8 * (v4 - 31) + 48);
-      v12 = v4;
+      v13 = (impl[9130] + 8 * (indexCopy - 31) + 48);
+      v12 = indexCopy;
     }
 
     else
     {
-      v12 = v4 & 0x1F;
+      v12 = indexCopy & 0x1F;
       v13 = (*v9 + 8 * v12);
     }
 
-    *v13 = *(a3 + 90);
-    v26 = [a3 buffer];
+    *v13 = *(structure + 90);
+    buffer = [structure buffer];
     v27 = MEMORY[0x29EDC5638];
-    v28 = *(v26 + *MEMORY[0x29EDC5638] + 8);
-    v29 = *([a3 buffer] + *v27 + 24);
-    v30 = *([a3 buffer] + *v27 + 16);
+    v28 = *(buffer + *MEMORY[0x29EDC5638] + 8);
+    v29 = *([structure buffer] + *v27 + 24);
+    v30 = *([structure buffer] + *v27 + 16);
     v31 = &impl[v12];
     v31[9585] = v28;
     v31[9655] = v29;
-    if (v4 >= 0x1F)
+    if (indexCopy >= 0x1F)
     {
-      *(impl[9130] + 8 * (v4 - 31) + 360) = v29;
+      *(impl[9130] + 8 * (indexCopy - 31) + 360) = v29;
     }
 
     else
@@ -1752,8 +1752,8 @@ LABEL_27:
       *(v32 + 17644) = v28 >> 8;
     }
 
-    v47 = [a3 buffer];
-    v31[9131] = v47 + *v27;
+    buffer2 = [structure buffer];
+    v31[9131] = buffer2 + *v27;
     v48 = impl[251];
     v49 = v48[2].i64[1];
     if (*(v49 + 480) == 1)
@@ -1762,7 +1762,7 @@ LABEL_27:
       v51 = v48[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v50), vceqzq_s64(v51))))))
       {
-        v52 = v47 + *v27;
+        v52 = buffer2 + *v27;
         if ((*(v52 + 23) & 0x10) != 0)
         {
           v52 = *v52;
@@ -1820,10 +1820,10 @@ LABEL_27:
           v53 = (*(v65 + 10) >> v66) & 1;
           v58 = (*(v65 + 14) >> v66) & 1;
 LABEL_46:
-          v59 = (v49 + 8 * (v4 > 0x3F));
-          v59[2] = v59[2] & ~(1 << v4) | (v53 << v4);
-          v59[22] = v59[22] & ~(1 << v4) | (v58 << v4);
-          v59[42] &= ~(1 << v4);
+          v59 = (v49 + 8 * (indexCopy > 0x3F));
+          v59[2] = v59[2] & ~(1 << indexCopy) | (v53 << indexCopy);
+          v59[22] = v59[22] & ~(1 << indexCopy) | (v58 << indexCopy);
+          v59[42] &= ~(1 << indexCopy);
           if (impl[237])
           {
             MTLResourceListAddResource();
@@ -1840,37 +1840,37 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (v4 <= 0x22)
+  if (indexCopy <= 0x22)
   {
-    impl[(v4 & 0x3F) + 9725] = 0;
+    impl[(indexCopy & 0x3F) + 9725] = 0;
   }
 
-  if (a3)
+  if (structure)
   {
-    if (v4 > 0x1E)
+    if (indexCopy > 0x1E)
     {
-      v11 = (impl[9130] + 8 * (v4 - 31) + 48);
-      v10 = v4;
+      v11 = (impl[9130] + 8 * (indexCopy - 31) + 48);
+      v10 = indexCopy;
     }
 
     else
     {
-      v10 = v4 & 0x1F;
+      v10 = indexCopy & 0x1F;
       v11 = (*v9 + 8 * v10);
     }
 
-    *v11 = *(a3 + 84);
-    v19 = [a3 buffer];
+    *v11 = *(structure + 84);
+    buffer3 = [structure buffer];
     v20 = MEMORY[0x29EDC5638];
-    v21 = *(v19 + *MEMORY[0x29EDC5638] + 8);
-    v22 = *([a3 buffer] + *v20 + 24);
-    v23 = *([a3 buffer] + *v20 + 16);
+    v21 = *(buffer3 + *MEMORY[0x29EDC5638] + 8);
+    v22 = *([structure buffer] + *v20 + 24);
+    v23 = *([structure buffer] + *v20 + 16);
     v24 = &impl[v10];
     v24[9585] = v21;
     v24[9655] = v22;
-    if (v4 >= 0x1F)
+    if (indexCopy >= 0x1F)
     {
-      *(impl[9130] + 8 * (v4 - 31) + 360) = v22;
+      *(impl[9130] + 8 * (indexCopy - 31) + 360) = v22;
     }
 
     else
@@ -1882,8 +1882,8 @@ LABEL_45:
       *(v25 + 17644) = v21 >> 8;
     }
 
-    v33 = [a3 buffer];
-    v24[9131] = v33 + *v20;
+    buffer4 = [structure buffer];
+    v24[9131] = buffer4 + *v20;
     v34 = impl[251];
     v35 = v34[2].i64[1];
     if (*(v35 + 480) == 1)
@@ -1892,7 +1892,7 @@ LABEL_45:
       v37 = v34[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v36), vceqzq_s64(v37))))))
       {
-        v38 = v33 + *v20;
+        v38 = buffer4 + *v20;
         if ((*(v38 + 23) & 0x10) != 0)
         {
           v38 = *v38;
@@ -1945,21 +1945,21 @@ LABEL_59:
           }
 
 LABEL_32:
-          v45 = (v35 + 8 * (v4 > 0x3F));
-          v45[2] = v45[2] & ~(1 << v4) | (v39 << v4);
-          v45[22] = v45[22] & ~(1 << v4) | (v44 << v4);
-          v45[42] &= ~(1 << v4);
+          v45 = (v35 + 8 * (indexCopy > 0x3F));
+          v45[2] = v45[2] & ~(1 << indexCopy) | (v39 << indexCopy);
+          v45[22] = v45[22] & ~(1 << indexCopy) | (v44 << indexCopy);
+          v45[42] &= ~(1 << indexCopy);
           if (impl[237])
           {
             MTLResourceListAddResource();
           }
 
-          v46 = *(a3 + 43);
+          v46 = *(structure + 43);
           os_unfair_lock_lock(v46 + 194);
-          os_unfair_lock_assert_owner((*(a3 + 43) + 776));
+          os_unfair_lock_assert_owner((*(structure + 43) + 776));
           os_unfair_lock_unlock(v46 + 194);
 LABEL_48:
-          [a3 buffer];
+          [structure buffer];
           goto LABEL_49;
         }
       }
@@ -1972,13 +1972,13 @@ LABEL_31:
   }
 
 LABEL_12:
-  impl[v4 + 9131] = 0;
-  if (v4 >= 0x1F)
+  impl[indexCopy + 9131] = 0;
+  if (indexCopy >= 0x1F)
   {
-    v17 = impl[9130] + 8 * (v4 - 31);
+    v17 = impl[9130] + 8 * (indexCopy - 31);
     *(v17 + 48) = 0;
     *(v17 + 360) = 0;
-    v18 = &impl[v4];
+    v18 = &impl[indexCopy];
     v18[9585] = 0;
     v18[9655] = 0;
   }
@@ -1986,65 +1986,65 @@ LABEL_12:
   else
   {
     v14 = *v9;
-    v15 = (*v9 + 8 * v4);
+    v15 = (*v9 + 8 * indexCopy);
     *v15 = 0;
-    v16 = &impl[v4];
+    v16 = &impl[indexCopy];
     v16[9585] = 0;
     v15[31] = 0;
     v16[9655] = 0;
-    *(v14 + 4 * v4 + 17516) = 0;
+    *(v14 + 4 * indexCopy + 17516) = 0;
     v15[2205] = 0;
   }
 
 LABEL_49:
-  v60 = &impl[v4 > 0x3F];
-  v60[9798] |= 1 << v4;
-  v60[9804] |= 1 << v4;
+  v60 = &impl[indexCopy > 0x3F];
+  v60[9798] |= 1 << indexCopy;
+  v60[9804] |= 1 << indexCopy;
   impl[9810] |= 0x3000000000uLL;
 }
 
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v7 = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
+  indexCopy = index;
+  requiresRaytracingEmulation = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
   impl = self->_impl;
   v9 = impl + 6136;
-  if (!v7)
+  if (!requiresRaytracingEmulation)
   {
-    if (v4 <= 0x22)
+    if (indexCopy <= 0x22)
     {
-      impl[(v4 & 0x3F) + 6732] = 0;
+      impl[(indexCopy & 0x3F) + 6732] = 0;
     }
 
-    if (!a3)
+    if (!structure)
     {
       goto LABEL_12;
     }
 
-    if (v4 > 0x1E)
+    if (indexCopy > 0x1E)
     {
-      v13 = (impl[6137] + 8 * (v4 - 31) + 40);
-      v12 = v4;
+      v13 = (impl[6137] + 8 * (indexCopy - 31) + 40);
+      v12 = indexCopy;
     }
 
     else
     {
-      v12 = v4 & 0x1F;
+      v12 = indexCopy & 0x1F;
       v13 = (*v9 + 8 * v12);
     }
 
-    *v13 = *(a3 + 90);
-    v26 = [a3 buffer];
+    *v13 = *(structure + 90);
+    buffer = [structure buffer];
     v27 = MEMORY[0x29EDC5638];
-    v28 = *(v26 + *MEMORY[0x29EDC5638] + 8);
-    v29 = *([a3 buffer] + *v27 + 24);
-    v30 = *([a3 buffer] + *v27 + 16);
+    v28 = *(buffer + *MEMORY[0x29EDC5638] + 8);
+    v29 = *([structure buffer] + *v27 + 24);
+    v30 = *([structure buffer] + *v27 + 16);
     v31 = &impl[v12];
     v31[6592] = v28;
     v31[6662] = v29;
-    if (v4 >= 0x1F)
+    if (indexCopy >= 0x1F)
     {
-      *(impl[6137] + 8 * (v4 - 31) + 352) = v29;
+      *(impl[6137] + 8 * (indexCopy - 31) + 352) = v29;
     }
 
     else
@@ -2056,8 +2056,8 @@ LABEL_49:
       *(v32 + 17644) = v28 >> 8;
     }
 
-    v47 = [a3 buffer];
-    v31[6138] = v47 + *v27;
+    buffer2 = [structure buffer];
+    v31[6138] = buffer2 + *v27;
     v48 = impl[251];
     v49 = v48[2].i64[1];
     if (*(v49 + 480) == 1)
@@ -2066,7 +2066,7 @@ LABEL_49:
       v51 = v48[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v50), vceqzq_s64(v51))))))
       {
-        v52 = v47 + *v27;
+        v52 = buffer2 + *v27;
         if ((*(v52 + 23) & 0x10) != 0)
         {
           v52 = *v52;
@@ -2124,10 +2124,10 @@ LABEL_49:
           v53 = (*(v65 + 10) >> v66) & 1;
           v58 = (*(v65 + 14) >> v66) & 1;
 LABEL_46:
-          v59 = (v49 + 8 * (v4 > 0x3F));
-          *v59 = *v59 & ~(1 << v4) | (v53 << v4);
-          v59[20] = v59[20] & ~(1 << v4) | (v58 << v4);
-          v59[40] &= ~(1 << v4);
+          v59 = (v49 + 8 * (indexCopy > 0x3F));
+          *v59 = *v59 & ~(1 << indexCopy) | (v53 << indexCopy);
+          v59[20] = v59[20] & ~(1 << indexCopy) | (v58 << indexCopy);
+          v59[40] &= ~(1 << indexCopy);
           if (impl[237])
           {
             MTLResourceListAddResource();
@@ -2144,37 +2144,37 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (v4 <= 0x22)
+  if (indexCopy <= 0x22)
   {
-    impl[(v4 & 0x3F) + 6732] = 0;
+    impl[(indexCopy & 0x3F) + 6732] = 0;
   }
 
-  if (a3)
+  if (structure)
   {
-    if (v4 > 0x1E)
+    if (indexCopy > 0x1E)
     {
-      v11 = (impl[6137] + 8 * (v4 - 31) + 40);
-      v10 = v4;
+      v11 = (impl[6137] + 8 * (indexCopy - 31) + 40);
+      v10 = indexCopy;
     }
 
     else
     {
-      v10 = v4 & 0x1F;
+      v10 = indexCopy & 0x1F;
       v11 = (*v9 + 8 * v10);
     }
 
-    *v11 = *(a3 + 84);
-    v19 = [a3 buffer];
+    *v11 = *(structure + 84);
+    buffer3 = [structure buffer];
     v20 = MEMORY[0x29EDC5638];
-    v21 = *(v19 + *MEMORY[0x29EDC5638] + 8);
-    v22 = *([a3 buffer] + *v20 + 24);
-    v23 = *([a3 buffer] + *v20 + 16);
+    v21 = *(buffer3 + *MEMORY[0x29EDC5638] + 8);
+    v22 = *([structure buffer] + *v20 + 24);
+    v23 = *([structure buffer] + *v20 + 16);
     v24 = &impl[v10];
     v24[6592] = v21;
     v24[6662] = v22;
-    if (v4 >= 0x1F)
+    if (indexCopy >= 0x1F)
     {
-      *(impl[6137] + 8 * (v4 - 31) + 352) = v22;
+      *(impl[6137] + 8 * (indexCopy - 31) + 352) = v22;
     }
 
     else
@@ -2186,8 +2186,8 @@ LABEL_45:
       *(v25 + 17644) = v21 >> 8;
     }
 
-    v33 = [a3 buffer];
-    v24[6138] = v33 + *v20;
+    buffer4 = [structure buffer];
+    v24[6138] = buffer4 + *v20;
     v34 = impl[251];
     v35 = v34[2].i64[1];
     if (*(v35 + 480) == 1)
@@ -2196,7 +2196,7 @@ LABEL_45:
       v37 = v34[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v36), vceqzq_s64(v37))))))
       {
-        v38 = v33 + *v20;
+        v38 = buffer4 + *v20;
         if ((*(v38 + 23) & 0x10) != 0)
         {
           v38 = *v38;
@@ -2249,21 +2249,21 @@ LABEL_59:
           }
 
 LABEL_32:
-          v45 = (v35 + 8 * (v4 > 0x3F));
-          *v45 = *v45 & ~(1 << v4) | (v39 << v4);
-          v45[20] = v45[20] & ~(1 << v4) | (v44 << v4);
-          v45[40] &= ~(1 << v4);
+          v45 = (v35 + 8 * (indexCopy > 0x3F));
+          *v45 = *v45 & ~(1 << indexCopy) | (v39 << indexCopy);
+          v45[20] = v45[20] & ~(1 << indexCopy) | (v44 << indexCopy);
+          v45[40] &= ~(1 << indexCopy);
           if (impl[237])
           {
             MTLResourceListAddResource();
           }
 
-          v46 = *(a3 + 43);
+          v46 = *(structure + 43);
           os_unfair_lock_lock(v46 + 194);
-          os_unfair_lock_assert_owner((*(a3 + 43) + 776));
+          os_unfair_lock_assert_owner((*(structure + 43) + 776));
           os_unfair_lock_unlock(v46 + 194);
 LABEL_48:
-          [a3 buffer];
+          [structure buffer];
           goto LABEL_49;
         }
       }
@@ -2276,13 +2276,13 @@ LABEL_31:
   }
 
 LABEL_12:
-  impl[v4 + 6138] = 0;
-  if (v4 >= 0x1F)
+  impl[indexCopy + 6138] = 0;
+  if (indexCopy >= 0x1F)
   {
-    v17 = impl[6137] + 8 * (v4 - 31);
+    v17 = impl[6137] + 8 * (indexCopy - 31);
     *(v17 + 40) = 0;
     *(v17 + 352) = 0;
-    v18 = &impl[v4];
+    v18 = &impl[indexCopy];
     v18[6592] = 0;
     v18[6662] = 0;
   }
@@ -2290,32 +2290,32 @@ LABEL_12:
   else
   {
     v14 = *v9;
-    v15 = (*v9 + 8 * v4);
+    v15 = (*v9 + 8 * indexCopy);
     *v15 = 0;
-    v16 = &impl[v4];
+    v16 = &impl[indexCopy];
     v16[6592] = 0;
     v15[31] = 0;
     v16[6662] = 0;
-    *(v14 + 4 * v4 + 17516) = 0;
+    *(v14 + 4 * indexCopy + 17516) = 0;
     v15[2205] = 0;
   }
 
 LABEL_49:
-  v60 = &impl[v4 > 0x3F];
-  v60[9762] |= 1 << v4;
-  v60[9768] |= 1 << v4;
+  v60 = &impl[indexCopy > 0x3F];
+  v60[9762] |= 1 << indexCopy;
+  v60[9768] |= 1 << indexCopy;
   impl[9810] |= 0xC0uLL;
 }
 
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v19[1] = *MEMORY[0x29EDCA608];
-  v8 = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
-  if (v8)
+  requiresRaytracingEmulation = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
+  if (requiresRaytracingEmulation)
   {
-    MEMORY[0x2A1C7C4A8](v8);
+    MEMORY[0x2A1C7C4A8](requiresRaytracingEmulation);
     v10 = (v9 + 15) & 0xFFFFFFFFFFFFFFF0;
     v11 = v19 - v10;
     if (length)
@@ -2324,7 +2324,7 @@ LABEL_49:
       v13 = length;
       do
       {
-        v14 = *a3++;
+        v14 = *tables++;
         *v12++ = [v14 visibleFunctionTable];
         --v13;
       }
@@ -2339,12 +2339,12 @@ LABEL_49:
   {
     for (; length; --length)
     {
-      v15 = *a3;
+      v15 = *tables;
       impl = self->_impl;
       v17 = impl[3495];
       if (!v17)
       {
-        v18 = *a3;
+        v18 = *tables;
         std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
         v15 = v18;
         impl[3495] = v17;
@@ -2352,18 +2352,18 @@ LABEL_49:
 
       AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setIntersectionFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v17, v15, location, v17 + 24048);
       LODWORD(location) = location + 1;
-      ++a3;
+      ++tables;
     }
   }
 }
 
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation])
   {
-    v7 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(AGXG18PFamilyRenderContext *)self setMeshVisibleFunctionTable:v7 atBufferIndex:a4];
+    [(AGXG18PFamilyRenderContext *)self setMeshVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -2376,19 +2376,19 @@ LABEL_49:
       impl[3495] = v9;
     }
 
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setIntersectionFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v9, a3, a4, v9 + 24048);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setIntersectionFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v9, table, index, v9 + 24048);
   }
 }
 
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v19[1] = *MEMORY[0x29EDCA608];
-  v8 = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
-  if (v8)
+  requiresRaytracingEmulation = [(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation];
+  if (requiresRaytracingEmulation)
   {
-    MEMORY[0x2A1C7C4A8](v8);
+    MEMORY[0x2A1C7C4A8](requiresRaytracingEmulation);
     v10 = (v9 + 15) & 0xFFFFFFFFFFFFFFF0;
     v11 = v19 - v10;
     if (length)
@@ -2397,7 +2397,7 @@ LABEL_49:
       v13 = length;
       do
       {
-        v14 = *a3++;
+        v14 = *tables++;
         *v12++ = [v14 visibleFunctionTable];
         --v13;
       }
@@ -2412,12 +2412,12 @@ LABEL_49:
   {
     for (; length; --length)
     {
-      v15 = *a3;
+      v15 = *tables;
       impl = self->_impl;
       v17 = impl[3495];
       if (!v17)
       {
-        v18 = *a3;
+        v18 = *tables;
         std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
         v15 = v18;
         impl[3495] = v17;
@@ -2425,18 +2425,18 @@ LABEL_49:
 
       AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setIntersectionFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v17, v15, location, v17 + 72);
       LODWORD(location) = location + 1;
-      ++a3;
+      ++tables;
     }
   }
 }
 
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation])
   {
-    v7 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(AGXG18PFamilyRenderContext *)self setObjectVisibleFunctionTable:v7 atBufferIndex:a4];
+    [(AGXG18PFamilyRenderContext *)self setObjectVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -2449,148 +2449,148 @@ LABEL_49:
       impl[3495] = v9;
     }
 
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setIntersectionFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v9, a3, a4, v9 + 72);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setIntersectionFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v9, table, index, v9 + 72);
   }
 }
 
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
     v9.receiver = self;
     v9.super_class = AGXG18PFamilyRenderContext;
-    [(IOGPUMetalRenderCommandEncoder *)&v9 setTileIntersectionFunctionTables:a3 withBufferRange:location, length];
+    [(IOGPUMetalRenderCommandEncoder *)&v9 setTileIntersectionFunctionTables:tables withBufferRange:location, length];
   }
 
   else
   {
     for (; length; --length)
     {
-      v8 = *a3++;
+      v8 = *tables++;
       AGX::RenderTileDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTileProgramIntersectionFunctionTable(self->_impl + 2664, v8, location);
       LODWORD(location) = location + 1;
     }
   }
 }
 
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation])
   {
     v8.receiver = self;
     v8.super_class = AGXG18PFamilyRenderContext;
-    [(IOGPUMetalRenderCommandEncoder *)&v8 setTileIntersectionFunctionTable:a3 atBufferIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)&v8 setTileIntersectionFunctionTable:table atBufferIndex:index];
   }
 
   else
   {
     v7 = self->_impl + 2664;
 
-    AGX::RenderTileDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTileProgramIntersectionFunctionTable(v7, a3, a4);
+    AGX::RenderTileDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTileProgramIntersectionFunctionTable(v7, table, index);
   }
 }
 
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
     v9.receiver = self;
     v9.super_class = AGXG18PFamilyRenderContext;
-    [(IOGPUMetalRenderCommandEncoder *)&v9 setFragmentIntersectionFunctionTables:a3 withBufferRange:location, length];
+    [(IOGPUMetalRenderCommandEncoder *)&v9 setFragmentIntersectionFunctionTables:tables withBufferRange:location, length];
   }
 
   else
   {
     for (; length; --length)
     {
-      v8 = *a3++;
+      v8 = *tables++;
       AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setFragmentProgramIntersectionFunctionTable(self->_impl, v8, location);
       LODWORD(location) = location + 1;
     }
   }
 }
 
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation])
   {
     v8.receiver = self;
     v8.super_class = AGXG18PFamilyRenderContext;
-    [(IOGPUMetalRenderCommandEncoder *)&v8 setFragmentIntersectionFunctionTable:a3 atBufferIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)&v8 setFragmentIntersectionFunctionTable:table atBufferIndex:index];
   }
 
   else
   {
     impl = self->_impl;
 
-    AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setFragmentProgramIntersectionFunctionTable(impl, a3, a4);
+    AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setFragmentProgramIntersectionFunctionTable(impl, table, index);
   }
 }
 
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
     v9.receiver = self;
     v9.super_class = AGXG18PFamilyRenderContext;
-    [(IOGPUMetalRenderCommandEncoder *)&v9 setVertexIntersectionFunctionTables:a3 withBufferRange:location, length];
+    [(IOGPUMetalRenderCommandEncoder *)&v9 setVertexIntersectionFunctionTables:tables withBufferRange:location, length];
   }
 
   else
   {
     for (; length; --length)
     {
-      v8 = *a3++;
+      v8 = *tables++;
       AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVertexProgramIntersectionFunctionTable(self->_impl, v8, location);
       LODWORD(location) = location + 1;
     }
   }
 }
 
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation])
   {
     v8.receiver = self;
     v8.super_class = AGXG18PFamilyRenderContext;
-    [(IOGPUMetalRenderCommandEncoder *)&v8 setVertexIntersectionFunctionTable:a3 atBufferIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)&v8 setVertexIntersectionFunctionTable:table atBufferIndex:index];
   }
 
   else
   {
     impl = self->_impl;
 
-    AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVertexProgramIntersectionFunctionTable(impl, a3, a4);
+    AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVertexProgramIntersectionFunctionTable(impl, table, index);
   }
 }
 
-- (void)setMeshVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setMeshVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3;
+      v8 = *tables;
       impl = self->_impl;
       v10 = impl[3495];
       if (!v10)
       {
-        v11 = *a3;
+        v11 = *tables;
         std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
         v8 = v11;
         impl[3495] = v10;
       }
 
       AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVisibleFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v10, v8, location++, v10 + 24048);
-      ++a3;
+      ++tables;
       --length;
     }
 
@@ -2598,43 +2598,43 @@ LABEL_49:
   }
 }
 
-- (void)setMeshVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
+  indexCopy = index;
+  tableCopy2 = table;
   impl = self->_impl;
   v7 = impl[3495];
   if (!v7)
   {
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v5 = a3;
+    tableCopy2 = table;
     impl[3495] = v7;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVisibleFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v7, v5, v4, v7 + 24048);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVisibleFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<true>>(v7, tableCopy2, indexCopy, v7 + 24048);
 }
 
-- (void)setObjectVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setObjectVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3;
+      v8 = *tables;
       impl = self->_impl;
       v10 = impl[3495];
       if (!v10)
       {
-        v11 = *a3;
+        v11 = *tables;
         std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
         v8 = v11;
         impl[3495] = v10;
       }
 
       AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVisibleFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v10, v8, location++, v10 + 72);
-      ++a3;
+      ++tables;
       --length;
     }
 
@@ -2642,31 +2642,31 @@ LABEL_49:
   }
 }
 
-- (void)setObjectVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
+  indexCopy = index;
+  tableCopy2 = table;
   impl = self->_impl;
   v7 = impl[3495];
   if (!v7)
   {
     std::function<AGX::HAL300::HWGeometryPipelineContextA * ()(void)>::operator()(impl[3499]);
-    v5 = a3;
+    tableCopy2 = table;
     impl[3495] = v7;
   }
 
-  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVisibleFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v7, v5, v4, v7 + 72);
+  AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVisibleFunctionTable<AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::StageBindInfo<false>>(v7, tableCopy2, indexCopy, v7 + 72);
 }
 
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       AGX::RenderTileDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTileProgramVisibleFunctionTable(self->_impl + 333, v8, location++);
       --length;
     }
@@ -2675,15 +2675,15 @@ LABEL_49:
   }
 }
 
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setFragmentProgramVisibleFunctionTable(self->_impl, v8, location++);
       --length;
     }
@@ -2692,15 +2692,15 @@ LABEL_49:
   }
 }
 
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setVertexProgramVisibleFunctionTable(self->_impl, v8, location++);
       --length;
     }
@@ -2709,23 +2709,23 @@ LABEL_49:
   }
 }
 
-- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)a3 vertexStartIndex:(unsigned int)a4 vertexEndIndex:(unsigned int)a5 fragmentStartIndex:(unsigned int)a6 fragmentEndIndex:(unsigned int)a7
+- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)buffer vertexStartIndex:(unsigned int)index vertexEndIndex:(unsigned int)endIndex fragmentStartIndex:(unsigned int)startIndex fragmentEndIndex:(unsigned int)fragmentEndIndex
 {
-  if (a3)
+  if (buffer)
   {
     impl = self->_impl;
     v9 = *(impl + 237);
-    *(impl + 19644) = a4;
-    *(impl + 19645) = a5;
-    *(impl + 19646) = a6;
-    *(impl + 19647) = a7;
-    v10 = AGX::CounterSamplingContextGen1::validateSampleIndex(a3, impl + 19644);
-    v11 = AGX::CounterSamplingContextGen1::validateSampleIndex(a3, impl + 19645);
-    v12 = AGX::CounterSamplingContextGen1::validateSampleIndex(a3, impl + 19646);
-    v13 = AGX::CounterSamplingContextGen1::validateSampleIndex(a3, impl + 19647);
+    *(impl + 19644) = index;
+    *(impl + 19645) = endIndex;
+    *(impl + 19646) = startIndex;
+    *(impl + 19647) = fragmentEndIndex;
+    v10 = AGX::CounterSamplingContextGen1::validateSampleIndex(buffer, impl + 19644);
+    v11 = AGX::CounterSamplingContextGen1::validateSampleIndex(buffer, impl + 19645);
+    v12 = AGX::CounterSamplingContextGen1::validateSampleIndex(buffer, impl + 19646);
+    v13 = AGX::CounterSamplingContextGen1::validateSampleIndex(buffer, impl + 19647);
     if ((v10 & 1) != 0 || (v11 & 1) != 0 || (v12 & 1) != 0 || v13)
     {
-      v13 = AGX::CounterSamplingContextGen1::setCounterSampleBuffer((impl + 78568), a3);
+      v13 = AGX::CounterSamplingContextGen1::setCounterSampleBuffer((impl + 78568), buffer);
       if (v13)
       {
         if (*(impl + 9821))
@@ -2751,7 +2751,7 @@ LABEL_49:
   return v13;
 }
 
-- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)a3 startIndex:(unsigned int)a4 endIndex:(unsigned int)a5 dm:(unsigned int)a6
+- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)buffer startIndex:(unsigned int)index endIndex:(unsigned int)endIndex dm:(unsigned int)dm
 {
   v15 = *MEMORY[0x29EDCA608];
   fprintf(*MEMORY[0x29EDCA610], "AGX: %s:%d:%s: *** Please use setMTLCounterSampleLocationWithBuffer:vertexStartIndex:vertexEndIndex:fragmentStartIndex:fragmentEndIndex:\n", "agxa_render_objc.mm", 1324, "[AGXG18PFamilyRenderContext setMTLCounterSampleLocationWithBuffer:startIndex:endIndex:dm:]");
@@ -2781,14 +2781,14 @@ LABEL_49:
   return 0;
 }
 
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index
 {
   impl = self->_impl;
-  impl[483] = a3;
-  impl[484] = a4;
+  impl[483] = batch;
+  impl[484] = lastBatch;
 }
 
-- (void)addSplitHandler:(id)a3
+- (void)addSplitHandler:(id)handler
 {
   v4[0] = 0;
   v4[1] = v4;
@@ -2800,36 +2800,36 @@ LABEL_49:
   v3[1] = 3221225472;
   v3[2] = __46__AGXG18PFamilyRenderContext_addSplitHandler___block_invoke;
   v3[3] = &unk_29F342140;
-  v3[4] = a3;
+  v3[4] = handler;
   v3[5] = v4;
   _Block_copy(v3);
   operator new();
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  v6 = 4 * a5;
-  *(impl[2694] + v6 + 672) = a4 ^ 0x80000000;
-  *(impl[9130] + v6 + 736) = a4 ^ 0x80000000;
+  v6 = 4 * index;
+  *(impl[2694] + v6 + 672) = offset ^ 0x80000000;
+  *(impl[9130] + v6 + 736) = offset ^ 0x80000000;
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4 withRenderTargetArrayIndex:(unsigned int)a5 withCondition:(int64_t)a6
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region withRenderTargetArrayIndex:(unsigned int)index withCondition:(int64_t)condition
 {
   impl = self->_impl;
-  v9 = *&a3->var0;
-  var2 = a3->var2;
-  v7 = *&a4->var0.var2;
-  v8[0] = *&a4->var0.var0;
+  v9 = *&tile->var0;
+  var2 = tile->var2;
+  v7 = *&region->var0.var2;
+  v8[0] = *&region->var0.var0;
   v8[1] = v7;
-  v8[2] = *&a4->var1.var1;
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchWarpedThreads(impl, &v9, v8, a5 | 0x100000000, a6);
+  v8[2] = *&region->var1.var1;
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchWarpedThreads(impl, &v9, v8, index | 0x100000000, condition);
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 withCondition:(int64_t)a4
+- (void)dispatchThreadsPerTile:(id *)tile withCondition:(int64_t)condition
 {
   impl = self->_impl;
-  v8 = *a3;
+  v8 = *tile;
   v5 = impl[299];
   memset(v9, 0, sizeof(v9));
   v6 = *(v5 + 3568);
@@ -2837,7 +2837,7 @@ LABEL_49:
   *(&v7 + 1) = HIDWORD(v6);
   v10 = v7;
   v11 = 1;
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchThreadsImpl<false>(impl, &v8, v9, 1uLL, 0, a4);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchThreadsImpl<false>(impl, &v8, v9, 1uLL, 0, condition);
 }
 
 - (void)resetTileCondition
@@ -2859,41 +2859,41 @@ LABEL_49:
   impl[9810] |= 0x3BuLL;
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4 withRenderTargetArrayIndex:(unsigned int)a5
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region withRenderTargetArrayIndex:(unsigned int)index
 {
   impl = self->_impl;
   impl[486] = impl[485];
-  v7 = *&a3->var0;
-  var2 = a3->var2;
-  v8 = *&a4->var0.var2;
-  v9[0] = *&a4->var0.var0;
+  v7 = *&tile->var0;
+  var2 = tile->var2;
+  v8 = *&region->var0.var2;
+  v9[0] = *&region->var0.var0;
   v9[1] = v8;
-  v9[2] = *&a4->var1.var1;
+  v9[2] = *&region->var1.var1;
   v10 = v7;
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchWarpedThreads(impl, &v10, v9, a5 | 0x100000000, 0);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchWarpedThreads(impl, &v10, v9, index | 0x100000000, 0);
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region
 {
   impl = self->_impl;
   impl[486] = impl[485];
-  v6 = *&a3->var0;
-  var2 = a3->var2;
-  v7 = *&a4->var0.var2;
-  v8[0] = *&a4->var0.var0;
+  v6 = *&tile->var0;
+  var2 = tile->var2;
+  v7 = *&region->var0.var2;
+  v8[0] = *&region->var0.var0;
   v8[1] = v7;
-  v8[2] = *&a4->var1.var1;
+  v8[2] = *&region->var1.var1;
   v9 = v6;
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchWarpedThreads(impl, &v9, v8, 0, 0);
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3
+- (void)dispatchThreadsPerTile:(id *)tile
 {
   impl = self->_impl;
   impl[486] = impl[485];
-  v8 = *a3;
+  v8 = *tile;
   v5 = *(impl + 299);
   memset(v9, 0, sizeof(v9));
   v6 = *(v5 + 3568);
@@ -2905,22 +2905,22 @@ LABEL_49:
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)setTileSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setTileSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length_low = LODWORD(a6.length);
-  if (LODWORD(a6.length))
+  length_low = LODWORD(range.length);
+  if (LODWORD(range.length))
   {
-    location = a6.location;
+    location = range.location;
     impl = self->_impl;
-    while (*a3)
+    while (*states)
     {
       v13 = impl[3331];
       v14 = *(v13 + 848);
-      v15 = *a4;
-      v16 = *a5;
-      v17 = *a3 + 48;
-      v19 = *(*a3 + 4);
-      v18 = *(*a3 + 5);
+      v15 = *clamps;
+      v16 = *maxClamps;
+      v17 = *states + 48;
+      v19 = *(*states + 4);
+      v18 = *(*states + 5);
       v23[0] = *v17;
       v23[1] = v19;
       v23[2] = v18;
@@ -2976,9 +2976,9 @@ LABEL_15:
 
       ++location;
       *(impl[2693] + 32 * v22 + 16880) = p_impl;
-      ++a5;
-      ++a4;
-      ++a3;
+      ++maxClamps;
+      ++clamps;
+      ++states;
       if (!--length_low)
       {
         return;
@@ -2995,34 +2995,34 @@ LABEL_15:
   }
 }
 
-- (void)setTileSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setTileSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v6 = a6;
+  indexCopy = index;
   impl = self->_impl;
-  if (a3)
+  if (state)
   {
     v8 = impl[3331];
     v9 = *(v8 + 848);
-    v10 = *(a3 + 4);
-    v17[0] = *(a3 + 3);
+    v10 = *(state + 4);
+    v17[0] = *(state + 3);
     v17[1] = v10;
-    v17[2] = *(a3 + 5);
-    if (*(a3 + 119) < 0)
+    v17[2] = *(state + 5);
+    if (*(state + 119) < 0)
     {
-      v12 = a5;
-      v13 = a4;
-      std::string::__init_copy_ctor_external(&__p, *(a3 + 12), *(a3 + 13));
-      a4 = v13;
-      a5 = v12;
+      maxClampCopy = maxClamp;
+      clampCopy = clamp;
+      std::string::__init_copy_ctor_external(&__p, *(state + 12), *(state + 13));
+      clamp = clampCopy;
+      maxClamp = maxClampCopy;
     }
 
     else
     {
-      __p = *(a3 + 4);
+      __p = *(state + 4);
     }
 
-    *(v17 + 2) = a4;
-    *(v17 + 3) = a5;
+    *(v17 + 2) = clamp;
+    *(v17 + 3) = maxClamp;
     Sampler = AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::findOrCreateSampler(v9, v17, v8, 0);
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -3044,8 +3044,8 @@ LABEL_15:
   {
     p_impl = &Sampler->_impl;
     v15 = impl + 2693;
-    v16 = v6;
-    *(impl[2693] + 32 * v6 + 16888) = *&Sampler->_impl.desc.var1;
+    v16 = indexCopy;
+    *(impl[2693] + 32 * indexCopy + 16888) = *&Sampler->_impl.desc.var1;
     if (LODWORD(Sampler[1].super._device))
     {
       p_impl = LODWORD(Sampler[1].super._device);
@@ -3056,31 +3056,31 @@ LABEL_15:
   {
     p_impl = 0;
     v15 = impl + 2693;
-    v16 = v6;
-    *(impl[2693] + 32 * v6 + 16888) = 0;
+    v16 = indexCopy;
+    *(impl[2693] + 32 * indexCopy + 16888) = 0;
   }
 
   *(*v15 + 32 * v16 + 16880) = p_impl;
 }
 
-- (void)setTileSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTileSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  statesCopy = states;
   impl = self->_impl;
-  if (LODWORD(a4.length) && impl[337])
+  if (LODWORD(range.length) && impl[337])
   {
-    length_low = LODWORD(a4.length);
-    v9 = a3;
+    length_low = LODWORD(range.length);
+    statesCopy2 = states;
     do
     {
-      if (*v9)
+      if (*statesCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v9;
+      ++statesCopy2;
       --length_low;
     }
 
@@ -3092,8 +3092,8 @@ LABEL_15:
     v10 = length;
     do
     {
-      v11 = *v6;
-      if (*v6)
+      v11 = *statesCopy;
+      if (*statesCopy)
       {
         v11 += 6;
         *(impl[2693] + 32 * location + 16888) = v11[9];
@@ -3109,7 +3109,7 @@ LABEL_15:
       }
 
       *(impl[2693] + 32 * location++ + 16880) = v11;
-      ++v6;
+      ++statesCopy;
       --v10;
     }
 
@@ -3117,24 +3117,24 @@ LABEL_15:
   }
 }
 
-- (void)setTileSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setTileSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   impl = self->_impl;
   if (impl[337])
   {
     MTLResourceListAddResource();
   }
 
-  if (a3)
+  if (state)
   {
-    v7 = a3 + 48;
+    v7 = state + 48;
     v8 = impl + 2693;
-    v9 = v4;
-    *(impl[2693] + 32 * v4 + 16888) = *(a3 + 15);
-    if (*(a3 + 36))
+    v9 = indexCopy;
+    *(impl[2693] + 32 * indexCopy + 16888) = *(state + 15);
+    if (*(state + 36))
     {
-      v7 = *(a3 + 36);
+      v7 = *(state + 36);
     }
   }
 
@@ -3142,31 +3142,31 @@ LABEL_15:
   {
     v7 = 0;
     v8 = impl + 2693;
-    v9 = v4;
-    *(impl[2693] + 32 * v4 + 16888) = 0;
+    v9 = indexCopy;
+    *(impl[2693] + 32 * indexCopy + 16888) = 0;
   }
 
   *(*v8 + 32 * v9 + 16880) = v7;
 }
 
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range
 {
-  LODWORD(v4) = a4.length;
-  location = a4.location;
-  v6 = a3;
+  LODWORD(v4) = range.length;
+  location = range.location;
+  texturesCopy = textures;
   impl = self->_impl;
-  if (LODWORD(a4.length) && impl[337])
+  if (LODWORD(range.length) && impl[337])
   {
-    length_low = LODWORD(a4.length);
-    v9 = a3;
+    length_low = LODWORD(range.length);
+    texturesCopy2 = textures;
     do
     {
-      if (*v9)
+      if (*texturesCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v9;
+      ++texturesCopy2;
       --length_low;
     }
 
@@ -3181,8 +3181,8 @@ LABEL_15:
     v12 = location;
     for (i = 3 * location; ; i += 3)
     {
-      v27 = *v6;
-      if (*v6)
+      v27 = *texturesCopy;
+      if (*texturesCopy)
       {
         break;
       }
@@ -3211,7 +3211,7 @@ LABEL_15:
 LABEL_10:
       *(v26 + (v16 << 7) + 552) = v17;
       ++v12;
-      ++v6;
+      ++texturesCopy;
       if (!--v4)
       {
         return;
@@ -3351,22 +3351,22 @@ LABEL_24:
   }
 }
 
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  if (!a3)
+  if (!texture)
   {
-    v9 = a4;
-    v10 = a4 << 7;
+    indexCopy3 = index;
+    v10 = index << 7;
     v11 = impl[2693] + v10;
-    v12 = a4;
+    indexCopy2 = index;
     bzero((v11 + 496), 0x38uLL);
     v13 = 0;
     *(v11 + 544) = 0;
     v14 = impl[2693];
-    v15 = v14 + 8 * (v12 > 0x3F);
-    *(v15 + 17888) &= ~(1 << v12);
-    *(v15 + 17904) &= ~(1 << v12);
+    v15 = v14 + 8 * (indexCopy2 > 0x3F);
+    *(v15 + 17888) &= ~(1 << indexCopy2);
+    *(v15 + 17904) &= ~(1 << indexCopy2);
     v16 = *(impl[3331] + 848);
     v17 = v14 + v10;
     v18 = *(v16 + 16496);
@@ -3380,7 +3380,7 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  v6 = *(a3 + 74);
+  v6 = *(texture + 74);
   if (v6)
   {
     v7 = *(v6 + 592);
@@ -3408,7 +3408,7 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  v27 = a3 + *MEMORY[0x29EDC5638];
+  v27 = texture + *MEMORY[0x29EDC5638];
   if ((v27[23] & 0x10) != 0)
   {
     v27 = *v27;
@@ -3468,15 +3468,15 @@ LABEL_32:
   }
 
 LABEL_16:
-  v34 = a4 > 0x3F;
+  v34 = index > 0x3F;
   v35 = (v23 + 8 * v34);
-  v36 = 1 << a4;
-  v35[10] = v35[10] & ~(1 << a4) | (v28 << a4);
-  v35[30] = v35[30] & ~(1 << a4) | (v33 << a4);
-  v35[50] &= ~(1 << a4);
-  v37 = 3 * a4;
+  v36 = 1 << index;
+  v35[10] = v35[10] & ~(1 << index) | (v28 << index);
+  v35[30] = v35[30] & ~(1 << index) | (v33 << index);
+  v35[50] &= ~(1 << index);
+  v37 = 3 * index;
   v38 = impl + 2765;
-  impl[(3 * a4) + 2765] = a3 + *v24;
+  impl[(3 * index) + 2765] = texture + *v24;
   if (v7)
   {
     v7 += *v24;
@@ -3494,8 +3494,8 @@ LABEL_16:
   }
 
   v38[v37 + 2] = v39;
-  v9 = a4;
-  v40 = impl[2693] + (a4 << 7);
+  indexCopy3 = index;
+  v40 = impl[2693] + (index << 7);
   v41 = *(v6 + 72);
   v42 = *(v6 + 88);
   v43 = *(v6 + 104);
@@ -3511,12 +3511,12 @@ LABEL_16:
     v45 = *(v45 + 1304) != 0;
   }
 
-  *(v44 + 17904 + 8 * v34) = *(v44 + 17904 + 8 * v34) & ~v36 | (v45 << (a4 & 0x3F));
-  v46 = v44 + (a4 << 7);
+  *(v44 + 17904 + 8 * v34) = *(v44 + 17904 + 8 * v34) & ~v36 | (v45 << (index & 0x3F));
+  v46 = v44 + (index << 7);
   v47 = *(v6 + 432);
   *(v46 + 560) = *(v6 + 416);
   *(v46 + 576) = v47;
-  v48 = impl[2693] + (a4 << 7);
+  v48 = impl[2693] + (index << 7);
   v49 = *(v6 + 464);
   *(v48 + 592) = *(v6 + 448);
   *(v48 + 608) = v49;
@@ -3525,29 +3525,29 @@ LABEL_16:
     MTLResourceListAddResource();
   }
 
-  v13 = *(*(a3 + 74) + 120);
+  v13 = *(*(texture + 74) + 120);
 LABEL_26:
-  *(impl[2693] + (v9 << 7) + 552) = v13;
+  *(impl[2693] + (indexCopy3 << 7) + 552) = v13;
 }
 
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  buffersCopy = buffers;
   impl = self->_impl;
-  if (LODWORD(a5.length) && impl[337])
+  if (LODWORD(range.length) && impl[337])
   {
-    length_low = LODWORD(a5.length);
-    v11 = a3;
+    length_low = LODWORD(range.length);
+    buffersCopy2 = buffers;
     do
     {
-      if (*v11)
+      if (*buffersCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v11;
+      ++buffersCopy2;
       --length_low;
     }
 
@@ -3568,8 +3568,8 @@ LABEL_26:
         impl[v16 + 3149] = 0;
       }
 
-      v20 = *v8;
-      if (!*v8)
+      v20 = *buffersCopy;
+      if (!*buffersCopy)
       {
         if (v16 > 0x1E)
         {
@@ -3603,8 +3603,8 @@ LABEL_26:
       v21 = &v20[*v15];
       v22 = *(v21 + 1);
       v23 = *(v21 + 3);
-      v24 = *a4 + v22;
-      v25 = v23 + *a4;
+      v24 = *offsets + v22;
+      v25 = v23 + *offsets;
       if (v16 >= 0x1F)
       {
         v34 = impl[2694] + 8 * (v16 - 31);
@@ -3707,8 +3707,8 @@ LABEL_11:
       v19[44] &= ~(1 << v16);
 LABEL_12:
       ++v16;
-      ++a4;
-      ++v8;
+      ++offsets;
+      ++buffersCopy;
       if (!--v14)
       {
         return;
@@ -3722,68 +3722,68 @@ LABEL_10:
   }
 }
 
-- (void)setTileBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setTileBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  v5 = &impl[a4];
+  v5 = &impl[index];
   v6 = *(v5 + 3184);
   v7 = *(v5 + 3254);
-  v8 = v6 + a3;
-  if (a4 >= 0x1F)
+  v8 = v6 + offset;
+  if (index >= 0x1F)
   {
-    v11 = impl[2694] + 8 * (a4 - 31);
+    v11 = impl[2694] + 8 * (index - 31);
     *(v11 + 48) = v8;
-    *(v11 + 360) = v7 + a3;
+    *(v11 + 360) = v7 + offset;
   }
 
   else
   {
     v9 = impl[2693];
-    v10 = v9 + 8 * a4;
+    v10 = v9 + 8 * index;
     *v10 = v8;
-    *(v10 + 248) = v7 + a3;
-    *(v10 + 17640) = *(v9 + 4 * a4 + 17516);
+    *(v10 + 248) = v7 + offset;
+    *(v10 + 17640) = *(v9 + 4 * index + 17516);
   }
 }
 
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  if (a5 <= 0x22)
+  if (index <= 0x22)
   {
-    impl[(a5 & 0x3F) + 3149] = 0;
+    impl[(index & 0x3F) + 3149] = 0;
   }
 
-  if (a3)
+  if (buffer)
   {
     v6 = MEMORY[0x29EDC5638];
-    v7 = a3 + *MEMORY[0x29EDC5638];
+    v7 = buffer + *MEMORY[0x29EDC5638];
     v8 = v7[2];
     v9 = v7[3];
     v10 = v7[1];
-    v11 = &impl[a5];
+    v11 = &impl[index];
     v11[3184] = v10;
     v11[3254] = v9;
-    v12 = v10 + a4;
-    if (a5 >= 0x1F)
+    v12 = v10 + offset;
+    if (index >= 0x1F)
     {
-      v19 = impl[2694] + 8 * (a5 - 31);
+      v19 = impl[2694] + 8 * (index - 31);
       *(v19 + 48) = v12;
-      *(v19 + 360) = v9 + a4;
+      *(v19 + 360) = v9 + offset;
     }
 
     else
     {
       v13 = impl[2693];
-      v14 = v13 + 8 * a5;
+      v14 = v13 + 8 * index;
       *v14 = v12;
-      *(v13 + 4 * a5 + 17516) = v8;
-      *(v14 + 248) = v9 + a4;
+      *(v13 + 4 * index + 17516) = v8;
+      *(v14 + 248) = v9 + offset;
       *(v14 + 17640) = v8;
       *(v14 + 17644) = v10 >> 8;
     }
 
-    impl[a5 + 2695] = a3 + *v6;
+    impl[index + 2695] = buffer + *v6;
     v20 = impl[336];
     v21 = v20[2].i64[1];
     if (*(v21 + 480) == 1)
@@ -3792,7 +3792,7 @@ LABEL_10:
       v23 = v20[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v22), vceqzq_s64(v23))))))
       {
-        v24 = a3 + *v6;
+        v24 = buffer + *v6;
         if ((v24[23] & 0x10) != 0)
         {
           v24 = *v24;
@@ -3850,10 +3850,10 @@ LABEL_10:
           v25 = (*(v35 + 10) >> v36) & 1;
           v30 = (*(v35 + 14) >> v36) & 1;
 LABEL_19:
-          v31 = (v21 + 8 * (a5 > 0x3F));
-          v31[4] = v31[4] & ~(1 << a5) | (v25 << a5);
-          v31[24] = v31[24] & ~(1 << a5) | (v30 << a5);
-          v31[44] &= ~(1 << a5);
+          v31 = (v21 + 8 * (index > 0x3F));
+          v31[4] = v31[4] & ~(1 << index) | (v25 << index);
+          v31[24] = v31[24] & ~(1 << index) | (v30 << index);
+          v31[44] &= ~(1 << index);
           if (impl[337])
           {
             MTLResourceListAddResource();
@@ -3870,12 +3870,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a5 >= 0x1F)
+  if (index >= 0x1F)
   {
-    v32 = impl[2694] + 8 * (a5 - 31);
+    v32 = impl[2694] + 8 * (index - 31);
     *(v32 + 48) = 0;
     *(v32 + 360) = 0;
-    v33 = &impl[a5];
+    v33 = &impl[index];
     v33[3184] = 0;
     v33[3254] = 0;
   }
@@ -3883,31 +3883,31 @@ LABEL_18:
   else
   {
     v15 = impl[2693];
-    v16 = a5 & 0x1F;
+    v16 = index & 0x1F;
     v17 = (v15 + v16 * 8);
     *v17 = 0;
     v17[31] = 0;
     v18 = &impl[v16];
     v18[3184] = 0;
     v18[3254] = 0;
-    *(v15 + 4 * (a5 & 0x1F) + 17516) = 0;
+    *(v15 + 4 * (index & 0x1F) + 17516) = 0;
     v17[2205] = 0;
   }
 }
 
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   impl = self->_impl;
-  v8 = a4 + 15;
+  v8 = length + 15;
   v9 = impl[335];
-  v10 = (a4 + 15) | 0xF;
+  v10 = (length + 15) | 0xF;
   v11 = v9[22] + v10;
   if (v11 > v9[21])
   {
-    v19 = a3;
+    bytesCopy = bytes;
     v20 = AGX::DataBufferAllocator<44ul>::growNoInline(impl[335], 4, 0);
-    a3 = v19;
+    bytes = bytesCopy;
     if (!v20)
     {
       goto LABEL_3;
@@ -3926,84 +3926,84 @@ LABEL_3:
   v13 = ((*(v12 + 176) + 15) & 0xFFFFFFFFFFFFFFF0);
   v14 = &v13[*(v12 + 192)];
   *(v12 + 176) = &v13[v8 & 0xFFFFFFFFFFFFFFF0];
-  memcpy(v13, a3, a4);
+  memcpy(v13, bytes, length);
   v15 = *(*(impl[335] + 24) + 288) + *MEMORY[0x29EDC5638];
-  v16 = &impl[v5];
-  if (v5 > 0x22 || (v16[3149] = 0, v5 >= 0x1F))
+  v16 = &impl[indexCopy];
+  if (indexCopy > 0x22 || (v16[3149] = 0, indexCopy >= 0x1F))
   {
-    *(impl[2694] + 8 * (v5 - 31) + 48) = v14;
+    *(impl[2694] + 8 * (indexCopy - 31) + 48) = v14;
     v16[2695] = v15;
   }
 
   else
   {
     v17 = impl[2693];
-    v18 = v17 + 8 * v5;
+    v18 = v17 + 8 * indexCopy;
     *v18 = v14;
-    *(v17 + 4 * v5 + 17516) = a4;
-    impl[v5 + 2695] = v15;
-    *(v18 + 17640) = a4;
+    *(v17 + 4 * indexCopy + 17516) = length;
+    impl[indexCopy + 2695] = v15;
+    *(v18 + 17640) = length;
     *(v18 + 17644) = v14 >> 8;
   }
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset
 {
-  v16 = a9;
+  indirectBufferOffsetCopy2 = indirectBufferOffset;
   impl = self->_impl;
   *(impl + 486) = *(impl + 485);
   v18 = *(impl + 6137);
   *(impl + 9934) |= 0x8000uLL;
-  *(v18 + 716) = a3;
-  *(v18 + 680) = a4 != 0;
+  *(v18 + 716) = patches;
+  *(v18 + 680) = buffer != 0;
   *(impl + 9772) |= 0x20uLL;
   *(impl + 9810) |= 0x40uLL;
   v19 = *(impl + 3469);
   if (!v19)
   {
     v19 = std::function<AGX::HAL300::HWTessellationContextA * ()(void)>::operator()(*(impl + 3473));
-    v16 = a9;
+    indirectBufferOffsetCopy2 = indirectBufferOffset;
     *(impl + 3469) = v19;
   }
 
-  (*(*v19 + 40))(v19, a3, a4, a5, a6, a7, a8, v16);
+  (*(*v19 + 40))(v19, patches, buffer, offset, indexBuffer, bufferOffset, indirectBuffer, indirectBufferOffsetCopy2);
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1
 {
-  v18 = a9;
+  bufferOffsetCopy2 = bufferOffset;
   impl = self->_impl;
   *(impl + 486) = *(impl + 485);
   *(impl + 9934) |= 0x8000uLL;
   v20 = *(impl + 6137);
-  v20[179] = a3;
-  v20[170] = a6 != 0;
-  v20[168] = a11;
+  v20[179] = patches;
+  v20[170] = buffer != 0;
+  v20[168] = instance;
   *(impl + 9772) |= 0x20uLL;
   *(impl + 9810) |= 0x40uLL;
   v21 = *(impl + 3469);
   if (!v21)
   {
-    v22 = a8;
+    indexBufferCopy = indexBuffer;
     v21 = std::function<AGX::HAL300::HWTessellationContextA * ()(void)>::operator()(*(impl + 3473));
-    a8 = v22;
-    v18 = a9;
+    indexBuffer = indexBufferCopy;
+    bufferOffsetCopy2 = bufferOffset;
     *(impl + 3469) = v21;
   }
 
-  (*(*v21 + 32))(v21, a3, a4, a5, a6, a7, a8, v18, __PAIR64__(a11, a10));
+  (*(*v21 + 32))(v21, patches, start, count, buffer, offset, indexBuffer, bufferOffsetCopy2, __PAIR64__(instance, instanceCount));
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
   impl = self->_impl;
   *(impl + 486) = *(impl + 485);
   v14 = *(impl + 6137);
   *(impl + 9934) |= 0x8000uLL;
-  *(v14 + 716) = a3;
-  *(v14 + 680) = a4 != 0;
+  *(v14 + 716) = patches;
+  *(v14 + 680) = buffer != 0;
   *(impl + 9772) |= 0x20uLL;
   *(impl + 9810) |= 0x40uLL;
   v15 = *(impl + 3469);
@@ -4013,35 +4013,35 @@ LABEL_3:
     *(impl + 3469) = v15;
   }
 
-  (*(*v15 + 40))(v15, a3, a4, a5, 0, 0, a6, a7);
+  (*(*v15 + 40))(v15, patches, buffer, offset, 0, 0, indirectBuffer, bufferOffset);
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   impl = self->_impl;
   *(impl + 486) = *(impl + 485);
   *(impl + 9934) |= 0x8000uLL;
   v16 = *(impl + 6137);
-  v16[179] = a3;
-  v16[170] = a6 != 0;
-  v16[168] = a9;
+  v16[179] = patches;
+  v16[170] = buffer != 0;
+  v16[168] = instance;
   *(impl + 9772) |= 0x20uLL;
   *(impl + 9810) |= 0x40uLL;
   v17 = *(impl + 3469);
   if (!v17)
   {
-    v18 = a8;
+    instanceCountCopy = instanceCount;
     v17 = std::function<AGX::HAL300::HWTessellationContextA * ()(void)>::operator()(*(impl + 3473));
-    LODWORD(a8) = v18;
+    LODWORD(instanceCount) = instanceCountCopy;
     *(impl + 3469) = v17;
   }
 
-  (*(*v17 + 32))(v17, a3, a4, a5, a6, a7, 0, 0, __PAIR64__(a9, a8));
+  (*(*v17 + 32))(v17, patches, start, count, buffer, offset, 0, 0, __PAIR64__(instance, instanceCount));
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride
 {
   impl = self->_impl;
   v6 = impl[3469];
@@ -4056,27 +4056,27 @@ LABEL_3:
   v7();
 }
 
-- (void)setTessellationFactorScale:(float)a3
+- (void)setTessellationFactorScale:(float)scale
 {
   impl = self->_impl;
   v4 = impl[3469];
   if (!v4)
   {
-    v6 = a3;
+    scaleCopy = scale;
     v4 = std::function<AGX::HAL300::HWTessellationContextA * ()(void)>::operator()(impl[3473]);
-    a3 = v6;
+    scale = scaleCopy;
     impl[3469] = v4;
   }
 
   v5 = *(*v4 + 24);
 
-  v5(*&a3);
+  v5(*&scale);
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   impl = self->_impl;
-  if (AGX::BarrierTracker::addBackFacingBarrier((impl + 507), a3, a4, 1))
+  if (AGX::BarrierTracker::addBackFacingBarrier((impl + 507), stages, beforeStages, 1))
   {
     AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::reserveVertexBarrier((impl + 6), 0);
     ++impl[19640];
@@ -4086,16 +4086,16 @@ LABEL_3:
   }
 }
 
-- (void)waitForFence:(id)a3 beforeStages:(unint64_t)a4
+- (void)waitForFence:(id)fence beforeStages:(unint64_t)stages
 {
-  if (a4)
+  if (stages)
   {
-    v4 = a4;
+    stagesCopy = stages;
     impl = self->_impl;
     v7 = MEMORY[0x29EDC5610];
     do
     {
-      v9 = __clz(__rbit64(v4));
+      v9 = __clz(__rbit64(stagesCopy));
       if ((1 << v9) <= 0x10)
       {
         v10 = 1 << (1 << v9);
@@ -4126,27 +4126,27 @@ LABEL_3:
             operator new();
           }
 
-          AGX::FenceList::insertFence(v8, *(a3 + *v7));
+          AGX::FenceList::insertFence(v8, *(fence + *v7));
         }
       }
 
-      v4 &= ~(1 << v9);
+      stagesCopy &= ~(1 << v9);
     }
 
-    while (v4);
+    while (stagesCopy);
   }
 }
 
-- (void)updateFence:(id)a3 afterStages:(unint64_t)a4
+- (void)updateFence:(id)fence afterStages:(unint64_t)stages
 {
-  if (a4)
+  if (stages)
   {
-    v4 = a4;
+    stagesCopy = stages;
     impl = self->_impl;
     v7 = MEMORY[0x29EDC5610];
     do
     {
-      v9 = __clz(__rbit64(v4));
+      v9 = __clz(__rbit64(stagesCopy));
       if ((1 << v9) <= 0x10)
       {
         v10 = 1 << (1 << v9);
@@ -4177,29 +4177,29 @@ LABEL_3:
             operator new();
           }
 
-          AGX::FenceList::insertFence(v8, *(a3 + *v7));
+          AGX::FenceList::insertFence(v8, *(fence + *v7));
         }
       }
 
-      v4 &= ~(1 << v9);
+      stagesCopy &= ~(1 << v9);
     }
 
-    while (v4);
+    while (stagesCopy);
   }
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
-  v68 = a8;
-  v70 = a6;
+  bufferOffsetCopy = bufferOffset;
+  offsetCopy = offset;
   impl = self->_impl;
   impl[121].i32[2] = impl[121].i32[1];
   v11 = MEMORY[0x29EDC5638];
   v12 = *MEMORY[0x29EDC5638];
-  v13 = a5 + v12;
-  v14 = *(a5 + v12 + 8);
-  v15 = *(a5 + v12 + 16);
-  if (impl[1880].i64[1] == a5)
+  v13 = buffer + v12;
+  v14 = *(buffer + v12 + 8);
+  v15 = *(buffer + v12 + 16);
+  if (impl[1880].i64[1] == buffer)
   {
     v28 = *MEMORY[0x29EDC5638];
     goto LABEL_29;
@@ -4214,7 +4214,7 @@ LABEL_3:
       v20 = v18[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v19), vceqzq_s64(v20))))))
       {
-        v21 = (a5 + v12);
+        v21 = (buffer + v12);
         if ((v15 & 0x1000000000000000) != 0)
         {
           v21 = *v13;
@@ -4261,7 +4261,7 @@ LABEL_22:
               v33 = (v32 & v31) != 0;
               if ((v32 & (*(v30 + 14) | v31)) != 0)
               {
-                v34 = a5 + v12;
+                v34 = buffer + v12;
                 if ((v15 & 0x1000000000000000) != 0)
                 {
                   v34 = *v13;
@@ -4287,18 +4287,18 @@ LABEL_22:
     MTLResourceListAddResource();
   }
 
-  impl[1880].i64[1] = a5;
+  impl[1880].i64[1] = buffer;
   v28 = *v11;
   v12 = *v11;
 LABEL_29:
   v35 = &impl[1879].i8[1];
-  v36 = *(a7 + v12 + 8);
-  if (impl[1881].i64[0] == a7)
+  v36 = *(indirectBuffer + v12 + 8);
+  if (impl[1881].i64[0] == indirectBuffer)
   {
     goto LABEL_56;
   }
 
-  v37 = a7 + v28;
+  v37 = indirectBuffer + v28;
   v38 = *(v37 + 2);
   if ((v38 & 0x7FFFFFFF80) != 0 && (v38 >> 61) - 5 >= 0xFFFFFFFFFFFFFFFCLL)
   {
@@ -4309,7 +4309,7 @@ LABEL_29:
       v42 = v40[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v41), vceqzq_s64(v42))))))
       {
-        v43 = (a7 + v28);
+        v43 = (indirectBuffer + v28);
         if ((v38 & 0x1000000000000000) != 0)
         {
           v43 = *v37;
@@ -4357,7 +4357,7 @@ LABEL_49:
               if ((v53 & (*(v51 + 14) | v52)) != 0)
               {
                 v55 = (*(v37 + 1) + 127) & 0xFFFFFFFFFFFFFF80;
-                v56 = a7 + v28;
+                v56 = indirectBuffer + v28;
                 if ((v38 & 0x1000000000000000) != 0)
                 {
                   v56 = *v37;
@@ -4383,12 +4383,12 @@ LABEL_49:
     MTLResourceListAddResource();
   }
 
-  impl[1881].i64[0] = a7;
+  impl[1881].i64[0] = indirectBuffer;
 LABEL_56:
-  v57 = v36 + v68;
+  v57 = v36 + bufferOffsetCopy;
   if (((*(impl[1896].i64[0] + 2480) | *(impl[1896].i64[0] + 2432)) & 0x700000000000) != 0)
   {
-    v58 = a7 + *v11;
+    v58 = indirectBuffer + *v11;
     impl[4881].i64[0] |= 0x700000000000uLL;
     impl[4905].i64[0] |= 0x40uLL;
     *(impl[3068].i64[1] + 144) = vaddq_s64(vdupq_n_s64(v57), xmmword_29D2F2530);
@@ -4401,12 +4401,12 @@ LABEL_56:
     impl[4905].i64[0] |= 1uLL;
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, impl[1896].i64[0], impl[1896].i64[1], impl[3068].i64[0], impl[4564].i64[1], impl[4881].i64, 0);
   if (*(impl[149].i64[1] + 4907) == 1)
   {
-    v59 = 0x114u >> a3;
-    if (a3 >= 9)
+    v59 = 0x114u >> primitives;
+    if (primitives >= 9)
     {
       LOBYTE(v59) = 0;
     }
@@ -4428,7 +4428,7 @@ LABEL_56:
     v61 = impl[1879].u32[1];
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v60 = v60;
   }
@@ -4451,9 +4451,9 @@ LABEL_56:
     v63 = 0;
   }
 
-  v64 = v14 + v70;
-  v65 = v70 & 0xFFFFFFFC;
-  v66 = BYTE4(v64) | v63 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDrawIndirect[a3] + (a4 << 17)) & 0xFFEEFF00 | 0x100000;
+  v64 = v14 + offsetCopy;
+  v65 = offsetCopy & 0xFFFFFFFC;
+  v66 = BYTE4(v64) | v63 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDrawIndirect[primitives] + (type << 17)) & 0xFFEEFF00 | 0x100000;
   if ((v15 & 0xFFFFFFFFFFFFFFLL) <= v65)
   {
     v67 = -1;
@@ -4476,16 +4476,16 @@ LABEL_56:
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
-  v5 = a5;
+  offsetCopy = offset;
   impl = self->_impl;
   v10 = MEMORY[0x29EDC5638];
   *(impl + 486) = *(impl + 485);
   v11 = *v10;
-  v12 = a4 + v11;
-  v13 = *(a4 + v11 + 8);
-  if (*(impl + 3762) == a4)
+  v12 = buffer + v11;
+  v13 = *(buffer + v11 + 8);
+  if (*(impl + 3762) == buffer)
   {
     goto LABEL_28;
   }
@@ -4500,7 +4500,7 @@ LABEL_56:
       v18 = v16[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v17), vceqzq_s64(v18))))))
       {
-        v19 = (a4 + v11);
+        v19 = (buffer + v11);
         if ((v14 & 0x1000000000000000) != 0)
         {
           v19 = *v12;
@@ -4547,7 +4547,7 @@ LABEL_21:
               v30 = (v29 & v28) != 0;
               if ((v29 & (*(v27 + 14) | v28)) != 0)
               {
-                v31 = a4 + v11;
+                v31 = buffer + v11;
                 if ((v14 & 0x1000000000000000) != 0)
                 {
                   v31 = *v12;
@@ -4573,17 +4573,17 @@ LABEL_21:
     MTLResourceListAddResource();
   }
 
-  *(impl + 3762) = a4;
+  *(impl + 3762) = buffer;
   v10 = MEMORY[0x29EDC5638];
   v11 = *MEMORY[0x29EDC5638];
 LABEL_28:
-  v32 = v13 + v5;
+  v32 = v13 + offsetCopy;
   if (((*(*(impl + 3792) + 2480) | *(*(impl + 3792) + 2432)) & 0x700000000000) == 0)
   {
     goto LABEL_35;
   }
 
-  v33 = a4 + v11;
+  v33 = buffer + v11;
   *(impl + 9762) |= 0x700000000000uLL;
   *(impl + 9810) |= 0x40uLL;
   v34 = *(impl + 6137);
@@ -4632,10 +4632,10 @@ LABEL_35:
     *(impl + 9810) |= 1uLL;
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, *(impl + 3792), *(impl + 3793), *(impl + 6136), *(impl + 9129), (impl + 78096), 0);
   *(impl + 9934) |= 0x80uLL;
-  v38 = v32 & 0xFFFF00000000 | AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDrawIndirect[a3];
+  v38 = v32 & 0xFFFF00000000 | AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDrawIndirect[primitives];
   v39 = *(impl + 9);
   *(impl + 9) = v39 + 12;
   *v39 = v38;
@@ -4645,24 +4645,24 @@ LABEL_35:
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v60 = a4;
+  instanceCountCopy = instanceCount;
+  offsetCopy = offset;
+  countCopy = count;
   impl = self->_impl;
   impl[121].i32[2] = impl[121].i32[1];
   v15 = MEMORY[0x29EDC5638];
   v16 = *MEMORY[0x29EDC5638];
-  v17 = a6 + v16;
-  v18 = *(a6 + v16 + 8);
-  v19 = *(a6 + v16 + 16);
-  if (impl[1880].i64[1] == a6)
+  v17 = buffer + v16;
+  v18 = *(buffer + v16 + 8);
+  v19 = *(buffer + v16 + 16);
+  if (impl[1880].i64[1] == buffer)
   {
     goto LABEL_28;
   }
 
-  v21 = *(a6 + v16 + 8);
+  v21 = *(buffer + v16 + 8);
   if ((v19 & 0x7FFFFFFF80) != 0 && (v19 >> 61) - 5 >= 0xFFFFFFFFFFFFFFFCLL)
   {
     v23 = impl[125].i64[1];
@@ -4672,7 +4672,7 @@ LABEL_35:
       v25 = v23[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v24), vceqzq_s64(v25))))))
       {
-        v26 = (a6 + v16);
+        v26 = (buffer + v16);
         if ((v19 & 0x1000000000000000) != 0)
         {
           v26 = *v17;
@@ -4719,7 +4719,7 @@ LABEL_21:
               v37 = (v36 & v35) != 0;
               if ((v36 & (*(v34 + 14) | v35)) != 0)
               {
-                v38 = a6 + v16;
+                v38 = buffer + v16;
                 if ((v19 & 0x1000000000000000) != 0)
                 {
                   v38 = *v17;
@@ -4745,11 +4745,11 @@ LABEL_21:
     MTLResourceListAddResource();
   }
 
-  impl[1880].i64[1] = a6;
+  impl[1880].i64[1] = buffer;
   v18 = v21;
   v15 = MEMORY[0x29EDC5638];
 LABEL_28:
-  v39 = a9;
+  vertexCopy3 = vertex;
   if (((*(impl[1896].i64[0] + 2480) | *(impl[1896].i64[0] + 2432)) & 0x700000000000) == 0)
   {
     goto LABEL_32;
@@ -4757,7 +4757,7 @@ LABEL_28:
 
   impl[4881].i64[0] |= 0x700000000000uLL;
   impl[4905].i64[0] |= 0x40uLL;
-  *(impl[3068].i64[1] + 160) = a10;
+  *(impl[3068].i64[1] + 160) = instance;
   v40 = impl[10].i64[1];
   v41 = v40 + 2;
   if ((v40 + 2) > impl[10].i64[0])
@@ -4769,14 +4769,14 @@ LABEL_28:
     {
       v18 = v57;
       v15 = MEMORY[0x29EDC5638];
-      v39 = a9;
+      vertexCopy3 = vertex;
       goto LABEL_31;
     }
 
     v41 = v40 + 2;
     v18 = v57;
     v15 = MEMORY[0x29EDC5638];
-    v39 = a9;
+    vertexCopy3 = vertex;
     if ((v40 + 2) > impl[10].i64[0])
     {
       abort();
@@ -4790,12 +4790,12 @@ LABEL_31:
   v43 = impl[3068].i64[1];
   *(v43 + 144) = v42;
   *(v43 + 152) = v42 + 4;
-  *v40 = v39;
-  v40[1] = a10;
+  *v40 = vertexCopy3;
+  v40[1] = instance;
   impl[3091] = vdupq_n_s64(*(impl[3].i64[0] + 224) + *v15);
 LABEL_32:
-  v44 = v11 & 0xFFFFFFFC;
-  v45 = v18 + v11;
+  v44 = offsetCopy & 0xFFFFFFFC;
+  v45 = v18 + offsetCopy;
   if ((impl[1879].i8[1] & 1) == 0)
   {
     impl[1879].i8[1] = 1;
@@ -4804,12 +4804,12 @@ LABEL_32:
 
   v46 = v19 & 0xFFFFFFFFFFFFFFLL;
   v47 = ((v19 - v44 + 3) >> 2) - 1;
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, impl[1896].i64[0], impl[1896].i64[1], impl[3068].i64[0], impl[4564].i64[1], impl[4881].i64, 0);
   if (*(impl[149].i64[1] + 4907) == 1)
   {
-    v48 = 0x114u >> a3;
-    if (a3 >= 9)
+    v48 = 0x114u >> primitives;
+    if (primitives >= 9)
     {
       LOBYTE(v48) = 0;
     }
@@ -4820,7 +4820,7 @@ LABEL_32:
     LOBYTE(v48) = impl[1879].i8[3];
   }
 
-  v49 = v60;
+  v49 = countCopy;
   LODWORD(v50) = impl[1879].i32[1];
   if (v50 >= 0xFFFF)
   {
@@ -4832,7 +4832,7 @@ LABEL_32:
     v51 = impl[1879].u32[1];
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v50 = v50;
   }
@@ -4854,7 +4854,7 @@ LABEL_32:
     v53 = 0;
   }
 
-  v54 = BYTE4(v45) | v53 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDraw[a3] + (a5 << 17)) & 0xFFEEFF00 | 0x100000;
+  v54 = BYTE4(v45) | v53 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDraw[primitives] + (type << 17)) & 0xFFEEFF00 | 0x100000;
   if (v46 <= v44)
   {
     v55 = -1;
@@ -4867,34 +4867,34 @@ LABEL_32:
 
   *(v52 + 8) = v54;
   *(v52 + 12) = v45;
-  *(v52 + 16) = v60;
-  *(v52 + 20) = v10;
-  *(v52 + 24) = a9;
+  *(v52 + 16) = countCopy;
+  *(v52 + 20) = instanceCountCopy;
+  *(v52 + 24) = vertex;
   *(v52 + 28) = v55;
   *(v52 + 32) = BYTE5(v45);
   impl[4].i64[1] = v52 + 36;
   ++impl[121].i32[1];
-  if (a3 <= 5)
+  if (primitives <= 5)
   {
-    v56 = self;
-    if (a3 <= 2)
+    selfCopy2 = self;
+    if (primitives <= 2)
     {
-      if (a3 == 1)
+      if (primitives == 1)
       {
-        v49 = v60 >> 1;
+        v49 = countCopy >> 1;
       }
 
-      else if (a3 == 2)
+      else if (primitives == 2)
       {
-        v49 = v60 - 1;
+        v49 = countCopy - 1;
       }
 
       goto LABEL_66;
     }
 
-    if (a3 != 3)
+    if (primitives != 3)
     {
-      if (a3 != 4)
+      if (primitives != 4)
       {
         goto LABEL_66;
       }
@@ -4905,55 +4905,55 @@ LABEL_32:
     goto LABEL_63;
   }
 
-  v56 = self;
-  if (a3 <= 7)
+  selfCopy2 = self;
+  if (primitives <= 7)
   {
-    if (a3 != 6)
+    if (primitives != 6)
     {
-      v49 = v60 >> 2;
+      v49 = countCopy >> 2;
       goto LABEL_66;
     }
 
 LABEL_60:
-    v49 = v60 - 2;
+    v49 = countCopy - 2;
     goto LABEL_66;
   }
 
-  if (a3 == 8)
+  if (primitives == 8)
   {
-    v49 = ((v60 - 4) >> 1) + 1;
+    v49 = ((countCopy - 4) >> 1) + 1;
     goto LABEL_66;
   }
 
-  if (a3 == 9)
+  if (primitives == 9)
   {
 LABEL_63:
-    v49 = v60 / 3;
+    v49 = countCopy / 3;
   }
 
 LABEL_66:
-  impl[122].i32[1] += v49 * v10;
-  *(v56->_impl + 487) = *(v56->_impl + 485);
+  impl[122].i32[1] += v49 * instanceCountCopy;
+  *(selfCopy2->_impl + 487) = *(selfCopy2->_impl + 485);
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a4;
+  instanceCountCopy = instanceCount;
+  offsetCopy = offset;
+  countCopy = count;
   impl = self->_impl;
   impl[121].i32[2] = impl[121].i32[1];
   v14 = MEMORY[0x29EDC5638];
   v15 = *MEMORY[0x29EDC5638];
-  v16 = a6 + v15;
-  v17 = *(a6 + v15 + 8);
-  v18 = *(a6 + v15 + 16);
-  if (impl[1880].i64[1] == a6)
+  v16 = buffer + v15;
+  v17 = *(buffer + v15 + 8);
+  v18 = *(buffer + v15 + 16);
+  if (impl[1880].i64[1] == buffer)
   {
     goto LABEL_28;
   }
 
-  v55 = *(a6 + v15 + 8);
+  v55 = *(buffer + v15 + 8);
   if ((v18 & 0x7FFFFFFF80) != 0 && (v18 >> 61) - 5 >= 0xFFFFFFFFFFFFFFFCLL)
   {
     v21 = impl[125].i64[1];
@@ -4963,7 +4963,7 @@ LABEL_66:
       v23 = v21[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v22), vceqzq_s64(v23))))))
       {
-        v24 = (a6 + v15);
+        v24 = (buffer + v15);
         if ((v18 & 0x1000000000000000) != 0)
         {
           v24 = *v16;
@@ -5010,7 +5010,7 @@ LABEL_21:
               v35 = (v34 & v33) != 0;
               if ((v34 & (*(v32 + 14) | v33)) != 0)
               {
-                v36 = a6 + v15;
+                v36 = buffer + v15;
                 if ((v18 & 0x1000000000000000) != 0)
                 {
                   v36 = *v16;
@@ -5036,7 +5036,7 @@ LABEL_21:
     MTLResourceListAddResource();
   }
 
-  impl[1880].i64[1] = a6;
+  impl[1880].i64[1] = buffer;
   v17 = v55;
   v14 = MEMORY[0x29EDC5638];
 LABEL_28:
@@ -5081,8 +5081,8 @@ LABEL_31:
   *v37 = 0;
   impl[3091] = vdupq_n_s64(*(impl[3].i64[0] + 224) + *v14);
 LABEL_32:
-  v41 = v9 & 0xFFFFFFFC;
-  v42 = v17 + v9;
+  v41 = offsetCopy & 0xFFFFFFFC;
+  v42 = v17 + offsetCopy;
   if ((impl[1879].i8[1] & 1) == 0)
   {
     impl[1879].i8[1] = 1;
@@ -5091,12 +5091,12 @@ LABEL_32:
 
   v43 = v18 & 0xFFFFFFFFFFFFFFLL;
   v44 = ((v18 - v41 + 3) >> 2) - 1;
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, impl[1896].i64[0], impl[1896].i64[1], impl[3068].i64[0], impl[4564].i64[1], impl[4881].i64, 0);
   if (*(impl[149].i64[1] + 4907) == 1)
   {
-    v45 = 0x114u >> a3;
-    if (a3 >= 9)
+    v45 = 0x114u >> primitives;
+    if (primitives >= 9)
     {
       LOBYTE(v45) = 0;
     }
@@ -5118,7 +5118,7 @@ LABEL_32:
     v47 = impl[1879].u32[1];
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v46 = v46;
   }
@@ -5140,7 +5140,7 @@ LABEL_32:
     v49 = 0;
   }
 
-  v50 = BYTE4(v42) | v49 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDraw[a3] + (a5 << 17)) & 0xFFEEFF00 | 0x100000;
+  v50 = BYTE4(v42) | v49 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDraw[primitives] + (type << 17)) & 0xFFEEFF00 | 0x100000;
   if (v43 <= v41)
   {
     v51 = -1;
@@ -5153,34 +5153,34 @@ LABEL_32:
 
   *(v48 + 8) = v50;
   *(v48 + 12) = v42;
-  *(v48 + 16) = v10;
-  *(v48 + 20) = v8;
+  *(v48 + 16) = countCopy;
+  *(v48 + 20) = instanceCountCopy;
   *(v48 + 24) = 0;
   *(v48 + 28) = v51;
   *(v48 + 32) = BYTE5(v42);
   impl[4].i64[1] = v48 + 36;
   ++impl[121].i32[1];
-  if (a3 <= 5)
+  if (primitives <= 5)
   {
-    v52 = self;
-    if (a3 <= 2)
+    selfCopy2 = self;
+    if (primitives <= 2)
     {
-      if (a3 == 1)
+      if (primitives == 1)
       {
-        v10 >>= 1;
+        countCopy >>= 1;
       }
 
-      else if (a3 == 2)
+      else if (primitives == 2)
       {
-        --v10;
+        --countCopy;
       }
 
       goto LABEL_66;
     }
 
-    if (a3 != 3)
+    if (primitives != 3)
     {
-      if (a3 != 4)
+      if (primitives != 4)
       {
         goto LABEL_66;
       }
@@ -5191,54 +5191,54 @@ LABEL_32:
     goto LABEL_63;
   }
 
-  v52 = self;
-  if (a3 <= 7)
+  selfCopy2 = self;
+  if (primitives <= 7)
   {
-    if (a3 != 6)
+    if (primitives != 6)
     {
-      v10 >>= 2;
+      countCopy >>= 2;
       goto LABEL_66;
     }
 
 LABEL_60:
-    v10 -= 2;
+    countCopy -= 2;
     goto LABEL_66;
   }
 
-  if (a3 == 8)
+  if (primitives == 8)
   {
-    v10 = ((v10 - 4) >> 1) + 1;
+    countCopy = ((countCopy - 4) >> 1) + 1;
     goto LABEL_66;
   }
 
-  if (a3 == 9)
+  if (primitives == 9)
   {
 LABEL_63:
-    v10 /= 3u;
+    countCopy /= 3u;
   }
 
 LABEL_66:
-  impl[122].i32[1] += v10 * v8;
-  *(v52->_impl + 487) = *(v52->_impl + 485);
+  impl[122].i32[1] += countCopy * instanceCountCopy;
+  *(selfCopy2->_impl + 487) = *(selfCopy2->_impl + 485);
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset
 {
-  v7 = a7;
-  v9 = a4;
+  offsetCopy = offset;
+  countCopy = count;
   impl = self->_impl;
   impl[121].i32[2] = impl[121].i32[1];
   v13 = MEMORY[0x29EDC5638];
   v14 = *MEMORY[0x29EDC5638];
-  v15 = a6 + v14;
-  v16 = *(a6 + v14 + 8);
-  v17 = *(a6 + v14 + 16);
-  if (impl[1880].i64[1] == a6)
+  v15 = buffer + v14;
+  v16 = *(buffer + v14 + 8);
+  v17 = *(buffer + v14 + 16);
+  if (impl[1880].i64[1] == buffer)
   {
     goto LABEL_28;
   }
 
-  v53 = *(a6 + v14 + 8);
+  v53 = *(buffer + v14 + 8);
   if ((v17 & 0x7FFFFFFF80) != 0 && (v17 >> 61) - 5 >= 0xFFFFFFFFFFFFFFFCLL)
   {
     v20 = impl[125].i64[1];
@@ -5248,7 +5248,7 @@ LABEL_66:
       v22 = v20[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v21), vceqzq_s64(v22))))))
       {
-        v23 = (a6 + v14);
+        v23 = (buffer + v14);
         if ((v17 & 0x1000000000000000) != 0)
         {
           v23 = *v15;
@@ -5295,7 +5295,7 @@ LABEL_21:
               v34 = (v33 & v32) != 0;
               if ((v33 & (*(v31 + 14) | v32)) != 0)
               {
-                v35 = a6 + v14;
+                v35 = buffer + v14;
                 if ((v17 & 0x1000000000000000) != 0)
                 {
                   v35 = *v15;
@@ -5321,7 +5321,7 @@ LABEL_21:
     MTLResourceListAddResource();
   }
 
-  impl[1880].i64[1] = a6;
+  impl[1880].i64[1] = buffer;
   v16 = v53;
   v13 = MEMORY[0x29EDC5638];
 LABEL_28:
@@ -5366,8 +5366,8 @@ LABEL_31:
   *v36 = 0;
   impl[3091] = vdupq_n_s64(*(impl[3].i64[0] + 224) + *v13);
 LABEL_32:
-  v40 = v7 & 0xFFFFFFFC;
-  v41 = v16 + v7;
+  v40 = offsetCopy & 0xFFFFFFFC;
+  v41 = v16 + offsetCopy;
   if ((impl[1879].i8[1] & 1) == 0)
   {
     impl[1879].i8[1] = 1;
@@ -5376,12 +5376,12 @@ LABEL_32:
 
   v42 = v17 & 0xFFFFFFFFFFFFFFLL;
   v43 = ((v17 - v40 + 3) >> 2) - 1;
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, impl[1896].i64[0], impl[1896].i64[1], impl[3068].i64[0], impl[4564].i64[1], impl[4881].i64, 0);
   if (*(impl[149].i64[1] + 4907) == 1)
   {
-    v44 = 0x114u >> a3;
-    if (a3 >= 9)
+    v44 = 0x114u >> primitives;
+    if (primitives >= 9)
     {
       LOBYTE(v44) = 0;
     }
@@ -5403,7 +5403,7 @@ LABEL_32:
     v46 = impl[1879].u32[1];
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v45 = v45;
   }
@@ -5425,7 +5425,7 @@ LABEL_32:
     v48 = 0;
   }
 
-  v49 = BYTE4(v41) | v48 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDraw[a3] + (a5 << 17)) & 0xFFEEFF00 | 0x100000;
+  v49 = BYTE4(v41) | v48 | (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDraw[primitives] + (type << 17)) & 0xFFEEFF00 | 0x100000;
   if (v42 <= v40)
   {
     v50 = -1;
@@ -5438,32 +5438,32 @@ LABEL_32:
 
   *(v47 + 8) = v49;
   *(v47 + 12) = v41;
-  *(v47 + 16) = v9;
+  *(v47 + 16) = countCopy;
   *(v47 + 20) = 1;
   *(v47 + 28) = v50;
   *(v47 + 32) = BYTE5(v41);
   impl[4].i64[1] = v47 + 36;
   ++impl[121].i32[1];
-  if (a3 <= 5)
+  if (primitives <= 5)
   {
-    if (a3 <= 2)
+    if (primitives <= 2)
     {
-      if (a3 == 1)
+      if (primitives == 1)
       {
-        v9 >>= 1;
+        countCopy >>= 1;
       }
 
-      else if (a3 == 2)
+      else if (primitives == 2)
       {
-        --v9;
+        --countCopy;
       }
 
       goto LABEL_66;
     }
 
-    if (a3 != 3)
+    if (primitives != 3)
     {
-      if (a3 != 4)
+      if (primitives != 4)
       {
         goto LABEL_66;
       }
@@ -5474,73 +5474,73 @@ LABEL_32:
     goto LABEL_63;
   }
 
-  if (a3 <= 7)
+  if (primitives <= 7)
   {
-    if (a3 != 6)
+    if (primitives != 6)
     {
-      v9 >>= 2;
+      countCopy >>= 2;
       goto LABEL_66;
     }
 
 LABEL_60:
-    v9 -= 2;
+    countCopy -= 2;
     goto LABEL_66;
   }
 
-  if (a3 == 8)
+  if (primitives == 8)
   {
-    v9 = ((v9 - 4) >> 1) + 1;
+    countCopy = ((countCopy - 4) >> 1) + 1;
     goto LABEL_66;
   }
 
-  if (a3 == 9)
+  if (primitives == 9)
   {
 LABEL_63:
-    v9 /= 3u;
+    countCopy /= 3u;
   }
 
 LABEL_66:
-  impl[122].i32[1] += v9;
+  impl[122].i32[1] += countCopy;
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
+  instanceCountCopy = instanceCount;
+  countCopy = count;
+  startCopy = start;
   impl = self->_impl;
   impl[121].i32[2] = impl[121].i32[1];
   if (impl[1870].i8[0])
   {
-    v13 = a4;
+    startCopy2 = start;
   }
 
   else
   {
-    v13 = 0;
+    startCopy2 = 0;
   }
 
   if (((*(impl[1896].i64[0] + 2480) | *(impl[1896].i64[0] + 2432)) & 0x700000000000) != 0)
   {
     impl[4881].i64[0] |= 0x700000000000uLL;
     impl[4905].i64[0] |= 0x40uLL;
-    *(impl[3068].i64[1] + 160) = a7;
+    *(impl[3068].i64[1] + 160) = instance;
     v14 = impl[10].i64[1];
     v15 = v14 + 2;
     if ((v14 + 2) > impl[10].i64[0])
     {
-      v21 = a7;
+      instanceCopy = instance;
       v20 = AGX::DataBufferAllocator<44ul>::growNoInline(&impl[1].u64[1], 3, 0);
       v14 = impl[10].i64[1];
       if (!v20)
       {
-        LODWORD(a7) = v21;
+        LODWORD(instance) = instanceCopy;
         goto LABEL_7;
       }
 
       v15 = v14 + 2;
-      LODWORD(a7) = v21;
+      LODWORD(instance) = instanceCopy;
       if ((v14 + 2) > impl[10].i64[0])
       {
         abort();
@@ -5554,8 +5554,8 @@ LABEL_7:
     v17 = impl[3068].i64[1];
     *(v17 + 144) = v16;
     *(v17 + 152) = v16 + 4;
-    *v14 = v13;
-    v14[1] = a7;
+    *v14 = startCopy2;
+    v14[1] = instance;
     impl[3091] = vdupq_n_s64(*(impl[3].i64[0] + 224) + *MEMORY[0x29EDC5638]);
   }
 
@@ -5565,35 +5565,35 @@ LABEL_7:
     impl[4905].i64[0] |= 1uLL;
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, impl[1896].i64[0], impl[1896].i64[1], impl[3068].i64[0], impl[4564].i64[1], impl[4881].i64, 0);
-  LODWORD(v18) = AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDraw[a3] & 0xFFFEFFFF;
-  DWORD1(v18) = v8;
-  *(&v18 + 1) = __PAIR64__(v9, v7);
+  LODWORD(v18) = AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDraw[primitives] & 0xFFFEFFFF;
+  DWORD1(v18) = countCopy;
+  *(&v18 + 1) = __PAIR64__(startCopy, instanceCountCopy);
   v19 = impl[4].i64[1];
   *v19 = v18;
   impl[4].i64[1] = (v19 + 1);
   ++impl[121].i32[1];
-  if (a3 <= 5)
+  if (primitives <= 5)
   {
-    if (a3 <= 2)
+    if (primitives <= 2)
     {
-      if (a3 == 1)
+      if (primitives == 1)
       {
-        v8 >>= 1;
+        countCopy >>= 1;
       }
 
-      else if (a3 == 2)
+      else if (primitives == 2)
       {
-        --v8;
+        --countCopy;
       }
 
       goto LABEL_26;
     }
 
-    if (a3 != 3)
+    if (primitives != 3)
     {
-      if (a3 != 4)
+      if (primitives != 4)
       {
         goto LABEL_26;
       }
@@ -5604,51 +5604,51 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  if (a3 <= 7)
+  if (primitives <= 7)
   {
-    if (a3 != 6)
+    if (primitives != 6)
     {
-      v8 >>= 2;
+      countCopy >>= 2;
       goto LABEL_26;
     }
 
 LABEL_20:
-    v8 -= 2;
+    countCopy -= 2;
     goto LABEL_26;
   }
 
-  if (a3 == 8)
+  if (primitives == 8)
   {
-    v8 = ((v8 - 4) >> 1) + 1;
+    countCopy = ((countCopy - 4) >> 1) + 1;
     goto LABEL_26;
   }
 
-  if (a3 == 9)
+  if (primitives == 9)
   {
 LABEL_23:
-    v8 /= 3u;
+    countCopy /= 3u;
   }
 
 LABEL_26:
-  impl[122].i32[1] += v8 * v7;
+  impl[122].i32[1] += countCopy * instanceCountCopy;
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  instanceCountCopy = instanceCount;
+  countCopy = count;
+  startCopy = start;
   impl = self->_impl;
   impl[121].i32[2] = impl[121].i32[1];
   if (impl[1870].i8[0])
   {
-    v12 = a4;
+    startCopy2 = start;
   }
 
   else
   {
-    v12 = 0;
+    startCopy2 = 0;
   }
 
   if (((*(impl[1896].i64[0] + 2480) | *(impl[1896].i64[0] + 2432)) & 0x700000000000) != 0)
@@ -5681,7 +5681,7 @@ LABEL_7:
     v16 = impl[3068].i64[1];
     *(v16 + 144) = v15;
     *(v16 + 152) = v15 + 4;
-    *v13 = v12;
+    *v13 = startCopy2;
     v13[1] = 0;
     impl[3091] = vdupq_n_s64(*(impl[3].i64[0] + 224) + *MEMORY[0x29EDC5638]);
   }
@@ -5692,35 +5692,35 @@ LABEL_7:
     impl[4905].i64[0] |= 1uLL;
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, impl[1896].i64[0], impl[1896].i64[1], impl[3068].i64[0], impl[4564].i64[1], impl[4881].i64, 0);
-  LODWORD(v17) = AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDraw[a3] & 0xFFFEFFFF;
-  DWORD1(v17) = v7;
-  *(&v17 + 1) = __PAIR64__(v8, v6);
+  LODWORD(v17) = AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDraw[primitives] & 0xFFFEFFFF;
+  DWORD1(v17) = countCopy;
+  *(&v17 + 1) = __PAIR64__(startCopy, instanceCountCopy);
   v18 = impl[4].i64[1];
   *v18 = v17;
   impl[4].i64[1] = (v18 + 1);
   ++impl[121].i32[1];
-  if (a3 <= 5)
+  if (primitives <= 5)
   {
-    if (a3 <= 2)
+    if (primitives <= 2)
     {
-      if (a3 == 1)
+      if (primitives == 1)
       {
-        v7 >>= 1;
+        countCopy >>= 1;
       }
 
-      else if (a3 == 2)
+      else if (primitives == 2)
       {
-        --v7;
+        --countCopy;
       }
 
       goto LABEL_26;
     }
 
-    if (a3 != 3)
+    if (primitives != 3)
     {
-      if (a3 != 4)
+      if (primitives != 4)
       {
         goto LABEL_26;
       }
@@ -5731,50 +5731,50 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  if (a3 <= 7)
+  if (primitives <= 7)
   {
-    if (a3 != 6)
+    if (primitives != 6)
     {
-      v7 >>= 2;
+      countCopy >>= 2;
       goto LABEL_26;
     }
 
 LABEL_20:
-    v7 -= 2;
+    countCopy -= 2;
     goto LABEL_26;
   }
 
-  if (a3 == 8)
+  if (primitives == 8)
   {
-    v7 = ((v7 - 4) >> 1) + 1;
+    countCopy = ((countCopy - 4) >> 1) + 1;
     goto LABEL_26;
   }
 
-  if (a3 == 9)
+  if (primitives == 9)
   {
 LABEL_23:
-    v7 /= 3u;
+    countCopy /= 3u;
   }
 
 LABEL_26:
-  impl[122].i32[1] += v7 * v6;
+  impl[122].i32[1] += countCopy * instanceCountCopy;
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count
 {
-  v5 = a5;
-  v6 = a4;
+  countCopy = count;
+  startCopy = start;
   impl = self->_impl;
   impl[121].i32[2] = impl[121].i32[1];
   if (impl[1870].i8[0])
   {
-    v10 = a4;
+    startCopy2 = start;
   }
 
   else
   {
-    v10 = 0;
+    startCopy2 = 0;
   }
 
   if (((*(impl[1896].i64[0] + 2480) | *(impl[1896].i64[0] + 2432)) & 0x700000000000) != 0)
@@ -5807,7 +5807,7 @@ LABEL_7:
     v14 = impl[3068].i64[1];
     *(v14 + 144) = v13;
     *(v14 + 152) = v13 + 4;
-    *v11 = v10;
+    *v11 = startCopy2;
     v11[1] = 0;
     impl[3091] = vdupq_n_s64(*(impl[3].i64[0] + 224) + *MEMORY[0x29EDC5638]);
   }
@@ -5818,36 +5818,36 @@ LABEL_7:
     impl[4905].i64[0] |= 1uLL;
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeISPPrimitiveType(impl, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeAndEmitRenderState(impl, impl[1896].i64[0], impl[1896].i64[1], impl[3068].i64[0], impl[4564].i64[1], impl[4881].i64, 0);
   DWORD2(v15) = 1;
-  LODWORD(v15) = AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDraw[a3] & 0xFFFEFFFF;
-  DWORD1(v15) = v5;
-  HIDWORD(v15) = v6;
+  LODWORD(v15) = AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDraw[primitives] & 0xFFFEFFFF;
+  DWORD1(v15) = countCopy;
+  HIDWORD(v15) = startCopy;
   v16 = impl[4].i64[1];
   *v16 = v15;
   impl[4].i64[1] = (v16 + 1);
   ++impl[121].i32[1];
-  if (a3 <= 5)
+  if (primitives <= 5)
   {
-    if (a3 <= 2)
+    if (primitives <= 2)
     {
-      if (a3 == 1)
+      if (primitives == 1)
       {
-        v5 >>= 1;
+        countCopy >>= 1;
       }
 
-      else if (a3 == 2)
+      else if (primitives == 2)
       {
-        --v5;
+        --countCopy;
       }
 
       goto LABEL_26;
     }
 
-    if (a3 != 3)
+    if (primitives != 3)
     {
-      if (a3 != 4)
+      if (primitives != 4)
       {
         goto LABEL_26;
       }
@@ -5858,33 +5858,33 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  if (a3 <= 7)
+  if (primitives <= 7)
   {
-    if (a3 != 6)
+    if (primitives != 6)
     {
-      v5 >>= 2;
+      countCopy >>= 2;
       goto LABEL_26;
     }
 
 LABEL_20:
-    v5 -= 2;
+    countCopy -= 2;
     goto LABEL_26;
   }
 
-  if (a3 == 8)
+  if (primitives == 8)
   {
-    v5 = ((v5 - 4) >> 1) + 1;
+    countCopy = ((countCopy - 4) >> 1) + 1;
     goto LABEL_26;
   }
 
-  if (a3 == 9)
+  if (primitives == 9)
   {
 LABEL_23:
-    v5 /= 3u;
+    countCopy /= 3u;
   }
 
 LABEL_26:
-  impl[122].i32[1] += v5;
+  impl[122].i32[1] += countCopy;
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
@@ -5928,16 +5928,16 @@ LABEL_26:
   }
 }
 
-- (void)setStencilResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 yInvert:(BOOL)a7
+- (void)setStencilResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level yInvert:(BOOL)invert
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
+  levelCopy = level;
+  planeCopy = plane;
+  sliceCopy = slice;
   impl = self->_impl;
   v11 = 0uLL;
-  if (a3)
+  if (texture)
   {
-    v12 = *(a3 + 74);
+    v12 = *(texture + 74);
     if (v12)
     {
       v11 = *(v12 + 592);
@@ -5952,7 +5952,7 @@ LABEL_26:
   v13 = *(impl + 299);
   v14 = *(impl + 237);
   v15 = *(impl + 251);
-  *(v13 + 6224) = a3;
+  *(v13 + 6224) = texture;
   *(v13 + 6232) = v11;
   *(v13 + 6256) = v12;
   v16 = *(v12 + 208);
@@ -5960,7 +5960,7 @@ LABEL_26:
   if (*(v12 + 236))
   {
     v18 = v17 >= 2 && *(v16 + 80) != 0;
-    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, a4, 0, v8, v18);
+    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, slice, 0, planeCopy, v18);
     v20 = 0;
     *(v13 + 6168) = GPUVirtualAddress;
     v21 = *(v13 + 6256);
@@ -5970,14 +5970,14 @@ LABEL_26:
       v20 = *(v22 + 80) != 0;
     }
 
-    v23 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(v21, v7, v20);
+    v23 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(v21, levelCopy, v20);
     v25 = 6184;
   }
 
   else
   {
     v26 = v17 >= 2 && *(v16 + 80) != 0;
-    v23 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, a4, a6, v8, v26);
+    v23 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, slice, level, planeCopy, v26);
     v25 = 6168;
   }
 
@@ -6001,11 +6001,11 @@ LABEL_26:
   }
 
   v27 = *(v12 + 584);
-  if (v27 && *(v27 + 1304) > v7)
+  if (v27 && *(v27 + 1304) > levelCopy)
   {
     v28 = *(v12 + 208);
     v29 = *(v28 + 24) >= 2u && *(v28 + 80) != 0;
-    *(v13 + 6320) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v27 + 648 * v29, v9, v7, v8, 0);
+    *(v13 + 6320) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v27 + 648 * v29, sliceCopy, levelCopy, planeCopy, 0);
   }
 
   if (!*(*(impl + 239) + 520))
@@ -6019,16 +6019,16 @@ LABEL_26:
   }
 }
 
-- (void)setDepthResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 yInvert:(BOOL)a7
+- (void)setDepthResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level yInvert:(BOOL)invert
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
+  levelCopy = level;
+  planeCopy = plane;
+  sliceCopy = slice;
   impl = self->_impl;
   v11 = 0uLL;
-  if (a3)
+  if (texture)
   {
-    v12 = *(a3 + 74);
+    v12 = *(texture + 74);
     if (v12)
     {
       v11 = *(v12 + 592);
@@ -6043,19 +6043,19 @@ LABEL_26:
   v13 = *(impl + 299);
   v14 = *(impl + 237);
   v15 = *(impl + 251);
-  *(v13 + 6200) = a3;
+  *(v13 + 6200) = texture;
   *(v13 + 6208) = v11;
   *(v13 + 6248) = v12;
   if (*(v12 + 236))
   {
-    *(v13 + 6160) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, a4, 0, a5, 0);
-    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(*(v13 + 6248), v7, v8);
+    *(v13 + 6160) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, slice, 0, plane, 0);
+    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(*(v13 + 6248), levelCopy, planeCopy);
     v18 = 6176;
   }
 
   else
   {
-    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, a4, a6, a5, 0);
+    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v12, slice, level, plane, 0);
     v18 = 6160;
   }
 
@@ -6079,9 +6079,9 @@ LABEL_26:
   }
 
   v19 = *(v12 + 584);
-  if (v19 && *(v19 + 1304) > v7)
+  if (v19 && *(v19 + 1304) > levelCopy)
   {
-    *(v13 + 6312) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v19, v9, v7, v8, 0);
+    *(v13 + 6312) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v19, sliceCopy, levelCopy, planeCopy, 0);
   }
 
   if (!*(*(impl + 239) + 520))
@@ -6095,13 +6095,13 @@ LABEL_26:
   }
 }
 
-- (void)setColorResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 yInvert:(BOOL)a7 atIndex:(unint64_t)a8
+- (void)setColorResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level yInvert:(BOOL)invert atIndex:(unint64_t)index
 {
   impl = self->_impl;
   v9 = 0uLL;
-  if (a3)
+  if (texture)
   {
-    v10 = *(a3 + 74);
+    v10 = *(texture + 74);
     if (v10)
     {
       v9 = *(v10 + 592);
@@ -6115,15 +6115,15 @@ LABEL_26:
 
   v11 = impl[299];
   v12 = impl[237];
-  *&v11[2 * a8 + 876] = v10;
+  *&v11[2 * index + 876] = v10;
   v13 = v11 + 808;
-  *&v11[2 * (3 * a8) + 808] = a3;
-  v14 = 3 * a8 + 1;
+  *&v11[2 * (3 * index) + 808] = texture;
+  v14 = 3 * index + 1;
   *&v11[2 * v14 + 808] = v9;
-  v15 = 3 * a8 + 2;
+  v15 = 3 * index + 2;
   *&v11[2 * v15 + 808] = *(&v9 + 1);
-  v11[1238] |= 1 << a8;
-  AGX::Framebuffer<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::configurePBE(v11, v10, a5, a6, a4, &v11[a8 + 102], a8, 1, (v11[1242] & (1 << a8)) != 0, a7, (v11[1478] & (1 << a8)) != 0);
+  v11[1238] |= 1 << index;
+  AGX::Framebuffer<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::configurePBE(v11, v10, plane, level, slice, &v11[index + 102], index, 1, (v11[1242] & (1 << index)) != 0, invert, (v11[1478] & (1 << index)) != 0);
   IOGPUResourceListAddResource();
   if (*&v13[2 * v14])
   {
@@ -6151,16 +6151,16 @@ LABEL_26:
   }
 }
 
-- (void)setStencilResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6
+- (void)setStencilResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  levelCopy = level;
+  planeCopy = plane;
+  sliceCopy = slice;
   impl = self->_impl;
   v10 = 0uLL;
-  if (a3)
+  if (texture)
   {
-    v11 = *(a3 + 74);
+    v11 = *(texture + 74);
     if (v11)
     {
       v10 = *(v11 + 592);
@@ -6175,7 +6175,7 @@ LABEL_26:
   v12 = *(impl + 299);
   v13 = *(impl + 237);
   v14 = *(impl + 251);
-  *(v12 + 6224) = a3;
+  *(v12 + 6224) = texture;
   *(v12 + 6232) = v10;
   *(v12 + 6256) = v11;
   v15 = *(v11 + 208);
@@ -6183,7 +6183,7 @@ LABEL_26:
   if (*(v11 + 236))
   {
     v17 = v16 >= 2 && *(v15 + 80) != 0;
-    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, a4, 0, v7, v17);
+    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, slice, 0, planeCopy, v17);
     v19 = 0;
     *(v12 + 6168) = GPUVirtualAddress;
     v20 = *(v12 + 6256);
@@ -6193,14 +6193,14 @@ LABEL_26:
       v19 = *(v21 + 80) != 0;
     }
 
-    v22 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(v20, v6, v19);
+    v22 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(v20, levelCopy, v19);
     v24 = 6184;
   }
 
   else
   {
     v25 = v16 >= 2 && *(v15 + 80) != 0;
-    v22 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, a4, a6, v7, v25);
+    v22 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, slice, level, planeCopy, v25);
     v24 = 6168;
   }
 
@@ -6224,11 +6224,11 @@ LABEL_26:
   }
 
   v26 = *(v11 + 584);
-  if (v26 && *(v26 + 1304) > v6)
+  if (v26 && *(v26 + 1304) > levelCopy)
   {
     v27 = *(v11 + 208);
     v28 = *(v27 + 24) >= 2u && *(v27 + 80) != 0;
-    *(v12 + 6320) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v26 + 648 * v28, v8, v6, v7, 0);
+    *(v12 + 6320) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v26 + 648 * v28, sliceCopy, levelCopy, planeCopy, 0);
   }
 
   if (!*(*(impl + 239) + 520))
@@ -6242,16 +6242,16 @@ LABEL_26:
   }
 }
 
-- (void)setDepthResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6
+- (void)setDepthResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  levelCopy = level;
+  planeCopy = plane;
+  sliceCopy = slice;
   impl = self->_impl;
   v10 = 0uLL;
-  if (a3)
+  if (texture)
   {
-    v11 = *(a3 + 74);
+    v11 = *(texture + 74);
     if (v11)
     {
       v10 = *(v11 + 592);
@@ -6266,19 +6266,19 @@ LABEL_26:
   v12 = *(impl + 299);
   v13 = *(impl + 237);
   v14 = *(impl + 251);
-  *(v12 + 6200) = a3;
+  *(v12 + 6200) = texture;
   *(v12 + 6208) = v10;
   *(v12 + 6248) = v11;
   if (*(v11 + 236))
   {
-    *(v12 + 6160) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, a4, 0, a5, 0);
-    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(*(v12 + 6248), v6, v7);
+    *(v12 + 6160) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, slice, 0, plane, 0);
+    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(*(v12 + 6248), levelCopy, planeCopy);
     v17 = 6176;
   }
 
   else
   {
-    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, a4, a6, a5, 0);
+    GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v11, slice, level, plane, 0);
     v17 = 6160;
   }
 
@@ -6302,9 +6302,9 @@ LABEL_26:
   }
 
   v18 = *(v11 + 584);
-  if (v18 && *(v18 + 1304) > v6)
+  if (v18 && *(v18 + 1304) > levelCopy)
   {
-    *(v12 + 6312) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v18, v8, v6, v7, 0);
+    *(v12 + 6312) = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v18, sliceCopy, levelCopy, planeCopy, 0);
   }
 
   if (!*(*(impl + 239) + 520))
@@ -6318,13 +6318,13 @@ LABEL_26:
   }
 }
 
-- (void)setColorResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 atIndex:(unint64_t)a7
+- (void)setColorResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level atIndex:(unint64_t)index
 {
   impl = self->_impl;
   v8 = 0uLL;
-  if (a3)
+  if (texture)
   {
-    v9 = *(a3 + 74);
+    v9 = *(texture + 74);
     if (v9)
     {
       v8 = *(v9 + 592);
@@ -6338,15 +6338,15 @@ LABEL_26:
 
   v10 = impl[299];
   v11 = impl[237];
-  *&v10[2 * a7 + 876] = v9;
+  *&v10[2 * index + 876] = v9;
   v12 = v10 + 808;
-  *&v10[2 * (3 * a7) + 808] = a3;
-  v13 = 3 * a7 + 1;
+  *&v10[2 * (3 * index) + 808] = texture;
+  v13 = 3 * index + 1;
   *&v10[2 * v13 + 808] = v8;
-  v14 = 3 * a7 + 2;
+  v14 = 3 * index + 2;
   *&v10[2 * v14 + 808] = *(&v8 + 1);
-  v10[1238] |= 1 << a7;
-  AGX::Framebuffer<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::configurePBE(v10, v9, a5, a6, a4, &v10[a7 + 102], a7, 1, (v10[1242] & (1 << a7)) != 0, (v10[1241] & (1 << a7)) != 0, (v10[1478] & (1 << a7)) != 0);
+  v10[1238] |= 1 << index;
+  AGX::Framebuffer<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::configurePBE(v10, v9, plane, level, slice, &v10[index + 102], index, 1, (v10[1242] & (1 << index)) != 0, (v10[1241] & (1 << index)) != 0, (v10[1478] & (1 << index)) != 0);
   IOGPUResourceListAddResource();
   if (*&v12[2 * v13])
   {
@@ -6383,23 +6383,23 @@ LABEL_26:
   }
 }
 
-- (void)setStencilStoreAction:(unint64_t)a3
+- (void)setStencilStoreAction:(unint64_t)action
 {
   impl = self->_impl;
   v4 = impl[299];
   if ((*(v4 + 5909) & 2) != 0)
   {
-    *(v4 + 6120) = a3;
-    if (a3 > 1)
+    *(v4 + 6120) = action;
+    if (action > 1)
     {
-      if (a3 == 2)
+      if (action == 2)
       {
         *(v4 + 5904) |= 0x200u;
         *(v4 + 5896) &= 0xFFFFFDFFFFFFFDFFLL;
         goto LABEL_12;
       }
 
-      if (a3 != 3)
+      if (action != 3)
       {
         goto LABEL_14;
       }
@@ -6409,7 +6409,7 @@ LABEL_26:
 
     else
     {
-      if (!a3)
+      if (!action)
       {
         *(v4 + 5904) &= ~0x200u;
         LODWORD(v7) = *(v4 + 5896) & 0xFFFFFDFF;
@@ -6421,7 +6421,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      if (a3 != 1)
+      if (action != 1)
       {
         goto LABEL_14;
       }
@@ -6440,7 +6440,7 @@ LABEL_12:
 
 LABEL_14:
   v9 = 68;
-  if (a3 != 1)
+  if (action != 1)
   {
     v9 = 0;
   }
@@ -6448,16 +6448,16 @@ LABEL_14:
   *(impl + (v9 >> 3) + 79464) |= 1 << (v9 & 4);
 }
 
-- (void)setDepthStoreAction:(unint64_t)a3
+- (void)setDepthStoreAction:(unint64_t)action
 {
   impl = self->_impl;
   v4 = impl[299];
   if (*(v4 + 5909))
   {
-    *(v4 + 6112) = a3;
-    if (a3 <= 1)
+    *(v4 + 6112) = action;
+    if (action <= 1)
     {
-      if (!a3)
+      if (!action)
       {
         *(v4 + 5904) &= ~0x100u;
         LODWORD(v9) = *(v4 + 5896) & 0xFFFFFEFF;
@@ -6467,7 +6467,7 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      if (a3 != 1)
+      if (action != 1)
       {
         goto LABEL_15;
       }
@@ -6475,7 +6475,7 @@ LABEL_14:
 
     else
     {
-      if (a3 == 2)
+      if (action == 2)
       {
         *(v4 + 5904) |= 0x100u;
         *(v4 + 5896) &= 0xFFFFFEFFFFFFFEFFLL;
@@ -6486,13 +6486,13 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if (a3 == 3)
+      if (action == 3)
       {
         v5 = *(v4 + 5904) | 0x100;
         goto LABEL_12;
       }
 
-      if (a3 != 5)
+      if (action != 5)
       {
         goto LABEL_15;
       }
@@ -6509,7 +6509,7 @@ LABEL_12:
 
 LABEL_15:
   v8 = 67;
-  if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((action & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v8 = 0;
   }
@@ -6517,22 +6517,22 @@ LABEL_15:
   *(impl + (v8 >> 3) + 79464) |= 1 << (v8 & 3);
 }
 
-- (void)setVisibilityResultMode:(unint64_t)a3 offset:(unint64_t)a4
+- (void)setVisibilityResultMode:(unint64_t)mode offset:(unint64_t)offset
 {
   impl = self->_impl;
-  *(impl + 14958) = a4 >> 3;
-  *(impl + 7160) = ((a3 != 0) << 15) | ((a3 == 1) << 14) | *(impl + 7160) & 0xFFFF3FFF;
-  *(impl + 7165) = *(impl + 7165) & 0x1FFFF | ((a4 >> 3) << 17);
+  *(impl + 14958) = offset >> 3;
+  *(impl + 7160) = ((mode != 0) << 15) | ((mode == 1) << 14) | *(impl + 7160) & 0xFFFF3FFF;
+  *(impl + 7165) = *(impl + 7165) & 0x1FFFF | ((offset >> 3) << 17);
   *(impl + 9810) |= 0x100000000000uLL;
-  if (a3 && (impl[29918] & 1) != 0)
+  if (mode && (impl[29918] & 1) != 0)
   {
     *(impl + 9934) |= 0x10000uLL;
     v6 = *(impl + 57);
     if ((v6 + 1) > *(impl + 56))
     {
-      v9 = a3;
+      modeCopy = mode;
       v10 = AGX::DataBufferAllocator<44ul>::growNoInline(impl + 24, 12, 0);
-      a3 = v9;
+      mode = modeCopy;
       v6 = *(impl + 57);
       if (v10)
       {
@@ -6547,7 +6547,7 @@ LABEL_15:
         AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::finalizeVisibilityClear(impl);
         *v4.i64 = AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::emitVisibilityClear(impl);
         v6 = *(impl + 57);
-        a3 = v9;
+        mode = modeCopy;
       }
     }
 
@@ -6563,7 +6563,7 @@ LABEL_15:
     *(*(impl + 3737) + 8) = v7;
   }
 
-  v8 = impl[29919] | (a3 != 0);
+  v8 = impl[29919] | (mode != 0);
   impl[29919] = v8;
   if ((v8 & 1) != 0 && (impl[78488] & 2) != 0)
   {
@@ -6572,35 +6572,35 @@ LABEL_15:
   }
 }
 
-- (void)setStencilFrontReferenceValue:(unsigned int)a3 backReferenceValue:(unsigned int)a4
+- (void)setStencilFrontReferenceValue:(unsigned int)value backReferenceValue:(unsigned int)referenceValue
 {
   impl = self->_impl;
-  v5 = vmin_u32(__PAIR64__(a4, a3), 0xFF000000FFLL);
+  v5 = vmin_u32(__PAIR64__(referenceValue, value), 0xFF000000FFLL);
   *(impl + 3735) = v5;
   *(impl + 28644) = vorr_s8((*(impl + 28644) & 0xFFFFFF00FFFFFF00), v5);
   *(impl + 9810) |= 0x100000000000uLL;
 }
 
-- (void)setStencilReferenceValue:(unsigned int)a3
+- (void)setStencilReferenceValue:(unsigned int)value
 {
   impl = self->_impl;
-  if (a3 >= 0xFF)
+  if (value >= 0xFF)
   {
-    v4 = 255;
+    valueCopy = 255;
   }
 
   else
   {
-    v4 = a3;
+    valueCopy = value;
   }
 
-  v5 = vdup_n_s32(v4);
+  v5 = vdup_n_s32(valueCopy);
   *(impl + 3735) = v5;
   *(impl + 28644) = vorr_s8((*(impl + 28644) & 0xFFFFFF00FFFFFF00), v5);
   *(impl + 9810) |= 0x100000000000uLL;
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
   impl = self->_impl;
   v19[0] = 0xFFFFFF1C00E007;
@@ -6608,9 +6608,9 @@ LABEL_15:
   v19[1] = 0;
   v20 = 0uLL;
   v23 = -1;
-  if (a3)
+  if (state)
   {
-    v4 = (a3 + 24);
+    v4 = (state + 24);
   }
 
   else
@@ -6685,21 +6685,21 @@ LABEL_15:
   }
 }
 
-- (void)setPrimitiveRestartEnabled:(BOOL)a3 index:(unint64_t)a4
+- (void)setPrimitiveRestartEnabled:(BOOL)enabled index:(unint64_t)index
 {
   v4 = self->_impl + 28672;
-  v4[1395] = a3;
-  *(v4 + 349) = a4;
+  v4[1395] = enabled;
+  *(v4 + 349) = index;
 }
 
-- (void)setPrimitiveRestartEnabled:(BOOL)a3
+- (void)setPrimitiveRestartEnabled:(BOOL)enabled
 {
   v3 = self->_impl + 28672;
-  v3[1395] = a3;
+  v3[1395] = enabled;
   *(v3 + 349) = -1;
 }
 
-- (void)setProvokingVertexMode:(unint64_t)a3
+- (void)setProvokingVertexMode:(unint64_t)mode
 {
   impl = self->_impl;
   v4 = impl[9810];
@@ -6710,7 +6710,7 @@ LABEL_15:
     impl[9808] |= 0x400uLL;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v5 = 2;
   }
@@ -6720,21 +6720,21 @@ LABEL_15:
     v5 = 1;
   }
 
-  if (!a3)
+  if (!mode)
   {
     v5 = 0;
   }
 
   *(impl + 7518) = v5;
   *(impl + 7158) = impl[3579] & 0xFFFFFE7F | (((((v5 << 7) + 128) >> 7) & 3) << 7);
-  *(impl[9130] + 916) = a3 == 2;
+  *(impl[9130] + 916) = mode == 2;
 }
 
-- (void)setViewportTransformEnabled:(BOOL)a3
+- (void)setViewportTransformEnabled:(BOOL)enabled
 {
   impl = self->_impl;
   impl[9810] |= 0x2000000000000uLL;
-  if (a3)
+  if (enabled)
   {
     v4 = 0;
   }
@@ -6747,56 +6747,56 @@ LABEL_15:
   *(impl + 7158) = impl[3579] & 0xFFFFFFBF | v4;
 }
 
-- (void)setPointSize:(float)a3
+- (void)setPointSize:(float)size
 {
   impl = self->_impl;
-  if (impl[7513] != a3)
+  if (impl[7513] != size)
   {
-    impl[7513] = a3;
+    impl[7513] = size;
     *(impl + 9810) |= 0x100000000000uLL;
   }
 }
 
-- (void)setAlphaTestReferenceValue:(float)a3
+- (void)setAlphaTestReferenceValue:(float)value
 {
   impl = self->_impl;
-  *(impl[9130] + 900) = a3;
+  *(impl[9130] + 900) = value;
   impl[9810] |= 0x1000000000uLL;
   impl[9808] |= 8uLL;
 }
 
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
   impl = self->_impl;
   v7 = impl[9130];
-  v7[219] = a3;
-  v7[220] = a4;
-  v7[221] = a5;
-  v7[222] = a6;
+  v7[219] = red;
+  v7[220] = green;
+  v7[221] = blue;
+  v7[222] = alpha;
   impl[9810] |= 0x1000000000uLL;
   impl[9808] |= 1uLL;
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::bindStatelessPsoMetadataArgumentBuffer(impl, 0, impl[3794] != 0);
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   impl = self->_impl;
-  if (LODWORD(a6.length))
+  if (LODWORD(range.length))
   {
-    v10 = a6.location;
-    for (i = LODWORD(a6.length); i; --i)
+    v10 = range.location;
+    for (i = LODWORD(range.length); i; --i)
     {
-      if (*a3)
+      if (*states)
       {
         v14 = impl[234];
         v15 = *(v14 + 848);
-        v16 = *a4;
-        v17 = *a5;
-        v18 = *a3 + 48;
-        v20 = *(*a3 + 4);
-        v19 = *(*a3 + 5);
+        v16 = *clamps;
+        v17 = *maxClamps;
+        v18 = *states + 48;
+        v20 = *(*states + 4);
+        v19 = *(*states + 5);
         v35[0] = *v18;
         v35[1] = v20;
         v35[2] = v19;
@@ -6880,9 +6880,9 @@ LABEL_4:
 LABEL_6:
       ++v10;
       *(v12 + 32 * v25 + 16880) = p_impl;
-      ++a5;
-      ++a4;
-      ++a3;
+      ++maxClamps;
+      ++clamps;
+      ++states;
     }
   }
 
@@ -6935,37 +6935,37 @@ LABEL_6:
   impl[9810] |= 0x1000000000uLL;
 }
 
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v6 = a6;
+  indexCopy = index;
   impl = self->_impl;
-  if (!a3)
+  if (!state)
   {
     goto LABEL_15;
   }
 
   v8 = impl[234];
   v9 = *(v8 + 848);
-  v10 = *(a3 + 4);
-  v19[0] = *(a3 + 3);
+  v10 = *(state + 4);
+  v19[0] = *(state + 3);
   v19[1] = v10;
-  v19[2] = *(a3 + 5);
-  if (*(a3 + 119) < 0)
+  v19[2] = *(state + 5);
+  if (*(state + 119) < 0)
   {
-    v11 = a5;
-    v12 = a4;
-    std::string::__init_copy_ctor_external(&__p, *(a3 + 12), *(a3 + 13));
-    a4 = v12;
-    a5 = v11;
+    maxClampCopy = maxClamp;
+    clampCopy = clamp;
+    std::string::__init_copy_ctor_external(&__p, *(state + 12), *(state + 13));
+    clamp = clampCopy;
+    maxClamp = maxClampCopy;
   }
 
   else
   {
-    __p = *(a3 + 4);
+    __p = *(state + 4);
   }
 
-  *(v19 + 2) = a4;
-  *(v19 + 3) = a5;
+  *(v19 + 2) = clamp;
+  *(v19 + 3) = maxClamp;
   Sampler = AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::findOrCreateSampler(v9, v19, v8, 0);
   v14 = Sampler;
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
@@ -6978,8 +6978,8 @@ LABEL_6:
 
 LABEL_15:
     p_impl = 0;
-    v16 = v6;
-    *(impl[9129] + 32 * v6 + 16888) = 0;
+    v16 = indexCopy;
+    *(impl[9129] + 32 * indexCopy + 16888) = 0;
     v18 = impl[9129];
     goto LABEL_16;
   }
@@ -6996,13 +6996,13 @@ LABEL_7:
   }
 
   p_impl = &v14->_impl;
-  v16 = v6;
-  v17 = 32 * v6;
+  v16 = indexCopy;
+  v17 = 32 * indexCopy;
   *(impl[9129] + v17 + 16888) = *&v14->_impl.desc.var1;
   v18 = impl[9129];
   if ((~*(v18 + 16880 + v17 + 8) & 0x6000000000000000) == 0)
   {
-    *(v18 + 16880 + 32 * v6 + 16) = *&v14->_impl.var0;
+    *(v18 + 16880 + 32 * indexCopy + 16) = *&v14->_impl.var0;
     v18 = impl[9129];
   }
 
@@ -7013,28 +7013,28 @@ LABEL_7:
 
 LABEL_16:
   *(v18 + 32 * v16 + 16880) = p_impl;
-  impl[((v6 & 0xFFFFFFC0) != 0) + 9802] |= 1 << v6;
+  impl[((indexCopy & 0xFFFFFFC0) != 0) + 9802] |= 1 << indexCopy;
   impl[9810] |= 0x1000000000uLL;
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  statesCopy = states;
   impl = self->_impl;
-  if (LODWORD(a4.length) && impl[237])
+  if (LODWORD(range.length) && impl[237])
   {
-    length_low = LODWORD(a4.length);
-    v9 = a3;
+    length_low = LODWORD(range.length);
+    statesCopy2 = states;
     do
     {
-      if (*v9)
+      if (*statesCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v9;
+      ++statesCopy2;
       --length_low;
     }
 
@@ -7047,8 +7047,8 @@ LABEL_16:
     v11 = location;
     while (1)
     {
-      v13 = *v6;
-      v14 = *v6 ? v13[15] : 0;
+      v13 = *statesCopy;
+      v14 = *statesCopy ? v13[15] : 0;
       v15 = 32 * v11;
       *(impl[9129] + v15 + 16888) = v14;
       v12 = impl[9129];
@@ -7064,7 +7064,7 @@ LABEL_16:
 
 LABEL_12:
       *(v12 + 32 * v11++ + 16880) = v13;
-      ++v6;
+      ++statesCopy;
       if (!--v10)
       {
         goto LABEL_19;
@@ -7133,65 +7133,65 @@ LABEL_19:
   impl[9810] |= 0x1000000000uLL;
 }
 
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   impl = self->_impl;
-  if (a3)
+  if (state)
   {
     if (impl[237])
     {
       MTLResourceListAddResource();
     }
 
-    v7 = a3 + 48;
-    v8 = v4;
-    v9 = 32 * v4;
-    *(impl[9129] + v9 + 16888) = *(a3 + 15);
+    v7 = state + 48;
+    indexCopy2 = indexCopy;
+    v9 = 32 * indexCopy;
+    *(impl[9129] + v9 + 16888) = *(state + 15);
     v10 = impl[9129];
     if ((~*(v10 + 16880 + v9 + 8) & 0x6000000000000000) == 0)
     {
-      *(v10 + 16880 + 32 * v4 + 16) = *(a3 + 8);
+      *(v10 + 16880 + 32 * indexCopy + 16) = *(state + 8);
       v10 = impl[9129];
     }
 
-    if (*(a3 + 36))
+    if (*(state + 36))
     {
-      v7 = *(a3 + 36);
+      v7 = *(state + 36);
     }
   }
 
   else
   {
     v7 = 0;
-    v8 = a4;
-    *(impl[9129] + 32 * a4 + 16888) = 0;
+    indexCopy2 = index;
+    *(impl[9129] + 32 * index + 16888) = 0;
     v10 = impl[9129];
   }
 
-  *(v10 + 32 * v8 + 16880) = v7;
-  impl[((v4 & 0xFFFFFFC0) != 0) + 9802] |= 1 << v4;
+  *(v10 + 32 * indexCopy2 + 16880) = v7;
+  impl[((indexCopy & 0xFFFFFFC0) != 0) + 9802] |= 1 << indexCopy;
   impl[9810] |= 0x1000000000uLL;
 }
 
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  texturesCopy = textures;
   impl = self->_impl;
-  if (LODWORD(a4.length) && *(impl + 237))
+  if (LODWORD(range.length) && *(impl + 237))
   {
-    length_low = LODWORD(a4.length);
-    v9 = a3;
+    length_low = LODWORD(range.length);
+    texturesCopy2 = textures;
     do
     {
-      if (*v9)
+      if (*texturesCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v9;
+      ++texturesCopy2;
       --length_low;
     }
 
@@ -7204,7 +7204,7 @@ LABEL_19:
     v11 = location;
     do
     {
-      v12 = *v6++;
+      v12 = *texturesCopy++;
       AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<false,true>(impl, (impl + 54144), v12, v11++);
       --v10;
     }
@@ -7295,15 +7295,15 @@ LABEL_19:
   *(impl + 78456) = vorrq_s8(*(impl + 78456), v23);
 }
 
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex
 {
-  v6 = a6;
-  v8 = a4;
+  samplerIndexCopy = samplerIndex;
+  indexCopy = index;
   impl = self->_impl;
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<false,true>(impl, (impl + 6768), a3, a4);
-  if (a5)
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<false,true>(impl, (impl + 6768), texture, index);
+  if (state)
   {
-    v11 = *(a5 + 15);
+    v11 = *(state + 15);
   }
 
   else
@@ -7311,12 +7311,12 @@ LABEL_19:
     v11 = 0;
   }
 
-  v12 = 32 * v6;
+  v12 = 32 * samplerIndexCopy;
   *(impl[9129] + v12 + 16888) = v11;
   v13 = impl[9129];
   if ((~*(v13 + 16880 + v12 + 8) & 0x6000000000000000) != 0)
   {
-    if (!a5)
+    if (!state)
     {
       v14 = 0;
       goto LABEL_9;
@@ -7325,19 +7325,19 @@ LABEL_19:
 
   else
   {
-    *(v13 + 16880 + 32 * v6 + 16) = *(a5 + 8);
+    *(v13 + 16880 + 32 * samplerIndexCopy + 16) = *(state + 8);
     v13 = impl[9129];
   }
 
-  v14 = a5 + 48;
-  if (*(a5 + 36))
+  v14 = state + 48;
+  if (*(state + 36))
   {
-    v14 = *(a5 + 36);
+    v14 = *(state + 36);
   }
 
 LABEL_9:
-  *(v13 + 32 * v6 + 16880) = v14;
-  if (a3)
+  *(v13 + 32 * samplerIndexCopy + 16880) = v14;
+  if (texture)
   {
     if (impl[237])
     {
@@ -7349,42 +7349,42 @@ LABEL_9:
     }
   }
 
-  v15 = &impl[v8 > 0x3F];
-  v15[9800] |= 1 << v8;
-  v15[9806] |= 1 << v8;
-  impl[((v6 & 0xFFFFFFC0) != 0) + 9802] |= 1 << v6;
+  v15 = &impl[indexCopy > 0x3F];
+  v15[9800] |= 1 << indexCopy;
+  v15[9806] |= 1 << indexCopy;
+  impl[((samplerIndexCopy & 0xFFFFFFC0) != 0) + 9802] |= 1 << samplerIndexCopy;
   impl[9810] |= 0x5000000000uLL;
 }
 
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   impl = self->_impl;
-  if (a3)
+  if (texture)
   {
     if (impl[237])
     {
-      v6 = a3;
+      textureCopy = texture;
       MTLResourceListAddResource();
-      a3 = v6;
+      texture = textureCopy;
     }
 
-    AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<false,true>(impl, (impl + 6768), a3, v4);
-    v7 = 1 << v4;
+    AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setTexture<false,true>(impl, (impl + 6768), texture, indexCopy);
+    v7 = 1 << indexCopy;
   }
 
   else
   {
-    v8 = 8 * (a4 > 0x3F);
+    v8 = 8 * (index > 0x3F);
     v9 = (*(impl[251] + 40) + v8);
-    v7 = 1 << a4;
-    v9[8] &= ~(1 << a4);
-    v9[28] &= ~(1 << a4);
-    v9[48] &= ~(1 << a4);
-    impl[(3 * a4) + 9201] = 0;
-    impl[(3 * a4 + 1) + 9201] = 0;
-    impl[(3 * a4 + 2) + 9201] = 0;
-    v10 = a4 << 7;
+    v7 = 1 << index;
+    v9[8] &= ~(1 << index);
+    v9[28] &= ~(1 << index);
+    v9[48] &= ~(1 << index);
+    impl[(3 * index) + 9201] = 0;
+    impl[(3 * index + 1) + 9201] = 0;
+    impl[(3 * index + 2) + 9201] = 0;
+    v10 = index << 7;
     v11 = impl[9129] + v10;
     bzero((v11 + 496), 0x38uLL);
     *(v11 + 544) = 0;
@@ -7405,32 +7405,32 @@ LABEL_9:
     *(impl[9129] + v10 + 552) = 0;
   }
 
-  v20 = &impl[v4 > 0x3F];
+  v20 = &impl[indexCopy > 0x3F];
   v20[9800] |= v7;
   v20[9806] |= v7;
   impl[9810] |= 0x5000000000uLL;
   impl[9808] |= 0x10uLL;
 }
 
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  buffersCopy = buffers;
   impl = self->_impl;
   v10 = impl + 9798;
-  if (LODWORD(a5.length) && impl[237])
+  if (LODWORD(range.length) && impl[237])
   {
-    length_low = LODWORD(a5.length);
-    v12 = a3;
+    length_low = LODWORD(range.length);
+    buffersCopy2 = buffers;
     do
     {
-      if (*v12)
+      if (*buffersCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v12;
+      ++buffersCopy2;
       --length_low;
     }
 
@@ -7453,8 +7453,8 @@ LABEL_9:
         impl[location + 9725] = 0;
       }
 
-      v23 = *v8;
-      if (!*v8)
+      v23 = *buffersCopy;
+      if (!*buffersCopy)
       {
         v16[v19] = 0;
         if (v19 < 0x1F)
@@ -7487,8 +7487,8 @@ LABEL_9:
       v28 = v24 + 16;
       v26 = *(v24 + 2);
       v27 = *(v28 + 1);
-      v29 = *a4;
-      v30 = *a4 + v25;
+      v29 = *offsets;
+      v30 = *offsets + v25;
       if (v19 > 0x1E)
       {
         v34 = impl[9130] + 8 * (v19 - 31);
@@ -7592,8 +7592,8 @@ LABEL_31:
       v48[42] &= ~(1 << v19);
 LABEL_10:
       ++v19;
-      ++a4;
-      ++v8;
+      ++offsets;
+      ++buffersCopy;
       if (!--v17)
       {
         goto LABEL_38;
@@ -7691,51 +7691,51 @@ LABEL_38:
   impl[9810] |= 0x3000000000uLL;
 }
 
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  v5 = &impl[a4];
+  v5 = &impl[index];
   v6 = v5[9655];
-  v7 = v5[9585] + a3;
-  if (a4 >= 0x1F)
+  v7 = v5[9585] + offset;
+  if (index >= 0x1F)
   {
-    v10 = impl[9130] + 8 * (a4 - 31);
+    v10 = impl[9130] + 8 * (index - 31);
     *(v10 + 48) = v7;
-    *(v10 + 360) = v6 + a3;
+    *(v10 + 360) = v6 + offset;
   }
 
   else
   {
     v8 = impl[9129];
-    v9 = v8 + 8 * a4;
+    v9 = v8 + 8 * index;
     *v9 = v7;
-    *(v9 + 248) = v6 + a3;
-    *(v9 + 17640) = *(v8 + 4 * a4 + 17516);
+    *(v9 + 248) = v6 + offset;
+    *(v9 + 17640) = *(v8 + 4 * index + 17516);
   }
 
-  impl[(a4 > 0x3F) + 9798] |= 1 << a4;
+  impl[(index > 0x3F) + 9798] |= 1 << index;
   impl[9810] |= 0x1000000000uLL;
 }
 
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   impl = self->_impl;
   v7 = impl + 9129;
-  if (a5 <= 0x22)
+  if (index <= 0x22)
   {
-    impl[(a5 & 0x3F) + 9725] = 0;
+    impl[(index & 0x3F) + 9725] = 0;
   }
 
-  if (!a3)
+  if (!buffer)
   {
-    impl[a5 + 9131] = 0;
-    if (a5 >= 0x1F)
+    impl[index + 9131] = 0;
+    if (index >= 0x1F)
     {
-      v33 = impl[9130] + 8 * (a5 - 31);
+      v33 = impl[9130] + 8 * (index - 31);
       *(v33 + 48) = 0;
       *(v33 + 360) = 0;
-      v34 = &impl[a5];
+      v34 = &impl[index];
       v34[9585] = 0;
       v34[9655] = 0;
     }
@@ -7743,13 +7743,13 @@ LABEL_38:
     else
     {
       v17 = *v7;
-      v18 = (v17 + 8 * a5);
+      v18 = (v17 + 8 * index);
       *v18 = 0;
-      v19 = &impl[a5];
+      v19 = &impl[index];
       v19[9585] = 0;
       v18[31] = 0;
       v19[9655] = 0;
-      *(v17 + 4 * a5 + 17516) = 0;
+      *(v17 + 4 * index + 17516) = 0;
       v18[2205] = 0;
     }
 
@@ -7757,33 +7757,33 @@ LABEL_38:
   }
 
   v8 = MEMORY[0x29EDC5638];
-  v9 = a3 + *MEMORY[0x29EDC5638];
+  v9 = buffer + *MEMORY[0x29EDC5638];
   v10 = v9[2];
   v11 = v9[3];
   v12 = v9[1];
-  v13 = &impl[a5];
+  v13 = &impl[index];
   v13[9585] = v12;
   v13[9655] = v11;
-  v14 = v12 + a4;
-  if (a5 >= 0x1F)
+  v14 = v12 + offset;
+  if (index >= 0x1F)
   {
-    v20 = impl[9130] + 8 * (a5 - 31);
+    v20 = impl[9130] + 8 * (index - 31);
     *(v20 + 48) = v14;
-    *(v20 + 360) = v11 + a4;
+    *(v20 + 360) = v11 + offset;
   }
 
   else
   {
     v15 = *v7;
-    v16 = v15 + 8 * a5;
+    v16 = v15 + 8 * index;
     *v16 = v14;
-    *(v15 + 4 * a5 + 17516) = v10;
-    *(v16 + 248) = v11 + a4;
+    *(v15 + 4 * index + 17516) = v10;
+    *(v16 + 248) = v11 + offset;
     *(v16 + 17640) = v10;
     *(v16 + 17644) = v12 >> 8;
   }
 
-  impl[a5 + 9131] = a3 + *v8;
+  impl[index + 9131] = buffer + *v8;
   v21 = impl[251];
   v22 = v21[2].i64[1];
   if (*(v22 + 480) != 1)
@@ -7798,7 +7798,7 @@ LABEL_38:
     goto LABEL_17;
   }
 
-  v25 = a3 + *v8;
+  v25 = buffer + *v8;
   if ((v25[23] & 0x10) != 0)
   {
     v25 = *v25;
@@ -7863,28 +7863,28 @@ LABEL_18:
   v26 = (*(v37 + 10) >> v38) & 1;
   v31 = (*(v37 + 14) >> v38) & 1;
 LABEL_19:
-  v32 = (v22 + 8 * (a5 > 0x3F));
-  v32[2] = v32[2] & ~(1 << a5) | (v26 << a5);
-  v32[22] = v32[22] & ~(1 << a5) | (v31 << a5);
-  v32[42] &= ~(1 << a5);
+  v32 = (v22 + 8 * (index > 0x3F));
+  v32[2] = v32[2] & ~(1 << index) | (v26 << index);
+  v32[22] = v32[22] & ~(1 << index) | (v31 << index);
+  v32[42] &= ~(1 << index);
   if (impl[237])
   {
     MTLResourceListAddResource();
   }
 
 LABEL_22:
-  v35 = &impl[v5 > 0x3F];
-  v35[9798] |= 1 << v5;
-  v35[9804] |= 1 << v5;
+  v35 = &impl[indexCopy > 0x3F];
+  v35[9798] |= 1 << indexCopy;
+  v35[9804] |= 1 << indexCopy;
   impl[9810] |= 0x3000000000uLL;
 }
 
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   impl = self->_impl;
-  v8 = a4 + 15;
-  v9 = (a4 + 15) | 0xF;
+  v8 = length + 15;
+  v9 = (length + 15) | 0xF;
   v10 = impl[25];
   v11 = v10 + v9;
   if (v10 + v9 <= impl[24])
@@ -7894,13 +7894,13 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v23 = a3;
+  bytesCopy = bytes;
   v24 = AGX::DataBufferAllocator<44ul>::growNoInline(impl + 3, 4, 0);
   v10 = impl[25];
   if (v24)
   {
     v11 = v10 + v9;
-    a3 = v23;
+    bytes = bytesCopy;
     if (v10 + v9 > impl[24])
     {
       abort();
@@ -7909,56 +7909,56 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  a3 = v23;
+  bytes = bytesCopy;
 LABEL_3:
   v12 = impl + 9129;
   v13 = v8 & 0xFFFFFFFFFFFFFFF0;
   v14 = ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   v15 = &v14[impl[27]];
   impl[25] = &v14[v13];
-  memcpy(v14, a3, a4);
+  memcpy(v14, bytes, length);
   v16 = *(impl[6] + 288);
   v17 = *MEMORY[0x29EDC5638];
-  v18 = v5 & 0x3F;
-  if (v5 < 0x23)
+  v18 = indexCopy & 0x3F;
+  if (indexCopy < 0x23)
   {
     impl[v18 + 9725] = 0;
   }
 
   v19 = v16 + v17;
-  impl[(v5 > 0x3F) + 9798] |= 1 << v18;
+  impl[(indexCopy > 0x3F) + 9798] |= 1 << v18;
   impl[9810] |= 0x1000000000uLL;
-  if (v5 >= 0x1F)
+  if (indexCopy >= 0x1F)
   {
-    *(impl[9130] + 8 * (v5 - 31) + 48) = v15;
-    impl[v5 + 9131] = v19;
+    *(impl[9130] + 8 * (indexCopy - 31) + 48) = v15;
+    impl[indexCopy + 9131] = v19;
   }
 
   else
   {
     v20 = *v12;
-    v21 = v5 & 0x1F;
+    v21 = indexCopy & 0x1F;
     v22 = *v12 + v21 * 8;
     impl[v21 + 9131] = v19;
-    *(v20 + 4 * (v5 & 0x1F) + 17516) = a4;
+    *(v20 + 4 * (indexCopy & 0x1F) + 17516) = length;
     *v22 = v15;
-    *(v22 + 17640) = a4;
+    *(v22 + 17640) = length;
     *(v22 + 17644) = v15 >> 8;
   }
 }
 
-- (void)setTriangleFillMode:(unint64_t)a3
+- (void)setTriangleFillMode:(unint64_t)mode
 {
   impl = self->_impl;
-  if (*(impl + 3755) != a3)
+  if (*(impl + 3755) != mode)
   {
     *(impl + 9810) |= 0x100000000000uLL;
   }
 
-  *(impl + 3755) = a3;
-  *(impl + 28644) = vorr_s8((*(impl + 28644) & 0xFFF3FFFFFFF3FFFFLL), vdup_n_s32((a3 & 3) << 18));
+  *(impl + 3755) = mode;
+  *(impl + 28644) = vorr_s8((*(impl + 28644) & 0xFFF3FFFFFFF3FFFFLL), vdup_n_s32((mode & 3) << 18));
   v4 = 82;
-  if (a3 != 1)
+  if (mode != 1)
   {
     v4 = 0;
   }
@@ -7966,47 +7966,47 @@ LABEL_3:
   *&impl[((v4 >> 3) & 8) + 79464] |= 1 << (v4 & 0x3E);
 }
 
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4
+- (void)setScissorRects:(id *)rects count:(unint64_t)count
 {
   impl = self->_impl;
-  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setScissors((impl + 3589), a3, a4);
+  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setScissors((impl + 3589), rects, count);
   impl[9810] |= 0x200000000000uLL;
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
   impl = self->_impl;
-  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setScissors((impl + 3589), a3, 1u);
+  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setScissors((impl + 3589), rect, 1u);
   impl[9810] |= 0x200000000000uLL;
 }
 
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound
 {
   impl = self->_impl;
   v5 = (impl + 28608);
-  v6 = 0.0;
-  if (a3 >= 0.0)
+  maxBoundCopy = 0.0;
+  if (bound >= 0.0)
   {
-    v6 = a3;
+    maxBoundCopy = bound;
   }
 
-  if (a4 > 1.0)
+  if (maxBound > 1.0)
   {
-    a4 = 1.0;
+    maxBound = 1.0;
   }
 
-  if (v6 > a4)
+  if (maxBoundCopy > maxBound)
   {
-    v6 = a4;
+    maxBoundCopy = maxBound;
   }
 
-  if (v6 != *v5 || a4 != *(impl + 7153))
+  if (maxBoundCopy != *v5 || maxBound != *(impl + 7153))
   {
     v7 = (impl + 78480);
-    *v5 = v6;
-    v5[1] = a4;
-    v8 = v6 != 0.0;
-    if (a4 != 1.0)
+    *v5 = maxBoundCopy;
+    v5[1] = maxBound;
+    v8 = maxBoundCopy != 0.0;
+    if (maxBound != 1.0)
     {
       v8 = 1;
     }
@@ -8049,18 +8049,18 @@ LABEL_13:
   }
 }
 
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp
 {
   impl = self->_impl;
   v6 = impl + 7462;
-  if (impl[7462] != a3 || impl[7463] != a4 || impl[7464] != a5)
+  if (impl[7462] != bias || impl[7463] != scale || impl[7464] != clamp)
   {
     v7 = (impl + 19620);
-    *v6 = a3;
-    v6[1] = a4;
-    v6[2] = a5;
+    *v6 = bias;
+    v6[1] = scale;
+    v6[2] = clamp;
     v8 = *v7;
-    if (a3 == 0.0 && a4 == 0.0)
+    if (bias == 0.0 && scale == 0.0)
     {
       *v7 = v8 & 0xFFFFBFFFFFFFFFFFLL;
     }
@@ -8073,22 +8073,22 @@ LABEL_13:
   }
 }
 
-- (void)setLineWidth:(float)a3
+- (void)setLineWidth:(float)width
 {
   impl = self->_impl;
-  if (impl[7512] != a3)
+  if (impl[7512] != width)
   {
-    impl[7512] = a3;
+    impl[7512] = width;
     *(impl + 9810) |= 0x100000000000uLL;
   }
 }
 
-- (void)setDepthClipMode:(unint64_t)a3
+- (void)setDepthClipMode:(unint64_t)mode
 {
   impl = self->_impl;
-  impl[3757] = a3;
-  *(impl + 7158) = impl[3579] & 0xFFFFF3FF | ((((1024 << a3) >> 10) & 3) << 10);
-  v4 = a3 == 1;
+  impl[3757] = mode;
+  *(impl + 7158) = impl[3579] & 0xFFFFF3FF | ((((1024 << mode) >> 10) & 3) << 10);
+  v4 = mode == 1;
   v5 = *(impl + 29516);
   *(impl + 29516) = v4;
   if (v5 == v4)
@@ -8102,14 +8102,14 @@ LABEL_13:
   }
 
   impl[9810] = v6 | 0x2000000000000;
-  impl[(a3 == 1) + 9933] |= 1uLL;
+  impl[(mode == 1) + 9933] |= 1uLL;
 }
 
-- (void)setCullMode:(unint64_t)a3
+- (void)setCullMode:(unint64_t)mode
 {
   impl = self->_impl;
-  impl[3733] = a3;
-  *(impl + 7158) = a3 & 3 | ((impl[3734] & 1) << 16) | impl[3579] & 0xFFFEFFFC;
+  impl[3733] = mode;
+  *(impl + 7158) = mode & 3 | ((impl[3734] & 1) << 16) | impl[3579] & 0xFFFEFFFC;
   impl[9810] |= 0x2000000000000uLL;
   {
     v6 = impl;
@@ -8127,28 +8127,28 @@ LABEL_13:
   }
 }
 
-- (void)setVertexAmplificationMode:(unint64_t)a3 value:(unint64_t)a4
+- (void)setVertexAmplificationMode:(unint64_t)mode value:(unint64_t)value
 {
   impl = self->_impl;
   v6 = impl + 28688;
   v7 = *(impl + 6137);
-  if (a3 == 1)
+  if (mode == 1)
   {
-    *(v7 + 740) = a4;
-    v4.i32[0] = a4;
+    *(v7 + 740) = value;
+    v4.i32[0] = value;
     v8 = vcnt_s8(v4);
     v8.i16[0] = vaddlv_u8(v8);
     *(v7 + 736) = v8.i32[0];
-    LODWORD(a4) = v8.i32[0];
+    LODWORD(value) = v8.i32[0];
   }
 
   else
   {
-    *(v7 + 736) = a4;
-    *(v7 + 740) = ~(-1 << a4);
+    *(v7 + 736) = value;
+    *(v7 + 740) = ~(-1 << value);
   }
 
-  *(impl + 7520) = a4;
+  *(impl + 7520) = value;
   v9 = *(impl + 9810);
   *(impl + 9810) = v9 | 0x40;
   *(impl + 9772) |= 0x80uLL;
@@ -8158,7 +8158,7 @@ LABEL_13:
     v11 = *(v10 + 4112);
     v12 = HIDWORD(v11);
     LODWORD(v11) = *v6 & 0xF0E3FF00 | v11 & 0xF1C00FF;
-    *(impl + 7174) = *(impl + 7174) & 0xFFFFFFF8 | (a4 - 1) & 7;
+    *(impl + 7174) = *(impl + 7174) & 0xFFFFFFF8 | (value - 1) & 7;
     *(impl + 7175) = v12;
     *v6 = v11;
     *(impl + 9810) = v9 | 0x44;
@@ -8167,14 +8167,14 @@ LABEL_13:
   v13 = *(impl + 3495);
   if (v13)
   {
-    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAmplificationCount(v13, a4, 0);
+    AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setAmplificationCount(v13, value, 0);
   }
 }
 
-- (void)setFrontFacingWinding:(unint64_t)a3
+- (void)setFrontFacingWinding:(unint64_t)winding
 {
   impl = self->_impl;
-  *(impl + 3734) = a3;
+  *(impl + 3734) = winding;
   v4 = *(impl + 7168) >> 28;
   if (v4)
   {
@@ -8193,32 +8193,32 @@ LABEL_13:
     v6 = *(impl + 9810);
     v7 = *(impl + 7466);
     *(impl + 28644) = vbsl_s8(0xFFFFFF00FFFFFF00, *(impl + 28644), *(impl + 29880));
-    *(impl + 7158) = v7 & 3 | ((a3 & 1) << 16) | *(impl + 7158) & 0xFFFEFFFC;
+    *(impl + 7158) = v7 & 3 | ((winding & 1) << 16) | *(impl + 7158) & 0xFFFEFFFC;
     *(impl + 9810) = v6 | 0x2100000000000;
   }
 }
 
-- (void)setViewports:(id *)a3 count:(unint64_t)a4
+- (void)setViewports:(id *)viewports count:(unint64_t)count
 {
-  v4 = a4;
+  countCopy = count;
   impl = self->_impl;
   v6 = (impl + 9728);
-  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setViewports((impl + 3589), a3, a4, *(impl[299] + 4906));
+  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setViewports((impl + 3589), viewports, count, *(impl[299] + 4906));
   *(v6 + 82) |= 0x81200000000000uLL;
-  if (v4 >= 2)
+  if (countCopy >= 2)
   {
     *(v6 + 206) |= 0x80000000uLL;
   }
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
   impl = self->_impl;
-  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setViewports((impl + 3589), a3, 1u, *(impl[299] + 4906));
+  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setViewports((impl + 3589), viewport, 1u, *(impl[299] + 4906));
   impl[9810] |= 0x81200000000000uLL;
 }
 
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset
 {
   impl = self->_impl;
   impl[486] = impl[485];
@@ -8228,8 +8228,8 @@ LABEL_13:
   }
 
   v8 = *MEMORY[0x29EDC5638];
-  v9 = a4 + v8;
-  v10 = *(a4 + v8 + 16);
+  v9 = indirectBuffer + v8;
+  v10 = *(indirectBuffer + v8 + 16);
   if ((v10 & 0x7FFFFFFF80) != 0 && (v10 >> 61) - 5 >= 0xFFFFFFFFFFFFFFFCLL)
   {
     v12 = *(impl + 251);
@@ -8239,7 +8239,7 @@ LABEL_13:
       v14 = v12[4];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_s64(v13), vceqzq_s64(v14))))))
       {
-        v15 = (a4 + v8);
+        v15 = (indirectBuffer + v8);
         if ((v10 & 0x1000000000000000) != 0)
         {
           v15 = *v9;
@@ -8296,7 +8296,7 @@ LABEL_13:
             if ((v25 & (*(v23 + 14) | v24)) != 0)
             {
               v27 = (*(v9 + 1) + 127) & 0xFFFFFFFFFFFFFF80;
-              v28 = a4 + v8;
+              v28 = indirectBuffer + v8;
               if ((v10 & 0x1000000000000000) != 0)
               {
                 v28 = *v9;
@@ -8321,12 +8321,12 @@ LABEL_26:
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
   impl = self->_impl;
   v6 = impl[485];
   impl[486] = v6;
-  if (LODWORD(a4.length))
+  if (LODWORD(range.length))
   {
     AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::executeCommandsInBufferCommon(impl);
     impl = self->_impl;
@@ -8336,51 +8336,51 @@ LABEL_26:
   impl[487] = v6;
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v4 = a4;
+    countCopy = count;
     if (*(self->_impl + 237))
     {
       do
       {
-        if (*a3)
+        if (*sets)
         {
           MTLResourceListAddResource();
           IOGPUResourceListAddResource();
         }
 
-        ++a3;
-        --v4;
+        ++sets;
+        --countCopy;
       }
 
-      while (v4);
+      while (countCopy);
     }
 
     else
     {
       do
       {
-        if (*a3)
+        if (*sets)
         {
           IOGPUResourceListAddResource();
         }
 
-        ++a3;
-        --v4;
+        ++sets;
+        --countCopy;
       }
 
-      while (v4);
+      while (countCopy);
     }
   }
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
   if (*(self->_impl + 237))
   {
-    if (!a3)
+    if (!set)
     {
       return;
     }
@@ -8388,7 +8388,7 @@ LABEL_26:
     MTLResourceListAddResource();
   }
 
-  else if (!a3)
+  else if (!set)
   {
     return;
   }
@@ -8396,12 +8396,12 @@ LABEL_26:
   IOGPUResourceListAddResource();
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
   impl = self->_impl;
-  if ([a3 type] == 2)
+  if ([heap type] == 2)
   {
-    for (i = *(a3 + 7); i != *(a3 + 8); i += 8)
+    for (i = *(heap + 7); i != *(heap + 8); i += 8)
     {
       if (impl[237])
       {
@@ -8412,7 +8412,7 @@ LABEL_26:
     }
   }
 
-  else if (a3)
+  else if (heap)
   {
     if (impl[237])
     {
@@ -8423,12 +8423,12 @@ LABEL_26:
   }
 }
 
-- (void)useHeap:(id)a3 stages:(unint64_t)a4
+- (void)useHeap:(id)heap stages:(unint64_t)stages
 {
   impl = self->_impl;
-  if ([a3 type] == 2)
+  if ([heap type] == 2)
   {
-    for (i = *(a3 + 7); i != *(a3 + 8); i += 8)
+    for (i = *(heap + 7); i != *(heap + 8); i += 8)
     {
       if (impl[237])
       {
@@ -8439,7 +8439,7 @@ LABEL_26:
     }
   }
 
-  else if (a3)
+  else if (heap)
   {
     if (impl[237])
     {
@@ -8450,18 +8450,18 @@ LABEL_26:
   }
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
-  v17 = a5;
-  v6 = a4;
+  usageCopy = usage;
+  countCopy = count;
   impl = self->_impl;
-  if (a4)
+  if (count)
   {
     v9 = 0;
     v10 = MEMORY[0x29EDC5638];
     do
     {
-      v11 = a3[v9];
+      v11 = resources[v9];
       if (v11 && *(v11 + *v10 + 16) >> 61 == 3)
       {
         v12 = v11[39];
@@ -8483,10 +8483,10 @@ LABEL_26:
       ++v9;
     }
 
-    while (v9 != v6);
+    while (v9 != countCopy);
   }
 
-  if ((v17 & 5) != 0)
+  if ((usageCopy & 5) != 0)
   {
     v15 = 5;
   }
@@ -8496,7 +8496,7 @@ LABEL_26:
     v15 = 0;
   }
 
-  if ((v17 & 2) != 0)
+  if ((usageCopy & 2) != 0)
   {
     v16 = 13;
   }
@@ -8506,12 +8506,12 @@ LABEL_26:
     v16 = v15;
   }
 
-  AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourcesCommon(impl, a3, v6, v5, 5, v16);
+  AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourcesCommon(impl, resources, countCopy, v5, 5, v16);
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
-  if ((a4 & 5) != 0)
+  if ((usage & 5) != 0)
   {
     v5 = 5;
   }
@@ -8521,7 +8521,7 @@ LABEL_26:
     v5 = 0;
   }
 
-  if ((a4 & 2) != 0)
+  if ((usage & 2) != 0)
   {
     v6 = 13;
   }
@@ -8531,12 +8531,12 @@ LABEL_26:
     v6 = v5;
   }
 
-  if (a3)
+  if (resource)
   {
     impl = self->_impl;
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(resource + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v9 = *(a3 + 39);
+      v9 = *(resource + 39);
       IOGPUResourceListAddResource();
       v10 = *(v9 + 64);
       v11 = *(v9 + 72);
@@ -8552,20 +8552,20 @@ LABEL_26:
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(impl, a3, v4, 5, v6);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(impl, resource, v4, 5, v6);
   }
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  v7 = a6 & 1;
-  if ((a6 & 0x18) != 0)
+  v7 = stages & 1;
+  if ((stages & 0x18) != 0)
   {
     v7 = 1;
   }
 
   v8 = v7 | 4;
-  if ((a6 & 6) == 0)
+  if ((stages & 6) == 0)
   {
     v8 = v7;
   }
@@ -8577,7 +8577,7 @@ LABEL_26:
   }
 
   v10 = v7 | 0xC;
-  if ((a6 & 6) != 0)
+  if ((stages & 6) != 0)
   {
     v11 = 1;
   }
@@ -8588,17 +8588,17 @@ LABEL_26:
     v11 = 0;
   }
 
-  if ((a5 & 5) == 0)
+  if ((usage & 5) == 0)
   {
     v7 = 0;
   }
 
-  if ((((a5 & 5) != 0) & v11) != 0)
+  if ((((usage & 5) != 0) & v11) != 0)
   {
     v7 |= 4u;
   }
 
-  if ((a5 & 2) != 0)
+  if ((usage & 2) != 0)
   {
     v12 = v10;
   }
@@ -8608,16 +8608,16 @@ LABEL_26:
     v12 = v7;
   }
 
-  if (a4)
+  if (count)
   {
     v14 = 0;
     impl = self->_impl;
-    v22 = a4;
-    v16 = a4;
+    countCopy = count;
+    countCopy2 = count;
     v17 = MEMORY[0x29EDC5638];
     do
     {
-      v18 = a3[v14];
+      v18 = resources[v14];
       if (v18 && *(v18 + *v17 + 16) >> 61 == 3)
       {
         v19 = v18[39];
@@ -8639,22 +8639,22 @@ LABEL_26:
       ++v14;
     }
 
-    while (v14 != v16);
+    while (v14 != countCopy2);
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourcesCommon(impl, a3, v22, v6, v12, v12);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourcesCommon(impl, resources, countCopy, v6, v12, v12);
   }
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5
+- (void)useResource:(id)resource usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  v6 = a5 & 1;
-  if ((a5 & 0x18) != 0)
+  v6 = stages & 1;
+  if ((stages & 0x18) != 0)
   {
     v6 = 1;
   }
 
   v7 = v6 | 4;
-  if ((a5 & 6) == 0)
+  if ((stages & 6) == 0)
   {
     v7 = v6;
   }
@@ -8666,7 +8666,7 @@ LABEL_26:
   }
 
   v9 = v6 | 0xC;
-  if ((a5 & 6) != 0)
+  if ((stages & 6) != 0)
   {
     v10 = 1;
   }
@@ -8677,17 +8677,17 @@ LABEL_26:
     v10 = 0;
   }
 
-  if ((a4 & 5) == 0)
+  if ((usage & 5) == 0)
   {
     v6 = 0;
   }
 
-  if ((((a4 & 5) != 0) & v10) != 0)
+  if ((((usage & 5) != 0) & v10) != 0)
   {
     v6 |= 4u;
   }
 
-  if ((a4 & 2) != 0)
+  if ((usage & 2) != 0)
   {
     v11 = v9;
   }
@@ -8697,12 +8697,12 @@ LABEL_26:
     v11 = v6;
   }
 
-  if (a3)
+  if (resource)
   {
     impl = self->_impl;
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(resource + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v14 = *(a3 + 39);
+      v14 = *(resource + 39);
       IOGPUResourceListAddResource();
       v15 = *(v14 + 64);
       v16 = *(v14 + 72);
@@ -8718,29 +8718,29 @@ LABEL_26:
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(impl, a3, v5, v11, v11);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(impl, resource, v5, v11, v11);
   }
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   impl = self->_impl;
-  if (LODWORD(a6.length))
+  if (LODWORD(range.length))
   {
-    v10 = a6.location;
-    for (i = LODWORD(a6.length); i; --i)
+    v10 = range.location;
+    for (i = LODWORD(range.length); i; --i)
     {
-      if (*a3)
+      if (*states)
       {
         v14 = impl[234];
         v15 = *(v14 + 848);
-        v16 = *a4;
-        v17 = *a5;
-        v18 = *a3 + 48;
-        v20 = *(*a3 + 4);
-        v19 = *(*a3 + 5);
+        v16 = *clamps;
+        v17 = *maxClamps;
+        v18 = *states + 48;
+        v20 = *(*states + 4);
+        v19 = *(*states + 5);
         v35[0] = *v18;
         v35[1] = v20;
         v35[2] = v19;
@@ -8824,9 +8824,9 @@ LABEL_4:
 LABEL_6:
       ++v10;
       *(v12 + 32 * v25 + 16880) = p_impl;
-      ++a5;
-      ++a4;
-      ++a3;
+      ++maxClamps;
+      ++clamps;
+      ++states;
     }
   }
 
@@ -8879,37 +8879,37 @@ LABEL_6:
   impl[9810] |= 0x40uLL;
 }
 
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v6 = a6;
+  indexCopy = index;
   impl = self->_impl;
-  if (!a3)
+  if (!state)
   {
     goto LABEL_15;
   }
 
   v8 = impl[234];
   v9 = *(v8 + 848);
-  v10 = *(a3 + 4);
-  v19[0] = *(a3 + 3);
+  v10 = *(state + 4);
+  v19[0] = *(state + 3);
   v19[1] = v10;
-  v19[2] = *(a3 + 5);
-  if (*(a3 + 119) < 0)
+  v19[2] = *(state + 5);
+  if (*(state + 119) < 0)
   {
-    v11 = a5;
-    v12 = a4;
-    std::string::__init_copy_ctor_external(&__p, *(a3 + 12), *(a3 + 13));
-    a4 = v12;
-    a5 = v11;
+    maxClampCopy = maxClamp;
+    clampCopy = clamp;
+    std::string::__init_copy_ctor_external(&__p, *(state + 12), *(state + 13));
+    clamp = clampCopy;
+    maxClamp = maxClampCopy;
   }
 
   else
   {
-    __p = *(a3 + 4);
+    __p = *(state + 4);
   }
 
-  *(v19 + 2) = a4;
-  *(v19 + 3) = a5;
+  *(v19 + 2) = clamp;
+  *(v19 + 3) = maxClamp;
   Sampler = AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::findOrCreateSampler(v9, v19, v8, 0);
   v14 = Sampler;
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
@@ -8922,8 +8922,8 @@ LABEL_6:
 
 LABEL_15:
     p_impl = 0;
-    v16 = v6;
-    *(impl[6136] + 32 * v6 + 16888) = 0;
+    v16 = indexCopy;
+    *(impl[6136] + 32 * indexCopy + 16888) = 0;
     v18 = impl[6136];
     goto LABEL_16;
   }
@@ -8940,13 +8940,13 @@ LABEL_7:
   }
 
   p_impl = &v14->_impl;
-  v16 = v6;
-  v17 = 32 * v6;
+  v16 = indexCopy;
+  v17 = 32 * indexCopy;
   *(impl[6136] + v17 + 16888) = *&v14->_impl.desc.var1;
   v18 = impl[6136];
   if ((~*(v18 + 16880 + v17 + 8) & 0x6000000000000000) == 0)
   {
-    *(v18 + 16880 + 32 * v6 + 16) = *&v14->_impl.var0;
+    *(v18 + 16880 + 32 * indexCopy + 16) = *&v14->_impl.var0;
     v18 = impl[6136];
   }
 
@@ -8957,28 +8957,28 @@ LABEL_7:
 
 LABEL_16:
   *(v18 + 32 * v16 + 16880) = p_impl;
-  impl[((v6 & 0xFFFFFFC0) != 0) + 9766] |= 1 << v6;
+  impl[((indexCopy & 0xFFFFFFC0) != 0) + 9766] |= 1 << indexCopy;
   impl[9810] |= 0x40uLL;
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  statesCopy = states;
   impl = self->_impl;
-  if (LODWORD(a4.length) && impl[237])
+  if (LODWORD(range.length) && impl[237])
   {
-    length_low = LODWORD(a4.length);
-    v9 = a3;
+    length_low = LODWORD(range.length);
+    statesCopy2 = states;
     do
     {
-      if (*v9)
+      if (*statesCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v9;
+      ++statesCopy2;
       --length_low;
     }
 
@@ -8991,8 +8991,8 @@ LABEL_16:
     v11 = location;
     while (1)
     {
-      v13 = *v6;
-      v14 = *v6 ? v13[15] : 0;
+      v13 = *statesCopy;
+      v14 = *statesCopy ? v13[15] : 0;
       v15 = 32 * v11;
       *(impl[6136] + v15 + 16888) = v14;
       v12 = impl[6136];
@@ -9008,7 +9008,7 @@ LABEL_16:
 
 LABEL_12:
       *(v12 + 32 * v11++ + 16880) = v13;
-      ++v6;
+      ++statesCopy;
       if (!--v10)
       {
         goto LABEL_19;
@@ -9077,66 +9077,66 @@ LABEL_19:
   impl[9810] |= 0x40uLL;
 }
 
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   impl = self->_impl;
-  if (a3)
+  if (state)
   {
     if (impl[237])
     {
       MTLResourceListAddResource();
     }
 
-    v7 = a3 + 48;
-    v8 = v4;
-    v9 = 32 * v4;
-    *(impl[6136] + v9 + 16888) = *(a3 + 15);
+    v7 = state + 48;
+    indexCopy2 = indexCopy;
+    v9 = 32 * indexCopy;
+    *(impl[6136] + v9 + 16888) = *(state + 15);
     v10 = impl[6136];
     if ((~*(v10 + 16880 + v9 + 8) & 0x6000000000000000) == 0)
     {
-      *(v10 + 16880 + 32 * v4 + 16) = *(a3 + 8);
+      *(v10 + 16880 + 32 * indexCopy + 16) = *(state + 8);
       v10 = impl[6136];
     }
 
-    if (*(a3 + 36))
+    if (*(state + 36))
     {
-      v7 = *(a3 + 36);
+      v7 = *(state + 36);
     }
   }
 
   else
   {
     v7 = 0;
-    v8 = a4;
-    *(impl[6136] + 32 * a4 + 16888) = 0;
+    indexCopy2 = index;
+    *(impl[6136] + 32 * index + 16888) = 0;
     v10 = impl[6136];
   }
 
-  *(v10 + 32 * v8 + 16880) = v7;
-  impl[((v4 & 0xFFFFFFC0) != 0) + 9766] |= 1 << v4;
+  *(v10 + 32 * indexCopy2 + 16880) = v7;
+  impl[((indexCopy & 0xFFFFFFC0) != 0) + 9766] |= 1 << indexCopy;
   impl[9810] |= 0x40uLL;
 }
 
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v5 = a3;
+  length = range.length;
+  location = range.location;
+  texturesCopy = textures;
   impl = self->_impl;
   v73 = impl + 9764;
-  if (LODWORD(a4.length) && impl[237])
+  if (LODWORD(range.length) && impl[237])
   {
-    length_low = LODWORD(a4.length);
-    v8 = a3;
+    length_low = LODWORD(range.length);
+    texturesCopy2 = textures;
     do
     {
-      if (*v8)
+      if (*texturesCopy2)
       {
         MTLResourceListAddResource();
       }
 
-      ++v8;
+      ++texturesCopy2;
       --length_low;
     }
 
@@ -9154,8 +9154,8 @@ LABEL_19:
     v76 = impl;
     do
     {
-      v28 = *v5;
-      if (*v5)
+      v28 = *texturesCopy;
+      if (*texturesCopy)
       {
         v29 = v28[74];
         if (v29)
@@ -9319,11 +9319,11 @@ LABEL_29:
         v14 = impl[6136] + (v12 << 7);
         v77 = v12 << 7;
         v15 = v10;
-        v16 = v5;
+        v16 = texturesCopy;
         v17 = v9;
         bzero((v14 + 496), 0x38uLL);
         v9 = v17;
-        v5 = v16;
+        texturesCopy = v16;
         v10 = v15;
         impl = v76;
         v18 = v12;
@@ -9347,7 +9347,7 @@ LABEL_29:
 
       *(impl[6136] + (v18 << 7) + 552) = v19;
       ++v12;
-      ++v5;
+      ++texturesCopy;
       v13 += 3;
       --v9;
     }
@@ -9440,24 +9440,24 @@ LABEL_29:
   *(v73 + 7) = vorrq_s8(*(v73 + 7), v72);
 }
 
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index
 {
-  LODWORD(v4) = a4;
+  LODWORD(indexCopy) = index;
   impl = self->_impl;
-  if (!a3)
+  if (!texture)
   {
-    v10 = a4 > 0x3F;
+    v10 = index > 0x3F;
     v11 = (*(impl[251] + 40) + 8 * v10);
-    v12 = 1 << a4;
-    v11[6] &= ~(1 << a4);
-    impl[(3 * a4 + 1) + 6208] = 0;
-    v13 = v11[26] & ~(1 << a4);
-    impl[(3 * a4) + 6208] = 0;
+    v12 = 1 << index;
+    v11[6] &= ~(1 << index);
+    impl[(3 * index + 1) + 6208] = 0;
+    v13 = v11[26] & ~(1 << index);
+    impl[(3 * index) + 6208] = 0;
     v11[26] = v13;
-    impl[(3 * a4 + 2) + 6208] = 0;
-    v11[46] &= ~(1 << a4);
-    v4 = a4;
-    v14 = a4 << 7;
+    impl[(3 * index + 2) + 6208] = 0;
+    v11[46] &= ~(1 << index);
+    indexCopy = index;
+    v14 = index << 7;
     v15 = impl[6136] + v14;
     bzero((v15 + 496), 0x38uLL);
     v16 = 0;
@@ -9484,7 +9484,7 @@ LABEL_29:
     MTLResourceListAddResource();
   }
 
-  v7 = *(a3 + 74);
+  v7 = *(texture + 74);
   if (v7)
   {
     v8 = *(v7 + 592);
@@ -9512,7 +9512,7 @@ LABEL_29:
     goto LABEL_16;
   }
 
-  v30 = a3 + *MEMORY[0x29EDC5638];
+  v30 = texture + *MEMORY[0x29EDC5638];
   if ((v30[23] & 0x10) != 0)
   {
     v30 = *v30;
@@ -9572,15 +9572,15 @@ LABEL_32:
   }
 
 LABEL_18:
-  v10 = v4 > 0x3F;
+  v10 = indexCopy > 0x3F;
   v37 = (v26 + 8 * v10);
-  v12 = 1 << v4;
-  v37[6] = v37[6] & ~(1 << v4) | (v31 << v4);
-  v37[26] = v37[26] & ~(1 << v4) | (v36 << v4);
-  v37[46] &= ~(1 << v4);
+  v12 = 1 << indexCopy;
+  v37[6] = v37[6] & ~(1 << indexCopy) | (v31 << indexCopy);
+  v37[26] = v37[26] & ~(1 << indexCopy) | (v36 << indexCopy);
+  v37[46] &= ~(1 << indexCopy);
   v38 = impl + 6208;
-  v39 = 3 * v4;
-  impl[(3 * v4) + 6208] = a3 + *v27;
+  v39 = 3 * indexCopy;
+  impl[(3 * indexCopy) + 6208] = texture + *v27;
   if (v8)
   {
     v8 += *v27;
@@ -9598,8 +9598,8 @@ LABEL_18:
   }
 
   v38[v39 + 2] = v40;
-  v4 = v4;
-  v41 = impl[6136] + (v4 << 7);
+  indexCopy = indexCopy;
+  v41 = impl[6136] + (indexCopy << 7);
   v42 = *(v7 + 72);
   v43 = *(v7 + 88);
   v44 = *(v7 + 104);
@@ -9615,18 +9615,18 @@ LABEL_18:
     v46 = *(v46 + 1304) != 0;
   }
 
-  *(v45 + 17904 + 8 * v10) = *(v45 + 17904 + 8 * v10) & ~v12 | (v46 << (v4 & 0x3F));
-  v47 = v45 + (v4 << 7);
+  *(v45 + 17904 + 8 * v10) = *(v45 + 17904 + 8 * v10) & ~v12 | (v46 << (indexCopy & 0x3F));
+  v47 = v45 + (indexCopy << 7);
   v48 = *(v7 + 432);
   *(v47 + 560) = *(v7 + 416);
   *(v47 + 576) = v48;
-  v49 = impl[6136] + (v4 << 7);
+  v49 = impl[6136] + (indexCopy << 7);
   v50 = *(v7 + 464);
   *(v49 + 592) = *(v7 + 448);
   *(v49 + 608) = v50;
-  v16 = *(*(a3 + 74) + 120);
+  v16 = *(*(texture + 74) + 120);
 LABEL_26:
-  *(impl[6136] + (v4 << 7) + 552) = v16;
+  *(impl[6136] + (indexCopy << 7) + 552) = v16;
   v51 = &impl[v10];
   v51[9764] |= v12;
   v51[9770] |= v12;
@@ -9634,69 +9634,69 @@ LABEL_26:
   impl[9772] |= 0x10uLL;
 }
 
-- (void)setVertexBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  v6 = &impl[a5];
+  v6 = &impl[index];
   v7 = v6[6662];
-  v8 = v6[6592] + a3;
-  if (a5 >= 0x1F)
+  v8 = v6[6592] + offset;
+  if (index >= 0x1F)
   {
-    v12 = impl[6137] + 8 * (a5 - 31);
+    v12 = impl[6137] + 8 * (index - 31);
     *(v12 + 40) = v8;
-    *(v12 + 352) = v7 + a3;
+    *(v12 + 352) = v7 + offset;
   }
 
   else
   {
     v9 = impl[6136];
-    v10 = v9 + 8 * a5;
+    v10 = v9 + 8 * index;
     *v10 = v8;
-    *(v10 + 248) = v7 + a3;
-    v11 = v9 + 4 * a5;
+    *(v10 + 248) = v7 + offset;
+    v11 = v9 + 4 * index;
     *(v10 + 17640) = *(v11 + 17516);
-    *(v11 + 17392) = a4;
+    *(v11 + 17392) = stride;
   }
 
-  impl[(a5 > 0x3F) + 9762] |= 1 << a5;
+  impl[(index > 0x3F) + 9762] |= 1 << index;
   impl[9810] |= 0x40uLL;
 }
 
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  v5 = &impl[a4];
+  v5 = &impl[index];
   v6 = v5[6662];
-  v7 = v5[6592] + a3;
-  if (a4 >= 0x1F)
+  v7 = v5[6592] + offset;
+  if (index >= 0x1F)
   {
-    v11 = impl[6137] + 8 * (a4 - 31);
+    v11 = impl[6137] + 8 * (index - 31);
     *(v11 + 40) = v7;
-    *(v11 + 352) = v6 + a3;
+    *(v11 + 352) = v6 + offset;
   }
 
   else
   {
     v8 = impl[6136];
-    v9 = v8 + 8 * a4;
+    v9 = v8 + 8 * index;
     *v9 = v7;
-    *(v9 + 248) = v6 + a3;
-    v10 = v8 + 4 * a4;
+    *(v9 + 248) = v6 + offset;
+    v10 = v8 + 4 * index;
     *(v9 + 17640) = *(v10 + 17516);
     *(v10 + 17392) = 0;
   }
 
-  impl[(a4 > 0x3F) + 9762] |= 1 << a4;
+  impl[(index > 0x3F) + 9762] |= 1 << index;
   impl[9810] |= 0x40uLL;
 }
 
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v6 = a6;
-  v7 = a5;
+  indexCopy = index;
+  strideCopy = stride;
   impl = self->_impl;
-  v10 = a4 + 15;
-  v11 = (a4 + 15) | 0xF;
+  v10 = length + 15;
+  v11 = (length + 15) | 0xF;
   v12 = impl[21];
   v13 = v12 + v11;
   if (v12 + v11 <= impl[20])
@@ -9706,13 +9706,13 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v26 = a3;
+  bytesCopy = bytes;
   v27 = AGX::DataBufferAllocator<44ul>::growNoInline(impl + 3, 3, 0);
   v12 = impl[21];
   if (v27)
   {
     v13 = v12 + v11;
-    a3 = v26;
+    bytes = bytesCopy;
     if (v12 + v11 > impl[20])
     {
       abort();
@@ -9721,52 +9721,52 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  a3 = v26;
+  bytes = bytesCopy;
 LABEL_3:
   v14 = impl + 6136;
   v15 = v10 & 0xFFFFFFFFFFFFFFF0;
   v16 = ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   v17 = &v16[impl[23]];
   impl[21] = &v16[v15];
-  memcpy(v16, a3, a4);
+  memcpy(v16, bytes, length);
   v18 = *(impl[6] + 224);
   v19 = *MEMORY[0x29EDC5638];
-  v20 = v6 & 0x3F;
-  if (v6 < 0x23)
+  v20 = indexCopy & 0x3F;
+  if (indexCopy < 0x23)
   {
     impl[v20 + 6732] = 0;
   }
 
   v21 = v18 + v19;
-  impl[(v6 > 0x3F) + 9762] |= 1 << v20;
+  impl[(indexCopy > 0x3F) + 9762] |= 1 << v20;
   impl[9810] |= 0x40uLL;
-  if (v6 >= 0x1F)
+  if (indexCopy >= 0x1F)
   {
-    *(impl[6137] + 8 * (v6 - 31) + 40) = v17;
-    impl[v6 + 6138] = v21;
+    *(impl[6137] + 8 * (indexCopy - 31) + 40) = v17;
+    impl[indexCopy + 6138] = v21;
   }
 
   else
   {
     v22 = *v14;
-    v23 = v6 & 0x1F;
+    v23 = indexCopy & 0x1F;
     v24 = *v14 + v23 * 8;
     impl[v23 + 6138] = v21;
-    v25 = v22 + 4 * (v6 & 0x1F);
-    *(v25 + 17392) = v7;
-    *(v25 + 17516) = a4;
+    v25 = v22 + 4 * (indexCopy & 0x1F);
+    *(v25 + 17392) = strideCopy;
+    *(v25 + 17516) = length;
     *v24 = v17;
-    *(v24 + 17640) = a4;
+    *(v24 + 17640) = length;
     *(v24 + 17644) = v17 >> 8;
   }
 }
 
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   impl = self->_impl;
-  v8 = a4 + 15;
-  v9 = (a4 + 15) | 0xF;
+  v8 = length + 15;
+  v9 = (length + 15) | 0xF;
   v10 = impl[21];
   v11 = v10 + v9;
   if (v10 + v9 <= impl[20])
@@ -9776,13 +9776,13 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v24 = a3;
+  bytesCopy = bytes;
   v25 = AGX::DataBufferAllocator<44ul>::growNoInline(impl + 3, 3, 0);
   v10 = impl[21];
   if (v25)
   {
     v11 = v10 + v9;
-    a3 = v24;
+    bytes = bytesCopy;
     if (v10 + v9 > impl[20])
     {
       abort();
@@ -9791,47 +9791,47 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  a3 = v24;
+  bytes = bytesCopy;
 LABEL_3:
   v12 = impl + 6136;
   v13 = v8 & 0xFFFFFFFFFFFFFFF0;
   v14 = ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   v15 = &v14[impl[23]];
   impl[21] = &v14[v13];
-  memcpy(v14, a3, a4);
+  memcpy(v14, bytes, length);
   v16 = *(impl[6] + 224);
   v17 = *MEMORY[0x29EDC5638];
-  v18 = v5 & 0x3F;
-  if (v5 < 0x23)
+  v18 = indexCopy & 0x3F;
+  if (indexCopy < 0x23)
   {
     impl[v18 + 6732] = 0;
   }
 
   v19 = v16 + v17;
-  impl[(v5 > 0x3F) + 9762] |= 1 << v18;
+  impl[(indexCopy > 0x3F) + 9762] |= 1 << v18;
   impl[9810] |= 0x40uLL;
-  if (v5 >= 0x1F)
+  if (indexCopy >= 0x1F)
   {
-    *(impl[6137] + 8 * (v5 - 31) + 40) = v15;
-    impl[v5 + 6138] = v19;
+    *(impl[6137] + 8 * (indexCopy - 31) + 40) = v15;
+    impl[indexCopy + 6138] = v19;
   }
 
   else
   {
     v20 = *v12;
-    v21 = v5 & 0x1F;
+    v21 = indexCopy & 0x1F;
     v22 = *v12 + v21 * 8;
     impl[v21 + 6138] = v19;
-    v23 = v20 + 4 * (v5 & 0x1F);
+    v23 = v20 + 4 * (indexCopy & 0x1F);
     *(v23 + 17392) = 0;
-    *(v23 + 17516) = a4;
+    *(v23 + 17516) = length;
     *v22 = v15;
-    *(v22 + 17640) = a4;
+    *(v22 + 17640) = length;
     *(v22 + 17644) = v15 >> 8;
   }
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
   impl = self->_impl;
   if (impl[237])
@@ -9839,14 +9839,14 @@ LABEL_3:
     MTLResourceListAddResource();
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setRenderPipelineStateCommon(impl, a3 + 240);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::setRenderPipelineStateCommon(impl, state + 240);
   *(impl + 28067) = 1;
 }
 
-- (void)deferredEndEncoding:(id)a3
+- (void)deferredEndEncoding:(id)encoding
 {
   impl = self->_impl;
-  [a3 _descriptorPrivate];
+  [encoding _descriptorPrivate];
   v5 = *(impl + 299);
   v6 = v5[738].i32[1];
   v7 = v5[737].i32[0];
@@ -10281,44 +10281,44 @@ LABEL_22:
   [(_MTLCommandEncoder *)&v3 dealloc];
 }
 
-- (AGXG18PFamilyRenderContext)initWithCommandBuffer:(id)a3 descriptor:(id)a4 subEncoderIndex:(unint64_t)a5 framebuffer:(void *)a6
+- (AGXG18PFamilyRenderContext)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor subEncoderIndex:(unint64_t)index framebuffer:(void *)framebuffer
 {
   v198 = *MEMORY[0x29EDCA608];
-  v10 = [a3 device];
+  device = [buffer device];
   v184 = 0;
   v185 = 0;
-  v180 = a6;
-  if (!a6)
+  framebufferCopy = framebuffer;
+  if (!framebuffer)
   {
-    [a4 validate:v10 width:&v185 height:&v184];
+    [descriptor validate:device width:&v185 height:&v184];
   }
 
   v183.receiver = self;
   v183.super_class = AGXG18PFamilyRenderContext;
-  v182 = [(IOGPUMetalCommandEncoder *)&v183 initWithCommandBuffer:a3];
+  v182 = [(IOGPUMetalCommandEncoder *)&v183 initWithCommandBuffer:buffer];
   if (!v182)
   {
     goto LABEL_158;
   }
 
-  v181 = [a4 _descriptorPrivate];
-  if (*(v181 + 43) == 1)
+  _descriptorPrivate = [descriptor _descriptorPrivate];
+  if (*(_descriptorPrivate + 43) == 1)
   {
-    v11 = v10[114];
+    v11 = device[114];
     if (v11)
     {
       *&block = MEMORY[0x29EDCA5F8];
       *(&block + 1) = 3221225472;
       *&v187 = ___ZN13AGXATelemetry16disableTelemetryEv_block_invoke;
       *(&v187 + 1) = &__block_descriptor_40_e5_v8__0l;
-      v188 = v10 + 107;
+      v188 = device + 107;
       dispatch_sync(v11, &block);
     }
   }
 
-  v182->parallelSubContext = [a3 ownedByParallelEncoder];
-  v12 = v10[106];
-  if (!a6)
+  v182->parallelSubContext = [buffer ownedByParallelEncoder];
+  v12 = device[106];
+  if (!framebuffer)
   {
     if (!v185 || !v184 || *(v12 + 16016) >> 7 < 0x33uLL)
     {
@@ -10335,12 +10335,12 @@ LABEL_22:
       os_unfair_lock_unlock((v12 + 16028));
       if (v18)
       {
-        v180 = v18;
+        framebufferCopy = v18;
         bzero(v18, *(v12 + 16016));
 LABEL_156:
-        AGX::FramebufferDriverConfigGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferDriverConfigGen3_3(&block, v181, *(v10[106] + 16948), *(v12 + 16458) & 0x1F);
-        AGX::FramebufferGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferGen3_3(v180, v10, *(a3 + 90), &block, v185, v184, 0);
-        v182->_framebuffer = v180;
+        AGX::FramebufferDriverConfigGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferDriverConfigGen3_3(&block, _descriptorPrivate, *(device[106] + 16948), *(v12 + 16458) & 0x1F);
+        AGX::FramebufferGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferGen3_3(framebufferCopy, device, *(buffer + 90), &block, v185, v184, 0);
+        v182->_framebuffer = framebufferCopy;
         goto LABEL_8;
       }
     }
@@ -10350,8 +10350,8 @@ LABEL_156:
       os_unfair_lock_unlock((v12 + 16028));
     }
 
-    v180 = malloc_type_calloc(*(v12 + 16016), 1uLL, 0x689CC946uLL);
-    if (!v180)
+    framebufferCopy = malloc_type_calloc(*(v12 + 16016), 1uLL, 0x689CC946uLL);
+    if (!framebufferCopy)
     {
       goto LABEL_158;
     }
@@ -10400,26 +10400,26 @@ LABEL_158:
   }
 
 LABEL_20:
-  v20 = *(a3 + 760);
-  v21 = *(a3 + 90);
-  v22 = [a3 globalTraceObjectID];
-  v23 = [(IOGPUMetalCommandEncoder *)v182 globalTraceObjectID];
+  v20 = *(buffer + 760);
+  v21 = *(buffer + 90);
+  globalTraceObjectID = [buffer globalTraceObjectID];
+  globalTraceObjectID2 = [(IOGPUMetalCommandEncoder *)v182 globalTraceObjectID];
   parallelSubContext = v182->parallelSubContext;
-  v25 = [a3 protectionOptions];
-  v26 = [a3 commandBufferStorage];
-  v27 = [a3 privateData];
-  v176 = [a3 privateDataOffset];
-  *&v28 = v10;
-  *(&v28 + 1) = a3;
+  protectionOptions = [buffer protectionOptions];
+  commandBufferStorage = [buffer commandBufferStorage];
+  privateData = [buffer privateData];
+  privateDataOffset = [buffer privateDataOffset];
+  *&v28 = device;
+  *(&v28 + 1) = buffer;
   *&v29 = v21;
-  *(&v29 + 1) = v26;
-  *&v30 = v22;
-  *(&v30 + 1) = v23;
+  *(&v29 + 1) = commandBufferStorage;
+  *&v30 = globalTraceObjectID;
+  *(&v30 + 1) = globalTraceObjectID2;
   v31 = *p_impl;
   v32 = *p_impl + 1896;
   *v197 = v28;
   *&v197[16] = v29;
-  v33 = v10[106] + 7008;
+  v33 = device[106] + 7008;
   *&block = MEMORY[0x29EDCA5F8];
   *(&block + 1) = 3221225472;
   *&v187 = ___ZN3AGX20RenderUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfigNSt3__15arrayIjLm4EEE_block_invoke;
@@ -10427,7 +10427,7 @@ LABEL_20:
   v189 = 0;
   v190 = 0;
   v188 = v33;
-  v177 = v27;
+  v177 = privateData;
   if (AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&,std::array<unsigned int,4ul>)::once != -1)
   {
     v175 = v30;
@@ -10437,22 +10437,22 @@ LABEL_20:
 
   v34 = *&v197[16];
   *v31 = *&v197[8];
-  *(v31 + 16) = v26;
+  *(v31 + 16) = commandBufferStorage;
   *(v31 + 24) = &AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
   v35 = v31 + 24;
-  *(v31 + 32) = v10;
-  *(v31 + 40) = v26;
-  v36 = *(v26 + 768);
+  *(v31 + 32) = device;
+  *(v31 + 40) = commandBufferStorage;
+  v36 = *(commandBufferStorage + 768);
   *(v31 + 1824) = 0;
   *(v31 + 1840) = 0;
   *(v31 + 1832) = 0;
   *(v31 + 1848) = 0;
-  *(v31 + 1864) = v25;
+  *(v31 + 1864) = protectionOptions;
   *(v31 + 48) = v36;
-  *(v31 + 56) = v26 + 144;
-  *(v31 + 1856) = *(v26 + 784);
-  *(v31 + 1880) = v26;
-  *(v31 + 1888) = v26 + 64;
+  *(v31 + 56) = commandBufferStorage + 144;
+  *(v31 + 1856) = *(commandBufferStorage + 784);
+  *(v31 + 1880) = commandBufferStorage;
+  *(v31 + 1888) = commandBufferStorage + 64;
   *(v31 + 1920) = 0;
   *(v31 + 1961) = 0;
   *(v32 + 96) = v30;
@@ -10463,16 +10463,16 @@ LABEL_20:
   *(v31 + 2044) = 0u;
   *(v31 + 2053) = 0u;
   *(v31 + 2069) = 1;
-  *(v31 + 1872) = v10;
-  *v32 = *(v26 + 728);
-  *(v31 + 1912) = v26 + 144;
-  *(v31 + 1968) = *(v26 + 48);
-  *(v31 + 1976) = *(v26 + 56);
-  *(v31 + 1924) = v23;
+  *(v31 + 1872) = device;
+  *v32 = *(commandBufferStorage + 728);
+  *(v31 + 1912) = commandBufferStorage + 144;
+  *(v31 + 1968) = *(commandBufferStorage + 48);
+  *(v31 + 1976) = *(commandBufferStorage + 56);
+  *(v31 + 1924) = globalTraceObjectID2;
   *(v31 + 1932) = 0xFFFFFFFF00000000;
   *(v31 + 1956) = 0;
   *(v31 + 1960) = 1;
-  if (a5)
+  if (index)
   {
     v37 = 0;
   }
@@ -10487,7 +10487,7 @@ LABEL_20:
   *(v31 + 2074) = parallelSubContext;
   *(v32 + 179) = 0;
   *(v31 + 2080) = 0;
-  v38 = v10[106];
+  v38 = device[106];
   v39 = *(v38 + 7092);
   *(v31 + 2088) = ((((96 * (*(v38 + 7056) / v39) + 367) & 0xFFFFFFE0) + 127) & 0xFFFFFF80) * v39 + 128;
   *(v31 + 2096) = 1792 * v39 + 3456;
@@ -10516,14 +10516,14 @@ LABEL_20:
   }
 
   *(v31 + 2112) = v42 + v43;
-  AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::RenderUSCStateLoader(v31 + 2120, v38, v180, v20);
+  AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::RenderUSCStateLoader(v31 + 2120, v38, framebufferCopy, v20);
   v174 = v32;
-  *(v31 + 2392) = v180;
+  *(v31 + 2392) = framebufferCopy;
   v44 = *(v31 + 1912);
   v45 = *(*(v31 + 1872) + 848);
   *(v31 + 2504) = v45;
   *(v31 + 2512) = v31;
-  *(v31 + 2520) = v180;
+  *(v31 + 2520) = framebufferCopy;
   *(v31 + 2528) = v31 + 2120;
   *(v31 + 2536) = v35;
   v46 = AGX::SpillInfoGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::SpillInfoGen4(v31 + 2544, v45, *(v45 + 7184));
@@ -10542,7 +10542,7 @@ LABEL_20:
   v53 = *(v31 + 1904);
   v54 = *(v31 + 1992);
   v55 = *(v31 + 2000);
-  *(v31 + 2664) = v180;
+  *(v31 + 2664) = framebufferCopy;
   *(v31 + 2672) = v31 + 2120;
   *(v31 + 2680) = v35;
   *(v31 + 2688) = v50;
@@ -10603,7 +10603,7 @@ LABEL_20:
   *(v31 + 2728) = v68 + 14912;
   v69 = *(v31 + 1912);
   v70 = *(v31 + 1904);
-  *(v31 + 26696) = v180;
+  *(v31 + 26696) = framebufferCopy;
   *(v31 + 26704) = v31 + 2120;
   *(v31 + 26712) = v69;
   *(v31 + 26720) = v70;
@@ -10920,13 +10920,13 @@ LABEL_105:
   {
     (*(**(&v187 + 1) + 32))(*(&v187 + 1));
     v106 = 0x2A179C000uLL;
-    v107 = v180;
+    v107 = framebufferCopy;
   }
 
   else
   {
     v106 = 0x2A179C000;
-    v107 = v180;
+    v107 = framebufferCopy;
     if (*(&v187 + 1))
     {
       (*(**(&v187 + 1) + 40))();
@@ -10979,7 +10979,7 @@ LABEL_105:
   *(v31 + 28680) = 0xC28000000000000;
   *(v31 + 28688) = 0u;
   *(v31 + 28704) |= 0xE0000000E000000uLL;
-  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::ClipRectContextGen3(v31 + 28712, v107[446].u32[0], v107[446].u32[1], v181, v31 + 28068);
+  AGX::ClipRectContextGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::ClipRectContextGen3(v31 + 28712, v107[446].u32[0], v107[446].u32[1], _descriptorPrivate, v31 + 28068);
   *(v31 + 29824) = 1;
   *(v31 + 29864) = 0u;
   *(v31 + 29880) = 0u;
@@ -11025,9 +11025,9 @@ LABEL_105:
   *(v31 + 78480) = 0;
   *(v31 + 78488) = 0;
   *(v31 + 78544) = 0;
-  *(v31 + 78553) = *(v181 + 184);
+  *(v31 + 78553) = *(_descriptorPrivate + 184);
   *(v31 + 78556) = 1;
-  AGX::RenderCounterSamplingContextGen1::RenderCounterSamplingContextGen1((v31 + 78568), v181);
+  AGX::RenderCounterSamplingContextGen1::RenderCounterSamplingContextGen1((v31 + 78568), _descriptorPrivate);
   v116 = *(*(*(v31 + 1872) + *(v106 + 1260)) + 6241);
   v117 = *(*(*(v31 + 1872) + *(v106 + 1260)) + 6242);
   *(v31 + 78752) = 0;
@@ -11104,7 +11104,7 @@ LABEL_105:
   *(v31 + 79392) = 257;
   *(v31 + 79394) = 1;
   *(v31 + 79400) = v177;
-  *(v31 + 79408) = v176;
+  *(v31 + 79408) = privateDataOffset;
   *(v31 + 79416) = 0uLL;
   *(v31 + 79464) = xmmword_29D2F1F00;
   *(v31 + 79624) = 0;
@@ -11132,7 +11132,7 @@ LABEL_105:
   *(v31 + 78672) = 0u;
   *(v31 + 78688) = 0u;
   *(v31 + 78704) = 0u;
-  *(v31 + 29918) = *(v181 + 192) == 0;
+  *(v31 + 29918) = *(_descriptorPrivate + 192) == 0;
   v122 = *(v106 + 1260);
   v123 = *(*(v31 + 1872) + v122);
   *(v31 + 29920) = *(v123 + 16950) > 0xAu;
@@ -11239,19 +11239,19 @@ LABEL_135:
   v157 = *(v31 + 2392);
   *(*(v31 + 49096) + 744) = *(v157 + 6328) > 1u;
   v158 = 91;
-  if (!*(v181 + 88))
+  if (!*(_descriptorPrivate + 88))
   {
     v158 = 0;
   }
 
   *(v31 + 79464 + ((v158 >> 3) & 8)) |= 1 << (v158 & 0x3F);
   AGX::FramebufferGen3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::updateResourceGroupUsage(v157, *(v31 + 2008), v156);
-  if (*(v181 + 48) >= 2uLL)
+  if (*(_descriptorPrivate + 48) >= 2uLL)
   {
     *(v31 + 79472) |= 0x40000000uLL;
   }
 
-  v159 = *(v181 + 168);
+  v159 = *(_descriptorPrivate + 168);
   if (v159)
   {
     if (*v174)
@@ -11314,7 +11314,7 @@ LABEL_135:
   *(*(v31 + 73040) + 908) = (v161[892] + v161[1233] - 1) / v161[1233];
   *(v31 + 1940) = 1;
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::beginRenderPass(*p_impl);
-  if (!a5)
+  if (!index)
   {
     AGX::FramebufferGen3_2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::allocateDatabufferResources(*(*p_impl + 2392), (*p_impl + 24));
   }

@@ -1,144 +1,144 @@
 @interface PUPXOneUpPresentationImplementationDelegate
-- (BOOL)oneUpPresentation:(id)a3 canStartAnimated:(BOOL)a4;
-- (BOOL)oneUpPresentation:(id)a3 handlePresentingPinchGestureRecognizer:(id)a4;
-- (BOOL)oneUpPresentation:(id)a3 startWithConfigurationHandler:(id)a4;
-- (BOOL)oneUpPresentationCanStop:(id)a3;
-- (id)oneUpPresentationLastViewedAssetReference:(id)a3;
-- (id)previewViewControllerForOneUpPresentation:(id)a3 allowingActions:(BOOL)a4;
-- (void)oneUpPresentation:(id)a3 commitPreviewViewController:(id)a4;
-- (void)oneUpPresentation:(id)a3 didDismissPreviewViewController:(id)a4 committing:(BOOL)a5;
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewDidAppear:(BOOL)a4;
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewDidDisappear:(BOOL)a4;
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewIsAppearing:(BOOL)a4;
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewWillAppear:(BOOL)a4;
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewWillDisappear:(BOOL)a4;
-- (void)oneUpPresentation:(id)a3 registerStateChangeHandler:(id)a4;
-- (void)oneUpPresentation:(id)a3 stopAnimated:(BOOL)a4;
-- (void)oneUpPresentationInvalidatePresentingGeometry:(id)a3;
+- (BOOL)oneUpPresentation:(id)presentation canStartAnimated:(BOOL)animated;
+- (BOOL)oneUpPresentation:(id)presentation handlePresentingPinchGestureRecognizer:(id)recognizer;
+- (BOOL)oneUpPresentation:(id)presentation startWithConfigurationHandler:(id)handler;
+- (BOOL)oneUpPresentationCanStop:(id)stop;
+- (id)oneUpPresentationLastViewedAssetReference:(id)reference;
+- (id)previewViewControllerForOneUpPresentation:(id)presentation allowingActions:(BOOL)actions;
+- (void)oneUpPresentation:(id)presentation commitPreviewViewController:(id)controller;
+- (void)oneUpPresentation:(id)presentation didDismissPreviewViewController:(id)controller committing:(BOOL)committing;
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewDidAppear:(BOOL)appear;
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewDidDisappear:(BOOL)disappear;
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewIsAppearing:(BOOL)appearing;
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewWillAppear:(BOOL)appear;
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewWillDisappear:(BOOL)disappear;
+- (void)oneUpPresentation:(id)presentation registerStateChangeHandler:(id)handler;
+- (void)oneUpPresentation:(id)presentation stopAnimated:(BOOL)animated;
+- (void)oneUpPresentationInvalidatePresentingGeometry:(id)geometry;
 @end
 
 @implementation PUPXOneUpPresentationImplementationDelegate
 
-- (BOOL)oneUpPresentation:(id)a3 handlePresentingPinchGestureRecognizer:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation handlePresentingPinchGestureRecognizer:(id)recognizer
 {
-  v5 = a4;
-  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  v7 = [v6 handlePresentingPinchGestureRecognizer:v5];
+  recognizerCopy = recognizer;
+  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  v7 = [v6 handlePresentingPinchGestureRecognizer:recognizerCopy];
 
   return v7;
 }
 
-- (void)oneUpPresentationInvalidatePresentingGeometry:(id)a3
+- (void)oneUpPresentationInvalidatePresentingGeometry:(id)geometry
 {
-  v3 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
+  v3 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:geometry];
   [v3 invalidatePresentingGeometry];
 }
 
-- (void)oneUpPresentation:(id)a3 stopAnimated:(BOOL)a4
+- (void)oneUpPresentation:(id)presentation stopAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v5 stopAnimated:v4];
+  animatedCopy = animated;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v5 stopAnimated:animatedCopy];
 }
 
-- (BOOL)oneUpPresentationCanStop:(id)a3
+- (BOOL)oneUpPresentationCanStop:(id)stop
 {
-  v3 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  v4 = [v3 canStop];
+  v3 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:stop];
+  canStop = [v3 canStop];
 
-  return v4;
+  return canStop;
 }
 
-- (void)oneUpPresentation:(id)a3 commitPreviewViewController:(id)a4
+- (void)oneUpPresentation:(id)presentation commitPreviewViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v6 commitPreviewViewController:v5];
+  controllerCopy = controller;
+  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v6 commitPreviewViewController:controllerCopy];
 }
 
-- (void)oneUpPresentation:(id)a3 didDismissPreviewViewController:(id)a4 committing:(BOOL)a5
+- (void)oneUpPresentation:(id)presentation didDismissPreviewViewController:(id)controller committing:(BOOL)committing
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v8 didDismissPreviewViewController:v7 committing:v5];
+  committingCopy = committing;
+  controllerCopy = controller;
+  v8 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v8 didDismissPreviewViewController:controllerCopy committing:committingCopy];
 }
 
-- (id)previewViewControllerForOneUpPresentation:(id)a3 allowingActions:(BOOL)a4
+- (id)previewViewControllerForOneUpPresentation:(id)presentation allowingActions:(BOOL)actions
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  v6 = [v5 previewViewControllerAllowingActions:v4];
+  actionsCopy = actions;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  v6 = [v5 previewViewControllerAllowingActions:actionsCopy];
 
   return v6;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 startWithConfigurationHandler:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation startWithConfigurationHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  v7 = [v6 startWithConfigurationHandler:v5];
+  handlerCopy = handler;
+  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  v7 = [v6 startWithConfigurationHandler:handlerCopy];
 
   return v7;
 }
 
-- (void)oneUpPresentation:(id)a3 registerStateChangeHandler:(id)a4
+- (void)oneUpPresentation:(id)presentation registerStateChangeHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v6 registerStateChangeHandler:v5];
+  handlerCopy = handler;
+  v6 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v6 registerStateChangeHandler:handlerCopy];
 }
 
-- (id)oneUpPresentationLastViewedAssetReference:(id)a3
+- (id)oneUpPresentationLastViewedAssetReference:(id)reference
 {
-  v3 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  v4 = [v3 lastViewedAssetReference];
+  v3 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:reference];
+  lastViewedAssetReference = [v3 lastViewedAssetReference];
 
-  return v4;
+  return lastViewedAssetReference;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 canStartAnimated:(BOOL)a4
+- (BOOL)oneUpPresentation:(id)presentation canStartAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  LOBYTE(v4) = [v5 canStartAnimated:v4];
+  animatedCopy = animated;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  LOBYTE(animatedCopy) = [v5 canStartAnimated:animatedCopy];
 
-  return v4;
+  return animatedCopy;
 }
 
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewDidDisappear:(BOOL)a4
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewDidDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v5 presentingViewControllerViewDidDisappear:v4];
+  disappearCopy = disappear;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v5 presentingViewControllerViewDidDisappear:disappearCopy];
 }
 
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewWillDisappear:(BOOL)a4
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewWillDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v5 presentingViewControllerViewWillDisappear:v4];
+  disappearCopy = disappear;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v5 presentingViewControllerViewWillDisappear:disappearCopy];
 }
 
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewDidAppear:(BOOL)a4
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewDidAppear:(BOOL)appear
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v5 presentingViewControllerViewDidAppear:v4];
+  appearCopy = appear;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v5 presentingViewControllerViewDidAppear:appearCopy];
 }
 
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewIsAppearing:(BOOL)a4
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewIsAppearing:(BOOL)appearing
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v5 presentingViewControllerViewIsAppearing:v4];
+  appearingCopy = appearing;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v5 presentingViewControllerViewIsAppearing:appearingCopy];
 }
 
-- (void)oneUpPresentation:(id)a3 presentingViewControllerViewWillAppear:(BOOL)a4
+- (void)oneUpPresentation:(id)presentation presentingViewControllerViewWillAppear:(BOOL)appear
 {
-  v4 = a4;
-  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:a3];
-  [v5 presentingViewControllerViewWillAppear:v4];
+  appearCopy = appear;
+  v5 = [PUPXOneUpPresentationImplementation implementationForOneUpPresentation:presentation];
+  [v5 presentingViewControllerViewWillAppear:appearCopy];
 }
 
 @end

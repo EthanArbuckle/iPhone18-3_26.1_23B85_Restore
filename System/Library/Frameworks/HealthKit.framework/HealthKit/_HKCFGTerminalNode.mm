@@ -1,17 +1,17 @@
 @interface _HKCFGTerminalNode
-+ (id)nodeWithValue:(id)a3 rangeOfString:(_NSRange)a4;
++ (id)nodeWithValue:(id)value rangeOfString:(_NSRange)string;
 @end
 
 @implementation _HKCFGTerminalNode
 
-+ (id)nodeWithValue:(id)a3 rangeOfString:(_NSRange)a4
++ (id)nodeWithValue:(id)value rangeOfString:(_NSRange)string
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRangeOfString:{location, length}];
+  length = string.length;
+  location = string.location;
+  valueCopy = value;
+  v8 = [[self alloc] initWithRangeOfString:{location, length}];
   v9 = v8[3];
-  v8[3] = v7;
+  v8[3] = valueCopy;
 
   return v8;
 }

@@ -1,21 +1,21 @@
 @interface BLSFrameSpecifiersRequestResponse
-- (BLSFrameSpecifiersRequestResponse)initWithDateSpecifiers:(id)a3;
+- (BLSFrameSpecifiersRequestResponse)initWithDateSpecifiers:(id)specifiers;
 - (NSArray)dateSpecifiers;
 @end
 
 @implementation BLSFrameSpecifiersRequestResponse
 
-- (BLSFrameSpecifiersRequestResponse)initWithDateSpecifiers:(id)a3
+- (BLSFrameSpecifiersRequestResponse)initWithDateSpecifiers:(id)specifiers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = objc_alloc_init(MEMORY[0x277CF0C80]);
   empty = xpc_array_create_empty();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v4;
+  v7 = specifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -60,8 +60,8 @@
 - (NSArray)dateSpecifiers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(BLSFrameSpecifiersRequestResponse *)self info];
-  v4 = [v3 objectForSetting:1];
+  info = [(BLSFrameSpecifiersRequestResponse *)self info];
+  v4 = [info objectForSetting:1];
 
   if (v4 && MEMORY[0x223D71A60](v4) == MEMORY[0x277D86440])
   {
@@ -90,7 +90,7 @@
             if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
             {
               *buf = v15;
-              v17 = self;
+              selfCopy = self;
               v18 = 2114;
               v19 = v11;
               v20 = 2114;

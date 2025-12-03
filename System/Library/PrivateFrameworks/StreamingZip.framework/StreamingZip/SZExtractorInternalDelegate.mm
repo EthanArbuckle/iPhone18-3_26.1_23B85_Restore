@@ -1,7 +1,7 @@
 @interface SZExtractorInternalDelegate
-- (void)extractionCompleteAtArchivePath:(id)a3;
+- (void)extractionCompleteAtArchivePath:(id)path;
 - (void)extractionEnteredPassThroughMode;
-- (void)setExtractionProgress:(double)a3;
+- (void)setExtractionProgress:(double)progress;
 @end
 
 @implementation SZExtractorInternalDelegate
@@ -13,22 +13,22 @@
     self = objc_loadWeakRetained(&self->delegate);
     if (self)
     {
-      v3 = self;
+      selfCopy = self;
       if (objc_opt_respondsToSelector())
       {
-        [(SZExtractorInternalDelegate *)v3 extractionEnteredPassThroughMode];
+        [(SZExtractorInternalDelegate *)selfCopy extractionEnteredPassThroughMode];
       }
 
-      self = v3;
+      self = selfCopy;
     }
 
     v2 = vars8;
   }
 }
 
-- (void)extractionCompleteAtArchivePath:(id)a3
+- (void)extractionCompleteAtArchivePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (self)
   {
     self = objc_loadWeakRetained(&self->delegate);
@@ -36,26 +36,26 @@
     {
       if (objc_opt_respondsToSelector())
       {
-        [(SZExtractorInternalDelegate *)self extractionCompleteAtArchivePath:v4];
+        [(SZExtractorInternalDelegate *)self extractionCompleteAtArchivePath:pathCopy];
       }
     }
   }
 }
 
-- (void)setExtractionProgress:(double)a3
+- (void)setExtractionProgress:(double)progress
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->delegate);
     if (self)
     {
-      v5 = self;
+      selfCopy = self;
       if (objc_opt_respondsToSelector())
       {
-        [(SZExtractorInternalDelegate *)v5 setExtractionProgress:a3];
+        [(SZExtractorInternalDelegate *)selfCopy setExtractionProgress:progress];
       }
 
-      self = v5;
+      self = selfCopy;
     }
 
     v3 = vars8;

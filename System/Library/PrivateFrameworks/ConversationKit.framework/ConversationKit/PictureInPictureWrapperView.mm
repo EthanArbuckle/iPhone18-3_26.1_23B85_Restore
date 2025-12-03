@@ -1,7 +1,7 @@
 @interface PictureInPictureWrapperView
 - (UIEdgeInsets)_touchInsets;
-- (void)_setTouchInsets:(UIEdgeInsets)a3;
-- (void)addSubview:(id)a3;
+- (void)_setTouchInsets:(UIEdgeInsets)insets;
+- (void)addSubview:(id)subview;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 @end
@@ -10,7 +10,7 @@
 
 - (UIEdgeInsets)_touchInsets
 {
-  v2 = self;
+  selfCopy = self;
   PictureInPictureWrapperView._touchInsets.getter();
   v4 = v3;
   v6 = v5;
@@ -28,32 +28,32 @@
   return result;
 }
 
-- (void)_setTouchInsets:(UIEdgeInsets)a3
+- (void)_setTouchInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   PictureInPictureWrapperView._touchInsets.setter(top, left, bottom, right);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PictureInPictureWrapperView.layoutSubviews()();
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
-  v5 = self;
-  PictureInPictureWrapperView.addSubview(_:)(v4);
+  subviewCopy = subview;
+  selfCopy = self;
+  PictureInPictureWrapperView.addSubview(_:)(subviewCopy);
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   PictureInPictureWrapperView._touchInsets.didset();
 }
 

@@ -1,25 +1,25 @@
 @interface PKPassTileValueDate
-+ (id)createWithContent:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5;
-+ (id)createWithContent:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5 ignoresTimeZone:(BOOL)a6 isRelative:(BOOL)a7;
-- (BOOL)_isEqual:(id)a3;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (PKPassTileValueDate)initWithCoder:(id)a3;
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4;
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4;
++ (id)createWithContent:(id)content dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle;
++ (id)createWithContent:(id)content dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle ignoresTimeZone:(BOOL)zone isRelative:(BOOL)relative;
+- (BOOL)_isEqual:(id)equal;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (PKPassTileValueDate)initWithCoder:(id)coder;
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileValueDate
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = PKPassTileValueDate;
-  if (-[PKPassTileValue _setUpWithDictionary:](&v23, sel__setUpWithDictionary_, v4) && ([v4 PKStringForKey:@"content"], v5 = objc_claimAutoreleasedReturnValue(), content = self->_content, self->_content = v5, content, self->_content))
+  if (-[PKPassTileValue _setUpWithDictionary:](&v23, sel__setUpWithDictionary_, dictionaryCopy) && ([dictionaryCopy PKStringForKey:@"content"], v5 = objc_claimAutoreleasedReturnValue(), content = self->_content, self->_content = v5, content, self->_content))
   {
-    v7 = [v4 PKStringForKey:@"dateStyle"];
+    v7 = [dictionaryCopy PKStringForKey:@"dateStyle"];
     v12 = v7;
     if (v7)
     {
@@ -32,7 +32,7 @@
     }
 
     self->_dateStyle = v13;
-    v15 = [v4 PKStringForKey:@"timeStyle"];
+    v15 = [dictionaryCopy PKStringForKey:@"timeStyle"];
     v20 = v15;
     if (v15)
     {
@@ -45,8 +45,8 @@
     }
 
     self->_timeStyle = v21;
-    self->_ignoresTimeZone = [v4 PKBoolForKey:@"ignoresTimeZone"];
-    self->_isRelative = [v4 PKBoolForKey:@"isRelative"];
+    self->_ignoresTimeZone = [dictionaryCopy PKBoolForKey:@"ignoresTimeZone"];
+    self->_isRelative = [dictionaryCopy PKBoolForKey:@"isRelative"];
 
     v14 = 1;
   }
@@ -59,24 +59,24 @@
   return v14;
 }
 
-+ (id)createWithContent:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5
++ (id)createWithContent:(id)content dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle
 {
-  v5 = [a1 createWithContent:a3 dateStyle:a4 timeStyle:a5 ignoresTimeZone:0 isRelative:0];
+  v5 = [self createWithContent:content dateStyle:style timeStyle:timeStyle ignoresTimeZone:0 isRelative:0];
 
   return v5;
 }
 
-+ (id)createWithContent:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5 ignoresTimeZone:(BOOL)a6 isRelative:(BOOL)a7
++ (id)createWithContent:(id)content dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle ignoresTimeZone:(BOOL)zone isRelative:(BOOL)relative
 {
-  v12 = a3;
-  if (v12)
+  contentCopy = content;
+  if (contentCopy)
   {
     v13 = [PKPassTileValue _createForType:1 resolved:1];
-    objc_storeStrong(v13 + 4, a3);
-    v13[5] = a4;
-    v13[6] = a5;
-    *(v13 + 24) = a6;
-    *(v13 + 25) = a7;
+    objc_storeStrong(v13 + 4, content);
+    v13[5] = style;
+    v13[6] = timeStyle;
+    *(v13 + 24) = zone;
+    *(v13 + 25) = relative;
   }
 
   else
@@ -87,11 +87,11 @@
   return v13;
 }
 
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v7.receiver = self;
   v7.super_class = PKPassTileValueDate;
-  v5 = [(PKPassTileValue *)&v7 createResolvedValueWithBundle:a3 privateBundle:a4];
+  v5 = [(PKPassTileValue *)&v7 createResolvedValueWithBundle:bundle privateBundle:privateBundle];
   objc_storeStrong(v5 + 4, self->_content);
   v5[5] = self->_dateStyle;
   v5[6] = self->_timeStyle;
@@ -100,17 +100,17 @@
   return v5;
 }
 
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v5 setDateStyle:self->_dateStyle];
   [v5 setTimeStyle:self->_timeStyle];
   [v5 setDoesRelativeDateFormatting:self->_isRelative];
-  v6 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v5 setLocale:v6];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v5 setLocale:autoupdatingCurrentLocale];
 
-  v7 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-  [v5 setCalendar:v7];
+  autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+  [v5 setCalendar:autoupdatingCurrentCalendar];
 
   if (self->_ignoresTimeZone)
   {
@@ -131,52 +131,52 @@
   return v11;
 }
 
-- (PKPassTileValueDate)initWithCoder:(id)a3
+- (PKPassTileValueDate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKPassTileValueDate;
-  v5 = [(PKPassTileValue *)&v21 initWithCoder:v4];
+  v5 = [(PKPassTileValue *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"content"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"content"];
     content = v5->_content;
     v5->_content = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateStyle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateStyle"];
     v5->_dateStyle = _PKEnumValueFromString(v8, 0, @"PKDateStyle", @"PKDateStyleNone, WLDateStyleNone,PKDateStyleShort, WLDateStyleShort, PKDateStyleMedium, WLDateStyleMedium, PKDateStyleLong, WLDateStyleLong, PKDateStyleFull, WLDateStyleFull", v9, v10, v11, v12, 0);
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeStyle"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeStyle"];
     v5->_timeStyle = _PKEnumValueFromString(v13, 0, @"PKDateStyle", @"PKDateStyleNone, WLDateStyleNone,PKDateStyleShort, WLDateStyleShort, PKDateStyleMedium, WLDateStyleMedium, PKDateStyleLong, WLDateStyleLong, PKDateStyleFull, WLDateStyleFull", v14, v15, v16, v17, 0);
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ignoresTimeZone"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ignoresTimeZone"];
     v5->_ignoresTimeZone = [v18 BOOLValue];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isRelative"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isRelative"];
     v5->_isRelative = [v19 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19.receiver = self;
   v19.super_class = PKPassTileValueDate;
-  v4 = a3;
-  [(PKPassTileValue *)&v19 encodeWithCoder:v4];
-  [v4 encodeObject:self->_content forKey:@"content"];
+  coderCopy = coder;
+  [(PKPassTileValue *)&v19 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_content forKey:@"content"];
   v10 = _PKEnumValueToString(self->_dateStyle, @"PKDateStyle", @"PKDateStyleNone, WLDateStyleNone,PKDateStyleShort, WLDateStyleShort, PKDateStyleMedium, WLDateStyleMedium, PKDateStyleLong, WLDateStyleLong, PKDateStyleFull, WLDateStyleFull", v5, v6, v7, v8, v9, 0);
-  [v4 encodeObject:v10 forKey:@"dateStyle"];
+  [coderCopy encodeObject:v10 forKey:@"dateStyle"];
 
   v16 = _PKEnumValueToString(self->_timeStyle, @"PKDateStyle", @"PKDateStyleNone, WLDateStyleNone,PKDateStyleShort, WLDateStyleShort, PKDateStyleMedium, WLDateStyleMedium, PKDateStyleLong, WLDateStyleLong, PKDateStyleFull, WLDateStyleFull", v11, v12, v13, v14, v15, 0);
-  [v4 encodeObject:v16 forKey:@"timeStyle"];
+  [coderCopy encodeObject:v16 forKey:@"timeStyle"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_ignoresTimeZone];
-  [v4 encodeObject:v17 forKey:@"ignoresTimeZone"];
+  [coderCopy encodeObject:v17 forKey:@"ignoresTimeZone"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_isRelative];
-  [v4 encodeObject:v18 forKey:@"isRelative"];
+  [coderCopy encodeObject:v18 forKey:@"isRelative"];
 }
 
 - (unint64_t)hash
@@ -194,14 +194,14 @@
   return SipHash();
 }
 
-- (BOOL)_isEqual:(id)a3
+- (BOOL)_isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = PKPassTileValueDate;
-  if ([(PKPassTileValue *)&v14 _isEqual:v4])
+  if ([(PKPassTileValue *)&v14 _isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     content = self->_content;
     v7 = v5[4];
     v8 = content;

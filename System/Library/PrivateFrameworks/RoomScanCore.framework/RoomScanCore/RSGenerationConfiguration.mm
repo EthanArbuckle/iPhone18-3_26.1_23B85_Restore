@@ -1,7 +1,7 @@
 @interface RSGenerationConfiguration
 - (RSGenerationConfiguration)init;
-- (RSGenerationConfiguration)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RSGenerationConfiguration)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 @end
 
@@ -43,52 +43,52 @@
   return v4;
 }
 
-- (RSGenerationConfiguration)initWithDictionary:(id)a3
+- (RSGenerationConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v47.receiver = self;
   v47.super_class = RSGenerationConfiguration;
   v6 = [(RSGenerationConfiguration *)&v47 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"doorWindowDetectionEnabled");
+    v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"doorWindowDetectionEnabled");
     v6->_windowDoorDetectionEnabled = objc_msgSend_BOOLValue(v7, v8, v9);
 
-    v11 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"objectBeautificationEnabled");
+    v11 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v10, @"objectBeautificationEnabled");
     v6->_objectBeautificationEnabled = objc_msgSend_BOOLValue(v11, v12, v13);
 
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"chairBeautificationEnabled");
+    v15 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, @"chairBeautificationEnabled");
     v6->_chairBeautificationEnabled = objc_msgSend_BOOLValue(v15, v16, v17);
 
-    v19 = objc_msgSend_objectForKeyedSubscript_(v4, v18, @"standardizationEnabled");
+    v19 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v18, @"standardizationEnabled");
     v6->_standardizationEnabled = objc_msgSend_BOOLValue(v19, v20, v21);
 
-    v23 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"wallOpeningMergeEnabled");
+    v23 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v22, @"wallOpeningMergeEnabled");
     v6->_wallOpeningMergeEnabled = objc_msgSend_BOOLValue(v23, v24, v25);
 
-    v27 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"openingReplaceOpendoorEnabled");
+    v27 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v26, @"openingReplaceOpendoorEnabled");
     v6->_openingReplaceOpendoorEnabled = objc_msgSend_BOOLValue(v27, v28, v29);
 
-    v31 = objc_msgSend_objectForKeyedSubscript_(v4, v30, @"nonUniformHeightEnabled");
+    v31 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v30, @"nonUniformHeightEnabled");
     v6->_nonUniformHeightEnabled = objc_msgSend_BOOLValue(v31, v32, v33);
 
-    v35 = objc_msgSend_objectForKeyedSubscript_(v4, v34, @"opendoorReplaceOpeningEnabled");
+    v35 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v34, @"opendoorReplaceOpeningEnabled");
     v6->_opendoorReplaceOpeningEnabled = objc_msgSend_BOOLValue(v35, v36, v37);
 
-    v39 = objc_msgSend_objectForKeyedSubscript_(v4, v38, @"roomTypeEnabled");
+    v39 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v38, @"roomTypeEnabled");
     v6->_roomTypeEnabled = objc_msgSend_BOOLValue(v39, v40, v41);
 
-    v43 = objc_msgSend_objectForKeyedSubscript_(v4, v42, @"curveEnabled");
+    v43 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v42, @"curveEnabled");
     v6->_curveEnabled = objc_msgSend_BOOLValue(v43, v44, v45);
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   *(result + 8) = self->_windowDoorDetectionEnabled;
   *(result + 9) = self->_objectBeautificationEnabled;

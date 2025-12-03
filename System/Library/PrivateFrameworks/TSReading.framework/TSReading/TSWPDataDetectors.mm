@@ -1,32 +1,32 @@
 @interface TSWPDataDetectors
-+ (id)calculateScanRanges:(id)a3 changedRange:(_NSRange)a4;
-+ (id)scanString:(id)a3 scanRanges:(id)a4;
-+ (void)registerDataDetectorClass:(Class)a3;
++ (id)calculateScanRanges:(id)ranges changedRange:(_NSRange)range;
++ (id)scanString:(id)string scanRanges:(id)ranges;
++ (void)registerDataDetectorClass:(Class)class;
 @end
 
 @implementation TSWPDataDetectors
 
-+ (void)registerDataDetectorClass:(Class)a3
++ (void)registerDataDetectorClass:(Class)class
 {
-  if (class_conformsToProtocol(a3, &unk_287E62C40))
+  if (class_conformsToProtocol(class, &unk_287E62C40))
   {
-    v4 = gRegisteredDataDetectors;
+    array = gRegisteredDataDetectors;
     if (!gRegisteredDataDetectors)
     {
-      v4 = [MEMORY[0x277CBEB18] array];
-      gRegisteredDataDetectors = v4;
+      array = [MEMORY[0x277CBEB18] array];
+      gRegisteredDataDetectors = array;
     }
 
-    [v4 addObject:a3];
+    [array addObject:class];
   }
 }
 
-+ (id)calculateScanRanges:(id)a3 changedRange:(_NSRange)a4
++ (id)calculateScanRanges:(id)ranges changedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -47,8 +47,8 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 calculateScanRangeForString:a3 changedRange:{location, length}];
-        [v7 setObject:objc_msgSend(MEMORY[0x277CCAE60] forKeyedSubscript:{"valueWithRange:", v13, v14), objc_msgSend(v12, "detectorIdentifier")}];
+        v13 = [v12 calculateScanRangeForString:ranges changedRange:{location, length}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCAE60] forKeyedSubscript:{"valueWithRange:", v13, v14), objc_msgSend(v12, "detectorIdentifier")}];
       }
 
       v9 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -57,13 +57,13 @@
     while (v9);
   }
 
-  return v7;
+  return dictionary;
 }
 
-+ (id)scanString:(id)a3 scanRanges:(id)a4
++ (id)scanString:(id)string scanRanges:(id)ranges
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -84,13 +84,13 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [objc_msgSend(a4 objectForKeyedSubscript:{objc_msgSend(v12, "detectorIdentifier")), "rangeValue"}];
+        v13 = [objc_msgSend(ranges objectForKeyedSubscript:{objc_msgSend(v12, "detectorIdentifier")), "rangeValue"}];
         if (v13 != 0x7FFFFFFFFFFFFFFFLL && v14 != 0)
         {
-          v16 = [v12 scanString:a3 scanRange:{v13, v14}];
+          v16 = [v12 scanString:string scanRange:{v13, v14}];
           if (v16)
           {
-            [v6 addObjectsFromArray:v16];
+            [array addObjectsFromArray:v16];
           }
         }
       }
@@ -101,7 +101,7 @@
     while (v9);
   }
 
-  return v6;
+  return array;
 }
 
 @end

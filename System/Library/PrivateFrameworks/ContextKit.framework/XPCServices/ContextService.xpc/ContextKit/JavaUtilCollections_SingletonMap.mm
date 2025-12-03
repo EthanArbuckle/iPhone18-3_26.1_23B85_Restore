@@ -1,48 +1,48 @@
 @interface JavaUtilCollections_SingletonMap
-- (BOOL)containsKeyWithId:(id)a3;
-- (BOOL)containsValueWithId:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (BOOL)containsValueWithId:(id)id;
 - (id)entrySet;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_SingletonMap
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
   k = self->k_;
   if (k)
   {
-    LOBYTE(v4) = [k isEqual:a3];
+    LOBYTE(v4) = [k isEqual:id];
   }
 
   else
   {
-    return a3 == 0;
+    return id == 0;
   }
 
   return v4;
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
   v = self->v_;
   if (v)
   {
-    LOBYTE(v4) = [v isEqual:a3];
+    LOBYTE(v4) = [v isEqual:id];
   }
 
   else
   {
-    return a3 == 0;
+    return id == 0;
   }
 
   return v4;
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  if ([(JavaUtilCollections_SingletonMap *)self containsKeyWithId:a3])
+  if ([(JavaUtilCollections_SingletonMap *)self containsKeyWithId:id])
   {
     return self->v_;
   }

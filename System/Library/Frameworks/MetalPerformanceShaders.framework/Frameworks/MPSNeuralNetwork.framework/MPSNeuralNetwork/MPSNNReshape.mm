@@ -5,10 +5,10 @@
 - (MPSImageBatch)encodeBatchToCommandBuffer:(id)commandBuffer sourceImages:(MPSImageBatch *)sourceImages reshapedWidth:(NSUInteger)reshapedWidth reshapedHeight:(NSUInteger)reshapedHeight reshapedFeatureChannels:(NSUInteger)reshapedFeatureChannels;
 - (MPSNNReshape)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNReshape)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNReshape
@@ -62,22 +62,22 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v20.receiver = self;
   v20.super_class = MPSNNReshape;
   [(MPSCNNKernel *)&v20 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_reshapedWidth, @"MPSNNReshape._reshapedWidth;", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_reshapedHeight, @"MPSNNReshape._reshapedHeight;", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_reshapedFeatureChannels, @"MPSNNReshape._reshapedFeatureChannels;", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_reshapedWidth, @"MPSNNReshape._reshapedWidth;", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_reshapedHeight, @"MPSNNReshape._reshapedHeight;", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_reshapedFeatureChannels, @"MPSNNReshape._reshapedFeatureChannels;", v16, v17, v18, v19);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNNReshape;
-  result = [(MPSCNNKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v6 copyWithZone:zone device:device];
   *(result + 41) = self->_reshapedWidth;
   *(result + 42) = self->_reshapedHeight;
   *(result + 43) = self->_reshapedFeatureChannels;
@@ -93,11 +93,11 @@
   return objc_msgSend_stringWithFormat_(v2, v4, @"%@\n\tReshapeOperation", v5, v6, v7, v8, v9, v3);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
   v27.receiver = self;
   v27.super_class = MPSNNReshape;
-  v7 = [(MPSCNNKernel *)&v27 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:a6];
+  v7 = [(MPSCNNKernel *)&v27 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:offset];
   objc_msgSend_setWidth_(v7, v8, self->_reshapedWidth, v9, v10, v11, v12, v13);
   objc_msgSend_setHeight_(v7, v14, self->_reshapedHeight, v15, v16, v17, v18, v19);
   objc_msgSend_setFeatureChannels_(v7, v20, self->_reshapedFeatureChannels, v21, v22, v23, v24, v25);

@@ -1,19 +1,19 @@
 @interface _PFFetchedResultOrderedSetWrapper
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOrderedSet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOrderedSet:(id)set;
 - (NSString)description;
-- (_PFFetchedResultOrderedSetWrapper)initWithArray:(id)a3 andContext:(id)a4;
+- (_PFFetchedResultOrderedSetWrapper)initWithArray:(id)array andContext:(id)context;
 - (id)allObjects;
 - (id)array;
-- (id)descriptionWithLocale:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)descriptionWithLocale:(id)locale;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)getObjects:(id *)a3;
+- (void)getObjects:(id *)objects;
 @end
 
 @implementation _PFFetchedResultOrderedSetWrapper
 
-- (_PFFetchedResultOrderedSetWrapper)initWithArray:(id)a3 andContext:(id)a4
+- (_PFFetchedResultOrderedSetWrapper)initWithArray:(id)array andContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = _PFFetchedResultOrderedSetWrapper;
@@ -23,7 +23,7 @@
     return v6;
   }
 
-  if (![a3 count])
+  if (![array count])
   {
 
     return objc_alloc_init(MEMORY[0x1E695DFB8]);
@@ -32,13 +32,13 @@
   if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    return [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:a3];
+    return [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:array];
   }
 
-  v6->_underlyingArray = a3;
-  if (a4 && _PF_shouldAsyncProcessReferenceQueue && ([a4 concurrencyType] == 1 || objc_msgSend(a4, "concurrencyType") == 2))
+  v6->_underlyingArray = array;
+  if (context && _PF_shouldAsyncProcessReferenceQueue && ([context concurrencyType] == 1 || objc_msgSend(context, "concurrencyType") == 2))
   {
-    v6->_weakmoc = [[_PFWeakReference alloc] initWithObject:a4];
+    v6->_weakmoc = [[_PFWeakReference alloc] initWithObject:context];
   }
 
   return v6;
@@ -74,7 +74,7 @@
   return v4;
 }
 
-- (id)descriptionWithLocale:(id)a3
+- (id)descriptionWithLocale:(id)locale
 {
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSOrderedSet wrapper '%@' for fetch request results: %@", self, self->_underlyingArray];
@@ -83,7 +83,7 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E695DFA0]);
   underlyingArray = self->_underlyingArray;
@@ -98,24 +98,24 @@
   return v2;
 }
 
-- (void)getObjects:(id *)a3
+- (void)getObjects:(id *)objects
 {
   underlyingArray = self->_underlyingArray;
   v5 = [(NSArray *)underlyingArray count];
 
-  [(NSArray *)underlyingArray getObjects:a3 range:0, v5];
+  [(NSArray *)underlyingArray getObjects:objects range:0, v5];
 }
 
-- (BOOL)isEqualToOrderedSet:(id)a3
+- (BOOL)isEqualToOrderedSet:(id)set
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (set == self)
   {
     goto LABEL_13;
   }
 
   v5 = [(_PFFetchedResultOrderedSetWrapper *)self count];
-  if (v5 != [a3 count])
+  if (v5 != [set count])
   {
     LOBYTE(v13) = 0;
     goto LABEL_15;
@@ -125,7 +125,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [set countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v6)
   {
 LABEL_13:
@@ -143,7 +143,7 @@ LABEL_5:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(set);
       }
 
       v11 = *(*(&v16 + 1) + 8 * v10);
@@ -160,7 +160,7 @@ LABEL_5:
       ++v8;
       if (v7 == ++v10)
       {
-        v7 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [set countByEnumeratingWithState:&v16 objects:v20 count:16];
         LOBYTE(v13) = 1;
         if (v7)
         {
@@ -177,24 +177,24 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(isNSOrderedSet) = 1;
   }
 
   else
   {
-    v5 = [a3 isNSOrderedSet];
-    if (v5)
+    isNSOrderedSet = [equal isNSOrderedSet];
+    if (isNSOrderedSet)
     {
 
-      LOBYTE(v5) = [(_PFFetchedResultOrderedSetWrapper *)self isEqualToOrderedSet:a3];
+      LOBYTE(isNSOrderedSet) = [(_PFFetchedResultOrderedSetWrapper *)self isEqualToOrderedSet:equal];
     }
   }
 
-  return v5;
+  return isNSOrderedSet;
 }
 
 - (id)allObjects

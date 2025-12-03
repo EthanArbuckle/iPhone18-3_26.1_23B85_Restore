@@ -12,9 +12,9 @@
   v1 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   v2 = [MEMORY[0x1E6966CF8] executeQueries:v1];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

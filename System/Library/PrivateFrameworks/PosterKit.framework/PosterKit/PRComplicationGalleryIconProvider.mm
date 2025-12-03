@@ -1,29 +1,29 @@
 @interface PRComplicationGalleryIconProvider
-+ (void)loadIconImageForApplicationBundleIdentifier:(id)a3 atWidth:(double)a4 completion:(id)a5;
-+ (void)loadIconImageForExtensionBundleIdentifier:(id)a3 atWidth:(double)a4 completion:(id)a5;
++ (void)loadIconImageForApplicationBundleIdentifier:(id)identifier atWidth:(double)width completion:(id)completion;
++ (void)loadIconImageForExtensionBundleIdentifier:(id)identifier atWidth:(double)width completion:(id)completion;
 @end
 
 @implementation PRComplicationGalleryIconProvider
 
-+ (void)loadIconImageForExtensionBundleIdentifier:(id)a3 atWidth:(double)a4 completion:(id)a5
++ (void)loadIconImageForExtensionBundleIdentifier:(id)identifier atWidth:(double)width completion:(id)completion
 {
   v8 = MEMORY[0x1E69635D0];
-  v9 = a5;
-  v10 = a3;
-  v13 = [[v8 alloc] initWithBundleIdentifier:v10 error:0];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  v13 = [[v8 alloc] initWithBundleIdentifier:identifierCopy error:0];
 
-  v11 = [v13 containingBundleRecord];
-  v12 = [v11 bundleIdentifier];
-  [a1 loadIconImageForApplicationBundleIdentifier:v12 atWidth:v9 completion:a4];
+  containingBundleRecord = [v13 containingBundleRecord];
+  bundleIdentifier = [containingBundleRecord bundleIdentifier];
+  [self loadIconImageForApplicationBundleIdentifier:bundleIdentifier atWidth:completionCopy completion:width];
 }
 
-+ (void)loadIconImageForApplicationBundleIdentifier:(id)a3 atWidth:(double)a4 completion:(id)a5
++ (void)loadIconImageForApplicationBundleIdentifier:(id)identifier atWidth:(double)width completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v7 length])
+    if ([identifierCopy length])
     {
       if (loadIconImageForApplicationBundleIdentifier_atWidth_completion__onceToken != -1)
       {
@@ -36,9 +36,9 @@
       v11[2] = __100__PRComplicationGalleryIconProvider_loadIconImageForApplicationBundleIdentifier_atWidth_completion___block_invoke_3;
       v11[3] = &unk_1E78452E8;
       v10 = &v12;
-      v12 = v7;
-      v14 = a4;
-      v13 = v8;
+      v12 = identifierCopy;
+      widthCopy = width;
+      v13 = completionCopy;
       [v9 addOperationWithBlock:v11];
     }
 
@@ -49,7 +49,7 @@
       v17 = __100__PRComplicationGalleryIconProvider_loadIconImageForApplicationBundleIdentifier_atWidth_completion___block_invoke;
       v18 = &unk_1E7843778;
       v10 = &v19;
-      v19 = v8;
+      v19 = completionCopy;
       BSDispatchMain();
     }
   }

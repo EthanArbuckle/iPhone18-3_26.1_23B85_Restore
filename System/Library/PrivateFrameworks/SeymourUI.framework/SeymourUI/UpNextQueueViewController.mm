@@ -1,13 +1,13 @@
 @interface UpNextQueueViewController
-- (_TtC9SeymourUI25UpNextQueueViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI25UpNextQueueViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI25UpNextQueueViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI25UpNextQueueViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -28,11 +28,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   UpNextQueueViewController.viewDidLoad()();
 }
 
-- (_TtC9SeymourUI25UpNextQueueViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI25UpNextQueueViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI25UpNextQueueViewController_visibility) = 1;
   v3 = self + OBJC_IVAR____TtC9SeymourUI25UpNextQueueViewController_currentContentInsetBehavior;
@@ -53,9 +53,9 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   ObjectType = swift_getObjectType();
   v6 = sub_20C1333A4();
   v7 = *(v6 - 8);
@@ -63,10 +63,10 @@
   v9 = v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v10 = self;
-  [(UpNextQueueViewController *)&v15 viewDidAppear:v3];
-  v14[1] = v10;
-  (*(v7 + 16))(v9, *(&v10->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI25UpNextQueueViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI30UpNextQueueGalleryDataProvider_metricPage, v6);
+  selfCopy = self;
+  [(UpNextQueueViewController *)&v15 viewDidAppear:appearCopy];
+  v14[1] = selfCopy;
+  (*(v7 + 16))(v9, *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI25UpNextQueueViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI30UpNextQueueGalleryDataProvider_metricPage, v6);
   sub_20BC3AAFC(&qword_27C76C4C8, v11, type metadata accessor for UpNextQueueViewController);
   sub_20C138C54();
   (*(v7 + 8))(v9, v6);
@@ -75,15 +75,15 @@
   sub_20C139364();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  UpNextQueueViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  UpNextQueueViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = sub_20C132E94();
   v7 = *(v6 - 8);
@@ -91,22 +91,22 @@
   v9 = v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v10 = self;
-  [(UpNextQueueViewController *)&v13 viewWillDisappear:v3];
-  v12[1] = v10;
+  selfCopy = self;
+  [(UpNextQueueViewController *)&v13 viewWillDisappear:disappearCopy];
+  v12[1] = selfCopy;
   sub_20C132E84();
   sub_20BC3AAFC(&qword_27C76C4D0, v11, type metadata accessor for UpNextQueueViewController);
   sub_20C139274();
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(UpNextQueueViewController *)&v7 viewDidDisappear:v3];
+  [(UpNextQueueViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_20BC3AAFC(&qword_27C76C4D0, v5, type metadata accessor for UpNextQueueViewController);
   sub_20BC3AAFC(&qword_27C76C4D8, v6, type metadata accessor for UpNextQueueViewController);
   sub_20C139374();
@@ -135,7 +135,7 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (_TtC9SeymourUI25UpNextQueueViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI25UpNextQueueViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

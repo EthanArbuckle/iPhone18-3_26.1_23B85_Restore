@@ -1,12 +1,12 @@
 @interface LocalPresetsViewController
-- (_TtC7Weather26LocalPresetsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)didLongPressWithLongPressGesture:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC7Weather26LocalPresetsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)didLongPressWithLongPressGesture:(id)gesture;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -14,22 +14,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100397268();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_100397428(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_100397428(selfCopy, section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  sub_1003974C0(self, a4);
+  sub_1003974C0(self, section);
   if (v4)
   {
     v5 = String._bridgeToObjectiveC()();
@@ -43,11 +43,11 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_100397548(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100397548(selfCopy, section);
   v9 = v8;
 
   if (v9)
@@ -63,65 +63,65 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100397668(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100397668(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100397828();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
-  sub_100397E74(v13, a4, v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100397E74(selfCopy, style, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)didLongPressWithLongPressGesture:(id)a3
+- (void)didLongPressWithLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_100398B14(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_100398B14(gestureCopy);
 }
 
-- (_TtC7Weather26LocalPresetsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Weather26LocalPresetsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_100399344();
 }
 

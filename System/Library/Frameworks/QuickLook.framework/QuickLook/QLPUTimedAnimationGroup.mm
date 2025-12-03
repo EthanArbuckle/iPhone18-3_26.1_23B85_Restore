@@ -4,7 +4,7 @@
 - (void)_update;
 - (void)pauseAnimations;
 - (void)resumeAnimations;
-- (void)setElapsedTime:(double)a3;
+- (void)setElapsedTime:(double)time;
 @end
 
 @implementation QLPUTimedAnimationGroup
@@ -37,11 +37,11 @@
   return v5 - v6;
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
-  if (self->_pausedElapsedTime != a3)
+  if (self->_pausedElapsedTime != time)
   {
-    self->_pausedElapsedTime = a3;
+    self->_pausedElapsedTime = time;
     [(QLPUTimedAnimationGroup *)self _update];
   }
 }
@@ -70,9 +70,9 @@
 
 - (void)_update
 {
-  v3 = [(QLPUAnimationGroup *)self isPaused];
-  v4 = v3;
-  if (self->_areAnimationsPaused != v3 || [(QLPUAnimationGroup *)self isPaused])
+  isPaused = [(QLPUAnimationGroup *)self isPaused];
+  v4 = isPaused;
+  if (self->_areAnimationsPaused != isPaused || [(QLPUAnimationGroup *)self isPaused])
   {
     self->_areAnimationsPaused = v4;
     [(QLPUTimedAnimationGroup *)self updateAnimations];

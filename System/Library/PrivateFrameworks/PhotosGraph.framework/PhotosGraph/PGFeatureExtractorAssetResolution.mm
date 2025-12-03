@@ -1,21 +1,21 @@
 @interface PGFeatureExtractorAssetResolution
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetResolution
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 pixelWidth];
-  v7 = [v5 pixelHeight];
+  entityCopy = entity;
+  pixelWidth = [entityCopy pixelWidth];
+  pixelHeight = [entityCopy pixelHeight];
 
   v8 = MEMORY[0x277D22C40];
-  v9 = [(PGFeatureExtractorAssetResolution *)self featureLength];
+  featureLength = [(PGFeatureExtractorAssetResolution *)self featureLength];
 
-  *&v10 = (v7 * v6);
-  return [v8 vectorRepeatingFloat:v9 count:v10];
+  *&v10 = (pixelHeight * pixelWidth);
+  return [v8 vectorRepeatingFloat:featureLength count:v10];
 }
 
 - (id)featureNames

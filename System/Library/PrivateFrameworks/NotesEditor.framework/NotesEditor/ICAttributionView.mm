@@ -1,38 +1,38 @@
 @interface ICAttributionView
-- (ICAttributionView)initWithConfiguration:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)updateContentAnimated:(BOOL)a3;
+- (ICAttributionView)initWithConfiguration:(id)configuration;
+- (void)setConfiguration:(id)configuration;
+- (void)updateContentAnimated:(BOOL)animated;
 - (void)updatePositionAndVisibility;
 - (void)updateVisibility;
 @end
 
 @implementation ICAttributionView
 
-- (ICAttributionView)initWithConfiguration:(id)a3
+- (ICAttributionView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  [v5 adjustedFrame];
+  configurationCopy = configuration;
+  [configurationCopy adjustedFrame];
   v30.receiver = self;
   v30.super_class = ICAttributionView;
   v6 = [(ICAttributionView *)&v30 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    [v5 attributionFrame];
-    [v5 attributionFrame];
+    objc_storeStrong(&v6->_configuration, configuration);
+    [configurationCopy attributionFrame];
+    [configurationCopy attributionFrame];
     v8 = objc_alloc(MEMORY[0x277D75D18]);
     [(ICAttributionView *)v7 frame];
     v9 = [v8 initWithFrame:{0.0, 0.0}];
     attributionClippingView = v7->_attributionClippingView;
     v7->_attributionClippingView = v9;
 
-    v11 = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
-    [(UIView *)v7->_attributionClippingView setBackgroundColor:v11];
+    ic_noteEditorBackgroundColor = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
+    [(UIView *)v7->_attributionClippingView setBackgroundColor:ic_noteEditorBackgroundColor];
 
     [(ICAttributionView *)v7 insertSubview:v7->_attributionClippingView atIndex:0];
     v12 = objc_alloc(MEMORY[0x277D756B8]);
-    [v5 attributionFrame];
+    [configurationCopy attributionFrame];
     v13 = [v12 initWithFrame:?];
     attributionLabel = v7->_attributionLabel;
     v7->_attributionLabel = v13;
@@ -41,7 +41,7 @@
     [(UILabel *)v7->_attributionLabel setLineBreakMode:5];
     [(ICAttributionView *)v7 addSubview:v7->_attributionLabel];
     v15 = objc_alloc(MEMORY[0x277D756B8]);
-    [v5 adjustedFormattedTimestampFrame];
+    [configurationCopy adjustedFormattedTimestampFrame];
     v16 = [v15 initWithFrame:?];
     timestampLabel = v7->_timestampLabel;
     v7->_timestampLabel = v16;
@@ -49,18 +49,18 @@
     [(UILabel *)v7->_timestampLabel setTextAlignment:2];
     [(ICAttributionView *)v7 insertSubview:v7->_timestampLabel atIndex:0];
     v18 = objc_alloc(MEMORY[0x277D755E8]);
-    [v5 disclosureImageFrame];
+    [configurationCopy disclosureImageFrame];
     v19 = [v18 initWithFrame:?];
     disclosureImageView = v7->_disclosureImageView;
     v7->_disclosureImageView = v19;
 
     [(UIImageView *)v7->_disclosureImageView setContentMode:4];
-    v21 = [MEMORY[0x277D75348] placeholderTextColor];
-    [(UIImageView *)v7->_disclosureImageView setTintColor:v21];
+    placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
+    [(UIImageView *)v7->_disclosureImageView setTintColor:placeholderTextColor];
 
     [(ICAttributionView *)v7 addSubview:v7->_disclosureImageView];
     v22 = objc_alloc(MEMORY[0x277D755E8]);
-    [v5 statusImageFrame];
+    [configurationCopy statusImageFrame];
     v23 = [v22 initWithFrame:?];
     statusImageView = v7->_statusImageView;
     v7->_statusImageView = v23;
@@ -81,25 +81,25 @@
   return v7;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
+  objc_storeStrong(&self->_configuration, configuration);
   [(ICAttributionView *)self updateContentAnimated:0];
 
   [(ICAttributionView *)self updatePositionAndVisibility];
 }
 
-- (void)updateContentAnimated:(BOOL)a3
+- (void)updateContentAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v122 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (animated)
   {
-    v5 = [(ICAttributionView *)self configuration];
-    v6 = [v5 attribution];
-    v7 = [(ICAttributionView *)self attributionLabel];
-    v8 = [v7 attributedText];
-    v9 = [v6 isEqualToAttributedString:v8];
+    configuration = [(ICAttributionView *)self configuration];
+    attribution = [configuration attribution];
+    attributionLabel = [(ICAttributionView *)self attributionLabel];
+    attributedText = [attributionLabel attributedText];
+    v9 = [attribution isEqualToAttributedString:attributedText];
 
     v10 = MEMORY[0x277D36490];
     if (v9)
@@ -109,16 +109,16 @@
 
     else
     {
-      v12 = [MEMORY[0x277CDA000] animation];
+      animation = [MEMORY[0x277CDA000] animation];
       v13 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-      [v12 setTimingFunction:v13];
+      [animation setTimingFunction:v13];
 
-      [v12 setType:*MEMORY[0x277CDA928]];
+      [animation setType:*MEMORY[0x277CDA928]];
       v11 = *v10;
-      [v12 setDuration:*v10];
-      v14 = [(ICAttributionView *)self attributionLabel];
-      v15 = [v14 layer];
-      [v15 addAnimation:v12 forKey:@"kCATransitionFade"];
+      [animation setDuration:*v10];
+      attributionLabel2 = [(ICAttributionView *)self attributionLabel];
+      layer = [attributionLabel2 layer];
+      [layer addAnimation:animation forKey:@"kCATransitionFade"];
     }
 
     v116[0] = MEMORY[0x277D85DD0];
@@ -134,42 +134,42 @@
     [(ICAttributionView *)self updateVisibility];
   }
 
-  v16 = [(ICAttributionView *)self configuration];
-  -[ICAttributionView setUserInteractionEnabled:](self, "setUserInteractionEnabled:", [v16 isBlurred] ^ 1);
+  configuration2 = [(ICAttributionView *)self configuration];
+  -[ICAttributionView setUserInteractionEnabled:](self, "setUserInteractionEnabled:", [configuration2 isBlurred] ^ 1);
 
-  v17 = [(ICAttributionView *)self configuration];
-  v18 = [v17 attribution];
-  v19 = [(ICAttributionView *)self attributionLabel];
-  [v19 setAttributedText:v18];
+  configuration3 = [(ICAttributionView *)self configuration];
+  attribution2 = [configuration3 attribution];
+  attributionLabel3 = [(ICAttributionView *)self attributionLabel];
+  [attributionLabel3 setAttributedText:attribution2];
 
-  v20 = [(ICAttributionView *)self configuration];
-  v21 = [v20 formattedTimestamp];
+  configuration4 = [(ICAttributionView *)self configuration];
+  formattedTimestamp = [configuration4 formattedTimestamp];
 
-  v22 = [(ICAttributionView *)self timestampLabel];
-  v95 = v21;
-  [v22 setAttributedText:v21];
+  timestampLabel = [(ICAttributionView *)self timestampLabel];
+  v95 = formattedTimestamp;
+  [timestampLabel setAttributedText:formattedTimestamp];
 
-  v23 = [(ICAttributionView *)self configuration];
-  v24 = [v23 disclosureImage];
-  v25 = [(ICAttributionView *)self disclosureImageView];
-  [v25 setImage:v24];
+  configuration5 = [(ICAttributionView *)self configuration];
+  disclosureImage = [configuration5 disclosureImage];
+  disclosureImageView = [(ICAttributionView *)self disclosureImageView];
+  [disclosureImageView setImage:disclosureImage];
 
-  v26 = [(ICAttributionView *)self configuration];
-  v27 = [v26 statusImage];
-  v28 = [(ICAttributionView *)self statusImageView];
-  [v28 setImage:v27];
+  configuration6 = [(ICAttributionView *)self configuration];
+  statusImage = [configuration6 statusImage];
+  statusImageView = [(ICAttributionView *)self statusImageView];
+  [statusImageView setImage:statusImage];
 
-  v29 = [(ICAttributionView *)self childAttributionViews];
-  v30 = [v29 objectEnumerator];
-  v31 = [v30 allObjects];
-  v32 = [v31 ic_map:&__block_literal_global_11];
+  childAttributionViews = [(ICAttributionView *)self childAttributionViews];
+  objectEnumerator = [childAttributionViews objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v32 = [allObjects ic_map:&__block_literal_global_11];
 
   v94 = v32;
   v33 = [MEMORY[0x277CBEB98] setWithArray:v32];
   v34 = MEMORY[0x277CBEB98];
-  v35 = [(ICAttributionView *)self configuration];
-  v36 = [v35 childConfigurations];
-  v37 = [v34 setWithArray:v36];
+  configuration7 = [(ICAttributionView *)self configuration];
+  childConfigurations = [configuration7 childConfigurations];
+  v37 = [v34 setWithArray:childConfigurations];
   v38 = [v33 isEqualToSet:v37];
 
   if ((v38 & 1) == 0)
@@ -178,11 +178,11 @@
     v115 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v39 = [(ICAttributionView *)self childAttributionViews];
-    v40 = [v39 objectEnumerator];
-    v41 = [v40 allObjects];
+    childAttributionViews2 = [(ICAttributionView *)self childAttributionViews];
+    objectEnumerator2 = [childAttributionViews2 objectEnumerator];
+    allObjects2 = [objectEnumerator2 allObjects];
 
-    v42 = [v41 countByEnumeratingWithState:&v112 objects:v121 count:16];
+    v42 = [allObjects2 countByEnumeratingWithState:&v112 objects:v121 count:16];
     if (v42)
     {
       v43 = v42;
@@ -193,29 +193,29 @@
         {
           if (*v113 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(allObjects2);
           }
 
           [*(*(&v112 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v43 = [v41 countByEnumeratingWithState:&v112 objects:v121 count:16];
+        v43 = [allObjects2 countByEnumeratingWithState:&v112 objects:v121 count:16];
       }
 
       while (v43);
     }
 
-    v46 = [(ICAttributionView *)self childAttributionViews];
-    [v46 removeAllObjects];
+    childAttributionViews3 = [(ICAttributionView *)self childAttributionViews];
+    [childAttributionViews3 removeAllObjects];
 
     v110 = 0u;
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v47 = [(ICAttributionView *)self configuration];
-    v48 = [v47 childConfigurations];
+    configuration8 = [(ICAttributionView *)self configuration];
+    childConfigurations2 = [configuration8 childConfigurations];
 
-    v49 = [v48 countByEnumeratingWithState:&v108 objects:v120 count:16];
+    v49 = [childConfigurations2 countByEnumeratingWithState:&v108 objects:v120 count:16];
     if (v49)
     {
       v50 = v49;
@@ -226,33 +226,33 @@
         {
           if (*v109 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(childConfigurations2);
           }
 
           v53 = *(*(&v108 + 1) + 8 * j);
           v54 = [[ICAttributionView alloc] initWithConfiguration:v53];
           [(ICAttributionView *)self insertSubview:v54 atIndex:0];
-          v55 = [(ICAttributionView *)self childAttributionViews];
-          [v55 setObject:v54 forKey:v53];
+          childAttributionViews4 = [(ICAttributionView *)self childAttributionViews];
+          [childAttributionViews4 setObject:v54 forKey:v53];
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v108 objects:v120 count:16];
+        v50 = [childConfigurations2 countByEnumeratingWithState:&v108 objects:v120 count:16];
       }
 
       while (v50);
     }
   }
 
-  v56 = [(ICAttributionView *)self highlightViews];
-  v57 = [v56 objectEnumerator];
-  v58 = [v57 allObjects];
-  v59 = [v58 ic_map:&__block_literal_global_25];
+  highlightViews = [(ICAttributionView *)self highlightViews];
+  objectEnumerator3 = [highlightViews objectEnumerator];
+  allObjects3 = [objectEnumerator3 allObjects];
+  v59 = [allObjects3 ic_map:&__block_literal_global_25];
 
   v60 = [MEMORY[0x277CBEB98] setWithArray:v59];
   v61 = MEMORY[0x277CBEB98];
-  v62 = [(ICAttributionView *)self configuration];
-  v63 = [v62 highlightConfigurations];
-  v64 = [v61 setWithArray:v63];
+  configuration9 = [(ICAttributionView *)self configuration];
+  highlightConfigurations = [configuration9 highlightConfigurations];
+  v64 = [v61 setWithArray:highlightConfigurations];
   v65 = [v60 isEqualToSet:v64];
 
   if ((v65 & 1) == 0)
@@ -261,11 +261,11 @@
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v66 = [(ICAttributionView *)self highlightViews];
-    v67 = [v66 objectEnumerator];
-    v68 = [v67 allObjects];
+    highlightViews2 = [(ICAttributionView *)self highlightViews];
+    objectEnumerator4 = [highlightViews2 objectEnumerator];
+    allObjects4 = [objectEnumerator4 allObjects];
 
-    v69 = [v68 countByEnumeratingWithState:&v104 objects:v119 count:16];
+    v69 = [allObjects4 countByEnumeratingWithState:&v104 objects:v119 count:16];
     if (v69)
     {
       v70 = v69;
@@ -276,13 +276,13 @@
         {
           if (*v105 != v71)
           {
-            objc_enumerationMutation(v68);
+            objc_enumerationMutation(allObjects4);
           }
 
           [*(*(&v104 + 1) + 8 * k) removeFromSuperview];
         }
 
-        v70 = [v68 countByEnumeratingWithState:&v104 objects:v119 count:16];
+        v70 = [allObjects4 countByEnumeratingWithState:&v104 objects:v119 count:16];
       }
 
       while (v70);
@@ -290,17 +290,17 @@
 
     v93 = v59;
 
-    v73 = [(ICAttributionView *)self highlightViews];
-    [v73 removeAllObjects];
+    highlightViews3 = [(ICAttributionView *)self highlightViews];
+    [highlightViews3 removeAllObjects];
 
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v74 = [(ICAttributionView *)self configuration];
-    v75 = [v74 highlightConfigurations];
+    configuration10 = [(ICAttributionView *)self configuration];
+    highlightConfigurations2 = [configuration10 highlightConfigurations];
 
-    v76 = [v75 countByEnumeratingWithState:&v100 objects:v118 count:16];
+    v76 = [highlightConfigurations2 countByEnumeratingWithState:&v100 objects:v118 count:16];
     if (v76)
     {
       v77 = v76;
@@ -311,7 +311,7 @@
         {
           if (*v101 != v78)
           {
-            objc_enumerationMutation(v75);
+            objc_enumerationMutation(highlightConfigurations2);
           }
 
           v80 = *(*(&v100 + 1) + 8 * m);
@@ -319,11 +319,11 @@
           [v80 alpha];
           [(ICAttributionHighlightView *)v81 setAlpha:?];
           [(ICAttributionView *)self addSubview:v81];
-          v82 = [(ICAttributionView *)self highlightViews];
-          [v82 setObject:v81 forKey:v80];
+          highlightViews4 = [(ICAttributionView *)self highlightViews];
+          [highlightViews4 setObject:v81 forKey:v80];
         }
 
-        v77 = [v75 countByEnumeratingWithState:&v100 objects:v118 count:16];
+        v77 = [highlightConfigurations2 countByEnumeratingWithState:&v100 objects:v118 count:16];
       }
 
       while (v77);
@@ -336,11 +336,11 @@
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v83 = [(ICAttributionView *)self childAttributionViews];
-  v84 = [v83 objectEnumerator];
-  v85 = [v84 allObjects];
+  childAttributionViews5 = [(ICAttributionView *)self childAttributionViews];
+  objectEnumerator5 = [childAttributionViews5 objectEnumerator];
+  allObjects5 = [objectEnumerator5 allObjects];
 
-  v86 = [v85 countByEnumeratingWithState:&v96 objects:v117 count:16];
+  v86 = [allObjects5 countByEnumeratingWithState:&v96 objects:v117 count:16];
   if (v86)
   {
     v87 = v86;
@@ -351,13 +351,13 @@
       {
         if (*v97 != v88)
         {
-          objc_enumerationMutation(v85);
+          objc_enumerationMutation(allObjects5);
         }
 
-        [*(*(&v96 + 1) + 8 * n) updateContentAnimated:v3];
+        [*(*(&v96 + 1) + 8 * n) updateContentAnimated:animatedCopy];
       }
 
-      v87 = [v85 countByEnumeratingWithState:&v96 objects:v117 count:16];
+      v87 = [allObjects5 countByEnumeratingWithState:&v96 objects:v117 count:16];
     }
 
     while (v87);
@@ -373,28 +373,28 @@
     v90 = 2;
   }
 
-  v91 = [(ICAttributionView *)self attributionLabel];
-  [v91 setTextAlignment:v90];
+  attributionLabel4 = [(ICAttributionView *)self attributionLabel];
+  [attributionLabel4 setTextAlignment:v90];
 
-  v92 = [(ICAttributionView *)self timestampLabel];
-  [v92 setTextAlignment:v90];
+  timestampLabel2 = [(ICAttributionView *)self timestampLabel];
+  [timestampLabel2 setTextAlignment:v90];
 }
 
 - (void)updatePositionAndVisibility
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttributionView *)self configuration];
-  [v3 adjustedFrame];
+  configuration = [(ICAttributionView *)self configuration];
+  [configuration adjustedFrame];
   [(ICAttributionView *)self setFrame:?];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v4 = [(ICAttributionView *)self configuration];
-  v5 = [v4 childConfigurations];
+  configuration2 = [(ICAttributionView *)self configuration];
+  childConfigurations = [configuration2 childConfigurations];
 
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  v6 = [childConfigurations countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v6)
   {
     v7 = v6;
@@ -406,12 +406,12 @@
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childConfigurations);
         }
 
         v10 = *(*(&v35 + 1) + 8 * v9);
-        v11 = [(ICAttributionView *)self childAttributionViews];
-        v12 = [v11 objectForKey:v10];
+        childAttributionViews = [(ICAttributionView *)self childAttributionViews];
+        v12 = [childAttributionViews objectForKey:v10];
 
         [v10 adjustedFrame];
         [v12 setFrame:?];
@@ -420,14 +420,14 @@
         v16 = v15;
         v18 = v17;
         v20 = v19;
-        v21 = [v12 timestampLabel];
-        [v21 setFrame:{v14, v16, v18, v20}];
+        timestampLabel = [v12 timestampLabel];
+        [timestampLabel setFrame:{v14, v16, v18, v20}];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v7 = [childConfigurations countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v7);
@@ -437,10 +437,10 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = [(ICAttributionView *)self configuration];
-  v23 = [v22 highlightConfigurations];
+  configuration3 = [(ICAttributionView *)self configuration];
+  highlightConfigurations = [configuration3 highlightConfigurations];
 
-  v24 = [v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  v24 = [highlightConfigurations countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v24)
   {
     v25 = v24;
@@ -452,12 +452,12 @@
       {
         if (*v32 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(highlightConfigurations);
         }
 
         v28 = *(*(&v31 + 1) + 8 * v27);
-        v29 = [(ICAttributionView *)self highlightViews];
-        v30 = [v29 objectForKey:v28];
+        highlightViews = [(ICAttributionView *)self highlightViews];
+        v30 = [highlightViews objectForKey:v28];
 
         [v28 adjustedFrame];
         [v30 setFrame:?];
@@ -466,7 +466,7 @@
       }
 
       while (v25 != v27);
-      v25 = [v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v25 = [highlightConfigurations countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v25);
@@ -478,39 +478,39 @@
 - (void)updateVisibility
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttributionView *)self configuration];
-  v4 = ([v3 isAttributionHidden] ^ 1);
-  v5 = [(ICAttributionView *)self attributionLabel];
-  [v5 setAlpha:v4];
+  configuration = [(ICAttributionView *)self configuration];
+  v4 = ([configuration isAttributionHidden] ^ 1);
+  attributionLabel = [(ICAttributionView *)self attributionLabel];
+  [attributionLabel setAlpha:v4];
 
-  v6 = [(ICAttributionView *)self configuration];
-  v7 = ([v6 isAttributionHidden] ^ 1);
-  v8 = [(ICAttributionView *)self attributionClippingView];
-  [v8 setAlpha:v7];
+  configuration2 = [(ICAttributionView *)self configuration];
+  v7 = ([configuration2 isAttributionHidden] ^ 1);
+  attributionClippingView = [(ICAttributionView *)self attributionClippingView];
+  [attributionClippingView setAlpha:v7];
 
-  v9 = [(ICAttributionView *)self configuration];
-  v10 = ([v9 isTimestampHidden] ^ 1);
-  v11 = [(ICAttributionView *)self timestampLabel];
-  [v11 setAlpha:v10];
+  configuration3 = [(ICAttributionView *)self configuration];
+  v10 = ([configuration3 isTimestampHidden] ^ 1);
+  timestampLabel = [(ICAttributionView *)self timestampLabel];
+  [timestampLabel setAlpha:v10];
 
-  v12 = [(ICAttributionView *)self configuration];
-  v13 = ([v12 isStatusImageHidden] ^ 1);
-  v14 = [(ICAttributionView *)self statusImageView];
-  [v14 setAlpha:v13];
+  configuration4 = [(ICAttributionView *)self configuration];
+  v13 = ([configuration4 isStatusImageHidden] ^ 1);
+  statusImageView = [(ICAttributionView *)self statusImageView];
+  [statusImageView setAlpha:v13];
 
-  v15 = [(ICAttributionView *)self configuration];
-  v16 = ([v15 isDisclosureImageHidden] ^ 1);
-  v17 = [(ICAttributionView *)self disclosureImageView];
-  [v17 setAlpha:v16];
+  configuration5 = [(ICAttributionView *)self configuration];
+  v16 = ([configuration5 isDisclosureImageHidden] ^ 1);
+  disclosureImageView = [(ICAttributionView *)self disclosureImageView];
+  [disclosureImageView setAlpha:v16];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = [(ICAttributionView *)self configuration];
-  v19 = [v18 highlightConfigurations];
+  configuration6 = [(ICAttributionView *)self configuration];
+  highlightConfigurations = [configuration6 highlightConfigurations];
 
-  v20 = [v19 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v20 = [highlightConfigurations countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v20)
   {
     v21 = v20;
@@ -521,18 +521,18 @@
       {
         if (*v30 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(highlightConfigurations);
         }
 
         v24 = *(*(&v29 + 1) + 8 * i);
         [v24 alpha];
         v26 = v25;
-        v27 = [(ICAttributionView *)self highlightViews];
-        v28 = [v27 objectForKey:v24];
+        highlightViews = [(ICAttributionView *)self highlightViews];
+        v28 = [highlightViews objectForKey:v24];
         [v28 setAlpha:v26];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v21 = [highlightConfigurations countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v21);

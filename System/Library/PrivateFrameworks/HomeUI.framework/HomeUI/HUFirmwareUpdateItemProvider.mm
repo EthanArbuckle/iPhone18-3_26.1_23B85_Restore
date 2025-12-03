@@ -1,15 +1,15 @@
 @interface HUFirmwareUpdateItemProvider
 + (id)itemComparator;
 - (HUFirmwareUpdateItemProvider)init;
-- (HUFirmwareUpdateItemProvider)initWithHome:(id)a3 style:(unint64_t)a4;
+- (HUFirmwareUpdateItemProvider)initWithHome:(id)home style:(unint64_t)style;
 - (id)_effectiveFilter;
-- (id)_instructionsItemResultsWithSampleLinkedApplicationItem:(id)a3 numberOfLinkedApplicationItems:(int64_t)a4;
-- (id)_localizedDescriptionForAppName:(id)a3 accessoriesWithFirmwareUpdates:(id)a4 visibleAccessoryTileDisplayNames:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_instructionsItemResultsWithSampleLinkedApplicationItem:(id)item numberOfLinkedApplicationItems:(int64_t)items;
+- (id)_localizedDescriptionForAppName:(id)name accessoriesWithFirmwareUpdates:(id)updates visibleAccessoryTileDisplayNames:(id)names;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
-- (void)setFilter:(id)a3;
+- (void)setFilter:(id)filter;
 @end
 
 @implementation HUFirmwareUpdateItemProvider
@@ -42,27 +42,27 @@ uint64_t __46__HUFirmwareUpdateItemProvider_itemComparator__block_invoke(uint64_
 
 - (HUFirmwareUpdateItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_style_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUFirmwareUpdateItemProvider.m" lineNumber:41 description:{@"%s is unavailable; use %@ instead", "-[HUFirmwareUpdateItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUFirmwareUpdateItemProvider.m" lineNumber:41 description:{@"%s is unavailable; use %@ instead", "-[HUFirmwareUpdateItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HUFirmwareUpdateItemProvider)initWithHome:(id)a3 style:(unint64_t)a4
+- (HUFirmwareUpdateItemProvider)initWithHome:(id)home style:(unint64_t)style
 {
-  v7 = a3;
+  homeCopy = home;
   v26.receiver = self;
   v26.super_class = HUFirmwareUpdateItemProvider;
   v8 = [(HFItemProvider *)&v26 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a3);
-    v9->_style = a4;
-    v10 = [[HULinkedApplicationItemProvider alloc] initWithHome:v7];
-    v11 = [(HUFirmwareUpdateItemProvider *)v9 _effectiveFilter];
-    [(HULinkedApplicationItemProvider *)v10 setFilter:v11];
+    objc_storeStrong(&v8->_home, home);
+    v9->_style = style;
+    v10 = [[HULinkedApplicationItemProvider alloc] initWithHome:homeCopy];
+    _effectiveFilter = [(HUFirmwareUpdateItemProvider *)v9 _effectiveFilter];
+    [(HULinkedApplicationItemProvider *)v10 setFilter:_effectiveFilter];
 
     v12 = [MEMORY[0x277CBEB98] set];
     linkedApplicationItems = v9->_linkedApplicationItems;
@@ -215,25 +215,25 @@ id __51__HUFirmwareUpdateItemProvider_initWithHome_style___block_invoke_5(uint64
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUFirmwareUpdateItemProvider *)self home];
-  v6 = [v4 initWithHome:v5 style:{-[HUFirmwareUpdateItemProvider style](self, "style")}];
+  home = [(HUFirmwareUpdateItemProvider *)self home];
+  v6 = [v4 initWithHome:home style:{-[HUFirmwareUpdateItemProvider style](self, "style")}];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
-  v4 = [v3 reloadItems];
+  linkedApplicationItemProvider = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
+  reloadItems = [linkedApplicationItemProvider reloadItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HUFirmwareUpdateItemProvider_reloadItems__block_invoke;
   v7[3] = &unk_277DB7F80;
   v7[4] = self;
-  v5 = [v4 flatMap:v7];
+  v5 = [reloadItems flatMap:v7];
 
   return v5;
 }
@@ -275,17 +275,17 @@ id __43__HUFirmwareUpdateItemProvider_reloadItems__block_invoke(uint64_t a1, voi
 {
   if ([(HUFirmwareUpdateItemProvider *)self style]== 2 || ![(HUFirmwareUpdateItemProvider *)self hasProvidedInstructionsItem])
   {
-    v5 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItems];
+    linkedApplicationItems = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItems];
   }
 
   else
   {
-    v3 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItems];
-    v4 = [(HUFirmwareUpdateItemProvider *)self instructionsItem];
-    v5 = [v3 setByAddingObject:v4];
+    linkedApplicationItems2 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItems];
+    instructionsItem = [(HUFirmwareUpdateItemProvider *)self instructionsItem];
+    linkedApplicationItems = [linkedApplicationItems2 setByAddingObject:instructionsItem];
   }
 
-  return v5;
+  return linkedApplicationItems;
 }
 
 - (id)invalidationReasons
@@ -293,27 +293,27 @@ id __43__HUFirmwareUpdateItemProvider_reloadItems__block_invoke(uint64_t a1, voi
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUFirmwareUpdateItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B40];
   v8[0] = *MEMORY[0x277D13B28];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = [a3 copy];
+  v4 = [filter copy];
   filter = self->_filter;
   self->_filter = v4;
 
   objc_opt_class();
-  v14 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
+  linkedApplicationItemProvider = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v14;
+    v6 = linkedApplicationItemProvider;
   }
 
   else
@@ -325,18 +325,18 @@ id __43__HUFirmwareUpdateItemProvider_reloadItems__block_invoke(uint64_t a1, voi
 
   if (!v7)
   {
-    v8 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
+    linkedApplicationItemProvider2 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
+      linkedApplicationItemProvider3 = [(HUFirmwareUpdateItemProvider *)self linkedApplicationItemProvider];
       objc_opt_class();
-      v11 = [v10 sourceProvider];
+      sourceProvider = [linkedApplicationItemProvider3 sourceProvider];
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = sourceProvider;
       }
 
       else
@@ -344,28 +344,28 @@ id __43__HUFirmwareUpdateItemProvider_reloadItems__block_invoke(uint64_t a1, voi
         v12 = 0;
       }
 
-      v14 = v12;
+      linkedApplicationItemProvider = v12;
     }
 
     else
     {
-      v14 = 0;
+      linkedApplicationItemProvider = 0;
     }
   }
 
-  v13 = [(HUFirmwareUpdateItemProvider *)self _effectiveFilter];
-  [v14 setFilter:v13];
+  _effectiveFilter = [(HUFirmwareUpdateItemProvider *)self _effectiveFilter];
+  [linkedApplicationItemProvider setFilter:_effectiveFilter];
 }
 
 - (id)_effectiveFilter
 {
-  v2 = [(HUFirmwareUpdateItemProvider *)self filter];
+  filter = [(HUFirmwareUpdateItemProvider *)self filter];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__HUFirmwareUpdateItemProvider__effectiveFilter__block_invoke;
   aBlock[3] = &unk_277DC3F00;
-  v7 = v2;
-  v3 = v2;
+  v7 = filter;
+  v3 = filter;
   v4 = _Block_copy(aBlock);
 
   return v4;
@@ -388,48 +388,48 @@ uint64_t __48__HUFirmwareUpdateItemProvider__effectiveFilter__block_invoke(uint6
   return v5;
 }
 
-- (id)_localizedDescriptionForAppName:(id)a3 accessoriesWithFirmwareUpdates:(id)a4 visibleAccessoryTileDisplayNames:(id)a5
+- (id)_localizedDescriptionForAppName:(id)name accessoriesWithFirmwareUpdates:(id)updates visibleAccessoryTileDisplayNames:(id)names
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HUFirmwareUpdateItemProvider *)self style];
-  if (v11 == 2)
+  nameCopy = name;
+  updatesCopy = updates;
+  namesCopy = names;
+  style = [(HUFirmwareUpdateItemProvider *)self style];
+  if (style == 2)
   {
     goto LABEL_4;
   }
 
-  if (v11 != 1)
+  if (style != 1)
   {
-    if (v11)
+    if (style)
     {
       v13 = 0;
       goto LABEL_35;
     }
 
 LABEL_4:
-    if ([v8 length] && objc_msgSend(v10, "count") == 1)
+    if ([nameCopy length] && objc_msgSend(namesCopy, "count") == 1)
     {
       [MEMORY[0x277D14CE8] isAMac];
-      v12 = [v10 anyObject];
-      v23 = v12;
-      v24 = v8;
+      anyObject = [namesCopy anyObject];
+      v23 = anyObject;
+      v24 = nameCopy;
 LABEL_33:
       v13 = HFLocalizedStringWithFormat();
 
       goto LABEL_35;
     }
 
-    if (![v8 length] || objc_msgSend(v10, "count") < 2)
+    if (![nameCopy length] || objc_msgSend(namesCopy, "count") < 2)
     {
-      if (![v8 length] && objc_msgSend(v10, "count") == 1 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
+      if (![nameCopy length] && objc_msgSend(namesCopy, "count") == 1 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
       {
-        v12 = [v10 anyObject];
-        v23 = v12;
+        anyObject = [namesCopy anyObject];
+        v23 = anyObject;
         goto LABEL_33;
       }
 
-      if (![v8 length] && objc_msgSend(v10, "count") >= 2 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
+      if (![nameCopy length] && objc_msgSend(namesCopy, "count") >= 2 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
       {
         goto LABEL_20;
       }
@@ -440,44 +440,44 @@ LABEL_33:
     goto LABEL_23;
   }
 
-  if (![v8 length] || objc_msgSend(v9, "count") != 1)
+  if (![nameCopy length] || objc_msgSend(updatesCopy, "count") != 1)
   {
-    if (![v8 length] || objc_msgSend(v9, "count") < 2)
+    if (![nameCopy length] || objc_msgSend(updatesCopy, "count") < 2)
     {
-      if (![v8 length] && objc_msgSend(v9, "count") == 1 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
+      if (![nameCopy length] && objc_msgSend(updatesCopy, "count") == 1 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
       {
-        v23 = v8;
+        v23 = nameCopy;
         goto LABEL_34;
       }
 
-      if (![v8 length] && objc_msgSend(v9, "count") >= 2 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
+      if (![nameCopy length] && objc_msgSend(updatesCopy, "count") >= 2 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
       {
-        v23 = v8;
+        v23 = nameCopy;
         goto LABEL_34;
       }
 
 LABEL_32:
       [MEMORY[0x277D14CE8] isAMac];
 LABEL_20:
-      v23 = [v10 count];
+      v23 = [namesCopy count];
       goto LABEL_34;
     }
 
 LABEL_23:
     [MEMORY[0x277D14CE8] isAMac];
-    v23 = [v10 count];
-    v24 = v8;
+    v23 = [namesCopy count];
+    v24 = nameCopy;
     goto LABEL_34;
   }
 
-  v23 = v8;
+  v23 = nameCopy;
   [MEMORY[0x277D14CE8] isAMac];
 LABEL_34:
   v13 = HFLocalizedStringWithFormat();
 LABEL_35:
-  if ([v9 na_any:{&__block_literal_global_78_2, v23, v24}])
+  if ([updatesCopy na_any:{&__block_literal_global_78_2, v23, v24}])
   {
-    [v9 count];
+    [updatesCopy count];
     v14 = HFLocalizedWiFiString();
     v15 = MEMORY[0x277CCA898];
     v16 = HFLocalizedStringWithFormat();
@@ -501,30 +501,30 @@ uint64_t __128__HUFirmwareUpdateItemProvider__localizedDescriptionForAppName_acc
   return v3;
 }
 
-- (id)_instructionsItemResultsWithSampleLinkedApplicationItem:(id)a3 numberOfLinkedApplicationItems:(int64_t)a4
+- (id)_instructionsItemResultsWithSampleLinkedApplicationItem:(id)item numberOfLinkedApplicationItems:(int64_t)items
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  itemCopy = item;
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HUFirmwareUpdateItemProvider *)self home];
-  v10 = [v9 accessories];
-  v11 = [v8 setWithArray:v10];
-  v12 = [(HUFirmwareUpdateItemProvider *)self _effectiveFilter];
-  v13 = [v11 na_filter:v12];
+  home = [(HUFirmwareUpdateItemProvider *)self home];
+  accessories = [home accessories];
+  v11 = [v8 setWithArray:accessories];
+  _effectiveFilter = [(HUFirmwareUpdateItemProvider *)self _effectiveFilter];
+  v13 = [v11 na_filter:_effectiveFilter];
 
   v14 = [v13 na_map:&__block_literal_global_97_1];
-  v15 = [v14 na_setByFlattening];
+  na_setByFlattening = [v14 na_setByFlattening];
 
   v16 = [v13 na_map:&__block_literal_global_99_5];
-  v17 = [v16 na_setByFlattening];
-  v18 = [v17 count];
+  na_setByFlattening2 = [v16 na_setByFlattening];
+  v18 = [na_setByFlattening2 count];
 
-  if ((a4 || [MEMORY[0x277D14CE8] isAMac]) && objc_msgSend(v15, "count"))
+  if ((items || [MEMORY[0x277D14CE8] isAMac]) && objc_msgSend(na_setByFlattening, "count"))
   {
     v19 = [MEMORY[0x277D2C900] futureWithResult:&stru_2823E0EE8];
-    if (a4 == 1)
+    if (items == 1)
     {
-      v20 = [v7 updateWithOptions:MEMORY[0x277CBEC10]];
+      v20 = [itemCopy updateWithOptions:MEMORY[0x277CBEC10]];
       v21 = [v20 flatMap:&__block_literal_global_102_0];
 
       v19 = v21;
@@ -538,7 +538,7 @@ uint64_t __128__HUFirmwareUpdateItemProvider__localizedDescriptionForAppName_acc
     objc_copyWeak(v28, &location);
     v28[1] = v18;
     v26 = v13;
-    v27 = v15;
+    v27 = na_setByFlattening;
     v28[2] = a2;
     v22 = [v19 flatMap:v25];
 

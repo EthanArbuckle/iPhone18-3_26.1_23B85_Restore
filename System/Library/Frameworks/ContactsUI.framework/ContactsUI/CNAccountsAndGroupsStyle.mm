@@ -1,15 +1,15 @@
 @interface CNAccountsAndGroupsStyle
-+ (id)styleForTraitCollection:(id)a3;
-- (id)cellAccessoriesForContextMenuPreviewForItem:(id)a3;
-- (id)cellAccessoriesForItem:(id)a3;
++ (id)styleForTraitCollection:(id)collection;
+- (id)cellAccessoriesForContextMenuPreviewForItem:(id)item;
+- (id)cellAccessoriesForItem:(id)item;
 - (id)parentCellAccessories;
 @end
 
 @implementation CNAccountsAndGroupsStyle
 
-+ (id)styleForTraitCollection:(id)a3
++ (id)styleForTraitCollection:(id)collection
 {
-  if ([a3 _splitViewControllerContext] == 2)
+  if ([collection _splitViewControllerContext] == 2)
   {
     v3 = &styleForTraitCollection__outlineStyle;
     v4 = styleForTraitCollection__outlineStyle;
@@ -39,9 +39,9 @@ LABEL_6:
   return v4;
 }
 
-- (id)cellAccessoriesForContextMenuPreviewForItem:(id)a3
+- (id)cellAccessoriesForContextMenuPreviewForItem:(id)item
 {
-  v3 = [(CNAccountsAndGroupsStyle *)self cellAccessoriesForItem:a3];
+  v3 = [(CNAccountsAndGroupsStyle *)self cellAccessoriesForItem:item];
   v4 = [v3 _cn_map:&__block_literal_global_38_17912];
 
   return v4;
@@ -59,26 +59,26 @@ id __72__CNAccountsAndGroupsStyle_cellAccessoriesForContextMenuPreviewForItem___
   return v2;
 }
 
-- (id)cellAccessoriesForItem:(id)a3
+- (id)cellAccessoriesForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 contactCountString];
-  if (v5)
+  contactCountString = [itemCopy contactCountString];
+  if (contactCountString)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:contactCountString];
     [v4 addObject:v6];
   }
 
-  v7 = [v3 groupSymbol];
-  if (v7)
+  groupSymbol = [itemCopy groupSymbol];
+  if (groupSymbol)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
+    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:groupSymbol];
     v9 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v8 placement:0];
     [v4 addObject:v9];
   }
 
-  if ([v3 canDelete])
+  if ([itemCopy canDelete])
   {
     v10 = objc_alloc_init(MEMORY[0x1E69DC798]);
     [v4 addObject:v10];
@@ -92,10 +92,10 @@ id __72__CNAccountsAndGroupsStyle_cellAccessoriesForContextMenuPreviewForItem___
   v8[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E69DC7C8]);
   [v2 setStyle:1];
-  v3 = [MEMORY[0x1E69DCC28] headerConfiguration];
-  v4 = [v3 textProperties];
-  v5 = [v4 color];
-  [v2 setTintColor:v5];
+  headerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
+  textProperties = [headerConfiguration textProperties];
+  color = [textProperties color];
+  [v2 setTintColor:color];
 
   v8[0] = v2;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];

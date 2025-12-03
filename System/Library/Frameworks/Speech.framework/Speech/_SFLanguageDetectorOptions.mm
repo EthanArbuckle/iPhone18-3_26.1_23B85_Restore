@@ -1,25 +1,25 @@
 @interface _SFLanguageDetectorOptions
-- (BOOL)isEqual:(id)a3;
-- (_SFLanguageDetectorOptions)initWithCoder:(id)a3;
-- (_SFLanguageDetectorOptions)initWithLanguageConstraints:(id)a3 alternativesCount:(int64_t)a4 resultReportingFrequency:(int64_t)a5 useVAD:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_SFLanguageDetectorOptions)initWithCoder:(id)coder;
+- (_SFLanguageDetectorOptions)initWithLanguageConstraints:(id)constraints alternativesCount:(int64_t)count resultReportingFrequency:(int64_t)frequency useVAD:(BOOL)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SFLanguageDetectorOptions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    if ([(_SFLanguageDetectorOptions *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(_SFLanguageDetectorOptions *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       languageConstraints = self->_languageConstraints;
       if (languageConstraints | v5->_languageConstraints)
       {
@@ -56,51 +56,51 @@ LABEL_13:
   return v8;
 }
 
-- (_SFLanguageDetectorOptions)initWithCoder:(id)a3
+- (_SFLanguageDetectorOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _SFLanguageDetectorOptions;
   v5 = [(_SFLanguageDetectorOptions *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_languageConstraints"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_languageConstraints"];
     languageConstraints = v5->_languageConstraints;
     v5->_languageConstraints = v6;
 
-    v5->_alternativesCount = [v4 decodeIntegerForKey:@"_alternativesCount"];
-    v5->_resultReportingFrequency = [v4 decodeIntegerForKey:@"_resultReportingFrequency"];
-    v5->_useVAD = [v4 decodeBoolForKey:@"_useVAD"];
+    v5->_alternativesCount = [coderCopy decodeIntegerForKey:@"_alternativesCount"];
+    v5->_resultReportingFrequency = [coderCopy decodeIntegerForKey:@"_resultReportingFrequency"];
+    v5->_useVAD = [coderCopy decodeBoolForKey:@"_useVAD"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   languageConstraints = self->_languageConstraints;
-  v5 = a3;
-  [v5 encodeObject:languageConstraints forKey:@"_languageConstraints"];
-  [v5 encodeInteger:self->_alternativesCount forKey:@"_alternativesCount"];
-  [v5 encodeInteger:self->_resultReportingFrequency forKey:@"_resultReportingFrequency"];
-  [v5 encodeBool:self->_useVAD forKey:@"_useVAD"];
+  coderCopy = coder;
+  [coderCopy encodeObject:languageConstraints forKey:@"_languageConstraints"];
+  [coderCopy encodeInteger:self->_alternativesCount forKey:@"_alternativesCount"];
+  [coderCopy encodeInteger:self->_resultReportingFrequency forKey:@"_resultReportingFrequency"];
+  [coderCopy encodeBool:self->_useVAD forKey:@"_useVAD"];
 }
 
-- (_SFLanguageDetectorOptions)initWithLanguageConstraints:(id)a3 alternativesCount:(int64_t)a4 resultReportingFrequency:(int64_t)a5 useVAD:(BOOL)a6
+- (_SFLanguageDetectorOptions)initWithLanguageConstraints:(id)constraints alternativesCount:(int64_t)count resultReportingFrequency:(int64_t)frequency useVAD:(BOOL)d
 {
-  v10 = a3;
+  constraintsCopy = constraints;
   v15.receiver = self;
   v15.super_class = _SFLanguageDetectorOptions;
   v11 = [(_SFLanguageDetectorOptions *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [constraintsCopy copy];
     languageConstraints = v11->_languageConstraints;
     v11->_languageConstraints = v12;
 
-    v11->_alternativesCount = a4;
-    v11->_resultReportingFrequency = a5;
-    v11->_useVAD = a6;
+    v11->_alternativesCount = count;
+    v11->_resultReportingFrequency = frequency;
+    v11->_useVAD = d;
   }
 
   return v11;

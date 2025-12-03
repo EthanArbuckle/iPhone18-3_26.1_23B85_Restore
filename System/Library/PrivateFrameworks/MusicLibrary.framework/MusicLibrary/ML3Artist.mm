@@ -1,14 +1,14 @@
 @interface ML3Artist
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5;
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier;
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class;
++ (id)joinClausesForProperty:(id)property;
 + (id)propertiesForGroupingKey;
 + (id)propertiesForGroupingUniqueCollections;
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4;
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library;
 + (void)initialize;
 - (id)multiverseIdentifier;
 - (id)protocolItem;
-- (void)updateTrackValues:(id)a3;
+- (void)updateTrackValues:(id)values;
 @end
 
 @implementation ML3Artist
@@ -16,7 +16,7 @@
 + (void)initialize
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = ML3ArtistDefaultOrderingTerms;
     ML3ArtistDefaultOrderingTerms = MEMORY[0x277CBEBF8];
@@ -41,7 +41,7 @@
     ML3ArtistAllProperties = v6;
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [a1 predisambiguateProperties:ML3ArtistAllProperties toDictionary:v8];
+    [self predisambiguateProperties:ML3ArtistAllProperties toDictionary:v8];
     v9 = ML3ArtistPredisambiguatedPropertyForProperties;
     ML3ArtistPredisambiguatedPropertyForProperties = v8;
     v10 = v8;
@@ -52,10 +52,10 @@
   }
 }
 
-- (void)updateTrackValues:(id)a3
+- (void)updateTrackValues:(id)values
 {
   v28[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v5 = @"ROWID";
   v28[0] = @"ROWID";
   v28[1] = @"item_artist";
@@ -71,42 +71,42 @@
   v26 = 0u;
   v24 = 0u;
   [(ML3Entity *)self getValues:&v24 forProperties:v28 count:7];
-  [v4 setValue:v24 forKey:@"item_artist_pid"];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [ML3Track trackValueAreInTheCloud:v4];
-  v10 = [v27 integerValue];
-  v11 = [v4 objectForKey:@"ROWID"];
-  v12 = [*(&v26 + 1) longLongValue];
-  if (v12)
+  [valuesCopy setValue:v24 forKey:@"item_artist_pid"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = [ML3Track trackValueAreInTheCloud:valuesCopy];
+  integerValue = [v27 integerValue];
+  v11 = [valuesCopy objectForKey:@"ROWID"];
+  longLongValue = [*(&v26 + 1) longLongValue];
+  if (longLongValue)
   {
-    v13 = v12;
-    [v4 setValue:*(&v24 + 1) forKey:@"item_artist.item_artist"];
-    [v4 setValue:v25 forKey:@"item_artist.sort_item_artist"];
-    [v4 setValue:*(&v25 + 1) forKey:@"item_artist.series_name"];
-    [v4 setValue:v26 forKey:@"item_artist.sort_series_name"];
+    v13 = longLongValue;
+    [valuesCopy setValue:*(&v24 + 1) forKey:@"item_artist.item_artist"];
+    [valuesCopy setValue:v25 forKey:@"item_artist.sort_item_artist"];
+    [valuesCopy setValue:*(&v25 + 1) forKey:@"item_artist.series_name"];
+    [valuesCopy setValue:v26 forKey:@"item_artist.sort_series_name"];
     if (v9)
     {
-      if (v10)
+      if (integerValue)
       {
         goto LABEL_9;
       }
     }
 
-    else if (v10 != 2)
+    else if (integerValue != 2)
     {
       goto LABEL_9;
     }
 
     v19 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-    [v8 setValue:v19 forKey:@"cloud_status"];
+    [dictionary setValue:v19 forKey:@"cloud_status"];
 
 LABEL_9:
-    [(ML3Collection *)self updateRepresentativeCollectionValues:v8 existingRepresentativePersistentID:v13 forUpdateTrackValues:v4];
-    v17 = [v8 objectForKey:@"representative_item_pid"];
-    v20 = [v17 longLongValue];
-    if (v20)
+    [(ML3Collection *)self updateRepresentativeCollectionValues:dictionary existingRepresentativePersistentID:v13 forUpdateTrackValues:valuesCopy];
+    v17 = [dictionary objectForKey:@"representative_item_pid"];
+    longLongValue2 = [v17 longLongValue];
+    if (longLongValue2)
     {
-      v18 = v20;
+      v18 = longLongValue2;
     }
 
     else
@@ -117,14 +117,14 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v14 = [v4 objectForKey:@"item_artist.item_artist"];
-  [v8 setValue:v14 forKey:@"item_artist"];
+  v14 = [valuesCopy objectForKey:@"item_artist.item_artist"];
+  [dictionary setValue:v14 forKey:@"item_artist"];
 
-  v15 = [v4 objectForKey:@"item_artist.sort_item_artist"];
-  [v8 setValue:v15 forKey:@"sort_item_artist"];
+  v15 = [valuesCopy objectForKey:@"item_artist.sort_item_artist"];
+  [dictionary setValue:v15 forKey:@"sort_item_artist"];
 
-  v16 = [v4 objectForKey:@"item_artist.sort_series_name"];
-  [v8 setValue:v16 forKey:@"sort_series_name"];
+  v16 = [valuesCopy objectForKey:@"item_artist.sort_series_name"];
+  [dictionary setValue:v16 forKey:@"sort_series_name"];
 
   if (!v9)
   {
@@ -133,7 +133,7 @@ LABEL_9:
   }
 
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:2];
-  [v8 setValue:v17 forKey:@"cloud_status"];
+  [dictionary setValue:v17 forKey:@"cloud_status"];
   v18 = 0;
 LABEL_12:
 
@@ -145,11 +145,11 @@ LABEL_13:
 
     if ((v22 & 1) == 0)
     {
-      [v8 setValue:v11 forKey:@"representative_item_pid"];
+      [dictionary setValue:v11 forKey:@"representative_item_pid"];
     }
   }
 
-  [(ML3Entity *)self setValuesForPropertiesWithDictionary:v8];
+  [(ML3Entity *)self setValuesForPropertiesWithDictionary:dictionary];
 
   for (i = 6; i != -1; --i)
   {
@@ -185,18 +185,18 @@ uint64_t __37__ML3Artist_propertiesForGroupingKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 predicateIncludingSystemwidePredicates];
+  queryCopy = query;
+  propertyCopy = property;
+  predicateIncludingSystemwidePredicates = [queryCopy predicateIncludingSystemwidePredicates];
 
-  if (v10)
+  if (predicateIncludingSystemwidePredicates)
   {
-    v11 = [v8 predicateIncludingSystemwidePredicates];
-    v20[0] = v11;
-    v12 = [ML3ComparisonPredicate predicateWithProperty:@"item_artist_pid" equalToInt64:a5];
+    predicateIncludingSystemwidePredicates2 = [queryCopy predicateIncludingSystemwidePredicates];
+    v20[0] = predicateIncludingSystemwidePredicates2;
+    v12 = [ML3ComparisonPredicate predicateWithProperty:@"item_artist_pid" equalToInt64:identifier];
     v20[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     v14 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v13];
@@ -204,27 +204,27 @@ uint64_t __37__ML3Artist_propertiesForGroupingKey__block_invoke()
 
   else
   {
-    v14 = [ML3ComparisonPredicate predicateWithProperty:@"item_artist_pid" equalToInt64:a5];
+    v14 = [ML3ComparisonPredicate predicateWithProperty:@"item_artist_pid" equalToInt64:identifier];
   }
 
-  if (v9 == @"item_pid")
+  if (propertyCopy == @"item_pid")
   {
-    v16 = [v8 library];
-    v17 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", v16, v14, [v8 options]);
+    library = [queryCopy library];
+    v17 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", library, v14, [queryCopy options]);
   }
 
   else
   {
-    if (v9 != @"album_pid")
+    if (propertyCopy != @"album_pid")
     {
-      v19.receiver = a1;
+      v19.receiver = self;
       v19.super_class = &OBJC_METACLASS___ML3Artist;
-      v15 = objc_msgSendSuper2(&v19, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, v8, v9, a5);
+      v15 = objc_msgSendSuper2(&v19, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, queryCopy, propertyCopy, identifier);
       goto LABEL_10;
     }
 
-    v16 = [v8 library];
-    v17 = +[ML3Entity queryWithLibrary:predicate:orderingTerms:propertyToCount:options:](ML3Track, "queryWithLibrary:predicate:orderingTerms:propertyToCount:options:", v16, v14, 0, @"album_pid", [v8 options]);
+    library = [queryCopy library];
+    v17 = +[ML3Entity queryWithLibrary:predicate:orderingTerms:propertyToCount:options:](ML3Track, "queryWithLibrary:predicate:orderingTerms:propertyToCount:options:", library, v14, 0, @"album_pid", [queryCopy options]);
   }
 
   v15 = v17;
@@ -234,17 +234,17 @@ LABEL_10:
   return v15;
 }
 
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class
 {
-  v6 = a3;
-  v9.receiver = a1;
+  propertyCopy = property;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___ML3Artist;
-  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, v6, a4);
+  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, propertyCopy, class);
   if (!v7)
   {
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
-      v7 = [ML3TrackForeignPropertyForML3ArtistProperties objectForKey:v6];
+      v7 = [ML3TrackForeignPropertyForML3ArtistProperties objectForKey:propertyCopy];
     }
 
     else
@@ -256,10 +256,10 @@ LABEL_10:
   return v7;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [ML3ArtistJoinsForProperties objectForKey:v4];
+  propertyCopy = property;
+  v5 = [ML3ArtistJoinsForProperties objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -268,9 +268,9 @@ LABEL_10:
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___ML3Artist;
-    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -302,8 +302,8 @@ LABEL_10:
   v4 = objc_alloc_init(MIPLibraryIdentifier);
   [(MIPLibraryIdentifier *)v4 setLibraryId:self->super.super._persistentID];
   WeakRetained = objc_loadWeakRetained(&self->super.super._library);
-  v6 = [WeakRetained libraryUID];
-  [(MIPLibraryIdentifier *)v4 setLibraryName:v6];
+  libraryUID = [WeakRetained libraryUID];
+  [(MIPLibraryIdentifier *)v4 setLibraryName:libraryUID];
 
   [(MIPMultiverseIdentifier *)v3 addLibraryIdentifiers:v4];
   v14[0] = @"item_artist";
@@ -314,9 +314,9 @@ LABEL_10:
   [(MIPMultiverseIdentifier *)v3 setName:v9];
 
   v10 = [v8 objectForKey:@"store_id"];
-  v11 = [v10 longLongValue];
+  longLongValue = [v10 longLongValue];
 
-  if (v11 >= 1)
+  if (longLongValue >= 1)
   {
     v12 = [v8 objectForKey:@"store_id"];
     -[MIPMultiverseIdentifier setStoreId:](v3, "setStoreId:", [v12 longLongValue]);
@@ -325,31 +325,31 @@ LABEL_10:
   return v3;
 }
 
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library
 {
-  v5 = a4;
-  v6 = a3;
+  libraryCopy = library;
+  propertiesCopy = properties;
   v7 = objc_alloc_init(MIPArtist);
-  v8 = [v6 objectForKey:@"ROWID"];
-  v9 = [v8 longLongValue];
+  v8 = [propertiesCopy objectForKey:@"ROWID"];
+  longLongValue = [v8 longLongValue];
 
-  v10 = [v6 objectForKey:@"store_id"];
-  v11 = [v10 longLongValue];
+  v10 = [propertiesCopy objectForKey:@"store_id"];
+  longLongValue2 = [v10 longLongValue];
 
-  v12 = [v6 objectForKey:@"sync_id"];
-  v13 = [v12 longLongValue];
+  v12 = [propertiesCopy objectForKey:@"sync_id"];
+  longLongValue3 = [v12 longLongValue];
 
-  v14 = [v6 objectForKey:@"item_artist"];
-  v15 = [v6 objectForKey:@"sort_item_artist"];
+  v14 = [propertiesCopy objectForKey:@"item_artist"];
+  v15 = [propertiesCopy objectForKey:@"sort_item_artist"];
 
-  if (v9)
+  if (longLongValue)
   {
-    [(MIPArtist *)v7 setPersistentId:v9];
+    [(MIPArtist *)v7 setPersistentId:longLongValue];
   }
 
-  if (v11)
+  if (longLongValue2)
   {
-    [(MIPArtist *)v7 setStoreId:v11];
+    [(MIPArtist *)v7 setStoreId:longLongValue2];
   }
 
   if ([v14 length])
@@ -362,22 +362,22 @@ LABEL_10:
     [(MIPArtist *)v7 setSortName:v15];
   }
 
-  v16 = [v5 libraryUID];
-  v17 = [v5 syncLibraryID];
+  libraryUID = [libraryCopy libraryUID];
+  syncLibraryID = [libraryCopy syncLibraryID];
 
   v18 = objc_alloc_init(MIPLibraryIdentifier);
-  [(MIPLibraryIdentifier *)v18 setLibraryId:v9];
-  [(MIPLibraryIdentifier *)v18 setLibraryName:v16];
-  v19 = [(MIPArtist *)v7 libraryIdentifiers];
-  [v19 addObject:v18];
+  [(MIPLibraryIdentifier *)v18 setLibraryId:longLongValue];
+  [(MIPLibraryIdentifier *)v18 setLibraryName:libraryUID];
+  libraryIdentifiers = [(MIPArtist *)v7 libraryIdentifiers];
+  [libraryIdentifiers addObject:v18];
 
-  if (v13 >= 1 && [v17 length])
+  if (longLongValue3 >= 1 && [syncLibraryID length])
   {
     v20 = objc_alloc_init(MIPLibraryIdentifier);
-    [(MIPLibraryIdentifier *)v20 setLibraryId:v13];
-    [(MIPLibraryIdentifier *)v20 setLibraryName:v17];
-    v21 = [(MIPArtist *)v7 libraryIdentifiers];
-    [v21 addObject:v20];
+    [(MIPLibraryIdentifier *)v20 setLibraryId:longLongValue3];
+    [(MIPLibraryIdentifier *)v20 setLibraryName:syncLibraryID];
+    libraryIdentifiers2 = [(MIPArtist *)v7 libraryIdentifiers];
+    [libraryIdentifiers2 addObject:v20];
   }
 
   return v7;

@@ -1,20 +1,20 @@
 @interface ICContentKeySessionDelegateWrapper
 - (_TtC18PodcastsFoundationP33_C5CCB7FDAA241CA13F97384CFFA3ACE334ICContentKeySessionDelegateWrapper)init;
-- (void)contentKeySession:(id)a3 didFinishProcessingKey:(id)a4 withResponse:(id)a5 error:(id)a6;
+- (void)contentKeySession:(id)session didFinishProcessingKey:(id)key withResponse:(id)response error:(id)error;
 @end
 
 @implementation ICContentKeySessionDelegateWrapper
 
-- (void)contentKeySession:(id)a3 didFinishProcessingKey:(id)a4 withResponse:(id)a5 error:(id)a6
+- (void)contentKeySession:(id)session didFinishProcessingKey:(id)key withResponse:(id)response error:(id)error
 {
   v9 = sub_1D917820C();
   v11 = v10;
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v12 = a5;
-    v13 = self;
-    v14 = a6;
-    sub_1D8EAF668(v9, v11, a5, a6);
+    responseCopy = response;
+    selfCopy = self;
+    errorCopy = error;
+    sub_1D8EAF668(v9, v11, response, error);
     swift_unknownObjectRelease();
   }
 }

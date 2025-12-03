@@ -1,17 +1,17 @@
 @interface MFCategorizationTriageInteraction
 + (OS_os_log)log;
-+ (id)interactionWithMessageListItemSelection:(id)a3 sender:(id)a4 groupedSenderDisplayName:(id)a5 origin:(int64_t)a6 actor:(int64_t)a7 bucket:(int64_t)a8 avatarGenerator:(id)a9 isAuthenticated:(BOOL)a10 changeOptions:(unint64_t)a11 showMenuWithOptions:(BOOL)a12;
-+ (id)mailMenuCommandsWithSelector:(SEL)a3;
++ (id)interactionWithMessageListItemSelection:(id)selection sender:(id)sender groupedSenderDisplayName:(id)name origin:(int64_t)origin actor:(int64_t)actor bucket:(int64_t)bucket avatarGenerator:(id)generator isAuthenticated:(BOOL)self0 changeOptions:(unint64_t)self1 showMenuWithOptions:(BOOL)self2;
++ (id)mailMenuCommandsWithSelector:(SEL)selector;
 - (id)_iconImageName;
-- (id)_menuWithPreparation:(id)a3 completion:(id)a4;
-- (id)cardActionWithCompletion:(id)a3;
+- (id)_menuWithPreparation:(id)preparation completion:(id)completion;
+- (id)cardActionWithCompletion:(id)completion;
 - (id)color;
 - (id)previewTitle;
 - (id)shortTitle;
-- (id)swipeActionWithPreparation:(id)a3 completion:(id)a4;
+- (id)swipeActionWithPreparation:(id)preparation completion:(id)completion;
 - (id)title;
 - (id)triageAction;
-- (void)_performInteractionIfPermittedWithContinuation:(id)a3;
+- (void)_performInteractionIfPermittedWithContinuation:(id)continuation;
 @end
 
 @implementation MFCategorizationTriageInteraction
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001AEE14;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD430 != -1)
   {
     dispatch_once(&qword_1006DD430, block);
@@ -33,59 +33,59 @@
   return v2;
 }
 
-+ (id)interactionWithMessageListItemSelection:(id)a3 sender:(id)a4 groupedSenderDisplayName:(id)a5 origin:(int64_t)a6 actor:(int64_t)a7 bucket:(int64_t)a8 avatarGenerator:(id)a9 isAuthenticated:(BOOL)a10 changeOptions:(unint64_t)a11 showMenuWithOptions:(BOOL)a12
++ (id)interactionWithMessageListItemSelection:(id)selection sender:(id)sender groupedSenderDisplayName:(id)name origin:(int64_t)origin actor:(int64_t)actor bucket:(int64_t)bucket avatarGenerator:(id)generator isAuthenticated:(BOOL)self0 changeOptions:(unint64_t)self1 showMenuWithOptions:(BOOL)self2
 {
-  v18 = a4;
-  v19 = a5;
-  v20 = a9;
-  v23.receiver = a1;
+  senderCopy = sender;
+  nameCopy = name;
+  generatorCopy = generator;
+  v23.receiver = self;
   v23.super_class = &OBJC_METACLASS___MFCategorizationTriageInteraction;
-  v21 = objc_msgSendSuper2(&v23, "interactionWithMessageListItemSelection:undoManager:origin:actor:", a3, 0, a6, a7);
-  [v21 setBucket:a8];
-  [v21 setSender:v18];
-  [v21 setAvatarGenerator:v20];
-  [v21 setChangeOptions:a11];
-  [v21 setShowMenuWithOptions:a12];
-  [v21 setDisplayName:v19];
-  [v21 setIsAuthenticated:a10];
+  v21 = objc_msgSendSuper2(&v23, "interactionWithMessageListItemSelection:undoManager:origin:actor:", selection, 0, origin, actor);
+  [v21 setBucket:bucket];
+  [v21 setSender:senderCopy];
+  [v21 setAvatarGenerator:generatorCopy];
+  [v21 setChangeOptions:options];
+  [v21 setShowMenuWithOptions:withOptions];
+  [v21 setDisplayName:nameCopy];
+  [v21 setIsAuthenticated:authenticated];
 
   return v21;
 }
 
 - (id)title
 {
-  v2 = [(MFTriageInteraction *)self messageListItemSelection];
-  v3 = [v2 messageListItems];
-  v4 = [v3 firstObject];
-  v5 = [v4 senderList];
-  v6 = [v5 firstObject];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  firstObject = [messageListItems firstObject];
+  senderList = [firstObject senderList];
+  firstObject2 = [senderList firstObject];
 
-  if (v6)
+  if (firstObject2)
   {
-    v7 = v6;
-    v8 = [v7 emailAddressValue];
-    v9 = [v8 em_displayableString];
-    v10 = v9;
-    if (v9)
+    v7 = firstObject2;
+    emailAddressValue = [v7 emailAddressValue];
+    em_displayableString = [emailAddressValue em_displayableString];
+    v10 = em_displayableString;
+    if (em_displayableString)
     {
-      v11 = v9;
+      v11 = em_displayableString;
     }
 
     else
     {
-      v12 = [v8 simpleAddress];
-      v13 = v12;
-      if (v12)
+      simpleAddress = [emailAddressValue simpleAddress];
+      v13 = simpleAddress;
+      if (simpleAddress)
       {
-        v14 = v12;
+        stringValue = simpleAddress;
       }
 
       else
       {
-        v14 = [v7 stringValue];
+        stringValue = [v7 stringValue];
       }
 
-      v11 = v14;
+      v11 = stringValue;
     }
   }
 
@@ -108,18 +108,18 @@
   return v16;
 }
 
-- (void)_performInteractionIfPermittedWithContinuation:(id)a3
+- (void)_performInteractionIfPermittedWithContinuation:(id)continuation
 {
-  v26 = a3;
-  v5 = [(MFTriageInteraction *)self delegate];
-  v6 = [v5 presentingViewControllerForTriageInteraction:self];
+  continuationCopy = continuation;
+  delegate = [(MFTriageInteraction *)self delegate];
+  v6 = [delegate presentingViewControllerForTriageInteraction:self];
 
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_1001AF60C;
   v36[3] = &unk_100653698;
   v36[4] = self;
-  v7 = v26;
+  v7 = continuationCopy;
   v38 = v7;
   v8 = v6;
   v37 = v8;
@@ -133,17 +133,17 @@
   v10 = v8;
   v34 = v10;
   v11 = objc_retainBlock(v33);
-  v12 = [(MFTriageInteraction *)self messageListItemSelection];
-  v13 = [v12 messageListItems];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
   v27 = a2;
-  v14 = [v13 firstObject];
+  firstObject = [messageListItems firstObject];
 
   v15 = [MFCategorizationConfirmationViewController alloc];
-  v16 = [(MFCategorizationTriageInteraction *)self displayName];
-  v17 = [(MFCategoryTriageInteraction *)self bucket];
+  displayName = [(MFCategorizationTriageInteraction *)self displayName];
+  bucket = [(MFCategoryTriageInteraction *)self bucket];
   v18 = +[UIApplication sharedApplication];
-  v19 = [v18 avatarGenerator];
-  v20 = [(MFCategorizationConfirmationViewController *)v15 initWithDisplayName:v16 bucket:v17 messageListItem:v14 avatarGenerator:v19 continueActionHandler:v28 cancelActionHandler:v11];
+  avatarGenerator = [v18 avatarGenerator];
+  v20 = [(MFCategorizationConfirmationViewController *)v15 initWithDisplayName:displayName bucket:bucket messageListItem:firstObject avatarGenerator:avatarGenerator continueActionHandler:v28 cancelActionHandler:v11];
 
   if (!v10)
   {
@@ -151,7 +151,7 @@
     [v25 handleFailureInMethod:v27 object:self file:@"MFCategoryTriageInteraction.m" lineNumber:222 description:@"Presenting a triage interaction confirmation prompt requires a presentationSource."];
   }
 
-  v21 = [v10 sheetPresentationController];
+  sheetPresentationController = [v10 sheetPresentationController];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1001AF6B8;
@@ -161,7 +161,7 @@
   v30 = v22;
   v23 = v10;
   v31 = v23;
-  v24 = v21;
+  v24 = sheetPresentationController;
   v32 = v24;
   [v24 animateChanges:v29];
   [v23 showViewController:v22 sender:0];
@@ -191,10 +191,10 @@
 
 - (id)color
 {
-  v2 = [(MFCategoryTriageInteraction *)self bucket];
-  if (v2 <= 5)
+  bucket = [(MFCategoryTriageInteraction *)self bucket];
+  if (bucket <= 5)
   {
-    if (((1 << v2) & 0x1C) != 0)
+    if (((1 << bucket) & 0x1C) != 0)
     {
       +[UIColor systemYellowColor];
     }
@@ -203,10 +203,10 @@
     {
       +[UIColor mailDarkGrayColor];
     }
-    v2 = ;
+    bucket = ;
   }
 
-  return v2;
+  return bucket;
 }
 
 - (id)_iconImageName
@@ -216,43 +216,43 @@
   return MUIImageNameForBucket();
 }
 
-- (id)swipeActionWithPreparation:(id)a3 completion:(id)a4
+- (id)swipeActionWithPreparation:(id)preparation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFCategorizationTriageInteraction *)self shortTitle];
+  preparationCopy = preparation;
+  completionCopy = completion;
+  shortTitle = [(MFCategorizationTriageInteraction *)self shortTitle];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001AFB34;
   v14[3] = &unk_100653710;
   v14[4] = self;
-  v9 = [UIContextualAction contextualActionWithStyle:0 title:v8 handler:v14];
+  v9 = [UIContextualAction contextualActionWithStyle:0 title:shortTitle handler:v14];
 
-  v10 = [(MFCategorizationTriageInteraction *)self color];
-  [v9 setBackgroundColor:v10];
+  color = [(MFCategorizationTriageInteraction *)self color];
+  [v9 setBackgroundColor:color];
 
-  v11 = [(MFTriageInteraction *)self swipeActionIcon];
-  [v9 setImage:v11];
+  swipeActionIcon = [(MFTriageInteraction *)self swipeActionIcon];
+  [v9 setImage:swipeActionIcon];
 
-  v12 = [(MFCategorizationTriageInteraction *)self _menuWithPreparation:v6 completion:v7];
+  v12 = [(MFCategorizationTriageInteraction *)self _menuWithPreparation:preparationCopy completion:completionCopy];
   [v9 _setMenu:v12];
 
   return v9;
 }
 
-- (id)_menuWithPreparation:(id)a3 completion:(id)a4
+- (id)_menuWithPreparation:(id)preparation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  preparationCopy = preparation;
+  completionCopy = completion;
   v8 = objc_opt_new();
   v9 = _EFLocalizedStringFromTable();
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1001AFEEC;
   v27[3] = &unk_100653738;
-  v10 = v6;
+  v10 = preparationCopy;
   v28 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v29 = v11;
   v27[4] = self;
   v12 = [UIAction actionWithTitle:v9 image:0 identifier:0 handler:v27];
@@ -263,13 +263,13 @@
   v21 = 3221225472;
   v22 = sub_1001AFF2C;
   v23 = &unk_100653760;
-  v24 = self;
+  selfCopy = self;
   v14 = v10;
   v25 = v14;
   v15 = v11;
   v26 = v15;
   v16 = [UIAction actionWithTitle:v13 image:0 identifier:0 handler:&v20];
-  [v8 addObject:{v16, v20, v21, v22, v23, v24}];
+  [v8 addObject:{v16, v20, v21, v22, v23, selfCopy}];
 
   if ([(MFCategoryTriageInteraction *)self bucket]- 2 >= 3)
   {
@@ -286,9 +286,9 @@
   return v18;
 }
 
-- (id)cardActionWithCompletion:(id)a3
+- (id)cardActionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MFCategoryTriageInteraction *)self bucket];
   v5 = MUILocalizedStringFromBucket();
   [(MFCategoryTriageInteraction *)self bucket];
@@ -297,20 +297,20 @@
   v18 = 3221225472;
   v19 = sub_1001B01D4;
   v20 = &unk_100653520;
-  v21 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = completionCopy;
   v22 = v7;
   v8 = [MFRecategorizationCardAction cardActionWithTitle:v5 shortTitle:0 imageName:v6 tintColor:0 handler:&v17];
 
   v9 = [(MFCategoryTriageInteraction *)self bucket:v17];
-  v10 = [(MFTriageInteraction *)self messageListItemSelection];
-  v11 = [v10 messageListItems];
-  v12 = [v11 firstObject];
-  v13 = [v12 category];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  firstObject = [messageListItems firstObject];
+  category = [firstObject category];
 
-  if ([v13 state] == 3)
+  if ([category state] == 3)
   {
-    [v13 type];
+    [category type];
     v14 = MUIBucketFromEMCategoryType();
   }
 
@@ -337,11 +337,11 @@
   if (!triageAction)
   {
     v4 = [MSCategoryTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [(MFTriageInteraction *)self origin];
-    v7 = [(MFTriageInteraction *)self actor];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    origin = [(MFTriageInteraction *)self origin];
+    actor = [(MFTriageInteraction *)self actor];
     [(MFCategoryTriageInteraction *)self bucket];
-    v8 = [v4 initWithMessageListSelection:v5 origin:v6 actor:v7 delegate:0 categoryType:EMCategoryTypeForBucket() changeOptions:{-[MFCategoryTriageInteraction changeOptions](self, "changeOptions")}];
+    v8 = [v4 initWithMessageListSelection:messageListItemSelection origin:origin actor:actor delegate:0 categoryType:EMCategoryTypeForBucket() changeOptions:{-[MFCategoryTriageInteraction changeOptions](self, "changeOptions")}];
     v9 = self->_triageAction;
     self->_triageAction = v8;
 
@@ -351,13 +351,13 @@
   return triageAction;
 }
 
-+ (id)mailMenuCommandsWithSelector:(SEL)a3
++ (id)mailMenuCommandsWithSelector:(SEL)selector
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001B0440;
   v8[3] = &unk_100653788;
-  v10 = a3;
+  selectorCopy = selector;
   v3 = objc_alloc_init(NSMutableArray);
   v9 = v3;
   v4 = objc_retainBlock(v8);

@@ -1,17 +1,17 @@
 @interface VSAuthenticationSchemeValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSAuthenticationSchemeValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 componentsJoinedByString:{@", "}];
+    v4 = [valueCopy componentsJoinedByString:{@", "}];
   }
 
   else
@@ -22,14 +22,14 @@
   return v4;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = v3;
+    v5 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,8 +68,8 @@
               }
 
               v17 = *(*(&v23 + 1) + 8 * i);
-              v18 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-              v19 = [v17 stringByTrimmingCharactersInSet:v18];
+              whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+              v19 = [v17 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
               if ([v19 length])
               {

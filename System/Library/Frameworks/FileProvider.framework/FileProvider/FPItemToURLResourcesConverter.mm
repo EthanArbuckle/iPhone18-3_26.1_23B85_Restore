@@ -1,15 +1,15 @@
 @interface FPItemToURLResourcesConverter
-+ (id)dictionaryFromItem:(id)a3 requestedKeys:(id)a4;
-- (FPItemToURLResourcesConverter)initWithItemClass:(Class)a3;
-- (id)_dictionaryFromItem:(id)a3 requestedKeys:(id)a4;
-- (void)_addHelperMethodsToClass:(Class)a3;
-- (void)_addMethod:(SEL)a3 toClass:(Class)a4;
-- (void)_cacheImplementedPropertiesForClass:(Class)a3;
++ (id)dictionaryFromItem:(id)item requestedKeys:(id)keys;
+- (FPItemToURLResourcesConverter)initWithItemClass:(Class)class;
+- (id)_dictionaryFromItem:(id)item requestedKeys:(id)keys;
+- (void)_addHelperMethodsToClass:(Class)class;
+- (void)_addMethod:(SEL)method toClass:(Class)class;
+- (void)_cacheImplementedPropertiesForClass:(Class)class;
 @end
 
 @implementation FPItemToURLResourcesConverter
 
-- (FPItemToURLResourcesConverter)initWithItemClass:(Class)a3
+- (FPItemToURLResourcesConverter)initWithItemClass:(Class)class
 {
   v13.receiver = self;
   v13.super_class = FPItemToURLResourcesConverter;
@@ -21,7 +21,7 @@
     v6 = fp_current_or_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(FPItemToURLResourcesConverter *)a3 initWithItemClass:v6];
+      [(FPItemToURLResourcesConverter *)class initWithItemClass:v6];
     }
 
     v7 = objc_opt_new();
@@ -32,44 +32,44 @@
     typesByURLKey = v4->_typesByURLKey;
     v4->_typesByURLKey = v9;
 
-    [(FPItemToURLResourcesConverter *)v4 _addHelperMethodsToClass:a3];
-    [(FPItemToURLResourcesConverter *)v4 _cacheImplementedPropertiesForClass:a3];
+    [(FPItemToURLResourcesConverter *)v4 _addHelperMethodsToClass:class];
+    [(FPItemToURLResourcesConverter *)v4 _cacheImplementedPropertiesForClass:class];
     __fp_leave_section_Debug(&v12);
   }
 
   return v4;
 }
 
-- (void)_addMethod:(SEL)a3 toClass:(Class)a4
+- (void)_addMethod:(SEL)method toClass:(Class)class
 {
   v6 = objc_opt_class();
-  MethodImplementation = class_getMethodImplementation(v6, a3);
+  MethodImplementation = class_getMethodImplementation(v6, method);
   v8 = objc_opt_class();
-  InstanceMethod = class_getInstanceMethod(v8, a3);
+  InstanceMethod = class_getInstanceMethod(v8, method);
   TypeEncoding = method_getTypeEncoding(InstanceMethod);
 
-  class_addMethod(a4, a3, MethodImplementation, TypeEncoding);
+  class_addMethod(class, method, MethodImplementation, TypeEncoding);
 }
 
-- (void)_addHelperMethodsToClass:(Class)a3
+- (void)_addHelperMethodsToClass:(Class)class
 {
-  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_downloadingStatus toClass:a3];
-  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_isReadable toClass:a3];
-  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_isWritable toClass:a3];
-  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_sharingCurrentUserRole toClass:a3];
-  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_sharingCurrentUserPermissions toClass:a3];
+  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_downloadingStatus toClass:class];
+  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_isReadable toClass:class];
+  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_isWritable toClass:class];
+  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_sharingCurrentUserRole toClass:class];
+  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_sharingCurrentUserPermissions toClass:class];
 
-  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_supportedSyncControls toClass:a3];
+  [(FPItemToURLResourcesConverter *)self _addMethod:sel_fp_supportedSyncControls toClass:class];
 }
 
-- (void)_cacheImplementedPropertiesForClass:(Class)a3
+- (void)_cacheImplementedPropertiesForClass:(Class)class
 {
   v31 = *MEMORY[0x1E69E9840];
   section = __fp_create_section();
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(FPItemToURLResourcesConverter *)&section _cacheImplementedPropertiesForClass:a3, v4];
+    [(FPItemToURLResourcesConverter *)&section _cacheImplementedPropertiesForClass:class, v4];
   }
 
   FPItemPropertyNamesByURLResourceKey();
@@ -95,15 +95,15 @@
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:{v10, v19}];
         v12 = NSSelectorFromString(v11);
-        if (([(objc_class *)a3 instancesRespondToSelector:v12]& 1) != 0)
+        if (([(objc_class *)class instancesRespondToSelector:v12]& 1) != 0)
         {
-          v13 = [(objc_class *)a3 instanceMethodSignatureForSelector:v12];
+          v13 = [(objc_class *)class instanceMethodSignatureForSelector:v12];
           v14 = MEMORY[0x1E696AEC0];
           v15 = v13;
           v16 = [v14 stringWithUTF8String:{-[NSObject methodReturnType](v13, "methodReturnType")}];
           [(NSMutableDictionary *)self->_typesByURLKey setObject:v16 forKeyedSubscript:v10];
 
-          v17 = [MEMORY[0x1E696B098] valueWithPointer:{class_getMethodImplementation(a3, v12)}];
+          v17 = [MEMORY[0x1E696B098] valueWithPointer:{class_getMethodImplementation(class, v12)}];
           [(NSMutableDictionary *)self->_gettersByURLKey setObject:v17 forKeyedSubscript:v10];
         }
 
@@ -115,7 +115,7 @@
             *buf = v19;
             v27 = v11;
             v28 = 2112;
-            v29 = a3;
+            classCopy = class;
             _os_log_debug_impl(&dword_1AAAE1000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] property %@ is unavailable on %@", buf, 0x16u);
           }
         }
@@ -131,88 +131,88 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_dictionaryFromItem:(id)a3 requestedKeys:(id)a4
+- (id)_dictionaryFromItem:(id)item requestedKeys:(id)keys
 {
   v107 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  keysCopy = keys;
   v8 = objc_opt_new();
-  v9 = [v6 filename];
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E695DC30]];
+  filename = [itemCopy filename];
+  [v8 setObject:filename forKeyedSubscript:*MEMORY[0x1E695DC30]];
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v6 contentType];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x1E695DAA0]];
+    contentType = [itemCopy contentType];
+    [v8 setObject:contentType forKeyedSubscript:*MEMORY[0x1E695DAA0]];
 
-    v11 = [v6 contentType];
-    v12 = [v11 identifier];
-    [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x1E695DC68]];
+    contentType2 = [itemCopy contentType];
+    identifier = [contentType2 identifier];
+    [v8 setObject:identifier forKeyedSubscript:*MEMORY[0x1E695DC68]];
   }
 
   else
   {
     v13 = *MEMORY[0x1E695DC68];
-    v11 = [v6 typeIdentifier];
-    [v8 setObject:v11 forKeyedSubscript:v13];
+    contentType2 = [itemCopy typeIdentifier];
+    [v8 setObject:contentType2 forKeyedSubscript:v13];
   }
 
   v14 = *MEMORY[0x1E695DCB0];
-  if ([v7 containsObject:*MEMORY[0x1E695DCB0]])
+  if ([keysCopy containsObject:*MEMORY[0x1E695DCB0]])
   {
     v15 = *MEMORY[0x1E695DC98];
-    if (([v7 containsObject:*MEMORY[0x1E695DC98]] & 1) == 0)
+    if (([keysCopy containsObject:*MEMORY[0x1E695DC98]] & 1) == 0)
     {
-      v16 = [v7 arrayByAddingObject:v15];
+      v16 = [keysCopy arrayByAddingObject:v15];
 
-      v7 = v16;
+      keysCopy = v16;
     }
   }
 
   v89 = *MEMORY[0x1E695DD38];
-  if ([v7 containsObject:*MEMORY[0x1E695DD38]])
+  if ([keysCopy containsObject:*MEMORY[0x1E695DD38]])
   {
-    v17 = [v7 arrayByAddingObject:*MEMORY[0x1E695DD00]];
+    v17 = [keysCopy arrayByAddingObject:*MEMORY[0x1E695DD00]];
 
-    v7 = v17;
+    keysCopy = v17;
   }
 
   v18 = *MEMORY[0x1E695DD18];
-  if ([v7 containsObject:*MEMORY[0x1E695DD18]])
+  if ([keysCopy containsObject:*MEMORY[0x1E695DD18]])
   {
-    v19 = [v7 arrayByAddingObject:*MEMORY[0x1E695DD10]];
+    v19 = [keysCopy arrayByAddingObject:*MEMORY[0x1E695DD10]];
 
-    v7 = v19;
+    keysCopy = v19;
   }
 
   v91 = *MEMORY[0x1E695DBD8];
-  if ([v7 containsObject:?])
+  if ([keysCopy containsObject:?])
   {
     v20 = *MEMORY[0x1E695DC98];
-    if (([v7 containsObject:*MEMORY[0x1E695DC98]] & 1) == 0)
+    if (([keysCopy containsObject:*MEMORY[0x1E695DC98]] & 1) == 0)
     {
-      v21 = [v7 arrayByAddingObject:v20];
+      v21 = [keysCopy arrayByAddingObject:v20];
 
-      v7 = v21;
+      keysCopy = v21;
     }
   }
 
   v94 = v8;
-  v96 = v6;
-  v92 = v7;
+  v96 = itemCopy;
+  v92 = keysCopy;
   v90 = v18;
   v88 = v14;
-  if (v7)
+  if (keysCopy)
   {
-    v22 = v7;
+    allKeys = keysCopy;
   }
 
   else
   {
-    v22 = [(NSMutableDictionary *)self->_gettersByURLKey allKeys];
+    allKeys = [(NSMutableDictionary *)self->_gettersByURLKey allKeys];
   }
 
-  v23 = v22;
+  v23 = allKeys;
   v97 = FPItemPropertyNamesByURLResourceKey();
   v98 = 0u;
   v99 = 0u;
@@ -235,16 +235,16 @@
 
         v28 = *(*(&v98 + 1) + 8 * i);
         v29 = [(NSMutableDictionary *)self->_gettersByURLKey objectForKeyedSubscript:v28];
-        v30 = [v29 pointerValue];
+        pointerValue = [v29 pointerValue];
 
         v31 = [(NSMutableDictionary *)self->_typesByURLKey objectForKeyedSubscript:v28];
-        if (v30)
+        if (pointerValue)
         {
           v32 = [v97 objectForKeyedSubscript:v28];
           if (!v32)
           {
-            v33 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v33 handleFailureInMethod:a2 object:self file:@"FPItemConversion.m" lineNumber:430 description:@"property doesn't exist"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"FPItemConversion.m" lineNumber:430 description:@"property doesn't exist"];
           }
 
           v34 = NSSelectorFromString(v32);
@@ -254,13 +254,13 @@
             switch(v35)
             {
               case '@':
-                v36 = v30(v6, v34);
+                v36 = pointerValue(itemCopy, v34);
                 break;
               case 'B':
-                v36 = [MEMORY[0x1E696AD98] numberWithBool:{(v30)(v6, v34)}];
+                v36 = [MEMORY[0x1E696AD98] numberWithBool:{(pointerValue)(itemCopy, v34)}];
                 break;
               case 'L':
-                v36 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{(v30)(v6, v34)}];
+                v36 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{(pointerValue)(itemCopy, v34)}];
                 break;
               default:
                 goto LABEL_38;
@@ -271,7 +271,7 @@
           {
             if (v35 == 108)
             {
-              v36 = [MEMORY[0x1E696AD98] numberWithLong:{(v30)(v6, v34)}];
+              v36 = [MEMORY[0x1E696AD98] numberWithLong:{(pointerValue)(itemCopy, v34)}];
             }
 
             else
@@ -281,7 +281,7 @@
                 goto LABEL_38;
               }
 
-              v36 = [MEMORY[0x1E696AD98] numberWithLongLong:{(v30)(v6, v34)}];
+              v36 = [MEMORY[0x1E696AD98] numberWithLongLong:{(pointerValue)(itemCopy, v34)}];
             }
           }
 
@@ -291,7 +291,7 @@
             {
               if (v35 == 99)
               {
-                v36 = [MEMORY[0x1E696AD98] numberWithChar:{(v30)(v6, v34)}];
+                v36 = [MEMORY[0x1E696AD98] numberWithChar:{(pointerValue)(itemCopy, v34)}];
                 goto LABEL_43;
               }
 
@@ -311,7 +311,7 @@ LABEL_45:
               goto LABEL_46;
             }
 
-            v36 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{(v30)(v6, v34)}];
+            v36 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{(pointerValue)(itemCopy, v34)}];
           }
 
 LABEL_43:
@@ -338,15 +338,15 @@ LABEL_46:
   {
     v40 = v39;
     v41 = [v94 objectForKeyedSubscript:*MEMORY[0x1E695DCC8]];
-    v42 = [v41 BOOLValue];
+    bOOLValue = [v41 BOOLValue];
 
-    if (v42)
+    if (bOOLValue)
     {
       v43 = [v94 objectForKeyedSubscript:v38];
-      v44 = [v43 BOOLValue];
+      bOOLValue2 = [v43 BOOLValue];
 
       v45 = MEMORY[0x1E695DD30];
-      if (!v44)
+      if (!bOOLValue2)
       {
         v45 = MEMORY[0x1E695DD28];
       }
@@ -456,11 +456,11 @@ LABEL_46:
   return v94;
 }
 
-+ (id)dictionaryFromItem:(id)a3 requestedKeys:(id)a4
++ (id)dictionaryFromItem:(id)item requestedKeys:(id)keys
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  itemCopy = item;
+  keysCopy = keys;
+  if (itemCopy)
   {
     if (dictionaryFromItem_requestedKeys__once != -1)
     {
@@ -485,11 +485,11 @@ LABEL_46:
     v20 = v12;
     v22 = v9;
     dispatch_sync(v11, &block);
-    v13 = [v24[5] _dictionaryFromItem:v7 requestedKeys:v8];
+    v13 = [v24[5] _dictionaryFromItem:itemCopy requestedKeys:keysCopy];
     if (!v13)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:a1 file:@"FPItemConversion.m" lineNumber:564 description:{@"couldn't convert item: %@", v7, block, v17, v18, v19}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"FPItemConversion.m" lineNumber:564 description:{@"couldn't convert item: %@", itemCopy, block, v17, v18, v19}];
     }
 
     _Block_object_dispose(&v23, 8);

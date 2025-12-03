@@ -13,7 +13,7 @@
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 mutableBytes];
+    mutableBytes = [v10 mutableBytes];
     if (a4)
     {
       v13 = 0;
@@ -77,11 +77,11 @@
               LOBYTE(v25) = 0;
             }
 
-            *v12 = v25;
-            v12[1] = v22;
-            v12[2] = v18;
-            v12[3] = -1;
-            v12 += 4;
+            *mutableBytes = v25;
+            mutableBytes[1] = v22;
+            mutableBytes[2] = v18;
+            mutableBytes[3] = -1;
+            mutableBytes += 4;
             ++v19;
           }
 
@@ -97,13 +97,13 @@
     }
 
     v46 = a4 * a4 * 4 * a4;
-    v44 = a1;
+    selfCopy = self;
     v26 = a4;
     v27 = v9;
     v43 = 4 * a4;
     v42 = *MEMORY[0x1E695F910];
     v45 = a5;
-    v28 = [MEMORY[0x1E695F658] imageWithBitmapData:v11 bytesPerRow:4 * a4 size:a4 format:v9 colorSpace:?];
+    outputImage = [MEMORY[0x1E695F658] imageWithBitmapData:v11 bytesPerRow:4 * a4 size:a4 format:v9 colorSpace:?];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -111,7 +111,7 @@
     v47 = v8;
     v29 = v8;
     v30 = [v29 countByEnumeratingWithState:&v49 objects:v53 count:16];
-    v48 = v28;
+    v48 = outputImage;
     if (v30)
     {
       v31 = v30;
@@ -120,7 +120,7 @@
       do
       {
         v34 = 0;
-        v35 = v28;
+        v35 = outputImage;
         do
         {
           if (*v50 != v32)
@@ -131,11 +131,11 @@
           v36 = *(*(&v49 + 1) + 8 * v34);
           v37 = [v36 valueForKey:v33];
           [v36 setValue:v35 forKey:v33];
-          v28 = [v36 outputImage];
+          outputImage = [v36 outputImage];
 
           [v36 setValue:v37 forKey:v33];
           ++v34;
-          v35 = v28;
+          v35 = outputImage;
         }
 
         while (v31 != v34);
@@ -149,7 +149,7 @@
     v39 = v38;
     if (v38)
     {
-      [v44 render:v28 toBitmap:objc_msgSend(v38 rowBytes:"mutableBytes") bounds:v43 format:v42 colorSpace:{v45, 0.0, 0.0, v26, v27}];
+      [selfCopy render:outputImage toBitmap:objc_msgSend(v38 rowBytes:"mutableBytes") bounds:v43 format:v42 colorSpace:{v45, 0.0, 0.0, v26, v27}];
       v40 = v39;
     }
 

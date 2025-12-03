@@ -1,20 +1,20 @@
 @interface _HKTimeScopeControlBar
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_HKTimeScopeControlBar)initWithFrame:(CGRect)a3 timeScopes:(id)a4;
+- (_HKTimeScopeControlBar)initWithFrame:(CGRect)frame timeScopes:(id)scopes;
 - (int64_t)selectedTimeScope;
 - (void)_rebuildSegments;
 - (void)layoutSubviews;
-- (void)setSelectedTimeScope:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSelectedTimeScope:(int64_t)scope;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _HKTimeScopeControlBar
 
-- (_HKTimeScopeControlBar)initWithFrame:(CGRect)a3 timeScopes:(id)a4
+- (_HKTimeScopeControlBar)initWithFrame:(CGRect)frame timeScopes:(id)scopes
 {
   v9.receiver = self;
   v9.super_class = _HKTimeScopeControlBar;
-  v4 = [(HKTimeScopeControl *)&v9 initWithFrame:a4 timeScopes:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(HKTimeScopeControl *)&v9 initWithFrame:scopes timeScopes:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -33,9 +33,9 @@
 - (void)_rebuildSegments
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(UISegmentedControl *)self->_segments selectedSegmentIndex];
-  v4 = [(_HKTimeScopeControlBar *)self traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  selectedSegmentIndex = [(UISegmentedControl *)self->_segments selectedSegmentIndex];
+  traitCollection = [(_HKTimeScopeControlBar *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
@@ -57,7 +57,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = HKStringForHKTimeScope([*(*(&v22 + 1) + 8 * i) integerValue], v5 != 2);
+        v12 = HKStringForHKTimeScope([*(*(&v22 + 1) + 8 * i) integerValue], horizontalSizeClass != 2);
         [v6 addObject:v12];
       }
 
@@ -75,9 +75,9 @@
       do
       {
         v14 = [v6 objectAtIndexedSubscript:{v13, v22}];
-        v15 = [(UISegmentedControl *)self->_segments numberOfSegments];
+        numberOfSegments = [(UISegmentedControl *)self->_segments numberOfSegments];
         segments = self->_segments;
-        if (v13 >= v15)
+        if (v13 >= numberOfSegments)
         {
           [(UISegmentedControl *)segments insertSegmentWithTitle:v14 atIndex:v13 animated:0];
         }
@@ -89,8 +89,8 @@
 
         v17 = [(UISegmentedControl *)self->_segments infoViewForSegment:v13];
         [v17 setNeedsLayout];
-        v18 = [v17 superview];
-        [v18 layoutIfNeeded];
+        superview = [v17 superview];
+        [superview layoutIfNeeded];
 
         [v17 _removeAllAnimations:1];
         ++v13;
@@ -106,7 +106,7 @@
     v20 = HKUIJoinStringsForAutomationIdentifier(&unk_1F43812D0);
     [(UISegmentedControl *)v19 setAccessibilityIdentifier:v20];
 
-    [(UISegmentedControl *)v19 setSelectedSegmentIndex:v3];
+    [(UISegmentedControl *)v19 setSelectedSegmentIndex:selectedSegmentIndex];
     [(UISegmentedControl *)v19 addTarget:self action:sel__segmentValueChanged_ forControlEvents:4096];
     [(UISegmentedControl *)v19 _setAutosizeText:1];
     [(_HKTimeScopeControlBar *)self addSubview:v19];
@@ -138,30 +138,30 @@
 
 - (int64_t)selectedTimeScope
 {
-  v3 = [(UISegmentedControl *)self->_segments selectedSegmentIndex];
+  selectedSegmentIndex = [(UISegmentedControl *)self->_segments selectedSegmentIndex];
 
-  return [(HKTimeScopeControl *)self _timeScopeForIndex:v3];
+  return [(HKTimeScopeControl *)self _timeScopeForIndex:selectedSegmentIndex];
 }
 
-- (void)setSelectedTimeScope:(int64_t)a3
+- (void)setSelectedTimeScope:(int64_t)scope
 {
   segments = self->_segments;
-  v4 = [(HKTimeScopeControl *)self _indexForTimeScope:a3];
+  v4 = [(HKTimeScopeControl *)self _indexForTimeScope:scope];
 
   [(UISegmentedControl *)segments setSelectedSegmentIndex:v4];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = _HKTimeScopeControlBar;
-  v4 = a3;
-  [(_HKTimeScopeControlBar *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(_HKTimeScopeControlBar *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(_HKTimeScopeControlBar *)self traitCollection:v8.receiver];
-  v6 = [v5 horizontalSizeClass];
-  v7 = [v4 horizontalSizeClass];
+  horizontalSizeClass = [v5 horizontalSizeClass];
+  horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-  if (v6 != v7)
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
     [(_HKTimeScopeControlBar *)self _rebuildSegments];
   }

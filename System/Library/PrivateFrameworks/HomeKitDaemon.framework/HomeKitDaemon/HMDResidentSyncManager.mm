@@ -1,11 +1,11 @@
 @interface HMDResidentSyncManager
 + (id)logCategory;
-- (HMDResidentSyncManager)initWithHome:(id)a3 notificationCenter:(id)a4 persistence:(id)a5 logEventSubmitter:(id)a6;
-- (HMDResidentSyncManager)initWithHome:(id)a3 notificationCenter:(id)a4 persistence:(id)a5 logEventSubmitter:(id)a6 isResidentCapable:(BOOL)a7 clientDataSource:(id)a8 serverDataSource:(id)a9;
+- (HMDResidentSyncManager)initWithHome:(id)home notificationCenter:(id)center persistence:(id)persistence logEventSubmitter:(id)submitter;
+- (HMDResidentSyncManager)initWithHome:(id)home notificationCenter:(id)center persistence:(id)persistence logEventSubmitter:(id)submitter isResidentCapable:(BOOL)capable clientDataSource:(id)source serverDataSource:(id)dataSource;
 - (id)logIdentifier;
 - (id)start;
-- (void)interceptRemoteResidentRequest:(id)a3 proceed:(id)a4;
-- (void)performResidentRequest:(id)a3 options:(unint64_t)a4;
+- (void)interceptRemoteResidentRequest:(id)request proceed:(id)proceed;
+- (void)performResidentRequest:(id)request options:(unint64_t)options;
 - (void)performSync;
 - (void)stop;
 @end
@@ -24,83 +24,83 @@
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained uuid];
-  v4 = [v3 UUIDString];
+  uuid = [WeakRetained uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)interceptRemoteResidentRequest:(id)a3 proceed:(id)a4
+- (void)interceptRemoteResidentRequest:(id)request proceed:(id)proceed
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDResidentSyncManager *)self server];
-  [v8 interceptRemoteResidentRequest:v7 proceed:v6];
+  proceedCopy = proceed;
+  requestCopy = request;
+  server = [(HMDResidentSyncManager *)self server];
+  [server interceptRemoteResidentRequest:requestCopy proceed:proceedCopy];
 }
 
 - (void)performSync
 {
-  v2 = [(HMDResidentSyncManager *)self client];
-  [v2 performSync];
+  client = [(HMDResidentSyncManager *)self client];
+  [client performSync];
 }
 
-- (void)performResidentRequest:(id)a3 options:(unint64_t)a4
+- (void)performResidentRequest:(id)request options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(HMDResidentSyncManager *)self client];
-  [v7 performResidentRequest:v6 options:a4];
+  requestCopy = request;
+  client = [(HMDResidentSyncManager *)self client];
+  [client performResidentRequest:requestCopy options:options];
 }
 
 - (void)stop
 {
-  v3 = [(HMDResidentSyncManager *)self client];
-  [v3 stop];
+  client = [(HMDResidentSyncManager *)self client];
+  [client stop];
 
-  v4 = [(HMDResidentSyncManager *)self server];
-  [v4 stop];
+  server = [(HMDResidentSyncManager *)self server];
+  [server stop];
 }
 
 - (id)start
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMDResidentSyncManager *)self client];
-  v5 = [v4 start];
-  [v3 addObject:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  client = [(HMDResidentSyncManager *)self client];
+  start = [client start];
+  [array addObject:start];
 
-  v6 = [(HMDResidentSyncManager *)self server];
+  server = [(HMDResidentSyncManager *)self server];
 
-  if (v6)
+  if (server)
   {
-    v7 = [(HMDResidentSyncManager *)self server];
-    v8 = [v7 start];
-    [v3 addObject:v8];
+    server2 = [(HMDResidentSyncManager *)self server];
+    start2 = [server2 start];
+    [array addObject:start2];
   }
 
-  v9 = [MEMORY[0x277D0F7C0] allSettled:v3];
+  v9 = [MEMORY[0x277D0F7C0] allSettled:array];
 
   return v9;
 }
 
-- (HMDResidentSyncManager)initWithHome:(id)a3 notificationCenter:(id)a4 persistence:(id)a5 logEventSubmitter:(id)a6 isResidentCapable:(BOOL)a7 clientDataSource:(id)a8 serverDataSource:(id)a9
+- (HMDResidentSyncManager)initWithHome:(id)home notificationCenter:(id)center persistence:(id)persistence logEventSubmitter:(id)submitter isResidentCapable:(BOOL)capable clientDataSource:(id)source serverDataSource:(id)dataSource
 {
-  v10 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  capableCopy = capable;
+  homeCopy = home;
+  centerCopy = center;
+  persistenceCopy = persistence;
+  submitterCopy = submitter;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
   v41.receiver = self;
   v41.super_class = HMDResidentSyncManager;
   v21 = [(HMDResidentSyncManager *)&v41 init];
   v22 = v21;
   if (v21)
   {
-    v40 = v19;
-    v23 = v10;
-    objc_storeWeak(&v21->_home, v15);
-    v39 = v20;
-    v24 = v16;
+    v40 = sourceCopy;
+    v23 = capableCopy;
+    objc_storeWeak(&v21->_home, homeCopy);
+    v39 = dataSourceCopy;
+    v24 = centerCopy;
     if (HMDResidentSyncCodingModel__hmf_once_t0 != -1)
     {
       dispatch_once(&HMDResidentSyncCodingModel__hmf_once_t0, &__block_literal_global_172418);
@@ -108,43 +108,43 @@
 
     v25 = HMDResidentSyncCodingModel__hmf_once_v1;
     v26 = [HMDResidentSyncClient alloc];
-    v27 = [v15 msgDispatcher];
-    v28 = [v15 residentDeviceManager];
+    msgDispatcher = [homeCopy msgDispatcher];
+    residentDeviceManager = [homeCopy residentDeviceManager];
     LOBYTE(v38) = v23;
     v29 = v26;
-    v16 = v24;
-    v30 = [(HMDResidentSyncClient *)v29 initWithHome:v15 codingModel:v25 dispatcher:v27 residentDeviceManager:v28 notificationCenter:v24 persistence:v17 isResidentCapable:v38 dataSource:v40 logEventSubmitter:v18];
+    centerCopy = v24;
+    v30 = [(HMDResidentSyncClient *)v29 initWithHome:homeCopy codingModel:v25 dispatcher:msgDispatcher residentDeviceManager:residentDeviceManager notificationCenter:v24 persistence:persistenceCopy isResidentCapable:v38 dataSource:v40 logEventSubmitter:submitterCopy];
     client = v22->_client;
     v22->_client = v30;
 
     if (v23)
     {
       v32 = [HMDResidentSyncServer alloc];
-      v33 = [v15 msgDispatcher];
-      v34 = [v15 residentDeviceManager];
-      v35 = [(HMDResidentSyncServer *)v32 initWithHome:v15 codingModel:v25 dispatcher:v33 residentDeviceManager:v34 notificationCenter:v16 persistence:v17 dataSource:v39 logEventSubmitter:v18];
+      msgDispatcher2 = [homeCopy msgDispatcher];
+      residentDeviceManager2 = [homeCopy residentDeviceManager];
+      v35 = [(HMDResidentSyncServer *)v32 initWithHome:homeCopy codingModel:v25 dispatcher:msgDispatcher2 residentDeviceManager:residentDeviceManager2 notificationCenter:centerCopy persistence:persistenceCopy dataSource:v39 logEventSubmitter:submitterCopy];
       server = v22->_server;
       v22->_server = v35;
     }
 
-    v20 = v39;
-    v19 = v40;
+    dataSourceCopy = v39;
+    sourceCopy = v40;
   }
 
   return v22;
 }
 
-- (HMDResidentSyncManager)initWithHome:(id)a3 notificationCenter:(id)a4 persistence:(id)a5 logEventSubmitter:(id)a6
+- (HMDResidentSyncManager)initWithHome:(id)home notificationCenter:(id)center persistence:(id)persistence logEventSubmitter:(id)submitter
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  submitterCopy = submitter;
+  persistenceCopy = persistence;
+  centerCopy = center;
+  homeCopy = home;
   v14 = +[HMDDeviceCapabilities deviceCapabilities];
-  v15 = [v14 isResidentCapable];
+  isResidentCapable = [v14 isResidentCapable];
   v16 = objc_alloc_init(HMDResidentSyncClientDefaultDataSource);
   v17 = objc_alloc_init(HMDResidentSyncServerDefaultDataSource);
-  v18 = [(HMDResidentSyncManager *)self initWithHome:v13 notificationCenter:v12 persistence:v11 logEventSubmitter:v10 isResidentCapable:v15 clientDataSource:v16 serverDataSource:v17];
+  v18 = [(HMDResidentSyncManager *)self initWithHome:homeCopy notificationCenter:centerCopy persistence:persistenceCopy logEventSubmitter:submitterCopy isResidentCapable:isResidentCapable clientDataSource:v16 serverDataSource:v17];
 
   return v18;
 }

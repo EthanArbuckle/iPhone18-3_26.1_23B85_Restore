@@ -1,30 +1,30 @@
 @interface PPNeuralNetwork
-- (PPNeuralNetwork)initWithData:(id)a3;
-- (double)_predict:(int)a3 freeInputsAfterUse:;
-- (double)predictWithDoubles:(const double *)a3;
-- (float)_runOnInputs:(int)a3 freeInputsAfterUse:;
-- (void)forInputs:(const float *)a3 computeOutputLayer:(float *)a4;
+- (PPNeuralNetwork)initWithData:(id)data;
+- (double)_predict:(int)_predict freeInputsAfterUse:;
+- (double)predictWithDoubles:(const double *)doubles;
+- (float)_runOnInputs:(int)inputs freeInputsAfterUse:;
+- (void)forInputs:(const float *)inputs computeOutputLayer:(float *)layer;
 @end
 
 @implementation PPNeuralNetwork
 
-- (void)forInputs:(const float *)a3 computeOutputLayer:(float *)a4
+- (void)forInputs:(const float *)inputs computeOutputLayer:(float *)layer
 {
-  v6 = [(PPNeuralNetwork *)self _runOnInputs:a3 freeInputsAfterUse:0];
+  v6 = [(PPNeuralNetwork *)self _runOnInputs:inputs freeInputsAfterUse:0];
   v7 = &self->_layers[self->_nlayers];
   var1 = v7[-1].var1;
   v13 = v7[-1].var1;
   if (v7[-1].var6)
   {
-    vvexpf(a4, v6, &v13);
+    vvexpf(layer, v6, &v13);
     v9 = 0.0;
     if (v13 >= 1)
     {
-      v10 = a4;
+      layerCopy = layer;
       v11 = v13;
       do
       {
-        v12 = *v10++;
+        v12 = *layerCopy++;
         v9 = v9 + v12;
         --v11;
       }
@@ -37,21 +37,21 @@
 
   else
   {
-    memcpy(a4, v6, 4 * var1);
+    memcpy(layer, v6, 4 * var1);
   }
 
   free(v6);
 }
 
-- (float)_runOnInputs:(int)a3 freeInputsAfterUse:
+- (float)_runOnInputs:(int)inputs freeInputsAfterUse:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v3 = a2;
-  if (!a1[3])
+  if (!self[3])
   {
     return a2;
   }
@@ -59,7 +59,7 @@
   v6 = 0;
   do
   {
-    v7 = a1[4] + 20 * v6;
+    v7 = self[4] + 20 * v6;
     v8 = *(v7 + 17);
     if (*(v7 + 17))
     {
@@ -74,14 +74,14 @@
     }
 
     v10 = v9;
-    memcpy(v9, (a1[2] + *(a1[4] + 20 * v6 + 12)), 4 * *(a1[4] + 20 * v6 + 4));
-    v11 = (a1[4] + 20 * v6);
+    memcpy(v9, (self[2] + *(self[4] + 20 * v6 + 12)), 4 * *(self[4] + 20 * v6 + 4));
+    v11 = (self[4] + 20 * v6);
     v13 = *v11;
     v12 = v11[1];
-    v14 = a1[2];
+    v14 = self[2];
     v15 = v11[2];
     cblas_sgemv_NEWLAPACK();
-    v16 = a1[4];
+    v16 = self[4];
     v17 = *(v16 + 20 * v6 + 16);
     if (*(v16 + 20 * v6 + 16))
     {
@@ -143,7 +143,7 @@
       memcpy(&v10[*(v16 + 20 * v6 + 4)], v3, 4 * *v24);
     }
 
-    if (v6 || a3)
+    if (v6 || inputs)
     {
       free(v3);
     }
@@ -152,29 +152,29 @@
     v3 = v10;
   }
 
-  while (v6 < a1[3]);
+  while (v6 < self[3]);
   return v10;
 }
 
-- (double)_predict:(int)a3 freeInputsAfterUse:
+- (double)_predict:(int)_predict freeInputsAfterUse:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v6 = a1[4] + 20 * a1[3];
+  v6 = self[4] + 20 * self[3];
   v7 = *(v6 - 16);
   if (v7 != 1 && (v7 != 2 || !*(v6 - 2)))
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:sel__predict_freeInputsAfterUse_ object:a1 file:@"PPNeuralNetwork.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"_layers[_nlayers-1].outsz == 1 || (_layers[_nlayers-1].outsz == 2 && _layers[_nlayers-1].softmax)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__predict_freeInputsAfterUse_ object:self file:@"PPNeuralNetwork.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"_layers[_nlayers-1].outsz == 1 || (_layers[_nlayers-1].outsz == 2 && _layers[_nlayers-1].softmax)"}];
   }
 
-  v9 = [(PPNeuralNetwork *)a1 _runOnInputs:a2 freeInputsAfterUse:a3];
+  v9 = [(PPNeuralNetwork *)self _runOnInputs:a2 freeInputsAfterUse:_predict];
   v10 = v9;
   v11 = *v9;
-  if (*(a1[4] + 20 * a1[3] - 2))
+  if (*(self[4] + 20 * self[3] - 2))
   {
     v12 = exp(*v9);
     v11 = v12 / (v12 + exp(v10[1]));
@@ -184,7 +184,7 @@
   return v11;
 }
 
-- (double)predictWithDoubles:(const double *)a3
+- (double)predictWithDoubles:(const double *)doubles
 {
   v5 = malloc_type_malloc(4 * self->_layers->var0, 0x100004052888210uLL);
   if (!v5)
@@ -199,7 +199,7 @@
     v7 = v5;
     do
     {
-      v8 = *a3++;
+      v8 = *doubles++;
       v9 = v8;
       *v7++ = v9;
       --var0;
@@ -211,27 +211,27 @@
   return [(PPNeuralNetwork *)self _predict:v5 freeInputsAfterUse:1];
 }
 
-- (PPNeuralNetwork)initWithData:(id)a3
+- (PPNeuralNetwork)initWithData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = PPNeuralNetwork;
   v7 = [(PPNeuralNetwork *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_data, a3);
-    v9 = [v6 bytes];
-    v10 = *v9;
-    v8->_dataBytes = v9;
+    objc_storeStrong(&v7->_data, data);
+    bytes = [dataCopy bytes];
+    v10 = *bytes;
+    v8->_dataBytes = bytes;
     v8->_nlayers = v10;
     if (!v10)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v8 file:@"PPNeuralNetwork.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"_nlayers > 0"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"PPNeuralNetwork.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"_nlayers > 0"}];
     }
 
-    v8->_layers = (v9 + 1);
+    v8->_layers = (bytes + 1);
   }
 
   return v8;

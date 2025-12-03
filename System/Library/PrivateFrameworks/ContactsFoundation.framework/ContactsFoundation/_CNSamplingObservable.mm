@@ -1,43 +1,43 @@
 @interface _CNSamplingObservable
-- (_CNSamplingObservable)initWithObservable:(id)a3 sampler:(id)a4;
-- (id)subscribe:(id)a3;
-- (void)receiveResult:(id)a3;
-- (void)sendSampleToObserver:(id)a3;
+- (_CNSamplingObservable)initWithObservable:(id)observable sampler:(id)sampler;
+- (id)subscribe:(id)subscribe;
+- (void)receiveResult:(id)result;
+- (void)sendSampleToObserver:(id)observer;
 @end
 
 @implementation _CNSamplingObservable
 
-- (_CNSamplingObservable)initWithObservable:(id)a3 sampler:(id)a4
+- (_CNSamplingObservable)initWithObservable:(id)observable sampler:(id)sampler
 {
-  v7 = a3;
-  v8 = a4;
+  observableCopy = observable;
+  samplerCopy = sampler;
   v13.receiver = self;
   v13.super_class = _CNSamplingObservable;
   v9 = [(_CNSamplingObservable *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_observable, a3);
-    objc_storeStrong(&v10->_sampler, a4);
+    objc_storeStrong(&v9->_observable, observable);
+    objc_storeStrong(&v10->_sampler, sampler);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = [(_CNSamplingObservable *)self sampler];
+  subscribeCopy = subscribe;
+  sampler = [(_CNSamplingObservable *)self sampler];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __35___CNSamplingObservable_subscribe___block_invoke;
   v30[3] = &unk_1E6ED63C8;
   v30[4] = self;
-  v6 = v4;
+  v6 = subscribeCopy;
   v31 = v6;
   v7 = [CNObserver observerWithResultBlock:v30];
-  v8 = [v5 subscribe:v7];
+  v8 = [sampler subscribe:v7];
 
   observable = self->_observable;
   v10 = objc_opt_class();
@@ -51,7 +51,7 @@
   v25[2] = __35___CNSamplingObservable_subscribe___block_invoke_3;
   v25[3] = &unk_1E6ED57E0;
   v26 = v8;
-  v27 = self;
+  selfCopy = self;
   v28 = v6;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -77,27 +77,27 @@
   return v17;
 }
 
-- (void)receiveResult:(id)a3
+- (void)receiveResult:(id)result
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(_CNSamplingObservable *)v4 setSample:v5];
-  objc_sync_exit(v4);
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(_CNSamplingObservable *)selfCopy setSample:resultCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)sendSampleToObserver:(id)a3
+- (void)sendSampleToObserver:(id)observer
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(_CNSamplingObservable *)v4 sample];
-  [(_CNSamplingObservable *)v4 setSample:0];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sample = [(_CNSamplingObservable *)selfCopy sample];
+  [(_CNSamplingObservable *)selfCopy setSample:0];
+  objc_sync_exit(selfCopy);
 
-  if (v5)
+  if (sample)
   {
-    [v6 observerDidReceiveResult:v5];
+    [observerCopy observerDidReceiveResult:sample];
   }
 }
 

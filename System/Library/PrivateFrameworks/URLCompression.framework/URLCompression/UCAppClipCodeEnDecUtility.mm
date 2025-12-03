@@ -1,94 +1,94 @@
 @interface UCAppClipCodeEnDecUtility
-+ (id)perepareData:(id)a3 withCodingVersion:(int64_t)a4 forCompressionVersion:(int64_t)a5;
-+ (id)prepareData:(id)a3 withCompressionVersion:(int64_t)a4 forCodingVersion:(int64_t)a5;
-+ (id)prepareURL:(id)a3 withCodingVersion:(int64_t)a4 forCompressionVersion:(int64_t)a5;
-+ (id)prepareURL:(id)a3 withCompressionVersion:(int64_t)a4 forCodingVersion:(int64_t)a5;
++ (id)perepareData:(id)data withCodingVersion:(int64_t)version forCompressionVersion:(int64_t)compressionVersion;
++ (id)prepareData:(id)data withCompressionVersion:(int64_t)version forCodingVersion:(int64_t)codingVersion;
++ (id)prepareURL:(id)l withCodingVersion:(int64_t)version forCompressionVersion:(int64_t)compressionVersion;
++ (id)prepareURL:(id)l withCompressionVersion:(int64_t)version forCodingVersion:(int64_t)codingVersion;
 @end
 
 @implementation UCAppClipCodeEnDecUtility
 
-+ (id)prepareURL:(id)a3 withCodingVersion:(int64_t)a4 forCompressionVersion:(int64_t)a5
++ (id)prepareURL:(id)l withCodingVersion:(int64_t)version forCompressionVersion:(int64_t)compressionVersion
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 == 2 && a5 == 1)
+  lCopy = l;
+  v8 = lCopy;
+  if (version == 2 && compressionVersion == 1)
   {
-    v9 = [v7 padPayloadToV1Length];
+    padPayloadToV1Length = [lCopy padPayloadToV1Length];
   }
 
   else
   {
-    v9 = v7;
+    padPayloadToV1Length = lCopy;
   }
 
-  v10 = v9;
+  v10 = padPayloadToV1Length;
 
   return v10;
 }
 
-+ (id)prepareData:(id)a3 withCompressionVersion:(int64_t)a4 forCodingVersion:(int64_t)a5
++ (id)prepareData:(id)data withCompressionVersion:(int64_t)version forCodingVersion:(int64_t)codingVersion
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 == 1 && a5 == 2)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (version == 1 && codingVersion == 2)
   {
-    v9 = [v7 transformV1ToV2Encoding];
+    transformV1ToV2Encoding = [dataCopy transformV1ToV2Encoding];
   }
 
-  else if (a4 == 1 && a5 == 3)
+  else if (version == 1 && codingVersion == 3)
   {
-    v9 = [v7 transformV1ToV3Encoding];
+    transformV1ToV2Encoding = [dataCopy transformV1ToV3Encoding];
   }
 
   else
   {
-    v9 = v7;
+    transformV1ToV2Encoding = dataCopy;
   }
 
-  v10 = v9;
+  v10 = transformV1ToV2Encoding;
 
   return v10;
 }
 
-+ (id)perepareData:(id)a3 withCodingVersion:(int64_t)a4 forCompressionVersion:(int64_t)a5
++ (id)perepareData:(id)data withCodingVersion:(int64_t)version forCompressionVersion:(int64_t)compressionVersion
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 == 2 && a5 == 1)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (version == 2 && compressionVersion == 1)
   {
-    v9 = [v7 transformV2ToV1Encoding];
+    transformV2ToV1Encoding = [dataCopy transformV2ToV1Encoding];
   }
 
-  else if (a4 == 3 && a5 == 1)
+  else if (version == 3 && compressionVersion == 1)
   {
-    v9 = [v7 transformV3ToV1Encoding];
+    transformV2ToV1Encoding = [dataCopy transformV3ToV1Encoding];
   }
 
   else
   {
-    v9 = v7;
+    transformV2ToV1Encoding = dataCopy;
   }
 
-  v10 = v9;
+  v10 = transformV2ToV1Encoding;
 
   return v10;
 }
 
-+ (id)prepareURL:(id)a3 withCompressionVersion:(int64_t)a4 forCodingVersion:(int64_t)a5
++ (id)prepareURL:(id)l withCompressionVersion:(int64_t)version forCodingVersion:(int64_t)codingVersion
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 == 1 && a5 == 2)
+  lCopy = l;
+  v8 = lCopy;
+  if (version == 1 && codingVersion == 2)
   {
-    v9 = [v7 truncatePayloadToV2Length];
+    truncatePayloadToV2Length = [lCopy truncatePayloadToV2Length];
   }
 
   else
   {
-    v9 = v7;
+    truncatePayloadToV2Length = lCopy;
   }
 
-  v10 = v9;
+  v10 = truncatePayloadToV2Length;
 
   return v10;
 }

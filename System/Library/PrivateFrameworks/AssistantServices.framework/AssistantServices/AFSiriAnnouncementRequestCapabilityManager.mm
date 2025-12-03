@@ -1,32 +1,32 @@
 @interface AFSiriAnnouncementRequestCapabilityManager
-+ (BOOL)_supportsAnnouncementType:(int64_t)a3 forSupportedIntents:(id)a4 forBundleId:(id)a5 onPlatform:(int64_t)a6;
-+ (Class)_classForPlatform:(int64_t)a3;
-+ (id)_candidateAnnounceNotificationTypesFromApp:(id)a3 withIntentIDs:(id)a4 notificationContentType:(id)a5 onPlatform:(int64_t)a6;
-+ (id)_requiredBundleIDsForNotificationAnnouncementType:(int64_t)a3;
-+ (id)_requiredPlatformsForNotificationAnnouncementType:(int64_t)a3;
-+ (id)supportedAnnouncementTypesForBundleId:(id)a3 onPlatform:(int64_t)a4;
-+ (int64_t)notificationAnnouncementTypeForNotificationFromApp:(id)a3 withIntentIDs:(id)a4 notificationContent:(id)a5 onPlatform:(int64_t)a6;
-- (AFSiriAnnouncementRequestCapabilityManager)initWithPlatform:(int64_t)a3;
-- (void)addObserver:(id)a3;
-- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)a3;
-- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)a3;
-- (void)provider:(id)a3 availableAnnouncementRequestTypesChanged:(unint64_t)a4;
-- (void)provider:(id)a3 eligibleAnnouncementRequestTypesChanged:(unint64_t)a4;
-- (void)removeObserver:(id)a3;
++ (BOOL)_supportsAnnouncementType:(int64_t)type forSupportedIntents:(id)intents forBundleId:(id)id onPlatform:(int64_t)platform;
++ (Class)_classForPlatform:(int64_t)platform;
++ (id)_candidateAnnounceNotificationTypesFromApp:(id)app withIntentIDs:(id)ds notificationContentType:(id)type onPlatform:(int64_t)platform;
++ (id)_requiredBundleIDsForNotificationAnnouncementType:(int64_t)type;
++ (id)_requiredPlatformsForNotificationAnnouncementType:(int64_t)type;
++ (id)supportedAnnouncementTypesForBundleId:(id)id onPlatform:(int64_t)platform;
++ (int64_t)notificationAnnouncementTypeForNotificationFromApp:(id)app withIntentIDs:(id)ds notificationContent:(id)content onPlatform:(int64_t)platform;
+- (AFSiriAnnouncementRequestCapabilityManager)initWithPlatform:(int64_t)platform;
+- (void)addObserver:(id)observer;
+- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)completion;
+- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)completion;
+- (void)provider:(id)provider availableAnnouncementRequestTypesChanged:(unint64_t)changed;
+- (void)provider:(id)provider eligibleAnnouncementRequestTypesChanged:(unint64_t)changed;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AFSiriAnnouncementRequestCapabilityManager
 
-- (void)provider:(id)a3 availableAnnouncementRequestTypesChanged:(unint64_t)a4
+- (void)provider:(id)provider availableAnnouncementRequestTypesChanged:(unint64_t)changed
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     *location = 136315394;
     *&location[4] = "[AFSiriAnnouncementRequestCapabilityManager provider:availableAnnouncementRequestTypesChanged:]";
     v14 = 2048;
-    v15 = a4;
+    changedCopy = changed;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Notifying observers available announcement request types changed: %lu", location, 0x16u);
   }
 
@@ -37,25 +37,25 @@
   block[2] = sub_1003183E8;
   block[3] = &unk_10051BCD0;
   objc_copyWeak(v12, location);
-  v12[1] = a4;
-  v11 = v6;
-  v9 = v6;
+  v12[1] = changed;
+  v11 = providerCopy;
+  v9 = providerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v12);
   objc_destroyWeak(location);
 }
 
-- (void)provider:(id)a3 eligibleAnnouncementRequestTypesChanged:(unint64_t)a4
+- (void)provider:(id)provider eligibleAnnouncementRequestTypesChanged:(unint64_t)changed
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     *location = 136315394;
     *&location[4] = "[AFSiriAnnouncementRequestCapabilityManager provider:eligibleAnnouncementRequestTypesChanged:]";
     v14 = 2048;
-    v15 = a4;
+    changedCopy = changed;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Notifying observers eligible announcement request types changed: %lu", location, 0x16u);
   }
 
@@ -66,18 +66,18 @@
   block[2] = sub_100318680;
   block[3] = &unk_10051BCD0;
   objc_copyWeak(v12, location);
-  v12[1] = a4;
-  v11 = v6;
-  v9 = v6;
+  v12[1] = changed;
+  v11 = providerCopy;
+  v9 = providerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v12);
   objc_destroyWeak(location);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -85,17 +85,17 @@
   block[2] = sub_10031887C;
   block[3] = &unk_10051C650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -103,31 +103,31 @@
   block[2] = sub_1003189A0;
   block[3] = &unk_10051C650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)a3
+- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     [(AFAnnouncementRequestCapabilityProviding *)self->_capabilityProvider fetchAvailableAnnouncementRequestTypesWithCompletion:?];
   }
 }
 
-- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)a3
+- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     [(AFAnnouncementRequestCapabilityProviding *)self->_capabilityProvider fetchEligibleAnnouncementRequestTypesWithCompletion:?];
   }
 }
 
-- (AFSiriAnnouncementRequestCapabilityManager)initWithPlatform:(int64_t)a3
+- (AFSiriAnnouncementRequestCapabilityManager)initWithPlatform:(int64_t)platform
 {
   v13.receiver = self;
   v13.super_class = AFSiriAnnouncementRequestCapabilityManager;
@@ -142,11 +142,11 @@
     observers = v4->_observers;
     v4->_observers = v7;
 
-    v9 = [objc_opt_class() _classForPlatform:a3];
+    v9 = [objc_opt_class() _classForPlatform:platform];
     v4->_platform = [v9 platform];
-    v10 = [v9 provider];
+    provider = [v9 provider];
     capabilityProvider = v4->_capabilityProvider;
-    v4->_capabilityProvider = v10;
+    v4->_capabilityProvider = provider;
 
     [(AFAnnouncementRequestCapabilityProviding *)v4->_capabilityProvider addDelegate:v4];
   }
@@ -154,15 +154,15 @@
   return v4;
 }
 
-+ (BOOL)_supportsAnnouncementType:(int64_t)a3 forSupportedIntents:(id)a4 forBundleId:(id)a5 onPlatform:(int64_t)a6
++ (BOOL)_supportsAnnouncementType:(int64_t)type forSupportedIntents:(id)intents forBundleId:(id)id onPlatform:(int64_t)platform
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [objc_msgSend(a1 _classForPlatform:{a6), "requiredIntentIdentifiersForUserNotificationAnnouncementType:", a3}];
+  intentsCopy = intents;
+  idCopy = id;
+  v12 = [objc_msgSend(self _classForPlatform:{platform), "requiredIntentIdentifiersForUserNotificationAnnouncementType:", type}];
   if (v12)
   {
-    v13 = [objc_opt_class() _requiredBundleIDsForNotificationAnnouncementType:a3];
-    if ([v13 count] && !objc_msgSend(v13, "containsObject:", v11))
+    v13 = [objc_opt_class() _requiredBundleIDsForNotificationAnnouncementType:type];
+    if ([v13 count] && !objc_msgSend(v13, "containsObject:", idCopy))
     {
       v21 = 0;
 LABEL_21:
@@ -170,7 +170,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v27 = v11;
+    v27 = idCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -190,7 +190,7 @@ LABEL_6:
           objc_enumerationMutation(v14);
         }
 
-        if (![v10 containsObject:*(*(&v28 + 1) + 8 * v18)])
+        if (![intentsCopy containsObject:*(*(&v28 + 1) + 8 * v18)])
         {
           break;
         }
@@ -212,12 +212,12 @@ LABEL_6:
     {
 LABEL_12:
 
-      v14 = [objc_opt_class() _requiredPlatformsForNotificationAnnouncementType:a3];
-      if (![v14 count] || (+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", a6), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v14, "containsObject:", v19), v19, (v20 & 1) != 0))
+      v14 = [objc_opt_class() _requiredPlatformsForNotificationAnnouncementType:type];
+      if (![v14 count] || (+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", platform), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v14, "containsObject:", v19), v19, (v20 & 1) != 0))
       {
         v21 = 1;
 LABEL_20:
-        v11 = v27;
+        idCopy = v27;
 
         goto LABEL_21;
       }
@@ -248,11 +248,11 @@ LABEL_22:
   return v21;
 }
 
-+ (id)_requiredPlatformsForNotificationAnnouncementType:(int64_t)a3
++ (id)_requiredPlatformsForNotificationAnnouncementType:(int64_t)type
 {
   IsValid = AFSiriUserNotificationAnnouncementTypeGetIsValid();
   v5 = 0;
-  if (a3 == 7 && IsValid)
+  if (type == 7 && IsValid)
   {
     v5 = [NSSet setWithObjects:&off_100534028, 0];
   }
@@ -260,11 +260,11 @@ LABEL_22:
   return v5;
 }
 
-+ (id)_requiredBundleIDsForNotificationAnnouncementType:(int64_t)a3
++ (id)_requiredBundleIDsForNotificationAnnouncementType:(int64_t)type
 {
-  if (AFSiriUserNotificationAnnouncementTypeGetIsValid() && (a3 - 2) <= 4)
+  if (AFSiriUserNotificationAnnouncementTypeGetIsValid() && (type - 2) <= 4)
   {
-    return (&off_10051BD20)[a3 - 2];
+    return (&off_10051BD20)[type - 2];
   }
 
   else
@@ -273,17 +273,17 @@ LABEL_22:
   }
 }
 
-+ (int64_t)notificationAnnouncementTypeForNotificationFromApp:(id)a3 withIntentIDs:(id)a4 notificationContent:(id)a5 onPlatform:(int64_t)a6
++ (int64_t)notificationAnnouncementTypeForNotificationFromApp:(id)app withIntentIDs:(id)ds notificationContent:(id)content onPlatform:(int64_t)platform
 {
-  if (!a3)
+  if (!app)
   {
     return 0;
   }
 
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 contentType];
-  v13 = [a1 _candidateAnnounceNotificationTypesFromApp:v11 withIntentIDs:v10 notificationContentType:v12 onPlatform:a6];
+  dsCopy = ds;
+  appCopy = app;
+  contentType = [content contentType];
+  v13 = [self _candidateAnnounceNotificationTypesFromApp:appCopy withIntentIDs:dsCopy notificationContentType:contentType onPlatform:platform];
 
   if ([v13 containsObject:&off_100534028])
   {
@@ -328,15 +328,15 @@ LABEL_22:
   return v14;
 }
 
-+ (id)_candidateAnnounceNotificationTypesFromApp:(id)a3 withIntentIDs:(id)a4 notificationContentType:(id)a5 onPlatform:(int64_t)a6
++ (id)_candidateAnnounceNotificationTypesFromApp:(id)app withIntentIDs:(id)ds notificationContentType:(id)type onPlatform:(int64_t)platform
 {
-  v10 = a3;
-  v11 = a4;
-  v29 = a5;
+  appCopy = app;
+  dsCopy = ds;
+  typeCopy = type;
   v33 = objc_alloc_init(NSMutableSet);
-  v12 = [a1 _classForPlatform:a6];
-  v30 = v10;
-  [objc_opt_class() supportedAnnouncementTypesForBundleId:v10 onPlatform:a6];
+  v12 = [self _classForPlatform:platform];
+  v30 = appCopy;
+  [objc_opt_class() supportedAnnouncementTypesForBundleId:appCopy onPlatform:platform];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -357,12 +357,12 @@ LABEL_22:
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v38 + 1) + 8 * v16) integerValue];
-        v18 = [v12 announceableIntentIdentifiersForUserNotificationAnnouncementType:v17];
+        integerValue = [*(*(&v38 + 1) + 8 * v16) integerValue];
+        v18 = [v12 announceableIntentIdentifiersForUserNotificationAnnouncementType:integerValue];
         v19 = v18;
         if (v18 && ![v18 count])
         {
-          v20 = [NSNumber numberWithInteger:v17];
+          v20 = [NSNumber numberWithInteger:integerValue];
           [v33 addObject:v20];
         }
 
@@ -388,9 +388,9 @@ LABEL_22:
                   objc_enumerationMutation(v20);
                 }
 
-                if ([v11 containsObject:*(*(&v34 + 1) + 8 * i)])
+                if ([dsCopy containsObject:*(*(&v34 + 1) + 8 * i)])
                 {
-                  v26 = [NSNumber numberWithInteger:v17];
+                  v26 = [NSNumber numberWithInteger:integerValue];
                   [v33 addObject:v26];
 
                   goto LABEL_18;
@@ -422,7 +422,7 @@ LABEL_18:
     while (v14);
   }
 
-  if (([v29 isEqualToString:_UNNotificationContentTypeMessagingDirect] & 1) != 0 || objc_msgSend(v29, "isEqualToString:", _UNNotificationContentTypeMessagingGroup)) && (v27 = &off_100534028, (objc_msgSend(obj, "containsObject:", &off_100534028)) || objc_msgSend(v29, "isEqualToString:", _UNNotificationContentTypeIntercom) && (v27 = &off_100534040, (objc_msgSend(obj, "containsObject:", &off_100534040)) || objc_msgSend(v29, "isEqualToString:", _UNNotificationContentTypeVoicemail) && (v27 = &off_100534058, (objc_msgSend(obj, "containsObject:", &off_100534058)) || objc_msgSend(v29, "isEqualToString:", _UNNotificationContentTypeIncomingCall) && (v27 = &off_100534070, objc_msgSend(obj, "containsObject:", &off_100534070)))
+  if (([typeCopy isEqualToString:_UNNotificationContentTypeMessagingDirect] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", _UNNotificationContentTypeMessagingGroup)) && (v27 = &off_100534028, (objc_msgSend(obj, "containsObject:", &off_100534028)) || objc_msgSend(typeCopy, "isEqualToString:", _UNNotificationContentTypeIntercom) && (v27 = &off_100534040, (objc_msgSend(obj, "containsObject:", &off_100534040)) || objc_msgSend(typeCopy, "isEqualToString:", _UNNotificationContentTypeVoicemail) && (v27 = &off_100534058, (objc_msgSend(obj, "containsObject:", &off_100534058)) || objc_msgSend(typeCopy, "isEqualToString:", _UNNotificationContentTypeIncomingCall) && (v27 = &off_100534070, objc_msgSend(obj, "containsObject:", &off_100534070)))
   {
     [v33 addObject:v27];
   }
@@ -430,9 +430,9 @@ LABEL_18:
   return v33;
 }
 
-+ (id)supportedAnnouncementTypesForBundleId:(id)a3 onPlatform:(int64_t)a4
++ (id)supportedAnnouncementTypesForBundleId:(id)id onPlatform:(int64_t)platform
 {
-  v6 = a3;
+  idCopy = id;
   v7 = objc_alloc_init(NSMutableSet);
   [v7 addObject:&off_100534010];
   v24 = 0;
@@ -454,7 +454,7 @@ LABEL_18:
   v9 = v8;
   _Block_object_dispose(&v24, 8);
   v23 = 0;
-  v10 = [[v8 alloc] initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v23];
+  v10 = [[v8 alloc] initWithBundleIdentifier:idCopy allowPlaceholder:0 error:&v23];
   v11 = v23;
   if (v11)
   {
@@ -464,7 +464,7 @@ LABEL_18:
       *buf = 136315650;
       *&buf[4] = "+[AFSiriAnnouncementRequestCapabilityManager supportedAnnouncementTypesForBundleId:onPlatform:]";
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = idCopy;
       *&buf[22] = 2112;
       v29 = v11;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Unable to retrieve LSApplicationRecord for bundle identifier %@: %@", buf, 0x20u);
@@ -494,10 +494,10 @@ LABEL_18:
     v15 = v14;
     _Block_object_dispose(&v24, 8);
     v22 = [v14 appInfoWithApplicationRecord:v10];
-    v16 = [v22 supportedIntents];
+    supportedIntents = [v22 supportedIntents];
     for (i = 0; i != 8; ++i)
     {
-      if ([a1 _supportsAnnouncementType:i forSupportedIntents:v16 forBundleId:v6 onPlatform:a4])
+      if ([self _supportsAnnouncementType:i forSupportedIntents:supportedIntents forBundleId:idCopy onPlatform:platform])
       {
         v18 = [NSNumber numberWithUnsignedInteger:i];
         [v7 addObject:v18];
@@ -510,7 +510,7 @@ LABEL_18:
       *buf = 136315650;
       *&buf[4] = "+[AFSiriAnnouncementRequestCapabilityManager supportedAnnouncementTypesForBundleId:onPlatform:]";
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = idCopy;
       *&buf[22] = 2112;
       v29 = v7;
       _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%s application: %@ supports %@", buf, 0x20u);
@@ -522,7 +522,7 @@ LABEL_18:
   return v7;
 }
 
-+ (Class)_classForPlatform:(int64_t)a3
++ (Class)_classForPlatform:(int64_t)platform
 {
   IsValid = AFSiriAnnouncementPlatformGetIsValid();
   if ((IsValid & 1) == 0)
@@ -539,19 +539,19 @@ LABEL_14:
     v7 = 136315394;
     v8 = "+[AFSiriAnnouncementRequestCapabilityManager _classForPlatform:]";
     v9 = 2048;
-    v10 = a3;
+    platformCopy = platform;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s platform %li is not valid, using headphones provider.", &v7, 0x16u);
     goto LABEL_8;
   }
 
-  if (a3 <= 5)
+  if (platform <= 5)
   {
-    if (((1 << a3) & 0x1A) != 0)
+    if (((1 << platform) & 0x1A) != 0)
     {
       goto LABEL_8;
     }
 
-    if (((1 << a3) & 0x21) == 0)
+    if (((1 << platform) & 0x21) == 0)
     {
       goto LABEL_8;
     }

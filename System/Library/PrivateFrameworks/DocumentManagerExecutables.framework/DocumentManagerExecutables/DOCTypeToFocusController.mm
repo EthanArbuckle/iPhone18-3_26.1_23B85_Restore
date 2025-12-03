@@ -2,7 +2,7 @@
 - (UITextInputAssistantItem)inputAssistantItem;
 - (UIView)inputView;
 - (_TtC26DocumentManagerExecutables24DOCTypeToFocusController)init;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 - (void)typingTimeout;
 @end
 
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   DOCTypeToFocusController.insertText(_:)(v8);
@@ -59,10 +59,10 @@
   swift_beginAccess();
   *v3 = 0;
   v3[1] = 0xE000000000000000;
-  v4 = self;
+  selfCopy = self;
 
-  v5 = *(&v4->super.super.isa + sharedTypeToFocusInputView._constraintsExceptingSubviewAutoresizingConstraints);
-  *(&v4->super.super.isa + sharedTypeToFocusInputView._constraintsExceptingSubviewAutoresizingConstraints) = 0;
+  v5 = *(&selfCopy->super.super.isa + sharedTypeToFocusInputView._constraintsExceptingSubviewAutoresizingConstraints);
+  *(&selfCopy->super.super.isa + sharedTypeToFocusInputView._constraintsExceptingSubviewAutoresizingConstraints) = 0;
 }
 
 @end

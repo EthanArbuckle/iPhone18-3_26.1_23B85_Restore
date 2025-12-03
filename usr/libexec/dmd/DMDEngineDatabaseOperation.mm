@@ -2,7 +2,7 @@
 - (DMDEngineDatabaseOperation)init;
 - (void)dealloc;
 - (void)main;
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3;
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context;
 @end
 
 @implementation DMDEngineDatabaseOperation
@@ -44,27 +44,27 @@
 
 - (void)main
 {
-  v4 = [(DMDEngineDatabaseOperation *)self database];
+  database = [(DMDEngineDatabaseOperation *)self database];
 
-  if (!v4)
+  if (!database)
   {
     sub_100082FE4(a2, self);
   }
 
-  v5 = [(DMDEngineDatabaseOperation *)self database];
-  v6 = [v5 newBackgroundContext];
+  database2 = [(DMDEngineDatabaseOperation *)self database];
+  newBackgroundContext = [database2 newBackgroundContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10003B628;
   v8[3] = &unk_1000CDC38;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = newBackgroundContext;
+  v7 = newBackgroundContext;
   [v7 performBlockAndWait:v8];
 }
 
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context
 {
   v8 = +[NSAssertionHandler currentHandler];
   v5 = objc_opt_class();

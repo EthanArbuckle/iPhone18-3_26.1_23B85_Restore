@@ -1,43 +1,43 @@
 @interface _NTKPieChartView
-- (_NTKPieChartView)initWithFrame:(CGRect)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (_NTKPieChartView)initWithFrame:(CGRect)frame;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 @end
 
 @implementation _NTKPieChartView
 
-- (_NTKPieChartView)initWithFrame:(CGRect)a3
+- (_NTKPieChartView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _NTKPieChartView;
-  v3 = [(_NTKPieChartView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_NTKPieChartView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(_NTKPieChartView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(_NTKPieChartView *)v3 setBackgroundColor:clearColor];
 
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v7 = v6;
-    v8 = [(_NTKPieChartView *)v3 layer];
-    [v8 setContentsScale:v7];
+    layer = [(_NTKPieChartView *)v3 layer];
+    [layer setContentsScale:v7];
   }
 
   return v3;
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
-    v8 = [(_NTKPieChartView *)self layer];
-    [v8 setProgress:a3];
+    layer = [(_NTKPieChartView *)self layer];
+    [layer setProgress:progress];
   }
 
   else
   {
     [MEMORY[0x277D75D18] setAnimationsEnabled:0];
-    v6 = [(_NTKPieChartView *)self layer];
-    [v6 setProgress:a3];
+    layer2 = [(_NTKPieChartView *)self layer];
+    [layer2 setProgress:progress];
 
     v7 = MEMORY[0x277D75D18];
 

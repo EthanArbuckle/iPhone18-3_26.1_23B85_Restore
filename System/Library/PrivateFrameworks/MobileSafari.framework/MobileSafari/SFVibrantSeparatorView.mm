@@ -1,19 +1,19 @@
 @interface SFVibrantSeparatorView
-- (SFVibrantSeparatorView)initWithFrame:(CGRect)a3;
+- (SFVibrantSeparatorView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SFVibrantSeparatorView
 
-- (SFVibrantSeparatorView)initWithFrame:(CGRect)a3
+- (SFVibrantSeparatorView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SFVibrantSeparatorView;
-  v3 = [(SFVibrantSeparatorView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFVibrantSeparatorView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
-    v5 = [(SFVibrantSeparatorView *)v3 contentView];
-    [v5 setBackgroundColor:v4];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    contentView = [(SFVibrantSeparatorView *)v3 contentView];
+    [contentView setBackgroundColor:whiteColor];
 
     v6 = MEMORY[0x1E69DD248];
     v7 = [MEMORY[0x1E69DC730] effectWithStyle:8];

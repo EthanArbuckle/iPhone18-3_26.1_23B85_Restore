@@ -1,15 +1,15 @@
 @interface Suggestion
 - (_TtC9MomentsUI10Suggestion)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Suggestion
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  Suggestion.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  Suggestion.encode(with:)(coderCopy);
 }
 
 - (_TtC9MomentsUI10Suggestion)init

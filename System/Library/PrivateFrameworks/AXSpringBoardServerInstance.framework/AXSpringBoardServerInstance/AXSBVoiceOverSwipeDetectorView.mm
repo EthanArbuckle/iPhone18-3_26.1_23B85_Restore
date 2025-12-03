@@ -1,29 +1,29 @@
 @interface AXSBVoiceOverSwipeDetectorView
 - (AXSBVoiceOverSwipeDetectorDelegate)delegate;
-- (AXSBVoiceOverSwipeDetectorView)initWithFrame:(CGRect)a3;
-- (void)_cancelVOSwipeActivation:(id)a3;
-- (void)_swipeDetected:(id)a3;
+- (AXSBVoiceOverSwipeDetectorView)initWithFrame:(CGRect)frame;
+- (void)_cancelVOSwipeActivation:(id)activation;
+- (void)_swipeDetected:(id)detected;
 - (void)layoutSubviews;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation AXSBVoiceOverSwipeDetectorView
 
-- (AXSBVoiceOverSwipeDetectorView)initWithFrame:(CGRect)a3
+- (AXSBVoiceOverSwipeDetectorView)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = AXSBVoiceOverSwipeDetectorView;
-  v3 = [(AXSBVoiceOverSwipeDetectorView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXSBVoiceOverSwipeDetectorView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [(AXSBVoiceOverSwipeDetectorView *)v3 setBackgroundColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(AXSBVoiceOverSwipeDetectorView *)v3 setBackgroundColor:whiteColor];
 
     [(AXSBVoiceOverSwipeDetectorView *)v3 setAutoresizesSubviews:1];
     [(AXSBVoiceOverSwipeDetectorView *)v3 setMultipleTouchEnabled:1];
     v5 = objc_alloc(MEMORY[0x277D755E8]);
-    v6 = [MEMORY[0x277D755B8] _defaultBackgroundGradient];
-    v7 = [v5 initWithImage:v6];
+    _defaultBackgroundGradient = [MEMORY[0x277D755B8] _defaultBackgroundGradient];
+    v7 = [v5 initWithImage:_defaultBackgroundGradient];
 
     [(AXSBVoiceOverSwipeDetectorView *)v3 bounds];
     [v7 setFrame:?];
@@ -83,14 +83,14 @@
     v30 = [MEMORY[0x277D75348] colorWithRed:0.294117647 green:0.341176471 blue:0.435294118 alpha:1.0];
     [(UILabel *)v3->_titleLabel setTextColor:v30];
 
-    v31 = [MEMORY[0x277D75348] whiteColor];
-    v32 = [v31 colorWithAlphaComponent:0.75];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    v32 = [whiteColor2 colorWithAlphaComponent:0.75];
     [(UILabel *)v3->_titleLabel setShadowColor:v32];
 
     [(UILabel *)v3->_titleLabel setShadowOffset:0.0, 1.0];
     [(UILabel *)v3->_titleLabel setIsAccessibilityElement:0];
-    v33 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_titleLabel setBackgroundColor:v33];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_titleLabel setBackgroundColor:clearColor];
 
     v34 = SBAXLocalizedString(@"SWIPE_TO_ENABLE");
     [(UILabel *)v3->_titleLabel setText:v34];
@@ -103,27 +103,27 @@
   return v3;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if (self->_swipeDetected)
   {
-    v5 = [(AXSBVoiceOverSwipeDetectorView *)self delegate:a3];
+    v5 = [(AXSBVoiceOverSwipeDetectorView *)self delegate:ended];
     [v5 swipeDetectorDetectedSwipe];
   }
 }
 
-- (void)_swipeDetected:(id)a3
+- (void)_swipeDetected:(id)detected
 {
-  if ([a3 state] == 3)
+  if ([detected state] == 3)
   {
     self->_swipeDetected = 1;
   }
 }
 
-- (void)_cancelVOSwipeActivation:(id)a3
+- (void)_cancelVOSwipeActivation:(id)activation
 {
-  v3 = [(AXSBVoiceOverSwipeDetectorView *)self delegate];
-  [v3 swipeDetectorCanceled];
+  delegate = [(AXSBVoiceOverSwipeDetectorView *)self delegate];
+  [delegate swipeDetectorCanceled];
 }
 
 - (void)layoutSubviews

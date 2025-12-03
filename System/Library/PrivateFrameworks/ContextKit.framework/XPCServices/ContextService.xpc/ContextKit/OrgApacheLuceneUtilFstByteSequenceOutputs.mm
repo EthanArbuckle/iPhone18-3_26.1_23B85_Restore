@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneUtilFstByteSequenceOutputs
 + (id)getSingleton;
 + (void)initialize;
-- (id)addWithId:(id)a3 withId:(id)a4;
-- (id)commonWithId:(id)a3 withId:(id)a4;
-- (id)outputToStringWithId:(id)a3;
-- (id)readWithOrgApacheLuceneStoreDataInput:(id)a3;
-- (id)subtractWithId:(id)a3 withId:(id)a4;
-- (int64_t)ramBytesUsedWithId:(id)a3;
-- (void)skipOutputWithOrgApacheLuceneStoreDataInput:(id)a3;
-- (void)writeWithId:(id)a3 withOrgApacheLuceneStoreDataOutput:(id)a4;
+- (id)addWithId:(id)id withId:(id)withId;
+- (id)commonWithId:(id)id withId:(id)withId;
+- (id)outputToStringWithId:(id)id;
+- (id)readWithOrgApacheLuceneStoreDataInput:(id)input;
+- (id)subtractWithId:(id)id withId:(id)withId;
+- (int64_t)ramBytesUsedWithId:(id)id;
+- (void)skipOutputWithOrgApacheLuceneStoreDataInput:(id)input;
+- (void)writeWithId:(id)id withOrgApacheLuceneStoreDataOutput:(id)output;
 @end
 
 @implementation OrgApacheLuceneUtilFstByteSequenceOutputs
@@ -23,17 +23,17 @@
   return qword_100554568;
 }
 
-- (id)commonWithId:(id)a3 withId:(id)a4
+- (id)commonWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v4 = a4) == 0)
+  if (!id || (v4 = withId) == 0)
   {
 LABEL_26:
     JreThrowNullPointerException();
   }
 
-  LODWORD(v6) = *(a3 + 4);
-  v7 = *(a4 + 4);
-  v8 = JavaLangMath_minWithInt_withInt_(*(a3 + 5), *(a4 + 5));
+  LODWORD(v6) = *(id + 4);
+  v7 = *(withId + 4);
+  v8 = JavaLangMath_minWithInt_withInt_(*(id + 5), *(withId + 5));
   v9 = v8 + v6;
   if (v6 >= v8 + v6)
   {
@@ -45,7 +45,7 @@ LABEL_26:
     v6 = v6;
     while (1)
     {
-      v10 = *(a3 + 1);
+      v10 = *(id + 1);
       if (!v10)
       {
         goto LABEL_26;
@@ -82,15 +82,15 @@ LABEL_26:
   }
 
 LABEL_17:
-  v15 = *(a3 + 4);
+  v15 = *(id + 4);
   if (v9 == v15)
   {
     return qword_100554558;
   }
 
-  if (v9 == *(a3 + 5) + v15)
+  if (v9 == *(id + 5) + v15)
   {
-    return a3;
+    return id;
   }
 
   if (v7 == *(v4 + 5) + *(v4 + 4))
@@ -98,29 +98,29 @@ LABEL_17:
     return v4;
   }
 
-  v17 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(*(a3 + 1), v15, v9 - v15);
+  v17 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(*(id + 1), v15, v9 - v15);
 
   return v17;
 }
 
-- (id)subtractWithId:(id)a3 withId:(id)a4
+- (id)subtractWithId:(id)id withId:(id)withId
 {
   result = qword_100554558;
-  if (qword_100554558 == a4)
+  if (qword_100554558 == withId)
   {
-    return a3;
+    return id;
   }
 
-  if (!a4 || !a3)
+  if (!withId || !id)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = *(a4 + 5);
-  v6 = *(a3 + 5) - v5;
+  v5 = *(withId + 5);
+  v6 = *(id + 5) - v5;
   if (v6)
   {
-    v7 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(*(a3 + 1), *(a3 + 4) + v5, v6);
+    v7 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(*(id + 1), *(id + 4) + v5, v6);
 
     return v7;
   }
@@ -128,103 +128,103 @@ LABEL_17:
   return result;
 }
 
-- (id)addWithId:(id)a3 withId:(id)a4
+- (id)addWithId:(id)id withId:(id)withId
 {
-  v4 = a4;
-  if (qword_100554558 != a3)
+  withIdCopy = withId;
+  if (qword_100554558 != id)
   {
-    if (qword_100554558 == a4)
+    if (qword_100554558 == withId)
     {
-      return a3;
+      return id;
     }
 
     else
     {
-      v6 = new_OrgApacheLuceneUtilBytesRef_initWithInt_(*(a4 + 5) + *(a3 + 5));
-      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 1), *(a3 + 4), v6->bytes_, 0, *(a3 + 5));
-      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v4[1], *(v4 + 4), v6->bytes_, *(a3 + 5), *(v4 + 5));
-      v6->length_ = *(v4 + 5) + *(a3 + 5);
+      v6 = new_OrgApacheLuceneUtilBytesRef_initWithInt_(*(withId + 5) + *(id + 5));
+      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(id + 1), *(id + 4), v6->bytes_, 0, *(id + 5));
+      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(withIdCopy[1], *(withIdCopy + 4), v6->bytes_, *(id + 5), *(withIdCopy + 5));
+      v6->length_ = *(withIdCopy + 5) + *(id + 5);
       return v6;
     }
   }
 
-  return v4;
+  return withIdCopy;
 }
 
-- (void)writeWithId:(id)a3 withOrgApacheLuceneStoreDataOutput:(id)a4
+- (void)writeWithId:(id)id withOrgApacheLuceneStoreDataOutput:(id)output
 {
-  if (!a4 || !a3)
+  if (!output || !id)
   {
     JreThrowNullPointerException();
   }
 
-  [a4 writeVIntWithInt:*(a3 + 5)];
-  v6 = *(a3 + 1);
-  v7 = *(a3 + 4);
-  v8 = *(a3 + 5);
+  [output writeVIntWithInt:*(id + 5)];
+  v6 = *(id + 1);
+  v7 = *(id + 4);
+  v8 = *(id + 5);
 
-  [a4 writeBytesWithByteArray:v6 withInt:v7 withInt:v8];
+  [output writeBytesWithByteArray:v6 withInt:v7 withInt:v8];
 }
 
-- (id)readWithOrgApacheLuceneStoreDataInput:(id)a3
+- (id)readWithOrgApacheLuceneStoreDataInput:(id)input
 {
-  if (!a3)
+  if (!input)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 readVInt];
-  if (!v4)
+  readVInt = [input readVInt];
+  if (!readVInt)
   {
     return qword_100554558;
   }
 
-  v5 = v4;
-  v6 = new_OrgApacheLuceneUtilBytesRef_initWithInt_(v4);
-  [a3 readBytesWithByteArray:v6->bytes_ withInt:0 withInt:v5];
+  v5 = readVInt;
+  v6 = new_OrgApacheLuceneUtilBytesRef_initWithInt_(readVInt);
+  [input readBytesWithByteArray:v6->bytes_ withInt:0 withInt:v5];
   v6->length_ = v5;
   return v6;
 }
 
-- (void)skipOutputWithOrgApacheLuceneStoreDataInput:(id)a3
+- (void)skipOutputWithOrgApacheLuceneStoreDataInput:(id)input
 {
-  if (!a3)
+  if (!input)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 readVInt];
-  if (v4)
+  readVInt = [input readVInt];
+  if (readVInt)
   {
 
-    [a3 skipBytesWithLong:v4];
+    [input skipBytesWithLong:readVInt];
   }
 }
 
-- (id)outputToStringWithId:(id)a3
+- (id)outputToStringWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 description];
+  return [id description];
 }
 
-- (int64_t)ramBytesUsedWithId:(id)a3
+- (int64_t)ramBytesUsedWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
   v3 = qword_100554560;
-  return OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithByteArray_(*(a3 + 1)) + v3;
+  return OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithByteArray_(*(id + 1)) + v3;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_OrgApacheLuceneUtilBytesRef_init();
     JreStrongAssignAndConsume(&qword_100554558, v2);

@@ -1,11 +1,11 @@
 @interface RestrictedGuestInfoLogEvent
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
-- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithHomeUUID:(id)a3;
-- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithHomeUUID:(id)d;
+- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 - (unint64_t)coreAnalyticsEventOptions;
-- (void)setCoreAnalyticsEventName:(id)a3;
-- (void)setCoreAnalyticsEventOptions:(unint64_t)a3;
+- (void)setCoreAnalyticsEventName:(id)name;
+- (void)setCoreAnalyticsEventOptions:(unint64_t)options;
 @end
 
 @implementation RestrictedGuestInfoLogEvent
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (void)setCoreAnalyticsEventName:(id)a3
+- (void)setCoreAnalyticsEventName:(id)name
 {
   v4 = sub_22A4DD5EC();
   v6 = v5;
@@ -35,7 +35,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   RestrictedGuestInfoLogEvent.coreAnalyticsEventDictionary.getter();
 
   sub_229562F68(0, &qword_281401760, 0x277D82BB8);
@@ -51,14 +51,14 @@
   return *(self + v3);
 }
 
-- (void)setCoreAnalyticsEventOptions:(unint64_t)a3
+- (void)setCoreAnalyticsEventOptions:(unint64_t)options
 {
   v5 = OBJC_IVAR____TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent_coreAnalyticsEventOptions;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = options;
 }
 
-- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithHomeUUID:(id)a3
+- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithHomeUUID:(id)d
 {
   v3 = sub_22A4DB7DC();
   v4 = *(*(v3 - 8) + 64);
@@ -69,7 +69,7 @@
   return result;
 }
 
-- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (_TtC13HomeKitDaemon27RestrictedGuestInfoLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v4 = sub_22A4DB7DC();
   v5 = *(*(v4 - 8) + 64);

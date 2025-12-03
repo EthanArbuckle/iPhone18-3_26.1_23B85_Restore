@@ -1,127 +1,127 @@
 @interface AEAssessmentUIServiceProxy
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4;
-+ (id)proxyWithOrigin:(void *)a3 queue:;
-+ (id)serviceProxyWithQueue:(id)a3;
-- (id)initWithXPCProxy:(void *)a3 queue:;
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue;
++ (id)proxyWithOrigin:(void *)origin queue:;
++ (id)serviceProxyWithQueue:(id)queue;
+- (id)initWithXPCProxy:(void *)proxy queue:;
 - (id)interruptionHandler;
 - (id)invalidationHandler;
-- (void)_activateWithConfiguration:(void *)a3 completion:;
-- (void)_animateInWithCompletion:(uint64_t)a1;
-- (void)_animateOutWithCompletion:(uint64_t)a1;
-- (void)_deactivateWithCompletion:(uint64_t)a1;
-- (void)activateWithConfiguration:(id)a3 completion:(id)a4;
-- (void)animateInWithCompletion:(id)a3;
-- (void)animateOutWithCompletion:(id)a3;
-- (void)deactivateWithCompletion:(id)a3;
+- (void)_activateWithConfiguration:(void *)configuration completion:;
+- (void)_animateInWithCompletion:(uint64_t)completion;
+- (void)_animateOutWithCompletion:(uint64_t)completion;
+- (void)_deactivateWithCompletion:(uint64_t)completion;
+- (void)activateWithConfiguration:(id)configuration completion:(id)completion;
+- (void)animateInWithCompletion:(id)completion;
+- (void)animateOutWithCompletion:(id)completion;
+- (void)deactivateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation AEAssessmentUIServiceProxy
 
-- (void)activateWithConfiguration:(id)a3 completion:(id)a4
+- (void)activateWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__AEAssessmentUIServiceProxy_activateWithConfiguration_completion___block_invoke;
   v8[3] = &unk_278BB6D40;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(AEAssessmentUIServiceProxy *)self _activateWithConfiguration:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(AEAssessmentUIServiceProxy *)self _activateWithConfiguration:configuration completion:v8];
 }
 
-- (void)animateInWithCompletion:(id)a3
+- (void)animateInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__AEAssessmentUIServiceProxy_animateInWithCompletion___block_invoke;
   v6[3] = &unk_278BB6D40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(AEAssessmentUIServiceProxy *)self _animateInWithCompletion:v6];
 }
 
-- (void)animateOutWithCompletion:(id)a3
+- (void)animateOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__AEAssessmentUIServiceProxy_animateOutWithCompletion___block_invoke;
   v6[3] = &unk_278BB6D40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(AEAssessmentUIServiceProxy *)self _animateOutWithCompletion:v6];
 }
 
-- (void)deactivateWithCompletion:(id)a3
+- (void)deactivateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__AEAssessmentUIServiceProxy_deactivateWithCompletion___block_invoke;
   v6[3] = &unk_278BB6D40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(AEAssessmentUIServiceProxy *)self _deactivateWithCompletion:v6];
 }
 
-- (id)initWithXPCProxy:(void *)a3 queue:
+- (id)initWithXPCProxy:(void *)proxy queue:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  proxyCopy = proxy;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = AEAssessmentUIServiceProxy;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, proxy);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)proxyWithOrigin:(void *)a3 queue:
++ (id)proxyWithOrigin:(void *)origin queue:
 {
-  v4 = a3;
+  originCopy = origin;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_new();
-  v7 = [v6 makeInterface];
+  makeInterface = [v6 makeInterface];
 
-  v8 = [[AEXPCProxy alloc] initWithOrigin:v5 interface:v7];
-  v9 = [[AEAssessmentUIServiceProxy alloc] initWithXPCProxy:v8 queue:v4];
+  v8 = [[AEXPCProxy alloc] initWithOrigin:v5 interface:makeInterface];
+  v9 = [[AEAssessmentUIServiceProxy alloc] initWithXPCProxy:v8 queue:originCopy];
 
   return v9;
 }
 
-+ (id)serviceProxyWithQueue:(id)a3
++ (id)serviceProxyWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [[AEServiceXPCConnectionOrigin alloc] initWithServiceName:?];
-  v6 = [(AEAssessmentUIServiceProxy *)a1 proxyWithOrigin:v5 queue:v4];
+  v6 = [(AEAssessmentUIServiceProxy *)self proxyWithOrigin:v5 queue:queueCopy];
 
   return v6;
 }
 
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:v7];
+  queueCopy = queue;
+  endpointCopy = endpoint;
+  v8 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:endpointCopy];
 
-  v9 = [(AEAssessmentUIServiceProxy *)a1 proxyWithOrigin:v8 queue:v6];
+  v9 = [(AEAssessmentUIServiceProxy *)self proxyWithOrigin:v8 queue:queueCopy];
 
   return v9;
 }
@@ -146,24 +146,24 @@
   return [(AEAssessmentUIServiceProxy *)self invalidationHandler];
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
   if (self)
   {
     self = self->_xpcProxy;
   }
 
-  [(AEAssessmentUIServiceProxy *)self setInterruptionHandler:a3];
+  [(AEAssessmentUIServiceProxy *)self setInterruptionHandler:handler];
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
   if (self)
   {
     self = self->_xpcProxy;
   }
 
-  [(AEAssessmentUIServiceProxy *)self setInvalidationHandler:a3];
+  [(AEAssessmentUIServiceProxy *)self setInvalidationHandler:handler];
 }
 
 - (void)invalidate
@@ -192,17 +192,17 @@ void __67__AEAssessmentUIServiceProxy_activateWithConfiguration_completion___blo
   OUTLINED_FUNCTION_3_0(v7, v8, v9, v10, v11, v12, v13, v14, v15);
 }
 
-- (void)_activateWithConfiguration:(void *)a3 completion:
+- (void)_activateWithConfiguration:(void *)configuration completion:
 {
-  v5 = a3;
-  if (a1)
+  configurationCopy = configuration;
+  if (self)
   {
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_6();
     v11 = __68__AEAssessmentUIServiceProxy__activateWithConfiguration_completion___block_invoke;
     v12 = &unk_278BB6D68;
-    v7 = v5;
+    v7 = configurationCopy;
     v13 = v7;
     v8 = a2;
     v9 = [(AEXPCProxy *)v6 remoteObjectProxyWithErrorHandler:v10];
@@ -226,12 +226,12 @@ void __54__AEAssessmentUIServiceProxy_animateInWithCompletion___block_invoke(uin
   OUTLINED_FUNCTION_3_0(v7, v8, v9, v10, v11, v12, v13, v14, v15);
 }
 
-- (void)_animateInWithCompletion:(uint64_t)a1
+- (void)_animateInWithCompletion:(uint64_t)completion
 {
   v4 = a2;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 8);
+    v5 = *(completion + 8);
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_6();
     v6 = v4;
@@ -257,12 +257,12 @@ void __55__AEAssessmentUIServiceProxy_animateOutWithCompletion___block_invoke(ui
   OUTLINED_FUNCTION_3_0(v7, v8, v9, v10, v11, v12, v13, v14, v15);
 }
 
-- (void)_animateOutWithCompletion:(uint64_t)a1
+- (void)_animateOutWithCompletion:(uint64_t)completion
 {
   v4 = a2;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 8);
+    v5 = *(completion + 8);
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_6();
     v6 = v4;
@@ -288,12 +288,12 @@ void __55__AEAssessmentUIServiceProxy_deactivateWithCompletion___block_invoke(ui
   OUTLINED_FUNCTION_3_0(v7, v8, v9, v10, v11, v12, v13, v14, v15);
 }
 
-- (void)_deactivateWithCompletion:(uint64_t)a1
+- (void)_deactivateWithCompletion:(uint64_t)completion
 {
   v4 = a2;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 8);
+    v5 = *(completion + 8);
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_6();
     v6 = v4;

@@ -25,7 +25,7 @@
   v11 = a7;
   v12 = a5;
   v13 = a3;
-  v14 = [a1 _formatHTTPDate:a6];
+  v14 = [self _formatHTTPDate:a6];
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@\n%@\n%@", v13, v12, v14, v11];
 
   return v15;
@@ -45,15 +45,15 @@
   v11 = a3;
   *a4 = [v10 dataWithLength:{objc_msgSend(v11, "length") + 16}];
   v19 = 0;
-  *a6 = [a1 _secureRandomOfLength:16];
-  v12 = [a1 _secureRandomOfLength:16];
+  *a6 = [self _secureRandomOfLength:16];
+  v12 = [self _secureRandomOfLength:16];
   *a5 = v12;
-  v13 = [v12 bytes];
-  v14 = [*a6 bytes];
-  v15 = [v11 bytes];
+  bytes = [v12 bytes];
+  bytes2 = [*a6 bytes];
+  bytes3 = [v11 bytes];
   v16 = [v11 length];
 
-  v17 = CCCrypt(0, 0, 1u, v13, 0x10uLL, v14, v15, v16, [*a4 mutableBytes], objc_msgSend(*a4, "length"), &v19);
+  v17 = CCCrypt(0, 0, 1u, bytes, 0x10uLL, bytes2, bytes3, v16, [*a4 mutableBytes], objc_msgSend(*a4, "length"), &v19);
   if (!v17)
   {
     [*a4 setLength:v19];
@@ -70,13 +70,13 @@
   v10 = a3;
   v11 = [v7 dataWithLength:{objc_msgSend(v10, "length")}];
   v19 = 0;
-  v12 = [v9 bytes];
+  bytes = [v9 bytes];
 
-  v13 = [v8 bytes];
-  v14 = [v10 bytes];
+  bytes2 = [v8 bytes];
+  bytes3 = [v10 bytes];
   v15 = [v10 length];
 
-  v16 = CCCrypt(1u, 0, 1u, v12, 0x10uLL, v13, v14, v15, [v11 mutableBytes], objc_msgSend(v11, "length"), &v19);
+  v16 = CCCrypt(1u, 0, 1u, bytes, 0x10uLL, bytes2, bytes3, v15, [v11 mutableBytes], objc_msgSend(v11, "length"), &v19);
   v17 = 0;
   if (!v16)
   {
@@ -93,7 +93,7 @@
   v19 = 0;
   v20 = 0;
   v18 = 0;
-  [a1 s3_encryptAESWithPlaintext:v4 ciphertext:&v20 key:&v19 iv:&v18];
+  [self s3_encryptAESWithPlaintext:v4 ciphertext:&v20 key:&v19 iv:&v18];
   v5 = v20;
   v6 = v19;
   v7 = v18;
@@ -126,60 +126,60 @@
   v6 = a3;
   v7 = MEMORY[0x277CCACA8];
   v8 = a4;
-  v9 = [v6 gzipContent];
-  v10 = v9;
-  if (!v9)
+  gzipContent = [v6 gzipContent];
+  content = gzipContent;
+  if (!gzipContent)
   {
-    v10 = [v6 content];
+    content = [v6 content];
   }
 
-  v11 = [v7 stringWithFormat:@"%lu", objc_msgSend(v10, "length")];
-  [a1 setValue:v11 forHTTPHeaderField:@"Content-Length"];
+  v11 = [v7 stringWithFormat:@"%lu", objc_msgSend(content, "length")];
+  [self setValue:v11 forHTTPHeaderField:@"Content-Length"];
 
-  if (!v9)
+  if (!gzipContent)
   {
   }
 
-  v12 = [v6 mimeType];
-  [a1 setValue:v12 forHTTPHeaderField:@"Content-Type"];
+  mimeType = [v6 mimeType];
+  [self setValue:mimeType forHTTPHeaderField:@"Content-Type"];
 
-  v13 = [v6 gzipContent];
-  if (v13)
+  gzipContent2 = [v6 gzipContent];
+  if (gzipContent2)
   {
-    [a1 setHTTPBody:v13];
+    [self setHTTPBody:gzipContent2];
   }
 
   else
   {
-    v14 = [v6 content];
-    [a1 setHTTPBody:v14];
+    content2 = [v6 content];
+    [self setHTTPBody:content2];
   }
 
-  [a1 setHTTPMethod:@"PUT"];
+  [self setHTTPMethod:@"PUT"];
   v15 = objc_opt_new();
-  v16 = [v6 bucket];
-  v17 = [v6 filename];
-  v30 = [a1 AWSCanonicalizedResourceWithBucket:v16 FileName:v17];
+  bucket = [v6 bucket];
+  filename = [v6 filename];
+  v30 = [self AWSCanonicalizedResourceWithBucket:bucket FileName:filename];
 
-  v18 = [v6 mimeType];
-  v19 = [a1 AWSStringToSignWithHTTPVerb:@"PUT" contentMD5:0 contentType:v18 date:v15 canonicalizedResource:v30];
+  mimeType2 = [v6 mimeType];
+  v19 = [self AWSStringToSignWithHTTPVerb:@"PUT" contentMD5:0 contentType:mimeType2 date:v15 canonicalizedResource:v30];
 
-  v20 = [v8 AWSSecretAccessKey];
-  v21 = [v20 UTF8String];
-  v22 = [v8 AWSSecretAccessKey];
-  CCHmac(0, v21, [v22 lengthOfBytesUsingEncoding:4], objc_msgSend(v19, "UTF8String"), objc_msgSend(v19, "lengthOfBytesUsingEncoding:", 4), macOut);
+  aWSSecretAccessKey = [v8 AWSSecretAccessKey];
+  uTF8String = [aWSSecretAccessKey UTF8String];
+  aWSSecretAccessKey2 = [v8 AWSSecretAccessKey];
+  CCHmac(0, uTF8String, [aWSSecretAccessKey2 lengthOfBytesUsingEncoding:4], objc_msgSend(v19, "UTF8String"), objc_msgSend(v19, "lengthOfBytesUsingEncoding:", 4), macOut);
 
   v23 = [MEMORY[0x277CBEA90] dataWithBytes:macOut length:20];
   v24 = [v23 base64EncodedStringWithOptions:0];
 
   v25 = MEMORY[0x277CCACA8];
-  v26 = [v8 AWSAccessKeyID];
+  aWSAccessKeyID = [v8 AWSAccessKeyID];
 
-  v27 = [v25 stringWithFormat:@"AWS %@:%@", v26, v24];
+  v27 = [v25 stringWithFormat:@"AWS %@:%@", aWSAccessKeyID, v24];
 
-  [a1 setValue:v27 forHTTPHeaderField:@"Authorization"];
-  v28 = [a1 _formatHTTPDate:v15];
-  [a1 setValue:v28 forHTTPHeaderField:@"Date"];
+  [self setValue:v27 forHTTPHeaderField:@"Authorization"];
+  v28 = [self _formatHTTPDate:v15];
+  [self setValue:v28 forHTTPHeaderField:@"Date"];
 
   v29 = *MEMORY[0x277D85DE8];
 }

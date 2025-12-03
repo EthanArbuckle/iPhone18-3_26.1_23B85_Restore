@@ -1,85 +1,85 @@
 @interface KCSharingPBPrivateKeyCredential
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCanDecrypt:(BOOL)a3;
-- (void)setHasCanDerive:(BOOL)a3;
-- (void)setHasCanEncrypt:(BOOL)a3;
-- (void)setHasCanSign:(BOOL)a3;
-- (void)setHasCanSignRecover:(BOOL)a3;
-- (void)setHasCanUnwrap:(BOOL)a3;
-- (void)setHasCanVerify:(BOOL)a3;
-- (void)setHasCanVerifyRecover:(BOOL)a3;
-- (void)setHasCanWrap:(BOOL)a3;
-- (void)setHasCreator:(BOOL)a3;
-- (void)setHasEffectiveKeySize:(BOOL)a3;
-- (void)setHasEndDate:(BOOL)a3;
-- (void)setHasIsExtractable:(BOOL)a3;
-- (void)setHasIsModifiable:(BOOL)a3;
-- (void)setHasIsPermanent:(BOOL)a3;
-- (void)setHasIsPrivate:(BOOL)a3;
-- (void)setHasIsSensitive:(BOOL)a3;
-- (void)setHasKeyClass:(BOOL)a3;
-- (void)setHasKeySizeInBits:(BOOL)a3;
-- (void)setHasKeyType:(BOOL)a3;
-- (void)setHasModificationDate:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)setHasWasAlwaysSensitive:(BOOL)a3;
-- (void)setHasWasNeverExtractable:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCanDecrypt:(BOOL)decrypt;
+- (void)setHasCanDerive:(BOOL)derive;
+- (void)setHasCanEncrypt:(BOOL)encrypt;
+- (void)setHasCanSign:(BOOL)sign;
+- (void)setHasCanSignRecover:(BOOL)recover;
+- (void)setHasCanUnwrap:(BOOL)unwrap;
+- (void)setHasCanVerify:(BOOL)verify;
+- (void)setHasCanVerifyRecover:(BOOL)recover;
+- (void)setHasCanWrap:(BOOL)wrap;
+- (void)setHasCreator:(BOOL)creator;
+- (void)setHasEffectiveKeySize:(BOOL)size;
+- (void)setHasEndDate:(BOOL)date;
+- (void)setHasIsExtractable:(BOOL)extractable;
+- (void)setHasIsModifiable:(BOOL)modifiable;
+- (void)setHasIsPermanent:(BOOL)permanent;
+- (void)setHasIsPrivate:(BOOL)private;
+- (void)setHasIsSensitive:(BOOL)sensitive;
+- (void)setHasKeyClass:(BOOL)class;
+- (void)setHasKeySizeInBits:(BOOL)bits;
+- (void)setHasKeyType:(BOOL)type;
+- (void)setHasModificationDate:(BOOL)date;
+- (void)setHasStartDate:(BOOL)date;
+- (void)setHasWasAlwaysSensitive:(BOOL)sensitive;
+- (void)setHasWasNeverExtractable:(BOOL)extractable;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCSharingPBPrivateKeyCredential
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 9))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(KCSharingPBPrivateKeyCredential *)self setAccessGroup:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 200) & 0x10) != 0)
+  if ((*(fromCopy + 200) & 0x10) != 0)
   {
-    self->_keyType = *(v4 + 6);
+    self->_keyType = *(fromCopy + 6);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(KCSharingPBPrivateKeyCredential *)self setApplicationTag:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(KCSharingPBPrivateKeyCredential *)self setLabel:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(KCSharingPBPrivateKeyCredential *)self setApplicationLabel:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(KCSharingPBPrivateKeyCredential *)self setKeyMaterial:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 8) != 0)
   {
-    self->_keySizeInBits = *(v4 + 5);
+    self->_keySizeInBits = *(fromCopy + 5);
     *&self->_has |= 8u;
-    v5 = *(v4 + 50);
+    v5 = *(fromCopy + 50);
     if ((v5 & 2) == 0)
     {
 LABEL_15:
@@ -97,9 +97,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  self->_effectiveKeySize = *(v4 + 3);
+  self->_effectiveKeySize = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 1) == 0)
   {
 LABEL_16:
@@ -112,9 +112,9 @@ LABEL_16:
   }
 
 LABEL_48:
-  self->_creationDate = *(v4 + 2);
+  self->_creationDate = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x20) == 0)
   {
 LABEL_17:
@@ -127,9 +127,9 @@ LABEL_17:
   }
 
 LABEL_49:
-  self->_modificationDate = *(v4 + 7);
+  self->_modificationDate = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_18:
@@ -142,9 +142,9 @@ LABEL_18:
   }
 
 LABEL_50:
-  self->_creator = *(v4 + 35);
+  self->_creator = *(fromCopy + 35);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x40) == 0)
   {
 LABEL_19:
@@ -157,28 +157,28 @@ LABEL_19:
   }
 
 LABEL_51:
-  self->_startDate = *(v4 + 8);
+  self->_startDate = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 50) & 4) != 0)
+  if ((*(fromCopy + 50) & 4) != 0)
   {
 LABEL_20:
-    self->_endDate = *(v4 + 4);
+    self->_endDate = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 
 LABEL_21:
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(KCSharingPBPrivateKeyCredential *)self setViewHint:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x400000) != 0)
   {
-    self->_keyClass = *(v4 + 41);
+    self->_keyClass = *(fromCopy + 41);
     *&self->_has |= 0x400000u;
-    v6 = *(v4 + 50);
+    v6 = *(fromCopy + 50);
     if ((v6 & 0x80000) == 0)
     {
 LABEL_25:
@@ -196,9 +196,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  self->_isPermanent = *(v4 + 38);
+  self->_isPermanent = *(fromCopy + 38);
   *&self->_has |= 0x80000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x100000) == 0)
   {
 LABEL_26:
@@ -211,9 +211,9 @@ LABEL_26:
   }
 
 LABEL_55:
-  self->_isPrivate = *(v4 + 39);
+  self->_isPrivate = *(fromCopy + 39);
   *&self->_has |= 0x100000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x40000) == 0)
   {
 LABEL_27:
@@ -226,9 +226,9 @@ LABEL_27:
   }
 
 LABEL_56:
-  self->_isModifiable = *(v4 + 37);
+  self->_isModifiable = *(fromCopy + 37);
   *&self->_has |= 0x40000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x200000) == 0)
   {
 LABEL_28:
@@ -241,9 +241,9 @@ LABEL_28:
   }
 
 LABEL_57:
-  self->_isSensitive = *(v4 + 40);
+  self->_isSensitive = *(fromCopy + 40);
   *&self->_has |= 0x200000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x800000) == 0)
   {
 LABEL_29:
@@ -256,9 +256,9 @@ LABEL_29:
   }
 
 LABEL_58:
-  self->_wasAlwaysSensitive = *(v4 + 48);
+  self->_wasAlwaysSensitive = *(fromCopy + 48);
   *&self->_has |= 0x800000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_30:
@@ -271,9 +271,9 @@ LABEL_30:
   }
 
 LABEL_59:
-  self->_isExtractable = *(v4 + 36);
+  self->_isExtractable = *(fromCopy + 36);
   *&self->_has |= 0x20000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x1000000) == 0)
   {
 LABEL_31:
@@ -286,9 +286,9 @@ LABEL_31:
   }
 
 LABEL_60:
-  self->_wasNeverExtractable = *(v4 + 49);
+  self->_wasNeverExtractable = *(fromCopy + 49);
   *&self->_has |= 0x1000000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x200) == 0)
   {
 LABEL_32:
@@ -301,9 +301,9 @@ LABEL_32:
   }
 
 LABEL_61:
-  self->_canEncrypt = *(v4 + 28);
+  self->_canEncrypt = *(fromCopy + 28);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x80) == 0)
   {
 LABEL_33:
@@ -316,9 +316,9 @@ LABEL_33:
   }
 
 LABEL_62:
-  self->_canDecrypt = *(v4 + 26);
+  self->_canDecrypt = *(fromCopy + 26);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x100) == 0)
   {
 LABEL_34:
@@ -331,9 +331,9 @@ LABEL_34:
   }
 
 LABEL_63:
-  self->_canDerive = *(v4 + 27);
+  self->_canDerive = *(fromCopy + 27);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x400) == 0)
   {
 LABEL_35:
@@ -346,9 +346,9 @@ LABEL_35:
   }
 
 LABEL_64:
-  self->_canSign = *(v4 + 29);
+  self->_canSign = *(fromCopy + 29);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_36:
@@ -361,9 +361,9 @@ LABEL_36:
   }
 
 LABEL_65:
-  self->_canVerify = *(v4 + 32);
+  self->_canVerify = *(fromCopy + 32);
   *&self->_has |= 0x2000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x800) == 0)
   {
 LABEL_37:
@@ -376,9 +376,9 @@ LABEL_37:
   }
 
 LABEL_66:
-  self->_canSignRecover = *(v4 + 30);
+  self->_canSignRecover = *(fromCopy + 30);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_38:
@@ -391,9 +391,9 @@ LABEL_38:
   }
 
 LABEL_67:
-  self->_canVerifyRecover = *(v4 + 33);
+  self->_canVerifyRecover = *(fromCopy + 33);
   *&self->_has |= 0x4000u;
-  v6 = *(v4 + 50);
+  v6 = *(fromCopy + 50);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_39:
@@ -406,20 +406,20 @@ LABEL_39:
   }
 
 LABEL_68:
-  self->_canWrap = *(v4 + 34);
+  self->_canWrap = *(fromCopy + 34);
   *&self->_has |= 0x8000u;
-  if ((*(v4 + 50) & 0x1000) != 0)
+  if ((*(fromCopy + 50) & 0x1000) != 0)
   {
 LABEL_40:
-    self->_canUnwrap = *(v4 + 31);
+    self->_canUnwrap = *(fromCopy + 31);
     *&self->_has |= 0x1000u;
   }
 
 LABEL_41:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(KCSharingPBPrivateKeyCredential *)self setAlias:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 
@@ -852,16 +852,16 @@ LABEL_59:
   return v50 ^ v51 ^ v49 ^ v48 ^ v47 ^ v46 ^ v6 ^ v7 ^ v11 ^ v12 ^ v16 ^ v20 ^ v21 ^ v25 ^ v27 ^ v28 ^ v29 ^ v30 ^ v31 ^ v32 ^ v33 ^ v34 ^ v35 ^ v36 ^ v37 ^ v38 ^ v39 ^ v40 ^ v41 ^ v42 ^ v43 ^ [(NSData *)self->_alias hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_142;
   }
 
   accessGroup = self->_accessGroup;
-  if (accessGroup | *(v4 + 9))
+  if (accessGroup | *(equalCopy + 9))
   {
     if (![(NSString *)accessGroup isEqual:?])
     {
@@ -869,10 +869,10 @@ LABEL_59:
     }
   }
 
-  v6 = *(v4 + 50);
+  v6 = *(equalCopy + 50);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_keyType != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_keyType != *(equalCopy + 6))
     {
       goto LABEL_142;
     }
@@ -884,13 +884,13 @@ LABEL_59:
   }
 
   applicationTag = self->_applicationTag;
-  if (applicationTag | *(v4 + 12) && ![(NSData *)applicationTag isEqual:?])
+  if (applicationTag | *(equalCopy + 12) && ![(NSData *)applicationTag isEqual:?])
   {
     goto LABEL_142;
   }
 
   label = self->_label;
-  if (label | *(v4 + 22))
+  if (label | *(equalCopy + 22))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -899,7 +899,7 @@ LABEL_59:
   }
 
   applicationLabel = self->_applicationLabel;
-  if (applicationLabel | *(v4 + 11))
+  if (applicationLabel | *(equalCopy + 11))
   {
     if (![(NSData *)applicationLabel isEqual:?])
     {
@@ -908,7 +908,7 @@ LABEL_59:
   }
 
   keyMaterial = self->_keyMaterial;
-  if (keyMaterial | *(v4 + 21))
+  if (keyMaterial | *(equalCopy + 21))
   {
     if (![(NSData *)keyMaterial isEqual:?])
     {
@@ -917,10 +917,10 @@ LABEL_59:
   }
 
   has = self->_has;
-  v12 = *(v4 + 50);
+  v12 = *(equalCopy + 50);
   if ((*&has & 8) != 0)
   {
-    if ((v12 & 8) == 0 || self->_keySizeInBits != *(v4 + 5))
+    if ((v12 & 8) == 0 || self->_keySizeInBits != *(equalCopy + 5))
     {
       goto LABEL_142;
     }
@@ -933,7 +933,7 @@ LABEL_59:
 
   if ((*&has & 2) != 0)
   {
-    if ((v12 & 2) == 0 || self->_effectiveKeySize != *(v4 + 3))
+    if ((v12 & 2) == 0 || self->_effectiveKeySize != *(equalCopy + 3))
     {
       goto LABEL_142;
     }
@@ -946,7 +946,7 @@ LABEL_59:
 
   if (*&has)
   {
-    if ((v12 & 1) == 0 || self->_creationDate != *(v4 + 2))
+    if ((v12 & 1) == 0 || self->_creationDate != *(equalCopy + 2))
     {
       goto LABEL_142;
     }
@@ -959,7 +959,7 @@ LABEL_59:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v12 & 0x20) == 0 || self->_modificationDate != *(v4 + 7))
+    if ((v12 & 0x20) == 0 || self->_modificationDate != *(equalCopy + 7))
     {
       goto LABEL_142;
     }
@@ -972,7 +972,7 @@ LABEL_59:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v12 & 0x10000) == 0 || self->_creator != *(v4 + 35))
+    if ((v12 & 0x10000) == 0 || self->_creator != *(equalCopy + 35))
     {
       goto LABEL_142;
     }
@@ -985,7 +985,7 @@ LABEL_59:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v12 & 0x40) == 0 || self->_startDate != *(v4 + 8))
+    if ((v12 & 0x40) == 0 || self->_startDate != *(equalCopy + 8))
     {
       goto LABEL_142;
     }
@@ -998,7 +998,7 @@ LABEL_59:
 
   if ((*&has & 4) != 0)
   {
-    if ((v12 & 4) == 0 || self->_endDate != *(v4 + 4))
+    if ((v12 & 4) == 0 || self->_endDate != *(equalCopy + 4))
     {
       goto LABEL_142;
     }
@@ -1010,7 +1010,7 @@ LABEL_59:
   }
 
   viewHint = self->_viewHint;
-  if (viewHint | *(v4 + 23))
+  if (viewHint | *(equalCopy + 23))
   {
     if (![(NSString *)viewHint isEqual:?])
     {
@@ -1020,12 +1020,12 @@ LABEL_142:
     }
 
     has = self->_has;
-    v12 = *(v4 + 50);
+    v12 = *(equalCopy + 50);
   }
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v12 & 0x400000) == 0 || self->_keyClass != *(v4 + 41))
+    if ((v12 & 0x400000) == 0 || self->_keyClass != *(equalCopy + 41))
     {
       goto LABEL_142;
     }
@@ -1038,7 +1038,7 @@ LABEL_142:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v12 & 0x80000) == 0 || self->_isPermanent != *(v4 + 38))
+    if ((v12 & 0x80000) == 0 || self->_isPermanent != *(equalCopy + 38))
     {
       goto LABEL_142;
     }
@@ -1051,7 +1051,7 @@ LABEL_142:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v12 & 0x100000) == 0 || self->_isPrivate != *(v4 + 39))
+    if ((v12 & 0x100000) == 0 || self->_isPrivate != *(equalCopy + 39))
     {
       goto LABEL_142;
     }
@@ -1064,7 +1064,7 @@ LABEL_142:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v12 & 0x40000) == 0 || self->_isModifiable != *(v4 + 37))
+    if ((v12 & 0x40000) == 0 || self->_isModifiable != *(equalCopy + 37))
     {
       goto LABEL_142;
     }
@@ -1077,7 +1077,7 @@ LABEL_142:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v12 & 0x200000) == 0 || self->_isSensitive != *(v4 + 40))
+    if ((v12 & 0x200000) == 0 || self->_isSensitive != *(equalCopy + 40))
     {
       goto LABEL_142;
     }
@@ -1090,7 +1090,7 @@ LABEL_142:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v12 & 0x800000) == 0 || self->_wasAlwaysSensitive != *(v4 + 48))
+    if ((v12 & 0x800000) == 0 || self->_wasAlwaysSensitive != *(equalCopy + 48))
     {
       goto LABEL_142;
     }
@@ -1103,7 +1103,7 @@ LABEL_142:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v12 & 0x20000) == 0 || self->_isExtractable != *(v4 + 36))
+    if ((v12 & 0x20000) == 0 || self->_isExtractable != *(equalCopy + 36))
     {
       goto LABEL_142;
     }
@@ -1116,7 +1116,7 @@ LABEL_142:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v12 & 0x1000000) == 0 || self->_wasNeverExtractable != *(v4 + 49))
+    if ((v12 & 0x1000000) == 0 || self->_wasNeverExtractable != *(equalCopy + 49))
     {
       goto LABEL_142;
     }
@@ -1129,7 +1129,7 @@ LABEL_142:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v12 & 0x200) == 0 || self->_canEncrypt != *(v4 + 28))
+    if ((v12 & 0x200) == 0 || self->_canEncrypt != *(equalCopy + 28))
     {
       goto LABEL_142;
     }
@@ -1142,7 +1142,7 @@ LABEL_142:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v12 & 0x80) == 0 || self->_canDecrypt != *(v4 + 26))
+    if ((v12 & 0x80) == 0 || self->_canDecrypt != *(equalCopy + 26))
     {
       goto LABEL_142;
     }
@@ -1155,7 +1155,7 @@ LABEL_142:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v12 & 0x100) == 0 || self->_canDerive != *(v4 + 27))
+    if ((v12 & 0x100) == 0 || self->_canDerive != *(equalCopy + 27))
     {
       goto LABEL_142;
     }
@@ -1168,7 +1168,7 @@ LABEL_142:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v12 & 0x400) == 0 || self->_canSign != *(v4 + 29))
+    if ((v12 & 0x400) == 0 || self->_canSign != *(equalCopy + 29))
     {
       goto LABEL_142;
     }
@@ -1181,7 +1181,7 @@ LABEL_142:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v12 & 0x2000) == 0 || self->_canVerify != *(v4 + 32))
+    if ((v12 & 0x2000) == 0 || self->_canVerify != *(equalCopy + 32))
     {
       goto LABEL_142;
     }
@@ -1194,7 +1194,7 @@ LABEL_142:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v12 & 0x800) == 0 || self->_canSignRecover != *(v4 + 30))
+    if ((v12 & 0x800) == 0 || self->_canSignRecover != *(equalCopy + 30))
     {
       goto LABEL_142;
     }
@@ -1207,7 +1207,7 @@ LABEL_142:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v12 & 0x4000) == 0 || self->_canVerifyRecover != *(v4 + 33))
+    if ((v12 & 0x4000) == 0 || self->_canVerifyRecover != *(equalCopy + 33))
     {
       goto LABEL_142;
     }
@@ -1220,7 +1220,7 @@ LABEL_142:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v12 & 0x8000) == 0 || self->_canWrap != *(v4 + 34))
+    if ((v12 & 0x8000) == 0 || self->_canWrap != *(equalCopy + 34))
     {
       goto LABEL_142;
     }
@@ -1233,7 +1233,7 @@ LABEL_142:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v12 & 0x1000) == 0 || self->_canUnwrap != *(v4 + 31))
+    if ((v12 & 0x1000) == 0 || self->_canUnwrap != *(equalCopy + 31))
     {
       goto LABEL_142;
     }
@@ -1245,7 +1245,7 @@ LABEL_142:
   }
 
   alias = self->_alias;
-  if (alias | *(v4 + 10))
+  if (alias | *(equalCopy + 10))
   {
     v15 = [(NSData *)alias isEqual:?];
   }
@@ -1260,10 +1260,10 @@ LABEL_143:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accessGroup copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accessGroup copyWithZone:zone];
   v7 = *(v5 + 9);
   *(v5 + 9) = v6;
 
@@ -1273,19 +1273,19 @@ LABEL_143:
     *(v5 + 50) |= 0x10u;
   }
 
-  v8 = [(NSData *)self->_applicationTag copyWithZone:a3];
+  v8 = [(NSData *)self->_applicationTag copyWithZone:zone];
   v9 = *(v5 + 12);
   *(v5 + 12) = v8;
 
-  v10 = [(NSString *)self->_label copyWithZone:a3];
+  v10 = [(NSString *)self->_label copyWithZone:zone];
   v11 = *(v5 + 22);
   *(v5 + 22) = v10;
 
-  v12 = [(NSData *)self->_applicationLabel copyWithZone:a3];
+  v12 = [(NSData *)self->_applicationLabel copyWithZone:zone];
   v13 = *(v5 + 11);
   *(v5 + 11) = v12;
 
-  v14 = [(NSData *)self->_keyMaterial copyWithZone:a3];
+  v14 = [(NSData *)self->_keyMaterial copyWithZone:zone];
   v15 = *(v5 + 21);
   *(v5 + 21) = v14;
 
@@ -1382,7 +1382,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  v17 = [(NSString *)self->_viewHint copyWithZone:a3];
+  v17 = [(NSString *)self->_viewHint copyWithZone:zone];
   v18 = *(v5 + 23);
   *(v5 + 23) = v17;
 
@@ -1629,7 +1629,7 @@ LABEL_28:
   }
 
 LABEL_29:
-  v20 = [(NSData *)self->_alias copyWithZone:a3];
+  v20 = [(NSData *)self->_alias copyWithZone:zone];
   v21 = *(v5 + 10);
   *(v5 + 10) = v20;
 
@@ -1637,45 +1637,45 @@ LABEL_29:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v32 = v4;
+  toCopy = to;
+  v32 = toCopy;
   if (self->_accessGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v32;
+    toCopy = v32;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     keyType = self->_keyType;
     PBDataWriterWriteInt64Field();
-    v4 = v32;
+    toCopy = v32;
   }
 
   if (self->_applicationTag)
   {
     PBDataWriterWriteDataField();
-    v4 = v32;
+    toCopy = v32;
   }
 
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v32;
+    toCopy = v32;
   }
 
   if (self->_applicationLabel)
   {
     PBDataWriterWriteDataField();
-    v4 = v32;
+    toCopy = v32;
   }
 
   if (self->_keyMaterial)
   {
     PBDataWriterWriteDataField();
-    v4 = v32;
+    toCopy = v32;
   }
 
   has = self->_has;
@@ -1683,7 +1683,7 @@ LABEL_29:
   {
     keySizeInBits = self->_keySizeInBits;
     PBDataWriterWriteInt64Field();
-    v4 = v32;
+    toCopy = v32;
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -1704,7 +1704,7 @@ LABEL_15:
 
   effectiveKeySize = self->_effectiveKeySize;
   PBDataWriterWriteInt64Field();
-  v4 = v32;
+  toCopy = v32;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1720,7 +1720,7 @@ LABEL_16:
 LABEL_48:
   creationDate = self->_creationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v32;
+  toCopy = v32;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1736,7 +1736,7 @@ LABEL_17:
 LABEL_49:
   modificationDate = self->_modificationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v32;
+  toCopy = v32;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1752,7 +1752,7 @@ LABEL_18:
 LABEL_50:
   creator = self->_creator;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1768,20 +1768,20 @@ LABEL_19:
 LABEL_51:
   startDate = self->_startDate;
   PBDataWriterWriteDoubleField();
-  v4 = v32;
+  toCopy = v32;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_20:
     endDate = self->_endDate;
     PBDataWriterWriteDoubleField();
-    v4 = v32;
+    toCopy = v32;
   }
 
 LABEL_21:
   if (self->_viewHint)
   {
     PBDataWriterWriteStringField();
-    v4 = v32;
+    toCopy = v32;
   }
 
   v8 = self->_has;
@@ -1789,7 +1789,7 @@ LABEL_21:
   {
     keyClass = self->_keyClass;
     PBDataWriterWriteInt32Field();
-    v4 = v32;
+    toCopy = v32;
     v8 = self->_has;
     if ((*&v8 & 0x80000) == 0)
     {
@@ -1810,7 +1810,7 @@ LABEL_25:
 
   isPermanent = self->_isPermanent;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x100000) == 0)
   {
@@ -1826,7 +1826,7 @@ LABEL_26:
 LABEL_55:
   isPrivate = self->_isPrivate;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x40000) == 0)
   {
@@ -1842,7 +1842,7 @@ LABEL_27:
 LABEL_56:
   isModifiable = self->_isModifiable;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x200000) == 0)
   {
@@ -1858,7 +1858,7 @@ LABEL_28:
 LABEL_57:
   isSensitive = self->_isSensitive;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x800000) == 0)
   {
@@ -1874,7 +1874,7 @@ LABEL_29:
 LABEL_58:
   wasAlwaysSensitive = self->_wasAlwaysSensitive;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x20000) == 0)
   {
@@ -1890,7 +1890,7 @@ LABEL_30:
 LABEL_59:
   isExtractable = self->_isExtractable;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x1000000) == 0)
   {
@@ -1906,7 +1906,7 @@ LABEL_31:
 LABEL_60:
   wasNeverExtractable = self->_wasNeverExtractable;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x200) == 0)
   {
@@ -1922,7 +1922,7 @@ LABEL_32:
 LABEL_61:
   canEncrypt = self->_canEncrypt;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x80) == 0)
   {
@@ -1938,7 +1938,7 @@ LABEL_33:
 LABEL_62:
   canDecrypt = self->_canDecrypt;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x100) == 0)
   {
@@ -1954,7 +1954,7 @@ LABEL_34:
 LABEL_63:
   canDerive = self->_canDerive;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x400) == 0)
   {
@@ -1970,7 +1970,7 @@ LABEL_35:
 LABEL_64:
   canSign = self->_canSign;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x2000) == 0)
   {
@@ -1986,7 +1986,7 @@ LABEL_36:
 LABEL_65:
   canVerify = self->_canVerify;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x800) == 0)
   {
@@ -2002,7 +2002,7 @@ LABEL_37:
 LABEL_66:
   canSignRecover = self->_canSignRecover;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x4000) == 0)
   {
@@ -2018,7 +2018,7 @@ LABEL_38:
 LABEL_67:
   canVerifyRecover = self->_canVerifyRecover;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   v8 = self->_has;
   if ((*&v8 & 0x8000) == 0)
   {
@@ -2034,23 +2034,23 @@ LABEL_39:
 LABEL_68:
   canWrap = self->_canWrap;
   PBDataWriterWriteInt32Field();
-  v4 = v32;
+  toCopy = v32;
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_40:
     canUnwrap = self->_canUnwrap;
     PBDataWriterWriteInt32Field();
-    v4 = v32;
+    toCopy = v32;
   }
 
 LABEL_41:
   if (self->_alias)
   {
     PBDataWriterWriteDataField();
-    v4 = v32;
+    toCopy = v32;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
 - (id)dictionaryRepresentation
@@ -2466,8 +2466,8 @@ LABEL_41:
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v18 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"Unknown Fields"];
+    dictionaryRepresentation = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"Unknown Fields"];
   }
 
   v19 = v4;
@@ -2480,15 +2480,15 @@ LABEL_41:
   v7.receiver = self;
   v7.super_class = KCSharingPBPrivateKeyCredential;
   v3 = [(KCSharingPBPrivateKeyCredential *)&v7 description];
-  v4 = [(KCSharingPBPrivateKeyCredential *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCSharingPBPrivateKeyCredential *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasCanUnwrap:(BOOL)a3
+- (void)setHasCanUnwrap:(BOOL)unwrap
 {
-  if (a3)
+  if (unwrap)
   {
     v3 = 4096;
   }
@@ -2501,9 +2501,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasCanWrap:(BOOL)a3
+- (void)setHasCanWrap:(BOOL)wrap
 {
-  if (a3)
+  if (wrap)
   {
     v3 = 0x8000;
   }
@@ -2516,9 +2516,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasCanVerifyRecover:(BOOL)a3
+- (void)setHasCanVerifyRecover:(BOOL)recover
 {
-  if (a3)
+  if (recover)
   {
     v3 = 0x4000;
   }
@@ -2531,9 +2531,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasCanSignRecover:(BOOL)a3
+- (void)setHasCanSignRecover:(BOOL)recover
 {
-  if (a3)
+  if (recover)
   {
     v3 = 2048;
   }
@@ -2546,9 +2546,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasCanVerify:(BOOL)a3
+- (void)setHasCanVerify:(BOOL)verify
 {
-  if (a3)
+  if (verify)
   {
     v3 = 0x2000;
   }
@@ -2561,9 +2561,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasCanSign:(BOOL)a3
+- (void)setHasCanSign:(BOOL)sign
 {
-  if (a3)
+  if (sign)
   {
     v3 = 1024;
   }
@@ -2576,9 +2576,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasCanDerive:(BOOL)a3
+- (void)setHasCanDerive:(BOOL)derive
 {
-  if (a3)
+  if (derive)
   {
     v3 = 256;
   }
@@ -2591,9 +2591,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasCanDecrypt:(BOOL)a3
+- (void)setHasCanDecrypt:(BOOL)decrypt
 {
-  if (a3)
+  if (decrypt)
   {
     v3 = 128;
   }
@@ -2606,9 +2606,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasCanEncrypt:(BOOL)a3
+- (void)setHasCanEncrypt:(BOOL)encrypt
 {
-  if (a3)
+  if (encrypt)
   {
     v3 = 512;
   }
@@ -2621,9 +2621,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasWasNeverExtractable:(BOOL)a3
+- (void)setHasWasNeverExtractable:(BOOL)extractable
 {
-  if (a3)
+  if (extractable)
   {
     v3 = 0x1000000;
   }
@@ -2636,9 +2636,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasIsExtractable:(BOOL)a3
+- (void)setHasIsExtractable:(BOOL)extractable
 {
-  if (a3)
+  if (extractable)
   {
     v3 = 0x20000;
   }
@@ -2651,9 +2651,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasWasAlwaysSensitive:(BOOL)a3
+- (void)setHasWasAlwaysSensitive:(BOOL)sensitive
 {
-  if (a3)
+  if (sensitive)
   {
     v3 = 0x800000;
   }
@@ -2666,9 +2666,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasIsSensitive:(BOOL)a3
+- (void)setHasIsSensitive:(BOOL)sensitive
 {
-  if (a3)
+  if (sensitive)
   {
     v3 = 0x200000;
   }
@@ -2681,9 +2681,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasIsModifiable:(BOOL)a3
+- (void)setHasIsModifiable:(BOOL)modifiable
 {
-  if (a3)
+  if (modifiable)
   {
     v3 = 0x40000;
   }
@@ -2696,9 +2696,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasIsPrivate:(BOOL)a3
+- (void)setHasIsPrivate:(BOOL)private
 {
-  if (a3)
+  if (private)
   {
     v3 = 0x100000;
   }
@@ -2711,9 +2711,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasIsPermanent:(BOOL)a3
+- (void)setHasIsPermanent:(BOOL)permanent
 {
-  if (a3)
+  if (permanent)
   {
     v3 = 0x80000;
   }
@@ -2726,9 +2726,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasKeyClass:(BOOL)a3
+- (void)setHasKeyClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 0x400000;
   }
@@ -2741,9 +2741,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasEndDate:(BOOL)a3
+- (void)setHasEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -2756,9 +2756,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 64;
   }
@@ -2771,9 +2771,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasCreator:(BOOL)a3
+- (void)setHasCreator:(BOOL)creator
 {
-  if (a3)
+  if (creator)
   {
     v3 = 0x10000;
   }
@@ -2786,9 +2786,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasModificationDate:(BOOL)a3
+- (void)setHasModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 32;
   }
@@ -2801,9 +2801,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasEffectiveKeySize:(BOOL)a3
+- (void)setHasEffectiveKeySize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -2816,9 +2816,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasKeySizeInBits:(BOOL)a3
+- (void)setHasKeySizeInBits:(BOOL)bits
 {
-  if (a3)
+  if (bits)
   {
     v3 = 8;
   }
@@ -2831,9 +2831,9 @@ LABEL_41:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasKeyType:(BOOL)a3
+- (void)setHasKeyType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }

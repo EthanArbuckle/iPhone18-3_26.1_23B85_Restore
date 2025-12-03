@@ -1,22 +1,22 @@
 @interface ATXModeInferredDurationAndCountProvider
-- (ATXModeInferredDurationAndCountProvider)initWithLastNDays:(unint64_t)a3;
-- (double)modeInferredDurationInLast1DayForMode:(unint64_t)a3;
-- (double)modeInferredDurationInLastNDaysForMode:(unint64_t)a3;
-- (unint64_t)modeInferredCountInLast1DayForMode:(unint64_t)a3;
-- (unint64_t)modeInferredCountInLastNDaysForMode:(unint64_t)a3;
+- (ATXModeInferredDurationAndCountProvider)initWithLastNDays:(unint64_t)days;
+- (double)modeInferredDurationInLast1DayForMode:(unint64_t)mode;
+- (double)modeInferredDurationInLastNDaysForMode:(unint64_t)mode;
+- (unint64_t)modeInferredCountInLast1DayForMode:(unint64_t)mode;
+- (unint64_t)modeInferredCountInLastNDaysForMode:(unint64_t)mode;
 - (void)cacheInferredModeStreamIfNecessary;
 @end
 
 @implementation ATXModeInferredDurationAndCountProvider
 
-- (ATXModeInferredDurationAndCountProvider)initWithLastNDays:(unint64_t)a3
+- (ATXModeInferredDurationAndCountProvider)initWithLastNDays:(unint64_t)days
 {
   v8.receiver = self;
   v8.super_class = ATXModeInferredDurationAndCountProvider;
   v4 = [(ATXModeInferredDurationAndCountProvider *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * a3)];
+    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * days)];
     thresholdDateLastNDays = v4->_thresholdDateLastNDays;
     v4->_thresholdDateLastNDays = v5;
   }
@@ -27,7 +27,7 @@
 - (void)cacheInferredModeStreamIfNecessary
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "ATXModeInferredDurationAndCountProvider: Could not fetch inferred mode stream with error: %@", &v4, 0xCu);
@@ -191,7 +191,7 @@ void __77__ATXModeInferredDurationAndCountProvider_cacheInferredModeStreamIfNece
 LABEL_15:
 }
 
-- (double)modeInferredDurationInLastNDaysForMode:(unint64_t)a3
+- (double)modeInferredDurationInLastNDaysForMode:(unint64_t)mode
 {
   [(ATXModeInferredDurationAndCountProvider *)self cacheInferredModeStreamIfNecessary];
   v4 = ATXModeToString();
@@ -202,7 +202,7 @@ LABEL_15:
   return v7;
 }
 
-- (double)modeInferredDurationInLast1DayForMode:(unint64_t)a3
+- (double)modeInferredDurationInLast1DayForMode:(unint64_t)mode
 {
   [(ATXModeInferredDurationAndCountProvider *)self cacheInferredModeStreamIfNecessary];
   v4 = ATXModeToString();
@@ -213,24 +213,24 @@ LABEL_15:
   return v7;
 }
 
-- (unint64_t)modeInferredCountInLastNDaysForMode:(unint64_t)a3
+- (unint64_t)modeInferredCountInLastNDaysForMode:(unint64_t)mode
 {
   [(ATXModeInferredDurationAndCountProvider *)self cacheInferredModeStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_inferredModeCounterLastNDays objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (unint64_t)modeInferredCountInLast1DayForMode:(unint64_t)a3
+- (unint64_t)modeInferredCountInLast1DayForMode:(unint64_t)mode
 {
   [(ATXModeInferredDurationAndCountProvider *)self cacheInferredModeStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_inferredModeCounterLast1Day objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
 @end

@@ -19,9 +19,9 @@
     reasonError = 0;
   }
 
-  v6 = [v3 initWithFormat:@"delete child with id %u, reason %@", childID, reasonError];
+  reasonError = [v3 initWithFormat:@"delete child with id %u, reason %@", childID, reasonError];
 
-  return v6;
+  return reasonError;
 }
 
 @end

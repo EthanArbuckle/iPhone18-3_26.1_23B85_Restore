@@ -1,21 +1,21 @@
 @interface AGXG18PFamilyArchive_mtlnext
-- (AGXG18PFamilyArchive_mtlnext)initWithDevice:(id)a3 error:(id *)a4;
-- (BOOL)loadFromURL:(id)a3 error:(id *)a4;
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4;
+- (AGXG18PFamilyArchive_mtlnext)initWithDevice:(id)device error:(id *)error;
+- (BOOL)loadFromURL:(id)l error:(id *)error;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation AGXG18PFamilyArchive_mtlnext
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
   v26[1] = *MEMORY[0x29EDCA608];
   archive_pipeline_factory = self->_archive_pipeline_factory;
-  v7 = [a3 functionDescriptor];
+  functionDescriptor = [descriptor functionDescriptor];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3052000000;
@@ -43,16 +43,16 @@
   v12[1] = 3221225472;
   v12[2] = ___ZN3AGX22ArchivePipelineFactoryINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesEE20lookupBinaryFunctionEP28MTL4BinaryFunctionDescriptorPP7NSError_block_invoke;
   v12[3] = &unk_29F341A80;
-  v12[4] = a3;
+  v12[4] = descriptor;
   v12[5] = v9;
   v12[6] = v8;
   v12[7] = &v19;
   v12[8] = &v13;
   v12[9] = archive_pipeline_factory;
-  AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createFunction(v7, v9, 0, 1u, 0, 0, v8, v12, 0);
-  if (a4)
+  AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createFunction(functionDescriptor, v9, 0, 1u, 0, 0, v8, v12, 0);
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v10 = v14[5];
@@ -61,15 +61,15 @@
   return v10;
 }
 
-- (BOOL)loadFromURL:(id)a3 error:(id *)a4
+- (BOOL)loadFromURL:(id)l error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = AGXG18PFamilyArchive_mtlnext;
-  v6 = [(_MTL4Archive *)&v10 loadFromURL:a3 error:a4];
+  v6 = [(_MTL4Archive *)&v10 loadFromURL:l error:error];
   if (v6)
   {
     v7 = v6;
-    v8 = [a3 copy];
+    v8 = [l copy];
     LOBYTE(v6) = v7;
     self->_url = v8;
   }
@@ -77,10 +77,10 @@
   return v6;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error
 {
   v9 = 0;
-  v6 = AGX::ArchivePipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::lookupRenderPipeline(self->_archive_pipeline_factory, a3, a4, &v9, a5);
+  v6 = AGX::ArchivePipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::lookupRenderPipeline(self->_archive_pipeline_factory, descriptor, linkingDescriptor, &v9, error);
   v7 = v6;
   if (v6)
   {
@@ -91,10 +91,10 @@
   return v7;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
   v8 = 0;
-  v5 = AGX::ArchivePipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::lookupRenderPipeline(self->_archive_pipeline_factory, a3, 0, &v8, a4);
+  v5 = AGX::ArchivePipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::lookupRenderPipeline(self->_archive_pipeline_factory, descriptor, 0, &v8, error);
   v6 = v5;
   if (v5)
   {
@@ -105,16 +105,16 @@
   return v6;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error
 {
   archive_pipeline_factory = self->_archive_pipeline_factory;
   v13 = 0;
-  MTLComputePipelineDescriptor = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createMTLComputePipelineDescriptor(a3, a4, 0, 0, *(archive_pipeline_factory[2] + 40), 0, 0);
-  v10 = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::convertPipelineOptions<MTLComputePipelineDescriptor>([a3 options], MTLComputePipelineDescriptor);
+  MTLComputePipelineDescriptor = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createMTLComputePipelineDescriptor(descriptor, linkingDescriptor, 0, 0, *(archive_pipeline_factory[2] + 40), 0, 0);
+  v10 = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::convertPipelineOptions<MTLComputePipelineDescriptor>([descriptor options], MTLComputePipelineDescriptor);
   v14 = archive_pipeline_factory[2];
   v15 = 0;
-  v16 = a3;
-  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*archive_pipeline_factory, MTLComputePipelineDescriptor, *(v14 + 40), 0, v10, &v13, a5, &v14, 0, 0);
+  descriptorCopy = descriptor;
+  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*archive_pipeline_factory, MTLComputePipelineDescriptor, *(v14 + 40), 0, v10, &v13, error, &v14, 0, 0);
 
   if (ComputePipeline_impl)
   {
@@ -125,16 +125,16 @@
   return ComputePipeline_impl;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
   archive_pipeline_factory = self->_archive_pipeline_factory;
   v12 = 0;
-  MTLComputePipelineDescriptor = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createMTLComputePipelineDescriptor(a3, 0, 0, 0, *(archive_pipeline_factory[2] + 40), 0, 0);
-  v9 = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::convertPipelineOptions<MTLComputePipelineDescriptor>([a3 options], MTLComputePipelineDescriptor);
+  MTLComputePipelineDescriptor = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createMTLComputePipelineDescriptor(descriptor, 0, 0, 0, *(archive_pipeline_factory[2] + 40), 0, 0);
+  v9 = AGX::Metal4To3ConversionUtility<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::convertPipelineOptions<MTLComputePipelineDescriptor>([descriptor options], MTLComputePipelineDescriptor);
   v13 = archive_pipeline_factory[2];
   v14 = 0;
-  v15 = a3;
-  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*archive_pipeline_factory, MTLComputePipelineDescriptor, *(v13 + 40), 0, v9, &v12, a4, &v13, 0, 0);
+  descriptorCopy = descriptor;
+  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*archive_pipeline_factory, MTLComputePipelineDescriptor, *(v13 + 40), 0, v9, &v12, error, &v13, 0, 0);
 
   if (ComputePipeline_impl)
   {
@@ -163,14 +163,14 @@
   [(_MTLObjectWithLabel *)&v4 dealloc];
 }
 
-- (AGXG18PFamilyArchive_mtlnext)initWithDevice:(id)a3 error:(id *)a4
+- (AGXG18PFamilyArchive_mtlnext)initWithDevice:(id)device error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyArchive_mtlnext;
   v5 = [(_MTL4Archive *)&v7 initWithDevice:?];
   if (v5)
   {
-    v5->_device = a3;
+    v5->_device = device;
     operator new();
   }
 

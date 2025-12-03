@@ -1,23 +1,23 @@
 @interface HFHomePodAlarmItemProvider
-- (HFHomePodAlarmItemProvider)initWithMediaProfileContainer:(id)a3;
+- (HFHomePodAlarmItemProvider)initWithMediaProfileContainer:(id)container;
 - (id)items;
 - (id)reloadItems;
 @end
 
 @implementation HFHomePodAlarmItemProvider
 
-- (HFHomePodAlarmItemProvider)initWithMediaProfileContainer:(id)a3
+- (HFHomePodAlarmItemProvider)initWithMediaProfileContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v16.receiver = self;
   v16.super_class = HFHomePodAlarmItemProvider;
   v6 = [(HFItemProvider *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaProfileContainer, a3);
-    v8 = [v5 hf_settingsAdapterManager];
-    v9 = [v8 adapterForIdentifier:@"MobileTimerAdapter"];
+    objc_storeStrong(&v6->_mediaProfileContainer, container);
+    hf_settingsAdapterManager = [containerCopy hf_settingsAdapterManager];
+    v9 = [hf_settingsAdapterManager adapterForIdentifier:@"MobileTimerAdapter"];
     mobileTimerAdapter = v7->_mobileTimerAdapter;
     v7->_mobileTimerAdapter = v9;
 
@@ -35,8 +35,8 @@
 
 - (id)items
 {
-  v2 = [(HFHomePodAlarmItemProvider *)self alarmItems];
-  v3 = [v2 copy];
+  alarmItems = [(HFHomePodAlarmItemProvider *)self alarmItems];
+  v3 = [alarmItems copy];
 
   return v3;
 }
@@ -47,8 +47,8 @@
   if (_os_feature_enabled_impl())
   {
     v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v4 = [(HFHomePodAlarmItemProvider *)self mobileTimerAdapter];
-    v5 = [v4 allAlarmsFuture];
+    mobileTimerAdapter = [(HFHomePodAlarmItemProvider *)self mobileTimerAdapter];
+    allAlarmsFuture = [mobileTimerAdapter allAlarmsFuture];
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -57,14 +57,14 @@
     objc_copyWeak(&v23, &location);
     v6 = v3;
     v22 = v6;
-    v7 = [v5 addSuccessBlock:v21];
+    v7 = [allAlarmsFuture addSuccessBlock:v21];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __41__HFHomePodAlarmItemProvider_reloadItems__block_invoke_7;
     v19[3] = &unk_277DF2D08;
     v8 = v6;
     v20 = v8;
-    v9 = [v5 addFailureBlock:v19];
+    v9 = [allAlarmsFuture addFailureBlock:v19];
     v10 = v20;
     v11 = v8;
 
@@ -73,14 +73,14 @@
 
   else
   {
-    v5 = [(HFHomePodAlarmItemProvider *)self mobileTimerAdapter];
-    v12 = [v5 allAlarms];
+    allAlarmsFuture = [(HFHomePodAlarmItemProvider *)self mobileTimerAdapter];
+    allAlarms = [allAlarmsFuture allAlarms];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __41__HFHomePodAlarmItemProvider_reloadItems__block_invoke_10;
     v17[3] = &unk_277DFFA20;
     objc_copyWeak(&v18, &location);
-    v13 = [(HFItemProvider *)self reloadItemsWithObjects:v12 keyAdaptor:&__block_literal_global_15_9 itemAdaptor:&__block_literal_global_17_9 filter:0 itemMap:v17];
+    v13 = [(HFItemProvider *)self reloadItemsWithObjects:allAlarms keyAdaptor:&__block_literal_global_15_9 itemAdaptor:&__block_literal_global_17_9 filter:0 itemMap:v17];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __41__HFHomePodAlarmItemProvider_reloadItems__block_invoke_11;

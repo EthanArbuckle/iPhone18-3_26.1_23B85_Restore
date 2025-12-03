@@ -1,14 +1,14 @@
 @interface PHAssetComment
 + (id)entityKeyMap;
-+ (id)fetchCommentsForAsset:(id)a3 options:(id)a4;
-+ (id)fetchCommentsForCloudFeedEntry:(id)a3 options:(id)a4;
-+ (id)fetchCommentsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchLikesForAsset:(id)a3 options:(id)a4;
-+ (id)fetchLikesForCloudFeedEntry:(id)a3 options:(id)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-- (BOOL)_isInterestingToUser:(id)a3 cloudSharedProperties:(id)a4;
++ (id)fetchCommentsForAsset:(id)asset options:(id)options;
++ (id)fetchCommentsForCloudFeedEntry:(id)entry options:(id)options;
++ (id)fetchCommentsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchLikesForAsset:(id)asset options:(id)options;
++ (id)fetchLikesForCloudFeedEntry:(id)entry options:(id)options;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
+- (BOOL)_isInterestingToUser:(id)user cloudSharedProperties:(id)properties;
 - (BOOL)isInterestingForAlbumsSorting;
-- (PHAssetComment)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHAssetComment)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 @end
 
 @implementation PHAssetComment
@@ -23,18 +23,18 @@
   return [(PHAssetComment *)self isInterestingToUser];
 }
 
-- (BOOL)_isInterestingToUser:(id)a3 cloudSharedProperties:(id)a4
+- (BOOL)_isInterestingToUser:(id)user cloudSharedProperties:(id)properties
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isCloudSharedAsset])
+  userCopy = user;
+  propertiesCopy = properties;
+  if (![userCopy isCloudSharedAsset])
   {
     v9 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = userCopy;
       v10 = "Comment marked as not interesting because it's not for a cloudSharedAsset: %@.";
       v11 = v9;
       v12 = OS_LOG_TYPE_ERROR;
@@ -47,7 +47,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [v7 cloudIsMyAsset];
+  cloudIsMyAsset = [propertiesCopy cloudIsMyAsset];
   if ([(PHAssetComment *)self isMyComment])
   {
     v9 = PLPhotoSharingGetLog();
@@ -66,13 +66,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v8)
+  if (cloudIsMyAsset)
   {
     LOBYTE(v14) = 1;
     goto LABEL_10;
   }
 
-  if ([v7 cloudHasCommentsByMe])
+  if ([propertiesCopy cloudHasCommentsByMe])
   {
     v14 = ![(PHAssetComment *)self isLike];
     goto LABEL_10;
@@ -85,52 +85,52 @@ LABEL_10:
   return v14;
 }
 
-- (PHAssetComment)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHAssetComment)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
   v38.receiver = self;
   v38.super_class = PHAssetComment;
-  v10 = [(PHObject *)&v38 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:v9];
+  v10 = [(PHObject *)&v38 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:libraryCopy];
   if (v10)
   {
-    v11 = [v8 objectForKeyedSubscript:@"cloudGUID"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"cloudGUID"];
     uuid = v10->super._uuid;
     v10->super._uuid = v11;
 
-    v13 = [v8 objectForKeyedSubscript:@"isCaption"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isCaption"];
     v10->_isCaption = [v13 BOOLValue];
 
-    v14 = [v8 objectForKeyedSubscript:@"isBatchComment"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isBatchComment"];
     v10->_isBatchComment = [v14 BOOLValue];
 
-    v15 = [v8 objectForKeyedSubscript:@"isDeletable"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isDeletable"];
     v10->_isDeletable = [v15 BOOLValue];
 
-    v16 = [v8 objectForKeyedSubscript:@"isLike"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isLike"];
     v10->_isLike = [v16 BOOLValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"isMyComment"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isMyComment"];
     v10->_isMyComment = [v17 BOOLValue];
 
-    v18 = [v8 objectForKeyedSubscript:@"commentClientDate"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"commentClientDate"];
     commentClientDate = v10->_commentClientDate;
     v10->_commentClientDate = v18;
 
-    v20 = [v8 objectForKeyedSubscript:@"commentDate"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"commentDate"];
     commentDate = v10->_commentDate;
     v10->_commentDate = v20;
 
-    v22 = [v8 objectForKeyedSubscript:@"commentText"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"commentText"];
     commentText = v10->_commentText;
     v10->_commentText = v22;
 
-    v24 = [v8 objectForKeyedSubscript:@"cloudGUID"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"cloudGUID"];
     cloudGUID = v10->_cloudGUID;
     v10->_cloudGUID = v24;
 
-    v26 = [v8 objectForKeyedSubscript:@"commenterHashedPersonID"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"commenterHashedPersonID"];
     commenterHashedPersonID = v10->_commenterHashedPersonID;
     v10->_commenterHashedPersonID = v26;
 
@@ -144,77 +144,77 @@ LABEL_10:
       v28 = @"commentedAsset";
     }
 
-    v29 = [v8 objectForKeyedSubscript:v28];
-    v30 = [v9 librarySpecificFetchOptions];
+    v29 = [dictionaryCopy objectForKeyedSubscript:v28];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
     v40[0] = @"PHAssetPropertySetCloudShared";
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-    [v30 setFetchPropertySets:v31];
+    [librarySpecificFetchOptions setFetchPropertySets:v31];
 
     v39 = v29;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
-    v33 = [PHAsset fetchAssetsWithObjectIDs:v32 options:v30];
-    v34 = [v33 firstObject];
+    v33 = [PHAsset fetchAssetsWithObjectIDs:v32 options:librarySpecificFetchOptions];
+    firstObject = [v33 firstObject];
 
-    v35 = [v34 cloudSharedProperties];
-    if (v34)
+    cloudSharedProperties = [firstObject cloudSharedProperties];
+    if (firstObject)
     {
-      v10->_isInterestingToUser = [(PHAssetComment *)v10 _isInterestingToUser:v34 cloudSharedProperties:v35];
+      v10->_isInterestingToUser = [(PHAssetComment *)v10 _isInterestingToUser:firstObject cloudSharedProperties:cloudSharedProperties];
     }
 
-    if (-[PHAssetComment isDeletable](v10, "isDeletable") || ([v35 cloudIsMyAsset] & 1) != 0)
+    if (-[PHAssetComment isDeletable](v10, "isDeletable") || ([cloudSharedProperties cloudIsMyAsset] & 1) != 0)
     {
-      v36 = 1;
+      isMyComment = 1;
     }
 
     else
     {
-      v36 = [(PHAssetComment *)v10 isMyComment];
+      isMyComment = [(PHAssetComment *)v10 isMyComment];
     }
 
-    v10->_canBeDeletedByUser = v36;
+    v10->_canBeDeletedByUser = isMyComment;
   }
 
   return v10;
 }
 
-+ (id)fetchLikesForCloudFeedEntry:(id)a3 options:(id)a4
++ (id)fetchLikesForCloudFeedEntry:(id)entry options:(id)options
 {
-  v4 = [PHQuery queryForLikesForCloudFeedEntry:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForLikesForCloudFeedEntry:entry options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchLikesForAsset:(id)a3 options:(id)a4
++ (id)fetchLikesForAsset:(id)asset options:(id)options
 {
-  v4 = [PHQuery queryForLikesForAsset:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForLikesForAsset:asset options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchCommentsForCloudFeedEntry:(id)a3 options:(id)a4
++ (id)fetchCommentsForCloudFeedEntry:(id)entry options:(id)options
 {
-  v4 = [PHQuery queryForCommentsForCloudFeedEntry:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForCommentsForCloudFeedEntry:entry options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchCommentsForAsset:(id)a3 options:(id)a4
++ (id)fetchCommentsForAsset:(id)asset options:(id)options
 {
-  v4 = [PHQuery queryForCommentsForAsset:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForCommentsForAsset:asset options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchCommentsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchCommentsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v4 = [PHQuery queryForCommentsWithLocalIdentifiers:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForCommentsWithLocalIdentifiers:identifiers options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
 + (id)entityKeyMap
@@ -276,13 +276,13 @@ void __30__PHAssetComment_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_50217 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__PHAssetComment_propertiesToFetchWithHint___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (propertiesToFetchWithHint__onceToken_50229 != -1)
   {
     dispatch_once(&propertiesToFetchWithHint__onceToken_50229, block);

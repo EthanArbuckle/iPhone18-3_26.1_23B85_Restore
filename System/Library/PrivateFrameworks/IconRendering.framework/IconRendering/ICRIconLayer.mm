@@ -1,29 +1,29 @@
 @interface ICRIconLayer
 - ($1AB5FA073B851C12C2339EC22442E995)lightDirection;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)lightAngles;
-- (BOOL)displayIcon:(id)a3 error:(id *)a4;
-- (ICRIconLayer)initWithData:(id)a3 error:(id *)a4;
-- (ICRIconLayer)initWithDeviceClass:(int64_t)a3 appearance:(unint64_t)a4 renderingMode:(id)a5;
-- (ICRIconLayer)initWithFinalizedIcon:(id)a3;
-- (ICRIconLayer)initWithIcon:(id)a3 deviceClass:(int64_t)a4 appearance:(unint64_t)a5 renderingMode:(id)a6;
+- (BOOL)displayIcon:(id)icon error:(id *)error;
+- (ICRIconLayer)initWithData:(id)data error:(id *)error;
+- (ICRIconLayer)initWithDeviceClass:(int64_t)class appearance:(unint64_t)appearance renderingMode:(id)mode;
+- (ICRIconLayer)initWithFinalizedIcon:(id)icon;
+- (ICRIconLayer)initWithIcon:(id)icon deviceClass:(int64_t)class appearance:(unint64_t)appearance renderingMode:(id)mode;
 - (double)lightAngle;
 - (unint64_t)iconAppearance;
 - (void)layoutSublayers;
-- (void)setDrawMitigatedVersion:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconAppearance:(unint64_t)a3;
-- (void)setLightAngle:(double)a3;
-- (void)setLightAngles:(id)a3;
-- (void)setLightDirection:(id)a3;
-- (void)setLightIntensity:(double)a3;
-- (void)setTintColor:(CGColor *)a3;
+- (void)setDrawMitigatedVersion:(BOOL)version;
+- (void)setIcon:(id)icon;
+- (void)setIconAppearance:(unint64_t)appearance;
+- (void)setLightAngle:(double)angle;
+- (void)setLightAngles:(id)angles;
+- (void)setLightDirection:(id)direction;
+- (void)setLightIntensity:(double)intensity;
+- (void)setTintColor:(CGColor *)color;
 @end
 
 @implementation ICRIconLayer
 
-- (ICRIconLayer)initWithData:(id)a3 error:(id *)a4
+- (ICRIconLayer)initWithData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_1B1619BD8();
   v7 = v6;
 
@@ -32,30 +32,30 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   ICRIconLayer.layoutSublayers()();
 }
 
-- (void)setLightDirection:(id)a3
+- (void)setLightDirection:(id)direction
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = self;
+  var2 = direction.var2;
+  var1 = direction.var1;
+  var0 = direction.var0;
+  selfCopy = self;
   ICRIconLayer.lightDirection.setter(var0, var1, var2);
 }
 
-- (void)setLightIntensity:(double)a3
+- (void)setLightIntensity:(double)intensity
 {
-  v4 = self;
-  ICRIconLayer.lightIntensity.setter(a3);
+  selfCopy = self;
+  ICRIconLayer.lightIntensity.setter(intensity);
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
-  v6 = self;
-  ICRIconLayer.icon.setter(a3);
+  iconCopy = icon;
+  selfCopy = self;
+  ICRIconLayer.icon.setter(icon);
 }
 
 - (unint64_t)iconAppearance
@@ -65,11 +65,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIconAppearance:(unint64_t)a3
+- (void)setIconAppearance:(unint64_t)appearance
 {
   v5 = OBJC_IVAR___ICRIconLayer_iconAppearance;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = appearance;
 }
 
 - (double)lightAngle
@@ -99,10 +99,10 @@
   return v6;
 }
 
-- (void)setLightAngle:(double)a3
+- (void)setLightAngle:(double)angle
 {
-  v4 = self;
-  ICRIconLayer.lightAngle.setter(a3);
+  selfCopy = self;
+  ICRIconLayer.lightAngle.setter(angle);
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)lightAngles
@@ -118,11 +118,11 @@
   return result;
 }
 
-- (void)setLightAngles:(id)a3
+- (void)setLightAngles:(id)angles
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = self;
+  var1 = angles.var1;
+  var0 = angles.var0;
+  selfCopy = self;
   ICRIconLayer.lightAngles.setter(var0, var1);
 }
 
@@ -138,52 +138,52 @@
   return result;
 }
 
-- (void)setDrawMitigatedVersion:(BOOL)a3
+- (void)setDrawMitigatedVersion:(BOOL)version
 {
-  v4 = self;
-  ICRIconLayer.drawMitigatedVersion.setter(a3);
+  selfCopy = self;
+  ICRIconLayer.drawMitigatedVersion.setter(version);
 }
 
-- (ICRIconLayer)initWithIcon:(id)a3 deviceClass:(int64_t)a4 appearance:(unint64_t)a5 renderingMode:(id)a6
+- (ICRIconLayer)initWithIcon:(id)icon deviceClass:(int64_t)class appearance:(unint64_t)appearance renderingMode:(id)mode
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(ICRIconLayer *)self initWithDeviceClass:a4 appearance:a5 renderingMode:v11];
-  [(ICRIconLayer *)v12 setIcon:v10];
+  iconCopy = icon;
+  modeCopy = mode;
+  v12 = [(ICRIconLayer *)self initWithDeviceClass:class appearance:appearance renderingMode:modeCopy];
+  [(ICRIconLayer *)v12 setIcon:iconCopy];
 
   return v12;
 }
 
-- (ICRIconLayer)initWithDeviceClass:(int64_t)a3 appearance:(unint64_t)a4 renderingMode:(id)a5
+- (ICRIconLayer)initWithDeviceClass:(int64_t)class appearance:(unint64_t)appearance renderingMode:(id)mode
 {
-  v7 = a5;
-  v8 = sub_1B16069CC(a3, a4, v7);
+  modeCopy = mode;
+  v8 = sub_1B16069CC(class, appearance, modeCopy);
 
   return v8;
 }
 
-- (ICRIconLayer)initWithFinalizedIcon:(id)a3
+- (ICRIconLayer)initWithFinalizedIcon:(id)icon
 {
-  v3 = a3;
-  v4 = sub_1B1606B20(v3);
+  iconCopy = icon;
+  v4 = sub_1B1606B20(iconCopy);
 
   return v4;
 }
 
-- (BOOL)displayIcon:(id)a3 error:(id *)a4
+- (BOOL)displayIcon:(id)icon error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  iconCopy = icon;
+  selfCopy = self;
   ICRIconLayer.display(_:)();
 
   return 1;
 }
 
-- (void)setTintColor:(CGColor *)a3
+- (void)setTintColor:(CGColor *)color
 {
-  v4 = a3;
-  v5 = self;
-  ICRIconLayer.setTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  ICRIconLayer.setTintColor(_:)(colorCopy);
 }
 
 @end

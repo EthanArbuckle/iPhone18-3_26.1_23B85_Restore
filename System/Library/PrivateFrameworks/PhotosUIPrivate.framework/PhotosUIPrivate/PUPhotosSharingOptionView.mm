@@ -1,23 +1,23 @@
 @interface PUPhotosSharingOptionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PUPhotosSharingOptionView)initWithFrame:(CGRect)a3;
-- (void)assetBadgeView:(id)a3 userDidSelectBadges:(unint64_t)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PUPhotosSharingOptionView)initWithFrame:(CGRect)frame;
+- (void)assetBadgeView:(id)view userDidSelectBadges:(unint64_t)badges;
 - (void)layoutSubviews;
-- (void)setInteractive:(BOOL)a3;
-- (void)setTarget:(id)a3 action:(SEL)a4;
-- (void)setToggled:(BOOL)a3;
+- (void)setInteractive:(BOOL)interactive;
+- (void)setTarget:(id)target action:(SEL)action;
+- (void)setToggled:(BOOL)toggled;
 @end
 
 @implementation PUPhotosSharingOptionView
 
-- (void)assetBadgeView:(id)a3 userDidSelectBadges:(unint64_t)a4
+- (void)assetBadgeView:(id)view userDidSelectBadges:(unint64_t)badges
 {
-  v5 = a3;
+  viewCopy = view;
   if (self->_action)
   {
-    v9 = v5;
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
+    v9 = viewCopy;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     if (self->_action)
     {
       action = self->_action;
@@ -29,9 +29,9 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_target);
-    [v6 sendAction:action to:WeakRetained from:self forEvent:0];
+    [mEMORY[0x1E69DC668] sendAction:action to:WeakRetained from:self forEvent:0];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
@@ -52,10 +52,10 @@
   [(PXUIAssetBadgeView *)self->_toggleGlyphButton setFrame:0.0, 0.0, v4, v5];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(PUPhotosSharingOptionView *)self bounds];
   v11 = CGRectInset(v10, -8.0, -8.0);
   v6 = x;
@@ -64,41 +64,41 @@
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  objc_storeWeak(&self->_target, a3);
-  if (a4)
+  objc_storeWeak(&self->_target, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v6;
+  self->_action = actionCopy;
 }
 
-- (void)setToggled:(BOOL)a3
+- (void)setToggled:(BOOL)toggled
 {
-  if (self->_toggled != a3)
+  if (self->_toggled != toggled)
   {
-    self->_toggled = a3;
+    self->_toggled = toggled;
     [(PUPhotosSharingOptionView *)self setNeedsLayout];
   }
 }
 
-- (void)setInteractive:(BOOL)a3
+- (void)setInteractive:(BOOL)interactive
 {
-  if (self->_interactive != a3)
+  if (self->_interactive != interactive)
   {
-    self->_interactive = a3;
+    self->_interactive = interactive;
     [(PUPhotosSharingOptionView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(PXUIAssetBadgeView *)self->_toggleGlyphButton sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.height = v4;
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (PUPhotosSharingOptionView)initWithFrame:(CGRect)a3
+- (PUPhotosSharingOptionView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PUPhotosSharingOptionView;
-  v3 = [(PUPhotosSharingOptionView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotosSharingOptionView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69C3BE0]);

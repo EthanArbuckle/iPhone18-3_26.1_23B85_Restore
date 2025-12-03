@@ -1,36 +1,36 @@
 @interface UIKeyboardKeySwipeTransition
-- (CGRect)keyRectForFrame:(CGRect)a3 normalizedSubRect:(CGRect)a4;
-- (id)meshTransformForKeyplane:(id)a3 forward:(BOOL)a4 initial:(BOOL)a5;
+- (CGRect)keyRectForFrame:(CGRect)frame normalizedSubRect:(CGRect)rect;
+- (id)meshTransformForKeyplane:(id)keyplane forward:(BOOL)forward initial:(BOOL)initial;
 - (void)_runOpacityAnimation;
 - (void)_runTransformAnimation;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)commitTransitionRebuild;
 - (void)gatherTransitionKeys;
-- (void)rebuildWithStartKeyplane:(id)a3 startView:(id)a4 endKeyplane:(id)a5 endView:(id)a6;
+- (void)rebuildWithStartKeyplane:(id)keyplane startView:(id)view endKeyplane:(id)endKeyplane endView:(id)endView;
 - (void)removeAllAnimations;
-- (void)runNonInteractivelyWithCompletion:(id)a3;
-- (void)updateWithProgress:(double)a3;
+- (void)runNonInteractivelyWithCompletion:(id)completion;
+- (void)updateWithProgress:(double)progress;
 @end
 
 @implementation UIKeyboardKeySwipeTransition
 
-- (void)rebuildWithStartKeyplane:(id)a3 startView:(id)a4 endKeyplane:(id)a5 endView:(id)a6
+- (void)rebuildWithStartKeyplane:(id)keyplane startView:(id)view endKeyplane:(id)endKeyplane endView:(id)endView
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  keyplaneCopy = keyplane;
+  endKeyplaneCopy = endKeyplane;
   v31.receiver = self;
   v31.super_class = UIKeyboardKeySwipeTransition;
-  [(UIKeyboardKeyplaneTransition *)&v31 rebuildWithStartKeyplane:v10 startView:a4 endKeyplane:v11 endView:a6];
-  if (v10)
+  [(UIKeyboardKeyplaneTransition *)&v31 rebuildWithStartKeyplane:keyplaneCopy startView:view endKeyplane:endKeyplaneCopy endView:endView];
+  if (keyplaneCopy)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v13 = [v10 keys];
-    v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    keys = [keyplaneCopy keys];
+    v14 = [keys countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v14)
     {
       v15 = v14;
@@ -41,46 +41,46 @@
         {
           if (*v28 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(keys);
           }
 
           v18 = *(*(&v27 + 1) + 8 * i);
-          v19 = [v18 shape];
+          shape = [v18 shape];
 
-          if (v19)
+          if (shape)
           {
-            v20 = [v18 shape];
-            [v12 addObject:v20];
+            shape2 = [v18 shape];
+            [array addObject:shape2];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v15 = [keys countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v15);
     }
 
-    [(UIKeyboardKeySwipeTransition *)self setStartGeometries:v12];
-    v21 = [v10 keysOrderedByPosition];
-    [(UIKeyboardKeySwipeTransition *)self setStartKeysOrdered:v21];
+    [(UIKeyboardKeySwipeTransition *)self setStartGeometries:array];
+    keysOrderedByPosition = [keyplaneCopy keysOrderedByPosition];
+    [(UIKeyboardKeySwipeTransition *)self setStartKeysOrdered:keysOrderedByPosition];
   }
 
-  if (v11)
+  if (endKeyplaneCopy)
   {
-    v22 = [v11 keysOrderedByPosition];
-    [(UIKeyboardKeySwipeTransition *)self setEndKeysOrdered:v22];
+    keysOrderedByPosition2 = [endKeyplaneCopy keysOrderedByPosition];
+    [(UIKeyboardKeySwipeTransition *)self setEndKeysOrdered:keysOrderedByPosition2];
   }
 
   start = self->super._start;
   if (start && self->super._end)
   {
-    v24 = [(UIKBTree *)start gestureKeyplaneName];
+    gestureKeyplaneName = [(UIKBTree *)start gestureKeyplaneName];
 
-    if (v24)
+    if (gestureKeyplaneName)
     {
-      v25 = [(UIKBTree *)self->super._end name];
-      v26 = [(UIKBTree *)self->super._start gestureKeyplaneName];
-      -[UIKeyboardKeyplaneTransition setInitiallyAtEnd:](self, "setInitiallyAtEnd:", [v25 rangeOfString:v26 options:1] == 0x7FFFFFFFFFFFFFFFLL);
+      name = [(UIKBTree *)self->super._end name];
+      gestureKeyplaneName2 = [(UIKBTree *)self->super._start gestureKeyplaneName];
+      -[UIKeyboardKeyplaneTransition setInitiallyAtEnd:](self, "setInitiallyAtEnd:", [name rangeOfString:gestureKeyplaneName2 options:1] == 0x7FFFFFFFFFFFFFFFLL);
     }
 
     else
@@ -93,9 +93,9 @@
 - (void)commitTransitionRebuild
 {
   [(UIKeyboardKeySwipeTransition *)self gatherTransitionKeys];
-  v3 = [(UIKeyboardKeyplaneTransition *)self initiallyAtEnd];
+  initiallyAtEnd = [(UIKeyboardKeyplaneTransition *)self initiallyAtEnd];
   v4 = 0.0;
-  if (v3)
+  if (initiallyAtEnd)
   {
     v4 = 1.0;
   }
@@ -103,19 +103,19 @@
   [(UIKeyboardKeySwipeTransition *)self setPreviousProgress:v4];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [a3 keyPath];
-  v6 = [v5 isEqualToString:@"meshTransform"];
+  keyPath = [stop keyPath];
+  v6 = [keyPath isEqualToString:@"meshTransform"];
 
   if (v6)
   {
-    v7 = [(UIKeyboardKeyplaneTransition *)self completionBlock];
+    completionBlock = [(UIKeyboardKeyplaneTransition *)self completionBlock];
 
-    if (v7)
+    if (completionBlock)
     {
-      v8 = [(UIKeyboardKeyplaneTransition *)self completionBlock];
-      v8[2]();
+      completionBlock2 = [(UIKeyboardKeyplaneTransition *)self completionBlock];
+      completionBlock2[2]();
 
       [(UIKeyboardKeyplaneTransition *)self setCompletionBlock:0];
     }
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)runNonInteractivelyWithCompletion:(id)a3
+- (void)runNonInteractivelyWithCompletion:(id)completion
 {
-  [(UIKeyboardKeyplaneTransition *)self setCompletionBlock:a3];
+  [(UIKeyboardKeyplaneTransition *)self setCompletionBlock:completion];
   [(UIKeyboardKeySwipeTransition *)self _runTransformAnimation];
 
   [(UIKeyboardKeySwipeTransition *)self _runOpacityAnimation];
@@ -135,16 +135,16 @@
 - (void)_runTransformAnimation
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardKeyplaneTransition *)self initiallyAtEnd];
-  v4 = v3;
+  initiallyAtEnd = [(UIKeyboardKeyplaneTransition *)self initiallyAtEnd];
+  v4 = initiallyAtEnd;
   v5 = &OBJC_IVAR___UIKeyboardKeyplaneTransition__start;
-  if (v3)
+  if (initiallyAtEnd)
   {
     v5 = &OBJC_IVAR___UIKeyboardKeyplaneTransition__end;
   }
 
   v6 = *v5;
-  v7 = [(UIKeyboardKeySwipeTransition *)self meshTransformForKeyplane:*(&self->super.super.isa + v6) forward:!v3 initial:1];
+  v7 = [(UIKeyboardKeySwipeTransition *)self meshTransformForKeyplane:*(&self->super.super.isa + v6) forward:!initiallyAtEnd initial:1];
   v8 = [(UIKeyboardKeySwipeTransition *)self meshTransformForKeyplane:*(&self->super.super.isa + v6) forward:!v4 initial:0];
   v9 = [MEMORY[0x1E6979390] animationWithKeyPath:@"meshTransform"];
   [(UIKeyboardKeySwipeTransition *)self nonInteractiveDuration];
@@ -162,13 +162,13 @@
   [v9 setValues:v11];
 
   [v9 setKeyTimes:&unk_1EFE2CE68];
-  v12 = [(UIView *)self->super._startView layer];
-  [v12 addAnimation:v9 forKey:@"transform interpolation"];
+  layer = [(UIView *)self->super._startView layer];
+  [layer addAnimation:v9 forKey:@"transform interpolation"];
 
   [(UIView *)self->super._startView contentScaleFactor];
   v14 = v13;
-  v15 = [(UIView *)self->super._startView layer];
-  [v15 setRasterizationScale:v14];
+  layer2 = [(UIView *)self->super._startView layer];
+  [layer2 setRasterizationScale:v14];
 }
 
 - (void)_runOpacityAnimation
@@ -183,81 +183,81 @@
   [v5 setRemovedOnCompletion:0];
   [v5 setValues:&unk_1EFE2CE80];
   [v5 setKeyTimes:&unk_1EFE2CE98];
-  v4 = [(UIView *)self->super._startView layer];
-  [v4 addAnimation:v5 forKey:@"opacity interpolation"];
+  layer = [(UIView *)self->super._startView layer];
+  [layer addAnimation:v5 forKey:@"opacity interpolation"];
 }
 
 - (void)removeAllAnimations
 {
-  v3 = [(UIView *)self->super._startView layer];
-  [v3 removeAnimationForKey:@"transform interpolation"];
+  layer = [(UIView *)self->super._startView layer];
+  [layer removeAnimationForKey:@"transform interpolation"];
 
-  v4 = [(UIView *)self->super._endView layer];
-  [v4 removeAnimationForKey:@"transform interpolation"];
+  layer2 = [(UIView *)self->super._endView layer];
+  [layer2 removeAnimationForKey:@"transform interpolation"];
 
-  v5 = [(UIView *)self->super._startView layer];
-  [v5 removeAnimationForKey:@"opacity interpolation"];
+  layer3 = [(UIView *)self->super._startView layer];
+  [layer3 removeAnimationForKey:@"opacity interpolation"];
 
-  v6 = [(UIView *)self->super._endView layer];
-  [v6 removeAnimationForKey:@"opacity interpolation"];
+  layer4 = [(UIView *)self->super._endView layer];
+  [layer4 removeAnimationForKey:@"opacity interpolation"];
 
-  v7 = [(UIView *)self->super._startView layer];
-  [v7 setMeshTransform:0];
+  layer5 = [(UIView *)self->super._startView layer];
+  [layer5 setMeshTransform:0];
 
-  v8 = [(UIView *)self->super._endView layer];
-  [v8 setMeshTransform:0];
+  layer6 = [(UIView *)self->super._endView layer];
+  [layer6 setMeshTransform:0];
 
   v9.receiver = self;
   v9.super_class = UIKeyboardKeySwipeTransition;
   [(UIKeyboardKeyplaneTransition *)&v9 removeAllAnimations];
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
   [(UIView *)self->super._startView setHidden:0];
   [(UIView *)self->super._endView setHidden:0];
   v5.receiver = self;
   v5.super_class = UIKeyboardKeySwipeTransition;
-  [(UIKeyboardKeyplaneTransition *)&v5 updateWithProgress:a3];
-  [(UIKeyboardKeySwipeTransition *)self setPreviousProgress:a3];
+  [(UIKeyboardKeyplaneTransition *)&v5 updateWithProgress:progress];
+  [(UIKeyboardKeySwipeTransition *)self setPreviousProgress:progress];
 }
 
 - (void)gatherTransitionKeys
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(UIKBTree *)self->super._end keys];
-  v6 = [(UIKeyboardKeyplaneTransition *)self keyboard];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  keys = [(UIKBTree *)self->super._end keys];
+  keyboard = [(UIKeyboardKeyplaneTransition *)self keyboard];
 
-  if (v6)
+  if (keyboard)
   {
-    v6 = [(UIKBTree *)self->super._end gestureKeyplaneName];
+    keyboard = [(UIKBTree *)self->super._end gestureKeyplaneName];
 
-    if (v6)
+    if (keyboard)
     {
-      v7 = [(UIKeyboardKeyplaneTransition *)self keyboard];
-      v8 = [(UIKBTree *)self->super._end gestureKeyplaneName];
-      v9 = [v7 subtreeWithName:v8];
+      keyboard2 = [(UIKeyboardKeyplaneTransition *)self keyboard];
+      gestureKeyplaneName = [(UIKBTree *)self->super._end gestureKeyplaneName];
+      v9 = [keyboard2 subtreeWithName:gestureKeyplaneName];
 
-      v6 = [v9 keys];
+      keyboard = [v9 keys];
     }
   }
 
-  v10 = [(UIKeyboardKeySwipeTransition *)self startKeysOrdered];
+  startKeysOrdered = [(UIKeyboardKeySwipeTransition *)self startKeysOrdered];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__UIKeyboardKeySwipeTransition_gatherTransitionKeys__block_invoke;
   v15[3] = &unk_1E7118DF0;
-  v16 = v6;
-  v17 = self;
-  v18 = v5;
-  v19 = v4;
-  v20 = v3;
-  v11 = v3;
-  v12 = v4;
-  v13 = v5;
-  v14 = v6;
-  [v10 enumerateObjectsUsingBlock:v15];
+  v16 = keyboard;
+  selfCopy = self;
+  v18 = keys;
+  v19 = array2;
+  v20 = array;
+  v11 = array;
+  v12 = array2;
+  v13 = keys;
+  v14 = keyboard;
+  [startKeysOrdered enumerateObjectsUsingBlock:v15];
 
   [(UIKeyboardKeySwipeTransition *)self setTransitionKeys:v11];
   [(UIKeyboardKeySwipeTransition *)self setKeyInfos:v12];
@@ -390,12 +390,12 @@ LABEL_35:
 LABEL_36:
 }
 
-- (CGRect)keyRectForFrame:(CGRect)a3 normalizedSubRect:(CGRect)a4
+- (CGRect)keyRectForFrame:(CGRect)frame normalizedSubRect:(CGRect)rect
 {
-  v4 = a3.origin.x + a3.size.width * a4.origin.x;
-  v5 = a3.origin.y + a3.size.height * a4.origin.y;
-  v6 = a3.size.width * a4.size.width;
-  v7 = a3.size.height * a4.size.height;
+  v4 = frame.origin.x + frame.size.width * rect.origin.x;
+  v5 = frame.origin.y + frame.size.height * rect.origin.y;
+  v6 = frame.size.width * rect.size.width;
+  v7 = frame.size.height * rect.size.height;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -403,15 +403,15 @@ LABEL_36:
   return result;
 }
 
-- (id)meshTransformForKeyplane:(id)a3 forward:(BOOL)a4 initial:(BOOL)a5
+- (id)meshTransformForKeyplane:(id)keyplane forward:(BOOL)forward initial:(BOOL)initial
 {
-  v398 = a5;
-  v397 = a4;
+  initialCopy = initial;
+  forwardCopy = forward;
   v455 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(UIKeyboardKeySwipeTransition *)self transitionKeys];
-  [v7 count];
-  v8 = [v7 count];
+  keyplaneCopy = keyplane;
+  transitionKeys = [(UIKeyboardKeySwipeTransition *)self transitionKeys];
+  [transitionKeys count];
+  v8 = [transitionKeys count];
   MEMORY[0x1EEE9AC00](v8);
   v10 = &v390 - v9;
   MEMORY[0x1EEE9AC00](v11);
@@ -420,19 +420,19 @@ LABEL_36:
   v13 = *(MEMORY[0x1E695F050] + 8);
   v15 = *(MEMORY[0x1E695F050] + 16);
   v430 = *(MEMORY[0x1E695F050] + 24);
-  [v6 frame];
+  [keyplaneCopy frame];
   v17 = v16;
   v18 = 1.0 / v16;
   v448 = 1.0 / v19;
-  v408 = [(UIKeyboardKeySwipeTransition *)self startGeometries];
-  v407 = [(UIKeyboardKeySwipeTransition *)self keyInfos];
-  v412 = self;
-  v424 = [(UIKBTree *)self->super._start keys];
+  startGeometries = [(UIKeyboardKeySwipeTransition *)self startGeometries];
+  keyInfos = [(UIKeyboardKeySwipeTransition *)self keyInfos];
+  selfCopy = self;
+  keys = [(UIKBTree *)self->super._start keys];
   v450 = 0u;
   v451 = 0u;
   v452 = 0u;
   v453 = 0u;
-  v20 = v7;
+  v20 = transitionKeys;
   v21 = [v20 countByEnumeratingWithState:&v450 objects:v454 count:16];
   v418 = v10;
   v449 = v18;
@@ -440,7 +440,7 @@ LABEL_36:
   {
     v22 = v21;
     v390 = &v390;
-    v391 = v6;
+    v391 = keyplaneCopy;
     v23 = 0.0;
     v24 = 0;
     v25 = *v451;
@@ -473,20 +473,20 @@ LABEL_36:
         }
 
         v29 = *(*(&v450 + 1) + 8 * v28);
-        v30 = [v424 indexOfObject:{v29, v390}];
+        v30 = [keys indexOfObject:{v29, v390}];
         if (v30 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v31 = [v408 objectAtIndex:v30];
+          v31 = [startGeometries objectAtIndex:v30];
           v32 = [v20 indexOfObject:v29];
-          v33 = [v407 objectAtIndex:v32];
-          v421 = [v33 integerValue];
+          v33 = [keyInfos objectAtIndex:v32];
+          integerValue = [v33 integerValue];
 
           v423 = v31;
           [v31 frame];
           v436 = v13;
           v428 = v15;
           v427 = v14;
-          v34 = v412;
+          v34 = selfCopy;
           v36 = v35;
           v38 = v37;
           v40 = v39;
@@ -494,7 +494,7 @@ LABEL_36:
           v43 = v411;
           v44 = v410;
           v45 = *&v402;
-          [UIKeyboardKeySwipeTransition keyRectForFrame:v412 normalizedSubRect:"keyRectForFrame:normalizedSubRect:"];
+          [UIKeyboardKeySwipeTransition keyRectForFrame:selfCopy normalizedSubRect:"keyRectForFrame:normalizedSubRect:"];
           v425 = v46;
           v431 = v47;
           v435 = v48;
@@ -809,12 +809,12 @@ LABEL_36:
           *(v139 + 19) = 0x3FE0000000000000;
           v150 = &v84[32 * *&v23 + 32];
           v13 = v145;
-          if (v421 == 3)
+          if (integerValue == 3)
           {
             v427 = v23;
             v417 = &v84[32 * *&v23 + 32];
-            v421 = v24 + 3;
-            v155 = v412;
+            integerValue = v24 + 3;
+            v155 = selfCopy;
             v156 = v447;
             v157 = v145;
             v158 = v15;
@@ -822,7 +822,7 @@ LABEL_36:
             v160 = v446;
             v161 = v411;
             v162 = v410;
-            [(UIKeyboardKeySwipeTransition *)v412 keyRectForFrame:v447 normalizedSubRect:v157, v158, v446, v411, 0.325, v410, 0.35];
+            [(UIKeyboardKeySwipeTransition *)selfCopy keyRectForFrame:v447 normalizedSubRect:v157, v158, v446, v411, 0.325, v410, 0.35];
             v425 = v163;
             v431 = v164;
             v435 = v165;
@@ -840,17 +840,17 @@ LABEL_36:
           {
             v151 = v449;
             v28 = v422;
-            if (v421 == 2)
+            if (integerValue == 2)
             {
               v427 = v23;
               v417 = &v84[32 * *&v23 + 32];
-              v421 = v24 + 3;
+              integerValue = v24 + 3;
             }
 
             else
             {
               v152 = v446;
-              if (!v421)
+              if (!integerValue)
               {
                 v153 = v434;
                 v150->i32[0] = v24;
@@ -874,7 +874,7 @@ LABEL_30:
 
               v427 = v23;
               v417 = &v84[32 * *&v23 + 32];
-              v421 = v24 + 3;
+              integerValue = v24 + 3;
               v426 = v129;
               v435 = v146;
               v431 = v443;
@@ -962,10 +962,10 @@ LABEL_30:
           v193 = v176;
           v194 = v177;
           v195 = v171;
-          if (v397)
+          if (forwardCopy)
           {
             v196 = v448 * CGRectGetMinY(*&v192);
-            if (v398)
+            if (initialCopy)
             {
               v489.origin.x = v175;
               v489.origin.y = v176;
@@ -1318,7 +1318,7 @@ LABEL_30:
             v243 = v176;
             v244 = v177;
             v245 = v171;
-            if (v398)
+            if (initialCopy)
             {
               v246 = CGRectGetMaxY(*&v242);
               *v190 = v191;
@@ -1746,8 +1746,8 @@ LABEL_30:
           v374[12].i32[0] = LODWORD(v428);
           v374[12].i32[1] = v24 + 12;
           v374[12].i32[2] = v24 + 13;
-          v26 = v421;
-          v374[12].i32[3] = v421;
+          v26 = integerValue;
+          v374[12].i32[3] = integerValue;
           *&v23 = *&v373 + 7;
           v125 = v24 + 14;
           v374[13] = v372;
@@ -1766,7 +1766,7 @@ LABEL_31:
       v22 = [v20 countByEnumeratingWithState:&v450 objects:v454 count:16];
       if (!v22)
       {
-        v6 = v391;
+        keyplaneCopy = v391;
         goto LABEL_35;
       }
     }

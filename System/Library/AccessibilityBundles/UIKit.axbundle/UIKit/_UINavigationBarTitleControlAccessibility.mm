@@ -1,19 +1,19 @@
 @interface _UINavigationBarTitleControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UINavigationBarTitleControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"_UINavigationBarTitleControl";
   v3 = @"UIControl";
   [location[0] validateClass:? isKindOfClass:?];
@@ -28,14 +28,14 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   v17.receiver = self;
   v17.super_class = _UINavigationBarTitleControlAccessibility;
   [(_UINavigationBarTitleControlAccessibility *)&v17 _accessibilityLoadAccessibilityInformation];
   v15 = 0;
   objc_opt_class();
-  v5 = [(_UINavigationBarTitleControlAccessibility *)v19 safeValueForKey:@"titleLabel"];
+  v5 = [(_UINavigationBarTitleControlAccessibility *)selfCopy safeValueForKey:@"titleLabel"];
   v14 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v13 = MEMORY[0x29EDC9748](v14);
@@ -44,7 +44,7 @@
   [v13 setIsAccessibilityElement:1];
   if (v16)
   {
-    if (([(_UINavigationBarTitleControlAccessibility *)v19 safeBoolForKey:@"isInteractive"]& 1) != 0)
+    if (([(_UINavigationBarTitleControlAccessibility *)selfCopy safeBoolForKey:@"isInteractive"]& 1) != 0)
     {
       [v16 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
       objc_initWeak(&v12, v16);
@@ -64,9 +64,9 @@
     {
       [v16 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
       v2 = v16;
-      v3 = [v16 text];
+      text = [v16 text];
       [v2 setAccessibilityLabel:?];
-      MEMORY[0x29EDC9740](v3);
+      MEMORY[0x29EDC9740](text);
     }
   }
 
@@ -75,17 +75,17 @@
 
 - (BOOL)canBecomeFocused
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6 = 0;
   objc_opt_class();
-  v3 = [(_UINavigationBarTitleControlAccessibility *)v8 safeValueForKey:@"titleLabel"];
+  v3 = [(_UINavigationBarTitleControlAccessibility *)selfCopy safeValueForKey:@"titleLabel"];
   v5 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v3);
   v4 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
   v7[0] = v4;
-  v9 = v4 && ([(_UINavigationBarTitleControlAccessibility *)v8 _accessibilityIsFKARunningForFocusItem]& 1) != 0 && ([(_UINavigationBarTitleControlAccessibility *)v8 safeBoolForKey:@"isInteractive"]& 1) != 0;
+  v9 = v4 && ([(_UINavigationBarTitleControlAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0 && ([(_UINavigationBarTitleControlAccessibility *)selfCopy safeBoolForKey:@"isInteractive"]& 1) != 0;
   objc_storeStrong(v7, 0);
   return v9;
 }

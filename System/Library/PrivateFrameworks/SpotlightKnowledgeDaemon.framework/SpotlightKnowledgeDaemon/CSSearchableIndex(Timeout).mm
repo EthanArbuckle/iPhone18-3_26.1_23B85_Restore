@@ -24,7 +24,7 @@
   v20 = &v21;
   v15 = v12;
   v19 = v15;
-  [a1 indexSearchableItems:v10 completionHandler:v17];
+  [self indexSearchableItems:v10 completionHandler:v17];
   v16 = dispatch_time(0, a2);
   if (dispatch_group_wait(v14, v16))
   {

@@ -1,14 +1,14 @@
 @interface ANSTFace
 + (id)new;
 - (ANSTFace)init;
-- (ANSTFace)initWithAcFace:(id *)a3;
-- (ANSTFace)initWithAcObject:(id *)a3;
-- (ANSTFace)initWithCoder:(id)a3;
-- (ANSTFace)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8;
-- (ANSTFace)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8 frontal:(BOOL)a9 faceMaskConfidence:(int64_t)a10 eyeCoveringConfidence:(int64_t)a11 poseEstimate:(id)a12 skinToneEstimate:(id)a13 smileEstimate:(id)a14 eyeBlinkEstimate:(id)a15 eyeRectEstimate:(id)a16;
+- (ANSTFace)initWithAcFace:(id *)face;
+- (ANSTFace)initWithAcObject:(id *)object;
+- (ANSTFace)initWithCoder:(id)coder;
+- (ANSTFace)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance;
+- (ANSTFace)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance frontal:(BOOL)frontal faceMaskConfidence:(int64_t)self0 eyeCoveringConfidence:(int64_t)self1 poseEstimate:(id)self2 skinToneEstimate:(id)self3 smileEstimate:(id)self4 eyeBlinkEstimate:(id)self5 eyeRectEstimate:(id)self6;
 - (id)debugJSONDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTFace
@@ -22,32 +22,32 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTFace)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8
+- (ANSTFace)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance
 {
-  v10 = a5;
+  categoryCopy = category;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v11, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTFace)initWithAcObject:(id *)a3
+- (ANSTFace)initWithAcObject:(id *)object
 {
   result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTFace)initWithAcFace:(id *)a3
+- (ANSTFace)initWithAcFace:(id *)face
 {
-  if (a3->var16)
+  if (face->var16)
   {
     v5 = [ANST3DPoseEstimate alloc];
-    v7 = objc_msgSend_initWithYaw_roll_refinedYaw_refinedRoll_refinedPitch_(v5, v6, a3->var6, a3->var7, a3->var8, a3->var9, a3->var10);
+    v7 = objc_msgSend_initWithYaw_roll_refinedYaw_refinedRoll_refinedPitch_(v5, v6, face->var6, face->var7, face->var8, face->var9, face->var10);
   }
 
   else
@@ -55,10 +55,10 @@
     v7 = 0;
   }
 
-  if (a3->var40)
+  if (face->var40)
   {
     v8 = [ANSTSkinToneEstimate alloc];
-    v10 = objc_msgSend_initWithTypeIConfidence_typeIIConfidence_typeIIIConfidence_typeIVConfidence_typeVConfidence_typeVIConfidence_firmwareConfidence_(v8, v9, a3->var29, a3->var30, a3->var31, a3->var32, a3->var33, a3->var34, a3->var35);
+    v10 = objc_msgSend_initWithTypeIConfidence_typeIIConfidence_typeIIIConfidence_typeIVConfidence_typeVConfidence_typeVIConfidence_firmwareConfidence_(v8, v9, face->var29, face->var30, face->var31, face->var32, face->var33, face->var34, face->var35);
   }
 
   else
@@ -66,10 +66,10 @@
     v10 = 0;
   }
 
-  if (a3->var19)
+  if (face->var19)
   {
     v11 = [ANSTSmileEstimate alloc];
-    v13 = objc_msgSend_initWithSmile_(v11, v12, a3->var11);
+    v13 = objc_msgSend_initWithSmile_(v11, v12, face->var11);
   }
 
   else
@@ -77,10 +77,10 @@
     v13 = 0;
   }
 
-  if (a3->var18)
+  if (face->var18)
   {
     v14 = [ANSTEyeBlinkEstimate alloc];
-    v16 = objc_msgSend_initWithBlinkLeft_blinkRight_(v14, v15, a3->var12, a3->var13);
+    v16 = objc_msgSend_initWithBlinkLeft_blinkRight_(v14, v15, face->var12, face->var13);
   }
 
   else
@@ -88,10 +88,10 @@
     v16 = 0;
   }
 
-  if (a3->var17)
+  if (face->var17)
   {
     v17 = [ANSTEyeRectEstimate alloc];
-    v20 = objc_msgSend_initWithEyeRectLeft_eyeRectRight_(v17, v18, v19, a3->var14.var0, a3->var14.var1, a3->var14.var2, a3->var14.var3, a3->var15.var0, a3->var15.var1, a3->var15.var2, a3->var15.var3);
+    v20 = objc_msgSend_initWithEyeRectLeft_eyeRectRight_(v17, v18, v19, face->var14.var0, face->var14.var1, face->var14.var2, face->var14.var3, face->var15.var0, face->var15.var1, face->var15.var2, face->var15.var3);
   }
 
   else
@@ -99,72 +99,72 @@
     v20 = 0;
   }
 
-  var0 = a3->var0;
-  var1 = a3->var1;
-  v23 = ANSTObjectCategoryFromAcDetCategory(a3->var2);
-  *&v24 = a3->var5;
-  v26 = objc_msgSend_initWithObjectID_groupID_category_boundingBox_confidence_distance_frontal_faceMaskConfidence_eyeCoveringConfidence_poseEstimate_skinToneEstimate_smileEstimate_eyeBlinkEstimate_eyeRectEstimate_(self, v25, var0, var1, v23, a3->var4, a3->var20 != 0, a3->var24, a3->var3.var0, a3->var3.var1, a3->var3.var2, a3->var3.var3, v24, a3->var28, v7, v10, v13, v16, v20);
+  var0 = face->var0;
+  var1 = face->var1;
+  v23 = ANSTObjectCategoryFromAcDetCategory(face->var2);
+  *&v24 = face->var5;
+  v26 = objc_msgSend_initWithObjectID_groupID_category_boundingBox_confidence_distance_frontal_faceMaskConfidence_eyeCoveringConfidence_poseEstimate_skinToneEstimate_smileEstimate_eyeBlinkEstimate_eyeRectEstimate_(self, v25, var0, var1, v23, face->var4, face->var20 != 0, face->var24, face->var3.var0, face->var3.var1, face->var3.var2, face->var3.var3, v24, face->var28, v7, v10, v13, v16, v20);
 
   return v26;
 }
 
-- (ANSTFace)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8 frontal:(BOOL)a9 faceMaskConfidence:(int64_t)a10 eyeCoveringConfidence:(int64_t)a11 poseEstimate:(id)a12 skinToneEstimate:(id)a13 smileEstimate:(id)a14 eyeBlinkEstimate:(id)a15 eyeRectEstimate:(id)a16
+- (ANSTFace)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance frontal:(BOOL)frontal faceMaskConfidence:(int64_t)self0 eyeCoveringConfidence:(int64_t)self1 poseEstimate:(id)self2 skinToneEstimate:(id)self3 smileEstimate:(id)self4 eyeBlinkEstimate:(id)self5 eyeRectEstimate:(id)self6
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v25 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
-  v44 = a16;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  estimateCopy = estimate;
+  toneEstimateCopy = toneEstimate;
+  smileEstimateCopy = smileEstimate;
+  blinkEstimateCopy = blinkEstimate;
+  rectEstimateCopy = rectEstimate;
   v45.receiver = self;
   v45.super_class = ANSTFace;
-  *&v29 = a8;
-  v30 = [(ANSTObject *)&v45 initWithObjectID:a3 groupID:a4 category:a5 boundingBox:a7 confidence:x distance:y, width, height, v29];
-  v30->_frontal = a9;
-  v30->_faceMaskConfidence = a10;
-  v30->_eyeCoveringConfidence = a11;
+  *&v29 = distance;
+  v30 = [(ANSTObject *)&v45 initWithObjectID:d groupID:iD category:category boundingBox:confidence confidence:x distance:y, width, height, v29];
+  v30->_frontal = frontal;
+  v30->_faceMaskConfidence = maskConfidence;
+  v30->_eyeCoveringConfidence = coveringConfidence;
   poseEstimate = v30->_poseEstimate;
-  v30->_poseEstimate = v25;
-  v32 = v25;
+  v30->_poseEstimate = estimateCopy;
+  v32 = estimateCopy;
 
   v30->_poseEstimateExists = v32 != 0;
   skinToneEstimate = v30->_skinToneEstimate;
-  v30->_skinToneEstimate = v26;
-  v34 = v26;
+  v30->_skinToneEstimate = toneEstimateCopy;
+  v34 = toneEstimateCopy;
 
   v30->_skinToneEstimateExists = v34 != 0;
   smileEstimate = v30->_smileEstimate;
-  v30->_smileEstimate = v27;
-  v36 = v27;
+  v30->_smileEstimate = smileEstimateCopy;
+  v36 = smileEstimateCopy;
 
   v30->_smileEstimateExists = v36 != 0;
   eyeBlinkEstimate = v30->_eyeBlinkEstimate;
-  v30->_eyeBlinkEstimate = v28;
-  v38 = v28;
+  v30->_eyeBlinkEstimate = blinkEstimateCopy;
+  v38 = blinkEstimateCopy;
 
   v30->_eyeBlinkEstimateExists = v38 != 0;
   eyeRectEstimate = v30->_eyeRectEstimate;
-  v30->_eyeRectEstimate = v44;
+  v30->_eyeRectEstimate = rectEstimateCopy;
 
-  v30->_eyeRectEstimateExists = v44 != 0;
+  v30->_eyeRectEstimateExists = rectEstimateCopy != 0;
   return v30;
 }
 
-- (ANSTFace)initWithCoder:(id)a3
+- (ANSTFace)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v68.receiver = self;
   v68.super_class = ANSTFace;
-  v5 = [(ANSTObject *)&v68 initWithCoder:v4];
+  v5 = [(ANSTObject *)&v68 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_21;
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_isFrontal);
   v10 = objc_msgSend_decodeObjectOfClass_forKey_(v6, v9, v7, v8);
@@ -321,15 +321,15 @@ LABEL_21:
   return v66;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v76.receiver = self;
   v76.super_class = ANSTFace;
-  [(ANSTObject *)&v76 encodeWithCoder:v4];
+  [(ANSTObject *)&v76 encodeWithCoder:coderCopy];
   frontal = self->_frontal;
   v6 = MEMORY[0x277CCABB0];
-  v7 = v4;
+  v7 = coderCopy;
   v9 = objc_msgSend_numberWithBool_(v6, v8, frontal);
   v10 = NSStringFromSelector(sel_isFrontal);
   objc_msgSend_encodeObject_forKey_(v7, v11, v9, v10);
@@ -662,8 +662,8 @@ LABEL_21:
 {
   v156.receiver = self;
   v156.super_class = ANSTFace;
-  v3 = [(ANSTObject *)&v156 debugJSONDictionary];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  debugJSONDictionary = [(ANSTObject *)&v156 debugJSONDictionary];
+  v6 = objc_msgSend_mutableCopy(debugJSONDictionary, v4, v5);
 
   v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v7, self->_frontal);
   objc_msgSend_setObject_forKeyedSubscript_(v6, v9, v8, @"isFrontal");

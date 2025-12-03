@@ -1,21 +1,21 @@
 @interface SXDocumentLayout
 - (NSString)description;
-- (SXDocumentLayout)initWithWidth:(int64_t)a3 margin:(int64_t)a4 gutter:(int64_t)a5 columns:(unint64_t)a6;
+- (SXDocumentLayout)initWithWidth:(int64_t)width margin:(int64_t)margin gutter:(int64_t)gutter columns:(unint64_t)columns;
 @end
 
 @implementation SXDocumentLayout
 
-- (SXDocumentLayout)initWithWidth:(int64_t)a3 margin:(int64_t)a4 gutter:(int64_t)a5 columns:(unint64_t)a6
+- (SXDocumentLayout)initWithWidth:(int64_t)width margin:(int64_t)margin gutter:(int64_t)gutter columns:(unint64_t)columns
 {
   v11.receiver = self;
   v11.super_class = SXDocumentLayout;
   result = [(SXDocumentLayout *)&v11 init];
   if (result)
   {
-    result->_width = a3;
-    result->_margin = a4;
-    result->_gutter = a5;
-    result->_columns = a6;
+    result->_width = width;
+    result->_margin = margin;
+    result->_gutter = gutter;
+    result->_columns = columns;
   }
 
   return result;

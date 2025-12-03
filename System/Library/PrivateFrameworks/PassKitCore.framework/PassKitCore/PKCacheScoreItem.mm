@@ -1,7 +1,7 @@
 @interface PKCacheScoreItem
 - (BOOL)hasExpired;
 - (PKCacheScoreItem)init;
-- (PKCacheScoreItem)initWithCoder:(id)a3;
+- (PKCacheScoreItem)initWithCoder:(id)coder;
 @end
 
 @implementation PKCacheScoreItem
@@ -13,9 +13,9 @@
   v2 = [(PKCacheScoreItem *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     insertDate = v2->_insertDate;
-    v2->_insertDate = v3;
+    v2->_insertDate = date;
   }
 
   return v2;
@@ -24,21 +24,21 @@
 - (BOOL)hasExpired
 {
   v2 = [(NSDate *)self->_insertDate dateByAddingTimeInterval:10368000.0];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 compare:v3] == -1;
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [v2 compare:date] == -1;
 
   return v4;
 }
 
-- (PKCacheScoreItem)initWithCoder:(id)a3
+- (PKCacheScoreItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCacheScoreItem;
   v5 = [(PKCacheScoreItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     insertDate = v5->_insertDate;
     v5->_insertDate = v6;
   }

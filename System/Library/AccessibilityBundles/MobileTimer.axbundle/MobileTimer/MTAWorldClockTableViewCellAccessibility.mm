@@ -1,23 +1,23 @@
 @interface MTAWorldClockTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityCityName;
 - (id)accessibilityLabel;
 @end
 
 @implementation MTAWorldClockTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAWorldClockTableViewCell" hasInstanceMethod:@"city" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WorldClockCity" hasInstanceMethod:@"alCity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WorldClockCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ALCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTUIWorldClockCellView" hasInstanceMethod:@"digitalClock" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTUIWorldClockCellView" hasInstanceMethod:@"combinedLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockTableViewCell" hasInstanceVariable:@"_clockCellView" withType:"MTUIWorldClockCellView"];
-  [v3 validateClass:@"MTUIAnalogClockView" hasInstanceVariable:@"_nighttime" withType:"c"];
-  [v3 validateClass:@"MTUIWorldClockCellView" hasInstanceVariable:@"_timeZone" withType:"NSTimeZone"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAWorldClockTableViewCell" hasInstanceMethod:@"city" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WorldClockCity" hasInstanceMethod:@"alCity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WorldClockCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ALCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTUIWorldClockCellView" hasInstanceMethod:@"digitalClock" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTUIWorldClockCellView" hasInstanceMethod:@"combinedLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockTableViewCell" hasInstanceVariable:@"_clockCellView" withType:"MTUIWorldClockCellView"];
+  [validationsCopy validateClass:@"MTUIAnalogClockView" hasInstanceVariable:@"_nighttime" withType:"c"];
+  [validationsCopy validateClass:@"MTUIWorldClockCellView" hasInstanceVariable:@"_timeZone" withType:"NSTimeZone"];
 }
 
 - (id)_accessibilityCityName
@@ -37,13 +37,13 @@
 {
   v3 = [(MTAWorldClockTableViewCellAccessibility *)self safeValueForKey:@"_clockCellView"];
   v4 = [v3 safeValueForKey:@"combinedLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  v6 = [(MTAWorldClockTableViewCellAccessibility *)self _accessibilityCityName];
+  _accessibilityCityName = [(MTAWorldClockTableViewCellAccessibility *)self _accessibilityCityName];
   v7 = [v3 safeValueForKey:@"_timeZone"];
-  v8 = [v7 secondsFromGMT];
-  v9 = [MEMORY[0x29EDB8E60] systemTimeZone];
-  v10 = v8 - [v9 secondsFromGMT];
+  secondsFromGMT = [v7 secondsFromGMT];
+  systemTimeZone = [MEMORY[0x29EDB8E60] systemTimeZone];
+  v10 = secondsFromGMT - [systemTimeZone secondsFromGMT];
 
   v11 = [MEMORY[0x29EDB8DB0] dateWithTimeIntervalSinceNow:v10];
   v14 = AXDateStringForFormat();

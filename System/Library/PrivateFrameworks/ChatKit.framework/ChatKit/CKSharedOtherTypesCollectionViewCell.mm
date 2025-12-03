@@ -1,54 +1,54 @@
 @interface CKSharedOtherTypesCollectionViewCell
 - (UIImageView)thumbnailImageView;
-- (void)configureWithAttachmentItem:(id)a3;
-- (void)configureWithThumbnail:(id)a3 fileURL:(id)a4;
+- (void)configureWithAttachmentItem:(id)item;
+- (void)configureWithThumbnail:(id)thumbnail fileURL:(id)l;
 - (void)layoutSubviews;
 @end
 
 @implementation CKSharedOtherTypesCollectionViewCell
 
-- (void)configureWithThumbnail:(id)a3 fileURL:(id)a4
+- (void)configureWithThumbnail:(id)thumbnail fileURL:(id)l
 {
-  v5 = a3;
-  v6 = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
-  [v6 setImage:v5];
+  thumbnailCopy = thumbnail;
+  thumbnailImageView = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
+  [thumbnailImageView setImage:thumbnailCopy];
 
-  v7 = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
+  thumbnailImageView2 = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
-  [v5 size];
+  [thumbnailCopy size];
   v11 = v10;
   v13 = v12;
 
-  [v7 setBounds:{v8, v9, v11, v13}];
+  [thumbnailImageView2 setBounds:{v8, v9, v11, v13}];
   [(CKSharedOtherTypesCollectionViewCell *)self setNeedsLayout];
 
   [(CKSharedOtherTypesCollectionViewCell *)self layoutIfNeeded];
 }
 
-- (void)configureWithAttachmentItem:(id)a3
+- (void)configureWithAttachmentItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
-  v6 = [v4 fileIcon];
-  [v5 setImage:v6];
+  itemCopy = item;
+  thumbnailImageView = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
+  fileIcon = [itemCopy fileIcon];
+  [thumbnailImageView setImage:fileIcon];
 
-  v7 = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
+  thumbnailImageView2 = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
-  v10 = [v4 fileIcon];
-  [v10 size];
-  [v7 setBounds:{v8, v9, v11, v12}];
+  fileIcon2 = [itemCopy fileIcon];
+  [fileIcon2 size];
+  [thumbnailImageView2 setBounds:{v8, v9, v11, v12}];
 
-  v13 = [v4 previewItemURL];
+  previewItemURL = [itemCopy previewItemURL];
 
-  v14 = [v13 absoluteString];
-  v15 = [v14 lastPathComponent];
-  v18 = [v15 stringByRemovingPercentEncoding];
+  absoluteString = [previewItemURL absoluteString];
+  lastPathComponent = [absoluteString lastPathComponent];
+  stringByRemovingPercentEncoding = [lastPathComponent stringByRemovingPercentEncoding];
 
-  v16 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
-  v17 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:v18];
-  [v16 setAttributedText:v17];
+  previewTitleLabel = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
+  v17 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:stringByRemovingPercentEncoding];
+  [previewTitleLabel setAttributedText:v17];
 
   [(CKSharedOtherTypesCollectionViewCell *)self setNeedsLayout];
   [(CKSharedOtherTypesCollectionViewCell *)self layoutIfNeeded];
@@ -63,8 +63,8 @@
     v5 = self->_thumbnailImageView;
     self->_thumbnailImageView = v4;
 
-    v6 = [(CKSharedAssetCollectionViewCell *)self previewView];
-    [v6 addSubview:self->_thumbnailImageView];
+    previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
+    [previewView addSubview:self->_thumbnailImageView];
 
     thumbnailImageView = self->_thumbnailImageView;
   }
@@ -77,8 +77,8 @@
   v26.receiver = self;
   v26.super_class = CKSharedOtherTypesCollectionViewCell;
   [(CKSharedContentsCollectionViewCell *)&v26 layoutSubviews];
-  v3 = [(CKSharedAssetCollectionViewCell *)self previewView];
-  [v3 bounds];
+  previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
+  [previewView bounds];
   v5 = v4;
   v24 = v6;
   v25 = v4;
@@ -86,8 +86,8 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
-  [v12 frame];
+  thumbnailImageView = [(CKSharedOtherTypesCollectionViewCell *)self thumbnailImageView];
+  [thumbnailImageView frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -111,7 +111,7 @@
   v30.origin.y = v16;
   v30.size.width = v18;
   v30.size.height = v20;
-  [v12 setFrame:{v22, v23 - CGRectGetHeight(v30) * 0.5, v18, v20}];
+  [thumbnailImageView setFrame:{v22, v23 - CGRectGetHeight(v30) * 0.5, v18, v20}];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_RevalidateFaceAreaPoints
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RevalidateFaceAreaPoints
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v122[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PLModelMigrationActionBackground *)self resumeMarker];
+  contextCopy = context;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -16,9 +16,9 @@
   v10 = MEMORY[0x1E696AB28];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K.@count > 0", @"detectedFaces"];
   v122[0] = v11;
-  if (v6)
+  if (resumeMarker)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"addedDate", v6];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"addedDate", resumeMarker];
   }
 
   else
@@ -52,7 +52,7 @@
   v79 = __Block_byref_object_dispose__1061;
   v80 = 0;
   obj = 0;
-  v18 = [v5 executeFetchRequest:v9 error:&obj];
+  v18 = [contextCopy executeFetchRequest:v9 error:&obj];
   objc_storeStrong(&v80, obj);
   if (v18)
   {
@@ -62,8 +62,8 @@
 
     if (v21)
     {
-      v22 = [(PLModelMigrationActionBackground *)self logger];
-      v23 = v22 == 0;
+      logger = [(PLModelMigrationActionBackground *)self logger];
+      v23 = logger == 0;
 
       if (v23)
       {
@@ -137,7 +137,7 @@
     v73 = &v75;
     v40 = v19;
     v71 = v40;
-    v41 = [v5 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v70];
+    v41 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v70];
     if (v41 && !v76[5])
     {
       objc_storeStrong(v76 + 5, v41);
@@ -147,8 +147,8 @@
 
       if (v51)
       {
-        v52 = [(PLModelMigrationActionBackground *)self logger];
-        v53 = v52 == 0;
+        logger2 = [(PLModelMigrationActionBackground *)self logger];
+        v53 = logger2 == 0;
 
         if (!v53)
         {
@@ -229,8 +229,8 @@ LABEL_24:
 
       if (v43)
       {
-        v44 = [(PLModelMigrationActionBackground *)self logger];
-        v45 = v44 == 0;
+        logger3 = [(PLModelMigrationActionBackground *)self logger];
+        v45 = logger3 == 0;
 
         if (!v45)
         {
@@ -267,9 +267,9 @@ LABEL_24:
           memset(buf, 0, sizeof(buf));
           v46 = PLMigrationGetLog();
           os_log_type_enabled(v46, OS_LOG_TYPE_INFO);
-          v47 = [v40 completedUnitCount];
+          completedUnitCount = [v40 completedUnitCount];
           v85 = 134217984;
-          v86 = v47;
+          v86 = completedUnitCount;
           LODWORD(v68) = 12;
           v48 = _os_log_send_and_compose_impl();
 
@@ -282,9 +282,9 @@ LABEL_24:
         v58 = PLMigrationGetLog();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
         {
-          v59 = [v40 completedUnitCount];
+          completedUnitCount2 = [v40 completedUnitCount];
           *buf = 134217984;
-          *&buf[4] = v59;
+          *&buf[4] = completedUnitCount2;
           _os_log_impl(&dword_19BF1F000, v58, OS_LOG_TYPE_INFO, "Completed update of %lu assets", buf, 0xCu);
         }
 
@@ -303,8 +303,8 @@ LABEL_35:
 
   if (v29)
   {
-    v30 = [(PLModelMigrationActionBackground *)self logger];
-    v31 = v30 == 0;
+    logger4 = [(PLModelMigrationActionBackground *)self logger];
+    v31 = logger4 == 0;
 
     if (v31)
     {
@@ -384,9 +384,9 @@ LABEL_36:
   }
 
   [(PLModelMigrationActionBackground *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = v76[5];
+    *error = v76[5];
   }
 
   v66 = v82[3];

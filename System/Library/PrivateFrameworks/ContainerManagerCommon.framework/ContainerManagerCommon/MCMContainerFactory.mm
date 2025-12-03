@@ -1,15 +1,15 @@
 @interface MCMContainerFactory
-- (BOOL)deleteURL:(id)a3 forUserIdentity:(id)a4 error:(id *)a5;
-- (BOOL)deleteURL:(id)a3 forUserIdentity:(id)a4 reclaimSoon:(BOOL)a5 error:(id *)a6;
-- (BOOL)upgradeContainer:(id)a3 clientIdentity:(id)a4 error:(id *)a5;
+- (BOOL)deleteURL:(id)l forUserIdentity:(id)identity error:(id *)error;
+- (BOOL)deleteURL:(id)l forUserIdentity:(id)identity reclaimSoon:(BOOL)soon error:(id *)error;
+- (BOOL)upgradeContainer:(id)container clientIdentity:(id)identity error:(id *)error;
 - (MCMClientIdentity)clientIdentity;
 - (MCMContainerCache)cache;
-- (MCMContainerFactory)initWithContainerCache:(id)a3 clientIdentity:(id)a4 userIdentityCache:(id)a5;
+- (MCMContainerFactory)initWithContainerCache:(id)cache clientIdentity:(id)identity userIdentityCache:(id)identityCache;
 - (MCMUserIdentityCache)userIdentityCache;
-- (id)_containerPathIdentifierForContainerIdentity:(id)a3;
-- (id)_createContainerForContainerIdentity:(id)a3 error:(id *)a4;
-- (id)_generateConcreteContainerIdentityFromContainerIdentity:(id)a3 error:(id *)a4;
-- (id)containerForContainerIdentity:(id)a3 createIfNecessary:(BOOL)a4 error:(id *)a5;
+- (id)_containerPathIdentifierForContainerIdentity:(id)identity;
+- (id)_createContainerForContainerIdentity:(id)identity error:(id *)error;
+- (id)_generateConcreteContainerIdentityFromContainerIdentity:(id)identity error:(id *)error;
+- (id)containerForContainerIdentity:(id)identity createIfNecessary:(BOOL)necessary error:(id *)error;
 @end
 
 @implementation MCMContainerFactory
@@ -38,45 +38,45 @@
   return result;
 }
 
-- (id)_containerPathIdentifierForContainerIdentity:(id)a3
+- (id)_containerPathIdentifierForContainerIdentity:(id)identity
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identityCopy = identity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 containerPathIdentifier];
+    containerPathIdentifier = [identityCopy containerPathIdentifier];
     goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v5 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  containerPathIdentifier = [uUID UUIDString];
 
-  v6 = [v3 containerClass];
-  [v3 platform];
-  [v3 transient];
-  v7 = [v3 identifier];
+  containerClass = [identityCopy containerClass];
+  [identityCopy platform];
+  [identityCopy transient];
+  identifier = [identityCopy identifier];
   if ((container_class_supports_randomized_path() & 1) == 0)
   {
-    +[MCMContainerPath containerPathIdentifierForCodeSignIdentifier:containerClass:](MCMContainerPath, "containerPathIdentifierForCodeSignIdentifier:containerClass:", v7, [v3 containerClass]);
-    v4 = v10 = v4;
+    +[MCMContainerPath containerPathIdentifierForCodeSignIdentifier:containerClass:](MCMContainerPath, "containerPathIdentifierForCodeSignIdentifier:containerClass:", identifier, [identityCopy containerClass]);
+    containerPathIdentifier = v10 = containerPathIdentifier;
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  if ((containerClass & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     v8 = +[MCMEntitlementBypassList sharedBypassList];
     v9 = v8;
-    if (v6 == 13)
+    if (containerClass == 13)
     {
-      [v8 wellknownSystemGroupContainerForId:v7];
+      [v8 wellknownSystemGroupContainerForId:identifier];
     }
 
     else
     {
-      [v8 wellknownSystemContainerForId:v7];
+      [v8 wellknownSystemContainerForId:identifier];
     }
     v10 = ;
 
@@ -84,7 +84,7 @@ LABEL_11:
     {
       v10 = v10;
 
-      v4 = v10;
+      containerPathIdentifier = v10;
     }
 
     goto LABEL_11;
@@ -95,32 +95,32 @@ LABEL_12:
 LABEL_13:
   v11 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return containerPathIdentifier;
 }
 
-- (id)_generateConcreteContainerIdentityFromContainerIdentity:(id)a3 error:(id *)a4
+- (id)_generateConcreteContainerIdentityFromContainerIdentity:(id)identity error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identityCopy = identity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = identityCopy;
     goto LABEL_13;
   }
 
-  v8 = [v6 identifier];
-  v25 = [v6 userIdentity];
-  v9 = [v6 platform];
-  v10 = [v6 transient];
+  identifier = [identityCopy identifier];
+  userIdentity = [identityCopy userIdentity];
+  platform = [identityCopy platform];
+  transient = [identityCopy transient];
   v26[0] = 1;
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [(MCMContainerFactory *)self _containerPathIdentifierForContainerIdentity:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v12 = [(MCMContainerFactory *)self _containerPathIdentifierForContainerIdentity:identityCopy];
   if (!v12)
   {
     v18 = [[MCMError alloc] initWithErrorType:138];
-    v17 = v25;
-    if (!a4)
+    v17 = userIdentity;
+    if (!error)
     {
 LABEL_11:
       v7 = 0;
@@ -130,34 +130,34 @@ LABEL_11:
 LABEL_9:
     v19 = v18;
     v7 = 0;
-    *a4 = v18;
+    *error = v18;
     goto LABEL_12;
   }
 
-  v24 = a4;
-  v13 = v8;
+  errorCopy = error;
+  v13 = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v6 uuid];
+    uuid = [identityCopy uuid];
 
-    v11 = v14;
+    uUID = uuid;
   }
 
-  v15 = [v6 containerConfig];
-  v16 = [(MCMContainerFactory *)self userIdentityCache];
-  BYTE1(v23) = v10;
+  containerConfig = [identityCopy containerConfig];
+  userIdentityCache = [(MCMContainerFactory *)self userIdentityCache];
+  BYTE1(v23) = transient;
   LOBYTE(v23) = 0;
-  v17 = v25;
-  v8 = v13;
-  v7 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:v11 userIdentity:v25 identifier:v13 containerConfig:v15 platform:v9 containerPathIdentifier:v12 existed:v23 transient:v16 userIdentityCache:v26 error:?];
+  v17 = userIdentity;
+  identifier = v13;
+  v7 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:uUID userIdentity:userIdentity identifier:v13 containerConfig:containerConfig platform:platform containerPathIdentifier:v12 existed:v23 transient:userIdentityCache userIdentityCache:v26 error:?];
 
   if (!v7)
   {
     v20 = [MCMError alloc];
     v18 = [(MCMError *)v20 initWithErrorType:v26[0]];
-    a4 = v24;
-    if (!v24)
+    error = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_11;
     }
@@ -174,32 +174,32 @@ LABEL_13:
   return v7;
 }
 
-- (id)_createContainerForContainerIdentity:(id)a3 error:(id *)a4
+- (id)_createContainerForContainerIdentity:(id)identity error:(id *)error
 {
   v98 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 containerClass];
-  v9 = [v6 userIdentity];
+  identityCopy = identity;
+  identifier = [identityCopy identifier];
+  containerClass = [identityCopy containerClass];
+  userIdentity = [identityCopy userIdentity];
   v10 = +[MCMTestLocks sharedInstance];
   [v10 waitOnLock:7];
 
   v11 = +[MCMDataProtectionManager defaultManager];
-  v12 = [(MCMContainerFactory *)self clientIdentity];
-  v13 = [v11 intendedDataProtectionClassBasedOnEntitlementsForIdentifier:v7 clientIdentity:v12 containerClass:v8 info:0];
+  clientIdentity = [(MCMContainerFactory *)self clientIdentity];
+  v13 = [v11 intendedDataProtectionClassBasedOnEntitlementsForIdentifier:identifier clientIdentity:clientIdentity containerClass:containerClass info:0];
 
   v88 = 0;
   v89 = 0;
-  v14 = [(MCMContainerFactory *)self createStagedContainerForContainerIdentity:v6 finalContainerPath:&v89 dataProtectionClass:v13 error:&v88];
+  v14 = [(MCMContainerFactory *)self createStagedContainerForContainerIdentity:identityCopy finalContainerPath:&v89 dataProtectionClass:v13 error:&v88];
   v15 = v89;
   v16 = v88;
   if (!v14)
   {
     v83 = 0;
-    v24 = 0;
+    containerPath = 0;
     v34 = 0;
     v49 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -207,30 +207,30 @@ LABEL_13:
     goto LABEL_45;
   }
 
-  v80 = v8;
-  v81 = v9;
+  v80 = containerClass;
+  v81 = userIdentity;
   v82 = v16;
-  v77 = a4;
-  v78 = v6;
-  v76 = [v14 containerIdentity];
-  v17 = [v76 containerPathIdentifier];
+  errorCopy = error;
+  v78 = identityCopy;
+  containerIdentity = [v14 containerIdentity];
+  containerPathIdentifier = [containerIdentity containerPathIdentifier];
   v18 = container_log_handle_for_category();
   if (os_signpost_enabled(v18))
   {
-    v19 = [(MCMContainerFactory *)self clientIdentity];
-    v20 = [v19 codeSignInfo];
-    v21 = [v20 identifier];
-    v22 = v21;
+    clientIdentity2 = [(MCMContainerFactory *)self clientIdentity];
+    codeSignInfo = [clientIdentity2 codeSignInfo];
+    identifier2 = [codeSignInfo identifier];
+    v22 = identifier2;
     v23 = @"<unknown>";
     *buf = 138478595;
-    v91 = v17;
-    if (v21)
+    v91 = containerPathIdentifier;
+    if (identifier2)
     {
-      v23 = v21;
+      v23 = identifier2;
     }
 
     v92 = 2113;
-    v93 = v7;
+    v93 = identifier;
     v94 = 2050;
     v95 = v80;
     v96 = 2113;
@@ -238,14 +238,14 @@ LABEL_13:
     _os_signpost_emit_with_name_impl(&dword_1DF2C3000, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CreatingContainer", " uuid=%{private, signpost.description:attribute}@  identifier=%{private, signpost.description:attribute}@  class=%{public, signpost.description:attribute}llu  clientIdentifier=%{private, signpost.description:attribute}@ ", buf, 0x2Au);
   }
 
-  v75 = self;
-  v83 = v17;
-  v79 = v7;
+  selfCopy = self;
+  v83 = containerPathIdentifier;
+  v79 = identifier;
 
-  v24 = [v14 containerPath];
-  v25 = [v15 containerClassPath];
+  containerPath = [v14 containerPath];
+  containerClassPath = [v15 containerClassPath];
   v87 = 0;
-  v26 = [v25 createIfNecessaryWithError:&v87];
+  v26 = [containerClassPath createIfNecessaryWithError:&v87];
   v27 = v87;
 
   if (v26)
@@ -256,10 +256,10 @@ LABEL_13:
     {
 
       v30 = +[MCMFileManager defaultManager];
-      v31 = [v24 containerRootURL];
-      v32 = [v15 containerRootURL];
+      containerRootURL = [containerPath containerRootURL];
+      containerRootURL2 = [v15 containerRootURL];
       v86 = 0;
-      v33 = [v30 moveItemAtURL:v31 toURL:v32 error:&v86];
+      v33 = [v30 moveItemAtURL:containerRootURL toURL:containerRootURL2 error:&v86];
       v34 = v86;
 
       if (v33)
@@ -270,33 +270,33 @@ LABEL_13:
       v35 = container_log_handle_for_category();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v74 = [v24 containerRootURL];
-        v43 = [v74 path];
-        v44 = [v15 containerRootURL];
-        v45 = [v44 path];
+        containerRootURL3 = [containerPath containerRootURL];
+        path = [containerRootURL3 path];
+        containerRootURL4 = [v15 containerRootURL];
+        path2 = [containerRootURL4 path];
         *buf = 138412802;
-        v91 = v43;
+        v91 = path;
         v92 = 2112;
-        v93 = v45;
+        v93 = path2;
         v94 = 2112;
         v95 = v34;
         _os_log_error_impl(&dword_1DF2C3000, v35, OS_LOG_TYPE_ERROR, "Failed to move staging dir: %@ to live dir: %@; error = %@", buf, 0x20u);
       }
 
-      v36 = [v34 domain];
-      if ([v36 isEqualToString:v29])
+      domain = [v34 domain];
+      if ([domain isEqualToString:v29])
       {
-        v37 = [v34 code];
+        code = [v34 code];
 
-        if (v37 == 66)
+        if (code == 66)
         {
 
           v63 = [MCMError alloc];
-          v64 = [v15 containerRootURL];
-          v65 = [v64 path];
-          v66 = [(MCMError *)v63 initWithErrorType:130 category:1 path:v65 POSIXerrno:66];
+          containerRootURL5 = [v15 containerRootURL];
+          path3 = [containerRootURL5 path];
+          v66 = [(MCMError *)v63 initWithErrorType:130 category:1 path:path3 POSIXerrno:66];
 
-          p_super = v64;
+          p_super = containerRootURL5;
           goto LABEL_21;
         }
       }
@@ -305,13 +305,13 @@ LABEL_13:
       {
       }
 
-      v38 = [v34 domain];
-      if (![v38 isEqualToString:v29])
+      domain2 = [v34 domain];
+      if (![domain2 isEqualToString:v29])
       {
 
 LABEL_32:
         v66 = [[MCMError alloc] initWithErrorType:8];
-        v7 = v79;
+        identifier = v79;
         p_super = &v82->super;
         goto LABEL_33;
       }
@@ -323,12 +323,12 @@ LABEL_32:
         goto LABEL_32;
       }
 
-      v40 = [v15 containerClassPath];
-      [v40 setExists:0];
+      containerClassPath2 = [v15 containerClassPath];
+      [containerClassPath2 setExists:0];
 
-      v41 = [v15 containerClassPath];
+      containerClassPath3 = [v15 containerClassPath];
       v87 = v34;
-      v42 = [v41 createIfNecessaryWithError:&v87];
+      v42 = [containerClassPath3 createIfNecessaryWithError:&v87];
       v27 = v87;
 
       v28 = 1;
@@ -338,13 +338,13 @@ LABEL_32:
       }
     }
 
-    v7 = v79;
+    identifier = v79;
     if (_os_feature_enabled_impl())
     {
       v50 = +[MCMFileManager defaultManager];
-      v51 = [v15 containerRootURL];
+      containerRootURL6 = [v15 containerRootURL];
       v85 = 0;
-      v52 = [v50 enableFastDiskUsageForURL:v51 error:&v85];
+      v52 = [v50 enableFastDiskUsageForURL:containerRootURL6 error:&v85];
       v53 = v85;
 
       if ((v52 & 1) == 0)
@@ -352,10 +352,10 @@ LABEL_32:
         v54 = container_log_handle_for_category();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
         {
-          v72 = [v15 containerRootURL];
-          v73 = [v72 path];
+          containerRootURL7 = [v15 containerRootURL];
+          path4 = [containerRootURL7 path];
           *buf = 138412546;
-          v91 = v73;
+          v91 = path4;
           v92 = 2112;
           v93 = v53;
           _os_log_error_impl(&dword_1DF2C3000, v54, OS_LOG_TYPE_ERROR, "Failed to enable fast disk stats on new container [%@]; error = %@", buf, 0x16u);
@@ -364,7 +364,7 @@ LABEL_32:
     }
 
     v49 = [v14 metadataByChangingContainerPath:v15];
-    v24 = 0;
+    containerPath = 0;
   }
 
   else
@@ -372,17 +372,17 @@ LABEL_32:
 LABEL_18:
 
     v46 = [MCMError alloc];
-    v47 = [v15 containerClassPath];
-    v48 = [v47 classURL];
-    v66 = [(MCMError *)v46 initWithNSError:v27 url:v48 defaultErrorType:8];
+    containerClassPath4 = [v15 containerClassPath];
+    classURL = [containerClassPath4 classURL];
+    v66 = [(MCMError *)v46 initWithNSError:v27 url:classURL defaultErrorType:8];
 
     p_super = container_log_handle_for_category();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
-      v68 = [v15 classURL];
-      v69 = [v68 path];
+      classURL2 = [v15 classURL];
+      path5 = [classURL2 path];
       *buf = 138412546;
-      v91 = v69;
+      v91 = path5;
       v92 = 2112;
       v93 = v27;
       _os_log_error_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_ERROR, "Failed to create class dir at %@ : %@", buf, 0x16u);
@@ -390,16 +390,16 @@ LABEL_18:
 
     v34 = v27;
 LABEL_21:
-    v7 = v79;
+    identifier = v79;
 LABEL_33:
 
-    v9 = v81;
-    if (!v24)
+    userIdentity = v81;
+    if (!containerPath)
     {
       v49 = 0;
       v16 = v66;
-      a4 = v77;
-      v6 = v78;
+      error = errorCopy;
+      identityCopy = v78;
       goto LABEL_44;
     }
 
@@ -416,9 +416,9 @@ LABEL_33:
       v57 = v81;
     }
 
-    v58 = [v24 containerRootURL];
+    containerRootURL8 = [containerPath containerRootURL];
     v84 = 0;
-    v59 = [(MCMContainerFactory *)v75 deleteURL:v58 forUserIdentity:v57 reclaimSoon:1 error:&v84];
+    v59 = [(MCMContainerFactory *)selfCopy deleteURL:containerRootURL8 forUserIdentity:v57 reclaimSoon:1 error:&v84];
     v14 = v84;
 
     if (!v59)
@@ -426,15 +426,15 @@ LABEL_33:
       v60 = container_log_handle_for_category();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_FAULT))
       {
-        v70 = [v24 containerRootURL];
-        v71 = [v70 path];
+        containerRootURL9 = [containerPath containerRootURL];
+        path6 = [containerRootURL9 path];
         *buf = 138412546;
-        v91 = v71;
+        v91 = path6;
         v92 = 2112;
         v93 = v14;
         _os_log_fault_impl(&dword_1DF2C3000, v60, OS_LOG_TYPE_FAULT, "Failed to remove staging dir: %@; error = %@", buf, 0x16u);
 
-        v7 = v79;
+        identifier = v79;
       }
     }
 
@@ -442,13 +442,13 @@ LABEL_33:
     v82 = v66;
   }
 
-  a4 = v77;
-  v6 = v78;
-  v9 = v81;
+  error = errorCopy;
+  identityCopy = v78;
+  userIdentity = v81;
   v16 = v82;
 LABEL_44:
-  v14 = v76;
-  if (!a4)
+  v14 = containerIdentity;
+  if (!error)
   {
     goto LABEL_47;
   }
@@ -457,7 +457,7 @@ LABEL_45:
   if (!v49)
   {
     v16 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
 LABEL_47:
@@ -467,12 +467,12 @@ LABEL_47:
   return v49;
 }
 
-- (BOOL)deleteURL:(id)a3 forUserIdentity:(id)a4 reclaimSoon:(BOOL)a5 error:(id *)a6
+- (BOOL)deleteURL:(id)l forUserIdentity:(id)identity reclaimSoon:(BOOL)soon error:(id *)error
 {
-  v7 = a5;
+  soonCopy = soon;
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  identityCopy = identity;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -499,23 +499,23 @@ LABEL_47:
   v37[3] = __Block_byref_object_copy__12874;
   v37[4] = __Block_byref_object_dispose__12875;
   v38 = 0;
-  v12 = [(MCMContainerFactory *)self userIdentityCache];
-  v13 = [v12 defaultUserIdentity];
+  userIdentityCache = [(MCMContainerFactory *)self userIdentityCache];
+  defaultUserIdentity = [userIdentityCache defaultUserIdentity];
 
   v14 = MCMSharedDeathrowQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MCMContainerFactory_deleteURL_forUserIdentity_reclaimSoon_error___block_invoke;
   block[3] = &unk_1E86B0C50;
-  v15 = v11;
+  v15 = identityCopy;
   v28 = v15;
   v32 = &v49;
   v33 = v37;
   v34 = v47;
-  v16 = v10;
+  v16 = lCopy;
   v29 = v16;
-  v30 = self;
-  v17 = v13;
+  selfCopy = self;
+  v17 = defaultUserIdentity;
   v31 = v17;
   v35 = &v43;
   v36 = &v39;
@@ -523,13 +523,13 @@ LABEL_47:
 
   if (v44[3])
   {
-    if (v7)
+    if (soonCopy)
     {
       v18 = [MCMCommandContext alloc];
-      v19 = [(MCMContainerFactory *)self clientIdentity];
-      v20 = [(MCMContainerFactory *)self userIdentityCache];
+      clientIdentity = [(MCMContainerFactory *)self clientIdentity];
+      userIdentityCache2 = [(MCMContainerFactory *)self userIdentityCache];
       v21 = containermanager_copy_global_configuration();
-      v22 = [(MCMCommandContext *)v18 initWithClientIdentity:v19 containerCache:0 containerFactory:self userIdentityCache:v20 clientFactory:0 kernelPersonaID:0 globalConfiguration:v21];
+      v22 = [(MCMCommandContext *)v18 initWithClientIdentity:clientIdentity containerCache:0 containerFactory:self userIdentityCache:userIdentityCache2 clientFactory:0 kernelPersonaID:0 globalConfiguration:v21];
 
       v23 = [[MCMCommandOperationReclaimDiskSpace alloc] initWithAsynchronously:1 context:v22 resultPromise:0];
       [(MCMCommandOperationReclaimDiskSpace *)v23 execute];
@@ -546,9 +546,9 @@ LABEL_5:
   }
 
   v24 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = v50[5];
+    *error = v50[5];
   }
 
 LABEL_6:
@@ -754,63 +754,63 @@ uint64_t __67__MCMContainerFactory_deleteURL_forUserIdentity_reclaimSoon_error__
   return v6;
 }
 
-- (BOOL)deleteURL:(id)a3 forUserIdentity:(id)a4 error:(id *)a5
+- (BOOL)deleteURL:(id)l forUserIdentity:(id)identity error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMContainerFactory *)self deleteURL:a3 forUserIdentity:a4 reclaimSoon:0 error:a5];
+  return [(MCMContainerFactory *)self deleteURL:l forUserIdentity:identity reclaimSoon:0 error:error];
 }
 
-- (id)containerForContainerIdentity:(id)a3 createIfNecessary:(BOOL)a4 error:(id *)a5
+- (id)containerForContainerIdentity:(id)identity createIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v78 = a4;
+  necessaryCopy = necessary;
   v96 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v79 = [v6 transient];
-  LODWORD(v7) = [v6 platform];
-  v8 = [(MCMContainerFactory *)self clientIdentity];
-  v9 = [v8 codeSignInfo];
-  v10 = [v9 identifier];
+  identityCopy = identity;
+  transient = [identityCopy transient];
+  LODWORD(platform) = [identityCopy platform];
+  clientIdentity = [(MCMContainerFactory *)self clientIdentity];
+  codeSignInfo = [clientIdentity codeSignInfo];
+  identifier = [codeSignInfo identifier];
 
-  v81 = [v6 userIdentity];
-  v11 = [v6 containerClass];
-  v82 = self;
-  if (!v7)
+  userIdentity = [identityCopy userIdentity];
+  containerClass = [identityCopy containerClass];
+  selfCopy = self;
+  if (!platform)
   {
-    v12 = [(MCMContainerFactory *)self clientIdentity];
-    v7 = [v12 platform];
+    clientIdentity2 = [(MCMContainerFactory *)self clientIdentity];
+    platform = [clientIdentity2 platform];
 
-    v13 = [v6 identityBySettingPlatform:v7];
+    v13 = [identityCopy identityBySettingPlatform:platform];
 
-    v6 = v13;
+    identityCopy = v13;
   }
 
   v14 = container_log_handle_for_category();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [(MCMContainerFactory *)self clientIdentity];
-    v44 = v43 = v10;
-    v45 = [v44 codeSignInfo];
-    v46 = [v45 entitlements];
+    v44 = v43 = identifier;
+    codeSignInfo2 = [v44 codeSignInfo];
+    entitlements = [codeSignInfo2 entitlements];
     *buf = 138413570;
-    v90 = v6;
+    v90 = identityCopy;
     v91 = 1024;
-    *v92 = v78;
+    *v92 = necessaryCopy;
     *&v92[4] = 1024;
-    *&v92[6] = v7;
+    *&v92[6] = platform;
     *v93 = 1024;
-    *&v93[2] = v79;
+    *&v93[2] = transient;
     LOWORD(v94) = 1024;
-    *(&v94 + 2) = [v46 privileged];
+    *(&v94 + 2) = [entitlements privileged];
     HIWORD(v94) = 2112;
     v95 = v43;
     _os_log_debug_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_DEBUG, "createOrLookup; identity: %@, createIfNecessary: %d, platform: %u, transient: %d, privileged: %d, clientBundleIdentifier: %@", buf, 0x2Eu);
 
-    v10 = v43;
+    identifier = v43;
   }
 
-  if (!v6)
+  if (!identityCopy)
   {
     v18 = [[MCMError alloc] initWithErrorType:38];
     v19 = container_log_handle_for_category();
@@ -832,7 +832,7 @@ LABEL_11:
     {
       v23 = v18;
       v24 = 0;
-      *a5 = v18;
+      *error = v18;
 LABEL_13:
       v25 = v18;
     }
@@ -847,7 +847,7 @@ LABEL_13:
   }
 
   v15 = containermanager_copy_global_configuration();
-  v16 = [v15 isUnsupportedSystemContainerWithContainerClass:v11];
+  v16 = [v15 isUnsupportedSystemContainerWithContainerClass:containerClass];
 
   if (v16)
   {
@@ -863,43 +863,43 @@ LABEL_13:
     goto LABEL_64;
   }
 
-  v75 = v10;
-  v76 = v11;
+  v75 = identifier;
+  v76 = containerClass;
   v21 = 0;
   v18 = 0;
   v24 = 0;
   v26 = 0;
   *&v17 = 136315138;
   v74 = v17;
-  v27 = v82;
+  v27 = selfCopy;
   while (1)
   {
     v28 = v26;
     v29 = v21;
 
-    v30 = [(MCMContainerFactory *)v27 cache];
-    v21 = [v30 classCacheForContainerIdentity:v6];
+    cache = [(MCMContainerFactory *)v27 cache];
+    v21 = [cache classCacheForContainerIdentity:identityCopy];
 
-    v31 = [(MCMContainerFactory *)v27 cache];
+    cache2 = [(MCMContainerFactory *)v27 cache];
     v88 = 0;
-    v24 = [v31 entryForContainerIdentity:v6 classCache:v21 error:&v88];
+    v24 = [cache2 entryForContainerIdentity:identityCopy classCache:v21 error:&v88];
     v18 = v88;
 
     if (v24)
     {
-      if (!v79 || (objc_opt_class(), ((objc_opt_isKindOfClass() | !v78) & 1) != 0))
+      if (!transient || (objc_opt_class(), ((objc_opt_isKindOfClass() | !necessaryCopy) & 1) != 0))
       {
         v22 = 0;
-        v10 = v75;
+        identifier = v75;
         goto LABEL_49;
       }
 
       v32 = objc_alloc(MEMORY[0x1E695DFF8]);
       v80 = v24;
-      v33 = [v24 containerPath];
-      v34 = [v33 containerRootURL];
-      v35 = [v34 path];
-      v36 = [v32 initFileURLWithPath:v35 isDirectory:1];
+      containerPath = [v24 containerPath];
+      containerRootURL = [containerPath containerRootURL];
+      path = [containerRootURL path];
+      v36 = [v32 initFileURLWithPath:path isDirectory:1];
 
       v37 = containermanager_copy_global_configuration();
       LOBYTE(v32) = [v37 isGlobalContainerClass:v76];
@@ -911,11 +911,11 @@ LABEL_13:
 
       else
       {
-        v38 = v81;
+        v38 = userIdentity;
       }
 
       v87 = v18;
-      v40 = [(MCMContainerFactory *)v82 deleteURL:v36 forUserIdentity:v38 reclaimSoon:1 error:&v87, v74];
+      v40 = [(MCMContainerFactory *)selfCopy deleteURL:v36 forUserIdentity:v38 reclaimSoon:1 error:&v87, v74];
       v39 = v87;
 
       if (!v40)
@@ -925,21 +925,21 @@ LABEL_13:
         v52 = container_log_handle_for_category();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
-          v67 = [v36 path];
+          path2 = [v36 path];
           *buf = 138412546;
-          v90 = v67;
+          v90 = path2;
           v91 = 2112;
           *v92 = v18;
           _os_log_error_impl(&dword_1DF2C3000, v52, OS_LOG_TYPE_ERROR, "Failed to remove transient container at %@; error = %@", buf, 0x16u);
         }
 
         v22 = 0;
-        v10 = v75;
+        identifier = v75;
         v24 = v80;
         goto LABEL_49;
       }
 
-      v27 = v82;
+      v27 = selfCopy;
       v24 = v80;
     }
 
@@ -950,12 +950,12 @@ LABEL_13:
         goto LABEL_62;
       }
 
-      if (!v78)
+      if (!necessaryCopy)
       {
         v18 = [[MCMError alloc] initWithErrorType:21];
 LABEL_62:
         v22 = 0;
-        v10 = v75;
+        identifier = v75;
         goto LABEL_11;
       }
 
@@ -963,7 +963,7 @@ LABEL_62:
     }
 
     v86 = v39;
-    v22 = [(MCMContainerFactory *)v27 _createContainerForContainerIdentity:v6 error:&v86, v74];
+    v22 = [(MCMContainerFactory *)v27 _createContainerForContainerIdentity:identityCopy error:&v86, v74];
     v18 = v86;
 
     if (v22)
@@ -995,7 +995,7 @@ LABEL_62:
     }
 
     v22 = 0;
-    v10 = v75;
+    identifier = v75;
     if (!v24)
     {
       goto LABEL_11;
@@ -1008,12 +1008,12 @@ LABEL_62:
   v47 = [v22 verifyWithError:&v85];
   v48 = v85;
 
-  v10 = v75;
+  identifier = v75;
   if (v47)
   {
-    v49 = [(MCMContainerFactory *)v82 cache];
+    cache3 = [(MCMContainerFactory *)selfCopy cache];
     v84 = v48;
-    v50 = [v49 addContainerMetadata:v22 error:&v84];
+    v50 = [cache3 addContainerMetadata:v22 error:&v84];
     v51 = v84;
 
     if (!v50)
@@ -1023,23 +1023,23 @@ LABEL_62:
       v63 = container_log_handle_for_category();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
-        v69 = [v22 containerPath];
-        [v69 containerRootURL];
-        v70 = v6;
+        containerPath2 = [v22 containerPath];
+        [containerPath2 containerRootURL];
+        v70 = identityCopy;
         v72 = v71 = v21;
-        v73 = [v72 path];
+        path3 = [v72 path];
         *buf = 138413058;
         v90 = v22;
         v91 = 2112;
-        *v92 = v73;
+        *v92 = path3;
         *&v92[8] = 1024;
-        *v93 = v79;
+        *v93 = transient;
         *&v93[4] = 2112;
         v94 = v18;
         _os_log_error_impl(&dword_1DF2C3000, v63, OS_LOG_TYPE_ERROR, "Failed to add to cache: %@, url: %@, transient: %d; error = %@", buf, 0x26u);
 
         v21 = v71;
-        v6 = v70;
+        identityCopy = v70;
       }
 
       goto LABEL_11;
@@ -1054,9 +1054,9 @@ LABEL_62:
     v50 = container_log_handle_for_category();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
-      v68 = [v22 shortDescription];
+      shortDescription = [v22 shortDescription];
       *buf = 138412546;
-      v90 = v68;
+      v90 = shortDescription;
       v91 = 2112;
       *v92 = v48;
       _os_log_error_impl(&dword_1DF2C3000, v50, OS_LOG_TYPE_ERROR, "Failed to verify new metadata; metadata = %@, error = %@", buf, 0x16u);
@@ -1073,9 +1073,9 @@ LABEL_49:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v53 = [v24 uuid];
-    v54 = [v6 uuid];
-    v55 = [v53 isEqual:v54];
+    uuid = [v24 uuid];
+    uuid2 = [identityCopy uuid];
+    v55 = [uuid isEqual:uuid2];
 
     if ((v55 & 1) == 0)
     {
@@ -1086,15 +1086,15 @@ LABEL_49:
     }
   }
 
-  if (!v78)
+  if (!necessaryCopy)
   {
     goto LABEL_13;
   }
 
   v56 = v21;
-  v57 = [(MCMContainerFactory *)v82 clientIdentity];
+  clientIdentity3 = [(MCMContainerFactory *)selfCopy clientIdentity];
   v83 = v18;
-  v58 = [(MCMContainerFactory *)v82 upgradeContainer:v24 clientIdentity:v57 error:&v83];
+  v58 = [(MCMContainerFactory *)selfCopy upgradeContainer:v24 clientIdentity:clientIdentity3 error:&v83];
   v25 = v83;
 
   if (!v58)
@@ -1102,11 +1102,11 @@ LABEL_49:
     v59 = container_log_handle_for_category();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
     {
-      v64 = [v24 containerPath];
-      v65 = [v64 containerRootURL];
-      v66 = [v65 path];
+      containerPath3 = [v24 containerPath];
+      containerRootURL2 = [containerPath3 containerRootURL];
+      path4 = [containerRootURL2 path];
       *buf = 138412546;
-      v90 = v66;
+      v90 = path4;
       v91 = 2112;
       *v92 = v25;
       _os_log_error_impl(&dword_1DF2C3000, v59, OS_LOG_TYPE_ERROR, "Failed to migrate container at [%@]; error = %@", buf, 0x16u);
@@ -1121,42 +1121,42 @@ LABEL_57:
   return v24;
 }
 
-- (MCMContainerFactory)initWithContainerCache:(id)a3 clientIdentity:(id)a4 userIdentityCache:(id)a5
+- (MCMContainerFactory)initWithContainerCache:(id)cache clientIdentity:(id)identity userIdentityCache:(id)identityCache
 {
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  cacheCopy = cache;
+  identityCopy = identity;
+  identityCacheCopy = identityCache;
   v16.receiver = self;
   v16.super_class = MCMContainerFactory;
   v12 = [(MCMContainerFactory *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_cache, a3);
-    objc_storeStrong(&v13->_clientIdentity, a4);
-    objc_storeStrong(&v13->_userIdentityCache, a5);
+    objc_storeStrong(&v12->_cache, cache);
+    objc_storeStrong(&v13->_clientIdentity, identity);
+    objc_storeStrong(&v13->_userIdentityCache, identityCache);
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)upgradeContainer:(id)a3 clientIdentity:(id)a4 error:(id *)a5
+- (BOOL)upgradeContainer:(id)container clientIdentity:(id)identity error:(id *)error
 {
-  v44 = a5;
+  errorCopy = error;
   v65 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v45 = a4;
-  v48 = [v7 schemaVersion];
-  v8 = [v7 containerPath];
-  v49 = [v7 identifier];
-  v9 = [v8 containerClass];
-  v10 = [(MCMContainerFactory *)self userIdentityCache];
-  v11 = [v8 userIdentity];
-  v47 = [v10 libraryRepairForUserIdentity:v11];
+  containerCopy = container;
+  identityCopy = identity;
+  schemaVersion = [containerCopy schemaVersion];
+  containerPath = [containerCopy containerPath];
+  identifier = [containerCopy identifier];
+  containerClass = [containerPath containerClass];
+  userIdentityCache = [(MCMContainerFactory *)self userIdentityCache];
+  userIdentity = [containerPath userIdentity];
+  v47 = [userIdentityCache libraryRepairForUserIdentity:userIdentity];
 
-  [v8 containerClass];
+  [containerPath containerClass];
   if (!container_class_supports_data_subdirectory())
   {
     v46 = 0;
@@ -1172,7 +1172,7 @@ LABEL_57:
   v60 = &v59;
   v61 = 0x2020000000;
   v62 = 0;
-  v12 = [v8 containerDataURL];
+  containerDataURL = [containerPath containerDataURL];
   v57[5] = &v59;
   v58 = 0;
   v57[0] = MEMORY[0x1E69E9820];
@@ -1180,43 +1180,43 @@ LABEL_57:
   v57[2] = __71__MCMContainerFactory_Upgrades__upgradeContainer_clientIdentity_error___block_invoke;
   v57[3] = &unk_1E86B0C78;
   v57[4] = buf;
-  v13 = [v47 fixAndRetryIfPermissionsErrorWithURL:v12 containerPath:v8 containerIdentifier:v49 error:&v58 duringBlock:v57];
+  v13 = [v47 fixAndRetryIfPermissionsErrorWithURL:containerDataURL containerPath:containerPath containerIdentifier:identifier error:&v58 duringBlock:v57];
   v46 = v58;
 
   if ((v13 & 1) == 0)
   {
     v29 = [MCMError alloc];
-    v30 = [v8 containerDataURL];
-    v14 = [(MCMError *)v29 initWithNSError:v46 url:v30 defaultErrorType:105];
+    containerDataURL2 = [containerPath containerDataURL];
+    v14 = [(MCMError *)v29 initWithNSError:v46 url:containerDataURL2 defaultErrorType:105];
     goto LABEL_26;
   }
 
   if (*(*&buf[8] + 24) != 1 || (v60[3] & 1) == 0)
   {
     v56 = 0;
-    v30 = [v7 metadataWithError:{&v56, v44}];
+    containerDataURL2 = [containerCopy metadataWithError:{&v56, errorCopy}];
     v14 = v56;
-    if (v30)
+    if (containerDataURL2)
     {
       v31 = +[MCMDataProtectionManager defaultManager];
-      v32 = [v31 desiredDataProtectionClassForMetadata:v30 clientIdentity:v45];
+      v32 = [v31 desiredDataProtectionClassForMetadata:containerDataURL2 clientIdentity:identityCopy];
 
       v55 = v46;
-      LOBYTE(v31) = [v8 createDataURLIfNecessaryWithDataProtectionClass:v32 error:&v55];
+      LOBYTE(v31) = [containerPath createDataURLIfNecessaryWithDataProtectionClass:v32 error:&v55];
       v33 = v55;
 
       if (v31)
       {
         v34 = &unk_1F5A76F90;
 
-        v48 = &unk_1F5A76F90;
+        schemaVersion = &unk_1F5A76F90;
         v46 = v33;
         goto LABEL_20;
       }
 
       v36 = [MCMError alloc];
-      v37 = [v8 containerDataURL];
-      v38 = [(MCMError *)v36 initWithNSError:v33 url:v37 defaultErrorType:106];
+      containerDataURL3 = [containerPath containerDataURL];
+      v38 = [(MCMError *)v36 initWithNSError:v33 url:containerDataURL3 defaultErrorType:106];
 
       v46 = v33;
       v14 = v38;
@@ -1228,12 +1228,12 @@ LABEL_26:
     _Block_object_dispose(buf, 8);
     v16 = 0;
 LABEL_27:
-    if (v44)
+    if (errorCopy)
     {
       v39 = v14;
       v18 = 0;
       v17 = 0;
-      *v44 = v14;
+      *errorCopy = v14;
     }
 
     else
@@ -1251,9 +1251,9 @@ LABEL_20:
   _Block_object_dispose(buf, 8);
 LABEL_7:
   v54 = 0;
-  v15 = [MCMContainerSchema schemaIsUpToDateForIdentifier:v49 containerClass:v9 currentSchemaVersion:v48 latestSchemaVersion:&v54, v44];
+  errorCopy = [MCMContainerSchema schemaIsUpToDateForIdentifier:identifier containerClass:containerClass currentSchemaVersion:schemaVersion latestSchemaVersion:&v54, errorCopy];
   v16 = v54;
-  if (v15)
+  if (errorCopy)
   {
     v17 = 0;
 LABEL_9:
@@ -1262,7 +1262,7 @@ LABEL_9:
   }
 
   v53 = v14;
-  v19 = [v7 metadataWithError:&v53];
+  v19 = [containerCopy metadataWithError:&v53];
   v20 = v53;
 
   if (!v19)
@@ -1272,13 +1272,13 @@ LABEL_9:
   }
 
   v21 = +[MCMDataProtectionManager defaultManager];
-  v22 = [v21 desiredDataProtectionClassForMetadata:v19 clientIdentity:v45];
+  v22 = [v21 desiredDataProtectionClassForMetadata:v19 clientIdentity:identityCopy];
 
-  v23 = [v19 containerPath];
-  v24 = [MCMContainerSchema containerSchemaWithMetadata:v19 finalContainerPath:v23 dataProtectionClass:v22 libraryRepair:v47];
+  containerPath2 = [v19 containerPath];
+  v24 = [MCMContainerSchema containerSchemaWithMetadata:v19 finalContainerPath:containerPath2 dataProtectionClass:v22 libraryRepair:v47];
 
   v52 = v20;
-  LOBYTE(v21) = [v24 writeSchemaFromVersion:v48 toTargetVersion:v16 error:&v52];
+  LOBYTE(v21) = [v24 writeSchemaFromVersion:schemaVersion toTargetVersion:v16 error:&v52];
   v14 = v52;
 
   if ((v21 & 1) == 0)
@@ -1287,7 +1287,7 @@ LABEL_9:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *&buf[4] = v49;
+      *&buf[4] = identifier;
       *&buf[12] = 2112;
       *&buf[14] = v14;
       _os_log_error_impl(&dword_1DF2C3000, v35, OS_LOG_TYPE_ERROR, "Could not update container schema for %@: %@", buf, 0x16u);
@@ -1309,15 +1309,15 @@ LABEL_9:
 
   if (v25)
   {
-    v27 = [(MCMContainerFactory *)self cache];
+    cache = [(MCMContainerFactory *)self cache];
     v50 = v26;
-    v28 = [v27 addContainerMetadata:v17 error:&v50];
+    v28 = [cache addContainerMetadata:v17 error:&v50];
     v14 = v50;
 
     if (v28)
     {
       v18 = 1;
-      v7 = v28;
+      containerCopy = v28;
       goto LABEL_30;
     }
 
@@ -1329,7 +1329,7 @@ LABEL_9:
       _os_log_error_impl(&dword_1DF2C3000, v43, OS_LOG_TYPE_ERROR, "Failed to update cache with new metadata during schema update; error = %@", buf, 0xCu);
     }
 
-    v7 = 0;
+    containerCopy = 0;
     v14 = 0;
     goto LABEL_9;
   }

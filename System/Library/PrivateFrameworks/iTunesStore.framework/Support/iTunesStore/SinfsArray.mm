@@ -1,18 +1,18 @@
 @interface SinfsArray
-- (BOOL)_isRecognizedProperty:(id)a3;
+- (BOOL)_isRecognizedProperty:(id)property;
 - (NSArray)sinfs;
-- (SinfsArray)initWithSINFs:(id)a3;
-- (id)_copyValueForSINF:(id)a3 property:(id)a4 error:(id *)a5;
-- (id)copyValueForField:(int64_t)a3 error:(id *)a4;
-- (id)copyValueForProperty:(id)a3 error:(id *)a4;
+- (SinfsArray)initWithSINFs:(id)fs;
+- (id)_copyValueForSINF:(id)f property:(id)property error:(id *)error;
+- (id)copyValueForField:(int64_t)field error:(id *)error;
+- (id)copyValueForProperty:(id)property error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation SinfsArray
 
-- (SinfsArray)initWithSINFs:(id)a3
+- (SinfsArray)initWithSINFs:(id)fs
 {
-  if (![a3 count])
+  if (![fs count])
   {
     sub_100271FD0(a2, self);
   }
@@ -22,7 +22,7 @@
   v6 = [(SinfsArray *)&v8 init];
   if (v6)
   {
-    v6->_sinfs = [a3 copy];
+    v6->_sinfs = [fs copy];
   }
 
   return v6;
@@ -35,7 +35,7 @@
   [(SinfsArray *)&v3 dealloc];
 }
 
-- (id)copyValueForField:(int64_t)a3 error:(id *)a4
+- (id)copyValueForField:(int64_t)field error:(id *)error
 {
   v17 = 0u;
   v18 = 0u;
@@ -48,7 +48,7 @@
 LABEL_13:
     v15 = SSError();
     result = 0;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -69,7 +69,7 @@ LABEL_3:
 
     v11 = *(*(&v17 + 1) + 8 * v10);
     v16 = 0;
-    sub_1000B2914(v11, a3, &v16);
+    sub_1000B2914(v11, field, &v16);
     if (!v12)
     {
       break;
@@ -95,16 +95,16 @@ LABEL_3:
   }
 
   v15 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_14:
-    *a4 = v15;
+    *error = v15;
   }
 
   return result;
 }
 
-- (id)copyValueForProperty:(id)a3 error:(id *)a4
+- (id)copyValueForProperty:(id)property error:(id *)error
 {
   v17 = 0;
   if (![(SinfsArray *)self _isRecognizedProperty:?])
@@ -131,7 +131,7 @@ LABEL_4:
         objc_enumerationMutation(sinfs);
       }
 
-      result = [(SinfsArray *)self _copyValueForSINF:*(*(&v13 + 1) + 8 * v11) property:a3 error:&v17];
+      result = [(SinfsArray *)self _copyValueForSINF:*(*(&v13 + 1) + 8 * v11) property:property error:&v17];
       v12 = v17;
       if (result | v17)
       {
@@ -165,9 +165,9 @@ LABEL_14:
     result = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v12;
+    *error = v12;
   }
 
   return result;
@@ -180,15 +180,15 @@ LABEL_14:
   return v2;
 }
 
-- (id)_copyValueForSINF:(id)a3 property:(id)a4 error:(id *)a5
+- (id)_copyValueForSINF:(id)f property:(id)property error:(id *)error
 {
-  if ([a4 isEqualToString:@"SinfPropertyAccountIdentifier"])
+  if ([property isEqualToString:@"SinfPropertyAccountIdentifier"])
   {
     v17 = 0;
-    v8 = a3;
+    fCopy2 = f;
     v9 = 2;
 LABEL_5:
-    sub_1000B2914(v8, v9, &v17);
+    sub_1000B2914(fCopy2, v9, &v17);
     v11 = v10;
     v12 = 0;
     if (!v10)
@@ -197,23 +197,23 @@ LABEL_5:
       v12 = [v13 initWithUnsignedLongLong:v17];
     }
 
-    if (a5 && v11)
+    if (error && v11)
     {
-      *a5 = SSError();
+      *error = SSError();
     }
 
     return v12;
   }
 
-  if ([a4 isEqualToString:@"SinfPropertyFairPlayKeyIdentifier"])
+  if ([property isEqualToString:@"SinfPropertyFairPlayKeyIdentifier"])
   {
     v17 = 0;
-    v8 = a3;
+    fCopy2 = f;
     v9 = 5;
     goto LABEL_5;
   }
 
-  if (![a4 isEqualToString:@"SinfPropertyRentalInformation"] || !objc_msgSend(a3, "length"))
+  if (![property isEqualToString:@"SinfPropertyRentalInformation"] || !objc_msgSend(f, "length"))
   {
     return 0;
   }
@@ -221,7 +221,7 @@ LABEL_5:
   v17 = 0;
   v18 = 0;
   v14 = sub_1000B33F4();
-  sub_10001A4B4(v14, [a3 bytes], objc_msgSend(a3, "length"), &v17);
+  sub_10001A4B4(v14, [f bytes], objc_msgSend(f, "length"), &v17);
   v12 = 0;
   if (!v15)
   {
@@ -235,14 +235,14 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)_isRecognizedProperty:(id)a3
+- (BOOL)_isRecognizedProperty:(id)property
 {
-  if ([a3 isEqualToString:@"SinfPropertyAccountIdentifier"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"SinfPropertyFairPlayKeyIdentifier"))
+  if ([property isEqualToString:@"SinfPropertyAccountIdentifier"] & 1) != 0 || (objc_msgSend(property, "isEqualToString:", @"SinfPropertyFairPlayKeyIdentifier"))
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"SinfPropertyRentalInformation"];
+  return [property isEqualToString:@"SinfPropertyRentalInformation"];
 }
 
 @end

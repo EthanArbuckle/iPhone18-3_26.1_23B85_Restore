@@ -13,8 +13,8 @@
   height = v16.size.height;
   if (CGRectIsEmpty(v16))
   {
-    v7 = [(MapAccessibilityMockView *)self accessibilityContainer];
-    [v7 accessibilityFrame];
+    accessibilityContainer = [(MapAccessibilityMockView *)self accessibilityContainer];
+    [accessibilityContainer accessibilityFrame];
     x = v8;
     y = v9;
     width = v10;

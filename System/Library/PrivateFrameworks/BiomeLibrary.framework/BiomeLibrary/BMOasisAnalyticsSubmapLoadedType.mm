@@ -1,26 +1,26 @@
 @interface BMOasisAnalyticsSubmapLoadedType
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsSubmapLoadedType)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMOasisAnalyticsSubmapLoadedType)initWithSubmapId:(id)a3 isLocated:(id)a4 numberOfSubmaps:(id)a5 bytesReadFromDisk:(id)a6 timeToLoadChunkInSecond:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsSubmapLoadedType)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMOasisAnalyticsSubmapLoadedType)initWithSubmapId:(id)id isLocated:(id)located numberOfSubmaps:(id)submaps bytesReadFromDisk:(id)disk timeToLoadChunkInSecond:(id)second;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsSubmapLoadedType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMOasisAnalyticsSubmapLoadedType hasSubmapId](self, "hasSubmapId") || [v5 hasSubmapId])
     {
       if (![(BMOasisAnalyticsSubmapLoadedType *)self hasSubmapId])
@@ -33,8 +33,8 @@
         goto LABEL_28;
       }
 
-      v6 = [(BMOasisAnalyticsSubmapLoadedType *)self submapId];
-      if (v6 != [v5 submapId])
+      submapId = [(BMOasisAnalyticsSubmapLoadedType *)self submapId];
+      if (submapId != [v5 submapId])
       {
         goto LABEL_28;
       }
@@ -52,8 +52,8 @@
         goto LABEL_28;
       }
 
-      v7 = [(BMOasisAnalyticsSubmapLoadedType *)self isLocated];
-      if (v7 != [v5 isLocated])
+      isLocated = [(BMOasisAnalyticsSubmapLoadedType *)self isLocated];
+      if (isLocated != [v5 isLocated])
       {
         goto LABEL_28;
       }
@@ -71,8 +71,8 @@
         goto LABEL_28;
       }
 
-      v8 = [(BMOasisAnalyticsSubmapLoadedType *)self numberOfSubmaps];
-      if (v8 != [v5 numberOfSubmaps])
+      numberOfSubmaps = [(BMOasisAnalyticsSubmapLoadedType *)self numberOfSubmaps];
+      if (numberOfSubmaps != [v5 numberOfSubmaps])
       {
         goto LABEL_28;
       }
@@ -90,8 +90,8 @@
         goto LABEL_28;
       }
 
-      v9 = [(BMOasisAnalyticsSubmapLoadedType *)self bytesReadFromDisk];
-      if (v9 != [v5 bytesReadFromDisk])
+      bytesReadFromDisk = [(BMOasisAnalyticsSubmapLoadedType *)self bytesReadFromDisk];
+      if (bytesReadFromDisk != [v5 bytesReadFromDisk])
       {
         goto LABEL_28;
       }
@@ -186,45 +186,45 @@ LABEL_30:
 
   v18 = v3;
   v20[0] = @"submapId";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[0] = v10;
+  v21[0] = null;
   v20[1] = @"isLocated";
-  v11 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[1] = v11;
+  v21[1] = null2;
   v20[2] = @"numberOfSubmaps";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[2] = v12;
+  v21[2] = null3;
   v20[3] = @"bytesReadFromDisk";
-  v13 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[3] = v13;
+  v21[3] = null4;
   v20[4] = @"timeToLoadChunkInSecond";
-  v14 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[4] = v14;
+  v21[4] = null5;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:{5, v18}];
   if (v9)
   {
@@ -279,29 +279,29 @@ LABEL_31:
   return v15;
 }
 
-- (BMOasisAnalyticsSubmapLoadedType)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsSubmapLoadedType)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"submapId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"submapId"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"isLocated"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isLocated"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v33 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v46 = *MEMORY[0x1E696A578];
@@ -310,7 +310,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
         v39 = 0;
         v16 = 0;
-        *v33 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -322,22 +322,22 @@ LABEL_4:
       v39 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"numberOfSubmaps"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSubmaps"];
     v36 = v8;
-    v38 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v37 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v44 = *MEMORY[0x1E696A578];
@@ -346,10 +346,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
         v37 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v38;
+        self = selfCopy;
         v8 = v36;
 LABEL_19:
 
@@ -364,13 +364,13 @@ LABEL_19:
       v37 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"bytesReadFromDisk"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bytesReadFromDisk"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -380,34 +380,34 @@ LABEL_19:
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v42 = *MEMORY[0x1E696A578];
-        v28 = a4;
+        errorCopy3 = error;
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"bytesReadFromDisk"];
         v43 = v15;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         v29 = [v34 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v28 = v29;
+        *errorCopy3 = v29;
         goto LABEL_17;
       }
 
-      v12 = a4;
+      errorCopy5 = error;
       v13 = v11;
     }
 
     else
     {
-      v12 = a4;
+      errorCopy5 = error;
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"timeToLoadChunkInSecond"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"timeToLoadChunkInSecond"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v12)
+        if (errorCopy5)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v32 = *MEMORY[0x1E698F240];
@@ -415,7 +415,7 @@ LABEL_19:
           v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"timeToLoadChunkInSecond"];
           v41 = v30;
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-          *v12 = [v35 initWithDomain:v32 code:2 userInfo:v31];
+          *errorCopy5 = [v35 initWithDomain:v32 code:2 userInfo:v31];
         }
 
         v15 = 0;
@@ -431,8 +431,8 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [(BMOasisAnalyticsSubmapLoadedType *)v38 initWithSubmapId:v36 isLocated:v39 numberOfSubmaps:v37 bytesReadFromDisk:v13 timeToLoadChunkInSecond:v15];
-    v38 = v16;
+    v16 = [(BMOasisAnalyticsSubmapLoadedType *)selfCopy initWithSubmapId:v36 isLocated:v39 numberOfSubmaps:v37 bytesReadFromDisk:v13 timeToLoadChunkInSecond:v15];
+    selfCopy = v16;
 LABEL_17:
 
     goto LABEL_18;
@@ -445,14 +445,14 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy6 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v48 = *MEMORY[0x1E696A578];
@@ -461,7 +461,7 @@ LABEL_17:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy6 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -473,14 +473,14 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsSubmapLoadedType *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_hasSubmapId)
   {
     submapId = self->_submapId;
@@ -512,9 +512,9 @@ LABEL_21:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v50.receiver = self;
   v50.super_class = BMOasisAnalyticsSubmapLoadedType;
   v5 = [(BMEventBase *)&v50 init];
@@ -523,12 +523,12 @@ LABEL_21:
     goto LABEL_85;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -539,18 +539,18 @@ LABEL_21:
       while (1)
       {
         LOBYTE(v51) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v51) & 0x7F) << v7;
@@ -568,9 +568,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -587,18 +587,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v51) = 0;
-            v42 = [v4 position] + 1;
-            if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+            v42 = [fromCopy position] + 1;
+            if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v41 = (((LOBYTE(v51) & 0x7F) << v39) | v41);
@@ -616,7 +616,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v38 = 0;
           }
@@ -649,18 +649,18 @@ LABEL_63:
         while (1)
         {
           LOBYTE(v51) = 0;
-          v21 = [v4 position] + 1;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 1;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v23 = [v4 data];
-            [v23 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (LOBYTE(v51) & 0x7F) << v18;
@@ -678,7 +678,7 @@ LABEL_63:
           }
         }
 
-        v24 = (v20 != 0) & ~[v4 hasError];
+        v24 = (v20 != 0) & ~[fromCopy hasError];
 LABEL_79:
         v5->_isLocated = v24;
       }
@@ -694,18 +694,18 @@ LABEL_79:
           while (1)
           {
             LOBYTE(v51) = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (LOBYTE(v51) & 0x7F) << v25;
@@ -723,7 +723,7 @@ LABEL_79:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v31 = 0;
           }
@@ -747,18 +747,18 @@ LABEL_68:
           while (1)
           {
             LOBYTE(v51) = 0;
-            v35 = [v4 position] + 1;
-            if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+            v35 = [fromCopy position] + 1;
+            if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
             {
-              v37 = [v4 data];
-              [v37 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v34 = (((LOBYTE(v51) & 0x7F) << v32) | v34);
@@ -776,7 +776,7 @@ LABEL_68:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v38 = 0;
           }
@@ -800,31 +800,31 @@ LABEL_77:
 
         v5->_hasTimeToLoadChunkInSecond = 1;
         v51 = 0.0;
-        v16 = [v4 position] + 4;
-        if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 4, v17 <= objc_msgSend(v4, "length")))
+        v16 = [fromCopy position] + 4;
+        if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 4, v17 <= objc_msgSend(fromCopy, "length")))
         {
-          v46 = [v4 data];
-          [v46 getBytes:&v51 range:{objc_msgSend(v4, "position"), 4}];
+          data6 = [fromCopy data];
+          [data6 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_timeToLoadChunkInSecond = v51;
       }
 
 LABEL_82:
-      v47 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v47 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_84:
     v48 = 0;
@@ -854,36 +854,36 @@ LABEL_85:
   return v10;
 }
 
-- (BMOasisAnalyticsSubmapLoadedType)initWithSubmapId:(id)a3 isLocated:(id)a4 numberOfSubmaps:(id)a5 bytesReadFromDisk:(id)a6 timeToLoadChunkInSecond:(id)a7
+- (BMOasisAnalyticsSubmapLoadedType)initWithSubmapId:(id)id isLocated:(id)located numberOfSubmaps:(id)submaps bytesReadFromDisk:(id)disk timeToLoadChunkInSecond:(id)second
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  locatedCopy = located;
+  submapsCopy = submaps;
+  diskCopy = disk;
+  secondCopy = second;
   v23.receiver = self;
   v23.super_class = BMOasisAnalyticsSubmapLoadedType;
   v17 = [(BMEventBase *)&v23 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (idCopy)
     {
       v17->_hasSubmapId = 1;
-      v18 = [v12 unsignedLongLongValue];
+      unsignedLongLongValue = [idCopy unsignedLongLongValue];
     }
 
     else
     {
-      v18 = 0;
+      unsignedLongLongValue = 0;
       v17->_hasSubmapId = 0;
     }
 
-    v17->_submapId = v18;
-    if (v13)
+    v17->_submapId = unsignedLongLongValue;
+    if (locatedCopy)
     {
       v17->_hasIsLocated = 1;
-      v17->_isLocated = [v13 BOOLValue];
+      v17->_isLocated = [locatedCopy BOOLValue];
     }
 
     else
@@ -892,36 +892,36 @@ LABEL_85:
       v17->_isLocated = 0;
     }
 
-    if (v14)
+    if (submapsCopy)
     {
       v17->_hasNumberOfSubmaps = 1;
-      v19 = [v14 unsignedIntValue];
+      unsignedIntValue = [submapsCopy unsignedIntValue];
     }
 
     else
     {
-      v19 = 0;
+      unsignedIntValue = 0;
       v17->_hasNumberOfSubmaps = 0;
     }
 
-    v17->_numberOfSubmaps = v19;
-    if (v15)
+    v17->_numberOfSubmaps = unsignedIntValue;
+    if (diskCopy)
     {
       v17->_hasBytesReadFromDisk = 1;
-      v20 = [v15 unsignedLongLongValue];
+      unsignedLongLongValue2 = [diskCopy unsignedLongLongValue];
     }
 
     else
     {
-      v20 = 0;
+      unsignedLongLongValue2 = 0;
       v17->_hasBytesReadFromDisk = 0;
     }
 
-    v17->_bytesReadFromDisk = v20;
-    if (v16)
+    v17->_bytesReadFromDisk = unsignedLongLongValue2;
+    if (secondCopy)
     {
       v17->_hasTimeToLoadChunkInSecond = 1;
-      [v16 floatValue];
+      [secondCopy floatValue];
     }
 
     else
@@ -975,9 +975,9 @@ LABEL_85:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -985,8 +985,8 @@ LABEL_85:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsSubmapLoadedType alloc] initByReadFrom:v7];
     v4 = v8;

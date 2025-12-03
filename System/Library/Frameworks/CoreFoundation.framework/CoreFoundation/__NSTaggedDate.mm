@@ -1,5 +1,5 @@
 @interface __NSTaggedDate
-- (__NSTaggedDate)initWithTimeIntervalSinceReferenceDate:(double)a3;
+- (__NSTaggedDate)initWithTimeIntervalSinceReferenceDate:(double)date;
 - (double)timeIntervalSinceReferenceDate;
 - (void)dealloc;
 @end
@@ -58,11 +58,11 @@ LABEL_8:
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSTaggedDate)initWithTimeIntervalSinceReferenceDate:(double)a3
+- (__NSTaggedDate)initWithTimeIntervalSinceReferenceDate:(double)date
 {
   v4 = [NSDate alloc];
 
-  return [(NSDate *)v4 initWithTimeIntervalSinceReferenceDate:a3];
+  return [(NSDate *)v4 initWithTimeIntervalSinceReferenceDate:date];
 }
 
 @end

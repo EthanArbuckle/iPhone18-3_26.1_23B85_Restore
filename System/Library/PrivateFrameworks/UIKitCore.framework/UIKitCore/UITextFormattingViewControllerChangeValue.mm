@@ -1,31 +1,31 @@
 @interface UITextFormattingViewControllerChangeValue
-- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)a3;
-- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)a3 customComponentKey:(id)a4;
-- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)a3 numberValue:(id)a4;
-- (UITextFormattingViewControllerChangeValue)initWithCoder:(id)a3;
-- (UITextFormattingViewControllerChangeValue)initWithEmphasisStyleKey:(id)a3;
-- (UITextFormattingViewControllerChangeValue)initWithFont:(id)a3;
-- (UITextFormattingViewControllerChangeValue)initWithFormattingStyleKey:(id)a3;
-- (UITextFormattingViewControllerChangeValue)initWithHighlight:(id)a3;
-- (UITextFormattingViewControllerChangeValue)initWithTextAlignment:(int64_t)a3;
-- (UITextFormattingViewControllerChangeValue)initWithTextColor:(id)a3;
-- (UITextFormattingViewControllerChangeValue)initWithTextList:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)type;
+- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)type customComponentKey:(id)key;
+- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)type numberValue:(id)value;
+- (UITextFormattingViewControllerChangeValue)initWithCoder:(id)coder;
+- (UITextFormattingViewControllerChangeValue)initWithEmphasisStyleKey:(id)key;
+- (UITextFormattingViewControllerChangeValue)initWithFont:(id)font;
+- (UITextFormattingViewControllerChangeValue)initWithFormattingStyleKey:(id)key;
+- (UITextFormattingViewControllerChangeValue)initWithHighlight:(id)highlight;
+- (UITextFormattingViewControllerChangeValue)initWithTextAlignment:(int64_t)alignment;
+- (UITextFormattingViewControllerChangeValue)initWithTextColor:(id)color;
+- (UITextFormattingViewControllerChangeValue)initWithTextList:(id)list;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UITextFormattingViewControllerChangeValue
 
-- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v17.receiver = self;
   v17.super_class = UITextFormattingViewControllerChangeValue;
   v6 = [(UITextFormattingViewControllerChangeValue *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_changeType, a3);
+    objc_storeStrong(&v6->_changeType, type);
     formattingStyleKey = v7->_formattingStyleKey;
     v7->_formattingStyleKey = 0;
 
@@ -55,240 +55,240 @@
   return v7;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)a3 customComponentKey:(id)a4
+- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)type customComponentKey:(id)key
 {
-  v7 = a4;
-  v8 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:a3];
+  keyCopy = key;
+  v8 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->__customComponentKey, a4);
+    objc_storeStrong(&v8->__customComponentKey, key);
   }
 
   return v9;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)a3 numberValue:(id)a4
+- (UITextFormattingViewControllerChangeValue)initWithChangeType:(id)type numberValue:(id)value
 {
-  v7 = a4;
-  v8 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:a3];
+  valueCopy = value;
+  v8 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_numberValue, a4);
+    objc_storeStrong(&v8->_numberValue, value);
   }
 
   return v9;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithFormattingStyleKey:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithFormattingStyleKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:@"UITextFormattingViewControllerFormattingStyleChange"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_formattingStyleKey, a3);
+    objc_storeStrong(&v6->_formattingStyleKey, key);
   }
 
   return v7;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithEmphasisStyleKey:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithEmphasisStyleKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:@"UITextFormattingViewControllerEmphasisStyleChange"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__emphasisStyleKey, a3);
+    objc_storeStrong(&v6->__emphasisStyleKey, key);
   }
 
   return v7;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithTextColor:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:@"UITextFormattingViewControllerTextColorChange"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_color, a3);
+    objc_storeStrong(&v6->_color, color);
   }
 
   return v7;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithFont:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   v6 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:@"UITextFormattingViewControllerFontChange"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_font, a3);
+    objc_storeStrong(&v6->_font, font);
   }
 
   return v7;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithTextList:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithTextList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v6 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:@"UITextFormattingViewControllerTextListChange"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textList, a3);
+    objc_storeStrong(&v6->_textList, list);
   }
 
   return v7;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithTextAlignment:(int64_t)a3
+- (UITextFormattingViewControllerChangeValue)initWithTextAlignment:(int64_t)alignment
 {
   result = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:@"UITextFormattingViewControllerTextAlignmentChange"];
   if (result)
   {
-    result->_textAlignment = a3;
+    result->_textAlignment = alignment;
   }
 
   return result;
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithHighlight:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithHighlight:(id)highlight
 {
-  v5 = a3;
+  highlightCopy = highlight;
   v6 = [(UITextFormattingViewControllerChangeValue *)self initWithChangeType:@"UITextFormattingViewControllerHighlightChange"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_highlight, a3);
+    objc_storeStrong(&v6->_highlight, highlight);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UITextFormattingViewControllerChangeValue *)self changeType];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  changeType = [(UITextFormattingViewControllerChangeValue *)self changeType];
   v6 = v4[1];
-  v4[1] = v5;
+  v4[1] = changeType;
 
-  v7 = [(UITextFormattingViewControllerChangeValue *)self formattingStyleKey];
-  v8 = [v7 copy];
+  formattingStyleKey = [(UITextFormattingViewControllerChangeValue *)self formattingStyleKey];
+  v8 = [formattingStyleKey copy];
   v9 = v4[2];
   v4[2] = v8;
 
-  v10 = [(UITextFormattingViewControllerChangeValue *)self font];
-  v11 = [v10 copy];
+  font = [(UITextFormattingViewControllerChangeValue *)self font];
+  v11 = [font copy];
   v12 = v4[3];
   v4[3] = v11;
 
-  v13 = [(UITextFormattingViewControllerChangeValue *)self color];
-  v14 = [v13 copy];
+  color = [(UITextFormattingViewControllerChangeValue *)self color];
+  v14 = [color copy];
   v15 = v4[4];
   v4[4] = v14;
 
-  v16 = [(UITextFormattingViewControllerChangeValue *)self numberValue];
-  v17 = [v16 copy];
+  numberValue = [(UITextFormattingViewControllerChangeValue *)self numberValue];
+  v17 = [numberValue copy];
   v18 = v4[5];
   v4[5] = v17;
 
-  v19 = [(UITextFormattingViewControllerChangeValue *)self textList];
-  v20 = [v19 copy];
+  textList = [(UITextFormattingViewControllerChangeValue *)self textList];
+  v20 = [textList copy];
   v21 = v4[6];
   v4[6] = v20;
 
   v4[7] = [(UITextFormattingViewControllerChangeValue *)self textAlignment];
-  v22 = [(UITextFormattingViewControllerChangeValue *)self highlight];
-  v23 = [v22 copy];
+  highlight = [(UITextFormattingViewControllerChangeValue *)self highlight];
+  v23 = [highlight copy];
   v24 = v4[8];
   v4[8] = v23;
 
-  v25 = [(UITextFormattingViewControllerChangeValue *)self _emphasisStyleKey];
-  v26 = [v25 copy];
+  _emphasisStyleKey = [(UITextFormattingViewControllerChangeValue *)self _emphasisStyleKey];
+  v26 = [_emphasisStyleKey copy];
   v27 = v4[10];
   v4[10] = v26;
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UITextFormattingViewControllerChangeValue *)self changeType];
-  [v4 encodeObject:v5 forKey:@"_ChangeType"];
+  coderCopy = coder;
+  changeType = [(UITextFormattingViewControllerChangeValue *)self changeType];
+  [coderCopy encodeObject:changeType forKey:@"_ChangeType"];
 
-  v6 = [(UITextFormattingViewControllerChangeValue *)self formattingStyleKey];
-  [v4 encodeObject:v6 forKey:@"_FormattingStyleKey"];
+  formattingStyleKey = [(UITextFormattingViewControllerChangeValue *)self formattingStyleKey];
+  [coderCopy encodeObject:formattingStyleKey forKey:@"_FormattingStyleKey"];
 
-  v7 = [(UITextFormattingViewControllerChangeValue *)self font];
-  [v4 encodeObject:v7 forKey:@"_Font"];
+  font = [(UITextFormattingViewControllerChangeValue *)self font];
+  [coderCopy encodeObject:font forKey:@"_Font"];
 
-  v8 = [(UITextFormattingViewControllerChangeValue *)self color];
-  [v4 encodeObject:v8 forKey:@"_Color"];
+  color = [(UITextFormattingViewControllerChangeValue *)self color];
+  [coderCopy encodeObject:color forKey:@"_Color"];
 
-  v9 = [(UITextFormattingViewControllerChangeValue *)self numberValue];
-  [v4 encodeObject:v9 forKey:@"_NumberValue"];
+  numberValue = [(UITextFormattingViewControllerChangeValue *)self numberValue];
+  [coderCopy encodeObject:numberValue forKey:@"_NumberValue"];
 
-  v10 = [(UITextFormattingViewControllerChangeValue *)self textList];
-  [v4 encodeObject:v10 forKey:@"_TextList"];
+  textList = [(UITextFormattingViewControllerChangeValue *)self textList];
+  [coderCopy encodeObject:textList forKey:@"_TextList"];
 
-  [v4 encodeInteger:-[UITextFormattingViewControllerChangeValue textAlignment](self forKey:{"textAlignment"), @"_TextAlignment"}];
-  v11 = [(UITextFormattingViewControllerChangeValue *)self highlight];
-  [v4 encodeObject:v11 forKey:@"_Highlight"];
+  [coderCopy encodeInteger:-[UITextFormattingViewControllerChangeValue textAlignment](self forKey:{"textAlignment"), @"_TextAlignment"}];
+  highlight = [(UITextFormattingViewControllerChangeValue *)self highlight];
+  [coderCopy encodeObject:highlight forKey:@"_Highlight"];
 
-  v12 = [(UITextFormattingViewControllerChangeValue *)self _emphasisStyleKey];
-  [v4 encodeObject:v12 forKey:@"_EmphasisStyleKey"];
+  _emphasisStyleKey = [(UITextFormattingViewControllerChangeValue *)self _emphasisStyleKey];
+  [coderCopy encodeObject:_emphasisStyleKey forKey:@"_EmphasisStyleKey"];
 }
 
-- (UITextFormattingViewControllerChangeValue)initWithCoder:(id)a3
+- (UITextFormattingViewControllerChangeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UITextFormattingViewControllerChangeValue *)self init];
   if (v5)
   {
     v6 = _UITextFormattingViewControllerChangeValueClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_ChangeType"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_ChangeType"];
     changeType = v5->_changeType;
     v5->_changeType = v7;
 
     v9 = _UITextFormattingViewControllerChangeValueClasses();
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_FormattingStyleKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_FormattingStyleKey"];
     formattingStyleKey = v5->_formattingStyleKey;
     v5->_formattingStyleKey = v10;
 
     v12 = _UITextFormattingViewControllerChangeValueClasses();
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_Font"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_Font"];
     font = v5->_font;
     v5->_font = v13;
 
     v15 = _UITextFormattingViewControllerChangeValueClasses();
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"_Color"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"_Color"];
     color = v5->_color;
     v5->_color = v16;
 
     v18 = _UITextFormattingViewControllerChangeValueClasses();
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_NumberValue"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_NumberValue"];
     numberValue = v5->_numberValue;
     v5->_numberValue = v19;
 
     v21 = _UITextFormattingViewControllerChangeValueClasses();
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"_TextList"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"_TextList"];
     textList = v5->_textList;
     v5->_textList = v22;
 
-    v5->_textAlignment = [v4 decodeIntegerForKey:@"_TextAlignment"];
+    v5->_textAlignment = [coderCopy decodeIntegerForKey:@"_TextAlignment"];
     v24 = _UITextFormattingViewControllerChangeValueClasses();
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"_Highlight"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"_Highlight"];
     highlight = v5->_highlight;
     v5->_highlight = v25;
 
     v27 = _UITextFormattingViewControllerChangeValueClasses();
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"_EmphasisStyleKey"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"_EmphasisStyleKey"];
     emphasisStyleKey = v5->__emphasisStyleKey;
     v5->__emphasisStyleKey = v28;
   }

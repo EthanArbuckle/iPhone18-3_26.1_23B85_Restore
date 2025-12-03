@@ -1,20 +1,20 @@
 @interface _TUITransactionGroupCompletionToken
-- (_TUITransactionGroupCompletionToken)initWithGroup:(id)a3;
+- (_TUITransactionGroupCompletionToken)initWithGroup:(id)group;
 - (void)dealloc;
 @end
 
 @implementation _TUITransactionGroupCompletionToken
 
-- (_TUITransactionGroupCompletionToken)initWithGroup:(id)a3
+- (_TUITransactionGroupCompletionToken)initWithGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = _TUITransactionGroupCompletionToken;
   v6 = [(_TUITransactionGroupCompletionToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_group, a3);
+    objc_storeStrong(&v6->_group, group);
     dispatch_group_enter(v7->_group);
   }
 

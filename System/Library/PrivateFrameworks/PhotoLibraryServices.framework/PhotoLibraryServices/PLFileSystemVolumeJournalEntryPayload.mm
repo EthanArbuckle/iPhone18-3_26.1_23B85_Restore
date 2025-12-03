@@ -3,7 +3,7 @@
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (id)insertFileSystemVolumeFromDataInManagedObjectContext:(id)a3;
+- (id)insertFileSystemVolumeFromDataInManagedObjectContext:(id)context;
 @end
 
 @implementation PLFileSystemVolumeJournalEntryPayload
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __77__PLFileSystemVolumeJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken, block);
@@ -38,7 +38,7 @@ void __77__PLFileSystemVolumeJournalEntryPayload_persistedPropertyNamesForEntity
   block[1] = 3221225472;
   block[2] = __56__PLFileSystemVolumeJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken != -1)
   {
     dispatch_once(&modelProperties_onceToken, block);
@@ -89,12 +89,12 @@ uint64_t __56__PLFileSystemVolumeJournalEntryPayload_modelProperties__block_invo
   return v5;
 }
 
-- (id)insertFileSystemVolumeFromDataInManagedObjectContext:(id)a3
+- (id)insertFileSystemVolumeFromDataInManagedObjectContext:(id)context
 {
-  v4 = [(PLManagedObject *)PLFileSystemVolume insertInManagedObjectContext:a3];
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  [v4 setUuid:v6];
+  v4 = [(PLManagedObject *)PLFileSystemVolume insertInManagedObjectContext:context];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v4 setUuid:payloadIDString];
 
   [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v4 payloadAttributesToUpdate:0];
 

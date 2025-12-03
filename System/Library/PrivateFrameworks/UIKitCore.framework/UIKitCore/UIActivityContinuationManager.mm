@@ -1,45 +1,45 @@
 @interface UIActivityContinuationManager
-- (BOOL)_continueUserActivity:(id)a3;
-- (BOOL)_delegateHandledContinueActivityWithType:(id)a3;
-- (BOOL)isTrackingActivityContinuationForResponder:(id)a3 document:(id)a4 userActivity:(id)a5;
+- (BOOL)_continueUserActivity:(id)activity;
+- (BOOL)_delegateHandledContinueActivityWithType:(id)type;
+- (BOOL)isTrackingActivityContinuationForResponder:(id)responder document:(id)document userActivity:(id)activity;
 - (UIActivityContinuationManager)init;
-- (UIActivityContinuationManager)initWithApplicationContext:(id)a3;
-- (id)_fetchUserActivityWithUUID:(id)a3 completionHandler:(id)a4;
-- (id)activityContinuationDictionaryWithAction:(id)a3 sourceApplication:(id)a4 originatingProcess:(id)a5;
-- (void)_cleanupUserActivity:(id)a3 activityIdentifier:(id)a4;
-- (void)_clearCurrentActivityContinuationCancelingProgress:(BOOL)a3;
-- (void)_didFailToContinueUserActivityWithType:(id)a3 error:(id)a4;
+- (UIActivityContinuationManager)initWithApplicationContext:(id)context;
+- (id)_fetchUserActivityWithUUID:(id)d completionHandler:(id)handler;
+- (id)activityContinuationDictionaryWithAction:(id)action sourceApplication:(id)application originatingProcess:(id)process;
+- (void)_cleanupUserActivity:(id)activity activityIdentifier:(id)identifier;
+- (void)_clearCurrentActivityContinuationCancelingProgress:(BOOL)progress;
+- (void)_didFailToContinueUserActivityWithType:(id)type error:(id)error;
 - (void)_displayCurrentActivityContinuationProgressUI;
-- (void)_endCurrentActivityContinuationAndDisplayError:(id)a3;
-- (void)_endCurrentActivityContinuationWithCompletion:(id)a3;
+- (void)_endCurrentActivityContinuationAndDisplayError:(id)error;
+- (void)_endCurrentActivityContinuationWithCompletion:(id)completion;
 - (void)_hideCurrentActivityContinuationProgressUI;
-- (void)_userActivityWillSave:(id)a3;
-- (void)addResponder:(id)a3 document:(id)a4 forUserActivity:(id)a5;
-- (void)handleActivityContinuation:(id)a3 isSuspended:(BOOL)a4;
-- (void)removeResponder:(id)a3 document:(id)a4 forUserActivity:(id)a5;
-- (void)userActivityWillSave:(id)a3;
+- (void)_userActivityWillSave:(id)save;
+- (void)addResponder:(id)responder document:(id)document forUserActivity:(id)activity;
+- (void)handleActivityContinuation:(id)continuation isSuspended:(BOOL)suspended;
+- (void)removeResponder:(id)responder document:(id)document forUserActivity:(id)activity;
+- (void)userActivityWillSave:(id)save;
 @end
 
 @implementation UIActivityContinuationManager
 
 - (UIActivityContinuationManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIActivityContinuationManager.m" lineNumber:65 description:@"Use initWithApplication:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIActivityContinuationManager.m" lineNumber:65 description:@"Use initWithApplication:"];
 
   return 0;
 }
 
-- (UIActivityContinuationManager)initWithApplicationContext:(id)a3
+- (UIActivityContinuationManager)initWithApplicationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = UIActivityContinuationManager;
   v5 = [(UIActivityContinuationManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
   }
 
   return v6;
@@ -81,47 +81,47 @@ uint64_t __78__UIActivityContinuationManager__displayCurrentActivityContinuation
   [WeakRetained activityContinuationManager:self hideProgressUIWithCompletion:0];
 }
 
-- (void)_endCurrentActivityContinuationAndDisplayError:(id)a3
+- (void)_endCurrentActivityContinuationAndDisplayError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(UIActivityContinuationManager *)self _clearCurrentActivityContinuationCancelingProgress:0];
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained activityContinuationManager:self configureProgressUIWithError:v4];
+  [WeakRetained activityContinuationManager:self configureProgressUIWithError:errorCopy];
 }
 
-- (void)_endCurrentActivityContinuationWithCompletion:(id)a3
+- (void)_endCurrentActivityContinuationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(UIActivityContinuationManager *)self _clearCurrentActivityContinuationCancelingProgress:0];
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained activityContinuationManager:self hideProgressUIWithCompletion:v4];
+  [WeakRetained activityContinuationManager:self hideProgressUIWithCompletion:completionCopy];
 }
 
-- (BOOL)_continueUserActivity:(id)a3
+- (BOOL)_continueUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  LOBYTE(self) = [WeakRetained activityContinuationManager:self continueUserActivity:v4];
+  LOBYTE(self) = [WeakRetained activityContinuationManager:self continueUserActivity:activityCopy];
 
   return self;
 }
 
-- (void)_didFailToContinueUserActivityWithType:(id)a3 error:(id)a4
+- (void)_didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v6 = a4;
-    v7 = a3;
+    errorCopy = error;
+    typeCopy = type;
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    [WeakRetained activityContinuationManager:self didFailToContinueUserActivityWithType:v7 error:v6];
+    [WeakRetained activityContinuationManager:self didFailToContinueUserActivityWithType:typeCopy error:errorCopy];
   }
 }
 
-- (BOOL)_delegateHandledContinueActivityWithType:(id)a3
+- (BOOL)_delegateHandledContinueActivityWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v6 = [WeakRetained activityContinuationManager:self willContinueUserActivityWithType:v4];
+  v6 = [WeakRetained activityContinuationManager:self willContinueUserActivityWithType:typeCopy];
 
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
@@ -166,11 +166,11 @@ uint64_t __78__UIActivityContinuationManager__displayCurrentActivityContinuation
   return v10 & 1;
 }
 
-- (id)_fetchUserActivityWithUUID:(id)a3 completionHandler:(id)a4
+- (id)_fetchUserActivityWithUUID:(id)d completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"UIApplicationLaunchOptionsUserActivityKey"];
+  dCopy = d;
+  handlerCopy = handler;
+  v7 = [dCopy objectForKey:@"UIApplicationLaunchOptionsUserActivityKey"];
   v8 = v7;
   if (v7)
   {
@@ -201,62 +201,62 @@ uint64_t __78__UIActivityContinuationManager__displayCurrentActivityContinuation
       v16[1] = 3221225472;
       v16[2] = __78__UIActivityContinuationManager__fetchUserActivityWithUUID_completionHandler___block_invoke;
       v16[3] = &unk_1E70F4A50;
-      v18 = v6;
+      v18 = handlerCopy;
       v17 = v8;
       [v11 associateAppIntentWithUserActivity:v17 completionHandler:v16];
     }
 
     else
     {
-      (*(v6 + 2))(v6, v8, 0);
+      (*(handlerCopy + 2))(handlerCopy, v8, 0);
     }
   }
 
   else
   {
-    v13 = [v5 objectForKey:@"UIApplicationLaunchOptionsUserActivityIdentifierKey"];
+    v13 = [dCopy objectForKey:@"UIApplicationLaunchOptionsUserActivityIdentifierKey"];
     v14 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v13];
-    [MEMORY[0x1E696B090] _fetchUserActivityWithUUID:v14 completionHandler:v6];
+    [MEMORY[0x1E696B090] _fetchUserActivityWithUUID:v14 completionHandler:handlerCopy];
   }
 
   return 0;
 }
 
-- (void)_clearCurrentActivityContinuationCancelingProgress:(BOOL)a3
+- (void)_clearCurrentActivityContinuationCancelingProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v5 = self->_currentActivityContinuationProgress;
   [(UIActivityContinuationManager *)self _setCurrentActivityContinuationType:0];
   [(UIActivityContinuationManager *)self _setCurrentActivityContinuationUUIDString:0];
   [(UIActivityContinuationManager *)self _setCurrentActivityContinuationProgress:0];
-  if (v3)
+  if (progressCopy)
   {
     [(NSProgress *)v5 cancel];
   }
 }
 
-- (void)handleActivityContinuation:(id)a3 isSuspended:(BOOL)a4
+- (void)handleActivityContinuation:(id)continuation isSuspended:(BOOL)suspended
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKey:@"UIApplicationLaunchOptionsUserActivityTypeKey"];
-  v8 = [v6 objectForKey:@"UIApplicationLaunchOptionsUserActivityIdentifierKey"];
-  v9 = [v6 objectForKeyedSubscript:@"UINSUserActivitySourceApplicationKey"];
+  continuationCopy = continuation;
+  v7 = [continuationCopy objectForKey:@"UIApplicationLaunchOptionsUserActivityTypeKey"];
+  v8 = [continuationCopy objectForKey:@"UIApplicationLaunchOptionsUserActivityIdentifierKey"];
+  v9 = [continuationCopy objectForKeyedSubscript:@"UINSUserActivitySourceApplicationKey"];
   if (!v8)
   {
-    NSLog(&cfstr_SNoActivityUui.isa, "[UIActivityContinuationManager handleActivityContinuation:isSuspended:]", v6);
+    NSLog(&cfstr_SNoActivityUui.isa, "[UIActivityContinuationManager handleActivityContinuation:isSuspended:]", continuationCopy);
     goto LABEL_22;
   }
 
   if (!v7)
   {
-    NSLog(&cfstr_SNoActivityTyp.isa, "[UIActivityContinuationManager handleActivityContinuation:isSuspended:]", v6);
+    NSLog(&cfstr_SNoActivityTyp.isa, "[UIActivityContinuationManager handleActivityContinuation:isSuspended:]", continuationCopy);
     goto LABEL_22;
   }
 
   if (_UIStateRestorationDebugLogEnabled())
   {
-    NSLog(&cfstr_SCalledWithAct.isa, "[UIActivityContinuationManager handleActivityContinuation:isSuspended:]", v6);
+    NSLog(&cfstr_SCalledWithAct.isa, "[UIActivityContinuationManager handleActivityContinuation:isSuspended:]", continuationCopy);
   }
 
   if (self->_currentActivityContinuationUUIDString)
@@ -318,8 +318,8 @@ LABEL_19:
   v18 = v8;
   v19 = v9;
   v20 = v7;
-  v21 = a4;
-  v16 = [(UIActivityContinuationManager *)self _fetchUserActivityWithUUID:v6 completionHandler:v17];
+  suspendedCopy = suspended;
+  v16 = [(UIActivityContinuationManager *)self _fetchUserActivityWithUUID:continuationCopy completionHandler:v17];
   [(UIActivityContinuationManager *)self _setCurrentActivityContinuationProgress:v16];
 
 LABEL_22:
@@ -483,32 +483,32 @@ void __72__UIActivityContinuationManager_handleActivityContinuation_isSuspended_
   }
 }
 
-- (id)activityContinuationDictionaryWithAction:(id)a3 sourceApplication:(id)a4 originatingProcess:(id)a5
+- (id)activityContinuationDictionaryWithAction:(id)action sourceApplication:(id)application originatingProcess:(id)process
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  applicationCopy = application;
+  processCopy = process;
   if (_UIStateRestorationDebugLogEnabled())
   {
-    NSLog(&cfstr_SCalledWithAct_0.isa, "[UIActivityContinuationManager activityContinuationDictionaryWithAction:sourceApplication:originatingProcess:]", v8);
+    NSLog(&cfstr_SCalledWithAct_0.isa, "[UIActivityContinuationManager activityContinuationDictionaryWithAction:sourceApplication:originatingProcess:]", actionCopy);
   }
 
   if (dyld_program_sdk_at_least())
   {
-    v11 = [v8 identifier];
-    v12 = [v8 activityType];
-    v13 = [v8 userActivityData];
-    if (v13)
+    identifier = [actionCopy identifier];
+    activityType = [actionCopy activityType];
+    userActivityData = [actionCopy userActivityData];
+    if (userActivityData)
     {
-      v14 = [objc_alloc(MEMORY[0x1E696B090]) _initWithUserActivityData:v13];
-      v15 = [v14 _uniqueIdentifier];
-      v16 = [v15 UUIDString];
+      v14 = [objc_alloc(MEMORY[0x1E696B090]) _initWithUserActivityData:userActivityData];
+      _uniqueIdentifier = [v14 _uniqueIdentifier];
+      uUIDString = [_uniqueIdentifier UUIDString];
 
-      v17 = [v14 activityType];
+      activityType2 = [v14 activityType];
 
-      v12 = v17;
-      v11 = v16;
+      activityType = activityType2;
+      identifier = uUIDString;
     }
 
     else
@@ -517,36 +517,36 @@ void __72__UIActivityContinuationManager_handleActivityContinuation_isSuspended_
     }
 
     v18 = 0;
-    if (v11 && v12)
+    if (identifier && activityType)
     {
       if (_UIStateRestorationDebugLogEnabled())
       {
         WeakRetained = objc_loadWeakRetained(&self->_context);
-        NSLog(&cfstr_SCheckingForAc_0.isa, "[UIActivityContinuationManager activityContinuationDictionaryWithAction:sourceApplication:originatingProcess:]", v11, v12, WeakRetained);
+        NSLog(&cfstr_SCheckingForAc_0.isa, "[UIActivityContinuationManager activityContinuationDictionaryWithAction:sourceApplication:originatingProcess:]", identifier, activityType, WeakRetained);
       }
 
       if (v14)
       {
-        if (v9)
+        if (applicationCopy)
         {
-          [v14 _setSourceApplication:v9];
+          [v14 _setSourceApplication:applicationCopy];
         }
 
-        if (v10)
+        if (processCopy)
         {
-          [v14 _setOriginatingProcess:v10];
+          [v14 _setOriginatingProcess:processCopy];
         }
 
         v30[0] = @"UIApplicationLaunchOptionsUserActivityIdentifierKey";
         v30[1] = @"_UISceneConnectionOptionsUserActivityKey";
-        v31[0] = v11;
+        v31[0] = identifier;
         v31[1] = v14;
         v30[2] = @"UIApplicationLaunchOptionsUserActivityKey";
         v30[3] = @"_UISceneConnectionOptionsUserActivityTypeKey";
         v31[2] = v14;
-        v31[3] = v12;
+        v31[3] = activityType;
         v30[4] = @"UIApplicationLaunchOptionsUserActivityTypeKey";
-        v31[4] = v12;
+        v31[4] = activityType;
         v20 = MEMORY[0x1E695DF20];
         v21 = v31;
         v22 = v30;
@@ -557,10 +557,10 @@ void __72__UIActivityContinuationManager_handleActivityContinuation_isSuspended_
       {
         v28[0] = @"UIApplicationLaunchOptionsUserActivityIdentifierKey";
         v28[1] = @"_UISceneConnectionOptionsUserActivityTypeKey";
-        v29[0] = v11;
-        v29[1] = v12;
+        v29[0] = identifier;
+        v29[1] = activityType;
         v28[2] = @"UIApplicationLaunchOptionsUserActivityTypeKey";
-        v29[2] = v12;
+        v29[2] = activityType;
         v20 = MEMORY[0x1E695DF20];
         v21 = v29;
         v22 = v28;
@@ -569,10 +569,10 @@ void __72__UIActivityContinuationManager_handleActivityContinuation_isSuspended_
 
       v24 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:v23];
       v18 = v24;
-      if (v9)
+      if (applicationCopy)
       {
         v25 = [v24 mutableCopy];
-        [v25 setObject:v9 forKeyedSubscript:@"UINSUserActivitySourceApplicationKey"];
+        [v25 setObject:applicationCopy forKeyedSubscript:@"UINSUserActivitySourceApplicationKey"];
         v26 = [v25 copy];
 
         v18 = v26;
@@ -580,7 +580,7 @@ void __72__UIActivityContinuationManager_handleActivityContinuation_isSuspended_
 
       if (_UIStateRestorationDebugLogEnabled())
       {
-        NSLog(&cfstr_SCreatedActivi.isa, "[UIActivityContinuationManager activityContinuationDictionaryWithAction:sourceApplication:originatingProcess:]", v11, v18, v12);
+        NSLog(&cfstr_SCreatedActivi.isa, "[UIActivityContinuationManager activityContinuationDictionaryWithAction:sourceApplication:originatingProcess:]", identifier, v18, activityType);
       }
     }
 
@@ -598,16 +598,16 @@ void __72__UIActivityContinuationManager_handleActivityContinuation_isSuspended_
   return v18;
 }
 
-- (BOOL)isTrackingActivityContinuationForResponder:(id)a3 document:(id)a4 userActivity:(id)a5
+- (BOOL)isTrackingActivityContinuationForResponder:(id)responder document:(id)document userActivity:(id)activity
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  responderCopy = responder;
+  documentCopy = document;
+  if (activity)
   {
-    v9 = [a5 _uniqueIdentifier];
-    v10 = [v9 UUIDString];
+    _uniqueIdentifier = [activity _uniqueIdentifier];
+    uUIDString = [_uniqueIdentifier UUIDString];
 
-    if (!v10)
+    if (!uUIDString)
     {
       v15 = 0;
 LABEL_13:
@@ -615,14 +615,14 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v11 = [_activityContinuationMap objectForKeyedSubscript:v10];
+    v11 = [_activityContinuationMap objectForKeyedSubscript:uUIDString];
     v12 = v11;
     if (v11)
     {
-      if (v7)
+      if (responderCopy)
       {
         v13 = 2;
-        v14 = v7;
+        v14 = responderCopy;
 LABEL_10:
         v16 = [v11 objectAtIndexedSubscript:v13];
         v15 = [v16 containsObject:v14];
@@ -631,10 +631,10 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (v8)
+      if (documentCopy)
       {
         v13 = 1;
-        v14 = v8;
+        v14 = documentCopy;
         goto LABEL_10;
       }
     }
@@ -649,16 +649,16 @@ LABEL_14:
   return v15;
 }
 
-- (void)_userActivityWillSave:(id)a3
+- (void)_userActivityWillSave:(id)save
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  saveCopy = save;
+  _uniqueIdentifier = [saveCopy _uniqueIdentifier];
+  uUIDString = [_uniqueIdentifier UUIDString];
 
-  if (v6)
+  if (uUIDString)
   {
-    v7 = [_activityContinuationMap objectForKeyedSubscript:v6];
+    v7 = [_activityContinuationMap objectForKeyedSubscript:uUIDString];
     v8 = v7;
     if (!v7)
     {
@@ -668,10 +668,10 @@ LABEL_22:
     }
 
     v9 = [v7 objectAtIndexedSubscript:1];
-    v10 = [v9 allObjects];
-    if ([v10 count])
+    allObjects = [v9 allObjects];
+    if ([allObjects count])
     {
-      v11 = [v10 objectAtIndex:0];
+      v11 = [allObjects objectAtIndex:0];
     }
 
     else
@@ -681,11 +681,11 @@ LABEL_22:
 
     v12 = [v8 objectAtIndexedSubscript:2];
 
-    v13 = [v12 allObjects];
+    allObjects2 = [v12 allObjects];
     v14 = dyld_program_sdk_at_least();
     if (v14)
     {
-      if (![v13 count] && !v11)
+      if (![allObjects2 count] && !v11)
       {
 LABEL_21:
 
@@ -693,25 +693,25 @@ LABEL_21:
       }
 
       v22 = v12;
-      v24 = v10;
-      [v4 _beginUserInfoUpdate:0];
+      v24 = allObjects;
+      [saveCopy _beginUserInfoUpdate:0];
     }
 
     else
     {
       v22 = v12;
-      v24 = v10;
-      v15 = [MEMORY[0x1E695DF20] dictionary];
-      [v4 setUserInfo:v15];
+      v24 = allObjects;
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
+      [saveCopy setUserInfo:dictionary];
     }
 
     v23 = v11;
-    [v11 updateUserActivityState:v4];
+    [v11 updateUserActivityState:saveCopy];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = v13;
+    v16 = allObjects2;
     v17 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v17)
     {
@@ -726,7 +726,7 @@ LABEL_21:
             objc_enumerationMutation(v16);
           }
 
-          [*(*(&v25 + 1) + 8 * i) updateUserActivityState:v4];
+          [*(*(&v25 + 1) + 8 * i) updateUserActivityState:saveCopy];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -737,26 +737,26 @@ LABEL_21:
 
     if (v14)
     {
-      [v4 _finishUserInfoUpdate];
+      [saveCopy _finishUserInfoUpdate];
     }
 
     v11 = v23;
-    v10 = v24;
+    allObjects = v24;
     v12 = v22;
     goto LABEL_21;
   }
 
 LABEL_23:
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained activityContinuationManager:self didUpdateUserActivity:v4];
+  [WeakRetained activityContinuationManager:self didUpdateUserActivity:saveCopy];
 }
 
-- (void)userActivityWillSave:(id)a3
+- (void)userActivityWillSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   if (pthread_main_np() == 1)
   {
-    [(UIActivityContinuationManager *)self _userActivityWillSave:v4];
+    [(UIActivityContinuationManager *)self _userActivityWillSave:saveCopy];
   }
 
   else
@@ -766,35 +766,35 @@ LABEL_23:
     v5[2] = __54__UIActivityContinuationManager_userActivityWillSave___block_invoke;
     v5[3] = &unk_1E70F35B8;
     v5[4] = self;
-    v6 = v4;
+    v6 = saveCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)addResponder:(id)a3 document:(id)a4 forUserActivity:(id)a5
+- (void)addResponder:(id)responder document:(id)document forUserActivity:(id)activity
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  responderCopy = responder;
+  documentCopy = document;
+  activityCopy = activity;
+  v11 = activityCopy;
+  if (activityCopy)
   {
-    v12 = [v10 _uniqueIdentifier];
-    v13 = [v12 UUIDString];
+    _uniqueIdentifier = [activityCopy _uniqueIdentifier];
+    uUIDString = [_uniqueIdentifier UUIDString];
 
-    if (!v13)
+    if (!uUIDString)
     {
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    if (v8)
+    if (responderCopy)
     {
-      v14 = [v11 _frameworkDelegate];
+      _frameworkDelegate = [v11 _frameworkDelegate];
 
-      if (!v14)
+      if (!_frameworkDelegate)
       {
         [v11 _setFrameworkDelegate:self];
       }
@@ -810,10 +810,10 @@ LABEL_19:
       v15 = _activityContinuationMap;
     }
 
-    v18 = [v15 objectForKeyedSubscript:v13];
+    v18 = [v15 objectForKeyedSubscript:uUIDString];
     if (v18)
     {
-      if (v8)
+      if (responderCopy)
       {
         goto LABEL_10;
       }
@@ -827,18 +827,18 @@ LABEL_19:
       v23[1] = v21;
       v23[2] = v22;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
-      [_activityContinuationMap setObject:v18 forKeyedSubscript:v13];
+      [_activityContinuationMap setObject:v18 forKeyedSubscript:uUIDString];
 
-      if (v8)
+      if (responderCopy)
       {
 LABEL_10:
         v19 = [v18 objectAtIndexedSubscript:2];
-        if (([v19 containsObject:v8] & 1) == 0)
+        if (([v19 containsObject:responderCopy] & 1) == 0)
         {
-          [v19 addObject:v8];
+          [v19 addObject:responderCopy];
         }
 
-        if (v9)
+        if (documentCopy)
         {
           goto LABEL_13;
         }
@@ -848,14 +848,14 @@ LABEL_10:
     }
 
     v19 = 0;
-    if (v9)
+    if (documentCopy)
     {
 LABEL_13:
       v20 = [v18 objectAtIndexedSubscript:1];
 
       if (![v20 count])
       {
-        [v20 addObject:v9];
+        [v20 addObject:documentCopy];
       }
 
       goto LABEL_18;
@@ -871,80 +871,80 @@ LABEL_18:
 LABEL_20:
 }
 
-- (void)_cleanupUserActivity:(id)a3 activityIdentifier:(id)a4
+- (void)_cleanupUserActivity:(id)activity activityIdentifier:(id)identifier
 {
-  v6 = a4;
-  v5 = a3;
-  [v5 _setFrameworkDelegate:0];
-  [v5 invalidate];
+  identifierCopy = identifier;
+  activityCopy = activity;
+  [activityCopy _setFrameworkDelegate:0];
+  [activityCopy invalidate];
 
-  [_activityContinuationMap removeObjectForKey:v6];
+  [_activityContinuationMap removeObjectForKey:identifierCopy];
 }
 
-- (void)removeResponder:(id)a3 document:(id)a4 forUserActivity:(id)a5
+- (void)removeResponder:(id)responder document:(id)document forUserActivity:(id)activity
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  responderCopy = responder;
+  documentCopy = document;
+  activityCopy = activity;
+  v10 = activityCopy;
+  if (activityCopy)
   {
-    v11 = [v9 _uniqueIdentifier];
-    v12 = [v11 UUIDString];
+    _uniqueIdentifier = [activityCopy _uniqueIdentifier];
+    uUIDString = [_uniqueIdentifier UUIDString];
 
-    if (v12)
+    if (uUIDString)
     {
-      v13 = [_activityContinuationMap objectForKeyedSubscript:v12];
+      v13 = [_activityContinuationMap objectForKeyedSubscript:uUIDString];
       v14 = v13;
       if (v13)
       {
         v15 = [v13 objectAtIndexedSubscript:1];
         v16 = [v14 objectAtIndexedSubscript:2];
-        if (v25)
+        if (responderCopy)
         {
-          if ([v16 containsObject:v25])
+          if ([v16 containsObject:responderCopy])
           {
-            [v16 removeObject:v25];
+            [v16 removeObject:responderCopy];
           }
 
-          v17 = [v16 allObjects];
-          v18 = [v17 count];
+          allObjects = [v16 allObjects];
+          v18 = [allObjects count];
 
           if (!v18)
           {
-            v19 = [v15 allObjects];
-            v20 = [v19 count];
+            allObjects2 = [v15 allObjects];
+            v20 = [allObjects2 count];
 
             if (!v20)
             {
               if (_UIStateRestorationDebugLogEnabled())
               {
-                v21 = [v10 title];
-                NSLog(&cfstr_SAfterRemoving.isa, "[UIActivityContinuationManager removeResponder:document:forUserActivity:]", v10, v21, v12);
+                title = [v10 title];
+                NSLog(&cfstr_SAfterRemoving.isa, "[UIActivityContinuationManager removeResponder:document:forUserActivity:]", v10, title, uUIDString);
               }
 
-              [(UIActivityContinuationManager *)self _cleanupUserActivity:v10 activityIdentifier:v12];
+              [(UIActivityContinuationManager *)self _cleanupUserActivity:v10 activityIdentifier:uUIDString];
             }
           }
         }
 
-        if (v8)
+        if (documentCopy)
         {
-          if ([v15 containsObject:v8])
+          if ([v15 containsObject:documentCopy])
           {
-            [v15 removeObject:v8];
-            v22 = [v16 allObjects];
-            v23 = [v22 count];
+            [v15 removeObject:documentCopy];
+            allObjects3 = [v16 allObjects];
+            v23 = [allObjects3 count];
 
             if (!v23)
             {
               if (_UIStateRestorationDebugLogEnabled())
               {
-                v24 = [v10 title];
-                NSLog(&cfstr_SAfterRemoving_0.isa, "[UIActivityContinuationManager removeResponder:document:forUserActivity:]", v10, v24, v12);
+                title2 = [v10 title];
+                NSLog(&cfstr_SAfterRemoving_0.isa, "[UIActivityContinuationManager removeResponder:document:forUserActivity:]", v10, title2, uUIDString);
               }
 
-              [(UIActivityContinuationManager *)self _cleanupUserActivity:v10 activityIdentifier:v12];
+              [(UIActivityContinuationManager *)self _cleanupUserActivity:v10 activityIdentifier:uUIDString];
             }
           }
         }

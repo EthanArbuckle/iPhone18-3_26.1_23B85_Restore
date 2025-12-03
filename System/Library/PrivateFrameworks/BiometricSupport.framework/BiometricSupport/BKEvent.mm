@@ -1,8 +1,8 @@
 @interface BKEvent
-- (BKEvent)initWithEncodedEventOrCode:(unsigned int)a3;
-- (BKEvent)initWithEventOrCode:(unint64_t)a3;
+- (BKEvent)initWithEncodedEventOrCode:(unsigned int)code;
+- (BKEvent)initWithEventOrCode:(unint64_t)code;
 - (id)description;
-- (void)encodeEventValue:(unsigned int *)a3 secondValue:(unsigned int *)a4;
+- (void)encodeEventValue:(unsigned int *)value secondValue:(unsigned int *)secondValue;
 - (void)setProperties;
 @end
 
@@ -66,7 +66,7 @@ LABEL_12:
   }
 }
 
-- (BKEvent)initWithEventOrCode:(unint64_t)a3
+- (BKEvent)initWithEventOrCode:(unint64_t)code
 {
   v7.receiver = self;
   v7.super_class = BKEvent;
@@ -74,15 +74,15 @@ LABEL_12:
   v5 = v4;
   if (v4)
   {
-    v4->_cls = BYTE4(a3);
-    v4->_event = a3;
+    v4->_cls = BYTE4(code);
+    v4->_event = code;
     [(BKEvent *)v4 setProperties];
   }
 
   return v5;
 }
 
-- (BKEvent)initWithEncodedEventOrCode:(unsigned int)a3
+- (BKEvent)initWithEncodedEventOrCode:(unsigned int)code
 {
   v7.receiver = self;
   v7.super_class = BKEvent;
@@ -90,10 +90,10 @@ LABEL_12:
   v5 = v4;
   if (v4)
   {
-    v4->_cls = HIBYTE(a3);
-    v4->_event = a3 & 0x3FFFFF;
-    v4->_isHigh = (a3 & 0x800000) != 0;
-    v4->_isLow = (a3 & 0x400000) != 0;
+    v4->_cls = HIBYTE(code);
+    v4->_event = code & 0x3FFFFF;
+    v4->_isHigh = (code & 0x800000) != 0;
+    v4->_isLow = (code & 0x400000) != 0;
     [(BKEvent *)v4 setProperties];
   }
 
@@ -151,23 +151,23 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeEventValue:(unsigned int *)a3 secondValue:(unsigned int *)a4
+- (void)encodeEventValue:(unsigned int *)value secondValue:(unsigned int *)secondValue
 {
   event = self->_event;
   v5 = self->_cls << 24;
   if (event < 0x400000)
   {
     v6 = 0;
-    *a3 = v5 | event;
+    *value = v5 | event;
   }
 
   else
   {
-    *a3 = v5 | HIWORD(event) | 0x800000;
+    *value = v5 | HIWORD(event) | 0x800000;
     v6 = LOWORD(self->_event) | (self->_cls << 24) | 0x400000;
   }
 
-  *a4 = v6;
+  *secondValue = v6;
 }
 
 @end

@@ -9,7 +9,7 @@
 {
   v5 = objc_alloc_init(MEMORY[0x277CBE450]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [a1 vs_identityProviderEntityForVersion:a3];
+  v7 = [self vs_identityProviderEntityForVersion:a3];
   [v6 addObject:v7];
   [v5 setEntities:v6];
 
@@ -145,12 +145,12 @@
         }
 
         v31 = *(*(&v42 + 1) + 8 * j);
-        v32 = [v31 name];
+        name = [v31 name];
         v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v34 = [objc_alloc(MEMORY[0x277CBE420]) initWithProperty:v31 collationType:0];
         [v33 addObject:v34];
 
-        v35 = [objc_alloc(MEMORY[0x277CBE418]) initWithName:v32 elements:v33];
+        v35 = [objc_alloc(MEMORY[0x277CBE418]) initWithName:name elements:v33];
         [v25 addObject:v35];
       }
 

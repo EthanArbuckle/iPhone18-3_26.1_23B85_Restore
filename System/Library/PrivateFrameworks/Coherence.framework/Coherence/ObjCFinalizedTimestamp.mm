@@ -1,10 +1,10 @@
 @interface ObjCFinalizedTimestamp
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isGreaterThanTimestamp:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isGreaterThanTimestamp:(id)timestamp;
 - (NSString)description;
 - (_TtC9Coherence11ObjCReplica)replica;
 - (_TtC9Coherence22ObjCFinalizedTimestamp)init;
-- (_TtC9Coherence22ObjCFinalizedTimestamp)initWithReplica:(id)a3 counter:(int64_t)a4;
+- (_TtC9Coherence22ObjCFinalizedTimestamp)initWithReplica:(id)replica counter:(int64_t)counter;
 - (int64_t)hash;
 @end
 
@@ -19,7 +19,7 @@
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1ADED0548(self + OBJC_IVAR____TtC9Coherence22ObjCFinalizedTimestamp_timestamp, v7);
   sub_1AE23E31C();
-  v8 = self;
+  selfCopy = self;
   sub_1AE23BFAC();
   MEMORY[0x1B26FCBD0](*&v7[*(v4 + 28)]);
   v9 = sub_1AE23E34C();
@@ -28,11 +28,11 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1AE23D83C();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1ADDF1048(v8);
@@ -69,31 +69,31 @@
   *&v13[OBJC_IVAR____TtC9Coherence11ObjCReplica_index] = 0;
   v17.receiver = v13;
   v17.super_class = v12;
-  v14 = self;
+  selfCopy = self;
   v15 = [(ObjCFinalizedTimestamp *)&v17 init];
   (*(v4 + 8))(v7, v3);
 
   return v15;
 }
 
-- (_TtC9Coherence22ObjCFinalizedTimestamp)initWithReplica:(id)a3 counter:(int64_t)a4
+- (_TtC9Coherence22ObjCFinalizedTimestamp)initWithReplica:(id)replica counter:(int64_t)counter
 {
   v7 = OBJC_IVAR____TtC9Coherence11ObjCReplica_uuid;
   swift_beginAccess();
   v8 = self + OBJC_IVAR____TtC9Coherence22ObjCFinalizedTimestamp_timestamp;
   v9 = sub_1AE23BFEC();
-  (*(*(v9 - 8) + 16))(v8, a3 + v7, v9);
-  *&v8[*(type metadata accessor for FinalizedTimestamp(0) + 20)] = a4;
+  (*(*(v9 - 8) + 16))(v8, replica + v7, v9);
+  *&v8[*(type metadata accessor for FinalizedTimestamp(0) + 20)] = counter;
   v11.receiver = self;
   v11.super_class = type metadata accessor for ObjCFinalizedTimestamp(0);
   return [(ObjCFinalizedTimestamp *)&v11 init];
 }
 
-- (BOOL)isGreaterThanTimestamp:(id)a3
+- (BOOL)isGreaterThanTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1AE197F48(v4);
+  timestampCopy = timestamp;
+  selfCopy = self;
+  LOBYTE(self) = sub_1AE197F48(timestampCopy);
 
   return self & 1;
 }
@@ -105,7 +105,7 @@
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1ADED0548(self + OBJC_IVAR____TtC9Coherence22ObjCFinalizedTimestamp_timestamp, v6);
-  v7 = self;
+  selfCopy = self;
   FinalizedTimestamp.description.getter();
   sub_1ADE173B8(v6);
 

@@ -2,39 +2,39 @@
 + (id)_defaultSecondaryColorTransformer;
 + (uint64_t)isTypeSelectSupported;
 - (BOOL)_isKeyInputModeEnabled;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
-- (_UITypeSelectInteraction)initWithDelegate:(id)a3;
+- (_UITypeSelectInteraction)initWithDelegate:(id)delegate;
 - (_UITypeSelectInteractionDelegate)delegate;
-- (id)_filterResultsForTypeSelectItems:(id)a3;
-- (id)_updateInputStringWithNewInput:(id)a3;
-- (void)_addGesturesToView:(id)a3;
-- (void)_addSceneComponentStateInScene:(id)a3;
-- (void)_beginTypeSelectWithInput:(id *)a1;
+- (id)_filterResultsForTypeSelectItems:(id)items;
+- (id)_updateInputStringWithNewInput:(id)input;
+- (void)_addGesturesToView:(id)view;
+- (void)_addSceneComponentStateInScene:(id)scene;
+- (void)_beginTypeSelectWithInput:(id *)input;
 - (void)_cancelTimer;
 - (void)_createNewTimer;
-- (void)_createTimerWithTimeout:(double)a3;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (void)_createTimerWithTimeout:(double)timeout;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)_keyInputHasChanged;
-- (void)_keyPressedGestureRecognizerInputHasChanged:(id)a3;
-- (void)_registerWindowNotificationsOnNewWindow:(id)a3;
-- (void)_removeGesturesFromView:(id)a3;
-- (void)_removeSceneComponentStateInWindow:(id)a3;
+- (void)_keyPressedGestureRecognizerInputHasChanged:(id)changed;
+- (void)_registerWindowNotificationsOnNewWindow:(id)window;
+- (void)_removeGesturesFromView:(id)view;
+- (void)_removeSceneComponentStateInWindow:(id)window;
 - (void)_resetTypeSelectInput;
-- (void)_timerHandler:(id)a3;
+- (void)_timerHandler:(id)handler;
 - (void)_touchToEnableAllOptions;
 - (void)_typeSelectInteractionDidReset;
-- (void)_typeSelectInteractionInputHasChanged:(id)a3;
-- (void)_unregisterWindowNotificationsOnOldWindow:(id)a3;
+- (void)_typeSelectInteractionInputHasChanged:(id)changed;
+- (void)_unregisterWindowNotificationsOnOldWindow:(id)window;
 - (void)_updateGesturesIfNeeded;
-- (void)_updateResultsAnimated:(uint64_t)a1;
-- (void)_updateWithResult:(id)a3 animated:(BOOL)a4;
-- (void)_willMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_windowDidMoveToScene:(id)a3;
-- (void)_windowWillMoveToScene:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_updateResultsAnimated:(uint64_t)animated;
+- (void)_updateWithResult:(id)result animated:(BOOL)animated;
+- (void)_willMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_windowDidMoveToScene:(id)scene;
+- (void)_windowWillMoveToScene:(id)scene;
+- (void)didMoveToView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UITypeSelectInteraction
@@ -50,7 +50,7 @@
 {
   if ([(_UITypeSelectInteraction *)self isEnabled]&& +[_UITypeSelectInteraction isTypeSelectSupported])
   {
-    v3 = [(_UITypeSelectInteraction *)self view];
+    view = [(_UITypeSelectInteraction *)self view];
     [(_UITypeSelectInteraction *)self _addGesturesToView:?];
   }
 
@@ -61,14 +61,14 @@
       [(_UITypeSelectInteraction *)self _typeSelectInteractionDidReset];
     }
 
-    v3 = [(_UITypeSelectInteraction *)self view];
+    view = [(_UITypeSelectInteraction *)self view];
     [(_UITypeSelectInteraction *)self _removeGesturesFromView:?];
   }
 }
 
-- (_UITypeSelectInteraction)initWithDelegate:(id)a3
+- (_UITypeSelectInteraction)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = _UITypeSelectInteraction;
   v5 = [(_UITypeSelectInteraction *)&v22 init];
@@ -76,7 +76,7 @@
   if (v5)
   {
     v5->_enabled = 1;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[_UITypeSelectKeyPressGestureRecognizer alloc] initWithTarget:v6 action:sel__keyPressedGestureRecognizerInputHasChanged_];
     keyPressGestureRecognizer = v6->_keyPressGestureRecognizer;
     v6->_keyPressGestureRecognizer = v7;
@@ -102,8 +102,8 @@
     v6->_defaultTimeout = v17;
 
     v6->_hasTimedOut = 1;
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v6 selector:sel__hardwareKeyboardAvailabilityChanged_ name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__hardwareKeyboardAvailabilityChanged_ name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
 
     v19 = objc_alloc_init(_UITypeSelectKeyInput);
     keyInput = v6->_keyInput;
@@ -127,23 +127,23 @@
   return v2;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(_UITypeSelectInteraction *)self _updateGesturesIfNeeded];
-    if (!a3 && self->_shouldAvoidBecomingFirstResponder)
+    if (!enabled && self->_shouldAvoidBecomingFirstResponder)
     {
       WeakRetained = objc_loadWeakRetained(&self->_view);
-      v8 = [WeakRetained window];
+      window = [WeakRetained window];
 
-      v6 = [v8 _keyboardResponder];
-      [(_UITypeSelectInteraction *)self _removeSceneComponentStateInWindow:v8];
-      if ([v6 __isKindOfTypeSelectKeyInput])
+      _keyboardResponder = [window _keyboardResponder];
+      [(_UITypeSelectInteraction *)self _removeSceneComponentStateInWindow:window];
+      if ([_keyboardResponder __isKindOfTypeSelectKeyInput])
       {
-        v7 = [v8 firstResponder];
-        [v7 reloadInputViewsWithoutReset];
+        firstResponder = [window firstResponder];
+        [firstResponder reloadInputViewsWithoutReset];
       }
     }
   }
@@ -153,9 +153,9 @@
 {
   objc_opt_self();
   v0 = +[UIDevice currentDevice];
-  v1 = [v0 _isHardwareKeyboardAvailable];
+  _isHardwareKeyboardAvailable = [v0 _isHardwareKeyboardAvailable];
 
-  return v1;
+  return _isHardwareKeyboardAvailable;
 }
 
 - (BOOL)_isKeyInputModeEnabled
@@ -168,39 +168,39 @@
   return +[_UITypeSelectInteraction isTypeSelectSupported];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UITypeSelectInteraction *)self isEnabled]&& (self->_keyPressGestureRecognizer == v4 || self->_didRecognizeTouchResetGestureRecognizer == v4);
+  beginCopy = begin;
+  v5 = [(_UITypeSelectInteraction *)self isEnabled]&& (self->_keyPressGestureRecognizer == beginCopy || self->_didRecognizeTouchResetGestureRecognizer == beginCopy);
 
   return v5;
 }
 
-- (void)_beginTypeSelectWithInput:(id *)a1
+- (void)_beginTypeSelectWithInput:(id *)input
 {
   v4 = a2;
-  if (a1)
+  if (input)
   {
-    [a1 _cancelTimer];
-    [a1 _createTimer];
-    objc_storeStrong(a1 + 4, a2);
-    [a1[1] setProgrammaticInput:v4];
-    [a1 _typeSelectInteractionInputHasChanged:v4];
+    [input _cancelTimer];
+    [input _createTimer];
+    objc_storeStrong(input + 4, a2);
+    [input[1] setProgrammaticInput:v4];
+    [input _typeSelectInteractionInputHasChanged:v4];
   }
 }
 
-- (id)_updateInputStringWithNewInput:(id)a3
+- (id)_updateInputStringWithNewInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   programmaticInput = self->_programmaticInput;
   if (programmaticInput)
   {
-    v6 = [(NSString *)programmaticInput stringByAppendingString:v4];
+    v6 = [(NSString *)programmaticInput stringByAppendingString:inputCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = inputCopy;
   }
 
   v7 = v6;
@@ -212,18 +212,18 @@
 {
   [(_UITypeSelectInteraction *)self _cancelTimer];
   [(_UITypeSelectInteraction *)self _createNewTimer];
-  v3 = [(_UITypeSelectKeyInput *)self->_keyInput typedText];
-  v4 = [(_UITypeSelectInteraction *)self _updateInputStringWithNewInput:v3];
+  typedText = [(_UITypeSelectKeyInput *)self->_keyInput typedText];
+  v4 = [(_UITypeSelectInteraction *)self _updateInputStringWithNewInput:typedText];
 
   [(_UITypeSelectInteraction *)self _typeSelectInteractionInputHasChanged:v4];
 }
 
-- (void)_timerHandler:(id)a3
+- (void)_timerHandler:(id)handler
 {
-  v4 = [a3 state];
-  if ((v4 - 3) >= 2)
+  state = [handler state];
+  if ((state - 3) >= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
 
       [(_UITypeSelectInteraction *)self _cancelTimer];
@@ -250,20 +250,20 @@
   }
 }
 
-- (void)_keyPressedGestureRecognizerInputHasChanged:(id)a3
+- (void)_keyPressedGestureRecognizerInputHasChanged:(id)changed
 {
-  [(_UITypeSelectInteraction *)self _timerHandler:a3];
-  v4 = [(_UITypeSelectKeyPressGestureRecognizer *)self->_keyPressGestureRecognizer inputString];
-  v5 = [(_UITypeSelectInteraction *)self _updateInputStringWithNewInput:v4];
+  [(_UITypeSelectInteraction *)self _timerHandler:changed];
+  inputString = [(_UITypeSelectKeyPressGestureRecognizer *)self->_keyPressGestureRecognizer inputString];
+  v5 = [(_UITypeSelectInteraction *)self _updateInputStringWithNewInput:inputString];
 
   [(_UITypeSelectInteraction *)self _typeSelectInteractionInputHasChanged:v5];
 }
 
-- (void)_typeSelectInteractionInputHasChanged:(id)a3
+- (void)_typeSelectInteractionInputHasChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   currentInput = self->_currentInput;
-  v9 = v5;
+  v9 = changedCopy;
   v7 = currentInput;
   if (v7 == v9)
   {
@@ -282,7 +282,7 @@
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_currentInput, a3);
+    objc_storeStrong(&self->_currentInput, changed);
     [(_UITypeSelectInteraction *)self _updateResultsAnimated:?];
     self->_hasTimedOut = 0;
   }
@@ -290,31 +290,31 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_updateResultsAnimated:(uint64_t)a1
+- (void)_updateResultsAnimated:(uint64_t)animated
 {
-  if (a1)
+  if (animated)
   {
-    v4 = *(a1 + 72);
-    *(a1 + 72) = 0;
+    v4 = *(animated + 72);
+    *(animated + 72) = 0;
 
-    v5 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    v5 = *(animated + 80);
+    *(animated + 80) = 0;
 
-    *(a1 + 56) = 0;
-    v6 = [a1 delegate];
-    if (!*(a1 + 120))
+    *(animated + 56) = 0;
+    delegate = [animated delegate];
+    if (!*(animated + 120))
     {
-      [a1 _updateWithResult:0 animated:a2];
+      [animated _updateWithResult:0 animated:a2];
 LABEL_16:
 
       return;
     }
 
     v23 = a2;
-    [*(a1 + 16) setEnabled:1];
-    if (v6)
+    [*(animated + 16) setEnabled:1];
+    if (delegate)
     {
-      [v6 _metadataForTypeSelectInteraction:a1];
+      [delegate _metadataForTypeSelectInteraction:animated];
       v7 = v24;
       v8 = v25;
       v9 = v26;
@@ -327,25 +327,25 @@ LABEL_16:
       v7 = 0;
     }
 
-    v22 = [v6 _itemsForTypeSelectInteraction:a1 forRange:{v7, v8}];
-    v10 = [a1 _filterResultsForTypeSelectItems:?];
+    v22 = [delegate _itemsForTypeSelectInteraction:animated forRange:{v7, v8}];
+    v10 = [animated _filterResultsForTypeSelectItems:?];
     v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v10];
-    v12 = [v6 _itemsForTypeSelectInteraction:a1 forRange:{0, v7}];
-    v13 = [a1 _filterResultsForTypeSelectItems:v12];
+    v12 = [delegate _itemsForTypeSelectInteraction:animated forRange:{0, v7}];
+    v13 = [animated _filterResultsForTypeSelectItems:v12];
     [v11 addObjectsFromArray:v13];
-    v14 = [v6 _itemsForTypeSelectInteraction:a1 forRange:{v7 + v8, v9 - (v7 + v8)}];
-    v15 = [a1 _filterResultsForTypeSelectItems:v14];
+    v14 = [delegate _itemsForTypeSelectInteraction:animated forRange:{v7 + v8, v9 - (v7 + v8)}];
+    v15 = [animated _filterResultsForTypeSelectItems:v14];
     [v11 addObjectsFromArray:v15];
     v16 = [v11 copy];
-    if (*(a1 + 72))
+    if (*(animated + 72))
     {
       v17 = [_UITypeSelectResult alloc];
-      v18 = *(a1 + 72);
+      v18 = *(animated + 72);
     }
 
     else
     {
-      v19 = *(a1 + 80);
+      v19 = *(animated + 80);
       v17 = [_UITypeSelectResult alloc];
       if (!v19)
       {
@@ -354,32 +354,32 @@ LABEL_16:
         goto LABEL_12;
       }
 
-      v18 = *(a1 + 80);
+      v18 = *(animated + 80);
     }
 
     v20 = v16;
 LABEL_12:
     v21 = [(_UITypeSelectResult *)v17 initWithTypeSelectItemResults:v20 preferredItem:v18];
-    [a1 _updateWithResult:v21 animated:v23];
-    if (!*(a1 + 72) && !*(a1 + 80))
+    [animated _updateWithResult:v21 animated:v23];
+    if (!*(animated + 72) && !*(animated + 80))
     {
-      *(a1 + 56) = 1;
+      *(animated + 56) = 1;
     }
 
     goto LABEL_16;
   }
 }
 
-- (id)_filterResultsForTypeSelectItems:(id)a3
+- (id)_filterResultsForTypeSelectItems:(id)items
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -396,27 +396,27 @@ LABEL_12:
 
         v8 = *(*(&v25 + 1) + 8 * i);
         [(_UITypeSelectFilterSystem *)self->_filterSystem setInputString:self->_currentInput];
-        v9 = [MEMORY[0x1E696AC90] indexSet];
+        indexSet = [MEMORY[0x1E696AC90] indexSet];
         v10 = MEMORY[0x1E696AC90];
-        v11 = [v8 string];
-        v12 = [v10 indexSetWithIndexesInRange:{0, objc_msgSend(v11, "length")}];
+        string = [v8 string];
+        v12 = [v10 indexSetWithIndexesInRange:{0, objc_msgSend(string, "length")}];
 
         v13 = [(_UITypeSelectFilterSystem *)self->_filterSystem filterResultForTypeSelectItem:v8];
         if (!v13)
         {
-          v13 = [[_UITypeSelectItemResult alloc] initWithTypeSelectItem:v8 matchingRanges:v9 unmatchingRanges:v12];
+          v13 = [[_UITypeSelectItemResult alloc] initWithTypeSelectItem:v8 matchingRanges:indexSet unmatchingRanges:v12];
         }
 
         if (self->_currentInput)
         {
-          v14 = [(_UITypeSelectItemResult *)v13 matchingRanges];
-          v15 = [v14 containsIndex:0];
-          v16 = [v14 count];
+          matchingRanges = [(_UITypeSelectItemResult *)v13 matchingRanges];
+          v15 = [matchingRanges containsIndex:0];
+          v16 = [matchingRanges count];
           if (!self->_primaryMatch && (v15 ? (v17 = v16 == 0) : (v17 = 1), p_primaryMatch = &self->_primaryMatch, !v17) || !((self->_secondaryMatch != 0) | v15 & 1) && (p_primaryMatch = &self->_secondaryMatch, v16))
           {
-            v19 = [(_UITypeSelectItemResult *)v13 item];
+            item = [(_UITypeSelectItemResult *)v13 item];
             v20 = *p_primaryMatch;
-            *p_primaryMatch = v19;
+            *p_primaryMatch = item;
           }
         }
 
@@ -432,15 +432,15 @@ LABEL_12:
   return v24;
 }
 
-- (void)_updateWithResult:(id)a3 animated:(BOOL)a4
+- (void)_updateWithResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  resultCopy = result;
   v7 = objc_opt_new();
-  v8 = [(_UITypeSelectInteraction *)self delegate];
-  [v8 _typeSelectInteraction:self didUpdateResult:v6 animator:v7];
+  delegate = [(_UITypeSelectInteraction *)self delegate];
+  [delegate _typeSelectInteraction:self didUpdateResult:resultCopy animator:v7];
 
-  if (v4)
+  if (animatedCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -496,10 +496,10 @@ LABEL_12:
   self->_timer = 0;
 }
 
-- (void)_createTimerWithTimeout:(double)a3
+- (void)_createTimerWithTimeout:(double)timeout
 {
   [(_UITypeSelectInteraction *)self _cancelTimer];
-  v5 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__resetTypeSelectInput selector:0 userInfo:0 repeats:a3];
+  v5 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__resetTypeSelectInput selector:0 userInfo:0 repeats:timeout];
   timer = self->_timer;
   self->_timer = v5;
 }
@@ -531,20 +531,20 @@ LABEL_12:
   [(_UITypeSelectKeyPressGestureRecognizer *)keyPressGestureRecognizer setProgrammaticInput:0];
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v6 = [(_UITypeSelectInteraction *)self view];
+  viewCopy = view;
+  view = [(_UITypeSelectInteraction *)self view];
 
-  if (v6)
+  if (view)
   {
-    if (v6 != v4)
+    if (view != viewCopy)
     {
-      [(_UITypeSelectInteraction *)self _removeGesturesFromView:v6];
+      [(_UITypeSelectInteraction *)self _removeGesturesFromView:view];
       if ([(_UITypeSelectInteraction *)self _isKeyInputModeEnabled])
       {
-        v5 = [v6 window];
-        [(_UITypeSelectInteraction *)self _unregisterWindowNotificationsOnOldWindow:v5];
+        window = [view window];
+        [(_UITypeSelectInteraction *)self _unregisterWindowNotificationsOnOldWindow:window];
       }
     }
   }
@@ -552,67 +552,67 @@ LABEL_12:
   objc_storeWeak(&self->_view, 0);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v7 = a3;
-  objc_storeWeak(&self->_view, v7);
-  v4 = v7;
-  if (v7)
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
+  v4 = viewCopy;
+  if (viewCopy)
   {
     [(_UITypeSelectInteraction *)self _updateGesturesIfNeeded];
-    v5 = [(_UITypeSelectInteraction *)self _isKeyInputModeEnabled];
-    v4 = v7;
-    if (v5)
+    _isKeyInputModeEnabled = [(_UITypeSelectInteraction *)self _isKeyInputModeEnabled];
+    v4 = viewCopy;
+    if (_isKeyInputModeEnabled)
     {
-      v6 = [v7 window];
-      [(_UITypeSelectInteraction *)self _registerWindowNotificationsOnNewWindow:v6];
+      window = [viewCopy window];
+      [(_UITypeSelectInteraction *)self _registerWindowNotificationsOnNewWindow:window];
 
-      v4 = v7;
+      v4 = viewCopy;
     }
   }
 }
 
-- (void)_willMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_willMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v9 = a3;
-  v6 = a4;
+  windowCopy = window;
+  toWindowCopy = toWindow;
   if ([(_UITypeSelectInteraction *)self _isKeyInputModeEnabled])
   {
-    v7 = [v9 windowScene];
-    v8 = [v6 windowScene];
-    if (v9)
+    windowScene = [windowCopy windowScene];
+    windowScene2 = [toWindowCopy windowScene];
+    if (windowCopy)
     {
-      if (v6 && v8)
+      if (toWindowCopy && windowScene2)
       {
         *&self->_interactionFlags |= 2u;
       }
 
-      [(_UITypeSelectInteraction *)self _unregisterWindowNotificationsOnOldWindow:v9];
+      [(_UITypeSelectInteraction *)self _unregisterWindowNotificationsOnOldWindow:windowCopy];
     }
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v18 = a3;
-  v6 = a4;
+  windowCopy = window;
+  toWindowCopy = toWindow;
   if ([(_UITypeSelectInteraction *)self _isKeyInputModeEnabled])
   {
-    v7 = [v18 windowScene];
-    v8 = [v6 windowScene];
+    windowScene = [windowCopy windowScene];
+    windowScene2 = [toWindowCopy windowScene];
     interactionFlags = self->_interactionFlags;
     v10 = (*&interactionFlags >> 1) & 1;
-    if (!v18)
+    if (!windowCopy)
     {
       v10 = 0;
     }
 
-    if (!v6)
+    if (!toWindowCopy)
     {
       v10 = 0;
     }
 
-    if (v18)
+    if (windowCopy)
     {
       v11 = v10;
     }
@@ -622,9 +622,9 @@ LABEL_12:
       v11 = 1;
     }
 
-    if (v7)
+    if (windowScene)
     {
-      v12 = v8 == 0;
+      v12 = windowScene2 == 0;
     }
 
     else
@@ -632,34 +632,34 @@ LABEL_12:
       v12 = 1;
     }
 
-    v14 = !v12 && v7 != v8;
-    if (v11 != 1 || v8 == 0)
+    v14 = !v12 && windowScene != windowScene2;
+    if (v11 != 1 || windowScene2 == 0)
     {
-      if (!v18 && v6 && !v8)
+      if (!windowCopy && toWindowCopy && !windowScene2)
       {
-        [(_UITypeSelectInteraction *)self _registerWindowNotificationsOnNewWindow:v6];
+        [(_UITypeSelectInteraction *)self _registerWindowNotificationsOnNewWindow:toWindowCopy];
         goto LABEL_29;
       }
 
       if (!v14)
       {
 LABEL_28:
-        if (!v6)
+        if (!toWindowCopy)
         {
-          v16 = v18;
+          v16 = windowCopy;
           goto LABEL_31;
         }
 
 LABEL_29:
-        v16 = v6;
+        v16 = toWindowCopy;
 LABEL_31:
-        v17 = [v16 firstResponder];
-        [v17 reloadInputViewsWithoutReset];
+        firstResponder = [v16 firstResponder];
+        [firstResponder reloadInputViewsWithoutReset];
 
         goto LABEL_32;
       }
 
-      [(_UITypeSelectInteraction *)self _unregisterWindowNotificationsOnOldWindow:v18];
+      [(_UITypeSelectInteraction *)self _unregisterWindowNotificationsOnOldWindow:windowCopy];
     }
 
     else
@@ -667,20 +667,20 @@ LABEL_31:
       *&self->_interactionFlags = *&interactionFlags & 0xFD;
     }
 
-    [(_UITypeSelectInteraction *)self _registerWindowNotificationsOnNewWindow:v6];
+    [(_UITypeSelectInteraction *)self _registerWindowNotificationsOnNewWindow:toWindowCopy];
     goto LABEL_28;
   }
 
 LABEL_32:
 }
 
-- (void)_registerWindowNotificationsOnNewWindow:(id)a3
+- (void)_registerWindowNotificationsOnNewWindow:(id)window
 {
-  v6 = a3;
-  v4 = [v6 windowScene];
-  if (!v4)
+  windowCopy = window;
+  windowScene = [windowCopy windowScene];
+  if (!windowScene)
   {
-    if (!v6)
+    if (!windowCopy)
     {
       goto LABEL_7;
     }
@@ -690,54 +690,54 @@ LABEL_32:
   }
 
   *&self->_interactionFlags &= ~1u;
-  [(_UITypeSelectInteraction *)self _addSceneComponentStateInScene:v4];
-  if (v6)
+  [(_UITypeSelectInteraction *)self _addSceneComponentStateInScene:windowScene];
+  if (windowCopy)
   {
 LABEL_6:
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__windowWillMoveToScene_ name:@"_UIWindowWillMoveToSceneNotification" object:v6];
-    [v5 addObserver:self selector:sel__windowDidMoveToScene_ name:@"_UIWindowDidMoveToSceneNotification" object:v6];
-    [v5 addObserver:self selector:sel__windowWillMoveToScene_ name:@"_UIWindowWillMoveToNilSceneNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__windowWillMoveToScene_ name:@"_UIWindowWillMoveToSceneNotification" object:windowCopy];
+    [defaultCenter addObserver:self selector:sel__windowDidMoveToScene_ name:@"_UIWindowDidMoveToSceneNotification" object:windowCopy];
+    [defaultCenter addObserver:self selector:sel__windowWillMoveToScene_ name:@"_UIWindowWillMoveToNilSceneNotification" object:windowCopy];
   }
 
 LABEL_7:
 }
 
-- (void)_unregisterWindowNotificationsOnOldWindow:(id)a3
+- (void)_unregisterWindowNotificationsOnOldWindow:(id)window
 {
   v8[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
+  windowCopy = window;
+  defaultCenter = [v4 defaultCenter];
   v8[0] = @"_UIWindowWillMoveToSceneNotification";
   v8[1] = @"_UIWindowDidMoveToSceneNotification";
   v8[2] = @"_UIWindowWillMoveToNilSceneNotification";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
-  [(NSNotificationCenter *)v6 _uiRemoveObserver:v7 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v7 names:?];
 
   *&self->_interactionFlags &= ~1u;
-  [(_UITypeSelectInteraction *)self _removeSceneComponentStateInWindow:v5];
+  [(_UITypeSelectInteraction *)self _removeSceneComponentStateInWindow:windowCopy];
 }
 
-- (void)_windowWillMoveToScene:(id)a3
+- (void)_windowWillMoveToScene:(id)scene
 {
-  v10 = a3;
-  v4 = [v10 object];
+  sceneCopy = scene;
+  object = [sceneCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v10 object];
+    object2 = [sceneCopy object];
 
-    if (v5)
+    if (object2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_view);
-      v7 = [WeakRetained _window];
+      _window = [WeakRetained _window];
 
-      if (v7 == v5)
+      if (_window == object2)
       {
         v8 = objc_loadWeakRetained(&self->_view);
-        v9 = [v8 window];
-        [(_UITypeSelectInteraction *)self _removeSceneComponentStateInWindow:v9];
+        window = [v8 window];
+        [(_UITypeSelectInteraction *)self _removeSceneComponentStateInWindow:window];
 
         *&self->_interactionFlags |= 1u;
       }
@@ -747,31 +747,31 @@ LABEL_7:
   else
   {
 
-    v5 = 0;
+    object2 = 0;
   }
 }
 
-- (void)_windowDidMoveToScene:(id)a3
+- (void)_windowDidMoveToScene:(id)scene
 {
-  v8 = a3;
-  WeakRetained = [v8 object];
+  sceneCopy = scene;
+  WeakRetained = [sceneCopy object];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = 0;
+    object = 0;
     goto LABEL_6;
   }
 
-  v5 = [v8 object];
+  object = [sceneCopy object];
 
-  if (!v5)
+  if (!object)
   {
     goto LABEL_7;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v6 = [WeakRetained _window];
-  if (v6 != v5)
+  _window = [WeakRetained _window];
+  if (_window != object)
   {
 
 LABEL_6:
@@ -783,7 +783,7 @@ LABEL_6:
   if (interactionFlags)
   {
     *&self->_interactionFlags &= ~1u;
-    WeakRetained = [v5 windowScene];
+    WeakRetained = [object windowScene];
     [(_UITypeSelectInteraction *)self _addSceneComponentStateInScene:WeakRetained];
     goto LABEL_6;
   }
@@ -791,57 +791,57 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_addSceneComponentStateInScene:(id)a3
+- (void)_addSceneComponentStateInScene:(id)scene
 {
-  v11 = [a3 _keyboardOverridingSceneComponent];
-  v4 = [v11 commonView];
+  _keyboardOverridingSceneComponent = [scene _keyboardOverridingSceneComponent];
+  commonView = [_keyboardOverridingSceneComponent commonView];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v6 = [WeakRetained isDescendantOfView:v4];
+  v6 = [WeakRetained isDescendantOfView:commonView];
 
   if (v6)
   {
     v7 = [_UIKeyboardResponderOverrideInfo alloc];
     keyInput = self->_keyInput;
     v9 = objc_loadWeakRetained(&self->_view);
-    v10 = [(_UIKeyboardResponderOverrideInfo *)&v7->super.isa initWithKeyboardResponder:v9 sourceView:v4 commonView:?];
+    v10 = [(_UIKeyboardResponderOverrideInfo *)&v7->super.isa initWithKeyboardResponder:v9 sourceView:commonView commonView:?];
 
-    [v11 pushPreferredKeyboardResponderOverride:v10];
+    [_keyboardOverridingSceneComponent pushPreferredKeyboardResponderOverride:v10];
   }
 }
 
-- (void)_removeSceneComponentStateInWindow:(id)a3
+- (void)_removeSceneComponentStateInWindow:(id)window
 {
-  v4 = [a3 windowScene];
-  v5 = [v4 _keyboardOverridingSceneComponent];
+  windowScene = [window windowScene];
+  _keyboardOverridingSceneComponent = [windowScene _keyboardOverridingSceneComponent];
 
-  [v5 removePreferredKeyboardResponderOverride:self->_keyInput];
+  [_keyboardOverridingSceneComponent removePreferredKeyboardResponderOverride:self->_keyInput];
 }
 
-- (void)_addGesturesToView:(id)a3
+- (void)_addGesturesToView:(id)view
 {
-  v5 = a3;
-  v4 = [(UIGestureRecognizer *)self->_keyPressGestureRecognizer view];
+  viewCopy = view;
+  view = [(UIGestureRecognizer *)self->_keyPressGestureRecognizer view];
 
-  if (v4 != v5)
+  if (view != viewCopy)
   {
-    [v5 addGestureRecognizer:self->_keyPressGestureRecognizer];
-    [v5 addGestureRecognizer:self->_navigationGestureRecognizer];
-    [v5 addGestureRecognizer:self->_didRecognizeTouchResetGestureRecognizer];
+    [viewCopy addGestureRecognizer:self->_keyPressGestureRecognizer];
+    [viewCopy addGestureRecognizer:self->_navigationGestureRecognizer];
+    [viewCopy addGestureRecognizer:self->_didRecognizeTouchResetGestureRecognizer];
   }
 }
 
-- (void)_removeGesturesFromView:(id)a3
+- (void)_removeGesturesFromView:(id)view
 {
-  v6 = a3;
-  v4 = [(UIGestureRecognizer *)self->_keyPressGestureRecognizer view];
+  viewCopy = view;
+  view = [(UIGestureRecognizer *)self->_keyPressGestureRecognizer view];
 
-  v5 = v6;
-  if (v4 == v6)
+  v5 = viewCopy;
+  if (view == viewCopy)
   {
-    [v6 removeGestureRecognizer:self->_keyPressGestureRecognizer];
-    [v6 removeGestureRecognizer:self->_navigationGestureRecognizer];
-    [v6 removeGestureRecognizer:self->_didRecognizeTouchResetGestureRecognizer];
-    v5 = v6;
+    [viewCopy removeGestureRecognizer:self->_keyPressGestureRecognizer];
+    [viewCopy removeGestureRecognizer:self->_navigationGestureRecognizer];
+    [viewCopy removeGestureRecognizer:self->_didRecognizeTouchResetGestureRecognizer];
+    v5 = viewCopy;
   }
 }
 

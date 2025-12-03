@@ -1,9 +1,9 @@
 @interface IMCoreAutomationHook
-+ (id)stringFromAutomationErrorCode:(int64_t)a3;
++ (id)stringFromAutomationErrorCode:(int64_t)code;
 - (IMAccount)bestiMessageAccount;
-- (id)chatForHandles:(id)a3 error:(id *)a4 results:(id)a5;
-- (id)existingChatForGroupID:(id)a3 error:(id *)a4 results:(id)a5;
-- (id)handlesFromStrings:(id)a3 error:(id *)a4 results:(id)a5;
+- (id)chatForHandles:(id)handles error:(id *)error results:(id)results;
+- (id)existingChatForGroupID:(id)d error:(id *)error results:(id)results;
+- (id)handlesFromStrings:(id)strings error:(id *)error results:(id)results;
 @end
 
 @implementation IMCoreAutomationHook
@@ -25,20 +25,20 @@
   return imessageAccount;
 }
 
-- (id)chatForHandles:(id)a3 error:(id *)a4 results:(id)a5
+- (id)chatForHandles:(id)handles error:(id *)error results:(id)results
 {
   v61[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (objc_msgSend_count(v7, v9, v10))
+  handlesCopy = handles;
+  resultsCopy = results;
+  if (objc_msgSend_count(handlesCopy, v9, v10))
   {
     v13 = objc_msgSend_sharedRegistry(IMChatRegistry, v11, v12);
-    v15 = objc_msgSend_chatWithHandles_(v13, v14, v7);
+    v15 = objc_msgSend_chatWithHandles_(v13, v14, handlesCopy);
 
     if (v15)
     {
       v18 = objc_msgSend_groupID(v15, v16, v17);
-      objc_msgSend_setValue_forKey_(v8, v19, v18, @"group_id");
+      objc_msgSend_setValue_forKey_(resultsCopy, v19, v18, @"group_id");
 
       v15 = v15;
       v20 = v15;
@@ -72,10 +72,10 @@
           }
         }
 
-        if (a4 && !*a4)
+        if (error && !*error)
         {
           v53 = v48;
-          *a4 = v48;
+          *error = v48;
         }
       }
 
@@ -111,10 +111,10 @@
         }
       }
 
-      if (a4 && !*a4)
+      if (error && !*error)
       {
         v36 = v31;
-        *a4 = v31;
+        *error = v31;
       }
     }
 
@@ -126,19 +126,19 @@
   return v20;
 }
 
-- (id)handlesFromStrings:(id)a3 error:(id *)a4 results:(id)a5
+- (id)handlesFromStrings:(id)strings error:(id *)error results:(id)results
 {
   v79[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (objc_msgSend_count(v7, v9, v10))
+  stringsCopy = strings;
+  resultsCopy = results;
+  if (objc_msgSend_count(stringsCopy, v9, v10))
   {
     v13 = objc_msgSend_array(MEMORY[0x1E695DF70], v11, v12);
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v14 = v7;
+    v14 = stringsCopy;
     v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v69, v75, 16);
     if (v18)
     {
@@ -171,7 +171,7 @@
     v28 = objc_msgSend_count(v14, v26, v27);
     if (v28 == objc_msgSend_count(v13, v29, v30))
     {
-      objc_msgSend_setObject_forKey_(v8, v31, v14, @"members");
+      objc_msgSend_setObject_forKey_(resultsCopy, v31, v14, @"members");
       v13 = v13;
       v32 = v13;
       goto LABEL_32;
@@ -203,10 +203,10 @@
         }
       }
 
-      if (a4 && !*a4)
+      if (error && !*error)
       {
         v65 = v60;
-        *a4 = v60;
+        *error = v60;
       }
     }
   }
@@ -239,10 +239,10 @@
         }
       }
 
-      if (a4 && !*a4)
+      if (error && !*error)
       {
         v48 = v43;
-        *a4 = v43;
+        *error = v43;
       }
     }
   }
@@ -255,13 +255,13 @@ LABEL_32:
   return v32;
 }
 
-- (id)existingChatForGroupID:(id)a3 error:(id *)a4 results:(id)a5
+- (id)existingChatForGroupID:(id)d error:(id *)error results:(id)results
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  resultsCopy = results;
   v11 = objc_msgSend_sharedRegistry(IMChatRegistry, v9, v10);
-  v13 = objc_msgSend_existingChatWithGroupID_(v11, v12, v7);
+  v13 = objc_msgSend_existingChatWithGroupID_(v11, v12, dCopy);
 
   if (v13)
   {
@@ -296,10 +296,10 @@ LABEL_32:
         }
       }
 
-      if (a4 && !*a4)
+      if (error && !*error)
       {
         v32 = v27;
-        *a4 = v27;
+        *error = v27;
       }
     }
   }
@@ -309,18 +309,18 @@ LABEL_32:
   return v13;
 }
 
-+ (id)stringFromAutomationErrorCode:(int64_t)a3
++ (id)stringFromAutomationErrorCode:(int64_t)code
 {
-  if (a3 <= 2)
+  if (code <= 2)
   {
-    if (a3 == 1)
+    if (code == 1)
     {
       objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"%s:%ld", "IMCoreAutomationHookErrorCodeDomainTimeOut", 1);
     }
 
     else
     {
-      if (a3 != 2)
+      if (code != 2)
       {
         goto LABEL_13;
       }
@@ -331,7 +331,7 @@ LABEL_32:
 
   else
   {
-    switch(a3)
+    switch(code)
     {
       case 3:
         objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"%s:%ld", "IMCoreAutomationHookErrorCodeGroupCreationFailure", 3);
@@ -346,10 +346,10 @@ LABEL_32:
         goto LABEL_13;
     }
   }
-  a1 = ;
+  self = ;
 LABEL_13:
 
-  return a1;
+  return self;
 }
 
 @end

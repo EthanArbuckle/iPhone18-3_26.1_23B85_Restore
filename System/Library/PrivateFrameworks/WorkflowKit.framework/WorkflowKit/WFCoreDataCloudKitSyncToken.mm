@@ -7,8 +7,8 @@
 - (id)descriptor
 {
   v3 = objc_alloc(MEMORY[0x1E69E0A68]);
-  v4 = [(WFCoreDataCloudKitSyncToken *)self identifier];
-  v5 = [v3 initWithIdentifier:v4 objectType:3];
+  identifier = [(WFCoreDataCloudKitSyncToken *)self identifier];
+  v5 = [v3 initWithIdentifier:identifier objectType:3];
 
   return v5;
 }

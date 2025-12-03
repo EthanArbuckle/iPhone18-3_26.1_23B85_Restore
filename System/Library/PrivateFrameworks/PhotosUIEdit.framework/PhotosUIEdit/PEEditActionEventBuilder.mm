@@ -1,9 +1,9 @@
 @interface PEEditActionEventBuilder
-- (PEEditActionEventBuilder)initWithActionDescription:(id)a3 assets:(id)a4;
-- (PEEditActionEventBuilder)initWithBaseAction:(id)a3 assets:(id)a4;
+- (PEEditActionEventBuilder)initWithActionDescription:(id)description assets:(id)assets;
+- (PEEditActionEventBuilder)initWithBaseAction:(id)action assets:(id)assets;
 - (id)buildEvents;
-- (void)registerAction:(id)a3 forAssets:(id)a4;
-- (void)registerActionType:(id)a3 forAssets:(id)a4;
+- (void)registerAction:(id)action forAssets:(id)assets;
+- (void)registerActionType:(id)type forAssets:(id)assets;
 @end
 
 @implementation PEEditActionEventBuilder
@@ -11,8 +11,8 @@
 - (id)buildEvents
 {
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(NSDictionary *)self->_assetsMap allKeys];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  allKeys = [(NSDictionary *)self->_assetsMap allKeys];
+  v5 = [v3 initWithCapacity:{objc_msgSend(allKeys, "count")}];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   assetsMap = self->_assetsMap;
@@ -83,11 +83,11 @@ void __39__PEEditActionEventBuilder_buildEvents__block_invoke_2(uint64_t a1, voi
   [*(a1 + 40) addObject:v12];
 }
 
-- (void)registerActionType:(id)a3 forAssets:(id)a4
+- (void)registerActionType:(id)type forAssets:(id)assets
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  assetsCopy = assets;
   assetsMap = self->_assetsMap;
   if (!assetsMap)
   {
@@ -103,7 +103,7 @@ void __39__PEEditActionEventBuilder_buildEvents__block_invoke_2(uint64_t a1, voi
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v7;
+  v12 = assetsCopy;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -119,7 +119,7 @@ void __39__PEEditActionEventBuilder_buildEvents__block_invoke_2(uint64_t a1, voi
           objc_enumerationMutation(v12);
         }
 
-        [v11 setObject:v6 forKey:{*(*(&v19 + 1) + 8 * v16++), v19}];
+        [v11 setObject:typeCopy forKey:{*(*(&v19 + 1) + 8 * v16++), v19}];
       }
 
       while (v14 != v16);
@@ -134,53 +134,53 @@ void __39__PEEditActionEventBuilder_buildEvents__block_invoke_2(uint64_t a1, voi
   self->_assetsMap = v17;
 }
 
-- (void)registerAction:(id)a3 forAssets:(id)a4
+- (void)registerAction:(id)action forAssets:(id)assets
 {
-  v6 = a4;
-  v7 = [a3 actionType];
-  if ((v7 - 1) > 7)
+  assetsCopy = assets;
+  actionType = [action actionType];
+  if ((actionType - 1) > 7)
   {
     v8 = @"Unknown";
   }
 
   else
   {
-    v8 = off_279A30810[v7 - 1];
+    v8 = off_279A30810[actionType - 1];
   }
 
   v9 = v8;
-  [(PEEditActionEventBuilder *)self registerActionType:v9 forAssets:v6];
+  [(PEEditActionEventBuilder *)self registerActionType:v9 forAssets:assetsCopy];
 }
 
-- (PEEditActionEventBuilder)initWithActionDescription:(id)a3 assets:(id)a4
+- (PEEditActionEventBuilder)initWithActionDescription:(id)description assets:(id)assets
 {
-  v7 = a3;
-  v8 = a4;
+  descriptionCopy = description;
+  assetsCopy = assets;
   v12.receiver = self;
   v12.super_class = PEEditActionEventBuilder;
   v9 = [(PEEditActionEventBuilder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_actionDescription, a3);
-    [(PEEditActionEventBuilder *)v10 registerActionType:v7 forAssets:v8];
+    objc_storeStrong(&v9->_actionDescription, description);
+    [(PEEditActionEventBuilder *)v10 registerActionType:descriptionCopy forAssets:assetsCopy];
   }
 
   return v10;
 }
 
-- (PEEditActionEventBuilder)initWithBaseAction:(id)a3 assets:(id)a4
+- (PEEditActionEventBuilder)initWithBaseAction:(id)action assets:(id)assets
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  assetsCopy = assets;
   v12.receiver = self;
   v12.super_class = PEEditActionEventBuilder;
   v9 = [(PEEditActionEventBuilder *)&v12 init];
   v10 = v9;
-  if (v7 && v9)
+  if (actionCopy && v9)
   {
-    objc_storeStrong(&v9->_baseAction, a3);
-    [(PEEditActionEventBuilder *)v10 registerAction:v10->_baseAction forAssets:v8];
+    objc_storeStrong(&v9->_baseAction, action);
+    [(PEEditActionEventBuilder *)v10 registerAction:v10->_baseAction forAssets:assetsCopy];
   }
 
   return v10;

@@ -1,44 +1,44 @@
 @interface SCLSettingsSyncCoordinator
-- (SCLSettingsSyncCoordinator)initWithFileURL:(id)a3 pairingID:(id)a4 schedule:(id)a5 queue:(id)a6;
+- (SCLSettingsSyncCoordinator)initWithFileURL:(id)l pairingID:(id)d schedule:(id)schedule queue:(id)queue;
 - (SCLSettingsSyncTransport)transport;
 - (void)activate;
-- (void)applySchedule:(id)a3;
-- (void)beginActivity:(id)a3;
-- (void)cancelCommitTimerForStateMachine:(id)a3;
-- (void)cancelRetryActivityForStateMachine:(id)a3;
+- (void)applySchedule:(id)schedule;
+- (void)beginActivity:(id)activity;
+- (void)cancelCommitTimerForStateMachine:(id)machine;
+- (void)cancelRetryActivityForStateMachine:(id)machine;
 - (void)commitTimerFired;
-- (void)didDeliverMessageWithIdentifier:(id)a3;
-- (void)identifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5;
+- (void)didDeliverMessageWithIdentifier:(id)identifier;
+- (void)identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
 - (void)noteSignificantUserInteractionOccured;
-- (void)performSyncForStateMachine:(id)a3;
-- (void)registerActivityWithCriteria:(id)a3;
-- (void)stateMachine:(id)a3 didTransitionFromState:(id)a4 toState:(id)a5;
-- (void)stateMachine:(id)a3 scheduleCommitTimerWithInterval:(double)a4;
-- (void)stateMachine:(id)a3 scheduleRetryWithActivityCriteria:(id)a4;
+- (void)performSyncForStateMachine:(id)machine;
+- (void)registerActivityWithCriteria:(id)criteria;
+- (void)stateMachine:(id)machine didTransitionFromState:(id)state toState:(id)toState;
+- (void)stateMachine:(id)machine scheduleCommitTimerWithInterval:(double)interval;
+- (void)stateMachine:(id)machine scheduleRetryWithActivityCriteria:(id)criteria;
 @end
 
 @implementation SCLSettingsSyncCoordinator
 
-- (SCLSettingsSyncCoordinator)initWithFileURL:(id)a3 pairingID:(id)a4 schedule:(id)a5 queue:(id)a6
+- (SCLSettingsSyncCoordinator)initWithFileURL:(id)l pairingID:(id)d schedule:(id)schedule queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  dCopy = d;
+  scheduleCopy = schedule;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = SCLSettingsSyncCoordinator;
   v14 = [(SCLSettingsSyncCoordinator *)&v26 init];
   if (v14)
   {
-    v15 = [v10 URLByAppendingPathComponent:@"SettingsSyncContext.plist"];
+    v15 = [lCopy URLByAppendingPathComponent:@"SettingsSyncContext.plist"];
     contextURL = v14->_contextURL;
     v14->_contextURL = v15;
 
-    objc_storeStrong(&v14->_schedule, a5);
-    objc_storeStrong(&v14->_queue, a6);
+    objc_storeStrong(&v14->_schedule, schedule);
+    objc_storeStrong(&v14->_queue, queue);
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v11 UUIDString];
-    v19 = [v17 stringWithFormat:@"com.apple.schooltimed.settingssync-%@", v18];
+    uUIDString = [dCopy UUIDString];
+    v19 = [v17 stringWithFormat:@"com.apple.schooltimed.settingssync-%@", uUIDString];
     xpcActivityName = v14->_xpcActivityName;
     v14->_xpcActivityName = v19;
 
@@ -66,75 +66,75 @@
 
 - (void)activate
 {
-  v2 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-  [v2 activate];
+  stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+  [stateMachine activate];
 }
 
-- (void)applySchedule:(id)a3
+- (void)applySchedule:(id)schedule
 {
-  v4 = a3;
-  v5 = [(SCLSettingsSyncCoordinator *)self queue];
-  dispatch_assert_queue_V2(v5);
+  scheduleCopy = schedule;
+  queue = [(SCLSettingsSyncCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 copy];
+  v6 = [scheduleCopy copy];
   schedule = self->_schedule;
   self->_schedule = v6;
 
-  v8 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-  [v8 settingsDidChange];
+  stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+  [stateMachine settingsDidChange];
 }
 
 - (void)noteSignificantUserInteractionOccured
 {
-  v3 = [(SCLSettingsSyncCoordinator *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SCLSettingsSyncCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-  [v4 significantUserInteractionOccurred];
+  stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+  [stateMachine significantUserInteractionOccurred];
 }
 
 - (void)commitTimerFired
 {
-  v3 = [(SCLSettingsSyncCoordinator *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SCLSettingsSyncCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SCLSettingsSyncCoordinator *)self timerSource];
-  dispatch_source_cancel(v4);
+  timerSource = [(SCLSettingsSyncCoordinator *)self timerSource];
+  dispatch_source_cancel(timerSource);
 
   [(SCLSettingsSyncCoordinator *)self setTimerSource:0];
-  v5 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-  [v5 commitSettings];
+  stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+  [stateMachine commitSettings];
 }
 
-- (void)identifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5
+- (void)identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v11 = a5;
-  v8 = a3;
-  v9 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-  v10 = v9;
-  if (v5)
+  successCopy = success;
+  errorCopy = error;
+  identifierCopy = identifier;
+  stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+  v10 = stateMachine;
+  if (successCopy)
   {
-    [v9 messageDidSend:v8];
+    [stateMachine messageDidSend:identifierCopy];
   }
 
   else
   {
-    [v9 message:v8 failedWithError:v11];
+    [stateMachine message:identifierCopy failedWithError:errorCopy];
   }
 }
 
-- (void)didDeliverMessageWithIdentifier:(id)a3
+- (void)didDeliverMessageWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-  [v5 messageWasDelivered:v4];
+  identifierCopy = identifier;
+  stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+  [stateMachine messageWasDelivered:identifierCopy];
 }
 
-- (void)beginActivity:(id)a3
+- (void)beginActivity:(id)activity
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v5 = _os_activity_create(&dword_264829000, "Settings Sync Activity", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -142,31 +142,31 @@
   v6 = scl_transport_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
+    xpcActivityName = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
     *buf = 138412290;
-    v17 = v7;
+    v17 = xpcActivityName;
     _os_log_impl(&dword_264829000, v6, OS_LOG_TYPE_DEFAULT, "Begin sync activity %@", buf, 0xCu);
   }
 
-  if (!xpc_activity_set_state(v4, 4))
+  if (!xpc_activity_set_state(activityCopy, 4))
   {
     v8 = scl_persistence_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
-      [(SCLSettingsSyncCoordinator *)v9 beginActivity:buf, v8];
+      xpcActivityName2 = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
+      [(SCLSettingsSyncCoordinator *)xpcActivityName2 beginActivity:buf, v8];
     }
   }
 
-  v10 = [(SCLSettingsSyncCoordinator *)self queue];
+  queue = [(SCLSettingsSyncCoordinator *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __44__SCLSettingsSyncCoordinator_beginActivity___block_invoke;
   v13[3] = &unk_279B6C5D8;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
-  dispatch_async(v10, v13);
+  v14 = activityCopy;
+  v11 = activityCopy;
+  dispatch_async(queue, v13);
 
   os_activity_scope_leave(&state);
   v12 = *MEMORY[0x277D85DE8];
@@ -188,12 +188,12 @@ void __44__SCLSettingsSyncCoordinator_beginActivity___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stateMachine:(id)a3 didTransitionFromState:(id)a4 toState:(id)a5
+- (void)stateMachine:(id)machine didTransitionFromState:(id)state toState:(id)toState
 {
   v6 = MEMORY[0x277CCAAB0];
-  v7 = [a3 context];
+  context = [machine context];
   v16 = 0;
-  v8 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v16];
+  v8 = [v6 archivedDataWithRootObject:context requiringSecureCoding:1 error:&v16];
   v9 = v16;
 
   if (v9)
@@ -207,9 +207,9 @@ void __44__SCLSettingsSyncCoordinator_beginActivity___block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [(SCLSettingsSyncCoordinator *)self contextURL];
+    contextURL = [(SCLSettingsSyncCoordinator *)self contextURL];
     v15 = 0;
-    v12 = [v8 writeToURL:v11 options:0x10000000 error:&v15];
+    v12 = [v8 writeToURL:contextURL options:0x10000000 error:&v15];
     v9 = v15;
 
     v13 = scl_transport_log();
@@ -230,54 +230,54 @@ void __44__SCLSettingsSyncCoordinator_beginActivity___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stateMachine:(id)a3 scheduleCommitTimerWithInterval:(double)a4
+- (void)stateMachine:(id)machine scheduleCommitTimerWithInterval:(double)interval
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  machineCopy = machine;
   v7 = scl_persistence_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
     *buf = 138412290;
     v23 = v8;
     _os_log_impl(&dword_264829000, v7, OS_LOG_TYPE_DEFAULT, "Sync coordinator start timer: %@", buf, 0xCu);
   }
 
-  v9 = [(SCLSettingsSyncCoordinator *)self timerSource];
+  timerSource = [(SCLSettingsSyncCoordinator *)self timerSource];
 
-  if (v9)
+  if (timerSource)
   {
-    v10 = [(SCLSettingsSyncCoordinator *)self timerSource];
-    dispatch_source_cancel(v10);
+    timerSource2 = [(SCLSettingsSyncCoordinator *)self timerSource];
+    dispatch_source_cancel(timerSource2);
 
     [(SCLSettingsSyncCoordinator *)self setTimerSource:0];
   }
 
-  v11 = [(SCLSettingsSyncCoordinator *)self timerSource];
-  v12 = v11 == 0;
+  timerSource3 = [(SCLSettingsSyncCoordinator *)self timerSource];
+  v12 = timerSource3 == 0;
 
   if (v12)
   {
-    v13 = [(SCLSettingsSyncCoordinator *)self queue];
-    v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v13);
+    queue = [(SCLSettingsSyncCoordinator *)self queue];
+    v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     [(SCLSettingsSyncCoordinator *)self setTimerSource:v14];
   }
 
-  v15 = [(SCLSettingsSyncCoordinator *)self timerSource];
-  v16 = dispatch_walltime(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(v15, v16, 0xFFFFFFFFFFFFFFFFLL, 0x12A05F200uLL);
+  timerSource4 = [(SCLSettingsSyncCoordinator *)self timerSource];
+  v16 = dispatch_walltime(0, (interval * 1000000000.0));
+  dispatch_source_set_timer(timerSource4, v16, 0xFFFFFFFFFFFFFFFFLL, 0x12A05F200uLL);
 
   objc_initWeak(buf, self);
-  v17 = [(SCLSettingsSyncCoordinator *)self timerSource];
+  timerSource5 = [(SCLSettingsSyncCoordinator *)self timerSource];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __75__SCLSettingsSyncCoordinator_stateMachine_scheduleCommitTimerWithInterval___block_invoke;
   handler[3] = &unk_279B6C3A8;
   objc_copyWeak(&v21, buf);
-  dispatch_source_set_event_handler(v17, handler);
+  dispatch_source_set_event_handler(timerSource5, handler);
 
-  v18 = [(SCLSettingsSyncCoordinator *)self timerSource];
-  dispatch_resume(v18);
+  timerSource6 = [(SCLSettingsSyncCoordinator *)self timerSource];
+  dispatch_resume(timerSource6);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);
@@ -291,7 +291,7 @@ void __75__SCLSettingsSyncCoordinator_stateMachine_scheduleCommitTimerWithInterv
   [WeakRetained commitTimerFired];
 }
 
-- (void)cancelCommitTimerForStateMachine:(id)a3
+- (void)cancelCommitTimerForStateMachine:(id)machine
 {
   v4 = scl_persistence_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -300,19 +300,19 @@ void __75__SCLSettingsSyncCoordinator_stateMachine_scheduleCommitTimerWithInterv
     _os_log_impl(&dword_264829000, v4, OS_LOG_TYPE_DEFAULT, "Sync coordinator cancel tiemr", v7, 2u);
   }
 
-  v5 = [(SCLSettingsSyncCoordinator *)self timerSource];
+  timerSource = [(SCLSettingsSyncCoordinator *)self timerSource];
 
-  if (v5)
+  if (timerSource)
   {
-    v6 = [(SCLSettingsSyncCoordinator *)self timerSource];
-    dispatch_source_cancel(v6);
+    timerSource2 = [(SCLSettingsSyncCoordinator *)self timerSource];
+    dispatch_source_cancel(timerSource2);
   }
 }
 
-- (void)performSyncForStateMachine:(id)a3
+- (void)performSyncForStateMachine:(id)machine
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  machineCopy = machine;
   v5 = _os_activity_create(&dword_264829000, "Perform Settings Sync", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -324,11 +324,11 @@ void __75__SCLSettingsSyncCoordinator_stateMachine_scheduleCommitTimerWithInterv
     _os_log_impl(&dword_264829000, v6, OS_LOG_TYPE_DEFAULT, "Sync coordinator perform sync", buf, 2u);
   }
 
-  v7 = [(SCLSettingsSyncCoordinator *)self transport];
-  v8 = [(SCLSettingsSyncCoordinator *)self schedule];
+  transport = [(SCLSettingsSyncCoordinator *)self transport];
+  schedule = [(SCLSettingsSyncCoordinator *)self schedule];
   v16 = 0;
   v17 = 0;
-  v9 = [v7 sendSchedule:v8 identifier:&v17 error:&v16];
+  v9 = [transport sendSchedule:schedule identifier:&v17 error:&v16];
   v10 = v17;
   v11 = v16;
 
@@ -342,8 +342,8 @@ void __75__SCLSettingsSyncCoordinator_stateMachine_scheduleCommitTimerWithInterv
       _os_log_impl(&dword_264829000, v12, OS_LOG_TYPE_DEFAULT, "Sent schedule settings with identifier %@", buf, 0xCu);
     }
 
-    v13 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-    [v13 didEnqueueMessage:v10];
+    stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+    [stateMachine didEnqueueMessage:v10];
   }
 
   else
@@ -356,63 +356,63 @@ void __75__SCLSettingsSyncCoordinator_stateMachine_scheduleCommitTimerWithInterv
       _os_log_impl(&dword_264829000, v14, OS_LOG_TYPE_DEFAULT, "Failed to send schedule settings with error: %@", buf, 0xCu);
     }
 
-    v13 = [(SCLSettingsSyncCoordinator *)self stateMachine];
-    [v13 enqueueFailedWithError:v11];
+    stateMachine = [(SCLSettingsSyncCoordinator *)self stateMachine];
+    [stateMachine enqueueFailedWithError:v11];
   }
 
   os_activity_scope_leave(&state);
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelRetryActivityForStateMachine:(id)a3
+- (void)cancelRetryActivityForStateMachine:(id)machine
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = scl_persistence_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
+    xpcActivityName = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
     v9 = 138412290;
-    v10 = v5;
+    v10 = xpcActivityName;
     _os_log_impl(&dword_264829000, v4, OS_LOG_TYPE_DEFAULT, "Sync coordinator cancel retry activity: %@", &v9, 0xCu);
   }
 
-  v6 = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
-  v7 = [v6 cStringUsingEncoding:4];
+  xpcActivityName2 = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
+  v7 = [xpcActivityName2 cStringUsingEncoding:4];
 
   xpc_activity_unregister(v7);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateMachine:(id)a3 scheduleRetryWithActivityCriteria:(id)a4
+- (void)stateMachine:(id)machine scheduleRetryWithActivityCriteria:(id)criteria
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  criteriaCopy = criteria;
   v6 = scl_persistence_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = criteriaCopy;
     _os_log_impl(&dword_264829000, v6, OS_LOG_TYPE_DEFAULT, "Sync coordinator schedule retry activity %@", &v8, 0xCu);
   }
 
-  [(SCLSettingsSyncCoordinator *)self registerActivityWithCriteria:v5];
+  [(SCLSettingsSyncCoordinator *)self registerActivityWithCriteria:criteriaCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerActivityWithCriteria:(id)a3
+- (void)registerActivityWithCriteria:(id)criteria
 {
-  v4 = a3;
-  v5 = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
+  criteriaCopy = criteria;
+  xpcActivityName = [(SCLSettingsSyncCoordinator *)self xpcActivityName];
   objc_initWeak(&location, self);
-  v6 = [v5 cStringUsingEncoding:4];
+  v6 = [xpcActivityName cStringUsingEncoding:4];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __59__SCLSettingsSyncCoordinator_registerActivityWithCriteria___block_invoke;
   handler[3] = &unk_279B6CAB8;
-  v7 = v5;
+  v7 = xpcActivityName;
   v9 = v7;
   objc_copyWeak(&v10, &location);
-  xpc_activity_register(v6, v4, handler);
+  xpc_activity_register(v6, criteriaCopy, handler);
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(&location);

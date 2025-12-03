@@ -1,11 +1,11 @@
 @interface AutoSettingsApplication
 - (_TtC7Vehicle23AutoSettingsApplication)init;
-- (id)_keyWindowForScreen:(id)a3;
+- (id)_keyWindowForScreen:(id)screen;
 @end
 
 @implementation AutoSettingsApplication
 
-- (id)_keyWindowForScreen:(id)a3
+- (id)_keyWindowForScreen:(id)screen
 {
   sub_1000134C0();
 

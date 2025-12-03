@@ -1,39 +1,39 @@
 @interface BetterSliderPositionDriver
 - (double)velocity;
-- (void)contactBeganWithAction:(id)a3;
-- (void)contactEndedWithAction:(id)a3;
-- (void)contactUpdatedWithAction:(id)a3;
+- (void)contactBeganWithAction:(id)action;
+- (void)contactEndedWithAction:(id)action;
+- (void)contactUpdatedWithAction:(id)action;
 @end
 
 @implementation BetterSliderPositionDriver
 
 - (double)velocity
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B7ECB798();
   v4 = v3;
 
   return v4;
 }
 
-- (void)contactBeganWithAction:(id)a3
+- (void)contactBeganWithAction:(id)action
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B7ECB450();
-  *(&v3->super.isa + OBJC_IVAR____TtC13CameraEditKit26BetterSliderPositionDriver_lastUpdateTime) = CACurrentMediaTime();
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC13CameraEditKit26BetterSliderPositionDriver_lastUpdateTime) = CACurrentMediaTime();
 }
 
-- (void)contactUpdatedWithAction:(id)a3
+- (void)contactUpdatedWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B7ECB93C(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_1B7ECB93C(actionCopy);
 }
 
-- (void)contactEndedWithAction:(id)a3
+- (void)contactEndedWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_1B7ECC094();
 }
 

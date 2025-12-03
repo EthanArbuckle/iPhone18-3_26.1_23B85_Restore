@@ -1,16 +1,16 @@
 @interface SDAirDropEndpointService
 - (_TtC16DaemoniOSLibrary24SDAirDropEndpointService)init;
-- (id)addClient:(id)a3;
+- (id)addClient:(id)client;
 - (id)endpointsChangedHandler;
 - (void)nearFieldDidTap;
-- (void)removeClientWithToken:(id)a3;
-- (void)screenStateChangedWithNotification:(id)a3;
-- (void)setEndpointsChangedHandler:(id)a3;
+- (void)removeClientWithToken:(id)token;
+- (void)screenStateChangedWithNotification:(id)notification;
+- (void)setEndpointsChangedHandler:(id)handler;
 @end
 
 @implementation SDAirDropEndpointService
 
-- (void)screenStateChangedWithNotification:(id)a3
+- (void)screenStateChangedWithNotification:(id)notification
 {
   v4 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v5 = *(*(v4 - 8) + 64);
@@ -28,7 +28,7 @@
   v14[2] = 0;
   v14[3] = 0;
   v14[4] = self;
-  v15 = self;
+  selfCopy = self;
   sub_1002B3098(0, 0, v7, &unk_100805120, v14);
 
   (*(v9 + 8))(v12, v8);
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (void)setEndpointsChangedHandler:(id)a3
+- (void)setEndpointsChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -77,20 +77,20 @@
   v9 = *(self + OBJC_IVAR____TtC16DaemoniOSLibrary24SDAirDropEndpointService_endpointsChangedHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_100015D04(v8);
 }
 
-- (id)addClient:(id)a3
+- (id)addClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10047FEF8(v4);
+  clientCopy = client;
+  selfCopy = self;
+  v6 = sub_10047FEF8(clientCopy);
 
   return v6;
 }
 
-- (void)removeClientWithToken:(id)a3
+- (void)removeClientWithToken:(id)token
 {
   v5 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v6 = *(*(v5 - 8) + 64);
@@ -99,10 +99,10 @@
   v9 = type metadata accessor for TaskPriority();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   v10 = qword_1009735E0;
-  v11 = a3;
-  v12 = self;
-  v13 = v11;
-  v14 = v12;
+  tokenCopy = token;
+  selfCopy = self;
+  v13 = tokenCopy;
+  v14 = selfCopy;
   if (v10 != -1)
   {
     swift_once();
@@ -121,7 +121,7 @@
 
 - (void)nearFieldDidTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_100495278();
 }
 

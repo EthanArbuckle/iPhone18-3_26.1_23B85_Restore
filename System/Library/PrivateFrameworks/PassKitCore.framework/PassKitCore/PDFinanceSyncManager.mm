@@ -1,10 +1,10 @@
 @interface PDFinanceSyncManager
-- (BOOL)_canSyncAccountToFinanceKit:(id)a3;
-- (BOOL)_canSyncPeerPaymentAccountToFinanceKit:(id)a3;
-- (BOOL)_canSyncTransactionToFinanceKit:(id)a3;
-- (PDFinanceSyncManager)initWithDatabaseManager:(id)a3;
-- (id)_fkAppleAccountFromAccount:(id)a3;
-- (id)_fkAppleAccountFromPeerPaymentAccount:(id)a3;
+- (BOOL)_canSyncAccountToFinanceKit:(id)kit;
+- (BOOL)_canSyncPeerPaymentAccountToFinanceKit:(id)kit;
+- (BOOL)_canSyncTransactionToFinanceKit:(id)kit;
+- (PDFinanceSyncManager)initWithDatabaseManager:(id)manager;
+- (id)_fkAppleAccountFromAccount:(id)account;
+- (id)_fkAppleAccountFromPeerPaymentAccount:(id)account;
 - (void)retryTimerFired;
 - (void)sync;
 - (void)syncIfNeeded;
@@ -12,9 +12,9 @@
 
 @implementation PDFinanceSyncManager
 
-- (PDFinanceSyncManager)initWithDatabaseManager:(id)a3
+- (PDFinanceSyncManager)initWithDatabaseManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PDFinanceSyncManager;
   v6 = [(PDFinanceSyncManager *)&v13 init];
@@ -25,7 +25,7 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_databaseManager, a3);
+    objc_storeStrong(&v6->_databaseManager, manager);
     v10 = objc_alloc_init(NSMutableDictionary);
     insertionErrorCounts = v6->_insertionErrorCounts;
     v6->_insertionErrorCounts = v10;
@@ -72,23 +72,23 @@
   v6[2] = sub_1000D7FB0;
   v6[3] = &unk_10083C420;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(queue, v6);
 }
 
-- (BOOL)_canSyncAccountToFinanceKit:(id)a3
+- (BOOL)_canSyncAccountToFinanceKit:(id)kit
 {
-  v3 = a3;
-  v4 = [v3 accountIdentifier];
-  if (!v4)
+  kitCopy = kit;
+  accountIdentifier = [kitCopy accountIdentifier];
+  if (!accountIdentifier)
   {
-    v12 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    currentBalance = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(currentBalance, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v29) = 0;
       v17 = "Not syncing account to FinanceKit because there is no account identifier set on the account";
-      v18 = v12;
+      v18 = currentBalance;
       v19 = 2;
 LABEL_17:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, v17, &v29, v19);
@@ -98,18 +98,18 @@ LABEL_17:
     goto LABEL_28;
   }
 
-  v5 = [v3 lastUpdated];
+  lastUpdated = [kitCopy lastUpdated];
 
-  if (!v5)
+  if (!lastUpdated)
   {
-    v12 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    currentBalance = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(currentBalance, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412290;
-      v30 = v4;
+      v30 = accountIdentifier;
       v17 = "Not syncing account with identifier %@ to FinanceKit because there is no lastUpdated set on the account";
 LABEL_16:
-      v18 = v12;
+      v18 = currentBalance;
       v19 = 12;
       goto LABEL_17;
     }
@@ -119,40 +119,40 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v6 = [v3 type];
+  type = [kitCopy type];
   v7 = 0;
-  if (v6 > 2)
+  if (type > 2)
   {
-    if (v6 != 3)
+    if (type != 3)
     {
-      if (v6 != 4)
+      if (type != 4)
       {
         goto LABEL_30;
       }
 
-      v20 = [v3 savingsDetails];
-      v21 = [v20 currencyCode];
+      savingsDetails = [kitCopy savingsDetails];
+      currencyCode = [savingsDetails currencyCode];
 
-      if (!v21)
+      if (!currencyCode)
       {
-        v12 = PKLogFacilityTypeGetObject();
-        if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        currentBalance = PKLogFacilityTypeGetObject();
+        if (!os_log_type_enabled(currentBalance, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_28;
         }
 
         v29 = 138412290;
-        v30 = v4;
+        v30 = accountIdentifier;
         v17 = "Not syncing account with identifier %@ to FinanceKit because there is no currencyCode set on the account";
         goto LABEL_16;
       }
 
-      v22 = [v3 savingsDetails];
-      v23 = [v22 accountSummary];
-      v12 = [v23 currentBalance];
+      savingsDetails2 = [kitCopy savingsDetails];
+      accountSummary = [savingsDetails2 accountSummary];
+      currentBalance = [accountSummary currentBalance];
 
-      v7 = v12 != 0;
-      if (v12)
+      v7 = currentBalance != 0;
+      if (currentBalance)
       {
 LABEL_29:
 
@@ -168,7 +168,7 @@ LABEL_27:
       }
 
       v29 = 138412290;
-      v30 = v4;
+      v30 = accountIdentifier;
       v25 = "Temporarily not syncing account with identifier %@ to FinanceKit because there is no currentBalance";
       v26 = v24;
       v27 = 12;
@@ -178,52 +178,52 @@ LABEL_26:
     }
 
 LABEL_24:
-    v12 = PKLogFacilityTypeGetObject();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    currentBalance = PKLogFacilityTypeGetObject();
+    if (!os_log_type_enabled(currentBalance, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_28;
     }
 
-    [v3 type];
+    [kitCopy type];
     v24 = PKAccountTypeToString();
     v29 = 138412546;
-    v30 = v4;
+    v30 = accountIdentifier;
     v31 = 2112;
     v32 = v24;
     v25 = "Not syncing account %@ to FinanceKit since its type (%@) is not supported";
-    v26 = v12;
+    v26 = currentBalance;
     v27 = 22;
     goto LABEL_26;
   }
 
-  if (!v6)
+  if (!type)
   {
     goto LABEL_24;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v8 = [v3 creditDetails];
-    v9 = [v8 currencyCode];
+    creditDetails = [kitCopy creditDetails];
+    currencyCode2 = [creditDetails currencyCode];
 
-    if (v9)
+    if (currencyCode2)
     {
-      v10 = [v3 creditDetails];
-      v11 = [v10 totalBalance];
-      v12 = [v11 amount];
+      creditDetails2 = [kitCopy creditDetails];
+      totalBalance = [creditDetails2 totalBalance];
+      currentBalance = [totalBalance amount];
 
-      v13 = [v3 creditDetails];
-      v14 = [v13 accountSummary];
-      v15 = [v14 availableCredit];
+      creditDetails3 = [kitCopy creditDetails];
+      accountSummary2 = [creditDetails3 accountSummary];
+      availableCredit = [accountSummary2 availableCredit];
 
-      v7 = (v12 | v15) != 0;
-      if (!(v12 | v15))
+      v7 = (currentBalance | availableCredit) != 0;
+      if (!(currentBalance | availableCredit))
       {
         v16 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v29 = 138412290;
-          v30 = v4;
+          v30 = accountIdentifier;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Not syncing account with identifier %@ to FinanceKit because there is no totalBalance and no availableCredit", &v29, 0xCu);
         }
       }
@@ -231,14 +231,14 @@ LABEL_24:
       goto LABEL_29;
     }
 
-    v12 = PKLogFacilityTypeGetObject();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    currentBalance = PKLogFacilityTypeGetObject();
+    if (!os_log_type_enabled(currentBalance, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_28;
     }
 
     v29 = 138412290;
-    v30 = v4;
+    v30 = accountIdentifier;
     v17 = "Not syncing account with identifier %@ to FinanceKit because there is no currencyCode set on the account";
     goto LABEL_16;
   }
@@ -248,31 +248,31 @@ LABEL_30:
   return v7;
 }
 
-- (BOOL)_canSyncPeerPaymentAccountToFinanceKit:(id)a3
+- (BOOL)_canSyncPeerPaymentAccountToFinanceKit:(id)kit
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  if (v4)
+  kitCopy = kit;
+  identifier = [kitCopy identifier];
+  if (identifier)
   {
-    v5 = [v3 currentBalance];
-    v6 = [v5 currency];
+    currentBalance = [kitCopy currentBalance];
+    currency = [currentBalance currency];
 
-    if (v6)
+    if (currency)
     {
-      v7 = [v3 lastUpdated];
+      lastUpdated = [kitCopy lastUpdated];
 
-      if (v7)
+      if (lastUpdated)
       {
-        if ([v3 stage] == 1)
+        if ([kitCopy stage] == 1)
         {
-          v8 = PKLogFacilityTypeGetObject();
-          if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+          amount = PKLogFacilityTypeGetObject();
+          if (os_log_type_enabled(amount, OS_LOG_TYPE_DEFAULT))
           {
             v16 = 138412290;
-            v17 = v4;
+            v17 = identifier;
             v9 = "Not syncing peer payment account with identifier %@ to FinanceKit because it is at anonymous stage";
 LABEL_13:
-            v10 = v8;
+            v10 = amount;
             v11 = 12;
             goto LABEL_14;
           }
@@ -280,11 +280,11 @@ LABEL_13:
 
         else
         {
-          v14 = [v3 currentBalance];
-          v8 = [v14 amount];
+          currentBalance2 = [kitCopy currentBalance];
+          amount = [currentBalance2 amount];
 
-          v12 = v8 != 0;
-          if (v8)
+          v12 = amount != 0;
+          if (amount)
           {
             goto LABEL_16;
           }
@@ -293,7 +293,7 @@ LABEL_13:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             v16 = 138412290;
-            v17 = v4;
+            v17 = identifier;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Not syncing peer payment account with identifier %@ to FinanceKit because there is no currentBalance", &v16, 0xCu);
           }
         }
@@ -301,11 +301,11 @@ LABEL_13:
 
       else
       {
-        v8 = PKLogFacilityTypeGetObject();
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        amount = PKLogFacilityTypeGetObject();
+        if (os_log_type_enabled(amount, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 138412290;
-          v17 = v4;
+          v17 = identifier;
           v9 = "Not syncing peer payment account with identifier %@ to FinanceKit because there is no lastUpdated set on the account";
           goto LABEL_13;
         }
@@ -314,11 +314,11 @@ LABEL_13:
 
     else
     {
-      v8 = PKLogFacilityTypeGetObject();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      amount = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(amount, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v4;
+        v17 = identifier;
         v9 = "Not syncing peer payment account with identifier %@ to FinanceKit because there is no currency set on the account";
         goto LABEL_13;
       }
@@ -327,12 +327,12 @@ LABEL_13:
 
   else
   {
-    v8 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    amount = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(amount, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v16) = 0;
       v9 = "Not syncing peer payment account with nil identifier to FinanceKit";
-      v10 = v8;
+      v10 = amount;
       v11 = 2;
 LABEL_14:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v9, &v16, v11);
@@ -345,11 +345,11 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)_canSyncTransactionToFinanceKit:(id)a3
+- (BOOL)_canSyncTransactionToFinanceKit:(id)kit
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  if (!v4)
+  kitCopy = kit;
+  identifier = [kitCopy identifier];
+  if (!identifier)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -357,9 +357,9 @@ LABEL_16:
       goto LABEL_18;
     }
 
-    v10 = [v3 identifier];
+    identifier2 = [kitCopy identifier];
     v17 = 138412290;
-    v18 = v10;
+    v18 = identifier2;
     v11 = "Not syncing transaction with identifier %@ to FinanceKit because there is no identifier set on the transaction";
     v12 = v8;
     v13 = 12;
@@ -369,15 +369,15 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v5 = [v3 accountIdentifier];
+  accountIdentifier = [kitCopy accountIdentifier];
 
-  if (!v5)
+  if (!accountIdentifier)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = identifier;
       v9 = "Not syncing transaction with identifier %@ to FinanceKit because there is no account identifier set on the transaction";
       goto LABEL_17;
     }
@@ -387,15 +387,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v6 = [v3 currencyCode];
+  currencyCode = [kitCopy currencyCode];
 
-  if (!v6)
+  if (!currencyCode)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = identifier;
       v9 = "Not syncing transaction with identifier %@ to FinanceKit because there is no currencyCode set on the transaction";
       goto LABEL_17;
     }
@@ -403,15 +403,15 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v7 = [v3 transactionDate];
+  transactionDate = [kitCopy transactionDate];
 
-  if (!v7)
+  if (!transactionDate)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = identifier;
       v9 = "Not syncing transaction with identifier %@ to FinanceKit because there is no transactionDate set on the transaction";
       goto LABEL_17;
     }
@@ -419,13 +419,13 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v3 transactionType] == 14)
+  if ([kitCopy transactionType] == 14)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = identifier;
       v9 = "Not syncing transaction with identifier %@ to FinanceKit because its type is PKPaymentTransactionTypeInstallmentPlan";
 LABEL_17:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, &v17, 0xCu);
@@ -435,14 +435,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v16 = [v3 accountType];
-  if ((v16 - 1) < 3)
+  accountType = [kitCopy accountType];
+  if ((accountType - 1) < 3)
   {
     v14 = 1;
     goto LABEL_20;
   }
 
-  if (v16 == 4 || !v16)
+  if (accountType == 4 || !accountType)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -450,12 +450,12 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    [v3 accountType];
-    v10 = PKPaymentTransactionAccountTypeToString();
+    [kitCopy accountType];
+    identifier2 = PKPaymentTransactionAccountTypeToString();
     v17 = 138412546;
-    v18 = v4;
+    v18 = identifier;
     v19 = 2112;
-    v20 = v10;
+    v20 = identifier2;
     v11 = "Not syncing transaction with identifier %@ to FinanceKit because the account type is unknown %@";
     v12 = v8;
     v13 = 22;
@@ -469,12 +469,12 @@ LABEL_20:
   return v14;
 }
 
-- (id)_fkAppleAccountFromAccount:(id)a3
+- (id)_fkAppleAccountFromAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 accountIdentifier];
-  v5 = [v3 lastUpdated];
-  v6 = [v3 state] - 3;
+  accountCopy = account;
+  accountIdentifier = [accountCopy accountIdentifier];
+  lastUpdated = [accountCopy lastUpdated];
+  v6 = [accountCopy state] - 3;
   if (v6 > 2)
   {
     v40 = 0;
@@ -485,116 +485,116 @@ LABEL_20:
     v40 = qword_10068E140[v6];
   }
 
-  v7 = [v3 type];
-  if (v7 == 4)
+  type = [accountCopy type];
+  if (type == 4)
   {
-    v30 = [v3 savingsDetails];
-    v31 = [v30 accountSummary];
-    v29 = [v31 currentBalance];
+    savingsDetails = [accountCopy savingsDetails];
+    accountSummary = [savingsDetails accountSummary];
+    currentBalance = [accountSummary currentBalance];
 
-    v32 = [v3 savingsDetails];
-    v33 = [v32 accountSummary];
-    v42 = [v33 currentBalance];
+    savingsDetails2 = [accountCopy savingsDetails];
+    accountSummary2 = [savingsDetails2 accountSummary];
+    currentBalance2 = [accountSummary2 currentBalance];
 
-    v34 = [v3 savingsDetails];
-    v39 = [v34 currencyCode];
+    savingsDetails3 = [accountCopy savingsDetails];
+    currencyCode = [savingsDetails3 currencyCode];
 
     v19 = PKLocalizedFeatureString();
     v28 = 0;
-    v18 = 0;
-    v22 = 0;
-    v27 = 0;
+    paymentDueDate = 0;
+    creditLimit = 0;
+    pastDueAmount = 0;
     v35 = 2;
   }
 
   else
   {
-    if (v7 == 1)
+    if (type == 1)
     {
-      v8 = [v3 creditDetails];
-      v9 = [v8 totalBalance];
-      v37 = [v9 amount];
+      creditDetails = [accountCopy creditDetails];
+      totalBalance = [creditDetails totalBalance];
+      amount = [totalBalance amount];
 
-      v10 = [v3 creditDetails];
-      v11 = [v10 accountSummary];
-      v12 = [v11 remainingMinimumPayment];
+      creditDetails2 = [accountCopy creditDetails];
+      accountSummary3 = [creditDetails2 accountSummary];
+      remainingMinimumPayment = [accountSummary3 remainingMinimumPayment];
 
-      v13 = [v3 creditDetails];
-      v14 = [v13 accountSummary];
-      v42 = [v14 availableCredit];
+      creditDetails3 = [accountCopy creditDetails];
+      accountSummary4 = [creditDetails3 accountSummary];
+      currentBalance2 = [accountSummary4 availableCredit];
 
-      v15 = [v3 creditDetails];
-      v39 = [v15 currencyCode];
+      creditDetails4 = [accountCopy creditDetails];
+      currencyCode = [creditDetails4 currencyCode];
 
-      v16 = [v3 creditDetails];
-      v17 = [v16 accountSummary];
-      v18 = [v17 paymentDueDate];
+      creditDetails5 = [accountCopy creditDetails];
+      accountSummary5 = [creditDetails5 accountSummary];
+      paymentDueDate = [accountSummary5 paymentDueDate];
 
-      [v3 feature];
+      [accountCopy feature];
       v19 = PKLocalizedFeatureString();
-      v20 = [v3 creditDetails];
-      v21 = [v20 accountSummary];
-      v22 = [v21 creditLimit];
+      creditDetails6 = [accountCopy creditDetails];
+      accountSummary6 = [creditDetails6 accountSummary];
+      creditLimit = [accountSummary6 creditLimit];
 
-      v23 = [v3 creditDetails];
-      [v23 accountSummary];
-      v24 = v5;
-      v26 = v25 = v4;
-      v27 = [v26 pastDueAmount];
+      creditDetails7 = [accountCopy creditDetails];
+      [creditDetails7 accountSummary];
+      v24 = lastUpdated;
+      v26 = v25 = accountIdentifier;
+      pastDueAmount = [v26 pastDueAmount];
 
-      v4 = v25;
-      v5 = v24;
-      v28 = v12;
-      v29 = v37;
+      accountIdentifier = v25;
+      lastUpdated = v24;
+      v28 = remainingMinimumPayment;
+      currentBalance = amount;
 
       v38 = 0;
       goto LABEL_10;
     }
 
-    v42 = 0;
+    currentBalance2 = 0;
     v28 = 0;
-    v39 = 0;
-    v18 = 0;
-    v29 = 0;
+    currencyCode = 0;
+    paymentDueDate = 0;
+    currentBalance = 0;
     v19 = 0;
-    v22 = 0;
-    v27 = 0;
+    creditLimit = 0;
+    pastDueAmount = 0;
     v35 = -1;
   }
 
   v38 = v35;
 LABEL_10:
-  v41 = [[FKAppleAccount alloc] initWithAccountIdentifier:v4 currentBalance:v29 totalBalance:v42 currency:v39 status:v40 type:v38 creditLimit:v22 minimumDueAmount:v28 nextPaymentDueDate:v18 lastUpdated:v5 displayName:v19 openingDate:0 overduePaymentAmount:v27];
+  v41 = [[FKAppleAccount alloc] initWithAccountIdentifier:accountIdentifier currentBalance:currentBalance totalBalance:currentBalance2 currency:currencyCode status:v40 type:v38 creditLimit:creditLimit minimumDueAmount:v28 nextPaymentDueDate:paymentDueDate lastUpdated:lastUpdated displayName:v19 openingDate:0 overduePaymentAmount:pastDueAmount];
 
   return v41;
 }
 
-- (id)_fkAppleAccountFromPeerPaymentAccount:(id)a3
+- (id)_fkAppleAccountFromPeerPaymentAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v3 currentBalance];
-  v6 = [v5 amount];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  currentBalance = [accountCopy currentBalance];
+  amount = [currentBalance amount];
 
-  v7 = v6;
-  v8 = [v3 currentBalance];
-  v9 = [v8 currency];
+  v7 = amount;
+  currentBalance2 = [accountCopy currentBalance];
+  currency = [currentBalance2 currency];
 
-  v10 = [v3 lastUpdated];
+  lastUpdated = [accountCopy lastUpdated];
   v11 = PKLocalizedPeerPaymentString(@"APPLE_CASH");
-  v12 = [v3 state];
+  state = [accountCopy state];
 
-  if (v12 == 4)
+  if (state == 4)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = 2 * (v12 == 3);
+    v13 = 2 * (state == 3);
   }
 
-  v14 = [[FKAppleAccount alloc] initWithAccountIdentifier:v4 currentBalance:v7 totalBalance:v7 currency:v9 status:v13 type:1 creditLimit:0 minimumDueAmount:0 nextPaymentDueDate:0 lastUpdated:v10 displayName:v11 openingDate:0 overduePaymentAmount:0];
+  v14 = [[FKAppleAccount alloc] initWithAccountIdentifier:identifier currentBalance:v7 totalBalance:v7 currency:currency status:v13 type:1 creditLimit:0 minimumDueAmount:0 nextPaymentDueDate:0 lastUpdated:lastUpdated displayName:v11 openingDate:0 overduePaymentAmount:0];
 
   return v14;
 }

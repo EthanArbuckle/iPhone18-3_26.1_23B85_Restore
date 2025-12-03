@@ -1,15 +1,15 @@
 @interface JEMediaTimeTracker
-- (JEMediaTimeTracker)initWithPosition:(unint64_t)a3 playbackRate:(float)a4;
+- (JEMediaTimeTracker)initWithPosition:(unint64_t)position playbackRate:(float)rate;
 - (float)playbackRate;
-- (id)estimatedTimeAtPastPosition:(unint64_t)a3;
-- (id)estimatedTimeAtPosition:(unint64_t)a3;
-- (void)updatePosition:(unint64_t)a3;
-- (void)updatePosition:(unint64_t)a3 playbackRate:(float)a4;
+- (id)estimatedTimeAtPastPosition:(unint64_t)position;
+- (id)estimatedTimeAtPosition:(unint64_t)position;
+- (void)updatePosition:(unint64_t)position;
+- (void)updatePosition:(unint64_t)position playbackRate:(float)rate;
 @end
 
 @implementation JEMediaTimeTracker
 
-- (JEMediaTimeTracker)initWithPosition:(unint64_t)a3 playbackRate:(float)a4
+- (JEMediaTimeTracker)initWithPosition:(unint64_t)position playbackRate:(float)rate
 {
   v10.receiver = self;
   v10.super_class = JEMediaTimeTracker;
@@ -19,30 +19,30 @@
     v7 = objc_alloc_init(JEMediaTimeTrackerDateProvider);
     [(JEMediaTimeTracker *)v6 setDateProvider:v7];
 
-    *&v8 = a4;
-    [(JEMediaTimeTracker *)v6 updatePosition:a3 playbackRate:v8];
+    *&v8 = rate;
+    [(JEMediaTimeTracker *)v6 updatePosition:position playbackRate:v8];
   }
 
   return v6;
 }
 
-- (void)updatePosition:(unint64_t)a3
+- (void)updatePosition:(unint64_t)position
 {
-  v5 = [(JEMediaTimeTracker *)self dateProvider];
-  v6 = [v5 date];
-  [(JEMediaTimeTracker *)self setDate:v6];
+  dateProvider = [(JEMediaTimeTracker *)self dateProvider];
+  date = [dateProvider date];
+  [(JEMediaTimeTracker *)self setDate:date];
 
-  [(JEMediaTimeTracker *)self setPosition:a3];
+  [(JEMediaTimeTracker *)self setPosition:position];
 }
 
-- (void)updatePosition:(unint64_t)a3 playbackRate:(float)a4
+- (void)updatePosition:(unint64_t)position playbackRate:(float)rate
 {
-  v7 = [(JEMediaTimeTracker *)self dateProvider];
-  v8 = [v7 date];
-  [(JEMediaTimeTracker *)self setDate:v8];
+  dateProvider = [(JEMediaTimeTracker *)self dateProvider];
+  date = [dateProvider date];
+  [(JEMediaTimeTracker *)self setDate:date];
 
-  [(JEMediaTimeTracker *)self setPosition:a3];
-  *&v9 = a4;
+  [(JEMediaTimeTracker *)self setPosition:position];
+  *&v9 = rate;
 
   [(JEMediaTimeTracker *)self setPlaybackRate:v9];
 }
@@ -58,28 +58,28 @@
   return result;
 }
 
-- (id)estimatedTimeAtPosition:(unint64_t)a3
+- (id)estimatedTimeAtPosition:(unint64_t)position
 {
-  v4 = (a3 - [(JEMediaTimeTracker *)self position]) / 1000.0;
-  v5 = [(JEMediaTimeTracker *)self date];
+  v4 = (position - [(JEMediaTimeTracker *)self position]) / 1000.0;
+  date = [(JEMediaTimeTracker *)self date];
   [(JEMediaTimeTracker *)self playbackRate];
-  v7 = [v5 dateByAddingTimeInterval:v4 / v6];
+  v7 = [date dateByAddingTimeInterval:v4 / v6];
 
   return v7;
 }
 
-- (id)estimatedTimeAtPastPosition:(unint64_t)a3
+- (id)estimatedTimeAtPastPosition:(unint64_t)position
 {
-  v3 = [(JEMediaTimeTracker *)self estimatedTimeAtPosition:a3];
-  v4 = [MEMORY[0x1E695DF00] date];
-  if ([v3 compare:v4] == -1)
+  v3 = [(JEMediaTimeTracker *)self estimatedTimeAtPosition:position];
+  date = [MEMORY[0x1E695DF00] date];
+  if ([v3 compare:date] == -1)
   {
     v5 = v3;
   }
 
   else
   {
-    v5 = v4;
+    v5 = date;
   }
 
   v6 = v5;

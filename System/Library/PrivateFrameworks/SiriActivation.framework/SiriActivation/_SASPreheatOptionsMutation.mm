@@ -1,20 +1,20 @@
 @interface _SASPreheatOptionsMutation
-- (_SASPreheatOptionsMutation)initWithBaseModel:(id)a3;
+- (_SASPreheatOptionsMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
 @implementation _SASPreheatOptionsMutation
 
-- (_SASPreheatOptionsMutation)initWithBaseModel:(id)a3
+- (_SASPreheatOptionsMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SASPreheatOptionsMutation;
   v6 = [(_SASPreheatOptionsMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;
@@ -29,15 +29,15 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_preheatRequest;
+        preheatRequest = self->_preheatRequest;
       }
 
       else
       {
-        v6 = [(SASPreheatOptions *)baseModel preheatRequest];
+        preheatRequest = [(SASPreheatOptions *)baseModel preheatRequest];
       }
 
-      v7 = v6;
+      v7 = preheatRequest;
       if ((*&self->_mutationFlags & 4) != 0)
       {
         lockState = self->_lockState;

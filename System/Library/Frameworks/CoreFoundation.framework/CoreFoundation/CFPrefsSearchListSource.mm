@@ -1,47 +1,47 @@
 @interface CFPrefsSearchListSource
-- (BOOL)alreadylocked_hasNonRegisteredValueForKey:(uint64_t)a1;
+- (BOOL)alreadylocked_hasNonRegisteredValueForKey:(uint64_t)key;
 - (CFMutableArrayRef)_getPendingNotifications;
 - (CFMutableDictionaryRef)alreadylocked_copyManagedDictionary;
-- (CFPrefsSearchListSource)initWithIdentifier:(__CFString *)a3 containingPreferences:(id)a4;
-- (CFStringRef)copyCloudConfigurationWithURL:(CFPrefsConfigurationFileSource *)a3 outConfigFileSource:(CFStringRef *)a4 outStoreName:;
+- (CFPrefsSearchListSource)initWithIdentifier:(__CFString *)identifier containingPreferences:(id)preferences;
+- (CFStringRef)copyCloudConfigurationWithURL:(CFPrefsConfigurationFileSource *)l outConfigFileSource:(CFStringRef *)source outStoreName:;
 - (__CFArray)alreadylocked_copyKeyList;
 - (__CFDictionary)alreadylocked_copyDictionary;
 - (__CFString)copyOSLogDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)generationCount;
 - (uint64_t)_getPendingNotifications;
-- (uint64_t)alreadylocked_generationCountFromListOfSources:(uint64_t)a3 count:;
+- (uint64_t)alreadylocked_generationCountFromListOfSources:(uint64_t)sources count:;
 - (uint64_t)alreadylocked_hasCloudValueForKey:(uint64_t)result;
 - (uint64_t)alreadylocked_requestNewData;
 - (uint64_t)alreadylocked_useCloudForKey:(uint64_t)result;
 - (uint64_t)freeze;
-- (uint64_t)synchronouslySendSystemMessage:(uint64_t)a3 andUserMessage:(uint64_t)a4 andDirectMessage:(uint64_t)a5 replyHandler:;
-- (void)addCloudSourceForIdentifier:(uint64_t)a3 configurationPath:(uint64_t)a4 storeName:(__CFString *)a5 container:;
-- (void)addManagedSourceForIdentifier:(uint64_t)a1 user:;
-- (void)addNamedVolatileSourceForIdentifier:(uint64_t)a1;
-- (void)addPreferencesObserver:(uint64_t)a1;
-- (void)addSource:(uint64_t)a1;
-- (void)addSourceForIdentifier:(uint64_t)a1 user:byHost:container:;
-- (void)addSuiteSourceForIdentifier:(uint64_t)a1 user:;
-- (void)alreadylocked_copyValueForKey:(__CFString *)a3;
-- (void)alreadylocked_getDictionary:(uint64_t)a1;
+- (uint64_t)synchronouslySendSystemMessage:(uint64_t)message andUserMessage:(uint64_t)userMessage andDirectMessage:(uint64_t)directMessage replyHandler:;
+- (void)addCloudSourceForIdentifier:(uint64_t)identifier configurationPath:(uint64_t)path storeName:(__CFString *)name container:;
+- (void)addManagedSourceForIdentifier:(uint64_t)identifier user:;
+- (void)addNamedVolatileSourceForIdentifier:(uint64_t)identifier;
+- (void)addPreferencesObserver:(uint64_t)observer;
+- (void)addSource:(uint64_t)source;
+- (void)addSourceForIdentifier:(uint64_t)identifier user:byHost:container:;
+- (void)addSuiteSourceForIdentifier:(uint64_t)identifier user:;
+- (void)alreadylocked_copyValueForKey:(__CFString *)key;
+- (void)alreadylocked_getDictionary:(uint64_t)dictionary;
 - (void)alreadylocked_reloadCacheIfStale;
-- (void)alreadylocked_setObservingContents:(uint64_t)a1;
-- (void)alreadylocked_setPrecopiedValues:(const void *)a3 forKeys:(const __CFString *)a4 count:(int64_t)a5 from:(id)a6;
+- (void)alreadylocked_setObservingContents:(uint64_t)contents;
+- (void)alreadylocked_setPrecopiedValues:(const void *)values forKeys:(const __CFString *)keys count:(int64_t)count from:(id)from;
 - (void)dealloc;
-- (void)deferredNotifyCausedByLoadingOfChangesFromDictionary:(__CFDictionary *)a3 toDictionary:(__CFDictionary *)Copy;
-- (void)deferredNotifyCausedByLocalWriteOfChangesToKey:(__CFString *)a3 fromValue:(void *)a4 toValue:(void *)a5;
-- (void)fullCloudSynchronizeWithCompletionHandler:(id)a3;
+- (void)deferredNotifyCausedByLoadingOfChangesFromDictionary:(__CFDictionary *)dictionary toDictionary:(__CFDictionary *)Copy;
+- (void)deferredNotifyCausedByLocalWriteOfChangesToKey:(__CFString *)key fromValue:(void *)value toValue:(void *)toValue;
+- (void)fullCloudSynchronizeWithCompletionHandler:(id)handler;
 - (void)generationCount;
-- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)a3 isRemote:(BOOL)a4;
-- (void)handleReply:(id)a3 toRequestNewDataMessage:(id)a4 onConnection:(id)a5 retryCount:(int)a6 error:(BOOL *)a7;
-- (void)removePreferencesObserver:(uint64_t)a1;
-- (void)removeSource:(uint64_t)a1;
-- (void)replaceSource:(const void *)a3 withSource:;
-- (void)setCloudEnabled:(const void *)a3 forKey:;
-- (void)setCloudEnabled:(const void *)a3 forKeyPrefix:;
-- (xpc_object_t)createMultiMessageWithContainedMessages:(uint64_t)a1;
+- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)identifier isRemote:(BOOL)remote;
+- (void)handleReply:(id)reply toRequestNewDataMessage:(id)message onConnection:(id)connection retryCount:(int)count error:(BOOL *)error;
+- (void)removePreferencesObserver:(uint64_t)observer;
+- (void)removeSource:(uint64_t)source;
+- (void)replaceSource:(const void *)source withSource:;
+- (void)setCloudEnabled:(const void *)enabled forKey:;
+- (void)setCloudEnabled:(const void *)enabled forKeyPrefix:;
+- (xpc_object_t)createMultiMessageWithContainedMessages:(uint64_t)messages;
 @end
 
 @implementation CFPrefsSearchListSource
@@ -153,7 +153,7 @@ CFMutableDictionaryRef __55__CFPrefsSearchListSource_alreadylocked_copyDictionar
 - (uint64_t)_getPendingNotifications
 {
   Mutable = CFArrayCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeArrayCallBacks);
-  *a1 = Mutable;
+  *self = Mutable;
 
   return _CFSetTSD(0x10u, Mutable, pendingKVODestructor);
 }
@@ -217,22 +217,22 @@ CFMutableDictionaryRef __55__CFPrefsSearchListSource_alreadylocked_copyDictionar
 
 - (void)generationCount
 {
-  os_unfair_lock_lock((a1 + 52));
-  [(CFPrefsSearchListSource *)a1 alreadylocked_getDictionary:?];
-  os_unfair_lock_unlock((a1 + 52));
-  v4 = atomic_load((a1 + 32));
+  os_unfair_lock_lock((self + 52));
+  [(CFPrefsSearchListSource *)self alreadylocked_getDictionary:?];
+  os_unfair_lock_unlock((self + 52));
+  v4 = atomic_load((self + 32));
   *a2 = v4;
 }
 
-- (CFPrefsSearchListSource)initWithIdentifier:(__CFString *)a3 containingPreferences:(id)a4
+- (CFPrefsSearchListSource)initWithIdentifier:(__CFString *)identifier containingPreferences:(id)preferences
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = CFPrefsSearchListSource;
-  v5 = [(CFPrefsSource *)&v8 initWithContainingPreferences:a4];
+  v5 = [(CFPrefsSource *)&v8 initWithContainingPreferences:preferences];
   if (v5)
   {
-    v5->_identifier = _CFStringCopyBundleUnloadingProtectedString(a3);
+    v5->_identifier = _CFStringCopyBundleUnloadingProtectedString(identifier);
     v5->super._isSearchList = 1;
     atomic_store(0xFFFFFFFFFFFFFFFFLL, &v5->super._generationCount);
   }
@@ -241,11 +241,11 @@ CFMutableDictionaryRef __55__CFPrefsSearchListSource_alreadylocked_copyDictionar
   return v5;
 }
 
-- (CFStringRef)copyCloudConfigurationWithURL:(CFPrefsConfigurationFileSource *)a3 outConfigFileSource:(CFStringRef *)a4 outStoreName:
+- (CFStringRef)copyCloudConfigurationWithURL:(CFPrefsConfigurationFileSource *)l outConfigFileSource:(CFStringRef *)source outStoreName:
 {
-  v4 = a1;
+  selfCopy = self;
   v50 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_75;
   }
@@ -267,18 +267,18 @@ CFMutableDictionaryRef __55__CFPrefsSearchListSource_alreadylocked_copyDictionar
   }
 
   CacheStringForBundleID = _CFPrefsGetCacheStringForBundleID(@"kCFPreferencesAnyApplication");
-  if (CacheStringForBundleID == _CFPrefsGetCacheStringForBundleID(v4[2].info))
+  if (CacheStringForBundleID == _CFPrefsGetCacheStringForBundleID(selfCopy[2].info))
   {
 LABEL_14:
-    v4 = 0;
+    selfCopy = 0;
     goto LABEL_75;
   }
 
-  ConfigurationFileNameFromIdentifier = _CFPrefsCreateConfigurationFileNameFromIdentifier(v4[2].info);
+  ConfigurationFileNameFromIdentifier = _CFPrefsCreateConfigurationFileNameFromIdentifier(selfCopy[2].info);
   if (ConfigurationFileNameFromIdentifier)
   {
     v12 = ConfigurationFileNameFromIdentifier;
-    v48 = a3;
+    lCopy2 = l;
     v13 = CFCopySearchPathForDirectoriesInDomains(5, 8, 0);
     Count = CFArrayGetCount(v13);
     if (Count < 1)
@@ -290,7 +290,7 @@ LABEL_14:
     else
     {
       v15 = Count;
-      v47 = a4;
+      sourceCopy3 = source;
       v16 = 0;
       while (1)
       {
@@ -315,12 +315,12 @@ LABEL_14:
 
       v9 = v19;
 LABEL_18:
-      a4 = v47;
+      source = sourceCopy3;
     }
 
     CFRelease(v13);
     CFRelease(v12);
-    a3 = v48;
+    l = lCopy2;
     if (v9)
     {
       goto LABEL_36;
@@ -332,8 +332,8 @@ LABEL_18:
     v8 = 0;
   }
 
-  v20 = a4;
-  info = v4[2].info;
+  sourceCopy2 = source;
+  info = selfCopy[2].info;
   v22 = _CFPrefsGetCacheStringForBundleID(@"kCFPreferencesCurrentApplication");
   if (!CFEqual(info, v22))
   {
@@ -344,7 +344,7 @@ LABEL_18:
         CFRelease(v8);
       }
 
-      v25 = _CFPrefsCopyCloudConfigurationURLForIdentifier(v4[2].info);
+      v25 = _CFPrefsCopyCloudConfigurationURLForIdentifier(selfCopy[2].info);
       goto LABEL_29;
     }
 
@@ -360,7 +360,7 @@ LABEL_18:
       v9 = 0;
     }
 
-    a4 = v20;
+    source = sourceCopy2;
 LABEL_36:
     v49 = v8 == 0;
     if (v9)
@@ -377,7 +377,7 @@ LABEL_67:
 
     if (os_log_type_enabled(clientHandle, OS_LOG_TYPE_DEBUG))
     {
-      [CFPrefsSearchListSource copyCloudConfigurationWithURL:v4 outConfigFileSource:? outStoreName:?];
+      [CFPrefsSearchListSource copyCloudConfigurationWithURL:selfCopy outConfigFileSource:? outStoreName:?];
     }
 
     _CFSetTSD(0xFu, 0, 0);
@@ -396,11 +396,11 @@ LABEL_67:
     CFRelease(v8);
   }
 
-  v25 = _CFPrefsCopyCloudConfigurationURLFromBundle(v24, v4[2].info);
+  v25 = _CFPrefsCopyCloudConfigurationURLFromBundle(v24, selfCopy[2].info);
 LABEL_29:
   v8 = v25;
 LABEL_30:
-  a4 = v20;
+  source = sourceCopy2;
   if (!v8)
   {
 LABEL_31:
@@ -417,7 +417,7 @@ LABEL_5:
   }
 
 LABEL_37:
-  v48 = a3;
+  lCopy2 = l;
   v26 = CFPropertyListCreateWithData(&__kCFAllocatorSystemDefault, v9, 0, 0, 0);
   CFRelease(v9);
   if (!v26)
@@ -431,7 +431,7 @@ LABEL_37:
     goto LABEL_67;
   }
 
-  v47 = a4;
+  sourceCopy3 = source;
   _CFSetTSD(0xFu, &__kCFBooleanTrue, 0);
   if (makeLogHandles_logToken != -1)
   {
@@ -440,7 +440,7 @@ LABEL_37:
 
   if (os_log_type_enabled(clientHandle, OS_LOG_TYPE_DEBUG))
   {
-    [CFPrefsSearchListSource copyCloudConfigurationWithURL:v4 outConfigFileSource:? outStoreName:?];
+    [CFPrefsSearchListSource copyCloudConfigurationWithURL:selfCopy outConfigFileSource:? outStoreName:?];
   }
 
   _CFSetTSD(0xFu, 0, 0);
@@ -485,13 +485,13 @@ LABEL_37:
             v51.length = CFStringGetLength(*v30) - 1;
             v51.location = 0;
             v38 = CFStringCreateWithSubstring(&__kCFAllocatorSystemDefault, v37, v51);
-            [(CFPrefsSearchListSource *)v4 setCloudEnabled:v38 forKeyPrefix:?];
+            [(CFPrefsSearchListSource *)selfCopy setCloudEnabled:v38 forKeyPrefix:?];
             CFRelease(v38);
           }
 
           else
           {
-            [(CFPrefsSearchListSource *)v4 setCloudEnabled:*v30 forKey:?];
+            [(CFPrefsSearchListSource *)selfCopy setCloudEnabled:*v30 forKey:?];
           }
         }
 
@@ -506,22 +506,22 @@ LABEL_37:
     while (v27);
   }
 
-  if (v48)
+  if (lCopy2)
   {
-    v39 = [[CFPrefsConfigurationFileSource alloc] initWithConfigurationPropertyList:v26 containingPreferences:v4->info];
-    *v48 = v39;
+    v39 = [[CFPrefsConfigurationFileSource alloc] initWithConfigurationPropertyList:v26 containingPreferences:selfCopy->info];
+    *lCopy2 = v39;
   }
 
-  if (v47)
+  if (sourceCopy3)
   {
     Value = CFDictionaryGetValue(v26, @"NSUserDefaultsCloudStoreIdentifier");
     if (!Value)
     {
-      Value = v4[2].info;
+      Value = selfCopy[2].info;
     }
 
     Copy = CFStringCreateCopy(&__kCFAllocatorSystemDefault, Value);
-    *v47 = Copy;
+    *sourceCopy3 = Copy;
   }
 
   CFRelease(v26);
@@ -534,13 +534,13 @@ LABEL_37:
   v43 = v42;
   if (v42)
   {
-    v4 = CFURLCopyFileSystemPath(v42, kCFURLPOSIXPathStyle);
+    selfCopy = CFURLCopyFileSystemPath(v42, kCFURLPOSIXPathStyle);
     CFRelease(v43);
     goto LABEL_73;
   }
 
 LABEL_72:
-  v4 = 0;
+  selfCopy = 0;
 LABEL_73:
   if (!v49)
   {
@@ -549,16 +549,16 @@ LABEL_73:
 
 LABEL_75:
   v44 = *MEMORY[0x1E69E9840];
-  return v4;
+  return selfCopy;
 }
 
-- (void)alreadylocked_setObservingContents:(uint64_t)a1
+- (void)alreadylocked_setObservingContents:(uint64_t)contents
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (contents)
   {
-    os_unfair_lock_assert_owner((a1 + 52));
-    v4 = *(a1 + 80);
+    os_unfair_lock_assert_owner((contents + 52));
+    v4 = *(contents + 80);
     if (v4)
     {
       Count = CFArrayGetCount(v4);
@@ -575,16 +575,16 @@ LABEL_75:
       {
         for (i = 0; i != Count; ++i)
         {
-          ValueAtIndex = CFArrayGetValueAtIndex(*(a1 + 80), i);
+          ValueAtIndex = CFArrayGetValueAtIndex(*(contents + 80), i);
           os_unfair_lock_lock(ValueAtIndex + 13);
           if (a2)
           {
-            v8 = [(CFPrefsSource *)ValueAtIndex alreadylocked_addPreferencesObserver:a1];
+            v8 = [(CFPrefsSource *)ValueAtIndex alreadylocked_addPreferencesObserver:contents];
           }
 
           else
           {
-            v8 = [(CFPrefsSource *)ValueAtIndex alreadylocked_removePreferencesObserver:a1];
+            v8 = [(CFPrefsSource *)ValueAtIndex alreadylocked_removePreferencesObserver:contents];
           }
 
           v26 = 0;
@@ -646,7 +646,7 @@ LABEL_75:
     os_activity_scope_enter(v14, &objects);
     if (v12)
     {
-      v15 = [(CFPrefsSearchListSource *)a1 createMultiMessageWithContainedMessages:v12];
+      v15 = [(CFPrefsSearchListSource *)contents createMultiMessageWithContainedMessages:v12];
       xpc_release(v12);
     }
 
@@ -658,7 +658,7 @@ LABEL_75:
     v16 = v24;
     if (v24)
     {
-      v17 = [(CFPrefsSearchListSource *)a1 createMultiMessageWithContainedMessages:v24];
+      v17 = [(CFPrefsSearchListSource *)contents createMultiMessageWithContainedMessages:v24];
       xpc_release(v16);
     }
 
@@ -670,7 +670,7 @@ LABEL_75:
     v18 = v23;
     if (v23)
     {
-      v19 = [(CFPrefsSearchListSource *)a1 createMultiMessageWithContainedMessages:v23];
+      v19 = [(CFPrefsSearchListSource *)contents createMultiMessageWithContainedMessages:v23];
       xpc_release(v18);
     }
 
@@ -679,7 +679,7 @@ LABEL_75:
       v19 = 0;
     }
 
-    [(CFPrefsSearchListSource *)a1 synchronouslySendSystemMessage:v17 andUserMessage:v15 andDirectMessage:v19 replyHandler:0];
+    [(CFPrefsSearchListSource *)contents synchronouslySendSystemMessage:v17 andUserMessage:v15 andDirectMessage:v19 replyHandler:0];
     if (v17)
     {
       xpc_release(v17);
@@ -700,7 +700,7 @@ LABEL_75:
       v20 = 0;
       do
       {
-        v21 = CFArrayGetValueAtIndex(*(a1 + 80), v20);
+        v21 = CFArrayGetValueAtIndex(*(contents + 80), v20);
         os_unfair_lock_unlock(v21 + 13);
         ++v20;
       }
@@ -714,56 +714,56 @@ LABEL_75:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPreferencesObserver:(uint64_t)a1
+- (void)addPreferencesObserver:(uint64_t)observer
 {
-  if (a1 && a2)
+  if (observer && a2)
   {
     v4 = objc_autoreleasePoolPush();
-    os_unfair_lock_lock((a1 + 52));
-    if (![*(a1 + 24) approximateCount])
+    os_unfair_lock_lock((observer + 52));
+    if (![*(observer + 24) approximateCount])
     {
-      [(CFPrefsSearchListSource *)a1 alreadylocked_getDictionary:?];
+      [(CFPrefsSearchListSource *)observer alreadylocked_getDictionary:?];
     }
 
-    if ([(CFPrefsSource *)a1 alreadylocked_addPreferencesObserver:a2])
+    if ([(CFPrefsSource *)observer alreadylocked_addPreferencesObserver:a2])
     {
       [CFPrefsSearchListSource addPreferencesObserver:];
     }
 
-    if ([*(a1 + 24) approximateCount] == 1)
+    if ([*(observer + 24) approximateCount] == 1)
     {
-      [(CFPrefsSearchListSource *)a1 alreadylocked_setObservingContents:?];
+      [(CFPrefsSearchListSource *)observer alreadylocked_setObservingContents:?];
     }
 
-    os_unfair_lock_unlock((a1 + 52));
+    os_unfair_lock_unlock((observer + 52));
 
     objc_autoreleasePoolPop(v4);
   }
 }
 
-- (void)removePreferencesObserver:(uint64_t)a1
+- (void)removePreferencesObserver:(uint64_t)observer
 {
-  if (a1 && a2)
+  if (observer && a2)
   {
     v4 = objc_autoreleasePoolPush();
-    os_unfair_lock_lock((a1 + 52));
-    if ([(CFPrefsSource *)a1 alreadylocked_removePreferencesObserver:a2])
+    os_unfair_lock_lock((observer + 52));
+    if ([(CFPrefsSource *)observer alreadylocked_removePreferencesObserver:a2])
     {
       [CFPrefsSearchListSource removePreferencesObserver:];
     }
 
-    if (![*(a1 + 24) approximateCount])
+    if (![*(observer + 24) approximateCount])
     {
-      [(CFPrefsSearchListSource *)a1 alreadylocked_setObservingContents:?];
+      [(CFPrefsSearchListSource *)observer alreadylocked_setObservingContents:?];
     }
 
-    os_unfair_lock_unlock((a1 + 52));
+    os_unfair_lock_unlock((observer + 52));
 
     objc_autoreleasePoolPop(v4);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->super._lock);
   v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:self->_identifier containingPreferences:self->super._containingPreferences];
@@ -844,30 +844,30 @@ LABEL_75:
   return v5;
 }
 
-- (void)addSource:(uint64_t)a1
+- (void)addSource:(uint64_t)source
 {
-  if (a1 && a2)
+  if (source && a2)
   {
-    if (*(a1 + 120) == 1)
+    if (*(source + 120) == 1)
     {
       [CFPrefsSearchListSource addSource:];
     }
 
-    Mutable = *(a1 + 80);
+    Mutable = *(source + 80);
     if (!Mutable)
     {
       Mutable = CFArrayCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeArrayCallBacks);
-      *(a1 + 80) = Mutable;
+      *(source + 80) = Mutable;
     }
 
     v5.length = CFArrayGetCount(Mutable);
     v5.location = 0;
     if (!CFArrayContainsValue(Mutable, v5, a2))
     {
-      CFArrayAppendValue(*(a1 + 80), a2);
+      CFArrayAppendValue(*(source + 80), a2);
     }
 
-    atomic_store(0xFFFFFFFFFFFFFFFFLL, (a1 + 32));
+    atomic_store(0xFFFFFFFFFFFFFFFFLL, (source + 32));
   }
 }
 
@@ -880,7 +880,7 @@ void __93__CFPrefsSearchListSource_addCloudSourceForIdentifier_configurationPath
   [(CFPrefsSearchListSource *)v4 addSource:a2];
 }
 
-- (void)alreadylocked_copyValueForKey:(__CFString *)a3
+- (void)alreadylocked_copyValueForKey:(__CFString *)key
 {
   v26 = *MEMORY[0x1E69E9840];
   if (self->_sourceList)
@@ -894,7 +894,7 @@ void __93__CFPrefsSearchListSource_addCloudSourceForIdentifier_configurationPath
     v13[2] = __57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block_invoke;
     v13[3] = &unk_1E6DD0938;
     v13[4] = &v14;
-    v13[5] = a3;
+    v13[5] = key;
     [(CFPrefsSearchListSource *)self alreadylocked_getDictionary:v13];
     if (makeLogHandles_logToken != -1)
     {
@@ -905,7 +905,7 @@ void __93__CFPrefsSearchListSource_addCloudSourceForIdentifier_configurationPath
     {
       if (v15[3])
       {
-        Value = CFDictionaryGetValue(self->_keysToSources, a3);
+        Value = CFDictionaryGetValue(self->_keysToSources, key);
       }
 
       else
@@ -913,8 +913,8 @@ void __93__CFPrefsSearchListSource_addCloudSourceForIdentifier_configurationPath
         Value = 0;
       }
 
-      v7 = [(CFPrefsSearchListSource *)self copyOSLogDescription];
-      v8 = [Value copyOSLogDescription];
+      copyOSLogDescription = [(CFPrefsSearchListSource *)self copyOSLogDescription];
+      copyOSLogDescription2 = [Value copyOSLogDescription];
       if (v15[3])
       {
         _CFSetTSD(0xFu, &__kCFBooleanTrue, 0);
@@ -930,11 +930,11 @@ void __93__CFPrefsSearchListSource_addCloudSourceForIdentifier_configurationPath
           *buf = 138478595;
           v19 = v12;
           v20 = 2114;
-          v21 = a3;
+          keyCopy = key;
           v22 = 2114;
-          v23 = v8;
+          v23 = copyOSLogDescription2;
           v24 = 2114;
-          v25 = v7;
+          v25 = copyOSLogDescription;
           _os_log_debug_impl(&dword_1830E6000, v9, OS_LOG_TYPE_DEBUG, "looked up value %{private}@ for key %{public}@ in %{public}@ via %{public}@", buf, 0x2Au);
         }
       }
@@ -949,15 +949,15 @@ void __93__CFPrefsSearchListSource_addCloudSourceForIdentifier_configurationPath
 
         if (os_log_type_enabled(clientHandle, OS_LOG_TYPE_DEBUG))
         {
-          [CFPrefsSearchListSource alreadylocked_copyValueForKey:a3];
+          [CFPrefsSearchListSource alreadylocked_copyValueForKey:key];
         }
       }
 
       _CFSetTSD(0xFu, 0, 0);
-      CFRelease(v7);
-      if (v8)
+      CFRelease(copyOSLogDescription);
+      if (copyOSLogDescription2)
       {
-        CFRelease(v8);
+        CFRelease(copyOSLogDescription2);
       }
     }
 
@@ -991,7 +991,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
   return result;
 }
 
-- (void)alreadylocked_setPrecopiedValues:(const void *)a3 forKeys:(const __CFString *)a4 count:(int64_t)a5 from:(id)a6
+- (void)alreadylocked_setPrecopiedValues:(const void *)values forKeys:(const __CFString *)keys count:(int64_t)count from:(id)from
 {
   v92[1] = *MEMORY[0x1E69E9840];
   p_standardSetTarget = &self->_standardSetTarget;
@@ -1012,25 +1012,25 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
   }
 
   MEMORY[0x1EEE9AC00](self, a2);
-  v10 = (a5 + 15) & 0xFFFFFFFFFFFFFFF0;
-  v11 = &v80 - v10;
-  bzero(&v80 - v10, a5);
-  v80 = a3;
-  v81 = a5;
-  v84 = &v80 - v10;
-  if (a5 < 1)
+  v10 = (count + 15) & 0xFFFFFFFFFFFFFFF0;
+  v11 = &valuesCopy - v10;
+  bzero(&valuesCopy - v10, count);
+  valuesCopy = values;
+  countCopy = count;
+  v84 = &valuesCopy - v10;
+  if (count < 1)
   {
     LODWORD(v85) = 0;
   }
 
   else
   {
-    v14 = a5;
+    countCopy2 = count;
     LODWORD(v85) = 0;
-    v15 = a4;
+    keysCopy = keys;
     do
     {
-      v12 = [(CFPrefsSource *)self validateValue:*v15 forKey:0 inDict:1 forWriting:?];
+      v12 = [(CFPrefsSource *)self validateValue:*keysCopy forKey:0 inDict:1 forWriting:?];
       if (v12)
       {
         if (self->_cloudKeys || self->_cloudPrefixKeys)
@@ -1043,22 +1043,22 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
 
       else
       {
-        *v15 = 0;
+        *keysCopy = 0;
       }
 
       ++v11;
-      ++v15;
-      ++a3;
-      --v14;
+      ++keysCopy;
+      ++values;
+      --countCopy2;
     }
 
-    while (v14);
+    while (countCopy2);
   }
 
-  v16 = v81;
+  v16 = countCopy;
   MEMORY[0x1EEE9AC00](v12, v13);
-  v89 = &v80 - v10;
-  bzero(&v80 - v10, v16);
+  v89 = &valuesCopy - v10;
+  bzero(&valuesCopy - v10, v16);
   sourceList = self->_sourceList;
   v93.length = CFArrayGetCount(sourceList);
   v93.location = 0;
@@ -1085,12 +1085,12 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
   else
   {
     v19 = 0;
-    v20 = a4;
+    keysCopy2 = keys;
     v21 = v89;
     v22 = v84;
     do
     {
-      Value = CFDictionaryGetValue(self->_keysToSources, *v20);
+      Value = CFDictionaryGetValue(self->_keysToSources, *keysCopy2);
       *v21 = 1;
       if (Value)
       {
@@ -1126,20 +1126,20 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
 
       ++v22;
       ++v21;
-      ++v20;
+      ++keysCopy2;
       --v16;
     }
 
     while (v16);
   }
 
-  v29 = [(__CFPrefsWeakObservers *)self->super._observers approximateCount];
+  approximateCount = [(__CFPrefsWeakObservers *)self->super._observers approximateCount];
   Mutable = 0;
   v30 = *(&self->super.super.isa + v91);
-  v82 = v29;
+  v82 = approximateCount;
   if (v30)
   {
-    v31 = v29 == 0;
+    v31 = approximateCount == 0;
   }
 
   else
@@ -1149,32 +1149,32 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
 
   if (v31)
   {
-    v33 = v80;
-    v32 = v81;
+    v33 = valuesCopy;
+    v32 = countCopy;
   }
 
   else
   {
-    v33 = v80;
-    v32 = v81;
+    v33 = valuesCopy;
+    v32 = countCopy;
     if (v19)
     {
       Mutable = CFDictionaryCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       if (v32 >= 1)
       {
         v34 = v32;
-        v35 = a4;
+        keysCopy3 = keys;
         v36 = v89;
         do
         {
-          v37 = CFDictionaryGetValue(*(&self->super.super.isa + v91), *v35);
+          v37 = CFDictionaryGetValue(*(&self->super.super.isa + v91), *keysCopy3);
           if (v37 && *v36)
           {
-            CFDictionarySetValue(Mutable, *v35, v37);
+            CFDictionarySetValue(Mutable, *keysCopy3, v37);
           }
 
           ++v36;
-          ++v35;
+          ++keysCopy3;
           --v34;
         }
 
@@ -1204,7 +1204,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
     }
 
     v40 = MEMORY[0x1EEE9AC00](v39, v38);
-    v42 = &v80 - v41;
+    v42 = &valuesCopy - v41;
     v92[0] = 0;
     if (v43 >= 0x101)
     {
@@ -1227,7 +1227,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
     {
       v46 = 0;
       v47 = v84;
-      v48 = a4;
+      keysCopy4 = keys;
       v49 = v33;
       v50 = v32;
       do
@@ -1235,12 +1235,12 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
         v51 = *v47++;
         if (v51 == 1)
         {
-          *&v42[8 * v46] = *v48;
+          *&v42[8 * v46] = *keysCopy4;
           *&v45[8 * v46++] = *v49;
         }
 
         ++v49;
-        ++v48;
+        ++keysCopy4;
         --v50;
       }
 
@@ -1258,19 +1258,19 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
       v52 = 0;
       v53 = v84;
       v54 = v32;
-      v55 = a4;
+      keysCopy5 = keys;
       v56 = v33;
       do
       {
         v57 = *v53++;
         if ((v57 & 1) == 0)
         {
-          *&v42[8 * v52] = *v55;
+          *&v42[8 * v52] = *keysCopy5;
           *&v45[8 * v52++] = *v56;
         }
 
         ++v56;
-        ++v55;
+        ++keysCopy5;
         --v54;
       }
 
@@ -1287,7 +1287,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
 
   else
   {
-    [(CFPrefsSource *)*p_standardSetTarget setValues:v33 forKeys:a4 count:v32 copyValues:0 from:self];
+    [(CFPrefsSource *)*p_standardSetTarget setValues:v33 forKeys:keys count:v32 copyValues:0 from:self];
     if ((v19 & 1) == 0)
     {
       goto LABEL_96;
@@ -1300,7 +1300,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
     {
       if (v89[i])
       {
-        v59 = a4[i];
+        v59 = keys[i];
         if (v59)
         {
           v60 = *(v33 + 8 * i);
@@ -1313,7 +1313,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
               p_cloudSetTarget = &self->_cloudSetTarget;
             }
 
-            CFDictionarySetValue(self->_keysToSources, a4[i], *p_cloudSetTarget);
+            CFDictionarySetValue(self->_keysToSources, keys[i], *p_cloudSetTarget);
           }
 
           else
@@ -1322,9 +1322,9 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
             if (v62)
             {
               Count = CFArrayGetCount(v62);
-              v85 = &v80;
+              v85 = &valuesCopy;
               v65 = MEMORY[0x1EEE9AC00](Count, v64);
-              v67 = (&v80 - v66);
+              v67 = (&valuesCopy - v66);
               if (v65 >= 1)
               {
                 v96.location = 0;
@@ -1335,7 +1335,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
 
             else
             {
-              v85 = &v80;
+              v85 = &valuesCopy;
               MEMORY[0x1EEE9AC00](0, v59);
               v67 = &v79;
               Count = 0;
@@ -1353,16 +1353,16 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
               v70 = ~v68 + Count;
               while (1)
               {
-                v71 = [*v69 copyValueForKey:a4[i]];
+                v71 = [*v69 copyValueForKey:keys[i]];
                 v72 = *(&self->super.super.isa + v91);
-                v73 = a4[i];
+                v73 = keys[i];
                 if (v71)
                 {
                   break;
                 }
 
                 CFDictionaryRemoveValue(v72, v73);
-                CFDictionaryRemoveValue(self->_keysToSources, a4[i]);
+                CFDictionaryRemoveValue(self->_keysToSources, keys[i]);
                 ++v69;
                 if (!--v70)
                 {
@@ -1371,7 +1371,7 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
               }
 
               CFDictionarySetValue(v72, v73, v71);
-              CFDictionarySetValue(self->_keysToSources, a4[i], *v69);
+              CFDictionarySetValue(self->_keysToSources, keys[i], *v69);
               CFRelease(v71);
             }
           }
@@ -1379,9 +1379,9 @@ const void **__57__CFPrefsSearchListSource_alreadylocked_copyValueForKey___block
 LABEL_91:
           if (v82)
           {
-            v74 = a4[i];
+            v74 = keys[i];
             v75 = CFDictionaryGetValue(Mutable, v74);
-            [(CFPrefsSearchListSource *)self deferredNotifyCausedByLocalWriteOfChangesToKey:v74 fromValue:v75 toValue:CFDictionaryGetValue(*(&self->super.super.isa + v91), a4[i])];
+            [(CFPrefsSearchListSource *)self deferredNotifyCausedByLocalWriteOfChangesToKey:v74 fromValue:v75 toValue:CFDictionaryGetValue(*(&self->super.super.isa + v91), keys[i])];
           }
         }
       }
@@ -1397,17 +1397,17 @@ LABEL_96:
   v76 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fullCloudSynchronizeWithCompletionHandler:(id)a3
+- (void)fullCloudSynchronizeWithCompletionHandler:(id)handler
 {
   cloudSetTarget = self->_cloudSetTarget;
   if (cloudSetTarget)
   {
-    [(CFPrefsCloudSource *)cloudSetTarget fullCloudSynchronizeWithCompletionHandler:a3];
+    [(CFPrefsCloudSource *)cloudSetTarget fullCloudSynchronizeWithCompletionHandler:handler];
   }
 
   else
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
@@ -1487,7 +1487,7 @@ void __52__CFPrefsSearchListSource_alreadylocked_copyKeyList__block_invoke(uint6
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleReply:(id)a3 toRequestNewDataMessage:(id)a4 onConnection:(id)a5 retryCount:(int)a6 error:(BOOL *)a7
+- (void)handleReply:(id)reply toRequestNewDataMessage:(id)message onConnection:(id)connection retryCount:(int)count error:(BOOL *)error
 {
   v18[7] = *MEMORY[0x1E69E9840];
   sourceList = self->_sourceList;
@@ -1496,12 +1496,12 @@ void __52__CFPrefsSearchListSource_alreadylocked_copyKeyList__block_invoke(uint6
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!reply)
   {
     goto LABEL_5;
   }
 
-  if (object_getClass(a3) != MEMORY[0x1E69E9E80])
+  if (object_getClass(reply) != MEMORY[0x1E69E9E80])
   {
     sourceList = self->_sourceList;
 LABEL_5:
@@ -1519,8 +1519,8 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  value = xpc_dictionary_get_value(a4, "CFPreferencesMessages");
-  v14 = xpc_dictionary_get_value(a3, "CFPreferencesMessages");
+  value = xpc_dictionary_get_value(message, "CFPreferencesMessages");
+  v14 = xpc_dictionary_get_value(reply, "CFPreferencesMessages");
   if (v14)
   {
     v15 = v14;
@@ -1536,7 +1536,7 @@ LABEL_5:
     v18[3] = &unk_1E6DD0988;
     v18[4] = self;
     v18[5] = value;
-    v18[6] = a5;
+    v18[6] = connection;
     xpc_array_apply(v15, v18);
   }
 
@@ -1629,7 +1629,7 @@ uint64_t __80__CFPrefsSearchListSource_alreadylocked_generationCountFromListOfSo
   return result;
 }
 
-- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)a3 isRemote:(BOOL)a4
+- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)identifier isRemote:(BOOL)remote
 {
   v22 = *MEMORY[0x1E69E9840];
   if (!self->_sourceList)
@@ -1639,10 +1639,10 @@ LABEL_17:
     return;
   }
 
-  v4 = a4;
-  if (!CFEqual(a3, @"Volatile"))
+  remoteCopy = remote;
+  if (!CFEqual(identifier, @"Volatile"))
   {
-    if (!v4 || (identifier = self->_identifier, identifier == a3) || CFEqual(identifier, a3))
+    if (!remoteCopy || (identifier = self->_identifier, identifier == identifier) || CFEqual(identifier, identifier))
     {
       sourceList = self->_sourceList;
       if (sourceList)
@@ -1667,7 +1667,7 @@ LABEL_17:
 
       v20 = 0;
       v16 = generationCountFromListOfSources(v15, Count, &v20);
-      if ((v20 & 1) != 0 || !v4 && (v17 = atomic_load(&self->super._generationCount), v16 != v17))
+      if ((v20 & 1) != 0 || !remoteCopy && (v17 = atomic_load(&self->super._generationCount), v16 != v17))
       {
         [(CFPrefsSearchListSource *)self generationCount];
       }
@@ -1681,22 +1681,22 @@ LABEL_17:
   [(CFPrefsSearchListSource *)self generationCount];
 }
 
-- (void)deferredNotifyCausedByLocalWriteOfChangesToKey:(__CFString *)a3 fromValue:(void *)a4 toValue:(void *)a5
+- (void)deferredNotifyCausedByLocalWriteOfChangesToKey:(__CFString *)key fromValue:(void *)value toValue:(void *)toValue
 {
-  v6 = a4;
+  valueCopy = value;
   keys[1] = *MEMORY[0x1E69E9840];
-  values = a4;
-  keys[0] = a3;
-  v12 = a5;
+  values = value;
+  keys[0] = key;
+  toValueCopy = toValue;
   os_unfair_lock_assert_owner(&self->super._lock);
-  if (v6)
+  if (valueCopy)
   {
-    v6 = CFDictionaryCreate(&__kCFAllocatorSystemDefault, keys, &values, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    valueCopy = CFDictionaryCreate(&__kCFAllocatorSystemDefault, keys, &values, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  if (a5)
+  if (toValue)
   {
-    v8 = CFDictionaryCreate(&__kCFAllocatorSystemDefault, keys, &v12, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    v8 = CFDictionaryCreate(&__kCFAllocatorSystemDefault, keys, &toValueCopy, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
   else
@@ -1707,10 +1707,10 @@ LABEL_17:
   v9 = objc_alloc_init(_CFPrefsPendingKVONotification);
   [(_CFPrefsPendingKVONotification *)v9 setSource:?];
   [(_CFPrefsPendingKVONotification *)v9 setValues:v8];
-  [(_CFPrefsPendingKVONotification *)v9 setOldValues:v6];
-  if (v6)
+  [(_CFPrefsPendingKVONotification *)v9 setOldValues:valueCopy];
+  if (valueCopy)
   {
-    CFRelease(v6);
+    CFRelease(valueCopy);
   }
 
   if (v8)
@@ -1724,12 +1724,12 @@ LABEL_17:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deferredNotifyCausedByLoadingOfChangesFromDictionary:(__CFDictionary *)a3 toDictionary:(__CFDictionary *)Copy
+- (void)deferredNotifyCausedByLoadingOfChangesFromDictionary:(__CFDictionary *)dictionary toDictionary:(__CFDictionary *)Copy
 {
   os_unfair_lock_assert_owner(&self->super._lock);
-  if (a3)
+  if (dictionary)
   {
-    CFRetain(a3);
+    CFRetain(dictionary);
   }
 
   if (Copy)
@@ -1740,10 +1740,10 @@ LABEL_17:
   value = objc_alloc_init(_CFPrefsPendingKVONotification);
   [(_CFPrefsPendingKVONotification *)value setSource:?];
   [(_CFPrefsPendingKVONotification *)value setValues:?];
-  [(_CFPrefsPendingKVONotification *)value setOldValues:a3];
-  if (a3)
+  [(_CFPrefsPendingKVONotification *)value setOldValues:dictionary];
+  if (dictionary)
   {
-    CFRelease(a3);
+    CFRelease(dictionary);
   }
 
   if (Copy)
@@ -1755,57 +1755,57 @@ LABEL_17:
   CFArrayAppendValue(Pending, value);
 }
 
-- (void)removeSource:(uint64_t)a1
+- (void)removeSource:(uint64_t)source
 {
-  if (a1)
+  if (source)
   {
     if (a2)
     {
-      v4 = *(a1 + 80);
+      v4 = *(source + 80);
       if (v4)
       {
-        if (*(a1 + 120) == 1)
+        if (*(source + 120) == 1)
         {
           [CFPrefsSearchListSource removeSource:];
         }
 
-        v6.length = CFArrayGetCount(*(a1 + 80));
+        v6.length = CFArrayGetCount(*(source + 80));
         v6.location = 0;
         FirstIndexOfValue = CFArrayGetFirstIndexOfValue(v4, v6, a2);
         if (FirstIndexOfValue != -1)
         {
-          CFArrayRemoveValueAtIndex(*(a1 + 80), FirstIndexOfValue);
+          CFArrayRemoveValueAtIndex(*(source + 80), FirstIndexOfValue);
         }
 
-        if (*(a1 + 104) == a2)
+        if (*(source + 104) == a2)
         {
-          *(a1 + 104) = 0;
+          *(source + 104) = 0;
         }
 
-        if (*(a1 + 112) == a2)
+        if (*(source + 112) == a2)
         {
-          *(a1 + 112) = 0;
+          *(source + 112) = 0;
         }
 
-        atomic_store(0xFFFFFFFFFFFFFFFFLL, (a1 + 32));
+        atomic_store(0xFFFFFFFFFFFFFFFFLL, (source + 32));
       }
     }
   }
 }
 
-- (void)replaceSource:(const void *)a3 withSource:
+- (void)replaceSource:(const void *)source withSource:
 {
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 80);
+    v5 = *(self + 80);
     if (v5)
     {
-      if (!a2 || !a3 || *(a1 + 120) == 1)
+      if (!a2 || !source || *(self + 120) == 1)
       {
         [CFPrefsSearchListSource replaceSource:withSource:];
       }
 
-      [(CFPrefsSearchListSource *)v5 replaceSource:a2 withSource:a1, a3];
+      [(CFPrefsSearchListSource *)v5 replaceSource:a2 withSource:self, source];
     }
   }
 }
@@ -1898,97 +1898,97 @@ LABEL_17:
 
 - (__CFString)copyOSLogDescription
 {
-  v3 = [(_CFXPreferences *)self->super._containingPreferences nonLaunchPersonaUID];
+  nonLaunchPersonaUID = [(_CFXPreferences *)self->super._containingPreferences nonLaunchPersonaUID];
   ClassName = object_getClassName(self);
-  v5 = [(CFPrefsSearchListSource *)self domainIdentifier];
-  v6 = [(CFPrefsPlistSource *)self->_standardSetTarget container];
-  if (v3 == -1)
+  domainIdentifier = [(CFPrefsSearchListSource *)self domainIdentifier];
+  container = [(CFPrefsPlistSource *)self->_standardSetTarget container];
+  if (nonLaunchPersonaUID == -1)
   {
-    return CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%s<%p> (Domain: %@, Container: %@)", ClassName, self, v5, v6);
+    return CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%s<%p> (Domain: %@, Container: %@)", ClassName, self, domainIdentifier, container);
   }
 
   else
   {
-    return CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%s<%p> (Domain: %@, Container: %@ Non-launch persona: %d)", ClassName, self, v5, v6, v3);
+    return CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%s<%p> (Domain: %@, Container: %@ Non-launch persona: %d)", ClassName, self, domainIdentifier, container, nonLaunchPersonaUID);
   }
 }
 
-- (void)setCloudEnabled:(const void *)a3 forKeyPrefix:
+- (void)setCloudEnabled:(const void *)enabled forKeyPrefix:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  os_unfair_lock_lock((a1 + 52));
-  Mutable = *(a1 + 96);
+  os_unfair_lock_lock((self + 52));
+  Mutable = *(self + 96);
   if (a2)
   {
     if (!Mutable)
     {
       Mutable = CFArrayCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeArrayCallBacks);
-      *(a1 + 96) = Mutable;
+      *(self + 96) = Mutable;
     }
 
-    CFArrayAppendValue(Mutable, a3);
+    CFArrayAppendValue(Mutable, enabled);
     goto LABEL_6;
   }
 
   if (Mutable)
   {
-    Count = CFArrayGetCount(*(a1 + 96));
+    Count = CFArrayGetCount(*(self + 96));
     v8 = OUTLINED_FUNCTION_8_0(Count);
     if (v8 != -1)
     {
-      CFArrayRemoveValueAtIndex(*(a1 + 96), v8);
-      if (!CFArrayGetCount(*(a1 + 96)))
+      CFArrayRemoveValueAtIndex(*(self + 96), v8);
+      if (!CFArrayGetCount(*(self + 96)))
       {
 LABEL_6:
-        [*(a1 + 112) setEnabled:a2];
+        [*(self + 112) setEnabled:a2];
       }
     }
   }
 
-  os_unfair_lock_unlock((a1 + 52));
+  os_unfair_lock_unlock((self + 52));
 }
 
-- (void)setCloudEnabled:(const void *)a3 forKey:
+- (void)setCloudEnabled:(const void *)enabled forKey:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  os_unfair_lock_lock((a1 + 52));
-  Mutable = *(a1 + 88);
+  os_unfair_lock_lock((self + 52));
+  Mutable = *(self + 88);
   if (a2)
   {
     if (!Mutable)
     {
       Mutable = CFSetCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFCopyStringSetCallBacks);
-      *(a1 + 88) = Mutable;
+      *(self + 88) = Mutable;
     }
 
-    CFSetAddValue(Mutable, a3);
+    CFSetAddValue(Mutable, enabled);
     goto LABEL_6;
   }
 
   if (Mutable)
   {
-    CFSetRemoveValue(Mutable, a3);
-    if (!CFSetGetCount(*(a1 + 88)))
+    CFSetRemoveValue(Mutable, enabled);
+    if (!CFSetGetCount(*(self + 88)))
     {
 LABEL_6:
-      [*(a1 + 112) setEnabled:a2];
+      [*(self + 112) setEnabled:a2];
     }
   }
 
-  os_unfair_lock_unlock((a1 + 52));
+  os_unfair_lock_unlock((self + 52));
 }
 
-- (xpc_object_t)createMultiMessageWithContainedMessages:(uint64_t)a1
+- (xpc_object_t)createMultiMessageWithContainedMessages:(uint64_t)messages
 {
-  if (!a1)
+  if (!messages)
   {
     return 0;
   }
@@ -1999,7 +1999,7 @@ LABEL_6:
   return v3;
 }
 
-- (uint64_t)synchronouslySendSystemMessage:(uint64_t)a3 andUserMessage:(uint64_t)a4 andDirectMessage:(uint64_t)a5 replyHandler:
+- (uint64_t)synchronouslySendSystemMessage:(uint64_t)message andUserMessage:(uint64_t)userMessage andDirectMessage:(uint64_t)directMessage replyHandler:
 {
   v19[6] = *MEMORY[0x1E69E9840];
   if (result)
@@ -2009,8 +2009,8 @@ LABEL_6:
     v19[2] = __103__CFPrefsSearchListSource_synchronouslySendSystemMessage_andUserMessage_andDirectMessage_replyHandler___block_invoke;
     v19[3] = &unk_1E6DD09B0;
     v19[4] = result;
-    v19[5] = a5;
-    if (a2 && a3)
+    v19[5] = directMessage;
+    if (a2 && message)
     {
       v6 = OUTLINED_FUNCTION_5_2();
       v18[0] = MEMORY[0x1E69E9820];
@@ -2035,7 +2035,7 @@ LABEL_6:
       result = CFPREFERENCES_IS_WAITING_FOR_SYSTEM_CFPREFSD(v9, v17);
     }
 
-    else if (a3)
+    else if (message)
     {
       v11 = OUTLINED_FUNCTION_5_2();
       v16[0] = MEMORY[0x1E69E9820];
@@ -2047,14 +2047,14 @@ LABEL_6:
       result = CFPREFERENCES_IS_WAITING_FOR_USER_CFPREFSD(v11, v16);
     }
 
-    if (a4)
+    if (userMessage)
     {
       OUTLINED_FUNCTION_5_2();
       OUTLINED_FUNCTION_2_6();
       v15[1] = 3221225472;
       v15[2] = __103__CFPrefsSearchListSource_synchronouslySendSystemMessage_andUserMessage_andDirectMessage_replyHandler___block_invoke_7;
       v15[3] = &unk_1E6DD0A28;
-      v15[4] = a4;
+      v15[4] = userMessage;
       v15[5] = v19;
       result = CFPREFERENCES_IS_WAITING_FOR_DIRECT_CFPREFSD(v13, v15);
     }
@@ -2066,18 +2066,18 @@ LABEL_6:
 
 - (void)alreadylocked_reloadCacheIfStale
 {
-  if (a1)
+  if (self)
   {
-    [(CFPrefsSearchListSource *)a1 alreadylocked_getDictionary:?];
+    [(CFPrefsSearchListSource *)self alreadylocked_getDictionary:?];
   }
 }
 
-- (void)addManagedSourceForIdentifier:(uint64_t)a1 user:
+- (void)addManagedSourceForIdentifier:(uint64_t)identifier user:
 {
   v6[5] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_20(a1, 8);
+    OUTLINED_FUNCTION_0_20(identifier, 8);
     OUTLINED_FUNCTION_6_1();
     v6[2] = __62__CFPrefsSearchListSource_addManagedSourceForIdentifier_user___block_invoke;
     v6[3] = &unk_1E6DD0898;
@@ -2088,12 +2088,12 @@ LABEL_6:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSourceForIdentifier:(uint64_t)a1 user:byHost:container:
+- (void)addSourceForIdentifier:(uint64_t)identifier user:byHost:container:
 {
   v8[5] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_20(a1, 8);
+    OUTLINED_FUNCTION_0_20(identifier, 8);
     OUTLINED_FUNCTION_6_1();
     v8[2] = __72__CFPrefsSearchListSource_addSourceForIdentifier_user_byHost_container___block_invoke;
     v8[3] = &unk_1E6DD08C0;
@@ -2104,31 +2104,31 @@ LABEL_6:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCloudSourceForIdentifier:(uint64_t)a3 configurationPath:(uint64_t)a4 storeName:(__CFString *)a5 container:
+- (void)addCloudSourceForIdentifier:(uint64_t)identifier configurationPath:(uint64_t)path storeName:(__CFString *)name container:
 {
   v7[7] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 8);
+    v5 = *(self + 8);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __93__CFPrefsSearchListSource_addCloudSourceForIdentifier_configurationPath_storeName_container___block_invoke;
     v7[3] = &unk_1E6DD08E8;
-    v7[5] = a3;
-    v7[6] = a4;
-    v7[4] = a1;
-    [(_CFXPreferences *)v5 withSourceForIdentifier:a2 user:@"kCFPreferencesCurrentUser" byHost:0 container:a5 cloud:1 perform:v7];
+    v7[5] = identifier;
+    v7[6] = path;
+    v7[4] = self;
+    [(_CFXPreferences *)v5 withSourceForIdentifier:a2 user:@"kCFPreferencesCurrentUser" byHost:0 container:name cloud:1 perform:v7];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSuiteSourceForIdentifier:(uint64_t)a1 user:
+- (void)addSuiteSourceForIdentifier:(uint64_t)identifier user:
 {
   v6[5] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_20(a1, 8);
+    OUTLINED_FUNCTION_0_20(identifier, 8);
     OUTLINED_FUNCTION_6_1();
     v6[2] = __60__CFPrefsSearchListSource_addSuiteSourceForIdentifier_user___block_invoke;
     v6[3] = &unk_1E6DD0910;
@@ -2139,12 +2139,12 @@ LABEL_6:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addNamedVolatileSourceForIdentifier:(uint64_t)a1
+- (void)addNamedVolatileSourceForIdentifier:(uint64_t)identifier
 {
   v5[5] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_20(a1, 8);
+    OUTLINED_FUNCTION_0_20(identifier, 8);
     OUTLINED_FUNCTION_6_1();
     v5[2] = __63__CFPrefsSearchListSource_addNamedVolatileSourceForIdentifier___block_invoke;
     v5[3] = &unk_1E6DD08C0;
@@ -2155,16 +2155,16 @@ LABEL_6:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)alreadylocked_getDictionary:(uint64_t)a1
+- (void)alreadylocked_getDictionary:(uint64_t)dictionary
 {
   v27[5] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!dictionary)
   {
     goto LABEL_27;
   }
 
-  os_unfair_lock_assert_owner((a1 + 52));
-  v5 = *(a1 + 80);
+  os_unfair_lock_assert_owner((dictionary + 52));
+  v5 = *(dictionary + 80);
   if (v5)
   {
     if (!byte_1EA84A4F1)
@@ -2172,15 +2172,15 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    atomic_store(0xFFFFFFFFFFFFFFFFLL, (a1 + 32));
-    v8 = *(a1 + 16);
+    atomic_store(0xFFFFFFFFFFFFFFFFLL, (dictionary + 32));
+    v8 = *(dictionary + 16);
     if (v8)
     {
       CFRelease(v8);
     }
 
-    *(a1 + 16) = 0;
-    v5 = *(a1 + 80);
+    *(dictionary + 16) = 0;
+    v5 = *(dictionary + 80);
     if (v5)
     {
 LABEL_11:
@@ -2191,7 +2191,7 @@ LABEL_11:
       {
         v29.location = 0;
         v29.length = Count;
-        CFArrayGetValues(*(a1 + 80), v29, v9);
+        CFArrayGetValues(*(dictionary + 80), v29, v9);
       }
     }
 
@@ -2202,15 +2202,15 @@ LABEL_11:
       Count = 0;
     }
 
-    v14 = [(CFPrefsSearchListSource *)a1 alreadylocked_generationCountFromListOfSources:v9 count:Count];
-    v15 = atomic_load((a1 + 32));
+    v14 = [(CFPrefsSearchListSource *)dictionary alreadylocked_generationCountFromListOfSources:v9 count:Count];
+    v15 = atomic_load((dictionary + 32));
     if (v15 == v14)
     {
-      v16 = *(a1 + 16);
+      v16 = *(dictionary + 16);
       if (!v16)
       {
-        *(a1 + 16) = CFDictionaryCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        v16 = *(a1 + 16);
+        *(dictionary + 16) = CFDictionaryCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+        v16 = *(dictionary + 16);
       }
 
       v17 = CFRetain(v16);
@@ -2230,7 +2230,7 @@ LABEL_27:
     v27[1] = 3221225472;
     v27[2] = __55__CFPrefsSearchListSource_alreadylocked_getDictionary___block_invoke;
     v27[3] = &unk_1E6DD0A98;
-    v27[4] = a1;
+    v27[4] = dictionary;
     if (Count >= 1)
     {
       do
@@ -2243,15 +2243,15 @@ LABEL_27:
       while (Count);
     }
 
-    v22 = *(a1 + 16);
-    *(a1 + 16) = v19;
-    v23 = *(a1 + 64);
-    *(a1 + 64) = v20;
-    atomic_store(v18, (a1 + 32));
-    v17 = CFRetain(*(a1 + 16));
-    if ([*(a1 + 24) approximateCount])
+    v22 = *(dictionary + 16);
+    *(dictionary + 16) = v19;
+    v23 = *(dictionary + 64);
+    *(dictionary + 64) = v20;
+    atomic_store(v18, (dictionary + 32));
+    v17 = CFRetain(*(dictionary + 16));
+    if ([*(dictionary + 24) approximateCount])
     {
-      if (!(v22 | *(a1 + 16)))
+      if (!(v22 | *(dictionary + 16)))
       {
 LABEL_24:
         if (v23)
@@ -2262,7 +2262,7 @@ LABEL_24:
         goto LABEL_26;
       }
 
-      [a1 deferredNotifyCausedByLoadingOfChangesFromDictionary:v22 toDictionary:?];
+      [dictionary deferredNotifyCausedByLoadingOfChangesFromDictionary:v22 toDictionary:?];
     }
 
     if (v22)
@@ -2352,10 +2352,10 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)alreadylocked_hasNonRegisteredValueForKey:(uint64_t)a1
+- (BOOL)alreadylocked_hasNonRegisteredValueForKey:(uint64_t)key
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (!a1 || (v3 = *(a1 + 80)) == 0 || (Count = CFArrayGetCount(v3), Count < 1))
+  if (!key || (v3 = *(key + 80)) == 0 || (Count = CFArrayGetCount(v3), Count < 1))
   {
     v14 = 0;
     goto LABEL_17;
@@ -2366,7 +2366,7 @@ LABEL_24:
   v9 = (v20 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0));
   v21.location = 0;
   v21.length = v7;
-  CFArrayGetValues(*(a1 + 80), v21, v9);
+  CFArrayGetValues(*(key + 80), v21, v9);
   v10 = v9[v7 - 1];
   if (objc_opt_isKindOfClass())
   {
@@ -2413,14 +2413,14 @@ LABEL_17:
   return v14;
 }
 
-- (uint64_t)alreadylocked_generationCountFromListOfSources:(uint64_t)a3 count:
+- (uint64_t)alreadylocked_generationCountFromListOfSources:(uint64_t)sources count:
 {
   v16 = *MEMORY[0x1E69E9840];
   if (result)
   {
     v5 = result;
     v15 = 0;
-    result = generationCountFromListOfSources(a2, a3, &v15);
+    result = generationCountFromListOfSources(a2, sources, &v15);
     if (v15 == 1)
     {
       v7 = [v5 createRequestNewContentMessageForDaemon:2];
@@ -2447,7 +2447,7 @@ LABEL_17:
         xpc_release(v9);
       }
 
-      result = generationCountFromListOfSources(a2, a3, &v15);
+      result = generationCountFromListOfSources(a2, sources, &v15);
     }
   }
 
@@ -2457,24 +2457,24 @@ LABEL_17:
 
 - (CFMutableDictionaryRef)alreadylocked_copyManagedDictionary
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 alreadylocked_copyKeyList];
+  alreadylocked_copyKeyList = [self alreadylocked_copyKeyList];
   Mutable = CFDictionaryCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  Count = CFArrayGetCount(v1);
+  Count = CFArrayGetCount(alreadylocked_copyKeyList);
   if (Count >= 1)
   {
     v4 = Count;
     for (i = 0; i != v4; ++i)
     {
-      CFArrayGetValueAtIndex(v1, i);
+      CFArrayGetValueAtIndex(alreadylocked_copyKeyList, i);
     }
   }
 
-  CFRelease(v1);
+  CFRelease(alreadylocked_copyKeyList);
   return Mutable;
 }
 

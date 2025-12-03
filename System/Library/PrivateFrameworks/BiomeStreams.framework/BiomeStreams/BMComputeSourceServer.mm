@@ -1,14 +1,14 @@
 @interface BMComputeSourceServer
 - (BMComputeSourceDaemon)source;
-- (BMComputeSourceServer)initWithQueue:(id)a3 domain:(unint64_t)a4 source:(id)a5;
-- (BMComputeSourceServer)initWithQueue:(id)a3 domain:(unint64_t)a4 source:(id)a5 listener:(id)a6;
-- (BOOL)_acceptConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)validateConnection:(id)a3 error:(id *)a4;
+- (BMComputeSourceServer)initWithQueue:(id)queue domain:(unint64_t)domain source:(id)source;
+- (BMComputeSourceServer)initWithQueue:(id)queue domain:(unint64_t)domain source:(id)source listener:(id)listener;
+- (BOOL)_acceptConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)validateConnection:(id)connection error:(id *)error;
 - (void)activate;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)eventsPrunedWithStreamIdentifier:(id)a3 account:(id)a4 remoteName:(id)a5 reason:(unint64_t)a6;
-- (void)replyToInvocation:(id)a3 withError:(id)a4;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)eventsPrunedWithStreamIdentifier:(id)identifier account:(id)account remoteName:(id)name reason:(unint64_t)reason;
+- (void)replyToInvocation:(id)invocation withError:(id)error;
 @end
 
 @implementation BMComputeSourceServer
@@ -20,15 +20,15 @@
   return WeakRetained;
 }
 
-- (BMComputeSourceServer)initWithQueue:(id)a3 domain:(unint64_t)a4 source:(id)a5
+- (BMComputeSourceServer)initWithQueue:(id)queue domain:(unint64_t)domain source:(id)source
 {
-  if (!a4)
+  if (!domain)
   {
     v10 = MEMORY[0x1E698E8F0];
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (domain == 1)
   {
     v10 = MEMORY[0x1E698E8D8];
 LABEL_5:
@@ -36,31 +36,31 @@ LABEL_5:
   }
 
   v11 = MEMORY[0x1E698EA30];
-  v12 = a5;
-  v13 = a3;
-  v14 = [[v11 alloc] initWithMachServiceName:v5 queue:v13];
-  v15 = [(BMComputeSourceServer *)self initWithQueue:v13 domain:a4 source:v12 listener:v14];
+  sourceCopy = source;
+  queueCopy = queue;
+  v14 = [[v11 alloc] initWithMachServiceName:v5 queue:queueCopy];
+  v15 = [(BMComputeSourceServer *)self initWithQueue:queueCopy domain:domain source:sourceCopy listener:v14];
 
   return v15;
 }
 
-- (BMComputeSourceServer)initWithQueue:(id)a3 domain:(unint64_t)a4 source:(id)a5 listener:(id)a6
+- (BMComputeSourceServer)initWithQueue:(id)queue domain:(unint64_t)domain source:(id)source listener:(id)listener
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  dispatch_assert_queue_V2(v11);
+  queueCopy = queue;
+  sourceCopy = source;
+  listenerCopy = listener;
+  dispatch_assert_queue_V2(queueCopy);
   v17.receiver = self;
   v17.super_class = BMComputeSourceServer;
   v14 = [(BMComputeSourceServer *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_queue, a3);
-    objc_storeWeak(&v15->_source, v12);
-    objc_storeStrong(&v15->_listener, a6);
+    objc_storeStrong(&v14->_queue, queue);
+    objc_storeWeak(&v15->_source, sourceCopy);
+    objc_storeStrong(&v15->_listener, listener);
     [(BMXPCListener *)v15->_listener setDelegate:v15];
-    v15->_domain = a4;
+    v15->_domain = domain;
   }
 
   return v15;
@@ -68,27 +68,27 @@ LABEL_5:
 
 - (void)activate
 {
-  v3 = [(BMComputeSourceServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BMComputeSourceServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   listener = self->_listener;
 
   [(BMXPCListener *)listener activate];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:v7];
+  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:connectionCopy];
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 executableName];
+    executableName = [v9 executableName];
     v19 = 138543618;
-    v20 = v11;
+    v20 = executableName;
     v21 = 1024;
     v22 = [v9 pid];
     _os_log_impl(&dword_1848EE000, v10, OS_LOG_TYPE_DEFAULT, "Incoming connection from %{public}@(%d)", &v19, 0x12u);
@@ -105,7 +105,7 @@ LABEL_5:
       [BMComputeSourceServer listener:v9 shouldAcceptNewConnection:v15];
     }
 
-    v16 = [(BMComputeSourceServer *)self _acceptConnection:v7];
+    v16 = [(BMComputeSourceServer *)self _acceptConnection:connectionCopy];
   }
 
   else
@@ -123,20 +123,20 @@ LABEL_5:
   return v16;
 }
 
-- (BOOL)_acceptConnection:(id)a3
+- (BOOL)_acceptConnection:(id)connection
 {
   v4 = _acceptConnection__onceToken;
-  v5 = a3;
+  connectionCopy = connection;
   if (v4 != -1)
   {
     [BMComputeSourceServer _acceptConnection:];
   }
 
-  [v5 setDelegate:self];
-  [v5 setExportedInterface:_acceptConnection__interface];
-  [v5 setExportedObject:self];
-  [v5 _setQueue:self->_queue];
-  [v5 activate];
+  [connectionCopy setDelegate:self];
+  [connectionCopy setExportedInterface:_acceptConnection__interface];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy _setQueue:self->_queue];
+  [connectionCopy activate];
 
   return 1;
 }
@@ -148,37 +148,37 @@ uint64_t __43__BMComputeSourceServer__acceptConnection___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)replyToInvocation:(id)a3 withError:(id)a4
+- (void)replyToInvocation:(id)invocation withError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  v20 = v6;
-  v7 = [v5 methodSignature];
-  v8 = [v7 numberOfArguments] - 1;
+  invocationCopy = invocation;
+  errorCopy = error;
+  v20 = errorCopy;
+  methodSignature = [invocationCopy methodSignature];
+  v8 = [methodSignature numberOfArguments] - 1;
 
-  v9 = [v5 methodSignature];
-  v10 = [v9 getArgumentTypeAtIndex:v8];
+  methodSignature2 = [invocationCopy methodSignature];
+  v10 = [methodSignature2 getArgumentTypeAtIndex:v8];
 
   if (!strchr(v10, 64))
   {
     v18 = __biome_log_for_category();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      [BMComputeSourceServer replyToInvocation:v5 withError:?];
+      [BMComputeSourceServer replyToInvocation:invocationCopy withError:?];
     }
 
     goto LABEL_10;
   }
 
   v19 = 0;
-  [v5 getArgument:&v19 atIndex:v8];
+  [invocationCopy getArgument:&v19 atIndex:v8];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v18 = __biome_log_for_category();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      [BMComputeSourceServer replyToInvocation:v5 withError:&v19];
+      [BMComputeSourceServer replyToInvocation:invocationCopy withError:&v19];
     }
 
 LABEL_10:
@@ -186,9 +186,9 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v11 = [MEMORY[0x1E696B0B8] currentConnection];
-  v12 = [v11 exportedInterface];
-  v13 = [v12 replyBlockSignatureForSelector:{objc_msgSend(v5, "selector")}];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  exportedInterface = [currentConnection exportedInterface];
+  v13 = [exportedInterface replyBlockSignatureForSelector:{objc_msgSend(invocationCopy, "selector")}];
 
   v14 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:{objc_msgSend(v13, "UTF8String")}];
   v15 = v14;
@@ -209,7 +209,7 @@ LABEL_10:
       v17 = __biome_log_for_category();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        [BMComputeSourceServer replyToInvocation:v5 withError:?];
+        [BMComputeSourceServer replyToInvocation:invocationCopy withError:?];
       }
     }
   }
@@ -219,28 +219,28 @@ LABEL_10:
     v17 = __biome_log_for_category();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      [BMComputeSourceServer replyToInvocation:v5 withError:?];
+      [BMComputeSourceServer replyToInvocation:invocationCopy withError:?];
     }
   }
 
-  v6 = v20;
+  errorCopy = v20;
 LABEL_16:
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  invocationCopy = invocation;
   v22 = 0;
-  v9 = [(BMComputeSourceServer *)self validateConnection:v7 error:&v22];
+  v9 = [(BMComputeSourceServer *)self validateConnection:connectionCopy error:&v22];
   v10 = v22;
   if (v9)
   {
-    [v8 selector];
+    [invocationCopy selector];
     if (objc_opt_respondsToSelector())
     {
-      [v8 invokeWithTarget:self];
+      [invocationCopy invokeWithTarget:self];
     }
 
     else
@@ -248,21 +248,21 @@ LABEL_16:
       v12 = __biome_log_for_category();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [BMComputeSourceServer connection:v7 handleInvocation:v8 isReply:?];
+        [BMComputeSourceServer connection:connectionCopy handleInvocation:invocationCopy isReply:?];
       }
 
       v13 = MEMORY[0x1E696ABC0];
       v14 = *MEMORY[0x1E698E8C8];
       v23 = *MEMORY[0x1E696A578];
       v15 = MEMORY[0x1E696AEC0];
-      v16 = NSStringFromSelector([v8 selector]);
+      v16 = NSStringFromSelector([invocationCopy selector]);
       v17 = [v15 stringWithFormat:@"Failed to route request -%@", v16];
       v24 = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       v19 = [v13 errorWithDomain:v14 code:6 userInfo:v18];
 
-      [(BMComputeSourceServer *)self replyToInvocation:v8 withError:v19];
-      [v7 invalidate];
+      [(BMComputeSourceServer *)self replyToInvocation:invocationCopy withError:v19];
+      [connectionCopy invalidate];
       v10 = v19;
     }
   }
@@ -272,41 +272,41 @@ LABEL_16:
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      v21 = NSStringFromSelector([v8 selector]);
+      v21 = NSStringFromSelector([invocationCopy selector]);
       *buf = 138412802;
       v26 = v21;
       v27 = 2112;
-      v28 = v7;
+      v28 = connectionCopy;
       v29 = 2112;
       v30 = v10;
       _os_log_fault_impl(&dword_1848EE000, v11, OS_LOG_TYPE_FAULT, "Request -%@ from %@ failed validation with error %@", buf, 0x20u);
     }
 
-    [(BMComputeSourceServer *)self replyToInvocation:v8 withError:v10];
-    [v7 invalidate];
+    [(BMComputeSourceServer *)self replyToInvocation:invocationCopy withError:v10];
+    [connectionCopy invalidate];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)validateConnection:(id)a3 error:(id *)a4
+- (BOOL)validateConnection:(id)connection error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 bm_remoteUseCase];
-  if (v7)
+  connectionCopy = connection;
+  bm_remoteUseCase = [connectionCopy bm_remoteUseCase];
+  if (bm_remoteUseCase)
   {
-    v8 = [v6 bm_accessControlPolicy];
+    bm_accessControlPolicy = [connectionCopy bm_accessControlPolicy];
 
-    if (v8)
+    if (bm_accessControlPolicy)
     {
-      v9 = [v6 bm_accessControlPolicy];
-      v10 = [v9 useCase];
-      v11 = [v7 isEqual:v10];
+      bm_accessControlPolicy2 = [connectionCopy bm_accessControlPolicy];
+      useCase = [bm_accessControlPolicy2 useCase];
+      v11 = [bm_remoteUseCase isEqual:useCase];
 
       if ((v11 & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v26 = MEMORY[0x1E696ABC0];
           v27 = *MEMORY[0x1E698E8C8];
@@ -322,12 +322,12 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v12 = [v6 bm_accessControlPolicy];
-      v13 = [v12 useCase];
+      bm_accessControlPolicy3 = [connectionCopy bm_accessControlPolicy];
+      useCase2 = [bm_accessControlPolicy3 useCase];
 
-      if (!v13)
+      if (!useCase2)
       {
-        if (a4)
+        if (error)
         {
           v14 = MEMORY[0x1E696ABC0];
           v15 = *MEMORY[0x1E698E8C8];
@@ -342,7 +342,7 @@ LABEL_9:
           v21 = v15;
           v22 = 1;
 LABEL_15:
-          *a4 = [v20 errorWithDomain:v21 code:v22 userInfo:v19];
+          *error = [v20 errorWithDomain:v21 code:v22 userInfo:v19];
 
           goto LABEL_16;
         }
@@ -353,25 +353,25 @@ LABEL_15:
 
     else
     {
-      if (![MEMORY[0x1E698E970] allowsConfiguringConnection:v6 forUseCase:v7 inDomain:self->_domain error:a4])
+      if (![MEMORY[0x1E698E970] allowsConfiguringConnection:connectionCopy forUseCase:bm_remoteUseCase inDomain:self->_domain error:error])
       {
 LABEL_16:
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
         goto LABEL_17;
       }
 
       v23 = MEMORY[0x1E698E970];
-      v24 = [v6 bm_process];
-      v25 = [v23 policyForProcess:v24 connectionFlags:objc_msgSend(v6 useCase:{"bm_connectionFlags"), v7}];
+      bm_process = [connectionCopy bm_process];
+      v25 = [v23 policyForProcess:bm_process connectionFlags:objc_msgSend(connectionCopy useCase:{"bm_connectionFlags"), bm_remoteUseCase}];
 
-      [v6 setBm_accessControlPolicy:v25];
+      [connectionCopy setBm_accessControlPolicy:v25];
     }
 
-    LOBYTE(a4) = 1;
+    LOBYTE(error) = 1;
     goto LABEL_17;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = MEMORY[0x1E696ABC0];
     v15 = *MEMORY[0x1E698E8C8];
@@ -386,7 +386,7 @@ LABEL_16:
 LABEL_17:
 
   v28 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 void __122__BMComputeSourceServer_sendEventWithStreamIdentifier_timestamp_signpostID_eventData_eventDataVersion_account_remoteName___block_invoke(uint64_t a1)
@@ -409,19 +409,19 @@ void __122__BMComputeSourceServer_sendEventWithStreamIdentifier_timestamp_signpo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)eventsPrunedWithStreamIdentifier:(id)a3 account:(id)a4 remoteName:(id)a5 reason:(unint64_t)a6
+- (void)eventsPrunedWithStreamIdentifier:(id)identifier account:(id)account remoteName:(id)name reason:(unint64_t)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696B0B8] currentConnection];
-  v14 = [v13 bm_accessControlPolicy];
+  identifierCopy = identifier;
+  accountCopy = account;
+  nameCopy = name;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  bm_accessControlPolicy = [currentConnection bm_accessControlPolicy];
 
-  if (v10)
+  if (identifierCopy)
   {
-    v15 = [v14 allowsComputeSourceAccessToStream:v10];
+    v15 = [bm_accessControlPolicy allowsComputeSourceAccessToStream:identifierCopy];
     v16 = __biome_log_for_category();
-    v17 = v16;
+    source = v16;
     if (v15)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -429,8 +429,8 @@ void __122__BMComputeSourceServer_sendEventWithStreamIdentifier_timestamp_signpo
         [BMComputeSourceServer eventsPrunedWithStreamIdentifier:account:remoteName:reason:];
       }
 
-      v17 = [(BMComputeSourceServer *)self source];
-      [v17 eventsPrunedWithStreamIdentifier:v10 account:v11 remoteName:v12 reason:a6];
+      source = [(BMComputeSourceServer *)self source];
+      [source eventsPrunedWithStreamIdentifier:identifierCopy account:accountCopy remoteName:nameCopy reason:reason];
     }
 
     else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -441,8 +441,8 @@ void __122__BMComputeSourceServer_sendEventWithStreamIdentifier_timestamp_signpo
 
   else
   {
-    v17 = __biome_log_for_category();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    source = __biome_log_for_category();
+    if (os_log_type_enabled(source, OS_LOG_TYPE_ERROR))
     {
       [BMComputeSourceServer eventsPrunedWithStreamIdentifier:account:remoteName:reason:];
     }

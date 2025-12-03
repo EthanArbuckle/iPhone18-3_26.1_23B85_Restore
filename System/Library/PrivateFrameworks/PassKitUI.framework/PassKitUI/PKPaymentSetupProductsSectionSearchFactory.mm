@@ -1,47 +1,47 @@
 @interface PKPaymentSetupProductsSectionSearchFactory
-+ (double)_distanceBetweenTerms:(id)a3 andSearchTerms:(id)a4;
-+ (id)_cleanedSearchTermsFromString:(id)a3 usingTokenizerCharacterSet:(id)a4;
-+ (id)_createSortedSectionsListFromFilteredListItems:(id)a3 withContext:(id)a4 prefersCategorizingSectionsByCredentialType:(BOOL)a5;
-+ (id)_filteredListItemsFromSearchFilter:(id)a3 withContext:(id)a4 listItems:(id)a5 outSectionIdentifierToSearchRankingMapping:(id *)a6;
-+ (id)generateSectionsWithSearchFilter:(id)a3 forItems:(id)a4 withContext:(id)a5 prefersCategorizingSectionsByCredentialType:(BOOL)a6;
-+ (void)_applySortToSectionList:(id)a3 usingSearchRankingMapping:(id)a4;
++ (double)_distanceBetweenTerms:(id)terms andSearchTerms:(id)searchTerms;
++ (id)_cleanedSearchTermsFromString:(id)string usingTokenizerCharacterSet:(id)set;
++ (id)_createSortedSectionsListFromFilteredListItems:(id)items withContext:(id)context prefersCategorizingSectionsByCredentialType:(BOOL)type;
++ (id)_filteredListItemsFromSearchFilter:(id)filter withContext:(id)context listItems:(id)items outSectionIdentifierToSearchRankingMapping:(id *)mapping;
++ (id)generateSectionsWithSearchFilter:(id)filter forItems:(id)items withContext:(id)context prefersCategorizingSectionsByCredentialType:(BOOL)type;
++ (void)_applySortToSectionList:(id)list usingSearchRankingMapping:(id)mapping;
 @end
 
 @implementation PKPaymentSetupProductsSectionSearchFactory
 
-+ (id)generateSectionsWithSearchFilter:(id)a3 forItems:(id)a4 withContext:(id)a5 prefersCategorizingSectionsByCredentialType:(BOOL)a6
++ (id)generateSectionsWithSearchFilter:(id)filter forItems:(id)items withContext:(id)context prefersCategorizingSectionsByCredentialType:(BOOL)type
 {
-  v6 = a6;
+  typeCopy = type;
   v15 = 0;
-  v10 = a5;
-  v11 = [a1 _filteredListItemsFromSearchFilter:a3 withContext:v10 listItems:a4 outSectionIdentifierToSearchRankingMapping:&v15];
+  contextCopy = context;
+  v11 = [self _filteredListItemsFromSearchFilter:filter withContext:contextCopy listItems:items outSectionIdentifierToSearchRankingMapping:&v15];
   v12 = v15;
-  v13 = [a1 _createSortedSectionsListFromFilteredListItems:v11 withContext:v10 prefersCategorizingSectionsByCredentialType:v6];
+  v13 = [self _createSortedSectionsListFromFilteredListItems:v11 withContext:contextCopy prefersCategorizingSectionsByCredentialType:typeCopy];
 
-  [a1 _applySortToSectionList:v13 usingSearchRankingMapping:v12];
+  [self _applySortToSectionList:v13 usingSearchRankingMapping:v12];
 
   return v13;
 }
 
-+ (id)_filteredListItemsFromSearchFilter:(id)a3 withContext:(id)a4 listItems:(id)a5 outSectionIdentifierToSearchRankingMapping:(id *)a6
++ (id)_filteredListItemsFromSearchFilter:(id)filter withContext:(id)context listItems:(id)items outSectionIdentifierToSearchRankingMapping:(id *)mapping
 {
-  v43 = a6;
+  mappingCopy = mapping;
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  filterCopy = filter;
+  contextCopy = context;
+  itemsCopy = items;
   v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v44 = v10;
-  v12 = [v10 tokenizerCharacterSet];
-  v45 = v9;
-  v13 = [a1 _cleanedSearchTermsFromString:v9 usingTokenizerCharacterSet:v12];
+  v44 = contextCopy;
+  tokenizerCharacterSet = [contextCopy tokenizerCharacterSet];
+  v45 = filterCopy;
+  v13 = [self _cleanedSearchTermsFromString:filterCopy usingTokenizerCharacterSet:tokenizerCharacterSet];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v15 = v11;
+  v15 = itemsCopy;
   v16 = [v15 countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v16)
   {
@@ -57,10 +57,10 @@
         }
 
         v20 = *(*(&v51 + 1) + 8 * i);
-        v21 = [v20 searchTerms];
-        if ([v21 count])
+        searchTerms = [v20 searchTerms];
+        if ([searchTerms count])
         {
-          [a1 _distanceBetweenTerms:v21 andSearchTerms:v13];
+          [self _distanceBetweenTerms:searchTerms andSearchTerms:v13];
           if (v22 < 1.0)
           {
             v23 = [[PKProductSearchResult alloc] initWithListItem:v20 searchDistance:v22];
@@ -76,8 +76,8 @@
   }
 
   [v14 sortUsingComparator:&__block_literal_global_33];
-  v24 = [v14 firstObject];
-  [v24 searchDistance];
+  firstObject = [v14 firstObject];
+  [firstObject searchDistance];
   v26 = v25 <= 0.3;
 
   v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -109,14 +109,14 @@ LABEL_13:
       }
 
       v36 = v35;
-      v37 = [v34 listItem];
-      [v46 addObject:v37];
-      v38 = [v37 sectionIdentifier];
-      v39 = [v27 objectForKey:v38];
+      listItem = [v34 listItem];
+      [v46 addObject:listItem];
+      sectionIdentifier = [listItem sectionIdentifier];
+      v39 = [v27 objectForKey:sectionIdentifier];
       if (!v39)
       {
         v39 = objc_alloc_init(PKProductSectionSearchResult);
-        [v27 setObject:v39 forKey:v38];
+        [v27 setObject:v39 forKey:sectionIdentifier];
       }
 
       [(PKProductSectionSearchResult *)v39 searchDistance];
@@ -137,7 +137,7 @@ LABEL_13:
   }
 
   v41 = v27;
-  *v43 = v27;
+  *mappingCopy = v27;
 
   return v46;
 }
@@ -174,17 +174,17 @@ uint64_t __146__PKPaymentSetupProductsSectionSearchFactory__filteredListItemsFro
   return v9;
 }
 
-+ (id)_createSortedSectionsListFromFilteredListItems:(id)a3 withContext:(id)a4 prefersCategorizingSectionsByCredentialType:(BOOL)a5
++ (id)_createSortedSectionsListFromFilteredListItems:(id)items withContext:(id)context prefersCategorizingSectionsByCredentialType:(BOOL)type
 {
-  v23 = a5;
+  typeCopy = type;
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -200,29 +200,29 @@ uint64_t __146__PKPaymentSetupProductsSectionSearchFactory__filteredListItemsFro
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 sectionIdentifier];
-        v13 = [v11 credentialSectionIdentifier];
-        v14 = v12;
+        sectionIdentifier = [v11 sectionIdentifier];
+        credentialSectionIdentifier = [v11 credentialSectionIdentifier];
+        v14 = sectionIdentifier;
         v15 = v14;
         v16 = v14;
-        if (v23)
+        if (typeCopy)
         {
           v16 = v14;
-          if (v13)
+          if (credentialSectionIdentifier)
           {
-            v16 = v13;
+            v16 = credentialSectionIdentifier;
           }
         }
 
         v17 = [v6 objectForKey:v16];
         if (!v17)
         {
-          v17 = [[PKPaymentSetupProductsSectionListSection alloc] initWithIdentifier:v15 credentialTypeIdentifier:v13];
+          v17 = [[PKPaymentSetupProductsSectionListSection alloc] initWithIdentifier:v15 credentialTypeIdentifier:credentialSectionIdentifier];
           [v6 setObject:v17 forKey:v16];
         }
 
-        v18 = [(PKPaymentSetupProductsSectionListSection *)v17 sectionListItems];
-        [v18 addObject:v11];
+        sectionListItems = [(PKPaymentSetupProductsSectionListSection *)v17 sectionListItems];
+        [sectionListItems addObject:v11];
       }
 
       v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -231,22 +231,22 @@ uint64_t __146__PKPaymentSetupProductsSectionSearchFactory__filteredListItemsFro
     while (v8);
   }
 
-  v19 = [v6 allValues];
-  v20 = [v19 mutableCopy];
+  allValues = [v6 allValues];
+  v20 = [allValues mutableCopy];
 
   return v20;
 }
 
-+ (void)_applySortToSectionList:(id)a3 usingSearchRankingMapping:(id)a4
++ (void)_applySortToSectionList:(id)list usingSearchRankingMapping:(id)mapping
 {
-  v5 = a4;
+  mappingCopy = mapping;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __96__PKPaymentSetupProductsSectionSearchFactory__applySortToSectionList_usingSearchRankingMapping___block_invoke;
   v7[3] = &unk_1E8013810;
-  v8 = v5;
-  v6 = v5;
-  [a3 sortUsingComparator:v7];
+  v8 = mappingCopy;
+  v6 = mappingCopy;
+  [list sortUsingComparator:v7];
 }
 
 uint64_t __96__PKPaymentSetupProductsSectionSearchFactory__applySortToSectionList_usingSearchRankingMapping___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -273,23 +273,23 @@ uint64_t __96__PKPaymentSetupProductsSectionSearchFactory__applySortToSectionLis
   return v13;
 }
 
-+ (double)_distanceBetweenTerms:(id)a3 andSearchTerms:(id)a4
++ (double)_distanceBetweenTerms:(id)terms andSearchTerms:(id)searchTerms
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  termsCopy = terms;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = a4;
-  v25 = [v6 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  searchTermsCopy = searchTerms;
+  v25 = [searchTermsCopy countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v25)
   {
     v7 = *v34;
     v8 = 0.0;
     v9 = 0.0;
-    v27 = v6;
-    v28 = v5;
+    v27 = searchTermsCopy;
+    v28 = termsCopy;
     v24 = *v34;
     do
     {
@@ -298,7 +298,7 @@ uint64_t __96__PKPaymentSetupProductsSectionSearchFactory__applySortToSectionLis
       {
         if (*v34 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(searchTermsCopy);
         }
 
         v26 = v10;
@@ -307,7 +307,7 @@ uint64_t __96__PKPaymentSetupProductsSectionSearchFactory__applySortToSectionLis
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v12 = v5;
+        v12 = termsCopy;
         v13 = [v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v13)
         {
@@ -324,15 +324,15 @@ uint64_t __96__PKPaymentSetupProductsSectionSearchFactory__applySortToSectionLis
 
               v17 = *(*(&v29 + 1) + 8 * i);
               v18 = [v17 length];
-              v19 = [MEMORY[0x1E695DF58] currentLocale];
-              v20 = [v17 rangeOfString:v11 options:8 range:0 locale:{v18, v19}];
+              currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+              v20 = [v17 rangeOfString:v11 options:8 range:0 locale:{v18, currentLocale}];
 
               if (v20 != 0x7FFFFFFFFFFFFFFFLL)
               {
 
-                v6 = v27;
+                searchTermsCopy = v27;
                 v22 = 0.0;
-                v5 = v28;
+                termsCopy = v28;
                 goto LABEL_20;
               }
 
@@ -352,8 +352,8 @@ uint64_t __96__PKPaymentSetupProductsSectionSearchFactory__applySortToSectionLis
         }
 
         v10 = v26 + 1;
-        v6 = v27;
-        v5 = v28;
+        searchTermsCopy = v27;
+        termsCopy = v28;
         v7 = v24;
       }
 
@@ -376,17 +376,17 @@ LABEL_20:
   return v22;
 }
 
-+ (id)_cleanedSearchTermsFromString:(id)a3 usingTokenizerCharacterSet:(id)a4
++ (id)_cleanedSearchTermsFromString:(id)string usingTokenizerCharacterSet:(id)set
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 localizedLowercaseString];
+  setCopy = set;
+  localizedLowercaseString = [string localizedLowercaseString];
   v7 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v6 componentsSeparatedByCharactersInSet:{v5, 0}];
+  v8 = [localizedLowercaseString componentsSeparatedByCharactersInSet:{setCopy, 0}];
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {

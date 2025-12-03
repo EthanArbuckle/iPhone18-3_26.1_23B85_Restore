@@ -1,42 +1,42 @@
 @interface NSTextPhraseAnimationTimingFunction
-+ (NSTextPhraseAnimationTimingFunction)cubicBezierTimingFunctionWithSamplingFrequency:(double)a3 duration:(double)a4 initialValue:(double)a5 finalValue:(double)a6 point1:(double)a7 point2:(uint64_t)a8;
-- (NSTextPhraseAnimationTimingFunction)initWithSamplingFrequency:(unint64_t)a3 duration:(double)a4 initialValue:(double)a5 finalValue:(double)a6;
-- (double)sampleAtIndex:(uint64_t)a1;
++ (NSTextPhraseAnimationTimingFunction)cubicBezierTimingFunctionWithSamplingFrequency:(double)frequency duration:(double)duration initialValue:(double)value finalValue:(double)finalValue point1:(double)point1 point2:(uint64_t)point2;
+- (NSTextPhraseAnimationTimingFunction)initWithSamplingFrequency:(unint64_t)frequency duration:(double)duration initialValue:(double)value finalValue:(double)finalValue;
+- (double)sampleAtIndex:(uint64_t)index;
 - (void)populateValues;
 @end
 
 @implementation NSTextPhraseAnimationTimingFunction
 
-- (NSTextPhraseAnimationTimingFunction)initWithSamplingFrequency:(unint64_t)a3 duration:(double)a4 initialValue:(double)a5 finalValue:(double)a6
+- (NSTextPhraseAnimationTimingFunction)initWithSamplingFrequency:(unint64_t)frequency duration:(double)duration initialValue:(double)value finalValue:(double)finalValue
 {
   v11.receiver = self;
   v11.super_class = NSTextPhraseAnimationTimingFunction;
   result = [(NSTextPhraseAnimationTimingFunction *)&v11 init];
   if (result)
   {
-    result->_duration = a4;
-    result->_initialValue = a5;
-    result->_finalValue = a6;
-    result->_indexCount = (a3 * a4);
-    result->_frequency = a3;
+    result->_duration = duration;
+    result->_initialValue = value;
+    result->_finalValue = finalValue;
+    result->_indexCount = (frequency * duration);
+    result->_frequency = frequency;
     result->_populatedSamples = 0;
   }
 
   return result;
 }
 
-+ (NSTextPhraseAnimationTimingFunction)cubicBezierTimingFunctionWithSamplingFrequency:(double)a3 duration:(double)a4 initialValue:(double)a5 finalValue:(double)a6 point1:(double)a7 point2:(uint64_t)a8
++ (NSTextPhraseAnimationTimingFunction)cubicBezierTimingFunctionWithSamplingFrequency:(double)frequency duration:(double)duration initialValue:(double)value finalValue:(double)finalValue point1:(double)point1 point2:(uint64_t)point2
 {
   objc_opt_self();
-  v17 = [[NSTextPhraseAnimationTimingFunction alloc] initWithSamplingFrequency:a9 duration:a1 initialValue:a2 finalValue:a3];
+  v17 = [[NSTextPhraseAnimationTimingFunction alloc] initWithSamplingFrequency:a9 duration:self initialValue:a2 finalValue:frequency];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __133__NSTextPhraseAnimationTimingFunction_cubicBezierTimingFunctionWithSamplingFrequency_duration_initialValue_finalValue_point1_point2___block_invoke;
   v19[3] = &__block_descriptor_64_e8_d16__0d8l;
-  *&v19[4] = a4;
-  *&v19[5] = a5;
-  *&v19[6] = a6;
-  *&v19[7] = a7;
+  *&v19[4] = duration;
+  *&v19[5] = value;
+  *&v19[6] = finalValue;
+  *&v19[7] = point1;
   [(NSTextPhraseAnimationTimingFunction *)v17 setCalcTimingFunction:v19];
   [(NSTextPhraseAnimationTimingFunction *)v17 populateValues];
 
@@ -92,12 +92,12 @@ double __133__NSTextPhraseAnimationTimingFunction_cubicBezierTimingFunctionWithS
   self->_populatedSamples = 1;
 }
 
-- (double)sampleAtIndex:(uint64_t)a1
+- (double)sampleAtIndex:(uint64_t)index
 {
   v2 = 0.0;
-  if (a1 && *(a1 + 8) == 1 && *(a1 + 16) > a2)
+  if (index && *(index + 8) == 1 && *(index + 16) > a2)
   {
-    v3 = [*(a1 + 56) objectAtIndex:a2];
+    v3 = [*(index + 56) objectAtIndex:a2];
     [v3 floatValue];
     v2 = v4;
   }

@@ -1,18 +1,18 @@
 @interface MUILocalizationListFormatter
-- (id)attributedLocalizedStringFromList:(id)a3;
-- (id)localizedStringFromList:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)attributedLocalizedStringFromList:(id)list;
+- (id)localizedStringFromList:(id)list;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation MUILocalizationListFormatter
 
-- (id)localizedStringFromList:(id)a3
+- (id)localizedStringFromList:(id)list
 {
-  v4 = [a3 ef_map:&__block_literal_global_21];
+  v4 = [list ef_map:&__block_literal_global_21];
   v5 = [(MUILocalizationListFormatter *)self attributedLocalizedStringFromList:v4];
-  v6 = [v5 string];
+  string = [v5 string];
 
-  return v6;
+  return string;
 }
 
 id __56__MUILocalizationListFormatter_localizedStringFromList___block_invoke(uint64_t a1, void *a2)
@@ -35,12 +35,12 @@ id __56__MUILocalizationListFormatter_localizedStringFromList___block_invoke(uin
   return v6;
 }
 
-- (id)attributedLocalizedStringFromList:(id)a3
+- (id)attributedLocalizedStringFromList:(id)list
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v4 = objc_alloc_init(MEMORY[0x277CCAB48]);
-  if ([v3 count] == 2)
+  if ([listCopy count] == 2)
   {
     v5 = objc_alloc(MEMORY[0x277CCA898]);
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -58,20 +58,20 @@ id __56__MUILocalizationListFormatter_localizedStringFromList___block_invoke(uin
 
     v10 = [v5 initWithString:v9];
 
-    v11 = [v3 objectAtIndexedSubscript:0];
-    v12 = [v3 objectAtIndexedSubscript:1];
+    v11 = [listCopy objectAtIndexedSubscript:0];
+    v12 = [listCopy objectAtIndexedSubscript:1];
     [v4 appendLocalizedFormat:v10, v11, v12];
   }
 
-  else if (v3)
+  else if (listCopy)
   {
-    v13 = [v3 count];
+    v13 = [listCopy count];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v29 = v3;
-    obj = v3;
+    v29 = listCopy;
+    obj = listCopy;
     v14 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v14)
     {
@@ -140,19 +140,19 @@ id __56__MUILocalizationListFormatter_localizedStringFromList___block_invoke(uin
       while (v15);
     }
 
-    v3 = v29;
+    listCopy = v29;
   }
 
   return v4;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 ef_all:&__block_literal_global_23])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy ef_all:&__block_literal_global_23])
   {
-    v5 = [(MUILocalizationListFormatter *)self localizedStringFromList:v4];
+    v5 = [(MUILocalizationListFormatter *)self localizedStringFromList:valueCopy];
   }
 
   else

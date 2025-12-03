@@ -1,33 +1,33 @@
 @interface HMAccessoryCollectionSetting
-+ (id)itemValueClassesForKeyPath:(id)a3;
-+ (void)removeItemValueClassesForKeyPath:(id)a3;
-+ (void)setItemValueClass:(Class)a3 forKeyPath:(id)a4;
-+ (void)setItemValueClasses:(id)a3 forKeyPath:(id)a4;
-- (HMAccessoryCollectionSetting)initWithInternal:(id)a3;
-- (HMAccessoryCollectionSetting)initWithKey:(id)a3 properties:(unint64_t)a4 value:(id)a5;
++ (id)itemValueClassesForKeyPath:(id)path;
++ (void)removeItemValueClassesForKeyPath:(id)path;
++ (void)setItemValueClass:(Class)class forKeyPath:(id)path;
++ (void)setItemValueClasses:(id)classes forKeyPath:(id)path;
+- (HMAccessoryCollectionSetting)initWithInternal:(id)internal;
+- (HMAccessoryCollectionSetting)initWithKey:(id)key properties:(unint64_t)properties value:(id)value;
 - (NSSet)itemValueClasses;
 - (id)value;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)_setting:(id)a3 didAddConstraint:(id)a4;
-- (void)_setting:(id)a3 didRemoveConstraint:(id)a4;
-- (void)addItem:(id)a3 completionHandler:(id)a4;
-- (void)removeItem:(id)a3 completionHandler:(id)a4;
-- (void)replaceItem:(id)a3 withItem:(id)a4 completionHandler:(id)a5;
-- (void)replaceItems:(id)a3 withItems:(id)a4 completionHandler:(id)a5;
-- (void)setItemValueClass:(Class)a3;
-- (void)setItemValueClasses:(id)a3;
-- (void)updateValue:(id)a3 completionHandler:(id)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)_setting:(id)_setting didAddConstraint:(id)constraint;
+- (void)_setting:(id)_setting didRemoveConstraint:(id)constraint;
+- (void)addItem:(id)item completionHandler:(id)handler;
+- (void)removeItem:(id)item completionHandler:(id)handler;
+- (void)replaceItem:(id)item withItem:(id)withItem completionHandler:(id)handler;
+- (void)replaceItems:(id)items withItems:(id)withItems completionHandler:(id)handler;
+- (void)setItemValueClass:(Class)class;
+- (void)setItemValueClasses:(id)classes;
+- (void)updateValue:(id)value completionHandler:(id)handler;
 @end
 
 @implementation HMAccessoryCollectionSetting
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(HMAccessoryCollectionSetting *)self value];
+  value = [(HMAccessoryCollectionSetting *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = value;
   }
 
   else
@@ -37,23 +37,23 @@
 
   v10 = v9;
 
-  v11 = [v10 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v11 = [v10 countByEnumeratingWithState:state objects:objects count:count];
   return v11;
 }
 
-- (void)_setting:(id)a3 didRemoveConstraint:(id)a4
+- (void)_setting:(id)_setting didRemoveConstraint:(id)constraint
 {
-  v5 = [(HMAccessorySetting *)self internal:a3];
+  v5 = [(HMAccessorySetting *)self internal:_setting];
   [(HMAccessorySetting *)self _settingDidUpdateValue:v5];
 }
 
-- (void)_setting:(id)a3 didAddConstraint:(id)a4
+- (void)_setting:(id)_setting didAddConstraint:(id)constraint
 {
-  v5 = [a4 value];
+  value = [constraint value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = value;
   }
 
   else
@@ -64,16 +64,16 @@
   v7 = v6;
 
   [v7 setSetting:self];
-  v8 = [(HMAccessorySetting *)self internal];
-  [(HMAccessorySetting *)self _settingDidUpdateValue:v8];
+  internal = [(HMAccessorySetting *)self internal];
+  [(HMAccessorySetting *)self _settingDidUpdateValue:internal];
 }
 
-- (void)updateValue:(id)a3 completionHandler:(id)a4
+- (void)updateValue:(id)value completionHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  valueCopy = value;
+  handlerCopy = handler;
+  if (!valueCopy)
   {
     v11 = 0;
     goto LABEL_20;
@@ -86,7 +86,7 @@
     goto LABEL_25;
   }
 
-  v8 = v6;
+  v8 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -133,7 +133,7 @@ LABEL_25:
         if ((v16 & 1) == 0)
         {
           v19 = objc_autoreleasePoolPush();
-          v20 = self;
+          selfCopy = self;
           v21 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
@@ -146,10 +146,10 @@ LABEL_25:
           }
 
           objc_autoreleasePoolPop(v19);
-          v23 = [(HMAccessorySetting *)v20 internal];
-          v24 = [v23 context];
-          v25 = [v24 delegateCaller];
-          [v25 callCompletion:v7 error:v18];
+          internal = [(HMAccessorySetting *)selfCopy internal];
+          context = [internal context];
+          delegateCaller = [context delegateCaller];
+          [delegateCaller callCompletion:handlerCopy error:v18];
 
           goto LABEL_23;
         }
@@ -167,7 +167,7 @@ LABEL_25:
 
 LABEL_20:
   v26 = objc_autoreleasePoolPush();
-  v27 = self;
+  selfCopy2 = self;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
@@ -180,9 +180,9 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v26);
-  objc_initWeak(buf, v27);
-  v30 = __constraintsForItems(v27, v11);
-  v31 = [(HMAccessorySetting *)v27 internal];
+  objc_initWeak(buf, selfCopy2);
+  v30 = __constraintsForItems(selfCopy2, v11);
+  internal2 = [(HMAccessorySetting *)selfCopy2 internal];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __62__HMAccessoryCollectionSetting_updateValue_completionHandler___block_invoke;
@@ -190,8 +190,8 @@ LABEL_20:
   objc_copyWeak(&v36, buf);
   v11 = v11;
   v34 = v11;
-  v35 = v7;
-  [v31 updateConstraints:v30 completionHandler:v33];
+  v35 = handlerCopy;
+  [internal2 updateConstraints:v30 completionHandler:v33];
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(buf);
@@ -265,14 +265,14 @@ LABEL_7:
 - (id)value
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 constraints];
-  v4 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{objc_msgSend(v3, "count")}];
+  internal = [(HMAccessorySetting *)self internal];
+  constraints = [internal constraints];
+  v4 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{objc_msgSend(constraints, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = constraints;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -290,11 +290,11 @@ LABEL_7:
         v10 = *(*(&v17 + 1) + 8 * i);
         if ([v10 type] == 4)
         {
-          v11 = [v10 value];
+          value = [v10 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = v11;
+            v12 = value;
           }
 
           else
@@ -317,36 +317,36 @@ LABEL_7:
     while (v7);
   }
 
-  v14 = [v4 array];
+  array = [v4 array];
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return array;
 }
 
-- (void)replaceItems:(id)a3 withItems:(id)a4 completionHandler:(id)a5
+- (void)replaceItems:(id)items withItems:(id)withItems completionHandler:(id)handler
 {
   v88 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v53 = a5;
-  if (!v7)
+  itemsCopy = items;
+  withItemsCopy = withItems;
+  handlerCopy = handler;
+  if (!itemsCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_44;
   }
 
-  if (!v8)
+  if (!withItemsCopy)
   {
 LABEL_44:
     _HMFPreconditionFailure();
     goto LABEL_45;
   }
 
-  v51 = v7;
-  v9 = [v7 mutableCopy];
-  v52 = v8;
-  v54 = [v8 mutableCopy];
+  v51 = itemsCopy;
+  v9 = [itemsCopy mutableCopy];
+  v52 = withItemsCopy;
+  v54 = [withItemsCopy mutableCopy];
   v10 = [MEMORY[0x1E695DFA8] setWithArray:v9];
   v11 = [MEMORY[0x1E695DFD8] setWithArray:v54];
   [v10 intersectSet:v11];
@@ -354,7 +354,7 @@ LABEL_44:
   if ([v10 count])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -367,16 +367,16 @@ LABEL_44:
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [v10 allObjects];
-    [v9 removeObjectsInArray:v16];
+    allObjects = [v10 allObjects];
+    [v9 removeObjectsInArray:allObjects];
 
-    v17 = [v10 allObjects];
-    [v54 removeObjectsInArray:v17];
+    allObjects2 = [v10 allObjects];
+    [v54 removeObjectsInArray:allObjects2];
   }
 
   v57 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  v18 = [(HMAccessorySetting *)self internal];
-  v59 = [v18 constraints];
+  internal = [(HMAccessorySetting *)self internal];
+  constraints = [internal constraints];
 
   v77 = 0u;
   v78 = 0u;
@@ -401,7 +401,7 @@ LABEL_44:
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v21 = v59;
+        v21 = constraints;
         v22 = [v21 countByEnumeratingWithState:&v71 objects:v86 count:16];
         if (v22)
         {
@@ -416,11 +416,11 @@ LABEL_44:
               }
 
               v25 = *(*(&v71 + 1) + 8 * j);
-              v26 = [v25 value];
+              value = [v25 value];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v27 = v26;
+                v27 = value;
               }
 
               else
@@ -491,7 +491,7 @@ LABEL_45:
         if ((v34 & 1) == 0)
         {
           v43 = objc_autoreleasePoolPush();
-          v44 = self;
+          selfCopy2 = self;
           v45 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
           {
@@ -504,10 +504,10 @@ LABEL_45:
           }
 
           objc_autoreleasePoolPop(v43);
-          v47 = [(HMAccessorySetting *)v44 internal];
-          v48 = [v47 context];
-          v49 = [v48 delegateCaller];
-          [v49 callCompletion:v53 error:v36];
+          internal2 = [(HMAccessorySetting *)selfCopy2 internal];
+          context = [internal2 context];
+          delegateCaller = [context delegateCaller];
+          [delegateCaller callCompletion:handlerCopy error:v36];
 
           v37 = v29;
           goto LABEL_42;
@@ -526,7 +526,7 @@ LABEL_45:
 
   v37 = __constraintsForItems(self, v29);
   v38 = objc_autoreleasePoolPush();
-  v39 = self;
+  selfCopy3 = self;
   v40 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
@@ -541,8 +541,8 @@ LABEL_45:
   }
 
   objc_autoreleasePoolPop(v38);
-  objc_initWeak(buf, v39);
-  v42 = [(HMAccessorySetting *)v39 internal];
+  objc_initWeak(buf, selfCopy3);
+  internal3 = [(HMAccessorySetting *)selfCopy3 internal];
   v61[0] = MEMORY[0x1E69E9820];
   v61[1] = 3221225472;
   v61[2] = __73__HMAccessoryCollectionSetting_replaceItems_withItems_completionHandler___block_invoke;
@@ -550,8 +550,8 @@ LABEL_45:
   objc_copyWeak(&v65, buf);
   v62 = obj;
   v63 = v29;
-  v64 = v53;
-  [v42 replaceConstraints:v57 withConstraints:v37 completionHandler:v61];
+  v64 = handlerCopy;
+  [internal3 replaceConstraints:v57 withConstraints:v37 completionHandler:v61];
 
   objc_destroyWeak(&v65);
   objc_destroyWeak(buf);
@@ -647,49 +647,49 @@ void __73__HMAccessoryCollectionSetting_replaceItems_withItems_completionHandler
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceItem:(id)a3 withItem:(id)a4 completionHandler:(id)a5
+- (void)replaceItem:(id)item withItem:(id)withItem completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  itemCopy = item;
+  withItemCopy = withItem;
+  handlerCopy = handler;
+  if (!itemCopy)
   {
     _HMFPreconditionFailure();
 LABEL_5:
     _HMFPreconditionFailure();
   }
 
-  if (!v9)
+  if (!withItemCopy)
   {
     goto LABEL_5;
   }
 
-  v11 = v10;
-  v16[0] = v8;
+  v11 = handlerCopy;
+  v16[0] = itemCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v15 = v9;
+  v15 = withItemCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
   [(HMAccessoryCollectionSetting *)self replaceItems:v12 withItems:v13 completionHandler:v11];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeItem:(id)a3 completionHandler:(id)a4
+- (void)removeItem:(id)item completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v27 = a4;
-  if (v6)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (itemCopy)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v7 = [(HMAccessorySetting *)self internal];
-    v8 = [v7 constraints];
+    internal = [(HMAccessorySetting *)self internal];
+    constraints = [internal constraints];
 
-    v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    v9 = [constraints countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v9)
     {
       v10 = *v35;
@@ -699,15 +699,15 @@ LABEL_5:
         {
           if (*v35 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(constraints);
           }
 
           v12 = *(*(&v34 + 1) + 8 * i);
-          v13 = [v12 value];
+          value = [v12 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = v13;
+            v14 = value;
           }
 
           else
@@ -717,7 +717,7 @@ LABEL_5:
 
           v15 = v14;
 
-          if ([v6 isEqual:v15])
+          if ([itemCopy isEqual:v15])
           {
             v9 = v12;
 
@@ -725,7 +725,7 @@ LABEL_5:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v9 = [constraints countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v9)
         {
           continue;
@@ -738,7 +738,7 @@ LABEL_5:
 LABEL_15:
 
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -746,40 +746,40 @@ LABEL_15:
       *buf = 138543618;
       v39 = v19;
       v40 = 2112;
-      v41 = v6;
+      v41 = itemCopy;
       _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Removing item: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v16);
-    objc_initWeak(buf, v17);
-    objc_initWeak(&location, v6);
-    v20 = [(HMAccessorySetting *)v17 internal];
+    objc_initWeak(buf, selfCopy);
+    objc_initWeak(&location, itemCopy);
+    internal2 = [(HMAccessorySetting *)selfCopy internal];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __61__HMAccessoryCollectionSetting_removeItem_completionHandler___block_invoke;
     v28[3] = &unk_1E754D938;
     objc_copyWeak(&v31, buf);
-    v29 = v6;
+    v29 = itemCopy;
     objc_copyWeak(&v32, &location);
-    v30 = v27;
-    [v20 removeConstraint:v9 completionHandler:v28];
+    v30 = handlerCopy;
+    [internal2 removeConstraint:v9 completionHandler:v28];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
     objc_destroyWeak(buf);
 
-    v21 = v27;
+    v21 = handlerCopy;
   }
 
   else
   {
-    v22 = [(HMAccessorySetting *)self internal];
-    v23 = [v22 context];
-    v24 = [v23 delegateCaller];
+    internal3 = [(HMAccessorySetting *)self internal];
+    context = [internal3 context];
+    delegateCaller = [context delegateCaller];
     v25 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-    v21 = v27;
-    [v24 callCompletion:v27 error:v25];
+    v21 = handlerCopy;
+    [delegateCaller callCompletion:handlerCopy error:v25];
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -839,16 +839,16 @@ void __61__HMAccessoryCollectionSetting_removeItem_completionHandler___block_inv
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addItem:(id)a3 completionHandler:(id)a4
+- (void)addItem:(id)item completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (itemCopy)
   {
-    [v6 setSetting:self];
+    [itemCopy setSetting:self];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -856,28 +856,28 @@ void __61__HMAccessoryCollectionSetting_removeItem_completionHandler___block_inv
       *buf = 138543618;
       v34 = v11;
       v35 = 2112;
-      v36 = v6;
+      v36 = itemCopy;
       _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Adding item: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
     v32 = 0;
-    v12 = __validateItem(v9, v6, &v32);
+    v12 = __validateItem(selfCopy, itemCopy, &v32);
     v13 = v32;
     if (v12)
     {
-      v14 = [[HMAccessorySettingConstraint alloc] initWithType:4 value:v6];
-      objc_initWeak(buf, v9);
-      objc_initWeak(&location, v6);
-      v15 = [(HMAccessorySetting *)v9 internal];
+      internal2 = [[HMAccessorySettingConstraint alloc] initWithType:4 value:itemCopy];
+      objc_initWeak(buf, selfCopy);
+      objc_initWeak(&location, itemCopy);
+      internal = [(HMAccessorySetting *)selfCopy internal];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __58__HMAccessoryCollectionSetting_addItem_completionHandler___block_invoke;
       v27[3] = &unk_1E754D8E8;
       objc_copyWeak(&v29, buf);
       objc_copyWeak(&v30, &location);
-      v28 = v7;
-      [v15 addConstraint:v14 completionHandler:v27];
+      v28 = handlerCopy;
+      [internal addConstraint:internal2 completionHandler:v27];
 
       objc_destroyWeak(&v30);
       objc_destroyWeak(&v29);
@@ -888,7 +888,7 @@ void __61__HMAccessoryCollectionSetting_removeItem_completionHandler___block_inv
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v9;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -896,25 +896,25 @@ void __61__HMAccessoryCollectionSetting_removeItem_completionHandler___block_inv
         *buf = 138543618;
         v34 = v23;
         v35 = 2112;
-        v36 = v6;
+        v36 = itemCopy;
         _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@Invalid item: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v20);
-      v14 = [(HMAccessorySetting *)v21 internal];
-      v24 = [(HMAccessorySettingConstraint *)v14 context];
-      v25 = [v24 delegateCaller];
-      [v25 callCompletion:v7 error:v13];
+      internal2 = [(HMAccessorySetting *)v21 internal];
+      context = [(HMAccessorySettingConstraint *)internal2 context];
+      delegateCaller = [context delegateCaller];
+      [delegateCaller callCompletion:handlerCopy error:v13];
     }
   }
 
   else
   {
-    v16 = [(HMAccessorySetting *)self internal];
-    v17 = [v16 context];
-    v18 = [v17 delegateCaller];
+    internal3 = [(HMAccessorySetting *)self internal];
+    context2 = [internal3 context];
+    delegateCaller2 = [context2 delegateCaller];
     v19 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-    [v18 callCompletion:v7 error:v19];
+    [delegateCaller2 callCompletion:handlerCopy error:v19];
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -981,42 +981,42 @@ LABEL_7:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setItemValueClasses:(id)a3
+- (void)setItemValueClasses:(id)classes
 {
-  v4 = a3;
-  v5 = [(HMAccessorySetting *)self keyPath];
-  [HMAccessoryCollectionSetting setItemValueClasses:v4 forKeyPath:v5];
+  classesCopy = classes;
+  keyPath = [(HMAccessorySetting *)self keyPath];
+  [HMAccessoryCollectionSetting setItemValueClasses:classesCopy forKeyPath:keyPath];
 }
 
-- (void)setItemValueClass:(Class)a3
+- (void)setItemValueClass:(Class)class
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:class];
   [(HMAccessoryCollectionSetting *)self setItemValueClasses:v4];
 }
 
 - (NSSet)itemValueClasses
 {
-  v2 = [(HMAccessorySetting *)self keyPath];
-  v3 = [HMAccessoryCollectionSetting itemValueClassesForKeyPath:v2];
+  keyPath = [(HMAccessorySetting *)self keyPath];
+  v3 = [HMAccessoryCollectionSetting itemValueClassesForKeyPath:keyPath];
 
   return v3;
 }
 
-- (HMAccessoryCollectionSetting)initWithInternal:(id)a3
+- (HMAccessoryCollectionSetting)initWithInternal:(id)internal
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  internalCopy = internal;
   v20.receiver = self;
   v20.super_class = HMAccessoryCollectionSetting;
-  v5 = [(HMAccessorySetting *)&v20 initWithInternal:v4];
+  v5 = [(HMAccessorySetting *)&v20 initWithInternal:internalCopy];
   if (v5)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v4 constraints];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    constraints = [internalCopy constraints];
+    v7 = [constraints countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1028,14 +1028,14 @@ LABEL_7:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(constraints);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * v10) value];
+          value = [*(*(&v16 + 1) + 8 * v10) value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = v11;
+            v12 = value;
           }
 
           else
@@ -1050,7 +1050,7 @@ LABEL_7:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v8 = [constraints countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v8);
@@ -1061,11 +1061,11 @@ LABEL_7:
   return v5;
 }
 
-- (HMAccessoryCollectionSetting)initWithKey:(id)a3 properties:(unint64_t)a4 value:(id)a5
+- (HMAccessoryCollectionSetting)initWithKey:(id)key properties:(unint64_t)properties value:(id)value
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  keyCopy = key;
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_8;
   }
@@ -1073,7 +1073,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1097,7 +1097,7 @@ LABEL_8:
     v12 = 0;
 LABEL_9:
     v13 = __constraintsForItems(self, v12);
-    v14 = [[_HMAccessorySetting alloc] initWithType:5 properties:a4 name:v8 constraints:v13];
+    v14 = [[_HMAccessorySetting alloc] initWithType:5 properties:properties name:keyCopy constraints:v13];
     v15 = [(HMAccessoryCollectionSetting *)self initWithInternal:v14];
 
     return v15;
@@ -1108,34 +1108,34 @@ LABEL_9:
   return result;
 }
 
-+ (void)removeItemValueClassesForKeyPath:(id)a3
++ (void)removeItemValueClassesForKeyPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[_HMAccessoryCollectionSettingItemClassManager sharedManager];
-  [v4 removeItemValueClassesForKeyPath:v3];
+  [v4 removeItemValueClassesForKeyPath:pathCopy];
 }
 
-+ (void)setItemValueClasses:(id)a3 forKeyPath:(id)a4
++ (void)setItemValueClasses:(id)classes forKeyPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
+  pathCopy = path;
+  classesCopy = classes;
   v7 = +[_HMAccessoryCollectionSettingItemClassManager sharedManager];
-  [v7 setItemValueClasses:v6 forKeyPath:v5];
+  [v7 setItemValueClasses:classesCopy forKeyPath:pathCopy];
 }
 
-+ (void)setItemValueClass:(Class)a3 forKeyPath:(id)a4
++ (void)setItemValueClass:(Class)class forKeyPath:(id)path
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [a1 setItemValueClasses:v8 forKeyPath:v7];
+  pathCopy = path;
+  v8 = [v6 setWithObject:class];
+  [self setItemValueClasses:v8 forKeyPath:pathCopy];
 }
 
-+ (id)itemValueClassesForKeyPath:(id)a3
++ (id)itemValueClassesForKeyPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[_HMAccessoryCollectionSettingItemClassManager sharedManager];
-  v5 = [v4 itemValueClassesForKeyPath:v3];
+  v5 = [v4 itemValueClassesForKeyPath:pathCopy];
 
   return v5;
 }

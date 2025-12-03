@@ -1,41 +1,41 @@
 @interface STSCHAlternativeCarrier
-- (BOOL)isEqual:(id)a3;
-- (STSCHAlternativeCarrier)initWithCoder:(id)a3;
-- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STSCHAlternativeCarrier)initWithCoder:(id)coder;
+- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)bundle;
 - (id)createAlternativeCarrierRecord;
 - (id)createNdefRecordBundle;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHAlternativeCarrier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_powerState forKey:@"powerState"];
-  [v5 encodeObject:self->_carrierRecord forKey:@"carrierRecord"];
-  [v5 encodeObject:self->_auxiliaryRecords forKey:@"auxiliaryRecords"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_powerState forKey:@"powerState"];
+  [coderCopy encodeObject:self->_carrierRecord forKey:@"carrierRecord"];
+  [coderCopy encodeObject:self->_auxiliaryRecords forKey:@"auxiliaryRecords"];
 }
 
-- (STSCHAlternativeCarrier)initWithCoder:(id)a3
+- (STSCHAlternativeCarrier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STSCHAlternativeCarrier;
   v5 = [(STSCHAlternativeCarrier *)&v13 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_powerState = [v4 decodeIntegerForKey:@"powerState"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carrierRecord"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_powerState = [coderCopy decodeIntegerForKey:@"powerState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carrierRecord"];
     carrierRecord = v5->_carrierRecord;
     v5->_carrierRecord = v6;
 
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"auxiliaryRecords"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"auxiliaryRecords"];
     auxiliaryRecords = v5->_auxiliaryRecords;
     v5->_auxiliaryRecords = v10;
   }
@@ -43,38 +43,38 @@
   return v5;
 }
 
-- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)a3
+- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v19.receiver = self;
   v19.super_class = STSCHAlternativeCarrier;
   v5 = [(STSCHAlternativeCarrier *)&v19 init];
   if (v5)
   {
-    v6 = [v4 configurationRecord];
-    v7 = [v6 isWiFiAwareConfigurationRecord];
+    configurationRecord = [bundleCopy configurationRecord];
+    isWiFiAwareConfigurationRecord = [configurationRecord isWiFiAwareConfigurationRecord];
 
-    if (v7)
+    if (isWiFiAwareConfigurationRecord)
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [v4 configurationRecord];
-      v10 = [v9 isBluetoothLEConfigurationRecord];
+      configurationRecord2 = [bundleCopy configurationRecord];
+      isBluetoothLEConfigurationRecord = [configurationRecord2 isBluetoothLEConfigurationRecord];
 
-      if (v10)
+      if (isBluetoothLEConfigurationRecord)
       {
         v8 = 2;
       }
 
       else
       {
-        v11 = [v4 configurationRecord];
-        v12 = [v11 isNfcConfigurationRecord];
+        configurationRecord3 = [bundleCopy configurationRecord];
+        isNfcConfigurationRecord = [configurationRecord3 isNfcConfigurationRecord];
 
-        if (!v12)
+        if (!isNfcConfigurationRecord)
         {
           v5->_type = 0;
           goto LABEL_9;
@@ -86,31 +86,31 @@
 
     v5->_type = v8;
 LABEL_9:
-    v13 = [v4 alternativeRecord];
-    v5->_powerState = [v13 getCarrierPowerStateFromAlternativeCarrierRecord];
+    alternativeRecord = [bundleCopy alternativeRecord];
+    v5->_powerState = [alternativeRecord getCarrierPowerStateFromAlternativeCarrierRecord];
 
-    v14 = [v4 configurationRecord];
+    configurationRecord4 = [bundleCopy configurationRecord];
     carrierRecord = v5->_carrierRecord;
-    v5->_carrierRecord = v14;
+    v5->_carrierRecord = configurationRecord4;
 
-    v16 = [v4 auxiliaryRecords];
+    auxiliaryRecords = [bundleCopy auxiliaryRecords];
     auxiliaryRecords = v5->_auxiliaryRecords;
-    v5->_auxiliaryRecords = v16;
+    v5->_auxiliaryRecords = auxiliaryRecords;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v8 = 0;
@@ -134,16 +134,16 @@ LABEL_9:
 
 - (id)createAlternativeCarrierRecord
 {
-  v3 = [(STSNDEFRecord *)self->_carrierRecord identifier];
-  v6 = v3;
-  if (!v3)
+  identifier = [(STSNDEFRecord *)self->_carrierRecord identifier];
+  v6 = identifier;
+  if (!identifier)
   {
     v7 = @"Missing carrier data reference";
     v8 = 99;
     goto LABEL_5;
   }
 
-  if ([v3 length] >= 0x100)
+  if ([identifier length] >= 0x100)
   {
     v7 = @"Invalid carrier reference length";
     v8 = 102;
@@ -182,12 +182,12 @@ LABEL_5:
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [v18 identifier];
-        v29 = [v19 length];
+        identifier2 = [v18 identifier];
+        v29 = [identifier2 length];
 
         [v11 appendBytes:&v29 length:1];
-        v20 = [v18 identifier];
-        [v11 appendData:v20];
+        identifier3 = [v18 identifier];
+        [v11 appendData:identifier3];
 
         v28 = ++v15;
       }
@@ -210,9 +210,9 @@ LABEL_14:
 - (id)createNdefRecordBundle
 {
   v3 = [STSCHNdefRecordBundle alloc];
-  v4 = [(STSCHAlternativeCarrier *)self createAlternativeCarrierRecord];
-  v5 = [(STSCHAlternativeCarrier *)self _createCarrierConfigurationRecord];
-  v6 = [(STSCHNdefRecordBundle *)v3 initWithAlternativeRecord:v4 configurationRecord:v5 auxiliaryRecords:self->_auxiliaryRecords errorRecord:0];
+  createAlternativeCarrierRecord = [(STSCHAlternativeCarrier *)self createAlternativeCarrierRecord];
+  _createCarrierConfigurationRecord = [(STSCHAlternativeCarrier *)self _createCarrierConfigurationRecord];
+  v6 = [(STSCHNdefRecordBundle *)v3 initWithAlternativeRecord:createAlternativeCarrierRecord configurationRecord:_createCarrierConfigurationRecord auxiliaryRecords:self->_auxiliaryRecords errorRecord:0];
 
   return v6;
 }

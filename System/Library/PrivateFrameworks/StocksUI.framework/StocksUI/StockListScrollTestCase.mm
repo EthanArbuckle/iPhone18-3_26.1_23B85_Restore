@@ -1,6 +1,6 @@
 @interface StockListScrollTestCase
 - (NSString)testName;
-- (id)scrollViewWithContext:(id)a3;
+- (id)scrollViewWithContext:(id)context;
 @end
 
 @implementation StockListScrollTestCase
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (id)scrollViewWithContext:(id)a3
+- (id)scrollViewWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_220835278(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_220835278(contextCopy);
   v7 = v6;
 
   return v7;

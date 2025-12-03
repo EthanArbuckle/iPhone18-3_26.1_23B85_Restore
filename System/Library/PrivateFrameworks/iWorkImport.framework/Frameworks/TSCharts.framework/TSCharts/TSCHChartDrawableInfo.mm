@@ -4,67 +4,67 @@
 - (BOOL)canSizeBeChangedIncrementally;
 - (BOOL)hasBackgroundLayerForPieChart;
 - (BOOL)hasReferenceLines;
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3;
-- (BOOL)isEquivalentForSerializationRoundTrip:(id)a3;
-- (BOOL)isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle:(unint64_t)a3;
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison;
+- (BOOL)isEquivalentForSerializationRoundTrip:(id)trip;
+- (BOOL)isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle:(unint64_t)style;
 - (BOOL)requiresStagesBuildingInReverse;
 - (BOOL)shouldAddMultiDataBuildWhenAddingToDocument;
 - (BOOL)suppliesFinalTextures;
-- (BOOL)validatedLoadFromUnarchiver:(id)a3;
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver;
 - (CGRect)visibleBoundsForPositioning;
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4;
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint;
 - (Class)layoutClass;
 - (Class)repClass;
 - (NSSet)referencedStyles;
-- (TSCHChartDrawableInfo)initWithContext:(id)a3 chart:(id)a4;
-- (TSCHChartDrawableInfo)initWithContext:(id)a3 chartType:(id)a4 legendShowing:(id)a5 chartBodyFrame:(id)a6 chartAreaFrame:(id)a7 circumscribingFrame:(id)a8 legendFrame:(id)a9 stylePreset:(id)a10 privateSeriesStyles:(id)a11 chartNonStyle:(id)a12 legendNonStyle:(id)a13 valueAxisNonStyles:(id)a14 categoryAxisNonStyles:(id)a15 seriesNonStyles:(id)a16 refLineNonStylesMap:(id)a17 refLineStylesMap:(id)a18;
+- (TSCHChartDrawableInfo)initWithContext:(id)context chart:(id)chart;
+- (TSCHChartDrawableInfo)initWithContext:(id)context chartType:(id)type legendShowing:(id)showing chartBodyFrame:(id)frame chartAreaFrame:(id)areaFrame circumscribingFrame:(id)circumscribingFrame legendFrame:(id)legendFrame stylePreset:(id)self0 privateSeriesStyles:(id)self1 chartNonStyle:(id)self2 legendNonStyle:(id)self3 valueAxisNonStyles:(id)self4 categoryAxisNonStyles:(id)self5 seriesNonStyles:(id)self6 refLineNonStylesMap:(id)self7 refLineStylesMap:(id)self8;
 - (TSCHChartInfo)chart;
 - (TSCHChunkManager)chunkManager;
 - (id)animationFilters;
-- (id)applyStyleSwapTuple:(id)a3;
-- (id)applyStyleSwapTuples:(id)a3;
-- (id)changeDetailsForCustomFormatListDidUpdateToCustomFormat:(id)a3 key:(id)a4;
+- (id)applyStyleSwapTuple:(id)tuple;
+- (id)applyStyleSwapTuples:(id)tuples;
+- (id)changeDetailsForCustomFormatListDidUpdateToCustomFormat:(id)format key:(id)key;
 - (id)geometry;
-- (id)infoGeometryForVisiblePositioningInfoGeometry:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)p_copyFor3DAs2DWithContext:(id)a3 chartFrame:(CGRect)a4 legendFrame:(CGRect)a5;
+- (id)infoGeometryForVisiblePositioningInfoGeometry:(id)geometry;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)p_copyFor3DAs2DWithContext:(id)context chartFrame:(CGRect)frame legendFrame:(CGRect)legendFrame;
 - (id)p_drawableGeometry;
-- (id)styleOwnerFromSwapType:(int)a3 andIndex:(unint64_t)a4;
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4;
-- (id)transformedGeometryWithTransform:(CGAffineTransform *)a3 inBounds:(CGRect)a4;
+- (id)styleOwnerFromSwapType:(int)type andIndex:(unint64_t)index;
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter;
+- (id)transformedGeometryWithTransform:(CGAffineTransform *)transform inBounds:(CGRect)bounds;
 - (id)typeName;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)a3 animationFilter:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)style animationFilter:(id)filter;
 - (unint64_t)multiDataSetIndex;
 - (unint64_t)numberOfMultiDataSets;
-- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)finalizeDataOnDeepCopyBeforeSerializingForDragAndDrop;
 - (void)hideAllTitles;
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3;
-- (void)p_setDrawableGeometry:(id)a3 clearObjectPlaceholderFlag:(BOOL)a4;
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver;
+- (void)p_setDrawableGeometry:(id)geometry clearObjectPlaceholderFlag:(BOOL)flag;
 - (void)reassignPasteboardCustomFormatKeys;
-- (void)saveToArchiver:(id)a3;
-- (void)setGeometry:(id)a3 omitLegendResize:(BOOL)a4;
-- (void)setInsertionCenterPosition:(CGPoint)a3;
-- (void)setPersistentMediator:(id)a3;
-- (void)tsaMoveToPosition:(CGPoint)a3 size:(CGSize)a4;
+- (void)saveToArchiver:(id)archiver;
+- (void)setGeometry:(id)geometry omitLegendResize:(BOOL)resize;
+- (void)setInsertionCenterPosition:(CGPoint)position;
+- (void)setPersistentMediator:(id)mediator;
+- (void)tsaMoveToPosition:(CGPoint)position size:(CGSize)size;
 - (void)upgradeFormatsForCustomFormatListU2_0;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 - (void)willModify;
 @end
 
 @implementation TSCHChartDrawableInfo
 
-- (id)p_copyFor3DAs2DWithContext:(id)a3 chartFrame:(CGRect)a4 legendFrame:(CGRect)a5
+- (id)p_copyFor3DAs2DWithContext:(id)context chartFrame:(CGRect)frame legendFrame:(CGRect)legendFrame
 {
-  width = a5.size.width;
-  height = a4.size.height;
-  v7 = a4.size.width;
-  v9 = objc_msgSend_replicateForReinsertion(self, a2, a4.origin.x, a4.origin.y, a4.size.width, a3);
+  width = legendFrame.size.width;
+  height = frame.size.height;
+  v7 = frame.size.width;
+  v9 = objc_msgSend_replicateForReinsertion(self, a2, frame.origin.x, frame.origin.y, frame.size.width, context);
   v14 = objc_msgSend_chart(v9, v10, v11, v12, v13);
   v19 = objc_msgSend_chart(self, v15, v16, v17, v18);
   v24 = objc_msgSend_chartType(v19, v20, v21, v22, v23);
@@ -112,11 +112,11 @@
   return v9;
 }
 
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithDescriptor_(v4, v5, v6, v7, v8, *off_2812EE5D0);
+  v9 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, v6, v7, v8, *off_2812EE5D0);
 
   if (*(v9 + 168))
   {
@@ -130,13 +130,13 @@
 
   v24.receiver = self;
   v24.super_class = TSCHChartDrawableInfo;
-  [(TSCHChartDrawableInfo *)&v24 loadFromArchive:v10 unarchiver:v4];
+  [(TSCHChartDrawableInfo *)&v24 loadFromArchive:v10 unarchiver:unarchiverCopy];
   v11 = [TSCHChartInfo alloc];
   v16 = objc_msgSend_p_init(v11, v12, v13, v14, v15);
   chart = self->_chart;
   self->_chart = v16;
 
-  if ((*(v9 + 17) & 1) != 0 && (objc_msgSend_isCrossAppPaste(v4, v18, v19, v20, v21) & 1) == 0)
+  if ((*(v9 + 17) & 1) != 0 && (objc_msgSend_isCrossAppPaste(unarchiverCopy, v18, v19, v20, v21) & 1) == 0)
   {
     if (*(v9 + 232))
     {
@@ -153,28 +153,28 @@
     v23[2] = sub_2762A9E84;
     v23[3] = &unk_27A6B7430;
     v23[4] = self;
-    sub_2762A9DD8(v4, v22, &unk_2885AE800, v23);
+    sub_2762A9DD8(unarchiverCopy, v22, &unk_2885AE800, v23);
   }
 
-  objc_msgSend_loadFromPreUFFArchive_unarchiver_persistentChartInfo_(self->_chart, v18, v19, v20, v21, v9, v4, self);
+  objc_msgSend_loadFromPreUFFArchive_unarchiver_persistentChartInfo_(self->_chart, v18, v19, v20, v21, v9, unarchiverCopy, self);
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
   v17.receiver = self;
   v17.super_class = TSCHChartDrawableInfo;
-  v6 = a4;
-  v7 = a3;
-  [(TSCHChartDrawableInfo *)&v17 adoptStylesheet:v7 withMapper:v6];
+  mapperCopy = mapper;
+  stylesheetCopy = stylesheet;
+  [(TSCHChartDrawableInfo *)&v17 adoptStylesheet:stylesheetCopy withMapper:mapperCopy];
   v12 = objc_msgSend_chart(self, v8, v9, v10, v11, v17.receiver, v17.super_class);
-  objc_msgSend_adoptStylesheet_withMapper_(v12, v13, v14, v15, v16, v7, v6);
+  objc_msgSend_adoptStylesheet_withMapper_(v12, v13, v14, v15, v16, stylesheetCopy, mapperCopy);
 }
 
-- (TSCHChartDrawableInfo)initWithContext:(id)a3 chart:(id)a4
+- (TSCHChartDrawableInfo)initWithContext:(id)context chart:(id)chart
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  contextCopy = context;
+  chartCopy = chart;
+  if (!chartCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHChartDrawableInfo initWithContext:chart:]");
@@ -184,45 +184,45 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  v27 = objc_msgSend_geometry(v8, v7, v9, v10, v11);
+  v27 = objc_msgSend_geometry(chartCopy, v7, v9, v10, v11);
   v32 = objc_msgSend_copy(v27, v28, v29, v30, v31);
   v39.receiver = self;
   v39.super_class = TSCHChartDrawableInfo;
-  v33 = [(TSCHChartDrawableInfo *)&v39 initWithContext:v6 geometry:v32];
+  v33 = [(TSCHChartDrawableInfo *)&v39 initWithContext:contextCopy geometry:v32];
 
   if (v33)
   {
-    objc_storeStrong(&v33->_chart, a4);
+    objc_storeStrong(&v33->_chart, chart);
     objc_msgSend_setDrawableInfo_(v33->_chart, v34, v35, v36, v37, v33);
   }
 
   return v33;
 }
 
-- (TSCHChartDrawableInfo)initWithContext:(id)a3 chartType:(id)a4 legendShowing:(id)a5 chartBodyFrame:(id)a6 chartAreaFrame:(id)a7 circumscribingFrame:(id)a8 legendFrame:(id)a9 stylePreset:(id)a10 privateSeriesStyles:(id)a11 chartNonStyle:(id)a12 legendNonStyle:(id)a13 valueAxisNonStyles:(id)a14 categoryAxisNonStyles:(id)a15 seriesNonStyles:(id)a16 refLineNonStylesMap:(id)a17 refLineStylesMap:(id)a18
+- (TSCHChartDrawableInfo)initWithContext:(id)context chartType:(id)type legendShowing:(id)showing chartBodyFrame:(id)frame chartAreaFrame:(id)areaFrame circumscribingFrame:(id)circumscribingFrame legendFrame:(id)legendFrame stylePreset:(id)self0 privateSeriesStyles:(id)self1 chartNonStyle:(id)self2 legendNonStyle:(id)self3 valueAxisNonStyles:(id)self4 categoryAxisNonStyles:(id)self5 seriesNonStyles:(id)self6 refLineNonStylesMap:(id)self7 refLineStylesMap:(id)self8
 {
-  v52 = a18;
-  v19 = a17;
-  v20 = a16;
-  v48 = a15;
-  v21 = a14;
-  v22 = a13;
-  v62 = a12;
-  v61 = a11;
-  v60 = a10;
-  v45 = a9;
-  v59 = a8;
-  v57 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v54 = a3;
+  stylesMapCopy = stylesMap;
+  mapCopy = map;
+  seriesNonStylesCopy = seriesNonStyles;
+  axisNonStylesCopy = axisNonStyles;
+  nonStylesCopy = nonStyles;
+  nonStyleCopy = nonStyle;
+  styleCopy = style;
+  stylesCopy = styles;
+  presetCopy = preset;
+  legendFrameCopy = legendFrame;
+  circumscribingFrameCopy = circumscribingFrame;
+  areaFrameCopy = areaFrame;
+  frameCopy = frame;
+  showingCopy = showing;
+  typeCopy = type;
+  contextCopy = context;
   v26 = [TSCHChartInfo alloc];
-  v51 = objc_msgSend_documentRoot(v54, v27, v28, v29, v30);
+  v51 = objc_msgSend_documentRoot(contextCopy, v27, v28, v29, v30);
   v49 = objc_msgSend_documentLocale(v51, v31, v32, v33, v34);
-  v47 = objc_msgSend_initWithChartType_legendShowing_chartBodyFrame_chartAreaFrame_circumscribingFrame_legendFrame_stylePreset_privateSeriesStyles_chartNonStyle_legendNonStyle_valueAxisNonStyles_categoryAxisNonStyles_seriesNonStyles_refLineNonStylesMap_refLineStylesMap_forDocumentLocale_(v26, v35, v36, v37, v38, v25, v24, v23, v57, v59, v45, v60, v61, v62, v22, v21, v48, v20, v19, v52, v49);
+  v47 = objc_msgSend_initWithChartType_legendShowing_chartBodyFrame_chartAreaFrame_circumscribingFrame_legendFrame_stylePreset_privateSeriesStyles_chartNonStyle_legendNonStyle_valueAxisNonStyles_categoryAxisNonStyles_seriesNonStyles_refLineNonStylesMap_refLineStylesMap_forDocumentLocale_(v26, v35, v36, v37, v38, typeCopy, showingCopy, frameCopy, areaFrameCopy, circumscribingFrameCopy, legendFrameCopy, presetCopy, stylesCopy, styleCopy, nonStyleCopy, nonStylesCopy, axisNonStylesCopy, seriesNonStylesCopy, mapCopy, stylesMapCopy, v49);
 
-  v43 = objc_msgSend_initWithContext_chart_(self, v39, v40, v41, v42, v54, v47);
+  v43 = objc_msgSend_initWithContext_chart_(self, v39, v40, v41, v42, contextCopy, v47);
   return v43;
 }
 
@@ -250,9 +250,9 @@
   return chart;
 }
 
-- (void)setPersistentMediator:(id)a3
+- (void)setPersistentMediator:(id)mediator
 {
-  v5 = a3;
+  mediatorCopy = mediator;
   if (self->_mediatorPersistentObject)
   {
     v9 = objc_msgSend_chart(self, v4, v6, v7, v8);
@@ -274,8 +274,8 @@
   self->_mediatorPersistentObject = 0;
 
   v40 = self->_mediatorPersistentObject;
-  self->_mediatorPersistentObject = v5;
-  v41 = v5;
+  self->_mediatorPersistentObject = mediatorCopy;
+  v41 = mediatorCopy;
 
   v46 = objc_msgSend_mediator(self->_mediatorPersistentObject, v42, v43, v44, v45);
   v51 = objc_msgSend_chart(self, v47, v48, v49, v50);
@@ -291,23 +291,23 @@
   objc_msgSend_setObjectToNotify_(v79, v75, v76, v77, v78, v74, &unk_288591920);
 }
 
-- (void)p_setDrawableGeometry:(id)a3 clearObjectPlaceholderFlag:(BOOL)a4
+- (void)p_setDrawableGeometry:(id)geometry clearObjectPlaceholderFlag:(BOOL)flag
 {
-  if (a4)
+  if (flag)
   {
     v17.receiver = self;
     v17.super_class = TSCHChartDrawableInfo;
-    v5 = a3;
-    [(TSCHChartDrawableInfo *)&v17 setGeometry:v5];
+    geometryCopy = geometry;
+    [(TSCHChartDrawableInfo *)&v17 setGeometry:geometryCopy];
   }
 
   else
   {
-    v6 = a3;
+    geometryCopy2 = geometry;
     v11 = objc_msgSend_matchesObjectPlaceholderGeometry(self, v7, v8, v9, v10);
     v16.receiver = self;
     v16.super_class = TSCHChartDrawableInfo;
-    [(TSCHChartDrawableInfo *)&v16 setGeometry:v6];
+    [(TSCHChartDrawableInfo *)&v16 setGeometry:geometryCopy2];
 
     objc_msgSend_setMatchesObjectPlaceholderGeometry_(self, v12, v13, v14, v15, v11);
   }
@@ -317,9 +317,9 @@
 {
   v4.receiver = self;
   v4.super_class = TSCHChartDrawableInfo;
-  v2 = [(TSCHChartDrawableInfo *)&v4 geometry];
+  geometry = [(TSCHChartDrawableInfo *)&v4 geometry];
 
-  return v2;
+  return geometry;
 }
 
 - (id)geometry
@@ -328,35 +328,35 @@
   v11 = v6;
   if (v6)
   {
-    v12 = objc_msgSend_geometry(v6, v7, v8, v9, v10);
+    geometry = objc_msgSend_geometry(v6, v7, v8, v9, v10);
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = TSCHChartDrawableInfo;
-    v12 = [(TSCHChartDrawableInfo *)&v15 geometry];
+    geometry = [(TSCHChartDrawableInfo *)&v15 geometry];
   }
 
-  v13 = v12;
+  v13 = geometry;
 
   return v13;
 }
 
-- (void)setGeometry:(id)a3 omitLegendResize:(BOOL)a4
+- (void)setGeometry:(id)geometry omitLegendResize:(BOOL)resize
 {
-  v4 = a4;
-  v6 = a3;
+  resizeCopy = resize;
+  geometryCopy = geometry;
   v11 = objc_msgSend_chart(self, v7, v8, v9, v10);
   v16 = v11;
   if (v11)
   {
-    objc_msgSend_setGeometry_omitLegendResize_(v11, v12, v13, v14, v15, v6, v4);
+    objc_msgSend_setGeometry_omitLegendResize_(v11, v12, v13, v14, v15, geometryCopy, resizeCopy);
   }
 
   else
   {
-    objc_msgSend_p_setDrawableGeometry_clearObjectPlaceholderFlag_(self, v12, v13, v14, v15, v6, 1);
+    objc_msgSend_p_setDrawableGeometry_clearObjectPlaceholderFlag_(self, v12, v13, v14, v15, geometryCopy, 1);
   }
 }
 
@@ -478,30 +478,30 @@
   return result;
 }
 
-- (id)infoGeometryForVisiblePositioningInfoGeometry:(id)a3
+- (id)infoGeometryForVisiblePositioningInfoGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   v9 = objc_msgSend_chart(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_infoGeometryForVisiblePositioningInfoGeometry_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_infoGeometryForVisiblePositioningInfoGeometry_(v9, v10, v11, v12, v13, geometryCopy);
 
   return v14;
 }
 
-- (void)tsaMoveToPosition:(CGPoint)a3 size:(CGSize)a4
+- (void)tsaMoveToPosition:(CGPoint)position size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
-  v9 = objc_msgSend_chart(self, a2, a3.x, a3.y, a4.width);
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  v9 = objc_msgSend_chart(self, a2, position.x, position.y, size.width);
   objc_msgSend_chartMoveToPosition_size_(v9, v8, x, y, width, height);
 }
 
-- (void)setInsertionCenterPosition:(CGPoint)a3
+- (void)setInsertionCenterPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = objc_msgSend_chart(self, a2, a3.x, a3.y, v3);
+  y = position.y;
+  x = position.x;
+  v7 = objc_msgSend_chart(self, a2, position.x, position.y, v3);
   v14 = objc_msgSend_infoGeometryForVisuallyCenteringOnUnscaledCanvasPoint_(v7, v8, x, y, v9);
 
   objc_msgSend_setGeometry_(self, v10, v11, v12, v13, v14);
@@ -524,29 +524,29 @@
   return chunkManager;
 }
 
-- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3
+- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9 = objc_msgSend_chunkManager(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_textureDeliveryStyleFromDeliveryString_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_textureDeliveryStyleFromDeliveryString_(v9, v10, v11, v12, v13, stringCopy);
 
   return v14;
 }
 
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter
 {
-  v4 = a3;
-  v6 = a4;
+  localizedCopy = localized;
+  filterCopy = filter;
   v11 = objc_msgSend_chunkManager(self, v7, v8, v9, v10);
-  v16 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(v11, v12, v13, v14, v15, v4, v6);
+  v16 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(v11, v12, v13, v14, v15, localizedCopy, filterCopy);
 
   return v16;
 }
 
-- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)a3 animationFilter:(id)a4
+- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)style animationFilter:(id)filter
 {
-  v8 = objc_msgSend_chunkManager(self, a2, v4, v5, v6, a3, a4);
-  v13 = objc_msgSend_chartDeliveryStyleFromTSDDeliveryStyle_(v8, v9, v10, v11, v12, a3);
+  v8 = objc_msgSend_chunkManager(self, a2, v4, v5, v6, style, filter);
+  v13 = objc_msgSend_chartDeliveryStyleFromTSDDeliveryStyle_(v8, v9, v10, v11, v12, style);
   v18 = objc_msgSend_chunkCountForChartDeliveryStyle_(v8, v14, v15, v16, v17, v13);
 
   return v18;
@@ -557,8 +557,8 @@
   v6 = objc_msgSend_chunkManager(self, a2, v2, v3, v4);
   v14.receiver = self;
   v14.super_class = TSCHChartDrawableInfo;
-  v7 = [(TSCHChartDrawableInfo *)&v14 animationFilters];
-  v12 = objc_msgSend_animationFiltersWithDefaultFilters_(v6, v8, v9, v10, v11, v7);
+  animationFilters = [(TSCHChartDrawableInfo *)&v14 animationFilters];
+  v12 = objc_msgSend_animationFiltersWithDefaultFilters_(v6, v8, v9, v10, v11, animationFilters);
 
   return v12;
 }
@@ -607,7 +607,7 @@
   return hasBackgroundLayerForPieChart;
 }
 
-- (BOOL)isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle:(unint64_t)a3
+- (BOOL)isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle:(unint64_t)style
 {
   v8 = objc_msgSend_chart(self, a2, v3, v4, v5);
   v13 = objc_msgSend_chartType(v8, v9, v10, v11, v12);
@@ -626,7 +626,7 @@
   }
 
   v48 = objc_msgSend_chunkManager(self, v19, v20, v21, v22);
-  isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle = objc_msgSend_isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle_(v48, v49, v50, v51, v52, a3);
+  isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle = objc_msgSend_isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle_(v48, v49, v50, v51, v52, style);
 
   return isVisibleAtBeginningOfMagicChartBuildForDeliveryStyle;
 }
@@ -640,10 +640,10 @@
   return v15;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -674,19 +674,19 @@
   return v35;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
 
   v12 = objc_msgSend_chart(self, v8, v9, v10, v11);
   v17 = objc_msgSend_chart(v7, v13, v14, v15, v16);
-  v21 = objc_msgSend_mixedObjectWithFraction_ofObject_(v12, v18, a3, v19, v20, v17);
+  v21 = objc_msgSend_mixedObjectWithFraction_ofObject_(v12, v18, fraction, v19, v20, v17);
 
   v26 = objc_msgSend_p_drawableGeometry(self, v22, v23, v24, v25);
   v31 = objc_msgSend_p_drawableGeometry(v7, v27, v28, v29, v30);
-  v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v26, v32, a3, v33, v34, v31);
+  v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v26, v32, fraction, v33, v34, v31);
 
   v36 = [TSCHChartDrawableInfo alloc];
   v41 = objc_msgSend_context(self, v37, v38, v39, v40);
@@ -708,60 +708,60 @@
   return v21;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v22.receiver = self;
   v22.super_class = TSCHChartDrawableInfo;
-  v6 = a4;
-  v7 = a3;
-  [(TSCHChartDrawableInfo *)&v22 willBeAddedToDocumentRoot:v7 dolcContext:v6];
+  contextCopy = context;
+  rootCopy = root;
+  [(TSCHChartDrawableInfo *)&v22 willBeAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
   v12 = objc_msgSend_chart(self, v8, v9, v10, v11);
   objc_msgSend_updateAfterPaste(v12, v13, v14, v15, v16);
 
   v17 = TSUProtocolCast();
-  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v17, v18, v19, v20, v21, v7, v6, &unk_2885ACC18);
+  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v17, v18, v19, v20, v21, rootCopy, contextCopy, &unk_2885ACC18);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v12.receiver = self;
   v12.super_class = TSCHChartDrawableInfo;
-  v5 = a4;
-  v6 = a3;
-  [(TSCHChartDrawableInfo *)&v12 wasAddedToDocumentRoot:v6 dolcContext:v5];
+  contextCopy = context;
+  rootCopy = root;
+  [(TSCHChartDrawableInfo *)&v12 wasAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
   v7 = TSUProtocolCast();
-  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v7, v8, v9, v10, v11, v6, v5, &unk_2885ACC18);
+  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v7, v8, v9, v10, v11, rootCopy, contextCopy, &unk_2885ACC18);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v9.receiver = self;
   v9.super_class = TSCHChartDrawableInfo;
-  v3 = a3;
-  [(TSCHChartDrawableInfo *)&v9 willBeRemovedFromDocumentRoot:v3];
+  rootCopy = root;
+  [(TSCHChartDrawableInfo *)&v9 willBeRemovedFromDocumentRoot:rootCopy];
   v4 = TSUProtocolCast();
-  objc_msgSend_willBeRemovedFromDocumentRoot_(v4, v5, v6, v7, v8, v3, &unk_2885ACC18);
+  objc_msgSend_willBeRemovedFromDocumentRoot_(v4, v5, v6, v7, v8, rootCopy, &unk_2885ACC18);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v9.receiver = self;
   v9.super_class = TSCHChartDrawableInfo;
-  v3 = a3;
-  [(TSCHChartDrawableInfo *)&v9 wasRemovedFromDocumentRoot:v3];
+  rootCopy = root;
+  [(TSCHChartDrawableInfo *)&v9 wasRemovedFromDocumentRoot:rootCopy];
   v4 = TSUProtocolCast();
-  objc_msgSend_wasRemovedFromDocumentRoot_(v4, v5, v6, v7, v8, v3, &unk_2885ACC18);
+  objc_msgSend_wasRemovedFromDocumentRoot_(v4, v5, v6, v7, v8, rootCopy, &unk_2885ACC18);
 }
 
-- (id)transformedGeometryWithTransform:(CGAffineTransform *)a3 inBounds:(CGRect)a4
+- (id)transformedGeometryWithTransform:(CGAffineTransform *)transform inBounds:(CGRect)bounds
 {
   v49.receiver = self;
   v49.super_class = TSCHChartDrawableInfo;
-  v5 = *&a3->c;
-  v48[0] = *&a3->a;
+  v5 = *&transform->c;
+  v48[0] = *&transform->a;
   v48[1] = v5;
-  v48[2] = *&a3->tx;
-  v6 = [(TSCHChartDrawableInfo *)&v49 transformedGeometryWithTransform:v48 inBounds:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v48[2] = *&transform->tx;
+  v6 = [(TSCHChartDrawableInfo *)&v49 transformedGeometryWithTransform:v48 inBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v11 = objc_msgSend_chart(self, v7, v8, v9, v10);
   objc_msgSend_minimumChartBodySizeForTransformingGeometryForChart_(TSCHChartInfo, v12, v13, v14, v15, v11);
   v17 = v16;
@@ -810,17 +810,17 @@
   v6 = objc_msgSend_chartType(self->_chart, a2, v2, v3, v4);
   if (objc_msgSend_hasFixedFrameRatio(v6, v7, v8, v9, v10))
   {
-    v11 = 0;
+    canAspectRatioLockBeChangedByUser = 0;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = TSCHChartDrawableInfo;
-    v11 = [(TSCHChartDrawableInfo *)&v13 canAspectRatioLockBeChangedByUser];
+    canAspectRatioLockBeChangedByUser = [(TSCHChartDrawableInfo *)&v13 canAspectRatioLockBeChangedByUser];
   }
 
-  return v11;
+  return canAspectRatioLockBeChangedByUser;
 }
 
 - (BOOL)canSizeBeChangedIncrementally
@@ -836,42 +836,42 @@
   v6 = objc_msgSend_chartType(self->_chart, a2, v2, v3, v4);
   if (objc_msgSend_hasFixedFrameRatio(v6, v7, v8, v9, v10))
   {
-    v11 = 1;
+    aspectRatioLocked = 1;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = TSCHChartDrawableInfo;
-    v11 = [(TSCHChartDrawableInfo *)&v13 aspectRatioLocked];
+    aspectRatioLocked = [(TSCHChartDrawableInfo *)&v13 aspectRatioLocked];
   }
 
-  return v11;
+  return aspectRatioLocked;
 }
 
-- (id)applyStyleSwapTuple:(id)a3
+- (id)applyStyleSwapTuple:(id)tuple
 {
-  v4 = a3;
+  tupleCopy = tuple;
   v9 = objc_msgSend_chart(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_applyStyleSwapTuple_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_applyStyleSwapTuple_(v9, v10, v11, v12, v13, tupleCopy);
 
   return v14;
 }
 
-- (id)applyStyleSwapTuples:(id)a3
+- (id)applyStyleSwapTuples:(id)tuples
 {
-  v4 = a3;
+  tuplesCopy = tuples;
   v9 = objc_msgSend_chart(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_applyStyleSwapTuples_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_applyStyleSwapTuples_(v9, v10, v11, v12, v13, tuplesCopy);
 
   return v14;
 }
 
-- (id)styleOwnerFromSwapType:(int)a3 andIndex:(unint64_t)a4
+- (id)styleOwnerFromSwapType:(int)type andIndex:(unint64_t)index
 {
-  v8 = *&a3;
+  v8 = *&type;
   v9 = objc_msgSend_chart(self, a2, v4, v5, v6);
-  v14 = objc_msgSend_styleOwnerFromSwapType_andIndex_(v9, v10, v11, v12, v13, v8, a4);
+  v14 = objc_msgSend_styleOwnerFromSwapType_andIndex_(v9, v10, v11, v12, v13, v8, index);
 
   return v14;
 }
@@ -886,7 +886,7 @@
   objc_msgSend_validateIfNeeded(v12, v13, v14, v15, v16);
 }
 
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint
 {
   v4 = 1.79769313e308;
   v5 = 1.79769313e308;
@@ -895,9 +895,9 @@
   return result;
 }
 
-- (id)changeDetailsForCustomFormatListDidUpdateToCustomFormat:(id)a3 key:(id)a4
+- (id)changeDetailsForCustomFormatListDidUpdateToCustomFormat:(id)format key:(id)key
 {
-  if (objc_msgSend_formatType(a3, a2, v4, v5, v6) == 272)
+  if (objc_msgSend_formatType(format, a2, v4, v5, v6) == 272)
   {
     objc_msgSend_propertySetWithProperties_(MEMORY[0x277D80AC0], v7, v8, v9, v10, 1371, 1235, 1352, 0);
   }
@@ -961,14 +961,14 @@
   objc_msgSend_reassignPasteboardCustomFormatKeys(v9, v5, v6, v7, v8);
 }
 
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison
 {
-  if (self == a3)
+  if (self == comparison)
   {
     return 1;
   }
 
-  v4 = a3;
+  comparisonCopy = comparison;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -987,14 +987,14 @@
   return isEquivalentForCrossDocumentPasteMasterComparison;
 }
 
-- (BOOL)isEquivalentForSerializationRoundTrip:(id)a3
+- (BOOL)isEquivalentForSerializationRoundTrip:(id)trip
 {
-  if (self == a3)
+  if (self == trip)
   {
     return 1;
   }
 
-  v4 = a3;
+  tripCopy = trip;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -1013,17 +1013,17 @@
   return isEquivalentForCrossDocumentPasteMasterComparison;
 }
 
-- (BOOL)validatedLoadFromUnarchiver:(id)a3
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_messageType(v4, v5, v6, v7, v8) == 5000)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_messageType(unarchiverCopy, v5, v6, v7, v8) == 5000)
   {
-    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, v4);
+    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, unarchiverCopy);
   }
 
   else
   {
-    v13 = v4;
+    v13 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v18 = objc_msgSend_messageWithDescriptor_(v13, v14, v15, v16, v17, *off_2812ED048);
 
@@ -1087,31 +1087,31 @@ LABEL_16:
   return v37;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, v6, v7, v8, sub_276381AC8, *off_2812ED048);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, v6, v7, v8, sub_276381AC8, *off_2812ED048);
 
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = sub_276381538;
   v63[3] = &unk_27A6B6A48;
   v66 = v9;
-  v10 = v4;
+  v10 = archiverCopy;
   v64 = v10;
-  v65 = self;
+  selfCopy = self;
   objc_msgSend_pushScopeForField_message_usingBlock_(v10, v11, v12, v13, v14, 1, v9, v63);
   v56 = MEMORY[0x277D85DD0];
   v57 = 3221225472;
   v58 = sub_2763815C0;
   v59 = &unk_27A6B6A48;
   v62 = v9;
-  v60 = self;
+  selfCopy2 = self;
   v15 = v10;
   v61 = v15;
   objc_msgSend_pushScopeForField_message_usingBlock_(v15, v16, v17, v18, v19, 10000, v9, &v56);
-  v24 = objc_msgSend_model(self->_chart, v20, v21, v22, v23, v56, v57, v58, v59, v60);
+  v24 = objc_msgSend_model(self->_chart, v20, v21, v22, v23, v56, v57, v58, v59, selfCopy2);
   objc_msgSend_setShouldCacheMediatorData_(v24, v25, v26, v27, v28, 0);
 
   v33 = objc_msgSend_chartType(self->_chart, v29, v30, v31, v32);

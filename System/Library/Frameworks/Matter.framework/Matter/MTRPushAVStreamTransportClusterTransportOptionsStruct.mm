@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterTransportOptionsStruct
 - (MTRPushAVStreamTransportClusterTransportOptionsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -47,35 +47,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterTransportOptionsStruct);
-  v5 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self streamUsage];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setStreamUsage:v5];
+  streamUsage = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self streamUsage];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setStreamUsage:streamUsage];
 
-  v6 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self videoStreamID];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setVideoStreamID:v6];
+  videoStreamID = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self videoStreamID];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setVideoStreamID:videoStreamID];
 
-  v7 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self audioStreamID];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setAudioStreamID:v7];
+  audioStreamID = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self audioStreamID];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setAudioStreamID:audioStreamID];
 
-  v8 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self endpointID];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setEndpointID:v8];
+  endpointID = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self endpointID];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setEndpointID:endpointID];
 
   v9 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self url];
   [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setUrl:v9];
 
-  v10 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self triggerOptions];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setTriggerOptions:v10];
+  triggerOptions = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self triggerOptions];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setTriggerOptions:triggerOptions];
 
-  v11 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self ingestMethod];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setIngestMethod:v11];
+  ingestMethod = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self ingestMethod];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setIngestMethod:ingestMethod];
 
-  v12 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self containerOptions];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setContainerOptions:v12];
+  containerOptions = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self containerOptions];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setContainerOptions:containerOptions];
 
-  v13 = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self expiryTime];
-  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setExpiryTime:v13];
+  expiryTime = [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)self expiryTime];
+  [(MTRPushAVStreamTransportClusterTransportOptionsStruct *)v4 setExpiryTime:expiryTime];
 
   return v4;
 }

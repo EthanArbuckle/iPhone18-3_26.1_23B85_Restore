@@ -1,39 +1,39 @@
 @interface BMSafariWindowProxy
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariWindowProxy)initWithDomain:(id)a3 openedDomain:(id)a4 visited:(id)a5 property:(int)a6 accessedPropertyDirectly:(id)a7;
-- (BMSafariWindowProxy)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariWindowProxy)initWithDomain:(id)domain openedDomain:(id)openedDomain visited:(id)visited property:(int)property accessedPropertyDirectly:(id)directly;
+- (BMSafariWindowProxy)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)visited;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSafariWindowProxy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariWindowProxy *)self domain];
-    v7 = [v5 domain];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    domain = [(BMSafariWindowProxy *)self domain];
+    domain2 = [v5 domain];
+    v8 = domain2;
+    if (domain == domain2)
     {
     }
 
     else
     {
-      v9 = [(BMSafariWindowProxy *)self domain];
-      v10 = [v5 domain];
-      v11 = [v9 isEqual:v10];
+      domain3 = [(BMSafariWindowProxy *)self domain];
+      domain4 = [v5 domain];
+      v11 = [domain3 isEqual:domain4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMSafariWindowProxy *)self openedDomain];
-    v14 = [v5 openedDomain];
-    v15 = v14;
-    if (v13 == v14)
+    openedDomain = [(BMSafariWindowProxy *)self openedDomain];
+    openedDomain2 = [v5 openedDomain];
+    v15 = openedDomain2;
+    if (openedDomain == openedDomain2)
     {
     }
 
     else
     {
-      v16 = [(BMSafariWindowProxy *)self openedDomain];
-      v17 = [v5 openedDomain];
-      v18 = [v16 isEqual:v17];
+      openedDomain3 = [(BMSafariWindowProxy *)self openedDomain];
+      openedDomain4 = [v5 openedDomain];
+      v18 = [openedDomain3 isEqual:openedDomain4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMSafariWindowProxy *)self visited];
-    v20 = [v5 visited];
-    v21 = v20;
-    if (v19 == v20)
+    visited = [(BMSafariWindowProxy *)self visited];
+    visited2 = [v5 visited];
+    v21 = visited2;
+    if (visited == visited2)
     {
     }
 
     else
     {
-      v22 = [(BMSafariWindowProxy *)self visited];
-      v23 = [v5 visited];
-      v24 = [v22 isEqual:v23];
+      visited3 = [(BMSafariWindowProxy *)self visited];
+      visited4 = [v5 visited];
+      v24 = [visited3 isEqual:visited4];
 
       if (!v24)
       {
@@ -79,8 +79,8 @@
       }
     }
 
-    v25 = [(BMSafariWindowProxy *)self property];
-    if (v25 == [v5 property])
+    property = [(BMSafariWindowProxy *)self property];
+    if (property == [v5 property])
     {
       if (!-[BMSafariWindowProxy hasAccessedPropertyDirectly](self, "hasAccessedPropertyDirectly") && ![v5 hasAccessedPropertyDirectly])
       {
@@ -90,8 +90,8 @@
 
       if (-[BMSafariWindowProxy hasAccessedPropertyDirectly](self, "hasAccessedPropertyDirectly") && [v5 hasAccessedPropertyDirectly])
       {
-        v26 = [(BMSafariWindowProxy *)self accessedPropertyDirectly];
-        v12 = v26 ^ [v5 accessedPropertyDirectly] ^ 1;
+        accessedPropertyDirectly = [(BMSafariWindowProxy *)self accessedPropertyDirectly];
+        v12 = accessedPropertyDirectly ^ [v5 accessedPropertyDirectly] ^ 1;
 LABEL_22:
 
         goto LABEL_23;
@@ -129,14 +129,14 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSafariWindowProxy *)self domain];
-  v4 = [(BMSafariWindowProxy *)self openedDomain];
-  v5 = [(BMSafariWindowProxy *)self visited];
-  if (v5)
+  domain = [(BMSafariWindowProxy *)self domain];
+  openedDomain = [(BMSafariWindowProxy *)self openedDomain];
+  visited = [(BMSafariWindowProxy *)self visited];
+  if (visited)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(BMSafariWindowProxy *)self visited];
-    [v7 timeIntervalSince1970];
+    visited2 = [(BMSafariWindowProxy *)self visited];
+    [visited2 timeIntervalSince1970];
     v8 = [v6 numberWithDouble:?];
   }
 
@@ -157,46 +157,46 @@ LABEL_23:
   }
 
   v21 = @"domain";
-  v11 = v3;
-  if (!v3)
+  null = domain;
+  if (!domain)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v11;
-  v26[0] = v11;
+  v19 = null;
+  v26[0] = null;
   v22 = @"openedDomain";
-  v12 = v4;
-  if (!v4)
+  null2 = openedDomain;
+  if (!openedDomain)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v12;
+  v26[1] = null2;
   v23 = @"visited";
-  v13 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v13;
+  v26[2] = null3;
   v24 = @"property";
-  v14 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v14;
+  v26[3] = null4;
   v25 = @"accessedPropertyDirectly";
-  v15 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v15;
+  v26[4] = null5;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v21 count:{5, v19}];
   if (v10)
   {
@@ -224,14 +224,14 @@ LABEL_19:
   if (v8)
   {
 LABEL_20:
-    if (v4)
+    if (openedDomain)
     {
       goto LABEL_21;
     }
 
 LABEL_28:
 
-    if (v3)
+    if (domain)
     {
       goto LABEL_22;
     }
@@ -241,13 +241,13 @@ LABEL_28:
 
 LABEL_27:
 
-  if (!v4)
+  if (!openedDomain)
   {
     goto LABEL_28;
   }
 
 LABEL_21:
-  if (v3)
+  if (domain)
   {
     goto LABEL_22;
   }
@@ -260,22 +260,22 @@ LABEL_22:
   return v16;
 }
 
-- (BMSafariWindowProxy)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSafariWindowProxy)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"domain"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v43 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"openedDomain"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"openedDomain"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v42 = 0;
           v18 = 0;
@@ -285,13 +285,13 @@ LABEL_4:
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
         v20 = *MEMORY[0x1E698F240];
         v50 = *MEMORY[0x1E696A578];
-        v21 = a4;
-        a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"openedDomain"];
-        v51 = a4;
-        v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
+        errorCopy = error;
+        error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"openedDomain"];
+        errorCopy2 = error;
+        v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy2 forKeys:&v50 count:1];
         v42 = 0;
         v18 = 0;
-        *v21 = [v19 initWithDomain:v20 code:2 userInfo:v9];
+        *errorCopy = [v19 initWithDomain:v20 code:2 userInfo:v9];
         goto LABEL_37;
       }
 
@@ -303,8 +303,8 @@ LABEL_4:
       v42 = 0;
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"visited"];
-    v40 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"visited"];
+    errorCopy3 = error;
     v41 = v7;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -326,7 +326,7 @@ LABEL_4:
         if (objc_opt_isKindOfClass())
         {
           v22 = objc_alloc_init(MEMORY[0x1E696AC80]);
-          a4 = [v22 dateFromString:v9];
+          error = [v22 dateFromString:v9];
 
           goto LABEL_23;
         }
@@ -334,7 +334,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v18 = 0;
             goto LABEL_37;
@@ -347,10 +347,10 @@ LABEL_4:
           v49 = v24;
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
           v34 = [v32 initWithDomain:v33 code:2 userInfo:v23];
-          v35 = a4;
-          a4 = 0;
+          errorCopy4 = error;
+          error = 0;
           v18 = 0;
-          *v35 = v34;
+          *errorCopy4 = v34;
 LABEL_36:
 
           v7 = v41;
@@ -362,16 +362,16 @@ LABEL_37:
         v15 = v9;
       }
 
-      a4 = v15;
+      error = v15;
     }
 
     else
     {
-      a4 = 0;
+      error = 0;
     }
 
 LABEL_23:
-    v23 = [v6 objectForKeyedSubscript:@"property"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"property"];
     if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -385,7 +385,7 @@ LABEL_23:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v40)
+          if (!errorCopy3)
           {
             v24 = 0;
             v18 = 0;
@@ -400,7 +400,7 @@ LABEL_23:
           v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
           v24 = 0;
           v18 = 0;
-          *v40 = [v39 initWithDomain:v37 code:2 userInfo:v26];
+          *errorCopy3 = [v39 initWithDomain:v37 code:2 userInfo:v26];
           goto LABEL_35;
         }
 
@@ -415,13 +415,13 @@ LABEL_23:
       v24 = 0;
     }
 
-    v26 = [v6 objectForKeyedSubscript:@"accessedPropertyDirectly"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"accessedPropertyDirectly"];
     if (v26 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v40)
+        if (errorCopy3)
         {
           v38 = objc_alloc(MEMORY[0x1E696ABC0]);
           v36 = *MEMORY[0x1E698F240];
@@ -429,7 +429,7 @@ LABEL_23:
           v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"accessedPropertyDirectly"];
           v45 = v30;
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-          *v40 = [v38 initWithDomain:v36 code:2 userInfo:v31];
+          *errorCopy3 = [v38 initWithDomain:v36 code:2 userInfo:v31];
         }
 
         v27 = 0;
@@ -445,7 +445,7 @@ LABEL_23:
       v27 = 0;
     }
 
-    v18 = -[BMSafariWindowProxy initWithDomain:openedDomain:visited:property:accessedPropertyDirectly:](self, "initWithDomain:openedDomain:visited:property:accessedPropertyDirectly:", v43, v42, a4, [v24 intValue], v27);
+    v18 = -[BMSafariWindowProxy initWithDomain:openedDomain:visited:property:accessedPropertyDirectly:](self, "initWithDomain:openedDomain:visited:property:accessedPropertyDirectly:", v43, v42, error, [v24 intValue], v27);
     self = v18;
 LABEL_35:
 
@@ -459,7 +459,7 @@ LABEL_35:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v43 = 0;
     v18 = 0;
@@ -474,7 +474,7 @@ LABEL_35:
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
   v43 = 0;
   v18 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v8];
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v8];
 LABEL_38:
 
 LABEL_39:
@@ -486,14 +486,14 @@ LABEL_39:
 {
   v3 = objc_opt_new();
   [(BMSafariWindowProxy *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -519,9 +519,9 @@ LABEL_39:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMSafariWindowProxy;
   v5 = [(BMEventBase *)&v39 init];
@@ -530,12 +530,12 @@ LABEL_39:
     goto LABEL_61;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -546,18 +546,18 @@ LABEL_39:
       while (1)
       {
         LOBYTE(v40) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v40) & 0x7F) << v7;
@@ -575,9 +575,9 @@ LABEL_39:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -619,18 +619,18 @@ LABEL_48:
           case 3:
             v5->_hasRaw_visited = 1;
             v40 = 0.0;
-            v25 = [v4 position] + 8;
-            if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+            v25 = [fromCopy position] + 8;
+            if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
             {
-              v35 = [v4 data];
-              [v35 getBytes:&v40 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_visited = v40;
@@ -643,18 +643,18 @@ LABEL_48:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v30 = [v4 position] + 1;
-              if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+              v30 = [fromCopy position] + 1;
+              if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
               {
-                v32 = [v4 data];
-                [v32 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v29 |= (LOBYTE(v40) & 0x7F) << v27;
@@ -672,7 +672,7 @@ LABEL_48:
               }
             }
 
-            v33 = (v29 != 0) & ~[v4 hasError];
+            v33 = (v29 != 0) & ~[fromCopy hasError];
 LABEL_51:
             v5->_accessedPropertyDirectly = v33;
             break;
@@ -683,18 +683,18 @@ LABEL_51:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (LOBYTE(v40) & 0x7F) << v16;
@@ -710,7 +710,7 @@ LABEL_51:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 4)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 4)
             {
 LABEL_54:
               LODWORD(v18) = 0;
@@ -724,13 +724,13 @@ LABEL_54:
       }
 
 LABEL_58:
-      v36 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v36 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_60:
     v37 = 0;
@@ -748,34 +748,34 @@ LABEL_61:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSafariWindowProxy *)self domain];
-  v5 = [(BMSafariWindowProxy *)self openedDomain];
-  v6 = [(BMSafariWindowProxy *)self visited];
+  domain = [(BMSafariWindowProxy *)self domain];
+  openedDomain = [(BMSafariWindowProxy *)self openedDomain];
+  visited = [(BMSafariWindowProxy *)self visited];
   v7 = BMSafariWindowProxyPropertyAsString([(BMSafariWindowProxy *)self property]);
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariWindowProxy accessedPropertyDirectly](self, "accessedPropertyDirectly")}];
-  v9 = [v3 initWithFormat:@"BMSafariWindowProxy with domain: %@, openedDomain: %@, visited: %@, property: %@, accessedPropertyDirectly: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMSafariWindowProxy with domain: %@, openedDomain: %@, visited: %@, property: %@, accessedPropertyDirectly: %@", domain, openedDomain, visited, v7, v8];
 
   return v9;
 }
 
-- (BMSafariWindowProxy)initWithDomain:(id)a3 openedDomain:(id)a4 visited:(id)a5 property:(int)a6 accessedPropertyDirectly:(id)a7
+- (BMSafariWindowProxy)initWithDomain:(id)domain openedDomain:(id)openedDomain visited:(id)visited property:(int)property accessedPropertyDirectly:(id)directly
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  domainCopy = domain;
+  openedDomainCopy = openedDomain;
+  visitedCopy = visited;
+  directlyCopy = directly;
   v20.receiver = self;
   v20.super_class = BMSafariWindowProxy;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_domain, a3);
-    objc_storeStrong(&v17->_openedDomain, a4);
-    if (v15)
+    objc_storeStrong(&v17->_domain, domain);
+    objc_storeStrong(&v17->_openedDomain, openedDomain);
+    if (visitedCopy)
     {
       v17->_hasRaw_visited = 1;
-      [v15 timeIntervalSince1970];
+      [visitedCopy timeIntervalSince1970];
     }
 
     else
@@ -785,11 +785,11 @@ LABEL_61:
     }
 
     v17->_raw_visited = v18;
-    v17->_property = a6;
-    if (v16)
+    v17->_property = property;
+    if (directlyCopy)
     {
       v17->_hasAccessedPropertyDirectly = 1;
-      v17->_accessedPropertyDirectly = [v16 BOOLValue];
+      v17->_accessedPropertyDirectly = [directlyCopy BOOLValue];
     }
 
     else
@@ -841,9 +841,9 @@ LABEL_61:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -851,8 +851,8 @@ LABEL_61:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariWindowProxy alloc] initByReadFrom:v7];
     v4 = v8;

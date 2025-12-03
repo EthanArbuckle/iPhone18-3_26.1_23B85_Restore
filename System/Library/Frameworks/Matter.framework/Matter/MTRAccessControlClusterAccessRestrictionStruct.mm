@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterAccessRestrictionStruct
 - (MTRAccessControlClusterAccessRestrictionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterAccessRestrictionStruct);
-  v5 = [(MTRAccessControlClusterAccessRestrictionStruct *)self type];
-  [(MTRAccessControlClusterAccessRestrictionStruct *)v4 setType:v5];
+  type = [(MTRAccessControlClusterAccessRestrictionStruct *)self type];
+  [(MTRAccessControlClusterAccessRestrictionStruct *)v4 setType:type];
 
   v6 = [(MTRAccessControlClusterAccessRestrictionStruct *)self id];
   [(MTRAccessControlClusterAccessRestrictionStruct *)v4 setId:v6];

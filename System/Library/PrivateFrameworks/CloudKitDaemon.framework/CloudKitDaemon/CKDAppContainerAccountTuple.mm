@@ -1,6 +1,6 @@
 @interface CKDAppContainerAccountTuple
-- (BOOL)isEqual:(id)a3;
-- (CKDAppContainerAccountTuple)initWithAppContainerTuple:(id)a3 accountID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKDAppContainerAccountTuple)initWithAppContainerTuple:(id)tuple accountID:(id)d;
 - (id)CKPropertiesDescription;
 - (unint64_t)hash;
 @end
@@ -17,20 +17,20 @@
   return v13 ^ v7;
 }
 
-- (CKDAppContainerAccountTuple)initWithAppContainerTuple:(id)a3 accountID:(id)a4
+- (CKDAppContainerAccountTuple)initWithAppContainerTuple:(id)tuple accountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  tupleCopy = tuple;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = CKDAppContainerAccountTuple;
   v10 = [(CKDAppContainerAccountTuple *)&v18 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(tupleCopy, v8, v9);
     appContainerTuple = v10->_appContainerTuple;
     v10->_appContainerTuple = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(dCopy, v13, v14);
     accountID = v10->_accountID;
     v10->_accountID = v15;
   }
@@ -38,10 +38,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -51,7 +51,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_accountID(self, v6, v7);
       v11 = objc_msgSend_accountID(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual();

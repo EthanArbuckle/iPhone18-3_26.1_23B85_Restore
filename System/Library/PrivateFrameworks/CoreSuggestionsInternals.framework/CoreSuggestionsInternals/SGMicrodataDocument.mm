@@ -1,7 +1,7 @@
 @interface SGMicrodataDocument
 - (SGMicrodataDocument)init;
 - (id)asJsonLd;
-- (id)jsonLdForItem:(id)a3;
+- (id)jsonLdForItem:(id)item;
 @end
 
 @implementation SGMicrodataDocument
@@ -63,30 +63,30 @@
   return v3;
 }
 
-- (id)jsonLdForItem:(id)a3
+- (id)jsonLdForItem:(id)item
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v28 = self;
-  [v4 resolveItemRefsWithDocument:self];
+  itemCopy = item;
+  selfCopy = self;
+  [itemCopy resolveItemRefsWithDocument:self];
   v5 = objc_opt_new();
-  v6 = [v4 itemType];
+  itemType = [itemCopy itemType];
 
-  if (v6)
+  if (itemType)
   {
-    v7 = [v4 itemType];
-    v8 = [v7 count];
+    itemType2 = [itemCopy itemType];
+    v8 = [itemType2 count];
 
-    v9 = [v4 itemType];
-    v10 = v9;
+    itemType3 = [itemCopy itemType];
+    v10 = itemType3;
     if (v8 == 1)
     {
-      [v9 anyObject];
+      [itemType3 anyObject];
     }
 
     else
     {
-      [v9 allObjects];
+      [itemType3 allObjects];
     }
     v11 = ;
     [v5 setObject:v11 forKeyedSubscript:@"@type"];
@@ -96,8 +96,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = [v4 itemProps];
-  v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  itemProps = [itemCopy itemProps];
+  v13 = [itemProps countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v13)
   {
     v14 = v13;
@@ -108,16 +108,16 @@
       {
         if (*v30 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(itemProps);
         }
 
         v17 = *(*(&v29 + 1) + 8 * i);
-        v18 = [v17 stringValue];
+        stringValue = [v17 stringValue];
 
-        if (v18)
+        if (stringValue)
         {
-          v19 = [v17 stringValue];
-          if (!v19)
+          stringValue2 = [v17 stringValue];
+          if (!stringValue2)
           {
             goto LABEL_21;
           }
@@ -125,44 +125,44 @@
 
         else
         {
-          v20 = [v17 itemValue];
-          v19 = [(SGMicrodataDocument *)v28 jsonLdForItem:v20];
+          itemValue = [v17 itemValue];
+          stringValue2 = [(SGMicrodataDocument *)selfCopy jsonLdForItem:itemValue];
 
-          if (!v19)
+          if (!stringValue2)
           {
             goto LABEL_21;
           }
         }
 
-        v21 = [v17 propertyName];
-        v22 = [v5 objectForKeyedSubscript:v21];
+        propertyName = [v17 propertyName];
+        v22 = [v5 objectForKeyedSubscript:propertyName];
 
         if (v22)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v22 addObject:v19];
+            [v22 addObject:stringValue2];
           }
 
           else
           {
-            v24 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v22, v19, 0}];
-            v25 = [v17 propertyName];
-            [v5 setObject:v24 forKeyedSubscript:v25];
+            v24 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v22, stringValue2, 0}];
+            propertyName2 = [v17 propertyName];
+            [v5 setObject:v24 forKeyedSubscript:propertyName2];
           }
         }
 
         else
         {
-          v23 = [v17 propertyName];
-          [v5 setObject:v19 forKeyedSubscript:v23];
+          propertyName3 = [v17 propertyName];
+          [v5 setObject:stringValue2 forKeyedSubscript:propertyName3];
         }
 
 LABEL_21:
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v14 = [itemProps countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v14);

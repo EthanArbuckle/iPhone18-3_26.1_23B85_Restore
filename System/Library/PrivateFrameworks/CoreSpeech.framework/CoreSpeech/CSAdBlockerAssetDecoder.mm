@@ -1,12 +1,12 @@
 @interface CSAdBlockerAssetDecoder
-- (CSAdBlockerAssetDecoder)initWithAssetPath:(id)a3;
+- (CSAdBlockerAssetDecoder)initWithAssetPath:(id)path;
 @end
 
 @implementation CSAdBlockerAssetDecoder
 
-- (CSAdBlockerAssetDecoder)initWithAssetPath:(id)a3
+- (CSAdBlockerAssetDecoder)initWithAssetPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = CSAdBlockerAssetDecoder;
   v5 = [(CSAdBlockerAssetDecoder *)&v14 init];
@@ -21,12 +21,12 @@
     *buf = 136315394;
     v16 = "[CSAdBlockerAssetDecoder initWithAssetPath:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = pathCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s initilizing adBlockerAssetDecoder with assetPath: %@", buf, 0x16u);
   }
 
   v13 = 0;
-  v7 = [NSData dataWithContentsOfFile:v4 options:2 error:&v13];
+  v7 = [NSData dataWithContentsOfFile:pathCopy options:2 error:&v13];
   v8 = v13;
   payLoadData = v5->_payLoadData;
   v5->_payLoadData = v7;

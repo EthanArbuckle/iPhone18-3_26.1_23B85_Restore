@@ -1,7 +1,7 @@
 @interface MFLock
-- (BOOL)lockBeforeDate:(id)a3;
+- (BOOL)lockBeforeDate:(id)date;
 - (BOOL)tryLock;
-- (MFLock)initWithName:(id)a3 andDelegate:(id)a4;
+- (MFLock)initWithName:(id)name andDelegate:(id)delegate;
 - (id)description;
 - (void)dealloc;
 - (void)lock;
@@ -39,15 +39,15 @@
   [(MFLock *)&v3 dealloc];
 }
 
-- (MFLock)initWithName:(id)a3 andDelegate:(id)a4
+- (MFLock)initWithName:(id)name andDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = MFLock;
   v6 = [(MFLock *)&v8 init];
   if (v6)
   {
-    v6->_name = [a3 copy];
-    v6->_delegate = a4;
+    v6->_name = [name copy];
+    v6->_delegate = delegate;
   }
 
   return v6;
@@ -63,16 +63,16 @@
 
   v6.receiver = self;
   v6.super_class = MFLock;
-  v4 = [(MFLock *)&v6 tryLock];
-  if (v4)
+  tryLock = [(MFLock *)&v6 tryLock];
+  if (tryLock)
   {
     _mfRegisterLockOnThisThread(self);
   }
 
-  return v4;
+  return tryLock;
 }
 
-- (BOOL)lockBeforeDate:(id)a3
+- (BOOL)lockBeforeDate:(id)date
 {
   delegate = self->_delegate;
   if (delegate)
@@ -82,7 +82,7 @@
 
   v8.receiver = self;
   v8.super_class = MFLock;
-  v6 = [(MFLock *)&v8 lockBeforeDate:a3];
+  v6 = [(MFLock *)&v8 lockBeforeDate:date];
   if (v6)
   {
     _mfRegisterLockOnThisThread(self);

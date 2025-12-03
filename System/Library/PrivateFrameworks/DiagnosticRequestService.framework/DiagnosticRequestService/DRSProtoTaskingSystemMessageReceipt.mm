@@ -1,12 +1,12 @@
 @interface DRSProtoTaskingSystemMessageReceipt
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoTaskingSystemMessageReceipt
@@ -17,159 +17,159 @@
   v8.receiver = self;
   v8.super_class = DRSProtoTaskingSystemMessageReceipt;
   v4 = [(DRSProtoTaskingSystemMessageReceipt *)&v8 description];
-  v5 = [(DRSProtoTaskingSystemMessageReceipt *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoTaskingSystemMessageReceipt *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   taskingDeviceMetadata = self->_taskingDeviceMetadata;
   if (taskingDeviceMetadata)
   {
-    v6 = [(DRSProtoTaskingDeviceMetadata *)taskingDeviceMetadata dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"tasking_device_metadata"];
+    dictionaryRepresentation = [(DRSProtoTaskingDeviceMetadata *)taskingDeviceMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"tasking_device_metadata"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   messageType = self->_messageType;
   if (messageType)
   {
-    [v3 setObject:messageType forKey:@"message_type"];
+    [dictionary setObject:messageType forKey:@"message_type"];
   }
 
   channelType = self->_channelType;
   if (channelType)
   {
-    [v3 setObject:channelType forKey:@"channel_type"];
+    [dictionary setObject:channelType forKey:@"channel_type"];
   }
 
   channelEnvironment = self->_channelEnvironment;
   if (channelEnvironment)
   {
-    [v3 setObject:channelEnvironment forKey:@"channel_environment"];
+    [dictionary setObject:channelEnvironment forKey:@"channel_environment"];
   }
 
   if (*&self->_has)
   {
     *&v4 = self->_receiptDelay;
     v11 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v11 forKey:@"receipt_delay"];
+    [dictionary setObject:v11 forKey:@"receipt_delay"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_taskingDeviceMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_messageType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_channelType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_channelEnvironment)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     receiptDelay = self->_receiptDelay;
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_taskingDeviceMetadata)
   {
-    [v4 setTaskingDeviceMetadata:?];
-    v4 = v5;
+    [toCopy setTaskingDeviceMetadata:?];
+    toCopy = v5;
   }
 
   if (self->_uuid)
   {
     [v5 setUuid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_messageType)
   {
     [v5 setMessageType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelType)
   {
     [v5 setChannelType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelEnvironment)
   {
     [v5 setChannelEnvironment:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = LODWORD(self->_receiptDelay);
-    *(v4 + 56) |= 1u;
+    *(toCopy + 8) = LODWORD(self->_receiptDelay);
+    *(toCopy + 56) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DRSProtoTaskingDeviceMetadata *)self->_taskingDeviceMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DRSProtoTaskingDeviceMetadata *)self->_taskingDeviceMetadata copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_uuid copyWithZone:a3];
+  v8 = [(NSString *)self->_uuid copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_messageType copyWithZone:a3];
+  v10 = [(NSString *)self->_messageType copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSString *)self->_channelType copyWithZone:a3];
+  v12 = [(NSString *)self->_channelType copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSString *)self->_channelEnvironment copyWithZone:a3];
+  v14 = [(NSString *)self->_channelEnvironment copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
@@ -182,16 +182,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   taskingDeviceMetadata = self->_taskingDeviceMetadata;
-  if (taskingDeviceMetadata | *(v4 + 5))
+  if (taskingDeviceMetadata | *(equalCopy + 5))
   {
     if (![(DRSProtoTaskingDeviceMetadata *)taskingDeviceMetadata isEqual:?])
     {
@@ -200,7 +200,7 @@
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 6))
+  if (uuid | *(equalCopy + 6))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -209,7 +209,7 @@
   }
 
   messageType = self->_messageType;
-  if (messageType | *(v4 + 3))
+  if (messageType | *(equalCopy + 3))
   {
     if (![(NSString *)messageType isEqual:?])
     {
@@ -218,7 +218,7 @@
   }
 
   channelType = self->_channelType;
-  if (channelType | *(v4 + 2))
+  if (channelType | *(equalCopy + 2))
   {
     if (![(NSString *)channelType isEqual:?])
     {
@@ -227,7 +227,7 @@
   }
 
   channelEnvironment = self->_channelEnvironment;
-  if (channelEnvironment | *(v4 + 1))
+  if (channelEnvironment | *(equalCopy + 1))
   {
     if (![(NSString *)channelEnvironment isEqual:?])
     {
@@ -235,10 +235,10 @@
     }
   }
 
-  v10 = (*(v4 + 56) & 1) == 0;
+  v10 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) != 0 && self->_receiptDelay == *(v4 + 8))
+    if ((*(equalCopy + 56) & 1) != 0 && self->_receiptDelay == *(equalCopy + 8))
     {
       v10 = 1;
       goto LABEL_17;
@@ -296,12 +296,12 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   taskingDeviceMetadata = self->_taskingDeviceMetadata;
-  v6 = *(v4 + 5);
-  v7 = v4;
+  v6 = *(fromCopy + 5);
+  v7 = fromCopy;
   if (taskingDeviceMetadata)
   {
     if (!v6)
@@ -322,35 +322,35 @@ LABEL_17:
     [(DRSProtoTaskingSystemMessageReceipt *)self setTaskingDeviceMetadata:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(DRSProtoTaskingSystemMessageReceipt *)self setUuid:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(DRSProtoTaskingSystemMessageReceipt *)self setMessageType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(DRSProtoTaskingSystemMessageReceipt *)self setChannelType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(DRSProtoTaskingSystemMessageReceipt *)self setChannelEnvironment:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_receiptDelay = *(v4 + 8);
+    self->_receiptDelay = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 }

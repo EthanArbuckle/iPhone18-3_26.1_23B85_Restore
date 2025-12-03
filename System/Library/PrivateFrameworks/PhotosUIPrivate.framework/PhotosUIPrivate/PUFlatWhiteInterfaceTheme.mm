@@ -32,14 +32,14 @@
 - (UIImage)airPlayVideoPlaceholderIcon;
 - (UIImage)compactLoadErrorIcon;
 - (UIImage)regularLoadErrorIcon;
-- (UIOffset)topLevelNavigationBarButtonTitlePositionAdjustmentforBarMetrics:(int64_t)a3;
-- (id)_fontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4;
-- (id)_themeImageWithBaseName:(id)a3;
-- (id)photoCollectionCloudQuotaBannerBackgroundColorHighlighted:(BOOL)a3;
+- (UIOffset)topLevelNavigationBarButtonTitlePositionAdjustmentforBarMetrics:(int64_t)metrics;
+- (id)_fontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits;
+- (id)_themeImageWithBaseName:(id)name;
+- (id)photoCollectionCloudQuotaBannerBackgroundColorHighlighted:(BOOL)highlighted;
 - (id)photoCollectionCloudQuotaBannerFont;
-- (id)photoCollectionCloudQuotaBannerLinkTextColorHighlighted:(BOOL)a3;
+- (id)photoCollectionCloudQuotaBannerLinkTextColorHighlighted:(BOOL)highlighted;
 - (id)photoCollectionCloudQuotaBannerLinkTextFont;
-- (id)photoCollectionCloudQuotaBannerTextColorHighlighted:(BOOL)a3;
+- (id)photoCollectionCloudQuotaBannerTextColorHighlighted:(BOOL)highlighted;
 - (id)photoEditingDepthBadgeDisabledColor;
 - (id)photoEditingDepthBadgeDisabledTextColor;
 - (id)photoEditingDepthBadgeEnabledTextColor;
@@ -48,23 +48,23 @@
 - (id)searchItalicTitleAttributes;
 - (id)searchTitleLabelHighlightedFont;
 - (int)photoCollectionViewBackgroundColorValue;
-- (void)configureAlbumListSectionTitleLabel:(id)a3;
-- (void)configureAlbumListStackViewPhonePhotoDecoration:(id)a3;
-- (void)configureAlbumListSubtitleLabel:(id)a3 asOpaque:(BOOL)a4;
-- (void)configureAlbumListTitleLabel:(id)a3 asOpaque:(BOOL)a4;
-- (void)configureAlbumListTitleTextField:(id)a3 asOpaque:(BOOL)a4;
-- (void)configureBannerLabel:(id)a3;
-- (void)configureBannerStackView:(id)a3;
-- (void)configureCompactProgressIndicatorMessageLabel:(id)a3;
-- (void)configureEditPluginListCellLabel:(id)a3;
-- (void)configureEditPluginNavigationController:(id)a3;
-- (void)configureEditPluginUserDefaultsCell:(id)a3 withIcon:(id)a4 title:(id)a5;
-- (void)configureEditPluginUserDefaultsTableView:(id)a3;
-- (void)configureMapViewAnnotationCountLabel:(id)a3;
-- (void)configureProgressIndicatorMessageLabel:(id)a3;
-- (void)configureSearchResultCountLabel:(id)a3;
-- (void)configureSearchSubtitleLabel:(id)a3;
-- (void)configureSearchTitleLabel:(id)a3;
+- (void)configureAlbumListSectionTitleLabel:(id)label;
+- (void)configureAlbumListStackViewPhonePhotoDecoration:(id)decoration;
+- (void)configureAlbumListSubtitleLabel:(id)label asOpaque:(BOOL)opaque;
+- (void)configureAlbumListTitleLabel:(id)label asOpaque:(BOOL)opaque;
+- (void)configureAlbumListTitleTextField:(id)field asOpaque:(BOOL)opaque;
+- (void)configureBannerLabel:(id)label;
+- (void)configureBannerStackView:(id)view;
+- (void)configureCompactProgressIndicatorMessageLabel:(id)label;
+- (void)configureEditPluginListCellLabel:(id)label;
+- (void)configureEditPluginNavigationController:(id)controller;
+- (void)configureEditPluginUserDefaultsCell:(id)cell withIcon:(id)icon title:(id)title;
+- (void)configureEditPluginUserDefaultsTableView:(id)view;
+- (void)configureMapViewAnnotationCountLabel:(id)label;
+- (void)configureProgressIndicatorMessageLabel:(id)label;
+- (void)configureSearchResultCountLabel:(id)label;
+- (void)configureSearchSubtitleLabel:(id)label;
+- (void)configureSearchTitleLabel:(id)label;
 @end
 
 @implementation PUFlatWhiteInterfaceTheme
@@ -73,11 +73,11 @@
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = *MEMORY[0x1E69DB648];
-  v3 = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
-  v8[0] = v3;
+  searchTitleLabelFont = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
+  v8[0] = searchTitleLabelFont;
   v7[1] = *MEMORY[0x1E69DB650];
-  v4 = [(PUFlatWhiteInterfaceTheme *)self searchTitleDimmedTextColor];
-  v8[1] = v4;
+  searchTitleDimmedTextColor = [(PUFlatWhiteInterfaceTheme *)self searchTitleDimmedTextColor];
+  v8[1] = searchTitleDimmedTextColor;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -87,11 +87,11 @@
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = *MEMORY[0x1E69DB648];
-  v3 = [(PUFlatWhiteInterfaceTheme *)self searchItalicTitleLabelFont];
-  v8[0] = v3;
+  searchItalicTitleLabelFont = [(PUFlatWhiteInterfaceTheme *)self searchItalicTitleLabelFont];
+  v8[0] = searchItalicTitleLabelFont;
   v7[1] = *MEMORY[0x1E69DB650];
-  v4 = [(PUFlatWhiteInterfaceTheme *)self searchTitleTextColor];
-  v8[1] = v4;
+  searchTitleTextColor = [(PUFlatWhiteInterfaceTheme *)self searchTitleTextColor];
+  v8[1] = searchTitleTextColor;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -101,34 +101,34 @@
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = *MEMORY[0x1E69DB648];
-  v3 = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
-  v8[0] = v3;
+  searchTitleLabelFont = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
+  v8[0] = searchTitleLabelFont;
   v7[1] = *MEMORY[0x1E69DB650];
-  v4 = [(PUFlatWhiteInterfaceTheme *)self searchTitleTextColor];
-  v8[1] = v4;
+  searchTitleTextColor = [(PUFlatWhiteInterfaceTheme *)self searchTitleTextColor];
+  v8[1] = searchTitleTextColor;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-- (void)configureSearchResultCountLabel:(id)a3
+- (void)configureSearchResultCountLabel:(id)label
 {
-  v9 = a3;
-  v4 = [(PUFlatWhiteInterfaceTheme *)self searchResultCountLabelFont];
-  [v9 setFont:v4];
+  labelCopy = label;
+  searchResultCountLabelFont = [(PUFlatWhiteInterfaceTheme *)self searchResultCountLabelFont];
+  [labelCopy setFont:searchResultCountLabelFont];
 
-  [v9 _setTextColorFollowsTintColor:1];
-  v5 = [(PUFlatWhiteInterfaceTheme *)self searchResultCountTextColor];
-  [v9 setTintColor:v5];
+  [labelCopy _setTextColorFollowsTintColor:1];
+  searchResultCountTextColor = [(PUFlatWhiteInterfaceTheme *)self searchResultCountTextColor];
+  [labelCopy setTintColor:searchResultCountTextColor];
 
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v7))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    [v9 setNumberOfLines:0];
+    [labelCopy setNumberOfLines:0];
     LODWORD(v8) = 1.0;
-    [v9 _setHyphenationFactor:v8];
+    [labelCopy _setHyphenationFactor:v8];
   }
 }
 
@@ -140,24 +140,24 @@
   return v3;
 }
 
-- (void)configureSearchSubtitleLabel:(id)a3
+- (void)configureSearchSubtitleLabel:(id)label
 {
-  v9 = a3;
-  v4 = [(PUFlatWhiteInterfaceTheme *)self searchSubtitleLabelFont];
-  [v9 setFont:v4];
+  labelCopy = label;
+  searchSubtitleLabelFont = [(PUFlatWhiteInterfaceTheme *)self searchSubtitleLabelFont];
+  [labelCopy setFont:searchSubtitleLabelFont];
 
-  [v9 _setTextColorFollowsTintColor:1];
-  v5 = [(PUFlatWhiteInterfaceTheme *)self searchSubtitleTextColor];
-  [v9 setTintColor:v5];
+  [labelCopy _setTextColorFollowsTintColor:1];
+  searchSubtitleTextColor = [(PUFlatWhiteInterfaceTheme *)self searchSubtitleTextColor];
+  [labelCopy setTintColor:searchSubtitleTextColor];
 
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v7))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    [v9 setNumberOfLines:0];
+    [labelCopy setNumberOfLines:0];
     LODWORD(v8) = 1.0;
-    [v9 _setHyphenationFactor:v8];
+    [labelCopy _setHyphenationFactor:v8];
   }
 }
 
@@ -169,34 +169,34 @@
   return v3;
 }
 
-- (void)configureSearchTitleLabel:(id)a3
+- (void)configureSearchTitleLabel:(id)label
 {
-  v9 = a3;
-  v4 = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
-  [v9 setFont:v4];
+  labelCopy = label;
+  searchTitleLabelFont = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
+  [labelCopy setFont:searchTitleLabelFont];
 
-  [v9 _setTextColorFollowsTintColor:1];
-  v5 = [(PUFlatWhiteInterfaceTheme *)self searchTitleTextColor];
-  [v9 setTintColor:v5];
+  [labelCopy _setTextColorFollowsTintColor:1];
+  searchTitleTextColor = [(PUFlatWhiteInterfaceTheme *)self searchTitleTextColor];
+  [labelCopy setTintColor:searchTitleTextColor];
 
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v7))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    [v9 setNumberOfLines:0];
+    [labelCopy setNumberOfLines:0];
     LODWORD(v8) = 1.0;
-    [v9 _setHyphenationFactor:v8];
+    [labelCopy _setHyphenationFactor:v8];
   }
 }
 
 - (id)searchTitleLabelHighlightedFont
 {
-  v2 = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
-  v3 = [v2 fontDescriptor];
+  searchTitleLabelFont = [(PUFlatWhiteInterfaceTheme *)self searchTitleLabelFont];
+  fontDescriptor = [searchTitleLabelFont fontDescriptor];
   v4 = MEMORY[0x1E69DB878];
-  v5 = [v3 fontDescriptorWithSymbolicTraits:32770];
-  [v2 pointSize];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:32770];
+  [searchTitleLabelFont pointSize];
   v6 = [v4 fontWithDescriptor:v5 size:?];
 
   return v6;
@@ -226,19 +226,19 @@
   return v3;
 }
 
-- (void)configureEditPluginUserDefaultsCell:(id)a3 withIcon:(id)a4 title:(id)a5
+- (void)configureEditPluginUserDefaultsCell:(id)cell withIcon:(id)icon title:(id)title
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 imageView];
-  [v10 setImage:v8];
+  titleCopy = title;
+  iconCopy = icon;
+  cellCopy = cell;
+  imageView = [cellCopy imageView];
+  [imageView setImage:iconCopy];
 
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-  if (v7)
+  if (titleCopy)
   {
-    v12 = v7;
+    v12 = titleCopy;
   }
 
   else
@@ -247,45 +247,45 @@
   }
 
   v20 = *MEMORY[0x1E69DB650];
-  v13 = [MEMORY[0x1E69DC888] blackColor];
-  v21[0] = v13;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v21[0] = blackColor;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v15 = [v11 initWithString:v12 attributes:v14];
 
-  v16 = [v9 textLabel];
-  [v16 setAttributedText:v15];
+  textLabel = [cellCopy textLabel];
+  [textLabel setAttributedText:v15];
 
-  v17 = [v9 textLabel];
-  v18 = [MEMORY[0x1E69DC888] clearColor];
-  [v17 setBackgroundColor:v18];
+  textLabel2 = [cellCopy textLabel];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [textLabel2 setBackgroundColor:clearColor];
 
-  v19 = [MEMORY[0x1E69DC888] clearColor];
-  [v9 setBackgroundColor:v19];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [cellCopy setBackgroundColor:clearColor2];
 }
 
-- (void)configureEditPluginUserDefaultsTableView:(id)a3
+- (void)configureEditPluginUserDefaultsTableView:(id)view
 {
   v3 = MEMORY[0x1E69DD250];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(v3);
-  [v4 setTableFooterView:v5];
+  [viewCopy setTableFooterView:v5];
 }
 
-- (void)configureEditPluginListCellLabel:(id)a3
+- (void)configureEditPluginListCellLabel:(id)label
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 blackColor];
-  [v4 setTextColor:v5];
+  labelCopy = label;
+  blackColor = [v3 blackColor];
+  [labelCopy setTextColor:blackColor];
 
   v6 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD08]];
-  [v4 setFont:v6];
+  [labelCopy setFont:v6];
 }
 
-- (void)configureEditPluginNavigationController:(id)a3
+- (void)configureEditPluginNavigationController:(id)controller
 {
-  v3 = [a3 navigationBar];
-  [v3 setBarStyle:1];
+  navigationBar = [controller navigationBar];
+  [navigationBar setBarStyle:1];
 }
 
 - (UIFont)topToolbarToolButtonFont
@@ -430,138 +430,138 @@ id __59__PUFlatWhiteInterfaceTheme_photoEditingCropInnerLineColor__block_invoke_
 
 - (UIColor)photoEditingTimecodeBackgroundColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.2];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.2];
 
   return v3;
 }
 
 - (UIColor)photoEditingEffectCellHighlightBackgroundColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.25];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.25];
 
   return v3;
 }
 
 - (UIColor)photoEditingCircularIndicatorBackgroundStrokeColor
 {
-  v2 = [MEMORY[0x1E69DC888] labelColor];
-  v3 = [v2 colorWithAlphaComponent:0.3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v3 = [labelColor colorWithAlphaComponent:0.3];
 
   return v3;
 }
 
 - (UIColor)photoEditingBadgeViewFillColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
   [v3 adjustmentLabelPlatterAlpha];
-  v4 = [v2 colorWithAlphaComponent:?];
+  v4 = [systemBackgroundColor colorWithAlphaComponent:?];
 
   return v4;
 }
 
 - (UIColor)photoEditingToolbarUnderlineColor
 {
-  v2 = [MEMORY[0x1E69DC888] labelColor];
-  v3 = [v2 colorWithAlphaComponent:0.200000003];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v3 = [labelColor colorWithAlphaComponent:0.200000003];
 
   return v3;
 }
 
 - (UIColor)photoEditingToolbarDarkGradientEndColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.0];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.0];
 
   return v3;
 }
 
 - (UIColor)photoEditingToolbarDarkGradientStartColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.600000024];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.600000024];
 
   return v3;
 }
 
 - (UIColor)photoEditingToolbarUltralightGradientEndColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.0];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.0];
 
   return v3;
 }
 
 - (UIColor)photoEditingToolbarUltralightGradientStartColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.200000003];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.200000003];
 
   return v3;
 }
 
 - (UIColor)photoEditingToolbarLightGradientEndColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.0];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.0];
 
   return v3;
 }
 
 - (UIColor)photoEditingToolbarLightGradientStartColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.400000006];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.400000006];
 
   return v3;
 }
 
 - (id)photoEditingDepthBadgeDisabledTextColor
 {
-  v2 = [MEMORY[0x1E69DC888] labelColor];
-  v3 = [v2 colorWithAlphaComponent:0.5];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v3 = [labelColor colorWithAlphaComponent:0.5];
 
   return v3;
 }
 
 - (id)photoEditingDepthBadgeEnabledTextColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.600000024];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.600000024];
 
   return v3;
 }
 
 - (id)photoEditingDepthBadgeDisabledColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.5];
 
   return v3;
 }
 
 - (UIColor)photoEditingAdjustmentsBarDisabledColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.800000012];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.800000012];
 
   return v3;
 }
 
 - (UIColor)photoEditingAdjustmentsBarBackgroundColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.899999976];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.899999976];
 
   return v3;
 }
 
 - (UIColor)photoEditingSolidBackgroundViewColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.8];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.8];
 
   return v3;
 }
@@ -631,100 +631,100 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
 - (UIFont)playbackTimeLabelFont
 {
   v2 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v3 = [v2 pu_fontWithMonospacedNumbers];
+  pu_fontWithMonospacedNumbers = [v2 pu_fontWithMonospacedNumbers];
 
-  return v3;
+  return pu_fontWithMonospacedNumbers;
 }
 
 - (UIColor)playbackTimeLabelBackgroundColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.8];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v3 = [systemBackgroundColor colorWithAlphaComponent:0.8];
 
   return v3;
 }
 
-- (void)configureCompactProgressIndicatorMessageLabel:(id)a3
+- (void)configureCompactProgressIndicatorMessageLabel:(id)label
 {
   v3 = MEMORY[0x1E69DB878];
   v4 = *MEMORY[0x1E69DB980];
-  v5 = a3;
+  labelCopy = label;
   v7 = [v3 systemFontOfSize:15.0 weight:v4];
-  [v5 setFont:v7];
-  [v5 _setTextColorFollowsTintColor:1];
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v5 setTintColor:v6];
+  [labelCopy setFont:v7];
+  [labelCopy _setTextColorFollowsTintColor:1];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [labelCopy setTintColor:secondaryLabelColor];
 }
 
-- (void)configureProgressIndicatorMessageLabel:(id)a3
+- (void)configureProgressIndicatorMessageLabel:(id)label
 {
   v3 = MEMORY[0x1E69DB878];
   v4 = *MEMORY[0x1E69DDD80];
-  v5 = a3;
+  labelCopy = label;
   v6 = [v3 px_defaultFontForTextStyle:v4 withSymbolicTraits:2];
-  [v5 setFont:v6];
+  [labelCopy setFont:v6];
 
-  [v5 _setTextColorFollowsTintColor:1];
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  v7 = [v8 colorWithAlphaComponent:0.5];
-  [v5 setTintColor:v7];
+  [labelCopy _setTextColorFollowsTintColor:1];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v7 = [labelColor colorWithAlphaComponent:0.5];
+  [labelCopy setTintColor:v7];
 }
 
-- (void)configureMapViewAnnotationCountLabel:(id)a3
+- (void)configureMapViewAnnotationCountLabel:(id)label
 {
   v3 = MEMORY[0x1E69DB878];
-  v4 = a3;
+  labelCopy = label;
   v5 = [v3 systemFontOfSize:16.0];
-  [v4 setFont:v5];
+  [labelCopy setFont:v5];
 
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setTextColor:v6];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [labelCopy setTextColor:whiteColor];
 
-  [v4 setTextAlignment:1];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v7];
+  [labelCopy setTextAlignment:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [labelCopy setBackgroundColor:clearColor];
 }
 
-- (void)configureBannerLabel:(id)a3
+- (void)configureBannerLabel:(id)label
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 clearColor];
-  [v4 setBackgroundColor:v5];
+  labelCopy = label;
+  clearColor = [v3 clearColor];
+  [labelCopy setBackgroundColor:clearColor];
 
   v6 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD48]];
-  [v4 setFont:v6];
+  [labelCopy setFont:v6];
 }
 
-- (void)configureBannerStackView:(id)a3
+- (void)configureBannerStackView:(id)view
 {
-  v3 = a3;
-  [v3 setStyle:2];
-  [v3 setStackSize:{48.0, 48.0}];
-  [v3 setStackOffset:{0.0, -1.0}];
-  [v3 setStackPerspectiveInsets:{2.0, 2.0, 2.0, 2.0}];
-  [v3 setStackPerspectiveOffset:{0.0, -4.0}];
+  viewCopy = view;
+  [viewCopy setStyle:2];
+  [viewCopy setStackSize:{48.0, 48.0}];
+  [viewCopy setStackOffset:{0.0, -1.0}];
+  [viewCopy setStackPerspectiveInsets:{2.0, 2.0, 2.0, 2.0}];
+  [viewCopy setStackPerspectiveOffset:{0.0, -4.0}];
 }
 
-- (void)configureAlbumListStackViewPhonePhotoDecoration:(id)a3
+- (void)configureAlbumListStackViewPhonePhotoDecoration:(id)decoration
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 whiteColor];
-  [v4 setBorderColor:v5];
+  decorationCopy = decoration;
+  whiteColor = [v3 whiteColor];
+  [decorationCopy setBorderColor:whiteColor];
 
   PLPhysicalScreenScale();
-  [v4 setBorderWidth:1.0 / v6];
+  [decorationCopy setBorderWidth:1.0 / v6];
   v7 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.0];
-  [v4 setForegroundColor:v7];
+  [decorationCopy setForegroundColor:v7];
 }
 
-- (void)configureAlbumListSectionTitleLabel:(id)a3
+- (void)configureAlbumListSectionTitleLabel:(id)label
 {
-  v3 = a3;
-  [v3 setNumberOfLines:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  labelCopy = label;
+  [labelCopy setNumberOfLines:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [labelCopy setBackgroundColor:clearColor];
 }
 
 - (UIFont)albumListSectionTitleLabelFont
@@ -735,12 +735,12 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
   return v3;
 }
 
-- (void)configureAlbumListSubtitleLabel:(id)a3 asOpaque:(BOOL)a4
+- (void)configureAlbumListSubtitleLabel:(id)label asOpaque:(BOOL)opaque
 {
-  v4 = a3;
-  [v4 _setTextColorFollowsTintColor:1];
-  v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v4 setTintColor:v5];
+  labelCopy = label;
+  [labelCopy _setTextColorFollowsTintColor:1];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [labelCopy setTintColor:secondaryLabelColor];
 }
 
 - (UIFont)albumListSubtitleLabelFont
@@ -751,13 +751,13 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
   return v3;
 }
 
-- (void)configureAlbumListTitleTextField:(id)a3 asOpaque:(BOOL)a4
+- (void)configureAlbumListTitleTextField:(id)field asOpaque:(BOOL)opaque
 {
-  v7 = a3;
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  [v7 setTextColor:v5];
+  fieldCopy = field;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [fieldCopy setTextColor:labelColor];
 
-  if (a4)
+  if (opaque)
   {
     [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
@@ -767,17 +767,17 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
     [MEMORY[0x1E69DC888] clearColor];
   }
   v6 = ;
-  [v7 setBackgroundColor:v6];
+  [fieldCopy setBackgroundColor:v6];
 
-  [v7 setReturnKeyType:9];
+  [fieldCopy setReturnKeyType:9];
 }
 
-- (void)configureAlbumListTitleLabel:(id)a3 asOpaque:(BOOL)a4
+- (void)configureAlbumListTitleLabel:(id)label asOpaque:(BOOL)opaque
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 labelColor];
-  [v5 setTextColor:v6];
+  labelCopy = label;
+  labelColor = [v4 labelColor];
+  [labelCopy setTextColor:labelColor];
 }
 
 - (UIFont)albumListTitleLabelFont
@@ -788,9 +788,9 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
   return v3;
 }
 
-- (id)photoCollectionCloudQuotaBannerLinkTextColorHighlighted:(BOOL)a3
+- (id)photoCollectionCloudQuotaBannerLinkTextColorHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -825,9 +825,9 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
   return result;
 }
 
-- (id)photoCollectionCloudQuotaBannerTextColorHighlighted:(BOOL)a3
+- (id)photoCollectionCloudQuotaBannerTextColorHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -841,9 +841,9 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
   return v3;
 }
 
-- (id)photoCollectionCloudQuotaBannerBackgroundColorHighlighted:(BOOL)a3
+- (id)photoCollectionCloudQuotaBannerBackgroundColorHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     [MEMORY[0x1E69DC888] colorWithRed:0.674509823 green:0.674509823 blue:0.674509823 alpha:1.0];
   }
@@ -875,8 +875,8 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
 
   v4 = v3;
   RenderingIntent = CGColorSpaceGetRenderingIntent();
-  v6 = [(PUFlatWhiteInterfaceTheme *)self photoCollectionViewBackgroundColor];
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v4, RenderingIntent, [v6 CGColor], 0);
+  photoCollectionViewBackgroundColor = [(PUFlatWhiteInterfaceTheme *)self photoCollectionViewBackgroundColor];
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v4, RenderingIntent, [photoCollectionViewBackgroundColor CGColor], 0);
 
   CGColorSpaceRelease(v4);
   if (!CopyByMatchingToColorSpace)
@@ -898,7 +898,7 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
   return vadd_s32(vdup_lane_s32(v15, 1), v15).u32[0] + (Components[1].f64[0] * 31.0);
 }
 
-- (UIOffset)topLevelNavigationBarButtonTitlePositionAdjustmentforBarMetrics:(int64_t)a3
+- (UIOffset)topLevelNavigationBarButtonTitlePositionAdjustmentforBarMetrics:(int64_t)metrics
 {
   v3 = *MEMORY[0x1E69DE258];
   v4 = *(MEMORY[0x1E69DE258] + 8);
@@ -907,27 +907,27 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
   return result;
 }
 
-- (id)_fontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4
+- (id)_fontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&traits;
+  styleCopy = style;
   v6 = MEMORY[0x1E69DDA98];
-  v7 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v9 = [*v6 preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [*v6 preferredContentSizeCategory];
     v10 = *MEMORY[0x1E69DDC38];
-    if (([v10 isEqualToString:*MEMORY[0x1E69DDC90]] & 1) == 0 && UIContentSizeCategoryCompareToCategory(v9, v10) == NSOrderedDescending)
+    if (([v10 isEqualToString:*MEMORY[0x1E69DDC90]] & 1) == 0 && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, v10) == NSOrderedDescending)
     {
       v11 = v10;
 
-      v9 = v11;
+      preferredContentSizeCategory2 = v11;
     }
 
-    v12 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v9];
-    v13 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v5 compatibleWithTraitCollection:v12];
+    v12 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory2];
+    v13 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:v12];
     v14 = v13;
     if (v4)
     {
@@ -939,22 +939,22 @@ void __49__PUFlatWhiteInterfaceTheme_compactLoadErrorIcon__block_invoke()
 
   else
   {
-    v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v5 addingSymbolicTraits:v4 options:2];
+    v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy addingSymbolicTraits:v4 options:2];
   }
 
   return v14;
 }
 
-- (id)_themeImageWithBaseName:(id)a3
+- (id)_themeImageWithBaseName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (_themeImageWithBaseName__onceToken != -1)
   {
     dispatch_once(&_themeImageWithBaseName__onceToken, &__block_literal_global_26997);
   }
 
-  v5 = [(PUFlatWhiteInterfaceTheme *)self themeImagePrefix];
-  v6 = [v5 stringByAppendingString:v4];
+  themeImagePrefix = [(PUFlatWhiteInterfaceTheme *)self themeImagePrefix];
+  v6 = [themeImagePrefix stringByAppendingString:nameCopy];
 
   if ([_themeImageWithBaseName__nonExistentImages containsObject:v6])
   {

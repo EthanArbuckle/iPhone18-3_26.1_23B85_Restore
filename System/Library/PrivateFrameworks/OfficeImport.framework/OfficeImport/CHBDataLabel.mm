@@ -1,34 +1,34 @@
 @interface CHBDataLabel
-+ (id)chdDataLabelFromXlChartCustomLabelText:(void *)a3 state:(id)a4;
-+ (id)chdDataLabelFromXlChartSeriesFormat:(const XlChartSeriesFormat *)a3 state:(id)a4;
-+ (int)chdLabelPositionEnumFromXlLabelPosition:(int)a3;
-+ (int)xlLabelPositionEnumFromCHDDataLabelPosition:(int)a3;
++ (id)chdDataLabelFromXlChartCustomLabelText:(void *)text state:(id)state;
++ (id)chdDataLabelFromXlChartSeriesFormat:(const XlChartSeriesFormat *)format state:(id)state;
++ (int)chdLabelPositionEnumFromXlLabelPosition:(int)position;
++ (int)xlLabelPositionEnumFromCHDDataLabelPosition:(int)position;
 @end
 
 @implementation CHBDataLabel
 
-+ (id)chdDataLabelFromXlChartSeriesFormat:(const XlChartSeriesFormat *)a3 state:(id)a4
++ (id)chdDataLabelFromXlChartSeriesFormat:(const XlChartSeriesFormat *)format state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 xlCurrentPlot];
+  stateCopy = state;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
   v7 = 0;
-  if (a3)
+  if (format)
   {
-    v8 = v6;
-    if (v6)
+    v8 = xlCurrentPlot;
+    if (xlCurrentPlot)
     {
-      v9 = [v5 resources];
-      v7 = [CHDDataLabel dataLabelWithResources:v9];
+      resources = [stateCopy resources];
+      v7 = [CHDDataLabel dataLabelWithResources:resources];
 
       [v7 setShowLeaderLines:*(v8 + 143)];
-      [v7 setShowCategoryName:a3->var19];
-      [v7 setShowPercent:a3->var18];
-      [v7 setShowBubbleSize:a3->var21];
-      [v7 setShowValue:a3->var17];
-      v10 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:a3 state:v5];
+      [v7 setShowCategoryName:format->var19];
+      [v7 setShowPercent:format->var18];
+      [v7 setShowBubbleSize:format->var21];
+      [v7 setShowValue:format->var17];
+      v10 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:format state:stateCopy];
       [v7 setGraphicProperties:v10];
 
-      v11 = [CHBGraphicProperties oadGraphicPropertiesFromXlLeaderLineStyleInPlot:v8 state:v5];
+      v11 = [CHBGraphicProperties oadGraphicPropertiesFromXlLeaderLineStyleInPlot:v8 state:stateCopy];
       [v7 setLeaderlineGraphicProperties:v11];
     }
   }
@@ -36,76 +36,76 @@
   return v7;
 }
 
-+ (id)chdDataLabelFromXlChartCustomLabelText:(void *)a3 state:(id)a4
++ (id)chdDataLabelFromXlChartCustomLabelText:(void *)text state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 xlCurrentPlot];
+  stateCopy = state;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
   v7 = 0;
-  if (a3)
+  if (text)
   {
-    v8 = v6;
-    if (v6)
+    v8 = xlCurrentPlot;
+    if (xlCurrentPlot)
     {
-      v9 = [v5 resources];
-      v7 = [CHDDataLabel dataLabelWithResources:v9];
+      resources = [stateCopy resources];
+      v7 = [CHDDataLabel dataLabelWithResources:resources];
 
       [v7 setShowLeaderLines:*(v8 + 143)];
-      [v7 setShowCategoryName:*(a3 + 197)];
-      [v7 setShowPercent:*(a3 + 199)];
-      [v7 setShowBubbleSize:*(a3 + 200)];
-      [v7 setShowValue:*(a3 + 196)];
-      [v7 setShowLegendKey:*(a3 + 195)];
-      [v7 setShowSeriesName:*(a3 + 198)];
-      [v7 setPosition:{+[CHBDataLabel chdLabelPositionEnumFromXlLabelPosition:](CHBDataLabel, "chdLabelPositionEnumFromXlLabelPosition:", *(a3 + 34))}];
-      if (*(a3 + 202))
+      [v7 setShowCategoryName:*(text + 197)];
+      [v7 setShowPercent:*(text + 199)];
+      [v7 setShowBubbleSize:*(text + 200)];
+      [v7 setShowValue:*(text + 196)];
+      [v7 setShowLegendKey:*(text + 195)];
+      [v7 setShowSeriesName:*(text + 198)];
+      [v7 setPosition:{+[CHBDataLabel chdLabelPositionEnumFromXlLabelPosition:](CHBDataLabel, "chdLabelPositionEnumFromXlLabelPosition:", *(text + 34))}];
+      if (*(text + 202))
       {
         [v7 setIsContentFormatDerivedFromDataPoints:1];
       }
 
       else
       {
-        [v7 setContentFormatId:*(a3 + 92)];
+        [v7 setContentFormatId:*(text + 92)];
       }
 
-      v10 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartTextFrame:a3 state:v5];
+      v10 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartTextFrame:text state:stateCopy];
       [v7 setGraphicProperties:v10];
 
-      v11 = [CHBGraphicProperties oadGraphicPropertiesFromXlLeaderLineStyleInPlot:v8 state:v5];
+      v11 = [CHBGraphicProperties oadGraphicPropertiesFromXlLeaderLineStyleInPlot:v8 state:stateCopy];
       [v7 setLeaderlineGraphicProperties:v11];
 
-      v12 = [CHBString edStringFromXlChartTextFrame:a3 state:v5];
+      v12 = [CHBString edStringFromXlChartTextFrame:text state:stateCopy];
       [v7 setString:v12];
 
-      [v7 setRotationAngle:*(a3 + 88)];
+      [v7 setRotationAngle:*(text + 88)];
     }
   }
 
   return v7;
 }
 
-+ (int)chdLabelPositionEnumFromXlLabelPosition:(int)a3
++ (int)chdLabelPositionEnumFromXlLabelPosition:(int)position
 {
-  if ((a3 - 1) >= 0xA)
+  if ((position - 1) >= 0xA)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return position;
   }
 }
 
-+ (int)xlLabelPositionEnumFromCHDDataLabelPosition:(int)a3
++ (int)xlLabelPositionEnumFromCHDDataLabelPosition:(int)position
 {
-  if ((a3 - 1) >= 0xA)
+  if ((position - 1) >= 0xA)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return position;
   }
 }
 

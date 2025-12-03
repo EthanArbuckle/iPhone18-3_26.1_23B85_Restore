@@ -1,18 +1,18 @@
 @interface CKReference
-+ (int)ckdpReferenceTypeForCKReferenceAction:(unint64_t)a3;
-+ (unint64_t)ckReferenceActionForCKDPRecordReferenceType:(int)a3;
++ (int)ckdpReferenceTypeForCKReferenceAction:(unint64_t)action;
++ (unint64_t)ckReferenceActionForCKDPRecordReferenceType:(int)type;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKReference)init;
-- (CKReference)initWithCoder:(id)a3;
+- (CKReference)initWithCoder:(id)coder;
 - (CKReference)initWithRecord:(CKRecord *)record action:(CKReferenceAction)action;
 - (CKReference)initWithRecordID:(CKRecordID *)recordID action:(CKReferenceAction)action;
 - (NSString)debugDescription;
 - (id)ckShortDescription;
 - (id)initInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRecordID_modelMutation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRecordID_modelMutation:(id)mutation;
 @end
 
 @implementation CKReference
@@ -25,21 +25,21 @@
   sub_1886CEE50(v3, v2, 0, 0, 0);
 }
 
-+ (unint64_t)ckReferenceActionForCKDPRecordReferenceType:(int)a3
++ (unint64_t)ckReferenceActionForCKDPRecordReferenceType:(int)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     v4 = [CKException alloc];
     v6 = objc_msgSend_initWithCode_format_(v4, v5, 12, @"Unexpected reference type");
     objc_exception_throw(v6);
   }
 
-  return qword_1886FE530[a3 - 1];
+  return qword_1886FE530[type - 1];
 }
 
-+ (int)ckdpReferenceTypeForCKReferenceAction:(unint64_t)a3
++ (int)ckdpReferenceTypeForCKReferenceAction:(unint64_t)action
 {
-  if (a3 == 2)
+  if (action == 2)
   {
     v3 = 3;
   }
@@ -49,7 +49,7 @@
     v3 = 2;
   }
 
-  if (a3 == 1)
+  if (action == 1)
   {
     return 1;
   }
@@ -133,19 +133,19 @@
   return v13;
 }
 
-- (void)setRecordID_modelMutation:(id)a3
+- (void)setRecordID_modelMutation:(id)mutation
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(mutation, a2, mutation);
   recordID = self->_recordID;
   self->_recordID = v4;
 
   MEMORY[0x1EEE66BB8](v4, recordID);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -155,7 +155,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_referenceAction(self, v6, v7);
       if (v8 == objc_msgSend_referenceAction(v5, v9, v10))
       {
@@ -217,25 +217,25 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_recordID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v13, v8, v7, @"recordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"recordID");
 
   v11 = objc_msgSend_referenceAction(self, v9, v10);
-  objc_msgSend_encodeInt64_forKey_(v13, v12, v11, @"referenceAction");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v12, v11, @"referenceAction");
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKReference)initWithCoder:(id)a3
+- (CKReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = objc_msgSend_decodeInt64ForKey_(v4, v5, @"referenceAction");
+  coderCopy = coder;
+  v6 = objc_msgSend_decodeInt64ForKey_(coderCopy, v5, @"referenceAction");
   v7 = objc_autoreleasePoolPush();
   v8 = objc_opt_class();
-  v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"recordID");
+  v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"recordID");
   objc_autoreleasePoolPop(v7);
   v12 = objc_msgSend_initWithRecordID_action_(self, v11, v10, v6);
 

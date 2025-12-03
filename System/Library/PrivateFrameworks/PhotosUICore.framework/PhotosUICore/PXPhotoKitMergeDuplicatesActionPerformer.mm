@@ -1,15 +1,15 @@
 @interface PXPhotoKitMergeDuplicatesActionPerformer
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4;
-+ (BOOL)shouldEnableWithActionManager:(id)a3;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error;
++ (BOOL)shouldEnableWithActionManager:(id)manager;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
 - (void)_clearSelection;
-- (void)_presentDuplicatesTypeDialogWithIdenticalCount:(int64_t)a3 totalCount:(int64_t)a4 completion:(id)a5;
-- (void)_presentGenericFailureAlertAndCompleteBackgroundTaskWithError:(id)a3;
-- (void)completeBackgroundTaskWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_presentDuplicatesTypeDialogWithIdenticalCount:(int64_t)count totalCount:(int64_t)totalCount completion:(id)completion;
+- (void)_presentGenericFailureAlertAndCompleteBackgroundTaskWithError:(id)error;
+- (void)completeBackgroundTaskWithSuccess:(BOOL)success error:(id)error;
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error;
 - (void)performBackgroundTask;
-- (void)performMergeWithSelection:(id)a3 localizedMessage:(id)a4 onlyIdenticalItemsSelected:(BOOL)a5;
+- (void)performMergeWithSelection:(id)selection localizedMessage:(id)message onlyIdenticalItemsSelected:(BOOL)selected;
 - (void)performUserInteractionTask;
 @end
 
@@ -22,23 +22,23 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Will clear selection", &v5, 0xCu);
   }
 
-  v4 = [(PXAssetActionPerformer *)self selectionManager];
-  [v4 performChanges:&__block_literal_global_30952];
+  selectionManager = [(PXAssetActionPerformer *)self selectionManager];
+  [selectionManager performChanges:&__block_literal_global_30952];
 }
 
-- (void)_presentGenericFailureAlertAndCompleteBackgroundTaskWithError:(id)a3
+- (void)_presentGenericFailureAlertAndCompleteBackgroundTaskWithError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Present Server Side Disabled Alert", buf, 0xCu);
   }
 
@@ -51,11 +51,11 @@
   v15 = 3221225472;
   v16 = __106__PXPhotoKitMergeDuplicatesActionPerformer__presentGenericFailureAlertAndCompleteBackgroundTaskWithError___block_invoke;
   v17 = &unk_1E774A2C8;
-  v18 = self;
-  v11 = v4;
+  selfCopy2 = self;
+  v11 = errorCopy;
   v19 = v11;
   v12 = [v9 actionWithTitle:v10 style:0 handler:&v14];
-  [v8 addAction:{v12, v14, v15, v16, v17, v18}];
+  [v8 addAction:{v12, v14, v15, v16, v17, selfCopy2}];
 
   if (![(PXActionPerformer *)self presentViewController:v8])
   {
@@ -64,14 +64,14 @@
   }
 }
 
-- (void)completeBackgroundTaskWithSuccess:(BOOL)a3 error:(id)a4
+- (void)completeBackgroundTaskWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   v7 = PLDuplicateDetectionGetLog();
   v8 = v7;
-  if (v4)
+  if (successCopy)
   {
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -79,7 +79,7 @@
     }
 
     *buf = 138543362;
-    v15 = self;
+    selfCopy2 = self;
     v9 = "%{public}@ Merge succeeded";
     v10 = v8;
     v11 = OS_LOG_TYPE_DEFAULT;
@@ -94,9 +94,9 @@
     }
 
     *buf = 138543618;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2112;
-    v17 = v6;
+    v17 = errorCopy;
     v9 = "%{public}@ Merge failed with error %@";
     v10 = v8;
     v11 = OS_LOG_TYPE_ERROR;
@@ -108,8 +108,8 @@ LABEL_7:
 
   v13.receiver = self;
   v13.super_class = PXPhotoKitMergeDuplicatesActionPerformer;
-  [(PXActionPerformer *)&v13 completeBackgroundTaskWithSuccess:v4 error:v6];
-  if (!v4)
+  [(PXActionPerformer *)&v13 completeBackgroundTaskWithSuccess:successCopy error:errorCopy];
+  if (!successCopy)
   {
     [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.deduplicationEventFailed" withPayload:MEMORY[0x1E695E0F8]];
   }
@@ -126,13 +126,13 @@ LABEL_7:
   {
     if (v6)
     {
-      v7 = [(PXSelectionSnapshot *)self->_mergeableSelection selectedIndexPaths];
+      selectedIndexPaths = [(PXSelectionSnapshot *)self->_mergeableSelection selectedIndexPaths];
       *buf = 138543874;
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2048;
       v11 = v4;
       v12 = 2048;
-      v13 = [v7 count];
+      v13 = [selectedIndexPaths count];
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will attempt merging %tu duplicate groups with a total of %tu assets", buf, 0x20u);
     }
 
@@ -146,7 +146,7 @@ LABEL_7:
   if (v6)
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Merge skipped, no assets selected.", buf, 0xCu);
   }
 
@@ -181,36 +181,36 @@ uint64_t __65__PXPhotoKitMergeDuplicatesActionPerformer_performBackgroundTask__b
   }
 }
 
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v6.receiver = self;
   v6.super_class = PXPhotoKitMergeDuplicatesActionPerformer;
-  [(PXActionPerformer *)&v6 completeUserInteractionTaskWithSuccess:a3 error:a4];
-  if (v4)
+  [(PXActionPerformer *)&v6 completeUserInteractionTaskWithSuccess:success error:error];
+  if (successCopy)
   {
     [(PXPhotoKitMergeDuplicatesActionPerformer *)self _clearSelection];
   }
 }
 
-- (void)performMergeWithSelection:(id)a3 localizedMessage:(id)a4 onlyIdenticalItemsSelected:(BOOL)a5
+- (void)performMergeWithSelection:(id)selection localizedMessage:(id)message onlyIdenticalItemsSelected:(BOOL)selected
 {
-  v5 = a5;
+  selectedCopy = selected;
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 sectionIndexPathsContainingSelection];
-  [v10 count];
+  selectionCopy = selection;
+  messageCopy = message;
+  sectionIndexPathsContainingSelection = [selectionCopy sectionIndexPathsContainingSelection];
+  [sectionIndexPathsContainingSelection count];
 
   v11 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Present Confirmation Dialog", buf, 0xCu);
   }
 
-  if (v5)
+  if (selectedCopy)
   {
     v12 = @"MERGE_%ld_DUPLICATES_CONFIRMATION_IDENTICAL_FORMAT";
   }
@@ -222,7 +222,7 @@ uint64_t __65__PXPhotoKitMergeDuplicatesActionPerformer_performBackgroundTask__b
 
   PXLocalizedStringFromTable(v12, @"PhotosUICore");
   objc_claimAutoreleasedReturnValue();
-  [v8 selectedIndexPaths];
+  [selectionCopy selectedIndexPaths];
   [objc_claimAutoreleasedReturnValue() count];
   PXLocalizedStringWithValidatedFormat();
 }
@@ -244,10 +244,10 @@ uint64_t __114__PXPhotoKitMergeDuplicatesActionPerformer_performMergeWithSelecti
   return [v2 completeUserInteractionTaskWithSuccess:0 error:0];
 }
 
-- (void)_presentDuplicatesTypeDialogWithIdenticalCount:(int64_t)a3 totalCount:(int64_t)a4 completion:(id)a5
+- (void)_presentDuplicatesTypeDialogWithIdenticalCount:(int64_t)count totalCount:(int64_t)totalCount completion:(id)completion
 {
-  v7 = a5;
-  if (a4 == a3)
+  completionCopy = completion;
+  if (totalCount == count)
   {
     PXAssertGetLog();
   }
@@ -273,15 +273,15 @@ uint64_t __113__PXPhotoKitMergeDuplicatesActionPerformer__presentDuplicatesTypeD
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v4 = PXDeduplicationAssetsThatCanBeMergedInSelection(v3);
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  v4 = PXDeduplicationAssetsThatCanBeMergedInSelection(selectionSnapshot);
 
-  v5 = [v4 selectedIndexPaths];
-  v6 = [v5 count];
+  selectedIndexPaths = [v4 selectedIndexPaths];
+  v6 = [selectedIndexPaths count];
 
   if (!v6)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_5;
   }
@@ -289,16 +289,16 @@ uint64_t __113__PXPhotoKitMergeDuplicatesActionPerformer__presentDuplicatesTypeD
   if ([(PXPhotoKitAssetActionPerformer *)self shouldSkipUserConfirmation])
   {
     objc_storeStrong(&self->_mergeableSelection, v4);
-    v7 = self;
+    selfCopy2 = self;
     v8 = 1;
 LABEL_5:
-    [(PXPhotoKitMergeDuplicatesActionPerformer *)v7 completeUserInteractionTaskWithSuccess:v8 error:0];
+    [(PXPhotoKitMergeDuplicatesActionPerformer *)selfCopy2 completeUserInteractionTaskWithSuccess:v8 error:0];
     goto LABEL_11;
   }
 
   v9 = PXDeduplicationIdenticalSelectionFromSelection(v4);
-  v10 = [v9 selectedIndexPaths];
-  v11 = [v10 count];
+  selectedIndexPaths2 = [v9 selectedIndexPaths];
+  v11 = [selectedIndexPaths2 count];
 
   if (v11 == v6 || !v11)
   {
@@ -315,7 +315,7 @@ LABEL_5:
     v14[3] = &unk_1E77302B8;
     v15 = v9;
     v16 = v4;
-    v17 = self;
+    selfCopy3 = self;
     [(PXPhotoKitMergeDuplicatesActionPerformer *)self _presentDuplicatesTypeDialogWithIdenticalCount:v11 totalCount:v6 completion:v14];
   }
 
@@ -347,17 +347,17 @@ void __70__PXPhotoKitMergeDuplicatesActionPerformer_performUserInteractionTask__
   }
 }
 
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error
 {
-  v6 = [a3 selectionManager];
-  v7 = [v6 dataSourceManager];
+  selectionManager = [manager selectionManager];
+  dataSourceManager = [selectionManager dataSourceManager];
 
-  if (!v7)
+  if (!dataSourceManager)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitMergeDuplicatesActionPerformer.m" lineNumber:59 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"actionManager.selectionManager.dataSourceManager", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMergeDuplicatesActionPerformer.m" lineNumber:59 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"actionManager.selectionManager.dataSourceManager", v14}];
 LABEL_9:
 
     goto LABEL_3;
@@ -366,63 +366,63 @@ LABEL_9:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v7 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitMergeDuplicatesActionPerformer.m" lineNumber:59 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"actionManager.selectionManager.dataSourceManager", v14, v16}];
+    px_descriptionForAssertionMessage = [dataSourceManager px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMergeDuplicatesActionPerformer.m" lineNumber:59 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"actionManager.selectionManager.dataSourceManager", v14, px_descriptionForAssertionMessage}];
 
     goto LABEL_9;
   }
 
 LABEL_3:
-  v8 = [v7 dataSource];
-  v9 = [v8 containerCollection];
+  dataSource = [dataSourceManager dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  if (v9)
+  if (containerCollection)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [v9 px_descriptionForAssertionMessage];
-      [v17 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitMergeDuplicatesActionPerformer.m" lineNumber:60 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"dataSourceManager.dataSource.containerCollection", v19, v20}];
+      px_descriptionForAssertionMessage2 = [containerCollection px_descriptionForAssertionMessage];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMergeDuplicatesActionPerformer.m" lineNumber:60 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"dataSourceManager.dataSource.containerCollection", v19, px_descriptionForAssertionMessage2}];
     }
   }
 
-  v10 = [v9 assetCollectionSubtype] == 1000000212;
+  v10 = [containerCollection assetCollectionSubtype] == 1000000212;
 
   return v10;
 }
 
-+ (BOOL)shouldEnableWithActionManager:(id)a3
++ (BOOL)shouldEnableWithActionManager:(id)manager
 {
-  v3 = [a3 selectionManager];
-  v4 = [v3 selectionSnapshot];
-  CanEnableMergeActionForSelection = PXDeduplicationCanEnableMergeActionForSelection(v4);
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  CanEnableMergeActionForSelection = PXDeduplicationCanEnableMergeActionForSelection(selectionSnapshot);
 
   return CanEnableMergeActionForSelection;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v4 = [a4 selectionManager];
-  v5 = [v4 selectionSnapshot];
-  v6 = PXDeduplicationLocalizedMergeActionTitleForSelection(v5, 0);
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  v6 = PXDeduplicationLocalizedMergeActionTitleForSelection(selectionSnapshot, 0);
 
   return v6;
 }
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
-  v7 = a3;
-  v8 = [a5 selectionManager];
-  v9 = [v8 selectionSnapshot];
-  v10 = PXDeduplicationLocalizedMergeActionTitleForSelection(v9, 1);
+  targetCopy = target;
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  v10 = PXDeduplicationLocalizedMergeActionTitleForSelection(selectionSnapshot, 1);
 
-  v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v10 style:0 target:v7 action:a4];
+  v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v10 style:0 target:targetCopy action:action];
 
   return v11;
 }

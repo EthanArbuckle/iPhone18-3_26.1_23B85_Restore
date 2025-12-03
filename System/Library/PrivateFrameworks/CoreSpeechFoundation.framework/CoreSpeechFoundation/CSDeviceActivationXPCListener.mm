@@ -1,9 +1,9 @@
 @interface CSDeviceActivationXPCListener
-- (CSDeviceActivationXPCListener)initWithMachServiceName:(const char *)a3;
-- (void)CSActivationXPCConnectionReceivedClientError:(id)a3 clientError:(id)a4 client:(id)a5;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
-- (void)_handleNewRemoteConnection:(id)a3;
+- (CSDeviceActivationXPCListener)initWithMachServiceName:(const char *)name;
+- (void)CSActivationXPCConnectionReceivedClientError:(id)error clientError:(id)clientError client:(id)client;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
+- (void)_handleNewRemoteConnection:(id)connection;
 - (void)listen;
 @end
 
@@ -34,20 +34,20 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)CSActivationXPCConnectionReceivedClientError:(id)a3 clientError:(id)a4 client:(id)a5
+- (void)CSActivationXPCConnectionReceivedClientError:(id)error clientError:(id)clientError client:(id)client
 {
-  v7 = a3;
-  v8 = a5;
+  errorCopy = error;
+  clientCopy = client;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97__CSDeviceActivationXPCListener_CSActivationXPCConnectionReceivedClientError_clientError_client___block_invoke;
   block[3] = &unk_1E865C778;
-  v13 = v8;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
-  v11 = v8;
+  v13 = clientCopy;
+  v14 = errorCopy;
+  selfCopy = self;
+  v10 = errorCopy;
+  v11 = clientCopy;
   dispatch_async(queue, block);
 }
 
@@ -73,25 +73,25 @@ void __97__CSDeviceActivationXPCListener_CSActivationXPCConnectionReceivedClient
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleNewRemoteConnection:(id)a3
+- (void)_handleNewRemoteConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = CSLogContextFacilityCoreSpeech;
-  if (v4)
+  if (connectionCopy)
   {
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 136315394;
       v9 = "[CSDeviceActivationXPCListener _handleNewRemoteConnection:]";
       v10 = 2050;
-      v11 = v4;
+      v11 = connectionCopy;
       _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s Getting new client connection : %{public}p", &v8, 0x16u);
     }
 
-    if ([CSUtils machXPCConnection:v4 hasEntitlement:@"corespeechd.activation"])
+    if ([CSUtils machXPCConnection:connectionCopy hasEntitlement:@"corespeechd.activation"])
     {
-      v6 = [[CSDeviceActivationXPCConnection alloc] initWithConnection:v4];
+      v6 = [[CSDeviceActivationXPCConnection alloc] initWithConnection:connectionCopy];
       [(CSDeviceActivationXPCConnection *)v6 activateConnection];
       [(CSDeviceActivationXPCConnection *)v6 setDelegate:self];
       if (v6)
@@ -111,7 +111,7 @@ void __97__CSDeviceActivationXPCListener_CSActivationXPCConnectionReceivedClient
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -122,17 +122,17 @@ void __97__CSDeviceActivationXPCListener_CSActivationXPCConnectionReceivedClient
     v8 = 136315394;
     v9 = "[CSDeviceActivationXPCListener _handleListenerError:]";
     v10 = 2082;
-    string = xpc_dictionary_get_string(a3, v6);
+    string = xpc_dictionary_get_string(error, v6);
     _os_log_error_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_ERROR, "%s Error = %{public}s", &v8, 0x16u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -142,16 +142,16 @@ void __97__CSDeviceActivationXPCListener_CSActivationXPCConnectionReceivedClient
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s Received new remote control connection request", &v8, 0xCu);
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    if (MEMORY[0x1E12BAC70](v4) == MEMORY[0x1E69E9E98])
+    if (MEMORY[0x1E12BAC70](eventCopy) == MEMORY[0x1E69E9E98])
     {
-      [(CSDeviceActivationXPCListener *)self _handleListenerError:v4];
+      [(CSDeviceActivationXPCListener *)self _handleListenerError:eventCopy];
     }
 
     else
     {
-      [(CSDeviceActivationXPCListener *)self _handleNewRemoteConnection:v4];
+      [(CSDeviceActivationXPCListener *)self _handleNewRemoteConnection:eventCopy];
     }
   }
 
@@ -176,7 +176,7 @@ void __39__CSDeviceActivationXPCListener_listen__block_invoke(uint64_t a1, void 
   [WeakRetained _handleListenerEvent:v3];
 }
 
-- (CSDeviceActivationXPCListener)initWithMachServiceName:(const char *)a3
+- (CSDeviceActivationXPCListener)initWithMachServiceName:(const char *)name
 {
   v19 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -188,13 +188,13 @@ void __39__CSDeviceActivationXPCListener_listen__block_invoke(uint64_t a1, void 
     v6 = *(v4 + 1);
     *(v4 + 1) = v5;
 
-    mach_service = xpc_connection_create_mach_service(a3, *(v4 + 1), 1uLL);
+    mach_service = xpc_connection_create_mach_service(name, *(v4 + 1), 1uLL);
     v8 = *(v4 + 2);
     *(v4 + 2) = mach_service;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = *(v4 + 3);
-    *(v4 + 3) = v9;
+    *(v4 + 3) = array;
   }
 
   CSLogInitIfNeededWithSubsystemType(0);
@@ -204,7 +204,7 @@ void __39__CSDeviceActivationXPCListener_listen__block_invoke(uint64_t a1, void 
     *buf = 136315394;
     v16 = "[CSDeviceActivationXPCListener initWithMachServiceName:]";
     v17 = 2080;
-    v18 = a3;
+    nameCopy = name;
     _os_log_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_DEFAULT, "%s machServiceName: %s", buf, 0x16u);
   }
 

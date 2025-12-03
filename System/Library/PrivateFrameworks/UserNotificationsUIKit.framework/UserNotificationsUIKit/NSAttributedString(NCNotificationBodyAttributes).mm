@@ -9,25 +9,25 @@
 
 - (uint64_t)nc_contentType
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [a1 attributesAtIndex:0 effectiveRange:0];
+  v2 = [self attributesAtIndex:0 effectiveRange:0];
   v3 = [v2 objectForKey:@"contentType"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (id)nc_initWithString:()NCNotificationBodyAttributes contentType:
@@ -38,7 +38,7 @@
     v7 = a3;
     v8 = [[v6 alloc] initWithString:v7];
 
-    v9 = [a1 nc_initWithAttributedString:v8 contentType:a4];
+    v9 = [self nc_initWithAttributedString:v8 contentType:a4];
   }
 
   else
@@ -78,11 +78,11 @@
   v20[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  if ([a1 nc_isAppleIntelligenceSummary])
+  if ([self nc_isAppleIntelligenceSummary])
   {
-    if ([a1 length])
+    if ([self length])
     {
-      v8 = objc_opt_new();
+      selfCopy = objc_opt_new();
       v9 = [MEMORY[0x277D755B8] _systemImageNamed:@"text.line.2.summary"];
       v10 = [MEMORY[0x277D755D0] configurationWithFont:v6 scale:1];
       if (v7)
@@ -101,25 +101,25 @@
       v16 = objc_opt_new();
       [v16 setImage:v15];
       v17 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v16];
-      [v8 appendAttributedString:v17];
+      [selfCopy appendAttributedString:v17];
       v18 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" "];
-      [v8 appendAttributedString:v18];
+      [selfCopy appendAttributedString:v18];
 
-      [v8 appendAttributedString:a1];
+      [selfCopy appendAttributedString:self];
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

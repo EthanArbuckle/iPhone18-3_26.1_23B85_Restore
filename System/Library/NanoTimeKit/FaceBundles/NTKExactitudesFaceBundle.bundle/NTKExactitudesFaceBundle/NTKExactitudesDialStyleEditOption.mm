@@ -1,34 +1,34 @@
 @interface NTKExactitudesDialStyleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKExactitudesDialStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_30A60[a3];
+    return off_30A60[value];
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKExactitudesDialStyleEditOption *)self style];
+  style = [(NTKExactitudesDialStyleEditOption *)self style];
   v3 = @"EDIT_OPTION_LABEL_DIAL_CLOSED";
-  if (v2 == 1)
+  if (style == 1)
   {
     v3 = @"EDIT_OPTION_LABEL_DIAL_OPEN_I";
   }
 
-  if (v2 == 2)
+  if (style == 2)
   {
     v4 = @"EDIT_OPTION_LABEL_DIAL_OPEN_II";
   }

@@ -1,8 +1,8 @@
 @interface ADOnDemandAssetSubscriber
-- (ADOnDemandAssetSubscriber)initWithPreferences:(id)a3 invalidationHandler:(id)a4;
+- (ADOnDemandAssetSubscriber)initWithPreferences:(id)preferences invalidationHandler:(id)handler;
 - (void)_invalidate;
 - (void)_setupIfNecessary;
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client;
 @end
 
 @implementation ADOnDemandAssetSubscriber
@@ -21,10 +21,10 @@
   }
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
-  v9 = a4;
-  v10 = a6;
+  infoCopy = info;
+  clientCopy = client;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -32,11 +32,11 @@
   block[2] = sub_10008DB04;
   block[3] = &unk_10050FCE8;
   objc_copyWeak(v17, &location);
-  v17[1] = a5;
-  v15 = v10;
-  v16 = v9;
-  v12 = v9;
-  v13 = v10;
+  v17[1] = origin;
+  v15 = clientCopy;
+  v16 = infoCopy;
+  v12 = infoCopy;
+  v13 = clientCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v17);
@@ -57,10 +57,10 @@
   objc_destroyWeak(&location);
 }
 
-- (ADOnDemandAssetSubscriber)initWithPreferences:(id)a3 invalidationHandler:(id)a4
+- (ADOnDemandAssetSubscriber)initWithPreferences:(id)preferences invalidationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  preferencesCopy = preferences;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = ADOnDemandAssetSubscriber;
   v9 = [(ADOnDemandAssetSubscriber *)&v16 init];
@@ -72,11 +72,11 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    v13 = objc_retainBlock(v8);
+    v13 = objc_retainBlock(handlerCopy);
     invalidationHandler = v9->_invalidationHandler;
     v9->_invalidationHandler = v13;
 
-    objc_storeStrong(&v9->_preferences, a3);
+    objc_storeStrong(&v9->_preferences, preferences);
     [(ADOnDemandAssetSubscriber *)v9 _setupIfNecessary];
   }
 

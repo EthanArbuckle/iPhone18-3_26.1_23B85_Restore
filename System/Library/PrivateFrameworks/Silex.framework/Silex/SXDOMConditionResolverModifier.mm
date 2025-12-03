@@ -1,58 +1,58 @@
 @interface SXDOMConditionResolverModifier
-- (BOOL)resolveComponentLayouts:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5;
-- (BOOL)resolveComponentStyles:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5;
-- (BOOL)resolveComponentTextStyle:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5;
-- (BOOL)resolveComponents:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5;
-- (BOOL)resolveTextStyles:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5;
-- (SXDOMConditionResolverModifier)initWithValidationContextFactory:(id)a3 componentResolver:(id)a4 textStyleResolver:(id)a5 componentStyleResolver:(id)a6 componentLayoutResolver:(id)a7 componentTextStyleResolver:(id)a8 advertisementAutoPlacementResolver:(id)a9 suggestedArticlesAutoPlacementResolver:(id)a10 documentStyleResolver:(id)a11 instructions:(id)a12;
-- (id)resolveAutoPlacement:(id)a3 validationContext:(id)a4;
-- (id)resolveDocumentStyle:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5;
-- (void)modifyDOM:(id)a3 context:(id)a4;
+- (BOOL)resolveComponentLayouts:(id)layouts conditionalObjectAnalysis:(id)analysis validationContext:(id)context;
+- (BOOL)resolveComponentStyles:(id)styles conditionalObjectAnalysis:(id)analysis validationContext:(id)context;
+- (BOOL)resolveComponentTextStyle:(id)style conditionalObjectAnalysis:(id)analysis validationContext:(id)context;
+- (BOOL)resolveComponents:(id)components conditionalObjectAnalysis:(id)analysis validationContext:(id)context;
+- (BOOL)resolveTextStyles:(id)styles conditionalObjectAnalysis:(id)analysis validationContext:(id)context;
+- (SXDOMConditionResolverModifier)initWithValidationContextFactory:(id)factory componentResolver:(id)resolver textStyleResolver:(id)styleResolver componentStyleResolver:(id)componentStyleResolver componentLayoutResolver:(id)layoutResolver componentTextStyleResolver:(id)textStyleResolver advertisementAutoPlacementResolver:(id)placementResolver suggestedArticlesAutoPlacementResolver:(id)self0 documentStyleResolver:(id)self1 instructions:(id)self2;
+- (id)resolveAutoPlacement:(id)placement validationContext:(id)context;
+- (id)resolveDocumentStyle:(id)style conditionalObjectAnalysis:(id)analysis validationContext:(id)context;
+- (void)modifyDOM:(id)m context:(id)context;
 @end
 
 @implementation SXDOMConditionResolverModifier
 
-- (SXDOMConditionResolverModifier)initWithValidationContextFactory:(id)a3 componentResolver:(id)a4 textStyleResolver:(id)a5 componentStyleResolver:(id)a6 componentLayoutResolver:(id)a7 componentTextStyleResolver:(id)a8 advertisementAutoPlacementResolver:(id)a9 suggestedArticlesAutoPlacementResolver:(id)a10 documentStyleResolver:(id)a11 instructions:(id)a12
+- (SXDOMConditionResolverModifier)initWithValidationContextFactory:(id)factory componentResolver:(id)resolver textStyleResolver:(id)styleResolver componentStyleResolver:(id)componentStyleResolver componentLayoutResolver:(id)layoutResolver componentTextStyleResolver:(id)textStyleResolver advertisementAutoPlacementResolver:(id)placementResolver suggestedArticlesAutoPlacementResolver:(id)self0 documentStyleResolver:(id)self1 instructions:(id)self2
 {
-  v35 = a3;
-  obj = a4;
-  v34 = a4;
-  v27 = a5;
-  v33 = a5;
-  v32 = a6;
-  v28 = a7;
-  v31 = a7;
-  v29 = a8;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  factoryCopy = factory;
+  obj = resolver;
+  resolverCopy = resolver;
+  styleResolverCopy = styleResolver;
+  styleResolverCopy2 = styleResolver;
+  componentStyleResolverCopy = componentStyleResolver;
+  layoutResolverCopy = layoutResolver;
+  layoutResolverCopy2 = layoutResolver;
+  textStyleResolverCopy = textStyleResolver;
+  textStyleResolverCopy2 = textStyleResolver;
+  placementResolverCopy = placementResolver;
+  autoPlacementResolverCopy = autoPlacementResolver;
+  documentStyleResolverCopy = documentStyleResolver;
+  instructionsCopy = instructions;
   v36.receiver = self;
   v36.super_class = SXDOMConditionResolverModifier;
   v23 = [(SXDOMConditionResolverModifier *)&v36 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_validationContextFactory, a3);
+    objc_storeStrong(&v23->_validationContextFactory, factory);
     objc_storeStrong(&v24->_componentResolver, obj);
-    objc_storeStrong(&v24->_textStyleResolver, v27);
-    objc_storeStrong(&v24->_componentStyleResolver, a6);
-    objc_storeStrong(&v24->_componentLayoutResolver, v28);
-    objc_storeStrong(&v24->_componentTextStyleResolver, v29);
-    objc_storeStrong(&v24->_advertisementAutoPlacementResolver, a9);
-    objc_storeStrong(&v24->_suggestedArticlesAutoPlacementResolver, a10);
-    objc_storeStrong(&v24->_documentStyleResolver, a11);
-    objc_storeStrong(&v24->_instructions, a12);
+    objc_storeStrong(&v24->_textStyleResolver, styleResolverCopy);
+    objc_storeStrong(&v24->_componentStyleResolver, componentStyleResolver);
+    objc_storeStrong(&v24->_componentLayoutResolver, layoutResolverCopy);
+    objc_storeStrong(&v24->_componentTextStyleResolver, textStyleResolverCopy);
+    objc_storeStrong(&v24->_advertisementAutoPlacementResolver, placementResolver);
+    objc_storeStrong(&v24->_suggestedArticlesAutoPlacementResolver, autoPlacementResolver);
+    objc_storeStrong(&v24->_documentStyleResolver, documentStyleResolver);
+    objc_storeStrong(&v24->_instructions, instructions);
   }
 
   return v24;
 }
 
-- (void)modifyDOM:(id)a3 context:(id)a4
+- (void)modifyDOM:(id)m context:(id)context
 {
-  v32 = a3;
-  v6 = a4;
+  mCopy = m;
+  contextCopy = context;
   if (!self->_hasCheckedInstructions)
   {
     self->_resolveAutoplacement = [(SXConditionalResolverModifierInstructions *)self->_instructions shouldResolveAutoplacement];
@@ -68,96 +68,96 @@
   if (self->_resolveComponents || self->_resolveComponentStyles || self->_resolveComponentLayouts || self->_resolveComponentTextStyles || self->_resolveTextStyles || self->_resolveAutoplacement || self->_resolveDocumentStyle)
   {
     validationContextFactory = self->_validationContextFactory;
-    v8 = [v6 layoutOptions];
-    v9 = [v6 experiment];
-    v10 = [(SXConditionValidationContextFactory *)validationContextFactory createContextWithLayoutOptions:v8 experiment:v9];
+    layoutOptions = [contextCopy layoutOptions];
+    experiment = [contextCopy experiment];
+    v10 = [(SXConditionValidationContextFactory *)validationContextFactory createContextWithLayoutOptions:layoutOptions experiment:experiment];
 
     if (self->_resolveComponents)
     {
-      v11 = [v32 components];
-      v12 = [v32 analysis];
-      v13 = [v12 conditionalObjectAnalysis];
-      self->_resolveComponents = [(SXDOMConditionResolverModifier *)self resolveComponents:v11 conditionalObjectAnalysis:v13 validationContext:v10];
+      components = [mCopy components];
+      analysis = [mCopy analysis];
+      conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+      self->_resolveComponents = [(SXDOMConditionResolverModifier *)self resolveComponents:components conditionalObjectAnalysis:conditionalObjectAnalysis validationContext:v10];
     }
 
     if (self->_resolveTextStyles)
     {
-      v14 = [v32 textStyles];
-      v15 = [v32 analysis];
-      v16 = [v15 conditionalObjectAnalysis];
-      self->_resolveTextStyles = [(SXDOMConditionResolverModifier *)self resolveTextStyles:v14 conditionalObjectAnalysis:v16 validationContext:v10];
+      textStyles = [mCopy textStyles];
+      analysis2 = [mCopy analysis];
+      conditionalObjectAnalysis2 = [analysis2 conditionalObjectAnalysis];
+      self->_resolveTextStyles = [(SXDOMConditionResolverModifier *)self resolveTextStyles:textStyles conditionalObjectAnalysis:conditionalObjectAnalysis2 validationContext:v10];
     }
 
     if (self->_resolveComponentLayouts)
     {
-      v17 = [v32 componentLayouts];
-      v18 = [v32 analysis];
-      v19 = [v18 conditionalObjectAnalysis];
-      self->_resolveComponentLayouts = [(SXDOMConditionResolverModifier *)self resolveComponentLayouts:v17 conditionalObjectAnalysis:v19 validationContext:v10];
+      componentLayouts = [mCopy componentLayouts];
+      analysis3 = [mCopy analysis];
+      conditionalObjectAnalysis3 = [analysis3 conditionalObjectAnalysis];
+      self->_resolveComponentLayouts = [(SXDOMConditionResolverModifier *)self resolveComponentLayouts:componentLayouts conditionalObjectAnalysis:conditionalObjectAnalysis3 validationContext:v10];
     }
 
     if (self->_resolveComponentStyles)
     {
-      v20 = [v32 componentStyles];
-      v21 = [v32 analysis];
-      v22 = [v21 conditionalObjectAnalysis];
-      self->_resolveComponentStyles = [(SXDOMConditionResolverModifier *)self resolveComponentStyles:v20 conditionalObjectAnalysis:v22 validationContext:v10];
+      componentStyles = [mCopy componentStyles];
+      analysis4 = [mCopy analysis];
+      conditionalObjectAnalysis4 = [analysis4 conditionalObjectAnalysis];
+      self->_resolveComponentStyles = [(SXDOMConditionResolverModifier *)self resolveComponentStyles:componentStyles conditionalObjectAnalysis:conditionalObjectAnalysis4 validationContext:v10];
     }
 
     if (self->_resolveComponentTextStyles)
     {
-      v23 = [v32 componentTextStyles];
-      v24 = [v32 analysis];
-      v25 = [v24 conditionalObjectAnalysis];
-      self->_resolveComponentTextStyles = [(SXDOMConditionResolverModifier *)self resolveComponentTextStyle:v23 conditionalObjectAnalysis:v25 validationContext:v10];
+      componentTextStyles = [mCopy componentTextStyles];
+      analysis5 = [mCopy analysis];
+      conditionalObjectAnalysis5 = [analysis5 conditionalObjectAnalysis];
+      self->_resolveComponentTextStyles = [(SXDOMConditionResolverModifier *)self resolveComponentTextStyle:componentTextStyles conditionalObjectAnalysis:conditionalObjectAnalysis5 validationContext:v10];
     }
 
     if (self->_resolveAutoplacement)
     {
-      v26 = [v32 autoPlacement];
-      v27 = [(SXDOMConditionResolverModifier *)self resolveAutoPlacement:v26 validationContext:v10];
-      [v32 setAutoPlacement:v27];
+      autoPlacement = [mCopy autoPlacement];
+      v27 = [(SXDOMConditionResolverModifier *)self resolveAutoPlacement:autoPlacement validationContext:v10];
+      [mCopy setAutoPlacement:v27];
     }
 
     if (self->_resolveDocumentStyle)
     {
-      v28 = [v32 documentStyle];
-      v29 = [v32 analysis];
-      v30 = [v29 conditionalObjectAnalysis];
-      v31 = [(SXDOMConditionResolverModifier *)self resolveDocumentStyle:v28 conditionalObjectAnalysis:v30 validationContext:v10];
-      [v32 setDocumentStyle:v31];
+      documentStyle = [mCopy documentStyle];
+      analysis6 = [mCopy analysis];
+      conditionalObjectAnalysis6 = [analysis6 conditionalObjectAnalysis];
+      v31 = [(SXDOMConditionResolverModifier *)self resolveDocumentStyle:documentStyle conditionalObjectAnalysis:conditionalObjectAnalysis6 validationContext:v10];
+      [mCopy setDocumentStyle:v31];
     }
   }
 }
 
-- (BOOL)resolveComponents:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5
+- (BOOL)resolveComponents:(id)components conditionalObjectAnalysis:(id)analysis validationContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  componentsCopy = components;
+  analysisCopy = analysis;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v11 = [v8 allComponents];
+  allComponents = [componentsCopy allComponents];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__SXDOMConditionResolverModifier_resolveComponents_conditionalObjectAnalysis_validationContext___block_invoke;
   v16[3] = &unk_1E8501950;
   v16[4] = self;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = componentsCopy;
   v18 = v13;
   v20 = &v21;
-  v14 = v9;
+  v14 = analysisCopy;
   v19 = v14;
-  [v11 enumerateObjectsUsingBlock:v16];
+  [allComponents enumerateObjectsUsingBlock:v16];
 
-  LOBYTE(v11) = *(v22 + 24);
+  LOBYTE(allComponents) = *(v22 + 24);
   _Block_object_dispose(&v21, 8);
 
-  return v11;
+  return allComponents;
 }
 
 void __96__SXDOMConditionResolverModifier_resolveComponents_conditionalObjectAnalysis_validationContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -208,27 +208,27 @@ void __96__SXDOMConditionResolverModifier_resolveComponents_conditionalObjectAna
   }
 }
 
-- (BOOL)resolveTextStyles:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5
+- (BOOL)resolveTextStyles:(id)styles conditionalObjectAnalysis:(id)analysis validationContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stylesCopy = styles;
+  analysisCopy = analysis;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v11 = [v8 copy];
+  v11 = [stylesCopy copy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__SXDOMConditionResolverModifier_resolveTextStyles_conditionalObjectAnalysis_validationContext___block_invoke;
   v16[3] = &unk_1E8501978;
   v16[4] = self;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
   v20 = &v21;
-  v13 = v8;
+  v13 = stylesCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = analysisCopy;
   v19 = v14;
   [v11 enumerateKeysAndObjectsUsingBlock:v16];
 
@@ -267,27 +267,27 @@ void __96__SXDOMConditionResolverModifier_resolveTextStyles_conditionalObjectAna
   }
 }
 
-- (BOOL)resolveComponentLayouts:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5
+- (BOOL)resolveComponentLayouts:(id)layouts conditionalObjectAnalysis:(id)analysis validationContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  layoutsCopy = layouts;
+  analysisCopy = analysis;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v11 = [v8 copy];
+  v11 = [layoutsCopy copy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __102__SXDOMConditionResolverModifier_resolveComponentLayouts_conditionalObjectAnalysis_validationContext___block_invoke;
   v16[3] = &unk_1E85019A0;
   v16[4] = self;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
   v20 = &v21;
-  v13 = v8;
+  v13 = layoutsCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = analysisCopy;
   v19 = v14;
   [v11 enumerateKeysAndObjectsUsingBlock:v16];
 
@@ -326,27 +326,27 @@ void __102__SXDOMConditionResolverModifier_resolveComponentLayouts_conditionalOb
   }
 }
 
-- (BOOL)resolveComponentStyles:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5
+- (BOOL)resolveComponentStyles:(id)styles conditionalObjectAnalysis:(id)analysis validationContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stylesCopy = styles;
+  analysisCopy = analysis;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v11 = [v8 copy];
+  v11 = [stylesCopy copy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __101__SXDOMConditionResolverModifier_resolveComponentStyles_conditionalObjectAnalysis_validationContext___block_invoke;
   v16[3] = &unk_1E85019C8;
   v16[4] = self;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
   v20 = &v21;
-  v13 = v8;
+  v13 = stylesCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = analysisCopy;
   v19 = v14;
   [v11 enumerateKeysAndObjectsUsingBlock:v16];
 
@@ -385,27 +385,27 @@ void __101__SXDOMConditionResolverModifier_resolveComponentStyles_conditionalObj
   }
 }
 
-- (BOOL)resolveComponentTextStyle:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5
+- (BOOL)resolveComponentTextStyle:(id)style conditionalObjectAnalysis:(id)analysis validationContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  analysisCopy = analysis;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v11 = [v8 copy];
+  v11 = [styleCopy copy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __104__SXDOMConditionResolverModifier_resolveComponentTextStyle_conditionalObjectAnalysis_validationContext___block_invoke;
   v16[3] = &unk_1E85019F0;
   v16[4] = self;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
   v20 = &v21;
-  v13 = v8;
+  v13 = styleCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = analysisCopy;
   v19 = v14;
   [v11 enumerateKeysAndObjectsUsingBlock:v16];
 
@@ -444,26 +444,26 @@ void __104__SXDOMConditionResolverModifier_resolveComponentTextStyle_conditional
   }
 }
 
-- (id)resolveAutoPlacement:(id)a3 validationContext:(id)a4
+- (id)resolveAutoPlacement:(id)placement validationContext:(id)context
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 advertisement];
-  v9 = [v6 suggestedArticles];
-  if (v8 && ([v8 conditional], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  placementCopy = placement;
+  contextCopy = context;
+  advertisement = [placementCopy advertisement];
+  suggestedArticles = [placementCopy suggestedArticles];
+  if (advertisement && ([advertisement conditional], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     advertisementAutoPlacementResolver = self->_advertisementAutoPlacementResolver;
-    v12 = [v6 advertisement];
-    v26[0] = v12;
+    advertisement2 = [placementCopy advertisement];
+    v26[0] = advertisement2;
     v13 = 1;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    v15 = [(SXConditionalObjectResolver *)advertisementAutoPlacementResolver resolveObjects:v14 context:v7];
+    v15 = [(SXConditionalObjectResolver *)advertisementAutoPlacementResolver resolveObjects:v14 context:contextCopy];
 
-    v16 = [v15 object];
+    object = [v15 object];
 
-    v8 = v16;
-    if (!v9)
+    advertisement = object;
+    if (!suggestedArticles)
     {
       goto LABEL_8;
     }
@@ -472,77 +472,77 @@ void __104__SXDOMConditionResolverModifier_resolveComponentTextStyle_conditional
   else
   {
     v13 = 0;
-    if (!v9)
+    if (!suggestedArticles)
     {
       goto LABEL_8;
     }
   }
 
-  v17 = [v9 conditional];
+  conditional = [suggestedArticles conditional];
 
-  if (v17)
+  if (conditional)
   {
     suggestedArticlesAutoPlacementResolver = self->_suggestedArticlesAutoPlacementResolver;
-    v19 = [v6 suggestedArticles];
-    v25 = v19;
+    suggestedArticles2 = [placementCopy suggestedArticles];
+    v25 = suggestedArticles2;
     v13 = 1;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-    v21 = [(SXConditionalObjectResolver *)suggestedArticlesAutoPlacementResolver resolveObjects:v20 context:v7];
+    v21 = [(SXConditionalObjectResolver *)suggestedArticlesAutoPlacementResolver resolveObjects:v20 context:contextCopy];
 
-    v22 = [v21 object];
+    object2 = [v21 object];
 
-    v9 = v22;
+    suggestedArticles = object2;
   }
 
 LABEL_8:
   self->_resolveAutoplacement = v13;
-  v23 = [[SXResolvedAutoPlacement alloc] initWithAdvertisement:v8 suggestedArticles:v9];
+  v23 = [[SXResolvedAutoPlacement alloc] initWithAdvertisement:advertisement suggestedArticles:suggestedArticles];
 
   return v23;
 }
 
-- (id)resolveDocumentStyle:(id)a3 conditionalObjectAnalysis:(id)a4 validationContext:(id)a5
+- (id)resolveDocumentStyle:(id)style conditionalObjectAnalysis:(id)analysis validationContext:(id)context
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  styleCopy = style;
+  analysisCopy = analysis;
+  contextCopy = context;
+  v11 = styleCopy;
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 conditional];
+    conditional = [v11 conditional];
 
-    if (v13)
+    if (conditional)
     {
       documentStyleResolver = self->_documentStyleResolver;
       v21[0] = v12;
       v15 = 1;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-      v17 = [(SXConditionalObjectResolver *)documentStyleResolver resolveObjects:v16 context:v10];
+      v17 = [(SXConditionalObjectResolver *)documentStyleResolver resolveObjects:v16 context:contextCopy];
 
-      v18 = [v17 object];
+      object = [v17 object];
 
-      v19 = [v17 conditionTypes];
-      [v9 setDocumentStyleConditionTypes:v19];
+      conditionTypes = [v17 conditionTypes];
+      [analysisCopy setDocumentStyleConditionTypes:conditionTypes];
     }
 
     else
     {
       v15 = 0;
-      v18 = v12;
+      object = v12;
     }
   }
 
   else
   {
     v15 = 0;
-    v18 = 0;
+    object = 0;
   }
 
   self->_resolveDocumentStyle = v15;
 
-  return v18;
+  return object;
 }
 
 @end

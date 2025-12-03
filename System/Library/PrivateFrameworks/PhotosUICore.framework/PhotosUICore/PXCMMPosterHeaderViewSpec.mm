@@ -1,6 +1,6 @@
 @interface PXCMMPosterHeaderViewSpec
 - (PXCMMPosterHeaderViewSpec)init;
-- (PXCMMPosterHeaderViewSpec)initWithPresentationStyle:(int64_t)a3;
+- (PXCMMPosterHeaderViewSpec)initWithPresentationStyle:(int64_t)style;
 - (UIFont)preferredStatusFont;
 - (UIFont)preferredSubtitleFont;
 - (UIFont)preferredTitleFont;
@@ -15,11 +15,11 @@
 
 - (UIFont)preferredStatusFont
 {
-  v3 = [(PXCMMPosterHeaderViewSpec *)self statusFontTextStyle];
-  v4 = [(PXCMMPosterHeaderViewSpec *)self statusFontDescriptorSymbolicTraits];
+  statusFontTextStyle = [(PXCMMPosterHeaderViewSpec *)self statusFontTextStyle];
+  statusFontDescriptorSymbolicTraits = [(PXCMMPosterHeaderViewSpec *)self statusFontDescriptorSymbolicTraits];
   if ([(PXCMMPosterHeaderViewSpec *)self canShowStatus])
   {
-    v5 = MEMORY[0x1A590C430](v3, v4, 7);
+    v5 = MEMORY[0x1A590C430](statusFontTextStyle, statusFontDescriptorSymbolicTraits, 7);
   }
 
   else
@@ -101,14 +101,14 @@
   PXScaledValueForTextStyleWithMaxContentSizeCategoryAndSymbolicTraits();
 }
 
-- (PXCMMPosterHeaderViewSpec)initWithPresentationStyle:(int64_t)a3
+- (PXCMMPosterHeaderViewSpec)initWithPresentationStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = PXCMMPosterHeaderViewSpec;
   result = [(PXCMMPosterHeaderViewSpec *)&v5 init];
   if (result)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       *&result->_titleFontDescriptorSymbolicTraits = 2;
       result->_titleFontTextStyle = 7;
@@ -124,7 +124,7 @@
       *&result->_bottomGradientFontTextStyle = 0u;
     }
 
-    else if (!a3)
+    else if (!style)
     {
       result->_titleBaselineOffset = 32.0;
       result->_subtitleFontTextStyle = 7;
@@ -149,8 +149,8 @@
 
 - (PXCMMPosterHeaderViewSpec)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderViewSpec.m" lineNumber:20 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderViewSpec init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderViewSpec.m" lineNumber:20 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderViewSpec init]"}];
 
   abort();
 }

@@ -2,24 +2,24 @@
 - (BOOL)isRunningTests;
 - (BOOL)pageRenderMetricsEnabled;
 - (SUUIApplicationController)applicationController;
-- (SUUIJSApplication)initWithAppContext:(id)a3 applicationController:(id)a4;
-- (void)launchComplete:(id)a3;
+- (SUUIJSApplication)initWithAppContext:(id)context applicationController:(id)controller;
+- (void)launchComplete:(id)complete;
 - (void)launchFailed;
-- (void)sendDocumentMessage:(id)a3 :(id)a4 :(id)a5;
+- (void)sendDocumentMessage:(id)message :(id)a4 :(id)a5;
 @end
 
 @implementation SUUIJSApplication
 
-- (SUUIJSApplication)initWithAppContext:(id)a3 applicationController:(id)a4
+- (SUUIJSApplication)initWithAppContext:(id)context applicationController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SUUIJSApplication;
-  v7 = [(IKJSObject *)&v10 initWithAppContext:a3];
+  v7 = [(IKJSObject *)&v10 initWithAppContext:context];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_applicationController, v6);
+    objc_storeWeak(&v7->_applicationController, controllerCopy);
   }
 
   return v8;
@@ -52,26 +52,26 @@ void __45__SUUIJSApplication_pageRenderMetricsEnabled__block_invoke(uint64_t a1)
 
 - (void)launchFailed
 {
-  v2 = [(SUUIJSApplication *)self applicationController];
-  [v2 performSelectorOnMainThread:sel_showErrorViewForLaunchFailure withObject:0 waitUntilDone:0];
+  applicationController = [(SUUIJSApplication *)self applicationController];
+  [applicationController performSelectorOnMainThread:sel_showErrorViewForLaunchFailure withObject:0 waitUntilDone:0];
 }
 
-- (void)launchComplete:(id)a3
+- (void)launchComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(SUUIJSApplication *)self applicationController];
-  [v5 performSelectorOnMainThread:sel__jsLaunchFinishedWithLaunchMetrics_ withObject:v4 waitUntilDone:0];
+  completeCopy = complete;
+  applicationController = [(SUUIJSApplication *)self applicationController];
+  [applicationController performSelectorOnMainThread:sel__jsLaunchFinishedWithLaunchMetrics_ withObject:completeCopy waitUntilDone:0];
 }
 
-- (void)sendDocumentMessage:(id)a3 :(id)a4 :(id)a5
+- (void)sendDocumentMessage:(id)message :(id)a4 :(id)a5
 {
   v7 = a4;
   v8 = a5;
-  v9 = [a3 appBridge];
+  appBridge = [message appBridge];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = appBridge;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__SUUIJSApplication_sendDocumentMessage_::__block_invoke;

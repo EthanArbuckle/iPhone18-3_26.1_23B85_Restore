@@ -2,7 +2,7 @@
 - (CGAffineTransform)localTransform;
 - (CGRect)_physicalButtonNormalizedFrame;
 - (CGRect)sidebarFrame;
-- (SBUIPoseidonIconView)initWithFrame:(CGRect)a3;
+- (SBUIPoseidonIconView)initWithFrame:(CGRect)frame;
 - (SBUIPoseidonIconViewDelegate)delegate;
 - (double)_fontSize;
 - (void)_cancelRestToOpenIdleTimer;
@@ -12,27 +12,27 @@
 - (void)_startRestToOpenIdleTimer;
 - (void)_startShimmer;
 - (void)_stopShimmer;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)fillRestToOpenWithDuration:(double)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)fillRestToOpenWithDuration:(double)duration;
 - (void)layoutSubviews;
 - (void)resetRestToOpen;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setLocalTransform:(CGAffineTransform *)a3;
-- (void)setState:(int64_t)a3 forIdleTimeout:(BOOL)a4 withCompletion:(id)a5;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setLocalTransform:(CGAffineTransform *)transform;
+- (void)setState:(int64_t)state forIdleTimeout:(BOOL)timeout withCompletion:(id)completion;
 @end
 
 @implementation SBUIPoseidonIconView
 
-- (SBUIPoseidonIconView)initWithFrame:(CGRect)a3
+- (SBUIPoseidonIconView)initWithFrame:(CGRect)frame
 {
   v52[3] = *MEMORY[0x1E69E9840];
   v50.receiver = self;
   v50.super_class = SBUIPoseidonIconView;
-  v3 = [(SBUIPoseidonIconView *)&v50 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIPoseidonIconView *)&v50 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
     v5 = objc_alloc_init(MEMORY[0x1E69DD5C8]);
     coachingButton = v3->_coachingButton;
@@ -40,14 +40,14 @@
 
     [(_UILegibilityView *)v3->_coachingButton setStrength:0.25];
     v7 = v3->_coachingButton;
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(_UILegibilityView *)v7 setBackgroundColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(_UILegibilityView *)v7 setBackgroundColor:whiteColor];
 
     [(SBUIPoseidonIconView *)v3 addSubview:v3->_coachingButton];
     [(SBUIPoseidonIconView *)v3 setClipsToBounds:1];
-    v46 = [(_UILegibilityView *)v3->_coachingButton layer];
-    [v46 setCornerRadius:5.0];
-    [v46 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [(_UILegibilityView *)v3->_coachingButton layer];
+    [layer setCornerRadius:5.0];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
     v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
     coachingLabelRotationView = v3->_coachingLabelRotationView;
     v3->_coachingLabelRotationView = v9;
@@ -60,15 +60,15 @@
     v49 = v13;
     v47 = v12;
     [(UIView *)v11 setTransform:&v47];
-    v14 = [MEMORY[0x1E6979380] layer];
+    layer2 = [MEMORY[0x1E6979380] layer];
     shimmerGradient = v3->_shimmerGradient;
-    v3->_shimmerGradient = v14;
+    v3->_shimmerGradient = layer2;
 
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
     v17 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.7];
     v18 = v3->_shimmerGradient;
     v52[0] = [v17 CGColor];
-    v52[1] = [v16 CGColor];
+    v52[1] = [whiteColor2 CGColor];
     v52[2] = [v17 CGColor];
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:3];
     [(CAGradientLayer *)v18 setColors:v19];
@@ -77,13 +77,13 @@
     [(CAGradientLayer *)v3->_shimmerGradient setEndPoint:1.0, 0.5];
     [(CAGradientLayer *)v3->_shimmerGradient setLocations:&unk_1F1DB5C98];
     v20 = [SBUILegibilityLabel alloc];
-    v21 = [(SBUIPoseidonIconView *)v3 legibilitySettings];
+    legibilitySettings = [(SBUIPoseidonIconView *)v3 legibilitySettings];
     v22 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"TOUCH_ID" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices-j307"];
     v24 = MEMORY[0x1E69DB878];
     [(SBUIPoseidonIconView *)v3 _fontSize];
     v25 = [v24 systemFontOfSize:? weight:?];
-    v26 = [(SBUILegibilityLabel *)v20 initWithSettings:v21 strength:v23 string:v25 font:0.25];
+    v26 = [(SBUILegibilityLabel *)v20 initWithSettings:legibilitySettings strength:v23 string:v25 font:0.25];
     coachingLabel = v3->_coachingLabel;
     v3->_coachingLabel = v26;
 
@@ -101,12 +101,12 @@
     v49 = v32;
     v47 = v31;
     [(UIView *)v30 setTransform:&v47];
-    v33 = [MEMORY[0x1E6979380] layer];
+    layer3 = [MEMORY[0x1E6979380] layer];
     progressFillGradient = v3->_progressFillGradient;
-    v3->_progressFillGradient = v33;
+    v3->_progressFillGradient = layer3;
 
     v35 = v3->_progressFillGradient;
-    v51[0] = [v16 CGColor];
+    v51[0] = [whiteColor2 CGColor];
     v51[1] = [v17 CGColor];
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
     [(CAGradientLayer *)v35 setColors:v36];
@@ -115,13 +115,13 @@
     [(CAGradientLayer *)v3->_progressFillGradient setEndPoint:1.0, 0.5];
     [(CAGradientLayer *)v3->_progressFillGradient setLocations:&unk_1F1DB5CB0];
     v37 = [SBUILegibilityLabel alloc];
-    v38 = [(SBUIPoseidonIconView *)v3 legibilitySettings];
+    legibilitySettings2 = [(SBUIPoseidonIconView *)v3 legibilitySettings];
     v39 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v40 = [v39 localizedStringForKey:@"REST_TO_OPEN" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices-j307"];
     v41 = MEMORY[0x1E69DB878];
     [(SBUIPoseidonIconView *)v3 _fontSize];
     v42 = [v41 systemFontOfSize:? weight:?];
-    v43 = [(SBUILegibilityLabel *)v37 initWithSettings:v38 strength:v40 string:v42 font:0.25];
+    v43 = [(SBUILegibilityLabel *)v37 initWithSettings:legibilitySettings2 strength:v40 string:v42 font:0.25];
     restToOpenLabel = v3->_restToOpenLabel;
     v3->_restToOpenLabel = v43;
 
@@ -136,31 +136,31 @@
   return v3;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    [(_UILegibilityView *)self->_coachingButton updateForChangedSettings:v5];
-    [(SBUILegibilityLabel *)self->_coachingLabel setLegibilitySettings:v5];
-    [(SBUILegibilityLabel *)self->_restToOpenLabel setLegibilitySettings:v5];
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    [(_UILegibilityView *)self->_coachingButton updateForChangedSettings:settingsCopy];
+    [(SBUILegibilityLabel *)self->_coachingLabel setLegibilitySettings:settingsCopy];
+    [(SBUILegibilityLabel *)self->_restToOpenLabel setLegibilitySettings:settingsCopy];
   }
 }
 
-- (void)setState:(int64_t)a3 forIdleTimeout:(BOOL)a4 withCompletion:(id)a5
+- (void)setState:(int64_t)state forIdleTimeout:(BOOL)timeout withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (self->_state != a3)
+  timeoutCopy = timeout;
+  completionCopy = completion;
+  if (self->_state != state)
   {
-    self->_state = a3;
-    switch(a3)
+    self->_state = state;
+    switch(state)
     {
       case 2:
         [(SBUIPoseidonIconView *)self _stopShimmer];
-        v17 = [(SBUIPoseidonIconView *)self delegate];
-        [v17 poseidonIconViewCoachingStateDidChange:self];
+        delegate = [(SBUIPoseidonIconView *)self delegate];
+        [delegate poseidonIconViewCoachingStateDidChange:self];
 
         v18 = MEMORY[0x1E69DD250];
         v21[0] = MEMORY[0x1E69E9820];
@@ -173,7 +173,7 @@
         v19[2] = __63__SBUIPoseidonIconView_setState_forIdleTimeout_withCompletion___block_invoke_8;
         v19[3] = &unk_1E78A0400;
         v19[4] = self;
-        v20 = v8;
+        v20 = completionCopy;
         [v18 animateWithDuration:v21 animations:v19 completion:0.15];
 
         break;
@@ -198,7 +198,7 @@ LABEL_10:
       case 0:
         [(SBUIPoseidonIconView *)self _stopShimmer];
         [(SBUIPoseidonIconView *)self _cancelRestToOpenIdleTimer];
-        if (v5)
+        if (timeoutCopy)
         {
           [(_UILegibilityView *)self->_coachingButton frame];
           v9 = MEMORY[0x1E69DD250];
@@ -314,10 +314,10 @@ uint64_t __63__SBUIPoseidonIconView_setState_forIdleTimeout_withCompletion___blo
   return [v3 _startRestToOpenIdleTimer];
 }
 
-- (void)fillRestToOpenWithDuration:(double)a3
+- (void)fillRestToOpenWithDuration:(double)duration
 {
   [(SBUIPoseidonIconView *)self _cancelRestToOpenIdleTimer];
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
     [(UIView *)self->_restToOpenLabelRotationView alpha];
     if (BSFloatGreaterThanFloat())
@@ -330,21 +330,21 @@ uint64_t __63__SBUIPoseidonIconView_setState_forIdleTimeout_withCompletion___blo
     v7 = v6 * 1.2;
     [(UIView *)self->_restToOpenLabelRotationView bounds];
     [(CAGradientLayer *)progressFillGradient setFrame:0.0, 0.0, v7];
-    v8 = [(UIView *)self->_restToOpenLabelRotationView layer];
-    [v8 setMask:self->_progressFillGradient];
+    layer = [(UIView *)self->_restToOpenLabelRotationView layer];
+    [layer setMask:self->_progressFillGradient];
 
     v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"locations"];
-    v9 = [(CAGradientLayer *)self->_progressFillGradient locations];
-    [v11 setFromValue:v9];
+    locations = [(CAGradientLayer *)self->_progressFillGradient locations];
+    [v11 setFromValue:locations];
 
     [v11 setToValue:&unk_1F1DB5CC8];
     LODWORD(v10) = 1.0;
     [v11 setRepeatCount:v10];
-    [v11 setDuration:a3];
+    [v11 setDuration:duration];
     [v11 setDelegate:self];
     [(CAGradientLayer *)self->_progressFillGradient removeAllAnimations];
     [(CAGradientLayer *)self->_progressFillGradient addAnimation:v11 forKey:@"fillGradient"];
-    self->_fullProgressFillDuration = a3;
+    self->_fullProgressFillDuration = duration;
     self->_startProgressFillTime = CACurrentMediaTime();
     self->_isFilling = 1;
   }
@@ -504,8 +504,8 @@ uint64_t __63__SBUIPoseidonIconView_setState_forIdleTimeout_withCompletion___blo
         v52 = v51;
         v54 = v53;
         v56 = v55;
-        v57 = [(SBUIPoseidonIconView *)self superview];
-        [(SBUIPoseidonIconView *)self convertRect:v57 toView:v50, v52, v54, v56];
+        superview = [(SBUIPoseidonIconView *)self superview];
+        [(SBUIPoseidonIconView *)self convertRect:superview toView:v50, v52, v54, v56];
         v59 = v58;
         v61 = v60;
         v63 = v62;
@@ -533,29 +533,29 @@ uint64_t __63__SBUIPoseidonIconView_setState_forIdleTimeout_withCompletion___blo
   }
 }
 
-- (void)setLocalTransform:(CGAffineTransform *)a3
+- (void)setLocalTransform:(CGAffineTransform *)transform
 {
   p_localTransform = &self->_localTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_localTransform.c;
   *&v14.a = *&self->_localTransform.a;
   *&v14.c = v7;
   *&v14.tx = *&self->_localTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v14))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_localTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_localTransform->c = *&transform->c;
     *&p_localTransform->tx = v9;
     *&p_localTransform->a = v8;
     coachingLabelRotationView = self->_coachingLabelRotationView;
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(UIView *)coachingLabelRotationView setTransform:&t1];
     restToOpenLabelRotationView = self->_restToOpenLabelRotationView;
     v13 = *&p_localTransform->c;
@@ -568,10 +568,10 @@ uint64_t __63__SBUIPoseidonIconView_setState_forIdleTimeout_withCompletion___blo
 
 - (double)_fontSize
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC20]) || UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC28]) || UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC30]) || UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC38]))
+  if (UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC20]) || UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC28]) || UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC30]) || UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC38]))
   {
     v4 = 32.0;
   }
@@ -579,24 +579,24 @@ uint64_t __63__SBUIPoseidonIconView_setState_forIdleTimeout_withCompletion___blo
   else
   {
     v4 = 28.0;
-    if (!UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC40]))
+    if (!UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC40]))
     {
       v4 = 24.0;
-      if (!UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC50]))
+      if (!UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]))
       {
         v4 = 22.0;
-        if (!UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC58]))
+        if (!UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC58]))
         {
           v4 = 20.0;
-          if (!UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC60]))
+          if (!UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC60]))
           {
             v4 = 19.0;
-            if (!UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC70]))
+            if (!UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC70]))
             {
               v4 = 18.0;
-              if (!UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC78]) && !UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC88]))
+              if (!UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC78]) && !UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC88]))
               {
-                if (UIContentSizeCategoryIsEqualToCategory(v3, *MEMORY[0x1E69DDC68]))
+                if (UIContentSizeCategoryIsEqualToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC68]))
                 {
                   v4 = 16.0;
                 }
@@ -688,8 +688,8 @@ void __54__SBUIPoseidonIconView__physicalButtonNormalizedFrame__block_invoke()
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     [v6 setFromValue:v9];
 
-    v10 = [(CAGradientLayer *)self->_progressFillGradient locations];
-    [v6 setToValue:v10];
+    locations = [(CAGradientLayer *)self->_progressFillGradient locations];
+    [v6 setToValue:locations];
 
     LODWORD(v11) = 1.0;
     [v6 setRepeatCount:v11];
@@ -830,8 +830,8 @@ void __49__SBUIPoseidonIconView__startReduceMotionShimmer__block_invoke_4(uint64
     [(UIView *)self->_coachingLabelRotationView setAlpha:0.7];
   }
 
-  v3 = [(UIView *)self->_coachingLabelRotationView layer];
-  [v3 setMask:0];
+  layer = [(UIView *)self->_coachingLabelRotationView layer];
+  [layer setMask:0];
 
   idleUntilShimmerTimer = self->_idleUntilShimmerTimer;
   if (idleUntilShimmerTimer)
@@ -841,8 +841,8 @@ void __49__SBUIPoseidonIconView__startReduceMotionShimmer__block_invoke_4(uint64
     self->_idleUntilShimmerTimer = 0;
   }
 
-  v6 = [(UIView *)self->_coachingLabelRotationView layer];
-  [v6 removeAllAnimations];
+  layer2 = [(UIView *)self->_coachingLabelRotationView layer];
+  [layer2 removeAllAnimations];
 
   reduceMotionShimmerTimer = self->_reduceMotionShimmerTimer;
   if (reduceMotionShimmerTimer)
@@ -877,12 +877,12 @@ void __49__SBUIPoseidonIconView__startReduceMotionShimmer__block_invoke_4(uint64
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
-    v5 = [(UIView *)self->_restToOpenLabelRotationView layer];
-    [v5 setMask:0];
+    layer = [(UIView *)self->_restToOpenLabelRotationView layer];
+    [layer setMask:0];
 
     if (!self->_isFilling)
     {

@@ -1,17 +1,17 @@
 @interface MUPlaceAppLockupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 @end
 
 @implementation MUPlaceAppLockupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPlaceAppLockupView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"MUAppLockupViewModel" hasRequiredInstanceMethod:@"titleText"];
-  [v3 validateClass:@"MUPlaceAppLockupView" hasInstanceVariable:@"_punchoutButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPlaceAppLockupView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"MUAppLockupViewModel" hasRequiredInstanceMethod:@"titleText"];
+  [validationsCopy validateClass:@"MUPlaceAppLockupView" hasInstanceVariable:@"_punchoutButton" withType:"UIButton"];
 }
 
 - (id)accessibilityLabel

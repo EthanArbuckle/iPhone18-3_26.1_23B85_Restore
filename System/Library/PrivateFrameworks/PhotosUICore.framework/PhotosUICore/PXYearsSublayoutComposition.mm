@@ -1,21 +1,21 @@
 @interface PXYearsSublayoutComposition
-- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)a3;
+- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)type;
 - (id)configuredLayoutGenerator;
-- (void)setMetrics:(id)a3;
+- (void)setMetrics:(id)metrics;
 @end
 
 @implementation PXYearsSublayoutComposition
 
-- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)a3
+- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     +[PXCursorInteractionSettings sharedInstance];
     [objc_claimAutoreleasedReturnValue() yearsPadding];
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v7 = *off_1E7721FA8;
     v8 = *(off_1E7721FA8 + 1);
@@ -24,25 +24,25 @@
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
 LABEL_13:
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXYearsSublayoutComposition.m" lineNumber:75 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXYearsSublayoutComposition.m" lineNumber:75 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
   v5 = +[PXKeyboardSettings sharedInstance];
-  v6 = [v5 yearsFocusAnimationStyle];
+  yearsFocusAnimationStyle = [v5 yearsFocusAnimationStyle];
   [v5 yearsFocusPadding];
-  if (v6 == 2 || v6 == 1)
+  if (yearsFocusAnimationStyle == 2 || yearsFocusAnimationStyle == 1)
   {
 LABEL_10:
     PXEdgeInsetsMake();
   }
 
-  if (v6)
+  if (yearsFocusAnimationStyle)
   {
 
     goto LABEL_13;
@@ -67,9 +67,9 @@ LABEL_11:
 
 - (id)configuredLayoutGenerator
 {
-  v3 = [(PXGSublayoutComposition *)self numberOfSublayouts];
-  v4 = [(PXYearsSublayoutComposition *)self metrics];
-  v5 = [v4 copy];
+  numberOfSublayouts = [(PXGSublayoutComposition *)self numberOfSublayouts];
+  metrics = [(PXYearsSublayoutComposition *)self metrics];
+  v5 = [metrics copy];
 
   [(PXGSublayoutComposition *)self referenceSize];
   [v5 setReferenceSize:?];
@@ -86,21 +86,21 @@ LABEL_11:
     self->_layoutGenerator = v7;
   }
 
-  [(PXYearsLayoutGenerator *)self->_layoutGenerator setItemCount:v3];
+  [(PXYearsLayoutGenerator *)self->_layoutGenerator setItemCount:numberOfSublayouts];
   v9 = self->_layoutGenerator;
   v10 = v9;
 
   return v9;
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_metrics != v4)
+  metricsCopy = metrics;
+  v5 = metricsCopy;
+  if (self->_metrics != metricsCopy)
   {
-    v9 = v4;
-    v6 = [(PXYearsLayoutMetrics *)v4 isEqual:?];
+    v9 = metricsCopy;
+    v6 = [(PXYearsLayoutMetrics *)metricsCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {

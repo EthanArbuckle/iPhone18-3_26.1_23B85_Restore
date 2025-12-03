@@ -1,9 +1,9 @@
 @interface MRUExpandableButtonSelectionView
-- (MRUExpandableButtonSelectionView)initWithFrame:(CGRect)a3;
+- (MRUExpandableButtonSelectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setOption:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setOption:(id)option;
 - (void)updateVisibility;
 @end
 
@@ -15,31 +15,31 @@
   {
     if ([(MediaControlsExpandableButtonOption *)self->_option selectedBackground]== 1)
     {
-      v3 = [MEMORY[0x1E69DC888] clearColor];
-      [(MRUExpandableButtonSelectionView *)self setBackgroundColor:v3];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(MRUExpandableButtonSelectionView *)self setBackgroundColor:clearColor];
       v4 = 1.0;
       goto LABEL_8;
     }
 
     if ([(MediaControlsExpandableButtonOption *)self->_option selectedBackground]== 2)
     {
-      v6 = [MEMORY[0x1E69DC888] systemBlueColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
       goto LABEL_6;
     }
 
-    v7 = [(MediaControlsExpandableButtonOption *)self->_option selectedBackgroundColor];
+    selectedBackgroundColor = [(MediaControlsExpandableButtonOption *)self->_option selectedBackgroundColor];
 
-    if (v7)
+    if (selectedBackgroundColor)
     {
-      v6 = [(MediaControlsExpandableButtonOption *)self->_option selectedBackgroundColor];
+      systemBlueColor = [(MediaControlsExpandableButtonOption *)self->_option selectedBackgroundColor];
       goto LABEL_6;
     }
 
     v5 = MEMORY[0x1E69DC888];
     if (self->_expanded)
     {
-      v3 = [MEMORY[0x1E69DC888] whiteColor];
-      v8 = [v3 colorWithAlphaComponent:0.2];
+      clearColor = [MEMORY[0x1E69DC888] whiteColor];
+      v8 = [clearColor colorWithAlphaComponent:0.2];
       [(MRUExpandableButtonSelectionView *)self setBackgroundColor:v8];
 
       goto LABEL_7;
@@ -51,23 +51,23 @@
     v5 = MEMORY[0x1E69DC888];
   }
 
-  v6 = [v5 clearColor];
+  systemBlueColor = [v5 clearColor];
 LABEL_6:
-  v3 = v6;
-  [(MRUExpandableButtonSelectionView *)self setBackgroundColor:v6];
+  clearColor = systemBlueColor;
+  [(MRUExpandableButtonSelectionView *)self setBackgroundColor:systemBlueColor];
 LABEL_7:
   v4 = 0.0;
 LABEL_8:
 
-  v9 = [(MRUExpandableButtonSelectionView *)self packageView];
-  [v9 setAlpha:v4];
+  packageView = [(MRUExpandableButtonSelectionView *)self packageView];
+  [packageView setAlpha:v4];
 }
 
-- (MRUExpandableButtonSelectionView)initWithFrame:(CGRect)a3
+- (MRUExpandableButtonSelectionView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MRUExpandableButtonSelectionView;
-  v3 = [(MRUExpandableButtonSelectionView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUExpandableButtonSelectionView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -107,10 +107,10 @@ LABEL_8:
   [(MRUCAPackageView *)self->_packageView _setCornerRadius:v11];
 }
 
-- (void)setOption:(id)a3
+- (void)setOption:(id)option
 {
-  objc_storeStrong(&self->_option, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_option, option);
+  optionCopy = option;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__MRUExpandableButtonSelectionView_setOption___block_invoke;
@@ -119,20 +119,20 @@ LABEL_8:
   [MEMORY[0x1E69DD250] performWithoutAnimation:v6];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(MRUExpandableButtonSelectionView *)self updateVisibility];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(MRUExpandableButtonSelectionView *)self updateVisibility];
   }
 }

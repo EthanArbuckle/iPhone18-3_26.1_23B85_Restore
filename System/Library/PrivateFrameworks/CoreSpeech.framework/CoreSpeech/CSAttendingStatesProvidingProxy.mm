@@ -1,25 +1,25 @@
 @interface CSAttendingStatesProvidingProxy
 - (CSAttendingHintProviding)hintProvider;
 - (CSAttendingStatesProvidingProxy)init;
-- (void)addDismissUpdateReceiver:(id)a3;
-- (void)addSiriPromptUpdateReceiver:(id)a3;
+- (void)addDismissUpdateReceiver:(id)receiver;
+- (void)addSiriPromptUpdateReceiver:(id)receiver;
 - (void)attendingStatesXPCDisconnected;
-- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)a3;
+- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)id;
 - (void)dismissAttending;
-- (void)localAttendingStartedWithRootRequestId:(id)a3;
+- (void)localAttendingStartedWithRootRequestId:(id)id;
 - (void)localAttendingStopped;
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3;
-- (void)localAttendingWillStartWithRootRequestId:(id)a3;
-- (void)registerAttendingHintProvider:(id)a3;
-- (void)removeDismissUpdateReceiver:(id)a3;
-- (void)removeSiriPromptUpdateReceiver:(id)a3;
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error;
+- (void)localAttendingWillStartWithRootRequestId:(id)id;
+- (void)registerAttendingHintProvider:(id)provider;
+- (void)removeDismissUpdateReceiver:(id)receiver;
+- (void)removeSiriPromptUpdateReceiver:(id)receiver;
 - (void)requestDismissed;
-- (void)setRemoteObjectProxy:(id)a3;
-- (void)siriDidPromptWithRootRequestId:(id)a3;
-- (void)siriPromptWillStartWithRootRequestId:(id)a3;
-- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5;
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5;
-- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)a3;
+- (void)setRemoteObjectProxy:(id)proxy;
+- (void)siriDidPromptWithRootRequestId:(id)id;
+- (void)siriPromptWillStartWithRootRequestId:(id)id;
+- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id;
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id;
+- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)s;
 - (void)startUpdateStates;
 @end
 
@@ -54,23 +54,23 @@
   return WeakRetained;
 }
 
-- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5
+- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id
 {
-  v8 = a5;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000766B4;
   v11[3] = &unk_100250B98;
-  v13 = a3;
-  v14 = a4;
+  timeCopy = time;
+  typeCopy = type;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = idCopy;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)a3
+- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)s
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -78,23 +78,23 @@
   v4[2] = sub_100076740;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  sCopy = s;
   dispatch_async(queue, v4);
 }
 
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id
 {
-  v8 = a5;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100076800;
   v11[3] = &unk_100250B98;
-  v13 = a3;
-  v14 = a4;
+  timeCopy = time;
+  typeCopy = type;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = idCopy;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
@@ -109,45 +109,45 @@
   dispatch_async(queue, block);
 }
 
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007692C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)localAttendingStartedWithRootRequestId:(id)a3
+- (void)localAttendingStartedWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000769D0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)localAttendingWillStartWithRootRequestId:(id)a3
+- (void)localAttendingWillStartWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100076A74;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -173,15 +173,15 @@
   dispatch_async(queue, block);
 }
 
-- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)a3
+- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)id
 {
-  v4 = a3;
-  v5 = [(CSAttendingStatesProvidingProxy *)self carKitUtils];
-  v6 = [v5 isBargeInDisabledForConnectedVehicle];
+  idCopy = id;
+  carKitUtils = [(CSAttendingStatesProvidingProxy *)self carKitUtils];
+  isBargeInDisabledForConnectedVehicle = [carKitUtils isBargeInDisabledForConnectedVehicle];
 
   v7 = CSLogContextFacilityCoreSpeech;
   v8 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isBargeInDisabledForConnectedVehicle)
   {
     if (v8)
     {
@@ -198,7 +198,7 @@
       *buf = 136315394;
       v14 = "[CSAttendingStatesProvidingProxy directActionJarvisAnnounceMessageTriggerWithDeviceId:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = idCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s deviceId=%@", buf, 0x16u);
     }
 
@@ -207,22 +207,22 @@
     v10[1] = 3221225472;
     v10[2] = sub_100076F80;
     v10[3] = &unk_100253C48;
-    v11 = v4;
-    v12 = self;
+    v11 = idCopy;
+    selfCopy = self;
     dispatch_async(queue, v10);
   }
 }
 
-- (void)siriDidPromptWithRootRequestId:(id)a3
+- (void)siriDidPromptWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[CSAttendingStatesProvidingProxy siriDidPromptWithRootRequestId:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = idCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -232,21 +232,21 @@
   v8[2] = sub_100077128;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = idCopy;
+  v7 = idCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)siriPromptWillStartWithRootRequestId:(id)a3
+- (void)siriPromptWillStartWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v9 = "[CSAttendingStatesProvidingProxy siriPromptWillStartWithRootRequestId:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = idCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -259,87 +259,87 @@
   dispatch_async(queue, block);
 }
 
-- (void)registerAttendingHintProvider:(id)a3
+- (void)registerAttendingHintProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100077618;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeSiriPromptUpdateReceiver:(id)a3
+- (void)removeSiriPromptUpdateReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000776BC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addSiriPromptUpdateReceiver:(id)a3
+- (void)addSiriPromptUpdateReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100077760;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeDismissUpdateReceiver:(id)a3
+- (void)removeDismissUpdateReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100077804;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addDismissUpdateReceiver:(id)a3
+- (void)addDismissUpdateReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000778A8;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setRemoteObjectProxy:(id)a3
+- (void)setRemoteObjectProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007794C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = proxyCopy;
+  v6 = proxyCopy;
   dispatch_async(queue, v7);
 }
 

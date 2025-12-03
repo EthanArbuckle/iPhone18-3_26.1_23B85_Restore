@@ -1,19 +1,19 @@
 @interface HitPassthroughWindow
-- (_TtC17SequoiaTranslator20HitPassthroughWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC17SequoiaTranslator20HitPassthroughWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation HitPassthroughWindow
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for HitPassthroughWindow();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(HitPassthroughWindow *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(HitPassthroughWindow *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -35,11 +35,11 @@ LABEL_5:
   return v10;
 }
 
-- (_TtC17SequoiaTranslator20HitPassthroughWindow)initWithWindowScene:(id)a3
+- (_TtC17SequoiaTranslator20HitPassthroughWindow)initWithWindowScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for HitPassthroughWindow();
-  return [(HitPassthroughWindow *)&v5 initWithWindowScene:a3];
+  return [(HitPassthroughWindow *)&v5 initWithWindowScene:scene];
 }
 
 @end

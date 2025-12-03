@@ -1,5 +1,5 @@
 @interface PKMicaView
-- (PKMicaView)initWithFrame:(CGRect)a3;
+- (PKMicaView)initWithFrame:(CGRect)frame;
 - (void)pauseAnimation;
 - (void)resetAndPauseAnimations;
 - (void)resetAndPlayAnimations;
@@ -10,44 +10,44 @@
 
 - (void)resetAndPauseAnimations
 {
-  v5 = self;
-  v2 = [(PKMicaView *)v5 layer];
-  [v2 setSpeed_];
+  selfCopy = self;
+  layer = [(PKMicaView *)selfCopy layer];
+  [layer setSpeed_];
 
-  v3 = [(PKMicaView *)v5 layer];
-  [v3 setTimeOffset_];
+  layer2 = [(PKMicaView *)selfCopy layer];
+  [layer2 setTimeOffset_];
 
-  v4 = [(PKMicaView *)v5 layer];
-  [v4 setBeginTime_];
+  layer3 = [(PKMicaView *)selfCopy layer];
+  [layer3 setBeginTime_];
 }
 
 - (void)resetAndPlayAnimations
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA8313C();
 }
 
 - (void)pauseAnimation
 {
-  v7 = self;
-  v2 = [(PKMicaView *)v7 layer];
-  [v2 convertTime:0 fromLayer:CACurrentMediaTime()];
+  selfCopy = self;
+  layer = [(PKMicaView *)selfCopy layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
 
-  v5 = [(PKMicaView *)v7 layer];
-  [v5 setSpeed_];
+  layer2 = [(PKMicaView *)selfCopy layer];
+  [layer2 setSpeed_];
 
-  v6 = [(PKMicaView *)v7 layer];
-  [v6 setTimeOffset_];
+  layer3 = [(PKMicaView *)selfCopy layer];
+  [layer3 setTimeOffset_];
 }
 
 - (void)resumeAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA8331C();
 }
 
-- (PKMicaView)initWithFrame:(CGRect)a3
+- (PKMicaView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

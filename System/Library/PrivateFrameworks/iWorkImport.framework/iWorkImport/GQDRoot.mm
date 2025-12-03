@@ -1,17 +1,17 @@
 @interface GQDRoot
-- (BOOL)addObject:(id)a3 withOwnedXmlUid:(const char *)a4;
+- (BOOL)addObject:(id)object withOwnedXmlUid:(const char *)uid;
 - (BOOL)appBundleCanProcessCurrentDocVersion;
-- (BOOL)includeStyleWithIdentifier:(const char *)a3 parentIdentifier:(const char *)a4 uid:(const char *)a5;
-- (BOOL)readDocumentVersion:(_xmlTextReader *)a3 isTooNew:(BOOL *)a4;
-- (Class)classForName:(const char *)a3;
+- (BOOL)includeStyleWithIdentifier:(const char *)identifier parentIdentifier:(const char *)parentIdentifier uid:(const char *)uid;
+- (BOOL)readDocumentVersion:(_xmlTextReader *)version isTooNew:(BOOL *)new;
+- (Class)classForName:(const char *)name;
 - (GQDRoot)init;
-- (__CFURL)appBundleResourcesUrl:(__CFURL *)a3;
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileExists:(BOOL *)a5 fileUrl:(__CFURL *)a6;
-- (const)addIdentifiedObject:(id)a3 fromCurrentNode:(_xmlTextReader *)a4;
-- (id)colorForMissingAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4;
+- (__CFURL)appBundleResourcesUrl:(__CFURL *)url;
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileExists:(BOOL *)exists fileUrl:(__CFURL *)url;
+- (const)addIdentifiedObject:(id)object fromCurrentNode:(_xmlTextReader *)node;
+- (id)colorForMissingAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle;
 - (id)uuid;
 - (void)dealloc;
-- (void)forgetAboutObject:(id)a3 withXmlUid:(const char *)a4;
+- (void)forgetAboutObject:(id)object withXmlUid:(const char *)uid;
 @end
 
 @implementation GQDRoot
@@ -51,19 +51,19 @@
   [(GQDRoot *)&v5 dealloc];
 }
 
-- (Class)classForName:(const char *)a3
+- (Class)classForName:(const char *)name
 {
   v4 = objc_opt_class();
 
-  return [GQDClassNameMap classForName:a3 inRootType:v4];
+  return [GQDClassNameMap classForName:name inRootType:v4];
 }
 
-- (BOOL)addObject:(id)a3 withOwnedXmlUid:(const char *)a4
+- (BOOL)addObject:(id)object withOwnedXmlUid:(const char *)uid
 {
-  v7 = CFDictionaryContainsKey(self->mUidToObjectMap, a4);
+  v7 = CFDictionaryContainsKey(self->mUidToObjectMap, uid);
   if (!v7)
   {
-    CFDictionaryAddValue(self->mUidToObjectMap, a4, a3);
+    CFDictionaryAddValue(self->mUidToObjectMap, uid, object);
   }
 
   return v7 == 0;
@@ -78,14 +78,14 @@
   return v3;
 }
 
-- (const)addIdentifiedObject:(id)a3 fromCurrentNode:(_xmlTextReader *)a4
+- (const)addIdentifiedObject:(id)object fromCurrentNode:(_xmlTextReader *)node
 {
-  AttributeNs = xmlTextReaderGetAttributeNs(a4, off_9D3D8, *(qword_A35E0 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(node, off_9D3D8, *(qword_A35E0 + 16));
   if (AttributeNs)
   {
     do
     {
-      v7 = [(GQDRoot *)self addObject:a3 withOwnedXmlUid:AttributeNs];
+      v7 = [(GQDRoot *)self addObject:object withOwnedXmlUid:AttributeNs];
       if (v7)
       {
         break;
@@ -106,17 +106,17 @@
   return AttributeNs;
 }
 
-- (void)forgetAboutObject:(id)a3 withXmlUid:(const char *)a4
+- (void)forgetAboutObject:(id)object withXmlUid:(const char *)uid
 {
-  if ([(GQDRoot *)self objectWithXmlUid:a4]== a3)
+  if ([(GQDRoot *)self objectWithXmlUid:uid]== object)
   {
     mUidToObjectMap = self->mUidToObjectMap;
 
-    CFDictionaryRemoveValue(mUidToObjectMap, a4);
+    CFDictionaryRemoveValue(mUidToObjectMap, uid);
   }
 }
 
-- (BOOL)includeStyleWithIdentifier:(const char *)a3 parentIdentifier:(const char *)a4 uid:(const char *)a5
+- (BOOL)includeStyleWithIdentifier:(const char *)identifier parentIdentifier:(const char *)parentIdentifier uid:(const char *)uid
 {
   v7 = qword_A40B8;
   if (!qword_A40B8)
@@ -125,24 +125,24 @@
     qword_A40B8 = v7;
   }
 
-  if (a3)
+  if (identifier)
   {
-    v8 = a3;
+    parentIdentifierCopy = identifier;
   }
 
   else
   {
-    v8 = a4;
+    parentIdentifierCopy = parentIdentifier;
   }
 
-  return !v8 || CFSetContainsValue(v7, v8) == 0;
+  return !parentIdentifierCopy || CFSetContainsValue(v7, parentIdentifierCopy) == 0;
 }
 
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileExists:(BOOL *)a5 fileUrl:(__CFURL *)a6
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileExists:(BOOL *)exists fileUrl:(__CFURL *)url
 {
-  v7 = [(GQDRoot *)self createUrlToAppBundleResource:a3 processorBundle:a4 fileUrl:a6];
+  v7 = [(GQDRoot *)self createUrlToAppBundleResource:resource processorBundle:bundle fileUrl:url];
   v8 = v7;
-  if (a5)
+  if (exists)
   {
     if (v7)
     {
@@ -154,32 +154,32 @@
       v9 = 0;
     }
 
-    *a5 = v9;
+    *exists = v9;
   }
 
   return v8;
 }
 
-- (id)colorForMissingAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4
+- (id)colorForMissingAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle
 {
   if (!self->mAppBundleColorMapLoaded)
   {
-    [(GQDRoot *)self loadAppBundleResourceToColorMap:a3];
+    [(GQDRoot *)self loadAppBundleResourceToColorMap:resource];
   }
 
   result = self->mAppBundleResourceToColorMap;
   if (result)
   {
 
-    return CFDictionaryGetValue(result, a3);
+    return CFDictionaryGetValue(result, resource);
   }
 
   return result;
 }
 
-- (__CFURL)appBundleResourcesUrl:(__CFURL *)a3
+- (__CFURL)appBundleResourcesUrl:(__CFURL *)url
 {
-  if (a3 && !self->mAppBundleResourcesUrlInitialized)
+  if (url && !self->mAppBundleResourcesUrlInitialized)
   {
     [(GQDRoot *)self initializeAppBundleResourcesUrl:?];
   }
@@ -187,12 +187,12 @@
   return self->mAppBundleResourcesUrl;
 }
 
-- (BOOL)readDocumentVersion:(_xmlTextReader *)a3 isTooNew:(BOOL *)a4
+- (BOOL)readDocumentVersion:(_xmlTextReader *)version isTooNew:(BOOL *)new
 {
   self->mDocVersion = 0;
   p_mDocVersion = &self->mDocVersion;
-  v7 = [objc_opt_class() appNamespace];
-  v8 = sub_425CC(a3, v7, "version", p_mDocVersion);
+  appNamespace = [objc_opt_class() appNamespace];
+  v8 = sub_425CC(version, appNamespace, "version", p_mDocVersion);
   v9 = 0;
   if (v8)
   {
@@ -200,11 +200,11 @@
   }
 
   *p_mDocVersion = v9;
-  if (a4)
+  if (new)
   {
     v13 = 0;
-    v10 = [objc_opt_class() appNamespace];
-    if (sub_425CC(a3, v10, "compatible-version", &v13))
+    appNamespace2 = [objc_opt_class() appNamespace];
+    if (sub_425CC(version, appNamespace2, "compatible-version", &v13))
     {
       v11 = sub_43054(v13);
     }
@@ -214,7 +214,7 @@
       v11 = *p_mDocVersion;
     }
 
-    *a4 = v11 > 0x156C1C3A00;
+    *new = v11 > 0x156C1C3A00;
     if (v11 > 0x156C1C3A00)
     {
       return 0;
@@ -236,19 +236,19 @@
 
 - (BOOL)appBundleCanProcessCurrentDocVersion
 {
-  v3 = [(GQDRoot *)self documentReleaseVersion];
+  documentReleaseVersion = [(GQDRoot *)self documentReleaseVersion];
   mAppBundleVersion = self->mAppBundleVersion;
   switch(mAppBundleVersion)
   {
     case 6:
       v5 = qword_9CAA8;
-      return v3 <= v5;
+      return documentReleaseVersion <= v5;
     case 8:
       v5 = qword_9CAA0;
-      return v3 <= v5;
+      return documentReleaseVersion <= v5;
     case 9:
       v5 = qword_9CA98;
-      return v3 <= v5;
+      return documentReleaseVersion <= v5;
   }
 
   return 0;

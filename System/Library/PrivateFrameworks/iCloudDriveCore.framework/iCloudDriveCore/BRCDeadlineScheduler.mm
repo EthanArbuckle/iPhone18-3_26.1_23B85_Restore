@@ -1,14 +1,14 @@
 @interface BRCDeadlineScheduler
-- (BOOL)_setupTimerRequiredForDeadline:(int64_t)a3 now:(int64_t)a4;
-- (BRCDeadlineScheduler)initWithName:(id)a3 fairScheduler:(id)a4;
+- (BOOL)_setupTimerRequiredForDeadline:(int64_t)deadline now:(int64_t)now;
+- (BRCDeadlineScheduler)initWithName:(id)name fairScheduler:(id)scheduler;
 - (void)_close;
 - (void)_schedule;
-- (void)addSource:(id)a3 deadline:(int64_t)a4;
+- (void)addSource:(id)source deadline:(int64_t)deadline;
 - (void)cancel;
 - (void)close;
 - (void)dealloc;
 - (void)resume;
-- (void)runDeadlineSource:(id)a3 completionHandler:(id)a4;
+- (void)runDeadlineSource:(id)source completionHandler:(id)handler;
 - (void)suspend;
 @end
 
@@ -18,25 +18,25 @@
 {
   dispatch_assert_queue_V2(self->_workloop);
   v3 = brc_current_date_nsec();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = 0;
   while (1)
   {
-    v6 = [(BRCMinHeap *)v4->_minHeap firstObject];
+    firstObject = [(BRCMinHeap *)selfCopy->_minHeap firstObject];
 
-    if (!v6 || [(BRCDeadlineScheduler *)v4 _setupTimerRequiredForDeadline:v6[1] now:v3])
+    if (!firstObject || [(BRCDeadlineScheduler *)selfCopy _setupTimerRequiredForDeadline:firstObject[1] now:v3])
     {
       break;
     }
 
-    [(BRCMinHeap *)v4->_minHeap removeFirstObject];
-    v4->_lastSchedule = v3;
-    v5 = v6;
-    if ([v6 willRunEvenHandler])
+    [(BRCMinHeap *)selfCopy->_minHeap removeFirstObject];
+    selfCopy->_lastSchedule = v3;
+    v5 = firstObject;
+    if ([firstObject willRunEvenHandler])
     {
-      v7 = [(BRCMinHeap *)v4->_minHeap count]!= 0;
-      v8 = v6;
+      v7 = [(BRCMinHeap *)selfCopy->_minHeap count]!= 0;
+      v8 = firstObject;
       goto LABEL_7;
     }
   }
@@ -45,7 +45,7 @@
   v8 = 0;
 LABEL_7:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   if (v8)
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -53,8 +53,8 @@ LABEL_7:
     v9[2] = __33__BRCDeadlineScheduler__schedule__block_invoke;
     v9[3] = &unk_278500EE0;
     v10 = v7;
-    v9[4] = v4;
-    [(BRCDeadlineScheduler *)v4 runDeadlineSource:v8 completionHandler:v9];
+    v9[4] = selfCopy;
+    [(BRCDeadlineScheduler *)selfCopy runDeadlineSource:v8 completionHandler:v9];
   }
 }
 
@@ -68,10 +68,10 @@ uint64_t __33__BRCDeadlineScheduler__schedule__block_invoke(uint64_t result)
   return result;
 }
 
-- (BRCDeadlineScheduler)initWithName:(id)a3 fairScheduler:(id)a4
+- (BRCDeadlineScheduler)initWithName:(id)name fairScheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  schedulerCopy = scheduler;
   v20.receiver = self;
   v20.super_class = BRCDeadlineScheduler;
   v9 = [(BRCDeadlineScheduler *)&v20 init];
@@ -81,14 +81,14 @@ uint64_t __33__BRCDeadlineScheduler__schedule__block_invoke(uint64_t result)
     minHeap = v9->_minHeap;
     v9->_minHeap = v10;
 
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v9->_fairScheduler, a4);
-    v12 = [(BRCFairScheduler *)v9->_fairScheduler workloop];
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v9->_fairScheduler, scheduler);
+    workloop = [(BRCFairScheduler *)v9->_fairScheduler workloop];
     workloop = v9->_workloop;
-    v9->_workloop = v12;
+    v9->_workloop = workloop;
 
     objc_initWeak(&location, v9);
-    v14 = [[BRCFairSource alloc] initWithName:@"deadline-sheduler" scheduler:v8];
+    v14 = [[BRCFairSource alloc] initWithName:@"deadline-sheduler" scheduler:schedulerCopy];
     source = v9->_source;
     v9->_source = v14;
 
@@ -129,16 +129,16 @@ void __51__BRCDeadlineScheduler_initWithName_fairScheduler___block_invoke_2(uint
   [WeakRetained _schedule];
 }
 
-- (BOOL)_setupTimerRequiredForDeadline:(int64_t)a3 now:(int64_t)a4
+- (BOOL)_setupTimerRequiredForDeadline:(int64_t)deadline now:(int64_t)now
 {
-  if (self->_leeway + self->_lastSchedule <= a3)
+  if (self->_leeway + self->_lastSchedule <= deadline)
   {
-    v6 = a3;
+    deadlineCopy = deadline;
   }
 
   else
   {
-    v6 = self->_leeway + self->_lastSchedule;
+    deadlineCopy = self->_leeway + self->_lastSchedule;
   }
 
   if (brc_is_before_deadline())
@@ -146,14 +146,14 @@ void __51__BRCDeadlineScheduler_initWithName_fairScheduler___block_invoke_2(uint
     computeNextAdmissibleDateForScheduling = self->_computeNextAdmissibleDateForScheduling;
     if (computeNextAdmissibleDateForScheduling)
     {
-      v6 = computeNextAdmissibleDateForScheduling[2](computeNextAdmissibleDateForScheduling, a4);
+      deadlineCopy = computeNextAdmissibleDateForScheduling[2](computeNextAdmissibleDateForScheduling, now);
     }
   }
 
   v8 = brc_is_before_deadline();
   if ((v8 & 1) == 0)
   {
-    v9 = v6 - a4;
+    v9 = deadlineCopy - now;
     v10 = dispatch_time(0, v9);
     delay = self->_delay;
     if (delay)
@@ -215,20 +215,20 @@ void __51__BRCDeadlineScheduler_initWithName_fairScheduler___block_invoke_2(uint
   return v8 ^ 1;
 }
 
-- (void)runDeadlineSource:(id)a3 completionHandler:(id)a4
+- (void)runDeadlineSource:(id)source completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_workloop);
-  v8 = [v6 workloop];
+  workloop = [sourceCopy workloop];
   workloop = self->_workloop;
 
-  if (v8 == workloop)
+  if (workloop == workloop)
   {
-    [v6 runEventHandler];
-    if (v7)
+    [sourceCopy runEventHandler];
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -236,16 +236,16 @@ void __51__BRCDeadlineScheduler_initWithName_fairScheduler___block_invoke_2(uint
   {
     v10 = self->_source;
     [(BRCFairSource *)v10 suspend];
-    v11 = [v6 workloop];
+    workloop2 = [sourceCopy workloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__BRCDeadlineScheduler_runDeadlineSource_completionHandler___block_invoke;
     block[3] = &unk_2784FF5B8;
-    v14 = v6;
+    v14 = sourceCopy;
     v15 = v10;
-    v16 = v7;
+    v16 = handlerCopy;
     v12 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(workloop2, block);
   }
 }
 
@@ -264,40 +264,40 @@ uint64_t __60__BRCDeadlineScheduler_runDeadlineSource_completionHandler___block_
   return result;
 }
 
-- (void)addSource:(id)a3 deadline:(int64_t)a4
+- (void)addSource:(id)source deadline:(int64_t)deadline
 {
-  v11 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  minHeap = v6->_minHeap;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  sourceCopy = source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  minHeap = selfCopy->_minHeap;
+  if (deadline == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(BRCMinHeap *)minHeap removeObject:v11];
+    [(BRCMinHeap *)minHeap removeObject:sourceCopy];
   }
 
   else
   {
-    v8 = [(BRCMinHeap *)minHeap containsObject:v11];
-    v9 = v6->_minHeap;
+    v8 = [(BRCMinHeap *)minHeap containsObject:sourceCopy];
+    v9 = selfCopy->_minHeap;
     if (v8)
     {
-      [(BRCMinHeap *)v9 objectWeightChanged:v11];
+      [(BRCMinHeap *)v9 objectWeightChanged:sourceCopy];
     }
 
     else
     {
-      [(BRCMinHeap *)v9 addObject:v11];
+      [(BRCMinHeap *)v9 addObject:sourceCopy];
     }
 
-    v10 = [(BRCMinHeap *)v6->_minHeap firstObject];
+    firstObject = [(BRCMinHeap *)selfCopy->_minHeap firstObject];
 
-    if (v10 == v11 && ![(BRCDeadlineScheduler *)v6 _setupTimerRequiredForDeadline:a4 now:brc_current_date_nsec()])
+    if (firstObject == sourceCopy && ![(BRCDeadlineScheduler *)selfCopy _setupTimerRequiredForDeadline:deadline now:brc_current_date_nsec()])
     {
-      [(BRCDeadlineScheduler *)v6 signal];
+      [(BRCDeadlineScheduler *)selfCopy signal];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)suspend
@@ -352,9 +352,9 @@ uint64_t __60__BRCDeadlineScheduler_runDeadlineSource_completionHandler___block_
   if (source)
   {
     [(BRCFairSource *)source cancel];
-    v6 = self;
-    objc_sync_enter(v6);
-    if (!v6->_isResumed)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_isResumed)
     {
       [(BRCFairSource *)self->_source resume];
     }
@@ -362,7 +362,7 @@ uint64_t __60__BRCDeadlineScheduler_runDeadlineSource_completionHandler___block_
     v7 = self->_source;
     self->_source = 0;
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   minHeap = self->_minHeap;

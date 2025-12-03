@@ -1,17 +1,17 @@
 @interface BackgroundColorService
 + (BackgroundColorService)sharedInstance;
-+ (id)makeWorkQueueUsingSchedulerProvider:(id)a3;
++ (id)makeWorkQueueUsingSchedulerProvider:(id)provider;
 + (unint64_t)_getDefaultBatchSize;
 + (unint64_t)batchSize;
 - (BackgroundColorService)init;
 - (id)fetchContactIdentifiersForContactsMissingBackgroundColors;
-- (id)fetchContactsWithImageKeysForIdentifiers:(id)a3;
+- (id)fetchContactsWithImageKeysForIdentifiers:(id)identifiers;
 - (id)imageKeysToFetch;
 - (id)interestedNotifications;
-- (void)_updateBackgroundColorIfNeeded:(id)a3 colorAnalyzer:(id)a4;
-- (void)batchUpdateBackgroundColorsForContactIdentifiers:(id)a3;
-- (void)handleCoalescedEvent:(id)a3;
-- (void)handleNotificationName:(id)a3;
+- (void)_updateBackgroundColorIfNeeded:(id)needed colorAnalyzer:(id)analyzer;
+- (void)batchUpdateBackgroundColorsForContactIdentifiers:(id)identifiers;
+- (void)handleCoalescedEvent:(id)event;
+- (void)handleNotificationName:(id)name;
 @end
 
 @implementation BackgroundColorService
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000C6B4;
   block[3] = &unk_100045580;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10004E078 != -1)
   {
     dispatch_once(&qword_10004E078, block);
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000C780;
   block[3] = &unk_100045580;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10004E088 != -1)
   {
     dispatch_once(&qword_10004E088, block);
@@ -86,23 +86,23 @@
   return v2;
 }
 
-+ (id)makeWorkQueueUsingSchedulerProvider:(id)a3
++ (id)makeWorkQueueUsingSchedulerProvider:(id)provider
 {
-  v3 = [a3 newSerialSchedulerWithName:@"com.apple.contactsd.BackgroundColorService"];
+  v3 = [provider newSerialSchedulerWithName:@"com.apple.contactsd.BackgroundColorService"];
   v4 = [[CNQualityOfServiceSchedulerDecorator alloc] initWithScheduler:v3 qualityOfService:2];
 
   return v4;
 }
 
-- (void)handleCoalescedEvent:(id)a3
+- (void)handleCoalescedEvent:(id)event
 {
-  v4 = [(BackgroundColorService *)self workQueue];
+  workQueue = [(BackgroundColorService *)self workQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000CA18;
   v5[3] = &unk_1000455E8;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [workQueue performBlock:v5];
 }
 
 - (id)interestedNotifications
@@ -114,18 +114,18 @@
   return v2;
 }
 
-- (void)handleNotificationName:(id)a3
+- (void)handleNotificationName:(id)name
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"__ABDataBaseChangedByOtherProcessNotification"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.datamigrator.migrationDidFinish"))
+  nameCopy = name;
+  if (([nameCopy isEqualToString:@"__ABDataBaseChangedByOtherProcessNotification"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"com.apple.datamigrator.migrationDidFinish"))
   {
-    v5 = [(BackgroundColorService *)self workQueue];
+    workQueue = [(BackgroundColorService *)self workQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10000CBF0;
     v6[3] = &unk_1000455E8;
     v6[4] = self;
-    [v5 performBlock:v6];
+    [workQueue performBlock:v6];
   }
 }
 
@@ -143,7 +143,7 @@
 
   [v6 setUnifyResults:0];
   v8 = +[CNEnvironment currentEnvironment];
-  v9 = [v8 contactStore];
+  contactStore = [v8 contactStore];
 
   v26 = 0;
   v21 = _NSConcreteStackBlock;
@@ -152,7 +152,7 @@
   v24 = &unk_100045790;
   v10 = v2;
   v25 = v10;
-  v11 = [v9 enumerateContactsWithFetchRequest:v6 error:&v26 usingBlock:&v21];
+  v11 = [contactStore enumerateContactsWithFetchRequest:v6 error:&v26 usingBlock:&v21];
   v12 = v26;
   if ((v11 & 1) == 0)
   {
@@ -179,29 +179,29 @@
   return v2;
 }
 
-- (id)fetchContactsWithImageKeysForIdentifiers:(id)a3
+- (id)fetchContactsWithImageKeysForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 contactStore];
+  contactStore = [v5 contactStore];
 
   v7 = [CNContactFetchRequest alloc];
-  v8 = [(BackgroundColorService *)self imageKeysToFetch];
-  v9 = [v7 initWithKeysToFetch:v8];
+  imageKeysToFetch = [(BackgroundColorService *)self imageKeysToFetch];
+  v9 = [v7 initWithKeysToFetch:imageKeysToFetch];
 
-  v10 = [CNContact predicateForContactsWithIdentifiers:v4];
+  v10 = [CNContact predicateForContactsWithIdentifiers:identifiersCopy];
 
   [v9 setPredicate:v10];
   [v9 setUnifyResults:0];
   [v9 setMutableObjects:1];
   v23 = 0;
-  v11 = [v6 executeFetchRequest:v9 error:&v23];
+  v11 = [contactStore executeFetchRequest:v9 error:&v23];
   v12 = v23;
-  v13 = [v11 value];
+  value = [v11 value];
 
-  if (v13)
+  if (value)
   {
-    v14 = v13;
+    v14 = value;
   }
 
   else
@@ -218,27 +218,27 @@
   return v14;
 }
 
-- (void)_updateBackgroundColorIfNeeded:(id)a3 colorAnalyzer:(id)a4
+- (void)_updateBackgroundColorIfNeeded:(id)needed colorAnalyzer:(id)analyzer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 thumbnailImageData];
-  if (v7)
+  neededCopy = needed;
+  analyzerCopy = analyzer;
+  thumbnailImageData = [neededCopy thumbnailImageData];
+  if (thumbnailImageData)
   {
-    v8 = v7;
+    v8 = thumbnailImageData;
 LABEL_4:
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000D244;
     v10[3] = &unk_1000457B8;
-    v11 = v5;
-    [v6 getBackgroundColorOnImageData:v8 bitmapFormat:0 reply:v10];
+    v11 = neededCopy;
+    [analyzerCopy getBackgroundColorOnImageData:v8 bitmapFormat:0 reply:v10];
 
     goto LABEL_5;
   }
 
-  v9 = [v5 imageData];
-  [v5 cropRect];
+  imageData = [neededCopy imageData];
+  [neededCopy cropRect];
   v8 = CNImageUtilsCroppedImageDataFromFullSizeImageData();
 
   if (v8)
@@ -249,9 +249,9 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)batchUpdateBackgroundColorsForContactIdentifiers:(id)a3
+- (void)batchUpdateBackgroundColorsForContactIdentifiers:(id)identifiers
 {
-  v30 = a3;
+  identifiersCopy = identifiers;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2050000000;
@@ -272,9 +272,9 @@ LABEL_5:
   _Block_object_dispose(&v40, 8);
   v31 = objc_opt_new();
   v12 = +[CNEnvironment currentEnvironment];
-  v32 = [v12 contactStore];
+  contactStore = [v12 contactStore];
 
-  v33 = [v30 _cn_balancedSlicesWithMaximumCount:{objc_msgSend(objc_opt_class(), "batchSize")}];
+  v33 = [identifiersCopy _cn_balancedSlicesWithMaximumCount:{objc_msgSend(objc_opt_class(), "batchSize")}];
   v13 = 0;
   v34 = [v33 count] - 1;
   do
@@ -306,7 +306,7 @@ LABEL_5:
     v39 = v23;
     [v20 _cn_each:v37];
     v36 = 0;
-    v24 = [v32 executeSaveRequest:v23 error:&v36];
+    v24 = [contactStore executeSaveRequest:v23 error:&v36];
     v25 = v36;
     if ((v24 & 1) == 0)
     {

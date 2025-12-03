@@ -1,13 +1,13 @@
 @interface BLTPBActionFactoryVersion1
-- (id)actionWithBBAction:(id)a3;
+- (id)actionWithBBAction:(id)action;
 @end
 
 @implementation BLTPBActionFactoryVersion1
 
-- (id)actionWithBBAction:(id)a3
+- (id)actionWithBBAction:(id)action
 {
-  v4 = a3;
-  if ([v4 behavior])
+  actionCopy = action;
+  if ([actionCopy behavior])
   {
     v5 = 0;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = BLTPBActionFactoryVersion1;
-    v5 = [(BLTPBActionFactory *)&v7 actionWithBBAction:v4];
+    v5 = [(BLTPBActionFactory *)&v7 actionWithBBAction:actionCopy];
   }
 
   return v5;

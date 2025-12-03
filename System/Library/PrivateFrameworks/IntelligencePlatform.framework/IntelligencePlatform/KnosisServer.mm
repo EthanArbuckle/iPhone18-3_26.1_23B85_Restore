@@ -1,9 +1,9 @@
 @interface KnosisServer
 + (id)initWithEntitySubgraphView;
-- (id)executeIntentsWithGraphObjectContextWithRequest:(id)a3;
-- (id)executeIntentsWithRequest:(id)a3;
-- (id)executeKGQWithGraphObjectContextWithRequest:(id)a3;
-- (id)executeKGQWithRequest:(id)a3;
+- (id)executeIntentsWithGraphObjectContextWithRequest:(id)request;
+- (id)executeIntentsWithRequest:(id)request;
+- (id)executeKGQWithGraphObjectContextWithRequest:(id)request;
+- (id)executeKGQWithRequest:(id)request;
 @end
 
 @implementation KnosisServer
@@ -15,41 +15,41 @@
   return v2;
 }
 
-- (id)executeKGQWithRequest:(id)a3
+- (id)executeKGQWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  KnosisServer.executeKGQ(request:)(v6, v4);
+  requestCopy = request;
+  selfCopy = self;
+  KnosisServer.executeKGQ(request:)(v6, requestCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (id)executeKGQWithGraphObjectContextWithRequest:(id)a3
+- (id)executeKGQWithGraphObjectContextWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  KnosisServer.executeKGQWithGraphObjectContext(request:)(v6, v4);
+  requestCopy = request;
+  selfCopy = self;
+  KnosisServer.executeKGQWithGraphObjectContext(request:)(v6, requestCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (id)executeIntentsWithRequest:(id)a3
+- (id)executeIntentsWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  KnosisServer.executeIntents(request:)(v6, v4);
+  requestCopy = request;
+  selfCopy = self;
+  KnosisServer.executeIntents(request:)(v6, requestCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (id)executeIntentsWithGraphObjectContextWithRequest:(id)a3
+- (id)executeIntentsWithGraphObjectContextWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  KnosisServer.executeIntentsWithGraphObjectContext(request:)(v6, v4);
+  requestCopy = request;
+  selfCopy = self;
+  KnosisServer.executeIntentsWithGraphObjectContext(request:)(v6, requestCopy);
   v8 = v7;
 
   return v8;

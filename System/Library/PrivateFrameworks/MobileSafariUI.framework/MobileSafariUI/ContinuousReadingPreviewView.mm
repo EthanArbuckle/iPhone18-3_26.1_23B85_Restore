@@ -2,7 +2,7 @@
 - (BOOL)canShowContentView;
 - (CGSize)contentViewSize;
 - (ContinuousReadingBannerView)bannerView;
-- (ContinuousReadingPreviewView)initWithContinuousReadingItem:(id)a3 previewingNextDocument:(BOOL)a4;
+- (ContinuousReadingPreviewView)initWithContinuousReadingItem:(id)item previewingNextDocument:(BOOL)document;
 - (UILabel)headerLabel;
 - (UIView)headerView;
 - (double)headerHeight;
@@ -11,33 +11,33 @@
 - (void)_layOutHeader;
 - (void)layoutSubviews;
 - (void)replaceContentViewWithItsSnapshot;
-- (void)setBannerTheme:(id)a3 animated:(BOOL)a4;
-- (void)setContentView:(id)a3;
-- (void)setContentViewSize:(CGSize)a3;
-- (void)setDocumentSnapshot:(id)a3;
+- (void)setBannerTheme:(id)theme animated:(BOOL)animated;
+- (void)setContentView:(id)view;
+- (void)setContentViewSize:(CGSize)size;
+- (void)setDocumentSnapshot:(id)snapshot;
 @end
 
 @implementation ContinuousReadingPreviewView
 
-- (ContinuousReadingPreviewView)initWithContinuousReadingItem:(id)a3 previewingNextDocument:(BOOL)a4
+- (ContinuousReadingPreviewView)initWithContinuousReadingItem:(id)item previewingNextDocument:(BOOL)document
 {
-  v7 = a3;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = ContinuousReadingPreviewView;
   v8 = [(ContinuousReadingPreviewView *)&v15 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_continuousReadingItem, a3);
-    v9->_previewingNextDocument = a4;
-    v10 = [(ContinuousReadingPreviewView *)v9 headerView];
-    [(ContinuousReadingPreviewView *)v9 addSubview:v10];
+    objc_storeStrong(&v8->_continuousReadingItem, item);
+    v9->_previewingNextDocument = document;
+    headerView = [(ContinuousReadingPreviewView *)v9 headerView];
+    [(ContinuousReadingPreviewView *)v9 addSubview:headerView];
 
-    v11 = [(ContinuousReadingPreviewView *)v9 bannerView];
-    [(ContinuousReadingPreviewView *)v9 addSubview:v11];
+    bannerView = [(ContinuousReadingPreviewView *)v9 bannerView];
+    [(ContinuousReadingPreviewView *)v9 addSubview:bannerView];
 
-    v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(ContinuousReadingPreviewView *)v9 setBackgroundColor:v12];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(ContinuousReadingPreviewView *)v9 setBackgroundColor:systemBackgroundColor];
 
     v13 = v9;
   }
@@ -47,10 +47,10 @@
 
 - (double)headerHeight
 {
-  v2 = [(ContinuousReadingPreviewView *)self bannerView];
-  [v2 layoutIfNeeded];
+  bannerView = [(ContinuousReadingPreviewView *)self bannerView];
+  [bannerView layoutIfNeeded];
   v3 = headerLabelHeight();
-  [v2 titleRect];
+  [bannerView titleRect];
   v4 = ceil(v3 + CGRectGetMinY(v6) * 1.5);
 
   return v4;
@@ -60,22 +60,22 @@
 {
   [(ContinuousReadingPreviewView *)self headerHeight];
   v4 = v3;
-  v5 = [(ContinuousReadingPreviewView *)self bannerView];
-  [v5 bounds];
+  bannerView = [(ContinuousReadingPreviewView *)self bannerView];
+  [bannerView bounds];
   v6 = v4 + CGRectGetHeight(v8);
 
   return v6;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  v14 = v5;
-  if (contentView != v5)
+  v14 = viewCopy;
+  if (contentView != viewCopy)
   {
     [(WKWebView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     v7 = self->_contentView;
     if (v7)
     {
@@ -86,8 +86,8 @@
         v10 = self->_contentBackgroundView;
         self->_contentBackgroundView = v9;
 
-        v11 = [MEMORY[0x277D75348] systemBackgroundColor];
-        [(UIView *)self->_contentBackgroundView setBackgroundColor:v11];
+        systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+        [(UIView *)self->_contentBackgroundView setBackgroundColor:systemBackgroundColor];
 
         [(ContinuousReadingPreviewView *)self insertSubview:self->_contentBackgroundView belowSubview:self->_contentView];
         v7 = self->_contentView;
@@ -119,13 +119,13 @@
 
       [(UIView *)self->_headerView setOpaque:1];
       v9 = self->_headerView;
-      v10 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-      [(UIView *)v9 setBackgroundColor:v10];
+      systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+      [(UIView *)v9 setBackgroundColor:systemGroupedBackgroundColor];
 
       [(UIView *)self->_headerView setAutoresizingMask:34];
       v11 = self->_headerView;
-      v12 = [(ContinuousReadingPreviewView *)self headerLabel];
-      [(UIView *)v11 addSubview:v12];
+      headerLabel = [(ContinuousReadingPreviewView *)self headerLabel];
+      [(UIView *)v11 addSubview:headerLabel];
 
       v13 = +[ContinuousReadingBannerView makeHairlineSeparator];
       headerHairline = self->_headerHairline;
@@ -156,14 +156,14 @@
   if (!bannerView)
   {
     v4 = [ContinuousReadingBannerView alloc];
-    v5 = [(ContinuousReadingPreviewView *)self continuousReadingItem];
-    v6 = [(ContinuousReadingBannerView *)v4 initWithContinuousReadingItem:v5];
+    continuousReadingItem = [(ContinuousReadingPreviewView *)self continuousReadingItem];
+    v6 = [(ContinuousReadingBannerView *)v4 initWithContinuousReadingItem:continuousReadingItem];
     v7 = self->_bannerView;
     self->_bannerView = v6;
 
     v8 = self->_bannerView;
-    v9 = [(ContinuousReadingPreviewView *)self headerView];
-    [v9 frame];
+    headerView = [(ContinuousReadingPreviewView *)self headerView];
+    [headerView frame];
     MaxY = CGRectGetMaxY(v14);
     [(ContinuousReadingPreviewView *)self bounds];
     [(ContinuousReadingBannerView *)v8 setFrame:0.0, MaxY];
@@ -190,8 +190,8 @@
     [(UILabel *)v6 setFont:v7];
 
     v8 = self->_headerLabel;
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v8 setTextColor:secondaryLabelColor];
 
     v10 = self->_headerLabel;
     v11 = _WBSLocalizedString();
@@ -207,19 +207,19 @@
 
 - (BOOL)canShowContentView
 {
-  v3 = [(ContinuousReadingPreviewView *)self contentView];
-  v4 = v3 || self->_snapshotView || [(ContinuousReadingPreviewView *)self isPrefetchingDisabled];
+  contentView = [(ContinuousReadingPreviewView *)self contentView];
+  v4 = contentView || self->_snapshotView || [(ContinuousReadingPreviewView *)self isPrefetchingDisabled];
 
   return v4;
 }
 
-- (void)setDocumentSnapshot:(id)a3
+- (void)setDocumentSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (self->_documentSnapshot != v5)
+  snapshotCopy = snapshot;
+  if (self->_documentSnapshot != snapshotCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->_documentSnapshot, a3);
+    v14 = snapshotCopy;
+    objc_storeStrong(&self->_documentSnapshot, snapshot);
     snapshotView = self->_snapshotView;
     if (self->_documentSnapshot)
     {
@@ -247,7 +247,7 @@
       self->_snapshotView = 0;
     }
 
-    v5 = v14;
+    snapshotCopy = v14;
   }
 }
 
@@ -271,32 +271,32 @@
   }
 }
 
-- (void)setContentViewSize:(CGSize)a3
+- (void)setContentViewSize:(CGSize)size
 {
-  if (self->_contentViewSize.width != a3.width || self->_contentViewSize.height != a3.height)
+  if (self->_contentViewSize.width != size.width || self->_contentViewSize.height != size.height)
   {
-    self->_contentViewSize = a3;
+    self->_contentViewSize = size;
     [(ContinuousReadingPreviewView *)self setNeedsLayout];
   }
 }
 
-- (void)setBannerTheme:(id)a3 animated:(BOOL)a4
+- (void)setBannerTheme:(id)theme animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  themeCopy = theme;
   if ((WBSIsEqual() & 1) == 0)
   {
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __56__ContinuousReadingPreviewView_setBannerTheme_animated___block_invoke;
     v12 = &unk_2781D4C88;
-    v13 = self;
-    v14 = v6;
+    selfCopy = self;
+    v14 = themeCopy;
     v7 = _Block_copy(&v9);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
-      [MEMORY[0x277D75D18] _animateUsingDefaultTimingWithOptions:50331648 animations:v7 completion:{0, v9, v10, v11, v12, v13}];
+      [MEMORY[0x277D75D18] _animateUsingDefaultTimingWithOptions:50331648 animations:v7 completion:{0, v9, v10, v11, v12, selfCopy}];
     }
 
     else
@@ -358,13 +358,13 @@ void __56__ContinuousReadingPreviewView_setBannerTheme_animated___block_invoke(u
 
 - (void)_layOutHeader
 {
-  v3 = [(ContinuousReadingPreviewView *)self headerView];
-  [v3 bounds];
+  headerView = [(ContinuousReadingPreviewView *)self headerView];
+  [headerView bounds];
 
   headerLabelHeight();
   [(ContinuousReadingPreviewView *)self safeAreaInsets];
-  v4 = [(ContinuousReadingPreviewView *)self bannerView];
-  [v4 titleRect];
+  bannerView = [(ContinuousReadingPreviewView *)self bannerView];
+  [bannerView titleRect];
   CGRectGetMinY(v15);
 
   _SFRoundRectToPixels();
@@ -372,8 +372,8 @@ void __56__ContinuousReadingPreviewView_setBannerTheme_animated___block_invoke(u
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(ContinuousReadingPreviewView *)self headerLabel];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  headerLabel = [(ContinuousReadingPreviewView *)self headerLabel];
+  [headerLabel setFrame:{v6, v8, v10, v12}];
 }
 
 - (void)_layOutContentView

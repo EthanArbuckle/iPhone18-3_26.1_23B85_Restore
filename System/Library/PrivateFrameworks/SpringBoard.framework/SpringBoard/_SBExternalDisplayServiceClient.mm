@@ -1,19 +1,19 @@
 @interface _SBExternalDisplayServiceClient
-- (_SBExternalDisplayServiceClient)initWithConnection:(id)a3 remoteProcess:(id)a4;
+- (_SBExternalDisplayServiceClient)initWithConnection:(id)connection remoteProcess:(id)process;
 - (id)description;
 - (int)pid;
 @end
 
 @implementation _SBExternalDisplayServiceClient
 
-- (_SBExternalDisplayServiceClient)initWithConnection:(id)a3 remoteProcess:(id)a4
+- (_SBExternalDisplayServiceClient)initWithConnection:(id)connection remoteProcess:(id)process
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  connectionCopy = connection;
+  processCopy = process;
+  v9 = processCopy;
+  if (connectionCopy)
   {
-    if (v8)
+    if (processCopy)
     {
       goto LABEL_3;
     }
@@ -36,8 +36,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_connection, a3);
-    objc_storeStrong(&v11->_remoteProcess, a4);
+    objc_storeStrong(&v10->_connection, connection);
+    objc_storeStrong(&v11->_remoteProcess, process);
   }
 
   return v11;
@@ -45,8 +45,8 @@ LABEL_3:
 
 - (int)pid
 {
-  v2 = [(_SBExternalDisplayServiceClient *)self auditToken];
-  v3 = [v2 pid];
+  auditToken = [(_SBExternalDisplayServiceClient *)self auditToken];
+  v3 = [auditToken pid];
 
   return v3;
 }

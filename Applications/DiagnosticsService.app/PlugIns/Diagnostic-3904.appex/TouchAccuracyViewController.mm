@@ -3,14 +3,14 @@
 - (void)batteryStateChanged;
 - (void)checkForNextTarget;
 - (void)cleanUp;
-- (void)endTestWithStatusCode:(id)a3;
-- (void)handleTouch:(id)a3;
-- (void)handleTouchBegan:(id)a3;
-- (void)handleTouchEnded:(id)a3;
+- (void)endTestWithStatusCode:(id)code;
+- (void)handleTouch:(id)touch;
+- (void)handleTouchBegan:(id)began;
+- (void)handleTouchEnded:(id)ended;
 - (void)noInputTimedOut;
-- (void)placeNextTarget:(id)a3;
+- (void)placeNextTarget:(id)target;
 - (void)setupView;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)shufflePositions;
 - (void)start;
 - (void)timedOut;
@@ -18,9 +18,9 @@
 
 @implementation TouchAccuracyViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(TouchAccuracyViewController *)self setInputs:a3, a4];
+  [(TouchAccuracyViewController *)self setInputs:inputs, responder];
   [(TouchAccuracyViewController *)self setGoodTaps:0];
   [(TouchAccuracyViewController *)self setBadTaps:0];
   v5 = objc_alloc_init(NSMutableArray);
@@ -31,50 +31,50 @@
 
   [(TouchAccuracyViewController *)self setTouchStatus:0];
   [(TouchAccuracyViewController *)self shufflePositions];
-  v7 = [(TouchAccuracyViewController *)self inputs];
-  v8 = [v7 connectedToPowerRequired];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  connectedToPowerRequired = [inputs connectedToPowerRequired];
 
-  if (v8)
+  if (connectedToPowerRequired)
   {
     v9 = +[UIDevice currentDevice];
     [(TouchAccuracyViewController *)self setDevice:v9];
 
-    v10 = [(TouchAccuracyViewController *)self device];
-    [v10 setBatteryMonitoringEnabled:1];
+    device = [(TouchAccuracyViewController *)self device];
+    [device setBatteryMonitoringEnabled:1];
   }
 
   v11 = +[DSTestAutomation sharedInstance];
-  v12 = [v11 testAutomationEnabled];
+  testAutomationEnabled = [v11 testAutomationEnabled];
 
-  if (v12)
+  if (testAutomationEnabled)
   {
     v26[0] = @"blockWidth";
-    v25 = [(TouchAccuracyViewController *)self inputs];
-    [v25 blockWidth];
+    inputs2 = [(TouchAccuracyViewController *)self inputs];
+    [inputs2 blockWidth];
     v24 = [NSNumber numberWithDouble:?];
     v27[0] = v24;
     v26[1] = @"blockHeight";
-    v23 = [(TouchAccuracyViewController *)self inputs];
-    [v23 blockHeight];
+    inputs3 = [(TouchAccuracyViewController *)self inputs];
+    [inputs3 blockHeight];
     v13 = [NSNumber numberWithDouble:?];
     v27[1] = v13;
     v26[2] = @"positions";
-    v14 = [(TouchAccuracyViewController *)self inputs];
-    v15 = [v14 positions];
-    v27[2] = v15;
+    inputs4 = [(TouchAccuracyViewController *)self inputs];
+    positions = [inputs4 positions];
+    v27[2] = positions;
     v26[3] = @"noInputTimeout";
-    v16 = [(TouchAccuracyViewController *)self inputs];
-    [v16 noInputTimeout];
+    inputs5 = [(TouchAccuracyViewController *)self inputs];
+    [inputs5 noInputTimeout];
     v17 = [NSNumber numberWithDouble:?];
     v27[3] = v17;
     v26[4] = @"partialInputTimeout";
-    v18 = [(TouchAccuracyViewController *)self inputs];
-    [v18 partialInputTimeout];
+    inputs6 = [(TouchAccuracyViewController *)self inputs];
+    [inputs6 partialInputTimeout];
     v19 = [NSNumber numberWithDouble:?];
     v27[4] = v19;
     v26[5] = @"connectedToPowerRequired";
-    v20 = [(TouchAccuracyViewController *)self inputs];
-    v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v20 connectedToPowerRequired]);
+    inputs7 = [(TouchAccuracyViewController *)self inputs];
+    v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [inputs7 connectedToPowerRequired]);
     v27[5] = v21;
     v22 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:6];
     [DSTestAutomation postConfiguration:v22];
@@ -113,19 +113,19 @@
 - (void)timedOut
 {
   LODWORD(v3) = [(TouchAccuracyViewController *)self totalTaps];
-  v4 = [(TouchAccuracyViewController *)self inputs];
-  v5 = [v4 numberOfBlocks];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  numberOfBlocks = [inputs numberOfBlocks];
 
-  if (v3 < v5)
+  if (v3 < numberOfBlocks)
   {
     v3 = v3;
     do
     {
-      v6 = [(TouchAccuracyViewController *)self inputs];
-      v7 = [v6 positions];
-      v8 = [v7 objectAtIndexedSubscript:v3];
+      inputs2 = [(TouchAccuracyViewController *)self inputs];
+      positions = [inputs2 positions];
+      v8 = [positions objectAtIndexedSubscript:v3];
 
-      v9 = [(TouchAccuracyViewController *)self allResults];
+      allResults = [(TouchAccuracyViewController *)self allResults];
       v16[0] = @"tapX";
       v10 = +[NSNull null];
       v17[0] = v10;
@@ -141,11 +141,11 @@
       v17[3] = v13;
       v17[4] = &__kCFBooleanFalse;
       v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:5];
-      [v9 addObject:v14];
+      [allResults addObject:v14];
 
       ++v3;
-      v15 = [(TouchAccuracyViewController *)self inputs];
-      LODWORD(v8) = [v15 numberOfBlocks];
+      inputs3 = [(TouchAccuracyViewController *)self inputs];
+      LODWORD(v8) = [inputs3 numberOfBlocks];
     }
 
     while (v3 < v8);
@@ -159,26 +159,26 @@
   [(TouchAccuracyViewController *)self setupView];
   v10 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"handleTouch:"];
   [v10 setMinimumPressDuration:0.0];
-  v3 = [(TouchAccuracyViewController *)self view];
-  [v3 addGestureRecognizer:v10];
+  view = [(TouchAccuracyViewController *)self view];
+  [view addGestureRecognizer:v10];
 
-  v4 = [(TouchAccuracyViewController *)self inputs];
-  [v4 noInputTimeout];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  [inputs noInputTimeout];
   v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"noInputTimedOut" selector:0 userInfo:0 repeats:?];
   [(TouchAccuracyViewController *)self setTimeoutTimer:v5];
 
-  v6 = [(TouchAccuracyViewController *)self inputs];
-  LODWORD(v4) = [v6 connectedToPowerRequired];
+  inputs2 = [(TouchAccuracyViewController *)self inputs];
+  LODWORD(inputs) = [inputs2 connectedToPowerRequired];
 
-  if (v4)
+  if (inputs)
   {
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:self selector:"batteryStateChanged" name:UIDeviceBatteryStateDidChangeNotification object:0];
 
-    v8 = [(TouchAccuracyViewController *)self multiTouchHelper];
-    v9 = [v8 isPowerConnected];
+    multiTouchHelper = [(TouchAccuracyViewController *)self multiTouchHelper];
+    isPowerConnected = [multiTouchHelper isPowerConnected];
 
-    if ((v9 & 1) == 0)
+    if ((isPowerConnected & 1) == 0)
     {
       [(TouchAccuracyViewController *)self endTestWithStatusCode:&off_100008818];
     }
@@ -187,13 +187,13 @@
 
 - (void)shufflePositions
 {
-  v3 = [(TouchAccuracyViewController *)self inputs];
-  v4 = [v3 positions];
-  v5 = [v4 count];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  positions = [inputs positions];
+  v5 = [positions count];
 
-  v6 = [(TouchAccuracyViewController *)self inputs];
-  v7 = [v6 positions];
-  v11 = [v7 mutableCopy];
+  inputs2 = [(TouchAccuracyViewController *)self inputs];
+  positions2 = [inputs2 positions];
+  v11 = [positions2 mutableCopy];
 
   if (v5)
   {
@@ -209,75 +209,75 @@
   }
 
   v9 = [v11 copy];
-  v10 = [(TouchAccuracyViewController *)self inputs];
-  [v10 setPositions:v9];
+  inputs3 = [(TouchAccuracyViewController *)self inputs];
+  [inputs3 setPositions:v9];
 }
 
 - (void)setupView
 {
   v3 = +[UIColor whiteColor];
-  v4 = [(TouchAccuracyViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(TouchAccuracyViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [UIView alloc];
-  v6 = [(TouchAccuracyViewController *)self inputs];
-  [v6 blockWidth];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  [inputs blockWidth];
   v8 = v7;
-  v9 = [(TouchAccuracyViewController *)self inputs];
-  [v9 blockHeight];
+  inputs2 = [(TouchAccuracyViewController *)self inputs];
+  [inputs2 blockHeight];
   v11 = [v5 initWithFrame:{0.0, 0.0, v8, v10}];
   [(TouchAccuracyViewController *)self setTargetView:v11];
 
   v12 = [UIColor colorWithHexValue:@"007AFF" error:0];
-  v13 = [v12 CGColor];
-  v14 = [(TouchAccuracyViewController *)self targetView];
-  v15 = [v14 layer];
-  [v15 setBorderColor:v13];
+  cGColor = [v12 CGColor];
+  targetView = [(TouchAccuracyViewController *)self targetView];
+  layer = [targetView layer];
+  [layer setBorderColor:cGColor];
 
-  v16 = [(TouchAccuracyViewController *)self targetView];
+  targetView2 = [(TouchAccuracyViewController *)self targetView];
   v17 = +[UIColor clearColor];
-  [v16 setBackgroundColor:v17];
+  [targetView2 setBackgroundColor:v17];
 
-  v18 = [(TouchAccuracyViewController *)self targetView];
-  v19 = [v18 layer];
-  [v19 setBorderWidth:1.5];
+  targetView3 = [(TouchAccuracyViewController *)self targetView];
+  layer2 = [targetView3 layer];
+  [layer2 setBorderWidth:1.5];
 
-  v20 = [(TouchAccuracyViewController *)self view];
-  v21 = [(TouchAccuracyViewController *)self targetView];
-  [v20 addSubview:v21];
+  view2 = [(TouchAccuracyViewController *)self view];
+  targetView4 = [(TouchAccuracyViewController *)self targetView];
+  [view2 addSubview:targetView4];
 
-  v22 = [(TouchAccuracyViewController *)self targetView];
-  [(TouchAccuracyViewController *)self placeNextTarget:v22];
+  targetView5 = [(TouchAccuracyViewController *)self targetView];
+  [(TouchAccuracyViewController *)self placeNextTarget:targetView5];
 }
 
-- (void)placeNextTarget:(id)a3
+- (void)placeNextTarget:(id)target
 {
-  v4 = a3;
-  v5 = [(TouchAccuracyViewController *)self totalTaps];
+  targetCopy = target;
+  totalTaps = [(TouchAccuracyViewController *)self totalTaps];
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v34 = v5;
+    v34 = totalTaps;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Index of the next target: %lu", buf, 0xCu);
   }
 
-  v7 = [(TouchAccuracyViewController *)self inputs];
-  v8 = [v7 positions];
-  v9 = [v8 count];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  positions = [inputs positions];
+  v9 = [positions count];
 
-  if (v9 > v5)
+  if (v9 > totalTaps)
   {
-    v10 = [(TouchAccuracyViewController *)self inputs];
-    v11 = [v10 positions];
-    v12 = [v11 objectAtIndexedSubscript:v5];
+    inputs2 = [(TouchAccuracyViewController *)self inputs];
+    positions2 = [inputs2 positions];
+    v12 = [positions2 objectAtIndexedSubscript:totalTaps];
 
     v13 = [v12 objectForKeyedSubscript:@"xPos"];
     [v13 doubleValue];
     v15 = v14;
     v16 = [v12 objectForKeyedSubscript:@"yPos"];
     [v16 doubleValue];
-    [v4 setCenter:{v15, v17}];
+    [targetCopy setCenter:{v15, v17}];
 
     v18 = +[DSTestAutomation sharedInstance];
     LODWORD(v16) = [v18 testAutomationEnabled];
@@ -285,23 +285,23 @@
     if (v16)
     {
       v31[0] = @"width";
-      v30 = [(TouchAccuracyViewController *)self targetView];
-      [v30 frame];
+      targetView = [(TouchAccuracyViewController *)self targetView];
+      [targetView frame];
       v20 = [NSNumber numberWithDouble:v19];
       v32[0] = v20;
       v31[1] = @"height";
-      v21 = [(TouchAccuracyViewController *)self targetView];
-      [v21 frame];
+      targetView2 = [(TouchAccuracyViewController *)self targetView];
+      [targetView2 frame];
       v23 = [NSNumber numberWithDouble:v22];
       v32[1] = v23;
       v31[2] = @"x";
-      v24 = [(TouchAccuracyViewController *)self targetView];
-      [v24 center];
+      targetView3 = [(TouchAccuracyViewController *)self targetView];
+      [targetView3 center];
       v25 = [NSNumber numberWithDouble:?];
       v32[2] = v25;
       v31[3] = @"y";
-      v26 = [(TouchAccuracyViewController *)self targetView];
-      [v26 center];
+      targetView4 = [(TouchAccuracyViewController *)self targetView];
+      [targetView4 center];
       v28 = [NSNumber numberWithDouble:v27];
       v32[3] = v28;
       v29 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:4];
@@ -310,42 +310,42 @@
   }
 }
 
-- (void)handleTouch:(id)a3
+- (void)handleTouch:(id)touch
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  touchCopy = touch;
+  if ([touchCopy state] == 1)
   {
-    [(TouchAccuracyViewController *)self handleTouchBegan:v4];
+    [(TouchAccuracyViewController *)self handleTouchBegan:touchCopy];
   }
 
-  else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+  else if ([touchCopy state] == 3 || objc_msgSend(touchCopy, "state") == 4)
   {
-    [(TouchAccuracyViewController *)self handleTouchEnded:v4];
+    [(TouchAccuracyViewController *)self handleTouchEnded:touchCopy];
   }
 }
 
-- (void)handleTouchBegan:(id)a3
+- (void)handleTouchBegan:(id)began
 {
-  v4 = a3;
+  beganCopy = began;
   if (![(TouchAccuracyViewController *)self touchStatus])
   {
-    v5 = [(TouchAccuracyViewController *)self view];
-    [v4 locationInView:v5];
+    view = [(TouchAccuracyViewController *)self view];
+    [beganCopy locationInView:view];
     [(TouchAccuracyViewController *)self setTouchLocation:?];
 
-    v6 = [(TouchAccuracyViewController *)self view];
+    view2 = [(TouchAccuracyViewController *)self view];
     [(TouchAccuracyViewController *)self touchLocation];
-    v7 = [v6 hitTest:0 withEvent:?];
-    v8 = [(TouchAccuracyViewController *)self targetView];
+    v7 = [view2 hitTest:0 withEvent:?];
+    targetView = [(TouchAccuracyViewController *)self targetView];
 
     v9 = DiagnosticLogHandleForCategory();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v7 == v8)
+    if (v7 == targetView)
     {
       if (v10)
       {
         *buf = 67109120;
-        v13 = [(TouchAccuracyViewController *)self totalTaps];
+        totalTaps = [(TouchAccuracyViewController *)self totalTaps];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "#%d Hit!", buf, 8u);
       }
 
@@ -363,7 +363,7 @@
       if (v10)
       {
         *buf = 67109120;
-        v13 = [(TouchAccuracyViewController *)self totalTaps];
+        totalTaps = [(TouchAccuracyViewController *)self totalTaps];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "#%d Missed!", buf, 8u);
       }
 
@@ -372,12 +372,12 @@
   }
 }
 
-- (void)handleTouchEnded:(id)a3
+- (void)handleTouchEnded:(id)ended
 {
   if ([(TouchAccuracyViewController *)self touchStatus])
   {
-    v4 = [(TouchAccuracyViewController *)self touchStatus];
-    if (v4 == 2)
+    touchStatus = [(TouchAccuracyViewController *)self touchStatus];
+    if (touchStatus == 2)
     {
       [(TouchAccuracyViewController *)self setGoodTaps:[(TouchAccuracyViewController *)self goodTaps]+ 1];
     }
@@ -387,8 +387,8 @@
       [(TouchAccuracyViewController *)self setBadTaps:[(TouchAccuracyViewController *)self badTaps]+ 1];
     }
 
-    v5 = v4 == 2;
-    v6 = [(TouchAccuracyViewController *)self allResults];
+    v5 = touchStatus == 2;
+    allResults = [(TouchAccuracyViewController *)self allResults];
     v17[0] = @"tapX";
     [(TouchAccuracyViewController *)self touchLocation];
     v7 = [NSNumber numberWithDouble:?];
@@ -398,20 +398,20 @@
     v9 = [NSNumber numberWithDouble:v8];
     v18[1] = v9;
     v17[2] = @"targetX";
-    v10 = [(TouchAccuracyViewController *)self targetView];
-    [v10 center];
+    targetView = [(TouchAccuracyViewController *)self targetView];
+    [targetView center];
     v11 = [NSNumber numberWithDouble:?];
     v18[2] = v11;
     v17[3] = @"targetY";
-    v12 = [(TouchAccuracyViewController *)self targetView];
-    [v12 center];
+    targetView2 = [(TouchAccuracyViewController *)self targetView];
+    [targetView2 center];
     v14 = [NSNumber numberWithDouble:v13];
     v18[3] = v14;
     v17[4] = @"hit";
     v15 = [NSNumber numberWithBool:v5];
     v18[4] = v15;
     v16 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:5];
-    [v6 addObject:v16];
+    [allResults addObject:v16];
 
     [(TouchAccuracyViewController *)self checkForNextTarget];
   }
@@ -419,26 +419,26 @@
 
 - (void)checkForNextTarget
 {
-  v3 = [(TouchAccuracyViewController *)self timeoutTimer];
+  timeoutTimer = [(TouchAccuracyViewController *)self timeoutTimer];
 
-  if (v3)
+  if (timeoutTimer)
   {
-    v4 = [(TouchAccuracyViewController *)self timeoutTimer];
-    [v4 invalidate];
+    timeoutTimer2 = [(TouchAccuracyViewController *)self timeoutTimer];
+    [timeoutTimer2 invalidate];
 
     [(TouchAccuracyViewController *)self setTimeoutTimer:0];
   }
 
-  v5 = [(TouchAccuracyViewController *)self inputs];
-  [v5 partialInputTimeout];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  [inputs partialInputTimeout];
   v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"timedOut" selector:0 userInfo:0 repeats:?];
   [(TouchAccuracyViewController *)self setTimeoutTimer:v6];
 
   LODWORD(v6) = [(TouchAccuracyViewController *)self totalTaps];
-  v7 = [(TouchAccuracyViewController *)self inputs];
-  v8 = [v7 numberOfBlocks];
+  inputs2 = [(TouchAccuracyViewController *)self inputs];
+  numberOfBlocks = [inputs2 numberOfBlocks];
 
-  if (v6 >= v8)
+  if (v6 >= numberOfBlocks)
   {
     if ([(TouchAccuracyViewController *)self badTaps]< 1)
     {
@@ -458,49 +458,49 @@
     [(TouchAccuracyViewController *)self setTouchLocation:CGPointZero.x, CGPointZero.y];
     [(TouchAccuracyViewController *)self setTouchStatus:0];
     v9 = +[UIColor clearColor];
-    v10 = [(TouchAccuracyViewController *)self targetView];
-    [v10 setBackgroundColor:v9];
+    targetView = [(TouchAccuracyViewController *)self targetView];
+    [targetView setBackgroundColor:v9];
 
-    v12 = [(TouchAccuracyViewController *)self targetView];
-    [(TouchAccuracyViewController *)self placeNextTarget:v12];
+    targetView2 = [(TouchAccuracyViewController *)self targetView];
+    [(TouchAccuracyViewController *)self placeNextTarget:targetView2];
   }
 }
 
 - (void)cleanUp
 {
-  v3 = [(TouchAccuracyViewController *)self timeoutTimer];
+  timeoutTimer = [(TouchAccuracyViewController *)self timeoutTimer];
 
-  if (v3)
+  if (timeoutTimer)
   {
-    v4 = [(TouchAccuracyViewController *)self timeoutTimer];
-    [v4 invalidate];
+    timeoutTimer2 = [(TouchAccuracyViewController *)self timeoutTimer];
+    [timeoutTimer2 invalidate];
 
     [(TouchAccuracyViewController *)self setTimeoutTimer:0];
   }
 
-  v5 = [(TouchAccuracyViewController *)self inputs];
-  v6 = [v5 connectedToPowerRequired];
+  inputs = [(TouchAccuracyViewController *)self inputs];
+  connectedToPowerRequired = [inputs connectedToPowerRequired];
 
-  if (v6)
+  if (connectedToPowerRequired)
   {
-    v7 = [(TouchAccuracyViewController *)self device];
-    [v7 setBatteryMonitoringEnabled:0];
+    device = [(TouchAccuracyViewController *)self device];
+    [device setBatteryMonitoringEnabled:0];
 
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 removeObserver:self];
   }
 }
 
-- (void)endTestWithStatusCode:(id)a3
+- (void)endTestWithStatusCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   [(TouchAccuracyViewController *)self cleanUp];
-  v5 = [(TouchAccuracyViewController *)self result];
-  [v5 setStatusCode:v4];
+  result = [(TouchAccuracyViewController *)self result];
+  [result setStatusCode:codeCopy];
 
-  v6 = [(TouchAccuracyViewController *)self result];
-  v7 = [v6 statusCode];
-  v8 = [v7 isEqualToNumber:&off_100008848];
+  result2 = [(TouchAccuracyViewController *)self result];
+  statusCode = [result2 statusCode];
+  v8 = [statusCode isEqualToNumber:&off_100008848];
 
   if (v8)
   {
@@ -513,46 +513,46 @@
 
   else
   {
-    v10 = [(TouchAccuracyViewController *)self result];
-    v11 = [v10 statusCode];
-    v12 = [v11 isEqualToNumber:&off_100008818];
+    result3 = [(TouchAccuracyViewController *)self result];
+    statusCode2 = [result3 statusCode];
+    v12 = [statusCode2 isEqualToNumber:&off_100008818];
 
     if (!v12)
     {
-      v14 = [(TouchAccuracyViewController *)self view];
-      v15 = [v14 window];
-      v16 = [v15 windowScene];
-      v17 = [v16 screen];
-      [v17 bounds];
+      view = [(TouchAccuracyViewController *)self view];
+      window = [view window];
+      windowScene = [window windowScene];
+      screen = [windowScene screen];
+      [screen bounds];
       v19 = v18;
       v21 = v20;
 
       v34[0] = @"displayResX";
-      v13 = [NSNumber numberWithDouble:v19];
-      v35[0] = v13;
+      result5 = [NSNumber numberWithDouble:v19];
+      v35[0] = result5;
       v34[1] = @"displayResY";
       v33 = [NSNumber numberWithDouble:v21];
       v35[1] = v33;
       v34[2] = @"allTaps";
-      v32 = [(TouchAccuracyViewController *)self allResults];
-      v35[2] = v32;
+      allResults = [(TouchAccuracyViewController *)self allResults];
+      v35[2] = allResults;
       v34[3] = @"isCharging";
       v22 = [NSNumber alloc];
-      v23 = [(TouchAccuracyViewController *)self multiTouchHelper];
-      v24 = [v22 initWithBool:{objc_msgSend(v23, "isBatteryCharging")}];
+      multiTouchHelper = [(TouchAccuracyViewController *)self multiTouchHelper];
+      v24 = [v22 initWithBool:{objc_msgSend(multiTouchHelper, "isBatteryCharging")}];
       v35[3] = v24;
       v34[4] = @"isPluggedIntoPower";
       v25 = [NSNumber alloc];
-      v26 = [(TouchAccuracyViewController *)self multiTouchHelper];
-      v27 = [v25 initWithBool:{objc_msgSend(v26, "isPowerConnected")}];
+      multiTouchHelper2 = [(TouchAccuracyViewController *)self multiTouchHelper];
+      v27 = [v25 initWithBool:{objc_msgSend(multiTouchHelper2, "isPowerConnected")}];
       v35[4] = v27;
       v34[5] = @"temperatureData";
-      v28 = [(TouchAccuracyViewController *)self multiTouchHelper];
-      v29 = [v28 temperatureData];
-      v35[5] = v29;
+      multiTouchHelper3 = [(TouchAccuracyViewController *)self multiTouchHelper];
+      temperatureData = [multiTouchHelper3 temperatureData];
+      v35[5] = temperatureData;
       v30 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:6];
-      v31 = [(TouchAccuracyViewController *)self result];
-      [v31 setData:v30];
+      result4 = [(TouchAccuracyViewController *)self result];
+      [result4 setData:v30];
 
       goto LABEL_9;
     }
@@ -564,8 +564,8 @@
     }
   }
 
-  v13 = [(TouchAccuracyViewController *)self result];
-  [v13 setData:&__NSDictionary0__struct];
+  result5 = [(TouchAccuracyViewController *)self result];
+  [result5 setData:&__NSDictionary0__struct];
 LABEL_9:
 
   [(TouchAccuracyViewController *)self setFinished:1];
@@ -573,17 +573,17 @@ LABEL_9:
 
 - (void)batteryStateChanged
 {
-  v3 = [(TouchAccuracyViewController *)self device];
-  if ([v3 batteryState] == 1)
+  device = [(TouchAccuracyViewController *)self device];
+  if ([device batteryState] == 1)
   {
   }
 
   else
   {
-    v4 = [(TouchAccuracyViewController *)self device];
-    v5 = [v4 batteryState];
+    device2 = [(TouchAccuracyViewController *)self device];
+    batteryState = [device2 batteryState];
 
-    if (v5)
+    if (batteryState)
     {
       return;
     }

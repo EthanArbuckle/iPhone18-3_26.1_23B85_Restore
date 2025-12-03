@@ -2,25 +2,25 @@
 - (BOOL)_checkNotAtRootLevel;
 - (BOOL)_isParsingExtension;
 - (BOOL)_isParsingExtensionsArray;
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4;
-- (BOOL)jsonReaderBeginArray:(id)a3;
-- (BOOL)jsonReaderBeginObject:(id)a3;
-- (BOOL)jsonReaderEndArray:(id)a3;
-- (BOOL)jsonReaderEndObject:(id)a3;
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value;
+- (BOOL)jsonReaderBeginArray:(id)array;
+- (BOOL)jsonReaderBeginObject:(id)object;
+- (BOOL)jsonReaderEndArray:(id)array;
+- (BOOL)jsonReaderEndObject:(id)object;
 - (WBSExtensionsImporterDelegate)delegate;
 - (id)_popKeyFromStackIfPossible;
-- (void)parseFileHandle:(id)a3 completionHandler:(id)a4;
-- (void)parseURL:(id)a3 completionHandler:(id)a4;
+- (void)parseFileHandle:(id)handle completionHandler:(id)handler;
+- (void)parseURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSExtensionsImporter
 
-- (void)parseURL:(id)a3 completionHandler:(id)a4
+- (void)parseURL:(id)l completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696AC00];
   v11 = 0;
-  v7 = a4;
-  v8 = [v6 safari_fileHandleWithURL:a3 options:0 createMode:0 error:&v11];
+  handlerCopy = handler;
+  v8 = [v6 safari_fileHandleWithURL:l options:0 createMode:0 error:&v11];
   v9 = v11;
   if (v9)
   {
@@ -34,20 +34,20 @@
 
   if (v10)
   {
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   else
   {
-    [(WBSExtensionsImporter *)self parseFileHandle:v8 completionHandler:v7];
+    [(WBSExtensionsImporter *)self parseFileHandle:v8 completionHandler:handlerCopy];
   }
 }
 
-- (void)parseFileHandle:(id)a3 completionHandler:(id)a4
+- (void)parseFileHandle:(id)handle completionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  handleCopy = handle;
   v8 = objc_alloc_init(WBSJSONReader);
   [(WBSJSONReader *)v8 setDelegate:self];
   lastError = self->_lastError;
@@ -58,12 +58,12 @@
   self->_stack = v10;
 
   v19 = 0;
-  [(WBSJSONReader *)v8 parseFileHandle:v7 error:&v19];
+  [(WBSJSONReader *)v8 parseFileHandle:handleCopy error:&v19];
 
   v12 = v19;
   if (v12)
   {
-    v6[2](v6, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 
   else
@@ -82,7 +82,7 @@
       v13 = self->_lastError;
     }
 
-    v6[2](v6, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -139,67 +139,67 @@
 
 - (id)_popKeyFromStackIfPossible
 {
-  v3 = [(NSMutableArray *)self->_stack lastObject];
+  lastObject = [(NSMutableArray *)self->_stack lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(NSMutableArray *)self->_stack lastObject];
+    lastObject2 = [(NSMutableArray *)self->_stack lastObject];
     [(NSMutableArray *)self->_stack removeLastObject];
   }
 
   else
   {
-    v5 = 0;
+    lastObject2 = 0;
   }
 
-  return v5;
+  return lastObject2;
 }
 
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value
 {
-  v6 = a4;
-  v7 = [(WBSExtensionsImporter *)self _checkNotAtRootLevel];
-  if (v7)
+  valueCopy = value;
+  _checkNotAtRootLevel = [(WBSExtensionsImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
-    v8 = [(WBSExtensionsImporter *)self _popKeyFromStackIfPossible];
+    _popKeyFromStackIfPossible = [(WBSExtensionsImporter *)self _popKeyFromStackIfPossible];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v8 isEqualToString:@"display_name"])
+      if ([_popKeyFromStackIfPossible isEqualToString:@"display_name"])
       {
         v9 = 48;
 LABEL_15:
-        objc_storeStrong((&self->super.isa + v9), a4);
+        objc_storeStrong((&self->super.isa + v9), value);
         goto LABEL_16;
       }
 
-      if ([v8 isEqualToString:@"developer_name"])
+      if ([_popKeyFromStackIfPossible isEqualToString:@"developer_name"])
       {
         v9 = 40;
         goto LABEL_15;
       }
 
-      if ([v8 isEqualToString:@"composed_identifier"])
+      if ([_popKeyFromStackIfPossible isEqualToString:@"composed_identifier"])
       {
         v9 = 32;
         goto LABEL_15;
       }
 
-      if ([v8 isEqualToString:@"store_identifier"])
+      if ([_popKeyFromStackIfPossible isEqualToString:@"store_identifier"])
       {
         v9 = 56;
         goto LABEL_15;
       }
 
-      if ([v8 isEqualToString:@"ios_extension_bundle_identifier"])
+      if ([_popKeyFromStackIfPossible isEqualToString:@"ios_extension_bundle_identifier"])
       {
         v9 = 72;
         goto LABEL_15;
       }
 
-      if ([v8 isEqualToString:@"ios_app_bundle_identifier"])
+      if ([_popKeyFromStackIfPossible isEqualToString:@"ios_app_bundle_identifier"])
       {
         v9 = 64;
         goto LABEL_15;
@@ -209,10 +209,10 @@ LABEL_15:
 LABEL_16:
   }
 
-  return v7;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderBeginObject:(id)a3
+- (BOOL)jsonReaderBeginObject:(id)object
 {
   [(NSMutableArray *)self->_stack addObject:&unk_1F308E4B0];
   if ([(WBSExtensionsImporter *)self _isParsingExtension])
@@ -239,7 +239,7 @@ LABEL_16:
   return 1;
 }
 
-- (BOOL)jsonReaderEndObject:(id)a3
+- (BOOL)jsonReaderEndObject:(id)object
 {
   if ([(WBSExtensionsImporter *)self _isParsingExtension])
   {
@@ -248,14 +248,14 @@ LABEL_16:
   }
 
   [(NSMutableArray *)self->_stack removeLastObject];
-  v5 = [(WBSExtensionsImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSExtensionsImporter *)self _popKeyFromStackIfPossible];
   return 1;
 }
 
-- (BOOL)jsonReaderBeginArray:(id)a3
+- (BOOL)jsonReaderBeginArray:(id)array
 {
-  v4 = [(WBSExtensionsImporter *)self _checkNotAtRootLevel];
-  if (v4)
+  _checkNotAtRootLevel = [(WBSExtensionsImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
     [(NSMutableArray *)self->_stack addObject:&unk_1F308E4C8];
     if ([(WBSExtensionsImporter *)self _isParsingExtensionsArray])
@@ -264,13 +264,13 @@ LABEL_16:
     }
   }
 
-  return v4;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderEndArray:(id)a3
+- (BOOL)jsonReaderEndArray:(id)array
 {
   [(NSMutableArray *)self->_stack removeLastObject];
-  v4 = [(WBSExtensionsImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSExtensionsImporter *)self _popKeyFromStackIfPossible];
   return 1;
 }
 

@@ -1,23 +1,23 @@
 @interface AXInvertColors_Spotlight
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Spotlight
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SPUISearchHeader" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SPUISearchHeader" hasProperty:@"cancelButton" withType:"@"];
-  [v3 validateClass:@"SPUISecureWindow" isKindOfClass:@"UIWindow"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SPUISearchHeader" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SPUISearchHeader" hasProperty:@"cancelButton" withType:"@"];
+  [validationsCopy validateClass:@"SPUISecureWindow" isKindOfClass:@"UIWindow"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SPUISecureWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SPUIBoxViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SPUISecureWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SPUIBoxViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface _UIDatePickerMode_DateAndTime
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 inComponent:(int64_t)a4 calendarUnit:(unint64_t)a5;
-- (BOOL)_shouldEnableWeekMonthDayForRow:(int64_t)a3;
-- (double)componentWidthForDateTimeCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5;
-- (id)_dateForWeekMonthDayRow:(int64_t)a3;
+- (BOOL)_shouldEnableValueForRow:(int64_t)row inComponent:(int64_t)component calendarUnit:(unint64_t)unit;
+- (BOOL)_shouldEnableWeekMonthDayForRow:(int64_t)row;
+- (double)componentWidthForDateTimeCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width;
+- (id)_dateForWeekMonthDayRow:(int64_t)row;
 - (id)baseDateComponents;
-- (id)dateForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4;
-- (id)dateFormatForCalendarUnit:(unint64_t)a3;
+- (id)dateForRow:(int64_t)row inCalendarUnit:(unint64_t)unit;
+- (id)dateFormatForCalendarUnit:(unint64_t)unit;
 - (id)localizedFormatString;
 - (id)relativeFormatter;
-- (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4;
-- (id)viewForRow:(int64_t)a3 inComponent:(int64_t)a4 reusingView:(id)a5;
+- (id)titleForRow:(int64_t)row inComponent:(int64_t)component;
+- (id)viewForRow:(int64_t)row inComponent:(int64_t)component reusingView:(id)view;
 - (id)weekdayFormatter;
 - (int64_t)displayedCalendarUnits;
-- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)a3;
-- (int64_t)rowForDate:(id)a3 dateComponents:(id)a4 component:(int64_t)a5 currentRow:(int64_t)a6;
+- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)unit;
+- (int64_t)rowForDate:(id)date dateComponents:(id)components component:(int64_t)component currentRow:(int64_t)row;
 - (unint64_t)elements;
-- (unint64_t)nextUnitLargerThanUnit:(unint64_t)a3;
-- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)a3;
-- (void)_resetBaseDateComponentsIfNecessaryFromDate:(id)a3;
-- (void)_shouldReset:(id)a3;
-- (void)_takeBaseDateComponentsFromDate:(id)a3;
-- (void)loadDate:(id)a3 animated:(BOOL)a4;
+- (unint64_t)nextUnitLargerThanUnit:(unint64_t)unit;
+- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)unit;
+- (void)_resetBaseDateComponentsIfNecessaryFromDate:(id)date;
+- (void)_shouldReset:(id)reset;
+- (void)_takeBaseDateComponentsFromDate:(id)date;
+- (void)loadDate:(id)date animated:(BOOL)animated;
 - (void)noteCalendarChanged;
 - (void)resetComponentWidths;
-- (void)updateEnabledStateOfViewForRow:(int64_t)a3 inComponent:(int64_t)a4;
+- (void)updateEnabledStateOfViewForRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation _UIDatePickerMode_DateAndTime
 
-- (void)_shouldReset:(id)a3
+- (void)_shouldReset:(id)reset
 {
   v10.receiver = self;
   v10.super_class = _UIDatePickerMode_DateAndTime;
-  [(_UIDatePickerMode *)&v10 _shouldReset:a3];
+  [(_UIDatePickerMode *)&v10 _shouldReset:reset];
   relativeFormatter = self->_relativeFormatter;
   self->_relativeFormatter = 0;
 
@@ -95,16 +95,16 @@
     self->_relativeFormatter = v4;
 
     v6 = self->_relativeFormatter;
-    v7 = [(_UIDatePickerMode *)self calendarForFormatters];
-    [(NSDateFormatter *)v6 setCalendar:v7];
+    calendarForFormatters = [(_UIDatePickerMode *)self calendarForFormatters];
+    [(NSDateFormatter *)v6 setCalendar:calendarForFormatters];
 
     v8 = self->_relativeFormatter;
-    v9 = [(_UIDatePickerMode *)self locale];
-    [(NSDateFormatter *)v8 setLocale:v9];
+    locale = [(_UIDatePickerMode *)self locale];
+    [(NSDateFormatter *)v8 setLocale:locale];
 
     v10 = self->_relativeFormatter;
-    v11 = [(_UIDatePickerMode *)self timeZone];
-    [(NSDateFormatter *)v10 setTimeZone:v11];
+    timeZone = [(_UIDatePickerMode *)self timeZone];
+    [(NSDateFormatter *)v10 setTimeZone:timeZone];
 
     [(NSDateFormatter *)self->_relativeFormatter setFormattingContext:2];
     [(NSDateFormatter *)self->_relativeFormatter setDoesRelativeDateFormatting:1];
@@ -126,16 +126,16 @@
     self->_weekdayFormatter = v4;
 
     v6 = self->_weekdayFormatter;
-    v7 = [(_UIDatePickerMode *)self calendarForFormatters];
-    [(NSDateFormatter *)v6 setCalendar:v7];
+    calendarForFormatters = [(_UIDatePickerMode *)self calendarForFormatters];
+    [(NSDateFormatter *)v6 setCalendar:calendarForFormatters];
 
     v8 = self->_weekdayFormatter;
-    v9 = [(_UIDatePickerMode *)self locale];
-    [(NSDateFormatter *)v8 setLocale:v9];
+    locale = [(_UIDatePickerMode *)self locale];
+    [(NSDateFormatter *)v8 setLocale:locale];
 
     v10 = self->_weekdayFormatter;
-    v11 = [(_UIDatePickerMode *)self timeZone];
-    [(NSDateFormatter *)v10 setTimeZone:v11];
+    timeZone = [(_UIDatePickerMode *)self timeZone];
+    [(NSDateFormatter *)v10 setTimeZone:timeZone];
 
     [(NSDateFormatter *)self->_weekdayFormatter setFormattingContext:2];
     [(NSDateFormatter *)self->_weekdayFormatter setTimeStyle:0];
@@ -155,8 +155,8 @@
   localizedFormatString = self->super._localizedFormatString;
   if (!localizedFormatString)
   {
-    v4 = [(_UIDatePickerMode *)self locale];
-    v5 = _UIDatePickerDateFormatFromTemplate(@"EEE, d MMM y j:m", v4, [(_UIDatePickerMode *)self followsSystemHourCycle]);
+    locale = [(_UIDatePickerMode *)self locale];
+    v5 = _UIDatePickerDateFormatFromTemplate(@"EEE, d MMM y j:m", locale, [(_UIDatePickerMode *)self followsSystemHourCycle]);
 
     [(_UIDatePickerMode *)self setLocalizedFormatString:v5];
     localizedFormatString = self->super._localizedFormatString;
@@ -165,16 +165,16 @@
   return localizedFormatString;
 }
 
-- (id)dateFormatForCalendarUnit:(unint64_t)a3
+- (id)dateFormatForCalendarUnit:(unint64_t)unit
 {
   v46 = *MEMORY[0x1E69E9840];
   p_weekdayFormat = &self->_weekdayFormat;
   if (!self->_weekdayFormat)
   {
-    v35 = a3;
-    v5 = [(_UIDatePickerMode_DateAndTime *)self localizedFormatString];
-    v6 = [(_UIDatePickerMode *)self locale];
-    v7 = [_UIDatePickerComponent componentsFromDateFormatString:v5 locale:v6 followsSystemHourCycle:[(_UIDatePickerMode *)self followsSystemHourCycle] desiredUnits:96];
+    unitCopy = unit;
+    localizedFormatString = [(_UIDatePickerMode_DateAndTime *)self localizedFormatString];
+    locale = [(_UIDatePickerMode *)self locale];
+    v7 = [_UIDatePickerComponent componentsFromDateFormatString:localizedFormatString locale:locale followsSystemHourCycle:[(_UIDatePickerMode *)self followsSystemHourCycle] desiredUnits:96];
 
     v42 = 0u;
     v43 = 0u;
@@ -210,9 +210,9 @@
             }
           }
 
-          v15 = [v13 formatString];
+          formatString = [v13 formatString];
           v16 = *p_minuteFormat;
-          *p_minuteFormat = v15;
+          *p_minuteFormat = formatString;
         }
 
         v10 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
@@ -221,11 +221,11 @@
       while (v10);
     }
 
-    v17 = [(_UIDatePickerMode *)self locale];
-    v18 = _UIDatePickerDateFormatFromTemplate(@"EEE, d MMM", v17, [(_UIDatePickerMode *)self followsSystemHourCycle]);
+    locale2 = [(_UIDatePickerMode *)self locale];
+    v18 = _UIDatePickerDateFormatFromTemplate(@"EEE, d MMM", locale2, [(_UIDatePickerMode *)self followsSystemHourCycle]);
 
-    v19 = [(_UIDatePickerMode *)self locale];
-    v20 = [_UIDatePickerComponent componentsFromDateFormatString:v18 locale:v19 followsSystemHourCycle:[(_UIDatePickerMode *)self followsSystemHourCycle] desiredUnits:512];
+    locale3 = [(_UIDatePickerMode *)self locale];
+    v20 = [_UIDatePickerComponent componentsFromDateFormatString:v18 locale:locale3 followsSystemHourCycle:[(_UIDatePickerMode *)self followsSystemHourCycle] desiredUnits:512];
 
     v38 = 0u;
     v39 = 0u;
@@ -249,9 +249,9 @@
           v26 = *(*(&v36 + 1) + 8 * j);
           if ([v26 calendarUnit] == 512)
           {
-            v27 = [v26 formatString];
+            formatString2 = [v26 formatString];
             v28 = *p_weekdayFormat;
-            *p_weekdayFormat = v27;
+            *p_weekdayFormat = formatString2;
           }
         }
 
@@ -261,25 +261,25 @@
       while (v23);
     }
 
-    v29 = [(_UIDatePickerMode *)self locale];
-    v30 = _UIDatePickerDateFormatFromTemplate(@"d MMM", v29, [(_UIDatePickerMode *)self followsSystemHourCycle]);
+    locale4 = [(_UIDatePickerMode *)self locale];
+    v30 = _UIDatePickerDateFormatFromTemplate(@"d MMM", locale4, [(_UIDatePickerMode *)self followsSystemHourCycle]);
     monthDayFormat = self->_monthDayFormat;
     self->_monthDayFormat = v30;
 
-    a3 = v35;
+    unit = unitCopy;
   }
 
   v32 = 0;
-  if (a3 <= 511)
+  if (unit <= 511)
   {
-    if (a3 == 32)
+    if (unit == 32)
     {
       v33 = &OBJC_IVAR____UIDatePickerMode_DateAndTime__hourFormat;
     }
 
     else
     {
-      if (a3 != 64)
+      if (unit != 64)
       {
         goto LABEL_34;
       }
@@ -292,9 +292,9 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if (a3 != 512)
+  if (unit != 512)
   {
-    if (a3 != 536)
+    if (unit != 536)
     {
       goto LABEL_34;
     }
@@ -323,14 +323,14 @@ LABEL_34:
   if (!result)
   {
     v19 = 0;
-    v5 = [(_UIDatePickerMode_DateAndTime *)self localizedFormatString];
-    v6 = [objc_opt_class() extractableCalendarUnits];
-    v7 = _UICopyCalendarUnitsFromFormatString(v5, v6, &v19);
+    localizedFormatString = [(_UIDatePickerMode_DateAndTime *)self localizedFormatString];
+    extractableCalendarUnits = [objc_opt_class() extractableCalendarUnits];
+    v7 = _UICopyCalendarUnitsFromFormatString(localizedFormatString, extractableCalendarUnits, &v19);
     v8 = v19;
     if (v19 <= 4)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:1911 description:{@"unexpected number of calendar units: %ld for format: %@ (expecting at least 5 elements)", v19, v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:1911 description:{@"unexpected number of calendar units: %ld for format: %@ (expecting at least 5 elements)", v19, localizedFormatString}];
 
       v8 = v19;
     }
@@ -389,62 +389,62 @@ LABEL_34:
   return result;
 }
 
-- (void)loadDate:(id)a3 animated:(BOOL)a4
+- (void)loadDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(_UIDatePickerMode_DateAndTime *)self _resetBaseDateComponentsIfNecessaryFromDate:v6];
+  animatedCopy = animated;
+  dateCopy = date;
+  [(_UIDatePickerMode_DateAndTime *)self _resetBaseDateComponentsIfNecessaryFromDate:dateCopy];
   v7.receiver = self;
   v7.super_class = _UIDatePickerMode_DateAndTime;
-  [(_UIDatePickerMode *)&v7 loadDate:v6 animated:v4];
+  [(_UIDatePickerMode *)&v7 loadDate:dateCopy animated:animatedCopy];
 }
 
-- (void)_resetBaseDateComponentsIfNecessaryFromDate:(id)a3
+- (void)_resetBaseDateComponentsIfNecessaryFromDate:(id)date
 {
-  v14 = a3;
+  dateCopy = date;
   v4 = ([(_UIDatePickerMode_DateAndTime *)self numberOfRowsForCalendarUnit:536]/ 4);
-  v5 = [(_UIDatePickerMode *)self baseDate];
+  baseDate = [(_UIDatePickerMode *)self baseDate];
   v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v6 setDay:v4];
-  v7 = [(_UIDatePickerMode *)self calendar];
-  v8 = [v7 dateByAddingComponents:v6 toDate:v5 options:0];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v8 = [calendar dateByAddingComponents:v6 toDate:baseDate options:0];
 
   [v6 setDay:3 * v4];
-  v9 = [(_UIDatePickerMode *)self calendar];
-  v10 = [v9 dateByAddingComponents:v6 toDate:v5 options:0];
+  calendar2 = [(_UIDatePickerMode *)self calendar];
+  v10 = [calendar2 dateByAddingComponents:v6 toDate:baseDate options:0];
 
-  v11 = [v8 earlierDate:v14];
+  v11 = [v8 earlierDate:dateCopy];
   v12 = v11;
-  if (v11 == v14)
+  if (v11 == dateCopy)
   {
   }
 
   else
   {
-    v13 = [v10 laterDate:v14];
+    v13 = [v10 laterDate:dateCopy];
 
-    if (v13 != v14)
+    if (v13 != dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  [(_UIDatePickerMode_DateAndTime *)self _takeBaseDateComponentsFromDate:v14];
+  [(_UIDatePickerMode_DateAndTime *)self _takeBaseDateComponentsFromDate:dateCopy];
 LABEL_6:
 }
 
-- (void)_takeBaseDateComponentsFromDate:(id)a3
+- (void)_takeBaseDateComponentsFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = ([(_UIDatePickerMode_DateAndTime *)self numberOfRowsForCalendarUnit:536]/ 2);
   v11 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v11 setDay:-v5];
-  v6 = [(_UIDatePickerMode *)self calendar];
-  v7 = [v6 dateByAddingComponents:v11 toDate:v4 options:0];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v7 = [calendar dateByAddingComponents:v11 toDate:dateCopy options:0];
 
-  v8 = [(_UIDatePickerMode_DateAndTime *)self displayedCalendarUnits];
-  v9 = [(_UIDatePickerMode *)self calendar];
-  v10 = [v9 components:v8 fromDate:v7];
+  displayedCalendarUnits = [(_UIDatePickerMode_DateAndTime *)self displayedCalendarUnits];
+  calendar2 = [(_UIDatePickerMode *)self calendar];
+  v10 = [calendar2 components:displayedCalendarUnits fromDate:v7];
 
   [v10 setHour:12];
   [v10 setMinute:0];
@@ -457,10 +457,10 @@ LABEL_6:
   baseDateComponents = self->super._baseDateComponents;
   if (!baseDateComponents)
   {
-    v4 = [(_UIDatePickerMode *)self datePickerView];
-    v5 = [v4 data];
-    v6 = [v5 effectiveDate];
-    [(_UIDatePickerMode_DateAndTime *)self _takeBaseDateComponentsFromDate:v6];
+    datePickerView = [(_UIDatePickerMode *)self datePickerView];
+    data = [datePickerView data];
+    effectiveDate = [data effectiveDate];
+    [(_UIDatePickerMode_DateAndTime *)self _takeBaseDateComponentsFromDate:effectiveDate];
 
     baseDateComponents = self->super._baseDateComponents;
   }
@@ -468,9 +468,9 @@ LABEL_6:
   return baseDateComponents;
 }
 
-- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)a3
+- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)unit
 {
-  if (a3 == 0x10000)
+  if (unit == 0x10000)
   {
     return 2;
   }
@@ -481,43 +481,43 @@ LABEL_6:
   }
 }
 
-- (double)componentWidthForDateTimeCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5
+- (double)componentWidthForDateTimeCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  fontCopy = font;
   p_wmdWeekMonthDayWidth = &self->_wmdWeekMonthDayWidth;
   if (self->_wmdWeekMonthDayWidth == 0.0)
   {
     v77 = &self->_wmdWeekMonthDayWidth;
-    v10 = [(_UIDatePickerMode *)self amString];
-    v11 = [(_UIDatePickerMode *)self pmString];
-    v12 = [(_UIDatePickerMode *)self amPmFont];
-    [(_UIDatePickerMode *)self componentWidthForTwoDigitCalendarUnit:32 font:v8 maxWidth:a5];
+    amString = [(_UIDatePickerMode *)self amString];
+    pmString = [(_UIDatePickerMode *)self pmString];
+    amPmFont = [(_UIDatePickerMode *)self amPmFont];
+    [(_UIDatePickerMode *)self componentWidthForTwoDigitCalendarUnit:32 font:fontCopy maxWidth:width];
     v14 = ceil(v13);
-    v15 = [(_UIDatePickerMode *)self _style];
-    [v15 horizontalWeekdayTimePadding];
+    _style = [(_UIDatePickerMode *)self _style];
+    [_style horizontalWeekdayTimePadding];
     self->_wmdHourWidth = v14 + v16 + v16;
 
-    [(_UIDatePickerMode *)self componentWidthForTwoDigitCalendarUnit:64 font:v8 maxWidth:a5];
+    [(_UIDatePickerMode *)self componentWidthForTwoDigitCalendarUnit:64 font:fontCopy maxWidth:width];
     v18 = ceil(v17);
-    v19 = [(_UIDatePickerMode *)self _style];
-    [v19 horizontalWeekdayTimePadding];
+    _style2 = [(_UIDatePickerMode *)self _style];
+    [_style2 horizontalWeekdayTimePadding];
     self->_wmdMinuteWidth = v18 + v20 + v20;
 
     self->_wmdAMPMWidth = 0.0;
     v21 = *off_1E70EC918;
-    if (v10)
+    if (amString)
     {
       v87 = *off_1E70EC918;
-      v88[0] = v12;
+      v88[0] = amPmFont;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:&v87 count:1];
-      [v10 sizeWithAttributes:v22];
+      [amString sizeWithAttributes:v22];
       v24 = v23;
 
       v85 = v21;
-      v86 = v12;
+      v86 = amPmFont;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-      [v11 sizeWithAttributes:v25];
+      [pmString sizeWithAttributes:v25];
       v27 = v26;
 
       if (v24 >= v27)
@@ -531,21 +531,21 @@ LABEL_6:
       }
 
       v29 = ceil(v28);
-      v30 = [(_UIDatePickerMode *)self _style];
-      [v30 horizontalPaddingForAMPM];
+      _style3 = [(_UIDatePickerMode *)self _style];
+      [_style3 horizontalPaddingForAMPM];
       self->_wmdAMPMWidth = v29 + v31 + v31;
     }
 
-    v75 = v12;
-    v76 = v10;
+    v75 = amPmFont;
+    v76 = amString;
     self->_wmdWeekdayWidth = 0.0;
-    v32 = [(_UIDatePickerMode_DateAndTime *)self weekdayFormatter];
+    weekdayFormatter = [(_UIDatePickerMode_DateAndTime *)self weekdayFormatter];
     for (i = 1; i != 8; ++i)
     {
       v34 = [objc_opt_class() newDateFromGregorianYear:2007 month:1 day:i timeZone:0];
-      v35 = [v32 stringFromDate:v34];
+      v35 = [weekdayFormatter stringFromDate:v34];
       v83 = v21;
-      v84 = v8;
+      v84 = fontCopy;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
       [v35 sizeWithAttributes:v36];
       v38 = v37;
@@ -567,7 +567,7 @@ LABEL_6:
       v43 = [objc_opt_class() newDateFromGregorianYear:2007 month:j day:28 timeZone:0];
       v44 = [v40 stringFromDate:v43];
       v81 = v21;
-      v82 = v8;
+      v82 = fontCopy;
       v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
       [v44 sizeWithAttributes:v45];
       v47 = v46;
@@ -579,24 +579,24 @@ LABEL_6:
     }
 
     v48 = v41 + self->_wmdWeekdayWidth;
-    v49 = [(_UIDatePickerMode *)self _style];
-    [v49 horizontalWeekMonthDayPadding];
+    _style4 = [(_UIDatePickerMode *)self _style];
+    [_style4 horizontalWeekMonthDayPadding];
     *v77 = v48 + v50;
 
     *v77 = ceil(*v77);
     WeakRetained = objc_loadWeakRetained(&self->super._datePickerView);
-    v52 = [WeakRetained traitCollection];
-    v78 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [v52 userInterfaceIdiom]);
+    traitCollection = [WeakRetained traitCollection];
+    v78 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
 
     v53 = _UINSLocalizedStringWithDefaultValue(@"Today", @"Today");
     v79 = v21;
-    v80 = v8;
+    v80 = fontCopy;
     p_wmdWeekMonthDayWidth = &self->_wmdWeekMonthDayWidth;
     v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
     [v53 sizeWithAttributes:v54];
     v56 = v55;
-    v57 = [(_UIDatePickerMode *)self _style];
-    [v57 horizontalWeekMonthDayPadding];
+    _style5 = [(_UIDatePickerMode *)self _style];
+    [_style5 horizontalWeekMonthDayPadding];
     v59 = v56 + v58;
     [v78 pickerHorizontalEdgeInset];
     v61 = v59 + v60;
@@ -610,9 +610,9 @@ LABEL_6:
     *v77 = v62;
     wmdAMPMWidth = self->_wmdAMPMWidth;
     v64 = v62 + self->_wmdHourWidth + self->_wmdMinuteWidth + wmdAMPMWidth;
-    if (v64 > a5)
+    if (v64 > width)
     {
-      v65 = v64 - a5;
+      v65 = v64 - width;
       if (self->_weekdayLast)
       {
         v66 = fmin(v65, 10.0);
@@ -643,16 +643,16 @@ LABEL_6:
   }
 
   v72 = 0.0;
-  if (a3 > 535)
+  if (unit > 535)
   {
-    if (a3 == 536)
+    if (unit == 536)
     {
 LABEL_34:
       v72 = *p_wmdWeekMonthDayWidth;
       goto LABEL_35;
     }
 
-    if (a3 == 0x10000)
+    if (unit == 0x10000)
     {
       v73 = &OBJC_IVAR____UIDatePickerMode_DateAndTime__wmdAMPMWidth;
       goto LABEL_33;
@@ -661,13 +661,13 @@ LABEL_34:
 
   else
   {
-    if (a3 == 32)
+    if (unit == 32)
     {
       v73 = &OBJC_IVAR____UIDatePickerMode_DateAndTime__wmdHourWidth;
       goto LABEL_33;
     }
 
-    if (a3 == 64)
+    if (unit == 64)
     {
       v73 = &OBJC_IVAR____UIDatePickerMode_DateAndTime__wmdMinuteWidth;
 LABEL_33:
@@ -681,9 +681,9 @@ LABEL_35:
   return v72;
 }
 
-- (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4
+- (id)titleForRow:(int64_t)row inComponent:(int64_t)component
 {
-  if ([(_UIDatePickerMode *)self calendarUnitForComponent:a4]== 536)
+  if ([(_UIDatePickerMode *)self calendarUnitForComponent:component]== 536)
   {
     v7 = &stru_1EFB14550;
   }
@@ -692,51 +692,51 @@ LABEL_35:
   {
     v9.receiver = self;
     v9.super_class = _UIDatePickerMode_DateAndTime;
-    v7 = [(_UIDatePickerMode *)&v9 titleForRow:a3 inComponent:a4];
+    v7 = [(_UIDatePickerMode *)&v9 titleForRow:row inComponent:component];
   }
 
   return v7;
 }
 
-- (id)dateForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4
+- (id)dateForRow:(int64_t)row inCalendarUnit:(unint64_t)unit
 {
-  if (a4 == 536)
+  if (unit == 536)
   {
-    v4 = [(_UIDatePickerMode_DateAndTime *)self _dateForWeekMonthDayRow:a3];
+    v4 = [(_UIDatePickerMode_DateAndTime *)self _dateForWeekMonthDayRow:row];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = _UIDatePickerMode_DateAndTime;
-    v4 = [(_UIDatePickerMode *)&v6 dateForRow:a3 inCalendarUnit:?];
+    v4 = [(_UIDatePickerMode *)&v6 dateForRow:row inCalendarUnit:?];
   }
 
   return v4;
 }
 
-- (int64_t)rowForDate:(id)a3 dateComponents:(id)a4 component:(int64_t)a5 currentRow:(int64_t)a6
+- (int64_t)rowForDate:(id)date dateComponents:(id)components component:(int64_t)component currentRow:(int64_t)row
 {
-  v10 = a3;
-  v11 = a4;
-  if ([(_UIDatePickerMode *)self calendarUnitForComponent:a5]== 536)
+  dateCopy = date;
+  componentsCopy = components;
+  if ([(_UIDatePickerMode *)self calendarUnitForComponent:component]== 536)
   {
-    v12 = [(_UIDatePickerMode *)self calendar];
-    v13 = [v12 components:30 fromDate:v10];
+    calendar = [(_UIDatePickerMode *)self calendar];
+    v13 = [calendar components:30 fromDate:dateCopy];
 
     [v13 setHour:12];
     [v13 setMinute:0];
     [v13 setSecond:0];
-    v14 = [(_UIDatePickerMode *)self calendar];
-    v15 = [v14 dateFromComponents:v13];
+    calendar2 = [(_UIDatePickerMode *)self calendar];
+    v15 = [calendar2 dateFromComponents:v13];
 
-    v16 = [(_UIDatePickerMode *)self calendar];
-    v17 = [(_UIDatePickerMode *)self baseDate];
-    v18 = [v16 components:16 fromDate:v15 toDate:v17 options:0];
+    calendar3 = [(_UIDatePickerMode *)self calendar];
+    baseDate = [(_UIDatePickerMode *)self baseDate];
+    v18 = [calendar3 components:16 fromDate:v15 toDate:baseDate options:0];
 
     v19 = [v18 day];
-    v20 = [(_UIDatePickerMode *)self baseDate];
-    v21 = [v15 compare:v20];
+    baseDate2 = [(_UIDatePickerMode *)self baseDate];
+    v21 = [v15 compare:baseDate2];
 
     if (v21 == -1 && v19 > 0 || v21 == 1 && v19 < 0)
     {
@@ -748,35 +748,35 @@ LABEL_35:
   {
     v23.receiver = self;
     v23.super_class = _UIDatePickerMode_DateAndTime;
-    v19 = [(_UIDatePickerMode *)&v23 rowForDate:v10 dateComponents:v11 component:a5 currentRow:a6];
+    v19 = [(_UIDatePickerMode *)&v23 rowForDate:dateCopy dateComponents:componentsCopy component:component currentRow:row];
   }
 
   return v19;
 }
 
-- (id)_dateForWeekMonthDayRow:(int64_t)a3
+- (id)_dateForWeekMonthDayRow:(int64_t)row
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v5 setDay:a3];
-  v6 = [(_UIDatePickerMode *)self calendar];
-  v7 = [(_UIDatePickerMode *)self baseDate];
-  v8 = [v6 dateByAddingComponents:v5 toDate:v7 options:0];
+  [v5 setDay:row];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  baseDate = [(_UIDatePickerMode *)self baseDate];
+  v8 = [calendar dateByAddingComponents:v5 toDate:baseDate options:0];
 
   return v8;
 }
 
-- (BOOL)_shouldEnableWeekMonthDayForRow:(int64_t)a3
+- (BOOL)_shouldEnableWeekMonthDayForRow:(int64_t)row
 {
-  v4 = [(_UIDatePickerMode_DateAndTime *)self _dateForWeekMonthDayRow:a3];
-  v5 = [(_UIDatePickerMode *)self calendar];
-  v6 = [v5 components:30 fromDate:v4];
+  v4 = [(_UIDatePickerMode_DateAndTime *)self _dateForWeekMonthDayRow:row];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v6 = [calendar components:30 fromDate:v4];
 
-  v7 = [(_UIDatePickerMode *)self minimumDateComponents];
-  v8 = [(_UIDatePickerMode *)self maximumDateComponents];
-  v9 = v8;
-  if (v7)
+  minimumDateComponents = [(_UIDatePickerMode *)self minimumDateComponents];
+  maximumDateComponents = [(_UIDatePickerMode *)self maximumDateComponents];
+  v9 = maximumDateComponents;
+  if (minimumDateComponents)
   {
-    v10 = (_UIDatePickerCompareDateComponents(v7, v6, 30) + 1) < 2;
+    v10 = (_UIDatePickerCompareDateComponents(minimumDateComponents, v6, 30) + 1) < 2;
     if (!v9)
     {
       goto LABEL_5;
@@ -786,7 +786,7 @@ LABEL_35:
   else
   {
     v10 = 1;
-    if (!v8)
+    if (!maximumDateComponents)
     {
       goto LABEL_5;
     }
@@ -802,80 +802,80 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 inComponent:(int64_t)a4 calendarUnit:(unint64_t)a5
+- (BOOL)_shouldEnableValueForRow:(int64_t)row inComponent:(int64_t)component calendarUnit:(unint64_t)unit
 {
-  if (a5 != 536)
+  if (unit != 536)
   {
-    v10 = [(_UIDatePickerMode *)self selectedDateComponents:a3];
+    v10 = [(_UIDatePickerMode *)self selectedDateComponents:row];
     v11 = v10;
-    switch(a5)
+    switch(unit)
     {
       case 0x10000uLL:
-        v16 = a3;
+        rowCopy = row;
         break;
       case 0x40uLL:
-        [v10 setMinute:{-[_UIDatePickerMode minuteForRow:](self, "minuteForRow:", a3)}];
-        v17 = 64;
+        [v10 setMinute:{-[_UIDatePickerMode minuteForRow:](self, "minuteForRow:", row)}];
+        unitCopy = 64;
         goto LABEL_14;
       case 0x20uLL:
-        [v10 setHour:{-[_UIDatePickerMode hourForRow:](self, "hourForRow:", a3)}];
+        [v10 setHour:{-[_UIDatePickerMode hourForRow:](self, "hourForRow:", row)}];
         [v11 setMinute:0];
         v12 = [(_UIDatePickerMode *)self componentForCalendarUnit:0x10000];
         if (v12 == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_13:
-          v17 = 32;
+          unitCopy = 32;
           goto LABEL_14;
         }
 
         v13 = v12;
-        v14 = [(_UIDatePickerMode *)self datePickerView];
-        v15 = [v14 selectedRowInComponent:v13];
+        datePickerView = [(_UIDatePickerMode *)self datePickerView];
+        v15 = [datePickerView selectedRowInComponent:v13];
 
         v10 = v11;
-        v16 = v15;
+        rowCopy = v15;
         break;
       default:
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:2197 description:{@"Unknown calendar unit: %lu", a5}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:2197 description:{@"Unknown calendar unit: %lu", unit}];
 
-        v18 = 0x7FFFFFFFFFFFFFFFLL;
-        v17 = a5;
-        if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+        unitCopy2 = 0x7FFFFFFFFFFFFFFFLL;
+        unitCopy = unit;
+        if (unit == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_16:
-          v19 = [(_UIDatePickerMode *)self areValidDateComponents:v11 comparingUnits:v18];
+          v19 = [(_UIDatePickerMode *)self areValidDateComponents:v11 comparingUnits:unitCopy2];
 
           return v19;
         }
 
 LABEL_14:
-        v18 = a5;
+        unitCopy2 = unit;
         do
         {
-          v18 |= v17;
-          v17 = [(_UIDatePickerMode_DateAndTime *)self nextUnitLargerThanUnit:?];
+          unitCopy2 |= unitCopy;
+          unitCopy = [(_UIDatePickerMode_DateAndTime *)self nextUnitLargerThanUnit:?];
         }
 
-        while (v17 != 0x7FFFFFFFFFFFFFFFLL);
+        while (unitCopy != 0x7FFFFFFFFFFFFFFFLL);
         goto LABEL_16;
     }
 
-    _UIDateComponentsSetValue(v10, 0x10000, v16);
+    _UIDateComponentsSetValue(v10, 0x10000, rowCopy);
     goto LABEL_13;
   }
 
-  return [(_UIDatePickerMode_DateAndTime *)self _shouldEnableWeekMonthDayForRow:a3, a4];
+  return [(_UIDatePickerMode_DateAndTime *)self _shouldEnableWeekMonthDayForRow:row, component];
 }
 
-- (id)viewForRow:(int64_t)a3 inComponent:(int64_t)a4 reusingView:(id)a5
+- (id)viewForRow:(int64_t)row inComponent:(int64_t)component reusingView:(id)view
 {
-  v8 = a5;
-  if ([(_UIDatePickerMode *)self calendarUnitForComponent:a4]!= 536)
+  viewCopy = view;
+  if ([(_UIDatePickerMode *)self calendarUnitForComponent:component]!= 536)
   {
     v55.receiver = self;
     v55.super_class = _UIDatePickerMode_DateAndTime;
-    v9 = [(_UIDatePickerMode *)&v55 viewForRow:a3 inComponent:a4 reusingView:v8];
+    v9 = [(_UIDatePickerMode *)&v55 viewForRow:row inComponent:component reusingView:viewCopy];
 
     goto LABEL_15;
   }
@@ -883,66 +883,66 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = viewCopy;
   }
 
   else
   {
     v10 = [UIDatePickerWeekMonthDayView alloc];
     v9 = [(UIDatePickerWeekMonthDayView *)v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v11 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
-    v12 = [(_UIDatePickerMode *)self datePickerView];
-    v13 = [v12 _textColor];
-    [v11 setTextColor:v13];
+    dateLabel = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
+    datePickerView = [(_UIDatePickerMode *)self datePickerView];
+    _textColor = [datePickerView _textColor];
+    [dateLabel setTextColor:_textColor];
 
-    v14 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
-    v15 = [(_UIDatePickerMode *)self datePickerView];
-    v16 = [v15 _textShadowColor];
-    [v14 setShadowColor:v16];
+    dateLabel2 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
+    datePickerView2 = [(_UIDatePickerMode *)self datePickerView];
+    _textShadowColor = [datePickerView2 _textShadowColor];
+    [dateLabel2 setShadowColor:_textShadowColor];
 
-    v17 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
-    v18 = [(_UIDatePickerMode *)self datePickerView];
-    v19 = [v18 _textColor];
-    [v17 setTextColor:v19];
+    weekdayLabel = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
+    datePickerView3 = [(_UIDatePickerMode *)self datePickerView];
+    _textColor2 = [datePickerView3 _textColor];
+    [weekdayLabel setTextColor:_textColor2];
 
-    v20 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
-    v21 = [(_UIDatePickerMode *)self datePickerView];
-    v22 = [v21 _textShadowColor];
-    [v20 setShadowColor:v22];
+    weekdayLabel2 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
+    datePickerView4 = [(_UIDatePickerMode *)self datePickerView];
+    _textShadowColor2 = [datePickerView4 _textShadowColor];
+    [weekdayLabel2 setShadowColor:_textShadowColor2];
   }
 
-  v54 = a3;
-  v23 = [(_UIDatePickerMode_DateAndTime *)self _dateForWeekMonthDayRow:a3];
+  rowCopy = row;
+  v23 = [(_UIDatePickerMode_DateAndTime *)self _dateForWeekMonthDayRow:row];
   v24 = [(_UIDatePickerMode *)self dateFormatterForCalendarUnit:536];
-  v25 = [(_UIDatePickerMode *)self calendar];
-  v26 = [v25 components:766 fromDate:v23];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v26 = [calendar components:766 fromDate:v23];
 
   [v26 setHour:12];
   [v26 setMinute:0];
   [v26 setSecond:0];
-  v27 = [(_UIDatePickerMode *)self calendar];
-  v28 = [v27 dateFromComponents:v26];
+  calendar2 = [(_UIDatePickerMode *)self calendar];
+  v28 = [calendar2 dateFromComponents:v26];
 
   v53 = [v24 stringFromDate:v28];
-  v29 = [(_UIDatePickerMode *)self datePickerView];
-  if (![v29 highlightsToday])
+  datePickerView5 = [(_UIDatePickerMode *)self datePickerView];
+  if (![datePickerView5 highlightsToday])
   {
 
 LABEL_13:
-    v38 = [(_UIDatePickerMode_DateAndTime *)self weekdayFormatter];
-    v39 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
-    v40 = [v38 stringFromDate:v28];
-    [v39 setText:v40];
+    weekdayFormatter = [(_UIDatePickerMode_DateAndTime *)self weekdayFormatter];
+    weekdayLabel3 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
+    v40 = [weekdayFormatter stringFromDate:v28];
+    [weekdayLabel3 setText:v40];
 
-    v41 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
-    v42 = [(_UIDatePickerMode *)self datePickerView];
-    v43 = [v42 _textColor];
-    [v41 setTextColor:v43];
+    dateLabel3 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
+    datePickerView6 = [(_UIDatePickerMode *)self datePickerView];
+    _textColor3 = [datePickerView6 _textColor];
+    [dateLabel3 setTextColor:_textColor3];
 
-    v44 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
-    v45 = [(_UIDatePickerMode *)self datePickerView];
-    v46 = [v45 _textColor];
-    [v44 setTextColor:v46];
+    weekdayLabel4 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
+    datePickerView7 = [(_UIDatePickerMode *)self datePickerView];
+    _textColor4 = [datePickerView7 _textColor];
+    [weekdayLabel4 setTextColor:_textColor4];
 
     goto LABEL_14;
   }
@@ -966,51 +966,51 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v35 = [(_UIDatePickerMode_DateAndTime *)self relativeFormatter];
+  relativeFormatter = [(_UIDatePickerMode_DateAndTime *)self relativeFormatter];
 
-  v36 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
-  v37 = [(_UIDatePickerMode *)self todayTextColor];
-  [v36 setTextColor:v37];
+  dateLabel4 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
+  todayTextColor = [(_UIDatePickerMode *)self todayTextColor];
+  [dateLabel4 setTextColor:todayTextColor];
 
-  v38 = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
-  [v38 setText:0];
-  v24 = v35;
+  weekdayFormatter = [(UIDatePickerWeekMonthDayView *)v9 weekdayLabel];
+  [weekdayFormatter setText:0];
+  v24 = relativeFormatter;
 LABEL_14:
 
-  v47 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
+  dateLabel5 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
   v48 = [v24 stringFromDate:v28];
-  [v47 setText:v48];
+  [dateLabel5 setText:v48];
 
-  v49 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
+  dateLabel6 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
   v50 = [(_UIDatePickerMode *)self fontForCalendarUnit:536];
-  [v49 setFont:v50];
+  [dateLabel6 setFont:v50];
 
   [(UIDatePickerWeekMonthDayView *)v9 setWeekdayLast:[(_UIDatePickerMode_DateAndTime *)self isWeekdayLast]];
   [(_UIDatePickerMode_DateAndTime *)self weekdayWidth];
   [(UIDatePickerWeekMonthDayView *)v9 setWeekdayWidth:?];
   [(UIDatePickerWeekMonthDayView *)v9 setFormattedDateString:v53];
-  v51 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
-  [v51 setEnabled:{-[_UIDatePickerMode_DateAndTime _shouldEnableWeekMonthDayForRow:](self, "_shouldEnableWeekMonthDayForRow:", v54)}];
+  dateLabel7 = [(UIDatePickerWeekMonthDayView *)v9 dateLabel];
+  [dateLabel7 setEnabled:{-[_UIDatePickerMode_DateAndTime _shouldEnableWeekMonthDayForRow:](self, "_shouldEnableWeekMonthDayForRow:", rowCopy)}];
 
 LABEL_15:
 
   return v9;
 }
 
-- (void)updateEnabledStateOfViewForRow:(int64_t)a3 inComponent:(int64_t)a4
+- (void)updateEnabledStateOfViewForRow:(int64_t)row inComponent:(int64_t)component
 {
-  if ([(_UIDatePickerMode *)self calendarUnitForComponent:a4]== 536)
+  if ([(_UIDatePickerMode *)self calendarUnitForComponent:component]== 536)
   {
-    v7 = [(_UIDatePickerMode *)self datePickerView];
-    v9 = [v7 viewForRow:a3 forComponent:a4];
+    datePickerView = [(_UIDatePickerMode *)self datePickerView];
+    v9 = [datePickerView viewForRow:row forComponent:component];
 
     if (v9)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v9 dateLabel];
-        [v8 setEnabled:{-[_UIDatePickerMode_DateAndTime _shouldEnableWeekMonthDayForRow:](self, "_shouldEnableWeekMonthDayForRow:", a3)}];
+        dateLabel = [v9 dateLabel];
+        [dateLabel setEnabled:{-[_UIDatePickerMode_DateAndTime _shouldEnableWeekMonthDayForRow:](self, "_shouldEnableWeekMonthDayForRow:", row)}];
       }
     }
   }
@@ -1019,20 +1019,20 @@ LABEL_15:
   {
     v10.receiver = self;
     v10.super_class = _UIDatePickerMode_DateAndTime;
-    [(_UIDatePickerMode *)&v10 updateEnabledStateOfViewForRow:a3 inComponent:a4];
+    [(_UIDatePickerMode *)&v10 updateEnabledStateOfViewForRow:row inComponent:component];
   }
 }
 
-- (unint64_t)nextUnitLargerThanUnit:(unint64_t)a3
+- (unint64_t)nextUnitLargerThanUnit:(unint64_t)unit
 {
-  if (a3 <= 15)
+  if (unit <= 15)
   {
-    if (a3 == 4)
+    if (unit == 4)
     {
       return 2;
     }
 
-    if (a3 == 8)
+    if (unit == 8)
     {
       return 4;
     }
@@ -1040,7 +1040,7 @@ LABEL_15:
 
   else
   {
-    switch(a3)
+    switch(unit)
     {
       case 0x10uLL:
         return 8;
@@ -1054,16 +1054,16 @@ LABEL_15:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)a3
+- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)unit
 {
-  if (a3 <= 7)
+  if (unit <= 7)
   {
-    if (a3 == 2)
+    if (unit == 2)
     {
       return 4;
     }
 
-    if (a3 == 4)
+    if (unit == 4)
     {
       return 8;
     }
@@ -1071,7 +1071,7 @@ LABEL_15:
 
   else
   {
-    switch(a3)
+    switch(unit)
     {
       case 8uLL:
         return 16;

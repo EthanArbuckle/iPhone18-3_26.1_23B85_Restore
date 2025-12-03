@@ -1,8 +1,8 @@
 @interface MCProfileConnection
-- (BOOL)isAutoLockOn:(id)a3;
+- (BOOL)isAutoLockOn:(id)on;
 - (id)autoLockTime;
 - (id)autoLockTimeMaximum;
-- (void)setAutoLockTime:(id)a3;
+- (void)setAutoLockTime:(id)time;
 @end
 
 @implementation MCProfileConnection
@@ -12,25 +12,25 @@
   v3 = [(MCProfileConnection *)self effectiveValueForSetting:MCFeatureAutoLockTime];
   if ([(MCProfileConnection *)self _isUnset:v3])
   {
-    v4 = [(MCProfileConnection *)self _autoLockTimeDefault];
+    _autoLockTimeDefault = [(MCProfileConnection *)self _autoLockTimeDefault];
   }
 
   else
   {
-    v4 = v3;
+    _autoLockTimeDefault = v3;
   }
 
-  v5 = v4;
+  v5 = _autoLockTimeDefault;
 
   return v5;
 }
 
-- (void)setAutoLockTime:(id)a3
+- (void)setAutoLockTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = &off_86A0;
-  v6 = v4;
-  if (v4 && ![(MCProfileConnection *)self _isNever:v4])
+  v6 = timeCopy;
+  if (timeCopy && ![(MCProfileConnection *)self _isNever:timeCopy])
   {
     v5 = v6;
   }
@@ -38,12 +38,12 @@
   [(MCProfileConnection *)self setValue:v5 forSetting:MCFeatureAutoLockTime];
 }
 
-- (BOOL)isAutoLockOn:(id)a3
+- (BOOL)isAutoLockOn:(id)on
 {
-  v4 = a3;
-  if ([(MCProfileConnection *)self isAutoLockEnabled]&& ![(MCProfileConnection *)self _isUnset:v4])
+  onCopy = on;
+  if ([(MCProfileConnection *)self isAutoLockEnabled]&& ![(MCProfileConnection *)self _isUnset:onCopy])
   {
-    v5 = ![(MCProfileConnection *)self _isNever:v4];
+    v5 = ![(MCProfileConnection *)self _isNever:onCopy];
   }
 
   else

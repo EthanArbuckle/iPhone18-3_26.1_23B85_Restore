@@ -1,11 +1,11 @@
 @interface LTMExtractMetadataV2
-+ (BOOL)extractCCMFromMetadata:(id)a3 toDriverInput:(sRefDriverInputs_SOFTISP *)a4;
-+ (BOOL)getTileStatsRegion:(id)a3 validBufferRect:(id)a4 ltmGeometryData:(id)a5 toDriverInput:(sRefDriverInputs_SOFTISP *)a6;
-+ (int)extractAWBMetadataFromMetadata:(id)a3 validBufferRect:(id)a4 ltmGeometryData:(id)a5 toDriverInput:(sRefDriverInputs_SOFTISP *)a6;
-+ (void)extractRectanglesFrom:(id)a3 inputBufferRect:(id)a4 validBufferRect:(id)a5 ltmGeometry:(id)a6;
-- (BOOL)extractFrom:(id)a3 toDriverInput:(sRefDriverInputs_SOFTISP *)a4 ltmGeometry:(id)a5;
++ (BOOL)extractCCMFromMetadata:(id)metadata toDriverInput:(sRefDriverInputs_SOFTISP *)input;
++ (BOOL)getTileStatsRegion:(id)region validBufferRect:(id)rect ltmGeometryData:(id)data toDriverInput:(sRefDriverInputs_SOFTISP *)input;
++ (int)extractAWBMetadataFromMetadata:(id)metadata validBufferRect:(id)rect ltmGeometryData:(id)data toDriverInput:(sRefDriverInputs_SOFTISP *)input;
++ (void)extractRectanglesFrom:(id)from inputBufferRect:(id)rect validBufferRect:(id)bufferRect ltmGeometry:(id)geometry;
+- (BOOL)extractFrom:(id)from toDriverInput:(sRefDriverInputs_SOFTISP *)input ltmGeometry:(id)geometry;
 - (LTMExtractMetadataV2)init;
-- (float)extractHRGainDownRatioFrom:(id)a3;
+- (float)extractHRGainDownRatioFrom:(id)from;
 @end
 
 @implementation LTMExtractMetadataV2
@@ -40,27 +40,27 @@
   return v4;
 }
 
-- (BOOL)extractFrom:(id)a3 toDriverInput:(sRefDriverInputs_SOFTISP *)a4 ltmGeometry:(id)a5
+- (BOOL)extractFrom:(id)from toDriverInput:(sRefDriverInputs_SOFTISP *)input ltmGeometry:(id)geometry
 {
-  v7 = a3;
-  v166 = a5;
+  fromCopy = from;
+  geometryCopy = geometry;
   if ([LTMExtractMetadataV2 extractFrom:toDriverInput:ltmGeometry:]::onceToken != -1)
   {
     [LTMExtractMetadataV2 extractFrom:toDriverInput:ltmGeometry:];
   }
 
-  v164 = v7;
-  v169 = [v7 inMetaData];
-  dict = [v7 validBufferRect];
-  v159 = [v7 inputBufferRect];
+  v164 = fromCopy;
+  inMetaData = [fromCopy inMetaData];
+  dict = [fromCopy validBufferRect];
+  inputBufferRect = [fromCopy inputBufferRect];
   v8 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v8;
-  v9 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6991108]];
-  v162 = [v9 intValue];
+  v9 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6991108]];
+  intValue = [v9 intValue];
 
-  v161 = [v169 objectForKeyedSubscript:*MEMORY[0x1E69910C8]];
-  v10 = [v169 objectForKeyedSubscript:*MEMORY[0x1E69910C0]];
+  v161 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E69910C8]];
+  v10 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E69910C0]];
   v160 = v10;
   if (!v161 || !v10)
   {
@@ -70,10 +70,10 @@
     goto LABEL_141;
   }
 
-  v11 = [v161 unsignedIntValue];
-  v12 = [v160 unsignedIntValue];
-  [v166 setRawSensorWidth:v11];
-  [v166 setRawSensorHeight:v12];
+  unsignedIntValue = [v161 unsignedIntValue];
+  unsignedIntValue2 = [v160 unsignedIntValue];
+  [geometryCopy setRawSensorWidth:unsignedIntValue];
+  [geometryCopy setRawSensorHeight:unsignedIntValue2];
   if (!dict)
   {
     goto LABEL_10;
@@ -89,10 +89,10 @@ LABEL_10:
     v172[0] = &unk_1F48E6618;
     v172[1] = &unk_1F48E6618;
     v171[2] = @"Width";
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:unsignedIntValue];
     v172[2] = v16;
     v171[3] = @"Height";
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:unsignedIntValue2];
     v172[3] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v172 forKeys:v171 count:4];
 
@@ -101,16 +101,16 @@ LABEL_10:
   }
 
   v14 = [(__CFDictionary *)dict objectForKeyedSubscript:@"Height"];
-  v15 = [v14 intValue];
+  intValue2 = [v14 intValue];
 
-  if (!v15)
+  if (!intValue2)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
-  [v166 inputTextureSize];
-  if (v19 == 0.0 || ([v166 inputTextureSize], v20 == 0.0))
+  [geometryCopy inputTextureSize];
+  if (v19 == 0.0 || ([geometryCopy inputTextureSize], v20 == 0.0))
   {
     FigDebugAssert3();
     v150 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -127,10 +127,10 @@ LABEL_141:
   v24 = [(__CFDictionary *)dict objectForKeyedSubscript:@"X"];
   [v24 floatValue];
   v26 = v25;
-  [v166 inputTextureSize];
+  [geometryCopy inputTextureSize];
   v28 = (v23 + (v26 * 2.0)) / v27;
   *&v28 = v28;
-  [v166 setInputTextureDownsampleRatio:v28];
+  [geometryCopy setInputTextureDownsampleRatio:v28];
 
   if (!CGRectMakeWithDictionaryRepresentation(dict, &rect))
   {
@@ -139,31 +139,31 @@ LABEL_141:
     goto LABEL_123;
   }
 
-  [v166 inputTextureDownsampleRatio];
-  [v166 inputTextureDownsampleRatio];
+  [geometryCopy inputTextureDownsampleRatio];
+  [geometryCopy inputTextureDownsampleRatio];
   width = rect.size.width;
-  [v166 inputTextureDownsampleRatio];
+  [geometryCopy inputTextureDownsampleRatio];
   v31 = v30;
   height = rect.size.height;
-  [v166 inputTextureDownsampleRatio];
+  [geometryCopy inputTextureDownsampleRatio];
   v34 = v33;
-  [LTMExtractMetadataV2 extractRectanglesFrom:v169 inputBufferRect:v159 validBufferRect:dict ltmGeometry:v166];
-  [v166 cropRect];
+  [LTMExtractMetadataV2 extractRectanglesFrom:inMetaData inputBufferRect:inputBufferRect validBufferRect:dict ltmGeometry:geometryCopy];
+  [geometryCopy cropRect];
   v36 = v35;
-  [v166 cropRect];
+  [geometryCopy cropRect];
   v38 = v37;
-  *&a4->faceInfo.primaryFaceIndex = 0;
-  a4->faceInfo.rectArray[8] = 0u;
-  a4->faceInfo.rectArray[9] = 0u;
-  a4->faceInfo.rectArray[6] = 0u;
-  a4->faceInfo.rectArray[7] = 0u;
-  a4->faceInfo.rectArray[4] = 0u;
-  a4->faceInfo.rectArray[5] = 0u;
-  a4->faceInfo.rectArray[2] = 0u;
-  a4->faceInfo.rectArray[3] = 0u;
-  a4->faceInfo.rectArray[0] = 0u;
-  a4->faceInfo.rectArray[1] = 0u;
-  v39 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6990FB8]];
+  *&input->faceInfo.primaryFaceIndex = 0;
+  input->faceInfo.rectArray[8] = 0u;
+  input->faceInfo.rectArray[9] = 0u;
+  input->faceInfo.rectArray[6] = 0u;
+  input->faceInfo.rectArray[7] = 0u;
+  input->faceInfo.rectArray[4] = 0u;
+  input->faceInfo.rectArray[5] = 0u;
+  input->faceInfo.rectArray[2] = 0u;
+  input->faceInfo.rectArray[3] = 0u;
+  input->faceInfo.rectArray[0] = 0u;
+  input->faceInfo.rectArray[1] = 0u;
+  v39 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6990FB8]];
   v167 = v39;
   if (v39 && ([v39 objectForKeyedSubscript:*MEMORY[0x1E6990E98]], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -174,7 +174,7 @@ LABEL_141:
     {
       v43 = [v42 count];
       v44 = v43 >= 0xA ? 10 : v43;
-      a4->faceInfo.numFaces = v44;
+      input->faceInfo.numFaces = v44;
       if (v43)
       {
         v45 = 0;
@@ -190,7 +190,7 @@ LABEL_141:
           v48 = v44;
         }
 
-        p_height = &a4->faceInfo.rectArray[0].height;
+        p_height = &input->faceInfo.rectArray[0].height;
         v50 = MEMORY[0x1E695EFD0];
         v51 = height / v34;
         while (1)
@@ -224,7 +224,7 @@ LABEL_141:
           y = v170.origin.y;
           v60 = v170.size.width;
           v61 = v170.size.height;
-          if (v162 == 2324)
+          if (intValue == 2324)
           {
             v62 = v50[1];
             *&v173.a = *v50;
@@ -232,9 +232,9 @@ LABEL_141:
             *&v173.tx = v50[2];
           }
 
-          else if (v166)
+          else if (geometryCopy)
           {
-            [v166 sensorSpaceToValidBufferSpaceTransform];
+            [geometryCopy sensorSpaceToValidBufferSpaceTransform];
           }
 
           else
@@ -292,7 +292,7 @@ LABEL_37:
     {
       v70 = [v69 objectAtIndexedSubscript:0];
       v71 = [v70 objectForKeyedSubscript:@"Index"];
-      a4->faceInfo.primaryFaceIndex = [v71 intValue];
+      input->faceInfo.primaryFaceIndex = [v71 intValue];
     }
   }
 
@@ -301,32 +301,32 @@ LABEL_37:
     v168 = 0;
   }
 
-  a4->forceDisableFaceBoost = self->_forceDisableLTMFaceBoost;
-  v72 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6991158]];
+  input->forceDisableFaceBoost = self->_forceDisableLTMFaceBoost;
+  v72 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6991158]];
   v73 = v72;
   if (!v72)
   {
     goto LABEL_142;
   }
 
-  a4->gainDigi = [v72 intValue];
-  v74 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6991090]];
+  input->gainDigi = [v72 intValue];
+  v74 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6991090]];
 
   if (!v74)
   {
     goto LABEL_142;
   }
 
-  a4->luxLevel = [v74 intValue];
-  v75 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6990ED8]];
+  input->luxLevel = [v74 intValue];
+  v75 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6990ED8]];
 
   if (!v75)
   {
     goto LABEL_142;
   }
 
-  a4->gainAnal.v16 = [v75 unsignedShortValue];
-  v76 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6990FC8]];
+  input->gainAnal.v16 = [v75 unsignedShortValue];
+  v76 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6990FC8]];
 
   if (!v76)
   {
@@ -334,31 +334,31 @@ LABEL_37:
   }
 
   [v76 doubleValue];
-  a4->exposureTime = (v77 * 1000000.0);
-  v78 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6991170]];
+  input->exposureTime = (v77 * 1000000.0);
+  v78 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6991170]];
 
   if (!v78)
   {
     goto LABEL_142;
   }
 
-  a4->gainDigiSensor.v16 = [v78 unsignedShortValue];
-  v79 = [v169 objectForKeyedSubscript:*MEMORY[0x1E69910F0]];
-  v80 = [v79 BOOLValue];
+  input->gainDigiSensor.v16 = [v78 unsignedShortValue];
+  v79 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E69910F0]];
+  bOOLValue = [v79 BOOLValue];
   v81 = MEMORY[0x1E6990F88];
   v82 = MEMORY[0x1E69910E8];
-  if (v80)
+  if (bOOLValue)
   {
   }
 
   else
   {
-    v83 = [v164 isSIFR];
+    isSIFR = [v164 isSIFR];
 
-    if ((v83 & 1) == 0)
+    if ((isSIFR & 1) == 0)
     {
-      a4->bracketingMode = 15;
-      v84 = [v169 objectForKeyedSubscript:*v81];
+      input->bracketingMode = 15;
+      v84 = [inMetaData objectForKeyedSubscript:*v81];
 
       if (v84)
       {
@@ -380,8 +380,8 @@ LABEL_37:
     }
   }
 
-  a4->bracketingMode = 15;
-  v84 = [v169 objectForKeyedSubscript:*v82];
+  input->bracketingMode = 15;
+  v84 = [inMetaData objectForKeyedSubscript:*v82];
 
   if (v84)
   {
@@ -391,7 +391,7 @@ LABEL_37:
     v88 = 1;
 LABEL_56:
     v90 = 0;
-    a4->bracketingExpRatio = v86;
+    input->bracketingExpRatio = v86;
     v89 = v84;
     goto LABEL_57;
   }
@@ -401,13 +401,13 @@ LABEL_56:
   v88 = 1;
   v90 = 1;
 LABEL_57:
-  a4->isSIFRFrame = v87;
-  v93 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6991038]];
-  a4->HROn = [v93 BOOLValue];
+  input->isSIFRFrame = v87;
+  v93 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6991038]];
+  input->HROn = [v93 BOOLValue];
 
-  if (a4->HROn && !self->_forceDisableHR)
+  if (input->HROn && !self->_forceDisableHR)
   {
-    v95 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6991040]];
+    v95 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6991040]];
 
     if (!v95)
     {
@@ -420,17 +420,17 @@ LABEL_142:
       goto LABEL_143;
     }
 
-    v94 = [v95 unsignedShortValue];
+    unsignedShortValue = [v95 unsignedShortValue];
     v89 = v95;
   }
 
   else
   {
-    v94 = 4096;
+    unsignedShortValue = 4096;
   }
 
-  a4->hrGainDownRatio = v94;
-  v96 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6990FC0]];
+  input->hrGainDownRatio = unsignedShortValue;
+  v96 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6990FC0]];
 
   if (!v96)
   {
@@ -441,12 +441,12 @@ LABEL_142:
   v98 = v97;
   if (v88)
   {
-    v99 = [v169 objectForKeyedSubscript:*v82];
+    v99 = [inMetaData objectForKeyedSubscript:*v82];
     [v99 floatValue];
     v98 = v98 - v100;
   }
 
-  v101 = [v169 objectForKeyedSubscript:*v81];
+  v101 = [inMetaData objectForKeyedSubscript:*v81];
 
   if (v101)
   {
@@ -454,13 +454,13 @@ LABEL_142:
     v98 = v98 - v102;
   }
 
-  a4->expBias = vcvts_n_s32_f32(exp2f(v98), 8uLL);
-  v103 = [v169 objectForKeyedSubscript:*MEMORY[0x1E69910D0]];
+  input->expBias = vcvts_n_s32_f32(exp2f(v98), 8uLL);
+  v103 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E69910D0]];
 
   if (v103)
   {
     [v103 floatValue];
-    a4->realizedExpBias = vcvts_n_s32_f32(v104, 8uLL);
+    input->realizedExpBias = vcvts_n_s32_f32(v104, 8uLL);
   }
 
   else
@@ -468,12 +468,12 @@ LABEL_142:
     v90 = 1;
   }
 
-  v105 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6990FD0]];
+  v105 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6990FD0]];
 
   if (v105)
   {
     [v105 floatValue];
-    a4->ev0Ratio = vcvts_n_s32_f32(v106, 8uLL);
+    input->ev0Ratio = vcvts_n_s32_f32(v106, 8uLL);
   }
 
   else
@@ -481,7 +481,7 @@ LABEL_142:
     v90 = 1;
   }
 
-  v107 = [v169 objectForKeyedSubscript:*MEMORY[0x1E69910A8]];
+  v107 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E69910A8]];
   if ([v107 isEqual:*MEMORY[0x1E6990CA0]])
   {
     v108 = 2;
@@ -497,17 +497,17 @@ LABEL_142:
     v108 = 0;
   }
 
-  a4->channel = v108;
-  v109 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6991028]];
-  a4->flashStatus = [v109 BOOLValue];
+  input->channel = v108;
+  v109 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6991028]];
+  input->flashStatus = [v109 BOOLValue];
 
-  a4->ltmProcMode = [v164 digitalFlash];
-  v110 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6990FE0]];
+  input->ltmProcMode = [v164 digitalFlash];
+  v110 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6990FE0]];
 
   if (v110)
   {
     [v110 floatValue];
-    a4->faceExpRatioFiltered = v111;
+    input->faceExpRatioFiltered = v111;
   }
 
   else
@@ -517,10 +517,10 @@ LABEL_142:
 
   if (self->_forceDisableLTMFaceExposureRatio)
   {
-    a4->faceExpRatioFiltered = 1.0;
+    input->faceExpRatioFiltered = 1.0;
   }
 
-  if (v90 && ![LTMExtractMetadataV2 extractFromRawMetadata:v169 toDriverInput:a4])
+  if (v90 && ![LTMExtractMetadataV2 extractFromRawMetadata:inMetaData toDriverInput:input])
   {
     FigDebugAssert3();
     v152 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -532,39 +532,39 @@ LABEL_143:
     goto LABEL_123;
   }
 
-  if (![LTMExtractMetadataV2 extractCCMFromMetadata:v169 toDriverInput:a4])
+  if (![LTMExtractMetadataV2 extractCCMFromMetadata:inMetaData toDriverInput:input])
   {
     v156 = v158;
     LODWORD(v154) = 0;
     FigDebugAssert3();
   }
 
-  v112 = [LTMExtractMetadataV2 isLocalCCMEnabled:a4, v154, v156];
-  a4->useSpatialCCM = v112;
-  if (v112)
+  v156 = [LTMExtractMetadataV2 isLocalCCMEnabled:input, v154, v156];
+  input->useSpatialCCM = v156;
+  if (v156)
   {
-    v113 = [LTMExtractMetadataV2 extractAWBMetadataFromMetadata:v169 validBufferRect:dict ltmGeometryData:v166 toDriverInput:a4];
+    v113 = [LTMExtractMetadataV2 extractAWBMetadataFromMetadata:inMetaData validBufferRect:dict ltmGeometryData:geometryCopy toDriverInput:input];
     if (v113)
     {
-      a4->useSpatialCCM = 0;
+      input->useSpatialCCM = 0;
       v157 = v158;
       LODWORD(v155) = v113;
       FigDebugAssert3();
     }
   }
 
-  a4->overflowDGain = 256;
-  a4->hdrRatio = 256;
-  a4->panoExpRatio = 0;
+  input->overflowDGain = 256;
+  input->hdrRatio = 256;
+  input->panoExpRatio = 0;
   v114 = 1;
-  a4->bLTMSingleFrameMode = 1;
-  a4->isHLGMode = 0;
-  a4->gammaCurve = 0;
-  a4->useHighlightCompression = 0;
-  a4->highlightCompressionGain = 1.0;
+  input->bLTMSingleFrameMode = 1;
+  input->isHLGMode = 0;
+  input->gammaCurve = 0;
+  input->useHighlightCompression = 0;
+  input->highlightCompressionGain = 1.0;
   if ((v88 & 1) == 0)
   {
-    v115 = [v169 objectForKeyedSubscript:*MEMORY[0x1E6990E18]];
+    v115 = [inMetaData objectForKeyedSubscript:*MEMORY[0x1E6990E18]];
     [v115 floatValue];
     v114 = v116 < -1.0;
   }
@@ -572,29 +572,29 @@ LABEL_143:
   if ([v164 isAdaptiveHighlightCompressionEnabled])
   {
     v117 = v164;
-    if (!a4->HROn)
+    if (!input->HROn)
     {
-      a4->softIspDGain = a4->gainDigi * 0.0039062;
-      p_softIspDGain = &a4->softIspDGain;
-      a4->useAdaptiveHighlightCompression = 1;
-      a4->hardIspDGain = 1.0;
-      p_hardIspDGain = &a4->hardIspDGain;
+      input->softIspDGain = input->gainDigi * 0.0039062;
+      p_softIspDGain = &input->softIspDGain;
+      input->useAdaptiveHighlightCompression = 1;
+      input->hardIspDGain = 1.0;
+      p_hardIspDGain = &input->hardIspDGain;
       goto LABEL_108;
     }
 
     LOBYTE(forceDisableHR) = self->_forceDisableHR;
-    a4->softIspDGain = a4->gainDigi * 0.0039062;
-    p_softIspDGain = &a4->softIspDGain;
-    a4->useAdaptiveHighlightCompression = 1;
+    input->softIspDGain = input->gainDigi * 0.0039062;
+    p_softIspDGain = &input->softIspDGain;
+    input->useAdaptiveHighlightCompression = 1;
     goto LABEL_95;
   }
 
-  if (![v164 isHighlightCompressionEnabled] || !a4->HROn)
+  if (![v164 isHighlightCompressionEnabled] || !input->HROn)
   {
-    a4->softIspDGain = a4->gainDigi * 0.0039062;
-    p_softIspDGain = &a4->softIspDGain;
-    a4->hardIspDGain = 1.0;
-    p_hardIspDGain = &a4->hardIspDGain;
+    input->softIspDGain = input->gainDigi * 0.0039062;
+    p_softIspDGain = &input->softIspDGain;
+    input->hardIspDGain = 1.0;
+    p_hardIspDGain = &input->hardIspDGain;
 LABEL_106:
     v117 = v164;
     goto LABEL_108;
@@ -604,8 +604,8 @@ LABEL_106:
   forceDisableHR = self->_forceDisableHR;
   if (forceDisableHR || v114)
   {
-    a4->softIspDGain = a4->gainDigi * 0.0039062;
-    p_softIspDGain = &a4->softIspDGain;
+    input->softIspDGain = input->gainDigi * 0.0039062;
+    p_softIspDGain = &input->softIspDGain;
 LABEL_95:
     *(p_softIspDGain - 1) = 1.0;
     p_hardIspDGain = p_softIspDGain - 1;
@@ -618,26 +618,26 @@ LABEL_95:
   }
 
   forceHighlightCompressionForEveryFrame = self->_forceHighlightCompressionForEveryFrame;
-  a4->softIspDGain = a4->gainDigi * 0.0039062;
-  p_softIspDGain = &a4->softIspDGain;
-  a4->hardIspDGain = 1.0;
-  p_hardIspDGain = &a4->hardIspDGain;
+  input->softIspDGain = input->gainDigi * 0.0039062;
+  p_softIspDGain = &input->softIspDGain;
+  input->hardIspDGain = 1.0;
+  p_hardIspDGain = &input->hardIspDGain;
   if (!forceHighlightCompressionForEveryFrame)
   {
     goto LABEL_108;
   }
 
 LABEL_96:
-  AuxCompute_CalcExposureRatio(a4);
-  if (!a4->useAdaptiveHighlightCompression)
+  AuxCompute_CalcExposureRatio(input);
+  if (!input->useAdaptiveHighlightCompression)
   {
-    a4->useHighlightCompression = 1;
-    a4->highlightCompressionGain = 2.0;
+    input->useHighlightCompression = 1;
+    input->highlightCompressionGain = 2.0;
     goto LABEL_106;
   }
 
   v122 = v121;
-  hardIspDGain = a4->hardIspDGain;
+  hardIspDGain = input->hardIspDGain;
   v124 = 1.0;
   v117 = v164;
   if (v114)
@@ -650,8 +650,8 @@ LABEL_96:
   v127 = fmaxf(v124, fminf((v122 / hardIspDGain) / v126, 4.0));
   if (v127 > 1.0)
   {
-    a4->useHighlightCompression = 1;
-    a4->highlightCompressionGain = v127;
+    input->useHighlightCompression = 1;
+    input->highlightCompressionGain = v127;
   }
 
 LABEL_108:
@@ -660,28 +660,28 @@ LABEL_108:
   if (v128 > v129)
   {
     [v164 ispDGainThreshold];
-    a4->hardIspDGain = (a4->gainDigi * 0.0039062) / v130;
-    a4->softIspDGain = v130;
+    input->hardIspDGain = (input->gainDigi * 0.0039062) / v130;
+    input->softIspDGain = v130;
   }
 
-  AuxCompute_CalcExposureRatio(a4);
+  AuxCompute_CalcExposureRatio(input);
   v132 = v131 / *p_hardIspDGain;
   if (v132 > 80.0)
   {
     v133 = *p_hardIspDGain * (v132 / 80.0);
-    v134 = (a4->gainDigi * 0.0039062) / v133;
-    a4->hardIspDGain = v133;
-    a4->softIspDGain = v134;
+    v134 = (input->gainDigi * 0.0039062) / v133;
+    input->hardIspDGain = v133;
+    input->softIspDGain = v134;
   }
 
-  AuxCompute_CalcExposureRatio(a4);
-  a4->LTMHazeCorrectionOff = self->_forceDisableLTMHazeCorrection;
-  a4->useBt709 = self->_forceUseBt709;
+  AuxCompute_CalcExposureRatio(input);
+  input->LTMHazeCorrectionOff = self->_forceDisableLTMHazeCorrection;
+  input->useBt709 = self->_forceUseBt709;
   if ([v164 doAdaptiveFaceBiasScaler])
   {
-    v135 = a4->gainAnal.v16;
-    v136 = a4->gainDigiSensor.v16;
-    gainDigi = a4->gainDigi;
+    v135 = input->gainAnal.v16;
+    v136 = input->gainDigiSensor.v16;
+    gainDigi = input->gainDigi;
     faceBiasThreshold = self->_faceBiasThreshold;
     faceBiasThresholdMin = self->_faceBiasThresholdMin;
     faceBiasScaler = self->_faceBiasScaler;
@@ -723,9 +723,9 @@ LABEL_108:
   v144 = v167;
   v143 = v168;
 LABEL_122:
-  *&a4[1].flashMixPercentage[400] = faceBiasScaler;
-  a4->useHazeCorrection = 0;
-  a4[1].flashMixPercentage[402] = 0;
+  *&input[1].flashMixPercentage[400] = faceBiasScaler;
+  input->useHazeCorrection = 0;
+  input[1].flashMixPercentage[402] = 0;
 
   v145 = 1;
 LABEL_123:
@@ -770,12 +770,12 @@ LABEL_8:
   return v10;
 }
 
-+ (void)extractRectanglesFrom:(id)a3 inputBufferRect:(id)a4 validBufferRect:(id)a5 ltmGeometry:(id)a6
++ (void)extractRectanglesFrom:(id)from inputBufferRect:(id)rect validBufferRect:(id)bufferRect ltmGeometry:(id)geometry
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  fromCopy = from;
+  rectCopy = rect;
+  bufferRectCopy = bufferRect;
+  geometryCopy = geometry;
   if (+[LTMExtractMetadataV2 extractRectanglesFrom:inputBufferRect:validBufferRect:ltmGeometry:]::onceToken != -1)
   {
     +[LTMExtractMetadataV2 extractRectanglesFrom:inputBufferRect:validBufferRect:ltmGeometry:];
@@ -785,20 +785,20 @@ LABEL_8:
   v14 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v14;
-  CGRectMakeWithDictionaryRepresentation(v11, &rect);
-  [v12 inputTextureDownsampleRatio];
-  [v12 inputTextureDownsampleRatio];
-  [v12 inputTextureDownsampleRatio];
-  [v12 inputTextureDownsampleRatio];
-  [v12 inputTextureSize];
+  CGRectMakeWithDictionaryRepresentation(bufferRectCopy, &rect);
+  [geometryCopy inputTextureDownsampleRatio];
+  [geometryCopy inputTextureDownsampleRatio];
+  [geometryCopy inputTextureDownsampleRatio];
+  [geometryCopy inputTextureDownsampleRatio];
+  [geometryCopy inputTextureSize];
   v50 = v15;
-  [v12 inputTextureSize];
+  [geometryCopy inputTextureSize];
   v17 = v16;
-  if (v10)
+  if (rectCopy)
   {
-    [v12 setDeepZoomOrigin:{0.0, 0.0}];
+    [geometryCopy setDeepZoomOrigin:{0.0, 0.0}];
     LODWORD(v18) = 1.0;
-    [v12 setDeepZoomRatio:v18];
+    [geometryCopy setDeepZoomRatio:v18];
   }
 
   else
@@ -811,7 +811,7 @@ LABEL_8:
     CGRectIfPresent = FigCFDictionaryGetCGRectIfPresent();
     if (CGRectIfPresent & FigCFDictionaryGetCGRectIfPresent())
     {
-      [v12 setDeepZoomOrigin:v51];
+      [geometryCopy setDeepZoomOrigin:v51];
       v21 = *(&v55 + 1);
       v22 = v21 / *(&v52 + 1);
       v23 = v22;
@@ -820,24 +820,24 @@ LABEL_8:
     else
     {
       v23 = 1.0;
-      [v12 setDeepZoomOrigin:{0.0, 0.0}];
+      [geometryCopy setDeepZoomOrigin:{0.0, 0.0}];
     }
 
     *&v22 = v23;
-    [v12 setDeepZoomRatio:v22];
+    [geometryCopy setDeepZoomRatio:v22];
   }
 
   FinalCropRect = GeometryUtilitiesGetFinalCropRect();
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  [v12 inputTextureSize];
+  [geometryCopy inputTextureSize];
   v32 = v31;
-  [v12 inputTextureSize];
+  [geometryCopy inputTextureSize];
   v34 = v33;
-  [v12 inputTextureSize];
+  [geometryCopy inputTextureSize];
   v36 = v35;
-  [v12 inputTextureSize];
+  [geometryCopy inputTextureSize];
   v37 = v50 / v17;
   v38 = v28 * v36;
   v40 = v30 * v39;
@@ -882,25 +882,25 @@ LABEL_8:
     v44 = v42 * 0.5;
   }
 
-  [(GeometryUtilities *)v9 getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:v54 validBufferRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  [(GeometryUtilities *)fromCopy getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:v54 validBufferRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v51 = v54[0];
   v52 = v54[1];
   v53 = v54[2];
-  [v12 setSensorSpaceToValidBufferSpaceTransform:&v51];
+  [geometryCopy setSensorSpaceToValidBufferSpaceTransform:&v51];
   v46 = round(v43 * 0.5);
   v47 = round(v44);
   v48 = round((FinalCropRect * v32 + (v38 - (v46 + v46)) * 0.5) * 0.5);
   v49 = round((v26 * v34 + (v40 - (v47 + v47)) * 0.5) * 0.5);
-  [v12 setCropRect:v48 + v48 sourceRect:v49 + v49];
+  [geometryCopy setCropRect:v48 + v48 sourceRect:v49 + v49];
 }
 
-+ (int)extractAWBMetadataFromMetadata:(id)a3 validBufferRect:(id)a4 ltmGeometryData:(id)a5 toDriverInput:(sRefDriverInputs_SOFTISP *)a6
++ (int)extractAWBMetadataFromMetadata:(id)metadata validBufferRect:(id)rect ltmGeometryData:(id)data toDriverInput:(sRefDriverInputs_SOFTISP *)input
 {
-  v9 = a3;
-  v10 = a4;
-  v41 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"SpatialCCMOutputMetadata"];
-  if (![LTMExtractMetadataV2 getTileStatsRegion:v9 validBufferRect:v10 ltmGeometryData:v41 toDriverInput:a6])
+  metadataCopy = metadata;
+  rectCopy = rect;
+  dataCopy = data;
+  v11 = [metadataCopy objectForKeyedSubscript:@"SpatialCCMOutputMetadata"];
+  if (![LTMExtractMetadataV2 getTileStatsRegion:metadataCopy validBufferRect:rectCopy ltmGeometryData:dataCopy toDriverInput:input])
   {
     goto LABEL_24;
   }
@@ -911,43 +911,43 @@ LABEL_8:
     v13 = v12;
     if (v12)
     {
-      a6->fdAWBChistMixFactor = [v12 intValue];
+      input->fdAWBChistMixFactor = [v12 intValue];
       v14 = [v11 objectForKeyedSubscript:@"AwbColorspace"];
 
       if (v14)
       {
-        a6->awbColorspace = [v14 unsignedCharValue];
+        input->awbColorspace = [v14 unsignedCharValue];
         v15 = [v11 objectForKeyedSubscript:@"IsLEDMainFlashforAWB"];
 
         if (v15)
         {
-          a6->isLEDMainFlashforAWB = [v15 BOOLValue];
+          input->isLEDMainFlashforAWB = [v15 BOOLValue];
           v16 = [v11 objectForKeyedSubscript:@"AwbGainsSkinOnly"];
           v17 = v16;
           if (v16)
           {
             v18 = [v16 objectAtIndexedSubscript:0];
-            *(&a6->awbGains.b.v16 + 1) = [v18 intValue];
+            *(&input->awbGains.b.v16 + 1) = [v18 intValue];
 
             v19 = [v17 objectAtIndexedSubscript:3];
-            *(&a6->awbGainsSkinOnly.gb.v16 + 1) = [v19 intValue];
+            *(&input->awbGainsSkinOnly.gb.v16 + 1) = [v19 intValue];
 
             v20 = [v11 objectForKeyedSubscript:@"AwbGainsFlashProj"];
 
             if (v20)
             {
               v21 = [v20 objectAtIndexedSubscript:0];
-              *(&a6->awbGainsSkinOnly.b.v16 + 1) = [v21 intValue];
+              *(&input->awbGainsSkinOnly.b.v16 + 1) = [v21 intValue];
 
               v22 = [v20 objectAtIndexedSubscript:3];
-              *(&a6->awbGainsFlashProj.gb.v16 + 1) = [v22 intValue];
+              *(&input->awbGainsFlashProj.gb.v16 + 1) = [v22 intValue];
 
               v23 = [v11 objectForKeyedSubscript:@"FlashProjMixWeighting"];
 
               if (v23)
               {
                 [v23 floatValue];
-                a6->flashProjMixWeighting = v24;
+                input->flashProjMixWeighting = v24;
                 goto LABEL_16;
               }
 
@@ -981,49 +981,49 @@ LABEL_24:
     goto LABEL_29;
   }
 
-  v20 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6990F40]];
-  v23 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6990F38]];
-  v25 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6990F28]];
+  v20 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990F40]];
+  v23 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990F38]];
+  v25 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990F28]];
   v26 = v25;
   if (v20 && v23 && v25)
   {
-    a6->fdAWBChistMixFactor = [v20 unsignedIntValue];
-    *(&a6->awbGains.b.v16 + 1) = [v23 unsignedShortValue];
-    *(&a6->awbGainsSkinOnly.gb.v16 + 1) = [v26 unsignedShortValue];
+    input->fdAWBChistMixFactor = [v20 unsignedIntValue];
+    *(&input->awbGains.b.v16 + 1) = [v23 unsignedShortValue];
+    *(&input->awbGainsSkinOnly.gb.v16 + 1) = [v26 unsignedShortValue];
   }
 
   else
   {
-    a6->fdAWBChistMixFactor = 0;
-    v27 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6990EF8]];
-    *(&a6->awbGains.b.v16 + 1) = [v27 unsignedShortValue];
+    input->fdAWBChistMixFactor = 0;
+    v27 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990EF8]];
+    *(&input->awbGains.b.v16 + 1) = [v27 unsignedShortValue];
 
-    v28 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6990EE8]];
-    *(&a6->awbGainsSkinOnly.gb.v16 + 1) = [v28 unsignedShortValue];
+    v28 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990EE8]];
+    *(&input->awbGainsSkinOnly.gb.v16 + 1) = [v28 unsignedShortValue];
   }
 
 LABEL_16:
-  v29 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6990EF8]];
-  *(&a6->isLEDMainFlashforAWB + 1) = [v29 unsignedShortValue];
+  v29 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990EF8]];
+  *(&input->isLEDMainFlashforAWB + 1) = [v29 unsignedShortValue];
 
-  v30 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6990EE8]];
-  *(&a6->awbGains.gb.v16 + 1) = [v30 unsignedShortValue];
+  v30 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990EE8]];
+  *(&input->awbGains.gb.v16 + 1) = [v30 unsignedShortValue];
 
-  flashMixPercentage = a6->flashMixPercentage;
+  flashMixPercentage = input->flashMixPercentage;
   bzero(flashMixPercentage, 0x400uLL);
-  v32 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6991010]];
+  v32 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6991010]];
   v33 = v32;
   if (v32)
   {
-    v34 = [v32 bytes];
+    bytes = [v32 bytes];
     for (i = 0; i != 16; ++i)
     {
       for (j = 0; j != 16; ++j)
       {
-        flashMixPercentage[j] = *(v34 + j * 2);
+        flashMixPercentage[j] = *(bytes + j * 2);
       }
 
-      v34 += 64;
+      bytes += 64;
       flashMixPercentage += 16;
     }
   }
@@ -1034,16 +1034,16 @@ LABEL_23:
   return v37;
 }
 
-+ (BOOL)getTileStatsRegion:(id)a3 validBufferRect:(id)a4 ltmGeometryData:(id)a5 toDriverInput:(sRefDriverInputs_SOFTISP *)a6
++ (BOOL)getTileStatsRegion:(id)region validBufferRect:(id)rect ltmGeometryData:(id)data toDriverInput:(sRefDriverInputs_SOFTISP *)input
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  regionCopy = region;
+  rectCopy = rect;
+  dataCopy = data;
+  v12 = dataCopy;
   v13 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v13;
-  if (!v9)
+  if (!regionCopy)
   {
     v26 = 0;
     FigDebugAssert3();
@@ -1052,7 +1052,7 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  [v11 cropRect];
+  [dataCopy cropRect];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1060,7 +1060,7 @@ LABEL_8:
   [v12 inputTextureDownsampleRatio];
   LODWORD(v23) = v22;
   v30 = 0;
-  v24 = [AWBProcessor getTileStatsRegionWithMetadata:v9 cropRectLTMInCoords:&v30 ltmInDownsamplingRatio:v15 tileStatsRegionLTMInCoordsDictOut:v17, v19, v21, v23];
+  v24 = [AWBProcessor getTileStatsRegionWithMetadata:regionCopy cropRectLTMInCoords:&v30 ltmInDownsamplingRatio:v15 tileStatsRegionLTMInCoordsDictOut:v17, v19, v21, v23];
   v25 = v30;
   v26 = v25;
   if (v24 || !CGRectMakeWithDictionaryRepresentation(v25, &rect))
@@ -1070,21 +1070,21 @@ LABEL_8:
   }
 
   v27 = vmovn_s64(vcvtq_u64_f64(rect.size));
-  *&a6->tileStatsRegion.x = vmovn_s64(vcvtq_s64_f64(rect.origin));
-  *&a6->tileStatsRegion.width = v27;
+  *&input->tileStatsRegion.x = vmovn_s64(vcvtq_s64_f64(rect.origin));
+  *&input->tileStatsRegion.width = v27;
   v28 = 1;
 LABEL_5:
 
   return v28;
 }
 
-- (float)extractHRGainDownRatioFrom:(id)a3
+- (float)extractHRGainDownRatioFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = 1.0;
-  if ([v3 cmi_BOOLValueForKey:*MEMORY[0x1E6991038] defaultValue:0 found:0])
+  if ([fromCopy cmi_BOOLValueForKey:*MEMORY[0x1E6991038] defaultValue:0 found:0])
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6991040]];
+    v5 = [fromCopy objectForKeyedSubscript:*MEMORY[0x1E6991040]];
     v6 = v5;
     if (v5)
     {
@@ -1103,16 +1103,16 @@ LABEL_5:
   return v4;
 }
 
-+ (BOOL)extractCCMFromMetadata:(id)a3 toDriverInput:(sRefDriverInputs_SOFTISP *)a4
++ (BOOL)extractCCMFromMetadata:(id)metadata toDriverInput:(sRefDriverInputs_SOFTISP *)input
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6990F98]];
+  metadataCopy = metadata;
+  v6 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990F98]];
   v7 = v6;
   if (v6 && (v8 = [v6 bytes], v9 = objc_msgSend(v7, "length"), v8) && v9 == 36)
   {
     for (i = 0; i != 9; ++i)
     {
-      a4->ccm.coeff[i].v16 = vcvts_n_s32_f32(*(v8 + 4 * i), 0xCuLL);
+      input->ccm.coeff[i].v16 = vcvts_n_s32_f32(*(v8 + 4 * i), 0xCuLL);
     }
 
     v11 = 1;
@@ -1123,7 +1123,7 @@ LABEL_5:
     FigDebugAssert3();
     v12 = 0;
     v13 = xmmword_1C932FAF0;
-    v14 = &a4->ccm.coeff[1];
+    v14 = &input->ccm.coeff[1];
     v15 = vdupq_n_s64(9uLL);
     v16 = vdupq_n_s64(2uLL);
     do

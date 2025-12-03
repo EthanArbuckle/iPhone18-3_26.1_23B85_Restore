@@ -15,9 +15,9 @@
 
 - (unsigned)type
 {
-  v2 = [(RSDRemoteCoreDeviceDevice *)self client_endpoint];
+  client_endpoint = [(RSDRemoteCoreDeviceDevice *)self client_endpoint];
 
-  if (v2)
+  if (client_endpoint)
   {
     return 10;
   }
@@ -60,12 +60,12 @@
   v5.receiver = self;
   v5.super_class = RSDRemoteCoreDeviceDevice;
   [(RSDRemoteDevice *)&v5 disconnect];
-  v3 = [(RSDRemoteCoreDeviceDevice *)self client_connection];
+  client_connection = [(RSDRemoteCoreDeviceDevice *)self client_connection];
 
-  if (v3)
+  if (client_connection)
   {
-    v4 = [(RSDRemoteCoreDeviceDevice *)self client_connection];
-    nw_connection_cancel(v4);
+    client_connection2 = [(RSDRemoteCoreDeviceDevice *)self client_connection];
+    nw_connection_cancel(client_connection2);
 
     [(RSDRemoteCoreDeviceDevice *)self setClient_connection:0];
   }
@@ -75,12 +75,12 @@
 
 - (void)cancelListener
 {
-  v3 = [(RSDRemoteCoreDeviceDevice *)self server_listener];
+  server_listener = [(RSDRemoteCoreDeviceDevice *)self server_listener];
 
-  if (v3)
+  if (server_listener)
   {
-    v4 = [(RSDRemoteCoreDeviceDevice *)self server_listener];
-    nw_listener_cancel(v4);
+    server_listener2 = [(RSDRemoteCoreDeviceDevice *)self server_listener];
+    nw_listener_cancel(server_listener2);
 
     [(RSDRemoteCoreDeviceDevice *)self setServer_listener:0];
   }
@@ -88,12 +88,12 @@
 
 - (void)dealloc
 {
-  v3 = [(RSDRemoteCoreDeviceDevice *)self server_listener];
+  server_listener = [(RSDRemoteCoreDeviceDevice *)self server_listener];
 
-  if (v3)
+  if (server_listener)
   {
-    v4 = [(RSDRemoteCoreDeviceDevice *)self server_listener];
-    nw_listener_cancel(v4);
+    server_listener2 = [(RSDRemoteCoreDeviceDevice *)self server_listener];
+    nw_listener_cancel(server_listener2);
   }
 
   free([(RSDRemoteCoreDeviceDevice *)self if_name]);
@@ -108,13 +108,13 @@
 
 - (void)connected
 {
-  v3 = [(RSDRemoteDevice *)self connection];
+  connection = [(RSDRemoteDevice *)self connection];
   v4 = xpc_remote_connection_copy_remote_endpoint();
   [(RSDRemoteCoreDeviceDevice *)self setAddress_endpoint:v4];
 
-  v5 = [(RSDRemoteCoreDeviceDevice *)self address_endpoint];
+  address_endpoint = [(RSDRemoteCoreDeviceDevice *)self address_endpoint];
 
-  if (!v5)
+  if (!address_endpoint)
   {
     v6 = sub_100004B08();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -130,30 +130,30 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", &v14, 0xCu);
   }
 
-  v4 = [(RSDRemoteCoreDeviceDevice *)self server_listener];
+  server_listener = [(RSDRemoteCoreDeviceDevice *)self server_listener];
 
-  if (v4)
+  if (server_listener)
   {
-    v5 = [(RSDRemoteCoreDeviceDevice *)self client_connection];
+    client_connection = [(RSDRemoteCoreDeviceDevice *)self client_connection];
 
     v6 = sub_100004B08();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (client_connection)
     {
       if (v7)
       {
         v14 = 138543362;
-        v15 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@> server using established client connection", &v14, 0xCu);
       }
 
-      v8 = [(RSDRemoteCoreDeviceDevice *)self client_connection];
+      client_connection2 = [(RSDRemoteCoreDeviceDevice *)self client_connection];
       [(RSDRemoteCoreDeviceDevice *)self setClient_connection:0];
-      if (v8)
+      if (client_connection2)
       {
 LABEL_8:
         xpc_remote_connection_get_failsafe_version_flags();
@@ -173,23 +173,23 @@ LABEL_15:
     if (v7)
     {
       v14 = 138543362;
-      v15 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@> server waiting for connection from client", &v14, 0xCu);
     }
   }
 
   else
   {
-    v10 = [(RSDRemoteCoreDeviceDevice *)self client_endpoint];
+    client_endpoint = [(RSDRemoteCoreDeviceDevice *)self client_endpoint];
 
     v11 = sub_100004B08();
     v6 = v11;
-    if (v10)
+    if (client_endpoint)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@> client connecting to remote remoted", &v14, 0xCu);
       }
 
@@ -207,10 +207,10 @@ LABEL_15:
       }
 
       [(RSDRemoteCoreDeviceDevice *)self setIf_index:?];
-      v12 = [(RSDRemoteCoreDeviceDevice *)self client_endpoint];
-      v8 = nw_connection_create(v12, v9);
+      client_endpoint2 = [(RSDRemoteCoreDeviceDevice *)self client_endpoint];
+      client_connection2 = nw_connection_create(client_endpoint2, v9);
 
-      if (v8)
+      if (client_connection2)
       {
         goto LABEL_8;
       }
@@ -242,8 +242,8 @@ LABEL_15:
 
 - (const)remote_address
 {
-  v2 = [(RSDRemoteCoreDeviceDevice *)self address_endpoint];
-  address = nw_endpoint_get_address(v2);
+  address_endpoint = [(RSDRemoteCoreDeviceDevice *)self address_endpoint];
+  address = nw_endpoint_get_address(address_endpoint);
 
   return &address->sa_data[6];
 }

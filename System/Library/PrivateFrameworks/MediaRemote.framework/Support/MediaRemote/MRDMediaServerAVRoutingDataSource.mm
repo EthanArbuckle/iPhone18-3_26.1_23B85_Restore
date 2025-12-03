@@ -1,29 +1,29 @@
 @interface MRDMediaServerAVRoutingDataSource
 - (BOOL)currentRouteSupportsVolumeControl;
-- (BOOL)resetPickedRouteForSource:(unsigned int)a3;
+- (BOOL)resetPickedRouteForSource:(unsigned int)source;
 - (BOOL)unpickAirPlayRoutes;
 - (MRDMediaServerAVRoutingDataSource)init;
-- (id)_descriptionForDiscoveryMode:(unsigned int)a3;
+- (id)_descriptionForDiscoveryMode:(unsigned int)mode;
 - (id)_oddsShimDataSource;
-- (id)pickableRoutesForCategory:(id)a3 source:(unsigned int)a4;
+- (id)pickableRoutesForCategory:(id)category source:(unsigned int)source;
 - (id)pickedRoute;
 - (unsigned)externalScreenType;
-- (void)_avSessionMediaServicesResetNotification:(id)a3;
-- (void)_externalScreenDidChangeNotification:(id)a3;
+- (void)_avSessionMediaServicesResetNotification:(id)notification;
+- (void)_externalScreenDidChangeNotification:(id)notification;
 - (void)_notifyDelegateRoutesDidChange;
-- (void)_portStatusDidChangeNotification:(id)a3;
+- (void)_portStatusDidChangeNotification:(id)notification;
 - (void)_registerAVSystemControllerNotifications;
 - (void)_unregisterAVSystemControllerNotifications;
 - (void)dealloc;
-- (void)userCancelledPickingRoute:(id)a3;
+- (void)userCancelledPickingRoute:(id)route;
 @end
 
 @implementation MRDMediaServerAVRoutingDataSource
 
 - (unsigned)externalScreenType
 {
-  v2 = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
-  v3 = [v2 attributeForKey:AVSystemController_CurrentExternalScreenAttribute];
+  _mediaServerController = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
+  v3 = [_mediaServerController attributeForKey:AVSystemController_CurrentExternalScreenAttribute];
 
   v4 = v3;
   if ([v4 isEqualToString:AVSystemController_ExternalScreenType_AirPlay])
@@ -78,55 +78,55 @@
 
 - (BOOL)currentRouteSupportsVolumeControl
 {
-  v2 = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
-  v3 = [v2 currentRouteHasVolumeControl];
+  _mediaServerController = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
+  currentRouteHasVolumeControl = [_mediaServerController currentRouteHasVolumeControl];
 
-  return v3;
+  return currentRouteHasVolumeControl;
 }
 
 - (id)pickedRoute
 {
-  v2 = [(MRDMediaServerAVRoutingDataSource *)self pickedRoutes];
-  v3 = [v2 firstObject];
+  pickedRoutes = [(MRDMediaServerAVRoutingDataSource *)self pickedRoutes];
+  firstObject = [pickedRoutes firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)pickableRoutesForCategory:(id)a3 source:(unsigned int)a4
+- (id)pickableRoutesForCategory:(id)category source:(unsigned int)source
 {
-  v5 = a3;
-  v22 = v5;
-  if (v5)
+  categoryCopy = category;
+  v22 = categoryCopy;
+  if (categoryCopy)
   {
-    v6 = v5;
-    if ([v5 isEqualToString:@"MRDAVRoutingCategoryMedia"])
+    v6 = categoryCopy;
+    if ([categoryCopy isEqualToString:@"MRDAVRoutingCategoryMedia"])
     {
-      v7 = @"Audio/Video";
+      _mediaServerController2 = @"Audio/Video";
     }
 
     else if ([v6 isEqualToString:@"MRDAVRoutingCategorySystem"])
     {
-      v7 = @"Default";
+      _mediaServerController2 = @"Default";
     }
 
     else
     {
-      v7 = v6;
+      _mediaServerController2 = v6;
     }
 
-    v9 = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
-    v8 = [v9 pickableRoutesForCategory:v7];
+    _mediaServerController = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
+    v8 = [_mediaServerController pickableRoutesForCategory:_mediaServerController2];
   }
 
   else
   {
-    v7 = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
-    v8 = [(__CFString *)v7 attributeForKey:AVSystemController_PickableRoutesAttribute];
+    _mediaServerController2 = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
+    v8 = [(__CFString *)_mediaServerController2 attributeForKey:AVSystemController_PickableRoutesAttribute];
   }
 
   v10 = objc_alloc_init(NSMutableArray);
   v11 = sub_1000164E0();
-  v12 = [v11 uppercaseString];
+  uppercaseString = [v11 uppercaseString];
 
   v27 = 0u;
   v28 = 0u;
@@ -150,7 +150,7 @@
 
         v17 = *(*(&v25 + 1) + 8 * i);
         v18 = [v17 valueForKeyPath:@"AirPlayPortExtendedInfo.deviceID"];
-        if ([v18 isEqualToString:v12])
+        if ([v18 isEqualToString:uppercaseString])
         {
           v19 = [v17 mutableCopy];
           [v19 setObject:&__kCFBooleanTrue forKey:v23];
@@ -171,7 +171,7 @@
   return v10;
 }
 
-- (BOOL)resetPickedRouteForSource:(unsigned int)a3
+- (BOOL)resetPickedRouteForSource:(unsigned int)source
 {
   [(MRDMediaServerAVRoutingDataSource *)self pickableRoutesForCategory:0];
   v18 = 0u;
@@ -182,8 +182,8 @@
   if (v6)
   {
     v7 = v6;
-    v16 = self;
-    v17 = a3;
+    selfCopy = self;
+    sourceCopy = source;
     v8 = *v19;
     while (2)
     {
@@ -195,17 +195,17 @@
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 type];
-        if ([v11 isEqualToString:@"AVAudioRoute_Speaker"])
+        type = [v10 type];
+        if ([type isEqualToString:@"AVAudioRoute_Speaker"])
         {
 
 LABEL_13:
-          v14 = [(MRDMediaServerAVRoutingDataSource *)v16 setPickedRoute:v10 withPassword:0 forSource:v17];
+          v14 = [(MRDMediaServerAVRoutingDataSource *)selfCopy setPickedRoute:v10 withPassword:0 forSource:sourceCopy];
           goto LABEL_14;
         }
 
-        v12 = [v10 type];
-        v13 = [v12 isEqualToString:@"AVAudioRoute_Headphone"];
+        type2 = [v10 type];
+        v13 = [type2 isEqualToString:@"AVAudioRoute_Headphone"];
 
         if (v13)
         {
@@ -234,22 +234,22 @@ LABEL_14:
   return v14;
 }
 
-- (void)userCancelledPickingRoute:(id)a3
+- (void)userCancelledPickingRoute:(id)route
 {
-  v6 = a3;
-  v4 = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
+  routeCopy = route;
+  _mediaServerController = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 dictionary];
-    [v4 didCancelRoutePicking:v5];
+    dictionary = [routeCopy dictionary];
+    [_mediaServerController didCancelRoutePicking:dictionary];
   }
 }
 
 - (BOOL)unpickAirPlayRoutes
 {
-  v3 = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
+  _mediaServerController = [(MRDMediaServerAVRoutingDataSource *)self _mediaServerController];
   v8 = 0;
-  v4 = [v3 setAttribute:&__kCFBooleanTrue forKey:AVSystemController_RouteAwayFromAirPlayAttribute error:&v8];
+  v4 = [_mediaServerController setAttribute:&__kCFBooleanTrue forKey:AVSystemController_RouteAwayFromAirPlayAttribute error:&v8];
   v5 = v8;
 
   if (v4)
@@ -269,29 +269,29 @@ LABEL_14:
   return v4;
 }
 
-- (void)_externalScreenDidChangeNotification:(id)a3
+- (void)_externalScreenDidChangeNotification:(id)notification
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"MRDAVRoutingDataSourceExternalScreenDidChangeNotification" object:self];
 }
 
-- (void)_portStatusDidChangeNotification:(id)a3
+- (void)_portStatusDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:AVSystemController_RouteDescriptionKey_PortStatusChangeReason];
-  v6 = [v5 intValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:AVSystemController_RouteDescriptionKey_PortStatusChangeReason];
+  intValue = [v5 intValue];
 
   v7 = 0;
-  if (v6 <= 200469)
+  if (intValue <= 200469)
   {
-    if (v6 > 200400)
+    if (intValue > 200400)
     {
-      if (v6 == 200401)
+      if (intValue == 200401)
       {
         goto LABEL_16;
       }
 
-      if (v6 == 200453)
+      if (intValue == 200453)
       {
         goto LABEL_13;
       }
@@ -299,13 +299,13 @@ LABEL_14:
 
     else
     {
-      if (v6 == -71891)
+      if (intValue == -71891)
       {
         v7 = 4;
         goto LABEL_22;
       }
 
-      if (!v6)
+      if (!intValue)
       {
         goto LABEL_22;
       }
@@ -314,13 +314,13 @@ LABEL_14:
 
   else
   {
-    if (v6 > 1886609777)
+    if (intValue > 1886609777)
     {
-      if (v6 != 1886609778)
+      if (intValue != 1886609778)
       {
-        if (v6 != 1886610035)
+        if (intValue != 1886610035)
         {
-          if (v6 == 1886613355)
+          if (intValue == 1886613355)
           {
             goto LABEL_22;
           }
@@ -338,12 +338,12 @@ LABEL_17:
       goto LABEL_22;
     }
 
-    if (v6 == 200470)
+    if (intValue == 200470)
     {
       goto LABEL_17;
     }
 
-    if (v6 == 1886609766)
+    if (intValue == 1886609766)
     {
 LABEL_16:
       v7 = 2;
@@ -356,7 +356,7 @@ LABEL_19:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *v20 = v6;
+    *v20 = intValue;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "AirPlay Error: Unknown VADPortStatus: %d", buf, 8u);
   }
 
@@ -365,9 +365,9 @@ LABEL_22:
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 objectForKey:AVSystemController_RouteDescriptionKey_RouteName];
+    v10 = [userInfo objectForKey:AVSystemController_RouteDescriptionKey_RouteName];
     *buf = 67109378;
-    *v20 = v6;
+    *v20 = intValue;
     *&v20[4] = 2112;
     *&v20[6] = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "VAD port status changed to %i for route %@", buf, 0x12u);
@@ -376,7 +376,7 @@ LABEL_22:
   v11 = _MRLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v4 objectForKey:AVSystemController_RouteDescriptionKey_RouteName];
+    v12 = [userInfo objectForKey:AVSystemController_RouteDescriptionKey_RouteName];
     *buf = 134218242;
     *v20 = v7;
     *&v20[8] = 2112;
@@ -384,7 +384,7 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "MRMediaRemoteRouteStatus changed to %li for route %@", buf, 0x16u);
   }
 
-  v13 = [[MRDMediaServerAVRoute alloc] initWithDictionary:v4];
+  v13 = [[MRDMediaServerAVRoute alloc] initWithDictionary:userInfo];
   v14 = [NSNumber numberWithInt:v7, @"MRDAVRoutingDataSourceAVRouteUserInfoKey", @"MRDAVRoutingDataSourceRouteStatusUserInfoKey", v13];
   v18[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:&v17 count:2];
@@ -393,7 +393,7 @@ LABEL_22:
   [v16 postNotificationName:@"MRDAVRoutingDataSourceRouteStatusDidChangeNotification" object:self userInfo:v15];
 }
 
-- (void)_avSessionMediaServicesResetNotification:(id)a3
+- (void)_avSessionMediaServicesResetNotification:(id)notification
 {
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -456,7 +456,7 @@ LABEL_22:
   [v3 removeObserver:self name:AVSystemController_PortStatusDidChangeNotification object:0];
 }
 
-- (id)_descriptionForDiscoveryMode:(unsigned int)a3
+- (id)_descriptionForDiscoveryMode:(unsigned int)mode
 {
   v3 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
 

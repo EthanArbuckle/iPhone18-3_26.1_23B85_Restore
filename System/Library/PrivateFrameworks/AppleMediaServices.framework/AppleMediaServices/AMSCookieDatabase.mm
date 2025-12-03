@@ -1,52 +1,52 @@
 @interface AMSCookieDatabase
-+ (id)_dataVaultPathForIdentifier:(id)a3 error:(id *)a4;
-+ (id)_databasePathForIdentifier:(id)a3 error:(id *)a4;
-+ (id)_databasePathForIdentifiers:(id)a3 fileManager:(id)a4 error:(id *)a5;
-+ (id)_rootDataVaultPathWithError:(id *)a3;
-+ (id)cleanUpCookieDatabasesWithValidIdentifiers:(id)a3 fileManager:(id)a4;
-+ (id)cookieDatabaseForIdentifier:(id)a3 error:(id *)a4;
-+ (id)cookieDatabaseForIdentifiers:(id)a3 error:(id *)a4;
-+ (id)cookieDatabaseForIdentifiers:(id)a3 error:(id *)a4 fileManager:(id)a5;
-+ (id)databasePathForIdentifiers:(id)a3 error:(id *)a4;
-+ (void)_cleanUpProtectionClassAtPath:(id)a3 fileManager:(id)a4;
-- (AMSCookieDatabase)initWithConnection:(id)a3 path:(id)a4;
-- (BOOL)_addCookieProperties:(id)a3 error:(id *)a4;
-- (BOOL)_executeStatement:(id)a3 columns:(id)a4 forCookieProperties:(id)a5 error:(id *)a6;
-- (BOOL)_removeCookieProperties:(id)a3 error:(id *)a4;
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5;
-- (BOOL)updateCookiesWithCookiePropertiesToAdd:(id)a3 cookiePropertiesToRemove:(id)a4 error:(id *)a5;
-- (id)_cookieDictionaryForCursor:(id)a3;
-- (id)cookiePropertiesWithError:(id *)a3;
-- (void)_bindCookieProperties:(id)a3 column:(unint64_t)a4 position:(int)a5 using:(id)a6;
++ (id)_dataVaultPathForIdentifier:(id)identifier error:(id *)error;
++ (id)_databasePathForIdentifier:(id)identifier error:(id *)error;
++ (id)_databasePathForIdentifiers:(id)identifiers fileManager:(id)manager error:(id *)error;
++ (id)_rootDataVaultPathWithError:(id *)error;
++ (id)cleanUpCookieDatabasesWithValidIdentifiers:(id)identifiers fileManager:(id)manager;
++ (id)cookieDatabaseForIdentifier:(id)identifier error:(id *)error;
++ (id)cookieDatabaseForIdentifiers:(id)identifiers error:(id *)error;
++ (id)cookieDatabaseForIdentifiers:(id)identifiers error:(id *)error fileManager:(id)manager;
++ (id)databasePathForIdentifiers:(id)identifiers error:(id *)error;
++ (void)_cleanUpProtectionClassAtPath:(id)path fileManager:(id)manager;
+- (AMSCookieDatabase)initWithConnection:(id)connection path:(id)path;
+- (BOOL)_addCookieProperties:(id)properties error:(id *)error;
+- (BOOL)_executeStatement:(id)statement columns:(id)columns forCookieProperties:(id)properties error:(id *)error;
+- (BOOL)_removeCookieProperties:(id)properties error:(id *)error;
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5;
+- (BOOL)updateCookiesWithCookiePropertiesToAdd:(id)add cookiePropertiesToRemove:(id)remove error:(id *)error;
+- (id)_cookieDictionaryForCursor:(id)cursor;
+- (id)cookiePropertiesWithError:(id *)error;
+- (void)_bindCookieProperties:(id)properties column:(unint64_t)column position:(int)position using:(id)using;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation AMSCookieDatabase
 
-- (BOOL)_addCookieProperties:(id)a3 error:(id *)a4
+- (BOOL)_addCookieProperties:(id)properties error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  propertiesCopy = properties;
   v7 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
-    v11 = AMSHashIfNeeded(v6);
+    v11 = AMSHashIfNeeded(propertiesCopy);
     *buf = 138543874;
     *&buf[4] = v9;
     *&buf[12] = 2114;
     *&buf[14] = v10;
     *&buf[22] = 2114;
     v36 = v11;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Adding cookie properties. cookieProperties = %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Adding cookie properties. cookieProperties = %{public}@", buf, 0x20u);
   }
 
   v12 = [AMSKeepAlive keepAliveWithName:@"AMSCookies"];
@@ -66,21 +66,21 @@
   [v15 appendString:v18];
 
   [v15 appendString:@";"]);
-  v19 = [(AMSCookieDatabase *)self connection];
+  connection = [(AMSCookieDatabase *)self connection];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __48__AMSCookieDatabase__addCookieProperties_error___block_invoke_2;
   v28 = &unk_1E73B6000;
-  v20 = v6;
+  v20 = propertiesCopy;
   v29 = v20;
-  v30 = self;
+  selfCopy = self;
   v21 = v15;
   v31 = v21;
   v22 = v13;
   v32 = v22;
   v33 = buf;
-  v34 = a4;
-  [v19 performTransaction:&v25];
+  errorCopy = error;
+  [connection performTransaction:&v25];
 
   [v12 invalidate];
   v23 = *(*&buf[8] + 24);
@@ -231,13 +231,13 @@ LABEL_29:
   return v14;
 }
 
-- (void)_bindCookieProperties:(id)a3 column:(unint64_t)a4 position:(int)a5 using:(id)a6
+- (void)_bindCookieProperties:(id)properties column:(unint64_t)column position:(int)position using:(id)using
 {
-  v7 = *&a5;
+  v7 = *&position;
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  v11 = NSHTTPCookiePropertyKeyForAMSCookieDatabaseColumn(a4);
+  propertiesCopy = properties;
+  usingCopy = using;
+  v11 = NSHTTPCookiePropertyKeyForAMSCookieDatabaseColumn(column);
   if (!v11)
   {
     v22 = +[AMSLogConfig sharedAccountsCookiesConfig];
@@ -246,36 +246,36 @@ LABEL_29:
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v24 = objc_opt_class();
       v25 = AMSLogKey();
-      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:column];
       *buf = 138543874;
       v56 = v24;
       v57 = 2114;
       v58 = v25;
       v59 = 2114;
       v60 = v26;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Attempting to bind a key for an invalid column. column = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Attempting to bind a key for an invalid column. column = %{public}@", buf, 0x20u);
     }
 
     goto LABEL_49;
   }
 
-  if (a4 <= 6)
+  if (column <= 6)
   {
-    if (a4 > 2)
+    if (column > 2)
     {
-      if (a4 > 4)
+      if (column > 4)
       {
-        if (a4 == 5)
+        if (column == 5)
         {
           goto LABEL_5;
         }
 
-        v12 = [v9 objectForKeyedSubscript:v11];
+        v12 = [propertiesCopy objectForKeyedSubscript:v11];
         v42 = +[AMSLogConfig sharedAccountsCookiesConfig];
         v34 = v42;
         if (!v12)
@@ -285,13 +285,13 @@ LABEL_29:
             v34 = +[AMSLogConfig sharedConfig];
           }
 
-          v45 = [v34 OSLogObject];
-          if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
+          oSLogObject2 = [v34 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
           {
             v46 = objc_opt_class();
             AMSLogKey();
-            v47 = v10;
-            v48 = v9;
+            v47 = usingCopy;
+            v48 = propertiesCopy;
             v50 = v49 = v7;
             AMSHashIfNeeded(v11);
             v52 = v51 = v11;
@@ -303,9 +303,9 @@ LABEL_29:
             v60 = v52;
             v61 = 1026;
             LODWORD(v62) = v49;
-            v9 = v48;
-            v10 = v47;
-            _os_log_impl(&dword_192869000, v45, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Attempting to store a NULL name. key = %{public}@ | position = %{public}d", buf, 0x26u);
+            propertiesCopy = v48;
+            usingCopy = v47;
+            _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Attempting to store a NULL name. key = %{public}@ | position = %{public}d", buf, 0x26u);
 
             v11 = v51;
           }
@@ -318,12 +318,12 @@ LABEL_29:
           v34 = +[AMSLogConfig sharedConfig];
         }
 
-        v35 = [v34 OSLogObject];
-        if (!os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+        oSLogObject3 = [v34 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
         {
 LABEL_38:
 
-          [v10 bindString:v12 atPosition:v7];
+          [usingCopy bindString:v12 atPosition:v7];
 LABEL_39:
 
           goto LABEL_49;
@@ -348,16 +348,16 @@ LABEL_39:
         v64 = v43;
         v41 = "%{public}@ [%{public}@]: Binding a non-null key. key = %{public}@ | value = %{public}@ | position = %{public}d";
 LABEL_37:
-        _os_log_impl(&dword_192869000, v35, OS_LOG_TYPE_INFO, v41, buf, 0x30u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, v41, buf, 0x30u);
 
         v11 = v54;
         goto LABEL_38;
       }
 
-      if (a4 == 3)
+      if (column == 3)
       {
 LABEL_25:
-        v31 = [v9 objectForKeyedSubscript:v11];
+        v31 = [propertiesCopy objectForKeyedSubscript:v11];
         v32 = v31;
         v33 = &stru_1F071BA78;
         if (v31)
@@ -373,8 +373,8 @@ LABEL_25:
           v34 = +[AMSLogConfig sharedConfig];
         }
 
-        v35 = [v34 OSLogObject];
-        if (!os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+        oSLogObject3 = [v34 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
         {
           goto LABEL_38;
         }
@@ -400,16 +400,16 @@ LABEL_25:
         goto LABEL_37;
       }
 
-      v27 = [v9 objectForKeyedSubscript:v11];
+      v27 = [propertiesCopy objectForKeyedSubscript:v11];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v28 = MEMORY[0x1E696AC80];
         v29 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
-        v30 = [v28 stringFromDate:v27 timeZone:v29 formatOptions:1907];
+        absoluteString = [v28 stringFromDate:v27 timeZone:v29 formatOptions:1907];
 
 LABEL_42:
-        [v10 bindNullableString:v30 atPosition:v7];
+        [usingCopy bindNullableString:absoluteString atPosition:v7];
 
 LABEL_48:
         goto LABEL_49;
@@ -419,25 +419,25 @@ LABEL_43:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v10 bindString:v27 atPosition:v7];
+        [usingCopy bindString:v27 atPosition:v7];
       }
 
       else
       {
-        [v10 bindNullAtPosition:v7];
+        [usingCopy bindNullAtPosition:v7];
       }
 
       goto LABEL_48;
     }
 
-    if (!a4)
+    if (!column)
     {
       goto LABEL_5;
     }
 
-    if (a4 != 1)
+    if (column != 1)
     {
-      if (a4 != 2)
+      if (column != 2)
       {
         goto LABEL_49;
       }
@@ -446,20 +446,20 @@ LABEL_43:
     }
 
 LABEL_40:
-    v27 = [v9 objectForKeyedSubscript:v11];
+    v27 = [propertiesCopy objectForKeyedSubscript:v11];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [v27 absoluteString];
+      absoluteString = [v27 absoluteString];
       goto LABEL_42;
     }
 
     goto LABEL_43;
   }
 
-  if (a4 <= 8)
+  if (column <= 8)
   {
-    if (a4 != 7)
+    if (column != 7)
     {
       goto LABEL_25;
     }
@@ -467,21 +467,21 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (a4 - 9 < 5)
+  if (column - 9 < 5)
   {
 LABEL_5:
-    v12 = [v9 objectForKeyedSubscript:v11];
+    v12 = [propertiesCopy objectForKeyedSubscript:v11];
     v13 = +[AMSLogConfig sharedAccountsCookiesConfig];
     if (!v13)
     {
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject4 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
     {
-      v15 = v10;
-      v16 = v9;
+      v15 = usingCopy;
+      v16 = propertiesCopy;
       v17 = v7;
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -491,8 +491,8 @@ LABEL_5:
       *buf = 138544386;
       v56 = v18;
       v7 = v17;
-      v9 = v16;
-      v10 = v15;
+      propertiesCopy = v16;
+      usingCopy = v15;
       v57 = 2114;
       v58 = v19;
       v59 = 2114;
@@ -501,32 +501,32 @@ LABEL_5:
       v62 = v21;
       v63 = 1026;
       v64 = v7;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Binding a nullable key. key = %{public}@ | value = %{public}@ | position = %{public}d", buf, 0x30u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Binding a nullable key. key = %{public}@ | value = %{public}@ | position = %{public}d", buf, 0x30u);
 
       v11 = v53;
     }
 
-    [v10 bindNullableString:v12 atPosition:v7];
+    [usingCopy bindNullableString:v12 atPosition:v7];
     goto LABEL_39;
   }
 
-  if (a4 == 14)
+  if (column == 14)
   {
-    [v10 bindNullAtPosition:v7];
+    [usingCopy bindNullAtPosition:v7];
   }
 
 LABEL_49:
 }
 
-+ (void)_cleanUpProtectionClassAtPath:(id)a3 fileManager:(id)a4
++ (void)_cleanUpProtectionClassAtPath:(id)path fileManager:(id)manager
 {
   v91 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 fileExistsAtPath:v6])
+  pathCopy = path;
+  managerCopy = manager;
+  if ([managerCopy fileExistsAtPath:pathCopy])
   {
     v81 = 0;
-    v8 = [v7 attributesOfItemAtPath:v6 error:&v81];
+    v8 = [managerCopy attributesOfItemAtPath:pathCopy error:&v81];
     v9 = v81;
     if (v8)
     {
@@ -563,9 +563,9 @@ LABEL_59:
         v15 = +[AMSLogConfig sharedConfig];
       }
 
-      v16 = [v15 OSLogObject];
-      v72 = v7;
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v15 OSLogObject];
+      v72 = managerCopy;
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v17 = AMSLogKey();
         v18 = MEMORY[0x1E696AEC0];
@@ -582,7 +582,7 @@ LABEL_59:
           [v18 stringWithFormat:@"%@: ", v19];
         }
         v21 = ;
-        v29 = AMSHashIfNeeded(v6);
+        v29 = AMSHashIfNeeded(pathCopy);
         v30 = AMSHashIfNeeded(v64);
         *buf = 138543874;
         v86 = v21;
@@ -590,28 +590,28 @@ LABEL_59:
         v88 = v29;
         v89 = 2114;
         v90 = v30;
-        _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Correcting file protection type of cookie database. path = %{public}@ | protectionType = %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Correcting file protection type of cookie database. path = %{public}@ | protectionType = %{public}@", buf, 0x20u);
         if (v17)
         {
 
           v21 = v73;
         }
 
-        v7 = v72;
+        managerCopy = v72;
         v14 = 0x1E73B0000uLL;
       }
 
-      v31 = [v6 stringByDeletingLastPathComponent];
-      v32 = v7;
-      v33 = v31;
+      stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+      v32 = managerCopy;
+      v33 = stringByDeletingLastPathComponent;
       v80 = v9;
-      v34 = [v32 contentsOfDirectoryAtPath:v31 error:&v80];
+      v34 = [v32 contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:&v80];
       v35 = v80;
 
       log = v33;
       if (v34)
       {
-        v62 = v6;
+        v62 = pathCopy;
         v83 = v10;
         v84 = v13;
         v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
@@ -651,14 +651,14 @@ LABEL_59:
 
               else
               {
-                v43 = [*(v14 + 3552) sharedAccountsCookiesConfig];
-                if (!v43)
+                sharedAccountsCookiesConfig = [*(v14 + 3552) sharedAccountsCookiesConfig];
+                if (!sharedAccountsCookiesConfig)
                 {
-                  v43 = [*(v14 + 3552) sharedConfig];
+                  sharedAccountsCookiesConfig = [*(v14 + 3552) sharedConfig];
                 }
 
-                v44 = [v43 OSLogObject];
-                if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+                oSLogObject2 = [sharedAccountsCookiesConfig OSLogObject];
+                if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
                 {
                   v45 = AMSLogKey();
                   v46 = MEMORY[0x1E696AEC0];
@@ -686,7 +686,7 @@ LABEL_59:
                   v88 = v51;
                   v89 = 2114;
                   v90 = v52;
-                  _os_log_impl(&dword_192869000, v44, OS_LOG_TYPE_ERROR, "%{public}@Failed to alter file protection class. path = %{public}@ | error = %{public}@", buf, 0x20u);
+                  _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Failed to alter file protection class. path = %{public}@ | error = %{public}@", buf, 0x20u);
                   v53 = v50;
                   v10 = v50;
                   if (v45)
@@ -718,7 +718,7 @@ LABEL_59:
 
           while (v74);
           v34 = v61;
-          v6 = v62;
+          pathCopy = v62;
         }
       }
 
@@ -769,7 +769,7 @@ LABEL_59:
         }
       }
 
-      v7 = v72;
+      managerCopy = v72;
 
       v9 = v35;
       v8 = v63;
@@ -802,7 +802,7 @@ LABEL_59:
           [v23 stringWithFormat:@"%@: ", v24];
         }
         v26 = ;
-        v27 = AMSHashIfNeeded(v6);
+        v27 = AMSHashIfNeeded(pathCopy);
         v28 = AMSLogableError(v9);
         *buf = 138543874;
         v86 = v26;
@@ -825,12 +825,12 @@ LABEL_59:
 LABEL_60:
 }
 
-- (id)_cookieDictionaryForCursor:(id)a3
+- (id)_cookieDictionaryForCursor:(id)cursor
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  cursorCopy = cursor;
   v4 = AMSNameForAMSCookieDatabaseColumn(6uLL);
-  v5 = [v3 stringForColumnName:v4];
+  v5 = [cursorCopy stringForColumnName:v4];
 
   if (v5)
   {
@@ -857,10 +857,10 @@ LABEL_60:
             objc_enumerationMutation(&unk_1F0779BB0);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) unsignedIntegerValue];
-          v13 = NSHTTPCookiePropertyKeyForAMSCookieDatabaseColumn(v12);
-          v14 = AMSNameForAMSCookieDatabaseColumn(v12);
-          v15 = [v3 stringForColumnName:v14];
+          unsignedIntegerValue = [*(*(&v19 + 1) + 8 * i) unsignedIntegerValue];
+          v13 = NSHTTPCookiePropertyKeyForAMSCookieDatabaseColumn(unsignedIntegerValue);
+          v14 = AMSNameForAMSCookieDatabaseColumn(unsignedIntegerValue);
+          v15 = [cursorCopy stringForColumnName:v14];
 
           if ([v15 isEqualToString:&stru_1F071BA78])
           {
@@ -890,11 +890,11 @@ LABEL_60:
   return v16;
 }
 
-+ (id)_databasePathForIdentifier:(id)a3 error:(id *)a4
++ (id)_databasePathForIdentifier:(id)identifier error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [a1 _dataVaultPathForIdentifier:v7 error:a4];
+  identifierCopy = identifier;
+  v8 = [self _dataVaultPathForIdentifier:identifierCopy error:error];
   if (v8)
   {
     v9 = +[AMSLogConfig sharedAccountsCookiesConfig];
@@ -903,14 +903,14 @@ LABEL_60:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
       v13 = NSStringFromSelector(a2);
       v14 = AMSHashIfNeeded(v13);
-      v15 = AMSHashIfNeeded(v7);
+      v15 = AMSHashIfNeeded(identifierCopy);
       v16 = AMSHashIfNeeded(v8);
       v19 = 138544386;
       v20 = v11;
@@ -922,7 +922,7 @@ LABEL_60:
       v26 = v15;
       v27 = 2114;
       v28 = v16;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: %{public}@ | identifier = %{public}@ | dataVaultPath = %{public}@", &v19, 0x34u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: %{public}@ | identifier = %{public}@ | dataVaultPath = %{public}@", &v19, 0x34u);
     }
 
     v17 = [AMSDatabaseHelper databasePathForDataVaultPath:v8 type:2];
@@ -936,40 +936,40 @@ LABEL_60:
   return v17;
 }
 
-+ (id)_databasePathForIdentifiers:(id)a3 fileManager:(id)a4 error:(id *)a5
++ (id)_databasePathForIdentifiers:(id)identifiers fileManager:(id)manager error:(id *)error
 {
-  v8 = a4;
+  managerCopy = manager;
   v9 = MEMORY[0x1E695DF70];
-  v10 = a3;
-  v11 = [[v9 alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+  identifiersCopy = identifiers;
+  v11 = [[v9 alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __67__AMSCookieDatabase__databasePathForIdentifiers_fileManager_error___block_invoke;
   v23[3] = &unk_1E73B6028;
-  v25 = a1;
+  selfCopy = self;
   v12 = v11;
   v24 = v12;
-  v13 = [v10 ams_mapWithTransformIgnoresNil:v23];
+  v13 = [identifiersCopy ams_mapWithTransformIgnoresNil:v23];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __67__AMSCookieDatabase__databasePathForIdentifiers_fileManager_error___block_invoke_2;
   v21[3] = &unk_1E73B2E28;
-  v22 = v8;
-  v14 = v8;
+  v22 = managerCopy;
+  v14 = managerCopy;
   v15 = [v13 ams_firstObjectPassingTest:v21];
   v16 = v15;
   if (v15)
   {
-    v17 = v15;
+    firstObject = v15;
 LABEL_5:
-    v18 = v17;
+    v18 = firstObject;
     goto LABEL_6;
   }
 
   if ([v13 count])
   {
-    v17 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     goto LABEL_5;
   }
 
@@ -977,26 +977,26 @@ LABEL_5:
   {
     if ([v12 count] == 1)
     {
-      if (a5)
+      if (error)
       {
         v20 = [v12 objectAtIndexedSubscript:0];
         goto LABEL_17;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v20 = AMSError(0, @"Error creating database path", 0, 0);
       goto LABEL_17;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v20 = AMSErrorWithMultipleUnderlyingErrors(16, @"Error creating database path", 0, v12);
 LABEL_17:
     v18 = 0;
-    *a5 = v20;
+    *error = v20;
     goto LABEL_6;
   }
 
@@ -1026,50 +1026,50 @@ id __67__AMSCookieDatabase__databasePathForIdentifiers_fileManager_error___block
   return v4;
 }
 
-+ (id)_dataVaultPathForIdentifier:(id)a3 error:(id *)a4
++ (id)_dataVaultPathForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _rootDataVaultPathWithError:a4];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  identifierCopy = identifier;
+  v7 = [self _rootDataVaultPathWithError:error];
+  v8 = [v7 stringByAppendingPathComponent:identifierCopy];
 
   return v8;
 }
 
-+ (id)_rootDataVaultPathWithError:(id *)a3
++ (id)_rootDataVaultPathWithError:(id *)error
 {
   v4 = [AMSDatabaseHelper databaseFolderNameForType:2];
   v5 = v4;
-  if (a3 && !v4)
+  if (error && !v4)
   {
-    *a3 = AMSError(7, @"Database Path Not Found", @"Could not find path for database", 0);
+    *error = AMSError(7, @"Database Path Not Found", @"Could not find path for database", 0);
   }
 
   return v5;
 }
 
-- (BOOL)_removeCookieProperties:(id)a3 error:(id *)a4
+- (BOOL)_removeCookieProperties:(id)properties error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  propertiesCopy = properties;
   v7 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
-    v11 = AMSHashIfNeeded(v6);
+    v11 = AMSHashIfNeeded(propertiesCopy);
     *buf = 138543874;
     *&buf[4] = v9;
     *&buf[12] = 2114;
     *&buf[14] = v10;
     *&buf[22] = 2114;
     v35 = v11;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Removing cookie properties. cookieProperties = %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Removing cookie properties. cookieProperties = %{public}@", buf, 0x20u);
   }
 
   v12 = [AMSKeepAlive keepAliveWithName:@"AMSCookies"];
@@ -1085,21 +1085,21 @@ id __67__AMSCookieDatabase__databasePathForIdentifiers_fileManager_error___block
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v35) = 1;
-  v18 = [(AMSCookieDatabase *)self connection];
+  connection = [(AMSCookieDatabase *)self connection];
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __51__AMSCookieDatabase__removeCookieProperties_error___block_invoke_3;
   v27 = &unk_1E73B6000;
-  v19 = v6;
+  v19 = propertiesCopy;
   v28 = v19;
-  v29 = self;
+  selfCopy = self;
   v20 = v13;
   v30 = v20;
   v21 = v15;
   v32 = buf;
-  v33 = a4;
+  errorCopy = error;
   v31 = v21;
-  [v18 performTransaction:&v24];
+  [connection performTransaction:&v24];
 
   [v12 invalidate];
   v22 = *(*&buf[8] + 24);
@@ -1203,24 +1203,24 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)_executeStatement:(id)a3 columns:(id)a4 forCookieProperties:(id)a5 error:(id *)a6
+- (BOOL)_executeStatement:(id)statement columns:(id)columns forCookieProperties:(id)properties error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(AMSCookieDatabase *)self connection];
+  columnsCopy = columns;
+  propertiesCopy = properties;
+  statementCopy = statement;
+  connection = [(AMSCookieDatabase *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_error___block_invoke;
   v17[3] = &unk_1E73B6078;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
-  v14 = v11;
-  v15 = v10;
-  LOBYTE(a6) = [v13 executeStatement:v12 error:a6 bindings:v17];
+  v18 = columnsCopy;
+  selfCopy = self;
+  v20 = propertiesCopy;
+  v14 = propertiesCopy;
+  v15 = columnsCopy;
+  LOBYTE(error) = [connection executeStatement:statementCopy error:error bindings:v17];
 
-  return a6;
+  return error;
 }
 
 void __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_error___block_invoke(void *a1, void *a2)
@@ -1249,19 +1249,19 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
   return [v6 _bindCookieProperties:v7 column:v5 position:(a3 + 1) using:v8];
 }
 
-+ (id)cleanUpCookieDatabasesWithValidIdentifiers:(id)a3 fileManager:(id)a4
++ (id)cleanUpCookieDatabasesWithValidIdentifiers:(id)identifiers fileManager:(id)manager
 {
   v176 = *MEMORY[0x1E69E9840];
-  v124 = a3;
-  v135 = a4;
+  identifiersCopy = identifiers;
+  managerCopy = manager;
   v6 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -1280,19 +1280,19 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
       v12 = v13;
     }
 
-    v4 = AMSHashIfNeededNonnull(v124);
+    v4 = AMSHashIfNeededNonnull(identifiersCopy);
     *buf = 138543618;
     *&buf[4] = v13;
     *&buf[12] = 2114;
     *&buf[14] = v4;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@| validIdentifiers = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@| validIdentifiers = %{public}@", buf, 0x16u);
     if (v8)
     {
     }
   }
 
   v163 = 0;
-  v125 = [a1 _rootDataVaultPathWithError:&v163];
+  v125 = [self _rootDataVaultPathWithError:&v163];
   v14 = v163;
   if (!v125)
   {
@@ -1310,8 +1310,8 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v26 = AMSLogKey();
       v27 = MEMORY[0x1E696AEC0];
@@ -1331,7 +1331,7 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
       v30 = ;
       *buf = 138543362;
       *&buf[4] = v30;
-      _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@| Error creating URL. dataVaultURL is nil", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@| Error creating URL. dataVaultURL is nil", buf, 0xCu);
       if (v26)
       {
 
@@ -1351,19 +1351,19 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
   v158[3] = &unk_1E73B60A0;
   v107 = v15;
   v159 = v107;
-  v161 = a1;
+  selfCopy = self;
   v162 = a2;
   v112 = v14;
   v160 = v112;
-  v137 = [v124 ams_mapWithTransformIgnoresNil:v158];
+  v137 = [identifiersCopy ams_mapWithTransformIgnoresNil:v158];
   v16 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v16)
   {
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+  oSLogObject3 = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
   {
     v18 = AMSLogKey();
     v19 = MEMORY[0x1E696AEC0];
@@ -1387,7 +1387,7 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
     *&buf[4] = v23;
     *&buf[12] = 2114;
     *&buf[14] = v31;
-    _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEBUG, "%{public}@| enumerating contents of %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@| enumerating contents of %{public}@", buf, 0x16u);
     if (v18)
     {
     }
@@ -1407,9 +1407,9 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
   v157[2] = __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_fileManager___block_invoke_108;
   v157[3] = &unk_1E73B60C8;
   v157[6] = a2;
-  v157[5] = a1;
+  v157[5] = self;
   v157[4] = buf;
-  v33 = [v135 enumeratorAtURL:v107 includingPropertiesForKeys:v32 options:17 errorHandler:v157];
+  v33 = [managerCopy enumeratorAtURL:v107 includingPropertiesForKeys:v32 options:17 errorHandler:v157];
 
   v155 = 0u;
   v156 = 0u;
@@ -1442,8 +1442,8 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
         v37 = +[AMSLogConfig sharedConfig];
       }
 
-      v38 = [v37 OSLogObject];
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
+      oSLogObject4 = [v37 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEBUG))
       {
         v39 = AMSLogKey();
         v40 = MEMORY[0x1E696AEC0];
@@ -1452,23 +1452,23 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
         {
           v143 = AMSLogKey();
           v142 = NSStringFromSelector(a2);
-          v42 = [v40 stringWithFormat:@"%@: [%@] %@ ", v41, v143, v142];
-          v139 = v42;
+          v142 = [v40 stringWithFormat:@"%@: [%@] %@ ", v41, v143, v142];
+          v139 = v142;
         }
 
         else
         {
           v141 = NSStringFromSelector(a2);
-          v42 = [v40 stringWithFormat:@"%@: %@ ", v41, v141];
-          v140 = v42;
+          v142 = [v40 stringWithFormat:@"%@: %@ ", v41, v141];
+          v140 = v142;
         }
 
         v43 = AMSLogableURL(v36);
         *v164 = 138543618;
-        v165 = v42;
+        v165 = v142;
         v166 = 2114;
         v167 = v43;
-        _os_log_impl(&dword_192869000, v38, OS_LOG_TYPE_DEBUG, "%{public}@ | Processing URL: %{public}@", v164, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEBUG, "%{public}@ | Processing URL: %{public}@", v164, 0x16u);
         v44 = v140;
         v45 = v141;
         if (v39)
@@ -1493,8 +1493,8 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
           v50 = +[AMSLogConfig sharedConfig];
         }
 
-        v51 = [v50 OSLogObject];
-        if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
+        oSLogObject5 = [v50 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
         {
           v56 = AMSLogKey();
           v57 = MEMORY[0x1E696AEC0];
@@ -1502,25 +1502,25 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
           {
             v58 = objc_opt_class();
             v136 = AMSLogKey();
-            v59 = [v57 stringWithFormat:@"%@: [%@] ", v58, v136];
-            v133 = v59;
+            v136 = [v57 stringWithFormat:@"%@: [%@] ", v58, v136];
+            v133 = v136;
           }
 
           else
           {
-            v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-            v134 = v59;
+            v136 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+            v134 = v136;
           }
 
           v66 = AMSLogableURL(v36);
           v67 = AMSLogableError(v48);
           *v164 = 138543874;
-          v165 = v59;
+          v165 = v136;
           v166 = 2114;
           v167 = v66;
           v168 = 2114;
           v169 = v67;
-          _os_log_impl(&dword_192869000, v51, OS_LOG_TYPE_ERROR, "%{public}@Error getting file resource identifier. URL = %{public}@ | error = %{public}@", v164, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@Error getting file resource identifier. URL = %{public}@ | error = %{public}@", v164, 0x20u);
 
           v68 = v134;
           if (v56)
@@ -1543,8 +1543,8 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
           v50 = +[AMSLogConfig sharedConfig];
         }
 
-        v51 = [v50 OSLogObject];
-        if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
+        oSLogObject5 = [v50 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEBUG))
         {
           v52 = AMSLogKey();
           v53 = MEMORY[0x1E696AEC0];
@@ -1553,26 +1553,26 @@ uint64_t __73__AMSCookieDatabase__executeStatement_columns_forCookieProperties_e
           {
             v129 = AMSLogKey();
             v128 = NSStringFromSelector(a2);
-            v55 = [v53 stringWithFormat:@"%@: [%@] %@ ", v54, v129, v128];
-            v120 = v55;
+            v128 = [v53 stringWithFormat:@"%@: [%@] %@ ", v54, v129, v128];
+            v120 = v128;
           }
 
           else
           {
             v126 = NSStringFromSelector(a2);
-            v55 = [v53 stringWithFormat:@"%@: %@ ", v54, v126];
-            v122 = v55;
+            v128 = [v53 stringWithFormat:@"%@: %@ ", v54, v126];
+            v122 = v128;
           }
 
           v70 = AMSLogableURL(v36);
           v71 = AMSHashIfNeeded(v47);
           *v164 = 138543874;
-          v165 = v55;
+          v165 = v128;
           v166 = 2114;
           v167 = v70;
           v168 = 2114;
           v169 = v71;
-          _os_log_impl(&dword_192869000, v51, OS_LOG_TYPE_DEBUG, "%{public}@| URL has expected identifier, skipping. URL = %{public}@ | identifier = %{public}@", v164, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEBUG, "%{public}@| URL has expected identifier, skipping. URL = %{public}@ | identifier = %{public}@", v164, 0x20u);
 
           v72 = v122;
           v73 = v126;
@@ -1597,8 +1597,8 @@ LABEL_88:
         v60 = +[AMSLogConfig sharedConfig];
       }
 
-      v61 = [v60 OSLogObject];
-      if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+      oSLogObject6 = [v60 OSLogObject];
+      if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
       {
         v62 = AMSLogKey();
         v63 = MEMORY[0x1E696AEC0];
@@ -1607,23 +1607,23 @@ LABEL_88:
         {
           v131 = AMSLogKey();
           v130 = NSStringFromSelector(a2);
-          v65 = [v63 stringWithFormat:@"%@: [%@] %@ ", v64, v131, v130];
-          v121 = v65;
+          v130 = [v63 stringWithFormat:@"%@: [%@] %@ ", v64, v131, v130];
+          v121 = v130;
         }
 
         else
         {
           v127 = NSStringFromSelector(a2);
-          v65 = [v63 stringWithFormat:@"%@: %@ ", v64, v127];
-          v123 = v65;
+          v130 = [v63 stringWithFormat:@"%@: %@ ", v64, v127];
+          v123 = v130;
         }
 
         v74 = AMSLogableURL(v36);
         *v164 = 138543618;
-        v165 = v65;
+        v165 = v130;
         v166 = 2114;
         v167 = v74;
-        _os_log_impl(&dword_192869000, v61, OS_LOG_TYPE_DEFAULT, "%{public}@| Deleting file at URL: %{public}@", v164, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_DEFAULT, "%{public}@| Deleting file at URL: %{public}@", v164, 0x16u);
         v75 = v123;
         v76 = v127;
         if (v62)
@@ -1635,7 +1635,7 @@ LABEL_88:
       }
 
       v150 = v48;
-      v77 = [v135 removeItemAtURL:v36 error:&v150];
+      v77 = [managerCopy removeItemAtURL:v36 error:&v150];
       v78 = v150;
 
       if (v77)
@@ -1646,8 +1646,8 @@ LABEL_88:
           v50 = +[AMSLogConfig sharedConfig];
         }
 
-        v51 = [v50 OSLogObject];
-        if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
+        oSLogObject5 = [v50 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEBUG))
         {
           v79 = AMSLogKey();
           v80 = MEMORY[0x1E696AEC0];
@@ -1656,23 +1656,23 @@ LABEL_88:
           {
             v118 = AMSLogKey();
             v117 = NSStringFromSelector(a2);
-            v82 = [v80 stringWithFormat:@"%@: [%@] %@ ", v81, v118, v117];
-            v109 = v82;
+            v117 = [v80 stringWithFormat:@"%@: [%@] %@ ", v81, v118, v117];
+            v109 = v117;
           }
 
           else
           {
             v114 = NSStringFromSelector(a2);
-            v82 = [v80 stringWithFormat:@"%@: %@ ", v81, v114];
-            v111 = v82;
+            v117 = [v80 stringWithFormat:@"%@: %@ ", v81, v114];
+            v111 = v117;
           }
 
           v89 = AMSLogableURL(v36);
           *v164 = 138543618;
-          v165 = v82;
+          v165 = v117;
           v166 = 2114;
           v167 = v89;
-          _os_log_impl(&dword_192869000, v51, OS_LOG_TYPE_DEBUG, "%{public}@| Deleted file. URL = %{public}@", v164, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEBUG, "%{public}@| Deleted file. URL = %{public}@", v164, 0x16u);
           v90 = v111;
           v91 = v114;
           if (v79)
@@ -1694,8 +1694,8 @@ LABEL_88:
         v83 = +[AMSLogConfig sharedConfig];
       }
 
-      v84 = [v83 OSLogObject];
-      if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
+      oSLogObject7 = [v83 OSLogObject];
+      if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_ERROR))
       {
         v85 = AMSLogKey();
         v86 = MEMORY[0x1E696AEC0];
@@ -1704,26 +1704,26 @@ LABEL_88:
         {
           v116 = AMSLogKey();
           v115 = NSStringFromSelector(a2);
-          v88 = [v86 stringWithFormat:@"%@: [%@] %@ ", v87, v116, v115];
-          v108 = v88;
+          v115 = [v86 stringWithFormat:@"%@: [%@] %@ ", v87, v116, v115];
+          v108 = v115;
         }
 
         else
         {
           v113 = NSStringFromSelector(a2);
-          v88 = [v86 stringWithFormat:@"%@: %@ ", v87, v113];
-          v110 = v88;
+          v115 = [v86 stringWithFormat:@"%@: %@ ", v87, v113];
+          v110 = v115;
         }
 
         v92 = AMSLogableURL(v36);
         v93 = AMSLogableError(v78);
         *v164 = 138543874;
-        v165 = v88;
+        v165 = v115;
         v166 = 2114;
         v167 = v92;
         v168 = 2114;
         v169 = v93;
-        _os_log_impl(&dword_192869000, v84, OS_LOG_TYPE_ERROR, "%{public}@| Error deleting file. URL = %{public}@ | error = %{public}@", v164, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_ERROR, "%{public}@| Error deleting file. URL = %{public}@ | error = %{public}@", v164, 0x20u);
 
         v94 = v110;
         v95 = v113;
@@ -1770,8 +1770,8 @@ LABEL_99:
       v96 = +[AMSLogConfig sharedConfig];
     }
 
-    v97 = [v96 OSLogObject];
-    if (os_log_type_enabled(v97, OS_LOG_TYPE_DEBUG))
+    oSLogObject8 = [v96 OSLogObject];
+    if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_DEBUG))
     {
       v98 = AMSLogKey();
       v99 = MEMORY[0x1E696AEC0];
@@ -1780,23 +1780,23 @@ LABEL_99:
         v100 = objc_opt_class();
         v101 = AMSLogKey();
         v102 = NSStringFromSelector(a2);
-        v103 = [v99 stringWithFormat:@"%@: [%@] %@ ", v100, v101, v102];
+        v102 = [v99 stringWithFormat:@"%@: [%@] %@ ", v100, v101, v102];
       }
 
       else
       {
         v104 = objc_opt_class();
         v101 = NSStringFromSelector(a2);
-        v103 = [v99 stringWithFormat:@"%@: %@ ", v104, v101];
-        v102 = v103;
+        v102 = [v99 stringWithFormat:@"%@: %@ ", v104, v101];
+        v102 = v102;
       }
 
       v105 = AMSLogableURL(v107);
       *v164 = 138543618;
-      v165 = v103;
+      v165 = v102;
       v166 = 2114;
       v167 = v105;
-      _os_log_impl(&dword_192869000, v97, OS_LOG_TYPE_DEBUG, "%{public}@| Finished enumeration contents of %{public}@", v164, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject8, OS_LOG_TYPE_DEBUG, "%{public}@| Finished enumeration contents of %{public}@", v164, 0x16u);
       if (v98)
       {
       }
@@ -1995,9 +1995,9 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = [AMSKeepAlive keepAliveWithName:@"AMSCookies"];
-  v4 = [(AMSCookieDatabase *)self connection];
+  connection = [(AMSCookieDatabase *)self connection];
   v12 = 0;
-  v5 = [v4 closeWithError:&v12];
+  v5 = [connection closeWithError:&v12];
   v6 = v12;
 
   if (v5)
@@ -2014,8 +2014,8 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
       connection = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [connection OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [connection OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = v9;
@@ -2024,89 +2024,89 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
       v14 = v9;
       v15 = 2114;
       v16 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to close the AMS Cookie Storage database connection: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to close the AMS Cookie Storage database connection: %{public}@", buf, 0x16u);
     }
   }
 
   [v3 invalidate];
 }
 
-+ (id)databasePathForIdentifiers:(id)a3 error:(id *)a4
++ (id)databasePathForIdentifiers:(id)identifiers error:(id *)error
 {
   v6 = MEMORY[0x1E696AC08];
-  v7 = a3;
-  v8 = [v6 defaultManager];
-  v9 = [a1 _databasePathForIdentifiers:v7 fileManager:v8 error:a4];
+  identifiersCopy = identifiers;
+  defaultManager = [v6 defaultManager];
+  v9 = [self _databasePathForIdentifiers:identifiersCopy fileManager:defaultManager error:error];
 
   return v9;
 }
 
-+ (id)cookieDatabaseForIdentifier:(id)a3 error:(id *)a4
++ (id)cookieDatabaseForIdentifier:(id)identifier error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
-    v11 = AMSHashIfNeeded(v6);
+    v11 = AMSHashIfNeeded(identifierCopy);
     *buf = 138543874;
     v17 = v9;
     v18 = 2114;
     v19 = v10;
     v20 = 2114;
     v21 = v11;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Getting cookie database. accountIdentifier = %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Getting cookie database. accountIdentifier = %{public}@", buf, 0x20u);
   }
 
-  v15 = v6;
+  v15 = identifierCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-  v13 = [a1 cookieDatabaseForIdentifiers:v12 error:a4];
+  v13 = [self cookieDatabaseForIdentifiers:v12 error:error];
 
   return v13;
 }
 
-+ (id)cookieDatabaseForIdentifiers:(id)a3 error:(id *)a4
++ (id)cookieDatabaseForIdentifiers:(id)identifiers error:(id *)error
 {
   v6 = MEMORY[0x1E696AC08];
-  v7 = a3;
-  v8 = [v6 defaultManager];
-  v9 = [a1 cookieDatabaseForIdentifiers:v7 error:a4 fileManager:v8];
+  identifiersCopy = identifiers;
+  defaultManager = [v6 defaultManager];
+  v9 = [self cookieDatabaseForIdentifiers:identifiersCopy error:error fileManager:defaultManager];
 
   return v9;
 }
 
-+ (id)cookieDatabaseForIdentifiers:(id)a3 error:(id *)a4 fileManager:(id)a5
++ (id)cookieDatabaseForIdentifiers:(id)identifiers error:(id *)error fileManager:(id)manager
 {
   v74 = *MEMORY[0x1E69E9840];
-  v62 = a3;
-  v63 = a5;
+  identifiersCopy = identifiers;
+  managerCopy = manager;
   v7 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
-    v11 = AMSHashIfNeeded(v62);
+    v11 = AMSHashIfNeeded(identifiersCopy);
     *buf = 138543874;
     v69 = v9;
     v70 = 2114;
     v71 = v10;
     v72 = 2114;
     v73 = v11;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@]: Getting cookie database. accountIdentifiers = %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@]: Getting cookie database. accountIdentifiers = %{public}@", buf, 0x20u);
   }
 
   v12 = [AMSKeepAlive keepAliveWithName:@"AMSCookies"];
@@ -2117,7 +2117,7 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
   v59 = v12;
   v67 = v59;
   v13 = _Block_copy(aBlock);
-  v14 = [a1 _databasePathForIdentifiers:v62 fileManager:v63 error:a4];
+  v14 = [self _databasePathForIdentifiers:identifiersCopy fileManager:managerCopy error:error];
   if (v14)
   {
     v15 = +[AMSLogConfig sharedAccountsCookiesConfig];
@@ -2126,8 +2126,8 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v17 = AMSLogKey();
       v18 = MEMORY[0x1E696AEC0];
@@ -2149,7 +2149,7 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
       v69 = v21;
       v70 = 2114;
       v71 = v23;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_INFO, "%{public}@Cookie database path is %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@Cookie database path is %{public}@", buf, 0x16u);
       if (v17)
       {
       }
@@ -2157,7 +2157,7 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
 
     v60 = [[AMSSQLiteConnectionOptions alloc] initWithDatabasePath:v14];
     [(AMSSQLiteConnectionOptions *)v60 setProtectionType:*MEMORY[0x1E696A388]];
-    [a1 _cleanUpProtectionClassAtPath:v14 fileManager:v63];
+    [self _cleanUpProtectionClassAtPath:v14 fileManager:managerCopy];
     v24 = [[AMSSQLiteConnection alloc] initWithOptions:v60];
     v65 = 0;
     v25 = [(AMSSQLiteConnection *)v24 openWithError:&v65];
@@ -2176,8 +2176,8 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
           v34 = +[AMSLogConfig sharedConfig];
         }
 
-        v35 = [v34 OSLogObject];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+        oSLogObject3 = [v34 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
         {
           v36 = objc_opt_class();
           v37 = AMSLogKey();
@@ -2185,7 +2185,7 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
           v69 = v36;
           v70 = 2114;
           v71 = v37;
-          _os_log_impl(&dword_192869000, v35, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Finished creating or updating schema. Initializing database.", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Finished creating or updating schema. Initializing database.", buf, 0x16u);
         }
 
         v22 = [[AMSCookieDatabase alloc] initWithConnection:v24 path:v14];
@@ -2195,8 +2195,8 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
           v38 = +[AMSLogConfig sharedConfig];
         }
 
-        v39 = [v38 OSLogObject];
-        if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+        oSLogObject4 = [v38 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
         {
           v40 = AMSLogKey();
           v41 = MEMORY[0x1E696AEC0];
@@ -2218,7 +2218,7 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
           v69 = v44;
           v70 = 2114;
           v71 = v54;
-          _os_log_impl(&dword_192869000, v39, OS_LOG_TYPE_INFO, "%{public}@Created cookie database. %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_INFO, "%{public}@Created cookie database. %{public}@", buf, 0x16u);
           if (v40)
           {
           }
@@ -2234,8 +2234,8 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
           v45 = +[AMSLogConfig sharedConfig];
         }
 
-        v46 = [v45 OSLogObject];
-        if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+        oSLogObject5 = [v45 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
         {
           v47 = AMSLogKey();
           v48 = MEMORY[0x1E696AEC0];
@@ -2257,17 +2257,17 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
           v69 = v51;
           v70 = 2114;
           v71 = v52;
-          _os_log_impl(&dword_192869000, v46, OS_LOG_TYPE_ERROR, "%{public}@Failed to create the AMSCookie database schema. error = %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@Failed to create the AMSCookie database schema. error = %{public}@", buf, 0x16u);
           if (v47)
           {
           }
         }
 
-        if (a4)
+        if (error)
         {
           v53 = v38;
           v22 = 0;
-          *a4 = v38;
+          *error = v38;
         }
 
         else
@@ -2286,38 +2286,38 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
         v26 = +[AMSLogConfig sharedConfig];
       }
 
-      v27 = [v26 OSLogObject];
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      oSLogObject6 = [v26 OSLogObject];
+      if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
       {
         v28 = AMSLogKey();
         v29 = MEMORY[0x1E696AEC0];
         if (v28)
         {
           v30 = objc_opt_class();
-          a1 = AMSLogKey();
-          [v29 stringWithFormat:@"%@: [%@] ", v30, a1];
+          self = AMSLogKey();
+          [v29 stringWithFormat:@"%@: [%@] ", v30, self];
         }
 
         else
         {
           [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
         }
-        v31 = ;
+        selfCopy = ;
         *buf = 138543362;
-        v69 = v31;
-        _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@Failed to open the AMS cookie database.", buf, 0xCu);
+        v69 = selfCopy;
+        _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_ERROR, "%{public}@Failed to open the AMS cookie database.", buf, 0xCu);
         if (v28)
         {
 
-          v31 = a1;
+          selfCopy = self;
         }
       }
 
-      if (a4)
+      if (error)
       {
         v56 = v57;
         v22 = 0;
-        *a4 = v57;
+        *error = v57;
       }
 
       else
@@ -2337,7 +2337,7 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
   return v22;
 }
 
-- (id)cookiePropertiesWithError:(id *)a3
+- (id)cookiePropertiesWithError:(id *)error
 {
   v5 = [AMSKeepAlive keepAliveWithName:@"AMSCookies"];
   v14 = 0;
@@ -2346,17 +2346,17 @@ uint64_t __76__AMSCookieDatabase_cleanUpCookieDatabasesWithValidIdentifiers_file
   v17 = __Block_byref_object_copy__18;
   v18 = __Block_byref_object_dispose__18;
   v19 = 0;
-  v6 = [(AMSCookieDatabase *)self connection];
+  connection = [(AMSCookieDatabase *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__AMSCookieDatabase_cookiePropertiesWithError___block_invoke;
   v10[3] = &unk_1E73B6118;
   v12 = &v14;
-  v13 = a3;
+  errorCopy = error;
   v10[4] = self;
   v7 = v5;
   v11 = v7;
-  [v6 executeQuery:@"SELECT * FROM cookies" withResults:v10];
+  [connection executeQuery:@"SELECT * FROM cookies" withResults:v10];
 
   v8 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -2600,19 +2600,19 @@ LABEL_20:
   [(AMSCookieDatabase *)&v3 dealloc];
 }
 
-- (AMSCookieDatabase)initWithConnection:(id)a3 path:(id)a4
+- (AMSCookieDatabase)initWithConnection:(id)connection path:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = AMSCookieDatabase;
   v9 = [(AMSCookieDatabase *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    [v7 setDelegate:v10];
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_connection, connection);
+    [connectionCopy setDelegate:v10];
+    v11 = [pathCopy copy];
     dbPath = v10->_dbPath;
     v10->_dbPath = v11;
   }
@@ -2620,36 +2620,36 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)updateCookiesWithCookiePropertiesToAdd:(id)a3 cookiePropertiesToRemove:(id)a4 error:(id *)a5
+- (BOOL)updateCookiesWithCookiePropertiesToAdd:(id)add cookiePropertiesToRemove:(id)remove error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  addCopy = add;
+  removeCopy = remove;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 1;
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v11 = [(AMSCookieDatabase *)self connection];
+  connection = [(AMSCookieDatabase *)self connection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __91__AMSCookieDatabase_updateCookiesWithCookiePropertiesToAdd_cookiePropertiesToRemove_error___block_invoke;
   v23[3] = &unk_1E73B6140;
-  v12 = v9;
+  v12 = removeCopy;
   v24 = v12;
-  v25 = self;
+  selfCopy = self;
   v13 = v10;
   v26 = v13;
-  v14 = v8;
+  v14 = addCopy;
   v27 = v14;
   v28 = &v29;
-  [v11 performTransaction:v23];
+  [connection performTransaction:v23];
 
   if ([v13 count] == 1)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [v13 objectAtIndexedSubscript:0];
+      *error = [v13 objectAtIndexedSubscript:0];
     }
   }
 
@@ -2661,8 +2661,8 @@ LABEL_20:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -2670,17 +2670,17 @@ LABEL_20:
       v34 = v18;
       v35 = 2114;
       v36 = v19;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting a CookiesChanged notification.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting a CookiesChanged notification.", buf, 0x16u);
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.AppleMediaServices.cookieschanged", 0, 0, 0);
   }
 
-  else if (a5)
+  else if (error)
   {
     v15 = [v13 copy];
-    *a5 = AMSErrorWithMultipleUnderlyingErrors(16, @"Multiple Database Errors", @"Encountered multiple errors modifying the cookie database.", v15);
+    *error = AMSErrorWithMultipleUnderlyingErrors(16, @"Multiple Database Errors", @"Encountered multiple errors modifying the cookie database.", v15);
   }
 
   v21 = *(v30 + 24);
@@ -2730,11 +2730,11 @@ uint64_t __91__AMSCookieDatabase_updateCookiesWithCookiePropertiesToAdd_cookiePr
   return *(*(*(a1 + 64) + 8) + 24);
 }
 
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   v10 = 0x1E73B0000uLL;
   v11 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v11)
@@ -2742,8 +2742,8 @@ uint64_t __91__AMSCookieDatabase_updateCookiesWithCookiePropertiesToAdd_cookiePr
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     v14 = AMSLogKey();
@@ -2751,27 +2751,27 @@ uint64_t __91__AMSCookieDatabase_updateCookiesWithCookiePropertiesToAdd_cookiePr
     v41 = v13;
     v42 = 2114;
     v43 = v14;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Resetting connection for corruption is called.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Resetting connection for corruption is called.", buf, 0x16u);
   }
 
   v15 = [AMSKeepAlive keepAliveWithName:@"AMSCookies"];
   v39 = 0;
-  v16 = [v8 truncateWithError:&v39];
+  v16 = [connectionCopy truncateWithError:&v39];
   v17 = v39;
   if ((v16 & 1) == 0)
   {
     v38 = 0;
-    [v8 closeWithError:&v38];
+    [connectionCopy closeWithError:&v38];
     v18 = v38;
-    v19 = [(AMSCookieDatabase *)self dbPath];
+    dbPath = [(AMSCookieDatabase *)self dbPath];
 
-    if (v19)
+    if (dbPath)
     {
       v35 = a5;
-      v20 = v9;
+      v20 = errorCopy;
       v21 = MEMORY[0x1E695DFF8];
-      v22 = [(AMSCookieDatabase *)self dbPath];
-      v23 = [v21 fileURLWithPath:v22];
+      dbPath2 = [(AMSCookieDatabase *)self dbPath];
+      v23 = [v21 fileURLWithPath:dbPath2];
       v37 = 0;
       v24 = [AMSDatabaseHelper removeDatabaseAtURL:v23 error:&v37];
       v25 = v37;
@@ -2779,15 +2779,15 @@ uint64_t __91__AMSCookieDatabase_updateCookiesWithCookiePropertiesToAdd_cookiePr
       if (v24)
       {
 
-        v9 = v20;
+        errorCopy = v20;
         a5 = v35;
         v10 = 0x1E73B0000;
         goto LABEL_9;
       }
 
-      v9 = v20;
+      errorCopy = v20;
       v28 = AMSErrorBySettingUnderlyingError(v17, v20);
-      v19 = AMSErrorBySettingUnderlyingError(v25, v28);
+      dbPath = AMSErrorBySettingUnderlyingError(v25, v28);
 
       a5 = v35;
       v10 = 0x1E73B0000uLL;
@@ -2798,8 +2798,8 @@ uint64_t __91__AMSCookieDatabase_updateCookiesWithCookiePropertiesToAdd_cookiePr
 
 LABEL_9:
   v36 = 0;
-  v26 = [AMSCookieDatabaseSchema createOrUpdateSchemaUsingConnection:v8 error:&v36];
-  v19 = v36;
+  v26 = [AMSCookieDatabaseSchema createOrUpdateSchemaUsingConnection:connectionCopy error:&v36];
+  dbPath = v36;
   if (v26)
   {
     v27 = 1;
@@ -2807,22 +2807,22 @@ LABEL_9:
   }
 
 LABEL_13:
-  v29 = [*(v10 + 3552) sharedAccountsCookiesConfig];
-  if (!v29)
+  sharedAccountsCookiesConfig = [*(v10 + 3552) sharedAccountsCookiesConfig];
+  if (!sharedAccountsCookiesConfig)
   {
-    v29 = [*(v10 + 3552) sharedConfig];
+    sharedAccountsCookiesConfig = [*(v10 + 3552) sharedConfig];
   }
 
-  v30 = [v29 OSLogObject];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [sharedAccountsCookiesConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v31 = objc_opt_class();
-    v32 = AMSLogableError(v19);
+    v32 = AMSLogableError(dbPath);
     *buf = 138543618;
     v41 = v31;
     v42 = 2114;
     v43 = v32;
-    _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_ERROR, "%{public}@: Failed to reset AMS cookie database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to reset AMS cookie database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
   }
 
   v27 = 0;
@@ -2830,8 +2830,8 @@ LABEL_18:
   [v15 invalidate];
   if (a5)
   {
-    v33 = v19;
-    *a5 = v19;
+    v33 = dbPath;
+    *a5 = dbPath;
   }
 
   return v27;

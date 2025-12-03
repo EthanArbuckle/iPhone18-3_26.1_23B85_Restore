@@ -1,13 +1,13 @@
 @interface GainMapShaders
-- (GainMapShaders)initWithMetal:(id)a3;
+- (GainMapShaders)initWithMetal:(id)metal;
 @end
 
 @implementation GainMapShaders
 
-- (GainMapShaders)initWithMetal:(id)a3
+- (GainMapShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
-  if (!v4)
+  metalCopy = metal;
+  if (!metalCopy)
   {
     sub_2958BCF28(self);
 LABEL_8:
@@ -24,7 +24,7 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"GainMap", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"GainMap", 0);
   gainMapFilter = v6->_gainMapFilter;
   v6->_gainMapFilter = v7;
 

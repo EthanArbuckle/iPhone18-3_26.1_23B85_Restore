@@ -1,7 +1,7 @@
 @interface CRLMiniFormatterStateManager
 - (_TtC8Freeform28CRLMiniFormatterStateManager)init;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
-- (void)selectionPathDidChangeWithNotification:(id)a3;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
+- (void)selectionPathDidChangeWithNotification:(id)notification;
 - (void)teardown;
 @end
 
@@ -10,27 +10,27 @@
 - (void)teardown
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6 = [v3 defaultCenter];
-  v7 = v6;
+  defaultCenter2 = [v3 defaultCenter];
+  v7 = defaultCenter2;
   if (qword_1019F2368 != -1)
   {
     swift_once();
-    v6 = v7;
+    defaultCenter2 = v7;
   }
 
-  [v6 removeObserver:v4 name:qword_101AD80C8 object:0];
+  [defaultCenter2 removeObserver:selfCopy name:qword_101AD80C8 object:0];
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
   type metadata accessor for CRLChangeRecord();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   CRLMiniFormatterStateManager.processChanges(_:forChangeSource:)(v5, v7);
@@ -38,11 +38,11 @@
   sub_100005070(v7);
 }
 
-- (void)selectionPathDidChangeWithNotification:(id)a3
+- (void)selectionPathDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_10073554C(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_10073554C(notificationCopy);
 }
 
 - (_TtC8Freeform28CRLMiniFormatterStateManager)init

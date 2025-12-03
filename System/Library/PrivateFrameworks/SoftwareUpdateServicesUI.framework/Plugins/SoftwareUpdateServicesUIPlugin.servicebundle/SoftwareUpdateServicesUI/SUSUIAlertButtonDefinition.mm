@@ -1,40 +1,40 @@
 @interface SUSUIAlertButtonDefinition
-- (SUSUIAlertButtonDefinition)initWithLabel:(id)a3 presentationStyle:(unint64_t)a4 isPreferredButton:(BOOL)a5 handler:(id)a6;
+- (SUSUIAlertButtonDefinition)initWithLabel:(id)label presentationStyle:(unint64_t)style isPreferredButton:(BOOL)button handler:(id)handler;
 @end
 
 @implementation SUSUIAlertButtonDefinition
 
-- (SUSUIAlertButtonDefinition)initWithLabel:(id)a3 presentationStyle:(unint64_t)a4 isPreferredButton:(BOOL)a5 handler:(id)a6
+- (SUSUIAlertButtonDefinition)initWithLabel:(id)label presentationStyle:(unint64_t)style isPreferredButton:(BOOL)button handler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
-  v17 = a5;
+  objc_storeStrong(location, label);
+  styleCopy = style;
+  buttonCopy = button;
   v16 = 0;
-  objc_storeStrong(&v16, a6);
-  v6 = v20;
-  v20 = 0;
+  objc_storeStrong(&v16, handler);
+  v6 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v6;
   v15.super_class = SUSUIAlertButtonDefinition;
   v14 = [(SUSUIAlertButtonDefinition *)&v15 init];
-  v20 = v14;
-  objc_storeStrong(&v20, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (v14)
   {
-    objc_storeStrong(&v20->_label, location[0]);
-    v20->_presentationStyle = v18;
-    v20->_isPreferredButton = v17;
+    objc_storeStrong(&selfCopy->_label, location[0]);
+    selfCopy->_presentationStyle = styleCopy;
+    selfCopy->_isPreferredButton = buttonCopy;
     v7 = objc_retainBlock(v16);
-    handler = v20->_handler;
-    v20->_handler = v7;
+    handler = selfCopy->_handler;
+    selfCopy->_handler = v7;
   }
 
-  v10 = v20;
+  v10 = selfCopy;
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 

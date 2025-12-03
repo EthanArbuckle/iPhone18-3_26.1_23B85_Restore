@@ -11,45 +11,45 @@
 - (NSMutableArray)allEdits;
 - (TIWordEntry)editedEntry;
 - (TIWordEntry)init;
-- (TIWordEntry)initWithCoder:(id)a3;
+- (TIWordEntry)initWithCoder:(id)coder;
 - (id)description;
 - (id)descriptionWithContext;
 - (id)documentContextBeforeInput;
 - (id)resolveBackspacesInKeyboardInputs;
-- (id)textFromResolvedKeyboardInputs:(id)a3;
+- (id)textFromResolvedKeyboardInputs:(id)inputs;
 - (id)trimmedDocumentContextBeforeInput;
-- (int)leadingBackspaceCountFromResolvedKeyboardInputs:(id)a3;
-- (void)addCandidateOffered:(id)a3;
-- (void)addKeyInput:(id)a3;
-- (void)addTouchEvent:(id)a3 withLayoutId:(unint64_t)a4;
-- (void)addUserEdit:(id)a3;
+- (int)leadingBackspaceCountFromResolvedKeyboardInputs:(id)inputs;
+- (void)addCandidateOffered:(id)offered;
+- (void)addKeyInput:(id)input;
+- (void)addTouchEvent:(id)event withLayoutId:(unint64_t)id;
+- (void)addUserEdit:(id)edit;
 - (void)clearCandidatesOffered;
 - (void)clearKeyInputs;
 - (void)clearTouches;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEditActionType:(int)a3;
-- (void)trimLeadingAndTrailingCharacters:(id)a3 fromResolvedInputs:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEditActionType:(int)type;
+- (void)trimLeadingAndTrailingCharacters:(id)characters fromResolvedInputs:(id)inputs;
 @end
 
 @implementation TIWordEntry
 
 - (id)trimmedDocumentContextBeforeInput
 {
-  v2 = [(TIWordEntry *)self documentContextBeforeInput];
-  v3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  documentContextBeforeInput = [(TIWordEntry *)self documentContextBeforeInput];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v4 = [documentContextBeforeInput stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v4;
 }
 
 - (id)documentContextBeforeInput
 {
-  v2 = [(TIUserAction *)self documentState];
-  v3 = [v2 contextBeforeInput];
+  documentState = [(TIUserAction *)self documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  if (v3)
+  if (contextBeforeInput)
   {
-    v4 = v3;
+    v4 = contextBeforeInput;
   }
 
   else
@@ -67,8 +67,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(TIWordEntry *)self allEdits];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allEdits = [(TIWordEntry *)self allEdits];
+  v4 = [allEdits countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -79,12 +79,12 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allEdits);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * i) acceptedString];
-        v9 = [(TIWordEntry *)self acceptedString];
-        v10 = [v8 isEqual:v9];
+        acceptedString = [*(*(&v14 + 1) + 8 * i) acceptedString];
+        acceptedString2 = [(TIWordEntry *)self acceptedString];
+        v10 = [acceptedString isEqual:acceptedString2];
 
         if (!v10)
         {
@@ -93,7 +93,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [allEdits countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -110,16 +110,16 @@ LABEL_11:
   return v11;
 }
 
-- (id)textFromResolvedKeyboardInputs:(id)a3
+- (id)textFromResolvedKeyboardInputs:(id)inputs
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputsCopy = inputs;
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = inputsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -137,12 +137,12 @@ LABEL_11:
         v11 = *(*(&v17 + 1) + 8 * i);
         if (([v11 isBackspace] & 1) == 0)
         {
-          v12 = [(TIWordEntry *)self inputTriggeredTextAccepted];
+          inputTriggeredTextAccepted = [(TIWordEntry *)self inputTriggeredTextAccepted];
 
-          if (v11 != v12)
+          if (v11 != inputTriggeredTextAccepted)
           {
-            v13 = [v11 string];
-            [v5 appendString:v13];
+            string = [v11 string];
+            [v5 appendString:string];
           }
         }
       }
@@ -159,15 +159,15 @@ LABEL_11:
   return v14;
 }
 
-- (int)leadingBackspaceCountFromResolvedKeyboardInputs:(id)a3
+- (int)leadingBackspaceCountFromResolvedKeyboardInputs:(id)inputs
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inputsCopy = inputs;
+  v4 = [inputsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -182,7 +182,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inputsCopy);
         }
 
         if (![*(*(&v12 + 1) + 8 * v8) isBackspace])
@@ -196,7 +196,7 @@ LABEL_11:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [inputsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -217,14 +217,14 @@ LABEL_12:
   return v6;
 }
 
-- (void)trimLeadingAndTrailingCharacters:(id)a3 fromResolvedInputs:(id)a4
+- (void)trimLeadingAndTrailingCharacters:(id)characters fromResolvedInputs:(id)inputs
 {
-  v18 = a3;
-  v5 = a4;
-  v6 = [v5 firstObject];
-  if (v6)
+  charactersCopy = characters;
+  inputsCopy = inputs;
+  firstObject = [inputsCopy firstObject];
+  if (firstObject)
   {
-    v7 = v6;
+    v7 = firstObject;
     do
     {
       if ([v7 isBackspace])
@@ -232,8 +232,8 @@ LABEL_12:
         break;
       }
 
-      v8 = [v7 string];
-      v9 = [v8 stringByTrimmingCharactersInSet:v18];
+      string = [v7 string];
+      v9 = [string stringByTrimmingCharactersInSet:charactersCopy];
       v10 = [v9 length];
 
       if (v10)
@@ -241,19 +241,19 @@ LABEL_12:
         break;
       }
 
-      [v5 removeObject:v7];
-      v11 = [v5 firstObject];
+      [inputsCopy removeObject:v7];
+      firstObject2 = [inputsCopy firstObject];
 
-      v7 = v11;
+      v7 = firstObject2;
     }
 
-    while (v11);
+    while (firstObject2);
   }
 
-  v12 = [v5 lastObject];
-  if (v12)
+  lastObject = [inputsCopy lastObject];
+  if (lastObject)
   {
-    v13 = v12;
+    v13 = lastObject;
     do
     {
       if ([v13 isBackspace])
@@ -261,8 +261,8 @@ LABEL_12:
         break;
       }
 
-      v14 = [v13 string];
-      v15 = [v14 stringByTrimmingCharactersInSet:v18];
+      string2 = [v13 string];
+      v15 = [string2 stringByTrimmingCharactersInSet:charactersCopy];
       v16 = [v15 length];
 
       if (v16)
@@ -270,26 +270,26 @@ LABEL_12:
         break;
       }
 
-      [v5 removeObject:v13];
-      v17 = [v5 lastObject];
+      [inputsCopy removeObject:v13];
+      lastObject2 = [inputsCopy lastObject];
 
-      v13 = v17;
+      v13 = lastObject2;
     }
 
-    while (v17);
+    while (lastObject2);
   }
 }
 
 - (id)resolveBackspacesInKeyboardInputs
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(TIWordEntry *)self allKeyboardInputs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeyboardInputs = [(TIWordEntry *)self allKeyboardInputs];
+  v5 = [allKeyboardInputs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -301,26 +301,26 @@ LABEL_12:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeyboardInputs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [v3 lastObject];
-        if (v10 && [v9 isBackspace] && (objc_msgSend(v10, "isBackspace") & 1) == 0)
+        lastObject = [array lastObject];
+        if (lastObject && [v9 isBackspace] && (objc_msgSend(lastObject, "isBackspace") & 1) == 0)
         {
-          [v3 removeLastObject];
+          [array removeLastObject];
         }
 
         else
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v11 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [allKeyboardInputs countByEnumeratingWithState:&v14 objects:v18 count:16];
       v6 = v11;
     }
 
@@ -329,7 +329,7 @@ LABEL_12:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)candidateContainsEmoji
@@ -339,8 +339,8 @@ LABEL_12:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(TIWordEntry *)self allKeyboardInputsM];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeyboardInputsM = [(TIWordEntry *)self allKeyboardInputsM];
+  v3 = [allKeyboardInputsM countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -350,20 +350,20 @@ LABEL_12:
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeyboardInputsM);
         }
 
-        v6 = [*(*(&v10 + 1) + 8 * i) string];
-        v7 = [v6 _containsEmoji];
+        string = [*(*(&v10 + 1) + 8 * i) string];
+        _containsEmoji = [string _containsEmoji];
 
-        if (v7)
+        if (_containsEmoji)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [allKeyboardInputsM countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -379,27 +379,27 @@ LABEL_11:
   return v3;
 }
 
-- (void)setEditActionType:(int)a3
+- (void)setEditActionType:(int)type
 {
-  if (a3)
+  if (type)
   {
-    self->_editActionType = a3;
+    self->_editActionType = type;
   }
 }
 
-- (void)addUserEdit:(id)a3
+- (void)addUserEdit:(id)edit
 {
-  v11 = a3;
+  editCopy = edit;
   if ([(TIWordEntry *)self origin]== 1)
   {
-    v4 = [(TIWordEntry *)self allEdits];
-    v5 = [v4 count];
+    allEdits = [(TIWordEntry *)self allEdits];
+    v5 = [allEdits count];
 
     if (!v5)
     {
-      v6 = [(TIWordEntry *)self acceptedString];
-      v7 = [v11 acceptedString];
-      v8 = [v6 isEqualToString:v7];
+      acceptedString = [(TIWordEntry *)self acceptedString];
+      acceptedString2 = [editCopy acceptedString];
+      v8 = [acceptedString isEqualToString:acceptedString2];
 
       if (v8)
       {
@@ -411,21 +411,21 @@ LABEL_11:
         v9 = 3;
       }
 
-      [v11 setOrigin:v9];
+      [editCopy setOrigin:v9];
     }
   }
 
-  v10 = [(TIWordEntry *)self allEdits];
-  [v10 addObject:v11];
+  allEdits2 = [(TIWordEntry *)self allEdits];
+  [allEdits2 addObject:editCopy];
 }
 
 - (BOOL)isPeriodFromDoubleSpaceEntry
 {
-  v3 = [(TIKeyboardCandidate *)self->_acceptedCandidate candidate];
-  if ([v3 isEqualToString:@"."])
+  candidate = [(TIKeyboardCandidate *)self->_acceptedCandidate candidate];
+  if ([candidate isEqualToString:@"."])
   {
-    v4 = [(TIKeyboardCandidate *)self->_acceptedCandidate input];
-    v5 = [v4 isEqualToString:@" "];
+    input = [(TIKeyboardCandidate *)self->_acceptedCandidate input];
+    v5 = [input isEqualToString:@" "];
   }
 
   else
@@ -438,12 +438,12 @@ LABEL_11:
 
 - (BOOL)endsWithNewLine
 {
-  v3 = [(TIWordEntry *)self acceptedString];
+  acceptedString = [(TIWordEntry *)self acceptedString];
 
-  if (v3)
+  if (acceptedString)
   {
-    v4 = [(TIWordEntry *)self allKeyboardInputs];
-    v5 = [v4 count];
+    allKeyboardInputs = [(TIWordEntry *)self allKeyboardInputs];
+    v5 = [allKeyboardInputs count];
 
     v6 = (v5 - 1);
     if (v5 - 1 >= 0)
@@ -452,19 +452,19 @@ LABEL_11:
       v8 = 0;
       do
       {
-        v9 = [(TIWordEntry *)self allKeyboardInputs];
-        v10 = [v9 objectAtIndex:v6];
+        allKeyboardInputs2 = [(TIWordEntry *)self allKeyboardInputs];
+        v10 = [allKeyboardInputs2 objectAtIndex:v6];
 
-        v11 = [v10 string];
+        string = [v10 string];
 
-        if (v11)
+        if (string)
         {
           v12 = MEMORY[0x277CCA900];
-          v13 = [v10 string];
-          v14 = [v12 characterSetWithCharactersInString:v13];
+          string2 = [v10 string];
+          v14 = [v12 characterSetWithCharactersInString:string2];
 
-          v15 = [MEMORY[0x277CCA900] newlineCharacterSet];
-          v16 = [v15 isSupersetOfSet:v14];
+          newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+          v16 = [newlineCharacterSet isSupersetOfSet:v14];
 
           if (v16)
           {
@@ -479,8 +479,8 @@ LABEL_11:
 
           else
           {
-            v17 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-            v18 = [v17 isSupersetOfSet:v14];
+            alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+            v18 = [alphanumericCharacterSet isSupersetOfSet:v14];
 
             if (!(v7 & 1 | ((v18 & 1) == 0)))
             {
@@ -504,12 +504,12 @@ LABEL_15:
 
 - (BOOL)startsWithNewLine
 {
-  v3 = [(TIWordEntry *)self acceptedString];
+  acceptedString = [(TIWordEntry *)self acceptedString];
 
-  if (v3)
+  if (acceptedString)
   {
-    v4 = [(TIWordEntry *)self allKeyboardInputs];
-    v5 = [v4 count];
+    allKeyboardInputs = [(TIWordEntry *)self allKeyboardInputs];
+    v5 = [allKeyboardInputs count];
 
     if (v5)
     {
@@ -518,19 +518,19 @@ LABEL_15:
       v8 = 0;
       do
       {
-        v9 = [(TIWordEntry *)self allKeyboardInputs];
-        v10 = [v9 objectAtIndex:v6];
+        allKeyboardInputs2 = [(TIWordEntry *)self allKeyboardInputs];
+        v10 = [allKeyboardInputs2 objectAtIndex:v6];
 
-        v11 = [v10 string];
+        string = [v10 string];
 
-        if (v11)
+        if (string)
         {
           v12 = MEMORY[0x277CCA900];
-          v13 = [v10 string];
-          v14 = [v12 characterSetWithCharactersInString:v13];
+          string2 = [v10 string];
+          v14 = [v12 characterSetWithCharactersInString:string2];
 
-          v15 = [MEMORY[0x277CCA900] newlineCharacterSet];
-          v16 = [v15 isSupersetOfSet:v14];
+          newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+          v16 = [newlineCharacterSet isSupersetOfSet:v14];
 
           if (v16)
           {
@@ -545,8 +545,8 @@ LABEL_15:
 
           else
           {
-            v17 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-            v18 = [v17 isSupersetOfSet:v14];
+            alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+            v18 = [alphanumericCharacterSet isSupersetOfSet:v14];
 
             if (!(v7 & 1 | ((v18 & 1) == 0)))
             {
@@ -560,8 +560,8 @@ LABEL_14:
         }
 
         ++v6;
-        v19 = [(TIWordEntry *)self allKeyboardInputs];
-        v20 = [v19 count];
+        allKeyboardInputs3 = [(TIWordEntry *)self allKeyboardInputs];
+        v20 = [allKeyboardInputs3 count];
       }
 
       while (v20 > v6);
@@ -574,119 +574,119 @@ LABEL_14:
 
 - (NSArray)touchLayouts
 {
-  v2 = [(TIWordEntry *)self touchLayoutsM];
-  v3 = [v2 copy];
+  touchLayoutsM = [(TIWordEntry *)self touchLayoutsM];
+  v3 = [touchLayoutsM copy];
 
   return v3;
 }
 
 - (NSArray)candidatesOffered
 {
-  v2 = [(TIWordEntry *)self candidatesOfferedM];
-  v3 = [v2 copy];
+  candidatesOfferedM = [(TIWordEntry *)self candidatesOfferedM];
+  v3 = [candidatesOfferedM copy];
 
   return v3;
 }
 
 - (NSArray)allTouches
 {
-  v2 = [(TIWordEntry *)self allTouchesM];
-  v3 = [v2 copy];
+  allTouchesM = [(TIWordEntry *)self allTouchesM];
+  v3 = [allTouchesM copy];
 
   return v3;
 }
 
 - (NSArray)allKeyboardInputs
 {
-  v2 = [(TIWordEntry *)self allKeyboardInputsM];
-  v3 = [v2 copy];
+  allKeyboardInputsM = [(TIWordEntry *)self allKeyboardInputsM];
+  v3 = [allKeyboardInputsM copy];
 
   return v3;
 }
 
 - (void)clearTouches
 {
-  v3 = [(TIWordEntry *)self allTouchesM];
-  [v3 removeAllObjects];
+  allTouchesM = [(TIWordEntry *)self allTouchesM];
+  [allTouchesM removeAllObjects];
 
-  v4 = [(TIWordEntry *)self touchLayoutsM];
-  [v4 removeAllObjects];
+  touchLayoutsM = [(TIWordEntry *)self touchLayoutsM];
+  [touchLayoutsM removeAllObjects];
 }
 
-- (void)addTouchEvent:(id)a3 withLayoutId:(unint64_t)a4
+- (void)addTouchEvent:(id)event withLayoutId:(unint64_t)id
 {
-  v6 = a3;
-  v7 = [(TIWordEntry *)self allTouchesM];
-  [v7 addObject:v6];
+  eventCopy = event;
+  allTouchesM = [(TIWordEntry *)self allTouchesM];
+  [allTouchesM addObject:eventCopy];
 
-  v9 = [(TIWordEntry *)self touchLayoutsM];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [v9 addObject:v8];
+  touchLayoutsM = [(TIWordEntry *)self touchLayoutsM];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:id];
+  [touchLayoutsM addObject:v8];
 }
 
 - (void)clearCandidatesOffered
 {
-  v2 = [(TIWordEntry *)self candidatesOfferedM];
-  [v2 removeAllObjects];
+  candidatesOfferedM = [(TIWordEntry *)self candidatesOfferedM];
+  [candidatesOfferedM removeAllObjects];
 }
 
-- (void)addCandidateOffered:(id)a3
+- (void)addCandidateOffered:(id)offered
 {
-  v4 = a3;
-  v5 = [(TIWordEntry *)self candidatesOfferedM];
-  [v5 removeAllObjects];
+  offeredCopy = offered;
+  candidatesOfferedM = [(TIWordEntry *)self candidatesOfferedM];
+  [candidatesOfferedM removeAllObjects];
 
-  v6 = [(TIWordEntry *)self candidatesOfferedM];
-  [v6 addObject:v4];
+  candidatesOfferedM2 = [(TIWordEntry *)self candidatesOfferedM];
+  [candidatesOfferedM2 addObject:offeredCopy];
 }
 
 - (void)clearKeyInputs
 {
-  v2 = [(TIWordEntry *)self allKeyboardInputsM];
-  [v2 removeAllObjects];
+  allKeyboardInputsM = [(TIWordEntry *)self allKeyboardInputsM];
+  [allKeyboardInputsM removeAllObjects];
 }
 
-- (void)addKeyInput:(id)a3
+- (void)addKeyInput:(id)input
 {
-  v4 = a3;
-  v5 = [(TIWordEntry *)self allKeyboardInputsM];
-  [v5 addObject:v4];
+  inputCopy = input;
+  allKeyboardInputsM = [(TIWordEntry *)self allKeyboardInputsM];
+  [allKeyboardInputsM addObject:inputCopy];
 }
 
 - (id)descriptionWithContext
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TIUserAction *)self documentState];
-  v5 = [v4 contextBeforeInput];
-  v6 = [(TIWordEntry *)self acceptedString];
-  v7 = [v3 stringWithFormat:@"%@ <%@>", v5, v6];
+  documentState = [(TIUserAction *)self documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
+  acceptedString = [(TIWordEntry *)self acceptedString];
+  v7 = [v3 stringWithFormat:@"%@ <%@>", contextBeforeInput, acceptedString];
 
   return v7;
 }
 
 - (id)description
 {
-  v3 = [(TIWordEntry *)self acceptedString];
+  acceptedString = [(TIWordEntry *)self acceptedString];
 
-  if (v3)
+  if (acceptedString)
   {
-    v4 = [(TIWordEntry *)self acceptedString];
+    acceptedString2 = [(TIWordEntry *)self acceptedString];
   }
 
   else
   {
-    v4 = &stru_283FDFAF8;
+    acceptedString2 = &stru_283FDFAF8;
   }
 
-  return v4;
+  return acceptedString2;
 }
 
 - (TIWordEntry)editedEntry
 {
-  v2 = [(TIWordEntry *)self allEdits];
-  v3 = [v2 lastObject];
+  allEdits = [(TIWordEntry *)self allEdits];
+  lastObject = [allEdits lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSMutableArray)allEdits
@@ -694,9 +694,9 @@ LABEL_14:
   allEdits = self->_allEdits;
   if (!allEdits)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_allEdits;
-    self->_allEdits = v4;
+    self->_allEdits = array;
 
     allEdits = self->_allEdits;
   }
@@ -704,125 +704,125 @@ LABEL_14:
   return allEdits;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TIWordEntry;
-  v4 = a3;
-  [(TIUserAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_allKeyboardInputsM forKey:{@"allKeyboardInputsM", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_allTouchesM forKey:@"allTouchesM"];
-  [v4 encodeObject:self->_touchLayoutsM forKey:@"touchLayoutsM"];
-  [v4 encodeObject:self->_candidatesOfferedM forKey:@"candidatesOfferedM"];
-  [v4 encodeObject:self->_acceptedString forKey:@"acceptedString"];
-  [v4 encodeObject:self->_acceptedCandidate forKey:@"acceptedCandidate"];
-  [v4 encodeObject:self->_originalAcceptedString forKey:@"originalAcceptedString"];
-  [v4 encodeObject:self->_originalCandidate forKey:@"originalCandidate"];
-  [v4 encodeObject:self->_orientation forKey:@"orientation"];
-  [v4 encodeInt:self->_wordEntryType forKey:@"wordEntryType"];
-  [v4 encodeBool:self->_deleted forKey:@"deleted"];
-  [v4 encodeBool:self->_cancelled forKey:@"cancelled"];
-  [v4 encodeBool:self->_includesCursorEdits forKey:@"includesCursorEdits"];
-  [v4 encodeBool:self->_includesOrientationChange forKey:@"includesOrientationChange"];
-  [v4 encodeBool:self->_extendsPriorWord forKey:@"extendsPriorWord"];
-  [v4 encodeBool:self->_isRetrocorrection forKey:@"isRetrocorrection"];
-  [v4 encodeBool:self->_isMultilingual forKey:@"isMultilingual"];
-  [v4 encodeBool:self->_isContinuousPathCompletion forKey:@"isContinuousPathCompletion"];
-  [v4 encodeObject:self->_inputStem forKey:@"inputStem"];
-  [v4 encodeObject:self->_inputContext forKey:@"inputContext"];
-  [v4 encodeInteger:self->_layoutID forKey:@"layoutID"];
-  [v4 encodeInteger:self->_candidateIndex forKey:@"candidateIndex"];
-  [v4 encodeObject:self->_inputTriggeredTextAccepted forKey:@"inputTriggeredTextAccepted"];
-  [v4 encodeBool:self->_isPunctuationEntryFollowingAWord forKey:@"isPunctuationEntryFollowingAWord"];
-  [v4 encodeInt:self->_unfinishedWordEntryTreatment forKey:@"unfinishedWordEntryTreatment"];
-  [v4 encodeBool:self->_originalWordInAlignment forKey:@"originalWordInAlignment"];
-  [v4 encodeInt:self->_origin forKey:@"origin"];
+  coderCopy = coder;
+  [(TIUserAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_allKeyboardInputsM forKey:{@"allKeyboardInputsM", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_allTouchesM forKey:@"allTouchesM"];
+  [coderCopy encodeObject:self->_touchLayoutsM forKey:@"touchLayoutsM"];
+  [coderCopy encodeObject:self->_candidatesOfferedM forKey:@"candidatesOfferedM"];
+  [coderCopy encodeObject:self->_acceptedString forKey:@"acceptedString"];
+  [coderCopy encodeObject:self->_acceptedCandidate forKey:@"acceptedCandidate"];
+  [coderCopy encodeObject:self->_originalAcceptedString forKey:@"originalAcceptedString"];
+  [coderCopy encodeObject:self->_originalCandidate forKey:@"originalCandidate"];
+  [coderCopy encodeObject:self->_orientation forKey:@"orientation"];
+  [coderCopy encodeInt:self->_wordEntryType forKey:@"wordEntryType"];
+  [coderCopy encodeBool:self->_deleted forKey:@"deleted"];
+  [coderCopy encodeBool:self->_cancelled forKey:@"cancelled"];
+  [coderCopy encodeBool:self->_includesCursorEdits forKey:@"includesCursorEdits"];
+  [coderCopy encodeBool:self->_includesOrientationChange forKey:@"includesOrientationChange"];
+  [coderCopy encodeBool:self->_extendsPriorWord forKey:@"extendsPriorWord"];
+  [coderCopy encodeBool:self->_isRetrocorrection forKey:@"isRetrocorrection"];
+  [coderCopy encodeBool:self->_isMultilingual forKey:@"isMultilingual"];
+  [coderCopy encodeBool:self->_isContinuousPathCompletion forKey:@"isContinuousPathCompletion"];
+  [coderCopy encodeObject:self->_inputStem forKey:@"inputStem"];
+  [coderCopy encodeObject:self->_inputContext forKey:@"inputContext"];
+  [coderCopy encodeInteger:self->_layoutID forKey:@"layoutID"];
+  [coderCopy encodeInteger:self->_candidateIndex forKey:@"candidateIndex"];
+  [coderCopy encodeObject:self->_inputTriggeredTextAccepted forKey:@"inputTriggeredTextAccepted"];
+  [coderCopy encodeBool:self->_isPunctuationEntryFollowingAWord forKey:@"isPunctuationEntryFollowingAWord"];
+  [coderCopy encodeInt:self->_unfinishedWordEntryTreatment forKey:@"unfinishedWordEntryTreatment"];
+  [coderCopy encodeBool:self->_originalWordInAlignment forKey:@"originalWordInAlignment"];
+  [coderCopy encodeInt:self->_origin forKey:@"origin"];
 }
 
-- (TIWordEntry)initWithCoder:(id)a3
+- (TIWordEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = TIWordEntry;
-  v5 = [(TIUserAction *)&v43 initWithCoder:v4];
+  v5 = [(TIUserAction *)&v43 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"allKeyboardInputsM"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"allKeyboardInputsM"];
     allKeyboardInputsM = v5->_allKeyboardInputsM;
     v5->_allKeyboardInputsM = v9;
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"allTouchesM"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"allTouchesM"];
     allTouchesM = v5->_allTouchesM;
     v5->_allTouchesM = v14;
 
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"touchLayoutsM"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"touchLayoutsM"];
     touchLayoutsM = v5->_touchLayoutsM;
     v5->_touchLayoutsM = v19;
 
     v21 = MEMORY[0x277CBEB98];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"candidatesOffered"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"candidatesOffered"];
     candidatesOfferedM = v5->_candidatesOfferedM;
     v5->_candidatesOfferedM = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acceptedString"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acceptedString"];
     acceptedString = v5->_acceptedString;
     v5->_acceptedString = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acceptedCandidate"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acceptedCandidate"];
     acceptedCandidate = v5->_acceptedCandidate;
     v5->_acceptedCandidate = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalAcceptedString"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalAcceptedString"];
     originalAcceptedString = v5->_originalAcceptedString;
     v5->_originalAcceptedString = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalCandidate"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalCandidate"];
     originalCandidate = v5->_originalCandidate;
     v5->_originalCandidate = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orientation"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orientation"];
     orientation = v5->_orientation;
     v5->_orientation = v34;
 
-    v5->_wordEntryType = [v4 decodeIntForKey:@"wordEntryType"];
-    v5->_deleted = [v4 decodeBoolForKey:@"deleted"];
-    v5->_cancelled = [v4 decodeBoolForKey:@"cancelled"];
-    v5->_includesCursorEdits = [v4 decodeBoolForKey:@"includesCursorEdits"];
-    v5->_includesOrientationChange = [v4 decodeBoolForKey:@"includesOrientationChange"];
-    v5->_extendsPriorWord = [v4 decodeBoolForKey:@"extendsPriorWord"];
-    v5->_isRetrocorrection = [v4 decodeBoolForKey:@"isRetrocorrection"];
-    v5->_isMultilingual = [v4 decodeBoolForKey:@"isMultilingual"];
-    v5->_isOOV = [v4 decodeBoolForKey:@"isOOV"];
-    v5->_isContinuousPathCompletion = [v4 decodeBoolForKey:@"isContinuousPathCompletion"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputStem"];
+    v5->_wordEntryType = [coderCopy decodeIntForKey:@"wordEntryType"];
+    v5->_deleted = [coderCopy decodeBoolForKey:@"deleted"];
+    v5->_cancelled = [coderCopy decodeBoolForKey:@"cancelled"];
+    v5->_includesCursorEdits = [coderCopy decodeBoolForKey:@"includesCursorEdits"];
+    v5->_includesOrientationChange = [coderCopy decodeBoolForKey:@"includesOrientationChange"];
+    v5->_extendsPriorWord = [coderCopy decodeBoolForKey:@"extendsPriorWord"];
+    v5->_isRetrocorrection = [coderCopy decodeBoolForKey:@"isRetrocorrection"];
+    v5->_isMultilingual = [coderCopy decodeBoolForKey:@"isMultilingual"];
+    v5->_isOOV = [coderCopy decodeBoolForKey:@"isOOV"];
+    v5->_isContinuousPathCompletion = [coderCopy decodeBoolForKey:@"isContinuousPathCompletion"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputStem"];
     inputStem = v5->_inputStem;
     v5->_inputStem = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputContext"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputContext"];
     inputContext = v5->_inputContext;
     v5->_inputContext = v38;
 
-    v5->_layoutID = [v4 decodeIntegerForKey:@"layoutID"];
-    v5->_candidateIndex = [v4 decodeIntegerForKey:@"candidateIndex"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputTriggeredTextAccepted"];
+    v5->_layoutID = [coderCopy decodeIntegerForKey:@"layoutID"];
+    v5->_candidateIndex = [coderCopy decodeIntegerForKey:@"candidateIndex"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputTriggeredTextAccepted"];
     inputTriggeredTextAccepted = v5->_inputTriggeredTextAccepted;
     v5->_inputTriggeredTextAccepted = v40;
 
-    v5->_isPunctuationEntryFollowingAWord = [v4 decodeBoolForKey:@"isPunctuationEntryFollowingAWord"];
-    v5->_unfinishedWordEntryTreatment = [v4 decodeIntForKey:@"unfinishedWordEntryTreatment"];
-    v5->_originalWordInAlignment = [v4 decodeBoolForKey:@"originalWordInAlignment"];
-    v5->_origin = [v4 decodeIntForKey:@"origin"];
+    v5->_isPunctuationEntryFollowingAWord = [coderCopy decodeBoolForKey:@"isPunctuationEntryFollowingAWord"];
+    v5->_unfinishedWordEntryTreatment = [coderCopy decodeIntForKey:@"unfinishedWordEntryTreatment"];
+    v5->_originalWordInAlignment = [coderCopy decodeBoolForKey:@"originalWordInAlignment"];
+    v5->_origin = [coderCopy decodeIntForKey:@"origin"];
     [(TIUserAction *)v5 setActionType:0];
   }
 
@@ -836,21 +836,21 @@ LABEL_14:
   v2 = [(TIUserAction *)&v12 initWithTIKeyboardState:0];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     allKeyboardInputsM = v2->_allKeyboardInputsM;
-    v2->_allKeyboardInputsM = v3;
+    v2->_allKeyboardInputsM = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     allTouchesM = v2->_allTouchesM;
-    v2->_allTouchesM = v5;
+    v2->_allTouchesM = array2;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     candidatesOfferedM = v2->_candidatesOfferedM;
-    v2->_candidatesOfferedM = v7;
+    v2->_candidatesOfferedM = array3;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     touchLayoutsM = v2->_touchLayoutsM;
-    v2->_touchLayoutsM = v9;
+    v2->_touchLayoutsM = array4;
 
     v2->_unfinishedWordEntryTreatment = 0;
     v2->_origin = 0;

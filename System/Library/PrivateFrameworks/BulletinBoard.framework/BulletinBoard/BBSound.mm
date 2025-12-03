@@ -1,36 +1,36 @@
 @interface BBSound
-- (BBSound)initWithCoder:(id)a3;
-- (BBSound)initWithToneAlert:(int64_t)a3;
-- (BBSound)initWithToneAlertConfiguration:(id)a3;
+- (BBSound)initWithCoder:(id)coder;
+- (BBSound)initWithToneAlert:(int64_t)alert;
+- (BBSound)initWithToneAlertConfiguration:(id)configuration;
 - (BOOL)ignoreRingerSwitch;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)accountIdentifier;
 - (NSString)toneIdentifier;
 - (NSString)vibrationIdentifier;
-- (id)awakeAfterUsingCoder:(id)a3;
+- (id)awakeAfterUsingCoder:(id)coder;
 - (id)description;
-- (id)replacementObjectForCoder:(id)a3;
+- (id)replacementObjectForCoder:(id)coder;
 - (int64_t)alertType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBSound
 
 - (id)description
 {
-  v3 = [(BBSound *)self soundType];
-  switch(v3)
+  soundType = [(BBSound *)self soundType];
+  switch(soundType)
   {
     case 2:
       v18 = MEMORY[0x277CCACA8];
-      v7 = [(BBSound *)self alertConfiguration];
-      v8 = [v18 stringWithFormat:@"alertConfiguration: %@ ", v7];;
+      alertConfiguration = [(BBSound *)self alertConfiguration];
+      v8 = [v18 stringWithFormat:@"alertConfiguration: %@ ", alertConfiguration];;
       v9 = @"ToneAlert";
       goto LABEL_12;
     case 1:
       v10 = MEMORY[0x277CCACA8];
-      v7 = [(BBSound *)self ringtoneName];
+      alertConfiguration = [(BBSound *)self ringtoneName];
       if ([(BBSound *)self isRepeating])
       {
         v11 = @"YES";
@@ -43,25 +43,25 @@
 
       [(BBSound *)self maxDuration];
       v13 = v12;
-      v14 = [(BBSound *)self vibrationPattern];
-      v15 = [(BBSound *)self audioCategory];
-      v16 = v15;
+      vibrationPattern = [(BBSound *)self vibrationPattern];
+      audioCategory = [(BBSound *)self audioCategory];
+      v16 = audioCategory;
       v17 = @"Default";
-      if (v15)
+      if (audioCategory)
       {
-        v17 = v15;
+        v17 = audioCategory;
       }
 
-      v8 = [v10 stringWithFormat:@"name: %@ repeats: %@; maxDuration: %lf; vibPattern: %@; audioCategory: %@", v7, v11, v13, v14, v17];;
+      v8 = [v10 stringWithFormat:@"name: %@ repeats: %@; maxDuration: %lf; vibPattern: %@; audioCategory: %@", alertConfiguration, v11, v13, vibrationPattern, v17];;
 
       v9 = @"Ringtone";
       goto LABEL_12;
     case 0:
       v4 = MEMORY[0x277CCACA8];
-      v5 = [(BBSound *)self systemSoundID];
-      v6 = [(BBSound *)self soundBehavior];
-      v7 = [(BBSound *)self vibrationPattern];
-      v8 = [v4 stringWithFormat:@"soundID: %u behavior: %lu; vibPattern: %@", v5, v6, v7];;
+      systemSoundID = [(BBSound *)self systemSoundID];
+      soundBehavior = [(BBSound *)self soundBehavior];
+      alertConfiguration = [(BBSound *)self vibrationPattern];
+      v8 = [v4 stringWithFormat:@"soundID: %u behavior: %lu; vibPattern: %@", systemSoundID, soundBehavior, alertConfiguration];;
       v9 = @"SystemSound";
 LABEL_12:
 
@@ -79,11 +79,11 @@ LABEL_14:
 - (unint64_t)hash
 {
   v3 = 1 << ([(BBSound *)self soundType]+ 8);
-  v4 = [(BBSound *)self alertConfiguration];
-  v5 = [v4 hash] + v3;
+  alertConfiguration = [(BBSound *)self alertConfiguration];
+  v5 = [alertConfiguration hash] + v3;
 
-  v6 = [(BBSound *)self audioCategory];
-  v7 = v5 + [v6 hash];
+  audioCategory = [(BBSound *)self audioCategory];
+  v7 = v5 + [audioCategory hash];
 
   v8 = MEMORY[0x277CCABB0];
   [(BBSound *)self maxDuration];
@@ -91,28 +91,28 @@ LABEL_14:
   v10 = v7 + [v9 hash];
 
   v11 = v10 + [(BBSound *)self isRepeating];
-  v12 = [(BBSound *)self ringtoneName];
-  v13 = [v12 hash];
+  ringtoneName = [(BBSound *)self ringtoneName];
+  v13 = [ringtoneName hash];
 
   v14 = v11 + v13 + [(BBSound *)self soundBehavior];
   v15 = v14 + [(BBSound *)self systemSoundID];
-  v16 = [(BBSound *)self vibrationPattern];
-  v17 = [v16 hash];
+  vibrationPattern = [(BBSound *)self vibrationPattern];
+  v17 = [vibrationPattern hash];
 
   return v15 + v17;
 }
 
-- (BBSound)initWithToneAlert:(int64_t)a3
+- (BBSound)initWithToneAlert:(int64_t)alert
 {
-  v4 = [objc_alloc(MEMORY[0x277D71F58]) initWithType:a3];
+  v4 = [objc_alloc(MEMORY[0x277D71F58]) initWithType:alert];
   v5 = [(BBSound *)self initWithToneAlertConfiguration:v4];
 
   return v5;
 }
 
-- (BBSound)initWithToneAlertConfiguration:(id)a3
+- (BBSound)initWithToneAlertConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = BBSound;
   v5 = [(BBSound *)&v8 init];
@@ -120,17 +120,17 @@ LABEL_14:
   if (v5)
   {
     [(BBSound *)v5 setSoundType:2];
-    [v4 setPrefersToDisallowExternalPlayback:1];
-    [(BBSound *)v6 setAlertConfiguration:v4];
+    [configurationCopy setPrefersToDisallowExternalPlayback:1];
+    [(BBSound *)v6 setAlertConfiguration:configurationCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -140,21 +140,21 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(BBSound *)self alertConfiguration];
-      v7 = [(BBSound *)v5 alertConfiguration];
+      v5 = equalCopy;
+      alertConfiguration = [(BBSound *)self alertConfiguration];
+      alertConfiguration2 = [(BBSound *)v5 alertConfiguration];
       if (BSEqualObjects())
       {
-        v8 = [(BBSound *)self audioCategory];
-        v9 = [(BBSound *)v5 audioCategory];
+        audioCategory = [(BBSound *)self audioCategory];
+        audioCategory2 = [(BBSound *)v5 audioCategory];
         if (BSEqualObjects() && ([(BBSound *)self maxDuration], [(BBSound *)v5 maxDuration], BSFloatEqualToFloat()) && (v10 = [(BBSound *)self isRepeating], v10 == [(BBSound *)v5 isRepeating]))
         {
-          v13 = [(BBSound *)self ringtoneName];
-          v14 = [(BBSound *)v5 ringtoneName];
+          ringtoneName = [(BBSound *)self ringtoneName];
+          ringtoneName2 = [(BBSound *)v5 ringtoneName];
           if (BSEqualObjects() && (v15 = [(BBSound *)self soundBehavior], v15 == [(BBSound *)v5 soundBehavior]) && (v16 = [(BBSound *)self soundType], v16 == [(BBSound *)v5 soundType]) && (v17 = [(BBSound *)self systemSoundID], v17 == [(BBSound *)v5 systemSoundID]))
           {
-            v19 = [(BBSound *)self vibrationPattern];
-            v18 = [(BBSound *)v5 vibrationPattern];
+            vibrationPattern = [(BBSound *)self vibrationPattern];
+            vibrationPattern2 = [(BBSound *)v5 vibrationPattern];
             v11 = BSEqualObjects();
           }
 
@@ -185,113 +185,113 @@ LABEL_14:
   return v11;
 }
 
-- (BBSound)initWithCoder:(id)a3
+- (BBSound)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = BBSound;
   v5 = [(BBSound *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertConfiguration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertConfiguration"];
     [(BBSound *)v5 setAlertConfiguration:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioCategory"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioCategory"];
     [(BBSound *)v5 setAudioCategory:v7];
 
-    [v4 decodeDoubleForKey:@"maxDuration"];
+    [coderCopy decodeDoubleForKey:@"maxDuration"];
     [(BBSound *)v5 setMaxDuration:?];
-    -[BBSound setRepeats:](v5, "setRepeats:", [v4 decodeBoolForKey:@"repeats"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ringtoneName"];
+    -[BBSound setRepeats:](v5, "setRepeats:", [coderCopy decodeBoolForKey:@"repeats"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ringtoneName"];
     [(BBSound *)v5 setRingtoneName:v8];
 
-    -[BBSound setSoundBehavior:](v5, "setSoundBehavior:", [v4 decodeInt32ForKey:@"soundBehavior"]);
-    -[BBSound setSoundType:](v5, "setSoundType:", [v4 decodeInt32ForKey:@"soundType"]);
-    -[BBSound setSystemSoundID:](v5, "setSystemSoundID:", [v4 decodeInt32ForKey:@"systemSoundID"]);
+    -[BBSound setSoundBehavior:](v5, "setSoundBehavior:", [coderCopy decodeInt32ForKey:@"soundBehavior"]);
+    -[BBSound setSoundType:](v5, "setSoundType:", [coderCopy decodeInt32ForKey:@"soundType"]);
+    -[BBSound setSystemSoundID:](v5, "setSystemSoundID:", [coderCopy decodeInt32ForKey:@"systemSoundID"]);
     v9 = BBAllowedClasses();
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"vibrationPattern"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"vibrationPattern"];
     [(BBSound *)v5 setVibrationPattern:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BBSound *)self alertConfiguration];
-  [v4 encodeObject:v5 forKey:@"alertConfiguration"];
+  coderCopy = coder;
+  alertConfiguration = [(BBSound *)self alertConfiguration];
+  [coderCopy encodeObject:alertConfiguration forKey:@"alertConfiguration"];
 
-  v6 = [(BBSound *)self audioCategory];
-  [v4 encodeObject:v6 forKey:@"audioCategory"];
+  audioCategory = [(BBSound *)self audioCategory];
+  [coderCopy encodeObject:audioCategory forKey:@"audioCategory"];
 
   [(BBSound *)self maxDuration];
-  [v4 encodeDouble:@"maxDuration" forKey:?];
-  [v4 encodeBool:-[BBSound isRepeating](self forKey:{"isRepeating"), @"repeats"}];
-  v7 = [(BBSound *)self ringtoneName];
-  [v4 encodeObject:v7 forKey:@"ringtoneName"];
+  [coderCopy encodeDouble:@"maxDuration" forKey:?];
+  [coderCopy encodeBool:-[BBSound isRepeating](self forKey:{"isRepeating"), @"repeats"}];
+  ringtoneName = [(BBSound *)self ringtoneName];
+  [coderCopy encodeObject:ringtoneName forKey:@"ringtoneName"];
 
-  [v4 encodeInteger:-[BBSound soundBehavior](self forKey:{"soundBehavior"), @"soundBehavior"}];
-  [v4 encodeInteger:-[BBSound soundType](self forKey:{"soundType"), @"soundType"}];
-  [v4 encodeInt32:-[BBSound systemSoundID](self forKey:{"systemSoundID"), @"systemSoundID"}];
-  v8 = [(BBSound *)self vibrationPattern];
-  [v4 encodeObject:v8 forKey:@"vibrationPattern"];
+  [coderCopy encodeInteger:-[BBSound soundBehavior](self forKey:{"soundBehavior"), @"soundBehavior"}];
+  [coderCopy encodeInteger:-[BBSound soundType](self forKey:{"soundType"), @"soundType"}];
+  [coderCopy encodeInt32:-[BBSound systemSoundID](self forKey:{"systemSoundID"), @"systemSoundID"}];
+  vibrationPattern = [(BBSound *)self vibrationPattern];
+  [coderCopy encodeObject:vibrationPattern forKey:@"vibrationPattern"];
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
-  v4 = [self bb_objectCache];
-  v5 = [v4 cacheObject:self];
+  bb_objectCache = [self bb_objectCache];
+  v5 = [bb_objectCache cacheObject:self];
 
   return v5;
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
-  v4 = [self bb_objectCache];
-  v5 = [v4 cacheObject:self];
+  bb_objectCache = [self bb_objectCache];
+  v5 = [bb_objectCache cacheObject:self];
 
   return v5;
 }
 
 - (int64_t)alertType
 {
-  v2 = [(BBSound *)self alertConfiguration];
-  v3 = [v2 type];
+  alertConfiguration = [(BBSound *)self alertConfiguration];
+  type = [alertConfiguration type];
 
-  return v3;
+  return type;
 }
 
 - (NSString)accountIdentifier
 {
-  v2 = [(BBSound *)self alertConfiguration];
-  v3 = [v2 topic];
+  alertConfiguration = [(BBSound *)self alertConfiguration];
+  topic = [alertConfiguration topic];
 
-  return v3;
+  return topic;
 }
 
 - (NSString)toneIdentifier
 {
-  v2 = [(BBSound *)self alertConfiguration];
-  v3 = [v2 toneIdentifier];
+  alertConfiguration = [(BBSound *)self alertConfiguration];
+  toneIdentifier = [alertConfiguration toneIdentifier];
 
-  return v3;
+  return toneIdentifier;
 }
 
 - (NSString)vibrationIdentifier
 {
-  v2 = [(BBSound *)self alertConfiguration];
-  v3 = [v2 vibrationIdentifier];
+  alertConfiguration = [(BBSound *)self alertConfiguration];
+  vibrationIdentifier = [alertConfiguration vibrationIdentifier];
 
-  return v3;
+  return vibrationIdentifier;
 }
 
 - (BOOL)ignoreRingerSwitch
 {
-  v2 = [(BBSound *)self alertConfiguration];
-  v3 = [v2 shouldIgnoreRingerSwitch];
+  alertConfiguration = [(BBSound *)self alertConfiguration];
+  shouldIgnoreRingerSwitch = [alertConfiguration shouldIgnoreRingerSwitch];
 
-  return v3;
+  return shouldIgnoreRingerSwitch;
 }
 
 @end

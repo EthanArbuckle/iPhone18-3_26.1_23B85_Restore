@@ -1,19 +1,19 @@
 @interface SBDragAndDropToAppTransitionSwitcherModifier
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 @end
 
 @implementation SBDragAndDropToAppTransitionSwitcherModifier
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBDragAndDropToAppTransitionSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBDragAndDropToAppTransitionSwitcherModifier *)self medusaSettings];
-  v7 = [v6 resizeAnimationSettings];
-  [v5 setLayoutSettings:v7];
+  medusaSettings = [(SBDragAndDropToAppTransitionSwitcherModifier *)self medusaSettings];
+  resizeAnimationSettings = [medusaSettings resizeAnimationSettings];
+  [v5 setLayoutSettings:resizeAnimationSettings];
 
   [v5 setUpdateMode:3];
 

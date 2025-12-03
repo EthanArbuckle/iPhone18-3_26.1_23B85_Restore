@@ -41,35 +41,35 @@
 
 - (uint64_t)accessibilityContainer
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXContainerIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXContainerIdentifier);
 
   return [AssociatedObject referencedContainer];
 }
 
 - (uint64_t)accessibilityValue
 {
-  v1 = [a1 _internalAccessibilityAttributedValue];
+  _internalAccessibilityAttributedValue = [self _internalAccessibilityAttributedValue];
 
-  return [v1 string];
+  return [_internalAccessibilityAttributedValue string];
 }
 
 - (uint64_t)accessibilityHint
 {
-  v1 = [a1 _internalAccessibilityAttributedHint];
+  _internalAccessibilityAttributedHint = [self _internalAccessibilityAttributedHint];
 
-  return [v1 string];
+  return [_internalAccessibilityAttributedHint string];
 }
 
 - (uint64_t)accessibilityLabel
 {
-  v1 = [a1 _internalAccessibilityAttributedLabel];
+  _internalAccessibilityAttributedLabel = [self _internalAccessibilityAttributedLabel];
 
-  return [v1 string];
+  return [_internalAccessibilityAttributedLabel string];
 }
 
 - (uint64_t)accessibilityTraits
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXTraitsIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXTraitsIdentifier);
 
   return [AssociatedObject unsignedLongLongValue];
 }
@@ -77,13 +77,13 @@
 - (void)accessibilityUserInputLabels
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a1 _internalAccessibilityAttributedUserInputLabels];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _internalAccessibilityAttributedUserInputLabels = [self _internalAccessibilityAttributedUserInputLabels];
+  v4 = [_internalAccessibilityAttributedUserInputLabels countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -95,39 +95,39 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_internalAccessibilityAttributedUserInputLabels);
         }
 
-        [v2 addObject:{objc_msgSend(*(*(&v9 + 1) + 8 * v7++), "string")}];
+        [array addObject:{objc_msgSend(*(*(&v9 + 1) + 8 * v7++), "string")}];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_internalAccessibilityAttributedUserInputLabels countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  return v2;
+  return array;
 }
 
 - (uint64_t)isAccessibilityElement
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXIsElementIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXIsElementIdentifier);
 
   return [AssociatedObject BOOLValue];
 }
 
 - (uint64_t)shouldGroupAccessibilityChildren
 {
-  v1 = [a1 storedShouldGroupAccessibilityChildren];
+  storedShouldGroupAccessibilityChildren = [self storedShouldGroupAccessibilityChildren];
 
-  return [v1 BOOLValue];
+  return [storedShouldGroupAccessibilityChildren BOOLValue];
 }
 
 - (double)accessibilityActivationPoint
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXActivationPointIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXActivationPointIdentifier);
   if (AssociatedObject)
   {
 
@@ -136,7 +136,7 @@
 
   else
   {
-    [a1 accessibilityFrame];
+    [self accessibilityFrame];
     x = v10.origin.x;
     y = v10.origin.y;
     width = v10.size.width;
@@ -155,7 +155,7 @@
 
 - (double)accessibilityFrame
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXFrameIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXFrameIdentifier);
   if (!AssociatedObject)
   {
     return *MEMORY[0x1E695F058];
@@ -167,35 +167,35 @@
 
 - (uint64_t)accessibilityViewIsModal
 {
-  v1 = [a1 storedAccessibilityViewIsModal];
+  storedAccessibilityViewIsModal = [self storedAccessibilityViewIsModal];
 
-  return [v1 BOOLValue];
+  return [storedAccessibilityViewIsModal BOOLValue];
 }
 
 - (uint64_t)accessibilityElementsHidden
 {
-  v1 = [a1 storedAccessibilityElementsHidden];
+  storedAccessibilityElementsHidden = [self storedAccessibilityElementsHidden];
 
-  return [v1 BOOLValue];
+  return [storedAccessibilityElementsHidden BOOLValue];
 }
 
 - (uint64_t)accessibilityNavigationStyle
 {
-  v1 = [a1 storedAccessibilityNavigationStyle];
+  storedAccessibilityNavigationStyle = [self storedAccessibilityNavigationStyle];
 
-  return [v1 integerValue];
+  return [storedAccessibilityNavigationStyle integerValue];
 }
 
 - (uint64_t)accessibilityRespondsToUserInteraction
 {
-  v1 = [a1 storedAccessibilityRespondsToUserInteraction];
+  storedAccessibilityRespondsToUserInteraction = [self storedAccessibilityRespondsToUserInteraction];
 
-  return [v1 BOOLValue];
+  return [storedAccessibilityRespondsToUserInteraction BOOLValue];
 }
 
 - (uint64_t)accessibilityHeaderElements
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXHeaderElementsIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXHeaderElementsIdentifier);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -209,14 +209,14 @@
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
 
-  objc_setAssociatedObject(a1, &AXElementsHiddenIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXElementsHiddenIdentifier, v2, 1);
 }
 
 - (void)setAccessibilityViewIsModal:()UIAccessibility
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
 
-  objc_setAssociatedObject(a1, &AXViewIsModalIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXViewIsModalIdentifier, v2, 1);
 }
 
 - (uint64_t)setAccessibilityLabel:()UIAccessibility
@@ -227,7 +227,7 @@
     a3 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a3];
   }
 
-  return [a1 _internalSetAccessibilityAttributedLabel:a3];
+  return [self _internalSetAccessibilityAttributedLabel:a3];
 }
 
 - (uint64_t)setAccessibilityValue:()UIAccessibility
@@ -238,7 +238,7 @@
     a3 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a3];
   }
 
-  return [a1 _internalSetAccessibilityAttributedValue:a3];
+  return [self _internalSetAccessibilityAttributedValue:a3];
 }
 
 - (uint64_t)setAccessibilityHint:()UIAccessibility
@@ -249,35 +249,35 @@
     a3 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a3];
   }
 
-  return [a1 _internalSetAccessibilityAttributedHint:a3];
+  return [self _internalSetAccessibilityAttributedHint:a3];
 }
 
 - (void)setAccessibilityFrame:()UIAccessibility
 {
   v2 = [MEMORY[0x1E696B098] valueWithRect:?];
 
-  objc_setAssociatedObject(a1, &AXFrameIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXFrameIdentifier, v2, 1);
 }
 
 - (void)setAccessibilityActivationPoint:()UIAccessibility
 {
   v2 = [MEMORY[0x1E696B098] valueWithPoint:?];
 
-  objc_setAssociatedObject(a1, &AXActivationPointIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXActivationPointIdentifier, v2, 1);
 }
 
 - (void)setAccessibilityTraits:()UIAccessibility
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
 
-  objc_setAssociatedObject(a1, &AXTraitsIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXTraitsIdentifier, v2, 1);
 }
 
 - (void)setIsAccessibilityElement:()UIAccessibility
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
 
-  objc_setAssociatedObject(a1, &AXIsElementIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXIsElementIdentifier, v2, 1);
 }
 
 - (void)setAccessibilityContainer:()UIAccessibility
@@ -305,21 +305,21 @@
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
 
-  objc_setAssociatedObject(a1, &AXShouldGroupChildren, v2, 1);
+  objc_setAssociatedObject(self, &AXShouldGroupChildren, v2, 1);
 }
 
 - (void)setAccessibilityNavigationStyle:()UIAccessibility
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
 
-  objc_setAssociatedObject(a1, &AXNavigationStyle, v2, 1);
+  objc_setAssociatedObject(self, &AXNavigationStyle, v2, 1);
 }
 
 - (void)setAccessibilityRespondsToUserInteraction:()UIAccessibility
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
 
-  objc_setAssociatedObject(a1, &AXRespondsToUserInteractionIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXRespondsToUserInteractionIdentifier, v2, 1);
 }
 
 - (uint64_t)setAccessibilityUserInputLabels:()UIAccessibility
@@ -327,7 +327,7 @@
   v16 = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -346,7 +346,7 @@
             objc_enumerationMutation(a3);
           }
 
-          [v5 addObject:{objc_msgSend(objc_alloc(MEMORY[0x1E696AAB0]), "initWithString:", *(*(&v11 + 1) + 8 * i))}];
+          [array addObject:{objc_msgSend(objc_alloc(MEMORY[0x1E696AAB0]), "initWithString:", *(*(&v11 + 1) + 8 * i))}];
         }
 
         v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -358,15 +358,15 @@
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return [a1 _internalSetAccessibilityAttributedUserInputLabels:v5];
+  return [self _internalSetAccessibilityAttributedUserInputLabels:array];
 }
 
 - (uint64_t)accessibilityDirectTouchOptions
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXDirectTouchOptionsIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXDirectTouchOptionsIdentifier);
 
   return [AssociatedObject unsignedIntegerValue];
 }
@@ -375,7 +375,7 @@
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
 
-  objc_setAssociatedObject(a1, &AXDirectTouchOptionsIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXDirectTouchOptionsIdentifier, v2, 1);
 }
 
 - (void)setAccessibilityHeaderElements:()UIAccessibility
@@ -394,11 +394,11 @@
     v12 = objc_opt_class();
     [v10 raise:v11 format:{@"accessibilityHeaderElements must be an NSArray. Was actually: %@", NSStringFromClass(v12)}];
 LABEL_12:
-    v5 = 0;
+    weakObjectsPointerArray = 0;
     goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -417,7 +417,7 @@ LABEL_12:
           objc_enumerationMutation(a3);
         }
 
-        [v5 addPointer:*(*(&v13 + 1) + 8 * i)];
+        [weakObjectsPointerArray addPointer:*(*(&v13 + 1) + 8 * i)];
       }
 
       v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -427,7 +427,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  objc_setAssociatedObject(a1, &AXHeaderElementsIdentifier, v5, 1);
+  objc_setAssociatedObject(self, &AXHeaderElementsIdentifier, weakObjectsPointerArray, 1);
 }
 
 - (void)_accessibilitySetReturnBlock:()UIAccessibility forAttribute:
@@ -437,14 +437,14 @@ LABEL_13:
     return;
   }
 
-  v7 = [a1 _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
-  if (v7)
+  dictionary = [self _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
+  if (dictionary)
   {
     if (a3)
     {
 LABEL_5:
       v8 = _Block_copy(a3);
-      [v7 setObject:v8 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a4)}];
+      [dictionary setObject:v8 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a4)}];
 
       _Block_release(v8);
       return;
@@ -453,19 +453,19 @@ LABEL_5:
 
   else
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [a1 _accessibilitySetValue:v7 forKey:@"AccessibilityAttributeBlockStorageKey" storageMode:0];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [self _accessibilitySetValue:dictionary forKey:@"AccessibilityAttributeBlockStorageKey" storageMode:0];
     if (a3)
     {
       goto LABEL_5;
     }
   }
 
-  [v7 removeObjectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a4)}];
-  if (![v7 count])
+  [dictionary removeObjectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a4)}];
+  if (![dictionary count])
   {
 
-    [a1 _accessibilitySetValue:0 forKey:@"AccessibilityAttributeBlockStorageKey" storageMode:1];
+    [self _accessibilitySetValue:0 forKey:@"AccessibilityAttributeBlockStorageKey" storageMode:1];
   }
 }
 
@@ -476,7 +476,7 @@ LABEL_5:
     return 0;
   }
 
-  v5 = [a1 _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
+  v5 = [self _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
   if (!v5)
   {
     return 0;
@@ -492,12 +492,12 @@ LABEL_5:
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
 
-  objc_setAssociatedObject(a1, &AXExpandedStatusIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXExpandedStatusIdentifier, v2, 1);
 }
 
 - (uint64_t)accessibilityExpandedStatus
 {
-  AssociatedObject = objc_getAssociatedObject(a1, &AXExpandedStatusIdentifier);
+  AssociatedObject = objc_getAssociatedObject(self, &AXExpandedStatusIdentifier);
 
   return [AssociatedObject integerValue];
 }

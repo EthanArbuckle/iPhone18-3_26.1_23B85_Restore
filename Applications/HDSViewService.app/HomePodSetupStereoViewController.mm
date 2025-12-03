@@ -1,5 +1,5 @@
 @interface HomePodSetupStereoViewController
-- (_TtC14HDSViewService32HomePodSetupStereoViewController)initWithContentView:(id)a3;
+- (_TtC14HDSViewService32HomePodSetupStereoViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006F6FC();
 }
 
-- (_TtC14HDSViewService32HomePodSetupStereoViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService32HomePodSetupStereoViewController)initWithContentView:(id)view
 {
   *&self->presenter[OBJC_IVAR____TtC14HDSViewService32HomePodSetupStereoViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -22,7 +22,7 @@
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC14HDSViewService32HomePodSetupStereoViewController_bodyLabel] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for HomePodSetupStereoViewController();
-  return [(HomePodSetupStereoViewController *)&v8 initWithContentView:a3];
+  return [(HomePodSetupStereoViewController *)&v8 initWithContentView:view];
 }
 
 @end

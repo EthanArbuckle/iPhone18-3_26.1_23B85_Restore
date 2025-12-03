@@ -1,17 +1,17 @@
 @interface ARImageCroppingTechnique
-- (ARImageCroppingTechnique)initWithCroppedImageSize:(CGSize)a3 centerCropToTargetResolution:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
+- (ARImageCroppingTechnique)initWithCroppedImageSize:(CGSize)size centerCropToTargetResolution:(BOOL)resolution;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)croppedImageSize;
-- (id)processData:(id)a3;
+- (id)processData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation ARImageCroppingTechnique
 
-- (ARImageCroppingTechnique)initWithCroppedImageSize:(CGSize)a3 centerCropToTargetResolution:(BOOL)a4
+- (ARImageCroppingTechnique)initWithCroppedImageSize:(CGSize)size centerCropToTargetResolution:(BOOL)resolution
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v38 = *MEMORY[0x1E69E9840];
   v29.receiver = self;
   v29.super_class = ARImageCroppingTechnique;
@@ -22,7 +22,7 @@
     v9 = (v7 + 112);
     *(v7 + 14) = width;
     *(v7 + 15) = height;
-    v7[104] = a4;
+    v7[104] = resolution;
     v10 = VTPixelTransferSessionCreate(0, v7 + 7);
     if (v10)
     {
@@ -134,13 +134,13 @@ LABEL_18:
   [(ARImageCroppingTechnique *)&v6 dealloc];
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v109 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v4;
+  v6 = dataCopy;
   v7 = v6;
   v8 = v6;
   if (isKindOfClass)
@@ -218,7 +218,7 @@ LABEL_18:
           *buf = 138543618;
           v104 = v73;
           v105 = 2048;
-          v106 = self;
+          selfCopy8 = self;
           v74 = "%{public}@ <%p>: The cropped image size must be less than source image size and not zero";
           v75 = v22;
           v76 = OS_LOG_TYPE_ERROR;
@@ -236,7 +236,7 @@ LABEL_18:
           *buf = 138543618;
           v104 = v73;
           v105 = 2048;
-          v106 = self;
+          selfCopy8 = self;
           v74 = "Error: %{public}@ <%p>: The cropped image size must be less than source image size and not zero";
           v75 = v22;
           v76 = OS_LOG_TYPE_INFO;
@@ -278,7 +278,7 @@ LABEL_18:
           *buf = 138543874;
           v104 = v24;
           v105 = 2048;
-          v106 = self;
+          selfCopy8 = self;
           v107 = 1024;
           v108 = v66;
           v25 = "%{public}@ <%p>: Unable to initialize pixel transfer session for image cropping: %i";
@@ -295,7 +295,7 @@ LABEL_18:
         *buf = 138543874;
         v104 = v24;
         v105 = 2048;
-        v106 = self;
+        selfCopy8 = self;
         v107 = 1024;
         v108 = v66;
         v25 = "Error: %{public}@ <%p>: Unable to initialize pixel transfer session for image cropping: %i";
@@ -327,7 +327,7 @@ LABEL_18:
           *buf = 138543874;
           v104 = v24;
           v105 = 2048;
-          v106 = self;
+          selfCopy8 = self;
           v107 = 1024;
           v108 = v83;
           v25 = "%{public}@ <%p>: Unable to create pixel buffer pool for cropping: %i";
@@ -344,7 +344,7 @@ LABEL_18:
         *buf = 138543874;
         v104 = v24;
         v105 = 2048;
-        v106 = self;
+        selfCopy8 = self;
         v107 = 1024;
         v108 = v83;
         v25 = "Error: %{public}@ <%p>: Unable to create pixel buffer pool for cropping: %i";
@@ -358,8 +358,8 @@ LABEL_18:
     if (!v18)
     {
       vtPixelTransferSession = self->_vtPixelTransferSession;
-      v34 = [(ARImageData *)v7 pixelBuffer];
-      VTPixelTransferSessionTransferImage(vtPixelTransferSession, v34, pixelBufferOut);
+      pixelBuffer = [(ARImageData *)v7 pixelBuffer];
+      VTPixelTransferSessionTransferImage(vtPixelTransferSession, pixelBuffer, pixelBufferOut);
       v8 = [[ARModifiedImageData alloc] initWithImageData:v7];
       [(ARImageData *)v8 setPixelBuffer:pixelBufferOut];
       [(ARImageData *)v7 cameraIntrinsics];
@@ -424,7 +424,7 @@ LABEL_51:
         *buf = 138543874;
         v104 = v24;
         v105 = 2048;
-        v106 = self;
+        selfCopy8 = self;
         v107 = 1024;
         v108 = v19;
         v25 = "%{public}@ <%p>: Unable to create pixel buffer for cropping: %i";
@@ -437,9 +437,9 @@ LABEL_24:
 
 LABEL_49:
 
-      v78 = [(ARTechnique *)self delegate];
+      delegate = [(ARTechnique *)self delegate];
       v79 = ARErrorWithCodeAndUserInfo(151, 0);
-      [v78 technique:self didFailWithError:v79];
+      [delegate technique:self didFailWithError:v79];
 
 LABEL_50:
       v8 = v7;
@@ -456,7 +456,7 @@ LABEL_50:
     *buf = 138543874;
     v104 = v24;
     v105 = 2048;
-    v106 = self;
+    selfCopy8 = self;
     v107 = 1024;
     v108 = v19;
     v25 = "Error: %{public}@ <%p>: Unable to create pixel buffer for cropping: %i";
@@ -471,14 +471,14 @@ LABEL_52:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = ARImageCroppingTechnique;
-  if ([(ARTechnique *)&v16 isEqual:v4])
+  if ([(ARTechnique *)&v16 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(ARImageCroppingTechnique *)self croppedImageSize];
     v7 = v6;
     v9 = v8;

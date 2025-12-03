@@ -2,35 +2,35 @@
 - (BOOL)_focusSystemIsValid;
 - (BOOL)_isEligibleForFocusInteraction;
 - (BOOL)_isEligibleForFocusOcclusion;
-- (BOOL)containsChildOfHostEnvironment:(id)a3;
+- (BOOL)containsChildOfHostEnvironment:(id)environment;
 - (UIFocusEnvironment)hostEnvironment;
 - (_UIHostedFocusSystemDelegate)delegate;
 - (id)_hostFocusSystem;
-- (id)_initWithHostEnvironment:(id)a3;
+- (id)_initWithHostEnvironment:(id)environment;
 - (id)behavior;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIHostedFocusSystem
 
-- (id)_initWithHostEnvironment:(id)a3
+- (id)_initWithHostEnvironment:(id)environment
 {
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIHostedFocusSystem.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"hostEnvironment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHostedFocusSystem.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"hostEnvironment"}];
   }
 
-  v6 = [UIFocusSystem focusSystemForEnvironment:v5];
-  v7 = [v6 behavior];
+  v6 = [UIFocusSystem focusSystemForEnvironment:environmentCopy];
+  behavior = [v6 behavior];
   v20.receiver = self;
   v20.super_class = _UIHostedFocusSystem;
-  v8 = [(UIFocusSystem *)&v20 initWithFocusBehavior:v7 enabled:1];
+  v8 = [(UIFocusSystem *)&v20 initWithFocusBehavior:behavior enabled:1];
 
   if (v8)
   {
-    objc_storeWeak(&v8->_hostEnvironment, v5);
+    objc_storeWeak(&v8->_hostEnvironment, environmentCopy);
     v9 = [[_UIHostedFocusSystemItemContainer alloc] initWithHostedFocusSystem:v8];
     itemContainerProxy = v8->_itemContainerProxy;
     v8->_itemContainerProxy = v9;
@@ -41,16 +41,16 @@
       dispatch_once(&qword_27F062FD8, &__block_literal_global_7);
     }
 
-    v12 = [(_UIHostedFocusSystem *)v11 hostEnvironment];
-    if (!v12)
+    hostEnvironment = [(_UIHostedFocusSystem *)v11 hostEnvironment];
+    if (!hostEnvironment)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"void _UIHostedFocusSystemRegister(_UIHostedFocusSystem *__strong)"];
-      [v18 handleFailureInFunction:v19 file:@"_UIHostedFocusSystem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"hostEnvironment"}];
+      [currentHandler2 handleFailureInFunction:v19 file:@"_UIHostedFocusSystem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"hostEnvironment"}];
     }
 
     v13 = _MergedGlobals_1;
-    v14 = [v13 objectForKey:v12];
+    v14 = [v13 objectForKey:hostEnvironment];
     if (v14)
     {
       v15 = v14;
@@ -61,7 +61,7 @@
     {
       v15 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
       [v15 addObject:v11];
-      [v13 setObject:v15 forKey:v12];
+      [v13 setObject:v15 forKey:hostEnvironment];
     }
   }
 
@@ -72,20 +72,20 @@
 {
   v4.receiver = self;
   v4.super_class = _UIHostedFocusSystem;
-  v2 = [(UIFocusSystem *)&v4 delegate];
+  delegate = [(UIFocusSystem *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(_UIHostedFocusSystem *)self delegateProxy];
-  v6 = [v5 delegate];
+  delegateCopy = delegate;
+  delegateProxy = [(_UIHostedFocusSystem *)self delegateProxy];
+  delegate = [delegateProxy delegate];
 
-  if (v6 != v4)
+  if (delegate != delegateCopy)
   {
-    v7 = [[_UIHostedFocusSystemDelegateProxy alloc] initWithFocusSystem:self delegate:v4];
+    v7 = [[_UIHostedFocusSystemDelegateProxy alloc] initWithFocusSystem:self delegate:delegateCopy];
     [(_UIHostedFocusSystem *)self setDelegateProxy:v7];
     v8.receiver = self;
     v8.super_class = _UIHostedFocusSystem;
@@ -93,21 +93,21 @@
   }
 }
 
-- (BOOL)containsChildOfHostEnvironment:(id)a3
+- (BOOL)containsChildOfHostEnvironment:(id)environment
 {
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIHostedFocusSystem.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"childEnvironment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHostedFocusSystem.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"childEnvironment"}];
   }
 
-  v6 = [(_UIHostedFocusSystem *)self delegateProxy];
-  v7 = [v6 delegate];
+  delegateProxy = [(_UIHostedFocusSystem *)self delegateProxy];
+  delegate = [delegateProxy delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [v7 _focusSystem:self containsChildOfHostEnvironment:v5];
+    v8 = [delegate _focusSystem:self containsChildOfHostEnvironment:environmentCopy];
   }
 
   else
@@ -120,22 +120,22 @@
 
 - (id)behavior
 {
-  v3 = [(_UIHostedFocusSystem *)self _hostFocusSystem];
-  v4 = [v3 behavior];
-  v5 = v4;
-  if (v4)
+  _hostFocusSystem = [(_UIHostedFocusSystem *)self _hostFocusSystem];
+  behavior = [_hostFocusSystem behavior];
+  v5 = behavior;
+  if (behavior)
   {
-    v6 = v4;
+    behavior2 = behavior;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _UIHostedFocusSystem;
-    v6 = [(UIFocusSystem *)&v9 behavior];
+    behavior2 = [(UIFocusSystem *)&v9 behavior];
   }
 
-  v7 = v6;
+  v7 = behavior2;
 
   return v7;
 }
@@ -166,10 +166,10 @@
     return 0;
   }
 
-  v3 = [(_UIHostedFocusSystem *)self _hostFocusSystem];
-  v4 = [v3 _focusSystemIsValid];
+  _hostFocusSystem = [(_UIHostedFocusSystem *)self _hostFocusSystem];
+  _focusSystemIsValid = [_hostFocusSystem _focusSystemIsValid];
 
-  return v4;
+  return _focusSystemIsValid;
 }
 
 - (BOOL)_isEligibleForFocusInteraction

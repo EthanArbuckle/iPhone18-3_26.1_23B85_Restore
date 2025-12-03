@@ -2,7 +2,7 @@
 - (BKPageThumbnailView)leftPageView;
 - (BKPageThumbnailView)rightPageView;
 - (CGSize)pageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)gutter;
 - (void)layoutSubviews;
 @end
@@ -22,9 +22,9 @@
   [UIView performWithoutAnimation:v3];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if ([(BKPageThumbnailView *)self->_leftPageView pageNumber:a3.width]!= 0x7FFFFFFFFFFFFFFFLL && [(BKPageThumbnailView *)self->_rightPageView pageNumber]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(BKPageThumbnailView *)self->_leftPageView pageNumber:fits.width]!= 0x7FFFFFFFFFFFFFFFLL && [(BKPageThumbnailView *)self->_rightPageView pageNumber]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     [(BKSpreadThumbnailView *)self pageSize];
     width = v7 + v7;

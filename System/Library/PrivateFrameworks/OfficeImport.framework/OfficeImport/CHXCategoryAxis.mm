@@ -1,54 +1,54 @@
 @interface CHXCategoryAxis
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)stringFromLabelAlignment:(int)a3;
-+ (int)chdLabelAlignFromXmlLabelAlignElement:(_xmlNode *)a3;
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state;
++ (id)stringFromLabelAlignment:(int)alignment;
++ (int)chdLabelAlignFromXmlLabelAlignElement:(_xmlNode *)element;
 @end
 
 @implementation CHXCategoryAxis
 
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = [CHDCategoryAxis alloc];
-  v8 = [v6 resources];
-  v9 = [(CHDCategoryAxis *)v7 initWithResources:v8];
+  resources = [stateCopy resources];
+  v9 = [(CHDCategoryAxis *)v7 initWithResources:resources];
 
-  v10 = [v6 drawingState];
-  v11 = [v10 OAXChartNamespace];
-  v12 = OCXFindChild(a3, v11, "auto");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v12 = OCXFindChild(element, oAXChartNamespace, "auto");
 
   if (v12)
   {
     [(CHDCategoryAxis *)v9 setAutomatic:CXRequiredBoolAttribute(v12, CXNoNamespace, "val")];
   }
 
-  v13 = [v6 drawingState];
-  v14 = [v13 OAXChartNamespace];
-  v15 = OCXFindChild(a3, v14, "noMultiLvlLbl");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v15 = OCXFindChild(element, oAXChartNamespace2, "noMultiLvlLbl");
 
   if (v15)
   {
     [(CHDCategoryAxis *)v9 setNoMultipleLevelLabel:CXRequiredBoolAttribute(v15, CXNoNamespace, "val")];
   }
 
-  v16 = [v6 drawingState];
-  v17 = [v16 OAXChartNamespace];
-  v18 = OCXFindChild(a3, v17, "lblAlgn");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v18 = OCXFindChild(element, oAXChartNamespace3, "lblAlgn");
 
   if (v18)
   {
-    -[CHDCategoryAxis setLabelAlignment:](v9, "setLabelAlignment:", [a1 chdLabelAlignFromXmlLabelAlignElement:v18]);
+    -[CHDCategoryAxis setLabelAlignment:](v9, "setLabelAlignment:", [self chdLabelAlignFromXmlLabelAlignElement:v18]);
   }
 
-  v19 = [v6 drawingState];
-  v20 = [v19 OAXChartNamespace];
-  v21 = OCXFindChild(a3, v20, "scaling");
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v21 = OCXFindChild(element, oAXChartNamespace4, "scaling");
 
   if (v21)
   {
-    v22 = [v6 drawingState];
-    v23 = [v22 OAXChartNamespace];
-    v24 = OCXFindChild(v21, v23, "orientation");
+    drawingState5 = [stateCopy drawingState];
+    oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+    v24 = OCXFindChild(v21, oAXChartNamespace5, "orientation");
 
     if (v24)
     {
@@ -63,9 +63,9 @@
     }
   }
 
-  v28 = [v6 drawingState];
-  v29 = [v28 OAXChartNamespace];
-  v30 = OCXFindChild(a3, v29, "tickLblSkip");
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v30 = OCXFindChild(element, oAXChartNamespace6, "tickLblSkip");
 
   if (v30)
   {
@@ -75,9 +75,9 @@
   return v9;
 }
 
-+ (int)chdLabelAlignFromXmlLabelAlignElement:(_xmlNode *)a3
++ (int)chdLabelAlignFromXmlLabelAlignElement:(_xmlNode *)element
 {
-  v3 = CXRequiredStringAttribute(a3, CXNoNamespace, "val");
+  v3 = CXRequiredStringAttribute(element, CXNoNamespace, "val");
   if ([v3 isEqualToString:@"ctr"])
   {
     v4 = 2;
@@ -101,15 +101,15 @@
   return v4;
 }
 
-+ (id)stringFromLabelAlignment:(int)a3
++ (id)stringFromLabelAlignment:(int)alignment
 {
   v3 = @"ctr";
-  if (a3 == 1)
+  if (alignment == 1)
   {
     v3 = @"l";
   }
 
-  if (a3 == 3)
+  if (alignment == 3)
   {
     return @"r";
   }

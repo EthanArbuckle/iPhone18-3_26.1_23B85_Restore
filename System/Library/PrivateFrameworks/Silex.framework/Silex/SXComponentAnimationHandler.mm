@@ -1,43 +1,43 @@
 @interface SXComponentAnimationHandler
-- (BOOL)isEqual:(id)a3;
-- (SXComponentAnimationHandler)initWithComponent:(id)a3 withAnimation:(id)a4;
-- (double)factorForVisibileBounds:(CGRect)a3 andAbsoluteComponentRect:(CGRect)a4;
+- (BOOL)isEqual:(id)equal;
+- (SXComponentAnimationHandler)initWithComponent:(id)component withAnimation:(id)animation;
+- (double)factorForVisibileBounds:(CGRect)bounds andAbsoluteComponentRect:(CGRect)rect;
 - (void)finishAnimation;
 - (void)prepareAnimation;
-- (void)setState:(int64_t)a3;
-- (void)updateAnimationWithFactor:(double)a3;
+- (void)setState:(int64_t)state;
+- (void)updateAnimationWithFactor:(double)factor;
 @end
 
 @implementation SXComponentAnimationHandler
 
-- (SXComponentAnimationHandler)initWithComponent:(id)a3 withAnimation:(id)a4
+- (SXComponentAnimationHandler)initWithComponent:(id)component withAnimation:(id)animation
 {
-  v7 = a3;
-  v8 = a4;
+  componentCopy = component;
+  animationCopy = animation;
   v12.receiver = self;
   v12.super_class = SXComponentAnimationHandler;
   v9 = [(SXComponentAnimationHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_component, a3);
-    objc_storeStrong(&v10->_animation, a4);
+    objc_storeStrong(&v9->_component, component);
+    objc_storeStrong(&v10->_animation, animation);
     v10->_state = 1;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 component];
-  v6 = [(SXComponentAnimationHandler *)self component];
-  if (v5 == v6)
+  equalCopy = equal;
+  component = [equalCopy component];
+  component2 = [(SXComponentAnimationHandler *)self component];
+  if (component == component2)
   {
-    v8 = [v4 animation];
-    v9 = [(SXComponentAnimationHandler *)self animation];
-    v7 = v8 == v9;
+    animation = [equalCopy animation];
+    animation2 = [(SXComponentAnimationHandler *)self animation];
+    v7 = animation == animation2;
   }
 
   else
@@ -50,22 +50,22 @@
 
 - (void)prepareAnimation
 {
-  v4 = [(SXComponentAnimationHandler *)self component];
-  v3 = [(SXComponentAnimationHandler *)self animation];
-  [v4 animationDidStart:v3];
+  component = [(SXComponentAnimationHandler *)self component];
+  animation = [(SXComponentAnimationHandler *)self animation];
+  [component animationDidStart:animation];
 }
 
-- (double)factorForVisibileBounds:(CGRect)a3 andAbsoluteComponentRect:(CGRect)a4
+- (double)factorForVisibileBounds:(CGRect)bounds andAbsoluteComponentRect:(CGRect)rect
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  MinY = CGRectGetMinY(a3);
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v6 = bounds.size.height;
+  v7 = bounds.size.width;
+  v8 = bounds.origin.y;
+  v9 = bounds.origin.x;
+  MinY = CGRectGetMinY(bounds);
   v17.origin.x = v9;
   v17.origin.y = v8;
   v17.size.width = v7;
@@ -88,9 +88,9 @@
   return fmin(fmax(1.0 - (CGRectGetMinY(v20) - v13) / (v11 - v13), 0.0), 1.0);
 }
 
-- (void)updateAnimationWithFactor:(double)a3
+- (void)updateAnimationWithFactor:(double)factor
 {
-  self->_factor = a3;
+  self->_factor = factor;
   if ([(SXComponentAnimationHandler *)self state]!= 2)
   {
 
@@ -101,21 +101,21 @@
 - (void)finishAnimation
 {
   [(SXComponentAnimationHandler *)self setState:4];
-  v4 = [(SXComponentAnimationHandler *)self component];
-  v3 = [(SXComponentAnimationHandler *)self animation];
-  [v4 animationDidFinish:v3];
+  component = [(SXComponentAnimationHandler *)self component];
+  animation = [(SXComponentAnimationHandler *)self animation];
+  [component animationDidFinish:animation];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
-    v5 = [(SXComponentAnimationHandler *)self component];
-    v6 = [(SXComponentAnimationHandler *)self animation];
-    [v5 animationDidStart:v6];
+    component = [(SXComponentAnimationHandler *)self component];
+    animation = [(SXComponentAnimationHandler *)self animation];
+    [component animationDidStart:animation];
   }
 
-  self->_state = a3;
+  self->_state = state;
 }
 
 @end

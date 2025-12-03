@@ -1,29 +1,29 @@
 @interface PFStoryConcreteRecipePresentation
-- (BOOL)isEqualToPresentation:(id)a3;
+- (BOOL)isEqualToPresentation:(id)presentation;
 - (NSString)diagnosticDescription;
-- (PFStoryConcreteRecipePresentation)initWithIdentifier:(id)a3 clips:(id)a4;
-- (id)clipAtIndex:(int64_t)a3;
+- (PFStoryConcreteRecipePresentation)initWithIdentifier:(id)identifier clips:(id)clips;
+- (id)clipAtIndex:(int64_t)index;
 - (int64_t)clipCount;
 @end
 
 @implementation PFStoryConcreteRecipePresentation
 
-- (BOOL)isEqualToPresentation:(id)a3
+- (BOOL)isEqualToPresentation:(id)presentation
 {
-  v4 = a3;
-  if (v4 == self)
+  presentationCopy = presentation;
+  if (presentationCopy == self)
   {
     goto LABEL_8;
   }
 
-  v5 = [(PFStoryConcreteRecipePresentation *)self clipCount];
-  if (v5 != [(PFStoryConcreteRecipePresentation *)v4 clipCount])
+  clipCount = [(PFStoryConcreteRecipePresentation *)self clipCount];
+  if (clipCount != [(PFStoryConcreteRecipePresentation *)presentationCopy clipCount])
   {
     LOBYTE(v10) = 0;
     goto LABEL_10;
   }
 
-  if (v5 < 1)
+  if (clipCount < 1)
   {
 LABEL_8:
     LOBYTE(v10) = 1;
@@ -34,9 +34,9 @@ LABEL_8:
     v6 = 1;
     do
     {
-      v7 = [(PFStoryConcreteRecipePresentation *)self clips];
-      v8 = [v7 objectAtIndexedSubscript:v6 - 1];
-      v9 = [(PFStoryConcreteRecipePresentation *)v4 clipAtIndex:v6 - 1];
+      clips = [(PFStoryConcreteRecipePresentation *)self clips];
+      v8 = [clips objectAtIndexedSubscript:v6 - 1];
+      v9 = [(PFStoryConcreteRecipePresentation *)presentationCopy clipAtIndex:v6 - 1];
       v10 = [v8 isEqualToClip:v9];
 
       if (!v10)
@@ -45,7 +45,7 @@ LABEL_8:
       }
     }
 
-    while (v6++ < v5);
+    while (v6++ < clipCount);
   }
 
 LABEL_10:
@@ -62,35 +62,35 @@ LABEL_10:
   return v5;
 }
 
-- (id)clipAtIndex:(int64_t)a3
+- (id)clipAtIndex:(int64_t)index
 {
-  v4 = [(PFStoryConcreteRecipePresentation *)self clips];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  clips = [(PFStoryConcreteRecipePresentation *)self clips];
+  v5 = [clips objectAtIndexedSubscript:index];
 
   return v5;
 }
 
 - (int64_t)clipCount
 {
-  v2 = [(PFStoryConcreteRecipePresentation *)self clips];
-  v3 = [v2 count];
+  clips = [(PFStoryConcreteRecipePresentation *)self clips];
+  v3 = [clips count];
 
   return v3;
 }
 
-- (PFStoryConcreteRecipePresentation)initWithIdentifier:(id)a3 clips:(id)a4
+- (PFStoryConcreteRecipePresentation)initWithIdentifier:(id)identifier clips:(id)clips
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  clipsCopy = clips;
   v13.receiver = self;
   v13.super_class = PFStoryConcreteRecipePresentation;
   v8 = [(PFStoryConcreteRecipePresentation *)&v13 init];
   identifier = v8->_identifier;
-  v8->_identifier = v6;
-  v10 = v6;
+  v8->_identifier = identifierCopy;
+  v10 = identifierCopy;
 
   clips = v8->_clips;
-  v8->_clips = v7;
+  v8->_clips = clipsCopy;
 
   return v8;
 }

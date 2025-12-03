@@ -1,52 +1,52 @@
 @interface UIDocumentBrowserTransitionController
-- (BOOL)isCoordinatingForURL:(id)a3;
-- (UIDocumentBrowserTransitionController)initWithItemURL:(id)a3 documentBrowserProxy:(id)a4 referenceView:(id)a5;
+- (BOOL)isCoordinatingForURL:(id)l;
+- (UIDocumentBrowserTransitionController)initWithItemURL:(id)l documentBrowserProxy:(id)proxy referenceView:(id)view;
 - (UIView)targetView;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)dealloc;
 - (void)doc_commonInit;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setLoadingProgress:(NSProgress *)loadingProgress;
 @end
 
 @implementation UIDocumentBrowserTransitionController
 
-- (UIDocumentBrowserTransitionController)initWithItemURL:(id)a3 documentBrowserProxy:(id)a4 referenceView:(id)a5
+- (UIDocumentBrowserTransitionController)initWithItemURL:(id)l documentBrowserProxy:(id)proxy referenceView:(id)view
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && (v15.receiver = self, v15.super_class = UIDocumentBrowserTransitionController, v12 = [(UIDocumentBrowserTransitionController *)&v15 init], (self = v12) != 0))
+  lCopy = l;
+  proxyCopy = proxy;
+  viewCopy = view;
+  if (lCopy && (v15.receiver = self, v15.super_class = UIDocumentBrowserTransitionController, v12 = [(UIDocumentBrowserTransitionController *)&v15 init], (self = v12) != 0))
   {
-    objc_storeStrong(&v12->_itemURL, a3);
-    objc_storeStrong(&self->_serviceDocumentBrowserProxy, a4);
-    objc_storeStrong(&self->_referenceView, a5);
+    objc_storeStrong(&v12->_itemURL, l);
+    objc_storeStrong(&self->_serviceDocumentBrowserProxy, proxy);
+    objc_storeStrong(&self->_referenceView, view);
     [(UIDocumentBrowserTransitionController *)self doc_commonInit];
     self = self;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)isCoordinatingForURL:(id)a3
+- (BOOL)isCoordinatingForURL:(id)l
 {
-  v4 = a3;
-  if (-[NSURL isEqual:](self->_itemURL, "isEqual:", v4) & 1) != 0 || (-[NSURL standardizedURL](self->_itemURL, "standardizedURL"), v5 = objc_claimAutoreleasedReturnValue(), [v4 standardizedURL], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, (v7))
+  lCopy = l;
+  if (-[NSURL isEqual:](self->_itemURL, "isEqual:", lCopy) & 1) != 0 || (-[NSURL standardizedURL](self->_itemURL, "standardizedURL"), v5 = objc_claimAutoreleasedReturnValue(), [lCopy standardizedURL], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, (v7))
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(NSURL *)self->_itemURL URLByStandardizingPath];
-    v10 = [v4 URLByStandardizingPath];
-    v8 = [v9 isEqual:v10];
+    uRLByStandardizingPath = [(NSURL *)self->_itemURL URLByStandardizingPath];
+    uRLByStandardizingPath2 = [lCopy URLByStandardizingPath];
+    v8 = [uRLByStandardizingPath isEqual:uRLByStandardizingPath2];
   }
 
   return v8;
@@ -55,7 +55,7 @@
 - (void)doc_commonInit
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v4 = 138412546;
   v5 = v3;
   v6 = 2112;
@@ -137,9 +137,9 @@ void __55__UIDocumentBrowserTransitionController_doc_commonInit__block_invoke_4(
   p_loadingProgress = &self->_loadingProgress;
   if (self->_loadingProgress != v5)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    if (v7->_shouldStopObservingProgress && *p_loadingProgress)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_shouldStopObservingProgress && *p_loadingProgress)
     {
       v8 = MEMORY[0x1E699A478];
       v9 = *MEMORY[0x1E699A478];
@@ -157,24 +157,24 @@ void __55__UIDocumentBrowserTransitionController_doc_commonInit__block_invoke_4(
         _os_log_impl(&dword_1E57D8000, v9, OS_LOG_TYPE_DEFAULT, "Progress: [Transition Controller] REMOVE fractionCompleted observer for: %{public}@", buf, 0xCu);
       }
 
-      [*p_loadingProgress removeObserver:v7 forKeyPath:@"fractionCompleted"];
-      [*p_loadingProgress removeObserver:v7 forKeyPath:@"isIndeterminate"];
-      v7->_shouldStopObservingProgress = 0;
+      [*p_loadingProgress removeObserver:selfCopy forKeyPath:@"fractionCompleted"];
+      [*p_loadingProgress removeObserver:selfCopy forKeyPath:@"isIndeterminate"];
+      selfCopy->_shouldStopObservingProgress = 0;
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
     objc_storeStrong(p_loadingProgress, loadingProgress);
-    transitionControllerQueue = v7->_transitionControllerQueue;
+    transitionControllerQueue = selfCopy->_transitionControllerQueue;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __60__UIDocumentBrowserTransitionController_setLoadingProgress___block_invoke;
     v16[3] = &unk_1E87829A0;
-    v16[4] = v7;
+    v16[4] = selfCopy;
     [(NSOperationQueue *)transitionControllerQueue addOperationWithBlock:v16];
     if (*p_loadingProgress && ([*p_loadingProgress isFinished] & 1) == 0)
     {
-      v12 = v7;
+      v12 = selfCopy;
       objc_sync_enter(v12);
       v13 = MEMORY[0x1E699A478];
       v14 = *MEMORY[0x1E699A478];
@@ -194,7 +194,7 @@ void __55__UIDocumentBrowserTransitionController_doc_commonInit__block_invoke_4(
 
       [*p_loadingProgress addObserver:v12 forKeyPath:@"fractionCompleted" options:1 context:&UIDocumentBrowserTransitionControllerKVOContext];
       [*p_loadingProgress addObserver:v12 forKeyPath:@"isIndeterminate" options:1 context:&UIDocumentBrowserTransitionControllerKVOContext];
-      v7->_shouldStopObservingProgress = 1;
+      selfCopy->_shouldStopObservingProgress = 1;
       objc_sync_exit(v12);
     }
   }
@@ -209,41 +209,41 @@ void __60__UIDocumentBrowserTransitionController_setLoadingProgress___block_invo
   [v3 setHasProgress:(v5 != 0) & ~v2 loadingFractionCompleted:objc_msgSend(v5 setIsIndeterminate:{"isIndeterminate"), v4}];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &UIDocumentBrowserTransitionControllerKVOContext)
+  if (context == &UIDocumentBrowserTransitionControllerKVOContext)
   {
     transitionController = self->_transitionController;
     transitionDidFinish = self->_transitionDidFinish;
     loadingProgress = self->_loadingProgress;
     v10 = loadingProgress != 0;
     v11 = !transitionDidFinish;
-    [(NSProgress *)loadingProgress fractionCompleted:a3];
+    [(NSProgress *)loadingProgress fractionCompleted:path];
     v13 = v12;
-    v14 = [(NSProgress *)self->_loadingProgress isIndeterminate];
+    isIndeterminate = [(NSProgress *)self->_loadingProgress isIndeterminate];
 
-    [(DOCServiceTransitionProtocol *)transitionController setHasProgress:v10 & v11 loadingFractionCompleted:v14 setIsIndeterminate:v13];
+    [(DOCServiceTransitionProtocol *)transitionController setHasProgress:v10 & v11 loadingFractionCompleted:isIndeterminate setIsIndeterminate:v13];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = UIDocumentBrowserTransitionController;
-    [(UIDocumentBrowserTransitionController *)&v15 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(UIDocumentBrowserTransitionController *)&v15 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)dealloc
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(UIDocumentBrowserTransitionController *)v2 loadingProgress];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  loadingProgress = [(UIDocumentBrowserTransitionController *)selfCopy loadingProgress];
+  if (loadingProgress)
   {
-    v4 = [(UIDocumentBrowserTransitionController *)v2 shouldStopObservingProgress];
+    shouldStopObservingProgress = [(UIDocumentBrowserTransitionController *)selfCopy shouldStopObservingProgress];
 
-    if (v4)
+    if (shouldStopObservingProgress)
     {
       v5 = MEMORY[0x1E699A478];
       v6 = *MEMORY[0x1E699A478];
@@ -255,33 +255,33 @@ void __60__UIDocumentBrowserTransitionController_setLoadingProgress___block_invo
 
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        loadingProgress = v2->_loadingProgress;
+        loadingProgress = selfCopy->_loadingProgress;
         *buf = 138543362;
         v12 = loadingProgress;
         _os_log_impl(&dword_1E57D8000, v6, OS_LOG_TYPE_DEFAULT, "Progress: [Transition Controller] REMOVE-DEALLOC fractionCompleted observer for: %{public}@", buf, 0xCu);
       }
 
-      v8 = [(UIDocumentBrowserTransitionController *)v2 loadingProgress];
-      [v8 removeObserver:v2 forKeyPath:@"fractionCompleted"];
+      loadingProgress2 = [(UIDocumentBrowserTransitionController *)selfCopy loadingProgress];
+      [loadingProgress2 removeObserver:selfCopy forKeyPath:@"fractionCompleted"];
 
-      v9 = [(UIDocumentBrowserTransitionController *)v2 loadingProgress];
-      [v9 removeObserver:v2 forKeyPath:@"isIndeterminate"];
+      loadingProgress3 = [(UIDocumentBrowserTransitionController *)selfCopy loadingProgress];
+      [loadingProgress3 removeObserver:selfCopy forKeyPath:@"isIndeterminate"];
 
-      [(UIDocumentBrowserTransitionController *)v2 setShouldStopObservingProgress:0];
+      [(UIDocumentBrowserTransitionController *)selfCopy setShouldStopObservingProgress:0];
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10.receiver = v2;
+  v10.receiver = selfCopy;
   v10.super_class = UIDocumentBrowserTransitionController;
   [(UIDocumentBrowserTransitionController *)&v10 dealloc];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  transitionCopy = transition;
   if ([(UIDocumentBrowserTransitionController *)self encounteredUnrecoverableError])
   {
     v6 = MEMORY[0x1E699A450];
@@ -297,12 +297,12 @@ void __60__UIDocumentBrowserTransitionController_setLoadingProgress___block_invo
       [UIDocumentBrowserTransitionController animateTransition:v7];
     }
 
-    [v5 completeTransition:1];
+    [transitionCopy completeTransition:1];
     goto LABEL_24;
   }
 
-  v8 = [v5 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v9 = [v5 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  v8 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v9 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -310,8 +310,8 @@ void __60__UIDocumentBrowserTransitionController_setLoadingProgress___block_invo
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v10 = objc_opt_class();
-      v11 = NSStringFromClass(v10);
-      if ([v11 isEqualToString:@"DOCServiceBrowserViewController"])
+      currentHandler = NSStringFromClass(v10);
+      if ([currentHandler isEqualToString:@"DOCServiceBrowserViewController"])
       {
 LABEL_12:
 
@@ -324,8 +324,8 @@ LABEL_12:
 
       if ((v14 & 1) == 0)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"UIDocumentBrowserTransitionController.m" lineNumber:192 description:{@"UIDocumentBrowserTransitionController can only be used when transitioning from or to a viewController of type UIDocumentBrowserViewController. sourceViewController: %@, destinationViewController: %@", v8, v9}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentBrowserTransitionController.m" lineNumber:192 description:{@"UIDocumentBrowserTransitionController can only be used when transitioning from or to a viewController of type UIDocumentBrowserViewController. sourceViewController: %@, destinationViewController: %@", v8, v9}];
         goto LABEL_12;
       }
     }
@@ -345,22 +345,22 @@ LABEL_13:
     v15 = [v17 isEqualToString:@"DOCServiceBrowserViewController"];
   }
 
-  v18 = [v5 containerView];
-  v19 = [v5 viewForKey:*MEMORY[0x1E69DE770]];
-  v20 = [v5 viewForKey:*MEMORY[0x1E69DE780]];
+  containerView = [transitionCopy containerView];
+  v19 = [transitionCopy viewForKey:*MEMORY[0x1E69DE770]];
+  v20 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
   [v20 setAutoresizingMask:18];
-  [v18 bounds];
+  [containerView bounds];
   [v20 setFrame:?];
   [v20 setAlpha:0.0];
   v34 = v9;
   if (v15)
   {
-    [v18 insertSubview:v20 belowSubview:v19];
+    [containerView insertSubview:v20 belowSubview:v19];
   }
 
   else
   {
-    [v18 addSubview:v20];
+    [containerView addSubview:v20];
   }
 
   v21 = MEMORY[0x1E699A450];
@@ -383,12 +383,12 @@ LABEL_13:
   v42[1] = 3221225472;
   v42[2] = __59__UIDocumentBrowserTransitionController_animateTransition___block_invoke;
   v42[3] = &unk_1E87830A8;
-  v23 = v18;
+  v23 = containerView;
   v43 = v23;
   v44 = v19;
   v45 = v20;
-  v46 = self;
-  v47 = v5;
+  selfCopy = self;
+  v47 = transitionCopy;
   v48 = v15;
   v24 = v20;
   v25 = v19;

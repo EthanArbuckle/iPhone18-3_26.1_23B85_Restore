@@ -2,19 +2,19 @@
 + (NSMapTable)globallyScopedWorkers;
 + (OS_dispatch_queue)globalQueue;
 - (BOOL)hasRegisteredWorkers;
-- (BOOL)service:(id)a3 registerWorker:(id)a4 watchdogTimeout:(double)a5 error:(id *)a6;
-- (SHServiceStateHandler)initWithClientCredentials:(id)a3;
-- (id)allWorkersForService:(id)a3;
-- (id)registeredWorkerForWorkerID:(id)a3;
-- (void)service:(id)a3 unregisterWorker:(id)a4;
-- (void)unregisterAllWorkersForService:(id)a3;
+- (BOOL)service:(id)service registerWorker:(id)worker watchdogTimeout:(double)timeout error:(id *)error;
+- (SHServiceStateHandler)initWithClientCredentials:(id)credentials;
+- (id)allWorkersForService:(id)service;
+- (id)registeredWorkerForWorkerID:(id)d;
+- (void)service:(id)service unregisterWorker:(id)worker;
+- (void)unregisterAllWorkersForService:(id)service;
 @end
 
 @implementation SHServiceStateHandler
 
-- (SHServiceStateHandler)initWithClientCredentials:(id)a3
+- (SHServiceStateHandler)initWithClientCredentials:(id)credentials
 {
-  v5 = a3;
+  credentialsCopy = credentials;
   v18.receiver = self;
   v18.super_class = SHServiceStateHandler;
   v6 = [(SHServiceStateHandler *)&v18 init];
@@ -24,14 +24,14 @@
     lock = v6->_lock;
     v6->_lock = v7;
 
-    objc_storeStrong(&v6->_clientCredentials, a3);
+    objc_storeStrong(&v6->_clientCredentials, credentials);
     v9 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:512 capacity:0];
     workers = v6->_workers;
     v6->_workers = v9;
 
-    v11 = [(SHClientCredentials *)v6->_clientCredentials attribution];
-    v12 = [v11 bundleIdentifier];
-    v13 = [SHAttribution requiresMusicRecognitionSensorActivityAttributionForBundleIdentifier:v12];
+    attribution = [(SHClientCredentials *)v6->_clientCredentials attribution];
+    bundleIdentifier = [attribution bundleIdentifier];
+    v13 = [SHAttribution requiresMusicRecognitionSensorActivityAttributionForBundleIdentifier:bundleIdentifier];
 
     if (v13)
     {
@@ -40,11 +40,11 @@
 
     else
     {
-      v14 = [(SHClientCredentials *)v6->_clientCredentials attribution];
-      v15 = v14;
-      if (v14)
+      attribution2 = [(SHClientCredentials *)v6->_clientCredentials attribution];
+      v15 = attribution2;
+      if (attribution2)
       {
-        [v14 auditToken];
+        [attribution2 auditToken];
       }
 
       else
@@ -83,40 +83,40 @@
   return v3;
 }
 
-- (BOOL)service:(id)a3 registerWorker:(id)a4 watchdogTimeout:(double)a5 error:(id *)a6
+- (BOOL)service:(id)service registerWorker:(id)worker watchdogTimeout:(double)timeout error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v11 workerID];
-  v13 = [(SHServiceStateHandler *)self registeredWorkerForWorkerID:v12];
+  serviceCopy = service;
+  workerCopy = worker;
+  workerID = [workerCopy workerID];
+  v13 = [(SHServiceStateHandler *)self registeredWorkerForWorkerID:workerID];
 
   if (v13)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [SHCoreError errorWithCode:106 underlyingError:0];
+      *error = [SHCoreError errorWithCode:106 underlyingError:0];
     }
   }
 
   else
   {
-    v14 = [(SHServiceStateHandler *)self lock];
-    [v14 lock];
+    lock = [(SHServiceStateHandler *)self lock];
+    [lock lock];
 
     v15 = objc_alloc_init(SHWatchdogTimer);
-    v16 = [(SHServiceStateHandler *)self workers];
-    [v16 setObject:v15 forKey:v11];
+    workers = [(SHServiceStateHandler *)self workers];
+    [workers setObject:v15 forKey:workerCopy];
 
-    if (a5 > 0.0)
+    if (timeout > 0.0)
     {
-      objc_initWeak(&location, v11);
+      objc_initWeak(&location, workerCopy);
       v17 = sh_log_object();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v27 = v11;
+        v27 = workerCopy;
         v28 = 2048;
-        v29 = a5;
+        timeoutCopy = timeout;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Worker %@ started watchdog timer for %f seconds", buf, 0x16u);
       }
 
@@ -125,95 +125,95 @@
       v23[2] = sub_1000025E4;
       v23[3] = &unk_10007CD28;
       objc_copyWeak(&v24, &location);
-      [(SHWatchdogTimer *)v15 startWatchdogTimerForInterval:v23 firedCompletion:a5];
+      [(SHWatchdogTimer *)v15 startWatchdogTimerForInterval:v23 firedCompletion:timeout];
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
     }
 
-    if ([v11 executionScope] == 1)
+    if ([workerCopy executionScope] == 1)
     {
       v18 = +[SHServiceStateHandler globalQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100002624;
       block[3] = &unk_10007CD50;
-      v22 = v11;
+      v22 = workerCopy;
       dispatch_sync(v18, block);
     }
 
-    v19 = [(SHServiceStateHandler *)self lock];
-    [v19 unlock];
+    lock2 = [(SHServiceStateHandler *)self lock];
+    [lock2 unlock];
   }
 
   return v13 == 0;
 }
 
-- (void)service:(id)a3 unregisterWorker:(id)a4
+- (void)service:(id)service unregisterWorker:(id)worker
 {
-  v5 = a4;
-  v6 = [(SHServiceStateHandler *)self lock];
-  [v6 lock];
+  workerCopy = worker;
+  lock = [(SHServiceStateHandler *)self lock];
+  [lock lock];
 
-  v7 = [(SHServiceStateHandler *)self workers];
-  v8 = [v7 objectForKey:v5];
+  workers = [(SHServiceStateHandler *)self workers];
+  v8 = [workers objectForKey:workerCopy];
 
   [v8 stopWatchdogTimer];
-  v9 = [(SHServiceStateHandler *)self workers];
-  [v9 removeObjectForKey:v5];
+  workers2 = [(SHServiceStateHandler *)self workers];
+  [workers2 removeObjectForKey:workerCopy];
 
-  if ([v5 executionScope] == 1)
+  if ([workerCopy executionScope] == 1)
   {
     v10 = +[SHServiceStateHandler globalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000027DC;
     block[3] = &unk_10007CD50;
-    v13 = v5;
+    v13 = workerCopy;
     dispatch_sync(v10, block);
   }
 
-  v11 = [(SHServiceStateHandler *)self lock];
-  [v11 unlock];
+  lock2 = [(SHServiceStateHandler *)self lock];
+  [lock2 unlock];
 }
 
-- (void)unregisterAllWorkersForService:(id)a3
+- (void)unregisterAllWorkersForService:(id)service
 {
-  v4 = [(SHServiceStateHandler *)self lock];
-  [v4 lock];
+  lock = [(SHServiceStateHandler *)self lock];
+  [lock lock];
 
-  v5 = [(SHServiceStateHandler *)self workers];
-  [v5 removeAllObjects];
+  workers = [(SHServiceStateHandler *)self workers];
+  [workers removeAllObjects];
 
-  v6 = [(SHServiceStateHandler *)self lock];
-  [v6 unlock];
+  lock2 = [(SHServiceStateHandler *)self lock];
+  [lock2 unlock];
 }
 
-- (id)allWorkersForService:(id)a3
+- (id)allWorkersForService:(id)service
 {
-  v4 = [(SHServiceStateHandler *)self lock];
-  [v4 lock];
+  lock = [(SHServiceStateHandler *)self lock];
+  [lock lock];
 
-  v5 = [(SHServiceStateHandler *)self workers];
-  v6 = [v5 copy];
+  workers = [(SHServiceStateHandler *)self workers];
+  v6 = [workers copy];
 
-  v7 = [(SHServiceStateHandler *)self lock];
-  [v7 unlock];
+  lock2 = [(SHServiceStateHandler *)self lock];
+  [lock2 unlock];
 
   return v6;
 }
 
-- (id)registeredWorkerForWorkerID:(id)a3
+- (id)registeredWorkerForWorkerID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHServiceStateHandler *)self lock];
-  [v5 lock];
+  dCopy = d;
+  lock = [(SHServiceStateHandler *)self lock];
+  [lock lock];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(SHServiceStateHandler *)self workers];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  workers = [(SHServiceStateHandler *)self workers];
+  v7 = [workers countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = *v28;
@@ -223,24 +223,24 @@
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(workers);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 workerID];
-        v12 = [v11 isEqual:v4];
+        workerID = [v10 workerID];
+        v12 = [workerID isEqual:dCopy];
 
         if (v12)
         {
-          v16 = [(SHServiceStateHandler *)self lock];
-          [v16 unlock];
+          lock2 = [(SHServiceStateHandler *)self lock];
+          [lock2 unlock];
 
           v15 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v7 = [workers countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v7)
       {
         continue;
@@ -250,8 +250,8 @@
     }
   }
 
-  v13 = [(SHServiceStateHandler *)self lock];
-  [v13 unlock];
+  lock3 = [(SHServiceStateHandler *)self lock];
+  [lock3 unlock];
 
   v21 = 0;
   v22 = &v21;
@@ -265,7 +265,7 @@
   v18[2] = sub_100002BFC;
   v18[3] = &unk_10007CD78;
   v20 = &v21;
-  v19 = v4;
+  v19 = dCopy;
   dispatch_sync(v14, v18);
 
   v15 = v22[5];
@@ -278,14 +278,14 @@ LABEL_11:
 
 - (BOOL)hasRegisteredWorkers
 {
-  v3 = [(SHServiceStateHandler *)self lock];
-  [v3 lock];
+  lock = [(SHServiceStateHandler *)self lock];
+  [lock lock];
 
-  v4 = [(SHServiceStateHandler *)self workers];
-  v5 = [v4 count] != 0;
+  workers = [(SHServiceStateHandler *)self workers];
+  v5 = [workers count] != 0;
 
-  v6 = [(SHServiceStateHandler *)self lock];
-  [v6 unlock];
+  lock2 = [(SHServiceStateHandler *)self lock];
+  [lock2 unlock];
 
   return v5;
 }

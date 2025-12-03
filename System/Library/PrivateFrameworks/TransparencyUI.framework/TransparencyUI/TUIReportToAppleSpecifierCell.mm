@@ -1,20 +1,20 @@
 @interface TUIReportToAppleSpecifierCell
-- (id)attributedStringForSystemImageNamed:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (id)attributedStringForSystemImageNamed:(id)named;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation TUIReportToAppleSpecifierCell
 
-- (id)attributedStringForSystemImageNamed:(id)a3
+- (id)attributedStringForSystemImageNamed:(id)named
 {
   v3 = MEMORY[0x277D74270];
-  v4 = a3;
+  namedCopy = named;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:3 scale:10.0];
-  v7 = [MEMORY[0x277D755B8] systemImageNamed:v4 withConfiguration:v6];
+  v7 = [MEMORY[0x277D755B8] systemImageNamed:namedCopy withConfiguration:v6];
 
-  v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v9 = [v7 imageWithTintColor:v8];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v9 = [v7 imageWithTintColor:secondaryLabelColor];
   [v5 setImage:v9];
 
   v10 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v5];
@@ -22,10 +22,10 @@
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_6 != -1)
   {
     [TUIReportToAppleSpecifierCell refreshCellContentsWithSpecifier:];
@@ -39,31 +39,31 @@
 
   v51.receiver = self;
   v51.super_class = TUIReportToAppleSpecifierCell;
-  [(PSTableCell *)&v51 refreshCellContentsWithSpecifier:v4];
-  v6 = [(TUIReportToAppleSpecifierCell *)self textLabel];
-  [v6 setText:0];
+  [(PSTableCell *)&v51 refreshCellContentsWithSpecifier:specifierCopy];
+  textLabel = [(TUIReportToAppleSpecifierCell *)self textLabel];
+  [textLabel setText:0];
 
-  v50 = v4;
-  v7 = [v4 propertyForKey:*MEMORY[0x277D40160]];
-  v8 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
+  v50 = specifierCopy;
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D40160]];
+  detailTextLabel = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-  [v8 setFont:v9];
+  [detailTextLabel setFont:v9];
 
-  v10 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
-  v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v10 setTextColor:v11];
+  detailTextLabel2 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [detailTextLabel2 setTextColor:secondaryLabelColor];
 
-  v12 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
-  [v12 setLineBreakMode:0];
+  detailTextLabel3 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
+  [detailTextLabel3 setLineBreakMode:0];
 
-  v13 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
-  [v13 setNumberOfLines:0];
+  detailTextLabel4 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
+  [detailTextLabel4 setNumberOfLines:0];
 
   v14 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"\t"];
   v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"\n"];
   v16 = objc_opt_new();
   v49 = v7;
-  LODWORD(v11) = [v7 isEqual:*MEMORY[0x277D735C8]];
+  LODWORD(secondaryLabelColor) = [v7 isEqual:*MEMORY[0x277D735C8]];
   v17 = [(TUIReportToAppleSpecifierCell *)self attributedStringForSystemImageNamed:@"person.crop.circle"];
   [v16 appendAttributedString:v17];
 
@@ -71,7 +71,7 @@
   v18 = objc_alloc(MEMORY[0x277CCA898]);
   v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v20 = v19;
-  if (v11)
+  if (secondaryLabelColor)
   {
     v21 = [v19 localizedStringForKey:@"APPLE_ID_WITH_PEER_STRING" value:&stru_287F92480 table:@"Localizable"];
     v22 = [v18 initWithString:v21];
@@ -140,8 +140,8 @@
   v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
   [v16 addAttributes:v44 range:{0, objc_msgSend(v16, "length")}];
 
-  v45 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
-  [v45 setAttributedText:v16];
+  detailTextLabel5 = [(TUIReportToAppleSpecifierCell *)self detailTextLabel];
+  [detailTextLabel5 setAttributedText:v16];
 
   [(TUIReportToAppleSpecifierCell *)self setNeedsLayout];
   v46 = *MEMORY[0x277D85DE8];

@@ -1,71 +1,71 @@
 @interface RTPModelTile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addApMapping:(id)a3;
-- (void)addHashedApMapping:(id)a3;
-- (void)addModel:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addApMapping:(id)mapping;
+- (void)addHashedApMapping:(id)mapping;
+- (void)addModel:(id)model;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RTPModelTile
 
-- (void)addModel:(id)a3
+- (void)addModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   models = self->_models;
-  v8 = v4;
+  v8 = modelCopy;
   if (!models)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_models;
     self->_models = v6;
 
-    v4 = v8;
+    modelCopy = v8;
     models = self->_models;
   }
 
-  [(NSMutableArray *)models addObject:v4];
+  [(NSMutableArray *)models addObject:modelCopy];
 }
 
-- (void)addApMapping:(id)a3
+- (void)addApMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   apMappings = self->_apMappings;
-  v8 = v4;
+  v8 = mappingCopy;
   if (!apMappings)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_apMappings;
     self->_apMappings = v6;
 
-    v4 = v8;
+    mappingCopy = v8;
     apMappings = self->_apMappings;
   }
 
-  [(NSMutableArray *)apMappings addObject:v4];
+  [(NSMutableArray *)apMappings addObject:mappingCopy];
 }
 
-- (void)addHashedApMapping:(id)a3
+- (void)addHashedApMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   hashedApMappings = self->_hashedApMappings;
-  v8 = v4;
+  v8 = mappingCopy;
   if (!hashedApMappings)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_hashedApMappings;
     self->_hashedApMappings = v6;
 
-    v4 = v8;
+    mappingCopy = v8;
     hashedApMappings = self->_hashedApMappings;
   }
 
-  [(NSMutableArray *)hashedApMappings addObject:v4];
+  [(NSMutableArray *)hashedApMappings addObject:mappingCopy];
 }
 
 - (id)description
@@ -73,8 +73,8 @@
   v7.receiver = self;
   v7.super_class = RTPModelTile;
   v3 = [(RTPModelTile *)&v7 description];
-  v4 = [(RTPModelTile *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RTPModelTile *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -104,8 +104,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -139,8 +139,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -180,8 +180,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v28 objects:v40 count:16];
@@ -202,9 +202,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -313,69 +313,69 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if ([(RTPModelTile *)self modelsCount])
   {
-    [v16 clearModels];
-    v4 = [(RTPModelTile *)self modelsCount];
-    if (v4)
+    [toCopy clearModels];
+    modelsCount = [(RTPModelTile *)self modelsCount];
+    if (modelsCount)
     {
-      v5 = v4;
+      v5 = modelsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(RTPModelTile *)self modelAtIndex:i];
-        [v16 addModel:v7];
+        [toCopy addModel:v7];
       }
     }
   }
 
   if ([(RTPModelTile *)self apMappingsCount])
   {
-    [v16 clearApMappings];
-    v8 = [(RTPModelTile *)self apMappingsCount];
-    if (v8)
+    [toCopy clearApMappings];
+    apMappingsCount = [(RTPModelTile *)self apMappingsCount];
+    if (apMappingsCount)
     {
-      v9 = v8;
+      v9 = apMappingsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(RTPModelTile *)self apMappingAtIndex:j];
-        [v16 addApMapping:v11];
+        [toCopy addApMapping:v11];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v16 + 1) = self->_singlePoiMuid;
-    *(v16 + 48) |= 1u;
+    *(toCopy + 1) = self->_singlePoiMuid;
+    *(toCopy + 48) |= 1u;
   }
 
   if ([(RTPModelTile *)self hashedApMappingsCount])
   {
-    [v16 clearHashedApMappings];
-    v12 = [(RTPModelTile *)self hashedApMappingsCount];
-    if (v12)
+    [toCopy clearHashedApMappings];
+    hashedApMappingsCount = [(RTPModelTile *)self hashedApMappingsCount];
+    if (hashedApMappingsCount)
     {
-      v13 = v12;
+      v13 = hashedApMappingsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(RTPModelTile *)self hashedApMappingAtIndex:k];
-        [v16 addHashedApMapping:v15];
+        [toCopy addHashedApMapping:v15];
       }
     }
   }
 
   if (self->_hashSalt)
   {
-    [v16 setHashSalt:?];
+    [toCopy setHashSalt:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -396,7 +396,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v35 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v35 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addModel:v11];
 
         v10 = v10 + 1;
@@ -429,7 +429,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v31 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v31 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addApMapping:v17];
 
         v16 = v16 + 1;
@@ -468,7 +468,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v27 + 1) + 8 * v22) copyWithZone:{a3, v27}];
+        v23 = [*(*(&v27 + 1) + 8 * v22) copyWithZone:{zone, v27}];
         [v5 addHashedApMapping:v23];
 
         v22 = v22 + 1;
@@ -481,23 +481,23 @@
     while (v20);
   }
 
-  v24 = [(NSData *)self->_hashSalt copyWithZone:a3];
+  v24 = [(NSData *)self->_hashSalt copyWithZone:zone];
   v25 = *(v5 + 3);
   *(v5 + 3) = v24;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   models = self->_models;
-  if (models | *(v4 + 5))
+  if (models | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)models isEqual:?])
     {
@@ -506,7 +506,7 @@
   }
 
   apMappings = self->_apMappings;
-  if (apMappings | *(v4 + 2))
+  if (apMappings | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)apMappings isEqual:?])
     {
@@ -514,16 +514,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_singlePoiMuid != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_singlePoiMuid != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -531,13 +531,13 @@ LABEL_15:
   }
 
   hashedApMappings = self->_hashedApMappings;
-  if (hashedApMappings | *(v4 + 4) && ![(NSMutableArray *)hashedApMappings isEqual:?])
+  if (hashedApMappings | *(equalCopy + 4) && ![(NSMutableArray *)hashedApMappings isEqual:?])
   {
     goto LABEL_15;
   }
 
   hashSalt = self->_hashSalt;
-  if (hashSalt | *(v4 + 3))
+  if (hashSalt | *(equalCopy + 3))
   {
     v10 = [(NSData *)hashSalt isEqual:?];
   }
@@ -570,14 +570,14 @@ LABEL_16:
   return v6 ^ [(NSData *)self->_hashSalt hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v6)
   {
@@ -605,7 +605,7 @@ LABEL_16:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v11)
   {
@@ -629,9 +629,9 @@ LABEL_16:
     while (v12);
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_singlePoiMuid = *(v4 + 1);
+    self->_singlePoiMuid = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -639,7 +639,7 @@ LABEL_16:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = *(v4 + 4);
+  v15 = *(fromCopy + 4);
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v16)
   {
@@ -663,7 +663,7 @@ LABEL_16:
     while (v17);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(RTPModelTile *)self setHashSalt:?];
   }

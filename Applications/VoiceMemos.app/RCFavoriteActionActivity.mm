@@ -9,10 +9,10 @@
 
 - (id)activityTitle
 {
-  v2 = [(RCFavoriteActionActivity *)self isAlreadyFavorite];
+  isAlreadyFavorite = [(RCFavoriteActionActivity *)self isAlreadyFavorite];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (isAlreadyFavorite)
   {
     v5 = @"REMOVE_FROM_FAVORITES";
   }
@@ -38,14 +38,14 @@
 - (void)performActivity
 {
   v3 = +[UIApplication sharedApplication];
-  v7 = [v3 delegate];
+  delegate = [v3 delegate];
 
-  v4 = [v7 defaultSceneDelegate];
-  v5 = [v4 mainViewController];
+  defaultSceneDelegate = [delegate defaultSceneDelegate];
+  mainViewController = [defaultSceneDelegate mainViewController];
 
-  LODWORD(v4) = [(RCFavoriteActionActivity *)self isAlreadyFavorite];
-  v6 = [(RCUIActivity *)self recordingUUIDs];
-  [v5 setFavorite:v4 ^ 1 forRecordingsWithUUIDs:v6];
+  LODWORD(defaultSceneDelegate) = [(RCFavoriteActionActivity *)self isAlreadyFavorite];
+  recordingUUIDs = [(RCUIActivity *)self recordingUUIDs];
+  [mainViewController setFavorite:defaultSceneDelegate ^ 1 forRecordingsWithUUIDs:recordingUUIDs];
 
   [(RCFavoriteActionActivity *)self activityDidFinish:1];
 }
@@ -63,7 +63,7 @@
   v5[3] = &unk_10028AFE8;
   v3 = v8 = &v9;
   v6 = v3;
-  v7 = self;
+  selfCopy = self;
   [v3 performBlockAndWait:v5];
   LOBYTE(self) = *(v10 + 24);
 

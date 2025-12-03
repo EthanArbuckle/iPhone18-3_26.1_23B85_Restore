@@ -7,8 +7,8 @@
 
 - (id)nC4QvxwoXaT2I88i
 {
-  v3 = [(ASClass101288420 *)self dfVal];
-  v4 = [v3 dataUsingEncoding:4];
+  dfVal = [(ASClass101288420 *)self dfVal];
+  v4 = [dfVal dataUsingEncoding:4];
 
   v5 = [v4 length];
   v6 = malloc_type_malloc(v5 + 32, 0x72494357uLL);
@@ -24,8 +24,8 @@
   *(v6 + 4) = vmovn_s16(vuzp1q_s16(vuzp1q_s32(vshlq_u64(v9, xmmword_1005C1310), vshlq_u64(v9, xmmword_1005C1320)), vuzp1q_s32(vshlq_u64(v9, xmmword_1005C1340), vshlq_u64(v9, xmmword_1005C1330))));
   memcpy(v6 + 12, [v4 bytes], objc_msgSend(v4, "length"));
   v10 = [v4 length];
-  v11 = [(ASClass101288420 *)self presentTime];
-  [v11 timeIntervalSinceReferenceDate];
+  presentTime = [(ASClass101288420 *)self presentTime];
+  [presentTime timeIntervalSinceReferenceDate];
   v13 = vdupq_n_s64(v12);
   *&v6[v10 + 12] = vmovn_s16(vuzp1q_s16(vuzp1q_s32(vshlq_u64(v13, xmmword_1005C1310), vshlq_u64(v13, xmmword_1005C1320)), vuzp1q_s32(vshlq_u64(v13, xmmword_1005C1340), vshlq_u64(v13, xmmword_1005C1330))));
 
@@ -64,14 +64,14 @@
 
 - (BOOL)PJ7tY2vmxQ3CBhNO
 {
-  v3 = [(ASClass101288420 *)self nC4QvxwoXaT2I88i];
-  v4 = [(ASClass101288420 *)self macVal];
-  v5 = [v4 isEqual:v3];
+  nC4QvxwoXaT2I88i = [(ASClass101288420 *)self nC4QvxwoXaT2I88i];
+  macVal = [(ASClass101288420 *)self macVal];
+  v5 = [macVal isEqual:nC4QvxwoXaT2I88i];
 
   if (v5)
   {
-    v6 = [(ASClass101288420 *)self presentTime];
-    v7 = [v6 dateByAddingTimeInterval:{-[ASClass101288420 dfMaxAge](self, "dfMaxAge") / 1000.0}];
+    presentTime = [(ASClass101288420 *)self presentTime];
+    v7 = [presentTime dateByAddingTimeInterval:{-[ASClass101288420 dfMaxAge](self, "dfMaxAge") / 1000.0}];
 
     [v7 timeIntervalSinceNow];
     v9 = v8 >= 0.0;

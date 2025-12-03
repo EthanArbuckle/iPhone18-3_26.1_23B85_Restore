@@ -1,7 +1,7 @@
 @interface CellLayer
 - (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)init;
-- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithCoder:(id)a3;
-- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithLayer:(id)a3;
+- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithCoder:(id)coder;
+- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithLayer:(id)layer;
 @end
 
 @implementation CellLayer
@@ -13,7 +13,7 @@
   return [(CellLayer *)&v3 init];
 }
 
-- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithLayer:(id)a3
+- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -29,12 +29,12 @@
   return v6;
 }
 
-- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithCoder:(id)a3
+- (_TtC9RemindersP33_E28D896C953424B0133C5B43DB432AE59CellLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(CellLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CellLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

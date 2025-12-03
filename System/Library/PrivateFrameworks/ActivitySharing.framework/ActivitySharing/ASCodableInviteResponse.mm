@@ -1,20 +1,20 @@
 @interface ASCodableInviteResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResponseCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResponseCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableInviteResponse
 
-- (void)setHasResponseCode:(BOOL)a3
+- (void)setHasResponseCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = ASCodableInviteResponse;
   v4 = [(ASCodableInviteResponse *)&v8 description];
-  v5 = [(ASCodableInviteResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableInviteResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   handshakeToken = self->_handshakeToken;
   if (handshakeToken)
   {
-    [v3 setObject:handshakeToken forKey:@"handshakeToken"];
+    [dictionary setObject:handshakeToken forKey:@"handshakeToken"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -64,8 +64,8 @@
   inviteeShareLocations = self->_inviteeShareLocations;
   if (inviteeShareLocations)
   {
-    v9 = [(ASCodableShareLocations *)inviteeShareLocations dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"inviteeShareLocations"];
+    dictionaryRepresentation = [(ASCodableShareLocations *)inviteeShareLocations dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"inviteeShareLocations"];
   }
 
   inviteeBuildNumber = self->_inviteeBuildNumber;
@@ -83,113 +83,113 @@
   activityDataPreview = self->_activityDataPreview;
   if (activityDataPreview)
   {
-    v13 = [(ASCodableActivityDataPreview *)activityDataPreview dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"activityDataPreview"];
+    dictionaryRepresentation2 = [(ASCodableActivityDataPreview *)activityDataPreview dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"activityDataPreview"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_handshakeToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     responseCode = self->_responseCode;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_inviteeCloudKitAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_inviteeShareLocations)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_inviteeBuildNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     inviteeVersion = self->_inviteeVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_activityDataPreview)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_handshakeToken)
   {
-    [v4 setHandshakeToken:?];
-    v4 = v5;
+    [toCopy setHandshakeToken:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 13) = self->_responseCode;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 13) = self->_responseCode;
+    *(toCopy + 56) |= 2u;
   }
 
   if (self->_inviteeCloudKitAddress)
   {
     [v5 setInviteeCloudKitAddress:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_inviteeShareLocations)
   {
     [v5 setInviteeShareLocations:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_inviteeBuildNumber)
   {
     [v5 setInviteeBuildNumber:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 12) = self->_inviteeVersion;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 12) = self->_inviteeVersion;
+    *(toCopy + 56) |= 1u;
   }
 
   if (self->_activityDataPreview)
   {
     [v5 setActivityDataPreview:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_handshakeToken copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_handshakeToken copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -199,15 +199,15 @@
     *(v5 + 56) |= 2u;
   }
 
-  v8 = [(NSString *)self->_inviteeCloudKitAddress copyWithZone:a3];
+  v8 = [(NSString *)self->_inviteeCloudKitAddress copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(ASCodableShareLocations *)self->_inviteeShareLocations copyWithZone:a3];
+  v10 = [(ASCodableShareLocations *)self->_inviteeShareLocations copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_inviteeBuildNumber copyWithZone:a3];
+  v12 = [(NSString *)self->_inviteeBuildNumber copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
@@ -217,23 +217,23 @@
     *(v5 + 56) |= 1u;
   }
 
-  v14 = [(ASCodableActivityDataPreview *)self->_activityDataPreview copyWithZone:a3];
+  v14 = [(ASCodableActivityDataPreview *)self->_activityDataPreview copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   handshakeToken = self->_handshakeToken;
-  if (handshakeToken | *(v4 + 2))
+  if (handshakeToken | *(equalCopy + 2))
   {
     if (![(NSString *)handshakeToken isEqual:?])
     {
@@ -241,16 +241,16 @@
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_responseCode != *(v4 + 13))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_responseCode != *(equalCopy + 13))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_22:
     v12 = 0;
@@ -258,13 +258,13 @@ LABEL_22:
   }
 
   inviteeCloudKitAddress = self->_inviteeCloudKitAddress;
-  if (inviteeCloudKitAddress | *(v4 + 4) && ![(NSString *)inviteeCloudKitAddress isEqual:?])
+  if (inviteeCloudKitAddress | *(equalCopy + 4) && ![(NSString *)inviteeCloudKitAddress isEqual:?])
   {
     goto LABEL_22;
   }
 
   inviteeShareLocations = self->_inviteeShareLocations;
-  if (inviteeShareLocations | *(v4 + 5))
+  if (inviteeShareLocations | *(equalCopy + 5))
   {
     if (![(ASCodableShareLocations *)inviteeShareLocations isEqual:?])
     {
@@ -273,7 +273,7 @@ LABEL_22:
   }
 
   inviteeBuildNumber = self->_inviteeBuildNumber;
-  if (inviteeBuildNumber | *(v4 + 3))
+  if (inviteeBuildNumber | *(equalCopy + 3))
   {
     if (![(NSString *)inviteeBuildNumber isEqual:?])
     {
@@ -281,22 +281,22 @@ LABEL_22:
     }
   }
 
-  v10 = *(v4 + 56);
+  v10 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_inviteeVersion != *(v4 + 12))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_inviteeVersion != *(equalCopy + 12))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_22;
   }
 
   activityDataPreview = self->_activityDataPreview;
-  if (activityDataPreview | *(v4 + 1))
+  if (activityDataPreview | *(equalCopy + 1))
   {
     v12 = [(ASCodableActivityDataPreview *)activityDataPreview isEqual:?];
   }
@@ -340,30 +340,30 @@ LABEL_23:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(ASCodableActivityDataPreview *)self->_activityDataPreview hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ASCodableInviteResponse *)self setHandshakeToken:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if ((*(v4 + 56) & 2) != 0)
+  if ((*(fromCopy + 56) & 2) != 0)
   {
-    self->_responseCode = *(v4 + 13);
+    self->_responseCode = *(fromCopy + 13);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ASCodableInviteResponse *)self setInviteeCloudKitAddress:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   inviteeShareLocations = self->_inviteeShareLocations;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (inviteeShareLocations)
   {
     if (!v6)
@@ -384,22 +384,22 @@ LABEL_23:
     [(ASCodableInviteResponse *)self setInviteeShareLocations:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ASCodableInviteResponse *)self setInviteeBuildNumber:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_inviteeVersion = *(v4 + 12);
+    self->_inviteeVersion = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
   activityDataPreview = self->_activityDataPreview;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (activityDataPreview)
   {
     if (v8)

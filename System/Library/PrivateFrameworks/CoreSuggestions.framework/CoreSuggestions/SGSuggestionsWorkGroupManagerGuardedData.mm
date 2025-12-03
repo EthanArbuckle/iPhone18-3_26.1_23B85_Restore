@@ -1,27 +1,27 @@
 @interface SGSuggestionsWorkGroupManagerGuardedData
 - (SGSuggestionsWorkGroupManagerGuardedData)init;
-- (id)createGroupForUniqueId:(id)a3;
-- (void)addToProcessedIds:(id)a3;
-- (void)enterGroupForUniqueId:(id)a3;
-- (void)leaveGroupForUniqueId:(id)a3;
+- (id)createGroupForUniqueId:(id)id;
+- (void)addToProcessedIds:(id)ids;
+- (void)enterGroupForUniqueId:(id)id;
+- (void)leaveGroupForUniqueId:(id)id;
 @end
 
 @implementation SGSuggestionsWorkGroupManagerGuardedData
 
-- (void)addToProcessedIds:(id)a3
+- (void)addToProcessedIds:(id)ids
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_uniqueIds count]>= 0x40 && ([(NSMutableArray *)self->_uniqueIds containsObject:v4]& 1) == 0)
+  idsCopy = ids;
+  if ([(NSMutableArray *)self->_uniqueIds count]>= 0x40 && ([(NSMutableArray *)self->_uniqueIds containsObject:idsCopy]& 1) == 0)
   {
     [(NSMutableArray *)self->_uniqueIds removeObjectAtIndex:0];
   }
 
-  [(NSMutableArray *)self->_uniqueIds addObject:v4];
+  [(NSMutableArray *)self->_uniqueIds addObject:idsCopy];
 }
 
-- (void)leaveGroupForUniqueId:(id)a3
+- (void)leaveGroupForUniqueId:(id)id
 {
-  v3 = [(NSMapTable *)self->_groupLookup objectForKey:a3];
+  v3 = [(NSMapTable *)self->_groupLookup objectForKey:id];
   if (v3)
   {
     v4 = v3;
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)enterGroupForUniqueId:(id)a3
+- (void)enterGroupForUniqueId:(id)id
 {
-  v3 = [(NSMapTable *)self->_groupLookup objectForKey:a3];
+  v3 = [(NSMapTable *)self->_groupLookup objectForKey:id];
   if (v3)
   {
     v4 = v3;
@@ -41,11 +41,11 @@
   }
 }
 
-- (id)createGroupForUniqueId:(id)a3
+- (id)createGroupForUniqueId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = dispatch_group_create();
-  [(NSMapTable *)self->_groupLookup setObject:v5 forKey:v4];
+  [(NSMapTable *)self->_groupLookup setObject:v5 forKey:idCopy];
 
   return v5;
 }
@@ -57,9 +57,9 @@
   v2 = [(SGSuggestionsWorkGroupManagerGuardedData *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     groupLookup = v2->_groupLookup;
-    v2->_groupLookup = v3;
+    v2->_groupLookup = strongToWeakObjectsMapTable;
 
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:64];
     uniqueIds = v2->_uniqueIds;

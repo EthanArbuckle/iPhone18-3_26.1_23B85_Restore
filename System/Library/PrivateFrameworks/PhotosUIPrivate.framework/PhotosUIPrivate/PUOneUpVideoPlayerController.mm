@@ -1,9 +1,9 @@
 @interface PUOneUpVideoPlayerController
 - (PUBrowsingVideoPlayer)player;
 - (PUOneUpVideoPlayerControllerDelegate)delegate;
-- (void)setDelegate:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)updateWithBrowsingViewModel:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setPlayer:(id)player;
+- (void)updateWithBrowsingViewModel:(id)model;
 @end
 
 @implementation PUOneUpVideoPlayerController
@@ -15,11 +15,11 @@
   return v2;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B37D900C(a3);
+  playerCopy = player;
+  selfCopy = self;
+  sub_1B37D900C(player);
 }
 
 - (PUOneUpVideoPlayerControllerDelegate)delegate
@@ -29,18 +29,18 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B37D9220();
 }
 
-- (void)updateWithBrowsingViewModel:(id)a3
+- (void)updateWithBrowsingViewModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B37DA9F4(v4);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1B37DA9F4(modelCopy);
 }
 
 @end

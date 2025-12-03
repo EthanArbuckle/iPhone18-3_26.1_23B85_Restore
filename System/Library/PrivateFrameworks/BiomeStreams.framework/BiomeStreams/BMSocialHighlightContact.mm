@@ -1,37 +1,37 @@
 @interface BMSocialHighlightContact
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSocialHighlightContact)initWithHandle:(id)a3 isSignificant:(BOOL)a4 isMe:(BOOL)a5;
-- (BMSocialHighlightContact)initWithProto:(id)a3;
-- (BMSocialHighlightContact)initWithProtoData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSocialHighlightContact)initWithHandle:(id)handle isSignificant:(BOOL)significant isMe:(BOOL)me;
+- (BMSocialHighlightContact)initWithProto:(id)proto;
+- (BMSocialHighlightContact)initWithProtoData:(id)data;
 - (id)encodeAsProto;
 - (id)proto;
 @end
 
 @implementation BMSocialHighlightContact
 
-- (BMSocialHighlightContact)initWithHandle:(id)a3 isSignificant:(BOOL)a4 isMe:(BOOL)a5
+- (BMSocialHighlightContact)initWithHandle:(id)handle isSignificant:(BOOL)significant isMe:(BOOL)me
 {
-  v9 = a3;
+  handleCopy = handle;
   v13.receiver = self;
   v13.super_class = BMSocialHighlightContact;
   v10 = [(BMEventBase *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_handle, a3);
-    v11->_isSignificant = a4;
-    v11->_isMe = a5;
+    objc_storeStrong(&v10->_handle, handle);
+    v11->_isSignificant = significant;
+    v11->_isMe = me;
   }
 
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 3)
+  if (version == 3)
   {
-    v4 = a3;
-    v5 = [[BMSocialHighlightContact alloc] initWithProtoData:v4];
+    dataCopy = data;
+    v5 = [[BMSocialHighlightContact alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -44,58 +44,58 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSocialHighlightContact *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSocialHighlightContact *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSocialHighlightContact)initWithProto:(id)a3
+- (BMSocialHighlightContact)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 handle];
-    if (v6)
+    v5 = protoCopy;
+    handle = [v5 handle];
+    if (handle)
     {
-      v7 = [v5 handle];
-      self = -[BMSocialHighlightContact initWithHandle:isSignificant:isMe:](self, "initWithHandle:isSignificant:isMe:", v7, [v5 isSignificant], objc_msgSend(v5, "isMe"));
+      handle2 = [v5 handle];
+      self = -[BMSocialHighlightContact initWithHandle:isSignificant:isMe:](self, "initWithHandle:isSignificant:isMe:", handle2, [v5 isSignificant], objc_msgSend(v5, "isMe"));
 
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMSocialHighlightContact)initWithProtoData:(id)a3
+- (BMSocialHighlightContact)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSocialHighlightContact alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSocialHighlightContact alloc] initWithData:dataCopy];
 
     self = [(BMSocialHighlightContact *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -103,8 +103,8 @@
   v3 = objc_opt_new();
   [v3 setIsMe:{-[BMSocialHighlightContact isMe](self, "isMe")}];
   [v3 setIsSignificant:{-[BMSocialHighlightContact isSignificant](self, "isSignificant")}];
-  v4 = [(BMSocialHighlightContact *)self handle];
-  [v3 setHandle:v4];
+  handle = [(BMSocialHighlightContact *)self handle];
+  [v3 setHandle:handle];
 
   return v3;
 }

@@ -1,21 +1,21 @@
 @interface HFDataAnalyticsLogItemProvider
 - (HFDataAnalyticsLogItemProvider)init;
-- (HFDataAnalyticsLogItemProvider)initWithMediaProfileContainer:(id)a3;
+- (HFDataAnalyticsLogItemProvider)initWithMediaProfileContainer:(id)container;
 - (NAFuture)logFetchFuture;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFDataAnalyticsLogItemProvider
 
-- (HFDataAnalyticsLogItemProvider)initWithMediaProfileContainer:(id)a3
+- (HFDataAnalyticsLogItemProvider)initWithMediaProfileContainer:(id)container
 {
-  v6 = a3;
-  if (!v6)
+  containerCopy = container;
+  if (!containerCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItemProvider.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItemProvider.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
   }
 
   v15.receiver = self;
@@ -24,14 +24,14 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_mediaProfileContainer, a3);
+    objc_storeStrong(&v7->_mediaProfileContainer, container);
     v9 = objc_opt_new();
     logItems = v8->_logItems;
     v8->_logItems = v9;
 
-    v11 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     logEntryUniqueIdentifierToLogItemMap = v8->_logEntryUniqueIdentifierToLogItemMap;
-    v8->_logEntryUniqueIdentifierToLogItemMap = v11;
+    v8->_logEntryUniqueIdentifierToLogItemMap = strongToWeakObjectsMapTable;
   }
 
   return v8;
@@ -39,18 +39,18 @@
 
 - (HFDataAnalyticsLogItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithMediaProfileContainer_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItemProvider.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HFDataAnalyticsLogItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItemProvider.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HFDataAnalyticsLogItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFDataAnalyticsLogItemProvider *)self mediaProfileContainer];
-  v6 = [v4 initWithMediaProfileContainer:v5];
+  mediaProfileContainer = [(HFDataAnalyticsLogItemProvider *)self mediaProfileContainer];
+  v6 = [v4 initWithMediaProfileContainer:mediaProfileContainer];
 
   return v6;
 }
@@ -60,8 +60,8 @@
   logFetchFuture = self->_logFetchFuture;
   if (!logFetchFuture)
   {
-    v4 = [(HFDataAnalyticsLogItemProvider *)self mediaProfileContainer];
-    v5 = [v4 hf_fetchLogListWithTimeout:*&kHFDataAnalyticsFetchLogListTimeout];
+    mediaProfileContainer = [(HFDataAnalyticsLogItemProvider *)self mediaProfileContainer];
+    v5 = [mediaProfileContainer hf_fetchLogListWithTimeout:*&kHFDataAnalyticsFetchLogListTimeout];
     v6 = self->_logFetchFuture;
     self->_logFetchFuture = v5;
 
@@ -76,14 +76,14 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HFDataAnalyticsLogItemProvider *)self logFetchFuture];
+  logFetchFuture = [(HFDataAnalyticsLogItemProvider *)self logFetchFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__HFDataAnalyticsLogItemProvider_reloadItems__block_invoke;
   v6[3] = &unk_277DFED88;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [logFetchFuture flatMap:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -153,8 +153,8 @@ id __45__HFDataAnalyticsLogItemProvider_reloadItems__block_invoke_5(uint64_t a1,
 {
   v5.receiver = self;
   v5.super_class = HFDataAnalyticsLogItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"accessory"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"accessory"];
 
   return v3;
 }

@@ -4,35 +4,35 @@
 - (BOOL)startedPairing;
 - (EPSagaTransactionPairing)init;
 - (EPTransactionDelegate)delegate;
-- (id)findPairingReaderEntryWithPairer:(id)a3 andRemove:(BOOL)a4;
-- (id)findPairingReaderEntryWithReader:(id)a3 andRemove:(BOOL)a4;
-- (id)pairer:(id)a3 newEndpointWithDelegate:(id)a4;
+- (id)findPairingReaderEntryWithPairer:(id)pairer andRemove:(BOOL)remove;
+- (id)findPairingReaderEntryWithReader:(id)reader andRemove:(BOOL)remove;
+- (id)pairer:(id)pairer newEndpointWithDelegate:(id)delegate;
 - (void)_directBluetoothMigrationPairing;
 - (void)_directBluetoothMigrationUnpairing;
 - (void)_networkRelayMigrationPairing;
 - (void)_networkRelayMigrationUnpairing;
-- (void)_requestMigrationAndPairWithCandidateWithNetworkRelayIdentifier:(id)a3;
-- (void)advertiser:(id)a3 deviceDidAppear:(id)a4;
-- (void)advertiser:(id)a3 receivedPairingRequestForDevice:(id)a4;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)characteristicReader:(id)a3 didRead:(id)a4;
+- (void)_requestMigrationAndPairWithCandidateWithNetworkRelayIdentifier:(id)identifier;
+- (void)advertiser:(id)advertiser deviceDidAppear:(id)appear;
+- (void)advertiser:(id)advertiser receivedPairingRequestForDevice:(id)device;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)characteristicReader:(id)reader didRead:(id)read;
 - (void)checkIfIDSPaired;
-- (void)connectUp:(id)a3;
-- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)a3;
-- (void)discoverer:(id)a3 deviceDidBecomeDisplayable:(id)a4;
-- (void)failWithError:(id)a3;
-- (void)migrationBTPairingTimeout:(id)a3;
-- (void)networkRelayPairingCompletedWithIdentifier:(id)a3 error:(id)a4;
-- (void)networkRelayUnpairingCompletedWithError:(id)a3;
-- (void)pairer:(id)a3 completedWithError:(id)a4;
-- (void)pairer:(id)a3 requestWithType:(int64_t)a4 passkey:(id)a5;
-- (void)registerForPairingNotificationCompletion:(id)a3;
-- (void)setAdvertisingName:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)connectUp:(id)up;
+- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)identifier;
+- (void)discoverer:(id)discoverer deviceDidBecomeDisplayable:(id)displayable;
+- (void)failWithError:(id)error;
+- (void)migrationBTPairingTimeout:(id)timeout;
+- (void)networkRelayPairingCompletedWithIdentifier:(id)identifier error:(id)error;
+- (void)networkRelayUnpairingCompletedWithError:(id)error;
+- (void)pairer:(id)pairer completedWithError:(id)error;
+- (void)pairer:(id)pairer requestWithType:(int64_t)type passkey:(id)passkey;
+- (void)registerForPairingNotificationCompletion:(id)completion;
+- (void)setAdvertisingName:(id)name;
+- (void)setState:(unint64_t)state;
 - (void)timedOut;
-- (void)timeout:(id)a3;
-- (void)unpairer:(id)a3 didFinishUnpairingDevices:(id)a4;
+- (void)timeout:(id)timeout;
+- (void)unpairer:(id)unpairer didFinishUnpairingDevices:(id)devices;
 - (void)unregisterForPairingNotification;
 - (void)update;
 - (void)updateAdvertisingName;
@@ -68,37 +68,37 @@
   return v2;
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  [(EPSagaTransactionPairing *)self setServiceRegistry:v6];
-  v8 = [v6 serviceFromClass:objc_opt_class()];
+  registryCopy = registry;
+  entryCopy = entry;
+  [(EPSagaTransactionPairing *)self setServiceRegistry:registryCopy];
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
   [(EPSagaTransactionPairing *)self setFactory:v8];
 
-  v9 = [v6 serviceFromClass:objc_opt_class()];
+  v9 = [registryCopy serviceFromClass:objc_opt_class()];
 
   [(EPSagaTransactionPairing *)self setOobKeyStash:v9];
-  v10 = [v7 objectForKeyedSubscript:@"destinationIsAltAccount"];
+  v10 = [entryCopy objectForKeyedSubscript:@"destinationIsAltAccount"];
   self->_isAltAccountPairing = [v10 BOOLValue];
-  [(EPSagaTransactionPairing *)self setRoutingSlipEntry:v7];
+  [(EPSagaTransactionPairing *)self setRoutingSlipEntry:entryCopy];
 
-  v11 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v12 = [v11 objectForKeyedSubscript:@"useNetworkRelayPairing"];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v12 = [routingSlipEntry objectForKeyedSubscript:@"useNetworkRelayPairing"];
 
   if (v12)
   {
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
   }
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
   }
 
-  self->_useNetworkRelayPairing = v13;
-  v14 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v15 = [v14 objectForKeyedSubscript:@"iAmACompanionDevice"];
+  self->_useNetworkRelayPairing = bOOLValue;
+  routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v15 = [routingSlipEntry2 objectForKeyedSubscript:@"iAmACompanionDevice"];
 
   self->_iAmACompanionDevice = [v15 BOOLValue];
   [(EPSagaTransactionPairing *)self updateAdvertisingName];
@@ -126,15 +126,15 @@
   [(EPSagaTransactionPairing *)self setState:1];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  [(EPSagaTransactionPairing *)self setServiceRegistry:v6];
-  v8 = [v6 serviceFromClass:objc_opt_class()];
+  registryCopy = registry;
+  entryCopy = entry;
+  [(EPSagaTransactionPairing *)self setServiceRegistry:registryCopy];
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
 
   [(EPSagaTransactionPairing *)self setFactory:v8];
-  [(EPSagaTransactionPairing *)self setRoutingSlipEntry:v7];
+  [(EPSagaTransactionPairing *)self setRoutingSlipEntry:entryCopy];
 
   [(EPSagaTransactionPairing *)self setState:3];
 }
@@ -155,22 +155,22 @@
   [(EPSagaTransactionPairing *)self setAdvertisingName:v3];
 }
 
-- (void)setAdvertisingName:(id)a3
+- (void)setAdvertisingName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   advertisingName = self->_advertisingName;
-  v8 = v5;
-  if (v5 && !advertisingName || advertisingName && ([(NSString *)advertisingName isEqual:v5]& 1) == 0)
+  v8 = nameCopy;
+  if (nameCopy && !advertisingName || advertisingName && ([(NSString *)advertisingName isEqual:nameCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_advertisingName, a3);
-    v7 = [(EPSagaTransactionPairing *)self factory];
-    [v7 setAdvertisingName:v8];
+    objc_storeStrong(&self->_advertisingName, name);
+    factory = [(EPSagaTransactionPairing *)self factory];
+    [factory setAdvertisingName:v8];
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = sub_1000034AC();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -182,15 +182,15 @@
       {
         state = self->_state;
         *buf = 67109376;
-        v20 = state;
+        stateCopy = state;
         v21 = 1024;
-        v22 = a3;
+        stateCopy2 = state;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Changing EPSagaTransactionPairing state from %d -> %d", buf, 0xEu);
       }
     }
 
-    self->_state = a3;
-    if (a3 == 1)
+    self->_state = state;
+    if (state == 1)
     {
       [(EPSagaTransactionPairing *)self update];
     }
@@ -203,13 +203,13 @@
       block[3] = &unk_100175660;
       block[4] = self;
       dispatch_sync(&_dispatch_main_q, block);
-      if (a3 != 2)
+      if (state != 2)
       {
-        v9 = [(EPSagaTransactionPairing *)self pairers];
-        [v9 removeAllObjects];
+        pairers = [(EPSagaTransactionPairing *)self pairers];
+        [pairers removeAllObjects];
 
-        v10 = [(EPSagaTransactionPairing *)self pairingDevices];
-        [v10 removeAllObjects];
+        pairingDevices = [(EPSagaTransactionPairing *)self pairingDevices];
+        [pairingDevices removeAllObjects];
       }
 
       unpairer = self->_unpairer;
@@ -221,40 +221,40 @@
       sharedKey = self->_sharedKey;
       self->_sharedKey = 0;
 
-      if (a3 == 3 || !a3)
+      if (state == 3 || !state)
       {
         advertiser = self->_advertiser;
         self->_advertiser = 0;
 
-        v15 = [(EPSagaTransactionPairing *)self pairers];
-        [v15 removeAllObjects];
+        pairers2 = [(EPSagaTransactionPairing *)self pairers];
+        [pairers2 removeAllObjects];
 
-        v16 = [(EPSagaTransactionPairing *)self pairingDevices];
-        [v16 removeAllObjects];
+        pairingDevices2 = [(EPSagaTransactionPairing *)self pairingDevices];
+        [pairingDevices2 removeAllObjects];
 
         [(EPSagaTransactionPairing *)self setConnector:0];
         [(EPSagaTransactionPairing *)self setConnectorManager:0];
       }
 
       [(EPSagaTransactionPairing *)self update];
-      if ((a3 | 2) == 2)
+      if ((state | 2) == 2)
       {
-        v17 = [(EPSagaTransactionPairing *)self delegate];
-        [v17 transactionDidComplete:self];
+        delegate = [(EPSagaTransactionPairing *)self delegate];
+        [delegate transactionDidComplete:self];
       }
     }
   }
 }
 
-- (void)registerForPairingNotificationCompletion:(id)a3
+- (void)registerForPairingNotificationCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_registeredForPairingNotification)
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
@@ -286,13 +286,13 @@
 
 - (void)checkIfIDSPaired
 {
-  v3 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v12 = [v3 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v12 = [routingSlipEntry objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
   v4 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
-  v5 = [v4 defaultPairedDevice];
-  v6 = [v5 nsuuid];
-  v7 = [v12 isEqual:v6];
+  defaultPairedDevice = [v4 defaultPairedDevice];
+  nsuuid = [defaultPairedDevice nsuuid];
+  v7 = [v12 isEqual:nsuuid];
 
   if (v7)
   {
@@ -301,9 +301,9 @@
 
   v8 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
 
-  v9 = [v8 defaultPairedDevice];
-  v10 = [v9 nsuuid];
-  v11 = [v12 isEqual:v10];
+  defaultPairedDevice2 = [v8 defaultPairedDevice];
+  nsuuid2 = [defaultPairedDevice2 nsuuid];
+  v11 = [v12 isEqual:nsuuid2];
 
   if (v11)
   {
@@ -347,26 +347,26 @@
 
 - (void)_directBluetoothMigrationPairing
 {
-  v3 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v4 = [v3 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v4 = [routingSlipEntry objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
-  v5 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v6 = [v5 objectForKeyedSubscript:@"iAmACompanionDevice"];
+  routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v6 = [routingSlipEntry2 objectForKeyedSubscript:@"iAmACompanionDevice"];
 
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
   if (v4)
   {
-    v8 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v9 = [v8 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+    routingSlipEntry3 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    v9 = [routingSlipEntry3 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
     [(EPSagaTransactionPairing *)self connectUp:v9];
     goto LABEL_3;
   }
 
-  v10 = v7;
+  v10 = bOOLValue;
   if (self->_sharedKey)
   {
-    if (v7)
+    if (bOOLValue)
     {
 LABEL_6:
       if ([(EPResource *)self->_sharedKey availability]!= 1)
@@ -374,56 +374,56 @@ LABEL_6:
         goto LABEL_3;
       }
 
-      v11 = [(EPSagaTransactionPairing *)self discoverer];
-      if (v11)
+      discoverer = [(EPSagaTransactionPairing *)self discoverer];
+      if (discoverer)
       {
 
         goto LABEL_3;
       }
 
-      v52 = [(EPSagaTransactionPairing *)self readers];
-      if ([v52 count])
+      readers = [(EPSagaTransactionPairing *)self readers];
+      if ([readers count])
       {
 LABEL_33:
 
         goto LABEL_3;
       }
 
-      v56 = [(EPSagaTransactionPairing *)self pairers];
-      v57 = [v56 count];
+      pairers = [(EPSagaTransactionPairing *)self pairers];
+      v57 = [pairers count];
 
       if (!v57)
       {
-        v58 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-        v59 = [v58 objectForKeyedSubscript:@"discoverableCoreBluetoothID"];
+        routingSlipEntry4 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+        v59 = [routingSlipEntry4 objectForKeyedSubscript:@"discoverableCoreBluetoothID"];
 
         v72 = v6;
         if (v59)
         {
           v85 = v59;
-          v60 = [NSArray arrayWithObjects:&v85 count:1];
-          v61 = [(EPSagaTransactionPairing *)self factory];
-          [v61 setDiscovererDeviceUUIDs:v60];
+          factory2 = [NSArray arrayWithObjects:&v85 count:1];
+          factory = [(EPSagaTransactionPairing *)self factory];
+          [factory setDiscovererDeviceUUIDs:factory2];
         }
 
         else
         {
-          v60 = [(EPSagaTransactionPairing *)self factory];
-          [v60 setDiscovererDeviceUUIDs:0];
+          factory2 = [(EPSagaTransactionPairing *)self factory];
+          [factory2 setDiscovererDeviceUUIDs:0];
         }
 
-        v62 = [(EPSagaTransactionPairing *)self factory];
-        [v62 setDiscovererShouldScanForProximity:0];
+        factory3 = [(EPSagaTransactionPairing *)self factory];
+        [factory3 setDiscovererShouldScanForProximity:0];
 
-        v63 = [(EPSagaTransactionPairing *)self factory];
-        v64 = [v63 newDiscovererWithDelegate:self];
+        factory4 = [(EPSagaTransactionPairing *)self factory];
+        v64 = [factory4 newDiscovererWithDelegate:self];
         [(EPSagaTransactionPairing *)self setDiscoverer:v64];
 
         v78 = 0u;
         v79 = 0u;
         v76 = 0u;
         v77 = 0u;
-        v65 = self;
+        selfCopy = self;
         obj = [(EPDiscoverer *)self->_discoverer displayableDevices];
         v66 = [obj countByEnumeratingWithState:&v76 objects:v84 count:16];
         if (v66)
@@ -445,7 +445,7 @@ LABEL_33:
               v75[1] = 3221225472;
               v75[2] = sub_1000EAD14;
               v75[3] = &unk_100175598;
-              v75[4] = v65;
+              v75[4] = selfCopy;
               v75[5] = v70;
               dispatch_async(v71, v75);
             }
@@ -465,8 +465,8 @@ LABEL_33:
 
   else
   {
-    v12 = [(EPSagaTransactionPairing *)self serviceRegistry];
-    v13 = [v12 serviceFromClass:objc_opt_class()];
+    serviceRegistry = [(EPSagaTransactionPairing *)self serviceRegistry];
+    v13 = [serviceRegistry serviceFromClass:objc_opt_class()];
 
     v14 = [v13 newResourceWithDelegate:self];
     sharedKey = self->_sharedKey;
@@ -494,84 +494,84 @@ LABEL_33:
       v18 = sub_1000A98C0();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(EPSagaTransactionPairing *)self startedPairing];
+        startedPairing = [(EPSagaTransactionPairing *)self startedPairing];
         *buf = 67109120;
-        v83 = v19;
+        v83 = startedPairing;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionPairing: Set not available to pair to %{BOOL}d", buf, 8u);
       }
     }
 
-    v20 = [(EPSagaTransactionPairing *)self startedPairing];
-    v21 = [(EPSagaTransactionPairing *)self factory];
-    [v21 setAdvertiserNotAvailableToPair:v20];
+    startedPairing2 = [(EPSagaTransactionPairing *)self startedPairing];
+    factory5 = [(EPSagaTransactionPairing *)self factory];
+    [factory5 setAdvertiserNotAvailableToPair:startedPairing2];
 
-    v22 = [(EPSagaTransactionPairing *)self factory];
-    [v22 setDontAdvertiseWithServiceUUID:1];
+    factory6 = [(EPSagaTransactionPairing *)self factory];
+    [factory6 setDontAdvertiseWithServiceUUID:1];
 
-    v23 = [(EPSagaTransactionPairing *)self advertiser];
+    advertiser = [(EPSagaTransactionPairing *)self advertiser];
 
-    if (!v23)
+    if (!advertiser)
     {
-      v24 = [(EPSagaTransactionPairing *)self advertisingName];
-      v25 = [(EPSagaTransactionPairing *)self factory];
-      [v25 setAdvertisingName:v24];
+      advertisingName = [(EPSagaTransactionPairing *)self advertisingName];
+      factory7 = [(EPSagaTransactionPairing *)self factory];
+      [factory7 setAdvertisingName:advertisingName];
 
-      v26 = [(EPSagaTransactionPairing *)self factory];
-      [v26 setAdvertisingRate:1];
+      factory8 = [(EPSagaTransactionPairing *)self factory];
+      [factory8 setAdvertisingRate:1];
 
-      v27 = [(EPSagaTransactionPairing *)self factory];
-      v28 = [v27 newAdvertiserWithDelegate:self];
+      factory9 = [(EPSagaTransactionPairing *)self factory];
+      v28 = [factory9 newAdvertiserWithDelegate:self];
       [(EPSagaTransactionPairing *)self setAdvertiser:v28];
     }
 
-    v29 = [(EPSagaTransactionPairing *)self oobKeyGenerator];
+    oobKeyGenerator = [(EPSagaTransactionPairing *)self oobKeyGenerator];
 
-    if (!v29)
+    if (!oobKeyGenerator)
     {
       v30 = +[EPFactory sharedFactory];
       v31 = [v30 newKeyGeneratorWithDelegate:self];
       [(EPSagaTransactionPairing *)self setOobKeyGenerator:v31];
     }
 
-    v32 = [(EPSagaTransactionPairing *)self oobKeyGenerator];
-    v33 = [v32 availability];
+    oobKeyGenerator2 = [(EPSagaTransactionPairing *)self oobKeyGenerator];
+    availability = [oobKeyGenerator2 availability];
 
-    if (v33 == 1)
+    if (availability == 1)
     {
-      v34 = [(EPSagaTransactionPairing *)self oobKeyStash];
-      v35 = [v34 oobKey];
+      oobKeyStash = [(EPSagaTransactionPairing *)self oobKeyStash];
+      oobKey = [oobKeyStash oobKey];
 
-      if (!v35)
+      if (!oobKey)
       {
-        v36 = [(EPSagaTransactionPairing *)self oobKeyGenerator];
-        v37 = [v36 key];
-        v38 = [(EPSagaTransactionPairing *)self oobKeyStash];
-        [v38 setOobKey:v37];
+        oobKeyGenerator3 = [(EPSagaTransactionPairing *)self oobKeyGenerator];
+        v37 = [oobKeyGenerator3 key];
+        oobKeyStash2 = [(EPSagaTransactionPairing *)self oobKeyStash];
+        [oobKeyStash2 setOobKey:v37];
       }
 
-      v39 = [(EPSagaTransactionPairing *)self oobKeyStash];
-      v40 = [v39 oobKey];
+      oobKeyStash3 = [(EPSagaTransactionPairing *)self oobKeyStash];
+      oobKey2 = [oobKeyStash3 oobKey];
 
-      if (v40)
+      if (oobKey2)
       {
-        v41 = [(EPSagaTransactionPairing *)self oobKeyStash];
-        v42 = [v41 oobKey];
-        v43 = [(EPSagaTransactionPairing *)self oobKeyGenerator];
-        v44 = [v43 key];
-        v45 = [v42 isEqual:v44];
+        oobKeyStash4 = [(EPSagaTransactionPairing *)self oobKeyStash];
+        oobKey3 = [oobKeyStash4 oobKey];
+        oobKeyGenerator4 = [(EPSagaTransactionPairing *)self oobKeyGenerator];
+        v44 = [oobKeyGenerator4 key];
+        v45 = [oobKey3 isEqual:v44];
 
         if ((v45 & 1) == 0)
         {
-          v46 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-          v47 = [v46 errors];
+          routingSlipEntry5 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+          errors = [routingSlipEntry5 errors];
           v80 = NSLocalizedDescriptionKey;
           v81 = @"OOB key changed";
           v48 = [NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1];
           v49 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing" code:2 userInfo:v48];
-          [v47 addObject:v49];
+          [errors addObject:v49];
 
-          v50 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-          [v50 persist];
+          routingSlipEntry6 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+          [routingSlipEntry6 persist];
 
           [(EPSagaTransactionPairing *)self setState:3];
         }
@@ -579,10 +579,10 @@ LABEL_33:
         if (!self->_calledReadyToPair)
         {
           self->_calledReadyToPair = 1;
-          v51 = [(EPSagaTransactionPairing *)self serviceRegistry];
-          v52 = [v51 serviceFromProtocol:&OBJC_PROTOCOL___EPSagaTransactionPairingIsReadyToPair];
+          serviceRegistry2 = [(EPSagaTransactionPairing *)self serviceRegistry];
+          readers = [serviceRegistry2 serviceFromProtocol:&OBJC_PROTOCOL___EPSagaTransactionPairingIsReadyToPair];
 
-          if (v52)
+          if (readers)
           {
             v53 = sub_1000034AC();
             v54 = os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT);
@@ -597,7 +597,7 @@ LABEL_33:
               }
             }
 
-            [v52 pairingTransactionIsReadyToPair:self];
+            [readers pairingTransactionIsReadyToPair:self];
           }
 
           goto LABEL_33;
@@ -611,8 +611,8 @@ LABEL_3:
 
 - (void)_directBluetoothMigrationUnpairing
 {
-  v3 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v7 = [v3 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v7 = [routingSlipEntry objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
   if (v7)
   {
@@ -648,11 +648,11 @@ LABEL_3:
   [v5 addDelegate:self];
   if (self->_iAmACompanionDevice)
   {
-    v6 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v7 = [v6 objectForKeyedSubscript:@"networkRelayID"];
+    routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    v7 = [routingSlipEntry objectForKeyedSubscript:@"networkRelayID"];
 
-    v8 = [v5 migrationCandidates];
-    v9 = [v8 containsObject:v7];
+    migrationCandidates = [v5 migrationCandidates];
+    v9 = [migrationCandidates containsObject:v7];
 
     if (v9)
     {
@@ -669,8 +669,8 @@ LABEL_3:
 
     else
     {
-      v11 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-      v12 = [v11 objectForKeyedSubscript:@"networkRelayID"];
+      routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+      v12 = [routingSlipEntry2 objectForKeyedSubscript:@"networkRelayID"];
 
       v13 = networkrelay_pairing_log_handle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -704,28 +704,28 @@ LABEL_3:
   }
 }
 
-- (void)_requestMigrationAndPairWithCandidateWithNetworkRelayIdentifier:(id)a3
+- (void)_requestMigrationAndPairWithCandidateWithNetworkRelayIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   +[NetworkRelayAgent sharedInstance];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EB210;
   v7[3] = &unk_100177CF0;
   v8 = v7[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = identifierCopy;
+  v5 = identifierCopy;
   v6 = v8;
   [v6 requestMigrationFromCandidateWithNetworkRelayIdentifier:v5 completion:v7];
 }
 
-- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)a3
+- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v6 = [v5 objectForKeyedSubscript:@"networkRelayID"];
+  identifierCopy = identifier;
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v6 = [routingSlipEntry objectForKeyedSubscript:@"networkRelayID"];
 
-  v7 = [v6 isEqual:v4];
+  v7 = [v6 isEqual:identifierCopy];
   v8 = networkrelay_pairing_log_handle();
   v9 = v8;
   if (v7)
@@ -735,7 +735,7 @@ LABEL_3:
       v10 = 136315394;
       v11 = "[EPSagaTransactionPairing discoveredMigrationCandidateWithNetworkRelayIdentifier:]";
       v12 = 2114;
-      v13 = v4;
+      v13 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s discovered a migration candidate with NetworkRelay identifier %{public}@. Requesting migration.", &v10, 0x16u);
     }
 
@@ -749,7 +749,7 @@ LABEL_3:
       v10 = 136315650;
       v11 = "[EPSagaTransactionPairing discoveredMigrationCandidateWithNetworkRelayIdentifier:]";
       v12 = 2114;
-      v13 = v4;
+      v13 = identifierCopy;
       v14 = 2114;
       v15 = v6;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s discovered an unexpected migration candidate with NetworkRelay identifier %{public}@, looking for %{public}@", &v10, 0x20u);
@@ -757,33 +757,33 @@ LABEL_3:
   }
 }
 
-- (void)networkRelayPairingCompletedWithIdentifier:(id)a3 error:(id)a4
+- (void)networkRelayPairingCompletedWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v9 = [v8 objectForKeyedSubscript:@"networkRelayID"];
+  identifierCopy = identifier;
+  errorCopy = error;
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v9 = [routingSlipEntry objectForKeyedSubscript:@"networkRelayID"];
 
   v10 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 UUIDString];
-    v12 = [v6 UUIDString];
+    uUIDString = [v9 UUIDString];
+    uUIDString2 = [identifierCopy UUIDString];
     v28 = 136315906;
     v29 = "[EPSagaTransactionPairing networkRelayPairingCompletedWithIdentifier:error:]";
     v30 = 2114;
-    v31 = v11;
+    v31 = uUIDString;
     v32 = 2114;
-    v33 = v12;
+    v33 = uUIDString2;
     v34 = 2114;
-    v35 = v7;
+    v35 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s identifier: requested nrUUID = %{public}@; got newly paired BTUUID = %{public}@ error:%{public}@", &v28, 0x2Au);
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v13 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
-    [v13 addObject:v7];
+    errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+    [errors addObject:errorCopy];
 
     [(EPRoutingSlipEntry *)self->_routingSlipEntry persist];
     [(EPSagaTransactionPairing *)self setState:3];
@@ -795,71 +795,71 @@ LABEL_3:
     v15 = [NSSet setWithObject:v9];
     [v14 removeMigrationScanCandidates:v15];
 
-    v16 = [[EPSagaOperandUUID alloc] initWithUUID:v6];
-    v17 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v18 = [v17 operands];
-    [v18 setObject:v16 forKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+    v16 = [[EPSagaOperandUUID alloc] initWithUUID:identifierCopy];
+    routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    operands = [routingSlipEntry2 operands];
+    [operands setObject:v16 forKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
-    v19 = [NetworkRelayAgent networkRelayIdentifierForBluetoothIdentifier:v6];
+    v19 = [NetworkRelayAgent networkRelayIdentifierForBluetoothIdentifier:identifierCopy];
     v20 = networkrelay_pairing_log_handle();
-    v21 = v20;
+    routingSlipEntry3 = v20;
     if (v19)
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v6 UUIDString];
-        v23 = [v19 UUIDString];
+        uUIDString3 = [identifierCopy UUIDString];
+        uUIDString4 = [v19 UUIDString];
         v28 = 138412546;
-        v29 = v22;
+        v29 = uUIDString3;
         v30 = 2114;
-        v31 = v23;
-        _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "NetworkRelayIdentifier for device with Bluetooth identifier %@ is %{public}@", &v28, 0x16u);
+        v31 = uUIDString4;
+        _os_log_impl(&_mh_execute_header, routingSlipEntry3, OS_LOG_TYPE_DEFAULT, "NetworkRelayIdentifier for device with Bluetooth identifier %@ is %{public}@", &v28, 0x16u);
       }
 
       v24 = [[EPSagaOperandUUID alloc] initWithUUID:v19];
-      v21 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-      v25 = [v21 operands];
-      [v25 setObject:v24 forKeyedSubscript:@"newlyPairedNetworkRelayID"];
+      routingSlipEntry3 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+      operands2 = [routingSlipEntry3 operands];
+      [operands2 setObject:v24 forKeyedSubscript:@"newlyPairedNetworkRelayID"];
 
       v16 = v24;
     }
 
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v6 UUIDString];
+      uUIDString5 = [identifierCopy UUIDString];
       v28 = 138412290;
-      v29 = v26;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Unable to retrieve NetworkRelayIdentifier for device with Bluetooth identifier %@", &v28, 0xCu);
+      v29 = uUIDString5;
+      _os_log_impl(&_mh_execute_header, routingSlipEntry3, OS_LOG_TYPE_ERROR, "Unable to retrieve NetworkRelayIdentifier for device with Bluetooth identifier %@", &v28, 0xCu);
     }
 
-    v27 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    [v27 persist];
+    routingSlipEntry4 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    [routingSlipEntry4 persist];
 
     [(EPSagaTransactionPairing *)self setState:2];
   }
 }
 
-- (void)networkRelayUnpairingCompletedWithError:(id)a3
+- (void)networkRelayUnpairingCompletedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "networkRelayUnpairingCompletedWithError called with error %{public}@", buf, 0xCu);
   }
 
   v6 = +[NetworkRelayAgent sharedInstance];
   [v6 removeDelegate:self];
-  v7 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v8 = [v7 queue];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  queue = [routingSlipEntry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EBB64;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_networkRelayMigrationUnpairing
@@ -872,8 +872,8 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v4 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v5 = [v4 objectForKeyedSubscript:@"newlyPairedNetworkRelayID"];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v5 = [routingSlipEntry objectForKeyedSubscript:@"newlyPairedNetworkRelayID"];
 
   if (v5)
   {
@@ -896,89 +896,89 @@ LABEL_3:
   }
 }
 
-- (void)connectUp:(id)a3
+- (void)connectUp:(id)up
 {
-  v4 = a3;
-  if (v4)
+  upCopy = up;
+  if (upCopy)
   {
-    v13 = v4;
-    v5 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v6 = [v5 objectForKeyedSubscript:@"iAmACompanionDevice"];
+    v13 = upCopy;
+    routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    v6 = [routingSlipEntry objectForKeyedSubscript:@"iAmACompanionDevice"];
 
     if ([v6 BOOLValue])
     {
-      v7 = [(EPSagaTransactionPairing *)self connector];
+      connector = [(EPSagaTransactionPairing *)self connector];
 
-      if (!v7)
+      if (!connector)
       {
-        v8 = [(EPSagaTransactionPairing *)self connectorManager];
+        connectorManager = [(EPSagaTransactionPairing *)self connectorManager];
 
-        if (!v8)
+        if (!connectorManager)
         {
           v9 = +[EPPeripheralConnectorManagerFactory sharedConnectorManagerFactory];
           v10 = [v9 connectorManagerWithUuid:v13];
           [(EPSagaTransactionPairing *)self setConnectorManager:v10];
         }
 
-        v11 = [(EPSagaTransactionPairing *)self connectorManager];
-        v12 = [v11 newResourceWithDelegate:self];
+        connectorManager2 = [(EPSagaTransactionPairing *)self connectorManager];
+        v12 = [connectorManager2 newResourceWithDelegate:self];
         [(EPSagaTransactionPairing *)self setConnector:v12];
       }
     }
 
-    v4 = v13;
+    upCopy = v13;
   }
 }
 
-- (void)unpairer:(id)a3 didFinishUnpairingDevices:(id)a4
+- (void)unpairer:(id)unpairer didFinishUnpairingDevices:(id)devices
 {
-  v5 = a4;
-  v6 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v7 = [v6 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+  devicesCopy = devices;
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v7 = [routingSlipEntry objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
   if ([(EPSagaTransactionPairing *)self state]== 3)
   {
-    if (v7 && ([v5 containsObject:v7] & 1) == 0)
+    if (v7 && ([devicesCopy containsObject:v7] & 1) == 0)
     {
       v17 = NSLocalizedDescriptionKey;
-      v10 = [v7 UUIDString];
-      v11 = [NSString stringWithFormat:@"Bluetooth was not able to unpair device %@ during rollback", v10];
+      uUIDString = [v7 UUIDString];
+      v11 = [NSString stringWithFormat:@"Bluetooth was not able to unpair device %@ during rollback", uUIDString];
       v18 = v11;
       v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
       v13 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing" code:4 userInfo:v12];
 
-      v14 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-      v15 = [v14 errors];
-      [v15 addObject:v13];
+      routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+      errors = [routingSlipEntry2 errors];
+      [errors addObject:v13];
     }
 
     else
     {
-      v8 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-      v9 = [v8 operands];
-      [v9 removeObjectForKey:@"newlyPairedCoreBluetoothID"];
+      routingSlipEntry3 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+      operands = [routingSlipEntry3 operands];
+      [operands removeObjectForKey:@"newlyPairedCoreBluetoothID"];
     }
 
-    v16 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    [v16 persist];
+    routingSlipEntry4 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    [routingSlipEntry4 persist];
 
     [(EPSagaTransactionPairing *)self setState:0];
   }
 }
 
-- (void)advertiser:(id)a3 deviceDidAppear:(id)a4
+- (void)advertiser:(id)advertiser deviceDidAppear:(id)appear
 {
-  if ([(EPSagaTransactionPairing *)self state:a3]== 1)
+  if ([(EPSagaTransactionPairing *)self state:advertiser]== 1)
   {
 
     [(EPSagaTransactionPairing *)self update];
   }
 }
 
-- (void)advertiser:(id)a3 receivedPairingRequestForDevice:(id)a4
+- (void)advertiser:(id)advertiser receivedPairingRequestForDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  advertiserCopy = advertiser;
+  deviceCopy = device;
   if (CFPreferencesGetAppBooleanValue(@"migrationShouldIgnoreBTPairingRequest", @"com.apple.nanoregistryd", 0))
   {
     v8 = nr_daemon_log();
@@ -1010,20 +1010,20 @@ LABEL_3:
     dispatch_sync(&_dispatch_main_q, v17);
     if (![(EPSagaTransactionPairing *)self startedPairing]&& v19[24] == 1)
     {
-      v11 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-      v12 = [v11 objectForKeyedSubscript:@"iAmACompanionDevice"];
+      routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+      v12 = [routingSlipEntry objectForKeyedSubscript:@"iAmACompanionDevice"];
 
       if (([v12 BOOLValue] & 1) == 0)
       {
-        v13 = [v7 newPairerWithDelegate:self];
+        v13 = [deviceCopy newPairerWithDelegate:self];
         if (v13)
         {
-          v14 = [(EPSagaTransactionPairing *)self pairers];
-          [v14 addObject:v13];
+          pairers = [(EPSagaTransactionPairing *)self pairers];
+          [pairers addObject:v13];
 
-          v15 = [(EPSagaTransactionPairing *)self pairingDevices];
-          v16 = [v13 device];
-          [v15 addObject:v16];
+          pairingDevices = [(EPSagaTransactionPairing *)self pairingDevices];
+          device = [v13 device];
+          [pairingDevices addObject:device];
         }
       }
     }
@@ -1034,8 +1034,8 @@ LABEL_3:
 
 - (BOOL)alreadyPaired
 {
-  v2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v3 = [v2 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v3 = [routingSlipEntry objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
   return v3 != 0;
 }
@@ -1047,8 +1047,8 @@ LABEL_3:
     return 1;
   }
 
-  v4 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v5 = [v4 objectForKeyedSubscript:@"iAmACompanionDevice"];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  v5 = [routingSlipEntry objectForKeyedSubscript:@"iAmACompanionDevice"];
 
   if ([v5 BOOLValue])
   {
@@ -1071,9 +1071,9 @@ LABEL_3:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) pairer];
+          pairer = [*(*(&v14 + 1) + 8 * i) pairer];
 
-          if (v11)
+          if (pairer)
           {
 
             v3 = 1;
@@ -1096,8 +1096,8 @@ LABEL_3:
 
   else
   {
-    v12 = [(EPSagaTransactionPairing *)self pairers];
-    v3 = [v12 count] != 0;
+    pairers = [(EPSagaTransactionPairing *)self pairers];
+    v3 = [pairers count] != 0;
   }
 
 LABEL_15:
@@ -1105,14 +1105,14 @@ LABEL_15:
   return v3;
 }
 
-- (void)discoverer:(id)a3 deviceDidBecomeDisplayable:(id)a4
+- (void)discoverer:(id)discoverer deviceDidBecomeDisplayable:(id)displayable
 {
-  v6 = a3;
-  v7 = a4;
+  discovererCopy = discoverer;
+  displayableCopy = displayable;
   if ([(EPSagaTransactionPairing *)self state]== 1)
   {
-    v8 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v9 = [v8 objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+    routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    v9 = [routingSlipEntry objectForKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
     v26 = 0;
     v27 = &v26;
@@ -1130,27 +1130,27 @@ LABEL_15:
       goto LABEL_14;
     }
 
-    v11 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v12 = [v11 objectForKeyedSubscript:@"discoverableCoreBluetoothID"];
+    routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    v12 = [routingSlipEntry2 objectForKeyedSubscript:@"discoverableCoreBluetoothID"];
 
-    v13 = [v7 uuid];
-    if ([v13 isEqual:v12])
+    uuid = [displayableCopy uuid];
+    if ([uuid isEqual:v12])
     {
     }
 
     else
     {
-      v14 = [(EPSagaTransactionPairing *)self advertisingName];
-      if (!v14)
+      advertisingName = [(EPSagaTransactionPairing *)self advertisingName];
+      if (!advertisingName)
       {
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v15 = [(EPSagaTransactionPairing *)self advertisingName];
-      v16 = [v7 name];
-      v17 = [v15 isEqual:v16];
+      advertisingName2 = [(EPSagaTransactionPairing *)self advertisingName];
+      name = [displayableCopy name];
+      v17 = [advertisingName2 isEqual:name];
 
       if (!v17)
       {
@@ -1163,18 +1163,18 @@ LABEL_14:
       }
     }
 
-    v18 = [v7 uuid];
-    [(EPSagaTransactionPairing *)self connectUp:v18];
+    uuid2 = [displayableCopy uuid];
+    [(EPSagaTransactionPairing *)self connectUp:uuid2];
 
-    v13 = [v7 newObserverWithDelegate:0];
+    uuid = [displayableCopy newObserverWithDelegate:0];
     v19 = [EPCharacteristicReader alloc];
     v20 = [CBUUID UUIDWithString:@"9AA4730F-B25C-4CC3-B821-C931559FC196"];
     v21 = [CBUUID UUIDWithString:@"889DBEA2-6C42-4B56-A453-8EAB0976D184"];
-    v22 = [(EPCharacteristicReader *)v19 initWithDelegate:self timeout:v13 peripheral:v20 serviceUUID:v21 characteristicUUID:70.0];
+    v22 = [(EPCharacteristicReader *)v19 initWithDelegate:self timeout:uuid peripheral:v20 serviceUUID:v21 characteristicUUID:70.0];
 
     v23 = objc_opt_new();
     [v23 setReader:v22];
-    [v23 setDevice:v7];
+    [v23 setDevice:displayableCopy];
     [(NSMutableSet *)self->_readers addObject:v23];
     discoverer = self->_discoverer;
     self->_discoverer = 0;
@@ -1185,24 +1185,24 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)characteristicReader:(id)a3 didRead:(id)a4
+- (void)characteristicReader:(id)reader didRead:(id)read
 {
-  v6 = a3;
-  v7 = a4;
+  readerCopy = reader;
+  readCopy = read;
   if ([(EPSagaTransactionPairing *)self state]== 1)
   {
-    v8 = [(EPSagaTransactionPairing *)self findPairingReaderEntryWithReader:v6 andRemove:0];
+    v8 = [(EPSagaTransactionPairing *)self findPairingReaderEntryWithReader:readerCopy andRemove:0];
     v9 = v8;
-    if (!v7 || !v8)
+    if (!readCopy || !v8)
     {
       v22 = sub_1000034AC();
       v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
 
-      if (v7)
+      if (readCopy)
       {
         if (!v23)
         {
-          v21 = v7;
+          data = readCopy;
 LABEL_45:
 
           goto LABEL_46;
@@ -1214,7 +1214,7 @@ LABEL_45:
           sub_100105E70();
         }
 
-        v21 = v7;
+        data = readCopy;
       }
 
       else
@@ -1234,7 +1234,7 @@ LABEL_45:
         v10 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing" code:10 userInfo:v25];
 
         [(EPSagaTransactionPairing *)self failWithError:v10];
-        v21 = 0;
+        data = 0;
       }
 
 LABEL_44:
@@ -1242,7 +1242,7 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    v10 = [(EPKey *)self->_sharedKey decryptPayload:v7];
+    v10 = [(EPKey *)self->_sharedKey decryptPayload:readCopy];
     if (!v10)
     {
       v26 = sub_1000034AC();
@@ -1263,7 +1263,7 @@ LABEL_44:
       v14 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing" code:6 userInfo:v29];
 
       [(EPSagaTransactionPairing *)self failWithError:v14];
-      v21 = v7;
+      data = readCopy;
       goto LABEL_43;
     }
 
@@ -1328,12 +1328,12 @@ LABEL_44:
 
       v20 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing" code:v15 userInfo:v19];
       [(EPSagaTransactionPairing *)self failWithError:v20];
-      v21 = v7;
+      data = readCopy;
       goto LABEL_42;
     }
 
-    v30 = [v9 device];
-    v19 = [v30 newObserverWithDelegate:0];
+    device = [v9 device];
+    v19 = [device newObserverWithDelegate:0];
 
     v31 = [EPCharacteristicWriter alloc];
     v32 = [CBUUID UUIDWithString:@"9AA4730F-B25C-4CC3-B821-C931559FC196"];
@@ -1354,11 +1354,11 @@ LABEL_44:
       sub_1001010B8(v42, v37);
     }
 
-    v21 = [v42 data];
+    data = [v42 data];
 
-    if (v21)
+    if (data)
     {
-      v38 = [(EPKey *)self->_sharedKey encryptPayload:v21];
+      v38 = [(EPKey *)self->_sharedKey encryptPayload:data];
       objc_initWeak(buf, self);
       v43[0] = _NSConcreteStackBlock;
       v43[1] = 3221225472;
@@ -1398,14 +1398,14 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  v21 = v7;
+  data = readCopy;
 LABEL_46:
 }
 
-- (id)findPairingReaderEntryWithReader:(id)a3 andRemove:(BOOL)a4
+- (id)findPairingReaderEntryWithReader:(id)reader andRemove:(BOOL)remove
 {
-  v4 = a4;
-  v6 = a3;
+  removeCopy = remove;
+  readerCopy = reader;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1426,15 +1426,15 @@ LABEL_46:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 reader];
+        reader = [v12 reader];
 
-        if (v13 == v6)
+        if (reader == readerCopy)
         {
           v14 = v12;
 
           if (v14)
           {
-            v15 = !v4;
+            v15 = !removeCopy;
           }
 
           else
@@ -1467,10 +1467,10 @@ LABEL_15:
   return v14;
 }
 
-- (id)findPairingReaderEntryWithPairer:(id)a3 andRemove:(BOOL)a4
+- (id)findPairingReaderEntryWithPairer:(id)pairer andRemove:(BOOL)remove
 {
-  v4 = a4;
-  v6 = a3;
+  removeCopy = remove;
+  pairerCopy = pairer;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1491,15 +1491,15 @@ LABEL_15:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 pairer];
+        pairer = [v12 pairer];
 
-        if (v13 == v6)
+        if (pairer == pairerCopy)
         {
           v14 = v12;
 
           if (v14)
           {
-            v15 = !v4;
+            v15 = !removeCopy;
           }
 
           else
@@ -1532,25 +1532,25 @@ LABEL_15:
   return v14;
 }
 
-- (id)pairer:(id)a3 newEndpointWithDelegate:(id)a4
+- (id)pairer:(id)pairer newEndpointWithDelegate:(id)delegate
 {
-  v5 = a4;
-  v6 = [(EPSagaTransactionPairing *)self fakePipeManager];
-  v7 = [v6 newResourceWithDelegate:v5];
+  delegateCopy = delegate;
+  fakePipeManager = [(EPSagaTransactionPairing *)self fakePipeManager];
+  v7 = [fakePipeManager newResourceWithDelegate:delegateCopy];
 
   return v7;
 }
 
-- (void)pairer:(id)a3 requestWithType:(int64_t)a4 passkey:(id)a5
+- (void)pairer:(id)pairer requestWithType:(int64_t)type passkey:(id)passkey
 {
-  v8 = a3;
-  v9 = a5;
+  pairerCopy = pairer;
+  passkeyCopy = passkey;
   if ([(EPSagaTransactionPairing *)self state]== 1)
   {
-    v10 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v11 = [v10 objectForKeyedSubscript:@"iAmACompanionDevice"];
+    routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    v11 = [routingSlipEntry objectForKeyedSubscript:@"iAmACompanionDevice"];
 
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
@@ -1562,14 +1562,14 @@ LABEL_15:
     block[4] = self;
     block[5] = &v37;
     dispatch_sync(&_dispatch_main_q, block);
-    if (a4 == 5)
+    if (type == 5)
     {
       if (*(v38 + 24) != 1 || [(EPSagaTransactionPairing *)self alreadyPaired])
       {
         goto LABEL_18;
       }
 
-      if (v12)
+      if (bOOLValue)
       {
         v34 = 0u;
         v35 = 0u;
@@ -1590,8 +1590,8 @@ LABEL_8:
             }
 
             v17 = *(*(&v32 + 1) + 8 * v16);
-            v18 = [v17 pairer];
-            v19 = v18 == v8;
+            pairer = [v17 pairer];
+            v19 = pairer == pairerCopy;
 
             if (v19)
             {
@@ -1617,15 +1617,15 @@ LABEL_8:
             goto LABEL_18;
           }
 
-          v26 = [p_super oobKey];
-          v27 = [(EPSagaTransactionPairing *)self oobKeyStash];
-          [v27 setOobKey:v26];
+          oobKey = [p_super oobKey];
+          oobKeyStash = [(EPSagaTransactionPairing *)self oobKeyStash];
+          [oobKeyStash setOobKey:oobKey];
 
           v45 = CBPairingAgentPairingDataOOBTKKey;
-          v28 = [p_super oobKey];
-          v46 = v28;
+          oobKey2 = [p_super oobKey];
+          v46 = oobKey2;
           v29 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-          [v8 respondWithType:5 accept:1 data:v29];
+          [pairerCopy respondWithType:5 accept:1 data:v29];
         }
 
         else
@@ -1637,17 +1637,17 @@ LABEL_14:
 
       else
       {
-        v22 = [(EPSagaTransactionPairing *)self oobKeyStash];
-        v23 = [v22 oobKey];
+        oobKeyStash2 = [(EPSagaTransactionPairing *)self oobKeyStash];
+        oobKey3 = [oobKeyStash2 oobKey];
 
-        if (v23)
+        if (oobKey3)
         {
           v43 = CBPairingAgentPairingDataOOBTKKey;
           p_super = [(EPSagaTransactionPairing *)self oobKeyStash];
-          v24 = [p_super oobKey];
-          v44 = v24;
+          oobKey4 = [p_super oobKey];
+          v44 = oobKey4;
           v25 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-          [v8 respondWithType:5 accept:1 data:v25];
+          [pairerCopy respondWithType:5 accept:1 data:v25];
         }
 
         else
@@ -1671,7 +1671,7 @@ LABEL_14:
 
     else
     {
-      if ((a4 - 1) > 1)
+      if ((type - 1) > 1)
       {
 LABEL_18:
         _Block_object_dispose(&v37, 8);
@@ -1683,7 +1683,7 @@ LABEL_18:
       v42 = @"Wrong Bluetooth pairing type received";
       p_super = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v21 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing" code:5 userInfo:p_super];
-      [v8 invalidateWithError:v21];
+      [pairerCopy invalidateWithError:v21];
     }
 
     goto LABEL_18;
@@ -1692,30 +1692,30 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)pairer:(id)a3 completedWithError:(id)a4
+- (void)pairer:(id)pairer completedWithError:(id)error
 {
-  v25 = a3;
-  v6 = a4;
+  pairerCopy = pairer;
+  errorCopy = error;
   if ([(EPSagaTransactionPairing *)self state]== 1)
   {
-    v7 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-    v8 = [v7 objectForKeyedSubscript:@"iAmACompanionDevice"];
+    routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+    v8 = [routingSlipEntry objectForKeyedSubscript:@"iAmACompanionDevice"];
 
     if ([v8 BOOLValue])
     {
-      v9 = [(EPSagaTransactionPairing *)self findPairingReaderEntryWithPairer:v25 andRemove:1];
+      v9 = [(EPSagaTransactionPairing *)self findPairingReaderEntryWithPairer:pairerCopy andRemove:1];
     }
 
     pairers = self->_pairers;
-    if (v6)
+    if (errorCopy)
     {
-      [(NSMutableSet *)pairers removeObject:v25];
+      [(NSMutableSet *)pairers removeObject:pairerCopy];
       pairingDevices = self->_pairingDevices;
-      v12 = [v25 device];
-      [(NSMutableSet *)pairingDevices removeObject:v12];
+      device = [pairerCopy device];
+      [(NSMutableSet *)pairingDevices removeObject:device];
 
-      v13 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
-      [v13 addObject:v6];
+      errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+      [errors addObject:errorCopy];
 
       [(EPRoutingSlipEntry *)self->_routingSlipEntry persist];
       [(EPSagaTransactionPairing *)self setState:3];
@@ -1723,54 +1723,54 @@ LABEL_19:
 
     else
     {
-      [(NSMutableSet *)pairers addObject:v25];
+      [(NSMutableSet *)pairers addObject:pairerCopy];
       v14 = self->_pairingDevices;
-      v15 = [v25 device];
-      [(NSMutableSet *)v14 addObject:v15];
+      device2 = [pairerCopy device];
+      [(NSMutableSet *)v14 addObject:device2];
 
       v16 = [EPSagaOperandUUID alloc];
-      v17 = [v25 device];
-      v18 = [v17 uuid];
-      v19 = [(EPSagaOperandUUID *)v16 initWithUUID:v18];
+      device3 = [pairerCopy device];
+      uuid = [device3 uuid];
+      v19 = [(EPSagaOperandUUID *)v16 initWithUUID:uuid];
 
-      v20 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-      v21 = [v20 operands];
-      [v21 setObject:v19 forKeyedSubscript:@"newlyPairedCoreBluetoothID"];
+      routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+      operands = [routingSlipEntry2 operands];
+      [operands setObject:v19 forKeyedSubscript:@"newlyPairedCoreBluetoothID"];
 
-      v22 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-      [v22 persist];
+      routingSlipEntry3 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+      [routingSlipEntry3 persist];
 
-      v23 = [v25 device];
-      v24 = [v23 pairingConnector];
-      [(EPSagaTransactionPairing *)self setConnector:v24];
+      device4 = [pairerCopy device];
+      pairingConnector = [device4 pairingConnector];
+      [(EPSagaTransactionPairing *)self setConnector:pairingConnector];
 
       [(EPSagaTransactionPairing *)self setState:2];
     }
   }
 }
 
-- (void)timeout:(id)a3
+- (void)timeout:(id)timeout
 {
-  v4 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v5 = [v4 queue];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  queue = [routingSlipEntry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EDD18;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
-- (void)migrationBTPairingTimeout:(id)a3
+- (void)migrationBTPairingTimeout:(id)timeout
 {
-  v4 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v5 = [v4 queue];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  queue = [routingSlipEntry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EDDC0;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (void)timedOut
@@ -1830,8 +1830,8 @@ LABEL_19:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(EPSagaTransactionPairing *)self readers];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  readers = [(EPSagaTransactionPairing *)self readers];
+  v3 = [readers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -1841,18 +1841,18 @@ LABEL_19:
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(readers);
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 reader];
-        if (v7)
+        reader = [v6 reader];
+        if (reader)
         {
-          v8 = v7;
-          v9 = [v6 reader];
-          v10 = [v9 readData];
+          v8 = reader;
+          reader2 = [v6 reader];
+          readData = [reader2 readData];
 
-          if (!v10)
+          if (!readData)
           {
             LOBYTE(v3) = 1;
             goto LABEL_12;
@@ -1860,7 +1860,7 @@ LABEL_19:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [readers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v3)
       {
         continue;
@@ -1875,9 +1875,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_1000034AC();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
@@ -1890,22 +1890,22 @@ LABEL_12:
     }
   }
 
-  v8 = [(EPSagaTransactionPairing *)self factory];
-  [v8 setAdvertiserNotAvailableToPair:1];
+  factory = [(EPSagaTransactionPairing *)self factory];
+  [factory setAdvertiserNotAvailableToPair:1];
 
-  v9 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  v10 = [v9 errors];
-  [v10 addObject:v4];
+  routingSlipEntry = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  errors = [routingSlipEntry errors];
+  [errors addObject:errorCopy];
 
-  v11 = [(EPSagaTransactionPairing *)self routingSlipEntry];
-  [v11 persist];
+  routingSlipEntry2 = [(EPSagaTransactionPairing *)self routingSlipEntry];
+  [routingSlipEntry2 persist];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(EPSagaTransactionPairing *)self pairers];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  pairers = [(EPSagaTransactionPairing *)self pairers];
+  v13 = [pairers countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1917,28 +1917,28 @@ LABEL_12:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(pairers);
         }
 
-        [*(*(&v21 + 1) + 8 * v16) invalidateWithError:v4];
+        [*(*(&v21 + 1) + 8 * v16) invalidateWithError:errorCopy];
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [pairers countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
   }
 
-  v17 = [(EPSagaTransactionPairing *)self pairers];
-  [v17 removeAllObjects];
+  pairers2 = [(EPSagaTransactionPairing *)self pairers];
+  [pairers2 removeAllObjects];
 
-  v18 = [(EPSagaTransactionPairing *)self pairingDevices];
-  [v18 removeAllObjects];
+  pairingDevices = [(EPSagaTransactionPairing *)self pairingDevices];
+  [pairingDevices removeAllObjects];
 
-  v19 = [(EPSagaTransactionPairing *)self oobKeyStash];
-  [v19 clearOOBKey];
+  oobKeyStash = [(EPSagaTransactionPairing *)self oobKeyStash];
+  [oobKeyStash clearOOBKey];
 
   if ([(EPSagaTransactionPairing *)self state]== 1)
   {

@@ -19,49 +19,49 @@
 - (void)SBUISA_setCGRect:()SBUISystemAperture forSetting:
 {
   v5 = [MEMORY[0x1E696B098] valueWithCGRect:?];
-  [a1 setObject:v5 forSetting:a3];
+  [self setObject:v5 forSetting:a3];
 }
 
 - (void)SBUISA_setCGSize:()SBUISystemAperture forSetting:
 {
   v5 = [MEMORY[0x1E696B098] valueWithCGSize:?];
-  [a1 setObject:v5 forSetting:a3];
+  [self setObject:v5 forSetting:a3];
 }
 
 - (void)SBUISA_setDirectionalEdgeInsets:()SBUISystemAperture forSetting:
 {
   v5 = [MEMORY[0x1E696B098] valueWithDirectionalEdgeInsets:?];
-  [a1 setObject:v5 forSetting:a3];
+  [self setObject:v5 forSetting:a3];
 }
 
 - (void)SBUISA_setContextId:()SBUISystemAperture forSetting:
 {
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-  [a1 setObject:v6 forSetting:a4];
+  [self setObject:v6 forSetting:a4];
 }
 
 - (void)SBUISA_setRenderingid:()SBUISystemAperture forSetting:
 {
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-  [a1 setObject:v6 forSetting:a4];
+  [self setObject:v6 forSetting:a4];
 }
 
 - (void)SBUISA_setLayoutMode:()SBUISystemAperture forSetting:
 {
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 setObject:v6 forSetting:a4];
+  [self setObject:v6 forSetting:a4];
 }
 
 - (void)SBUISA_setContentRole:()SBUISystemAperture forSetting:
 {
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 setObject:v6 forSetting:a4];
+  [self setObject:v6 forSetting:a4];
 }
 
 - (void)SBUISA_setPresentationBehaviors:()SBUISystemAperture forSetting:
 {
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  [a1 setObject:v6 forSetting:a4];
+  [self setObject:v6 forSetting:a4];
 }
 
 - (void)SBUISA_setUIColor:()SBUISystemAperture forSetting:
@@ -86,13 +86,13 @@
     v10 = 0;
   }
 
-  [a1 SBUISA_setNullableObject:v10 forSetting:{a4, *&v11, *&v12, *&v13, *&v14}];
+  [self SBUISA_setNullableObject:v10 forSetting:{a4, *&v11, *&v12, *&v13, *&v14}];
 }
 
 - (void)SBUISA_setCustomLayout:()SBUISystemAperture forSetting:
 {
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 setObject:v6 forSetting:a4];
+  [self setObject:v6 forSetting:a4];
 }
 
 - (void)SBUISA_setNullableObject:()SBUISystemAperture forSetting:
@@ -100,13 +100,13 @@
   if (a3)
   {
 
-    [a1 setObject:? forSetting:?];
+    [self setObject:? forSetting:?];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
-    [a1 setObject:v6 forSetting:a4];
+    null = [MEMORY[0x1E695DFB0] null];
+    [self setObject:null forSetting:a4];
   }
 }
 
@@ -116,7 +116,7 @@
   v7 = a3;
   v8 = [[v6 alloc] initWithArray:v7];
 
-  [a1 setObject:v8 forSetting:a4];
+  [self setObject:v8 forSetting:a4];
 }
 
 - (void)SBUISA_setComponentStates:()SBUISystemAperture forSetting:
@@ -132,7 +132,7 @@
     v6 = MEMORY[0x1E695E0F8];
   }
 
-  [a1 setObject:v6 forSetting:a4];
+  [self setObject:v6 forSetting:a4];
 }
 
 @end

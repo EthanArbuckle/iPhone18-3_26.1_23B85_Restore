@@ -1,36 +1,36 @@
 @interface MUIMessageListOnboardingTipDataSource
-- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)a3;
-- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)a3 bucket:(int64_t)a4 countHelper:(id)a5;
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6;
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5;
+- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)configuration;
+- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)configuration bucket:(int64_t)bucket countHelper:(id)helper;
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier;
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d;
 - (void)_hideOnboardingTip;
 - (void)_learnMoreTip;
 - (void)_turnOffCategoriesTip;
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4;
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot;
 @end
 
 @implementation MUIMessageListOnboardingTipDataSource
 
-- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)a3 bucket:(int64_t)a4 countHelper:(id)a5
+- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)configuration bucket:(int64_t)bucket countHelper:(id)helper
 {
-  v9 = a5;
-  v10 = [(MUIMessageListOnboardingTipDataSource *)self initWithConfiguration:a3];
+  helperCopy = helper;
+  v10 = [(MUIMessageListOnboardingTipDataSource *)self initWithConfiguration:configuration];
   v11 = v10;
   if (v10)
   {
-    v10->_selectedBucket = a4;
-    objc_storeStrong(&v10->_helper, a5);
+    v10->_selectedBucket = bucket;
+    objc_storeStrong(&v10->_helper, helper);
   }
 
   return v11;
 }
 
-- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)a3
+- (MUIMessageListOnboardingTipDataSource)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = MUIMessageListOnboardingTipDataSource;
-  v5 = [(MessageListSectionDataSource *)&v20 initWithConfiguration:v4];
+  v5 = [(MessageListSectionDataSource *)&v20 initWithConfiguration:configurationCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -66,7 +66,7 @@ void __63__MUIMessageListOnboardingTipDataSource_initWithConfiguration___block_i
   [WeakRetained _configureCell:v9 atIndexPath:v8 itemID:v7];
 }
 
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -74,20 +74,20 @@ void __63__MUIMessageListOnboardingTipDataSource_initWithConfiguration___block_i
   aBlock[2] = __93__MUIMessageListOnboardingTipDataSource_beginObservingAnimated_nextUpdateNeedsCleanSnapshot___block_invoke;
   aBlock[3] = &unk_27818ABB8;
   objc_copyWeak(&v13, &location);
-  v14 = a3;
+  animatedCopy = animated;
   v6 = _Block_copy(aBlock);
   if (MUIOnboardingTipFromBucket([(MUIMessageListOnboardingTipDataSource *)self selectedBucket]) == 2)
   {
-    v7 = [(MUIMessageListOnboardingTipDataSource *)self helper];
-    v8 = [v7 messageCount];
-    v9 = [MEMORY[0x277D071B8] mainThreadScheduler];
+    helper = [(MUIMessageListOnboardingTipDataSource *)self helper];
+    messageCount = [helper messageCount];
+    mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __93__MUIMessageListOnboardingTipDataSource_beginObservingAnimated_nextUpdateNeedsCleanSnapshot___block_invoke_3;
     v10[3] = &unk_27818ABE0;
     v10[4] = self;
     v11 = v6;
-    [v8 onScheduler:v9 addSuccessBlock:v10];
+    [messageCount onScheduler:mainThreadScheduler addSuccessBlock:v10];
   }
 
   else
@@ -129,38 +129,38 @@ void __93__MUIMessageListOnboardingTipDataSource_beginObservingAnimated_nextUpda
   }
 }
 
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d
 {
-  v6 = a3;
-  v7 = [(MUIMessageListOnboardingTipDataSource *)self selectedBucket];
+  cellCopy = cell;
+  selectedBucket = [(MUIMessageListOnboardingTipDataSource *)self selectedBucket];
   v8 = [(MUIMessageListOnboardingTipDataSource *)self count];
-  v9 = [v8 primaryCount];
+  primaryCount = [v8 primaryCount];
   v10 = [(MUIMessageListOnboardingTipDataSource *)self count];
-  v11 = [v10 fullCount];
+  fullCount = [v10 fullCount];
   v12 = [(MUIMessageListOnboardingTipDataSource *)self count];
-  [v6 configureForBucket:v7 primaryUnreadCount:v9 otherUnreadCount:{v11 - objc_msgSend(v12, "primaryCount")}];
+  [cellCopy configureForBucket:selectedBucket primaryUnreadCount:primaryCount otherUnreadCount:{fullCount - objc_msgSend(v12, "primaryCount")}];
 
-  v13 = [v6 tryCategoriesButton];
-  [v13 addTarget:self action:sel__hideOnboardingTip forControlEvents:64];
+  tryCategoriesButton = [cellCopy tryCategoriesButton];
+  [tryCategoriesButton addTarget:self action:sel__hideOnboardingTip forControlEvents:64];
 
-  v14 = [v6 turnOffCategoriesButton];
-  [v14 addTarget:self action:sel__turnOffCategoriesTip forControlEvents:64];
+  turnOffCategoriesButton = [cellCopy turnOffCategoriesButton];
+  [turnOffCategoriesButton addTarget:self action:sel__turnOffCategoriesTip forControlEvents:64];
 
-  v15 = [v6 customizeButton];
-  [v15 addTarget:self action:sel__learnMoreTip forControlEvents:64];
+  customizeButton = [cellCopy customizeButton];
+  [customizeButton addTarget:self action:sel__learnMoreTip forControlEvents:64];
 
-  v16 = [v6 okButton];
-  [v16 addTarget:self action:sel__hideOnboardingTip forControlEvents:64];
+  okButton = [cellCopy okButton];
+  [okButton addTarget:self action:sel__hideOnboardingTip forControlEvents:64];
 
-  v17 = [v6 cancelButton];
+  cancelButton = [cellCopy cancelButton];
 
-  [v17 addTarget:self action:sel__hideOnboardingTip forControlEvents:64];
+  [cancelButton addTarget:self action:sel__hideOnboardingTip forControlEvents:64];
 }
 
 - (void)_learnMoreTip
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"MUIMessageListOnboardingTipDataSource.m" lineNumber:102 description:{@"Learn More tapped, but delegate doesn't implement the necessary method"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"MUIMessageListOnboardingTipDataSource.m" lineNumber:102 description:{@"Learn More tapped, but delegate doesn't implement the necessary method"}];
 }
 
 - (void)_hideOnboardingTip
@@ -171,14 +171,14 @@ void __93__MUIMessageListOnboardingTipDataSource_beginObservingAnimated_nextUpda
   v4[3] = &unk_278188EE0;
   v4[4] = self;
   [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:1 cleanSnapshot:0 isLastUpdate:1 prepare:0 update:v4 completion:0];
-  v3 = [(MessageListSectionDataSource *)self delegate];
-  [v3 showNoContentViewIfNecessary:self];
+  delegate = [(MessageListSectionDataSource *)self delegate];
+  [delegate showNoContentViewIfNecessary:self];
 }
 
 - (void)_turnOffCategoriesTip
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"MUIMessageListOnboardingTipDataSource.m" lineNumber:123 description:{@"Turn Off tapped, but delegate doesn't implement the necessary method"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"MUIMessageListOnboardingTipDataSource.m" lineNumber:123 description:{@"Turn Off tapped, but delegate doesn't implement the necessary method"}];
 }
 
 id __93__MUIMessageListOnboardingTipDataSource_beginObservingAnimated_nextUpdateNeedsCleanSnapshot___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -267,7 +267,7 @@ id __59__MUIMessageListOnboardingTipDataSource__hideOnboardingTip__block_invoke(
   return v12;
 }
 
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier
 {
   if (self)
   {
@@ -279,7 +279,7 @@ id __59__MUIMessageListOnboardingTipDataSource__hideOnboardingTip__block_invoke(
     cellRegistration = 0;
   }
 
-  return [a3 dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:a4 item:{a5, a6}];
+  return [view dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:path item:{d, identifier}];
 }
 
 @end

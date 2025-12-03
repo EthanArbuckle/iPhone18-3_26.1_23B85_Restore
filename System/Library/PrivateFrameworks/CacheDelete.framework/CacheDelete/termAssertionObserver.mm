@@ -1,17 +1,17 @@
 @interface termAssertionObserver
-- (void)assertionTargetProcessDidExit:(id)a3;
+- (void)assertionTargetProcessDidExit:(id)exit;
 @end
 
 @implementation termAssertionObserver
 
-- (void)assertionTargetProcessDidExit:(id)a3
+- (void)assertionTargetProcessDidExit:(id)exit
 {
-  v4 = [(termAssertionObserver *)self completionSem];
+  completionSem = [(termAssertionObserver *)self completionSem];
 
-  if (v4)
+  if (completionSem)
   {
-    v5 = [(termAssertionObserver *)self completionSem];
-    dispatch_semaphore_signal(v5);
+    completionSem2 = [(termAssertionObserver *)self completionSem];
+    dispatch_semaphore_signal(completionSem2);
   }
 }
 

@@ -10,10 +10,10 @@
   v3 = +[CIImage emptyImage];
   if (self->inputImage)
   {
-    v4 = [(CIBlurmapRefinementThreshold *)self kernel];
-    if (v4)
+    kernel = [(CIBlurmapRefinementThreshold *)self kernel];
+    if (kernel)
     {
-      v5 = v4;
+      v5 = kernel;
       inputImage = self->inputImage;
       [(CIImage *)inputImage extent];
       v8 = v7;

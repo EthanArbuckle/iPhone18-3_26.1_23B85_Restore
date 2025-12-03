@@ -1,27 +1,27 @@
 @interface MTPlaylistSyncProcessor
 - (BOOL)hasLocalChanges;
-- (BOOL)mergeData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6 isGetTransaction:(BOOL)a7;
-- (MTPlaylistSyncProcessor)initWithStorageProvider:(id)a3;
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5;
-- (id)versionForGetTransaction:(id)a3 key:(id)a4;
-- (void)completeTransactionWithNewVersion:(id)a3 isGetTransaction:(BOOL)a4 mismatch:(BOOL)a5 finishedBlock:(id)a6;
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4;
+- (BOOL)mergeData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch isGetTransaction:(BOOL)transaction;
+- (MTPlaylistSyncProcessor)initWithStorageProvider:(id)provider;
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version;
+- (id)versionForGetTransaction:(id)transaction key:(id)key;
+- (void)completeTransactionWithNewVersion:(id)version isGetTransaction:(BOOL)transaction mismatch:(BOOL)mismatch finishedBlock:(id)block;
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version;
 @end
 
 @implementation MTPlaylistSyncProcessor
 
-- (MTPlaylistSyncProcessor)initWithStorageProvider:(id)a3
+- (MTPlaylistSyncProcessor)initWithStorageProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = MTPlaylistSyncProcessor;
   v5 = [(MTPlaylistSyncProcessor *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(MTPlaylistSyncProcessor *)v5 setStorageProvider:v4];
+    [(MTPlaylistSyncProcessor *)v5 setStorageProvider:providerCopy];
     v7 = _MTLogCategoryCloudSync();
     v6->_signpostID = os_signpost_id_generate(v7);
 
@@ -40,63 +40,63 @@
 
 - (BOOL)hasLocalChanges
 {
-  v2 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  v3 = [v2 playlistSyncDirtyFlag];
+  storageProvider = [(MTPlaylistSyncProcessor *)self storageProvider];
+  playlistSyncDirtyFlag = [storageProvider playlistSyncDirtyFlag];
 
-  return v3;
+  return playlistSyncDirtyFlag;
 }
 
-- (id)versionForGetTransaction:(id)a3 key:(id)a4
+- (id)versionForGetTransaction:(id)transaction key:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = _MTLogCategoryCloudSync();
   v7 = v6;
   signpostID = self->_signpostID;
   if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = keyCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MTPlaylistSyncProcessor.GET", "key: %@", &v12, 0xCu);
   }
 
-  v9 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  v10 = [v9 playlistSyncVersion];
+  storageProvider = [(MTPlaylistSyncProcessor *)self storageProvider];
+  playlistSyncVersion = [storageProvider playlistSyncVersion];
 
-  return v10;
+  return playlistSyncVersion;
 }
 
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version
 {
-  v7 = a4;
+  keyCopy = key;
   v8 = _MTLogCategoryCloudSync();
   v9 = v8;
   signpostID = self->_signpostID;
   if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 138412290;
-    v28 = v7;
+    v28 = keyCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MTPlaylistSyncProcessor.SET", "key: %@", buf, 0xCu);
   }
 
-  v11 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  if ([v11 playlistSyncDirtyFlag])
+  storageProvider = [(MTPlaylistSyncProcessor *)self storageProvider];
+  if ([storageProvider playlistSyncDirtyFlag])
   {
 
 LABEL_8:
-    v15 = [(MTPlaylistSyncProcessor *)self storageProvider];
-    *a5 = [v15 playlistSyncVersion];
+    storageProvider2 = [(MTPlaylistSyncProcessor *)self storageProvider];
+    *version = [storageProvider2 playlistSyncVersion];
 
-    v16 = [(MTPlaylistSyncProcessor *)self storageProvider];
-    v17 = [v16 importContext];
+    storageProvider3 = [(MTPlaylistSyncProcessor *)self storageProvider];
+    importContext = [storageProvider3 importContext];
 
     v18 = objc_opt_new();
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100160D30;
     v23[3] = &unk_1004D94C8;
-    v19 = v17;
+    v19 = importContext;
     v24 = v19;
-    v25 = self;
+    selfCopy = self;
     v20 = v18;
     v26 = v20;
     [v19 performBlockAndWait:v23];
@@ -104,78 +104,78 @@ LABEL_8:
     {
       v21 = objc_alloc_init(MZKeyValueStoreNode);
       [(MZKeyValueStoreNode *)v21 setArrayValue:v20];
-      v14 = [(MZKeyValueStoreNode *)v21 value];
+      value = [(MZKeyValueStoreNode *)v21 value];
     }
 
     else
     {
-      v14 = 0;
+      value = 0;
     }
 
     goto LABEL_12;
   }
 
-  v12 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  v13 = [v12 playlistSyncVersion];
+  storageProvider4 = [(MTPlaylistSyncProcessor *)self storageProvider];
+  playlistSyncVersion = [storageProvider4 playlistSyncVersion];
 
-  if (!v13)
+  if (!playlistSyncVersion)
   {
     goto LABEL_8;
   }
 
-  v14 = 0;
+  value = 0;
 LABEL_12:
 
-  return v14;
+  return value;
 }
 
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version
 {
-  v5 = a4;
-  v6 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  [v6 setPodcastsDomainVersion:v5];
+  versionCopy = version;
+  storageProvider = [(MTPlaylistSyncProcessor *)self storageProvider];
+  [storageProvider setPodcastsDomainVersion:versionCopy];
 }
 
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v11 = a7;
-  v12 = a6;
-  [(MTPlaylistSyncProcessor *)self completeTransactionWithNewVersion:v12 isGetTransaction:1 mismatch:[(MTPlaylistSyncProcessor *)self mergeData:a4 forKey:a5 version:v12 mismatch:0 isGetTransaction:1] finishedBlock:v11];
+  blockCopy = block;
+  versionCopy = version;
+  [(MTPlaylistSyncProcessor *)self completeTransactionWithNewVersion:versionCopy isGetTransaction:1 mismatch:[(MTPlaylistSyncProcessor *)self mergeData:data forKey:key version:versionCopy mismatch:0 isGetTransaction:1] finishedBlock:blockCopy];
 }
 
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v11 = a7;
-  v12 = a6;
-  [(MTPlaylistSyncProcessor *)self completeTransactionWithNewVersion:v12 isGetTransaction:0 mismatch:[(MTPlaylistSyncProcessor *)self mergeData:a4 forKey:a5 version:v12 mismatch:1 isGetTransaction:0] finishedBlock:v11];
+  blockCopy = block;
+  versionCopy = version;
+  [(MTPlaylistSyncProcessor *)self completeTransactionWithNewVersion:versionCopy isGetTransaction:0 mismatch:[(MTPlaylistSyncProcessor *)self mergeData:data forKey:key version:versionCopy mismatch:1 isGetTransaction:0] finishedBlock:blockCopy];
 }
 
-- (BOOL)mergeData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6 isGetTransaction:(BOOL)a7
+- (BOOL)mergeData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch isGetTransaction:(BOOL)transaction
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  v13 = [v12 playlistSyncVersion];
+  keyCopy = key;
+  dataCopy = data;
+  storageProvider = [(MTPlaylistSyncProcessor *)self storageProvider];
+  playlistSyncVersion = [storageProvider playlistSyncVersion];
 
-  if (!v13)
+  if (!playlistSyncVersion)
   {
-    v14 = [(MTPlaylistSyncProcessor *)self storageProvider];
-    [v14 setPlaylistSyncDirtyFlag:1];
+    storageProvider2 = [(MTPlaylistSyncProcessor *)self storageProvider];
+    [storageProvider2 setPlaylistSyncDirtyFlag:1];
   }
 
   v15 = objc_alloc_init(MZKeyValueStoreNode);
-  [(MZKeyValueStoreNode *)v15 setKey:v10];
+  [(MZKeyValueStoreNode *)v15 setKey:keyCopy];
 
-  [(MZKeyValueStoreNode *)v15 setValue:v11];
+  [(MZKeyValueStoreNode *)v15 setValue:dataCopy];
   if ([(MZKeyValueStoreNode *)v15 hasData])
   {
-    v16 = [(MZKeyValueStoreNode *)v15 arrayValue];
-    v17 = [(MTPlaylistSyncProcessor *)self storageProvider];
-    v18 = [v17 importContext];
+    arrayValue = [(MZKeyValueStoreNode *)v15 arrayValue];
+    storageProvider3 = [(MTPlaylistSyncProcessor *)self storageProvider];
+    importContext = [storageProvider3 importContext];
 
     v19 = [MTPlaylistSyncDictionaryMerge alloc];
     v20 = _MTLogCategoryCloudSync();
-    v21 = [(MTPlaylistSyncDictionaryMerge *)v19 initWithLoggingCategory:v20 dictionariesToMerge:v16];
+    v21 = [(MTPlaylistSyncDictionaryMerge *)v19 initWithLoggingCategory:v20 dictionariesToMerge:arrayValue];
 
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -183,24 +183,24 @@ LABEL_12:
     v23[3] = &unk_1004DD3E8;
     v23[4] = self;
     [(MTPlaylistSyncDictionaryMerge *)v21 setCanDeletePlaylistUUIDBlock:v23];
-    [(MTPlaylistSyncDictionaryMerge *)v21 performAndWaitWithContext:v18 save:1];
+    [(MTPlaylistSyncDictionaryMerge *)v21 performAndWaitWithContext:importContext save:1];
   }
 
-  return a6;
+  return mismatch;
 }
 
-- (void)completeTransactionWithNewVersion:(id)a3 isGetTransaction:(BOOL)a4 mismatch:(BOOL)a5 finishedBlock:(id)a6
+- (void)completeTransactionWithNewVersion:(id)version isGetTransaction:(BOOL)transaction mismatch:(BOOL)mismatch finishedBlock:(id)block
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a3;
+  mismatchCopy = mismatch;
+  blockCopy = block;
+  versionCopy = version;
   v11 = _MTLogCategoryCloudSync();
   v12 = v11;
   signpostID = self->_signpostID;
   if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     v14 = @"NO";
-    if (v6)
+    if (mismatchCopy)
     {
       v14 = @"YES";
     }
@@ -210,12 +210,12 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, signpostID, "MTPlaylistSyncProcessor.completed", "mismatch %@", &v17, 0xCu);
   }
 
-  v15 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  [v15 setPlaylistSyncDirtyFlag:v6];
+  storageProvider = [(MTPlaylistSyncProcessor *)self storageProvider];
+  [storageProvider setPlaylistSyncDirtyFlag:mismatchCopy];
 
-  v9[2](v9, v6);
-  v16 = [(MTPlaylistSyncProcessor *)self storageProvider];
-  [v16 setPlaylistSyncVersion:v10];
+  blockCopy[2](blockCopy, mismatchCopy);
+  storageProvider2 = [(MTPlaylistSyncProcessor *)self storageProvider];
+  [storageProvider2 setPlaylistSyncVersion:versionCopy];
 }
 
 @end

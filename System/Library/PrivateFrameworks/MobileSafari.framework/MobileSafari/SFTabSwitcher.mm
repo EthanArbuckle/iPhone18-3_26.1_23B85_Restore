@@ -3,11 +3,11 @@
 - (BOOL)showsSidebarToggle;
 - (BOOL)tabOverviewIsVisible;
 - (CGRect)capsuleReferenceFrame;
-- (CGRect)frameForLinkedPanningItemWithIdentifier:(id)a3;
+- (CGRect)frameForLinkedPanningItemWithIdentifier:(id)identifier;
 - (SFTabOverviewDisplayItem)tabOverviewDisplayItem;
-- (SFTabSwitcher)initWithCoder:(id)a3;
-- (SFTabSwitcher)initWithNibName:(id)a3 bundle:(id)a4;
-- (SFTabSwitcher)initWithTabIconPool:(id)a3 tabSnapshotPool:(id)a4;
+- (SFTabSwitcher)initWithCoder:(id)coder;
+- (SFTabSwitcher)initWithNibName:(id)name bundle:(id)bundle;
+- (SFTabSwitcher)initWithTabIconPool:(id)pool tabSnapshotPool:(id)snapshotPool;
 - (SFTabSwitcherPage)visiblePage;
 - (SFTabSwitcherPresentationObserving)presentationObserver;
 - (UIBarButtonItem)sidebarToggleBarButtonItem;
@@ -17,36 +17,36 @@
 - (double)linkedPanGesturePageWidth;
 - (double)quickTabSwitcherPageWidth;
 - (id)makeEditAction;
-- (int64_t)visibleSnapshotLimitForBounds:(CGRect)a3 traitCollection:(id)a4;
-- (void)applyConfiguration:(id)a3;
-- (void)applyContent:(id)a3 animated:(BOOL)a4;
+- (int64_t)visibleSnapshotLimitForBounds:(CGRect)bounds traitCollection:(id)collection;
+- (void)applyConfiguration:(id)configuration;
+- (void)applyContent:(id)content animated:(BOOL)animated;
 - (void)beginAnimatedSizeTransition;
 - (void)beginSearching;
-- (void)beginSearchingWithQuery:(id)a3;
+- (void)beginSearchingWithQuery:(id)query;
 - (void)clearHighlightedCapsule;
-- (void)didReceivePanGesture:(id)a3;
+- (void)didReceivePanGesture:(id)gesture;
 - (void)endAnimatedSizeTransition;
 - (void)loadView;
-- (void)performTransaction:(id)a3 withUpdates:(id)a4;
+- (void)performTransaction:(id)transaction withUpdates:(id)updates;
 - (void)present;
-- (void)scrollToPage:(id)a3;
+- (void)scrollToPage:(id)page;
 - (void)scrollVisiblePageToTopWithoutAnimation;
-- (void)setBorrowedContentSize:(CGSize)a3 obscuredInsets:(UIEdgeInsets)a4;
-- (void)setBrowserContentInsets:(UIEdgeInsets)a3;
-- (void)setCapsuleReferenceFrame:(CGRect)a3;
-- (void)setLinkedPanGesturePageWidth:(double)a3;
-- (void)setShowsSidebarToggle:(BOOL)a3;
+- (void)setBorrowedContentSize:(CGSize)size obscuredInsets:(UIEdgeInsets)insets;
+- (void)setBrowserContentInsets:(UIEdgeInsets)insets;
+- (void)setCapsuleReferenceFrame:(CGRect)frame;
+- (void)setLinkedPanGesturePageWidth:(double)width;
+- (void)setShowsSidebarToggle:(BOOL)toggle;
 @end
 
 @implementation SFTabSwitcher
 
-- (SFTabSwitcher)initWithTabIconPool:(id)a3 tabSnapshotPool:(id)a4
+- (SFTabSwitcher)initWithTabIconPool:(id)pool tabSnapshotPool:(id)snapshotPool
 {
-  v7 = *(a3 + OBJC_IVAR___SFTabIconPool_wrapped);
-  v8 = *(a4 + OBJC_IVAR___SFTabSnapshotPool_wrapped);
+  v7 = *(pool + OBJC_IVAR___SFTabIconPool_wrapped);
+  v8 = *(snapshotPool + OBJC_IVAR___SFTabSnapshotPool_wrapped);
   objc_allocWithZone(type metadata accessor for TabSwitcher(0));
-  v9 = a3;
-  v10 = a4;
+  poolCopy = pool;
+  snapshotPoolCopy = snapshotPool;
   sub_18BC1E1A8();
   sub_18BC1E1A8();
   *(&self->super.super.super.isa + OBJC_IVAR___SFTabSwitcher_wrapped) = sub_18B7DD240(v7, v8);
@@ -59,26 +59,26 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   SFTabSwitcher.loadView()();
 }
 
-- (void)applyConfiguration:(id)a3
+- (void)applyConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_18B7EF2B0(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_18B7EF2B0(configurationCopy);
 }
 
-- (void)setShowsSidebarToggle:(BOOL)a3
+- (void)setShowsSidebarToggle:(BOOL)toggle
 {
-  v4 = self;
-  sub_18B7F8070(a3);
+  selfCopy = self;
+  sub_18B7F8070(toggle);
 }
 
 - (UIBarButtonItem)sidebarToggleBarButtonItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C5C10();
   v4 = sub_18B7DEE8C();
   swift_beginAccess();
@@ -89,87 +89,87 @@
   return v5;
 }
 
-- (int64_t)visibleSnapshotLimitForBounds:(CGRect)a3 traitCollection:(id)a4
+- (int64_t)visibleSnapshotLimitForBounds:(CGRect)bounds traitCollection:(id)collection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  collectionCopy = collection;
+  selfCopy = self;
   v11 = sub_18B7C5C10();
-  v12 = sub_18B7F84B0(v9, x, y, width, height);
+  v12 = sub_18B7F84B0(collectionCopy, x, y, width, height);
 
   return v12;
 }
 
 - (void)beginAnimatedSizeTransition
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B7FC98C();
 }
 
 - (void)endAnimatedSizeTransition
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B7FD274();
 }
 
-- (void)setBrowserContentInsets:(UIEdgeInsets)a3
+- (void)setBrowserContentInsets:(UIEdgeInsets)insets
 {
-  *(*(&self->super.super.super.isa + OBJC_IVAR___SFTabSwitcher_wrapped) + OBJC_IVAR____TtC12MobileSafari11TabSwitcher_browserContentInsets) = a3;
-  v3 = self;
+  *(*(&self->super.super.super.isa + OBJC_IVAR___SFTabSwitcher_wrapped) + OBJC_IVAR____TtC12MobileSafari11TabSwitcher_browserContentInsets) = insets;
+  selfCopy = self;
   sub_18B7FE620();
 }
 
-- (void)setBorrowedContentSize:(CGSize)a3 obscuredInsets:(UIEdgeInsets)a4
+- (void)setBorrowedContentSize:(CGSize)size obscuredInsets:(UIEdgeInsets)insets
 {
   v4 = (*(&self->super.super.super.isa + OBJC_IVAR___SFTabSwitcher_wrapped) + OBJC_IVAR____TtC12MobileSafari11TabSwitcher_borrowedContentMetrics);
   v5 = v4[1];
   v7[0] = *v4;
   v7[1] = v5;
   v7[2] = v4[2];
-  *&v4->width = a4;
-  v4[2] = a3;
-  v6 = self;
+  *&v4->width = insets;
+  v4[2] = size;
+  selfCopy = self;
   sub_18B7FE7A8(v7);
 }
 
-- (void)setCapsuleReferenceFrame:(CGRect)a3
+- (void)setCapsuleReferenceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_18B7FE8AC(x, y, width, height);
 }
 
-- (void)setLinkedPanGesturePageWidth:(double)a3
+- (void)setLinkedPanGesturePageWidth:(double)width
 {
-  v4 = self;
-  sub_18B7FEA50(a3);
+  selfCopy = self;
+  sub_18B7FEA50(width);
 }
 
-- (void)performTransaction:(id)a3 withUpdates:(id)a4
+- (void)performTransaction:(id)transaction withUpdates:(id)updates
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(updates);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_18B81CA28(v7, v8, v6);
+  transactionCopy = transaction;
+  selfCopy = self;
+  sub_18B81CA28(transactionCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)applyContent:(id)a3 animated:(BOOL)a4
+- (void)applyContent:(id)content animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_18B831B0C(v6, a4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_18B831B0C(contentCopy, animated);
 }
 
-- (SFTabSwitcher)initWithCoder:(id)a3
+- (SFTabSwitcher)initWithCoder:(id)coder
 {
   result = sub_18BC21CF8();
   __break(1u);
@@ -178,15 +178,15 @@
 
 - (void)beginSearching
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA90A18();
 }
 
-- (void)beginSearchingWithQuery:(id)a3
+- (void)beginSearchingWithQuery:(id)query
 {
   v4 = sub_18BC20BD8();
   v6 = v5;
-  v8 = self;
+  selfCopy = self;
   v7 = sub_18B7C5C10();
   sub_18B9DEAB0(v4, v6);
 }
@@ -221,38 +221,38 @@
 
 - (void)clearHighlightedCapsule
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA90D2C();
 }
 
-- (void)didReceivePanGesture:(id)a3
+- (void)didReceivePanGesture:(id)gesture
 {
-  v5 = a3;
-  v4 = self;
-  sub_18BAFF620(v5);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_18BAFF620(gestureCopy);
 }
 
 - (BOOL)isSelectingInteractivelyInsertedItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C07CC();
   v4 = *&v3[OBJC_IVAR____TtC12MobileSafari27QuickTabSwitcherDisplayItem_quickTabSwitcher];
 
-  LOBYTE(v2) = v4[qword_1EA9F8540];
-  return v2;
+  LOBYTE(selfCopy) = v4[qword_1EA9F8540];
+  return selfCopy;
 }
 
 - (double)linkedPanGesturePageWidth
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C07CC();
   v4 = *&v3[OBJC_IVAR____TtC12MobileSafari27QuickTabSwitcherDisplayItem_quickTabSwitcher];
 
   v5 = *&v4[qword_1EA9F8568 + 112];
-  LODWORD(v2) = v4[qword_1EA9F8568 + 120];
+  LODWORD(selfCopy) = v4[qword_1EA9F8568 + 120];
 
   result = 0.0;
-  if (!v2)
+  if (!selfCopy)
   {
     return v5;
   }
@@ -262,7 +262,7 @@
 
 - (void)present
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB04F20();
 }
 
@@ -275,7 +275,7 @@
 
 - (double)quickTabSwitcherPageWidth
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C07CC();
   v4 = *&v3[OBJC_IVAR____TtC12MobileSafari27QuickTabSwitcherDisplayItem_quickTabSwitcher];
 
@@ -294,14 +294,14 @@
   return v9 + Width;
 }
 
-- (CGRect)frameForLinkedPanningItemWithIdentifier:(id)a3
+- (CGRect)frameForLinkedPanningItemWithIdentifier:(id)identifier
 {
   v4 = sub_18BC1EC08();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v21 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1EBE8();
-  v8 = self;
+  selfCopy = self;
   sub_18BA912E4(v7);
   v10 = v9;
   v12 = v11;
@@ -322,28 +322,28 @@
 
 - (id)makeEditAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA91844();
 
   return v3;
 }
 
-- (void)scrollToPage:(id)a3
+- (void)scrollToPage:(id)page
 {
-  v4 = a3;
-  v5 = self;
-  sub_18BA91B30(v4);
+  pageCopy = page;
+  selfCopy = self;
+  sub_18BA91B30(pageCopy);
 }
 
 - (void)scrollVisiblePageToTopWithoutAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA91EC4();
 }
 
 - (_UIScrollPocketCollectorInteraction)scrollPocketCollector
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C5C10();
   sub_18B7C9974();
   v5 = v4;
@@ -356,7 +356,7 @@
 
 - (BOOL)showsSidebarToggle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C5C10();
   v4 = v3[OBJC_IVAR___SFTabOverviewDisplayItem_showsSidebarToggle];
 
@@ -365,7 +365,7 @@
 
 - (SFTabOverviewDisplayItem)tabOverviewDisplayItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C5C10();
 
   return v3;
@@ -373,7 +373,7 @@
 
 - (BOOL)tabOverviewIsVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B7C5C10();
   v4 = v3[OBJC_IVAR___SFTabOverviewDisplayItem_state + 9];
 
@@ -389,13 +389,13 @@
 
 - (SFTabSwitcherPage)visiblePage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA928E0();
 
   return v3;
 }
 
-- (SFTabSwitcher)initWithNibName:(id)a3 bundle:(id)a4
+- (SFTabSwitcher)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

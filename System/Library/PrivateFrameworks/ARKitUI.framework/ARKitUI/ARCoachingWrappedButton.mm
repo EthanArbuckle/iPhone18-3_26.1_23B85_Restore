@@ -1,15 +1,15 @@
 @interface ARCoachingWrappedButton
-- (void)sendAction:(SEL)a3 to:(id)a4 forEvent:(id)a5;
+- (void)sendAction:(SEL)action to:(id)to forEvent:(id)event;
 @end
 
 @implementation ARCoachingWrappedButton
 
-- (void)sendAction:(SEL)a3 to:(id)a4 forEvent:(id)a5
+- (void)sendAction:(SEL)action to:(id)to forEvent:(id)event
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ARCoachingWrappedButton *)self wrapperButton];
-  [v10 sendAction:a3 to:v9 forEvent:v8];
+  eventCopy = event;
+  toCopy = to;
+  wrapperButton = [(ARCoachingWrappedButton *)self wrapperButton];
+  [wrapperButton sendAction:action to:toCopy forEvent:eventCopy];
 }
 
 @end

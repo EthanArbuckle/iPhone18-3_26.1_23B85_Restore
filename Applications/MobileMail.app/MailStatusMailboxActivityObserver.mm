@@ -1,17 +1,17 @@
 @interface MailStatusMailboxActivityObserver
-- (MailStatusMailboxActivityObserver)initWithDelegate:(id)a3;
-- (void)setMailboxesOfInterest:(id)a3 mailboxTypeResolver:(id)a4;
-- (void)startWithRegistry:(id)a3;
+- (MailStatusMailboxActivityObserver)initWithDelegate:(id)delegate;
+- (void)setMailboxesOfInterest:(id)interest mailboxTypeResolver:(id)resolver;
+- (void)startWithRegistry:(id)registry;
 - (void)tearDown;
 @end
 
 @implementation MailStatusMailboxActivityObserver
 
-- (MailStatusMailboxActivityObserver)initWithDelegate:(id)a3
+- (MailStatusMailboxActivityObserver)initWithDelegate:(id)delegate
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  return sub_1003956C0(a3);
+  return sub_1003956C0(delegate);
 }
 
 - (void)tearDown
@@ -22,27 +22,27 @@
   _objc_release(self);
 }
 
-- (void)startWithRegistry:(id)a3
+- (void)startWithRegistry:(id)registry
 {
   swift_getObjectType();
-  _objc_retain(a3);
+  _objc_retain(registry);
   _objc_retain(self);
-  sub_100396468(a3);
+  sub_100396468(registry);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(registry);
 }
 
-- (void)setMailboxesOfInterest:(id)a3 mailboxTypeResolver:(id)a4
+- (void)setMailboxesOfInterest:(id)interest mailboxTypeResolver:(id)resolver
 {
   swift_getObjectType();
-  _objc_retain(a3);
+  _objc_retain(interest);
   swift_unknownObjectRetain();
   _objc_retain(self);
   sub_1003655EC();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  sub_100396E10(v5, a4);
+  sub_100396E10(v5, resolver);
 
-  _objc_release(a3);
+  _objc_release(interest);
   _objc_release(self);
   swift_unknownObjectRelease();
 }

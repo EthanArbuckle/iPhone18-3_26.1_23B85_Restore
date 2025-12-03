@@ -1,14 +1,14 @@
 @interface VKRouteEtaDescription
-- (BOOL)isEqual:(id)a3;
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 etaAdvisoryStyleAttributes:(id)a4;
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 etaAdvisoryStyleAttributes:(id)a4 routeEtaType:(int64_t)a5;
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 etaAdvisoryStyleAttributes:(id)a4 routeEtaType:(int64_t)a5 shieldText:(id)a6 shieldType:(int)a7;
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 glyphType:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (VKRouteEtaDescription)initWithEtaText:(id)text etaAdvisoryStyleAttributes:(id)attributes;
+- (VKRouteEtaDescription)initWithEtaText:(id)text etaAdvisoryStyleAttributes:(id)attributes routeEtaType:(int64_t)type;
+- (VKRouteEtaDescription)initWithEtaText:(id)text etaAdvisoryStyleAttributes:(id)attributes routeEtaType:(int64_t)type shieldText:(id)shieldText shieldType:(int)shieldType;
+- (VKRouteEtaDescription)initWithEtaText:(id)text glyphType:(unsigned __int8)type;
 - (id).cxx_construct;
-- (id)_initWithEtaText:(id)a3 styleAttributes:(id)a4 routeEtaType:(int64_t)a5;
-- (int64_t)compare:(id)a3;
+- (id)_initWithEtaText:(id)text styleAttributes:(id)attributes routeEtaType:(int64_t)type;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)setImageProvider:(id)a3 withKey:(id)a4;
+- (void)setImageProvider:(id)provider withKey:(id)key;
 @end
 
 @implementation VKRouteEtaDescription
@@ -22,24 +22,24 @@
   return self;
 }
 
-- (void)setImageProvider:(id)a3 withKey:(id)a4
+- (void)setImageProvider:(id)provider withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  keyCopy = key;
   imageProvider = self->_imageProvider;
-  self->_imageProvider = v6;
-  v10 = v6;
+  self->_imageProvider = providerCopy;
+  v10 = providerCopy;
 
   customImageKey = self->_customImageKey;
-  self->_customImageKey = v7;
+  self->_customImageKey = keyCopy;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if ([v4 routeEtaType] != self->_routeEtaType)
+  compareCopy = compare;
+  if ([compareCopy routeEtaType] != self->_routeEtaType)
   {
-    if ([v4 routeEtaType] < self->_routeEtaType)
+    if ([compareCopy routeEtaType] < self->_routeEtaType)
     {
       v6 = -1;
     }
@@ -52,9 +52,9 @@
     goto LABEL_32;
   }
 
-  if ([v4 glyphType] != self->_glyphType)
+  if ([compareCopy glyphType] != self->_glyphType)
   {
-    if ([v4 glyphType] < self->_glyphType)
+    if ([compareCopy glyphType] < self->_glyphType)
     {
       v6 = -1;
     }
@@ -73,14 +73,14 @@
     goto LABEL_14;
   }
 
-  v5 = [v4 styleAttributes];
-  if (!v5)
+  styleAttributes = [compareCopy styleAttributes];
+  if (!styleAttributes)
   {
     styleAttributes = self->_styleAttributes;
 LABEL_14:
-    v8 = [v4 styleAttributes];
+    styleAttributes2 = [compareCopy styleAttributes];
 
-    if (styleAttributes != v8)
+    if (styleAttributes != styleAttributes2)
     {
       if (self->_styleAttributes)
       {
@@ -104,25 +104,25 @@ LABEL_18:
     goto LABEL_31;
   }
 
-  v9 = [v4 styleAttributes];
+  styleAttributes3 = [compareCopy styleAttributes];
 
-  if (!v9)
+  if (!styleAttributes3)
   {
     goto LABEL_31;
   }
 
-  v10 = [(GEOFeatureStyleAttributes *)self->_styleAttributes featureStyleAttributesPtr];
-  v12 = *v10;
-  v11 = v10[1];
+  featureStyleAttributesPtr = [(GEOFeatureStyleAttributes *)self->_styleAttributes featureStyleAttributesPtr];
+  v12 = *featureStyleAttributesPtr;
+  v11 = featureStyleAttributesPtr[1];
   if (v11)
   {
     atomic_fetch_add_explicit(&v11->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v13 = [v4 styleAttributes];
-  v14 = [v13 featureStyleAttributesPtr];
-  v15 = *v14;
-  v16 = v14[1];
+  styleAttributes4 = [compareCopy styleAttributes];
+  featureStyleAttributesPtr2 = [styleAttributes4 featureStyleAttributesPtr];
+  v15 = *featureStyleAttributesPtr2;
+  v16 = featureStyleAttributesPtr2[1];
   if (v16)
   {
     atomic_fetch_add_explicit(&v16->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -144,8 +144,8 @@ LABEL_18:
   if (!v17)
   {
 LABEL_31:
-    v18 = [v4 etaText];
-    v6 = [v18 compare:self->_etaText._obj];
+    etaText = [compareCopy etaText];
+    v6 = [etaText compare:self->_etaText._obj];
   }
 
 LABEL_32:
@@ -167,10 +167,10 @@ LABEL_32:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -178,25 +178,25 @@ LABEL_32:
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(VKRouteEtaDescription *)self compare:v4]== 0;
+    v6 = v5 == objc_opt_class() && [(VKRouteEtaDescription *)self compare:equalCopy]== 0;
   }
 
   return v6;
 }
 
-- (id)_initWithEtaText:(id)a3 styleAttributes:(id)a4 routeEtaType:(int64_t)a5
+- (id)_initWithEtaText:(id)text styleAttributes:(id)attributes routeEtaType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  attributesCopy = attributes;
   v16.receiver = self;
   v16.super_class = VKRouteEtaDescription;
   v10 = [(VKRouteEtaDescription *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v10->_etaText, v8);
-    objc_storeStrong(&v11->_styleAttributes, a4);
-    v11->_routeEtaType = a5;
+    geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v10->_etaText, textCopy);
+    objc_storeStrong(&v11->_styleAttributes, attributes);
+    v11->_routeEtaType = type;
     imageProvider = v11->_imageProvider;
     v11->_imageProvider = 0;
 
@@ -209,51 +209,51 @@ LABEL_32:
   return v11;
 }
 
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 etaAdvisoryStyleAttributes:(id)a4 routeEtaType:(int64_t)a5
+- (VKRouteEtaDescription)initWithEtaText:(id)text etaAdvisoryStyleAttributes:(id)attributes routeEtaType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithGEOStyleAttributes:v9];
-  v11 = [(VKRouteEtaDescription *)self _initWithEtaText:v8 styleAttributes:v10 routeEtaType:a5];
+  textCopy = text;
+  attributesCopy = attributes;
+  v10 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithGEOStyleAttributes:attributesCopy];
+  v11 = [(VKRouteEtaDescription *)self _initWithEtaText:textCopy styleAttributes:v10 routeEtaType:type];
 
   return v11;
 }
 
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 etaAdvisoryStyleAttributes:(id)a4 routeEtaType:(int64_t)a5 shieldText:(id)a6 shieldType:(int)a7
+- (VKRouteEtaDescription)initWithEtaText:(id)text etaAdvisoryStyleAttributes:(id)attributes routeEtaType:(int64_t)type shieldText:(id)shieldText shieldType:(int)shieldType
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithGEOStyleAttributes:v13];
-  v16 = [(VKRouteEtaDescription *)self _initWithEtaText:v12 styleAttributes:v15 routeEtaType:a5];
+  textCopy = text;
+  attributesCopy = attributes;
+  shieldTextCopy = shieldText;
+  v15 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithGEOStyleAttributes:attributesCopy];
+  v16 = [(VKRouteEtaDescription *)self _initWithEtaText:textCopy styleAttributes:v15 routeEtaType:type];
   v17 = v16;
-  if (v14)
+  if (shieldTextCopy)
   {
-    geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v16->_shieldText, v14);
+    geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v16->_shieldText, shieldTextCopy);
   }
 
-  v17->_shieldType = a7;
+  v17->_shieldType = shieldType;
 
   return v17;
 }
 
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 etaAdvisoryStyleAttributes:(id)a4
+- (VKRouteEtaDescription)initWithEtaText:(id)text etaAdvisoryStyleAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithGEOStyleAttributes:v7];
-  v9 = [(VKRouteEtaDescription *)self _initWithEtaText:v6 styleAttributes:v8 routeEtaType:0];
+  textCopy = text;
+  attributesCopy = attributes;
+  v8 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithGEOStyleAttributes:attributesCopy];
+  v9 = [(VKRouteEtaDescription *)self _initWithEtaText:textCopy styleAttributes:v8 routeEtaType:0];
 
   return v9;
 }
 
-- (VKRouteEtaDescription)initWithEtaText:(id)a3 glyphType:(unsigned __int8)a4
+- (VKRouteEtaDescription)initWithEtaText:(id)text glyphType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VKRouteEtaDescription *)self initWithEtaText:v6];
-  v7->_glyphType = v4;
-  if (v4 == 1)
+  typeCopy = type;
+  textCopy = text;
+  v7 = [(VKRouteEtaDescription *)self initWithEtaText:textCopy];
+  v7->_glyphType = typeCopy;
+  if (typeCopy == 1)
   {
     v8 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithAttributes:{65618, 3, 0}];
   }
@@ -263,7 +263,7 @@ LABEL_32:
     v8 = 0;
   }
 
-  v9 = [(VKRouteEtaDescription *)v7 _initWithEtaText:v6 styleAttributes:v8 routeEtaType:0];
+  v9 = [(VKRouteEtaDescription *)v7 _initWithEtaText:textCopy styleAttributes:v8 routeEtaType:0];
 
   return v9;
 }

@@ -1,84 +1,84 @@
 @interface SUUIProductPageHeaderLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (__CTFramesetter)_newTextFramesetter;
 - (double)secondaryImageWidth;
 - (id)_textAttributes;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setContentRating:(id)a3;
-- (void)setRatingColor:(id)a3;
-- (void)setSecondaryContentRatingImages:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setContentRating:(id)rating;
+- (void)setRatingColor:(id)color;
+- (void)setSecondaryContentRatingImages:(id)images;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation SUUIProductPageHeaderLabel
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
-  if (self->_text != v5)
+  textCopy = text;
+  if (self->_text != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_text, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_text, text);
     [(SUUIProductPageHeaderLabel *)self setNeedsDisplay];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(SUUIProductPageHeaderLabel *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setContentRating:(id)a3
+- (void)setContentRating:(id)rating
 {
-  v5 = a3;
-  if (self->_contentRating != v5)
+  ratingCopy = rating;
+  if (self->_contentRating != ratingCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_contentRating, a3);
+    v8 = ratingCopy;
+    objc_storeStrong(&self->_contentRating, rating);
     v6 = [(SUUIProductPageHeaderLabel *)self _imageForContentRating:self->_contentRating];
     contentRatingImage = self->_contentRatingImage;
     self->_contentRatingImage = v6;
 
     [(SUUIProductPageHeaderLabel *)self setNeedsDisplay];
-    v5 = v8;
+    ratingCopy = v8;
   }
 }
 
-- (void)setSecondaryContentRatingImages:(id)a3
+- (void)setSecondaryContentRatingImages:(id)images
 {
-  v5 = a3;
-  if (self->_secondaryContentRatingImages != v5)
+  imagesCopy = images;
+  if (self->_secondaryContentRatingImages != imagesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_secondaryContentRatingImages, a3);
+    v6 = imagesCopy;
+    objc_storeStrong(&self->_secondaryContentRatingImages, images);
     [(SUUIProductPageHeaderLabel *)self setNeedsDisplay];
-    v5 = v6;
+    imagesCopy = v6;
   }
 }
 
-- (void)setRatingColor:(id)a3
+- (void)setRatingColor:(id)color
 {
-  v5 = a3;
-  if (self->_ratingColor != v5)
+  colorCopy = color;
+  if (self->_ratingColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_ratingColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(&self->_ratingColor, color);
     v6 = [(SUUIProductPageHeaderLabel *)self _imageForContentRating:self->_contentRating];
     contentRatingImage = self->_contentRatingImage;
     self->_contentRatingImage = v6;
 
     [(SUUIProductPageHeaderLabel *)self setNeedsDisplay];
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
@@ -128,13 +128,13 @@
   return v7;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(SUUIProductPageHeaderLabel *)self bounds:a3.origin.x];
+  [(SUUIProductPageHeaderLabel *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v8 = MEMORY[0x277CBF348];
-  v9 = [(SUUIProductPageHeaderLabel *)self _newTextFramesetter];
+  _newTextFramesetter = [(SUUIProductPageHeaderLabel *)self _newTextFramesetter];
   Mutable = CGPathCreateMutable();
   v95.origin.x = 0.0;
   v95.origin.y = 0.0;
@@ -144,7 +144,7 @@
   CGPathAddRect(Mutable, 0, v95);
   v91.location = 0;
   v91.length = 0;
-  Frame = CTFramesetterCreateFrame(v9, v91, Mutable, 0);
+  Frame = CTFramesetterCreateFrame(_newTextFramesetter, v91, Mutable, 0);
   CFRelease(Mutable);
   Lines = CTFrameGetLines(Frame);
   Count = CFArrayGetCount(Lines);
@@ -171,7 +171,7 @@
       CGPathAddRect(v21, 0, v97);
       v93.location = 0;
       v93.length = 0;
-      v22 = CTFramesetterCreateFrame(v9, v93, v21, 0);
+      v22 = CTFramesetterCreateFrame(_newTextFramesetter, v93, v21, 0);
       CFRelease(v21);
       theArray = CTFrameGetLines(v22);
       Count = CFArrayGetCount(theArray);
@@ -188,7 +188,7 @@
     }
   }
 
-  v75 = v9;
+  v75 = _newTextFramesetter;
   v77 = v8[1];
   v78 = *v8;
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -235,16 +235,16 @@
         {
           v34 = [(NSString *)self->_text substringFromIndex:location];
           v35 = objc_alloc(MEMORY[0x277CCA898]);
-          v36 = [(SUUIProductPageHeaderLabel *)self _textAttributes];
-          v37 = [v35 initWithString:v34 attributes:v36];
+          _textAttributes = [(SUUIProductPageHeaderLabel *)self _textAttributes];
+          v37 = [v35 initWithString:v34 attributes:_textAttributes];
 
           v38 = CTLineCreateWithAttributedString(v37);
           CFRelease(v37);
         }
 
         v40 = objc_alloc(MEMORY[0x277CCA898]);
-        v41 = [(SUUIProductPageHeaderLabel *)self _textAttributes];
-        v42 = [v40 initWithString:@"…" attributes:v41];
+        _textAttributes2 = [(SUUIProductPageHeaderLabel *)self _textAttributes];
+        v42 = [v40 initWithString:@"…" attributes:_textAttributes2];
 
         v87 = v42;
         v43 = CTLineCreateWithAttributedString(v42);
@@ -404,16 +404,16 @@
   CFRelease(v71);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SUUIProductPageHeaderLabel *)self _newTextFramesetter];
+  height = fits.height;
+  width = fits.width;
+  _newTextFramesetter = [(SUUIProductPageHeaderLabel *)self _newTextFramesetter];
   v28.location = 0;
   v28.length = 0;
   v33.width = width;
   v33.height = height;
-  v7 = CTFramesetterSuggestFrameSizeWithConstraints(v6, v28, 0, v33, 0);
+  v7 = CTFramesetterSuggestFrameSizeWithConstraints(_newTextFramesetter, v28, 0, v33, 0);
   v8 = v7.height;
   Mutable = CGPathCreateMutable();
   v36.origin.x = 0.0;
@@ -423,7 +423,7 @@
   CGPathAddRect(Mutable, 0, v36);
   v29.location = 0;
   v29.length = 0;
-  Frame = CTFramesetterCreateFrame(v6, v29, Mutable, 0);
+  Frame = CTFramesetterCreateFrame(_newTextFramesetter, v29, Mutable, 0);
   CFRelease(Mutable);
   Lines = CTFrameGetLines(Frame);
   Count = CFArrayGetCount(Lines);
@@ -448,7 +448,7 @@
       v30.length = 0;
       v34.width = v18;
       v34.height = height;
-      v8 = CTFramesetterSuggestFrameSizeWithConstraints(v6, v30, 0, v34, 0).height;
+      v8 = CTFramesetterSuggestFrameSizeWithConstraints(_newTextFramesetter, v30, 0, v34, 0).height;
       v19 = CGPathCreateMutable();
       v38.origin.x = 0.0;
       v38.origin.y = 0.0;
@@ -457,7 +457,7 @@
       CGPathAddRect(v19, 0, v38);
       v31.location = 0;
       v31.length = 0;
-      Frame = CTFramesetterCreateFrame(v6, v31, v19, 0);
+      Frame = CTFramesetterCreateFrame(_newTextFramesetter, v31, v19, 0);
       CFRelease(v19);
       Lines = CTFrameGetLines(Frame);
       Count = CFArrayGetCount(Lines);
@@ -482,7 +482,7 @@ LABEL_7:
   v23 = width;
   v24 = roundf(v23);
   CFRelease(Frame);
-  CFRelease(v6);
+  CFRelease(_newTextFramesetter);
   v25 = v24;
   v26 = v22;
   result.height = v26;
@@ -502,8 +502,8 @@ LABEL_7:
 {
   v3 = objc_alloc(MEMORY[0x277CCA898]);
   text = self->_text;
-  v5 = [(SUUIProductPageHeaderLabel *)self _textAttributes];
-  v6 = [v3 initWithString:text attributes:v5];
+  _textAttributes = [(SUUIProductPageHeaderLabel *)self _textAttributes];
+  v6 = [v3 initWithString:text attributes:_textAttributes];
 
   v7 = CTFramesetterCreateWithAttributedString(v6);
   CFRelease(v6);
@@ -524,13 +524,13 @@ LABEL_7:
   v10[0] = v4;
   v9[1] = *MEMORY[0x277D740C0];
   textColor = self->_textColor;
-  v6 = textColor;
+  blackColor = textColor;
   if (!textColor)
   {
-    v6 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v10[1] = v6;
+  v10[1] = blackColor;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
   if (!textColor)
   {

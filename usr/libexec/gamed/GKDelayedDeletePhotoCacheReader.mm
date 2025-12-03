@@ -1,31 +1,31 @@
 @interface GKDelayedDeletePhotoCacheReader
-+ (id)readerWithDatabaseConnection:(id)a3;
-- (GKDelayedDeletePhotoCacheReader)initWithDatabaseConnection:(id)a3;
-- (id)deletePhotoDescriptorForExecutedStatement:(sqlite3_stmt *)a3;
++ (id)readerWithDatabaseConnection:(id)connection;
+- (GKDelayedDeletePhotoCacheReader)initWithDatabaseConnection:(id)connection;
+- (id)deletePhotoDescriptorForExecutedStatement:(sqlite3_stmt *)statement;
 - (id)deletePhotoDescriptorStatement;
-- (void)readResources:(id)a3 handler:(id)a4;
+- (void)readResources:(id)resources handler:(id)handler;
 @end
 
 @implementation GKDelayedDeletePhotoCacheReader
 
-+ (id)readerWithDatabaseConnection:(id)a3
++ (id)readerWithDatabaseConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDatabaseConnection:v4];
+  connectionCopy = connection;
+  v5 = [[self alloc] initWithDatabaseConnection:connectionCopy];
 
   return v5;
 }
 
-- (GKDelayedDeletePhotoCacheReader)initWithDatabaseConnection:(id)a3
+- (GKDelayedDeletePhotoCacheReader)initWithDatabaseConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = GKDelayedDeletePhotoCacheReader;
   v5 = [(GKDelayedDeletePhotoCacheReader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKDelayedDeletePhotoCacheReader *)v5 setConnection:v4];
+    [(GKDelayedDeletePhotoCacheReader *)v5 setConnection:connectionCopy];
   }
 
   return v6;
@@ -39,26 +39,26 @@
   return v3;
 }
 
-- (id)deletePhotoDescriptorForExecutedStatement:(sqlite3_stmt *)a3
+- (id)deletePhotoDescriptorForExecutedStatement:(sqlite3_stmt *)statement
 {
-  v3 = [NSDate _gkDateFromScalarServerTimestamp:sqlite3_column_int64(a3, 1)];
+  v3 = [NSDate _gkDateFromScalarServerTimestamp:sqlite3_column_int64(statement, 1)];
   v7[0] = @"delete-approved";
   v7[1] = @"delete-pending";
   v8[0] = &__kCFBooleanTrue;
   v8[1] = &__kCFBooleanTrue;
   v7[2] = @"timestamp";
-  v4 = [v3 _gkServerTimestamp];
-  v8[2] = v4;
+  _gkServerTimestamp = [v3 _gkServerTimestamp];
+  v8[2] = _gkServerTimestamp;
   v5 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:3];
 
   return v5;
 }
 
-- (void)readResources:(id)a3 handler:(id)a4
+- (void)readResources:(id)resources handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] >= 2)
+  resourcesCopy = resources;
+  handlerCopy = handler;
+  if ([resourcesCopy count] >= 2)
   {
     v16 = [NSString stringWithFormat:@"%@ is being asked to read photos for multiple players. This is not currently supported.", objc_opt_class()];
     v17 = [NSException exceptionWithName:NSInvalidArgumentException reason:v16 userInfo:0];
@@ -78,7 +78,7 @@
   v22[2] = sub_10010E85C;
   v22[3] = &unk_100366EE8;
   v22[4] = self;
-  v11 = v6;
+  v11 = resourcesCopy;
   v23 = v11;
   v12 = v9;
   v24 = v12;
@@ -88,7 +88,7 @@
   v19[1] = 3221225472;
   v19[2] = sub_10010EBC8;
   v19[3] = &unk_100366F10;
-  v14 = v7;
+  v14 = handlerCopy;
   v21 = v14;
   v15 = v12;
   v20 = v15;

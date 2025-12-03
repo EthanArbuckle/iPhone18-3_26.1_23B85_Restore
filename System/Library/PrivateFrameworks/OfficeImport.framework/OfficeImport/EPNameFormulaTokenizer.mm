@@ -1,30 +1,30 @@
 @interface EPNameFormulaTokenizer
-- (BOOL)isObjectSupported:(id)a3;
-- (void)applyProcessorToObject:(id)a3 sheet:(id)a4;
+- (BOOL)isObjectSupported:(id)supported;
+- (void)applyProcessorToObject:(id)object sheet:(id)sheet;
 @end
 
 @implementation EPNameFormulaTokenizer
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)applyProcessorToObject:(id)a3 sheet:(id)a4
+- (void)applyProcessorToObject:(id)object sheet:(id)sheet
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = v6;
-  v8 = [v14 formulaString];
-  v9 = v8;
-  if (v8 && [v8 length])
+  objectCopy = object;
+  sheetCopy = sheet;
+  v14 = objectCopy;
+  formulaString = [v14 formulaString];
+  v9 = formulaString;
+  if (formulaString && [formulaString length])
   {
     WeakRetained = objc_loadWeakRetained(&self->super.mWorkbook);
-    v11 = [EXFormula edTokensForFormulaString:v9 sheet:v7 workbook:WeakRetained];
+    v11 = [EXFormula edTokensForFormulaString:v9 sheet:sheetCopy workbook:WeakRetained];
 
     v12 = objc_loadWeakRetained(&self->super.mWorkbook);
     [v14 setFormula:v11 workbook:v12];

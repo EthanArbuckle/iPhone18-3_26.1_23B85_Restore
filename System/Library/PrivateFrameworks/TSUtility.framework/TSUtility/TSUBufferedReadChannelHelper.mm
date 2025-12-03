@@ -1,19 +1,19 @@
 @interface TSUBufferedReadChannelHelper
-- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3;
-- (void)readWithQueue:(id)a3 handler:(id)a4;
+- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel;
+- (void)readWithQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation TSUBufferedReadChannelHelper
 
-- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3
+- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v10.receiver = self;
   v10.super_class = TSUBufferedReadChannelHelper;
   v5 = [(TSUBufferedReadChannelHelper *)&v10 init];
   if (v5)
   {
-    if (!v4)
+    if (!channelCopy)
     {
       v6 = +[TSUAssertionHandler currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUBufferedReadChannelHelper initWithBufferedReadChannel:]"];
@@ -21,18 +21,18 @@
       [v6 handleFailureInFunction:v7 file:v8 lineNumber:296 description:{@"invalid nil value for '%s'", "bufferedReadChannel"}];
     }
 
-    objc_storeWeak(&v5->_bufferedReadChannel, v4);
+    objc_storeWeak(&v5->_bufferedReadChannel, channelCopy);
   }
 
   return v5;
 }
 
-- (void)readWithQueue:(id)a3 handler:(id)a4
+- (void)readWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   WeakRetained = objc_loadWeakRetained(&self->_bufferedReadChannel);
-  [WeakRetained setStreamReadChannelSourceQueue:v7 handler:v6];
+  [WeakRetained setStreamReadChannelSourceQueue:queueCopy handler:handlerCopy];
 }
 
 @end

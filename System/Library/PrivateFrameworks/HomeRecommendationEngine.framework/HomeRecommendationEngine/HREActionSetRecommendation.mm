@@ -1,31 +1,31 @@
 @interface HREActionSetRecommendation
 - (BOOL)containsMeaningfulChanges;
 - (BOOL)containsRecommendableContent;
-- (BOOL)includesObjects:(id)a3;
+- (BOOL)includesObjects:(id)objects;
 - (HFActionSetBuilder)selectedActionSetBuilder;
-- (HREActionSetRecommendation)initWithHome:(id)a3 uniqueIdentifier:(id)a4;
+- (HREActionSetRecommendation)initWithHome:(id)home uniqueIdentifier:(id)identifier;
 - (NSSet)actionSetBuilders;
 - (NSSet)actions;
 - (NSSet)addedActions;
 - (id)changedInvolvedObjects;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilder;
-- (id)existingActionBuilder:(id)a3 inSet:(id)a4;
+- (id)existingActionBuilder:(id)builder inSet:(id)set;
 - (id)involvedObjects;
-- (void)addAction:(id)a3 allowEditingExistingActions:(BOOL)a4;
-- (void)addActions:(id)a3 allowEditingExistingActions:(BOOL)a4;
-- (void)removeAction:(id)a3;
-- (void)removeActions:(id)a3;
-- (void)setSelectedActionSetBuilder:(id)a3;
+- (void)addAction:(id)action allowEditingExistingActions:(BOOL)actions;
+- (void)addActions:(id)actions allowEditingExistingActions:(BOOL)existingActions;
+- (void)removeAction:(id)action;
+- (void)removeActions:(id)actions;
+- (void)setSelectedActionSetBuilder:(id)builder;
 @end
 
 @implementation HREActionSetRecommendation
 
-- (HREActionSetRecommendation)initWithHome:(id)a3 uniqueIdentifier:(id)a4
+- (HREActionSetRecommendation)initWithHome:(id)home uniqueIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = HREActionSetRecommendation;
-  v4 = [(HRERecommendation *)&v11 initWithHome:a3 uniqueIdentifier:a4];
+  v4 = [(HRERecommendation *)&v11 initWithHome:home uniqueIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEB58] set];
@@ -41,8 +41,8 @@
     }
 
     v8 = qword_27F5F98B0;
-    v9 = [(HRERecommendation *)v4 defaultAnalyticsData];
-    [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x277D134E8]];
+    defaultAnalyticsData = [(HRERecommendation *)v4 defaultAnalyticsData];
+    [defaultAnalyticsData setObject:v8 forKeyedSubscript:*MEMORY[0x277D134E8]];
   }
 
   return v4;
@@ -54,14 +54,14 @@ void __60__HREActionSetRecommendation_initWithHome_uniqueIdentifier___block_invo
   qword_27F5F98B0 = @"action-set";
 }
 
-- (void)setSelectedActionSetBuilder:(id)a3
+- (void)setSelectedActionSetBuilder:(id)builder
 {
-  v5 = a3;
-  if (self->_selectedActionSetBuilder != v5)
+  builderCopy = builder;
+  if (self->_selectedActionSetBuilder != builderCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedActionSetBuilder, a3);
-    v5 = v6;
+    v6 = builderCopy;
+    objc_storeStrong(&self->_selectedActionSetBuilder, builder);
+    builderCopy = v6;
   }
 }
 
@@ -70,13 +70,13 @@ void __60__HREActionSetRecommendation_initWithHome_uniqueIdentifier___block_invo
   selectedActionSetBuilder = self->_selectedActionSetBuilder;
   if (!selectedActionSetBuilder)
   {
-    v4 = [(HREActionSetRecommendation *)self actionSetBuilders];
-    v5 = [v4 count];
+    actionSetBuilders = [(HREActionSetRecommendation *)self actionSetBuilders];
+    v5 = [actionSetBuilders count];
 
     if (v5 == 1)
     {
-      v6 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
-      v7 = [v6 anyObject];
+      mutableActionSetBuilders = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
+      anyObject = [mutableActionSetBuilders anyObject];
 
       goto LABEL_6;
     }
@@ -84,36 +84,36 @@ void __60__HREActionSetRecommendation_initWithHome_uniqueIdentifier___block_invo
     selectedActionSetBuilder = self->_selectedActionSetBuilder;
   }
 
-  v7 = selectedActionSetBuilder;
+  anyObject = selectedActionSetBuilder;
 LABEL_6:
 
-  return v7;
+  return anyObject;
 }
 
 - (NSSet)actionSetBuilders
 {
-  v2 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
-  v3 = [v2 copy];
+  mutableActionSetBuilders = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
+  v3 = [mutableActionSetBuilders copy];
 
   return v3;
 }
 
 - (NSSet)actions
 {
-  v3 = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
+  selectedActionSetBuilder = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
 
-  if (v3)
+  if (selectedActionSetBuilder)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
-    v6 = [v5 actions];
-    v7 = [v4 setWithArray:v6];
+    selectedActionSetBuilder2 = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
+    actions = [selectedActionSetBuilder2 actions];
+    v7 = [v4 setWithArray:actions];
   }
 
   else
   {
-    v5 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
-    v7 = [v5 na_flatMap:&__block_literal_global_8_2];
+    selectedActionSetBuilder2 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
+    v7 = [selectedActionSetBuilder2 na_flatMap:&__block_literal_global_8_2];
   }
 
   return v7;
@@ -128,31 +128,31 @@ id __37__HREActionSetRecommendation_actions__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (id)existingActionBuilder:(id)a3 inSet:(id)a4
+- (id)existingActionBuilder:(id)builder inSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
-  v9 = [v8 existingActionBuilder:v7 inSet:v6];
+  setCopy = set;
+  builderCopy = builder;
+  selectedActionSetBuilder = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
+  v9 = [selectedActionSetBuilder existingActionBuilder:builderCopy inSet:setCopy];
 
   return v9;
 }
 
-- (void)addAction:(id)a3 allowEditingExistingActions:(BOOL)a4
+- (void)addAction:(id)action allowEditingExistingActions:(BOOL)actions
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
-  v8 = v7;
-  if (v7)
+  actionsCopy = actions;
+  actionCopy = action;
+  selectedActionSetBuilder = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
+  v8 = selectedActionSetBuilder;
+  if (selectedActionSetBuilder)
   {
-    v9 = [v7 actionBuilders];
-    v10 = [v9 toSet];
-    v11 = [(HREActionSetRecommendation *)self existingActionBuilder:v6 inSet:v10];
+    actionBuilders = [selectedActionSetBuilder actionBuilders];
+    toSet = [actionBuilders toSet];
+    v11 = [(HREActionSetRecommendation *)self existingActionBuilder:actionCopy inSet:toSet];
 
     if (v11)
     {
-      v12 = [v11 compareToObject:v6];
+      v12 = [v11 compareToObject:actionCopy];
       v13 = [v12 hasNoDifferencesHigherThanPriority:0];
 
       if (v13)
@@ -162,23 +162,23 @@ id __37__HREActionSetRecommendation_actions__block_invoke(uint64_t a1, void *a2)
 
       else
       {
-        v19 = [(HREActionSetRecommendation *)self allowedVariance];
-        v14 = [v19 anyRulePassesForAction:v11];
+        allowedVariance = [(HREActionSetRecommendation *)self allowedVariance];
+        v14 = [allowedVariance anyRulePassesForAction:v11];
       }
     }
 
     else
     {
-      v15 = [v6 recommendableObjectsInvolved];
-      v16 = [v8 actionBuilders];
-      v17 = [v16 fromSet];
+      recommendableObjectsInvolved = [actionCopy recommendableObjectsInvolved];
+      actionBuilders2 = [v8 actionBuilders];
+      fromSet = [actionBuilders2 fromSet];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __68__HREActionSetRecommendation_addAction_allowEditingExistingActions___block_invoke;
       v21[3] = &unk_2797767E8;
-      v22 = v15;
-      v18 = v15;
-      v11 = [v17 na_firstObjectPassingTest:v21];
+      v22 = recommendableObjectsInvolved;
+      v18 = recommendableObjectsInvolved;
+      v11 = [fromSet na_firstObjectPassingTest:v21];
 
       v14 = 0;
       if (!v11)
@@ -187,7 +187,7 @@ id __37__HREActionSetRecommendation_actions__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    if (!v4)
+    if (!actionsCopy)
     {
 LABEL_14:
 
@@ -197,16 +197,16 @@ LABEL_14:
 LABEL_9:
     if (v11)
     {
-      if ([v11 updateWithActionBuilder:v6])
+      if ([v11 updateWithActionBuilder:actionCopy])
       {
-        v20 = [v8 actionBuilders];
-        [v20 updateObject:v11];
+        actionBuilders3 = [v8 actionBuilders];
+        [actionBuilders3 updateObject:v11];
       }
     }
 
     else if ((v14 & 1) == 0)
     {
-      [v8 addAction:v6];
+      [v8 addAction:actionCopy];
     }
 
     goto LABEL_14;
@@ -223,32 +223,32 @@ uint64_t __68__HREActionSetRecommendation_addAction_allowEditingExistingActions_
   return v4;
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
-  v4 = a3;
-  v5 = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
-  [v5 removeAction:v4];
+  actionCopy = action;
+  selectedActionSetBuilder = [(HREActionSetRecommendation *)self selectedActionSetBuilder];
+  [selectedActionSetBuilder removeAction:actionCopy];
 }
 
-- (void)addActions:(id)a3 allowEditingExistingActions:(BOOL)a4
+- (void)addActions:(id)actions allowEditingExistingActions:(BOOL)existingActions
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__HREActionSetRecommendation_addActions_allowEditingExistingActions___block_invoke;
   v4[3] = &unk_279776810;
   v4[4] = self;
-  v5 = a4;
-  [a3 na_each:v4];
+  existingActionsCopy = existingActions;
+  [actions na_each:v4];
 }
 
-- (void)removeActions:(id)a3
+- (void)removeActions:(id)actions
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __44__HREActionSetRecommendation_removeActions___block_invoke;
   v3[3] = &unk_279776838;
   v3[4] = self;
-  [a3 na_each:v3];
+  [actions na_each:v3];
 }
 
 void __44__HREActionSetRecommendation_removeActions___block_invoke(uint64_t a1, void *a2)
@@ -261,13 +261,13 @@ void __44__HREActionSetRecommendation_removeActions___block_invoke(uint64_t a1, 
 
 - (BOOL)containsRecommendableContent
 {
-  v3 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
-  v4 = [v3 na_all:&__block_literal_global_13_0];
+  mutableActionSetBuilders = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
+  v4 = [mutableActionSetBuilders na_all:&__block_literal_global_13_0];
 
-  v5 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
-  LOBYTE(v3) = [v5 count] != 0;
+  mutableActionSetBuilders2 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
+  LOBYTE(mutableActionSetBuilders) = [mutableActionSetBuilders2 count] != 0;
 
-  return v3 & v4;
+  return mutableActionSetBuilders & v4;
 }
 
 BOOL __58__HREActionSetRecommendation_containsRecommendableContent__block_invoke(uint64_t a1, void *a2)
@@ -280,8 +280,8 @@ BOOL __58__HREActionSetRecommendation_containsRecommendableContent__block_invoke
 
 - (BOOL)containsMeaningfulChanges
 {
-  v2 = [(HREActionSetRecommendation *)self actionSetBuilders];
-  v3 = [v2 na_any:&__block_literal_global_15_1];
+  actionSetBuilders = [(HREActionSetRecommendation *)self actionSetBuilders];
+  v3 = [actionSetBuilders na_any:&__block_literal_global_15_1];
 
   return v3;
 }
@@ -296,23 +296,23 @@ uint64_t __55__HREActionSetRecommendation_containsMeaningfulChanges__block_invok
 
 - (id)changedInvolvedObjects
 {
-  v2 = [(HREActionSetRecommendation *)self addedActions];
-  v3 = [v2 na_flatMap:&__block_literal_global_18_0];
+  addedActions = [(HREActionSetRecommendation *)self addedActions];
+  v3 = [addedActions na_flatMap:&__block_literal_global_18_0];
 
   return v3;
 }
 
 - (id)involvedObjects
 {
-  v2 = [(HREActionSetRecommendation *)self actions];
-  v3 = [v2 na_flatMap:&__block_literal_global_20_0];
+  actions = [(HREActionSetRecommendation *)self actions];
+  v3 = [actions na_flatMap:&__block_literal_global_20_0];
 
   return v3;
 }
 
-- (BOOL)includesObjects:(id)a3
+- (BOOL)includesObjects:(id)objects
 {
-  v4 = [a3 na_flatMap:&__block_literal_global_23];
+  v4 = [objects na_flatMap:&__block_literal_global_23];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__HREActionSetRecommendation_includesObjects___block_invoke_2;
@@ -367,8 +367,8 @@ uint64_t __46__HREActionSetRecommendation_includesObjects___block_invoke_3(uint6
 
 - (NSSet)addedActions
 {
-  v2 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
-  v3 = [v2 na_flatMap:&__block_literal_global_27];
+  mutableActionSetBuilders = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
+  v3 = [mutableActionSetBuilders na_flatMap:&__block_literal_global_27];
 
   return v3;
 }
@@ -385,19 +385,19 @@ id __42__HREActionSetRecommendation_addedActions__block_invoke(uint64_t a1, void
 {
   v12.receiver = self;
   v12.super_class = HREActionSetRecommendation;
-  v3 = [(HRERecommendation *)&v12 descriptionBuilder];
-  v4 = [(HREActionSetRecommendation *)self actionSetBuilders];
-  v5 = [v4 na_map:&__block_literal_global_32];
-  v6 = [v3 appendObject:v5 withName:@"actionSetNames"];
+  descriptionBuilder = [(HRERecommendation *)&v12 descriptionBuilder];
+  actionSetBuilders = [(HREActionSetRecommendation *)self actionSetBuilders];
+  v5 = [actionSetBuilders na_map:&__block_literal_global_32];
+  v6 = [descriptionBuilder appendObject:v5 withName:@"actionSetNames"];
 
-  v7 = [(HREActionSetRecommendation *)self addedActions];
+  addedActions = [(HREActionSetRecommendation *)self addedActions];
   v8 = MEMORY[0x277D14380];
-  v9 = [v7 allObjects];
-  v10 = [v8 hre_sortActionBuilders:v9];
+  allObjects = [addedActions allObjects];
+  v10 = [v8 hre_sortActionBuilders:allObjects];
 
-  [v3 appendArraySection:v10 withName:@"actions" skipIfEmpty:1];
+  [descriptionBuilder appendArraySection:v10 withName:@"actions" skipIfEmpty:1];
 
-  return v3;
+  return descriptionBuilder;
 }
 
 id __48__HREActionSetRecommendation_descriptionBuilder__block_invoke(uint64_t a1, void *a2)
@@ -422,7 +422,7 @@ id __48__HREActionSetRecommendation_descriptionBuilder__block_invoke(uint64_t a1
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22.receiver = self;
   v22.super_class = HREActionSetRecommendation;
@@ -434,16 +434,16 @@ id __48__HREActionSetRecommendation_descriptionBuilder__block_invoke(uint64_t a1
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v7 = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
+  mutableActionSetBuilders = [(HREActionSetRecommendation *)self mutableActionSetBuilders];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __43__HREActionSetRecommendation_copyWithZone___block_invoke;
   v12[3] = &unk_279777390;
-  v15 = a3;
+  zoneCopy = zone;
   v8 = v6;
   v13 = v8;
   v14 = &v16;
-  v9 = [v7 na_map:v12];
+  v9 = [mutableActionSetBuilders na_map:v12];
   v10 = [v9 mutableCopy];
   [v5 setMutableActionSetBuilders:v10];
 

@@ -1,6 +1,6 @@
 @interface PUAddToLastUsedAlbumActivity
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityTitle;
 - (void)performActivity;
 @end
@@ -9,17 +9,17 @@
 
 - (void)performActivity
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 assets];
-  v5 = [v4 array];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  array = [assets array];
 
   WeakRetained = objc_loadWeakRetained(&self->_undoManager);
-  v7 = [objc_alloc(MEMORY[0x1E69C3320]) initWithAssets:v5];
+  v7 = [objc_alloc(MEMORY[0x1E69C3320]) initWithAssets:array];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 underlyingAction];
-    [v9 setShouldSortAssetsByCreationDate:1];
+    underlyingAction = [v7 underlyingAction];
+    [underlyingAction setShouldSortAssetsByCreationDate:1];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -35,16 +35,16 @@
   }
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(PXActivity *)self itemSourceController];
+  itemSourceController = [(PXActivity *)self itemSourceController];
   v4 = MEMORY[0x1E69C3320];
-  v5 = [v3 appPhotoLibrary];
-  v6 = [v4 targetAssetCollectionInPhotoLibrary:v5 error:0];
+  appPhotoLibrary = [itemSourceController appPhotoLibrary];
+  v6 = [v4 targetAssetCollectionInPhotoLibrary:appPhotoLibrary error:0];
 
   if (v6)
   {
-    LOBYTE(v6) = [PUAddToAlbumActivity canPerformWithItemSourceController:v3];
+    LOBYTE(v6) = [PUAddToAlbumActivity canPerformWithItemSourceController:itemSourceController];
   }
 
   return v6;
@@ -52,29 +52,29 @@
 
 - (id)activityTitle
 {
-  v2 = [(PXActivity *)self itemSourceController];
-  v3 = [v2 assets];
-  v4 = [v3 firstObject];
-  v5 = [v4 photoLibrary];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  firstObject = [assets firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
-  v6 = [MEMORY[0x1E69C3320] commandTitleWithPhotoLibrary:v5];
+  v6 = [MEMORY[0x1E69C3320] commandTitleWithPhotoLibrary:photoLibrary];
 
   return v6;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 undoManager];
-  objc_storeWeak(&self->_undoManager, v10);
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  undoManager = [controllerCopy undoManager];
+  objc_storeWeak(&self->_undoManager, undoManager);
 
   v12.receiver = self;
   v12.super_class = PUAddToLastUsedAlbumActivity;
-  LOBYTE(v5) = [(PXActivity *)&v12 _presentActivityOnViewController:v9 animated:v5 completion:v8];
+  LOBYTE(animatedCopy) = [(PXActivity *)&v12 _presentActivityOnViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
-  return v5;
+  return animatedCopy;
 }
 
 @end

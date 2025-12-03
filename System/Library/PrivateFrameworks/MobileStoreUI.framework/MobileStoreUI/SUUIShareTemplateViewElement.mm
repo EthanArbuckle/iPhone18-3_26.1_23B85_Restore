@@ -1,19 +1,19 @@
 @interface SUUIShareTemplateViewElement
 - (NSArray)activities;
-- (id)activityForShareSheetActivityType:(id)a3;
-- (id)activityForUIActivityType:(id)a3;
+- (id)activityForShareSheetActivityType:(id)type;
+- (id)activityForUIActivityType:(id)type;
 @end
 
 @implementation SUUIShareTemplateViewElement
 
 - (NSArray)activities
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SUUIShareTemplateViewElement_activities__block_invoke;
   v6[3] = &unk_2798F5B20;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -29,10 +29,10 @@ void __42__SUUIShareTemplateViewElement_activities__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)activityForShareSheetActivityType:(id)a3
+- (id)activityForShareSheetActivityType:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   [(SUUIShareTemplateViewElement *)self activities];
   v12 = 0u;
   v13 = 0u;
@@ -52,8 +52,8 @@ void __42__SUUIShareTemplateViewElement_activities__block_invoke(uint64_t a1, vo
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 activityType];
-        if ([v10 isEqualToString:v4])
+        activityType = [v9 activityType];
+        if ([activityType isEqualToString:typeCopy])
         {
           v6 = v9;
 
@@ -76,10 +76,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)activityForUIActivityType:(id)a3
+- (id)activityForUIActivityType:(id)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = SUUIShareSheetActivityTypeForUIActivityType(a3);
+  v4 = SUUIShareSheetActivityTypeForUIActivityType(type);
   [(SUUIShareTemplateViewElement *)self activities];
   v18 = 0u;
   v19 = 0u;
@@ -101,15 +101,15 @@ LABEL_11:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 activityType];
-        if ([v12 isEqualToString:@"*"])
+        activityType = [v11 activityType];
+        if ([activityType isEqualToString:@"*"])
         {
           v13 = v11;
 
           v8 = v13;
         }
 
-        if ([v12 isEqualToString:v4])
+        if ([activityType isEqualToString:v4])
         {
           v14 = v11;
 

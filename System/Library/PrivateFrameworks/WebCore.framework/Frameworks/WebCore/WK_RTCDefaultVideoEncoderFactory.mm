@@ -1,34 +1,34 @@
 @interface WK_RTCDefaultVideoEncoderFactory
-+ (id)supportedCodecsWithH265:(BOOL)a3 vp9Profile0:(BOOL)a4 vp9Profile2:(BOOL)a5 av1:(BOOL)a6;
-- (WK_RTCDefaultVideoEncoderFactory)initWithH265:(BOOL)a3 vp9Profile0:(BOOL)a4 vp9Profile2:(BOOL)a5 av1:(BOOL)a6;
-- (id)createEncoder:(id)a3;
++ (id)supportedCodecsWithH265:(BOOL)h265 vp9Profile0:(BOOL)profile0 vp9Profile2:(BOOL)profile2 av1:(BOOL)av1;
+- (WK_RTCDefaultVideoEncoderFactory)initWithH265:(BOOL)h265 vp9Profile0:(BOOL)profile0 vp9Profile2:(BOOL)profile2 av1:(BOOL)av1;
+- (id)createEncoder:(id)encoder;
 - (id)supportedCodecs;
 @end
 
 @implementation WK_RTCDefaultVideoEncoderFactory
 
-- (WK_RTCDefaultVideoEncoderFactory)initWithH265:(BOOL)a3 vp9Profile0:(BOOL)a4 vp9Profile2:(BOOL)a5 av1:(BOOL)a6
+- (WK_RTCDefaultVideoEncoderFactory)initWithH265:(BOOL)h265 vp9Profile0:(BOOL)profile0 vp9Profile2:(BOOL)profile2 av1:(BOOL)av1
 {
   v11.receiver = self;
   v11.super_class = WK_RTCDefaultVideoEncoderFactory;
   result = [(WK_RTCDefaultVideoEncoderFactory *)&v11 init];
   if (result)
   {
-    result->_supportsH265 = a3;
-    result->_supportsVP9Profile0 = a4;
-    result->_supportsVP9Profile2 = a5;
-    result->_supportsAv1 = a6;
+    result->_supportsH265 = h265;
+    result->_supportsVP9Profile0 = profile0;
+    result->_supportsVP9Profile2 = profile2;
+    result->_supportsAv1 = av1;
   }
 
   return result;
 }
 
-+ (id)supportedCodecsWithH265:(BOOL)a3 vp9Profile0:(BOOL)a4 vp9Profile2:(BOOL)a5 av1:(BOOL)a6
++ (id)supportedCodecsWithH265:(BOOL)h265 vp9Profile0:(BOOL)profile0 vp9Profile2:(BOOL)profile2 av1:(BOOL)av1
 {
-  v27 = a5;
-  v28 = a6;
-  v25 = a3;
-  v26 = a4;
+  profile2Copy = profile2;
+  av1Copy = av1;
+  h265Copy = h265;
+  profile0Copy = profile0;
   v36[3] = *MEMORY[0x277D85DE8];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:8];
   v7 = [WK_RTCVideoCodecInfo alloc];
@@ -75,7 +75,7 @@
   v18 = [(WK_RTCVideoCodecInfo *)v16 initWithName:@"H264" parameters:v17];
   [v6 addObject:v18];
 
-  if (v25)
+  if (h265Copy)
   {
     v19 = [[WK_RTCVideoCodecInfo alloc] initWithName:@"H265"];
     [v6 addObject:v19];
@@ -83,15 +83,15 @@
 
   v20 = [[WK_RTCVideoCodecInfo alloc] initWithName:@"VP8"];
   [v6 addObject:v20];
-  if (v26)
+  if (profile0Copy)
   {
     v23 = [[WK_RTCVideoCodecInfo alloc] initWithName:@"VP9" parameters:&unk_2882B0F30];
     [v6 addObject:v23];
 
-    if (!v27)
+    if (!profile2Copy)
     {
 LABEL_5:
-      if (!v28)
+      if (!av1Copy)
       {
         goto LABEL_7;
       }
@@ -100,7 +100,7 @@ LABEL_5:
     }
   }
 
-  else if (!v27)
+  else if (!profile2Copy)
   {
     goto LABEL_5;
   }
@@ -108,7 +108,7 @@ LABEL_5:
   v24 = [[WK_RTCVideoCodecInfo alloc] initWithName:@"VP9" parameters:&unk_2882B0F58];
   [v6 addObject:v24];
 
-  if (v28)
+  if (av1Copy)
   {
 LABEL_6:
     v21 = [[WK_RTCVideoCodecInfo alloc] initWithName:@"AV1"];
@@ -120,21 +120,21 @@ LABEL_7:
   return v6;
 }
 
-- (id)createEncoder:(id)a3
+- (id)createEncoder:(id)encoder
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v4 isEqualToString:@"H264"];
+  encoderCopy = encoder;
+  name = [encoderCopy name];
+  v5 = [name isEqualToString:@"H264"];
 
   if (v5)
   {
-    v6 = [[WK_RTCVideoEncoderH264 alloc] initWithCodecInfo:v3];
+    v6 = [[WK_RTCVideoEncoderH264 alloc] initWithCodecInfo:encoderCopy];
     [(WK_RTCVideoEncoderH264 *)v6 setH264LowLatencyEncoderEnabled:1];
     goto LABEL_12;
   }
 
-  v7 = [v3 name];
-  v8 = [v7 isEqualToString:@"VP8"];
+  name2 = [encoderCopy name];
+  v8 = [name2 isEqualToString:@"VP8"];
 
   if (v8)
   {
@@ -144,26 +144,26 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [v3 name];
-  v11 = [v10 isEqualToString:@"VP9"];
+  name3 = [encoderCopy name];
+  v11 = [name3 isEqualToString:@"VP9"];
 
   if (v11)
   {
-    v9 = [WK_RTCVideoEncoderVP9 vp9Encoder:v3];
+    v9 = [WK_RTCVideoEncoderVP9 vp9Encoder:encoderCopy];
     goto LABEL_11;
   }
 
-  v12 = [v3 name];
-  v13 = [v12 isEqualToString:@"H265"];
+  name4 = [encoderCopy name];
+  v13 = [name4 isEqualToString:@"H265"];
 
   if (v13)
   {
-    v9 = [[WK_RTCVideoEncoderH265 alloc] initWithCodecInfo:v3];
+    v9 = [[WK_RTCVideoEncoderH265 alloc] initWithCodecInfo:encoderCopy];
     goto LABEL_11;
   }
 
-  v14 = [v3 name];
-  v15 = [v14 isEqualToString:@"AV1"];
+  name5 = [encoderCopy name];
+  v15 = [name5 isEqualToString:@"AV1"];
 
   if (v15)
   {

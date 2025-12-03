@@ -1,22 +1,22 @@
 @interface SCRCColorUtilities
-+ (id)descriptionForAlphaValueString:(id)a3;
-+ (id)descriptionForBrightnessValueString:(id)a3;
-+ (id)descriptionForHueValueString:(id)a3;
-+ (id)descriptionForSaturationValueString:(id)a3;
++ (id)descriptionForAlphaValueString:(id)string;
++ (id)descriptionForBrightnessValueString:(id)string;
++ (id)descriptionForHueValueString:(id)string;
++ (id)descriptionForSaturationValueString:(id)string;
 @end
 
 @implementation SCRCColorUtilities
 
-+ (id)descriptionForHueValueString:(id)a3
++ (id)descriptionForHueValueString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCA8D8] localizedCoreStringForKey:@"invalid hue value"];
-  if (![v3 hasPrefix:@"hue"])
+  if (![stringCopy hasPrefix:@"hue"])
   {
     goto LABEL_40;
   }
 
-  v5 = [v3 substringFromIndex:{objc_msgSend(@"hue", "length") + 1}];
+  v5 = [stringCopy substringFromIndex:{objc_msgSend(@"hue", "length") + 1}];
   [v5 doubleValue];
   v7 = v6;
 
@@ -153,13 +153,13 @@ LABEL_40:
   return v4;
 }
 
-+ (id)descriptionForSaturationValueString:(id)a3
++ (id)descriptionForSaturationValueString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCA8D8] localizedCoreStringForKey:@"invalid saturation value"];
-  if ([v3 hasPrefix:@"saturation"])
+  if ([stringCopy hasPrefix:@"saturation"])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(@"saturation", "length") + 1}];
+    v5 = [stringCopy substringFromIndex:{objc_msgSend(@"saturation", "length") + 1}];
     [v5 doubleValue];
     v7 = v6;
 
@@ -167,22 +167,22 @@ LABEL_40:
     {
       v9 = MEMORY[0x277CCACA8];
       v10 = [MEMORY[0x277CCA8D8] localizedCoreStringForKey:@"saturationValueFormatString"];
-      v11 = [v9 stringWithFormat:v10, llround(v7 * 100.0) | 0x4059000000000000];
+      0x4059000000000000 = [v9 stringWithFormat:v10, llround(v7 * 100.0) | 0x4059000000000000];
 
-      v4 = v11;
+      v4 = 0x4059000000000000;
     }
   }
 
   return v4;
 }
 
-+ (id)descriptionForBrightnessValueString:(id)a3
++ (id)descriptionForBrightnessValueString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCA8D8] localizedCoreStringForKey:@"invalid brightness value"];
-  if ([v3 hasPrefix:@"brightness"])
+  if ([stringCopy hasPrefix:@"brightness"])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(@"brightness", "length") + 1}];
+    v5 = [stringCopy substringFromIndex:{objc_msgSend(@"brightness", "length") + 1}];
     [v5 doubleValue];
     v7 = v6;
 
@@ -190,22 +190,22 @@ LABEL_40:
     {
       v9 = MEMORY[0x277CCACA8];
       v10 = [MEMORY[0x277CCA8D8] localizedCoreStringForKey:@"brightnessValueFormatString"];
-      v11 = [v9 stringWithFormat:v10, llround(v7 * 100.0) | 0x4059000000000000];
+      0x4059000000000000 = [v9 stringWithFormat:v10, llround(v7 * 100.0) | 0x4059000000000000];
 
-      v4 = v11;
+      v4 = 0x4059000000000000;
     }
   }
 
   return v4;
 }
 
-+ (id)descriptionForAlphaValueString:(id)a3
++ (id)descriptionForAlphaValueString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCA8D8] localizedCoreStringForKey:@"invalid alpha value"];
-  if ([v3 hasPrefix:@"alpha"])
+  if ([stringCopy hasPrefix:@"alpha"])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(@"alpha", "length") + 1}];
+    v5 = [stringCopy substringFromIndex:{objc_msgSend(@"alpha", "length") + 1}];
     [v5 doubleValue];
     v7 = v6;
 
@@ -213,9 +213,9 @@ LABEL_40:
     {
       v9 = MEMORY[0x277CCACA8];
       v10 = [MEMORY[0x277CCA8D8] localizedCoreStringForKey:@"alphaValueFormatString"];
-      v11 = [v9 stringWithFormat:v10, llround(v7 * 100.0) | 0x4059000000000000];
+      0x4059000000000000 = [v9 stringWithFormat:v10, llround(v7 * 100.0) | 0x4059000000000000];
 
-      v4 = v11;
+      v4 = 0x4059000000000000;
     }
   }
 

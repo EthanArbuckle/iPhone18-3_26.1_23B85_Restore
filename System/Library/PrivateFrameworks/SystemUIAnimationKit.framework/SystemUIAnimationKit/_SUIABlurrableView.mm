@@ -1,19 +1,19 @@
 @interface _SUIABlurrableView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_SUIABlurrableView)initWithCoder:(id)a3;
-- (_SUIABlurrableView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_SUIABlurrableView)initWithCoder:(id)coder;
+- (_SUIABlurrableView)initWithFrame:(CGRect)frame;
 - (void)_setupBlur;
 - (void)layoutSubviews;
-- (void)setBlurRadius:(double)a3;
+- (void)setBlurRadius:(double)radius;
 @end
 
 @implementation _SUIABlurrableView
 
-- (_SUIABlurrableView)initWithFrame:(CGRect)a3
+- (_SUIABlurrableView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _SUIABlurrableView;
-  v3 = [(_SUIABlurrableView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SUIABlurrableView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (_SUIABlurrableView)initWithCoder:(id)a3
+- (_SUIABlurrableView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _SUIABlurrableView;
-  v3 = [(_SUIABlurrableView *)&v6 initWithCoder:a3];
+  v3 = [(_SUIABlurrableView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -56,17 +56,17 @@
     }
 
     v6 = v5 * 0.5;
-    v7 = [(_SUIABlurrableView *)self layer];
-    [v7 setCornerRadius:v6];
+    layer = [(_SUIABlurrableView *)self layer];
+    [layer setCornerRadius:v6];
 
-    v8 = [(_SUIABlurrableView *)self layer];
-    [v8 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [(_SUIABlurrableView *)self layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
   }
 
   else
   {
-    v8 = [(_SUIABlurrableView *)self layer];
-    [v8 setCornerRadius:0.0];
+    layer2 = [(_SUIABlurrableView *)self layer];
+    [layer2 setCornerRadius:0.0];
   }
 }
 
@@ -76,28 +76,28 @@
   v3 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
   [v3 setValue:@"low" forKey:*MEMORY[0x277CDA4E8]];
   [v3 setValue:@"low" forKey:*MEMORY[0x277CDA4B8]];
-  v4 = [(_SUIABlurrableView *)self layer];
+  layer = [(_SUIABlurrableView *)self layer];
   v6[0] = v3;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [v4 setFilters:v5];
+  [layer setFilters:v5];
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   blurRadius = self->_blurRadius;
-  self->_blurRadius = a3;
-  if (blurRadius != a3)
+  self->_blurRadius = radius;
+  if (blurRadius != radius)
   {
-    v6 = [(_SUIABlurrableView *)self layer];
+    layer = [(_SUIABlurrableView *)self layer];
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_blurRadius];
-    [v6 setValue:v5 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [layer setValue:v5 forKeyPath:@"filters.gaussianBlur.inputRadius"];
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -106,7 +106,7 @@
   {
     v7.receiver = self;
     v7.super_class = _SUIABlurrableView;
-    v5 = [(_SUIABlurrableView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(_SUIABlurrableView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

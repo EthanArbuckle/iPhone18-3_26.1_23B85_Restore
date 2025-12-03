@@ -1,19 +1,19 @@
 @interface _UIMorphingPlatterAnimatableFloat
-- (void)setValue:(double)a3;
+- (void)setValue:(double)value;
 @end
 
 @implementation _UIMorphingPlatterAnimatableFloat
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
   [(UIViewFloatAnimatableProperty *)self value];
-  if (vabdd_f64(a3, v5) > 2.22044605e-16)
+  if (vabdd_f64(value, v5) > 2.22044605e-16)
   {
     [(UIViewFloatAnimatableProperty *)self value];
-    self->_lastModelValueChangeWasPositive = v6 < a3;
+    self->_lastModelValueChangeWasPositive = v6 < value;
     v7.receiver = self;
     v7.super_class = _UIMorphingPlatterAnimatableFloat;
-    [(UIViewFloatAnimatableProperty *)&v7 setValue:a3];
+    [(UIViewFloatAnimatableProperty *)&v7 setValue:value];
   }
 }
 

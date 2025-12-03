@@ -19,7 +19,7 @@
 
 - (id)ams_sanitizedForSecureCoding
 {
-  v1 = [a1 ams_filterUsingTest:&__block_literal_global_3_6];
+  v1 = [self ams_filterUsingTest:&__block_literal_global_3_6];
   v2 = [v1 ams_mapWithTransform:&__block_literal_global_5_0];
 
   return v2;
@@ -27,8 +27,8 @@
 
 - (id)hashedDescription
 {
-  v2 = [a1 ams_mapWithTransform:&__block_literal_global_158];
-  v3 = [a1 ams_generateDescriptionWithSubObjects:v2];
+  v2 = [self ams_mapWithTransform:&__block_literal_global_158];
+  v3 = [self ams_generateDescriptionWithSubObjects:v2];
 
   return v3;
 }
@@ -45,7 +45,7 @@
   v15 = v4;
   v6 = v4;
   v7 = v5;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v7 copy];
 
   return v8;
@@ -54,7 +54,7 @@
 - (id)ams_compactMapValues:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __57__NSDictionary_AppleMediaServices__ams_compactMapValues___block_invoke;
@@ -63,7 +63,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -73,16 +73,16 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [a1 allKeys];
-  if ([v6 count])
+  allKeys = [self allKeys];
+  if ([allKeys count])
   {
     v7 = 0;
     do
     {
-      v8 = [v6 objectAtIndexedSubscript:v7];
-      v9 = [a1 objectForKeyedSubscript:v8];
+      v8 = [allKeys objectAtIndexedSubscript:v7];
+      v9 = [self objectForKeyedSubscript:v8];
       [v5 appendFormat:@"%@:%@", v8, v9];
-      if (v7 != [v6 count] - 1)
+      if (v7 != [allKeys count] - 1)
       {
         [v5 appendString:v4];
       }
@@ -90,7 +90,7 @@
       ++v7;
     }
 
-    while (v7 < [v6 count]);
+    while (v7 < [allKeys count]);
   }
 
   v10 = [v5 copy];
@@ -101,7 +101,7 @@
 - (id)ams_dictionaryByAddingEntriesFromDictionary:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 addEntriesFromDictionary:v4];
 
   v6 = [v5 copy];
@@ -121,7 +121,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -129,10 +129,10 @@
 
 - (id)ams_firstKeyPassingTest:()AppleMediaServices
 {
-  v1 = [a1 ams_firstKeyObjectPassingTest:?];
-  v2 = [v1 first];
+  v1 = [self ams_firstKeyObjectPassingTest:?];
+  first = [v1 first];
 
-  return v2;
+  return first;
 }
 
 - (id)ams_firstKeyObjectPassingTest:()AppleMediaServices
@@ -151,7 +151,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateKeysAndObjectsUsingBlock:v8];
+  [self enumerateKeysAndObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -161,16 +161,16 @@
 
 - (id)ams_firstObjectPassingTest:()AppleMediaServices
 {
-  v1 = [a1 ams_firstKeyObjectPassingTest:?];
-  v2 = [v1 second];
+  v1 = [self ams_firstKeyObjectPassingTest:?];
+  second = [v1 second];
 
-  return v2;
+  return second;
 }
 
 - (id)ams_mapWithTransform:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __57__NSDictionary_AppleMediaServices__ams_mapWithTransform___block_invoke;
@@ -179,7 +179,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -193,8 +193,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [self allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -205,17 +205,17 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         if (![v4 caseInsensitiveCompare:*(*(&v12 + 1) + 8 * i)])
         {
-          v10 = [a1 objectForKeyedSubscript:v4];
+          v10 = [self objectForKeyedSubscript:v4];
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -234,7 +234,7 @@ LABEL_11:
 - (id)ams_objectForKey:()AppleMediaServices defaultValue:
 {
   v6 = a4;
-  v7 = [a1 objectForKeyedSubscript:a3];
+  v7 = [self objectForKeyedSubscript:a3];
   if (!v7)
   {
     v7 = v6;
@@ -246,7 +246,7 @@ LABEL_11:
 - (id)ams_dictionaryRemovingKeys:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObjectsForKeys:v4];
 
   v6 = [v5 copy];

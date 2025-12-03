@@ -1,6 +1,6 @@
 @interface DBDashboardEntity
 - (DBDashboardWorkspaceStateChangeItem)_sr_associatedChangeItem;
-- (id)_initWithIdentifier:(id)a3;
+- (id)_initWithIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -10,9 +10,9 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CF0C00]) initWithObject:self];
   [(DBDashboardEntity *)self _buildDescriptionWithBuilder:v3];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (DBDashboardWorkspaceStateChangeItem)_sr_associatedChangeItem
@@ -34,16 +34,16 @@
   return v3;
 }
 
-- (id)_initWithIdentifier:(id)a3
+- (id)_initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DBDashboardEntity;
   v6 = [(DBDashboardEntity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;

@@ -1,15 +1,15 @@
 @interface _MFDALibraryConsumerFactory
-- (id)dataConsumerForPart:(id)a3;
+- (id)dataConsumerForPart:(id)part;
 @end
 
 @implementation _MFDALibraryConsumerFactory
 
-- (id)dataConsumerForPart:(id)a3
+- (id)dataConsumerForPart:(id)part
 {
-  v4 = a3;
-  v5 = [(_MFDALibraryConsumerFactory *)self library];
-  v6 = [(_MFDALibraryConsumerFactory *)self message];
-  v7 = [v5 dataConsumerForMessage:v6 part:v4];
+  partCopy = part;
+  library = [(_MFDALibraryConsumerFactory *)self library];
+  message = [(_MFDALibraryConsumerFactory *)self message];
+  v7 = [library dataConsumerForMessage:message part:partCopy];
 
   return v7;
 }

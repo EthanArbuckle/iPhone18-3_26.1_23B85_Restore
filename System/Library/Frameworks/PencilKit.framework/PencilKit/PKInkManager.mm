@@ -2,10 +2,10 @@
 + (id)defaultInkManager;
 + (void)clearCachedManager;
 - (PKInkManager)init;
-- (id)inkBehaviorForIdentifier:(id)a3 variant:(id)a4;
-- (id)inkBehaviorForIdentifier:(id)a3 version:(unint64_t)a4 variant:(id)a5;
-- (id)supportedInkIdentifierFromIdentifier:(id)a3;
-- (void)addInkBehavior:(id)a3 forIdentifier:(id)a4;
+- (id)inkBehaviorForIdentifier:(id)identifier variant:(id)variant;
+- (id)inkBehaviorForIdentifier:(id)identifier version:(unint64_t)version variant:(id)variant;
+- (id)supportedInkIdentifierFromIdentifier:(id)identifier;
+- (void)addInkBehavior:(id)behavior forIdentifier:(id)identifier;
 @end
 
 @implementation PKInkManager
@@ -24,13 +24,13 @@ void __33__PKInkManager_defaultInkManager__block_invoke()
   v2 = [(PKInkManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     inks = v2->_inks;
-    v2->_inks = v3;
+    v2->_inks = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     supportedInkIdentifiers = v2->_supportedInkIdentifiers;
-    v2->_supportedInkIdentifiers = v5;
+    v2->_supportedInkIdentifiers = dictionary2;
   }
 
   return v2;
@@ -55,71 +55,71 @@ void __33__PKInkManager_defaultInkManager__block_invoke()
   _MergedGlobals_149 = v2;
 }
 
-- (id)supportedInkIdentifierFromIdentifier:(id)a3
+- (id)supportedInkIdentifierFromIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_supportedInkIdentifiers objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_supportedInkIdentifiers objectForKeyedSubscript:identifierCopy];
   if (!v6)
   {
-    v7 = [PKInkParser hasDefinitionForIdentifier:v4];
+    v7 = [PKInkParser hasDefinitionForIdentifier:identifierCopy];
     v8 = @"com.apple.ink.pen";
     if (v7)
     {
-      v8 = v4;
+      v8 = identifierCopy;
     }
 
     v6 = v8;
-    [(NSMutableDictionary *)v5->_supportedInkIdentifiers setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)selfCopy->_supportedInkIdentifiers setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)inkBehaviorForIdentifier:(id)a3 variant:(id)a4
+- (id)inkBehaviorForIdentifier:(id)identifier variant:(id)variant
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKInkManager *)self inkBehaviorForIdentifier:v6 version:[PKInk variant:"currentInkVersionForInkIdentifier:" currentInkVersionForInkIdentifier:v6], v7];
+  identifierCopy = identifier;
+  variantCopy = variant;
+  variantCopy = [(PKInkManager *)self inkBehaviorForIdentifier:identifierCopy version:[PKInk variant:"currentInkVersionForInkIdentifier:" currentInkVersionForInkIdentifier:identifierCopy], variantCopy];
 
-  return v8;
+  return variantCopy;
 }
 
-- (id)inkBehaviorForIdentifier:(id)a3 version:(unint64_t)a4 variant:(id)a5
+- (id)inkBehaviorForIdentifier:(id)identifier version:(unint64_t)version variant:(id)variant
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (!v9)
+  identifierCopy = identifier;
+  variantCopy = variant;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!variantCopy)
   {
-    v9 = @"default";
+    variantCopy = @"default";
   }
 
-  v11 = [[PKInkKey alloc] initWithIdentifier:v8 version:a4 variant:v9];
-  v12 = [(NSMutableDictionary *)v10->_inks objectForKeyedSubscript:v11];
+  v11 = [[PKInkKey alloc] initWithIdentifier:identifierCopy version:version variant:variantCopy];
+  v12 = [(NSMutableDictionary *)selfCopy->_inks objectForKeyedSubscript:v11];
 
   if (!v12)
   {
-    v13 = [PKInkParser inkBehaviorsWithIdentifer:v8 version:a4];
-    [(NSMutableDictionary *)v10->_inks addEntriesFromDictionary:v13];
-    if (!a4 || v13)
+    v13 = [PKInkParser inkBehaviorsWithIdentifer:identifierCopy version:version];
+    [(NSMutableDictionary *)selfCopy->_inks addEntriesFromDictionary:v13];
+    if (!version || v13)
     {
       v15 = v11;
     }
 
     else
     {
-      v14 = a4 - 1;
+      v14 = version - 1;
       do
       {
-        v13 = [PKInkParser inkBehaviorsWithIdentifer:v8 version:v14];
-        [(NSMutableDictionary *)v10->_inks addEntriesFromDictionary:v13];
-        v15 = [[PKInkKey alloc] initWithIdentifier:v8 version:v14 variant:v9];
+        v13 = [PKInkParser inkBehaviorsWithIdentifer:identifierCopy version:v14];
+        [(NSMutableDictionary *)selfCopy->_inks addEntriesFromDictionary:v13];
+        v15 = [[PKInkKey alloc] initWithIdentifier:identifierCopy version:v14 variant:variantCopy];
 
         if (v14-- == 0)
         {
@@ -130,17 +130,17 @@ void __33__PKInkManager_defaultInkManager__block_invoke()
       }
 
       while (!v13);
-      a4 = v14 + 1;
+      version = v14 + 1;
     }
 
     v11 = v15;
   }
 
-  v17 = [(NSMutableDictionary *)v10->_inks objectForKeyedSubscript:v11];
+  v17 = [(NSMutableDictionary *)selfCopy->_inks objectForKeyedSubscript:v11];
 
   if (v17)
   {
-    v18 = [(NSMutableDictionary *)v10->_inks objectForKeyedSubscript:v11];
+    v18 = [(NSMutableDictionary *)selfCopy->_inks objectForKeyedSubscript:v11];
   }
 
   else
@@ -149,32 +149,32 @@ void __33__PKInkManager_defaultInkManager__block_invoke()
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v22 = 138412546;
-      v23 = v9;
+      v23 = variantCopy;
       v24 = 2112;
-      v25 = v8;
+      v25 = identifierCopy;
       _os_log_error_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_ERROR, "Could not find variant %@ for ink identifier %@, falling back to default", &v22, 0x16u);
     }
 
-    v20 = [[PKInkKey alloc] initWithIdentifier:v8 version:a4 variant:@"default"];
-    v18 = [(NSMutableDictionary *)v10->_inks objectForKeyedSubscript:v20];
+    v20 = [[PKInkKey alloc] initWithIdentifier:identifierCopy version:version variant:@"default"];
+    v18 = [(NSMutableDictionary *)selfCopy->_inks objectForKeyedSubscript:v20];
     v11 = v20;
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
 
-- (void)addInkBehavior:(id)a3 forIdentifier:(id)a4
+- (void)addInkBehavior:(id)behavior forIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [[PKInkKey alloc] initWithIdentifier:v6 version:3 variant:@"default"];
-  [(NSMutableDictionary *)v7->_inks setObject:v9 forKeyedSubscript:v8];
+  behaviorCopy = behavior;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [[PKInkKey alloc] initWithIdentifier:identifierCopy version:3 variant:@"default"];
+  [(NSMutableDictionary *)selfCopy->_inks setObject:behaviorCopy forKeyedSubscript:v8];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 @end

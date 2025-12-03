@@ -9,11 +9,11 @@
 
 - (BOOL)fp_markResolvedWithError:()FPVersions
 {
-  v5 = [a1 storage];
-  v6 = [v5 documentURL];
-  FPPrecheckTCCReadAccess(v6);
+  storage = [self storage];
+  documentURL = [storage documentURL];
+  FPPrecheckTCCReadAccess(documentURL);
 
-  [a1 markSavedConflictAsResolved:1 error:a3];
+  [self markSavedConflictAsResolved:1 error:a3];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -21,14 +21,14 @@
   v17 = __Block_byref_object_dispose__20;
   v18 = 0;
   v7 = +[FPDaemonConnection synchronousSharedConnectionProxy];
-  v8 = [a1 storage];
-  v9 = [v8 documentURL];
+  storage2 = [self storage];
+  documentURL2 = [storage2 documentURL];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__GSAddition_FPVersions__fp_markResolvedWithError___block_invoke;
   v12[3] = &unk_1E793B278;
   v12[4] = &v13;
-  [v7 resolveConflictAtURL:v9 completionHandler:v12];
+  [v7 resolveConflictAtURL:documentURL2 completionHandler:v12];
 
   if (a3)
   {
@@ -43,16 +43,16 @@
 
 - (id)fp_lastEditorDeviceName
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:fpVersionLastEditorDeviceNameKey];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:fpVersionLastEditorDeviceNameKey];
 
   return v2;
 }
 
 - (id)fp_lastEditorNameComponents
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:fpVersionLastEditorNameComponentsKey];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:fpVersionLastEditorNameComponentsKey];
 
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -73,8 +73,8 @@
 
 - (id)fp_etag
 {
-  v1 = [a1 name];
-  v2 = [FPFileVersion parseEtag:v1];
+  name = [self name];
+  v2 = [FPFileVersion parseEtag:name];
 
   return v2;
 }

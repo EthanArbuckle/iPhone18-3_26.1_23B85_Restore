@@ -1,38 +1,38 @@
 @interface RFAspectRatio
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFAspectRatio)initWithCoder:(id)a3;
-- (RFAspectRatio)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFAspectRatio)initWithCoder:(id)coder;
+- (RFAspectRatio)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFAspectRatio
 
-- (RFAspectRatio)initWithProtobuf:(id)a3
+- (RFAspectRatio)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = RFAspectRatio;
   v5 = [(RFAspectRatio *)&v14 init];
   if (v5)
   {
-    [v4 width];
+    [protobufCopy width];
     if (v6 != 0.0)
     {
       v7 = MEMORY[0x1E696AD98];
-      [v4 width];
+      [protobufCopy width];
       v8 = [v7 numberWithFloat:?];
       [(RFAspectRatio *)v5 setWidth:v8];
     }
 
-    [v4 height];
+    [protobufCopy height];
     if (v9 != 0.0)
     {
       v10 = MEMORY[0x1E696AD98];
-      [v4 height];
+      [protobufCopy height];
       v11 = [v10 numberWithFloat:?];
       [(RFAspectRatio *)v5 setHeight:v11];
     }
@@ -45,30 +45,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RFAspectRatio *)self width];
-  v4 = [v3 hash];
-  v5 = [(RFAspectRatio *)self height];
-  v6 = [v5 hash];
+  width = [(RFAspectRatio *)self width];
+  v4 = [width hash];
+  height = [(RFAspectRatio *)self height];
+  v6 = [height hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFAspectRatio *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFAspectRatio *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFAspectRatio *)self width];
-      v8 = [(RFAspectRatio *)v6 width];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      width = [(RFAspectRatio *)self width];
+      width2 = [(RFAspectRatio *)v6 width];
+      if ((width != 0) == (width2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -76,12 +76,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(RFAspectRatio *)self width];
-      if (v9)
+      width3 = [(RFAspectRatio *)self width];
+      if (width3)
       {
-        v3 = [(RFAspectRatio *)self width];
-        v10 = [(RFAspectRatio *)v6 width];
-        if (![v3 isEqual:v10])
+        width4 = [(RFAspectRatio *)self width];
+        width5 = [(RFAspectRatio *)v6 width];
+        if (![width4 isEqual:width5])
         {
           v11 = 0;
 LABEL_17:
@@ -90,13 +90,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = width5;
       }
 
-      v12 = [(RFAspectRatio *)self height];
-      v13 = [(RFAspectRatio *)v6 height];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      height = [(RFAspectRatio *)self height];
+      height2 = [(RFAspectRatio *)v6 height];
+      v14 = height2;
+      if ((height != 0) == (height2 == 0))
       {
 
         v11 = 0;
@@ -104,16 +104,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(RFAspectRatio *)self height];
-        if (v15)
+        height3 = [(RFAspectRatio *)self height];
+        if (height3)
         {
-          v16 = v15;
-          v19 = [(RFAspectRatio *)self height];
+          v16 = height3;
+          height4 = [(RFAspectRatio *)self height];
           [(RFAspectRatio *)v6 height];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = width4;
+          v11 = [height4 isEqual:v17];
 
-          v3 = v20;
+          width4 = v20;
         }
 
         else
@@ -123,8 +123,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      width5 = v21;
+      if (!width3)
       {
         goto LABEL_18;
       }
@@ -140,15 +140,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFAspectRatio *)self width];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  width = [(RFAspectRatio *)self width];
+  v6 = [width copy];
   [v4 setWidth:v6];
 
-  v7 = [(RFAspectRatio *)self height];
-  v8 = [v7 copy];
+  height = [(RFAspectRatio *)self height];
+  v8 = [height copy];
   [v4 setHeight:v8];
 
   return v4;
@@ -157,31 +157,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFAspectRatio alloc] initWithFacade:self];
-  v3 = [(_SFPBRFAspectRatio *)v2 jsonData];
+  jsonData = [(_SFPBRFAspectRatio *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFAspectRatio alloc] initWithFacade:self];
-  v3 = [(_SFPBRFAspectRatio *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFAspectRatio *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFAspectRatio alloc] initWithFacade:self];
-  v5 = [(_SFPBRFAspectRatio *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFAspectRatio *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFAspectRatio)initWithCoder:(id)a3
+- (RFAspectRatio)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFAspectRatio alloc] initWithData:v5];
   v7 = [(RFAspectRatio *)self initWithProtobuf:v6];

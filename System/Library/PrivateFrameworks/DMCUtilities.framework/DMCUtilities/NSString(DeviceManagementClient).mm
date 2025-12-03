@@ -27,12 +27,12 @@
 
   else
   {
-    v8 = [v4 firstMatchInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}];
+    v8 = [v4 firstMatchInString:self options:0 range:{0, objc_msgSend(self, "length")}];
     v9 = v8;
     if (v8)
     {
       v10 = [v8 rangeAtIndex:1];
-      v7 = [a1 substringWithRange:{v10, v11}];
+      v7 = [self substringWithRange:{v10, v11}];
     }
 
     else

@@ -18,7 +18,7 @@
 
 - (void)preferredContentSizeCategoryTraitChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_10045657C();
 }
 

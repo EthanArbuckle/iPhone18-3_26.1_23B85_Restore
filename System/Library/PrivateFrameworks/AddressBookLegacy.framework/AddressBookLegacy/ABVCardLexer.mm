@@ -1,5 +1,5 @@
 @interface ABVCardLexer
-- (ABVCardLexer)initWithData:(id)a3 watchdogTimer:(id)a4;
+- (ABVCardLexer)initWithData:(id)data watchdogTimer:(id)timer;
 - (BOOL)_advancePastLineFoldingSequenceIfNeeded;
 - (BOOL)advancePastEOL;
 - (BOOL)advancePastEOLSingle;
@@ -7,43 +7,43 @@
 - (BOOL)advanceToEOL;
 - (BOOL)advanceToEOLSingle;
 - (BOOL)advanceToEOLUnicode;
-- (BOOL)advanceToToken:(int)a3 throughTypes:(int)a4;
-- (BOOL)advancedPastToken:(int)a3;
-- (id)nextArraySeperatedByToken:(int)a3 stoppingAt:(int)a4 inEncoding:(unint64_t)a5;
+- (BOOL)advanceToToken:(int)token throughTypes:(int)types;
+- (BOOL)advancedPastToken:(int)token;
+- (id)nextArraySeperatedByToken:(int)token stoppingAt:(int)at inEncoding:(unint64_t)encoding;
 - (id)nextBase64Data;
-- (id)nextBase64Line:(BOOL *)a3;
+- (id)nextBase64Line:(BOOL *)line;
 - (id)nextEscapedCharacter;
 - (id)nextQuotedPrintableData;
-- (id)nextSingleByteBase64Line:(BOOL *)a3;
-- (id)nextSingleByteStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6;
-- (id)nextStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6;
-- (id)nextUnicodeBase64Line:(BOOL *)a3;
-- (id)nextUnicodeStringStopTokens:(int)a3 quotedPrintable:(BOOL)a4 trim:(BOOL)a5;
-- (id)tokenName:(int)a3;
-- (id)tokenSetForLength:(int)a3;
+- (id)nextSingleByteBase64Line:(BOOL *)line;
+- (id)nextSingleByteStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim;
+- (id)nextStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim;
+- (id)nextUnicodeBase64Line:(BOOL *)line;
+- (id)nextUnicodeStringStopTokens:(int)tokens quotedPrintable:(BOOL)printable trim:(BOOL)trim;
+- (id)tokenName:(int)name;
+- (id)tokenSetForLength:(int)length;
 - (int)advanceToSingleByteString;
 - (int)advanceToString;
 - (int)advanceToUnicodeString;
-- (int)nextTokenPeak:(BOOL)a3;
-- (int)nextTokenPeakSingle:(BOOL)a3 length:(int)a4;
-- (int)nextTokenPeakUnicode:(BOOL)a3 length:(int)a4;
+- (int)nextTokenPeak:(BOOL)peak;
+- (int)nextTokenPeakSingle:(BOOL)single length:(int)length;
+- (int)nextTokenPeakUnicode:(BOOL)unicode length:(int)length;
 - (int)tokenAtCursor;
-- (void)_applyNextStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6 intoString:(id)a7;
+- (void)_applyNextStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim intoString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation ABVCardLexer
 
-- (id)tokenName:(int)a3
+- (id)tokenName:(int)name
 {
-  if (a3 <= 32769)
+  if (name <= 32769)
   {
-    if (!a3)
+    if (!name)
     {
       return @"ABNoToken";
     }
 
-    if (a3 == 32769)
+    if (name == 32769)
     {
       return @"ABLF";
     }
@@ -51,7 +51,7 @@
 
   else
   {
-    switch(a3)
+    switch(name)
     {
       case 32770:
         return @"ABCR";
@@ -92,7 +92,7 @@ LABEL_18:
   while (1)
   {
     v13 = [v9 objectAtIndex:v12];
-    if (*(v13 + 8) == a3)
+    if (*(v13 + 8) == name)
     {
       return *v13;
     }
@@ -104,17 +104,17 @@ LABEL_18:
   }
 }
 
-- (ABVCardLexer)initWithData:(id)a3 watchdogTimer:(id)a4
+- (ABVCardLexer)initWithData:(id)data watchdogTimer:(id)timer
 {
   v15.receiver = self;
   v15.super_class = ABVCardLexer;
   v6 = [(ABVCardLexer *)&v15 init];
-  v7 = [a3 mutableCopy];
+  v7 = [data mutableCopy];
   v6->_data = v7;
   v6->_length = [(NSMutableData *)v7 length];
   v6->_bytes = [(NSMutableData *)v6->_data mutableBytes];
   v6->_unicode = [(NSMutableData *)v6->_data abIsUTF16EntourageVCard];
-  v6->_timer = a4;
+  v6->_timer = timer;
   length = v6->_length;
   if (length >= 0xB)
   {
@@ -146,9 +146,9 @@ LABEL_18:
       goto LABEL_12;
     }
 
-    v12 = [(NSMutableData *)v6->_data abIsUTF16EntourageVCard];
-    v6->_unicode = v12;
-    if (!v12)
+    abIsUTF16EntourageVCard = [(NSMutableData *)v6->_data abIsUTF16EntourageVCard];
+    v6->_unicode = abIsUTF16EntourageVCard;
+    if (!abIsUTF16EntourageVCard)
     {
       v13 = ABVCardSingleByteTokens;
       if (!ABVCardSingleByteTokens)
@@ -183,10 +183,10 @@ LABEL_16:
   [(ABVCardLexer *)&v3 dealloc];
 }
 
-- (id)tokenSetForLength:(int)a3
+- (id)tokenSetForLength:(int)length
 {
-  v3 = a3 - 1;
-  if (a3 - 1) <= 6 && ((0x55u >> v3))
+  v3 = length - 1;
+  if (length - 1) <= 6 && ((0x55u >> v3))
   {
     return [(NSArray *)self->_activeTokenSets objectAtIndex:qword_1B7F770C0[v3]];
   }
@@ -197,7 +197,7 @@ LABEL_16:
   }
 }
 
-- (int)nextTokenPeakSingle:(BOOL)a3 length:(int)a4
+- (int)nextTokenPeakSingle:(BOOL)single length:(int)length
 {
   v35 = *MEMORY[0x1E69E9840];
   cursor = self->_cursor;
@@ -226,21 +226,21 @@ LABEL_16:
     goto LABEL_40;
   }
 
-  if (a4 <= 0)
+  if (length <= 0)
   {
-    v11 = 7;
+    lengthCopy = 7;
   }
 
   else
   {
-    v11 = a4;
+    lengthCopy = length;
   }
 
   v12 = v8 == 0;
   if (v8)
   {
 LABEL_40:
-    if (a3)
+    if (single)
     {
       goto LABEL_42;
     }
@@ -248,7 +248,7 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v33 = a3;
+  singleCopy = single;
   v13 = 1;
   do
   {
@@ -313,20 +313,20 @@ LABEL_28:
       break;
     }
 
-    v27 = v13++ >= v11;
+    v27 = v13++ >= lengthCopy;
     v28 = !v27 && v8 == 0;
     v12 = v28;
   }
 
   while (v28);
-  if (!v33)
+  if (!singleCopy)
   {
 LABEL_41:
     self->_cursor = peakedPoint;
   }
 
 LABEL_42:
-  if (a4 | v8)
+  if (length | v8)
   {
     result = v8;
   }
@@ -336,7 +336,7 @@ LABEL_42:
     result = 65537;
   }
 
-  if ((a4 | v8) == 0 && !v12)
+  if ((length | v8) == 0 && !v12)
   {
     ABDiagnosticsEnabled();
     _ABLog2(3, "[ABVCardLexer nextTokenPeakSingle:length:]", 356, 0, @"vCard Syntax Error, character: %d : %c", v30, v31, v32, self->_cursor);
@@ -347,20 +347,20 @@ LABEL_42:
   return result;
 }
 
-- (int)nextTokenPeakUnicode:(BOOL)a3 length:(int)a4
+- (int)nextTokenPeakUnicode:(BOOL)unicode length:(int)length
 {
-  v4 = a4;
+  lengthCopy = length;
   v41 = *MEMORY[0x1E69E9840];
   cursor = self->_cursor;
   self->_peakedPoint = cursor;
-  if (a4 <= 0)
+  if (length <= 0)
   {
-    v8 = 7;
+    lengthCopy2 = 7;
   }
 
   else
   {
-    v8 = a4;
+    lengthCopy2 = length;
   }
 
   if (self->_length <= cursor)
@@ -384,7 +384,7 @@ LABEL_42:
   if (self->_length <= peakedPoint)
   {
     v12 = 1;
-    if (a3)
+    if (unicode)
     {
       goto LABEL_16;
     }
@@ -395,7 +395,7 @@ LABEL_42:
   v12 = v9 == 0;
   if (v9)
   {
-    if (a3)
+    if (unicode)
     {
       goto LABEL_16;
     }
@@ -405,8 +405,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v38 = a3;
-  v39 = v4;
+  unicodeCopy = unicode;
+  v39 = lengthCopy;
   v17 = 1;
   do
   {
@@ -478,20 +478,20 @@ LABEL_38:
       break;
     }
 
-    v36 = v17++ >= v8;
+    v36 = v17++ >= lengthCopy2;
     v37 = !v36 && v9 == 0;
     v12 = v37;
   }
 
   while (v37);
-  v4 = v39;
-  if (!v38)
+  lengthCopy = v39;
+  if (!unicodeCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_16:
-  if (v4 | v9)
+  if (lengthCopy | v9)
   {
     result = v9;
   }
@@ -501,7 +501,7 @@ LABEL_16:
     result = 65537;
   }
 
-  if ((v4 | v9) == 0 && !v12)
+  if ((lengthCopy | v9) == 0 && !v12)
   {
     ABDiagnosticsEnabled();
     _ABLog2(3, "[ABVCardLexer nextTokenPeakUnicode:length:]", 406, 0, @"vCard Syntax Error, character: %d : %c", v14, v15, v16, self->_cursor);
@@ -512,16 +512,16 @@ LABEL_16:
   return result;
 }
 
-- (int)nextTokenPeak:(BOOL)a3
+- (int)nextTokenPeak:(BOOL)peak
 {
   if (self->_unicode)
   {
-    return [(ABVCardLexer *)self nextTokenPeakUnicode:a3 length:0];
+    return [(ABVCardLexer *)self nextTokenPeakUnicode:peak length:0];
   }
 
   else
   {
-    return [(ABVCardLexer *)self nextTokenPeakSingle:a3 length:0];
+    return [(ABVCardLexer *)self nextTokenPeakSingle:peak length:0];
   }
 }
 
@@ -663,13 +663,13 @@ LABEL_16:
   return [v8 dataWithBytes:v9 length:v10];
 }
 
-- (BOOL)advancedPastToken:(int)a3
+- (BOOL)advancedPastToken:(int)token
 {
   cursor = self->_cursor;
   LODWORD(v4) = self->_cursor;
   if (self->_length > cursor)
   {
-    while (([(ABVCardLexer *)self tokenAtCursor]& a3) != 0)
+    while (([(ABVCardLexer *)self tokenAtCursor]& token) != 0)
     {
       if (self->_unicode)
       {
@@ -695,10 +695,10 @@ LABEL_16:
   return v4 > cursor;
 }
 
-- (id)nextSingleByteStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6
+- (id)nextSingleByteStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim
 {
-  v6 = a6;
-  v40 = a4;
+  trimCopy = trim;
+  printableCopy = printable;
   cursor = self->_cursor;
   v9 = [(ABVCardLexer *)self tokenSetForLength:1];
   v10 = objc_alloc_init(MEMORY[0x1E695DF88]);
@@ -724,7 +724,7 @@ LABEL_36:
     {
 LABEL_15:
       v26 = 0;
-      if (!v6)
+      if (!trimCopy)
       {
         goto LABEL_21;
       }
@@ -775,7 +775,7 @@ LABEL_15:
 
 LABEL_17:
       v26 = *(ValueAtIndex + 2);
-      if (!v6)
+      if (!trimCopy)
       {
         goto LABEL_21;
       }
@@ -786,21 +786,21 @@ LABEL_17:
       break;
     }
 
-    v14 &= (v26 & a5) != 0;
-    if ((v26 & a5) == 0)
+    v14 &= (v26 & tokens) != 0;
+    if ((v26 & tokens) == 0)
     {
       v13 = 0;
     }
 
 LABEL_21:
-    if (v40 && v26 == 1025)
+    if (printableCopy && v26 == 1025)
     {
       v27 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&self->_bytes[cursor] length:v12 freeWhenDone:0];
       [v10 appendData:v27];
 
       ++self->_cursor;
-      v28 = [(ABVCardLexer *)self nextQuotedPrintableData];
-      if (v28)
+      nextQuotedPrintableData = [(ABVCardLexer *)self nextQuotedPrintableData];
+      if (nextQuotedPrintableData)
       {
         goto LABEL_24;
       }
@@ -817,11 +817,11 @@ LABEL_21:
       [v10 appendData:v29];
 
       ++self->_cursor;
-      v28 = [(ABVCardLexer *)self nextEscapedCharacter];
-      if (v28)
+      nextQuotedPrintableData = [(ABVCardLexer *)self nextEscapedCharacter];
+      if (nextQuotedPrintableData)
       {
 LABEL_24:
-        [v10 appendData:v28];
+        [v10 appendData:nextQuotedPrintableData];
       }
     }
 
@@ -850,7 +850,7 @@ LABEL_35:
   }
 
 LABEL_33:
-  if ((v26 & a5) == 0)
+  if ((v26 & tokens) == 0)
   {
     ++v12;
     v11 = self->_cursor + 1;
@@ -861,14 +861,14 @@ LABEL_33:
   v33 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&self->_bytes[cursor] length:v12 freeWhenDone:0];
   [v10 appendData:v33];
 
-  if (v6 && v38 | v13)
+  if (trimCopy && v38 | v13)
   {
     v34 = [v10 subdataWithRange:{v38, objc_msgSend(v10, "length") - (v13 + v38)}];
 
     v10 = v34;
   }
 
-  if (a3 == 4000100)
+  if (encoding == 4000100)
   {
     v35 = v10;
 
@@ -877,19 +877,19 @@ LABEL_33:
 
   else
   {
-    v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v10 encoding:a3];
+    v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v10 encoding:encoding];
 
     return v36;
   }
 }
 
-- (id)nextUnicodeStringStopTokens:(int)a3 quotedPrintable:(BOOL)a4 trim:(BOOL)a5
+- (id)nextUnicodeStringStopTokens:(int)tokens quotedPrintable:(BOOL)printable trim:(BOOL)trim
 {
-  v5 = a5;
-  v39 = a4;
+  trimCopy = trim;
+  printableCopy = printable;
   cursor = self->_cursor;
   v8 = [(ABVCardLexer *)self tokenSetForLength:1];
-  v9 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v41 = 0;
   v10 = self->_cursor;
   if (self->_length <= v10)
@@ -899,7 +899,7 @@ LABEL_36:
     return 0;
   }
 
-  v11 = v9;
+  v11 = data;
   v12 = 0;
   v13 = 0;
   v37 = 0;
@@ -916,7 +916,7 @@ LABEL_36:
     {
 LABEL_15:
       v28 = 0;
-      if (!v5)
+      if (!trimCopy)
       {
         goto LABEL_21;
       }
@@ -967,7 +967,7 @@ LABEL_15:
 
 LABEL_17:
       v28 = *(ValueAtIndex + 2);
-      if (!v5)
+      if (!trimCopy)
       {
         goto LABEL_21;
       }
@@ -978,21 +978,21 @@ LABEL_17:
       break;
     }
 
-    v14 &= (v28 & a3) != 0;
-    if ((v28 & a3) == 0)
+    v14 &= (v28 & tokens) != 0;
+    if ((v28 & tokens) == 0)
     {
       v13 = 0;
     }
 
 LABEL_21:
-    if (v39 && v28 == 1025)
+    if (printableCopy && v28 == 1025)
     {
       v29 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&self->_bytes[cursor] length:v12 freeWhenDone:0];
       [v11 appendData:v29];
 
       ++self->_cursor;
-      v30 = [(ABVCardLexer *)self nextQuotedPrintableData];
-      if (v30)
+      nextQuotedPrintableData = [(ABVCardLexer *)self nextQuotedPrintableData];
+      if (nextQuotedPrintableData)
       {
         goto LABEL_24;
       }
@@ -1009,11 +1009,11 @@ LABEL_21:
       [v11 appendData:v31];
 
       ++self->_cursor;
-      v30 = [(ABVCardLexer *)self nextEscapedCharacter];
-      if (v30)
+      nextQuotedPrintableData = [(ABVCardLexer *)self nextEscapedCharacter];
+      if (nextQuotedPrintableData)
       {
 LABEL_24:
-        [v11 appendData:v30];
+        [v11 appendData:nextQuotedPrintableData];
       }
     }
 
@@ -1042,7 +1042,7 @@ LABEL_35:
   }
 
 LABEL_33:
-  if ((v28 & a3) == 0)
+  if ((v28 & tokens) == 0)
   {
     v12 += 2;
     v10 = self->_cursor + 1;
@@ -1053,7 +1053,7 @@ LABEL_33:
   v35 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&self->_bytes[cursor] length:v12 freeWhenDone:0];
   [v11 appendData:v35];
 
-  if (v5 && v37 | v13)
+  if (trimCopy && v37 | v13)
   {
     v11 = [v11 subdataWithRange:{v37, objc_msgSend(v11, "length") - (v13 + v37)}];
   }
@@ -1104,14 +1104,14 @@ LABEL_10:
   return 1;
 }
 
-- (void)_applyNextStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6 intoString:(id)a7
+- (void)_applyNextStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim intoString:(id)string
 {
-  v8 = a6;
-  v9 = *&a5;
-  v10 = a4;
+  trimCopy = trim;
+  v9 = *&tokens;
+  printableCopy = printable;
   if (!self->_unicode)
   {
-    v13 = [(ABVCardLexer *)self nextSingleByteStringInEncoding:a3 quotedPrintable:a4 stopTokens:*&a5 trim:a6];
+    v13 = [(ABVCardLexer *)self nextSingleByteStringInEncoding:encoding quotedPrintable:printable stopTokens:*&tokens trim:trim];
     if (!v13)
     {
       goto LABEL_6;
@@ -1120,29 +1120,29 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v13 = [(ABVCardLexer *)self nextUnicodeStringStopTokens:*&a5 quotedPrintable:a4 trim:a6];
+  v13 = [(ABVCardLexer *)self nextUnicodeStringStopTokens:*&tokens quotedPrintable:printable trim:trim];
   if (v13)
   {
 LABEL_5:
-    [a7 appendString:v13];
+    [string appendString:v13];
   }
 
 LABEL_6:
   if ([(ABVCardLexer *)self _advancePastLineFoldingSequenceIfNeeded])
   {
 
-    [(ABVCardLexer *)self _applyNextStringInEncoding:a3 quotedPrintable:v10 stopTokens:v9 trim:v8 intoString:a7];
+    [(ABVCardLexer *)self _applyNextStringInEncoding:encoding quotedPrintable:printableCopy stopTokens:v9 trim:trimCopy intoString:string];
   }
 }
 
-- (id)nextStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6
+- (id)nextStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim
 {
-  v6 = a6;
-  v7 = *&a5;
-  v8 = a4;
+  trimCopy = trim;
+  v7 = *&tokens;
+  printableCopy = printable;
   v11 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  [(ABVCardLexer *)self _applyNextStringInEncoding:a3 quotedPrintable:v8 stopTokens:v7 trim:0 intoString:v11];
-  if (v6)
+  [(ABVCardLexer *)self _applyNextStringInEncoding:encoding quotedPrintable:printableCopy stopTokens:v7 trim:0 intoString:v11];
+  if (trimCopy)
   {
     v12 = _ABStringByTrimmingWhiteSpace(v11);
 
@@ -1262,28 +1262,28 @@ LABEL_6:
   return *(ValueAtIndex + 2);
 }
 
-- (id)nextArraySeperatedByToken:(int)a3 stoppingAt:(int)a4 inEncoding:(unint64_t)a5
+- (id)nextArraySeperatedByToken:(int)token stoppingAt:(int)at inEncoding:(unint64_t)encoding
 {
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(ABVCardLexer *)self _advancePastLineFoldingSequenceIfNeeded];
-  while (([(ABVCardLexer *)self tokenAtCursor]& a4) == 0)
+  while (([(ABVCardLexer *)self tokenAtCursor]& at) == 0)
   {
     if (self->_length <= self->_cursor)
     {
       break;
     }
 
-    v10 = [(ABVCardLexer *)self nextStringInEncoding:a5 quotedPrintable:0 stopTokens:a4 | a3 trim:1];
+    v10 = [(ABVCardLexer *)self nextStringInEncoding:encoding quotedPrintable:0 stopTokens:at | token trim:1];
     if (v10)
     {
       v11 = v10;
       if ([v10 length])
       {
-        [v9 addObject:v11];
+        [array addObject:v11];
       }
     }
 
-    if (([(ABVCardLexer *)self tokenAtCursor]& a3) != 0)
+    if (([(ABVCardLexer *)self tokenAtCursor]& token) != 0)
     {
       if (self->_unicode)
       {
@@ -1299,18 +1299,18 @@ LABEL_6:
     }
   }
 
-  return v9;
+  return array;
 }
 
-- (id)nextUnicodeBase64Line:(BOOL *)a3
+- (id)nextUnicodeBase64Line:(BOOL *)line
 {
-  v5 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v6 = [(ABVCardLexer *)self tokenSetForLength:1];
   v22 = 0;
   cursor = self->_cursor;
   if (self->_length <= cursor)
   {
-    return v5;
+    return data;
   }
 
   v8 = v6;
@@ -1325,7 +1325,7 @@ LABEL_6:
     if (Count < 1)
     {
 LABEL_20:
-      [v5 appendBytes:v21 length:1];
+      [data appendBytes:v21 length:1];
       goto LABEL_23;
     }
 
@@ -1374,8 +1374,8 @@ LABEL_18:
     v19 = *(ValueAtIndex + 2);
     if (v19 == 1025)
     {
-      [v5 appendBytes:v21 length:1];
-      *a3 = 1;
+      [data appendBytes:v21 length:1];
+      *line = 1;
       goto LABEL_23;
     }
 
@@ -1387,7 +1387,7 @@ LABEL_18:
     if ((v19 & 0x8000) != 0)
     {
       --self->_cursor;
-      return v5;
+      return data;
     }
 
 LABEL_23:
@@ -1396,18 +1396,18 @@ LABEL_23:
   }
 
   while (self->_length > cursor);
-  return v5;
+  return data;
 }
 
-- (id)nextSingleByteBase64Line:(BOOL *)a3
+- (id)nextSingleByteBase64Line:(BOOL *)line
 {
-  v5 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v6 = [(ABVCardLexer *)self tokenSetForLength:1];
   v19[1] = 0;
   cursor = self->_cursor;
   if (self->_length <= cursor)
   {
-    return v5;
+    return data;
   }
 
   v8 = v6;
@@ -1418,7 +1418,7 @@ LABEL_23:
     if (Count < 1)
     {
 LABEL_20:
-      [v5 appendBytes:v19 length:1];
+      [data appendBytes:v19 length:1];
       goto LABEL_23;
     }
 
@@ -1467,8 +1467,8 @@ LABEL_18:
     v17 = *(ValueAtIndex + 2);
     if (v17 == 1025)
     {
-      [v5 appendBytes:v19 length:1];
-      *a3 = 1;
+      [data appendBytes:v19 length:1];
+      *line = 1;
       goto LABEL_23;
     }
 
@@ -1484,26 +1484,26 @@ LABEL_23:
       self->_cursor = cursor;
       if (self->_length <= cursor)
       {
-        return v5;
+        return data;
       }
 
       continue;
     }
 
-    return v5;
+    return data;
   }
 }
 
-- (id)nextBase64Line:(BOOL *)a3
+- (id)nextBase64Line:(BOOL *)line
 {
   if (self->_unicode)
   {
-    return [(ABVCardLexer *)self nextUnicodeBase64Line:a3];
+    return [(ABVCardLexer *)self nextUnicodeBase64Line:line];
   }
 
   else
   {
-    return [(ABVCardLexer *)self nextSingleByteBase64Line:a3];
+    return [(ABVCardLexer *)self nextSingleByteBase64Line:line];
   }
 }
 
@@ -1732,20 +1732,20 @@ LABEL_19:
   }
 }
 
-- (BOOL)advanceToToken:(int)a3 throughTypes:(int)a4
+- (BOOL)advanceToToken:(int)token throughTypes:(int)types
 {
   v7 = 0;
-  while (v7 != a3)
+  while (v7 != token)
   {
     v8 = [(ABVCardLexer *)self nextTokenPeak:0];
-    if (v8 == a3)
+    if (v8 == token)
     {
       break;
     }
 
     v7 = v8;
     result = 0;
-    v11 = (v7 & a4) == 0 && a4 != 0;
+    v11 = (v7 & types) == 0 && types != 0;
     if ((v7 - 65537) < 2 || v11)
     {
       return result;

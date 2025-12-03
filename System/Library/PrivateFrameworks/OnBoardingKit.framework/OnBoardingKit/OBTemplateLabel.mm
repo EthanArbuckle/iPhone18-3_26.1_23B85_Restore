@@ -2,9 +2,9 @@
 - (BOOL)isRTL;
 - (OBTemplateLabel)init;
 - (void)_textAlignmentDidChange;
-- (void)setText:(id)a3;
-- (void)setTitleTrailingSymbol:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setText:(id)text;
+- (void)setTitleTrailingSymbol:(id)symbol;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTextAlignmentIfNeeded;
 @end
 
@@ -24,58 +24,58 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = OBTemplateLabel;
-  [(OBTemplateLabel *)&v7 traitCollectionDidChange:a3];
+  [(OBTemplateLabel *)&v7 traitCollectionDidChange:change];
   [(OBTemplateLabel *)self updateTextAlignmentIfNeeded];
-  v4 = [(OBTemplateLabel *)self symbolName];
-  v5 = [v4 length];
+  symbolName = [(OBTemplateLabel *)self symbolName];
+  v5 = [symbolName length];
 
   if (v5)
   {
-    v6 = [(OBTemplateLabel *)self symbolName];
-    [(OBTemplateLabel *)self setTitleTrailingSymbol:v6];
+    symbolName2 = [(OBTemplateLabel *)self symbolName];
+    [(OBTemplateLabel *)self setTitleTrailingSymbol:symbolName2];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  [(OBTemplateLabel *)self setDisplayText:v4];
+  textCopy = text;
+  [(OBTemplateLabel *)self setDisplayText:textCopy];
   v8.receiver = self;
   v8.super_class = OBTemplateLabel;
-  [(OBTemplateLabel *)&v8 setText:v4];
+  [(OBTemplateLabel *)&v8 setText:textCopy];
 
-  v5 = [(OBTemplateLabel *)self symbolName];
-  v6 = [v5 length];
+  symbolName = [(OBTemplateLabel *)self symbolName];
+  v6 = [symbolName length];
 
   if (v6)
   {
-    v7 = [(OBTemplateLabel *)self symbolName];
-    [(OBTemplateLabel *)self setTitleTrailingSymbol:v7];
+    symbolName2 = [(OBTemplateLabel *)self symbolName];
+    [(OBTemplateLabel *)self setTitleTrailingSymbol:symbolName2];
   }
 }
 
-- (void)setTitleTrailingSymbol:(id)a3
+- (void)setTitleTrailingSymbol:(id)symbol
 {
-  objc_storeStrong(&self->_symbolName, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_symbolName, symbol);
+  symbolCopy = symbol;
   v6 = MEMORY[0x1E69DCAD8];
-  v7 = [(OBTemplateLabel *)self font];
-  v18 = [v6 configurationWithFont:v7];
+  font = [(OBTemplateLabel *)self font];
+  v18 = [v6 configurationWithFont:font];
 
-  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:v5];
+  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:symbolCopy];
   v9 = [v8 imageByApplyingSymbolConfiguration:v18];
-  v10 = [(OBTemplateLabel *)self tintColor];
-  v11 = [v9 imageWithTintColor:v10];
+  tintColor = [(OBTemplateLabel *)self tintColor];
+  v11 = [v9 imageWithTintColor:tintColor];
 
   v12 = objc_opt_new();
   [v12 setImage:v11];
   v13 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v12];
-  v14 = [(OBTemplateLabel *)self displayText];
-  v15 = [v14 stringByAppendingString:@" "];
+  displayText = [(OBTemplateLabel *)self displayText];
+  v15 = [displayText stringByAppendingString:@" "];
 
   v16 = objc_alloc(MEMORY[0x1E696AD40]);
   v17 = [v16 initWithString:v15];
@@ -85,26 +85,26 @@
 
 - (BOOL)isRTL
 {
-  v3 = [(OBTemplateLabel *)self _defaultAttributes];
-  v4 = [v3 objectForKeyedSubscript:@"NSLanguage"];
+  _defaultAttributes = [(OBTemplateLabel *)self _defaultAttributes];
+  v4 = [_defaultAttributes objectForKeyedSubscript:@"NSLanguage"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DB7D0] defaultWritingDirectionForLanguage:v4];
+    layoutDirection = [MEMORY[0x1E69DB7D0] defaultWritingDirectionForLanguage:v4];
   }
 
   else
   {
-    v6 = [(OBTemplateLabel *)self traitCollection];
-    v5 = [v6 layoutDirection];
+    traitCollection = [(OBTemplateLabel *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
   }
 
-  return v5 == 1;
+  return layoutDirection == 1;
 }
 
 - (void)updateTextAlignmentIfNeeded
 {
-  v3 = [(OBTemplateLabel *)self textAlignment];
+  textAlignment = [(OBTemplateLabel *)self textAlignment];
   if (+[OBViewUtilities shouldUseAccessibilityLayout](OBViewUtilities, "shouldUseAccessibilityLayout") || +[OBFeatureFlags isNaturalUIEnabled])
   {
     if ([(OBTemplateLabel *)self isRTL])
@@ -133,7 +133,7 @@
     v5 = v4;
   }
 
-  if (v5 != v3)
+  if (v5 != textAlignment)
   {
     [(OBTemplateLabel *)self setTextAlignment:?];
 
@@ -143,13 +143,13 @@
 
 - (void)_textAlignmentDidChange
 {
-  v3 = [(OBTemplateLabel *)self symbolName];
-  v4 = [v3 length];
+  symbolName = [(OBTemplateLabel *)self symbolName];
+  v4 = [symbolName length];
 
   if (v4)
   {
-    v5 = [(OBTemplateLabel *)self symbolName];
-    [(OBTemplateLabel *)self setTitleTrailingSymbol:v5];
+    symbolName2 = [(OBTemplateLabel *)self symbolName];
+    [(OBTemplateLabel *)self setTitleTrailingSymbol:symbolName2];
   }
 }
 

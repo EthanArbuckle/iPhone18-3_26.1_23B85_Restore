@@ -1,32 +1,32 @@
 @interface CRLScrollView
 - (BOOL)p_optOutOfUIScrollViewContentOffsetAnimation;
 - (void)safeAreaInsetsDidChange;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setContentOffset:(CGPoint)a3 relativeToOriginalSize:(CGSize)a4;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setContentOffset:(CGPoint)offset relativeToOriginalSize:(CGSize)size;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation CRLScrollView
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  if (animated)
   {
     [(CRLScrollView *)self contentOffset];
     if (x != v9 || y != v8)
     {
-      v11 = [(CRLScrollView *)self delegate];
+      delegate = [(CRLScrollView *)self delegate];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v13 = [(CRLScrollView *)self delegate];
-        [v13 scrollView:self willAnimateToContentOffset:{x, y}];
+        delegate2 = [(CRLScrollView *)self delegate];
+        [delegate2 scrollView:self willAnimateToContentOffset:{x, y}];
       }
     }
   }
@@ -42,7 +42,7 @@
     *&v18[6] = y;
     v14 = objc_retainBlock(v18);
     v15 = v14;
-    if (v4)
+    if (animatedCopy)
     {
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
@@ -62,23 +62,23 @@
   {
     v16.receiver = self;
     v16.super_class = CRLScrollView;
-    [(CRLScrollView *)&v16 setContentOffset:v4 animated:x, y];
+    [(CRLScrollView *)&v16 setContentOffset:animatedCopy animated:x, y];
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
   v3.receiver = self;
   v3.super_class = CRLScrollView;
-  [(CRLScrollView *)&v3 setContentOffset:a3.x, a3.y];
+  [(CRLScrollView *)&v3 setContentOffset:offset.x, offset.y];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(CRLScrollView *)self contentInset];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -90,16 +90,16 @@
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3 relativeToOriginalSize:(CGSize)a4
+- (void)setContentOffset:(CGPoint)offset relativeToOriginalSize:(CGSize)size
 {
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLScrollView *)self delegate:a3.x];
+  width = size.width;
+  y = offset.y;
+  x = offset.x;
+  v8 = [(CRLScrollView *)self delegate:offset.x];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(CRLScrollView *)self delegate];
-    v10 = [v9 scrollViewShouldAnchorToRightEdge:self];
+    delegate = [(CRLScrollView *)self delegate];
+    v10 = [delegate scrollViewShouldAnchorToRightEdge:self];
   }
 
   else
@@ -107,11 +107,11 @@
     v10 = 0;
   }
 
-  v11 = [(CRLScrollView *)self delegate];
+  delegate2 = [(CRLScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(CRLScrollView *)self delegate];
-    v13 = [v12 contentViewCanResizeToFitScrollView:self];
+    delegate3 = [(CRLScrollView *)self delegate];
+    v13 = [delegate3 contentViewCanResizeToFitScrollView:self];
 
     if ((v10 & v13) == 1)
     {
@@ -136,9 +136,9 @@
   [v3 postNotificationName:@"CRLScrollViewSafeAreaInsetsDidChangeNotification" object:self];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (a3.height > 0.0 && a3.width > 0.0)
+  if (size.height > 0.0 && size.width > 0.0)
   {
     v6 = v3;
     v7 = v4;
@@ -150,7 +150,7 @@
 
 - (BOOL)p_optOutOfUIScrollViewContentOffsetAnimation
 {
-  v3 = [(CRLScrollView *)self delegate];
+  delegate = [(CRLScrollView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -158,8 +158,8 @@
     return 0;
   }
 
-  v5 = [(CRLScrollView *)self delegate];
-  v6 = [v5 scrollViewShouldOptOutOfUIScrollViewContentOffsetAnimationForScrollView:self];
+  delegate2 = [(CRLScrollView *)self delegate];
+  v6 = [delegate2 scrollViewShouldOptOutOfUIScrollViewContentOffsetAnimationForScrollView:self];
 
   return v6;
 }

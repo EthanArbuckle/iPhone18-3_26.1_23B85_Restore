@@ -1,26 +1,26 @@
 @interface HUSceneUtilities
-+ (id)_hasSuggestedScenesForHome:(id)a3;
-+ (id)initialViewControllerForAddingSceneWithPresentationDelegate:(id)a3 home:(id)a4;
++ (id)_hasSuggestedScenesForHome:(id)home;
++ (id)initialViewControllerForAddingSceneWithPresentationDelegate:(id)delegate home:(id)home;
 @end
 
 @implementation HUSceneUtilities
 
-+ (id)initialViewControllerForAddingSceneWithPresentationDelegate:(id)a3 home:(id)a4
++ (id)initialViewControllerForAddingSceneWithPresentationDelegate:(id)delegate home:(id)home
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = MEMORY[0x277D2C900];
-  v8 = a4;
+  homeCopy = home;
   v9 = objc_alloc_init(v7);
-  v10 = [a1 _hasSuggestedScenesForHome:v8];
+  v10 = [self _hasSuggestedScenesForHome:homeCopy];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __85__HUSceneUtilities_initialViewControllerForAddingSceneWithPresentationDelegate_home___block_invoke;
   v17[3] = &unk_277DC05E8;
-  v18 = v6;
+  v18 = delegateCopy;
   v11 = v9;
   v19 = v11;
-  v12 = v6;
+  v12 = delegateCopy;
   v13 = [v10 addCompletionBlock:v17];
 
   v14 = v19;
@@ -48,9 +48,9 @@ void __85__HUSceneUtilities_initialViewControllerForAddingSceneWithPresentationD
   [*(a1 + 40) finishWithResult:v7];
 }
 
-+ (id)_hasSuggestedScenesForHome:(id)a3
++ (id)_hasSuggestedScenesForHome:(id)home
 {
-  v3 = [HUSceneSuggestionsViewController computeNumberOfSuggestionsInHome:a3];
+  v3 = [HUSceneSuggestionsViewController computeNumberOfSuggestionsInHome:home];
   v4 = [v3 flatMap:&__block_literal_global_178];
 
   return v4;

@@ -1,12 +1,12 @@
 @interface UIPrinterPickerController
 + (UIPrinterPickerController)printerPickerControllerWithInitiallySelectedPrinter:(UIPrinter *)printer;
 - (BOOL)_delegateFiltersPrinters;
-- (BOOL)_setupPickerPanel:(id)a3;
-- (BOOL)_shouldShowPrinter:(id)a3;
-- (BOOL)presentAnimated:(BOOL)a3 hostingScene:(id)a4 completionHandler:(id)a5;
+- (BOOL)_setupPickerPanel:(id)panel;
+- (BOOL)_shouldShowPrinter:(id)printer;
+- (BOOL)presentAnimated:(BOOL)animated hostingScene:(id)scene completionHandler:(id)handler;
 - (BOOL)presentFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated completionHandler:(UIPrinterPickerCompletionHandler)completion;
 - (BOOL)presentFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(UIPrinterPickerCompletionHandler)completion;
-- (UIPrinterPickerController)initWithInitiallySelectedPrinter:(id)a3;
+- (UIPrinterPickerController)initWithInitiallySelectedPrinter:(id)printer;
 - (id)delegate;
 - (void)_printerPickerDidDismiss;
 - (void)_printerPickerDidPresent;
@@ -24,36 +24,36 @@
   return v4;
 }
 
-- (UIPrinterPickerController)initWithInitiallySelectedPrinter:(id)a3
+- (UIPrinterPickerController)initWithInitiallySelectedPrinter:(id)printer
 {
   v6.receiver = self;
   v6.super_class = UIPrinterPickerController;
-  v3 = a3;
+  printerCopy = printer;
   v4 = [(UIPrinterPickerController *)&v6 init];
-  [(UIPrinterPickerController *)v4 setSelectedPrinter:v3, v6.receiver, v6.super_class];
+  [(UIPrinterPickerController *)v4 setSelectedPrinter:printerCopy, v6.receiver, v6.super_class];
 
   return v4;
 }
 
-- (BOOL)presentAnimated:(BOOL)a3 hostingScene:(id)a4 completionHandler:(id)a5
+- (BOOL)presentAnimated:(BOOL)animated hostingScene:(id)scene completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  animatedCopy = animated;
+  sceneCopy = scene;
+  handlerCopy = handler;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v11)
+  if (userInterfaceIdiom)
   {
     NSLog(&cfstr_WarningCalling.isa);
-    if (!v8)
+    if (!sceneCopy)
     {
-      v12 = [MEMORY[0x277D75128] sharedApplication];
-      v8 = [v12 _findUISceneForLegacyInterfaceOrientation];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      sceneCopy = [mEMORY[0x277D75128] _findUISceneForLegacyInterfaceOrientation];
     }
 
-    v13 = [v8 windows];
-    WeakRetained = [v13 firstObject];
+    windows = [sceneCopy windows];
+    WeakRetained = [windows firstObject];
 
     [WeakRetained bounds];
     x = v22.origin.x;
@@ -65,12 +65,12 @@
     v23.origin.y = y;
     v23.size.width = width;
     v23.size.height = height;
-    v20 = [(UIPrinterPickerController *)self presentFromRect:WeakRetained inView:v6 animated:v9 completionHandler:MidX, CGRectGetMidY(v23), 0.0, 0.0];
+    v20 = [(UIPrinterPickerController *)self presentFromRect:WeakRetained inView:animatedCopy animated:handlerCopy completionHandler:MidX, CGRectGetMidY(v23), 0.0, 0.0];
   }
 
   else
   {
-    if (![(UIPrinterPickerController *)self _setupPickerPanel:v9])
+    if (![(UIPrinterPickerController *)self _setupPickerPanel:handlerCopy])
     {
       v20 = 0;
       goto LABEL_10;
@@ -82,7 +82,7 @@
       [WeakRetained printerPickerControllerWillPresent:self];
     }
 
-    [*(self->_state + 1) presentPrinterPickerPanelAnimated:v6 hostingScene:v8];
+    [*(self->_state + 1) presentPrinterPickerPanelAnimated:animatedCopy hostingScene:sceneCopy];
     v20 = 1;
   }
 
@@ -99,10 +99,10 @@ LABEL_10:
   x = rect.origin.x;
   v13 = view;
   v14 = completion;
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v16)
+  if (userInterfaceIdiom)
   {
     if (![(UIPrinterPickerController *)self _setupPickerPanel:v14])
     {
@@ -124,8 +124,8 @@ LABEL_10:
   {
     NSLog(&cfstr_WarningCalling_0.isa);
     WeakRetained = [(UIView *)v13 window];
-    v19 = [WeakRetained windowScene];
-    v18 = [(UIPrinterPickerController *)self presentAnimated:v7 hostingScene:v19 completionHandler:v14];
+    windowScene = [WeakRetained windowScene];
+    v18 = [(UIPrinterPickerController *)self presentAnimated:v7 hostingScene:windowScene completionHandler:v14];
   }
 
 LABEL_9:
@@ -137,10 +137,10 @@ LABEL_9:
   v6 = animated;
   v8 = item;
   v9 = completion;
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v11)
+  if (userInterfaceIdiom)
   {
     if (![(UIPrinterPickerController *)self _setupPickerPanel:v9])
     {
@@ -162,18 +162,18 @@ LABEL_9:
   {
     NSLog(&cfstr_WarningCalling_1.isa);
     WeakRetained = [(UIBarButtonItem *)v8 _viewForPresenting];
-    v14 = [WeakRetained window];
-    v15 = [v14 windowScene];
-    v13 = [(UIPrinterPickerController *)self presentAnimated:v6 hostingScene:v15 completionHandler:v9];
+    window = [WeakRetained window];
+    windowScene = [window windowScene];
+    v13 = [(UIPrinterPickerController *)self presentAnimated:v6 hostingScene:windowScene completionHandler:v9];
   }
 
 LABEL_9:
   return v13;
 }
 
-- (BOOL)_setupPickerPanel:(id)a3
+- (BOOL)_setupPickerPanel:(id)panel
 {
-  v4 = a3;
+  panelCopy = panel;
   if (_UIApplicationIsExtension())
   {
     NSLog(&cfstr_PrintingIsUnav.isa);
@@ -198,7 +198,7 @@ LABEL_6:
   v10 = self->_state;
   self->_state = v9;
 
-  v11 = [v4 copy];
+  v11 = [panelCopy copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v11;
 
@@ -218,13 +218,13 @@ LABEL_6:
   v17 = v16[1];
   v16[1] = v15;
 
-  v18 = [(UIPrinterPickerController *)self selectedPrinter];
+  selectedPrinter = [(UIPrinterPickerController *)self selectedPrinter];
 
-  if (v18)
+  if (selectedPrinter)
   {
-    v19 = [(UIPrinterPickerController *)self selectedPrinter];
-    v20 = [v19 pkPrinter];
-    [*(self->_state + 1) setPrinter:v20];
+    selectedPrinter2 = [(UIPrinterPickerController *)self selectedPrinter];
+    pkPrinter = [selectedPrinter2 pkPrinter];
+    [*(self->_state + 1) setPrinter:pkPrinter];
   }
 
   v7 = 1;
@@ -245,26 +245,26 @@ LABEL_7:
 - (void)_printerPickerWillDismiss
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = objc_opt_respondsToSelector();
-  if (v3)
+  userSelectedPrinter = objc_opt_respondsToSelector();
+  if (userSelectedPrinter)
   {
-    v3 = [*(self->_state + 1) userSelectedPrinter];
-    if (v3)
+    userSelectedPrinter = [*(self->_state + 1) userSelectedPrinter];
+    if (userSelectedPrinter)
     {
-      v3 = [WeakRetained printerPickerControllerDidSelectPrinter:self];
+      userSelectedPrinter = [WeakRetained printerPickerControllerDidSelectPrinter:self];
     }
   }
 
   if ((*(self->_state + 16) & 1) == 0)
   {
-    v3 = objc_opt_respondsToSelector();
-    if (v3)
+    userSelectedPrinter = objc_opt_respondsToSelector();
+    if (userSelectedPrinter)
     {
-      v3 = [WeakRetained printerPickerControllerWillDismiss:self];
+      userSelectedPrinter = [WeakRetained printerPickerControllerWillDismiss:self];
     }
   }
 
-  MEMORY[0x2821F9730](v3);
+  MEMORY[0x2821F9730](userSelectedPrinter);
 }
 
 - (void)_printerPickerDidDismiss
@@ -272,17 +272,17 @@ LABEL_7:
   state = self->_state;
   if (state)
   {
-    v4 = [state[1] printer];
+    printer = [state[1] printer];
 
-    if (v4)
+    if (printer)
     {
       v5 = [UIPrinter alloc];
-      v6 = [*(self->_state + 1) printer];
-      v7 = [(UIPrinter *)v5 _initWithPrinter:v6];
+      printer2 = [*(self->_state + 1) printer];
+      v7 = [(UIPrinter *)v5 _initWithPrinter:printer2];
       [(UIPrinterPickerController *)self setSelectedPrinter:v7];
     }
 
-    v8 = [*(self->_state + 1) userSelectedPrinter];
+    userSelectedPrinter = [*(self->_state + 1) userSelectedPrinter];
     v9 = self->_state;
     v10 = v9[1];
     v9[1] = 0;
@@ -296,7 +296,7 @@ LABEL_7:
     completionHandler = self->_completionHandler;
     if (completionHandler)
     {
-      completionHandler[2](completionHandler, self, v8, 0);
+      completionHandler[2](completionHandler, self, userSelectedPrinter, 0);
       v12 = self->_completionHandler;
       self->_completionHandler = 0;
     }
@@ -316,13 +316,13 @@ LABEL_7:
   return v3 & 1;
 }
 
-- (BOOL)_shouldShowPrinter:(id)a3
+- (BOOL)_shouldShowPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained printerPickerController:self shouldShowPrinter:v4];
+    v6 = [WeakRetained printerPickerController:self shouldShowPrinter:printerCopy];
   }
 
   else

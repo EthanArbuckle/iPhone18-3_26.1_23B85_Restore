@@ -1,60 +1,60 @@
 @interface PREditingRequestDismissalAction
 - (BOOL)userAcceptedChanges;
-- (PREditingRequestDismissalAction)initWithUserAcceptedChanges:(BOOL)a3 completion:(id)a4;
+- (PREditingRequestDismissalAction)initWithUserAcceptedChanges:(BOOL)changes completion:(id)completion;
 - (PRMutablePosterConfiguration)updatedConfiguration;
 - (PRPosterConfiguredProperties)updatedConfiguredProperties;
-- (id)_initWithUserAcceptedChanges:(BOOL)a3 updatedConfiguration:(id)a4 updatedConfiguredProperties:(id)a5 auditTokenForSandboxExtension:(id)a6 completion:(id)a7;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
-- (void)sendResponseWithSuccess:(BOOL)a3 error:(id)a4;
+- (id)_initWithUserAcceptedChanges:(BOOL)changes updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties auditTokenForSandboxExtension:(id)extension completion:(id)completion;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (void)sendResponseWithSuccess:(BOOL)success error:(id)error;
 - (void)updatedConfiguration;
 @end
 
 @implementation PREditingRequestDismissalAction
 
-- (id)_initWithUserAcceptedChanges:(BOOL)a3 updatedConfiguration:(id)a4 updatedConfiguredProperties:(id)a5 auditTokenForSandboxExtension:(id)a6 completion:(id)a7
+- (id)_initWithUserAcceptedChanges:(BOOL)changes updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties auditTokenForSandboxExtension:(id)extension completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  extensionCopy = extension;
+  completionCopy = completion;
   v16 = MEMORY[0x1E698E5F8];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __154__PREditingRequestDismissalAction__initWithUserAcceptedChanges_updatedConfiguration_updatedConfiguredProperties_auditTokenForSandboxExtension_completion___block_invoke;
   v34[3] = &unk_1E7844B08;
-  v17 = v15;
+  v17 = completionCopy;
   v36 = v17;
-  v18 = self;
-  v35 = v18;
+  selfCopy = self;
+  v35 = selfCopy;
   v19 = [v16 responderWithHandler:v34];
   [v19 setQueue:MEMORY[0x1E69E96A0]];
   v20 = objc_alloc_init(MEMORY[0x1E698E700]);
   [v20 setFlag:BSSettingFlagForBool() forSetting:1];
-  [v20 setObject:v13 forSetting:5];
-  v21 = [v12 _path];
-  [v20 setObject:v21 forSetting:2];
-  v22 = [v21 descriptorIdentifier];
+  [v20 setObject:propertiesCopy forSetting:5];
+  _path = [configurationCopy _path];
+  [v20 setObject:_path forSetting:2];
+  descriptorIdentifier = [_path descriptorIdentifier];
 
-  if (v22)
+  if (descriptorIdentifier)
   {
-    [PREditingRequestDismissalAction _initWithUserAcceptedChanges:v21 updatedConfiguration:a2 updatedConfiguredProperties:v18 auditTokenForSandboxExtension:? completion:?];
+    [PREditingRequestDismissalAction _initWithUserAcceptedChanges:_path updatedConfiguration:a2 updatedConfiguredProperties:selfCopy auditTokenForSandboxExtension:? completion:?];
   }
 
-  if (v14)
+  if (extensionCopy)
   {
-    v31 = v12;
+    v31 = configurationCopy;
     v33 = 0;
-    v23 = [v21 extendContentsReadAccessToAuditToken:v14 error:&v33];
+    v23 = [_path extendContentsReadAccessToAuditToken:extensionCopy error:&v33];
     v24 = v33;
     if (v23)
     {
       [v20 setObject:v23 forSetting:2];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      v27 = [v21 extendValidityForReason:v26];
-      tempPathValidityExtension = v18->_tempPathValidityExtension;
-      v18->_tempPathValidityExtension = v27;
+      v27 = [_path extendValidityForReason:v26];
+      tempPathValidityExtension = selfCopy->_tempPathValidityExtension;
+      selfCopy->_tempPathValidityExtension = v27;
     }
 
     else
@@ -62,14 +62,14 @@
       v26 = PRSLogPosterContents();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        [PREditingRequestDismissalAction _initWithUserAcceptedChanges:v18 updatedConfiguration:v24 updatedConfiguredProperties:v26 auditTokenForSandboxExtension:? completion:?];
+        [PREditingRequestDismissalAction _initWithUserAcceptedChanges:selfCopy updatedConfiguration:v24 updatedConfiguredProperties:v26 auditTokenForSandboxExtension:? completion:?];
       }
     }
 
-    v12 = v31;
+    configurationCopy = v31;
   }
 
-  v32.receiver = v18;
+  v32.receiver = selfCopy;
   v32.super_class = PREditingRequestDismissalAction;
   v29 = [(PREditingRequestDismissalAction *)&v32 initWithInfo:v20 responder:v19];
 
@@ -93,24 +93,24 @@ void __154__PREditingRequestDismissalAction__initWithUserAcceptedChanges_updated
   }
 }
 
-- (PREditingRequestDismissalAction)initWithUserAcceptedChanges:(BOOL)a3 completion:(id)a4
+- (PREditingRequestDismissalAction)initWithUserAcceptedChanges:(BOOL)changes completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  changesCopy = changes;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __74__PREditingRequestDismissalAction_initWithUserAcceptedChanges_completion___block_invoke;
     v10[3] = &unk_1E7844B30;
-    v11 = v6;
-    v8 = [(PREditingRequestDismissalAction *)self _initWithUserAcceptedChanges:v4 updatedConfiguration:0 updatedConfiguredProperties:0 auditTokenForSandboxExtension:0 completion:v10];
+    v11 = completionCopy;
+    v8 = [(PREditingRequestDismissalAction *)self _initWithUserAcceptedChanges:changesCopy updatedConfiguration:0 updatedConfiguredProperties:0 auditTokenForSandboxExtension:0 completion:v10];
   }
 
   else
   {
-    v8 = [(PREditingRequestDismissalAction *)self _initWithUserAcceptedChanges:v4 updatedConfiguration:0 updatedConfiguredProperties:0 auditTokenForSandboxExtension:0 completion:0];
+    v8 = [(PREditingRequestDismissalAction *)self _initWithUserAcceptedChanges:changesCopy updatedConfiguration:0 updatedConfiguredProperties:0 auditTokenForSandboxExtension:0 completion:0];
   }
 
   return v8;
@@ -118,8 +118,8 @@ void __154__PREditingRequestDismissalAction__initWithUserAcceptedChanges_updated
 
 - (BOOL)userAcceptedChanges
 {
-  v2 = [(PREditingRequestDismissalAction *)self info];
-  [v2 flagForSetting:1];
+  info = [(PREditingRequestDismissalAction *)self info];
+  [info flagForSetting:1];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -127,8 +127,8 @@ void __154__PREditingRequestDismissalAction__initWithUserAcceptedChanges_updated
 
 - (PRMutablePosterConfiguration)updatedConfiguration
 {
-  v3 = [(PREditingRequestDismissalAction *)self info];
-  v4 = [v3 objectForSetting:2];
+  info = [(PREditingRequestDismissalAction *)self info];
+  v4 = [info objectForSetting:2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -152,19 +152,19 @@ void __154__PREditingRequestDismissalAction__initWithUserAcceptedChanges_updated
 
 - (PRPosterConfiguredProperties)updatedConfiguredProperties
 {
-  v2 = [(PREditingRequestDismissalAction *)self info];
-  v3 = [v2 objectForSetting:5];
+  info = [(PREditingRequestDismissalAction *)self info];
+  v3 = [info objectForSetting:5];
 
   return v3;
 }
 
-- (void)sendResponseWithSuccess:(BOOL)a3 error:(id)a4
+- (void)sendResponseWithSuccess:(BOOL)success error:(id)error
 {
   v5 = MEMORY[0x1E698E700];
-  v6 = a4;
+  errorCopy = error;
   v7 = objc_alloc_init(v5);
   [v7 setFlag:BSSettingFlagForBool() forSetting:3];
-  [v7 setObject:v6 forSetting:4];
+  [v7 setObject:errorCopy forSetting:4];
 
   v8 = [MEMORY[0x1E698E600] responseWithInfo:v7];
   v9.receiver = self;
@@ -172,15 +172,15 @@ void __154__PREditingRequestDismissalAction__initWithUserAcceptedChanges_updated
   [(PREditingRequestDismissalAction *)&v9 sendResponse:v8];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"updatedConfiguration";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"userAcceptedChanges";
   }
@@ -191,17 +191,17 @@ void __154__PREditingRequestDismissalAction__initWithUserAcceptedChanges_updated
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
-  if (a5 == 2)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (setting == 2)
   {
-    v8 = [v6 description];
+    v8 = [objectCopy description];
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (setting == 1)
   {
     v8 = BSSettingFlagDescription();
 LABEL_5:

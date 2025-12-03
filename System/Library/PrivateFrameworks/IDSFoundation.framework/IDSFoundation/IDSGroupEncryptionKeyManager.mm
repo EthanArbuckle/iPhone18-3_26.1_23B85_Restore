@@ -1,20 +1,20 @@
 @interface IDSGroupEncryptionKeyManager
-- (BOOL)recvKeyMaterial:(id)a3;
-- (BOOL)useCurrentEncryptionkeyWithHandler:(id)a3;
-- (BOOL)useDecryptingKeyForKeyIndex:(id)a3 handler:(id)a4;
-- (IDSGroupEncryptionKeyManager)initWithEncryptionContext:(id)a3 encryptionKeySize:(unint64_t)a4;
-- (void)enumerateDecryptingKeysAndSaltsUsingBlock:(id)a3;
-- (void)invalidateKeyMaterialByKeyIndexes:(id)a3;
+- (BOOL)recvKeyMaterial:(id)material;
+- (BOOL)useCurrentEncryptionkeyWithHandler:(id)handler;
+- (BOOL)useDecryptingKeyForKeyIndex:(id)index handler:(id)handler;
+- (IDSGroupEncryptionKeyManager)initWithEncryptionContext:(id)context encryptionKeySize:(unint64_t)size;
+- (void)enumerateDecryptingKeysAndSaltsUsingBlock:(id)block;
+- (void)invalidateKeyMaterialByKeyIndexes:(id)indexes;
 - (void)purgeOldKeyMaterial;
-- (void)receiveMembershipChangedInformation:(unsigned __int8)a3;
+- (void)receiveMembershipChangedInformation:(unsigned __int8)information;
 @end
 
 @implementation IDSGroupEncryptionKeyManager
 
-- (IDSGroupEncryptionKeyManager)initWithEncryptionContext:(id)a3 encryptionKeySize:(unint64_t)a4
+- (IDSGroupEncryptionKeyManager)initWithEncryptionContext:(id)context encryptionKeySize:(unint64_t)size
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = IDSGroupEncryptionKeyManager;
   v7 = [(IDSGroupEncryptionKeyManager *)&v20 init];
@@ -24,53 +24,53 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v22 = a4;
+      sizeCopy = size;
       _os_log_impl(&dword_1A7AD9000, v8, OS_LOG_TYPE_DEFAULT, "IDSGroupEncryptionKeyManager created with encryptionKeySize %ld", buf, 0xCu);
     }
 
     v7->_lock._os_unfair_lock_opaque = 0;
-    v9 = [v6 copy];
+    v9 = [contextCopy copy];
     encryptionContext = v7->_encryptionContext;
     v7->_encryptionContext = v9;
 
-    v7->_encryptionKeySize = a4;
-    v11 = [MEMORY[0x1E695DF70] array];
+    v7->_encryptionKeySize = size;
+    array = [MEMORY[0x1E695DF70] array];
     previousEncryptingKeys = v7->_previousEncryptingKeys;
-    v7->_previousEncryptingKeys = v11;
+    v7->_previousEncryptingKeys = array;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     previousEncryptingKeyIndexes = v7->_previousEncryptingKeyIndexes;
-    v7->_previousEncryptingKeyIndexes = v13;
+    v7->_previousEncryptingKeyIndexes = array2;
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     previousEncryptingKeySalts = v7->_previousEncryptingKeySalts;
-    v7->_previousEncryptingKeySalts = v15;
+    v7->_previousEncryptingKeySalts = array3;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     currentDecryptingKeysAndSalts = v7->_currentDecryptingKeysAndSalts;
-    v7->_currentDecryptingKeysAndSalts = v17;
+    v7->_currentDecryptingKeysAndSalts = dictionary;
   }
 
   return v7;
 }
 
-- (BOOL)recvKeyMaterial:(id)a3
+- (BOOL)recvKeyMaterial:(id)material
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  materialCopy = material;
   os_unfair_lock_lock(&self->_lock);
-  if (v4)
+  if (materialCopy)
   {
     if (self->_encryptionContext)
     {
-      v5 = [v4 keySalt];
+      keySalt = [materialCopy keySalt];
 
-      if (v5)
+      if (keySalt)
       {
-        v6 = [v4 keySalt];
-        [v6 bytes];
-        v7 = [v4 keySalt];
-        [v7 length];
+        keySalt2 = [materialCopy keySalt];
+        [keySalt2 bytes];
+        keySalt3 = [materialCopy keySalt];
+        [keySalt3 length];
         [(NSMutableData *)self->_encryptionContext bytes];
         [(NSMutableData *)self->_encryptionContext length];
         Hkdf = CCKDFParametersCreateHkdf();
@@ -78,25 +78,25 @@
         v9 = +[IDSFoundationLog RealTimeEncryptionController];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v4 keySalt];
-          v11 = v10;
-          v12 = [v10 bytes];
-          v13 = [v4 keySalt];
-          v14 = [v13 length];
-          v15 = [(NSMutableData *)self->_encryptionContext bytes];
+          keySalt4 = [materialCopy keySalt];
+          v11 = keySalt4;
+          bytes = [keySalt4 bytes];
+          keySalt5 = [materialCopy keySalt];
+          v14 = [keySalt5 length];
+          bytes2 = [(NSMutableData *)self->_encryptionContext bytes];
           v16 = [(NSMutableData *)self->_encryptionContext length];
           *buf = 67110402;
           *v61 = Hkdf;
           *&v61[4] = 2048;
-          *&v61[6] = v12;
+          *&v61[6] = bytes;
           v62 = 2048;
           v63 = v14;
           v64 = 2048;
-          v65 = v15;
+          v65 = bytes2;
           v66 = 2048;
           v67 = v16;
           v68 = 2112;
-          v69 = v4;
+          v69 = materialCopy;
           _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "IDSGroupEncryptionKeyManager CCKDFParametersCreateHkdf returned %d with salt %p saltLength %lu context %p contextLength %lu key %@", buf, 0x3Au);
         }
 
@@ -153,18 +153,18 @@ LABEL_29:
         }
 
         v17 = [MEMORY[0x1E695DF88] dataWithLength:self->_encryptionKeySize];
-        v21 = [v4 keyMaterial];
-        if (v21 && v17)
+        keyMaterial = [materialCopy keyMaterial];
+        if (keyMaterial && v17)
         {
           v22 = self->_encryptionKeySize == 0;
 
           if (!v22)
           {
-            v23 = [v4 keyMaterial];
-            v24 = v23;
-            [v23 bytes];
-            v25 = [v4 keyMaterial];
-            [v25 length];
+            keyMaterial2 = [materialCopy keyMaterial];
+            v24 = keyMaterial2;
+            [keyMaterial2 bytes];
+            keyMaterial3 = [materialCopy keyMaterial];
+            [keyMaterial3 length];
             v26 = v17;
             [v17 mutableBytes];
             v27 = CCDeriveKey();
@@ -172,29 +172,29 @@ LABEL_29:
             v28 = +[IDSFoundationLog RealTimeEncryptionController];
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
-              v59 = [v4 keyMaterial];
-              v29 = v59;
-              v57 = [v59 bytes];
-              v58 = [v4 keyMaterial];
-              v30 = [v58 length];
+              keyMaterial4 = [materialCopy keyMaterial];
+              v29 = keyMaterial4;
+              bytes3 = [keyMaterial4 bytes];
+              keyMaterial5 = [materialCopy keyMaterial];
+              v30 = [keyMaterial5 length];
               v31 = v17;
-              v32 = [v17 mutableBytes];
+              mutableBytes = [v17 mutableBytes];
               encryptionKeySize = self->_encryptionKeySize;
-              v34 = [v4 keyIndex];
+              keyIndex = [materialCopy keyIndex];
               *buf = 67110658;
               *v61 = v27;
               *&v61[4] = 2048;
               *&v61[6] = 0;
               v62 = 2048;
-              v63 = v57;
+              v63 = bytes3;
               v64 = 2048;
               v65 = v30;
               v66 = 2048;
-              v67 = v32;
+              v67 = mutableBytes;
               v68 = 2048;
               v69 = encryptionKeySize;
               v70 = 2112;
-              v71 = v34;
+              v71 = keyIndex;
               _os_log_impl(&dword_1A7AD9000, v28, OS_LOG_TYPE_DEFAULT, "IDSGroupEncryptionKeyManager CCDeriveKey returned %d with params %p key %p keyLength %lu derivedKey %p derivedKeyLength %ld keyID %@", buf, 0x44u);
             }
 
@@ -203,8 +203,8 @@ LABEL_29:
             {
               if (v27 == -4305)
               {
-                v35 = +[IDSFoundationLog RealTimeEncryptionController];
-                if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+                keySalt7 = +[IDSFoundationLog RealTimeEncryptionController];
+                if (os_log_type_enabled(keySalt7, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 0;
                   v36 = "IDSGroupEncryptionKeyManager CCDeriveKey failed: unimplemented";
@@ -216,13 +216,13 @@ LABEL_29:
 
               if (v27 == -4302)
               {
-                v35 = +[IDSFoundationLog RealTimeEncryptionController];
-                if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+                keySalt7 = +[IDSFoundationLog RealTimeEncryptionController];
+                if (os_log_type_enabled(keySalt7, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 0;
                   v36 = "IDSGroupEncryptionKeyManager CCDeriveKey failed: memory failure";
 LABEL_42:
-                  v39 = v35;
+                  v39 = keySalt7;
                   v40 = 2;
                   goto LABEL_43;
                 }
@@ -237,8 +237,8 @@ LABEL_42:
             {
               if (v27 == -4300)
               {
-                v35 = +[IDSFoundationLog RealTimeEncryptionController];
-                if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+                keySalt7 = +[IDSFoundationLog RealTimeEncryptionController];
+                if (os_log_type_enabled(keySalt7, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 0;
                   v36 = "IDSGroupEncryptionKeyManager CCDeriveKey failed: bad params";
@@ -253,13 +253,13 @@ LABEL_54:
               }
 
 LABEL_38:
-              v35 = +[IDSFoundationLog RealTimeEncryptionController];
-              if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+              keySalt7 = +[IDSFoundationLog RealTimeEncryptionController];
+              if (os_log_type_enabled(keySalt7, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134217984;
                 *v61 = v27;
                 v36 = "IDSGroupEncryptionKeyManager CCDeriveKey failed: %ld";
-                v39 = v35;
+                v39 = keySalt7;
                 v40 = 12;
 LABEL_43:
                 _os_log_impl(&dword_1A7AD9000, v39, OS_LOG_TYPE_DEFAULT, v36, buf, v40);
@@ -269,26 +269,26 @@ LABEL_43:
               goto LABEL_53;
             }
 
-            if ([v4 isGeneratedLocally])
+            if ([materialCopy isGeneratedLocally])
             {
               p_currentEncryptingKey = &self->_currentEncryptingKey;
               if (!self->_currentEncryptingKey)
               {
 LABEL_49:
                 objc_storeStrong(&self->_currentEncryptingKey, v17);
-                v42 = [v4 keyIndex];
-                v43 = [v42 copy];
+                keyIndex2 = [materialCopy keyIndex];
+                v43 = [keyIndex2 copy];
                 currentEncryptingKeyIndex = self->_currentEncryptingKeyIndex;
                 self->_currentEncryptingKeyIndex = v43;
 
-                v45 = [v4 keySalt];
-                v46 = [v45 copy];
+                keySalt6 = [materialCopy keySalt];
+                v46 = [keySalt6 copy];
                 currentEncryptingKeySalt = self->_currentEncryptingKeySalt;
                 self->_currentEncryptingKeySalt = v46;
 
-                self->_currentEncryptingKeyGeneration = [v4 generationCounter];
-                v35 = +[IDSFoundationLog RealTimeEncryptionController];
-                if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+                self->_currentEncryptingKeyGeneration = [materialCopy generationCounter];
+                keySalt7 = +[IDSFoundationLog RealTimeEncryptionController];
+                if (os_log_type_enabled(keySalt7, OS_LOG_TYPE_DEFAULT))
                 {
                   v48 = self->_currentEncryptingKeyIndex;
                   currentEncryptingKeyGeneration = self->_currentEncryptingKeyGeneration;
@@ -296,14 +296,14 @@ LABEL_49:
                   *v61 = v48;
                   *&v61[8] = 1024;
                   *&v61[10] = currentEncryptingKeyGeneration;
-                  _os_log_impl(&dword_1A7AD9000, v35, OS_LOG_TYPE_DEFAULT, "IDSGroupEncryptionKeyManager New EncryptionKey:%@, generation counter: %u", buf, 0x12u);
+                  _os_log_impl(&dword_1A7AD9000, keySalt7, OS_LOG_TYPE_DEFAULT, "IDSGroupEncryptionKeyManager New EncryptionKey:%@, generation counter: %u", buf, 0x12u);
                 }
 
                 v20 = 1;
                 goto LABEL_54;
               }
 
-              if ([v4 generationCounter] > self->_currentEncryptingKeyGeneration)
+              if ([materialCopy generationCounter] > self->_currentEncryptingKeyGeneration)
               {
                 if (*p_currentEncryptingKey)
                 {
@@ -318,11 +318,11 @@ LABEL_49:
 
             currentDecryptingKeysAndSalts = self->_currentDecryptingKeysAndSalts;
             v51 = MEMORY[0x1E69A6128];
-            v35 = [v4 keySalt];
-            v52 = [v35 copy];
+            keySalt7 = [materialCopy keySalt];
+            v52 = [keySalt7 copy];
             v53 = [v51 pairWithFirst:v17 second:v52];
-            v54 = [v4 keyIndex];
-            v55 = [v54 copy];
+            keyIndex3 = [materialCopy keyIndex];
+            v55 = [keyIndex3 copy];
             [(NSMutableDictionary *)currentDecryptingKeysAndSalts setObject:v53 forKey:v55];
 
             goto LABEL_53;
@@ -333,10 +333,10 @@ LABEL_49:
         {
         }
 
-        v35 = +[IDSFoundationLog RealTimeEncryptionController];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+        keySalt7 = +[IDSFoundationLog RealTimeEncryptionController];
+        if (os_log_type_enabled(keySalt7, OS_LOG_TYPE_ERROR))
         {
-          sub_1A7E1B678(v35);
+          sub_1A7E1B678(keySalt7);
         }
 
         goto LABEL_53;
@@ -357,11 +357,11 @@ LABEL_56:
   return v20;
 }
 
-- (void)receiveMembershipChangedInformation:(unsigned __int8)a3
+- (void)receiveMembershipChangedInformation:(unsigned __int8)information
 {
-  v3 = a3;
+  informationCopy = information;
   os_unfair_lock_lock(&self->_lock);
-  if (v3 != 3)
+  if (informationCopy != 3)
   {
     currentEncryptingKey = self->_currentEncryptingKey;
     if (currentEncryptingKey)
@@ -394,16 +394,16 @@ LABEL_56:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)invalidateKeyMaterialByKeyIndexes:(id)a3
+- (void)invalidateKeyMaterialByKeyIndexes:(id)indexes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indexesCopy = indexes;
   os_unfair_lock_lock(&self->_lock);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = indexesCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -470,29 +470,29 @@ LABEL_56:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)useCurrentEncryptionkeyWithHandler:(id)a3
+- (BOOL)useCurrentEncryptionkeyWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   currentEncryptingKey = self->_currentEncryptingKey;
   if (currentEncryptingKey)
   {
-    v6 = currentEncryptingKey;
-    v7 = self->_currentEncryptingKeySalt;
-    v8 = self->_currentEncryptingKeyIndex;
+    firstObject = currentEncryptingKey;
+    firstObject2 = self->_currentEncryptingKeySalt;
+    firstObject3 = self->_currentEncryptingKeyIndex;
   }
 
   else
   {
-    v6 = [(NSMutableArray *)self->_previousEncryptingKeys firstObject];
-    v7 = [(NSMutableArray *)self->_previousEncryptingKeySalts firstObject];
-    v8 = [(NSMutableArray *)self->_previousEncryptingKeyIndexes firstObject];
+    firstObject = [(NSMutableArray *)self->_previousEncryptingKeys firstObject];
+    firstObject2 = [(NSMutableArray *)self->_previousEncryptingKeySalts firstObject];
+    firstObject3 = [(NSMutableArray *)self->_previousEncryptingKeyIndexes firstObject];
   }
 
-  v9 = v8;
-  if (v6)
+  v9 = firstObject3;
+  if (firstObject)
   {
-    v10 = v8 == 0;
+    v10 = firstObject3 == 0;
   }
 
   else
@@ -500,45 +500,45 @@ LABEL_56:
     v10 = 1;
   }
 
-  v11 = v10 || v7 == 0;
+  v11 = v10 || firstObject2 == 0;
   v12 = !v11;
   if (!v11)
   {
-    v4[2](v4, v6, v7, v8);
+    handlerCopy[2](handlerCopy, firstObject, firstObject2, firstObject3);
   }
 
   os_unfair_lock_unlock(&self->_lock);
   return v12;
 }
 
-- (BOOL)useDecryptingKeyForKeyIndex:(id)a3 handler:(id)a4
+- (BOOL)useDecryptingKeyForKeyIndex:(id)index handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_currentDecryptingKeysAndSalts objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_currentDecryptingKeysAndSalts objectForKeyedSubscript:indexCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 first];
-    v11 = [v9 second];
-    v7[2](v7, v10, v11, v6);
+    first = [v8 first];
+    second = [v9 second];
+    handlerCopy[2](handlerCopy, first, second, indexCopy);
   }
 
   os_unfair_lock_unlock(&self->_lock);
   return v9 != 0;
 }
 
-- (void)enumerateDecryptingKeysAndSaltsUsingBlock:(id)a3
+- (void)enumerateDecryptingKeysAndSaltsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   currentDecryptingKeysAndSalts = self->_currentDecryptingKeysAndSalts;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A7C0D930;
   v7[3] = &unk_1E77E1818;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   [(NSMutableDictionary *)currentDecryptingKeysAndSalts enumerateKeysAndObjectsUsingBlock:v7];
 

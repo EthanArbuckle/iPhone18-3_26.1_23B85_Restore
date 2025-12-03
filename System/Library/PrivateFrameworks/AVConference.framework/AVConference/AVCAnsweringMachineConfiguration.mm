@@ -1,16 +1,16 @@
 @interface AVCAnsweringMachineConfiguration
-+ (const)cStringFromCallSource:(unsigned __int8)a3;
-+ (id)stringFromCallSource:(unsigned __int8)a3;
++ (const)cStringFromCallSource:(unsigned __int8)source;
++ (id)stringFromCallSource:(unsigned __int8)source;
 - (AVCAnsweringMachineConfiguration)init;
-- (AVCAnsweringMachineConfiguration)initWithClientDictionary:(id)a3 clientPid:(int)a4;
+- (AVCAnsweringMachineConfiguration)initWithClientDictionary:(id)dictionary clientPid:(int)pid;
 - (NSURL)announcementAsset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionary;
 - (void)dealloc;
 - (void)dictionary;
 - (void)init;
-- (void)setAnnouncementAsset:(id)a3;
+- (void)setAnnouncementAsset:(id)asset;
 @end
 
 @implementation AVCAnsweringMachineConfiguration
@@ -34,17 +34,17 @@
   return v2;
 }
 
-- (void)setAnnouncementAsset:(id)a3
+- (void)setAnnouncementAsset:(id)asset
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 copy];
+    v5 = [asset copy];
   }
 
-  else if (a3)
+  else if (asset)
   {
-    v5 = [[VCSandboxedURL alloc] initWithURL:a3 accessType:1];
+    v5 = [[VCSandboxedURL alloc] initWithURL:asset accessType:1];
   }
 
   else
@@ -62,12 +62,12 @@
   return v2;
 }
 
-+ (const)cStringFromCallSource:(unsigned __int8)a3
++ (const)cStringFromCallSource:(unsigned __int8)source
 {
-  v3 = a3;
-  if (a3 < 7u)
+  sourceCopy = source;
+  if (source < 7u)
   {
-    return off_1E85F6F30[a3];
+    return off_1E85F6F30[source];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -76,18 +76,18 @@
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(AVCAnsweringMachineConfiguration *)v5 cStringFromCallSource:v3, v6];
+      [(AVCAnsweringMachineConfiguration *)v5 cStringFromCallSource:sourceCopy, v6];
     }
   }
 
   return "Unknown";
 }
 
-+ (id)stringFromCallSource:(unsigned __int8)a3
++ (id)stringFromCallSource:(unsigned __int8)source
 {
-  v3 = a3;
-  v4 = [a1 cStringFromCallSource:?];
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s(%hhu)", v4, v3];
+  sourceCopy = source;
+  v4 = [self cStringFromCallSource:?];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s(%hhu)", v4, sourceCopy];
 }
 
 - (id)description
@@ -180,7 +180,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -197,22 +197,22 @@ LABEL_11:
 - (id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", self->_source), @"vcAnsweringMachineCallSource"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isMessageRecordingEnabled), @"vcAnsweringMachineRecordingEnabled"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isMessageCaptioningEnabled), @"vcAnsweringMachineCaptioningEnabled"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isMessagePlaybackEnabled), @"vcAnsweringMachinePlaybackEnabled"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", self->_usage), @"vcAnsweringMachineUsage"}];
-  [v3 setObject:-[NSUUID UUIDString](self->_reportingSamplingUUID forKeyedSubscript:{"UUIDString"), @"vcAnsweringMachineReportingSamplingUUID"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", self->_source), @"vcAnsweringMachineCallSource"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isMessageRecordingEnabled), @"vcAnsweringMachineRecordingEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isMessageCaptioningEnabled), @"vcAnsweringMachineCaptioningEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isMessagePlaybackEnabled), @"vcAnsweringMachinePlaybackEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", self->_usage), @"vcAnsweringMachineUsage"}];
+  [dictionary setObject:-[NSUUID UUIDString](self->_reportingSamplingUUID forKeyedSubscript:{"UUIDString"), @"vcAnsweringMachineReportingSamplingUUID"}];
   p_announcementAsset = &self->_announcementAsset;
   announcementAsset = self->_announcementAsset;
   if (announcementAsset)
   {
-    v6 = [(VCSandboxedURL *)announcementAsset serialize];
-    if (v6)
+    serialize = [(VCSandboxedURL *)announcementAsset serialize];
+    if (serialize)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"vcAnsweringMachineAnnouncementAssetURL"];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_announcementAssetMilliSecondDelay), @"vcAnsweringMachineAnnouncementAssetDelay"}];
+      [dictionary setObject:serialize forKeyedSubscript:@"vcAnsweringMachineAnnouncementAssetURL"];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_announcementAssetMilliSecondDelay), @"vcAnsweringMachineAnnouncementAssetDelay"}];
     }
 
     else
@@ -258,7 +258,7 @@ LABEL_11:
             v20 = 2112;
             v21 = v7;
             v22 = 2048;
-            v23 = self;
+            selfCopy = self;
             v24 = 2112;
             v25 = v13;
             _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to serialize announcementAsset=%@", &v14, 0x3Au);
@@ -270,10 +270,10 @@ LABEL_11:
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (AVCAnsweringMachineConfiguration)initWithClientDictionary:(id)a3 clientPid:(int)a4
+- (AVCAnsweringMachineConfiguration)initWithClientDictionary:(id)dictionary clientPid:(int)pid
 {
   v27 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -281,21 +281,21 @@ LABEL_11:
   v6 = [(AVCAnsweringMachineConfiguration *)&v16 init];
   if (v6)
   {
-    v6->_source = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcAnsweringMachineCallSource", "integerValue"}];
-    v6->_isMessageRecordingEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcAnsweringMachineRecordingEnabled", "BOOLValue"}];
-    v6->_isMessageCaptioningEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcAnsweringMachineCaptioningEnabled", "BOOLValue"}];
-    v6->_isMessagePlaybackEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcAnsweringMachinePlaybackEnabled", "BOOLValue"}];
-    v6->_announcementAsset = [+[VCSandboxedURL deserialize:](VCSandboxedURL deserialize:{objc_msgSend(a3, "objectForKeyedSubscript:", @"vcAnsweringMachineAnnouncementAssetURL", "consumeToken"}];
-    v6->_announcementAssetMilliSecondDelay = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcAnsweringMachineAnnouncementAssetDelay", "unsignedLongValue"}];
-    v6->_usage = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcAnsweringMachineUsage", "integerValue"}];
-    v6->_clientPid = a4;
-    v6->_reportingSamplingUUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:{objc_msgSend(a3, "objectForKeyedSubscript:", @"vcAnsweringMachineReportingSamplingUUID"}];
+    v6->_source = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcAnsweringMachineCallSource", "integerValue"}];
+    v6->_isMessageRecordingEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcAnsweringMachineRecordingEnabled", "BOOLValue"}];
+    v6->_isMessageCaptioningEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcAnsweringMachineCaptioningEnabled", "BOOLValue"}];
+    v6->_isMessagePlaybackEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcAnsweringMachinePlaybackEnabled", "BOOLValue"}];
+    v6->_announcementAsset = [+[VCSandboxedURL deserialize:](VCSandboxedURL deserialize:{objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcAnsweringMachineAnnouncementAssetURL", "consumeToken"}];
+    v6->_announcementAssetMilliSecondDelay = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcAnsweringMachineAnnouncementAssetDelay", "unsignedLongValue"}];
+    v6->_usage = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcAnsweringMachineUsage", "integerValue"}];
+    v6->_clientPid = pid;
+    v6->_reportingSamplingUUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:{objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcAnsweringMachineReportingSamplingUUID"}];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
       v7 = [-[AVCAnsweringMachineConfiguration description](v6 "description")];
-      v8 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-      asprintf(&__str, "self=%s succeeded with clientDict=%s clientPid=%d", v7, v8, a4);
+      v8 = dictionary ? [objc_msgSend(dictionary "description")] : "<nil>";
+      asprintf(&__str, "self=%s succeeded with clientDict=%s clientPid=%d", v7, v8, pid);
       if (__str)
       {
         __lasts = 0;
@@ -335,14 +335,14 @@ LABEL_11:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(AVCAnsweringMachineConfiguration);
   [(AVCAnsweringMachineConfiguration *)v5 setSource:[(AVCAnsweringMachineConfiguration *)self source]];
   [(AVCAnsweringMachineConfiguration *)v5 setIsMessageRecordingEnabled:[(AVCAnsweringMachineConfiguration *)self isMessageRecordingEnabled]];
   [(AVCAnsweringMachineConfiguration *)v5 setIsMessageCaptioningEnabled:[(AVCAnsweringMachineConfiguration *)self isMessageCaptioningEnabled]];
   [(AVCAnsweringMachineConfiguration *)v5 setIsMessagePlaybackEnabled:[(AVCAnsweringMachineConfiguration *)self isMessagePlaybackEnabled]];
-  v6 = [(VCSandboxedURL *)self->_announcementAsset copyWithZone:a3];
+  v6 = [(VCSandboxedURL *)self->_announcementAsset copyWithZone:zone];
   [(AVCAnsweringMachineConfiguration *)v5 setAnnouncementAsset:v6];
 
   [(AVCAnsweringMachineConfiguration *)v5 setAnnouncementAssetMilliSecondDelay:[(AVCAnsweringMachineConfiguration *)self announcementAssetMilliSecondDelay]];
@@ -391,7 +391,7 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
   v3 = *a2;
   v4 = 136315906;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
   v7 = "[AVCAnsweringMachineConfiguration dictionary]";
   v8 = 1024;

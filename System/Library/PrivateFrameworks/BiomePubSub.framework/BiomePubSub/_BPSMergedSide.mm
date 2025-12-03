@@ -1,51 +1,51 @@
 @interface _BPSMergedSide
-- (_BPSMergedSide)initWithIndex:(int64_t)a3 merger:(id)a4;
-- (int64_t)receiveInput:(id)a3;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (_BPSMergedSide)initWithIndex:(int64_t)index merger:(id)merger;
+- (int64_t)receiveInput:(id)input;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation _BPSMergedSide
 
-- (_BPSMergedSide)initWithIndex:(int64_t)a3 merger:(id)a4
+- (_BPSMergedSide)initWithIndex:(int64_t)index merger:(id)merger
 {
-  v7 = a4;
+  mergerCopy = merger;
   v11.receiver = self;
   v11.super_class = _BPSMergedSide;
   v8 = [(_BPSMergedSide *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_index = a3;
-    objc_storeStrong(&v8->_merger, a4);
+    v8->_index = index;
+    objc_storeStrong(&v8->_merger, merger);
   }
 
   return v9;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v6 = self;
-  v4 = a3;
-  v5 = [(_BPSMergedSide *)v6 merger];
-  [v5 receiveCompletion:v4 atIndex:{-[_BPSMergedSide index](v6, "index")}];
+  selfCopy = self;
+  completionCopy = completion;
+  merger = [(_BPSMergedSide *)selfCopy merger];
+  [merger receiveCompletion:completionCopy atIndex:{-[_BPSMergedSide index](selfCopy, "index")}];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(_BPSMergedSide *)v4 merger];
-  v7 = [v6 receiveInput:v5 atIndex:{-[_BPSMergedSide index](v4, "index")}];
+  selfCopy = self;
+  inputCopy = input;
+  merger = [(_BPSMergedSide *)selfCopy merger];
+  v7 = [merger receiveInput:inputCopy atIndex:{-[_BPSMergedSide index](selfCopy, "index")}];
 
   return v7;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(_BPSMergedSide *)self merger];
-  [v5 receiveSubscription:v4 atIndex:{-[_BPSMergedSide index](self, "index")}];
+  subscriptionCopy = subscription;
+  merger = [(_BPSMergedSide *)self merger];
+  [merger receiveSubscription:subscriptionCopy atIndex:{-[_BPSMergedSide index](self, "index")}];
 }
 
 @end

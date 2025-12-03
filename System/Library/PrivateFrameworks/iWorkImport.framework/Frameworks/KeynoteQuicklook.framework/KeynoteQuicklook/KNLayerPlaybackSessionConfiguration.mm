@@ -1,30 +1,30 @@
 @interface KNLayerPlaybackSessionConfiguration
 - (CGSize)boundsSize;
 - (KNLayerPlaybackSessionConfiguration)configurationWithUpdatedLayerScreenEnvironment;
-- (KNLayerPlaybackSessionConfiguration)initWithLayerHost:(id)a3 isMetalEnabled:(BOOL)a4 isSceneRenderingEnabled:(BOOL)a5 isHDREnabled:(BOOL)a6;
+- (KNLayerPlaybackSessionConfiguration)initWithLayerHost:(id)host isMetalEnabled:(BOOL)enabled isSceneRenderingEnabled:(BOOL)renderingEnabled isHDREnabled:(BOOL)rEnabled;
 - (id)description;
 @end
 
 @implementation KNLayerPlaybackSessionConfiguration
 
-- (KNLayerPlaybackSessionConfiguration)initWithLayerHost:(id)a3 isMetalEnabled:(BOOL)a4 isSceneRenderingEnabled:(BOOL)a5 isHDREnabled:(BOOL)a6
+- (KNLayerPlaybackSessionConfiguration)initWithLayerHost:(id)host isMetalEnabled:(BOOL)enabled isSceneRenderingEnabled:(BOOL)renderingEnabled isHDREnabled:(BOOL)rEnabled
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = a3;
+  renderingEnabledCopy = renderingEnabled;
+  enabledCopy = enabled;
+  hostCopy = host;
   v51.receiver = self;
   v51.super_class = KNLayerPlaybackSessionConfiguration;
-  v12 = [(KNPlaybackSessionConfiguration *)&v51 initSuperclass];
-  v13 = v12;
-  if (v12)
+  initSuperclass = [(KNPlaybackSessionConfiguration *)&v51 initSuperclass];
+  v13 = initSuperclass;
+  if (initSuperclass)
   {
-    objc_storeStrong(v12 + 4, a3);
-    v16 = objc_msgSend_screenEnvironment(v11, v14, v15);
+    objc_storeStrong(initSuperclass + 4, host);
+    v16 = objc_msgSend_screenEnvironment(hostCopy, v14, v15);
     v19 = objc_msgSend_copy(v16, v17, v18);
     v20 = v13[2];
     v13[2] = v19;
 
-    if (a6)
+    if (rEnabled)
     {
       v23 = objc_msgSend_currentCapabilities(MEMORY[0x277D801F0], v21, v22);
       isHDRCapable = objc_msgSend_isHDRCapable(v23, v24, v25);
@@ -36,14 +36,14 @@
       objc_msgSend_setSupportsHDR_(v13, v21, 0);
     }
 
-    *(v13 + 24) = v8;
-    *(v13 + 25) = v7;
+    *(v13 + 24) = enabledCopy;
+    *(v13 + 25) = renderingEnabledCopy;
     v30 = objc_msgSend_rootLayer(v13[4], v28, v29);
     objc_msgSend_bounds(v30, v31, v32);
     v13[5] = v33;
     v13[6] = v34;
 
-    if (v8)
+    if (enabledCopy)
     {
       v36 = MEMORY[0x277D81150];
       v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v35, "[KNLayerPlaybackSessionConfiguration initWithLayerHost:isMetalEnabled:isSceneRenderingEnabled:isHDREnabled:]");
@@ -53,7 +53,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v41, v42);
     }
 
-    if (v7)
+    if (renderingEnabledCopy)
     {
       v43 = MEMORY[0x277D81150];
       v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v35, "[KNLayerPlaybackSessionConfiguration initWithLayerHost:isMetalEnabled:isSceneRenderingEnabled:isHDREnabled:]");

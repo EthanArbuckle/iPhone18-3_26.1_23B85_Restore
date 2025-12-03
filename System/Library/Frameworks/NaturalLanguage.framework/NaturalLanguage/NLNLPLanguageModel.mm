@@ -1,21 +1,21 @@
 @interface NLNLPLanguageModel
-- (NLNLPLanguageModel)initWithLocalization:(id)a3 options:(id)a4;
-- (double)conditionalProbabilityForEntry:(id)a3 context:(id)a4;
-- (double)conditionalProbabilityForWord:(id)a3 context:(id)a4;
-- (id)sessionWithOptions:(id)a3;
-- (void)enumeratePredictionsForContext:(id)a3 maxEntriesPerPrediction:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumeratePredictionsForContext:(id)a3 maxWordsPerPrediction:(unint64_t)a4 usingBlock:(id)a5;
+- (NLNLPLanguageModel)initWithLocalization:(id)localization options:(id)options;
+- (double)conditionalProbabilityForEntry:(id)entry context:(id)context;
+- (double)conditionalProbabilityForWord:(id)word context:(id)context;
+- (id)sessionWithOptions:(id)options;
+- (void)enumeratePredictionsForContext:(id)context maxEntriesPerPrediction:(unint64_t)prediction usingBlock:(id)block;
+- (void)enumeratePredictionsForContext:(id)context maxWordsPerPrediction:(unint64_t)prediction usingBlock:(id)block;
 @end
 
 @implementation NLNLPLanguageModel
 
-- (NLNLPLanguageModel)initWithLocalization:(id)a3 options:(id)a4
+- (NLNLPLanguageModel)initWithLocalization:(id)localization options:(id)options
 {
-  v6 = a3;
-  v7 = granularityForOptions(a4);
+  localizationCopy = localization;
+  v7 = granularityForOptions(options);
   v10.receiver = self;
   v10.super_class = NLNLPLanguageModel;
-  v8 = [(NLLanguageModel *)&v10 initWithLocalization:v6];
+  v8 = [(NLLanguageModel *)&v10 initWithLocalization:localizationCopy];
 
   if (v8)
   {
@@ -25,15 +25,15 @@
   return v8;
 }
 
-- (id)sessionWithOptions:(id)a3
+- (id)sessionWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [[NLNLPLanguageModelSession alloc] initWithLanguageModel:self options:v4];
+  optionsCopy = options;
+  v5 = [[NLNLPLanguageModelSession alloc] initWithLanguageModel:self options:optionsCopy];
 
   return v5;
 }
 
-- (double)conditionalProbabilityForEntry:(id)a3 context:(id)a4
+- (double)conditionalProbabilityForEntry:(id)entry context:(id)context
 {
   if (conditionalProbabilityForEntry_context__onceToken != -1)
   {
@@ -43,7 +43,7 @@
   return -30.0;
 }
 
-- (double)conditionalProbabilityForWord:(id)a3 context:(id)a4
+- (double)conditionalProbabilityForWord:(id)word context:(id)context
 {
   if (conditionalProbabilityForWord_context__onceToken != -1)
   {
@@ -53,7 +53,7 @@
   return -30.0;
 }
 
-- (void)enumeratePredictionsForContext:(id)a3 maxEntriesPerPrediction:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumeratePredictionsForContext:(id)context maxEntriesPerPrediction:(unint64_t)prediction usingBlock:(id)block
 {
   if (enumeratePredictionsForContext_maxEntriesPerPrediction_usingBlock__onceToken != -1)
   {
@@ -61,7 +61,7 @@
   }
 }
 
-- (void)enumeratePredictionsForContext:(id)a3 maxWordsPerPrediction:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumeratePredictionsForContext:(id)context maxWordsPerPrediction:(unint64_t)prediction usingBlock:(id)block
 {
   if (enumeratePredictionsForContext_maxWordsPerPrediction_usingBlock__onceToken != -1)
   {

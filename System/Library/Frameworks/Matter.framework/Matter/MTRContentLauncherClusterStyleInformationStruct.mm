@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterStyleInformationStruct
 - (MTRContentLauncherClusterStyleInformationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterStyleInformationStruct);
-  v5 = [(MTRContentLauncherClusterStyleInformationStruct *)self imageURL];
-  [(MTRContentLauncherClusterStyleInformationStruct *)v4 setImageURL:v5];
+  imageURL = [(MTRContentLauncherClusterStyleInformationStruct *)self imageURL];
+  [(MTRContentLauncherClusterStyleInformationStruct *)v4 setImageURL:imageURL];
 
-  v6 = [(MTRContentLauncherClusterStyleInformationStruct *)self color];
-  [(MTRContentLauncherClusterStyleInformationStruct *)v4 setColor:v6];
+  color = [(MTRContentLauncherClusterStyleInformationStruct *)self color];
+  [(MTRContentLauncherClusterStyleInformationStruct *)v4 setColor:color];
 
   v7 = [(MTRContentLauncherClusterStyleInformationStruct *)self size];
   [(MTRContentLauncherClusterStyleInformationStruct *)v4 setSize:v7];

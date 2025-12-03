@@ -1,30 +1,30 @@
 @interface HMDHomeSettingsModel
-+ (id)defaultModelForHomeUUID:(id)a3;
-+ (id)modelIDForHomeUUID:(id)a3;
++ (id)defaultModelForHomeUUID:(id)d;
++ (id)modelIDForHomeUUID:(id)d;
 + (id)modelNamespace;
 + (id)properties;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDHomeSettingsModel
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"home"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"home"])
   {
     v11 = objc_opt_class();
-    v12 = [(HMDBackingStoreModelObject *)self parentUUID];
-    v13 = [v11 cd_getHomeFromUUID:v12];
+    parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+    v13 = [v11 cd_getHomeFromUUID:parentUUID];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = HMDHomeSettingsModel;
-    v13 = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v13 = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v13;
@@ -58,12 +58,12 @@ void __34__HMDHomeSettingsModel_properties__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultModelForHomeUUID:(id)a3
++ (id)defaultModelForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDHomeSettingsModel alloc];
-  v6 = [a1 modelIDForHomeUUID:v4];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v4];
+  v6 = [self modelIDForHomeUUID:dCopy];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:dCopy];
 
   [(HMDHomeSettingsModel *)v7 setAutomaticSoftwareUpdateEnabled:MEMORY[0x277CBEC38]];
   [(HMDHomeSettingsModel *)v7 setAutomaticThirdPartyAccessorySoftwareUpdateEnabled:MEMORY[0x277CBEC28]];
@@ -71,12 +71,12 @@ void __34__HMDHomeSettingsModel_properties__block_invoke()
   return v7;
 }
 
-+ (id)modelIDForHomeUUID:(id)a3
++ (id)modelIDForHomeUUID:(id)d
 {
   v3 = MEMORY[0x277CBEB28];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 dataWithLength:16];
-  [v4 getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
+  [dCopy getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
 
   v6 = objc_alloc(MEMORY[0x277CCAD78]);
   v7 = +[HMDHomeSettingsModel modelNamespace];

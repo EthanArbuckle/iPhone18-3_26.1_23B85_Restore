@@ -1,16 +1,16 @@
 @interface BMSiriSELFProcessedEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriSELFProcessedEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriSELFProcessedEvent)initWithLogicalTimestamp:(id)a3 clusterRepresentativeId:(id)a4 componentId:(id)a5 anyEventType:(id)a6 innerType:(id)a7 messageUuid:(id)a8 eventData:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriSELFProcessedEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriSELFProcessedEvent)initWithLogicalTimestamp:(id)timestamp clusterRepresentativeId:(id)id componentId:(id)componentId anyEventType:(id)type innerType:(id)innerType messageUuid:(id)uuid eventData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)messageUuid;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriSELFProcessedEvent
@@ -39,25 +39,25 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
-    v7 = [v5 logicalTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    logicalTimestamp = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
+    logicalTimestamp2 = [v5 logicalTimestamp];
+    v8 = logicalTimestamp2;
+    if (logicalTimestamp == logicalTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
-      v10 = [v5 logicalTimestamp];
-      v11 = [v9 isEqual:v10];
+      logicalTimestamp3 = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
+      logicalTimestamp4 = [v5 logicalTimestamp];
+      v11 = [logicalTimestamp3 isEqual:logicalTimestamp4];
 
       if (!v11)
       {
@@ -65,18 +65,18 @@
       }
     }
 
-    v13 = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
-    v14 = [v5 clusterRepresentativeId];
-    v15 = v14;
-    if (v13 == v14)
+    clusterRepresentativeId = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
+    clusterRepresentativeId2 = [v5 clusterRepresentativeId];
+    v15 = clusterRepresentativeId2;
+    if (clusterRepresentativeId == clusterRepresentativeId2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
-      v17 = [v5 clusterRepresentativeId];
-      v18 = [v16 isEqual:v17];
+      clusterRepresentativeId3 = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
+      clusterRepresentativeId4 = [v5 clusterRepresentativeId];
+      v18 = [clusterRepresentativeId3 isEqual:clusterRepresentativeId4];
 
       if (!v18)
       {
@@ -84,18 +84,18 @@
       }
     }
 
-    v19 = [(BMSiriSELFProcessedEvent *)self componentId];
-    v20 = [v5 componentId];
-    v21 = v20;
-    if (v19 == v20)
+    componentId = [(BMSiriSELFProcessedEvent *)self componentId];
+    componentId2 = [v5 componentId];
+    v21 = componentId2;
+    if (componentId == componentId2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriSELFProcessedEvent *)self componentId];
-      v23 = [v5 componentId];
-      v24 = [v22 isEqual:v23];
+      componentId3 = [(BMSiriSELFProcessedEvent *)self componentId];
+      componentId4 = [v5 componentId];
+      v24 = [componentId3 isEqual:componentId4];
 
       if (!v24)
       {
@@ -115,8 +115,8 @@
         goto LABEL_27;
       }
 
-      v25 = [(BMSiriSELFProcessedEvent *)self anyEventType];
-      if (v25 != [v5 anyEventType])
+      anyEventType = [(BMSiriSELFProcessedEvent *)self anyEventType];
+      if (anyEventType != [v5 anyEventType])
       {
         goto LABEL_27;
       }
@@ -134,25 +134,25 @@
         goto LABEL_27;
       }
 
-      v26 = [(BMSiriSELFProcessedEvent *)self innerType];
-      if (v26 != [v5 innerType])
+      innerType = [(BMSiriSELFProcessedEvent *)self innerType];
+      if (innerType != [v5 innerType])
       {
         goto LABEL_27;
       }
     }
 
-    v27 = [(BMSiriSELFProcessedEvent *)self messageUuid];
-    v28 = [v5 messageUuid];
-    v29 = v28;
-    if (v27 == v28)
+    messageUuid = [(BMSiriSELFProcessedEvent *)self messageUuid];
+    messageUuid2 = [v5 messageUuid];
+    v29 = messageUuid2;
+    if (messageUuid == messageUuid2)
     {
     }
 
     else
     {
-      v30 = [(BMSiriSELFProcessedEvent *)self messageUuid];
-      v31 = [v5 messageUuid];
-      v32 = [v30 isEqual:v31];
+      messageUuid3 = [(BMSiriSELFProcessedEvent *)self messageUuid];
+      messageUuid4 = [v5 messageUuid];
+      v32 = [messageUuid3 isEqual:messageUuid4];
 
       if (!v32)
       {
@@ -164,18 +164,18 @@ LABEL_28:
       }
     }
 
-    v34 = [(BMSiriSELFProcessedEvent *)self eventData];
-    v35 = [v5 eventData];
-    if (v34 == v35)
+    eventData = [(BMSiriSELFProcessedEvent *)self eventData];
+    eventData2 = [v5 eventData];
+    if (eventData == eventData2)
     {
       v12 = 1;
     }
 
     else
     {
-      v36 = [(BMSiriSELFProcessedEvent *)self eventData];
-      v37 = [v5 eventData];
-      v12 = [v36 isEqual:v37];
+      eventData3 = [(BMSiriSELFProcessedEvent *)self eventData];
+      eventData4 = [v5 eventData];
+      v12 = [eventData3 isEqual:eventData4];
     }
 
     goto LABEL_28;
@@ -206,14 +206,14 @@ LABEL_29:
 - (id)jsonDictionary
 {
   v30[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
-  v4 = [v3 jsonDictionary];
+  logicalTimestamp = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
+  jsonDictionary = [logicalTimestamp jsonDictionary];
 
-  v5 = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
-  v6 = [v5 jsonDictionary];
+  clusterRepresentativeId = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
+  jsonDictionary2 = [clusterRepresentativeId jsonDictionary];
 
-  v7 = [(BMSiriSELFProcessedEvent *)self componentId];
-  v8 = [v7 jsonDictionary];
+  componentId = [(BMSiriSELFProcessedEvent *)self componentId];
+  jsonDictionary3 = [componentId jsonDictionary];
 
   if ([(BMSiriSELFProcessedEvent *)self hasAnyEventType])
   {
@@ -235,76 +235,76 @@ LABEL_29:
     v9 = 0;
   }
 
-  v10 = [(BMSiriSELFProcessedEvent *)self messageUuid];
-  v11 = [v10 UUIDString];
+  messageUuid = [(BMSiriSELFProcessedEvent *)self messageUuid];
+  uUIDString = [messageUuid UUIDString];
 
-  v12 = [(BMSiriSELFProcessedEvent *)self eventData];
-  v13 = [v12 base64EncodedStringWithOptions:0];
+  eventData = [(BMSiriSELFProcessedEvent *)self eventData];
+  v13 = [eventData base64EncodedStringWithOptions:0];
 
   v29[0] = @"logicalTimestamp";
-  v14 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v14;
-  v30[0] = v14;
+  v25 = null;
+  v30[0] = null;
   v29[1] = @"clusterRepresentativeId";
-  v15 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v15;
-  v30[1] = v15;
+  v24 = null2;
+  v30[1] = null2;
   v29[2] = @"componentId";
-  v16 = v8;
-  if (!v8)
+  null3 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v4;
-  v30[2] = v16;
+  v27 = jsonDictionary;
+  v30[2] = null3;
   v29[3] = @"anyEventType";
-  v17 = v28;
+  null4 = v28;
   if (!v28)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v6;
-  v30[3] = v17;
+  v26 = jsonDictionary2;
+  v30[3] = null4;
   v29[4] = @"innerType";
-  v18 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[4] = v18;
+  v30[4] = null5;
   v29[5] = @"messageUuid";
-  v19 = v11;
-  if (!v11)
+  null6 = uUIDString;
+  if (!uUIDString)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[5] = v19;
+  v30[5] = null6;
   v29[6] = @"eventData";
-  v20 = v13;
+  null7 = v13;
   if (!v13)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[6] = v20;
+  v30[6] = null7;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:7];
   if (v13)
   {
-    if (v11)
+    if (uUIDString)
     {
       goto LABEL_23;
     }
@@ -319,7 +319,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (!v11)
+  if (!uUIDString)
   {
     goto LABEL_33;
   }
@@ -337,7 +337,7 @@ LABEL_24:
   {
   }
 
-  if (v8)
+  if (jsonDictionary3)
   {
     if (v26)
     {
@@ -373,11 +373,11 @@ LABEL_29:
   return v21;
 }
 
-- (BMSiriSELFProcessedEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriSELFProcessedEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v106[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"logicalTimestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"logicalTimestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -393,17 +393,17 @@ LABEL_29:
     v19 = v88;
     if (v19)
     {
-      if (a4)
+      if (error)
       {
         v19 = v19;
-        *a4 = v19;
+        *error = v19;
       }
 
       goto LABEL_55;
     }
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"clusterRepresentativeId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"clusterRepresentativeId"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
@@ -419,10 +419,10 @@ LABEL_4:
       v20 = v87;
       if (v20)
       {
-        if (a4)
+        if (error)
         {
           v20 = v20;
-          *a4 = v20;
+          *error = v20;
         }
 
         v21 = 0;
@@ -430,15 +430,15 @@ LABEL_4:
       }
 
 LABEL_7:
-      v11 = [v6 objectForKeyedSubscript:@"componentId"];
-      v84 = self;
-      v85 = v6;
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"componentId"];
+      selfCopy = self;
+      v85 = dictionaryCopy;
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v21 = 0;
             goto LABEL_48;
@@ -459,8 +459,8 @@ LABEL_7:
           v48 = v44;
           v8 = v83;
           v21 = 0;
-          *a4 = [v43 initWithDomain:v48 code:2 userInfo:v22];
-          v12 = v84;
+          *error = [v43 initWithDomain:v48 code:2 userInfo:v22];
+          selfCopy2 = selfCopy;
           goto LABEL_47;
         }
 
@@ -470,11 +470,11 @@ LABEL_7:
         v24 = v86;
         if (v24)
         {
-          v12 = v84;
-          if (a4)
+          selfCopy2 = selfCopy;
+          if (error)
           {
             v24 = v24;
-            *a4 = v24;
+            *error = v24;
           }
 
           v21 = 0;
@@ -487,12 +487,12 @@ LABEL_7:
         v15 = v11;
         v81 = v23;
 
-        v12 = v84;
+        selfCopy2 = selfCopy;
       }
 
       else
       {
-        v12 = self;
+        selfCopy2 = self;
         v13 = v9;
         v14 = v7;
         v15 = v11;
@@ -507,7 +507,7 @@ LABEL_7:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v80 = 0;
             v21 = 0;
@@ -518,7 +518,7 @@ LABEL_7:
             goto LABEL_46;
           }
 
-          v49 = a4;
+          errorCopy = error;
           v50 = objc_alloc(MEMORY[0x1E696ABC0]);
           v51 = v10;
           v52 = *MEMORY[0x1E698F240];
@@ -530,7 +530,7 @@ LABEL_7:
           v10 = v51;
           v80 = 0;
           v21 = 0;
-          *v49 = [v50 initWithDomain:v53 code:2 userInfo:v18];
+          *errorCopy = [v50 initWithDomain:v53 code:2 userInfo:v18];
           v23 = v81;
           v11 = v15;
           v7 = v14;
@@ -543,8 +543,8 @@ LABEL_46:
           v22 = v80;
 LABEL_47:
 
-          self = v12;
-          v6 = v85;
+          self = selfCopy2;
+          dictionaryCopy = v85;
 LABEL_48:
 
           goto LABEL_49;
@@ -571,7 +571,7 @@ LABEL_48:
           v9 = v13;
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v79 = 0;
               v21 = 0;
@@ -582,18 +582,18 @@ LABEL_48:
             v54 = objc_alloc(MEMORY[0x1E696ABC0]);
             v55 = *MEMORY[0x1E698F240];
             v97 = *MEMORY[0x1E696A578];
-            v56 = a4;
+            errorCopy2 = error;
             v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"innerType"];
             v98 = v30;
             v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
             v57 = [v54 initWithDomain:v55 code:2 userInfo:v31];
             v79 = 0;
             v21 = 0;
-            *v56 = v57;
+            *errorCopy2 = v57;
             goto LABEL_43;
           }
 
-          v75 = a4;
+          errorCopy5 = error;
           v79 = v18;
 LABEL_35:
           v30 = [v85 objectForKeyedSubscript:@"messageUuid"];
@@ -602,8 +602,8 @@ LABEL_35:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v21 = v75;
-              if (!v75)
+              v21 = errorCopy5;
+              if (!errorCopy5)
               {
                 goto LABEL_44;
               }
@@ -614,12 +614,12 @@ LABEL_35:
               v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"messageUuid"];
               v94 = v31;
               v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
-              *v75 = [v58 initWithDomain:v59 code:2 userInfo:v60];
+              *errorCopy5 = [v58 initWithDomain:v59 code:2 userInfo:v60];
 
               v21 = 0;
 LABEL_43:
 
-              v12 = v84;
+              selfCopy2 = selfCopy;
               v10 = v77;
 LABEL_44:
               v23 = v81;
@@ -632,7 +632,7 @@ LABEL_44:
             v32 = v85;
             if (!v41)
             {
-              if (v75)
+              if (errorCopy5)
               {
                 v66 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v67 = *MEMORY[0x1E698F240];
@@ -640,7 +640,7 @@ LABEL_44:
                 v68 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"messageUuid"];
                 v96 = v68;
                 v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
-                *v75 = [v66 initWithDomain:v67 code:2 userInfo:v69];
+                *errorCopy5 = [v66 initWithDomain:v67 code:2 userInfo:v69];
               }
 
               v21 = 0;
@@ -674,7 +674,7 @@ LABEL_44:
                   goto LABEL_41;
                 }
 
-                if (v75)
+                if (errorCopy5)
                 {
                   v73 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v71 = *MEMORY[0x1E698F240];
@@ -682,11 +682,11 @@ LABEL_44:
                   v61 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected format for value of field '%@', expected base64 encoding", @"eventData"];
                   v92 = v61;
                   v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-                  *v75 = [v73 initWithDomain:v71 code:2 userInfo:v62];
+                  *errorCopy5 = [v73 initWithDomain:v71 code:2 userInfo:v62];
                 }
               }
 
-              else if (v75)
+              else if (errorCopy5)
               {
                 v74 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v72 = *MEMORY[0x1E698F240];
@@ -694,7 +694,7 @@ LABEL_44:
                 v64 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type (%@) for value of field '%@', expected NSData or base64 encoded NSString", objc_opt_class(), @"eventData"];
                 v90 = v64;
                 v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
-                *v75 = [v74 initWithDomain:v72 code:2 userInfo:v65];
+                *errorCopy5 = [v74 initWithDomain:v72 code:2 userInfo:v65];
               }
 
               v34 = 0;
@@ -711,20 +711,20 @@ LABEL_44:
           }
 
 LABEL_41:
-          v21 = [(BMSiriSELFProcessedEvent *)v84 initWithLogicalTimestamp:v82 clusterRepresentativeId:v77 componentId:v81 anyEventType:v80 innerType:v79 messageUuid:v31 eventData:v34];
-          v84 = v21;
+          v21 = [(BMSiriSELFProcessedEvent *)selfCopy initWithLogicalTimestamp:v82 clusterRepresentativeId:v77 componentId:v81 anyEventType:v80 innerType:v79 messageUuid:v31 eventData:v34];
+          selfCopy = v21;
 LABEL_42:
 
           goto LABEL_43;
         }
 
-        v75 = a4;
+        errorCopy5 = error;
         v79 = 0;
       }
 
       else
       {
-        v75 = a4;
+        errorCopy5 = error;
         v79 = 0;
         v7 = v14;
       }
@@ -733,9 +733,9 @@ LABEL_42:
       goto LABEL_35;
     }
 
-    if (a4)
+    if (error)
     {
-      v76 = a4;
+      errorCopy6 = error;
       v37 = objc_alloc(MEMORY[0x1E696ABC0]);
       v38 = v8;
       v39 = *MEMORY[0x1E698F240];
@@ -746,7 +746,7 @@ LABEL_42:
       v40 = v39;
       v8 = v38;
       v21 = 0;
-      *v76 = [v37 initWithDomain:v40 code:2 userInfo:v11];
+      *errorCopy6 = [v37 initWithDomain:v40 code:2 userInfo:v11];
       goto LABEL_48;
     }
 
@@ -755,13 +755,13 @@ LABEL_55:
     goto LABEL_49;
   }
 
-  if (!a4)
+  if (!error)
   {
     v21 = 0;
     goto LABEL_50;
   }
 
-  v25 = a4;
+  errorCopy7 = error;
   v26 = objc_alloc(MEMORY[0x1E696ABC0]);
   v27 = *MEMORY[0x1E698F240];
   v105 = *MEMORY[0x1E696A578];
@@ -771,7 +771,7 @@ LABEL_55:
   v29 = v27;
   v8 = v28;
   v21 = 0;
-  *v25 = [v26 initWithDomain:v29 code:2 userInfo:v9];
+  *errorCopy7 = [v26 initWithDomain:v29 code:2 userInfo:v9];
 LABEL_49:
 
 LABEL_50:
@@ -783,32 +783,32 @@ LABEL_50:
 {
   v3 = objc_opt_new();
   [(BMSiriSELFProcessedEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_logicalTimestamp)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriSELFProcessedEventLogicalTimestamp *)self->_logicalTimestamp writeTo:v4];
+    [(BMSiriSELFProcessedEventLogicalTimestamp *)self->_logicalTimestamp writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_clusterRepresentativeId)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriSELFProcessedEventComponentIdentifier *)self->_clusterRepresentativeId writeTo:v4];
+    [(BMSiriSELFProcessedEventComponentIdentifier *)self->_clusterRepresentativeId writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_componentId)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriSELFProcessedEventComponentIdentifier *)self->_componentId writeTo:v4];
+    [(BMSiriSELFProcessedEventComponentIdentifier *)self->_componentId writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -835,9 +835,9 @@ LABEL_50:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMSiriSELFProcessedEvent;
   v5 = [(BMEventBase *)&v39 init];
@@ -846,12 +846,12 @@ LABEL_50:
     goto LABEL_73;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -862,18 +862,18 @@ LABEL_50:
       while (1)
       {
         LOBYTE(v40) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v40 & 0x7F) << v7;
@@ -891,9 +891,9 @@ LABEL_50:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -911,7 +911,7 @@ LABEL_16:
               goto LABEL_72;
             }
 
-            v23 = [[BMSiriSELFProcessedEventLogicalTimestamp alloc] initByReadFrom:v4];
+            v23 = [[BMSiriSELFProcessedEventLogicalTimestamp alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_72;
@@ -927,7 +927,7 @@ LABEL_16:
               goto LABEL_72;
             }
 
-            v23 = [[BMSiriSELFProcessedEventComponentIdentifier alloc] initByReadFrom:v4];
+            v23 = [[BMSiriSELFProcessedEventComponentIdentifier alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_72;
@@ -943,7 +943,7 @@ LABEL_16:
               goto LABEL_72;
             }
 
-            v23 = [[BMSiriSELFProcessedEventComponentIdentifier alloc] initByReadFrom:v4];
+            v23 = [[BMSiriSELFProcessedEventComponentIdentifier alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_72;
@@ -1006,18 +1006,18 @@ LABEL_43:
           while (1)
           {
             LOBYTE(v40) = 0;
-            v30 = [v4 position] + 1;
-            if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+            v30 = [fromCopy position] + 1;
+            if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
             {
-              v32 = [v4 data];
-              [v32 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v29 |= (v40 & 0x7F) << v27;
@@ -1035,7 +1035,7 @@ LABEL_43:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -1063,18 +1063,18 @@ LABEL_64:
           while (1)
           {
             LOBYTE(v40) = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v40 & 0x7F) << v16;
@@ -1092,7 +1092,7 @@ LABEL_64:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -1110,13 +1110,13 @@ LABEL_68:
       }
 
 LABEL_70:
-      v36 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v36 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_72:
     v37 = 0;
@@ -1134,68 +1134,68 @@ LABEL_73:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
-  v5 = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
-  v6 = [(BMSiriSELFProcessedEvent *)self componentId];
+  logicalTimestamp = [(BMSiriSELFProcessedEvent *)self logicalTimestamp];
+  clusterRepresentativeId = [(BMSiriSELFProcessedEvent *)self clusterRepresentativeId];
+  componentId = [(BMSiriSELFProcessedEvent *)self componentId];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriSELFProcessedEvent anyEventType](self, "anyEventType")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriSELFProcessedEvent innerType](self, "innerType")}];
-  v9 = [(BMSiriSELFProcessedEvent *)self messageUuid];
-  v10 = [(BMSiriSELFProcessedEvent *)self eventData];
-  v11 = [v3 initWithFormat:@"BMSiriSELFProcessedEvent with logicalTimestamp: %@, clusterRepresentativeId: %@, componentId: %@, anyEventType: %@, innerType: %@, messageUuid: %@, eventData: %@", v4, v5, v6, v7, v8, v9, v10];
+  messageUuid = [(BMSiriSELFProcessedEvent *)self messageUuid];
+  eventData = [(BMSiriSELFProcessedEvent *)self eventData];
+  v11 = [v3 initWithFormat:@"BMSiriSELFProcessedEvent with logicalTimestamp: %@, clusterRepresentativeId: %@, componentId: %@, anyEventType: %@, innerType: %@, messageUuid: %@, eventData: %@", logicalTimestamp, clusterRepresentativeId, componentId, v7, v8, messageUuid, eventData];
 
   return v11;
 }
 
-- (BMSiriSELFProcessedEvent)initWithLogicalTimestamp:(id)a3 clusterRepresentativeId:(id)a4 componentId:(id)a5 anyEventType:(id)a6 innerType:(id)a7 messageUuid:(id)a8 eventData:(id)a9
+- (BMSiriSELFProcessedEvent)initWithLogicalTimestamp:(id)timestamp clusterRepresentativeId:(id)id componentId:(id)componentId anyEventType:(id)type innerType:(id)innerType messageUuid:(id)uuid eventData:(id)data
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  timestampCopy = timestamp;
+  idCopy = id;
+  componentIdCopy = componentId;
+  typeCopy = type;
+  innerTypeCopy = innerType;
+  uuidCopy = uuid;
+  dataCopy = data;
   v30.receiver = self;
   v30.super_class = BMSiriSELFProcessedEvent;
   v20 = [(BMEventBase *)&v30 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_logicalTimestamp, a3);
-    objc_storeStrong(&v20->_clusterRepresentativeId, a4);
-    objc_storeStrong(&v20->_componentId, a5);
-    if (v16)
+    objc_storeStrong(&v20->_logicalTimestamp, timestamp);
+    objc_storeStrong(&v20->_clusterRepresentativeId, id);
+    objc_storeStrong(&v20->_componentId, componentId);
+    if (typeCopy)
     {
       v20->_hasAnyEventType = 1;
-      v21 = [v16 intValue];
+      intValue = [typeCopy intValue];
     }
 
     else
     {
       v20->_hasAnyEventType = 0;
-      v21 = -1;
+      intValue = -1;
     }
 
-    v20->_anyEventType = v21;
-    if (v17)
+    v20->_anyEventType = intValue;
+    if (innerTypeCopy)
     {
       v20->_hasInnerType = 1;
-      v22 = [v17 intValue];
+      intValue2 = [innerTypeCopy intValue];
     }
 
     else
     {
       v20->_hasInnerType = 0;
-      v22 = -1;
+      intValue2 = -1;
     }
 
-    v20->_innerType = v22;
-    if (v18)
+    v20->_innerType = intValue2;
+    if (uuidCopy)
     {
       v31[0] = 0;
       v31[1] = 0;
-      [v18 getUUIDBytes:v31];
+      [uuidCopy getUUIDBytes:v31];
       v23 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v31 length:16];
       raw_messageUuid = v20->_raw_messageUuid;
       v20->_raw_messageUuid = v23;
@@ -1207,7 +1207,7 @@ LABEL_73:
       v20->_raw_messageUuid = 0;
     }
 
-    objc_storeStrong(&v20->_eventData, a9);
+    objc_storeStrong(&v20->_eventData, data);
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -1267,9 +1267,9 @@ id __35__BMSiriSELFProcessedEvent_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1277,8 +1277,8 @@ id __35__BMSiriSELFProcessedEvent_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriSELFProcessedEvent alloc] initByReadFrom:v7];
     v4 = v8;

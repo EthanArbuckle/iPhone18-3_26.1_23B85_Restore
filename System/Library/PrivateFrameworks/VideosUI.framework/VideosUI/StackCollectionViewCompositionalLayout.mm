@@ -1,23 +1,23 @@
 @interface StackCollectionViewCompositionalLayout
 + (Class)layoutAttributesClass;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 @end
 
 @implementation StackCollectionViewCompositionalLayout
 
 + (Class)layoutAttributesClass
 {
-  sub_1E37BDB4C(a1, a2);
+  sub_1E37BDB4C(self, a2);
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
   OUTLINED_FUNCTION_0_8();
   v4 = v3;
@@ -27,7 +27,7 @@
   return v5 & 1;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   OUTLINED_FUNCTION_0_8();
   v4 = v3;
@@ -49,7 +49,7 @@
   return v4;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -57,7 +57,7 @@
   MEMORY[0x1EEE9AC00](v7);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1E41FE804();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_1E37BE680();
 
   (*(v6 + 8))(v9, v4);
@@ -65,25 +65,25 @@
   return v11;
 }
 
-- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  configurationCopy = configuration;
   return sub_1E37BE884();
 }
 
-- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(provider);
   *(swift_allocObject() + 16) = v3;
   return sub_1E37BE9A4();
 }
 
-- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC8VideosUI38StackCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(provider);
   *(swift_allocObject() + 16) = v5;
-  v6 = a4;
+  configurationCopy = configuration;
   return sub_1E37BEB94();
 }
 

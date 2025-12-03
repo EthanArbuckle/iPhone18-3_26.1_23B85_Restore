@@ -1,38 +1,38 @@
 @interface EKSequenceToken
-- (EKSequenceToken)initWithCADSequenceToken:(id)a3;
-- (EKSequenceToken)initWithCoder:(id)a3;
+- (EKSequenceToken)initWithCADSequenceToken:(id)token;
+- (EKSequenceToken)initWithCoder:(id)coder;
 - (id)CADToken;
 - (int)legacyToken;
 @end
 
 @implementation EKSequenceToken
 
-- (EKSequenceToken)initWithCADSequenceToken:(id)a3
+- (EKSequenceToken)initWithCADSequenceToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = EKSequenceToken;
   v5 = [(EKSequenceToken *)&v9 init];
   if (v5)
   {
-    v6 = [v4 allDBSequenceMap];
+    allDBSequenceMap = [tokenCopy allDBSequenceMap];
     sequenceNumbers = v5->_sequenceNumbers;
-    v5->_sequenceNumbers = v6;
+    v5->_sequenceNumbers = allDBSequenceMap;
   }
 
   return v5;
 }
 
-- (EKSequenceToken)initWithCoder:(id)a3
+- (EKSequenceToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = EKSequenceToken;
   v5 = [(EKSequenceToken *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"sequenceNumbers"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"sequenceNumbers"];
     sequenceNumbers = v5->_sequenceNumbers;
     v5->_sequenceNumbers = v7;
   }
@@ -55,15 +55,15 @@
 
   if (v4)
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v5 = -1;
+    intValue = -1;
   }
 
-  return v5;
+  return intValue;
 }
 
 @end

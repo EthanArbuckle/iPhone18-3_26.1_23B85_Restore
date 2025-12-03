@@ -1,36 +1,36 @@
 @interface PRPosterColorVariationsConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PRPosterColorVariationsConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterColorVariationsConfiguration)initWithCoder:(id)a3;
-- (PRPosterColorVariationsConfiguration)initWithVariationStorage:(id)a3 version:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (PRPosterColorVariationsConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterColorVariationsConfiguration)initWithCoder:(id)coder;
+- (PRPosterColorVariationsConfiguration)initWithVariationStorage:(id)storage version:(unint64_t)version;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterColorVariationsConfiguration
 
-- (PRPosterColorVariationsConfiguration)initWithVariationStorage:(id)a3 version:(unint64_t)a4
+- (PRPosterColorVariationsConfiguration)initWithVariationStorage:(id)storage version:(unint64_t)version
 {
-  v7 = a3;
+  storageCopy = storage;
   v11.receiver = self;
   v11.super_class = PRPosterColorVariationsConfiguration;
   v8 = [(PRPosterColorVariationsConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_variationStorage, a3);
-    v9->_version = a4;
+    objc_storeStrong(&v8->_variationStorage, storage);
+    v9->_version = version;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -42,15 +42,15 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterColorVariationsConfiguration *)self variationStorage];
-      v9 = [(PRPosterColorVariationsConfiguration *)v7 variationStorage];
-      v10 = [v8 isEqualToDictionary:v9];
+      v7 = equalCopy;
+      variationStorage = [(PRPosterColorVariationsConfiguration *)self variationStorage];
+      variationStorage2 = [(PRPosterColorVariationsConfiguration *)v7 variationStorage];
+      v10 = [variationStorage isEqualToDictionary:variationStorage2];
 
       if (v10)
       {
-        v11 = [(PRPosterColorVariationsConfiguration *)self version];
-        v12 = v11 == [(PRPosterColorVariationsConfiguration *)v7 version];
+        version = [(PRPosterColorVariationsConfiguration *)self version];
+        v12 = version == [(PRPosterColorVariationsConfiguration *)v7 version];
       }
 
       else
@@ -70,30 +70,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PRPosterColorVariationsConfiguration *)self variationStorage];
-  v4 = [v3 hash];
+  variationStorage = [(PRPosterColorVariationsConfiguration *)self variationStorage];
+  v4 = [variationStorage hash];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PRPosterColorVariationsConfiguration version](self, "version")}];
   v6 = [v5 hash];
 
   return v6 + v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AE40];
   variationStorage = self->_variationStorage;
-  v6 = a3;
+  coderCopy = coder;
   v8 = [v4 dataWithPropertyList:variationStorage format:200 options:0 error:0];
-  [v6 encodeObject:v8 forKey:@"variationStorage"];
+  [coderCopy encodeObject:v8 forKey:@"variationStorage"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PRPosterColorVariationsConfiguration version](self, "version")}];
-  [v6 encodeObject:v7 forKey:@"version"];
+  [coderCopy encodeObject:v7 forKey:@"version"];
 }
 
-- (PRPosterColorVariationsConfiguration)initWithCoder:(id)a3
+- (PRPosterColorVariationsConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"variationStorage"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"variationStorage"];
 
   if (!v6 || ([MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:0], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -101,39 +101,39 @@
   }
 
   v8 = objc_opt_self();
-  v9 = [v4 decodeObjectOfClass:v8 forKey:@"version"];
+  v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"version"];
 
   if (v9)
   {
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
   }
 
   else
   {
-    v10 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  v11 = [(PRPosterColorVariationsConfiguration *)self initWithVariationStorage:v7 version:v10];
+  v11 = [(PRPosterColorVariationsConfiguration *)self initWithVariationStorage:v7 version:unsignedIntegerValue];
 
   return v11;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AE40];
   variationStorage = self->_variationStorage;
-  v6 = a3;
+  coderCopy = coder;
   v8 = [v4 dataWithPropertyList:variationStorage format:200 options:0 error:0];
-  [v6 encodeObject:v8 forKey:@"variationStorage"];
+  [coderCopy encodeObject:v8 forKey:@"variationStorage"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PRPosterColorVariationsConfiguration version](self, "version")}];
-  [v6 encodeObject:v7 forKey:@"version"];
+  [coderCopy encodeObject:v7 forKey:@"version"];
 }
 
-- (PRPosterColorVariationsConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterColorVariationsConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"variationStorage"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"variationStorage"];
 
   if (!v6 || ([MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:0], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -141,28 +141,28 @@
   }
 
   v8 = objc_opt_self();
-  v9 = [v4 decodeObjectOfClass:v8 forKey:@"version"];
+  v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"version"];
 
   if (v9)
   {
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
   }
 
   else
   {
-    v10 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  v11 = [(PRPosterColorVariationsConfiguration *)self initWithVariationStorage:v7 version:v10];
+  v11 = [(PRPosterColorVariationsConfiguration *)self initWithVariationStorage:v7 version:unsignedIntegerValue];
 
   return v11;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [(PRPosterColorVariationsConfiguration *)self variationStorage];
-  v5 = [v6 appendObject:v4 withName:@"variationStorage"];
+  formatterCopy = formatter;
+  variationStorage = [(PRPosterColorVariationsConfiguration *)self variationStorage];
+  v5 = [formatterCopy appendObject:variationStorage withName:@"variationStorage"];
 }
 
 @end

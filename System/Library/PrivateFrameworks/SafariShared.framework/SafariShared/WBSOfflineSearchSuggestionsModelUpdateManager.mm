@@ -7,8 +7,8 @@
 - (void)_clearModels;
 - (void)_disconnectFromSearchHelper;
 - (void)_doUpdates;
-- (void)_recordUpdateResultWithError:(id)a3;
-- (void)_searchEngineChangedToOrFromGoogle:(id)a3;
+- (void)_recordUpdateResultWithError:(id)error;
+- (void)_searchEngineChangedToOrFromGoogle:(id)google;
 - (void)_updateDefaultSearchEnginePreferencesState;
 - (void)checkForModelUpdatesOrRemoteDisablementIfNeeded;
 - (void)dealloc;
@@ -28,20 +28,20 @@
     v2->_dateFormatter = v3;
 
     [(NSDateFormatter *)v2->_dateFormatter setDateFormat:@"yyyy-MM-dd-HHmm"];
-    v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v6 = [v5 stringForKey:@"WBSOfflineSearchSuggestionsModelLastUsedLocaleIdentifierKey"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v6 = [safari_browserDefaults stringForKey:@"WBSOfflineSearchSuggestionsModelLastUsedLocaleIdentifierKey"];
     lastUsedLocaleIdentifier = v2->_lastUsedLocaleIdentifier;
     v2->_lastUsedLocaleIdentifier = v6;
 
     [(WBSOfflineSearchSuggestionsModelUpdateManager *)v2 _updateDefaultSearchEnginePreferencesState];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x1E695D8F0] object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__searchEngineChangedToOrFromGoogle_ name:*MEMORY[0x1E69C8B60] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__searchEngineChangedToOrFromGoogle_ name:*MEMORY[0x1E69C8B60] object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v2 selector:sel__suppressSearchSuggestionsSettingDidChange_ name:*MEMORY[0x1E69C8D78] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__suppressSearchSuggestionsSettingDidChange_ name:*MEMORY[0x1E69C8D78] object:0];
 
     v11 = v2;
   }
@@ -51,12 +51,12 @@
 
 - (void)_updateDefaultSearchEnginePreferencesState
 {
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  self->_googleWasADefaultSearchProvider = [v4 BOOLForKey:@"WBSOfflineSearchSuggestionsModelGoogleWasDefaultSearchEngineKey"];
-  v3 = [MEMORY[0x1E69C8A48] sharedObserver];
-  self->_googleIsADefaultSearchProvider = [v3 isGoogleEnabledSearchEngine];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  self->_googleWasADefaultSearchProvider = [safari_browserDefaults BOOLForKey:@"WBSOfflineSearchSuggestionsModelGoogleWasDefaultSearchEngineKey"];
+  mEMORY[0x1E69C8A48] = [MEMORY[0x1E69C8A48] sharedObserver];
+  self->_googleIsADefaultSearchProvider = [mEMORY[0x1E69C8A48] isGoogleEnabledSearchEngine];
 
-  [v4 setBool:self->_googleIsADefaultSearchProvider forKey:@"WBSOfflineSearchSuggestionsModelGoogleWasDefaultSearchEngineKey"];
+  [safari_browserDefaults setBool:self->_googleIsADefaultSearchProvider forKey:@"WBSOfflineSearchSuggestionsModelGoogleWasDefaultSearchEngineKey"];
 }
 
 - (void)checkForModelUpdatesOrRemoteDisablementIfNeeded
@@ -83,8 +83,8 @@ void __96__WBSOfflineSearchSuggestionsModelUpdateManager_checkForModelUpdatesOrR
 
 - (BOOL)_shouldCheckForModelUpdates
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:*MEMORY[0x1E69C8A80]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69C8A80]];
 
   if (v4)
   {
@@ -131,11 +131,11 @@ LABEL_11:
 
 - (double)_timeIntervalSinceLastUpdate
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [v3 stringForKey:@"WBSOfflineSearchSuggestionsModelLastUpdateDateKey"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [safari_browserDefaults stringForKey:@"WBSOfflineSearchSuggestionsModelLastUpdateDateKey"];
 
-  v5 = [MEMORY[0x1E695DF00] distantPast];
-  v6 = v5;
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v6 = distantPast;
   if (v4)
   {
     v7 = [(NSDateFormatter *)self->_dateFormatter dateFromString:v4];
@@ -155,11 +155,11 @@ LABEL_11:
 
   else
   {
-    v10 = v5;
+    v10 = distantPast;
   }
 
-  v11 = [MEMORY[0x1E695DF00] date];
-  [v11 timeIntervalSinceDate:v10];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:v10];
   v13 = v12;
 
   return v13;
@@ -180,7 +180,7 @@ LABEL_11:
   }
 }
 
-- (void)_searchEngineChangedToOrFromGoogle:(id)a3
+- (void)_searchEngineChangedToOrFromGoogle:(id)google
 {
   [(WBSOfflineSearchSuggestionsModelUpdateManager *)self _updateDefaultSearchEnginePreferencesState];
 
@@ -189,21 +189,21 @@ LABEL_11:
 
 - (void)_checkForModelUpdates
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
   lastUsedLocaleIdentifier = self->_lastUsedLocaleIdentifier;
-  self->_lastUsedLocaleIdentifier = v4;
+  self->_lastUsedLocaleIdentifier = localeIdentifier;
 
-  v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v6 setObject:self->_lastUsedLocaleIdentifier forKey:@"WBSOfflineSearchSuggestionsModelLastUsedLocaleIdentifierKey"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults setObject:self->_lastUsedLocaleIdentifier forKey:@"WBSOfflineSearchSuggestionsModelLastUsedLocaleIdentifierKey"];
 
-  v7 = [(WBSOfflineSearchSuggestionsModelUpdateManager *)self _searchHelperProxy];
+  _searchHelperProxy = [(WBSOfflineSearchSuggestionsModelUpdateManager *)self _searchHelperProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__WBSOfflineSearchSuggestionsModelUpdateManager__checkForModelUpdates__block_invoke;
   v8[3] = &unk_1E7FB8278;
   v8[4] = self;
-  [v7 checkForModelUpdatesIfNeededWithCompletionHandler:v8];
+  [_searchHelperProxy checkForModelUpdatesIfNeededWithCompletionHandler:v8];
 }
 
 uint64_t __70__WBSOfflineSearchSuggestionsModelUpdateManager__checkForModelUpdates__block_invoke(uint64_t a1, uint64_t a2)
@@ -214,16 +214,16 @@ uint64_t __70__WBSOfflineSearchSuggestionsModelUpdateManager__checkForModelUpdat
   return [v3 _disconnectFromSearchHelper];
 }
 
-- (void)_recordUpdateResultWithError:(id)a3
+- (void)_recordUpdateResultWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = WBS_LOG_CHANNEL_PREFIXOfflineSearchSuggestions();
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(WBSOfflineSearchSuggestionsModelUpdateManager *)v6 _recordUpdateResultWithError:v4];
+      [(WBSOfflineSearchSuggestionsModelUpdateManager *)v6 _recordUpdateResultWithError:errorCopy];
     }
   }
 
@@ -236,11 +236,11 @@ uint64_t __70__WBSOfflineSearchSuggestionsModelUpdateManager__checkForModelUpdat
     }
 
     dateFormatter = self->_dateFormatter;
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [(NSDateFormatter *)dateFormatter stringFromDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
 
-    v10 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v10 setObject:v9 forKey:@"WBSOfflineSearchSuggestionsModelLastUpdateDateKey"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults setObject:v9 forKey:@"WBSOfflineSearchSuggestionsModelLastUpdateDateKey"];
   }
 }
 
@@ -253,16 +253,16 @@ uint64_t __70__WBSOfflineSearchSuggestionsModelUpdateManager__checkForModelUpdat
     _os_log_impl(&dword_1BB6F3000, v3, OS_LOG_TYPE_DEFAULT, "Clearing all offline search models", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v4 removeObjectForKey:@"WBSOfflineSearchSuggestionsModelLastUpdateDateKey"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults removeObjectForKey:@"WBSOfflineSearchSuggestionsModelLastUpdateDateKey"];
 
-  v5 = [(WBSOfflineSearchSuggestionsModelUpdateManager *)self _searchHelperProxy];
+  _searchHelperProxy = [(WBSOfflineSearchSuggestionsModelUpdateManager *)self _searchHelperProxy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__WBSOfflineSearchSuggestionsModelUpdateManager__clearModels__block_invoke;
   v6[3] = &unk_1E7FB6D90;
   v6[4] = self;
-  [v5 clearAllSearchModelsWithCompletionHandler:v6];
+  [_searchHelperProxy clearAllSearchModelsWithCompletionHandler:v6];
 }
 
 - (id)_searchHelperProxy

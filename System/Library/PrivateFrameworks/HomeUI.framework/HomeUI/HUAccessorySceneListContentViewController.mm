@@ -1,32 +1,32 @@
 @interface HUAccessorySceneListContentViewController
-- (HUAccessorySceneListContentViewController)initWithServiceLikeItem:(id)a3 contentSource:(unint64_t)a4 selectionType:(unint64_t)a5;
+- (HUAccessorySceneListContentViewController)initWithServiceLikeItem:(id)item contentSource:(unint64_t)source selectionType:(unint64_t)type;
 - (HUAccessorySceneListContentViewControllerDelegate)delegate;
 - (NSSet)selectedActionSetBuilders;
 - (id)commitChangesToSelectedActionBuilders;
-- (id)layoutOptionsForSection:(int64_t)a3;
-- (unint64_t)itemTypeForItem:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (id)layoutOptionsForSection:(int64_t)section;
+- (unint64_t)itemTypeForItem:(id)item;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
 - (void)didChangeSelection;
-- (void)sceneEditor:(id)a3 didCommitActionSet:(id)a4;
-- (void)setPersistAddedSuggestions:(BOOL)a3;
+- (void)sceneEditor:(id)editor didCommitActionSet:(id)set;
+- (void)setPersistAddedSuggestions:(BOOL)suggestions;
 @end
 
 @implementation HUAccessorySceneListContentViewController
 
-- (HUAccessorySceneListContentViewController)initWithServiceLikeItem:(id)a3 contentSource:(unint64_t)a4 selectionType:(unint64_t)a5
+- (HUAccessorySceneListContentViewController)initWithServiceLikeItem:(id)item contentSource:(unint64_t)source selectionType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = [[HUAccessorySceneListContentItemManager alloc] initWithDelegate:self contentSource:a4 serviceLikeItem:v9];
+  itemCopy = item;
+  v10 = [[HUAccessorySceneListContentItemManager alloc] initWithDelegate:self contentSource:source serviceLikeItem:itemCopy];
   v14.receiver = self;
   v14.super_class = HUAccessorySceneListContentViewController;
   v11 = [(HUSelectableServiceGridViewController *)&v14 initWithServiceGridItemManager:v10];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_serviceLikeItem, a3);
-    v12->_contentSource = a4;
-    v12->_selectionType = a5;
+    objc_storeStrong(&v11->_serviceLikeItem, item);
+    v12->_contentSource = source;
+    v12->_selectionType = type;
     v12->_includeTopMargin = 1;
   }
 
@@ -35,24 +35,24 @@
 
 - (id)commitChangesToSelectedActionBuilders
 {
-  v3 = [(HUItemCollectionViewController *)self itemManager];
-  v4 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v5 = [v4 toSet];
-  v6 = [v3 commitSelectionChangesWithSelectedItems:v5];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet = [selectedItems toSet];
+  v6 = [itemManager commitSelectionChangesWithSelectedItems:toSet];
 
   return v6;
 }
 
 - (NSSet)selectedActionSetBuilders
 {
-  v3 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v4 = [v3 toSet];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet = [selectedItems toSet];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__HUAccessorySceneListContentViewController_selectedActionSetBuilders__block_invoke;
   v7[3] = &unk_277DBC358;
   v7[4] = self;
-  v5 = [v4 na_map:v7];
+  v5 = [toSet na_map:v7];
 
   return v5;
 }
@@ -67,12 +67,12 @@ id __70__HUAccessorySceneListContentViewController_selectedActionSetBuilders__bl
   return v5;
 }
 
-- (void)setPersistAddedSuggestions:(BOOL)a3
+- (void)setPersistAddedSuggestions:(BOOL)suggestions
 {
-  v3 = a3;
-  self->_persistAddedSuggestions = a3;
-  v4 = [(HUItemCollectionViewController *)self itemManager];
-  [v4 setPersistAddedSuggestions:v3];
+  suggestionsCopy = suggestions;
+  self->_persistAddedSuggestions = suggestions;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  [itemManager setPersistAddedSuggestions:suggestionsCopy];
 }
 
 - (void)didChangeSelection
@@ -80,22 +80,22 @@ id __70__HUAccessorySceneListContentViewController_selectedActionSetBuilders__bl
   v7.receiver = self;
   v7.super_class = HUAccessorySceneListContentViewController;
   [(HUSelectableServiceGridViewController *)&v7 didChangeSelection];
-  v3 = [(HUAccessorySceneListContentViewController *)self delegate];
+  delegate = [(HUAccessorySceneListContentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HUAccessorySceneListContentViewController *)self delegate];
-    v6 = [(HUAccessorySceneListContentViewController *)self selectedActionSetBuilders];
-    [v5 sceneListContentViewController:self didUpdateSelectedActionSetBuilders:v6];
+    delegate2 = [(HUAccessorySceneListContentViewController *)self delegate];
+    selectedActionSetBuilders = [(HUAccessorySceneListContentViewController *)self selectedActionSetBuilders];
+    [delegate2 sceneListContentViewController:self didUpdateSelectedActionSetBuilders:selectedActionSetBuilders];
   }
 }
 
-- (id)layoutOptionsForSection:(int64_t)a3
+- (id)layoutOptionsForSection:(int64_t)section
 {
   v6.receiver = self;
   v6.super_class = HUAccessorySceneListContentViewController;
-  v4 = [(HUServiceGridViewController *)&v6 layoutOptionsForSection:a3];
+  v4 = [(HUServiceGridViewController *)&v6 layoutOptionsForSection:section];
   [v4 setSectionLeadingMargin:0.0];
   [v4 setSectionTrailingMargin:0.0];
   if (![(HUAccessorySceneListContentViewController *)self includeTopMargin])
@@ -106,9 +106,9 @@ id __70__HUAccessorySceneListContentViewController_selectedActionSetBuilders__bl
   return v4;
 }
 
-- (unint64_t)itemTypeForItem:(id)a3
+- (unint64_t)itemTypeForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -119,20 +119,20 @@ id __70__HUAccessorySceneListContentViewController_selectedActionSetBuilders__bl
   {
     v7.receiver = self;
     v7.super_class = HUAccessorySceneListContentViewController;
-    v5 = [(HUServiceGridViewController *)&v7 itemTypeForItem:v4];
+    v5 = [(HUServiceGridViewController *)&v7 itemTypeForItem:itemCopy];
   }
 
   return v5;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v16.receiver = self;
   v16.super_class = HUAccessorySceneListContentViewController;
-  [(HUSelectableServiceGridViewController *)&v16 configureCell:v6 forItem:a4];
+  [(HUSelectableServiceGridViewController *)&v16 configureCell:cellCopy forItem:item];
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = cellCopy;
   if (!v8)
   {
     goto LABEL_7;
@@ -151,9 +151,9 @@ id __70__HUAccessorySceneListContentViewController_selectedActionSetBuilders__bl
   v10 = v8;
   if (!v9)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v11 handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v7, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v7, objc_opt_class()}];
 
 LABEL_7:
     v10 = 0;
@@ -183,41 +183,41 @@ void __67__HUAccessorySceneListContentViewController_configureCell_forItem___blo
   qword_27C837E80 = v0;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(HUAccessorySceneListContentViewController *)self selectionType])
   {
     v26.receiver = self;
     v26.super_class = HUAccessorySceneListContentViewController;
-    [(HUSelectableServiceGridViewController *)&v26 collectionView:v6 didSelectItemAtIndexPath:v7];
+    [(HUSelectableServiceGridViewController *)&v26 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [(HUItemCollectionViewController *)self itemManager];
-    v9 = [v8 displayedItemAtIndexPath:v7];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
     [(HUAccessorySceneListContentViewController *)self setCurrentlyOpenedItem:v9];
-    v10 = [(HUItemCollectionViewController *)self itemManager];
-    v11 = [v10 actionSetBuilderForItem:v9];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    v11 = [itemManager2 actionSetBuilderForItem:v9];
 
-    v12 = [v11 actionSet];
-    v13 = [v12 actions];
-    v14 = [v13 count] == 0;
+    actionSet = [v11 actionSet];
+    actions = [actionSet actions];
+    v14 = [actions count] == 0;
 
     v15 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:v11 mode:v14];
     [(HUSceneActionEditorViewController *)v15 setSceneEditorDelegate:self];
-    v16 = [(UIViewController *)self hu_delegateForModalPresentation];
-    [(HUSceneActionEditorViewController *)v15 setPresentationDelegate:v16];
+    hu_delegateForModalPresentation = [(UIViewController *)self hu_delegateForModalPresentation];
+    [(HUSceneActionEditorViewController *)v15 setPresentationDelegate:hu_delegateForModalPresentation];
 
     v17 = [MEMORY[0x277CBEB58] set];
-    v18 = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
-    v19 = [v18 homeKitObject];
-    if ([v19 conformsToProtocol:&unk_2825BCA78])
+    serviceLikeItem = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
+    homeKitObject = [serviceLikeItem homeKitObject];
+    if ([homeKitObject conformsToProtocol:&unk_2825BCA78])
     {
-      v20 = v19;
+      v20 = homeKitObject;
     }
 
     else
@@ -234,9 +234,9 @@ void __67__HUAccessorySceneListContentViewController_configureCell_forItem___blo
 
     else
     {
-      v22 = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
-      v23 = [v22 services];
-      [v17 unionSet:v23];
+      serviceLikeItem2 = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
+      services = [serviceLikeItem2 services];
+      [v17 unionSet:services];
     }
 
     [(HUSceneActionEditorViewController *)v15 setPrioritizedAccessories:v17];
@@ -246,26 +246,26 @@ void __67__HUAccessorySceneListContentViewController_configureCell_forItem___blo
   }
 }
 
-- (void)sceneEditor:(id)a3 didCommitActionSet:(id)a4
+- (void)sceneEditor:(id)editor didCommitActionSet:(id)set
 {
-  v5 = [(HUAccessorySceneListContentViewController *)self currentlyOpenedItem:a3];
-  v6 = [v5 latestResults];
-  v20 = [v6 objectForKeyedSubscript:*MEMORY[0x277D14070]];
+  v5 = [(HUAccessorySceneListContentViewController *)self currentlyOpenedItem:editor];
+  latestResults = [v5 latestResults];
+  v20 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14070]];
 
   [(HUAccessorySceneListContentViewController *)self setCurrentlyOpenedItem:0];
   v7 = v20;
   if (v20)
   {
-    v8 = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
-    v9 = [v8 services];
-    v10 = [v9 na_map:&__block_literal_global_156_0];
+    serviceLikeItem = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
+    services = [serviceLikeItem services];
+    v10 = [services na_map:&__block_literal_global_156_0];
 
     v11 = MEMORY[0x277D17E68];
-    v12 = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
-    v13 = [v11 accessoryCategoryAnalyticsDescription:v12];
+    serviceLikeItem2 = [(HUAccessorySceneListContentViewController *)self serviceLikeItem];
+    v13 = [v11 accessoryCategoryAnalyticsDescription:serviceLikeItem2];
 
-    v14 = [v20 analyticsData];
-    v15 = [v14 mutableCopy];
+    analyticsData = [v20 analyticsData];
+    v15 = [analyticsData mutableCopy];
 
     v16 = MEMORY[0x277CBEC38];
     [v15 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13598]];
@@ -277,16 +277,16 @@ void __67__HUAccessorySceneListContentViewController_configureCell_forItem___blo
 
     if ([v10 count] == 1)
     {
-      v17 = [v10 anyObject];
-      [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x277D13578]];
+      anyObject = [v10 anyObject];
+      [v15 setObject:anyObject forKeyedSubscript:*MEMORY[0x277D13578]];
     }
 
-    v18 = [(HUAccessorySceneListContentViewController *)self analyticsPresentationContext];
+    analyticsPresentationContext = [(HUAccessorySceneListContentViewController *)self analyticsPresentationContext];
 
-    if (v18)
+    if (analyticsPresentationContext)
     {
-      v19 = [(HUAccessorySceneListContentViewController *)self analyticsPresentationContext];
-      [v15 setObject:v19 forKeyedSubscript:*MEMORY[0x277D13548]];
+      analyticsPresentationContext2 = [(HUAccessorySceneListContentViewController *)self analyticsPresentationContext];
+      [v15 setObject:analyticsPresentationContext2 forKeyedSubscript:*MEMORY[0x277D13548]];
     }
 
     [MEMORY[0x277D143D8] sendEvent:14 withData:v15];

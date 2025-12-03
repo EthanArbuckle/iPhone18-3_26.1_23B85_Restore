@@ -1,26 +1,26 @@
 @interface PKTransactionSpotlightDebugDetailsViewController
-- (PKTransactionSpotlightDebugDetailsViewController)initWithTransaction:(id)a3;
-- (id)_cellWithTitleText:(id)a3 valueText:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)loadItemWithCompletion:(id)a3;
-- (void)spotlightObjectDescriptionWithCompletion:(id)a3;
+- (PKTransactionSpotlightDebugDetailsViewController)initWithTransaction:(id)transaction;
+- (id)_cellWithTitleText:(id)text valueText:(id)valueText;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)loadItemWithCompletion:(id)completion;
+- (void)spotlightObjectDescriptionWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation PKTransactionSpotlightDebugDetailsViewController
 
-- (PKTransactionSpotlightDebugDetailsViewController)initWithTransaction:(id)a3
+- (PKTransactionSpotlightDebugDetailsViewController)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v11.receiver = self;
   v11.super_class = PKTransactionSpotlightDebugDetailsViewController;
   v6 = [(PKTransactionSpotlightDebugDetailsViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
+    objc_storeStrong(&v6->_transaction, transaction);
     v8 = objc_alloc_init(MEMORY[0x1E69B91C0]);
     searchService = v7->_searchService;
     v7->_searchService = v8;
@@ -37,50 +37,50 @@
   v4.receiver = self;
   v4.super_class = PKTransactionSpotlightDebugDetailsViewController;
   [(PKTransactionSpotlightDebugDetailsViewController *)&v4 viewDidLoad];
-  v3 = [(PKTransactionSpotlightDebugDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
+  tableView = [(PKTransactionSpotlightDebugDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
 }
 
-- (id)_cellWithTitleText:(id)a3 valueText:(id)a4
+- (id)_cellWithTitleText:(id)text valueText:(id)valueText
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKTransactionSpotlightDebugDetailsViewController *)self tableView];
-  v9 = [v8 dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
+  valueTextCopy = valueText;
+  textCopy = text;
+  tableView = [(PKTransactionSpotlightDebugDetailsViewController *)self tableView];
+  v9 = [tableView dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
 
   [v9 setSelectionStyle:0];
-  v10 = [v9 keyLabel];
-  [v10 setNumberOfLines:0];
-  [v10 setText:v7];
+  keyLabel = [v9 keyLabel];
+  [keyLabel setNumberOfLines:0];
+  [keyLabel setText:textCopy];
 
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  [v10 setTextColor:v11];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [keyLabel setTextColor:labelColor];
 
   if (self->_inBridge)
   {
     v12 = PKBridgeTextColor();
-    [v10 setTextColor:v12];
+    [keyLabel setTextColor:v12];
   }
 
-  v13 = [v9 valueLabel];
-  [v13 setText:v6];
+  valueLabel = [v9 valueLabel];
+  [valueLabel setText:valueTextCopy];
 
   return v9;
 }
 
-- (void)loadItemWithCompletion:(id)a3
+- (void)loadItemWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   searchService = self->_searchService;
-  v6 = [(PKPaymentTransaction *)self->_transaction identifier];
+  identifier = [(PKPaymentTransaction *)self->_transaction identifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__PKTransactionSpotlightDebugDetailsViewController_loadItemWithCompletion___block_invoke;
   v8[3] = &unk_1E801EBB8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [(PKSearchService *)searchService indexedTransactionWithIdentifier:v6 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(PKSearchService *)searchService indexedTransactionWithIdentifier:identifier completion:v8];
 }
 
 void __75__PKTransactionSpotlightDebugDetailsViewController_loadItemWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -240,9 +240,9 @@ LABEL_24:
   return result;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return @"Custom Attributes";
   }
@@ -253,15 +253,15 @@ LABEL_24:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (self->_loading)
   {
     goto LABEL_2;
   }
 
-  if (a4)
+  if (section)
   {
     p_customAttributes = &self->_customAttributes;
 LABEL_6:
@@ -282,10 +282,10 @@ LABEL_7:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_loading)
   {
     v8 = @"Loading";
@@ -299,9 +299,9 @@ LABEL_3:
   {
     if (self->_item)
     {
-      if ([v7 section])
+      if ([pathCopy section])
       {
-        v14 = -[NSMutableArray objectAtIndex:](self->_customAttributes, "objectAtIndex:", [v7 row]);
+        v14 = -[NSMutableArray objectAtIndex:](self->_customAttributes, "objectAtIndex:", [pathCopy row]);
         v15 = [v14 stringByReplacingOccurrencesOfString:@"Passbook_" withString:&stru_1F3BD7330];
         v16 = [(NSMutableDictionary *)self->_customAttributesPerKey objectForKey:v14];
         v17 = [v16 description];
@@ -310,7 +310,7 @@ LABEL_3:
 
       else
       {
-        v14 = -[NSMutableArray objectAtIndex:](self->_attributes, "objectAtIndex:", [v7 row]);
+        v14 = -[NSMutableArray objectAtIndex:](self->_attributes, "objectAtIndex:", [pathCopy row]);
         v15 = [(NSMutableDictionary *)self->_attributesPerKey objectForKey:v14];
         v16 = [v15 description];
         v9 = [(PKTransactionSpotlightDebugDetailsViewController *)self _cellWithTitleText:v14 valueText:v16];
@@ -333,18 +333,18 @@ LABEL_12:
   return v9;
 }
 
-- (void)spotlightObjectDescriptionWithCompletion:(id)a3
+- (void)spotlightObjectDescriptionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __93__PKTransactionSpotlightDebugDetailsViewController_spotlightObjectDescriptionWithCompletion___block_invoke;
     aBlock[3] = &unk_1E8010DD0;
     aBlock[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     v6 = _Block_copy(aBlock);
     v7 = v6;
     if (self->_loading || !self->_item)

@@ -1,6 +1,6 @@
 @interface FAPushNotificationHandler
 + (id)sharedHandler;
-- (void)didReceivePushNotificationWithPayload:(id)a3;
+- (void)didReceivePushNotificationWithPayload:(id)payload;
 @end
 
 @implementation FAPushNotificationHandler
@@ -24,19 +24,19 @@ uint64_t __42__FAPushNotificationHandler_sharedHandler__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)didReceivePushNotificationWithPayload:(id)a3
+- (void)didReceivePushNotificationWithPayload:(id)payload
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  payloadCopy = payload;
   v4 = _FALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = payloadCopy;
     _os_log_impl(&dword_1B70B0000, v4, OS_LOG_TYPE_DEFAULT, "FAPushNotificationHandler: Received payload %@", &v7, 0xCu);
   }
 
-  v5 = [[FAHandleFamilyEventPushNotificationRequest alloc] initWithPayload:v3];
+  v5 = [[FAHandleFamilyEventPushNotificationRequest alloc] initWithPayload:payloadCopy];
   [(FAHandleFamilyEventPushNotificationRequest *)v5 startRequestWithCompletionHandler:&__block_literal_global_20];
 
   v6 = *MEMORY[0x1E69E9840];

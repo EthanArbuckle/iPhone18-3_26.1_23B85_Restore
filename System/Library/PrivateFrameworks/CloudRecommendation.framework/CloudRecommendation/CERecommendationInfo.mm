@@ -1,21 +1,21 @@
 @interface CERecommendationInfo
-- (CERecommendationInfo)initWithCoder:(id)a3;
-- (CERecommendationInfo)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CERecommendationInfo)initWithCoder:(id)coder;
+- (CERecommendationInfo)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CERecommendationInfo
 
-- (CERecommendationInfo)initWithDictionary:(id)a3
+- (CERecommendationInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = CERecommendationInfo;
   v5 = [(CERecommendationInfo *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       }
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"message"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"message"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"recommendationsUrl"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"recommendationsUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"recommendationRulesUrl"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"recommendationRulesUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"completedRecommendationsUrl"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"completedRecommendationsUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"subtitleTemplates"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"subtitleTemplates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,7 +133,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CERecommendationInfo);
   [(CERecommendationInfo *)v4 setRecommendationSpecifierTitle:self->_recommendationSpecifierTitle];
@@ -145,48 +145,48 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   recommendationSpecifierTitle = self->_recommendationSpecifierTitle;
-  v5 = a3;
-  [v5 encodeObject:recommendationSpecifierTitle forKey:@"title"];
-  [v5 encodeObject:self->_recommendationSpecifierSubtitle forKey:@"message"];
-  [v5 encodeObject:self->_serverRecommendationsURL forKey:@"recommendationsUrl"];
-  [v5 encodeObject:self->_serverRulesURL forKey:@"recommendationRulesUrl"];
-  [v5 encodeObject:self->_completedRecommendationsURL forKey:@"completedRecommendationsUrl"];
-  [v5 encodeObject:self->_subtitleTemplates forKey:@"subtitleTemplates"];
+  coderCopy = coder;
+  [coderCopy encodeObject:recommendationSpecifierTitle forKey:@"title"];
+  [coderCopy encodeObject:self->_recommendationSpecifierSubtitle forKey:@"message"];
+  [coderCopy encodeObject:self->_serverRecommendationsURL forKey:@"recommendationsUrl"];
+  [coderCopy encodeObject:self->_serverRulesURL forKey:@"recommendationRulesUrl"];
+  [coderCopy encodeObject:self->_completedRecommendationsURL forKey:@"completedRecommendationsUrl"];
+  [coderCopy encodeObject:self->_subtitleTemplates forKey:@"subtitleTemplates"];
 }
 
-- (CERecommendationInfo)initWithCoder:(id)a3
+- (CERecommendationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CERecommendationInfo;
   v5 = [(CERecommendationInfo *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     recommendationSpecifierTitle = v5->_recommendationSpecifierTitle;
     v5->_recommendationSpecifierTitle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     recommendationSpecifierSubtitle = v5->_recommendationSpecifierSubtitle;
     v5->_recommendationSpecifierSubtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recommendationsUrl"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recommendationsUrl"];
     serverRecommendationsURL = v5->_serverRecommendationsURL;
     v5->_serverRecommendationsURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recommendationRulesUrl"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recommendationRulesUrl"];
     serverRulesURL = v5->_serverRulesURL;
     v5->_serverRulesURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completedRecommendationsUrl"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completedRecommendationsUrl"];
     completedRecommendationsURL = v5->_completedRecommendationsURL;
     v5->_completedRecommendationsURL = v14;
 
     v16 = objc_opt_class();
-    v17 = [v4 decodeDictionaryWithKeysOfClass:v16 objectsOfClass:objc_opt_class() forKey:@"subtitleTemplates"];
+    v17 = [coderCopy decodeDictionaryWithKeysOfClass:v16 objectsOfClass:objc_opt_class() forKey:@"subtitleTemplates"];
     subtitleTemplates = v5->_subtitleTemplates;
     v5->_subtitleTemplates = v17;
   }

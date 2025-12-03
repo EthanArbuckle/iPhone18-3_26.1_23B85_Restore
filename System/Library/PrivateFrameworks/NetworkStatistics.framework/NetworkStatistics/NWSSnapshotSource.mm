@@ -1,7 +1,7 @@
 @interface NWSSnapshotSource
 - (NWSSnapshotSource)init;
-- (int64_t)recv:(void *)a3 length:(unint64_t)a4 err:(int *)a5;
-- (int64_t)send:(void *)a3 length:(unint64_t)a4 err:(int *)a5;
+- (int64_t)recv:(void *)recv length:(unint64_t)length err:(int *)err;
+- (int64_t)send:(void *)send length:(unint64_t)length err:(int *)err;
 - (void)dealloc;
 @end
 
@@ -68,11 +68,11 @@ LABEL_11:
   [(NWSSnapshotSource *)&v3 dealloc];
 }
 
-- (int64_t)send:(void *)a3 length:(unint64_t)a4 err:(int *)a5
+- (int64_t)send:(void *)send length:(unint64_t)length err:(int *)err
 {
-  v6 = send(self->_sockFd, a3, a4, 0);
+  v6 = send(self->_sockFd, send, length, 0);
   v7 = v6;
-  if (a5)
+  if (err)
   {
     if (v6 < 0)
     {
@@ -84,17 +84,17 @@ LABEL_11:
       v8 = 0;
     }
 
-    *a5 = v8;
+    *err = v8;
   }
 
   return v7;
 }
 
-- (int64_t)recv:(void *)a3 length:(unint64_t)a4 err:(int *)a5
+- (int64_t)recv:(void *)recv length:(unint64_t)length err:(int *)err
 {
-  v6 = recv(self->_sockFd, a3, a4, 0);
+  v6 = recv(self->_sockFd, recv, length, 0);
   v7 = v6;
-  if (a5)
+  if (err)
   {
     if (v6 < 0)
     {
@@ -106,7 +106,7 @@ LABEL_11:
       v8 = 0;
     }
 
-    *a5 = v8;
+    *err = v8;
   }
 
   return v7;

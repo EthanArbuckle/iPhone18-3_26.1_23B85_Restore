@@ -1,41 +1,41 @@
 @interface UABestAppSuggestion
-- (BOOL)isEqual:(id)a3;
-- (UABestAppSuggestion)initWithBundleIdentifier:(id)a3 uuid:(id)a4 activityType:(id)a5 dynamicIdentifier:(id)a6 lastUpdateTime:(id)a7 lastActiveTime:(id)a8 type:(unint64_t)a9 deviceName:(id)a10 deviceIdentifier:(id)a11 deviceType:(id)a12 options:(id)a13 isActive:(BOOL)a14;
-- (UABestAppSuggestion)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UABestAppSuggestion)initWithBundleIdentifier:(id)identifier uuid:(id)uuid activityType:(id)type dynamicIdentifier:(id)dynamicIdentifier lastUpdateTime:(id)time lastActiveTime:(id)activeTime type:(unint64_t)a9 deviceName:(id)self0 deviceIdentifier:(id)self1 deviceType:(id)self2 options:(id)self3 isActive:(BOOL)self4;
+- (UABestAppSuggestion)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UABestAppSuggestion
 
-- (UABestAppSuggestion)initWithBundleIdentifier:(id)a3 uuid:(id)a4 activityType:(id)a5 dynamicIdentifier:(id)a6 lastUpdateTime:(id)a7 lastActiveTime:(id)a8 type:(unint64_t)a9 deviceName:(id)a10 deviceIdentifier:(id)a11 deviceType:(id)a12 options:(id)a13 isActive:(BOOL)a14
+- (UABestAppSuggestion)initWithBundleIdentifier:(id)identifier uuid:(id)uuid activityType:(id)type dynamicIdentifier:(id)dynamicIdentifier lastUpdateTime:(id)time lastActiveTime:(id)activeTime type:(unint64_t)a9 deviceName:(id)self0 deviceIdentifier:(id)self1 deviceType:(id)self2 options:(id)self3 isActive:(BOOL)self4
 {
-  v19 = a3;
-  v20 = a4;
-  obj = a5;
-  v21 = a5;
-  v22 = v20;
-  v52 = v21;
-  v53 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
+  identifierCopy = identifier;
+  uuidCopy = uuid;
+  obj = type;
+  typeCopy = type;
+  v22 = uuidCopy;
+  v52 = typeCopy;
+  dynamicIdentifierCopy = dynamicIdentifier;
+  timeCopy = time;
+  activeTimeCopy = activeTime;
+  nameCopy = name;
+  deviceIdentifierCopy = deviceIdentifier;
+  deviceTypeCopy = deviceType;
+  optionsCopy = options;
   v29 = [(UABestAppSuggestion *)self init];
   if (v29)
   {
-    v30 = [v28 copy];
+    v30 = [optionsCopy copy];
     options = v29->_options;
     v29->_options = v30;
 
     v29->_type = a9;
-    if (v19)
+    if (identifierCopy)
     {
-      v32 = v19;
-      v33 = [v19 copy];
+      v32 = identifierCopy;
+      v33 = [identifierCopy copy];
     }
 
     else
@@ -61,13 +61,13 @@
     v29->_uniqueIdentifier = v35;
 
     objc_storeStrong(&v29->_activityType, obj);
-    v37 = [v53 copy];
+    v37 = [dynamicIdentifierCopy copy];
     dynamicIdentifier = v29->_dynamicIdentifier;
     v29->_dynamicIdentifier = v37;
 
-    if (v23)
+    if (timeCopy)
     {
-      v39 = v23;
+      v39 = timeCopy;
     }
 
     else
@@ -78,9 +78,9 @@
     lastUpdateTime = v29->_lastUpdateTime;
     v29->_lastUpdateTime = v39;
 
-    if (v24)
+    if (activeTimeCopy)
     {
-      v41 = v24;
+      v41 = activeTimeCopy;
     }
 
     else
@@ -92,20 +92,20 @@
     v29->_lastActiveTime = v41;
 
     v29->_confidence = 0.75;
-    v43 = [v25 copy];
+    v43 = [nameCopy copy];
     originatingDeviceName = v29->_originatingDeviceName;
     v29->_originatingDeviceName = v43;
 
-    v45 = [v26 copy];
+    v45 = [deviceIdentifierCopy copy];
     originatingDeviceIdentifier = v29->_originatingDeviceIdentifier;
     v29->_originatingDeviceIdentifier = v45;
 
-    v47 = [v27 copy];
+    v47 = [deviceTypeCopy copy];
     originatingDeviceType = v29->_originatingDeviceType;
     v29->_originatingDeviceType = v47;
 
-    v29->_isActive = a14;
-    v19 = v32;
+    v29->_isActive = active;
+    identifierCopy = v32;
   }
 
   return v29;
@@ -115,18 +115,18 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = suggestedActionTypeString(self->_type);
-  v5 = [(NSUUID *)self->_uniqueIdentifier UUIDString];
+  uUIDString = [(NSUUID *)self->_uniqueIdentifier UUIDString];
   originatingDeviceIdentifier = self->_originatingDeviceIdentifier;
-  v7 = [v3 stringWithFormat:@"UABestAppSuggestion(%@ %@ %@ %@:%@ %@ from:%@/%@/%@)", v4, v5, self->_bundleIdentifier, self->_activityType, self->_dynamicIdentifier, self->_lastActiveTime, self->_originatingDeviceName, originatingDeviceIdentifier, self->_originatingDeviceType];
+  v7 = [v3 stringWithFormat:@"UABestAppSuggestion(%@ %@ %@ %@:%@ %@ from:%@/%@/%@)", v4, uUIDString, self->_bundleIdentifier, self->_activityType, self->_dynamicIdentifier, self->_lastActiveTime, self->_originatingDeviceName, originatingDeviceIdentifier, self->_originatingDeviceType];
 
   return v7;
 }
 
 - (id)debugDescription
 {
-  v3 = [(UABestAppSuggestion *)self options];
+  options = [(UABestAppSuggestion *)self options];
 
-  if (v3 && (v4 = MEMORY[0x277CCAAA0], -[UABestAppSuggestion options](self, "options"), v5 = objc_claimAutoreleasedReturnValue(), [v4 dataWithJSONObject:v5 options:0 error:0], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
+  if (options && (v4 = MEMORY[0x277CCAAA0], -[UABestAppSuggestion options](self, "options"), v5 = objc_claimAutoreleasedReturnValue(), [v4 dataWithJSONObject:v5 options:0 error:0], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
   }
@@ -137,29 +137,29 @@
   }
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(UABestAppSuggestion *)self bundleIdentifier];
-  v10 = [(UABestAppSuggestion *)self uniqueIdentifier];
-  v11 = [v10 UUIDString];
-  v12 = [(UABestAppSuggestion *)self lastUpdateTime];
-  v13 = [v8 stringWithFormat:@"BestApp: %@ %@ %@ %d %@", v9, v11, v12, -[UABestAppSuggestion type](self, "type"), v7];
+  bundleIdentifier = [(UABestAppSuggestion *)self bundleIdentifier];
+  uniqueIdentifier = [(UABestAppSuggestion *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  lastUpdateTime = [(UABestAppSuggestion *)self lastUpdateTime];
+  v13 = [v8 stringWithFormat:@"BestApp: %@ %@ %@ %d %@", bundleIdentifier, uUIDString, lastUpdateTime, -[UABestAppSuggestion type](self, "type"), v7];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (v10.receiver = self, v10.super_class = UABestAppSuggestion, [(UABestAppSuggestion *)&v10 isEqual:v4]))
+  else if (equalCopy && (v10.receiver = self, v10.super_class = UABestAppSuggestion, [(UABestAppSuggestion *)&v10 isEqual:equalCopy]))
   {
     uniqueIdentifier = self->_uniqueIdentifier;
-    v7 = [(UABestAppSuggestion *)v5 uniqueIdentifier];
-    v8 = [(NSUUID *)uniqueIdentifier isEqual:v7];
+    uniqueIdentifier = [(UABestAppSuggestion *)v5 uniqueIdentifier];
+    v8 = [(NSUUID *)uniqueIdentifier isEqual:uniqueIdentifier];
   }
 
   else
@@ -170,87 +170,87 @@
   return v8;
 }
 
-- (UABestAppSuggestion)initWithCoder:(id)a3
+- (UABestAppSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = UABestAppSuggestion;
   v5 = [(UABestAppSuggestion *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdateTime"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdateTime"];
     lastUpdateTime = v5->_lastUpdateTime;
     v5->_lastUpdateTime = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastActiveTime"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastActiveTime"];
     lastActiveTime = v5->_lastActiveTime;
     v5->_lastActiveTime = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatingDeviceIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatingDeviceIdentifier"];
     originatingDeviceIdentifier = v5->_originatingDeviceIdentifier;
     v5->_originatingDeviceIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatingDeviceName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatingDeviceName"];
     originatingDeviceName = v5->_originatingDeviceName;
     v5->_originatingDeviceName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatingDeviceType"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatingDeviceType"];
     originatingDeviceType = v5->_originatingDeviceType;
     v5->_originatingDeviceType = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
     activityType = v5->_activityType;
     v5->_activityType = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dynamicIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dynamicIdentifier"];
     dynamicIdentifier = v5->_dynamicIdentifier;
     v5->_dynamicIdentifier = v22;
 
-    v5->_isActive = [v4 decodeBoolForKey:@"isActive"];
+    v5->_isActive = [coderCopy decodeBoolForKey:@"isActive"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(UABestAppSuggestion *)self bundleIdentifier];
-  [v13 encodeObject:v4 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(UABestAppSuggestion *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v5 = [(UABestAppSuggestion *)self lastUpdateTime];
-  [v13 encodeObject:v5 forKey:@"lastUpdateTime"];
+  lastUpdateTime = [(UABestAppSuggestion *)self lastUpdateTime];
+  [coderCopy encodeObject:lastUpdateTime forKey:@"lastUpdateTime"];
 
-  v6 = [(UABestAppSuggestion *)self lastActiveTime];
-  [v13 encodeObject:v6 forKey:@"lastActiveTime"];
+  lastActiveTime = [(UABestAppSuggestion *)self lastActiveTime];
+  [coderCopy encodeObject:lastActiveTime forKey:@"lastActiveTime"];
 
-  v7 = [(UABestAppSuggestion *)self originatingDeviceIdentifier];
-  [v13 encodeObject:v7 forKey:@"originatingDeviceIdentifier"];
+  originatingDeviceIdentifier = [(UABestAppSuggestion *)self originatingDeviceIdentifier];
+  [coderCopy encodeObject:originatingDeviceIdentifier forKey:@"originatingDeviceIdentifier"];
 
-  v8 = [(UABestAppSuggestion *)self originatingDeviceName];
-  [v13 encodeObject:v8 forKey:@"originatingDeviceName"];
+  originatingDeviceName = [(UABestAppSuggestion *)self originatingDeviceName];
+  [coderCopy encodeObject:originatingDeviceName forKey:@"originatingDeviceName"];
 
-  v9 = [(UABestAppSuggestion *)self originatingDeviceType];
-  [v13 encodeObject:v9 forKey:@"originatingDeviceType"];
+  originatingDeviceType = [(UABestAppSuggestion *)self originatingDeviceType];
+  [coderCopy encodeObject:originatingDeviceType forKey:@"originatingDeviceType"];
 
-  v10 = [(UABestAppSuggestion *)self uniqueIdentifier];
-  [v13 encodeObject:v10 forKey:@"uniqueIdentifier"];
+  uniqueIdentifier = [(UABestAppSuggestion *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v11 = [(UABestAppSuggestion *)self activityType];
-  [v13 encodeObject:v11 forKey:@"activityType"];
+  activityType = [(UABestAppSuggestion *)self activityType];
+  [coderCopy encodeObject:activityType forKey:@"activityType"];
 
-  v12 = [(UABestAppSuggestion *)self dynamicIdentifier];
-  [v13 encodeObject:v12 forKey:@"dynamicIdentifier"];
+  dynamicIdentifier = [(UABestAppSuggestion *)self dynamicIdentifier];
+  [coderCopy encodeObject:dynamicIdentifier forKey:@"dynamicIdentifier"];
 
-  [v13 encodeBool:-[UABestAppSuggestion isActive](self forKey:{"isActive"), @"isActive"}];
+  [coderCopy encodeBool:-[UABestAppSuggestion isActive](self forKey:{"isActive"), @"isActive"}];
 }
 
 @end

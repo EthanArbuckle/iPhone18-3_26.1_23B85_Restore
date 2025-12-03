@@ -1,6 +1,6 @@
 @interface HMDResidentSelectionManualMode
 + (id)logCategory;
-- (HMDResidentSelectionManualMode)initWithContext:(id)a3;
+- (HMDResidentSelectionManualMode)initWithContext:(id)context;
 - (id)logIdentifier;
 - (id)shortDescription;
 @end
@@ -10,22 +10,22 @@
 - (id)shortDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDResidentSelectionMode *)self context];
-  v4 = [v3 home];
-  v5 = [v4 uuid];
-  v6 = [v2 stringWithFormat:@"%@", v5];
+  context = [(HMDResidentSelectionMode *)self context];
+  home = [context home];
+  uuid = [home uuid];
+  v6 = [v2 stringWithFormat:@"%@", uuid];
 
   return v6;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentSelectionMode *)self context];
-  v3 = [v2 home];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  context = [(HMDResidentSelectionMode *)self context];
+  home = [context home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
 void __115__HMDResidentSelectionManualMode_performSelectionWithPreferredPrimaryResident_requireAutoUpdate_reason_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -94,11 +94,11 @@ uint64_t __115__HMDResidentSelectionManualMode_performSelectionWithPreferredPrim
   return result;
 }
 
-- (HMDResidentSelectionManualMode)initWithContext:(id)a3
+- (HMDResidentSelectionManualMode)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = HMDResidentSelectionManualMode;
-  return [(HMDResidentSelectionMode *)&v4 initWithContext:a3];
+  return [(HMDResidentSelectionMode *)&v4 initWithContext:context];
 }
 
 + (id)logCategory

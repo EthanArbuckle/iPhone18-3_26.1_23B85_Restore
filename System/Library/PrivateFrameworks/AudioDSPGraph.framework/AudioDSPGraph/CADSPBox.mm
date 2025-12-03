@@ -1,11 +1,11 @@
 @interface CADSPBox
-- (CADSPBox)initWithBox:(shared_ptr<AudioDSPGraph:(id)a4 :Box>)a3 model:;
-- (CADSPBox)initWithModel:(id)a3 error:(id *)a4;
+- (CADSPBox)initWithBox:(shared_ptr<AudioDSPGraph:(id)box :Box>)a3 model:;
+- (CADSPBox)initWithModel:(id)model error:(id *)error;
 - (NSArray)eventListeners;
 - (id).cxx_construct;
-- (void)addEventListener:(id)a3;
+- (void)addEventListener:(id)listener;
 - (void)removeAllEventListeners;
-- (void)removeEventListener:(id)a3;
+- (void)removeEventListener:(id)listener;
 @end
 
 @implementation CADSPBox
@@ -17,7 +17,7 @@
   return self;
 }
 
-- (CADSPBox)initWithBox:(shared_ptr<AudioDSPGraph:(id)a4 :Box>)a3 model:
+- (CADSPBox)initWithBox:(shared_ptr<AudioDSPGraph:(id)box :Box>)a3 model:
 {
   ptr = a3.__ptr_;
   v25 = *MEMORY[0x1E69E9840];
@@ -70,23 +70,23 @@
   return v8;
 }
 
-- (CADSPBox)initWithModel:(id)a3 error:(id *)a4
+- (CADSPBox)initWithModel:(id)model error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   AudioDSPGraph::BoxRegistry::BoxRegistry(v6);
 }
 
 - (void)removeAllEventListeners
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = v2->_eventListeners;
+  v3 = selfCopy->_eventListeners;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
@@ -102,7 +102,7 @@
         }
 
         v7 = *(*(&v13 + 1) + 8 * v6);
-        ptr = v2->_this.__ptr_;
+        ptr = selfCopy->_this.__ptr_;
         v9 = v7[1];
         v10 = v7[2];
         if (v10)
@@ -128,22 +128,22 @@
     while (v4);
   }
 
-  [(NSMutableArray *)v2->_eventListeners removeAllObjects];
-  objc_sync_exit(v2);
+  [(NSMutableArray *)selfCopy->_eventListeners removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEventListener:(id)a3
+- (void)removeEventListener:(id)listener
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(NSMutableArray *)v4->_eventListeners containsObject:v8])
+  listenerCopy = listener;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_eventListeners containsObject:listenerCopy])
   {
-    ptr = v4->_this.__ptr_;
-    v6 = v8[1];
-    v7 = v8[2];
+    ptr = selfCopy->_this.__ptr_;
+    v6 = listenerCopy[1];
+    v7 = listenerCopy[2];
     if (v7)
     {
       atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -157,25 +157,25 @@
       std::__shared_weak_count::__release_shared[abi:ne200100](v7);
     }
 
-    [(NSMutableArray *)v4->_eventListeners removeObject:v8];
+    [(NSMutableArray *)selfCopy->_eventListeners removeObject:listenerCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addEventListener:(id)a3
+- (void)addEventListener:(id)listener
 {
-  v14 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  eventListeners = v4->_eventListeners;
+  listenerCopy = listener;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventListeners = selfCopy->_eventListeners;
   if (eventListeners)
   {
-    if (([(NSMutableArray *)eventListeners containsObject:v14]& 1) == 0)
+    if (([(NSMutableArray *)eventListeners containsObject:listenerCopy]& 1) == 0)
     {
-      ptr = v4->_this.__ptr_;
-      v8 = v14[1];
-      v7 = v14[2];
+      ptr = selfCopy->_this.__ptr_;
+      v8 = listenerCopy[1];
+      v7 = listenerCopy[2];
       if (v7)
       {
         atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -189,15 +189,15 @@
         std::__shared_weak_count::__release_shared[abi:ne200100](*(&v15 + 1));
       }
 
-      [(NSMutableArray *)v4->_eventListeners addObject:v14];
+      [(NSMutableArray *)selfCopy->_eventListeners addObject:listenerCopy];
     }
   }
 
   else
   {
-    v9 = v4->_this.__ptr_;
-    v11 = v14[1];
-    v10 = v14[2];
+    v9 = selfCopy->_this.__ptr_;
+    v11 = listenerCopy[1];
+    v10 = listenerCopy[2];
     if (v10)
     {
       atomic_fetch_add_explicit((v10 + 8), 1uLL, memory_order_relaxed);
@@ -211,19 +211,19 @@
       std::__shared_weak_count::__release_shared[abi:ne200100](*(&v16 + 1));
     }
 
-    v12 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
-    v13 = v4->_eventListeners;
-    v4->_eventListeners = v12;
+    v12 = [MEMORY[0x1E695DF70] arrayWithObject:listenerCopy];
+    v13 = selfCopy->_eventListeners;
+    selfCopy->_eventListeners = v12;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)eventListeners
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  eventListeners = v2->_eventListeners;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventListeners = selfCopy->_eventListeners;
   if (eventListeners)
   {
     v4 = [(NSMutableArray *)eventListeners copy];
@@ -234,7 +234,7 @@
     v4 = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }

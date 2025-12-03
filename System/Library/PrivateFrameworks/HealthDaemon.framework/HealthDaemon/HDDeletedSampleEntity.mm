@@ -1,32 +1,32 @@
 @interface HDDeletedSampleEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (BOOL)deletedSampleInProfile:(id)a3 sampleUUID:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)enumerateDeletedSamplesInProfile:(id)a3 anchor:(int64_t)a4 limit:(unint64_t)a5 error:(id *)a6 handler:(id)a7;
-+ (BOOL)enumerateDeletedSamplesInProfile:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(unint64_t)a6 error:(id *)a7 handler:(id)a8;
-+ (BOOL)enumerateDeletedSamplesWithTypes:(id)a3 profile:(id)a4 restrictedSourceEntities:(id)a5 limit:(unint64_t)a6 anchor:(int64_t)a7 error:(id *)a8 handler:(id)a9;
-+ (BOOL)enumerateEntitiesForSyncWithProperties:(id)a3 predicate:(id)a4 session:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 limit:(unint64_t)a7 lastSyncAnchor:(int64_t *)a8 healthDatabase:(id)a9 error:(id *)a10 block:(id)a11;
-+ (BOOL)insertCodableDeletedSamples:(id)a3 provenance:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (BOOL)deletedSampleInProfile:(id)profile sampleUUID:(id)d error:(id *)error handler:(id)handler;
++ (BOOL)enumerateDeletedSamplesInProfile:(id)profile anchor:(int64_t)anchor limit:(unint64_t)limit error:(id *)error handler:(id)handler;
++ (BOOL)enumerateDeletedSamplesInProfile:(id)profile createdOnOrAfter:(id)after createdBefore:(id)before limit:(unint64_t)limit error:(id *)error handler:(id)handler;
++ (BOOL)enumerateDeletedSamplesWithTypes:(id)types profile:(id)profile restrictedSourceEntities:(id)entities limit:(unint64_t)limit anchor:(int64_t)anchor error:(id *)error handler:(id)handler;
++ (BOOL)enumerateEntitiesForSyncWithProperties:(id)properties predicate:(id)predicate session:(id)session syncAnchorRange:(HDSyncAnchorRange)range limit:(unint64_t)limit lastSyncAnchor:(int64_t *)anchor healthDatabase:(id)database error:(id *)self0 block:(id)self1;
++ (BOOL)insertCodableDeletedSamples:(id)samples provenance:(id)provenance profile:(id)profile error:(id *)error;
 + (id)_externalSyncMetadataForRow:;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)insertDeletedObject:(id)a3 dataType:(id)a4 provenanceIdentifier:(id)a5 deletionDate:(id)a6 persistStartAndEndDates:(BOOL)a7 startTimestamp:(double)a8 endTimestamp:(double)a9 inDatabase:(id)a10 error:(id *)a11;
-+ (uint64_t)_deletedSamplesInProfile:(void *)a3 queryStringBlock:(void *)a4 bindingBlock:(uint64_t)a5 limit:(uint64_t)a6 error:(void *)a7 handler:;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)insertDeletedObject:(id)object dataType:(id)type provenanceIdentifier:(id)identifier deletionDate:(id)date persistStartAndEndDates:(BOOL)dates startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp inDatabase:(id)self0 error:(id *)self1;
++ (uint64_t)_deletedSamplesInProfile:(void *)profile queryStringBlock:(void *)block bindingBlock:(uint64_t)bindingBlock limit:(uint64_t)limit error:(void *)error handler:;
 @end
 
 @implementation HDDeletedSampleEntity
 
-+ (id)insertDeletedObject:(id)a3 dataType:(id)a4 provenanceIdentifier:(id)a5 deletionDate:(id)a6 persistStartAndEndDates:(BOOL)a7 startTimestamp:(double)a8 endTimestamp:(double)a9 inDatabase:(id)a10 error:(id *)a11
++ (id)insertDeletedObject:(id)object dataType:(id)type provenanceIdentifier:(id)identifier deletionDate:(id)date persistStartAndEndDates:(BOOL)dates startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp inDatabase:(id)self0 error:(id *)self1
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a10;
-  v25 = [v20 metadata];
+  objectCopy = object;
+  typeCopy = type;
+  identifierCopy = identifier;
+  dateCopy = date;
+  databaseCopy = database;
+  metadata = [objectCopy metadata];
 
-  if (v25)
+  if (metadata)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"HDDeletedSampleEntity.m" lineNumber:75 description:@"You can not insert a HKDeletedObject with metadata. Deleted objects don't insert related objects."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDeletedSampleEntity.m" lineNumber:75 description:@"You can not insert a HKDeletedObject with metadata. Deleted objects don't insert related objects."];
   }
 
   v38 = 0;
@@ -34,9 +34,9 @@
   v40 = 0x3032000000;
   v41 = __Block_byref_object_copy__178;
   v42 = __Block_byref_object_dispose__178;
-  v37.receiver = a1;
+  v37.receiver = self;
   v37.super_class = &OBJC_METACLASS___HDDeletedSampleEntity;
-  v43 = objc_msgSendSuper2(&v37, sel_insertDeletedObject_provenanceIdentifier_deletionDate_inDatabase_error_, v20, v22, v23, v24, a11);
+  v43 = objc_msgSendSuper2(&v37, sel_insertDeletedObject_provenanceIdentifier_deletionDate_inDatabase_error_, objectCopy, identifierCopy, dateCopy, databaseCopy, error);
   v26 = v39[5];
   if (v26)
   {
@@ -45,11 +45,11 @@
     v31[2] = __157__HDDeletedSampleEntity_insertDeletedObject_dataType_provenanceIdentifier_deletionDate_persistStartAndEndDates_startTimestamp_endTimestamp_inDatabase_error___block_invoke_2;
     v31[3] = &unk_27862BCD0;
     v33 = &v38;
-    v32 = v21;
-    v36 = a7;
-    v34 = a8;
-    v35 = a9;
-    v27 = [v24 executeCachedStatementForKey:&insertDeletedObject_dataType_provenanceIdentifier_deletionDate_persistStartAndEndDates_startTimestamp_endTimestamp_inDatabase_error__insertKey error:a11 SQLGenerator:&__block_literal_global_214 bindingHandler:v31 enumerationHandler:0];
+    v32 = typeCopy;
+    datesCopy = dates;
+    timestampCopy = timestamp;
+    endTimestampCopy = endTimestamp;
+    v27 = [databaseCopy executeCachedStatementForKey:&insertDeletedObject_dataType_provenanceIdentifier_deletionDate_persistStartAndEndDates_startTimestamp_endTimestamp_inDatabase_error__insertKey error:error SQLGenerator:&__block_literal_global_214 bindingHandler:v31 enumerationHandler:0];
 
     if (v27)
     {
@@ -105,19 +105,19 @@ uint64_t __157__HDDeletedSampleEntity_insertDeletedObject_dataType_provenanceIde
   }
 }
 
-+ (BOOL)enumerateDeletedSamplesWithTypes:(id)a3 profile:(id)a4 restrictedSourceEntities:(id)a5 limit:(unint64_t)a6 anchor:(int64_t)a7 error:(id *)a8 handler:(id)a9
++ (BOOL)enumerateDeletedSamplesWithTypes:(id)types profile:(id)profile restrictedSourceEntities:(id)entities limit:(unint64_t)limit anchor:(int64_t)anchor error:(id *)error handler:(id)handler
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a9;
-  v40 = v16;
-  if (v19)
+  typesCopy = types;
+  profileCopy = profile;
+  entitiesCopy = entities;
+  handlerCopy = handler;
+  v40 = typesCopy;
+  if (handlerCopy)
   {
-    v39 = a8;
+    errorCopy = error;
     v20 = HDDataEntityPredicateForType(2);
-    v21 = HDSampleEntityPredicateForDataTypes(v16);
+    v21 = HDSampleEntityPredicateForDataTypes(typesCopy);
     if (v21)
     {
       v22 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v20 otherPredicate:v21];
@@ -125,19 +125,19 @@ uint64_t __157__HDDeletedSampleEntity_insertDeletedObject_dataType_provenanceIde
       v20 = v22;
     }
 
-    if (v18)
+    if (entitiesCopy)
     {
       v23 = MEMORY[0x277D10B70];
-      v24 = HDDataEntityPredicateForSourceEntitySet(7, v18);
+      v24 = HDDataEntityPredicateForSourceEntitySet(7, entitiesCopy);
       v25 = [v23 compoundPredicateWithPredicate:v20 otherPredicate:v24];
 
       v20 = v25;
     }
 
-    if (a7 >= 1)
+    if (anchor >= 1)
     {
       v26 = MEMORY[0x277D10B18];
-      v27 = [MEMORY[0x277CCABB0] numberWithLongLong:a7];
+      v27 = [MEMORY[0x277CCABB0] numberWithLongLong:anchor];
       v28 = [v26 predicateWithProperty:@"data_id" greaterThanValue:v27];
 
       v29 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v28 otherPredicate:v20];
@@ -147,29 +147,29 @@ uint64_t __157__HDDeletedSampleEntity_insertDeletedObject_dataType_provenanceIde
 
     v30 = objc_alloc_init(MEMORY[0x277D10B80]);
     [v30 setEntityClass:objc_opt_class()];
-    [v30 setLimitCount:a6];
+    [v30 setLimitCount:limit];
     [v30 setPredicate:v20];
     v31 = [objc_alloc(MEMORY[0x277D10B68]) initWithExpression:@"data_id" ascending:1];
     v45[0] = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
     [v30 setOrderingTerms:v32];
 
-    v33 = [v17 database];
+    database = [profileCopy database];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __118__HDDeletedSampleEntity_enumerateDeletedSamplesWithTypes_profile_restrictedSourceEntities_limit_anchor_error_handler___block_invoke;
     v41[3] = &unk_27861B6E8;
-    v44 = a1;
+    selfCopy = self;
     v42 = v30;
-    v43 = v19;
+    v43 = handlerCopy;
     v34 = v30;
-    v35 = [a1 performReadTransactionWithHealthDatabase:v33 error:v39 block:v41];
+    v35 = [self performReadTransactionWithHealthDatabase:database error:errorCopy block:v41];
   }
 
   else
   {
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:a1 file:@"HDDeletedSampleEntity.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDeletedSampleEntity.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
     v35 = 1;
   }
@@ -224,21 +224,21 @@ uint64_t __118__HDDeletedSampleEntity_enumerateDeletedSamplesWithTypes_profile_r
   return v2;
 }
 
-+ (BOOL)deletedSampleInProfile:(id)a3 sampleUUID:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)deletedSampleInProfile:(id)profile sampleUUID:(id)d error:(id *)error handler:(id)handler
 {
-  v10 = a4;
+  dCopy = d;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__HDDeletedSampleEntity_deletedSampleInProfile_sampleUUID_error_handler___block_invoke_2;
   aBlock[3] = &unk_27862BCF8;
-  v17 = v10;
-  v11 = v10;
-  v12 = a6;
-  v13 = a3;
+  v17 = dCopy;
+  v11 = dCopy;
+  handlerCopy = handler;
+  profileCopy = profile;
   v14 = _Block_copy(aBlock);
-  LOBYTE(a5) = [(HDDeletedSampleEntity *)a1 _deletedSamplesInProfile:v13 queryStringBlock:&__block_literal_global_324_4 bindingBlock:v14 limit:1 error:a5 handler:v12];
+  LOBYTE(error) = [(HDDeletedSampleEntity *)self _deletedSamplesInProfile:profileCopy queryStringBlock:&__block_literal_global_324_4 bindingBlock:v14 limit:1 error:error handler:handlerCopy];
 
-  return a5;
+  return error;
 }
 
 uint64_t __73__HDDeletedSampleEntity_deletedSampleInProfile_sampleUUID_error_handler___block_invoke_2(uint64_t a1, sqlite3_stmt *a2, int a3)
@@ -252,32 +252,32 @@ uint64_t __73__HDDeletedSampleEntity_deletedSampleInProfile_sampleUUID_error_han
   return (a3 + 1);
 }
 
-+ (uint64_t)_deletedSamplesInProfile:(void *)a3 queryStringBlock:(void *)a4 bindingBlock:(uint64_t)a5 limit:(uint64_t)a6 error:(void *)a7 handler:
++ (uint64_t)_deletedSamplesInProfile:(void *)profile queryStringBlock:(void *)block bindingBlock:(uint64_t)bindingBlock limit:(uint64_t)limit error:(void *)error handler:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  profileCopy = profile;
+  blockCopy = block;
+  errorCopy = error;
   v16 = objc_opt_self();
-  if (v15)
+  if (errorCopy)
   {
-    v17 = [v12 database];
+    database = [v12 database];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __100__HDDeletedSampleEntity__deletedSamplesInProfile_queryStringBlock_bindingBlock_limit_error_handler___block_invoke;
     v21[3] = &unk_27862BDD8;
-    v22 = v13;
-    v25 = a5;
+    v22 = profileCopy;
+    bindingBlockCopy = bindingBlock;
     v26 = v16;
-    v23 = v14;
-    v24 = v15;
-    v18 = [v16 performReadTransactionWithHealthDatabase:v17 error:a6 block:v21];
+    v23 = blockCopy;
+    v24 = errorCopy;
+    v18 = [v16 performReadTransactionWithHealthDatabase:database error:limit block:v21];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:sel__deletedSamplesInProfile_queryStringBlock_bindingBlock_limit_error_handler_ object:v16 file:@"HDDeletedSampleEntity.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__deletedSamplesInProfile_queryStringBlock_bindingBlock_limit_error_handler_ object:v16 file:@"HDDeletedSampleEntity.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
     v18 = 1;
   }
@@ -285,25 +285,25 @@ uint64_t __73__HDDeletedSampleEntity_deletedSampleInProfile_sampleUUID_error_han
   return v18;
 }
 
-+ (BOOL)enumerateDeletedSamplesInProfile:(id)a3 anchor:(int64_t)a4 limit:(unint64_t)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)enumerateDeletedSamplesInProfile:(id)profile anchor:(int64_t)anchor limit:(unint64_t)limit error:(id *)error handler:(id)handler
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__HDDeletedSampleEntity_enumerateDeletedSamplesInProfile_anchor_limit_error_handler___block_invoke;
   aBlock[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8l;
-  aBlock[4] = a4;
-  v12 = a7;
-  v13 = a3;
+  aBlock[4] = anchor;
+  handlerCopy = handler;
+  profileCopy = profile;
   v14 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __85__HDDeletedSampleEntity_enumerateDeletedSamplesInProfile_anchor_limit_error_handler___block_invoke_2;
   v17[3] = &__block_descriptor_40_e26_i20__0__sqlite3_stmt__8i16l;
-  v17[4] = a4;
+  v17[4] = anchor;
   v15 = _Block_copy(v17);
-  LOBYTE(a6) = [(HDDeletedSampleEntity *)a1 _deletedSamplesInProfile:v13 queryStringBlock:v14 bindingBlock:v15 limit:a5 error:a6 handler:v12];
+  LOBYTE(error) = [(HDDeletedSampleEntity *)self _deletedSamplesInProfile:profileCopy queryStringBlock:v14 bindingBlock:v15 limit:limit error:error handler:handlerCopy];
 
-  return a6;
+  return error;
 }
 
 id __85__HDDeletedSampleEntity_enumerateDeletedSamplesInProfile_anchor_limit_error_handler___block_invoke(uint64_t a1, void *a2)
@@ -333,20 +333,20 @@ uint64_t __85__HDDeletedSampleEntity_enumerateDeletedSamplesInProfile_anchor_lim
   return a3;
 }
 
-+ (BOOL)enumerateDeletedSamplesInProfile:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(unint64_t)a6 error:(id *)a7 handler:(id)a8
++ (BOOL)enumerateDeletedSamplesInProfile:(id)profile createdOnOrAfter:(id)after createdBefore:(id)before limit:(unint64_t)limit error:(id *)error handler:(id)handler
 {
-  v14 = a4;
-  v15 = a5;
+  afterCopy = after;
+  beforeCopy = before;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __109__HDDeletedSampleEntity_enumerateDeletedSamplesInProfile_createdOnOrAfter_createdBefore_limit_error_handler___block_invoke;
   aBlock[3] = &unk_27862BD60;
-  v16 = v14;
+  v16 = afterCopy;
   v29 = v16;
-  v17 = v15;
+  v17 = beforeCopy;
   v30 = v17;
-  v18 = a8;
-  v19 = a3;
+  handlerCopy = handler;
+  profileCopy = profile;
   v20 = _Block_copy(aBlock);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -357,9 +357,9 @@ uint64_t __85__HDDeletedSampleEntity_enumerateDeletedSamplesInProfile_anchor_lim
   v21 = v17;
   v22 = v16;
   v23 = _Block_copy(v25);
-  LOBYTE(a7) = [(HDDeletedSampleEntity *)a1 _deletedSamplesInProfile:v19 queryStringBlock:v20 bindingBlock:v23 limit:a6 error:a7 handler:v18];
+  LOBYTE(error) = [(HDDeletedSampleEntity *)self _deletedSamplesInProfile:profileCopy queryStringBlock:v20 bindingBlock:v23 limit:limit error:error handler:handlerCopy];
 
-  return a7;
+  return error;
 }
 
 id __109__HDDeletedSampleEntity_enumerateDeletedSamplesInProfile_createdOnOrAfter_createdBefore_limit_error_handler___block_invoke(uint64_t a1, void *a2)
@@ -483,61 +483,61 @@ uint64_t __100__HDDeletedSampleEntity__deletedSamplesInProfile_queryStringBlock_
   return 1;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDDeletedSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDDeletedSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (BOOL)enumerateEntitiesForSyncWithProperties:(id)a3 predicate:(id)a4 session:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 limit:(unint64_t)a7 lastSyncAnchor:(int64_t *)a8 healthDatabase:(id)a9 error:(id *)a10 block:(id)a11
++ (BOOL)enumerateEntitiesForSyncWithProperties:(id)properties predicate:(id)predicate session:(id)session syncAnchorRange:(HDSyncAnchorRange)range limit:(unint64_t)limit lastSyncAnchor:(int64_t *)anchor healthDatabase:(id)database error:(id *)self0 block:(id)self1
 {
   v28[1] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277D10B68];
   v15 = *MEMORY[0x277D10A40];
-  v16 = a11;
-  v17 = a9;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  blockCopy = block;
+  databaseCopy = database;
+  sessionCopy = session;
+  predicateCopy = predicate;
+  propertiesCopy = properties;
   v21 = [v14 orderingTermWithProperty:v15 entityClass:objc_opt_class() ascending:1];
   v28[0] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   LOBYTE(v25) = 0;
-  LOBYTE(v15) = [(HDHealthEntity *)HDSampleEntity enumerateEntitiesForSyncWithProperties:v20 predicate:v19 syncEntityClass:0 session:v18 syncAnchorRange:a6.start orderingTerms:a6.end limit:v22 lastSyncAnchor:a7 distinct:a8 healthDatabase:v25 error:v17 block:a10, v16];
+  LOBYTE(v15) = [(HDHealthEntity *)HDSampleEntity enumerateEntitiesForSyncWithProperties:propertiesCopy predicate:predicateCopy syncEntityClass:0 session:sessionCopy syncAnchorRange:range.start orderingTerms:range.end limit:v22 lastSyncAnchor:limit distinct:anchor healthDatabase:v25 error:databaseCopy block:error, blockCopy];
 
   v23 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addDeletedSamples:a3];
+    [collection addDeletedSamples:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (BOOL)insertCodableDeletedSamples:(id)a3 provenance:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertCodableDeletedSamples:(id)samples provenance:(id)provenance profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 database];
+  samplesCopy = samples;
+  provenanceCopy = provenance;
+  profileCopy = profile;
+  database = [profileCopy database];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __78__HDDeletedSampleEntity_insertCodableDeletedSamples_provenance_profile_error___block_invoke;
   v22[3] = &unk_278613550;
-  v26 = a1;
-  v23 = v12;
-  v24 = v11;
-  v25 = v10;
+  selfCopy = self;
+  v23 = profileCopy;
+  v24 = provenanceCopy;
+  v25 = samplesCopy;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __78__HDDeletedSampleEntity_insertCodableDeletedSamples_provenance_profile_error___block_invoke_367;
@@ -548,9 +548,9 @@ uint64_t __100__HDDeletedSampleEntity__deletedSamplesInProfile_queryStringBlock_
   v14 = v23;
   v15 = v24;
   v16 = v25;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v13 error:a6 block:v22 inaccessibilityHandler:v18];
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v22 inaccessibilityHandler:v18];
 
-  return a6;
+  return error;
 }
 
 uint64_t __78__HDDeletedSampleEntity_insertCodableDeletedSamples_provenance_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)

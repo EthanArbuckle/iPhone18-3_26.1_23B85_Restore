@@ -2,21 +2,21 @@
 + (BOOL)allowBlendingMotionBackgroundsDefaultValue;
 + (BOOL)isCustomEffectTimingCurveEditingEnabled;
 + (BOOL)isDisplayLoggingEnabled;
-+ (BOOL)isMotionBlurCapableWithAnimationContext:(id)a3;
++ (BOOL)isMotionBlurCapableWithAnimationContext:(id)context;
 + (BOOL)isRandomNumberSeedInspectionEnabled;
 + (BOOL)shouldForceDisplayPreferredMode;
-+ (BOOL)willPluginClassAllowBlendingMotionBackgrounds:(Class)a3;
-+ (CGRect)recommendedLayerBoundsForNaturalPlaybackSize:(CGSize)a3 inContainerWithBounds:(CGRect)a4 contentsScale:(double)a5 isExternalDisplay:(BOOL)a6;
-+ (id)CAAccelerationFromSFXActionAcceleration:(unint64_t)a3;
-+ (id)customAttributesArrayWithDeliveryOptions:(id)a3;
-+ (id)customAttributesArrayWithJiggleIntensityOptions:(id)a3;
-+ (id)customAttributesArrayWithTextDeliveryOptions:(id)a3;
-+ (id)timingsArrayWithDirection:(unint64_t)a3 duration:(double)a4 count:(unint64_t)a5 chunkDuration:(double)a6 randomness:(double)a7 randomGenerator:(id)a8;
++ (BOOL)willPluginClassAllowBlendingMotionBackgrounds:(Class)backgrounds;
++ (CGRect)recommendedLayerBoundsForNaturalPlaybackSize:(CGSize)size inContainerWithBounds:(CGRect)bounds contentsScale:(double)scale isExternalDisplay:(BOOL)display;
++ (id)CAAccelerationFromSFXActionAcceleration:(unint64_t)acceleration;
++ (id)customAttributesArrayWithDeliveryOptions:(id)options;
++ (id)customAttributesArrayWithJiggleIntensityOptions:(id)options;
++ (id)customAttributesArrayWithTextDeliveryOptions:(id)options;
++ (id)timingsArrayWithDirection:(unint64_t)direction duration:(double)duration count:(unint64_t)count chunkDuration:(double)chunkDuration randomness:(double)randomness randomGenerator:(id)generator;
 + (id)videoControllerSignpostLog;
-+ (unint64_t)directionFromCustomAttributesDeliveryOption:(unint64_t)a3;
++ (unint64_t)directionFromCustomAttributesDeliveryOption:(unint64_t)option;
 + (unint64_t)randomBasicDirection;
 + (unint64_t)randomDirection;
-+ (void)getRecommendedPosition:(CGPoint *)a3 andTransform:(CATransform3D *)a4 toFitLayer:(id)a5 inContainerWithBounds:(CGRect)a6 contentsScale:(double)a7;
++ (void)getRecommendedPosition:(CGPoint *)position andTransform:(CATransform3D *)transform toFitLayer:(id)layer inContainerWithBounds:(CGRect)bounds contentsScale:(double)scale;
 + (void)initialize;
 + (void)updateDefaultsValues;
 @end
@@ -137,28 +137,28 @@
   block[1] = 3221225472;
   block[2] = sub_275D99DB8;
   block[3] = &unk_27A698760;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A3C050 != -1)
   {
     dispatch_once(&qword_280A3C050, block);
   }
 }
 
-+ (id)timingsArrayWithDirection:(unint64_t)a3 duration:(double)a4 count:(unint64_t)a5 chunkDuration:(double)a6 randomness:(double)a7 randomGenerator:(id)a8
++ (id)timingsArrayWithDirection:(unint64_t)direction duration:(double)duration count:(unint64_t)count chunkDuration:(double)chunkDuration randomness:(double)randomness randomGenerator:(id)generator
 {
   v138 = *MEMORY[0x277D85DE8];
-  v14 = a8;
-  if (a3 - 111 >= 5)
+  generatorCopy = generator;
+  if (direction - 111 >= 5)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "+[KNAnimationUtils timingsArrayWithDirection:duration:count:chunkDuration:randomness:randomGenerator:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimationUtils.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v19, v16, v18, 244, 0, "Wrong direction! Expected Character direction, not %tu", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v19, v16, v18, 244, 0, "Wrong direction! Expected Character direction, not %tu", direction);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
-  if (a6 < 0.0 || a6 > 1.0)
+  if (chunkDuration < 0.0 || chunkDuration > 1.0)
   {
     v23 = MEMORY[0x277D81150];
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "+[KNAnimationUtils timingsArrayWithDirection:duration:count:chunkDuration:randomness:randomGenerator:]");
@@ -168,7 +168,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
   }
 
-  if (!v14)
+  if (!generatorCopy)
   {
     v30 = MEMORY[0x277D81150];
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "+[KNAnimationUtils timingsArrayWithDirection:duration:count:chunkDuration:randomness:randomGenerator:]");
@@ -178,51 +178,51 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36);
   }
 
-  v37 = a5 - 1;
-  if (a5 == 1)
+  v37 = count - 1;
+  if (count == 1)
   {
-    v38 = a4;
+    durationCopy = duration;
   }
 
   else
   {
-    v38 = a4 * a6;
+    durationCopy = duration * chunkDuration;
   }
 
-  v41 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v13, a5);
-  if (a3 - 111 < 2)
+  v41 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v13, count);
+  if (direction - 111 < 2)
   {
-    if (a5)
+    if (count)
     {
       v58 = 0;
-      v59 = (a4 - v38) / a5;
-      v60 = a5;
+      v59 = (duration - durationCopy) / count;
+      countCopy = count;
       do
       {
         v61 = v59 * v58;
-        if (a7 == 0.0)
+        if (randomness == 0.0)
         {
-          objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v39, v40, v61, v38);
+          objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v39, v40, v61, durationCopy);
         }
 
         else
         {
-          if (v58 && v60 != 1)
+          if (v58 && countCopy != 1)
           {
-            objc_msgSend_doubleBetween::(v14, v39, v40, -0.5, 0.5);
-            v61 = v61 + v59 * a7 * v62;
+            objc_msgSend_doubleBetween::(generatorCopy, v39, v40, -0.5, 0.5);
+            v61 = v61 + v59 * randomness * v62;
           }
 
-          objc_msgSend_doubleBetween::(v14, v39, v40, -0.5, 0.5);
-          v66 = v38 + v38 * a7 * v65;
-          if (v66 >= a4)
+          objc_msgSend_doubleBetween::(generatorCopy, v39, v40, -0.5, 0.5);
+          v66 = durationCopy + durationCopy * randomness * v65;
+          if (v66 >= duration)
           {
-            v67 = a4;
+            durationCopy2 = duration;
           }
 
           else
           {
-            v67 = v66;
+            durationCopy2 = v66;
           }
 
           if (v61 >= 0.0)
@@ -235,43 +235,43 @@
             v68 = 0.0;
           }
 
-          if (v68 >= a4 - v67)
+          if (v68 >= duration - durationCopy2)
           {
-            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v63, v64, a4 - v67, v67);
+            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v63, v64, duration - durationCopy2, durationCopy2);
           }
 
           else
           {
-            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v63, v64, v68, v67);
+            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v63, v64, v68, durationCopy2);
           }
         }
         v69 = ;
         objc_msgSend_addObject_(v41, v70, v69);
 
         ++v58;
-        --v60;
+        --countCopy;
       }
 
-      while (v60);
+      while (countCopy);
     }
   }
 
-  else if (a3 - 114 >= 2)
+  else if (direction - 114 >= 2)
   {
-    if (a3 != 113)
+    if (direction != 113)
     {
       v88 = MEMORY[0x277D81150];
       v89 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, "+[KNAnimationUtils timingsArrayWithDirection:duration:count:chunkDuration:randomness:randomGenerator:]");
       v91 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v90, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimationUtils.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v88, v92, v89, v91, 342, 0, "KNAnimationUtils: We should never have gotten here! Direction: %tu", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v88, v92, v89, v91, 342, 0, "KNAnimationUtils: We should never have gotten here! Direction: %tu", direction);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v93, v94);
       v95 = MEMORY[0x277CBEBF8];
       goto LABEL_93;
     }
 
-    v72 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v39, a5);
-    if (a5)
+    v72 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v39, count);
+    if (count)
     {
       v73 = 0;
       do
@@ -282,49 +282,49 @@
         ++v73;
       }
 
-      while (a5 != v73);
+      while (count != v73);
     }
 
-    v78 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v71, a5);
+    v78 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v71, count);
     while (objc_msgSend_count(v72, v76, v77))
     {
       v81 = objc_msgSend_count(v72, v79, v80);
-      v83 = objc_msgSend_intBetween::(v14, v82, 0, v81 - 1);
+      v83 = objc_msgSend_intBetween::(generatorCopy, v82, 0, v81 - 1);
       v85 = objc_msgSend_objectAtIndex_(v72, v84, v83);
       objc_msgSend_addObject_(v78, v86, v85);
 
       objc_msgSend_removeObjectAtIndex_(v72, v87, v83);
     }
 
-    if (a5)
+    if (count)
     {
       v96 = 0;
-      v97 = (a4 - v38) / a5;
+      v97 = (duration - durationCopy) / count;
       do
       {
         v98 = objc_msgSend_objectAtIndex_(v78, v79, v96);
         v101 = objc_msgSend_intValue(v98, v99, v100);
 
         v104 = v97 * v101;
-        if (a7 == 0.0)
+        if (randomness == 0.0)
         {
-          objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v102, v103, v104, v38);
+          objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v102, v103, v104, durationCopy);
         }
 
         else
         {
-          objc_msgSend_doubleBetween::(v14, v102, v103, -0.5, 0.5);
-          v106 = v104 + v97 * a7 * v105;
-          objc_msgSend_doubleBetween::(v14, v107, v108, -0.5, 0.5);
-          v112 = v38 + v38 * a7 * v111;
-          if (v112 >= a4)
+          objc_msgSend_doubleBetween::(generatorCopy, v102, v103, -0.5, 0.5);
+          v106 = v104 + v97 * randomness * v105;
+          objc_msgSend_doubleBetween::(generatorCopy, v107, v108, -0.5, 0.5);
+          v112 = durationCopy + durationCopy * randomness * v111;
+          if (v112 >= duration)
           {
-            v113 = a4;
+            durationCopy3 = duration;
           }
 
           else
           {
-            v113 = v112;
+            durationCopy3 = v112;
           }
 
           if (v106 >= 0.0)
@@ -337,14 +337,14 @@
             v114 = 0.0;
           }
 
-          if (v114 >= a4 - v113)
+          if (v114 >= duration - durationCopy3)
           {
-            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v109, v110, a4 - v113, v113);
+            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v109, v110, duration - durationCopy3, durationCopy3);
           }
 
           else
           {
-            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v109, v110, v114, v113);
+            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v109, v110, v114, durationCopy3);
           }
         }
         v115 = ;
@@ -353,27 +353,27 @@
         ++v96;
       }
 
-      while (a5 != v96);
+      while (count != v96);
     }
   }
 
   else
   {
-    if (a5 >> 1 <= 1)
+    if (count >> 1 <= 1)
     {
       v42 = 1;
     }
 
     else
     {
-      v42 = a5 >> 1;
+      v42 = count >> 1;
     }
 
-    if (a5)
+    if (count)
     {
       v43 = 0;
-      v44 = (a4 - v38) / v42;
-      v45 = vcvtd_n_f64_u64(a5, 1uLL);
+      v44 = (duration - durationCopy) / v42;
+      v45 = vcvtd_n_f64_u64(count, 1uLL);
       do
       {
         if (v45 <= v43)
@@ -387,16 +387,16 @@
         }
 
         v47 = v44 * v46;
-        if (a7 == 0.0)
+        if (randomness == 0.0)
         {
-          objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v39, v40, v47, v38);
+          objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v39, v40, v47, durationCopy);
         }
 
         else
         {
           if (v46)
           {
-            v48 = v46 == a5 >> 1;
+            v48 = v46 == count >> 1;
           }
 
           else
@@ -406,20 +406,20 @@
 
           if (!v48)
           {
-            objc_msgSend_doubleBetween::(v14, v39, v40, -0.5, 0.5);
-            v47 = v47 + v44 * a7 * v49;
+            objc_msgSend_doubleBetween::(generatorCopy, v39, v40, -0.5, 0.5);
+            v47 = v47 + v44 * randomness * v49;
           }
 
-          objc_msgSend_doubleBetween::(v14, v39, v40, -0.5, 0.5);
-          v53 = v38 + v38 * a7 * v52;
-          if (v53 >= a4)
+          objc_msgSend_doubleBetween::(generatorCopy, v39, v40, -0.5, 0.5);
+          v53 = durationCopy + durationCopy * randomness * v52;
+          if (v53 >= duration)
           {
-            v54 = a4;
+            durationCopy4 = duration;
           }
 
           else
           {
-            v54 = v53;
+            durationCopy4 = v53;
           }
 
           v55 = 0.0;
@@ -428,14 +428,14 @@
             v55 = v47;
           }
 
-          if (v55 >= a4 - v54)
+          if (v55 >= duration - durationCopy4)
           {
-            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v50, v51, a4 - v54, v54);
+            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v50, v51, duration - durationCopy4, durationCopy4);
           }
 
           else
           {
-            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v50, v51, v55, v54);
+            objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v50, v51, v55, durationCopy4);
           }
         }
         v56 = ;
@@ -449,9 +449,9 @@
     }
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0x70)
+  if ((direction & 0xFFFFFFFFFFFFFFFDLL) == 0x70)
   {
-    v117 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v39, a5);
+    v117 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v39, count);
     v133 = 0u;
     v134 = 0u;
     v135 = 0u;
@@ -472,7 +472,7 @@
           }
 
           objc_msgSend_CGPointValue(*(*(&v133 + 1) + 8 * i), v121, v122);
-          v130 = objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v128, v129, a4 - v126 - v127);
+          v130 = objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v128, v129, duration - v126 - v127);
           objc_msgSend_addObject_(v117, v131, v130);
         }
 
@@ -495,18 +495,18 @@ LABEL_93:
   return v95;
 }
 
-+ (id)customAttributesArrayWithTextDeliveryOptions:(id)a3
++ (id)customAttributesArrayWithTextDeliveryOptions:(id)options
 {
   v53 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v4 = MEMORY[0x277CBEB38];
-  v7 = objc_msgSend_count(v3, v5, v6);
+  v7 = objc_msgSend_count(optionsCopy, v5, v6);
   v9 = objc_msgSend_dictionaryWithCapacity_(v4, v8, v7);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = v3;
+  v10 = optionsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v45, v52, 16);
   if (v12)
   {
@@ -600,18 +600,18 @@ LABEL_17:
   return v43;
 }
 
-+ (id)customAttributesArrayWithDeliveryOptions:(id)a3
++ (id)customAttributesArrayWithDeliveryOptions:(id)options
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v4 = MEMORY[0x277CBEB38];
-  v7 = objc_msgSend_count(v3, v5, v6);
+  v7 = objc_msgSend_count(optionsCopy, v5, v6);
   v9 = objc_msgSend_dictionaryWithCapacity_(v4, v8, v7);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = v3;
+  v10 = optionsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v48, v55, 16);
   if (v12)
   {
@@ -707,18 +707,18 @@ LABEL_18:
   return v46;
 }
 
-+ (id)customAttributesArrayWithJiggleIntensityOptions:(id)a3
++ (id)customAttributesArrayWithJiggleIntensityOptions:(id)options
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v4 = MEMORY[0x277CBEB38];
-  v7 = objc_msgSend_count(v3, v5, v6);
+  v7 = objc_msgSend_count(optionsCopy, v5, v6);
   v9 = objc_msgSend_dictionaryWithCapacity_(v4, v8, v7);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v10 = v3;
+  v10 = optionsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v38, v45, 16);
   if (v12)
   {
@@ -789,16 +789,16 @@ LABEL_18:
   return v36;
 }
 
-+ (unint64_t)directionFromCustomAttributesDeliveryOption:(unint64_t)a3
++ (unint64_t)directionFromCustomAttributesDeliveryOption:(unint64_t)option
 {
-  if (a3 - 2 > 3)
+  if (option - 2 > 3)
   {
     return 111;
   }
 
   else
   {
-    return qword_275E71058[a3 - 2];
+    return qword_275E71058[option - 2];
   }
 }
 
@@ -876,15 +876,15 @@ LABEL_18:
   return v5;
 }
 
-+ (BOOL)willPluginClassAllowBlendingMotionBackgrounds:(Class)a3
++ (BOOL)willPluginClassAllowBlendingMotionBackgrounds:(Class)backgrounds
 {
-  v4 = objc_msgSend_allowBlendingMotionBackgroundsDefaultValue(KNAnimationUtils, a2, a3);
-  if (!objc_msgSend_conformsToProtocol_(a3, v5, &unk_288546310))
+  v4 = objc_msgSend_allowBlendingMotionBackgroundsDefaultValue(KNAnimationUtils, a2, backgrounds);
+  if (!objc_msgSend_conformsToProtocol_(backgrounds, v5, &unk_288546310))
   {
     return v4;
   }
 
-  return MEMORY[0x2821F9670](a3, sel_allowsMotionBackgroundBlending, v6);
+  return MEMORY[0x2821F9670](backgrounds, sel_allowsMotionBackgroundBlending, v6);
 }
 
 + (id)videoControllerSignpostLog
@@ -899,10 +899,10 @@ LABEL_18:
   return v3;
 }
 
-+ (BOOL)isMotionBlurCapableWithAnimationContext:(id)a3
++ (BOOL)isMotionBlurCapableWithAnimationContext:(id)context
 {
-  v3 = a3;
-  v6 = v3;
+  contextCopy = context;
+  v6 = contextCopy;
   if (byte_280A3C041)
   {
     v7 = 0;
@@ -915,18 +915,18 @@ LABEL_18:
 
   else
   {
-    v8 = objc_msgSend_capabilities(v3, v4, v5);
+    v8 = objc_msgSend_capabilities(contextCopy, v4, v5);
     v7 = (objc_msgSend_platform(v8, v9, v10) == 2) & byte_280A3C03F;
   }
 
   return v7;
 }
 
-+ (id)CAAccelerationFromSFXActionAcceleration:(unint64_t)a3
++ (id)CAAccelerationFromSFXActionAcceleration:(unint64_t)acceleration
 {
-  if (a3 > 1)
+  if (acceleration > 1)
   {
-    switch(a3)
+    switch(acceleration)
     {
       case 2uLL:
         v4 = MEMORY[0x277CDA7C0];
@@ -947,13 +947,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!acceleration)
   {
     v4 = MEMORY[0x277CDA7C8];
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (acceleration == 1)
   {
     v4 = MEMORY[0x277CDA7B0];
     goto LABEL_12;
@@ -972,7 +972,7 @@ LABEL_13:
   return v3;
 }
 
-+ (CGRect)recommendedLayerBoundsForNaturalPlaybackSize:(CGSize)a3 inContainerWithBounds:(CGRect)a4 contentsScale:(double)a5 isExternalDisplay:(BOOL)a6
++ (CGRect)recommendedLayerBoundsForNaturalPlaybackSize:(CGSize)size inContainerWithBounds:(CGRect)bounds contentsScale:(double)scale isExternalDisplay:(BOOL)display
 {
   TSUMultiplyRectScalar();
   TSUScaleSizeWithinSize();
@@ -997,10 +997,10 @@ LABEL_13:
   return result;
 }
 
-+ (void)getRecommendedPosition:(CGPoint *)a3 andTransform:(CATransform3D *)a4 toFitLayer:(id)a5 inContainerWithBounds:(CGRect)a6 contentsScale:(double)a7
++ (void)getRecommendedPosition:(CGPoint *)position andTransform:(CATransform3D *)transform toFitLayer:(id)layer inContainerWithBounds:(CGRect)bounds contentsScale:(double)scale
 {
-  v9 = a5;
-  objc_msgSend_bounds(v9, v10, v11);
+  layerCopy = layer;
+  objc_msgSend_bounds(layerCopy, v10, v11);
   v44 = v13;
   v45 = v12;
   TSUScaleSizeWithinSize();
@@ -1023,7 +1023,7 @@ LABEL_13:
   y = v49.origin.y;
   width = v49.size.width;
   height = v49.size.height;
-  objc_msgSend_anchorPoint(v9, v30, v31);
+  objc_msgSend_anchorPoint(layerCopy, v30, v31);
   v33 = v32;
   v35 = v34;
 
@@ -1044,26 +1044,26 @@ LABEL_13:
     CATransform3DMakeScale(&v46, width / v45, height / v44, 1.0);
   }
 
-  if (a3)
+  if (position)
   {
-    a3->x = x + width * v33;
-    a3->y = y + height * v35;
+    position->x = x + width * v33;
+    position->y = y + height * v35;
   }
 
-  if (a4)
+  if (transform)
   {
     v40 = *&v46.m33;
-    *&a4->m31 = *&v46.m31;
-    *&a4->m33 = v40;
+    *&transform->m31 = *&v46.m31;
+    *&transform->m33 = v40;
     v41 = *&v46.m43;
-    *&a4->m41 = *&v46.m41;
-    *&a4->m43 = v41;
+    *&transform->m41 = *&v46.m41;
+    *&transform->m43 = v41;
     v42 = *&v46.m13;
-    *&a4->m11 = *&v46.m11;
-    *&a4->m13 = v42;
+    *&transform->m11 = *&v46.m11;
+    *&transform->m13 = v42;
     v43 = *&v46.m23;
-    *&a4->m21 = *&v46.m21;
-    *&a4->m23 = v43;
+    *&transform->m21 = *&v46.m21;
+    *&transform->m23 = v43;
   }
 }
 

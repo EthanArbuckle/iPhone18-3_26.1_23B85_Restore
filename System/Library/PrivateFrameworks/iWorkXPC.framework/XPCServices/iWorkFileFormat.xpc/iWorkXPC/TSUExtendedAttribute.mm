@@ -1,21 +1,21 @@
 @interface TSUExtendedAttribute
-+ (id)extendedAttributeWithName:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setAttributeToPathFileSystemRepresentation:(const char *)a3 options:(int)a4 error:(id *)a5;
-- (BOOL)shouldPreserveForIntent:(unsigned int)a3;
++ (id)extendedAttributeWithName:(id)name value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setAttributeToPathFileSystemRepresentation:(const char *)representation options:(int)options error:(id *)error;
+- (BOOL)shouldPreserveForIntent:(unsigned int)intent;
 - (TSUExtendedAttribute)init;
-- (TSUExtendedAttribute)initWithName:(id)a3 value:(id)a4;
+- (TSUExtendedAttribute)initWithName:(id)name value:(id)value;
 - (id)description;
-- (id)initFromPathFileSystemRepresentation:(const char *)a3 name:(id)a4 forRemoval:(BOOL)a5 options:(int)a6 error:(id *)a7;
+- (id)initFromPathFileSystemRepresentation:(const char *)representation name:(id)name forRemoval:(BOOL)removal options:(int)options error:(id *)error;
 @end
 
 @implementation TSUExtendedAttribute
 
-+ (id)extendedAttributeWithName:(id)a3 value:(id)a4
++ (id)extendedAttributeWithName:(id)name value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 value:v6];
+  valueCopy = value;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy value:valueCopy];
 
   return v8;
 }
@@ -54,20 +54,20 @@
   objc_exception_throw(v7);
 }
 
-- (TSUExtendedAttribute)initWithName:(id)a3 value:(id)a4
+- (TSUExtendedAttribute)initWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = TSUExtendedAttribute;
   v8 = [(TSUExtendedAttribute *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v11;
   }
@@ -75,46 +75,46 @@
   return v8;
 }
 
-- (id)initFromPathFileSystemRepresentation:(const char *)a3 name:(id)a4 forRemoval:(BOOL)a5 options:(int)a6 error:(id *)a7
+- (id)initFromPathFileSystemRepresentation:(const char *)representation name:(id)name forRemoval:(BOOL)removal options:(int)options error:(id *)error
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = [v12 UTF8String];
-  if (!v13)
+  removalCopy = removal;
+  nameCopy = name;
+  uTF8String = [nameCopy UTF8String];
+  if (!uTF8String)
   {
-    if (a7)
+    if (error)
     {
       v15 = 22;
 LABEL_23:
       [NSError tsu_fileReadPOSIXErrorWithNumber:v15 userInfo:0];
-      *a7 = v14 = 0;
+      *error = selfCopy2 = 0;
       goto LABEL_31;
     }
 
 LABEL_30:
-    v14 = 0;
+    selfCopy2 = 0;
     goto LABEL_31;
   }
 
-  if (!v9)
+  if (!removalCopy)
   {
-    v16 = v13;
-    v17 = getxattr(a3, v13, 0, 0, 0, a6);
+    v16 = uTF8String;
+    v17 = getxattr(representation, uTF8String, 0, 0, 0, options);
     if (!v17)
     {
       v19 = objc_alloc_init(NSData);
-      v20 = [(TSUExtendedAttribute *)self initWithName:v12 value:v19];
+      v20 = [(TSUExtendedAttribute *)self initWithName:nameCopy value:v19];
 LABEL_20:
       self = v20;
 
-      v14 = self;
+      selfCopy2 = self;
       goto LABEL_31;
     }
 
     v18 = v17;
     if (v17 == -1)
     {
-      if (a7)
+      if (error)
       {
         v15 = *__error();
         goto LABEL_23;
@@ -126,7 +126,7 @@ LABEL_20:
     v21 = malloc_type_malloc(v17, 0xA5D88C57uLL);
     if (!v21)
     {
-      if (a7)
+      if (error)
       {
         v15 = 12;
         goto LABEL_23;
@@ -136,7 +136,7 @@ LABEL_20:
     }
 
     v22 = v21;
-    v23 = getxattr(a3, v16, v21, v18, 0, a6);
+    v23 = getxattr(representation, v16, v21, v18, 0, options);
     if (v23 != -1)
     {
       if (v23 != v18)
@@ -161,7 +161,7 @@ LABEL_20:
       }
 
       v19 = [[NSData alloc] initWithBytesNoCopy:v22 length:v18 freeWhenDone:1];
-      v20 = [(TSUExtendedAttribute *)self initWithName:v12 value:v19];
+      v20 = [(TSUExtendedAttribute *)self initWithName:nameCopy value:v19];
       goto LABEL_20;
     }
 
@@ -173,71 +173,71 @@ LABEL_20:
     v28 = TSUDefaultCat_log_t;
     if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_ERROR))
     {
-      sub_10015B1B0(v16, a3, v28);
-      if (!a7)
+      sub_10015B1B0(v16, representation, v28);
+      if (!error)
       {
         goto LABEL_29;
       }
     }
 
-    else if (!a7)
+    else if (!error)
     {
 LABEL_29:
       free(v22);
       goto LABEL_30;
     }
 
-    *a7 = [NSError tsu_fileReadPOSIXErrorWithNumber:*__error() userInfo:0];
+    *error = [NSError tsu_fileReadPOSIXErrorWithNumber:*__error() userInfo:0];
     goto LABEL_29;
   }
 
-  self = [(TSUExtendedAttribute *)self initWithName:v12 value:0];
-  v14 = self;
+  self = [(TSUExtendedAttribute *)self initWithName:nameCopy value:0];
+  selfCopy2 = self;
 LABEL_31:
 
-  return v14;
+  return selfCopy2;
 }
 
-- (BOOL)shouldPreserveForIntent:(unsigned int)a3
+- (BOOL)shouldPreserveForIntent:(unsigned int)intent
 {
-  v4 = [(NSString *)self->_name UTF8String];
-  if (v4)
+  uTF8String = [(NSString *)self->_name UTF8String];
+  if (uTF8String)
   {
-    LOBYTE(v4) = xattr_preserve_for_intent(v4, a3) != 0;
+    LOBYTE(uTF8String) = xattr_preserve_for_intent(uTF8String, intent) != 0;
   }
 
-  return v4;
+  return uTF8String;
 }
 
-- (BOOL)setAttributeToPathFileSystemRepresentation:(const char *)a3 options:(int)a4 error:(id *)a5
+- (BOOL)setAttributeToPathFileSystemRepresentation:(const char *)representation options:(int)options error:(id *)error
 {
-  v9 = [(NSString *)self->_name UTF8String];
-  if (!v9)
+  uTF8String = [(NSString *)self->_name UTF8String];
+  if (!uTF8String)
   {
 LABEL_5:
-    if (a5)
+    if (error)
     {
       v14 = 22;
 LABEL_15:
       v17 = [NSError tsu_fileReadPOSIXErrorWithNumber:v14 userInfo:0];
       v18 = v17;
       result = 0;
-      *a5 = v17;
+      *error = v17;
       return result;
     }
 
     return 0;
   }
 
-  v10 = v9;
+  v10 = uTF8String;
   value = self->_value;
   if (value)
   {
     v12 = [(NSData *)value length];
     if (v12)
     {
-      v13 = [(NSData *)self->_value bytes];
-      if (!v13)
+      bytes = [(NSData *)self->_value bytes];
+      if (!bytes)
       {
         goto LABEL_5;
       }
@@ -245,10 +245,10 @@ LABEL_15:
 
     else
     {
-      v13 = "";
+      bytes = "";
     }
 
-    v15 = setxattr(a3, v10, v13, v12, 0, a4);
+    v15 = setxattr(representation, v10, bytes, v12, 0, options);
   }
 
   else
@@ -258,7 +258,7 @@ LABEL_15:
       return 1;
     }
 
-    v15 = removexattr(a3, v10, a4);
+    v15 = removexattr(representation, v10, options);
   }
 
   if (v15 != -1)
@@ -266,7 +266,7 @@ LABEL_15:
     return 1;
   }
 
-  if (a5)
+  if (error)
   {
     v14 = *__error();
     goto LABEL_15;
@@ -275,17 +275,17 @@ LABEL_15:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, equalCopy);
 
   if (v6)
   {
     name = self->_name;
-    v8 = [v6 name];
-    if (name | v8 && ![(NSString *)name isEqual:v8])
+    name = [v6 name];
+    if (name | name && ![(NSString *)name isEqual:name])
     {
       v11 = 0;
     }
@@ -293,10 +293,10 @@ LABEL_15:
     else
     {
       value = self->_value;
-      v10 = [v6 value];
-      if (value | v10)
+      value = [v6 value];
+      if (value | value)
       {
-        v11 = [(NSData *)value isEqual:v10];
+        v11 = [(NSData *)value isEqual:value];
       }
 
       else

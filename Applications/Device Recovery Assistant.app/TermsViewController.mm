@@ -1,8 +1,8 @@
 @interface TermsViewController
 - (TermsViewController)init;
 - (TermsViewControllerDelegate)delegate;
-- (void)_didTapAgreeButton:(id)a3;
-- (void)_didTapDisagreeButton:(id)a3;
+- (void)_didTapAgreeButton:(id)button;
+- (void)_didTapDisagreeButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -33,14 +33,14 @@
     v15 = +[OBBoldTrayButton boldButton];
     [v15 setTitle:v11 forState:0];
     [v15 addTarget:v14 action:"_didTapAgreeButton:" forControlEvents:0x2000];
-    v16 = [(TermsViewController *)v14 buttonTray];
-    [v16 addButton:v15];
+    buttonTray = [(TermsViewController *)v14 buttonTray];
+    [buttonTray addButton:v15];
 
     v17 = +[OBLinkTrayButton linkButton];
     [v17 setTitle:v13 forState:0];
     [v17 addTarget:v14 action:"_didTapDisagreeButton:" forControlEvents:0x2000];
-    v18 = [(TermsViewController *)v14 buttonTray];
-    [v18 addButton:v17];
+    buttonTray2 = [(TermsViewController *)v14 buttonTray];
+    [buttonTray2 addButton:v17];
   }
 
   return v14;
@@ -53,25 +53,25 @@
   [(TermsViewController *)&v2 viewDidLoad];
 }
 
-- (void)_didTapAgreeButton:(id)a3
+- (void)_didTapAgreeButton:(id)button
 {
-  v4 = [(TermsViewController *)self delegate];
+  delegate = [(TermsViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(TermsViewController *)self delegate];
-    [v5 termsViewControllerDidAgree:self];
+    delegate2 = [(TermsViewController *)self delegate];
+    [delegate2 termsViewControllerDidAgree:self];
   }
 }
 
-- (void)_didTapDisagreeButton:(id)a3
+- (void)_didTapDisagreeButton:(id)button
 {
-  v4 = [(TermsViewController *)self delegate];
+  delegate = [(TermsViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(TermsViewController *)self delegate];
-    [v5 termsViewControllerDidDisagree:self];
+    delegate2 = [(TermsViewController *)self delegate];
+    [delegate2 termsViewControllerDidDisagree:self];
   }
 }
 

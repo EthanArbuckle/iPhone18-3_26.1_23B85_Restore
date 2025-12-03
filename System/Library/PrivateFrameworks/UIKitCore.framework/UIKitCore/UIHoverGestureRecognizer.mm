@@ -1,35 +1,35 @@
 @interface UIHoverGestureRecognizer
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3;
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer;
 - (BOOL)_isPaused;
-- (CAPoint3D)_location3DInView:(id)a3;
+- (CAPoint3D)_location3DInView:(id)view;
 - (CGFloat)altitudeAngle;
 - (CGFloat)azimuthAngleInView:(UIView *)view;
 - (CGFloat)zOffset;
-- (CGPoint)_preciseLocationInView:(id)a3;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)_preciseLocationInView:(id)view;
+- (CGPoint)locationInView:(id)view;
 - (CGVector)azimuthUnitVectorInView:(UIView *)view;
-- (UIHoverGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIHoverGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)_hoverHeight;
 - (double)_maximumHoverHeight;
 - (double)_rollAngle;
 - (id)_setAllowedTouchTypes:(id)result;
-- (void)_hoverCancelled:(id)a3 withEvent:(id)a4;
-- (void)_hoverEntered:(id)a3 withEvent:(id)a4;
-- (void)_hoverExited:(id)a3 withEvent:(id)a4;
-- (void)_hoverMoved:(id)a3 withEvent:(id)a4;
+- (void)_hoverCancelled:(id)cancelled withEvent:(id)event;
+- (void)_hoverEntered:(id)entered withEvent:(id)event;
+- (void)_hoverExited:(id)exited withEvent:(id)event;
+- (void)_hoverMoved:(id)moved withEvent:(id)event;
 - (void)_resetInternalState;
 - (void)reset;
-- (void)setAllowedTouchTypes:(id)a3;
-- (void)setRequiresExclusiveTouchType:(BOOL)a3;
+- (void)setAllowedTouchTypes:(id)types;
+- (void)setRequiresExclusiveTouchType:(BOOL)type;
 @end
 
 @implementation UIHoverGestureRecognizer
 
-- (UIHoverGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIHoverGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = UIHoverGestureRecognizer;
-  result = [(UIGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(UIGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_pausesWhilePanning = 1;
@@ -38,15 +38,15 @@
   return result;
 }
 
-- (void)setAllowedTouchTypes:(id)a3
+- (void)setAllowedTouchTypes:(id)types
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   if (dyld_program_sdk_at_least())
   {
     v25.receiver = self;
     v25.super_class = UIHoverGestureRecognizer;
-    [(UIGestureRecognizer *)&v25 setAllowedTouchTypes:v4];
+    [(UIGestureRecognizer *)&v25 setAllowedTouchTypes:typesCopy];
   }
 
   else
@@ -55,8 +55,8 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v4;
-    v5 = v4;
+    v23 = typesCopy;
+    v5 = typesCopy;
     v6 = [v5 countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v6)
     {
@@ -83,19 +83,19 @@
               if (self)
               {
                 v13 = MEMORY[0x1E696AEC0];
-                v14 = self;
+                selfCopy = self;
                 v15 = objc_opt_class();
                 NSStringFromClass(v15);
                 v16 = v10;
                 v17 = v5;
-                v18 = self;
+                selfCopy2 = self;
                 v19 = v9;
                 v21 = v20 = v8;
-                v22 = [v13 stringWithFormat:@"<%@: %p>", v21, v14];
+                selfCopy = [v13 stringWithFormat:@"<%@: %p>", v21, selfCopy];
 
                 v8 = v20;
                 v9 = v19;
-                self = v18;
+                self = selfCopy2;
                 v5 = v17;
                 v10 = v16;
                 v7 = v24;
@@ -103,11 +103,11 @@
 
               else
               {
-                v22 = @"(nil)";
+                selfCopy = @"(nil)";
               }
 
               *buf = 138412290;
-              v31 = v22;
+              v31 = selfCopy;
               _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "An invalid allowed touch type of UITouch.TouchType.indirect was set on the UIHoverGestureRecognizer %@. In a future release, this will render the gesture nonfunctional", buf, 0xCu);
             }
           }
@@ -122,7 +122,7 @@
       while (v7);
     }
 
-    v4 = v23;
+    typesCopy = v23;
   }
 }
 
@@ -138,10 +138,10 @@
   return result;
 }
 
-- (void)setRequiresExclusiveTouchType:(BOOL)a3
+- (void)setRequiresExclusiveTouchType:(BOOL)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     v4 = *(__UILogGetCategoryCachedImpl("Hover", &setRequiresExclusiveTouchType____s_category) + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -149,19 +149,19 @@
       if (self)
       {
         v5 = MEMORY[0x1E696AEC0];
-        v6 = self;
+        selfCopy = self;
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
-        v9 = [v5 stringWithFormat:@"<%@: %p>", v8, v6];
+        selfCopy = [v5 stringWithFormat:@"<%@: %p>", v8, selfCopy];
       }
 
       else
       {
-        v9 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
       *buf = 138412290;
-      v11 = v9;
+      v11 = selfCopy;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "requiresExclusiveTouchType was called on the UIHoverGestureRecognizer %@ with an unsupported value of false. UIHoverGestureRecognizer currently does not support non-exclusive touch types. This value will be ignored.", buf, 0xCu);
     }
   }
@@ -182,11 +182,11 @@
   self->_trackpadFingerDownCount = 0;
 }
 
-- (void)_hoverEntered:(id)a3 withEvent:(id)a4
+- (void)_hoverEntered:(id)entered withEvent:(id)event
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  enteredCopy = entered;
+  eventCopy = event;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("HoverGesture", &_MergedGlobals_15_13);
   if (*CategoryCachedImpl)
   {
@@ -194,22 +194,22 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412546;
-      v19 = v6;
+      v19 = enteredCopy;
       v20 = 2112;
-      v21 = v7;
+      v21 = eventCopy;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "_hoverEntered: %@ withEvent: %@", &v18, 0x16u);
     }
   }
 
-  if (!self->_currentHoverEvent && [(UITouch *)v6 count]== 1)
+  if (!self->_currentHoverEvent && [(UITouch *)enteredCopy count]== 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&self->_currentHoverEvent, a4);
-      v9 = [(UITouch *)v6 anyObject];
+      objc_storeStrong(&self->_currentHoverEvent, event);
+      anyObject = [(UITouch *)enteredCopy anyObject];
       currentTouch = self->_currentTouch;
-      self->_currentTouch = v9;
+      self->_currentTouch = anyObject;
 
       self->_trackpadFingerDownCount = [(UIEvent *)self->_currentHoverEvent _trackpadFingerDownCount];
       [(UIGestureRecognizer *)self setState:1];
@@ -221,8 +221,8 @@
         {
           v14 = self->_currentTouch;
           v15 = v13;
-          v16 = [(UIGestureRecognizer *)self view];
-          [(UITouch *)v14 locationInView:v16];
+          view = [(UIGestureRecognizer *)self view];
+          [(UITouch *)v14 locationInView:view];
           v17 = NSStringFromCGPoint(v23);
           v18 = 138412546;
           v19 = v14;
@@ -235,11 +235,11 @@
   }
 }
 
-- (void)_hoverMoved:(id)a3 withEvent:(id)a4
+- (void)_hoverMoved:(id)moved withEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("HoverGesture", &qword_1ED49C228);
   if (*CategoryCachedImpl)
   {
@@ -247,19 +247,19 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412546;
-      v17 = v6;
+      v17 = movedCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = eventCopy;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "_hoverMoved: %@ withEvent: %@", &v16, 0x16u);
     }
   }
 
-  if (self->_currentHoverEvent == v7)
+  if (self->_currentHoverEvent == eventCopy)
   {
-    if ([(UITouch *)v6 containsObject:self->_currentTouch])
+    if ([(UITouch *)movedCopy containsObject:self->_currentTouch])
     {
       self->_previousTrackpadFingerDownCount = self->_trackpadFingerDownCount;
-      self->_trackpadFingerDownCount = [(UIEvent *)v7 _trackpadFingerDownCount];
+      self->_trackpadFingerDownCount = [(UIEvent *)eventCopy _trackpadFingerDownCount];
       [(UIGestureRecognizer *)self setState:2];
       v9 = __UILogGetCategoryCachedImpl("HoverGesture", &qword_1ED49C230);
       if (*v9)
@@ -269,8 +269,8 @@
         {
           currentTouch = self->_currentTouch;
           v13 = v11;
-          v14 = [(UIGestureRecognizer *)self view];
-          [(UITouch *)currentTouch locationInView:v14];
+          view = [(UIGestureRecognizer *)self view];
+          [(UITouch *)currentTouch locationInView:view];
           v15 = NSStringFromCGPoint(v21);
           v16 = 138412546;
           v17 = currentTouch;
@@ -283,11 +283,11 @@
   }
 }
 
-- (void)_hoverExited:(id)a3 withEvent:(id)a4
+- (void)_hoverExited:(id)exited withEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  exitedCopy = exited;
+  eventCopy = event;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("HoverGesture", &qword_1ED49C238);
   if (*CategoryCachedImpl)
   {
@@ -295,14 +295,14 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412546;
-      v17 = v6;
+      v17 = exitedCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = eventCopy;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "_hoverExited: %@ withEvent: %@", &v16, 0x16u);
     }
   }
 
-  if (self->_currentHoverEvent == v7)
+  if (self->_currentHoverEvent == eventCopy)
   {
     v9 = __UILogGetCategoryCachedImpl("HoverGesture", &qword_1ED49C240);
     if (*v9)
@@ -312,8 +312,8 @@
       {
         currentTouch = self->_currentTouch;
         v13 = v11;
-        v14 = [(UIGestureRecognizer *)self view];
-        [(UITouch *)currentTouch locationInView:v14];
+        view = [(UIGestureRecognizer *)self view];
+        [(UITouch *)currentTouch locationInView:view];
         v15 = NSStringFromCGPoint(v21);
         v16 = 138412546;
         v17 = currentTouch;
@@ -328,11 +328,11 @@
   }
 }
 
-- (void)_hoverCancelled:(id)a3 withEvent:(id)a4
+- (void)_hoverCancelled:(id)cancelled withEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("HoverGesture", &qword_1ED49C248);
   if (*CategoryCachedImpl)
   {
@@ -340,14 +340,14 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412546;
-      v17 = v6;
+      v17 = cancelledCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = eventCopy;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "_hoverCancelled: %@ withEvent: %@", &v16, 0x16u);
     }
   }
 
-  if (self->_currentHoverEvent == v7)
+  if (self->_currentHoverEvent == eventCopy)
   {
     v9 = __UILogGetCategoryCachedImpl("HoverGesture", &qword_1ED49C250);
     if (*v9)
@@ -357,8 +357,8 @@
       {
         currentTouch = self->_currentTouch;
         v13 = v11;
-        v14 = [(UIGestureRecognizer *)self view];
-        [(UITouch *)currentTouch locationInView:v14];
+        view = [(UIGestureRecognizer *)self view];
+        [(UITouch *)currentTouch locationInView:view];
         v15 = NSStringFromCGPoint(v21);
         v16 = 138412546;
         v17 = currentTouch;
@@ -385,12 +385,12 @@
   self->_trackpadFingerDownCount = 0;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   currentTouch = self->_currentTouch;
   if (currentTouch)
   {
-    [(UITouch *)currentTouch locationInView:a3];
+    [(UITouch *)currentTouch locationInView:view];
   }
 
   else
@@ -404,12 +404,12 @@
   return result;
 }
 
-- (CGPoint)_preciseLocationInView:(id)a3
+- (CGPoint)_preciseLocationInView:(id)view
 {
   currentTouch = self->_currentTouch;
   if (currentTouch)
   {
-    [(UITouch *)currentTouch preciseLocationInView:a3];
+    [(UITouch *)currentTouch preciseLocationInView:view];
   }
 
   else
@@ -423,9 +423,9 @@
   return result;
 }
 
-- (CAPoint3D)_location3DInView:(id)a3
+- (CAPoint3D)_location3DInView:(id)view
 {
-  [(UIHoverGestureRecognizer *)self locationInView:a3];
+  [(UIHoverGestureRecognizer *)self locationInView:view];
   v5 = v4;
   v7 = v6;
   [(UIHoverGestureRecognizer *)self _hoverHeight];
@@ -438,9 +438,9 @@
   return result;
 }
 
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -513,17 +513,17 @@
   if (self->_currentHoverEvent)
   {
     v4 = view;
-    v5 = [(UIView *)v4 window];
-    v6 = v5;
-    if (v5)
+    window = [(UIView *)v4 window];
+    v6 = window;
+    if (window)
     {
-      v7 = v5;
+      window2 = window;
     }
 
     else
     {
-      v10 = [(UIGestureRecognizer *)self view];
-      v7 = [v10 window];
+      view = [(UIGestureRecognizer *)self view];
+      window2 = [view window];
     }
 
     currentHoverEvent = self->_currentHoverEvent;
@@ -537,8 +537,8 @@
       hoverAzimuthAngle = 0.0;
     }
 
-    v13 = _UITouchConvertCADisplayAzimuthAngleToWindow(v7, hoverAzimuthAngle);
-    v8 = _UITouchAzimuthUnitVectorInView(v7, v4, v13).n128_u64[0];
+    v13 = _UITouchConvertCADisplayAzimuthAngleToWindow(window2, hoverAzimuthAngle);
+    v8 = _UITouchAzimuthUnitVectorInView(window2, v4, v13).n128_u64[0];
     v9 = v14;
   }
 

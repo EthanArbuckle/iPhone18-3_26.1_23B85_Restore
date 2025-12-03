@@ -1,10 +1,10 @@
 @interface HKFeatureAvailabilityRequirementFitnessTrackingIsEnabledInPrivacy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)requiredEntitlements;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementFitnessTrackingIsEnabledInPrivacy
@@ -23,21 +23,21 @@
   return v4;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [a3 privacyPreferencesDataSource];
-  v6 = [v5 userDefaults];
-  v7 = [v4 numberWithBool:HKIsFitnessTrackingEnabledWithUserDefaults(v6)];
+  privacyPreferencesDataSource = [source privacyPreferencesDataSource];
+  userDefaults = [privacyPreferencesDataSource userDefaults];
+  v7 = [v4 numberWithBool:HKIsFitnessTrackingEnabledWithUserDefaults(userDefaults)];
 
   return v7;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v7);
+  observerCopy = observer;
+  sourceCopy = source;
+  objc_initWeak(&location, sourceCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __100__HKFeatureAvailabilityRequirementFitnessTrackingIsEnabledInPrivacy_registerObserver_forDataSource___block_invoke;
@@ -46,17 +46,17 @@
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
   v9 = +[_HKBehavior sharedBehavior];
-  v10 = [v9 isAppleWatch];
+  isAppleWatch = [v9 isAppleWatch];
 
-  if (v10)
+  if (isAppleWatch)
   {
-    v11 = [v7 privacyPreferencesDataSource];
+    privacyPreferencesDataSource = [sourceCopy privacyPreferencesDataSource];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __100__HKFeatureAvailabilityRequirementFitnessTrackingIsEnabledInPrivacy_registerObserver_forDataSource___block_invoke_11;
     v16[3] = &unk_1E737FBB0;
     v17 = v8;
-    [v11 registerObserver:v6 forKey:@"EnableFitnessTracking" newValueHandler:v16];
+    [privacyPreferencesDataSource registerObserver:observerCopy forKey:@"EnableFitnessTracking" newValueHandler:v16];
 
     v12 = v17;
   }
@@ -64,13 +64,13 @@
   else
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.tcc.access.changed"];
-    v13 = [v7 darwinNotificationDataSource];
+    darwinNotificationDataSource = [sourceCopy darwinNotificationDataSource];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __100__HKFeatureAvailabilityRequirementFitnessTrackingIsEnabledInPrivacy_registerObserver_forDataSource___block_invoke_2;
     v14[3] = &unk_1E737BAB0;
     v15 = v8;
-    [v13 registerObserver:v6 forKey:v12 newValueHandler:v14];
+    [darwinNotificationDataSource registerObserver:observerCopy forKey:v12 newValueHandler:v14];
   }
 
   objc_destroyWeak(&v19);
@@ -105,32 +105,32 @@ void __100__HKFeatureAvailabilityRequirementFitnessTrackingIsEnabledInPrivacy_re
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v10 = a4;
-  v5 = a3;
+  sourceCopy = source;
+  observerCopy = observer;
   v6 = +[_HKBehavior sharedBehavior];
-  v7 = [v6 isAppleWatch];
+  isAppleWatch = [v6 isAppleWatch];
 
-  if (v7)
+  if (isAppleWatch)
   {
-    v8 = [v10 privacyPreferencesDataSource];
-    [v8 unregisterObserver:v5 forKey:@"EnableFitnessTracking"];
+    privacyPreferencesDataSource = [sourceCopy privacyPreferencesDataSource];
+    [privacyPreferencesDataSource unregisterObserver:observerCopy forKey:@"EnableFitnessTracking"];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.tcc.access.changed"];
-    v9 = [v10 darwinNotificationDataSource];
-    [v9 unregisterObserver:v5 forKey:v8];
+    privacyPreferencesDataSource = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.tcc.access.changed"];
+    darwinNotificationDataSource = [sourceCopy darwinNotificationDataSource];
+    [darwinNotificationDataSource unregisterObserver:observerCopy forKey:privacyPreferencesDataSource];
 
-    v5 = v9;
+    observerCopy = darwinNotificationDataSource;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

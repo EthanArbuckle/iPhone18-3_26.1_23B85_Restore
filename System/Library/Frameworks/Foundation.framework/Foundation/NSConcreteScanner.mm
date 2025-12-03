@@ -1,13 +1,13 @@
 @interface NSConcreteScanner
-- (NSConcreteScanner)initWithString:(id)a3;
+- (NSConcreteScanner)initWithString:(id)string;
 - (id)_invertedSkipSet;
 - (id)charactersToBeSkipped;
 - (id)locale;
 - (id)string;
 - (void)dealloc;
-- (void)setCharactersToBeSkipped:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setScanLocation:(unint64_t)a3;
+- (void)setCharactersToBeSkipped:(id)skipped;
+- (void)setLocale:(id)locale;
+- (void)setScanLocation:(unint64_t)location;
 @end
 
 @implementation NSConcreteScanner
@@ -72,52 +72,52 @@
   return v2;
 }
 
-- (NSConcreteScanner)initWithString:(id)a3
+- (NSConcreteScanner)initWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v8 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!string)
   {
     NSLog(@"NSScanner: nil string argument", a2);
-    v3 = &stru_1EEEFDF90;
+    stringCopy = &stru_1EEEFDF90;
   }
 
   v7.receiver = self;
   v7.super_class = NSConcreteScanner;
-  v5 = [(NSScanner *)&v7 initWithString:v3];
-  v5->scanString = [(__CFString *)v3 copyWithZone:0];
+  v5 = [(NSScanner *)&v7 initWithString:stringCopy];
+  v5->scanString = [(__CFString *)stringCopy copyWithZone:0];
   v5->skipSet = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
   v5->scanLocation = 0;
   return v5;
 }
 
-- (void)setScanLocation:(unint64_t)a3
+- (void)setScanLocation:(unint64_t)location
 {
   v6 = [(NSString *)self->scanString length];
-  if (v6 < a3)
+  if (v6 < location)
   {
-    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Index %lu out of bounds; string length %lu", _NSMethodExceptionProem(self, a2), a3, v6), 0}];
+    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Index %lu out of bounds; string length %lu", _NSMethodExceptionProem(self, a2), location, v6), 0}];
     objc_exception_throw(v7);
   }
 
-  self->scanLocation = a3;
+  self->scanLocation = location;
 }
 
-- (void)setCharactersToBeSkipped:(id)a3
+- (void)setCharactersToBeSkipped:(id)skipped
 {
   v5 = self->skipSet;
-  self->skipSet = [a3 copyWithZone:{-[NSConcreteScanner zone](self, "zone")}];
+  self->skipSet = [skipped copyWithZone:{-[NSConcreteScanner zone](self, "zone")}];
 
   self->invertedSkipSet = 0;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   locale = self->locale;
-  if (locale != a3)
+  if (locale != locale)
   {
 
-    self->locale = a3;
+    self->locale = locale;
   }
 }
 

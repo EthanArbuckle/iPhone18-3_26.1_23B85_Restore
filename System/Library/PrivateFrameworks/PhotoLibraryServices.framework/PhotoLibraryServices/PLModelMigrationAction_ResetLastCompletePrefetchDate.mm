@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_ResetLastCompletePrefetchDate
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetLastCompletePrefetchDate
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:v5];
+  v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
 
   v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-604800.0];
   [(PLGlobalValues *)v7 setLastCompletePrefetchDate:v8];

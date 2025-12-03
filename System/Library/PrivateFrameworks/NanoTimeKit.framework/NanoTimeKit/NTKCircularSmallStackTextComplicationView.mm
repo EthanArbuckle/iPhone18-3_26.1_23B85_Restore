@@ -1,20 +1,20 @@
 @interface NTKCircularSmallStackTextComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKCircularSmallStackTextComplicationView)initWithFrame:(CGRect)a3;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKCircularSmallStackTextComplicationView)initWithFrame:(CGRect)frame;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
 - (void)_updateForTemplateChange;
 - (void)_updateLabelColors;
 - (void)_updateLabelsForFontChange;
 - (void)layoutSubviews;
-- (void)setForegroundColor:(id)a3;
-- (void)setUsesMultiColor:(BOOL)a3;
+- (void)setForegroundColor:(id)color;
+- (void)setUsesMultiColor:(BOOL)color;
 @end
 
 @implementation NTKCircularSmallStackTextComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -30,11 +30,11 @@
   return isKindOfClass & 1;
 }
 
-- (NTKCircularSmallStackTextComplicationView)initWithFrame:(CGRect)a3
+- (NTKCircularSmallStackTextComplicationView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = NTKCircularSmallStackTextComplicationView;
-  v3 = [(NTKCircularComplicationView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKCircularComplicationView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -67,7 +67,7 @@
   [(NTKCircularComplicationView *)self _layoutConstants];
   [(CLKUIColoringLabel *)self->_firstLineLabel _lastLineBaseline];
   [(NTKCircularComplicationView *)self _layoutConstants];
-  v3 = [(NTKCircularComplicationView *)self device];
+  device = [(NTKCircularComplicationView *)self device];
   CLKRectCenteredXInRectForDevice();
   v5 = v4;
   v7 = v6;
@@ -79,7 +79,7 @@
   [(NTKCircularComplicationView *)self _layoutConstants];
   [(NTKCircularComplicationView *)self _layoutConstants];
   [(CLKUIColoringLabel *)self->_secondLineLabel _lastLineBaseline];
-  v12 = [(NTKCircularComplicationView *)self device];
+  device2 = [(NTKCircularComplicationView *)self device];
   CLKRectCenteredXInRectForDevice();
   v14 = v13;
   v16 = v15;
@@ -91,14 +91,14 @@
 
 - (void)_updateForTemplateChange
 {
-  v7 = [(NTKCircularComplicationView *)self complicationTemplate];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
   firstLineLabel = self->_firstLineLabel;
-  v4 = [v7 line1TextProvider];
-  [(CLKUIColoringLabel *)firstLineLabel setTextProvider:v4];
+  line1TextProvider = [complicationTemplate line1TextProvider];
+  [(CLKUIColoringLabel *)firstLineLabel setTextProvider:line1TextProvider];
 
   secondLineLabel = self->_secondLineLabel;
-  v6 = [v7 line2TextProvider];
-  [(CLKUIColoringLabel *)secondLineLabel setTextProvider:v6];
+  line2TextProvider = [complicationTemplate line2TextProvider];
+  [(CLKUIColoringLabel *)secondLineLabel setTextProvider:line2TextProvider];
 
   if ([(NTKCircularComplicationView *)self usesMediumLayout])
   {
@@ -117,19 +117,19 @@
   [(NTKCircularComplicationView *)self _updateLabelViewColor:secondLineLabel];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = NTKCircularSmallStackTextComplicationView;
-  [(NTKCircularComplicationView *)&v4 setForegroundColor:a3];
+  [(NTKCircularComplicationView *)&v4 setForegroundColor:color];
   [(NTKCircularSmallStackTextComplicationView *)self _updateLabelColors];
 }
 
-- (void)setUsesMultiColor:(BOOL)a3
+- (void)setUsesMultiColor:(BOOL)color
 {
   v4.receiver = self;
   v4.super_class = NTKCircularSmallStackTextComplicationView;
-  [(NTKCircularComplicationView *)&v4 setUsesMultiColor:a3];
+  [(NTKCircularComplicationView *)&v4 setUsesMultiColor:color];
   [(NTKCircularSmallStackTextComplicationView *)self _updateLabelColors];
 }
 
@@ -137,11 +137,11 @@
 {
   if ([(NTKCircularComplicationView *)self usesMediumLayout])
   {
-    v3 = [(CLKUIColoringLabel *)self->_firstLineLabel text];
-    v4 = [(NTKCircularComplicationView *)self _mediumStackFontForText:v3];
+    text = [(CLKUIColoringLabel *)self->_firstLineLabel text];
+    v4 = [(NTKCircularComplicationView *)self _mediumStackFontForText:text];
 
-    v5 = [(CLKUIColoringLabel *)self->_secondLineLabel text];
-    v6 = [(NTKCircularComplicationView *)self _mediumStackFontForText:v5];
+    text2 = [(CLKUIColoringLabel *)self->_secondLineLabel text];
+    v6 = [(NTKCircularComplicationView *)self _mediumStackFontForText:text2];
   }
 
   else
@@ -157,13 +157,13 @@
   [(CLKUIColoringLabel *)self->_secondLineLabel setMaxWidth:v7];
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_secondLineLabel);
+  (*v4)(blockCopy, self->_secondLineLabel);
 }
 
 @end

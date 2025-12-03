@@ -1,47 +1,47 @@
 @interface PHCloudSharedAlbumChangeRequest
-+ (id)changeRequestForCloudSharedAlbum:(id)a3;
-+ (id)creationRequestForCloudSharedAlbumWithTitle:(id)a3;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
++ (id)changeRequestForCloudSharedAlbum:(id)album;
++ (id)creationRequestForCloudSharedAlbumWithTitle:(id)title;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
 - (BOOL)cloudNotificationsEnabled;
 - (BOOL)isOwned;
 - (NSString)cloudOwnerFirstName;
 - (NSString)cloudOwnerFullName;
 - (NSString)cloudOwnerLastName;
 - (NSString)title;
-- (PHCloudSharedAlbumChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHCloudSharedAlbumChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (PHCloudSharedAlbumChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHCloudSharedAlbumChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (id)placeholderForCreatedCloudSharedAlbum;
-- (void)addInvitationRecordWithFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 emails:(id)a6 phones:(id)a7;
-- (void)encodeToXPCDict:(id)a3;
-- (void)publishBatchOfOriginalAssets:(id)a3 withBatchCommentText:(id)a4 creationOptionsPerAsset:(id)a5;
-- (void)removeCloudSharedAlbumInvitationRecords:(id)a3;
-- (void)resendPendingInvitationRecords:(id)a3;
-- (void)setCloudMultipleContributorsEnabled:(BOOL)a3;
-- (void)setCloudNotificationsEnabled:(BOOL)a3;
-- (void)setCloudOwnerEmail:(id)a3;
-- (void)setCloudOwnerFirstName:(id)a3;
-- (void)setCloudOwnerFullName:(id)a3;
-- (void)setCloudOwnerLastName:(id)a3;
-- (void)setInvitationState:(int64_t)a3;
-- (void)setInvitationStateLocalForInvitationRecords:(id)a3 invitationStateLocal:(id)a4;
-- (void)setIsOwned:(BOOL)a3;
-- (void)setIsPublic:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)addInvitationRecordWithFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emails:(id)emails phones:(id)phones;
+- (void)encodeToXPCDict:(id)dict;
+- (void)publishBatchOfOriginalAssets:(id)assets withBatchCommentText:(id)text creationOptionsPerAsset:(id)asset;
+- (void)removeCloudSharedAlbumInvitationRecords:(id)records;
+- (void)resendPendingInvitationRecords:(id)records;
+- (void)setCloudMultipleContributorsEnabled:(BOOL)enabled;
+- (void)setCloudNotificationsEnabled:(BOOL)enabled;
+- (void)setCloudOwnerEmail:(id)email;
+- (void)setCloudOwnerFirstName:(id)name;
+- (void)setCloudOwnerFullName:(id)name;
+- (void)setCloudOwnerLastName:(id)name;
+- (void)setInvitationState:(int64_t)state;
+- (void)setInvitationStateLocalForInvitationRecords:(id)records invitationStateLocal:(id)local;
+- (void)setIsOwned:(BOOL)owned;
+- (void)setIsPublic:(BOOL)public;
+- (void)setTitle:(id)title;
 - (void)stopSharing;
 @end
 
 @implementation PHCloudSharedAlbumChangeRequest
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v87 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v64 = a4;
-  v9 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  libraryCopy = library;
+  helper = [(PHChangeRequest *)self helper];
   v79 = 0;
-  v10 = [v9 applyMutationsToManagedObject:v8 error:&v79];
+  v10 = [helper applyMutationsToManagedObject:objectCopy error:&v79];
   v11 = v79;
 
   if (!v10)
@@ -52,17 +52,17 @@
   v12 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(PHChangeRequest *)self isMutated];
-    v14 = [(PHChangeRequest *)self helper];
-    v15 = [v14 mutations];
+    isMutated = [(PHChangeRequest *)self isMutated];
+    helper2 = [(PHChangeRequest *)self helper];
+    mutations = [helper2 mutations];
     *buf = 67109378;
-    v84 = v13;
+    v84 = isMutated;
     v85 = 2112;
-    v86 = v15;
+    v86 = mutations;
     _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEBUG, "##### isMutated %d mutations %@ will update", buf, 0x12u);
   }
 
-  v16 = v8;
+  v16 = objectCopy;
   v17 = v16;
   if (self->_cloudOwnerEmail)
   {
@@ -72,7 +72,7 @@
   v18 = 0x1E69BE000uLL;
   if ([(NSMutableArray *)self->_invitationRecordGUIDsToRemove count])
   {
-    [MEMORY[0x1E69BE338] cloudSharedAlbumInvitationRecordsWithGUIDs:self->_invitationRecordGUIDsToRemove inLibrary:v64];
+    [MEMORY[0x1E69BE338] cloudSharedAlbumInvitationRecordsWithGUIDs:self->_invitationRecordGUIDsToRemove inLibrary:libraryCopy];
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
@@ -107,12 +107,12 @@
   }
 
   v60 = v11;
-  v61 = a5;
+  errorCopy = error;
   if ([(NSMutableArray *)self->_invitationsToAdd count])
   {
     v57 = v19;
-    v58 = self;
-    v59 = v8;
+    selfCopy = self;
+    v59 = objectCopy;
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
@@ -143,7 +143,7 @@
           v35 = [v28 objectForKeyedSubscript:@"phones"];
           v36 = v29;
           v17 = v27;
-          v37 = [v36 insertNewInvitationRecordIntoAlbum:v27 withFirstName:v31 lastName:v32 fullName:v33 emails:v34 phones:v35 inLibrary:v64];
+          v37 = [v36 insertNewInvitationRecordIntoAlbum:v27 withFirstName:v31 lastName:v32 fullName:v33 emails:v34 phones:v35 inLibrary:libraryCopy];
 
           v18 = v30;
         }
@@ -154,15 +154,15 @@
       while (v25);
     }
 
-    self = v58;
-    v8 = v59;
-    a5 = v61;
+    self = selfCopy;
+    objectCopy = v59;
+    error = errorCopy;
     v19 = v57;
   }
 
   if ([(NSMutableArray *)self->_invitationRecordGUIDsToUpdate count])
   {
-    v38 = [*(v18 + 824) cloudSharedAlbumInvitationRecordsWithGUIDs:self->_invitationRecordGUIDsToUpdate inLibrary:v64];
+    v38 = [*(v18 + 824) cloudSharedAlbumInvitationRecordsWithGUIDs:self->_invitationRecordGUIDsToUpdate inLibrary:libraryCopy];
 
     v69 = 0u;
     v70 = 0u;
@@ -196,7 +196,7 @@
       while (v40);
     }
 
-    a5 = v61;
+    error = errorCopy;
   }
 
   if (self->_didSetIsPublic)
@@ -273,61 +273,61 @@ LABEL_45:
   }
 
 LABEL_55:
-  if (a5 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v54 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v10;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69BE330];
-  v7 = a3;
-  v8 = [(PHCloudSharedAlbumChangeRequest *)self title];
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [v6 insertNewCloudSharedAlbumWithTitle:v8 lastInterestingDate:v9 intoLibrary:v7];
+  libraryCopy = library;
+  title = [(PHCloudSharedAlbumChangeRequest *)self title];
+  date = [MEMORY[0x1E695DF00] date];
+  v10 = [v6 insertNewCloudSharedAlbumWithTitle:title lastInterestingDate:date intoLibrary:libraryCopy];
 
-  v11 = [(PHChangeRequest *)self uuid];
-  [v10 setUuid:v11];
+  uuid = [(PHChangeRequest *)self uuid];
+  [v10 setUuid:uuid];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHCloudSharedAlbumChangeRequest isOwned](self, "isOwned")}];
   [v10 setIsOwned:v12];
 
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v13 = MEMORY[0x1E696ABC0];
     v17 = *MEMORY[0x1E696A578];
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create cloud shared album"];
     v18[0] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    *a4 = [v13 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v15];
+    *error = [v13 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v15];
   }
 
   return v10;
 }
 
-- (void)publishBatchOfOriginalAssets:(id)a3 withBatchCommentText:(id)a4 creationOptionsPerAsset:(id)a5
+- (void)publishBatchOfOriginalAssets:(id)assets withBatchCommentText:(id)text creationOptionsPerAsset:(id)asset
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v26 = a4;
-  v29 = a4;
-  v9 = a5;
+  assetsCopy = assets;
+  textCopy = text;
+  textCopy2 = text;
+  assetCopy = asset;
   if (!self->_assetsSharingInfos)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     assetsSharingInfos = self->_assetsSharingInfos;
-    self->_assetsSharingInfos = v10;
+    self->_assetsSharingInfos = dictionary;
   }
 
-  v28 = self;
-  v30 = v8;
+  selfCopy = self;
+  v30 = assetsCopy;
   v12 = PFMap();
-  v33 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -349,20 +349,20 @@ LABEL_55:
         }
 
         v16 = *(*(&v34 + 1) + 8 * i);
-        v17 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
         v18 = MEMORY[0x1E696AD98];
-        v19 = [v9 objectForKeyedSubscript:v16];
-        v20 = [v19 metadataCopyOptions];
-        v21 = [v18 numberWithInt:{objc_msgSend(v20, "shouldCopyLocationData") ^ 1}];
-        [v17 setObject:v21 forKeyedSubscript:@"excludeLocation"];
+        v19 = [assetCopy objectForKeyedSubscript:v16];
+        metadataCopyOptions = [v19 metadataCopyOptions];
+        v21 = [v18 numberWithInt:{objc_msgSend(metadataCopyOptions, "shouldCopyLocationData") ^ 1}];
+        [dictionary3 setObject:v21 forKeyedSubscript:@"excludeLocation"];
 
         v22 = MEMORY[0x1E696AD98];
-        v23 = [v9 objectForKeyedSubscript:v16];
-        v24 = [v23 adjustmentBakeInOptions];
-        v25 = [v22 numberWithBool:{objc_msgSend(v24, "flattenLivePhotoToStillIfNeeded")}];
-        [v17 setObject:v25 forKeyedSubscript:@"useStillImageOnly"];
+        v23 = [assetCopy objectForKeyedSubscript:v16];
+        adjustmentBakeInOptions = [v23 adjustmentBakeInOptions];
+        v25 = [v22 numberWithBool:{objc_msgSend(adjustmentBakeInOptions, "flattenLivePhotoToStillIfNeeded")}];
+        [dictionary3 setObject:v25 forKeyedSubscript:@"useStillImageOnly"];
 
-        [v33 setObject:v17 forKeyedSubscript:v16];
+        [dictionary2 setObject:dictionary3 forKeyedSubscript:v16];
       }
 
       v14 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -371,32 +371,32 @@ LABEL_55:
     while (v14);
   }
 
-  objc_storeStrong(&v28->_assetsToPublish, v27);
-  objc_storeStrong(&v28->_assetsSharingInfos, v33);
-  if (v29 && [v29 length])
+  objc_storeStrong(&selfCopy->_assetsToPublish, v27);
+  objc_storeStrong(&selfCopy->_assetsSharingInfos, dictionary2);
+  if (textCopy2 && [textCopy2 length])
   {
-    objc_storeStrong(&v28->_commentText, v26);
+    objc_storeStrong(&selfCopy->_commentText, textCopy);
   }
 
-  [(PHChangeRequest *)v28 didMutate];
+  [(PHChangeRequest *)selfCopy didMutate];
 }
 
 - (void)stopSharing
 {
-  v3 = [(PHCloudSharedAlbum *)self->_cloudSharedAlbum invitationRecords];
-  [(PHCloudSharedAlbumChangeRequest *)self removeCloudSharedAlbumInvitationRecords:v3];
+  invitationRecords = [(PHCloudSharedAlbum *)self->_cloudSharedAlbum invitationRecords];
+  [(PHCloudSharedAlbumChangeRequest *)self removeCloudSharedAlbumInvitationRecords:invitationRecords];
 }
 
-- (void)setInvitationStateLocalForInvitationRecords:(id)a3 invitationStateLocal:(id)a4
+- (void)setInvitationStateLocalForInvitationRecords:(id)records invitationStateLocal:(id)local
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v16 = a4;
+  recordsCopy = records;
+  localCopy = local;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [recordsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -407,7 +407,7 @@ LABEL_55:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -417,19 +417,19 @@ LABEL_55:
           invitationRecordGUIDsToUpdate = self->_invitationRecordGUIDsToUpdate;
           if (!invitationRecordGUIDsToUpdate)
           {
-            v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+            v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(recordsCopy, "count")}];
             v14 = self->_invitationRecordGUIDsToUpdate;
             self->_invitationRecordGUIDsToUpdate = v13;
 
             invitationRecordGUIDsToUpdate = self->_invitationRecordGUIDsToUpdate;
           }
 
-          v15 = [v11 cloudGUID];
-          [(NSMutableArray *)invitationRecordGUIDsToUpdate addObject:v15];
+          cloudGUID = [v11 cloudGUID];
+          [(NSMutableArray *)invitationRecordGUIDsToUpdate addObject:cloudGUID];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [recordsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -437,20 +437,20 @@ LABEL_55:
 
   if ([(NSMutableArray *)self->_invitationRecordGUIDsToUpdate count])
   {
-    self->_invitationStateToUpdate = [v16 intValue];
+    self->_invitationStateToUpdate = [localCopy intValue];
     [(PHChangeRequest *)self didMutate];
   }
 }
 
-- (void)removeCloudSharedAlbumInvitationRecords:(id)a3
+- (void)removeCloudSharedAlbumInvitationRecords:(id)records
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [recordsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -461,7 +461,7 @@ LABEL_55:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -471,19 +471,19 @@ LABEL_55:
           invitationRecordGUIDsToRemove = self->_invitationRecordGUIDsToRemove;
           if (!invitationRecordGUIDsToRemove)
           {
-            v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+            v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(recordsCopy, "count")}];
             v12 = self->_invitationRecordGUIDsToRemove;
             self->_invitationRecordGUIDsToRemove = v11;
 
             invitationRecordGUIDsToRemove = self->_invitationRecordGUIDsToRemove;
           }
 
-          v13 = [v9 cloudGUID];
-          [(NSMutableArray *)invitationRecordGUIDsToRemove addObject:v13];
+          cloudGUID = [v9 cloudGUID];
+          [(NSMutableArray *)invitationRecordGUIDsToRemove addObject:cloudGUID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [recordsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -495,15 +495,15 @@ LABEL_55:
   }
 }
 
-- (void)resendPendingInvitationRecords:(id)a3
+- (void)resendPendingInvitationRecords:(id)records
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [recordsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -514,7 +514,7 @@ LABEL_55:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -524,19 +524,19 @@ LABEL_55:
           pendingInvitationRecordGUIDs = self->_pendingInvitationRecordGUIDs;
           if (!pendingInvitationRecordGUIDs)
           {
-            v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+            v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(recordsCopy, "count")}];
             v12 = self->_pendingInvitationRecordGUIDs;
             self->_pendingInvitationRecordGUIDs = v11;
 
             pendingInvitationRecordGUIDs = self->_pendingInvitationRecordGUIDs;
           }
 
-          v13 = [v9 cloudGUID];
-          [(NSMutableArray *)pendingInvitationRecordGUIDs addObject:v13];
+          cloudGUID = [v9 cloudGUID];
+          [(NSMutableArray *)pendingInvitationRecordGUIDs addObject:cloudGUID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [recordsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -548,265 +548,265 @@ LABEL_55:
   }
 }
 
-- (void)addInvitationRecordWithFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 emails:(id)a6 phones:(id)a7
+- (void)addInvitationRecordWithFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emails:(id)emails phones:(id)phones
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v14 count] || objc_msgSend(v15, "count"))
+  nameCopy = name;
+  lastNameCopy = lastName;
+  fullNameCopy = fullName;
+  emailsCopy = emails;
+  phonesCopy = phones;
+  if ([emailsCopy count] || objc_msgSend(phonesCopy, "count"))
   {
     if (!self->_invitationsToAdd)
     {
-      v16 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       invitationsToAdd = self->_invitationsToAdd;
-      self->_invitationsToAdd = v16;
+      self->_invitationsToAdd = array;
     }
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [v18 setObject:v19 forKeyedSubscript:@"firstName"];
-    [v18 setObject:v12 forKeyedSubscript:@"lastName"];
-    [v18 setObject:v13 forKeyedSubscript:@"fullName"];
-    [v18 setObject:v14 forKeyedSubscript:@"emails"];
-    [v18 setObject:v15 forKeyedSubscript:@"phones"];
-    [(NSMutableArray *)self->_invitationsToAdd addObject:v18];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:nameCopy forKeyedSubscript:@"firstName"];
+    [dictionary setObject:lastNameCopy forKeyedSubscript:@"lastName"];
+    [dictionary setObject:fullNameCopy forKeyedSubscript:@"fullName"];
+    [dictionary setObject:emailsCopy forKeyedSubscript:@"emails"];
+    [dictionary setObject:phonesCopy forKeyedSubscript:@"phones"];
+    [(NSMutableArray *)self->_invitationsToAdd addObject:dictionary];
     [(PHChangeRequest *)self didMutate];
   }
 }
 
-- (void)setInvitationState:(int64_t)a3
+- (void)setInvitationState:(int64_t)state
 {
-  self->_invitationState = a3;
+  self->_invitationState = state;
   self->_didSetInvitationState = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setCloudOwnerEmail:(id)a3
+- (void)setCloudOwnerEmail:(id)email
 {
-  objc_storeStrong(&self->_cloudOwnerEmail, a3);
+  objc_storeStrong(&self->_cloudOwnerEmail, email);
   self->_didSetCloudOwnerEmail = 1;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setCloudMultipleContributorsEnabled:(BOOL)a3
+- (void)setCloudMultipleContributorsEnabled:(BOOL)enabled
 {
-  self->_cloudMultipleContributorsEnabled = a3;
+  self->_cloudMultipleContributorsEnabled = enabled;
   self->_didSetCloudMultipleContributorsEnabled = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setIsPublic:(BOOL)a3
+- (void)setIsPublic:(BOOL)public
 {
-  self->_isPublic = a3;
+  self->_isPublic = public;
   self->_didSetIsPublic = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setCloudNotificationsEnabled:(BOOL)a3
+- (void)setCloudNotificationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  enabledCopy = enabled;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"cloudNotificationsEnabled"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"cloudNotificationsEnabled"];
 }
 
 - (BOOL)cloudNotificationsEnabled
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"cloudNotificationsEnabled"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"cloudNotificationsEnabled"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setIsOwned:(BOOL)a3
+- (void)setIsOwned:(BOOL)owned
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  ownedCopy = owned;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"isOwned"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:ownedCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"isOwned"];
 }
 
 - (BOOL)isOwned
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"isOwned"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"isOwned"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setCloudOwnerFullName:(id)a3
+- (void)setCloudOwnerFullName:(id)name
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  nameCopy = name;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (nameCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"cloudOwnerFullName"];
+    [mutations setObject:nameCopy forKeyedSubscript:@"cloudOwnerFullName"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"cloudOwnerFullName"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"cloudOwnerFullName"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"cloudOwnerFullName"];
+    [mutations removeObjectForKey:@"cloudOwnerFullName"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"cloudOwnerFullName"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"cloudOwnerFullName"];
   }
 }
 
 - (NSString)cloudOwnerFullName
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"cloudOwnerFullName"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"cloudOwnerFullName"];
 
   return v5;
 }
 
-- (void)setCloudOwnerLastName:(id)a3
+- (void)setCloudOwnerLastName:(id)name
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  nameCopy = name;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (nameCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"cloudOwnerLastName"];
+    [mutations setObject:nameCopy forKeyedSubscript:@"cloudOwnerLastName"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"cloudOwnerLastName"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"cloudOwnerLastName"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"cloudOwnerLastName"];
+    [mutations removeObjectForKey:@"cloudOwnerLastName"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"cloudOwnerLastName"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"cloudOwnerLastName"];
   }
 }
 
 - (NSString)cloudOwnerLastName
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"cloudOwnerLastName"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"cloudOwnerLastName"];
 
   return v5;
 }
 
-- (void)setCloudOwnerFirstName:(id)a3
+- (void)setCloudOwnerFirstName:(id)name
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  nameCopy = name;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (nameCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"cloudOwnerFirstName"];
+    [mutations setObject:nameCopy forKeyedSubscript:@"cloudOwnerFirstName"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"cloudOwnerFirstName"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"cloudOwnerFirstName"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"cloudOwnerFirstName"];
+    [mutations removeObjectForKey:@"cloudOwnerFirstName"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"cloudOwnerFirstName"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"cloudOwnerFirstName"];
   }
 }
 
 - (NSString)cloudOwnerFirstName
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"cloudOwnerFirstName"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"cloudOwnerFirstName"];
 
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  titleCopy = title;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (titleCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"title"];
+    [mutations setObject:titleCopy forKeyedSubscript:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"title"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"title"];
+    [mutations removeObjectForKey:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"title"];
   }
 }
 
 - (NSString)title
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"title"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"title"];
 
   return v5;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:xdict];
+  xdict = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:xdict];
 
   if ([(NSMutableArray *)self->_invitationRecordGUIDsToRemove count])
   {
@@ -882,17 +882,17 @@ LABEL_55:
   }
 }
 
-- (PHCloudSharedAlbumChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHCloudSharedAlbumChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v47.receiver = self;
   v47.super_class = PHCloudSharedAlbumChangeRequest;
   v11 = [(PHChangeRequest *)&v47 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
@@ -906,7 +906,7 @@ LABEL_55:
       if ([(NSMutableArray *)v11->_invitationRecordGUIDsToRemove count])
       {
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
       v17 = PLArrayFromXPCDictionary();
@@ -917,7 +917,7 @@ LABEL_55:
       if ([(NSMutableArray *)v11->_pendingInvitationRecordGUIDs count])
       {
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
       v20 = PLArrayFromXPCDictionary();
@@ -928,7 +928,7 @@ LABEL_55:
       if ([(NSMutableArray *)v11->_invitationsToAdd count])
       {
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
       v23 = PLArrayFromXPCDictionary();
@@ -938,55 +938,55 @@ LABEL_55:
 
       if ([(NSMutableArray *)v11->_invitationRecordGUIDsToUpdate count])
       {
-        v11->_invitationStateToUpdate = xpc_dictionary_get_int64(v8, "invitationStateToUpdate");
+        v11->_invitationStateToUpdate = xpc_dictionary_get_int64(dictCopy, "invitationStateToUpdate");
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
-      v26 = xpc_dictionary_get_value(v8, "isPublic");
+      v26 = xpc_dictionary_get_value(dictCopy, "isPublic");
       v27 = v26;
       if (v26)
       {
         [(PHCloudSharedAlbumChangeRequest *)v11 setIsPublic:xpc_BOOL_get_value(v26)];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
-      v28 = xpc_dictionary_get_value(v8, "cloudMultipleContributorsEnabled");
+      v28 = xpc_dictionary_get_value(dictCopy, "cloudMultipleContributorsEnabled");
       v29 = v28;
       if (v28)
       {
         [(PHCloudSharedAlbumChangeRequest *)v11 setCloudMultipleContributorsEnabled:xpc_BOOL_get_value(v28)];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
       v30 = PLStringFromXPCDictionary();
       if (v30)
       {
         [(PHCloudSharedAlbumChangeRequest *)v11 setCloudOwnerEmail:v30];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
-      int64 = xpc_dictionary_get_int64(v8, "invitationState");
+      int64 = xpc_dictionary_get_int64(dictCopy, "invitationState");
       if (int64)
       {
         [(PHCloudSharedAlbumChangeRequest *)v11 setInvitationState:int64];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
-      v32 = xpc_dictionary_get_value(v8, "didSendPendingInvitations");
+      v32 = xpc_dictionary_get_value(dictCopy, "didSendPendingInvitations");
       v33 = v32;
       if (v32)
       {
         v11->_didSendPendingInvitations = xpc_BOOL_get_value(v32);
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
-      v34 = xpc_dictionary_get_value(v8, "didReportInvitationAsSpam");
+      v34 = xpc_dictionary_get_value(dictCopy, "didReportInvitationAsSpam");
       v35 = v34;
       if (v34)
       {
         v11->_didReportInvitationAsSpam = xpc_BOOL_get_value(v34);
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
       v36 = PLArrayFromXPCDictionary();
@@ -1006,15 +1006,15 @@ LABEL_55:
         v11->_assetsSharingInfos = v42;
 
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
-      v44 = xpc_dictionary_get_value(v8, "didPublish");
+      v44 = xpc_dictionary_get_value(dictCopy, "didPublish");
       v45 = v44;
       if (v44)
       {
         v11->_didPublish = xpc_BOOL_get_value(v44);
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
     }
   }
@@ -1024,22 +1024,22 @@ LABEL_55:
 
 - (id)placeholderForCreatedCloudSharedAlbum
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (PHCloudSharedAlbumChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHCloudSharedAlbumChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHCloudSharedAlbumChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
   }
@@ -1062,18 +1062,18 @@ LABEL_55:
   return v2;
 }
 
-+ (id)changeRequestForCloudSharedAlbum:(id)a3
++ (id)changeRequestForCloudSharedAlbum:(id)album
 {
-  v3 = a3;
+  albumCopy = album;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [PHCloudSharedAlbumChangeRequest alloc];
-    v5 = [v3 uuid];
-    v6 = [v3 objectID];
-    v7 = [(PHCloudSharedAlbumChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+    uuid = [albumCopy uuid];
+    objectID = [albumCopy objectID];
+    v7 = [(PHCloudSharedAlbumChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
 
-    [(PHCloudSharedAlbumChangeRequest *)v7 setCloudSharedAlbum:v3];
+    [(PHCloudSharedAlbumChangeRequest *)v7 setCloudSharedAlbum:albumCopy];
   }
 
   else
@@ -1084,27 +1084,27 @@ LABEL_55:
   return v7;
 }
 
-+ (id)creationRequestForCloudSharedAlbumWithTitle:(id)a3
++ (id)creationRequestForCloudSharedAlbumWithTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
-    v3 = a3;
-    v4 = [[PHCloudSharedAlbumChangeRequest alloc] initForNewObject];
-    [v4 setTitle:v3];
+    titleCopy = title;
+    initForNewObject = [[PHCloudSharedAlbumChangeRequest alloc] initForNewObject];
+    [initForNewObject setTitle:titleCopy];
 
-    [v4 setIsOwned:1];
-    [v4 setCloudPublicURLEnabled:0];
-    [v4 setCloudPublicURLEnabledLocal:0];
-    [v4 setCloudMultipleContributorsEnabled:1];
-    [v4 setCloudMultipleContributorsEnabledLocal:1];
+    [initForNewObject setIsOwned:1];
+    [initForNewObject setCloudPublicURLEnabled:0];
+    [initForNewObject setCloudPublicURLEnabledLocal:0];
+    [initForNewObject setCloudMultipleContributorsEnabled:1];
+    [initForNewObject setCloudMultipleContributorsEnabledLocal:1];
   }
 
   else
   {
-    v4 = 0;
+    initForNewObject = 0;
   }
 
-  return v4;
+  return initForNewObject;
 }
 
 @end

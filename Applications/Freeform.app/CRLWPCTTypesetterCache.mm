@@ -1,11 +1,11 @@
 @interface CRLWPCTTypesetterCache
 - (id).cxx_construct;
-- (shared_ptr<CRLWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)a3;
-- (void)addTypesetterForParagraphIdentifier:(unint64_t)a3 typesetter:(shared_ptr<CRLWPParagraphTypesetter>)a4;
+- (shared_ptr<CRLWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)identifier;
+- (void)addTypesetterForParagraphIdentifier:(unint64_t)identifier typesetter:(shared_ptr<CRLWPParagraphTypesetter>)typesetter;
 - (void)clearCache;
 - (void)dealloc;
-- (void)p_limitCacheSize:(unint64_t)a3;
-- (void)removeTypesetterForParagraphIndex:(unint64_t)a3;
+- (void)p_limitCacheSize:(unint64_t)size;
+- (void)removeTypesetterForParagraphIndex:(unint64_t)index;
 @end
 
 @implementation CRLWPCTTypesetterCache
@@ -18,7 +18,7 @@
   [(CRLWPCTTypesetterCache *)&v3 dealloc];
 }
 
-- (shared_ptr<CRLWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)a3
+- (shared_ptr<CRLWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)identifier
 {
   *v3 = 0;
   v3[1] = 0;
@@ -31,8 +31,8 @@
     do
     {
       v8 = v5[4].__left_;
-      v9 = v8 >= a3;
-      v10 = v8 < a3;
+      v9 = v8 >= identifier;
+      v10 = v8 < identifier;
       if (v9)
       {
         v7 = v5;
@@ -42,7 +42,7 @@
     }
 
     while (v5);
-    if (v7 != p_end_node && v7[4].__left_ <= a3)
+    if (v7 != p_end_node && v7[4].__left_ <= identifier)
     {
       v12 = v7[5].__left_;
       v11 = v7[6].__left_;
@@ -61,14 +61,14 @@
   return result;
 }
 
-- (void)addTypesetterForParagraphIdentifier:(unint64_t)a3 typesetter:(shared_ptr<CRLWPParagraphTypesetter>)a4
+- (void)addTypesetterForParagraphIdentifier:(unint64_t)identifier typesetter:(shared_ptr<CRLWPParagraphTypesetter>)typesetter
 {
-  v16 = a3;
-  if (*a4.var0)
+  identifierCopy = identifier;
+  if (*typesetter.var0)
   {
-    var0 = a4.var0;
-    *buf = &v16;
-    v6 = sub_100263C64(&self->_typesetters, &v16);
+    var0 = typesetter.var0;
+    *buf = &identifierCopy;
+    v6 = sub_100263C64(&self->_typesetters, &identifierCopy);
     v8 = *var0;
     v7 = *(var0 + 1);
     if (v7)
@@ -84,7 +84,7 @@
       sub_1000F532C(v9);
     }
 
-    [(CRLWPCTTypesetterCache *)self p_limitCacheSize:v16, v16];
+    [(CRLWPCTTypesetterCache *)self p_limitCacheSize:identifierCopy, identifierCopy];
     if (self->_typesetters.__tree_.__size_ >= 0x41)
     {
       v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -118,7 +118,7 @@
   }
 }
 
-- (void)removeTypesetterForParagraphIndex:(unint64_t)a3
+- (void)removeTypesetterForParagraphIndex:(unint64_t)index
 {
   p_end_node = &self->_typesetters.__tree_.__end_node_;
   left = self->_typesetters.__tree_.__end_node_.__left_;
@@ -129,8 +129,8 @@
     do
     {
       v7 = left[4];
-      v8 = v7 >= a3;
-      v9 = v7 < a3;
+      v8 = v7 >= index;
+      v9 = v7 < index;
       if (v8)
       {
         v6 = left;
@@ -140,7 +140,7 @@
     }
 
     while (left);
-    if (v6 != p_end_node && v6[4] <= a3)
+    if (v6 != p_end_node && v6[4] <= index)
     {
       sub_100263D38(p_typesetters, v6);
     }
@@ -156,7 +156,7 @@
   p_end_node[-1].__left_ = p_end_node;
 }
 
-- (void)p_limitCacheSize:(unint64_t)a3
+- (void)p_limitCacheSize:(unint64_t)size
 {
   if (self->_typesetters.__tree_.__size_ >= 0x41)
   {
@@ -185,7 +185,7 @@
       while (v6);
     }
 
-    if (begin_node[4] == a3)
+    if (begin_node[4] == size)
     {
       begin_node = self->_typesetters.__tree_.__begin_node_;
     }

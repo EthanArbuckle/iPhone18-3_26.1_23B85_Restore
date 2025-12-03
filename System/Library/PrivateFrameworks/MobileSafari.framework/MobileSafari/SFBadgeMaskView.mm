@@ -1,24 +1,24 @@
 @interface SFBadgeMaskView
 - (CGRect)badgeRect;
-- (SFBadgeMaskView)initWithFrame:(CGRect)a3;
+- (SFBadgeMaskView)initWithFrame:(CGRect)frame;
 - (void)_updateShape;
 - (void)layoutSubviews;
-- (void)setBadgeRect:(CGRect)a3;
+- (void)setBadgeRect:(CGRect)rect;
 @end
 
 @implementation SFBadgeMaskView
 
-- (SFBadgeMaskView)initWithFrame:(CGRect)a3
+- (SFBadgeMaskView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SFBadgeMaskView;
-  v3 = [(SFBadgeMaskView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFBadgeMaskView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
-    v5 = [v4 CGColor];
-    v6 = [(SFBadgeMaskView *)v3 shapeLayer];
-    [v6 setFillColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    shapeLayer = [(SFBadgeMaskView *)v3 shapeLayer];
+    [shapeLayer setFillColor:cGColor];
 
     v7 = v3;
   }
@@ -28,8 +28,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(SFBadgeMaskView *)self shapeLayer];
-  BoundingBox = CGPathGetBoundingBox([v3 path]);
+  shapeLayer = [(SFBadgeMaskView *)self shapeLayer];
+  BoundingBox = CGPathGetBoundingBox([shapeLayer path]);
   x = BoundingBox.origin.x;
   y = BoundingBox.origin.y;
   width = BoundingBox.size.width;
@@ -52,14 +52,14 @@
   }
 }
 
-- (void)setBadgeRect:(CGRect)a3
+- (void)setBadgeRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_badgeRect = &self->_badgeRect;
-  if (!CGRectEqualToRect(a3, self->_badgeRect))
+  if (!CGRectEqualToRect(rect, self->_badgeRect))
   {
     p_badgeRect->origin.x = x;
     p_badgeRect->origin.y = y;
@@ -78,13 +78,13 @@
   v4 = MEMORY[0x1E69DC728];
   v12 = CGRectInset(self->_badgeRect, -2.0, -2.0);
   v5 = [v4 bezierPathWithOvalInRect:{v12.origin.x, v12.origin.y, v12.size.width, v12.size.height}];
-  v6 = [v5 bezierPathByReversingPath];
-  [v10 appendPath:v6];
+  bezierPathByReversingPath = [v5 bezierPathByReversingPath];
+  [v10 appendPath:bezierPathByReversingPath];
 
   v7 = v10;
-  v8 = [v10 CGPath];
-  v9 = [(SFBadgeMaskView *)self shapeLayer];
-  [v9 setPath:v8];
+  cGPath = [v10 CGPath];
+  shapeLayer = [(SFBadgeMaskView *)self shapeLayer];
+  [shapeLayer setPath:cGPath];
 }
 
 - (CGRect)badgeRect

@@ -1,103 +1,103 @@
 @interface CTEmergencyMode
-+ (id)convertFromEmergencyMode:(const EmergencyMode *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTEmergencyMode:(id)a3;
-- (CTEmergencyMode)initWithCoder:(id)a3;
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5;
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6;
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6 isStewieActive:(BOOL)a7;
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6 isStewieActive:(BOOL)a7 state:(int64_t)a8;
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6 state:(int64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)convertFromEmergencyMode:(const EmergencyMode *)mode;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTEmergencyMode:(id)mode;
+- (CTEmergencyMode)initWithCoder:(id)coder;
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text;
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup;
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup isStewieActive:(BOOL)active;
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup isStewieActive:(BOOL)active state:(int64_t)state;
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup state:(int64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTEmergencyMode
 
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6 isStewieActive:(BOOL)a7 state:(int64_t)a8
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup isStewieActive:(BOOL)active state:(int64_t)state
 {
   v15.receiver = self;
   v15.super_class = CTEmergencyMode;
   result = [(CTEmergencyMode *)&v15 init];
   if (result)
   {
-    result->_enabled = a3;
-    result->_isEmergencyText = a5;
-    result->_isEmergencySetup = a6;
-    result->_isStewieActive = a7;
-    result->_type = a4;
-    result->_state = a8;
+    result->_enabled = enabled;
+    result->_isEmergencyText = text;
+    result->_isEmergencySetup = setup;
+    result->_isStewieActive = active;
+    result->_type = type;
+    result->_state = state;
   }
 
   return result;
 }
 
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6 state:(int64_t)a7
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup state:(int64_t)state
 {
   v13.receiver = self;
   v13.super_class = CTEmergencyMode;
   result = [(CTEmergencyMode *)&v13 init];
   if (result)
   {
-    result->_enabled = a3;
-    result->_isEmergencyText = a5;
-    result->_isEmergencySetup = a6;
+    result->_enabled = enabled;
+    result->_isEmergencyText = text;
+    result->_isEmergencySetup = setup;
     result->_isStewieActive = 0;
-    result->_type = a4;
-    result->_state = a7;
+    result->_type = type;
+    result->_state = state;
   }
 
   return result;
 }
 
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6 isStewieActive:(BOOL)a7
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup isStewieActive:(BOOL)active
 {
   v13.receiver = self;
   v13.super_class = CTEmergencyMode;
   result = [(CTEmergencyMode *)&v13 init];
   if (result)
   {
-    result->_enabled = a3;
-    result->_isEmergencyText = a5;
-    result->_isEmergencySetup = a6;
-    result->_isStewieActive = a7;
-    result->_type = a4;
+    result->_enabled = enabled;
+    result->_isEmergencyText = text;
+    result->_isEmergencySetup = setup;
+    result->_isStewieActive = active;
+    result->_type = type;
     result->_state = 5;
   }
 
   return result;
 }
 
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5 isEmergencySetup:(BOOL)a6
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text isEmergencySetup:(BOOL)setup
 {
   v11.receiver = self;
   v11.super_class = CTEmergencyMode;
   result = [(CTEmergencyMode *)&v11 init];
   if (result)
   {
-    result->_enabled = a3;
-    result->_isEmergencyText = a5;
-    result->_isEmergencySetup = a6;
+    result->_enabled = enabled;
+    result->_isEmergencyText = text;
+    result->_isEmergencySetup = setup;
     result->_isStewieActive = 0;
-    result->_type = a4;
+    result->_type = type;
     result->_state = 5;
   }
 
   return result;
 }
 
-- (CTEmergencyMode)initWithEnabled:(BOOL)a3 type:(int64_t)a4 isEmergencyText:(BOOL)a5
+- (CTEmergencyMode)initWithEnabled:(BOOL)enabled type:(int64_t)type isEmergencyText:(BOOL)text
 {
   v9.receiver = self;
   v9.super_class = CTEmergencyMode;
   result = [(CTEmergencyMode *)&v9 init];
   if (result)
   {
-    result->_enabled = a3;
-    result->_isEmergencyText = a5;
+    result->_enabled = enabled;
+    result->_isEmergencyText = text;
     *&result->_isEmergencySetup = 1;
-    result->_type = a4;
+    result->_type = type;
     result->_state = 5;
   }
 
@@ -107,9 +107,9 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTEmergencyMode *)self enabled];
+  enabled = [(CTEmergencyMode *)self enabled];
   v5 = "disabled";
-  if (v4)
+  if (enabled)
   {
     v5 = "enabled";
   }
@@ -152,27 +152,27 @@
     [v3 appendFormat:@" isStewieActive=%s", v8];
   }
 
-  v9 = [(CTEmergencyMode *)self type];
-  if ((v9 - 1) > 4)
+  type = [(CTEmergencyMode *)self type];
+  if ((type - 1) > 4)
   {
     v10 = "CTEmergencyModeUnknown";
   }
 
   else
   {
-    v10 = off_1E6A48320[v9 - 1];
+    v10 = off_1E6A48320[type - 1];
   }
 
   [v3 appendFormat:@" type=%s", v10];
-  v11 = [(CTEmergencyMode *)self state];
-  if ((v11 - 1) > 4)
+  state = [(CTEmergencyMode *)self state];
+  if ((state - 1) > 4)
   {
     v12 = "CTEmergencyModeStateInCall";
   }
 
   else
   {
-    v12 = off_1E6A48348[v11 - 1];
+    v12 = off_1E6A48348[state - 1];
   }
 
   [v3 appendFormat:@" state=%s", v12];
@@ -181,13 +181,13 @@
   return v3;
 }
 
-- (BOOL)isEqualToCTEmergencyMode:(id)a3
+- (BOOL)isEqualToCTEmergencyMode:(id)mode
 {
-  v4 = a3;
-  if (v4 && (v5 = -[CTEmergencyMode enabled](self, "enabled"), v5 == [v4 enabled]) && (v6 = -[CTEmergencyMode type](self, "type"), v6 == objc_msgSend(v4, "type")) && (v7 = -[CTEmergencyMode isEmergencyText](self, "isEmergencyText"), v7 == objc_msgSend(v4, "isEmergencyText")) && (v8 = -[CTEmergencyMode isEmergencySetup](self, "isEmergencySetup"), v8 == objc_msgSend(v4, "isEmergencySetup")) && (v9 = -[CTEmergencyMode isStewieActive](self, "isStewieActive"), v9 == objc_msgSend(v4, "isStewieActive")))
+  modeCopy = mode;
+  if (modeCopy && (v5 = -[CTEmergencyMode enabled](self, "enabled"), v5 == [modeCopy enabled]) && (v6 = -[CTEmergencyMode type](self, "type"), v6 == objc_msgSend(modeCopy, "type")) && (v7 = -[CTEmergencyMode isEmergencyText](self, "isEmergencyText"), v7 == objc_msgSend(modeCopy, "isEmergencyText")) && (v8 = -[CTEmergencyMode isEmergencySetup](self, "isEmergencySetup"), v8 == objc_msgSend(modeCopy, "isEmergencySetup")) && (v9 = -[CTEmergencyMode isStewieActive](self, "isStewieActive"), v9 == objc_msgSend(modeCopy, "isStewieActive")))
   {
-    v12 = [(CTEmergencyMode *)self state];
-    v10 = v12 == [v4 state];
+    state = [(CTEmergencyMode *)self state];
+    v10 = state == [modeCopy state];
   }
 
   else
@@ -198,10 +198,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -209,16 +209,16 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTEmergencyMode *)self isEqualToCTEmergencyMode:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTEmergencyMode *)self isEqualToCTEmergencyMode:equalCopy];
   }
 
   return v5;
 }
 
-+ (id)convertFromEmergencyMode:(const EmergencyMode *)a3
++ (id)convertFromEmergencyMode:(const EmergencyMode *)mode
 {
-  v4 = [a1 alloc];
-  v5 = (a3->var0 - 1);
+  v4 = [self alloc];
+  v5 = (mode->var0 - 1);
   if (v5 < 5)
   {
     v6 = v5 + 1;
@@ -229,7 +229,7 @@
     v6 = 0;
   }
 
-  var2 = a3->var2;
+  var2 = mode->var2;
   v8 = (var2 - 1);
   if (v8 < 5)
   {
@@ -241,39 +241,39 @@
     v9 = 0;
   }
 
-  v10 = [v4 initWithEnabled:var2 != 5 type:v6 isEmergencyText:var2 == 3 isEmergencySetup:a3->var3 == 1 isStewieActive:a3->var4 state:v9];
+  v10 = [v4 initWithEnabled:var2 != 5 type:v6 isEmergencyText:var2 == 3 isEmergencySetup:mode->var3 == 1 isStewieActive:mode->var4 state:v9];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CTEmergencyMode *)self enabled];
-  v6 = [(CTEmergencyMode *)self type];
-  v7 = [(CTEmergencyMode *)self isEmergencyText];
-  v8 = [(CTEmergencyMode *)self isEmergencySetup];
-  v9 = [(CTEmergencyMode *)self isStewieActive];
-  v10 = [(CTEmergencyMode *)self state];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  enabled = [(CTEmergencyMode *)self enabled];
+  type = [(CTEmergencyMode *)self type];
+  isEmergencyText = [(CTEmergencyMode *)self isEmergencyText];
+  isEmergencySetup = [(CTEmergencyMode *)self isEmergencySetup];
+  isStewieActive = [(CTEmergencyMode *)self isStewieActive];
+  state = [(CTEmergencyMode *)self state];
 
-  return [v4 initWithEnabled:v5 type:v6 isEmergencyText:v7 isEmergencySetup:v8 isStewieActive:v9 state:v10];
+  return [v4 initWithEnabled:enabled type:type isEmergencyText:isEmergencyText isEmergencySetup:isEmergencySetup isStewieActive:isStewieActive state:state];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_enabled forKey:@"enabled"];
-  [v4 encodeInteger:self->_type forKey:@"type"];
-  [v4 encodeBool:self->_isEmergencyText forKey:@"isEmergencyText"];
-  [v4 encodeBool:self->_isEmergencySetup forKey:@"isEmergencySetup"];
-  [v4 encodeBool:self->_isStewieActive forKey:@"isStewieActiveKey"];
-  [v4 encodeInteger:self->_state forKey:@"state"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_enabled forKey:@"enabled"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeBool:self->_isEmergencyText forKey:@"isEmergencyText"];
+  [coderCopy encodeBool:self->_isEmergencySetup forKey:@"isEmergencySetup"];
+  [coderCopy encodeBool:self->_isStewieActive forKey:@"isStewieActiveKey"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
 }
 
-- (CTEmergencyMode)initWithCoder:(id)a3
+- (CTEmergencyMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[CTEmergencyMode initWithEnabled:type:isEmergencyText:isEmergencySetup:isStewieActive:state:](self, "initWithEnabled:type:isEmergencyText:isEmergencySetup:isStewieActive:state:", [v4 decodeBoolForKey:@"enabled"], objc_msgSend(v4, "decodeIntegerForKey:", @"type"), objc_msgSend(v4, "decodeBoolForKey:", @"isEmergencyText"), objc_msgSend(v4, "decodeBoolForKey:", @"isEmergencySetup"), objc_msgSend(v4, "decodeBoolForKey:", @"isStewieActiveKey"), objc_msgSend(v4, "decodeIntegerForKey:", @"state"));
+  coderCopy = coder;
+  v5 = -[CTEmergencyMode initWithEnabled:type:isEmergencyText:isEmergencySetup:isStewieActive:state:](self, "initWithEnabled:type:isEmergencyText:isEmergencySetup:isStewieActive:state:", [coderCopy decodeBoolForKey:@"enabled"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"type"), objc_msgSend(coderCopy, "decodeBoolForKey:", @"isEmergencyText"), objc_msgSend(coderCopy, "decodeBoolForKey:", @"isEmergencySetup"), objc_msgSend(coderCopy, "decodeBoolForKey:", @"isStewieActiveKey"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"state"));
 
   return v5;
 }

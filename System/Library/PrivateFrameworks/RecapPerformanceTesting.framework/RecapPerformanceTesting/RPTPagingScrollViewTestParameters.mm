@@ -1,23 +1,23 @@
 @interface RPTPagingScrollViewTestParameters
 - (CGRect)scrollingBounds;
-- (RPTPagingScrollViewTestParameters)initWithTestName:(id)a3 scrollBounds:(CGRect)a4 scrollContentLength:(double)a5 direction:(int64_t)a6 completionHandler:(id)a7;
-- (RPTPagingScrollViewTestParameters)initWithTestName:(id)a3 scrollView:(id)a4 completionHandler:(id)a5;
+- (RPTPagingScrollViewTestParameters)initWithTestName:(id)name scrollBounds:(CGRect)bounds scrollContentLength:(double)length direction:(int64_t)direction completionHandler:(id)handler;
+- (RPTPagingScrollViewTestParameters)initWithTestName:(id)name scrollView:(id)view completionHandler:(id)handler;
 - (id)composerBlock;
-- (void)positionsForDirection:(int64_t)a3 startOut:(CGPoint *)a4 endOut:(CGPoint *)a5;
-- (void)swipeWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6;
+- (void)positionsForDirection:(int64_t)direction startOut:(CGPoint *)out endOut:(CGPoint *)endOut;
+- (void)swipeWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration;
 @end
 
 @implementation RPTPagingScrollViewTestParameters
 
-- (RPTPagingScrollViewTestParameters)initWithTestName:(id)a3 scrollBounds:(CGRect)a4 scrollContentLength:(double)a5 direction:(int64_t)a6 completionHandler:(id)a7
+- (RPTPagingScrollViewTestParameters)initWithTestName:(id)name scrollBounds:(CGRect)bounds scrollContentLength:(double)length direction:(int64_t)direction completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v44 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a7;
+  nameCopy = name;
+  handlerCopy = handler;
   v17 = RPTLogTestRunning();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -29,30 +29,30 @@
     v19 = v18;
     *buf = 138544386;
     v20 = @"YES";
-    v35 = v15;
+    v35 = nameCopy;
     v36 = 2114;
-    if (!v16)
+    if (!handlerCopy)
     {
       v20 = @"NULL";
     }
 
     v37 = v18;
     v38 = 2048;
-    v39 = a5;
+    lengthCopy = length;
     v40 = 2050;
-    v41 = a6;
+    directionCopy = direction;
     v42 = 2114;
     v43 = v20;
     _os_log_impl(&dword_261A17000, v17, OS_LOG_TYPE_DEFAULT, "RPT: [RPTPagingScrollViewTestParameters initWithTestName:]", buf, 0x34u);
   }
 
-  v21 = _RPTAxisFromScrollDirection(a6);
-  if (RPTSizeAlongAxis(v21, width, height) * 1.5 > a5)
+  v21 = _RPTAxisFromScrollDirection(direction);
+  if (RPTSizeAlongAxis(v21, width, height) * 1.5 > length)
   {
     v22 = RPTLogTestRunning();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      [(RPTPagingScrollViewTestParameters *)v22 initWithTestName:y scrollBounds:width scrollContentLength:height direction:a5 completionHandler:?];
+      [(RPTPagingScrollViewTestParameters *)v22 initWithTestName:y scrollBounds:width scrollContentLength:height direction:length completionHandler:?];
     }
   }
 
@@ -61,7 +61,7 @@
   v23 = [(RPTPagingScrollViewTestParameters *)&v33 init];
   if (v23)
   {
-    v24 = [v15 copy];
+    v24 = [nameCopy copy];
     testName = v23->_testName;
     v23->_testName = v24;
 
@@ -69,9 +69,9 @@
     v23->_scrollingBounds.origin.y = y;
     v23->_scrollingBounds.size.width = width;
     v23->_scrollingBounds.size.height = height;
-    v23->_scrollingContentLength = a5;
-    v23->_direction = _UIScrollDirectionFromRPTScrollDirection(a6);
-    v26 = MEMORY[0x2667162B0](v16);
+    v23->_scrollingContentLength = length;
+    v23->_direction = _UIScrollDirectionFromRPTScrollDirection(direction);
+    v26 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v23->_completionHandler;
     v23->_completionHandler = v26;
 
@@ -89,37 +89,37 @@
   return v23;
 }
 
-- (RPTPagingScrollViewTestParameters)initWithTestName:(id)a3 scrollView:(id)a4 completionHandler:(id)a5
+- (RPTPagingScrollViewTestParameters)initWithTestName:(id)name scrollView:(id)view completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  viewCopy = view;
+  handlerCopy = handler;
   v11 = RPTLogTestRunning();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"YES";
     v18 = 138543874;
-    v19 = v8;
+    v19 = nameCopy;
     v20 = 2114;
-    if (!v10)
+    if (!handlerCopy)
     {
       v12 = @"NULL";
     }
 
-    v21 = v9;
+    v21 = viewCopy;
     v22 = 2114;
     v23 = v12;
     _os_log_impl(&dword_261A17000, v11, OS_LOG_TYPE_DEFAULT, "RPT: [RPTPagingScrollViewTestParameters initWithTestName:]", &v18, 0x20u);
   }
 
-  v13 = RPTDefaultScrollDirection(v9);
-  RPTContentSizeInDirection(v9, v13);
-  v14 = [(RPTPagingScrollViewTestParameters *)self initWithTestName:v8 scrollBounds:v13 scrollContentLength:v10 direction:RPTGetBoundsForView(v9) completionHandler:?];
+  v13 = RPTDefaultScrollDirection(viewCopy);
+  RPTContentSizeInDirection(viewCopy, v13);
+  v14 = [(RPTPagingScrollViewTestParameters *)self initWithTestName:nameCopy scrollBounds:v13 scrollContentLength:handlerCopy direction:RPTGetBoundsForView(viewCopy) completionHandler:?];
   if (v14)
   {
-    v15 = [v9 window];
-    v16 = [RPTCoordinateSpaceConverter converterFromWindow:v15];
+    window = [viewCopy window];
+    v16 = [RPTCoordinateSpaceConverter converterFromWindow:window];
     [(RPTPagingScrollViewTestParameters *)v14 setConversion:v16];
   }
 
@@ -241,7 +241,7 @@ void __50__RPTPagingScrollViewTestParameters_composerBlock__block_invoke(uint64_
   }
 }
 
-- (void)positionsForDirection:(int64_t)a3 startOut:(CGPoint *)a4 endOut:(CGPoint *)a5
+- (void)positionsForDirection:(int64_t)direction startOut:(CGPoint *)out endOut:(CGPoint *)endOut
 {
   [(RPTPagingScrollViewTestParameters *)self scrollingBounds];
   Midpoint = RPTCGRectGetMidpoint(v9, v10, v11, v12);
@@ -249,12 +249,12 @@ void __50__RPTPagingScrollViewTestParameters_composerBlock__block_invoke(uint64_
   [(RPTPagingScrollViewTestParameters *)self scrollingBounds];
   v17 = v16;
   v19 = v18;
-  v20 = _RPTAxisFromScrollDirection(a3);
+  v20 = _RPTAxisFromScrollDirection(direction);
   v21 = (RPTSizeAlongAxis(v20, v17, v19) + -20.0) * 0.5;
   v22 = 0.0;
-  if (a3 > 1)
+  if (direction > 1)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
       v25 = Midpoint + v21;
       v23 = Midpoint - v21;
@@ -265,7 +265,7 @@ void __50__RPTPagingScrollViewTestParameters_composerBlock__block_invoke(uint64_
       v23 = 0.0;
       v24 = 0.0;
       v25 = 0.0;
-      if (a3 != 3)
+      if (direction != 3)
       {
         goto LABEL_12;
       }
@@ -279,7 +279,7 @@ void __50__RPTPagingScrollViewTestParameters_composerBlock__block_invoke(uint64_
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!direction)
   {
     v24 = v15 - v21;
     v22 = v15 + v21;
@@ -289,7 +289,7 @@ void __50__RPTPagingScrollViewTestParameters_composerBlock__block_invoke(uint64_
   v23 = 0.0;
   v24 = 0.0;
   v25 = 0.0;
-  if (a3 == 1)
+  if (direction == 1)
   {
     v24 = v15 + v21;
     v22 = v15 - v21;
@@ -299,20 +299,20 @@ LABEL_9:
   }
 
 LABEL_12:
-  a4->x = v25;
-  a4->y = v24;
-  a5->x = v23;
-  a5->y = v22;
+  out->x = v25;
+  out->y = v24;
+  endOut->x = v23;
+  endOut->y = v22;
 }
 
-- (void)swipeWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6
+- (void)swipeWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v9 = point.y;
+  v10 = point.x;
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  composerCopy = composer;
   v13 = RPTLogTestRunning();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -327,19 +327,19 @@ LABEL_12:
     v26 = 2114;
     v27 = v15;
     v28 = 2048;
-    v29 = a6;
+    durationCopy = duration;
     _os_log_impl(&dword_261A17000, v13, OS_LOG_TYPE_DEFAULT, "RPT: RPTPagingScrollViewTestParameters swipeFromPoint: %{public}@ toPoint: %{public}@ duration:%f ", &v24, 0x20u);
   }
 
-  v16 = [(RPTPagingScrollViewTestParameters *)self conversion];
-  [v16 convertPoint:{v10, v9}];
+  conversion = [(RPTPagingScrollViewTestParameters *)self conversion];
+  [conversion convertPoint:{v10, v9}];
   v18 = v17;
   v20 = v19;
-  v21 = [(RPTPagingScrollViewTestParameters *)self conversion];
-  [v21 convertVector:{x - v10, y - v9}];
-  [v12 pointerOrFingerScrollAt:v18 byDelta:v20 duration:{v22, v23, a6}];
+  conversion2 = [(RPTPagingScrollViewTestParameters *)self conversion];
+  [conversion2 convertVector:{x - v10, y - v9}];
+  [composerCopy pointerOrFingerScrollAt:v18 byDelta:v20 duration:{v22, v23, duration}];
 
-  [v12 advanceTime:0.4];
+  [composerCopy advanceTime:0.4];
 }
 
 - (CGRect)scrollingBounds

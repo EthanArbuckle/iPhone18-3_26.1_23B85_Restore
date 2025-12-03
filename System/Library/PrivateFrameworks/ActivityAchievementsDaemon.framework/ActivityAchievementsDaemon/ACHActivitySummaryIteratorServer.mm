@@ -1,27 +1,27 @@
 @interface ACHActivitySummaryIteratorServer
-- (ACHActivitySummaryIteratorServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (ACHActivitySummaryIteratorServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)exportedInterface;
 @end
 
 @implementation ACHActivitySummaryIteratorServer
 
-- (ACHActivitySummaryIteratorServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (ACHActivitySummaryIteratorServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v19.receiver = self;
   v19.super_class = ACHActivitySummaryIteratorServer;
-  v11 = [(HDStandardTaskServer *)&v19 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v19 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277D10588]);
-    v13 = [v10 profile];
-    v14 = [v12 initWithProfile:v13];
+    profile = [clientCopy profile];
+    v14 = [v12 initWithProfile:profile];
     builder = v11->_builder;
     v11->_builder = v14;
 
-    v16 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     calendar = v11->_calendar;
-    v11->_calendar = v16;
+    v11->_calendar = hk_gregorianCalendar;
   }
 
   return v11;

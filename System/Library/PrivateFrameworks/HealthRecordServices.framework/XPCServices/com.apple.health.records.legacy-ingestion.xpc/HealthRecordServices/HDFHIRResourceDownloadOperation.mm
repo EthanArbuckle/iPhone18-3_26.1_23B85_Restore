@@ -1,21 +1,21 @@
 @interface HDFHIRResourceDownloadOperation
-+ (id)FHIRDateStringFromDate:(id)a3;
-+ (id)FHIRDateTimeStringFromDate:(id)a3;
-+ (id)_schemaVariableBindingsWithLastFetchDate:(id)a3;
-+ (id)operationWithDownloadRequest:(id)a3 session:(id)a4 error:(id *)a5 downloadCompletion:(id)a6;
++ (id)FHIRDateStringFromDate:(id)date;
++ (id)FHIRDateTimeStringFromDate:(id)date;
++ (id)_schemaVariableBindingsWithLastFetchDate:(id)date;
++ (id)operationWithDownloadRequest:(id)request session:(id)session error:(id *)error downloadCompletion:(id)completion;
 - (HDFHIRResourceDownloadOperation)init;
-- (HDFHIRResourceDownloadOperation)initWithDownloadRequest:(id)a3 session:(id)a4 resourceSchema:(id)a5 downloadCompletion:(id)a6;
+- (HDFHIRResourceDownloadOperation)initWithDownloadRequest:(id)request session:(id)session resourceSchema:(id)schema downloadCompletion:(id)completion;
 - (id)_performPreflightChecks;
-- (id)_requestResultWithError:(id)a3;
-- (id)_requestResultWithResourceBundleData:(id)a3;
+- (id)_requestResultWithError:(id)error;
+- (id)_requestResultWithResourceBundleData:(id)data;
 - (id)_schemaVariableBindings;
 - (id)assembleEndStates;
 - (id)logDescription;
-- (void)_handlePreflightError:(id)a3;
-- (void)_handleTaskCompletedWithData:(id)a3 endState:(id)a4;
-- (void)_handleTaskError:(id)a3 retryCount:(int64_t)a4 endState:(id)a5;
-- (void)_performFetchWithURL:(id)a3 retryCount:(int64_t)a4;
-- (void)consumeEndState:(id)a3;
+- (void)_handlePreflightError:(id)error;
+- (void)_handleTaskCompletedWithData:(id)data endState:(id)state;
+- (void)_handleTaskError:(id)error retryCount:(int64_t)count endState:(id)state;
+- (void)_performFetchWithURL:(id)l retryCount:(int64_t)count;
+- (void)consumeEndState:(id)state;
 - (void)main;
 @end
 
@@ -29,27 +29,27 @@
   return 0;
 }
 
-- (HDFHIRResourceDownloadOperation)initWithDownloadRequest:(id)a3 session:(id)a4 resourceSchema:(id)a5 downloadCompletion:(id)a6
+- (HDFHIRResourceDownloadOperation)initWithDownloadRequest:(id)request session:(id)session resourceSchema:(id)schema downloadCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  sessionCopy = session;
+  schemaCopy = schema;
+  completionCopy = completion;
   v24.receiver = self;
   v24.super_class = HDFHIRResourceDownloadOperation;
   v14 = [(HDFHIRResourceDownloadOperation *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [requestCopy copy];
     request = v14->_request;
     v14->_request = v15;
 
-    v17 = [v13 copy];
+    v17 = [completionCopy copy];
     downloadCompletion = v14->_downloadCompletion;
     v14->_downloadCompletion = v17;
 
-    objc_storeStrong(&v14->_session, a4);
-    v19 = [v12 copy];
+    objc_storeStrong(&v14->_session, session);
+    v19 = [schemaCopy copy];
     resourceSchema = v14->_resourceSchema;
     v14->_resourceSchema = v19;
 
@@ -61,20 +61,20 @@
   return v14;
 }
 
-+ (id)operationWithDownloadRequest:(id)a3 session:(id)a4 error:(id *)a5 downloadCompletion:(id)a6
++ (id)operationWithDownloadRequest:(id)request session:(id)session error:(id *)error downloadCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 resourceSchemaDefinition];
-  v14 = [v10 context];
-  v15 = [v14 accountInformation];
-  v16 = [v15 authentication];
-  v17 = [(HDFHIREndpointSchema *)HDFHIRResourceSchema schemaWithDefinition:v13 authenticationInformation:v16 error:a5];
+  requestCopy = request;
+  sessionCopy = session;
+  completionCopy = completion;
+  resourceSchemaDefinition = [requestCopy resourceSchemaDefinition];
+  context = [requestCopy context];
+  accountInformation = [context accountInformation];
+  authentication = [accountInformation authentication];
+  v17 = [(HDFHIREndpointSchema *)HDFHIRResourceSchema schemaWithDefinition:resourceSchemaDefinition authenticationInformation:authentication error:error];
 
   if (v17)
   {
-    v18 = [[a1 alloc] initWithDownloadRequest:v10 session:v11 resourceSchema:v17 downloadCompletion:v12];
+    v18 = [[self alloc] initWithDownloadRequest:requestCopy session:sessionCopy resourceSchema:v17 downloadCompletion:completionCopy];
   }
 
   else
@@ -87,26 +87,26 @@
 
 - (void)main
 {
-  v3 = [(HDFHIRResourceDownloadOperation *)self _performPreflightChecks];
+  _performPreflightChecks = [(HDFHIRResourceDownloadOperation *)self _performPreflightChecks];
   _HKInitializeLogging();
   v4 = HKLogHealthRecords;
-  if (v3)
+  if (_performPreflightChecks)
   {
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(HDFHIRResourceDownloadOperation *)self logDescription];
-      v7 = [(HDFHIREndpointSchema *)self->_resourceSchema name];
+      logDescription = [(HDFHIRResourceDownloadOperation *)self logDescription];
+      name = [(HDFHIREndpointSchema *)self->_resourceSchema name];
       v12 = 138543874;
-      v13 = v6;
+      v13 = logDescription;
       v14 = 2114;
-      v15 = v7;
+      v15 = name;
       v16 = 2114;
-      v17 = v3;
+      v17 = _performPreflightChecks;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will skip download for %{public}@: %{public}@", &v12, 0x20u);
     }
 
-    [(HDFHIRResourceDownloadOperation *)self _handlePreflightError:v3];
+    [(HDFHIRResourceDownloadOperation *)self _handlePreflightError:_performPreflightChecks];
   }
 
   else
@@ -119,9 +119,9 @@
     v8 = objc_alloc_init(NSMutableArray);
     [(HDFHIRResourceDownloadOperation *)self setEndStates:v8];
 
-    v9 = [(HDFHIRResourceDownloadOperation *)self _defaultRetryCount];
-    v10 = [(HKFHIRResourceDownloadRequest *)self->_request fullRequestURL];
-    [(HDFHIRResourceDownloadOperation *)self _performFetchWithURL:v10 retryCount:v9];
+    _defaultRetryCount = [(HDFHIRResourceDownloadOperation *)self _defaultRetryCount];
+    fullRequestURL = [(HKFHIRResourceDownloadRequest *)self->_request fullRequestURL];
+    [(HDFHIRResourceDownloadOperation *)self _performFetchWithURL:fullRequestURL retryCount:_defaultRetryCount];
 
     dispatch_group_wait(self->_fetchGroup, 0xFFFFFFFFFFFFFFFFLL);
     _HKInitializeLogging();
@@ -142,17 +142,17 @@
 
   else
   {
-    v4 = [(HDFHIREndpointSchema *)self->_resourceSchema name];
-    v3 = [NSError hk_error:125 format:@"resource schema %@ is not enabled", v4];
+    name = [(HDFHIREndpointSchema *)self->_resourceSchema name];
+    v3 = [NSError hk_error:125 format:@"resource schema %@ is not enabled", name];
   }
 
   return v3;
 }
 
-- (void)_performFetchWithURL:(id)a3 retryCount:(int64_t)a4
+- (void)_performFetchWithURL:(id)l retryCount:(int64_t)count
 {
-  v6 = a3;
-  if (a4 < 0)
+  lCopy = l;
+  if (count < 0)
   {
     sub_10000B5B0();
   }
@@ -162,43 +162,43 @@
   v39[2] = sub_1000029A4;
   v39[3] = &unk_100018488;
   v39[4] = self;
-  v39[5] = a4;
+  v39[5] = count;
   v7 = objc_retainBlock(v39);
   dispatch_group_enter(self->_fetchGroup);
-  v8 = [(HKFHIRResourceDownloadRequest *)self->_request context];
-  v9 = [v8 options];
+  context = [(HKFHIRResourceDownloadRequest *)self->_request context];
+  options = [context options];
 
-  if ((v9 & 2) != 0)
+  if ((options & 2) != 0)
   {
     _HKInitializeLogging();
     v17 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(HDFHIRResourceDownloadOperation *)self logDescription];
+      logDescription = [(HDFHIRResourceDownloadOperation *)self logDescription];
       *buf = 138543362;
-      v41 = v19;
+      v41 = logDescription;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ BYPASSING FHIR REQUEST, this FHIR resource download request has the skip web request option set.", buf, 0xCu);
     }
 
     v16 = [@"{resourceType: Bundle entry:{"dataUsingEncoding:", 4} []}"];
-    if (v6)
+    if (lCopy)
     {
-      v20 = v6;
+      v20 = lCopy;
       v21 = 4;
     }
 
     else
     {
-      v28 = [(HKFHIRResourceDownloadRequest *)self->_request resourceType];
-      v29 = [NSString stringWithFormat:@"http://127.0.0.1/FHIR/%@", v28];
+      resourceType = [(HKFHIRResourceDownloadRequest *)self->_request resourceType];
+      v29 = [NSString stringWithFormat:@"http://127.0.0.1/FHIR/%@", resourceType];
       v20 = [NSURL URLWithString:v29];
 
       v21 = 5;
     }
 
-    v30 = [(HKFHIRResourceDownloadRequest *)self->_request resourceType];
-    v31 = [HKFHIRRequestTaskEndState endStateForCanceledRequestAtURL:v20 resourceType:v30 interactionType:v21];
+    resourceType2 = [(HKFHIRResourceDownloadRequest *)self->_request resourceType];
+    v31 = [HKFHIRRequestTaskEndState endStateForCanceledRequestAtURL:v20 resourceType:resourceType2 interactionType:v21];
 
     (v7[2])(v7, v16, v31, 0);
   }
@@ -208,19 +208,19 @@
     _HKInitializeLogging();
     v10 = HKLogHealthRecords;
     v11 = os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG);
-    if (v6)
+    if (lCopy)
     {
       if (v11)
       {
         v32 = v10;
-        v33 = [(HDFHIRResourceDownloadOperation *)self logDescription];
-        v34 = [(HKFHIRResourceDownloadRequest *)self->_request resourceType];
+        logDescription2 = [(HDFHIRResourceDownloadOperation *)self logDescription];
+        resourceType3 = [(HKFHIRResourceDownloadRequest *)self->_request resourceType];
         *buf = 138543874;
-        v41 = v33;
+        v41 = logDescription2;
         v42 = 2114;
-        v43 = v34;
+        v43 = resourceType3;
         v44 = 2048;
-        v45 = a4;
+        countCopy = count;
         _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "%{public}@ fetching %{public}@ resources with %zd retry(ies) remaining", buf, 0x20u);
       }
 
@@ -233,79 +233,79 @@
       v35[3] = &unk_1000184B0;
       v15 = &v36;
       v36 = v7;
-      v16 = [(HDFHIRResourceRequestTask *)v12 initWithCredentialedSession:session resourceSchema:resourceSchema requestURL:v6 completion:v35];
+      v16 = [(HDFHIRResourceRequestTask *)v12 initWithCredentialedSession:session resourceSchema:resourceSchema requestURL:lCopy completion:v35];
     }
 
     else
     {
       if (v11)
       {
-        sub_10000B624(v10, self, a4);
+        sub_10000B624(v10, self, count);
       }
 
       v22 = [HDFHIRResourceQueryTask alloc];
       v23 = self->_session;
       v24 = self->_resourceSchema;
-      v25 = [(HKFHIRResourceDownloadRequest *)self->_request context];
-      v26 = [v25 queryMode];
-      v27 = [(HDFHIRResourceDownloadOperation *)self _schemaVariableBindings];
+      context2 = [(HKFHIRResourceDownloadRequest *)self->_request context];
+      queryMode = [context2 queryMode];
+      _schemaVariableBindings = [(HDFHIRResourceDownloadOperation *)self _schemaVariableBindings];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_100002A20;
       v37[3] = &unk_1000184B0;
       v15 = &v38;
       v38 = v7;
-      v16 = [(HDFHIRResourceQueryTask *)v22 initWithCredentialedSession:v23 resourceSchema:v24 queryMode:v26 bindings:v27 completion:v37];
+      v16 = [(HDFHIRResourceQueryTask *)v22 initWithCredentialedSession:v23 resourceSchema:v24 queryMode:queryMode bindings:_schemaVariableBindings completion:v37];
     }
 
     [(HDFHIRRequestTask *)v16 resume];
   }
 }
 
-- (void)_handlePreflightError:(id)a3
+- (void)_handlePreflightError:(id)error
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  errorCopy = error;
+  v7 = errorCopy;
+  if (!errorCopy)
   {
     sub_10000B6E4();
-    v4 = 0;
+    errorCopy = 0;
   }
 
   downloadCompletion = self->_downloadCompletion;
-  v6 = [(HDFHIRResourceDownloadOperation *)self _requestResultWithError:v4];
+  v6 = [(HDFHIRResourceDownloadOperation *)self _requestResultWithError:errorCopy];
   downloadCompletion[2](downloadCompletion, v6);
 }
 
-- (void)_handleTaskError:(id)a3 retryCount:(int64_t)a4 endState:(id)a5
+- (void)_handleTaskError:(id)error retryCount:(int64_t)count endState:(id)state
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  errorCopy = error;
+  stateCopy = state;
+  if (!errorCopy)
   {
     sub_10000B758();
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((count & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
-    sub_10000B7CC(a2, self, v10);
+    sub_10000B7CC(a2, self, stateCopy);
     goto LABEL_10;
   }
 
-  if (a4 < 0)
+  if (count < 0)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  [(HDFHIRResourceDownloadOperation *)self consumeEndState:v10];
-  if (a4)
+  [(HDFHIRResourceDownloadOperation *)self consumeEndState:stateCopy];
+  if (count)
   {
-    v11 = [(HDFHIRResourceDownloadOperation *)self session];
-    v12 = [v11 specification];
-    v13 = [v12 shouldRetryFailedResourceTaskWithError:v9];
+    session = [(HDFHIRResourceDownloadOperation *)self session];
+    specification = [session specification];
+    v13 = [specification shouldRetryFailedResourceTaskWithError:errorCopy];
 
     if (v13)
     {
@@ -314,19 +314,19 @@ LABEL_3:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         v15 = v14;
-        v16 = [(HDFHIRResourceDownloadOperation *)self logDescription];
-        v17 = [v9 hrs_safelyLoggableDescription];
+        logDescription = [(HDFHIRResourceDownloadOperation *)self logDescription];
+        hrs_safelyLoggableDescription = [errorCopy hrs_safelyLoggableDescription];
         v21 = 138543874;
-        v22 = v16;
+        v22 = logDescription;
         v23 = 2114;
-        v24 = v17;
+        v24 = hrs_safelyLoggableDescription;
         v25 = 2048;
-        v26 = a4;
+        countCopy = count;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching encountered error: %{public}@. %zd retry(ies) remaining", &v21, 0x20u);
       }
 
-      v18 = [(HKFHIRResourceDownloadRequest *)self->_request fullRequestURL];
-      [(HDFHIRResourceDownloadOperation *)self _performFetchWithURL:v18 retryCount:a4 - 1];
+      fullRequestURL = [(HKFHIRResourceDownloadRequest *)self->_request fullRequestURL];
+      [(HDFHIRResourceDownloadOperation *)self _performFetchWithURL:fullRequestURL retryCount:count - 1];
       goto LABEL_13;
     }
   }
@@ -336,21 +336,21 @@ LABEL_10:
   v19 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
   {
-    sub_10000B860(v19, self, v9);
+    sub_10000B860(v19, self, errorCopy);
   }
 
   downloadCompletion = self->_downloadCompletion;
-  v18 = [(HDFHIRResourceDownloadOperation *)self _requestResultWithError:v9];
-  downloadCompletion[2](downloadCompletion, v18);
+  fullRequestURL = [(HDFHIRResourceDownloadOperation *)self _requestResultWithError:errorCopy];
+  downloadCompletion[2](downloadCompletion, fullRequestURL);
 LABEL_13:
 }
 
-- (void)_handleTaskCompletedWithData:(id)a3 endState:(id)a4
+- (void)_handleTaskCompletedWithData:(id)data endState:(id)state
 {
-  v6 = a3;
-  [(HDFHIRResourceDownloadOperation *)self consumeEndState:a4];
+  dataCopy = data;
+  [(HDFHIRResourceDownloadOperation *)self consumeEndState:state];
   downloadCompletion = self->_downloadCompletion;
-  v8 = [(HDFHIRResourceDownloadOperation *)self _requestResultWithResourceBundleData:v6];
+  v8 = [(HDFHIRResourceDownloadOperation *)self _requestResultWithResourceBundleData:dataCopy];
 
   downloadCompletion[2](downloadCompletion, v8);
 }
@@ -358,19 +358,19 @@ LABEL_13:
 - (id)_schemaVariableBindings
 {
   v3 = objc_opt_class();
-  v4 = [(HKFHIRResourceDownloadRequest *)self->_request context];
-  v5 = [v4 lastFetchDate];
-  v6 = [v3 _schemaVariableBindingsWithLastFetchDate:v5];
+  context = [(HKFHIRResourceDownloadRequest *)self->_request context];
+  lastFetchDate = [context lastFetchDate];
+  v6 = [v3 _schemaVariableBindingsWithLastFetchDate:lastFetchDate];
 
   return v6;
 }
 
-+ (id)_schemaVariableBindingsWithLastFetchDate:(id)a3
++ (id)_schemaVariableBindingsWithLastFetchDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = v4;
+    v5 = dateCopy;
     v6 = objc_alloc_init(NSDateComponents);
     [v6 setDay:-1];
     v7 = +[NSCalendar hk_gregorianCalendarWithUTCTimeZone];
@@ -382,8 +382,8 @@ LABEL_13:
     v8 = +[NSDate distantPast];
   }
 
-  v9 = [a1 FHIRDateStringFromDate:v8];
-  v10 = [a1 FHIRDateTimeStringFromDate:v8];
+  v9 = [self FHIRDateStringFromDate:v8];
+  v10 = [self FHIRDateTimeStringFromDate:v8];
   v11 = [NSString stringWithFormat:@"ge%@", v9];
   v12 = [NSString stringWithFormat:@"ge%@", v10];
   v15[0] = HKFHIREndpointSchemaVariableGreaterEqualLastFetchDate;
@@ -395,49 +395,49 @@ LABEL_13:
   return v13;
 }
 
-- (id)_requestResultWithResourceBundleData:(id)a3
+- (id)_requestResultWithResourceBundleData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     sub_10000B934();
   }
 
   v5 = [HKFHIRResourceDownloadRequestResult alloc];
-  v6 = [(HDFHIRResourceDownloadOperation *)self assembleEndStates];
-  v7 = [(HDFHIRCredentialedSession *)self->_session consumeRefreshResult];
-  v8 = [v5 initWithResourceBundleData:v4 endStates:v6 refreshResult:v7];
+  assembleEndStates = [(HDFHIRResourceDownloadOperation *)self assembleEndStates];
+  consumeRefreshResult = [(HDFHIRCredentialedSession *)self->_session consumeRefreshResult];
+  v8 = [v5 initWithResourceBundleData:dataCopy endStates:assembleEndStates refreshResult:consumeRefreshResult];
 
   return v8;
 }
 
-- (id)_requestResultWithError:(id)a3
+- (id)_requestResultWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     sub_10000B9A8();
   }
 
   v5 = [HKFHIRResourceDownloadRequestResult alloc];
-  v6 = [(HDFHIRResourceDownloadOperation *)self assembleEndStates];
-  v7 = [(HDFHIRCredentialedSession *)self->_session consumeRefreshResult];
-  v8 = [v5 initWithError:v4 endStates:v6 refreshResult:v7];
+  assembleEndStates = [(HDFHIRResourceDownloadOperation *)self assembleEndStates];
+  consumeRefreshResult = [(HDFHIRCredentialedSession *)self->_session consumeRefreshResult];
+  v8 = [v5 initWithError:errorCopy endStates:assembleEndStates refreshResult:consumeRefreshResult];
 
   return v8;
 }
 
-- (void)consumeEndState:(id)a3
+- (void)consumeEndState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (!stateCopy)
   {
     sub_10000BA1C();
-    v4 = 0;
+    stateCopy = 0;
   }
 
-  [(NSMutableArray *)self->_endStates addObject:v4];
+  [(NSMutableArray *)self->_endStates addObject:stateCopy];
 }
 
 - (id)assembleEndStates
@@ -462,36 +462,36 @@ LABEL_13:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(HDFHIREndpointSchema *)self->_resourceSchema name];
-  v6 = [NSString stringWithFormat:@"%@ resource: %@", v4, v5];
+  name = [(HDFHIREndpointSchema *)self->_resourceSchema name];
+  v6 = [NSString stringWithFormat:@"%@ resource: %@", v4, name];
 
   return v6;
 }
 
-+ (id)FHIRDateStringFromDate:(id)a3
++ (id)FHIRDateStringFromDate:(id)date
 {
   v3 = qword_10001EF78;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     sub_10000BA90();
   }
 
-  v5 = [qword_10001EF70 stringFromDate:v4];
+  v5 = [qword_10001EF70 stringFromDate:dateCopy];
 
   return v5;
 }
 
-+ (id)FHIRDateTimeStringFromDate:(id)a3
++ (id)FHIRDateTimeStringFromDate:(id)date
 {
   v3 = qword_10001EF88;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     sub_10000BAA4();
   }
 
-  v5 = [qword_10001EF80 stringFromDate:v4];
+  v5 = [qword_10001EF80 stringFromDate:dateCopy];
 
   return v5;
 }

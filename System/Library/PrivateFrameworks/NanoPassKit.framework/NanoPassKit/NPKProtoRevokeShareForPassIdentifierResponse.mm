@@ -1,11 +1,11 @@
 @interface NPKProtoRevokeShareForPassIdentifierResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRevokeShareForPassIdentifierResponse
@@ -16,32 +16,32 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRevokeShareForPassIdentifierResponse;
   v4 = [(NPKProtoRevokeShareForPassIdentifierResponse *)&v8 description];
-  v5 = [(NPKProtoRevokeShareForPassIdentifierResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRevokeShareForPassIdentifierResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-  [v3 setObject:v4 forKey:@"success"];
+  [dictionary setObject:v4 forKey:@"success"];
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   success = self->_success;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteBOOLField();
   if (self->_errorData)
   {
@@ -49,39 +49,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 16) = self->_success;
+  *(to + 16) = self->_success;
   errorData = self->_errorData;
   if (errorData)
   {
-    [a3 setErrorData:errorData];
+    [to setErrorData:errorData];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_success;
-  v6 = [(NSData *)self->_errorData copyWithZone:a3];
+  v6 = [(NSData *)self->_errorData copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_4;
   }
 
-  v5 = *(v4 + 16);
+  v5 = *(equalCopy + 16);
   if (self->_success)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
 LABEL_4:
       v6 = 0;
@@ -89,13 +89,13 @@ LABEL_4:
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_4;
   }
 
   errorData = self->_errorData;
-  if (errorData | *(v4 + 1))
+  if (errorData | *(equalCopy + 1))
   {
     v6 = [(NSData *)errorData isEqual:?];
   }
@@ -110,10 +110,10 @@ LABEL_5:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_success = *(a3 + 16);
-  if (*(a3 + 1))
+  self->_success = *(from + 16);
+  if (*(from + 1))
   {
     [(NPKProtoRevokeShareForPassIdentifierResponse *)self setErrorData:?];
   }

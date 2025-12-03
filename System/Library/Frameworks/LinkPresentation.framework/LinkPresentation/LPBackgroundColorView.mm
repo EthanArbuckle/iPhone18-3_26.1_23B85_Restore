@@ -1,21 +1,21 @@
 @interface LPBackgroundColorView
-- (LPBackgroundColorView)initWithColor:(id)a3;
-- (void)setColor:(id)a3;
+- (LPBackgroundColorView)initWithColor:(id)color;
+- (void)setColor:(id)color;
 - (void)updateColor;
 @end
 
 @implementation LPBackgroundColorView
 
-- (LPBackgroundColorView)initWithColor:(id)a3
+- (LPBackgroundColorView)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v10.receiver = self;
   v10.super_class = LPBackgroundColorView;
   v6 = [(LPBackgroundColorView *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_color, a3);
+    objc_storeStrong(&v6->_color, color);
     [(LPBackgroundColorView *)v7 updateColor];
     v8 = v7;
   }
@@ -34,9 +34,9 @@
   v2[2]();
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
+  objc_storeStrong(&self->_color, color);
 
   [(LPBackgroundColorView *)self updateColor];
 }

@@ -1,7 +1,7 @@
 @interface PPEventQuery
-- (PPEventQuery)initWithCoder:(id)a3;
+- (PPEventQuery)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPEventQuery
@@ -13,10 +13,10 @@
   return v2;
 }
 
-- (PPEventQuery)initWithCoder:(id)a3
+- (PPEventQuery)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PPEventQuery;
   v5 = [(PPEventQuery *)&v17 init];
@@ -25,8 +25,8 @@
     goto LABEL_10;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
   v8 = v7;
   if (v6)
   {
@@ -56,7 +56,7 @@ LABEL_10:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = coderCopy;
     _os_log_error_impl(&dword_1A7FD3000, v10, OS_LOG_TYPE_ERROR, "failed to decode fromDate or toDate from %@", buf, 0xCu);
   }
 
@@ -67,12 +67,12 @@ LABEL_11:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fromDate = self->_fromDate;
-  v5 = a3;
-  [v5 encodeObject:fromDate forKey:@"fdt"];
-  [v5 encodeObject:self->_toDate forKey:@"tdt"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fromDate forKey:@"fdt"];
+  [coderCopy encodeObject:self->_toDate forKey:@"tdt"];
 }
 
 @end

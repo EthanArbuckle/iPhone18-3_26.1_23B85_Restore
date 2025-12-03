@@ -21,7 +21,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1 & 1;
+  v3[1] = self & 1;
   _os_log_debug_impl(&dword_1B6F6A000, a2, OS_LOG_TYPE_DEBUG, "SwiftUI/Solarium=%d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

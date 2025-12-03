@@ -1,20 +1,20 @@
 @interface NTNewsTodayResultOperation
 + (void)initialize;
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
 - (BOOL)validateOperation;
 - (NTNewsTodayResultOperation)init;
 - (id)_firstRefreshDateDefaultsKey;
-- (id)_supplementTodayData:(id)a3 forResults:(id)a4;
-- (id)dictionaryFromColorGradient:(id)a3;
-- (id)gradientBackgroundPairFromLightGradientDict:(id)a3 darkGradientDict:(id)a4;
-- (id)todayBannerWithTodayConfig:(id)a3 todayData:(id)a4;
-- (unint64_t)convertBannerBackgroundMethodToNTBannerBackgroundType:(int)a3;
-- (unint64_t)convertBannerImageMethodToNTBannerImageType:(int)a3;
-- (void)_assembleQueueDescriptorsWithConfig:(id)a3 allowOnlyWatchEligibleSections:(BOOL)a4 respectsWidgetVisibleSectionsLimit:(BOOL)a5 personalizationTreatment:(id)a6 aggregateStore:(id)a7 appConfiguration:(id)a8 todayData:(id)a9 completion:(id)a10;
-- (void)_fetchTodayResultsWithFetchHelper:(id)a3 aggregator:(id)a4 budgetInfo:(id)a5 appConfiguration:(id)a6 feedPersonalizer:(id)a7 todayData:(id)a8 todayBanner:(id)a9 completion:(id)a10;
-- (void)_finalizeTodayResultsWithSectionDescriptors:(id)a3 catchUpOperationResultsBySectionDescriptor:(id)a4 appConfiguration:(id)a5 feedPersonalizer:(id)a6 todayData:(id)a7 todayBanner:(id)a8 debugInspection:(id)a9 completion:(id)a10;
-- (void)_registerForYouFetchWithForYouFetchInfo:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_supplementTodayData:(id)data forResults:(id)results;
+- (id)dictionaryFromColorGradient:(id)gradient;
+- (id)gradientBackgroundPairFromLightGradientDict:(id)dict darkGradientDict:(id)gradientDict;
+- (id)todayBannerWithTodayConfig:(id)config todayData:(id)data;
+- (unint64_t)convertBannerBackgroundMethodToNTBannerBackgroundType:(int)type;
+- (unint64_t)convertBannerImageMethodToNTBannerImageType:(int)type;
+- (void)_assembleQueueDescriptorsWithConfig:(id)config allowOnlyWatchEligibleSections:(BOOL)sections respectsWidgetVisibleSectionsLimit:(BOOL)limit personalizationTreatment:(id)treatment aggregateStore:(id)store appConfiguration:(id)configuration todayData:(id)data completion:(id)self0;
+- (void)_fetchTodayResultsWithFetchHelper:(id)helper aggregator:(id)aggregator budgetInfo:(id)info appConfiguration:(id)configuration feedPersonalizer:(id)personalizer todayData:(id)data todayBanner:(id)banner completion:(id)self0;
+- (void)_finalizeTodayResultsWithSectionDescriptors:(id)descriptors catchUpOperationResultsBySectionDescriptor:(id)descriptor appConfiguration:(id)configuration feedPersonalizer:(id)personalizer todayData:(id)data todayBanner:(id)banner debugInspection:(id)inspection completion:(id)self0;
+- (void)_registerForYouFetchWithForYouFetchInfo:(id)info;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 - (void)validateOperation;
@@ -27,8 +27,8 @@
   v2 = objc_opt_class();
   if (v2 == objc_opt_class())
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 removeObjectForKey:@"tempID"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:@"tempID"];
   }
 }
 
@@ -49,23 +49,23 @@
 
 - (BOOL)validateOperation
 {
-  v3 = [(NTTodayResultOperation *)self contentContext];
+  contentContext = [(NTTodayResultOperation *)self contentContext];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!contentContext && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation validateOperation];
   }
 
-  v4 = [(NTTodayResultOperation *)self feedPersonalizerFactory];
+  feedPersonalizerFactory = [(NTTodayResultOperation *)self feedPersonalizerFactory];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!feedPersonalizerFactory && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation validateOperation];
   }
 
-  if (v3)
+  if (contentContext)
   {
-    v5 = v4 == 0;
+    v5 = feedPersonalizerFactory == 0;
   }
 
   else
@@ -74,13 +74,13 @@
   }
 
   v6 = !v5;
-  v7 = [(NTTodayResultOperation *)self operationInfo];
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  operationInfo = [(NTTodayResultOperation *)self operationInfo];
+  if (!operationInfo && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation validateOperation];
   }
 
-  if (v7)
+  if (operationInfo)
   {
     v8 = v6;
   }
@@ -90,26 +90,26 @@
     v8 = 0;
   }
 
-  v9 = [v7 request];
-  v10 = [v9 identifier];
+  request = [operationInfo request];
+  identifier = [request identifier];
 
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!identifier && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation validateOperation];
   }
 
-  if (!v10)
+  if (!identifier)
   {
     v8 = 0;
   }
 
-  v11 = [(NTTodayResultOperation *)self prefetchedContent];
-  if (!v11 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  prefetchedContent = [(NTTodayResultOperation *)self prefetchedContent];
+  if (!prefetchedContent && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation validateOperation];
   }
 
-  if (v11)
+  if (prefetchedContent)
   {
     v12 = v8;
   }
@@ -119,10 +119,10 @@
     v12 = 0;
   }
 
-  if (v10)
+  if (identifier)
   {
-    v13 = [v11 todayConfigsByRequestID];
-    v14 = [v13 objectForKeyedSubscript:v10];
+    todayConfigsByRequestID = [prefetchedContent todayConfigsByRequestID];
+    v14 = [todayConfigsByRequestID objectForKeyedSubscript:identifier];
 
     if (!v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -135,14 +135,14 @@
     }
   }
 
-  v15 = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
+  headlineResultCompletionHandler = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
 
-  if (!v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!headlineResultCompletionHandler && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation validateOperation];
   }
 
-  if (v15)
+  if (headlineResultCompletionHandler)
   {
     v16 = v12;
   }
@@ -157,18 +157,18 @@
 
 - (void)prepareOperation
 {
-  v3 = [(NTTodayResultOperation *)self operationInfo];
-  v4 = [v3 request];
-  v5 = [v4 identifier];
+  operationInfo = [(NTTodayResultOperation *)self operationInfo];
+  request = [operationInfo request];
+  identifier = [request identifier];
 
-  v6 = [(NTTodayResultOperation *)self prefetchedContent];
-  v7 = [v6 todayConfigsByRequestID];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  prefetchedContent = [(NTTodayResultOperation *)self prefetchedContent];
+  todayConfigsByRequestID = [prefetchedContent todayConfigsByRequestID];
+  v8 = [todayConfigsByRequestID objectForKeyedSubscript:identifier];
   [(NTNewsTodayResultOperation *)self setTodayConfig:v8];
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [(NTNewsTodayResultOperation *)self _firstRefreshDateDefaultsKey];
-  v11 = [v9 objectForKey:v10];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  _firstRefreshDateDefaultsKey = [(NTNewsTodayResultOperation *)self _firstRefreshDateDefaultsKey];
+  v11 = [standardUserDefaults objectForKey:_firstRefreshDateDefaultsKey];
 
   if (!v11)
   {
@@ -179,22 +179,22 @@
       _os_log_impl(&dword_25BF21000, v12, OS_LOG_TYPE_INFO, "no existing date for first refresh. setting to current date", v15, 2u);
     }
 
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [(NTNewsTodayResultOperation *)self _firstRefreshDateDefaultsKey];
-    [v9 setObject:v13 forKey:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    _firstRefreshDateDefaultsKey2 = [(NTNewsTodayResultOperation *)self _firstRefreshDateDefaultsKey];
+    [standardUserDefaults setObject:date forKey:_firstRefreshDateDefaultsKey2];
   }
 }
 
 - (void)performOperation
 {
-  v3 = [(NTTodayResultOperation *)self operationInfo];
-  [v3 slotsLimit];
+  operationInfo = [(NTTodayResultOperation *)self operationInfo];
+  [operationInfo slotsLimit];
   if (v4 == 0.0)
   {
     v5 = [NTTodayResults alloc];
     v6 = objc_opt_new();
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [(NTTodayResults *)v5 initWithSourceIdentifier:@"news" sections:v6 expirationDate:v7 headlineScale:1.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [(NTTodayResults *)v5 initWithSourceIdentifier:@"news" sections:v6 expirationDate:date headlineScale:1.0];
     [(NTNewsTodayResultOperation *)self setResultTodayResults:v8];
 
     [(FCOperation *)self finishedPerformingOperationWithError:0];
@@ -227,25 +227,25 @@
     v65[4] = &v67;
     [v12 readSyncWithAccessor:v65];
     v14 = NTSharedLog();
-    v50 = v3;
+    v50 = operationInfo;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_25BF21000, v14, OS_LOG_TYPE_DEFAULT, "proceeding, having fetched personalization updates", buf, 2u);
     }
 
-    v46 = [(NTTodayResultOperation *)self contentContext];
-    v15 = [v46 appConfigurationManager];
-    v16 = [(NTTodayResultOperation *)self prefetchedContent];
-    v17 = [(NTNewsTodayResultOperation *)self todayConfig];
-    v18 = [v16 appConfiguration];
-    v19 = [v16 privateData];
-    v49 = [v18 personalizationTreatment];
-    v20 = [v19 derivedPersonalizationData];
-    v21 = v20;
-    if (v20)
+    contentContext = [(NTTodayResultOperation *)self contentContext];
+    appConfigurationManager = [contentContext appConfigurationManager];
+    prefetchedContent = [(NTTodayResultOperation *)self prefetchedContent];
+    todayConfig = [(NTNewsTodayResultOperation *)self todayConfig];
+    appConfiguration = [prefetchedContent appConfiguration];
+    privateData = [prefetchedContent privateData];
+    personalizationTreatment = [appConfiguration personalizationTreatment];
+    derivedPersonalizationData = [privateData derivedPersonalizationData];
+    v21 = derivedPersonalizationData;
+    if (derivedPersonalizationData)
     {
-      v48 = v20;
+      v48 = derivedPersonalizationData;
     }
 
     else
@@ -255,16 +255,16 @@
     }
 
     v23 = [objc_alloc(MEMORY[0x277D31298]) initWithGenerator:v48];
-    [v23 processTodayPersonalizationUpdates:v68[5] withConfigurableValues:v49];
-    v24 = [v17 copy];
-    v45 = [v15 feldsparID];
-    v44 = [v18 currentTreatment];
-    v43 = [v15 segmentSetIDs];
+    [v23 processTodayPersonalizationUpdates:v68[5] withConfigurableValues:personalizationTreatment];
+    v24 = [todayConfig copy];
+    feldsparID = [appConfigurationManager feldsparID];
+    currentTreatment = [appConfiguration currentTreatment];
+    segmentSetIDs = [appConfigurationManager segmentSetIDs];
     v40 = v24;
-    v41 = v16;
+    v41 = prefetchedContent;
     v42 = v12;
-    v25 = [v15 treatmentIDs];
-    v39 = [v19 onboardingVersion];
+    treatmentIDs = [appConfigurationManager treatmentIDs];
+    onboardingVersion = [privateData onboardingVersion];
     v26 = NTSharedLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -272,8 +272,8 @@
       _os_log_impl(&dword_25BF21000, v26, OS_LOG_TYPE_DEFAULT, "assembling queue descriptors", buf, 2u);
     }
 
-    v38 = [v50 allowOnlyWatchEligibleSections];
-    v37 = [v50 respectsWidgetVisibleSectionsPerQueueLimit];
+    allowOnlyWatchEligibleSections = [v50 allowOnlyWatchEligibleSections];
+    respectsWidgetVisibleSectionsPerQueueLimit = [v50 respectsWidgetVisibleSectionsPerQueueLimit];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __46__NTNewsTodayResultOperation_performOperation__block_invoke_36;
@@ -281,32 +281,32 @@
     v51[4] = self;
     v27 = v23;
     v52 = v27;
-    v36 = v15;
+    v36 = appConfigurationManager;
     v53 = v36;
-    v28 = v19;
+    v28 = privateData;
     v54 = v28;
-    v29 = v18;
+    v29 = appConfiguration;
     v55 = v29;
-    v30 = v17;
+    v30 = todayConfig;
     v56 = v30;
     v57 = v50;
     v64 = v9;
-    v47 = v46;
+    v47 = contentContext;
     v58 = v47;
-    v31 = v45;
+    v31 = feldsparID;
     v59 = v31;
-    v32 = v44;
+    v32 = currentTreatment;
     v60 = v32;
-    v33 = v43;
+    v33 = segmentSetIDs;
     v61 = v33;
-    v34 = v25;
+    v34 = treatmentIDs;
     v62 = v34;
-    v35 = v39;
+    v35 = onboardingVersion;
     v63 = v35;
-    [(NTNewsTodayResultOperation *)self _assembleQueueDescriptorsWithConfig:v30 allowOnlyWatchEligibleSections:v38 respectsWidgetVisibleSectionsLimit:v37 personalizationTreatment:v49 aggregateStore:v27 appConfiguration:v29 todayData:v28 completion:v51];
+    [(NTNewsTodayResultOperation *)self _assembleQueueDescriptorsWithConfig:v30 allowOnlyWatchEligibleSections:allowOnlyWatchEligibleSections respectsWidgetVisibleSectionsLimit:respectsWidgetVisibleSectionsPerQueueLimit personalizationTreatment:personalizationTreatment aggregateStore:v27 appConfiguration:v29 todayData:v28 completion:v51];
 
     _Block_object_dispose(&v67, 8);
-    v3 = v50;
+    operationInfo = v50;
   }
 }
 
@@ -624,48 +624,48 @@ void __46__NTNewsTodayResultOperation_performOperation__block_invoke_44(uint64_t
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v8 = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
-  v5 = [(NTNewsTodayResultOperation *)self resultTodayResults];
-  v6 = [(NTNewsTodayResultOperation *)self resultAssetHandlesByAssetID];
-  v7 = [(NTNewsTodayResultOperation *)self resultFetchInfo];
-  v8[2](v8, v5, v6, v7, v4);
+  errorCopy = error;
+  headlineResultCompletionHandler = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
+  resultTodayResults = [(NTNewsTodayResultOperation *)self resultTodayResults];
+  resultAssetHandlesByAssetID = [(NTNewsTodayResultOperation *)self resultAssetHandlesByAssetID];
+  resultFetchInfo = [(NTNewsTodayResultOperation *)self resultFetchInfo];
+  headlineResultCompletionHandler[2](headlineResultCompletionHandler, resultTodayResults, resultAssetHandlesByAssetID, resultFetchInfo, errorCopy);
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v6 = a3;
-  v7 = [v6 domain];
-  if (![v7 isEqualToString:*MEMORY[0x277D309C8]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x277D309C8]])
   {
     goto LABEL_7;
   }
 
-  v8 = [v6 code];
+  code = [errorCopy code];
 
-  if (v8 != 21)
+  if (code != 21)
   {
     v12 = 0;
     goto LABEL_10;
   }
 
-  v9 = [v6 userInfo];
-  v7 = [v9 objectForKeyedSubscript:*MEMORY[0x277D309D0]];
+  userInfo = [errorCopy userInfo];
+  domain = [userInfo objectForKeyedSubscript:*MEMORY[0x277D309D0]];
 
-  if (v7)
+  if (domain)
   {
-    v10 = [v7 fc_arrayOfObjectsPassingTest:&__block_literal_global_58];
+    v10 = [domain fc_arrayOfObjectsPassingTest:&__block_literal_global_58];
     v11 = [v10 count];
     v12 = v11 != 0;
     if (v11)
     {
-      v13 = [(NTNewsTodayResultOperation *)self articleIDsToExclude];
+      articleIDsToExclude = [(NTNewsTodayResultOperation *)self articleIDsToExclude];
       v14 = [MEMORY[0x277CBEB98] setWithArray:v10];
-      [v13 unionSet:v14];
+      [articleIDsToExclude unionSet:v14];
 
-      *a4 = objc_opt_new();
+      *after = objc_opt_new();
     }
   }
 
@@ -679,25 +679,25 @@ LABEL_10:
   return v12;
 }
 
-- (void)_assembleQueueDescriptorsWithConfig:(id)a3 allowOnlyWatchEligibleSections:(BOOL)a4 respectsWidgetVisibleSectionsLimit:(BOOL)a5 personalizationTreatment:(id)a6 aggregateStore:(id)a7 appConfiguration:(id)a8 todayData:(id)a9 completion:(id)a10
+- (void)_assembleQueueDescriptorsWithConfig:(id)config allowOnlyWatchEligibleSections:(BOOL)sections respectsWidgetVisibleSectionsLimit:(BOOL)limit personalizationTreatment:(id)treatment aggregateStore:(id)store appConfiguration:(id)configuration todayData:(id)data completion:(id)self0
 {
   v69 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v52 = a9;
-  v17 = a10;
-  if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configCopy = config;
+  treatmentCopy = treatment;
+  storeCopy = store;
+  configurationCopy = configuration;
+  dataCopy = data;
+  completionCopy = completion;
+  if (!configCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _assembleQueueDescriptorsWithConfig:allowOnlyWatchEligibleSections:respectsWidgetVisibleSectionsLimit:personalizationTreatment:aggregateStore:appConfiguration:todayData:completion:];
-    if (v14)
+    if (treatmentCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v14)
+  else if (treatmentCopy)
   {
     goto LABEL_6;
   }
@@ -708,21 +708,21 @@ LABEL_10:
   }
 
 LABEL_6:
-  if (!v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!storeCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _assembleQueueDescriptorsWithConfig:allowOnlyWatchEligibleSections:respectsWidgetVisibleSectionsLimit:personalizationTreatment:aggregateStore:appConfiguration:todayData:completion:];
   }
 
-  v48 = v14;
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v48 = treatmentCopy;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _assembleQueueDescriptorsWithConfig:allowOnlyWatchEligibleSections:respectsWidgetVisibleSectionsLimit:personalizationTreatment:aggregateStore:appConfiguration:todayData:completion:];
   }
 
-  v43 = v16;
-  v46 = v17;
-  v47 = v15;
-  if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v43 = configurationCopy;
+  v46 = completionCopy;
+  v47 = storeCopy;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _assembleQueueDescriptorsWithConfig:allowOnlyWatchEligibleSections:respectsWidgetVisibleSectionsLimit:personalizationTreatment:aggregateStore:appConfiguration:todayData:completion:];
   }
@@ -731,9 +731,9 @@ LABEL_6:
   v19 = [v18 BOOLForKey:*MEMORY[0x277D30C78]];
 
   v20 = MEMORY[0x277CBEA60];
-  v49 = v13;
-  v21 = [v13 todayQueueConfigs];
-  v22 = [v20 arrayWithArray:v21];
+  v49 = configCopy;
+  todayQueueConfigs = [configCopy todayQueueConfigs];
+  v22 = [v20 arrayWithArray:todayQueueConfigs];
 
   v66 = 0u;
   v67 = 0u;
@@ -756,8 +756,8 @@ LABEL_6:
         }
 
         v28 = *(*(&v64 + 1) + 8 * i);
-        v29 = [v28 todaySectionConfigs];
-        v30 = [v29 sortedArrayUsingComparator:&__block_literal_global_77];
+        todaySectionConfigs = [v28 todaySectionConfigs];
+        v30 = [todaySectionConfigs sortedArrayUsingComparator:&__block_literal_global_77];
         v31 = [v30 mutableCopy];
 
         v32 = NewsCoreUserDefaults();
@@ -786,8 +786,8 @@ LABEL_6:
         v59[2] = __210__NTNewsTodayResultOperation__assembleQueueDescriptorsWithConfig_allowOnlyWatchEligibleSections_respectsWidgetVisibleSectionsLimit_personalizationTreatment_aggregateStore_appConfiguration_todayData_completion___block_invoke_4;
         v59[3] = &unk_2799831C0;
         v62 = v19;
-        v63 = a4;
-        v60 = v52;
+        sectionsCopy = sections;
+        v60 = dataCopy;
         v61 = v37;
         v38 = v37;
         [v31 enumerateObjectsUsingBlock:v59];
@@ -806,11 +806,11 @@ LABEL_6:
   v53[2] = __210__NTNewsTodayResultOperation__assembleQueueDescriptorsWithConfig_allowOnlyWatchEligibleSections_respectsWidgetVisibleSectionsLimit_personalizationTreatment_aggregateStore_appConfiguration_todayData_completion___block_invoke_5;
   v53[3] = &unk_2799831E8;
   v54 = v43;
-  v55 = v52;
+  v55 = dataCopy;
   v57 = v19;
-  v58 = a5;
-  v56 = self;
-  v39 = v52;
+  limitCopy = limit;
+  selfCopy = self;
+  v39 = dataCopy;
   v40 = v43;
   v41 = [obj fc_arrayByTransformingWithBlock:v53];
   (v46)[2](v46, v41, 0);
@@ -856,85 +856,85 @@ NTQueueConfigSectionQueueDescriptor *__210__NTNewsTodayResultOperation__assemble
   return v10;
 }
 
-- (void)_fetchTodayResultsWithFetchHelper:(id)a3 aggregator:(id)a4 budgetInfo:(id)a5 appConfiguration:(id)a6 feedPersonalizer:(id)a7 todayData:(id)a8 todayBanner:(id)a9 completion:(id)a10
+- (void)_fetchTodayResultsWithFetchHelper:(id)helper aggregator:(id)aggregator budgetInfo:(id)info appConfiguration:(id)configuration feedPersonalizer:(id)personalizer todayData:(id)data todayBanner:(id)banner completion:(id)self0
 {
   v63 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v46 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  helperCopy = helper;
+  aggregatorCopy = aggregator;
+  infoCopy = info;
+  configurationCopy = configuration;
+  personalizerCopy = personalizer;
+  dataCopy = data;
+  bannerCopy = banner;
+  completionCopy = completion;
+  if (!helperCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _fetchTodayResultsWithFetchHelper:aggregator:budgetInfo:appConfiguration:feedPersonalizer:todayData:todayBanner:completion:];
   }
 
-  v45 = v20;
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v45 = dataCopy;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _fetchTodayResultsWithFetchHelper:aggregator:budgetInfo:appConfiguration:feedPersonalizer:todayData:todayBanner:completion:];
   }
 
-  v43 = v21;
-  v47 = v17;
-  v23 = [v16 sectionDescriptorsAtHeadsOfQueues];
+  v43 = bannerCopy;
+  v47 = aggregatorCopy;
+  sectionDescriptorsAtHeadsOfQueues = [helperCopy sectionDescriptorsAtHeadsOfQueues];
   v24 = NTSharedLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(FCOperation *)self shortOperationDescription];
-    v26 = [v23 fc_arrayByTransformingWithBlock:&__block_literal_global_92];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
+    v26 = [sectionDescriptorsAtHeadsOfQueues fc_arrayByTransformingWithBlock:&__block_literal_global_92];
     *buf = 138543618;
-    v60 = v25;
+    v60 = shortOperationDescription;
     v61 = 2114;
     v62 = v26;
     _os_log_impl(&dword_25BF21000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ will fetch today results with sections: %{public}@", buf, 0x16u);
   }
 
-  v44 = v16;
+  v44 = helperCopy;
 
-  if ([v23 count])
+  if ([sectionDescriptorsAtHeadsOfQueues count])
   {
-    v27 = [(NTTodayResultOperation *)self prefetchedContent];
-    v28 = objc_opt_new();
-    [v28 setAppConfiguration:v18];
-    v29 = [(NTTodayResultOperation *)self contentContext];
-    [v28 setContentContext:v29];
+    prefetchedContent = [(NTTodayResultOperation *)self prefetchedContent];
+    distantFuture = objc_opt_new();
+    [distantFuture setAppConfiguration:configurationCopy];
+    contentContext = [(NTTodayResultOperation *)self contentContext];
+    [distantFuture setContentContext:contentContext];
 
-    [v28 setFeedPersonalizer:v19];
-    v42 = v27;
-    v30 = [v27 prefetchedHeldRecordsByType];
-    [v28 setTodayConfigOperationHeldRecordsByType:v30];
+    [distantFuture setFeedPersonalizer:personalizerCopy];
+    v42 = prefetchedContent;
+    prefetchedHeldRecordsByType = [prefetchedContent prefetchedHeldRecordsByType];
+    [distantFuture setTodayConfigOperationHeldRecordsByType:prefetchedHeldRecordsByType];
 
-    [v23 makeObjectsPerformSelector:sel_configureCatchUpOperationWithFetchRequest_ withObject:v28];
-    v31 = [(NTNewsTodayResultOperation *)self articleIDsToExclude];
-    [v28 addArticleIDsToExclude:v31];
+    [sectionDescriptorsAtHeadsOfQueues makeObjectsPerformSelector:sel_configureCatchUpOperationWithFetchRequest_ withObject:distantFuture];
+    articleIDsToExclude = [(NTNewsTodayResultOperation *)self articleIDsToExclude];
+    [distantFuture addArticleIDsToExclude:articleIDsToExclude];
 
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __153__NTNewsTodayResultOperation__fetchTodayResultsWithFetchHelper_aggregator_budgetInfo_appConfiguration_feedPersonalizer_todayData_todayBanner_completion___block_invoke_96;
     v48[3] = &unk_2799832E8;
-    v58 = v22;
-    v49 = v23;
-    v50 = self;
-    v32 = v18;
+    v58 = completionCopy;
+    v49 = sectionDescriptorsAtHeadsOfQueues;
+    selfCopy = self;
+    v32 = configurationCopy;
     v33 = v45;
     v51 = v45;
     v52 = v47;
-    v34 = v46;
-    v53 = v46;
+    v34 = infoCopy;
+    v53 = infoCopy;
     v54 = v32;
-    v55 = v19;
+    v55 = personalizerCopy;
     v35 = v43;
     v56 = v43;
-    v36 = v22;
+    v36 = completionCopy;
     v37 = v44;
     v57 = v44;
-    [v28 setCatchUpCompletionHandler:v48];
-    [(FCOperation *)self associateChildOperation:v28];
-    [v28 start];
+    [distantFuture setCatchUpCompletionHandler:v48];
+    [(FCOperation *)self associateChildOperation:distantFuture];
+    [distantFuture start];
 
     v38 = v58;
   }
@@ -943,14 +943,14 @@ NTQueueConfigSectionQueueDescriptor *__210__NTNewsTodayResultOperation__assemble
   {
     v39 = [NTTodayResults alloc];
     v40 = objc_opt_new();
-    v28 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v42 = v40;
-    v38 = [(NTTodayResults *)v39 initWithSourceIdentifier:@"news" sections:v40 expirationDate:v28 headlineScale:1.0];
-    (*(v22 + 2))(v22, v38, MEMORY[0x277CBEC10], 0);
-    v32 = v18;
+    v38 = [(NTTodayResults *)v39 initWithSourceIdentifier:@"news" sections:v40 expirationDate:distantFuture headlineScale:1.0];
+    (*(completionCopy + 2))(completionCopy, v38, MEMORY[0x277CBEC10], 0);
+    v32 = configurationCopy;
     v33 = v45;
-    v34 = v46;
-    v36 = v22;
+    v34 = infoCopy;
+    v36 = completionCopy;
     v35 = v43;
     v37 = v44;
   }
@@ -1170,61 +1170,61 @@ uint64_t __153__NTNewsTodayResultOperation__fetchTodayResultsWithFetchHelper_agg
   }
 }
 
-- (void)_registerForYouFetchWithForYouFetchInfo:(id)a3
+- (void)_registerForYouFetchWithForYouFetchInfo:(id)info
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _registerForYouFetchWithForYouFetchInfo:];
   }
 
-  v5 = [(NTNewsTodayResultOperation *)self forYouFetchInfo];
-  v6 = v5;
-  if (v5)
+  forYouFetchInfo = [(NTNewsTodayResultOperation *)self forYouFetchInfo];
+  v6 = forYouFetchInfo;
+  if (forYouFetchInfo)
   {
-    if ([v5 attemptedCachedOnly])
+    if ([forYouFetchInfo attemptedCachedOnly])
     {
-      v7 = [v4 attemptedCachedOnly];
+      attemptedCachedOnly = [infoCopy attemptedCachedOnly];
     }
 
     else
     {
-      v7 = 0;
+      attemptedCachedOnly = 0;
     }
 
     v9 = [NTCatchUpOperationForYouFetchInfo alloc];
-    v10 = [v4 feedContextByFeedID];
-    v8 = [(NTCatchUpOperationForYouFetchInfo *)v9 initWithAttemptedCachedOnly:v7 feedContextByFeedID:v10];
+    feedContextByFeedID = [infoCopy feedContextByFeedID];
+    v8 = [(NTCatchUpOperationForYouFetchInfo *)v9 initWithAttemptedCachedOnly:attemptedCachedOnly feedContextByFeedID:feedContextByFeedID];
   }
 
   else
   {
-    v8 = v4;
+    v8 = infoCopy;
   }
 
   [(NTNewsTodayResultOperation *)self setForYouFetchInfo:v8];
 }
 
-- (void)_finalizeTodayResultsWithSectionDescriptors:(id)a3 catchUpOperationResultsBySectionDescriptor:(id)a4 appConfiguration:(id)a5 feedPersonalizer:(id)a6 todayData:(id)a7 todayBanner:(id)a8 debugInspection:(id)a9 completion:(id)a10
+- (void)_finalizeTodayResultsWithSectionDescriptors:(id)descriptors catchUpOperationResultsBySectionDescriptor:(id)descriptor appConfiguration:(id)configuration feedPersonalizer:(id)personalizer todayData:(id)data todayBanner:(id)banner debugInspection:(id)inspection completion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v37 = a7;
-  v36 = a8;
-  v20 = a9;
-  v21 = a10;
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorsCopy = descriptors;
+  descriptorCopy = descriptor;
+  configurationCopy = configuration;
+  personalizerCopy = personalizer;
+  dataCopy = data;
+  bannerCopy = banner;
+  inspectionCopy = inspection;
+  completionCopy = completion;
+  if (!descriptorsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _finalizeTodayResultsWithSectionDescriptors:catchUpOperationResultsBySectionDescriptor:appConfiguration:feedPersonalizer:todayData:todayBanner:debugInspection:completion:];
-    if (v17)
+    if (descriptorCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v17)
+  else if (descriptorCopy)
   {
     goto LABEL_6;
   }
@@ -1235,20 +1235,20 @@ uint64_t __153__NTNewsTodayResultOperation__fetchTodayResultsWithFetchHelper_agg
   }
 
 LABEL_6:
-  v22 = [v16 count];
-  v23 = [v17 nf_objectsForKeysWithoutMarker:v16];
+  v22 = [descriptorsCopy count];
+  v23 = [descriptorCopy nf_objectsForKeysWithoutMarker:descriptorsCopy];
   v24 = [v23 count];
 
   if (v22 != v24 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _finalizeTodayResultsWithSectionDescriptors:catchUpOperationResultsBySectionDescriptor:appConfiguration:feedPersonalizer:todayData:todayBanner:debugInspection:completion:];
-    if (v18)
+    if (configurationCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v18)
+  else if (configurationCopy)
   {
     goto LABEL_11;
   }
@@ -1259,16 +1259,16 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!personalizerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultOperation _finalizeTodayResultsWithSectionDescriptors:catchUpOperationResultsBySectionDescriptor:appConfiguration:feedPersonalizer:todayData:todayBanner:debugInspection:completion:];
-    if (v21)
+    if (completionCopy)
     {
       goto LABEL_16;
     }
   }
 
-  else if (v21)
+  else if (completionCopy)
   {
     goto LABEL_16;
   }
@@ -1279,37 +1279,37 @@ LABEL_11:
   }
 
 LABEL_16:
-  v25 = [(NTTodayResultOperation *)self operationInfo];
+  operationInfo = [(NTTodayResultOperation *)self operationInfo];
   v26 = objc_opt_new();
-  [v26 setCatchUpOperationResultsBySectionDescriptor:v17];
-  v35 = v18;
-  [v26 setAppConfiguration:v18];
-  v27 = [(NTTodayResultOperation *)self contentContext];
-  [v26 setContentContext:v27];
+  [v26 setCatchUpOperationResultsBySectionDescriptor:descriptorCopy];
+  v35 = configurationCopy;
+  [v26 setAppConfiguration:configurationCopy];
+  contentContext = [(NTTodayResultOperation *)self contentContext];
+  [v26 setContentContext:contentContext];
 
-  [v26 setFeedPersonalizer:v19];
-  [v26 setTodayData:v37];
-  v28 = [(NTNewsTodayResultOperation *)self forYouFetchInfo];
-  [v26 setForYouFetchInfo:v28];
+  [v26 setFeedPersonalizer:personalizerCopy];
+  [v26 setTodayData:dataCopy];
+  forYouFetchInfo = [(NTNewsTodayResultOperation *)self forYouFetchInfo];
+  [v26 setForYouFetchInfo:forYouFetchInfo];
 
-  [v26 setOperationInfo:v25];
+  [v26 setOperationInfo:operationInfo];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __200__NTNewsTodayResultOperation__finalizeTodayResultsWithSectionDescriptors_catchUpOperationResultsBySectionDescriptor_appConfiguration_feedPersonalizer_todayData_todayBanner_debugInspection_completion___block_invoke;
   v38[3] = &unk_279983338;
-  v44 = v20;
-  v45 = v21;
-  v39 = v16;
-  v40 = v17;
-  v41 = v25;
-  v42 = self;
-  v43 = v36;
-  v29 = v20;
-  v30 = v36;
-  v31 = v25;
-  v32 = v17;
-  v33 = v16;
-  v34 = v21;
+  v44 = inspectionCopy;
+  v45 = completionCopy;
+  v39 = descriptorsCopy;
+  v40 = descriptorCopy;
+  v41 = operationInfo;
+  selfCopy = self;
+  v43 = bannerCopy;
+  v29 = inspectionCopy;
+  v30 = bannerCopy;
+  v31 = operationInfo;
+  v32 = descriptorCopy;
+  v33 = descriptorsCopy;
+  v34 = completionCopy;
   [v26 setTodayItemCompletion:v38];
   [(FCOperation *)self associateChildOperation:v26];
   [v26 start];
@@ -1509,29 +1509,29 @@ void __200__NTNewsTodayResultOperation__finalizeTodayResultsWithSectionDescripto
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (id)todayBannerWithTodayConfig:(id)a3 todayData:(id)a4
+- (id)todayBannerWithTodayConfig:(id)config todayData:(id)data
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(NTTodayResultOperation *)self operationInfo];
-  v7 = [v6 widgetSize];
+  dataCopy = data;
+  operationInfo = [(NTTodayResultOperation *)self operationInfo];
+  widgetSize = [operationInfo widgetSize];
 
-  if (v7 != 4)
+  if (widgetSize != 4)
   {
     goto LABEL_8;
   }
 
-  v8 = [(NTNewsTodayResultOperation *)self todayConfig];
-  if (([v8 hasWidgetBannerConfig] & 1) == 0)
+  todayConfig = [(NTNewsTodayResultOperation *)self todayConfig];
+  if (([todayConfig hasWidgetBannerConfig] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v9 = [(NTTodayResultOperation *)self todayBannerValidator];
-  v10 = [(NTNewsTodayResultOperation *)self todayConfig];
-  v11 = [v10 widgetBannerConfig];
-  v12 = [v9 validateWith:v5 bannerConfig:v11];
+  todayBannerValidator = [(NTTodayResultOperation *)self todayBannerValidator];
+  todayConfig2 = [(NTNewsTodayResultOperation *)self todayConfig];
+  widgetBannerConfig = [todayConfig2 widgetBannerConfig];
+  v12 = [todayBannerValidator validateWith:dataCopy bannerConfig:widgetBannerConfig];
 
   if (!v12)
   {
@@ -1540,18 +1540,18 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(NTNewsTodayResultOperation *)self todayConfig];
-  v14 = [v13 widgetBannerConfig];
+  todayConfig3 = [(NTNewsTodayResultOperation *)self todayConfig];
+  widgetBannerConfig2 = [todayConfig3 widgetBannerConfig];
 
-  if ([v14 hasGradientBackgroundPair])
+  if ([widgetBannerConfig2 hasGradientBackgroundPair])
   {
-    v15 = [v14 gradientBackgroundPair];
-    v16 = [v15 light];
-    v17 = [(NTNewsTodayResultOperation *)self dictionaryFromColorGradient:v16];
+    gradientBackgroundPair = [widgetBannerConfig2 gradientBackgroundPair];
+    light = [gradientBackgroundPair light];
+    v17 = [(NTNewsTodayResultOperation *)self dictionaryFromColorGradient:light];
 
-    v18 = [v14 gradientBackgroundPair];
-    v19 = [v18 dark];
-    v20 = [(NTNewsTodayResultOperation *)self dictionaryFromColorGradient:v19];
+    gradientBackgroundPair2 = [widgetBannerConfig2 gradientBackgroundPair];
+    dark = [gradientBackgroundPair2 dark];
+    v20 = [(NTNewsTodayResultOperation *)self dictionaryFromColorGradient:dark];
   }
 
   else
@@ -1562,17 +1562,17 @@ LABEL_8:
 
   v51 = [(NTNewsTodayResultOperation *)self gradientBackgroundPairFromLightGradientDict:v17 darkGradientDict:v20];
 
-  if ([v14 hasSolidBackgroundColorPair])
+  if ([widgetBannerConfig2 hasSolidBackgroundColorPair])
   {
     v24 = MEMORY[0x277D30EE8];
-    v25 = [v14 solidBackgroundColorPair];
-    v26 = [v25 light];
-    v27 = [v24 colorWithHexString:v26];
+    solidBackgroundColorPair = [widgetBannerConfig2 solidBackgroundColorPair];
+    light2 = [solidBackgroundColorPair light];
+    v27 = [v24 colorWithHexString:light2];
 
     v28 = MEMORY[0x277D30EE8];
-    v29 = [v14 solidBackgroundColorPair];
-    v30 = [v29 dark];
-    v31 = [v28 colorWithHexString:v30];
+    solidBackgroundColorPair2 = [widgetBannerConfig2 solidBackgroundColorPair];
+    dark2 = [solidBackgroundColorPair2 dark];
+    v31 = [v28 colorWithHexString:dark2];
 
     v56[0] = v27;
     v56[1] = v31;
@@ -1585,58 +1585,58 @@ LABEL_8:
   }
 
   v47 = [NTTodayBanner alloc];
-  v50 = [v14 identifier];
-  v49 = [v14 hasTitle];
-  if (v49)
+  identifier = [widgetBannerConfig2 identifier];
+  hasTitle = [widgetBannerConfig2 hasTitle];
+  if (hasTitle)
   {
-    v55 = [v14 title];
+    title = [widgetBannerConfig2 title];
   }
 
   else
   {
-    v55 = @"Title";
+    title = @"Title";
   }
 
-  v48 = [v14 hasBody];
-  if (v48)
+  hasBody = [widgetBannerConfig2 hasBody];
+  if (hasBody)
   {
-    v54 = [v14 body];
+    body = [widgetBannerConfig2 body];
   }
 
   else
   {
-    v54 = @"Body";
+    body = @"Body";
   }
 
-  v33 = [v14 hasActionURL];
+  hasActionURL = [widgetBannerConfig2 hasActionURL];
   v34 = MEMORY[0x277CBEBC0];
-  v46 = v33;
-  if (v33)
+  v46 = hasActionURL;
+  if (hasActionURL)
   {
-    v45 = [v14 actionURL];
+    actionURL = [widgetBannerConfig2 actionURL];
     v53 = [v34 URLWithString:?];
   }
 
   else
   {
     v53 = [MEMORY[0x277CBEBC0] URLWithString:@"http://news.apple.com"];
-    v45 = v53;
+    actionURL = v53;
   }
 
-  v35 = [v14 hasActionButtonText];
-  if (v35)
+  hasActionButtonText = [widgetBannerConfig2 hasActionButtonText];
+  if (hasActionButtonText)
   {
-    v52 = [v14 actionButtonText];
+    actionButtonText = [widgetBannerConfig2 actionButtonText];
   }
 
   else
   {
-    v52 = 0;
+    actionButtonText = 0;
   }
 
-  if ([v14 hasImageMethod])
+  if ([widgetBannerConfig2 hasImageMethod])
   {
-    v36 = -[NTNewsTodayResultOperation convertBannerImageMethodToNTBannerImageType:](self, "convertBannerImageMethodToNTBannerImageType:", [v14 imageMethod]);
+    v36 = -[NTNewsTodayResultOperation convertBannerImageMethodToNTBannerImageType:](self, "convertBannerImageMethodToNTBannerImageType:", [widgetBannerConfig2 imageMethod]);
   }
 
   else
@@ -1644,11 +1644,11 @@ LABEL_8:
     v36 = 3;
   }
 
-  v37 = [v14 hasImageURL];
-  if (v37)
+  hasImageURL = [widgetBannerConfig2 hasImageURL];
+  if (hasImageURL)
   {
     v38 = MEMORY[0x277CBEBC0];
-    v44 = [v14 imageURL];
+    imageURL = [widgetBannerConfig2 imageURL];
     v39 = [v38 URLWithString:?];
   }
 
@@ -1657,9 +1657,9 @@ LABEL_8:
     v39 = 0;
   }
 
-  if ([v14 hasBackgroundMethod])
+  if ([widgetBannerConfig2 hasBackgroundMethod])
   {
-    v40 = -[NTNewsTodayResultOperation convertBannerBackgroundMethodToNTBannerBackgroundType:](self, "convertBannerBackgroundMethodToNTBannerBackgroundType:", [v14 backgroundMethod]);
+    v40 = -[NTNewsTodayResultOperation convertBannerBackgroundMethodToNTBannerBackgroundType:](self, "convertBannerBackgroundMethodToNTBannerBackgroundType:", [widgetBannerConfig2 backgroundMethod]);
   }
 
   else
@@ -1668,33 +1668,33 @@ LABEL_8:
   }
 
   v41 = v32;
-  if (![v14 hasSolidBackgroundColorPair])
+  if (![widgetBannerConfig2 hasSolidBackgroundColorPair])
   {
     v32 = 0;
   }
 
-  v42 = 0;
-  if ([v14 hasNumberOfAppearancesToHide])
+  numberOfAppearancesToHide = 0;
+  if ([widgetBannerConfig2 hasNumberOfAppearancesToHide])
   {
-    v42 = [v14 numberOfAppearancesToHide];
+    numberOfAppearancesToHide = [widgetBannerConfig2 numberOfAppearancesToHide];
   }
 
-  if ([v14 hasNumberOfTapsToHide])
+  if ([widgetBannerConfig2 hasNumberOfTapsToHide])
   {
-    v43 = [v14 numberOfTapsToHide];
+    numberOfTapsToHide = [widgetBannerConfig2 numberOfTapsToHide];
   }
 
   else
   {
-    v43 = 0;
+    numberOfTapsToHide = 0;
   }
 
-  v21 = [(NTTodayBanner *)v47 initWithIdentifier:v50 title:v55 body:v54 actionURL:v53 actionButtonText:v52 imageMethod:v36 imageURL:v39 backgroundMethod:v40 solidBackgroundColorPair:v32 gradientBackgroundPair:v51 numberOfAppearancesToHide:v42 numberOfTapsToHide:v43];
-  if (v37)
+  v21 = [(NTTodayBanner *)v47 initWithIdentifier:identifier title:title body:body actionURL:v53 actionButtonText:actionButtonText imageMethod:v36 imageURL:v39 backgroundMethod:v40 solidBackgroundColorPair:v32 gradientBackgroundPair:v51 numberOfAppearancesToHide:numberOfAppearancesToHide numberOfTapsToHide:numberOfTapsToHide];
+  if (hasImageURL)
   {
   }
 
-  if (v35)
+  if (hasActionButtonText)
   {
   }
 
@@ -1702,11 +1702,11 @@ LABEL_8:
   {
   }
 
-  if (v48)
+  if (hasBody)
   {
   }
 
-  if (v49)
+  if (hasTitle)
   {
   }
 
@@ -1716,15 +1716,15 @@ LABEL_9:
   return v21;
 }
 
-- (unint64_t)convertBannerImageMethodToNTBannerImageType:(int)a3
+- (unint64_t)convertBannerImageMethodToNTBannerImageType:(int)type
 {
   v3 = 1;
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = 2;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return 3;
   }
@@ -1735,9 +1735,9 @@ LABEL_9:
   }
 }
 
-- (unint64_t)convertBannerBackgroundMethodToNTBannerBackgroundType:(int)a3
+- (unint64_t)convertBannerBackgroundMethodToNTBannerBackgroundType:(int)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 1;
   }
@@ -1748,13 +1748,13 @@ LABEL_9:
   }
 }
 
-- (id)gradientBackgroundPairFromLightGradientDict:(id)a3 darkGradientDict:(id)a4
+- (id)gradientBackgroundPairFromLightGradientDict:(id)dict darkGradientDict:(id)gradientDict
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D30EF0];
-  v6 = a4;
-  v7 = [v5 colorGradientWithConfigDict:a3];
-  v8 = [MEMORY[0x277D30EF0] colorGradientWithConfigDict:v6];
+  gradientDictCopy = gradientDict;
+  v7 = [v5 colorGradientWithConfigDict:dict];
+  v8 = [MEMORY[0x277D30EF0] colorGradientWithConfigDict:gradientDictCopy];
 
   v12[0] = v7;
   v12[1] = v8;
@@ -1765,46 +1765,46 @@ LABEL_9:
   return v9;
 }
 
-- (id)dictionaryFromColorGradient:(id)a3
+- (id)dictionaryFromColorGradient:(id)gradient
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  gradientCopy = gradient;
   v43[0] = @"x";
   v4 = MEMORY[0x277CCABB0];
-  v5 = [v3 startPoint];
-  [v5 x];
+  startPoint = [gradientCopy startPoint];
+  [startPoint x];
   v6 = [v4 numberWithDouble:?];
   v43[1] = @"y";
   v44[0] = v6;
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v3 startPoint];
-  [v8 y];
+  startPoint2 = [gradientCopy startPoint];
+  [startPoint2 y];
   v9 = [v7 numberWithDouble:?];
   v44[1] = v9;
   v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:2];
 
   v41[0] = @"x";
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v3 endPoint];
-  [v11 x];
+  endPoint = [gradientCopy endPoint];
+  [endPoint x];
   v12 = [v10 numberWithDouble:?];
   v41[1] = @"y";
   v42[0] = v12;
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v3 endPoint];
-  [v14 y];
+  endPoint2 = [gradientCopy endPoint];
+  [endPoint2 y];
   v15 = [v13 numberWithDouble:?];
   v42[1] = v15;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:2];
 
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v31 = v3;
-  v17 = [v3 colorStops];
-  v18 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v31 = gradientCopy;
+  colorStops = [gradientCopy colorStops];
+  v18 = [colorStops countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1815,22 +1815,22 @@ LABEL_9:
       {
         if (*v33 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(colorStops);
         }
 
         v22 = *(*(&v32 + 1) + 8 * i);
         v38[0] = @"color";
-        v23 = [v22 color];
+        color = [v22 color];
         v38[1] = @"location";
-        v39[0] = v23;
+        v39[0] = color;
         v24 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v22, "location")}];
         v39[1] = v24;
         v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
 
-        [v16 addObject:v25];
+        [array addObject:v25];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v19 = [colorStops countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v19);
@@ -1841,7 +1841,7 @@ LABEL_9:
   v37[0] = v30;
   v37[1] = v29;
   v36[2] = @"colorStops";
-  v37[2] = v16;
+  v37[2] = array;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:3];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -1851,41 +1851,41 @@ LABEL_9:
 
 - (id)_firstRefreshDateDefaultsKey
 {
-  v3 = [(NTTodayResultOperation *)self operationInfo];
-  v4 = [v3 widgetSize];
+  operationInfo = [(NTTodayResultOperation *)self operationInfo];
+  widgetSize = [operationInfo widgetSize];
 
   v5 = @"first_widget_refresh_date";
-  if (v4 == 1)
+  if (widgetSize == 1)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(NTTodayResultOperation *)self operationInfo];
-    v8 = [v7 request];
-    v9 = [v8 identifier];
-    v10 = [(NTTodayResultOperation *)self operationInfo];
-    v5 = [v6 stringWithFormat:@"%@_%@-%d", @"first_widget_refresh_date", v9, objc_msgSend(v10, "widgetSize")];
+    operationInfo2 = [(NTTodayResultOperation *)self operationInfo];
+    request = [operationInfo2 request];
+    identifier = [request identifier];
+    operationInfo3 = [(NTTodayResultOperation *)self operationInfo];
+    v5 = [v6 stringWithFormat:@"%@_%@-%d", @"first_widget_refresh_date", identifier, objc_msgSend(operationInfo3, "widgetSize")];
   }
 
   return v5;
 }
 
-- (id)_supplementTodayData:(id)a3 forResults:(id)a4
+- (id)_supplementTodayData:(id)data forResults:(id)results
 {
   v102 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTTodayResultOperation *)self articleExposureRegistry];
+  dataCopy = data;
+  resultsCopy = results;
+  articleExposureRegistry = [(NTTodayResultOperation *)self articleExposureRegistry];
 
-  if (v8)
+  if (articleExposureRegistry)
   {
-    v72 = self;
-    v75 = v6;
+    selfCopy = self;
+    v75 = dataCopy;
     v9 = [MEMORY[0x277CBEB58] set];
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v68 = v7;
-    v10 = v7;
+    v68 = resultsCopy;
+    v10 = resultsCopy;
     v11 = [v10 countByEnumeratingWithState:&v88 objects:v101 count:16];
     if (v11)
     {
@@ -1905,8 +1905,8 @@ LABEL_9:
           v85 = 0u;
           v86 = 0u;
           v87 = 0u;
-          v16 = [v15 items];
-          v17 = [v16 countByEnumeratingWithState:&v84 objects:v100 count:16];
+          items = [v15 items];
+          v17 = [items countByEnumeratingWithState:&v84 objects:v100 count:16];
           if (v17)
           {
             v18 = v17;
@@ -1917,14 +1917,14 @@ LABEL_9:
               {
                 if (*v85 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(items);
                 }
 
-                v21 = [*(*(&v84 + 1) + 8 * j) identifier];
-                [v9 addObject:v21];
+                identifier = [*(*(&v84 + 1) + 8 * j) identifier];
+                [v9 addObject:identifier];
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v84 objects:v100 count:16];
+              v18 = [items countByEnumeratingWithState:&v84 objects:v100 count:16];
             }
 
             while (v18);
@@ -1937,17 +1937,17 @@ LABEL_9:
       while (v12);
     }
 
-    v22 = [(NTTodayResultOperation *)v72 articleExposureRegistry];
-    v23 = [v9 allObjects];
-    v24 = [v22 exposuresForItemIDs:v23];
+    articleExposureRegistry2 = [(NTTodayResultOperation *)selfCopy articleExposureRegistry];
+    allObjects = [v9 allObjects];
+    v24 = [articleExposureRegistry2 exposuresForItemIDs:allObjects];
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v26 = [v75 recentlySeenHistoryItems];
-    v27 = [v26 countByEnumeratingWithState:&v80 objects:v99 count:16];
+    recentlySeenHistoryItems = [v75 recentlySeenHistoryItems];
+    v27 = [recentlySeenHistoryItems countByEnumeratingWithState:&v80 objects:v99 count:16];
     if (v27)
     {
       v28 = v27;
@@ -1958,15 +1958,15 @@ LABEL_9:
         {
           if (*v81 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(recentlySeenHistoryItems);
           }
 
           v31 = *(*(&v80 + 1) + 8 * k);
-          v32 = [v31 articleID];
-          [v25 setObject:v31 forKeyedSubscript:v32];
+          articleID = [v31 articleID];
+          [dictionary setObject:v31 forKeyedSubscript:articleID];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v80 objects:v99 count:16];
+        v28 = [recentlySeenHistoryItems countByEnumeratingWithState:&v80 objects:v99 count:16];
       }
 
       while (v28);
@@ -1992,26 +1992,26 @@ LABEL_9:
           }
 
           v38 = *(*(&v76 + 1) + 8 * m);
-          v39 = [v38 itemID];
-          v40 = [v25 objectForKey:v39];
+          itemID = [v38 itemID];
+          v40 = [dictionary objectForKey:itemID];
 
           if (!v40)
           {
             v41 = objc_alloc_init(MEMORY[0x277D354F0]);
-            v42 = [v38 itemID];
-            [v41 setArticleID:v42];
+            itemID2 = [v38 itemID];
+            [v41 setArticleID:itemID2];
 
-            v43 = [v38 firstExposedAt];
-            v44 = [v43 pbDate];
-            [v41 setFirstSeenDate:v44];
+            firstExposedAt = [v38 firstExposedAt];
+            pbDate = [firstExposedAt pbDate];
+            [v41 setFirstSeenDate:pbDate];
 
             [v41 setMaxVersionSeen:{objc_msgSend(v38, "maxExposedVersion")}];
-            v45 = [v38 maxExposedVersionFirstExposedAt];
-            v46 = [v45 pbDate];
-            [v41 setFirstSeenDateOfMaxVersionSeen:v46];
+            maxExposedVersionFirstExposedAt = [v38 maxExposedVersionFirstExposedAt];
+            pbDate2 = [maxExposedVersionFirstExposedAt pbDate];
+            [v41 setFirstSeenDateOfMaxVersionSeen:pbDate2];
 
-            v47 = [v38 itemID];
-            [v25 setObject:v41 forKey:v47];
+            itemID3 = [v38 itemID];
+            [dictionary setObject:v41 forKey:itemID3];
           }
         }
 
@@ -2021,21 +2021,21 @@ LABEL_9:
       while (v35);
     }
 
-    v48 = [v25 count];
-    v49 = [v75 recentlySeenHistoryItems];
-    v50 = [v49 count];
+    v48 = [dictionary count];
+    recentlySeenHistoryItems2 = [v75 recentlySeenHistoryItems];
+    v50 = [recentlySeenHistoryItems2 count];
 
     if (v48 > v50)
     {
       v51 = NTSharedLog();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [(FCOperation *)v72 shortOperationDescription];
-        v53 = [v25 count];
-        v54 = [v75 recentlySeenHistoryItems];
-        v55 = [v54 count];
+        shortOperationDescription = [(FCOperation *)selfCopy shortOperationDescription];
+        v53 = [dictionary count];
+        recentlySeenHistoryItems3 = [v75 recentlySeenHistoryItems];
+        v55 = [recentlySeenHistoryItems3 count];
         *buf = 138543618;
-        v95 = v52;
+        v95 = shortOperationDescription;
         v96 = 2048;
         v97 = v53 - v55;
         _os_log_impl(&dword_25BF21000, v51, OS_LOG_TYPE_DEFAULT, "%{public}@ supplemented seen items with %lu additions from the article exposure registry", buf, 0x16u);
@@ -2043,23 +2043,23 @@ LABEL_9:
     }
 
     v73 = [NTTodayPrivateData alloc];
-    v71 = [v75 derivedPersonalizationData];
-    v70 = [v75 localNewsTagID];
-    v69 = [v75 mutedTagIDs];
-    v67 = [v75 autoFavoriteTagIDs];
-    v66 = [v75 purchasedTagIDs];
-    v65 = [v75 groupableTagIDs];
-    v64 = [v75 rankedAllSubscribedTagIDs];
-    v63 = [v75 rankedAllSubscriptionDates];
-    v62 = [v25 allValues];
-    v56 = [v75 recentlyReadHistoryItems];
-    v57 = [v75 onboardingVersion];
-    v58 = [v75 bundleSubscription];
-    v59 = [v75 userEmbeddingData];
-    v74 = [(NTTodayPrivateData *)v73 initWithDerivedPersonalizationData:v71 localNewsTagID:v70 mutedTagIDs:v69 autoFavoriteTagIDs:v67 purchasedTagIDs:v66 groupableTagIDs:v65 rankedAllSubscribedTagIDs:v64 rankedAllSubscriptionDates:v63 recentlySeenHistoryItems:v62 recentlyReadHistoryItems:v56 onboardingVersion:v57 bundleSubscription:v58 userEmbeddingData:v59];
+    derivedPersonalizationData = [v75 derivedPersonalizationData];
+    localNewsTagID = [v75 localNewsTagID];
+    mutedTagIDs = [v75 mutedTagIDs];
+    autoFavoriteTagIDs = [v75 autoFavoriteTagIDs];
+    purchasedTagIDs = [v75 purchasedTagIDs];
+    groupableTagIDs = [v75 groupableTagIDs];
+    rankedAllSubscribedTagIDs = [v75 rankedAllSubscribedTagIDs];
+    rankedAllSubscriptionDates = [v75 rankedAllSubscriptionDates];
+    allValues = [dictionary allValues];
+    recentlyReadHistoryItems = [v75 recentlyReadHistoryItems];
+    onboardingVersion = [v75 onboardingVersion];
+    bundleSubscription = [v75 bundleSubscription];
+    userEmbeddingData = [v75 userEmbeddingData];
+    v74 = [(NTTodayPrivateData *)v73 initWithDerivedPersonalizationData:derivedPersonalizationData localNewsTagID:localNewsTagID mutedTagIDs:mutedTagIDs autoFavoriteTagIDs:autoFavoriteTagIDs purchasedTagIDs:purchasedTagIDs groupableTagIDs:groupableTagIDs rankedAllSubscribedTagIDs:rankedAllSubscribedTagIDs rankedAllSubscriptionDates:rankedAllSubscriptionDates recentlySeenHistoryItems:allValues recentlyReadHistoryItems:recentlyReadHistoryItems onboardingVersion:onboardingVersion bundleSubscription:bundleSubscription userEmbeddingData:userEmbeddingData];
 
-    v6 = v75;
-    v7 = v68;
+    dataCopy = v75;
+    resultsCopy = v68;
   }
 
   else
@@ -2069,7 +2069,7 @@ LABEL_9:
     v92[2] = __62__NTNewsTodayResultOperation__supplementTodayData_forResults___block_invoke;
     v92[3] = &unk_279983388;
     v92[4] = self;
-    v93 = v6;
+    v93 = dataCopy;
     v74 = __62__NTNewsTodayResultOperation__supplementTodayData_forResults___block_invoke(v92);
   }
 

@@ -1,8 +1,8 @@
 @interface IMDSpotlightDataProvider
 + (id)_createDataProviders;
 + (id)_dataProviders;
-+ (id)dataProviderForIdentifier:(id)a3;
-- (id)dataForGUID:(id)a3 error:(id *)a4;
++ (id)dataProviderForIdentifier:(id)identifier;
+- (id)dataForGUID:(id)d error:(id *)error;
 - (id)typeIdentifier;
 @end
 
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_1B7B9218C;
   block[3] = &unk_1E7CB6A70;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EBA540C8 != -1)
   {
     dispatch_once(&qword_1EBA540C8, block);
@@ -39,11 +39,11 @@
   return v2;
 }
 
-+ (id)dataProviderForIdentifier:(id)a3
++ (id)dataProviderForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = objc_msgSend__dataProviders(a1, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  identifierCopy = identifier;
+  v7 = objc_msgSend__dataProviders(self, v5, v6);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, identifierCopy);
 
   return v9;
 }
@@ -54,9 +54,9 @@
   objc_exception_throw(v2);
 }
 
-- (id)dataForGUID:(id)a3 error:(id *)a4
+- (id)dataForGUID:(id)d error:(id *)error
 {
-  v4 = a3;
+  dCopy = d;
   v6 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v5, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v6);
 }

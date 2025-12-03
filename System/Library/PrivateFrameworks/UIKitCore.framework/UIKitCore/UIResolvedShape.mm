@@ -4,15 +4,15 @@
 - (UIResolvedShape)shapeByApplyingInset:(CGFloat)inset;
 - (UIResolvedShape)shapeByApplyingInsets:(UIEdgeInsets)insets;
 - (UIShape)shape;
-- (id)_shapeByClippingToShape:(id)a3;
-- (id)_shapeByConvertingFromSpace:(id)a3 toSpace:(id)a4;
+- (id)_shapeByClippingToShape:(id)shape;
+- (id)_shapeByConvertingFromSpace:(id)space toSpace:(id)toSpace;
 @end
 
 @implementation UIResolvedShape
 
 - (UIBezierPath)path
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18922E240();
 
   return v3;
@@ -20,7 +20,7 @@
 
 - (UIShape)shape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18922E3A4();
 
   return v3;
@@ -58,7 +58,7 @@
   bottom = insets.bottom;
   left = insets.left;
   top = insets.top;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_18922E4E0(top, left, bottom, right);
 
   return v8;
@@ -66,27 +66,27 @@
 
 - (UIResolvedShape)shapeByApplyingInset:(CGFloat)inset
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_18922E790(inset);
 
   return v5;
 }
 
-- (id)_shapeByClippingToShape:(id)a3
+- (id)_shapeByClippingToShape:(id)shape
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_18922EBF4(v4);
+  shapeCopy = shape;
+  selfCopy = self;
+  v6 = sub_18922EBF4(shapeCopy);
 
   return v6;
 }
 
-- (id)_shapeByConvertingFromSpace:(id)a3 toSpace:(id)a4
+- (id)_shapeByConvertingFromSpace:(id)space toSpace:(id)toSpace
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_18922EE6C(a3, a4);
+  selfCopy = self;
+  v8 = sub_18922EE6C(space, toSpace);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 

@@ -4,18 +4,18 @@
 - (ACAccount)unsafeUntilSystemReady_primaryICloudACAccount;
 - (BOOL)isCurrentPersonaDataSeparated;
 - (NSArray)unsafeUntilSystemReady_allICloudACAccounts;
-- (id)_cachedDisplayICloudACAccountWithIdentifier:(id)a3;
+- (id)_cachedDisplayICloudACAccountWithIdentifier:(id)identifier;
 - (id)accessQueue;
 - (id)currentPersonaUserPersonaUniqueString;
-- (id)initForObservingAccountStoreChanges:(BOOL)a3;
+- (id)initForObservingAccountStoreChanges:(BOOL)changes;
 - (id)unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts;
-- (id)unsafeUntilSystemReady_displayedHostnameOfICloudACAccountWithAccountIdentifier:(id)a3;
-- (id)unsafeUntilSystemReady_iCloudAccountCalDavServiceWithAccountID:(id)a3;
-- (id)unsafeUntilSystemReady_icloudACAccountMatchingAccountIdentifier:(id)a3;
+- (id)unsafeUntilSystemReady_displayedHostnameOfICloudACAccountWithAccountIdentifier:(id)identifier;
+- (id)unsafeUntilSystemReady_iCloudAccountCalDavServiceWithAccountID:(id)d;
+- (id)unsafeUntilSystemReady_icloudACAccountMatchingAccountIdentifier:(id)identifier;
 - (void)_invalidateCachedICloudACAccounts;
 - (void)_updateCachedICloudACAccounts;
 - (void)dealloc;
-- (void)performBlockInPersonaContextForAccountIdentifier:(id)a3 block:(id)a4;
+- (void)performBlockInPersonaContextForAccountIdentifier:(id)identifier block:(id)block;
 @end
 
 @implementation REMAppleAccountUtilities
@@ -26,7 +26,7 @@
   v4[1] = 3221225472;
   v4[2] = __42__REMAppleAccountUtilities_sharedInstance__block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, v4);
@@ -49,22 +49,22 @@ uint64_t __42__REMAppleAccountUtilities_sharedInstance__block_invoke(uint64_t a1
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)initForObservingAccountStoreChanges:(BOOL)a3
+- (id)initForObservingAccountStoreChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v9.receiver = self;
   v9.super_class = REMAppleAccountUtilities;
   v4 = [(REMAppleAccountUtilities *)&v9 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     accountStore = v4->_accountStore;
-    v4->_accountStore = v5;
+    v4->_accountStore = defaultStore;
 
-    if (v3)
+    if (changesCopy)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:v4 selector:sel_accountStoreDidChange_ name:*MEMORY[0x1E69597D8] object:v4->_accountStore];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v4 selector:sel_accountStoreDidChange_ name:*MEMORY[0x1E69597D8] object:v4->_accountStore];
     }
   }
 
@@ -73,8 +73,8 @@ uint64_t __42__REMAppleAccountUtilities_sharedInstance__block_invoke(uint64_t a1
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = REMAppleAccountUtilities;
@@ -90,14 +90,14 @@ uint64_t __42__REMAppleAccountUtilities_sharedInstance__block_invoke(uint64_t a1
   v10 = __Block_byref_object_copy__9;
   v11 = __Block_byref_object_dispose__9;
   v12 = 0;
-  v3 = [(REMAppleAccountUtilities *)self accessQueue];
+  accessQueue = [(REMAppleAccountUtilities *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__REMAppleAccountUtilities_unsafeUntilSystemReady_primaryICloudACAccount__block_invoke;
   v6[3] = &unk_1E7508420;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
   v4 = v8[5];
 
   _Block_object_dispose(&v7, 8);
@@ -113,15 +113,15 @@ uint64_t __42__REMAppleAccountUtilities_sharedInstance__block_invoke(uint64_t a1
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__9;
   v11 = __Block_byref_object_dispose__9;
-  v12 = [MEMORY[0x1E695DF70] array];
-  v3 = [(REMAppleAccountUtilities *)self accessQueue];
+  array = [MEMORY[0x1E695DF70] array];
+  accessQueue = [(REMAppleAccountUtilities *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__REMAppleAccountUtilities_unsafeUntilSystemReady_allICloudACAccounts__block_invoke;
   v6[3] = &unk_1E7508318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
   v4 = v8[5];
 
   _Block_object_dispose(&v7, 8);
@@ -141,19 +141,19 @@ uint64_t __70__REMAppleAccountUtilities_unsafeUntilSystemReady_allICloudACAccoun
 
 - (id)unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts
 {
-  v2 = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_allICloudACAccounts];
+  unsafeUntilSystemReady_allICloudACAccounts = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_allICloudACAccounts];
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
   v9 = __Block_byref_object_copy__9;
   v10 = __Block_byref_object_dispose__9;
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(unsafeUntilSystemReady_allICloudACAccounts, "count")}];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __94__REMAppleAccountUtilities_unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts__block_invoke;
   v5[3] = &unk_1E7509328;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [unsafeUntilSystemReady_allICloudACAccounts enumerateObjectsUsingBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -189,10 +189,10 @@ void __94__REMAppleAccountUtilities_unsafeUntilSystemReady_allCloudKitRemindersE
   }
 }
 
-- (id)unsafeUntilSystemReady_icloudACAccountMatchingAccountIdentifier:(id)a3
+- (id)unsafeUntilSystemReady_icloudACAccountMatchingAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_allICloudACAccounts];
+  identifierCopy = identifier;
+  unsafeUntilSystemReady_allICloudACAccounts = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_allICloudACAccounts];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -203,10 +203,10 @@ void __94__REMAppleAccountUtilities_unsafeUntilSystemReady_allCloudKitRemindersE
   v12 = 3221225472;
   v13 = __92__REMAppleAccountUtilities_unsafeUntilSystemReady_icloudACAccountMatchingAccountIdentifier___block_invoke;
   v14 = &unk_1E7509350;
-  v6 = v4;
+  v6 = identifierCopy;
   v15 = v6;
   v16 = &v17;
-  [v5 enumerateObjectsUsingBlock:&v11];
+  [unsafeUntilSystemReady_allICloudACAccounts enumerateObjectsUsingBlock:&v11];
   v7 = v18[5];
   if (!v7)
   {
@@ -239,10 +239,10 @@ void __92__REMAppleAccountUtilities_unsafeUntilSystemReady_icloudACAccountMatchi
   }
 }
 
-- (id)unsafeUntilSystemReady_iCloudAccountCalDavServiceWithAccountID:(id)a3
+- (id)unsafeUntilSystemReady_iCloudAccountCalDavServiceWithAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_allICloudACAccounts];
+  dCopy = d;
+  unsafeUntilSystemReady_allICloudACAccounts = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_allICloudACAccounts];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -253,10 +253,10 @@ void __92__REMAppleAccountUtilities_unsafeUntilSystemReady_icloudACAccountMatchi
   v20 = 3221225472;
   v21 = __91__REMAppleAccountUtilities_unsafeUntilSystemReady_iCloudAccountCalDavServiceWithAccountID___block_invoke;
   v22 = &unk_1E7509350;
-  v6 = v4;
+  v6 = dCopy;
   v23 = v6;
   v24 = &v25;
-  [v5 enumerateObjectsUsingBlock:&v19];
+  [unsafeUntilSystemReady_allICloudACAccounts enumerateObjectsUsingBlock:&v19];
   if (!v26[5])
   {
     v7 = [REMLog utility:v19];
@@ -266,14 +266,14 @@ void __92__REMAppleAccountUtilities_unsafeUntilSystemReady_icloudACAccountMatchi
     }
   }
 
-  v8 = [v26[5] dataclassProperties];
-  v9 = [v8 count];
+  dataclassProperties = [v26[5] dataclassProperties];
+  v9 = [dataclassProperties count];
 
   if (v9)
   {
     v10 = objc_opt_class();
-    v11 = [v26[5] dataclassProperties];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6959AE0]];
+    dataclassProperties2 = [v26[5] dataclassProperties];
+    v12 = [dataclassProperties2 objectForKeyedSubscript:*MEMORY[0x1E6959AE0]];
     v13 = REMDynamicCast(v10, v12);
 
     if (v13)
@@ -324,14 +324,14 @@ void __91__REMAppleAccountUtilities_unsafeUntilSystemReady_iCloudAccountCalDavSe
   }
 }
 
-- (id)unsafeUntilSystemReady_displayedHostnameOfICloudACAccountWithAccountIdentifier:(id)a3
+- (id)unsafeUntilSystemReady_displayedHostnameOfICloudACAccountWithAccountIdentifier:(id)identifier
 {
-  v3 = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_icloudACAccountMatchingAccountIdentifier:a3];
-  v4 = [v3 aa_regionInfo];
-  v5 = [v4 displayedHostname];
-  v6 = [v5 lowercaseString];
+  v3 = [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_icloudACAccountMatchingAccountIdentifier:identifier];
+  aa_regionInfo = [v3 aa_regionInfo];
+  displayedHostname = [aa_regionInfo displayedHostname];
+  lowercaseString = [displayedHostname lowercaseString];
 
-  return v6;
+  return lowercaseString;
 }
 
 void __108__REMAppleAccountUtilities_saveDidChooseToMigrate_didFinishMigration_toACAccount_inStore_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -393,13 +393,13 @@ void __39__REMAppleAccountUtilities_accessQueue__block_invoke()
 
 - (void)_updateCachedICloudACAccounts
 {
-  v3 = [(REMAppleAccountUtilities *)self accessQueue];
+  accessQueue = [(REMAppleAccountUtilities *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__REMAppleAccountUtilities__updateCachedICloudACAccounts__block_invoke;
   block[3] = &unk_1E7508028;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(accessQueue, block);
 }
 
 void __57__REMAppleAccountUtilities__updateCachedICloudACAccounts__block_invoke(uint64_t a1)
@@ -545,13 +545,13 @@ void __57__REMAppleAccountUtilities__updateCachedICloudACAccounts__block_invoke(
 
 - (void)_invalidateCachedICloudACAccounts
 {
-  v3 = [(REMAppleAccountUtilities *)self accessQueue];
+  accessQueue = [(REMAppleAccountUtilities *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__REMAppleAccountUtilities__invalidateCachedICloudACAccounts__block_invoke;
   block[3] = &unk_1E7508028;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(accessQueue, block);
 }
 
 void __61__REMAppleAccountUtilities__invalidateCachedICloudACAccounts__block_invoke(uint64_t a1)
@@ -570,37 +570,37 @@ void __61__REMAppleAccountUtilities__invalidateCachedICloudACAccounts__block_inv
   *(v6 + 32) = 0;
 }
 
-- (id)_cachedDisplayICloudACAccountWithIdentifier:(id)a3
+- (id)_cachedDisplayICloudACAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__9;
   v15 = __Block_byref_object_dispose__9;
   v16 = 0;
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    v5 = [(REMAppleAccountUtilities *)self accessQueue];
+    accessQueue = [(REMAppleAccountUtilities *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__REMAppleAccountUtilities__cachedDisplayICloudACAccountWithIdentifier___block_invoke;
     block[3] = &unk_1E7508780;
     block[4] = self;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = &v11;
-    dispatch_sync(v5, block);
-    v6 = [v12[5] displayAccount];
+    dispatch_sync(accessQueue, block);
+    displayAccount = [v12[5] displayAccount];
   }
 
   else
   {
-    v6 = v12[5];
+    displayAccount = v12[5];
   }
 
   _Block_object_dispose(&v11, 8);
 
-  return v6;
+  return displayAccount;
 }
 
 void __72__REMAppleAccountUtilities__cachedDisplayICloudACAccountWithIdentifier___block_invoke(uint64_t a1)
@@ -726,29 +726,29 @@ LABEL_29:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlockInPersonaContextForAccountIdentifier:(id)a3 block:(id)a4
+- (void)performBlockInPersonaContextForAccountIdentifier:(id)identifier block:(id)block
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(REMAppleAccountUtilities *)self _cachedDisplayICloudACAccountWithIdentifier:v6];
+  identifierCopy = identifier;
+  blockCopy = block;
+  v8 = [(REMAppleAccountUtilities *)self _cachedDisplayICloudACAccountWithIdentifier:identifierCopy];
   v9 = objc_opt_class();
   v10 = [v8 accountPropertyForKey:*MEMORY[0x1E69597A0]];
   v11 = REMDynamicCast(v9, v10);
 
-  v12 = [getUMUserManagerClass() sharedManager];
-  v13 = [v12 currentPersona];
+  sharedManager = [getUMUserManagerClass() sharedManager];
+  currentPersona = [sharedManager currentPersona];
   v14 = +[REMLog utility];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v8 identifier];
+    identifier = [v8 identifier];
     v16 = [v8 description];
     *buf = 138544130;
     *&buf[4] = v11;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = identifierCopy;
     *&buf[22] = 2114;
-    v43 = v15;
+    v43 = identifier;
     LOWORD(v44[0]) = 2112;
     *(v44 + 2) = v16;
     _os_log_impl(&dword_19A0DB000, v14, OS_LOG_TYPE_INFO, "performBlockInPersonaContext: Looked up account persona {personaIdentifier: %{public}@, accountIdentifier: %{public}@, displayAccountIdentifier: %{public}@, desc: %@}", buf, 0x2Au);
@@ -762,12 +762,12 @@ LABEL_29:
       *buf = 138543618;
       *&buf[4] = v11;
       *&buf[12] = 2114;
-      *&buf[14] = v6;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_19A0DB000, v23, OS_LOG_TYPE_INFO, "performBlockInPersonaContext: Adopting persona {personaIdentifier: %{public}@, accountIdentifier: %{public}@}", buf, 0x16u);
     }
 
     v37 = 0;
-    v24 = [v13 copyCurrentPersonaContextWithError:&v37];
+    v24 = [currentPersona copyCurrentPersonaContextWithError:&v37];
     v25 = v37;
     if (v25)
     {
@@ -777,20 +777,20 @@ LABEL_29:
         [REMAppleAccountUtilities(DataSeparation) performBlockInPersonaContextForAccountIdentifier:block:];
       }
 
-      v7[2](v7, v11, v25);
+      blockCopy[2](blockCopy, v11, v25);
     }
 
     else
     {
-      v27 = [v13 generateAndRestorePersonaContextWithPersonaUniqueString:v11];
-      v7[2](v7, v11, 0);
-      v28 = [v13 restorePersonaWithSavedPersonaContext:v24];
+      v27 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:v11];
+      blockCopy[2](blockCopy, v11, 0);
+      v28 = [currentPersona restorePersonaWithSavedPersonaContext:v24];
     }
   }
 
   else
   {
-    v17 = [v13 isProxy];
+    v17 = [currentPersona isProxy];
     v18 = +[REMLog utility];
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
     if (v17)
@@ -798,12 +798,12 @@ LABEL_29:
       if (v19)
       {
         *buf = 138543362;
-        *&buf[4] = v6;
+        *&buf[4] = identifierCopy;
         _os_log_impl(&dword_19A0DB000, v18, OS_LOG_TYPE_INFO, "performBlockInPersonaContext: Adopting personal persona (isProxy) {accountIdentifier: %{public}@}", buf, 0xCu);
       }
 
       v36 = 0;
-      v20 = [v13 copyCurrentPersonaContextWithError:&v36];
+      v20 = [currentPersona copyCurrentPersonaContextWithError:&v36];
       v21 = v36;
       if (v21)
       {
@@ -813,7 +813,7 @@ LABEL_29:
           [REMAppleAccountUtilities(DataSeparation) performBlockInPersonaContextForAccountIdentifier:block:];
         }
 
-        v7[2](v7, v11, v21);
+        blockCopy[2](blockCopy, v11, v21);
       }
 
       else
@@ -837,11 +837,11 @@ LABEL_29:
         v30 = v29;
         _Block_object_dispose(&v38, 8);
         v31 = [v29 personaAttributesForPersonaType:0];
-        v32 = [v31 userPersonaUniqueString];
-        v33 = [v13 generateAndRestorePersonaContextWithPersonaUniqueString:v32];
+        userPersonaUniqueString = [v31 userPersonaUniqueString];
+        v33 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:userPersonaUniqueString];
 
-        v7[2](v7, v11, 0);
-        v34 = [v13 restorePersonaWithSavedPersonaContext:v20];
+        blockCopy[2](blockCopy, v11, 0);
+        v34 = [currentPersona restorePersonaWithSavedPersonaContext:v20];
       }
     }
 
@@ -850,11 +850,11 @@ LABEL_29:
       if (v19)
       {
         *buf = 138543362;
-        *&buf[4] = v6;
+        *&buf[4] = identifierCopy;
         _os_log_impl(&dword_19A0DB000, v18, OS_LOG_TYPE_INFO, "performBlockInPersonaContext: Using default persona {accountIdentifier: %{public}@}", buf, 0xCu);
       }
 
-      v7[2](v7, 0, 0);
+      blockCopy[2](blockCopy, 0, 0);
     }
   }
 
@@ -863,20 +863,20 @@ LABEL_29:
 
 - (BOOL)isCurrentPersonaDataSeparated
 {
-  v2 = [getUMUserManagerClass() sharedManager];
-  v3 = [v2 currentPersona];
-  v4 = [v3 isDataSeparatedPersona];
+  sharedManager = [getUMUserManagerClass() sharedManager];
+  currentPersona = [sharedManager currentPersona];
+  isDataSeparatedPersona = [currentPersona isDataSeparatedPersona];
 
-  return v4;
+  return isDataSeparatedPersona;
 }
 
 - (id)currentPersonaUserPersonaUniqueString
 {
-  v2 = [getUMUserManagerClass() sharedManager];
-  v3 = [v2 currentPersona];
-  v4 = [v3 userPersonaUniqueString];
+  sharedManager = [getUMUserManagerClass() sharedManager];
+  currentPersona = [sharedManager currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  return v4;
+  return userPersonaUniqueString;
 }
 
 + (void)sharedInstance
@@ -888,7 +888,7 @@ LABEL_29:
     _os_log_fault_impl(&dword_19A0DB000, v2, OS_LOG_TYPE_FAULT, "rem_log_fault_if (!sharedInstance) -- Failed to create REMAppleAccountUtilities shared instance", v3, 2u);
   }
 
-  *a1 = sharedInstance_sharedInstance;
+  *self = sharedInstance_sharedInstance;
 }
 
 void __94__REMAppleAccountUtilities_unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts__block_invoke_cold_1()

@@ -1,35 +1,35 @@
 @interface SCLSchoolModeCoordinatorConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SCLSchoolModeCoordinatorConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SCLSchoolModeCoordinatorConfiguration);
-  v5 = [(SCLSchoolModeCoordinatorConfiguration *)self NRDevice];
-  [(SCLSchoolModeCoordinatorConfiguration *)v4 setNRDevice:v5];
+  nRDevice = [(SCLSchoolModeCoordinatorConfiguration *)self NRDevice];
+  [(SCLSchoolModeCoordinatorConfiguration *)v4 setNRDevice:nRDevice];
 
-  v6 = [(SCLSchoolModeCoordinatorConfiguration *)self idsDevice];
-  [(SCLSchoolModeCoordinatorConfiguration *)v4 setIdsDevice:v6];
+  idsDevice = [(SCLSchoolModeCoordinatorConfiguration *)self idsDevice];
+  [(SCLSchoolModeCoordinatorConfiguration *)v4 setIdsDevice:idsDevice];
 
-  v7 = [(SCLSchoolModeCoordinatorConfiguration *)self transportController];
-  [(SCLSchoolModeCoordinatorConfiguration *)v4 setTransportController:v7];
+  transportController = [(SCLSchoolModeCoordinatorConfiguration *)self transportController];
+  [(SCLSchoolModeCoordinatorConfiguration *)v4 setTransportController:transportController];
 
-  v8 = [(SCLSchoolModeCoordinatorConfiguration *)self server];
-  [(SCLSchoolModeCoordinatorConfiguration *)v4 setServer:v8];
+  server = [(SCLSchoolModeCoordinatorConfiguration *)self server];
+  [(SCLSchoolModeCoordinatorConfiguration *)v4 setServer:server];
 
-  v9 = [(SCLSchoolModeCoordinatorConfiguration *)self historyStore];
-  [(SCLSchoolModeCoordinatorConfiguration *)v4 setHistoryStore:v9];
+  historyStore = [(SCLSchoolModeCoordinatorConfiguration *)self historyStore];
+  [(SCLSchoolModeCoordinatorConfiguration *)v4 setHistoryStore:historyStore];
 
-  v10 = [(SCLSchoolModeCoordinatorConfiguration *)self directoryURL];
-  [(SCLSchoolModeCoordinatorConfiguration *)v4 setDirectoryURL:v10];
+  directoryURL = [(SCLSchoolModeCoordinatorConfiguration *)self directoryURL];
+  [(SCLSchoolModeCoordinatorConfiguration *)v4 setDirectoryURL:directoryURL];
 
   [(SCLSchoolModeCoordinatorConfiguration *)v4 setSendsRemoteHistoryItems:[(SCLSchoolModeCoordinatorConfiguration *)self sendsRemoteHistoryItems]];
   [(SCLSchoolModeCoordinatorConfiguration *)v4 setSendsRemoteScheduleSettings:[(SCLSchoolModeCoordinatorConfiguration *)self sendsRemoteScheduleSettings]];
   [(SCLSchoolModeCoordinatorConfiguration *)v4 setManuallyManagedOnly:[(SCLSchoolModeCoordinatorConfiguration *)self isManuallyManagedOnly]];
-  v11 = [(SCLSchoolModeCoordinatorConfiguration *)self targetQueue];
-  [(SCLSchoolModeCoordinatorConfiguration *)v4 setTargetQueue:v11];
+  targetQueue = [(SCLSchoolModeCoordinatorConfiguration *)self targetQueue];
+  [(SCLSchoolModeCoordinatorConfiguration *)v4 setTargetQueue:targetQueue];
 
   return v4;
 }

@@ -22,11 +22,11 @@
 {
   if (!self->mPathString)
   {
-    v3 = [(GQDPath *)self createBezierPath];
-    if (v3)
+    createBezierPath = [(GQDPath *)self createBezierPath];
+    if (createBezierPath)
     {
-      v4 = v3;
-      self->mPathString = sub_42CE8(v3);
+      v4 = createBezierPath;
+      self->mPathString = sub_42CE8(createBezierPath);
       CFRelease(v4);
     }
   }

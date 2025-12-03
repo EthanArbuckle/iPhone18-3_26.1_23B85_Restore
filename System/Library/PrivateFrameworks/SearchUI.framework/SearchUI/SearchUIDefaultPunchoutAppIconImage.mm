@@ -1,37 +1,37 @@
 @interface SearchUIDefaultPunchoutAppIconImage
-+ (id)defaultRecordForURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SearchUIDefaultPunchoutAppIconImage)initWithFileProviderId:(id)a3 coreSpotlightId:(id)a4 variant:(unint64_t)a5;
-- (SearchUIDefaultPunchoutAppIconImage)initWithSFImage:(id)a3 variant:(unint64_t)a4;
-- (SearchUIDefaultPunchoutAppIconImage)initWithURL:(id)a3 variant:(unint64_t)a4;
++ (id)defaultRecordForURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (SearchUIDefaultPunchoutAppIconImage)initWithFileProviderId:(id)id coreSpotlightId:(id)spotlightId variant:(unint64_t)variant;
+- (SearchUIDefaultPunchoutAppIconImage)initWithSFImage:(id)image variant:(unint64_t)variant;
+- (SearchUIDefaultPunchoutAppIconImage)initWithURL:(id)l variant:(unint64_t)variant;
 - (id)defaultApplicationFetchQueue;
 - (unint64_t)hash;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
-- (void)loadRelatedAppIconImageForFileURL:(id)a3 scale:(double)a4 isDarkStyle:(BOOL)a5 completionHandler:(id)a6;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
+- (void)loadRelatedAppIconImageForFileURL:(id)l scale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation SearchUIDefaultPunchoutAppIconImage
 
-- (SearchUIDefaultPunchoutAppIconImage)initWithSFImage:(id)a3 variant:(unint64_t)a4
+- (SearchUIDefaultPunchoutAppIconImage)initWithSFImage:(id)image variant:(unint64_t)variant
 {
-  v6 = a3;
-  v7 = [v6 punchout];
-  v8 = [v7 urls];
-  v9 = [v8 firstObject];
+  imageCopy = image;
+  punchout = [imageCopy punchout];
+  urls = [punchout urls];
+  firstObject = [urls firstObject];
 
-  if (!v9)
+  if (!firstObject)
   {
-    v11 = [v6 fileProviderIdentifier];
-    if ([v11 length])
+    fileProviderIdentifier = [imageCopy fileProviderIdentifier];
+    if ([fileProviderIdentifier length])
     {
-      v12 = [v6 coreSpotlightIdentifier];
-      v13 = [v12 length];
+      coreSpotlightIdentifier = [imageCopy coreSpotlightIdentifier];
+      v13 = [coreSpotlightIdentifier length];
 
       if (v13)
       {
-        v14 = [v6 fileProviderIdentifier];
-        v15 = [v6 coreSpotlightIdentifier];
-        v10 = [(SearchUIDefaultPunchoutAppIconImage *)self initWithFileProviderId:v14 coreSpotlightId:v15 variant:a4];
+        fileProviderIdentifier2 = [imageCopy fileProviderIdentifier];
+        coreSpotlightIdentifier2 = [imageCopy coreSpotlightIdentifier];
+        v10 = [(SearchUIDefaultPunchoutAppIconImage *)self initWithFileProviderId:fileProviderIdentifier2 coreSpotlightId:coreSpotlightIdentifier2 variant:variant];
 
         self = v10;
         goto LABEL_8;
@@ -46,37 +46,37 @@
     goto LABEL_8;
   }
 
-  v10 = [(SearchUIDefaultPunchoutAppIconImage *)self initWithURL:v9 variant:a4];
+  v10 = [(SearchUIDefaultPunchoutAppIconImage *)self initWithURL:firstObject variant:variant];
   self = v10;
 LABEL_8:
-  [(SearchUIImage *)v10 setSfImage:v6];
+  [(SearchUIImage *)v10 setSfImage:imageCopy];
 
   return v10;
 }
 
-- (SearchUIDefaultPunchoutAppIconImage)initWithURL:(id)a3 variant:(unint64_t)a4
+- (SearchUIDefaultPunchoutAppIconImage)initWithURL:(id)l variant:(unint64_t)variant
 {
-  v6 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = SearchUIDefaultPunchoutAppIconImage;
-  v7 = [(SearchUIAppIconImage *)&v10 initWithBundleIdentifier:0 isOnenessApp:0 variant:a4 contentType:0];
+  v7 = [(SearchUIAppIconImage *)&v10 initWithBundleIdentifier:0 isOnenessApp:0 variant:variant contentType:0];
   v8 = v7;
   if (v7)
   {
-    [(SearchUIDefaultPunchoutAppIconImage *)v7 setUrl:v6];
+    [(SearchUIDefaultPunchoutAppIconImage *)v7 setUrl:lCopy];
   }
 
   return v8;
 }
 
-- (SearchUIDefaultPunchoutAppIconImage)initWithFileProviderId:(id)a3 coreSpotlightId:(id)a4 variant:(unint64_t)a5
+- (SearchUIDefaultPunchoutAppIconImage)initWithFileProviderId:(id)id coreSpotlightId:(id)spotlightId variant:(unint64_t)variant
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  spotlightIdCopy = spotlightId;
   v14.receiver = self;
   v14.super_class = SearchUIDefaultPunchoutAppIconImage;
-  v10 = [(SearchUIAppIconImage *)&v14 initWithBundleIdentifier:0 isOnenessApp:0 variant:a5 contentType:0];
-  if (!v10 || ([SearchUIUtilities fileProviderItemIDForCoreSpotlightIdentifier:v9 fileProviderIdentifier:v8], v11 = objc_claimAutoreleasedReturnValue(), [(SearchUIDefaultPunchoutAppIconImage *)v10 setFpItemID:v11], v11, [(SearchUIDefaultPunchoutAppIconImage *)v10 fpItemID], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  v10 = [(SearchUIAppIconImage *)&v14 initWithBundleIdentifier:0 isOnenessApp:0 variant:variant contentType:0];
+  if (!v10 || ([SearchUIUtilities fileProviderItemIDForCoreSpotlightIdentifier:spotlightIdCopy fileProviderIdentifier:idCopy], v11 = objc_claimAutoreleasedReturnValue(), [(SearchUIDefaultPunchoutAppIconImage *)v10 setFpItemID:v11], v11, [(SearchUIDefaultPunchoutAppIconImage *)v10 fpItemID], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     v12 = v10;
   }
@@ -84,36 +84,36 @@ LABEL_8:
   return v12;
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  styleCopy = style;
+  handlerCopy = handler;
   v9 = [(SearchUIDefaultPunchoutAppIconImage *)self url];
 
   if (v9)
   {
     v10 = [(SearchUIDefaultPunchoutAppIconImage *)self url];
-    [(SearchUIDefaultPunchoutAppIconImage *)self loadRelatedAppIconImageForFileURL:v10 scale:v5 isDarkStyle:v8 completionHandler:a3];
+    [(SearchUIDefaultPunchoutAppIconImage *)self loadRelatedAppIconImageForFileURL:v10 scale:styleCopy isDarkStyle:handlerCopy completionHandler:scale];
   }
 
   else
   {
-    v11 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
+    fpItemID = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
 
-    if (v11)
+    if (fpItemID)
     {
       objc_initWeak(&location, self);
-      v12 = [MEMORY[0x1E69673B0] defaultManager];
-      v13 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
+      defaultManager = [MEMORY[0x1E69673B0] defaultManager];
+      fpItemID2 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __88__SearchUIDefaultPunchoutAppIconImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke;
       v14[3] = &unk_1E85B3D68;
       objc_copyWeak(v16, &location);
-      v16[1] = *&a3;
-      v17 = v5;
-      v15 = v8;
-      [v12 fetchURLForItemID:v13 completionHandler:v14];
+      v16[1] = *&scale;
+      v17 = styleCopy;
+      v15 = handlerCopy;
+      [defaultManager fetchURLForItemID:fpItemID2 completionHandler:v14];
 
       objc_destroyWeak(v16);
       objc_destroyWeak(&location);
@@ -121,7 +121,7 @@ LABEL_8:
 
     else
     {
-      (*(v8 + 2))(v8, 0, 1);
+      (*(handlerCopy + 2))(handlerCopy, 0, 1);
     }
   }
 }
@@ -163,33 +163,33 @@ void __67__SearchUIDefaultPunchoutAppIconImage_defaultApplicationFetchQueue__blo
   defaultApplicationFetchQueue_queue = v1;
 }
 
-- (void)loadRelatedAppIconImageForFileURL:(id)a3 scale:(double)a4 isDarkStyle:(BOOL)a5 completionHandler:(id)a6
+- (void)loadRelatedAppIconImageForFileURL:(id)l scale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = [(SearchUIDefaultPunchoutAppIconImage *)self wrappedImage];
+  styleCopy = style;
+  lCopy = l;
+  handlerCopy = handler;
+  wrappedImage = [(SearchUIDefaultPunchoutAppIconImage *)self wrappedImage];
 
-  if (v12)
+  if (wrappedImage)
   {
-    v13 = [(SearchUIDefaultPunchoutAppIconImage *)self wrappedImage];
-    [v13 loadImageWithScale:v7 isDarkStyle:v11 completionHandler:a4];
+    wrappedImage2 = [(SearchUIDefaultPunchoutAppIconImage *)self wrappedImage];
+    [wrappedImage2 loadImageWithScale:styleCopy isDarkStyle:handlerCopy completionHandler:scale];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v14 = [(SearchUIDefaultPunchoutAppIconImage *)self defaultApplicationFetchQueue];
+    defaultApplicationFetchQueue = [(SearchUIDefaultPunchoutAppIconImage *)self defaultApplicationFetchQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __109__SearchUIDefaultPunchoutAppIconImage_loadRelatedAppIconImageForFileURL_scale_isDarkStyle_completionHandler___block_invoke;
     v15[3] = &unk_1E85B2D88;
     objc_copyWeak(v18, &location);
-    v16 = v10;
-    v18[1] = *&a4;
-    v19 = v7;
-    v17 = v11;
-    dispatch_async(v14, v15);
+    v16 = lCopy;
+    v18[1] = *&scale;
+    v19 = styleCopy;
+    v17 = handlerCopy;
+    dispatch_async(defaultApplicationFetchQueue, v15);
 
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -264,27 +264,27 @@ void __109__SearchUIDefaultPunchoutAppIconImage_loadRelatedAppIconImageForFileUR
   IDSBAASignerErrorDomain_block_invoke_disabledBundleIDs = v0;
 }
 
-+ (id)defaultRecordForURL:(id)a3
++ (id)defaultRecordForURL:(id)l
 {
-  v3 = [MEMORY[0x1E69635C0] appLinksWithURL:a3 limit:1 error:0];
-  v4 = [v3 firstObject];
-  v5 = [v4 targetApplicationRecord];
+  v3 = [MEMORY[0x1E69635C0] appLinksWithURL:l limit:1 error:0];
+  firstObject = [v3 firstObject];
+  targetApplicationRecord = [firstObject targetApplicationRecord];
 
-  return v5;
+  return targetApplicationRecord;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
+  equalCopy = equal;
   v19.receiver = self;
   v19.super_class = SearchUIDefaultPunchoutAppIconImage;
-  if (![(SearchUIAppIconImage *)&v19 isEqual:v8]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (![(SearchUIAppIconImage *)&v19 isEqual:equalCopy]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = 0;
     goto LABEL_26;
   }
 
-  v9 = v8;
+  v9 = equalCopy;
   v10 = [(SearchUIDefaultPunchoutAppIconImage *)self url];
   if (v10 && (-[SearchUIDefaultPunchoutAppIconImage url](self, "url"), v3 = objc_claimAutoreleasedReturnValue(), [v9 url], v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "isEqual:", v4) & 1) != 0))
   {
@@ -313,24 +313,24 @@ LABEL_22:
     v11 = 1;
   }
 
-  v15 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
-  if (v15)
+  fpItemID = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
+  if (fpItemID)
   {
-    v5 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
-    v6 = [v9 fpItemID];
-    if ([v5 isEqual:v6])
+    fpItemID2 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
+    fpItemID3 = [v9 fpItemID];
+    if ([fpItemID2 isEqual:fpItemID3])
     {
       v12 = 1;
       goto LABEL_17;
     }
   }
 
-  v16 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
-  if (v16)
+  fpItemID4 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
+  if (fpItemID4)
   {
 
     v12 = 0;
-    if (v15)
+    if (fpItemID)
     {
       goto LABEL_17;
     }
@@ -338,10 +338,10 @@ LABEL_22:
 
   else
   {
-    v17 = [v9 fpItemID];
-    v12 = v17 == 0;
+    fpItemID5 = [v9 fpItemID];
+    v12 = fpItemID5 == 0;
 
-    if (v15)
+    if (fpItemID)
     {
 LABEL_17:
 
@@ -374,8 +374,8 @@ LABEL_26:
 {
   v3 = [(SearchUIDefaultPunchoutAppIconImage *)self url];
   v4 = [v3 hash];
-  v5 = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
-  v6 = [v5 hash] ^ v4;
+  fpItemID = [(SearchUIDefaultPunchoutAppIconImage *)self fpItemID];
+  v6 = [fpItemID hash] ^ v4;
   v9.receiver = self;
   v9.super_class = SearchUIDefaultPunchoutAppIconImage;
   v7 = [(SearchUIAppIconImage *)&v9 hash];

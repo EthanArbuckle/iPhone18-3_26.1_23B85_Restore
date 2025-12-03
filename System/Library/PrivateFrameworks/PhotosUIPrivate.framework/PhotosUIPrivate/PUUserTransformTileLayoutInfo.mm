@@ -1,11 +1,11 @@
 @interface PUUserTransformTileLayoutInfo
-- (BOOL)isGeometryEqualToLayoutInfo:(id)a3;
+- (BOOL)isGeometryEqualToLayoutInfo:(id)info;
 - (CGRect)untransformedContentFrame;
 - (CGSize)contentPixelSize;
-- (PUUserTransformTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 alpha:(double)a6 transform:(CGAffineTransform *)a7 zPosition:(double)a8 coordinateSystem:(id)a9;
+- (PUUserTransformTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)system;
 - (UIEdgeInsets)chromeInsets;
-- (double)initWithTileIdentifier:(double)a3 center:(double)a4 size:(double)a5 alpha:(double)a6 transform:(double)a7 zPosition:(uint64_t)a8 coordinateSystem:(uint64_t)a9 untransformedContentFrame:(_OWORD *)a10 chromeInsets:(uint64_t)a11 contentPixelSize:(double)a12 cropInsets:(double)a13;
-- (double)initWithTileIdentifier:(uint64_t)a3 center:(_OWORD *)a4 size:(uint64_t)a5 alpha:(uint64_t)a6 transform:(uint64_t)a7 zPosition:(uint64_t)a8 coordinateSystem:(double)a9 untransformedContentFrame:(double)a10 chromeInsets:(double)a11 contentPixelSize:(double)a12;
+- (double)initWithTileIdentifier:(double)identifier center:(double)center size:(double)size alpha:(double)alpha transform:(double)transform zPosition:(uint64_t)position coordinateSystem:(uint64_t)system untransformedContentFrame:(_OWORD *)self0 chromeInsets:(uint64_t)self1 contentPixelSize:(double)self2 cropInsets:(double)self3;
+- (double)initWithTileIdentifier:(uint64_t)identifier center:(_OWORD *)center size:(uint64_t)size alpha:(uint64_t)alpha transform:(uint64_t)transform zPosition:(uint64_t)position coordinateSystem:(double)system untransformedContentFrame:(double)self0 chromeInsets:(double)self1 contentPixelSize:(double)self2;
 - (id)clone;
 @end
 
@@ -49,7 +49,7 @@
 - (id)clone
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(PUTileLayoutInfo *)self tileIdentifier];
+  tileIdentifier = [(PUTileLayoutInfo *)self tileIdentifier];
   [(PUTileLayoutInfo *)self center];
   v36 = v6;
   v37 = v5;
@@ -61,7 +61,7 @@
   [(PUTileLayoutInfo *)self transform];
   [(PUTileLayoutInfo *)self zPosition];
   v32 = v10;
-  v11 = [(PUTileLayoutInfo *)self coordinateSystem];
+  coordinateSystem = [(PUTileLayoutInfo *)self coordinateSystem];
   [(PUUserTransformTileLayoutInfo *)self untransformedContentFrame];
   v13 = v12;
   v15 = v14;
@@ -73,20 +73,20 @@
   v25 = v24;
   v27 = v26;
   [(PUUserTransformTileLayoutInfo *)self contentPixelSize];
-  v30 = [v3 initWithTileIdentifier:v4 center:v38 size:v11 alpha:v37 transform:v36 zPosition:v35 coordinateSystem:v34 untransformedContentFrame:v33 chromeInsets:v32 contentPixelSize:{v13, v15, v17, v19, v21, v23, v25, v27, v28, v29}];
+  v30 = [v3 initWithTileIdentifier:tileIdentifier center:v38 size:coordinateSystem alpha:v37 transform:v36 zPosition:v35 coordinateSystem:v34 untransformedContentFrame:v33 chromeInsets:v32 contentPixelSize:{v13, v15, v17, v19, v21, v23, v25, v27, v28, v29}];
 
   return v30;
 }
 
-- (BOOL)isGeometryEqualToLayoutInfo:(id)a3
+- (BOOL)isGeometryEqualToLayoutInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = PUUserTransformTileLayoutInfo;
-  if (-[PUTileLayoutInfo isGeometryEqualToLayoutInfo:](&v14, sel_isGeometryEqualToLayoutInfo_, v4) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v4 untransformedContentFrame], v15.origin.x = v5, v15.origin.y = v6, v15.size.width = v7, v15.size.height = v8, CGRectEqualToRect(self->_untransformedContentFrame, v15)) && (objc_msgSend(v4, "chromeInsets"), PXEdgeInsetsEqualToEdgeInsets()))
+  if (-[PUTileLayoutInfo isGeometryEqualToLayoutInfo:](&v14, sel_isGeometryEqualToLayoutInfo_, infoCopy) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([infoCopy untransformedContentFrame], v15.origin.x = v5, v15.origin.y = v6, v15.size.width = v7, v15.size.height = v8, CGRectEqualToRect(self->_untransformedContentFrame, v15)) && (objc_msgSend(infoCopy, "chromeInsets"), PXEdgeInsetsEqualToEdgeInsets()))
   {
     p_contentPixelSize = &self->_contentPixelSize;
-    [v4 contentPixelSize];
+    [infoCopy contentPixelSize];
     v12 = p_contentPixelSize->height == v11 && p_contentPixelSize->width == v10;
   }
 
@@ -98,15 +98,15 @@
   return v12;
 }
 
-- (double)initWithTileIdentifier:(double)a3 center:(double)a4 size:(double)a5 alpha:(double)a6 transform:(double)a7 zPosition:(uint64_t)a8 coordinateSystem:(uint64_t)a9 untransformedContentFrame:(_OWORD *)a10 chromeInsets:(uint64_t)a11 contentPixelSize:(double)a12 cropInsets:(double)a13
+- (double)initWithTileIdentifier:(double)identifier center:(double)center size:(double)size alpha:(double)alpha transform:(double)transform zPosition:(uint64_t)position coordinateSystem:(uint64_t)system untransformedContentFrame:(_OWORD *)self0 chromeInsets:(uint64_t)self1 contentPixelSize:(double)self2 cropInsets:(double)self3
 {
-  v31.receiver = a1;
+  v31.receiver = self;
   v31.super_class = PUUserTransformTileLayoutInfo;
-  v27 = a10[1];
-  v30[0] = *a10;
+  v27 = frame[1];
+  v30[0] = *frame;
   v30[1] = v27;
-  v30[2] = a10[2];
-  v28 = objc_msgSendSuper2(&v31, sel_initWithTileIdentifier_center_size_alpha_cornerRadius_cornerCurve_cornerMask_borderWidth_borderColor_transform_zPosition_contentsRect_hitTestOutset_coordinateSystem_cropInsets_normalizedLegibilityInsets_, a9, 0, 0, 0, v30, a11, a2, a3, a4, a5, a6, 0.0, 0.0, a7, 0, 0, 0x3FF0000000000000, 0x3FF0000000000000, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), a27, a28, a29, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24));
+  v30[2] = frame[2];
+  v28 = objc_msgSendSuper2(&v31, sel_initWithTileIdentifier_center_size_alpha_cornerRadius_cornerCurve_cornerMask_borderWidth_borderColor_transform_zPosition_contentsRect_hitTestOutset_coordinateSystem_cropInsets_normalizedLegibilityInsets_, system, 0, 0, 0, v30, insets, a2, identifier, center, size, alpha, 0.0, 0.0, transform, 0, 0, 0x3FF0000000000000, 0x3FF0000000000000, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), a27, a28, a29, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24));
   if (v28)
   {
     result = a26;
@@ -125,15 +125,15 @@
   return result;
 }
 
-- (double)initWithTileIdentifier:(uint64_t)a3 center:(_OWORD *)a4 size:(uint64_t)a5 alpha:(uint64_t)a6 transform:(uint64_t)a7 zPosition:(uint64_t)a8 coordinateSystem:(double)a9 untransformedContentFrame:(double)a10 chromeInsets:(double)a11 contentPixelSize:(double)a12
+- (double)initWithTileIdentifier:(uint64_t)identifier center:(_OWORD *)center size:(uint64_t)size alpha:(uint64_t)alpha transform:(uint64_t)transform zPosition:(uint64_t)position coordinateSystem:(double)system untransformedContentFrame:(double)self0 chromeInsets:(double)self1 contentPixelSize:(double)self2
 {
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = PUUserTransformTileLayoutInfo;
-  v18 = a4[1];
-  v21[0] = *a4;
+  v18 = center[1];
+  v21[0] = *center;
   v21[1] = v18;
-  v21[2] = a4[2];
-  v19 = objc_msgSendSuper2(&v22, sel_initWithTileIdentifier_center_size_alpha_transform_zPosition_coordinateSystem_, a3, v21);
+  v21[2] = center[2];
+  v19 = objc_msgSendSuper2(&v22, sel_initWithTileIdentifier_center_size_alpha_transform_zPosition_coordinateSystem_, identifier, v21);
   if (v19)
   {
     result = a26;
@@ -152,13 +152,13 @@
   return result;
 }
 
-- (PUUserTransformTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 alpha:(double)a6 transform:(CGAffineTransform *)a7 zPosition:(double)a8 coordinateSystem:(id)a9
+- (PUUserTransformTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)system
 {
-  v9 = *&a7->c;
-  v11[0] = *&a7->a;
+  v9 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v9;
-  v11[2] = *&a7->tx;
-  return [(PUUserTransformTileLayoutInfo *)self initWithTileIdentifier:a3 center:v11 size:a9 alpha:a4.x transform:a4.y zPosition:a5.width coordinateSystem:a5.height untransformedContentFrame:a6 chromeInsets:a8 contentPixelSize:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E69C48A0], *(MEMORY[0x1E69C48A0] + 8), *(MEMORY[0x1E69C48A0] + 16), *(MEMORY[0x1E69C48A0] + 24), *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v11[2] = *&transform->tx;
+  return [(PUUserTransformTileLayoutInfo *)self initWithTileIdentifier:identifier center:v11 size:system alpha:center.x transform:center.y zPosition:size.width coordinateSystem:size.height untransformedContentFrame:alpha chromeInsets:position contentPixelSize:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E69C48A0], *(MEMORY[0x1E69C48A0] + 8), *(MEMORY[0x1E69C48A0] + 16), *(MEMORY[0x1E69C48A0] + 24), *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 }
 
 @end

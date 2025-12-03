@@ -6,17 +6,17 @@
 - (BuddyProximityPairingController)init;
 - (NSString)language;
 - (NSString)pairingCode;
-- (void)prepareForLanguageChange:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setNonUserInitiatedDismissal:(BOOL)a3;
-- (void)setPairingCode:(id)a3;
-- (void)setProximitySetupController:(id)a3;
+- (void)prepareForLanguageChange:(id)change;
+- (void)setLanguage:(id)language;
+- (void)setNonUserInitiatedDismissal:(BOOL)dismissal;
+- (void)setPairingCode:(id)code;
+- (void)setProximitySetupController:(id)controller;
 - (void)showPairingCode;
 - (void)showVisualPairing;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BuddyProximityPairingController
@@ -46,74 +46,74 @@
 
 - (void)viewDidLoad
 {
-  v68 = self;
+  selfCopy = self;
   v67 = a2;
   v66.receiver = self;
   v66.super_class = BuddyProximityPairingController;
   [(BuddyProximityPairingController *)&v66 viewDidLoad];
-  v2 = [(BuddyProximityPairingController *)v68 parentViewController];
+  parentViewController = [(BuddyProximityPairingController *)selfCopy parentViewController];
 
-  if (v2)
+  if (parentViewController)
   {
-    v3 = [(BuddyProximityPairingController *)v68 parentViewController];
-    v4 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    [v3 addChildViewController:v4];
+    parentViewController2 = [(BuddyProximityPairingController *)selfCopy parentViewController];
+    proxBackingController = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    [parentViewController2 addChildViewController:proxBackingController];
   }
 
   else
   {
-    v5 = v68;
-    v6 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    [(BuddyProximityPairingController *)v5 addChildViewController:v6];
+    v5 = selfCopy;
+    proxBackingController2 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    [(BuddyProximityPairingController *)v5 addChildViewController:proxBackingController2];
   }
 
-  v7 = [(BuddyProximityPairingController *)v68 proxBackingController];
-  v8 = [(BuddyProximityBackingViewController *)v7 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  proxBackingController3 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+  view = [(BuddyProximityBackingViewController *)proxBackingController3 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(BuddyProximityPairingController *)v68 view];
-  v10 = [(BuddyProximityPairingController *)v68 proxBackingController];
-  v11 = [(BuddyProximityBackingViewController *)v10 view];
-  [v9 addSubview:v11];
+  view2 = [(BuddyProximityPairingController *)selfCopy view];
+  proxBackingController4 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+  view3 = [(BuddyProximityBackingViewController *)proxBackingController4 view];
+  [view2 addSubview:view3];
 
-  v12 = [(BuddyProximityPairingController *)v68 proxBackingController];
-  [(BuddyProximityBackingViewController *)v12 didMoveToParentViewController:v68];
+  proxBackingController5 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+  [(BuddyProximityBackingViewController *)proxBackingController5 didMoveToParentViewController:selfCopy];
 
-  v13 = [(BuddyProximityPairingController *)v68 view];
-  [v13 layoutIfNeeded];
+  view4 = [(BuddyProximityPairingController *)selfCopy view];
+  [view4 layoutIfNeeded];
 
-  v14 = [(BuddyProximityPairingController *)v68 featureFlags];
-  LOBYTE(v10) = [(BuddyFeatureFlags *)v14 isSolariumEnabled];
+  featureFlags = [(BuddyProximityPairingController *)selfCopy featureFlags];
+  LOBYTE(proxBackingController4) = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v10)
+  if (proxBackingController4)
   {
-    v63 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v62 = [(BuddyProximityBackingViewController *)v63 view];
-    v57 = [v62 leadingAnchor];
-    v59 = [(BuddyProximityPairingController *)v68 view];
-    v55 = [v59 leadingAnchor];
-    v54 = [v57 constraintEqualToAnchor:?];
+    proxBackingController6 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view5 = [(BuddyProximityBackingViewController *)proxBackingController6 view];
+    leadingAnchor = [view5 leadingAnchor];
+    view6 = [(BuddyProximityPairingController *)selfCopy view];
+    leadingAnchor2 = [view6 leadingAnchor];
+    v54 = [leadingAnchor constraintEqualToAnchor:?];
     v70[0] = v54;
-    v51 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v50 = [(BuddyProximityBackingViewController *)v51 view];
-    v45 = [v50 trailingAnchor];
-    v47 = [(BuddyProximityPairingController *)v68 view];
-    v43 = [v47 trailingAnchor];
-    v42 = [v45 constraintEqualToAnchor:?];
+    proxBackingController7 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view7 = [(BuddyProximityBackingViewController *)proxBackingController7 view];
+    trailingAnchor = [view7 trailingAnchor];
+    view8 = [(BuddyProximityPairingController *)selfCopy view];
+    trailingAnchor2 = [view8 trailingAnchor];
+    v42 = [trailingAnchor constraintEqualToAnchor:?];
     v70[1] = v42;
-    v39 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v38 = [(BuddyProximityBackingViewController *)v39 view];
-    v35 = [v38 bottomAnchor];
-    v15 = [(BuddyProximityPairingController *)v68 view];
-    v16 = [v15 bottomAnchor];
-    v17 = [v35 constraintEqualToAnchor:v16];
+    proxBackingController8 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view9 = [(BuddyProximityBackingViewController *)proxBackingController8 view];
+    bottomAnchor = [view9 bottomAnchor];
+    view10 = [(BuddyProximityPairingController *)selfCopy view];
+    bottomAnchor2 = [view10 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v70[2] = v17;
-    v18 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v19 = [(BuddyProximityBackingViewController *)v18 view];
-    v20 = [v19 topAnchor];
-    v21 = [(BuddyProximityPairingController *)v68 view];
-    v22 = [v21 topAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    proxBackingController9 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view11 = [(BuddyProximityBackingViewController *)proxBackingController9 view];
+    topAnchor = [view11 topAnchor];
+    view12 = [(BuddyProximityPairingController *)selfCopy view];
+    topAnchor2 = [view12 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v70[3] = v23;
     v24 = [NSArray arrayWithObjects:v70 count:4];
     [NSLayoutConstraint activateConstraints:v24];
@@ -121,52 +121,52 @@
 
   else
   {
-    v65 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v64 = [(BuddyProximityBackingViewController *)v65 view];
-    v60 = [v64 leadingAnchor];
-    v61 = [(BuddyProximityPairingController *)v68 view];
-    v58 = [v61 leadingAnchor];
-    v56 = [v60 constraintEqualToAnchor:?];
+    proxBackingController10 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view13 = [(BuddyProximityBackingViewController *)proxBackingController10 view];
+    leadingAnchor3 = [view13 leadingAnchor];
+    view14 = [(BuddyProximityPairingController *)selfCopy view];
+    leadingAnchor4 = [view14 leadingAnchor];
+    v56 = [leadingAnchor3 constraintEqualToAnchor:?];
     v69[0] = v56;
-    v53 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v52 = [(BuddyProximityBackingViewController *)v53 view];
-    v48 = [v52 trailingAnchor];
-    v49 = [(BuddyProximityPairingController *)v68 view];
-    v46 = [v49 trailingAnchor];
-    v44 = [v48 constraintEqualToAnchor:?];
+    proxBackingController11 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view15 = [(BuddyProximityBackingViewController *)proxBackingController11 view];
+    trailingAnchor3 = [view15 trailingAnchor];
+    view16 = [(BuddyProximityPairingController *)selfCopy view];
+    trailingAnchor4 = [view16 trailingAnchor];
+    v44 = [trailingAnchor3 constraintEqualToAnchor:?];
     v69[1] = v44;
-    v41 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v40 = [(BuddyProximityBackingViewController *)v41 view];
-    v36 = [v40 bottomAnchor];
-    v37 = [(BuddyProximityPairingController *)v68 view];
-    v25 = [v37 bottomAnchor];
-    v26 = [v36 constraintEqualToAnchor:v25];
+    proxBackingController12 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view17 = [(BuddyProximityBackingViewController *)proxBackingController12 view];
+    bottomAnchor3 = [view17 bottomAnchor];
+    view18 = [(BuddyProximityPairingController *)selfCopy view];
+    bottomAnchor4 = [view18 bottomAnchor];
+    v26 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v69[2] = v26;
-    v27 = [(BuddyProximityPairingController *)v68 proxBackingController];
-    v28 = [(BuddyProximityBackingViewController *)v27 view];
-    v29 = [v28 topAnchor];
-    v30 = [(BuddyProximityPairingController *)v68 view];
-    v31 = [v30 safeAreaLayoutGuide];
-    v32 = [v31 topAnchor];
-    v33 = [v29 constraintEqualToAnchor:v32];
+    proxBackingController13 = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    view19 = [(BuddyProximityBackingViewController *)proxBackingController13 view];
+    topAnchor3 = [view19 topAnchor];
+    view20 = [(BuddyProximityPairingController *)selfCopy view];
+    safeAreaLayoutGuide = [view20 safeAreaLayoutGuide];
+    topAnchor4 = [safeAreaLayoutGuide topAnchor];
+    v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v69[3] = v33;
     v34 = [NSArray arrayWithObjects:v69 count:4];
     [NSLayoutConstraint activateConstraints:v34];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = BuddyProximityPairingController;
-  [(BuddyProximityPairingController *)&v4 viewDidDisappear:a3];
-  if (([(BuddyProximityPairingController *)v7 isMovingFromParentViewController]& 1) != 0)
+  [(BuddyProximityPairingController *)&v4 viewDidDisappear:disappear];
+  if (([(BuddyProximityPairingController *)selfCopy isMovingFromParentViewController]& 1) != 0)
   {
-    v3 = [(BuddyProximityPairingController *)v7 proxBackingController];
-    [(BuddyProximityBackingViewController *)v3 endPairingIfNeeded];
+    proxBackingController = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+    [(BuddyProximityBackingViewController *)proxBackingController endPairingIfNeeded];
   }
 }
 
@@ -182,14 +182,14 @@
   [(BuddyProximityBackingViewController *)v2 showPairingCode];
 }
 
-- (void)prepareForLanguageChange:(id)a3
+- (void)prepareForLanguageChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityPairingController *)v5 proxBackingController];
-  [(BuddyProximityBackingViewController *)v3 prepareForLanguageChange:location[0]];
+  objc_storeStrong(location, change);
+  proxBackingController = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+  [(BuddyProximityBackingViewController *)proxBackingController prepareForLanguageChange:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -197,19 +197,19 @@
 - (NSString)language
 {
   v2 = [(BuddyProximityPairingController *)self proxBackingController:a2];
-  v3 = [(BuddyProximityBackingViewController *)v2 language];
+  language = [(BuddyProximityBackingViewController *)v2 language];
 
-  return v3;
+  return language;
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityPairingController *)v5 proxBackingController];
-  [(BuddyProximityBackingViewController *)v3 setLanguage:location[0]];
+  objc_storeStrong(location, language);
+  proxBackingController = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+  [(BuddyProximityBackingViewController *)proxBackingController setLanguage:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -217,19 +217,19 @@
 - (NSString)pairingCode
 {
   v2 = [(BuddyProximityPairingController *)self proxBackingController:a2];
-  v3 = [(BuddyProximityBackingViewController *)v2 pairingCode];
+  pairingCode = [(BuddyProximityBackingViewController *)v2 pairingCode];
 
-  return v3;
+  return pairingCode;
 }
 
-- (void)setPairingCode:(id)a3
+- (void)setPairingCode:(id)code
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityPairingController *)v5 proxBackingController];
-  [(BuddyProximityBackingViewController *)v3 setPairingCode:location[0]];
+  objc_storeStrong(location, code);
+  proxBackingController = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+  [(BuddyProximityBackingViewController *)proxBackingController setPairingCode:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -237,55 +237,55 @@
 - (BOOL)isShowingVisualPairing
 {
   v2 = [(BuddyProximityPairingController *)self proxBackingController:a2];
-  v3 = [(BuddyProximityBackingViewController *)v2 isShowingVisualPairing];
+  isShowingVisualPairing = [(BuddyProximityBackingViewController *)v2 isShowingVisualPairing];
 
-  return v3 & 1;
+  return isShowingVisualPairing & 1;
 }
 
 - (BOOL)nonUserInitiatedDismissal
 {
   v2 = [(BuddyProximityPairingController *)self proxBackingController:a2];
-  v3 = [(BuddyProximityBackingViewController *)v2 nonUserInitiatedDismissal];
+  nonUserInitiatedDismissal = [(BuddyProximityBackingViewController *)v2 nonUserInitiatedDismissal];
 
-  return v3 & 1;
+  return nonUserInitiatedDismissal & 1;
 }
 
-- (void)setNonUserInitiatedDismissal:(BOOL)a3
+- (void)setNonUserInitiatedDismissal:(BOOL)dismissal
 {
-  v3 = [(BuddyProximityPairingController *)self proxBackingController];
-  [(BuddyProximityBackingViewController *)v3 setNonUserInitiatedDismissal:a3];
+  proxBackingController = [(BuddyProximityPairingController *)self proxBackingController];
+  [(BuddyProximityBackingViewController *)proxBackingController setNonUserInitiatedDismissal:dismissal];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, collection);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6.receiver = v9;
+  objc_storeStrong(&v7, coordinator);
+  v6.receiver = selfCopy;
   v6.super_class = BuddyProximityPairingController;
   [(BuddyProximityPairingController *)&v6 willTransitionToTraitCollection:location[0] withTransitionCoordinator:v7];
-  v5 = [(BuddyProximityPairingController *)v9 view];
-  [v5 setNeedsLayout];
+  view = [(BuddyProximityPairingController *)selfCopy view];
+  [view setNeedsLayout];
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v7 = self;
+  sizeCopy = size;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v5.receiver = v7;
+  objc_storeStrong(location, coordinator);
+  v5.receiver = selfCopy;
   v5.super_class = BuddyProximityPairingController;
-  [(BuddyProximityPairingController *)&v5 viewWillTransitionToSize:location[0] withTransitionCoordinator:v8.width, v8.height];
-  v4 = [(BuddyProximityPairingController *)v7 proxBackingController];
-  [(BuddyProximityBackingViewController *)v4 viewWillTransitionToSize:location[0] withTransitionCoordinator:v8.width, v8.height];
+  [(BuddyProximityPairingController *)&v5 viewWillTransitionToSize:location[0] withTransitionCoordinator:sizeCopy.width, sizeCopy.height];
+  proxBackingController = [(BuddyProximityPairingController *)selfCopy proxBackingController];
+  [(BuddyProximityBackingViewController *)proxBackingController viewWillTransitionToSize:location[0] withTransitionCoordinator:sizeCopy.width, sizeCopy.height];
 
   objc_storeStrong(location, 0);
 }
@@ -293,22 +293,22 @@
 - (BOOL)isLandscape
 {
   v2 = [(BuddyProximityPairingController *)self navigationController:a2];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = sub_100201EBC([v5 interfaceOrientation]);
+  view = [v2 view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v6 = sub_100201EBC([windowScene interfaceOrientation]);
 
   return v6;
 }
 
-- (void)setProximitySetupController:(id)a3
+- (void)setProximitySetupController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_proximitySetupController, location[0]);
-  [(BuddyProximityBackingViewController *)v4->_proxBackingController setDelegate:location[0]];
+  objc_storeStrong(location, controller);
+  objc_storeStrong(&selfCopy->_proximitySetupController, location[0]);
+  [(BuddyProximityBackingViewController *)selfCopy->_proxBackingController setDelegate:location[0]];
   objc_storeStrong(location, 0);
 }
 

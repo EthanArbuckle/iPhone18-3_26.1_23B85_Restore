@@ -1,13 +1,13 @@
 @interface ScheduleSettingsStyleController
 - (id)notAvailableText;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_accountsChanged;
-- (void)_reloadFoldersAndSpecifiersForced:(BOOL)a3;
+- (void)_reloadFoldersAndSpecifiersForced:(BOOL)forced;
 - (void)dealloc;
-- (void)listItemSelected:(id)a3;
+- (void)listItemSelected:(id)selected;
 - (void)reloadFolders;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ScheduleSettingsStyleController
@@ -35,8 +35,8 @@
 
     v5 = [v4 objectForKey:@"ScheduleSettingsAccountKey"];
     self->_account = v5;
-    v6 = [(ACAccountType *)[(ACAccount *)v5 accountType] identifier];
-    self->_isExchangeAccount = [(NSString *)v6 isEqualToString:*MEMORY[0x277CB8C00]];
+    identifier = [(ACAccountType *)[(ACAccount *)v5 accountType] identifier];
+    self->_isExchangeAccount = [(NSString *)identifier isEqualToString:*MEMORY[0x277CB8C00]];
 
     self->_mailAccountUniqueId = 0;
     v7 = [v4 objectForKey:@"ScheduleSettingsAccountUniqueIdentifierKey"];
@@ -44,8 +44,8 @@
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [MEMORY[0x277D28280] mailAccounts];
-    v9 = [v8 countByEnumeratingWithState:&v38 objects:v44 count:16];
+    mailAccounts = [MEMORY[0x277D28280] mailAccounts];
+    v9 = [mailAccounts countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v9)
     {
       v10 = v9;
@@ -56,7 +56,7 @@
         {
           if (*v39 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(mailAccounts);
           }
 
           v13 = *(*(&v38 + 1) + 8 * i);
@@ -68,7 +68,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v38 objects:v44 count:16];
+        v10 = [mailAccounts countByEnumeratingWithState:&v38 objects:v44 count:16];
         if (v10)
         {
           continue;
@@ -81,11 +81,11 @@
 LABEL_12:
     v14 = [v2 objectAtIndex:0];
     [v14 setName:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"SELECT_SCHEDULE", &stru_284EEC2E8, @"ScheduleSettings"}];
-    v15 = [(ScheduleSettingsStyleController *)self notAvailableText];
-    if (v15)
+    notAvailableText = [(ScheduleSettingsStyleController *)self notAvailableText];
+    if (notAvailableText)
     {
-      v16 = v15;
-      [v14 setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
+      v16 = notAvailableText;
+      [v14 setProperty:notAvailableText forKey:*MEMORY[0x277D3FF88]];
       if ([v16 _isNaturallyRTL])
       {
         v17 = 2;
@@ -102,7 +102,7 @@ LABEL_12:
       [v14 setProperty:v19 forKey:*MEMORY[0x277D3FD78]];
     }
 
-    v33 = self;
+    selfCopy = self;
     if ([(ScheduleSettingsStyleController *)self shouldShowMailboxes])
     {
       mailboxInfos = self->_mailboxInfos;
@@ -150,7 +150,7 @@ LABEL_12:
       }
     }
 
-    *(&v33->super.super.super.super.super.super.isa + v32) = v2;
+    *(&selfCopy->super.super.super.super.super.super.isa + v32) = v2;
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -251,16 +251,16 @@ uint64_t __48__ScheduleSettingsStyleController_reloadFolders__block_invoke(uint6
   return [v6 localizedStringForKey:v5 value:&stru_284EEC2E8 table:@"ScheduleSettings"];
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
   v4.receiver = self;
   v4.super_class = ScheduleSettingsStyleController;
-  [(PSListItemsController *)&v4 listItemSelected:a3];
+  [(PSListItemsController *)&v4 listItemSelected:selected];
   [-[ScheduleSettingsStyleController table](self "table")];
   [(ScheduleSettingsStyleController *)self reloadSpecifiers];
 }
 
-- (void)_reloadFoldersAndSpecifiersForced:(BOOL)a3
+- (void)_reloadFoldersAndSpecifiersForced:(BOOL)forced
 {
   if (!self->_ignoringNotifications)
   {
@@ -268,7 +268,7 @@ uint64_t __48__ScheduleSettingsStyleController_reloadFolders__block_invoke(uint6
     {
       v6 = self->_monitored;
       [(ScheduleSettingsStyleController *)self reloadFolders];
-      if (a3 || ([(NSMutableSet *)self->_monitored isEqualToSet:v6]& 1) == 0)
+      if (forced || ([(NSMutableSet *)self->_monitored isEqualToSet:v6]& 1) == 0)
       {
         [(ScheduleSettingsStyleController *)self reloadSpecifiers];
       }
@@ -276,9 +276,9 @@ uint64_t __48__ScheduleSettingsStyleController_reloadFolders__block_invoke(uint6
 
     else
     {
-      v5 = [(ScheduleSettingsStyleController *)self navigationController];
+      navigationController = [(ScheduleSettingsStyleController *)self navigationController];
 
-      [v5 popViewControllerAnimated:1];
+      [navigationController popViewControllerAnimated:1];
     }
   }
 }
@@ -290,14 +290,14 @@ uint64_t __48__ScheduleSettingsStyleController_reloadFolders__block_invoke(uint6
   [(ScheduleSettingsStyleController *)self performSelector:sel__reloadFoldersAndSpecifiers withObject:0 afterDelay:0.1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = [(ScheduleSettingsStyleController *)self indexForIndexPath:a4];
+  v7 = [(ScheduleSettingsStyleController *)self indexForIndexPath:path];
   v8 = [objc_msgSend(*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:{v7), "propertyForKey:", @"mailbox"}];
   if (v8)
   {
     v9 = v8;
-    v10 = [a3 dequeueReusableCellWithIdentifier:@"PushedMailboxTableCell"];
+    v10 = [view dequeueReusableCellWithIdentifier:@"PushedMailboxTableCell"];
     if (!v10)
     {
       v10 = [[PushedMailboxTableCell alloc] initWithStyle:0 reuseIdentifier:@"PushedMailboxTableCell"];
@@ -315,21 +315,21 @@ uint64_t __48__ScheduleSettingsStyleController_reloadFolders__block_invoke(uint6
   {
     v13.receiver = self;
     v13.super_class = ScheduleSettingsStyleController;
-    return [(PSListItemsController *)&v13 tableView:a3 cellForRowAtIndexPath:a4];
+    return [(PSListItemsController *)&v13 tableView:view cellForRowAtIndexPath:path];
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = [(ScheduleSettingsStyleController *)self indexForIndexPath:a4];
+  v7 = [(ScheduleSettingsStyleController *)self indexForIndexPath:path];
   v8 = [objc_msgSend(*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:{v7), "propertyForKey:", @"mailbox"}];
   if (v8)
   {
     v9 = v8;
-    v10 = [a3 cellForRowAtIndexPath:a4];
-    [a3 deselectRowAtIndexPath:a4 animated:1];
+    v10 = [view cellForRowAtIndexPath:path];
+    [view deselectRowAtIndexPath:path animated:1];
     v11 = [v10 isChecked] ^ 1;
     [v10 setChecked:v11];
     monitored = self->_monitored;
@@ -350,7 +350,7 @@ uint64_t __48__ScheduleSettingsStyleController_reloadFolders__block_invoke(uint6
   {
     v13.receiver = self;
     v13.super_class = ScheduleSettingsStyleController;
-    [(PSListItemsController *)&v13 tableView:a3 didSelectRowAtIndexPath:a4];
+    [(PSListItemsController *)&v13 tableView:view didSelectRowAtIndexPath:path];
   }
 }
 

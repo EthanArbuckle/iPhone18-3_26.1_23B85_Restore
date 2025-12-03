@@ -1,17 +1,17 @@
 @interface SCROServer
 + (SCROServer)sharedServer;
 - (BOOL)_ensureResourcesExist;
-- (BOOL)_registerWithMachServiceName:(char *)a3;
+- (BOOL)_registerWithMachServiceName:(char *)name;
 - (BOOL)_shouldStayAliveAfterLastClientUnregisters;
 - (SCROServer)init;
 - (__CFRunLoopSource)serverSource;
 - (__CFRunLoopTimer)_deathTimer;
-- (int)_registerForNotificationOnDeathPort:(unsigned int)a3;
+- (int)_registerForNotificationOnDeathPort:(unsigned int)port;
 - (int64_t)_clientCount;
 - (int64_t)_incrementClientCount;
 - (void)_deleteOldResources;
-- (void)_setClientCount:(int64_t)a3;
-- (void)_setShouldStayAliveAfterLastClientUnregisters:(BOOL)a3;
+- (void)_setClientCount:(int64_t)count;
+- (void)_setShouldStayAliveAfterLastClientUnregisters:(BOOL)unregisters;
 - (void)unregisterWithMach;
 @end
 
@@ -72,10 +72,10 @@ uint64_t __26__SCROServer_sharedServer__block_invoke()
   return v3;
 }
 
-- (void)_setClientCount:(int64_t)a3
+- (void)_setClientCount:(int64_t)count
 {
   [(NSLock *)self->_contentLock lock];
-  self->_clientCount = a3;
+  self->_clientCount = count;
   contentLock = self->_contentLock;
 
   [(NSLock *)contentLock unlock];
@@ -89,11 +89,11 @@ uint64_t __26__SCROServer_sharedServer__block_invoke()
   return deathTimer;
 }
 
-- (int)_registerForNotificationOnDeathPort:(unsigned int)a3
+- (int)_registerForNotificationOnDeathPort:(unsigned int)port
 {
   previous = 0;
   [(NSLock *)self->_contentLock lock];
-  v5 = mach_port_request_notification(*MEMORY[0x277D85F48], a3, 72, 0, self->_deathPort, 0x15u, &previous);
+  v5 = mach_port_request_notification(*MEMORY[0x277D85F48], port, 72, 0, self->_deathPort, 0x15u, &previous);
   [(NSLock *)self->_contentLock unlock];
   return v5;
 }
@@ -106,16 +106,16 @@ uint64_t __26__SCROServer_sharedServer__block_invoke()
   return shouldStayAliveAfterLastClientUnregisters;
 }
 
-- (void)_setShouldStayAliveAfterLastClientUnregisters:(BOOL)a3
+- (void)_setShouldStayAliveAfterLastClientUnregisters:(BOOL)unregisters
 {
   [(NSLock *)self->_contentLock lock];
-  self->_shouldStayAliveAfterLastClientUnregisters = a3;
+  self->_shouldStayAliveAfterLastClientUnregisters = unregisters;
   contentLock = self->_contentLock;
 
   [(NSLock *)contentLock unlock];
 }
 
-- (BOOL)_registerWithMachServiceName:(char *)a3
+- (BOOL)_registerWithMachServiceName:(char *)name
 {
   if (self->_isRegisteredWithMach)
   {
@@ -133,7 +133,7 @@ uint64_t __26__SCROServer_sharedServer__block_invoke()
 
   else
   {
-    v9 = bootstrap_check_in(special_port, a3, &self->_serverPort);
+    v9 = bootstrap_check_in(special_port, name, &self->_serverPort);
     if (v9)
     {
       NSLog(&cfstr_ErrorDCouldNot_0.isa, v9);
@@ -243,13 +243,13 @@ uint64_t __26__SCROServer_sharedServer__block_invoke()
   v2 = NSHomeDirectory();
   v6 = [v2 stringByAppendingPathComponent:@"/Library/Accessibility/ktoa_u_kwa.dic"];
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v6];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    [v5 removeItemAtPath:v6 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 removeItemAtPath:v6 error:0];
   }
 }
 
@@ -259,15 +259,15 @@ uint64_t __26__SCROServer_sharedServer__block_invoke()
   v2 = NSHomeDirectory();
   v3 = [v2 stringByAppendingPathComponent:@"/Library/Accessibility/ktoa_u_kwa_v5.dic"];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if ((v5 & 1) == 0)
   {
     archive_read_new();
     v7 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/ScreenReader/BrailleTables/BrailleNBSC.brailletable"];
-    v8 = [v7 resourcePath];
-    v9 = [v8 stringByAppendingString:@"/ktoa_u_kwa"];
+    resourcePath = [v7 resourcePath];
+    v9 = [resourcePath stringByAppendingString:@"/ktoa_u_kwa"];
     [v9 UTF8String];
 
     if (archive_read_support_format_zip())
@@ -309,18 +309,18 @@ LABEL_10:
     v24 = 0;
     if (archive_read_next_header())
     {
-      v16 = _SCROD_LOG();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      data = _SCROD_LOG();
+      if (os_log_type_enabled(data, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_26490B000, v16, OS_LOG_TYPE_DEFAULT, "NBSC Braille for text: (init) failed to read header.", buf, 2u);
+        _os_log_impl(&dword_26490B000, data, OS_LOG_TYPE_DEFAULT, "NBSC Braille for text: (init) failed to read header.", buf, 2u);
       }
 
       v6 = 0;
       goto LABEL_28;
     }
 
-    v16 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     v22 = 0;
     v23 = 0;
     v21[1] = 0;
@@ -332,13 +332,13 @@ LABEL_10:
         break;
       }
 
-      [v16 appendBytes:v23 length:v22];
+      [data appendBytes:v23 length:v22];
     }
 
     if (data_block == 1)
     {
       v21[0] = 0;
-      [v16 writeToFile:v3 options:1 error:v21];
+      [data writeToFile:v3 options:1 error:v21];
       v18 = v21[0];
       v6 = v18 == 0;
       if (!v18)
@@ -352,9 +352,9 @@ LABEL_28:
       v19 = _SCROD_LOG();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v18 localizedDescription];
+        localizedDescription = [v18 localizedDescription];
         *buf = 138412290;
-        v26 = v20;
+        v26 = localizedDescription;
         _os_log_impl(&dword_26490B000, v19, OS_LOG_TYPE_DEFAULT, "NBSC Braille for text: writing the unzipped file of ktoa_u_kwa.zip failed: %@", buf, 0xCu);
       }
     }

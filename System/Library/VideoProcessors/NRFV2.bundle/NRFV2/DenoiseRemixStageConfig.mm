@@ -1,32 +1,32 @@
 @interface DenoiseRemixStageConfig
-+ (id)getOrRelease:(BOOL)a3;
-- (id)_initWithLGAAlgorithm:(int)a3 enableBandZeroDenoising:(BOOL)a4 enableNoiseMap:(BOOL)a5;
++ (id)getOrRelease:(BOOL)release;
+- (id)_initWithLGAAlgorithm:(int)algorithm enableBandZeroDenoising:(BOOL)denoising enableNoiseMap:(BOOL)map;
 @end
 
 @implementation DenoiseRemixStageConfig
 
-- (id)_initWithLGAAlgorithm:(int)a3 enableBandZeroDenoising:(BOOL)a4 enableNoiseMap:(BOOL)a5
+- (id)_initWithLGAAlgorithm:(int)algorithm enableBandZeroDenoising:(BOOL)denoising enableNoiseMap:(BOOL)map
 {
   v9.receiver = self;
   v9.super_class = DenoiseRemixStageConfig;
   result = [(DenoiseRemixStageConfig *)&v9 init];
   if (result)
   {
-    *(result + 3) = a3;
-    *(result + 8) = a4;
-    *(result + 9) = a5;
+    *(result + 3) = algorithm;
+    *(result + 8) = denoising;
+    *(result + 9) = map;
   }
 
   return result;
 }
 
-+ (id)getOrRelease:(BOOL)a3
++ (id)getOrRelease:(BOOL)release
 {
-  v3 = a3;
+  releaseCopy = release;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   v5 = qword_2A18C2330;
-  if (v3)
+  if (releaseCopy)
   {
     qword_2A18C2330 = 0;
   }

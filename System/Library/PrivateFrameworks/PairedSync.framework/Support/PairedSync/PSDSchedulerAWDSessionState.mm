@@ -1,20 +1,20 @@
 @interface PSDSchedulerAWDSessionState
-- (BOOL)hasDurationForActivity:(id)a3;
-- (BOOL)hasErrorCodeForActivity:(id)a3;
-- (BOOL)wasDropoutForActivity:(id)a3;
+- (BOOL)hasDurationForActivity:(id)activity;
+- (BOOL)hasErrorCodeForActivity:(id)activity;
+- (BOOL)wasDropoutForActivity:(id)activity;
 - (PSDSchedulerAWDSessionState)init;
-- (PSDSchedulerAWDSessionState)initWithCoder:(id)a3;
-- (double)durationForActivity:(id)a3;
-- (id)errorCodeForActivity:(id)a3;
-- (id)retryCountForActivity:(id)a3;
-- (id)stateDictionaryForActivity:(id)a3;
-- (id)syncTypeForActivity:(id)a3;
-- (void)_computeDurationForStateDictionary:(id)a3 activity:(id)a4;
-- (void)enumerateActivityNamesWithBlock:(id)a3;
-- (void)noteActivityDropout:(id)a3;
-- (void)noteActivityFinished:(id)a3;
-- (void)noteActivityInterrupted:(id)a3;
-- (void)noteActivityStarted:(id)a3 syncSession:(id)a4;
+- (PSDSchedulerAWDSessionState)initWithCoder:(id)coder;
+- (double)durationForActivity:(id)activity;
+- (id)errorCodeForActivity:(id)activity;
+- (id)retryCountForActivity:(id)activity;
+- (id)stateDictionaryForActivity:(id)activity;
+- (id)syncTypeForActivity:(id)activity;
+- (void)_computeDurationForStateDictionary:(id)dictionary activity:(id)activity;
+- (void)enumerateActivityNamesWithBlock:(id)block;
+- (void)noteActivityDropout:(id)dropout;
+- (void)noteActivityFinished:(id)finished;
+- (void)noteActivityInterrupted:(id)interrupted;
+- (void)noteActivityStarted:(id)started syncSession:(id)session;
 @end
 
 @implementation PSDSchedulerAWDSessionState
@@ -34,9 +34,9 @@
   return v2;
 }
 
-- (PSDSchedulerAWDSessionState)initWithCoder:(id)a3
+- (PSDSchedulerAWDSessionState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PSDSchedulerAWDSessionState;
   v5 = [(PSDSchedulerAWDSessionState *)&v17 init];
@@ -48,7 +48,7 @@
     v18[3] = objc_opt_class();
     v6 = [NSArray arrayWithObjects:v18 count:4];
     v7 = [NSSet setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"sessionState"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sessionState"];
     v9 = [v8 mutableCopy];
     stateDictionary = v5->_stateDictionary;
     v5->_stateDictionary = v9;
@@ -76,22 +76,22 @@
   return v5;
 }
 
-- (void)noteActivityStarted:(id)a3 syncSession:(id)a4
+- (void)noteActivityStarted:(id)started syncSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  startedCopy = started;
+  sessionCopy = session;
+  if (startedCopy)
   {
-    v8 = [v6 activityInfo];
-    v9 = [v8 label];
+    activityInfo = [startedCopy activityInfo];
+    label = [activityInfo label];
   }
 
   else
   {
-    v9 = @"initialSyncSession";
+    label = @"initialSyncSession";
   }
 
-  v10 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:v9];
+  v10 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:label];
   v11 = [v10 objectForKeyedSubscript:@"startDate"];
 
   if (v11)
@@ -105,7 +105,7 @@
     v13 = [v10 objectForKeyedSubscript:@"startDate"];
     [v13 timeIntervalSinceReferenceDate];
     v22 = 138543618;
-    v23 = v9;
+    v23 = label;
     v24 = 2048;
     v25 = v14;
     v15 = "Inheriting start datestamp for %{public}@: %f";
@@ -116,7 +116,7 @@
     v16 = +[NSDate date];
     [v10 setObject:v16 forKeyedSubscript:@"startDate"];
 
-    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 syncSessionType]);
+    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [sessionCopy syncSessionType]);
     [v10 setObject:v17 forKeyedSubscript:@"syncType"];
 
     v12 = psd_log();
@@ -128,7 +128,7 @@
     v13 = [v10 objectForKeyedSubscript:@"startDate"];
     [v13 timeIntervalSinceReferenceDate];
     v22 = 138543618;
-    v23 = v9;
+    v23 = label;
     v24 = 2048;
     v25 = v18;
     v15 = "Start datestamp for %{public}@: %f";
@@ -137,7 +137,7 @@
   _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v15, &v22, 0x16u);
 
 LABEL_10:
-  if (!v6)
+  if (!startedCopy)
   {
     v19 = [v10 objectForKeyedSubscript:@"retryCount"];
 
@@ -155,28 +155,28 @@ LABEL_10:
   }
 }
 
-- (void)_computeDurationForStateDictionary:(id)a3 activity:(id)a4
+- (void)_computeDurationForStateDictionary:(id)dictionary activity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"startDate"];
+  dictionaryCopy = dictionary;
+  activityCopy = activity;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
 
   if (v7)
   {
     v8 = +[NSDate date];
-    v9 = [v5 objectForKeyedSubscript:@"startDate"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     [v8 timeIntervalSinceDate:v9];
     v10 = [NSNumber numberWithDouble:?];
-    [v5 setObject:v10 forKeyedSubscript:@"duration"];
+    [dictionaryCopy setObject:v10 forKeyedSubscript:@"duration"];
 
-    [v5 setObject:0 forKeyedSubscript:@"startDate"];
+    [dictionaryCopy setObject:0 forKeyedSubscript:@"startDate"];
     v11 = psd_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 objectForKeyedSubscript:@"duration"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
       [v12 doubleValue];
       v14 = 138543618;
-      v15 = v6;
+      v15 = activityCopy;
       v16 = 2048;
       v17 = v13;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Duration for activity %{public}@ is %f", &v14, 0x16u);
@@ -184,28 +184,28 @@ LABEL_10:
   }
 }
 
-- (void)noteActivityFinished:(id)a3
+- (void)noteActivityFinished:(id)finished
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  finishedCopy = finished;
+  v12 = finishedCopy;
+  if (finishedCopy)
   {
-    v5 = [v4 activityInfo];
-    v6 = [v5 label];
+    activityInfo = [finishedCopy activityInfo];
+    label = [activityInfo label];
 
-    v4 = v12;
+    finishedCopy = v12;
   }
 
   else
   {
-    v6 = @"initialSyncSession";
+    label = @"initialSyncSession";
   }
 
-  v7 = [v4 error];
-  if (v7)
+  error = [finishedCopy error];
+  if (error)
   {
-    v8 = [v12 error];
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+    error2 = [v12 error];
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [error2 code]);
   }
 
   else
@@ -213,34 +213,34 @@ LABEL_10:
     v9 = 0;
   }
 
-  v10 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:v6];
-  [(PSDSchedulerAWDSessionState *)self _computeDurationForStateDictionary:v10 activity:v6];
+  v10 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:label];
+  [(PSDSchedulerAWDSessionState *)self _computeDurationForStateDictionary:v10 activity:label];
   [v10 setObject:v9 forKeyedSubscript:@"errorCode"];
   v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 interruptionCount]);
   [v10 setObject:v11 forKeyedSubscript:@"retryCount"];
 }
 
-- (void)noteActivityInterrupted:(id)a3
+- (void)noteActivityInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  interruptedCopy = interrupted;
+  v12 = interruptedCopy;
+  if (interruptedCopy)
   {
-    v5 = [v4 activityInfo];
-    v6 = [v5 label];
+    activityInfo = [interruptedCopy activityInfo];
+    label = [activityInfo label];
   }
 
   else
   {
-    v6 = @"initialSyncSession";
+    label = @"initialSyncSession";
   }
 
-  v7 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:v6];
-  v8 = [v12 error];
-  if (v8)
+  v7 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:label];
+  error = [v12 error];
+  if (error)
   {
-    v9 = [v12 error];
-    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 code]);
+    error2 = [v12 error];
+    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [error2 code]);
   }
 
   else
@@ -248,84 +248,84 @@ LABEL_10:
     v10 = 0;
   }
 
-  [(PSDSchedulerAWDSessionState *)self _computeDurationForStateDictionary:v7 activity:v6];
+  [(PSDSchedulerAWDSessionState *)self _computeDurationForStateDictionary:v7 activity:label];
   [v7 setObject:v10 forKeyedSubscript:@"errorCode"];
   v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 interruptionCount]);
   [v7 setObject:v11 forKeyedSubscript:@"retryCount"];
 }
 
-- (void)noteActivityDropout:(id)a3
+- (void)noteActivityDropout:(id)dropout
 {
-  if (a3)
+  if (dropout)
   {
-    v4 = [a3 activityInfo];
-    v6 = [v4 label];
+    activityInfo = [dropout activityInfo];
+    label = [activityInfo label];
   }
 
   else
   {
-    v6 = @"initialSyncSession";
+    label = @"initialSyncSession";
   }
 
-  v5 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:v6];
+  v5 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:label];
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:@"dropout"];
 }
 
-- (BOOL)hasDurationForActivity:(id)a3
+- (BOOL)hasDurationForActivity:(id)activity
 {
-  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:a3];
+  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:activity];
   v4 = [v3 objectForKeyedSubscript:@"duration"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (BOOL)wasDropoutForActivity:(id)a3
+- (BOOL)wasDropoutForActivity:(id)activity
 {
-  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:a3];
+  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:activity];
   v4 = [v3 objectForKeyedSubscript:@"dropout"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)hasErrorCodeForActivity:(id)a3
+- (BOOL)hasErrorCodeForActivity:(id)activity
 {
-  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:a3];
+  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:activity];
   v4 = [v3 objectForKeyedSubscript:@"errorCode"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)errorCodeForActivity:(id)a3
+- (id)errorCodeForActivity:(id)activity
 {
-  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:a3];
+  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:activity];
   v4 = [v3 objectForKeyedSubscript:@"errorCode"];
 
   return v4;
 }
 
-- (id)syncTypeForActivity:(id)a3
+- (id)syncTypeForActivity:(id)activity
 {
-  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:a3];
+  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:activity];
   v4 = [v3 objectForKeyedSubscript:@"syncType"];
 
   return v4;
 }
 
-- (id)retryCountForActivity:(id)a3
+- (id)retryCountForActivity:(id)activity
 {
-  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:a3];
+  v3 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:activity];
   v4 = [v3 objectForKeyedSubscript:@"retryCount"];
 
   return v4;
 }
 
-- (double)durationForActivity:(id)a3
+- (double)durationForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:v4];
+  activityCopy = activity;
+  v5 = [(PSDSchedulerAWDSessionState *)self stateDictionaryForActivity:activityCopy];
   v6 = [v5 objectForKeyedSubscript:@"duration"];
   [v6 doubleValue];
   v8 = v7;
@@ -351,23 +351,23 @@ LABEL_10:
   return fmax(v8, 0.0);
 }
 
-- (id)stateDictionaryForActivity:(id)a3
+- (id)stateDictionaryForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_stateDictionary objectForKeyedSubscript:v4];
+  activityCopy = activity;
+  v5 = [(NSMutableDictionary *)self->_stateDictionary objectForKeyedSubscript:activityCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (activityCopy && !v5)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
-    [(NSMutableDictionary *)self->_stateDictionary setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_stateDictionary setObject:v6 forKeyedSubscript:activityCopy];
   }
 
   return v6;
 }
 
-- (void)enumerateActivityNamesWithBlock:(id)a3
+- (void)enumerateActivityNamesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -388,7 +388,7 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 

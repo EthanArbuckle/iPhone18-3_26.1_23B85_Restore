@@ -5,7 +5,7 @@
 - (id)imageResource;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)applyConfirmedOptin:(BOOL)a3;
+- (void)applyConfirmedOptin:(BOOL)optin;
 @end
 
 @implementation COSTinkerLocationOptinViewController
@@ -28,9 +28,9 @@
 {
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"LOCATION_TINKER_TITLE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v4 = [UIApp tinkerUserName];
-  v5 = [v4 localizedCapitalizedString];
-  v6 = [NSString stringWithFormat:v3, v5];
+  tinkerUserName = [UIApp tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+  v6 = [NSString stringWithFormat:v3, localizedCapitalizedString];
 
   return v6;
 }
@@ -39,34 +39,34 @@
 {
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"LOCATION_DETAIL_TINKER_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v4 = [UIApp tinkerUserName];
-  v5 = [v4 localizedCapitalizedString];
-  v6 = [NSString stringWithFormat:v3, v5];
+  tinkerUserName = [UIApp tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+  v6 = [NSString stringWithFormat:v3, localizedCapitalizedString];
 
   return v6;
 }
 
 - (id)imageResource
 {
-  v2 = [UIApp activeWatch];
-  v3 = sub_100059F28(v2);
+  activeWatch = [UIApp activeWatch];
+  v3 = sub_100059F28(activeWatch);
 
   return v3;
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  v3 = a3;
+  optinCopy = optin;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 setupController];
-  [v6 setDidAllowTinkerLocationPermissions:v3];
+  setupController = [v5 setupController];
+  [setupController setDidAllowTinkerLocationPermissions:optinCopy];
 
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 bridgeController];
-  [v8 tellGizmoToSetLocationEnabled:v3];
+  bridgeController = [v7 bridgeController];
+  [bridgeController tellGizmoToSetLocationEnabled:optinCopy];
 
-  v9 = [(COSTinkerLocationOptinViewController *)self delegate];
-  [v9 buddyControllerDone:self];
+  delegate = [(COSTinkerLocationOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle

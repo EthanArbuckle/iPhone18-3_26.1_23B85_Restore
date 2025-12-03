@@ -1,19 +1,19 @@
 @interface _UIBarTapGestureRecognizer
-- (_UIBarTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UIBarTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (id)description;
-- (int64_t)_categoryForTapLocation:(CGPoint)a3;
-- (void)_setDelegate:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (int64_t)_categoryForTapLocation:(CGPoint)location;
+- (void)_setDelegate:(id)delegate;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIBarTapGestureRecognizer
 
-- (_UIBarTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIBarTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIBarTapGestureRecognizer;
-  v4 = [(UITapGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UITapGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -26,56 +26,56 @@
   return v5;
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UIBarCommon.m" lineNumber:755 description:{@"delegate doesn't implement required methods (%@)", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarCommon.m" lineNumber:755 description:{@"delegate doesn't implement required methods (%@)", delegateCopy}];
   }
 
   v7.receiver = self;
   v7.super_class = _UIBarTapGestureRecognizer;
-  [(UIGestureRecognizer *)&v7 setDelegate:v5];
+  [(UIGestureRecognizer *)&v7 setDelegate:delegateCopy];
 }
 
-- (int64_t)_categoryForTapLocation:(CGPoint)a3
+- (int64_t)_categoryForTapLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIGestureRecognizer *)self delegate];
-  v7 = [v6 _existingNavigationBar];
-  v8 = [v6 _existingToolbarWithItems];
-  if (!v7)
+  y = location.y;
+  x = location.x;
+  delegate = [(UIGestureRecognizer *)self delegate];
+  _existingNavigationBar = [delegate _existingNavigationBar];
+  _existingToolbarWithItems = [delegate _existingToolbarWithItems];
+  if (!_existingNavigationBar)
   {
     goto LABEL_7;
   }
 
-  if (![v6 isNavigationBarHidden])
+  if (![delegate isNavigationBarHidden])
   {
-    v11 = [(UIGestureRecognizer *)self view];
-    [v7 convertPoint:v11 fromView:{x, y}];
+    view = [(UIGestureRecognizer *)self view];
+    [_existingNavigationBar convertPoint:view fromView:{x, y}];
     v13 = v12;
     v15 = v14;
 
-    if ([v7 pointInside:0 withEvent:{v13, v15}])
+    if ([_existingNavigationBar pointInside:0 withEvent:{v13, v15}])
     {
       v10 = 2;
       goto LABEL_14;
     }
 
 LABEL_7:
-    if (v8)
+    if (_existingToolbarWithItems)
     {
-      v16 = [v6 isToolbarHidden];
-      v17 = [(UIGestureRecognizer *)self view];
-      v18 = v17;
-      if (v16)
+      isToolbarHidden = [delegate isToolbarHidden];
+      view2 = [(UIGestureRecognizer *)self view];
+      v18 = view2;
+      if (isToolbarHidden)
       {
-        [v17 bounds];
+        [view2 bounds];
         v20 = v19;
-        [v8 frame];
+        [_existingToolbarWithItems frame];
         v22 = v20 - v21;
 
         if (y >= v22)
@@ -87,11 +87,11 @@ LABEL_7:
 
       else
       {
-        [v8 convertPoint:v17 fromView:{x, y}];
+        [_existingToolbarWithItems convertPoint:view2 fromView:{x, y}];
         v24 = v23;
         v26 = v25;
 
-        if ([v8 pointInside:0 withEvent:{v24, v26}])
+        if ([_existingToolbarWithItems pointInside:0 withEvent:{v24, v26}])
         {
           v10 = 4;
           goto LABEL_14;
@@ -103,7 +103,7 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  [v7 _heightIncludingBackground];
+  [_existingNavigationBar _heightIncludingBackground];
   if (y > v9)
   {
     goto LABEL_7;
@@ -115,14 +115,14 @@ LABEL_14:
   return v10;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_tapCategory = 0;
   v7.receiver = self;
   v7.super_class = _UIBarTapGestureRecognizer;
-  [(UITapGestureRecognizer *)&v7 touchesBegan:a3 withEvent:a4];
-  v5 = [(UIGestureRecognizer *)self view];
-  [(UITapGestureRecognizer *)self locationInView:v5];
+  [(UITapGestureRecognizer *)&v7 touchesBegan:began withEvent:event];
+  view = [(UIGestureRecognizer *)self view];
+  [(UITapGestureRecognizer *)self locationInView:view];
   v6 = [(_UIBarTapGestureRecognizer *)self _categoryForTapLocation:?];
 
   if (self->_failWhenTappingInBars && (v6 == 4 || v6 == 2))
@@ -131,15 +131,15 @@ LABEL_14:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = _UIBarTapGestureRecognizer;
-  [(UITapGestureRecognizer *)&v6 touchesEnded:a3 withEvent:a4];
+  [(UITapGestureRecognizer *)&v6 touchesEnded:ended withEvent:event];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateEnded)
   {
-    v5 = [(UIGestureRecognizer *)self view];
-    [(UITapGestureRecognizer *)self locationInView:v5];
+    view = [(UIGestureRecognizer *)self view];
+    [(UITapGestureRecognizer *)self locationInView:view];
     self->_tapCategory = [(_UIBarTapGestureRecognizer *)self _categoryForTapLocation:?];
   }
 

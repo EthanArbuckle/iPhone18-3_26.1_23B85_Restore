@@ -1,9 +1,9 @@
 @interface RESessionRelevanceProviderManager
 + (id)_features;
-- (float)_relevanceForProvider:(id)a3;
+- (float)_relevanceForProvider:(id)provider;
 - (void)_handleSignificantTimeChange;
 - (void)_prepareForUpdate;
-- (void)_scheduleUpdatesForSessionProvider:(id)a3;
+- (void)_scheduleUpdatesForSessionProvider:(id)provider;
 - (void)pause;
 - (void)resume;
 @end
@@ -22,38 +22,38 @@
   return v3;
 }
 
-- (float)_relevanceForProvider:(id)a3
+- (float)_relevanceForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  if (v5)
+  providerCopy = provider;
+  startDate = [providerCopy startDate];
+  if (startDate)
   {
   }
 
   else
   {
-    v6 = [v4 endDate];
+    endDate = [providerCopy endDate];
 
-    if (!v6)
+    if (!endDate)
     {
       v15 = 1.0;
       goto LABEL_19;
     }
   }
 
-  v7 = [v4 startDate];
-  if (v7)
+  startDate2 = [providerCopy startDate];
+  if (startDate2)
   {
   }
 
   else
   {
-    v16 = [v4 endDate];
+    endDate2 = [providerCopy endDate];
 
-    if (v16)
+    if (endDate2)
     {
-      v14 = [v4 endDate];
-      v17 = [v14 earlierDate:self->_lastDateUpdate];
+      endDate3 = [providerCopy endDate];
+      v17 = [endDate3 earlierDate:self->_lastDateUpdate];
 LABEL_14:
       if (v17 == self->_lastDateUpdate)
       {
@@ -69,26 +69,26 @@ LABEL_14:
     }
   }
 
-  v8 = [v4 startDate];
-  if (v8)
+  startDate3 = [providerCopy startDate];
+  if (startDate3)
   {
-    v9 = v8;
-    v10 = [v4 endDate];
+    v9 = startDate3;
+    endDate4 = [providerCopy endDate];
 
-    if (!v10)
+    if (!endDate4)
     {
-      v14 = [v4 startDate];
-      v17 = [v14 laterDate:self->_lastDateUpdate];
+      endDate3 = [providerCopy startDate];
+      v17 = [endDate3 laterDate:self->_lastDateUpdate];
       goto LABEL_14;
     }
   }
 
   v11 = objc_alloc(MEMORY[0x277CCA970]);
-  v12 = [v4 startDate];
-  v13 = [v4 endDate];
-  v14 = [v11 initWithStartDate:v12 endDate:v13];
+  startDate4 = [providerCopy startDate];
+  endDate5 = [providerCopy endDate];
+  endDate3 = [v11 initWithStartDate:startDate4 endDate:endDate5];
 
-  if ([v14 containsDate:self->_lastDateUpdate])
+  if ([endDate3 containsDate:self->_lastDateUpdate])
   {
     v15 = 1.0;
   }
@@ -104,49 +104,49 @@ LABEL_19:
   return v15;
 }
 
-- (void)_scheduleUpdatesForSessionProvider:(id)a3
+- (void)_scheduleUpdatesForSessionProvider:(id)provider
 {
-  v10 = a3;
-  v4 = [v10 startDate];
+  providerCopy = provider;
+  startDate = [providerCopy startDate];
 
-  if (v4)
+  if (startDate)
   {
-    v5 = [v10 startDate];
-    v6 = [RERelevanceProviderManagerUpdate scheduledUpdateForProvider:v10 atDate:v5];
+    startDate2 = [providerCopy startDate];
+    v6 = [RERelevanceProviderManagerUpdate scheduledUpdateForProvider:providerCopy atDate:startDate2];
     [(RERelevanceProviderManager *)self _scheduleUpdate:v6];
   }
 
-  v7 = [v10 endDate];
+  endDate = [providerCopy endDate];
 
-  if (v7)
+  if (endDate)
   {
-    v8 = [v10 endDate];
-    v9 = [RERelevanceProviderManagerUpdate scheduledUpdateForProvider:v10 atDate:v8];
+    endDate2 = [providerCopy endDate];
+    v9 = [RERelevanceProviderManagerUpdate scheduledUpdateForProvider:providerCopy atDate:endDate2];
     [(RERelevanceProviderManager *)self _scheduleUpdate:v9];
   }
 }
 
 - (void)_prepareForUpdate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastDateUpdate = self->_lastDateUpdate;
-  self->_lastDateUpdate = v3;
+  self->_lastDateUpdate = date;
 
-  MEMORY[0x2821F96F8](v3, lastDateUpdate);
+  MEMORY[0x2821F96F8](date, lastDateUpdate);
 }
 
 - (void)resume
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = RESignificantTimeChangeNotification();
-  [v4 addObserver:self selector:sel__handleSignificantTimeChange name:v3 object:0];
+  [defaultCenter addObserver:self selector:sel__handleSignificantTimeChange name:v3 object:0];
 }
 
 - (void)pause
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = RESignificantTimeChangeNotification();
-  [v4 removeObserver:self name:v3 object:0];
+  [defaultCenter removeObserver:self name:v3 object:0];
 }
 
 - (void)_handleSignificantTimeChange

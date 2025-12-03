@@ -2,29 +2,29 @@
 + (id)sharedInstance;
 - (DEDDaemon)init;
 - (id)_controller;
-- (id)_extensionsForSession:(id)a3;
+- (id)_extensionsForSession:(id)session;
 - (id)attachmentHandler;
 - (id)diagnosticCollector;
 - (void)_logOperations;
-- (void)_startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5 runSetup:(BOOL)a6;
+- (void)_startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session runSetup:(BOOL)setup;
 - (void)_streamOperationStatus;
-- (void)_syncSessionStatusWithSession:(id)a3 withIdentifiers:(BOOL)a4;
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5;
-- (void)adoptFiles:(id)a3 forSession:(id)a4;
-- (void)cancelSession:(id)a3;
-- (void)commitSession:(id)a3;
-- (void)finallyStartDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5;
-- (void)getSessionStateWithSession:(id)a3;
-- (void)listAvailableExtensionsForSession:(id)a3;
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5;
-- (void)pingSession:(id)a3;
-- (void)scheduleNotificationForSession:(id)a3;
-- (void)setupDeferredDiagnosticsWithExtensionInfo:(id)a3;
+- (void)_syncSessionStatusWithSession:(id)session withIdentifiers:(BOOL)identifiers;
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session;
+- (void)adoptFiles:(id)files forSession:(id)session;
+- (void)cancelSession:(id)session;
+- (void)commitSession:(id)session;
+- (void)finallyStartDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session;
+- (void)getSessionStateWithSession:(id)session;
+- (void)listAvailableExtensionsForSession:(id)session;
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d;
+- (void)pingSession:(id)session;
+- (void)scheduleNotificationForSession:(id)session;
+- (void)setupDeferredDiagnosticsWithExtensionInfo:(id)info;
 - (void)start;
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6;
-- (void)teardownDeferredDiagnosticsWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5;
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5;
-- (void)unscheduleNotificationForSession:(id)a3;
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session;
+- (void)teardownDeferredDiagnosticsWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session;
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session;
+- (void)unscheduleNotificationForSession:(id)session;
 - (void)warmUpCaches;
 @end
 
@@ -43,9 +43,9 @@
     v4 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [v4 setQualityOfService:9];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(DEDDaemon *)v2 config];
-    v7 = [v6 identifier];
-    v8 = [v5 stringWithFormat:@"%@.ded-daemon-bkgd-queue", v7];
+    config = [(DEDDaemon *)v2 config];
+    identifier = [config identifier];
+    v8 = [v5 stringWithFormat:@"%@.ded-daemon-bkgd-queue", identifier];
     [v4 setName:v8];
 
     [(DEDDaemon *)v2 setBackgroundOpQueue:v4];
@@ -53,9 +53,9 @@
 
     [v9 setQualityOfService:25];
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(DEDDaemon *)v2 config];
-    v12 = [v11 identifier];
-    v13 = [v10 stringWithFormat:@"%@.ded-daemon-uinit-queue", v12];
+    config2 = [(DEDDaemon *)v2 config];
+    identifier2 = [config2 identifier];
+    v13 = [v10 stringWithFormat:@"%@.ded-daemon-uinit-queue", identifier2];
     [v9 setName:v13];
 
     [(DEDDaemon *)v2 setUserInitiatedOpQueue:v9];
@@ -85,23 +85,23 @@ uint64_t __27__DEDDaemon_sharedInstance__block_invoke()
 
 - (void)start
 {
-  v3 = [(DEDDaemon *)self _controller];
-  [(DEDDaemon *)self setController:v3];
+  _controller = [(DEDDaemon *)self _controller];
+  [(DEDDaemon *)self setController:_controller];
 
   if ([(DEDDaemon *)self embeddedInApp])
   {
-    v4 = [(DEDDaemon *)self controller];
-    [v4 configureForEmbedded:1];
+    controller = [(DEDDaemon *)self controller];
+    [controller configureForEmbedded:1];
   }
 
-  v5 = [(DEDDaemon *)self controller];
-  [v5 configureForDaemon];
+  controller2 = [(DEDDaemon *)self controller];
+  [controller2 configureForDaemon];
 
-  v6 = [(DEDDaemon *)self controller];
-  [v6 configureWorkerDelegate:self];
+  controller3 = [(DEDDaemon *)self controller];
+  [controller3 configureWorkerDelegate:self];
 
-  v7 = [(DEDDaemon *)self controller];
-  [v7 start];
+  controller4 = [(DEDDaemon *)self controller];
+  [controller4 start];
 
   +[DEDAnalytics didStartDaemon];
   +[DEDDeferredExtensionInfo checkIn];
@@ -131,8 +131,8 @@ uint64_t __27__DEDDaemon_sharedInstance__block_invoke()
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"warmUpCaches", v7, v8, v9, v10];
   [v4 setName:v5];
 
-  v6 = [(DEDDaemon *)self backgroundOpQueue];
-  [v6 addOperation:v4];
+  backgroundOpQueue = [(DEDDaemon *)self backgroundOpQueue];
+  [backgroundOpQueue addOperation:v4];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -159,101 +159,101 @@ void __25__DEDDaemon_warmUpCaches__block_invoke(uint64_t a1)
   [v6 setCachedExtensionsForThisDevice:v5];
 }
 
-- (void)finallyStartDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5
+- (void)finallyStartDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  sessionCopy = session;
   v11 = Log_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v13 = 136315906;
     v14 = "[DEDDaemon finallyStartDiagnosticWithIdentifier:parameters:session:]";
     v15 = 2112;
-    v16 = v8;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = parametersCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = sessionCopy;
     _os_log_debug_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEBUG, "%s %@ %@ %@", &v13, 0x2Au);
   }
 
-  [(DEDDaemon *)self _startDiagnosticWithIdentifier:v8 parameters:v9 session:v10 runSetup:0];
+  [(DEDDaemon *)self _startDiagnosticWithIdentifier:identifierCopy parameters:parametersCopy session:sessionCopy runSetup:0];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupDeferredDiagnosticsWithExtensionInfo:(id)a3
+- (void)setupDeferredDiagnosticsWithExtensionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = Log_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DEDDaemon *)v4 setupDeferredDiagnosticsWithExtensionInfo:v5];
+    [(DEDDaemon *)infoCopy setupDeferredDiagnosticsWithExtensionInfo:v5];
   }
 
-  v6 = [(DEDDaemon *)self diagnosticCollector];
-  [v6 prepareItemsWithDeferredExtensionInfo:v4];
+  diagnosticCollector = [(DEDDaemon *)self diagnosticCollector];
+  [diagnosticCollector prepareItemsWithDeferredExtensionInfo:infoCopy];
 }
 
-- (void)teardownDeferredDiagnosticsWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5
+- (void)teardownDeferredDiagnosticsWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  sessionCopy = session;
   v11 = Log_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v14 = 136315906;
     v15 = "[DEDDaemon teardownDeferredDiagnosticsWithIdentifier:parameters:session:]";
     v16 = 2112;
-    v17 = v8;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = parametersCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = sessionCopy;
     _os_log_debug_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEBUG, "%s %@ %@ %@", &v14, 0x2Au);
   }
 
-  v12 = [(DEDDaemon *)self diagnosticCollector];
-  [v12 cleanupItemsWithIdentifier:v8 parameters:v9 session:v10];
+  diagnosticCollector = [(DEDDaemon *)self diagnosticCollector];
+  [diagnosticCollector cleanupItemsWithIdentifier:identifierCopy parameters:parametersCopy session:sessionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pingSession:(id)a3
+- (void)pingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = Log_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DEDDaemon pingSession:v5];
   }
 
-  v6 = [(DEDDaemon *)self controller];
-  v7 = [v6 sessionForIdentifier:v4];
+  controller = [(DEDDaemon *)self controller];
+  v7 = [controller sessionForIdentifier:sessionCopy];
 
   [v7 pong];
 }
 
-- (void)listAvailableExtensionsForSession:(id)a3
+- (void)listAvailableExtensionsForSession:(id)session
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = Log_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v23 = "[DEDDaemon listAvailableExtensionsForSession:]";
     v24 = 2114;
-    v25 = v4;
+    v25 = sessionCopy;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}s] [%{public}@]", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-show-extensions-%@", v4];
-  v7 = v6;
-  [v6 UTF8String];
+  sessionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-show-extensions-%@", sessionCopy];
+  v7 = sessionCopy;
+  [sessionCopy UTF8String];
   v8 = os_transaction_create();
   objc_initWeak(buf, self);
   v9 = MEMORY[0x277CCA8C8];
@@ -263,17 +263,17 @@ void __25__DEDDaemon_warmUpCaches__block_invoke(uint64_t a1)
   v17[3] = &unk_278F65C88;
   v10 = v8;
   v18 = v10;
-  v11 = v6;
+  v11 = sessionCopy;
   v19 = v11;
   objc_copyWeak(&v21, buf);
-  v12 = v4;
+  v12 = sessionCopy;
   v20 = v12;
   v13 = [v9 blockOperationWithBlock:v17];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"show-extensions(%@)", v12];
   [v13 setName:v14];
 
-  v15 = [(DEDDaemon *)self userInitiatedOpQueue];
-  [v15 addOperation:v13];
+  userInitiatedOpQueue = [(DEDDaemon *)self userInitiatedOpQueue];
+  [userInitiatedOpQueue addOperation:v13];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -309,31 +309,31 @@ void __47__DEDDaemon_listAvailableExtensionsForSession___block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_extensionsForSession:(id)a3
+- (id)_extensionsForSession:(id)session
 {
-  v4 = [(DEDDaemon *)self cachedExtensionsForThisDevice];
+  cachedExtensionsForThisDevice = [(DEDDaemon *)self cachedExtensionsForThisDevice];
 
-  if (v4)
+  if (cachedExtensionsForThisDevice)
   {
-    v5 = [(DEDDaemon *)self cachedExtensionsForThisDevice];
+    cachedExtensionsForThisDevice2 = [(DEDDaemon *)self cachedExtensionsForThisDevice];
   }
 
   else
   {
-    v6 = [(DEDDaemon *)self diagnosticCollector];
-    v5 = [v6 availableDiagnosticExtensions];
+    diagnosticCollector = [(DEDDaemon *)self diagnosticCollector];
+    cachedExtensionsForThisDevice2 = [diagnosticCollector availableDiagnosticExtensions];
   }
 
-  return v5;
+  return cachedExtensionsForThisDevice2;
 }
 
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  untilCopy = until;
+  sessionCopy = session;
   v14 = Log_0();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -344,52 +344,52 @@ void __47__DEDDaemon_listAvailableExtensionsForSession___block_invoke(uint64_t a
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v21 = 138412546;
-    v22 = v10;
+    v22 = identifierCopy;
     v23 = 2112;
-    v24 = v12;
+    v24 = untilCopy;
     _os_log_impl(&dword_248AD7000, v15, OS_LOG_TYPE_INFO, "will collect %@, deferred until %@", &v21, 0x16u);
   }
 
-  v16 = [[DEDExtensionIdentifier alloc] initWithString:v10];
+  v16 = [[DEDExtensionIdentifier alloc] initWithString:identifierCopy];
   v17 = [DEDDeferredExtensionInfo alloc];
-  [DEDDeferredExtensionInfo recommendedGracePeriodForDate:v12];
-  v18 = [(DEDDeferredExtensionInfo *)v17 initWithBugSessionIdentifier:v13 dedIdentifier:v16 runOnDate:v12 withGracePeriod:?];
+  [DEDDeferredExtensionInfo recommendedGracePeriodForDate:untilCopy];
+  v18 = [(DEDDeferredExtensionInfo *)v17 initWithBugSessionIdentifier:sessionCopy dedIdentifier:v16 runOnDate:untilCopy withGracePeriod:?];
 
-  [(DEDDeferredExtensionInfo *)v18 setParameters:v11];
+  [(DEDDeferredExtensionInfo *)v18 setParameters:parametersCopy];
   [(DEDDeferredExtensionInfo *)v18 schedule];
-  [v12 timeIntervalSinceNow];
-  [DEDAnalytics extensionDidScheduleExtensionWithIdentifier:v10 delay:v19];
+  [untilCopy timeIntervalSinceNow];
+  [DEDAnalytics extensionDidScheduleExtensionWithIdentifier:identifierCopy delay:v19];
   [(DEDDaemon *)self setupDeferredDiagnosticsWithExtensionInfo:v18];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5 runSetup:(BOOL)a6
+- (void)_startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session runSetup:(BOOL)setup
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  sessionCopy = session;
   v13 = Log_0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     v42 = "[DEDDaemon _startDiagnosticWithIdentifier:parameters:session:runSetup:]";
     v43 = 2114;
-    v44 = v12;
+    v44 = sessionCopy;
     v45 = 2114;
-    v46 = v10;
+    v46 = identifierCopy;
     _os_log_impl(&dword_248AD7000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}s] [%{public}@] [%{public}@]", buf, 0x20u);
   }
 
-  [DEDAnalytics didStartExtensionWithIdentifier:v10];
-  v30 = [MEMORY[0x277CBEAA8] date];
+  [DEDAnalytics didStartExtensionWithIdentifier:identifierCopy];
+  date = [MEMORY[0x277CBEAA8] date];
   objc_initWeak(buf, self);
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-collect-%@-%@", v12, v10];
-  v15 = v14;
-  [v14 UTF8String];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-collect-%@-%@", sessionCopy, identifierCopy];
+  v15 = identifierCopy;
+  [identifierCopy UTF8String];
   v16 = os_transaction_create();
-  v17 = [[DEDExtensionIdentifier alloc] initWithString:v10];
+  v17 = [[DEDExtensionIdentifier alloc] initWithString:identifierCopy];
   v18 = MEMORY[0x277CCA8C8];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -397,26 +397,26 @@ void __47__DEDDaemon_listAvailableExtensionsForSession___block_invoke(uint64_t a
   v31[3] = &unk_278F65CD8;
   v19 = v16;
   v32 = v19;
-  v20 = v14;
+  v20 = identifierCopy;
   v33 = v20;
   objc_copyWeak(&v39, buf);
-  v21 = v12;
+  v21 = sessionCopy;
   v34 = v21;
-  v22 = v10;
+  v22 = identifierCopy;
   v35 = v22;
-  v23 = v11;
+  v23 = parametersCopy;
   v36 = v23;
-  v40 = a6;
+  setupCopy = setup;
   v24 = v17;
   v37 = v24;
-  v25 = v30;
+  v25 = date;
   v38 = v25;
   v26 = [v18 blockOperationWithBlock:v31];
   v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"collect(%@-%@)", v21, v22];
   [v26 setName:v27];
 
-  v28 = [(DEDDaemon *)self backgroundOpQueue];
-  [v28 addOperation:v26];
+  backgroundOpQueue = [(DEDDaemon *)self backgroundOpQueue];
+  [backgroundOpQueue addOperation:v26];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -731,30 +731,30 @@ void __72__DEDDaemon__startDiagnosticWithIdentifier_parameters_session_runSetup_
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionCopy = extension;
+  infoCopy = info;
+  sessionCopy = session;
   v11 = Log_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *location = 136315906;
     *&location[4] = "[DEDDaemon terminateExtension:info:session:]";
     v31 = 2112;
-    v32 = v8;
+    v32 = extensionCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = infoCopy;
     v35 = 2112;
-    v36 = v10;
+    v36 = sessionCopy;
     _os_log_debug_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEBUG, "%s %@ %@ %@", location, 0x2Au);
   }
 
   objc_initWeak(location, self);
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-terminate-%@", v8];
-  v13 = v12;
-  [v12 UTF8String];
+  extensionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-terminate-%@", extensionCopy];
+  v13 = extensionCopy;
+  [extensionCopy UTF8String];
   v14 = os_transaction_create();
   v15 = MEMORY[0x277CCA8C8];
   v24[0] = MEMORY[0x277D85DD0];
@@ -763,19 +763,19 @@ void __72__DEDDaemon__startDiagnosticWithIdentifier_parameters_session_runSetup_
   v24[3] = &unk_278F65D00;
   v16 = v14;
   v25 = v16;
-  v17 = v8;
+  v17 = extensionCopy;
   v26 = v17;
   objc_copyWeak(&v29, location);
-  v18 = v10;
+  v18 = sessionCopy;
   v27 = v18;
-  v19 = v9;
+  v19 = infoCopy;
   v28 = v19;
   v20 = [v15 blockOperationWithBlock:v24];
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"terminate(%@-%@)", v18, v17];
   [v20 setName:v21];
 
-  v22 = [(DEDDaemon *)self backgroundOpQueue];
-  [v22 addOperation:v20];
+  backgroundOpQueue = [(DEDDaemon *)self backgroundOpQueue];
+  [backgroundOpQueue addOperation:v20];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -863,10 +863,10 @@ uint64_t __45__DEDDaemon_terminateExtension_info_session___block_invoke_124(uint
   return result;
 }
 
-- (void)adoptFiles:(id)a3 forSession:(id)a4
+- (void)adoptFiles:(id)files forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  filesCopy = files;
+  sessionCopy = session;
   v8 = Log_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -874,8 +874,8 @@ uint64_t __45__DEDDaemon_terminateExtension_info_session___block_invoke_124(uint
   }
 
   objc_initWeak(&location, self);
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-adopt-%@", v7];
-  [v9 UTF8String];
+  sessionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-adopt-%@", sessionCopy];
+  [sessionCopy UTF8String];
   v10 = os_transaction_create();
   v11 = MEMORY[0x277CCA8C8];
   v18 = MEMORY[0x277D85DD0];
@@ -885,16 +885,16 @@ uint64_t __45__DEDDaemon_terminateExtension_info_session___block_invoke_124(uint
   v12 = v10;
   v22 = v12;
   objc_copyWeak(&v25, &location);
-  v13 = v7;
+  v13 = sessionCopy;
   v23 = v13;
-  v14 = v6;
+  v14 = filesCopy;
   v24 = v14;
   v15 = [v11 blockOperationWithBlock:&v18];
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"adopt(%@)", v13, v18, v19, v20, v21];
   [v15 setName:v16];
 
-  v17 = [(DEDDaemon *)self userInitiatedOpQueue];
-  [v17 addOperation:v15];
+  userInitiatedOpQueue = [(DEDDaemon *)self userInitiatedOpQueue];
+  [userInitiatedOpQueue addOperation:v15];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -1005,44 +1005,44 @@ void __35__DEDDaemon_adoptFiles_forSession___block_invoke(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)commitSession:(id)a3
+- (void)commitSession:(id)session
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDDaemon *)self controller];
-  v6 = [v5 sessionForIdentifier:v4];
+  sessionCopy = session;
+  controller = [(DEDDaemon *)self controller];
+  v6 = [controller sessionForIdentifier:sessionCopy];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"finish(%@)", v4];
-    v8 = [(DEDDaemon *)self backgroundOpQueue];
-    v9 = [v8 operations];
+    sessionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"finish(%@)", sessionCopy];
+    backgroundOpQueue = [(DEDDaemon *)self backgroundOpQueue];
+    operations = [backgroundOpQueue operations];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __27__DEDDaemon_commitSession___block_invoke;
     v26[3] = &unk_278F65D50;
-    v10 = v7;
+    v10 = sessionCopy;
     v27 = v10;
-    v11 = [v9 ded_findWithBlock:v26];
+    v11 = [operations ded_findWithBlock:v26];
 
     if (v11)
     {
-      v12 = Log_0();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      sessionCopy2 = Log_0();
+      if (os_log_type_enabled(sessionCopy2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = v4;
+        v29 = sessionCopy;
         v13 = "Already finishing [%{public}@]";
 LABEL_11:
-        _os_log_impl(&dword_248AD7000, v12, OS_LOG_TYPE_DEFAULT, v13, buf, 0xCu);
+        _os_log_impl(&dword_248AD7000, sessionCopy2, OS_LOG_TYPE_DEFAULT, v13, buf, 0xCu);
       }
     }
 
     else if ([v6 readyToFinish])
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-commits-%@", v4];
-      v14 = v12;
-      [v12 UTF8String];
+      sessionCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-commits-%@", sessionCopy];
+      v14 = sessionCopy2;
+      [sessionCopy2 UTF8String];
       v15 = os_transaction_create();
       objc_initWeak(buf, self);
       v16 = MEMORY[0x277CCA8C8];
@@ -1052,13 +1052,13 @@ LABEL_11:
       v21[3] = &unk_278F65DA0;
       v17 = v15;
       v22 = v17;
-      v23 = v4;
+      v23 = sessionCopy;
       v24 = v6;
       objc_copyWeak(&v25, buf);
       v18 = [v16 blockOperationWithBlock:v21];
       [v18 setName:v10];
-      v19 = [(DEDDaemon *)self backgroundOpQueue];
-      [v19 addOperation:v18];
+      backgroundOpQueue2 = [(DEDDaemon *)self backgroundOpQueue];
+      [backgroundOpQueue2 addOperation:v18];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(buf);
@@ -1066,11 +1066,11 @@ LABEL_11:
 
     else
     {
-      v12 = Log_0();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      sessionCopy2 = Log_0();
+      if (os_log_type_enabled(sessionCopy2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = v4;
+        v29 = sessionCopy;
         v13 = "Not ready to finish [%{public}@]";
         goto LABEL_11;
       }
@@ -1083,7 +1083,7 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v4;
+    v29 = sessionCopy;
     _os_log_impl(&dword_248AD7000, v10, OS_LOG_TYPE_DEFAULT, "Session is nil for identifier [%{public}@]. Cannot commit", buf, 0xCu);
   }
 
@@ -1280,7 +1280,7 @@ void __27__DEDDaemon_commitSession___block_invoke_154(uint64_t a1, void *a2)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelSession:(id)a3
+- (void)cancelSession:(id)session
 {
   v3 = Log_0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1289,18 +1289,18 @@ void __27__DEDDaemon_commitSession___block_invoke_154(uint64_t a1, void *a2)
   }
 }
 
-- (void)scheduleNotificationForSession:(id)a3
+- (void)scheduleNotificationForSession:(id)session
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDDaemon *)self controller];
-  v6 = [v5 sessionForIdentifier:v4];
+  sessionCopy = session;
+  controller = [(DEDDaemon *)self controller];
+  v6 = [controller sessionForIdentifier:sessionCopy];
 
   v7 = Log_0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v4;
+    v11 = sessionCopy;
     _os_log_impl(&dword_248AD7000, v7, OS_LOG_TYPE_DEFAULT, "Daemon received notification request for bug session: %{public}@", &v10, 0xCu);
   }
 
@@ -1319,26 +1319,26 @@ void __27__DEDDaemon_commitSession___block_invoke_154(uint64_t a1, void *a2)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unscheduleNotificationForSession:(id)a3
+- (void)unscheduleNotificationForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDDaemon *)self controller];
-  v6 = [v5 sessionForIdentifier:v4];
+  sessionCopy = session;
+  controller = [(DEDDaemon *)self controller];
+  v6 = [controller sessionForIdentifier:sessionCopy];
 
   [v6 clearNotificationOnFilingDevice];
 }
 
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DEDDaemon *)self controller];
-  v12 = [v11 sessionForIdentifier:v10];
+  dataCopy = data;
+  filenameCopy = filename;
+  sessionCopy = session;
+  controller = [(DEDDaemon *)self controller];
+  v12 = [controller sessionForIdentifier:sessionCopy];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v12 identifier];
-  v15 = [v13 stringWithFormat:@"com.apple.diagnosticextensionsd-send-data-%@-%@", v10, v14];
+  identifier = [v12 identifier];
+  v15 = [v13 stringWithFormat:@"com.apple.diagnosticextensionsd-send-data-%@-%@", sessionCopy, identifier];
 
   [v15 UTF8String];
   v16 = os_transaction_create();
@@ -1351,18 +1351,18 @@ void __27__DEDDaemon_commitSession___block_invoke_154(uint64_t a1, void *a2)
   v31 = v18;
   v19 = v12;
   v32 = v19;
-  v20 = v8;
+  v20 = dataCopy;
   v33 = v20;
-  v21 = v9;
+  v21 = filenameCopy;
   v34 = v21;
   v22 = [v17 blockOperationWithBlock:&v27];
   v23 = MEMORY[0x277CCACA8];
-  v24 = [v19 identifier];
-  v25 = [v23 stringWithFormat:@"send-data(%@-%@)", v10, v24, v27, v28, v29, v30];
+  identifier2 = [v19 identifier];
+  v25 = [v23 stringWithFormat:@"send-data(%@-%@)", sessionCopy, identifier2, v27, v28, v29, v30];
 
   [v22 setName:v25];
-  v26 = [(DEDDaemon *)self backgroundOpQueue];
-  [v26 addOperation:v22];
+  backgroundOpQueue = [(DEDDaemon *)self backgroundOpQueue];
+  [backgroundOpQueue addOperation:v22];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -1370,12 +1370,12 @@ void __27__DEDDaemon_commitSession___block_invoke_154(uint64_t a1, void *a2)
   }
 }
 
-- (void)getSessionStateWithSession:(id)a3
+- (void)getSessionStateWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-get-status-%@", v4];
-  [v5 UTF8String];
+  sessionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-get-status-%@", sessionCopy];
+  [sessionCopy UTF8String];
   v6 = os_transaction_create();
   v7 = MEMORY[0x277CCA8C8];
   v14 = MEMORY[0x277D85DD0];
@@ -1384,17 +1384,17 @@ void __27__DEDDaemon_commitSession___block_invoke_154(uint64_t a1, void *a2)
   v17 = &unk_278F65C88;
   v8 = v6;
   v18 = v8;
-  v9 = v5;
+  v9 = sessionCopy;
   v19 = v9;
   objc_copyWeak(&v21, &location);
-  v10 = v4;
+  v10 = sessionCopy;
   v20 = v10;
   v11 = [v7 blockOperationWithBlock:&v14];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"getState(%@)", v10, v14, v15, v16, v17];
   [v11 setName:v12];
 
-  v13 = [(DEDDaemon *)self userInitiatedOpQueue];
-  [v13 addOperation:v11];
+  userInitiatedOpQueue = [(DEDDaemon *)self userInitiatedOpQueue];
+  [userInitiatedOpQueue addOperation:v11];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -1487,14 +1487,14 @@ void __40__DEDDaemon_getSessionStateWithSession___block_invoke_2(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_syncSessionStatusWithSession:(id)a3 withIdentifiers:(BOOL)a4
+- (void)_syncSessionStatusWithSession:(id)session withIdentifiers:(BOOL)identifiers
 {
-  v6 = a3;
+  sessionCopy = session;
   objc_initWeak(&location, self);
-  v7 = [v6 identifier];
+  identifier = [sessionCopy identifier];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v6 identifier];
-  v10 = [v8 stringWithFormat:@"com.apple.diagnosticextensionsd-status-%@", v9];
+  identifier2 = [sessionCopy identifier];
+  v10 = [v8 stringWithFormat:@"com.apple.diagnosticextensionsd-status-%@", identifier2];
 
   [v10 UTF8String];
   v11 = os_transaction_create();
@@ -1505,20 +1505,20 @@ void __40__DEDDaemon_getSessionStateWithSession___block_invoke_2(uint64_t a1)
   v21[3] = &unk_278F65E68;
   v13 = v11;
   v22 = v13;
-  v14 = v6;
+  v14 = sessionCopy;
   v23 = v14;
   objc_copyWeak(&v25, &location);
-  v15 = v7;
+  v15 = identifier;
   v24 = v15;
-  v26 = a4;
+  identifiersCopy = identifiers;
   v16 = [v12 blockOperationWithBlock:v21];
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v14 identifier];
-  v19 = [v17 stringWithFormat:@"getStatus(%@)", v18];
+  identifier3 = [v14 identifier];
+  v19 = [v17 stringWithFormat:@"getStatus(%@)", identifier3];
   [v16 setName:v19];
 
-  v20 = [(DEDDaemon *)self userInitiatedOpQueue];
-  [v20 addOperation:v16];
+  userInitiatedOpQueue = [(DEDDaemon *)self userInitiatedOpQueue];
+  [userInitiatedOpQueue addOperation:v16];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -1724,31 +1724,31 @@ id __59__DEDDaemon__syncSessionStatusWithSession_withIdentifiers___block_invoke_
   return v8;
 }
 
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionsCopy = extensions;
+  localizationCopy = localization;
+  dCopy = d;
   v11 = Log_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v8 valueForKeyPath:@"identifier"];
+    v24 = [extensionsCopy valueForKeyPath:@"identifier"];
     *location = 136315906;
     *&location[4] = "[DEDDaemon loadTextDataForExtensions:localization:sessionID:]";
     v35 = 2112;
     v36 = v24;
     v37 = 2112;
-    v38 = v9;
+    v38 = localizationCopy;
     v39 = 2112;
-    v40 = v10;
+    v40 = dCopy;
     _os_log_debug_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEBUG, "%s %@, $@, %@, %@", location, 0x2Au);
   }
 
   objc_initWeak(location, self);
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-load-extension-text-%@", v10];
-  v13 = v12;
-  [v12 UTF8String];
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd-load-extension-text-%@", dCopy];
+  v13 = dCopy;
+  [dCopy UTF8String];
   v14 = os_transaction_create();
   v15 = MEMORY[0x277CCA8C8];
   v25 = MEMORY[0x277D85DD0];
@@ -1757,19 +1757,19 @@ id __59__DEDDaemon__syncSessionStatusWithSession_withIdentifiers___block_invoke_
   v28 = &unk_278F65D00;
   v16 = v14;
   v29 = v16;
-  v17 = v8;
+  v17 = extensionsCopy;
   v30 = v17;
   objc_copyWeak(&v33, location);
-  v18 = v9;
+  v18 = localizationCopy;
   v31 = v18;
-  v19 = v10;
+  v19 = dCopy;
   v32 = v19;
   v20 = [v15 blockOperationWithBlock:&v25];
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"loadExtensionText(%@)", v19, v25, v26, v27, v28];
   [v20 setName:v21];
 
-  v22 = [(DEDDaemon *)self userInitiatedOpQueue];
-  [v22 addOperation:v20];
+  userInitiatedOpQueue = [(DEDDaemon *)self userInitiatedOpQueue];
+  [userInitiatedOpQueue addOperation:v20];
 
   if ([(DEDDaemon *)self observesOperations])
   {
@@ -1830,9 +1830,9 @@ void __62__DEDDaemon_loadTextDataForExtensions_localization_sessionID___block_in
 
 - (id)diagnosticCollector
 {
-  v3 = [(DEDDaemon *)self _diagnosticCollector];
+  _diagnosticCollector = [(DEDDaemon *)self _diagnosticCollector];
 
-  if (!v3)
+  if (!_diagnosticCollector)
   {
     v4 = objc_alloc_init(DEDDiagnosticCollector);
     [(DEDDaemon *)self set_diagnosticCollector:v4];
@@ -1877,16 +1877,16 @@ uint64_t __35__DEDDaemon__streamOperationStatus__block_invoke(uint64_t a1)
 - (void)_logOperations
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 userInitiatedOpQueue];
-  v5 = [v4 name];
-  v6 = [a2 userInitiatedOpQueue];
-  v7 = [v6 operations];
-  v8 = [v7 valueForKeyPath:@"name"];
+  selfCopy = self;
+  userInitiatedOpQueue = [a2 userInitiatedOpQueue];
+  name = [userInitiatedOpQueue name];
+  userInitiatedOpQueue2 = [a2 userInitiatedOpQueue];
+  operations = [userInitiatedOpQueue2 operations];
+  v8 = [operations valueForKeyPath:@"name"];
   v11 = 138412546;
-  v12 = v5;
+  v12 = name;
   OUTLINED_FUNCTION_0_3();
-  OUTLINED_FUNCTION_2_2(&dword_248AD7000, v3, v9, "%@ operations %@", &v11);
+  OUTLINED_FUNCTION_2_2(&dword_248AD7000, selfCopy, v9, "%@ operations %@", &v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }

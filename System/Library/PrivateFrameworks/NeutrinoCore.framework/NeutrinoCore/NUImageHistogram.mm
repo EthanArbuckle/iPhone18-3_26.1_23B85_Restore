@@ -1,9 +1,9 @@
 @interface NUImageHistogram
 - ($F24F406B2B787EFB06265DBA3D28CBD5)range;
-- (NUImageHistogram)initWithBinCount:(int64_t)a3 range:(id)a4;
+- (NUImageHistogram)initWithBinCount:(int64_t)count range:(id)range;
 - (id)description;
-- (id)immutableCopyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)immutableCopyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NUImageHistogram
@@ -21,36 +21,36 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUImageHistogram *)self binCount];
+  binCount = [(NUImageHistogram *)self binCount];
   [(NUImageHistogram *)self range];
   v7 = v6;
   [(NUImageHistogram *)self range];
   v9 = v8;
   v10 = [(NUImageHistogram *)self red];
-  v11 = [(NUImageHistogram *)self green];
-  v12 = [(NUImageHistogram *)self blue];
-  v13 = [(NUImageHistogram *)self luminance];
-  v14 = [v3 stringWithFormat:@"<%@:%p> count=%ld, range: [%0.3f..%0.3f], red=%@, green=%@, blue=%@, luminance=%@", v4, self, v5, v7, v9, v10, v11, v12, v13];
+  green = [(NUImageHistogram *)self green];
+  blue = [(NUImageHistogram *)self blue];
+  luminance = [(NUImageHistogram *)self luminance];
+  v14 = [v3 stringWithFormat:@"<%@:%p> count=%ld, range: [%0.3f..%0.3f], red=%@, green=%@, blue=%@, luminance=%@", v4, self, binCount, v7, v9, v10, green, blue, luminance];
 
   return v14;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [NUMutableImageHistogram allocWithZone:?];
-  v6 = [(NUHistogram *)self->_red mutableCopyWithZone:a3];
+  v6 = [(NUHistogram *)self->_red mutableCopyWithZone:zone];
   red = v5->super._red;
   v5->super._red = v6;
 
-  v8 = [(NUHistogram *)self->_green mutableCopyWithZone:a3];
+  v8 = [(NUHistogram *)self->_green mutableCopyWithZone:zone];
   green = v5->super._green;
   v5->super._green = v8;
 
-  v10 = [(NUHistogram *)self->_blue mutableCopyWithZone:a3];
+  v10 = [(NUHistogram *)self->_blue mutableCopyWithZone:zone];
   blue = v5->super._blue;
   v5->super._blue = v10;
 
-  v12 = [(NUHistogram *)self->_luminance mutableCopyWithZone:a3];
+  v12 = [(NUHistogram *)self->_luminance mutableCopyWithZone:zone];
   luminance = v5->super._luminance;
   v5->super._luminance = v12;
 
@@ -59,22 +59,22 @@
   return v5;
 }
 
-- (id)immutableCopyWithZone:(_NSZone *)a3
+- (id)immutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [NUImageHistogram allocWithZone:?];
-  v6 = [(NUHistogram *)self->_red copyWithZone:a3];
+  v6 = [(NUHistogram *)self->_red copyWithZone:zone];
   red = v5->_red;
   v5->_red = v6;
 
-  v8 = [(NUHistogram *)self->_green copyWithZone:a3];
+  v8 = [(NUHistogram *)self->_green copyWithZone:zone];
   green = v5->_green;
   v5->_green = v8;
 
-  v10 = [(NUHistogram *)self->_blue copyWithZone:a3];
+  v10 = [(NUHistogram *)self->_blue copyWithZone:zone];
   blue = v5->_blue;
   v5->_blue = v10;
 
-  v12 = [(NUHistogram *)self->_luminance copyWithZone:a3];
+  v12 = [(NUHistogram *)self->_luminance copyWithZone:zone];
   luminance = v5->_luminance;
   v5->_luminance = v12;
 
@@ -84,10 +84,10 @@
   return v5;
 }
 
-- (NUImageHistogram)initWithBinCount:(int64_t)a3 range:(id)a4
+- (NUImageHistogram)initWithBinCount:(int64_t)count range:(id)range
 {
   v71 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0)
+  if (count <= 0)
   {
     v18 = NUAssertLogger_21313();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -108,8 +108,8 @@
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v39;
         v69 = 2114;
@@ -120,8 +120,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -130,8 +130,8 @@
     _NUAssertFailHandler("[NUImageHistogram initWithBinCount:range:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUImageHistogram.m", 54, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "count > 0");
   }
 
-  var0 = a4.var0;
-  if (a4.var0 > 0.0)
+  var0 = range.var0;
+  if (range.var0 > 0.0)
   {
     v25 = NUAssertLogger_21313();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -152,8 +152,8 @@
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v49 callStackSymbols];
+        v52 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v48;
         v69 = 2114;
@@ -164,8 +164,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -174,8 +174,8 @@
     _NUAssertFailHandler("[NUImageHistogram initWithBinCount:range:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUImageHistogram.m", 55, @"Invalid parameter not satisfying: %s", v53, v54, v55, v56, "range.min <= 0.0");
   }
 
-  var1 = a4.var1;
-  if (a4.var1 < 1.0)
+  var1 = range.var1;
+  if (range.var1 < 1.0)
   {
     v32 = NUAssertLogger_21313();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -196,8 +196,8 @@
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v58 = MEMORY[0x1E696AF00];
         v59 = v57;
-        v60 = [v58 callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v58 callStackSymbols];
+        v61 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v57;
         v69 = 2114;
@@ -208,8 +208,8 @@
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -221,23 +221,23 @@
   v66.receiver = self;
   v66.super_class = NUImageHistogram;
   v7 = [(NUImageHistogram *)&v66 init];
-  v7->_binCount = a3;
+  v7->_binCount = count;
   v7->_range.min = var0;
   v7->_range.max = var1;
-  v8 = [objc_opt_class() _histogramClass];
-  v9 = [[v8 alloc] initWithBinCount:a3 range:{var0, var1}];
+  _histogramClass = [objc_opt_class() _histogramClass];
+  v9 = [[_histogramClass alloc] initWithBinCount:count range:{var0, var1}];
   red = v7->_red;
   v7->_red = v9;
 
-  v11 = [[v8 alloc] initWithBinCount:a3 range:{var0, var1}];
+  v11 = [[_histogramClass alloc] initWithBinCount:count range:{var0, var1}];
   green = v7->_green;
   v7->_green = v11;
 
-  v13 = [[v8 alloc] initWithBinCount:a3 range:{var0, var1}];
+  v13 = [[_histogramClass alloc] initWithBinCount:count range:{var0, var1}];
   blue = v7->_blue;
   v7->_blue = v13;
 
-  v15 = [[v8 alloc] initWithBinCount:a3 range:{var0, var1}];
+  v15 = [[_histogramClass alloc] initWithBinCount:count range:{var0, var1}];
   luminance = v7->_luminance;
   v7->_luminance = v15;
 

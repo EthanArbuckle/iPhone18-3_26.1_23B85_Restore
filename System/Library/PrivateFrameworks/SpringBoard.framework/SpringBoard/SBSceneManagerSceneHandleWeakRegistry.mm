@@ -1,26 +1,26 @@
 @interface SBSceneManagerSceneHandleWeakRegistry
-- (void)addSceneHandle:(id)a3 forSceneIdentity:(id)a4;
+- (void)addSceneHandle:(id)handle forSceneIdentity:(id)identity;
 @end
 
 @implementation SBSceneManagerSceneHandleWeakRegistry
 
-- (void)addSceneHandle:(id)a3 forSceneIdentity:(id)a4
+- (void)addSceneHandle:(id)handle forSceneIdentity:(id)identity
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  handleCopy = handle;
+  identityCopy = identity;
+  if (identityCopy)
   {
     sceneHandlesBySceneIdentity = self->_sceneHandlesBySceneIdentity;
     if (!sceneHandlesBySceneIdentity)
     {
-      v8 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
       v9 = self->_sceneHandlesBySceneIdentity;
-      self->_sceneHandlesBySceneIdentity = v8;
+      self->_sceneHandlesBySceneIdentity = strongToWeakObjectsMapTable;
 
       sceneHandlesBySceneIdentity = self->_sceneHandlesBySceneIdentity;
     }
 
-    [(NSMapTable *)sceneHandlesBySceneIdentity setObject:v10 forKey:v6];
+    [(NSMapTable *)sceneHandlesBySceneIdentity setObject:handleCopy forKey:identityCopy];
   }
 }
 

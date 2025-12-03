@@ -1,31 +1,31 @@
 @interface WFArticleContentItem
 + (id)coercions;
 + (id)contentCategories;
-+ (id)fileWithHTML:(id)a3 named:(id)a4;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)fileWithHTML:(id)l named:(id)named;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListSubtitle:(id)a3;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (WFArticle)article;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 - (id)htmlRepresentation;
 @end
 
 @implementation WFArticleContentItem
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfType];
-  v6 = [v5 conformsToClass:objc_opt_class()];
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v6 = [wfType conformsToClass:objc_opt_class()];
 
   if (v6)
   {
-    v7 = [v4 object];
+    object = [representationCopy object];
 
-    v8 = [v7 URL];
+    v8 = [object URL];
     v9 = [WFURLContentItem attributionSetContentOfURL:v8];
   }
 
@@ -33,7 +33,7 @@
   {
     v11.receiver = self;
     v11.super_class = WFArticleContentItem;
-    v9 = [(WFContentItem *)&v11 defaultSourceForRepresentation:v4];
+    v9 = [(WFContentItem *)&v11 defaultSourceForRepresentation:representationCopy];
   }
 
   return v9;
@@ -41,29 +41,29 @@
 
 - (id)htmlRepresentation
 {
-  v2 = [(WFArticleContentItem *)self article];
-  v3 = [v2 body];
-  v4 = v3;
-  if (v3)
+  article = [(WFArticleContentItem *)self article];
+  body = [article body];
+  v4 = body;
+  if (body)
   {
-    v5 = v3;
+    v5 = body;
   }
 
   else
   {
-    v6 = [v2 excerpt];
-    v7 = v6;
-    if (v6)
+    excerpt = [article excerpt];
+    v7 = excerpt;
+    if (excerpt)
     {
-      v8 = v6;
+      title = excerpt;
     }
 
     else
     {
-      v8 = [v2 title];
+      title = [article title];
     }
 
-    v5 = v8;
+    v5 = title;
   }
 
   return v5;
@@ -76,20 +76,20 @@
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Articles", @"Articles");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Article (singular)", @"Article");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -116,24 +116,24 @@
 {
   v20[5] = *MEMORY[0x277D85DE8];
   v19 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1DA0]];
-  v18 = [a1 htmlCoercionHandler];
-  v17 = [WFCoercion coercionToType:v19 handler:v18];
+  htmlCoercionHandler = [self htmlCoercionHandler];
+  v17 = [WFCoercion coercionToType:v19 handler:htmlCoercionHandler];
   v20[0] = v17;
   v3 = objc_opt_class();
-  v4 = [a1 stringCoercionHandler];
-  v5 = [WFCoercion coercionToClass:v3 handler:v4];
+  stringCoercionHandler = [self stringCoercionHandler];
+  v5 = [WFCoercion coercionToClass:v3 handler:stringCoercionHandler];
   v20[1] = v5;
   v6 = objc_opt_class();
-  v7 = [a1 dateCoercionHandler];
-  v8 = [WFCoercion coercionToClass:v6 handler:v7];
+  dateCoercionHandler = [self dateCoercionHandler];
+  v8 = [WFCoercion coercionToClass:v6 handler:dateCoercionHandler];
   v20[2] = v8;
   v9 = objc_opt_class();
-  v10 = [a1 URLCoercionHandler];
-  v11 = [WFCoercion coercionToClass:v9 handler:v10];
+  uRLCoercionHandler = [self URLCoercionHandler];
+  v11 = [WFCoercion coercionToClass:v9 handler:uRLCoercionHandler];
   v20[3] = v11;
   v12 = objc_opt_class();
-  v13 = [a1 imageCoercionHandler];
-  v14 = [WFCoercion coercionToClass:v12 handler:v13];
+  imageCoercionHandler = [self imageCoercionHandler];
+  v14 = [WFCoercion coercionToClass:v12 handler:imageCoercionHandler];
   v20[4] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:5];
 
@@ -321,27 +321,27 @@ id __43__WFArticleContentItem_htmlCoercionHandler__block_invoke(uint64_t a1, voi
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Body"];
+  v2 = [self propertyForName:@"Body"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
 }
 
-+ (id)fileWithHTML:(id)a3 named:(id)a4
++ (id)fileWithHTML:(id)l named:(id)named
 {
-  v5 = a4;
-  v6 = [WFRichTextContentItem normalizedHTMLDocumentFromHTML:a3];
+  namedCopy = named;
+  v6 = [WFRichTextContentItem normalizedHTMLDocumentFromHTML:l];
   v7 = [v6 dataUsingEncoding:4];
   v8 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1DA0]];
-  if (v5)
+  if (namedCopy)
   {
-    v9 = [WFFileRepresentation fileWithData:v7 ofType:v8 proposedFilename:v5];
+    v9 = [WFFileRepresentation fileWithData:v7 ofType:v8 proposedFilename:namedCopy];
   }
 
   else
   {
-    v10 = [objc_opt_class() localizedTypeDescription];
-    v9 = [WFFileRepresentation fileWithData:v7 ofType:v8 proposedFilename:v10];
+    localizedTypeDescription = [objc_opt_class() localizedTypeDescription];
+    v9 = [WFFileRepresentation fileWithData:v7 ofType:v8 proposedFilename:localizedTypeDescription];
   }
 
   return v9;
@@ -363,7 +363,7 @@ id __43__WFArticleContentItem_htmlCoercionHandler__block_invoke(uint64_t a1, voi
   v22[1] = 3221225472;
   v22[2] = __40__WFArticleContentItem_propertyBuilders__block_invoke;
   v22[3] = &__block_descriptor_40_e43_v32__0__WFArticleContentItem_8_16___v____24l;
-  v22[4] = a1;
+  v22[4] = self;
   v14 = WFLocalizedContentPropertyNameMarker(@"Body");
   v3 = [WFContentPropertyBuilder block:v22 name:v14 class:objc_opt_class()];
   v23[3] = v3;
@@ -371,7 +371,7 @@ id __43__WFArticleContentItem_htmlCoercionHandler__block_invoke(uint64_t a1, voi
   v21[1] = 3221225472;
   v21[2] = __40__WFArticleContentItem_propertyBuilders__block_invoke_2;
   v21[3] = &__block_descriptor_40_e43_v32__0__WFArticleContentItem_8_16___v____24l;
-  v21[4] = a1;
+  v21[4] = self;
   v4 = WFLocalizedContentPropertyNameMarker(@"Excerpt");
   v5 = [WFContentPropertyBuilder block:v21 name:v4 class:objc_opt_class()];
   v23[4] = v5;
@@ -433,26 +433,26 @@ void __40__WFArticleContentItem_propertyBuilders__block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFArticleContentItem *)self article];
-  v6 = [v5 publishedDate];
+  subtitleCopy = subtitle;
+  article = [(WFArticleContentItem *)self article];
+  publishedDate = [article publishedDate];
 
-  if (v6)
+  if (publishedDate)
   {
     v7 = objc_opt_new();
     [v7 setDateStyle:3];
     [v7 setTimeStyle:1];
     [v7 setDoesRelativeDateFormatting:1];
-    if (v4)
+    if (subtitleCopy)
     {
-      v8 = [v7 stringFromDate:v6];
-      v4[2](v4, v8);
+      v8 = [v7 stringFromDate:publishedDate];
+      subtitleCopy[2](subtitleCopy, v8);
     }
   }
 
-  return v6 != 0;
+  return publishedDate != 0;
 }
 
 @end

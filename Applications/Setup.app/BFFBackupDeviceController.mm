@@ -1,63 +1,63 @@
 @interface BFFBackupDeviceController
-- (BFFBackupDeviceController)initWithProximitySetupController:(id)a3;
+- (BFFBackupDeviceController)initWithProximitySetupController:(id)controller;
 - (BFFBackupDeviceControllerDelegate)delegate;
 - (void)connectionTerminated;
 - (void)dealloc;
-- (void)receivedBackupAction:(id)a3;
+- (void)receivedBackupAction:(id)action;
 - (void)reset;
 - (void)retryBackup;
-- (void)startBackupDevice:(id)a3 UUID:(id)a4;
+- (void)startBackupDevice:(id)device UUID:(id)d;
 @end
 
 @implementation BFFBackupDeviceController
 
-- (BFFBackupDeviceController)initWithProximitySetupController:(id)a3
+- (BFFBackupDeviceController)initWithProximitySetupController:(id)controller
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
+  objc_storeStrong(location, controller);
+  v3 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v3;
   v8.super_class = BFFBackupDeviceController;
   v4 = [(BFFBackupDeviceController *)&v8 init];
-  v10 = v4;
-  objc_storeStrong(&v10, v4);
+  selfCopy = v4;
+  objc_storeStrong(&selfCopy, v4);
   if (v4)
   {
-    [v10 setProximitySetupController:location[0]];
-    v5 = [v10 proximitySetupController];
-    [v5 addObserver:v10];
+    [selfCopy setProximitySetupController:location[0]];
+    proximitySetupController = [selfCopy proximitySetupController];
+    [proximitySetupController addObserver:selfCopy];
   }
 
-  v6 = v10;
+  v6 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
-  v2 = [(BFFBackupDeviceController *)self proximitySetupController];
-  [(ProximitySetupController *)v2 removeObserver:v5];
+  proximitySetupController = [(BFFBackupDeviceController *)self proximitySetupController];
+  [(ProximitySetupController *)proximitySetupController removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BFFBackupDeviceController;
   [(BFFBackupDeviceController *)&v3 dealloc];
 }
 
-- (void)startBackupDevice:(id)a3 UUID:(id)a4
+- (void)startBackupDevice:(id)device UUID:(id)d
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
-  if ([(BFFBackupDeviceController *)v30 isBackingUp])
+  objc_storeStrong(&v28, d);
+  if ([(BFFBackupDeviceController *)selfCopy isBackingUp])
   {
     oslog = _BYLoggingFacility();
     v26 = OS_LOG_TYPE_DEFAULT;
@@ -75,10 +75,10 @@
 
   else
   {
-    v7 = [(BFFBackupDeviceController *)v30 proximitySetupController];
-    v8 = [(ProximitySetupController *)v7 hasConnection];
+    proximitySetupController = [(BFFBackupDeviceController *)selfCopy proximitySetupController];
+    hasConnection = [(ProximitySetupController *)proximitySetupController hasConnection];
 
-    if (v8)
+    if (hasConnection)
     {
       v20 = _BYLoggingFacility();
       v19 = OS_LOG_TYPE_DEFAULT;
@@ -91,16 +91,16 @@
       }
 
       objc_storeStrong(&v20, 0);
-      [(BFFBackupDeviceController *)v30 setBackingUp:1];
-      [(BFFBackupDeviceController *)v30 setBackupFinished:0];
-      [(BFFBackupDeviceController *)v30 setError:0];
-      [(BFFBackupDeviceController *)v30 setCompletionDate:0];
-      [(BFFBackupDeviceController *)v30 setPercentComplete:0.0];
-      [(BFFBackupDeviceController *)v30 setTimeRemaining:0.0];
-      [(BFFBackupDeviceController *)v30 setBackingUpDeviceName:location[0]];
-      [(BFFBackupDeviceController *)v30 setBackingUpDeviceUUID:v28];
-      v17 = [(BFFBackupDeviceController *)v30 proximitySetupController];
-      [(ProximitySetupController *)v17 startiCloudBackup];
+      [(BFFBackupDeviceController *)selfCopy setBackingUp:1];
+      [(BFFBackupDeviceController *)selfCopy setBackupFinished:0];
+      [(BFFBackupDeviceController *)selfCopy setError:0];
+      [(BFFBackupDeviceController *)selfCopy setCompletionDate:0];
+      [(BFFBackupDeviceController *)selfCopy setPercentComplete:0.0];
+      [(BFFBackupDeviceController *)selfCopy setTimeRemaining:0.0];
+      [(BFFBackupDeviceController *)selfCopy setBackingUpDeviceName:location[0]];
+      [(BFFBackupDeviceController *)selfCopy setBackingUpDeviceUUID:v28];
+      proximitySetupController2 = [(BFFBackupDeviceController *)selfCopy proximitySetupController];
+      [(ProximitySetupController *)proximitySetupController2 startiCloudBackup];
 
       v24 = 0;
     }
@@ -119,13 +119,13 @@
 
       objc_storeStrong(&v23, 0);
       v11 = [NSError errorWithDomain:@"BFFBackupDeviceErrorDomain" code:-1 userInfo:0];
-      [(BFFBackupDeviceController *)v30 setError:v11];
+      [(BFFBackupDeviceController *)selfCopy setError:v11];
 
-      [(BFFBackupDeviceController *)v30 setBackupFinished:1];
-      v12 = [(BFFBackupDeviceController *)v30 delegate];
-      v13 = v30;
-      v14 = [(BFFBackupDeviceController *)v30 error];
-      [(BFFBackupDeviceControllerDelegate *)v12 backupDeviceController:v13 backupCompletedWithError:v14];
+      [(BFFBackupDeviceController *)selfCopy setBackupFinished:1];
+      delegate = [(BFFBackupDeviceController *)selfCopy delegate];
+      v13 = selfCopy;
+      error = [(BFFBackupDeviceController *)selfCopy error];
+      [(BFFBackupDeviceControllerDelegate *)delegate backupDeviceController:v13 backupCompletedWithError:error];
 
       v24 = 1;
     }
@@ -137,7 +137,7 @@
 
 - (void)retryBackup
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
@@ -150,10 +150,10 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = v10;
-  v5 = [(BFFBackupDeviceController *)v10 backingUpDeviceName];
-  v6 = [(BFFBackupDeviceController *)v10 backingUpDeviceUUID];
-  [(BFFBackupDeviceController *)v4 startBackupDevice:v5 UUID:v6];
+  v4 = selfCopy;
+  backingUpDeviceName = [(BFFBackupDeviceController *)selfCopy backingUpDeviceName];
+  backingUpDeviceUUID = [(BFFBackupDeviceController *)selfCopy backingUpDeviceUUID];
+  [(BFFBackupDeviceController *)v4 startBackupDevice:backingUpDeviceName UUID:backingUpDeviceUUID];
 }
 
 - (void)reset
@@ -169,24 +169,24 @@
   [(BFFBackupDeviceController *)self setBackupStateUnknown:0];
 }
 
-- (void)receivedBackupAction:(id)a3
+- (void)receivedBackupAction:(id)action
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   if ([location[0] finishedBackup])
   {
-    [(BFFBackupDeviceController *)v45 setBackingUp:0];
-    [(BFFBackupDeviceController *)v45 setBackupFinished:1];
-    v3 = [location[0] completionDate];
-    [(BFFBackupDeviceController *)v45 setCompletionDate:v3];
+    [(BFFBackupDeviceController *)selfCopy setBackingUp:0];
+    [(BFFBackupDeviceController *)selfCopy setBackupFinished:1];
+    completionDate = [location[0] completionDate];
+    [(BFFBackupDeviceController *)selfCopy setCompletionDate:completionDate];
 
-    v4 = [location[0] error];
-    [(BFFBackupDeviceController *)v45 setError:v4];
+    error = [location[0] error];
+    [(BFFBackupDeviceController *)selfCopy setError:error];
 
-    v5 = [(BFFBackupDeviceController *)v45 error];
-    if (v5)
+    error2 = [(BFFBackupDeviceController *)selfCopy error];
+    if (error2)
     {
       v36 = _BYLoggingFacility();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -199,35 +199,35 @@
         v24 = 0;
         if (_BYIsInternalInstall())
         {
-          v15 = [(BFFBackupDeviceController *)v45 error];
-          v35 = v15;
+          error3 = [(BFFBackupDeviceController *)selfCopy error];
+          v35 = error3;
           v34 = 1;
         }
 
         else
         {
-          v33 = [(BFFBackupDeviceController *)v45 error];
+          error4 = [(BFFBackupDeviceController *)selfCopy error];
           v32 = 1;
-          if (v33)
+          if (error4)
           {
-            v31 = [(BFFBackupDeviceController *)v45 error];
+            error5 = [(BFFBackupDeviceController *)selfCopy error];
             v30 = 1;
-            v29 = [(NSError *)v31 domain];
+            domain = [(NSError *)error5 domain];
             v28 = 1;
-            v27 = [(BFFBackupDeviceController *)v45 error];
+            error6 = [(BFFBackupDeviceController *)selfCopy error];
             v26 = 1;
-            v15 = [NSString stringWithFormat:@"<Error domain: %@, code %ld>", v29, [(NSError *)v27 code]];
-            v25 = v15;
+            error3 = [NSString stringWithFormat:@"<Error domain: %@, code %ld>", domain, [(NSError *)error6 code]];
+            v25 = error3;
             v24 = 1;
           }
 
           else
           {
-            v15 = 0;
+            error3 = 0;
           }
         }
 
-        sub_100071CBC(v46, v15);
+        sub_100071CBC(v46, error3);
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Backup failed with error: %{public}@", v46, 0xCu);
         if (v24)
         {
@@ -270,13 +270,13 @@
       }
 
       objc_storeStrong(&v43, 0);
-      v8 = [(BFFBackupDeviceController *)v45 proximitySetupController];
-      v9 = [(ProximitySetupController *)v8 information];
-      v10 = [(SASProximityInformation *)v9 hasTransferrableTelephonyPlan];
-      v11 = [v10 BOOLValue];
+      proximitySetupController = [(BFFBackupDeviceController *)selfCopy proximitySetupController];
+      information = [(ProximitySetupController *)proximitySetupController information];
+      hasTransferrableTelephonyPlan = [(SASProximityInformation *)information hasTransferrableTelephonyPlan];
+      bOOLValue = [hasTransferrableTelephonyPlan BOOLValue];
 
-      v40 = v11 & 1;
-      if (v11)
+      v40 = bOOLValue & 1;
+      if (bOOLValue)
       {
         oslog = _BYLoggingFacility();
         v38 = OS_LOG_TYPE_DEFAULT;
@@ -293,28 +293,28 @@
 
       else
       {
-        v14 = [(BFFBackupDeviceController *)v45 proximitySetupController];
-        [(ProximitySetupController *)v14 setupFinished];
+        proximitySetupController2 = [(BFFBackupDeviceController *)selfCopy proximitySetupController];
+        [(ProximitySetupController *)proximitySetupController2 setupFinished];
       }
     }
 
-    v16 = [(BFFBackupDeviceController *)v45 delegate];
-    v17 = v45;
-    v18 = [(BFFBackupDeviceController *)v45 error];
-    [(BFFBackupDeviceControllerDelegate *)v16 backupDeviceController:v17 backupCompletedWithError:v18];
+    delegate = [(BFFBackupDeviceController *)selfCopy delegate];
+    v17 = selfCopy;
+    error7 = [(BFFBackupDeviceController *)selfCopy error];
+    [(BFFBackupDeviceControllerDelegate *)delegate backupDeviceController:v17 backupCompletedWithError:error7];
   }
 
   else
   {
     [location[0] percentComplete];
-    [(BFFBackupDeviceController *)v45 setPercentComplete:?];
-    v19 = [location[0] timeRemaining];
-    [(BFFBackupDeviceController *)v45 setTimeRemaining:v19];
-    v20 = [(BFFBackupDeviceController *)v45 delegate];
-    [(BFFBackupDeviceController *)v45 percentComplete];
+    [(BFFBackupDeviceController *)selfCopy setPercentComplete:?];
+    timeRemaining = [location[0] timeRemaining];
+    [(BFFBackupDeviceController *)selfCopy setTimeRemaining:timeRemaining];
+    delegate2 = [(BFFBackupDeviceController *)selfCopy delegate];
+    [(BFFBackupDeviceController *)selfCopy percentComplete];
     v22 = v21;
-    [(BFFBackupDeviceController *)v45 timeRemaining];
-    [(BFFBackupDeviceControllerDelegate *)v20 backupProgress:v23 estimatedTimeRemaining:v22];
+    [(BFFBackupDeviceController *)selfCopy timeRemaining];
+    [(BFFBackupDeviceControllerDelegate *)delegate2 backupProgress:v23 estimatedTimeRemaining:v22];
   }
 
   objc_storeStrong(location, 0);
@@ -322,15 +322,15 @@
 
 - (void)connectionTerminated
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   if ([(BFFBackupDeviceController *)self isBackingUp])
   {
-    [(BFFBackupDeviceController *)v10 setBackingUp:0];
-    [(BFFBackupDeviceController *)v10 setBackupFinished:1];
-    [(BFFBackupDeviceController *)v10 setBackupStateUnknown:1];
+    [(BFFBackupDeviceController *)selfCopy setBackingUp:0];
+    [(BFFBackupDeviceController *)selfCopy setBackupFinished:1];
+    [(BFFBackupDeviceController *)selfCopy setBackupStateUnknown:1];
     v2 = [NSError errorWithDomain:@"BFFBackupDeviceErrorDomain" code:-1 userInfo:0];
-    [(BFFBackupDeviceController *)v10 setError:v2];
+    [(BFFBackupDeviceController *)selfCopy setError:v2];
 
     v3 = dispatch_get_global_queue(0, 0);
     block = _NSConcreteStackBlock;
@@ -338,7 +338,7 @@
     v6 = 0;
     v7 = sub_10021CC34;
     v8 = &unk_10032B0D0;
-    v9[0] = v10;
+    v9[0] = selfCopy;
     dispatch_async(v3, &block);
 
     objc_storeStrong(v9, 0);

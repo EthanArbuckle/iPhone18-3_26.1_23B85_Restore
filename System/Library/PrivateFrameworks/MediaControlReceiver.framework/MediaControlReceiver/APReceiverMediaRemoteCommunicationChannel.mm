@@ -1,9 +1,9 @@
 @interface APReceiverMediaRemoteCommunicationChannel
-- (APReceiverMediaRemoteCommunicationChannel)initWithDictionary:(id)a3;
+- (APReceiverMediaRemoteCommunicationChannel)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
-- (void)sendData:(id)a3 completionHandler:(id)a4;
+- (void)sendData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation APReceiverMediaRemoteCommunicationChannel
@@ -20,7 +20,7 @@
   [(APReceiverMediaRemoteCommunicationChannel *)&v4 dealloc];
 }
 
-- (void)sendData:(id)a3 completionHandler:(id)a4
+- (void)sendData:(id)data completionHandler:(id)handler
 {
   if (self->_commChannel->invalidated)
   {
@@ -28,14 +28,14 @@
     v8 = 0;
     v10 = -6709;
 LABEL_14:
-    if (!a4)
+    if (!handler)
     {
       goto LABEL_17;
     }
 
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v10 userInfo:0];
 LABEL_16:
-    (*(a4 + 2))(a4, v11);
+    (*(handler + 2))(handler, v11);
 LABEL_17:
     if (!v8)
     {
@@ -55,10 +55,10 @@ LABEL_17:
   }
 
   CFDictionarySetValue(Mutable, @"objectID", self->_commChannel->objectID);
-  CFDictionarySetValue(v8, @"data", a3);
+  CFDictionarySetValue(v8, @"data", data);
   if (gLogCategory_APReceiverMediaRemoteXPCClient <= 50 && (gLogCategory_APReceiverMediaRemoteXPCClient != -1 || _LogCategory_Initialize()))
   {
-    CFDataGetLength(a3);
+    CFDataGetLength(data);
     LogPrintF();
   }
 
@@ -74,7 +74,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if (a4)
+  if (handler)
   {
     v11 = 0;
     goto LABEL_16;
@@ -85,7 +85,7 @@ LABEL_18:
   CFRelease(v8);
 }
 
-- (APReceiverMediaRemoteCommunicationChannel)initWithDictionary:(id)a3
+- (APReceiverMediaRemoteCommunicationChannel)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = APReceiverMediaRemoteCommunicationChannel;
@@ -97,8 +97,8 @@ LABEL_18:
     if (v5)
     {
       v5->invalidated = 0;
-      v4->_commChannel->objectID = [a3 objectForKey:@"objectID"];
-      v4->_commChannel->uuid = [a3 objectForKey:@"clientUUID"];
+      v4->_commChannel->objectID = [dictionary objectForKey:@"objectID"];
+      v4->_commChannel->uuid = [dictionary objectForKey:@"clientUUID"];
     }
 
     else

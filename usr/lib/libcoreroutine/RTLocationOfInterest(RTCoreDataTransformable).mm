@@ -73,9 +73,9 @@ LABEL_11:
 {
   v57[1] = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  if (!v4)
+  if (!identifier)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -92,9 +92,9 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  v5 = [v3 placeIdentifier];
+  placeIdentifier = [v3 placeIdentifier];
 
-  if (!v5)
+  if (!placeIdentifier)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -108,9 +108,9 @@ LABEL_17:
   }
 
   v6 = [_RTMap alloc];
-  v7 = [v3 visits];
-  v8 = [v7 array];
-  v9 = [(_RTMap *)v6 initWithInput:v8];
+  visits = [v3 visits];
+  array = [visits array];
+  v9 = [(_RTMap *)v6 initWithInput:array];
   v10 = [(_RTMap *)v9 withBlock:&__block_literal_global_34];
 
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"entryDate" ascending:1];
@@ -119,23 +119,23 @@ LABEL_17:
   v13 = [v10 sortedArrayUsingDescriptors:v12];
 
   v14 = MEMORY[0x277D011A0];
-  v15 = [v3 mapItem];
-  v16 = [v14 createWithManagedObject:v15];
+  mapItem = [v3 mapItem];
+  v16 = [v14 createWithManagedObject:mapItem];
 
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x277D01160]);
-    v53 = [v3 locationLatitude];
-    [v53 doubleValue];
+    locationLatitude = [v3 locationLatitude];
+    [locationLatitude doubleValue];
     v19 = v18;
-    v20 = [v3 locationLongitude];
-    [v20 doubleValue];
+    locationLongitude = [v3 locationLongitude];
+    [locationLongitude doubleValue];
     v22 = v21;
-    v23 = [v3 locationHorizontalUncertainty];
-    [v23 doubleValue];
+    locationHorizontalUncertainty = [v3 locationHorizontalUncertainty];
+    [locationHorizontalUncertainty doubleValue];
     v25 = v24;
-    v26 = [v3 locationAltitude];
-    [v26 doubleValue];
+    locationAltitude = [v3 locationAltitude];
+    [locationAltitude doubleValue];
     v28 = v27;
     [v3 locationVerticalUncertainty];
     v29 = v52 = v10;
@@ -145,25 +145,25 @@ LABEL_17:
     v32 = v55 = v16;
     [v3 locationReferenceFrame];
     v33 = v54 = v11;
-    v34 = [v33 intValue];
-    v35 = [v3 locationSourceAccuracy];
-    v36 = [v17 initWithLatitude:v32 longitude:v34 horizontalUncertainty:objc_msgSend(v35 altitude:"intValue") verticalUncertainty:v19 date:v22 referenceFrame:v25 speed:v28 sourceAccuracy:{v31, 0.0}];
+    intValue = [v33 intValue];
+    locationSourceAccuracy = [v3 locationSourceAccuracy];
+    v36 = [v17 initWithLatitude:v32 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v19 date:v22 referenceFrame:v25 speed:v28 sourceAccuracy:{v31, 0.0}];
 
     v37 = objc_alloc(MEMORY[0x277D01170]);
-    v38 = [v3 confidence];
-    [v38 doubleValue];
+    confidence = [v3 confidence];
+    [confidence doubleValue];
     v40 = v39;
-    v41 = [v3 identifier];
-    v42 = [v3 placeType];
-    v43 = [v42 unsignedIntValue];
-    v44 = [v3 placeTypeSource];
-    v45 = [v44 unsignedIntegerValue];
-    v46 = [v3 placeCustomLabel];
+    identifier2 = [v3 identifier];
+    placeType = [v3 placeType];
+    unsignedIntValue = [placeType unsignedIntValue];
+    placeTypeSource = [v3 placeTypeSource];
+    unsignedIntegerValue = [placeTypeSource unsignedIntegerValue];
+    placeCustomLabel = [v3 placeCustomLabel];
     v47 = v37;
     v16 = v55;
-    v48 = v45;
+    v48 = unsignedIntegerValue;
     v10 = v52;
-    v49 = [v47 initWithLocation:v36 confidence:v41 identifier:v43 type:v48 typeSource:v52 visits:v46 customLabel:v40 mapItem:v55];
+    v49 = [v47 initWithLocation:v36 confidence:identifier2 identifier:unsignedIntValue type:v48 typeSource:v52 visits:placeCustomLabel customLabel:v40 mapItem:v55];
 
     v11 = v54;
   }
@@ -192,8 +192,8 @@ LABEL_13:
   v4 = v3;
   if (!v3)
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    locationOfInterest = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(locationOfInterest, OS_LOG_TYPE_ERROR))
     {
 LABEL_10:
       v40 = 0;
@@ -203,16 +203,16 @@ LABEL_10:
     *buf = 0;
     v41 = "Invalid parameter not satisfying: learnedLocationOfInterestVisitMO";
 LABEL_27:
-    _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, v41, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, locationOfInterest, OS_LOG_TYPE_ERROR, v41, buf, 2u);
     goto LABEL_10;
   }
 
-  v5 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  if (!v5)
+  if (!identifier)
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    locationOfInterest = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(locationOfInterest, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_10;
     }
@@ -222,58 +222,58 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v6 = [v4 locationOfInterest];
-  v7 = [v6 identifier];
+  locationOfInterest = [v4 locationOfInterest];
+  identifier2 = [locationOfInterest identifier];
 
-  if (v7)
+  if (identifier2)
   {
     v8 = [MEMORY[0x277D01188] createWithManagedObject:v4];
     if (v8)
     {
       v9 = MEMORY[0x277D011A0];
-      v10 = [v6 mapItem];
-      v11 = [v9 createWithManagedObject:v10];
+      mapItem = [locationOfInterest mapItem];
+      v11 = [v9 createWithManagedObject:mapItem];
 
       if (v11)
       {
         v43 = objc_alloc(MEMORY[0x277D01160]);
-        v47 = [v6 locationLatitude];
-        [v47 doubleValue];
+        locationLatitude = [locationOfInterest locationLatitude];
+        [locationLatitude doubleValue];
         v13 = v12;
-        v45 = [v6 locationLongitude];
-        [v45 doubleValue];
+        locationLongitude = [locationOfInterest locationLongitude];
+        [locationLongitude doubleValue];
         v15 = v14;
-        v16 = [v6 locationHorizontalUncertainty];
-        [v16 doubleValue];
+        locationHorizontalUncertainty = [locationOfInterest locationHorizontalUncertainty];
+        [locationHorizontalUncertainty doubleValue];
         v18 = v17;
-        v19 = [v6 locationAltitude];
-        [v19 doubleValue];
+        locationAltitude = [locationOfInterest locationAltitude];
+        [locationAltitude doubleValue];
         v21 = v20;
-        v22 = [v6 locationVerticalUncertainty];
-        [v22 doubleValue];
+        locationVerticalUncertainty = [locationOfInterest locationVerticalUncertainty];
+        [locationVerticalUncertainty doubleValue];
         v24 = v23;
-        v25 = [MEMORY[0x277CBEAA8] date];
-        v26 = [v6 locationReferenceFrame];
-        v27 = [v26 intValue];
-        [v6 locationSourceAccuracy];
+        date = [MEMORY[0x277CBEAA8] date];
+        locationReferenceFrame = [locationOfInterest locationReferenceFrame];
+        intValue = [locationReferenceFrame intValue];
+        [locationOfInterest locationSourceAccuracy];
         v28 = v49 = v11;
-        v44 = [v43 initWithLatitude:v25 longitude:v27 horizontalUncertainty:objc_msgSend(v28 altitude:"intValue") verticalUncertainty:v13 date:v15 referenceFrame:v18 speed:v21 sourceAccuracy:{v24, 0.0}];
+        v44 = [v43 initWithLatitude:date longitude:intValue horizontalUncertainty:objc_msgSend(v28 altitude:"intValue") verticalUncertainty:v13 date:v15 referenceFrame:v18 speed:v21 sourceAccuracy:{v24, 0.0}];
 
         v29 = objc_alloc(MEMORY[0x277D01170]);
-        v48 = [v6 confidence];
-        [v48 doubleValue];
+        confidence = [locationOfInterest confidence];
+        [confidence doubleValue];
         v31 = v30;
-        v32 = [v6 identifier];
-        v46 = [v6 placeType];
-        [v46 unsignedIntValue];
-        v33 = [v6 placeTypeSource];
-        [v33 unsignedIntegerValue];
+        identifier3 = [locationOfInterest identifier];
+        placeType = [locationOfInterest placeType];
+        [placeType unsignedIntValue];
+        placeTypeSource = [locationOfInterest placeTypeSource];
+        [placeTypeSource unsignedIntegerValue];
         v51[0] = v8;
         v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
-        [v6 placeCustomLabel];
+        [locationOfInterest placeCustomLabel];
         v36 = v35 = v8;
         v37 = v29;
-        v38 = v32;
+        v38 = identifier3;
         v11 = v49;
         v39 = v44;
         v40 = [v37 initWithLocation:v31 confidence:v49 identifier:? type:? typeSource:? visits:? customLabel:? mapItem:?];

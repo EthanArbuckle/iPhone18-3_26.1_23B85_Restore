@@ -9,16 +9,16 @@
   _DMLogFunc();
   if ([(MCCleanupMigrator *)self didRestoreFromBackup])
   {
-    v3 = [(MCCleanupMigrator *)self didMigrateBackupFromDifferentDevice];
-    v4 = v3 == 0;
-    if (v3)
+    didMigrateBackupFromDifferentDevice = [(MCCleanupMigrator *)self didMigrateBackupFromDifferentDevice];
+    v4 = didMigrateBackupFromDifferentDevice == 0;
+    if (didMigrateBackupFromDifferentDevice)
     {
-      v5 = &dword_0 + 3;
+      didUpgrade = &dword_0 + 3;
     }
 
     else
     {
-      v5 = &dword_0 + 2;
+      didUpgrade = &dword_0 + 2;
     }
 
     v6 = @"Restore from the same device";
@@ -27,10 +27,10 @@
 
   else
   {
-    v5 = [(MCCleanupMigrator *)self didUpgrade];
+    didUpgrade = [(MCCleanupMigrator *)self didUpgrade];
     v6 = @"Device erasure";
     v7 = @"Software update";
-    v4 = v5 == 0;
+    v4 = didUpgrade == 0;
   }
 
   if (v4)
@@ -44,7 +44,7 @@
   }
 
   _DMLogFunc();
-  if ([(MCCleanupMigrator *)self _triggerMigrationWithContext:v5, v8])
+  if ([(MCCleanupMigrator *)self _triggerMigrationWithContext:didUpgrade, v8])
   {
     goto LABEL_15;
   }
@@ -52,7 +52,7 @@
   v9 = -2;
   do
   {
-    v10 = [(MCCleanupMigrator *)self _triggerMigrationWithContext:v5];
+    v10 = [(MCCleanupMigrator *)self _triggerMigrationWithContext:didUpgrade];
     sleep(1u);
     if (!v9)
     {

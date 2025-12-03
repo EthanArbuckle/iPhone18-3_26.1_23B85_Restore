@@ -1,20 +1,20 @@
 @interface RWIProtocolDOMDomainEventDispatcher
-- (RWIProtocolDOMDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3;
+- (RWIProtocolDOMDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller;
 - (void)documentUpdated;
-- (void)inlineStyleInvalidatedWithNodeIds:(id)a3;
-- (void)setChildNodesWithParentId:(int)a3 nodes:(id)a4;
+- (void)inlineStyleInvalidatedWithNodeIds:(id)ids;
+- (void)setChildNodesWithParentId:(int)id nodes:(id)nodes;
 @end
 
 @implementation RWIProtocolDOMDomainEventDispatcher
 
-- (RWIProtocolDOMDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolDOMDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller
 {
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMDomainEventDispatcher;
   result = [(RWIProtocolDOMDomainEventDispatcher *)&v5 init];
   if (result)
   {
-    result->_controller = a3;
+    result->_controller = controller;
   }
 
   return result;
@@ -36,12 +36,12 @@
   [(RWIProtocolCSSDomainEventDispatcher *)&v7 mediaQueryResultChanged];
 }
 
-- (void)setChildNodesWithParentId:(int)a3 nodes:(id)a4
+- (void)setChildNodesWithParentId:(int)id nodes:(id)nodes
 {
-  v37[0] = a3;
+  v37[0] = id;
   v50 = *MEMORY[0x277D85DE8];
   v36 = (*(self->_controller->var0 + 4))(self->_controller, a2);
-  if (!a4)
+  if (!nodes)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"nodes"}];
   }
@@ -50,7 +50,7 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = [a4 countByEnumeratingWithState:&v43 objects:v49 count:16];
+  v5 = [nodes countByEnumeratingWithState:&v43 objects:v49 count:16];
   v6 = v5;
   if (v5)
   {
@@ -63,7 +63,7 @@
       {
         if (*v44 != v7)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(nodes);
         }
 
         v10 = *(*(&v43 + 1) + 8 * v9);
@@ -79,7 +79,7 @@
       }
 
       while (v6 != v9);
-      v5 = [a4 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      v5 = [nodes countByEnumeratingWithState:&v43 objects:v49 count:16];
       v6 = v5;
     }
 
@@ -103,7 +103,7 @@
   v16 = v41;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v39 = v47[0];
-  Inspector::toJSONObjectArray(a4, &v37[1]);
+  Inspector::toJSONObjectArray(nodes, &v37[1]);
   v17 = *&v37[1];
   *&v37[1] = 0;
   v38 = v17;
@@ -210,11 +210,11 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inlineStyleInvalidatedWithNodeIds:(id)a3
+- (void)inlineStyleInvalidatedWithNodeIds:(id)ids
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!ids)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"nodeIds"}];
   }
@@ -231,7 +231,7 @@
   v8 = v31;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v29 = v33[0];
-  Inspector::toJSONIntegerArray(a3, &v27);
+  Inspector::toJSONIntegerArray(ids, &v27);
   v9 = v27;
   v27 = 0;
   v28 = v9;

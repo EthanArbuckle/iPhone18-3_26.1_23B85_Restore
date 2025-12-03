@@ -1,18 +1,18 @@
 @interface GDPersonEntityTagEventIDSet
-- (GDPersonEntityTagEventIDSet)initWithEventId:(int64_t)a3;
-- (void)addEventId:(int64_t)a3;
+- (GDPersonEntityTagEventIDSet)initWithEventId:(int64_t)id;
+- (void)addEventId:(int64_t)id;
 @end
 
 @implementation GDPersonEntityTagEventIDSet
 
-- (void)addEventId:(int64_t)a3
+- (void)addEventId:(int64_t)id
 {
   internalSet = self->_internalSet;
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:id];
   [(NSMutableSet *)internalSet addObject:v4];
 }
 
-- (GDPersonEntityTagEventIDSet)initWithEventId:(int64_t)a3
+- (GDPersonEntityTagEventIDSet)initWithEventId:(int64_t)id
 {
   v10.receiver = self;
   v10.super_class = GDPersonEntityTagEventIDSet;
@@ -20,7 +20,7 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:id];
     v7 = [v5 initWithObjects:{v6, 0}];
     internalSet = v4->_internalSet;
     v4->_internalSet = v7;

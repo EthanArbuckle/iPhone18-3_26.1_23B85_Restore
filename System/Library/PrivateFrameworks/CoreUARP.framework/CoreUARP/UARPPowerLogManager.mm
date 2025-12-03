@@ -1,19 +1,19 @@
 @interface UARPPowerLogManager
-- (BOOL)accessoryIDSupportsPowerLogging:(id)a3;
+- (BOOL)accessoryIDSupportsPowerLogging:(id)logging;
 - (UARPPowerLogManager)init;
-- (id)createPowerLogAccessoryForAccessoryID:(id)a3;
-- (id)pendingReachabilityEventForAccessoryID:(id)a3;
-- (id)powerLogAccessoryForAccessoryID:(id)a3;
-- (id)powerLogAccessoryForUUID:(id)a3;
-- (void)addAccessoryID:(id)a3;
-- (void)postPendingReachabilityEvent:(id)a3;
-- (void)removeAccessoryID:(id)a3;
-- (void)setAccessoryIDReachable:(id)a3;
-- (void)setAccessoryIDUnreachable:(id)a3;
-- (void)setActiveFirmwareVersionForAccessoryID:(id)a3 activeFirmwareVersion:(id)a4;
-- (void)setAssetOfferedForAccessoryID:(id)a3 offeredFirmwareVersion:(id)a4 activeFirmwareVersion:(id)a5;
-- (void)setStagedFirmwareVersionForAccessoryID:(id)a3 stagedFirmwareVersion:(id)a4;
-- (void)setStagingCompleteForAccessoryID:(id)a3 stagedFirmwareVersion:(id)a4 activeFirmareVersion:(id)a5 status:(unint64_t)a6;
+- (id)createPowerLogAccessoryForAccessoryID:(id)d;
+- (id)pendingReachabilityEventForAccessoryID:(id)d;
+- (id)powerLogAccessoryForAccessoryID:(id)d;
+- (id)powerLogAccessoryForUUID:(id)d;
+- (void)addAccessoryID:(id)d;
+- (void)postPendingReachabilityEvent:(id)event;
+- (void)removeAccessoryID:(id)d;
+- (void)setAccessoryIDReachable:(id)reachable;
+- (void)setAccessoryIDUnreachable:(id)unreachable;
+- (void)setActiveFirmwareVersionForAccessoryID:(id)d activeFirmwareVersion:(id)version;
+- (void)setAssetOfferedForAccessoryID:(id)d offeredFirmwareVersion:(id)version activeFirmwareVersion:(id)firmwareVersion;
+- (void)setStagedFirmwareVersionForAccessoryID:(id)d stagedFirmwareVersion:(id)version;
+- (void)setStagingCompleteForAccessoryID:(id)d stagedFirmwareVersion:(id)version activeFirmareVersion:(id)firmareVersion status:(unint64_t)status;
 @end
 
 @implementation UARPPowerLogManager
@@ -43,32 +43,32 @@
   return v2;
 }
 
-- (BOOL)accessoryIDSupportsPowerLogging:(id)a3
+- (BOOL)accessoryIDSupportsPowerLogging:(id)logging
 {
-  v3 = [a3 modelNumber];
-  if (v3)
+  modelNumber = [logging modelNumber];
+  if (modelNumber)
   {
-    v4 = [UARPSupportedAccessory findByAppleModelNumber:v3];
-    v5 = [v4 supportsPowerLogging];
+    v4 = [UARPSupportedAccessory findByAppleModelNumber:modelNumber];
+    supportsPowerLogging = [v4 supportsPowerLogging];
   }
 
   else
   {
-    v5 = 0;
+    supportsPowerLogging = 0;
   }
 
-  return v5;
+  return supportsPowerLogging;
 }
 
-- (id)createPowerLogAccessoryForAccessoryID:(id)a3
+- (id)createPowerLogAccessoryForAccessoryID:(id)d
 {
-  v4 = a3;
-  if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:v4])
+  dCopy = d;
+  if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:dCopy])
   {
     v5 = [UARPPowerLogAccessory alloc];
-    v6 = [v4 modelNumber];
-    v7 = [v4 uuid];
-    v8 = [(UARPPowerLogAccessory *)v5 initWithModelNumber:v6 uuid:v7 stagingWindowPeriodSeconds:self->_stagingWindowPeriodSeconds];
+    modelNumber = [dCopy modelNumber];
+    uuid = [dCopy uuid];
+    v8 = [(UARPPowerLogAccessory *)v5 initWithModelNumber:modelNumber uuid:uuid stagingWindowPeriodSeconds:self->_stagingWindowPeriodSeconds];
   }
 
   else
@@ -79,11 +79,11 @@
   return v8;
 }
 
-- (void)addAccessoryID:(id)a3
+- (void)addAccessoryID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UARPPowerLogManager *)self createPowerLogAccessoryForAccessoryID:v4];
+  dCopy = d;
+  v5 = [(UARPPowerLogManager *)self createPowerLogAccessoryForAccessoryID:dCopy];
   if (v5)
   {
     if ([(NSMutableSet *)self->_accessories containsObject:v5])
@@ -101,7 +101,7 @@
       if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
       {
         v8 = 138412290;
-        v9 = v4;
+        v9 = dCopy;
         _os_log_impl(&dword_247AA7000, log, OS_LOG_TYPE_INFO, "Added: %@", &v8, 0xCu);
       }
     }
@@ -110,10 +110,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)powerLogAccessoryForUUID:(id)a3
+- (id)powerLogAccessoryForUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -133,8 +133,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v10 isEqual:v4];
+        uuid = [v9 uuid];
+        v11 = [uuid isEqual:dCopy];
 
         if (v11)
         {
@@ -160,18 +160,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)powerLogAccessoryForAccessoryID:(id)a3
+- (id)powerLogAccessoryForAccessoryID:(id)d
 {
-  v4 = [a3 uuid];
-  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForUUID:v4];
+  uuid = [d uuid];
+  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForUUID:uuid];
 
   return v5;
 }
 
-- (id)pendingReachabilityEventForAccessoryID:(id)a3
+- (id)pendingReachabilityEventForAccessoryID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -191,9 +191,9 @@ LABEL_11:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v4 uuid];
-        v12 = [v10 isEqual:v11];
+        uuid = [v9 uuid];
+        uuid2 = [dCopy uuid];
+        v12 = [uuid isEqual:uuid2];
 
         if (v12)
         {
@@ -219,18 +219,18 @@ LABEL_11:
   return v6;
 }
 
-- (void)postPendingReachabilityEvent:(id)a3
+- (void)postPendingReachabilityEvent:(id)event
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_pendingReachableEvents removeObject:v4];
-  v5 = [v4 uuid];
-  v6 = [(UARPPowerLogManager *)self powerLogAccessoryForUUID:v5];
+  eventCopy = event;
+  [(NSMutableSet *)self->_pendingReachableEvents removeObject:eventCopy];
+  uuid = [eventCopy uuid];
+  v6 = [(UARPPowerLogManager *)self powerLogAccessoryForUUID:uuid];
 
   if (v6)
   {
-    v7 = [v4 activeFirmwareVersion];
-    v8 = [v4 stagedFirmwareVersion];
-    [v6 setReachableWithActiveFirmwareVersion:v7 stagedFirmwareVersion:v8];
+    activeFirmwareVersion = [eventCopy activeFirmwareVersion];
+    stagedFirmwareVersion = [eventCopy stagedFirmwareVersion];
+    [v6 setReachableWithActiveFirmwareVersion:activeFirmwareVersion stagedFirmwareVersion:stagedFirmwareVersion];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -239,25 +239,25 @@ LABEL_11:
   }
 }
 
-- (void)removeAccessoryID:(id)a3
+- (void)removeAccessoryID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:v4];
+  dCopy = d;
+  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:dCopy];
   if (v5)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = dCopy;
       _os_log_impl(&dword_247AA7000, log, OS_LOG_TYPE_INFO, "Removed: %@", &v8, 0xCu);
     }
 
     [(NSMutableSet *)self->_accessories removeObject:v5];
   }
 
-  else if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:v4]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
+  else if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:dCopy]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     [UARPPowerLogManager removeAccessoryID:];
   }
@@ -265,10 +265,10 @@ LABEL_11:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAccessoryIDReachable:(id)a3
+- (void)setAccessoryIDReachable:(id)reachable
 {
-  v4 = a3;
-  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:v4];
+  reachableCopy = reachable;
+  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:reachableCopy];
   v6 = v5;
   if (v5)
   {
@@ -283,28 +283,28 @@ LABEL_11:
     else
     {
       v7 = [UARPPowerLogPendingReachabilityEvent alloc];
-      v8 = [v4 modelNumber];
-      v9 = [v4 uuid];
-      v10 = [(UARPPowerLogPendingReachabilityEvent *)v7 initModelNumber:v8 uuid:v9];
+      modelNumber = [reachableCopy modelNumber];
+      uuid = [reachableCopy uuid];
+      v10 = [(UARPPowerLogPendingReachabilityEvent *)v7 initModelNumber:modelNumber uuid:uuid];
 
       [(NSMutableSet *)self->_pendingReachableEvents addObject:v10];
     }
   }
 
-  else if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:v4]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
+  else if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:reachableCopy]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     [UARPPowerLogManager setAccessoryIDReachable:];
   }
 }
 
-- (void)setStagedFirmwareVersionForAccessoryID:(id)a3 stagedFirmwareVersion:(id)a4
+- (void)setStagedFirmwareVersionForAccessoryID:(id)d stagedFirmwareVersion:(id)version
 {
-  v8 = a4;
-  v6 = [(UARPPowerLogManager *)self pendingReachabilityEventForAccessoryID:a3];
+  versionCopy = version;
+  v6 = [(UARPPowerLogManager *)self pendingReachabilityEventForAccessoryID:d];
   v7 = v6;
   if (v6)
   {
-    [v6 setStagedFirmwareVersion:v8];
+    [v6 setStagedFirmwareVersion:versionCopy];
     if ([v7 allDataPresent])
     {
       [(UARPPowerLogManager *)self postPendingReachabilityEvent:v7];
@@ -312,14 +312,14 @@ LABEL_11:
   }
 }
 
-- (void)setActiveFirmwareVersionForAccessoryID:(id)a3 activeFirmwareVersion:(id)a4
+- (void)setActiveFirmwareVersionForAccessoryID:(id)d activeFirmwareVersion:(id)version
 {
-  v8 = a4;
-  v6 = [(UARPPowerLogManager *)self pendingReachabilityEventForAccessoryID:a3];
+  versionCopy = version;
+  v6 = [(UARPPowerLogManager *)self pendingReachabilityEventForAccessoryID:d];
   v7 = v6;
   if (v6)
   {
-    [v6 setActiveFirmwareVersion:v8];
+    [v6 setActiveFirmwareVersion:versionCopy];
     if ([v7 allDataPresent])
     {
       [(UARPPowerLogManager *)self postPendingReachabilityEvent:v7];
@@ -327,10 +327,10 @@ LABEL_11:
   }
 }
 
-- (void)setAccessoryIDUnreachable:(id)a3
+- (void)setAccessoryIDUnreachable:(id)unreachable
 {
-  v4 = a3;
-  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:v4];
+  unreachableCopy = unreachable;
+  v5 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:unreachableCopy];
   v6 = v5;
   if (v5)
   {
@@ -345,17 +345,17 @@ LABEL_11:
     }
   }
 
-  else if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:v4]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
+  else if ([(UARPPowerLogManager *)self accessoryIDSupportsPowerLogging:unreachableCopy]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     [UARPPowerLogManager setAccessoryIDUnreachable:];
   }
 }
 
-- (void)setAssetOfferedForAccessoryID:(id)a3 offeredFirmwareVersion:(id)a4 activeFirmwareVersion:(id)a5
+- (void)setAssetOfferedForAccessoryID:(id)d offeredFirmwareVersion:(id)version activeFirmwareVersion:(id)firmwareVersion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:a3];
+  versionCopy = version;
+  firmwareVersionCopy = firmwareVersion;
+  v10 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:d];
   v11 = v10;
   if (v10)
   {
@@ -369,11 +369,11 @@ LABEL_11:
         }
       }
 
-      else if (v8)
+      else if (versionCopy)
       {
-        if (v9)
+        if (firmwareVersionCopy)
         {
-          [v11 setAssetOfferedWithVersion:v8 activeFirmwareVersion:v9];
+          [v11 setAssetOfferedWithVersion:versionCopy activeFirmwareVersion:firmwareVersionCopy];
         }
 
         else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -395,23 +395,23 @@ LABEL_11:
   }
 }
 
-- (void)setStagingCompleteForAccessoryID:(id)a3 stagedFirmwareVersion:(id)a4 activeFirmareVersion:(id)a5 status:(unint64_t)a6
+- (void)setStagingCompleteForAccessoryID:(id)d stagedFirmwareVersion:(id)version activeFirmareVersion:(id)firmareVersion status:(unint64_t)status
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:v10];
+  dCopy = d;
+  versionCopy = version;
+  firmareVersionCopy = firmareVersion;
+  v13 = [(UARPPowerLogManager *)self powerLogAccessoryForAccessoryID:dCopy];
   v14 = v13;
   if (v13)
   {
     if ([v13 stagingInProgress])
     {
-      if (v11)
+      if (versionCopy)
       {
-        if (v12)
+        if (firmareVersionCopy)
         {
 LABEL_14:
-          [v14 setStagingCompleteForStagedFirmareVersion:v11 activeFirmareVersion:v12 status:a6];
+          [v14 setStagingCompleteForStagedFirmareVersion:versionCopy activeFirmareVersion:firmareVersionCopy status:status];
           goto LABEL_15;
         }
       }
@@ -423,8 +423,8 @@ LABEL_14:
           [UARPPowerLogManager setStagingCompleteForAccessoryID:stagedFirmwareVersion:activeFirmareVersion:status:];
         }
 
-        v11 = &stru_2859B53B8;
-        if (v12)
+        versionCopy = &stru_2859B53B8;
+        if (firmareVersionCopy)
         {
           goto LABEL_14;
         }
@@ -435,7 +435,7 @@ LABEL_14:
         [UARPPowerLogManager setStagingCompleteForAccessoryID:stagedFirmwareVersion:activeFirmareVersion:status:];
       }
 
-      v12 = &stru_2859B53B8;
+      firmareVersionCopy = &stru_2859B53B8;
       goto LABEL_14;
     }
 

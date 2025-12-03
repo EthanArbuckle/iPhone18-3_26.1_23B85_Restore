@@ -1,5 +1,5 @@
 @interface SRAuthorizationGroup
-+ (id)authorizationGroupWithServiceName:(id)a3;
++ (id)authorizationGroupWithServiceName:(id)name;
 + (void)initialize;
 - (NSArray)localizedCollectedData;
 - (NSArray)localizedNotCollectedData;
@@ -10,8 +10,8 @@
 - (NSString)localizedPlatforms;
 - (NSString)localizedRequiredAuthAlertDetail;
 - (NSString)localizedRevokeRequiredAuthAlertDetail;
-- (SRAuthorizationGroup)initWithBundle:(id)a3;
-- (id)localizedExampleDataValue:(id)a3;
+- (SRAuthorizationGroup)initWithBundle:(id)bundle;
+- (id)localizedExampleDataValue:(id)value;
 - (void)dealloc;
 @end
 
@@ -19,14 +19,14 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _MergedGlobals_6 = os_log_create("com.apple.SensorKit", "SRAuthorizationGroup");
     qword_28001A2C0 = objc_alloc_init(MEMORY[0x277CBEA78]);
   }
 }
 
-+ (id)authorizationGroupWithServiceName:(id)a3
++ (id)authorizationGroupWithServiceName:(id)name
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = [qword_28001A2C0 objectForKey:?];
@@ -39,11 +39,11 @@ LABEL_4:
     return v6;
   }
 
-  v5 = [MEMORY[0x277CCA8D8] skui_bundleForAuthorizationService:a3];
+  v5 = [MEMORY[0x277CCA8D8] skui_bundleForAuthorizationService:name];
   if (v5)
   {
     v4 = v5;
-    [qword_28001A2C0 setObject:v5 forKey:a3];
+    [qword_28001A2C0 setObject:v5 forKey:name];
     goto LABEL_4;
   }
 
@@ -51,7 +51,7 @@ LABEL_4:
   if (os_log_type_enabled(_MergedGlobals_6, OS_LOG_TYPE_ERROR))
   {
     v11 = 138543362;
-    v12 = a3;
+    nameCopy = name;
     _os_log_error_impl(&dword_265602000, v9, OS_LOG_TYPE_ERROR, "Unable to find a bundle for %{public}@", &v11, 0xCu);
   }
 
@@ -59,14 +59,14 @@ LABEL_4:
   return 0;
 }
 
-- (SRAuthorizationGroup)initWithBundle:(id)a3
+- (SRAuthorizationGroup)initWithBundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = SRAuthorizationGroup;
   v4 = [(SRAuthorizationGroup *)&v6 init];
   if (v4)
   {
-    v4->_bundle = a3;
+    v4->_bundle = bundle;
   }
 
   return v4;
@@ -299,13 +299,13 @@ LABEL_4:
 - (NSString)localizedPlatforms
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(SRAuthorizationGroup *)self platforms];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v2, "count")}];
+  platforms = [(SRAuthorizationGroup *)self platforms];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](platforms, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(NSArray *)v2 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v4 = [(NSArray *)platforms countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -316,7 +316,7 @@ LABEL_4:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(platforms);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
@@ -342,7 +342,7 @@ LABEL_4:
         }
       }
 
-      v5 = [(NSArray *)v2 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v5 = [(NSArray *)platforms countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v5);
@@ -434,17 +434,17 @@ LABEL_24:
   return result;
 }
 
-- (id)localizedExampleDataValue:(id)a3
+- (id)localizedExampleDataValue:(id)value
 {
   v58 = *MEMORY[0x277D85DE8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 hasSuffix:@"<no loc>"])
+    if ([value hasSuffix:@"<no loc>"])
     {
       v5 = *MEMORY[0x277D85DE8];
 
-      return [a3 stringByReplacingOccurrencesOfString:@"<no loc>" withString:&stru_2876FBDF0];
+      return [value stringByReplacingOccurrencesOfString:@"<no loc>" withString:&stru_2876FBDF0];
     }
 
     else
@@ -452,7 +452,7 @@ LABEL_24:
       bundle = self->_bundle;
       v10 = *MEMORY[0x277D85DE8];
 
-      return [(NSBundle *)bundle objectForInfoDictionaryKey:a3];
+      return [(NSBundle *)bundle objectForInfoDictionaryKey:value];
     }
   }
 
@@ -462,7 +462,7 @@ LABEL_24:
     v7 = MEMORY[0x277CCABB8];
     v8 = *MEMORY[0x277D85DE8];
 
-    return [v7 localizedStringFromNumber:a3 numberStyle:1];
+    return [v7 localizedStringFromNumber:value numberStyle:1];
   }
 
   objc_opt_class();
@@ -471,18 +471,18 @@ LABEL_24:
     v11 = MEMORY[0x277CCA968];
     v12 = *MEMORY[0x277D85DE8];
 
-    return [v11 localizedStringFromDate:a3 dateStyle:1 timeStyle:1];
+    return [v11 localizedStringFromDate:value dateStyle:1 timeStyle:1];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v14 = [a3 countByEnumeratingWithState:&v48 objects:v57 count:16];
+    v14 = [value countByEnumeratingWithState:&v48 objects:v57 count:16];
     if (!v14)
     {
       goto LABEL_37;
@@ -499,7 +499,7 @@ LABEL_24:
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(value);
         }
 
         v19 = *(*(&v48 + 1) + 8 * v18);
@@ -522,32 +522,32 @@ LABEL_24:
             goto LABEL_32;
           }
 
-          v24 = [(NSBundle *)self->_bundle bundlePath];
+          bundlePath = [(NSBundle *)self->_bundle bundlePath];
           *buf = v42;
           v54 = v19;
           v55 = 2114;
-          v56 = v24;
+          v56 = bundlePath;
           v25 = v23;
           v26 = "Failed to find key: %{public}@ in %{public}@/Info.plist";
           goto LABEL_35;
         }
 
-        v22 = -[SRAuthorizationGroup localizedExampleDataValue:](self, "localizedExampleDataValue:", [a3 objectForKeyedSubscript:v19]);
+        v22 = -[SRAuthorizationGroup localizedExampleDataValue:](self, "localizedExampleDataValue:", [value objectForKeyedSubscript:v19]);
         if (v22)
         {
-          [v13 setObject:v22 forKeyedSubscript:v21];
+          [dictionary setObject:v22 forKeyedSubscript:v21];
           goto LABEL_32;
         }
 
         v27 = _MergedGlobals_6;
         if (os_log_type_enabled(_MergedGlobals_6, OS_LOG_TYPE_FAULT))
         {
-          v28 = [a3 objectForKeyedSubscript:v19];
-          v29 = [(NSBundle *)self->_bundle bundlePath];
+          v28 = [value objectForKeyedSubscript:v19];
+          bundlePath2 = [(NSBundle *)self->_bundle bundlePath];
           *buf = v42;
           v54 = v28;
           v55 = 2114;
-          v56 = v29;
+          v56 = bundlePath2;
           v25 = v27;
           v26 = "Failed to find value: %{public}@ in %{public}@/Info.plist";
 LABEL_35:
@@ -559,12 +559,12 @@ LABEL_32:
       }
 
       while (v16 != v18);
-      v30 = [a3 countByEnumeratingWithState:&v48 objects:v57 count:16];
+      v30 = [value countByEnumeratingWithState:&v48 objects:v57 count:16];
       v16 = v30;
       if (!v30)
       {
 LABEL_37:
-        result = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v13];
+        result = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
         goto LABEL_52;
       }
     }
@@ -573,12 +573,12 @@ LABEL_37:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v32 = [a3 countByEnumeratingWithState:&v44 objects:v52 count:16];
+    v32 = [value countByEnumeratingWithState:&v44 objects:v52 count:16];
     if (v32)
     {
       v34 = v32;
@@ -591,14 +591,14 @@ LABEL_37:
         {
           if (*v45 != v35)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(value);
           }
 
           v37 = *(*(&v44 + 1) + 8 * i);
           v38 = [(SRAuthorizationGroup *)self localizedExampleDataValue:v37, v43];
           if (v38)
           {
-            [v31 addObject:v38];
+            [array addObject:v38];
           }
 
           else
@@ -606,23 +606,23 @@ LABEL_37:
             v39 = _MergedGlobals_6;
             if (os_log_type_enabled(_MergedGlobals_6, OS_LOG_TYPE_FAULT))
             {
-              v40 = [(NSBundle *)self->_bundle bundlePath];
+              bundlePath3 = [(NSBundle *)self->_bundle bundlePath];
               *buf = v43;
               v54 = v37;
               v55 = 2114;
-              v56 = v40;
+              v56 = bundlePath3;
               _os_log_fault_impl(&dword_265602000, v39, OS_LOG_TYPE_FAULT, "Failed to find value: %{public}@ in %{public}@/Info.plist", buf, 0x16u);
             }
           }
         }
 
-        v34 = [a3 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        v34 = [value countByEnumeratingWithState:&v44 objects:v52 count:16];
       }
 
       while (v34);
     }
 
-    result = [MEMORY[0x277CBEA60] arrayWithArray:v31];
+    result = [MEMORY[0x277CBEA60] arrayWithArray:array];
   }
 
   else

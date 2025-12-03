@@ -1,34 +1,34 @@
 @interface MOContextManager
 - (BOOL)requestBackgroundProcessAccessForDB;
-- (MOContextManager)initWithClientID:(id)a3;
-- (id)_activityStringFromEnum:(unint64_t)a3;
-- (id)_bundleTypeFromContextType:(id)a3;
-- (id)_createContextsWithBundleContents:(id)a3;
-- (id)_createContextsWithBundleContents:(id)a3 authorizedTypes:(id)a4;
-- (id)_createContextsWithStringDictArray:(id)a3 bundleContents:(id)a4;
-- (id)_replacePredicate:(id)a3 forKeyPath:(id)a4 withNewKeyPath:(id)a5 newValue:(id)a6 comparisonType:(unint64_t)a7;
-- (id)filterResults:(id)a3 withCriteria:(id)a4;
-- (id)updatePredicateType:(id)a3;
-- (unint64_t)_getActionTypeForBundleContent:(id)a3;
-- (void)_addMetaDataToContext:(id)a3 bundleContent:(id)a4;
-- (void)_addMetaDataToContextForRetrieval:(id)a3 bundleContent:(id)a4 authorizedTypes:(id)a5;
-- (void)_addMusicMetaDataToContext:(id)a3 bundleContent:(id)a4;
-- (void)_fetchContextWithOption:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 handler:(id)a6;
-- (void)_fetchStoredContextsWithOption:(id)a3 request:(id)a4 handler:(id)a5;
-- (void)_generateContextWithOption:(id)a3 request:(id)a4 handler:(id)a5;
-- (void)_retrieveContextWithOption:(id)a3 predicate:(id)a4 authorizedTypes:(id)a5 handler:(id)a6;
-- (void)_retrievePersonalizedContextWithOption:(id)a3 handler:(id)a4;
-- (void)_storeNewContexts:(id)a3 withRequest:(id)a4;
-- (void)refreshMomentsContextWithReply:(id)a3;
-- (void)retrieveContextWithOption:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 handler:(id)a6;
-- (void)retrievePersonalizedContextWithOption:(id)a3 handler:(id)a4;
+- (MOContextManager)initWithClientID:(id)d;
+- (id)_activityStringFromEnum:(unint64_t)enum;
+- (id)_bundleTypeFromContextType:(id)type;
+- (id)_createContextsWithBundleContents:(id)contents;
+- (id)_createContextsWithBundleContents:(id)contents authorizedTypes:(id)types;
+- (id)_createContextsWithStringDictArray:(id)array bundleContents:(id)contents;
+- (id)_replacePredicate:(id)predicate forKeyPath:(id)path withNewKeyPath:(id)keyPath newValue:(id)value comparisonType:(unint64_t)type;
+- (id)filterResults:(id)results withCriteria:(id)criteria;
+- (id)updatePredicateType:(id)type;
+- (unint64_t)_getActionTypeForBundleContent:(id)content;
+- (void)_addMetaDataToContext:(id)context bundleContent:(id)content;
+- (void)_addMetaDataToContextForRetrieval:(id)retrieval bundleContent:(id)content authorizedTypes:(id)types;
+- (void)_addMusicMetaDataToContext:(id)context bundleContent:(id)content;
+- (void)_fetchContextWithOption:(id)option predicates:(id)predicates authorizedTypes:(id)types handler:(id)handler;
+- (void)_fetchStoredContextsWithOption:(id)option request:(id)request handler:(id)handler;
+- (void)_generateContextWithOption:(id)option request:(id)request handler:(id)handler;
+- (void)_retrieveContextWithOption:(id)option predicate:(id)predicate authorizedTypes:(id)types handler:(id)handler;
+- (void)_retrievePersonalizedContextWithOption:(id)option handler:(id)handler;
+- (void)_storeNewContexts:(id)contexts withRequest:(id)request;
+- (void)refreshMomentsContextWithReply:(id)reply;
+- (void)retrieveContextWithOption:(id)option predicates:(id)predicates authorizedTypes:(id)types handler:(id)handler;
+- (void)retrievePersonalizedContextWithOption:(id)option handler:(id)handler;
 @end
 
 @implementation MOContextManager
 
-- (MOContextManager)initWithClientID:(id)a3
+- (MOContextManager)initWithClientID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v33.receiver = self;
   v33.super_class = MOContextManager;
   v6 = [(MOContextManager *)&v33 init];
@@ -39,7 +39,7 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_clientBundleId, a3);
+    objc_storeStrong(&v6->_clientBundleId, d);
     v10 = [[MOContextPersistenceManager alloc] initWithClientID:v6->_clientBundleId];
     persistenceManager = v6->_persistenceManager;
     v6->_persistenceManager = v10;
@@ -69,7 +69,7 @@
     block[1] = 3221225472;
     block[2] = __37__MOContextManager_initWithClientID___block_invoke;
     block[3] = &unk_1000B7718;
-    v32 = v5;
+    v32 = dCopy;
     dispatch_async(v22, block);
     v23 = [[MOClientRequestStore alloc] initWithPersistenceManager:v6->_persistenceManager];
     clientRequestStore = v6->_clientRequestStore;
@@ -102,20 +102,20 @@ void __37__MOContextManager_initWithClientID___block_invoke(uint64_t a1)
   [v2 registerClientsForDataAccess:*(a1 + 32)];
 }
 
-- (void)retrievePersonalizedContextWithOption:(id)a3 handler:(id)a4
+- (void)retrievePersonalizedContextWithOption:(id)option handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionCopy = option;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __66__MOContextManager_retrievePersonalizedContextWithOption_handler___block_invoke;
   block[3] = &unk_1000B5470;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = optionCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionCopy;
   dispatch_async(queue, block);
 }
 
@@ -131,26 +131,26 @@ void __66__MOContextManager_retrievePersonalizedContextWithOption_handler___bloc
   [v1 _retrievePersonalizedContextWithOption:v2 handler:v3];
 }
 
-- (void)retrieveContextWithOption:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 handler:(id)a6
+- (void)retrieveContextWithOption:(id)option predicates:(id)predicates authorizedTypes:(id)types handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  optionCopy = option;
+  predicatesCopy = predicates;
+  typesCopy = types;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __81__MOContextManager_retrieveContextWithOption_predicates_authorizedTypes_handler___block_invoke;
   block[3] = &unk_1000B7918;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = optionCopy;
+  v21 = predicatesCopy;
+  v22 = typesCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = typesCopy;
+  v17 = predicatesCopy;
+  v18 = optionCopy;
   dispatch_async(queue, block);
 }
 
@@ -168,15 +168,15 @@ void __81__MOContextManager_retrieveContextWithOption_predicates_authorizedTypes
   [v1 _retrieveContextWithOption:v2 predicate:v3 authorizedTypes:v4 handler:v5];
 }
 
-- (void)_retrievePersonalizedContextWithOption:(id)a3 handler:(id)a4
+- (void)_retrievePersonalizedContextWithOption:(id)option handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 contextRetrieval];
+  handlerCopy = handler;
+  optionCopy = option;
+  contextRetrieval = [optionCopy contextRetrieval];
   v9 = [MOClientRequest alloc];
   v10 = +[NSUUID UUID];
   v11 = +[NSDate now];
-  if (v8 == 2)
+  if (contextRetrieval == 2)
   {
     v12 = [(MOClientRequest *)v9 initWithRequestIdentifier:v10 requestType:2 creationDate:v11];
 
@@ -187,10 +187,10 @@ void __81__MOContextManager_retrieveContextWithOption_predicates_authorizedTypes
     v13 = &v23;
     v14 = &v22;
     v22 = v12;
-    v23 = v6;
-    v15 = v6;
+    v23 = handlerCopy;
+    v15 = handlerCopy;
     v16 = v12;
-    [(MOContextManager *)self _generateContextWithOption:v7 request:v16 handler:v21];
+    [(MOContextManager *)self _generateContextWithOption:optionCopy request:v16 handler:v21];
   }
 
   else
@@ -204,38 +204,38 @@ void __81__MOContextManager_retrieveContextWithOption_predicates_authorizedTypes
     v13 = &v20;
     v14 = &v19;
     v19 = v17;
-    v20 = v6;
+    v20 = handlerCopy;
     v15 = v17;
-    v16 = v6;
-    [(MOContextManager *)self _fetchStoredContextsWithOption:v7 request:v15 handler:v18];
+    v16 = handlerCopy;
+    [(MOContextManager *)self _fetchStoredContextsWithOption:optionCopy request:v15 handler:v18];
   }
 }
 
-- (void)_retrieveContextWithOption:(id)a3 predicate:(id)a4 authorizedTypes:(id)a5 handler:(id)a6
+- (void)_retrieveContextWithOption:(id)option predicate:(id)predicate authorizedTypes:(id)types handler:(id)handler
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __81__MOContextManager__retrieveContextWithOption_predicate_authorizedTypes_handler___block_invoke;
   v11[3] = &unk_1000B5358;
-  v12 = a6;
-  v10 = v12;
-  [(MOContextManager *)self _fetchContextWithOption:a3 predicates:a4 authorizedTypes:a5 handler:v11];
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  [(MOContextManager *)self _fetchContextWithOption:option predicates:predicate authorizedTypes:types handler:v11];
 }
 
-- (void)_generateContextWithOption:(id)a3 request:(id)a4 handler:(id)a5
+- (void)_generateContextWithOption:(id)option request:(id)request handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   extractor = self->_extractor;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __63__MOContextManager__generateContextWithOption_request_handler___block_invoke;
   v12[3] = &unk_1000B4A98;
-  v13 = v7;
-  v14 = v8;
+  v13 = requestCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v7;
-  v11 = v8;
+  v10 = requestCopy;
+  v11 = handlerCopy;
   [(MOBundleContentExtractor *)extractor extractContentsFromBundlesWithHandler:v12];
 }
 
@@ -335,12 +335,12 @@ void __63__MOContextManager__generateContextWithOption_request_handler___block_i
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)_fetchContextWithOption:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 handler:(id)a6
+- (void)_fetchContextWithOption:(id)option predicates:(id)predicates authorizedTypes:(id)types handler:(id)handler
 {
-  v20 = a3;
-  v10 = a4;
-  v23 = a5;
-  v21 = a6;
+  optionCopy = option;
+  predicatesCopy = predicates;
+  typesCopy = types;
+  handlerCopy = handler;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -365,7 +365,7 @@ void __63__MOContextManager__generateContextWithOption_request_handler___block_i
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v10;
+  obj = predicatesCopy;
   v13 = [obj countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v13)
   {
@@ -389,7 +389,7 @@ void __63__MOContextManager__generateContextWithOption_request_handler___block_i
         v28[3] = &unk_1000B79B8;
         v32 = v38;
         v28[4] = self;
-        v29 = v23;
+        v29 = typesCopy;
         v30 = v16;
         v33 = buf;
         v31 = v12;
@@ -406,10 +406,10 @@ void __63__MOContextManager__generateContextWithOption_request_handler___block_i
   block[1] = 3221225472;
   block[2] = __79__MOContextManager__fetchContextWithOption_predicates_authorizedTypes_handler___block_invoke_125;
   block[3] = &unk_1000B79E0;
-  v25 = v21;
+  v25 = handlerCopy;
   v26 = v38;
   v27 = buf;
-  v19 = v21;
+  v19 = handlerCopy;
   dispatch_group_notify(v12, &_dispatch_main_q, block);
 
   _Block_object_dispose(v38, 8);
@@ -559,12 +559,12 @@ void __79__MOContextManager__fetchContextWithOption_predicates_authorizedTypes_h
   }
 }
 
-- (id)filterResults:(id)a3 withCriteria:(id)a4
+- (id)filterResults:(id)results withCriteria:(id)criteria
 {
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  criteriaCopy = criteria;
   v7 = +[NSMutableArray array];
-  v8 = [v6 objectForKeyedSubscript:@"distanceFromLocation"];
+  v8 = [criteriaCopy objectForKeyedSubscript:@"distanceFromLocation"];
   v9 = [v8 objectForKeyedSubscript:@"targetLocation"];
   v10 = [v8 objectForKeyedSubscript:@"maxDistance"];
   if (v9)
@@ -601,12 +601,12 @@ void __79__MOContextManager__fetchContextWithOption_predicates_authorizedTypes_h
   }
 
   v33 = v10;
-  v31 = v6;
+  v31 = criteriaCopy;
 
   v18 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [v5 count];
+    v19 = [resultsCopy count];
     *buf = 134217984;
     v41 = *&v19;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "filterResults, before count %lu", buf, 0xCu);
@@ -616,8 +616,8 @@ void __79__MOContextManager__fetchContextWithOption_predicates_authorizedTypes_h
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v32 = v5;
-  v20 = v5;
+  v32 = resultsCopy;
+  v20 = resultsCopy;
   v21 = [v20 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v21)
   {
@@ -666,24 +666,24 @@ void __79__MOContextManager__fetchContextWithOption_predicates_authorizedTypes_h
   }
 
   v14 = [v7 copy];
-  v6 = v31;
-  v5 = v32;
+  criteriaCopy = v31;
+  resultsCopy = v32;
   v10 = v33;
 LABEL_30:
 
   return v14;
 }
 
-- (id)_createContextsWithStringDictArray:(id)a3 bundleContents:(id)a4
+- (id)_createContextsWithStringDictArray:(id)array bundleContents:(id)contents
 {
-  v33 = a3;
-  v5 = a4;
+  arrayCopy = array;
+  contentsCopy = contents;
   v31 = +[NSMutableArray array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v5;
+  obj = contentsCopy;
   v34 = [obj countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v34)
   {
@@ -706,24 +706,24 @@ LABEL_30:
         v11 = +[NSDate now];
         v12 = [(MOContext *)v9 initWithContextIdentifier:v10 contextCreationTimestamp:v11];
 
-        v13 = [v8 associatedBundleID];
-        v14 = [v13 UUIDString];
-        [(MOContext *)v12 setAssociatedBundleID:v14];
+        associatedBundleID = [v8 associatedBundleID];
+        uUIDString = [associatedBundleID UUIDString];
+        [(MOContext *)v12 setAssociatedBundleID:uUIDString];
 
-        v15 = [v8 associatedSuggestionID];
-        v16 = [v15 UUIDString];
-        [(MOContext *)v12 setAssociatedSuggestionID:v16];
+        associatedSuggestionID = [v8 associatedSuggestionID];
+        uUIDString2 = [associatedSuggestionID UUIDString];
+        [(MOContext *)v12 setAssociatedSuggestionID:uUIDString2];
 
         [(MOContext *)v12 setActionType:[(MOContextManager *)self _getActionTypeForBundleContent:v8]];
-        v17 = [v8 bundleContentIdentifier];
-        [(MOContext *)v12 setBundleContentIdentifier:v17];
+        bundleContentIdentifier = [v8 bundleContentIdentifier];
+        [(MOContext *)v12 setBundleContentIdentifier:bundleContentIdentifier];
 
         v18 = objc_opt_new();
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v19 = v33;
+        v19 = arrayCopy;
         v20 = [v19 countByEnumeratingWithState:&v36 objects:v46 count:16];
         if (v20)
         {
@@ -739,8 +739,8 @@ LABEL_30:
               }
 
               v24 = *(*(&v36 + 1) + 8 * i);
-              v25 = [v8 bundleContentIdentifier];
-              v26 = [v24 objectForKey:v25];
+              bundleContentIdentifier2 = [v8 bundleContentIdentifier];
+              v26 = [v24 objectForKey:bundleContentIdentifier2];
 
               if ([v26 count])
               {
@@ -782,15 +782,15 @@ LABEL_30:
   return v31;
 }
 
-- (id)_createContextsWithBundleContents:(id)a3
+- (id)_createContextsWithBundleContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v5 = +[NSMutableArray array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = contentsCopy;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v6)
   {
@@ -812,17 +812,17 @@ LABEL_30:
         v13 = +[NSDate now];
         v14 = [(MOContext *)v11 initWithContextIdentifier:v12 contextCreationTimestamp:v13];
 
-        v15 = [v10 associatedBundleID];
-        v16 = [v15 UUIDString];
-        [(MOContext *)v14 setAssociatedBundleID:v16];
+        associatedBundleID = [v10 associatedBundleID];
+        uUIDString = [associatedBundleID UUIDString];
+        [(MOContext *)v14 setAssociatedBundleID:uUIDString];
 
-        v17 = [v10 associatedSuggestionID];
-        v18 = [v17 UUIDString];
-        [(MOContext *)v14 setAssociatedSuggestionID:v18];
+        associatedSuggestionID = [v10 associatedSuggestionID];
+        uUIDString2 = [associatedSuggestionID UUIDString];
+        [(MOContext *)v14 setAssociatedSuggestionID:uUIDString2];
 
         [(MOContext *)v14 setActionType:[(MOContextManager *)self _getActionTypeForBundleContent:v10]];
-        v19 = [v10 bundleContentIdentifier];
-        [(MOContext *)v14 setBundleContentIdentifier:v19];
+        bundleContentIdentifier = [v10 bundleContentIdentifier];
+        [(MOContext *)v14 setBundleContentIdentifier:bundleContentIdentifier];
 
         [(MOContextManager *)self _addMetaDataToContext:v14 bundleContent:v10];
         v20 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
@@ -847,16 +847,16 @@ LABEL_30:
   return v5;
 }
 
-- (id)_createContextsWithBundleContents:(id)a3 authorizedTypes:(id)a4
+- (id)_createContextsWithBundleContents:(id)contents authorizedTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  typesCopy = types;
   v8 = +[NSMutableArray array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = contentsCopy;
   v9 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v9)
   {
@@ -878,19 +878,19 @@ LABEL_30:
         v16 = +[NSDate now];
         v17 = [(MOContext *)v14 initWithContextIdentifier:v15 contextCreationTimestamp:v16];
 
-        v18 = [v13 associatedBundleID];
-        v19 = [v18 UUIDString];
-        [(MOContext *)v17 setAssociatedBundleID:v19];
+        associatedBundleID = [v13 associatedBundleID];
+        uUIDString = [associatedBundleID UUIDString];
+        [(MOContext *)v17 setAssociatedBundleID:uUIDString];
 
-        v20 = [v13 associatedSuggestionID];
-        v21 = [v20 UUIDString];
-        [(MOContext *)v17 setAssociatedSuggestionID:v21];
+        associatedSuggestionID = [v13 associatedSuggestionID];
+        uUIDString2 = [associatedSuggestionID UUIDString];
+        [(MOContext *)v17 setAssociatedSuggestionID:uUIDString2];
 
         [(MOContext *)v17 setActionType:[(MOContextManager *)self _getActionTypeForBundleContent:v13]];
-        v22 = [v13 bundleContentIdentifier];
-        [(MOContext *)v17 setBundleContentIdentifier:v22];
+        bundleContentIdentifier = [v13 bundleContentIdentifier];
+        [(MOContext *)v17 setBundleContentIdentifier:bundleContentIdentifier];
 
-        [(MOContextManager *)self _addMetaDataToContextForRetrieval:v17 bundleContent:v13 authorizedTypes:v7];
+        [(MOContextManager *)self _addMetaDataToContextForRetrieval:v17 bundleContent:v13 authorizedTypes:typesCopy];
         v23 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
@@ -913,30 +913,30 @@ LABEL_30:
   return v8;
 }
 
-- (void)_addMetaDataToContext:(id)a3 bundleContent:(id)a4
+- (void)_addMetaDataToContext:(id)context bundleContent:(id)content
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contextStrings];
-  v9 = [v8 count];
+  contextCopy = context;
+  contentCopy = content;
+  contextStrings = [contextCopy contextStrings];
+  v9 = [contextStrings count];
 
   if (v9)
   {
-    v33 = self;
-    v34 = v6;
+    selfCopy = self;
+    v34 = contextCopy;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = [v6 contextStrings];
+    obj = [contextCopy contextStrings];
     v10 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v10)
     {
       v11 = v10;
-      v12 = 0;
-      v13 = 0;
-      v14 = 0;
-      v15 = 0;
+      capitalizedString = 0;
+      firstObject = 0;
+      cityName = 0;
+      placeName = 0;
       v16 = *v37;
       do
       {
@@ -948,26 +948,26 @@ LABEL_30:
           }
 
           v18 = *(*(&v36 + 1) + 8 * i);
-          if (([v18 contentType] & 4) != 0 && !v15)
+          if (([v18 contentType] & 4) != 0 && !placeName)
           {
-            v15 = [v7 placeName];
+            placeName = [contentCopy placeName];
           }
 
-          if (([v18 contentType] & 8) != 0 && !v14)
+          if (([v18 contentType] & 8) != 0 && !cityName)
           {
-            v14 = [v7 cityName];
+            cityName = [contentCopy cityName];
           }
 
-          if (([v18 contentType] & 1) != 0 && !v13)
+          if (([v18 contentType] & 1) != 0 && !firstObject)
           {
-            v19 = [v7 personNames];
-            v13 = [v19 firstObject];
+            personNames = [contentCopy personNames];
+            firstObject = [personNames firstObject];
           }
 
-          if (([v18 contentType] & 0x4000) != 0 && !v12)
+          if (([v18 contentType] & 0x4000) != 0 && !capitalizedString)
           {
-            v20 = [v7 timeReference];
-            v12 = [v20 capitalizedString];
+            timeReference = [contentCopy timeReference];
+            capitalizedString = [timeReference capitalizedString];
           }
         }
 
@@ -979,17 +979,17 @@ LABEL_30:
 
     else
     {
-      v12 = 0;
-      v13 = 0;
-      v14 = 0;
-      v15 = 0;
+      capitalizedString = 0;
+      firstObject = 0;
+      cityName = 0;
+      placeName = 0;
     }
 
-    if (v15 | v14 && (v21 = [[MOContextLocationMetaData alloc] initWithPlace:v15 city:v14]) != 0)
+    if (placeName | cityName && (v21 = [[MOContextLocationMetaData alloc] initWithPlace:placeName city:cityName]) != 0)
     {
       v22 = v21;
       v23 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
-      v6 = v34;
+      contextCopy = v34;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
         [MOContextManager _addMetaDataToContext:bundleContent:];
@@ -998,7 +998,7 @@ LABEL_30:
       v24 = [NSArray arrayWithObjects:v22, 0];
       [v34 setAssociatedLocations:v24];
 
-      if (!v13)
+      if (!firstObject)
       {
         goto LABEL_35;
       }
@@ -1006,16 +1006,16 @@ LABEL_30:
 
     else
     {
-      v6 = v34;
+      contextCopy = v34;
       [v34 setAssociatedLocations:0];
       v22 = 0;
-      if (!v13)
+      if (!firstObject)
       {
         goto LABEL_35;
       }
     }
 
-    v25 = [[MOContextContactMetaData alloc] initWithContactName:v13];
+    v25 = [[MOContextContactMetaData alloc] initWithContactName:firstObject];
     if (v25)
     {
       v26 = v25;
@@ -1026,15 +1026,15 @@ LABEL_30:
       }
 
       v28 = [NSArray arrayWithObjects:v26, 0];
-      [v6 setAssociatedContacts:v28];
+      [contextCopy setAssociatedContacts:v28];
 
-      if (!v12)
+      if (!capitalizedString)
       {
         goto LABEL_40;
       }
 
 LABEL_36:
-      v29 = [[MOContextTimeMetaData alloc] initWithTimeReferenceString:v12];
+      v29 = [[MOContextTimeMetaData alloc] initWithTimeReferenceString:capitalizedString];
       if (v29)
       {
         v30 = v29;
@@ -1045,23 +1045,23 @@ LABEL_36:
         }
 
         v32 = [NSArray arrayWithObjects:v30, 0];
-        [v6 setAssociatedTime:v32];
+        [contextCopy setAssociatedTime:v32];
 
         goto LABEL_41;
       }
 
 LABEL_40:
-      [v6 setAssociatedTime:0];
+      [contextCopy setAssociatedTime:0];
 LABEL_41:
-      [(MOContextManager *)v33 _addMusicMetaDataToContext:v6 bundleContent:v7];
+      [(MOContextManager *)selfCopy _addMusicMetaDataToContext:contextCopy bundleContent:contentCopy];
 
       goto LABEL_42;
     }
 
 LABEL_35:
-    [v6 setAssociatedContacts:0];
+    [contextCopy setAssociatedContacts:0];
     v26 = 0;
-    if (!v12)
+    if (!capitalizedString)
     {
       goto LABEL_40;
     }
@@ -1072,100 +1072,100 @@ LABEL_35:
 LABEL_42:
 }
 
-- (void)_addMetaDataToContextForRetrieval:(id)a3 bundleContent:(id)a4 authorizedTypes:(id)a5
+- (void)_addMetaDataToContextForRetrieval:(id)retrieval bundleContent:(id)content authorizedTypes:(id)types
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 placeName];
+  retrievalCopy = retrieval;
+  contentCopy = content;
+  typesCopy = types;
+  placeName = [contentCopy placeName];
 
-  if (v10)
+  if (placeName)
   {
-    v11 = [v8 placeName];
+    placeName2 = [contentCopy placeName];
   }
 
   else
   {
-    v11 = 0;
+    placeName2 = 0;
   }
 
-  v12 = [v8 cityName];
+  cityName = [contentCopy cityName];
 
-  if (v12)
+  if (cityName)
   {
-    v13 = [v8 cityName];
+    cityName2 = [contentCopy cityName];
   }
 
   else
   {
-    v13 = 0;
+    cityName2 = 0;
   }
 
-  v14 = [v8 timeReference];
+  timeReference = [contentCopy timeReference];
 
-  if (v14)
+  if (timeReference)
   {
-    v15 = [v8 timeReference];
-    v16 = [v15 capitalizedString];
+    timeReference2 = [contentCopy timeReference];
+    capitalizedString = [timeReference2 capitalizedString];
   }
 
   else
   {
-    v16 = 0;
+    capitalizedString = 0;
   }
 
-  v17 = [v8 startDate];
+  startDate = [contentCopy startDate];
 
-  if (v17)
+  if (startDate)
   {
-    v18 = [v8 startDate];
+    startDate2 = [contentCopy startDate];
   }
 
   else
   {
-    v18 = 0;
+    startDate2 = 0;
   }
 
-  v19 = [v8 endDate];
+  endDate = [contentCopy endDate];
 
-  if (v19)
+  if (endDate)
   {
-    v20 = [v8 endDate];
+    endDate2 = [contentCopy endDate];
   }
 
   else
   {
-    v20 = 0;
+    endDate2 = 0;
   }
 
-  v21 = [v8 location];
+  location = [contentCopy location];
 
-  if (v21)
+  if (location)
   {
     v58 = [CLLocation alloc];
-    v22 = [v8 location];
-    [v22 latitude];
+    location2 = [contentCopy location];
+    [location2 latitude];
     v24 = v23;
-    [v8 location];
-    v25 = v8;
-    v26 = v9;
-    v27 = v20;
-    v28 = v18;
-    v29 = v16;
-    v30 = v7;
-    v31 = v13;
-    v33 = v32 = v11;
+    [contentCopy location];
+    v25 = contentCopy;
+    v26 = typesCopy;
+    v27 = endDate2;
+    v28 = startDate2;
+    v29 = capitalizedString;
+    v30 = retrievalCopy;
+    v31 = cityName2;
+    v33 = v32 = placeName2;
     [v33 longitude];
     v59 = [v58 initWithLatitude:v24 longitude:v34];
 
-    v11 = v32;
-    v13 = v31;
-    v7 = v30;
-    v16 = v29;
-    v18 = v28;
-    v20 = v27;
-    v9 = v26;
-    v8 = v25;
+    placeName2 = v32;
+    cityName2 = v31;
+    retrievalCopy = v30;
+    capitalizedString = v29;
+    startDate2 = v28;
+    endDate2 = v27;
+    typesCopy = v26;
+    contentCopy = v25;
   }
 
   else
@@ -1173,31 +1173,31 @@ LABEL_42:
     v59 = 0;
   }
 
-  if (![v9 containsObject:&off_1000C87D0])
+  if (![typesCopy containsObject:&off_1000C87D0])
   {
     goto LABEL_32;
   }
 
-  if (v18 && v20)
+  if (startDate2 && endDate2)
   {
-    v35 = [[MOContextTimeMetaData alloc] initWithStartDate:v18 endDate:v20 timeReferenceString:v16];
+    v35 = [[MOContextTimeMetaData alloc] initWithStartDate:startDate2 endDate:endDate2 timeReferenceString:capitalizedString];
   }
 
   else
   {
-    if (!v16 || v18 || v20)
+    if (!capitalizedString || startDate2 || endDate2)
     {
       goto LABEL_31;
     }
 
-    v35 = [[MOContextTimeMetaData alloc] initWithTimeReferenceString:v16];
+    v35 = [[MOContextTimeMetaData alloc] initWithTimeReferenceString:capitalizedString];
   }
 
   v36 = v35;
   if (!v35)
   {
 LABEL_31:
-    [v7 setAssociatedTime:0];
+    [retrievalCopy setAssociatedTime:0];
     goto LABEL_32;
   }
 
@@ -1208,36 +1208,36 @@ LABEL_31:
   }
 
   v38 = [NSArray arrayWithObjects:v36, 0];
-  [v7 setAssociatedTime:v38];
+  [retrievalCopy setAssociatedTime:v38];
 
 LABEL_32:
-  if ([v9 containsObject:&off_1000C87E8])
+  if ([typesCopy containsObject:&off_1000C87E8])
   {
-    if (![v8 activityType])
+    if (![contentCopy activityType])
     {
       goto LABEL_38;
     }
 
     v39 = [MOContextActivityMetaData alloc];
-    -[MOContextManager _activityStringFromEnum:](self, "_activityStringFromEnum:", [v8 activityType]);
-    v40 = v8;
-    v41 = v9;
-    v42 = v20;
-    v43 = v18;
-    v44 = v16;
-    v45 = v7;
-    v46 = v13;
-    v48 = v47 = v11;
+    -[MOContextManager _activityStringFromEnum:](self, "_activityStringFromEnum:", [contentCopy activityType]);
+    v40 = contentCopy;
+    v41 = typesCopy;
+    v42 = endDate2;
+    v43 = startDate2;
+    v44 = capitalizedString;
+    v45 = retrievalCopy;
+    v46 = cityName2;
+    v48 = v47 = placeName2;
     v49 = [(MOContextActivityMetaData *)v39 initWithActivityType:v48];
 
-    v11 = v47;
-    v13 = v46;
-    v7 = v45;
-    v16 = v44;
-    v18 = v43;
-    v20 = v42;
-    v9 = v41;
-    v8 = v40;
+    placeName2 = v47;
+    cityName2 = v46;
+    retrievalCopy = v45;
+    capitalizedString = v44;
+    startDate2 = v43;
+    endDate2 = v42;
+    typesCopy = v41;
+    contentCopy = v40;
     if (v49)
     {
       v50 = v49;
@@ -1248,19 +1248,19 @@ LABEL_32:
       }
 
       v52 = [NSArray arrayWithObjects:v50, 0];
-      [v7 setAssociatedActivities:v52];
+      [retrievalCopy setAssociatedActivities:v52];
     }
 
     else
     {
 LABEL_38:
-      [v7 setAssociatedActivities:0];
+      [retrievalCopy setAssociatedActivities:0];
     }
   }
 
-  if ([v9 containsObject:&off_1000C8800])
+  if ([typesCopy containsObject:&off_1000C8800])
   {
-    if ((v11 || v13 || v59) && (v53 = [[MOContextLocationMetaData alloc] initWithPlace:v11 city:v13 location:v59]) != 0)
+    if ((placeName2 || cityName2 || v59) && (v53 = [[MOContextLocationMetaData alloc] initWithPlace:placeName2 city:cityName2 location:v59]) != 0)
     {
       v54 = v53;
       v55 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
@@ -1270,100 +1270,100 @@ LABEL_38:
       }
 
       v56 = [NSArray arrayWithObjects:v54, 0];
-      [v7 setAssociatedLocations:v56];
+      [retrievalCopy setAssociatedLocations:v56];
     }
 
     else
     {
-      [v7 setAssociatedLocations:0];
+      [retrievalCopy setAssociatedLocations:0];
     }
   }
 }
 
-- (id)_activityStringFromEnum:(unint64_t)a3
+- (id)_activityStringFromEnum:(unint64_t)enum
 {
-  if (a3 - 1 > 9)
+  if (enum - 1 > 9)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1000B7B50 + a3 - 1);
+    return *(&off_1000B7B50 + enum - 1);
   }
 }
 
-- (void)_addMusicMetaDataToContext:(id)a3 bundleContent:(id)a4
+- (void)_addMusicMetaDataToContext:(id)context bundleContent:(id)content
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 musicSuggestionSongTitle];
-  if (v7)
+  contextCopy = context;
+  contentCopy = content;
+  musicSuggestionSongTitle = [contentCopy musicSuggestionSongTitle];
+  if (musicSuggestionSongTitle)
   {
 
 LABEL_4:
-    v9 = [(MOTemplateBasedContextBuilder *)self->_templateBasedContextBuilder musicMetaDataWithArtistSongForBundleContent:v6];
+    v9 = [(MOTemplateBasedContextBuilder *)self->_templateBasedContextBuilder musicMetaDataWithArtistSongForBundleContent:contentCopy];
     goto LABEL_5;
   }
 
-  v8 = [v6 musicSuggestionArtistName];
+  musicSuggestionArtistName = [contentCopy musicSuggestionArtistName];
 
-  if (v8)
+  if (musicSuggestionArtistName)
   {
     goto LABEL_4;
   }
 
-  v9 = [(MOTemplateBasedContextBuilder *)self->_templateBasedContextBuilder musicMetaDataWithMoodForBundleContent:v6];
+  v9 = [(MOTemplateBasedContextBuilder *)self->_templateBasedContextBuilder musicMetaDataWithMoodForBundleContent:contentCopy];
 LABEL_5:
   v10 = v9;
-  [v11 setAssociatedMusic:v9];
+  [contextCopy setAssociatedMusic:v9];
 }
 
-- (unint64_t)_getActionTypeForBundleContent:(id)a3
+- (unint64_t)_getActionTypeForBundleContent:(id)content
 {
-  v3 = a3;
-  if ([v3 activityType])
+  contentCopy = content;
+  if ([contentCopy activityType])
   {
     v4 = 7;
   }
 
   else
   {
-    v5 = [v3 bundleType];
-    if ((v5 - 1) >= 6)
+    bundleType = [contentCopy bundleType];
+    if ((bundleType - 1) >= 6)
     {
       v4 = 0;
     }
 
     else
     {
-      v4 = v5;
+      v4 = bundleType;
     }
   }
 
   return v4;
 }
 
-- (void)_fetchStoredContextsWithOption:(id)a3 request:(id)a4 handler:(id)a5
+- (void)_fetchStoredContextsWithOption:(id)option request:(id)request handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MOContextManager *)self persistenceManager];
-  v10 = [v9 available];
+  requestCopy = request;
+  handlerCopy = handler;
+  persistenceManager = [(MOContextManager *)self persistenceManager];
+  available = [persistenceManager available];
 
-  if (v10)
+  if (available)
   {
-    v11 = [(MOContextManager *)self clientRequestStore];
+    clientRequestStore = [(MOContextManager *)self clientRequestStore];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = __67__MOContextManager__fetchStoredContextsWithOption_request_handler___block_invoke;
     v16[3] = &unk_1000B7A08;
     v16[4] = self;
-    v17 = v8;
-    [v11 fetchMostRecentClientRequestWithHandler:v16];
+    v17 = handlerCopy;
+    [clientRequestStore fetchMostRecentClientRequestWithHandler:v16];
 
-    v12 = [(MOContextManager *)self clientRequestStore];
-    [v12 storeClientRequest:v7 handler:&__block_literal_global_7];
+    clientRequestStore2 = [(MOContextManager *)self clientRequestStore];
+    [clientRequestStore2 storeClientRequest:requestCopy handler:&__block_literal_global_7];
   }
 
   else
@@ -1378,7 +1378,7 @@ LABEL_5:
     v19 = @"MOContextManager:_fetchStoredContextsWithOption, fail to fetch context as db is not available";
     v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v15 = [NSError errorWithDomain:@"MOContextErrorDomain" code:769 userInfo:v14];
-    (*(v8 + 2))(v8, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 
@@ -1430,21 +1430,21 @@ void __67__MOContextManager__fetchStoredContextsWithOption_request_handler___blo
   }
 }
 
-- (void)_storeNewContexts:(id)a3 withRequest:(id)a4
+- (void)_storeNewContexts:(id)contexts withRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOContextManager *)self persistenceManager];
-  v9 = [v8 available];
+  contextsCopy = contexts;
+  requestCopy = request;
+  persistenceManager = [(MOContextManager *)self persistenceManager];
+  available = [persistenceManager available];
 
-  if (v9)
+  if (available)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v23 = v6;
-    v10 = v6;
+    v23 = contextsCopy;
+    v10 = contextsCopy;
     v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
@@ -1462,9 +1462,9 @@ void __67__MOContextManager__fetchStoredContextsWithOption_request_handler___blo
 
           v15 = *(*(&v24 + 1) + 8 * v14);
           v16 = objc_autoreleasePoolPush();
-          v17 = [v7 requestIdentifier];
-          v18 = [v17 UUIDString];
-          [v15 setAssociatedRequestID:v18];
+          requestIdentifier = [requestCopy requestIdentifier];
+          uUIDString = [requestIdentifier UUIDString];
+          [v15 setAssociatedRequestID:uUIDString];
 
           objc_autoreleasePoolPop(v16);
           v14 = v14 + 1;
@@ -1477,24 +1477,24 @@ void __67__MOContextManager__fetchStoredContextsWithOption_request_handler___blo
       while (v12);
     }
 
-    v19 = [(MOContextManager *)self contextStore];
-    [v19 removeExpiredContextWithHandler:&__block_literal_global_185];
+    contextStore = [(MOContextManager *)self contextStore];
+    [contextStore removeExpiredContextWithHandler:&__block_literal_global_185];
 
-    v20 = [(MOContextManager *)self contextStore];
-    [v20 storeContexts:v10 handler:&__block_literal_global_188];
+    contextStore2 = [(MOContextManager *)self contextStore];
+    [contextStore2 storeContexts:v10 handler:&__block_literal_global_188];
 
-    v21 = [(MOContextManager *)self clientRequestStore];
-    [v21 removeExpiredClientRequestsWithHandler:&__block_literal_global_191];
+    clientRequestStore = [(MOContextManager *)self clientRequestStore];
+    [clientRequestStore removeExpiredClientRequestsWithHandler:&__block_literal_global_191];
 
-    v22 = [(MOContextManager *)self clientRequestStore];
-    [v22 storeClientRequest:v7 handler:&__block_literal_global_194];
-    v6 = v23;
+    clientRequestStore2 = [(MOContextManager *)self clientRequestStore];
+    [clientRequestStore2 storeClientRequest:requestCopy handler:&__block_literal_global_194];
+    contextsCopy = v23;
   }
 
   else
   {
-    v22 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    clientRequestStore2 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
+    if (os_log_type_enabled(clientRequestStore2, OS_LOG_TYPE_ERROR))
     {
       [MOContextManager _storeNewContexts:withRequest:];
     }
@@ -1583,8 +1583,8 @@ void __50__MOContextManager__storeNewContexts_withRequest___block_invoke_192(id 
 
 - (BOOL)requestBackgroundProcessAccessForDB
 {
-  v3 = [(MOContextManager *)self persistenceManager];
-  v4 = [v3 acquireBackgroundProcessingPermissionsWithClientID:self->_clientBundleId];
+  persistenceManager = [(MOContextManager *)self persistenceManager];
+  v4 = [persistenceManager acquireBackgroundProcessingPermissionsWithClientID:self->_clientBundleId];
 
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -1610,13 +1610,13 @@ LABEL_6:
 
   v9 = v4 == 1;
 
-  v10 = [(MOContextManager *)self promptManager];
-  [v10 acquireBackgroundProcessingPermissionsForMomentsWithHander:&__block_literal_global_197];
+  promptManager = [(MOContextManager *)self promptManager];
+  [promptManager acquireBackgroundProcessingPermissionsForMomentsWithHander:&__block_literal_global_197];
 
-  v11 = [(MOContextManager *)self persistenceManager];
-  v12 = [v11 available];
+  persistenceManager2 = [(MOContextManager *)self persistenceManager];
+  available = [persistenceManager2 available];
 
-  v13 = [[MOContextAnalyticsManager alloc] initWithAssertionErrorState:v4 dbAvailability:v12];
+  v13 = [[MOContextAnalyticsManager alloc] initWithAssertionErrorState:v4 dbAvailability:available];
   [(MOContextAnalyticsManager *)v13 sendAssertionAnalyticsEvent];
 
   return v9;
@@ -1642,9 +1642,9 @@ void __55__MOContextManager_requestBackgroundProcessAccessForDB__block_invoke(id
   }
 }
 
-- (id)updatePredicateType:(id)a3
+- (id)updatePredicateType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1652,39 +1652,39 @@ void __55__MOContextManager_requestBackgroundProcessAccessForDB__block_invoke(id
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "updatePredicateType", buf, 2u);
   }
 
-  v6 = [v4 fetchRequestPredicate];
-  v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:0];
+  fetchRequestPredicate = [typeCopy fetchRequestPredicate];
+  v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:fetchRequestPredicate error:0];
   [v7 allowEvaluation];
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 predicateFormat];
+    predicateFormat = [v7 predicateFormat];
     *buf = 138412290;
-    v41 = v9;
+    v41 = predicateFormat;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "deserializedfetchRequestPredicate, %@", buf, 0xCu);
   }
 
-  v10 = [v4 filterCriteriaMap];
+  filterCriteriaMap = [typeCopy filterCriteriaMap];
   v11 = +[NSNull null];
-  v12 = [v10 isEqual:v11];
+  v12 = [filterCriteriaMap isEqual:v11];
 
   if (v12)
   {
-    v35 = 0;
+    filterCriteriaMap2 = 0;
   }
 
   else
   {
-    v35 = [v4 filterCriteriaMap];
+    filterCriteriaMap2 = [typeCopy filterCriteriaMap];
   }
 
   objc_opt_class();
-  v37 = v6;
-  v38 = v4;
+  v37 = fetchRequestPredicate;
+  v38 = typeCopy;
   v36 = v7;
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v7 subpredicates];
+    subpredicates = [v7 subpredicates];
   }
 
   else
@@ -1696,16 +1696,16 @@ void __55__MOContextManager_requestBackgroundProcessAccessForDB__block_invoke(id
       v14 = [NSArray arrayWithObjects:&v39 count:1];
       v15 = [NSCompoundPredicate andPredicateWithSubpredicates:v14];
 
-      v13 = [v15 subpredicates];
+      subpredicates = [v15 subpredicates];
     }
 
     else
     {
-      v13 = 0;
+      subpredicates = 0;
     }
   }
 
-  v16 = [NSMutableArray arrayWithArray:v13, v13];
+  v16 = [NSMutableArray arrayWithArray:subpredicates, subpredicates];
   if ([v16 count])
   {
     v17 = 0;
@@ -1716,9 +1716,9 @@ void __55__MOContextManager_requestBackgroundProcessAccessForDB__block_invoke(id
       if (objc_opt_isKindOfClass())
       {
         v19 = v18;
-        v20 = [v19 leftExpression];
-        v21 = [v20 keyPath];
-        v22 = [v21 isEqualToString:@"contextType"];
+        leftExpression = [v19 leftExpression];
+        keyPath = [leftExpression keyPath];
+        v22 = [keyPath isEqualToString:@"contextType"];
 
         if (v22)
         {
@@ -1729,10 +1729,10 @@ void __55__MOContextManager_requestBackgroundProcessAccessForDB__block_invoke(id
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "updating contextType", buf, 2u);
           }
 
-          v24 = [v19 rightExpression];
-          v25 = [v24 constantValue];
+          rightExpression = [v19 rightExpression];
+          constantValue = [rightExpression constantValue];
 
-          v26 = [(MOContextManager *)self _bundleTypeFromContextType:v25];
+          v26 = [(MOContextManager *)self _bundleTypeFromContextType:constantValue];
           v27 = [(MOContextManager *)self _replacePredicate:v19 forKeyPath:@"contextType" withNewKeyPath:@"interfaceType" newValue:v26 comparisonType:4];
           [v16 setObject:v27 atIndexedSubscript:v17];
         }
@@ -1747,54 +1747,54 @@ void __55__MOContextManager_requestBackgroundProcessAccessForDB__block_invoke(id
   v28 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
   v29 = [NSKeyedArchiver archivedDataWithRootObject:v28 requiringSecureCoding:1 error:0];
   v30 = [MOContextPredicate alloc];
-  v31 = [v38 metadataTypes];
-  v32 = [(MOContextPredicate *)v30 initWithPredicate:v29 filter:v35 metadataTypes:v31];
+  metadataTypes = [v38 metadataTypes];
+  v32 = [(MOContextPredicate *)v30 initWithPredicate:v29 filter:filterCriteriaMap2 metadataTypes:metadataTypes];
 
   return v32;
 }
 
-- (id)_replacePredicate:(id)a3 forKeyPath:(id)a4 withNewKeyPath:(id)a5 newValue:(id)a6 comparisonType:(unint64_t)a7
+- (id)_replacePredicate:(id)predicate forKeyPath:(id)path withNewKeyPath:(id)keyPath newValue:(id)value comparisonType:(unint64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  predicateCopy = predicate;
+  pathCopy = path;
+  keyPathCopy = keyPath;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v11;
-    v16 = [v15 leftExpression];
-    v17 = [v16 keyPath];
-    v18 = [v17 isEqualToString:v12];
+    v15 = predicateCopy;
+    leftExpression = [v15 leftExpression];
+    keyPath = [leftExpression keyPath];
+    v18 = [keyPath isEqualToString:pathCopy];
 
     if (v18)
     {
-      v19 = [NSExpression expressionForKeyPath:v13];
-      v20 = [NSExpression expressionForConstantValue:v14];
-      v21 = +[NSComparisonPredicate predicateWithLeftExpression:rightExpression:modifier:type:options:](NSComparisonPredicate, "predicateWithLeftExpression:rightExpression:modifier:type:options:", v19, v20, [v15 comparisonPredicateModifier], a7, objc_msgSend(v15, "options"));
+      v19 = [NSExpression expressionForKeyPath:keyPathCopy];
+      v20 = [NSExpression expressionForConstantValue:valueCopy];
+      v21 = +[NSComparisonPredicate predicateWithLeftExpression:rightExpression:modifier:type:options:](NSComparisonPredicate, "predicateWithLeftExpression:rightExpression:modifier:type:options:", v19, v20, [v15 comparisonPredicateModifier], type, objc_msgSend(v15, "options"));
 
       goto LABEL_6;
     }
   }
 
-  v21 = v11;
+  v21 = predicateCopy;
 LABEL_6:
 
   return v21;
 }
 
-- (id)_bundleTypeFromContextType:(id)a3
+- (id)_bundleTypeFromContextType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 integerValue];
-  if ((v4 - 1) > 2)
+  typeCopy = type;
+  integerValue = [typeCopy integerValue];
+  if ((integerValue - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1000A7978[(v4 - 1)];
+    v5 = qword_1000A7978[(integerValue - 1)];
   }
 
   v6 = [NSNumber numberWithUnsignedInteger:v5];
@@ -1802,7 +1802,7 @@ LABEL_6:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v3;
+    v10 = typeCopy;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "contextType,%@,bundletype,%@", &v9, 0x16u);
@@ -1811,17 +1811,17 @@ LABEL_6:
   return v6;
 }
 
-- (void)refreshMomentsContextWithReply:(id)a3
+- (void)refreshMomentsContextWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(MOContextManager *)self promptManager];
+  replyCopy = reply;
+  promptManager = [(MOContextManager *)self promptManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __51__MOContextManager_refreshMomentsContextWithReply___block_invoke;
   v7[3] = &unk_1000B7B30;
-  v8 = v4;
-  v6 = v4;
-  [v5 softRefreshEventsWithRefreshVariant:1536 andIgnoreLastTrigger:0 andHandler:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [promptManager softRefreshEventsWithRefreshVariant:1536 andIgnoreLastTrigger:0 andHandler:v7];
 }
 
 void __51__MOContextManager_refreshMomentsContextWithReply___block_invoke(uint64_t a1, void *a2)

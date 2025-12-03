@@ -1,8 +1,8 @@
 @interface _UIImageAsyncCGImageContent
 - (BOOL)isDecompressing;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGImage)CGImage;
-- (_UIImageAsyncCGImageContent)initWithData:(id)a3 immediateLoadWithMaxSize:(CGSize)a4 scale:(double)a5 renderingIntent:(unint64_t)a6 cache:(BOOL)a7;
+- (_UIImageAsyncCGImageContent)initWithData:(id)data immediateLoadWithMaxSize:(CGSize)size scale:(double)scale renderingIntent:(unint64_t)intent cache:(BOOL)cache;
 - (id)description;
 - (int64_t)orientation;
 - (unint64_t)hash;
@@ -10,26 +10,26 @@
 
 @implementation _UIImageAsyncCGImageContent
 
-- (_UIImageAsyncCGImageContent)initWithData:(id)a3 immediateLoadWithMaxSize:(CGSize)a4 scale:(double)a5 renderingIntent:(unint64_t)a6 cache:(BOOL)a7
+- (_UIImageAsyncCGImageContent)initWithData:(id)data immediateLoadWithMaxSize:(CGSize)size scale:(double)scale renderingIntent:(unint64_t)intent cache:(BOOL)cache
 {
-  v7 = a7;
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  if (!v14)
+  cacheCopy = cache;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1134 description:@"Need data"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1134 description:@"Need data"];
   }
 
   v20.receiver = self;
   v20.super_class = _UIImageAsyncCGImageContent;
-  v15 = [(_UIImageContent *)&v20 initWithScale:a5];
+  v15 = [(_UIImageContent *)&v20 initWithScale:scale];
   if (v15)
   {
-    v16 = [[_UIOldCGImageDecompressor alloc] initWithData:v14 immediateLoadWithMaxSize:a6 renderingIntent:v7 cache:width, height];
+    height = [[_UIOldCGImageDecompressor alloc] initWithData:dataCopy immediateLoadWithMaxSize:intent renderingIntent:cacheCopy cache:width, height];
     decompressor = v15->_decompressor;
-    v15->_decompressor = v16;
+    v15->_decompressor = height;
   }
 
   return v15;
@@ -55,13 +55,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (!self ? (Property = 0) : (Property = objc_getProperty(self, v6, 64, 1)), (v9 = Property, !v5) ? (v10 = 0) : (v10 = objc_getProperty(v5, v8, 64, 1)), v11 = v10, v9 | v11))
     {

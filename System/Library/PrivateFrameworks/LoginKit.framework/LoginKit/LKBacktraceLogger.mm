@@ -1,8 +1,8 @@
 @interface LKBacktraceLogger
-- (BOOL)_copyFrameInformation:(unint64_t)a3 destination:(unint64_t)a4 size:(unint64_t)a5;
-- (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)a3;
+- (BOOL)_copyFrameInformation:(unint64_t)information destination:(unint64_t)destination size:(unint64_t)size;
+- (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)thread;
 - (id)getBacktraceFromTrackedThread;
-- (void)_symbolicateBuffer:(const unint64_t *)a3 symbolsBuffer:(dl_info *)a4 count:(int)a5;
+- (void)_symbolicateBuffer:(const unint64_t *)buffer symbolsBuffer:(dl_info *)symbolsBuffer count:(int)count;
 - (void)trackCurrentThread;
 @end
 
@@ -17,12 +17,12 @@
 
 - (id)getBacktraceFromTrackedThread
 {
-  v3 = [(LKBacktraceLogger *)self trackedThread];
+  trackedThread = [(LKBacktraceLogger *)self trackedThread];
 
-  return [(LKBacktraceLogger *)self _getBacktraceFromThread:v3];
+  return [(LKBacktraceLogger *)self _getBacktraceFromThread:trackedThread];
 }
 
-- (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)a3
+- (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)thread
 {
   *&retstr->__lr = 0u;
   *&retstr->__pc = 0u;
@@ -55,42 +55,42 @@
   return result;
 }
 
-- (BOOL)_copyFrameInformation:(unint64_t)a3 destination:(unint64_t)a4 size:(unint64_t)a5
+- (BOOL)_copyFrameInformation:(unint64_t)information destination:(unint64_t)destination size:(unint64_t)size
 {
   outsize = 0;
-  v6 = vm_read_overwrite(*MEMORY[0x277D85F48], a3, a5, a4, &outsize);
+  v6 = vm_read_overwrite(*MEMORY[0x277D85F48], information, size, destination, &outsize);
   if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [LKBacktraceLogger _copyFrameInformation:a3 destination:? size:?];
+    [LKBacktraceLogger _copyFrameInformation:information destination:? size:?];
   }
 
   return v6 == 0;
 }
 
-- (void)_symbolicateBuffer:(const unint64_t *)a3 symbolsBuffer:(dl_info *)a4 count:(int)a5
+- (void)_symbolicateBuffer:(const unint64_t *)buffer symbolsBuffer:(dl_info *)symbolsBuffer count:(int)count
 {
-  if (a5 >= 1)
+  if (count >= 1)
   {
     v7 = 0;
-    v8 = 8 * a5;
-    v9 = a4;
+    v8 = 8 * count;
+    symbolsBufferCopy = symbolsBuffer;
     do
     {
       if (v7)
       {
-        v10 = ((a3[v7 / 8] & 0xFFFFFFFFFFFFFFFCLL) - 1);
-        v11 = v9;
+        v10 = ((buffer[v7 / 8] & 0xFFFFFFFFFFFFFFFCLL) - 1);
+        symbolsBufferCopy2 = symbolsBufferCopy;
       }
 
       else
       {
-        v10 = *a3;
-        v11 = a4;
+        v10 = *buffer;
+        symbolsBufferCopy2 = symbolsBuffer;
       }
 
-      dladdr(v10, v11);
+      dladdr(v10, symbolsBufferCopy2);
       v7 += 8;
-      ++v9;
+      ++symbolsBufferCopy;
     }
 
     while (v8 != v7);

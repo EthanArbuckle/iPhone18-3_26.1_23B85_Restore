@@ -1,17 +1,17 @@
 @interface TimerApertureAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithCoder:(id)a3;
-- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithCoder:(id)coder;
+- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TimerApertureAccessoryView
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
-  v7 = [(TimerApertureAccessoryView *)v6 subviews];
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  subviews = [(TimerApertureAccessoryView *)selfCopy subviews];
   sub_10002BB3C(0, &unk_1001197A8, UIView_ptr);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -66,23 +66,23 @@ LABEL_12:
   return result;
 }
 
-- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TimerApertureAccessoryView();
   return [(TimerApertureAccessoryView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithCoder:(id)a3
+- (_TtC10ClockAngel26TimerApertureAccessoryView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TimerApertureAccessoryView();
-  v4 = a3;
-  v5 = [(TimerApertureAccessoryView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TimerApertureAccessoryView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

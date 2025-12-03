@@ -1,24 +1,24 @@
 @interface CMContinuityCaptureCMIOVideoDevice
-- (BOOL)_setDeviceProperties:(id)a3 error:(id *)a4;
-- (BOOL)publishDevice:(BOOL)a3;
-- (BOOL)setDeviceProperties:(id)a3 error:(id *)a4;
-- (BOOL)setupStreamsWithDeviceID:(id)a3;
-- (CMContinuityCaptureCMIOVideoDevice)initWithCaptureDevice:(id)a3;
+- (BOOL)_setDeviceProperties:(id)properties error:(id *)error;
+- (BOOL)publishDevice:(BOOL)device;
+- (BOOL)setDeviceProperties:(id)properties error:(id *)error;
+- (BOOL)setupStreamsWithDeviceID:(id)d;
+- (CMContinuityCaptureCMIOVideoDevice)initWithCaptureDevice:(id)device;
 - (NSSet)availableProperties;
 - (NSString)description;
 - (id)_availableProperties;
-- (id)_devicePropertiesForProperties:(id)a3 error:(id *)a4;
-- (id)devicePropertiesForProperties:(id)a3 error:(id *)a4;
+- (id)_devicePropertiesForProperties:(id)properties error:(id *)error;
+- (id)devicePropertiesForProperties:(id)properties error:(id *)error;
 - (void)_setCMIOExtensionPropertyAttributesByPropertyNames;
 - (void)_updateCameraHiddenControlIfApplicable;
 - (void)_updateCameraReadyToUnhideControlIfApplicable;
-- (void)dispatchFrame:(opaqueCMSampleBuffer *)a3 entity:(int64_t)a4 completion:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)resetTransportDevice:(id)a3;
-- (void)setSystemPreferredStatus:(BOOL)a3 withCompletion:(id)a4;
-- (void)setValueForControl:(id)a3 completion:(id)a4;
+- (void)dispatchFrame:(opaqueCMSampleBuffer *)frame entity:(int64_t)entity completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)resetTransportDevice:(id)device;
+- (void)setSystemPreferredStatus:(BOOL)status withCompletion:(id)completion;
+- (void)setValueForControl:(id)control completion:(id)completion;
 - (void)setupControls;
-- (void)terminateComplete:(id)a3;
+- (void)terminateComplete:(id)complete;
 @end
 
 @implementation CMContinuityCaptureCMIOVideoDevice
@@ -51,14 +51,14 @@ void __60__CMContinuityCaptureCMIOVideoDevice_initWithCaptureDevice___block_invo
   objc_storeWeak((*(a1 + 40) + 208), v6);
 }
 
-- (BOOL)publishDevice:(BOOL)a3
+- (BOOL)publishDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
-  v6 = [WeakRetained compositeDelegate];
-  v7 = [v6 provider];
+  compositeDelegate = [WeakRetained compositeDelegate];
+  provider = [compositeDelegate provider];
 
-  if (!v7)
+  if (!provider)
   {
     v13 = 0;
 LABEL_14:
@@ -70,32 +70,32 @@ LABEL_14:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = "Unpublish";
-    if (v3)
+    if (deviceCopy)
     {
       v9 = "Publish";
     }
 
     v18 = 138543618;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2082;
     v21 = v9;
     _os_log_impl(&dword_242545000, v8, OS_LOG_TYPE_DEFAULT, " %{public}@ %{public}s", &v18, 0x16u);
   }
 
-  v10 = [v7 queue];
-  dispatch_assert_queue_V2(v10);
+  queue = [provider queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v3)
+  if (deviceCopy)
   {
     v25 = 0;
-    v11 = [v7 addDevice:self error:&v25];
+    v11 = [provider addDevice:self error:&v25];
     v12 = v25;
   }
 
   else
   {
     v24 = 0;
-    v11 = [v7 removeDevice:self error:&v24];
+    v11 = [provider removeDevice:self error:&v24];
     v12 = v24;
   }
 
@@ -107,8 +107,8 @@ LABEL_14:
     {
       v17 = "Unpublish";
       v18 = 138543874;
-      v19 = self;
-      if (v3)
+      selfCopy2 = self;
+      if (deviceCopy)
       {
         v17 = "Publish";
       }
@@ -129,68 +129,68 @@ LABEL_15:
   return v14;
 }
 
-- (void)resetTransportDevice:(id)a3
+- (void)resetTransportDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_magicStateObserver);
-  v6 = [WeakRetained queue];
-  dispatch_assert_queue_not_V2(v6);
+  queue = [WeakRetained queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v7 = objc_loadWeakRetained(&self->_magicStateObserver);
-  v8 = [v7 queue];
+  queue2 = [v7 queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke;
   block[3] = &unk_278D5C0D0;
   block[4] = self;
-  dispatch_async_and_wait(v8, block);
+  dispatch_async_and_wait(queue2, block);
 
-  v9 = [v4 magicStateMonitor];
-  v10 = [v9 queue];
-  dispatch_assert_queue_not_V2(v10);
+  magicStateMonitor = [deviceCopy magicStateMonitor];
+  queue3 = [magicStateMonitor queue];
+  dispatch_assert_queue_not_V2(queue3);
 
-  v11 = [v4 magicStateMonitor];
-  v12 = [v11 queue];
+  magicStateMonitor2 = [deviceCopy magicStateMonitor];
+  queue4 = [magicStateMonitor2 queue];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke_2;
   v28[3] = &unk_278D5C008;
-  v13 = v4;
+  v13 = deviceCopy;
   v29 = v13;
-  v30 = self;
-  dispatch_async_and_wait(v12, v28);
+  selfCopy = self;
+  dispatch_async_and_wait(queue4, v28);
 
   v14 = objc_loadWeakRetained(&self->_wiredObserver);
   if (v14)
   {
     v15 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-    v16 = [v15 queue];
-    dispatch_assert_queue_not_V2(v16);
+    queue5 = [v15 queue];
+    dispatch_assert_queue_not_V2(queue5);
 
     v17 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-    v18 = [v17 queue];
+    queue6 = [v17 queue];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke_3;
     v27[3] = &unk_278D5C0D0;
     v27[4] = self;
-    dispatch_async_and_wait(v18, v27);
+    dispatch_async_and_wait(queue6, v27);
   }
 
   v19 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-  v20 = [v19 queue];
-  dispatch_assert_queue_not_V2(v20);
+  queue7 = [v19 queue];
+  dispatch_assert_queue_not_V2(queue7);
 
   v21 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-  v22 = [v21 queue];
+  queue8 = [v21 queue];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke_4;
   v24[3] = &unk_278D5C008;
   v25 = v13;
-  v26 = self;
+  selfCopy2 = self;
   v23 = v13;
-  dispatch_async_and_wait(v22, v24);
+  dispatch_async_and_wait(queue8, v24);
 }
 
 void __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke(uint64_t a1)
@@ -236,15 +236,15 @@ id __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke_
   return objc_storeWeak(v3, v2);
 }
 
-- (void)terminateComplete:(id)a3
+- (void)terminateComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   dispatch_assert_queue_V2(self->_queue);
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v34 = self;
+    selfCopy = self;
     v35 = 2080;
     v36 = "[CMContinuityCaptureCMIOVideoDevice terminateComplete:]";
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
@@ -252,7 +252,7 @@ id __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke_
 
   if (self->_terminated)
   {
-    v4[2](v4);
+    completeCopy[2](completeCopy);
   }
 
   else
@@ -263,10 +263,10 @@ id __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke_
     if (WeakRetained)
     {
       v7 = objc_loadWeakRetained(&self->_captureDevice);
-      v8 = [v7 compositeDelegate];
-      v9 = [v8 provider];
+      compositeDelegate = [v7 compositeDelegate];
+      provider = [compositeDelegate provider];
 
-      if (v9)
+      if (provider)
       {
         dispatch_assert_queue_V2(self->_queue);
         if ([(NSMutableArray *)self->_streams count])
@@ -276,47 +276,47 @@ id __59__CMContinuityCaptureCMIOVideoDevice_resetTransportDevice___block_invoke_
         }
 
         [(NSMutableArray *)self->_streams removeAllObjects];
-        v11 = [WeakRetained compositeDelegate];
-        v12 = [v11 client];
-        v13 = [v12 device];
-        v14 = [v13 magicStateMonitor];
-        v15 = [v14 queue];
-        dispatch_assert_queue_not_V2(v15);
+        compositeDelegate2 = [WeakRetained compositeDelegate];
+        client = [compositeDelegate2 client];
+        device = [client device];
+        magicStateMonitor = [device magicStateMonitor];
+        queue = [magicStateMonitor queue];
+        dispatch_assert_queue_not_V2(queue);
 
-        v16 = [WeakRetained compositeDelegate];
-        v17 = [v16 client];
-        v18 = [v17 device];
-        v19 = [v18 magicStateMonitor];
-        v20 = [v19 queue];
+        compositeDelegate3 = [WeakRetained compositeDelegate];
+        client2 = [compositeDelegate3 client];
+        device2 = [client2 device];
+        magicStateMonitor2 = [device2 magicStateMonitor];
+        queue2 = [magicStateMonitor2 queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __56__CMContinuityCaptureCMIOVideoDevice_terminateComplete___block_invoke_2;
         block[3] = &unk_278D5C008;
         v31 = WeakRetained;
-        v32 = self;
-        dispatch_async_and_wait(v20, block);
+        selfCopy2 = self;
+        dispatch_async_and_wait(queue2, block);
 
         v21 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-        v22 = [v21 queue];
-        dispatch_assert_queue_not_V2(v22);
+        queue3 = [v21 queue];
+        dispatch_assert_queue_not_V2(queue3);
 
         v23 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-        v24 = [v23 queue];
+        queue4 = [v23 queue];
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __56__CMContinuityCaptureCMIOVideoDevice_terminateComplete___block_invoke_3;
         v29[3] = &unk_278D5C0D0;
         v29[4] = self;
-        dispatch_async_and_wait(v24, v29);
+        dispatch_async_and_wait(queue4, v29);
 
-        v25 = [v9 queue];
+        queue5 = [provider queue];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __56__CMContinuityCaptureCMIOVideoDevice_terminateComplete___block_invoke_4;
         v26[3] = &unk_278D5C688;
         objc_copyWeak(&v28, buf);
-        v27 = v4;
-        dispatch_async(v25, v26);
+        v27 = completeCopy;
+        dispatch_async(queue5, v26);
 
         objc_destroyWeak(&v28);
       }
@@ -408,41 +408,41 @@ void __56__CMContinuityCaptureCMIOVideoDevice_terminateComplete___block_invoke_6
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v12 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v38 = self;
+    selfCopy = self;
     v39 = 2114;
-    v40 = v9;
+    v40 = pathCopy;
     v41 = 2114;
-    v42 = v10;
+    v42 = objectCopy;
     _os_log_impl(&dword_242545000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ keypath:%{public}@ object:%{public}@", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
-  if ([v9 isEqualToString:@"magic"])
+  if ([pathCopy isEqualToString:@"magic"])
   {
-    v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-    v14 = [v13 integerValue];
-    v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-    v16 = [v15 integerValue];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    integerValue = [v13 integerValue];
+    v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+    integerValue2 = [v15 integerValue];
 
-    if (v14 != v16)
+    if (integerValue != integerValue2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
-      v26 = [WeakRetained compositeDelegate];
-      v27 = [v26 client];
-      v28 = [v27 device];
-      v29 = [v28 magicStateMonitor];
-      v30 = [v29 magic];
+      compositeDelegate = [WeakRetained compositeDelegate];
+      client = [compositeDelegate client];
+      device = [client device];
+      magicStateMonitor = [device magicStateMonitor];
+      magic = [magicStateMonitor magic];
 
-      [(CMContinuityCaptureCMIOVideoDevice *)self setSystemPreferredStatus:v30 withCompletion:0];
+      [(CMContinuityCaptureCMIOVideoDevice *)self setSystemPreferredStatus:magic withCompletion:0];
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -450,20 +450,20 @@ void __56__CMContinuityCaptureCMIOVideoDevice_terminateComplete___block_invoke_6
       block[3] = &unk_278D5C6B0;
       v23 = &v35;
       objc_copyWeak(&v35, buf);
-      v36 = v30;
+      v36 = magic;
       block[4] = self;
       v24 = block;
       goto LABEL_8;
     }
   }
 
-  if ([v9 isEqualToString:@"wired"])
+  if ([pathCopy isEqualToString:@"wired"])
   {
     v17 = objc_loadWeakRetained(&self->_captureDevice);
-    v18 = [v17 compositeDelegate];
-    v19 = [v18 client];
-    v20 = [v19 device];
-    v21 = [v20 wired];
+    compositeDelegate2 = [v17 compositeDelegate];
+    client2 = [compositeDelegate2 client];
+    device2 = [client2 device];
+    wired = [device2 wired];
 
     queue = self->_queue;
     v31[0] = MEMORY[0x277D85DD0];
@@ -472,7 +472,7 @@ void __56__CMContinuityCaptureCMIOVideoDevice_terminateComplete___block_invoke_6
     v31[3] = &unk_278D5C6B0;
     v23 = &v32;
     objc_copyWeak(&v32, buf);
-    v33 = v21;
+    v33 = wired;
     v31[4] = self;
     v24 = v31;
 LABEL_8:
@@ -537,11 +537,11 @@ void __85__CMContinuityCaptureCMIOVideoDevice_observeValueForKeyPath_ofObject_ch
   }
 }
 
-- (void)setSystemPreferredStatus:(BOOL)a3 withCompletion:(id)a4
+- (void)setSystemPreferredStatus:(BOOL)status withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
@@ -554,18 +554,18 @@ void __85__CMContinuityCaptureCMIOVideoDevice_observeValueForKeyPath_ofObject_ch
   }
 }
 
-- (void)dispatchFrame:(opaqueCMSampleBuffer *)a3 entity:(int64_t)a4 completion:(id)a5
+- (void)dispatchFrame:(opaqueCMSampleBuffer *)frame entity:(int64_t)entity completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if ([(NSMutableArray *)self->_streams count])
   {
     v8 = +[CMContinuityCaptureUserOnboarding sharedInstance];
-    v9 = [v8 logTryItNowAnalytics];
+    logTryItNowAnalytics = [v8 logTryItNowAnalytics];
 
-    if (v9)
+    if (logTryItNowAnalytics)
     {
-      CMSetAttachment(a3, @"com.apple.cmio.buffer_attachment.continuity_capture_try_it_now_active", MEMORY[0x277CBEC38], 1u);
+      CMSetAttachment(frame, @"com.apple.cmio.buffer_attachment.continuity_capture_try_it_now_active", MEMORY[0x277CBEC38], 1u);
       v10 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -578,7 +578,7 @@ void __85__CMContinuityCaptureCMIOVideoDevice_observeValueForKeyPath_ofObject_ch
     }
 
     v12 = [(NSMutableArray *)self->_streams objectAtIndexedSubscript:0];
-    [v12 dispatchFrame:a3 entity:self->_entity completion:v7];
+    [v12 dispatchFrame:frame entity:self->_entity completion:completionCopy];
   }
 }
 
@@ -633,16 +633,16 @@ uint64_t __57__CMContinuityCaptureCMIOVideoDevice_availableProperties__block_inv
   [v3 addObject:@"DockedTrackingActive"];
   if ([(NSMutableDictionary *)self->_cmControlByPropertyName count])
   {
-    v4 = [(NSMutableDictionary *)self->_cmControlByPropertyName allKeys];
-    [v3 addObjectsFromArray:v4];
+    allKeys = [(NSMutableDictionary *)self->_cmControlByPropertyName allKeys];
+    [v3 addObjectsFromArray:allKeys];
   }
 
   return v3;
 }
 
-- (id)devicePropertiesForProperties:(id)a3 error:(id *)a4
+- (id)devicePropertiesForProperties:(id)properties error:(id *)error
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -663,14 +663,14 @@ uint64_t __57__CMContinuityCaptureCMIOVideoDevice_availableProperties__block_inv
   v11[3] = &unk_278D5C638;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = propertiesCopy;
   v12 = v8;
   v14 = &v15;
   dispatch_async_and_wait(queue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = v22[5];
@@ -694,9 +694,9 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
   *(v6 + 40) = v5;
 }
 
-- (id)_devicePropertiesForProperties:(id)a3 error:(id *)a4
+- (id)_devicePropertiesForProperties:(id)properties error:(id *)error
 {
-  v5 = a3;
+  propertiesCopy = properties;
   WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
   if (WeakRetained)
   {
@@ -718,25 +718,25 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
     v77[3] = __Block_byref_object_copy__3;
     v77[4] = __Block_byref_object_dispose__3;
     v78 = 0;
-    v7 = [WeakRetained compositeDelegate];
-    v8 = v7;
-    if (!v7)
+    compositeDelegate = [WeakRetained compositeDelegate];
+    v8 = compositeDelegate;
+    if (!compositeDelegate)
     {
       goto LABEL_42;
     }
 
-    v9 = [v7 client];
-    v10 = [v9 device];
-    v11 = [v10 magicStateMonitor];
-    v12 = [v11 magic];
+    client = [compositeDelegate client];
+    device = [client device];
+    magicStateMonitor = [device magicStateMonitor];
+    magic = [magicStateMonitor magic];
 
-    v76 = v12;
-    v13 = [v8 client];
-    v14 = [v13 device];
-    v15 = [v14 wired];
+    v76 = magic;
+    client2 = [v8 client];
+    device2 = [client2 device];
+    wired = [device2 wired];
 
-    v75 = v15;
-    if (!v5)
+    v75 = wired;
+    if (!propertiesCopy)
     {
       goto LABEL_42;
     }
@@ -744,17 +744,17 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
     if (v86[5])
     {
       dispatch_assert_queue_V2(self->_queue);
-      if ([v5 containsObject:*MEMORY[0x277CC1B40]])
+      if ([propertiesCopy containsObject:*MEMORY[0x277CC1B40]])
       {
         [v86[5] setModel:self->_modelID];
       }
 
-      if ([v5 containsObject:self->_cmioDeviceConnectionState])
+      if ([propertiesCopy containsObject:self->_cmioDeviceConnectionState])
       {
         v16 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v76 length:1];
         v17 = MEMORY[0x277CC1B90];
-        v18 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-        v19 = [v17 propertyStateWithValue:v16 attributes:v18];
+        readOnlyPropertyAttribute = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+        v19 = [v17 propertyStateWithValue:v16 attributes:readOnlyPropertyAttribute];
         v20 = v80[5];
         v80[5] = v19;
 
@@ -765,12 +765,12 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
         }
       }
 
-      if ([v5 containsObject:self->_cmioDeviceWired])
+      if ([propertiesCopy containsObject:self->_cmioDeviceWired])
       {
         v22 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v75 length:1];
         v23 = MEMORY[0x277CC1B90];
-        v24 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-        v25 = [v23 propertyStateWithValue:v22 attributes:v24];
+        readOnlyPropertyAttribute2 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+        v25 = [v23 propertyStateWithValue:v22 attributes:readOnlyPropertyAttribute2];
         v26 = v80[5];
         v80[5] = v25;
 
@@ -782,12 +782,12 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
       }
 
       v28 = *MEMORY[0x277CC1B48];
-      if ([v5 containsObject:*MEMORY[0x277CC1B48]])
+      if ([propertiesCopy containsObject:*MEMORY[0x277CC1B48]])
       {
         v29 = MEMORY[0x277CC1B90];
         nonLocalizedName = self->_nonLocalizedName;
-        v31 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-        v32 = [v29 propertyStateWithValue:nonLocalizedName attributes:v31];
+        readOnlyPropertyAttribute3 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+        v32 = [v29 propertyStateWithValue:nonLocalizedName attributes:readOnlyPropertyAttribute3];
         v33 = v80[5];
         v80[5] = v32;
 
@@ -799,14 +799,14 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
       }
 
       v35 = *MEMORY[0x277CC1B50];
-      if ([v5 containsObject:*MEMORY[0x277CC1B50]])
+      if ([propertiesCopy containsObject:*MEMORY[0x277CC1B50]])
       {
         v36 = MEMORY[0x277CC1B90];
         v37 = MEMORY[0x277CCABB0];
         v38 = [WeakRetained entity] == 2 ? 1 : 2;
         v39 = [v37 numberWithInteger:v38];
-        v40 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-        v41 = [v36 propertyStateWithValue:v39 attributes:v40];
+        readOnlyPropertyAttribute4 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+        v41 = [v36 propertyStateWithValue:v39 attributes:readOnlyPropertyAttribute4];
         v42 = v80[5];
         v80[5] = v41;
 
@@ -817,18 +817,18 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
         }
       }
 
-      if ([v5 containsObject:@"CMIOExtensionPropertyDeviceCompanionDeskcamDeviceUUID"])
+      if ([propertiesCopy containsObject:@"CMIOExtensionPropertyDeviceCompanionDeskcamDeviceUUID"])
       {
-        v44 = [WeakRetained transportDevice];
-        v45 = [v44 deviceIdentifier];
-        v46 = CMContinuityCaptureGetDeviceUUID(v45, 2);
+        transportDevice = [WeakRetained transportDevice];
+        deviceIdentifier = [transportDevice deviceIdentifier];
+        v46 = CMContinuityCaptureGetDeviceUUID(deviceIdentifier, 2);
 
         if (v46)
         {
           v47 = MEMORY[0x277CC1B90];
-          v48 = [v46 UUIDString];
-          v49 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-          v50 = [v47 propertyStateWithValue:v48 attributes:v49];
+          uUIDString = [v46 UUIDString];
+          readOnlyPropertyAttribute5 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+          v50 = [v47 propertyStateWithValue:uUIDString attributes:readOnlyPropertyAttribute5];
           v51 = v80[5];
           v80[5] = v50;
 
@@ -840,17 +840,17 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
         }
       }
 
-      if ([v5 containsObject:@"CMIOExtensionPropertyContinuityCaptureDeviceState"])
+      if ([propertiesCopy containsObject:@"CMIOExtensionPropertyContinuityCaptureDeviceState"])
       {
-        v53 = [WeakRetained stateMachineCurrentState];
+        stateMachineCurrentState = [WeakRetained stateMachineCurrentState];
 
-        if (v53)
+        if (stateMachineCurrentState)
         {
           v54 = MEMORY[0x277CC1B90];
-          v55 = [WeakRetained stateMachineCurrentState];
-          v56 = [v55 name];
-          v57 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-          v58 = [v54 propertyStateWithValue:v56 attributes:v57];
+          stateMachineCurrentState2 = [WeakRetained stateMachineCurrentState];
+          name = [stateMachineCurrentState2 name];
+          readOnlyPropertyAttribute6 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+          v58 = [v54 propertyStateWithValue:name attributes:readOnlyPropertyAttribute6];
           v59 = v80[5];
           v80[5] = v58;
 
@@ -862,7 +862,7 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
         }
       }
 
-      if ([v5 containsObject:@"CMIOExtensionPropertyContinuityCaptureDeviceStateEvent"])
+      if ([propertiesCopy containsObject:@"CMIOExtensionPropertyContinuityCaptureDeviceStateEvent"])
       {
         v61 = [MEMORY[0x277CC1B90] propertyStateWithValue:@"NA" attributes:0];
         v62 = v80[5];
@@ -875,17 +875,17 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
         }
       }
 
-      if ([v5 containsObject:@"CMIOExtensionPropertyRapportDeviceUniqueID"])
+      if ([propertiesCopy containsObject:@"CMIOExtensionPropertyRapportDeviceUniqueID"])
       {
-        v64 = [WeakRetained transportDevice];
-        v65 = [v64 deviceIdentifier];
-        v66 = [v65 UUIDString];
+        transportDevice2 = [WeakRetained transportDevice];
+        deviceIdentifier2 = [transportDevice2 deviceIdentifier];
+        uUIDString2 = [deviceIdentifier2 UUIDString];
 
-        if (v66)
+        if (uUIDString2)
         {
           v67 = MEMORY[0x277CC1B90];
-          v68 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-          v69 = [v67 propertyStateWithValue:v66 attributes:v68];
+          readOnlyPropertyAttribute7 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+          v69 = [v67 propertyStateWithValue:uUIDString2 attributes:readOnlyPropertyAttribute7];
           v70 = v80[5];
           v80[5] = v69;
 
@@ -905,7 +905,7 @@ void __74__CMContinuityCaptureCMIOVideoDevice_devicePropertiesForProperties_erro
       v74[5] = v77;
       v74[6] = &v79;
       v74[7] = &v85;
-      [v5 enumerateObjectsUsingBlock:v74];
+      [propertiesCopy enumerateObjectsUsingBlock:v74];
       v72 = v86[5];
     }
 
@@ -970,16 +970,16 @@ void __75__CMContinuityCaptureCMIOVideoDevice__devicePropertiesForProperties_err
 
 - (void)_setCMIOExtensionPropertyAttributesByPropertyNames
 {
-  v3 = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
-  v7 = v3;
+  readOnlyPropertyAttribute = [MEMORY[0x277CC1B88] readOnlyPropertyAttribute];
+  v7 = readOnlyPropertyAttribute;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   cmioExtensionPropertyAttributesByCMIOExtensionPropertyName = self->_cmioExtensionPropertyAttributesByCMIOExtensionPropertyName;
   self->_cmioExtensionPropertyAttributesByCMIOExtensionPropertyName = v4;
 }
 
-- (BOOL)setDeviceProperties:(id)a3 error:(id *)a4
+- (BOOL)setDeviceProperties:(id)properties error:(id *)error
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -998,14 +998,14 @@ void __75__CMContinuityCaptureCMIOVideoDevice__devicePropertiesForProperties_err
   v11[3] = &unk_278D5C638;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = propertiesCopy;
   v12 = v8;
   v14 = &v15;
   dispatch_async_and_wait(queue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -1026,30 +1026,30 @@ void __64__CMContinuityCaptureCMIOVideoDevice_setDeviceProperties_error___block_
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)_setDeviceProperties:(id)a3 error:(id *)a4
+- (BOOL)_setDeviceProperties:(id)properties error:(id *)error
 {
-  if (!a3)
+  if (!properties)
   {
-    return a3 != 0;
+    return properties != 0;
   }
 
   queue = self->_queue;
-  v7 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(queue);
-  v8 = [v7 propertiesDictionary];
+  propertiesDictionary = [propertiesCopy propertiesDictionary];
 
   v9 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v36 = 138543618;
-    v37 = self;
+    selfCopy3 = self;
     v38 = 2114;
-    v39 = v8;
+    v39 = propertiesDictionary;
     _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ propertyDict %{public}@", &v36, 0x16u);
   }
 
   v10 = [(NSMutableDictionary *)self->_cmControlByPropertyName objectForKeyedSubscript:@"CMIOExtensionPropertyDeviceHidden"];
-  v11 = [v8 objectForKeyedSubscript:@"CMIOExtensionPropertyDeviceHidden"];
+  v11 = [propertiesDictionary objectForKeyedSubscript:@"CMIOExtensionPropertyDeviceHidden"];
   v12 = v11;
   if (v10)
   {
@@ -1063,9 +1063,9 @@ void __64__CMContinuityCaptureCMIOVideoDevice_setDeviceProperties_error___block_
 
   if (!v13)
   {
-    v14 = [v10 value];
-    v15 = [v12 value];
-    if ([v15 BOOLValue])
+    value = [v10 value];
+    value2 = [v12 value];
+    if ([value2 BOOLValue])
     {
       WeakRetained = CMContinuityCaptureLog(2);
       if (!os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
@@ -1075,67 +1075,67 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v17 = [v10 name];
+      name = [v10 name];
       v36 = 138543618;
-      v37 = self;
+      selfCopy3 = self;
       v38 = 2112;
-      v39 = v17;
+      v39 = name;
       _os_log_impl(&dword_242545000, WeakRetained, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip updating %@ to YES", &v36, 0x16u);
     }
 
     else
     {
-      if ([v14 isEqualToNumber:v15])
+      if ([value isEqualToNumber:value2])
       {
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v18 = [v12 value];
-      [v10 setValue:v18];
+      value3 = [v12 value];
+      [v10 setValue:value3];
 
       v19 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v10 name];
-        v21 = [v10 value];
+        name2 = [v10 name];
+        value4 = [v10 value];
         v36 = 138543874;
-        v37 = self;
+        selfCopy3 = self;
         v38 = 2112;
-        v39 = v20;
+        v39 = name2;
         v40 = 2112;
-        v41 = v21;
+        v41 = value4;
         _os_log_impl(&dword_242545000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Updated %@ to %@", &v36, 0x20u);
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
-      v17 = [WeakRetained compositeDelegate];
+      name = [WeakRetained compositeDelegate];
       v22 = objc_loadWeakRetained(&self->_captureDevice);
-      [v17 device:v22 updatedValueForControl:v10];
+      [name device:v22 updatedValueForControl:v10];
     }
 
     goto LABEL_16;
   }
 
 LABEL_18:
-  v23 = [v8 objectForKeyedSubscript:@"CMIOExtensionPropertyContinuityCaptureDeviceStateEvent"];
+  v23 = [propertiesDictionary objectForKeyedSubscript:@"CMIOExtensionPropertyContinuityCaptureDeviceStateEvent"];
 
   if (v23)
   {
-    v24 = [v23 value];
-    if (v24)
+    value5 = [v23 value];
+    if (value5)
     {
-      v25 = v24;
-      v26 = [v23 value];
+      v25 = value5;
+      value6 = [v23 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v28 = [v23 value];
+        value7 = [v23 value];
         v29 = CMContinuityCaptureRemoteEventToBeRelayedList();
-        v30 = [v29 containsObject:v28];
+        v30 = [v29 containsObject:value7];
         v31 = objc_loadWeakRetained(&self->_captureDevice);
         v32 = v31;
         if (v30)
@@ -1149,12 +1149,12 @@ LABEL_18:
         }
         v33 = ;
         v34 = objc_loadWeakRetained(&self->_captureDevice);
-        [v33 postEvent:v28 entity:objc_msgSend(v34 data:{"entity"), 0}];
+        [v33 postEvent:value7 entity:objc_msgSend(v34 data:{"entity"), 0}];
       }
     }
   }
 
-  return a3 != 0;
+  return properties != 0;
 }
 
 - (NSString)description
@@ -1165,34 +1165,34 @@ LABEL_18:
   return v3;
 }
 
-- (CMContinuityCaptureCMIOVideoDevice)initWithCaptureDevice:(id)a3
+- (CMContinuityCaptureCMIOVideoDevice)initWithCaptureDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 compositeDelegate];
-  v6 = [v5 client];
-  v7 = [v6 device];
+  deviceCopy = device;
+  compositeDelegate = [deviceCopy compositeDelegate];
+  client = [compositeDelegate client];
+  device = [client device];
 
-  v8 = [v7 deviceIdentifier];
-  v9 = CMContinuityCaptureGetDeviceUUID(v8, [v4 entity]);
+  deviceIdentifier = [device deviceIdentifier];
+  v9 = CMContinuityCaptureGetDeviceUUID(deviceIdentifier, [deviceCopy entity]);
 
   if (!v9)
   {
     v26 = 0;
 LABEL_21:
-    v70 = 0;
+    selfCopy4 = 0;
     goto LABEL_15;
   }
 
-  if ([v4 entity] == 2)
+  if ([deviceCopy entity] == 2)
   {
-    v10 = [v7 deviceName];
-    CMContinuityCaptureCreateLocalizedString(@"DESK_VIEW_CAMERA_NAME", @"%@ Desk View Camera", v11, v12, v13, v14, v15, v16, v10);
+    deviceName = [device deviceName];
+    CMContinuityCaptureCreateLocalizedString(@"DESK_VIEW_CAMERA_NAME", @"%@ Desk View Camera", v11, v12, v13, v14, v15, v16, deviceName);
   }
 
   else
   {
-    v17 = [v7 deviceModel];
-    v18 = continuityCaptureNotificationCenter_isiPhone(v17);
+    deviceModel = [device deviceModel];
+    v18 = continuityCaptureNotificationCenter_isiPhone(deviceModel);
 
     if (v18)
     {
@@ -1204,8 +1204,8 @@ LABEL_21:
       v19 = @"CAMERA_NAME_IPAD";
     }
 
-    v10 = [v7 deviceName];
-    CMContinuityCaptureCreateLocalizedString(v19, @"%@ Camera", v20, v21, v22, v23, v24, v25, v10);
+    deviceName = [device deviceName];
+    CMContinuityCaptureCreateLocalizedString(v19, @"%@ Camera", v20, v21, v22, v23, v24, v25, deviceName);
   }
   v26 = ;
 
@@ -1213,7 +1213,7 @@ LABEL_21:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v90 = v9;
+    selfCopy2 = v9;
     v91 = 2114;
     v92 = v26;
     _os_log_impl(&dword_242545000, v27, OS_LOG_TYPE_DEFAULT, "Publish Device UUID %{public}@ name %{public}@", buf, 0x16u);
@@ -1232,25 +1232,25 @@ LABEL_21:
   self->_streams = v28;
 
   OUTLINED_FUNCTION_15(objc_alloc_init(MEMORY[0x277CBEB38]), 176);
-  objc_storeWeak(&self->_captureDevice, v4);
-  v30 = [v4 queue];
-  OUTLINED_FUNCTION_15(v30, 136);
+  objc_storeWeak(&self->_captureDevice, deviceCopy);
+  queue = [deviceCopy queue];
+  OUTLINED_FUNCTION_15(queue, 136);
   v31 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v32 = dispatch_queue_create("com.apple.continuitycapture.systempreferredstatus", v31);
   OUTLINED_FUNCTION_15(v32, 184);
 
-  self->_entity = [v4 entity];
+  self->_entity = [deviceCopy entity];
   objc_storeStrong(&self->_name, v26);
   objc_storeStrong(&self->_deviceID, v9);
   objc_storeStrong(&self->_nonLocalizedName, self->_name);
-  v33 = [v7 deviceModel];
-  OUTLINED_FUNCTION_15(v33, 112);
+  deviceModel2 = [device deviceModel];
+  OUTLINED_FUNCTION_15(deviceModel2, 112);
   v34 = CMIOExtensionPropertyFromPropertyAddress();
   OUTLINED_FUNCTION_15(v34, 144);
   v35 = CMIOExtensionPropertyFromPropertyAddress();
   OUTLINED_FUNCTION_15(v35, 152);
-  v36 = [(CMContinuityCaptureCMIOVideoDevice *)v9 UUIDString];
-  v37 = [(CMContinuityCaptureCMIOVideoDevice *)self setupStreamsWithDeviceID:v36];
+  uUIDString = [(CMContinuityCaptureCMIOVideoDevice *)v9 UUIDString];
+  v37 = [(CMContinuityCaptureCMIOVideoDevice *)self setupStreamsWithDeviceID:uUIDString];
 
   if (!v37)
   {
@@ -1268,7 +1268,7 @@ LABEL_20:
     }
 
     *buf = 138543362;
-    v90 = self;
+    selfCopy2 = self;
 LABEL_23:
     OUTLINED_FUNCTION_3_1();
     _os_log_error_impl(v74, v75, v76, v77, v78, v79);
@@ -1285,84 +1285,84 @@ LABEL_23:
     }
 
     *buf = 138543362;
-    v90 = self;
+    selfCopy2 = self;
     goto LABEL_23;
   }
 
-  v38 = [v4 compositeDelegate];
-  v39 = [v38 client];
-  [v39 device];
-  v40 = v81 = v7;
+  compositeDelegate2 = [deviceCopy compositeDelegate];
+  client2 = [compositeDelegate2 client];
+  [client2 device];
+  v40 = v81 = device;
   [v40 magicStateMonitor];
   v41 = v80 = v9;
   [v41 queue];
   v43 = v42 = v26;
   dispatch_assert_queue_not_V2(v43);
 
-  v44 = [v4 compositeDelegate];
-  v45 = [v44 client];
-  v46 = [v45 device];
-  v47 = [v46 magicStateMonitor];
-  v48 = [v47 queue];
+  compositeDelegate3 = [deviceCopy compositeDelegate];
+  client3 = [compositeDelegate3 client];
+  device2 = [client3 device];
+  magicStateMonitor = [device2 magicStateMonitor];
+  queue2 = [magicStateMonitor queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CMContinuityCaptureCMIOVideoDevice_initWithCaptureDevice___block_invoke;
   block[3] = &unk_278D5C008;
-  v49 = v4;
+  v49 = deviceCopy;
   v86 = v49;
-  v50 = self;
-  v87 = v50;
-  dispatch_async_and_wait(v48, block);
+  selfCopy3 = self;
+  v87 = selfCopy3;
+  dispatch_async_and_wait(queue2, block);
 
   v26 = v42;
   WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
-  v52 = [WeakRetained compositeDelegate];
-  v53 = [v52 client];
-  v54 = [v53 device];
-  v55 = [v54 magicStateMonitor];
-  v50->_cachedMagicState = [v55 magic];
+  compositeDelegate4 = [WeakRetained compositeDelegate];
+  client4 = [compositeDelegate4 client];
+  device3 = [client4 device];
+  magicStateMonitor2 = [device3 magicStateMonitor];
+  selfCopy3->_cachedMagicState = [magicStateMonitor2 magic];
 
-  [(CMContinuityCaptureCMIOVideoDevice *)v50 _setCMIOExtensionPropertyAttributesByPropertyNames];
-  v56 = [v49 compositeDelegate];
-  v57 = [v56 client];
-  v58 = [v57 device];
-  v59 = [v58 magicStateMonitor];
-  v60 = [v59 magic];
+  [(CMContinuityCaptureCMIOVideoDevice *)selfCopy3 _setCMIOExtensionPropertyAttributesByPropertyNames];
+  compositeDelegate5 = [v49 compositeDelegate];
+  client5 = [compositeDelegate5 client];
+  device4 = [client5 device];
+  magicStateMonitor3 = [device4 magicStateMonitor];
+  magic = [magicStateMonitor3 magic];
 
-  v7 = v81;
-  v61 = v60;
+  device = v81;
+  v61 = magic;
   v9 = v80;
-  [(CMContinuityCaptureCMIOVideoDevice *)v50 setSystemPreferredStatus:v61 withCompletion:0];
-  v62 = [v49 compositeDelegate];
-  v63 = [v62 client];
-  v64 = [v63 device];
-  v50->_cachedWiredState = [v64 wired];
+  [(CMContinuityCaptureCMIOVideoDevice *)selfCopy3 setSystemPreferredStatus:v61 withCompletion:0];
+  compositeDelegate6 = [v49 compositeDelegate];
+  client6 = [compositeDelegate6 client];
+  device5 = [client6 device];
+  selfCopy3->_cachedWiredState = [device5 wired];
 
   v65 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-  v66 = [v65 queue];
-  dispatch_assert_queue_not_V2(v66);
+  queue3 = [v65 queue];
+  dispatch_assert_queue_not_V2(queue3);
 
   v67 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-  v68 = [v67 queue];
+  queue4 = [v67 queue];
   v82[0] = MEMORY[0x277D85DD0];
   v82[1] = 3221225472;
   v82[2] = __60__CMContinuityCaptureCMIOVideoDevice_initWithCaptureDevice___block_invoke_2;
   v82[3] = &unk_278D5C008;
   v83 = v49;
-  v69 = v50;
+  v69 = selfCopy3;
   v84 = v69;
-  dispatch_async_and_wait(v68, v82);
+  dispatch_async_and_wait(queue4, v82);
 
   self = v69;
-  v70 = self;
+  selfCopy4 = self;
 LABEL_15:
 
-  return v70;
+  return selfCopy4;
 }
 
-- (BOOL)setupStreamsWithDeviceID:(id)a3
+- (BOOL)setupStreamsWithDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
   v6 = WeakRetained;
   if (!WeakRetained || ([WeakRetained capabilities], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
@@ -1371,15 +1371,15 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v8 = [v6 capabilities];
-  v9 = [v8 manualFramingSupportedStreamFormats];
-  v10 = [v9 count];
+  capabilities = [v6 capabilities];
+  manualFramingSupportedStreamFormats = [capabilities manualFramingSupportedStreamFormats];
+  v10 = [manualFramingSupportedStreamFormats count];
 
-  v11 = [v6 capabilities];
-  v12 = v11;
+  capabilities2 = [v6 capabilities];
+  v12 = capabilities2;
   if (v10)
   {
-    v13 = [v11 manualFramingSupportedStreamFormats];
+    manualFramingSupportedStreamFormats2 = [capabilities2 manualFramingSupportedStreamFormats];
 
     v14 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1393,7 +1393,7 @@ LABEL_9:
 
   else
   {
-    v13 = [v11 streamFormats];
+    manualFramingSupportedStreamFormats2 = [capabilities2 streamFormats];
 
     v14 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1404,7 +1404,7 @@ LABEL_9:
     }
   }
 
-  v17 = [[CMContinuityCaptureVideoStream alloc] initWithDevice:v6 streamFormats:v13 deviceID:v4 queue:self->_queue];
+  v17 = [[CMContinuityCaptureVideoStream alloc] initWithDevice:v6 streamFormats:manualFramingSupportedStreamFormats2 deviceID:dCopy queue:self->_queue];
   if (v17)
   {
     p_super = &v17->super.super;
@@ -1444,25 +1444,25 @@ LABEL_9:
     }
 
     v16 = 0;
-    v20 = v13;
+    v20 = manualFramingSupportedStreamFormats2;
   }
 
 LABEL_14:
   return v16;
 }
 
-- (void)setValueForControl:(id)a3 completion:(id)a4
+- (void)setValueForControl:(id)control completion:(id)completion
 {
-  v35 = a3;
-  v33 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v34 = self;
-  v6 = [(NSMutableDictionary *)self->_cmControlByPropertyName allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v47 objects:v46 count:16];
+  selfCopy = self;
+  allKeys = [(NSMutableDictionary *)self->_cmControlByPropertyName allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v47 objects:v46 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1473,14 +1473,14 @@ LABEL_3:
     {
       if (*v48 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = *(*(&v47 + 1) + 8 * v10);
-      v12 = [(NSMutableDictionary *)v34->_cmControlByPropertyName objectForKeyedSubscript:v11];
-      v13 = [v12 name];
-      v14 = [v35 name];
-      v15 = [v13 isEqualToString:v14];
+      v12 = [(NSMutableDictionary *)selfCopy->_cmControlByPropertyName objectForKeyedSubscript:v11];
+      name = [v12 name];
+      name2 = [controlCopy name];
+      v15 = [name isEqualToString:name2];
 
       if (v15)
       {
@@ -1489,7 +1489,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v47 objects:v46 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v47 objects:v46 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1499,7 +1499,7 @@ LABEL_3:
       }
     }
 
-    v17 = [(NSMutableDictionary *)v34->_cmControlByPropertyName objectForKeyedSubscript:v11];
+    v17 = [(NSMutableDictionary *)selfCopy->_cmControlByPropertyName objectForKeyedSubscript:v11];
     v16 = v11;
 
     if (!v17)
@@ -1507,14 +1507,14 @@ LABEL_3:
       goto LABEL_19;
     }
 
-    v18 = [v35 value];
+    value = [controlCopy value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     v20 = 0;
     if (v16)
     {
-      v21 = v33;
+      v21 = completionCopy;
       if ((isKindOfClass & 1) == 0)
       {
         goto LABEL_26;
@@ -1522,9 +1522,9 @@ LABEL_3:
 
       if (([v16 containsString:@"btst"] & 1) == 0)
       {
-        v22 = [v17 value];
-        v23 = [v35 value];
-        v24 = [v22 isEqualToNumber:v23];
+        value2 = [v17 value];
+        value3 = [controlCopy value];
+        v24 = [value2 isEqualToNumber:value3];
 
         if (v24)
         {
@@ -1533,31 +1533,31 @@ LABEL_3:
         }
       }
 
-      v25 = [v35 value];
-      [v17 setValue:v25];
+      value4 = [controlCopy value];
+      [v17 setValue:value4];
 
       v26 = MEMORY[0x277CC1B90];
-      v27 = [v35 value];
-      v20 = [v26 propertyStateWithValue:v27 attributes:0];
+      value5 = [controlCopy value];
+      v20 = [v26 propertyStateWithValue:value5 attributes:0];
 
       if (v20)
       {
         v44 = v16;
         v45 = v20;
         v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-        [(CMIOExtensionDevice *)v34 notifyPropertiesChanged:v28];
+        [(CMIOExtensionDevice *)selfCopy notifyPropertiesChanged:v28];
       }
 
       v29 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [v35 name];
+        name3 = [controlCopy name];
         *buf = 138544130;
-        v37 = v34;
+        v37 = selfCopy;
         v38 = 2112;
         v39 = v17;
         v40 = 2112;
-        v41 = v30;
+        v41 = name3;
         v42 = 2114;
         v43 = v20;
         _os_log_impl(&dword_242545000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ update property %@ [%@] with state %{public}@", buf, 0x2Au);
@@ -1567,7 +1567,7 @@ LABEL_3:
     }
 
 LABEL_25:
-    v21 = v33;
+    v21 = completionCopy;
     goto LABEL_26;
   }
 
@@ -1575,7 +1575,7 @@ LABEL_9:
 
   v16 = 0;
 LABEL_19:
-  if (![(NSMutableArray *)v34->_streams count])
+  if (![(NSMutableArray *)selfCopy->_streams count])
   {
     v17 = 0;
     v20 = 0;
@@ -1583,21 +1583,21 @@ LABEL_19:
   }
 
   v31 = CMContinuityCaptureLog(2);
-  v21 = v33;
+  v21 = completionCopy;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [v35 value];
+    value6 = [controlCopy value];
     *buf = 138543874;
-    v37 = v34;
+    v37 = selfCopy;
     v38 = 2114;
-    v39 = v35;
+    v39 = controlCopy;
     v40 = 2112;
-    v41 = v32;
+    v41 = value6;
     _os_log_impl(&dword_242545000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ to stream with value %@", buf, 0x20u);
   }
 
-  v29 = [(NSMutableArray *)v34->_streams objectAtIndexedSubscript:0];
-  [v29 setValueForControl:v35 completion:v33];
+  v29 = [(NSMutableArray *)selfCopy->_streams objectAtIndexedSubscript:0];
+  [v29 setValueForControl:controlCopy completion:completionCopy];
   v17 = 0;
   v20 = 0;
 LABEL_23:
@@ -1621,10 +1621,10 @@ LABEL_26:
 
   if (v4)
   {
-    v11 = [v4 value];
-    v12 = [v11 BOOLValue];
+    value = [v4 value];
+    bOOLValue = [value BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v13 = CMContinuityCaptureLog(2);
       if (OUTLINED_FUNCTION_16(v13))
@@ -1650,7 +1650,7 @@ LABEL_26:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
-      v22 = [WeakRetained compositeDelegate];
+      compositeDelegate = [WeakRetained compositeDelegate];
       v23 = objc_loadWeakRetained(&self->_captureDevice);
       [OUTLINED_FUNCTION_17() device:? updatedValueForControl:?];
     }
@@ -1673,10 +1673,10 @@ LABEL_26:
 
   if (v4)
   {
-    v11 = [v4 value];
-    v12 = [v11 BOOLValue];
+    value = [v4 value];
+    bOOLValue = [value BOOLValue];
 
-    if ((v12 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v13 = CMContinuityCaptureLog(2);
       if (OUTLINED_FUNCTION_16(v13))
@@ -1702,7 +1702,7 @@ LABEL_26:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_captureDevice);
-      v22 = [WeakRetained compositeDelegate];
+      compositeDelegate = [WeakRetained compositeDelegate];
       v23 = objc_loadWeakRetained(&self->_captureDevice);
       [OUTLINED_FUNCTION_17() device:? updatedValueForControl:?];
     }

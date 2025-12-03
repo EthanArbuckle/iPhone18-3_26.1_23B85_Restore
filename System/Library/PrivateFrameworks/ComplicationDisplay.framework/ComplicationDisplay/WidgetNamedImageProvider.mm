@@ -2,14 +2,14 @@
 - (CGSize)maxSize;
 - (UIFont)font;
 - (_TtC19ComplicationDisplay24WidgetNamedImageProvider)init;
-- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithCoder:(id)a3;
-- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithForegroundAccentImage:(id)a3;
-- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithJSONObjectRepresentation:(id)a3 bundle:(id)a4;
-- (id)copyWithZone:(void *)a3;
+- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithCoder:(id)coder;
+- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithForegroundAccentImage:(id)image;
+- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithJSONObjectRepresentation:(id)representation bundle:(id)bundle;
+- (id)copyWithZone:(void *)zone;
 - (id)initPrivate;
 - (int64_t)scale;
-- (void)setFont:(id)a3;
-- (void)setScale:(int64_t)a3;
+- (void)setFont:(id)font;
+- (void)setScale:(int64_t)scale;
 @end
 
 @implementation WidgetNamedImageProvider
@@ -21,13 +21,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v5 = OBJC_IVAR____TtC19ComplicationDisplay24WidgetNamedImageProvider_font;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = font;
+  fontCopy = font;
 }
 
 - (int64_t)scale
@@ -37,14 +37,14 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setScale:(int64_t)a3
+- (void)setScale:(int64_t)scale
 {
   v5 = OBJC_IVAR____TtC19ComplicationDisplay24WidgetNamedImageProvider_scale;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = scale;
 }
 
-- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithCoder:(id)a3
+- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay24WidgetNamedImageProvider_font) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay24WidgetNamedImageProvider_scale) = 2;
@@ -59,9 +59,9 @@
   return 0;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_243DA8F5C(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -86,7 +86,7 @@
   return result;
 }
 
-- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithJSONObjectRepresentation:(id)a3 bundle:(id)a4
+- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithJSONObjectRepresentation:(id)representation bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -100,7 +100,7 @@
   return result;
 }
 
-- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithForegroundAccentImage:(id)a3
+- (_TtC19ComplicationDisplay24WidgetNamedImageProvider)initWithForegroundAccentImage:(id)image
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

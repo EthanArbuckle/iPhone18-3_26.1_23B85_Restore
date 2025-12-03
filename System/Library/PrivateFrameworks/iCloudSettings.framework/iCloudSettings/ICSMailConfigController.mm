@@ -1,41 +1,41 @@
 @interface ICSMailConfigController
-- (ICSMailConfigController)initWithAccount:(id)a3 presenter:(id)a4;
+- (ICSMailConfigController)initWithAccount:(id)account presenter:(id)presenter;
 - (void)_cleanupLoader;
 - (void)configureEmailAccount;
-- (void)loader:(id)a3 didFailWithError:(id)a4;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5;
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5;
-- (void)presentCreateFreeEmailPromptWithCompletion:(id)a3 isForNotes:(BOOL)a4;
+- (void)loader:(id)loader didFailWithError:(id)error;
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal;
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method;
+- (void)presentCreateFreeEmailPromptWithCompletion:(id)completion isForNotes:(BOOL)notes;
 @end
 
 @implementation ICSMailConfigController
 
-- (ICSMailConfigController)initWithAccount:(id)a3 presenter:(id)a4
+- (ICSMailConfigController)initWithAccount:(id)account presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = ICSMailConfigController;
   v9 = [(ICSMailConfigController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeWeak(&v10->_presenter, v8);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeWeak(&v10->_presenter, presenterCopy);
   }
 
   return v10;
 }
 
-- (void)presentCreateFreeEmailPromptWithCompletion:(id)a3 isForNotes:(BOOL)a4
+- (void)presentCreateFreeEmailPromptWithCompletion:(id)completion isForNotes:(BOOL)notes
 {
-  v4 = a4;
+  notesCopy = notes;
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a3;
+  completionCopy = completion;
   v8 = [v6 bundleForClass:objc_opt_class()];
   v9 = v8;
-  if (v4)
+  if (notesCopy)
   {
     v10 = @"TURN_ON_NOTES_MESSAGE";
   }
@@ -45,7 +45,7 @@
     v10 = @"TURN_ON_MAIL_MESSAGE";
   }
 
-  if (v4)
+  if (notesCopy)
   {
     v11 = @"TURN_ON_NOTES_TITLE";
   }
@@ -66,7 +66,7 @@
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v16 localizedStringForKey:@"CANCEL" value:&stru_288487370 table:@"Localizable-AppleID"];
 
-  v18 = [MEMORY[0x277D75110] alertWithTitle:v13 message:v20 cancelButtonTitle:v17 defaultButtonTitle:v15 actionHandler:v7];
+  v18 = [MEMORY[0x277D75110] alertWithTitle:v13 message:v20 cancelButtonTitle:v17 defaultButtonTitle:v15 actionHandler:completionCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
   [WeakRetained presentViewController:v18 animated:0 completion:0];
@@ -80,20 +80,20 @@
   aBlock[3] = &unk_27A666198;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  [v4 setNetworkActivityIndicatorVisible:1];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:1];
 
-  v5 = [(ACAccount *)self->_account identifier];
-  if (v5 && (v6 = v5, [(ACAccount *)self->_account aa_authToken], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  identifier = [(ACAccount *)self->_account identifier];
+  if (identifier && (v6 = identifier, [(ACAccount *)self->_account aa_authToken], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
-    v8 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     account = self->_account;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __48__ICSMailConfigController_configureEmailAccount__block_invoke_4;
     v10[3] = &unk_27A6667F0;
     v11 = v3;
-    [v8 renewCredentialsForAccount:account completion:v10];
+    [defaultStore renewCredentialsForAccount:account completion:v10];
   }
 
   else
@@ -193,11 +193,11 @@ uint64_t __48__ICSMailConfigController_configureEmailAccount__block_invoke_5(uin
   return result;
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal
 {
-  v7 = a4;
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  [v8 setNetworkActivityIndicatorVisible:0];
+  modelCopy = model;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:0];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -205,15 +205,15 @@ uint64_t __48__ICSMailConfigController_configureEmailAccount__block_invoke_5(uin
   aBlock[3] = &unk_27A666198;
   aBlock[4] = self;
   v9 = _Block_copy(aBlock);
-  if (a5 == 2)
+  if (signal == 2)
   {
-    [v7 presentInParentViewController:self->_addEmailNavController animated:1];
-    [v7 setDelegate:self];
+    [modelCopy presentInParentViewController:self->_addEmailNavController animated:1];
+    [modelCopy setDelegate:self];
     WeakRetained = objc_loadWeakRetained(&self->_presenter);
-    v15 = [WeakRetained presentedViewController];
+    presentedViewController = [WeakRetained presentedViewController];
     addEmailNavController = self->_addEmailNavController;
 
-    if (v15 != addEmailNavController)
+    if (presentedViewController != addEmailNavController)
     {
       v17 = objc_loadWeakRetained(&self->_presenter);
       [v17 presentViewController:self->_addEmailNavController animated:1 completion:0];
@@ -229,10 +229,10 @@ uint64_t __48__ICSMailConfigController_configureEmailAccount__block_invoke_5(uin
       addEmailObjectModels = self->_addEmailObjectModels;
     }
 
-    [(NSMutableArray *)addEmailObjectModels addObject:v7];
+    [(NSMutableArray *)addEmailObjectModels addObject:modelCopy];
   }
 
-  else if (a5 == 1)
+  else if (signal == 1)
   {
     v10 = self->_account;
     [(ACAccount *)self->_account setEnabled:1 forDataclass:*MEMORY[0x277CB89C8]];
@@ -288,15 +288,15 @@ void __67__ICSMailConfigController_loader_receivedObjectModel_actionSignal___blo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)loader:(id)a3 didFailWithError:(id)a4
+- (void)loader:(id)loader didFailWithError:(id)error
 {
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  [v4 setNetworkActivityIndicatorVisible:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:0];
 }
 
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes
 {
-  if ([a4 isEqualToString:*MEMORY[0x277D46248]])
+  if ([button isEqualToString:*MEMORY[0x277D46248]])
   {
     WeakRetained = objc_loadWeakRetained(&self->_presenter);
     [WeakRetained reloadSpecifiers];
@@ -335,27 +335,27 @@ void __64__ICSMailConfigController_objectModel_pressedButton_attributes___block_
   }
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method
 {
-  v15 = a3;
-  v8 = a5;
-  v9 = [a4 absoluteString];
-  v10 = [objc_alloc(MEMORY[0x277CEC760]) initWithURLString:v9 account:self->_account];
-  v11 = [v10 urlRequest];
-  v12 = [v11 mutableCopy];
+  modelCopy = model;
+  methodCopy = method;
+  absoluteString = [link absoluteString];
+  v10 = [objc_alloc(MEMORY[0x277CEC760]) initWithURLString:absoluteString account:self->_account];
+  urlRequest = [v10 urlRequest];
+  v12 = [urlRequest mutableCopy];
 
-  [v12 setHTTPMethod:v8];
-  LODWORD(v11) = [v8 isEqualToString:@"POST"];
+  [v12 setHTTPMethod:methodCopy];
+  LODWORD(urlRequest) = [methodCopy isEqualToString:@"POST"];
 
-  if (v11)
+  if (urlRequest)
   {
-    v13 = [v15 postbackData];
-    [v12 setHTTPBody:v13];
+    postbackData = [modelCopy postbackData];
+    [v12 setHTTPBody:postbackData];
   }
 
   [(RUILoader *)self->_addEmailLoader loadXMLUIWithRequest:v12];
-  v14 = [MEMORY[0x277D75128] sharedApplication];
-  [v14 setNetworkActivityIndicatorVisible:1];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:1];
 }
 
 - (void)_cleanupLoader

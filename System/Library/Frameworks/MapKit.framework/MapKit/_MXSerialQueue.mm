@@ -2,24 +2,24 @@
 + (id)taskCompletionQueue;
 + (id)taskInsertionQueue;
 - (_MXSerialQueue)init;
-- (void)addTask:(id)a3;
+- (void)addTask:(id)task;
 @end
 
 @implementation _MXSerialQueue
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
-  v4 = a3;
-  if (v4)
+  taskCopy = task;
+  if (taskCopy)
   {
-    v5 = [objc_opt_class() taskInsertionQueue];
+    taskInsertionQueue = [objc_opt_class() taskInsertionQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __26___MXSerialQueue_addTask___block_invoke;
     v6[3] = &unk_1E76CDA20;
     v6[4] = self;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    v7 = taskCopy;
+    dispatch_sync(taskInsertionQueue, v6);
   }
 }
 

@@ -1,37 +1,37 @@
 @interface RTStateModelLegacy
-- (RTStateModelLegacy)initWithCoder:(id)a3;
+- (RTStateModelLegacy)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStateModelLegacy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"version"];
-  [v5 encodeObject:self->_stateModelLut forKey:@"stateModelLut"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeObject:self->_stateModelLut forKey:@"stateModelLut"];
 }
 
-- (RTStateModelLegacy)initWithCoder:(id)a3
+- (RTStateModelLegacy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RTStateModelLegacy;
   v5 = [(RTStateModelLegacy *)&v13 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"version"])
+    if ([coderCopy containsValueForKey:@"version"])
     {
-      v5->_version = [v4 decodeIntegerForKey:@"version"];
+      v5->_version = [coderCopy decodeIntegerForKey:@"version"];
     }
 
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"stateModelLut"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"stateModelLut"];
     stateModelLut = v5->_stateModelLut;
     v5->_stateModelLut = v10;
   }
@@ -42,9 +42,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTStateModelLegacy *)self version];
-  v5 = [(RTStateModelLegacy *)self stateModelLut];
-  v6 = [v3 stringWithFormat:@"version, %lu, states, %lu", v4, objc_msgSend(v5, "count")];
+  version = [(RTStateModelLegacy *)self version];
+  stateModelLut = [(RTStateModelLegacy *)self stateModelLut];
+  v6 = [v3 stringWithFormat:@"version, %lu, states, %lu", version, objc_msgSend(stateModelLut, "count")];
 
   return v6;
 }

@@ -1,22 +1,22 @@
 @interface _GCControllerInputComponent
-- (_GCControllerInputComponent)initWithIdentifier:(id)a3 templateFacadeParameters:(id)a4 templateElementParameters:(id)a5;
-- (void)handleGamepadEvent:(id)a3;
-- (void)setController:(id)a3;
-- (void)setSettingsProfile:(id)a3;
+- (_GCControllerInputComponent)initWithIdentifier:(id)identifier templateFacadeParameters:(id)parameters templateElementParameters:(id)elementParameters;
+- (void)handleGamepadEvent:(id)event;
+- (void)setController:(id)controller;
+- (void)setSettingsProfile:(id)profile;
 @end
 
 @implementation _GCControllerInputComponent
 
-- (_GCControllerInputComponent)initWithIdentifier:(id)a3 templateFacadeParameters:(id)a4 templateElementParameters:(id)a5
+- (_GCControllerInputComponent)initWithIdentifier:(id)identifier templateFacadeParameters:(id)parameters templateElementParameters:(id)elementParameters
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  elementParametersCopy = elementParameters;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
   v11 = [objc_alloc(objc_msgSend(objc_opt_class() "viewClass"))];
 
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [v8 gc_arrayByTransformingElementsUsingBlock:&__block_literal_global_49];
+  v13 = [elementParametersCopy gc_arrayByTransformingElementsUsingBlock:&__block_literal_global_49];
   v14 = [v12 setWithArray:v13];
 
   v15 = [_GCDevicePhysicalInput alloc];
@@ -32,9 +32,9 @@
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   v27.receiver = self;
   v27.super_class = _GCControllerInputComponent;
-  v22 = [(_GCDevicePhysicalInputComponent *)&v27 initWithIdentifier:v10 physicalInputs:v21];
+  v22 = [(_GCDevicePhysicalInputComponent *)&v27 initWithIdentifier:identifierCopy physicalInputs:v21];
 
-  v23 = [v8 copy];
+  v23 = [elementParametersCopy copy];
   templateElementParameters = v22->_templateElementParameters;
   v22->_templateElementParameters = v23;
 
@@ -42,26 +42,26 @@
   return v22;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  v4 = a3;
-  [(_GCDevicePhysicalInputComponent *)self setDevice:v4];
-  v5 = [v4 handlerQueue];
+  controllerCopy = controller;
+  [(_GCDevicePhysicalInputComponent *)self setDevice:controllerCopy];
+  handlerQueue = [controllerCopy handlerQueue];
 
-  [(_GCDevicePhysicalInputComponent *)self setDispatchQueue:v5];
+  [(_GCDevicePhysicalInputComponent *)self setDispatchQueue:handlerQueue];
 }
 
-- (void)handleGamepadEvent:(id)a3
+- (void)handleGamepadEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if ([(NSArray *)self->_eventRemappingActions count])
   {
-    v5 = [[_GCGamepadEventImpl alloc] initWithGamepadEvent:v4];
-    v6 = self;
-    objc_sync_enter(v6);
+    v5 = [[_GCGamepadEventImpl alloc] initWithGamepadEvent:eventCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = self->_eventRemappingActions;
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     v17 = 0u;
     v18 = 0u;
@@ -96,7 +96,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = eventCopy;
   }
 
   v14.receiver = self;
@@ -106,24 +106,24 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSettingsProfile:(id)a3
+- (void)setSettingsProfile:(id)profile
 {
-  v4 = a3;
-  v6 = [(_GCDevicePhysicalInputComponent *)&self->super.super.isa defaultPhysicalInput];
+  profileCopy = profile;
+  defaultPhysicalInput = [(_GCDevicePhysicalInputComponent *)&self->super.super.isa defaultPhysicalInput];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (profileCopy && (isKindOfClass & 1) != 0)
   {
-    v8 = [(GCDeviceCollection *)&self->super.super.isa underlyingCollection];
-    v9 = [(_GCDevicePhysicalInputGroup *)v8 queue];
+    underlyingCollection = [(GCDeviceCollection *)&self->super.super.isa underlyingCollection];
+    queue = [(_GCDevicePhysicalInputGroup *)underlyingCollection queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50___GCControllerInputComponent_setSettingsProfile___block_invoke;
     block[3] = &unk_1E8419BC0;
-    v11 = v4;
-    v12 = self;
-    v13 = v6;
-    dispatch_async(v9, block);
+    v11 = profileCopy;
+    selfCopy = self;
+    v13 = defaultPhysicalInput;
+    dispatch_async(queue, block);
   }
 }
 

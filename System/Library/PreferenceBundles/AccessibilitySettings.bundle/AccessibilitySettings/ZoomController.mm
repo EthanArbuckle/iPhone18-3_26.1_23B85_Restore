@@ -1,60 +1,60 @@
 @interface ZoomController
-+ (void)setZoomEnabled:(BOOL)a3;
-+ (void)setZoomEnabled:(BOOL)a3 initialFocusRect:(CGRect)a4 contextId:(unsigned int)a5;
++ (void)setZoomEnabled:(BOOL)enabled;
++ (void)setZoomEnabled:(BOOL)enabled initialFocusRect:(CGRect)rect contextId:(unsigned int)id;
 - (BOOL)zoomScalePointerIsAllowed;
 - (ZoomController)init;
 - (id)specifiers;
-- (id)zoomAlwaysUseWindowZoomForTyping:(id)a3;
-- (id)zoomFilterSummary:(id)a3;
-- (id)zoomKeyboardShortcutsSettingsSummary:(id)a3;
-- (id)zoomLensModeSummary:(id)a3;
-- (id)zoomScalePointerEnabled:(id)a3;
-- (id)zoomShouldFollowFocus:(id)a3;
-- (id)zoomShowWhileMirroring:(id)a3;
-- (id)zoomSlugSettingsSummary:(id)a3;
-- (id)zoomTouchEnabled:(id)a3;
-- (id)zoomTrackpadGestureEnabled:(id)a3;
-- (void)_updateOptionsFooterText:(BOOL)a3;
+- (id)zoomAlwaysUseWindowZoomForTyping:(id)typing;
+- (id)zoomFilterSummary:(id)summary;
+- (id)zoomKeyboardShortcutsSettingsSummary:(id)summary;
+- (id)zoomLensModeSummary:(id)summary;
+- (id)zoomScalePointerEnabled:(id)enabled;
+- (id)zoomShouldFollowFocus:(id)focus;
+- (id)zoomShowWhileMirroring:(id)mirroring;
+- (id)zoomSlugSettingsSummary:(id)summary;
+- (id)zoomTouchEnabled:(id)enabled;
+- (id)zoomTrackpadGestureEnabled:(id)enabled;
+- (void)_updateOptionsFooterText:(BOOL)text;
 - (void)_zoomTouchEnabledChange;
 - (void)dealloc;
-- (void)setZoomAlwaysUseWindowZoomForTyping:(id)a3 specifier:(id)a4;
-- (void)setZoomScalePointerEnabled:(id)a3 specifier:(id)a4;
-- (void)setZoomShouldFollowFocus:(id)a3 specifier:(id)a4;
-- (void)setZoomShowWhileMirroring:(id)a3 specifier:(id)a4;
-- (void)setZoomTouchEnabled:(id)a3 specifier:(id)a4;
-- (void)setZoomTrackpadGestureEnabled:(id)a3 specifier:(id)a4;
+- (void)setZoomAlwaysUseWindowZoomForTyping:(id)typing specifier:(id)specifier;
+- (void)setZoomScalePointerEnabled:(id)enabled specifier:(id)specifier;
+- (void)setZoomShouldFollowFocus:(id)focus specifier:(id)specifier;
+- (void)setZoomShowWhileMirroring:(id)mirroring specifier:(id)specifier;
+- (void)setZoomTouchEnabled:(id)enabled specifier:(id)specifier;
+- (void)setZoomTrackpadGestureEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ZoomController
 
-+ (void)setZoomEnabled:(BOOL)a3 initialFocusRect:(CGRect)a4 contextId:(unsigned int)a5
++ (void)setZoomEnabled:(BOOL)enabled initialFocusRect:(CGRect)rect contextId:(unsigned int)id
 {
-  v5 = a3;
-  if (a5)
+  enabledCopy = enabled;
+  if (id)
   {
-    v7 = *&a5;
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    v7 = *&id;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     v12 = +[AXBackBoardServer server];
     [v12 setZoomInitialFocusRect:v7 fromContext:{x, y, width, height}];
   }
 
-  [a1 setZoomEnabled:{v5, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  [self setZoomEnabled:{enabledCopy, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 }
 
-+ (void)setZoomEnabled:(BOOL)a3
++ (void)setZoomEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[AXSettings sharedInstance];
   [v4 setZoomInStandby:0];
 
   _AXSZoomTouchSetEnabled();
 
-  __AXSZoomTouchSetToggledByPreferenceSwitch(v3);
+  __AXSZoomTouchSetToggledByPreferenceSwitch(enabledCopy);
 }
 
 - (ZoomController)init
@@ -110,9 +110,9 @@
 
     objc_destroyWeak(&v20);
     v11 = [AXSettings sharedInstance:v15];
-    v12 = [v11 laserEnabled];
+    laserEnabled = [v11 laserEnabled];
 
-    if (v12)
+    if (laserEnabled)
     {
       v13 = +[AXPointerDeviceManager sharedInstance];
       [v13 addObserver:v10];
@@ -178,13 +178,13 @@ void __22__ZoomController_init__block_invoke_4(uint64_t a1)
     [v7 setProperty:@"ZoomPreferredMaxZoomLevel" forKey:PSIDKey];
     [v6 addObject:v7];
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 laserEnabled];
+    laserEnabled = [v9 laserEnabled];
 
-    if (v10)
+    if (laserEnabled)
     {
       v11 = +[AXPointerDeviceManager sharedInstance];
-      v12 = [v11 connectedDevices];
-      v13 = [v12 count];
+      connectedDevices = [v11 connectedDevices];
+      v13 = [connectedDevices count];
 
       if (v13)
       {
@@ -227,12 +227,12 @@ void __22__ZoomController_init__block_invoke_4(uint64_t a1)
     [(ZoomController *)self setLeaveKeyboardUnzoomedSpecifier:v24];
 
     v25 = +[AXSettings sharedInstance];
-    v26 = [v25 zoomShouldFollowFocus];
+    zoomShouldFollowFocus = [v25 zoomShouldFollowFocus];
 
-    if ((v26 & 1) == 0)
+    if ((zoomShouldFollowFocus & 1) == 0)
     {
-      v27 = [(ZoomController *)self leaveKeyboardUnzoomedSpecifier];
-      [v6 removeObject:v27];
+      leaveKeyboardUnzoomedSpecifier = [(ZoomController *)self leaveKeyboardUnzoomedSpecifier];
+      [v6 removeObject:leaveKeyboardUnzoomedSpecifier];
 
       [(ZoomController *)self _updateOptionsFooterText:0];
     }
@@ -248,28 +248,28 @@ void __22__ZoomController_init__block_invoke_4(uint64_t a1)
   v6.receiver = self;
   v6.super_class = ZoomController;
   [(ZoomController *)&v6 viewDidLoad];
-  v3 = [(ZoomController *)self table];
+  table = [(ZoomController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsZoomLabeledSliderCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ZoomController;
-  [(ZoomController *)&v4 viewWillAppear:a3];
+  [(ZoomController *)&v4 viewWillAppear:appear];
   [(ZoomController *)self reloadSpecifiers];
 }
 
-- (void)setZoomScalePointerEnabled:(id)a3 specifier:(id)a4
+- (void)setZoomScalePointerEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSPointerScaleWithZoomLevelSetEnabled(v4);
+  __AXSPointerScaleWithZoomLevelSetEnabled(bOOLValue);
 }
 
-- (id)zoomScalePointerEnabled:(id)a3
+- (id)zoomScalePointerEnabled:(id)enabled
 {
   if ([(ZoomController *)self zoomScalePointerIsAllowed])
   {
@@ -287,20 +287,20 @@ void __22__ZoomController_init__block_invoke_4(uint64_t a1)
 - (BOOL)zoomScalePointerIsAllowed
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 zoomPreferredCurrentLensMode];
-  v4 = [v3 isEqualToString:AXZoomLensModeWindowAnchored];
+  zoomPreferredCurrentLensMode = [v2 zoomPreferredCurrentLensMode];
+  v4 = [zoomPreferredCurrentLensMode isEqualToString:AXZoomLensModeWindowAnchored];
 
   return v4 ^ 1;
 }
 
-- (void)setZoomTrackpadGestureEnabled:(id)a3 specifier:(id)a4
+- (void)setZoomTrackpadGestureEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomTrackpadGestureEnabled:v4];
+  [v5 setZoomTrackpadGestureEnabled:bOOLValue];
 }
 
-- (id)zoomTrackpadGestureEnabled:(id)a3
+- (id)zoomTrackpadGestureEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 zoomTrackpadGestureEnabled]);
@@ -314,17 +314,17 @@ void __22__ZoomController_init__block_invoke_4(uint64_t a1)
   [(ZoomController *)self reloadSpecifier:v3];
 }
 
-- (void)_updateOptionsFooterText:(BOOL)a3
+- (void)_updateOptionsFooterText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v8 = [(ZoomController *)self specifierForID:@"ZoomOptionsGroup"];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 zoomShouldFollowFocus];
+  zoomShouldFollowFocus = [v5 zoomShouldFollowFocus];
 
-  if ((v6 & 1) == 0)
+  if ((zoomShouldFollowFocus & 1) == 0)
   {
     [v8 removePropertyForKey:PSFooterTextGroupKey];
-    if (!v3)
+    if (!textCopy)
     {
       goto LABEL_6;
     }
@@ -335,7 +335,7 @@ void __22__ZoomController_init__block_invoke_4(uint64_t a1)
   v7 = settingsLocString(@"ZOOM_USE_WINDOW_FOR_TYPING_INSTRUCTIONS", @"ZoomSettings");
   [v8 setProperty:v7 forKey:PSFooterTextGroupKey];
 
-  if (v3)
+  if (textCopy)
   {
 LABEL_5:
     [(ZoomController *)self reloadSpecifier:v8 animated:1];
@@ -344,69 +344,69 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)zoomTouchEnabled:(id)a3
+- (id)zoomTouchEnabled:(id)enabled
 {
   v3 = _AXSZoomTouchEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setZoomTouchEnabled:(id)a3 specifier:(id)a4
+- (void)setZoomTouchEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = [(ZoomController *)self cellForSpecifierID:@"ZoomTouchEnabled"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 control];
-    [v7 bounds];
-    [v7 convertRect:0 toView:?];
+    control = [v6 control];
+    [control bounds];
+    [control convertRect:0 toView:?];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v7 window];
-    [v16 convertRect:0 toWindow:{v9, v11, v13, v15}];
+    window = [control window];
+    [window convertRect:0 toWindow:{v9, v11, v13, v15}];
 
-    v17 = [v7 window];
+    window2 = [control window];
     AXUIConvertRectFromScreenToContextSpace();
     x = v18;
     y = v20;
     width = v22;
     height = v24;
 
-    v26 = [v7 window];
-    v27 = [v26 _contextId];
+    window3 = [control window];
+    _contextId = [window3 _contextId];
   }
 
   else
   {
-    v27 = 0;
+    _contextId = 0;
     x = CGRectNull.origin.x;
     y = CGRectNull.origin.y;
     width = CGRectNull.size.width;
     height = CGRectNull.size.height;
   }
 
-  v28 = [v5 BOOLValue];
-  if (v28)
+  bOOLValue = [enabledCopy BOOLValue];
+  if (bOOLValue)
   {
-    [ZoomController setZoomEnabled:1 initialFocusRect:v27 contextId:x, y, width, height];
+    [ZoomController setZoomEnabled:1 initialFocusRect:_contextId contextId:x, y, width, height];
   }
 
   else
   {
-    v29 = v28;
-    v30 = [(ZoomController *)self parentController];
-    if (v30 && (v31 = v30, [(ZoomController *)self parentController], v32 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v32, v31, (isKindOfClass & 1) != 0))
+    v29 = bOOLValue;
+    parentController = [(ZoomController *)self parentController];
+    if (parentController && (v31 = parentController, [(ZoomController *)self parentController], v32 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v32, v31, (isKindOfClass & 1) != 0))
     {
-      v34 = [(ZoomController *)self parentController];
+      parentController2 = [(ZoomController *)self parentController];
       v35 = settingsLocString(@"CONFIRM_ZOT_REMOVAL", @"Accessibility");
       v36 = kAXSZoomTouchEnabledByiTunesPreference;
       LOBYTE(v41) = v29;
       v37 = [(ZoomController *)self view:_NSConcreteStackBlock];
-      v38 = [v37 window];
-      [v34 confirmDisablingWithString:v35 forKey:v36 confirmedBlock:&v40 canceledBlock:&v39 inWindow:v38];
+      window4 = [v37 window];
+      [parentController2 confirmDisablingWithString:v35 forKey:v36 confirmedBlock:&v40 canceledBlock:&v39 inWindow:window4];
     }
 
     else
@@ -423,7 +423,7 @@ void __48__ZoomController_setZoomTouchEnabled_specifier___block_invoke_2(uint64_
   [*(a1 + 32) reloadSpecifier:v2];
 }
 
-- (id)zoomShouldFollowFocus:(id)a3
+- (id)zoomShouldFollowFocus:(id)focus
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 zoomShouldFollowFocus]);
@@ -431,28 +431,28 @@ void __48__ZoomController_setZoomTouchEnabled_specifier___block_invoke_2(uint64_
   return v4;
 }
 
-- (void)setZoomShouldFollowFocus:(id)a3 specifier:(id)a4
+- (void)setZoomShouldFollowFocus:(id)focus specifier:(id)specifier
 {
-  v5 = a3;
+  focusCopy = focus;
   [(ZoomController *)self beginUpdates];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [focusCopy BOOLValue];
   v7 = +[AXSettings sharedInstance];
-  [v7 setZoomShouldFollowFocus:v6];
+  [v7 setZoomShouldFollowFocus:bOOLValue];
 
-  LODWORD(v6) = [v5 BOOLValue];
-  v8 = [(ZoomController *)self leaveKeyboardUnzoomedSpecifier];
-  if (v6)
+  LODWORD(bOOLValue) = [focusCopy BOOLValue];
+  leaveKeyboardUnzoomedSpecifier = [(ZoomController *)self leaveKeyboardUnzoomedSpecifier];
+  if (bOOLValue)
   {
     v9 = [(ZoomController *)self specifierForID:@"ZoomShouldFollowFocus"];
-    [(ZoomController *)self insertSpecifier:v8 afterSpecifier:v9 animated:1];
+    [(ZoomController *)self insertSpecifier:leaveKeyboardUnzoomedSpecifier afterSpecifier:v9 animated:1];
   }
 
   else
   {
-    [(ZoomController *)self removeSpecifier:v8 animated:1];
+    [(ZoomController *)self removeSpecifier:leaveKeyboardUnzoomedSpecifier animated:1];
 
-    v8 = +[AXSettings sharedInstance];
-    [v8 setZoomAlwaysUseWindowedZoomForTyping:0];
+    leaveKeyboardUnzoomedSpecifier = +[AXSettings sharedInstance];
+    [leaveKeyboardUnzoomedSpecifier setZoomAlwaysUseWindowedZoomForTyping:0];
   }
 
   [(ZoomController *)self _updateOptionsFooterText:1];
@@ -460,7 +460,7 @@ void __48__ZoomController_setZoomTouchEnabled_specifier___block_invoke_2(uint64_
   [(ZoomController *)self endUpdates];
 }
 
-- (id)zoomAlwaysUseWindowZoomForTyping:(id)a3
+- (id)zoomAlwaysUseWindowZoomForTyping:(id)typing
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 zoomAlwaysUseWindowedZoomForTyping]);
@@ -468,14 +468,14 @@ void __48__ZoomController_setZoomTouchEnabled_specifier___block_invoke_2(uint64_
   return v4;
 }
 
-- (void)setZoomAlwaysUseWindowZoomForTyping:(id)a3 specifier:(id)a4
+- (void)setZoomAlwaysUseWindowZoomForTyping:(id)typing specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [typing BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomAlwaysUseWindowedZoomForTyping:v4];
+  [v5 setZoomAlwaysUseWindowedZoomForTyping:bOOLValue];
 }
 
-- (id)zoomShowWhileMirroring:(id)a3
+- (id)zoomShowWhileMirroring:(id)mirroring
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 zoomShowWhileMirroring]);
@@ -483,39 +483,39 @@ void __48__ZoomController_setZoomTouchEnabled_specifier___block_invoke_2(uint64_
   return v4;
 }
 
-- (void)setZoomShowWhileMirroring:(id)a3 specifier:(id)a4
+- (void)setZoomShowWhileMirroring:(id)mirroring specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [mirroring BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomShowWhileMirroring:v4];
+  [v5 setZoomShowWhileMirroring:bOOLValue];
 }
 
-- (id)zoomLensModeSummary:(id)a3
+- (id)zoomLensModeSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomPreferredCurrentLensMode];
+  zoomPreferredCurrentLensMode = [v3 zoomPreferredCurrentLensMode];
 
-  v5 = AXLocalizedTitleForZoomLensMode(v4);
+  v5 = AXLocalizedTitleForZoomLensMode(zoomPreferredCurrentLensMode);
 
   return v5;
 }
 
-- (id)zoomFilterSummary:(id)a3
+- (id)zoomFilterSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomCurrentLensEffect];
+  zoomCurrentLensEffect = [v3 zoomCurrentLensEffect];
 
   v5 = AXUILocalizedTitleForZoomLensEffect();
 
   return v5;
 }
 
-- (id)zoomSlugSettingsSummary:(id)a3
+- (id)zoomSlugSettingsSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomShouldShowSlug];
+  zoomShouldShowSlug = [v3 zoomShouldShowSlug];
 
-  if (v4)
+  if (zoomShouldShowSlug)
   {
     v5 = @"ON";
   }
@@ -528,12 +528,12 @@ void __48__ZoomController_setZoomTouchEnabled_specifier___block_invoke_2(uint64_
   return settingsLocString(v5, @"Accessibility");
 }
 
-- (id)zoomKeyboardShortcutsSettingsSummary:(id)a3
+- (id)zoomKeyboardShortcutsSettingsSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomKeyboardShortcutsEnabled];
+  zoomKeyboardShortcutsEnabled = [v3 zoomKeyboardShortcutsEnabled];
 
-  if (v4)
+  if (zoomKeyboardShortcutsEnabled)
   {
     v5 = @"ON";
   }

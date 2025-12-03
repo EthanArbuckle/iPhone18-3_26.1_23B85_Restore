@@ -1,31 +1,31 @@
 @interface MIOSEITrackReader
-- (BOOL)parseSEIInData:(char *)a3 length:(unsigned int)a4 output:(char *)a5 outputSize:(unsigned int *)a6;
-- (MIOSEITrackReader)initWithVideoTrack:(id)a3 assetReader:(id)a4;
-- (OpaqueCMBlockBuffer)readNextValidBlockBufferPts:(id *)a3;
-- (id)copyNextSEIPts:(id *)a3 deserialize:(BOOL)a4 error:(id *)a5;
-- (id)extractDebugSEIFromBuffer:(OpaqueCMBlockBuffer *)a3 codecType:(unsigned int)a4;
-- (id)findNALUInData:(char *)a3 length:(unint64_t)a4 isHEVC:(BOOL)a5;
-- (id)popFrontPts:(id *)a3;
-- (id)readNextSEIPts:(id *)a3 deserialize:(BOOL)a4 error:(id *)a5;
-- (unsigned)removeEPBFrom:(char *)a3 length:(unsigned int)a4 outBuffer:(char *)a5;
+- (BOOL)parseSEIInData:(char *)data length:(unsigned int)length output:(char *)output outputSize:(unsigned int *)size;
+- (MIOSEITrackReader)initWithVideoTrack:(id)track assetReader:(id)reader;
+- (OpaqueCMBlockBuffer)readNextValidBlockBufferPts:(id *)pts;
+- (id)copyNextSEIPts:(id *)pts deserialize:(BOOL)deserialize error:(id *)error;
+- (id)extractDebugSEIFromBuffer:(OpaqueCMBlockBuffer *)buffer codecType:(unsigned int)type;
+- (id)findNALUInData:(char *)data length:(unint64_t)length isHEVC:(BOOL)c;
+- (id)popFrontPts:(id *)pts;
+- (id)readNextSEIPts:(id *)pts deserialize:(BOOL)deserialize error:(id *)error;
+- (unsigned)removeEPBFrom:(char *)from length:(unsigned int)length outBuffer:(char *)buffer;
 @end
 
 @implementation MIOSEITrackReader
 
-- (MIOSEITrackReader)initWithVideoTrack:(id)a3 assetReader:(id)a4
+- (MIOSEITrackReader)initWithVideoTrack:(id)track assetReader:(id)reader
 {
-  v6 = a3;
-  v7 = a4;
+  trackCopy = track;
+  readerCopy = reader;
   v15.receiver = self;
   v15.super_class = MIOSEITrackReader;
   v8 = [(MIOSEITrackReader *)&v15 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:v6 outputSettings:0];
+    v9 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:trackCopy outputSettings:0];
     [(MIOSEITrackReader *)v8 setTrackOutput:v9];
 
-    v10 = [(MIOSEITrackReader *)v8 trackOutput];
-    [v7 addOutput:v10];
+    trackOutput = [(MIOSEITrackReader *)v8 trackOutput];
+    [readerCopy addOutput:trackOutput];
 
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
     [(MIOSEITrackReader *)v8 setSeiItemsBuffer:v11];
@@ -39,33 +39,33 @@
   return v8;
 }
 
-- (BOOL)parseSEIInData:(char *)a3 length:(unsigned int)a4 output:(char *)a5 outputSize:(unsigned int *)a6
+- (BOOL)parseSEIInData:(char *)data length:(unsigned int)length output:(char *)output outputSize:(unsigned int *)size
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (size)
   {
-    *a6 = 0;
-    if (a4)
+    *size = 0;
+    if (length)
     {
       v7 = 0;
       v8 = 5;
-      while (a3[v7] == 255)
+      while (data[v7] == 255)
       {
         ++v7;
         v8 -= 255;
-        if (a4 == v7)
+        if (length == v7)
         {
           return 0;
         }
       }
 
-      if (v7 + 1 < a4)
+      if (v7 + 1 < length)
       {
-        v9 = &a3[v7 + 1];
-        v10 = a3[v7];
-        v11 = a4 - 1 - v7;
+        v9 = &data[v7 + 1];
+        v10 = data[v7];
+        v11 = length - 1 - v7;
         v12 = v7 + 2;
-        v13 = &a3[(v7 + 2)];
+        v13 = &data[(v7 + 2)];
         v14 = 16;
         for (i = -v12; ; --i)
         {
@@ -90,7 +90,7 @@
         }
 
         v19 = 0;
-        while (v19 - i < a4)
+        while (v19 - i < length)
         {
           *(v22 + v19) = v13[v19];
           if (++v19 == 16)
@@ -98,8 +98,8 @@
             if (v22[0] == 0x5646C3E2DC8DF223 && v22[1] == 0xDE4FDE1CA55751BCLL)
             {
               v21 = v16 - v14;
-              memcpy(a5, &a3[(16 - i)], (v16 - v14));
-              *a6 = v21;
+              memcpy(output, &data[(16 - i)], (v16 - v14));
+              *size = v21;
               return 1;
             }
 
@@ -113,47 +113,47 @@
   return 0;
 }
 
-- (unsigned)removeEPBFrom:(char *)a3 length:(unsigned int)a4 outBuffer:(char *)a5
+- (unsigned)removeEPBFrom:(char *)from length:(unsigned int)length outBuffer:(char *)buffer
 {
   result = 0;
-  if (a4 >= 3 && a3 && a5)
+  if (length >= 3 && from && buffer)
   {
     v6 = 0;
-    v7 = a5;
+    bufferCopy = buffer;
     do
     {
-      v8 = *a3;
+      v8 = *from;
       v6 = v8 | (v6 << 8);
       if ((v6 & 0xFFFFFF) != 3)
       {
-        *v7++ = v8;
+        *bufferCopy++ = v8;
       }
 
-      ++a3;
-      --a4;
+      ++from;
+      --length;
     }
 
-    while (a4);
-    return v7 - a5;
+    while (length);
+    return bufferCopy - buffer;
   }
 
   return result;
 }
 
-- (id)findNALUInData:(char *)a3 length:(unint64_t)a4 isHEVC:(BOOL)a5
+- (id)findNALUInData:(char *)data length:(unint64_t)length isHEVC:(BOOL)c
 {
-  v5 = a5;
+  cCopy = c;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a4 >= 1)
+  if (length >= 1)
   {
-    v10 = &a3[a4];
+    v10 = &data[length];
     do
     {
-      v11 = bswap32(*a3);
-      v14 = a3[4];
-      v13 = a3 + 4;
+      v11 = bswap32(*data);
+      v14 = data[4];
+      v13 = data + 4;
       v12 = v14;
-      if (v5)
+      if (cCopy)
       {
         if ((v12 & 0x7E) == 0x4E)
         {
@@ -181,26 +181,26 @@ LABEL_8:
         free(v18);
       }
 
-      a3 = &v13[v11];
+      data = &v13[v11];
     }
 
-    while (a3 < v10);
+    while (data < v10);
   }
 
   return v9;
 }
 
-- (id)extractDebugSEIFromBuffer:(OpaqueCMBlockBuffer *)a3 codecType:(unsigned int)a4
+- (id)extractDebugSEIFromBuffer:(OpaqueCMBlockBuffer *)buffer codecType:(unsigned int)type
 {
-  if (a4 == 1752589105 || a4 == 1635148593)
+  if (type == 1752589105 || type == 1635148593)
   {
     dataPointerOut[3] = v4;
     v14 = v5;
     lengthAtOffsetOut = 0;
     dataPointerOut[0] = 0;
-    v8 = a4 == 1752589105;
+    v8 = type == 1752589105;
     totalLengthOut = 0;
-    CMBlockBufferGetDataPointer(a3, 0, &lengthAtOffsetOut, &totalLengthOut, dataPointerOut);
+    CMBlockBufferGetDataPointer(buffer, 0, &lengthAtOffsetOut, &totalLengthOut, dataPointerOut);
     v9 = [(MIOSEITrackReader *)self findNALUInData:dataPointerOut[0] length:totalLengthOut isHEVC:v8];
   }
 
@@ -212,86 +212,86 @@ LABEL_8:
   return v9;
 }
 
-- (OpaqueCMBlockBuffer)readNextValidBlockBufferPts:(id *)a3
+- (OpaqueCMBlockBuffer)readNextValidBlockBufferPts:(id *)pts
 {
   for (i = self; ; self = i)
   {
-    v5 = [(MIOSEITrackReader *)self trackOutput];
-    v6 = [v5 copyNextSampleBuffer];
+    trackOutput = [(MIOSEITrackReader *)self trackOutput];
+    copyNextSampleBuffer = [trackOutput copyNextSampleBuffer];
 
-    if (!v6)
+    if (!copyNextSampleBuffer)
     {
       return 0;
     }
 
-    DataBuffer = CMSampleBufferGetDataBuffer(v6);
+    DataBuffer = CMSampleBufferGetDataBuffer(copyNextSampleBuffer);
     if (DataBuffer)
     {
       break;
     }
 
-    CFRelease(v6);
+    CFRelease(copyNextSampleBuffer);
   }
 
   v8 = DataBuffer;
-  if (a3)
+  if (pts)
   {
-    CMSampleBufferGetPresentationTimeStamp(&v11, v6);
-    *a3 = v11;
+    CMSampleBufferGetPresentationTimeStamp(&v11, copyNextSampleBuffer);
+    *pts = v11;
   }
 
-  FormatDescription = CMSampleBufferGetFormatDescription(v6);
+  FormatDescription = CMSampleBufferGetFormatDescription(copyNextSampleBuffer);
   [(MIOSEITrackReader *)i setCodec:CMFormatDescriptionGetMediaSubType(FormatDescription)];
   CFRetain(v8);
-  CFRelease(v6);
+  CFRelease(copyNextSampleBuffer);
   return v8;
 }
 
-- (id)popFrontPts:(id *)a3
+- (id)popFrontPts:(id *)pts
 {
-  v5 = [(MIOSEITrackReader *)self seiItemsBuffer];
-  v6 = [v5 firstObject];
-  v7 = [v6 objectForKey:@"SEI"];
+  seiItemsBuffer = [(MIOSEITrackReader *)self seiItemsBuffer];
+  firstObject = [seiItemsBuffer firstObject];
+  v7 = [firstObject objectForKey:@"SEI"];
 
-  v8 = [(MIOSEITrackReader *)self seiItemsBuffer];
-  v9 = [v8 firstObject];
-  v10 = [v9 objectForKey:@"PTSDICT"];
+  seiItemsBuffer2 = [(MIOSEITrackReader *)self seiItemsBuffer];
+  firstObject2 = [seiItemsBuffer2 firstObject];
+  v10 = [firstObject2 objectForKey:@"PTSDICT"];
 
-  v11 = [(MIOSEITrackReader *)self seiItemsBuffer];
-  [v11 removeObjectAtIndex:0];
+  seiItemsBuffer3 = [(MIOSEITrackReader *)self seiItemsBuffer];
+  [seiItemsBuffer3 removeObjectAtIndex:0];
 
-  if (a3)
+  if (pts)
   {
     CMTimeMakeFromDictionary(&v13, v10);
-    *a3 = v13;
+    *pts = v13;
   }
 
   return v7;
 }
 
-- (id)copyNextSEIPts:(id *)a3 deserialize:(BOOL)a4 error:(id *)a5
+- (id)copyNextSEIPts:(id *)pts deserialize:(BOOL)deserialize error:(id *)error
 {
-  v6 = a4;
+  deserializeCopy = deserialize;
   v36[3] = *MEMORY[0x277D85DE8];
   if (![(MIOSEITrackReader *)self drainBeforeRead])
   {
 LABEL_5:
     memset(&v34, 0, sizeof(v34));
-    v12 = [(MIOSEITrackReader *)self readNextSEIPts:&v34 deserialize:v6 error:a5];
+    v12 = [(MIOSEITrackReader *)self readNextSEIPts:&v34 deserialize:deserializeCopy error:error];
     v13 = v12;
-    if (*a5)
+    if (*error)
     {
       goto LABEL_6;
     }
 
     if (!v12)
     {
-      v26 = [(MIOSEITrackReader *)self seiItemsBuffer];
-      v27 = [v26 count];
+      seiItemsBuffer = [(MIOSEITrackReader *)self seiItemsBuffer];
+      v27 = [seiItemsBuffer count];
 
       if (v27)
       {
-        v11 = [(MIOSEITrackReader *)self popFrontPts:a3];
+        v11 = [(MIOSEITrackReader *)self popFrontPts:pts];
         goto LABEL_18;
       }
 
@@ -315,14 +315,14 @@ LABEL_18:
     v36[2] = v13;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:3];
 
-    v18 = [(MIOSEITrackReader *)self seiItemsBuffer];
-    [v18 addObject:v17];
+    seiItemsBuffer2 = [(MIOSEITrackReader *)self seiItemsBuffer];
+    [seiItemsBuffer2 addObject:v17];
 
-    v19 = [(MIOSEITrackReader *)self seiItemsBuffer];
+    seiItemsBuffer3 = [(MIOSEITrackReader *)self seiItemsBuffer];
     v20 = MEMORY[0x277CBEA60];
     v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"PTS" ascending:1];
     v22 = [v20 arrayWithObjects:{v21, 0}];
-    [v19 sortUsingDescriptors:v22];
+    [seiItemsBuffer3 sortUsingDescriptors:v22];
 
     v23 = objc_opt_self();
     v24 = v23;
@@ -339,7 +339,7 @@ LABEL_18:
           time = v34;
           [(MIOSEITrackReader *)self setMaxCurrentPts:&time];
           [(MIOSEITrackReader *)self setDrainBeforeRead:1];
-          v25 = [(MIOSEITrackReader *)self popFrontPts:a3];
+          v25 = [(MIOSEITrackReader *)self popFrontPts:pts];
 LABEL_17:
           v11 = v25;
 
@@ -347,7 +347,7 @@ LABEL_17:
         }
 
 LABEL_16:
-        v25 = [(MIOSEITrackReader *)self copyNextSEIPts:a3 deserialize:v6 error:a5];
+        v25 = [(MIOSEITrackReader *)self copyNextSEIPts:pts deserialize:deserializeCopy error:error];
         goto LABEL_17;
       }
     }
@@ -364,8 +364,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v9 = [(MIOSEITrackReader *)self seiItemsBuffer];
-  v10 = [v9 count];
+  seiItemsBuffer4 = [(MIOSEITrackReader *)self seiItemsBuffer];
+  v10 = [seiItemsBuffer4 count];
 
   if (v10 < 2)
   {
@@ -373,15 +373,15 @@ LABEL_16:
     goto LABEL_5;
   }
 
-  [(MIOSEITrackReader *)self popFrontPts:a3];
+  [(MIOSEITrackReader *)self popFrontPts:pts];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (id)readNextSEIPts:(id *)a3 deserialize:(BOOL)a4 error:(id *)a5
+- (id)readNextSEIPts:(id *)pts deserialize:(BOOL)deserialize error:(id *)error
 {
-  v6 = a4;
+  deserializeCopy = deserialize;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = [(MIOSEITrackReader *)self readNextValidBlockBufferPts:a3];
+  v8 = [(MIOSEITrackReader *)self readNextValidBlockBufferPts:pts];
   if (!v8)
   {
     v13 = 0;
@@ -391,14 +391,14 @@ LABEL_16:
   v9 = v8;
   v10 = [(MIOSEITrackReader *)self extractDebugSEIFromBuffer:v8 codecType:[(MIOSEITrackReader *)self codec]];
   CFRelease(v9);
-  if (v6)
+  if (deserializeCopy)
   {
     if ([v10 count] == 1)
     {
       v24 = 0;
       v11 = MEMORY[0x277CCAC58];
-      v12 = [v10 firstObject];
-      v13 = [v11 propertyListWithData:v12 options:0 format:&v24 error:a5];
+      firstObject = [v10 firstObject];
+      v13 = [v11 propertyListWithData:firstObject options:0 format:&v24 error:error];
     }
 
     else
@@ -415,8 +415,8 @@ LABEL_16:
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v12 = v10;
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      firstObject = v10;
+      v14 = [firstObject countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v14)
       {
         v15 = v14;
@@ -427,14 +427,14 @@ LABEL_16:
           {
             if (*v21 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(firstObject);
             }
 
-            v18 = [MEMORY[0x277CCAC58] propertyListWithData:*(*(&v20 + 1) + 8 * i) options:0 format:&v24 error:{a5, v20}];
+            v18 = [MEMORY[0x277CCAC58] propertyListWithData:*(*(&v20 + 1) + 8 * i) options:0 format:&v24 error:{error, v20}];
             [v13 addObject:v18];
           }
 
-          v15 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          v15 = [firstObject countByEnumeratingWithState:&v20 objects:v25 count:16];
         }
 
         while (v15);

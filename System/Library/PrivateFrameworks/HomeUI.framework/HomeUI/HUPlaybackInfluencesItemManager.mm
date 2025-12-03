@@ -1,58 +1,58 @@
 @interface HUPlaybackInfluencesItemManager
 - (BOOL)playbackInfluencesFollowUser;
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3;
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3 module:(id)a4 homeKitAccessorySettingItem:(id)a5;
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3 settingItem:(id)a4;
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate;
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate module:(id)module homeKitAccessorySettingItem:(id)item;
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate settingItem:(id)item;
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)playbackInfluencesSetting;
-- (id)updateUseListeningHistorySetting:(BOOL)a3;
+- (id)updateUseListeningHistorySetting:(BOOL)setting;
 @end
 
 @implementation HUPlaybackInfluencesItemManager
 
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_groupItem_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUPlaybackInfluencesItemManager.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HUPlaybackInfluencesItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPlaybackInfluencesItemManager.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HUPlaybackInfluencesItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithDelegate_groupItem_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUPlaybackInfluencesItemManager.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUPlaybackInfluencesItemManager initWithDelegate:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPlaybackInfluencesItemManager.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUPlaybackInfluencesItemManager initWithDelegate:]", v6}];
 
   return 0;
 }
 
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3 settingItem:(id)a4
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate settingItem:(id)item
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  delegateCopy = delegate;
+  v7 = [item copy];
   v10.receiver = self;
   v10.super_class = HUPlaybackInfluencesItemManager;
-  v8 = [(HFItemManager *)&v10 initWithDelegate:v6 sourceItem:v7];
+  v8 = [(HFItemManager *)&v10 initWithDelegate:delegateCopy sourceItem:v7];
 
   return v8;
 }
 
-- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)a3 module:(id)a4 homeKitAccessorySettingItem:(id)a5
+- (HUPlaybackInfluencesItemManager)initWithDelegate:(id)delegate module:(id)module homeKitAccessorySettingItem:(id)item
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [a5 copy];
+  moduleCopy = module;
+  delegateCopy = delegate;
+  v11 = [item copy];
   v14.receiver = self;
   v14.super_class = HUPlaybackInfluencesItemManager;
-  v12 = [(HFItemManager *)&v14 initWithDelegate:v10 sourceItem:v11];
+  v12 = [(HFItemManager *)&v14 initWithDelegate:delegateCopy sourceItem:v11];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_accessorySettingsModule, a4);
+    objc_storeStrong(&v12->_accessorySettingsModule, module);
   }
 
   return v12;
@@ -60,10 +60,10 @@
 
 - (id)playbackInfluencesSetting
 {
-  v2 = [(HUPlaybackInfluencesItemManager *)self settingItem];
-  v3 = [v2 homeKitSettingsVendor];
-  v4 = [v3 settings];
-  v5 = [v4 hf_accessorySettingAtKeyPath:*MEMORY[0x277D13990]];
+  settingItem = [(HUPlaybackInfluencesItemManager *)self settingItem];
+  homeKitSettingsVendor = [settingItem homeKitSettingsVendor];
+  settings = [homeKitSettingsVendor settings];
+  v5 = [settings hf_accessorySettingAtKeyPath:*MEMORY[0x277D13990]];
 
   return v5;
 }
@@ -71,10 +71,10 @@
 - (BOOL)playbackInfluencesFollowUser
 {
   objc_opt_class();
-  v3 = [(HUPlaybackInfluencesItemManager *)self settingItem];
+  settingItem = [(HUPlaybackInfluencesItemManager *)self settingItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = settingItem;
   }
 
   else
@@ -86,35 +86,35 @@
 
   if (v5)
   {
-    v6 = [v5 settingValue];
-    v7 = [v6 BOOLValue];
+    settingValue = [v5 settingValue];
+    bOOLValue = [settingValue BOOLValue];
   }
 
   else
   {
-    v8 = [(HUPlaybackInfluencesItemManager *)self settingItem];
-    v9 = [v8 homeKitSettingsVendor];
-    v6 = [v9 hf_settingsValueManager];
+    settingItem2 = [(HUPlaybackInfluencesItemManager *)self settingItem];
+    homeKitSettingsVendor = [settingItem2 homeKitSettingsVendor];
+    settingValue = [homeKitSettingsVendor hf_settingsValueManager];
 
-    v10 = [(HUPlaybackInfluencesItemManager *)self playbackInfluencesSetting];
-    v11 = [v6 valueForSetting:v10];
-    v7 = [v11 BOOLValue];
+    playbackInfluencesSetting = [(HUPlaybackInfluencesItemManager *)self playbackInfluencesSetting];
+    v11 = [settingValue valueForSetting:playbackInfluencesSetting];
+    bOOLValue = [v11 BOOLValue];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)updateUseListeningHistorySetting:(BOOL)a3
+- (id)updateUseListeningHistorySetting:(BOOL)setting
 {
-  v3 = a3;
-  v4 = [(HUPlaybackInfluencesItemManager *)self settingItem];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  v6 = [v4 updateValue:v5];
+  settingCopy = setting;
+  settingItem = [(HUPlaybackInfluencesItemManager *)self settingItem];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:settingCopy];
+  v6 = [settingItem updateValue:v5];
 
   return v6;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D14B38]);
@@ -128,8 +128,8 @@
 
   v6 = objc_alloc(MEMORY[0x277D14B40]);
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(HUPlaybackInfluencesItemManager *)self useListeningHistoryItem];
-  v9 = [v7 setWithObject:v8];
+  useListeningHistoryItem = [(HUPlaybackInfluencesItemManager *)self useListeningHistoryItem];
+  v9 = [v7 setWithObject:useListeningHistoryItem];
   v10 = [v6 initWithItems:v9];
 
   v14[0] = v10;
@@ -166,27 +166,27 @@ id __62__HUPlaybackInfluencesItemManager__buildItemProvidersForHome___block_invo
   return v13;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v31[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
-  v7 = [v5 array];
-  v8 = [(HUPlaybackInfluencesItemManager *)self accessorySettingsModule];
-  v9 = [v8 sourceItem];
-  v10 = [v9 accessories];
-  v11 = [v10 anyObject];
+  itemsCopy = items;
+  array = [v5 array];
+  accessorySettingsModule = [(HUPlaybackInfluencesItemManager *)self accessorySettingsModule];
+  sourceItem = [accessorySettingsModule sourceItem];
+  accessories = [sourceItem accessories];
+  anyObject = [accessories anyObject];
 
-  v12 = [(HUPlaybackInfluencesItemManager *)self accessorySettingsModule];
-  if (v12)
+  accessorySettingsModule2 = [(HUPlaybackInfluencesItemManager *)self accessorySettingsModule];
+  if (accessorySettingsModule2)
   {
-    [v11 mediaProfile];
+    [anyObject mediaProfile];
   }
 
   else
   {
-    v3 = [(HUPlaybackInfluencesItemManager *)self settingItem];
-    [v3 homeKitSettingsVendor];
+    settingItem = [(HUPlaybackInfluencesItemManager *)self settingItem];
+    [settingItem homeKitSettingsVendor];
   }
   v13 = ;
   v14 = v13;
@@ -202,17 +202,17 @@ id __62__HUPlaybackInfluencesItemManager__buildItemProvidersForHome___block_invo
 
   v16 = v15;
 
-  if (!v12)
+  if (!accessorySettingsModule2)
   {
 
-    v13 = v3;
+    v13 = settingItem;
   }
 
   if (v16)
   {
     v17 = [MEMORY[0x277D14810] siriLanguageOptionFor:v16];
-    v18 = [v16 hf_home];
-    v19 = [HUHomeFeatureOnboardingUtilities home:v18 voiceRecognitionIsSupportedForCurrentUserOnMediaAccessory:v16 languageOption:v17];
+    hf_home = [v16 hf_home];
+    v19 = [HUHomeFeatureOnboardingUtilities home:hf_home voiceRecognitionIsSupportedForCurrentUserOnMediaAccessory:v16 languageOption:v17];
   }
 
   else
@@ -221,9 +221,9 @@ id __62__HUPlaybackInfluencesItemManager__buildItemProvidersForHome___block_invo
   }
 
   v20 = MEMORY[0x277CBEB98];
-  v21 = [(HUPlaybackInfluencesItemManager *)self useListeningHistoryItem];
-  v22 = [v20 setWithObject:v21];
-  v23 = [v6 intersectsSet:v22];
+  useListeningHistoryItem = [(HUPlaybackInfluencesItemManager *)self useListeningHistoryItem];
+  v22 = [v20 setWithObject:useListeningHistoryItem];
+  v23 = [itemsCopy intersectsSet:v22];
 
   if (v23)
   {
@@ -236,15 +236,15 @@ id __62__HUPlaybackInfluencesItemManager__buildItemProvidersForHome___block_invo
     v25 = __68__HUPlaybackInfluencesItemManager__buildSectionsWithDisplayedItems___block_invoke(v29);
     [v24 setAttributedFooterTitle:v25];
 
-    v26 = [(HUPlaybackInfluencesItemManager *)self useListeningHistoryItem];
-    v31[0] = v26;
+    useListeningHistoryItem2 = [(HUPlaybackInfluencesItemManager *)self useListeningHistoryItem];
+    v31[0] = useListeningHistoryItem2;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
     [v24 setItems:v27];
 
-    [v7 addObject:v24];
+    [array addObject:v24];
   }
 
-  return v7;
+  return array;
 }
 
 id __68__HUPlaybackInfluencesItemManager__buildSectionsWithDisplayedItems___block_invoke(uint64_t a1)

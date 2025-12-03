@@ -1,23 +1,23 @@
 @interface AXVKMultiSectionFeatureWrapper
-- (AXVKMultiSectionFeatureWrapper)initWithFeature:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AXVKMultiSectionFeatureWrapper)initWithFeature:(id)feature;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)featureName;
 - (void)dealloc;
-- (void)setFeature:(id)a3;
+- (void)setFeature:(id)feature;
 @end
 
 @implementation AXVKMultiSectionFeatureWrapper
 
-- (AXVKMultiSectionFeatureWrapper)initWithFeature:(id)a3
+- (AXVKMultiSectionFeatureWrapper)initWithFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v9.receiver = self;
   v9.super_class = AXVKMultiSectionFeatureWrapper;
   v5 = [(AXVKMultiSectionFeatureWrapper *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (featureCopy)
     {
       v6 = GEOMultiSectionFeatureRetain();
       feature = v5->_feature;
@@ -42,13 +42,13 @@
   [(AXVKMultiSectionFeatureWrapper *)&v3 dealloc];
 }
 
-- (void)setFeature:(id)a3
+- (void)setFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   feature = self->_feature;
-  if (feature != v4)
+  if (feature != featureCopy)
   {
-    v8 = v4;
+    v8 = featureCopy;
     if (feature)
     {
       GEOMultiSectionFeatureRelease();
@@ -63,18 +63,18 @@
     v7 = self->_feature;
     self->_feature = v6;
 
-    v4 = v8;
+    featureCopy = v8;
   }
 }
 
 - (id)featureName
 {
-  v2 = [(GEOMultiSectionFeature *)self->_feature feature];
-  v3 = [v2 name];
+  feature = [(GEOMultiSectionFeature *)self->_feature feature];
+  name = [feature name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v3];
+    v4 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:name];
   }
 
   else
@@ -89,16 +89,16 @@
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = objc_opt_class();
-  v5 = [(AXVKMultiSectionFeatureWrapper *)self featureName];
-  v6 = [v3 stringWithFormat:@"%@:%p: %@", v4, self, v5];
+  featureName = [(AXVKMultiSectionFeatureWrapper *)self featureName];
+  v6 = [v3 stringWithFormat:@"%@:%p: %@", v4, self, featureName];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -108,10 +108,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXVKMultiSectionFeatureWrapper *)self feature];
-      v7 = [(AXVKMultiSectionFeatureWrapper *)v5 feature];
-      v8 = AXVKMultiSectionFeatureEqualToMultiSectionFeature(v6, v7);
+      v5 = equalCopy;
+      feature = [(AXVKMultiSectionFeatureWrapper *)self feature];
+      feature2 = [(AXVKMultiSectionFeatureWrapper *)v5 feature];
+      v8 = AXVKMultiSectionFeatureEqualToMultiSectionFeature(feature, feature2);
     }
 
     else

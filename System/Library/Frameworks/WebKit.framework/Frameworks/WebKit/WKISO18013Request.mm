@@ -1,18 +1,18 @@
 @interface WKISO18013Request
 - (WKISO18013Request)init;
-- (WKISO18013Request)initWithEncryptionInfo:(id)a3 deviceRequest:(id)a4;
+- (WKISO18013Request)initWithEncryptionInfo:(id)info deviceRequest:(id)request;
 @end
 
 @implementation WKISO18013Request
 
-- (WKISO18013Request)initWithEncryptionInfo:(id)a3 deviceRequest:(id)a4
+- (WKISO18013Request)initWithEncryptionInfo:(id)info deviceRequest:(id)request
 {
-  v4 = a4;
-  if (!a3)
+  requestCopy = request;
+  if (!info)
   {
     v6 = 0;
     v8 = 0;
-    if (a4)
+    if (request)
     {
       goto LABEL_3;
     }
@@ -24,13 +24,13 @@ LABEL_5:
 
   v6 = sub_23B59D820();
   v8 = v7;
-  if (!v4)
+  if (!requestCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v4 = sub_23B59D820();
+  requestCopy = sub_23B59D820();
   v10 = v9;
 LABEL_6:
   v11 = (self + OBJC_IVAR___WKISO18013Request_encryptionInfo);
@@ -43,7 +43,7 @@ LABEL_6:
   *v11 = v6;
   v11[1] = v8;
   swift_beginAccess();
-  *v12 = v4;
+  *v12 = requestCopy;
   v12[1] = v10;
   v14.receiver = self;
   v14.super_class = WKISO18013Request;

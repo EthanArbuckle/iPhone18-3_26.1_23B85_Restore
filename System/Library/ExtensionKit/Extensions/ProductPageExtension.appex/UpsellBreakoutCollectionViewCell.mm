@@ -1,14 +1,14 @@
 @interface UpsellBreakoutCollectionViewCell
 - (UIEdgeInsets)layoutMargins;
-- (_TtC20ProductPageExtension32UpsellBreakoutCollectionViewCell)initWithCoder:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC20ProductPageExtension32UpsellBreakoutCollectionViewCell)initWithCoder:(id)coder;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation UpsellBreakoutCollectionViewCell
 
-- (_TtC20ProductPageExtension32UpsellBreakoutCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension32UpsellBreakoutCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension32UpsellBreakoutCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -36,7 +36,7 @@
   v2 = v13.receiver;
   [(UpsellBreakoutCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC20ProductPageExtension32UpsellBreakoutCollectionViewCell_upsellBreakoutView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_1000ACA5C();
   sub_10076422C();
   v6 = v5;
@@ -54,11 +54,11 @@
   [(UpsellBreakoutCollectionViewCell *)&v2 prepareForReuse];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_100359B88(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_100359B88(attributesCopy);
 }
 
 @end

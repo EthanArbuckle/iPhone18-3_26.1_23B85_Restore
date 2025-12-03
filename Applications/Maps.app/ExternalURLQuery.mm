@@ -1,8 +1,8 @@
 @interface ExternalURLQuery
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalURLQuery:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalURLQuery:(id)query;
 - (CLLocationCoordinate2D)coordinate;
-- (ExternalURLQuery)initWithQuery:(id)a3 coordinate:(CLLocationCoordinate2D)a4 muid:(unint64_t)a5 resultProviderId:(int)a6 contentProvider:(id)a7;
+- (ExternalURLQuery)initWithQuery:(id)query coordinate:(CLLocationCoordinate2D)coordinate muid:(unint64_t)muid resultProviderId:(int)id contentProvider:(id)provider;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -31,7 +31,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ExternalURLQuery *)self isEqualToExternalURLQuery:v4];
+      v5 = [(ExternalURLQuery *)self isEqualToExternalURLQuery:equalCopy];
     }
 
     else
@@ -43,21 +43,21 @@
   return v5;
 }
 
-- (BOOL)isEqualToExternalURLQuery:(id)a3
+- (BOOL)isEqualToExternalURLQuery:(id)query
 {
-  v7 = a3;
-  if (!v7)
+  queryCopy = query;
+  if (!queryCopy)
   {
     v10 = 0;
     goto LABEL_23;
   }
 
-  v8 = [(ExternalURLQuery *)self query];
-  if (v8 || ([v7 query], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  query = [(ExternalURLQuery *)self query];
+  if (query || ([queryCopy query], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(ExternalURLQuery *)self query];
-    v5 = [v7 query];
-    if (([v4 isEqualToString:v5] & 1) == 0)
+    query2 = [(ExternalURLQuery *)self query];
+    query3 = [queryCopy query];
+    if (([query2 isEqualToString:query3] & 1) == 0)
     {
 
       v10 = 0;
@@ -74,28 +74,28 @@
 
   [(ExternalURLQuery *)self coordinate];
   v12 = v11;
-  [v7 coordinate];
+  [queryCopy coordinate];
   if (v12 == v13)
   {
     [(ExternalURLQuery *)self coordinate];
     v15 = v14;
-    [v7 coordinate];
+    [queryCopy coordinate];
     if (v15 == v16)
     {
-      v17 = [(ExternalURLQuery *)self muid];
-      if (v17 == [v7 muid])
+      muid = [(ExternalURLQuery *)self muid];
+      if (muid == [queryCopy muid])
       {
-        v18 = [(ExternalURLQuery *)self resultProviderId];
-        if (v18 == [v7 resultProviderId])
+        resultProviderId = [(ExternalURLQuery *)self resultProviderId];
+        if (resultProviderId == [queryCopy resultProviderId])
         {
-          v19 = [(ExternalURLQuery *)self contentProvider];
-          if (v19 || ([v7 contentProvider], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+          contentProvider = [(ExternalURLQuery *)self contentProvider];
+          if (contentProvider || ([queryCopy contentProvider], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v20 = [(ExternalURLQuery *)self contentProvider];
-            v21 = [v7 contentProvider];
-            v10 = [v20 isEqualToString:v21];
+            contentProvider2 = [(ExternalURLQuery *)self contentProvider];
+            contentProvider3 = [queryCopy contentProvider];
+            v10 = [contentProvider2 isEqualToString:contentProvider3];
 
-            if (v19)
+            if (contentProvider)
             {
 
               if ((v9 & 1) == 0)
@@ -135,7 +135,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  if (!v8)
+  if (!query)
   {
   }
 
@@ -145,8 +145,8 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(ExternalURLQuery *)self query];
-  v4 = [v3 hash];
+  query = [(ExternalURLQuery *)self query];
+  v4 = [query hash];
   [(ExternalURLQuery *)self coordinate];
   v6 = fabs(v5);
   v7 = floor(v6 + 0.5);
@@ -195,8 +195,8 @@ LABEL_23:
 
   v23 = v13 ^ v4 ^ v22 ^ (2654435761u * [(ExternalURLQuery *)self muid]);
   v24 = 2654435761 * [(ExternalURLQuery *)self resultProviderId];
-  v25 = [(ExternalURLQuery *)self contentProvider];
-  v26 = v24 ^ [v25 hash];
+  contentProvider = [(ExternalURLQuery *)self contentProvider];
+  v26 = v24 ^ [contentProvider hash];
 
   return v23 ^ v26;
 }
@@ -204,39 +204,39 @@ LABEL_23:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(ExternalURLQuery *)self query];
+  query = [(ExternalURLQuery *)self query];
   [(ExternalURLQuery *)self coordinate];
   v6 = v5;
   [(ExternalURLQuery *)self coordinate];
   v8 = v7;
   v9 = [NSNumber numberWithUnsignedLongLong:[(ExternalURLQuery *)self muid]];
   v10 = [NSNumber numberWithInt:[(ExternalURLQuery *)self resultProviderId]];
-  v11 = [(ExternalURLQuery *)self contentProvider];
-  v12 = [NSString stringWithFormat:@"<%@: %p query=%@ coordinate=%lf, %lf muid=%@ resultProviderId=%@ contentProvider=%@>", v3, self, v4, v6, v8, v9, v10, v11];
+  contentProvider = [(ExternalURLQuery *)self contentProvider];
+  v12 = [NSString stringWithFormat:@"<%@: %p query=%@ coordinate=%lf, %lf muid=%@ resultProviderId=%@ contentProvider=%@>", v3, self, query, v6, v8, v9, v10, contentProvider];
 
   return v12;
 }
 
-- (ExternalURLQuery)initWithQuery:(id)a3 coordinate:(CLLocationCoordinate2D)a4 muid:(unint64_t)a5 resultProviderId:(int)a6 contentProvider:(id)a7
+- (ExternalURLQuery)initWithQuery:(id)query coordinate:(CLLocationCoordinate2D)coordinate muid:(unint64_t)muid resultProviderId:(int)id contentProvider:(id)provider
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v13 = a3;
-  v14 = a7;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  queryCopy = query;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = ExternalURLQuery;
   v15 = [(ExternalURLQuery *)&v21 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [queryCopy copy];
     query = v15->_query;
     v15->_query = v16;
 
     v15->_coordinate.latitude = latitude;
     v15->_coordinate.longitude = longitude;
-    v15->_muid = a5;
-    v15->_resultProviderId = a6;
-    v18 = [v14 copy];
+    v15->_muid = muid;
+    v15->_resultProviderId = id;
+    v18 = [providerCopy copy];
     contentProvider = v15->_contentProvider;
     v15->_contentProvider = v18;
   }

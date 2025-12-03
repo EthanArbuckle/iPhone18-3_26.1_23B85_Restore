@@ -1,19 +1,19 @@
 @interface HMDHAPAccessoryLocalOperationTask
 - (NSString)activityRequestEventName;
 - (NSString)activityResponseEventName;
-- (id)_completionHandlerForAccessory:(id)a3 accessoryRequests:(id)a4 responseWaitGroup:(id)a5;
-- (void)_dispatchToAccessory:(id)a3 requests:(id)a4 logEvent:(id)a5 completion:(id)a6;
+- (id)_completionHandlerForAccessory:(id)accessory accessoryRequests:(id)requests responseWaitGroup:(id)group;
+- (void)_dispatchToAccessory:(id)accessory requests:(id)requests logEvent:(id)event completion:(id)completion;
 - (void)execute;
 @end
 
 @implementation HMDHAPAccessoryLocalOperationTask
 
-- (void)_dispatchToAccessory:(id)a3 requests:(id)a4 logEvent:(id)a5 completion:(id)a6
+- (void)_dispatchToAccessory:(id)accessory requests:(id)requests logEvent:(id)event completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accessoryCopy = accessory;
+  requestsCopy = requests;
+  eventCopy = event;
+  completionCopy = completion;
   v14 = MEMORY[0x277CBEAD8];
   v15 = *MEMORY[0x277CBE658];
   v16 = MEMORY[0x277CCACA8];
@@ -28,9 +28,9 @@
 - (NSString)activityResponseEventName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDHAPAccessoryTask *)self operationName];
-  v4 = [v3 capitalizedString];
-  v5 = [v2 stringWithFormat:@"HMDHAPAccessoryLocalOperationTask.MultiCharacteristic%@Response", v4];
+  operationName = [(HMDHAPAccessoryTask *)self operationName];
+  capitalizedString = [operationName capitalizedString];
+  v5 = [v2 stringWithFormat:@"HMDHAPAccessoryLocalOperationTask.MultiCharacteristic%@Response", capitalizedString];
 
   return v5;
 }
@@ -38,29 +38,29 @@
 - (NSString)activityRequestEventName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDHAPAccessoryTask *)self operationName];
-  v4 = [v3 capitalizedString];
-  v5 = [v2 stringWithFormat:@"HMDHAPAccessoryLocalOperationTask.MultiCharacteristic%@Accessory", v4];
+  operationName = [(HMDHAPAccessoryTask *)self operationName];
+  capitalizedString = [operationName capitalizedString];
+  v5 = [v2 stringWithFormat:@"HMDHAPAccessoryLocalOperationTask.MultiCharacteristic%@Accessory", capitalizedString];
 
   return v5;
 }
 
-- (id)_completionHandlerForAccessory:(id)a3 accessoryRequests:(id)a4 responseWaitGroup:(id)a5
+- (id)_completionHandlerForAccessory:(id)accessory accessoryRequests:(id)requests responseWaitGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  requestsCopy = requests;
+  groupCopy = group;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __104__HMDHAPAccessoryLocalOperationTask__completionHandlerForAccessory_accessoryRequests_responseWaitGroup___block_invoke;
   v16[3] = &unk_279735220;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v17 = accessoryCopy;
+  v18 = requestsCopy;
+  v19 = groupCopy;
+  v11 = groupCopy;
+  v12 = requestsCopy;
+  v13 = accessoryCopy;
   v14 = _Block_copy(v16);
 
   return v14;
@@ -180,16 +180,16 @@ void __104__HMDHAPAccessoryLocalOperationTask__completionHandlerForAccessory_acc
 - (void)execute
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(HMDHAPAccessoryTask *)self setExecutionTime:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDHAPAccessoryTask *)self setExecutionTime:date];
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(HMDHAPAccessoryTask *)self requests];
-  v38 = self;
-  v6 = [(HMDHAPAccessoryTask *)self context];
-  v7 = [v6 user];
-  v33 = v4;
-  v8 = accessoryRequestMapFromRequests(v5, v4, v7);
+  array = [MEMORY[0x277CBEB18] array];
+  requests = [(HMDHAPAccessoryTask *)self requests];
+  selfCopy = self;
+  context = [(HMDHAPAccessoryTask *)self context];
+  user = [context user];
+  v33 = array;
+  v8 = accessoryRequestMapFromRequests(requests, array, user);
 
   v9 = dispatch_group_create();
   v41 = 0u;
@@ -213,33 +213,33 @@ void __104__HMDHAPAccessoryLocalOperationTask__completionHandlerForAccessory_acc
 
         v11 = *(*(&v41 + 1) + 8 * i);
         v12 = [obj objectForKey:v11];
-        v13 = [(HMDHAPAccessoryTask *)v38 activity];
-        v14 = [(HMDHAPAccessoryTask *)v38 operationName];
-        v15 = [v11 shortDescription];
-        [v13 markWithFormat:@"Starting %@ for accessory: %@", v14, v15];
+        activity = [(HMDHAPAccessoryTask *)selfCopy activity];
+        operationName = [(HMDHAPAccessoryTask *)selfCopy operationName];
+        shortDescription = [v11 shortDescription];
+        [activity markWithFormat:@"Starting %@ for accessory: %@", operationName, shortDescription];
 
         v16 = objc_autoreleasePoolPush();
-        v17 = v38;
+        v17 = selfCopy;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           v19 = HMFGetLogIdentifier();
-          v20 = [v11 name];
-          v21 = [v11 uuid];
-          [v21 UUIDString];
+          name = [v11 name];
+          uuid = [v11 uuid];
+          [uuid UUIDString];
           v22 = v35 = v16;
-          v23 = [v11 uniqueIdentifier];
+          uniqueIdentifier = [v11 uniqueIdentifier];
           v24 = [v12 count];
           *buf = 138544642;
           v46 = v19;
           v47 = 2114;
-          v48 = v38;
+          v48 = selfCopy;
           v49 = 2112;
-          v50 = v20;
+          v50 = name;
           v51 = 2114;
           v52 = v22;
           v53 = 2114;
-          v54 = v23;
+          v54 = uniqueIdentifier;
           v55 = 2048;
           v56 = v24;
           _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@[%{public}@] Starting for accessory %@/%{public}@/%{public}@ with %ld requests", buf, 0x3Eu);
@@ -249,17 +249,17 @@ void __104__HMDHAPAccessoryLocalOperationTask__completionHandlerForAccessory_acc
         }
 
         objc_autoreleasePoolPop(v16);
-        v25 = [(HMDHAPAccessoryTask *)v17 activity];
+        activity2 = [(HMDHAPAccessoryTask *)v17 activity];
         [(HMDHAPAccessoryLocalOperationTask *)v17 activityRequestEventName];
 
         [(HMDHAPAccessoryTask *)v17 operationName];
         [v11 uuid];
 
         [v12 count];
-        v26 = [(HMDHAPAccessoryLocalOperationTask *)v17 logEvents];
-        v27 = [v11 uuid];
-        v28 = [v27 UUIDString];
-        v29 = [v26 objectForKeyedSubscript:v28];
+        logEvents = [(HMDHAPAccessoryLocalOperationTask *)v17 logEvents];
+        uuid2 = [v11 uuid];
+        uUIDString = [uuid2 UUIDString];
+        v29 = [logEvents objectForKeyedSubscript:uUIDString];
 
         dispatch_group_enter(v9);
         v30 = [(HMDHAPAccessoryLocalOperationTask *)v17 _completionHandlerForAccessory:v11 accessoryRequests:v12 responseWaitGroup:v9];
@@ -272,14 +272,14 @@ void __104__HMDHAPAccessoryLocalOperationTask__completionHandlerForAccessory_acc
     while (v37);
   }
 
-  [(HMDHAPAccessoryTask *)v38 addCharacteristicResponses:v33 isRemote:0];
-  v31 = [(HMDHAPAccessoryTask *)v38 workQueue];
+  [(HMDHAPAccessoryTask *)selfCopy addCharacteristicResponses:v33 isRemote:0];
+  workQueue = [(HMDHAPAccessoryTask *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__HMDHAPAccessoryLocalOperationTask_execute__block_invoke;
   block[3] = &unk_279735D00;
-  block[4] = v38;
-  dispatch_group_notify(v9, v31, block);
+  block[4] = selfCopy;
+  dispatch_group_notify(v9, workQueue, block);
 
   v32 = *MEMORY[0x277D85DE8];
 }

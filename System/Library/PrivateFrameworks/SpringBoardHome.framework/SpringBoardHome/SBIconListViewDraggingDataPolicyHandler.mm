@@ -1,13 +1,13 @@
 @interface SBIconListViewDraggingDataPolicyHandler
-- (BOOL)allowsSpringLoadForSession:(id)a3 onIconView:(id)a4;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)allowsSpringLoadForSession:(id)session onIconView:(id)view;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (SBIconListViewDraggingDataPolicyHandler)init;
 - (SBIconListViewDraggingDestinationDelegate)draggingDestinationDelegate;
-- (id)_bestSupportedUTIForDragItem:(id)a3 supportedTypes:(id)a4;
-- (id)_currentDraggingIconViewInView:(id)a3 forLocation:(CGPoint)a4;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)_removeAnySourceURLForOperation:(id)a3;
-- (void)handleSpringLoadOnIconView:(id)a3;
+- (id)_bestSupportedUTIForDragItem:(id)item supportedTypes:(id)types;
+- (id)_currentDraggingIconViewInView:(id)view forLocation:(CGPoint)location;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)_removeAnySourceURLForOperation:(id)operation;
+- (void)handleSpringLoadOnIconView:(id)view;
 @end
 
 @implementation SBIconListViewDraggingDataPolicyHandler
@@ -19,24 +19,24 @@
   v2 = [(SBIconListViewDraggingDataPolicyHandler *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     sourceURLsByOperationMapTable = v2->_sourceURLsByOperationMapTable;
-    v2->_sourceURLsByOperationMapTable = v3;
+    v2->_sourceURLsByOperationMapTable = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (BOOL)allowsSpringLoadForSession:(id)a3 onIconView:(id)a4
+- (BOOL)allowsSpringLoadForSession:(id)session onIconView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBIconListViewDraggingDataPolicyHandler *)self draggingDestinationDelegate];
-  v9 = [v8 iconListView];
-  if (SBHContentVisibilityIsVisible([v9 contentVisibility]))
+  sessionCopy = session;
+  viewCopy = view;
+  draggingDestinationDelegate = [(SBIconListViewDraggingDataPolicyHandler *)self draggingDestinationDelegate];
+  iconListView = [draggingDestinationDelegate iconListView];
+  if (SBHContentVisibilityIsVisible([iconListView contentVisibility]))
   {
-    v10 = [v8 dragDelegate];
-    v11 = [v10 iconListView:v9 shouldAllowSpringLoadedInteractionForIconDropSession:v6 onIconView:v7];
+    dragDelegate = [draggingDestinationDelegate dragDelegate];
+    v11 = [dragDelegate iconListView:iconListView shouldAllowSpringLoadedInteractionForIconDropSession:sessionCopy onIconView:viewCopy];
   }
 
   else
@@ -47,57 +47,57 @@
   return v11;
 }
 
-- (void)handleSpringLoadOnIconView:(id)a3
+- (void)handleSpringLoadOnIconView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v6 = objc_alloc_init(SBHIconLaunchContext);
-  [(SBHIconLaunchContext *)v6 setIconView:v3];
-  v4 = [v3 icon];
-  v5 = [v3 location];
+  [(SBHIconLaunchContext *)v6 setIconView:viewCopy];
+  icon = [viewCopy icon];
+  location = [viewCopy location];
 
-  [v4 launchFromLocation:v5 context:v6];
+  [icon launchFromLocation:location context:v6];
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v5 = a4;
-  v6 = [(SBIconListViewDraggingDataPolicyHandler *)self draggingDestinationDelegate];
-  v7 = [v6 iconListView];
-  v8 = [v6 dragDelegate];
-  v9 = [v8 iconListView:v7 canHandleDataDropSession:v5];
+  sessionCopy = session;
+  draggingDestinationDelegate = [(SBIconListViewDraggingDataPolicyHandler *)self draggingDestinationDelegate];
+  iconListView = [draggingDestinationDelegate iconListView];
+  dragDelegate = [draggingDestinationDelegate dragDelegate];
+  v9 = [dragDelegate iconListView:iconListView canHandleDataDropSession:sessionCopy];
 
   return v9;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v5 = a4;
-  v6 = [(SBIconListViewDraggingDataPolicyHandler *)self draggingDestinationDelegate];
-  v7 = [v6 iconListView];
-  v8 = [v6 dragDelegate];
-  v9 = [v8 iconListView:v7 dataDropSessionDidUpdate:v5];
+  updateCopy = update;
+  draggingDestinationDelegate = [(SBIconListViewDraggingDataPolicyHandler *)self draggingDestinationDelegate];
+  iconListView = [draggingDestinationDelegate iconListView];
+  dragDelegate = [draggingDestinationDelegate dragDelegate];
+  v9 = [dragDelegate iconListView:iconListView dataDropSessionDidUpdate:updateCopy];
 
   return v9;
 }
 
-- (void)_removeAnySourceURLForOperation:(id)a3
+- (void)_removeAnySourceURLForOperation:(id)operation
 {
-  v6 = a3;
+  operationCopy = operation;
   v4 = [(NSMapTable *)self->_sourceURLsByOperationMapTable objectForKey:?];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtURL:v4 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v4 error:0];
 
-    [(NSMapTable *)self->_sourceURLsByOperationMapTable removeObjectForKey:v6];
+    [(NSMapTable *)self->_sourceURLsByOperationMapTable removeObjectForKey:operationCopy];
   }
 }
 
-- (id)_currentDraggingIconViewInView:(id)a3 forLocation:(CGPoint)a4
+- (id)_currentDraggingIconViewInView:(id)view forLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   objc_opt_class();
   v7 = SBFSafeCast();
 
@@ -123,13 +123,13 @@
   return v9;
 }
 
-- (id)_bestSupportedUTIForDragItem:(id)a3 supportedTypes:(id)a4
+- (id)_bestSupportedUTIForDragItem:(id)item supportedTypes:(id)types
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 itemProvider];
-  v7 = [v6 registeredTypeIdentifiersWithFileOptions:0];
-  v8 = v5;
+  typesCopy = types;
+  itemProvider = [item itemProvider];
+  v7 = [itemProvider registeredTypeIdentifiersWithFileOptions:0];
+  v8 = typesCopy;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -174,7 +174,7 @@
               }
 
               v19 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v36 + 1) + 8 * i)];
-              if ([v13 conformsToType:v19] && (objc_msgSend(v6, "hasRepresentationConformingToTypeIdentifier:fileOptions:", v12, 0) & 1) != 0)
+              if ([v13 conformsToType:v19] && (objc_msgSend(itemProvider, "hasRepresentationConformingToTypeIdentifier:fileOptions:", v12, 0) & 1) != 0)
               {
                 v26 = v12;
 
@@ -228,7 +228,7 @@
         }
 
         v25 = *(*(&v32 + 1) + 8 * j);
-        if ([v6 hasRepresentationConformingToTypeIdentifier:v25 fileOptions:0])
+        if ([itemProvider hasRepresentationConformingToTypeIdentifier:v25 fileOptions:0])
         {
           v26 = v25;
           goto LABEL_28;

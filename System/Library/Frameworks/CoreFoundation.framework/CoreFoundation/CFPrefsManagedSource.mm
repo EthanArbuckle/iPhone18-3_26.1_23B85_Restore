@@ -1,25 +1,25 @@
 @interface CFPrefsManagedSource
-- (id)initWithDomain:(uint64_t)a3 user:(uint64_t)a4 byHost:(uint64_t)a5 containingPreferences:;
-- (void)alreadylocked_setPrecopiedValues:(const void *)a3 forKeys:(const __CFString *)a4 count:(int64_t)a5 from:(id)a6;
+- (id)initWithDomain:(uint64_t)domain user:(uint64_t)user byHost:(uint64_t)host containingPreferences:;
+- (void)alreadylocked_setPrecopiedValues:(const void *)values forKeys:(const __CFString *)keys count:(int64_t)count from:(id)from;
 @end
 
 @implementation CFPrefsManagedSource
 
-- (void)alreadylocked_setPrecopiedValues:(const void *)a3 forKeys:(const __CFString *)a4 count:(int64_t)a5 from:(id)a6
+- (void)alreadylocked_setPrecopiedValues:(const void *)values forKeys:(const __CFString *)keys count:(int64_t)count from:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a5 >= 1)
+  if (count >= 1)
   {
-    v7 = a5;
+    countCopy = count;
     do
     {
-      v10 = *a4;
-      v11 = *a3;
-      v12 = [(CFPrefsPlistSource *)self alreadylocked_copyDictionary];
-      if (v12)
+      v10 = *keys;
+      v11 = *values;
+      alreadylocked_copyDictionary = [(CFPrefsPlistSource *)self alreadylocked_copyDictionary];
+      if (alreadylocked_copyDictionary)
       {
-        v13 = v12;
-        MutableCopy = CFDictionaryCreateMutableCopy(&__kCFAllocatorSystemDefault, 0, v12);
+        v13 = alreadylocked_copyDictionary;
+        MutableCopy = CFDictionaryCreateMutableCopy(&__kCFAllocatorSystemDefault, 0, alreadylocked_copyDictionary);
         if (!MutableCopy)
         {
           MutableCopy = CFDictionaryCreateMutable(&__kCFAllocatorSystemDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -44,18 +44,18 @@
       }
 
       bzero(v19, 0x400uLL);
-      v15 = [(CFPrefsPlistSource *)self userIdentifier];
-      if (CFEqual(v15, @"kCFPreferencesCurrentUser"))
+      userIdentifier = [(CFPrefsPlistSource *)self userIdentifier];
+      if (CFEqual(userIdentifier, @"kCFPreferencesCurrentUser"))
       {
-        v15 = CFCopyUserName();
+        userIdentifier = CFCopyUserName();
       }
 
       else
       {
-        CFRetain(v15);
+        CFRetain(userIdentifier);
       }
 
-      if (_CFPrefsGetPathForManagedBundleID([(CFPrefsPlistSource *)self domainIdentifier], v15, 0, v19))
+      if (_CFPrefsGetPathForManagedBundleID([(CFPrefsPlistSource *)self domainIdentifier], userIdentifier, 0, v19))
       {
         v16 = CFStringCreateWithFileSystemRepresentation(&__kCFAllocatorSystemDefault, v19);
         if (v16)
@@ -66,28 +66,28 @@
         }
       }
 
-      CFRelease(v15);
+      CFRelease(userIdentifier);
       CFRelease(MutableCopy);
-      ++a3;
-      ++a4;
-      --v7;
+      ++values;
+      ++keys;
+      --countCopy;
     }
 
-    while (v7);
+    while (countCopy);
   }
 
   atomic_fetch_add(&self->super.super._generationCount, 1uLL);
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initWithDomain:(uint64_t)a3 user:(uint64_t)a4 byHost:(uint64_t)a5 containingPreferences:
+- (id)initWithDomain:(uint64_t)domain user:(uint64_t)user byHost:(uint64_t)host containingPreferences:
 {
   v7 = *MEMORY[0x1E69E9840];
   if (result)
   {
     v6.receiver = result;
     v6.super_class = CFPrefsManagedSource;
-    result = objc_msgSendSuper2(&v6, sel_initWithDomain_user_byHost_containerPath_containingPreferences_, a2, a3, a4, 0, a5);
+    result = objc_msgSendSuper2(&v6, sel_initWithDomain_user_byHost_containerPath_containingPreferences_, a2, domain, user, 0, host);
   }
 
   v5 = *MEMORY[0x1E69E9840];

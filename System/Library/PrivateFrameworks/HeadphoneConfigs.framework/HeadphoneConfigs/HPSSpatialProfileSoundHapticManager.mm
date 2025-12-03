@@ -1,19 +1,19 @@
 @interface HPSSpatialProfileSoundHapticManager
 - (BOOL)isEnrollGuidancePlaying;
 - (HPSSpatialProfileSoundHapticManager)init;
-- (id)initPlayerWithFileName:(id)a3;
+- (id)initPlayerWithFileName:(id)name;
 - (void)pauseEnrollGuidancePlayer;
 - (void)pauseProgressPlayer;
-- (void)playEnrollGuidance:(int)a3;
-- (void)playProgressPlayer:(int)a3;
+- (void)playEnrollGuidance:(int)guidance;
+- (void)playProgressPlayer:(int)player;
 - (void)readDynamicEnrollmentFeedback;
-- (void)setEnrollGuidancePitch:(float)a3;
-- (void)setProgressPlayerPitch:(float)a3;
+- (void)setEnrollGuidancePitch:(float)pitch;
+- (void)setProgressPlayerPitch:(float)pitch;
 - (void)setupPlayers;
 - (void)start;
 - (void)stop;
-- (void)triggerSoundHapticForEarCaptureState:(int)a3 completion:(id)a4;
-- (void)triggerSoundHapticForEnrollmentState:(int)a3 completion:(id)a4;
+- (void)triggerSoundHapticForEarCaptureState:(int)state completion:(id)completion;
+- (void)triggerSoundHapticForEnrollmentState:(int)state completion:(id)completion;
 @end
 
 @implementation HPSSpatialProfileSoundHapticManager
@@ -26,8 +26,8 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277CBF6B0]);
-    v4 = [MEMORY[0x277CB83F8] sharedInstance];
-    v5 = [v3 initWithAudioSession:v4 error:0];
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+    v5 = [v3 initWithAudioSession:mEMORY[0x277CB83F8] error:0];
     engine = v2->_engine;
     v2->_engine = v5;
 
@@ -63,12 +63,12 @@
 
 - (void)setupPlayers
 {
-  v2 = self;
-  v3 = [(HPSSpatialProfileSoundHapticManager *)v2 initPlayerWithFileName:@"Spatial_Profile_Scan_Lock"];
-  scanLockPlayer = v2->_scanLockPlayer;
-  v2->_scanLockPlayer = v3;
+  selfCopy = self;
+  v3 = [(HPSSpatialProfileSoundHapticManager *)selfCopy initPlayerWithFileName:@"Spatial_Profile_Scan_Lock"];
+  scanLockPlayer = selfCopy->_scanLockPlayer;
+  selfCopy->_scanLockPlayer = v3;
 
-  v5 = v2;
+  v5 = selfCopy;
   v6 = [(HPSSpatialProfileSoundHapticManager *)v5 initPlayerWithFileName:@"Spatial_Profile_Scan_In_Progress"];
   scanInProgressPlayer = v5->_scanInProgressPlayer;
   v5->_scanInProgressPlayer = v6;
@@ -106,7 +106,7 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setEnrollGuidancePitch:(float)a3
+- (void)setEnrollGuidancePitch:(float)pitch
 {
   enrollGuidancePlayer = self->_enrollGuidancePlayer;
   if (enrollGuidancePlayer)
@@ -137,13 +137,13 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playEnrollGuidance:(int)a3
+- (void)playEnrollGuidance:(int)guidance
 {
   if (self->_dynamicEnrollmentFeedback)
   {
     v12[3] = v3;
     v12[4] = v4;
-    if (a3 == 11 || a3 == 7)
+    if (guidance == 11 || guidance == 7)
     {
       enrollGuidancePlayer = self->_enrollGuidancePlayer;
       if (enrollGuidancePlayer)
@@ -172,7 +172,7 @@
   }
 }
 
-- (void)setProgressPlayerPitch:(float)a3
+- (void)setProgressPlayerPitch:(float)pitch
 {
   scanInProgressPlayer = self->_scanInProgressPlayer;
   if (scanInProgressPlayer)
@@ -201,9 +201,9 @@
   }
 }
 
-- (void)playProgressPlayer:(int)a3
+- (void)playProgressPlayer:(int)player
 {
-  if (a3 == 11 || a3 == 7)
+  if (player == 11 || player == 7)
   {
     scanInProgressPlayer = self->_scanInProgressPlayer;
     if (scanInProgressPlayer)
@@ -228,12 +228,12 @@
   }
 }
 
-- (id)initPlayerWithFileName:(id)a3
+- (id)initPlayerWithFileName:(id)name
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 bundleForClass:objc_opt_class()];
-  v7 = [v6 URLForResource:v5 withExtension:@"ahap"];
+  v7 = [v6 URLForResource:nameCopy withExtension:@"ahap"];
 
   v17 = 0;
   v8 = [objc_alloc(MEMORY[0x277CBF6D0]) initWithContentsOfURL:v7 error:&v17];
@@ -263,14 +263,14 @@
   return v12;
 }
 
-- (void)triggerSoundHapticForEnrollmentState:(int)a3 completion:(id)a4
+- (void)triggerSoundHapticForEnrollmentState:(int)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_group_create();
-  v8 = [MEMORY[0x277CB83F8] sharedInstance];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
   v9 = *MEMORY[0x277CB8030];
   v41 = 0;
-  [v8 setCategory:v9 error:&v41];
+  [mEMORY[0x277CB83F8] setCategory:v9 error:&v41];
   v10 = v41;
 
   if (v10)
@@ -282,15 +282,15 @@
     }
   }
 
-  if (a3 > 10)
+  if (state > 10)
   {
-    if (a3 <= 16)
+    if (state <= 16)
     {
-      if (a3 != 11)
+      if (state != 11)
       {
-        if (a3 != 12)
+        if (state != 12)
         {
-          if (a3 == 16)
+          if (state == 16)
           {
             v12 = sharedBluetoothSettingsLogComponent();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -305,8 +305,8 @@
             block[2] = __87__HPSSpatialProfileSoundHapticManager_triggerSoundHapticForEnrollmentState_completion___block_invoke_47;
             block[3] = &unk_2796AD5F0;
             v28 = v7;
-            v29 = self;
-            v30 = v6;
+            selfCopy = self;
+            v30 = completionCopy;
             dispatch_async(soundHapticSerialQueue, block);
 
             v14 = v28;
@@ -333,7 +333,7 @@ LABEL_17:
         v31[3] = &unk_2796AD5F0;
         v31[4] = self;
         v32 = v7;
-        v33 = v6;
+        v33 = completionCopy;
         dispatch_async(v16, v31);
 
         v14 = v32;
@@ -343,7 +343,7 @@ LABEL_17:
       goto LABEL_26;
     }
 
-    if ((a3 - 17) < 3)
+    if ((state - 17) < 3)
     {
       v17 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -358,7 +358,7 @@ LABEL_17:
       v24[3] = &unk_2796AD5F0;
       v24[4] = self;
       v25 = v7;
-      v26 = v6;
+      v26 = completionCopy;
       dispatch_async(v18, v24);
 
       v14 = v25;
@@ -368,9 +368,9 @@ LABEL_17:
     goto LABEL_38;
   }
 
-  if (a3 > 3)
+  if (state > 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 4:
         goto LABEL_17;
@@ -389,9 +389,9 @@ LABEL_26:
         v34[2] = __87__HPSSpatialProfileSoundHapticManager_triggerSoundHapticForEnrollmentState_completion___block_invoke;
         v34[3] = &unk_2796AD5C8;
         v35 = v7;
-        v36 = self;
-        v38 = a3;
-        v37 = v6;
+        selfCopy2 = self;
+        stateCopy = state;
+        v37 = completionCopy;
         dispatch_async(v20, v34);
 
         v14 = v35;
@@ -401,17 +401,17 @@ LABEL_26:
     }
 
 LABEL_38:
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_30;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
       goto LABEL_26;
     }
@@ -433,9 +433,9 @@ LABEL_38:
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   v10 = v22;
@@ -716,11 +716,11 @@ uint64_t __87__HPSSpatialProfileSoundHapticManager_triggerSoundHapticForEnrollme
   return result;
 }
 
-- (void)triggerSoundHapticForEarCaptureState:(int)a3 completion:(id)a4
+- (void)triggerSoundHapticForEarCaptureState:(int)state completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v7 setCategory:*MEMORY[0x277CB8030] error:0];
+  completionCopy = completion;
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8030] error:0];
 
   v8 = dispatch_group_create();
   soundHapticSerialQueue = self->_soundHapticSerialQueue;
@@ -728,11 +728,11 @@ uint64_t __87__HPSSpatialProfileSoundHapticManager_triggerSoundHapticForEnrollme
   v12[1] = 3221225472;
   v12[2] = __87__HPSSpatialProfileSoundHapticManager_triggerSoundHapticForEarCaptureState_completion___block_invoke;
   v12[3] = &unk_2796AD5C8;
-  v16 = a3;
+  stateCopy = state;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
   dispatch_async(soundHapticSerialQueue, v12);
 }

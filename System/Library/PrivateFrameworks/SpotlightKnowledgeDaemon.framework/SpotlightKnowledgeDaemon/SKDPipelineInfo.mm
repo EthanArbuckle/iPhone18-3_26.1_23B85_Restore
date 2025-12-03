@@ -1,24 +1,24 @@
 @interface SKDPipelineInfo
-- (SKDPipelineInfo)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
+- (SKDPipelineInfo)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 @end
 
 @implementation SKDPipelineInfo
 
-- (SKDPipelineInfo)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (SKDPipelineInfo)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
+  domainCopy = domain;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = SKDPipelineInfo;
   v11 = [(SKDPipelineInfo *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_domain, a3);
-    v12->_code = a4;
-    if (v10)
+    objc_storeStrong(&v11->_domain, domain);
+    v12->_code = code;
+    if (infoCopy)
     {
-      v13 = v10;
+      v13 = infoCopy;
     }
 
     else

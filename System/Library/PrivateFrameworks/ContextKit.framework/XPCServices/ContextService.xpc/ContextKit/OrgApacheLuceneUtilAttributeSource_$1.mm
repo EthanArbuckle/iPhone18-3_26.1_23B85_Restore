@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilAttributeSource_$1
-- (id)computeValueWithIOSClass:(id)a3;
+- (id)computeValueWithIOSClass:(id)class;
 @end
 
 @implementation OrgApacheLuceneUtilAttributeSource_$1
 
-- (id)computeValueWithIOSClass:(id)a3
+- (id)computeValueWithIOSClass:(id)class
 {
   v4 = new_JavaUtilLinkedHashSet_init();
   do
   {
-    if (!a3 || (v5 = [a3 getInterfaces]) == 0)
+    if (!class || (v5 = [class getInterfaces]) == 0)
     {
 LABEL_14:
       JreThrowNullPointerException();
@@ -32,10 +32,10 @@ LABEL_14:
       }
     }
 
-    a3 = [a3 getSuperclass];
+    class = [class getSuperclass];
   }
 
-  while (a3);
+  while (class);
   v10 = [IOSObjectArray arrayWithLength:[(JavaUtilHashSet *)v4 size] type:IOSClass_class_()];
 
   return [(JavaUtilAbstractCollection *)v4 toArrayWithNSObjectArray:v10];

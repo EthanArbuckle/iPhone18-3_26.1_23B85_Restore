@@ -1,27 +1,27 @@
 @interface NUImageExportFormatGeneric
-- (NUImageExportFormatGeneric)initWithFileType:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addImageDestinationOptionsToImageProperties:(id)a3;
+- (NUImageExportFormatGeneric)initWithFileType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addImageDestinationOptionsToImageProperties:(id)properties;
 @end
 
 @implementation NUImageExportFormatGeneric
 
-- (void)addImageDestinationOptionsToImageProperties:(id)a3
+- (void)addImageDestinationOptionsToImageProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   options = self->_options;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__NUImageExportFormatGeneric_addImageDestinationOptionsToImageProperties___block_invoke;
   v7[3] = &unk_1E8109EA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = propertiesCopy;
+  v6 = propertiesCopy;
   [(NSDictionary *)options enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   if (v4)
   {
     v5 = [(NSString *)self->_fileType copy];
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (NUImageExportFormatGeneric)initWithFileType:(id)a3
+- (NUImageExportFormatGeneric)initWithFileType:(id)type
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  typeCopy = type;
+  if (!typeCopy)
   {
     v14 = NUAssertLogger_7209();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -62,8 +62,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v21;
         v33 = 2114;
@@ -74,8 +74,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -84,7 +84,7 @@
     _NUAssertFailHandler("[NUImageExportFormatGeneric initWithFileType:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageExportFormat.m", 71, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "fileType != nil");
   }
 
-  v5 = v4;
+  v5 = typeCopy;
   v30.receiver = self;
   v30.super_class = NUImageExportFormatGeneric;
   v6 = [(NUImageExportFormatGeneric *)&v30 init];

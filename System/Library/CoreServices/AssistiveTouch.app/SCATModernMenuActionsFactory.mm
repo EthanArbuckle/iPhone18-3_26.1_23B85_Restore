@@ -1,24 +1,24 @@
 @interface SCATModernMenuActionsFactory
-+ (id)_additionalMenuItemsForHomeActionForMenu:(id)a3 delegate:(id)a4;
-+ (id)_capitalizedMenuTitle:(id)a3;
++ (id)_additionalMenuItemsForHomeActionForMenu:(id)menu delegate:(id)delegate;
++ (id)_capitalizedMenuTitle:(id)title;
 + (id)_escapableElements;
-+ (id)_fallbackImageForCustomActionMenuItem:(id)a3 charactersInUse:(id)a4;
-+ (id)_fingerItemStringForNumberOfFingers:(unint64_t)a3;
-+ (id)_imageNameForNumberOfFingers:(unint64_t)a3;
-+ (id)_menuItemsForElementSpecificActionsForMenu:(id)a3 delegate:(id)a4;
++ (id)_fallbackImageForCustomActionMenuItem:(id)item charactersInUse:(id)use;
++ (id)_fingerItemStringForNumberOfFingers:(unint64_t)fingers;
++ (id)_imageNameForNumberOfFingers:(unint64_t)fingers;
++ (id)_menuItemsForElementSpecificActionsForMenu:(id)menu delegate:(id)delegate;
 + (id)_typingCandidates;
-+ (id)dragMenuItemsForElement:(id)a3 delegate:(id)a4;
-+ (id)itemDetailsForItem:(id)a3 menu:(id)a4;
-+ (id)menuItemForTapWithMenu:(id)a3 delegate:(id)a4;
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)menuItemsForCustomActions:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)menuItemsForDrops:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)updateBlockForIdentifier:(id)a3;
-+ (void)_handlePerformEscapeWithMenu:(id)a3;
-+ (void)_title:(id *)a3 imageForAlternateNavigationItem:(id *)a4;
-+ (void)_title:(id *)a3 imageForEyeTrackingNavigationItem:(id *)a4;
-+ (void)_title:(id *)a3 imageForNavigationItem:(id *)a4;
++ (id)dragMenuItemsForElement:(id)element delegate:(id)delegate;
++ (id)itemDetailsForItem:(id)item menu:(id)menu;
++ (id)menuItemForTapWithMenu:(id)menu delegate:(id)delegate;
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate;
++ (id)menuItemsForCustomActions:(id)actions menu:(id)menu delegate:(id)delegate;
++ (id)menuItemsForDrops:(id)drops menu:(id)menu delegate:(id)delegate;
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate;
++ (id)updateBlockForIdentifier:(id)identifier;
++ (void)_handlePerformEscapeWithMenu:(id)menu;
++ (void)_title:(id *)_title imageForAlternateNavigationItem:(id *)item;
++ (void)_title:(id *)_title imageForEyeTrackingNavigationItem:(id *)item;
++ (void)_title:(id *)_title imageForNavigationItem:(id *)item;
 + (void)toggleAlternativeNavigationMode;
 + (void)toggleEyeTracking;
 + (void)toggleNavigationMode;
@@ -26,13 +26,13 @@
 
 @implementation SCATModernMenuActionsFactory
 
-+ (id)menuItemForTapWithMenu:(id)a3 delegate:(id)a4
++ (id)menuItemForTapWithMenu:(id)menu delegate:(id)delegate
 {
   v13[0] = @"action_activate";
   v12[0] = @"identifier";
   v12[1] = @"title";
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  menuCopy = menu;
   v8 = sub_100042B24(@"TAP");
   v13[1] = v8;
   v13[2] = @"SCATIcon_gestures_tap";
@@ -40,19 +40,19 @@
   v12[3] = @"activateBehavior";
   v13[3] = &off_1001E5580;
   v9 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:4];
-  v10 = [a1 menuItemWithItemDictionary:v9 menu:v7 delegate:v6];
+  v10 = [self menuItemWithItemDictionary:v9 menu:menuCopy delegate:delegateCopy];
 
   return v10;
 }
 
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:AXSSwitchControlMenuItemElementSpecificActions])
+  itemCopy = item;
+  menuCopy = menu;
+  delegateCopy = delegate;
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemElementSpecificActions])
   {
-    v11 = [a1 _menuItemsForElementSpecificActionsForMenu:v9 delegate:v10];
+    v11 = [self _menuItemsForElementSpecificActionsForMenu:menuCopy delegate:delegateCopy];
   }
 
   else
@@ -62,7 +62,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [a1 itemDetailsForItem:v8 menu:{v9, 0}];
+    v12 = [self itemDetailsForItem:itemCopy menu:{menuCopy, 0}];
     v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
@@ -77,7 +77,7 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [a1 menuItemWithItemDictionary:*(*(&v20 + 1) + 8 * i) menu:v9 delegate:v10];
+          v17 = [self menuItemWithItemDictionary:*(*(&v20 + 1) + 8 * i) menu:menuCopy delegate:delegateCopy];
           [v11 addObject:v17];
         }
 
@@ -87,9 +87,9 @@
       while (v14);
     }
 
-    if ([v8 isEqualToString:AXSSwitchControlMenuItemHome])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemHome])
     {
-      v18 = [a1 _additionalMenuItemsForHomeActionForMenu:v9 delegate:v10];
+      v18 = [self _additionalMenuItemsForHomeActionForMenu:menuCopy delegate:delegateCopy];
       [v11 addObjectsFromArray:v18];
     }
   }
@@ -97,17 +97,17 @@
   return v11;
 }
 
-+ (id)itemDetailsForItem:(id)a3 menu:(id)a4
++ (id)itemDetailsForItem:(id)item menu:(id)menu
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDevice])
+  itemCopy = item;
+  menuCopy = menu;
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDevice])
   {
     v139[0] = @"device";
     v138[0] = @"identifier";
     v138[1] = @"title";
-    v8 = sub_100042B24(@"DEVICE");
-    v139[1] = v8;
+    keyboardApplication = sub_100042B24(@"DEVICE");
+    v139[1] = keyboardApplication;
     v138[2] = @"imageName";
     v9 = [NSString sc_deviceIconNameForIdentifier:@"device"];
     v138[3] = @"activateBehavior";
@@ -117,18 +117,18 @@
     v140 = v10;
     v11 = &v140;
 LABEL_3:
-    v12 = [NSArray arrayWithObjects:v11 count:1];
+    textElement = [NSArray arrayWithObjects:v11 count:1];
 LABEL_4:
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemEdit])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemEdit])
   {
-    v12 = [v7 textElement];
+    textElement = [menuCopy textElement];
 
-    if (!v12)
+    if (!textElement)
     {
       goto LABEL_12;
     }
@@ -136,8 +136,8 @@ LABEL_11:
     v136[0] = @"action_edit";
     v135[0] = @"identifier";
     v135[1] = @"title";
-    v8 = sub_100042B24(@"EDIT");
-    v136[1] = v8;
+    keyboardApplication = sub_100042B24(@"EDIT");
+    v136[1] = keyboardApplication;
     v136[2] = @"SCATIcon_edit";
     v135[2] = @"imageName";
     v135[3] = @"activateBehavior";
@@ -148,33 +148,33 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemEscape])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemEscape])
   {
     v133[0] = @"action_escape";
     v132[0] = @"identifier";
     v132[1] = @"title";
-    v8 = sub_100042B24(@"ESCAPE");
+    keyboardApplication = sub_100042B24(@"ESCAPE");
     v132[2] = @"activateBehavior";
-    v133[1] = v8;
+    v133[1] = keyboardApplication;
     v133[2] = &off_1001E5580;
     v9 = [NSDictionary dictionaryWithObjects:v133 forKeys:v132 count:3];
     v134 = v9;
     v13 = &v134;
 LABEL_10:
-    v12 = [NSArray arrayWithObjects:v13 count:1];
+    textElement = [NSArray arrayWithObjects:v13 count:1];
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemToggleDictation])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemToggleDictation])
   {
-    v8 = [v7 keyboardApplication];
-    v15 = [v8 uiElement];
-    v16 = [v15 BOOLWithAXAttribute:3034];
+    keyboardApplication = [menuCopy keyboardApplication];
+    uiElement = [keyboardApplication uiElement];
+    v16 = [uiElement BOOLWithAXAttribute:3034];
 
     if (v16)
     {
-      v17 = [v8 uiElement];
-      v18 = [v17 BOOLWithAXAttribute:3010];
+      uiElement2 = [keyboardApplication uiElement];
+      v18 = [uiElement2 BOOLWithAXAttribute:3010];
 
       v130[0] = @"action_toggle_dictation";
       v129[0] = @"identifier";
@@ -200,7 +200,7 @@ LABEL_10:
       v130[4] = &off_1001E55B0;
       v20 = [NSDictionary dictionaryWithObjects:v130 forKeys:v129 count:5];
       v131 = v20;
-      v12 = [NSArray arrayWithObjects:&v131 count:1];
+      textElement = [NSArray arrayWithObjects:&v131 count:1];
 
       goto LABEL_4;
     }
@@ -208,20 +208,20 @@ LABEL_10:
 LABEL_69:
 
 LABEL_70:
-    v12 = 0;
+    textElement = 0;
     goto LABEL_12;
   }
 
-  if (![v6 isEqualToString:AXSSwitchControlMenuItemGestures])
+  if (![itemCopy isEqualToString:AXSSwitchControlMenuItemGestures])
   {
     v21 = AXSSwitchControlMenuItemHome;
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemHome])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemHome])
     {
       v124[0] = @"action_home";
       v123[0] = @"identifier";
       v123[1] = @"title";
-      v8 = sub_100042B24(@"SCAT_QUICK_ITEM_HOME");
-      v124[1] = v8;
+      keyboardApplication = sub_100042B24(@"SCAT_QUICK_ITEM_HOME");
+      v124[1] = keyboardApplication;
       v124[2] = @"SCATIcon_device_home";
       v123[2] = @"imageName";
       v123[3] = @"guidedAccess";
@@ -234,11 +234,11 @@ LABEL_70:
       goto LABEL_10;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemIncrementDecrement])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemIncrementDecrement])
     {
-      v22 = [v7 element];
-      v23 = [v22 scatTraits];
-      v24 = kAXAdjustableTrait & ~v23;
+      element = [menuCopy element];
+      scatTraits = [element scatTraits];
+      v24 = kAXAdjustableTrait & ~scatTraits;
 
       if (!v24)
       {
@@ -290,7 +290,7 @@ LABEL_70:
         v119[3] = &off_1001E55B0;
         v34 = [NSDictionary dictionaryWithObjects:v119 forKeys:v118 count:4];
         v122[1] = v34;
-        v12 = [NSArray arrayWithObjects:v122 count:2];
+        textElement = [NSArray arrayWithObjects:v122 count:2];
 
         goto LABEL_12;
       }
@@ -298,14 +298,14 @@ LABEL_70:
       goto LABEL_70;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemNavigationMode])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemNavigationMode])
     {
       v70 = 0;
       v71 = 0;
-      [a1 _title:&v71 imageForNavigationItem:&v70];
+      [self _title:&v71 imageForNavigationItem:&v70];
       v35 = v71;
       v36 = v70;
-      v12 = objc_alloc_init(NSMutableArray);
+      textElement = objc_alloc_init(NSMutableArray);
       if (v35 && v36)
       {
         v116[0] = @"identifier";
@@ -317,7 +317,7 @@ LABEL_70:
         v117[2] = v36;
         v117[3] = &off_1001E5580;
         v37 = [NSDictionary dictionaryWithObjects:v117 forKeys:v116 count:4];
-        [v12 addObject:v37];
+        [textElement addObject:v37];
       }
 
       else
@@ -330,13 +330,13 @@ LABEL_70:
       }
 
       v39 = +[AXSettings sharedInstance];
-      v40 = [v39 switchControlUseCameraForPointMode];
+      switchControlUseCameraForPointMode = [v39 switchControlUseCameraForPointMode];
 
-      if (v40)
+      if (switchControlUseCameraForPointMode)
       {
         v68 = 0;
         v69 = 0;
-        [a1 _title:&v69 imageForAlternateNavigationItem:&v68];
+        [self _title:&v69 imageForAlternateNavigationItem:&v68];
         v41 = v69;
         v42 = v68;
         v43 = v42;
@@ -351,7 +351,7 @@ LABEL_70:
           v115[2] = v42;
           v115[3] = &off_1001E5580;
           v44 = [NSDictionary dictionaryWithObjects:v115 forKeys:v114 count:4];
-          [v12 addObject:v44];
+          [textElement addObject:v44];
         }
 
         else
@@ -367,7 +367,7 @@ LABEL_70:
       goto LABEL_60;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemEyeTracking])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemEyeTracking])
     {
       if (!_os_feature_enabled_impl() || !AXDeviceSupportsOnDeviceEyeTracking())
       {
@@ -376,16 +376,16 @@ LABEL_70:
 
       v66 = 0;
       v67 = 0;
-      [a1 _title:&v67 imageForEyeTrackingNavigationItem:&v66];
-      v8 = v67;
+      [self _title:&v67 imageForEyeTrackingNavigationItem:&v66];
+      keyboardApplication = v67;
       v38 = v66;
       v9 = v38;
-      if (v8 && v38)
+      if (keyboardApplication && v38)
       {
         v111[0] = @"identifier";
         v111[1] = @"title";
         v112[0] = @"eye_tracking";
-        v112[1] = v8;
+        v112[1] = keyboardApplication;
         v111[2] = @"imageName";
         v111[3] = @"activateBehavior";
         v112[2] = v38;
@@ -405,22 +405,22 @@ LABEL_70:
       goto LABEL_69;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemCalibrateEyeTracking])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemCalibrateEyeTracking])
     {
       if (_os_feature_enabled_impl())
       {
         if (AXDeviceSupportsOnDeviceEyeTracking())
         {
           v45 = +[AXSettings sharedInstance];
-          v46 = [v45 switchControlOnDeviceEyeTrackingEnabled];
+          switchControlOnDeviceEyeTrackingEnabled = [v45 switchControlOnDeviceEyeTrackingEnabled];
 
-          if (v46)
+          if (switchControlOnDeviceEyeTrackingEnabled)
           {
             v109[0] = @"calibrate_eye_tracking";
             v108[0] = @"identifier";
             v108[1] = @"title";
-            v8 = sub_100042B24(@"CALIBRATE_ON_DEVICE_EYE_TRACKING");
-            v109[1] = v8;
+            keyboardApplication = sub_100042B24(@"CALIBRATE_ON_DEVICE_EYE_TRACKING");
+            v109[1] = keyboardApplication;
             v109[2] = @"dot.scope";
             v108[2] = @"imageName";
             v108[3] = @"activateBehavior";
@@ -436,13 +436,13 @@ LABEL_70:
       goto LABEL_70;
     }
 
-    if ([v6 isEqualToString:v21])
+    if ([itemCopy isEqualToString:v21])
     {
       v106[0] = @"action_home";
       v105[0] = @"identifier";
       v105[1] = @"title";
-      v8 = sub_100042B24(@"SCAT_QUICK_ITEM_HOME");
-      v106[1] = v8;
+      keyboardApplication = sub_100042B24(@"SCAT_QUICK_ITEM_HOME");
+      v106[1] = keyboardApplication;
       v106[2] = @"SCATIcon_device_home";
       v105[2] = @"imageName";
       v105[3] = @"guidedAccess";
@@ -455,19 +455,19 @@ LABEL_70:
       goto LABEL_10;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemRecipes])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemRecipes])
     {
       v47 = +[AXSettings sharedInstance];
-      v48 = [v47 switchControlRecipes];
-      if ([v48 count])
+      switchControlRecipes = [v47 switchControlRecipes];
+      if ([switchControlRecipes count])
       {
       }
 
       else
       {
-        v50 = [v7 screenPoint];
+        screenPoint = [menuCopy screenPoint];
 
-        if (!v50)
+        if (!screenPoint)
         {
           goto LABEL_70;
         }
@@ -476,9 +476,9 @@ LABEL_70:
       v103[0] = @"recipes";
       v102[0] = @"identifier";
       v102[1] = @"title";
-      v8 = sub_100042B24(@"RECIPES");
+      keyboardApplication = sub_100042B24(@"RECIPES");
       v102[2] = @"activateBehavior";
-      v103[1] = v8;
+      v103[1] = keyboardApplication;
       v103[2] = &off_1001E5598;
       v9 = [NSDictionary dictionaryWithObjects:v103 forKeys:v102 count:3];
       v104 = v9;
@@ -486,10 +486,10 @@ LABEL_70:
       goto LABEL_10;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemRefineSelection])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemRefineSelection])
     {
-      v8 = [v7 pointPicker];
-      if ([v8 allowsSelectionRefinement])
+      keyboardApplication = [menuCopy pointPicker];
+      if ([keyboardApplication allowsSelectionRefinement])
       {
         v100[0] = @"action_refinePoint";
         v99[0] = @"identifier";
@@ -507,14 +507,14 @@ LABEL_70:
       goto LABEL_69;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemScroll])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemScroll])
     {
       v97[0] = @"action_scroll";
       v96[0] = @"identifier";
       v96[1] = @"title";
-      v8 = sub_100042B24(@"SCROLL");
+      keyboardApplication = sub_100042B24(@"SCROLL");
       v96[2] = @"activateBehavior";
-      v97[1] = v8;
+      v97[1] = keyboardApplication;
       v97[2] = &off_1001E5598;
       v9 = [NSDictionary dictionaryWithObjects:v97 forKeys:v96 count:3];
       v98 = v9;
@@ -522,13 +522,13 @@ LABEL_70:
       goto LABEL_10;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemSettings])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemSettings])
     {
       v94[0] = @"settings";
       v93[0] = @"identifier";
       v93[1] = @"title";
-      v8 = sub_100042B24(@"SETTINGS");
-      v94[1] = v8;
+      keyboardApplication = sub_100042B24(@"SETTINGS");
+      v94[1] = keyboardApplication;
       v94[2] = &__kCFBooleanFalse;
       v93[2] = @"guidedAccess";
       v93[3] = @"activateBehavior";
@@ -539,13 +539,13 @@ LABEL_70:
       goto LABEL_10;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemMediaControls])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControls])
     {
       v91[0] = @"mediacontrols";
       v90[0] = @"identifier";
       v90[1] = @"title";
-      v8 = sub_100042B24(@"MEDIA_CONTROLS");
-      v91[1] = v8;
+      keyboardApplication = sub_100042B24(@"MEDIA_CONTROLS");
+      v91[1] = keyboardApplication;
       v91[2] = &__kCFBooleanFalse;
       v90[2] = @"guidedAccess";
       v90[3] = @"activateBehavior";
@@ -556,21 +556,21 @@ LABEL_70:
       goto LABEL_10;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemItemMenu])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemItemMenu])
     {
-      v51 = [v7 delegate];
-      if (([v51 shouldAddItemSpecificMenuOptionsToMenu:v7]& 1) != 0)
+      delegate = [menuCopy delegate];
+      if (([delegate shouldAddItemSpecificMenuOptionsToMenu:menuCopy]& 1) != 0)
       {
-        v52 = [v7 delegate];
-        v53 = [v52 itemMenuStateForMenu:v7];
+        delegate2 = [menuCopy delegate];
+        v53 = [delegate2 itemMenuStateForMenu:menuCopy];
 
         if (v53 != 2)
         {
           v88[0] = @"action_itemSpecificMenu";
           v87[0] = @"identifier";
           v87[1] = @"title";
-          v8 = sub_100042B24(@"ITEM_SPECIFIC_MENU");
-          v88[1] = v8;
+          keyboardApplication = sub_100042B24(@"ITEM_SPECIFIC_MENU");
+          v88[1] = keyboardApplication;
           v88[2] = @"SCATIcon_settings_moveTop";
           v87[2] = @"imageName";
           v87[3] = @"activateBehavior";
@@ -587,18 +587,18 @@ LABEL_70:
 
     else
     {
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemLockItemMenu])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemLockItemMenu])
       {
-        v54 = [v7 delegate];
-        v55 = [v54 shouldAddItemSpecificMenuOptionsToMenu:v7];
+        delegate3 = [menuCopy delegate];
+        v55 = [delegate3 shouldAddItemSpecificMenuOptionsToMenu:menuCopy];
 
         if (!v55)
         {
           goto LABEL_70;
         }
 
-        v56 = [v7 delegate];
-        v57 = [v56 itemMenuStateForMenu:v7];
+        delegate4 = [menuCopy delegate];
+        v57 = [delegate4 itemMenuStateForMenu:menuCopy];
 
         v85[0] = @"action_lockItemSpecificMenu";
         v84[0] = @"identifier";
@@ -622,19 +622,19 @@ LABEL_70:
         v85[3] = &off_1001E5580;
         v62 = [NSDictionary dictionaryWithObjects:v85 forKeys:v84 count:4];
         v86 = v62;
-        v12 = [NSArray arrayWithObjects:&v86 count:1];
+        textElement = [NSArray arrayWithObjects:&v86 count:1];
 
 LABEL_60:
         goto LABEL_12;
       }
 
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemSwitchDisplay])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemSwitchDisplay])
       {
         v82[0] = @"action_switchDisplay";
         v81[0] = @"identifier";
         v81[1] = @"title";
-        v8 = sub_100042B24(@"SWITCH_DISPLAY");
-        v82[1] = v8;
+        keyboardApplication = sub_100042B24(@"SWITCH_DISPLAY");
+        v82[1] = keyboardApplication;
         v82[2] = @"SCATIcon_switch_display";
         v81[2] = @"imageName";
         v81[3] = @"activateBehavior";
@@ -645,21 +645,21 @@ LABEL_60:
         goto LABEL_10;
       }
 
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemSiriShortcuts])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemSiriShortcuts])
       {
         if (sub_1000424F4())
         {
           v59 = +[AXSiriShortcutsManager sharedManager];
-          v60 = [v59 shortcuts];
-          v61 = [v60 count];
+          shortcuts = [v59 shortcuts];
+          v61 = [shortcuts count];
 
           if (v61)
           {
             v79[0] = @"siri_shortcuts";
             v78[0] = @"identifier";
             v78[1] = @"title";
-            v8 = sub_100042B24(@"SIRI_SHORTCUTS");
-            v79[1] = v8;
+            keyboardApplication = sub_100042B24(@"SIRI_SHORTCUTS");
+            v79[1] = keyboardApplication;
             v79[2] = &__kCFBooleanFalse;
             v78[2] = @"guidedAccess";
             v78[3] = @"activateBehavior";
@@ -674,16 +674,16 @@ LABEL_60:
         goto LABEL_70;
       }
 
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemAppleWatchRemoteScreen])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemAppleWatchRemoteScreen])
       {
         if (sub_1000425F8())
         {
           v76[0] = @"action_applewatchRemoteScreen";
           v75[0] = @"identifier";
           v75[1] = @"title";
-          v8 = sub_100042B24(@"APPLE_WATCH_REMOTE_SCREEN");
+          keyboardApplication = sub_100042B24(@"APPLE_WATCH_REMOTE_SCREEN");
           v75[2] = @"activateBehavior";
-          v76[1] = v8;
+          v76[1] = keyboardApplication;
           v76[2] = &off_1001E5580;
           v9 = [NSDictionary dictionaryWithObjects:v76 forKeys:v75 count:3];
           v77 = v9;
@@ -694,19 +694,19 @@ LABEL_60:
         goto LABEL_70;
       }
 
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemProfiles])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemProfiles])
       {
         v63 = +[AXSettings sharedInstance];
-        v64 = [v63 switchControlProfiles];
-        v65 = [v64 count];
+        switchControlProfiles = [v63 switchControlProfiles];
+        v65 = [switchControlProfiles count];
 
         if (v65)
         {
           v73[0] = @"profiles";
           v72[0] = @"identifier";
           v72[1] = @"title";
-          v8 = sub_100042B24(@"PROFILES");
-          v73[1] = v8;
+          keyboardApplication = sub_100042B24(@"PROFILES");
+          v73[1] = keyboardApplication;
           v73[2] = @"SCATIcon_switchsets";
           v72[2] = @"imageName";
           v72[3] = @"activateBehavior";
@@ -720,8 +720,8 @@ LABEL_60:
         goto LABEL_70;
       }
 
-      v51 = SWCHLogMenu();
-      if (os_log_type_enabled(v51, OS_LOG_TYPE_FAULT))
+      delegate = SWCHLogMenu();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_FAULT))
       {
         sub_10012A978();
       }
@@ -730,15 +730,15 @@ LABEL_60:
     goto LABEL_70;
   }
 
-  v12 = [v7 screenPoint];
+  textElement = [menuCopy screenPoint];
 
-  if (v12)
+  if (textElement)
   {
     v127[0] = @"gestures";
     v126[0] = @"identifier";
     v126[1] = @"title";
-    v8 = sub_100042B24(@"SCAT_QUICK_ITEM_GESTURES");
-    v127[1] = v8;
+    keyboardApplication = sub_100042B24(@"SCAT_QUICK_ITEM_GESTURES");
+    v127[1] = keyboardApplication;
     v127[2] = @"SCATIcon_gestures";
     v126[2] = @"imageName";
     v126[3] = @"activateBehavior";
@@ -751,32 +751,32 @@ LABEL_60:
 
 LABEL_12:
 
-  return v12;
+  return textElement;
 }
 
-+ (id)_additionalMenuItemsForHomeActionForMenu:(id)a3 delegate:(id)a4
++ (id)_additionalMenuItemsForHomeActionForMenu:(id)menu delegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
+  menuCopy = menu;
+  delegateCopy = delegate;
   if (+[AXSpringBoardServer isAvailable])
   {
     v7 = +[AXSpringBoardServer server];
     v8 = [v7 isScreenLockedWithPasscode:0];
 
     v9 = +[AXSpringBoardServer server];
-    v10 = [v9 isControlCenterVisible];
+    isControlCenterVisible = [v9 isControlCenterVisible];
 
     v11 = +[AXSpringBoardServer server];
-    v12 = [v11 isShowingLongLookNotification];
+    isShowingLongLookNotification = [v11 isShowingLongLookNotification];
 
     v13 = 0;
-    if (v8 && (v10 & 1) == 0 && (v12 & 1) == 0)
+    if (v8 && (isControlCenterVisible & 1) == 0 && (isShowingLongLookNotification & 1) == 0)
     {
       v14 = +[HNDAccessibilityManager sharedManager];
-      v15 = [v14 applicationIsRTL];
+      applicationIsRTL = [v14 applicationIsRTL];
 
-      v16 = v15 == 0;
-      if (v15)
+      v16 = applicationIsRTL == 0;
+      if (applicationIsRTL)
       {
         v17 = 2009;
       }
@@ -797,13 +797,13 @@ LABEL_12:
       }
 
       v13 = +[NSMutableArray array];
-      v19 = [SCATMenuItemFactory menuItemsForItem:AXSSwitchControlMenuItemDeviceNotificationCenter menu:v5 delegate:v6];
+      v19 = [SCATMenuItemFactory menuItemsForItem:AXSSwitchControlMenuItemDeviceNotificationCenter menu:menuCopy delegate:delegateCopy];
       [v13 addObjectsFromArray:v19];
 
-      v20 = [SCATModernMenuScrollFactory menuItemForScrollAction:v17 withDelegate:v6];
+      v20 = [SCATModernMenuScrollFactory menuItemForScrollAction:v17 withDelegate:delegateCopy];
       [v13 axSafelyAddObject:v20];
 
-      v21 = [SCATModernMenuScrollFactory menuItemForScrollAction:v18 withDelegate:v6];
+      v21 = [SCATModernMenuScrollFactory menuItemForScrollAction:v18 withDelegate:delegateCopy];
       [v13 axSafelyAddObject:v21];
     }
   }
@@ -816,37 +816,37 @@ LABEL_12:
   return v13;
 }
 
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate
 {
-  v7 = a3;
-  v28 = a5;
-  v8 = [v7 objectForKey:@"identifier"];
-  v30 = [v7 objectForKey:@"title"];
-  v29 = [v7 objectForKey:@"imageName"];
-  v9 = [v7 objectForKey:@"allowsDwellScanningToAbortAfterTimeout"];
-  v27 = [v9 BOOLValue];
+  dictionaryCopy = dictionary;
+  delegateCopy = delegate;
+  v8 = [dictionaryCopy objectForKey:@"identifier"];
+  v30 = [dictionaryCopy objectForKey:@"title"];
+  v29 = [dictionaryCopy objectForKey:@"imageName"];
+  v9 = [dictionaryCopy objectForKey:@"allowsDwellScanningToAbortAfterTimeout"];
+  bOOLValue = [v9 BOOLValue];
 
-  v10 = [v7 objectForKey:@"activateBehavior"];
-  v26 = [v10 unsignedIntegerValue];
+  v10 = [dictionaryCopy objectForKey:@"activateBehavior"];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v11 = [v7 objectForKey:@"guidedAccess"];
+  v11 = [dictionaryCopy objectForKey:@"guidedAccess"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 BOOLValue];
+    bOOLValue2 = [v11 BOOLValue];
   }
 
   else
   {
-    v13 = 1;
+    bOOLValue2 = 1;
   }
 
-  v14 = [v7 objectForKeyedSubscript:@"assistiveAccess"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"assistiveAccess"];
   v15 = v14;
-  v16 = v13;
+  bOOLValue3 = bOOLValue2;
   if (v14)
   {
-    v16 = [v14 BOOLValue];
+    bOOLValue3 = [v14 BOOLValue];
   }
 
   if ([v8 isEqualToString:@"action_activate"])
@@ -876,7 +876,7 @@ LABEL_12:
     v38[1] = 3221225472;
     v38[2] = sub_1000A2FD8;
     v38[3] = &unk_1001D6298;
-    v38[4] = a1;
+    v38[4] = self;
     v19 = v38;
 LABEL_14:
     v18 = objc_retainBlock(v19);
@@ -899,7 +899,7 @@ LABEL_15:
       v37[1] = 3221225472;
       v37[2] = sub_1000A3028;
       v37[3] = &unk_1001D6298;
-      v37[4] = a1;
+      v37[4] = self;
       v19 = v37;
       goto LABEL_14;
     }
@@ -910,7 +910,7 @@ LABEL_15:
       v36[1] = 3221225472;
       v36[2] = sub_1000A30A8;
       v36[3] = &unk_1001D6298;
-      v36[4] = a1;
+      v36[4] = self;
       v19 = v36;
       goto LABEL_14;
     }
@@ -995,7 +995,7 @@ LABEL_15:
         v35[1] = 3221225472;
         v35[2] = sub_1000A3640;
         v35[3] = &unk_1001D6298;
-        v35[4] = a1;
+        v35[4] = self;
         v19 = v35;
         goto LABEL_14;
       }
@@ -1020,7 +1020,7 @@ LABEL_15:
           v34[1] = 3221225472;
           v34[2] = sub_1000A36F8;
           v34[3] = &unk_1001D6298;
-          v34[4] = a1;
+          v34[4] = self;
           v19 = v34;
           goto LABEL_14;
         }
@@ -1031,7 +1031,7 @@ LABEL_15:
           v33[1] = 3221225472;
           v33[2] = sub_1000A3700;
           v33[3] = &unk_1001D6298;
-          v33[4] = a1;
+          v33[4] = self;
           v19 = v33;
           goto LABEL_14;
         }
@@ -1118,10 +1118,10 @@ LABEL_15:
 
 LABEL_18:
   v20 = [objc_opt_class() updateBlockForIdentifier:v8];
-  LOBYTE(v25) = v16;
-  v21 = [SCATModernMenuItem itemWithIdentifier:v8 delegate:v28 title:v30 imageName:v29 activateBehavior:v26 allowedWithGuidedAccess:v13 allowedWithAssistiveAccess:v25 activateHandler:v18 updateHandler:v20];
+  LOBYTE(v25) = bOOLValue3;
+  v21 = [SCATModernMenuItem itemWithIdentifier:v8 delegate:delegateCopy title:v30 imageName:v29 activateBehavior:unsignedIntegerValue allowedWithGuidedAccess:bOOLValue2 allowedWithAssistiveAccess:v25 activateHandler:v18 updateHandler:v20];
 
-  [v21 setAllowsDwellScanningToAbortAfterTimeout:v27];
+  [v21 setAllowsDwellScanningToAbortAfterTimeout:bOOLValue];
   if (v17)
   {
     v22 = +[UIColor whiteColor];
@@ -1132,16 +1132,16 @@ LABEL_18:
   return v21;
 }
 
-+ (id)updateBlockForIdentifier:(id)a3
++ (id)updateBlockForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"action_toggle_dictation"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"action_toggle_dictation"])
   {
     v5 = &stru_1001D65F8;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"settings_navigationMode"])
+  if ([identifierCopy isEqualToString:@"settings_navigationMode"])
   {
     v6 = v11;
     v11[0] = _NSConcreteStackBlock;
@@ -1150,12 +1150,12 @@ LABEL_18:
 LABEL_9:
     v6[2] = v7;
     v6[3] = &unk_1001D4AA8;
-    v6[4] = a1;
+    v6[4] = self;
     v5 = objc_retainBlock(v6);
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"settings_alternativeNavigationMode"])
+  if ([identifierCopy isEqualToString:@"settings_alternativeNavigationMode"])
   {
     v6 = v10;
     v10[0] = _NSConcreteStackBlock;
@@ -1164,7 +1164,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"eye_tracking"])
+  if ([identifierCopy isEqualToString:@"eye_tracking"])
   {
     v6 = v9;
     v9[0] = _NSConcreteStackBlock;
@@ -1174,7 +1174,7 @@ LABEL_9:
   }
 
   v5 = &stru_1001D6618;
-  if (([v4 isEqualToString:@"action_keyboardContinuousSlide"] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"action_keyboardSlide"))
+  if (([identifierCopy isEqualToString:@"action_keyboardContinuousSlide"] & 1) == 0 && !objc_msgSend(identifierCopy, "isEqualToString:", @"action_keyboardSlide"))
   {
     v5 = &stru_1001D6638;
   }
@@ -1184,7 +1184,7 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_fingerItemStringForNumberOfFingers:(unint64_t)a3
++ (id)_fingerItemStringForNumberOfFingers:(unint64_t)fingers
 {
   v3 = sub_100042B24(@"FingersFormat");
   v4 = AXFormatInteger();
@@ -1193,28 +1193,28 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_imageNameForNumberOfFingers:(unint64_t)a3
++ (id)_imageNameForNumberOfFingers:(unint64_t)fingers
 {
-  if (a3 - 1 > 4)
+  if (fingers - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1001D66A0 + a3 - 1);
+    return *(&off_1001D66A0 + fingers - 1);
   }
 }
 
-+ (void)_title:(id *)a3 imageForNavigationItem:(id *)a4
++ (void)_title:(id *)_title imageForNavigationItem:(id *)item
 {
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 assistiveTouchScanningMode];
-  if (v7 > 6 || ((0x6Fu >> v7) & 1) == 0)
+  assistiveTouchScanningMode = [v6 assistiveTouchScanningMode];
+  if (assistiveTouchScanningMode > 6 || ((0x6Fu >> assistiveTouchScanningMode) & 1) == 0)
   {
     v8 = 0;
     v9 = 0;
-    if (!a4)
+    if (!item)
     {
       goto LABEL_7;
     }
@@ -1222,63 +1222,63 @@ LABEL_10:
     goto LABEL_6;
   }
 
-  v8 = *(&off_1001D6700 + v7);
-  v9 = sub_100042B24(*(&off_1001D66C8 + v7));
-  if (a4)
+  v8 = *(&off_1001D6700 + assistiveTouchScanningMode);
+  v9 = sub_100042B24(*(&off_1001D66C8 + assistiveTouchScanningMode));
+  if (item)
   {
 LABEL_6:
-    *a4 = v8;
+    *item = v8;
   }
 
 LABEL_7:
-  if (a3)
+  if (_title)
   {
     v9 = v9;
-    *a3 = v9;
+    *_title = v9;
   }
 
   v10 = v9;
 }
 
-+ (void)_title:(id *)a3 imageForAlternateNavigationItem:(id *)a4
++ (void)_title:(id *)_title imageForAlternateNavigationItem:(id *)item
 {
   v8 = +[AXSettings sharedInstance];
-  v6 = [v8 assistiveTouchScanningMode];
-  if (v6 <= 6 && ((0x6Fu >> v6) & 1) != 0)
+  assistiveTouchScanningMode = [v8 assistiveTouchScanningMode];
+  if (assistiveTouchScanningMode <= 6 && ((0x6Fu >> assistiveTouchScanningMode) & 1) != 0)
   {
-    v7 = *(&off_1001D6770 + v6);
-    *a3 = sub_100042B24(*(&off_1001D6738 + v6));
-    *a4 = v7;
+    v7 = *(&off_1001D6770 + assistiveTouchScanningMode);
+    *_title = sub_100042B24(*(&off_1001D6738 + assistiveTouchScanningMode));
+    *item = v7;
   }
 }
 
-+ (void)_title:(id *)a3 imageForEyeTrackingNavigationItem:(id *)a4
++ (void)_title:(id *)_title imageForEyeTrackingNavigationItem:(id *)item
 {
   v8 = +[AXSettings sharedInstance];
-  v6 = [v8 assistiveTouchScanningMode];
-  if (v6 <= 6 && ((0x6Fu >> v6) & 1) != 0)
+  assistiveTouchScanningMode = [v8 assistiveTouchScanningMode];
+  if (assistiveTouchScanningMode <= 6 && ((0x6Fu >> assistiveTouchScanningMode) & 1) != 0)
   {
-    v7 = *(&off_1001D67E0 + v6);
-    *a3 = sub_100042B24(*(&off_1001D67A8 + v6));
-    *a4 = v7;
+    v7 = *(&off_1001D67E0 + assistiveTouchScanningMode);
+    *_title = sub_100042B24(*(&off_1001D67A8 + assistiveTouchScanningMode));
+    *item = v7;
   }
 }
 
-+ (void)_handlePerformEscapeWithMenu:(id)a3
++ (void)_handlePerformEscapeWithMenu:(id)menu
 {
-  v4 = [a3 element];
-  v7 = v4;
-  if (v4)
+  element = [menu element];
+  v7 = element;
+  if (element)
   {
-    [v4 scatPerformAction:2013];
+    [element scatPerformAction:2013];
   }
 
   else
   {
-    v5 = [a1 _escapableElements];
-    v6 = [v5 firstObject];
+    _escapableElements = [self _escapableElements];
+    firstObject = [_escapableElements firstObject];
 
-    [v6 performAction:2013];
+    [firstObject performAction:2013];
   }
 }
 
@@ -1293,11 +1293,11 @@ LABEL_7:
 + (id)_typingCandidates
 {
   v2 = +[HNDAccessibilityManager sharedManager];
-  v3 = [v2 firstResponder];
-  v4 = [v3 elementForAttribute:2017];
-  v5 = [v4 typingCandidates];
+  firstResponder = [v2 firstResponder];
+  v4 = [firstResponder elementForAttribute:2017];
+  typingCandidates = [v4 typingCandidates];
 
-  return v5;
+  return typingCandidates;
 }
 
 + (void)toggleNavigationMode
@@ -1310,10 +1310,10 @@ LABEL_7:
   }
 
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchScanningMode];
-  if (v4 <= 6 && ((0x6Fu >> v4) & 1) != 0)
+  assistiveTouchScanningMode = [v3 assistiveTouchScanningMode];
+  if (assistiveTouchScanningMode <= 6 && ((0x6Fu >> assistiveTouchScanningMode) & 1) != 0)
   {
-    [v3 setAssistiveTouchScanningMode:qword_1001BD430[v4]];
+    [v3 setAssistiveTouchScanningMode:qword_1001BD430[assistiveTouchScanningMode]];
   }
 }
 
@@ -1327,15 +1327,15 @@ LABEL_7:
   }
 
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchScanningMode];
-  if (v4 <= 6)
+  assistiveTouchScanningMode = [v3 assistiveTouchScanningMode];
+  if (assistiveTouchScanningMode <= 6)
   {
-    if (((1 << v4) & 0x27) != 0)
+    if (((1 << assistiveTouchScanningMode) & 0x27) != 0)
     {
       v5 = +[AXSpringBoardServer server];
-      v6 = [v5 isContinuitySessionActive];
+      isContinuitySessionActive = [v5 isContinuitySessionActive];
 
-      if ((v6 & 1) == 0)
+      if ((isContinuitySessionActive & 1) == 0)
       {
         v7 = 3;
 LABEL_9:
@@ -1343,7 +1343,7 @@ LABEL_9:
       }
     }
 
-    else if (((1 << v4) & 0x48) != 0)
+    else if (((1 << assistiveTouchScanningMode) & 0x48) != 0)
     {
       v7 = 1;
       goto LABEL_9;
@@ -1361,10 +1361,10 @@ LABEL_9:
   }
 
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchScanningMode];
-  if (v4 >= 4)
+  assistiveTouchScanningMode = [v3 assistiveTouchScanningMode];
+  if (assistiveTouchScanningMode >= 4)
   {
-    if ((v4 - 5) < 2)
+    if ((assistiveTouchScanningMode - 5) < 2)
     {
       v7 = 1;
       goto LABEL_8;
@@ -1374,9 +1374,9 @@ LABEL_9:
   else
   {
     v5 = +[AXSpringBoardServer server];
-    v6 = [v5 isContinuitySessionActive];
+    isContinuitySessionActive = [v5 isContinuitySessionActive];
 
-    if ((v6 & 1) == 0)
+    if ((isContinuitySessionActive & 1) == 0)
     {
       v7 = 5;
 LABEL_8:
@@ -1385,30 +1385,30 @@ LABEL_8:
   }
 }
 
-+ (id)_menuItemsForElementSpecificActionsForMenu:(id)a3 delegate:(id)a4
++ (id)_menuItemsForElementSpecificActionsForMenu:(id)menu delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 element];
+  menuCopy = menu;
+  delegateCopy = delegate;
+  element = [menuCopy element];
   v9 = objc_alloc_init(NSMutableArray);
-  v10 = [v8 scatCustomActions];
-  v11 = [a1 menuItemsForCustomActions:v10 menu:v6 delegate:v7];
+  scatCustomActions = [element scatCustomActions];
+  v11 = [self menuItemsForCustomActions:scatCustomActions menu:menuCopy delegate:delegateCopy];
   [v9 axSafelyAddObjectsFromArray:v11];
 
-  v62 = [v8 scatCustomHardwareActions];
+  scatCustomHardwareActions = [element scatCustomHardwareActions];
   v12 = [SCATMenuHardwareActionsMovementFactory menuItemsForCustomHardwareActions:"menuItemsForCustomHardwareActions:menu:delegate:" menu:? delegate:?];
   [v9 axSafelyAddObjectsFromArray:v12];
 
   v13 = +[SCATScannerManager sharedManager];
-  v14 = [v13 isDragActive];
+  isDragActive = [v13 isDragActive];
 
-  v63 = v10;
-  if (v14)
+  v63 = scatCustomActions;
+  if (isDragActive)
   {
-    if (v8)
+    if (element)
     {
-      v15 = [v8 scatDrops];
-      v16 = [a1 menuItemsForDrops:v15 menu:v6 delegate:v7];
+      scatDrops = [element scatDrops];
+      v16 = [self menuItemsForDrops:scatDrops menu:menuCopy delegate:delegateCopy];
       [v9 axSafelyAddObjectsFromArray:v16];
     }
 
@@ -1416,11 +1416,11 @@ LABEL_8:
     {
       v18 = [SCATDropMenuItem alloc];
       v19 = sub_100042B24(@"DROP_HERE");
-      v20 = [v6 screenPoint];
-      [v20 CGPointValue];
-      v15 = [(SCATDropMenuItem *)v18 initWithTitle:v19 fixedSpaceScreenPoint:v7 delegate:v6 menu:?];
+      screenPoint = [menuCopy screenPoint];
+      [screenPoint CGPointValue];
+      scatDrops = [(SCATDropMenuItem *)v18 initWithTitle:v19 fixedSpaceScreenPoint:delegateCopy delegate:menuCopy menu:?];
 
-      [v9 addObject:v15];
+      [v9 addObject:scatDrops];
     }
 
     v90[0] = @"action_cancelDrag";
@@ -1433,18 +1433,18 @@ LABEL_8:
     v89[3] = @"activateBehavior";
     v90[3] = &off_1001E5580;
     v21 = [NSDictionary dictionaryWithObjects:v90 forKeys:v89 count:4];
-    v22 = [a1 menuItemWithItemDictionary:v21 menu:v6 delegate:v7];
+    v22 = [self menuItemWithItemDictionary:v21 menu:menuCopy delegate:delegateCopy];
     [v9 addObject:v22];
   }
 
   else
   {
-    v17 = [a1 dragMenuItemsForElement:v8 delegate:v7];
+    v17 = [self dragMenuItemsForElement:element delegate:delegateCopy];
     [v9 axSafelyAddObjectsFromArray:v17];
   }
 
-  v69 = v8;
-  if ([v8 scatCanShowAlternateKeys])
+  v69 = element;
+  if ([element scatCanShowAlternateKeys])
   {
     v88[0] = @"action_alternateKeys";
     v87[0] = @"identifier";
@@ -1454,13 +1454,13 @@ LABEL_8:
     v88[1] = v23;
     v88[2] = &off_1001E5580;
     v24 = [NSDictionary dictionaryWithObjects:v88 forKeys:v87 count:3];
-    v25 = [a1 menuItemWithItemDictionary:v24 menu:v6 delegate:v7];
+    v25 = [self menuItemWithItemDictionary:v24 menu:menuCopy delegate:delegateCopy];
     [v9 addObject:v25];
   }
 
-  v26 = [a1 _typingCandidates];
-  v61 = v26;
-  if ([v26 count] == 1 && (objc_msgSend(v26, "lastObject"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "traits"), v29 = UIAccessibilityTraitSelectionDismissesItem & v28, v27, v29))
+  _typingCandidates = [self _typingCandidates];
+  v61 = _typingCandidates;
+  if ([_typingCandidates count] == 1 && (objc_msgSend(_typingCandidates, "lastObject"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "traits"), v29 = UIAccessibilityTraitSelectionDismissesItem & v28, v27, v29))
   {
     v86[0] = @"action_dismissAutocorrection";
     v85[0] = @"identifier";
@@ -1476,7 +1476,7 @@ LABEL_8:
   else
   {
     v32 = v69;
-    if (![v26 count])
+    if (![_typingCandidates count])
     {
       goto LABEL_15;
     }
@@ -1491,11 +1491,11 @@ LABEL_8:
     v31 = [NSDictionary dictionaryWithObjects:v84 forKeys:v83 count:3];
   }
 
-  v33 = [a1 menuItemWithItemDictionary:v31 menu:v6 delegate:v7];
+  v33 = [self menuItemWithItemDictionary:v31 menu:menuCopy delegate:delegateCopy];
   [v9 addObject:v33];
 
 LABEL_15:
-  v66 = v7;
+  v66 = delegateCopy;
   v67 = v9;
   if ([v32 scatSupportsAction:2001])
   {
@@ -1507,7 +1507,7 @@ LABEL_15:
     v82[1] = v34;
     v82[2] = &off_1001E5580;
     v35 = [NSDictionary dictionaryWithObjects:v82 forKeys:v81 count:3];
-    v36 = [a1 menuItemWithItemDictionary:v35 menu:v6 delegate:v7];
+    v36 = [self menuItemWithItemDictionary:v35 menu:menuCopy delegate:delegateCopy];
     [v9 addObject:v36];
 
     v80[0] = @"action_zoomOut";
@@ -1519,13 +1519,13 @@ LABEL_15:
     v80[2] = &off_1001E5580;
     v38 = [NSDictionary dictionaryWithObjects:v80 forKeys:v79 count:3];
     v32 = v69;
-    v39 = [a1 menuItemWithItemDictionary:v38 menu:v6 delegate:v7];
+    v39 = [self menuItemWithItemDictionary:v38 menu:menuCopy delegate:delegateCopy];
     [v9 addObject:v39];
   }
 
-  v40 = [v6 pointPicker];
+  pointPicker = [menuCopy pointPicker];
   objc_opt_class();
-  v59 = v40;
+  v59 = pointPicker;
   isKindOfClass = objc_opt_isKindOfClass();
   if (AXRuntimeCheck_DwellKeyboardSwipe() && ([v32 scatCanStartContinuousPathGesture] & isKindOfClass) == 1)
   {
@@ -1556,17 +1556,17 @@ LABEL_15:
     }
 
     v45 = [NSDictionary dictionaryWithObjects:v43 forKeys:v44 count:3];
-    v46 = [a1 menuItemWithItemDictionary:v45 menu:v6 delegate:v7];
+    v46 = [self menuItemWithItemDictionary:v45 menu:menuCopy delegate:delegateCopy];
     [v9 addObject:v46];
   }
 
-  v65 = v6;
-  v47 = [v32 scatSupportedGestures];
+  v65 = menuCopy;
+  scatSupportedGestures = [v32 scatSupportedGestures];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v48 = [v47 countByEnumeratingWithState:&v70 objects:v74 count:16];
+  v48 = [scatSupportedGestures countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (v48)
   {
     v49 = v48;
@@ -1580,7 +1580,7 @@ LABEL_15:
       {
         if (*v71 != v51)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(scatSupportedGestures);
         }
 
         if (v50)
@@ -1593,10 +1593,10 @@ LABEL_15:
         v54 = [v53 objectForKey:@"AXSupportedGestureTypeKey"];
         if ([v54 intValue] == 1)
         {
-          v55 = [v53 objectForKey:@"AXGestureFingerCountKey"];
-          v56 = [v55 intValue];
-          v50 = v56 == 1;
-          if (v56 == 1)
+          firstObject = [v53 objectForKey:@"AXGestureFingerCountKey"];
+          intValue = [firstObject intValue];
+          v50 = intValue == 1;
+          if (intValue == 1)
           {
             v57 = v68 & [v32 scatTraits];
 
@@ -1608,8 +1608,8 @@ LABEL_15:
             }
 
             v54 = [SCATMenuItemFactory menuItemsForItem:v64 menu:v65 delegate:v66];
-            v55 = [v54 firstObject];
-            [v67 addObject:v55];
+            firstObject = [v54 firstObject];
+            [v67 addObject:firstObject];
             v32 = v69;
           }
         }
@@ -1620,7 +1620,7 @@ LABEL_15:
         }
       }
 
-      v49 = [v47 countByEnumeratingWithState:&v70 objects:v74 count:16];
+      v49 = [scatSupportedGestures countByEnumeratingWithState:&v70 objects:v74 count:16];
     }
 
     while (v49);
@@ -1629,21 +1629,21 @@ LABEL_15:
   return v67;
 }
 
-+ (id)menuItemsForCustomActions:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemsForCustomActions:(id)actions menu:(id)menu delegate:(id)delegate
 {
-  v8 = a3;
-  v39 = a4;
-  v38 = a5;
-  if ([v8 count])
+  actionsCopy = actions;
+  menuCopy = menu;
+  delegateCopy = delegate;
+  if ([actionsCopy count])
   {
     v35 = +[NSMutableSet set];
-    v37 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+    v37 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [actionsCopy count]);
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v34 = v8;
-    obj = v8;
+    v34 = actionsCopy;
+    obj = actionsCopy;
     v9 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v9)
     {
@@ -1665,7 +1665,7 @@ LABEL_15:
             v14 = [v13 objectForKeyedSubscript:@"CustomActionName"];
           }
 
-          v15 = [a1 _capitalizedMenuTitle:v14];
+          v15 = [self _capitalizedMenuTitle:v14];
 
           v44[0] = @"identifier";
           v16 = [v13 objectForKeyedSubscript:@"CustomActionIdentifier"];
@@ -1676,7 +1676,7 @@ LABEL_15:
           v44[2] = @"activateBehavior";
           v45[2] = &off_1001E5580;
           v18 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:3];
-          v19 = [a1 menuItemWithItemDictionary:v18 menu:v39 delegate:v38];
+          v19 = [self menuItemWithItemDictionary:v18 menu:menuCopy delegate:delegateCopy];
 
           v20 = [v13 objectForKeyedSubscript:@"CustomActionImage"];
           v21 = +[UIScreen mainScreen];
@@ -1684,21 +1684,21 @@ LABEL_15:
           v22 = [UIImage imageWithData:v20 scale:?];
           [v19 setImage:v22];
 
-          v23 = [v19 image];
+          image = [v19 image];
           v24 = +[UIColor whiteColor];
-          v25 = [v23 imageWithTintColor:v24 renderingMode:1];
+          v25 = [image imageWithTintColor:v24 renderingMode:1];
           [v19 setImage:v25];
 
           v26 = [v13 objectForKeyedSubscript:@"CustomActionImageOrientation"];
-          v27 = [v26 integerValue];
+          integerValue = [v26 integerValue];
 
-          if (v27)
+          if (integerValue)
           {
-            if (v27 == 4)
+            if (integerValue == 4)
             {
-              v28 = [v19 image];
-              v29 = [v28 imageWithHorizontallyFlippedOrientation];
-              [v19 setImage:v29];
+              image2 = [v19 image];
+              imageWithHorizontallyFlippedOrientation = [image2 imageWithHorizontallyFlippedOrientation];
+              [v19 setImage:imageWithHorizontallyFlippedOrientation];
             }
 
             else
@@ -1708,11 +1708,11 @@ LABEL_15:
             }
           }
 
-          v30 = [v19 image];
+          image3 = [v19 image];
 
-          if (!v30)
+          if (!image3)
           {
-            v31 = [a1 _fallbackImageForCustomActionMenuItem:v19 charactersInUse:v35];
+            v31 = [self _fallbackImageForCustomActionMenuItem:v19 charactersInUse:v35];
             [v19 setImage:v31];
           }
 
@@ -1725,7 +1725,7 @@ LABEL_15:
       while (v10);
     }
 
-    v8 = v34;
+    actionsCopy = v34;
   }
 
   else
@@ -1736,21 +1736,21 @@ LABEL_15:
   return v37;
 }
 
-+ (id)dragMenuItemsForElement:(id)a3 delegate:(id)a4
++ (id)dragMenuItemsForElement:(id)element delegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  delegateCopy = delegate;
   v7 = +[SCATScannerManager sharedManager];
-  v8 = [v7 isDragActive];
+  isDragActive = [v7 isDragActive];
 
-  if (v8)
+  if (isDragActive)
   {
     v9 = &__NSArray0__struct;
   }
 
   else
   {
-    v10 = [v5 scatDrags];
+    scatDrags = [elementCopy scatDrags];
     v11 = AXNamesForDrags();
     v12 = +[NSMutableArray array];
     v17[0] = _NSConcreteStackBlock;
@@ -1758,12 +1758,12 @@ LABEL_15:
     v17[2] = sub_1000A574C;
     v17[3] = &unk_1001D6680;
     v18 = v11;
-    v19 = v5;
-    v20 = v6;
+    v19 = elementCopy;
+    v20 = delegateCopy;
     v13 = v12;
     v21 = v13;
     v14 = v11;
-    [v10 enumerateObjectsUsingBlock:v17];
+    [scatDrags enumerateObjectsUsingBlock:v17];
     v15 = v21;
     v9 = v13;
   }
@@ -1771,15 +1771,15 @@ LABEL_15:
   return v9;
 }
 
-+ (id)menuItemsForDrops:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemsForDrops:(id)drops menu:(id)menu delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dropsCopy = drops;
+  menuCopy = menu;
+  delegateCopy = delegate;
   v10 = +[SCATScannerManager sharedManager];
-  v11 = [v10 isDragActive];
+  isDragActive = [v10 isDragActive];
 
-  if (v11)
+  if (isDragActive)
   {
     v12 = +[NSMutableArray array];
     AXNamesForDrops();
@@ -1787,12 +1787,12 @@ LABEL_15:
     v18[1] = 3221225472;
     v18[2] = sub_1000A5960;
     v19 = v18[3] = &unk_1001D6680;
-    v20 = v9;
-    v21 = v8;
+    v20 = delegateCopy;
+    v21 = menuCopy;
     v13 = v12;
     v22 = v13;
     v14 = v19;
-    [v7 enumerateObjectsUsingBlock:v18];
+    [dropsCopy enumerateObjectsUsingBlock:v18];
     v15 = v22;
     v16 = v13;
   }
@@ -1805,12 +1805,12 @@ LABEL_15:
   return v16;
 }
 
-+ (id)_fallbackImageForCustomActionMenuItem:(id)a3 charactersInUse:(id)a4
++ (id)_fallbackImageForCustomActionMenuItem:(id)item charactersInUse:(id)use
 {
-  v5 = a4;
-  v6 = [a3 title];
+  useCopy = use;
+  title = [item title];
   v7 = sub_100042B24(@"DELETE");
-  v8 = [v6 hasPrefix:v7];
+  v8 = [title hasPrefix:v7];
 
   if (v8)
   {
@@ -1831,7 +1831,7 @@ LABEL_7:
   else
   {
     v11 = sub_100042B24(@"MORE");
-    v12 = [v6 hasPrefix:v11];
+    v12 = [title hasPrefix:v11];
 
     if (v12)
     {
@@ -1845,7 +1845,7 @@ LABEL_7:
 
     else
     {
-      v9 = [UIImage scat_singleCharacterImageForTitle:v6 charactersInUse:v5];
+      v9 = [UIImage scat_singleCharacterImageForTitle:title charactersInUse:useCopy];
     }
   }
 
@@ -1855,26 +1855,26 @@ LABEL_10:
   return v15;
 }
 
-+ (id)_capitalizedMenuTitle:(id)a3
++ (id)_capitalizedMenuTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = objc_alloc_init(NSMutableString);
-  v5 = [v3 localizedCapitalizedString];
-  if ([v3 length])
+  localizedCapitalizedString = [titleCopy localizedCapitalizedString];
+  if ([titleCopy length])
   {
     v6 = 0;
     do
     {
-      v7 = [v3 rangeOfComposedCharacterSequenceAtIndex:v6];
+      v7 = [titleCopy rangeOfComposedCharacterSequenceAtIndex:v6];
       v9 = v8;
-      v10 = [v3 substringWithRange:{v7, v8}];
-      v11 = [v10 uppercaseString];
-      v12 = [v10 isEqualToString:v11];
+      v10 = [titleCopy substringWithRange:{v7, v8}];
+      uppercaseString = [v10 uppercaseString];
+      v12 = [v10 isEqualToString:uppercaseString];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [v5 rangeOfComposedCharacterSequenceAtIndex:v6];
-        v15 = [v5 substringWithRange:{v13, v14}];
+        v13 = [localizedCapitalizedString rangeOfComposedCharacterSequenceAtIndex:v6];
+        v15 = [localizedCapitalizedString substringWithRange:{v13, v14}];
 
         v10 = v15;
       }
@@ -1883,7 +1883,7 @@ LABEL_10:
       v6 += v9;
     }
 
-    while (v6 < [v3 length]);
+    while (v6 < [titleCopy length]);
   }
 
   return v4;

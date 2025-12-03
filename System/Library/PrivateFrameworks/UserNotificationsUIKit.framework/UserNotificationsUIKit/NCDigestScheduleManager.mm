@@ -1,21 +1,21 @@
 @interface NCDigestScheduleManager
 - (NCDigestScheduleManager)init;
 - (id)_currentScheduleTimes;
-- (id)_scheduleDateFromScheduleTime:(id)a3;
-- (void)_handleTimeOrLocaleChange:(id)a3;
-- (void)_publishDigestInfo:(id)a3 withUpcomingDigestInfo:(id)a4;
-- (void)_publishRevokeUpcomingDigest:(id)a3;
-- (void)_publishToAllObservers:(id)a3;
-- (void)_publishUpcomingDigestInfo:(id)a3;
+- (id)_scheduleDateFromScheduleTime:(id)time;
+- (void)_handleTimeOrLocaleChange:(id)change;
+- (void)_publishDigestInfo:(id)info withUpcomingDigestInfo:(id)digestInfo;
+- (void)_publishRevokeUpcomingDigest:(id)digest;
+- (void)_publishToAllObservers:(id)observers;
+- (void)_publishUpcomingDigestInfo:(id)info;
 - (void)_registerPrototypeRecipeToDeliveryDigestImmediately;
-- (void)_scheduleTimerFiredForTimer:(id)a3;
-- (void)_scheduleTimerForDigestInfo:(id)a3;
-- (void)_updateDigestInfosForScheduleTimes:(id)a3;
+- (void)_scheduleTimerFiredForTimer:(id)timer;
+- (void)_scheduleTimerForDigestInfo:(id)info;
+- (void)_updateDigestInfosForScheduleTimes:(id)times;
 - (void)_updateUpcomingScheduledDigestInfo;
-- (void)addObserver:(id)a3;
-- (void)invalidateScheduledTimerSendCancel:(BOOL)a3;
-- (void)removeObserver:(id)a3;
-- (void)setDigestScheduleTimes:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)invalidateScheduledTimerSendCancel:(BOOL)cancel;
+- (void)removeObserver:(id)observer;
+- (void)setDigestScheduleTimes:(id)times;
 @end
 
 @implementation NCDigestScheduleManager
@@ -32,19 +32,19 @@
     digestScheduleTimerQueue = v2->_digestScheduleTimerQueue;
     v2->_digestScheduleTimerQueue = v4;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277D766F0] object:0];
-    [v6 addObserver:v2 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277D766F0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277CBE620] object:0];
     [(NCDigestScheduleManager *)v2 _registerPrototypeRecipeToDeliveryDigestImmediately];
   }
 
   return v2;
 }
 
-- (void)setDigestScheduleTimes:(id)a3
+- (void)setDigestScheduleTimes:(id)times
 {
-  v5 = a3;
-  if (![(NSArray *)self->_digestScheduleTimes isEqualToArray:v5])
+  timesCopy = times;
+  if (![(NSArray *)self->_digestScheduleTimes isEqualToArray:timesCopy])
   {
     v6 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -53,15 +53,15 @@
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Updating notification digest schedule times", v7, 2u);
     }
 
-    objc_storeStrong(&self->_digestScheduleTimes, a3);
-    -[NCDigestScheduleManager invalidateScheduledTimerSendCancel:](self, "invalidateScheduledTimerSendCancel:", [v5 count] == 0);
-    [(NCDigestScheduleManager *)self _updateDigestInfosForScheduleTimes:v5];
+    objc_storeStrong(&self->_digestScheduleTimes, times);
+    -[NCDigestScheduleManager invalidateScheduledTimerSendCancel:](self, "invalidateScheduledTimerSendCancel:", [timesCopy count] == 0);
+    [(NCDigestScheduleManager *)self _updateDigestInfosForScheduleTimes:timesCopy];
   }
 }
 
-- (void)invalidateScheduledTimerSendCancel:(BOOL)a3
+- (void)invalidateScheduledTimerSendCancel:(BOOL)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   v12 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -72,7 +72,7 @@
     _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "Invalidating scheduled notification digest timer %{public}@", &v10, 0xCu);
   }
 
-  v7 = [(NCDigestScheduleManager *)self upcomingScheduledDigestInfo];
+  upcomingScheduledDigestInfo = [(NCDigestScheduleManager *)self upcomingScheduledDigestInfo];
   digestInfos = self->_digestInfos;
   self->_digestInfos = 0;
 
@@ -80,33 +80,33 @@
   v9 = self->_digestScheduleTimer;
   self->_digestScheduleTimer = 0;
 
-  if (v3)
+  if (cancelCopy)
   {
-    [(NCDigestScheduleManager *)self _publishRevokeUpcomingDigest:v7];
+    [(NCDigestScheduleManager *)self _publishRevokeUpcomingDigest:upcomingScheduledDigestInfo];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -114,10 +114,10 @@
   }
 }
 
-- (void)_publishToAllObservers:(id)a3
+- (void)_publishToAllObservers:(id)observers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   v5 = [(NSHashTable *)self->_observers copy];
   v11 = 0u;
   v12 = 0u;
@@ -139,7 +139,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        observersCopy[2](observersCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -150,18 +150,18 @@
   }
 }
 
-- (void)_publishDigestInfo:(id)a3 withUpcomingDigestInfo:(id)a4
+- (void)_publishDigestInfo:(id)info withUpcomingDigestInfo:(id)digestInfo
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  digestInfoCopy = digestInfo;
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v6;
+    v15 = infoCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = digestInfoCopy;
     _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "Publishing scheduled notification digest [info=%{public}@] \t upcoming digest [date=%{public}@]", buf, 0x16u);
   }
 
@@ -169,24 +169,24 @@
   v11[1] = 3221225472;
   v11[2] = __69__NCDigestScheduleManager__publishDigestInfo_withUpcomingDigestInfo___block_invoke;
   v11[3] = &unk_278372D60;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = digestInfoCopy;
+  v9 = digestInfoCopy;
+  v10 = infoCopy;
   [(NCDigestScheduleManager *)self _publishToAllObservers:v11];
 }
 
-- (void)_publishUpcomingDigestInfo:(id)a3
+- (void)_publishUpcomingDigestInfo:(id)info
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = v4;
+      v9 = infoCopy;
       _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "Publishing upcoming notification digest [info=%{public}@]", buf, 0xCu);
     }
 
@@ -194,28 +194,28 @@
     v6[1] = 3221225472;
     v6[2] = __54__NCDigestScheduleManager__publishUpcomingDigestInfo___block_invoke;
     v6[3] = &unk_278372D88;
-    v7 = v4;
+    v7 = infoCopy;
     [(NCDigestScheduleManager *)self _publishToAllObservers:v6];
   }
 }
 
-- (void)_publishRevokeUpcomingDigest:(id)a3
+- (void)_publishRevokeUpcomingDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__NCDigestScheduleManager__publishRevokeUpcomingDigest___block_invoke;
   v6[3] = &unk_278372D88;
-  v7 = v4;
-  v5 = v4;
+  v7 = digestCopy;
+  v5 = digestCopy;
   [(NCDigestScheduleManager *)self _publishToAllObservers:v6];
 }
 
-- (void)_updateDigestInfosForScheduleTimes:(id)a3
+- (void)_updateDigestInfosForScheduleTimes:(id)times
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  timesCopy = times;
+  if ([timesCopy count])
   {
     if (!self->_digestInfos)
     {
@@ -230,8 +230,8 @@
     previouslyScheduledDigestInfo = self->_previouslyScheduledDigestInfo;
     self->_previouslyScheduledDigestInfo = 0;
 
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [v4 sortedArrayUsingComparator:&__block_literal_global_40];
+    date = [MEMORY[0x277CBEAA8] date];
+    v10 = [timesCopy sortedArrayUsingComparator:&__block_literal_global_40];
     v11 = [v10 count];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -239,12 +239,12 @@
     v23[3] = &unk_278372DB0;
     v23[4] = self;
     v25 = v11;
-    v12 = v9;
+    v12 = date;
     v24 = v12;
     [v10 enumerateObjectsUsingBlock:v23];
     v13 = [(NCDigestInfo *)self->_previouslyScheduledDigestInfo mutableCopy];
-    v14 = [v13 scheduleDate];
-    v15 = [v14 dateByAddingTimeInterval:-86400.0];
+    scheduleDate = [v13 scheduleDate];
+    v15 = [scheduleDate dateByAddingTimeInterval:-86400.0];
     [v13 setScheduleDate:v15];
 
     v16 = [v13 copy];
@@ -482,14 +482,14 @@ void __62__NCDigestScheduleManager__updateDigestInfosForScheduleTimes___block_in
   v10[1] = v10;
   v10[2] = 0x2020000000;
   v10[3] = 0x41DFFFFFFFC00000;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   digestInfos = self->_digestInfos;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__NCDigestScheduleManager__updateUpcomingScheduledDigestInfo__block_invoke;
   v6[3] = &unk_278372DD8;
   v6[4] = self;
-  v5 = v3;
+  v5 = date;
   v7 = v5;
   v8 = v10;
   v9 = &v11;
@@ -538,18 +538,18 @@ void __61__NCDigestScheduleManager__updateUpcomingScheduledDigestInfo__block_inv
   }
 }
 
-- (void)_scheduleTimerFiredForTimer:(id)a3
+- (void)_scheduleTimerFiredForTimer:(id)timer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
+  timerCopy = timer;
+  userInfo = [timerCopy userInfo];
   v6 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = v4;
+    v12 = timerCopy;
     v13 = 2114;
-    v14 = v5;
+    v14 = userInfo;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Notification digest scheduled timer %{public}@ fired for digest info [%{public}@]", buf, 0x16u);
   }
 
@@ -559,8 +559,8 @@ void __61__NCDigestScheduleManager__updateUpcomingScheduledDigestInfo__block_inv
   v8[2] = __55__NCDigestScheduleManager__scheduleTimerFiredForTimer___block_invoke;
   v8[3] = &unk_278370A90;
   objc_copyWeak(&v10, buf);
-  v9 = v5;
-  v7 = v5;
+  v9 = userInfo;
+  v7 = userInfo;
   dispatch_sync(MEMORY[0x277D85CD0], v8);
 
   objc_destroyWeak(&v10);
@@ -604,43 +604,43 @@ void __55__NCDigestScheduleManager__scheduleTimerFiredForTimer___block_invoke(ui
   [WeakRetained _scheduleTimerForDigestInfo:v13];
 }
 
-- (void)_handleTimeOrLocaleChange:(id)a3
+- (void)_handleTimeOrLocaleChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [a3 name];
+    name = [change name];
     v9 = 138543362;
-    v10 = v7;
+    v10 = name;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Updating notification digest schedule infos on time or locale change for notification %{public}@", &v9, 0xCu);
   }
 
-  v8 = [(NCDigestScheduleManager *)self _currentScheduleTimes];
-  [(NCDigestScheduleManager *)self invalidateScheduledTimerSendCancel:v8 == 0];
-  [(NCDigestScheduleManager *)self _updateDigestInfosForScheduleTimes:v8];
+  _currentScheduleTimes = [(NCDigestScheduleManager *)self _currentScheduleTimes];
+  [(NCDigestScheduleManager *)self invalidateScheduledTimerSendCancel:_currentScheduleTimes == 0];
+  [(NCDigestScheduleManager *)self _updateDigestInfosForScheduleTimes:_currentScheduleTimes];
 }
 
-- (id)_scheduleDateFromScheduleTime:(id)a3
+- (id)_scheduleDateFromScheduleTime:(id)time
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v5 components:28 fromDate:v6];
+  timeCopy = time;
+  currentCalendar = [v3 currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [currentCalendar components:28 fromDate:date];
   v8 = [v7 copy];
-  [v8 setHour:{objc_msgSend(v4, "hour")}];
-  v9 = [v4 minute];
+  [v8 setHour:{objc_msgSend(timeCopy, "hour")}];
+  minute = [timeCopy minute];
 
-  [v8 setMinute:v9];
+  [v8 setMinute:minute];
   [v8 setSecond:0];
   [v8 setNanosecond:0];
-  v10 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v8 setTimeZone:v10];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [v8 setTimeZone:localTimeZone];
 
-  v11 = [v5 dateFromComponents:v8];
-  [v11 timeIntervalSinceDate:v6];
+  v11 = [currentCalendar dateFromComponents:v8];
+  [v11 timeIntervalSinceDate:date];
   if (v12 < 10.0)
   {
     v13 = [v11 dateByAddingTimeInterval:86400.0];
@@ -674,37 +674,37 @@ void __48__NCDigestScheduleManager__currentScheduleTimes__block_invoke(uint64_t 
   [v2 addObject:v3];
 }
 
-- (void)_scheduleTimerForDigestInfo:(id)a3
+- (void)_scheduleTimerForDigestInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = v4;
-    v6 = [v4 scheduleDate];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v6 earlierDate:v7];
+    v5 = infoCopy;
+    scheduleDate = [infoCopy scheduleDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [scheduleDate earlierDate:date];
 
     v9 = MEMORY[0x277D77DD0];
-    if (v8 == v6)
+    if (v8 == scheduleDate)
     {
       v10 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
       {
-        [(NCDigestScheduleManager *)v6 _scheduleTimerForDigestInfo:v10];
+        [(NCDigestScheduleManager *)scheduleDate _scheduleTimerForDigestInfo:v10];
       }
 
-      v11 = [v6 dateByAddingTimeInterval:86400.0];
+      v11 = [scheduleDate dateByAddingTimeInterval:86400.0];
 
       v12 = [v5 copy];
       [v12 setScheduleDate:v11];
       v13 = [v12 copy];
 
-      v6 = v11;
+      scheduleDate = v11;
       v5 = v13;
     }
 
-    v14 = [objc_alloc(MEMORY[0x277D3A180]) initWithFireDate:v6 serviceIdentifier:@"com.apple.usernotifications.scheduledDelivery" target:self selector:sel__scheduleTimerFiredForTimer_ userInfo:v5];
+    v14 = [objc_alloc(MEMORY[0x277D3A180]) initWithFireDate:scheduleDate serviceIdentifier:@"com.apple.usernotifications.scheduledDelivery" target:self selector:sel__scheduleTimerFiredForTimer_ userInfo:v5];
     digestScheduleTimer = self->_digestScheduleTimer;
     self->_digestScheduleTimer = v14;
 

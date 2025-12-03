@@ -7,7 +7,7 @@
 + (NSArray)allowedTopLevelClasses
 {
   v17 = *MEMORY[0x1E69E9840];
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___PFCloudKitMetadataValueTransformer;
   v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:{objc_msgSendSuper2(&v14, sel_allowedTopLevelClasses)}];
   v10 = 0u;

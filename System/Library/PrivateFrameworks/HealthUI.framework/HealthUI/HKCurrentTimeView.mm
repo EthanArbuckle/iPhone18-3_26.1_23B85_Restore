@@ -1,82 +1,82 @@
 @interface HKCurrentTimeView
-- (HKCurrentTimeView)initWithCoder:(id)a3;
-- (HKCurrentTimeView)initWithWideHorizontalMargin:(BOOL)a3;
+- (HKCurrentTimeView)initWithCoder:(id)coder;
+- (HKCurrentTimeView)initWithWideHorizontalMargin:(BOOL)margin;
 - (HKCurrentTimeViewDelegate)delegate;
-- (double)_backgroundAlpha:(BOOL)a3;
+- (double)_backgroundAlpha:(BOOL)alpha;
 - (double)_currentTimeButtonBaselineToBottom;
 - (double)_currentTimeButtonBaselineToTop;
-- (double)_foregroundAlpha:(BOOL)a3;
-- (id)_backgroundColor:(BOOL)a3;
-- (id)_colorIfForeground:(BOOL)a3 enabled:(BOOL)a4;
-- (id)_foregroundColor:(BOOL)a3;
-- (id)_labelColor:(BOOL)a3;
-- (id)_tintColor:(BOOL)a3;
+- (double)_foregroundAlpha:(BOOL)alpha;
+- (id)_backgroundColor:(BOOL)color;
+- (id)_colorIfForeground:(BOOL)foreground enabled:(BOOL)enabled;
+- (id)_foregroundColor:(BOOL)color;
+- (id)_labelColor:(BOOL)color;
+- (id)_tintColor:(BOOL)color;
 - (void)_handleContentSizeCategoryDidChange;
-- (void)currentTimeButtonTapped:(id)a3;
+- (void)currentTimeButtonTapped:(id)tapped;
 - (void)dealloc;
-- (void)nextTimeIndexButtonTapped:(id)a3;
-- (void)previousTimeIndexButtonTapped:(id)a3;
-- (void)setCurrentTimeButtonEnabled:(BOOL)a3;
-- (void)setCurrentTimeString:(id)a3;
-- (void)setDisableControls:(BOOL)a3;
-- (void)setNextTimeButtonEnabled:(BOOL)a3;
-- (void)setPreviousTimeButtonEnabled:(BOOL)a3;
-- (void)setupViewWithWideHorizontalMargin:(BOOL)a3;
+- (void)nextTimeIndexButtonTapped:(id)tapped;
+- (void)previousTimeIndexButtonTapped:(id)tapped;
+- (void)setCurrentTimeButtonEnabled:(BOOL)enabled;
+- (void)setCurrentTimeString:(id)string;
+- (void)setDisableControls:(BOOL)controls;
+- (void)setNextTimeButtonEnabled:(BOOL)enabled;
+- (void)setPreviousTimeButtonEnabled:(BOOL)enabled;
+- (void)setupViewWithWideHorizontalMargin:(BOOL)margin;
 @end
 
 @implementation HKCurrentTimeView
 
-- (HKCurrentTimeView)initWithWideHorizontalMargin:(BOOL)a3
+- (HKCurrentTimeView)initWithWideHorizontalMargin:(BOOL)margin
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  marginCopy = margin;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v8.receiver = self;
   v8.super_class = HKCurrentTimeView;
   v6 = [(HKCurrentTimeView *)&v8 initWithFrame:?];
 
   if (v6)
   {
-    [(HKCurrentTimeView *)v6 setupViewWithWideHorizontalMargin:v3];
+    [(HKCurrentTimeView *)v6 setupViewWithWideHorizontalMargin:marginCopy];
   }
 
   return v6;
 }
 
-- (HKCurrentTimeView)initWithCoder:(id)a3
+- (HKCurrentTimeView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HKCurrentTimeView;
-  return [(HKCurrentTimeView *)&v4 initWithCoder:a3];
+  return [(HKCurrentTimeView *)&v4 initWithCoder:coder];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = HKCurrentTimeView;
   [(HKCurrentTimeView *)&v4 dealloc];
 }
 
-- (void)setupViewWithWideHorizontalMargin:(BOOL)a3
+- (void)setupViewWithWideHorizontalMargin:(BOOL)margin
 {
-  v3 = a3;
+  marginCopy = margin;
   v5 = objc_alloc_init(MEMORY[0x1E69DC738]);
   currentTimeButton = self->_currentTimeButton;
   self->_currentTimeButton = v5;
 
   [(UIButton *)self->_currentTimeButton addTarget:self action:sel_currentTimeButtonTapped_ forControlEvents:64];
-  v7 = [(UIButton *)self->_currentTimeButton titleLabel];
-  v8 = [(HKCurrentTimeView *)self _currentTimeButtonFont];
-  [v7 setFont:v8];
+  titleLabel = [(UIButton *)self->_currentTimeButton titleLabel];
+  _currentTimeButtonFont = [(HKCurrentTimeView *)self _currentTimeButtonFont];
+  [titleLabel setFont:_currentTimeButtonFont];
 
-  v9 = [(UIButton *)self->_currentTimeButton titleLabel];
-  [v9 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [(UIButton *)self->_currentTimeButton titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v10 = [(UIButton *)self->_currentTimeButton titleLabel];
-  [v10 setBaselineAdjustment:1];
+  titleLabel3 = [(UIButton *)self->_currentTimeButton titleLabel];
+  [titleLabel3 setBaselineAdjustment:1];
 
   v11 = self->_currentTimeButton;
   v12 = HKHealthKeyColor();
@@ -100,7 +100,7 @@
   [(HKCurrentTimeView *)self addSubview:self->_nextTimeIndexButton];
   [(HKCurrentTimeView *)self setPreviousTimeButtonEnabled:0];
   [(HKCurrentTimeView *)self setNextTimeButtonEnabled:0];
-  if (v3)
+  if (marginCopy)
   {
     v17 = 16.0;
   }
@@ -110,75 +110,75 @@
     v17 = 3.0;
   }
 
-  v18 = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton leftAnchor];
-  v19 = [(HKCurrentTimeView *)self leftAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:v17];
+  leftAnchor = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton leftAnchor];
+  leftAnchor2 = [(HKCurrentTimeView *)self leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v17];
   [v20 setActive:1];
 
-  v21 = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton centerYAnchor];
-  v22 = [(UIButton *)self->_currentTimeButton centerYAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  centerYAnchor = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton centerYAnchor];
+  centerYAnchor2 = [(UIButton *)self->_currentTimeButton centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v23 setActive:1];
 
-  v24 = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton widthAnchor];
-  v25 = [v24 constraintEqualToConstant:54.0];
+  widthAnchor = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton widthAnchor];
+  v25 = [widthAnchor constraintEqualToConstant:54.0];
   [v25 setActive:1];
 
-  v26 = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton rightAnchor];
-  v27 = [(HKCurrentTimeView *)self rightAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:-v17];
+  rightAnchor = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton rightAnchor];
+  rightAnchor2 = [(HKCurrentTimeView *)self rightAnchor];
+  v28 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-v17];
   [v28 setActive:1];
 
-  v29 = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton centerYAnchor];
-  v30 = [(UIButton *)self->_currentTimeButton centerYAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  centerYAnchor3 = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton centerYAnchor];
+  centerYAnchor4 = [(UIButton *)self->_currentTimeButton centerYAnchor];
+  v31 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v31 setActive:1];
 
-  v32 = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton widthAnchor];
-  v33 = [v32 constraintEqualToConstant:54.0];
+  widthAnchor2 = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton widthAnchor];
+  v33 = [widthAnchor2 constraintEqualToConstant:54.0];
   [v33 setActive:1];
 
-  v34 = [(UIButton *)self->_currentTimeButton centerXAnchor];
-  v35 = [(HKCurrentTimeView *)self centerXAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  centerXAnchor = [(UIButton *)self->_currentTimeButton centerXAnchor];
+  centerXAnchor2 = [(HKCurrentTimeView *)self centerXAnchor];
+  v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v36 setActive:1];
 
-  v37 = [(UIButton *)self->_currentTimeButton leftAnchor];
-  v38 = [(HKCurrentTimeView *)self leftAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38 constant:v17 + 27.0];
+  leftAnchor3 = [(UIButton *)self->_currentTimeButton leftAnchor];
+  leftAnchor4 = [(HKCurrentTimeView *)self leftAnchor];
+  v39 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:v17 + 27.0];
   [v39 setActive:1];
 
-  v40 = [(UIButton *)self->_currentTimeButton rightAnchor];
-  v41 = [(HKCurrentTimeView *)self rightAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41 constant:-27.0 - v17];
+  rightAnchor3 = [(UIButton *)self->_currentTimeButton rightAnchor];
+  rightAnchor4 = [(HKCurrentTimeView *)self rightAnchor];
+  v42 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:-27.0 - v17];
   [v42 setActive:1];
 
-  v43 = [(UIButton *)self->_currentTimeButton topAnchor];
-  v44 = [(HKCurrentTimeView *)self topAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44 constant:2.0];
+  topAnchor = [(UIButton *)self->_currentTimeButton topAnchor];
+  topAnchor2 = [(HKCurrentTimeView *)self topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
   [v45 setActive:1];
 
-  v46 = [(UIButton *)self->_currentTimeButton bottomAnchor];
-  v47 = [(HKCurrentTimeView *)self bottomAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47 constant:-2.0];
+  bottomAnchor = [(UIButton *)self->_currentTimeButton bottomAnchor];
+  bottomAnchor2 = [(HKCurrentTimeView *)self bottomAnchor];
+  v48 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-2.0];
   [v48 setActive:1];
 
-  v49 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v49 addObserver:self selector:sel__handleContentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleContentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
 }
 
-- (void)setCurrentTimeString:(id)a3
+- (void)setCurrentTimeString:(id)string
 {
-  objc_storeStrong(&self->_currentTimeString, a3);
-  v5 = a3;
-  [(UIButton *)self->_currentTimeButton setTitle:v5 forState:0];
+  objc_storeStrong(&self->_currentTimeString, string);
+  stringCopy = string;
+  [(UIButton *)self->_currentTimeButton setTitle:stringCopy forState:0];
 }
 
-- (void)setDisableControls:(BOOL)a3
+- (void)setDisableControls:(BOOL)controls
 {
-  v3 = a3;
-  self->_disableControls = a3;
-  if (a3)
+  controlsCopy = controls;
+  self->_disableControls = controls;
+  if (controls)
   {
     omitPrevNextButtons = 1;
     [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton setHidden:1];
@@ -191,68 +191,68 @@
   }
 
   [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton setHidden:omitPrevNextButtons];
-  [(UIButton *)self->_currentTimeButton setEnabled:!v3];
+  [(UIButton *)self->_currentTimeButton setEnabled:!controlsCopy];
 
   [(HKCurrentTimeView *)self setNeedsLayout];
 }
 
-- (void)setPreviousTimeButtonEnabled:(BOOL)a3
+- (void)setPreviousTimeButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton setEnabled:?];
-  v5 = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton imageView];
-  v6 = [(HKCurrentTimeView *)self _colorIfForeground:1 enabled:v3];
-  [v5 setTintColor:v6];
+  imageView = [(HKCurrentTimeChevronButton *)self->_previousTimeIndexButton imageView];
+  v6 = [(HKCurrentTimeView *)self _colorIfForeground:1 enabled:enabledCopy];
+  [imageView setTintColor:v6];
 
   previousTimeIndexButton = self->_previousTimeIndexButton;
-  v8 = [(HKCurrentTimeView *)self _colorIfForeground:0 enabled:v3];
+  v8 = [(HKCurrentTimeView *)self _colorIfForeground:0 enabled:enabledCopy];
   [(HKCurrentTimeChevronButton *)previousTimeIndexButton setTintColor:v8];
 }
 
-- (void)setNextTimeButtonEnabled:(BOOL)a3
+- (void)setNextTimeButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton setEnabled:?];
-  v5 = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton imageView];
-  v6 = [(HKCurrentTimeView *)self _colorIfForeground:1 enabled:v3];
-  [v5 setTintColor:v6];
+  imageView = [(HKCurrentTimeChevronButton *)self->_nextTimeIndexButton imageView];
+  v6 = [(HKCurrentTimeView *)self _colorIfForeground:1 enabled:enabledCopy];
+  [imageView setTintColor:v6];
 
   nextTimeIndexButton = self->_nextTimeIndexButton;
-  v8 = [(HKCurrentTimeView *)self _colorIfForeground:0 enabled:v3];
+  v8 = [(HKCurrentTimeView *)self _colorIfForeground:0 enabled:enabledCopy];
   [(HKCurrentTimeChevronButton *)nextTimeIndexButton setTintColor:v8];
 }
 
-- (void)setCurrentTimeButtonEnabled:(BOOL)a3
+- (void)setCurrentTimeButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(UIButton *)self->_currentTimeButton setEnabled:?];
   currentTimeButton = self->_currentTimeButton;
-  v6 = [(HKCurrentTimeView *)self _labelColor:v3];
+  v6 = [(HKCurrentTimeView *)self _labelColor:enabledCopy];
   [(UIButton *)currentTimeButton setTitleColor:v6 forState:0];
 }
 
-- (void)currentTimeButtonTapped:(id)a3
+- (void)currentTimeButtonTapped:(id)tapped
 {
-  v4 = [(HKCurrentTimeView *)self delegate];
-  [v4 currentTimeViewDidTapOnDateSelector:self];
+  delegate = [(HKCurrentTimeView *)self delegate];
+  [delegate currentTimeViewDidTapOnDateSelector:self];
 }
 
-- (void)previousTimeIndexButtonTapped:(id)a3
+- (void)previousTimeIndexButtonTapped:(id)tapped
 {
-  v4 = [(HKCurrentTimeView *)self delegate];
-  [v4 currentTimeViewDidTapOnPreviousTimeButton:self];
+  delegate = [(HKCurrentTimeView *)self delegate];
+  [delegate currentTimeViewDidTapOnPreviousTimeButton:self];
 }
 
-- (void)nextTimeIndexButtonTapped:(id)a3
+- (void)nextTimeIndexButtonTapped:(id)tapped
 {
-  v4 = [(HKCurrentTimeView *)self delegate];
-  [v4 currentTimeViewDidTapOnNextTimeButton:self];
+  delegate = [(HKCurrentTimeView *)self delegate];
+  [delegate currentTimeViewDidTapOnNextTimeButton:self];
 }
 
 - (double)_currentTimeButtonBaselineToTop
 {
-  v2 = [(HKCurrentTimeView *)self _currentTimeButtonFont];
-  [v2 _scaledValueForValue:27.0];
+  _currentTimeButtonFont = [(HKCurrentTimeView *)self _currentTimeButtonFont];
+  [_currentTimeButtonFont _scaledValueForValue:27.0];
   v4 = v3;
 
   return v4;
@@ -260,32 +260,32 @@
 
 - (double)_currentTimeButtonBaselineToBottom
 {
-  v2 = [(HKCurrentTimeView *)self _currentTimeButtonFont];
-  [v2 _scaledValueForValue:19.0];
+  _currentTimeButtonFont = [(HKCurrentTimeView *)self _currentTimeButtonFont];
+  [_currentTimeButtonFont _scaledValueForValue:19.0];
   v4 = v3;
 
   return v4;
 }
 
-- (id)_colorIfForeground:(BOOL)a3 enabled:(BOOL)a4
+- (id)_colorIfForeground:(BOOL)foreground enabled:(BOOL)enabled
 {
-  if (a3)
+  if (foreground)
   {
-    [(HKCurrentTimeView *)self _foregroundColor:a4];
+    [(HKCurrentTimeView *)self _foregroundColor:enabled];
   }
 
   else
   {
-    [(HKCurrentTimeView *)self _backgroundColor:a4];
+    [(HKCurrentTimeView *)self _backgroundColor:enabled];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_tintColor:(BOOL)a3
+- (id)_tintColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     HKHealthTintColor();
   }
@@ -299,9 +299,9 @@
   return v3;
 }
 
-- (id)_labelColor:(BOOL)a3
+- (id)_labelColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     HKHealthKeyColor();
   }
@@ -315,30 +315,30 @@
   return v3;
 }
 
-- (id)_foregroundColor:(BOOL)a3
+- (id)_foregroundColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   v5 = [(HKCurrentTimeView *)self _tintColor:?];
-  [(HKCurrentTimeView *)self _foregroundAlpha:v3];
+  [(HKCurrentTimeView *)self _foregroundAlpha:colorCopy];
   v6 = [v5 colorWithAlphaComponent:?];
 
   return v6;
 }
 
-- (id)_backgroundColor:(BOOL)a3
+- (id)_backgroundColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   v5 = [(HKCurrentTimeView *)self _tintColor:?];
-  [(HKCurrentTimeView *)self _backgroundAlpha:v3];
+  [(HKCurrentTimeView *)self _backgroundAlpha:colorCopy];
   v6 = [v5 colorWithAlphaComponent:?];
 
   return v6;
 }
 
-- (double)_foregroundAlpha:(BOOL)a3
+- (double)_foregroundAlpha:(BOOL)alpha
 {
   result = 0.4;
-  if (a3)
+  if (alpha)
   {
     return 1.0;
   }
@@ -346,10 +346,10 @@
   return result;
 }
 
-- (double)_backgroundAlpha:(BOOL)a3
+- (double)_backgroundAlpha:(BOOL)alpha
 {
   result = 0.1;
-  if (a3)
+  if (alpha)
   {
     return 0.05;
   }
@@ -359,9 +359,9 @@
 
 - (void)_handleContentSizeCategoryDidChange
 {
-  v4 = [(UIButton *)self->_currentTimeButton titleLabel];
-  v3 = [(HKCurrentTimeView *)self _currentTimeButtonFont];
-  [v4 setFont:v3];
+  titleLabel = [(UIButton *)self->_currentTimeButton titleLabel];
+  _currentTimeButtonFont = [(HKCurrentTimeView *)self _currentTimeButtonFont];
+  [titleLabel setFont:_currentTimeButtonFont];
 }
 
 - (HKCurrentTimeViewDelegate)delegate

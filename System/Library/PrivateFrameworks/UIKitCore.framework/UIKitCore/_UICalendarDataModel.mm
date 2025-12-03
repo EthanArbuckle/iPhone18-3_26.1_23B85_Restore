@@ -5,9 +5,9 @@
 - (_UICalendarDataModel)init;
 - (_UIDatePickerCalendarMonth)visibleMonth;
 - (void)_deriveEffectiveLocaleAndCalendarIfNeeded;
-- (void)setCalendar:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (void)setCalendar:(id)calendar;
+- (void)setLocale:(id)locale;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation _UICalendarDataModel
@@ -19,19 +19,19 @@
   v2 = [(_UICalendarDataModel *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     locale = v2->_locale;
-    v2->_locale = v3;
+    v2->_locale = currentLocale;
 
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     calendar = v2->_calendar;
-    v2->_calendar = v5;
+    v2->_calendar = currentCalendar;
 
     objc_storeStrong(&v2->_fontDesign, *off_1E70ECCA8);
     v7 = objc_alloc(MEMORY[0x1E696AB80]);
-    v8 = [MEMORY[0x1E695DF00] distantPast];
-    v9 = [MEMORY[0x1E695DF00] distantFuture];
-    v10 = [v7 initWithStartDate:v8 endDate:v9];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    v10 = [v7 initWithStartDate:distantPast endDate:distantFuture];
     availableDateRange = v2->_availableDateRange;
     v2->_availableDateRange = v10;
   }
@@ -39,10 +39,10 @@
   return v2;
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  objc_storeStrong(&self->_calendar, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_calendar, calendar);
+  calendarCopy = calendar;
   effectiveCalendar = self->_effectiveCalendar;
   self->_effectiveCalendar = 0;
 
@@ -50,18 +50,18 @@
   self->_effectiveLocale = 0;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  objc_storeStrong(&self->_locale, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_locale, locale);
+  localeCopy = locale;
   effectiveLocale = self->_effectiveLocale;
   self->_effectiveLocale = 0;
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  objc_storeStrong(&self->_timeZone, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_timeZone, zone);
+  zoneCopy = zone;
   effectiveCalendar = self->_effectiveCalendar;
   self->_effectiveCalendar = 0;
 }
@@ -84,10 +84,10 @@
 
 - (NSTimeZone)effectiveTimeZone
 {
-  v2 = [(_UICalendarDataModel *)self effectiveCalendar];
-  v3 = [v2 timeZone];
+  effectiveCalendar = [(_UICalendarDataModel *)self effectiveCalendar];
+  timeZone = [effectiveCalendar timeZone];
 
-  return v3;
+  return timeZone;
 }
 
 - (_UIDatePickerCalendarMonth)visibleMonth
@@ -97,11 +97,11 @@
     visibleMonth = self->_visibleMonth;
     if (visibleMonth)
     {
-      v7 = [(_UIDatePickerCalendarDateComponent *)visibleMonth calendar];
-      v8 = [v7 timeZone];
-      v9 = [(_UICalendarDataModel *)self effectiveTimeZone];
-      v10 = v8;
-      v11 = v9;
+      calendar = [(_UIDatePickerCalendarDateComponent *)visibleMonth calendar];
+      timeZone = [calendar timeZone];
+      effectiveTimeZone = [(_UICalendarDataModel *)self effectiveTimeZone];
+      v10 = timeZone;
+      v11 = effectiveTimeZone;
       v12 = v11;
       if (v10 == v11)
       {
@@ -123,18 +123,18 @@
         {
         }
 
-        v14 = [(_UIDatePickerCalendarDateComponent *)self->_visibleMonth components];
-        v15 = [(_UICalendarDataModel *)self effectiveTimeZone];
-        [v14 setTimeZone:v15];
+        components = [(_UIDatePickerCalendarDateComponent *)self->_visibleMonth components];
+        effectiveTimeZone2 = [(_UICalendarDataModel *)self effectiveTimeZone];
+        [components setTimeZone:effectiveTimeZone2];
 
-        v16 = [v14 date];
+        date = [components date];
 
-        if (v16)
+        if (date)
         {
 LABEL_17:
           v20 = [_UIDatePickerCalendarMonth alloc];
-          v21 = [(_UICalendarDataModel *)self effectiveCalendar];
-          v22 = [(_UIDatePickerCalendarDateComponent *)v20 initWithDate:v16 calendar:v21];
+          effectiveCalendar = [(_UICalendarDataModel *)self effectiveCalendar];
+          v22 = [(_UIDatePickerCalendarDateComponent *)v20 initWithDate:date calendar:effectiveCalendar];
           v23 = self->_visibleMonth;
           self->_visibleMonth = v22;
 
@@ -144,11 +144,11 @@ LABEL_17:
     }
 
 LABEL_13:
-    v17 = [(_UIDatePickerCalendarDateComponent *)self->_visibleMonth date];
-    v18 = v17;
-    if (v17)
+    date2 = [(_UIDatePickerCalendarDateComponent *)self->_visibleMonth date];
+    v18 = date2;
+    if (date2)
     {
-      v19 = v17;
+      v19 = date2;
     }
 
     else
@@ -156,7 +156,7 @@ LABEL_13:
       v19 = [MEMORY[0x1E695DF00] now];
     }
 
-    v16 = v19;
+    date = v19;
 
     goto LABEL_17;
   }
@@ -171,18 +171,18 @@ LABEL_18:
 {
   if (!self->_effectiveLocale || !self->_effectiveCalendar)
   {
-    v3 = [(_UICalendarDataModel *)self locale];
-    v4 = [(_UICalendarDataModel *)self calendar];
-    v5 = [v4 copy];
+    locale = [(_UICalendarDataModel *)self locale];
+    calendar = [(_UICalendarDataModel *)self calendar];
+    v5 = [calendar copy];
 
-    v6 = [(NSCalendar *)v5 locale];
-    v7 = [v6 isEqual:v3];
+    locale2 = [(NSCalendar *)v5 locale];
+    v7 = [locale2 isEqual:locale];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(NSCalendar *)v5 firstWeekday];
-      [(NSCalendar *)v5 setLocale:v3];
-      [(NSCalendar *)v5 setFirstWeekday:v8];
+      firstWeekday = [(NSCalendar *)v5 firstWeekday];
+      [(NSCalendar *)v5 setLocale:locale];
+      [(NSCalendar *)v5 setFirstWeekday:firstWeekday];
     }
 
     if (self->_timeZone)
@@ -195,7 +195,7 @@ LABEL_18:
     v11 = v5;
 
     effectiveLocale = self->_effectiveLocale;
-    self->_effectiveLocale = v3;
+    self->_effectiveLocale = locale;
   }
 }
 

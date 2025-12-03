@@ -1,13 +1,13 @@
 @interface NDAnalyticsTelemetryUploader
 - (NDAnalyticsTelemetryUploader)init;
-- (void)uploadEnvelopes:(id)a3 completion:(id)a4;
+- (void)uploadEnvelopes:(id)envelopes completion:(id)completion;
 @end
 
 @implementation NDAnalyticsTelemetryUploader
 
-- (void)uploadEnvelopes:(id)a3 completion:(id)a4
+- (void)uploadEnvelopes:(id)envelopes completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   sub_25BE11458(0, &qword_281475988, 0x277D35468);
   v6 = sub_25BE15198();
   if (v5)
@@ -23,7 +23,7 @@
     v7 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   TelemetryUploader.uploadEnvelopes(_:completion:)(v6, v8, v7);
   sub_25BE10744(v8);
 }

@@ -1,7 +1,7 @@
 @interface AnimatableAdaptiveColorMatrixView
 + (Class)layerClass;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtC9DropletUI33AnimatableAdaptiveColorMatrixView)initWithCoder:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtC9DropletUI33AnimatableAdaptiveColorMatrixView)initWithCoder:(id)coder;
 @end
 
 @implementation AnimatableAdaptiveColorMatrixView
@@ -13,7 +13,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC9DropletUI33AnimatableAdaptiveColorMatrixView)initWithCoder:(id)a3
+- (_TtC9DropletUI33AnimatableAdaptiveColorMatrixView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC9DropletUI33AnimatableAdaptiveColorMatrixView_inputColorMatrix);
   *v3 = 0u;
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_249ED6C70();
     v6 = v5;
@@ -41,7 +41,7 @@
   }
 
   v7 = qword_281252CA8;
-  v8 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
@@ -70,7 +70,7 @@ LABEL_6:
 
   v11 = sub_249ED6C60();
 LABEL_15:
-  v13.receiver = v8;
+  v13.receiver = selfCopy;
   v13.super_class = type metadata accessor for AnimatableAdaptiveColorMatrixView();
   v12 = [(AnimatableAdaptiveColorMatrixView *)&v13 _shouldAnimatePropertyWithKey:v11];
 

@@ -1,13 +1,13 @@
 @interface MFMessageURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
 + (OS_os_log)log;
 + (_MFMessageURLProtocolRegistry)registry;
-+ (id)canonicalRequestForRequest:(id)a3;
-+ (id)contentRepresentationForURL:(id)a3;
++ (id)canonicalRequestForRequest:(id)request;
++ (id)contentRepresentationForURL:(id)l;
 + (void)initialize;
-+ (void)registerContentRepresentation:(id)a3;
-- (MFMessageURLProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5;
-- (id)_cachedResponseWithData:(id)a3 mimeType:(id)a4 error:(id *)a5;
++ (void)registerContentRepresentation:(id)representation;
+- (MFMessageURLProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client;
+- (id)_cachedResponseWithData:(id)data mimeType:(id)type error:(id *)error;
 - (void)dealloc;
 - (void)startLoading;
 - (void)stopLoading;
@@ -17,11 +17,11 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = MEMORY[0x1E696AF58];
 
-    [v3 registerClass:a1];
+    [v3 registerClass:self];
   }
 }
 
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __27__MFMessageURLProtocol_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_9 != -1)
   {
     dispatch_once(&log_onceToken_9, block);
@@ -65,39 +65,39 @@ void __27__MFMessageURLProtocol_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)registerContentRepresentation:(id)a3
++ (void)registerContentRepresentation:(id)representation
 {
-  v5 = a3;
-  v4 = [a1 registry];
-  [v4 registerContentRepresentation:v5];
+  representationCopy = representation;
+  registry = [self registry];
+  [registry registerContentRepresentation:representationCopy];
 }
 
-+ (id)contentRepresentationForURL:(id)a3
++ (id)contentRepresentationForURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 registry];
-  v6 = [v5 contentRepresentationForURL:v4];
+  lCopy = l;
+  registry = [self registry];
+  v6 = [registry contentRepresentationForURL:lCopy];
 
   return v6;
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 URL];
-  v5 = [v4 scheme];
+  requestCopy = request;
+  v4 = [requestCopy URL];
+  scheme = [v4 scheme];
 
-  v6 = [*MEMORY[0x1E69B1540] caseInsensitiveCompare:v5] == 0;
-  v7 = [v3 URL];
-  v8 = [v7 resourceSpecifier];
-  v9 = [v8 length];
+  v6 = [*MEMORY[0x1E69B1540] caseInsensitiveCompare:scheme] == 0;
+  v7 = [requestCopy URL];
+  resourceSpecifier = [v7 resourceSpecifier];
+  v9 = [resourceSpecifier length];
 
   if (!v9)
   {
     v10 = +[MFMessageURLProtocol log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(MFMessageURLProtocol *)v3 canInitWithRequest:v10];
+      [(MFMessageURLProtocol *)requestCopy canInitWithRequest:v10];
     }
 
     v6 = 0;
@@ -106,24 +106,24 @@ void __27__MFMessageURLProtocol_log__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)canonicalRequestForRequest:(id)a3
++ (id)canonicalRequestForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 URL];
-  v5 = [v4 query];
+  requestCopy = request;
+  v4 = [requestCopy URL];
+  query = [v4 query];
 
-  if (v5)
+  if (query)
   {
     v6 = [MEMORY[0x1E696AF20] componentsWithURL:v4 resolvingAgainstBaseURL:0];
     [v6 setQuery:0];
-    v7 = [v3 mutableCopy];
+    v7 = [requestCopy mutableCopy];
     v8 = [v6 URL];
     [v7 setURL:v8];
   }
 
   else
   {
-    v7 = v3;
+    v7 = requestCopy;
   }
 
   return v7;
@@ -137,14 +137,14 @@ void __27__MFMessageURLProtocol_log__block_invoke(uint64_t a1)
   [(NSURLProtocol *)&v3 dealloc];
 }
 
-- (MFMessageURLProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5
+- (MFMessageURLProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  clientCopy = client;
   v26.receiver = self;
   v26.super_class = MFMessageURLProtocol;
-  v11 = [(NSURLProtocol *)&v26 initWithRequest:v8 cachedResponse:v9 client:v10];
+  v11 = [(NSURLProtocol *)&v26 initWithRequest:requestCopy cachedResponse:responseCopy client:clientCopy];
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x1E699B868]);
@@ -152,27 +152,27 @@ void __27__MFMessageURLProtocol_log__block_invoke(uint64_t a1)
     v11->_promise = v12;
 
     v14 = objc_opt_class();
-    v15 = [v8 mainDocumentURL];
-    v16 = [v14 contentRepresentationForURL:v15];
+    mainDocumentURL = [requestCopy mainDocumentURL];
+    v16 = [v14 contentRepresentationForURL:mainDocumentURL];
     contentRepresentation = v11->_contentRepresentation;
     v11->_contentRepresentation = v16;
 
     objc_initWeak(&location, v11);
-    v18 = [(EFPromise *)v11->_promise future];
+    future = [(EFPromise *)v11->_promise future];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __62__MFMessageURLProtocol_initWithRequest_cachedResponse_client___block_invoke;
     v23[3] = &unk_1E8070330;
     objc_copyWeak(&v24, &location);
-    [v18 addSuccessBlock:v23];
+    [future addSuccessBlock:v23];
 
-    v19 = [(EFPromise *)v11->_promise future];
+    future2 = [(EFPromise *)v11->_promise future];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __62__MFMessageURLProtocol_initWithRequest_cachedResponse_client___block_invoke_2;
     v21[3] = &unk_1E806FBB8;
     objc_copyWeak(&v22, &location);
-    [v19 addFailureBlock:v21];
+    [future2 addFailureBlock:v21];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v24);
@@ -206,14 +206,14 @@ void __62__MFMessageURLProtocol_initWithRequest_cachedResponse_client___block_in
   [v4 URLProtocol:WeakRetained didFailWithError:v5];
 }
 
-- (id)_cachedResponseWithData:(id)a3 mimeType:(id)a4 error:(id *)a5
+- (id)_cachedResponseWithData:(id)data mimeType:(id)type error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dataCopy = data;
+  typeCopy = type;
+  if (dataCopy)
   {
-    v10 = [v8 length];
+    v10 = [dataCopy length];
     if (v10)
     {
       v11 = v10;
@@ -225,13 +225,13 @@ void __62__MFMessageURLProtocol_initWithRequest_cachedResponse_client___block_in
     }
 
     v12 = objc_alloc(MEMORY[0x1E696AF70]);
-    v13 = [(NSURLProtocol *)self request];
-    v14 = [v13 URL];
-    v15 = [v12 initWithURL:v14 MIMEType:v9 expectedContentLength:v11 textEncodingName:0];
+    request = [(NSURLProtocol *)self request];
+    v14 = [request URL];
+    v15 = [v12 initWithURL:v14 MIMEType:typeCopy expectedContentLength:v11 textEncodingName:0];
 
-    v16 = [objc_alloc(MEMORY[0x1E696AAF8]) initWithResponse:v15 data:v8 userInfo:0 storagePolicy:2];
+    v16 = [objc_alloc(MEMORY[0x1E696AAF8]) initWithResponse:v15 data:dataCopy userInfo:0 storagePolicy:2];
     v17 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -241,21 +241,21 @@ void __62__MFMessageURLProtocol_initWithRequest_cachedResponse_client___block_in
   {
     v18 = MEMORY[0x1E696ABC0];
     v24 = *MEMORY[0x1E696A980];
-    v19 = [(NSURLProtocol *)self request];
-    v20 = [v19 URL];
+    request2 = [(NSURLProtocol *)self request];
+    v20 = [request2 URL];
     v25[0] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v17 = [v18 errorWithDomain:*MEMORY[0x1E696A978] code:-1008 userInfo:v21];
 
     v16 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
   }
 
   v22 = v17;
-  *a5 = v17;
+  *error = v17;
 LABEL_9:
 
   return v16;
@@ -264,65 +264,65 @@ LABEL_9:
 - (void)startLoading
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSURLProtocol *)self request];
-  v5 = [v4 URL];
+  request = [(NSURLProtocol *)self request];
+  v5 = [request URL];
 
   v6 = [MEMORY[0x1E696AF20] componentsWithURL:v5 resolvingAgainstBaseURL:0];
-  v7 = [v6 path];
-  v8 = [(EMContentRepresentation *)self->_contentRepresentation relatedContentItems];
+  path = [v6 path];
+  relatedContentItems = [(EMContentRepresentation *)self->_contentRepresentation relatedContentItems];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __36__MFMessageURLProtocol_startLoading__block_invoke;
   v50[3] = &unk_1E8070358;
-  v9 = v7;
+  v9 = path;
   v51 = v9;
-  v10 = [v8 ef_firstObjectPassingTest:v50];
+  v10 = [relatedContentItems ef_firstObjectPassingTest:v50];
 
   if (v10)
   {
-    v11 = [v10 mailDropMetadata];
-    v12 = v11 == 0;
+    mailDropMetadata = [v10 mailDropMetadata];
+    v12 = mailDropMetadata == 0;
 
     if (v12)
     {
       v13 = [MEMORY[0x1E699AC68] optionsWithRequestedRepresentationType:*MEMORY[0x1E699A710] networkUsage:1];
-      v14 = [MEMORY[0x1E699B868] promise];
-      v15 = [v14 completionHandlerAdapter];
-      v16 = [v10 requestRepresentationWithOptions:v13 completionHandler:v15];
+      promise = [MEMORY[0x1E699B868] promise];
+      completionHandlerAdapter = [promise completionHandlerAdapter];
+      v16 = [v10 requestRepresentationWithOptions:v13 completionHandler:completionHandlerAdapter];
       [(MFMessageURLProtocol *)self setCancelable:v16];
 
-      v17 = [v14 future];
+      future = [promise future];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __36__MFMessageURLProtocol_startLoading__block_invoke_2;
       v47[3] = &unk_1E80703A8;
       v48 = v10;
-      v49 = self;
-      v18 = [v17 then:v47];
+      selfCopy = self;
+      v18 = [future then:v47];
 
-      v19 = [(MFMessageURLProtocol *)self promise];
-      [v19 finishWithFuture:v18];
+      promise2 = [(MFMessageURLProtocol *)self promise];
+      [promise2 finishWithFuture:v18];
 
       goto LABEL_8;
     }
 
 LABEL_7:
-    v23 = [(MFMessageURLProtocol *)self promise];
+    promise3 = [(MFMessageURLProtocol *)self promise];
     v24 = MEMORY[0x1E696ABC0];
     v52 = *MEMORY[0x1E696A980];
-    v14 = [(NSURLProtocol *)self request];
-    v25 = [v14 URL];
+    promise = [(NSURLProtocol *)self request];
+    v25 = [promise URL];
     v53 = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
     v27 = [v24 errorWithDomain:*MEMORY[0x1E696A978] code:-1008 userInfo:v26];
-    [v23 finishWithError:v27];
+    [promise3 finishWithError:v27];
 
-    v13 = v23;
+    v13 = promise3;
     goto LABEL_8;
   }
 
-  v20 = [MEMORY[0x1E69B15D0] defaultManager];
-  v13 = [v20 attachmentForContentID:v9 preferredSchemes:&unk_1F3D167C0];
+  defaultManager = [MEMORY[0x1E69B15D0] defaultManager];
+  v13 = [defaultManager attachmentForContentID:v9 preferredSchemes:&unk_1F3D167C0];
 
   if (!v13)
   {
@@ -330,16 +330,16 @@ LABEL_7:
   }
 
   v21 = [v13 url];
-  v22 = [v21 scheme];
-  if ([@"x-attach-compose" caseInsensitiveCompare:v22])
+  scheme = [v21 scheme];
+  if ([@"x-attach-compose" caseInsensitiveCompare:scheme])
   {
   }
 
   else
   {
-    v28 = [v13 isDisplayableInline];
+    isDisplayableInline = [v13 isDisplayableInline];
 
-    if ((v28 & 1) == 0)
+    if ((isDisplayableInline & 1) == 0)
     {
       v44[0] = MEMORY[0x1E69E9820];
       v44[1] = 3221225472;
@@ -347,18 +347,18 @@ LABEL_7:
       v44[3] = &unk_1E806C520;
       v13 = v13;
       v45 = v13;
-      v46 = self;
-      v37 = [MEMORY[0x1E699B978] mainThreadScheduler];
-      [v37 performBlock:v44];
+      selfCopy2 = self;
+      mainThreadScheduler = [MEMORY[0x1E699B978] mainThreadScheduler];
+      [mainThreadScheduler performBlock:v44];
 
-      v14 = v45;
+      promise = v45;
       goto LABEL_8;
     }
   }
 
   if ([v13 isDisplayableInline])
   {
-    v29 = [v13 mimeType];
+    mimeType = [v13 mimeType];
     objc_initWeak(&location, self);
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -366,21 +366,21 @@ LABEL_7:
     v39[3] = &unk_1E80703D0;
     objc_copyWeak(&v42, &location);
     v40 = v5;
-    v14 = v29;
-    v41 = v14;
+    promise = mimeType;
+    v41 = promise;
     [v13 setFetchCompletionBlock:v39];
     [v13 setWantsCompletionBlockOffMainThread:1];
-    v30 = [(MFMessageURLProtocol *)self cancelable];
-    LOBYTE(v29) = v30 == 0;
+    cancelable = [(MFMessageURLProtocol *)self cancelable];
+    LOBYTE(mimeType) = cancelable == 0;
 
-    if ((v29 & 1) == 0)
+    if ((mimeType & 1) == 0)
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v38 handleFailureInMethod:a2 object:self file:@"MFMessageURLProtocol.m" lineNumber:280 description:@"should only get here once"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessageURLProtocol.m" lineNumber:280 description:@"should only get here once"];
     }
 
-    v31 = [v13 fetchData];
-    [(MFMessageURLProtocol *)self setCancelable:v31];
+    fetchData = [v13 fetchData];
+    [(MFMessageURLProtocol *)self setCancelable:fetchData];
 
     objc_destroyWeak(&v42);
     objc_destroyWeak(&location);
@@ -388,15 +388,15 @@ LABEL_7:
 
   else
   {
-    v14 = [(MFMessageURLProtocol *)self promise];
+    promise = [(MFMessageURLProtocol *)self promise];
     v32 = MEMORY[0x1E696ABC0];
     v54 = *MEMORY[0x1E696A980];
-    v33 = [(NSURLProtocol *)self request];
-    v34 = [v33 URL];
+    request2 = [(NSURLProtocol *)self request];
+    v34 = [request2 URL];
     v55[0] = v34;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
     v36 = [v32 errorWithDomain:*MEMORY[0x1E696A978] code:-1103 userInfo:v35];
-    [v14 finishWithError:v36];
+    [promise finishWithError:v36];
   }
 
 LABEL_8:
@@ -511,18 +511,18 @@ void __36__MFMessageURLProtocol_startLoading__block_invoke_5(uint64_t a1, uint64
 - (void)stopLoading
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFMessageURLProtocol *)self promise];
+  promise = [(MFMessageURLProtocol *)self promise];
   v4 = MEMORY[0x1E696ABC0];
   v10 = *MEMORY[0x1E696A980];
-  v5 = [(NSURLProtocol *)self request];
-  v6 = [v5 URL];
+  request = [(NSURLProtocol *)self request];
+  v6 = [request URL];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v4 errorWithDomain:*MEMORY[0x1E696A978] code:-999 userInfo:v7];
-  [v3 finishWithError:v8];
+  [promise finishWithError:v8];
 
-  v9 = [(MFMessageURLProtocol *)self cancelable];
-  [v9 cancel];
+  cancelable = [(MFMessageURLProtocol *)self cancelable];
+  [cancelable cancel];
 }
 
 + (void)canInitWithRequest:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

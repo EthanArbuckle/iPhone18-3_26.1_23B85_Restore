@@ -1,25 +1,25 @@
 @interface DAHolidayCalendarsFetchContext
-- (DAHolidayCalendarsFetchContext)initWithResultsBlock:(id)a3 completionBlock:(id)a4;
-- (void)finishedWithError:(id)a3;
-- (void)resultsReturned:(id)a3;
+- (DAHolidayCalendarsFetchContext)initWithResultsBlock:(id)block completionBlock:(id)completionBlock;
+- (void)finishedWithError:(id)error;
+- (void)resultsReturned:(id)returned;
 @end
 
 @implementation DAHolidayCalendarsFetchContext
 
-- (DAHolidayCalendarsFetchContext)initWithResultsBlock:(id)a3 completionBlock:(id)a4
+- (DAHolidayCalendarsFetchContext)initWithResultsBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v14.receiver = self;
   v14.super_class = DAHolidayCalendarsFetchContext;
   v8 = [(DAHolidayCalendarsFetchContext *)&v14 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(blockCopy);
     resultsBlock = v8->_resultsBlock;
     v8->_resultsBlock = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionBlockCopy);
     completionBlock = v8->_completionBlock;
     v8->_completionBlock = v11;
   }
@@ -27,9 +27,9 @@
   return v8;
 }
 
-- (void)resultsReturned:(id)a3
+- (void)resultsReturned:(id)returned
 {
-  v4 = a3;
+  returnedCopy = returned;
   if (self->_resultsBlock)
   {
     queue = self->_queue;
@@ -49,14 +49,14 @@
     v8[2] = __50__DAHolidayCalendarsFetchContext_resultsReturned___block_invoke;
     v8[3] = &unk_27851FED8;
     v8[4] = self;
-    v9 = v4;
+    v9 = returnedCopy;
     dispatch_async(v7, v8);
   }
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_completionBlock)
   {
     queue = self->_queue;
@@ -76,7 +76,7 @@
     v8[2] = __52__DAHolidayCalendarsFetchContext_finishedWithError___block_invoke;
     v8[3] = &unk_27851FED8;
     v8[4] = self;
-    v9 = v4;
+    v9 = errorCopy;
     dispatch_async(v7, v8);
   }
 }

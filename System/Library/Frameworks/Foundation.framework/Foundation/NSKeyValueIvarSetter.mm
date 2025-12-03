@@ -1,13 +1,13 @@
 @interface NSKeyValueIvarSetter
-- (NSKeyValueIvarSetter)initWithContainerClassID:(id)a3 key:(id)a4 containerIsa:(Class)a5 ivar:(objc_ivar *)a6;
+- (NSKeyValueIvarSetter)initWithContainerClassID:(id)d key:(id)key containerIsa:(Class)isa ivar:(objc_ivar *)ivar;
 @end
 
 @implementation NSKeyValueIvarSetter
 
-- (NSKeyValueIvarSetter)initWithContainerClassID:(id)a3 key:(id)a4 containerIsa:(Class)a5 ivar:(objc_ivar *)a6
+- (NSKeyValueIvarSetter)initWithContainerClassID:(id)d key:(id)key containerIsa:(Class)isa ivar:(objc_ivar *)ivar
 {
   v30 = *MEMORY[0x1E69E9840];
-  TypeEncoding = ivar_getTypeEncoding(a6);
+  TypeEncoding = ivar_getTypeEncoding(ivar);
   v12 = *TypeEncoding;
   v13 = _NSSetBoolValueForKeyInIvar;
   if (v12 > 0x62)
@@ -191,14 +191,14 @@ LABEL_51:
 LABEL_47:
   v15 = v13;
 LABEL_48:
-  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(a5, a4))
+  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(isa, key))
   {
-    return [(NSKeyValueAccessor *)&v28 initWithContainerClassID:a3 key:a4 implementation:_NSSetValueAndNotifyForKeyInIvar selector:0 extraArguments:&v29 count:3, v27.receiver, v27.super_class, self, NSKeyValueIvarSetter, a4, a6, v15, v30];
+    return [(NSKeyValueAccessor *)&v28 initWithContainerClassID:d key:key implementation:_NSSetValueAndNotifyForKeyInIvar selector:0 extraArguments:&v29 count:3, v27.receiver, v27.super_class, self, NSKeyValueIvarSetter, key, ivar, v15, v30];
   }
 
   else
   {
-    return [(NSKeyValueAccessor *)&v27 initWithContainerClassID:a3 key:a4 implementation:v15 selector:0 extraArguments:&v29 count:2, self, NSKeyValueIvarSetter, v28.receiver, v28.super_class, a4, a6, 0, v30];
+    return [(NSKeyValueAccessor *)&v27 initWithContainerClassID:d key:key implementation:v15 selector:0 extraArguments:&v29 count:2, self, NSKeyValueIvarSetter, v28.receiver, v28.super_class, key, ivar, 0, v30];
   }
 }
 

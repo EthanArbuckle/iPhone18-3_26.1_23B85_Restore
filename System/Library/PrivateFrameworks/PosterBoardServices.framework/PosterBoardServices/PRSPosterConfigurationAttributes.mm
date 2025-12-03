@@ -1,26 +1,26 @@
 @interface PRSPosterConfigurationAttributes
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAttributes:(id)a3;
-- (BOOL)isExtensionIdentifierEqual:(id)a3;
-- (BOOL)isIdentifierURLEqual:(id)a3;
-- (BOOL)isPosterUUIDEqual:(id)a3;
-- (BOOL)isRoleEqual:(id)a3;
-- (BOOL)isSupplementalVersionEqual:(id)a3;
-- (BOOL)isVersionEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAttributes:(id)attributes;
+- (BOOL)isExtensionIdentifierEqual:(id)equal;
+- (BOOL)isIdentifierURLEqual:(id)equal;
+- (BOOL)isPosterUUIDEqual:(id)equal;
+- (BOOL)isRoleEqual:(id)equal;
+- (BOOL)isSupplementalVersionEqual:(id)equal;
+- (BOOL)isVersionEqual:(id)equal;
 - (NSSet)snapshotURLs;
-- (PRSPosterConfigurationAttributes)initWithConfiguration:(id)a3;
-- (PRSPosterConfigurationAttributes)initWithPath:(id)a3 extensionIdentifier:(id)a4;
-- (PRSPosterConfigurationAttributes)initWithURL:(id)a3 extensionIdentifier:(id)a4 configurationUUID:(id)a5 role:(id)a6 version:(id)a7 supplementalVersion:(id)a8;
-- (id)_initWithPath:(id)a3 extensionIdentifier:(id)a4 posterUUID:(id)a5 providerURL:(id)a6 version:(unint64_t)a7 supplementalVersion:(unint64_t)a8 fileManager:(id)a9;
+- (PRSPosterConfigurationAttributes)initWithConfiguration:(id)configuration;
+- (PRSPosterConfigurationAttributes)initWithPath:(id)path extensionIdentifier:(id)identifier;
+- (PRSPosterConfigurationAttributes)initWithURL:(id)l extensionIdentifier:(id)identifier configurationUUID:(id)d role:(id)role version:(id)version supplementalVersion:(id)supplementalVersion;
+- (id)_initWithPath:(id)path extensionIdentifier:(id)identifier posterUUID:(id)d providerURL:(id)l version:(unint64_t)version supplementalVersion:(unint64_t)supplementalVersion fileManager:(id)manager;
 @end
 
 @implementation PRSPosterConfigurationAttributes
 
-- (PRSPosterConfigurationAttributes)initWithPath:(id)a3 extensionIdentifier:(id)a4
+- (PRSPosterConfigurationAttributes)initWithPath:(id)path extensionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  pathCopy = path;
+  identifierCopy = identifier;
+  v9 = pathCopy;
   NSClassFromString(&cfstr_Pfposterpath.isa);
   if (!v9)
   {
@@ -33,27 +33,27 @@
   }
 
   v10 = objc_opt_new();
-  v22 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [@"PRS_STAGED" stringByAppendingPathComponent:v8];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [@"PRS_STAGED" stringByAppendingPathComponent:identifierCopy];
   v12 = PFTemporaryDirectory();
   v13 = [v12 stringByAppendingPathComponent:v11];
 
   v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 isDirectory:1];
-  v15 = [v9 serverIdentity];
-  v16 = [v15 version];
+  serverIdentity = [v9 serverIdentity];
+  version = [serverIdentity version];
   [v9 serverIdentity];
-  v17 = v8;
+  v17 = identifierCopy;
   v19 = v18 = self;
-  v20 = -[PRSPosterConfigurationAttributes _initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:](v18, "_initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:", v9, v17, v22, v14, v16, [v19 supplement], v10);
+  v20 = -[PRSPosterConfigurationAttributes _initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:](v18, "_initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:", v9, v17, uUID, v14, version, [v19 supplement], v10);
 
   return v20;
 }
 
-- (PRSPosterConfigurationAttributes)initWithConfiguration:(id)a3
+- (PRSPosterConfigurationAttributes)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [v5 _path];
-  v7 = v5;
+  configurationCopy = configuration;
+  _path = [configurationCopy _path];
+  v7 = configurationCopy;
   NSClassFromString(&cfstr_Prsposterconfi_1.isa);
   if (!v7)
   {
@@ -65,7 +65,7 @@
     [PRSPosterConfigurationAttributes initWithConfiguration:a2];
   }
 
-  v8 = v6;
+  v8 = _path;
   NSClassFromString(&cfstr_Pfserverposter.isa);
   if (!v8)
   {
@@ -99,61 +99,61 @@
 
   v12 = v11;
 
-  v13 = [v12 identity];
+  identity = [v12 identity];
   v14 = objc_opt_new();
-  v15 = [v13 posterUUID];
-  v16 = [v13 provider];
-  v17 = [v12 providerURL];
-  v18 = -[PRSPosterConfigurationAttributes _initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:](self, "_initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:", v10, v16, v15, v17, [v13 version], objc_msgSend(v13, "supplement"), v14);
+  posterUUID = [identity posterUUID];
+  provider = [identity provider];
+  providerURL = [v12 providerURL];
+  v18 = -[PRSPosterConfigurationAttributes _initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:](self, "_initWithPath:extensionIdentifier:posterUUID:providerURL:version:supplementalVersion:fileManager:", v10, provider, posterUUID, providerURL, [identity version], objc_msgSend(identity, "supplement"), v14);
 
   return v18;
 }
 
-- (id)_initWithPath:(id)a3 extensionIdentifier:(id)a4 posterUUID:(id)a5 providerURL:(id)a6 version:(unint64_t)a7 supplementalVersion:(unint64_t)a8 fileManager:(id)a9
+- (id)_initWithPath:(id)path extensionIdentifier:(id)identifier posterUUID:(id)d providerURL:(id)l version:(unint64_t)version supplementalVersion:(unint64_t)supplementalVersion fileManager:(id)manager
 {
-  v14 = a3;
-  v28 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
+  pathCopy = path;
+  identifierCopy = identifier;
+  dCopy = d;
+  lCopy = l;
+  managerCopy = manager;
   v29.receiver = self;
   v29.super_class = PRSPosterConfigurationAttributes;
   v18 = [(PRSPosterConfigurationAttributes *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_path, a3);
-    objc_storeStrong(&v19->_extensionIdentifier, a4);
-    objc_storeStrong(&v19->_posterUUID, a5);
-    objc_storeStrong(&v19->_providerURL, a6);
-    v20 = [MEMORY[0x1E695DFF8] pf_posterPathIdentifierURLProviderURL:v16 type:3 posterUUID:v15];
+    objc_storeStrong(&v18->_path, path);
+    objc_storeStrong(&v19->_extensionIdentifier, identifier);
+    objc_storeStrong(&v19->_posterUUID, d);
+    objc_storeStrong(&v19->_providerURL, l);
+    v20 = [MEMORY[0x1E695DFF8] pf_posterPathIdentifierURLProviderURL:lCopy type:3 posterUUID:dCopy];
     identifierURL = v19->_identifierURL;
     v19->_identifierURL = v20;
 
-    v19->_version = a7;
-    v19->_supplementalVersion = a8;
-    objc_storeStrong(&v19->_fileManager, a9);
-    v22 = [v14 serverIdentity];
-    v23 = [v22 descriptorIdentifier];
+    v19->_version = version;
+    v19->_supplementalVersion = supplementalVersion;
+    objc_storeStrong(&v19->_fileManager, manager);
+    serverIdentity = [pathCopy serverIdentity];
+    descriptorIdentifier = [serverIdentity descriptorIdentifier];
     descriptorIdentifier = v19->_descriptorIdentifier;
-    v19->_descriptorIdentifier = v23;
+    v19->_descriptorIdentifier = descriptorIdentifier;
   }
 
   return v19;
 }
 
-- (PRSPosterConfigurationAttributes)initWithURL:(id)a3 extensionIdentifier:(id)a4 configurationUUID:(id)a5 role:(id)a6 version:(id)a7 supplementalVersion:(id)a8
+- (PRSPosterConfigurationAttributes)initWithURL:(id)l extensionIdentifier:(id)identifier configurationUUID:(id)d role:(id)role version:(id)version supplementalVersion:(id)supplementalVersion
 {
   v91[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([v14 checkResourceIsReachableAndReturnError:0])
+  lCopy = l;
+  identifierCopy = identifier;
+  dCopy = d;
+  roleCopy = role;
+  versionCopy = version;
+  supplementalVersionCopy = supplementalVersion;
+  if ([lCopy checkResourceIsReachableAndReturnError:0])
   {
-    v86 = self;
+    selfCopy = self;
     v20 = objc_opt_new();
     v21 = *MEMORY[0x1E695DC30];
     v22 = *MEMORY[0x1E695DB78];
@@ -161,13 +161,13 @@
     v91[1] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
     v87 = v20;
-    v24 = [v20 contentsOfDirectoryAtURL:v14 includingPropertiesForKeys:v23 options:5 error:0];
+    v24 = [v20 contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:v23 options:5 error:0];
 
     v25 = [v24 count];
-    if (![v24 count] || !v15 && v25 > 1)
+    if (![v24 count] || !identifierCopy && v25 > 1)
     {
-      v26 = 0;
-      self = v86;
+      selfCopy2 = 0;
+      self = selfCopy;
 LABEL_75:
 
       goto LABEL_76;
@@ -175,13 +175,13 @@ LABEL_75:
 
     v27 = [v24 bs_map:&__block_literal_global_9];
     v85 = v27;
-    if (v15)
+    if (identifierCopy)
     {
-      v28 = [v27 indexOfObject:v15];
+      v28 = [v27 indexOfObject:identifierCopy];
       if (v28 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v26 = 0;
-        self = v86;
+        selfCopy2 = 0;
+        self = selfCopy;
 LABEL_74:
 
         goto LABEL_75;
@@ -193,16 +193,16 @@ LABEL_74:
       v28 = 0;
     }
 
-    v83 = v17;
+    v83 = roleCopy;
     v29 = [v24 objectAtIndexedSubscript:v28];
     v84 = [v85 objectAtIndexedSubscript:v28];
     if (!v29)
     {
-      v26 = 0;
-      self = v86;
+      selfCopy2 = 0;
+      self = selfCopy;
 LABEL_73:
 
-      v17 = v83;
+      roleCopy = v83;
       goto LABEL_74;
     }
 
@@ -210,8 +210,8 @@ LABEL_73:
     v30 = [v29 URLByAppendingPathComponent:@"configurations"];
     if (![v30 checkResourceIsReachableAndReturnError:0])
     {
-      v26 = 0;
-      self = v86;
+      selfCopy2 = 0;
+      self = selfCopy;
 LABEL_72:
 
       v29 = v82;
@@ -225,11 +225,11 @@ LABEL_72:
     v32 = [v87 contentsOfDirectoryAtURL:v30 includingPropertiesForKeys:v31 options:5 error:0];
 
     v33 = [v32 count];
-    if (![v32 count] || !v16 && v33 > 1)
+    if (![v32 count] || !dCopy && v33 > 1)
     {
       v34 = v32;
-      v26 = 0;
-      self = v86;
+      selfCopy2 = 0;
+      self = selfCopy;
       v30 = v81;
 LABEL_71:
 
@@ -238,17 +238,17 @@ LABEL_71:
 
     v35 = [v32 bs_map:&__block_literal_global_38];
     v80 = v35;
-    if (v16)
+    if (dCopy)
     {
       v36 = v35;
-      v78 = [v16 UUIDString];
-      v37 = [v36 indexOfObject:v78];
+      uUIDString = [dCopy UUIDString];
+      v37 = [v36 indexOfObject:uUIDString];
 
       if (v37 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v34 = v32;
-        v26 = 0;
-        self = v86;
+        selfCopy2 = 0;
+        self = selfCopy;
         v30 = v81;
 LABEL_70:
 
@@ -268,8 +268,8 @@ LABEL_70:
     if (!v38)
     {
       v34 = v77;
-      v26 = 0;
-      self = v86;
+      selfCopy2 = 0;
+      self = selfCopy;
       v30 = v81;
 LABEL_69:
 
@@ -281,9 +281,9 @@ LABEL_69:
     v75 = v40;
     if (![v40 checkResourceIsReachableAndReturnError:0])
     {
-      v26 = 0;
+      selfCopy2 = 0;
       v34 = v77;
-      self = v86;
+      self = selfCopy;
       v30 = v81;
 LABEL_68:
 
@@ -292,17 +292,17 @@ LABEL_68:
     }
 
     v41 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"1234567890"];
-    v73 = [v41 invertedSet];
+    invertedSet = [v41 invertedSet];
 
-    if (v18)
+    if (versionCopy)
     {
-      v74 = [v18 stringValue];
+      stringValue = [versionCopy stringValue];
       v72 = [v76 URLByAppendingPathComponent:?];
       if ([v72 checkResourceIsReachableAndReturnError:0])
       {
-        v26 = 0;
+        selfCopy2 = 0;
         v34 = v77;
-        self = v86;
+        self = selfCopy;
         v30 = v81;
 LABEL_65:
 
@@ -310,7 +310,7 @@ LABEL_65:
         goto LABEL_66;
       }
 
-      v71 = [v18 unsignedIntValue];
+      unsignedIntValue = [versionCopy unsignedIntValue];
     }
 
     else
@@ -324,28 +324,28 @@ LABEL_65:
       {
         v34 = v77;
         v47 = v43;
-        v26 = 0;
-        self = v86;
+        selfCopy2 = 0;
+        self = selfCopy;
         v30 = v81;
 LABEL_66:
 
         goto LABEL_67;
       }
 
-      v74 = v43;
+      stringValue = v43;
       v69 = [v43 bs_map:&__block_literal_global_47];
       v67 = [v69 sortedArrayUsingComparator:&__block_literal_global_50_0];
-      v44 = [v67 lastObject];
-      v45 = v44;
-      if (v44 && [v44 rangeOfCharacterFromSet:v73] == 0x7FFFFFFFFFFFFFFFLL)
+      lastObject = [v67 lastObject];
+      v45 = lastObject;
+      if (lastObject && [lastObject rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
       {
         v72 = [v75 URLByAppendingPathComponent:v45];
-        v71 = [v45 integerValue];
+        unsignedIntValue = [v45 integerValue];
       }
 
       else
       {
-        v71 = 0;
+        unsignedIntValue = 0;
         v72 = 0;
       }
     }
@@ -353,17 +353,17 @@ LABEL_66:
     if (!v72)
     {
       v34 = v77;
-      v26 = 0;
-      self = v86;
+      selfCopy2 = 0;
+      self = selfCopy;
       v30 = v81;
 LABEL_67:
 
       goto LABEL_68;
     }
 
-    v74 = [v72 URLByAppendingPathComponent:@"supplements"];
-    v68 = 0;
-    if (![v74 checkResourceIsReachableAndReturnError:0])
+    stringValue = [v72 URLByAppendingPathComponent:@"supplements"];
+    unsignedIntValue2 = 0;
+    if (![stringValue checkResourceIsReachableAndReturnError:0])
     {
 LABEL_54:
       v53 = *MEMORY[0x1E69C5220];
@@ -374,8 +374,8 @@ LABEL_54:
 
       v54 = v53;
       v55 = [v76 URLByAppendingPathComponent:*MEMORY[0x1E69C5200]];
-      self = v86;
-      v70 = v54;
+      self = selfCopy;
+      stringValue2 = v54;
       v66 = v55;
       if ([v55 checkResourceIsReachableAndReturnError:0])
       {
@@ -389,7 +389,7 @@ LABEL_54:
           {
             v34 = v77;
             v61 = v58;
-            v26 = 0;
+            selfCopy2 = 0;
             v60 = v64;
             goto LABEL_63;
           }
@@ -397,38 +397,38 @@ LABEL_54:
           v56 = v64;
         }
 
-        v54 = v70;
+        v54 = stringValue2;
       }
 
       v34 = v77;
-      v59 = [MEMORY[0x1E69C51E0] configurationIdentityWithProvider:v84 identifier:0 role:v54 posterUUID:v16 version:v71 supplement:v68];
+      v59 = [MEMORY[0x1E69C51E0] configurationIdentityWithProvider:v84 identifier:0 role:v54 posterUUID:dCopy version:unsignedIntValue supplement:unsignedIntValue2];
       v65 = [MEMORY[0x1E69C51E8] pathWithProviderURL:v82 identity:v59];
       v60 = v59;
-      self = [(PRSPosterConfigurationAttributes *)v86 _initWithPath:v65 extensionIdentifier:v84 posterUUID:v16 providerURL:v82 version:v71 supplementalVersion:v68 fileManager:v87];
+      self = [(PRSPosterConfigurationAttributes *)selfCopy _initWithPath:v65 extensionIdentifier:v84 posterUUID:dCopy providerURL:v82 version:unsignedIntValue supplementalVersion:unsignedIntValue2 fileManager:v87];
       v61 = v65;
-      v26 = self;
+      selfCopy2 = self;
 LABEL_63:
 
       goto LABEL_64;
     }
 
-    if (v19)
+    if (supplementalVersionCopy)
     {
-      v70 = [v19 stringValue];
+      stringValue2 = [supplementalVersionCopy stringValue];
       v46 = [v76 URLByAppendingPathComponent:?];
       if (![v46 checkResourceIsReachableAndReturnError:0])
       {
-        v26 = 0;
+        selfCopy2 = 0;
         v66 = v46;
         v34 = v77;
-        self = v86;
+        self = selfCopy;
 LABEL_64:
         v30 = v81;
 
         goto LABEL_65;
       }
 
-      v68 = [v19 unsignedIntValue];
+      unsignedIntValue2 = [supplementalVersionCopy unsignedIntValue];
     }
 
     else
@@ -436,137 +436,137 @@ LABEL_64:
       v88[0] = v21;
       v88[1] = v22;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:2];
-      v49 = [v87 contentsOfDirectoryAtURL:v74 includingPropertiesForKeys:v48 options:5 error:0];
+      v49 = [v87 contentsOfDirectoryAtURL:stringValue includingPropertiesForKeys:v48 options:5 error:0];
 
       if (![v49 count])
       {
-        v68 = 0;
+        unsignedIntValue2 = 0;
         goto LABEL_53;
       }
 
-      v70 = v49;
+      stringValue2 = v49;
       v46 = [v49 bs_map:&__block_literal_global_55];
       v50 = [v46 sortedArrayUsingComparator:&__block_literal_global_57];
-      v51 = [v50 lastObject];
-      v52 = v51;
-      if (v51 && [v51 rangeOfCharacterFromSet:v73] == 0x7FFFFFFFFFFFFFFFLL)
+      lastObject2 = [v50 lastObject];
+      v52 = lastObject2;
+      if (lastObject2 && [lastObject2 rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v68 = [v52 integerValue];
+        unsignedIntValue2 = [v52 integerValue];
       }
 
       else
       {
-        v68 = 0;
+        unsignedIntValue2 = 0;
       }
     }
 
-    v49 = v70;
+    v49 = stringValue2;
 LABEL_53:
 
     goto LABEL_54;
   }
 
-  v26 = 0;
+  selfCopy2 = 0;
 LABEL_76:
 
   v62 = *MEMORY[0x1E69E9840];
-  return v26;
+  return selfCopy2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PRSPosterConfigurationAttributes *)self isEqualToAttributes:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PRSPosterConfigurationAttributes *)self isEqualToAttributes:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAttributes:(id)a3
+- (BOOL)isEqualToAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (attributesCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && [(PRSPosterConfigurationAttributes *)self isExtensionIdentifierEqual:v4]&& [(PRSPosterConfigurationAttributes *)self isRoleEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isPosterUUIDEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isIdentifierURLEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isVersionEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isSupplementalVersionEqual:v5];
+    v6 = attributesCopy && [(PRSPosterConfigurationAttributes *)self isExtensionIdentifierEqual:attributesCopy]&& [(PRSPosterConfigurationAttributes *)self isRoleEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isPosterUUIDEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isIdentifierURLEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isVersionEqual:v5]&& [(PRSPosterConfigurationAttributes *)self isSupplementalVersionEqual:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isExtensionIdentifierEqual:(id)a3
+- (BOOL)isExtensionIdentifierEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PRSPosterConfigurationAttributes *)self extensionIdentifier];
-  v6 = [v4 extensionIdentifier];
+  equalCopy = equal;
+  extensionIdentifier = [(PRSPosterConfigurationAttributes *)self extensionIdentifier];
+  extensionIdentifier2 = [equalCopy extensionIdentifier];
 
-  LOBYTE(v4) = BSEqualObjects();
-  return v4;
+  LOBYTE(equalCopy) = BSEqualObjects();
+  return equalCopy;
 }
 
-- (BOOL)isRoleEqual:(id)a3
+- (BOOL)isRoleEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PRSPosterConfigurationAttributes *)self role];
-  v6 = [v4 role];
+  equalCopy = equal;
+  role = [(PRSPosterConfigurationAttributes *)self role];
+  role2 = [equalCopy role];
 
-  LOBYTE(v4) = BSEqualObjects();
-  return v4;
+  LOBYTE(equalCopy) = BSEqualObjects();
+  return equalCopy;
 }
 
-- (BOOL)isPosterUUIDEqual:(id)a3
+- (BOOL)isPosterUUIDEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PRSPosterConfigurationAttributes *)self posterUUID];
-  v6 = [v4 posterUUID];
+  equalCopy = equal;
+  posterUUID = [(PRSPosterConfigurationAttributes *)self posterUUID];
+  posterUUID2 = [equalCopy posterUUID];
 
-  LOBYTE(v4) = BSEqualObjects();
-  return v4;
+  LOBYTE(equalCopy) = BSEqualObjects();
+  return equalCopy;
 }
 
-- (BOOL)isIdentifierURLEqual:(id)a3
+- (BOOL)isIdentifierURLEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PRSPosterConfigurationAttributes *)self identifierURL];
-  v6 = [v5 URLByResolvingSymlinksInPath];
+  equalCopy = equal;
+  identifierURL = [(PRSPosterConfigurationAttributes *)self identifierURL];
+  uRLByResolvingSymlinksInPath = [identifierURL URLByResolvingSymlinksInPath];
 
-  v7 = [v4 identifierURL];
+  identifierURL2 = [equalCopy identifierURL];
 
-  v8 = [v7 URLByResolvingSymlinksInPath];
+  uRLByResolvingSymlinksInPath2 = [identifierURL2 URLByResolvingSymlinksInPath];
 
-  LOBYTE(v7) = BSEqualObjects();
-  return v7;
+  LOBYTE(identifierURL2) = BSEqualObjects();
+  return identifierURL2;
 }
 
-- (BOOL)isVersionEqual:(id)a3
+- (BOOL)isVersionEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PRSPosterConfigurationAttributes *)self version];
-  v6 = [v4 version];
+  equalCopy = equal;
+  version = [(PRSPosterConfigurationAttributes *)self version];
+  version2 = [equalCopy version];
 
-  return v5 == v6;
+  return version == version2;
 }
 
-- (BOOL)isSupplementalVersionEqual:(id)a3
+- (BOOL)isSupplementalVersionEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PRSPosterConfigurationAttributes *)self supplementalVersion];
-  v6 = [v4 supplementalVersion];
+  equalCopy = equal;
+  supplementalVersion = [(PRSPosterConfigurationAttributes *)self supplementalVersion];
+  supplementalVersion2 = [equalCopy supplementalVersion];
 
-  return v5 == v6;
+  return supplementalVersion == supplementalVersion2;
 }
 
 - (NSSet)snapshotURLs
@@ -611,8 +611,8 @@ LABEL_76:
         v16 = v21;
         if ([v16 isEqualToString:v13] && objc_msgSend(v15, "prs_isPosterSnapshot"))
         {
-          v17 = [v15 URLByStandardizingPath];
-          [v3 addObject:v17];
+          uRLByStandardizingPath = [v15 URLByStandardizingPath];
+          [v3 addObject:uRLByStandardizingPath];
         }
       }
 

@@ -7,7 +7,7 @@
 
 - (void)linkTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D8C7220();
 }
 

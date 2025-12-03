@@ -1,73 +1,73 @@
 @interface SGNoCloudNSUbiquitousKeyValueStore
 - (SGNoCloudNSUbiquitousKeyValueStore)init;
-- (id)arrayForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)objectForKey:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
-- (void)setArray:(id)a3 forKey:(id)a4;
-- (void)setData:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setArray:(id)array forKey:(id)key;
+- (void)setData:(id)data forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SGNoCloudNSUbiquitousKeyValueStore
 
-- (void)setArray:(id)a3 forKey:(id)a4
+- (void)setArray:(id)array forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  arrayCopy = array;
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_kv setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_kv setObject:arrayCopy forKeyedSubscript:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)setData:(id)a3 forKey:(id)a4
+- (void)setData:(id)data forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  dataCopy = data;
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_kv setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_kv setObject:dataCopy forKeyedSubscript:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_kv setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_kv setObject:objectCopy forKeyedSubscript:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_kv objectForKeyedSubscript:v4];
-
-  pthread_mutex_unlock(&self->_lock);
-
-  return v5;
-}
-
-- (id)dataForKey:(id)a3
-{
-  v4 = a3;
-  pthread_mutex_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_kv objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_kv objectForKeyedSubscript:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_kv objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_kv objectForKeyedSubscript:keyCopy];
+
+  pthread_mutex_unlock(&self->_lock);
+
+  return v5;
+}
+
+- (id)objectForKey:(id)key
+{
+  keyCopy = key;
+  pthread_mutex_lock(&self->_lock);
+  v5 = [(NSMutableDictionary *)self->_kv objectForKeyedSubscript:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 

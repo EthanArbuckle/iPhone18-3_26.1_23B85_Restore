@@ -6,13 +6,13 @@
 - ($41299696D20B6C925B74A5D5E4D5CC87)physicalScaledExtent;
 - (CGRect)scaledExtent;
 - (NUImageGeometry)init;
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4;
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4 orientation:(int64_t)a5;
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4 orientation:(int64_t)a5 spaceMap:(id)a6;
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4 orientation:(int64_t)a5 spaceMap:(id)a6 roundingPolicy:(int64_t)a7;
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale;
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale orientation:(int64_t)orientation;
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale orientation:(int64_t)orientation spaceMap:(id)map;
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale orientation:(int64_t)orientation spaceMap:(id)map roundingPolicy:(int64_t)policy;
 - (id)description;
 - (id)mediaGeometry;
-- (id)transformWithSourceSpace:(id)a3 destinationSpace:(id)a4 error:(id *)a5;
+- (id)transformWithSourceSpace:(id)space destinationSpace:(id)destinationSpace error:(id *)error;
 @end
 
 @implementation NUImageGeometry
@@ -20,8 +20,8 @@
 - (id)mediaGeometry
 {
   v3 = [_NUMediaGeometry alloc];
-  v4 = [(NUImageGeometry *)self scaledSize];
-  v6 = [(_NUMediaGeometry *)v3 initWithSize:v4 orientation:v5, [(NUImageGeometry *)self orientation]];
+  scaledSize = [(NUImageGeometry *)self scaledSize];
+  v6 = [(_NUMediaGeometry *)v3 initWithSize:scaledSize orientation:v5, [(NUImageGeometry *)self orientation]];
 
   return v6;
 }
@@ -48,10 +48,10 @@
   [(NUImageGeometry *)self scaledExtent];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f, %f  %f, %f", v3, v4, v5, v6];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld, %ld  %ld, %ld", self->_extent.origin.x, self->_extent.origin.y, self->_extent.size.width, self->_extent.size.height];
-  v9 = [(NUImageGeometry *)self orientation];
-  if ((v9 - 9) >= 0xFFFFFFFFFFFFFFF8)
+  orientation = [(NUImageGeometry *)self orientation];
+  if ((orientation - 9) >= 0xFFFFFFFFFFFFFFF8)
   {
-    v10 = v9;
+    v10 = orientation;
   }
 
   else
@@ -60,21 +60,21 @@
   }
 
   v11 = *(&NUOrientationName_names + v10);
-  v12 = [(NUImageGeometry *)self roundingPolicy];
-  if ((v12 - 1) > 3)
+  roundingPolicy = [(NUImageGeometry *)self roundingPolicy];
+  if ((roundingPolicy - 1) > 3)
   {
     v13 = @"Out";
   }
 
   else
   {
-    v13 = *(&off_1E8109788 + v12 - 1);
+    v13 = *(&off_1E8109788 + roundingPolicy - 1);
   }
 
   v14 = v13;
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [(NUImageGeometry *)self scaledSize];
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", v16, v17];
+  scaledSize = [(NUImageGeometry *)self scaledSize];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", scaledSize, v17];
   v19 = [v15 stringWithFormat:@"scaledImageSize : %@   scaledExtent : %@   extent, : %@   scale : %f   orientation : %@   rounding: %@", v18, v7, v8, NUScaleToDouble(self->_renderScale.numerator, self->_renderScale.denominator), v11, v14];
 
   return v19;
@@ -116,8 +116,8 @@
 
 - (CGRect)scaledExtent
 {
-  v3 = [(NUImageGeometry *)self renderScale];
-  v5 = NUScaleToDouble(v3, v4);
+  renderScale = [(NUImageGeometry *)self renderScale];
+  v5 = NUScaleToDouble(renderScale, v4);
   [(NUImageGeometry *)self extent];
   v10.origin.x = v5 * v6;
   v10.origin.y = v5 * v7;
@@ -126,12 +126,12 @@
   return CGRectStandardize(v10);
 }
 
-- (id)transformWithSourceSpace:(id)a3 destinationSpace:(id)a4 error:(id *)a5
+- (id)transformWithSourceSpace:(id)space destinationSpace:(id)destinationSpace error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  spaceCopy = space;
+  destinationSpaceCopy = destinationSpace;
+  if (!error)
   {
     v14 = NUAssertLogger_21877();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -152,8 +152,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v21;
         v32 = 2114;
@@ -164,8 +164,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -174,28 +174,28 @@
     _NUAssertFailHandler("[NUImageGeometry transformWithSourceSpace:destinationSpace:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUImageGeometry.m", 64, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "error != NULL");
   }
 
-  v10 = v9;
+  v10 = destinationSpaceCopy;
   spaceMap = self->_spaceMap;
   if (spaceMap)
   {
-    v12 = [(NUTaggedSpaceMapping *)spaceMap transformWithSourceSpace:v8 destinationSpace:v10 error:a5];
+    v12 = [(NUTaggedSpaceMapping *)spaceMap transformWithSourceSpace:spaceCopy destinationSpace:v10 error:error];
   }
 
   else
   {
     [NUError errorWithCode:3 reason:@"no space map present" object:0];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   return v12;
 }
 
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4 orientation:(int64_t)a5 spaceMap:(id)a6 roundingPolicy:(int64_t)a7
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale orientation:(int64_t)orientation spaceMap:(id)map roundingPolicy:(int64_t)policy
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = scale.var1;
+  var0 = scale.var0;
   v41 = *MEMORY[0x1E69E9840];
-  v14 = a6;
+  mapCopy = map;
   if (var0 < 1 || var1 <= 0)
   {
     v20 = NUAssertLogger_21877();
@@ -217,8 +217,8 @@
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v27;
         v39 = 2114;
@@ -229,8 +229,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -239,48 +239,48 @@
     _NUAssertFailHandler("[NUImageGeometry initWithExtent:renderScale:orientation:spaceMap:roundingPolicy:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUImageGeometry.m", 49, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "NUScaleIsValid(renderScale)");
   }
 
-  v15 = v14;
+  v15 = mapCopy;
   v36.receiver = self;
   v36.super_class = NUImageGeometry;
   v16 = [(NUImageGeometry *)&v36 init];
   v17 = v16;
   if (v16)
   {
-    v18 = a3->var1;
-    v16->_extent.origin = a3->var0;
+    v18 = extent->var1;
+    v16->_extent.origin = extent->var0;
     v16->_extent.size = v18;
     v16->_renderScale.numerator = var0;
     v16->_renderScale.denominator = var1;
-    objc_storeStrong(&v16->_spaceMap, a6);
-    v17->_orientation = a5;
-    v17->_roundingPolicy = a7;
+    objc_storeStrong(&v16->_spaceMap, map);
+    v17->_orientation = orientation;
+    v17->_roundingPolicy = policy;
   }
 
   return v17;
 }
 
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4 orientation:(int64_t)a5 spaceMap:(id)a6
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale orientation:(int64_t)orientation spaceMap:(id)map
 {
-  var1 = a3->var1;
-  v8[0] = a3->var0;
+  var1 = extent->var1;
+  v8[0] = extent->var0;
   v8[1] = var1;
-  return [(NUImageGeometry *)self initWithExtent:v8 renderScale:a4.var0 orientation:a4.var1 spaceMap:a5 roundingPolicy:a6, 0];
+  return [(NUImageGeometry *)self initWithExtent:v8 renderScale:scale.var0 orientation:scale.var1 spaceMap:orientation roundingPolicy:map, 0];
 }
 
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4 orientation:(int64_t)a5
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale orientation:(int64_t)orientation
 {
-  var1 = a3->var1;
-  v7[0] = a3->var0;
+  var1 = extent->var1;
+  v7[0] = extent->var0;
   v7[1] = var1;
-  return [(NUImageGeometry *)self initWithExtent:v7 renderScale:a4.var0 orientation:a4.var1 spaceMap:a5 roundingPolicy:0, 0];
+  return [(NUImageGeometry *)self initWithExtent:v7 renderScale:scale.var0 orientation:scale.var1 spaceMap:orientation roundingPolicy:0, 0];
 }
 
-- (NUImageGeometry)initWithExtent:(id *)a3 renderScale:(id)a4
+- (NUImageGeometry)initWithExtent:(id *)extent renderScale:(id)scale
 {
-  var1 = a3->var1;
-  v6[0] = a3->var0;
+  var1 = extent->var1;
+  v6[0] = extent->var0;
   v6[1] = var1;
-  return [(NUImageGeometry *)self initWithExtent:v6 renderScale:a4.var0 orientation:a4.var1 spaceMap:1 roundingPolicy:0, 0];
+  return [(NUImageGeometry *)self initWithExtent:v6 renderScale:scale.var0 orientation:scale.var1 spaceMap:1 roundingPolicy:0, 0];
 }
 
 - (NUImageGeometry)init
@@ -329,8 +329,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -346,8 +346,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

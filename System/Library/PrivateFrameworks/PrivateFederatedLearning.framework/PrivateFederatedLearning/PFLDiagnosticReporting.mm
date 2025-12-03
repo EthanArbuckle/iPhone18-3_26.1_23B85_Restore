@@ -1,10 +1,10 @@
 @interface PFLDiagnosticReporting
-+ (id)reportingStringForIdentifier:(id)a3;
++ (id)reportingStringForIdentifier:(id)identifier;
 @end
 
 @implementation PFLDiagnosticReporting
 
-+ (id)reportingStringForIdentifier:(id)a3
++ (id)reportingStringForIdentifier:(id)identifier
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {

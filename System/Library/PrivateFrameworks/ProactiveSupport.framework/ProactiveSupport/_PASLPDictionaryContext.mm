@@ -1,7 +1,7 @@
 @interface _PASLPDictionaryContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSCache)enumerationCache;
-- (_PASLPDictionaryContext)initWithStorage:(const unsigned int *)a3 count:(unint64_t)a4;
+- (_PASLPDictionaryContext)initWithStorage:(const unsigned int *)storage count:(unint64_t)count;
 @end
 
 @implementation _PASLPDictionaryContext
@@ -13,16 +13,16 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (self)
@@ -39,12 +39,12 @@
   return self;
 }
 
-- (_PASLPDictionaryContext)initWithStorage:(const unsigned int *)a3 count:(unint64_t)a4
+- (_PASLPDictionaryContext)initWithStorage:(const unsigned int *)storage count:(unint64_t)count
 {
-  if (!a3)
+  if (!storage)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_PASLPReaderCommon.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPReaderCommon.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
   }
 
   v10.receiver = self;
@@ -52,8 +52,8 @@
   result = [(_PASLPDictionaryContext *)&v10 init];
   if (result)
   {
-    result->_storage = a3;
-    result->_count = a4;
+    result->_storage = storage;
+    result->_count = count;
   }
 
   return result;

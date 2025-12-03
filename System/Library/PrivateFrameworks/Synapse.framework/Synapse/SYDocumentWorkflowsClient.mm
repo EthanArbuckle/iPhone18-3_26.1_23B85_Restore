@@ -1,29 +1,29 @@
 @interface SYDocumentWorkflowsClient
-+ (BOOL)_verifyFeatureFlagWithError:(id *)a3;
-+ (id)_createUnableToPerformRequestErrorWithCode:(int64_t)a3;
-- (BOOL)canPerformRequest:(id)a3 withError:(id *)a4;
++ (BOOL)_verifyFeatureFlagWithError:(id *)error;
++ (id)_createUnableToPerformRequestErrorWithCode:(int64_t)code;
+- (BOOL)canPerformRequest:(id)request withError:(id *)error;
 - (SYDocumentWorkflowsClient)init;
 - (void)_createConnectionIfNecessary;
-- (void)_dispatchRequestWithCompletion:(id)a3;
+- (void)_dispatchRequestWithCompletion:(id)completion;
 - (void)_invalidateConnection;
-- (void)canPerformRequest:(id)a3 completion:(id)a4;
+- (void)canPerformRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)fetchAttributesForDocumentsWithIndexKeys:(id)a3 completion:(id)a4;
-- (void)fetchUserActivityForDocumentIndexKey:(id)a3 completion:(id)a4;
-- (void)hasLastModifiedDocumentForFileAtURL:(id)a3 completion:(id)a4;
-- (void)hasLastModifiedDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4;
-- (void)hasOriginalDocumentForFileAtURL:(id)a3 completion:(id)a4;
-- (void)hasOriginalDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4;
-- (void)openLastModifiedDocumentForFileAtURL:(id)a3 completion:(id)a4;
-- (void)openLastModifiedDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4;
-- (void)openOriginalDocumentForFileAtURL:(id)a3 completion:(id)a4;
-- (void)openOriginalDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4;
-- (void)performRequest:(id)a3 completion:(id)a4;
-- (void)performRequest:(id)a3 withCompletion:(id)a4;
-- (void)performRequest:(id)a3 withErrorHandler:(id)a4 completion:(id)a5;
-- (void)saveUserActivity:(id)a3 forDocumentIndexKey:(id)a4 sourceBundleIdentifier:(id)a5 completion:(id)a6;
-- (void)unlinkDocumentsWithRelatedUniqueidentifiers:(id)a3 completion:(id)a4;
-- (void)updateLinkedDocumentsWithCompletion:(id)a3;
+- (void)fetchAttributesForDocumentsWithIndexKeys:(id)keys completion:(id)completion;
+- (void)fetchUserActivityForDocumentIndexKey:(id)key completion:(id)completion;
+- (void)hasLastModifiedDocumentForFileAtURL:(id)l completion:(id)completion;
+- (void)hasLastModifiedDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion;
+- (void)hasOriginalDocumentForFileAtURL:(id)l completion:(id)completion;
+- (void)hasOriginalDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion;
+- (void)openLastModifiedDocumentForFileAtURL:(id)l completion:(id)completion;
+- (void)openLastModifiedDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion;
+- (void)openOriginalDocumentForFileAtURL:(id)l completion:(id)completion;
+- (void)openOriginalDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion;
+- (void)performRequest:(id)request completion:(id)completion;
+- (void)performRequest:(id)request withCompletion:(id)completion;
+- (void)performRequest:(id)request withErrorHandler:(id)handler completion:(id)completion;
+- (void)saveUserActivity:(id)activity forDocumentIndexKey:(id)key sourceBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)unlinkDocumentsWithRelatedUniqueidentifiers:(id)uniqueidentifiers completion:(id)completion;
+- (void)updateLinkedDocumentsWithCompletion:(id)completion;
 @end
 
 @implementation SYDocumentWorkflowsClient
@@ -44,25 +44,25 @@
   return v2;
 }
 
-+ (BOOL)_verifyFeatureFlagWithError:(id *)a3
++ (BOOL)_verifyFeatureFlagWithError:(id *)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = SYIsReturnToSenderEnabled();
   v5 = v4;
-  if (a3 && (v4 & 1) == 0)
+  if (error && (v4 & 1) == 0)
   {
     v6 = MEMORY[0x277CCA9B8];
     v10 = *MEMORY[0x277CCA450];
     v11[0] = @"Feature is not available.";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a3 = [v6 errorWithDomain:@"com.apple.synapse" code:-127 userInfo:v7];
+    *error = [v6 errorWithDomain:@"com.apple.synapse" code:-127 userInfo:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-+ (id)_createUnableToPerformRequestErrorWithCode:(int64_t)a3
++ (id)_createUnableToPerformRequestErrorWithCode:(int64_t)code
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
@@ -71,7 +71,7 @@
   v6 = [v5 localizedStringForKey:@"Unable to perform request." value:@"Unable to perform request." table:@"Localizable"];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v8 = [v4 errorWithDomain:@"com.apple.synapse" code:a3 userInfo:v7];
+  v8 = [v4 errorWithDomain:@"com.apple.synapse" code:code userInfo:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -93,15 +93,15 @@
   [(SYDocumentWorkflowsClient *)&v4 dealloc];
 }
 
-- (void)fetchUserActivityForDocumentIndexKey:(id)a3 completion:(id)a4
+- (void)fetchUserActivityForDocumentIndexKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __77__SYDocumentWorkflowsClient_fetchUserActivityForDocumentIndexKey_completion___block_invoke;
   v16[3] = &unk_27856BEC8;
-  v8 = v7;
+  v8 = completionCopy;
   v17 = v8;
   v9 = MEMORY[0x22AA6A360](v16);
   v15 = 0;
@@ -114,7 +114,7 @@
     v12[2] = __77__SYDocumentWorkflowsClient_fetchUserActivityForDocumentIndexKey_completion___block_invoke_2;
     v12[3] = &unk_27856BF18;
     v14 = v9;
-    v13 = v6;
+    v13 = keyCopy;
     [(SYDocumentWorkflowsClient *)self _dispatchRequestWithCompletion:v12];
   }
 
@@ -164,17 +164,17 @@ void __77__SYDocumentWorkflowsClient_fetchUserActivityForDocumentIndexKey_comple
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)saveUserActivity:(id)a3 forDocumentIndexKey:(id)a4 sourceBundleIdentifier:(id)a5 completion:(id)a6
+- (void)saveUserActivity:(id)activity forDocumentIndexKey:(id)key sourceBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  activityCopy = activity;
+  keyCopy = key;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __100__SYDocumentWorkflowsClient_saveUserActivity_forDocumentIndexKey_sourceBundleIdentifier_completion___block_invoke;
   v24[3] = &unk_27856B738;
-  v14 = v13;
+  v14 = completionCopy;
   v25 = v14;
   v15 = MEMORY[0x22AA6A360](v24);
   v23 = 0;
@@ -187,9 +187,9 @@ void __77__SYDocumentWorkflowsClient_fetchUserActivityForDocumentIndexKey_comple
     v18[2] = __100__SYDocumentWorkflowsClient_saveUserActivity_forDocumentIndexKey_sourceBundleIdentifier_completion___block_invoke_2;
     v18[3] = &unk_27856BF40;
     v22 = v15;
-    v19 = v10;
-    v20 = v11;
-    v21 = v12;
+    v19 = activityCopy;
+    v20 = keyCopy;
+    v21 = identifierCopy;
     [(SYDocumentWorkflowsClient *)self _dispatchRequestWithCompletion:v18];
   }
 
@@ -232,18 +232,18 @@ void __100__SYDocumentWorkflowsClient_saveUserActivity_forDocumentIndexKey_sourc
   }
 }
 
-- (void)fetchAttributesForDocumentsWithIndexKeys:(id)a3 completion:(id)a4
+- (void)fetchAttributesForDocumentsWithIndexKeys:(id)keys completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __81__SYDocumentWorkflowsClient_fetchAttributesForDocumentsWithIndexKeys_completion___block_invoke;
   v21[3] = &unk_27856BF68;
-  v8 = v7;
+  v8 = completionCopy;
   v22 = v8;
   v9 = MEMORY[0x22AA6A360](v21);
-  if (![v6 count])
+  if (![keysCopy count])
   {
     v12 = MEMORY[0x277CBEAD8];
     v13 = *MEMORY[0x277CBE658];
@@ -271,7 +271,7 @@ LABEL_9:
     v16[2] = __81__SYDocumentWorkflowsClient_fetchAttributesForDocumentsWithIndexKeys_completion___block_invoke_2;
     v16[3] = &unk_27856BF90;
     v18 = v9;
-    v17 = v6;
+    v17 = keysCopy;
     v19 = v8;
     [(SYDocumentWorkflowsClient *)self _dispatchRequestWithCompletion:v16];
   }
@@ -314,16 +314,16 @@ void __81__SYDocumentWorkflowsClient_fetchAttributesForDocumentsWithIndexKeys_co
   }
 }
 
-- (void)canPerformRequest:(id)a3 completion:(id)a4
+- (void)canPerformRequest:(id)request completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __58__SYDocumentWorkflowsClient_canPerformRequest_completion___block_invoke;
   v19[3] = &unk_27856B738;
-  v7 = v6;
+  v7 = completionCopy;
   v20 = v7;
   v8 = MEMORY[0x22AA6A360](v19);
   v18 = 0;
@@ -337,13 +337,13 @@ void __81__SYDocumentWorkflowsClient_fetchAttributesForDocumentsWithIndexKeys_co
       objc_exception_throw(v17);
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v5 verifyParameters] & 1) == 0)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([requestCopy verifyParameters] & 1) == 0)
     {
       v14 = os_log_create("com.apple.synapse", "DocumentWorkflows");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v5;
+        v22 = requestCopy;
         _os_log_impl(&dword_225901000, v14, OS_LOG_TYPE_DEFAULT, "%@ request has invalid parameters.", buf, 0xCu);
       }
 
@@ -353,8 +353,8 @@ void __81__SYDocumentWorkflowsClient_fetchAttributesForDocumentsWithIndexKeys_co
 
     else
     {
-      v11 = [v5 documentIndexKey];
-      if (v11)
+      documentIndexKey = [requestCopy documentIndexKey];
+      if (documentIndexKey)
       {
         v8[2](v8, 1, 0);
       }
@@ -365,7 +365,7 @@ void __81__SYDocumentWorkflowsClient_fetchAttributesForDocumentsWithIndexKeys_co
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v22 = v5;
+          v22 = requestCopy;
           _os_log_impl(&dword_225901000, v12, OS_LOG_TYPE_DEFAULT, "%@ request doesn't have a valid document index key.", buf, 0xCu);
         }
 
@@ -394,9 +394,9 @@ uint64_t __58__SYDocumentWorkflowsClient_canPerformRequest_completion___block_in
   return result;
 }
 
-- (BOOL)canPerformRequest:(id)a3 withError:(id *)a4
+- (BOOL)canPerformRequest:(id)request withError:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = dispatch_semaphore_create(0);
   v22 = 0;
   v23 = &v22;
@@ -416,14 +416,14 @@ uint64_t __58__SYDocumentWorkflowsClient_canPerformRequest_completion___block_in
   v15 = &v16;
   v8 = v7;
   v13 = v8;
-  [(SYDocumentWorkflowsClient *)self canPerformRequest:v6 completion:v12];
+  [(SYDocumentWorkflowsClient *)self canPerformRequest:requestCopy completion:v12];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -443,19 +443,19 @@ void __57__SYDocumentWorkflowsClient_canPerformRequest_withError___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)performRequest:(id)a3 withErrorHandler:(id)a4 completion:(id)a5
+- (void)performRequest:(id)request withErrorHandler:(id)handler completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __72__SYDocumentWorkflowsClient_performRequest_withErrorHandler_completion___block_invoke;
   v12[3] = &unk_27856BFB8;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(SYDocumentWorkflowsClient *)self performRequest:a3 completion:v12];
+  v13 = handlerCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = handlerCopy;
+  [(SYDocumentWorkflowsClient *)self performRequest:request completion:v12];
 }
 
 uint64_t __72__SYDocumentWorkflowsClient_performRequest_withErrorHandler_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -479,16 +479,16 @@ uint64_t __72__SYDocumentWorkflowsClient_performRequest_withErrorHandler_complet
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)performRequest:(id)a3 withCompletion:(id)a4
+- (void)performRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__SYDocumentWorkflowsClient_performRequest_withCompletion___block_invoke;
   v8[3] = &unk_27856B738;
-  v9 = v6;
-  v7 = v6;
-  [(SYDocumentWorkflowsClient *)self performRequest:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SYDocumentWorkflowsClient *)self performRequest:request completion:v8];
 }
 
 uint64_t __59__SYDocumentWorkflowsClient_performRequest_withCompletion___block_invoke(uint64_t a1)
@@ -502,26 +502,26 @@ uint64_t __59__SYDocumentWorkflowsClient_performRequest_withCompletion___block_i
   return result;
 }
 
-- (void)performRequest:(id)a3 completion:(id)a4
+- (void)performRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__SYDocumentWorkflowsClient_performRequest_completion___block_invoke;
   v16[3] = &unk_27856B738;
-  v17 = v7;
-  v8 = v7;
+  v17 = completionCopy;
+  v8 = completionCopy;
   v9 = MEMORY[0x22AA6A360](v16);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__SYDocumentWorkflowsClient_performRequest_completion___block_invoke_2;
   v12[3] = &unk_27856C008;
-  v14 = self;
+  selfCopy = self;
   v15 = v9;
-  v13 = v6;
+  v13 = requestCopy;
   v10 = v9;
-  v11 = v6;
+  v11 = requestCopy;
   [(SYDocumentWorkflowsClient *)self canPerformRequest:v11 completion:v12];
 }
 
@@ -601,17 +601,17 @@ void __55__SYDocumentWorkflowsClient_performRequest_completion___block_invoke_2_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)hasOriginalDocumentForFileAtURL:(id)a3 completion:(id)a4
+- (void)hasOriginalDocumentForFileAtURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__SYDocumentWorkflowsClient_hasOriginalDocumentForFileAtURL_completion___block_invoke;
   v17[3] = &unk_27856C030;
-  v8 = v7;
+  v8 = completionCopy;
   v19 = v8;
-  v9 = v6;
+  v9 = lCopy;
   v18 = v9;
   v10 = MEMORY[0x22AA6A360](v17);
   v16 = 0;
@@ -716,21 +716,21 @@ void __72__SYDocumentWorkflowsClient_hasOriginalDocumentForFileAtURL_completion_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasOriginalDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4
+- (void)hasOriginalDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __89__SYDocumentWorkflowsClient_hasOriginalDocumentForFileWithDocumentAttributes_completion___block_invoke;
   v16[3] = &unk_27856B8D8;
-  v17 = v6;
-  v7 = v6;
-  v8 = a3;
+  v17 = completionCopy;
+  v7 = completionCopy;
+  attributesCopy = attributes;
   v9 = MEMORY[0x22AA6A360](v16);
-  v10 = [v8 indexKey];
+  indexKey = [attributesCopy indexKey];
 
-  v18[0] = v10;
+  v18[0] = indexKey;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -761,18 +761,18 @@ void __89__SYDocumentWorkflowsClient_hasOriginalDocumentForFileWithDocumentAttri
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)openOriginalDocumentForFileAtURL:(id)a3 completion:(id)a4
+- (void)openOriginalDocumentForFileAtURL:(id)l completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __73__SYDocumentWorkflowsClient_openOriginalDocumentForFileAtURL_completion___block_invoke;
   v19[3] = &unk_27856C0A8;
-  v8 = v7;
+  v8 = completionCopy;
   v21 = v8;
-  v9 = v6;
+  v9 = lCopy;
   v20 = v9;
   v10 = MEMORY[0x22AA6A360](v19);
   v18 = 0;
@@ -783,9 +783,9 @@ void __89__SYDocumentWorkflowsClient_hasOriginalDocumentForFileWithDocumentAttri
     v13 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 path];
+      path = [v9 path];
       *buf = 138412290;
-      v23 = v14;
+      v23 = path;
       _os_log_impl(&dword_225901000, v13, OS_LOG_TYPE_DEFAULT, "Opening original document of: %@", buf, 0xCu);
     }
 
@@ -830,19 +830,19 @@ void __73__SYDocumentWorkflowsClient_openOriginalDocumentForFileAtURL_completion
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openOriginalDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4
+- (void)openOriginalDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  attributesCopy = attributes;
   v8 = objc_alloc_init(SYReturnToDocumentRequest);
-  [(SYReturnToDocumentRequest *)v8 setDocumentAttributes:v7];
+  [(SYReturnToDocumentRequest *)v8 setDocumentAttributes:attributesCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__SYDocumentWorkflowsClient_openOriginalDocumentForFileWithDocumentAttributes_completion___block_invoke;
   v10[3] = &unk_27856B738;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(SYDocumentWorkflowsClient *)self performRequest:v8 completion:v10];
 }
 
@@ -857,17 +857,17 @@ uint64_t __90__SYDocumentWorkflowsClient_openOriginalDocumentForFileWithDocument
   return result;
 }
 
-- (void)hasLastModifiedDocumentForFileAtURL:(id)a3 completion:(id)a4
+- (void)hasLastModifiedDocumentForFileAtURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __76__SYDocumentWorkflowsClient_hasLastModifiedDocumentForFileAtURL_completion___block_invoke;
   v21[3] = &unk_27856C0D0;
-  v8 = v7;
+  v8 = completionCopy;
   v23 = v8;
-  v9 = v6;
+  v9 = lCopy;
   v22 = v9;
   v10 = MEMORY[0x22AA6A360](v21);
   v20 = 0;
@@ -995,15 +995,15 @@ void __76__SYDocumentWorkflowsClient_hasLastModifiedDocumentForFileAtURL_complet
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasLastModifiedDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4
+- (void)hasLastModifiedDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __93__SYDocumentWorkflowsClient_hasLastModifiedDocumentForFileWithDocumentAttributes_completion___block_invoke;
   v16[3] = &unk_27856C120;
-  v8 = v7;
+  v8 = completionCopy;
   v17 = v8;
   v9 = MEMORY[0x22AA6A360](v16);
   v15 = 0;
@@ -1016,7 +1016,7 @@ void __76__SYDocumentWorkflowsClient_hasLastModifiedDocumentForFileAtURL_complet
     v12[2] = __93__SYDocumentWorkflowsClient_hasLastModifiedDocumentForFileWithDocumentAttributes_completion___block_invoke_2;
     v12[3] = &unk_27856BF18;
     v14 = v9;
-    v13 = v6;
+    v13 = attributesCopy;
     [(SYDocumentWorkflowsClient *)self _dispatchRequestWithCompletion:v12];
   }
 
@@ -1057,24 +1057,24 @@ void __93__SYDocumentWorkflowsClient_hasLastModifiedDocumentForFileWithDocumentA
   }
 }
 
-- (void)openLastModifiedDocumentForFileAtURL:(id)a3 completion:(id)a4
+- (void)openLastModifiedDocumentForFileAtURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__SYDocumentWorkflowsClient_openLastModifiedDocumentForFileAtURL_completion___block_invoke;
   v17[3] = &unk_27856C0A8;
-  v19 = v7;
-  v8 = v6;
+  v19 = completionCopy;
+  v8 = lCopy;
   v18 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v10 = MEMORY[0x22AA6A360](v17);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__SYDocumentWorkflowsClient_openLastModifiedDocumentForFileAtURL_completion___block_invoke_45;
   v13[3] = &unk_27856C080;
-  v15 = self;
+  selfCopy = self;
   v16 = v10;
   v14 = v8;
   v11 = v8;
@@ -1139,15 +1139,15 @@ void __77__SYDocumentWorkflowsClient_openLastModifiedDocumentForFileAtURL_comple
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openLastModifiedDocumentForFileWithDocumentAttributes:(id)a3 completion:(id)a4
+- (void)openLastModifiedDocumentForFileWithDocumentAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __94__SYDocumentWorkflowsClient_openLastModifiedDocumentForFileWithDocumentAttributes_completion___block_invoke;
   v16[3] = &unk_27856B738;
-  v8 = v7;
+  v8 = completionCopy;
   v17 = v8;
   v9 = MEMORY[0x22AA6A360](v16);
   v15 = 0;
@@ -1160,7 +1160,7 @@ void __77__SYDocumentWorkflowsClient_openLastModifiedDocumentForFileAtURL_comple
     v12[2] = __94__SYDocumentWorkflowsClient_openLastModifiedDocumentForFileWithDocumentAttributes_completion___block_invoke_2;
     v12[3] = &unk_27856BF18;
     v14 = v9;
-    v13 = v6;
+    v13 = attributesCopy;
     [(SYDocumentWorkflowsClient *)self _dispatchRequestWithCompletion:v12];
   }
 
@@ -1201,14 +1201,14 @@ void __94__SYDocumentWorkflowsClient_openLastModifiedDocumentForFileWithDocument
   }
 }
 
-- (void)updateLinkedDocumentsWithCompletion:(id)a3
+- (void)updateLinkedDocumentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__SYDocumentWorkflowsClient_updateLinkedDocumentsWithCompletion___block_invoke;
   v12[3] = &unk_27856B738;
-  v5 = v4;
+  v5 = completionCopy;
   v13 = v5;
   v6 = MEMORY[0x22AA6A360](v12);
   v11 = 0;
@@ -1261,15 +1261,15 @@ void __65__SYDocumentWorkflowsClient_updateLinkedDocumentsWithCompletion___block
   }
 }
 
-- (void)unlinkDocumentsWithRelatedUniqueidentifiers:(id)a3 completion:(id)a4
+- (void)unlinkDocumentsWithRelatedUniqueidentifiers:(id)uniqueidentifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  uniqueidentifiersCopy = uniqueidentifiers;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __84__SYDocumentWorkflowsClient_unlinkDocumentsWithRelatedUniqueidentifiers_completion___block_invoke;
   v18[3] = &unk_27856B738;
-  v8 = v7;
+  v8 = completionCopy;
   v19 = v8;
   v9 = MEMORY[0x22AA6A360](v18);
   v17 = 0;
@@ -1277,18 +1277,18 @@ void __65__SYDocumentWorkflowsClient_updateLinkedDocumentsWithCompletion___block
   v11 = v17;
   if (v10)
   {
-    if ([v6 count])
+    if ([uniqueidentifiersCopy count])
     {
-      v12 = [MEMORY[0x277CBEB98] setWithArray:v6];
-      v13 = [v12 allObjects];
+      v12 = [MEMORY[0x277CBEB98] setWithArray:uniqueidentifiersCopy];
+      allObjects = [v12 allObjects];
 
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __84__SYDocumentWorkflowsClient_unlinkDocumentsWithRelatedUniqueidentifiers_completion___block_invoke_2;
       v14[3] = &unk_27856BF18;
       v16 = v9;
-      v6 = v13;
-      v15 = v6;
+      uniqueidentifiersCopy = allObjects;
+      v15 = uniqueidentifiersCopy;
       [(SYDocumentWorkflowsClient *)self _dispatchRequestWithCompletion:v14];
     }
 
@@ -1336,18 +1336,18 @@ void __84__SYDocumentWorkflowsClient_unlinkDocumentsWithRelatedUniqueidentifiers
   }
 }
 
-- (void)_dispatchRequestWithCompletion:(id)a3
+- (void)_dispatchRequestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SYDocumentWorkflowsClient *)self processingQueue];
+  completionCopy = completion;
+  processingQueue = [(SYDocumentWorkflowsClient *)self processingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SYDocumentWorkflowsClient__dispatchRequestWithCompletion___block_invoke;
   v7[3] = &unk_27856B978;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(processingQueue, v7);
 }
 
 void __60__SYDocumentWorkflowsClient__dispatchRequestWithCompletion___block_invoke(uint64_t a1)
@@ -1402,25 +1402,25 @@ void __60__SYDocumentWorkflowsClient__dispatchRequestWithCompletion___block_invo
 - (void)_createConnectionIfNecessary
 {
   v40[5] = *MEMORY[0x277D85DE8];
-  v3 = [(SYDocumentWorkflowsClient *)self connection];
+  connection = [(SYDocumentWorkflowsClient *)self connection];
 
-  if (!v3)
+  if (!connection)
   {
     v4 = objc_alloc(MEMORY[0x277CCAE80]);
     v5 = +[SYDocumentWorkflowsService serviceName];
     v6 = [v4 initWithMachServiceName:v5 options:0];
     [(SYDocumentWorkflowsClient *)self setConnection:v6];
 
-    v7 = [(SYDocumentWorkflowsClient *)self connection];
-    v8 = [(SYDocumentWorkflowsClient *)self processingQueue];
-    [v7 _setQueue:v8];
+    connection2 = [(SYDocumentWorkflowsClient *)self connection];
+    processingQueue = [(SYDocumentWorkflowsClient *)self processingQueue];
+    [connection2 _setQueue:processingQueue];
 
     v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2838F6570];
-    v10 = [(SYDocumentWorkflowsClient *)self connection];
-    [v10 setRemoteObjectInterface:v9];
+    connection3 = [(SYDocumentWorkflowsClient *)self connection];
+    [connection3 setRemoteObjectInterface:v9];
 
-    v11 = [(SYDocumentWorkflowsClient *)self connection];
-    v12 = [v11 remoteObjectInterface];
+    connection4 = [(SYDocumentWorkflowsClient *)self connection];
+    remoteObjectInterface = [connection4 remoteObjectInterface];
     v13 = MEMORY[0x277CBEB98];
     v40[0] = objc_opt_class();
     v40[1] = objc_opt_class();
@@ -1429,43 +1429,43 @@ void __60__SYDocumentWorkflowsClient__dispatchRequestWithCompletion___block_invo
     v40[4] = objc_opt_class();
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:5];
     v15 = [v13 setWithArray:v14];
-    [v12 setClasses:v15 forSelector:sel_fetchAttributesForDocumentsWithIndexKeys_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface setClasses:v15 forSelector:sel_fetchAttributesForDocumentsWithIndexKeys_completion_ argumentIndex:0 ofReply:1];
 
-    v16 = [(SYDocumentWorkflowsClient *)self connection];
-    v17 = [v16 remoteObjectInterface];
+    connection5 = [(SYDocumentWorkflowsClient *)self connection];
+    remoteObjectInterface2 = [connection5 remoteObjectInterface];
     v18 = MEMORY[0x277CBEB98];
     v39[0] = objc_opt_class();
     v39[1] = objc_opt_class();
     v39[2] = objc_opt_class();
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:3];
     v20 = [v18 setWithArray:v19];
-    [v17 setClasses:v20 forSelector:sel_hasLastModifiedDocument_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface2 setClasses:v20 forSelector:sel_hasLastModifiedDocument_completion_ argumentIndex:0 ofReply:1];
 
-    v21 = [(SYDocumentWorkflowsClient *)self connection];
-    v22 = [v21 remoteObjectInterface];
+    connection6 = [(SYDocumentWorkflowsClient *)self connection];
+    remoteObjectInterface3 = [connection6 remoteObjectInterface];
     v23 = MEMORY[0x277CBEB98];
     v38[0] = objc_opt_class();
     v38[1] = objc_opt_class();
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
     v25 = [v23 setWithArray:v24];
-    [v22 setClasses:v25 forSelector:sel_fetchUserActivityForDocumentIndexKey_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface3 setClasses:v25 forSelector:sel_fetchUserActivityForDocumentIndexKey_completion_ argumentIndex:0 ofReply:1];
 
     objc_initWeak(&location, self);
-    v26 = [(SYDocumentWorkflowsClient *)self connection];
+    connection7 = [(SYDocumentWorkflowsClient *)self connection];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __57__SYDocumentWorkflowsClient__createConnectionIfNecessary__block_invoke;
     v35[3] = &unk_27856B5A0;
     objc_copyWeak(&v36, &location);
-    [v26 setInvalidationHandler:v35];
+    [connection7 setInvalidationHandler:v35];
 
-    v27 = [(SYDocumentWorkflowsClient *)self connection];
+    connection8 = [(SYDocumentWorkflowsClient *)self connection];
     v30 = MEMORY[0x277D85DD0];
     v31 = 3221225472;
     v32 = __57__SYDocumentWorkflowsClient__createConnectionIfNecessary__block_invoke_126;
     v33 = &unk_27856B5A0;
     objc_copyWeak(&v34, &location);
-    [v27 setInterruptionHandler:&v30];
+    [connection8 setInterruptionHandler:&v30];
 
     v28 = [(SYDocumentWorkflowsClient *)self connection:v30];
     [v28 resume];

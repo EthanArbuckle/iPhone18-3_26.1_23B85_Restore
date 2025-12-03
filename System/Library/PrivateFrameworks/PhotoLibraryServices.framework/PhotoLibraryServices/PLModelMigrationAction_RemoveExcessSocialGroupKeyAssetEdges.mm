@@ -1,36 +1,36 @@
 @interface PLModelMigrationAction_RemoveExcessSocialGroupKeyAssetEdges
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (void)_recordUserPickedKeyAssetEdge:(id)a3 inExistingKeyAssetEdgeByNodeIDDictionary:(id)a4;
-- (void)_removeKeyAssetLabelsIfNecessaryForEdge:(id)a3 existingKeyAssetEdgeByNodeID:(id)a4 keyAssetLabel:(id)a5 userPickedKeyAssetLabel:(id)a6;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (void)_recordUserPickedKeyAssetEdge:(id)edge inExistingKeyAssetEdgeByNodeIDDictionary:(id)dictionary;
+- (void)_removeKeyAssetLabelsIfNecessaryForEdge:(id)edge existingKeyAssetEdgeByNodeID:(id)d keyAssetLabel:(id)label userPickedKeyAssetLabel:(id)assetLabel;
 @end
 
 @implementation PLModelMigrationAction_RemoveExcessSocialGroupKeyAssetEdges
 
-- (void)_removeKeyAssetLabelsIfNecessaryForEdge:(id)a3 existingKeyAssetEdgeByNodeID:(id)a4 keyAssetLabel:(id)a5 userPickedKeyAssetLabel:(id)a6
+- (void)_removeKeyAssetLabelsIfNecessaryForEdge:(id)edge existingKeyAssetEdgeByNodeID:(id)d keyAssetLabel:(id)label userPickedKeyAssetLabel:(id)assetLabel
 {
   v20 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 sourceNode];
-  v14 = v13;
-  if (v13)
+  edgeCopy = edge;
+  dCopy = d;
+  labelCopy = label;
+  assetLabelCopy = assetLabel;
+  sourceNode = [edgeCopy sourceNode];
+  v14 = sourceNode;
+  if (sourceNode)
   {
-    v15 = [v13 objectID];
-    v16 = [v10 objectForKeyedSubscript:v15];
+    objectID = [sourceNode objectID];
+    v16 = [dCopy objectForKeyedSubscript:objectID];
 
     if (!v16)
     {
-      v16 = v9;
-      v17 = [v14 objectID];
-      [v10 setObject:v16 forKey:v17];
+      v16 = edgeCopy;
+      objectID2 = [v14 objectID];
+      [dCopy setObject:v16 forKey:objectID2];
     }
 
-    if (([v9 isEqual:v16] & 1) == 0)
+    if (([edgeCopy isEqual:v16] & 1) == 0)
     {
-      [v9 removeLabel:v11];
-      [v9 removeLabel:v12];
+      [edgeCopy removeLabel:labelCopy];
+      [edgeCopy removeLabel:assetLabelCopy];
     }
   }
 
@@ -40,57 +40,57 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v9;
+      v19 = edgeCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Social group key asset edge %@ unexpectedly has nil sourceNode", &v18, 0xCu);
     }
   }
 }
 
-- (void)_recordUserPickedKeyAssetEdge:(id)a3 inExistingKeyAssetEdgeByNodeIDDictionary:(id)a4
+- (void)_recordUserPickedKeyAssetEdge:(id)edge inExistingKeyAssetEdgeByNodeIDDictionary:(id)dictionary
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 sourceNode];
-  v8 = v7;
-  if (v7)
+  edgeCopy = edge;
+  dictionaryCopy = dictionary;
+  sourceNode = [edgeCopy sourceNode];
+  v8 = sourceNode;
+  if (sourceNode)
   {
-    v9 = [v7 objectID];
-    [v6 setObject:v5 forKey:v9];
+    objectID = [sourceNode objectID];
+    [dictionaryCopy setObject:edgeCopy forKey:objectID];
   }
 
   else
   {
-    v9 = PLMigrationGetLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    objectID = PLMigrationGetLog();
+    if (os_log_type_enabled(objectID, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v5;
-      _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Social group user-picked key asset edge %@ unexpectedly has nil sourceNode", &v10, 0xCu);
+      v11 = edgeCopy;
+      _os_log_impl(&dword_19BF1F000, objectID, OS_LOG_TYPE_ERROR, "Social group user-picked key asset edge %@ unexpectedly has nil sourceNode", &v10, 0xCu);
     }
   }
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 pl_graphCache];
-  v8 = [v7 labelWithCode:1001 inContext:v6];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v8 = [pl_graphCache labelWithCode:1001 inContext:contextCopy];
 
-  v9 = [v6 pl_graphCache];
-  v10 = [v9 labelWithCode:1003 inContext:v6];
+  pl_graphCache2 = [contextCopy pl_graphCache];
+  v10 = [pl_graphCache2 labelWithCode:1003 inContext:contextCopy];
 
-  v11 = [v6 pl_graphCache];
-  v12 = [v11 labelWithCode:1004 inContext:v6];
+  pl_graphCache3 = [contextCopy pl_graphCache];
+  v12 = [pl_graphCache3 labelWithCode:1004 inContext:contextCopy];
 
   if (v8 && v10 && v12)
   {
-    v41 = a4;
+    errorCopy = error;
     v42 = v12;
     v43 = v8;
-    v13 = [(PLModelMigrationActionCore *)self progress];
-    v14 = [v13 totalUnitCount] / 2;
+    progress = [(PLModelMigrationActionCore *)self progress];
+    v14 = [progress totalUnitCount] / 2;
 
     v15 = +[PLGraphEdge fetchRequest];
     v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K.%K = %@", @"additionalLabelAssignments", @"label", v10];
@@ -100,17 +100,17 @@
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
     [v15 setRelationshipKeyPathsForPrefetching:v17];
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v54 = 0;
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __107__PLModelMigrationAction_RemoveExcessSocialGroupKeyAssetEdges_performActionWithManagedObjectContext_error___block_invoke;
     v52[3] = &unk_1E7567E88;
     v52[4] = self;
-    v19 = v18;
+    v19 = dictionary;
     v53 = v19;
     v39 = v14;
-    v20 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v15 pendingParentUnitCount:v14 error:&v54 processingBlock:v52];
+    v20 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v15 pendingParentUnitCount:v14 error:&v54 processingBlock:v52];
     v21 = v54;
     if (v20 == 1)
     {
@@ -133,7 +133,7 @@
       v26 = v43;
       v49 = v26;
       v50 = v10;
-      v20 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v22 pendingParentUnitCount:v39 error:&v51 processingBlock:v47];
+      v20 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v22 pendingParentUnitCount:v39 error:&v51 processingBlock:v47];
       v40 = v51;
 
       v44[0] = MEMORY[0x1E69E9820];
@@ -150,10 +150,10 @@
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v27 = v21;
     v28 = v27;
-    if (v20 != 1 && v41)
+    if (v20 != 1 && errorCopy)
     {
       v29 = v27;
-      *v41 = v28;
+      *errorCopy = v28;
     }
 
     v12 = v42;
@@ -167,9 +167,9 @@
 
     if (v31)
     {
-      v32 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v32)
+      if (logger)
       {
         v88 = 0u;
         v89 = 0u;

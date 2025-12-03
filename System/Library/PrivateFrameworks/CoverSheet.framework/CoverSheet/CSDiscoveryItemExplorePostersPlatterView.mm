@@ -2,13 +2,13 @@
 - (CSDiscoveryItemExplorePostersPlatterView)init;
 - (CSDiscoveryItemExplorePostersPlatterViewDelegate)delegate;
 - (void)_configureGraphicViewIfNecessary;
-- (void)_pauseLayer:(id)a3;
+- (void)_pauseLayer:(id)layer;
 - (void)_reconfigureGraphicView;
-- (void)_resumeLayer:(id)a3;
+- (void)_resumeLayer:(id)layer;
 - (void)layoutSubviews;
 - (void)pauseAnimations;
 - (void)resumeAnimations;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CSDiscoveryItemExplorePostersPlatterView
@@ -106,19 +106,19 @@ void __48__CSDiscoveryItemExplorePostersPlatterView_init__block_invoke_2(uint64_
   v5.super_class = CSDiscoveryItemExplorePostersPlatterView;
   [(PLPlatterDiscoveryView *)&v5 layoutSubviews];
   [(CSDiscoveryItemExplorePostersPlatterView *)self _configureGraphicViewIfNecessary];
-  v3 = [(CSDiscoveryItemExplorePostersPlatterView *)self rootAnimationLayer];
-  v4 = [(PLPlatterDiscoveryView *)self graphicView];
-  [v4 center];
-  [v3 setPosition:?];
+  rootAnimationLayer = [(CSDiscoveryItemExplorePostersPlatterView *)self rootAnimationLayer];
+  graphicView = [(PLPlatterDiscoveryView *)self graphicView];
+  [graphicView center];
+  [rootAnimationLayer setPosition:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 userInterfaceStyle];
-  v5 = [(CSDiscoveryItemExplorePostersPlatterView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle = [change userInterfaceStyle];
+  traitCollection = [(CSDiscoveryItemExplorePostersPlatterView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v4 != v6)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(CSDiscoveryItemExplorePostersPlatterView *)self _reconfigureGraphicView];
@@ -139,9 +139,9 @@ void __48__CSDiscoveryItemExplorePostersPlatterView_init__block_invoke_2(uint64_
 
 - (void)_configureGraphicViewIfNecessary
 {
-  v3 = [(PLPlatterDiscoveryView *)self graphicView];
+  graphicView = [(PLPlatterDiscoveryView *)self graphicView];
 
-  if (v3)
+  if (graphicView)
   {
     v4 = SBLogDashBoard();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -160,16 +160,16 @@ void __48__CSDiscoveryItemExplorePostersPlatterView_init__block_invoke_2(uint64_
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 rootLayer];
+        rootLayer = [v6 rootLayer];
         if ([v7 isGeometryFlipped])
         {
-          [v8 setGeometryFlipped:1];
+          [rootLayer setGeometryFlipped:1];
         }
 
-        objc_storeStrong(&self->_rootAnimationLayer, v8);
+        objc_storeStrong(&self->_rootAnimationLayer, rootLayer);
         if (!self->_graphicStateController)
         {
-          v9 = [objc_alloc(MEMORY[0x277CD9FB8]) initWithLayer:v8];
+          v9 = [objc_alloc(MEMORY[0x277CD9FB8]) initWithLayer:rootLayer];
           graphicStateController = self->_graphicStateController;
           self->_graphicStateController = v9;
         }
@@ -177,17 +177,17 @@ void __48__CSDiscoveryItemExplorePostersPlatterView_init__block_invoke_2(uint64_
         v11 = objc_alloc(MEMORY[0x277D75D18]);
         v12 = [v11 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
         CATransform3DMakeScale(&v14, 0.35, 0.35, 1.0);
-        [v8 setTransform:&v14];
-        v13 = [v12 layer];
-        [v13 addSublayer:v8];
+        [rootLayer setTransform:&v14];
+        layer = [v12 layer];
+        [layer addSublayer:rootLayer];
 
         [(PLPlatterDiscoveryView *)self setGraphicView:v12];
       }
 
       else
       {
-        v8 = SBLogDashBoard();
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        rootLayer = SBLogDashBoard();
+        if (os_log_type_enabled(rootLayer, OS_LOG_TYPE_ERROR))
         {
           [CSDiscoveryItemExplorePostersPlatterView _configureGraphicViewIfNecessary];
         }
@@ -215,8 +215,8 @@ void __48__CSDiscoveryItemExplorePostersPlatterView_init__block_invoke_2(uint64_
       [CSDiscoveryItemExplorePostersPlatterView pauseAnimations];
     }
 
-    v4 = [(CSDiscoveryItemExplorePostersPlatterView *)self rootAnimationLayer];
-    [(CSDiscoveryItemExplorePostersPlatterView *)self _pauseLayer:v4];
+    rootAnimationLayer = [(CSDiscoveryItemExplorePostersPlatterView *)self rootAnimationLayer];
+    [(CSDiscoveryItemExplorePostersPlatterView *)self _pauseLayer:rootAnimationLayer];
     [(CSDiscoveryItemExplorePostersPlatterView *)self setAnimationPaused:1];
   }
 }
@@ -231,32 +231,32 @@ void __48__CSDiscoveryItemExplorePostersPlatterView_init__block_invoke_2(uint64_
       [CSDiscoveryItemExplorePostersPlatterView resumeAnimations];
     }
 
-    v4 = [(CSDiscoveryItemExplorePostersPlatterView *)self rootAnimationLayer];
-    [(CSDiscoveryItemExplorePostersPlatterView *)self _resumeLayer:v4];
+    rootAnimationLayer = [(CSDiscoveryItemExplorePostersPlatterView *)self rootAnimationLayer];
+    [(CSDiscoveryItemExplorePostersPlatterView *)self _resumeLayer:rootAnimationLayer];
     [(CSDiscoveryItemExplorePostersPlatterView *)self setAnimationPaused:0];
   }
 }
 
-- (void)_pauseLayer:(id)a3
+- (void)_pauseLayer:(id)layer
 {
-  v5 = a3;
-  [v5 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layerCopy = layer;
+  [layerCopy convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
-  [v5 setSpeed:0.0];
-  [v5 setTimeOffset:v4];
+  [layerCopy setSpeed:0.0];
+  [layerCopy setTimeOffset:v4];
 }
 
-- (void)_resumeLayer:(id)a3
+- (void)_resumeLayer:(id)layer
 {
-  v6 = a3;
-  [v6 timeOffset];
+  layerCopy = layer;
+  [layerCopy timeOffset];
   v4 = v3;
   LODWORD(v3) = 1.0;
-  [v6 setSpeed:v3];
-  [v6 setTimeOffset:0.0];
-  [v6 setBeginTime:0.0];
-  [v6 convertTime:0 fromLayer:CACurrentMediaTime()];
-  [v6 setBeginTime:v5 - v4];
+  [layerCopy setSpeed:v3];
+  [layerCopy setTimeOffset:0.0];
+  [layerCopy setBeginTime:0.0];
+  [layerCopy convertTime:0 fromLayer:CACurrentMediaTime()];
+  [layerCopy setBeginTime:v5 - v4];
 }
 
 - (CSDiscoveryItemExplorePostersPlatterViewDelegate)delegate

@@ -1,36 +1,36 @@
 @interface SyncedBookmarkRepr
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GEOMapRegion)mapRegion;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)directionsModeAsString:(int)a3;
+- (id)directionsModeAsString:(int)string;
 - (id)richMapsActivity;
-- (id)typeAsString:(int)a3;
-- (int)StringAsDirectionsMode:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsDirectionsMode:(id)mode;
+- (int)StringAsType:(id)type;
 - (int)directionsMode;
 - (unint64_t)hash;
-- (void)addPlaces:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDirectionsMode:(BOOL)a3;
-- (void)setHasLatitude:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasProviderID:(BOOL)a3;
-- (void)setHasRegionLatitude:(BOOL)a3;
-- (void)setHasRegionLatitudeDelta:(BOOL)a3;
-- (void)setHasRegionLongitude:(BOOL)a3;
-- (void)setHasRegionLongitudeDelta:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPlaces:(id)places;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDirectionsMode:(BOOL)mode;
+- (void)setHasLatitude:(BOOL)latitude;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasProviderID:(BOOL)d;
+- (void)setHasRegionLatitude:(BOOL)latitude;
+- (void)setHasRegionLatitudeDelta:(BOOL)delta;
+- (void)setHasRegionLongitude:(BOOL)longitude;
+- (void)setHasRegionLongitudeDelta:(BOOL)delta;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SyncedBookmarkRepr
 
 - (id)richMapsActivity
 {
-  v3 = [(SyncedBookmarkRepr *)self type];
-  if (v3 == 4)
+  type = [(SyncedBookmarkRepr *)self type];
+  if (type == 4)
   {
     if ([(SyncedBookmarkRepr *)self placesCount]< 2)
     {
@@ -40,16 +40,16 @@ LABEL_39:
     }
 
     v13 = [(SyncedBookmarkRepr *)self placesAtIndex:0];
-    v18 = [(SyncedBookmarkRepr *)self places];
-    v16 = [v18 lastObject];
+    places = [(SyncedBookmarkRepr *)self places];
+    lastObject = [places lastObject];
 
-    v17 = [[SearchResult alloc] initWithBookmarkRepresentation:v13];
-    v19 = [[SearchResult alloc] initWithBookmarkRepresentation:v16];
-    v20 = [(SearchResult *)v17 composedWaypoint];
-    v21 = [(SearchResult *)v19 composedWaypoint];
-    v22 = v21;
+    displayOptions = [[SearchResult alloc] initWithBookmarkRepresentation:v13];
+    v19 = [[SearchResult alloc] initWithBookmarkRepresentation:lastObject];
+    composedWaypoint = [(SearchResult *)displayOptions composedWaypoint];
+    composedWaypoint2 = [(SearchResult *)v19 composedWaypoint];
+    v22 = composedWaypoint2;
     v14 = 0;
-    if (v20 && v21)
+    if (composedWaypoint && composedWaypoint2)
     {
       v23 = [(SyncedBookmarkRepr *)self directionsMode]- 2;
       if (v23 > 2)
@@ -66,11 +66,11 @@ LABEL_39:
       v34 = objc_alloc_init(GEOStorageRouteRequestStorage);
       [(DirectionsPlan *)v33 setRouteRequestStorage:v34];
 
-      v35 = [v13 title];
-      [(DirectionsPlan *)v33 setOriginString:v35];
+      title = [v13 title];
+      [(DirectionsPlan *)v33 setOriginString:title];
 
-      v36 = [v16 title];
-      [(DirectionsPlan *)v33 setDestinationString:v36];
+      title2 = [lastObject title];
+      [(DirectionsPlan *)v33 setDestinationString:title2];
 
       if (v24 > 7)
       {
@@ -82,15 +82,15 @@ LABEL_39:
         v37 = dword_101215CE0[v24];
       }
 
-      v38 = [(DirectionsPlan *)v33 routeRequestStorage];
-      [v38 setTransportType:v37];
+      routeRequestStorage = [(DirectionsPlan *)v33 routeRequestStorage];
+      [routeRequestStorage setTransportType:v37];
 
-      v45[0] = v20;
+      v45[0] = composedWaypoint;
       v45[1] = v22;
       v39 = [NSArray arrayWithObjects:v45 count:2];
       v40 = [v39 mutableCopy];
-      v41 = [(DirectionsPlan *)v33 routeRequestStorage];
-      [v41 setWaypoints:v40];
+      routeRequestStorage2 = [(DirectionsPlan *)v33 routeRequestStorage];
+      [routeRequestStorage2 setWaypoints:v40];
 
       [(DirectionsPlan *)v33 setDisplayMethod:1];
       v14 = objc_alloc_init(MapsActivity);
@@ -100,7 +100,7 @@ LABEL_39:
     goto LABEL_35;
   }
 
-  if (v3 != 3)
+  if (type != 3)
   {
     if ([(SyncedBookmarkRepr *)self type]== 2 && (![(SyncedBookmarkRepr *)self hasLatitude]|| ![(SyncedBookmarkRepr *)self hasLongitude]))
     {
@@ -142,13 +142,13 @@ LABEL_26:
       goto LABEL_37;
     }
 
-    v30 = [v13 mapItem];
-    v16 = [v30 _geoMapItemStorageForPersistence];
+    mapItem = [v13 mapItem];
+    lastObject = [mapItem _geoMapItemStorageForPersistence];
 
-    if (v16)
+    if (lastObject)
     {
       v14 = objc_alloc_init(MapsActivity);
-      v44 = v16;
+      v44 = lastObject;
       v31 = [NSArray arrayWithObjects:&v44 count:1];
       v32 = [v31 mutableCopy];
       [(MapsActivity *)v14 setSearchPlaces:v32];
@@ -188,9 +188,9 @@ LABEL_36:
       v15 = objc_alloc_init(GEOURLOptions);
       [(MapsActivity *)v14 setDisplayOptions:v15];
 
-      v16 = [v13 geoCamera];
-      v17 = [(MapsActivity *)v14 displayOptions];
-      [(SearchResult *)v17 setCamera:v16];
+      lastObject = [v13 geoCamera];
+      displayOptions = [(MapsActivity *)v14 displayOptions];
+      [(SearchResult *)displayOptions setCamera:lastObject];
 LABEL_35:
 
       goto LABEL_36;
@@ -215,26 +215,26 @@ LABEL_40:
   return [GEOMapRegion _mapkit_mapRegionForLatitude:v4 longitude:v6 latSpan:v8 longSpan:v9];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_type = *(v4 + 28);
-  if (*(v4 + 13))
+  fromCopy = from;
+  self->_type = *(fromCopy + 28);
+  if (*(fromCopy + 13))
   {
     [(SyncedBookmarkRepr *)self setTitle:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(SyncedBookmarkRepr *)self setSingleLineAddress:?];
   }
 
-  v5 = *(v4 + 58);
+  v5 = *(fromCopy + 58);
   if ((v5 & 2) != 0)
   {
-    self->_latitude = *(v4 + 2);
+    self->_latitude = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 58);
+    v5 = *(fromCopy + 58);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -252,9 +252,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_longitude = *(v4 + 3);
+  self->_longitude = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 58);
+  v5 = *(fromCopy + 58);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -267,9 +267,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_regionLatitude = *(v4 + 4);
+  self->_regionLatitude = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 58);
+  v5 = *(fromCopy + 58);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -282,9 +282,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_regionLongitude = *(v4 + 6);
+  self->_regionLongitude = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 58);
+  v5 = *(fromCopy + 58);
   if ((v5 & 0x10) == 0)
   {
 LABEL_10:
@@ -297,9 +297,9 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_regionLatitudeDelta = *(v4 + 5);
+  self->_regionLatitudeDelta = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 58);
+  v5 = *(fromCopy + 58);
   if ((v5 & 0x40) == 0)
   {
 LABEL_11:
@@ -312,9 +312,9 @@ LABEL_11:
   }
 
 LABEL_31:
-  self->_regionLongitudeDelta = *(v4 + 7);
+  self->_regionLongitudeDelta = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 58);
+  v5 = *(fromCopy + 58);
   if ((v5 & 0x100) == 0)
   {
 LABEL_12:
@@ -327,24 +327,24 @@ LABEL_12:
   }
 
 LABEL_32:
-  self->_providerID = *(v4 + 22);
+  self->_providerID = *(fromCopy + 22);
   *&self->_has |= 0x100u;
-  if (*(v4 + 58))
+  if (*(fromCopy + 58))
   {
 LABEL_13:
-    self->_businessID = *(v4 + 1);
+    self->_businessID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_14:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(SyncedBookmarkRepr *)self setContactIdentifier:?];
   }
 
-  if ((*(v4 + 58) & 0x80) != 0)
+  if ((*(fromCopy + 58) & 0x80) != 0)
   {
-    self->_directionsMode = *(v4 + 18);
+    self->_directionsMode = *(fromCopy + 18);
     *&self->_has |= 0x80u;
   }
 
@@ -352,7 +352,7 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 10);
+  v6 = *(fromCopy + 10);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -569,21 +569,21 @@ LABEL_42:
   return v34 ^ v33 ^ v4 ^ v8 ^ v12 ^ (2654435761 * type) ^ v16 ^ v20 ^ v24 ^ v28 ^ v29 ^ v30 ^ v31 ^ [(NSMutableArray *)self->_places hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
-  if (self->_type != *(v4 + 28))
+  if (self->_type != *(equalCopy + 28))
   {
     goto LABEL_57;
   }
 
   title = self->_title;
-  if (title | *(v4 + 13))
+  if (title | *(equalCopy + 13))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -592,7 +592,7 @@ LABEL_42:
   }
 
   singleLineAddress = self->_singleLineAddress;
-  if (singleLineAddress | *(v4 + 12))
+  if (singleLineAddress | *(equalCopy + 12))
   {
     if (![(NSString *)singleLineAddress isEqual:?])
     {
@@ -601,10 +601,10 @@ LABEL_42:
   }
 
   has = self->_has;
-  v8 = *(v4 + 58);
+  v8 = *(equalCopy + 58);
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_latitude != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_latitude != *(equalCopy + 2))
     {
       goto LABEL_57;
     }
@@ -617,7 +617,7 @@ LABEL_42:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_longitude != *(v4 + 3))
+    if ((v8 & 4) == 0 || self->_longitude != *(equalCopy + 3))
     {
       goto LABEL_57;
     }
@@ -630,7 +630,7 @@ LABEL_42:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_regionLatitude != *(v4 + 4))
+    if ((v8 & 8) == 0 || self->_regionLatitude != *(equalCopy + 4))
     {
       goto LABEL_57;
     }
@@ -643,7 +643,7 @@ LABEL_42:
 
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_regionLongitude != *(v4 + 6))
+    if ((v8 & 0x20) == 0 || self->_regionLongitude != *(equalCopy + 6))
     {
       goto LABEL_57;
     }
@@ -656,7 +656,7 @@ LABEL_42:
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_regionLatitudeDelta != *(v4 + 5))
+    if ((v8 & 0x10) == 0 || self->_regionLatitudeDelta != *(equalCopy + 5))
     {
       goto LABEL_57;
     }
@@ -669,7 +669,7 @@ LABEL_42:
 
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_regionLongitudeDelta != *(v4 + 7))
+    if ((v8 & 0x40) == 0 || self->_regionLongitudeDelta != *(equalCopy + 7))
     {
       goto LABEL_57;
     }
@@ -682,20 +682,20 @@ LABEL_42:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 58) & 0x100) == 0 || self->_providerID != *(v4 + 22))
+    if ((*(equalCopy + 58) & 0x100) == 0 || self->_providerID != *(equalCopy + 22))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 58) & 0x100) != 0)
+  else if ((*(equalCopy + 58) & 0x100) != 0)
   {
     goto LABEL_57;
   }
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_businessID != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_businessID != *(equalCopy + 1))
     {
       goto LABEL_57;
     }
@@ -707,7 +707,7 @@ LABEL_42:
   }
 
   contactIdentifier = self->_contactIdentifier;
-  if (contactIdentifier | *(v4 + 8))
+  if (contactIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)contactIdentifier isEqual:?])
     {
@@ -717,12 +717,12 @@ LABEL_57:
     }
 
     has = self->_has;
-    v8 = *(v4 + 58);
+    v8 = *(equalCopy + 58);
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_directionsMode != *(v4 + 18))
+    if ((v8 & 0x80) == 0 || self->_directionsMode != *(equalCopy + 18))
     {
       goto LABEL_57;
     }
@@ -734,7 +734,7 @@ LABEL_57:
   }
 
   places = self->_places;
-  if (places | *(v4 + 10))
+  if (places | *(equalCopy + 10))
   {
     v11 = [(NSMutableArray *)places isEqual:?];
   }
@@ -749,15 +749,15 @@ LABEL_58:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[28] = self->_type;
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 13);
   *(v5 + 13) = v6;
 
-  v8 = [(NSString *)self->_singleLineAddress copyWithZone:a3];
+  v8 = [(NSString *)self->_singleLineAddress copyWithZone:zone];
   v9 = *(v5 + 12);
   *(v5 + 12) = v8;
 
@@ -869,7 +869,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v11 = [(NSString *)self->_contactIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_contactIdentifier copyWithZone:zone];
   v12 = *(v5 + 8);
   *(v5 + 8) = v11;
 
@@ -898,7 +898,7 @@ LABEL_10:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v5 addPlaces:v18];
       }
 
@@ -911,28 +911,28 @@ LABEL_10:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[28] = self->_type;
-  v10 = v4;
+  toCopy = to;
+  toCopy[28] = self->_type;
+  v10 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v10;
+    [toCopy setTitle:?];
+    toCopy = v10;
   }
 
   if (self->_singleLineAddress)
   {
     [v10 setSingleLineAddress:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_latitude;
-    *(v4 + 58) |= 2u;
+    *(toCopy + 2) = *&self->_latitude;
+    *(toCopy + 58) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -951,8 +951,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 3) = *&self->_longitude;
-  *(v4 + 58) |= 4u;
+  *(toCopy + 3) = *&self->_longitude;
+  *(toCopy + 58) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -966,8 +966,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(v4 + 4) = *&self->_regionLatitude;
-  *(v4 + 58) |= 8u;
+  *(toCopy + 4) = *&self->_regionLatitude;
+  *(toCopy + 58) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -981,8 +981,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  *(v4 + 6) = *&self->_regionLongitude;
-  *(v4 + 58) |= 0x20u;
+  *(toCopy + 6) = *&self->_regionLongitude;
+  *(toCopy + 58) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -996,8 +996,8 @@ LABEL_10:
   }
 
 LABEL_29:
-  *(v4 + 5) = *&self->_regionLatitudeDelta;
-  *(v4 + 58) |= 0x10u;
+  *(toCopy + 5) = *&self->_regionLatitudeDelta;
+  *(toCopy + 58) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1011,8 +1011,8 @@ LABEL_11:
   }
 
 LABEL_30:
-  *(v4 + 7) = *&self->_regionLongitudeDelta;
-  *(v4 + 58) |= 0x40u;
+  *(toCopy + 7) = *&self->_regionLongitudeDelta;
+  *(toCopy + 58) |= 0x40u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1026,35 +1026,35 @@ LABEL_12:
   }
 
 LABEL_31:
-  v4[22] = self->_providerID;
-  *(v4 + 58) |= 0x100u;
+  toCopy[22] = self->_providerID;
+  *(toCopy + 58) |= 0x100u;
   if (*&self->_has)
   {
 LABEL_13:
-    *(v4 + 1) = self->_businessID;
-    *(v4 + 58) |= 1u;
+    *(toCopy + 1) = self->_businessID;
+    *(toCopy + 58) |= 1u;
   }
 
 LABEL_14:
   if (self->_contactIdentifier)
   {
     [v10 setContactIdentifier:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    v4[18] = self->_directionsMode;
-    *(v4 + 58) |= 0x80u;
+    toCopy[18] = self->_directionsMode;
+    *(toCopy + 58) |= 0x80u;
   }
 
   if ([(SyncedBookmarkRepr *)self placesCount])
   {
     [v10 clearPlaces];
-    v6 = [(SyncedBookmarkRepr *)self placesCount];
-    if (v6)
+    placesCount = [(SyncedBookmarkRepr *)self placesCount];
+    if (placesCount)
     {
-      v7 = v6;
+      v7 = placesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SyncedBookmarkRepr *)self placesAtIndex:i];
@@ -1064,9 +1064,9 @@ LABEL_14:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   if (self->_title)
   {
@@ -1404,8 +1404,8 @@ LABEL_17:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -1425,54 +1425,54 @@ LABEL_17:
   v7.receiver = self;
   v7.super_class = SyncedBookmarkRepr;
   v3 = [(SyncedBookmarkRepr *)&v7 description];
-  v4 = [(SyncedBookmarkRepr *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SyncedBookmarkRepr *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addPlaces:(id)a3
+- (void)addPlaces:(id)places
 {
-  v4 = a3;
+  placesCopy = places;
   places = self->_places;
-  v8 = v4;
+  v8 = placesCopy;
   if (!places)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_places;
     self->_places = v6;
 
-    v4 = v8;
+    placesCopy = v8;
     places = self->_places;
   }
 
-  [(NSMutableArray *)places addObject:v4];
+  [(NSMutableArray *)places addObject:placesCopy];
 }
 
-- (int)StringAsDirectionsMode:(id)a3
+- (int)StringAsDirectionsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DRIVING"])
+  else if ([modeCopy isEqualToString:@"DRIVING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT"])
+  else if ([modeCopy isEqualToString:@"TRANSIT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WALKING"])
+  else if ([modeCopy isEqualToString:@"WALKING"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CYCLING"])
+  else if ([modeCopy isEqualToString:@"CYCLING"])
   {
     v4 = 4;
   }
@@ -1485,24 +1485,24 @@ LABEL_17:
   return v4;
 }
 
-- (id)directionsModeAsString:(int)a3
+- (id)directionsModeAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_101661518[a3];
+    v4 = off_101661518[string];
   }
 
   return v4;
 }
 
-- (void)setHasDirectionsMode:(BOOL)a3
+- (void)setHasDirectionsMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 128;
   }
@@ -1528,9 +1528,9 @@ LABEL_17:
   }
 }
 
-- (void)setHasProviderID:(BOOL)a3
+- (void)setHasProviderID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 256;
   }
@@ -1543,9 +1543,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRegionLongitudeDelta:(BOOL)a3
+- (void)setHasRegionLongitudeDelta:(BOOL)delta
 {
-  if (a3)
+  if (delta)
   {
     v3 = 64;
   }
@@ -1558,9 +1558,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRegionLatitudeDelta:(BOOL)a3
+- (void)setHasRegionLatitudeDelta:(BOOL)delta
 {
-  if (a3)
+  if (delta)
   {
     v3 = 16;
   }
@@ -1573,9 +1573,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRegionLongitude:(BOOL)a3
+- (void)setHasRegionLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 32;
   }
@@ -1588,9 +1588,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRegionLatitude:(BOOL)a3
+- (void)setHasRegionLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 8;
   }
@@ -1603,9 +1603,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 4;
   }
@@ -1618,9 +1618,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLatitude:(BOOL)a3
+- (void)setHasLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 2;
   }
@@ -1633,35 +1633,35 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PLACE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PLACE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT"])
+  else if ([typeCopy isEqualToString:@"CONTACT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"USER_LOCATION"])
+  else if ([typeCopy isEqualToString:@"USER_LOCATION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"REGION"])
+  else if ([typeCopy isEqualToString:@"REGION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TRIP"])
+  else if ([typeCopy isEqualToString:@"TRIP"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SEARCH"])
+  else if ([typeCopy isEqualToString:@"SEARCH"])
   {
     v4 = 5;
   }
@@ -1674,16 +1674,16 @@ LABEL_17:
   return v4;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1016614E8[a3];
+    v4 = off_1016614E8[string];
   }
 
   return v4;

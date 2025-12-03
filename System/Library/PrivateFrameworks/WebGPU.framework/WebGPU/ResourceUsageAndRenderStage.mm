@@ -1,25 +1,25 @@
 @interface ResourceUsageAndRenderStage
-- (ResourceUsageAndRenderStage)initWithUsage:(unint64_t)a3 renderStages:(unint64_t)a4 entryUsage:(OptionSet<WebGPU:(unsigned int)a6 :()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)a7 :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer> BindGroupEntryUsage>)a5 binding:resource:;
+- (ResourceUsageAndRenderStage)initWithUsage:(unint64_t)usage renderStages:(unint64_t)stages entryUsage:(OptionSet<WebGPU:(unsigned int)entryUsage :()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)f :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer> BindGroupEntryUsage>)a5 binding:resource:;
 - (id).cxx_construct;
 - (variant<WTF::RefPtr<WebGPU::Buffer>,)resource;
-- (void)setResource:()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)a3 :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer>;
+- (void)setResource:()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)f :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer>;
 @end
 
 @implementation ResourceUsageAndRenderStage
 
-- (ResourceUsageAndRenderStage)initWithUsage:(unint64_t)a3 renderStages:(unint64_t)a4 entryUsage:(OptionSet<WebGPU:(unsigned int)a6 :()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)a7 :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer> BindGroupEntryUsage>)a5 binding:resource:
+- (ResourceUsageAndRenderStage)initWithUsage:(unint64_t)usage renderStages:(unint64_t)stages entryUsage:(OptionSet<WebGPU:(unsigned int)entryUsage :()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)f :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer> BindGroupEntryUsage>)a5 binding:resource:
 {
-  m_ptr = a7.impl_.data_.head_.value.m_ptr;
+  m_ptr = f.impl_.data_.head_.value.m_ptr;
   v17.receiver = self;
   v17.super_class = ResourceUsageAndRenderStage;
-  v12 = [(ResourceUsageAndRenderStage *)&v17 init:a3];
+  v12 = [(ResourceUsageAndRenderStage *)&v17 init:usage];
   v13 = v12;
   if (v12)
   {
-    v12->_usage = a3;
-    v12->_renderStages = a4;
+    v12->_usage = usage;
+    v12->_renderStages = stages;
     v12->_entryUsage = a5;
-    v12->_binding = a6;
+    v12->_binding = entryUsage;
     v14 = *(m_ptr + 8);
     if (v12->_resource.impl_.index_ == 255)
     {
@@ -55,7 +55,7 @@ LABEL_8:
   index = self->_resource.impl_.index_;
   if (index != 255)
   {
-    v5 = self;
+    selfCopy = self;
     m_ptr = self->_resource.impl_.data_.head_.value.m_ptr;
     if (index == 2 || index == 1)
     {
@@ -89,9 +89,9 @@ LABEL_8:
       atomic_compare_exchange_strong_explicit(*m_ptr, &v9, 1u, memory_order_acquire, memory_order_acquire);
       if (v9)
       {
-        v11 = self;
+        selfCopy2 = self;
         MEMORY[0x22AA683C0]();
-        self = v11;
+        self = selfCopy2;
       }
 
       ++*&self->_entryUsage.m_storage;
@@ -104,7 +104,7 @@ LABEL_8:
 
 LABEL_14:
     *v3 = m_ptr;
-    v3[8] = v5->_resource.impl_.index_;
+    v3[8] = selfCopy->_resource.impl_.index_;
   }
 
   *&result.impl_.index_ = a2;
@@ -112,9 +112,9 @@ LABEL_14:
   return result;
 }
 
-- (void)setResource:()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)a3 :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer>
+- (void)setResource:()variant<WTF:(WTF:(WTF::RefPtr<const WebGPU::ExternalTexture>>)f :RefPtr<const)WebGPU::TextureView> :RefPtr<WebGPU::Buffer>
 {
-  v5 = *(a3.impl_.data_.head_.value.m_ptr + 8);
+  v5 = *(f.impl_.data_.head_.value.m_ptr + 8);
   if (self->_resource.impl_.index_ == 255)
   {
     if (v5 == 255)
@@ -132,7 +132,7 @@ LABEL_14:
     return;
   }
 
-  _ZN5mpark6detail10visitation3alt12visit_alt_atIZNS0_10assignmentINS0_6traitsIJN3WTF6RefPtrIN6WebGPU6BufferENS6_12RawPtrTraitsIS9_EENS6_21DefaultRefDerefTraitsIS9_EEEENS7_IKNS8_11TextureViewENSA_ISG_EENSC_ISG_EEEENS7_IKNS8_15ExternalTextureENSA_ISL_EENSC_ISL_EEEEEEEE14generic_assignIRKNS0_15copy_assignmentISP_LNS0_5TraitE1EEEEEvOT_EUlRSX_OT0_E_JRSQ_SW_EEEDcmSY_DpOT0_(v5, &self->_resource, &self->_resource, a3.impl_.data_.head_.value.m_ptr);
+  _ZN5mpark6detail10visitation3alt12visit_alt_atIZNS0_10assignmentINS0_6traitsIJN3WTF6RefPtrIN6WebGPU6BufferENS6_12RawPtrTraitsIS9_EENS6_21DefaultRefDerefTraitsIS9_EEEENS7_IKNS8_11TextureViewENSA_ISG_EENSC_ISG_EEEENS7_IKNS8_15ExternalTextureENSA_ISL_EENSC_ISL_EEEEEEEE14generic_assignIRKNS0_15copy_assignmentISP_LNS0_5TraitE1EEEEEvOT_EUlRSX_OT0_E_JRSQ_SW_EEEDcmSY_DpOT0_(v5, &self->_resource, &self->_resource, f.impl_.data_.head_.value.m_ptr);
 }
 
 - (id).cxx_construct

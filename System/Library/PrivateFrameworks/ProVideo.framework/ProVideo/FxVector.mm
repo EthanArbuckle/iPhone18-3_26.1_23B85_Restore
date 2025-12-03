@@ -1,40 +1,40 @@
 @interface FxVector
-+ (id)vectorWithCIVector:(id)a3;
-+ (id)vectorWithString:(id)a3;
-+ (id)vectorWithValues:(const double *)a3 count:(unint64_t)a4;
-+ (id)vectorWithX:(double)a3;
-+ (id)vectorWithX:(double)a3 Y:(double)a4;
-+ (id)vectorWithX:(double)a3 Y:(double)a4 Z:(double)a5;
-+ (id)vectorWithX:(double)a3 Y:(double)a4 Z:(double)a5 W:(double)a6;
-- (FxVector)initWithCIVector:(id)a3;
-- (FxVector)initWithCoder:(id)a3;
-- (FxVector)initWithString:(id)a3;
-- (FxVector)initWithValues:(const double *)a3 count:(unint64_t)a4;
-- (FxVector)initWithX:(double)a3 Y:(double)a4;
-- (FxVector)initWithX:(double)a3 Y:(double)a4 Z:(double)a5;
-- (FxVector)initWithX:(double)a3 Y:(double)a4 Z:(double)a5 W:(double)a6;
++ (id)vectorWithCIVector:(id)vector;
++ (id)vectorWithString:(id)string;
++ (id)vectorWithValues:(const double *)values count:(unint64_t)count;
++ (id)vectorWithX:(double)x;
++ (id)vectorWithX:(double)x Y:(double)y;
++ (id)vectorWithX:(double)x Y:(double)y Z:(double)z;
++ (id)vectorWithX:(double)x Y:(double)y Z:(double)z W:(double)w;
+- (FxVector)initWithCIVector:(id)vector;
+- (FxVector)initWithCoder:(id)coder;
+- (FxVector)initWithString:(id)string;
+- (FxVector)initWithValues:(const double *)values count:(unint64_t)count;
+- (FxVector)initWithX:(double)x Y:(double)y;
+- (FxVector)initWithX:(double)x Y:(double)y Z:(double)z;
+- (FxVector)initWithX:(double)x Y:(double)y Z:(double)z W:(double)w;
 - (double)W;
 - (double)X;
 - (double)Y;
 - (double)Z;
-- (double)valueAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)valueAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FxVector
 
-+ (id)vectorWithValues:(const double *)a3 count:(unint64_t)a4
++ (id)vectorWithValues:(const double *)values count:(unint64_t)count
 {
-  v4 = [[a1 alloc] initWithValues:a3 count:a4];
+  v4 = [[self alloc] initWithValues:values count:count];
 
   return v4;
 }
 
-- (FxVector)initWithCIVector:(id)a3
+- (FxVector)initWithCIVector:(id)vector
 {
-  v5 = [a3 count];
+  v5 = [vector count];
   v6 = malloc_type_malloc(8 * v5, 0x100004000313F17uLL);
   if (v6)
   {
@@ -43,7 +43,7 @@
     {
       for (i = 0; i != v5; ++i)
       {
-        [a3 valueAtIndex:i];
+        [vector valueAtIndex:i];
         v7[i] = v9;
       }
     }
@@ -60,76 +60,76 @@
   }
 }
 
-+ (id)vectorWithCIVector:(id)a3
++ (id)vectorWithCIVector:(id)vector
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithCIVector:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithCIVector:vector];
 
   return v3;
 }
 
-+ (id)vectorWithX:(double)a3
++ (id)vectorWithX:(double)x
 {
-  v3 = [[a1 alloc] initWithX:a3];
+  v3 = [[self alloc] initWithX:x];
 
   return v3;
 }
 
-+ (id)vectorWithX:(double)a3 Y:(double)a4
++ (id)vectorWithX:(double)x Y:(double)y
 {
-  v4 = [[a1 alloc] initWithX:a3 Y:a4];
+  v4 = [[self alloc] initWithX:x Y:y];
 
   return v4;
 }
 
-+ (id)vectorWithX:(double)a3 Y:(double)a4 Z:(double)a5
++ (id)vectorWithX:(double)x Y:(double)y Z:(double)z
 {
-  v5 = [[a1 alloc] initWithX:a3 Y:a4 Z:a5];
+  v5 = [[self alloc] initWithX:x Y:y Z:z];
 
   return v5;
 }
 
-+ (id)vectorWithX:(double)a3 Y:(double)a4 Z:(double)a5 W:(double)a6
++ (id)vectorWithX:(double)x Y:(double)y Z:(double)z W:(double)w
 {
-  v6 = [[a1 alloc] initWithX:a3 Y:a4 Z:a5 W:a6];
+  v6 = [[self alloc] initWithX:x Y:y Z:z W:w];
 
   return v6;
 }
 
-+ (id)vectorWithString:(id)a3
++ (id)vectorWithString:(id)string
 {
-  v3 = [[a1 alloc] initWithString:a3];
+  v3 = [[self alloc] initWithString:string];
 
   return v3;
 }
 
-- (FxVector)initWithX:(double)a3 Y:(double)a4
+- (FxVector)initWithX:(double)x Y:(double)y
 {
   v5[2] = *MEMORY[0x277D85DE8];
-  *v5 = a3;
-  *&v5[1] = a4;
+  *v5 = x;
+  *&v5[1] = y;
   return [(FxVector *)self initWithValues:v5 count:2];
 }
 
-- (FxVector)initWithX:(double)a3 Y:(double)a4 Z:(double)a5
+- (FxVector)initWithX:(double)x Y:(double)y Z:(double)z
 {
   v6[3] = *MEMORY[0x277D85DE8];
-  *v6 = a3;
-  *&v6[1] = a4;
-  *&v6[2] = a5;
+  *v6 = x;
+  *&v6[1] = y;
+  *&v6[2] = z;
   return [(FxVector *)self initWithValues:v6 count:3];
 }
 
-- (FxVector)initWithX:(double)a3 Y:(double)a4 Z:(double)a5 W:(double)a6
+- (FxVector)initWithX:(double)x Y:(double)y Z:(double)z W:(double)w
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  *v7 = a3;
-  *&v7[1] = a4;
-  *&v7[2] = a5;
-  *&v7[3] = a6;
+  *v7 = x;
+  *&v7[1] = y;
+  *&v7[2] = z;
+  *&v7[3] = w;
   return [(FxVector *)self initWithValues:v7 count:4];
 }
 
-- (FxVector)initWithValues:(const double *)a3 count:(unint64_t)a4
+- (FxVector)initWithValues:(const double *)values count:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = FxVector;
@@ -137,21 +137,21 @@
   v7 = v6;
   if (v6)
   {
-    v6->_count = a4;
-    if (a4 > 4)
+    v6->_count = count;
+    if (count > 4)
     {
-      v9 = malloc_type_malloc(8 * a4, 0x100004000313F17uLL);
+      v9 = malloc_type_malloc(8 * count, 0x100004000313F17uLL);
       v7->_u.ptr = v9;
       if (v9)
       {
         v10 = 0;
         do
         {
-          v7->_u.ptr[v10] = a3[v10];
+          v7->_u.ptr[v10] = values[v10];
           ++v10;
         }
 
-        while (a4 != v10);
+        while (count != v10);
       }
 
       else
@@ -163,7 +163,7 @@
 
     else
     {
-      if (!a4)
+      if (!count)
       {
         goto LABEL_7;
       }
@@ -171,15 +171,15 @@
       v8 = 0;
       do
       {
-        v6->_u.vec[v8] = a3[v8];
+        v6->_u.vec[v8] = values[v8];
         ++v8;
       }
 
-      while (a4 != v8);
-      if (a4 != 4)
+      while (count != v8);
+      if (count != 4)
       {
 LABEL_7:
-        bzero(&v6->_u.vec[a4], 32 - 8 * a4);
+        bzero(&v6->_u.vec[count], 32 - 8 * count);
       }
     }
   }
@@ -187,25 +187,25 @@ LABEL_7:
   return v7;
 }
 
-- (FxVector)initWithString:(id)a3
+- (FxVector)initWithString:(id)string
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 UTF8String];
-  if (!v4)
+  uTF8String = [string UTF8String];
+  if (!uTF8String)
   {
 
     return [(FxVector *)self init];
   }
 
   v18 = 0;
-  if (*v4 == 91)
+  if (*uTF8String == 91)
   {
-    v5 = v4 + 1;
+    v5 = uTF8String + 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = uTF8String;
   }
 
   v6 = strtod(v5, &v18);
@@ -275,10 +275,10 @@ LABEL_21:
   [(FxVector *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   count = self->_count;
-  v5 = [FxVector allocWithZone:a3];
+  v5 = [FxVector allocWithZone:zone];
   v6 = self->_count;
   if (count > 4)
   {
@@ -293,13 +293,13 @@ LABEL_21:
   return [(FxVector *)v5 initWithValues:ptr count:v6];
 }
 
-- (FxVector)initWithCoder:(id)a3
+- (FxVector)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x277D85DE8];
-  if ([a3 containsValueForKey:@"CICount"])
+  if ([coder containsValueForKey:@"CICount"])
   {
-    LODWORD(v5) = [a3 decodeIntForKey:@"CICount"];
-    if (([a3 containsValueForKey:@"FxVector"] & 1) == 0)
+    LODWORD(v5) = [coder decodeIntForKey:@"CICount"];
+    if (([coder containsValueForKey:@"FxVector"] & 1) == 0)
     {
       v5 = v5;
       if (v5 >= 0x41)
@@ -327,7 +327,7 @@ LABEL_9:
       for (i = 0; i != v5; ++i)
       {
         v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CI_%ld", i];
-        [a3 decodeFloatForKey:v8];
+        [coder decodeFloatForKey:v8];
         *&v6[8 * i] = v9;
       }
 
@@ -335,7 +335,7 @@ LABEL_9:
     }
   }
 
-  else if (([a3 containsValueForKey:@"FxVector"] & 1) == 0)
+  else if (([coder containsValueForKey:@"FxVector"] & 1) == 0)
   {
     v6 = v11;
     v5 = 4;
@@ -345,9 +345,9 @@ LABEL_9:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:LODWORD(self->_count) forKey:@"CICount"];
+  [coder encodeInt:LODWORD(self->_count) forKey:@"CICount"];
   if (self->_count >= 5)
   {
     v5 = 0;
@@ -356,7 +356,7 @@ LABEL_9:
       v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CI_%ld", v5];
       v7 = self->_u.ptr[v5];
       *&v7 = v7;
-      [a3 encodeFloat:v6 forKey:v7];
+      [coder encodeFloat:v6 forKey:v7];
 
       ++v5;
     }
@@ -365,21 +365,21 @@ LABEL_9:
   }
 }
 
-- (double)valueAtIndex:(unint64_t)a3
+- (double)valueAtIndex:(unint64_t)index
 {
   count = self->_count;
   result = 0.0;
-  if (count > a3)
+  if (count > index)
   {
     p_u = &self->_u;
     if (count > 4)
     {
-      v6 = &p_u->ptr[a3];
+      v6 = &p_u->ptr[index];
     }
 
     else
     {
-      v6 = &p_u->vec[a3];
+      v6 = &p_u->vec[index];
     }
 
     return *v6;

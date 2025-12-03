@@ -1,7 +1,7 @@
 @interface CARDevicePickerPanel
 - (CARDevicePickerCellSpecifier)cellSpecifier;
 - (void)_refreshViewControllerIfNeeded;
-- (void)carManager:(id)a3 didUpdatePairedDevices:(id)a4;
+- (void)carManager:(id)manager didUpdatePairedDevices:(id)devices;
 - (void)viewDidLoad;
 @end
 
@@ -16,14 +16,14 @@
     v4 = [CARDevicePickerCellSpecifier alloc];
     v5 = sub_10001C80C(@"DEVICE_PICKER_CELL_TITLE");
     v6 = [[ISIcon alloc] initWithType:@"com.apple.graphic-icon.carplay-devices"];
-    v7 = [(CARSettingsPanel *)self panelController];
-    v8 = [v7 carSession];
+    panelController = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController carSession];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_10001510C;
     v16 = &unk_1000DAE40;
     objc_copyWeak(&v17, &location);
-    v9 = [(CARDevicePickerCellSpecifier *)v4 initWithTitle:v5 image:0 icon:v6 accessoryType:1 carSession:v8 actionBlock:&v13];
+    v9 = [(CARDevicePickerCellSpecifier *)v4 initWithTitle:v5 image:0 icon:v6 accessoryType:1 carSession:carSession actionBlock:&v13];
 
     [(CARDevicePickerCellSpecifier *)v9 refreshSpecifierIfNeeded:v13];
     v10 = self->_cellSpecifier;
@@ -47,15 +47,15 @@
   [(CARSettingsPanel *)&v5 viewDidLoad];
   [(CARDevicePickerPanel *)self _refreshViewControllerIfNeeded];
   v3 = +[CARSettingsAppDelegate sharedDelegate];
-  v4 = [v3 carManager];
-  [v4 addObserver:self];
+  carManager = [v3 carManager];
+  [carManager addObserver:self];
 }
 
 - (void)_refreshViewControllerIfNeeded
 {
-  v3 = [(CARDevicePickerPanel *)self pairedDevices];
+  pairedDevices = [(CARDevicePickerPanel *)self pairedDevices];
 
-  if (v3)
+  if (pairedDevices)
   {
     v4 = sub_10001C784();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -64,62 +64,62 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[Settings] current view controller set to device picker", buf, 2u);
     }
 
-    v5 = [(CARDevicePickerPanel *)self currentViewController];
-    v6 = [v5 view];
-    [v6 removeFromSuperview];
+    currentViewController = [(CARDevicePickerPanel *)self currentViewController];
+    view = [currentViewController view];
+    [view removeFromSuperview];
 
-    v7 = [(CARDevicePickerPanel *)self currentViewController];
-    [v7 removeFromParentViewController];
+    currentViewController2 = [(CARDevicePickerPanel *)self currentViewController];
+    [currentViewController2 removeFromParentViewController];
 
     v8 = [_TtC15CarPlaySettings22CARDevicePickerManager alloc];
-    v9 = [(CARDevicePickerPanel *)self pairedDevices];
-    v10 = [(CARSettingsPanel *)self panelController];
-    v11 = [v10 carSession];
-    v68 = [(CARDevicePickerManager *)v8 initWithPairedDevices:v9 carSession:v11];
+    pairedDevices2 = [(CARDevicePickerPanel *)self pairedDevices];
+    panelController = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController carSession];
+    v68 = [(CARDevicePickerManager *)v8 initWithPairedDevices:pairedDevices2 carSession:carSession];
 
-    v12 = [(CARDevicePickerManager *)v68 viewController];
-    [v12 willMoveToParentViewController:self];
-    [(CARDevicePickerPanel *)self addChildViewController:v12];
-    v13 = [(CARDevicePickerPanel *)self view];
-    v14 = [v12 view];
-    [v13 addSubview:v14];
+    viewController = [(CARDevicePickerManager *)v68 viewController];
+    [viewController willMoveToParentViewController:self];
+    [(CARDevicePickerPanel *)self addChildViewController:viewController];
+    view2 = [(CARDevicePickerPanel *)self view];
+    view3 = [viewController view];
+    [view2 addSubview:view3];
 
-    v15 = [v12 view];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view4 = [viewController view];
+    [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v66 = [v12 view];
-    v62 = [v66 leadingAnchor];
-    v64 = [(CARDevicePickerPanel *)self view];
-    v60 = [v64 leadingAnchor];
-    v58 = [v62 constraintEqualToAnchor:v60];
+    view5 = [viewController view];
+    leadingAnchor = [view5 leadingAnchor];
+    view6 = [(CARDevicePickerPanel *)self view];
+    leadingAnchor2 = [view6 leadingAnchor];
+    v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v72[0] = v58;
-    v56 = [v12 view];
-    v52 = [v56 trailingAnchor];
-    v54 = [(CARDevicePickerPanel *)self view];
-    v51 = [v54 trailingAnchor];
-    v48 = [v52 constraintEqualToAnchor:v51];
+    view7 = [viewController view];
+    trailingAnchor = [view7 trailingAnchor];
+    view8 = [(CARDevicePickerPanel *)self view];
+    trailingAnchor2 = [view8 trailingAnchor];
+    v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v72[1] = v48;
-    v46 = [v12 view];
-    v43 = [v46 topAnchor];
-    v16 = [(CARDevicePickerPanel *)self view];
-    v17 = [v16 topAnchor];
-    v18 = [v43 constraintEqualToAnchor:v17];
+    view9 = [viewController view];
+    topAnchor = [view9 topAnchor];
+    view10 = [(CARDevicePickerPanel *)self view];
+    topAnchor2 = [view10 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v72[2] = v18;
-    v19 = [v12 view];
-    v20 = [v19 bottomAnchor];
-    v21 = [(CARDevicePickerPanel *)self view];
-    v22 = [v21 bottomAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    view11 = [viewController view];
+    bottomAnchor = [view11 bottomAnchor];
+    view12 = [(CARDevicePickerPanel *)self view];
+    bottomAnchor2 = [view12 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v72[3] = v23;
     [NSArray arrayWithObjects:v72 count:4];
     v24 = v44 = self;
     [NSLayoutConstraint activateConstraints:v24];
 
-    v25 = [(CARSettingsPanel *)v44 navigationItem];
-    [v12 _setExistingNavigationItem:v25];
+    navigationItem = [(CARSettingsPanel *)v44 navigationItem];
+    [viewController _setExistingNavigationItem:navigationItem];
 
     v26 = v68;
-    [(CARDevicePickerPanel *)v44 setCurrentViewController:v12];
+    [(CARDevicePickerPanel *)v44 setCurrentViewController:viewController];
   }
 
   else
@@ -138,45 +138,45 @@
 
     [(CARDevicePickerPanel *)self currentViewController];
     v29 = v28 = self;
-    v30 = [v29 view];
-    [v30 removeFromSuperview];
+    view13 = [v29 view];
+    [view13 removeFromSuperview];
 
-    v31 = [(CARDevicePickerPanel *)v28 currentViewController];
-    [v31 removeFromParentViewController];
+    currentViewController3 = [(CARDevicePickerPanel *)v28 currentViewController];
+    [currentViewController3 removeFromParentViewController];
 
     v26 = +[_TtC15CarPlaySettings20CARSettingsUtilities loadingViewController];
     [v26 willMoveToParentViewController:v28];
     [(CARDevicePickerPanel *)v28 addChildViewController:v26];
-    v32 = [(CARDevicePickerPanel *)v28 view];
-    v33 = [v26 view];
-    [v32 addSubview:v33];
+    view14 = [(CARDevicePickerPanel *)v28 view];
+    view15 = [v26 view];
+    [view14 addSubview:view15];
 
-    v34 = [v26 view];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view16 = [v26 view];
+    [view16 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v69 = [v26 view];
-    v65 = [v69 leadingAnchor];
-    v67 = [(CARDevicePickerPanel *)v28 view];
-    v63 = [v67 leadingAnchor];
-    v61 = [v65 constraintEqualToAnchor:v63];
+    view17 = [v26 view];
+    leadingAnchor3 = [view17 leadingAnchor];
+    view18 = [(CARDevicePickerPanel *)v28 view];
+    leadingAnchor4 = [view18 leadingAnchor];
+    v61 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v71[0] = v61;
-    v59 = [v26 view];
-    v55 = [v59 trailingAnchor];
-    v57 = [(CARDevicePickerPanel *)v28 view];
-    v53 = [v57 trailingAnchor];
-    v50 = [v55 constraintEqualToAnchor:v53];
+    view19 = [v26 view];
+    trailingAnchor3 = [view19 trailingAnchor];
+    view20 = [(CARDevicePickerPanel *)v28 view];
+    trailingAnchor4 = [view20 trailingAnchor];
+    v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v71[1] = v50;
-    v49 = [v26 view];
-    v45 = [v49 topAnchor];
-    v47 = [(CARDevicePickerPanel *)v28 view];
-    v35 = [v47 topAnchor];
-    v36 = [v45 constraintEqualToAnchor:v35];
+    view21 = [v26 view];
+    topAnchor3 = [view21 topAnchor];
+    view22 = [(CARDevicePickerPanel *)v28 view];
+    topAnchor4 = [view22 topAnchor];
+    v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v71[2] = v36;
-    v37 = [v26 view];
-    v38 = [v37 bottomAnchor];
-    v39 = [(CARDevicePickerPanel *)v28 view];
-    v40 = [v39 bottomAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
+    view23 = [v26 view];
+    bottomAnchor3 = [view23 bottomAnchor];
+    view24 = [(CARDevicePickerPanel *)v28 view];
+    bottomAnchor4 = [view24 bottomAnchor];
+    v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v71[3] = v41;
     v42 = [NSArray arrayWithObjects:v71 count:4];
     [NSLayoutConstraint activateConstraints:v42];
@@ -186,17 +186,17 @@
   }
 }
 
-- (void)carManager:(id)a3 didUpdatePairedDevices:(id)a4
+- (void)carManager:(id)manager didUpdatePairedDevices:(id)devices
 {
-  v7 = a4;
-  v5 = [(CARDevicePickerPanel *)self pairedDevices];
+  devicesCopy = devices;
+  pairedDevices = [(CARDevicePickerPanel *)self pairedDevices];
 
-  v6 = v7;
-  if (v5 != v7)
+  v6 = devicesCopy;
+  if (pairedDevices != devicesCopy)
   {
-    [(CARDevicePickerPanel *)self setPairedDevices:v7];
+    [(CARDevicePickerPanel *)self setPairedDevices:devicesCopy];
     [(CARDevicePickerPanel *)self _refreshViewControllerIfNeeded];
-    v6 = v7;
+    v6 = devicesCopy;
   }
 }
 

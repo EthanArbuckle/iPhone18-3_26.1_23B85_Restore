@@ -1,34 +1,34 @@
 @interface REMFileAttachment
-+ (id)createTemporaryFileURLWithUTI:(id)a3;
-+ (id)createTemporaryFileWithData:(id)a3 UTI:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (REMFileAttachment)initWithCoder:(id)a3;
-- (REMFileAttachment)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 UTI:(id)a6 fileSize:(unint64_t)a7 fileURL:(id)a8 data:(id)a9;
++ (id)createTemporaryFileURLWithUTI:(id)i;
++ (id)createTemporaryFileWithData:(id)data UTI:(id)i;
+- (BOOL)isEqual:(id)equal;
+- (REMFileAttachment)initWithCoder:(id)coder;
+- (REMFileAttachment)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID UTI:(id)i fileSize:(unint64_t)size fileURL:(id)l data:(id)data;
 - (id)_deepCopy;
 - (void)_deepCopy;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMFileAttachment
 
-- (REMFileAttachment)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 UTI:(id)a6 fileSize:(unint64_t)a7 fileURL:(id)a8 data:(id)a9
+- (REMFileAttachment)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID UTI:(id)i fileSize:(unint64_t)size fileURL:(id)l data:(id)data
 {
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  iCopy = i;
+  lCopy = l;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = REMFileAttachment;
-  v18 = [(REMAttachment *)&v23 initWithObjectID:a3 accountID:a4 reminderID:a5 UTI:v15];
+  v18 = [(REMAttachment *)&v23 initWithObjectID:d accountID:iD reminderID:reminderID UTI:iCopy];
   v19 = v18;
   if (v18)
   {
-    v18->_fileSize = a7;
-    objc_storeStrong(&v18->_fileURL, a8);
+    v18->_fileSize = size;
+    objc_storeStrong(&v18->_fileURL, l);
     v19->_isTemporaryFileURL = 0;
-    if (v17)
+    if (dataCopy)
     {
-      v20 = [REMFileAttachment createTemporaryFileWithData:v17 UTI:v15];
+      v20 = [REMFileAttachment createTemporaryFileWithData:dataCopy UTI:iCopy];
       fileURL = v19->_fileURL;
       v19->_fileURL = v20;
 
@@ -50,18 +50,18 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)createTemporaryFileURLWithUTI:(id)a3
++ (id)createTemporaryFileURLWithUTI:(id)i
 {
-  v3 = UTTypeCopyPreferredTagWithClass(a3, *MEMORY[0x1E6963710]);
+  v3 = UTTypeCopyPreferredTagWithClass(i, *MEMORY[0x1E6963710]);
   v12 = 0;
   v4 = [REMPaths createTemporaryFileDirectoryURLIfNeededWithError:&v12];
   v5 = v12;
   if (v4)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    v7 = [v6 globallyUniqueString];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    globallyUniqueString = [processInfo globallyUniqueString];
 
-    v8 = [v4 URLByAppendingPathComponent:v7];
+    v8 = [v4 URLByAppendingPathComponent:globallyUniqueString];
     v9 = v8;
     if (v3)
     {
@@ -73,8 +73,8 @@
 
   else
   {
-    v7 = +[REMLogStore write];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    globallyUniqueString = +[REMLogStore write];
+    if (os_log_type_enabled(globallyUniqueString, OS_LOG_TYPE_ERROR))
     {
       +[REMFileAttachment createTemporaryFileURLWithUTI:];
     }
@@ -85,14 +85,14 @@
   return v9;
 }
 
-+ (id)createTemporaryFileWithData:(id)a3 UTI:(id)a4
++ (id)createTemporaryFileWithData:(id)data UTI:(id)i
 {
-  v5 = a3;
-  v6 = [REMFileAttachment createTemporaryFileURLWithUTI:a4];
+  dataCopy = data;
+  v6 = [REMFileAttachment createTemporaryFileURLWithUTI:i];
   if (v6)
   {
     v10 = 0;
-    [v5 writeToURL:v6 options:1 error:&v10];
+    [dataCopy writeToURL:v6 options:1 error:&v10];
     v7 = v10;
     if (v7)
     {
@@ -109,39 +109,39 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = REMFileAttachment;
-  [(REMAttachment *)&v10 encodeWithCoder:v4];
+  [(REMAttachment *)&v10 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[REMFileAttachment fileSize](self, "fileSize")}];
-  [v4 encodeObject:v5 forKey:@"fileSize"];
-  v6 = [(REMFileAttachment *)self fileURL];
+  [coderCopy encodeObject:v5 forKey:@"fileSize"];
+  fileURL = [(REMFileAttachment *)self fileURL];
 
-  if (v6)
+  if (fileURL)
   {
     v7 = objc_alloc(MEMORY[0x1E696AE98]);
-    v8 = [(REMFileAttachment *)self fileURL];
-    v9 = [v7 initWithURL:v8 readonly:{-[REMFileAttachment isTemporaryFileURL](self, "isTemporaryFileURL") ^ 1}];
+    fileURL2 = [(REMFileAttachment *)self fileURL];
+    v9 = [v7 initWithURL:fileURL2 readonly:{-[REMFileAttachment isTemporaryFileURL](self, "isTemporaryFileURL") ^ 1}];
 
-    [v4 encodeObject:v9 forKey:@"fileURL"];
+    [coderCopy encodeObject:v9 forKey:@"fileURL"];
   }
 
-  [v4 encodeBool:-[REMFileAttachment isTemporaryFileURL](self forKey:{"isTemporaryFileURL"), @"isTemporaryFileURL"}];
+  [coderCopy encodeBool:-[REMFileAttachment isTemporaryFileURL](self forKey:{"isTemporaryFileURL"), @"isTemporaryFileURL"}];
 }
 
-- (REMFileAttachment)initWithCoder:(id)a3
+- (REMFileAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = REMFileAttachment;
-  v5 = [(REMAttachment *)&v12 initWithCoder:v4];
+  v5 = [(REMAttachment *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileSize"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileSize"];
     v5->_fileSize = [v6 unsignedLongLongValue];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
     v8 = v7;
     if (v7)
     {
@@ -150,7 +150,7 @@
       v5->_fileURL = v9;
     }
 
-    v5->_isTemporaryFileURL = [v4 decodeBoolForKey:@"isTemporaryFileURL"];
+    v5->_isTemporaryFileURL = [coderCopy decodeBoolForKey:@"isTemporaryFileURL"];
   }
 
   return v5;
@@ -160,32 +160,32 @@
 {
   v17.receiver = self;
   v17.super_class = REMFileAttachment;
-  v3 = [(REMAttachment *)&v17 _deepCopy];
-  [v3 setFileSize:{-[REMFileAttachment fileSize](self, "fileSize")}];
+  _deepCopy = [(REMAttachment *)&v17 _deepCopy];
+  [_deepCopy setFileSize:{-[REMFileAttachment fileSize](self, "fileSize")}];
   if (![(REMFileAttachment *)self isTemporaryFileURL]|| ([(REMFileAttachment *)self fileURL], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
-    v6 = [(REMFileAttachment *)self fileURL];
-    v13 = v3;
-    v14 = v6;
+    fileURL = [(REMFileAttachment *)self fileURL];
+    v13 = _deepCopy;
+    v14 = fileURL;
 LABEL_9:
     [v13 setFileURL:v14];
     goto LABEL_10;
   }
 
   v5 = [(REMAttachment *)self uti];
-  v6 = [REMFileAttachment createTemporaryFileURLWithUTI:v5];
+  fileURL = [REMFileAttachment createTemporaryFileURLWithUTI:v5];
 
-  if (!v6)
+  if (!fileURL)
   {
-    v13 = v3;
+    v13 = _deepCopy;
     v14 = 0;
     goto LABEL_9;
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(REMFileAttachment *)self fileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  fileURL2 = [(REMFileAttachment *)self fileURL];
   v16 = 0;
-  [v7 linkItemAtURL:v8 toURL:v6 error:&v16];
+  [defaultManager linkItemAtURL:fileURL2 toURL:fileURL error:&v16];
   v9 = v16;
 
   if (v9)
@@ -196,47 +196,47 @@ LABEL_9:
       [REMFileAttachment _deepCopy];
     }
 
-    v11 = v3;
+    v11 = _deepCopy;
     v12 = 0;
   }
 
   else
   {
-    v11 = v3;
-    v12 = v6;
+    v11 = _deepCopy;
+    v12 = fileURL;
   }
 
   [v11 setFileURL:v12];
 
 LABEL_10:
-  [v3 setIsTemporaryFileURL:{-[REMFileAttachment isTemporaryFileURL](self, "isTemporaryFileURL")}];
+  [_deepCopy setIsTemporaryFileURL:{-[REMFileAttachment isTemporaryFileURL](self, "isTemporaryFileURL")}];
 
-  return v3;
+  return _deepCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = REMFileAttachment;
-  if ([(REMAttachment *)&v16 isEqual:v4])
+  if ([(REMAttachment *)&v16 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [v5 fileSize];
-    if (v6 == [(REMFileAttachment *)self fileSize])
+    v5 = equalCopy;
+    fileSize = [v5 fileSize];
+    if (fileSize == [(REMFileAttachment *)self fileSize])
     {
-      v7 = [v5 fileURL];
-      v8 = [(REMFileAttachment *)self fileURL];
-      v9 = v8;
-      if (v7 == v8)
+      fileURL = [v5 fileURL];
+      fileURL2 = [(REMFileAttachment *)self fileURL];
+      v9 = fileURL2;
+      if (fileURL == fileURL2)
       {
       }
 
       else
       {
-        v10 = [v5 fileURL];
-        v11 = [(REMFileAttachment *)self fileURL];
-        v12 = [v10 isEqual:v11];
+        fileURL3 = [v5 fileURL];
+        fileURL4 = [(REMFileAttachment *)self fileURL];
+        v12 = [fileURL3 isEqual:fileURL4];
 
         if (!v12)
         {
@@ -244,8 +244,8 @@ LABEL_10:
         }
       }
 
-      v14 = [v5 isTemporaryFileURL];
-      v13 = v14 ^ [(REMFileAttachment *)self isTemporaryFileURL]^ 1;
+      isTemporaryFileURL = [v5 isTemporaryFileURL];
+      v13 = isTemporaryFileURL ^ [(REMFileAttachment *)self isTemporaryFileURL]^ 1;
       goto LABEL_9;
     }
 

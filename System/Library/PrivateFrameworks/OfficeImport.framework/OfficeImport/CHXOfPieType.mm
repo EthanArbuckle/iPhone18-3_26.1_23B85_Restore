@@ -1,16 +1,16 @@
 @interface CHXOfPieType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXOfPieType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [CHXPie2DType chdChartTypeFromXmlChartTypeElement:a3 state:v5];
-  v7 = [v5 drawingState];
-  v8 = [v7 OAXChartNamespace];
-  v9 = OCXFindChild(a3, v8, "ofPieType");
+  stateCopy = state;
+  v6 = [CHXPie2DType chdChartTypeFromXmlChartTypeElement:element state:stateCopy];
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v9 = OCXFindChild(element, oAXChartNamespace, "ofPieType");
 
   if (v9 && (CXRequiredStringAttribute(v9, CXNoNamespace, "val"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToString:@"bar"], v10, (v11 & 1) != 0))
   {

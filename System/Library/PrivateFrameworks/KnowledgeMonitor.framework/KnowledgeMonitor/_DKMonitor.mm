@@ -1,18 +1,18 @@
 @interface _DKMonitor
 - (BOOL)_instantMonitorNeedsActivation;
 - (BOOL)_instantMonitorNeedsDeactivation;
-- (BOOL)historicalStateHasChanged:(id)a3;
+- (BOOL)historicalStateHasChanged:(id)changed;
 - (BOOL)instantMonitorNeedsActivation;
 - (BOOL)instantMonitorNeedsDeactivation;
 - (_DKEvent)currentEvent;
 - (_DKMonitor)init;
 - (id)loadState;
 - (void)dealloc;
-- (void)endCurrentEvent:(id)a3;
+- (void)endCurrentEvent:(id)event;
 - (void)saveState;
-- (void)setCurrentEvent:(id)a3 inferHistoricalState:(BOOL)a4;
-- (void)setLastUpdate:(id)a3;
-- (void)systemClockDidChange:(id)a3;
+- (void)setCurrentEvent:(id)event inferHistoricalState:(BOOL)state;
+- (void)setLastUpdate:(id)update;
+- (void)systemClockDidChange:(id)change;
 @end
 
 @implementation _DKMonitor
@@ -76,8 +76,8 @@
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     if ([objc_opt_class() qualityOfService])
     {
-      v8 = [objc_opt_class() qualityOfService];
-      v9 = dispatch_queue_attr_make_with_qos_class(v7, v8, 0);
+      qualityOfService = [objc_opt_class() qualityOfService];
+      v9 = dispatch_queue_attr_make_with_qos_class(v7, qualityOfService, 0);
 
       v7 = v9;
     }
@@ -93,9 +93,9 @@
     eventQueue = v2->_eventQueue;
     v2->_eventQueue = v15;
 
-    v17 = [(_DKMonitor *)v2 loadState];
+    loadState = [(_DKMonitor *)v2 loadState];
     state = v2->_state;
-    v2->_state = v17;
+    v2->_state = loadState;
 
     v19 = [(NSDictionary *)v2->_state objectForKeyedSubscript:@"kInstantState"];
     instantState = v2->_instantState;
@@ -123,22 +123,22 @@
     }
 
     v29 = [MEMORY[0x277CBEB98] setWithObjects:{@"Backlight", @"ScreenLockState", @"AppUsage", 0}];
-    v30 = [objc_opt_class() eventStream];
-    if (v30)
+    eventStream = [objc_opt_class() eventStream];
+    if (eventStream)
     {
-      v31 = v30;
-      v32 = [objc_opt_class() eventStream];
-      v33 = [v29 containsObject:v32];
+      v31 = eventStream;
+      eventStream2 = [objc_opt_class() eventStream];
+      v33 = [v29 containsObject:eventStream2];
 
       if (v33)
       {
         v2->_machTimeAtLastClockChange = mach_continuous_time();
-        v34 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         dateAtLastClockChange = v2->_dateAtLastClockChange;
-        v2->_dateAtLastClockChange = v34;
+        v2->_dateAtLastClockChange = date;
 
-        v36 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v36 addObserver:v2 selector:sel_systemClockDidChange_ name:*MEMORY[0x277CBE778] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter addObserver:v2 selector:sel_systemClockDidChange_ name:*MEMORY[0x277CBE778] object:0];
       }
     }
   }
@@ -148,8 +148,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE778] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE778] object:0];
 
   v4.receiver = self;
   v4.super_class = _DKMonitor;
@@ -232,27 +232,27 @@
   return v3 == 0;
 }
 
-- (void)endCurrentEvent:(id)a3
+- (void)endCurrentEvent:(id)event
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = [(NSMutableDictionary *)self->_instantState objectForKeyedSubscript:@"kCurrentEvent"];
   if (v5)
   {
-    v6 = [(_DKMonitor *)self filter];
-    v7 = (v6)[2](v6, v5);
+    filter = [(_DKMonitor *)self filter];
+    v7 = (filter)[2](filter, v5);
 
     if ((v7 & 1) == 0)
     {
-      [v5 setEndDate:v4];
-      v8 = [(_DKMonitor *)self historicalHandler];
+      [v5 setEndDate:eventCopy];
+      historicalHandler = [(_DKMonitor *)self historicalHandler];
 
-      if (v8)
+      if (historicalHandler)
       {
-        v9 = [(_DKMonitor *)self historicalHandler];
+        historicalHandler2 = [(_DKMonitor *)self historicalHandler];
         v12[0] = v5;
         v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-        (v9)[2](v9, v10);
+        (historicalHandler2)[2](historicalHandler2, v10);
       }
     }
 
@@ -262,9 +262,9 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)historicalStateHasChanged:(id)a3
+- (BOOL)historicalStateHasChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = [(NSMutableDictionary *)self->_instantState objectForKeyedSubscript:@"kCurrentEvent"];
   if (v5)
   {
@@ -279,20 +279,20 @@
   return v6;
 }
 
-- (void)setCurrentEvent:(id)a3 inferHistoricalState:(BOOL)a4
+- (void)setCurrentEvent:(id)event inferHistoricalState:(BOOL)state
 {
-  v6 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __51___DKMonitor_setCurrentEvent_inferHistoricalState___block_invoke;
   v13[3] = &unk_27856F3B8;
   v13[4] = self;
-  v14 = v6;
-  v15 = a4;
+  v14 = eventCopy;
+  stateCopy = state;
   v8 = v13;
   v9 = queue;
-  v10 = v6;
+  v10 = eventCopy;
   v11 = os_transaction_create();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -304,19 +304,19 @@
   dispatch_async(v9, block);
 }
 
-- (void)setLastUpdate:(id)a3
+- (void)setLastUpdate:(id)update
 {
-  v9 = a3;
-  v5 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = objc_autoreleasePoolPush();
-  objc_storeStrong(&self->_lastUpdate, a3);
+  objc_storeStrong(&self->_lastUpdate, update);
   lastUpdate = self->_lastUpdate;
   if (lastUpdate)
   {
-    v8 = [(_DKMonitor *)self historicalState];
-    [v8 setObject:lastUpdate forKeyedSubscript:@"kLastUpdateDate"];
+    historicalState = [(_DKMonitor *)self historicalState];
+    [historicalState setObject:lastUpdate forKeyedSubscript:@"kLastUpdateDate"];
 
     [(_DKMonitor *)self saveState];
   }
@@ -324,9 +324,9 @@
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)systemClockDidChange:(id)a3
+- (void)systemClockDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (systemClockDidChange__onceToken != -1)
   {
     [_DKMonitor systemClockDidChange:];

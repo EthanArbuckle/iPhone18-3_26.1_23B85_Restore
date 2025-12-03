@@ -1,29 +1,29 @@
 @interface RoutePlanningWaypointRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
-- (RoutePlanningWaypointRequest)initWithWaypointPlaceholder:(id)a3 request:(id)a4 preferredNameSource:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)nameWithResolvedWaypoint:(id)a3 allowCurrentLocation:(BOOL)a4;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (RoutePlanningWaypointRequest)initWithWaypointPlaceholder:(id)placeholder request:(id)request preferredNameSource:(unint64_t)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)nameWithResolvedWaypoint:(id)waypoint allowCurrentLocation:(BOOL)location;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 @end
 
 @implementation RoutePlanningWaypointRequest
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, @"waypointRequest", self->_waypointRequest);
+  (*v4)(blockCopy, @"waypointRequest", self->_waypointRequest);
   v7 = [NSNumber numberWithUnsignedInteger:self->_preferredNameSource];
-  (*v4)(v6, @"preferredNameSource", v7);
+  (*v4)(blockCopy, @"preferredNameSource", v7);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100CE4DCC;
@@ -31,8 +31,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(RoutePlanningWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(RoutePlanningWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -66,7 +66,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100CE501C;
@@ -74,8 +74,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(RoutePlanningWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(RoutePlanningWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -107,24 +107,24 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if ([(RoutePlanningWaypointRequest *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(RoutePlanningWaypointRequest *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     waypointPlaceholder = self->_waypointPlaceholder;
-    v7 = [(RoutePlanningWaypointRequest *)v5 waypointPlaceholder];
-    if ([(WaypointPlaceholder *)waypointPlaceholder isEqual:v7])
+    waypointPlaceholder = [(RoutePlanningWaypointRequest *)v5 waypointPlaceholder];
+    if ([(WaypointPlaceholder *)waypointPlaceholder isEqual:waypointPlaceholder])
     {
       waypointRequest = self->_waypointRequest;
-      v9 = [(RoutePlanningWaypointRequest *)v5 waypointRequest];
-      if ([(WaypointRequest *)waypointRequest isEqual:v9])
+      waypointRequest = [(RoutePlanningWaypointRequest *)v5 waypointRequest];
+      if ([(WaypointRequest *)waypointRequest isEqual:waypointRequest])
       {
         preferredNameSource = self->_preferredNameSource;
         v11 = preferredNameSource == [(RoutePlanningWaypointRequest *)v5 preferredNameSource];
@@ -150,9 +150,9 @@ LABEL_9:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   waypointPlaceholder = self->_waypointPlaceholder;
   waypointRequest = self->_waypointRequest;
   preferredNameSource = self->_preferredNameSource;
@@ -160,104 +160,104 @@ LABEL_9:
   return [v4 initWithWaypointPlaceholder:waypointPlaceholder request:waypointRequest preferredNameSource:preferredNameSource];
 }
 
-- (id)nameWithResolvedWaypoint:(id)a3 allowCurrentLocation:(BOOL)a4
+- (id)nameWithResolvedWaypoint:(id)waypoint allowCurrentLocation:(BOOL)location
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 || ![v6 isCurrentLocation])
+  waypointCopy = waypoint;
+  v7 = waypointCopy;
+  if (location || ![waypointCopy isCurrentLocation])
   {
     if ([(RoutePlanningWaypointRequest *)self preferredNameSource])
     {
       if (!v7 || ([v7 isCurrentLocation] & 1) != 0)
       {
-        v11 = 0;
+        name2 = 0;
 LABEL_19:
-        if ([v11 length])
+        if ([name2 length])
         {
           goto LABEL_23;
         }
 
-        v8 = [(RoutePlanningWaypointRequest *)self waypointPlaceholder];
-        v10 = [v8 name];
+        waypointPlaceholder = [(RoutePlanningWaypointRequest *)self waypointPlaceholder];
+        name = [waypointPlaceholder name];
         goto LABEL_21;
       }
 
-      v13 = [[SearchResult alloc] initWithComposedWaypoint:v7];
-      v11 = [(SearchResult *)v13 name];
+      waypointRequest = [[SearchResult alloc] initWithComposedWaypoint:v7];
+      name2 = [(SearchResult *)waypointRequest name];
     }
 
     else
     {
-      v12 = [v7 addressBookAddress];
-      if (v12)
+      addressBookAddress = [v7 addressBookAddress];
+      if (addressBookAddress)
       {
       }
 
       else
       {
-        v11 = [v7 findMyHandle];
+        name2 = [v7 findMyHandle];
 
-        if (!v11)
+        if (!name2)
         {
           goto LABEL_19;
         }
       }
 
-      v13 = [(RoutePlanningWaypointRequest *)self waypointRequest];
-      v14 = [(SearchResult *)v13 waypointName];
-      v15 = v14;
-      if (v14)
+      waypointRequest = [(RoutePlanningWaypointRequest *)self waypointRequest];
+      waypointName = [(SearchResult *)waypointRequest waypointName];
+      v15 = waypointName;
+      if (waypointName)
       {
-        v11 = v14;
+        name2 = waypointName;
       }
 
       else
       {
-        v17 = [(RoutePlanningWaypointRequest *)self waypointPlaceholder];
-        v11 = [v17 name];
+        waypointPlaceholder2 = [(RoutePlanningWaypointRequest *)self waypointPlaceholder];
+        name2 = [waypointPlaceholder2 name];
       }
     }
 
     goto LABEL_19;
   }
 
-  v8 = [v7 mkMapItem];
-  v9 = [v8 _addressFormattedAsShortenedAddress];
-  if (v9)
+  waypointPlaceholder = [v7 mkMapItem];
+  _addressFormattedAsShortenedAddress = [waypointPlaceholder _addressFormattedAsShortenedAddress];
+  if (_addressFormattedAsShortenedAddress)
   {
-    v10 = v9;
-    v11 = v10;
+    name = _addressFormattedAsShortenedAddress;
+    name2 = name;
 LABEL_21:
-    v16 = v10;
+    v16 = name;
     goto LABEL_22;
   }
 
   v16 = MKLocalizedStringForUnknownLocation();
-  v11 = 0;
+  name2 = 0;
 LABEL_22:
 
-  v11 = v16;
+  name2 = v16;
 LABEL_23:
 
-  return v11;
+  return name2;
 }
 
-- (RoutePlanningWaypointRequest)initWithWaypointPlaceholder:(id)a3 request:(id)a4 preferredNameSource:(unint64_t)a5
+- (RoutePlanningWaypointRequest)initWithWaypointPlaceholder:(id)placeholder request:(id)request preferredNameSource:(unint64_t)source
 {
-  v9 = a3;
-  v10 = a4;
+  placeholderCopy = placeholder;
+  requestCopy = request;
   v16.receiver = self;
   v16.super_class = RoutePlanningWaypointRequest;
   v11 = [(RoutePlanningWaypointRequest *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_waypointPlaceholder, a3);
-    v13 = [v10 copyWithZone:0];
+    objc_storeStrong(&v11->_waypointPlaceholder, placeholder);
+    v13 = [requestCopy copyWithZone:0];
     waypointRequest = v12->_waypointRequest;
     v12->_waypointRequest = v13;
 
-    v12->_preferredNameSource = a5;
+    v12->_preferredNameSource = source;
   }
 
   return v12;

@@ -33,8 +33,8 @@
         v64 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v65 = MEMORY[0x1E696AF00];
         v66 = v64;
-        v67 = [v65 callStackSymbols];
-        v68 = [v67 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v65 callStackSymbols];
+        v68 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v110 = v64;
         v111 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v110 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -76,8 +76,8 @@
         v73 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v74 = MEMORY[0x1E696AF00];
         v75 = v73;
-        v76 = [v74 callStackSymbols];
-        v77 = [v76 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v74 callStackSymbols];
+        v77 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v110 = v73;
         v111 = 2114;
@@ -88,8 +88,8 @@
 
     else if (v40)
     {
-      v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v42 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v110 = v42;
       _os_log_error_impl(&dword_1C0184000, v39, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -99,8 +99,8 @@
   }
 
   v18 = v17;
-  v19 = [a1 _dataExtractionOverrrides];
-  v20 = [v19 objectForKeyedSubscript:v15];
+  _dataExtractionOverrrides = [self _dataExtractionOverrrides];
+  v20 = [_dataExtractionOverrrides objectForKeyedSubscript:v15];
   v21 = v20;
   if (v20)
   {
@@ -126,8 +126,8 @@
           v82 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v83 = MEMORY[0x1E696AF00];
           v84 = v82;
-          v85 = [v83 callStackSymbols];
-          v86 = [v85 componentsJoinedByString:@"\n"];
+          callStackSymbols5 = [v83 callStackSymbols];
+          v86 = [callStackSymbols5 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v110 = v82;
           v111 = 2114;
@@ -138,8 +138,8 @@
 
       else if (v47)
       {
-        v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v49 = [callStackSymbols6 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v110 = v49;
         _os_log_error_impl(&dword_1C0184000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -170,8 +170,8 @@
           v91 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v92 = MEMORY[0x1E696AF00];
           v93 = v91;
-          v94 = [v92 callStackSymbols];
-          v95 = [v94 componentsJoinedByString:@"\n"];
+          callStackSymbols7 = [v92 callStackSymbols];
+          v95 = [callStackSymbols7 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v110 = v91;
           v111 = 2114;
@@ -182,8 +182,8 @@
 
       else if (v54)
       {
-        v55 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v56 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v56 = [callStackSymbols8 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v110 = v56;
         _os_log_error_impl(&dword_1C0184000, v53, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -192,7 +192,7 @@
       _NUAssertFailHandler("+[CIFilter(DataAdditions) extractDataToDictionary:dataExtractor:options:context:colorSpace:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/CoreImageDataAdditions.m", 78, @"Bad override for %@: not implemented %@", v96, v97, v98, v99, v15);
     }
 
-    v24 = [a1 methodForSelector:v23];
+    v24 = [self methodForSelector:v23];
     if (!v24)
     {
       v57 = NUAssertLogger_20556();
@@ -214,8 +214,8 @@
           v100 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v101 = MEMORY[0x1E696AF00];
           v102 = v100;
-          v103 = [v101 callStackSymbols];
-          v104 = [v103 componentsJoinedByString:@"\n"];
+          callStackSymbols9 = [v101 callStackSymbols];
+          v104 = [callStackSymbols9 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v110 = v100;
           v111 = 2114;
@@ -226,8 +226,8 @@
 
       else if (v61)
       {
-        v62 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols10 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v63 = [callStackSymbols10 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v110 = v63;
         _os_log_error_impl(&dword_1C0184000, v60, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -236,7 +236,7 @@
       _NUAssertFailHandler("+[CIFilter(DataAdditions) extractDataToDictionary:dataExtractor:options:context:colorSpace:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/CoreImageDataAdditions.m", 81, @"Bad override for %@: cannot find IMP %@", v105, v106, v107, v108, v15);
     }
 
-    v25 = v24(a1, v23, v14, v15, v16, v18, a7, a8);
+    v25 = v24(self, v23, v14, v15, v16, v18, a7, a8);
   }
 
   else

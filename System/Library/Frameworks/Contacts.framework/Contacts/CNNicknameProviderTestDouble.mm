@@ -1,32 +1,32 @@
 @interface CNNicknameProviderTestDouble
-- (CNNicknameProviderTestDouble)initWithFilePathsForContacts:(id)a3;
-- (id)avatarImageFileURLForNickname:(id)a3;
-- (id)nicknameForContact:(id)a3;
-- (id)sharedWallpaperForNickname:(id)a3;
-- (id)sharedWatchWallpaperImageDataForNickname:(id)a3;
-- (id)wallpaperFileURLForNickname:(id)a3;
-- (id)watchWallpaperImageDataFileURLForNickname:(id)a3;
-- (void)addFilePath:(id)a3 forContact:(id)a4;
-- (void)fetchPersonalNicknameAsContactWithCompletion:(id)a3;
+- (CNNicknameProviderTestDouble)initWithFilePathsForContacts:(id)contacts;
+- (id)avatarImageFileURLForNickname:(id)nickname;
+- (id)nicknameForContact:(id)contact;
+- (id)sharedWallpaperForNickname:(id)nickname;
+- (id)sharedWatchWallpaperImageDataForNickname:(id)nickname;
+- (id)wallpaperFileURLForNickname:(id)nickname;
+- (id)watchWallpaperImageDataFileURLForNickname:(id)nickname;
+- (void)addFilePath:(id)path forContact:(id)contact;
+- (void)fetchPersonalNicknameAsContactWithCompletion:(id)completion;
 @end
 
 @implementation CNNicknameProviderTestDouble
 
-- (CNNicknameProviderTestDouble)initWithFilePathsForContacts:(id)a3
+- (CNNicknameProviderTestDouble)initWithFilePathsForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v12.receiver = self;
   v12.super_class = CNNicknameProviderTestDouble;
   v5 = [(CNNicknameProviderTestDouble *)&v12 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [contactsCopy mutableCopy];
     filePathsForContacts = v5->_filePathsForContacts;
     v5->_filePathsForContacts = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     contactForNickname = v5->_contactForNickname;
-    v5->_contactForNickname = v8;
+    v5->_contactForNickname = dictionary;
 
     v10 = v5;
   }
@@ -34,19 +34,19 @@
   return v5;
 }
 
-- (void)addFilePath:(id)a3 forContact:(id)a4
+- (void)addFilePath:(id)path forContact:(id)contact
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
-  v8 = [v6 identifier];
+  contactCopy = contact;
+  pathCopy = path;
+  filePathsForContacts = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
+  identifier = [contactCopy identifier];
 
-  [v9 setObject:v7 forKey:v8];
+  [filePathsForContacts setObject:pathCopy forKey:identifier];
 }
 
-- (id)nicknameForContact:(id)a3
+- (id)nicknameForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -65,24 +65,24 @@
 
   v6 = v5;
   _Block_object_dispose(&v13, 8);
-  v7 = [[v5 alloc] initWithMeContact:v4];
-  v8 = [v4 identifier];
-  [v7 setRecordID:v8];
+  v7 = [[v5 alloc] initWithMeContact:contactCopy];
+  identifier = [contactCopy identifier];
+  [v7 setRecordID:identifier];
 
-  v9 = [(CNNicknameProviderTestDouble *)self contactForNickname];
-  v10 = [v7 recordID];
-  [v9 setObject:v4 forKey:v10];
+  contactForNickname = [(CNNicknameProviderTestDouble *)self contactForNickname];
+  recordID = [v7 recordID];
+  [contactForNickname setObject:contactCopy forKey:recordID];
 
   return v7;
 }
 
-- (id)avatarImageFileURLForNickname:(id)a3
+- (id)avatarImageFileURLForNickname:(id)nickname
 {
-  v4 = a3;
-  v5 = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
-  v6 = [v4 recordID];
+  nicknameCopy = nickname;
+  filePathsForContacts = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
+  recordID = [nicknameCopy recordID];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [filePathsForContacts objectForKey:recordID];
 
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
@@ -97,13 +97,13 @@
   return v8;
 }
 
-- (id)wallpaperFileURLForNickname:(id)a3
+- (id)wallpaperFileURLForNickname:(id)nickname
 {
-  v4 = a3;
-  v5 = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
-  v6 = [v4 recordID];
+  nicknameCopy = nickname;
+  filePathsForContacts = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
+  recordID = [nicknameCopy recordID];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [filePathsForContacts objectForKey:recordID];
 
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
@@ -118,13 +118,13 @@
   return v8;
 }
 
-- (id)watchWallpaperImageDataFileURLForNickname:(id)a3
+- (id)watchWallpaperImageDataFileURLForNickname:(id)nickname
 {
-  v4 = a3;
-  v5 = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
-  v6 = [v4 recordID];
+  nicknameCopy = nickname;
+  filePathsForContacts = [(CNNicknameProviderTestDouble *)self filePathsForContacts];
+  recordID = [nicknameCopy recordID];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [filePathsForContacts objectForKey:recordID];
 
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
@@ -139,25 +139,25 @@
   return v8;
 }
 
-- (void)fetchPersonalNicknameAsContactWithCompletion:(id)a3
+- (void)fetchPersonalNicknameAsContactWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
+  completionCopy = completion;
+  selfCopy = self;
   v6 = CNUnimplementedMethodException();
   objc_exception_throw(v6);
 }
 
-- (id)sharedWallpaperForNickname:(id)a3
+- (id)sharedWallpaperForNickname:(id)nickname
 {
-  v3 = [(CNNicknameProviderTestDouble *)self wallpaperFileURLForNickname:a3];
+  v3 = [(CNNicknameProviderTestDouble *)self wallpaperFileURLForNickname:nickname];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v5 = [v4 fileManager];
-    v6 = [v5 dataWithContentsOfURL:v3];
-    v7 = [v6 value];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    fileManager = [currentEnvironment fileManager];
+    v6 = [fileManager dataWithContentsOfURL:v3];
+    value = [v6 value];
 
-    v8 = [[CNWallpaper alloc] initWithPosterArchiveData:v7];
+    v8 = [[CNWallpaper alloc] initWithPosterArchiveData:value];
   }
 
   else
@@ -168,23 +168,23 @@
   return v8;
 }
 
-- (id)sharedWatchWallpaperImageDataForNickname:(id)a3
+- (id)sharedWatchWallpaperImageDataForNickname:(id)nickname
 {
-  v3 = [(CNNicknameProviderTestDouble *)self watchWallpaperImageDataFileURLForNickname:a3];
+  v3 = [(CNNicknameProviderTestDouble *)self watchWallpaperImageDataFileURLForNickname:nickname];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v5 = [v4 fileManager];
-    v6 = [v5 dataWithContentsOfURL:v3];
-    v7 = [v6 value];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    fileManager = [currentEnvironment fileManager];
+    v6 = [fileManager dataWithContentsOfURL:v3];
+    value = [v6 value];
   }
 
   else
   {
-    v7 = 0;
+    value = 0;
   }
 
-  return v7;
+  return value;
 }
 
 @end

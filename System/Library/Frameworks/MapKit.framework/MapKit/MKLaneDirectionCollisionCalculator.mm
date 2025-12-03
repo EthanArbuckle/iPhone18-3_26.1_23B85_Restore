@@ -1,14 +1,14 @@
 @interface MKLaneDirectionCollisionCalculator
-- (MKLaneDirectionCollisionCalculator)initWithDirections:(id)a3;
+- (MKLaneDirectionCollisionCalculator)initWithDirections:(id)directions;
 - (NSArray)directions;
 - (void)_recalculateCollisions;
-- (void)removeDirectionWithCollisionsLeastSimilarToDirection:(int)a3;
+- (void)removeDirectionWithCollisionsLeastSimilarToDirection:(int)direction;
 - (void)removeNextDirectionWithCollisions;
 @end
 
 @implementation MKLaneDirectionCollisionCalculator
 
-- (void)removeDirectionWithCollisionsLeastSimilarToDirection:(int)a3
+- (void)removeDirectionWithCollisionsLeastSimilarToDirection:(int)direction
 {
   if ([(MKLaneDirectionCollisionCalculator *)self hasCollisions])
   {
@@ -19,11 +19,11 @@
     v11[4] = self;
     v5 = MEMORY[0x1A58E9F30](v11);
     v6 = v5;
-    if (a3 <= 15)
+    if (direction <= 15)
     {
-      if (a3 <= 3)
+      if (direction <= 3)
       {
-        if (a3 < 2)
+        if (direction < 2)
         {
           if (((*(v5 + 16))(v5, 256) & 1) == 0 && ((v6[2])(v6, 16) & 1) == 0 && ((v6[2])(v6, 8) & 1) == 0 && ((v6[2])(v6, 32) & 1) == 0 && ((v6[2])(v6, 4) & 1) == 0 && ((v6[2])(v6, 64) & 1) == 0 && ((v6[2])(v6, 2) & 1) == 0)
           {
@@ -33,7 +33,7 @@
           goto LABEL_85;
         }
 
-        if (a3 == 2 && ((*(v5 + 16))(v5, 16) & 1) == 0 && ((v6[2])(v6, 32) & 1) == 0 && ((v6[2])(v6, 64) & 1) == 0 && ((v6[2])(v6, 128) & 1) == 0 && ((v6[2])(v6, 256) & 1) == 0 && ((v6[2])(v6, 8) & 1) == 0)
+        if (direction == 2 && ((*(v5 + 16))(v5, 16) & 1) == 0 && ((v6[2])(v6, 32) & 1) == 0 && ((v6[2])(v6, 64) & 1) == 0 && ((v6[2])(v6, 128) & 1) == 0 && ((v6[2])(v6, 256) & 1) == 0 && ((v6[2])(v6, 8) & 1) == 0)
         {
           v8 = (v6[2])(v6, 1);
 LABEL_51:
@@ -48,9 +48,9 @@ LABEL_51:
         goto LABEL_85;
       }
 
-      if (a3 != 4)
+      if (direction != 4)
       {
-        if (a3 == 8 && ((*(v5 + 16))(v5, 16) & 1) == 0 && ((v6[2])(v6, 32) & 1) == 0 && ((v6[2])(v6, 64) & 1) == 0 && ((v6[2])(v6, 128) & 1) == 0 && ((v6[2])(v6, 1) & 1) == 0 && ((v6[2])(v6, 2) & 1) == 0)
+        if (direction == 8 && ((*(v5 + 16))(v5, 16) & 1) == 0 && ((v6[2])(v6, 32) & 1) == 0 && ((v6[2])(v6, 64) & 1) == 0 && ((v6[2])(v6, 128) & 1) == 0 && ((v6[2])(v6, 1) & 1) == 0 && ((v6[2])(v6, 2) & 1) == 0)
         {
           v8 = (v6[2])(v6, 256);
           goto LABEL_51;
@@ -76,11 +76,11 @@ LABEL_60:
       goto LABEL_85;
     }
 
-    if (a3 <= 63)
+    if (direction <= 63)
     {
-      if (a3 != 16)
+      if (direction != 16)
       {
-        if (a3 == 32 && ((*(v5 + 16))(v5, 256) & 1) == 0 && ((v6[2])(v6, 8) & 1) == 0 && ((v6[2])(v6, 4) & 1) == 0 && ((v6[2])(v6, 2) & 1) == 0 && ((v6[2])(v6, 1) & 1) == 0 && ((v6[2])(v6, 16) & 1) == 0 && ((v6[2])(v6, 128) & 1) == 0)
+        if (direction == 32 && ((*(v5 + 16))(v5, 256) & 1) == 0 && ((v6[2])(v6, 8) & 1) == 0 && ((v6[2])(v6, 4) & 1) == 0 && ((v6[2])(v6, 2) & 1) == 0 && ((v6[2])(v6, 1) & 1) == 0 && ((v6[2])(v6, 16) & 1) == 0 && ((v6[2])(v6, 128) & 1) == 0)
         {
           v6[2](v6, 64);
         }
@@ -98,7 +98,7 @@ LABEL_60:
 
     else
     {
-      if (a3 == 64)
+      if (direction == 64)
       {
         if ((*(v5 + 16))(v5, 256) & 1) != 0 || ((v6[2])(v6, 8) & 1) != 0 || ((v6[2])(v6, 4) & 1) != 0 || ((v6[2])(v6, 2) & 1) != 0 || ((v6[2])(v6, 1) & 1) != 0 || ((v6[2])(v6, 16))
         {
@@ -109,9 +109,9 @@ LABEL_60:
         goto LABEL_83;
       }
 
-      if (a3 != 128)
+      if (direction != 128)
       {
-        if (a3 != 256 || ((*(v5 + 16))(v5, 16) & 1) != 0 || ((v6[2])(v6, 32) & 1) != 0 || ((v6[2])(v6, 64) & 1) != 0 || ((v6[2])(v6, 128) & 1) != 0 || ((v6[2])(v6, 1) & 1) != 0 || ((v6[2])(v6, 2) & 1) != 0)
+        if (direction != 256 || ((*(v5 + 16))(v5, 16) & 1) != 0 || ((v6[2])(v6, 32) & 1) != 0 || ((v6[2])(v6, 64) & 1) != 0 || ((v6[2])(v6, 128) & 1) != 0 || ((v6[2])(v6, 1) & 1) != 0 || ((v6[2])(v6, 2) & 1) != 0)
         {
           goto LABEL_85;
         }
@@ -708,15 +708,15 @@ LABEL_125:
   return v2;
 }
 
-- (MKLaneDirectionCollisionCalculator)initWithDirections:(id)a3
+- (MKLaneDirectionCollisionCalculator)initWithDirections:(id)directions
 {
-  v4 = a3;
+  directionsCopy = directions;
   v9.receiver = self;
   v9.super_class = MKLaneDirectionCollisionCalculator;
   v5 = [(MKLaneDirectionCollisionCalculator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [directionsCopy mutableCopy];
     directions = v5->_directions;
     v5->_directions = v6;
 

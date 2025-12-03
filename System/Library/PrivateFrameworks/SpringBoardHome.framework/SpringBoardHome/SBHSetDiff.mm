@@ -1,48 +1,48 @@
 @interface SBHSetDiff
-+ (id)diffFromSet:(id)a3 toSet:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithFromSet:(id)a3 toSet:(id)a4 additions:(id)a5 deletions:(id)a6 updates:(id)a7;
++ (id)diffFromSet:(id)set toSet:(id)toSet;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithFromSet:(id)set toSet:(id)toSet additions:(id)additions deletions:(id)deletions updates:(id)updates;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SBHSetDiff
 
-+ (id)diffFromSet:(id)a3 toSet:(id)a4
++ (id)diffFromSet:(id)set toSet:(id)toSet
 {
   v5 = MEMORY[0x1E695DFA8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 setWithSet:v6];
-  [v8 minusSet:v7];
-  v9 = [MEMORY[0x1E695DFA8] setWithSet:v7];
-  [v9 minusSet:v6];
-  v10 = [MEMORY[0x1E695DFA8] setWithSet:v6];
+  toSetCopy = toSet;
+  setCopy = set;
+  v8 = [v5 setWithSet:toSetCopy];
+  [v8 minusSet:setCopy];
+  v9 = [MEMORY[0x1E695DFA8] setWithSet:setCopy];
+  [v9 minusSet:toSetCopy];
+  v10 = [MEMORY[0x1E695DFA8] setWithSet:toSetCopy];
   [v10 minusSet:v8];
   [v10 minusSet:v9];
-  v11 = [objc_alloc(objc_opt_class()) _initWithFromSet:v7 toSet:v6 additions:v8 deletions:v9 updates:v10];
+  v11 = [objc_alloc(objc_opt_class()) _initWithFromSet:setCopy toSet:toSetCopy additions:v8 deletions:v9 updates:v10];
 
   return v11;
 }
 
-- (id)_initWithFromSet:(id)a3 toSet:(id)a4 additions:(id)a5 deletions:(id)a6 updates:(id)a7
+- (id)_initWithFromSet:(id)set toSet:(id)toSet additions:(id)additions deletions:(id)deletions updates:(id)updates
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  setCopy = set;
+  toSetCopy = toSet;
+  additionsCopy = additions;
+  deletionsCopy = deletions;
+  updatesCopy = updates;
   v21.receiver = self;
   v21.super_class = SBHSetDiff;
   v17 = [(SBHSetDiff *)&v21 init];
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_fromSet, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v17->_fromSet, set);
+    objc_storeStrong(p_isa + 2, toSet);
+    objc_storeStrong(p_isa + 3, additions);
+    objc_storeStrong(p_isa + 4, deletions);
+    objc_storeStrong(p_isa + 5, updates);
   }
 
   return p_isa;
@@ -50,16 +50,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SBHSetDiff *)self fromSet];
-  v3 = [v2 hash];
+  fromSet = [(SBHSetDiff *)self fromSet];
+  v3 = [fromSet hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -69,28 +69,28 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SBHSetDiff *)v5 fromSet];
-      v7 = [(SBHSetDiff *)self fromSet];
-      if (v6 == v7)
+      v5 = equalCopy;
+      fromSet = [(SBHSetDiff *)v5 fromSet];
+      fromSet2 = [(SBHSetDiff *)self fromSet];
+      if (fromSet == fromSet2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(SBHSetDiff *)v5 fromSet];
-        v9 = [(SBHSetDiff *)self fromSet];
-        v10 = [v8 isEqual:v9];
+        fromSet3 = [(SBHSetDiff *)v5 fromSet];
+        fromSet4 = [(SBHSetDiff *)self fromSet];
+        v10 = [fromSet3 isEqual:fromSet4];
       }
 
-      v11 = [(SBHSetDiff *)v5 toSet];
-      v12 = [(SBHSetDiff *)self toSet];
-      if (v11 != v12)
+      toSet = [(SBHSetDiff *)v5 toSet];
+      toSet2 = [(SBHSetDiff *)self toSet];
+      if (toSet != toSet2)
       {
-        v13 = [(SBHSetDiff *)v5 toSet];
-        v14 = [(SBHSetDiff *)self toSet];
-        v10 &= [v13 isEqual:v14];
+        toSet3 = [(SBHSetDiff *)v5 toSet];
+        toSet4 = [(SBHSetDiff *)self toSet];
+        v10 &= [toSet3 isEqual:toSet4];
       }
     }
 
@@ -106,24 +106,24 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBHSetDiff *)self fromSet];
-  v5 = [v3 appendObject:v4 withName:@"fromSet"];
+  fromSet = [(SBHSetDiff *)self fromSet];
+  v5 = [v3 appendObject:fromSet withName:@"fromSet"];
 
-  v6 = [(SBHSetDiff *)self toSet];
-  v7 = [v3 appendObject:v6 withName:@"toSet"];
+  toSet = [(SBHSetDiff *)self toSet];
+  v7 = [v3 appendObject:toSet withName:@"toSet"];
 
-  v8 = [(SBHSetDiff *)self additions];
-  v9 = [v3 appendObject:v8 withName:@"additions"];
+  additions = [(SBHSetDiff *)self additions];
+  v9 = [v3 appendObject:additions withName:@"additions"];
 
-  v10 = [(SBHSetDiff *)self deletions];
-  v11 = [v3 appendObject:v10 withName:@"deletions"];
+  deletions = [(SBHSetDiff *)self deletions];
+  v11 = [v3 appendObject:deletions withName:@"deletions"];
 
-  v12 = [(SBHSetDiff *)self updates];
-  v13 = [v3 appendObject:v12 withName:@"updates"];
+  updates = [(SBHSetDiff *)self updates];
+  v13 = [v3 appendObject:updates withName:@"updates"];
 
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 @end

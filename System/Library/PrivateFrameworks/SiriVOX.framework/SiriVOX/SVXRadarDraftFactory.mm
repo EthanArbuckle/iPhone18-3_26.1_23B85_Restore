@@ -1,14 +1,14 @@
 @interface SVXRadarDraftFactory
 - (SVXRadarDraftFactory)init;
-- (id)createWithRequiredContent:(id)a3 extraContent:(id)a4;
+- (id)createWithRequiredContent:(id)content extraContent:(id)extraContent;
 @end
 
 @implementation SVXRadarDraftFactory
 
-- (id)createWithRequiredContent:(id)a3 extraContent:(id)a4
+- (id)createWithRequiredContent:(id)content extraContent:(id)extraContent
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  extraContentCopy = extraContent;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2050000000;
@@ -28,29 +28,29 @@
   v9 = v8;
   _Block_object_dispose(&v41, 8);
   v10 = objc_alloc_init(v8);
-  v11 = [v6 title];
-  [v10 setTitle:v11];
+  title = [contentCopy title];
+  [v10 setTitle:title];
 
   v12 = MEMORY[0x277CCACA8];
-  v13 = [v6 radarDescription];
+  radarDescription = [contentCopy radarDescription];
   ttrTimeFormatter = self->_ttrTimeFormatter;
   v15 = [MEMORY[0x277CBEAA8] now];
   v16 = [(NSISO8601DateFormatter *)ttrTimeFormatter stringFromDate:v15];
-  v17 = [v12 stringWithFormat:@"Please add sysdiagnose for relevant iPhones and AppleTVs to the radar\n\n%@ - Timestamp (when radar draft was created on HomePod): %@ (%@ time)", v13, v16, self->_timeZone];
+  v17 = [v12 stringWithFormat:@"Please add sysdiagnose for relevant iPhones and AppleTVs to the radar\n\n%@ - Timestamp (when radar draft was created on HomePod): %@ (%@ time)", radarDescription, v16, self->_timeZone];
   [v10 setProblemDescription:v17];
 
   [v10 setIsUserInitiated:0];
-  v18 = [v6 componentName];
-  if (v18)
+  componentName = [contentCopy componentName];
+  if (componentName)
   {
-    v19 = v18;
-    v20 = [v6 componentVersion];
-    if (v20)
+    componentName2 = componentName;
+    componentVersion = [contentCopy componentVersion];
+    if (componentVersion)
     {
-      v21 = v20;
-      v22 = [v6 componentID];
+      v21 = componentVersion;
+      componentID = [contentCopy componentID];
 
-      if (!v22)
+      if (!componentID)
       {
         goto LABEL_10;
       }
@@ -74,39 +74,39 @@
       v24 = v23;
       _Block_object_dispose(&v41, 8);
       v25 = [v23 alloc];
-      v19 = [v6 componentName];
-      v26 = [v6 componentVersion];
-      v27 = [v6 componentID];
-      v28 = [v25 initWithName:v19 version:v26 identifier:{objc_msgSend(v27, "integerValue")}];
+      componentName2 = [contentCopy componentName];
+      componentVersion2 = [contentCopy componentVersion];
+      componentID2 = [contentCopy componentID];
+      v28 = [v25 initWithName:componentName2 version:componentVersion2 identifier:{objc_msgSend(componentID2, "integerValue")}];
       [v10 setComponent:v28];
     }
   }
 
 LABEL_10:
-  if (v7)
+  if (extraContentCopy)
   {
-    v29 = [v7 deviceIDs];
+    deviceIDs = [extraContentCopy deviceIDs];
 
-    if (v29)
+    if (deviceIDs)
     {
-      v30 = [v7 deviceIDs];
-      [v10 setDeviceIDs:v30];
+      deviceIDs2 = [extraContentCopy deviceIDs];
+      [v10 setDeviceIDs:deviceIDs2];
     }
 
-    v31 = [v7 extensionIDs];
+    extensionIDs = [extraContentCopy extensionIDs];
 
-    if (v31)
+    if (extensionIDs)
     {
-      v32 = [v7 extensionIDs];
-      [v10 setDiagnosticExtensionIDs:v32];
+      extensionIDs2 = [extraContentCopy extensionIDs];
+      [v10 setDiagnosticExtensionIDs:extensionIDs2];
     }
 
-    v33 = [v7 attachmentURLs];
+    attachmentURLs = [extraContentCopy attachmentURLs];
 
-    if (v33)
+    if (attachmentURLs)
     {
-      v34 = [v7 attachmentURLs];
-      [v10 setAttachments:v34];
+      attachmentURLs2 = [extraContentCopy attachmentURLs];
+      [v10 setAttachments:attachmentURLs2];
     }
   }
 
@@ -126,17 +126,17 @@ LABEL_10:
   v2 = [(SVXRadarDraftFactory *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBB0] localTimeZone];
-    v4 = [v3 name];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    name = [localTimeZone name];
     timeZone = v2->_timeZone;
-    v2->_timeZone = v4;
+    v2->_timeZone = name;
 
     v6 = objc_alloc_init(MEMORY[0x277CCAA68]);
     ttrTimeFormatter = v2->_ttrTimeFormatter;
     v2->_ttrTimeFormatter = v6;
 
-    v8 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [(NSISO8601DateFormatter *)v2->_ttrTimeFormatter setTimeZone:v8];
+    localTimeZone2 = [MEMORY[0x277CBEBB0] localTimeZone];
+    [(NSISO8601DateFormatter *)v2->_ttrTimeFormatter setTimeZone:localTimeZone2];
 
     [(NSISO8601DateFormatter *)v2->_ttrTimeFormatter setFormatOptions:4083];
   }

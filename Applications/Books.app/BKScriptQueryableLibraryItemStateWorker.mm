@@ -1,20 +1,20 @@
 @interface BKScriptQueryableLibraryItemStateWorker
-+ (void)queryForItemStateWithStoreID:(id)a3 completionValue:(id)a4;
++ (void)queryForItemStateWithStoreID:(id)d completionValue:(id)value;
 @end
 
 @implementation BKScriptQueryableLibraryItemStateWorker
 
-+ (void)queryForItemStateWithStoreID:(id)a3 completionValue:(id)a4
++ (void)queryForItemStateWithStoreID:(id)d completionValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  valueCopy = value;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10018AE68;
   v12[3] = &unk_100A03440;
-  v7 = v5;
+  v7 = dCopy;
   v13 = v7;
-  v8 = v6;
+  v8 = valueCopy;
   v14 = v8;
   v9 = objc_retainBlock(v12);
   if (v9)

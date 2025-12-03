@@ -1,15 +1,15 @@
 @interface SSXPCConnection
-- (SSXPCConnection)initWithServiceName:(id)a3;
-- (SSXPCConnection)initWithXPCConnection:(id)a3;
+- (SSXPCConnection)initWithServiceName:(id)name;
+- (SSXPCConnection)initWithXPCConnection:(id)connection;
 - (id)_initSSXPCConnection;
 - (id)copyReplyQueue;
 - (id)disconnectBlock;
 - (id)messageBlock;
 - (void)_reloadEventHandler;
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4;
-- (void)setDisconnectBlock:(id)a3;
-- (void)setMessageBlock:(id)a3;
-- (void)setReplyQueue:(id)a3;
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply;
+- (void)setDisconnectBlock:(id)block;
+- (void)setMessageBlock:(id)block;
+- (void)setReplyQueue:(id)queue;
 @end
 
 @implementation SSXPCConnection
@@ -101,33 +101,33 @@ void __38__SSXPCConnection__reloadEventHandler__block_invoke(uint64_t a1, void *
   }
 }
 
-- (SSXPCConnection)initWithServiceName:(id)a3
+- (SSXPCConnection)initWithServiceName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = [a3 UTF8String];
+    uTF8String = [name UTF8String];
   }
 
   else
   {
-    v4 = 0;
+    uTF8String = 0;
   }
 
-  v5 = xpc_connection_create(v4, 0);
+  v5 = xpc_connection_create(uTF8String, 0);
   xpc_connection_set_legacy();
   v6 = [(SSXPCConnection *)self initWithXPCConnection:v5];
 
   return v6;
 }
 
-- (SSXPCConnection)initWithXPCConnection:(id)a3
+- (SSXPCConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [(SSXPCConnection *)self _initSSXPCConnection];
-  v7 = v6;
-  if (v6)
+  connectionCopy = connection;
+  _initSSXPCConnection = [(SSXPCConnection *)self _initSSXPCConnection];
+  v7 = _initSSXPCConnection;
+  if (_initSSXPCConnection)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_initSSXPCConnection + 1, connection);
     [(SSXPCConnection *)v7 _reloadEventHandler];
     xpc_connection_resume(v7->_connection);
   }
@@ -234,27 +234,27 @@ void __33__SSXPCConnection_copyReplyQueue__block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply
 {
-  v7 = a4;
-  v6 = xpc_connection_send_message_with_reply_sync(self->_connection, a3);
-  if (v7)
+  replyCopy = reply;
+  v6 = xpc_connection_send_message_with_reply_sync(self->_connection, message);
+  if (replyCopy)
   {
-    v7[2](v7, v6);
+    replyCopy[2](replyCopy, v6);
   }
 }
 
-- (void)setDisconnectBlock:(id)a3
+- (void)setDisconnectBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__SSXPCConnection_setDisconnectBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -277,17 +277,17 @@ void *__38__SSXPCConnection_setDisconnectBlock___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMessageBlock:(id)a3
+- (void)setMessageBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SSXPCConnection_setMessageBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -310,17 +310,17 @@ void *__35__SSXPCConnection_setMessageBlock___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setReplyQueue:(id)a3
+- (void)setReplyQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SSXPCConnection_setReplyQueue___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 

@@ -1,35 +1,35 @@
 @interface INControlHomeIntent
 - (BOOL)_hasTitle;
-- (INControlHomeIntent)initWithContents:(id)a3;
-- (INControlHomeIntent)initWithUserTask:(id)a3 filters:(id)a4 time:(id)a5;
+- (INControlHomeIntent)initWithContents:(id)contents;
+- (INControlHomeIntent)initWithUserTask:(id)task filters:(id)filters time:(id)time;
 - (INDateComponentsRange)time;
 - (INHomeUserTask)userTask;
 - (NSArray)contents;
 - (NSArray)filters;
 - (id)_dictionaryRepresentation;
-- (id)_initWithIdentifier:(id)a3 backingStore:(id)a4 schema:(id)a5 error:(id *)a6;
+- (id)_initWithIdentifier:(id)identifier backingStore:(id)store schema:(id)schema error:(id *)error;
 - (id)_metadata;
-- (id)_subtitleWithLocalizer:(id)a3 fromBundleURL:(id)a4;
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4;
+- (id)_subtitleWithLocalizer:(id)localizer fromBundleURL:(id)l;
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setContents:(id)a3;
-- (void)setFilters:(id)a3;
-- (void)setTime:(id)a3;
-- (void)setUserTask:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setContents:(id)contents;
+- (void)setFilters:(id)filters;
+- (void)setTime:(id)time;
+- (void)setUserTask:(id)task;
 @end
 
 @implementation INControlHomeIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INControlHomeIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 time];
-  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  time = [_typedBackingStore time];
+  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(time, options);
 
   [v8 setTime:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -39,42 +39,42 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"userTask";
-  v3 = [(INControlHomeIntent *)self userTask];
-  v4 = v3;
-  if (!v3)
+  userTask = [(INControlHomeIntent *)self userTask];
+  null = userTask;
+  if (!userTask)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"filters";
-  v5 = [(INControlHomeIntent *)self filters];
-  v6 = v5;
-  if (!v5)
+  filters = [(INControlHomeIntent *)self filters];
+  null2 = filters;
+  if (!filters)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"time";
-  v7 = [(INControlHomeIntent *)self time];
-  v8 = v7;
-  if (!v7)
+  time = [(INControlHomeIntent *)self time];
+  null3 = time;
+  if (!time)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!time)
   {
   }
 
-  if (!v5)
+  if (!filters)
   {
   }
 
-  if (!v3)
+  if (!userTask)
   {
   }
 
@@ -83,19 +83,19 @@
   return v9;
 }
 
-- (id)_initWithIdentifier:(id)a3 backingStore:(id)a4 schema:(id)a5 error:(id *)a6
+- (id)_initWithIdentifier:(id)identifier backingStore:(id)store schema:(id)schema error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INControlHomeIntent;
-  v6 = [(INIntent *)&v12 _initWithIdentifier:a3 backingStore:a4 schema:a5 error:a6];
+  v6 = [(INIntent *)&v12 _initWithIdentifier:identifier backingStore:store schema:schema error:error];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 backingStore];
-    if ([v8 contentsCount])
+    backingStore = [v6 backingStore];
+    if ([backingStore contentsCount])
     {
-      v9 = [v8 contents];
-      v10 = INIntentSlotValueTransformFromHomeContents(v9);
+      contents = [backingStore contents];
+      v10 = INIntentSlotValueTransformFromHomeContents(contents);
       [v7 setContents:v10];
     }
   }
@@ -103,30 +103,30 @@
   return v7;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 firstObject];
-  v5 = [v4 actions];
-  v6 = [v5 firstObject];
+  firstObject = [contents firstObject];
+  actions = [firstObject actions];
+  firstObject2 = [actions firstObject];
 
-  if (v6)
+  if (firstObject2)
   {
-    v7 = INIntentSlotValueTransformToHomeAction(v6);
+    v7 = INIntentSlotValueTransformToHomeAction(firstObject2);
     v8 = [INHomeUserTask alloc];
-    v9 = [v6 type];
-    v10 = [v7 attributeValue];
-    v11 = INIntentSlotValueTransformFromHomeAttributeValue(v10);
-    v12 = [(INHomeUserTask *)v8 initWithTaskType:1 attribute:v9 value:v11];
+    type = [firstObject2 type];
+    attributeValue = [v7 attributeValue];
+    v11 = INIntentSlotValueTransformFromHomeAttributeValue(attributeValue);
+    v12 = [(INHomeUserTask *)v8 initWithTaskType:1 attribute:type value:v11];
     [(INControlHomeIntent *)self setUserTask:v12];
   }
 
-  v13 = [v4 filter];
+  filter = [firstObject filter];
 
-  if (v13)
+  if (filter)
   {
-    v14 = [v4 filter];
-    v17[0] = v14;
+    filter2 = [firstObject filter];
+    v17[0] = filter2;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     [(INControlHomeIntent *)self setFilters:v15];
   }
@@ -137,26 +137,26 @@
 - (NSArray)contents
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = [(INControlHomeIntent *)self userTask];
-  v4 = [(INControlHomeIntent *)self filters];
-  if (v3 | v4)
+  userTask = [(INControlHomeIntent *)self userTask];
+  filters = [(INControlHomeIntent *)self filters];
+  if (userTask | filters)
   {
-    if (v3)
+    if (userTask)
     {
       v24 = [INHomeAction alloc];
-      v23 = [v3 attribute];
-      v26 = [v3 value];
-      v5 = [v26 type];
-      v25 = [v3 value];
-      v6 = [v25 BOOLValue];
-      v7 = [v3 value];
-      [v7 doubleValue];
+      attribute = [userTask attribute];
+      value = [userTask value];
+      type = [value type];
+      value2 = [userTask value];
+      bOOLValue = [value2 BOOLValue];
+      value3 = [userTask value];
+      [value3 doubleValue];
       v9 = v8;
-      v10 = [v3 value];
-      v11 = [v10 integerValue];
-      v12 = [v3 value];
-      v13 = [v12 stringValue];
-      v14 = [(INHomeAction *)v24 initWithType:v23 valueType:v5 BOOLValue:v6 doubleValue:v11 integerValue:v13 stringValue:v9];
+      value4 = [userTask value];
+      integerValue = [value4 integerValue];
+      value5 = [userTask value];
+      stringValue = [value5 stringValue];
+      v14 = [(INHomeAction *)v24 initWithType:attribute valueType:type BOOLValue:bOOLValue doubleValue:integerValue integerValue:stringValue stringValue:v9];
       v28[0] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     }
@@ -167,9 +167,9 @@
     }
 
     v17 = [INHomeContent alloc];
-    v18 = [(INControlHomeIntent *)self filters];
-    v19 = [v18 firstObject];
-    v20 = [(INHomeContent *)v17 initWithFilter:v19 actions:v15];
+    filters2 = [(INControlHomeIntent *)self filters];
+    firstObject = [filters2 firstObject];
+    v20 = [(INHomeContent *)v17 initWithFilter:firstObject actions:v15];
     v27 = v20;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
   }
@@ -184,21 +184,21 @@
   return v16;
 }
 
-- (INControlHomeIntent)initWithContents:(id)a3
+- (INControlHomeIntent)initWithContents:(id)contents
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 firstObject];
-  v5 = [v4 actions];
-  v6 = [v5 firstObject];
+  firstObject = [contents firstObject];
+  actions = [firstObject actions];
+  firstObject2 = [actions firstObject];
 
-  if (v6)
+  if (firstObject2)
   {
-    v7 = INIntentSlotValueTransformToHomeAction(v6);
+    v7 = INIntentSlotValueTransformToHomeAction(firstObject2);
     v8 = [INHomeUserTask alloc];
-    v9 = [v6 type];
-    v10 = [v7 attributeValue];
-    v11 = INIntentSlotValueTransformFromHomeAttributeValue(v10);
-    v12 = [(INHomeUserTask *)v8 initWithTaskType:1 attribute:v9 value:v11];
+    type = [firstObject2 type];
+    attributeValue = [v7 attributeValue];
+    v11 = INIntentSlotValueTransformFromHomeAttributeValue(attributeValue);
+    v12 = [(INHomeUserTask *)v8 initWithTaskType:1 attribute:type value:v11];
   }
 
   else
@@ -206,116 +206,116 @@
     v12 = 0;
   }
 
-  v13 = [v4 filter];
+  filter = [firstObject filter];
 
-  if (v13)
+  if (filter)
   {
-    v14 = [v4 filter];
-    v18[0] = v14;
-    v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
+    filter2 = [firstObject filter];
+    v18[0] = filter2;
+    filter = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   }
 
-  v15 = [(INControlHomeIntent *)self initWithUserTask:v12 filters:v13];
+  v15 = [(INControlHomeIntent *)self initWithUserTask:v12 filters:filter];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (void)setTime:(id)a3
+- (void)setTime:(id)time
 {
-  v4 = a3;
-  v6 = [(INControlHomeIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  timeCopy = time;
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(timeCopy);
 
-  [v6 setTime:v5];
+  [_typedBackingStore setTime:v5];
 }
 
 - (INDateComponentsRange)time
 {
-  v2 = [(INControlHomeIntent *)self _typedBackingStore];
-  v3 = [v2 time];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  time = [_typedBackingStore time];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(time);
 
   return v4;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  v4 = a3;
-  v6 = [(INControlHomeIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToHomeFilters(v4);
+  filtersCopy = filters;
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToHomeFilters(filtersCopy);
 
-  [v6 setFilters:v5];
+  [_typedBackingStore setFilters:v5];
 }
 
 - (NSArray)filters
 {
-  v2 = [(INControlHomeIntent *)self _typedBackingStore];
-  v3 = [v2 filters];
-  v4 = INIntentSlotValueTransformFromHomeFilters(v3);
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  filters = [_typedBackingStore filters];
+  v4 = INIntentSlotValueTransformFromHomeFilters(filters);
 
   return v4;
 }
 
-- (void)setUserTask:(id)a3
+- (void)setUserTask:(id)task
 {
-  v4 = a3;
-  v6 = [(INControlHomeIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToHomeUserTask(v4);
+  taskCopy = task;
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToHomeUserTask(taskCopy);
 
-  [v6 setUserTask:v5];
+  [_typedBackingStore setUserTask:v5];
 }
 
 - (INHomeUserTask)userTask
 {
-  v2 = [(INControlHomeIntent *)self _typedBackingStore];
-  v3 = [v2 userTask];
-  v4 = INIntentSlotValueTransformFromHomeUserTask(v3);
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  userTask = [_typedBackingStore userTask];
+  v4 = INIntentSlotValueTransformFromHomeUserTask(userTask);
 
   return v4;
 }
 
-- (INControlHomeIntent)initWithUserTask:(id)a3 filters:(id)a4 time:(id)a5
+- (INControlHomeIntent)initWithUserTask:(id)task filters:(id)filters time:(id)time
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  filtersCopy = filters;
+  timeCopy = time;
   v14.receiver = self;
   v14.super_class = INControlHomeIntent;
   v11 = [(INIntent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(INControlHomeIntent *)v11 setUserTask:v8];
-    [(INControlHomeIntent *)v12 setFilters:v9];
-    [(INControlHomeIntent *)v12 setTime:v10];
+    [(INControlHomeIntent *)v11 setUserTask:taskCopy];
+    [(INControlHomeIntent *)v12 setFilters:filtersCopy];
+    [(INControlHomeIntent *)v12 setTime:timeCopy];
   }
 
   return v12;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INControlHomeIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INControlHomeIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INControlHomeIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else
@@ -328,48 +328,48 @@
   return v3;
 }
 
-- (id)_subtitleWithLocalizer:(id)a3 fromBundleURL:(id)a4
+- (id)_subtitleWithLocalizer:(id)localizer fromBundleURL:(id)l
 {
-  v5 = a3;
-  v6 = [(INControlHomeIntent *)self filters];
-  v7 = [v6 firstObject];
+  localizerCopy = localizer;
+  filters = [(INControlHomeIntent *)self filters];
+  firstObject = [filters firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v7 home];
+    home = [firstObject home];
 
-    if (v8)
+    if (home)
     {
-      v9 = [v7 home];
-      v8 = [v9 _intents_readableTitleWithLocalizer:v5];
+      home2 = [firstObject home];
+      home = [home2 _intents_readableTitleWithLocalizer:localizerCopy];
     }
   }
 
   else
   {
-    v8 = 0;
+    home = 0;
   }
 
-  return v8;
+  return home;
 }
 
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l
 {
-  v5 = a3;
-  v6 = [(INControlHomeIntent *)self filters];
-  v7 = [v6 firstObject];
+  localizerCopy = localizer;
+  filters = [(INControlHomeIntent *)self filters];
+  firstObject = [filters firstObject];
 
-  v8 = [(INControlHomeIntent *)self userTask];
-  v9 = v8;
+  userTask = [(INControlHomeIntent *)self userTask];
+  v9 = userTask;
   v10 = 0;
-  if (v7 && v8)
+  if (firstObject && userTask)
   {
-    if ([v8 taskType] == 1)
+    if ([userTask taskType] == 1)
     {
       if ([v9 attribute] == 1)
       {
-        v11 = [v7 entityName];
-        if (v11 && (v12 = v11, v13 = [v7 entityType], v12, v13 == 5))
+        entityName = [firstObject entityName];
+        if (entityName && (v12 = entityName, v13 = [firstObject entityType], v12, v13 == 5))
         {
           v14 = MEMORY[0x1E696AEC0];
           v15 = @"Run %@";
@@ -377,11 +377,11 @@
 
         else
         {
-          v16 = [v9 value];
-          v17 = [v16 BOOLValue];
+          value = [v9 value];
+          bOOLValue = [value BOOLValue];
 
           v14 = MEMORY[0x1E696AEC0];
-          if (v17)
+          if (bOOLValue)
           {
             v15 = @"Turn on %@";
           }
@@ -399,8 +399,8 @@
         v15 = @"Control %@";
       }
 
-      v18 = INLocalizedStringWithLocalizer(v15, v15, v5);
-      v19 = [v7 _intents_readableTitleWithLocalizer:v5];
+      v18 = INLocalizedStringWithLocalizer(v15, v15, localizerCopy);
+      v19 = [firstObject _intents_readableTitleWithLocalizer:localizerCopy];
       v10 = [v14 localizedStringWithFormat:v18, v19];
     }
 
@@ -415,12 +415,12 @@
 
 - (BOOL)_hasTitle
 {
-  v3 = [(INControlHomeIntent *)self userTask];
-  v4 = [(INControlHomeIntent *)self filters];
+  userTask = [(INControlHomeIntent *)self userTask];
+  filters = [(INControlHomeIntent *)self filters];
   v5 = 0;
-  if ([v4 count] && v3)
+  if ([filters count] && userTask)
   {
-    v5 = [v3 taskType] == 1;
+    v5 = [userTask taskType] == 1;
   }
 
   return v5;

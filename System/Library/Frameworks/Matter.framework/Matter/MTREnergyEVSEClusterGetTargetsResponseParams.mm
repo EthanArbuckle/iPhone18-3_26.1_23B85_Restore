@@ -1,9 +1,9 @@
 @interface MTREnergyEVSEClusterGetTargetsResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTREnergyEVSEClusterGetTargetsResponseParams)init;
-- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,19 +16,19 @@
   v2 = [(MTREnergyEVSEClusterGetTargetsResponseParams *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     chargingTargetSchedules = v2->_chargingTargetSchedules;
-    v2->_chargingTargetSchedules = v3;
+    v2->_chargingTargetSchedules = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterGetTargetsResponseParams);
-  v5 = [(MTREnergyEVSEClusterGetTargetsResponseParams *)self chargingTargetSchedules];
-  [(MTREnergyEVSEClusterGetTargetsResponseParams *)v4 setChargingTargetSchedules:v5];
+  chargingTargetSchedules = [(MTREnergyEVSEClusterGetTargetsResponseParams *)self chargingTargetSchedules];
+  [(MTREnergyEVSEClusterGetTargetsResponseParams *)v4 setChargingTargetSchedules:chargingTargetSchedules];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTREnergyEVSEClusterGetTargetsResponseParams;
   v7 = [(MTREnergyEVSEClusterGetTargetsResponseParams *)&v15 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:153 commandID:0 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:153 commandID:0 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -77,7 +77,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -88,7 +88,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTREnergyEVSEClusterGetTargetsResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTREnergyEVSEClusterGetTargetsResponseParams;
@@ -96,7 +96,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTREnergyEVSEClusterGetTargetsResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTREnergyEVSEClusterGetTargetsResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -112,10 +112,10 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v4 = objc_opt_new();
-  sub_238EA2DBC(v23, a3);
+  sub_238EA2DBC(v23, struct);
   while (sub_238EA1A80(v23) && sub_238EA2E18(v23))
   {
     v5 = objc_opt_new();

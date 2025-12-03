@@ -1,27 +1,27 @@
 @interface SXTangierDragItemProvider
-- (BOOL)session:(id)a3 containsURL:(id)a4;
-- (id)dragItemForSmartField:(id)a3 interaction:(id)a4 session:(id)a5;
+- (BOOL)session:(id)session containsURL:(id)l;
+- (id)dragItemForSmartField:(id)field interaction:(id)interaction session:(id)session;
 @end
 
 @implementation SXTangierDragItemProvider
 
-- (id)dragItemForSmartField:(id)a3 interaction:(id)a4 session:(id)a5
+- (id)dragItemForSmartField:(id)field interaction:(id)interaction session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fieldCopy = field;
+  interactionCopy = interaction;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
-    v12 = [v11 action];
-    v13 = [v12 conformsToProtocol:&unk_1F53FB4F8];
+    v11 = fieldCopy;
+    action = [v11 action];
+    v13 = [action conformsToProtocol:&unk_1F53FB4F8];
 
     if (v13)
     {
-      v14 = [v11 action];
-      v15 = [v14 URL];
-      v16 = [(SXTangierDragItemProvider *)self session:v10 containsURL:v15];
+      action2 = [v11 action];
+      v15 = [action2 URL];
+      v16 = [(SXTangierDragItemProvider *)self session:sessionCopy containsURL:v15];
 
       if (v16)
       {
@@ -30,34 +30,34 @@
 
       else
       {
-        v18 = [v14 URL];
-        v19 = [v11 displayText];
+        v18 = [action2 URL];
+        displayText = [v11 displayText];
         v39 = v18;
-        [v18 _setTitle:v19];
+        [v18 _setTitle:displayText];
 
         v20 = [SXIdentifiableItemProvider alloc];
-        v21 = [v14 URL];
-        v22 = [v21 absoluteString];
-        v23 = [(SXIdentifiableItemProvider *)v20 initWithObject:v18 identifier:v22];
+        v21 = [action2 URL];
+        absoluteString = [v21 absoluteString];
+        v23 = [(SXIdentifiableItemProvider *)v20 initWithObject:v18 identifier:absoluteString];
 
-        v24 = [v11 displayText];
+        displayText2 = [v11 displayText];
         v38 = v23;
-        [(SXIdentifiableItemProvider *)v23 setSuggestedName:v24];
+        [(SXIdentifiableItemProvider *)v23 setSuggestedName:displayText2];
 
         v17 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:v23];
-        v25 = [v9 view];
-        [v10 locationInView:v25];
+        view = [interactionCopy view];
+        [sessionCopy locationInView:view];
         v27 = v26;
         v29 = v28;
 
         v30 = objc_alloc(MEMORY[0x1E69DC9A8]);
-        v31 = [v9 view];
-        v32 = [v30 initWithContainer:v31 center:{v27, v29}];
+        view2 = [interactionCopy view];
+        v32 = [v30 initWithContainer:view2 center:{v27, v29}];
 
         v33 = MEMORY[0x1E69DD068];
-        v34 = [v14 URL];
-        v35 = [v11 displayText];
-        v36 = [v33 previewForURL:v34 title:v35 target:v32];
+        v34 = [action2 URL];
+        displayText3 = [v11 displayText];
+        v36 = [v33 previewForURL:v34 title:displayText3 target:v32];
         [v17 setLocalObject:v36];
       }
 
@@ -76,16 +76,16 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)session:(id)a3 containsURL:(id)a4
+- (BOOL)session:(id)session containsURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  lCopy = l;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 items];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  items = [session items];
+  v7 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -95,16 +95,16 @@ LABEL_9:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) itemProvider];
+        itemProvider = [*(*(&v15 + 1) + 8 * i) itemProvider];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 identifier];
-          v12 = [v5 absoluteString];
-          v13 = [v11 isEqualToString:v12];
+          identifier = [itemProvider identifier];
+          absoluteString = [lCopy absoluteString];
+          v13 = [identifier isEqualToString:absoluteString];
 
           if (v13)
           {
@@ -115,7 +115,7 @@ LABEL_9:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

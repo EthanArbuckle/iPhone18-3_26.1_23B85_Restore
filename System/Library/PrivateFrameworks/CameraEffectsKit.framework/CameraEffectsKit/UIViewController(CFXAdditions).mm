@@ -12,32 +12,32 @@
   v22 = a11;
   v23 = a12;
   v24 = a7;
-  v25 = [a1 view];
-  v26 = [v25 window];
-  v27 = [v26 _toWindowOrientation];
+  view = [self view];
+  window = [view window];
+  _toWindowOrientation = [window _toWindowOrientation];
 
-  v28 = [a1 view];
-  v29 = [v28 window];
-  v30 = [v29 _fromWindowOrientation];
+  view2 = [self view];
+  window2 = [view2 window];
+  _fromWindowOrientation = [window2 _fromWindowOrientation];
 
-  v31 = [a1 counterRotationViewForSnapshot:v24 atCenterPoint:v27 toWindowOrientation:v30 fromWindowOrientation:{a2, a3}];
+  v31 = [self counterRotationViewForSnapshot:v24 atCenterPoint:_toWindowOrientation toWindowOrientation:_fromWindowOrientation fromWindowOrientation:{a2, a3}];
 
-  v32 = [a1 view];
-  [v32 insertSubview:v31 atIndex:a8];
+  view3 = [self view];
+  [view3 insertSubview:v31 atIndex:a8];
 
   if (v22)
   {
     v22[2](v22);
   }
 
-  [a1 animateCounterRotationView:v31 fadeOut:a9 toWindowOrientation:v27 fromWindowOrientation:v30 forTransitionToSize:v33 withTransitionCoordinator:v23 postTransitionBlock:a4 postRemoveFromSuperviewBlock:{a5, 0}];
+  [self animateCounterRotationView:v31 fadeOut:a9 toWindowOrientation:_toWindowOrientation fromWindowOrientation:_fromWindowOrientation forTransitionToSize:v33 withTransitionCoordinator:v23 postTransitionBlock:a4 postRemoveFromSuperviewBlock:{a5, 0}];
 }
 
 - (CFXCounterRotationView)counterRotationViewForSnapshot:()CFXAdditions atCenterPoint:toWindowOrientation:fromWindowOrientation:
 {
   v8 = a5;
-  v9 = [a1 view];
-  [v9 bounds];
+  view = [self view];
+  [view bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -132,7 +132,7 @@
   v32[3] = &unk_278D7ADF8;
   v33 = v18;
   v34 = v23;
-  v35 = a1;
+  selfCopy = self;
   v36 = a2;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;

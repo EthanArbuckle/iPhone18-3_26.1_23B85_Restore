@@ -1,21 +1,21 @@
 @interface SMIDSMessenger
-+ (int64_t)convertRTPlatformToIDSDeviceType:(id)a3;
-- (SMIDSMessenger)initWithQueue:(id)a3;
++ (int64_t)convertRTPlatformToIDSDeviceType:(id)type;
+- (SMIDSMessenger)initWithQueue:(id)queue;
 - (SMMessagingServiceMessengerDelegate)delegate;
 - (id)effectivePairedDevice;
-- (id)myNearbyDestinationsFromDevices:(id)a3;
+- (id)myNearbyDestinationsFromDevices:(id)devices;
 - (id)myNearbyDevices;
 - (void)cancelSubscriptionOnNearbyDevicesChanged;
-- (void)findObjectForMyAccountFromDict:(id)a3 withHandler:(id)a4;
-- (void)sendIDSMessage:(id)a3 toConversation:(id)a4 completion:(id)a5;
-- (void)sendIDSMessageToMyDevices:(id)a3 completion:(id)a4;
-- (void)sendIDSMessageToMyNearbyDevices:(id)a3 completion:(id)a4;
-- (void)sendIDSMessageToPairedDevice:(id)a3 completion:(id)a4;
-- (void)sendMessage:(id)a3 toDestinations:(id)a4 completion:(id)a5;
-- (void)sendMessage:(id)a3 toDestinations:(id)a4 retryCount:(int64_t)a5 completion:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)findObjectForMyAccountFromDict:(id)dict withHandler:(id)handler;
+- (void)sendIDSMessage:(id)message toConversation:(id)conversation completion:(id)completion;
+- (void)sendIDSMessageToMyDevices:(id)devices completion:(id)completion;
+- (void)sendIDSMessageToMyNearbyDevices:(id)devices completion:(id)completion;
+- (void)sendIDSMessageToPairedDevice:(id)device completion:(id)completion;
+- (void)sendMessage:(id)message toDestinations:(id)destinations completion:(id)completion;
+- (void)sendMessage:(id)message toDestinations:(id)destinations retryCount:(int64_t)count completion:(id)completion;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 - (void)startSubscriptionOnNearbyDevicesChanged;
 @end
 
@@ -28,10 +28,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SMIDSMessenger *)self ownAccountIDSService];
-  v3 = [v2 devices];
+  ownAccountIDSService = [(SMIDSMessenger *)self ownAccountIDSService];
+  devices = [ownAccountIDSService devices];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -41,7 +41,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -52,7 +52,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -67,10 +67,10 @@ LABEL_12:
   return v4;
 }
 
-- (SMIDSMessenger)initWithQueue:(id)a3
+- (SMIDSMessenger)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
     v19.receiver = self;
     v19.super_class = SMIDSMessenger;
@@ -78,10 +78,10 @@ LABEL_12:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_queue, a3);
-      v8 = [MEMORY[0x277CBEB18] array];
+      objc_storeStrong(&v6->_queue, queue);
+      array = [MEMORY[0x277CBEB18] array];
       idsMessagesWaitingForAck = v7->_idsMessagesWaitingForAck;
-      v7->_idsMessagesWaitingForAck = v8;
+      v7->_idsMessagesWaitingForAck = array;
 
       v10 = objc_alloc(MEMORY[0x277D18778]);
       v11 = [v10 initWithService:*MEMORY[0x277D4AD10]];
@@ -98,7 +98,7 @@ LABEL_12:
     }
 
     self = v7;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -110,43 +110,43 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queue", buf, 2u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)startSubscriptionOnNearbyDevicesChanged
 {
-  v3 = [(SMIDSMessenger *)self queue];
+  queue = [(SMIDSMessenger *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SMIDSMessenger_startSubscriptionOnNearbyDevicesChanged__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)cancelSubscriptionOnNearbyDevicesChanged
 {
-  v3 = [(SMIDSMessenger *)self queue];
+  queue = [(SMIDSMessenger *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SMIDSMessenger_cancelSubscriptionOnNearbyDevicesChanged__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)sendIDSMessage:(id)a3 toConversation:(id)a4 completion:(id)a5
+- (void)sendIDSMessage:(id)message toConversation:(id)conversation completion:(id)completion
 {
   v95[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  messageCopy = message;
+  conversationCopy = conversation;
+  completionCopy = completion;
+  if (messageCopy)
   {
-    if (v10)
+    if (conversationCopy)
     {
       goto LABEL_3;
     }
@@ -164,10 +164,10 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: message (in %s:%d)", buf, 0x12u);
     }
 
-    if (v10)
+    if (conversationCopy)
     {
 LABEL_3:
-      if (v11)
+      if (completionCopy)
       {
         goto LABEL_14;
       }
@@ -186,7 +186,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: conversation (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
 LABEL_11:
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -206,22 +206,22 @@ LABEL_14:
     v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      v53 = [v9 sessionID];
+      sessionID = [messageCopy sessionID];
       v54 = objc_opt_class();
       v55 = NSStringFromClass(v54);
       v56 = NSStringFromSelector(a2);
-      v57 = [v9 messageID];
-      v58 = [objc_opt_class() messageType];
+      messageID = [messageCopy messageID];
+      messageType = [objc_opt_class() messageType];
       *buf = 138413314;
-      v80 = v53;
+      v80 = sessionID;
       v81 = 2112;
       v82 = v55;
       v83 = 2112;
       v84 = v56;
       v85 = 2112;
-      v86 = v57;
+      v86 = messageID;
       v87 = 1024;
-      LODWORD(v88) = v58;
+      LODWORD(v88) = messageType;
       _os_log_error_impl(&dword_2304B3000, v41, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,wrong SPI being used for message type:%d", buf, 0x30u);
     }
 
@@ -235,26 +235,26 @@ LABEL_14:
     goto LABEL_38;
   }
 
-  v15 = [(SMIDSMessenger *)self idsService];
+  idsService = [(SMIDSMessenger *)self idsService];
 
-  if (!v15)
+  if (!idsService)
   {
     v47 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
-      v59 = [v9 sessionID];
+      sessionID2 = [messageCopy sessionID];
       v60 = objc_opt_class();
       v61 = NSStringFromClass(v60);
       v62 = NSStringFromSelector(a2);
-      v63 = [v9 messageID];
+      messageID2 = [messageCopy messageID];
       *buf = 138413058;
-      v80 = v59;
+      v80 = sessionID2;
       v81 = 2112;
       v82 = v61;
       v83 = 2112;
       v84 = v62;
       v85 = 2112;
-      v86 = v63;
+      v86 = messageID2;
       _os_log_error_impl(&dword_2304B3000, v47, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,IDSService unavailable", buf, 0x2Au);
     }
 
@@ -268,24 +268,24 @@ LABEL_14:
 LABEL_38:
     v18 = [v44 dictionaryWithObjects:v45 forKeys:v46 count:1];
     v48 = [v42 errorWithDomain:v43 code:5 userInfo:v18];
-    v11[2](v11, 0, v48);
+    completionCopy[2](completionCopy, 0, v48);
 
     goto LABEL_39;
   }
 
   aSelector = a2;
-  v71 = self;
-  v72 = v9;
+  selfCopy = self;
+  v72 = messageCopy;
   v16 = MEMORY[0x277CBEB58];
-  v17 = [v10 receiverHandles];
-  v18 = [v16 setWithCapacity:{objc_msgSend(v17, "count")}];
+  receiverHandles = [conversationCopy receiverHandles];
+  v18 = [v16 setWithCapacity:{objc_msgSend(receiverHandles, "count")}];
 
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v19 = [v10 receiverHandles];
-  v20 = [v19 countByEnumeratingWithState:&v73 objects:v91 count:16];
+  receiverHandles2 = [conversationCopy receiverHandles];
+  v20 = [receiverHandles2 countByEnumeratingWithState:&v73 objects:v91 count:16];
   if (v20)
   {
     v21 = v20;
@@ -296,17 +296,17 @@ LABEL_38:
       {
         if (*v74 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(receiverHandles2);
         }
 
         v24 = *(*(&v73 + 1) + 8 * i);
         v25 = MEMORY[0x277D4AAE8];
-        v26 = [v24 primaryHandle];
-        v27 = [v25 getSMHandleTypeWithHandle:v26];
+        primaryHandle = [v24 primaryHandle];
+        v27 = [v25 getSMHandleTypeWithHandle:primaryHandle];
 
         if (v27 == 2)
         {
-          v28 = [v24 primaryHandle];
+          primaryHandle2 = [v24 primaryHandle];
           v29 = MEMORY[0x23191AA00]();
         }
 
@@ -317,7 +317,7 @@ LABEL_38:
             continue;
           }
 
-          v28 = [v24 primaryHandle];
+          primaryHandle2 = [v24 primaryHandle];
           v29 = IDSCopyIDForPhoneNumber();
         }
 
@@ -325,65 +325,65 @@ LABEL_38:
         [v18 addObject:v29];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v73 objects:v91 count:16];
+      v21 = [receiverHandles2 countByEnumeratingWithState:&v73 objects:v91 count:16];
     }
 
     while (v21);
   }
 
   v31 = [v18 count];
-  v32 = [v10 receiverHandles];
-  v33 = [v32 count];
+  receiverHandles3 = [conversationCopy receiverHandles];
+  v33 = [receiverHandles3 count];
 
   v34 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v35 = v34;
   if (v31 == v33)
   {
-    v9 = v72;
+    messageCopy = v72;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v72 sessionID];
+      sessionID3 = [v72 sessionID];
       v37 = objc_opt_class();
       v38 = NSStringFromClass(v37);
       v39 = NSStringFromSelector(aSelector);
-      v40 = [v72 messageID];
+      messageID3 = [v72 messageID];
       *buf = 138413314;
-      v80 = v36;
+      v80 = sessionID3;
       v81 = 2112;
       v82 = v38;
       v83 = 2112;
       v84 = v39;
       v85 = 2112;
-      v86 = v40;
+      v86 = messageID3;
       v87 = 2112;
       v88 = v18;
       _os_log_impl(&dword_2304B3000, v35, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,sending message to handles,%@", buf, 0x34u);
     }
 
-    [(SMIDSMessenger *)v71 sendMessage:v72 toDestinations:v18 completion:v11];
+    [(SMIDSMessenger *)selfCopy sendMessage:v72 toDestinations:v18 completion:completionCopy];
   }
 
   else
   {
-    v9 = v72;
+    messageCopy = v72;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v64 = [v72 sessionID];
+      sessionID4 = [v72 sessionID];
       v65 = objc_opt_class();
       v66 = NSStringFromClass(v65);
       v67 = NSStringFromSelector(aSelector);
-      v68 = [v72 messageID];
-      v69 = [v10 receiverPrimaryHandles];
+      messageID4 = [v72 messageID];
+      receiverPrimaryHandles = [conversationCopy receiverPrimaryHandles];
       *buf = 138413570;
-      v80 = v64;
+      v80 = sessionID4;
       v81 = 2112;
       v82 = v66;
       v83 = 2112;
       v84 = v67;
       v85 = 2112;
-      v86 = v68;
+      v86 = messageID4;
       v87 = 2112;
-      v88 = v69;
+      v88 = receiverPrimaryHandles;
       v89 = 2112;
       v90 = v18;
       _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,Invalid Handles %@,destinations %@", buf, 0x3Eu);
@@ -395,21 +395,21 @@ LABEL_38:
     v78 = @"Invalid Handle";
     v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
     v52 = [v49 errorWithDomain:v50 code:7 userInfo:v51];
-    v11[2](v11, 0, v52);
+    completionCopy[2](completionCopy, 0, v52);
   }
 
 LABEL_39:
 }
 
-- (void)sendIDSMessageToMyDevices:(id)a3 completion:(id)a4
+- (void)sendIDSMessageToMyDevices:(id)devices completion:(id)completion
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  devicesCopy = devices;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (devicesCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_10;
     }
@@ -447,22 +447,22 @@ LABEL_10:
     v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v37 = [v7 sessionID];
+      sessionID = [devicesCopy sessionID];
       v38 = objc_opt_class();
       v39 = NSStringFromClass(v38);
       v40 = NSStringFromSelector(a2);
-      v41 = [v7 messageID];
-      v42 = [objc_opt_class() messageType];
+      messageID = [devicesCopy messageID];
+      messageType = [objc_opt_class() messageType];
       v58 = 138413314;
-      v59 = v37;
+      v59 = sessionID;
       v60 = 2112;
       v61 = v39;
       v62 = 2112;
       v63 = v40;
       v64 = 2112;
-      v65 = v41;
+      v65 = messageID;
       v66 = 1024;
-      LODWORD(v67) = v42;
+      LODWORD(v67) = messageType;
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,wrong SPI being used for message type:%d", &v58, 0x30u);
     }
 
@@ -476,26 +476,26 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  v12 = [(SMIDSMessenger *)self ownAccountIDSService];
+  ownAccountIDSService = [(SMIDSMessenger *)self ownAccountIDSService];
 
-  if (!v12)
+  if (!ownAccountIDSService)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v43 = [v7 sessionID];
+      sessionID2 = [devicesCopy sessionID];
       v44 = objc_opt_class();
       v45 = NSStringFromClass(v44);
       v46 = NSStringFromSelector(a2);
-      v47 = [v7 messageID];
+      messageID2 = [devicesCopy messageID];
       v58 = 138413058;
-      v59 = v43;
+      v59 = sessionID2;
       v60 = 2112;
       v61 = v45;
       v62 = 2112;
       v63 = v46;
       v64 = 2112;
-      v65 = v47;
+      v65 = messageID2;
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,IDSService unavailable", &v58, 0x2Au);
     }
 
@@ -507,16 +507,16 @@ LABEL_10:
     v28 = &v73;
     v29 = &v72;
 LABEL_23:
-    v14 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
-    v15 = [v25 errorWithDomain:v26 code:5 userInfo:v14];
+    firstRoutableInternetDestinationForSelf = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
+    v15 = [v25 errorWithDomain:v26 code:5 userInfo:firstRoutableInternetDestinationForSelf];
     (v9)[2](v9, 0, v15);
     goto LABEL_31;
   }
 
-  v13 = [(SMIDSMessenger *)self ownAccountIDSService];
-  v14 = [v13 firstRoutableInternetDestinationForSelf];
+  ownAccountIDSService2 = [(SMIDSMessenger *)self ownAccountIDSService];
+  firstRoutableInternetDestinationForSelf = [ownAccountIDSService2 firstRoutableInternetDestinationForSelf];
 
-  if (v14)
+  if (firstRoutableInternetDestinationForSelf)
   {
     v15 = IDSCopyAddressDestinationForDestination();
     v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -525,45 +525,45 @@ LABEL_23:
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v7 sessionID];
+        sessionID3 = [devicesCopy sessionID];
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
         v21 = NSStringFromSelector(a2);
-        v22 = [v7 messageID];
+        messageID3 = [devicesCopy messageID];
         v58 = 138413314;
-        v59 = v18;
+        v59 = sessionID3;
         v60 = 2112;
         v61 = v20;
         v62 = 2112;
         v63 = v21;
         v64 = 2112;
-        v65 = v22;
+        v65 = messageID3;
         v66 = 2112;
         v67 = v15;
         _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,sending message to my devices,%@", &v58, 0x34u);
       }
 
       v23 = [MEMORY[0x277CBEB98] setWithObject:v15];
-      [(SMIDSMessenger *)self sendMessage:v7 toDestinations:v23 completion:v9];
+      [(SMIDSMessenger *)self sendMessage:devicesCopy toDestinations:v23 completion:v9];
     }
 
     else
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v53 = [v7 sessionID];
+        sessionID4 = [devicesCopy sessionID];
         v54 = objc_opt_class();
         v55 = NSStringFromClass(v54);
         v56 = NSStringFromSelector(a2);
-        v57 = [v7 messageID];
+        messageID4 = [devicesCopy messageID];
         v58 = 138413058;
-        v59 = v53;
+        v59 = sessionID4;
         v60 = 2112;
         v61 = v55;
         v62 = 2112;
         v63 = v56;
         v64 = 2112;
-        v65 = v57;
+        v65 = messageID4;
         _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,null destination for self", &v58, 0x2Au);
       }
 
@@ -584,19 +584,19 @@ LABEL_23:
     v31 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v48 = [v7 sessionID];
+      sessionID5 = [devicesCopy sessionID];
       v49 = objc_opt_class();
       v50 = NSStringFromClass(v49);
       v51 = NSStringFromSelector(a2);
-      v52 = [v7 messageID];
+      messageID5 = [devicesCopy messageID];
       v58 = 138413058;
-      v59 = v48;
+      v59 = sessionID5;
       v60 = 2112;
       v61 = v50;
       v62 = 2112;
       v63 = v51;
       v64 = 2112;
-      v65 = v52;
+      v65 = messageID5;
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,null routable destination for self", &v58, 0x2Au);
     }
 
@@ -612,15 +612,15 @@ LABEL_23:
 LABEL_31:
 }
 
-- (void)sendIDSMessageToPairedDevice:(id)a3 completion:(id)a4
+- (void)sendIDSMessageToPairedDevice:(id)device completion:(id)completion
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  deviceCopy = device;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (deviceCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_10;
     }
@@ -658,22 +658,22 @@ LABEL_10:
     v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v42 = [v7 sessionID];
+      sessionID = [deviceCopy sessionID];
       v43 = objc_opt_class();
       v44 = NSStringFromClass(v43);
       v45 = NSStringFromSelector(a2);
-      v46 = [v7 messageID];
-      v47 = [objc_opt_class() messageType];
+      messageID = [deviceCopy messageID];
+      messageType = [objc_opt_class() messageType];
       v58 = 138413314;
-      v59 = v42;
+      v59 = sessionID;
       v60 = 2112;
       v61 = v44;
       v62 = 2112;
       v63 = v45;
       v64 = 2112;
-      v65 = v46;
+      v65 = messageID;
       v66 = 1024;
-      LODWORD(v67) = v47;
+      LODWORD(v67) = messageType;
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,wrong SPI being used for message type:%d", &v58, 0x30u);
     }
 
@@ -687,26 +687,26 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  v12 = [(SMIDSMessenger *)self ownAccountIDSService];
+  ownAccountIDSService = [(SMIDSMessenger *)self ownAccountIDSService];
 
-  if (!v12)
+  if (!ownAccountIDSService)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v48 = [v7 sessionID];
+      sessionID2 = [deviceCopy sessionID];
       v49 = objc_opt_class();
       v50 = NSStringFromClass(v49);
       v51 = NSStringFromSelector(a2);
-      v52 = [v7 messageID];
+      messageID2 = [deviceCopy messageID];
       v58 = 138413058;
-      v59 = v48;
+      v59 = sessionID2;
       v60 = 2112;
       v61 = v50;
       v62 = 2112;
       v63 = v51;
       v64 = 2112;
-      v65 = v52;
+      v65 = messageID2;
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,IDSService unavailable", &v58, 0x2Au);
     }
 
@@ -719,61 +719,61 @@ LABEL_10:
     v29 = &v72;
 LABEL_23:
     v14 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
-    v15 = [v25 errorWithDomain:v26 code:5 userInfo:v14];
-    (v9)[2](v9, 0, v15);
+    destination = [v25 errorWithDomain:v26 code:5 userInfo:v14];
+    (v9)[2](v9, 0, destination);
     goto LABEL_31;
   }
 
-  v13 = [(SMIDSMessenger *)self effectivePairedDevice];
-  v14 = v13;
-  if (v13)
+  effectivePairedDevice = [(SMIDSMessenger *)self effectivePairedDevice];
+  v14 = effectivePairedDevice;
+  if (effectivePairedDevice)
   {
-    v15 = [v13 destination];
+    destination = [effectivePairedDevice destination];
     v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v17 = v16;
-    if (v15)
+    if (destination)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v7 sessionID];
+        sessionID3 = [deviceCopy sessionID];
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
         v21 = NSStringFromSelector(a2);
-        v22 = [v7 messageID];
+        messageID3 = [deviceCopy messageID];
         v58 = 138413314;
-        v59 = v18;
+        v59 = sessionID3;
         v60 = 2112;
         v61 = v20;
         v62 = 2112;
         v63 = v21;
         v64 = 2112;
-        v65 = v22;
+        v65 = messageID3;
         v66 = 2112;
-        v67 = v15;
+        v67 = destination;
         _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,sending message to paired device,%@", &v58, 0x34u);
       }
 
-      v23 = [MEMORY[0x277CBEB98] setWithObject:v15];
-      [(SMIDSMessenger *)self sendMessage:v7 toDestinations:v23 completion:v9];
+      v23 = [MEMORY[0x277CBEB98] setWithObject:destination];
+      [(SMIDSMessenger *)self sendMessage:deviceCopy toDestinations:v23 completion:v9];
     }
 
     else
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v53 = [v7 sessionID];
+        sessionID4 = [deviceCopy sessionID];
         v54 = objc_opt_class();
         v55 = NSStringFromClass(v54);
         v56 = NSStringFromSelector(a2);
-        v57 = [v7 messageID];
+        messageID4 = [deviceCopy messageID];
         v58 = 138413058;
-        v59 = v53;
+        v59 = sessionID4;
         v60 = 2112;
         v61 = v55;
         v62 = 2112;
         v63 = v56;
         v64 = 2112;
-        v65 = v57;
+        v65 = messageID4;
         _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,pairedDevice does not have a destination", &v58, 0x2Au);
       }
 
@@ -785,7 +785,7 @@ LABEL_23:
       v41 = [v39 errorWithDomain:v40 code:0 userInfo:v23];
       (v9)[2](v9, 0, v41);
 
-      v15 = 0;
+      destination = 0;
     }
   }
 
@@ -794,19 +794,19 @@ LABEL_23:
     v31 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v7 sessionID];
+      sessionID5 = [deviceCopy sessionID];
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
       v35 = NSStringFromSelector(a2);
-      v36 = [v7 messageID];
+      messageID5 = [deviceCopy messageID];
       v58 = 138413058;
-      v59 = v32;
+      v59 = sessionID5;
       v60 = 2112;
       v61 = v34;
       v62 = 2112;
       v63 = v35;
       v64 = 2112;
-      v65 = v36;
+      v65 = messageID5;
       _os_log_impl(&dword_2304B3000, v31, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,no effectivePairedDevice to send message", &v58, 0x2Au);
     }
 
@@ -814,23 +814,23 @@ LABEL_23:
     v38 = *MEMORY[0x277D01448];
     v70 = *MEMORY[0x277CCA450];
     v71 = @"No effectivePairedDevice to send message";
-    v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-    v23 = [v37 errorWithDomain:v38 code:5 userInfo:v15];
+    destination = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
+    v23 = [v37 errorWithDomain:v38 code:5 userInfo:destination];
     (v9)[2](v9, 0, v23);
   }
 
 LABEL_31:
 }
 
-- (void)sendIDSMessageToMyNearbyDevices:(id)a3 completion:(id)a4
+- (void)sendIDSMessageToMyNearbyDevices:(id)devices completion:(id)completion
 {
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  devicesCopy = devices;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (devicesCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_10;
     }
@@ -868,22 +868,22 @@ LABEL_10:
     v25 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v43 = [v7 sessionID];
+      sessionID = [devicesCopy sessionID];
       v44 = objc_opt_class();
       v45 = NSStringFromClass(v44);
       v46 = NSStringFromSelector(a2);
-      v47 = [v7 messageID];
-      v48 = [objc_opt_class() messageType];
+      messageID = [devicesCopy messageID];
+      messageType = [objc_opt_class() messageType];
       *buf = 138413314;
-      v68 = v43;
+      v68 = sessionID;
       v69 = 2112;
       v70 = v45;
       v71 = 2112;
       v72 = v46;
       v73 = 2112;
-      v74 = v47;
+      v74 = messageID;
       v75 = 1024;
-      v76 = v48;
+      v76 = messageType;
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,wrong SPI being used for message type:%d", buf, 0x30u);
     }
 
@@ -897,26 +897,26 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  v12 = [(SMIDSMessenger *)self ownAccountIDSService];
+  ownAccountIDSService = [(SMIDSMessenger *)self ownAccountIDSService];
 
-  if (!v12)
+  if (!ownAccountIDSService)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v49 = [v7 sessionID];
+      sessionID2 = [devicesCopy sessionID];
       v50 = objc_opt_class();
       v51 = NSStringFromClass(v50);
       v52 = NSStringFromSelector(a2);
-      v53 = [v7 messageID];
+      messageID2 = [devicesCopy messageID];
       *buf = 138413058;
-      v68 = v49;
+      v68 = sessionID2;
       v69 = 2112;
       v70 = v51;
       v71 = 2112;
       v72 = v52;
       v73 = 2112;
-      v74 = v53;
+      v74 = messageID2;
       _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,IDSService unavailable", buf, 0x2Au);
     }
 
@@ -934,9 +934,9 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v13 = [(SMIDSMessenger *)self myNearbyDevices];
-  v14 = v13;
-  if (v13 && [v13 count])
+  myNearbyDevices = [(SMIDSMessenger *)self myNearbyDevices];
+  v14 = myNearbyDevices;
+  if (myNearbyDevices && [myNearbyDevices count])
   {
     v15 = [(SMIDSMessenger *)self myNearbyDestinationsFromDevices:v14];
     v16 = [v15 count];
@@ -946,43 +946,43 @@ LABEL_28:
     {
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v7 sessionID];
+        sessionID3 = [devicesCopy sessionID];
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
         v22 = NSStringFromSelector(a2);
-        v23 = [v7 messageID];
+        messageID3 = [devicesCopy messageID];
         *buf = 138413058;
-        v68 = v19;
+        v68 = sessionID3;
         v69 = 2112;
         v70 = v21;
         v71 = 2112;
         v72 = v22;
         v73 = 2112;
-        v74 = v23;
+        v74 = messageID3;
         _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,sending message to myNearbyDevices", buf, 0x2Au);
       }
 
       v24 = [MEMORY[0x277CBEB98] setWithArray:v15];
-      [(SMIDSMessenger *)self sendMessage:v7 toDestinations:v24 completion:v9];
+      [(SMIDSMessenger *)self sendMessage:devicesCopy toDestinations:v24 completion:v9];
     }
 
     else
     {
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v54 = [v7 sessionID];
+        sessionID4 = [devicesCopy sessionID];
         v55 = objc_opt_class();
         v56 = NSStringFromClass(v55);
         v57 = NSStringFromSelector(a2);
-        v58 = [v7 messageID];
+        messageID4 = [devicesCopy messageID];
         *buf = 138413058;
-        v68 = v54;
+        v68 = sessionID4;
         v69 = 2112;
         v70 = v56;
         v71 = 2112;
         v72 = v57;
         v73 = 2112;
-        v74 = v58;
+        v74 = messageID4;
         _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,myNearbyDevices do not have destinations", buf, 0x2Au);
       }
 
@@ -1001,19 +1001,19 @@ LABEL_28:
     v31 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v7 sessionID];
+      sessionID5 = [devicesCopy sessionID];
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
       v35 = NSStringFromSelector(a2);
-      v36 = [v7 messageID];
+      messageID5 = [devicesCopy messageID];
       *buf = 138413058;
-      v68 = v32;
+      v68 = sessionID5;
       v69 = 2112;
       v70 = v34;
       v71 = 2112;
       v72 = v35;
       v73 = 2112;
-      v74 = v36;
+      v74 = messageID5;
       _os_log_impl(&dword_2304B3000, v31, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,no nearby devices of mine to send a message", buf, 0x2Au);
     }
 
@@ -1029,15 +1029,15 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)sendMessage:(id)a3 toDestinations:(id)a4 completion:(id)a5
+- (void)sendMessage:(id)message toDestinations:(id)destinations completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  messageCopy = message;
+  destinationsCopy = destinations;
+  completionCopy = completion;
+  if (messageCopy)
   {
-    if (v9)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
@@ -1055,10 +1055,10 @@ LABEL_29:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: message (in %s:%d)", &v14, 0x12u);
     }
 
-    if (v9)
+    if (destinationsCopy)
     {
 LABEL_3:
-      if (v10)
+      if (completionCopy)
       {
         goto LABEL_14;
       }
@@ -1077,7 +1077,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinations (in %s:%d)", &v14, 0x12u);
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
 LABEL_11:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1092,18 +1092,18 @@ LABEL_11:
   }
 
 LABEL_14:
-  [(SMIDSMessenger *)self sendMessage:v8 toDestinations:v9 retryCount:2 completion:v10];
+  [(SMIDSMessenger *)self sendMessage:messageCopy toDestinations:destinationsCopy retryCount:2 completion:completionCopy];
 }
 
-- (void)sendMessage:(id)a3 toDestinations:(id)a4 retryCount:(int64_t)a5 completion:(id)a6
+- (void)sendMessage:(id)message toDestinations:(id)destinations retryCount:(int64_t)count completion:(id)completion
 {
   v92[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  messageCopy = message;
+  destinationsCopy = destinations;
+  completionCopy = completion;
+  if (messageCopy)
   {
-    if (v11)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
@@ -1121,10 +1121,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: message (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (destinationsCopy)
     {
 LABEL_3:
-      if ((a5 & 0x8000000000000000) == 0)
+      if ((count & 0x8000000000000000) == 0)
       {
         goto LABEL_4;
       }
@@ -1143,10 +1143,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinations (in %s:%d)", buf, 0x12u);
   }
 
-  if ((a5 & 0x8000000000000000) == 0)
+  if ((count & 0x8000000000000000) == 0)
   {
 LABEL_4:
-    if (v12)
+    if (completionCopy)
     {
       goto LABEL_18;
     }
@@ -1165,7 +1165,7 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: retryCount >= 0 (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v12)
+  if (!completionCopy)
   {
 LABEL_15:
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1183,9 +1183,9 @@ LABEL_18:
   v17 = [MEMORY[0x277D4AB38] interfaceTypeFromMessageType:{objc_msgSend(objc_opt_class(), "messageType")}];
   if (v17 == 3)
   {
-    v18 = [(SMIDSMessenger *)self ownAccountIDSService];
+    ownAccountIDSService = [(SMIDSMessenger *)self ownAccountIDSService];
 
-    if (!v18)
+    if (!ownAccountIDSService)
     {
       goto LABEL_27;
     }
@@ -1193,21 +1193,21 @@ LABEL_18:
 
   else
   {
-    v19 = [(SMIDSMessenger *)self idsService];
-    if (!v19)
+    idsService = [(SMIDSMessenger *)self idsService];
+    if (!idsService)
     {
 LABEL_27:
       v34 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        v52 = [v10 sessionID];
+        sessionID = [messageCopy sessionID];
         v53 = objc_opt_class();
         v54 = NSStringFromClass(v53);
         v55 = NSStringFromSelector(a2);
-        [v10 messageID];
-        v57 = v56 = v12;
+        [messageCopy messageID];
+        v57 = v56 = completionCopy;
         *buf = 138413058;
-        v78 = v52;
+        v78 = sessionID;
         v79 = 2112;
         v80 = v54;
         v81 = 2112;
@@ -1216,7 +1216,7 @@ LABEL_27:
         v84 = v57;
         _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,IDSService unavailable", buf, 0x2Au);
 
-        v12 = v56;
+        completionCopy = v56;
       }
 
       v35 = MEMORY[0x277CCA9B8];
@@ -1224,47 +1224,47 @@ LABEL_27:
       v91 = *MEMORY[0x277CCA450];
       v92[0] = @"IDSService unavailable";
       v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v92 forKeys:&v91 count:1];
-      v21 = [v35 errorWithDomain:v36 code:5 userInfo:v37];
-      v12[2](v12, 0, v21);
+      outputToDictionary = [v35 errorWithDomain:v36 code:5 userInfo:v37];
+      completionCopy[2](completionCopy, 0, outputToDictionary);
       goto LABEL_44;
     }
   }
 
-  v67 = a5;
-  v68 = v12;
-  v20 = v11;
-  v71 = [MEMORY[0x277CBEAA8] date];
-  v21 = [v10 outputToDictionary];
+  countCopy = count;
+  v68 = completionCopy;
+  v20 = destinationsCopy;
+  date = [MEMORY[0x277CBEAA8] date];
+  outputToDictionary = [messageCopy outputToDictionary];
   v89 = *MEMORY[0x277D185B0];
   v90 = MEMORY[0x277CBEC38];
   v72 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
   v22 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v10 sessionID];
+    sessionID2 = [messageCopy sessionID];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     v26 = NSStringFromSelector(a2);
-    v27 = [v10 messageID];
+    messageID = [messageCopy messageID];
     *buf = 138413571;
-    v78 = v23;
+    v78 = sessionID2;
     v79 = 2112;
     v80 = v25;
     v81 = 2112;
     v82 = v26;
     v83 = 2112;
-    v84 = v27;
+    v84 = messageID;
     v85 = 2112;
     v86 = v20;
     v87 = 2117;
-    v88 = v21;
+    v88 = outputToDictionary;
     _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,sending message to %@,messageDict:%{sensitive}@", buf, 0x3Eu);
   }
 
   if (v17 == 3)
   {
-    v28 = [(SMIDSMessenger *)self ownAccountIDSService];
-    v29 = v28;
+    ownAccountIDSService2 = [(SMIDSMessenger *)self ownAccountIDSService];
+    v29 = ownAccountIDSService2;
     v75 = 0;
     v76 = 0;
     v30 = &v76;
@@ -1275,8 +1275,8 @@ LABEL_27:
 
   else
   {
-    v28 = [(SMIDSMessenger *)self idsService];
-    v29 = v28;
+    ownAccountIDSService2 = [(SMIDSMessenger *)self idsService];
+    v29 = ownAccountIDSService2;
     v73 = 0;
     v74 = 0;
     v30 = &v74;
@@ -1285,8 +1285,8 @@ LABEL_27:
     v33 = &v73;
   }
 
-  v11 = v20;
-  v38 = [v28 sendMessage:v21 toDestinations:v20 priority:300 options:v72 identifier:v32 error:v33];
+  destinationsCopy = v20;
+  v38 = [ownAccountIDSService2 sendMessage:outputToDictionary toDestinations:v20 priority:300 options:v72 identifier:v32 error:v33];
   v69 = *v30;
   v39 = *v31;
 
@@ -1296,31 +1296,31 @@ LABEL_27:
   {
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
-      v58 = [v10 sessionID];
+      sessionID3 = [messageCopy sessionID];
       v59 = objc_opt_class();
       v60 = NSStringFromClass(v59);
       v61 = NSStringFromSelector(a2);
-      v62 = [v10 messageID];
+      messageID2 = [messageCopy messageID];
       *buf = 138413314;
-      v78 = v58;
+      v78 = sessionID3;
       v79 = 2112;
       v80 = v60;
       v81 = 2112;
       v82 = v61;
       v83 = 2112;
-      v84 = v62;
+      v84 = messageID2;
       v85 = 2112;
       v86 = v39;
       _os_log_error_impl(&dword_2304B3000, v41, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,send failed with error:%@", buf, 0x34u);
     }
 
-    v12 = v68;
+    completionCopy = v68;
     v68[2](v68, 0, v39);
-    v50 = [objc_opt_class() messageType];
-    v37 = v71;
-    [v71 timeIntervalSinceNow];
+    messageType = [objc_opt_class() messageType];
+    v37 = date;
+    [date timeIntervalSinceNow];
     LOBYTE(v66) = 0;
-    +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", v50, 0, 0, 3 - v67, 1, v39, -v51, v66, [v11 count]);
+    +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", messageType, 0, 0, 3 - countCopy, 1, v39, -v51, v66, [destinationsCopy count]);
     v47 = v69;
   }
 
@@ -1328,39 +1328,39 @@ LABEL_27:
   {
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [v10 sessionID];
+      sessionID4 = [messageCopy sessionID];
       v43 = objc_opt_class();
       v44 = NSStringFromClass(v43);
       v45 = NSStringFromSelector(a2);
-      v46 = [v10 messageID];
+      messageID3 = [messageCopy messageID];
       *buf = 138413314;
-      v78 = v42;
+      v78 = sessionID4;
       v79 = 2112;
       v80 = v44;
       v81 = 2112;
       v82 = v45;
       v83 = 2112;
-      v84 = v46;
+      v84 = messageID3;
       v85 = 2112;
       v86 = v69;
       _os_log_impl(&dword_2304B3000, v41, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,message sent to IDS with identifier,%@", buf, 0x34u);
 
-      v11 = v20;
+      destinationsCopy = v20;
     }
 
-    v12 = v68;
+    completionCopy = v68;
     v47 = v69;
-    v48 = [[SMIDSMessageWaitingForAck alloc] initWithIdentifier:v69 destinations:v11 message:v10 pendingRetryCount:v67 messageSentDate:v71 callback:v68];
+    v48 = [[SMIDSMessageWaitingForAck alloc] initWithIdentifier:v69 destinations:destinationsCopy message:messageCopy pendingRetryCount:countCopy messageSentDate:date callback:v68];
     if (v48)
     {
-      v49 = [(SMIDSMessenger *)self idsMessagesWaitingForAck];
-      [v49 addObject:v48];
+      idsMessagesWaitingForAck = [(SMIDSMessenger *)self idsMessagesWaitingForAck];
+      [idsMessagesWaitingForAck addObject:v48];
     }
 
     else
     {
-      v49 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-      if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
+      idsMessagesWaitingForAck = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+      if (os_log_type_enabled(idsMessagesWaitingForAck, OS_LOG_TYPE_FAULT))
       {
         v63 = objc_opt_class();
         v64 = NSStringFromClass(v63);
@@ -1369,35 +1369,35 @@ LABEL_27:
         v78 = v64;
         v79 = 2112;
         v80 = v65;
-        _os_log_fault_impl(&dword_2304B3000, v49, OS_LOG_TYPE_FAULT, "#SafetyCache,%@,%@,failed to create SMIDSMessageWaitingForAck", buf, 0x16u);
+        _os_log_fault_impl(&dword_2304B3000, idsMessagesWaitingForAck, OS_LOG_TYPE_FAULT, "#SafetyCache,%@,%@,failed to create SMIDSMessageWaitingForAck", buf, 0x16u);
 
         v47 = v69;
       }
     }
 
-    v37 = v71;
+    v37 = date;
   }
 
 LABEL_44:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v11 = a5;
-  v12 = a7;
-  v13 = [(SMIDSMessenger *)self queue];
+  identifierCopy = identifier;
+  errorCopy = error;
+  queue = [(SMIDSMessenger *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SMIDSMessenger_service_account_identifier_didSendWithSuccess_error___block_invoke;
   block[3] = &unk_2788C50C0;
-  v17 = v11;
-  v18 = self;
-  v21 = a6;
-  v19 = v12;
+  v17 = identifierCopy;
+  selfCopy = self;
+  successCopy = success;
+  v19 = errorCopy;
   v20 = a2;
-  v14 = v12;
-  v15 = v11;
-  dispatch_async(v13, block);
+  v14 = errorCopy;
+  v15 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__SMIDSMessenger_service_account_identifier_didSendWithSuccess_error___block_invoke(uint64_t a1)
@@ -1611,14 +1611,14 @@ void __70__SMIDSMessenger_service_account_identifier_didSendWithSuccess_error___
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v13)
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  v15 = dCopy;
+  if (!messageCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1635,7 +1635,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v14)
+  if (!dCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1648,17 +1648,17 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v16 = [(SMIDSMessenger *)self queue];
+  queue = [(SMIDSMessenger *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SMIDSMessenger_service_account_incomingMessage_fromID___block_invoke;
   block[3] = &unk_2788C50E8;
   block[4] = self;
   v20 = v15;
-  v21 = v13;
-  v22 = v11;
+  v21 = messageCopy;
+  v22 = serviceCopy;
   v23 = a2;
-  dispatch_async(v16, block);
+  dispatch_async(queue, block);
 
 LABEL_8:
 }
@@ -1780,47 +1780,47 @@ LABEL_11:
 LABEL_16:
 }
 
-+ (int64_t)convertRTPlatformToIDSDeviceType:(id)a3
++ (int64_t)convertRTPlatformToIDSDeviceType:(id)type
 {
-  v3 = a3;
-  if ([v3 iPhoneDevice] && (objc_msgSend(v3, "iPhonePlatform") & 1) != 0)
+  typeCopy = type;
+  if ([typeCopy iPhoneDevice] && (objc_msgSend(typeCopy, "iPhonePlatform") & 1) != 0)
   {
-    v4 = 2;
+    macOSPlatform = 2;
   }
 
-  else if ([v3 watchPlatform])
+  else if ([typeCopy watchPlatform])
   {
-    v4 = 6;
+    macOSPlatform = 6;
   }
 
   else
   {
-    v4 = [v3 macOSPlatform];
+    macOSPlatform = [typeCopy macOSPlatform];
   }
 
-  return v4;
+  return macOSPlatform;
 }
 
-- (void)findObjectForMyAccountFromDict:(id)a3 withHandler:(id)a4
+- (void)findObjectForMyAccountFromDict:(id)dict withHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dictCopy = dict;
+  handlerCopy = handler;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = [(SMIDSMessenger *)self idsService];
-  v10 = [v9 accounts];
+  idsService = [(SMIDSMessenger *)self idsService];
+  accounts = [idsService accounts];
 
-  v11 = [v10 countByEnumeratingWithState:&v40 objects:v53 count:16];
+  v11 = [accounts countByEnumeratingWithState:&v40 objects:v53 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v41;
     v34 = *v41;
-    v35 = v8;
-    v32 = self;
+    v35 = handlerCopy;
+    selfCopy = self;
     aSelector = a2;
     do
     {
@@ -1828,7 +1828,7 @@ LABEL_16:
       {
         if (*v41 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(accounts);
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
@@ -1836,8 +1836,8 @@ LABEL_16:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v16 = [v15 vettedAliases];
-        v17 = [v16 countByEnumeratingWithState:&v36 objects:v52 count:16];
+        vettedAliases = [v15 vettedAliases];
+        v17 = [vettedAliases countByEnumeratingWithState:&v36 objects:v52 count:16];
         if (v17)
         {
           v18 = v17;
@@ -1848,11 +1848,11 @@ LABEL_16:
             {
               if (*v37 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(vettedAliases);
               }
 
               v21 = *(*(&v36 + 1) + 8 * j);
-              v22 = [v7 objectForKey:v21];
+              v22 = [dictCopy objectForKey:v21];
               if (v22)
               {
                 v24 = v22;
@@ -1873,14 +1873,14 @@ LABEL_16:
                   _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,found handle %@ in dict with object %@", buf, 0x2Au);
                 }
 
-                v8 = v35;
+                handlerCopy = v35;
                 (*(v35 + 2))(v35, v21, v24);
 
                 goto LABEL_22;
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v36 objects:v52 count:16];
+            v18 = [vettedAliases countByEnumeratingWithState:&v36 objects:v52 count:16];
             if (v18)
             {
               continue;
@@ -1893,8 +1893,8 @@ LABEL_16:
         v13 = v34;
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v40 objects:v53 count:16];
-      v8 = v35;
+      v12 = [accounts countByEnumeratingWithState:&v40 objects:v53 count:16];
+      handlerCopy = v35;
       a2 = aSelector;
     }
 
@@ -1912,11 +1912,11 @@ LABEL_16:
     v46 = 2112;
     v47 = v31;
     v48 = 2112;
-    v49 = v7;
+    v49 = dictCopy;
     _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,did not find handle for this account in dict %@", buf, 0x20u);
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_22:
 }
 
@@ -1928,10 +1928,10 @@ LABEL_22:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SMIDSMessenger *)self ownAccountIDSService];
-  v5 = [v4 devices];
+  ownAccountIDSService = [(SMIDSMessenger *)self ownAccountIDSService];
+  devices = [ownAccountIDSService devices];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1942,7 +1942,7 @@ LABEL_22:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -1952,7 +1952,7 @@ LABEL_22:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1961,16 +1961,16 @@ LABEL_22:
   return v3;
 }
 
-- (id)myNearbyDestinationsFromDevices:(id)a3
+- (id)myNearbyDestinationsFromDevices:(id)devices
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = devicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v6)
   {
@@ -1988,10 +1988,10 @@ LABEL_22:
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 destination];
-        if (v12)
+        destination = [v11 destination];
+        if (destination)
         {
-          [v4 addObject:v12];
+          [v4 addObject:destination];
         }
 
         else
@@ -2023,11 +2023,11 @@ LABEL_22:
   return v4;
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SMIDSMessenger *)self effectivePairedDevice];
+  changedCopy = changed;
+  effectivePairedDevice = [(SMIDSMessenger *)self effectivePairedDevice];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2041,18 +2041,18 @@ LABEL_22:
       v16 = 2112;
       v17 = v11;
       v18 = 2112;
-      v19 = v7;
+      v19 = effectivePairedDevice;
       v20 = 2112;
-      v21 = v6;
+      v21 = changedCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "#SafetyCache,%@,%@,effectivePairedDevice %@, devices %@", &v14, 0x2Au);
     }
   }
 
-  if (v7)
+  if (effectivePairedDevice)
   {
-    v12 = [[SMIDSMessengerNearbyEffectivePairedDeviceChangedNotification alloc] initWithIDSDevice:v7];
-    v13 = [(SMIDSMessenger *)self delegate];
-    [v13 postNotification:v12];
+    v12 = [[SMIDSMessengerNearbyEffectivePairedDeviceChangedNotification alloc] initWithIDSDevice:effectivePairedDevice];
+    delegate = [(SMIDSMessenger *)self delegate];
+    [delegate postNotification:v12];
   }
 }
 

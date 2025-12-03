@@ -1,101 +1,101 @@
 @interface _UIAnimatedImage
 - (BOOL)_isResizable;
-- (BOOL)_isTiledWhenStretchedToSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isTiledWhenStretchedToSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)_contentRectInPixels;
 - (CGRect)_contentStretchInPixels;
-- (CGSize)_sizeWithHairlineThickening:(BOOL)a3 forTraitCollection:(id)a4;
+- (CGSize)_sizeWithHairlineThickening:(BOOL)thickening forTraitCollection:(id)collection;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIEdgeInsets)capInsets;
-- (_UIAnimatedImage)initWithCoder:(id)a3;
-- (_UIAnimatedImage)initWithImages:(id)a3 duration:(double)a4;
-- (id)_bezeledImageWithShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 fillRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 drawShadow:(BOOL)a11;
-- (id)_doubleBezeledImageWithExteriorShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 interiorShadowRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 fillRed:(double)a11 green:(double)a12 blue:(double)a13 alpha:(double)a14;
-- (id)_imageScaledToProportion:(double)a3 interpolationQuality:(int)a4;
-- (id)_imageWithStylePresets:(id)a3 tintColor:(id)a4 traitCollection:(id)a5;
-- (id)_initWithOtherImage:(id)a3;
-- (id)resizableImageWithCapInsets:(UIEdgeInsets)a3 resizingMode:(int64_t)a4;
+- (_UIAnimatedImage)initWithCoder:(id)coder;
+- (_UIAnimatedImage)initWithImages:(id)images duration:(double)duration;
+- (id)_bezeledImageWithShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha fillRed:(double)fillRed green:(double)a8 blue:(double)a9 alpha:(double)self0 drawShadow:(BOOL)self1;
+- (id)_doubleBezeledImageWithExteriorShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha interiorShadowRed:(double)shadowRed green:(double)a8 blue:(double)a9 alpha:(double)self0 fillRed:(double)self1 green:(double)self2 blue:(double)self3 alpha:(double)self4;
+- (id)_imageScaledToProportion:(double)proportion interpolationQuality:(int)quality;
+- (id)_imageWithStylePresets:(id)presets tintColor:(id)color traitCollection:(id)collection;
+- (id)_initWithOtherImage:(id)image;
+- (id)resizableImageWithCapInsets:(UIEdgeInsets)insets resizingMode:(int64_t)mode;
 - (int64_t)resizingMode;
 - (unint64_t)hash;
 - (void)_horizontallyFlipImageOrientation;
 - (void)_mirrorImageOrientation;
-- (void)_setAlignmentRectInsets:(UIEdgeInsets)a3;
-- (void)_setAlwaysStretches:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAlignmentRectInsets:(UIEdgeInsets)insets;
+- (void)_setAlwaysStretches:(BOOL)stretches;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIAnimatedImage
 
-- (id)_initWithOtherImage:(id)a3
+- (id)_initWithOtherImage:(id)image
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imageCopy = image;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 images];
-    [v4 duration];
+    images = [imageCopy images];
+    [imageCopy duration];
   }
 
   else
   {
-    v9[0] = v4;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+    v9[0] = imageCopy;
+    images = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     v6 = 0.0;
   }
 
-  v7 = [(_UIAnimatedImage *)self initWithImages:v5 duration:v6];
+  v7 = [(_UIAnimatedImage *)self initWithImages:images duration:v6];
 
   if (v7)
   {
-    [v4 _configureImage:v7 assumePreconfigured:0];
+    [imageCopy _configureImage:v7 assumePreconfigured:0];
   }
 
   return v7;
 }
 
-- (_UIAnimatedImage)initWithImages:(id)a3 duration:(double)a4
+- (_UIAnimatedImage)initWithImages:(id)images duration:(double)duration
 {
-  v6 = a3;
-  v7 = [v6 objectAtIndex:0];
+  imagesCopy = images;
+  v7 = [imagesCopy objectAtIndex:0];
   v12.receiver = self;
   v12.super_class = _UIAnimatedImage;
   v8 = [(UIImage *)&v12 _initWithOtherImage:v7];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [imagesCopy copy];
     images = v8->_images;
     v8->_images = v9;
 
-    if (a4 <= 0.0)
+    if (duration <= 0.0)
     {
-      a4 = [v6 count] * 0.0333333333;
+      duration = [imagesCopy count] * 0.0333333333;
     }
 
-    v8->_duration = a4;
+    v8->_duration = duration;
   }
 
   return v8;
 }
 
-- (_UIAnimatedImage)initWithCoder:(id)a3
+- (_UIAnimatedImage)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _UIAnimatedImage;
-  v5 = [(UIImage *)&v12 initWithCoder:v4];
+  v5 = [(UIImage *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v13[0] = objc_opt_class();
     v13[1] = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"UIImages"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"UIImages"];
     images = v5->_images;
     v5->_images = v8;
 
-    [v4 decodeDoubleForKey:@"UIDuration"];
+    [coderCopy decodeDoubleForKey:@"UIDuration"];
     v5->_duration = v10;
     if (v10 == 0.0)
     {
@@ -106,16 +106,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _UIAnimatedImage;
-  [(UIImage *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_images forKey:@"UIImages"];
+  [(UIImage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_images forKey:@"UIImages"];
   if (fabs(self->_duration + [(NSArray *)self->_images count]* -0.0333333333) >= 2.22044605e-16)
   {
-    [v4 encodeDouble:@"UIDuration" forKey:self->_duration];
+    [coderCopy encodeDouble:@"UIDuration" forKey:self->_duration];
   }
 }
 
@@ -216,9 +216,9 @@
 - (int64_t)resizingMode
 {
   v2 = [(NSArray *)self->_images objectAtIndex:0];
-  v3 = [v2 resizingMode];
+  resizingMode = [v2 resizingMode];
 
-  return v3;
+  return resizingMode;
 }
 
 - (CGRect)_contentStretchInPixels
@@ -264,24 +264,24 @@
 - (BOOL)_isResizable
 {
   v2 = [(NSArray *)self->_images objectAtIndex:0];
-  v3 = [v2 _isResizable];
+  _isResizable = [v2 _isResizable];
 
-  return v3;
+  return _isResizable;
 }
 
-- (BOOL)_isTiledWhenStretchedToSize:(CGSize)a3
+- (BOOL)_isTiledWhenStretchedToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = [(NSArray *)self->_images objectAtIndex:0];
   v6 = [v5 _isTiledWhenStretchedToSize:{width, height}];
 
   return v6;
 }
 
-- (void)_setAlwaysStretches:(BOOL)a3
+- (void)_setAlwaysStretches:(BOOL)stretches
 {
-  v3 = a3;
+  stretchesCopy = stretches;
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
@@ -303,7 +303,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) _setAlwaysStretches:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) _setAlwaysStretches:{stretchesCopy, v9}];
       }
 
       while (v6 != v8);
@@ -314,12 +314,12 @@
   }
 }
 
-- (id)resizableImageWithCapInsets:(UIEdgeInsets)a3 resizingMode:(int64_t)a4
+- (id)resizableImageWithCapInsets:(UIEdgeInsets)insets resizingMode:(int64_t)mode
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v31 = *MEMORY[0x1E69E9840];
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_images, "count")}];
   v26 = 0u;
@@ -345,18 +345,18 @@
         v18 = [v17 resizableImageWithCapInsets:{top, left, bottom, right}];
         if (!v18)
         {
-          v24 = [MEMORY[0x1E696AAA8] currentHandler];
-          v25 = a4;
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          modeCopy = mode;
           v33.top = top;
           v33.left = left;
           v33.bottom = bottom;
           v33.right = right;
           NSStringFromUIEdgeInsets(v33);
           v20 = v19 = a2;
-          [v24 handleFailureInMethod:v19 object:self file:@"UIImage.m" lineNumber:837 description:{@"Unable to create resizable image from %@ with cap insets %@", v17, v20}];
+          [currentHandler handleFailureInMethod:v19 object:self file:@"UIImage.m" lineNumber:837 description:{@"Unable to create resizable image from %@ with cap insets %@", v17, v20}];
 
           a2 = v19;
-          a4 = v25;
+          mode = modeCopy;
         }
 
         [v11 addObject:v18];
@@ -370,7 +370,7 @@
 
   v21 = [UIImage animatedImageWithImages:v11 duration:self->_duration];
   v22 = v21;
-  if (a4 == 1)
+  if (mode == 1)
   {
     [v21 _setAlwaysStretches:1];
   }
@@ -378,12 +378,12 @@
   return v22;
 }
 
-- (void)_setAlignmentRectInsets:(UIEdgeInsets)a3
+- (void)_setAlignmentRectInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
@@ -436,9 +436,9 @@
   return result;
 }
 
-- (id)_bezeledImageWithShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 fillRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 drawShadow:(BOOL)a11
+- (id)_bezeledImageWithShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha fillRed:(double)fillRed green:(double)a8 blue:(double)a9 alpha:(double)self0 drawShadow:(BOOL)self1
 {
-  v11 = a11;
+  shadowCopy = shadow;
   v35 = *MEMORY[0x1E69E9840];
   v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_images, "count")}];
   v30 = 0u;
@@ -460,7 +460,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v30 + 1) + 8 * i) _bezeledImageWithShadowRed:v11 green:a3 blue:a4 alpha:a5 fillRed:a6 green:a7 blue:a8 alpha:a9 drawShadow:{a10, v30}];
+        v27 = [*(*(&v30 + 1) + 8 * i) _bezeledImageWithShadowRed:shadowCopy green:red blue:green alpha:blue fillRed:alpha green:fillRed blue:a8 alpha:a9 drawShadow:{a10, v30}];
         [v21 addObject:v27];
       }
 
@@ -475,7 +475,7 @@
   return v28;
 }
 
-- (id)_doubleBezeledImageWithExteriorShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 interiorShadowRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 fillRed:(double)a11 green:(double)a12 blue:(double)a13 alpha:(double)a14
+- (id)_doubleBezeledImageWithExteriorShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha interiorShadowRed:(double)shadowRed green:(double)a8 blue:(double)a9 alpha:(double)self0 fillRed:(double)self1 green:(double)self2 blue:(double)self3 alpha:(double)self4
 {
   v37 = *MEMORY[0x1E69E9840];
   v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_images, "count")}];
@@ -498,7 +498,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v32 + 1) + 8 * i) _doubleBezeledImageWithExteriorShadowRed:a3 green:a4 blue:a5 alpha:a6 interiorShadowRed:a7 green:a8 blue:a9 alpha:a10 fillRed:*&a11 green:*&a12 blue:*&a13 alpha:*&a14];
+        v25 = [*(*(&v32 + 1) + 8 * i) _doubleBezeledImageWithExteriorShadowRed:red green:green blue:blue alpha:alpha interiorShadowRed:shadowRed green:a8 blue:a9 alpha:a10 fillRed:*&fillRed green:*&a12 blue:*&a13 alpha:*&a14];
         [v19 addObject:v25];
       }
 
@@ -513,9 +513,9 @@
   return v26;
 }
 
-- (id)_imageScaledToProportion:(double)a3 interpolationQuality:(int)a4
+- (id)_imageScaledToProportion:(double)proportion interpolationQuality:(int)quality
 {
-  v4 = *&a4;
+  v4 = *&quality;
   v21 = *MEMORY[0x1E69E9840];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_images, "count")}];
   v16 = 0u;
@@ -537,7 +537,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) _imageScaledToProportion:v4 interpolationQuality:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) _imageScaledToProportion:v4 interpolationQuality:{proportion, v16}];
         [v7 addObject:v13];
       }
 
@@ -552,7 +552,7 @@
   return v14;
 }
 
-- (id)_imageWithStylePresets:(id)a3 tintColor:(id)a4 traitCollection:(id)a5
+- (id)_imageWithStylePresets:(id)presets tintColor:(id)color traitCollection:(id)collection
 {
   v6 = NSStringFromSelector(a2);
   NSLog(&cfstr_NotYetSupporte.isa, v6);
@@ -560,15 +560,15 @@
   return self;
 }
 
-- (CGSize)_sizeWithHairlineThickening:(BOOL)a3 forTraitCollection:(id)a4
+- (CGSize)_sizeWithHairlineThickening:(BOOL)thickening forTraitCollection:(id)collection
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(NSArray *)self->_images firstObject];
-  v8 = v7;
-  if (v7)
+  thickeningCopy = thickening;
+  collectionCopy = collection;
+  firstObject = [(NSArray *)self->_images firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    [v7 _sizeWithHairlineThickening:v4 forTraitCollection:v6];
+    [firstObject _sizeWithHairlineThickening:thickeningCopy forTraitCollection:collectionCopy];
     v10 = v9;
     v12 = v11;
   }
@@ -586,36 +586,36 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UIAnimatedImage *)self images];
-    v7 = [v6 count];
-    v8 = [v5 images];
-    if (v7 == [v8 count] && (-[_UIAnimatedImage duration](self, "duration"), v10 = v9, objc_msgSend(v5, "duration"), v10 == v11) && (-[_UIAnimatedImage capInsets](self, "capInsets"), v13 = v12, v15 = v14, v17 = v16, v19 = v18, objc_msgSend(v5, "capInsets"), v15 == v23) && v13 == v20 && v19 == v22 && v17 == v21)
+    v5 = equalCopy;
+    images = [(_UIAnimatedImage *)self images];
+    v7 = [images count];
+    images2 = [v5 images];
+    if (v7 == [images2 count] && (-[_UIAnimatedImage duration](self, "duration"), v10 = v9, objc_msgSend(v5, "duration"), v10 == v11) && (-[_UIAnimatedImage capInsets](self, "capInsets"), v13 = v12, v15 = v14, v17 = v16, v19 = v18, objc_msgSend(v5, "capInsets"), v15 == v23) && v13 == v20 && v19 == v22 && v17 == v21)
     {
-      v24 = [(_UIAnimatedImage *)self resizingMode];
-      v25 = [v5 resizingMode];
+      resizingMode = [(_UIAnimatedImage *)self resizingMode];
+      resizingMode2 = [v5 resizingMode];
 
-      if (v24 == v25)
+      if (resizingMode == resizingMode2)
       {
-        v26 = [(_UIAnimatedImage *)self images];
-        v27 = [v26 count];
+        images3 = [(_UIAnimatedImage *)self images];
+        v27 = [images3 count];
 
         if (v27)
         {
           v28 = 0;
           do
           {
-            v29 = [(_UIAnimatedImage *)self images];
-            v30 = [v29 objectAtIndexedSubscript:v28];
+            images4 = [(_UIAnimatedImage *)self images];
+            v30 = [images4 objectAtIndexedSubscript:v28];
 
-            v31 = [v5 images];
-            v32 = [v31 objectAtIndexedSubscript:v28];
+            images5 = [v5 images];
+            v32 = [images5 objectAtIndexedSubscript:v28];
 
             v33 = [v30 isEqual:v32];
             if ((v33 & 1) == 0)
@@ -624,8 +624,8 @@
             }
 
             ++v28;
-            v34 = [(_UIAnimatedImage *)self images];
-            v35 = [v34 count];
+            images6 = [(_UIAnimatedImage *)self images];
+            v35 = [images6 count];
           }
 
           while (v28 < v35);

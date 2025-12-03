@@ -1,20 +1,20 @@
 @interface ICRadioGetTracksRequest
 - (ICRadioGetTracksRequest)init;
 - (NSDictionary)additionalRequestParameters;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)performWithResponseHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICRadioGetTracksRequest
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(ICRadioGetTracksRequest *)self requestContext];
-  if (!v6)
+  handlerCopy = handler;
+  requestContext = [(ICRadioGetTracksRequest *)self requestContext];
+  if (!requestContext)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ICRadioGetTracksRequest.m" lineNumber:72 description:@"Request context must not be nil."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICRadioGetTracksRequest.m" lineNumber:72 description:@"Request context must not be nil."];
   }
 
   v7 = +[ICURLBagProvider sharedBagProvider];
@@ -22,11 +22,11 @@
   v11[1] = 3221225472;
   v11[2] = __54__ICRadioGetTracksRequest_performWithResponseHandler___block_invoke;
   v11[3] = &unk_1E7BF9DB0;
-  v12 = v6;
-  v13 = self;
-  v14 = v5;
-  v8 = v5;
-  v9 = v6;
+  v12 = requestContext;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = requestContext;
   [v7 getBagForRequestContext:v9 withCompletionHandler:v11];
 }
 
@@ -490,32 +490,32 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSDictionary *)self->_additionalRequestParameters copyWithZone:a3];
+    v6 = [(NSDictionary *)self->_additionalRequestParameters copyWithZone:zone];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
     *(v5 + 8) = self->_allowsExplicitContent;
-    v8 = [(NSNumber *)self->_delegatedPrivateListeningEnabled copyWithZone:a3];
+    v8 = [(NSNumber *)self->_delegatedPrivateListeningEnabled copyWithZone:zone];
     v9 = *(v5 + 32);
     *(v5 + 32) = v8;
 
-    v10 = [(NSNumber *)self->_privateListeningEnabled copyWithZone:a3];
+    v10 = [(NSNumber *)self->_privateListeningEnabled copyWithZone:zone];
     v11 = *(v5 + 24);
     *(v5 + 24) = v10;
 
-    v12 = [(ICRadioContentReference *)self->_nowPlayingContentReference copyWithZone:a3];
+    v12 = [(ICRadioContentReference *)self->_nowPlayingContentReference copyWithZone:zone];
     v13 = *(v5 + 104);
     *(v5 + 104) = v12;
 
     *(v5 + 9) = self->_preservingCurrentlyPlayingItem;
     *(v5 + 40) = self->_reasonType;
     objc_storeStrong((v5 + 48), self->_requestContext);
-    v14 = [(ICRadioContentReference *)self->_seedContentReference copyWithZone:a3];
+    v14 = [(ICRadioContentReference *)self->_seedContentReference copyWithZone:zone];
     v15 = *(v5 + 96);
     *(v5 + 96) = v14;
 
@@ -525,7 +525,7 @@ LABEL_15:
     objc_storeStrong((v5 + 88), self->_stationURL);
     objc_storeStrong((v5 + 64), self->_stationHash);
     *(v5 + 72) = self->_stationID;
-    v16 = [(NSArray *)self->_queueContentReferences copyWithZone:a3];
+    v16 = [(NSArray *)self->_queueContentReferences copyWithZone:zone];
     v17 = *(v5 + 112);
     *(v5 + 112) = v16;
   }

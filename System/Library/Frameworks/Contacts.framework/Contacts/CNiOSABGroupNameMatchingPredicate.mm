@@ -1,24 +1,24 @@
 @interface CNiOSABGroupNameMatchingPredicate
 + (id)groupNameTokenizingCharacterSet;
-+ (id)tokenizeString:(id)a3;
-- (BOOL)groupName:(id)a3 matchesSearchTokens:(id)a4;
-- (CNiOSABGroupNameMatchingPredicate)initWithCoder:(id)a3;
-- (CNiOSABGroupNameMatchingPredicate)initWithName:(id)a3;
++ (id)tokenizeString:(id)string;
+- (BOOL)groupName:(id)name matchesSearchTokens:(id)tokens;
+- (CNiOSABGroupNameMatchingPredicate)initWithCoder:(id)coder;
+- (CNiOSABGroupNameMatchingPredicate)initWithName:(id)name;
 - (NSString)description;
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABGroupNameMatchingPredicate
 
-- (CNiOSABGroupNameMatchingPredicate)initWithName:(id)a3
+- (CNiOSABGroupNameMatchingPredicate)initWithName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   v6 = MEMORY[0x1E696AE18];
-  if (v4)
+  if (nameCopy)
   {
-    v7 = v4;
+    v7 = nameCopy;
   }
 
   else
@@ -42,15 +42,15 @@
   return v10;
 }
 
-- (CNiOSABGroupNameMatchingPredicate)initWithCoder:(id)a3
+- (CNiOSABGroupNameMatchingPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABGroupNameMatchingPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     v7 = [v6 copy];
     name = v5->_name;
     v5->_name = v7;
@@ -61,34 +61,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABGroupNameMatchingPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_name forKey:{@"_name", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_name forKey:{@"_name", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error
 {
   v7 = *MEMORY[0x1E6996568];
-  v8 = [(CNiOSABGroupNameMatchingPredicate *)self name];
-  LODWORD(v7) = (*(v7 + 16))(v7, v8);
+  name = [(CNiOSABGroupNameMatchingPredicate *)self name];
+  LODWORD(v7) = (*(v7 + 16))(v7, name);
 
   if (v7)
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
 
     [CNErrorFactory errorWithCode:400 userInfo:0];
-    *a4 = Mutable = 0;
+    *error = Mutable = 0;
     return Mutable;
   }
 
-  v10 = ABAddressBookCopyArrayOfAllGroups(a3);
+  v10 = ABAddressBookCopyArrayOfAllGroups(book);
   if (v10)
   {
     v11 = v10;
@@ -96,8 +96,8 @@
     {
       Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
       v12 = objc_opt_class();
-      v13 = [(CNiOSABGroupNameMatchingPredicate *)self name];
-      v14 = [v12 tokenizeString:v13];
+      name2 = [(CNiOSABGroupNameMatchingPredicate *)self name];
+      v14 = [v12 tokenizeString:name2];
 
       if (CFArrayGetCount(v11) >= 1)
       {
@@ -141,11 +141,11 @@
   return CFArrayCreate(0, 0, 0, v21);
 }
 
-- (BOOL)groupName:(id)a3 matchesSearchTokens:(id)a4
+- (BOOL)groupName:(id)name matchesSearchTokens:(id)tokens
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() tokenizeString:v6];
+  tokensCopy = tokens;
+  nameCopy = name;
+  v7 = [objc_opt_class() tokenizeString:nameCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -153,7 +153,7 @@
   v10[3] = &unk_1E7412440;
   v11 = v7;
   v8 = v7;
-  LOBYTE(v7) = [v5 _cn_all:v10];
+  LOBYTE(v7) = [tokensCopy _cn_all:v10];
 
   return v7;
 }
@@ -173,11 +173,11 @@ uint64_t __67__CNiOSABGroupNameMatchingPredicate_groupName_matchesSearchTokens__
   return v6;
 }
 
-+ (id)tokenizeString:(id)a3
++ (id)tokenizeString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 groupNameTokenizingCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  stringCopy = string;
+  groupNameTokenizingCharacterSet = [self groupNameTokenizingCharacterSet];
+  v6 = [stringCopy componentsSeparatedByCharactersInSet:groupNameTokenizingCharacterSet];
 
   v7 = [v6 _cn_filter:*MEMORY[0x1E6996570]];
 
@@ -186,9 +186,9 @@ uint64_t __67__CNiOSABGroupNameMatchingPredicate_groupName_matchesSearchTokens__
 
 + (id)groupNameTokenizingCharacterSet
 {
-  v2 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v3 = [v2 invertedSet];
-  v4 = [v3 mutableCopy];
+  alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
+  v4 = [invertedSet mutableCopy];
 
   [v4 removeCharactersInString:@"@"];
 
@@ -199,12 +199,12 @@ uint64_t __67__CNiOSABGroupNameMatchingPredicate_groupName_matchesSearchTokens__
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNGroup predicateForGroupWithNameMatching:]"];
-  v5 = [(CNiOSABGroupNameMatchingPredicate *)self name];
-  v6 = [v3 appendName:@"name" object:v5];
+  name = [(CNiOSABGroupNameMatchingPredicate *)self name];
+  v6 = [v3 appendName:@"name" object:name];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

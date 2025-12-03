@@ -7,7 +7,7 @@
 
 - (void)didTapCloseButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_100168904();
 }
 

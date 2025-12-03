@@ -1,33 +1,33 @@
 @interface MusicKit_SoftLinking_MPModelFileAsset
-+ (int64_t)protectionTypeForRawValue:(int64_t)a3;
-+ (int64_t)rawValueForProtectionType:(int64_t)a3;
++ (int64_t)protectionTypeForRawValue:(int64_t)value;
++ (int64_t)rawValueForProtectionType:(int64_t)type;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelFileAsset
 
-+ (int64_t)protectionTypeForRawValue:(int64_t)a3
++ (int64_t)protectionTypeForRawValue:(int64_t)value
 {
-  if (a3 == 2)
+  if (value == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return value == 1;
   }
 }
 
-+ (int64_t)rawValueForProtectionType:(int64_t)a3
++ (int64_t)rawValueForProtectionType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 

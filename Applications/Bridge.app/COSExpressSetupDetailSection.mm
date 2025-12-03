@@ -12,9 +12,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;

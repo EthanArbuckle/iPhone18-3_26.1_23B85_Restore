@@ -1,10 +1,10 @@
 @interface PKContinuityPaymentFaviconView
 - (CGSize)_imageViewSize;
-- (PKContinuityPaymentFaviconView)initWithCoder:(id)a3;
-- (PKContinuityPaymentFaviconView)initWithFrame:(CGRect)a3 imageURL:(id)a4 modelIdentifier:(id)a5 merchantName:(id)a6;
+- (PKContinuityPaymentFaviconView)initWithCoder:(id)coder;
+- (PKContinuityPaymentFaviconView)initWithFrame:(CGRect)frame imageURL:(id)l modelIdentifier:(id)identifier merchantName:(id)name;
 - (double)_iconVerticalOffset;
 - (void)_loadMacImage;
-- (void)_loadMerchantImage:(id)a3;
+- (void)_loadMerchantImage:(id)image;
 - (void)_setupMonogram;
 - (void)dealloc;
 - (void)layoutSubviews;
@@ -12,90 +12,90 @@
 
 @implementation PKContinuityPaymentFaviconView
 
-- (PKContinuityPaymentFaviconView)initWithCoder:(id)a3
+- (PKContinuityPaymentFaviconView)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This class is not NSCoding compliant"];
 
   return 0;
 }
 
-- (PKContinuityPaymentFaviconView)initWithFrame:(CGRect)a3 imageURL:(id)a4 modelIdentifier:(id)a5 merchantName:(id)a6
+- (PKContinuityPaymentFaviconView)initWithFrame:(CGRect)frame imageURL:(id)l modelIdentifier:(id)identifier merchantName:(id)name
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  lCopy = l;
+  identifierCopy = identifier;
+  nameCopy = name;
   v40.receiver = self;
   v40.super_class = PKContinuityPaymentFaviconView;
-  v16 = [(PKContinuityPaymentFaviconView *)&v40 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(PKContinuityPaymentFaviconView *)&v40 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v17 = [v15 copy];
-    merchantName = v16->_merchantName;
-    v16->_merchantName = v17;
+    v17 = [nameCopy copy];
+    merchantName = height->_merchantName;
+    height->_merchantName = v17;
 
-    v19 = [v14 copy];
-    modelIdentifier = v16->_modelIdentifier;
-    v16->_modelIdentifier = v19;
+    v19 = [identifierCopy copy];
+    modelIdentifier = height->_modelIdentifier;
+    height->_modelIdentifier = v19;
 
     v21 = objc_alloc_init(PKShapeView);
-    maskView = v16->_maskView;
-    v16->_maskView = v21;
+    maskView = height->_maskView;
+    height->_maskView = v21;
 
     v23 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{x, y, width, height}];
-    macImageView = v16->_macImageView;
-    v16->_macImageView = v23;
+    macImageView = height->_macImageView;
+    height->_macImageView = v23;
 
-    [(UIImageView *)v16->_macImageView setContentMode:1];
-    [(PKContinuityPaymentFaviconView *)v16 _loadMacImage];
-    v25 = [(PKContinuityPaymentFaviconView *)v16 layer];
-    [v25 setAllowsGroupOpacity:0];
+    [(UIImageView *)height->_macImageView setContentMode:1];
+    [(PKContinuityPaymentFaviconView *)height _loadMacImage];
+    layer = [(PKContinuityPaymentFaviconView *)height layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v26 = [(PKContinuityPaymentFaviconView *)v16 layer];
-    [v26 setAllowsGroupBlending:0];
+    layer2 = [(PKContinuityPaymentFaviconView *)height layer];
+    [layer2 setAllowsGroupBlending:0];
 
-    [(PKContinuityPaymentFaviconView *)v16 addSubview:v16->_macImageView];
+    [(PKContinuityPaymentFaviconView *)height addSubview:height->_macImageView];
     v27 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{x, y, width, height}];
-    imageShadowView = v16->_imageShadowView;
-    v16->_imageShadowView = v27;
+    imageShadowView = height->_imageShadowView;
+    height->_imageShadowView = v27;
 
-    [(PKContinuityPaymentFaviconView *)v16 addSubview:v16->_imageShadowView];
-    v29 = [(UIView *)v16->_imageShadowView layer];
-    [v29 setShadowOffset:{0.0, 1.0}];
-    v30 = [MEMORY[0x1E69DC888] darkGrayColor];
-    [v29 setShadowColor:{objc_msgSend(v30, "CGColor")}];
+    [(PKContinuityPaymentFaviconView *)height addSubview:height->_imageShadowView];
+    layer3 = [(UIView *)height->_imageShadowView layer];
+    [layer3 setShadowOffset:{0.0, 1.0}];
+    darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+    [layer3 setShadowColor:{objc_msgSend(darkGrayColor, "CGColor")}];
 
     LODWORD(v31) = 1050253722;
-    [v29 setShadowOpacity:v31];
-    [v29 setShadowRadius:1.0];
-    [v29 setMasksToBounds:0];
+    [layer3 setShadowOpacity:v31];
+    [layer3 setShadowRadius:1.0];
+    [layer3 setMasksToBounds:0];
     v32 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{x, y, width, height}];
-    imageView = v16->_imageView;
-    v16->_imageView = v32;
+    imageView = height->_imageView;
+    height->_imageView = v32;
 
-    [(UIImageView *)v16->_imageView setContentMode:2];
-    v34 = [(UIImageView *)v16->_imageView layer];
-    [v34 setMasksToBounds:1];
+    [(UIImageView *)height->_imageView setContentMode:2];
+    layer4 = [(UIImageView *)height->_imageView layer];
+    [layer4 setMasksToBounds:1];
 
-    v35 = [(UIImageView *)v16->_imageView layer];
-    [v35 setCornerRadius:5.0];
+    layer5 = [(UIImageView *)height->_imageView layer];
+    [layer5 setCornerRadius:5.0];
 
-    [(PKContinuityPaymentFaviconView *)v16 addSubview:v16->_imageView];
+    [(PKContinuityPaymentFaviconView *)height addSubview:height->_imageView];
     v36 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{x, y, width, height}];
-    monogramView = v16->_monogramView;
-    v16->_monogramView = v36;
+    monogramView = height->_monogramView;
+    height->_monogramView = v36;
 
-    v38 = [(UIView *)v16->_monogramView layer];
-    [v38 setCornerRadius:5.0];
+    layer6 = [(UIView *)height->_monogramView layer];
+    [layer6 setCornerRadius:5.0];
 
-    [(PKContinuityPaymentFaviconView *)v16 _setupMonogram];
-    [(PKContinuityPaymentFaviconView *)v16 _loadMerchantImage:v13];
+    [(PKContinuityPaymentFaviconView *)height _setupMonogram];
+    [(PKContinuityPaymentFaviconView *)height _loadMerchantImage:lCopy];
   }
 
-  return v16;
+  return height;
 }
 
 - (void)dealloc
@@ -143,24 +143,24 @@
   [(UIView *)self->_imageShadowView setFrame:v11, v12, v5, v7];
   [(UIView *)self->_monogramView setFrame:v11, v12, v5, v7];
   v13 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, v5, v7, 5.0}];
-  v14 = [v13 CGPath];
+  cGPath = [v13 CGPath];
 
-  v15 = [(UIView *)self->_imageShadowView layer];
-  [v15 setShadowPath:v14];
+  layer = [(UIView *)self->_imageShadowView layer];
+  [layer setShadowPath:cGPath];
 }
 
 - (void)_setupMonogram
 {
   monogramView = self->_monogramView;
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [(UIView *)monogramView setBackgroundColor:v4];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UIView *)monogramView setBackgroundColor:labelColor];
 
   v5 = objc_alloc(MEMORY[0x1E69DCC10]);
   [(UIView *)self->_monogramView bounds];
   v9 = [v5 initWithFrame:?];
   [v9 setAutoresizingMask:18];
-  v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v9 setTextColor:v6];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v9 setTextColor:systemBackgroundColor];
 
   v7 = [MEMORY[0x1E69DB878] systemFontOfSize:38.0 weight:*MEMORY[0x1E69DB978]];
   [v9 setFont:v7];
@@ -176,17 +176,17 @@
   [(PKContinuityPaymentFaviconView *)self addSubview:self->_monogramView];
 }
 
-- (void)_loadMerchantImage:(id)a3
+- (void)_loadMerchantImage:(id)image
 {
-  v4 = a3;
-  if (v4)
+  imageCopy = image;
+  if (imageCopy)
   {
     objc_initWeak(&location, self);
     [(PKContinuityPaymentFaviconView *)self _imageViewSize];
     v6 = v5;
     v8 = v7;
-    v9 = [(PKContinuityPaymentFaviconView *)self traitCollection];
-    [v9 displayScale];
+    traitCollection = [(PKContinuityPaymentFaviconView *)self traitCollection];
+    [traitCollection displayScale];
     if (v10 == 0.0)
     {
       v11 = 1.0;
@@ -203,13 +203,13 @@
     self->_webView = v13;
 
     v15 = self->_webView;
-    v16 = [MEMORY[0x1E696AF68] requestWithURL:v4];
+    v16 = [MEMORY[0x1E696AF68] requestWithURL:imageCopy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __53__PKContinuityPaymentFaviconView__loadMerchantImage___block_invoke;
     v17[3] = &unk_1E8026DA0;
     objc_copyWeak(&v19, &location);
-    v18 = v4;
+    v18 = imageCopy;
     [(WKWebView *)v15 _loadAndDecodeImage:v16 constrainedToSize:0x80000 maximumBytesFromNetwork:v17 completionHandler:v6 * v11, v8 * v11];
 
     objc_destroyWeak(&v19);
@@ -290,8 +290,8 @@ void __53__PKContinuityPaymentFaviconView__loadMerchantImage___block_invoke_2(ui
   }
 
   v4 = MEMORY[0x1E69DCAD8];
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  v10 = [v4 configurationWithHierarchicalColor:v5];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v10 = [v4 configurationWithHierarchicalColor:labelColor];
 
   v6 = [MEMORY[0x1E69DCAD8] configurationWithWeight:2];
   v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:v3];

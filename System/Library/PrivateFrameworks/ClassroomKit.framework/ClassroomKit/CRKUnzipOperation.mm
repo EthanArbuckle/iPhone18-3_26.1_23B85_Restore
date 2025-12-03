@@ -1,33 +1,33 @@
 @interface CRKUnzipOperation
-+ (id)errorFromBOMCopierStatus:(int)a3 message:(id)a4;
-- (CRKUnzipOperation)initWithZipFileURL:(id)a3;
-- (CRKUnzipOperation)initWithZipFileURL:(id)a3 destinationDirectoryURL:(id)a4;
++ (id)errorFromBOMCopierStatus:(int)status message:(id)message;
+- (CRKUnzipOperation)initWithZipFileURL:(id)l;
+- (CRKUnzipOperation)initWithZipFileURL:(id)l destinationDirectoryURL:(id)rL;
 - (void)cancel;
 - (void)main;
 - (void)operationWillFinish;
-- (void)setStashedError:(id)a3;
+- (void)setStashedError:(id)error;
 @end
 
 @implementation CRKUnzipOperation
 
-- (CRKUnzipOperation)initWithZipFileURL:(id)a3
+- (CRKUnzipOperation)initWithZipFileURL:(id)l
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = a3;
-  v6 = [v4 crk_uniqueTemporaryDirectoryURL];
-  v7 = [(CRKUnzipOperation *)self initWithZipFileURL:v5 destinationDirectoryURL:v6];
+  lCopy = l;
+  crk_uniqueTemporaryDirectoryURL = [v4 crk_uniqueTemporaryDirectoryURL];
+  v7 = [(CRKUnzipOperation *)self initWithZipFileURL:lCopy destinationDirectoryURL:crk_uniqueTemporaryDirectoryURL];
 
   return v7;
 }
 
-- (CRKUnzipOperation)initWithZipFileURL:(id)a3 destinationDirectoryURL:(id)a4
+- (CRKUnzipOperation)initWithZipFileURL:(id)l destinationDirectoryURL:(id)rL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  lCopy = l;
+  rLCopy = rL;
+  v10 = rLCopy;
+  if (lCopy)
   {
-    if (v9)
+    if (rLCopy)
     {
       goto LABEL_3;
     }
@@ -50,8 +50,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_zipFileURL, a3);
-    objc_storeStrong(&v12->_destinationDirectoryURL, a4);
+    objc_storeStrong(&v11->_zipFileURL, l);
+    objc_storeStrong(&v12->_destinationDirectoryURL, rL);
   }
 
   return v12;
@@ -79,10 +79,10 @@ LABEL_3:
 - (void)main
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(CRKUnzipOperation *)self destinationDirectoryURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  destinationDirectoryURL = [(CRKUnzipOperation *)self destinationDirectoryURL];
   v15 = 0;
-  v5 = [v3 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v15];
+  v5 = [defaultManager createDirectoryAtURL:destinationDirectoryURL withIntermediateDirectories:1 attributes:0 error:&v15];
   v6 = v15;
 
   if (v5)
@@ -90,8 +90,8 @@ LABEL_3:
     [(CRKUnzipOperation *)self setCopier:BOMCopierNew()];
     if ([(CRKUnzipOperation *)self isCanceled])
     {
-      v7 = CATErrorWithCodeAndUserInfo();
-      [(CRKUnzipOperation *)self endOperationWithError:v7];
+      destinationDirectoryURL3 = CATErrorWithCodeAndUserInfo();
+      [(CRKUnzipOperation *)self endOperationWithError:destinationDirectoryURL3];
 LABEL_9:
 
       goto LABEL_12;
@@ -108,10 +108,10 @@ LABEL_9:
     [(CRKUnzipOperation *)self copier];
     BOMCopierSetFileConflictErrorHandler();
     [(CRKUnzipOperation *)self copier];
-    v8 = [(CRKUnzipOperation *)self zipFileURL];
-    [v8 fileSystemRepresentation];
-    v9 = [(CRKUnzipOperation *)self destinationDirectoryURL];
-    [v9 fileSystemRepresentation];
+    zipFileURL = [(CRKUnzipOperation *)self zipFileURL];
+    [zipFileURL fileSystemRepresentation];
+    destinationDirectoryURL2 = [(CRKUnzipOperation *)self destinationDirectoryURL];
+    [destinationDirectoryURL2 fileSystemRepresentation];
     v16 = @"extractPKZip";
     v17[0] = MEMORY[0x277CBEC38];
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
@@ -119,16 +119,16 @@ LABEL_9:
 
     if (!v10)
     {
-      v7 = [(CRKUnzipOperation *)self destinationDirectoryURL];
-      [(CRKUnzipOperation *)self endOperationWithResultObject:v7];
+      destinationDirectoryURL3 = [(CRKUnzipOperation *)self destinationDirectoryURL];
+      [(CRKUnzipOperation *)self endOperationWithResultObject:destinationDirectoryURL3];
       goto LABEL_9;
     }
 
-    v11 = [(CRKUnzipOperation *)self stashedError];
-    v12 = v11;
-    if (v11)
+    stashedError = [(CRKUnzipOperation *)self stashedError];
+    v12 = stashedError;
+    if (stashedError)
     {
-      v13 = v11;
+      v13 = stashedError;
     }
 
     else
@@ -149,39 +149,39 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)setStashedError:(id)a3
+- (void)setStashedError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (!self->_stashedError)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stashedError, a3);
-    v5 = v6;
+    v6 = errorCopy;
+    objc_storeStrong(&self->_stashedError, error);
+    errorCopy = v6;
   }
 }
 
-+ (id)errorFromBOMCopierStatus:(int)a3 message:(id)a4
++ (id)errorFromBOMCopierStatus:(int)status message:(id)message
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  if (a3 <= 1)
+  messageCopy = message;
+  v6 = messageCopy;
+  if (status <= 1)
   {
-    if (a3 != -1)
+    if (status != -1)
     {
-      if (!a3)
+      if (!status)
       {
         v16 = 0;
         goto LABEL_32;
       }
 
-      if (a3 == 1)
+      if (status == 1)
       {
         v11 = MEMORY[0x277CCA9B8];
-        if (v5)
+        if (messageCopy)
         {
           v30 = *MEMORY[0x277CCA450];
-          v31 = v5;
+          v31 = messageCopy;
           v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
           v9 = v11;
           v10 = 1;
@@ -199,10 +199,10 @@ LABEL_12:
 
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277CCA5B8];
-    if (v5)
+    if (messageCopy)
     {
       v32 = *MEMORY[0x277CCA450];
-      v33 = v5;
+      v33 = messageCopy;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v16 = [v13 errorWithDomain:v14 code:-1 userInfo:v15];
 
@@ -217,15 +217,15 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (a3 <= 3)
+  if (status <= 3)
   {
-    if (a3 == 2)
+    if (status == 2)
     {
       v18 = MEMORY[0x277CCA9B8];
-      if (v5)
+      if (messageCopy)
       {
         v28 = *MEMORY[0x277CCA450];
-        v29 = v5;
+        v29 = messageCopy;
         v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v9 = v18;
         v10 = 2;
@@ -240,10 +240,10 @@ LABEL_30:
     else
     {
       v7 = MEMORY[0x277CCA9B8];
-      if (v5)
+      if (messageCopy)
       {
         v26 = *MEMORY[0x277CCA450];
-        v27 = v5;
+        v27 = messageCopy;
         v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
         v9 = v7;
         v10 = 3;
@@ -261,13 +261,13 @@ LABEL_22:
     goto LABEL_30;
   }
 
-  if (a3 == 4)
+  if (status == 4)
   {
     v19 = MEMORY[0x277CCA9B8];
-    if (v5)
+    if (messageCopy)
     {
       v24 = *MEMORY[0x277CCA450];
-      v25 = v5;
+      v25 = messageCopy;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v9 = v19;
       v10 = 4;
@@ -280,13 +280,13 @@ LABEL_22:
     goto LABEL_30;
   }
 
-  if (a3 == 22)
+  if (status == 22)
   {
     v12 = MEMORY[0x277CCA9B8];
-    if (v5)
+    if (messageCopy)
     {
       v34 = *MEMORY[0x277CCA450];
-      v35[0] = v5;
+      v35[0] = messageCopy;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
       v9 = v12;
       v10 = 0;

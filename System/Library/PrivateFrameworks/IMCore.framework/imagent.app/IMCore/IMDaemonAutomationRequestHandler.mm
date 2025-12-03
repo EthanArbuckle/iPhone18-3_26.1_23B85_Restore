@@ -1,75 +1,75 @@
 @interface IMDaemonAutomationRequestHandler
-- (void)_automation_markMessagesAsRead:(BOOL)a3 messageGUID:(id)a4 forChatGUID:(id)a5 fromMe:(BOOL)a6 queryID:(id)a7;
-- (void)_automation_receiveDictionary:(id)a3 options:(id)a4 fromID:(id)a5;
-- (void)_automation_sendDictionary:(id)a3 options:(id)a4 toHandles:(id)a5;
-- (void)beginRecordingMessagesToReplayDatabase:(id)a3;
-- (void)debugUpdateGroupParticipantversion:(int64_t)a3 chatIdentifier:(id)a4;
-- (void)relayMessageGUID:(id)a3 completion:(id)a4;
-- (void)replayMessagesFromDatabasePath:(id)a3;
-- (void)resetTranscriptBackgroundForAllChatsWithCompletion:(id)a3;
+- (void)_automation_markMessagesAsRead:(BOOL)read messageGUID:(id)d forChatGUID:(id)iD fromMe:(BOOL)me queryID:(id)queryID;
+- (void)_automation_receiveDictionary:(id)dictionary options:(id)options fromID:(id)d;
+- (void)_automation_sendDictionary:(id)dictionary options:(id)options toHandles:(id)handles;
+- (void)beginRecordingMessagesToReplayDatabase:(id)database;
+- (void)debugUpdateGroupParticipantversion:(int64_t)participantversion chatIdentifier:(id)identifier;
+- (void)relayMessageGUID:(id)d completion:(id)completion;
+- (void)replayMessagesFromDatabasePath:(id)path;
+- (void)resetTranscriptBackgroundForAllChatsWithCompletion:(id)completion;
 - (void)simulateAppDeletion;
 - (void)simulateAppInstallation;
-- (void)simulateDowngradeRequestFromID:(id)a3 fromService:(id)a4 toService:(id)a5 expirationDate:(id)a6;
-- (void)simulateMessageDeliveryControllerDidFlushCacheForRemoteURI:(id)a3 fromURI:(id)a4 guid:(id)a5;
-- (void)simulateMessageReceive:(id)a3 serviceName:(id)a4 groupID:(id)a5 handles:(id)a6 sender:(id)a7 date:(id)a8 associatedMessageType:(int64_t)a9 associatedMessageGuid:(id)a10;
-- (void)simulateMessages:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)simulateReceivedPendingSatelliteMessageForChatWithGUID:(id)a3;
+- (void)simulateDowngradeRequestFromID:(id)d fromService:(id)service toService:(id)toService expirationDate:(id)date;
+- (void)simulateMessageDeliveryControllerDidFlushCacheForRemoteURI:(id)i fromURI:(id)rI guid:(id)guid;
+- (void)simulateMessageReceive:(id)receive serviceName:(id)name groupID:(id)d handles:(id)handles sender:(id)sender date:(id)date associatedMessageType:(int64_t)type associatedMessageGuid:(id)self0;
+- (void)simulateMessages:(id)messages configuration:(id)configuration completion:(id)completion;
+- (void)simulateReceivedPendingSatelliteMessageForChatWithGUID:(id)d;
 - (void)stopRecordingMessagesReplayDatabase;
 - (void)test_firstUnlockCompleted;
-- (void)updateOffGridSummaryOnChatWithGUID:(id)a3 pendingMessageCount:(int64_t)a4;
+- (void)updateOffGridSummaryOnChatWithGUID:(id)d pendingMessageCount:(int64_t)count;
 @end
 
 @implementation IMDaemonAutomationRequestHandler
 
-- (void)simulateMessageReceive:(id)a3 serviceName:(id)a4 groupID:(id)a5 handles:(id)a6 sender:(id)a7 date:(id)a8 associatedMessageType:(int64_t)a9 associatedMessageGuid:(id)a10
+- (void)simulateMessageReceive:(id)receive serviceName:(id)name groupID:(id)d handles:(id)handles sender:(id)sender date:(id)date associatedMessageType:(int64_t)type associatedMessageGuid:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
+  receiveCopy = receive;
+  nameCopy = name;
+  dCopy = d;
+  handlesCopy = handles;
+  senderCopy = sender;
+  dateCopy = date;
+  guidCopy = guid;
   if (IMOSLoggingEnabled())
   {
     v22 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v25 = v15;
+      v25 = receiveCopy;
       v26 = 2112;
-      v27 = v16;
+      v27 = nameCopy;
       v28 = 2112;
-      v29 = v17;
+      v29 = dCopy;
       v30 = 2112;
-      v31 = v18;
+      v31 = handlesCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Received request to simulate receiving a message with content %@ service %@ groupID: %@ handles %@", buf, 0x2Au);
     }
   }
 
   v23 = +[IMDChatRegistry sharedInstance];
-  [v23 simulateMessageReceive:v15 serviceName:v16 groupID:v17 handles:v18 sender:v19 date:v20 associatedMessageType:a9 associatedMessageGuid:v21];
+  [v23 simulateMessageReceive:receiveCopy serviceName:nameCopy groupID:dCopy handles:handlesCopy sender:senderCopy date:dateCopy associatedMessageType:type associatedMessageGuid:guidCopy];
 }
 
-- (void)replayMessagesFromDatabasePath:(id)a3
+- (void)replayMessagesFromDatabasePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSString stringGUID];
-  v5 = [v3 lastPathComponent];
-  v6 = [NSString stringWithFormat:@"/tmp/%@-%@", v4, v5];
+  lastPathComponent = [pathCopy lastPathComponent];
+  v6 = [NSString stringWithFormat:@"/tmp/%@-%@", v4, lastPathComponent];
 
   v7 = +[NSFileManager defaultManager];
-  LODWORD(v5) = [v7 copyItemAtPath:v3 toPath:v6 error:0];
+  LODWORD(lastPathComponent) = [v7 copyItemAtPath:pathCopy toPath:v6 error:0];
 
-  if (v5)
+  if (lastPathComponent)
   {
     v8 = +[NSFileManager defaultManager];
-    v9 = [v3 stringByAppendingString:@"-wal"];
+    v9 = [pathCopy stringByAppendingString:@"-wal"];
     v10 = [v6 stringByAppendingString:@"-wal"];
     [v8 copyItemAtPath:v9 toPath:v10 error:0];
 
     v11 = +[NSFileManager defaultManager];
-    v12 = [v3 stringByAppendingString:@"-shm"];
+    v12 = [pathCopy stringByAppendingString:@"-shm"];
     v13 = [v6 stringByAppendingString:@"-shm"];
     [v11 copyItemAtPath:v12 toPath:v13 error:0];
 
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)beginRecordingMessagesToReplayDatabase:(id)a3
+- (void)beginRecordingMessagesToReplayDatabase:(id)database
 {
-  v3 = a3;
+  databaseCopy = database;
   v4 = +[IMDReplayController sharedInstance];
-  [v4 overrideStorageControllerWithDatabaseFromPath:v3];
+  [v4 overrideStorageControllerWithDatabaseFromPath:databaseCopy];
 
   v5 = +[IMDReplayController sharedInstance];
   [v5 startRecordingReplayDatabase];
@@ -105,36 +105,36 @@
   [v3 restoreDefaultStoreControllerInstance];
 }
 
-- (void)_automation_receiveDictionary:(id)a3 options:(id)a4 fromID:(id)a5
+- (void)_automation_receiveDictionary:(id)dictionary options:(id)options fromID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
   v10 = +[IMDAccountController sharedAccountController];
   v11 = [v10 anySessionForServiceName:IMServiceNameiMessage];
 
-  [v11 _automation_receiveDictionary:v9 options:v8 fromHandle:v7];
+  [v11 _automation_receiveDictionary:dictionaryCopy options:optionsCopy fromHandle:dCopy];
 }
 
-- (void)_automation_sendDictionary:(id)a3 options:(id)a4 toHandles:(id)a5
+- (void)_automation_sendDictionary:(id)dictionary options:(id)options toHandles:(id)handles
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlesCopy = handles;
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
   v10 = +[IMDAccountController sharedAccountController];
   v11 = [v10 anySessionForServiceName:IMServiceNameiMessage];
 
-  [v11 _automation_sendDictionary:v9 options:v8 toHandles:v7];
+  [v11 _automation_sendDictionary:dictionaryCopy options:optionsCopy toHandles:handlesCopy];
 }
 
-- (void)_automation_markMessagesAsRead:(BOOL)a3 messageGUID:(id)a4 forChatGUID:(id)a5 fromMe:(BOOL)a6 queryID:(id)a7
+- (void)_automation_markMessagesAsRead:(BOOL)read messageGUID:(id)d forChatGUID:(id)iD fromMe:(BOOL)me queryID:(id)queryID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  readCopy = read;
+  dCopy = d;
+  iDCopy = iD;
+  queryIDCopy = queryID;
   v14 = +[IMDClientRequestContext currentContext];
-  v15 = [v14 replyProxy];
+  replyProxy = [v14 replyProxy];
 
   if (IMOSLoggingEnabled())
   {
@@ -142,11 +142,11 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = +[IMDClientRequestContext currentContext];
-      v18 = [v17 listenerID];
+      listenerID = [v17 listenerID];
       v19 = @"NO";
       *buf = 138413058;
-      v31 = v18;
-      if (v10)
+      v31 = listenerID;
+      if (readCopy)
       {
         v19 = @"YES";
       }
@@ -154,26 +154,26 @@
       v32 = 2112;
       v33 = v19;
       v34 = 2112;
-      v35 = v11;
+      v35 = dCopy;
       v36 = 2112;
-      v37 = v12;
+      v37 = iDCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "AUTOMATION Request from %@ to mark as read: %@ messageGUID %@ chatGUID: %@", buf, 0x2Au);
     }
   }
 
-  if (v10)
+  if (readCopy)
   {
     buf[0] = 0;
     IMComponentsFromChatGUID();
     v20 = 0;
     v21 = 0;
-    if (a6)
+    if (me)
     {
       v22 = +[IMDMessageStore sharedInstance];
-      v27 = v12;
+      v27 = iDCopy;
       v23 = [NSArray arrayWithObjects:&v27 count:1];
       v24 = +[NSDate date];
-      v25 = [v22 markMessagesAsReadWithChatGUIDs:v23 upToGUID:v11 readDate:v24 fromMe:1];
+      v25 = [v22 markMessagesAsReadWithChatGUIDs:v23 upToGUID:dCopy readDate:v24 fromMe:1];
     }
 
     else
@@ -192,22 +192,22 @@
     IMDMessageRecordMarkMessagesAsUnreadWithChatGUIDUpToGUIDFromMe();
   }
 
-  [v15 _automation_markAsReadQuery:v13 finishedWithResult:1];
+  [replyProxy _automation_markAsReadQuery:queryIDCopy finishedWithResult:1];
 }
 
-- (void)debugUpdateGroupParticipantversion:(int64_t)a3 chatIdentifier:(id)a4
+- (void)debugUpdateGroupParticipantversion:(int64_t)participantversion chatIdentifier:(id)identifier
 {
-  v18 = a4;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [NSNumber numberWithInteger:a3];
+      v6 = [NSNumber numberWithInteger:participantversion];
       *buf = 138412546;
-      v28 = v18;
+      v28 = identifierCopy;
       v29 = 2112;
-      v30 = v6;
+      participantversionCopy = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "debugUpdateGroupParticipantversion Request to update participant version of chat %@ to %@", buf, 0x16u);
     }
   }
@@ -236,17 +236,17 @@
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          v12 = [[NSNumber alloc] initWithUnsignedInteger:a3];
+          v12 = [[NSNumber alloc] initWithUnsignedInteger:participantversion];
           if (IMOSLoggingEnabled())
           {
             v13 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
-              v14 = [v11 guid];
+              guid = [v11 guid];
               *buf = 138412546;
-              v28 = v14;
+              v28 = guid;
               v29 = 2048;
-              v30 = a3;
+              participantversionCopy = participantversion;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Setting participant version of chat %@ to %ld", buf, 0x16u);
             }
           }
@@ -296,41 +296,41 @@
   [v3 systemDidLeaveFirstDataProtectionLock];
 }
 
-- (void)simulateMessages:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)simulateMessages:(id)messages configuration:(id)configuration completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   sub_10004626C();
   v8 = sub_1000541B4();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a4;
-  v11 = self;
-  _sSo32IMDaemonAutomationRequestHandlerC7imagentE16simulateMessages_13configuration10completionySaySo18IMSimulatedMessageCG_So0jK13ConfigurationCSgys5Error_pSgctF_0(v8, a4, sub_1000462B8, v9);
+  configurationCopy = configuration;
+  selfCopy = self;
+  _sSo32IMDaemonAutomationRequestHandlerC7imagentE16simulateMessages_13configuration10completionySaySo18IMSimulatedMessageCG_So0jK13ConfigurationCSgys5Error_pSgctF_0(v8, configuration, sub_1000462B8, v9);
 }
 
-- (void)updateOffGridSummaryOnChatWithGUID:(id)a3 pendingMessageCount:(int64_t)a4
+- (void)updateOffGridSummaryOnChatWithGUID:(id)d pendingMessageCount:(int64_t)count
 {
   v6 = objc_opt_self();
-  v7 = a3;
-  v8 = [v6 sharedInstance];
-  v9 = [v8 existingChatWithGUID:v7];
+  dCopy = d;
+  sharedInstance = [v6 sharedInstance];
+  v9 = [sharedInstance existingChatWithGUID:dCopy];
 
   if (v9)
   {
-    [v9 updatePendingIncomingSatelliteMessageCount:a4];
+    [v9 updatePendingIncomingSatelliteMessageCount:count];
   }
 }
 
-- (void)simulateReceivedPendingSatelliteMessageForChatWithGUID:(id)a3
+- (void)simulateReceivedPendingSatelliteMessageForChatWithGUID:(id)d
 {
   sub_100054164();
-  v4 = self;
+  selfCopy = self;
   _sSo32IMDaemonAutomationRequestHandlerC7imagentE46simulateReceivedPendingSatelliteMessageForChat8withGUIDySS_tF_0();
 }
 
-- (void)simulateDowngradeRequestFromID:(id)a3 fromService:(id)a4 toService:(id)a5 expirationDate:(id)a6
+- (void)simulateDowngradeRequestFromID:(id)d fromService:(id)service toService:(id)toService expirationDate:(id)date
 {
-  v13 = self;
+  selfCopy = self;
   v6 = sub_100053E44();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
@@ -340,19 +340,19 @@
   sub_100054164();
   sub_100054164();
   sub_100053E34();
-  v11 = v13;
+  v11 = selfCopy;
   _sSo32IMDaemonAutomationRequestHandlerC7imagentE017simulateDowngradeC06fromID0H7Service02toJ014expirationDateySS_S2S10Foundation0M0VtF_0();
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)relayMessageGUID:(id)a3 completion:(id)a4
+- (void)relayMessageGUID:(id)d completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_100054164();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
+  selfCopy = self;
   sub_100045C9C(v6, v8, v5);
   _Block_release(v5);
   _Block_release(v5);
@@ -372,20 +372,20 @@
   (*((swift_isaMask & *v3) + 0xD8))();
 }
 
-- (void)simulateMessageDeliveryControllerDidFlushCacheForRemoteURI:(id)a3 fromURI:(id)a4 guid:(id)a5
+- (void)simulateMessageDeliveryControllerDidFlushCacheForRemoteURI:(id)i fromURI:(id)rI guid:(id)guid
 {
   sub_100054164();
   sub_100054164();
   sub_100054164();
-  v6 = self;
+  selfCopy = self;
   _sSo32IMDaemonAutomationRequestHandlerC7imagentE46simulateMessageDeliveryControllerDidFlushCache12forRemoteURI04fromO04guidySS_S2StF_0();
 }
 
-- (void)resetTranscriptBackgroundForAllChatsWithCompletion:(id)a3
+- (void)resetTranscriptBackgroundForAllChatsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   sub_1000460F4(v4);
   _Block_release(v4);
   _Block_release(v4);

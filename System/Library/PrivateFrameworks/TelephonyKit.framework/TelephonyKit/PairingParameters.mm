@@ -1,14 +1,14 @@
 @interface PairingParameters
 - (NSString)description;
 - (_TtC12TelephonyKit17PairingParameters)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PairingParameters
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   PairingParameters.description.getter();
 
   v3 = sub_26D2624FC();
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PairingParameters.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PairingParameters.encode(with:)(coderCopy);
 }
 
 @end

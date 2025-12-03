@@ -1,7 +1,7 @@
 @interface ATXSearchFeedbackListenerTargetBiomeStream
 - (ATXSearchFeedbackListenerTargetBiomeStream)init;
-- (ATXSearchFeedbackListenerTargetBiomeStream)initWithBiomeUIStream:(id)a3;
-- (void)writeSpotlightEvent:(id)a3;
+- (ATXSearchFeedbackListenerTargetBiomeStream)initWithBiomeUIStream:(id)stream;
+- (void)writeSpotlightEvent:(id)event;
 @end
 
 @implementation ATXSearchFeedbackListenerTargetBiomeStream
@@ -14,27 +14,27 @@
   return v4;
 }
 
-- (ATXSearchFeedbackListenerTargetBiomeStream)initWithBiomeUIStream:(id)a3
+- (ATXSearchFeedbackListenerTargetBiomeStream)initWithBiomeUIStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXSearchFeedbackListenerTargetBiomeStream;
   v6 = [(ATXSearchFeedbackListenerTargetBiomeStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uiStream, a3);
+    objc_storeStrong(&v6->_uiStream, stream);
   }
 
   return v7;
 }
 
-- (void)writeSpotlightEvent:(id)a3
+- (void)writeSpotlightEvent:(id)event
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   uiStream = self->_uiStream;
-  v6 = [ATXUIEvent uiEventWithSpotlightEvent:v4];
+  v6 = [ATXUIEvent uiEventWithSpotlightEvent:eventCopy];
   [(ATXUniversalBiomeUIStream *)uiStream donateGenericUIEvent:v6];
 
   v7 = __atxlog_handle_feedback();
@@ -42,33 +42,33 @@
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v4 eventType];
-    if ((v10 - 1) >= 8)
+    eventType = [eventCopy eventType];
+    if ((eventType - 1) >= 8)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", eventType];
     }
 
     else
     {
-      v11 = off_1E80C6040[(v10 - 1)];
+      v11 = off_1E80C6040[(eventType - 1)];
     }
 
-    v12 = [v4 appBlendingCacheId];
-    v13 = [v4 actionBlendingCacheId];
-    v14 = [v4 appSuggestionIds];
-    v15 = [v4 actionSuggestionIds];
+    appBlendingCacheId = [eventCopy appBlendingCacheId];
+    actionBlendingCacheId = [eventCopy actionBlendingCacheId];
+    appSuggestionIds = [eventCopy appSuggestionIds];
+    actionSuggestionIds = [eventCopy actionSuggestionIds];
     *buf = 138413570;
     v17 = v9;
     v18 = 2112;
     v19 = v11;
     v20 = 2112;
-    v21 = v12;
+    v21 = appBlendingCacheId;
     v22 = 2112;
-    v23 = v13;
+    v23 = actionBlendingCacheId;
     v24 = 2112;
-    v25 = v14;
+    v25 = appSuggestionIds;
     v26 = 2112;
-    v27 = v15;
+    v27 = actionSuggestionIds;
     _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_INFO, "%@ - wrote event of type %@ \nappBlendingCacheId: %@ \nactionBlendingCacheId: %@ \nappUUIDs: %@ \nactionUUIDs: %@", buf, 0x3Eu);
   }
 }

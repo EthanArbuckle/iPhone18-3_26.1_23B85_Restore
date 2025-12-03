@@ -1,144 +1,144 @@
 @interface MTSettingsController
-- (BOOL)isEnabledForGroupWithIdentifier:(id)a3;
+- (BOOL)isEnabledForGroupWithIdentifier:(id)identifier;
 - (MTSettingsControllerDelegate)delegate;
-- (void)addGroup:(id)a3 withIdentifier:(id)a4 atIndex:(unint64_t)a5;
-- (void)reloadGroupWithIdentifier:(id)a3;
-- (void)removeGroupWithIdentifier:(id)a3;
-- (void)removeSettingAtIndex:(unint64_t)a3 fromGroupWithIdentifier:(id)a4;
-- (void)setEnabled:(BOOL)a3 forGroupWithIdentifier:(id)a4;
-- (void)setHeaderAction:(id)a3 forGroupWithIdentifier:(id)a4;
-- (void)setValue:(id)a3 forSettingWithIdentifier:(id)a4 inGroup:(id)a5;
+- (void)addGroup:(id)group withIdentifier:(id)identifier atIndex:(unint64_t)index;
+- (void)reloadGroupWithIdentifier:(id)identifier;
+- (void)removeGroupWithIdentifier:(id)identifier;
+- (void)removeSettingAtIndex:(unint64_t)index fromGroupWithIdentifier:(id)identifier;
+- (void)setEnabled:(BOOL)enabled forGroupWithIdentifier:(id)identifier;
+- (void)setHeaderAction:(id)action forGroupWithIdentifier:(id)identifier;
+- (void)setValue:(id)value forSettingWithIdentifier:(id)identifier inGroup:(id)group;
 @end
 
 @implementation MTSettingsController
 
-- (void)reloadGroupWithIdentifier:(id)a3
+- (void)reloadGroupWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(MTSettingsController *)self groups];
-  v5 = [v4 objectForKeyedSubscript:v8];
+  identifierCopy = identifier;
+  groups = [(MTSettingsController *)self groups];
+  v5 = [groups objectForKeyedSubscript:identifierCopy];
 
   if (v5)
   {
-    v6 = [v5 settingsHandler];
+    settingsHandler = [v5 settingsHandler];
 
-    if (v6)
+    if (settingsHandler)
     {
       [v5 setGroupSettings:0];
     }
 
-    v7 = [(MTSettingsController *)self delegate];
-    [v7 settingsController:self reloadedGroupWithIdentifier:v8];
+    delegate = [(MTSettingsController *)self delegate];
+    [delegate settingsController:self reloadedGroupWithIdentifier:identifierCopy];
   }
 }
 
-- (BOOL)isEnabledForGroupWithIdentifier:(id)a3
+- (BOOL)isEnabledForGroupWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MTSettingsController *)self disabledGroups];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  disabledGroups = [(MTSettingsController *)self disabledGroups];
+  v6 = [disabledGroups containsObject:identifierCopy];
 
   return v6 ^ 1;
 }
 
-- (void)setEnabled:(BOOL)a3 forGroupWithIdentifier:(id)a4
+- (void)setEnabled:(BOOL)enabled forGroupWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v11 = a4;
-  if ([(MTSettingsController *)self isEnabledForGroupWithIdentifier:?]!= v4)
+  enabledCopy = enabled;
+  identifierCopy = identifier;
+  if ([(MTSettingsController *)self isEnabledForGroupWithIdentifier:?]!= enabledCopy)
   {
     disabledGroups = self->_disabledGroups;
-    if (v4)
+    if (enabledCopy)
     {
-      [(NSMutableSet *)disabledGroups removeObject:v11];
+      [(NSMutableSet *)disabledGroups removeObject:identifierCopy];
     }
 
     else
     {
-      v7 = v11;
+      v7 = identifierCopy;
       if (!disabledGroups)
       {
         v8 = +[NSMutableSet set];
         v9 = self->_disabledGroups;
         self->_disabledGroups = v8;
 
-        v7 = v11;
+        v7 = identifierCopy;
         disabledGroups = self->_disabledGroups;
       }
 
       [(NSMutableSet *)disabledGroups addObject:v7];
     }
 
-    v10 = [(MTSettingsController *)self delegate];
-    [v10 settingsController:self reloadedGroupWithIdentifier:v11];
+    delegate = [(MTSettingsController *)self delegate];
+    [delegate settingsController:self reloadedGroupWithIdentifier:identifierCopy];
   }
 }
 
-- (void)setHeaderAction:(id)a3 forGroupWithIdentifier:(id)a4
+- (void)setHeaderAction:(id)action forGroupWithIdentifier:(id)identifier
 {
   groups = self->_groups;
-  v7 = a4;
-  v8 = a3;
-  v10 = [(NSDictionary *)groups objectForKeyedSubscript:v7];
-  [v10 setHeaderAction:v8];
-  v9 = [(MTSettingsController *)self delegate];
-  [v9 settingsController:self didChangeHeaderAction:v8 inGroupWithIdentifier:v7];
+  identifierCopy = identifier;
+  actionCopy = action;
+  v10 = [(NSDictionary *)groups objectForKeyedSubscript:identifierCopy];
+  [v10 setHeaderAction:actionCopy];
+  delegate = [(MTSettingsController *)self delegate];
+  [delegate settingsController:self didChangeHeaderAction:actionCopy inGroupWithIdentifier:identifierCopy];
 }
 
-- (void)addGroup:(id)a3 withIdentifier:(id)a4 atIndex:(unint64_t)a5
+- (void)addGroup:(id)group withIdentifier:(id)identifier atIndex:(unint64_t)index
 {
   order = self->_order;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  groupCopy = group;
   v13 = [(NSArray *)order mutableCopy];
-  [v13 insertObject:v9 atIndex:a5];
+  [v13 insertObject:identifierCopy atIndex:index];
   [(MTSettingsController *)self setOrder:v13];
   v11 = [(NSDictionary *)self->_groups mutableCopy];
-  [v11 setObject:v10 forKey:v9];
+  [v11 setObject:groupCopy forKey:identifierCopy];
 
   [(MTSettingsController *)self setGroups:v11];
-  v12 = [(MTSettingsController *)self delegate];
-  [v12 settingsController:self addedGroup:v10 atIndex:a5];
+  delegate = [(MTSettingsController *)self delegate];
+  [delegate settingsController:self addedGroup:groupCopy atIndex:index];
 }
 
-- (void)removeGroupWithIdentifier:(id)a3
+- (void)removeGroupWithIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v4 = [(NSArray *)self->_order mutableCopy];
-  v5 = [v4 indexOfObject:v9];
+  v5 = [v4 indexOfObject:identifierCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    [v4 removeObject:v9];
+    [v4 removeObject:identifierCopy];
     [(MTSettingsController *)self setOrder:v4];
     v7 = [(NSDictionary *)self->_groups mutableCopy];
-    [v7 removeObjectForKey:v9];
+    [v7 removeObjectForKey:identifierCopy];
     [(MTSettingsController *)self setGroups:v7];
-    v8 = [(MTSettingsController *)self delegate];
-    [v8 settingsController:self removedGroupAtIndex:v6];
+    delegate = [(MTSettingsController *)self delegate];
+    [delegate settingsController:self removedGroupAtIndex:v6];
   }
 }
 
-- (void)removeSettingAtIndex:(unint64_t)a3 fromGroupWithIdentifier:(id)a4
+- (void)removeSettingAtIndex:(unint64_t)index fromGroupWithIdentifier:(id)identifier
 {
   groups = self->_groups;
-  v7 = a4;
-  v11 = [(NSDictionary *)groups objectForKeyedSubscript:v7];
-  v8 = [v11 groupSettings];
-  v9 = [v8 mutableCopy];
+  identifierCopy = identifier;
+  v11 = [(NSDictionary *)groups objectForKeyedSubscript:identifierCopy];
+  groupSettings = [v11 groupSettings];
+  v9 = [groupSettings mutableCopy];
 
-  [v9 removeObjectAtIndex:a3];
+  [v9 removeObjectAtIndex:index];
   [v11 setGroupSettings:v9];
-  v10 = [(MTSettingsController *)self delegate];
-  [v10 settingsController:self removedSettingAtIndex:a3 inGroupWithIdentifier:v7];
+  delegate = [(MTSettingsController *)self delegate];
+  [delegate settingsController:self removedSettingAtIndex:index inGroupWithIdentifier:identifierCopy];
 }
 
-- (void)setValue:(id)a3 forSettingWithIdentifier:(id)a4 inGroup:(id)a5
+- (void)setValue:(id)value forSettingWithIdentifier:(id)identifier inGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSDictionary *)self->_groups objectForKeyedSubscript:v10];
+  valueCopy = value;
+  identifierCopy = identifier;
+  groupCopy = group;
+  v11 = [(NSDictionary *)self->_groups objectForKeyedSubscript:groupCopy];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -149,23 +149,23 @@
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v12 = [v11 groupSettings];
+  groupSettings = [v11 groupSettings];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100123F40;
   v16[3] = &unk_1004DD228;
-  v13 = v9;
+  v13 = identifierCopy;
   v17 = v13;
   v18 = &v24;
   v19 = &v20;
-  [v12 enumerateObjectsUsingBlock:v16];
+  [groupSettings enumerateObjectsUsingBlock:v16];
 
   v14 = v25[5];
   if (v14)
   {
-    [v14 setValue:v8];
-    v15 = [(MTSettingsController *)self delegate];
-    [v15 settingsController:self didChangeSettingValueAtIndex:v21[3] inGroupWithIdentifier:v10];
+    [v14 setValue:valueCopy];
+    delegate = [(MTSettingsController *)self delegate];
+    [delegate settingsController:self didChangeSettingValueAtIndex:v21[3] inGroupWithIdentifier:groupCopy];
   }
 
   _Block_object_dispose(&v20, 8);

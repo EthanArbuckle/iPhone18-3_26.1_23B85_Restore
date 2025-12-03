@@ -1,39 +1,39 @@
 @interface PhotoKitClearRecentCollectionAssetsActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)a3;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-+ (id)systemImageNameForActionManager:(id)a3;
-- (_TtC12PhotosUICore50PhotoKitClearRecentCollectionAssetsActionPerformer)initWithActionType:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)collection;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
++ (id)systemImageNameForActionManager:(id)manager;
+- (_TtC12PhotosUICore50PhotoKitClearRecentCollectionAssetsActionPerformer)initWithActionType:(id)type;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PhotoKitClearRecentCollectionAssetsActionPerformer
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  LOBYTE(a4) = _s12PhotosUICore50PhotoKitClearRecentCollectionAssetsActionPerformerC10canPerform4with6person11socialGroupSbSo19PXSelectionSnapshotC_So8PHPersonCSgSo08PHSocialP0CSgtFZ_0(v8);
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  LOBYTE(person) = _s12PhotosUICore50PhotoKitClearRecentCollectionAssetsActionPerformerC10canPerform4with6person11socialGroupSbSo19PXSelectionSnapshotC_So8PHPersonCSgSo08PHSocialP0CSgtFZ_0(snapshotCopy);
 
-  return a4 & 1;
+  return person & 1;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   v7 = *(swift_getObjCClassMetadata() + 112);
-  v8 = a4;
+  collectionCopy = collection;
   v9 = v7();
 
   return v9 & 1;
 }
 
-+ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)a3
++ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
     v3 = *(swift_getObjCClassMetadata() + 112);
     v4 = swift_unknownObjectRetain();
@@ -49,21 +49,21 @@
   return v5 & 1;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  if (a4)
+  if (manager)
   {
-    v5 = [a4 effectiveSelectionSnapshot];
-    v6 = [v5 isAnyItemSelected];
+    effectiveSelectionSnapshot = [manager effectiveSelectionSnapshot];
+    isAnyItemSelected = [effectiveSelectionSnapshot isAnyItemSelected];
   }
 
   else
   {
-    v6 = 0;
+    isAnyItemSelected = 0;
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  (*(ObjCClassMetadata + 128))(v6);
+  (*(ObjCClassMetadata + 128))(isAnyItemSelected);
 
   v8 = sub_1A524C634();
 
@@ -72,29 +72,29 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4756CAC();
 }
 
 - (void)performBackgroundTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4757250();
 }
 
-+ (id)systemImageNameForActionManager:(id)a3
++ (id)systemImageNameForActionManager:(id)manager
 {
   v3 = sub_1A524C634();
 
   return v3;
 }
 
-- (_TtC12PhotosUICore50PhotoKitClearRecentCollectionAssetsActionPerformer)initWithActionType:(id)a3
+- (_TtC12PhotosUICore50PhotoKitClearRecentCollectionAssetsActionPerformer)initWithActionType:(id)type
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore50PhotoKitClearRecentCollectionAssetsActionPerformer_assetsToProcess) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for PhotoKitClearRecentCollectionAssetsActionPerformer();
-  return [(PXActionPerformer *)&v5 initWithActionType:a3];
+  return [(PXActionPerformer *)&v5 initWithActionType:type];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface RTStateModelAggOutOfStateSelection
 - (RTStateModelAggOutOfStateSelection)init;
-- (RTStateModelAggOutOfStateSelection)initWithSelectOOStStates:(id)a3 dailyDensityCorrection:(double)a4 weeklyDensityCorrection:(double)a5;
+- (RTStateModelAggOutOfStateSelection)initWithSelectOOStStates:(id)states dailyDensityCorrection:(double)correction weeklyDensityCorrection:(double)densityCorrection;
 @end
 
 @implementation RTStateModelAggOutOfStateSelection
@@ -22,18 +22,18 @@
   return v3;
 }
 
-- (RTStateModelAggOutOfStateSelection)initWithSelectOOStStates:(id)a3 dailyDensityCorrection:(double)a4 weeklyDensityCorrection:(double)a5
+- (RTStateModelAggOutOfStateSelection)initWithSelectOOStStates:(id)states dailyDensityCorrection:(double)correction weeklyDensityCorrection:(double)densityCorrection
 {
-  v9 = a3;
+  statesCopy = states;
   v13.receiver = self;
   v13.super_class = RTStateModelAggOutOfStateSelection;
   v10 = [(RTStateModelAggOutOfStateSelection *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_selectOOStStates, a3);
-    v11->_weeklyDensityCorrection = a5;
-    v11->_dailyDensityCorrection = a4;
+    objc_storeStrong(&v10->_selectOOStStates, states);
+    v11->_weeklyDensityCorrection = densityCorrection;
+    v11->_dailyDensityCorrection = correction;
   }
 
   return v11;

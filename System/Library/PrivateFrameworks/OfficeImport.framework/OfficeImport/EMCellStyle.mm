@@ -1,34 +1,34 @@
 @interface EMCellStyle
-+ (id)_parseFontName:(id)a3 nameContainsBold:(BOOL *)a4 nameContainsItalic:(BOOL *)a5;
-+ (id)styleForFont:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (EMCellStyle)initWithStyleWrapper:(id)a3 type:(int)a4 columnWidth:(unint64_t)a5 contentWidth:(unint64_t)a6 truncateContents:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_parseFontName:(id)name nameContainsBold:(BOOL *)bold nameContainsItalic:(BOOL *)italic;
++ (id)styleForFont:(id)font;
+- (BOOL)isEqual:(id)equal;
+- (EMCellStyle)initWithStyleWrapper:(id)wrapper type:(int)type columnWidth:(unint64_t)width contentWidth:(unint64_t)contentWidth truncateContents:(BOOL)contents;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)cssStyleString;
-- (void)addAlignmentStyle:(id)a3;
-- (void)addBordersStyle:(id)a3;
+- (void)addAlignmentStyle:(id)style;
+- (void)addBordersStyle:(id)style;
 - (void)addFillStyle;
-- (void)addFontStyle:(id)a3;
+- (void)addFontStyle:(id)style;
 - (void)resolveContentWidth;
 - (void)resolveFormatType;
 @end
 
 @implementation EMCellStyle
 
-- (EMCellStyle)initWithStyleWrapper:(id)a3 type:(int)a4 columnWidth:(unint64_t)a5 contentWidth:(unint64_t)a6 truncateContents:(BOOL)a7
+- (EMCellStyle)initWithStyleWrapper:(id)wrapper type:(int)type columnWidth:(unint64_t)width contentWidth:(unint64_t)contentWidth truncateContents:(BOOL)contents
 {
-  v13 = a3;
+  wrapperCopy = wrapper;
   v17.receiver = self;
   v17.super_class = EMCellStyle;
   v14 = [(CMStyle *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_emStyle, a3);
-    v15->_edCellType = a4;
-    v15->_contentWidth = a6;
-    v15->_columnWidth = a5;
-    v15->_truncateContents = a7;
+    objc_storeStrong(&v14->_emStyle, wrapper);
+    v15->_edCellType = type;
+    v15->_contentWidth = contentWidth;
+    v15->_columnWidth = width;
+    v15->_truncateContents = contents;
     v15->_resolvedProperties = 0;
   }
 
@@ -37,20 +37,20 @@
 
 - (void)resolveFormatType
 {
-  v11 = [(EMCellStyleWrapper *)self->_emStyle edStyle];
+  edStyle = [(EMCellStyleWrapper *)self->_emStyle edStyle];
   if (self->_edCellType == 2)
   {
     v3 = [[CMStringProperty alloc] initWithString:0x286EF6750];
     [(CMStyle *)self addProperty:v3 forKey:0x286F08170];
   }
 
-  if (![v11 isAlignmentInfoOverridden])
+  if (![edStyle isAlignmentInfoOverridden])
   {
     goto LABEL_8;
   }
 
-  v4 = [v11 alignmentInfo];
-  if (([v4 isHorizontalAlignOverridden] & 1) == 0)
+  alignmentInfo = [edStyle alignmentInfo];
+  if (([alignmentInfo isHorizontalAlignOverridden] & 1) == 0)
   {
 
 LABEL_8:
@@ -72,10 +72,10 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v5 = [v11 alignmentInfo];
-  v6 = [v5 horizontalAlignment];
+  alignmentInfo2 = [edStyle alignmentInfo];
+  horizontalAlignment = [alignmentInfo2 horizontalAlignment];
 
-  if (!v6)
+  if (!horizontalAlignment)
   {
     goto LABEL_8;
   }
@@ -85,22 +85,22 @@ LABEL_12:
 
 - (void)resolveContentWidth
 {
-  v3 = [(EMCellStyleWrapper *)self->_emStyle edStyle];
-  v4 = v3;
-  if (self->_columnWidth < self->_contentWidth && v3 != 0)
+  edStyle = [(EMCellStyleWrapper *)self->_emStyle edStyle];
+  v4 = edStyle;
+  if (self->_columnWidth < self->_contentWidth && edStyle != 0)
   {
-    v13 = v3;
-    v6 = [v3 isAlignmentInfoOverridden];
+    v13 = edStyle;
+    isAlignmentInfoOverridden = [edStyle isAlignmentInfoOverridden];
     v4 = v13;
-    if (v6)
+    if (isAlignmentInfoOverridden)
     {
-      v7 = [v13 alignmentInfo];
-      if ([v7 isTextWrapped])
+      alignmentInfo = [v13 alignmentInfo];
+      if ([alignmentInfo isTextWrapped])
       {
         goto LABEL_27;
       }
 
-      if ([v7 textRotation])
+      if ([alignmentInfo textRotation])
       {
         goto LABEL_27;
       }
@@ -122,10 +122,10 @@ LABEL_27:
       }
 
       v10 = [(CMStyle *)self propertyForName:@"Borders"];
-      v11 = [v9 value];
-      if (v11 > 2)
+      value = [v9 value];
+      if (value > 2)
       {
-        if (v11 == 3)
+        if (value == 3)
         {
           if (v10)
           {
@@ -135,7 +135,7 @@ LABEL_27:
           goto LABEL_23;
         }
 
-        if (v11 != 6)
+        if (value != 6)
         {
           goto LABEL_25;
         }
@@ -143,7 +143,7 @@ LABEL_27:
 
       else
       {
-        if (v11 < 2)
+        if (value < 2)
         {
           if (self->_truncateContents)
           {
@@ -157,7 +157,7 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        if (v11 != 2)
+        if (value != 2)
         {
           goto LABEL_25;
         }
@@ -180,125 +180,125 @@ LABEL_23:
 LABEL_28:
 }
 
-+ (id)styleForFont:(id)a3
++ (id)styleForFont:(id)font
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
+  fontCopy = font;
+  string = [MEMORY[0x277CCAB68] string];
   v15 = 0;
-  v6 = [v4 name];
+  name = [fontCopy name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [v4 name];
-    v8 = [a1 _parseFontName:v7 nameContainsBold:&v15 + 1 nameContainsItalic:&v15];
+    name2 = [fontCopy name];
+    v8 = [self _parseFontName:name2 nameContainsBold:&v15 + 1 nameContainsItalic:&v15];
 
-    [v5 appendFormat:@"%@:%@;", 0x286EF73B0, v8];
+    [string appendFormat:@"%@:%@;", 0x286EF73B0, v8];
   }
 
-  if ((v15 & 0x100) != 0 || [v4 isBoldOverridden] && objc_msgSend(v4, "isBold"))
+  if ((v15 & 0x100) != 0 || [fontCopy isBoldOverridden] && objc_msgSend(fontCopy, "isBold"))
   {
-    [v5 appendString:@" font-weight:bold;"];
+    [string appendString:@" font-weight:bold;"];
   }
 
-  if ((v15 & 1) != 0 || [v4 isItalicOverridden] && objc_msgSend(v4, "isItalic"))
+  if ((v15 & 1) != 0 || [fontCopy isItalicOverridden] && objc_msgSend(fontCopy, "isItalic"))
   {
-    [v5 appendString:@" font-style:italic;"];
+    [string appendString:@" font-style:italic;"];
   }
 
-  if ([v4 isStrikeOverridden] && objc_msgSend(v4, "isStrike"))
+  if ([fontCopy isStrikeOverridden] && objc_msgSend(fontCopy, "isStrike"))
   {
-    [v5 appendString:@" text-decoration:line-through;"];
+    [string appendString:@" text-decoration:line-through;"];
   }
 
-  if ([v4 isUnderlineOverridden])
+  if ([fontCopy isUnderlineOverridden])
   {
-    [v5 appendString:@" "];
-    v9 = +[EMEnumProperty mapUnderlineValue:](EMEnumProperty, "mapUnderlineValue:", [v4 underline]);
-    [v5 appendString:v9];
+    [string appendString:@" "];
+    v9 = +[EMEnumProperty mapUnderlineValue:](EMEnumProperty, "mapUnderlineValue:", [fontCopy underline]);
+    [string appendString:v9];
   }
 
-  v10 = [v4 color];
-  if (([v10 isBlack] & 1) == 0)
+  color = [fontCopy color];
+  if (([color isBlack] & 1) == 0)
   {
-    [v5 appendString:0x286F077B0];
-    v11 = [CMColorProperty cssStringFromTSUColor:v10];
-    [v5 appendString:v11];
+    [string appendString:0x286F077B0];
+    v11 = [CMColorProperty cssStringFromTSUColor:color];
+    [string appendString:v11];
   }
 
-  if ([v4 isHeightOverridden])
+  if ([fontCopy isHeightOverridden])
   {
-    [v4 height];
+    [fontCopy height];
     if (v12 != 200.0)
     {
-      [v5 appendString:0x286EF73D0];
-      [v4 height];
+      [string appendString:0x286EF73D0];
+      [fontCopy height];
       v13 = [CMLengthProperty cssStringValue:2 unit:?];
-      [v5 appendString:v13];
+      [string appendString:v13];
     }
   }
 
-  return v5;
+  return string;
 }
 
-- (void)addFontStyle:(id)a3
+- (void)addFontStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   mStyleString = self->super.mStyleString;
-  v5 = [objc_opt_class() styleForFont:v6];
+  v5 = [objc_opt_class() styleForFont:styleCopy];
   [(NSMutableString *)mStyleString appendString:v5];
 }
 
 - (void)addFillStyle
 {
-  v3 = [(EMCellStyleWrapper *)self->_emStyle fillColor];
-  if (v3)
+  fillColor = [(EMCellStyleWrapper *)self->_emStyle fillColor];
+  if (fillColor)
   {
-    v5 = v3;
-    v4 = [CMColorProperty cssStringFromTSUColor:v3];
+    v5 = fillColor;
+    v4 = [CMColorProperty cssStringFromTSUColor:fillColor];
     [(CMStyle *)self appendPropertyForName:0x286F07DF0 stringWithColons:v4];
 
-    v3 = v5;
+    fillColor = v5;
   }
 }
 
-- (void)addBordersStyle:(id)a3
+- (void)addBordersStyle:(id)style
 {
-  v5 = a3;
-  v4 = [[EMBordersProperty alloc] initWithEDBorders:v5];
+  styleCopy = style;
+  v4 = [[EMBordersProperty alloc] initWithEDBorders:styleCopy];
   [(CMStyle *)self addProperty:v4 forKey:@"Borders"];
 }
 
-- (void)addAlignmentStyle:(id)a3
+- (void)addAlignmentStyle:(id)style
 {
-  v13 = a3;
-  v4 = [(EMCellStyleWrapper *)self->_emStyle edStyle];
-  if ([v13 isVerticalAlignOverridden])
+  styleCopy = style;
+  edStyle = [(EMCellStyleWrapper *)self->_emStyle edStyle];
+  if ([styleCopy isVerticalAlignOverridden])
   {
-    v5 = -[EMEnumProperty initWithEnum:]([EMEnumProperty alloc], "initWithEnum:", [v13 verticalAlignment]);
+    v5 = -[EMEnumProperty initWithEnum:]([EMEnumProperty alloc], "initWithEnum:", [styleCopy verticalAlignment]);
     [(CMStyle *)self addProperty:v5 forKey:0x286F077D0];
   }
 
-  if ([v13 isHorizontalAlignOverridden] && objc_msgSend(v13, "horizontalAlignment"))
+  if ([styleCopy isHorizontalAlignOverridden] && objc_msgSend(styleCopy, "horizontalAlignment"))
   {
-    v6 = -[EMEnumProperty initWithEnum:]([EMEnumProperty alloc], "initWithEnum:", [v13 horizontalAlignment]);
+    v6 = -[EMEnumProperty initWithEnum:]([EMEnumProperty alloc], "initWithEnum:", [styleCopy horizontalAlignment]);
     [(CMStyle *)self addProperty:v6 forKey:0x286F08230];
   }
 
-  if ([v13 indent] >= 1)
+  if ([styleCopy indent] >= 1)
   {
     v7 = 12.0;
-    if ([v4 isFontOverridden])
+    if ([edStyle isFontOverridden])
     {
-      v8 = [v4 font];
-      [v8 height];
+      font = [edStyle font];
+      [font height];
       v7 = v9 / 20.0;
     }
 
-    v10 = -[CMLengthProperty initWithNumber:]([CMLengthProperty alloc], "initWithNumber:", v7 * [v13 indent]);
+    v10 = -[CMLengthProperty initWithNumber:]([CMLengthProperty alloc], "initWithNumber:", v7 * [styleCopy indent]);
     [(CMStyle *)self addProperty:v10 forKey:0x286F081B0];
   }
 
-  if ([v13 isTextWrapped])
+  if ([styleCopy isTextWrapped])
   {
     [(CMStyle *)self appendPropertyForName:0x286F082B0 stringWithColons:@":normal;"];
   }
@@ -312,77 +312,77 @@ LABEL_28:
   [(CMStyle *)self addProperty:v12 forKey:0x286F081D0];
 }
 
-+ (id)_parseFontName:(id)a3 nameContainsBold:(BOOL *)a4 nameContainsItalic:(BOOL *)a5
++ (id)_parseFontName:(id)name nameContainsBold:(BOOL *)bold nameContainsItalic:(BOOL *)italic
 {
-  v7 = a3;
-  if ([v7 hasSuffix:@" Bold"])
+  nameCopy = name;
+  if ([nameCopy hasSuffix:@" Bold"])
   {
-    *a4 = 1;
-    v8 = [v7 length];
+    *bold = 1;
+    v8 = [nameCopy length];
 LABEL_3:
     v9 = v8 - 5;
 LABEL_13:
-    v11 = [v7 substringToIndex:v9];
+    v11 = [nameCopy substringToIndex:v9];
     goto LABEL_14;
   }
 
-  if ([v7 hasSuffix:@" BoldItalic"])
+  if ([nameCopy hasSuffix:@" BoldItalic"])
   {
-    *a4 = 1;
-    *a5 = 1;
-    v10 = [v7 length];
+    *bold = 1;
+    *italic = 1;
+    v10 = [nameCopy length];
 LABEL_6:
     v9 = v10 - 11;
     goto LABEL_13;
   }
 
-  if ([v7 hasSuffix:@" MediumItalic"])
+  if ([nameCopy hasSuffix:@" MediumItalic"])
   {
-    *a5 = 1;
-    v9 = [v7 length] - 13;
+    *italic = 1;
+    v9 = [nameCopy length] - 13;
     goto LABEL_13;
   }
 
-  if ([v7 hasSuffix:@" SemiBold"])
+  if ([nameCopy hasSuffix:@" SemiBold"])
   {
-    *a4 = 1;
-    v9 = [v7 length] - 9;
+    *bold = 1;
+    v9 = [nameCopy length] - 9;
     goto LABEL_13;
   }
 
-  if ([v7 hasSuffix:@" SemiBoldItalic"])
+  if ([nameCopy hasSuffix:@" SemiBoldItalic"])
   {
-    *a4 = 1;
-    *a5 = 1;
-    v9 = [v7 length] - 15;
+    *bold = 1;
+    *italic = 1;
+    v9 = [nameCopy length] - 15;
     goto LABEL_13;
   }
 
-  if ([v7 hasSuffix:@" Text"])
+  if ([nameCopy hasSuffix:@" Text"])
   {
-    v8 = [v7 length];
+    v8 = [nameCopy length];
     goto LABEL_3;
   }
 
-  if ([v7 hasSuffix:@" TextItalic"])
+  if ([nameCopy hasSuffix:@" TextItalic"])
   {
-    *a5 = 1;
-    v10 = [v7 length];
+    *italic = 1;
+    v10 = [nameCopy length];
     goto LABEL_6;
   }
 
-  v11 = v7;
+  v11 = nameCopy;
 LABEL_14:
   v12 = v11;
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = EMCellStyle;
-  v4 = [(CMStyle *)&v6 copyWithZone:a3];
+  v4 = [(CMStyle *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 3, self->_emStyle);
   *(v4 + 8) = self->_edCellType;
   v4[6] = *&self->_contentWidth;
@@ -390,10 +390,10 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -403,7 +403,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(EMCellStyleWrapper *)v5->_emStyle isEqual:self->_emStyle]&& v5->_contentWidth == self->_contentWidth && v5->_columnWidth == self->_columnWidth && v5->_edCellType == self->_edCellType;
     }
 
@@ -418,32 +418,32 @@ LABEL_14:
 
 - (id)cssStyleString
 {
-  v3 = [(EMCellStyleWrapper *)self->_emStyle edStyle];
-  v4 = v3;
+  edStyle = [(EMCellStyleWrapper *)self->_emStyle edStyle];
+  v4 = edStyle;
   if (!self->_resolvedProperties)
   {
     self->_resolvedProperties = 1;
-    v5 = [v3 font];
+    font = [edStyle font];
 
-    if (v5)
+    if (font)
     {
-      v6 = [v4 font];
-      [(EMCellStyle *)self addFontStyle:v6];
+      font2 = [v4 font];
+      [(EMCellStyle *)self addFontStyle:font2];
     }
 
     if ([v4 isBordersOverridden])
     {
-      v7 = [v4 borders];
-      [(EMCellStyle *)self addBordersStyle:v7];
+      borders = [v4 borders];
+      [(EMCellStyle *)self addBordersStyle:borders];
     }
 
     [(EMCellStyle *)self addFillStyle];
-    v8 = [v4 alignmentInfo];
+    alignmentInfo = [v4 alignmentInfo];
 
-    if (v8)
+    if (alignmentInfo)
     {
-      v9 = [v4 alignmentInfo];
-      [(EMCellStyle *)self addAlignmentStyle:v9];
+      alignmentInfo2 = [v4 alignmentInfo];
+      [(EMCellStyle *)self addAlignmentStyle:alignmentInfo2];
     }
 
     [(EMCellStyle *)self resolveFormatType];
@@ -452,9 +452,9 @@ LABEL_14:
 
   v12.receiver = self;
   v12.super_class = EMCellStyle;
-  v10 = [(CMStyle *)&v12 cssStyleString];
+  cssStyleString = [(CMStyle *)&v12 cssStyleString];
 
-  return v10;
+  return cssStyleString;
 }
 
 @end

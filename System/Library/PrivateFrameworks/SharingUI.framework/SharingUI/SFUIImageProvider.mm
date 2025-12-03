@@ -1,8 +1,8 @@
 @interface SFUIImageProvider
 - (SFUIImageProvider)init;
-- (void)cancelImageRequest:(int)a3;
-- (void)deliverImage:(id)a3 identifier:(id)a4 placeholder:(BOOL)a5 error:(id)a6;
-- (void)scheduleImageRequest:(id)a3;
+- (void)cancelImageRequest:(int)request;
+- (void)deliverImage:(id)image identifier:(id)identifier placeholder:(BOOL)placeholder error:(id)error;
+- (void)scheduleImageRequest:(id)request;
 @end
 
 @implementation SFUIImageProvider
@@ -25,21 +25,21 @@
     fetchQueue = v3->_fetchQueue;
     v3->_fetchQueue = v7;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     requestsForIdentifier = v3->_requestsForIdentifier;
-    v3->_requestsForIdentifier = v9;
+    v3->_requestsForIdentifier = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     requestsForRequestID = v3->_requestsForRequestID;
-    v3->_requestsForRequestID = v11;
+    v3->_requestsForRequestID = dictionary2;
   }
 
   return v3;
 }
 
-- (void)cancelImageRequest:(int)a3
+- (void)cancelImageRequest:(int)request
 {
-  v3 = *&a3;
+  v3 = *&request;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = sharing_ui_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -47,63 +47,63 @@
     [(SFUIImageProvider *)v3 cancelImageRequest:v5];
   }
 
-  v6 = [(SFUIImageProvider *)self requestsForRequestID];
+  requestsForRequestID = [(SFUIImageProvider *)self requestsForRequestID];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [requestsForRequestID objectForKeyedSubscript:v7];
 
   if (v8)
   {
-    v9 = [(SFUIImageProvider *)self requestsForRequestID];
+    requestsForRequestID2 = [(SFUIImageProvider *)self requestsForRequestID];
     v10 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-    [v9 setObject:0 forKeyedSubscript:v10];
+    [requestsForRequestID2 setObject:0 forKeyedSubscript:v10];
 
-    v11 = [(SFUIImageProvider *)self requestsForIdentifier];
-    v12 = [v8 identifier];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    requestsForIdentifier = [(SFUIImageProvider *)self requestsForIdentifier];
+    identifier = [v8 identifier];
+    v13 = [requestsForIdentifier objectForKeyedSubscript:identifier];
 
     [v13 removeObject:v8];
   }
 }
 
-- (void)scheduleImageRequest:(id)a3
+- (void)scheduleImageRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(SFUIImageProvider *)self requestsForRequestID];
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "requestID")}];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  requestsForRequestID = [(SFUIImageProvider *)self requestsForRequestID];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "requestID")}];
+  [requestsForRequestID setObject:requestCopy forKeyedSubscript:v6];
 
-  v7 = [(SFUIImageProvider *)self requestsForIdentifier];
-  v8 = [v4 identifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  requestsForIdentifier = [(SFUIImageProvider *)self requestsForIdentifier];
+  identifier = [requestCopy identifier];
+  v9 = [requestsForIdentifier objectForKeyedSubscript:identifier];
 
   if (!v9)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
-    v10 = [(SFUIImageProvider *)self requestsForIdentifier];
-    v11 = [v4 identifier];
-    [v10 setObject:v9 forKeyedSubscript:v11];
+    requestsForIdentifier2 = [(SFUIImageProvider *)self requestsForIdentifier];
+    identifier2 = [requestCopy identifier];
+    [requestsForIdentifier2 setObject:v9 forKeyedSubscript:identifier2];
   }
 
-  [v9 addObject:v4];
+  [v9 addObject:requestCopy];
   if ([v9 count] <= 1)
   {
-    if ([v4 synchronous])
+    if ([requestCopy synchronous])
     {
-      [(SFUIImageProvider *)self performImageRequest:v4];
+      [(SFUIImageProvider *)self performImageRequest:requestCopy];
     }
 
     else
     {
       objc_initWeak(&location, self);
-      v13 = [(SFUIImageProvider *)self fetchQueue];
+      fetchQueue = [(SFUIImageProvider *)self fetchQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __42__SFUIImageProvider_scheduleImageRequest___block_invoke;
       block[3] = &unk_1E7EE3CB8;
       objc_copyWeak(&v16, &location);
-      v15 = v4;
-      dispatch_async(v13, block);
+      v15 = requestCopy;
+      dispatch_async(fetchQueue, block);
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -115,7 +115,7 @@
     v12 = sharing_ui_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [(SFUIImageProvider *)v4 scheduleImageRequest:v12];
+      [(SFUIImageProvider *)requestCopy scheduleImageRequest:v12];
     }
   }
 }
@@ -126,46 +126,46 @@ void __42__SFUIImageProvider_scheduleImageRequest___block_invoke(uint64_t a1)
   [WeakRetained performImageRequest:*(a1 + 32)];
 }
 
-- (void)deliverImage:(id)a3 identifier:(id)a4 placeholder:(BOOL)a5 error:(id)a6
+- (void)deliverImage:(id)image identifier:(id)identifier placeholder:(BOOL)placeholder error:(id)error
 {
-  v7 = a5;
+  placeholderCopy = placeholder;
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v31 = a6;
+  imageCopy = image;
+  identifierCopy = identifier;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v12 = sharing_ui_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromBOOL();
     *buf = 138413058;
-    v38 = v10;
+    v38 = imageCopy;
     v39 = 2112;
-    v40 = v11;
+    v40 = identifierCopy;
     v41 = 2112;
     v42 = v13;
     v43 = 2112;
-    v44 = v31;
+    v44 = errorCopy;
     _os_log_impl(&dword_1B9E4B000, v12, OS_LOG_TYPE_DEFAULT, "deliver image:%@ identifier:%@ placeholder:%@ error:%@", buf, 0x2Au);
   }
 
-  if (v10)
+  if (imageCopy)
   {
-    v14 = [(SFUIImageProvider *)self imageCache];
-    [v14 setObject:v10 forKey:v11];
+    imageCache = [(SFUIImageProvider *)self imageCache];
+    [imageCache setObject:imageCopy forKey:identifierCopy];
   }
 
-  v15 = [(SFUIImageProvider *)self requestsForIdentifier];
-  v16 = [v15 objectForKeyedSubscript:v11];
+  requestsForIdentifier = [(SFUIImageProvider *)self requestsForIdentifier];
+  v16 = [requestsForIdentifier objectForKeyedSubscript:identifierCopy];
 
-  if (!v7)
+  if (!placeholderCopy)
   {
-    v17 = [(SFUIImageProvider *)self requestsForIdentifier];
-    [v17 setObject:0 forKeyedSubscript:v11];
+    requestsForIdentifier2 = [(SFUIImageProvider *)self requestsForIdentifier];
+    [requestsForIdentifier2 setObject:0 forKeyedSubscript:identifierCopy];
   }
 
-  v29 = v11;
-  v30 = self;
+  v29 = identifierCopy;
+  selfCopy = self;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -186,21 +186,21 @@ void __42__SFUIImageProvider_scheduleImageRequest___block_invoke(uint64_t a1)
         }
 
         v23 = *(*(&v32 + 1) + 8 * i);
-        v24 = [v23 resultHandler];
-        v25 = v24;
-        if (v24)
+        resultHandler = [v23 resultHandler];
+        v25 = resultHandler;
+        if (resultHandler)
         {
-          (*(v24 + 16))(v24, v10, v7, v31);
+          (*(resultHandler + 16))(resultHandler, imageCopy, placeholderCopy, errorCopy);
         }
 
-        if (!v7)
+        if (!placeholderCopy)
         {
-          [(SFUIImageProvider *)v30 requestsForRequestID];
-          v27 = v26 = v10;
+          [(SFUIImageProvider *)selfCopy requestsForRequestID];
+          v27 = v26 = imageCopy;
           v28 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v23, "requestID")}];
           [v27 setObject:0 forKeyedSubscript:v28];
 
-          v10 = v26;
+          imageCopy = v26;
         }
       }
 

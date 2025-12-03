@@ -1,119 +1,119 @@
 @interface UARPManifestProperties
-- (BOOL)isEqual:(id)a3;
-- (UARPManifestProperties)initWithBoardID:(unsigned int)a3 chipID:(unsigned int)a4 securityDomain:(unint64_t)a5 securityMode:(BOOL)a6 productionMode:(BOOL)a7;
-- (UARPManifestProperties)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UARPManifestProperties)initWithBoardID:(unsigned int)d chipID:(unsigned int)iD securityDomain:(unint64_t)domain securityMode:(BOOL)mode productionMode:(BOOL)productionMode;
+- (UARPManifestProperties)initWithCoder:(id)coder;
 - (const)securityDomainString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPManifestProperties
 
-- (UARPManifestProperties)initWithBoardID:(unsigned int)a3 chipID:(unsigned int)a4 securityDomain:(unint64_t)a5 securityMode:(BOOL)a6 productionMode:(BOOL)a7
+- (UARPManifestProperties)initWithBoardID:(unsigned int)d chipID:(unsigned int)iD securityDomain:(unint64_t)domain securityMode:(BOOL)mode productionMode:(BOOL)productionMode
 {
   v13.receiver = self;
   v13.super_class = UARPManifestProperties;
   result = [(UARPManifestProperties *)&v13 init];
   if (result)
   {
-    result->_boardID = a3;
-    result->_chipID = a4;
-    result->_securityDomain = a5;
-    result->_securityMode = a6;
-    result->_productionMode = a7;
+    result->_boardID = d;
+    result->_chipID = iD;
+    result->_securityDomain = domain;
+    result->_securityMode = mode;
+    result->_productionMode = productionMode;
   }
 
   return result;
 }
 
-- (UARPManifestProperties)initWithCoder:(id)a3
+- (UARPManifestProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = UARPManifestProperties;
   v5 = [(UARPManifestProperties *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"boardID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"boardID"];
     v5->_boardID = [v6 unsignedIntValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chipID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chipID"];
     v5->_chipID = [v7 unsignedIntValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityDomain"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityDomain"];
     v5->_securityDomain = [v8 unsignedIntegerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityMode"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityMode"];
     v5->_securityMode = [v9 BOOLValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productionMode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productionMode"];
     v5->_productionMode = [v10 BOOLValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ecID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ecID"];
     ecID = v5->_ecID;
     v5->_ecID = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chipEpoch"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chipEpoch"];
     chipEpoch = v5->_chipEpoch;
     v5->_chipEpoch = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enableMixMatch"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enableMixMatch"];
     enableMixMatch = v5->_enableMixMatch;
     v5->_enableMixMatch = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"effectiveProductionMode"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"effectiveProductionMode"];
     v5->_effectiveProductionMode = [v19 BOOLValue];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"effectiveSecurityMode"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"effectiveSecurityMode"];
     v5->_effectiveSecurityMode = [v20 BOOLValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsImg4"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsImg4"];
     v5->_supportsImg4 = [v21 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   boardID = self->_boardID;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInt:boardID];
-  [v6 encodeObject:v7 forKey:@"boardID"];
+  [coderCopy encodeObject:v7 forKey:@"boardID"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_chipID];
-  [v6 encodeObject:v8 forKey:@"chipID"];
+  [coderCopy encodeObject:v8 forKey:@"chipID"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_securityDomain];
-  [v6 encodeObject:v9 forKey:@"securityDomain"];
+  [coderCopy encodeObject:v9 forKey:@"securityDomain"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_securityMode];
-  [v6 encodeObject:v10 forKey:@"securityMode"];
+  [coderCopy encodeObject:v10 forKey:@"securityMode"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_productionMode];
-  [v6 encodeObject:v11 forKey:@"productionMode"];
+  [coderCopy encodeObject:v11 forKey:@"productionMode"];
 
-  [v6 encodeObject:self->_ecID forKey:@"ecID"];
-  [v6 encodeObject:self->_nonce forKey:@"nonce"];
-  [v6 encodeObject:self->_chipEpoch forKey:@"chipEpoch"];
-  [v6 encodeObject:self->_enableMixMatch forKey:@"enableMixMatch"];
+  [coderCopy encodeObject:self->_ecID forKey:@"ecID"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
+  [coderCopy encodeObject:self->_chipEpoch forKey:@"chipEpoch"];
+  [coderCopy encodeObject:self->_enableMixMatch forKey:@"enableMixMatch"];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_effectiveProductionMode];
-  [v6 encodeObject:v12 forKey:@"effectiveProductionMode"];
+  [coderCopy encodeObject:v12 forKey:@"effectiveProductionMode"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_effectiveSecurityMode];
-  [v6 encodeObject:v13 forKey:@"effectiveSecurityMode"];
+  [coderCopy encodeObject:v13 forKey:@"effectiveSecurityMode"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsImg4];
-  [v6 encodeObject:v14 forKey:@"supportsImg4"];
+  [coderCopy encodeObject:v14 forKey:@"supportsImg4"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UARPManifestProperties);
   v4->_boardID = self->_boardID;
@@ -131,38 +131,38 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v22 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       boardID = self->_boardID;
       if (boardID == [(UARPManifestProperties *)v5 boardID]&& (chipID = self->_chipID, chipID == [(UARPManifestProperties *)v5 chipID]) && (securityDomain = self->_securityDomain, securityDomain == [(UARPManifestProperties *)v5 securityDomain]) && (securityMode = self->_securityMode, securityMode == [(UARPManifestProperties *)v5 securityMode]) && (productionMode = self->_productionMode, productionMode == [(UARPManifestProperties *)v5 productionMode]))
       {
         ecID = self->_ecID;
-        v12 = [(UARPManifestProperties *)v5 ecID];
-        if (nullableObjectsEqual(ecID, v12))
+        ecID = [(UARPManifestProperties *)v5 ecID];
+        if (nullableObjectsEqual(ecID, ecID))
         {
           nonce = self->_nonce;
-          v14 = [(UARPManifestProperties *)v5 nonce];
-          if (nullableObjectsEqual(nonce, v14))
+          nonce = [(UARPManifestProperties *)v5 nonce];
+          if (nullableObjectsEqual(nonce, nonce))
           {
             chipEpoch = self->_chipEpoch;
-            v16 = [(UARPManifestProperties *)v5 chipEpoch];
-            if (nullableObjectsEqual(chipEpoch, v16))
+            chipEpoch = [(UARPManifestProperties *)v5 chipEpoch];
+            if (nullableObjectsEqual(chipEpoch, chipEpoch))
             {
               enableMixMatch = self->_enableMixMatch;
-              v18 = [(UARPManifestProperties *)v5 enableMixMatch];
-              if (nullableObjectsEqual(enableMixMatch, v18) && (effectiveProductionMode = self->_effectiveProductionMode, effectiveProductionMode == [(UARPManifestProperties *)v5 effectiveProductionMode]) && (effectiveSecurityMode = self->_effectiveSecurityMode, effectiveSecurityMode == [(UARPManifestProperties *)v5 effectiveSecurityMode]))
+              enableMixMatch = [(UARPManifestProperties *)v5 enableMixMatch];
+              if (nullableObjectsEqual(enableMixMatch, enableMixMatch) && (effectiveProductionMode = self->_effectiveProductionMode, effectiveProductionMode == [(UARPManifestProperties *)v5 effectiveProductionMode]) && (effectiveSecurityMode = self->_effectiveSecurityMode, effectiveSecurityMode == [(UARPManifestProperties *)v5 effectiveSecurityMode]))
               {
                 supportsImg4 = self->_supportsImg4;
                 v22 = supportsImg4 == [(UARPManifestProperties *)v5 supportsImg4];

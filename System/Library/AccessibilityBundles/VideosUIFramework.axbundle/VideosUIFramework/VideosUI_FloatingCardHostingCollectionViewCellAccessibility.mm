@@ -15,8 +15,8 @@
   v9[4] = v3;
   v4 = [(VideosUI_FloatingCardHostingCollectionViewCellAccessibility *)self _accessibilityFindViewAncestor:v9 startWithSelf:0];
 
-  v5 = [(VideosUI_FloatingCardHostingCollectionViewCellAccessibility *)self _axNode];
-  v6 = [v5 accessibilityTraits];
+  _axNode = [(VideosUI_FloatingCardHostingCollectionViewCellAccessibility *)self _axNode];
+  accessibilityTraits = [_axNode accessibilityTraits];
   if (v4)
   {
     v7 = *MEMORY[0x29EDC7F70];
@@ -27,15 +27,15 @@
     v7 = 0;
   }
 
-  return v7 | v6;
+  return v7 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(VideosUI_FloatingCardHostingCollectionViewCellAccessibility *)self _axNode];
-  v3 = [v2 accessibilityLabel];
+  _axNode = [(VideosUI_FloatingCardHostingCollectionViewCellAccessibility *)self _axNode];
+  accessibilityLabel = [_axNode accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

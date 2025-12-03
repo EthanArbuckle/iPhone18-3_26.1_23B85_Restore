@@ -1,9 +1,9 @@
 @interface _INSiriAuthorizationManager
 + (BOOL)_siriEnabled;
-+ (id)_tccAccessInfoForBundle:(id)a3;
-+ (int64_t)_rawSiriAuthorizationStatusForAppID:(id)a3;
-+ (int64_t)_siriAuthorizationStatusForAppID:(id)a3 intentSlot:(id)a4;
-+ (void)_requestSiriAuthorization:(id)a3 auditToken:(id *)a4;
++ (id)_tccAccessInfoForBundle:(id)bundle;
++ (int64_t)_rawSiriAuthorizationStatusForAppID:(id)d;
++ (int64_t)_siriAuthorizationStatusForAppID:(id)d intentSlot:(id)slot;
++ (void)_requestSiriAuthorization:(id)authorization auditToken:(id *)token;
 @end
 
 @implementation _INSiriAuthorizationManager
@@ -28,18 +28,18 @@
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 sharedPreferences];
-  v5 = [v4 assistantIsEnabled];
+  sharedPreferences = [v2 sharedPreferences];
+  assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
-  return v5;
+  return assistantIsEnabled;
 }
 
-+ (id)_tccAccessInfoForBundle:(id)a3
++ (id)_tccAccessInfoForBundle:(id)bundle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 bundleURL];
-  if (!v4)
+  bundleCopy = bundle;
+  bundleURL = [bundleCopy bundleURL];
+  if (!bundleURL)
   {
     v18 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -49,14 +49,14 @@
       v29 = 2112;
       v30 = 0;
       v31 = 2112;
-      v32 = v3;
+      v32 = bundleCopy;
       _os_log_error_impl(&dword_18E991000, v18, OS_LOG_TYPE_ERROR, "%s Could not lookup TCC info for nil bundleURL: %@ bundle: %@", buf, 0x20u);
     }
 
     goto LABEL_13;
   }
 
-  v5 = CFBundleCreate(0, [v3 bundleURL]);
+  v5 = CFBundleCreate(0, [bundleCopy bundleURL]);
   if (!v5)
   {
 LABEL_13:
@@ -65,7 +65,7 @@ LABEL_13:
   }
 
   cf = v5;
-  v22 = v4;
+  v22 = bundleURL;
   v6 = TCCAccessCopyInformationForBundle();
   v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v23 = 0u;
@@ -102,7 +102,7 @@ LABEL_13:
   }
 
   CFRelease(cf);
-  v4 = v22;
+  bundleURL = v22;
 LABEL_14:
 
   v19 = *MEMORY[0x1E69E9840];
@@ -110,15 +110,15 @@ LABEL_14:
   return v7;
 }
 
-+ (int64_t)_rawSiriAuthorizationStatusForAppID:(id)a3
++ (int64_t)_rawSiriAuthorizationStatusForAppID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 _siriEnabled])
+  dCopy = d;
+  if ([self _siriEnabled])
   {
-    v5 = [MEMORY[0x1E6963618] bundleProxyForIdentifier:v4];
-    v6 = [v5 bundleType];
-    if ([v6 isEqualToString:*MEMORY[0x1E6963590]])
+    v5 = [MEMORY[0x1E6963618] bundleProxyForIdentifier:dCopy];
+    bundleType = [v5 bundleType];
+    if ([bundleType isEqualToString:*MEMORY[0x1E6963590]])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -129,7 +129,7 @@ LABEL_14:
       }
 
       [v5 containingBundle];
-      v5 = v6 = v5;
+      v5 = bundleType = v5;
     }
 
 LABEL_6:
@@ -141,14 +141,14 @@ LABEL_6:
       v21 = 2112;
       v22 = v5;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s Resolved appBundleProxy: %@ for appID: %@", &v19, 0x20u);
     }
 
     if (v5)
     {
-      v9 = [v5 bundleType];
-      if ([v9 isEqualToString:*MEMORY[0x1E69635A8]])
+      bundleType2 = [v5 bundleType];
+      if ([bundleType2 isEqualToString:*MEMORY[0x1E69635A8]])
       {
         v10 = 3;
 LABEL_24:
@@ -156,12 +156,12 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v12 = [v5 bundleType];
-      v13 = [v12 isEqualToString:*MEMORY[0x1E6963578]];
+      bundleType3 = [v5 bundleType];
+      v13 = [bundleType3 isEqualToString:*MEMORY[0x1E6963578]];
 
       if ((v13 & 1) == 0)
       {
-        v9 = [a1 _tccAccessInfoForBundle:v5];
+        bundleType2 = [self _tccAccessInfoForBundle:v5];
         v14 = INSiriLogContextIntents;
         if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
         {
@@ -170,11 +170,11 @@ LABEL_24:
           v21 = 2112;
           v22 = v5;
           v23 = 2112;
-          v24 = v9;
+          v24 = bundleType2;
           _os_log_impl(&dword_18E991000, v14, OS_LOG_TYPE_INFO, "%s TCC access for %@: %@", &v19, 0x20u);
         }
 
-        v15 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69D55E8]];
+        v15 = [bundleType2 objectForKeyedSubscript:*MEMORY[0x1E69D55E8]];
         v16 = v15;
         if (v15)
         {
@@ -210,7 +210,7 @@ LABEL_25:
     v19 = 136315394;
     v20 = "+[_INSiriAuthorizationManager _rawSiriAuthorizationStatusForAppID:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = dCopy;
     _os_log_impl(&dword_18E991000, v11, OS_LOG_TYPE_INFO, "%s Siri is not enabled on this device, therefore Siri cannot be authorized for %@", &v19, 0x16u);
   }
 
@@ -221,11 +221,11 @@ LABEL_26:
   return v10;
 }
 
-+ (int64_t)_siriAuthorizationStatusForAppID:(id)a3 intentSlot:(id)a4
++ (int64_t)_siriAuthorizationStatusForAppID:(id)d intentSlot:(id)slot
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([a4 isEqualToString:@"AutoShortcutNameType"])
+  dCopy = d;
+  if ([slot isEqualToString:@"AutoShortcutNameType"])
   {
     v7 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -238,7 +238,7 @@ LABEL_26:
     v8 = 3;
   }
 
-  else if (v6)
+  else if (dCopy)
   {
     if (_siriAuthorizationStatusForAppID_intentSlot__onceToken != -1)
     {
@@ -254,9 +254,9 @@ LABEL_26:
     block[1] = 3221225472;
     block[2] = __75___INSiriAuthorizationManager__siriAuthorizationStatusForAppID_intentSlot___block_invoke_12;
     block[3] = &unk_1E7281438;
-    v13 = v6;
+    v13 = dCopy;
     p_buf = &buf;
-    v15 = a1;
+    selfCopy = self;
     dispatch_sync(v9, block);
     v8 = *(*(&buf + 1) + 24);
 
@@ -272,28 +272,28 @@ LABEL_26:
   return v8;
 }
 
-+ (void)_requestSiriAuthorization:(id)a3 auditToken:(id *)a4
++ (void)_requestSiriAuthorization:(id)authorization auditToken:(id *)token
 {
-  v6 = a3;
-  if (v6)
+  authorizationCopy = authorization;
+  if (authorizationCopy)
   {
-    if ([a1 _siriEnabled])
+    if ([self _siriEnabled])
     {
       v7 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
-      v8 = *&a4->var0[4];
-      v11 = *a4->var0;
+      v8 = *&token->var0[4];
+      v11 = *token->var0;
       v12 = v8;
       block[2] = __68___INSiriAuthorizationManager__requestSiriAuthorization_auditToken___block_invoke;
       block[3] = &unk_1E72813C8;
-      v10 = v6;
+      v10 = authorizationCopy;
       dispatch_async(v7, block);
     }
 
     else
     {
-      (*(v6 + 2))(v6, 2);
+      (*(authorizationCopy + 2))(authorizationCopy, 2);
     }
   }
 }

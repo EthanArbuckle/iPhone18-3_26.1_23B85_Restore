@@ -1,20 +1,20 @@
 @interface TPSHeadEnrollmentValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSHeadEnrollmentValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277D71778];
-  v5 = a3;
-  v6 = [v4 targeting];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  completionCopy = completion;
+  targeting = [v4 targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSHeadEnrollmentValidation *)self validateWithCompletion:v6];
+    [(TPSHeadEnrollmentValidation *)self validateWithCompletion:targeting];
   }
 
-  (*(v5 + 2))(v5, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
 - (void)validateWithCompletion:(void *)a1 .cold.1(void *a1, NSObject *a2)

@@ -1,21 +1,21 @@
 @interface SHLCloudSubscriptionTransformer
-- (SHLCloudSubscriptionTransformer)initWithConfiguration:(id)a3;
-- (id)cloudBackedOperationForZones:(id)a3 container:(id)a4;
-- (id)newSubscriptionForZoneID:(id)a3;
+- (SHLCloudSubscriptionTransformer)initWithConfiguration:(id)configuration;
+- (id)cloudBackedOperationForZones:(id)zones container:(id)container;
+- (id)newSubscriptionForZoneID:(id)d;
 @end
 
 @implementation SHLCloudSubscriptionTransformer
 
-- (SHLCloudSubscriptionTransformer)initWithConfiguration:(id)a3
+- (SHLCloudSubscriptionTransformer)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SHLCloudSubscriptionTransformer;
   v6 = [(SHLCloudSubscriptionTransformer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_alloc_init(CKModifySubscriptionsOperation);
     modifySubscriptionsOperation = v7->_modifySubscriptionsOperation;
     v7->_modifySubscriptionsOperation = v8;
@@ -24,24 +24,24 @@
   return v7;
 }
 
-- (id)cloudBackedOperationForZones:(id)a3 container:(id)a4
+- (id)cloudBackedOperationForZones:(id)zones container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  zonesCopy = zones;
+  containerCopy = container;
   v8 = [SHLCloudLibraryCache alloc];
-  v9 = [(SHLCloudSubscriptionTransformer *)self configuration];
-  v10 = [v9 callingProcessIdentifier];
-  v52 = v7;
-  v11 = [v7 container];
-  v12 = [v11 containerIdentifier];
-  v57 = self;
-  v13 = [(SHLCloudSubscriptionTransformer *)self configuration];
-  v14 = [v13 sessionIdentifier];
-  v55 = [(SHLCloudLibraryCache *)v8 initWithCallingProcessIdentifier:v10 containerIdentifier:v12 transactionIdentifier:v14];
+  configuration = [(SHLCloudSubscriptionTransformer *)self configuration];
+  callingProcessIdentifier = [configuration callingProcessIdentifier];
+  v52 = containerCopy;
+  container = [containerCopy container];
+  containerIdentifier = [container containerIdentifier];
+  selfCopy = self;
+  configuration2 = [(SHLCloudSubscriptionTransformer *)self configuration];
+  sessionIdentifier = [configuration2 sessionIdentifier];
+  v55 = [(SHLCloudLibraryCache *)v8 initWithCallingProcessIdentifier:callingProcessIdentifier containerIdentifier:containerIdentifier transactionIdentifier:sessionIdentifier];
 
-  v54 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
-  v15 = v6;
-  v16 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+  v54 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [zonesCopy count]);
+  v15 = zonesCopy;
+  v16 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [zonesCopy count]);
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -63,22 +63,22 @@
 
         v21 = *(*(&v61 + 1) + 8 * i);
         v22 = [v21 zone];
-        v23 = [v22 zoneID];
-        v24 = [(SHLCloudSubscriptionTransformer *)v57 newSubscriptionForZoneID:v23];
+        zoneID = [v22 zoneID];
+        v24 = [(SHLCloudSubscriptionTransformer *)selfCopy newSubscriptionForZoneID:zoneID];
 
         v25 = [[SHLCloudBackedSubscription alloc] initWithSubscription:v24];
         v26 = [v21 zone];
-        v27 = [v26 zoneID];
-        v28 = [v27 zoneName];
-        [(SHLCloudLibraryCache *)v55 storeSubscription:v25 forZoneIdentifier:v28 error:0];
+        zoneID2 = [v26 zoneID];
+        zoneName = [zoneID2 zoneName];
+        [(SHLCloudLibraryCache *)v55 storeSubscription:v25 forZoneIdentifier:zoneName error:0];
 
         v29 = [v21 zone];
-        v30 = [v29 zoneID];
-        v31 = [v24 subscriptionID];
-        [v54 setObject:v30 forKey:v31];
+        zoneID3 = [v29 zoneID];
+        subscriptionID = [v24 subscriptionID];
+        [v54 setObject:zoneID3 forKey:subscriptionID];
 
-        v32 = [v24 subscriptionID];
-        [v16 setObject:v24 forKey:v32];
+        subscriptionID2 = [v24 subscriptionID];
+        [v16 setObject:v24 forKey:subscriptionID2];
       }
 
       v18 = [obj countByEnumeratingWithState:&v61 objects:v65 count:16];
@@ -87,14 +87,14 @@
     while (v18);
   }
 
-  v33 = [v52 container];
-  v34 = [v33 privateCloudDatabase];
-  v35 = [(SHLCloudSubscriptionTransformer *)v57 modifySubscriptionsOperation];
-  [v35 setDatabase:v34];
+  container2 = [v52 container];
+  privateCloudDatabase = [container2 privateCloudDatabase];
+  modifySubscriptionsOperation = [(SHLCloudSubscriptionTransformer *)selfCopy modifySubscriptionsOperation];
+  [modifySubscriptionsOperation setDatabase:privateCloudDatabase];
 
-  v36 = [v16 allValues];
-  v37 = [(SHLCloudSubscriptionTransformer *)v57 modifySubscriptionsOperation];
-  [v37 setSubscriptionsToSave:v36];
+  allValues = [v16 allValues];
+  modifySubscriptionsOperation2 = [(SHLCloudSubscriptionTransformer *)selfCopy modifySubscriptionsOperation];
+  [modifySubscriptionsOperation2 setSubscriptionsToSave:allValues];
 
   v58[0] = _NSConcreteStackBlock;
   v58[1] = 3221225472;
@@ -104,37 +104,37 @@
   v60 = v55;
   v56 = v55;
   v38 = v54;
-  v39 = [(SHLCloudSubscriptionTransformer *)v57 modifySubscriptionsOperation];
-  [v39 setModifySubscriptionsCompletionBlock:v58];
+  modifySubscriptionsOperation3 = [(SHLCloudSubscriptionTransformer *)selfCopy modifySubscriptionsOperation];
+  [modifySubscriptionsOperation3 setModifySubscriptionsCompletionBlock:v58];
 
   v40 = objc_alloc_init(CKOperationGroup);
   [v40 setExpectedSendSize:1];
-  v41 = [(SHLCloudSubscriptionTransformer *)v57 modifySubscriptionsOperation];
-  v42 = [v41 subscriptionsToSave];
-  v43 = [v42 count];
-  v44 = [(SHLCloudSubscriptionTransformer *)v57 modifySubscriptionsOperation];
-  v45 = [v44 subscriptionIDsToDelete];
-  [v40 setQuantity:{&v43[objc_msgSend(v45, "count")]}];
+  modifySubscriptionsOperation4 = [(SHLCloudSubscriptionTransformer *)selfCopy modifySubscriptionsOperation];
+  subscriptionsToSave = [modifySubscriptionsOperation4 subscriptionsToSave];
+  v43 = [subscriptionsToSave count];
+  modifySubscriptionsOperation5 = [(SHLCloudSubscriptionTransformer *)selfCopy modifySubscriptionsOperation];
+  subscriptionIDsToDelete = [modifySubscriptionsOperation5 subscriptionIDsToDelete];
+  [v40 setQuantity:{&v43[objc_msgSend(subscriptionIDsToDelete, "count")]}];
 
   v46 = [NSString stringWithFormat:@"%@", @"ModifySubscriptions"];
   [v40 setName:v46];
 
-  v47 = [(SHLCloudSubscriptionTransformer *)v57 modifySubscriptionsOperation];
-  [v47 setGroup:v40];
+  modifySubscriptionsOperation6 = [(SHLCloudSubscriptionTransformer *)selfCopy modifySubscriptionsOperation];
+  [modifySubscriptionsOperation6 setGroup:v40];
 
   v48 = [SHLCloudBackedOperation alloc];
-  v49 = [(SHLCloudSubscriptionTransformer *)v57 modifySubscriptionsOperation];
-  v50 = [(SHLCloudBackedOperation *)v48 initWithOperation:v49];
+  modifySubscriptionsOperation7 = [(SHLCloudSubscriptionTransformer *)selfCopy modifySubscriptionsOperation];
+  v50 = [(SHLCloudBackedOperation *)v48 initWithOperation:modifySubscriptionsOperation7];
 
   return v50;
 }
 
-- (id)newSubscriptionForZoneID:(id)a3
+- (id)newSubscriptionForZoneID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [CKRecordZoneSubscription alloc];
-  v5 = [v3 zoneName];
-  v6 = [v4 initWithZoneID:v3 subscriptionID:v5];
+  zoneName = [dCopy zoneName];
+  v6 = [v4 initWithZoneID:dCopy subscriptionID:zoneName];
 
   v7 = objc_alloc_init(CKNotificationInfo);
   [v7 setShouldSendContentAvailable:1];

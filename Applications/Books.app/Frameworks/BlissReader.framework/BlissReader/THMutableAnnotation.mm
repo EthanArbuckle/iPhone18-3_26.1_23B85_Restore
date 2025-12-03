@@ -1,19 +1,19 @@
 @interface THMutableAnnotation
-- (THMutableAnnotation)initWithAEAnnotation:(id)a3;
+- (THMutableAnnotation)initWithAEAnnotation:(id)annotation;
 - (_NSRange)annotationStorageRange;
 - (void)dealloc;
 @end
 
 @implementation THMutableAnnotation
 
-- (THMutableAnnotation)initWithAEAnnotation:(id)a3
+- (THMutableAnnotation)initWithAEAnnotation:(id)annotation
 {
   v6.receiver = self;
   v6.super_class = THMutableAnnotation;
   v4 = [(THMutableAnnotation *)&v6 init];
   if (v4)
   {
-    v4->_annotation = a3;
+    v4->_annotation = annotation;
   }
 
   return v4;
@@ -28,9 +28,9 @@
 
 - (_NSRange)annotationStorageRange
 {
-  v2 = [(AEAnnotation *)self->_annotation annotationStorageRange];
+  annotationStorageRange = [(AEAnnotation *)self->_annotation annotationStorageRange];
   result.length = v3;
-  result.location = v2;
+  result.location = annotationStorageRange;
   return result;
 }
 

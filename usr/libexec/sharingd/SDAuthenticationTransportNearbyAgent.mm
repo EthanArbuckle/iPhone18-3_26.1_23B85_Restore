@@ -1,10 +1,10 @@
 @interface SDAuthenticationTransportNearbyAgent
-- (void)handleBLEMessage:(id)a3;
+- (void)handleBLEMessage:(id)message;
 @end
 
 @implementation SDAuthenticationTransportNearbyAgent
 
-- (void)handleBLEMessage:(id)a3
+- (void)handleBLEMessage:(id)message
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

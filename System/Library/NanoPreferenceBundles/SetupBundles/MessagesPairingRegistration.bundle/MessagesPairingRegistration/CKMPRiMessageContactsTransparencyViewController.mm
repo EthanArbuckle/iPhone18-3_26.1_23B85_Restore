@@ -6,7 +6,7 @@
 - (id)imageResourceBundleIdentifier;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation CKMPRiMessageContactsTransparencyViewController
@@ -23,14 +23,14 @@
     v4 = +[PDRRegistry sharedInstance];
     v5 = +[PDRRegistry activeDeviceSelectorBlock];
     v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-    v7 = [v6 firstObject];
-    v8 = v7;
-    if (v7)
+    firstObject = [v6 firstObject];
+    v8 = firstObject;
+    if (firstObject)
     {
-      LOBYTE(v7) = [v7 isAltAccount];
+      LOBYTE(firstObject) = [firstObject isAltAccount];
     }
 
-    v3->_isTinkerPairing = v7;
+    v3->_isTinkerPairing = firstObject;
   }
 
   return v3;
@@ -39,7 +39,7 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = +[BPSBridgeAppContext shared];
-  v3 = [v2 isRestoringToKnownDevice];
+  isRestoringToKnownDevice = [v2 isRestoringToKnownDevice];
 
   if (IMOSLoggingEnabled())
   {
@@ -47,7 +47,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = @"YES";
-      if (v3)
+      if (isRestoringToKnownDevice)
       {
         v5 = @"NO";
       }
@@ -58,7 +58,7 @@
     }
   }
 
-  return v3 ^ 1;
+  return isRestoringToKnownDevice ^ 1;
 }
 
 - (id)titleString
@@ -92,15 +92,15 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(CKMPRiMessageContactsTransparencyViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(CKMPRiMessageContactsTransparencyViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle

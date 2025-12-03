@@ -1,7 +1,7 @@
 @interface ONOXPathEnumerator
 - (id)allObjects;
 - (id)nextObject;
-- (id)objectAtIndex:(int64_t)a3;
+- (id)objectAtIndex:(int64_t)index;
 - (void)dealloc;
 @end
 
@@ -9,17 +9,17 @@
 
 - (id)nextObject
 {
-  v3 = [(ONOXPathEnumerator *)self cursor];
-  if (v3 >= *[(ONOXPathEnumerator *)self xmlXPath][8])
+  cursor = [(ONOXPathEnumerator *)self cursor];
+  if (cursor >= *[(ONOXPathEnumerator *)self xmlXPath][8])
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [(ONOXPathEnumerator *)self cursor];
-    [(ONOXPathEnumerator *)self setCursor:v4 + 1];
-    v5 = [(ONOXPathEnumerator *)self objectAtIndex:v4];
+    cursor2 = [(ONOXPathEnumerator *)self cursor];
+    [(ONOXPathEnumerator *)self setCursor:cursor2 + 1];
+    v5 = [(ONOXPathEnumerator *)self objectAtIndex:cursor2];
   }
 
   return v5;
@@ -53,7 +53,7 @@
   return v7;
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
   v5 = [(ONOXPathEnumerator *)self xmlXPath][8];
   if (v5)
@@ -61,15 +61,15 @@
     v5 = *[(ONOXPathEnumerator *)self xmlXPath][8];
   }
 
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(ONOXPathEnumerator *)self document];
-    v7 = [v6 elementWithNode:{*(*(-[ONOXPathEnumerator xmlXPath](self, "xmlXPath")[8] + 8) + 8 * a3)}];
+    document = [(ONOXPathEnumerator *)self document];
+    v7 = [document elementWithNode:{*(*(-[ONOXPathEnumerator xmlXPath](self, "xmlXPath")[8] + 8) + 8 * index)}];
   }
 
   return v7;

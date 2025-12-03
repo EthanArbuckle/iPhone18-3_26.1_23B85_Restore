@@ -1,6 +1,6 @@
 @interface HMDUnifiedLanguageValueListSettingDataProvider
 + (id)logCategory;
-+ (id)unifyLanguageValues:(id)a3 withValues:(id)a4;
++ (id)unifyLanguageValues:(id)values withValues:(id)withValues;
 - (HMDUnifiedLanguageValueListSettingDataProviderDataSource)dataSource;
 - (id)dataSourceDataProviders;
 - (id)languageValueList;
@@ -18,12 +18,12 @@
 - (id)languageValueList
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDUnifiedLanguageValueListSettingDataProvider *)self dataSourceDataProviders];
+  dataSourceDataProviders = [(HMDUnifiedLanguageValueListSettingDataProvider *)self dataSourceDataProviders];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v3 = [dataSourceDataProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -37,18 +37,18 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(dataSourceDataProviders);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v7) languageValueList];
-        v6 = [HMDUnifiedLanguageValueListSettingDataProvider unifyLanguageValues:v8 withValues:v9];
+        languageValueList = [*(*(&v12 + 1) + 8 * v7) languageValueList];
+        v6 = [HMDUnifiedLanguageValueListSettingDataProvider unifyLanguageValues:v8 withValues:languageValueList];
 
         ++v7;
         v8 = v6;
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [dataSourceDataProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -67,17 +67,17 @@
 - (id)dataSourceDataProviders
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUnifiedLanguageValueListSettingDataProvider *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDUnifiedLanguageValueListSettingDataProvider *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 dataProvidersForUnifiedLanguageValueListSettingDataProvider:self];
+    v5 = [dataSource dataProvidersForUnifiedLanguageValueListSettingDataProvider:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -118,16 +118,16 @@ uint64_t __61__HMDUnifiedLanguageValueListSettingDataProvider_logCategory__block
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)unifyLanguageValues:(id)a3 withValues:(id)a4
++ (id)unifyLanguageValues:(id)values withValues:(id)withValues
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a4;
-  v7 = [v5 setWithArray:a3];
-  v8 = [v7 setByAddingObjectsFromArray:v6];
+  withValuesCopy = withValues;
+  v7 = [v5 setWithArray:values];
+  v8 = [v7 setByAddingObjectsFromArray:withValuesCopy];
 
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
 @end

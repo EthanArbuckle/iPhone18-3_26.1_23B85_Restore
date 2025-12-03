@@ -1,41 +1,41 @@
 @interface IMAssistantMessageAttributeOptions
-+ (id)optionsWithAttributes:(unint64_t)a3;
-+ (id)optionsWithAttributes:(unint64_t)a3 sanitizer:(id)a4;
-- (IMAssistantMessageAttributeOptions)initWithAttributes:(unint64_t)a3 sanitizer:(id)a4;
++ (id)optionsWithAttributes:(unint64_t)attributes;
++ (id)optionsWithAttributes:(unint64_t)attributes sanitizer:(id)sanitizer;
+- (IMAssistantMessageAttributeOptions)initWithAttributes:(unint64_t)attributes sanitizer:(id)sanitizer;
 @end
 
 @implementation IMAssistantMessageAttributeOptions
 
-- (IMAssistantMessageAttributeOptions)initWithAttributes:(unint64_t)a3 sanitizer:(id)a4
+- (IMAssistantMessageAttributeOptions)initWithAttributes:(unint64_t)attributes sanitizer:(id)sanitizer
 {
-  v6 = a4;
+  sanitizerCopy = sanitizer;
   v9.receiver = self;
   v9.super_class = IMAssistantMessageAttributeOptions;
   v7 = [(IMAssistantMessageAttributeOptions *)&v9 init];
   if (v7)
   {
-    if (v6)
+    if (sanitizerCopy)
     {
-      a3 = [v6 sanitize:a3];
+      attributes = [sanitizerCopy sanitize:attributes];
     }
 
-    v7->_attributes = a3;
+    v7->_attributes = attributes;
   }
 
   return v7;
 }
 
-+ (id)optionsWithAttributes:(unint64_t)a3
++ (id)optionsWithAttributes:(unint64_t)attributes
 {
-  v3 = [[a1 alloc] initWithAttributes:a3];
+  v3 = [[self alloc] initWithAttributes:attributes];
 
   return v3;
 }
 
-+ (id)optionsWithAttributes:(unint64_t)a3 sanitizer:(id)a4
++ (id)optionsWithAttributes:(unint64_t)attributes sanitizer:(id)sanitizer
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithAttributes:a3 sanitizer:v6];
+  sanitizerCopy = sanitizer;
+  v7 = [[self alloc] initWithAttributes:attributes sanitizer:sanitizerCopy];
 
   return v7;
 }

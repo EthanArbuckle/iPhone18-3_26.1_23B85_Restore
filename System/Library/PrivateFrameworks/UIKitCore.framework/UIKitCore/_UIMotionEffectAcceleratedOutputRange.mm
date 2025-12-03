@@ -1,14 +1,14 @@
 @interface _UIMotionEffectAcceleratedOutputRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)acceleration;
-- (UIOffset)acceleratedOutputForViewerOffset:(UIOffset)a3 accelerationBoostFactor:(CGPoint)a4;
+- (UIOffset)acceleratedOutputForViewerOffset:(UIOffset)offset accelerationBoostFactor:(CGPoint)factor;
 - (_UIMotionEffectAcceleratedOutputRange)init;
-- (_UIMotionEffectAcceleratedOutputRange)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIMotionEffectAcceleratedOutputRange)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
-- (void)setAcceleration:(CGPoint)a3 fixingOutputForViewerOffset:(UIOffset)a4;
+- (void)setAcceleration:(CGPoint)acceleration fixingOutputForViewerOffset:(UIOffset)offset;
 @end
 
 @implementation _UIMotionEffectAcceleratedOutputRange
@@ -37,9 +37,9 @@
   self->_referenceOffset.vertical = 0.0;
 }
 
-- (_UIMotionEffectAcceleratedOutputRange)initWithCoder:(id)a3
+- (_UIMotionEffectAcceleratedOutputRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _UIMotionEffectAcceleratedOutputRange;
   v5 = [(_UIMotionEffectAcceleratedOutputRange *)&v15 init];
@@ -47,13 +47,13 @@
   if (v5)
   {
     [(_UIMotionEffectAcceleratedOutputRange *)v5 reset];
-    [v4 decodeUIOffsetForKey:@"UIReferenceOffset"];
+    [coderCopy decodeUIOffsetForKey:@"UIReferenceOffset"];
     v6->_referenceOffset.horizontal = v7;
     v6->_referenceOffset.vertical = v8;
-    [v4 decodeCGPointForKey:@"UIReferenceAcceleration"];
+    [coderCopy decodeCGPointForKey:@"UIReferenceAcceleration"];
     v6->_referenceAcceleration.x = v9;
     v6->_referenceAcceleration.y = v10;
-    [v4 decodeCGPointForKey:@"UIAcceleration"];
+    [coderCopy decodeCGPointForKey:@"UIAcceleration"];
     v6->_acceleration.x = v11;
     v6->_acceleration.y = v12;
     v13 = v6;
@@ -62,23 +62,23 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   horizontal = self->_referenceOffset.horizontal;
   vertical = self->_referenceOffset.vertical;
-  v6 = a3;
-  [v6 encodeUIOffset:@"UIReferenceOffset" forKey:{horizontal, vertical}];
-  [v6 encodeCGPoint:@"UIReferenceAcceleration" forKey:{self->_referenceAcceleration.x, self->_referenceAcceleration.y}];
-  [v6 encodeCGPoint:@"UIAcceleration" forKey:{self->_acceleration.x, self->_acceleration.y}];
+  coderCopy = coder;
+  [coderCopy encodeUIOffset:@"UIReferenceOffset" forKey:{horizontal, vertical}];
+  [coderCopy encodeCGPoint:@"UIReferenceAcceleration" forKey:{self->_referenceAcceleration.x, self->_referenceAcceleration.y}];
+  [coderCopy encodeCGPoint:@"UIAcceleration" forKey:{self->_acceleration.x, self->_acceleration.y}];
 }
 
-- (void)setAcceleration:(CGPoint)a3 fixingOutputForViewerOffset:(UIOffset)a4
+- (void)setAcceleration:(CGPoint)acceleration fixingOutputForViewerOffset:(UIOffset)offset
 {
-  vertical = a4.vertical;
-  horizontal = a4.horizontal;
-  y = a3.y;
-  x = a3.x;
-  _AssertPointComponentsArePositive(a3.x, a3.y);
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
+  y = acceleration.y;
+  x = acceleration.x;
+  _AssertPointComponentsArePositive(acceleration.x, acceleration.y);
   v9 = self->_acceleration.x;
   if (vabdd_f64(x, v9) >= 2.22044605e-16)
   {
@@ -97,13 +97,13 @@
   self->_acceleration.y = y;
 }
 
-- (UIOffset)acceleratedOutputForViewerOffset:(UIOffset)a3 accelerationBoostFactor:(CGPoint)a4
+- (UIOffset)acceleratedOutputForViewerOffset:(UIOffset)offset accelerationBoostFactor:(CGPoint)factor
 {
-  y = a4.y;
-  x = a4.x;
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
-  _AssertPointComponentsArePositive(a4.x, a4.y);
+  y = factor.y;
+  x = factor.x;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
+  _AssertPointComponentsArePositive(factor.x, factor.y);
   v5.f64[0] = x;
   v5.f64[1] = y;
   __asm { FMOV            V0.2D, #1.0 }
@@ -136,13 +136,13 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_referenceAcceleration.x == v5[3] && self->_referenceAcceleration.y == v5[4];
     v8 = v6 && (self->_referenceOffset.horizontal == v5[1] ? (v7 = self->_referenceOffset.vertical == v5[2]) : (v7 = 0), v7) && self->_acceleration.y == v5[6] && self->_acceleration.x == v5[5];
   }
@@ -155,7 +155,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(_UIMotionEffectAcceleratedOutputRange);
   *(result + 8) = self->_referenceOffset;

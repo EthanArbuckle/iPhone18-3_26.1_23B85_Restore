@@ -53,8 +53,8 @@
 + (id)hk_gregorianCalendarWithLocalTimeZone
 {
   v0 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v1 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v0 setTimeZone:v1];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v0 setTimeZone:localTimeZone];
 
   return v0;
 }
@@ -71,8 +71,8 @@
 + (id)hk_gregorianCalendarWithFirstWeekdayFromRegion
 {
   v0 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v1 = [MEMORY[0x1E695DF58] currentLocale];
-  v2 = [v1 objectForKey:*MEMORY[0x1E695D958]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v2 = [currentLocale objectForKey:*MEMORY[0x1E695D958]];
   [v0 setFirstWeekday:{objc_msgSend(v2, "firstWeekday")}];
 
   return v0;
@@ -82,11 +82,11 @@
 {
   v3 = MEMORY[0x1E695DEE8];
   v4 = a3;
-  v5 = [v3 hk_gregorianCalendarWithLocalTimeZone];
-  v6 = [v5 hk_dateOfBirthDateComponentsWithDate:v4];
+  hk_gregorianCalendarWithLocalTimeZone = [v3 hk_gregorianCalendarWithLocalTimeZone];
+  v6 = [hk_gregorianCalendarWithLocalTimeZone hk_dateOfBirthDateComponentsWithDate:v4];
 
-  v7 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-  [v6 setCalendar:v7];
+  hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+  [v6 setCalendar:hk_gregorianCalendar];
 
   return v6;
 }
@@ -95,27 +95,27 @@
 {
   v3 = MEMORY[0x1E695DEE8];
   v4 = a3;
-  v5 = [v3 hk_gregorianCalendarWithUTCTimeZone];
-  v6 = [v5 hk_dateOfBirthDateComponentsWithDate:v4];
+  hk_gregorianCalendarWithUTCTimeZone = [v3 hk_gregorianCalendarWithUTCTimeZone];
+  v6 = [hk_gregorianCalendarWithUTCTimeZone hk_dateOfBirthDateComponentsWithDate:v4];
 
-  v7 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-  [v6 setCalendar:v7];
+  hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+  [v6 setCalendar:hk_gregorianCalendar];
 
   return v6;
 }
 
 - (id)hk_dateOfBirthDateComponentsWithDate:()HKCalendar
 {
-  v4 = [a1 components:30 fromDate:a3];
-  [v4 setCalendar:a1];
+  v4 = [self components:30 fromDate:a3];
+  [v4 setCalendar:self];
 
   return v4;
 }
 
 - (id)hk_startOfDateByAddingDays:()HKCalendar toDate:
 {
-  v5 = [a1 dateByAddingUnit:16 value:a3 toDate:a4 options:0];
-  v6 = [a1 startOfDayForDate:v5];
+  v5 = [self dateByAddingUnit:16 value:a3 toDate:a4 options:0];
+  v6 = [self startOfDayForDate:v5];
 
   return v6;
 }
@@ -123,7 +123,7 @@
 - (id)hk_startOfFitnessWeekBeforeDate:()HKCalendar
 {
   v4 = a3;
-  v5 = [a1 hk_startOfWeekWithFirstWeekday:HKFirstDayOfWeekForWeeklyGoalCalculations() beforeDate:v4 addingWeeks:0];
+  v5 = [self hk_startOfWeekWithFirstWeekday:HKFirstDayOfWeekForWeeklyGoalCalculations() beforeDate:v4 addingWeeks:0];
 
   return v5;
 }
@@ -131,15 +131,15 @@
 - (id)hk_startOfWeekWithFirstWeekday:()HKCalendar beforeDate:addingWeeks:
 {
   v8 = a4;
-  v9 = [a1 component:512 fromDate:v8];
-  v10 = [a1 dateByAddingUnit:16 value:7 * ((v9 - a3 + 7) / 7) - (v9 - a3 + 7) toDate:v8 options:0];
+  v9 = [self component:512 fromDate:v8];
+  v10 = [self dateByAddingUnit:16 value:7 * ((v9 - a3 + 7) / 7) - (v9 - a3 + 7) toDate:v8 options:0];
 
-  v11 = [a1 startOfDayForDate:v10];
+  v11 = [self startOfDayForDate:v10];
 
   if (a5)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    [v12 setCalendar:a1];
+    [v12 setCalendar:self];
     [v12 setWeekOfYear:1];
     v13 = [v12 hk_dateByAddingInterval:a5 toDate:v11];
 
@@ -152,19 +152,19 @@
 - (id)hk_weeksContainingInterval:()HKCalendar firstWeekday:
 {
   v6 = a3;
-  v7 = [v6 startDate];
-  v8 = [a1 hk_startOfWeekWithFirstWeekday:a4 beforeDate:v7 addingWeeks:0];
+  startDate = [v6 startDate];
+  v8 = [self hk_startOfWeekWithFirstWeekday:a4 beforeDate:startDate addingWeeks:0];
 
-  v9 = [v6 endDate];
-  v10 = [a1 hk_startOfWeekWithFirstWeekday:a4 beforeDate:v9 addingWeeks:0];
+  endDate = [v6 endDate];
+  v10 = [self hk_startOfWeekWithFirstWeekday:a4 beforeDate:endDate addingWeeks:0];
 
-  v11 = [v6 endDate];
-  v12 = [v10 hk_isBeforeDate:v11];
+  endDate2 = [v6 endDate];
+  v12 = [v10 hk_isBeforeDate:endDate2];
 
   if (v12)
   {
-    v13 = [v6 endDate];
-    v14 = [a1 hk_startOfWeekWithFirstWeekday:a4 beforeDate:v13 addingWeeks:1];
+    endDate3 = [v6 endDate];
+    v14 = [self hk_startOfWeekWithFirstWeekday:a4 beforeDate:endDate3 addingWeeks:1];
 
     v10 = v14;
   }
@@ -176,7 +176,7 @@
 
 - (id)hk_startOfMinuteForDate:()HKCalendar moduloMinutes:addingModuloCount:
 {
-  v8 = [a1 components:126 fromDate:a3];
+  v8 = [self components:126 fromDate:a3];
   v9 = v8;
   if (a4 < 1)
   {
@@ -189,11 +189,11 @@
   }
 
   [v8 setMinute:{objc_msgSend(v8, "minute") / a4 * a4}];
-  v10 = [a1 dateFromComponents:v9];
+  v10 = [self dateFromComponents:v9];
   if (a5)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    [v11 setCalendar:a1];
+    [v11 setCalendar:self];
     [v11 setMinute:a4];
     v12 = [v11 hk_dateByAddingInterval:a5 toDate:v10];
 
@@ -205,12 +205,12 @@
 
 - (id)hk_startOfHourForDate:()HKCalendar addingHours:
 {
-  v6 = [a1 components:62 fromDate:a3];
-  v7 = [a1 dateFromComponents:v6];
+  v6 = [self components:62 fromDate:a3];
+  v7 = [self dateFromComponents:v6];
   if (a4)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    [v8 setCalendar:a1];
+    [v8 setCalendar:self];
     [v8 setHour:1];
     v9 = [v8 hk_dateByAddingInterval:a4 toDate:v7];
 
@@ -222,7 +222,7 @@
 
 - (id)hk_startOfHourForDate:()HKCalendar moduloHours:addingModuloCount:
 {
-  v8 = [a1 components:62 fromDate:a3];
+  v8 = [self components:62 fromDate:a3];
   v9 = v8;
   if (a4 < 1)
   {
@@ -235,11 +235,11 @@
   }
 
   [v8 setHour:{objc_msgSend(v8, "hour") / a4 * a4}];
-  v10 = [a1 dateFromComponents:v9];
+  v10 = [self dateFromComponents:v9];
   if (a5)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    [v11 setCalendar:a1];
+    [v11 setCalendar:self];
     [v11 setHour:a4];
     v12 = [v11 hk_dateByAddingInterval:a5 toDate:v10];
 
@@ -251,19 +251,19 @@
 
 - (id)hk_startOfMonthForDate:()HKCalendar
 {
-  v4 = [a1 components:14 fromDate:a3];
-  v5 = [a1 dateFromComponents:v4];
+  v4 = [self components:14 fromDate:a3];
+  v5 = [self dateFromComponents:v4];
 
   return v5;
 }
 
 - (id)hk_startOfMonthForDate:()HKCalendar addingMonths:
 {
-  v6 = [a1 hk_startOfMonthForDate:?];
+  v6 = [self hk_startOfMonthForDate:?];
   if (a4)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    [v7 setCalendar:a1];
+    [v7 setCalendar:self];
     [v7 setMonth:1];
     v8 = [v7 hk_dateByAddingInterval:a4 toDate:v6];
 
@@ -275,12 +275,12 @@
 
 - (id)hk_startOfYearForDate:()HKCalendar addingYears:
 {
-  v6 = [a1 components:6 fromDate:a3];
-  v7 = [a1 dateFromComponents:v6];
+  v6 = [self components:6 fromDate:a3];
+  v7 = [self dateFromComponents:v6];
   if (a4)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    [v8 setCalendar:a1];
+    [v8 setCalendar:self];
     [v8 setYear:1];
     v9 = [v8 hk_dateByAddingInterval:a4 toDate:v7];
 
@@ -294,9 +294,9 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 startOfDayForDate:v4];
+  v5 = [self startOfDayForDate:v4];
   v11[0] = v5;
-  v6 = [a1 hk_startOfDateByAddingDays:1 toDate:v4];
+  v6 = [self hk_startOfDateByAddingDays:1 toDate:v4];
   v11[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v8 = [v4 hk_nearestDate:v7];
@@ -310,8 +310,8 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 hk_startOfWeekWithFirstWeekday:a3 beforeDate:v6 addingWeeks:0];
-  v8 = [a1 hk_startOfDateByAddingDays:7 toDate:v7];
+  v7 = [self hk_startOfWeekWithFirstWeekday:a3 beforeDate:v6 addingWeeks:0];
+  v8 = [self hk_startOfDateByAddingDays:7 toDate:v7];
   v13[0] = v7;
   v13[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
@@ -326,11 +326,11 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 hk_startOfMonthForDate:v4];
+  v5 = [self hk_startOfMonthForDate:v4];
   v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v6 setCalendar:a1];
+  [v6 setCalendar:self];
   [v6 setMonth:1];
-  v7 = [a1 dateByAddingComponents:v6 toDate:v5 options:0];
+  v7 = [self dateByAddingComponents:v6 toDate:v5 options:0];
   v12[0] = v5;
   v12[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
@@ -343,14 +343,14 @@
 
 - (id)hk_sixMonthPeriodContaining:()HKCalendar dateBefore:
 {
-  v6 = [a1 components:24578 fromDate:a3];
+  v6 = [self components:24578 fromDate:a3];
   v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v7 setEra:{objc_msgSend(v6, "era")}];
   [v7 setYearForWeekOfYear:{objc_msgSend(v6, "yearForWeekOfYear")}];
-  v8 = [v6 weekOfYear];
+  weekOfYear = [v6 weekOfYear];
   if (a4)
   {
-    if (v8 <= 26)
+    if (weekOfYear <= 26)
     {
       v9 = 1;
     }
@@ -361,7 +361,7 @@
     }
   }
 
-  else if (v8 < 27)
+  else if (weekOfYear < 27)
   {
     v9 = 27;
   }
@@ -373,7 +373,7 @@
   }
 
   [v7 setWeekOfYear:v9];
-  v10 = [a1 dateFromComponents:v7];
+  v10 = [self dateFromComponents:v7];
 
   return v10;
 }
@@ -381,11 +381,11 @@
 - (id)hk_firstDateWithHour:()HKCalendar minute:afterDate:
 {
   v8 = a5;
-  v9 = [a1 dateBySettingHour:a3 minute:a4 second:0 ofDate:v8 options:0];
+  v9 = [self dateBySettingHour:a3 minute:a4 second:0 ofDate:v8 options:0];
   if ([v9 hk_isBeforeDate:v8])
   {
-    v10 = [a1 dateByAddingUnit:16 value:1 toDate:v8 options:0];
-    v11 = [a1 dateBySettingHour:a3 minute:a4 second:0 ofDate:v10 options:0];
+    v10 = [self dateByAddingUnit:16 value:1 toDate:v8 options:0];
+    v11 = [self dateBySettingHour:a3 minute:a4 second:0 ofDate:v10 options:0];
 
     v9 = v11;
   }
@@ -395,8 +395,8 @@
 
 - (id)hk_weekendDays
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [a1 _hk_weekendDaysForDate:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [self _hk_weekendDaysForDate:date];
 
   return v3;
 }
@@ -408,16 +408,16 @@
   v6 = 7;
   do
   {
-    if ([a1 isDateInWeekend:v4])
+    if ([self isDateInWeekend:v4])
     {
-      v7 = [a1 components:512 fromDate:v4];
-      v8 = [v7 weekday];
+      v7 = [self components:512 fromDate:v4];
+      weekday = [v7 weekday];
 
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:weekday];
       [v5 addObject:v9];
     }
 
-    v10 = [a1 hk_dateByAddingDays:1 toDate:v4];
+    v10 = [self hk_dateByAddingDays:1 toDate:v4];
 
     v4 = v10;
     --v6;
@@ -431,13 +431,13 @@
 - (id)hk_nearestNoonBeforeDateOrEqualToDate:()HKCalendar
 {
   v4 = a3;
-  v5 = [a1 startOfDayForDate:v4];
-  v6 = [a1 dateBySettingHour:12 minute:0 second:0 ofDate:v5 options:0];
+  v5 = [self startOfDayForDate:v4];
+  v6 = [self dateBySettingHour:12 minute:0 second:0 ofDate:v5 options:0];
   v7 = [v4 hk_isBeforeDate:v6];
 
   if (v7)
   {
-    v8 = [a1 dateByAddingUnit:16 value:-1 toDate:v6 options:0];
+    v8 = [self dateByAddingUnit:16 value:-1 toDate:v6 options:0];
 
     v6 = v8;
   }
@@ -448,7 +448,7 @@
 - (double)hk_timeIntervalSinceStartOfDayForDate:()HKCalendar
 {
   v4 = a3;
-  v5 = [a1 startOfDayForDate:v4];
+  v5 = [self startOfDayForDate:v4];
   [v4 timeIntervalSinceDate:v5];
   v7 = v6;
 
@@ -459,10 +459,10 @@
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 hk_gregorianCalendarWithUTCTimeZone];
-  v7 = [a1 components:254 fromDate:v5];
+  hk_gregorianCalendarWithUTCTimeZone = [v4 hk_gregorianCalendarWithUTCTimeZone];
+  v7 = [self components:254 fromDate:v5];
 
-  v8 = [v6 dateFromComponents:v7];
+  v8 = [hk_gregorianCalendarWithUTCTimeZone dateFromComponents:v7];
 
   return v8;
 }
@@ -471,10 +471,10 @@
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 hk_gregorianCalendarWithUTCTimeZone];
-  v7 = [v6 components:254 fromDate:v5];
+  hk_gregorianCalendarWithUTCTimeZone = [v4 hk_gregorianCalendarWithUTCTimeZone];
+  v7 = [hk_gregorianCalendarWithUTCTimeZone components:254 fromDate:v5];
 
-  v8 = [a1 dateFromComponents:v7];
+  v8 = [self dateFromComponents:v7];
 
   return v8;
 }
@@ -488,7 +488,7 @@
   [v15 setHour:a6];
   [v15 setMinute:a7];
   [v15 setSecond:a8];
-  v16 = [a1 dateFromComponents:v15];
+  v16 = [self dateFromComponents:v15];
 
   return v16;
 }
@@ -498,20 +498,20 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v8 startDate];
+  startDate = [v8 startDate];
   v21 = 0;
-  v12 = [v8 endDate];
-  v13 = [v11 hk_isBeforeDate:v12];
+  endDate = [v8 endDate];
+  v13 = [startDate hk_isBeforeDate:endDate];
 
   if (v13)
   {
     while (1)
     {
-      v14 = [a1 dateByAddingComponents:v9 toDate:v11 options:0];
+      v14 = [self dateByAddingComponents:v9 toDate:startDate options:0];
       v15 = objc_alloc(MEMORY[0x1E696AB80]);
-      v16 = [v8 endDate];
-      v17 = HKDateMin(v14, v16);
-      v18 = [v15 initWithStartDate:v11 endDate:v17];
+      endDate2 = [v8 endDate];
+      v17 = HKDateMin(v14, endDate2);
+      v18 = [v15 initWithStartDate:startDate endDate:v17];
       v10[2](v10, v18, &v21);
 
       if (v21 == 1)
@@ -519,10 +519,10 @@
         break;
       }
 
-      v19 = [v8 endDate];
-      v20 = [v14 hk_isBeforeDate:v19];
+      endDate3 = [v8 endDate];
+      v20 = [v14 hk_isBeforeDate:endDate3];
 
-      v11 = v14;
+      startDate = v14;
       if ((v20 & 1) == 0)
       {
         goto LABEL_7;
@@ -530,15 +530,15 @@
     }
   }
 
-  v14 = v11;
+  v14 = startDate;
 LABEL_7:
 }
 
 - (double)hk_lengthOfDayForDate:()HKCalendar
 {
-  v2 = [a1 startOfDayForDate:?];
-  v3 = [MEMORY[0x1E695DF10] hk_oneDay];
-  v4 = [a1 dateByAddingComponents:v3 toDate:v2 options:0];
+  v2 = [self startOfDayForDate:?];
+  hk_oneDay = [MEMORY[0x1E695DF10] hk_oneDay];
+  v4 = [self dateByAddingComponents:hk_oneDay toDate:v2 options:0];
 
   [v4 timeIntervalSinceDate:v2];
   v6 = v5;
@@ -559,23 +559,23 @@ LABEL_7:
     v2 = hk_timeZoneDependentReferenceDate___referenceDateCache;
   }
 
-  v5 = [a1 timeZone];
-  v6 = [v2 objectForKey:v5];
+  timeZone = [self timeZone];
+  v6 = [v2 objectForKey:timeZone];
 
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-    v8 = [a1 timeZone];
-    [v7 setTimeZone:v8];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    timeZone2 = [self timeZone];
+    [hk_gregorianCalendar setTimeZone:timeZone2];
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v9 setYear:2001];
     [v9 setMonth:1];
     [v9 setDay:1];
-    v6 = [v7 dateFromComponents:v9];
+    v6 = [hk_gregorianCalendar dateFromComponents:v9];
     v10 = hk_timeZoneDependentReferenceDate___referenceDateCache;
-    v11 = [a1 timeZone];
-    [v10 setObject:v6 forKey:v11];
+    timeZone3 = [self timeZone];
+    [v10 setObject:v6 forKey:timeZone3];
   }
 
   os_unfair_lock_unlock(&hk_timeZoneDependentReferenceDate___referenceDateCacheLock);
@@ -594,12 +594,12 @@ LABEL_7:
     _hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate_calendarUnit____valueSinceReferenceDateCache = v7;
   }
 
-  v9 = [[_HKDateCalendarUnitKey alloc] initWithDate:v6 calendar:a1 unit:a4];
+  v9 = [[_HKDateCalendarUnitKey alloc] initWithDate:v6 calendar:self unit:a4];
   v10 = [_hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate_calendarUnit____valueSinceReferenceDateCache objectForKey:v9];
   if (!v10)
   {
-    v11 = [a1 hk_timeZoneDependentReferenceDate];
-    v12 = [a1 components:a4 fromDate:v11 toDate:v6 options:0];
+    hk_timeZoneDependentReferenceDate = [self hk_timeZoneDependentReferenceDate];
+    v12 = [self components:a4 fromDate:hk_timeZoneDependentReferenceDate toDate:v6 options:0];
 
     v13 = [v12 valueForComponent:a4];
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
@@ -607,9 +607,9 @@ LABEL_7:
   }
 
   os_unfair_lock_unlock(&_hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate_calendarUnit____valueSinceReferenceDateLock);
-  v14 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  return v14;
+  return integerValue;
 }
 
 - (double)_hk_cachedLengthOfUnitForUnitStartDate:()HKCalendar calendarUnit:
@@ -623,18 +623,18 @@ LABEL_7:
     _hk_cachedLengthOfUnitForUnitStartDate_calendarUnit____lengthOfUnitCache = v8;
   }
 
-  v10 = [[_HKDateCalendarUnitKey alloc] initWithDate:v7 calendar:a1 unit:a4];
+  v10 = [[_HKDateCalendarUnitKey alloc] initWithDate:v7 calendar:self unit:a4];
   v11 = [_hk_cachedLengthOfUnitForUnitStartDate_calendarUnit____lengthOfUnitCache objectForKey:v10];
   if (!v11)
   {
     v12 = [MEMORY[0x1E695DF10] hk_dateComponentsForCalendarUnit:a4];
-    v13 = [a1 dateByAddingComponents:v12 toDate:v7 options:0];
+    v13 = [self dateByAddingComponents:v12 toDate:v7 options:0];
 
     [v13 timeIntervalSinceDate:v7];
     v15 = v14;
     if (v14 <= 2.22044605e-16)
     {
-      [(NSCalendar(HKCalendar) *)a2 _hk_cachedLengthOfUnitForUnitStartDate:a1 calendarUnit:a4, v7];
+      [(NSCalendar(HKCalendar) *)a2 _hk_cachedLengthOfUnitForUnitStartDate:self calendarUnit:a4, v7];
     }
 
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
@@ -654,20 +654,20 @@ LABEL_7:
   switch(a4)
   {
     case 8:
-      v8 = [a1 hk_startOfMonthForDate:v7];
+      v8 = [self hk_startOfMonthForDate:v7];
       goto LABEL_7;
     case 32:
-      v8 = [a1 hk_startOfHourForDate:v7 addingHours:0];
+      v8 = [self hk_startOfHourForDate:v7 addingHours:0];
       goto LABEL_7;
     case 16:
-      v8 = [a1 startOfDayForDate:v7];
+      v8 = [self startOfDayForDate:v7];
 LABEL_7:
       v9 = v8;
       goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:a1 file:@"NSCalendar+HKCalendar.m" lineNumber:526 description:@"Unsuppored calendar unit."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSCalendar+HKCalendar.m" lineNumber:526 description:@"Unsuppored calendar unit."];
 
   v9 = 0;
 LABEL_9:
@@ -678,11 +678,11 @@ LABEL_9:
 - (BOOL)hk_isDate:()HKCalendar withinNumberOfCalendarDays:ofDate:
 {
   v8 = a5;
-  v9 = [a1 hk_startOfUnitForDate:a3 calendarUnit:16];
-  v10 = [a1 _hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate:v9 calendarUnit:16];
-  v11 = [a1 hk_startOfUnitForDate:v8 calendarUnit:16];
+  v9 = [self hk_startOfUnitForDate:a3 calendarUnit:16];
+  v10 = [self _hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate:v9 calendarUnit:16];
+  v11 = [self hk_startOfUnitForDate:v8 calendarUnit:16];
 
-  v12 = [a1 _hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate:v11 calendarUnit:16];
+  v12 = [self _hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate:v11 calendarUnit:16];
   v13 = v10 - v12;
   if (v10 - v12 < 0)
   {
@@ -700,12 +700,12 @@ LABEL_9:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [NSCalendar(HKCalendar) hk_durationSinceReferenceDateForDate:a2 calendarUnit:a1];
+    [NSCalendar(HKCalendar) hk_durationSinceReferenceDateForDate:a2 calendarUnit:self];
   }
 
-  v8 = [a1 hk_startOfUnitForDate:v7 calendarUnit:a4];
-  v9 = [a1 _hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate:v8 calendarUnit:a4];
-  [a1 _hk_cachedLengthOfUnitForUnitStartDate:v8 calendarUnit:a4];
+  v8 = [self hk_startOfUnitForDate:v7 calendarUnit:a4];
+  v9 = [self _hk_cachedValueSinceTimeZoneDependentReferenceDateForUnitStartDate:v8 calendarUnit:a4];
+  [self _hk_cachedLengthOfUnitForUnitStartDate:v8 calendarUnit:a4];
   v11 = v10;
   [v7 timeIntervalSinceReferenceDate];
   v13 = v12;
@@ -718,10 +718,10 @@ LABEL_9:
 - (id)hk_dateWithDurationSinceReferenceDate:()HKCalendar calendarUnit:
 {
   v6 = *a2.i64;
-  v7 = [a1 hk_timeZoneDependentReferenceDate];
-  v8 = [a1 dateByAddingUnit:a4 value:v6 toDate:v7 options:0];
+  hk_timeZoneDependentReferenceDate = [self hk_timeZoneDependentReferenceDate];
+  v8 = [self dateByAddingUnit:a4 value:v6 toDate:hk_timeZoneDependentReferenceDate options:0];
 
-  [a1 _hk_cachedLengthOfUnitForUnitStartDate:v8 calendarUnit:a4];
+  [self _hk_cachedLengthOfUnitForUnitStartDate:v8 calendarUnit:a4];
   *v9.i64 = *a2.i64 - trunc(*a2.i64);
   v10.f64[0] = NAN;
   v10.f64[1] = NAN;

@@ -1,18 +1,18 @@
 @interface AWSampleLogger
 + (id)sharedLogger;
-+ (void)client:(id)a3 attentionStateChange:(BOOL)a4;
-+ (void)client:(id)a3 event:(id)a4;
-+ (void)client:(id)a3 pollEventType:(unint64_t)a4 event:(id)a5;
++ (void)client:(id)client attentionStateChange:(BOOL)change;
++ (void)client:(id)client event:(id)event;
++ (void)client:(id)client pollEventType:(unint64_t)type event:(id)event;
 - (AWSampleLogger)init;
 - (void)_logFeatureEnablement;
 - (void)_outputPowerLog;
 - (void)outputPowerLog;
-- (void)powerLogName:(id)a3 event:(id)a4;
-- (void)sampleStartedWithDeadline:(unint64_t)a3;
+- (void)powerLogName:(id)name event:(id)event;
+- (void)sampleStartedWithDeadline:(unint64_t)deadline;
 - (void)sampleSucceeded;
-- (void)shouldSample:(BOOL)a3;
-- (void)streamingCompleteWithidentifier:(id)a3 duration:(unint64_t)a4 ERActivated:(BOOL)a5;
-- (void)updateDataForClient:(id)a3 deadline:(unint64_t)a4;
+- (void)shouldSample:(BOOL)sample;
+- (void)streamingCompleteWithidentifier:(id)withidentifier duration:(unint64_t)duration ERActivated:(BOOL)activated;
+- (void)updateDataForClient:(id)client deadline:(unint64_t)deadline;
 @end
 
 @implementation AWSampleLogger
@@ -108,12 +108,12 @@ LABEL_23:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sampleStartedWithDeadline:(unint64_t)a3
+- (void)sampleStartedWithDeadline:(unint64_t)deadline
 {
   v30[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   ++self->_samplesRequested;
-  if (!a3)
+  if (!deadline)
   {
     if (currentLogLevel < 7)
     {
@@ -170,7 +170,7 @@ LABEL_29:
 
   ++self->_pollsRequested;
   v29 = @"deadline";
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:deadline];
   v30[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
 
@@ -229,9 +229,9 @@ LABEL_30:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)shouldSample:(BOOL)a3
+- (void)shouldSample:(BOOL)sample
 {
-  v38 = a3;
+  sampleCopy = sample;
   v59 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   v44 = 0u;
@@ -268,8 +268,8 @@ LABEL_30:
         [v8 setCumulativeSamplingTime:{objc_msgSend(v8, "cumulativeSamplingTime") + v10}];
         [v8 setSamplingStartTime:0];
         v56[0] = @"identifier";
-        v11 = [v8 identifier];
-        v57[0] = v11;
+        identifier = [v8 identifier];
+        v57[0] = identifier;
         v56[1] = @"samplingInterval";
         v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "samplingInterval")}];
         v57[1] = v12;
@@ -280,8 +280,8 @@ LABEL_30:
         v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "sampleSucceeded")}];
         v57[3] = v14;
         v56[4] = @"sampleDuration";
-        v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10 / 0xF4240];
-        v57[4] = v15;
+        0xF4240 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10 / 0xF4240];
+        v57[4] = 0xF4240;
         v56[5] = @"activateMotionDetect";
         v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "activateMotionDetect")}];
         v57[5] = v16;
@@ -357,7 +357,7 @@ LABEL_21:
   objc_storeStrong(&self->_addedClientLogData, outstandingClientLogData);
   [(NSMutableSet *)self->_addedClientLogData removeAllObjects];
   samplingStartTime = self->_samplingStartTime;
-  if (v38)
+  if (sampleCopy)
   {
     if (!samplingStartTime)
     {
@@ -468,26 +468,26 @@ LABEL_52:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateDataForClient:(id)a3 deadline:(unint64_t)a4
+- (void)updateDataForClient:(id)client deadline:(unint64_t)deadline
 {
   v37[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
-  if (a4)
+  if (deadline)
   {
-    v7 = 0;
+    samplingInterval = 0;
   }
 
   else
   {
-    v7 = [v6 samplingInterval];
+    samplingInterval = [clientCopy samplingInterval];
   }
 
-  v8 = [v6 identifier];
-  v37[0] = v8;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v7];
+  identifier = [clientCopy identifier];
+  v37[0] = identifier;
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:samplingInterval];
   v37[1] = v9;
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:a4 != 0];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:deadline != 0];
   v37[2] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:3];
 
@@ -495,12 +495,12 @@ LABEL_52:
   if (!v12)
   {
     v12 = objc_alloc_init(AWSampleLogData);
-    v13 = [v6 identifier];
-    [(AWSampleLogData *)v12 setIdentifier:v13];
+    identifier2 = [clientCopy identifier];
+    [(AWSampleLogData *)v12 setIdentifier:identifier2];
 
-    [(AWSampleLogData *)v12 setSamplingInterval:v7];
-    [(AWSampleLogData *)v12 setPollingClient:a4 != 0];
-    -[AWSampleLogData setActivateMotionDetect:](v12, "setActivateMotionDetect:", [v6 activateMotionDetect]);
+    [(AWSampleLogData *)v12 setSamplingInterval:samplingInterval];
+    [(AWSampleLogData *)v12 setPollingClient:deadline != 0];
+    -[AWSampleLogData setActivateMotionDetect:](v12, "setActivateMotionDetect:", [clientCopy activateMotionDetect]);
     [(NSMutableDictionary *)self->_clientLogData setObject:v12 forKeyedSubscript:v11];
   }
 
@@ -512,8 +512,8 @@ LABEL_52:
 
   [(AWSampleLogData *)v12 setSamplingStartTime:absTimeNS()];
   v35[0] = @"identifier";
-  v14 = [(AWSampleLogData *)v12 identifier];
-  v36[0] = v14;
+  identifier3 = [(AWSampleLogData *)v12 identifier];
+  v36[0] = identifier3;
   v35[1] = @"samplingInterval";
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AWSampleLogData samplingInterval](v12, "samplingInterval")}];
   v36[1] = v15;
@@ -521,7 +521,7 @@ LABEL_52:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[AWSampleLogData pollingClient](v12, "pollingClient")}];
   v36[2] = v16;
   v35[3] = @"pollingDeadline";
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:deadline];
   v36[3] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:4];
 
@@ -582,19 +582,19 @@ LABEL_21:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)powerLogName:(id)a3 event:(id)a4
+- (void)powerLogName:(id)name event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  eventCopy = event;
   powerLogQueue = self->_powerLogQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __37__AWSampleLogger_powerLogName_event___block_invoke;
   v11[3] = &unk_1E7F38060;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = eventCopy;
+  v9 = eventCopy;
+  v10 = nameCopy;
   dispatch_async(powerLogQueue, v11);
 }
 
@@ -766,7 +766,7 @@ LABEL_34:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v30 = self;
+  selfCopy = self;
   obj = [(NSMutableDictionary *)self->_clientLogData allValues];
   v3 = [obj countByEnumeratingWithState:&v31 objects:v41 count:16];
   v4 = 0x1E696A000uLL;
@@ -793,20 +793,20 @@ LABEL_34:
           if ([v10 pollingClient])
           {
             v39[0] = v8;
-            v11 = [v10 identifier];
+            identifier = [v10 identifier];
             v39[1] = @"cumulativeSamplingTimeMS";
-            v40[0] = v11;
+            v40[0] = identifier;
             v12 = [*(v4 + 3480) numberWithUnsignedLongLong:{objc_msgSend(v10, "cumulativeSamplingTime") / 0xF4240uLL}];
             v40[1] = v12;
             v13 = [*(v5 + 3872) dictionaryWithObjects:v40 forKeys:v39 count:2];
-            [(AWSampleLogger *)v30 powerLogName:@"PollingAggregation" event:v13];
+            [(AWSampleLogger *)selfCopy powerLogName:@"PollingAggregation" event:v13];
           }
 
           else
           {
             v37[0] = v8;
-            v11 = [v10 identifier];
-            v38[0] = v11;
+            identifier = [v10 identifier];
+            v38[0] = identifier;
             v37[1] = @"samplingRateMS";
             v14 = v7;
             v15 = v8;
@@ -818,7 +818,7 @@ LABEL_34:
             [*(v5 + 3872) dictionaryWithObjects:v38 forKeys:v37 count:3];
             v16 = v4;
             v18 = v17 = v5;
-            [(AWSampleLogger *)v30 powerLogName:@"SamplingAggregation" event:v18];
+            [(AWSampleLogger *)selfCopy powerLogName:@"SamplingAggregation" event:v18];
 
             v5 = v17;
             v4 = v16;
@@ -841,35 +841,35 @@ LABEL_34:
   }
 
   v35[0] = @"cumulativeSamplingTimeMS";
-  v19 = v30;
-  [*(v4 + 3480) numberWithUnsignedLongLong:v30->_cumulativeSamplingTime / 0xF4240];
+  v19 = selfCopy;
+  [*(v4 + 3480) numberWithUnsignedLongLong:selfCopy->_cumulativeSamplingTime / 0xF4240];
   v21 = v20 = v4;
   v36[0] = v21;
   v35[1] = @"pollsRequested";
-  v22 = [*(v20 + 3480) numberWithUnsignedLongLong:v30->_pollsRequested];
+  v22 = [*(v20 + 3480) numberWithUnsignedLongLong:selfCopy->_pollsRequested];
   v36[1] = v22;
   v35[2] = @"singleShotsRequested";
   v23 = [*(v20 + 3480) numberWithUnsignedLongLong:v19->_samplesRequested - v19->_pollsRequested];
   v36[2] = v23;
   v35[3] = @"positiveOutcomes";
-  v24 = [*(v20 + 3480) numberWithUnsignedLongLong:v30->_samplesSucceeded];
+  v24 = [*(v20 + 3480) numberWithUnsignedLongLong:selfCopy->_samplesSucceeded];
   v36[3] = v24;
   v35[4] = @"negativeOutcomes";
   v25 = [*(v20 + 3480) numberWithUnsignedLongLong:v19->_samplesRequested - v19->_samplesSucceeded];
   v36[4] = v25;
   v26 = [*(v5 + 3872) dictionaryWithObjects:v36 forKeys:v35 count:5];
-  [(AWSampleLogger *)v30 powerLogName:@"ServiceAggregation" event:v26];
+  [(AWSampleLogger *)selfCopy powerLogName:@"ServiceAggregation" event:v26];
 
-  *&v30->_cumulativeSamplingTime = 0u;
-  *&v30->_pollsRequested = 0u;
+  *&selfCopy->_cumulativeSamplingTime = 0u;
+  *&selfCopy->_pollsRequested = 0u;
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)streamingCompleteWithidentifier:(id)a3 duration:(unint64_t)a4 ERActivated:(BOOL)a5
+- (void)streamingCompleteWithidentifier:(id)withidentifier duration:(unint64_t)duration ERActivated:(BOOL)activated
 {
-  v5 = a5;
+  activatedCopy = activated;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  withidentifierCopy = withidentifier;
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
   {
@@ -890,11 +890,11 @@ LABEL_34:
       v22 = 134218754;
       v23 = v11;
       v24 = 2048;
-      *v25 = a4;
+      *v25 = duration;
       *&v25[8] = 2112;
-      *&v25[10] = v8;
+      *&v25[10] = withidentifierCopy;
       *&v25[18] = 1024;
-      *&v25[20] = v5;
+      *&v25[20] = activatedCopy;
       v16 = "%13.5f: Streaming complete. duration: %llu identifier: %@ ERActivated: %d";
       v17 = v9;
       v18 = 38;
@@ -940,11 +940,11 @@ LABEL_20:
           *&v25[4] = 2048;
           *&v25[6] = v15;
           *&v25[14] = 2048;
-          *&v25[16] = a4;
+          *&v25[16] = duration;
           v26 = 2112;
-          v27 = v8;
+          v27 = withidentifierCopy;
           v28 = 1024;
-          v29 = v5;
+          v29 = activatedCopy;
           v16 = "%30s:%-4d: %13.5f: Streaming complete. duration: %llu identifier: %@ ERActivated: %d";
           v17 = v9;
           v18 = 54;
@@ -958,10 +958,10 @@ LABEL_20:
 
 LABEL_21:
   v19 = xpc_dictionary_create(0, 0, 0);
-  v20 = [v8 UTF8String];
-  xpc_dictionary_set_int64(v19, "StreamingInterval", a4);
-  xpc_dictionary_set_string(v19, "identifier", v20);
-  xpc_dictionary_set_BOOL(v19, "ERActivated", v5);
+  uTF8String = [withidentifierCopy UTF8String];
+  xpc_dictionary_set_int64(v19, "StreamingInterval", duration);
+  xpc_dictionary_set_string(v19, "identifier", uTF8String);
+  xpc_dictionary_set_BOOL(v19, "ERActivated", activatedCopy);
   analytics_send_event();
 
   v21 = *MEMORY[0x1E69E9840];
@@ -1078,9 +1078,9 @@ LABEL_23:
     v6 = *(v2 + 2);
     *(v2 + 2) = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = *(v2 + 3);
-    *(v2 + 3) = v7;
+    *(v2 + 3) = dictionary;
 
     v9 = [MEMORY[0x1E695DFA8] set];
     v10 = *(v2 + 4);
@@ -1118,26 +1118,26 @@ uint64_t __22__AWSampleLogger_init__block_invoke(uint64_t a1)
   return [v2 _logFeatureEnablement];
 }
 
-+ (void)client:(id)a3 pollEventType:(unint64_t)a4 event:(id)a5
++ (void)client:(id)client pollEventType:(unint64_t)type event:(id)event
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [v7 configuration];
-  v11 = [v10 identifier];
-  [v9 setObject:v11 forKeyedSubscript:@"identifier"];
+  clientCopy = client;
+  eventCopy = event;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  configuration = [clientCopy configuration];
+  identifier = [configuration identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
-  [v9 setObject:v12 forKeyedSubscript:@"pollEventType"];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:type];
+  [dictionary setObject:v12 forKeyedSubscript:@"pollEventType"];
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "eventMask")}];
-    [v9 setObject:v13 forKeyedSubscript:@"pollEventMask"];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(eventCopy, "eventMask")}];
+    [dictionary setObject:v13 forKeyedSubscript:@"pollEventMask"];
   }
 
-  v14 = v9;
+  v14 = dictionary;
   if (currentLogLevel < 7)
   {
     goto LABEL_16;
@@ -1192,27 +1192,27 @@ LABEL_16:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)client:(id)a3 event:(id)a4
++ (void)client:(id)client event:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [v5 identifier];
-  [v7 setObject:v8 forKeyedSubscript:@"identifier"];
+  clientCopy = client;
+  eventCopy = event;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  identifier = [clientCopy identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "eventMask")}];
-  [v7 setObject:v9 forKeyedSubscript:@"eventMask"];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(eventCopy, "eventMask")}];
+  [dictionary setObject:v9 forKeyedSubscript:@"eventMask"];
 
-  if ([v6 eventMask] == 1)
+  if ([eventCopy eventMask] == 1)
   {
     v10 = MEMORY[0x1E696AD98];
-    [v6 attentionLostTimeout];
+    [eventCopy attentionLostTimeout];
     v11 = [v10 numberWithDouble:?];
-    [v7 setObject:v11 forKeyedSubscript:@"attentionLostTimeout"];
+    [dictionary setObject:v11 forKeyedSubscript:@"attentionLostTimeout"];
   }
 
-  v12 = v7;
+  v12 = dictionary;
   if (currentLogLevel < 7)
   {
     goto LABEL_16;
@@ -1267,21 +1267,21 @@ LABEL_16:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)client:(id)a3 attentionStateChange:(BOOL)a4
++ (void)client:(id)client attentionStateChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  clientCopy = client;
   v6 = @"com.apple.AttentionAwareness.clientStateNegative";
-  if (v4)
+  if (changeCopy)
   {
     v6 = @"com.apple.AttentionAwareness.clientStatePositive";
   }
 
   v7 = v6;
   v27 = @"identifier";
-  v8 = [v5 identifier];
-  v28[0] = v8;
+  identifier = [clientCopy identifier];
+  v28[0] = identifier;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
 
   v10 = v9;

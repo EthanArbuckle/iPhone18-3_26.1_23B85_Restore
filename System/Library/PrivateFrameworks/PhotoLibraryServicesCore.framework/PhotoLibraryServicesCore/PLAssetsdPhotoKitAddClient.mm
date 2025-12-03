@@ -1,25 +1,25 @@
 @interface PLAssetsdPhotoKitAddClient
-- (BOOL)sendChangesRequest:(id)a3 error:(id *)a4;
-- (void)sendChangesRequest:(id)a3 reply:(id)a4;
+- (BOOL)sendChangesRequest:(id)request error:(id *)error;
+- (void)sendChangesRequest:(id)request reply:(id)reply;
 @end
 
 @implementation PLAssetsdPhotoKitAddClient
 
-- (BOOL)sendChangesRequest:(id)a3 error:(id *)a4
+- (BOOL)sendChangesRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLAssetsdBaseClient *)self proxyFactory];
-  LOBYTE(a4) = [PLAssetsdPhotoKitClient sendChangesRequest:v6 usingProxyFactory:v7 error:a4];
+  requestCopy = request;
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  LOBYTE(error) = [PLAssetsdPhotoKitClient sendChangesRequest:requestCopy usingProxyFactory:proxyFactory error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)sendChangesRequest:(id)a3 reply:(id)a4
+- (void)sendChangesRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
-  [PLAssetsdPhotoKitClient sendChangesRequest:v7 usingProxyFactory:v8 reply:v6];
+  replyCopy = reply;
+  requestCopy = request;
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  [PLAssetsdPhotoKitClient sendChangesRequest:requestCopy usingProxyFactory:proxyFactory reply:replyCopy];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface CloudSecureManagerService
 + (BCCloudSecureManaging)sharedManager;
-+ (void)deleteCloudDataWithCompletion:(id)a3;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)hasSaltChangedWithCompletion:(id)a3;
++ (void)deleteCloudDataWithCompletion:(id)completion;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
 @end
 
 @implementation CloudSecureManagerService
@@ -19,18 +19,18 @@
   return v2;
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10013C008(sub_1000CACE8, v5);
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -45,14 +45,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_10013C274(v7, v6);
   sub_1000044D8(v7);
 }
 
-+ (void)deleteCloudDataWithCompletion:(id)a3
++ (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = swift_allocObject();

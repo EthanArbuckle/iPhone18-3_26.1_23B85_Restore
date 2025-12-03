@@ -1,6 +1,6 @@
 @interface MusicTab.Search
 - (NSString)identifier;
-- (_TtCC5Music8MusicTabP33_1DDCAC1CCF43315AC77B3A97766EC6C36Search)initWithViewControllerProvider:(id)a3;
+- (_TtCC5Music8MusicTabP33_1DDCAC1CCF43315AC77B3A97766EC6C36Search)initWithViewControllerProvider:(id)provider;
 @end
 
 @implementation MusicTab.Search
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (_TtCC5Music8MusicTabP33_1DDCAC1CCF43315AC77B3A97766EC6C36Search)initWithViewControllerProvider:(id)a3
+- (_TtCC5Music8MusicTabP33_1DDCAC1CCF43315AC77B3A97766EC6C36Search)initWithViewControllerProvider:(id)provider
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

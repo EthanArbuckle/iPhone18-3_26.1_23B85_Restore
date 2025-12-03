@@ -11,7 +11,7 @@
 - (uint64_t)isEqualForSmartPromptPurposes:()Shortcuts
 {
   v4 = a3;
-  if (a1 == v4)
+  if (self == v4)
   {
     v8 = 1;
   }
@@ -21,7 +21,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16.receiver = a1;
+      v16.receiver = self;
       v16.super_class = &off_1F294BE08;
       v5 = objc_msgSendSuper2(&v16, sel_isEqualForSmartPromptPurposes_, v4);
       v6 = v4;
@@ -48,10 +48,10 @@
 
       if (v5)
       {
-        v10 = [a1 displayableBundleIdentifier];
-        v11 = [v9 displayableBundleIdentifier];
-        v12 = v10;
-        v13 = v11;
+        displayableBundleIdentifier = [self displayableBundleIdentifier];
+        displayableBundleIdentifier2 = [v9 displayableBundleIdentifier];
+        v12 = displayableBundleIdentifier;
+        v13 = displayableBundleIdentifier2;
         v14 = v13;
         if (v12 == v13)
         {
@@ -85,11 +85,11 @@
 
 - (unint64_t)hashForSmartPromptPurposes
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F294BE08;
   v2 = objc_msgSendSuper2(&v6, sel_hashForSmartPromptPurposes);
-  v3 = [a1 displayableBundleIdentifier];
-  v4 = [v3 hash];
+  displayableBundleIdentifier = [self displayableBundleIdentifier];
+  v4 = [displayableBundleIdentifier hash];
 
   return v4 ^ v2;
 }
@@ -207,19 +207,19 @@
 
   v19 = v18;
 
-  v20 = [a1 initWithIntentClassName:v19 localizedName:v7 bundleIdentifier:v10 displayableBundleIdentifier:0 extensionBundleIdentifier:v13 uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:v16 preferredCallProvider:0 supportedIntents:0 bundleURL:0 documentTypes:0];
+  v20 = [self initWithIntentClassName:v19 localizedName:v7 bundleIdentifier:v10 displayableBundleIdentifier:0 extensionBundleIdentifier:v13 uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:v16 preferredCallProvider:0 supportedIntents:0 bundleURL:0 documentTypes:0];
   return v20;
 }
 
 - (id)serializedRepresentation
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F294BE08;
   v2 = objc_msgSendSuper2(&v6, sel_serializedRepresentation);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 intentClassName];
-  [v3 setValue:v4 forKey:@"IntentClassName"];
+  intentClassName = [self intentClassName];
+  [v3 setValue:intentClassName forKey:@"IntentClassName"];
 
   return v3;
 }
@@ -227,28 +227,28 @@
 - (id)_displayableAppDescriptor
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [a1 bundleIdentifier];
-  v3 = [a1 displayableBundleIdentifier];
-  v4 = [v2 isEqualToString:v3];
+  bundleIdentifier = [self bundleIdentifier];
+  displayableBundleIdentifier = [self displayableBundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:displayableBundleIdentifier];
 
   if (v4)
   {
-    v5 = [a1 appDescriptor];
+    appDescriptor = [self appDescriptor];
   }
 
   else
   {
     v6 = objc_alloc(MEMORY[0x1E69635F8]);
-    v7 = [a1 displayableBundleIdentifier];
+    displayableBundleIdentifier2 = [self displayableBundleIdentifier];
     v14 = 0;
-    v8 = [v6 initWithBundleIdentifier:v7 allowPlaceholder:0 error:&v14];
+    v8 = [v6 initWithBundleIdentifier:displayableBundleIdentifier2 allowPlaceholder:0 error:&v14];
     v9 = v14;
 
     if (v8)
     {
       v10 = [objc_alloc(MEMORY[0x1E696E720]) initWithApplicationRecord:v8];
-      v11 = [a1 extensionBundleIdentifier];
-      v5 = [v10 descriptorWithExtensionBundleIdentifier:v11];
+      extensionBundleIdentifier = [self extensionBundleIdentifier];
+      appDescriptor = [v10 descriptorWithExtensionBundleIdentifier:extensionBundleIdentifier];
     }
 
     else
@@ -261,13 +261,13 @@
         _os_log_error_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_ERROR, "Unable to get an app record for the displayable app, returning the launchable app instead. (%@)", buf, 0xCu);
       }
 
-      v5 = [a1 appDescriptor];
+      appDescriptor = [self appDescriptor];
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return appDescriptor;
 }
 
 @end

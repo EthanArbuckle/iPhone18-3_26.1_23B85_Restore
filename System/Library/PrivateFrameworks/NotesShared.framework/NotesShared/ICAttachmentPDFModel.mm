@@ -1,5 +1,5 @@
 @interface ICAttachmentPDFModel
-+ (id)contentTextFromPDFAtURL:(id)a3;
++ (id)contentTextFromPDFAtURL:(id)l;
 - (BOOL)hasPreviews;
 - (BOOL)showThumbnailInNoteList;
 - (id)searchableTextContent;
@@ -10,9 +10,9 @@
 
 - (BOOL)hasPreviews
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 previewImages];
-  v5 = [v4 count];
+  attachment = [(ICAttachmentModel *)self attachment];
+  previewImages = [attachment previewImages];
+  v5 = [previewImages count];
 
   if (v5)
   {
@@ -21,10 +21,10 @@
 
   else
   {
-    v7 = [(ICAttachmentModel *)self attachment];
-    v8 = [v7 media];
-    v9 = [v8 mediaURL];
-    v10 = CGPDFDocumentCreateWithURL(v9);
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    media = [attachment2 media];
+    mediaURL = [media mediaURL];
+    v10 = CGPDFDocumentCreateWithURL(mediaURL);
 
     if (v10)
     {
@@ -48,24 +48,24 @@
     return 0;
   }
 
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 previewImages];
-  v5 = [v4 count] != 0;
+  attachment = [(ICAttachmentModel *)self attachment];
+  previewImages = [attachment previewImages];
+  v5 = [previewImages count] != 0;
 
   return v5;
 }
 
-+ (id)contentTextFromPDFAtURL:(id)a3
++ (id)contentTextFromPDFAtURL:(id)l
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v34 = v3;
-  v35 = [objc_alloc(MEMORY[0x277CD93D8]) initWithURL:v3];
-  v5 = [v35 documentRef];
-  if (v5)
+  lCopy = l;
+  array = [MEMORY[0x277CBEB18] array];
+  v34 = lCopy;
+  v35 = [objc_alloc(MEMORY[0x277CD93D8]) initWithURL:lCopy];
+  documentRef = [v35 documentRef];
+  if (documentRef)
   {
-    Info = CGPDFDocumentGetInfo(v5);
+    Info = CGPDFDocumentGetInfo(documentRef);
     if (Info)
     {
       v7 = Info;
@@ -74,37 +74,37 @@
       if (CGPDFDictionaryGetString(Info, "Title", &value))
       {
         v8 = CGPDFStringCopyTextString(value);
-        [v4 addObject:v8];
+        [array addObject:v8];
       }
 
       if (CGPDFDictionaryGetString(v7, "Author", &value))
       {
         v9 = CGPDFStringCopyTextString(value);
-        [v4 addObject:v9];
+        [array addObject:v9];
       }
 
       if (CGPDFDictionaryGetString(v7, "Subject", &value))
       {
         v10 = CGPDFStringCopyTextString(value);
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
       if (CGPDFDictionaryGetString(v7, "Creator", &value))
       {
         v11 = CGPDFStringCopyTextString(value);
-        [v4 addObject:v11];
+        [array addObject:v11];
       }
 
       if (CGPDFDictionaryGetString(v7, "Producer", &value))
       {
         v12 = CGPDFStringCopyTextString(value);
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       if (CGPDFDictionaryGetString(v7, "CreationDate", &value))
       {
         v13 = CGPDFStringCopyTextString(value);
-        [v4 addObject:v13];
+        [array addObject:v13];
       }
 
       if (CGPDFDictionaryGetArray(v7, "AAPL:Keywords", &array))
@@ -118,7 +118,7 @@
             if (CGPDFArrayGetString(array, i, &value))
             {
               v17 = CGPDFStringCopyTextString(value);
-              [v4 addObject:v17];
+              [array addObject:v17];
             }
           }
         }
@@ -127,20 +127,20 @@
       else if (CGPDFDictionaryGetString(v7, "Keywords", &value))
       {
         v18 = CGPDFStringCopyTextString(value);
-        [v4 addObject:v18];
+        [array addObject:v18];
       }
     }
 
-    v19 = [v35 pageCount];
+    pageCount = [v35 pageCount];
     v20 = 0;
-    if (v19 >= 0x64)
+    if (pageCount >= 0x64)
     {
       v21 = 100;
     }
 
     else
     {
-      v21 = v19;
+      v21 = pageCount;
     }
 
     do
@@ -150,15 +150,15 @@
       if ([v23 pageRef])
       {
         v24 = CGPDFPageCopyString();
-        [v4 ic_addNonNilObject:v24];
+        [array ic_addNonNilObject:v24];
       }
 
-      v25 = [v23 annotations];
+      annotations = [v23 annotations];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v26 = [v25 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v26 = [annotations countByEnumeratingWithState:&v36 objects:v42 count:16];
       if (v26)
       {
         v27 = v26;
@@ -169,14 +169,14 @@
           {
             if (*v37 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(annotations);
             }
 
-            v30 = [*(*(&v36 + 1) + 8 * j) contents];
-            [v4 ic_addNonNilObject:v30];
+            contents = [*(*(&v36 + 1) + 8 * j) contents];
+            [array ic_addNonNilObject:contents];
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v36 objects:v42 count:16];
+          v27 = [annotations countByEnumeratingWithState:&v36 objects:v42 count:16];
         }
 
         while (v27);
@@ -188,80 +188,80 @@
     while (v20++ != v21);
   }
 
-  v32 = [v4 componentsJoinedByString:@" "];
+  v32 = [array componentsJoinedByString:@" "];
 
   return v32;
 }
 
 - (id)searchableTextContent
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14.receiver = self;
   v14.super_class = ICAttachmentPDFModel;
-  v4 = [(ICAttachmentModel *)&v14 searchableTextContent];
-  if (v4)
+  searchableTextContent = [(ICAttachmentModel *)&v14 searchableTextContent];
+  if (searchableTextContent)
   {
-    [v3 addObject:v4];
+    [array addObject:searchableTextContent];
   }
 
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 media];
-  v7 = [v6 mediaURL];
+  attachment = [(ICAttachmentModel *)self attachment];
+  media = [attachment media];
+  mediaURL = [media mediaURL];
 
-  if (v7)
+  if (mediaURL)
   {
-    v8 = [(ICAttachmentModel *)self attachment];
-    v9 = [v8 media];
-    v10 = [v9 mediaURL];
-    v11 = [ICAttachmentPDFModel contentTextFromPDFAtURL:v10];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    media2 = [attachment2 media];
+    mediaURL2 = [media2 mediaURL];
+    v11 = [ICAttachmentPDFModel contentTextFromPDFAtURL:mediaURL2];
 
     if (v11)
     {
-      [v3 addObject:v11];
+      [array addObject:v11];
     }
   }
 
-  v12 = [v3 componentsJoinedByString:@" "];
+  v12 = [array componentsJoinedByString:@" "];
 
   return v12;
 }
 
 - (id)standaloneTitleForNote
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 userTitle];
+  attachment = [(ICAttachmentModel *)self attachment];
+  userTitle = [attachment userTitle];
 
-  if (v4)
+  if (userTitle)
   {
-    v5 = v4;
+    title = userTitle;
   }
 
   else
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    v5 = [v6 title];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    title = [attachment2 title];
   }
 
-  if (![v5 length])
+  if (![title length])
   {
     v7 = +[ICNote defaultTitleForEmptyNote];
 
-    v5 = v7;
+    title = v7;
   }
 
-  v8 = [v5 pathExtension];
-  if ([v8 length])
+  pathExtension = [title pathExtension];
+  if ([pathExtension length])
   {
-    v9 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:v8];
+    v9 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:pathExtension];
     if ([v9 isEqual:*MEMORY[0x277CE1E08]])
     {
-      v10 = [v5 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [title stringByDeletingPathExtension];
 
-      v5 = v10;
+      title = stringByDeletingPathExtension;
     }
   }
 
-  return v5;
+  return title;
 }
 
 @end

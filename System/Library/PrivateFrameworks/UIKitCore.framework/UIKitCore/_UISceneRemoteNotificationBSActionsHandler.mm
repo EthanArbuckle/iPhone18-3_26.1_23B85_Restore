@@ -1,10 +1,10 @@
 @interface _UISceneRemoteNotificationBSActionsHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
 @end
 
 @implementation _UISceneRemoteNotificationBSActionsHandler
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_new();
@@ -12,8 +12,8 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = a3;
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  actionsCopy = actions;
+  v9 = [actionsCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -25,7 +25,7 @@
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actionsCopy);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
@@ -40,7 +40,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [actionsCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v10);
@@ -53,7 +53,7 @@
 
   if ([v11 count])
   {
-    v15 = [v8 mutableCopy];
+    v15 = [actionsCopy mutableCopy];
     [v15 minusSet:v11];
     v16 = objc_opt_new();
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -88,7 +88,7 @@
     goto LABEL_19;
   }
 
-  [v18 setUnprocessedActions:v8];
+  [v18 setUnprocessedActions:actionsCopy];
   if (v18)
   {
 LABEL_19:

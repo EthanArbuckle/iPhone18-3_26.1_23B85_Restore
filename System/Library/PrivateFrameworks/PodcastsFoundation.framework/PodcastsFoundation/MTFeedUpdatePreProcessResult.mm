@@ -1,21 +1,21 @@
 @interface MTFeedUpdatePreProcessResult
 + (MTFeedUpdatePreProcessResult)shouldNotContinueResult;
-- (MTFeedUpdatePreProcessResult)initWithShouldContinue:(BOOL)a3 createdPodcastUUID:(id)a4;
+- (MTFeedUpdatePreProcessResult)initWithShouldContinue:(BOOL)continue createdPodcastUUID:(id)d;
 @end
 
 @implementation MTFeedUpdatePreProcessResult
 
-- (MTFeedUpdatePreProcessResult)initWithShouldContinue:(BOOL)a3 createdPodcastUUID:(id)a4
+- (MTFeedUpdatePreProcessResult)initWithShouldContinue:(BOOL)continue createdPodcastUUID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = MTFeedUpdatePreProcessResult;
   v8 = [(MTFeedUpdatePreProcessResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_shouldContinue = a3;
-    objc_storeStrong(&v8->_createdPodcastUUID, a4);
+    v8->_shouldContinue = continue;
+    objc_storeStrong(&v8->_createdPodcastUUID, d);
   }
 
   return v9;

@@ -1,5 +1,5 @@
 @interface TSCH2DSageGeometryHelper
-+ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)a3 geometryRect:(CGRect)a4 returningContainingViewportSize:(id *)a5;
++ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)info geometryRect:(CGRect)rect returningContainingViewportSize:(id *)size;
 - (BOOL)aspectRatioLocked;
 - (BOOL)bottomAxisLabelsVisible;
 - (BOOL)calculateChartExplodedSize;
@@ -8,22 +8,22 @@
 - (BOOL)isScatter;
 - (BOOL)isVertical;
 - (BOOL)leftAxisLabelsVisible;
-- (BOOL)p_labelsVisible:(id)a3;
+- (BOOL)p_labelsVisible:(id)visible;
 - (BOOL)rightAxisLabelsVisible;
-- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)a3;
-- (CGSize)measureText:(id)a3 withParagraphStyle:(id)a4;
+- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)doc;
+- (CGSize)measureText:(id)text withParagraphStyle:(id)style;
 - (double)_bottomAxisOuterWidth;
 - (double)_horizontalAxisLabelsHeight;
 - (double)_leftAxisOuterWidth;
 - (double)_rightAxisOuterWidth;
 - (double)_seriesSymbolWidth;
 - (double)_topAxisOuterWidth;
-- (double)_verticalAxisLabelsWidth:(BOOL)a3;
-- (double)distanceFromXAxisUsingParagraphStyle:(id)a3;
-- (double)distanceFromYAxisUsingParagraphStyle:(id)a3;
-- (double)p_widthFromTicksAndStrokeForAxis:(id)a3;
+- (double)_verticalAxisLabelsWidth:(BOOL)width;
+- (double)distanceFromXAxisUsingParagraphStyle:(id)style;
+- (double)distanceFromYAxisUsingParagraphStyle:(id)style;
+- (double)p_widthFromTicksAndStrokeForAxis:(id)axis;
 - (double)xAxisLabelHeight;
-- (double)yAxisLabelHeight:(BOOL)a3;
+- (double)yAxisLabelHeight:(BOOL)height;
 - (void)calculateCategoryAxisTitleSize;
 - (void)calculateChartAxisLabelsSize;
 - (void)calculateChartAxisSize;
@@ -35,12 +35,12 @@
 
 @implementation TSCH2DSageGeometryHelper
 
-+ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)a3 geometryRect:(CGRect)a4 returningContainingViewportSize:(id *)a5
++ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)info geometryRect:(CGRect)rect returningContainingViewportSize:(id *)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v10 = a3;
-  if (!a5 || *a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  infoCopy = info;
+  if (!size || *size)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, "+[TSCH2DSageGeometryHelper computeSageChartAreaBoundsForChartInfo:geometryRect:returningContainingViewportSize:]");
@@ -50,7 +50,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_chartLayoutWithChartInfo_(TSCHChartLayout, v9, v11, v12, v13, v10);
+  v29 = objc_msgSend_chartLayoutWithChartInfo_(TSCHChartLayout, v9, v11, v12, v13, infoCopy);
   objc_msgSend_layoutForChartBodySize_(v29, v30, width, height, v31);
   objc_msgSend_chartBodyFrame(v29, v32, v33, v34, v35);
   v37 = v36;
@@ -76,7 +76,7 @@
   {
     v52 = objc_alloc(MEMORY[0x277D802E8]);
     v54 = objc_msgSend_initWithPosition_size_(v52, v53, v93, v92, v44, v46);
-    v59 = objc_msgSend_helperWithImportedChartInfo_importedInfoGeometry_(a1, v55, v56, v57, v58, v10, v54);
+    v59 = objc_msgSend_helperWithImportedChartInfo_importedInfoGeometry_(self, v55, v56, v57, v58, infoCopy, v54);
     TSURectWithSize();
     v97 = CGRectStandardize(v96);
     x = v97.origin.x;
@@ -218,9 +218,9 @@ LABEL_12:
   return hasFixedFrameRatio;
 }
 
-- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)a3
+- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)doc
 {
-  objc_msgSend_naturalSize(self, a2, v3, v4, v5, a3);
+  objc_msgSend_naturalSize(self, a2, v3, v4, v5, doc);
   TSURectWithSize();
   v9 = v8;
   verticalAxisOverhang = self->_verticalAxisOverhang;
@@ -511,11 +511,11 @@ LABEL_16:
   }
 }
 
-- (BOOL)p_labelsVisible:(id)a3
+- (BOOL)p_labelsVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   v9 = objc_msgSend_p_model(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_axisForID_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_axisForID_(v9, v10, v11, v12, v13, visibleCopy);
 
   if (!v14)
   {
@@ -1102,11 +1102,11 @@ LABEL_11:
   return v34;
 }
 
-- (double)p_widthFromTicksAndStrokeForAxis:(id)a3
+- (double)p_widthFromTicksAndStrokeForAxis:(id)axis
 {
-  v4 = a3;
+  axisCopy = axis;
   v9 = objc_msgSend_intValueForProperty_defaultValue_(self->super._chartInfo, v5, v6, v7, v8, 1112, 0);
-  v15 = v9 | objc_msgSend_intValueForProperty_defaultValue_(v4, v10, v11, v12, v13, 1049, 0);
+  v15 = v9 | objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v10, v11, v12, v13, 1049, 0);
   v19 = v15 != 0;
   if (v15)
   {
@@ -1146,8 +1146,8 @@ LABEL_11:
     v38 = 5.0;
   }
 
-  v39 = objc_msgSend_intValueForProperty_defaultValue_(v4, v32, v37, 5.0, v35, 1061, 2);
-  if (objc_msgSend_intValueForProperty_defaultValue_(v4, v40, v41, v42, v43, 1055, 0))
+  v39 = objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v32, v37, 5.0, v35, 1061, 2);
+  if (objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v40, v41, v42, v43, 1055, 0))
   {
     if (v39 != 1)
     {
@@ -1256,11 +1256,11 @@ LABEL_11:
   return v30;
 }
 
-- (double)_verticalAxisLabelsWidth:(BOOL)a3
+- (double)_verticalAxisLabelsWidth:(BOOL)width
 {
-  v6 = a3;
+  widthCopy = width;
   v8 = objc_msgSend_p_model(self, a2, v3, v4, v5);
-  v13 = objc_msgSend_axisIDWithType_ordinal_(TSCHChartAxisID, v9, v10, v11, v12, 2, !v6);
+  v13 = objc_msgSend_axisIDWithType_ordinal_(TSCHChartAxisID, v9, v10, v11, v12, 2, !widthCopy);
   v18 = objc_msgSend_axisForID_(v8, v14, v15, v16, v17, v13);
   v23 = objc_msgSend_intValueForProperty_defaultValue_(v18, v19, v20, v21, v22, 1034, 0);
   v28 = objc_msgSend_paragraphStyleAtIndex_(self->super._chartInfo, v24, v25, v26, v27, v23);
@@ -1647,11 +1647,11 @@ LABEL_38:
   return v37;
 }
 
-- (double)yAxisLabelHeight:(BOOL)a3
+- (double)yAxisLabelHeight:(BOOL)height
 {
-  v6 = a3;
+  heightCopy = height;
   v8 = objc_msgSend_p_model(self, a2, v3, v4, v5);
-  v13 = objc_msgSend_axisIDWithType_ordinal_(TSCHChartAxisID, v9, v10, v11, v12, 2, !v6);
+  v13 = objc_msgSend_axisIDWithType_ordinal_(TSCHChartAxisID, v9, v10, v11, v12, 2, !heightCopy);
   v18 = objc_msgSend_axisForID_(v8, v14, v15, v16, v17, v13);
   v23 = objc_msgSend_intValueForProperty_defaultValue_(v18, v19, v20, v21, v22, 1034, 0);
   v28 = objc_msgSend_paragraphStyleAtIndex_(self->super._chartInfo, v24, v25, v26, v27, v23);
@@ -1661,11 +1661,11 @@ LABEL_38:
   return v34;
 }
 
-- (double)distanceFromXAxisUsingParagraphStyle:(id)a3
+- (double)distanceFromXAxisUsingParagraphStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v8 = objc_msgSend_sharedText(TSCHText, v4, v5, v6, v7);
-  v13 = objc_msgSend_retainedCTFontForParagraphStyle_(v8, v9, v10, v11, v12, v3);
+  v13 = objc_msgSend_retainedCTFontForParagraphStyle_(v8, v9, v10, v11, v12, styleCopy);
 
   if (!v13)
   {
@@ -1683,11 +1683,11 @@ LABEL_38:
   return v34 * 0.5;
 }
 
-- (double)distanceFromYAxisUsingParagraphStyle:(id)a3
+- (double)distanceFromYAxisUsingParagraphStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v8 = objc_msgSend_sharedText(TSCHText, v4, v5, v6, v7);
-  v13 = objc_msgSend_retainedCTFontForParagraphStyle_(v8, v9, v10, v11, v12, v3);
+  v13 = objc_msgSend_retainedCTFontForParagraphStyle_(v8, v9, v10, v11, v12, styleCopy);
 
   if (!v13)
   {
@@ -1705,23 +1705,23 @@ LABEL_38:
   return v34 * 0.5 + 5.0;
 }
 
-- (CGSize)measureText:(id)a3 withParagraphStyle:(id)a4
+- (CGSize)measureText:(id)text withParagraphStyle:(id)style
 {
-  v5 = a3;
-  v7 = a4;
-  if (v7)
+  textCopy = text;
+  styleCopy = style;
+  if (styleCopy)
   {
     v11 = objc_msgSend_sharedText(TSCHText, v6, v8, v9, v10);
-    objc_msgSend_measureText_paragraphStyle_(v11, v12, v13, v14, v15, v5, v7);
+    objc_msgSend_measureText_paragraphStyle_(v11, v12, v13, v14, v15, textCopy, styleCopy);
     v17 = v16;
     v19 = v18;
 
     v22 = *(MEMORY[0x277CBF3A8] + 8);
     v23 = *MEMORY[0x277CBF3A8] == v17 && v22 == v19;
-    if (v23 && (objc_msgSend_isEqual_(&stru_288528678, v20, *MEMORY[0x277CBF3A8], v22, v21, v5) & 1) == 0)
+    if (v23 && (objc_msgSend_isEqual_(&stru_288528678, v20, *MEMORY[0x277CBF3A8], v22, v21, textCopy) & 1) == 0)
     {
       v28 = objc_msgSend_sharedText(TSCHText, v24, v25, v26, v27);
-      objc_msgSend_measureText_paragraphStyle_(v28, v29, v30, v31, v32, v5, v7);
+      objc_msgSend_measureText_paragraphStyle_(v28, v29, v30, v31, v32, textCopy, styleCopy);
       v17 = v33;
       v19 = v34;
     }

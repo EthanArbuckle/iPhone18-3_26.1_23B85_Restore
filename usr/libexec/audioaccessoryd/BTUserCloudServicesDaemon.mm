@@ -1,14 +1,14 @@
 @interface BTUserCloudServicesDaemon
 + (id)sharedBTServicesDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BTUserCloudServicesDaemon)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_invalidate;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
 - (void)invalidate;
-- (void)reportHMDeviceCloudRecordInfosUpdated:(id)a3;
+- (void)reportHMDeviceCloudRecordInfosUpdated:(id)updated;
 @end
 
 @implementation BTUserCloudServicesDaemon
@@ -43,7 +43,7 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v22 = 0u;
   v23 = 0u;
@@ -99,13 +99,13 @@
   }
 
   v13 = +[CBIDSManager sharedInstance];
-  v19 = [v13 statedumpAndRecordDailyMetric];
+  statedumpAndRecordDailyMetric = [v13 statedumpAndRecordDailyMetric];
   NSAppendPrintF();
   v14 = v7;
 
   v15 = +[CloudXPCService sharedInstance];
-  v16 = [v15 deviceManager];
-  v20 = [v16 printDebug];
+  deviceManager = [v15 deviceManager];
+  printDebug = [deviceManager printDebug];
   NSAppendPrintF();
   v17 = v14;
 
@@ -167,14 +167,14 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v28 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = objc_alloc_init(BTCloudServicesXPCConnection);
   [(BTCloudServicesXPCConnection *)v7 setDaemon:self];
   [(BTCloudServicesXPCConnection *)v7 setDispatchQueue:self->_dispatchQueue];
-  [(BTCloudServicesXPCConnection *)v7 setXpcCnx:v6];
+  [(BTCloudServicesXPCConnection *)v7 setXpcCnx:connectionCopy];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -185,17 +185,17 @@
     xpcConnections = self->_xpcConnections;
   }
 
-  v34 = self;
+  selfCopy = self;
   [(NSMutableSet *)xpcConnections addObject:v7];
   v40 = 0u;
   v41 = 0u;
-  if (v6)
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   v11 = xpc_copy_code_signing_identity_for_token();
-  v36 = v6;
+  v36 = connectionCopy;
   if (v11)
   {
     v12 = v11;
@@ -250,12 +250,12 @@
   [v14 setClasses:v24 forSelector:"fetchSoundProfileRecordWithCompletion:" argumentIndex:0 ofReply:1];
   [v14 setClasses:v24 forSelector:"deleteSoundProfileRecordWithCompletion:" argumentIndex:0 ofReply:1];
   [v14 setClasses:v24 forSelector:"hmDeviceCloudRecordInfosUpdated:" argumentIndex:0 ofReply:0];
-  [v36 _setQueue:v34->_dispatchQueue];
+  [v36 _setQueue:selfCopy->_dispatchQueue];
   v25 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BTCloudServicesXPCDaemonInterface];
   [v36 setExportedInterface:v25];
 
   [v36 setExportedObject:v35];
-  objc_initWeak(&location, v34);
+  objc_initWeak(&location, selfCopy);
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_1000A5AE0;
@@ -277,26 +277,26 @@
   return 1;
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v6 = v4;
+  invalidatedCopy = invalidated;
+  v6 = invalidatedCopy;
   if (dword_1002F6ED8 <= 20)
   {
-    if (dword_1002F6ED8 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_1002F6ED8 != -1 || (v5 = _LogCategory_Initialize(), invalidatedCopy = v6, v5))
     {
-      sub_1001F467C(v4);
-      v4 = v6;
+      sub_1001F467C(invalidatedCopy);
+      invalidatedCopy = v6;
     }
   }
 
-  [v4 xpcConnectionInvalidated];
+  [invalidatedCopy xpcConnectionInvalidated];
   [(NSMutableSet *)self->_xpcConnections removeObject:v6];
 }
 
-- (void)reportHMDeviceCloudRecordInfosUpdated:(id)a3
+- (void)reportHMDeviceCloudRecordInfosUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -317,7 +317,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) clientReportHMDeviceCloudRecordInfosUpdated:v4];
+        [*(*(&v10 + 1) + 8 * v9) clientReportHMDeviceCloudRecordInfosUpdated:updatedCopy];
         v9 = v9 + 1;
       }
 

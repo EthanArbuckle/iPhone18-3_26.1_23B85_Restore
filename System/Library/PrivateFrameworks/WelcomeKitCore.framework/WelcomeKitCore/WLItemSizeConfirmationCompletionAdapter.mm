@@ -1,13 +1,13 @@
 @interface WLItemSizeConfirmationCompletionAdapter
-- (WLItemSizeConfirmationCompletionAdapter)initWithUnconfirmedItemSize:(unint64_t)a3 segmentSize:(unint64_t)a4 originalSegmentCompletion:(id)a5 originalCompletion:(id)a6;
+- (WLItemSizeConfirmationCompletionAdapter)initWithUnconfirmedItemSize:(unint64_t)size segmentSize:(unint64_t)segmentSize originalSegmentCompletion:(id)completion originalCompletion:(id)originalCompletion;
 @end
 
 @implementation WLItemSizeConfirmationCompletionAdapter
 
-- (WLItemSizeConfirmationCompletionAdapter)initWithUnconfirmedItemSize:(unint64_t)a3 segmentSize:(unint64_t)a4 originalSegmentCompletion:(id)a5 originalCompletion:(id)a6
+- (WLItemSizeConfirmationCompletionAdapter)initWithUnconfirmedItemSize:(unint64_t)size segmentSize:(unint64_t)segmentSize originalSegmentCompletion:(id)completion originalCompletion:(id)originalCompletion
 {
-  v10 = a5;
-  v11 = a6;
+  completionCopy = completion;
+  originalCompletionCopy = originalCompletion;
   v31.receiver = self;
   v31.super_class = WLItemSizeConfirmationCompletionAdapter;
   v12 = [(WLItemSizeConfirmationCompletionAdapter *)&v31 init];
@@ -22,9 +22,9 @@
     v25[2] = __128__WLItemSizeConfirmationCompletionAdapter_initWithUnconfirmedItemSize_segmentSize_originalSegmentCompletion_originalCompletion___block_invoke;
     v25[3] = &unk_279EB5738;
     v27 = v30;
-    v28 = a3;
-    v29 = a4;
-    v13 = v10;
+    sizeCopy = size;
+    segmentSizeCopy = segmentSize;
+    v13 = completionCopy;
     v26 = v13;
     v14 = MEMORY[0x2743DF630](v25);
     segmentCompletion = v12->_segmentCompletion;
@@ -35,10 +35,10 @@
     v19[2] = __128__WLItemSizeConfirmationCompletionAdapter_initWithUnconfirmedItemSize_segmentSize_originalSegmentCompletion_originalCompletion___block_invoke_2;
     v19[3] = &unk_279EB5760;
     v22 = v30;
-    v23 = a3;
-    v24 = a4;
+    sizeCopy2 = size;
+    segmentSizeCopy2 = segmentSize;
     v20 = v13;
-    v21 = v11;
+    v21 = originalCompletionCopy;
     v16 = MEMORY[0x2743DF630](v19);
     completion = v12->_completion;
     v12->_completion = v16;

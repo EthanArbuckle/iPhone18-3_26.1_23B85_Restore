@@ -3,12 +3,12 @@
 - (DADMain)init;
 - (void)_boostConnectedActivityPriority;
 - (void)_evaluateConnectedStartupActivityStatus;
-- (void)_forceShutdownDaemonOnLogoutInTimeInterval:(int)a3;
-- (void)_forceShutdownTimerFired:(id)a3;
+- (void)_forceShutdownDaemonOnLogoutInTimeInterval:(int)interval;
+- (void)_forceShutdownTimerFired:(id)fired;
 - (void)_shutdownDaemon;
 - (void)addLanguageChangeHandler;
 - (void)addSignalHandler;
-- (void)addToOperationsQueueDisabledCheckAndGoBlock:(id)a3 wrappedBlock:(id)a4;
+- (void)addToOperationsQueueDisabledCheckAndGoBlock:(id)block wrappedBlock:(id)wrappedBlock;
 - (void)agentsStarted;
 - (void)boostConnectedActivityPriority;
 - (void)dealloc;
@@ -41,13 +41,13 @@
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
-  v12 = self;
+  selfCopy = self;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__DADMain__shutdownDaemon__block_invoke_5;
   v6[3] = &unk_278F1D290;
   v6[4] = buf;
-  [(DADMain *)v12 addToOperationsQueueDisabledCheckAndGoBlock:0 wrappedBlock:v6];
+  [(DADMain *)selfCopy addToOperationsQueueDisabledCheckAndGoBlock:0 wrappedBlock:v6];
   _Block_object_dispose(buf, 8);
 }
 
@@ -105,7 +105,7 @@ void __26__DADMain__shutdownDaemon__block_invoke_5(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forceShutdownTimerFired:(id)a3
+- (void)_forceShutdownTimerFired:(id)fired
 {
   forceShutdownTimer = self->_forceShutdownTimer;
   self->_forceShutdownTimer = 0;
@@ -113,7 +113,7 @@ void __26__DADMain__shutdownDaemon__block_invoke_5(uint64_t a1)
   [(DADMain *)self _shutdownDaemon];
 }
 
-- (void)_forceShutdownDaemonOnLogoutInTimeInterval:(int)a3
+- (void)_forceShutdownDaemonOnLogoutInTimeInterval:(int)interval
 {
   v16 = *MEMORY[0x277D85DE8];
   forceShutdownTimer = self->_forceShutdownTimer;
@@ -125,38 +125,38 @@ void __26__DADMain__shutdownDaemon__block_invoke_5(uint64_t a1)
   }
 
   v7 = objc_alloc(MEMORY[0x277CBEBB8]);
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:interval];
   v9 = [v7 initWithFireDate:v8 interval:self target:sel__forceShutdownTimerFired_ selector:0 userInfo:0 repeats:0.0];
   v10 = self->_forceShutdownTimer;
   self->_forceShutdownTimer = v9;
 
-  v11 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v11 addTimer:self->_forceShutdownTimer forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:self->_forceShutdownTimer forMode:*MEMORY[0x277CBE738]];
   v12 = DALoggingwithCategory();
   v13 = *(MEMORY[0x277D03988] + 4);
   if (os_log_type_enabled(v12, v13))
   {
     v15[0] = 67109120;
-    v15[1] = a3;
+    v15[1] = interval;
     _os_log_impl(&dword_248524000, v12, v13, "Add Force Logout Timer in %d seconds", v15, 8u);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addToOperationsQueueDisabledCheckAndGoBlock:(id)a3 wrappedBlock:(id)a4
+- (void)addToOperationsQueueDisabledCheckAndGoBlock:(id)block wrappedBlock:(id)wrappedBlock
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  wrappedBlockCopy = wrappedBlock;
   v7 = gDADOperationQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__DADMain_addToOperationsQueueDisabledCheckAndGoBlock_wrappedBlock___block_invoke;
   v10[3] = &unk_278F1D2B8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = blockCopy;
+  v12 = wrappedBlockCopy;
+  v8 = wrappedBlockCopy;
+  v9 = blockCopy;
   dispatch_async(v7, v10);
 }
 
@@ -189,15 +189,15 @@ uint64_t __68__DADMain_addToOperationsQueueDisabledCheckAndGoBlock_wrappedBlock_
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = +[DADAgentManager sharedManager];
-  v4 = [v3 activeAgents];
-  v5 = [v4 count];
+  activeAgents = [v3 activeAgents];
+  v5 = [activeAgents count];
 
   if (v5)
   {
     v6 = +[DADAgentManager sharedManager];
-    v7 = [v6 hasEASAccountConfigured];
+    hasEASAccountConfigured = [v6 hasEASAccountConfigured];
 
-    if (v7)
+    if (hasEASAccountConfigured)
     {
       v8 = DALoggingwithCategory();
       v9 = *(MEMORY[0x277D03988] + 6);
@@ -212,17 +212,17 @@ LABEL_16:
 
     else
     {
-      v11 = [(DADMain *)self userSwitchTasks];
-      v12 = [v11 count];
+      userSwitchTasks = [(DADMain *)self userSwitchTasks];
+      v12 = [userSwitchTasks count];
 
       if (v12 < 2)
       {
-        v13 = [MEMORY[0x277D037F8] sharedTransactionMonitor];
-        v14 = [v13 transactionCount];
+        mEMORY[0x277D037F8] = [MEMORY[0x277D037F8] sharedTransactionMonitor];
+        transactionCount = [mEMORY[0x277D037F8] transactionCount];
 
         v15 = DALoggingwithCategory();
         v8 = v15;
-        if (v14 < 1)
+        if (transactionCount < 1)
         {
           v9 = *(MEMORY[0x277D03988] + 6);
           if (os_log_type_enabled(v15, v9))
@@ -238,9 +238,9 @@ LABEL_16:
           v16 = *(MEMORY[0x277D03988] + 5);
           if (os_log_type_enabled(v15, v16))
           {
-            v17 = [MEMORY[0x277D037F8] sharedTransactionMonitor];
+            mEMORY[0x277D037F8]2 = [MEMORY[0x277D037F8] sharedTransactionMonitor];
             *buf = 67109120;
-            v23 = [v17 transactionCount];
+            transactionCount2 = [mEMORY[0x277D037F8]2 transactionCount];
             _os_log_impl(&dword_248524000, v8, v16, "UserManagementFramework: Creating Switch Tasks For Pending Transcation Count %d", buf, 8u);
           }
 
@@ -250,8 +250,8 @@ LABEL_16:
           v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
           [(DADMain *)self setUserSwitchTasks:v18];
 
-          v19 = [MEMORY[0x277D037F8] sharedTransactionMonitor];
-          [v19 setTransactionMonitorDelegate:self];
+          mEMORY[0x277D037F8]3 = [MEMORY[0x277D037F8] sharedTransactionMonitor];
+          [mEMORY[0x277D037F8]3 setTransactionMonitorDelegate:self];
 
           [(DADMain *)self _forceShutdownDaemonOnLogoutInTimeInterval:30];
         }
@@ -296,8 +296,8 @@ LABEL_16:
     _os_log_impl(&dword_248524000, v2, v3, "All Transactions Finished. Initiating DA Shutdown", v6, 2u);
   }
 
-  v4 = [MEMORY[0x277D037F8] sharedTransactionMonitor];
-  [v4 setTransactionMonitorDelegate:0];
+  mEMORY[0x277D037F8] = [MEMORY[0x277D037F8] sharedTransactionMonitor];
+  [mEMORY[0x277D037F8] setTransactionMonitorDelegate:0];
 
   v5 = +[DADMain sharedMain];
   [v5 shutdownDAD];
@@ -423,9 +423,9 @@ uint64_t __21__DADMain_sharedMain__block_invoke()
     v8 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v7, v8))
     {
-      v9 = [MEMORY[0x277D03910] isAppleInternalInstall];
+      isAppleInternalInstall = [MEMORY[0x277D03910] isAppleInternalInstall];
       v10 = @"NON";
-      if (v9)
+      if (isAppleInternalInstall)
       {
         v10 = &stru_285AC0920;
       }
@@ -474,8 +474,8 @@ uint64_t __21__DADMain_sharedMain__block_invoke()
 
 - (void)xpc_checkin
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_agentsStarted name:@"DADAgentsStartedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_agentsStarted name:@"DADAgentsStartedNotification" object:0];
 
   v4 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
@@ -523,8 +523,8 @@ void __22__DADMain_xpc_checkin__block_invoke(uint64_t a1, void *a2)
     _os_log_impl(&dword_248524000, v3, v4, "Agents have completed their first start after launch.", v6, 2u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"DADAgentsStartedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"DADAgentsStartedNotification" object:0];
 
   os_unfair_lock_lock(&_connectedLock);
   _startupComplete = 1;

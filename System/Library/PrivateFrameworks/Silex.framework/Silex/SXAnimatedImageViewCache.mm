@@ -1,28 +1,28 @@
 @interface SXAnimatedImageViewCache
 - (CGSize)size;
 - (SXAnimatedImage)animatedImage;
-- (SXAnimatedImageViewCache)initWithImageSize:(CGSize)a3;
+- (SXAnimatedImageViewCache)initWithImageSize:(CGSize)size;
 - (SXAnimatedImageViewCacheDelegate)delegate;
-- (id)decodeImageFromSource:(CGImageSource *)a3 index:(unint64_t)a4;
-- (id)imageForFrameIndex:(unint64_t)a3;
+- (id)decodeImageFromSource:(CGImageSource *)source index:(unint64_t)index;
+- (id)imageForFrameIndex:(unint64_t)index;
 - (unint64_t)maxCacheSize;
-- (unint64_t)nearestCachedFrameIndexForFrameIndex:(unint64_t)a3;
+- (unint64_t)nearestCachedFrameIndexForFrameIndex:(unint64_t)index;
 - (void)cacheNextImage;
 - (void)checkCacheSize;
 - (void)decreaseCacheSize;
 - (void)prepareCache;
-- (void)prepareImageForFrameIndex:(unint64_t)a3;
+- (void)prepareImageForFrameIndex:(unint64_t)index;
 - (void)prune;
 - (void)restoreCacheSize;
-- (void)setAnimatedImage:(id)a3;
+- (void)setAnimatedImage:(id)image;
 @end
 
 @implementation SXAnimatedImageViewCache
 
-- (SXAnimatedImageViewCache)initWithImageSize:(CGSize)a3
+- (SXAnimatedImageViewCache)initWithImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = SXAnimatedImageViewCache;
   v5 = [(SXAnimatedImageViewCache *)&v13 init];
@@ -52,31 +52,31 @@
   return v5;
 }
 
-- (void)setAnimatedImage:(id)a3
+- (void)setAnimatedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_animatedImage, v4);
+  objc_storeWeak(&self->_animatedImage, imageCopy);
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (imageCopy)
   {
 
     [(SXAnimatedImageViewCache *)self prepareCache];
   }
 }
 
-- (void)prepareImageForFrameIndex:(unint64_t)a3
+- (void)prepareImageForFrameIndex:(unint64_t)index
 {
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableArray *)self->_cachedImages objectAtIndex:a3];
-  v6 = [MEMORY[0x1E695DFB0] null];
+  v5 = [(NSMutableArray *)self->_cachedImages objectAtIndex:index];
+  null = [MEMORY[0x1E695DFB0] null];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v5 == v6)
+  if (v5 == null)
   {
     os_unfair_lock_lock_with_options();
-    [(NSMutableIndexSet *)self->_indicesToCache addIndex:a3];
+    [(NSMutableIndexSet *)self->_indicesToCache addIndex:index];
     v7 = [(NSMutableIndexSet *)self->_indicesToCache count];
     os_unfair_lock_unlock(&self->_lock);
     if (v7 == 1)
@@ -87,31 +87,31 @@
   }
 }
 
-- (unint64_t)nearestCachedFrameIndexForFrameIndex:(unint64_t)a3
+- (unint64_t)nearestCachedFrameIndexForFrameIndex:(unint64_t)index
 {
   os_unfair_lock_lock_with_options();
   WeakRetained = objc_loadWeakRetained(&self->_animatedImage);
-  v6 = [WeakRetained numberOfFrames];
+  numberOfFrames = [WeakRetained numberOfFrames];
 
-  v7 = a3 + 1;
-  v8 = a3 - 1;
+  v7 = index + 1;
+  v8 = index - 1;
   v9 = 1;
-  if (((a3 - 1) & 0x8000000000000000) != 0)
+  if (((index - 1) & 0x8000000000000000) != 0)
   {
     goto LABEL_5;
   }
 
 LABEL_2:
   v10 = [(NSMutableArray *)self->_cachedImages objectAtIndex:v8];
-  v11 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v10 != v11)
+  if (v10 != null)
   {
     goto LABEL_11;
   }
 
   v12 = v7;
-  if (v7 < v6)
+  if (v7 < numberOfFrames)
   {
     goto LABEL_7;
   }
@@ -126,50 +126,50 @@ LABEL_2:
     }
 
 LABEL_5:
-    if (v7 >= v6)
+    if (v7 >= numberOfFrames)
     {
       break;
     }
 
-    v12 = v9 + a3;
+    v12 = v9 + index;
 LABEL_7:
     v13 = [(NSMutableArray *)self->_cachedImages objectAtIndex:v12];
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (v13 != v14)
+    if (v13 != null2)
     {
       goto LABEL_11;
     }
   }
 
-  a3 = 0x7FFFFFFFFFFFFFFFLL;
+  index = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return index;
 }
 
-- (id)imageForFrameIndex:(unint64_t)a3
+- (id)imageForFrameIndex:(unint64_t)index
 {
-  self->_lastRequestedIndex = a3;
+  self->_lastRequestedIndex = index;
   os_unfair_lock_lock_with_options();
-  if ([(NSMutableArray *)self->_cachedImages count]<= a3)
+  if ([(NSMutableArray *)self->_cachedImages count]<= index)
   {
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_5;
   }
 
-  v5 = [(NSMutableArray *)self->_cachedImages objectAtIndex:a3];
-  v6 = [MEMORY[0x1E695DFB0] null];
+  v5 = [(NSMutableArray *)self->_cachedImages objectAtIndex:index];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
-    if (([(NSMutableIndexSet *)self->_indicesToCache containsIndex:a3]& 1) != 0)
+    if (([(NSMutableIndexSet *)self->_indicesToCache containsIndex:index]& 1) != 0)
     {
       v7 = 0;
       goto LABEL_8;
     }
 
-    [(NSMutableIndexSet *)self->_indicesToCache addIndex:a3];
+    [(NSMutableIndexSet *)self->_indicesToCache addIndex:index];
     v9 = [(NSMutableIndexSet *)self->_indicesToCache count];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -197,7 +197,7 @@ LABEL_9:
   os_unfair_lock_lock_with_options();
   numberOfCachedImages = self->_numberOfCachedImages;
   WeakRetained = objc_loadWeakRetained(&self->_animatedImage);
-  v5 = [WeakRetained numberOfFrames];
+  numberOfFrames = [WeakRetained numberOfFrames];
 
   os_unfair_lock_unlock(&self->_lock);
   if (numberOfCachedImages)
@@ -205,14 +205,14 @@ LABEL_9:
     os_unfair_lock_lock_with_options();
     self->_numberOfCachedImages = 0;
     os_unfair_lock_unlock(&self->_lock);
-    if (v5)
+    if (numberOfFrames)
     {
-      for (i = 0; i != v5; ++i)
+      for (i = 0; i != numberOfFrames; ++i)
       {
         os_unfair_lock_lock_with_options();
         cachedImages = self->_cachedImages;
-        v8 = [MEMORY[0x1E695DFB0] null];
-        [(NSMutableArray *)cachedImages replaceObjectAtIndex:i withObject:v8];
+        null = [MEMORY[0x1E695DFB0] null];
+        [(NSMutableArray *)cachedImages replaceObjectAtIndex:i withObject:null];
 
         os_unfair_lock_unlock(&self->_lock);
       }
@@ -261,15 +261,15 @@ LABEL_9:
 {
   os_unfair_lock_lock_with_options();
   WeakRetained = objc_loadWeakRetained(&self->_animatedImage);
-  v4 = [WeakRetained numberOfFrames];
+  numberOfFrames = [WeakRetained numberOfFrames];
 
   [(NSMutableArray *)self->_cachedImages removeAllObjects];
   [(NSMutableIndexSet *)self->_indicesToCache removeAllIndexes];
-  for (; v4; --v4)
+  for (; numberOfFrames; --numberOfFrames)
   {
     cachedImages = self->_cachedImages;
-    v6 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableArray *)cachedImages addObject:v6];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableArray *)cachedImages addObject:null];
   }
 
   v7 = objc_loadWeakRetained(&self->_animatedImage);
@@ -281,9 +281,9 @@ LABEL_9:
 - (void)cacheNextImage
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(SXAnimatedImageViewCache *)self animatedImage];
-  v4 = v3;
-  if (v3 && (v5 = [v3 imageSource]) != 0)
+  animatedImage = [(SXAnimatedImageViewCache *)self animatedImage];
+  v4 = animatedImage;
+  if (animatedImage && (v5 = [animatedImage imageSource]) != 0)
   {
     v6 = v5;
     CFRetain(v5);
@@ -368,7 +368,7 @@ void __42__SXAnimatedImageViewCache_cacheNextImage__block_invoke(uint64_t a1)
   os_unfair_lock_lock_with_options();
   numberOfCachedImages = self->_numberOfCachedImages;
   WeakRetained = objc_loadWeakRetained(&self->_animatedImage);
-  v5 = [WeakRetained numberOfFrames];
+  numberOfFrames = [WeakRetained numberOfFrames];
 
   os_unfair_lock_unlock(&self->_lock);
   v6 = self->_singleImageByteSize * numberOfCachedImages;
@@ -392,13 +392,13 @@ void __42__SXAnimatedImageViewCache_cacheNextImage__block_invoke(uint64_t a1)
       if (v9 < [(NSMutableArray *)self->_cachedImages count])
       {
         v10 = [(NSMutableArray *)self->_cachedImages objectAtIndex:v9];
-        v11 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v10 != v11)
+        if (v10 != null)
         {
           cachedImages = self->_cachedImages;
-          v13 = [MEMORY[0x1E695DFB0] null];
-          [(NSMutableArray *)cachedImages replaceObjectAtIndex:v9 withObject:v13];
+          null2 = [MEMORY[0x1E695DFB0] null];
+          [(NSMutableArray *)cachedImages replaceObjectAtIndex:v9 withObject:null2];
 
           --self->_numberOfCachedImages;
           --v8;
@@ -419,7 +419,7 @@ void __42__SXAnimatedImageViewCache_cacheNextImage__block_invoke(uint64_t a1)
 
       else
       {
-        v14 = v5;
+        v14 = numberOfFrames;
       }
 
       v9 = v14 - 1;
@@ -434,11 +434,11 @@ void __42__SXAnimatedImageViewCache_cacheNextImage__block_invoke(uint64_t a1)
   }
 }
 
-- (id)decodeImageFromSource:(CGImageSource *)a3 index:(unint64_t)a4
+- (id)decodeImageFromSource:(CGImageSource *)source index:(unint64_t)index
 {
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, a4, 0);
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(source, index, 0);
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   v9 = +[SXImageDecodingTools sharedInstance];

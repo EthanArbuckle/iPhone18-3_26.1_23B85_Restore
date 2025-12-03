@@ -1,13 +1,13 @@
 @interface IMDMessageQueryStrings
-+ (id)allColumnsWithPrefix:(id)a3;
++ (id)allColumnsWithPrefix:(id)prefix;
 - (IMDMessageQueryStrings)init;
 @end
 
 @implementation IMDMessageQueryStrings
 
-+ (id)allColumnsWithPrefix:(id)a3
++ (id)allColumnsWithPrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     v3 = sub_1B7CFEA60();
     v5 = v4;

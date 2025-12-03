@@ -4,14 +4,14 @@
 - (BOOL)dataActiveAndReachable;
 - (BOOL)networkActive;
 - (BOOL)networkReachable;
-- (BOOL)validNetworkActiveForBundleId:(id)a3;
-- (BOOL)validNetworkEnabledForBundleId:(id)a3;
-- (BOOL)validNetworkReachableForBundleId:(id)a3;
+- (BOOL)validNetworkActiveForBundleId:(id)id;
+- (BOOL)validNetworkEnabledForBundleId:(id)id;
+- (BOOL)validNetworkReachableForBundleId:(id)id;
 - (BOOL)wiFiActiveAndReachable;
-- (BOOL)willSearchForNetworkForBundleId:(id)a3;
+- (BOOL)willSearchForNetworkForBundleId:(id)id;
 - (void)_clearReliabilityTimeoutInterval;
 - (void)_createAPSConnectionIfNeeded;
-- (void)_reallySetCriticalReliability:(BOOL)a3;
+- (void)_reallySetCriticalReliability:(BOOL)reliability;
 - (void)_setReliabilityTimeoutInterval;
 - (void)_tryToEnableReliability;
 @end
@@ -32,8 +32,8 @@
 
 - (BOOL)wiFiActiveAndReachable
 {
-  v2 = [MEMORY[0x1E69A6108] sharedInstance];
-  if (![v2 isWiFiEnabled])
+  mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+  if (![mEMORY[0x1E69A6108] isWiFiEnabled])
   {
     v5 = 0;
 LABEL_6:
@@ -41,13 +41,13 @@ LABEL_6:
     return v5;
   }
 
-  v3 = [MEMORY[0x1E69A6108] sharedInstance];
-  v4 = [v3 isHostingWiFiHotSpot];
+  mEMORY[0x1E69A6108]2 = [MEMORY[0x1E69A6108] sharedInstance];
+  isHostingWiFiHotSpot = [mEMORY[0x1E69A6108]2 isHostingWiFiHotSpot];
 
-  if ((v4 & 1) == 0)
+  if ((isHostingWiFiHotSpot & 1) == 0)
   {
-    v2 = +[FTEmbeddedReachability reachabilityForInternetConnection];
-    v5 = [v2 currentReachabilityStatus] == 1;
+    mEMORY[0x1E69A6108] = +[FTEmbeddedReachability reachabilityForInternetConnection];
+    v5 = [mEMORY[0x1E69A6108] currentReachabilityStatus] == 1;
     goto LABEL_6;
   }
 
@@ -57,22 +57,22 @@ LABEL_6:
 - (BOOL)allowAnyNetwork
 {
   v2 = +[FTUserConfiguration sharedInstance];
-  v3 = [v2 allowAnyNetwork];
+  allowAnyNetwork = [v2 allowAnyNetwork];
 
-  return v3;
+  return allowAnyNetwork;
 }
 
-- (BOOL)validNetworkEnabledForBundleId:(id)a3
+- (BOOL)validNetworkEnabledForBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A6108] sharedInstance];
-  if (![v5 isWiFiEnabled])
+  idCopy = id;
+  mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+  if (![mEMORY[0x1E69A6108] isWiFiEnabled])
   {
     goto LABEL_4;
   }
 
-  v6 = [MEMORY[0x1E69A6108] sharedInstance];
-  if ([v6 isHostingWiFiHotSpot])
+  mEMORY[0x1E69A6108]2 = [MEMORY[0x1E69A6108] sharedInstance];
+  if ([mEMORY[0x1E69A6108]2 isHostingWiFiHotSpot])
   {
 
 LABEL_4:
@@ -80,37 +80,37 @@ LABEL_4:
   }
 
   v13 = +[FTDeviceSupport sharedInstance];
-  v14 = [v13 wifiAllowedForBundleId:v4];
+  v14 = [v13 wifiAllowedForBundleId:idCopy];
 
   if (v14)
   {
-    v9 = 1;
+    isDataConnectionActive = 1;
     goto LABEL_12;
   }
 
 LABEL_5:
-  v7 = [MEMORY[0x1E69A6108] sharedInstance];
-  v8 = [v7 isAirplaneModeEnabled];
+  mEMORY[0x1E69A6108]3 = [MEMORY[0x1E69A6108] sharedInstance];
+  isAirplaneModeEnabled = [mEMORY[0x1E69A6108]3 isAirplaneModeEnabled];
 
-  if ((v8 & 1) == 0 && (-[FTNetworkSupport allowAnyNetwork](self, "allowAnyNetwork") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 nonWifiAvailableForBundleId:v4], v10, v11)))
+  if ((isAirplaneModeEnabled & 1) == 0 && (-[FTNetworkSupport allowAnyNetwork](self, "allowAnyNetwork") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 nonWifiAvailableForBundleId:idCopy], v10, v11)))
   {
-    v12 = [MEMORY[0x1E69A6108] sharedInstance];
-    v9 = [v12 isDataConnectionActive];
+    mEMORY[0x1E69A6108]4 = [MEMORY[0x1E69A6108] sharedInstance];
+    isDataConnectionActive = [mEMORY[0x1E69A6108]4 isDataConnectionActive];
   }
 
   else
   {
-    v9 = 0;
+    isDataConnectionActive = 0;
   }
 
 LABEL_12:
 
-  return v9;
+  return isDataConnectionActive;
 }
 
-- (BOOL)validNetworkActiveForBundleId:(id)a3
+- (BOOL)validNetworkActiveForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   if ([(FTNetworkSupport *)self allowAnyNetwork])
   {
     v5 = 1;
@@ -119,14 +119,14 @@ LABEL_12:
   else
   {
     v6 = +[FTDeviceSupport sharedInstance];
-    v5 = [v6 nonWifiAvailableForBundleId:v4];
+    v5 = [v6 nonWifiAvailableForBundleId:idCopy];
   }
 
-  v7 = [MEMORY[0x1E69A6108] sharedInstance];
-  if ([v7 isWiFiAssociated])
+  mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+  if ([mEMORY[0x1E69A6108] isWiFiAssociated])
   {
     v8 = +[FTDeviceSupport sharedInstance];
-    v9 = [v8 wifiAllowedForBundleId:v4];
+    v9 = [v8 wifiAllowedForBundleId:idCopy];
   }
 
   else
@@ -137,7 +137,7 @@ LABEL_12:
   if (v5)
   {
     v10 = +[FTEmbeddedReachability reachabilityForInternetConnection];
-    v11 = [v10 currentReachabilityStatus];
+    currentReachabilityStatus = [v10 currentReachabilityStatus];
     if (v9)
     {
       goto LABEL_14;
@@ -147,96 +147,96 @@ LABEL_12:
   else
   {
     v10 = +[FTEmbeddedReachability reachabilityForLocalWiFi];
-    v12 = [v10 currentReachabilityStatus];
+    currentReachabilityStatus2 = [v10 currentReachabilityStatus];
     if (v9)
     {
       goto LABEL_16;
     }
 
-    v11 = v12;
+    currentReachabilityStatus = currentReachabilityStatus2;
   }
 
-  v13 = [MEMORY[0x1E69A6108] sharedInstance];
-  v14 = [v13 isAirplaneModeEnabled];
+  mEMORY[0x1E69A6108]2 = [MEMORY[0x1E69A6108] sharedInstance];
+  isAirplaneModeEnabled = [mEMORY[0x1E69A6108]2 isAirplaneModeEnabled];
 
-  v15 = 0;
-  if ((v14 & 1) == 0 && ((v5 ^ 1) & 1) == 0)
+  isWiFiUsable = 0;
+  if ((isAirplaneModeEnabled & 1) == 0 && ((v5 ^ 1) & 1) == 0)
   {
 LABEL_14:
-    if ((v11 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    if ((currentReachabilityStatus - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v16 = [MEMORY[0x1E69A6108] sharedInstance];
-      v15 = [v16 isWiFiUsable];
+      mEMORY[0x1E69A6108]3 = [MEMORY[0x1E69A6108] sharedInstance];
+      isWiFiUsable = [mEMORY[0x1E69A6108]3 isWiFiUsable];
 
       goto LABEL_17;
     }
 
 LABEL_16:
-    v15 = 1;
+    isWiFiUsable = 1;
   }
 
 LABEL_17:
 
-  return v15;
+  return isWiFiUsable;
 }
 
-- (BOOL)validNetworkReachableForBundleId:(id)a3
+- (BOOL)validNetworkReachableForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = +[FTEmbeddedReachability reachabilityForInternetConnection];
-  v6 = [v5 currentReachabilityStatus];
+  currentReachabilityStatus = [v5 currentReachabilityStatus];
   v7 = +[FTDeviceSupport sharedInstance];
-  v8 = [v7 wifiAllowedForBundleId:v4];
+  v8 = [v7 wifiAllowedForBundleId:idCopy];
 
-  if (-[FTNetworkSupport allowAnyNetwork](self, "allowAnyNetwork") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 nonWifiAvailableForBundleId:v4], v9, v10))
+  if (-[FTNetworkSupport allowAnyNetwork](self, "allowAnyNetwork") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 nonWifiAvailableForBundleId:idCopy], v9, v10))
   {
-    if (v6 == 2)
+    if (currentReachabilityStatus == 2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = (v6 == 1) & v8;
+      v11 = (currentReachabilityStatus == 1) & v8;
     }
   }
 
   else
   {
-    v11 = (v6 == 1) & v8;
+    v11 = (currentReachabilityStatus == 1) & v8;
   }
 
   return v11;
 }
 
-- (BOOL)willSearchForNetworkForBundleId:(id)a3
+- (BOOL)willSearchForNetworkForBundleId:(id)id
 {
-  v4 = a3;
-  if (-[FTNetworkSupport validNetworkReachable](self, "validNetworkReachable") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 wifiAllowedForBundleId:v4], v5, !v6))
+  idCopy = id;
+  if (-[FTNetworkSupport validNetworkReachable](self, "validNetworkReachable") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 wifiAllowedForBundleId:idCopy], v5, !v6))
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    if (-[FTNetworkSupport allowAnyNetwork](self, "allowAnyNetwork") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 nonWifiAvailableForBundleId:v4], v7, v8))
+    if (-[FTNetworkSupport allowAnyNetwork](self, "allowAnyNetwork") || (+[FTDeviceSupport sharedInstance](FTDeviceSupport, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 nonWifiAvailableForBundleId:idCopy], v7, v8))
     {
-      v9 = [MEMORY[0x1E69A6108] sharedInstance];
-      v10 = [v9 isDataConnectionActive] ^ 1;
+      mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+      v10 = [mEMORY[0x1E69A6108] isDataConnectionActive] ^ 1;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69A6108] sharedInstance];
-      if ([v9 willTryToSearchForWiFiNetwork])
+      mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+      if ([mEMORY[0x1E69A6108] willTryToSearchForWiFiNetwork])
       {
         LOBYTE(v10) = 1;
       }
 
       else
       {
-        v12 = [MEMORY[0x1E69A6108] sharedInstance];
-        LOBYTE(v10) = [v12 willTryToAutoAssociateWiFiNetwork];
+        mEMORY[0x1E69A6108]2 = [MEMORY[0x1E69A6108] sharedInstance];
+        LOBYTE(v10) = [mEMORY[0x1E69A6108]2 willTryToAutoAssociateWiFiNetwork];
       }
     }
   }
@@ -247,18 +247,18 @@ LABEL_17:
 - (BOOL)dataActiveAndReachable
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69A6108] sharedInstance];
-  LODWORD(v3) = [v2 isDataConnectionActive];
+  mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+  LODWORD(currentReachabilityStatus) = [mEMORY[0x1E69A6108] isDataConnectionActive];
 
-  if (v3)
+  if (currentReachabilityStatus)
   {
     v4 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [MEMORY[0x1E69A6108] sharedInstance];
-      v6 = [v5 isDataConnectionActive];
+      mEMORY[0x1E69A6108]2 = [MEMORY[0x1E69A6108] sharedInstance];
+      isDataConnectionActive = [mEMORY[0x1E69A6108]2 isDataConnectionActive];
       v7 = @"NO";
-      if (v6)
+      if (isDataConnectionActive)
       {
         v7 = @"YES";
       }
@@ -270,10 +270,10 @@ LABEL_17:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v8 = [MEMORY[0x1E69A6108] sharedInstance];
-      v9 = [v8 isDataConnectionActive];
+      mEMORY[0x1E69A6108]3 = [MEMORY[0x1E69A6108] sharedInstance];
+      isDataConnectionActive2 = [mEMORY[0x1E69A6108]3 isDataConnectionActive];
       v10 = @"NO";
-      if (v9)
+      if (isDataConnectionActive2)
       {
         v10 = @"YES";
       }
@@ -282,10 +282,10 @@ LABEL_17:
       _IDSLogV();
     }
 
-    v11 = [MEMORY[0x1E69A6108] sharedInstance];
-    v12 = [v11 isAirplaneModeEnabled];
+    mEMORY[0x1E69A6108]4 = [MEMORY[0x1E69A6108] sharedInstance];
+    isAirplaneModeEnabled = [mEMORY[0x1E69A6108]4 isAirplaneModeEnabled];
 
-    if (v12)
+    if (isAirplaneModeEnabled)
     {
       v13 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -299,18 +299,18 @@ LABEL_17:
         _IDSLogV();
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(currentReachabilityStatus) = 0;
     }
 
     else
     {
       v14 = +[FTEmbeddedReachability reachabilityForInternetConnection];
-      v3 = [v14 currentReachabilityStatus];
+      currentReachabilityStatus = [v14 currentReachabilityStatus];
       v15 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v20 = v3;
+        v20 = currentReachabilityStatus;
         _os_log_impl(&dword_195925000, v15, OS_LOG_TYPE_DEFAULT, "dataActiveAndReachable: status = %ld", buf, 0xCu);
       }
 
@@ -319,12 +319,12 @@ LABEL_17:
         _IDSLogV();
       }
 
-      LOBYTE(v3) = v3 == 2;
+      LOBYTE(currentReachabilityStatus) = currentReachabilityStatus == 2;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v3;
+  return currentReachabilityStatus;
 }
 
 - (BOOL)networkActive
@@ -332,16 +332,16 @@ LABEL_17:
   v2 = +[FTEmbeddedReachability reachabilityForInternetConnection];
   if (([v2 currentReachabilityStatus] - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v4 = 1;
+    isWiFiUsable = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69A6108] sharedInstance];
-    v4 = [v3 isWiFiUsable];
+    mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+    isWiFiUsable = [mEMORY[0x1E69A6108] isWiFiUsable];
   }
 
-  return v4;
+  return isWiFiUsable;
 }
 
 - (BOOL)networkReachable
@@ -447,11 +447,11 @@ LABEL_17:
   }
 }
 
-- (void)_reallySetCriticalReliability:(BOOL)a3
+- (void)_reallySetCriticalReliability:(BOOL)reliability
 {
-  v3 = a3;
+  reliabilityCopy = reliability;
   v22 = *MEMORY[0x1E69E9840];
-  self->_criticalReliabilityEnabledState = a3;
+  self->_criticalReliabilityEnabledState = reliability;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -466,7 +466,7 @@ LABEL_17:
       v7 = @"NO";
     }
 
-    if (v3)
+    if (reliabilityCopy)
     {
       v6 = @"YES";
     }
@@ -491,7 +491,7 @@ LABEL_17:
       v9 = @"NO";
     }
 
-    if (v3)
+    if (reliabilityCopy)
     {
       v8 = @"YES";
     }
@@ -506,7 +506,7 @@ LABEL_17:
   {
     v11 = @"NO";
     apsConnection = self->_apsConnection;
-    if (v3)
+    if (reliabilityCopy)
     {
       v11 = @"YES";
     }
@@ -521,7 +521,7 @@ LABEL_17:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v13 = @"NO";
-    if (v3)
+    if (reliabilityCopy)
     {
       v13 = @"YES";
     }
@@ -544,17 +544,17 @@ LABEL_17:
 - (void)_tryToEnableReliability
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_enableCriticalReliability)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_enableCriticalReliability)
   {
-    [(FTNetworkSupport *)v2 _createAPSConnectionIfNeeded];
+    [(FTNetworkSupport *)selfCopy _createAPSConnectionIfNeeded];
   }
 
   v3 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    if (v2->_enableCriticalReliability)
+    if (selfCopy->_enableCriticalReliability)
     {
       v4 = @"YES";
     }
@@ -571,7 +571,7 @@ LABEL_17:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    if (v2->_enableCriticalReliability)
+    if (selfCopy->_enableCriticalReliability)
     {
       v5 = @"YES";
     }
@@ -585,20 +585,20 @@ LABEL_17:
     _IDSLogV();
   }
 
-  if (v2->_enableCriticalReliability)
+  if (selfCopy->_enableCriticalReliability)
   {
     v6 = +[FTDeviceSupport sharedInstance];
-    v7 = [v6 conferencingAllowed];
+    conferencingAllowed = [v6 conferencingAllowed];
 
-    if (v7)
+    if (conferencingAllowed)
     {
-      if ([(FTNetworkSupport *)v2 validNetworkEnabled])
+      if ([(FTNetworkSupport *)selfCopy validNetworkEnabled])
       {
-        if ([(FTNetworkSupport *)v2 validNetworkActive])
+        if ([(FTNetworkSupport *)selfCopy validNetworkActive])
         {
           v8 = 1;
 LABEL_36:
-          [(FTNetworkSupport *)v2 _reallySetCriticalReliability:v8, v13];
+          [(FTNetworkSupport *)selfCopy _reallySetCriticalReliability:v8, v13];
           goto LABEL_37;
         }
 
@@ -652,10 +652,10 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  [(FTNetworkSupport *)v2 _reallySetCriticalReliability:0];
-  [(FTNetworkSupport *)v2 _clearReliabilityTimeoutInterval];
+  [(FTNetworkSupport *)selfCopy _reallySetCriticalReliability:0];
+  [(FTNetworkSupport *)selfCopy _clearReliabilityTimeoutInterval];
 LABEL_37:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }

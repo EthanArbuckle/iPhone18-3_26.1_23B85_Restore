@@ -1,5 +1,5 @@
 @interface ASUIUpgradeViewController
-- (_TtC16AccessorySetupUI25ASUIUpgradeViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI25ASUIUpgradeViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (_TtC16AccessorySetupUI25ASUIUpgradeViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI25ASUIUpgradeViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI25ASUIUpgradeViewController_type] = 17;
@@ -29,7 +29,7 @@
   *(v6 + 56) = 0u;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUIUpgradeViewController *)&v8 initWithContentView:a3];
+  return [(ASUIUpgradeViewController *)&v8 initWithContentView:view];
 }
 
 @end

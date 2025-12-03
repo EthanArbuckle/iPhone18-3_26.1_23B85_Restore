@@ -1,7 +1,7 @@
 @interface LACConcurrencyUtilities
 + (OS_dispatch_queue)daemonQueue;
-+ (id)createDefaultQueueWithIdentifier:(id)a3 concurrencyAttribute:(id)a4;
-+ (id)createQueueWithIdentifier:(id)a3 concurrencyAttribute:(id)a4 qos:(unsigned int)a5;
++ (id)createDefaultQueueWithIdentifier:(id)identifier concurrencyAttribute:(id)attribute;
++ (id)createQueueWithIdentifier:(id)identifier concurrencyAttribute:(id)attribute qos:(unsigned int)qos;
 @end
 
 @implementation LACConcurrencyUtilities
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __38__LACConcurrencyUtilities_daemonQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (daemonQueue_onceToken != -1)
   {
     dispatch_once(&daemonQueue_onceToken, block);
@@ -30,19 +30,19 @@ uint64_t __38__LACConcurrencyUtilities_daemonQueue__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)createDefaultQueueWithIdentifier:(id)a3 concurrencyAttribute:(id)a4
++ (id)createDefaultQueueWithIdentifier:(id)identifier concurrencyAttribute:(id)attribute
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = dispatch_queue_create([a3 UTF8String], v7);
+  identifierCopy = identifier;
+  attributeCopy = attribute;
+  v8 = dispatch_queue_create([identifier UTF8String], attributeCopy);
 
   return v8;
 }
 
-+ (id)createQueueWithIdentifier:(id)a3 concurrencyAttribute:(id)a4 qos:(unsigned int)a5
++ (id)createQueueWithIdentifier:(id)identifier concurrencyAttribute:(id)attribute qos:(unsigned int)qos
 {
-  v6 = dispatch_queue_attr_make_with_qos_class(a4, a5, 0);
-  v7 = dispatch_queue_create([a3 UTF8String], v6);
+  v6 = dispatch_queue_attr_make_with_qos_class(attribute, qos, 0);
+  v7 = dispatch_queue_create([identifier UTF8String], v6);
 
   return v7;
 }

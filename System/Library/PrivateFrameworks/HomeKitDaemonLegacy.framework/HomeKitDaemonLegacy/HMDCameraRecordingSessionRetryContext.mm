@@ -1,17 +1,17 @@
 @interface HMDCameraRecordingSessionRetryContext
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3 homePresenceByPairingIdentity:(id)a4;
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3 homePresenceByPairingIdentity:(id)a4 preferences:(id)a5;
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue homePresenceByPairingIdentity:(id)identity;
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue homePresenceByPairingIdentity:(id)identity preferences:(id)preferences;
 - (double)retryInterval;
 - (void)computeNextRetryInterval;
-- (void)setRetryInterval:(double)a3;
+- (void)setRetryInterval:(double)interval;
 @end
 
 @implementation HMDCameraRecordingSessionRetryContext
 
 - (void)computeNextRetryInterval
 {
-  v3 = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDCameraRecordingSessionRetryContext *)self setRetryCount:[(HMDCameraRecordingSessionRetryContext *)self retryCount]+ 1];
   [(HMDCameraRecordingSessionRetryContext *)self retryInterval];
@@ -28,42 +28,42 @@
 
 - (double)retryInterval
 {
-  v3 = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_retryInterval;
 }
 
-- (void)setRetryInterval:(double)a3
+- (void)setRetryInterval:(double)interval
 {
-  v5 = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  self->_retryInterval = a3;
+  self->_retryInterval = interval;
 }
 
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3 homePresenceByPairingIdentity:(id)a4 preferences:(id)a5
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue homePresenceByPairingIdentity:(id)identity preferences:(id)preferences
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  identityCopy = identity;
+  preferencesCopy = preferences;
   v28.receiver = self;
   v28.super_class = HMDCameraRecordingSessionRetryContext;
   v12 = [(HMDCameraRecordingSessionRetryContext *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeStrong(&v13->_homePresenceByPairingIdentity, a4);
-    v14 = [v11 preferenceForKey:@"recordingSessionInitialRetryInterval"];
-    v15 = [v14 numberValue];
-    [v15 doubleValue];
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeStrong(&v13->_homePresenceByPairingIdentity, identity);
+    v14 = [preferencesCopy preferenceForKey:@"recordingSessionInitialRetryInterval"];
+    numberValue = [v14 numberValue];
+    [numberValue doubleValue];
     v13->_retryInterval = v16;
 
-    v17 = [v11 preferenceForKey:@"recordingSessionMaxRetryInterval"];
-    v18 = [v17 numberValue];
-    [v18 doubleValue];
+    v17 = [preferencesCopy preferenceForKey:@"recordingSessionMaxRetryInterval"];
+    numberValue2 = [v17 numberValue];
+    [numberValue2 doubleValue];
     v13->_maxRetryInterval = v19;
 
     v20 = objc_autoreleasePoolPush();
@@ -90,13 +90,13 @@
   return v13;
 }
 
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3 homePresenceByPairingIdentity:(id)a4
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue homePresenceByPairingIdentity:(id)identity
 {
   v6 = MEMORY[0x277D0F8D0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedPreferences];
-  v10 = [(HMDCameraRecordingSessionRetryContext *)self initWithWorkQueue:v8 homePresenceByPairingIdentity:v7 preferences:v9];
+  identityCopy = identity;
+  queueCopy = queue;
+  sharedPreferences = [v6 sharedPreferences];
+  v10 = [(HMDCameraRecordingSessionRetryContext *)self initWithWorkQueue:queueCopy homePresenceByPairingIdentity:identityCopy preferences:sharedPreferences];
 
   return v10;
 }

@@ -1,52 +1,52 @@
 @interface HUColorLinearPaletteView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (HUColorLinearPaletteView)initWithProfile:(id)a3;
-- (HUColorLinearPaletteView)initWithProfile:(id)a3 colorPalette:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (HUColorLinearPaletteView)initWithProfile:(id)profile;
+- (HUColorLinearPaletteView)initWithProfile:(id)profile colorPalette:(id)palette;
 - (HUQuickControlColorPaletteViewInteractionDelegate)interactionDelegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)value;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)_indexForSelectedColor:(id)a3 includeBias:(BOOL)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)_indexForSelectedColor:(id)color includeBias:(BOOL)bias;
 - (void)_actuateImpactTapticFeedback;
 - (void)_actuateSelectionTapticFeedback;
 - (void)_prepareForTapticFeedback;
-- (void)_setColorPalette:(id)a3 notifyDelegate:(BOOL)a4;
-- (void)_setSelectedColor:(id)a3 notifyDelegate:(BOOL)a4 selectionChanged:(BOOL)a5;
+- (void)_setColorPalette:(id)palette notifyDelegate:(BOOL)delegate;
+- (void)_setSelectedColor:(id)color notifyDelegate:(BOOL)delegate selectionChanged:(BOOL)changed;
 - (void)_updateCalibratedColorPalette;
-- (void)_updateUIForReachabilityState:(unint64_t)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_updateUIForReachabilityState:(unint64_t)state;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)layoutSubviews;
-- (void)setUserInteractionActive:(BOOL)a3;
-- (void)setValue:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSelectedColorIndexPathToIndexPath:(id)a3;
+- (void)setUserInteractionActive:(BOOL)active;
+- (void)setValue:(id)value;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSelectedColorIndexPathToIndexPath:(id)path;
 @end
 
 @implementation HUColorLinearPaletteView
 
-- (HUColorLinearPaletteView)initWithProfile:(id)a3
+- (HUColorLinearPaletteView)initWithProfile:(id)profile
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithProfile_colorPalette_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUColorLinearPaletteView.m" lineNumber:52 description:{@"%s is unavailable; use %@ instead", "-[HUColorLinearPaletteView initWithProfile:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUColorLinearPaletteView.m" lineNumber:52 description:{@"%s is unavailable; use %@ instead", "-[HUColorLinearPaletteView initWithProfile:]", v6}];
 
   return 0;
 }
 
-- (HUColorLinearPaletteView)initWithProfile:(id)a3 colorPalette:(id)a4
+- (HUColorLinearPaletteView)initWithProfile:(id)profile colorPalette:(id)palette
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  paletteCopy = palette;
   v18.receiver = self;
   v18.super_class = HUColorLinearPaletteView;
   v9 = [(HUColorLinearPaletteView *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_profile, a3);
+    objc_storeStrong(&v9->_profile, profile);
     v10->_reachabilityState = 0;
-    objc_storeStrong(&v10->_colorPalette, a4);
+    objc_storeStrong(&v10->_colorPalette, palette);
     [(HUColorLinearPaletteView *)v10 _updateCalibratedColorPalette];
     v11 = objc_alloc_init(MEMORY[0x277D752F0]);
     collectionViewFlowLayout = v10->_collectionViewFlowLayout;
@@ -63,8 +63,8 @@
     [(UICollectionView *)v10->_colorSwatchCollectionView setClipsToBounds:0];
     [(UICollectionView *)v10->_colorSwatchCollectionView setDataSource:v10];
     [(UICollectionView *)v10->_colorSwatchCollectionView setDelegate:v10];
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [(UICollectionView *)v10->_colorSwatchCollectionView setBackgroundColor:v16];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UICollectionView *)v10->_colorSwatchCollectionView setBackgroundColor:clearColor];
 
     [(UICollectionView *)v10->_colorSwatchCollectionView setShowsHorizontalScrollIndicator:0];
     [(UICollectionView *)v10->_colorSwatchCollectionView setShowsVerticalScrollIndicator:0];
@@ -76,31 +76,31 @@
   return v10;
 }
 
-- (void)_setColorPalette:(id)a3 notifyDelegate:(BOOL)a4
+- (void)_setColorPalette:(id)palette notifyDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v25 = a3;
-  v7 = [(HFColorPalette *)self->_colorPalette isEqual:v25];
-  v8 = v25;
+  delegateCopy = delegate;
+  paletteCopy = palette;
+  v7 = [(HFColorPalette *)self->_colorPalette isEqual:paletteCopy];
+  v8 = paletteCopy;
   if ((v7 & 1) == 0)
   {
-    v24 = v4;
+    v24 = delegateCopy;
     v9 = self->_colorPalette;
-    objc_storeStrong(&self->_colorPalette, a3);
+    objc_storeStrong(&self->_colorPalette, palette);
     [(HUColorLinearPaletteView *)self _updateCalibratedColorPalette];
     v10 = objc_opt_new();
-    v11 = [(HFColorPalette *)v9 colors];
-    v12 = [v11 count];
+    colors = [(HFColorPalette *)v9 colors];
+    v12 = [colors count];
 
     if (v12)
     {
       v13 = 0;
       do
       {
-        v14 = [(HFColorPalette *)v9 colors];
-        v15 = [v14 objectAtIndexedSubscript:v13];
-        v16 = [v25 colors];
-        v17 = [v16 objectAtIndexedSubscript:v13];
+        colors2 = [(HFColorPalette *)v9 colors];
+        v15 = [colors2 objectAtIndexedSubscript:v13];
+        colors3 = [paletteCopy colors];
+        v17 = [colors3 objectAtIndexedSubscript:v13];
         v18 = [v15 isEqual:v17];
 
         if ((v18 & 1) == 0)
@@ -110,39 +110,39 @@
         }
 
         ++v13;
-        v20 = [(HFColorPalette *)v9 colors];
-        v21 = [v20 count];
+        colors4 = [(HFColorPalette *)v9 colors];
+        v21 = [colors4 count];
       }
 
       while (v13 < v21);
     }
 
-    v22 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-    [v22 reloadItemsAtIndexPaths:v10];
+    colorSwatchCollectionView = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+    [colorSwatchCollectionView reloadItemsAtIndexPaths:v10];
 
-    v8 = v25;
+    v8 = paletteCopy;
     if (v24)
     {
-      v23 = [(HUColorLinearPaletteView *)self interactionDelegate];
-      [v23 controlView:self colorPaletteDidChange:v25];
+      interactionDelegate = [(HUColorLinearPaletteView *)self interactionDelegate];
+      [interactionDelegate controlView:self colorPaletteDidChange:paletteCopy];
 
-      v8 = v25;
+      v8 = paletteCopy;
     }
   }
 }
 
 - (void)_updateCalibratedColorPalette
 {
-  v3 = [(HUColorLinearPaletteView *)self profile];
-  v4 = [v3 colorProfile];
+  profile = [(HUColorLinearPaletteView *)self profile];
+  colorProfile = [profile colorProfile];
 
-  v5 = [(HUColorLinearPaletteView *)self colorPalette];
-  if (v4)
+  colorPalette = [(HUColorLinearPaletteView *)self colorPalette];
+  if (colorProfile)
   {
-    v11 = v5;
-    v6 = [(HUColorLinearPaletteView *)self profile];
-    v7 = [v6 colorProfile];
-    v8 = [(HFColorPalette *)v11 colorPaletteByAdjustingForColorProfile:v7];
+    v11 = colorPalette;
+    profile2 = [(HUColorLinearPaletteView *)self profile];
+    colorProfile2 = [profile2 colorProfile];
+    v8 = [(HFColorPalette *)v11 colorPaletteByAdjustingForColorProfile:colorProfile2];
     calibratedColorPalette = self->_calibratedColorPalette;
     self->_calibratedColorPalette = v8;
 
@@ -152,86 +152,86 @@
   else
   {
     v10 = self->_calibratedColorPalette;
-    self->_calibratedColorPalette = v5;
+    self->_calibratedColorPalette = colorPalette;
   }
 }
 
-- (void)_setSelectedColor:(id)a3 notifyDelegate:(BOOL)a4 selectionChanged:(BOOL)a5
+- (void)_setSelectedColor:(id)color notifyDelegate:(BOOL)delegate selectionChanged:(BOOL)changed
 {
-  v5 = a5;
-  v6 = a4;
-  [(HUColorLinearPaletteView *)self setSelectedColor:a3];
+  changedCopy = changed;
+  delegateCopy = delegate;
+  [(HUColorLinearPaletteView *)self setSelectedColor:color];
   v15 = objc_opt_new();
-  v8 = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
-  [v15 na_safeAddObject:v8];
+  prevSelectedColorIndexPath = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
+  [v15 na_safeAddObject:prevSelectedColorIndexPath];
 
-  v9 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
-  [v15 na_safeAddObject:v9];
+  selectedColorIndexPath = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+  [v15 na_safeAddObject:selectedColorIndexPath];
 
-  v10 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-  [v10 reloadItemsAtIndexPaths:v15];
+  colorSwatchCollectionView = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+  [colorSwatchCollectionView reloadItemsAtIndexPaths:v15];
 
-  v11 = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
-  v12 = [v15 containsObject:v11];
+  prevSelectedColorIndexPath2 = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
+  v12 = [v15 containsObject:prevSelectedColorIndexPath2];
 
   if (v12)
   {
     [(HUColorLinearPaletteView *)self setPrevSelectedColorIndexPath:0];
   }
 
-  if (v6 && v5)
+  if (delegateCopy && changedCopy)
   {
-    v13 = [(HUColorLinearPaletteView *)self interactionDelegate];
-    v14 = [(HUColorLinearPaletteView *)self value];
-    [v13 controlView:self valueDidChange:v14];
+    interactionDelegate = [(HUColorLinearPaletteView *)self interactionDelegate];
+    value = [(HUColorLinearPaletteView *)self value];
+    [interactionDelegate controlView:self valueDidChange:value];
   }
 }
 
-- (unint64_t)_indexForSelectedColor:(id)a3 includeBias:(BOOL)a4
+- (unint64_t)_indexForSelectedColor:(id)color includeBias:(BOOL)bias
 {
-  v5 = a3;
-  v6 = [(HUColorLinearPaletteView *)self calibratedColorPalette];
-  v7 = [v6 colors];
+  colorCopy = color;
+  calibratedColorPalette = [(HUColorLinearPaletteView *)self calibratedColorPalette];
+  colors = [calibratedColorPalette colors];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__HUColorLinearPaletteView__indexForSelectedColor_includeBias___block_invoke;
   v12[3] = &unk_277DBD508;
-  v13 = v5;
-  v8 = v5;
-  v9 = [v7 indexesOfObjectsPassingTest:v12];
+  v13 = colorCopy;
+  v8 = colorCopy;
+  v9 = [colors indexesOfObjectsPassingTest:v12];
 
-  v10 = [v9 firstIndex];
-  return v10;
+  firstIndex = [v9 firstIndex];
+  return firstIndex;
 }
 
-- (void)updateSelectedColorIndexPathToIndexPath:(id)a3
+- (void)updateSelectedColorIndexPathToIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
-  [(HUColorLinearPaletteView *)self setPrevSelectedColorIndexPath:v5];
+  pathCopy = path;
+  selectedColorIndexPath = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+  [(HUColorLinearPaletteView *)self setPrevSelectedColorIndexPath:selectedColorIndexPath];
 
-  [(HUColorLinearPaletteView *)self setSelectedColorIndexPath:v4];
+  [(HUColorLinearPaletteView *)self setSelectedColorIndexPath:pathCopy];
   v9 = objc_opt_new();
-  v6 = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
-  [v9 na_safeAddObject:v6];
+  prevSelectedColorIndexPath = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
+  [v9 na_safeAddObject:prevSelectedColorIndexPath];
 
-  v7 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
-  [v9 na_safeAddObject:v7];
+  selectedColorIndexPath2 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+  [v9 na_safeAddObject:selectedColorIndexPath2];
 
-  v8 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-  [v8 reloadItemsAtIndexPaths:v9];
+  colorSwatchCollectionView = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+  [colorSwatchCollectionView reloadItemsAtIndexPaths:v9];
 }
 
 - (id)value
 {
-  v3 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+  selectedColorIndexPath = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
 
-  if (v3)
+  if (selectedColorIndexPath)
   {
-    v4 = [(HUColorLinearPaletteView *)self calibratedColorPalette];
-    v5 = [v4 colors];
-    v6 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
-    v7 = [v5 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+    calibratedColorPalette = [(HUColorLinearPaletteView *)self calibratedColorPalette];
+    colors = [calibratedColorPalette colors];
+    selectedColorIndexPath2 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+    v7 = [colors objectAtIndexedSubscript:{objc_msgSend(selectedColorIndexPath2, "item")}];
   }
 
   else
@@ -242,11 +242,11 @@
   return v7;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = valueCopy;
   v20 = v6;
   if (!v6)
   {
@@ -268,9 +268,9 @@
   v9 = v20;
   if (!v8)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v10 handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
     v6 = v20;
 LABEL_7:
@@ -278,76 +278,76 @@ LABEL_7:
   }
 
   v12 = [(HUColorLinearPaletteView *)self _indexForSelectedColor:v9 includeBias:1];
-  v13 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+  selectedColorIndexPath = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
 
-  if (v13)
+  if (selectedColorIndexPath)
   {
-    v14 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
-    v15 = [v14 item];
+    selectedColorIndexPath2 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+    item = [selectedColorIndexPath2 item];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v15 = 0x7FFFFFFFFFFFFFFFLL;
+  item = 0x7FFFFFFFFFFFFFFFLL;
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [MEMORY[0x277CCAA70] indexPathForItem:v12 inSection:0];
-    [(HUColorLinearPaletteView *)self setSelectedColorIndexPath:v14];
+    selectedColorIndexPath2 = [MEMORY[0x277CCAA70] indexPathForItem:v12 inSection:0];
+    [(HUColorLinearPaletteView *)self setSelectedColorIndexPath:selectedColorIndexPath2];
     goto LABEL_12;
   }
 
 LABEL_13:
-  v16 = [(HUColorLinearPaletteView *)self selectedColor];
-  v17 = [v9 isEqual:v16];
+  selectedColor = [(HUColorLinearPaletteView *)self selectedColor];
+  v17 = [v9 isEqual:selectedColor];
 
-  v18 = [(HUColorLinearPaletteView *)self colorPalette];
-  v19 = [v18 mutableCopy];
+  colorPalette = [(HUColorLinearPaletteView *)self colorPalette];
+  v19 = [colorPalette mutableCopy];
 
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL && v15 != 0x7FFFFFFFFFFFFFFFLL && ([v9 isNaturalLightColor] & 1) == 0)
+  if (v12 == 0x7FFFFFFFFFFFFFFFLL && item != 0x7FFFFFFFFFFFFFFFLL && ([v9 isNaturalLightColor] & 1) == 0)
   {
-    [v19 setColor:v9 atIndex:v15];
+    [v19 setColor:v9 atIndex:item];
     [(HUColorLinearPaletteView *)self _setColorPalette:v19 notifyDelegate:1];
   }
 
   [(HUColorLinearPaletteView *)self _setSelectedColor:v9 notifyDelegate:0 selectionChanged:v17 ^ 1u];
 }
 
-- (void)_updateUIForReachabilityState:(unint64_t)a3
+- (void)_updateUIForReachabilityState:(unint64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       return;
     }
 
-    v6 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-    [v6 setAlpha:1.0];
+    colorSwatchCollectionView = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+    [colorSwatchCollectionView setAlpha:1.0];
 
-    v7 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-    [v7 setUserInteractionEnabled:1];
+    colorSwatchCollectionView2 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+    [colorSwatchCollectionView2 setUserInteractionEnabled:1];
   }
 
   else
   {
-    v4 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-    [v4 setAlpha:0.5];
+    colorSwatchCollectionView3 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+    [colorSwatchCollectionView3 setAlpha:0.5];
 
-    v5 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-    [v5 setUserInteractionEnabled:0];
+    colorSwatchCollectionView4 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+    [colorSwatchCollectionView4 setUserInteractionEnabled:0];
 
     [(HUColorLinearPaletteView *)self setSelectedColor:0];
-    v7 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-    [v7 reloadData];
+    colorSwatchCollectionView2 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+    [colorSwatchCollectionView2 reloadData];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HUColorLinearPaletteView;
-  [(HUColorLinearPaletteView *)&v4 traitCollectionDidChange:a3];
+  [(HUColorLinearPaletteView *)&v4 traitCollectionDidChange:change];
   [(HUColorLinearPaletteView *)self invalidateIntrinsicContentSize];
 }
 
@@ -360,69 +360,69 @@ LABEL_13:
   v4 = v3;
   [(HUColorLinearPaletteView *)self frame];
   v6 = v5;
-  v7 = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  colorSwatchCollectionView = [(HUColorLinearPaletteView *)self colorSwatchCollectionView];
+  [colorSwatchCollectionView setFrame:{0.0, 0.0, v4, v6}];
 
   v8 = *&HUQuickControlPushButtonSmallDiameter;
-  v9 = [(HUColorLinearPaletteView *)self collectionViewFlowLayout];
-  [v9 setItemSize:{v8, v8}];
+  collectionViewFlowLayout = [(HUColorLinearPaletteView *)self collectionViewFlowLayout];
+  [collectionViewFlowLayout setItemSize:{v8, v8}];
 
   [(HUColorLinearPaletteView *)self _updateUIForReachabilityState:[(HUColorLinearPaletteView *)self reachabilityState]];
 }
 
-- (void)setUserInteractionActive:(BOOL)a3
+- (void)setUserInteractionActive:(BOOL)active
 {
-  if (self->_userInteractionActive != a3)
+  if (self->_userInteractionActive != active)
   {
-    v4 = a3;
-    self->_userInteractionActive = a3;
-    v6 = [(HUColorLinearPaletteView *)self interactionDelegate];
-    [v6 controlView:self interactionStateDidChange:v4 forFirstTouch:0];
+    activeCopy = active;
+    self->_userInteractionActive = active;
+    interactionDelegate = [(HUColorLinearPaletteView *)self interactionDelegate];
+    [interactionDelegate controlView:self interactionStateDidChange:activeCopy forFirstTouch:0];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(HUColorLinearPaletteView *)self calibratedColorPalette:a3];
-  v5 = [v4 colors];
-  v6 = [v5 count];
+  v4 = [(HUColorLinearPaletteView *)self calibratedColorPalette:view];
+  colors = [v4 colors];
+  v6 = [colors count];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUColorLinearPaletteView *)self selectedColor];
-  v9 = [(HUColorLinearPaletteView *)self _indexForSelectedColor:v8 includeBias:1];
+  viewCopy = view;
+  pathCopy = path;
+  selectedColor = [(HUColorLinearPaletteView *)self selectedColor];
+  item = [(HUColorLinearPaletteView *)self _indexForSelectedColor:selectedColor includeBias:1];
 
-  v10 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+  selectedColorIndexPath = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
 
-  if (v10)
+  if (selectedColorIndexPath)
   {
-    v11 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
-    v9 = [v11 item];
+    selectedColorIndexPath2 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+    item = [selectedColorIndexPath2 item];
   }
 
-  v12 = [(HUColorLinearPaletteView *)self colorPalette];
-  v13 = [v12 colors];
-  v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  colorPalette = [(HUColorLinearPaletteView *)self colorPalette];
+  colors = [colorPalette colors];
+  v14 = [colors objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   if ([v14 isNaturalLightColor])
   {
-    v15 = [v6 dequeueReusableCellWithReuseIdentifier:@"naturalLightSwatchViewCell" forIndexPath:v7];
+    v15 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"naturalLightSwatchViewCell" forIndexPath:pathCopy];
     if (!v15)
     {
       v15 = [[HUNaturalLightColorSwatchCollectionViewCell alloc] initWithFrame:0.0, 0.0, 57.0, 57.0];
     }
 
-    v16 = [v7 item];
-    v17 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-    [v17 setTag:v16];
+    item2 = [pathCopy item];
+    swatchView = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+    [swatchView setTag:item2];
 
-    v18 = [(HUColorLinearPaletteView *)self selectedColor];
-    if (v18 && (v19 = v18, v20 = [v7 item], v19, v9 == v20))
+    selectedColor2 = [(HUColorLinearPaletteView *)self selectedColor];
+    if (selectedColor2 && (v19 = selectedColor2, v20 = [pathCopy item], v19, item == v20))
     {
       v21 = 2;
     }
@@ -432,66 +432,66 @@ LABEL_13:
       v21 = 0;
     }
 
-    v36 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-    [v36 setSelectionState:v21];
+    swatchView2 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+    [swatchView2 setSelectionState:v21];
   }
 
   else
   {
-    v15 = [v6 dequeueReusableCellWithReuseIdentifier:@"colorSwatchViewCell" forIndexPath:v7];
+    v15 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"colorSwatchViewCell" forIndexPath:pathCopy];
     if (!v15)
     {
       v15 = [[HUColorSwatchViewCollectionViewCell alloc] initWithFrame:0.0, 0.0, 57.0, 57.0];
     }
 
     v22 = _HULocalizedStringWithDefaultValue(@"HUQuickControlColorPickerEditButton", @"HUQuickControlColorPickerEditButton", 1);
-    v23 = [v22 localizedUppercaseString];
-    v24 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-    [v24 setText:v23];
+    localizedUppercaseString = [v22 localizedUppercaseString];
+    swatchView3 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+    [swatchView3 setText:localizedUppercaseString];
 
-    v25 = [v7 item];
-    v26 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-    [v26 setTag:v25];
+    item3 = [pathCopy item];
+    swatchView4 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+    [swatchView4 setTag:item3];
 
-    v27 = [(HUColorLinearPaletteView *)self calibratedColorPalette];
-    v28 = [v27 colors];
-    v29 = [v28 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    calibratedColorPalette = [(HUColorLinearPaletteView *)self calibratedColorPalette];
+    colors2 = [calibratedColorPalette colors];
+    v29 = [colors2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-    v30 = [v29 UIColor];
-    v31 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-    [v31 setColor:v30];
+    uIColor = [v29 UIColor];
+    swatchView5 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+    [swatchView5 setColor:uIColor];
 
-    v32 = [(HUColorLinearPaletteView *)self selectedColor];
-    if (v32 && (v33 = v32, v34 = [v7 item], v33, v9 == v34))
+    selectedColor3 = [(HUColorLinearPaletteView *)self selectedColor];
+    if (selectedColor3 && (v33 = selectedColor3, v34 = [pathCopy item], v33, item == v34))
     {
-      v35 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-      [v35 setSelectionState:2];
+      swatchView6 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+      [swatchView6 setSelectionState:2];
 
-      v36 = [(HUColorLinearPaletteView *)self profile];
-      v37 = [v36 mode] != 0;
-      v38 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-      [v38 setLabelHidden:v37];
+      swatchView2 = [(HUColorLinearPaletteView *)self profile];
+      v37 = [swatchView2 mode] != 0;
+      swatchView7 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+      [swatchView7 setLabelHidden:v37];
     }
 
     else
     {
-      v39 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-      [v39 setSelectionState:0];
+      swatchView8 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+      [swatchView8 setSelectionState:0];
 
-      v36 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
-      [v36 setLabelHidden:1];
+      swatchView2 = [(HUNaturalLightColorSwatchCollectionViewCell *)v15 swatchView];
+      [swatchView2 setLabelHidden:1];
     }
 
     v14 = v29;
   }
 
-  v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"HUColorSwatchViewCollectionViewCell-%lu", objc_msgSend(v7, "item")];
+  v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"HUColorSwatchViewCollectionViewCell-%lu", objc_msgSend(pathCopy, "item")];
   [(HUNaturalLightColorSwatchCollectionViewCell *)v15 setAccessibilityIdentifier:v40];
 
   return v15;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v5 = 57.0;
   v6 = 57.0;
@@ -500,62 +500,62 @@ LABEL_13:
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  pathCopy = path;
   [(HUColorLinearPaletteView *)self setUserInteractionActive:1];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUColorLinearPaletteView *)self calibratedColorPalette];
-    v8 = [v7 colors];
+    calibratedColorPalette = [(HUColorLinearPaletteView *)self calibratedColorPalette];
+    colors = [calibratedColorPalette colors];
     v25 = 138412546;
-    v26 = v5;
+    v26 = pathCopy;
     v27 = 2112;
-    v28 = v8;
+    v28 = colors;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "User selected indexPath %@. colors = %@", &v25, 0x16u);
   }
 
-  v9 = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
+  selectedColorIndexPath = [(HUColorLinearPaletteView *)self selectedColorIndexPath];
 
-  if (v9)
+  if (selectedColorIndexPath)
   {
     [(HUColorLinearPaletteView *)self selectedColorIndexPath];
   }
 
   else
   {
-    v10 = [(HUColorLinearPaletteView *)self selectedColor];
-    v11 = [(HUColorLinearPaletteView *)self _indexForSelectedColor:v10 includeBias:1];
+    selectedColor = [(HUColorLinearPaletteView *)self selectedColor];
+    v11 = [(HUColorLinearPaletteView *)self _indexForSelectedColor:selectedColor includeBias:1];
 
     [MEMORY[0x277CCAA70] indexPathForItem:v11 inSection:0];
   }
   v12 = ;
   [(HUColorLinearPaletteView *)self setPrevSelectedColorIndexPath:v12];
 
-  [(HUColorLinearPaletteView *)self setSelectedColorIndexPath:v5];
-  v13 = [(HUColorLinearPaletteView *)self calibratedColorPalette];
-  v14 = [v13 colors];
-  v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+  [(HUColorLinearPaletteView *)self setSelectedColorIndexPath:pathCopy];
+  calibratedColorPalette2 = [(HUColorLinearPaletteView *)self calibratedColorPalette];
+  colors2 = [calibratedColorPalette2 colors];
+  v15 = [colors2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v16 = [v5 item];
-  v17 = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
-  v18 = [v17 item];
+  item = [pathCopy item];
+  prevSelectedColorIndexPath = [(HUColorLinearPaletteView *)self prevSelectedColorIndexPath];
+  item2 = [prevSelectedColorIndexPath item];
 
-  v19 = [v15 isNaturalLightColor];
-  if (v16 == v18)
+  isNaturalLightColor = [v15 isNaturalLightColor];
+  if (item == item2)
   {
-    v20 = v19;
-    v21 = [(HUColorLinearPaletteView *)self profile];
-    v22 = ([v21 mode] != 0) | v20;
+    v20 = isNaturalLightColor;
+    profile = [(HUColorLinearPaletteView *)self profile];
+    v22 = ([profile mode] != 0) | v20;
 
     if ((v22 & 1) == 0)
     {
       [(HUColorLinearPaletteView *)self setPrevSelectedColorIndexPath:0];
       [(HUColorLinearPaletteView *)self setPrevSelectedColorIndexPath:0];
-      v23 = [(HUColorLinearPaletteView *)self interactionDelegate];
-      [v23 presentFullColorViewForControlView:self selectedColorIndexPath:v5];
+      interactionDelegate = [(HUColorLinearPaletteView *)self interactionDelegate];
+      [interactionDelegate presentFullColorViewForControlView:self selectedColorIndexPath:pathCopy];
 
       [(HUColorLinearPaletteView *)self _actuateImpactTapticFeedback];
     }
@@ -563,8 +563,8 @@ LABEL_13:
 
   else
   {
-    v24 = [(HUColorLinearPaletteView *)self interactionDelegate];
-    [v24 controlView:self didSelectColorAtIndexPath:v5];
+    interactionDelegate2 = [(HUColorLinearPaletteView *)self interactionDelegate];
+    [interactionDelegate2 controlView:self didSelectColorAtIndexPath:pathCopy];
 
     [(HUColorLinearPaletteView *)self _setSelectedColor:v15 notifyDelegate:1 selectionChanged:1];
     [(HUColorLinearPaletteView *)self _actuateSelectionTapticFeedback];
@@ -573,7 +573,7 @@ LABEL_13:
   [(HUColorLinearPaletteView *)self setUserInteractionActive:0];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 0.0;
   v6 = 4.5;
@@ -591,32 +591,32 @@ LABEL_13:
   v3 = objc_alloc_init(MEMORY[0x277D75A10]);
   [(HUColorLinearPaletteView *)self setSelectionFeedbackGenerator:v3];
 
-  v4 = [(HUColorLinearPaletteView *)self selectionFeedbackGenerator];
-  [v4 prepare];
+  selectionFeedbackGenerator = [(HUColorLinearPaletteView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator prepare];
 
   v5 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:1];
   [(HUColorLinearPaletteView *)self setImpactFeedbackGenerator:v5];
 
-  v6 = [(HUColorLinearPaletteView *)self impactFeedbackGenerator];
-  [v6 prepare];
+  impactFeedbackGenerator = [(HUColorLinearPaletteView *)self impactFeedbackGenerator];
+  [impactFeedbackGenerator prepare];
 }
 
 - (void)_actuateSelectionTapticFeedback
 {
-  v3 = [(HUColorLinearPaletteView *)self selectionFeedbackGenerator];
-  [v3 selectionChanged];
+  selectionFeedbackGenerator = [(HUColorLinearPaletteView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator selectionChanged];
 
-  v4 = [(HUColorLinearPaletteView *)self selectionFeedbackGenerator];
-  [v4 prepare];
+  selectionFeedbackGenerator2 = [(HUColorLinearPaletteView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator2 prepare];
 }
 
 - (void)_actuateImpactTapticFeedback
 {
-  v3 = [(HUColorLinearPaletteView *)self impactFeedbackGenerator];
-  [v3 impactOccurred];
+  impactFeedbackGenerator = [(HUColorLinearPaletteView *)self impactFeedbackGenerator];
+  [impactFeedbackGenerator impactOccurred];
 
-  v4 = [(HUColorLinearPaletteView *)self impactFeedbackGenerator];
-  [v4 prepare];
+  impactFeedbackGenerator2 = [(HUColorLinearPaletteView *)self impactFeedbackGenerator];
+  [impactFeedbackGenerator2 prepare];
 }
 
 - (HUQuickControlColorPaletteViewInteractionDelegate)interactionDelegate

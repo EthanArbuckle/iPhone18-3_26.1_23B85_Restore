@@ -1,28 +1,28 @@
 @interface RTSignificantRegionHintInjectionMetrics
-+ (void)submitMetricsWithHintSource:(int64_t)a3 region:(id)a4 locationOfInterest:(id)a5 hintSubmitted:(BOOL)a6 matchingError:(id)a7;
-- (RTSignificantRegionHintInjectionMetrics)initWithHintSource:(int64_t)a3 region:(id)a4 locationOfInterest:(id)a5 hintSubmitted:(BOOL)a6 matchingError:(id)a7;
++ (void)submitMetricsWithHintSource:(int64_t)source region:(id)region locationOfInterest:(id)interest hintSubmitted:(BOOL)submitted matchingError:(id)error;
+- (RTSignificantRegionHintInjectionMetrics)initWithHintSource:(int64_t)source region:(id)region locationOfInterest:(id)interest hintSubmitted:(BOOL)submitted matchingError:(id)error;
 - (id)computeMetrics;
 - (void)submitMetrics;
 @end
 
 @implementation RTSignificantRegionHintInjectionMetrics
 
-- (RTSignificantRegionHintInjectionMetrics)initWithHintSource:(int64_t)a3 region:(id)a4 locationOfInterest:(id)a5 hintSubmitted:(BOOL)a6 matchingError:(id)a7
+- (RTSignificantRegionHintInjectionMetrics)initWithHintSource:(int64_t)source region:(id)region locationOfInterest:(id)interest hintSubmitted:(BOOL)submitted matchingError:(id)error
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  regionCopy = region;
+  interestCopy = interest;
+  errorCopy = error;
   v19.receiver = self;
   v19.super_class = RTSignificantRegionHintInjectionMetrics;
   v16 = [(RTSignificantRegionHintInjectionMetrics *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_region, a4);
-    objc_storeStrong(&v17->_locationOfInterest, a5);
-    v17->_hintSource = a3;
-    v17->_hintSubmitted = a6;
-    objc_storeStrong(&v17->_matchingError, a7);
+    objc_storeStrong(&v16->_region, region);
+    objc_storeStrong(&v17->_locationOfInterest, interest);
+    v17->_hintSource = source;
+    v17->_hintSubmitted = submitted;
+    objc_storeStrong(&v17->_matchingError, error);
   }
 
   return v17;
@@ -30,49 +30,49 @@
 
 - (id)computeMetrics
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[RTSignificantRegionHintInjectionMetrics hintSource](self, "hintSource")}];
-  [v3 setObject:v4 forKeyedSubscript:@"hintSource"];
+  [dictionary setObject:v4 forKeyedSubscript:@"hintSource"];
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(RTSignificantRegionHintInjectionMetrics *)self region];
-  [v6 horizontalUncertainty];
+  region = [(RTSignificantRegionHintInjectionMetrics *)self region];
+  [region horizontalUncertainty];
   v7 = [v5 numberWithDouble:?];
-  [v3 setObject:v7 forKeyedSubscript:@"regionRadius"];
+  [dictionary setObject:v7 forKeyedSubscript:@"regionRadius"];
 
-  [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"matched"];
-  v8 = [(RTSignificantRegionHintInjectionMetrics *)self locationOfInterest];
+  [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"matched"];
+  locationOfInterest = [(RTSignificantRegionHintInjectionMetrics *)self locationOfInterest];
 
-  if (v8)
+  if (locationOfInterest)
   {
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"matched"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"matched"];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(RTSignificantRegionHintInjectionMetrics *)self locationOfInterest];
-    v11 = [v10 location];
-    v12 = [v11 location];
-    [v12 horizontalUncertainty];
+    locationOfInterest2 = [(RTSignificantRegionHintInjectionMetrics *)self locationOfInterest];
+    location = [locationOfInterest2 location];
+    v11Location = [location location];
+    [v11Location horizontalUncertainty];
     v13 = [v9 numberWithDouble:?];
-    [v3 setObject:v13 forKeyedSubscript:@"loiRadius"];
+    [dictionary setObject:v13 forKeyedSubscript:@"loiRadius"];
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTSignificantRegionHintInjectionMetrics hintSubmitted](self, "hintSubmitted")}];
-  [v3 setObject:v14 forKeyedSubscript:@"hintSubmitted"];
+  [dictionary setObject:v14 forKeyedSubscript:@"hintSubmitted"];
 
-  v15 = [(RTSignificantRegionHintInjectionMetrics *)self matchingError];
+  matchingError = [(RTSignificantRegionHintInjectionMetrics *)self matchingError];
 
-  if (v15)
+  if (matchingError)
   {
-    v16 = [(RTSignificantRegionHintInjectionMetrics *)self matchingError];
-    v17 = [v16 domain];
-    [v3 setObject:v17 forKeyedSubscript:@"errorDomain"];
+    matchingError2 = [(RTSignificantRegionHintInjectionMetrics *)self matchingError];
+    domain = [matchingError2 domain];
+    [dictionary setObject:domain forKeyedSubscript:@"errorDomain"];
 
     v18 = MEMORY[0x277CCABB0];
-    v19 = [(RTSignificantRegionHintInjectionMetrics *)self matchingError];
-    v20 = [v18 numberWithInteger:{objc_msgSend(v19, "code")}];
-    [v3 setObject:v20 forKeyedSubscript:@"errorCode"];
+    matchingError3 = [(RTSignificantRegionHintInjectionMetrics *)self matchingError];
+    v20 = [v18 numberWithInteger:{objc_msgSend(matchingError3, "code")}];
+    [dictionary setObject:v20 forKeyedSubscript:@"errorCode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)submitMetrics
@@ -106,13 +106,13 @@ id __56__RTSignificantRegionHintInjectionMetrics_submitMetrics__block_invoke_2(u
   return v2;
 }
 
-+ (void)submitMetricsWithHintSource:(int64_t)a3 region:(id)a4 locationOfInterest:(id)a5 hintSubmitted:(BOOL)a6 matchingError:(id)a7
++ (void)submitMetricsWithHintSource:(int64_t)source region:(id)region locationOfInterest:(id)interest hintSubmitted:(BOOL)submitted matchingError:(id)error
 {
-  v7 = a6;
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = [[RTSignificantRegionHintInjectionMetrics alloc] initWithHintSource:a3 region:v13 locationOfInterest:v12 hintSubmitted:v7 matchingError:v11];
+  submittedCopy = submitted;
+  errorCopy = error;
+  interestCopy = interest;
+  regionCopy = region;
+  v14 = [[RTSignificantRegionHintInjectionMetrics alloc] initWithHintSource:source region:regionCopy locationOfInterest:interestCopy hintSubmitted:submittedCopy matchingError:errorCopy];
 
   [(RTSignificantRegionHintInjectionMetrics *)v14 submitMetrics];
 }

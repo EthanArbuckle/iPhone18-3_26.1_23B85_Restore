@@ -1,17 +1,17 @@
 @interface NPFamilySharingSetupPresenter
-- (void)presentFamilySharingSetupWith:(id)a3;
+- (void)presentFamilySharingSetupWith:(id)with;
 @end
 
 @implementation NPFamilySharingSetupPresenter
 
-- (void)presentFamilySharingSetupWith:(id)a3
+- (void)presentFamilySharingSetupWith:(id)with
 {
   v3 = MEMORY[0x1E699C090];
-  v4 = a3;
+  withCopy = with;
   v5 = [v3 alloc];
   v7 = [v5 initWithEventType:*MEMORY[0x1E699C088]];
   [v7 setClientName:@"AppleNewsPlus"];
-  v6 = [objc_alloc(MEMORY[0x1E699C098]) initWithPresenter:v4];
+  v6 = [objc_alloc(MEMORY[0x1E699C098]) initWithPresenter:withCopy];
 
   [v6 performWithContext:v7 completion:&__block_literal_global];
 }

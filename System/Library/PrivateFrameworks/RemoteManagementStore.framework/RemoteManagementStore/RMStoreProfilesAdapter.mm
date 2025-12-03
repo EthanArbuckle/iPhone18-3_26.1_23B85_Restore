@@ -1,27 +1,27 @@
 @interface RMStoreProfilesAdapter
-- (BOOL)_allowedPayloadType:(id)a3 store:(id)a4;
-- (BOOL)_canAssumeOwnershipOfProfile:(id)a3 newProfile:(id)a4 newDeclarationKey:(id)a5 store:(id)a6;
-- (BOOL)_canInstallProfile:(id)a3 store:(id)a4 declarationKey:(id)a5 outAssumeOwnership:(BOOL *)a6 error:(id *)a7;
-- (BOOL)_canReplaceProfile:(id)a3 newProfile:(id)a4 newDeclarationKey:(id)a5 store:(id)a6 outAssumeOwnership:(BOOL *)a7 error:(id *)a8;
-- (BOOL)_canUninstallProfileWithIdentifier:(id)a3 store:(id)a4 error:(id *)a5;
-- (BOOL)_removeProfileWithIdentifier:(id)a3 error:(id *)a4;
-- (RMStoreProfilesAdapter)initWithScope:(int64_t)a3;
+- (BOOL)_allowedPayloadType:(id)type store:(id)store;
+- (BOOL)_canAssumeOwnershipOfProfile:(id)profile newProfile:(id)newProfile newDeclarationKey:(id)key store:(id)store;
+- (BOOL)_canInstallProfile:(id)profile store:(id)store declarationKey:(id)key outAssumeOwnership:(BOOL *)ownership error:(id *)error;
+- (BOOL)_canReplaceProfile:(id)profile newProfile:(id)newProfile newDeclarationKey:(id)key store:(id)store outAssumeOwnership:(BOOL *)ownership error:(id *)error;
+- (BOOL)_canUninstallProfileWithIdentifier:(id)identifier store:(id)store error:(id *)error;
+- (BOOL)_removeProfileWithIdentifier:(id)identifier error:(id *)error;
+- (RMStoreProfilesAdapter)initWithScope:(int64_t)scope;
 - (id)_allowedErSSOPayloadTypes;
-- (id)_declarationKeyForProfile:(id)a3;
-- (id)_declarationKeyForUserInfo:(id)a3;
+- (id)_declarationKeyForProfile:(id)profile;
+- (id)_declarationKeyForUserInfo:(id)info;
 - (id)_disallowedPayloadTypes;
-- (id)_installOptionsForStore:(id)a3 declarationKey:(id)a4 assumeOwnership:(BOOL)a5;
-- (id)_installProfileData:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)_payloadStructure:(id)a3;
-- (id)_personaIDForStore:(id)a3;
-- (id)_profileForIdentifier:(id)a3 rmOnly:(BOOL)a4;
+- (id)_installOptionsForStore:(id)store declarationKey:(id)key assumeOwnership:(BOOL)ownership;
+- (id)_installProfileData:(id)data options:(id)options error:(id *)error;
+- (id)_payloadStructure:(id)structure;
+- (id)_personaIDForStore:(id)store;
+- (id)_profileForIdentifier:(id)identifier rmOnly:(BOOL)only;
 - (id)allProfileIdentifiers;
 - (id)installedProfileIdentifierByDeclarationKey;
-- (id)profileNameForIdentifier:(id)a3;
+- (id)profileNameForIdentifier:(id)identifier;
 - (void)allProfileIdentifiers;
-- (void)installProfileData:(id)a3 store:(id)a4 declarationKey:(id)a5 completionHandler:(id)a6;
+- (void)installProfileData:(id)data store:(id)store declarationKey:(id)key completionHandler:(id)handler;
 - (void)installedProfileIdentifierByDeclarationKey;
-- (void)uninstallProfileWithIdentifier:(id)a3 store:(id)a4 completionHandler:(id)a5;
+- (void)uninstallProfileWithIdentifier:(id)identifier store:(id)store completionHandler:(id)handler;
 @end
 
 @implementation RMStoreProfilesAdapter
@@ -29,7 +29,7 @@
 - (id)installedProfileIdentifierByDeclarationKey
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   if ([(RMStoreProfilesAdapter *)self isSystemScope])
   {
     v4 = 19;
@@ -40,7 +40,7 @@
     v4 = 9;
   }
 
-  v5 = [v3 installedProfileIdentifiersWithFilterFlags:v4];
+  v5 = [mEMORY[0x277D262A0] installedProfileIdentifiersWithFilterFlags:v4];
 
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
   v19 = 0u;
@@ -80,8 +80,8 @@
     while (v9);
   }
 
-  v16 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+  profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
   {
     [RMStoreProfilesAdapter installedProfileIdentifierByDeclarationKey];
   }
@@ -91,14 +91,14 @@
   return v6;
 }
 
-- (RMStoreProfilesAdapter)initWithScope:(int64_t)a3
+- (RMStoreProfilesAdapter)initWithScope:(int64_t)scope
 {
   v5.receiver = self;
   v5.super_class = RMStoreProfilesAdapter;
   result = [(RMStoreProfilesAdapter *)&v5 init];
   if (result)
   {
-    result->_isSystemScope = a3 == 1;
+    result->_isSystemScope = scope == 1;
   }
 
   return result;
@@ -106,7 +106,7 @@
 
 - (id)allProfileIdentifiers
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   if ([(RMStoreProfilesAdapter *)self isSystemScope])
   {
     v4 = 19;
@@ -117,10 +117,10 @@
     v4 = 9;
   }
 
-  v5 = [v3 installedProfileIdentifiersWithFilterFlags:v4];
+  v5 = [mEMORY[0x277D262A0] installedProfileIdentifiersWithFilterFlags:v4];
 
-  v6 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
   {
     [RMStoreProfilesAdapter allProfileIdentifiers];
   }
@@ -130,86 +130,86 @@
   return v7;
 }
 
-- (id)profileNameForIdentifier:(id)a3
+- (id)profileNameForIdentifier:(id)identifier
 {
-  v3 = [(RMStoreProfilesAdapter *)self _profileForIdentifier:a3 rmOnly:1];
-  v4 = [v3 friendlyName];
+  v3 = [(RMStoreProfilesAdapter *)self _profileForIdentifier:identifier rmOnly:1];
+  friendlyName = [v3 friendlyName];
 
-  return v4;
+  return friendlyName;
 }
 
-- (void)installProfileData:(id)a3 store:(id)a4 declarationKey:(id)a5 completionHandler:(id)a6
+- (void)installProfileData:(id)data store:(id)store declarationKey:(id)key completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  storeCopy = store;
+  keyCopy = key;
+  handlerCopy = handler;
   v23 = 0;
   v22 = 0;
-  v14 = [(RMStoreProfilesAdapter *)self _canInstallProfile:v10 store:v11 declarationKey:v12 outAssumeOwnership:&v23 error:&v22];
+  v14 = [(RMStoreProfilesAdapter *)self _canInstallProfile:dataCopy store:storeCopy declarationKey:keyCopy outAssumeOwnership:&v23 error:&v22];
   v15 = v22;
   if (v14)
   {
-    v16 = [(RMStoreProfilesAdapter *)self _installOptionsForStore:v11 declarationKey:v12 assumeOwnership:v23];
+    v16 = [(RMStoreProfilesAdapter *)self _installOptionsForStore:storeCopy declarationKey:keyCopy assumeOwnership:v23];
     v21 = v15;
-    v17 = [(RMStoreProfilesAdapter *)self _installProfileData:v10 options:v16 error:&v21];
+    v17 = [(RMStoreProfilesAdapter *)self _installProfileData:dataCopy options:v16 error:&v21];
     v18 = v21;
 
-    v19 = [MEMORY[0x277D45F58] profilesAdapter];
-    v20 = v19;
+    profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+    v20 = profilesAdapter;
     if (v17)
     {
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
       {
         [RMStoreProfilesAdapter installProfileData:store:declarationKey:completionHandler:];
       }
 
-      v13[2](v13, v17, 0);
+      handlerCopy[2](handlerCopy, v17, 0);
     }
 
     else
     {
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_ERROR))
       {
         [RMStoreProfilesAdapter installProfileData:store:declarationKey:completionHandler:];
       }
 
-      (v13)[2](v13, 0, v18);
+      (handlerCopy)[2](handlerCopy, 0, v18);
     }
   }
 
   else
   {
-    (v13)[2](v13, 0, v15);
+    (handlerCopy)[2](handlerCopy, 0, v15);
     v18 = v15;
   }
 }
 
-- (void)uninstallProfileWithIdentifier:(id)a3 store:(id)a4 completionHandler:(id)a5
+- (void)uninstallProfileWithIdentifier:(id)identifier store:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v18 = 0;
-  v10 = [(RMStoreProfilesAdapter *)self _canUninstallProfileWithIdentifier:v8 store:a4 error:&v18];
+  v10 = [(RMStoreProfilesAdapter *)self _canUninstallProfileWithIdentifier:identifierCopy store:store error:&v18];
   v11 = v18;
   v12 = v11;
   if (v10)
   {
     v17 = v11;
-    v13 = [(RMStoreProfilesAdapter *)self _removeProfileWithIdentifier:v8 error:&v17];
+    v13 = [(RMStoreProfilesAdapter *)self _removeProfileWithIdentifier:identifierCopy error:&v17];
     v14 = v17;
 
-    v15 = [MEMORY[0x277D45F58] profilesAdapter];
-    v16 = v15;
+    profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+    v16 = profilesAdapter;
     if (v13)
     {
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
       {
         [RMStoreProfilesAdapter uninstallProfileWithIdentifier:store:completionHandler:];
       }
     }
 
-    else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_ERROR))
     {
       [RMStoreProfilesAdapter uninstallProfileWithIdentifier:store:completionHandler:];
     }
@@ -220,25 +220,25 @@
     v14 = v11;
   }
 
-  v9[2](v9, v14);
+  handlerCopy[2](handlerCopy, v14);
 }
 
-- (id)_installProfileData:(id)a3 options:(id)a4 error:(id *)a5
+- (id)_installProfileData:(id)data options:(id)options error:(id *)error
 {
   v7 = MEMORY[0x277D262A0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedConnection];
-  v11 = [v10 installProfileData:v9 options:v8 outError:a5];
+  optionsCopy = options;
+  dataCopy = data;
+  sharedConnection = [v7 sharedConnection];
+  v11 = [sharedConnection installProfileData:dataCopy options:optionsCopy outError:error];
 
   return v11;
 }
 
-- (BOOL)_removeProfileWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_removeProfileWithIdentifier:(id)identifier error:(id *)error
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a3;
-  v7 = [v5 sharedConnection];
+  identifierCopy = identifier;
+  sharedConnection = [v5 sharedConnection];
   if ([(RMStoreProfilesAdapter *)self isSystemScope])
   {
     v8 = 1;
@@ -249,18 +249,18 @@
     v8 = 2;
   }
 
-  [v7 removeProfileWithIdentifier:v6 installationType:v8];
+  [sharedConnection removeProfileWithIdentifier:identifierCopy installationType:v8];
 
   return 1;
 }
 
-- (id)_installOptionsForStore:(id)a3 declarationKey:(id)a4 assumeOwnership:(BOOL)a5
+- (id)_installOptionsForStore:(id)store declarationKey:(id)key assumeOwnership:(BOOL)ownership
 {
-  v5 = a5;
+  ownershipCopy = ownership;
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  storeCopy = store;
   v24 = @"DeclarationKey";
-  v9 = [a4 key];
+  v9 = [key key];
   v25[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
@@ -290,23 +290,23 @@
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:4];
   v18 = [v17 mutableCopy];
 
-  if (![v8 type])
+  if (![storeCopy type])
   {
     [v18 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D26438]];
   }
 
-  if ([v8 type] != 2)
+  if ([storeCopy type] != 2)
   {
     [v18 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D26410]];
   }
 
-  if (v5)
+  if (ownershipCopy)
   {
     [v18 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D263D0]];
   }
 
-  v19 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+  profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
   {
     [RMStoreProfilesAdapter _installOptionsForStore:declarationKey:assumeOwnership:];
   }
@@ -316,40 +316,40 @@
   return v18;
 }
 
-- (id)_personaIDForStore:(id)a3
+- (id)_personaIDForStore:(id)store
 {
-  v3 = a3;
-  if ([v3 dataSeparated])
+  storeCopy = store;
+  if ([storeCopy dataSeparated])
   {
-    v4 = [v3 personaIdentifier];
+    personaIdentifier = [storeCopy personaIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    personaIdentifier = 0;
   }
 
-  return v4;
+  return personaIdentifier;
 }
 
-- (BOOL)_canInstallProfile:(id)a3 store:(id)a4 declarationKey:(id)a5 outAssumeOwnership:(BOOL *)a6 error:(id *)a7
+- (BOOL)_canInstallProfile:(id)profile store:(id)store declarationKey:(id)key outAssumeOwnership:(BOOL *)ownership error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
+  storeCopy = store;
+  keyCopy = key;
   v44 = 0;
-  v14 = [MEMORY[0x277D26290] profileWithData:a3 outError:&v44];
+  v14 = [MEMORY[0x277D26290] profileWithData:profile outError:&v44];
   v15 = v44;
   v16 = v15;
   if (v14)
   {
-    v36 = a6;
-    v37 = a7;
+    ownershipCopy = ownership;
+    errorCopy = error;
     v38 = v15;
-    v39 = v13;
-    v17 = [v14 identifier];
-    v18 = [MEMORY[0x277D45F58] profilesAdapter];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    v39 = keyCopy;
+    identifier = [v14 identifier];
+    profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+    if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
     {
       [RMStoreProfilesAdapter _canInstallProfile:store:declarationKey:outAssumeOwnership:error:];
     }
@@ -373,26 +373,26 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v40 + 1) + 8 * i) type];
-          v25 = [v24 lowercaseString];
+          type = [*(*(&v40 + 1) + 8 * i) type];
+          lowercaseString = [type lowercaseString];
 
-          if (![(RMStoreProfilesAdapter *)self _allowedPayloadType:v25 store:v12])
+          if (![(RMStoreProfilesAdapter *)self _allowedPayloadType:lowercaseString store:storeCopy])
           {
-            v28 = [MEMORY[0x277D45F58] profilesAdapter];
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+            profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+            if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
             {
               [RMStoreProfilesAdapter _canInstallProfile:store:declarationKey:outAssumeOwnership:error:];
             }
 
             v16 = v38;
-            v13 = v39;
-            if (v37)
+            keyCopy = v39;
+            if (errorCopy)
             {
-              v29 = [MEMORY[0x277D45F40] createProfilePayloadNotAllowedErrorWithPayloadType:v25];
+              v29 = [MEMORY[0x277D45F40] createProfilePayloadNotAllowedErrorWithPayloadType:lowercaseString];
               if (v29)
               {
                 v29 = v29;
-                *v37 = v29;
+                *errorCopy = v29;
               }
             }
 
@@ -412,18 +412,18 @@
       }
     }
 
-    v26 = [(RMStoreProfilesAdapter *)self _profileForIdentifier:v17 rmOnly:0];
+    v26 = [(RMStoreProfilesAdapter *)self _profileForIdentifier:identifier rmOnly:0];
     if (v26)
     {
-      v13 = v39;
-      v27 = [(RMStoreProfilesAdapter *)self _canReplaceProfile:v26 newProfile:v14 newDeclarationKey:v39 store:v12 outAssumeOwnership:v36 error:v37];
+      keyCopy = v39;
+      v27 = [(RMStoreProfilesAdapter *)self _canReplaceProfile:v26 newProfile:v14 newDeclarationKey:v39 store:storeCopy outAssumeOwnership:ownershipCopy error:errorCopy];
     }
 
     else
     {
-      v33 = [MEMORY[0x277D45F58] profilesAdapter];
-      v13 = v39;
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
+      profilesAdapter3 = [MEMORY[0x277D45F58] profilesAdapter];
+      keyCopy = v39;
+      if (os_log_type_enabled(profilesAdapter3, OS_LOG_TYPE_DEBUG))
       {
         [RMStoreProfilesAdapter _canInstallProfile:store:declarationKey:outAssumeOwnership:error:];
       }
@@ -437,21 +437,21 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v30 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+  profilesAdapter4 = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter4, OS_LOG_TYPE_ERROR))
   {
     [RMStoreProfilesAdapter _canInstallProfile:store:declarationKey:outAssumeOwnership:error:];
   }
 
-  if (a7)
+  if (error)
   {
     v31 = [MEMORY[0x277D45F40] createProfileInvalidErrorWithUnderlyingError:v16];
-    v17 = v31;
+    identifier = v31;
     if (v31)
     {
       v32 = v31;
       v27 = 0;
-      *a7 = v17;
+      *error = identifier;
     }
 
     else
@@ -471,46 +471,46 @@ LABEL_33:
   return v27;
 }
 
-- (BOOL)_canReplaceProfile:(id)a3 newProfile:(id)a4 newDeclarationKey:(id)a5 store:(id)a6 outAssumeOwnership:(BOOL *)a7 error:(id *)a8
+- (BOOL)_canReplaceProfile:(id)profile newProfile:(id)newProfile newDeclarationKey:(id)key store:(id)store outAssumeOwnership:(BOOL *)ownership error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = [(RMStoreProfilesAdapter *)self _declarationKeyForProfile:v13];
-  v18 = [v13 identifier];
-  v19 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+  profileCopy = profile;
+  newProfileCopy = newProfile;
+  keyCopy = key;
+  storeCopy = store;
+  v17 = [(RMStoreProfilesAdapter *)self _declarationKeyForProfile:profileCopy];
+  identifier = [profileCopy identifier];
+  profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
   {
     [RMStoreProfilesAdapter _canReplaceProfile:newProfile:newDeclarationKey:store:outAssumeOwnership:error:];
   }
 
   if (v17)
   {
-    v20 = [v17 subscriberIdentifier];
-    v21 = [v15 subscriberIdentifier];
-    v22 = [v20 isEqualToString:v21];
+    subscriberIdentifier = [v17 subscriberIdentifier];
+    subscriberIdentifier2 = [keyCopy subscriberIdentifier];
+    v22 = [subscriberIdentifier isEqualToString:subscriberIdentifier2];
 
     if (v22)
     {
-      v23 = [v17 storeIdentifier];
-      v24 = [v15 storeIdentifier];
-      v25 = [v23 isEqualToString:v24];
+      storeIdentifier = [v17 storeIdentifier];
+      storeIdentifier2 = [keyCopy storeIdentifier];
+      v25 = [storeIdentifier isEqualToString:storeIdentifier2];
 
       if (v25)
       {
-        v26 = [v17 declarationIdentifier];
-        v27 = [v15 declarationIdentifier];
-        v28 = [v26 isEqualToString:v27];
+        declarationIdentifier = [v17 declarationIdentifier];
+        declarationIdentifier2 = [keyCopy declarationIdentifier];
+        v28 = [declarationIdentifier isEqualToString:declarationIdentifier2];
 
         if (v28)
         {
-          v29 = 1;
+          errorCopy = 1;
           goto LABEL_21;
         }
 
-        v30 = [MEMORY[0x277D45F58] profilesAdapter];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+        profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+        if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
         {
           [RMStoreProfilesAdapter _canReplaceProfile:newProfile:newDeclarationKey:store:outAssumeOwnership:error:];
         }
@@ -518,8 +518,8 @@ LABEL_33:
 
       else
       {
-        v30 = [MEMORY[0x277D45F58] profilesAdapter];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+        profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+        if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
         {
           [RMStoreProfilesAdapter _canReplaceProfile:newProfile:newDeclarationKey:store:outAssumeOwnership:error:];
         }
@@ -528,77 +528,77 @@ LABEL_33:
 
     else
     {
-      v30 = [MEMORY[0x277D45F58] profilesAdapter];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+      if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
       {
         [RMStoreProfilesAdapter _canReplaceProfile:newProfile:newDeclarationKey:store:outAssumeOwnership:error:];
       }
     }
   }
 
-  else if ([(RMStoreProfilesAdapter *)self _canAssumeOwnershipOfProfile:v13 newProfile:v14 newDeclarationKey:v15 store:v16])
+  else if ([(RMStoreProfilesAdapter *)self _canAssumeOwnershipOfProfile:profileCopy newProfile:newProfileCopy newDeclarationKey:keyCopy store:storeCopy])
   {
-    v29 = 1;
-    *a7 = 1;
+    errorCopy = 1;
+    *ownership = 1;
     goto LABEL_21;
   }
 
-  v29 = a8;
-  if (a8)
+  errorCopy = error;
+  if (error)
   {
-    v31 = [MEMORY[0x277D45F40] createProfileCannotReplaceOtherProfile:v18];
+    v31 = [MEMORY[0x277D45F40] createProfileCannotReplaceOtherProfile:identifier];
     if (v31)
     {
       v31 = v31;
-      *a8 = v31;
+      *error = v31;
     }
 
-    v29 = 0;
+    errorCopy = 0;
   }
 
 LABEL_21:
 
-  return v29;
+  return errorCopy;
 }
 
-- (BOOL)_canAssumeOwnershipOfProfile:(id)a3 newProfile:(id)a4 newDeclarationKey:(id)a5 store:(id)a6
+- (BOOL)_canAssumeOwnershipOfProfile:(id)profile newProfile:(id)newProfile newDeclarationKey:(id)key store:(id)store
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 identifier];
-  v15 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+  profileCopy = profile;
+  newProfileCopy = newProfile;
+  keyCopy = key;
+  storeCopy = store;
+  identifier = [profileCopy identifier];
+  profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
   {
     [RMStoreProfilesAdapter _canAssumeOwnershipOfProfile:newProfile:newDeclarationKey:store:];
   }
 
-  v16 = [v13 enrollmentURL];
+  enrollmentURL = [storeCopy enrollmentURL];
 
-  v17 = [v16 scheme];
-  v18 = [v17 isEqualToString:@"mdm"];
+  scheme = [enrollmentURL scheme];
+  v18 = [scheme isEqualToString:@"mdm"];
 
   if ((v18 & 1) == 0)
   {
-    v21 = [MEMORY[0x277D45F58] profilesAdapter];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+    if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
     {
-      [RMStoreProfilesAdapter _canAssumeOwnershipOfProfile:v21 newProfile:? newDeclarationKey:? store:?];
+      [RMStoreProfilesAdapter _canAssumeOwnershipOfProfile:profilesAdapter2 newProfile:? newDeclarationKey:? store:?];
     }
 
     goto LABEL_12;
   }
 
-  if ([(RMStoreProfilesAdapter *)self _isManagedByMDM:v10])
+  if ([(RMStoreProfilesAdapter *)self _isManagedByMDM:profileCopy])
   {
-    v19 = [v12 subscriberIdentifier];
-    v20 = [v19 isEqualToString:@"com.apple.RemoteManagement.InteractiveLegacyProfilesExtension"];
+    subscriberIdentifier = [keyCopy subscriberIdentifier];
+    v20 = [subscriberIdentifier isEqualToString:@"com.apple.RemoteManagement.InteractiveLegacyProfilesExtension"];
 
     if (v20)
     {
-      v21 = [MEMORY[0x277D45F58] profilesAdapter];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+      if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_11;
       }
@@ -606,16 +606,16 @@ LABEL_21:
       goto LABEL_12;
     }
 
-    v21 = [v11 UUID];
-    v24 = [v10 UUID];
-    if ([v21 isEqualToString:v24])
+    profilesAdapter2 = [newProfileCopy UUID];
+    uUID = [profileCopy UUID];
+    if ([profilesAdapter2 isEqualToString:uUID])
     {
-      v25 = [(RMStoreProfilesAdapter *)self _payloadStructure:v11];
-      v26 = [(RMStoreProfilesAdapter *)self _payloadStructure:v10];
-      if ([v25 isEqualToSet:v26])
+      profilesAdapter4 = [(RMStoreProfilesAdapter *)self _payloadStructure:newProfileCopy];
+      v26 = [(RMStoreProfilesAdapter *)self _payloadStructure:profileCopy];
+      if ([profilesAdapter4 isEqualToSet:v26])
       {
-        v27 = [MEMORY[0x277D45F58] profilesAdapter];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+        profilesAdapter3 = [MEMORY[0x277D45F58] profilesAdapter];
+        if (os_log_type_enabled(profilesAdapter3, OS_LOG_TYPE_DEBUG))
         {
           [RMStoreProfilesAdapter _canAssumeOwnershipOfProfile:newProfile:newDeclarationKey:store:];
         }
@@ -627,8 +627,8 @@ LABEL_23:
       }
     }
 
-    v25 = [MEMORY[0x277D45F58] profilesAdapter];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    profilesAdapter4 = [MEMORY[0x277D45F58] profilesAdapter];
+    if (os_log_type_enabled(profilesAdapter4, OS_LOG_TYPE_ERROR))
     {
       [RMStoreProfilesAdapter _canAssumeOwnershipOfProfile:newProfile:newDeclarationKey:store:];
     }
@@ -637,8 +637,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v21 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+  profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
   {
 LABEL_11:
     [RMStoreProfilesAdapter _canAssumeOwnershipOfProfile:newProfile:newDeclarationKey:store:];
@@ -651,16 +651,16 @@ LABEL_13:
   return v22;
 }
 
-- (id)_payloadStructure:(id)a3
+- (id)_payloadStructure:(id)structure
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [a3 payloads];
-  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v3, "count")}];
+  payloads = [structure payloads];
+  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(payloads, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = payloads;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {
@@ -676,12 +676,12 @@ LABEL_13:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v21[0] = v11;
-        v12 = [v10 UUID];
-        v21[1] = v12;
-        v13 = [v10 type];
-        v21[2] = v13;
+        identifier = [v10 identifier];
+        v21[0] = identifier;
+        uUID = [v10 UUID];
+        v21[1] = uUID;
+        type = [v10 type];
+        v21[2] = type;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
 
         [v4 addObject:v14];
@@ -698,23 +698,23 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)_canUninstallProfileWithIdentifier:(id)a3 store:(id)a4 error:(id *)a5
+- (BOOL)_canUninstallProfileWithIdentifier:(id)identifier store:(id)store error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  identifierCopy = identifier;
+  storeCopy = store;
+  profilesAdapter = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter, OS_LOG_TYPE_DEBUG))
   {
     [RMStoreProfilesAdapter _canUninstallProfileWithIdentifier:store:error:];
   }
 
-  v11 = [(RMStoreProfilesAdapter *)self _profileForIdentifier:v8 rmOnly:1];
+  v11 = [(RMStoreProfilesAdapter *)self _profileForIdentifier:identifierCopy rmOnly:1];
   if (v11)
   {
     v12 = [(RMStoreProfilesAdapter *)self _declarationKeyForProfile:v11];
-    if (v12 || ([v8 hasPrefix:@"com.apple.RemoteManagement.PasscodeSettingsExtension"] & 1) != 0)
+    if (v12 || ([identifierCopy hasPrefix:@"com.apple.RemoteManagement.PasscodeSettingsExtension"] & 1) != 0)
     {
-      if (!v9 || ([v12 storeIdentifier], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqualToString:", v14), v14, v13, (v15 & 1) != 0))
+      if (!storeCopy || ([v12 storeIdentifier], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(storeCopy, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqualToString:", v14), v14, v13, (v15 & 1) != 0))
       {
         v16 = 1;
 LABEL_24:
@@ -722,8 +722,8 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v20 = [MEMORY[0x277D45F58] profilesAdapter];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+      if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
       {
         [RMStoreProfilesAdapter _canReplaceProfile:newProfile:newDeclarationKey:store:outAssumeOwnership:error:];
       }
@@ -731,41 +731,41 @@ LABEL_24:
 
     else
     {
-      v20 = [MEMORY[0x277D45F58] profilesAdapter];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      profilesAdapter2 = [MEMORY[0x277D45F58] profilesAdapter];
+      if (os_log_type_enabled(profilesAdapter2, OS_LOG_TYPE_ERROR))
       {
         [RMStoreProfilesAdapter _canUninstallProfileWithIdentifier:store:error:];
       }
     }
 
-    if (a5)
+    if (error)
     {
-      v21 = [MEMORY[0x277D45F40] createProfileCannotRemoveOtherProfile:v8];
+      v21 = [MEMORY[0x277D45F40] createProfileCannotRemoveOtherProfile:identifierCopy];
       if (v21)
       {
         v21 = v21;
-        *a5 = v21;
+        *error = v21;
       }
     }
 
     goto LABEL_23;
   }
 
-  v17 = [MEMORY[0x277D45F58] profilesAdapter];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  profilesAdapter3 = [MEMORY[0x277D45F58] profilesAdapter];
+  if (os_log_type_enabled(profilesAdapter3, OS_LOG_TYPE_ERROR))
   {
     [RMStoreProfilesAdapter _canUninstallProfileWithIdentifier:store:error:];
   }
 
-  if (a5)
+  if (error)
   {
-    v18 = [MEMORY[0x277D45F40] createProfileCannotFindRemoveProfile:v8];
+    v18 = [MEMORY[0x277D45F40] createProfileCannotFindRemoveProfile:identifierCopy];
     v12 = v18;
     if (v18)
     {
       v19 = v18;
       v16 = 0;
-      *a5 = v12;
+      *error = v12;
       goto LABEL_24;
     }
 
@@ -780,25 +780,25 @@ LABEL_25:
   return v16;
 }
 
-- (id)_profileForIdentifier:(id)a3 rmOnly:(BOOL)a4
+- (id)_profileForIdentifier:(id)identifier rmOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(RMStoreProfilesAdapter *)self isSystemScope];
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  v9 = v8;
-  if (v7)
+  onlyCopy = only;
+  identifierCopy = identifier;
+  isSystemScope = [(RMStoreProfilesAdapter *)self isSystemScope];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v9 = mEMORY[0x277D262A0];
+  if (isSystemScope)
   {
-    [v8 installedSystemProfileWithIdentifier:v6];
+    [mEMORY[0x277D262A0] installedSystemProfileWithIdentifier:identifierCopy];
   }
 
   else
   {
-    [v8 installedUserProfileWithIdentifier:v6];
+    [mEMORY[0x277D262A0] installedUserProfileWithIdentifier:identifierCopy];
   }
   v10 = ;
 
-  if (!v4 || ([(RMStoreProfilesAdapter *)self _declarationKeyForProfile:v10], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if (!onlyCopy || ([(RMStoreProfilesAdapter *)self _declarationKeyForProfile:v10], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     v11 = v10;
   }
@@ -806,17 +806,17 @@ LABEL_25:
   return v11;
 }
 
-- (id)_declarationKeyForProfile:(id)a3
+- (id)_declarationKeyForProfile:(id)profile
 {
-  v4 = [a3 installOptions];
-  v5 = [(RMStoreProfilesAdapter *)self _declarationKeyForUserInfo:v4];
+  installOptions = [profile installOptions];
+  v5 = [(RMStoreProfilesAdapter *)self _declarationKeyForUserInfo:installOptions];
 
   return v5;
 }
 
-- (id)_declarationKeyForUserInfo:(id)a3
+- (id)_declarationKeyForUserInfo:(id)info
 {
-  v3 = [a3 objectForKeyedSubscript:@"RemoteManagement.UserInfo"];
+  v3 = [info objectForKeyedSubscript:@"RemoteManagement.UserInfo"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = [v3 objectForKeyedSubscript:@"DeclarationKey"];
@@ -839,19 +839,19 @@ LABEL_25:
   return v5;
 }
 
-- (BOOL)_allowedPayloadType:(id)a3 store:(id)a4
+- (BOOL)_allowedPayloadType:(id)type store:(id)store
 {
-  v6 = a3;
-  if ([RMErSSOStore isPreEnrollmentErSSOStore:a4])
+  typeCopy = type;
+  if ([RMErSSOStore isPreEnrollmentErSSOStore:store])
   {
-    v7 = [(RMStoreProfilesAdapter *)self _allowedErSSOPayloadTypes];
-    v8 = [v7 containsObject:v6];
+    _allowedErSSOPayloadTypes = [(RMStoreProfilesAdapter *)self _allowedErSSOPayloadTypes];
+    v8 = [_allowedErSSOPayloadTypes containsObject:typeCopy];
   }
 
   else
   {
-    v7 = [(RMStoreProfilesAdapter *)self _disallowedPayloadTypes];
-    v9 = [v7 containsObject:v6];
+    _allowedErSSOPayloadTypes = [(RMStoreProfilesAdapter *)self _disallowedPayloadTypes];
+    v9 = [_allowedErSSOPayloadTypes containsObject:typeCopy];
 
     v8 = v9 ^ 1;
   }

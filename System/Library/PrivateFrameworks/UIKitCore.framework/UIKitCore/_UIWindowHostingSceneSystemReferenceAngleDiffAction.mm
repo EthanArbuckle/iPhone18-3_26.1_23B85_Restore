@@ -1,6 +1,6 @@
 @interface _UIWindowHostingSceneSystemReferenceAngleDiffAction
 - (UIApplicationSceneSettingsDiffInspector)diffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIWindowHostingSceneSystemReferenceAngleDiffAction
@@ -22,31 +22,31 @@
   return diffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v56 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
-  v14 = a5;
-  if (([v12 _hostsWindows] & 1) == 0)
+  sceneCopy = scene;
+  contextCopy = context;
+  diffCopy = diff;
+  if (([sceneCopy _hostsWindows] & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"_UIWindowHostingSceneSystemReferenceAngleDiffAction.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"[uiScene _hostsWindows]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowHostingSceneSystemReferenceAngleDiffAction.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"[uiScene _hostsWindows]"}];
   }
 
-  v15 = v12;
+  v15 = sceneCopy;
   v49 = 0;
-  v16 = [(_UIWindowHostingSceneSystemReferenceAngleDiffAction *)self diffInspector];
-  [v16 inspectDiff:v14 withContext:&v49];
+  diffInspector = [(_UIWindowHostingSceneSystemReferenceAngleDiffAction *)self diffInspector];
+  [diffInspector inspectDiff:diffCopy withContext:&v49];
 
   if (v49 & 2) != 0 || (v49)
   {
-    v17 = [v15 _effectiveUISettings];
-    [v17 angleFromHostReferenceUprightDirection];
+    _effectiveUISettings = [v15 _effectiveUISettings];
+    [_effectiveUISettings angleFromHostReferenceUprightDirection];
     v19 = v18;
 
-    v20 = [v15 _effectiveUISettings];
-    v21 = [v20 hostReferenceAngleMode];
+    _effectiveUISettings2 = [v15 _effectiveUISettings];
+    hostReferenceAngleMode = [_effectiveUISettings2 hostReferenceAngleMode];
 
     v22 = [v15 _allWindowsIncludingInternalWindows:1 onlyVisibleWindows:0];
     if ((v49 & 2) != 0)
@@ -72,12 +72,12 @@
           }
 
           v39 = v32;
-          v40 = [v28 _persistenceIdentifier];
+          _persistenceIdentifier = [v28 _persistenceIdentifier];
           v41 = _UISStringForSystemReferenceAngleMode();
           *buf = 138543874;
           v51 = v32;
           v52 = 2114;
-          v53 = v40;
+          v53 = _persistenceIdentifier;
           v54 = 2114;
           v55 = v41;
           _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, "%{public}@ (%{public}@) Scene hostReferenceAngleMode did change: %{public}@", buf, 0x20u);
@@ -108,11 +108,11 @@
           }
 
           v42 = v38;
-          v43 = [v34 _persistenceIdentifier];
+          _persistenceIdentifier2 = [v34 _persistenceIdentifier];
           *buf = 138543874;
           v51 = v38;
           v52 = 2114;
-          v53 = v43;
+          v53 = _persistenceIdentifier2;
           v54 = 2048;
           v55 = v19;
           _os_log_impl(&dword_188A29000, v33, OS_LOG_TYPE_ERROR, "%{public}@ (%{public}@) Scene angleFromHostReferenceUprightDirection did change: %.0f", buf, 0x20u);
@@ -125,8 +125,8 @@
     v44[2] = __165___UIWindowHostingSceneSystemReferenceAngleDiffAction__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke;
     v44[3] = &unk_1E70F9780;
     v47 = v19;
-    v48 = v21;
-    v45 = v13;
+    v48 = hostReferenceAngleMode;
+    v45 = contextCopy;
     v46 = v22;
     v25 = v22;
     [v15 _enqueuePostSettingsUpdateResponseBlock:v44 inPhase:0x1EFB17490];

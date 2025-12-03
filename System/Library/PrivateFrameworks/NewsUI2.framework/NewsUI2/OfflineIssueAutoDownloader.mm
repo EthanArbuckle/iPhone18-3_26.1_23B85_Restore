@@ -1,6 +1,6 @@
 @interface OfflineIssueAutoDownloader
 - (_TtC7NewsUI226OfflineIssueAutoDownloader)init;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
 @end
 
 @implementation OfflineIssueAutoDownloader
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  if (a4)
+  if (tags)
   {
     v9 = sub_219BF5D44();
   }
@@ -35,7 +35,7 @@
   v14[2] = sub_218793E0C;
   v14[3] = &block_descriptor_44;
   v12 = _Block_copy(v14);
-  v13 = self;
+  selfCopy = self;
 
   [v10 scheduleLowPriorityBlock_];
 

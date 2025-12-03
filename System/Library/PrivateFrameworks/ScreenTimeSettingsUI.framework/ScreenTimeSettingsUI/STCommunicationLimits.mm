@@ -1,51 +1,51 @@
 @interface STCommunicationLimits
-+ (BOOL)hasShownCompatibilityAlertForDSID:(id)a3;
-+ (void)setHasShownCompatibilityAlert:(BOOL)a3 forDSID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCommunicationLimits:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)hasShownCompatibilityAlertForDSID:(id)d;
++ (void)setHasShownCompatibilityAlert:(BOOL)alert forDSID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCommunicationLimits:(id)limits;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation STCommunicationLimits
 
-+ (BOOL)hasShownCompatibilityAlertForDSID:(id)a3
++ (BOOL)hasShownCompatibilityAlertForDSID:(id)d
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 objectForKey:@"HasShownCommunicationLimitsCompatibilityAlertByDSID"];
+  dCopy = d;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"HasShownCommunicationLimitsCompatibilityAlertByDSID"];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:dCopy];
 
   return v7 != 0;
 }
 
-+ (void)setHasShownCompatibilityAlert:(BOOL)a3 forDSID:(id)a4
++ (void)setHasShownCompatibilityAlert:(BOOL)alert forDSID:(id)d
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a4;
-  v6 = [v4 standardUserDefaults];
-  v7 = [v6 objectForKey:@"HasShownCommunicationLimitsCompatibilityAlertByDSID"];
+  dCopy = d;
+  standardUserDefaults = [v4 standardUserDefaults];
+  v7 = [standardUserDefaults objectForKey:@"HasShownCommunicationLimitsCompatibilityAlertByDSID"];
   if (v7)
   {
     v8 = v7;
     v9 = [v7 mutableCopy];
-    [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v5];
+    [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:dCopy];
   }
 
   else
   {
-    v10 = v5;
+    v10 = dCopy;
     v11[0] = MEMORY[0x277CBEC38];
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
-  [v6 setObject:v9 forKey:@"HasShownCommunicationLimitsCompatibilityAlertByDSID"];
+  [standardUserDefaults setObject:v9 forKey:@"HasShownCommunicationLimitsCompatibilityAlertByDSID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[STCommunicationLimits allocWithZone:?]];
   *(result + 2) = self->_screenTimeCommunicationLimit;
@@ -55,13 +55,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
-    v6 = v4 != 0;
+    v6 = equalCopy != 0;
   }
 
   else
@@ -73,19 +73,19 @@
   return v6;
 }
 
-- (BOOL)isEqualToCommunicationLimits:(id)a3
+- (BOOL)isEqualToCommunicationLimits:(id)limits
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  limitsCopy = limits;
+  v5 = limitsCopy;
+  if (limitsCopy == self)
   {
     LOBYTE(v10) = 1;
   }
 
-  else if (v4 && (v6 = [(STCommunicationLimits *)self screenTimeCommunicationLimit], v6 == [(STCommunicationLimits *)v5 screenTimeCommunicationLimit]) && (v7 = [(STCommunicationLimits *)self downtimeCommunicationLimit], v7 == [(STCommunicationLimits *)v5 downtimeCommunicationLimit]) && (v8 = [(STCommunicationLimits *)self contactManagementState], v8 == [(STCommunicationLimits *)v5 contactManagementState]))
+  else if (limitsCopy && (v6 = [(STCommunicationLimits *)self screenTimeCommunicationLimit], v6 == [(STCommunicationLimits *)v5 screenTimeCommunicationLimit]) && (v7 = [(STCommunicationLimits *)self downtimeCommunicationLimit], v7 == [(STCommunicationLimits *)v5 downtimeCommunicationLimit]) && (v8 = [(STCommunicationLimits *)self contactManagementState], v8 == [(STCommunicationLimits *)v5 contactManagementState]))
   {
-    v9 = [(STCommunicationLimits *)self contactsEditable];
-    v10 = v9 ^ [(STCommunicationLimits *)v5 contactsEditable]^ 1;
+    contactsEditable = [(STCommunicationLimits *)self contactsEditable];
+    v10 = contactsEditable ^ [(STCommunicationLimits *)v5 contactsEditable]^ 1;
   }
 
   else
@@ -98,8 +98,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STCommunicationLimits *)self screenTimeCommunicationLimit];
-  v4 = [(STCommunicationLimits *)self downtimeCommunicationLimit]^ v3;
+  screenTimeCommunicationLimit = [(STCommunicationLimits *)self screenTimeCommunicationLimit];
+  v4 = [(STCommunicationLimits *)self downtimeCommunicationLimit]^ screenTimeCommunicationLimit;
   v5 = v4 ^ [(STCommunicationLimits *)self contactManagementState];
   return v5 ^ [(STCommunicationLimits *)self contactsEditable];
 }

@@ -1,21 +1,21 @@
 @interface CARSessionStatusObservable
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation CARSessionStatusObservable
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  CARSessionStatusObservable.sessionDidConnect(_:)(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  CARSessionStatusObservable.sessionDidConnect(_:)(connectCopy);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   CARSessionStatusObservable.sessionDidDisconnect(_:)();
 }
 

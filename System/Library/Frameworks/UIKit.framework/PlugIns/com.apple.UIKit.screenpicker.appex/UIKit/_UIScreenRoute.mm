@@ -1,35 +1,35 @@
 @interface _UIScreenRoute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocalDevice;
-- (_UIScreenRoute)initWithDevice:(id)a3;
+- (_UIScreenRoute)initWithDevice:(id)device;
 - (id)description;
-- (id)displayTitleForTraits:(id)a3;
-- (id)imageForTraits:(id)a3;
+- (id)displayTitleForTraits:(id)traits;
+- (id)imageForTraits:(id)traits;
 - (unint64_t)hash;
 @end
 
 @implementation _UIScreenRoute
 
-- (_UIScreenRoute)initWithDevice:(id)a3
+- (_UIScreenRoute)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = _UIScreenRoute;
   v6 = [(_UIScreenRoute *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = +[AVOutputDevice sharedLocalDevice];
-    v7->_isLocalDevice = [v5 isEqual:v8];
+    v7->_isLocalDevice = [deviceCopy isEqual:v8];
 
-    v7->_isThirdPartyTV = [v5 deviceSubType] == 11;
-    v9 = [v5 name];
+    v7->_isThirdPartyTV = [deviceCopy deviceSubType] == 11;
+    name = [deviceCopy name];
     displayName = v7->_displayName;
-    v7->_displayName = v9;
+    v7->_displayName = name;
 
     isLocalDevice = v7->_isLocalDevice;
-    v12 = [v5 ID];
+    v12 = [deviceCopy ID];
     v13 = v12;
     if (isLocalDevice)
     {
@@ -43,10 +43,10 @@
       else
       {
         deviceID = +[UIDevice currentDevice];
-        v19 = [deviceID identifierForVendor];
-        v20 = [v19 UUIDString];
+        identifierForVendor = [deviceID identifierForVendor];
+        uUIDString = [identifierForVendor UUIDString];
         v21 = v7->_deviceID;
-        v7->_deviceID = v20;
+        v7->_deviceID = uUIDString;
       }
 
       sortTitle = v7->_sortTitle;
@@ -86,23 +86,23 @@
   return device;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [v4 deviceID];
-    v6 = [(_UIScreenRoute *)self deviceID];
-    if (v5 == v6)
+    deviceID = [equalCopy deviceID];
+    deviceID2 = [(_UIScreenRoute *)self deviceID];
+    if (deviceID == deviceID2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [v4 deviceID];
-      v8 = [(_UIScreenRoute *)self deviceID];
-      v9 = [v7 isEqualToString:v8];
+      deviceID3 = [equalCopy deviceID];
+      deviceID4 = [(_UIScreenRoute *)self deviceID];
+      v9 = [deviceID3 isEqualToString:deviceID4];
     }
   }
 
@@ -116,13 +116,13 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_UIScreenRoute *)self deviceID];
-  v3 = [v2 hash];
+  deviceID = [(_UIScreenRoute *)self deviceID];
+  v3 = [deviceID hash];
 
   return v3;
 }
 
-- (id)displayTitleForTraits:(id)a3
+- (id)displayTitleForTraits:(id)traits
 {
   if (self->_isLocalDevice || (displayName = self->_displayName) == 0)
   {
@@ -138,7 +138,7 @@
   return v4;
 }
 
-- (id)imageForTraits:(id)a3
+- (id)imageForTraits:(id)traits
 {
   if (self->_isLocalDevice)
   {
@@ -155,7 +155,7 @@
     v4 = @"Airplay-TV";
   }
 
-  return [UIImage _kitImageNamed:v4 withTrait:a3];
+  return [UIImage _kitImageNamed:v4 withTrait:traits];
 }
 
 @end

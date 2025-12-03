@@ -3,9 +3,9 @@
 - (uint64_t)viewConfiguration;
 - (uint64_t)viewProperties;
 - (uint64_t)viewState;
-- (unint64_t)view:(id)a3 makeReferenceToView:(id)a4;
+- (unint64_t)view:(id)view makeReferenceToView:(id)toView;
 - (void)dealloc;
-- (void)initWithViewConfiguration:(uint64_t)a3 viewProperties:(uint64_t)a4 viewState:;
+- (void)initWithViewConfiguration:(uint64_t)configuration viewProperties:(uint64_t)properties viewState:;
 @end
 
 @implementation _GCDevicePhysicalInputInitializationContext
@@ -41,22 +41,22 @@
   [(_GCDevicePhysicalInputInitializationContext *)&v6 dealloc];
 }
 
-- (unint64_t)view:(id)a3 makeReferenceToView:(id)a4
+- (unint64_t)view:(id)view makeReferenceToView:(id)toView
 {
-  v5 = [objc_opt_class() withTemplate:a4 context:self];
+  v5 = [objc_opt_class() withTemplate:toView context:self];
   Count = CFArrayGetCount(self->_views);
   CFArrayAppendValue(self->_views, v5);
   return Count | 0x30000000000;
 }
 
-- (void)initWithViewConfiguration:(uint64_t)a3 viewProperties:(uint64_t)a4 viewState:
+- (void)initWithViewConfiguration:(uint64_t)configuration viewProperties:(uint64_t)properties viewState:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = _GCDevicePhysicalInputInitializationContext;
   v7 = objc_msgSendSuper2(&v10, sel_init);
   memset(&callBacks, 0, sizeof(callBacks));
@@ -64,7 +64,7 @@
   if (a2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a3)
+    if (configuration)
     {
 LABEL_5:
       objc_opt_class();
@@ -75,12 +75,12 @@ LABEL_5:
     }
   }
 
-  else if (a3)
+  else if (configuration)
   {
     goto LABEL_5;
   }
 
-  if (a4)
+  if (properties)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -95,18 +95,18 @@ LABEL_5:
   }
 
   v7[3] = a2;
-  if (!a3)
+  if (!configuration)
   {
-    a3 = objc_opt_new();
+    configuration = objc_opt_new();
   }
 
-  v7[4] = a3;
-  if (!a4)
+  v7[4] = configuration;
+  if (!properties)
   {
-    a4 = objc_opt_new();
+    properties = objc_opt_new();
   }
 
-  v7[5] = a4;
+  v7[5] = properties;
   return v7;
 }
 

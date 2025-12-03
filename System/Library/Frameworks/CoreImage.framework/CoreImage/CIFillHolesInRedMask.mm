@@ -91,15 +91,15 @@
       }
 
       v34 = x;
-      v13 = [(NSNumber *)self->inputRefinementPassCount intValue];
-      if (v13 <= 1)
+      intValue = [(NSNumber *)self->inputRefinementPassCount intValue];
+      if (intValue <= 1)
       {
         v15 = 1;
       }
 
       else
       {
-        v15 = v13;
+        v15 = intValue;
       }
 
       inputImage = self->inputImage;

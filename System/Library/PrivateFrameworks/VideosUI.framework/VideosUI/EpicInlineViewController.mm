@@ -1,69 +1,69 @@
 @interface EpicInlineViewController
-- (_TtC8VideosUI24EpicInlineViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleIsPlaybackUIBeingShownDidChange:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (_TtC8VideosUI24EpicInlineViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleIsPlaybackUIBeingShownDidChange:(id)change;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)vui_loadView;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
 - (void)vui_viewWillLayoutSubviews;
-- (void)vui_willMoveToParentViewController:(id)a3;
+- (void)vui_willMoveToParentViewController:(id)controller;
 @end
 
 @implementation EpicInlineViewController
 
 - (void)vui_loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A4DEC8();
 }
 
-- (void)vui_willMoveToParentViewController:(id)a3
+- (void)vui_willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3A4E3C0(a3);
+  sub_1E3A4E3C0(controller);
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3A4E500(a3);
+  sub_1E3A4E500(appear);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3A4EB80(a3);
+  sub_1E3A4EB80(disappear);
 }
 
 - (void)vui_viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A4ED04();
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A4EF10();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3A4F934(a4, width, height);
+  sub_1E3A4F934(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)handleIsPlaybackUIBeingShownDidChange:(id)a3
+- (void)handleIsPlaybackUIBeingShownDidChange:(id)change
 {
   OUTLINED_FUNCTION_106();
   v4 = sub_1E41FDF34();
@@ -79,9 +79,9 @@
   (*(v6 + 8))(v10, v4);
 }
 
-- (_TtC8VideosUI24EpicInlineViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI24EpicInlineViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1E4205F14();
     v7 = v6;
@@ -93,8 +93,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1E3A50614(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1E3A50614(v5, v7, bundle);
 }
 
 @end

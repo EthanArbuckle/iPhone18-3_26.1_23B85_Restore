@@ -1,60 +1,60 @@
 @interface PXGHostingController
 + (OS_dispatch_queue)sharedQueue;
-- (BOOL)engine:(id)a3 shouldRenderLayout:(id)a4 sprites:(id)a5;
-- (BOOL)layoutQueue_acceptSize:(id)a3;
+- (BOOL)engine:(id)engine shouldRenderLayout:(id)layout sprites:(id)sprites;
+- (BOOL)layoutQueue_acceptSize:(id)size;
 - (NSArray)presenters;
 - (PXGHostingController)init;
-- (PXGHostingController)initWithClientQueue:(id)a3 layoutQueue:(id)a4 initialConfiguration:(id)a5;
+- (PXGHostingController)initWithClientQueue:(id)queue layoutQueue:(id)layoutQueue initialConfiguration:(id)configuration;
 - (PXGRenderFrame)lastFrame;
 - (id)addPresenter;
 - (void)_clientQueue_propagateConfigurationToEngine;
-- (void)_dispatchFrame:(id)a3 async:(BOOL)a4 toObserver:(id)a5;
-- (void)_distributeFrame:(id)a3;
+- (void)_dispatchFrame:(id)frame async:(BOOL)async toObserver:(id)observer;
+- (void)_distributeFrame:(id)frame;
 - (void)_layoutQueue_applyConfiguration;
 - (void)_layoutQueue_performInitialEngineSetupIfNeeded;
 - (void)_mainQueue_initialize;
 - (void)_mainQueue_updateIsAppInactive;
 - (void)_notePresentersDidChange;
-- (void)clientQueue_presenterDidChange:(id)a3;
+- (void)clientQueue_presenterDidChange:(id)change;
 - (void)dealloc;
-- (void)engineSetNeedsUpdate:(id)a3;
-- (void)layoutQueue_skipFrameCount:(int64_t)a3 forProposedSize:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)registerFrameObserver:(id)a3;
-- (void)setLayoutQueue_configuration:(id)a3;
-- (void)setLayoutQueue_isAppInactive:(BOOL)a3;
-- (void)unregisterFrameObserver:(id)a3;
+- (void)engineSetNeedsUpdate:(id)update;
+- (void)layoutQueue_skipFrameCount:(int64_t)count forProposedSize:(id)size;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)registerFrameObserver:(id)observer;
+- (void)setLayoutQueue_configuration:(id)queue_configuration;
+- (void)setLayoutQueue_isAppInactive:(BOOL)inactive;
+- (void)unregisterFrameObserver:(id)observer;
 @end
 
 @implementation PXGHostingController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ApplicationStateObservationContext_243120 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ApplicationStateObservationContext_243120 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGHostingController.m" lineNumber:508 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGHostingController.m" lineNumber:508 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXGHostingController *)self _mainQueue_updateIsAppInactive];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (BOOL)engine:(id)a3 shouldRenderLayout:(id)a4 sprites:(id)a5
+- (BOOL)engine:(id)engine shouldRenderLayout:(id)layout sprites:(id)sprites
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  layoutCopy = layout;
+  spritesCopy = sprites;
   dispatch_assert_queue_V2(self->_layoutQueue);
   layoutQueue_skipDegradedFramesCount = self->_layoutQueue_skipDegradedFramesCount;
   if (self->_layoutQueue_skipFramesCount <= 0)
@@ -74,19 +74,19 @@
   v19 = v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v12 = [(PXGEngine *)self->_layoutQueue_engine entityManager];
-  v13 = [v12 loadingStatus];
+  entityManager = [(PXGEngine *)self->_layoutQueue_engine entityManager];
+  loadingStatus = [entityManager loadingStatus];
 
-  v14 = v13;
-  v15 = [v13 states];
-  [v9 visibleRect];
+  v14 = loadingStatus;
+  states = [loadingStatus states];
+  [layoutCopy visibleRect];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __58__PXGHostingController_engine_shouldRenderLayout_sprites___block_invoke;
   v17[3] = &unk_1E774A208;
   v17[4] = v18;
-  v17[5] = v15;
-  [v10 enumerateSpritesInRect:v17 usingBlock:?];
+  v17[5] = states;
+  [spritesCopy enumerateSpritesInRect:v17 usingBlock:?];
   if (v19[24] == 1)
   {
     PXGTungstenGetLog();
@@ -123,7 +123,7 @@ uint64_t __58__PXGHostingController_engine_shouldRenderLayout_sprites___block_in
   return result;
 }
 
-- (void)engineSetNeedsUpdate:(id)a3
+- (void)engineSetNeedsUpdate:(id)update
 {
   dispatch_assert_queue_V2(self->_layoutQueue);
   layoutQueue_scrollController = self->_layoutQueue_scrollController;
@@ -131,30 +131,30 @@ uint64_t __58__PXGHostingController_engine_shouldRenderLayout_sprites___block_in
   [(PXGAsyncScrollController *)layoutQueue_scrollController setNeedsUpdate];
 }
 
-- (BOOL)layoutQueue_acceptSize:(id)a3
+- (BOOL)layoutQueue_acceptSize:(id)size
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sizeCopy = size;
   dispatch_assert_queue_V2(self->_layoutQueue);
   layoutQueue_pendingProposedSize = self->_layoutQueue_pendingProposedSize;
-  if (layoutQueue_pendingProposedSize == v4)
+  if (layoutQueue_pendingProposedSize == sizeCopy)
   {
     self->_layoutQueue_pendingProposedSize = 0;
 
     PXGTungstenGetLog();
   }
 
-  return layoutQueue_pendingProposedSize == v4;
+  return layoutQueue_pendingProposedSize == sizeCopy;
 }
 
-- (void)layoutQueue_skipFrameCount:(int64_t)a3 forProposedSize:(id)a4
+- (void)layoutQueue_skipFrameCount:(int64_t)count forProposedSize:(id)size
 {
   layoutQueue = self->_layoutQueue;
-  v6 = a4;
+  sizeCopy = size;
   dispatch_assert_queue_V2(layoutQueue);
   layoutQueue_pendingProposedSize = self->_layoutQueue_pendingProposedSize;
 
-  if (layoutQueue_pendingProposedSize == v6)
+  if (layoutQueue_pendingProposedSize == sizeCopy)
   {
     ++self->_layoutQueue_skipFramesCount;
   }
@@ -201,17 +201,17 @@ void __70__PXGHostingController__layoutQueue_performInitialEngineSetupIfNeeded__
       v8 = self->_layoutQueue_pendingRootLayoutPromise;
       self->_layoutQueue_pendingRootLayoutPromise = 0;
 
-      v9 = [(PXGEngine *)v4 layout];
+      layout = [(PXGEngine *)v4 layout];
       [(PXGConcreteEngineControllerConfiguration *)v3 referenceSize];
-      [v9 hostingControllerDidChangeReferenceSize:?];
+      [layout hostingControllerDidChangeReferenceSize:?];
     }
 
-    v10 = [(PXGConcreteEngineControllerConfiguration *)v3 viewEnvironment];
-    [(PXGEngine *)v4 setViewEnvironment:v10];
+    viewEnvironment = [(PXGConcreteEngineControllerConfiguration *)v3 viewEnvironment];
+    [(PXGEngine *)v4 setViewEnvironment:viewEnvironment];
 
     [(PXGEngine *)v4 setVisible:[(PXGConcreteEngineControllerConfiguration *)v3 isVisible]];
-    v11 = [(PXGConcreteEngineControllerConfiguration *)v3 backgroundColor];
-    [(PXGPixelBufferMetalRenderDestination *)self->_layoutQueue_renderDestination setBackgroundColor:v11];
+    backgroundColor = [(PXGConcreteEngineControllerConfiguration *)v3 backgroundColor];
+    [(PXGPixelBufferMetalRenderDestination *)self->_layoutQueue_renderDestination setBackgroundColor:backgroundColor];
 
     [(PXGConcreteEngineControllerConfiguration *)v3 displayScale];
     if (v12 == 0.0)
@@ -220,9 +220,9 @@ void __70__PXGHostingController__layoutQueue_performInitialEngineSetupIfNeeded__
     }
 
     [(PXGPixelBufferMetalRenderDestination *)self->_layoutQueue_renderDestination setScale:v12];
-    v13 = [(PXGEngine *)v4 layout];
+    layout2 = [(PXGEngine *)v4 layout];
     [(PXGConcreteEngineControllerConfiguration *)v3 displayScale];
-    [v13 setDisplayScale:?];
+    [layout2 setDisplayScale:?];
     v14 = self->_layoutQueue_scrollController;
     [(PXGAsyncScrollController *)v14 referenceSize];
     v16 = v15;
@@ -240,39 +240,39 @@ void __70__PXGHostingController__layoutQueue_performInitialEngineSetupIfNeeded__
       PXGTungstenGetLog();
     }
 
-    [v13 hostingControllerCanceledPreviouslyProposedReferenceSize];
+    [layout2 hostingControllerCanceledPreviouslyProposedReferenceSize];
     v33 = ![(PXGHostingController *)self layoutQueue_isAppInactive]&& [(PXGConcreteEngineControllerConfiguration *)v3 isVisible];
     [(PXGAsyncScrollController *)v14 setIsActive:v33];
   }
 }
 
-- (void)setLayoutQueue_isAppInactive:(BOOL)a3
+- (void)setLayoutQueue_isAppInactive:(BOOL)inactive
 {
-  if (self->_layoutQueue_isAppInactive != a3)
+  if (self->_layoutQueue_isAppInactive != inactive)
   {
-    self->_layoutQueue_isAppInactive = a3;
+    self->_layoutQueue_isAppInactive = inactive;
     [(PXGHostingController *)self _layoutQueue_applyConfiguration];
   }
 }
 
-- (void)setLayoutQueue_configuration:(id)a3
+- (void)setLayoutQueue_configuration:(id)queue_configuration
 {
-  v9 = a3;
-  v5 = [(PXGConcreteEngineControllerConfiguration *)self->_layoutQueue_configuration version];
-  if (v5 != [v9 version])
+  queue_configurationCopy = queue_configuration;
+  version = [(PXGConcreteEngineControllerConfiguration *)self->_layoutQueue_configuration version];
+  if (version != [queue_configurationCopy version])
   {
-    v6 = [v9 rootLayoutPromise];
+    rootLayoutPromise = [queue_configurationCopy rootLayoutPromise];
 
-    if (v6)
+    if (rootLayoutPromise)
     {
-      v7 = [v9 rootLayoutPromise];
+      rootLayoutPromise2 = [queue_configurationCopy rootLayoutPromise];
       layoutQueue_pendingRootLayoutPromise = self->_layoutQueue_pendingRootLayoutPromise;
-      self->_layoutQueue_pendingRootLayoutPromise = v7;
+      self->_layoutQueue_pendingRootLayoutPromise = rootLayoutPromise2;
 
-      [v9 setRootLayoutPromise:0];
+      [queue_configurationCopy setRootLayoutPromise:0];
     }
 
-    objc_storeStrong(&self->_layoutQueue_configuration, a3);
+    objc_storeStrong(&self->_layoutQueue_configuration, queue_configuration);
     [(PXGHostingController *)self _layoutQueue_applyConfiguration];
   }
 }
@@ -280,9 +280,9 @@ void __70__PXGHostingController__layoutQueue_performInitialEngineSetupIfNeeded__
 - (void)_clientQueue_propagateConfigurationToEngine
 {
   v3 = [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration copy];
-  v4 = [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration rootLayoutPromise];
+  rootLayoutPromise = [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration rootLayoutPromise];
 
-  if (v4)
+  if (rootLayoutPromise)
   {
     [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration setRootLayoutPromise:0];
   }
@@ -309,28 +309,28 @@ void __67__PXGHostingController__clientQueue_propagateConfigurationToEngine__blo
   [WeakRetained setLayoutQueue_configuration:v1];
 }
 
-- (void)_dispatchFrame:(id)a3 async:(BOOL)a4 toObserver:(id)a5
+- (void)_dispatchFrame:(id)frame async:(BOOL)async toObserver:(id)observer
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  asyncCopy = async;
+  frameCopy = frame;
+  observerCopy = observer;
+  v10 = observerCopy;
+  if (frameCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __56__PXGHostingController__dispatchFrame_async_toObserver___block_invoke;
     aBlock[3] = &unk_1E774A1B8;
-    v11 = v9;
+    v11 = observerCopy;
     v16 = v11;
-    v17 = self;
-    v18 = v8;
+    selfCopy = self;
+    v18 = frameCopy;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v6)
+    if (asyncCopy)
     {
-      v14 = [v11 hostingControllerObservationQueue];
-      dispatch_async(v14, v13);
+      hostingControllerObservationQueue = [v11 hostingControllerObservationQueue];
+      dispatch_async(hostingControllerObservationQueue, v13);
     }
 
     else
@@ -340,12 +340,12 @@ void __67__PXGHostingController__clientQueue_propagateConfigurationToEngine__blo
   }
 }
 
-- (void)_distributeFrame:(id)a3
+- (void)_distributeFrame:(id)frame
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  frameCopy = frame;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_lock_lastFrame, a3);
+  objc_storeStrong(&self->_lock_lastFrame, frame);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -366,7 +366,7 @@ void __67__PXGHostingController__clientQueue_propagateConfigurationToEngine__blo
           objc_enumerationMutation(v6);
         }
 
-        [(PXGHostingController *)self _dispatchFrame:v5 async:1 toObserver:*(*(&v11 + 1) + 8 * v10++), v11];
+        [(PXGHostingController *)self _dispatchFrame:frameCopy async:1 toObserver:*(*(&v11 + 1) + 8 * v10++), v11];
       }
 
       while (v8 != v10);
@@ -379,26 +379,26 @@ void __67__PXGHostingController__clientQueue_propagateConfigurationToEngine__blo
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterFrameObserver:(id)a3
+- (void)unregisterFrameObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)registerFrameObserver:(id)a3
+- (void)registerFrameObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v7];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
   v4 = self->_lock_lastFrame;
   os_unfair_lock_unlock(&self->_lock);
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v5 = [v7 hostingControllerObservationQueue];
-    v6 = v5 != MEMORY[0x1E69E96A0];
+    hostingControllerObservationQueue = [observerCopy hostingControllerObservationQueue];
+    v6 = hostingControllerObservationQueue != MEMORY[0x1E69E96A0];
   }
 
   else
@@ -406,7 +406,7 @@ void __67__PXGHostingController__clientQueue_propagateConfigurationToEngine__blo
     v6 = 1;
   }
 
-  [(PXGHostingController *)self _dispatchFrame:v4 async:v6 toObserver:v7];
+  [(PXGHostingController *)self _dispatchFrame:v4 async:v6 toObserver:observerCopy];
 }
 
 - (PXGRenderFrame)lastFrame
@@ -418,19 +418,19 @@ void __67__PXGHostingController__clientQueue_propagateConfigurationToEngine__blo
   return v3;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   clientQueue = self->_clientQueue;
-  v5 = a3;
+  changesCopy = changes;
   dispatch_assert_queue_V2(clientQueue);
   clientQueue_isPerformingChanges = self->_clientQueue_isPerformingChanges;
   self->_clientQueue_isPerformingChanges = 1;
-  v7 = [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration version];
-  v5[2](v5, self->_clientQueue_configuration);
+  version = [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration version];
+  changesCopy[2](changesCopy, self->_clientQueue_configuration);
 
-  v8 = [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration version];
+  version2 = [(PXGConcreteEngineControllerConfiguration *)self->_clientQueue_configuration version];
   self->_clientQueue_isPerformingChanges = clientQueue_isPerformingChanges;
-  if (!clientQueue_isPerformingChanges && v7 != v8)
+  if (!clientQueue_isPerformingChanges && version != version2)
   {
 
     [(PXGHostingController *)self _clientQueue_propagateConfigurationToEngine];
@@ -439,16 +439,16 @@ void __67__PXGHostingController__clientQueue_propagateConfigurationToEngine__blo
 
 - (void)_notePresentersDidChange
 {
-  v2 = [(PXGHostingController *)self onPresentersDidChange];
-  if (v2)
+  onPresentersDidChange = [(PXGHostingController *)self onPresentersDidChange];
+  if (onPresentersDidChange)
   {
-    v3 = v2;
-    v2[2]();
-    v2 = v3;
+    v3 = onPresentersDidChange;
+    onPresentersDidChange[2]();
+    onPresentersDidChange = v3;
   }
 }
 
-- (void)clientQueue_presenterDidChange:(id)a3
+- (void)clientQueue_presenterDidChange:(id)change
 {
   dispatch_assert_queue_V2(self->_clientQueue);
 
@@ -515,8 +515,8 @@ void __31__PXGHostingController_dealloc__block_invoke(uint64_t a1)
 
 - (void)_mainQueue_updateIsAppInactive
 {
-  v3 = [(PXGHostingController *)self mainQueue_applicationState];
-  v4 = [v3 visibilityState] != 1;
+  mainQueue_applicationState = [(PXGHostingController *)self mainQueue_applicationState];
+  v4 = [mainQueue_applicationState visibilityState] != 1;
 
   objc_initWeak(&location, self);
   layoutQueue = self->_layoutQueue;
@@ -557,37 +557,37 @@ void __54__PXGHostingController__mainQueue_updateIsAppInactive__block_invoke(uin
   return v4;
 }
 
-- (PXGHostingController)initWithClientQueue:(id)a3 layoutQueue:(id)a4 initialConfiguration:(id)a5
+- (PXGHostingController)initWithClientQueue:(id)queue layoutQueue:(id)layoutQueue initialConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  layoutQueueCopy = layoutQueue;
+  configurationCopy = configuration;
   v26.receiver = self;
   v26.super_class = PXGHostingController;
   v12 = [(PXGHostingController *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientQueue, a3);
-    objc_storeStrong(&v13->_layoutQueue, a4);
+    objc_storeStrong(&v12->_clientQueue, queue);
+    objc_storeStrong(&v13->_layoutQueue, layoutQueue);
     v14 = objc_alloc_init(PXGConcreteEngineControllerConfiguration);
     clientQueue_configuration = v13->_clientQueue_configuration;
     v13->_clientQueue_configuration = v14;
 
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     clientQueue_activePresenters = v13->_clientQueue_activePresenters;
-    v13->_clientQueue_activePresenters = v16;
+    v13->_clientQueue_activePresenters = weakObjectsHashTable;
 
     v18 = [(PXGConcreteEngineControllerConfiguration *)v13->_clientQueue_configuration copy];
     layoutQueue_configuration = v13->_layoutQueue_configuration;
     v13->_layoutQueue_configuration = v18;
 
     v13->_lock._os_unfair_lock_opaque = 0;
-    v20 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_observers = v13->_lock_observers;
-    v13->_lock_observers = v20;
+    v13->_lock_observers = weakObjectsHashTable2;
 
-    [(PXGHostingController *)v13 performChanges:v11];
+    [(PXGHostingController *)v13 performChanges:configurationCopy];
     objc_initWeak(&location, v13);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;

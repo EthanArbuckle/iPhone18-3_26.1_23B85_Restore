@@ -1,25 +1,25 @@
 @interface ArticleScrollPositionManager
-- (id)scrollPositionForHeadline:(id)a3;
-- (void)setPosition:(id)a3 headline:(id)a4;
+- (id)scrollPositionForHeadline:(id)headline;
+- (void)setPosition:(id)position headline:(id)headline;
 @end
 
 @implementation ArticleScrollPositionManager
 
-- (void)setPosition:(id)a3 headline:(id)a4
+- (void)setPosition:(id)position headline:(id)headline
 {
-  v5 = a3;
+  positionCopy = position;
   swift_unknownObjectRetain();
 
-  sub_1D7C582C8(v5, a4);
+  sub_1D7C582C8(positionCopy, headline);
 
   swift_unknownObjectRelease();
 }
 
-- (id)scrollPositionForHeadline:(id)a3
+- (id)scrollPositionForHeadline:(id)headline
 {
   swift_unknownObjectRetain();
 
-  v4 = sub_1D7C5886C(a3);
+  v4 = sub_1D7C5886C(headline);
   swift_unknownObjectRelease();
 
   return v4;

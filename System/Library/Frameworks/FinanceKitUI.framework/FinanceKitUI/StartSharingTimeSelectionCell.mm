@@ -1,13 +1,13 @@
 @interface StartSharingTimeSelectionCell
-- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithCoder:(id)a3;
-- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithCoder:(id)coder;
+- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation StartSharingTimeSelectionCell
 
-- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -18,13 +18,13 @@
   }
 
   v7 = sub_23875EA80();
-  sub_23863505C(a3, v7, v8, a5);
+  sub_23863505C(style, v7, v8, specifier);
   v10 = v9;
 
   return v10;
 }
 
-- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -34,7 +34,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v6 = sub_23875EA80();
     v8 = v7;
@@ -46,12 +46,12 @@
     v8 = 0;
   }
 
-  v9 = sub_23863525C(a3, v6, v8);
+  v9 = sub_23863525C(style, v6, v8);
 
   return v9;
 }
 
-- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithCoder:(id)a3
+- (_TtC12FinanceKitUI29StartSharingTimeSelectionCell)initWithCoder:(id)coder
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -67,7 +67,7 @@
   return result;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -77,8 +77,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_23863BB04();
 }
 

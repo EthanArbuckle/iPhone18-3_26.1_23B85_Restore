@@ -29,9 +29,9 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_linearToAppleLog];
-  v4 = [(CIImage *)[(CILinearToAppleLog *)self inputImage] imageByUnpremultiplyingAlpha];
-  [(CIImage *)v4 extent];
-  v10[0] = v4;
+  imageByUnpremultiplyingAlpha = [(CIImage *)[(CILinearToAppleLog *)self inputImage] imageByUnpremultiplyingAlpha];
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
+  v10[0] = imageByUnpremultiplyingAlpha;
   return -[CIImage imageByPremultiplyingAlpha](-[CIColorKernel applyWithExtent:arguments:](v3, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1], v5, v6, v7, v8), "imageByPremultiplyingAlpha");
 }
 

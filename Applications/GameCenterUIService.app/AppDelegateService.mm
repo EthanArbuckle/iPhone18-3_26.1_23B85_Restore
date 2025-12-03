@@ -1,6 +1,6 @@
 @interface AppDelegateService
 - (AppDelegateService)init;
-- (void)setLocalPlayer:(id)a3;
+- (void)setLocalPlayer:(id)player;
 @end
 
 @implementation AppDelegateService
@@ -20,13 +20,13 @@
   return v2;
 }
 
-- (void)setLocalPlayer:(id)a3
+- (void)setLocalPlayer:(id)player
 {
-  if (a3)
+  if (player)
   {
-    v3 = a3;
+    playerCopy = player;
     v4 = +[GKLocalPlayer localPlayer];
-    [v4 updateFromLocalPlayer:v3];
+    [v4 updateFromLocalPlayer:playerCopy];
   }
 }
 

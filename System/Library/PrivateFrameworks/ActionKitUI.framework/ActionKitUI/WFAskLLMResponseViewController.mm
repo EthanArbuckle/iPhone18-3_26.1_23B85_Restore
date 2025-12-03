@@ -1,12 +1,12 @@
 @interface WFAskLLMResponseViewController
 - (BOOL)shouldHideSashView;
-- (double)contentHeightForWidth:(double)a3 withMaximumVisibleHeight:(double)a4;
-- (double)targetHeightForAnimatingToProposedHeight:(double)a3;
+- (double)contentHeightForWidth:(double)width withMaximumVisibleHeight:(double)height;
+- (double)targetHeightForAnimatingToProposedHeight:(double)height;
 - (id)nestedScrollView;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)askContainerForHomeGestureUpdate;
-- (void)configureCell:(id)a3;
-- (void)updateContent:(id)a3 withCompletionHandler:(id)a4;
+- (void)configureCell:(id)cell;
+- (void)updateContent:(id)content withCompletionHandler:(id)handler;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -16,17 +16,17 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEB18];
-  v3 = [(WFCompactPlatterViewController *)self scrollView];
-  v4 = [v3 subviews];
-  v5 = [v2 arrayWithArray:v4];
+  scrollView = [(WFCompactPlatterViewController *)self scrollView];
+  subviews = [scrollView subviews];
+  v5 = [v2 arrayWithArray:subviews];
 
   if ([v5 count])
   {
     while (1)
     {
-      v6 = [v5 lastObject];
+      lastObject = [v5 lastObject];
       [v5 removeLastObject];
-      v7 = v6;
+      v7 = lastObject;
       if (v7)
       {
         objc_opt_class();
@@ -40,8 +40,8 @@
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [v7 subviews];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      subviews2 = [v7 subviews];
+      v9 = [subviews2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -52,13 +52,13 @@
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(subviews2);
             }
 
             [v5 addObject:*(*(&v15 + 1) + 8 * i)];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [subviews2 countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
@@ -84,48 +84,48 @@ LABEL_12:
 
 - (BOOL)shouldHideSashView
 {
-  v2 = [(WFAskLLMResponseViewController *)self contentCollectionPreviewController];
-  v3 = [v2 shouldHideSashView];
+  contentCollectionPreviewController = [(WFAskLLMResponseViewController *)self contentCollectionPreviewController];
+  shouldHideSashView = [contentCollectionPreviewController shouldHideSashView];
 
-  return v3;
+  return shouldHideSashView;
 }
 
 - (void)askContainerForHomeGestureUpdate
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:*MEMORY[0x277D7D2C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D7D2C0] object:0];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  v4 = [(WFCompactPlatterViewController *)self platterView];
-  v5 = [v4 visualStylingProviderForCategory:a3];
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  v5 = [platterView visualStylingProviderForCategory:category];
 
   return v5;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WFCompactPlatterViewController *)self appearanceProvider];
-  [v5 configureChooseFromListDialogCell:v4];
+  cellCopy = cell;
+  appearanceProvider = [(WFCompactPlatterViewController *)self appearanceProvider];
+  [appearanceProvider configureChooseFromListDialogCell:cellCopy];
 }
 
-- (double)targetHeightForAnimatingToProposedHeight:(double)a3
+- (double)targetHeightForAnimatingToProposedHeight:(double)height
 {
   [(WFCompactPlatterViewController *)self maximumExpectedVisibleContentHeight];
-  if (result > a3)
+  if (result > height)
   {
-    return a3;
+    return height;
   }
 
   return result;
 }
 
-- (void)updateContent:(id)a3 withCompletionHandler:(id)a4
+- (void)updateContent:(id)content withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  contentCopy = content;
   [(WFCompactPlatterViewController *)self setContentViewController:0];
   v8 = objc_alloc_init(MEMORY[0x277D7D2B8]);
   v11[0] = MEMORY[0x277D85DD0];
@@ -134,10 +134,10 @@ LABEL_12:
   v11[3] = &unk_278C36F90;
   v11[4] = self;
   v12 = v8;
-  v13 = v6;
-  v9 = v6;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v8;
-  [v10 prepareContentCollection:v7 withCompletionHandler:v11];
+  [v10 prepareContentCollection:contentCopy withCompletionHandler:v11];
 }
 
 uint64_t __70__WFAskLLMResponseViewController_updateContent_withCompletionHandler___block_invoke(uint64_t a1)
@@ -152,15 +152,15 @@ uint64_t __70__WFAskLLMResponseViewController_updateContent_withCompletionHandle
   return v3();
 }
 
-- (double)contentHeightForWidth:(double)a3 withMaximumVisibleHeight:(double)a4
+- (double)contentHeightForWidth:(double)width withMaximumVisibleHeight:(double)height
 {
-  v6 = [(WFAskLLMResponseViewController *)self contentCollectionPreviewController];
-  [v6 contentHeightForWidth:a3];
+  contentCollectionPreviewController = [(WFAskLLMResponseViewController *)self contentCollectionPreviewController];
+  [contentCollectionPreviewController contentHeightForWidth:width];
   v8 = v7;
 
-  if (v8 >= a4)
+  if (v8 >= height)
   {
-    return a4;
+    return height;
   }
 
   else
@@ -174,11 +174,11 @@ uint64_t __70__WFAskLLMResponseViewController_updateContent_withCompletionHandle
   v8.receiver = self;
   v8.super_class = WFAskLLMResponseViewController;
   [(WFAskLLMResponseViewController *)&v8 viewWillLayoutSubviews];
-  v3 = [(WFAskLLMResponseViewController *)self nestedScrollView];
-  v4 = v3;
-  if (v3)
+  nestedScrollView = [(WFAskLLMResponseViewController *)self nestedScrollView];
+  v4 = nestedScrollView;
+  if (nestedScrollView)
   {
-    [v3 contentSize];
+    [nestedScrollView contentSize];
     v6 = v5;
     [v4 bounds];
     [v4 setScrollEnabled:v6 > v7];

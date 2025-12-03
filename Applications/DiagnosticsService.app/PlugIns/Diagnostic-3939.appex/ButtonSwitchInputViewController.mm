@@ -1,35 +1,35 @@
 @interface ButtonSwitchInputViewController
 - (BOOL)setupTest;
-- (void)_downloadSpriteImageUsingResponder:(id)a3;
-- (void)cleanUpWithCompletion:(id)a3;
-- (void)didReceiveButtonEvent:(unint64_t)a3;
-- (void)endTestWithStatusCode:(id)a3;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)_downloadSpriteImageUsingResponder:(id)responder;
+- (void)cleanUpWithCompletion:(id)completion;
+- (void)didReceiveButtonEvent:(unint64_t)event;
+- (void)endTestWithStatusCode:(id)code;
+- (void)handleHIDEvent:(__IOHIDEvent *)event;
 - (void)noInputTimedOut;
 - (void)playHaptic;
 - (void)resetTimer;
 - (void)setupTouchButtonInteractions;
 - (void)setupView;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
-- (void)shouldShowViewControllerInHostApp:(id)a3;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
+- (void)shouldShowViewControllerInHostApp:(id)app;
 - (void)showNextSegment;
-- (void)showTransitionWithRange:(_NSRange)a3 WithCompletionHandler:(id)a4;
+- (void)showTransitionWithRange:(_NSRange)range WithCompletionHandler:(id)handler;
 - (void)startTimer;
 - (void)teardown;
 @end
 
 @implementation ButtonSwitchInputViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v70 = a4;
-  [(ButtonSwitchInputViewController *)self setInputs:v6];
+  inputsCopy = inputs;
+  responderCopy = responder;
+  [(ButtonSwitchInputViewController *)self setInputs:inputsCopy];
   [(ButtonSwitchInputViewController *)self setupTest];
-  v7 = [(ButtonSwitchInputViewController *)self inputs];
-  v8 = [v7 buttonSwitchSpecification];
+  inputs = [(ButtonSwitchInputViewController *)self inputs];
+  buttonSwitchSpecification = [inputs buttonSwitchSpecification];
 
-  if (v8)
+  if (buttonSwitchSpecification)
   {
     objc_initWeak(&location, self);
     v9 = dispatch_get_global_queue(0, 0);
@@ -38,15 +38,15 @@
     block[2] = sub_100004DB0;
     block[3] = &unk_1000104D8;
     objc_copyWeak(&v78, &location);
-    v77 = v70;
+    v77 = responderCopy;
     dispatch_async(v9, block);
 
     objc_destroyWeak(&v78);
     objc_destroyWeak(&location);
     [(ButtonSwitchInputViewController *)self setTargetButtonEvents:0xFFFFFFFFLL];
-    v10 = [(ButtonSwitchInputViewController *)self inputs];
-    v11 = [v10 identifier];
-    v12 = [v11 isEqualToString:@"Home"];
+    inputs2 = [(ButtonSwitchInputViewController *)self inputs];
+    identifier = [inputs2 identifier];
+    v12 = [identifier isEqualToString:@"Home"];
 
     if (v12)
     {
@@ -55,9 +55,9 @@
 
     else
     {
-      v14 = [(ButtonSwitchInputViewController *)self inputs];
-      v15 = [v14 identifier];
-      v16 = [v15 isEqualToString:@"RingerButton"];
+      inputs3 = [(ButtonSwitchInputViewController *)self inputs];
+      identifier2 = [inputs3 identifier];
+      v16 = [identifier2 isEqualToString:@"RingerButton"];
 
       if (v16)
       {
@@ -66,9 +66,9 @@
 
       else
       {
-        v17 = [(ButtonSwitchInputViewController *)self inputs];
-        v18 = [v17 identifier];
-        v19 = [v18 isEqualToString:@"Ringer"];
+        inputs4 = [(ButtonSwitchInputViewController *)self inputs];
+        identifier3 = [inputs4 identifier];
+        v19 = [identifier3 isEqualToString:@"Ringer"];
 
         if (v19)
         {
@@ -77,9 +77,9 @@
 
         else
         {
-          v20 = [(ButtonSwitchInputViewController *)self inputs];
-          v21 = [v20 identifier];
-          v22 = [v21 isEqualToString:@"Sleep"];
+          inputs5 = [(ButtonSwitchInputViewController *)self inputs];
+          identifier4 = [inputs5 identifier];
+          v22 = [identifier4 isEqualToString:@"Sleep"];
 
           if (v22)
           {
@@ -88,9 +88,9 @@
 
           else
           {
-            v23 = [(ButtonSwitchInputViewController *)self inputs];
-            v24 = [v23 identifier];
-            v25 = [v24 isEqualToString:@"VolumeIncrement"];
+            inputs6 = [(ButtonSwitchInputViewController *)self inputs];
+            identifier5 = [inputs6 identifier];
+            v25 = [identifier5 isEqualToString:@"VolumeIncrement"];
 
             if (v25)
             {
@@ -99,9 +99,9 @@
 
             else
             {
-              v26 = [(ButtonSwitchInputViewController *)self inputs];
-              v27 = [v26 identifier];
-              v28 = [v27 isEqualToString:@"VolumeDecrement"];
+              inputs7 = [(ButtonSwitchInputViewController *)self inputs];
+              identifier6 = [inputs7 identifier];
+              v28 = [identifier6 isEqualToString:@"VolumeDecrement"];
 
               if (v28)
               {
@@ -110,9 +110,9 @@
 
               else
               {
-                v29 = [(ButtonSwitchInputViewController *)self inputs];
-                v30 = [v29 identifier];
-                v31 = [v30 isEqualToString:@"DigitalCrown"];
+                inputs8 = [(ButtonSwitchInputViewController *)self inputs];
+                identifier7 = [inputs8 identifier];
+                v31 = [identifier7 isEqualToString:@"DigitalCrown"];
 
                 if (v31)
                 {
@@ -121,9 +121,9 @@
 
                 else
                 {
-                  v32 = [(ButtonSwitchInputViewController *)self inputs];
-                  v33 = [v32 identifier];
-                  v34 = [v33 isEqualToString:@"Side"];
+                  inputs9 = [(ButtonSwitchInputViewController *)self inputs];
+                  identifier8 = [inputs9 identifier];
+                  v34 = [identifier8 isEqualToString:@"Side"];
 
                   if (v34)
                   {
@@ -132,9 +132,9 @@
 
                   else
                   {
-                    v35 = [(ButtonSwitchInputViewController *)self inputs];
-                    v36 = [v35 identifier];
-                    v37 = [v36 isEqualToString:@"App"];
+                    inputs10 = [(ButtonSwitchInputViewController *)self inputs];
+                    identifier9 = [inputs10 identifier];
+                    v37 = [identifier9 isEqualToString:@"App"];
 
                     if (v37)
                     {
@@ -143,9 +143,9 @@
 
                     else
                     {
-                      v38 = [(ButtonSwitchInputViewController *)self inputs];
-                      v39 = [v38 identifier];
-                      v40 = [v39 isEqualToString:@"Camera"];
+                      inputs11 = [(ButtonSwitchInputViewController *)self inputs];
+                      identifier10 = [inputs11 identifier];
+                      v40 = [identifier10 isEqualToString:@"Camera"];
 
                       if (v40)
                       {
@@ -169,16 +169,16 @@
                         else
                         {
                           objc_initWeak(&location, self);
-                          v44 = [(ButtonSwitchInputViewController *)self hapticEngine];
+                          hapticEngine = [(ButtonSwitchInputViewController *)self hapticEngine];
                           v73[0] = _NSConcreteStackBlock;
                           v73[1] = 3221225472;
                           v73[2] = sub_100004E00;
                           v73[3] = &unk_100010500;
                           objc_copyWeak(&v74, &location);
-                          [v44 setResetHandler:v73];
+                          [hapticEngine setResetHandler:v73];
 
-                          v45 = [(ButtonSwitchInputViewController *)self hapticEngine];
-                          [v45 setStoppedHandler:&stru_100010540];
+                          hapticEngine2 = [(ButtonSwitchInputViewController *)self hapticEngine];
+                          [hapticEngine2 setStoppedHandler:&stru_100010540];
 
                           v46 = objc_alloc_init(NSLock);
                           [(ButtonSwitchInputViewController *)self setHapticPlaybackLock:v46];
@@ -201,34 +201,34 @@
     [(ButtonSwitchInputViewController *)self setButtonEventMonitor:v47];
 
     objc_initWeak(&location, self);
-    v48 = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
+    buttonEventMonitor = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = sub_100004F94;
     v71[3] = &unk_100010500;
     objc_copyWeak(&v72, &location);
-    [v48 startWithPriority:200 completion:v71];
+    [buttonEventMonitor startWithPriority:200 completion:v71];
 
-    v49 = [(ButtonSwitchInputViewController *)self inputs];
-    v50 = [v49 switchParameters];
+    inputs12 = [(ButtonSwitchInputViewController *)self inputs];
+    switchParameters = [inputs12 switchParameters];
 
-    if (v50)
+    if (switchParameters)
     {
       v51 = [DAButtonSwitchState alloc];
-      v52 = [(ButtonSwitchInputViewController *)self inputs];
-      v53 = [v52 identifier];
-      v54 = [(ButtonSwitchInputViewController *)self inputs];
-      v55 = [(DAButtonSwitchState *)v54 switchParameters];
-      v56 = -[DAButtonSwitchState initWithIdentifier:startingState:](v51, "initWithIdentifier:startingState:", v53, [v55 startingState]);
+      inputs13 = [(ButtonSwitchInputViewController *)self inputs];
+      identifier11 = [inputs13 identifier];
+      inputs14 = [(ButtonSwitchInputViewController *)self inputs];
+      switchParameters2 = [(DAButtonSwitchState *)inputs14 switchParameters];
+      v56 = -[DAButtonSwitchState initWithIdentifier:startingState:](v51, "initWithIdentifier:startingState:", identifier11, [switchParameters2 startingState]);
       [(ButtonSwitchInputViewController *)self setButtonSwitchState:v56];
     }
 
     else
     {
-      v57 = [(ButtonSwitchInputViewController *)self inputs];
-      v58 = [v57 buttonParameters];
+      inputs15 = [(ButtonSwitchInputViewController *)self inputs];
+      buttonParameters = [inputs15 buttonParameters];
 
-      if (!v58)
+      if (!buttonParameters)
       {
 LABEL_35:
         [(ButtonSwitchInputViewController *)self setIsInputMonitoringPaused:0];
@@ -237,22 +237,22 @@ LABEL_35:
         [(ButtonSwitchInputViewController *)self setAllResults:v60];
 
         v61 = +[DSTestAutomation sharedInstance];
-        v62 = [v61 testAutomationEnabled];
+        testAutomationEnabled = [v61 testAutomationEnabled];
 
-        if (v62)
+        if (testAutomationEnabled)
         {
           v80[0] = @"parameters";
-          v63 = [(ButtonSwitchInputViewController *)self inputs];
-          v64 = [v63 parameters];
-          v81[0] = v64;
+          inputs16 = [(ButtonSwitchInputViewController *)self inputs];
+          parameters = [inputs16 parameters];
+          v81[0] = parameters;
           v80[1] = @"predicates";
-          v65 = [(ButtonSwitchInputViewController *)self inputs];
-          v66 = [v65 predicates];
-          v81[1] = v66;
+          inputs17 = [(ButtonSwitchInputViewController *)self inputs];
+          predicates = [inputs17 predicates];
+          v81[1] = predicates;
           v80[2] = @"specifications";
-          v67 = [(ButtonSwitchInputViewController *)self inputs];
-          v68 = [v67 specifications];
-          v81[2] = v68;
+          inputs18 = [(ButtonSwitchInputViewController *)self inputs];
+          specifications = [inputs18 specifications];
+          v81[2] = specifications;
           v69 = [NSDictionary dictionaryWithObjects:v81 forKeys:v80 count:3];
           [DSTestAutomation postConfiguration:v69];
         }
@@ -263,10 +263,10 @@ LABEL_35:
       }
 
       v59 = [DAButtonSwitchState alloc];
-      v52 = [(ButtonSwitchInputViewController *)self inputs];
-      v53 = [v52 identifier];
-      v54 = [(DAButtonSwitchState *)v59 initWithIdentifier:v53];
-      [(ButtonSwitchInputViewController *)self setButtonSwitchState:v54];
+      inputs13 = [(ButtonSwitchInputViewController *)self inputs];
+      identifier11 = [inputs13 identifier];
+      inputs14 = [(DAButtonSwitchState *)v59 initWithIdentifier:identifier11];
+      [(ButtonSwitchInputViewController *)self setButtonSwitchState:inputs14];
     }
 
     goto LABEL_35;
@@ -282,9 +282,9 @@ LABEL_35:
 LABEL_38:
 }
 
-- (void)_downloadSpriteImageUsingResponder:(id)a3
+- (void)_downloadSpriteImageUsingResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   v5 = dispatch_semaphore_create(0);
   v27 = 0;
   v28 = &v27;
@@ -292,10 +292,10 @@ LABEL_38:
   v30 = sub_100005344;
   v31 = sub_100005354;
   v32 = 0;
-  v6 = [(ButtonSwitchInputViewController *)self inputs];
-  v7 = [v6 buttonSwitchSpecification];
-  v8 = [v7 asset];
-  v9 = [v8 name];
+  inputs = [(ButtonSwitchInputViewController *)self inputs];
+  buttonSwitchSpecification = [inputs buttonSwitchSpecification];
+  asset = [buttonSwitchSpecification asset];
+  name = [asset name];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_10000535C;
@@ -303,28 +303,28 @@ LABEL_38:
   v26 = &v27;
   v10 = v5;
   v25 = v10;
-  [v4 getAsset:v9 completion:&v21];
+  [responderCopy getAsset:name completion:&v21];
 
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
   if (v28[5])
   {
-    v11 = self;
-    objc_sync_enter(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v12 = [UIImage alloc];
     v13 = [v12 initWithData:{v28[5], v21, v22, v23, v24}];
-    [(ButtonSwitchInputViewController *)v11 setSpriteImage:v13];
+    [(ButtonSwitchInputViewController *)selfCopy setSpriteImage:v13];
 
-    v14 = [(ButtonSwitchInputViewController *)v11 spriteImageDownloadCompletion];
+    spriteImageDownloadCompletion = [(ButtonSwitchInputViewController *)selfCopy spriteImageDownloadCompletion];
 
-    if (v14)
+    if (spriteImageDownloadCompletion)
     {
-      v15 = [(ButtonSwitchInputViewController *)v11 spriteImageDownloadCompletion];
-      v15[2]();
+      spriteImageDownloadCompletion2 = [(ButtonSwitchInputViewController *)selfCopy spriteImageDownloadCompletion];
+      spriteImageDownloadCompletion2[2]();
 
-      [(ButtonSwitchInputViewController *)v11 setSpriteImageDownloadCompletion:0];
+      [(ButtonSwitchInputViewController *)selfCopy setSpriteImageDownloadCompletion:0];
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -333,11 +333,11 @@ LABEL_38:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = [(ButtonSwitchInputViewController *)self inputs:v21];
-      v18 = [v17 buttonSwitchSpecification];
-      v19 = [v18 asset];
-      v20 = [v19 name];
+      buttonSwitchSpecification2 = [v17 buttonSwitchSpecification];
+      asset2 = [buttonSwitchSpecification2 asset];
+      name2 = [asset2 name];
       *buf = 138412290;
-      v34 = v20;
+      v34 = name2;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to download asset %@", buf, 0xCu);
     }
 
@@ -347,16 +347,16 @@ LABEL_38:
   _Block_object_dispose(&v27, 8);
 }
 
-- (void)shouldShowViewControllerInHostApp:(id)a3
+- (void)shouldShowViewControllerInHostApp:(id)app
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ButtonSwitchInputViewController *)v5 spriteImage];
+  appCopy = app;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  spriteImage = [(ButtonSwitchInputViewController *)selfCopy spriteImage];
 
-  if (v6)
+  if (spriteImage)
   {
-    v4[2](v4, 1);
+    appCopy[2](appCopy, 1);
   }
 
   else
@@ -365,54 +365,54 @@ LABEL_38:
     v7[1] = 3221225472;
     v7[2] = sub_1000054B4;
     v7[3] = &unk_100010590;
-    v8 = v4;
-    [(ButtonSwitchInputViewController *)v5 setSpriteImageDownloadCompletion:v7];
+    v8 = appCopy;
+    [(ButtonSwitchInputViewController *)selfCopy setSpriteImageDownloadCompletion:v7];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)setupTest
 {
-  v3 = [(ButtonSwitchInputViewController *)self inputs];
-  v4 = [v3 type];
-  v5 = [v4 isEqualToString:@"Button"];
+  inputs = [(ButtonSwitchInputViewController *)self inputs];
+  type = [inputs type];
+  v5 = [type isEqualToString:@"Button"];
 
-  v6 = [(ButtonSwitchInputViewController *)self inputs];
-  v7 = v6;
+  inputs2 = [(ButtonSwitchInputViewController *)self inputs];
+  v7 = inputs2;
   if (v5)
   {
-    v8 = [v6 buttonParameters];
+    buttonParameters = [inputs2 buttonParameters];
 
     [(ButtonSwitchInputViewController *)self setCurrentSegment:0xFFFFFFFFLL];
     [(ButtonSwitchInputViewController *)self setIsSecondEvent:0];
 LABEL_8:
 
-    return v8 != 0;
+    return buttonParameters != 0;
   }
 
-  v9 = [v6 type];
-  v10 = [v9 isEqualToString:@"Switch"];
+  type2 = [inputs2 type];
+  v10 = [type2 isEqualToString:@"Switch"];
 
-  v11 = [(ButtonSwitchInputViewController *)self inputs];
-  v12 = v11;
+  inputs3 = [(ButtonSwitchInputViewController *)self inputs];
+  inputs4 = inputs3;
   if (v10)
   {
-    v13 = [v11 switchParameters];
+    switchParameters = [inputs3 switchParameters];
 LABEL_7:
-    v8 = v13;
+    buttonParameters = switchParameters;
 
     [(ButtonSwitchInputViewController *)self setCurrentSegment:0xFFFFFFFFLL];
     goto LABEL_8;
   }
 
-  v14 = [v11 type];
-  v15 = [v14 isEqualToString:@"TouchButton"];
+  type3 = [inputs3 type];
+  v15 = [type3 isEqualToString:@"TouchButton"];
 
   if (v15)
   {
-    v12 = [(ButtonSwitchInputViewController *)self inputs];
-    v13 = [v12 touchButtonParameters];
+    inputs4 = [(ButtonSwitchInputViewController *)self inputs];
+    switchParameters = [inputs4 touchButtonParameters];
     goto LABEL_7;
   }
 
@@ -422,31 +422,31 @@ LABEL_7:
 - (void)setupView
 {
   v3 = +[UIColor whiteColor];
-  v4 = [(ButtonSwitchInputViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(ButtonSwitchInputViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [UIImageView alloc];
-  v6 = [(ButtonSwitchInputViewController *)self inputs];
-  v7 = [v6 buttonSwitchSpecification];
-  [v7 position];
+  inputs = [(ButtonSwitchInputViewController *)self inputs];
+  buttonSwitchSpecification = [inputs buttonSwitchSpecification];
+  [buttonSwitchSpecification position];
   v8 = [v5 initWithFrame:?];
   [(ButtonSwitchInputViewController *)self setTestImage:v8];
 
-  v9 = [(ButtonSwitchInputViewController *)self view];
-  v10 = [(ButtonSwitchInputViewController *)self testImage];
-  [v9 addSubview:v10];
+  view2 = [(ButtonSwitchInputViewController *)self view];
+  testImage = [(ButtonSwitchInputViewController *)self testImage];
+  [view2 addSubview:testImage];
 
-  v11 = [(ButtonSwitchInputViewController *)self inputs];
-  v12 = [v11 switchParameters];
+  inputs2 = [(ButtonSwitchInputViewController *)self inputs];
+  switchParameters = [inputs2 switchParameters];
 
-  if (v12)
+  if (switchParameters)
   {
-    v13 = [(ButtonSwitchInputViewController *)self checkCurrentSwitchState];
-    v14 = [(ButtonSwitchInputViewController *)self inputs];
-    v15 = [v14 switchParameters];
-    v16 = [v15 startingState];
+    checkCurrentSwitchState = [(ButtonSwitchInputViewController *)self checkCurrentSwitchState];
+    inputs3 = [(ButtonSwitchInputViewController *)self inputs];
+    switchParameters2 = [inputs3 switchParameters];
+    startingState = [switchParameters2 startingState];
 
-    if (v13 == v16)
+    if (checkCurrentSwitchState == startingState)
     {
       [(ButtonSwitchInputViewController *)self setCurrentSegment:[(ButtonSwitchInputViewController *)self currentSegment]+ 1];
     }
@@ -471,8 +471,8 @@ LABEL_7:
   {
     v3 = [_UIPhysicalButtonConfiguration _cameraCaptureShutterConfigurationWithOptionsProvider:0];
     v4 = [[_UIPhysicalButtonInteraction alloc] initWithConfigurations:v3 delegate:self];
-    v5 = [(ButtonSwitchInputViewController *)self view];
-    [v5 addInteraction:v4];
+    view = [(ButtonSwitchInputViewController *)self view];
+    [view addInteraction:v4];
   }
 
   v8 = +[DAHIDEventMonitor sharedInstance];
@@ -490,33 +490,33 @@ LABEL_7:
 {
   [(ButtonSwitchInputViewController *)self setCurrentSegment:[(ButtonSwitchInputViewController *)self currentSegment]+ 1];
   [(ButtonSwitchInputViewController *)self setCurrentSegmentActionCount:0];
-  v4 = [(ButtonSwitchInputViewController *)self inputs];
-  v5 = [v4 buttonParameters];
-  if (v5)
+  inputs = [(ButtonSwitchInputViewController *)self inputs];
+  buttonParameters = [inputs buttonParameters];
+  if (buttonParameters)
   {
-    v6 = [(ButtonSwitchInputViewController *)self inputs];
-    v7 = [v6 buttonParameters];
-    v8 = [v7 segments];
-    v9 = [v8 count];
+    inputs2 = [(ButtonSwitchInputViewController *)self inputs];
+    buttonParameters2 = [inputs2 buttonParameters];
+    segments = [buttonParameters2 segments];
+    v9 = [segments count];
     if (v9 <= [(ButtonSwitchInputViewController *)self currentSegment])
     {
 
       goto LABEL_17;
     }
 
-    v29 = v8;
-    v30 = v7;
-    v31 = v6;
+    v29 = segments;
+    v30 = buttonParameters2;
+    v31 = inputs2;
   }
 
-  v10 = [(ButtonSwitchInputViewController *)self inputs];
-  v11 = [v10 switchParameters];
-  if (v11)
+  inputs3 = [(ButtonSwitchInputViewController *)self inputs];
+  switchParameters = [inputs3 switchParameters];
+  if (switchParameters)
   {
-    v12 = [(ButtonSwitchInputViewController *)self inputs];
-    v13 = [v12 switchParameters];
-    v2 = [v13 states];
-    v14 = [v2 count];
+    inputs4 = [(ButtonSwitchInputViewController *)self inputs];
+    switchParameters2 = [inputs4 switchParameters];
+    states = [switchParameters2 states];
+    v14 = [states count];
     if (v14 <= [(ButtonSwitchInputViewController *)self currentSegment])
     {
       v23 = 1;
@@ -525,28 +525,28 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v27 = v13;
-    v28 = v12;
+    v27 = switchParameters2;
+    v28 = inputs4;
   }
 
-  v15 = [(ButtonSwitchInputViewController *)self inputs];
-  v16 = [v15 touchButtonParameters];
-  if (v16)
+  inputs5 = [(ButtonSwitchInputViewController *)self inputs];
+  touchButtonParameters = [inputs5 touchButtonParameters];
+  if (touchButtonParameters)
   {
-    v17 = v16;
+    v17 = touchButtonParameters;
     [(ButtonSwitchInputViewController *)self inputs];
-    v18 = v26 = v4;
+    v18 = v26 = inputs;
     [v18 touchButtonParameters];
-    v25 = v10;
-    v20 = v19 = v2;
-    v21 = [v20 targetEvents];
-    v22 = [v21 count];
+    v25 = inputs3;
+    v20 = v19 = states;
+    targetEvents = [v20 targetEvents];
+    v22 = [targetEvents count];
     v23 = v22 <= [(ButtonSwitchInputViewController *)self currentSegment];
 
-    v2 = v19;
-    v10 = v25;
+    states = v19;
+    inputs3 = v25;
 
-    v4 = v26;
+    inputs = v26;
   }
 
   else
@@ -555,16 +555,16 @@ LABEL_13:
     v23 = 0;
   }
 
-  v13 = v27;
-  v12 = v28;
-  if (v11)
+  switchParameters2 = v27;
+  inputs4 = v28;
+  if (switchParameters)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  if (v5)
+  if (buttonParameters)
   {
   }
 
@@ -593,32 +593,32 @@ LABEL_17:
   [(ButtonSwitchInputViewController *)self endTestWithStatusCode:v24];
 }
 
-- (void)showTransitionWithRange:(_NSRange)a3 WithCompletionHandler:(id)a4
+- (void)showTransitionWithRange:(_NSRange)range WithCompletionHandler:(id)handler
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = v7;
+  length = range.length;
+  location = range.location;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   if (length)
   {
-    v9 = [(ButtonSwitchInputViewController *)self testImage];
-    v10 = [(ButtonSwitchInputViewController *)self spriteImage];
-    v11 = [(ButtonSwitchInputViewController *)self inputs];
-    v12 = [v11 buttonSwitchSpecification];
-    v13 = [v12 asset];
-    [v13 size];
-    v14 = [DASpriteImage imagesFromSprite:v10 inRange:location withImageSize:length];
-    [v9 setAnimationImages:v14];
+    testImage = [(ButtonSwitchInputViewController *)self testImage];
+    spriteImage = [(ButtonSwitchInputViewController *)self spriteImage];
+    inputs = [(ButtonSwitchInputViewController *)self inputs];
+    buttonSwitchSpecification = [inputs buttonSwitchSpecification];
+    asset = [buttonSwitchSpecification asset];
+    [asset size];
+    v14 = [DASpriteImage imagesFromSprite:spriteImage inRange:location withImageSize:length];
+    [testImage setAnimationImages:v14];
 
     v15 = length / 60.0;
-    v16 = [(ButtonSwitchInputViewController *)self testImage];
-    [v16 setAnimationRepeatCount:1];
+    testImage2 = [(ButtonSwitchInputViewController *)self testImage];
+    [testImage2 setAnimationRepeatCount:1];
 
-    v17 = [(ButtonSwitchInputViewController *)self testImage];
-    [v17 setAnimationDuration:v15];
+    testImage3 = [(ButtonSwitchInputViewController *)self testImage];
+    [testImage3 setAnimationDuration:v15];
 
-    v18 = [(ButtonSwitchInputViewController *)self testImage];
-    [v18 startAnimating];
+    testImage4 = [(ButtonSwitchInputViewController *)self testImage];
+    [testImage4 startAnimating];
 
     v19 = dispatch_time(0, (v15 * 1000000000.0));
     block[0] = _NSConcreteStackBlock;
@@ -631,26 +631,26 @@ LABEL_17:
 
   else
   {
-    (*(v7 + 2))(v7);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 
-- (void)cleanUpWithCompletion:(id)a3
+- (void)cleanUpWithCompletion:(id)completion
 {
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100006220;
   v11 = &unk_1000105E0;
-  v12 = self;
-  v13 = a3;
-  v4 = v13;
+  selfCopy = self;
+  completionCopy = completion;
+  v4 = completionCopy;
   v5 = objc_retainBlock(&v8);
   v6 = [(ButtonSwitchInputViewController *)self buttonEventMonitor:v8];
 
   if (v6)
   {
-    v7 = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
-    [v7 stopWithCompletion:v5];
+    buttonEventMonitor = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
+    [buttonEventMonitor stopWithCompletion:v5];
   }
 
   else
@@ -671,18 +671,18 @@ LABEL_17:
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)endTestWithStatusCode:(id)a3
+- (void)endTestWithStatusCode:(id)code
 {
-  v4 = a3;
-  if ([v4 isEqualToNumber:&off_100011248])
+  codeCopy = code;
+  if ([codeCopy isEqualToNumber:&off_100011248])
   {
-    v5 = [(ButtonSwitchInputViewController *)self hapticPlaybackLock];
+    hapticPlaybackLock = [(ButtonSwitchInputViewController *)self hapticPlaybackLock];
 
-    if (v5)
+    if (hapticPlaybackLock)
     {
-      v6 = [(ButtonSwitchInputViewController *)self hapticPlaybackLock];
+      hapticPlaybackLock2 = [(ButtonSwitchInputViewController *)self hapticPlaybackLock];
       v7 = [NSDate dateWithTimeIntervalSinceNow:1.5];
-      v8 = [v6 lockBeforeDate:v7];
+      v8 = [hapticPlaybackLock2 lockBeforeDate:v7];
 
       if ((v8 & 1) == 0)
       {
@@ -692,7 +692,7 @@ LABEL_17:
           sub_100008918();
         }
 
-        v4 = &off_100011260;
+        codeCopy = &off_100011260;
       }
     }
   }
@@ -702,8 +702,8 @@ LABEL_17:
   v11[2] = sub_1000065C0;
   v11[3] = &unk_1000105B8;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = codeCopy;
+  v10 = codeCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 
@@ -716,12 +716,12 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "No Input Timeout called", buf, 2u);
   }
 
-  v4 = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
+  buttonEventMonitor = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
 
-  if (v4)
+  if (buttonEventMonitor)
   {
-    v5 = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
-    [v5 removeTarget:self];
+    buttonEventMonitor2 = [(ButtonSwitchInputViewController *)self buttonEventMonitor];
+    [buttonEventMonitor2 removeTarget:self];
   }
 
   [(ButtonSwitchInputViewController *)self setIsInputMonitoringPaused:1];
@@ -748,7 +748,7 @@ LABEL_17:
   v17 = sub_100006BB0;
   v18 = &unk_100010608;
   objc_copyWeak(&v20, buf);
-  v19 = self;
+  selfCopy = self;
   v14 = [UIAlertAction actionWithTitle:v13 style:0 handler:&v15];
   [v8 addAction:{v14, v15, v16, v17, v18}];
 
@@ -761,40 +761,40 @@ LABEL_17:
 
 - (void)startTimer
 {
-  v3 = [(ButtonSwitchInputViewController *)self inputs];
-  v4 = [v3 type];
-  v5 = [v4 isEqualToString:@"Button"];
+  inputs = [(ButtonSwitchInputViewController *)self inputs];
+  type = [inputs type];
+  v5 = [type isEqualToString:@"Button"];
 
-  v6 = [(ButtonSwitchInputViewController *)self inputs];
-  v7 = v6;
+  inputs2 = [(ButtonSwitchInputViewController *)self inputs];
+  inputs4 = inputs2;
   if (v5)
   {
-    v8 = [v6 buttonParameters];
+    buttonParameters = [inputs2 buttonParameters];
 LABEL_7:
-    v19 = v8;
+    v19 = buttonParameters;
 
     v14 = v19;
     goto LABEL_8;
   }
 
-  v9 = [v6 type];
-  v10 = [v9 isEqualToString:@"Switch"];
+  type2 = [inputs2 type];
+  v10 = [type2 isEqualToString:@"Switch"];
 
-  v11 = [(ButtonSwitchInputViewController *)self inputs];
-  v7 = v11;
+  inputs3 = [(ButtonSwitchInputViewController *)self inputs];
+  inputs4 = inputs3;
   if (v10)
   {
-    v8 = [v11 switchParameters];
+    buttonParameters = [inputs3 switchParameters];
     goto LABEL_7;
   }
 
-  v12 = [v11 type];
-  v13 = [v12 isEqualToString:@"TouchButton"];
+  type3 = [inputs3 type];
+  v13 = [type3 isEqualToString:@"TouchButton"];
 
   if (v13)
   {
-    v7 = [(ButtonSwitchInputViewController *)self inputs];
-    v8 = [v7 touchButtonParameters];
+    inputs4 = [(ButtonSwitchInputViewController *)self inputs];
+    buttonParameters = [inputs4 touchButtonParameters];
     goto LABEL_7;
   }
 
@@ -828,19 +828,19 @@ LABEL_13:
 
 - (void)resetTimer
 {
-  v3 = [(ButtonSwitchInputViewController *)self inputs];
-  v4 = [v3 buttonParameters];
+  inputs = [(ButtonSwitchInputViewController *)self inputs];
+  buttonParameters = [inputs buttonParameters];
 
-  v5 = [(ButtonSwitchInputViewController *)self inputs];
-  v6 = v5;
-  if (v4)
+  inputs2 = [(ButtonSwitchInputViewController *)self inputs];
+  inputs4 = inputs2;
+  if (buttonParameters)
   {
-    v7 = [v5 buttonParameters];
+    buttonParameters2 = [inputs2 buttonParameters];
 LABEL_7:
-    v13 = v7;
+    v13 = buttonParameters2;
 
-    v11 = [(ButtonSwitchInputViewController *)self timeoutTimer];
-    [v11 invalidate];
+    timeoutTimer = [(ButtonSwitchInputViewController *)self timeoutTimer];
+    [timeoutTimer invalidate];
 
     [v13 noInputTimeout];
     v12 = [NSTimer scheduledTimerWithTimeInterval:self target:"noInputTimedOut" selector:0 userInfo:0 repeats:?];
@@ -849,35 +849,35 @@ LABEL_7:
     return;
   }
 
-  v8 = [v5 switchParameters];
+  switchParameters = [inputs2 switchParameters];
 
-  v9 = [(ButtonSwitchInputViewController *)self inputs];
-  v6 = v9;
-  if (v8)
+  inputs3 = [(ButtonSwitchInputViewController *)self inputs];
+  inputs4 = inputs3;
+  if (switchParameters)
   {
-    v7 = [v9 switchParameters];
+    buttonParameters2 = [inputs3 switchParameters];
     goto LABEL_7;
   }
 
-  v10 = [v9 touchButtonParameters];
+  touchButtonParameters = [inputs3 touchButtonParameters];
 
-  if (v10)
+  if (touchButtonParameters)
   {
-    v6 = [(ButtonSwitchInputViewController *)self inputs];
-    v7 = [v6 touchButtonParameters];
+    inputs4 = [(ButtonSwitchInputViewController *)self inputs];
+    buttonParameters2 = [inputs4 touchButtonParameters];
     goto LABEL_7;
   }
 
   [(ButtonSwitchInputViewController *)self endTestWithStatusCode:&off_100011278];
 }
 
-- (void)didReceiveButtonEvent:(unint64_t)a3
+- (void)didReceiveButtonEvent:(unint64_t)event
 {
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v44 = a3;
+    eventCopy3 = event;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Recieved hardware button event %x", buf, 8u);
   }
 
@@ -887,18 +887,18 @@ LABEL_7:
     [v6 timeIntervalSince1970];
     v8 = [NSNumber numberWithUnsignedLongLong:(v7 * 1000.0)];
 
-    v9 = [(ButtonSwitchInputViewController *)self inputs];
-    v10 = [v9 buttonParameters];
-    v11 = [(ButtonSwitchInputViewController *)self inputs];
-    v12 = v11;
-    if (v10)
+    inputs = [(ButtonSwitchInputViewController *)self inputs];
+    buttonParameters = [inputs buttonParameters];
+    inputs2 = [(ButtonSwitchInputViewController *)self inputs];
+    v12 = inputs2;
+    if (buttonParameters)
     {
-      [v11 buttonParameters];
+      [inputs2 buttonParameters];
     }
 
     else
     {
-      [v11 switchParameters];
+      [inputs2 switchParameters];
     }
     v13 = ;
 
@@ -912,10 +912,10 @@ LABEL_7:
       dispatch_async(&_dispatch_main_q, block);
     }
 
-    v14 = [(ButtonSwitchInputViewController *)self buttonSwitchState];
+    buttonSwitchState = [(ButtonSwitchInputViewController *)self buttonSwitchState];
     v36 = 0;
     v37 = 0;
-    v15 = [v14 isEventAcceptable:a3 type:&v37 eventType:&v36];
+    v15 = [buttonSwitchState isEventAcceptable:event type:&v37 eventType:&v36];
     v16 = v37;
     v17 = v36;
 
@@ -926,39 +926,39 @@ LABEL_7:
       if (v19)
       {
         *buf = 67109120;
-        v44 = a3;
+        eventCopy3 = event;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Button event %x is acceptable", buf, 8u);
       }
 
-      v20 = [(ButtonSwitchInputViewController *)self allResults];
+      allResults = [(ButtonSwitchInputViewController *)self allResults];
       v42[0] = v16;
       v41[0] = @"type";
       v41[1] = @"identifier";
-      v21 = [(ButtonSwitchInputViewController *)self inputs];
-      v22 = [v21 identifier];
-      v42[1] = v22;
+      inputs3 = [(ButtonSwitchInputViewController *)self inputs];
+      identifier = [inputs3 identifier];
+      v42[1] = identifier;
       v42[2] = v17;
       v41[2] = @"eventType";
       v41[3] = @"timestamp";
       v42[3] = v8;
       v23 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:4];
-      [v20 addObject:v23];
+      [allResults addObject:v23];
 
-      v24 = [(ButtonSwitchInputViewController *)self inputs];
-      v25 = [v24 buttonParameters];
+      inputs4 = [(ButtonSwitchInputViewController *)self inputs];
+      buttonParameters2 = [inputs4 buttonParameters];
 
-      if (v25)
+      if (buttonParameters2)
       {
         if ([(ButtonSwitchInputViewController *)self isSecondEvent])
         {
           [(ButtonSwitchInputViewController *)self setCurrentSegmentActionCount:[(ButtonSwitchInputViewController *)self currentSegmentActionCount]+ 1];
-          v26 = [(ButtonSwitchInputViewController *)self inputs];
-          v27 = [v26 buttonParameters];
-          v28 = [v27 segments];
-          v29 = [v28 objectAtIndexedSubscript:{-[ButtonSwitchInputViewController currentSegment](self, "currentSegment")}];
+          inputs5 = [(ButtonSwitchInputViewController *)self inputs];
+          buttonParameters3 = [inputs5 buttonParameters];
+          segments = [buttonParameters3 segments];
+          v29 = [segments objectAtIndexedSubscript:{-[ButtonSwitchInputViewController currentSegment](self, "currentSegment")}];
 
-          LODWORD(v26) = [(ButtonSwitchInputViewController *)self currentSegmentActionCount];
-          if (v26 >= [v29 numberOfActions])
+          LODWORD(inputs5) = [(ButtonSwitchInputViewController *)self currentSegmentActionCount];
+          if (inputs5 >= [v29 numberOfActions])
           {
             [(ButtonSwitchInputViewController *)self showNextSegment];
           }
@@ -974,10 +974,10 @@ LABEL_7:
         goto LABEL_27;
       }
 
-      v34 = [(ButtonSwitchInputViewController *)self inputs];
-      v35 = [v34 switchParameters];
+      inputs6 = [(ButtonSwitchInputViewController *)self inputs];
+      switchParameters = [inputs6 switchParameters];
 
-      if (!v35)
+      if (!switchParameters)
       {
 LABEL_27:
 
@@ -992,23 +992,23 @@ LABEL_27:
       if (v19)
       {
         *buf = 67109120;
-        v44 = a3;
+        eventCopy3 = event;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Button event %x is unacceptable!", buf, 8u);
       }
 
-      v30 = [(ButtonSwitchInputViewController *)self allResults];
+      allResults2 = [(ButtonSwitchInputViewController *)self allResults];
       v40[0] = v16;
       v39[0] = @"type";
       v39[1] = @"identifier";
-      v31 = [(ButtonSwitchInputViewController *)self inputs];
-      v32 = [v31 identifier];
-      v40[1] = v32;
+      inputs7 = [(ButtonSwitchInputViewController *)self inputs];
+      identifier2 = [inputs7 identifier];
+      v40[1] = identifier2;
       v40[2] = v17;
       v39[2] = @"eventType";
       v39[3] = @"timestamp";
       v40[3] = v8;
       v33 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:4];
-      [v30 addObject:v33];
+      [allResults2 addObject:v33];
 
       [(ButtonSwitchInputViewController *)self setButtonFailure:1];
     }
@@ -1027,7 +1027,7 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3
+- (void)handleHIDEvent:(__IOHIDEvent *)event
 {
   if (([(ButtonSwitchInputViewController *)self isCancelled]& 1) == 0 && ([(ButtonSwitchInputViewController *)self isFinished]& 1) == 0)
   {
@@ -1037,7 +1037,7 @@ LABEL_28:
     v6[2] = sub_1000076B4;
     v6[3] = &unk_100010630;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = event;
     dispatch_sync(v5, v6);
   }
 }
@@ -1068,25 +1068,25 @@ LABEL_28:
   v24[2] = 0x3032000000;
   v24[3] = sub_100005344;
   v24[4] = sub_100005354;
-  v9 = [(ButtonSwitchInputViewController *)self hapticEngine];
+  hapticEngine = [(ButtonSwitchInputViewController *)self hapticEngine];
   v23 = v8;
-  v10 = [v9 createPlayerWithPattern:v7 error:&v23];
+  v10 = [hapticEngine createPlayerWithPattern:v7 error:&v23];
   v11 = v23;
 
   v25 = v10;
   objc_initWeak(&location, self);
-  v12 = [(ButtonSwitchInputViewController *)self hapticEngine];
+  hapticEngine2 = [(ButtonSwitchInputViewController *)self hapticEngine];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100008100;
   v20[3] = &unk_100010658;
   objc_copyWeak(&v21, &location);
   v20[4] = self;
-  [v12 notifyWhenPlayersFinished:v20];
+  [hapticEngine2 notifyWhenPlayersFinished:v20];
 
-  v13 = [(ButtonSwitchInputViewController *)self hapticPlaybackLock];
+  hapticPlaybackLock = [(ButtonSwitchInputViewController *)self hapticPlaybackLock];
 
-  if (v13 && (-[ButtonSwitchInputViewController hapticPlaybackLock](self, "hapticPlaybackLock"), v14 = objc_claimAutoreleasedReturnValue(), +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", 1.5), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v14 lockBeforeDate:v15], v15, v14, (v16 & 1) == 0))
+  if (hapticPlaybackLock && (-[ButtonSwitchInputViewController hapticPlaybackLock](self, "hapticPlaybackLock"), v14 = objc_claimAutoreleasedReturnValue(), +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", 1.5), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v14 lockBeforeDate:v15], v15, v14, (v16 & 1) == 0))
   {
     v18 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1099,13 +1099,13 @@ LABEL_28:
 
   else
   {
-    v17 = [(ButtonSwitchInputViewController *)self hapticEngine];
+    hapticEngine3 = [(ButtonSwitchInputViewController *)self hapticEngine];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000081A0;
     v19[3] = &unk_100010680;
     v19[4] = v24;
-    [v17 startWithCompletionHandler:v19];
+    [hapticEngine3 startWithCompletionHandler:v19];
   }
 
   objc_destroyWeak(&v21);

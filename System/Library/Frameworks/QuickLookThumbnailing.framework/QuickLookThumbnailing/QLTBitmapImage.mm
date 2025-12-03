@@ -1,33 +1,33 @@
 @interface QLTBitmapImage
-+ (id)imageWithCGImage:(CGImage *)a3;
-+ (id)imageWithFormat:(id)a3 data:(id)a4;
++ (id)imageWithCGImage:(CGImage *)image;
++ (id)imageWithFormat:(id)format data:(id)data;
 - (CGImage)image;
-- (QLTBitmapImage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (QLTBitmapImage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLTBitmapImage
 
-+ (id)imageWithFormat:(id)a3 data:(id)a4
++ (id)imageWithFormat:(id)format data:(id)data
 {
-  v5 = a4;
-  v6 = a3;
+  dataCopy = data;
+  formatCopy = format;
   v7 = objc_opt_new();
-  [v7 setFormat:v6];
+  [v7 setFormat:formatCopy];
 
-  [v7 setData:v5];
+  [v7 setData:dataCopy];
 
   return v7;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
-  if (a3)
+  if (image)
   {
     v5 = [QLTBitmapFormat bitmapFormatWithBitmapImage:?];
-    DataProvider = CGImageGetDataProvider(a3);
+    DataProvider = CGImageGetDataProvider(image);
     v7 = CGDataProviderCopyData(DataProvider);
-    v8 = [a1 imageWithFormat:v5 data:v7];
+    v8 = [self imageWithFormat:v5 data:v7];
   }
 
   else
@@ -38,17 +38,17 @@
   return v8;
 }
 
-- (QLTBitmapImage)initWithCoder:(id)a3
+- (QLTBitmapImage)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = QLTBitmapImage;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(QLTBitmapImage *)&v10 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"d", v10.receiver, v10.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"d", v10.receiver, v10.super_class}];
   data = v4->_data;
   v4->_data = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"f"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"f"];
 
   format = v4->_format;
   v4->_format = v7;
@@ -56,12 +56,12 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"d"];
-  [v5 encodeObject:self->_format forKey:@"f"];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"d"];
+  [coderCopy encodeObject:self->_format forKey:@"f"];
 }
 
 - (CGImage)image

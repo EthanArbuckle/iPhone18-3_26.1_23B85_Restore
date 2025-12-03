@@ -8,12 +8,12 @@
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p>", objc_opt_class(), a1];
+  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p>", objc_opt_class(), self];
   if ([v4 count])
   {
     [v5 appendString:@" {\n"];
-    v6 = [v4 allKeys];
-    v7 = [v6 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+    allKeys = [v4 allKeys];
+    v7 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
     v33 = 0u;
     v34 = 0u;

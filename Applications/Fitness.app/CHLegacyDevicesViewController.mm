@@ -1,12 +1,12 @@
 @interface CHLegacyDevicesViewController
-- (CHLegacyDevicesViewController)initWithCoder:(id)a3;
-- (CHLegacyDevicesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CHLegacyDevicesViewController)initWithCoder:(id)coder;
+- (CHLegacyDevicesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation CHLegacyDevicesViewController
 
-- (CHLegacyDevicesViewController)initWithCoder:(id)a3
+- (CHLegacyDevicesViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___CHLegacyDevicesViewController_hostingViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___CHLegacyDevicesViewController_subView) = 0;
@@ -17,11 +17,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006180E0();
 }
 
-- (CHLegacyDevicesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CHLegacyDevicesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

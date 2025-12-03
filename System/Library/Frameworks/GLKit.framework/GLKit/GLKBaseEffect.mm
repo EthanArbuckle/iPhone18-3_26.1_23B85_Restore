@@ -221,9 +221,9 @@ LABEL_12:
 
 - (GLKVector4)constantColor
 {
-  v2 = [(GLKEffectPropertyConstantColor *)self->_constantColorProp color];
+  color = [(GLKEffectPropertyConstantColor *)self->_constantColorProp color];
   *&result.v[2] = v3;
-  *&result.x = v2;
+  *&result.x = color;
   return result;
 }
 

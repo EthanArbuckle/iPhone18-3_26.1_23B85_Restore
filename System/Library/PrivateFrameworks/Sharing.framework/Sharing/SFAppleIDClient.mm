@@ -1,28 +1,28 @@
 @interface SFAppleIDClient
 - (SFAppleIDClient)init;
-- (__SecIdentity)copyIdentityForAppleID:(id)a3 error:(id *)a4;
-- (id)myAccountWithError:(id *)a3;
-- (id)syncRemoteProxyWithError:(id *)a3;
-- (void)_altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5;
-- (void)_copyCertificateForAppleID:(id)a3 withCompletion:(id)a4;
-- (void)_copyIdentityForAppleID:(id)a3 withCompletion:(id)a4;
+- (__SecIdentity)copyIdentityForAppleID:(id)d error:(id *)error;
+- (id)myAccountWithError:(id *)error;
+- (id)syncRemoteProxyWithError:(id *)error;
+- (void)_altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion;
+- (void)_copyCertificateForAppleID:(id)d withCompletion:(id)completion;
+- (void)_copyIdentityForAppleID:(id)d withCompletion:(id)completion;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_myAccountWithCompletion:(id)a3;
-- (void)_personInfoWithEmailOrPhone:(id)a3 completion:(id)a4;
-- (void)altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5;
-- (void)authenticateAccountWithAppleID:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)copyCertificateForAppleID:(id)a3 withCompletion:(id)a4;
-- (void)copyIdentityForAppleID:(id)a3 withCompletion:(id)a4;
+- (void)_myAccountWithCompletion:(id)completion;
+- (void)_personInfoWithEmailOrPhone:(id)phone completion:(id)completion;
+- (void)altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion;
+- (void)authenticateAccountWithAppleID:(id)d password:(id)password completion:(id)completion;
+- (void)copyCertificateForAppleID:(id)d withCompletion:(id)completion;
+- (void)copyIdentityForAppleID:(id)d withCompletion:(id)completion;
 - (void)dealloc;
 - (void)ensureSyncXPCStarted;
 - (void)invalidate;
-- (void)myAccountWithCompletion:(id)a3;
-- (void)personInfoWithEmailOrPhone:(id)a3 completion:(id)a4;
-- (void)requestWithInfo:(id)a3 completion:(id)a4;
-- (void)statusInfoWithCompletion:(id)a3;
+- (void)myAccountWithCompletion:(id)completion;
+- (void)personInfoWithEmailOrPhone:(id)phone completion:(id)completion;
+- (void)requestWithInfo:(id)info completion:(id)completion;
+- (void)statusInfoWithCompletion:(id)completion;
 @end
 
 @implementation SFAppleIDClient
@@ -72,24 +72,24 @@
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  syncXPCCnx = v2->_syncXPCCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  syncXPCCnx = selfCopy->_syncXPCCnx;
   if (syncXPCCnx)
   {
     [(NSXPCConnection *)syncXPCCnx invalidate];
-    v4 = v2->_syncXPCCnx;
-    v2->_syncXPCCnx = 0;
+    v4 = selfCopy->_syncXPCCnx;
+    selfCopy->_syncXPCCnx = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  dispatchQueue = v2->_dispatchQueue;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__SFAppleIDClient_invalidate__block_invoke;
   block[3] = &unk_1E788B198;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -172,37 +172,37 @@ LABEL_10:
 
 - (void)ensureSyncXPCStarted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_syncXPCCnx)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_syncXPCCnx)
   {
     v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.SharingServices" options:0];
-    syncXPCCnx = v2->_syncXPCCnx;
-    v2->_syncXPCCnx = v3;
+    syncXPCCnx = selfCopy->_syncXPCCnx;
+    selfCopy->_syncXPCCnx = v3;
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke;
     v7[3] = &unk_1E788B198;
-    v7[4] = v2;
-    [(NSXPCConnection *)v2->_syncXPCCnx setInterruptionHandler:v7];
+    v7[4] = selfCopy;
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx setInterruptionHandler:v7];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke_3;
     v6[3] = &unk_1E788B198;
-    v6[4] = v2;
-    [(NSXPCConnection *)v2->_syncXPCCnx setInvalidationHandler:v6];
+    v6[4] = selfCopy;
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx setInvalidationHandler:v6];
     v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1DAE780];
-    [(NSXPCConnection *)v2->_syncXPCCnx setRemoteObjectInterface:v5];
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx setRemoteObjectInterface:v5];
 
-    [(NSXPCConnection *)v2->_syncXPCCnx resume];
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx resume];
     if (gLogCategory_SFAppleIDClient <= 10 && (gLogCategory_SFAppleIDClient != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke(uint64_t a1)
@@ -282,7 +282,7 @@ void __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke_3(uint64_t a1)
   }
 }
 
-- (id)syncRemoteProxyWithError:(id *)a3
+- (id)syncRemoteProxyWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -290,20 +290,20 @@ void __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke_3(uint64_t a1)
   v12 = __Block_byref_object_copy__0;
   v13 = __Block_byref_object_dispose__0;
   v14 = 0;
-  v4 = self;
-  objc_sync_enter(v4);
-  syncXPCCnx = v4->_syncXPCCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  syncXPCCnx = selfCopy->_syncXPCCnx;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__SFAppleIDClient_syncRemoteProxyWithError___block_invoke;
   v8[3] = &unk_1E788C320;
   v8[4] = &v9;
   v6 = [(NSXPCConnection *)syncXPCCnx synchronousRemoteObjectProxyWithErrorHandler:v8];
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  if (a3 && !v6)
+  if (error && !v6)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -311,34 +311,34 @@ void __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke_3(uint64_t a1)
   return v6;
 }
 
-- (void)copyCertificateForAppleID:(id)a3 withCompletion:(id)a4
+- (void)copyCertificateForAppleID:(id)d withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__SFAppleIDClient_copyCertificateForAppleID_withCompletion___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_copyCertificateForAppleID:(id)a3 withCompletion:(id)a4
+- (void)_copyCertificateForAppleID:(id)d withCompletion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFAppleIDClient/copyCertificateForAppleID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v6 && v7)
+  if (dCopy && completionCopy)
   {
     [(SFAppleIDClient *)self _ensureXPCStarted];
     xpcCnx = self->_xpcCnx;
@@ -346,7 +346,7 @@ void __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke_3(uint64_t a1)
     v21[1] = 3221225472;
     v21[2] = __61__SFAppleIDClient__copyCertificateForAppleID_withCompletion___block_invoke;
     v21[3] = &unk_1E788B6D8;
-    v10 = v7;
+    v10 = completionCopy;
     v22 = v10;
     v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -354,14 +354,14 @@ void __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke_3(uint64_t a1)
     v19[2] = __61__SFAppleIDClient__copyCertificateForAppleID_withCompletion___block_invoke_2;
     v19[3] = &unk_1E788C348;
     v20 = v10;
-    [v11 accountForAppleID:v6 withCompletion:v19];
+    [v11 accountForAppleID:dCopy withCompletion:v19];
 
     v12 = v22;
   }
 
   else
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_5;
     }
@@ -379,7 +379,7 @@ void __39__SFAppleIDClient_ensureSyncXPCStarted__block_invoke_3(uint64_t a1)
     v25[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v18 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-6705 userInfo:v17];
-    (*(v7 + 2))(v7, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
 LABEL_5:
@@ -444,10 +444,10 @@ LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyIdentityForAppleID:(id)a3 withCompletion:(id)a4
+- (void)copyIdentityForAppleID:(id)d withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (gSDAppleIDAgent)
   {
     if (gLogCategory_SFAppleIDClient <= 90 && (gLogCategory_SFAppleIDClient != -1 || _LogCategory_Initialize()))
@@ -455,17 +455,17 @@ LABEL_6:
       [SFAppleIDClient copyIdentityForAppleID:withCompletion:];
     }
 
-    v8 = [gSDAppleIDAgent copyIdentityForAppleID:v6];
+    v8 = [gSDAppleIDAgent copyIdentityForAppleID:dCopy];
     if (v8)
     {
-      v7[2](v7, v8, 0);
+      completionCopy[2](completionCopy, v8, 0);
     }
 
     else
     {
       v10 = *MEMORY[0x1E696A768];
       v11 = NSErrorF();
-      (v7)[2](v7, 0, v11);
+      (completionCopy)[2](completionCopy, 0, v11);
     }
   }
 
@@ -477,23 +477,23 @@ LABEL_6:
     block[2] = __57__SFAppleIDClient_copyIdentityForAppleID_withCompletion___block_invoke;
     block[3] = &unk_1E788A570;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = dCopy;
+    v14 = completionCopy;
     dispatch_async(dispatchQueue, block);
   }
 }
 
-- (void)_copyIdentityForAppleID:(id)a3 withCompletion:(id)a4
+- (void)_copyIdentityForAppleID:(id)d withCompletion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFAppleIDClient/copyIdentityForAppleID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v6 && v7)
+  if (dCopy && completionCopy)
   {
     [(SFAppleIDClient *)self _ensureXPCStarted];
     xpcCnx = self->_xpcCnx;
@@ -501,7 +501,7 @@ LABEL_6:
     v21[1] = 3221225472;
     v21[2] = __58__SFAppleIDClient__copyIdentityForAppleID_withCompletion___block_invoke;
     v21[3] = &unk_1E788B6D8;
-    v10 = v7;
+    v10 = completionCopy;
     v22 = v10;
     v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -509,14 +509,14 @@ LABEL_6:
     v19[2] = __58__SFAppleIDClient__copyIdentityForAppleID_withCompletion___block_invoke_2;
     v19[3] = &unk_1E788C348;
     v20 = v10;
-    [v11 accountForAppleID:v6 withCompletion:v19];
+    [v11 accountForAppleID:dCopy withCompletion:v19];
 
     v12 = v22;
   }
 
   else
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_5;
     }
@@ -534,7 +534,7 @@ LABEL_6:
     v25[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v18 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-6705 userInfo:v17];
-    (*(v7 + 2))(v7, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
 LABEL_5:
@@ -594,9 +594,9 @@ LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (__SecIdentity)copyIdentityForAppleID:(id)a3 error:(id *)a4
+- (__SecIdentity)copyIdentityForAppleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -607,7 +607,7 @@ LABEL_6:
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (!v6)
+  if (!dCopy)
   {
     goto LABEL_4;
   }
@@ -627,13 +627,13 @@ LABEL_6:
       v14[3] = &unk_1E788C370;
       v14[4] = &v20;
       v14[5] = &v16;
-      [v10 accountForAppleID:v6 withCompletion:v14];
+      [v10 accountForAppleID:dCopy withCompletion:v14];
     }
 
     goto LABEL_7;
   }
 
-  v7 = [gSDAppleIDAgent copyIdentityForAppleID:v6];
+  v7 = [gSDAppleIDAgent copyIdentityForAppleID:dCopy];
   v17[3] = v7;
   if (!v7)
   {
@@ -646,9 +646,9 @@ LABEL_7:
   }
 
   v12 = v17[3];
-  if (a4 && !v12)
+  if (error && !v12)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v12 = v17[3];
   }
 
@@ -686,10 +686,10 @@ void __48__SFAppleIDClient_copyIdentityForAppleID_error___block_invoke(uint64_t 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)myAccountWithCompletion:(id)a3
+- (void)myAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (gSDAppleIDAgent)
   {
     if (gLogCategory_SFAppleIDClient <= 90 && (gLogCategory_SFAppleIDClient != -1 || _LogCategory_Initialize()))
@@ -697,10 +697,10 @@ void __48__SFAppleIDClient_copyIdentityForAppleID_error___block_invoke(uint64_t 
       [SFAppleIDClient myAccountWithCompletion:];
     }
 
-    v6 = [gSDAppleIDAgent myAccount];
-    if (v6)
+    myAccount = [gSDAppleIDAgent myAccount];
+    if (myAccount)
     {
-      (v5)[2](v5, v6, 0);
+      (v5)[2](v5, myAccount, 0);
     }
 
     else
@@ -719,20 +719,20 @@ void __48__SFAppleIDClient_copyIdentityForAppleID_error___block_invoke(uint64_t 
     v10[2] = __43__SFAppleIDClient_myAccountWithCompletion___block_invoke;
     v10[3] = &unk_1E788B210;
     v10[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     dispatch_async(dispatchQueue, v10);
   }
 }
 
-- (void)_myAccountWithCompletion:(id)a3
+- (void)_myAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFAppleIDClient/myAccountWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v4)
+  if (completionCopy)
   {
     [(SFAppleIDClient *)self _ensureXPCStarted];
     xpcCnx = self->_xpcCnx;
@@ -740,7 +740,7 @@ void __48__SFAppleIDClient_copyIdentityForAppleID_error___block_invoke(uint64_t 
     v11[1] = 3221225472;
     v11[2] = __44__SFAppleIDClient__myAccountWithCompletion___block_invoke;
     v11[3] = &unk_1E788B6D8;
-    v7 = v4;
+    v7 = completionCopy;
     v12 = v7;
     v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v11];
     v9[0] = MEMORY[0x1E69E9820];
@@ -784,7 +784,7 @@ void __44__SFAppleIDClient__myAccountWithCompletion___block_invoke_2(uint64_t a1
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)myAccountWithError:(id *)a3
+- (id)myAccountWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -819,9 +819,9 @@ void __44__SFAppleIDClient__myAccountWithCompletion___block_invoke_2(uint64_t a1
     goto LABEL_6;
   }
 
-  v5 = [gSDAppleIDAgent myAccount];
+  myAccount = [gSDAppleIDAgent myAccount];
   v6 = v17[5];
-  v17[5] = v5;
+  v17[5] = myAccount;
 
   if (!v17[5])
   {
@@ -833,9 +833,9 @@ LABEL_6:
   }
 
   v11 = v17[5];
-  if (a3 && !v11)
+  if (error && !v11)
   {
-    *a3 = v23[5];
+    *error = v23[5];
     v11 = v17[5];
   }
 
@@ -876,36 +876,36 @@ LABEL_5:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)personInfoWithEmailOrPhone:(id)a3 completion:(id)a4
+- (void)personInfoWithEmailOrPhone:(id)phone completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  phoneCopy = phone;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__SFAppleIDClient_personInfoWithEmailOrPhone_completion___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = phoneCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = phoneCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_personInfoWithEmailOrPhone:(id)a3 completion:(id)a4
+- (void)_personInfoWithEmailOrPhone:(id)phone completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  phoneCopy = phone;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFAppleIDClient/personInfoWithEmailOrPhone", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v7)
+  if (completionCopy)
   {
-    if (v6)
+    if (phoneCopy)
     {
       [(SFAppleIDClient *)self _ensureXPCStarted];
       xpcCnx = self->_xpcCnx;
@@ -913,7 +913,7 @@ LABEL_5:
       v21[1] = 3221225472;
       v21[2] = __58__SFAppleIDClient__personInfoWithEmailOrPhone_completion___block_invoke;
       v21[3] = &unk_1E788B6D8;
-      v10 = v7;
+      v10 = completionCopy;
       v22 = v10;
       v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v21];
       v19[0] = MEMORY[0x1E69E9820];
@@ -922,7 +922,7 @@ LABEL_5:
       v19[3] = &unk_1E788C398;
       v19[4] = self;
       v20 = v10;
-      [v11 personInfoWithEmailOrPhone:v6 completion:v19];
+      [v11 personInfoWithEmailOrPhone:phoneCopy completion:v19];
 
       v12 = v22;
     }
@@ -942,7 +942,7 @@ LABEL_5:
       v25[0] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v18 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-6705 userInfo:v17];
-      (*(v7 + 2))(v7, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, v18);
     }
   }
 
@@ -973,31 +973,31 @@ void __58__SFAppleIDClient__personInfoWithEmailOrPhone_completion___block_invoke
   }
 }
 
-- (void)altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5
+- (void)altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__SFAppleIDClient_altDSIDLookupWithEmails_phoneNumbers_completion___block_invoke;
   v15[3] = &unk_1E788B750;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = emailsCopy;
+  v17 = numbersCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = numbersCopy;
+  v14 = emailsCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)_altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5
+- (void)_altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFAppleIDClient/altDSIDLookupWithEmailsAndPhoneNumbers", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1009,12 +1009,12 @@ void __58__SFAppleIDClient__personInfoWithEmailOrPhone_completion___block_invoke
   v16[2] = __68__SFAppleIDClient__altDSIDLookupWithEmails_phoneNumbers_completion___block_invoke;
   v16[3] = &unk_1E788C3C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = emailsCopy;
+  v18 = numbersCopy;
+  v19 = completionCopy;
+  v13 = numbersCopy;
+  v14 = emailsCopy;
+  v15 = completionCopy;
   dispatch_async(dispatchQueue, v16);
 
   os_activity_scope_leave(&state);
@@ -1033,23 +1033,23 @@ void __68__SFAppleIDClient__altDSIDLookupWithEmails_phoneNumbers_completion___bl
   [v3 altDSIDLookupWithEmails:*(a1 + 40) phoneNumbers:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)authenticateAccountWithAppleID:(id)a3 password:(id)a4 completion:(id)a5
+- (void)authenticateAccountWithAppleID:(id)d password:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  passwordCopy = password;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__SFAppleIDClient_authenticateAccountWithAppleID_password_completion___block_invoke;
   v15[3] = &unk_1E788C3C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dCopy;
+  v17 = passwordCopy;
+  v18 = completionCopy;
+  v12 = passwordCopy;
+  v13 = dCopy;
+  v14 = completionCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -1066,10 +1066,10 @@ void __70__SFAppleIDClient_authenticateAccountWithAppleID_password_completion___
   [v3 authenticateAccountWithAppleID:*(a1 + 40) password:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)requestWithInfo:(id)a3 completion:(id)a4
+- (void)requestWithInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFAppleIDClient/requestWithInfo", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1079,11 +1079,11 @@ void __70__SFAppleIDClient_authenticateAccountWithAppleID_password_completion___
   block[1] = 3221225472;
   block[2] = __46__SFAppleIDClient_requestWithInfo_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = infoCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = infoCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -1102,9 +1102,9 @@ void __46__SFAppleIDClient_requestWithInfo_completion___block_invoke(uint64_t a1
   [v3 requestWithInfo:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)statusInfoWithCompletion:(id)a3
+- (void)statusInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFAppleIDClient/statusInfoWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1115,8 +1115,8 @@ void __46__SFAppleIDClient_requestWithInfo_completion___block_invoke(uint64_t a1
   v8[2] = __44__SFAppleIDClient_statusInfoWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);

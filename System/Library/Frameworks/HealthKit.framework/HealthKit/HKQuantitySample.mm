@@ -1,15 +1,15 @@
 @interface HKQuantitySample
 + (HKQuantitySample)quantitySampleWithType:(HKQuantityType *)quantityType quantity:(HKQuantity *)quantity startDate:(NSDate *)startDate endDate:(NSDate *)endDate device:(HKDevice *)device metadata:(NSDictionary *)metadata;
-+ (id)_quantitySamplesEnforcingDurationWithType:(id)a3 quantity:(id)a4 startDate:(id)a5 endDate:(id)a6 device:(id)a7 metadata:(id)a8;
-+ (id)_unfrozenQuantitySampleWithQuantityType:(id)a3 quantity:(id)a4 startDate:(id)a5 device:(id)a6;
-- (HKQuantitySample)initWithCoder:(id)a3;
++ (id)_quantitySamplesEnforcingDurationWithType:(id)type quantity:(id)quantity startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata;
++ (id)_unfrozenQuantitySampleWithQuantityType:(id)type quantity:(id)quantity startDate:(id)date device:(id)device;
+- (HKQuantitySample)initWithCoder:(id)coder;
 - (id)_init;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)asJSONObject;
-- (int64_t)_compareFreezeStateWithSample:(id)a3;
-- (void)_setFrozen:(BOOL)a3;
-- (void)_setQuantity:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_compareFreezeStateWithSample:(id)sample;
+- (void)_setFrozen:(BOOL)frozen;
+- (void)_setQuantity:(id)quantity;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKQuantitySample
@@ -18,20 +18,20 @@
 {
   v11.receiver = self;
   v11.super_class = HKQuantitySample;
-  v3 = [(HKSample *)&v11 asJSONObject];
-  v4 = [(HKQuantitySample *)self quantityType];
-  v5 = [v4 canonicalUnit];
+  asJSONObject = [(HKSample *)&v11 asJSONObject];
+  quantityType = [(HKQuantitySample *)self quantityType];
+  canonicalUnit = [quantityType canonicalUnit];
 
-  v6 = [v5 description];
-  [v3 setObject:v6 forKeyedSubscript:@"unit"];
+  v6 = [canonicalUnit description];
+  [asJSONObject setObject:v6 forKeyedSubscript:@"unit"];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(HKQuantitySample *)self quantity];
-  [v8 doubleValueForUnit:v5];
+  quantity = [(HKQuantitySample *)self quantity];
+  [quantity doubleValueForUnit:canonicalUnit];
   v9 = [v7 numberWithDouble:?];
-  [v3 setObject:v9 forKeyedSubscript:@"quantity"];
+  [asJSONObject setObject:v9 forKeyedSubscript:@"quantity"];
 
-  return v3;
+  return asJSONObject;
 }
 
 + (HKQuantitySample)quantitySampleWithType:(HKQuantityType *)quantityType quantity:(HKQuantity *)quantity startDate:(NSDate *)startDate endDate:(NSDate *)endDate device:(HKDevice *)device metadata:(NSDictionary *)metadata
@@ -42,7 +42,7 @@
   v16 = endDate;
   v17 = device;
   v18 = metadata;
-  v19 = [(HKObjectType *)v13 dataObjectClass];
+  dataObjectClass = [(HKObjectType *)v13 dataObjectClass];
   if (v15)
   {
     [(NSDate *)v15 timeIntervalSinceReferenceDate];
@@ -73,22 +73,22 @@ LABEL_6:
   v27[3] = &unk_1E73816D0;
   v28 = v14;
   v24 = v14;
-  v25 = [(objc_class *)v19 _newSampleWithType:v13 startDate:v17 endDate:v18 device:v27 metadata:v21 config:v23];
+  v25 = [(objc_class *)dataObjectClass _newSampleWithType:v13 startDate:v17 endDate:v18 device:v27 metadata:v21 config:v23];
 
   return v25;
 }
 
-+ (id)_unfrozenQuantitySampleWithQuantityType:(id)a3 quantity:(id)a4 startDate:(id)a5 device:(id)a6
++ (id)_unfrozenQuantitySampleWithQuantityType:(id)type quantity:(id)quantity startDate:(id)date device:(id)device
 {
-  v9 = a4;
+  quantityCopy = quantity;
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  [v13 minimumAllowedDuration];
-  v14 = [v10 dateWithTimeInterval:v12 sinceDate:?];
-  v15 = [v13 dataObjectClass];
-  [v12 timeIntervalSinceReferenceDate];
+  deviceCopy = device;
+  dateCopy = date;
+  typeCopy = type;
+  [typeCopy minimumAllowedDuration];
+  v14 = [v10 dateWithTimeInterval:dateCopy sinceDate:?];
+  dataObjectClass = [typeCopy dataObjectClass];
+  [dateCopy timeIntervalSinceReferenceDate];
   v17 = v16;
 
   [v14 timeIntervalSinceReferenceDate];
@@ -97,9 +97,9 @@ LABEL_6:
   v23[1] = 3221225472;
   v23[2] = __86__HKQuantitySample__unfrozenQuantitySampleWithQuantityType_quantity_startDate_device___block_invoke;
   v23[3] = &unk_1E73816D0;
-  v24 = v9;
-  v20 = v9;
-  v21 = [v15 _newSampleWithType:v13 startDate:v11 endDate:0 device:v23 metadata:v17 config:v19];
+  v24 = quantityCopy;
+  v20 = quantityCopy;
+  v21 = [dataObjectClass _newSampleWithType:typeCopy startDate:deviceCopy endDate:0 device:v23 metadata:v17 config:v19];
 
   return v21;
 }
@@ -125,11 +125,11 @@ void __86__HKQuantitySample__unfrozenQuantitySampleWithQuantityType_quantity_sta
   return result;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v27.receiver = self;
   v27.super_class = HKQuantitySample;
-  v5 = [(HKSample *)&v27 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v27 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -137,14 +137,14 @@ void __86__HKQuantitySample__unfrozenQuantitySampleWithQuantityType_quantity_sta
     goto LABEL_16;
   }
 
-  v8 = [(HKQuantity *)self->_quantity _unit];
-  v9 = [(HKQuantitySample *)self quantityType];
-  v10 = [v9 isCompatibleWithUnit:v8];
+  _unit = [(HKQuantity *)self->_quantity _unit];
+  quantityType = [(HKQuantitySample *)self quantityType];
+  v10 = [quantityType isCompatibleWithUnit:_unit];
 
   if (v10)
   {
     v11 = +[HKUnit appleEffortScoreUnit];
-    v12 = [v8 isEqual:v11];
+    v12 = [_unit isEqual:v11];
 
     if (v12)
     {
@@ -154,7 +154,7 @@ void __86__HKQuantitySample__unfrozenQuantitySampleWithQuantityType_quantity_sta
       {
         v16 = MEMORY[0x1E696ABC0];
         v17 = objc_opt_class();
-        [v16 hk_errorForInvalidArgument:@"@" class:v17 selector:a2 format:{@"%@ %@ requires a value between 0 and 10. Invalid value: %f", objc_opt_class(), v8, *&v14}];
+        [v16 hk_errorForInvalidArgument:@"@" class:v17 selector:a2 format:{@"%@ %@ requires a value between 0 and 10. Invalid value: %f", objc_opt_class(), _unit, *&v14}];
         v7 = LABEL_14:;
         goto LABEL_15;
       }
@@ -176,9 +176,9 @@ void __86__HKQuantitySample__unfrozenQuantitySampleWithQuantityType_quantity_sta
     v18 = MEMORY[0x1E696ABC0];
     v19 = objc_opt_class();
     v20 = objc_opt_class();
-    v21 = [(HKQuantitySample *)self quantityType];
-    v22 = [v21 dimension];
-    v7 = [v18 hk_errorForInvalidArgument:@"@" class:v19 selector:a2 format:{@"%@ %@ requires unit of type %@. Incompatible unit: %@", v20, self, v22, v8}];
+    quantityType2 = [(HKQuantitySample *)self quantityType];
+    dimension = [quantityType2 dimension];
+    v7 = [v18 hk_errorForInvalidArgument:@"@" class:v19 selector:a2 format:{@"%@ %@ requires unit of type %@. Incompatible unit: %@", v20, self, dimension, _unit}];
   }
 
 LABEL_15:
@@ -188,20 +188,20 @@ LABEL_16:
   return v7;
 }
 
-+ (id)_quantitySamplesEnforcingDurationWithType:(id)a3 quantity:(id)a4 startDate:(id)a5 endDate:(id)a6 device:(id)a7 metadata:(id)a8
++ (id)_quantitySamplesEnforcingDurationWithType:(id)type quantity:(id)quantity startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata
 {
   v61 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  [v17 timeIntervalSinceDate:v16];
+  typeCopy = type;
+  quantityCopy = quantity;
+  dateCopy = date;
+  endDateCopy = endDate;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v21 = v20;
-  if ([v14 isMaximumDurationRestricted])
+  if ([typeCopy isMaximumDurationRestricted])
   {
-    [v14 maximumAllowedDuration];
+    [typeCopy maximumAllowedDuration];
     if (v21 > v22)
     {
       _HKInitializeLogging();
@@ -209,29 +209,29 @@ LABEL_16:
       if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412802;
-        *&buf[4] = v14;
+        *&buf[4] = typeCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v16;
+        *&buf[14] = dateCopy;
         *&buf[22] = 2112;
-        v58 = v17;
+        v58 = endDateCopy;
         _os_log_fault_impl(&dword_19197B000, v23, OS_LOG_TYPE_FAULT, "Data duration is longer than allowed for type %@, start date %@, end date %@", buf, 0x20u);
       }
 
-      v24 = [v14 aggregationStyle];
-      if ((v24 - 1) >= 3)
+      aggregationStyle = [typeCopy aggregationStyle];
+      if ((aggregationStyle - 1) >= 3)
       {
-        if (v24)
+        if (aggregationStyle)
         {
           v25 = 0;
         }
 
         else
         {
-          v30 = [v15 _unit];
+          _unit = [quantityCopy _unit];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x2020000000;
-          [v15 doubleValueForUnit:v30];
+          [quantityCopy doubleValueForUnit:_unit];
           v58 = v31;
           v32 = *(*&buf[8] + 24) / v21;
           aBlock[0] = MEMORY[0x1E69E9820];
@@ -240,13 +240,13 @@ LABEL_16:
           aBlock[3] = &unk_1E73816F8;
           v53 = buf;
           v54 = v32;
-          v48 = v17;
-          v49 = v30;
-          v55 = a1;
-          v50 = v14;
-          v51 = v18;
-          v52 = v19;
-          v33 = v30;
+          v48 = endDateCopy;
+          v49 = _unit;
+          selfCopy = self;
+          v50 = typeCopy;
+          v51 = deviceCopy;
+          v52 = metadataCopy;
+          v33 = _unit;
           v25 = _Block_copy(aBlock);
 
           _Block_object_dispose(buf, 8);
@@ -259,22 +259,22 @@ LABEL_16:
         v39 = 3221225472;
         v40 = __105__HKQuantitySample__quantitySamplesEnforcingDurationWithType_quantity_startDate_endDate_device_metadata___block_invoke_2;
         v41 = &unk_1E7381720;
-        v46 = a1;
-        v42 = v14;
-        v43 = v15;
-        v44 = v18;
-        v45 = v19;
+        selfCopy2 = self;
+        v42 = typeCopy;
+        v43 = quantityCopy;
+        v44 = deviceCopy;
+        v45 = metadataCopy;
         v25 = _Block_copy(&v38);
       }
 
-      v29 = [a1 _enumerateValidIntervalsWithStartDate:v16 endDate:v17 sampleType:v14 block:{v25, v38, v39, v40, v41}];
+      v29 = [self _enumerateValidIntervalsWithStartDate:dateCopy endDate:endDateCopy sampleType:typeCopy block:{v25, v38, v39, v40, v41}];
       goto LABEL_17;
     }
   }
 
-  if (![v14 isMinimumDurationRestricted] || (objc_msgSend(v14, "minimumAllowedDuration"), v21 >= v26))
+  if (![typeCopy isMinimumDurationRestricted] || (objc_msgSend(typeCopy, "minimumAllowedDuration"), v21 >= v26))
   {
-    v25 = [a1 quantitySampleWithType:v14 quantity:v15 startDate:v16 endDate:v17 device:v18 metadata:v19];
+    v25 = [self quantitySampleWithType:typeCopy quantity:quantityCopy startDate:dateCopy endDate:endDateCopy device:deviceCopy metadata:metadataCopy];
     v56 = v25;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
 LABEL_17:
@@ -288,13 +288,13 @@ LABEL_17:
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_FAULT))
   {
     v36 = v27;
-    [v14 minimumAllowedDuration];
+    [typeCopy minimumAllowedDuration];
     *buf = 138413058;
-    *&buf[4] = v14;
+    *&buf[4] = typeCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = dateCopy;
     *&buf[22] = 2112;
-    v58 = v17;
+    v58 = endDateCopy;
     v59 = 2048;
     v60 = v37;
     _os_log_fault_impl(&dword_19197B000, v36, OS_LOG_TYPE_FAULT, "Not creating any samples because data duration is shorter than allowed for type %@, start date %@, end date %@. Minimum allowed duration for this type is %f", buf, 0x2Au);
@@ -327,33 +327,33 @@ id __105__HKQuantitySample__quantitySamplesEnforcingDurationWithType_quantity_st
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = HKQuantitySample;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_quantity forKey:@"Quantity"];
-  [v4 encodeInteger:self->_count forKey:@"Count"];
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_quantity forKey:@"Quantity"];
+  [coderCopy encodeInteger:self->_count forKey:@"Count"];
   if (!self->_freezeState)
   {
-    [v4 encodeBool:1 forKey:@"Unfrozen"];
+    [coderCopy encodeBool:1 forKey:@"Unfrozen"];
   }
 }
 
-- (HKQuantitySample)initWithCoder:(id)a3
+- (HKQuantitySample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKQuantitySample;
-  v5 = [(HKSample *)&v13 initWithCoder:v4];
+  v5 = [(HKSample *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Quantity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Quantity"];
     quantity = v5->_quantity;
     v5->_quantity = v6;
 
-    v8 = [v4 decodeIntegerForKey:@"Count"];
+    v8 = [coderCopy decodeIntegerForKey:@"Count"];
     if (v8 <= 1)
     {
       v9 = 1;
@@ -365,7 +365,7 @@ id __105__HKQuantitySample__quantitySamplesEnforcingDurationWithType_quantity_st
     }
 
     v5->_count = v9;
-    v10 = [v4 decodeBoolForKey:@"Unfrozen"];
+    v10 = [coderCopy decodeBoolForKey:@"Unfrozen"];
     v11 = 2;
     if (v10)
     {
@@ -378,19 +378,19 @@ id __105__HKQuantitySample__quantitySamplesEnforcingDurationWithType_quantity_st
   return v5;
 }
 
-- (void)_setQuantity:(id)a3
+- (void)_setQuantity:(id)quantity
 {
-  v4 = [a3 copy];
+  v4 = [quantity copy];
   quantity = self->_quantity;
   self->_quantity = v4;
 
   MEMORY[0x1EEE66BB8](v4, quantity);
 }
 
-- (void)_setFrozen:(BOOL)a3
+- (void)_setFrozen:(BOOL)frozen
 {
   v3 = 2;
-  if (!a3)
+  if (!frozen)
   {
     v3 = 0;
   }
@@ -398,10 +398,10 @@ id __105__HKQuantitySample__quantitySamplesEnforcingDurationWithType_quantity_st
   self->_freezeState = v3;
 }
 
-- (int64_t)_compareFreezeStateWithSample:(id)a3
+- (int64_t)_compareFreezeStateWithSample:(id)sample
 {
   freezeState = self->_freezeState;
-  v4 = *(a3 + 13);
+  v4 = *(sample + 13);
   v5 = freezeState < v4;
   v6 = freezeState > v4;
   if (v5)

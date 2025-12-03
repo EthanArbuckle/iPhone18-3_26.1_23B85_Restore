@@ -1,9 +1,9 @@
 @interface CRKMemoryBasedKeyedDataStore
-- (BOOL)removeAllDataWithError:(id *)a3;
-- (BOOL)removeDataForKey:(id)a3 error:(id *)a4;
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (BOOL)removeAllDataWithError:(id *)error;
+- (BOOL)removeDataForKey:(id)key error:(id *)error;
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error;
 - (CRKMemoryBasedKeyedDataStore)init;
-- (id)dataForKey:(id)a3 error:(id *)a4;
+- (id)dataForKey:(id)key error:(id *)error;
 @end
 
 @implementation CRKMemoryBasedKeyedDataStore
@@ -23,38 +23,38 @@
   return v2;
 }
 
-- (id)dataForKey:(id)a3 error:(id *)a4
+- (id)dataForKey:(id)key error:(id *)error
 {
-  v5 = a3;
-  v6 = [(CRKMemoryBasedKeyedDataStore *)self backing];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backing = [(CRKMemoryBasedKeyedDataStore *)self backing];
+  v7 = [backing objectForKeyedSubscript:keyCopy];
 
   return v7;
 }
 
-- (BOOL)removeAllDataWithError:(id *)a3
+- (BOOL)removeAllDataWithError:(id *)error
 {
-  v3 = [(CRKMemoryBasedKeyedDataStore *)self backing];
-  [v3 removeAllObjects];
+  backing = [(CRKMemoryBasedKeyedDataStore *)self backing];
+  [backing removeAllObjects];
 
   return 1;
 }
 
-- (BOOL)removeDataForKey:(id)a3 error:(id *)a4
+- (BOOL)removeDataForKey:(id)key error:(id *)error
 {
-  v5 = a3;
-  v6 = [(CRKMemoryBasedKeyedDataStore *)self backing];
-  [v6 setObject:0 forKeyedSubscript:v5];
+  keyCopy = key;
+  backing = [(CRKMemoryBasedKeyedDataStore *)self backing];
+  [backing setObject:0 forKeyedSubscript:keyCopy];
 
   return 1;
 }
 
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 copy];
-  v9 = [(CRKMemoryBasedKeyedDataStore *)self backing];
-  [v9 setObject:v8 forKeyedSubscript:v7];
+  keyCopy = key;
+  v8 = [data copy];
+  backing = [(CRKMemoryBasedKeyedDataStore *)self backing];
+  [backing setObject:v8 forKeyedSubscript:keyCopy];
 
   return 1;
 }

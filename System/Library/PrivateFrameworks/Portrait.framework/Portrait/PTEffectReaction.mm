@@ -11,13 +11,13 @@
   v8.receiver = self;
   v8.super_class = PTEffectReaction;
   v2 = [(PTEffectReaction *)&v8 init];
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
   v6 = 0;
-  if ([v3 count])
+  if ([preferredLanguages count])
   {
     v4 = MEMORY[0x277CBEAF8];
-    v5 = [v3 firstObject];
-    LOBYTE(v4) = [v4 characterDirectionForLanguage:v5];
+    firstObject = [preferredLanguages firstObject];
+    LOBYTE(v4) = [v4 characterDirectionForLanguage:firstObject];
 
     if ((v4 & 2) != 0)
     {
@@ -61,7 +61,7 @@
 - (void)emoji
 {
   v4 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3[0] = 67109120;
   v3[1] = v2;
   _os_log_error_impl(&dword_2243FB000, a2, OS_LOG_TYPE_ERROR, "Invalid type %i", v3, 8u);

@@ -1,6 +1,6 @@
 @interface _CATRemoteTransportSendMessageOperation
 - (CATRemoteTransport)transport;
-- (void)didEncodeData:(id)a3;
+- (void)didEncodeData:(id)data;
 - (void)main;
 @end
 
@@ -12,13 +12,13 @@
   v3 = CATGetCatalystQueue();
   CATAssertIsQueue(v3);
 
-  v4 = [(_CATRemoteTransportSendMessageOperation *)self transport];
-  if (v4 && ![(CATOperation *)self isCanceled])
+  transport = [(_CATRemoteTransportSendMessageOperation *)self transport];
+  if (transport && ![(CATOperation *)self isCanceled])
   {
     v6 = MEMORY[0x277CCAAB0];
-    v7 = [(_CATRemoteTransportSendMessageOperation *)self message];
+    message = [(_CATRemoteTransportSendMessageOperation *)self message];
     v13[0] = 0;
-    v8 = [v6 cat_archivedDataWithRootObject:v7 error:v13];
+    v8 = [v6 cat_archivedDataWithRootObject:message error:v13];
     v9 = v13[0];
 
     if (v8)
@@ -45,16 +45,16 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didEncodeData:(id)a3
+- (void)didEncodeData:(id)data
 {
-  v7 = a3;
+  dataCopy = data;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
-  v5 = [(_CATRemoteTransportSendMessageOperation *)self transport];
-  if (v5 && ![(CATOperation *)self isCanceled])
+  transport = [(_CATRemoteTransportSendMessageOperation *)self transport];
+  if (transport && ![(CATOperation *)self isCanceled])
   {
-    [v5 remoteTransportSendMessageOperation:self sendData:v7];
+    [transport remoteTransportSendMessageOperation:self sendData:dataCopy];
   }
 
   else

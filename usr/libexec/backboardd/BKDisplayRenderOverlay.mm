@@ -1,43 +1,43 @@
 @interface BKDisplayRenderOverlay
-- (BKDisplayRenderOverlay)initWithOverlayDescriptor:(id)a3 level:(float)a4;
-- (BOOL)presentWithAnimationSettings:(id)a3;
-- (id)_initWithPersistenceData:(id)a3;
+- (BKDisplayRenderOverlay)initWithOverlayDescriptor:(id)descriptor level:(float)level;
+- (BOOL)presentWithAnimationSettings:(id)settings;
+- (id)_initWithPersistenceData:(id)data;
 - (id)_persistenceData;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_wrapInCATransaction:(id)a3;
+- (void)_wrapInCATransaction:(id)transaction;
 - (void)dealloc;
-- (void)dismissWithAnimationSettings:(id)a3;
+- (void)dismissWithAnimationSettings:(id)settings;
 - (void)freeze;
-- (void)setAnimates:(BOOL)a3;
+- (void)setAnimates:(BOOL)animates;
 @end
 
 @implementation BKDisplayRenderOverlay
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   [(BKDisplayRenderOverlay *)self succinctDescriptionBuilder];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100031928;
   v5 = v8[3] = &unk_1000FD128;
   v9 = v5;
-  v10 = self;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+  selfCopy = self;
+  [v5 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
 
   v6 = v5;
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKDisplayRenderOverlay *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKDisplayRenderOverlay *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -50,19 +50,19 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKDisplayRenderOverlay *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKDisplayRenderOverlay *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)_wrapInCATransaction:(id)a3
+- (void)_wrapInCATransaction:(id)transaction
 {
-  if (a3)
+  if (transaction)
   {
-    v3 = a3;
+    transactionCopy = transaction;
     +[CATransaction begin];
-    v3[2](v3);
+    transactionCopy[2](transactionCopy);
 
     +[CATransaction commit];
   }
@@ -79,19 +79,19 @@
   return v3;
 }
 
-- (void)dismissWithAnimationSettings:(id)a3
+- (void)dismissWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if (self->_visible)
   {
     v5 = sub_100052810();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(BKDisplayRenderOverlay *)self succinctDescription];
+      succinctDescription = [(BKDisplayRenderOverlay *)self succinctDescription];
       *buf = 138543618;
-      v10 = v6;
+      v10 = succinctDescription;
       v11 = 2114;
-      v12 = v4;
+      v12 = settingsCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dismissing render overlay %{public}@ with animation settings: %{public}@", buf, 0x16u);
     }
 
@@ -100,7 +100,7 @@
     v7[2] = sub_100031CD4;
     v7[3] = &unk_1000FD128;
     v7[4] = self;
-    v8 = v4;
+    v8 = settingsCopy;
     [(BKDisplayRenderOverlay *)self _wrapInCATransaction:v7];
     self->_visible = 0;
   }
@@ -121,7 +121,7 @@
       v13 = 2114;
       v14 = v9;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BKDisplayRenderOverlay.m";
       v19 = 1024;
@@ -143,9 +143,9 @@
     v3 = sub_100052810();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(BKDisplayRenderOverlay *)self succinctDescription];
+      succinctDescription = [(BKDisplayRenderOverlay *)self succinctDescription];
       *buf = 138543362;
-      v12 = v4;
+      v12 = succinctDescription;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Freezing overlay: %{public}@", buf, 0xCu);
     }
 
@@ -158,9 +158,9 @@
   }
 }
 
-- (BOOL)presentWithAnimationSettings:(id)a3
+- (BOOL)presentWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -173,11 +173,11 @@
   v5 = sub_100052810();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BKDisplayRenderOverlay *)self succinctDescription];
+    succinctDescription = [(BKDisplayRenderOverlay *)self succinctDescription];
     *buf = 138543618;
-    v17 = v6;
+    v17 = succinctDescription;
     v18 = 2114;
-    v19 = v4;
+    v19 = settingsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Presenting overlay: %{public}@ with animation settings: %{public}@", buf, 0x16u);
   }
 
@@ -187,7 +187,7 @@
   v9[3] = &unk_1000FD1C8;
   v11 = &v12;
   v9[4] = self;
-  v10 = v4;
+  v10 = settingsCopy;
   [(BKDisplayRenderOverlay *)self _wrapInCATransaction:v9];
   self->_visible = 1;
 
@@ -208,13 +208,13 @@ LABEL_5:
   return v7 & 1;
 }
 
-- (void)setAnimates:(BOOL)a3
+- (void)setAnimates:(BOOL)animates
 {
-  if (self->_animates != a3)
+  if (self->_animates != animates)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_animates = a3;
+    self->_animates = animates;
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1000321F0;
@@ -239,7 +239,7 @@ LABEL_5:
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BKDisplayRenderOverlay.m";
       v17 = 1024;
@@ -260,34 +260,34 @@ LABEL_5:
   [(BKDisplayRenderOverlay *)&v8 dealloc];
 }
 
-- (id)_initWithPersistenceData:(id)a3
+- (id)_initWithPersistenceData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [v4 descriptor];
-    [v4 level];
+    dataCopy = data;
+    descriptor = [dataCopy descriptor];
+    [dataCopy level];
     v7 = v6;
 
     LODWORD(v8) = v7;
-    v9 = [(BKDisplayRenderOverlay *)self initWithOverlayDescriptor:v5 level:v8];
+    v9 = [(BKDisplayRenderOverlay *)self initWithOverlayDescriptor:descriptor level:v8];
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BKDisplayRenderOverlay)initWithOverlayDescriptor:(id)a3 level:(float)a4
+- (BKDisplayRenderOverlay)initWithOverlayDescriptor:(id)descriptor level:(float)level
 {
-  v8 = a3;
-  if (!v8)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
@@ -303,7 +303,7 @@ LABEL_5:
       *&buf[12] = 2114;
       *&buf[14] = v22;
       *&buf[22] = 2048;
-      v33 = self;
+      selfCopy2 = self;
       LOWORD(v34) = 2114;
       *(&v34 + 2) = @"BKDisplayRenderOverlay.m";
       WORD5(v34) = 1024;
@@ -319,17 +319,17 @@ LABEL_5:
     JUMPOUT(0x1000326ECLL);
   }
 
-  v9 = v8;
+  v9 = descriptorCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v23 = [v9 classForCoder];
-    if (!v23)
+    classForCoder = [v9 classForCoder];
+    if (!classForCoder)
     {
-      v23 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v24 = NSStringFromClass(v23);
+    v24 = NSStringFromClass(classForCoder);
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     v27 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"descriptor", v24, v26];
@@ -344,7 +344,7 @@ LABEL_5:
       *&buf[12] = 2114;
       *&buf[14] = v30;
       *&buf[22] = 2048;
-      v33 = self;
+      selfCopy2 = self;
       LOWORD(v34) = 2114;
       *(&v34 + 2) = @"BKDisplayRenderOverlay.m";
       WORD5(v34) = 1024;
@@ -366,19 +366,19 @@ LABEL_5:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_descriptor, a3);
-    v11->_level = a4;
+    objc_storeStrong(&v10->_descriptor, descriptor);
+    v11->_level = level;
     v12 = +[BKDisplayRenderOverlayPersistenceCoordinator sharedInstance];
     persistenceCoordinator = v11->_persistenceCoordinator;
     v11->_persistenceCoordinator = v12;
 
     v11->_type = 0;
     *&v11->_visible = 0;
-    v14 = [v9 display];
-    if ([v14 isExternal])
+    display = [v9 display];
+    if ([display isExternal])
     {
-      v15 = [v14 currentMode];
-      v11->_scale = [v15 preferredScale];
+      currentMode = [display currentMode];
+      v11->_scale = [currentMode preferredScale];
     }
 
     else
@@ -386,7 +386,7 @@ LABEL_5:
       *buf = _NSConcreteStackBlock;
       *&buf[8] = 3221225472;
       *&buf[16] = sub_100002FE0;
-      v33 = &unk_1000FA7F8;
+      selfCopy2 = &unk_1000FA7F8;
       v34 = 0uLL;
       p_scale = &v11->_scale;
       v36 = 0;

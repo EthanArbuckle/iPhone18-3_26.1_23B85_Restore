@@ -1,12 +1,12 @@
 @interface _INPBActivityList
-- (BOOL)isEqual:(id)a3;
-- (_INPBActivityList)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBActivityList)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addActivity:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActivities:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActivity:(id)activity;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActivities:(id)activities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBActivityList
@@ -14,10 +14,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_activities count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -47,40 +47,40 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"activity"];
+    [dictionary setObject:array forKeyedSubscript:@"activity"];
   }
 
-  v11 = [(_INPBActivityList *)self condition];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"condition"];
+  condition = [(_INPBActivityList *)self condition];
+  dictionaryRepresentation2 = [condition dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"condition"];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBActivityList *)self activities];
-  v6 = [v4 activities];
-  if ((v5 != 0) == (v6 == 0))
+  activities = [(_INPBActivityList *)self activities];
+  activities2 = [equalCopy activities];
+  if ((activities != 0) == (activities2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBActivityList *)self activities];
-  if (v7)
+  activities3 = [(_INPBActivityList *)self activities];
+  if (activities3)
   {
-    v8 = v7;
-    v9 = [(_INPBActivityList *)self activities];
-    v10 = [v4 activities];
-    v11 = [v9 isEqual:v10];
+    v8 = activities3;
+    activities4 = [(_INPBActivityList *)self activities];
+    activities5 = [equalCopy activities];
+    v11 = [activities4 isEqual:activities5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBActivityList *)self condition];
-  v6 = [v4 condition];
-  if ((v5 != 0) != (v6 == 0))
+  activities = [(_INPBActivityList *)self condition];
+  activities2 = [equalCopy condition];
+  if ((activities != 0) != (activities2 == 0))
   {
-    v12 = [(_INPBActivityList *)self condition];
-    if (!v12)
+    condition = [(_INPBActivityList *)self condition];
+    if (!condition)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBActivityList *)self condition];
-    v15 = [v4 condition];
-    v16 = [v14 isEqual:v15];
+    v13 = condition;
+    condition2 = [(_INPBActivityList *)self condition];
+    condition3 = [equalCopy condition];
+    v16 = [condition2 isEqual:condition3];
 
     if (v16)
     {
@@ -128,46 +128,46 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBActivityList allocWithZone:](_INPBActivityList init];
-  v6 = [(NSArray *)self->_activities copyWithZone:a3];
+  v6 = [(NSArray *)self->_activities copyWithZone:zone];
   [(_INPBActivityList *)v5 setActivities:v6];
 
-  v7 = [(_INPBCondition *)self->_condition copyWithZone:a3];
+  v7 = [(_INPBCondition *)self->_condition copyWithZone:zone];
   [(_INPBActivityList *)v5 setCondition:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBActivityList *)self data];
+  coderCopy = coder;
+  data = [(_INPBActivityList *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBActivityList)initWithCoder:(id)a3
+- (_INPBActivityList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBActivityList *)self initWithData:v6];
+    self = [(_INPBActivityList *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -200,38 +200,38 @@ LABEL_13:
     while (v7);
   }
 
-  v11 = [(_INPBActivityList *)self condition];
+  condition = [(_INPBActivityList *)self condition];
 
-  if (v11)
+  if (condition)
   {
-    v12 = [(_INPBActivityList *)self condition];
+    condition2 = [(_INPBActivityList *)self condition];
     PBDataWriterWriteSubmessage();
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addActivity:(id)a3
+- (void)addActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   activities = self->_activities;
-  v8 = v4;
+  v8 = activityCopy;
   if (!activities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activities;
-    self->_activities = v6;
+    self->_activities = array;
 
-    v4 = v8;
+    activityCopy = v8;
     activities = self->_activities;
   }
 
-  [(NSArray *)activities addObject:v4];
+  [(NSArray *)activities addObject:activityCopy];
 }
 
-- (void)setActivities:(id)a3
+- (void)setActivities:(id)activities
 {
-  v4 = [a3 mutableCopy];
+  v4 = [activities mutableCopy];
   activities = self->_activities;
   self->_activities = v4;
 

@@ -3,7 +3,7 @@
 - (id)makeMemberContents;
 - (id)onlyMemberContents;
 - (id)snapshotMemberContents;
-- (void)discardMemberContents:(id)a3;
+- (void)discardMemberContents:(id)contents;
 @end
 
 @implementation _ASKResourceCacheGroup
@@ -37,10 +37,10 @@
 - (id)onlyMemberContents
 {
   os_unfair_lock_lock(&self->_guard);
-  v3 = [(NSMutableArray *)self->_memberContents firstObject];
+  firstObject = [(NSMutableArray *)self->_memberContents firstObject];
   os_unfair_lock_unlock(&self->_guard);
 
-  return v3;
+  return firstObject;
 }
 
 - (id)makeMemberContents
@@ -54,11 +54,11 @@
   return v3;
 }
 
-- (void)discardMemberContents:(id)a3
+- (void)discardMemberContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   os_unfair_lock_lock(&self->_guard);
-  [(NSMutableArray *)self->_memberContents removeObjectIdenticalTo:v4];
+  [(NSMutableArray *)self->_memberContents removeObjectIdenticalTo:contentsCopy];
 
   [(_ASKResourceCacheGroup *)self setHasMultipleMembers:[(NSMutableArray *)self->_memberContents count]> 1];
 

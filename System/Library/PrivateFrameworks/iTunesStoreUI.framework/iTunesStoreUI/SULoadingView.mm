@@ -1,24 +1,24 @@
 @interface SULoadingView
-- (SULoadingView)initWithFrame:(CGRect)a3;
+- (SULoadingView)initWithFrame:(CGRect)frame;
 - (id)newProgressIndicator;
 - (id)newTextLabel;
 - (void)_setupSubviews;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setActivityIndicatorColor:(id)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextShadowColor:(id)a3;
+- (void)setActivityIndicatorColor:(id)color;
+- (void)setStyle:(unint64_t)style;
+- (void)setTextColor:(id)color;
+- (void)setTextShadowColor:(id)color;
 - (void)sizeToFit;
 @end
 
 @implementation SULoadingView
 
-- (SULoadingView)initWithFrame:(CGRect)a3
+- (SULoadingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SULoadingView;
-  v3 = [(SULoadingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SULoadingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -90,62 +90,62 @@
   return v3;
 }
 
-- (void)setActivityIndicatorColor:(id)a3
+- (void)setActivityIndicatorColor:(id)color
 {
   activityIndicatorColor = self->_activityIndicatorColor;
-  if (activityIndicatorColor != a3)
+  if (activityIndicatorColor != color)
   {
 
-    v6 = a3;
-    self->_activityIndicatorColor = v6;
+    colorCopy = color;
+    self->_activityIndicatorColor = colorCopy;
     progressIndicator = self->_progressIndicator;
 
-    [(UIActivityIndicatorView *)progressIndicator setColor:v6];
+    [(UIActivityIndicatorView *)progressIndicator setColor:colorCopy];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    if (a3 == 1)
+    self->_style = style;
+    if (style == 1)
     {
-      v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.5];
+      whiteColor = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.5];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
 
-    [(SULoadingView *)self setTextShadowColor:v5];
+    [(SULoadingView *)self setTextShadowColor:whiteColor];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   textColor = self->_textColor;
-  if (textColor != a3)
+  if (textColor != color)
   {
 
-    self->_textColor = a3;
+    self->_textColor = color;
     label = self->_label;
 
-    [(UILabel *)label setTextColor:a3];
+    [(UILabel *)label setTextColor:color];
   }
 }
 
-- (void)setTextShadowColor:(id)a3
+- (void)setTextShadowColor:(id)color
 {
   textShadowColor = self->_textShadowColor;
-  if (textShadowColor != a3)
+  if (textShadowColor != color)
   {
 
-    self->_textShadowColor = a3;
+    self->_textShadowColor = color;
     label = self->_label;
 
-    [(UILabel *)label setShadowColor:a3];
+    [(UILabel *)label setShadowColor:color];
   }
 }
 
@@ -153,9 +153,9 @@
 {
   if (!self->_label)
   {
-    v3 = [(SULoadingView *)self newTextLabel];
-    self->_label = v3;
-    [(UILabel *)v3 sizeToFit];
+    newTextLabel = [(SULoadingView *)self newTextLabel];
+    self->_label = newTextLabel;
+    [(UILabel *)newTextLabel sizeToFit];
   }
 
   if (!self->_progressIndicator)

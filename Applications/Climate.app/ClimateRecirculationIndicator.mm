@@ -1,22 +1,22 @@
 @interface ClimateRecirculationIndicator
-- (void)recirculationService:(id)a3 didUpdateAutoMode:(BOOL)a4;
-- (void)recirculationService:(id)a3 didUpdateOn:(BOOL)a4;
+- (void)recirculationService:(id)service didUpdateAutoMode:(BOOL)mode;
+- (void)recirculationService:(id)service didUpdateOn:(BOOL)on;
 @end
 
 @implementation ClimateRecirculationIndicator
 
-- (void)recirculationService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)recirculationService:(id)service didUpdateOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = self;
-  sub_10003BDBC(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10003BDBC(serviceCopy, on);
 }
 
-- (void)recirculationService:(id)a3 didUpdateAutoMode:(BOOL)a4
+- (void)recirculationService:(id)service didUpdateAutoMode:(BOOL)mode
 {
-  v6 = a3;
-  v7 = self;
-  sub_10003C07C(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10003C07C(serviceCopy, mode);
 }
 
 @end

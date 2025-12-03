@@ -2,19 +2,19 @@
 + (double)highlightedCircleViewAlpha;
 + (double)unhighlightedCircleViewAlpha;
 - (id)buttonColor;
-- (id)initForCharacter:(int64_t)a3 style:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateCurrentStyleIfNecessaryFromStyle:(int64_t)a3;
+- (id)initForCharacter:(int64_t)character style:(int64_t)style;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateCurrentStyleIfNecessaryFromStyle:(int64_t)style;
 @end
 
 @implementation TPNumberPadDynamicButton
 
-- (id)initForCharacter:(int64_t)a3 style:(int64_t)a4
+- (id)initForCharacter:(int64_t)character style:(int64_t)style
 {
-  currentStyle = a4;
+  currentStyle = style;
   v7.receiver = self;
   v7.super_class = TPNumberPadDynamicButton;
-  v4 = [(TPNumberPadButton *)&v7 initForCharacter:a3 style:?];
+  v4 = [(TPNumberPadButton *)&v7 initForCharacter:character style:?];
   v5 = v4;
   if (v4)
   {
@@ -72,36 +72,36 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = TPNumberPadDynamicButton;
-  v4 = a3;
-  [(TPNumberPadDynamicButton *)&v6 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(TPNumberPadDynamicButton *)&v6 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  [(TPNumberPadDynamicButton *)self updateCurrentStyleIfNecessaryFromStyle:v5];
+  [(TPNumberPadDynamicButton *)self updateCurrentStyleIfNecessaryFromStyle:userInterfaceStyle];
 }
 
-- (void)updateCurrentStyleIfNecessaryFromStyle:(int64_t)a3
+- (void)updateCurrentStyleIfNecessaryFromStyle:(int64_t)style
 {
-  v9 = [(TPNumberPadDynamicButton *)self traitCollection];
-  if ([v9 userInterfaceStyle] == a3)
+  traitCollection = [(TPNumberPadDynamicButton *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == style)
   {
   }
 
   else
   {
-    v5 = [(TPNumberPadDynamicButton *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    traitCollection2 = [(TPNumberPadDynamicButton *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-    if (v6)
+    if (userInterfaceStyle)
     {
-      v7 = [(TPNumberPadDynamicButton *)self traitCollection];
-      currentStyle = [v7 userInterfaceStyle];
+      traitCollection3 = [(TPNumberPadDynamicButton *)self traitCollection];
+      currentStyle = [traitCollection3 userInterfaceStyle];
 
-      v8 = [(TPNumberPadDynamicButton *)self buttonColor];
-      [(TPNumberPadButton *)self setColor:v8];
+      buttonColor = [(TPNumberPadDynamicButton *)self buttonColor];
+      [(TPNumberPadButton *)self setColor:buttonColor];
 
       [(TPNumberPadButton *)self reloadImagesForCurrentCharacter];
     }

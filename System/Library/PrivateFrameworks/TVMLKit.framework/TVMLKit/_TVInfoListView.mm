@@ -1,45 +1,45 @@
 @interface _TVInfoListView
-+ (id)infoListViewWithElement:(id)a3 existingView:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TVInfoListView)initWithFrame:(CGRect)a3;
-- (double)_maxWidthForGroupInfos:(id)a3;
-- (void)_layouCellContentView:(id)a3 inCellBounds:(CGRect)a4;
++ (id)infoListViewWithElement:(id)element existingView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TVInfoListView)initWithFrame:(CGRect)frame;
+- (double)_maxWidthForGroupInfos:(id)infos;
+- (void)_layouCellContentView:(id)view inCellBounds:(CGRect)bounds;
 - (void)layoutSubviews;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setInfos:(id)a3;
+- (void)setFooterView:(id)view;
+- (void)setHeaderView:(id)view;
+- (void)setInfos:(id)infos;
 @end
 
 @implementation _TVInfoListView
 
-+ (id)infoListViewWithElement:(id)a3 existingView:(id)a4
++ (id)infoListViewWithElement:(id)element existingView:(id)view
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
-  v44 = v7;
+  v44 = viewCopy;
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = viewCopy;
   }
 
   else
   {
-    v9 = [a1 alloc];
-    v8 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v7}];
+    v9 = [self alloc];
+    v8 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), viewCopy}];
   }
 
   v10 = v8;
-  v11 = [v6 style];
-  [v10 setMaxLineCount:{objc_msgSend(v11, "tv_maxLines")}];
+  style = [elementCopy style];
+  [v10 setMaxLineCount:{objc_msgSend(style, "tv_maxLines")}];
 
-  v12 = [v6 style];
-  [v12 tv_lineSpacing];
+  style2 = [elementCopy style];
+  [style2 tv_lineSpacing];
   [v10 setLineSpacing:?];
 
-  v13 = [v6 style];
-  [v13 tv_interitemSpacing];
+  style3 = [elementCopy style];
+  [style3 tv_interitemSpacing];
   [v10 setInteritemSpacing:?];
 
   v50 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
@@ -47,14 +47,14 @@
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v46 = v6;
-  v14 = [v6 children];
-  v15 = [v14 countByEnumeratingWithState:&v57 objects:v62 count:16];
+  v46 = elementCopy;
+  children = [elementCopy children];
+  v15 = [children countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v15)
   {
     v16 = v15;
     v17 = *v58;
-    v48 = v14;
+    v48 = children;
     v49 = v10;
     v47 = *v58;
     do
@@ -65,15 +65,15 @@
       {
         if (*v58 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(children);
         }
 
         v19 = *(*(&v57 + 1) + 8 * v18);
         if ([v19 tv_elementType] == 15)
         {
           v20 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v21 = [v10 headerView];
-          v22 = [(_TVInfoListInfo *)v20 _viewFromElement:v19 existingView:v21];
+          headerView = [v10 headerView];
+          v22 = [(_TVInfoListInfo *)v20 _viewFromElement:v19 existingView:headerView];
           [v10 setHeaderView:v22];
 LABEL_13:
 
@@ -84,8 +84,8 @@ LABEL_14:
         if ([v19 tv_elementType] == 13)
         {
           v20 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v21 = [v10 footerView];
-          v22 = [(_TVInfoListInfo *)v20 _viewFromElement:v19 existingView:v21];
+          headerView = [v10 footerView];
+          v22 = [(_TVInfoListInfo *)v20 _viewFromElement:v19 existingView:headerView];
           [v10 setFooterView:v22];
           goto LABEL_13;
         }
@@ -94,25 +94,25 @@ LABEL_14:
         {
           v52 = v18;
           v20 = objc_alloc_init(_TVInfoListInfo);
-          v23 = [v19 style];
-          v24 = [v23 tv_group];
-          [(_TVInfoListInfo *)v20 setGroup:v24];
+          style4 = [v19 style];
+          tv_group = [style4 tv_group];
+          [(_TVInfoListInfo *)v20 setGroup:tv_group];
 
-          v25 = [v19 style];
-          [v25 tv_width];
+          style5 = [v19 style];
+          [style5 tv_width];
           [(_TVInfoListInfo *)v20 setWidth:?];
 
-          v26 = [v19 style];
-          [v26 tv_lineSpacing];
+          style6 = [v19 style];
+          [style6 tv_lineSpacing];
           [(_TVInfoListInfo *)v20 setLineSpacing:?];
 
-          v21 = [MEMORY[0x277CBEB18] array];
+          headerView = [MEMORY[0x277CBEB18] array];
           v53 = 0u;
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v27 = [v19 children];
-          v28 = [v27 countByEnumeratingWithState:&v53 objects:v61 count:16];
+          children2 = [v19 children];
+          v28 = [children2 countByEnumeratingWithState:&v53 objects:v61 count:16];
           if (v28)
           {
             v29 = v28;
@@ -123,51 +123,51 @@ LABEL_14:
               {
                 if (*v54 != v30)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(children2);
                 }
 
                 v32 = *(*(&v53 + 1) + 8 * i);
                 if ([v32 tv_elementType] == 15)
                 {
-                  v33 = [v32 style];
-                  [v33 tv_margin];
+                  style7 = [v32 style];
+                  [style7 tv_margin];
                   [(_TVInfoListInfo *)v20 setHeaderMargin:?];
 
-                  v34 = [v32 style];
-                  [v34 tv_padding];
+                  style8 = [v32 style];
+                  [style8 tv_padding];
                   [(_TVInfoListInfo *)v20 setHeaderPadding:?];
 
-                  v35 = [v32 children];
-                  v36 = [v35 firstObject];
+                  children3 = [v32 children];
+                  firstObject = [children3 firstObject];
 
                   v37 = +[TVInterfaceFactory sharedInterfaceFactory];
-                  v38 = [v37 _viewFromElement:v36 existingView:0];
+                  v38 = [v37 _viewFromElement:firstObject existingView:0];
                   [(_TVInfoListInfo *)v20 setHeaderContentView:v38];
                 }
 
                 else
                 {
                   v39 = +[TVInterfaceFactory sharedInterfaceFactory];
-                  v36 = [v39 _viewFromElement:v32 existingView:0];
+                  firstObject = [v39 _viewFromElement:v32 existingView:0];
 
-                  if (v36)
+                  if (firstObject)
                   {
-                    [v21 addObject:v36];
+                    [headerView addObject:firstObject];
                   }
                 }
               }
 
-              v29 = [v27 countByEnumeratingWithState:&v53 objects:v61 count:16];
+              v29 = [children2 countByEnumeratingWithState:&v53 objects:v61 count:16];
             }
 
             while (v29);
           }
 
-          v40 = [v21 copy];
+          v40 = [headerView copy];
           [(_TVInfoListInfo *)v20 setDataViews:v40];
 
           [v50 addObject:v20];
-          v14 = v48;
+          children = v48;
           v10 = v49;
           v17 = v47;
           v16 = v51;
@@ -180,7 +180,7 @@ LABEL_15:
       }
 
       while (v18 != v16);
-      v41 = [v14 countByEnumeratingWithState:&v57 objects:v62 count:16];
+      v41 = [children countByEnumeratingWithState:&v57 objects:v62 count:16];
       v16 = v41;
     }
 
@@ -193,22 +193,22 @@ LABEL_15:
   return v10;
 }
 
-- (_TVInfoListView)initWithFrame:(CGRect)a3
+- (_TVInfoListView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _TVInfoListView;
-  return [(_TVInfoListView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(_TVInfoListView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  v7 = v5;
-  if (headerView != v5)
+  v7 = viewCopy;
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     if (self->_headerView)
     {
       [(_TVInfoListView *)self addSubview:?];
@@ -218,15 +218,15 @@ LABEL_15:
   [(_TVInfoListView *)self setNeedsLayout];
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  v7 = v5;
-  if (footerView != v5)
+  v7 = viewCopy;
+  if (footerView != viewCopy)
   {
     [(UIView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     if (self->_footerView)
     {
       [(_TVInfoListView *)self addSubview:?];
@@ -236,16 +236,16 @@ LABEL_15:
   [(_TVInfoListView *)self setNeedsLayout];
 }
 
-- (void)setInfos:(id)a3
+- (void)setInfos:(id)infos
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infosCopy = infos;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v5 = [(_TVInfoListView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v56 objects:v64 count:16];
+  subviews = [(_TVInfoListView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v56 objects:v64 count:16];
   if (v6)
   {
     v7 = v6;
@@ -256,54 +256,54 @@ LABEL_15:
       {
         if (*v57 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v56 + 1) + 8 * i);
-        v11 = [(_TVInfoListView *)self headerView];
-        v12 = v11;
-        if (v10 == v11)
+        headerView = [(_TVInfoListView *)self headerView];
+        v12 = headerView;
+        if (v10 == headerView)
         {
         }
 
         else
         {
-          v13 = [(_TVInfoListView *)self footerView];
+          footerView = [(_TVInfoListView *)self footerView];
 
-          if (v10 != v13)
+          if (v10 != footerView)
           {
             [v10 removeFromSuperview];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v56 objects:v64 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v56 objects:v64 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [v4 copy];
+  v14 = [infosCopy copy];
   infos = self->_infos;
   self->_infos = v14;
 
-  v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(infosCopy, "count")}];
+  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(infosCopy, "count")}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v17 = v4;
+  v17 = infosCopy;
   v18 = [v17 countByEnumeratingWithState:&v52 objects:v63 count:16];
   if (v18)
   {
     v19 = v18;
-    v20 = 0;
+    group = 0;
     v21 = *v53;
     do
     {
       v22 = 0;
-      v23 = v20;
+      v23 = group;
       do
       {
         if (*v53 != v21)
@@ -312,8 +312,8 @@ LABEL_15:
         }
 
         v24 = *(*(&v52 + 1) + 8 * v22);
-        v20 = [v24 group];
-        if (v23 && ([v23 isEqualToString:v20] & 1) == 0)
+        group = [v24 group];
+        if (v23 && ([v23 isEqualToString:group] & 1) == 0)
         {
           v25 = [v16 copy];
           [v43 addObject:v25];
@@ -321,7 +321,7 @@ LABEL_15:
           [v16 removeAllObjects];
         }
 
-        if (v20)
+        if (group)
         {
           [v16 addObject:v24];
         }
@@ -334,7 +334,7 @@ LABEL_15:
         }
 
         ++v22;
-        v23 = v20;
+        v23 = group;
       }
 
       while (v19 != v22);
@@ -371,20 +371,20 @@ LABEL_15:
         }
 
         v35 = *(*(&v48 + 1) + 8 * j);
-        v36 = [v35 headerContentView];
+        headerContentView = [v35 headerContentView];
 
-        if (v36)
+        if (headerContentView)
         {
-          v37 = [v35 headerContentView];
-          [(_TVInfoListView *)self addSubview:v37];
+          headerContentView2 = [v35 headerContentView];
+          [(_TVInfoListView *)self addSubview:headerContentView2];
         }
 
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v38 = [v35 dataViews];
-        v39 = [v38 countByEnumeratingWithState:&v44 objects:v60 count:16];
+        dataViews = [v35 dataViews];
+        v39 = [dataViews countByEnumeratingWithState:&v44 objects:v60 count:16];
         if (v39)
         {
           v40 = v39;
@@ -395,13 +395,13 @@ LABEL_15:
             {
               if (*v45 != v41)
               {
-                objc_enumerationMutation(v38);
+                objc_enumerationMutation(dataViews);
               }
 
               [(_TVInfoListView *)self addSubview:*(*(&v44 + 1) + 8 * k)];
             }
 
-            v40 = [v38 countByEnumeratingWithState:&v44 objects:v60 count:16];
+            v40 = [dataViews countByEnumeratingWithState:&v44 objects:v60 count:16];
           }
 
           while (v40);
@@ -415,10 +415,10 @@ LABEL_15:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v151 = *MEMORY[0x277D85DE8];
   [(UIView *)self tv_padding];
   v104 = v6;
@@ -429,11 +429,11 @@ LABEL_15:
   v12 = v11;
   [(_TVInfoListView *)self lineSpacing];
   v110 = v13;
-  v14 = [(_TVInfoListView *)self maxLineCount];
+  maxLineCount = [(_TVInfoListView *)self maxLineCount];
   v15 = 0x7FFFFFFFLL;
-  if (v14)
+  if (maxLineCount)
   {
-    v15 = v14;
+    v15 = maxLineCount;
   }
 
   v135 = v15;
@@ -443,27 +443,27 @@ LABEL_15:
   v16 = width - v8 - v10;
   v17 = 0.0;
   v18 = fmax(v16, 0.0);
-  v19 = [(_TVInfoListView *)self headerView];
-  [v19 tv_margin];
+  headerView = [(_TVInfoListView *)self headerView];
+  [headerView tv_margin];
   v102 = v21;
   v103 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(_TVInfoListView *)self headerView];
-  [v26 tv_sizeThatFits:{v18 - (v23 + v25), 0.0}];
+  headerView2 = [(_TVInfoListView *)self headerView];
+  [headerView2 tv_sizeThatFits:{v18 - (v23 + v25), 0.0}];
   v101 = v27;
 
-  v28 = [(_TVInfoListView *)self footerView];
-  [v28 tv_margin];
+  footerView = [(_TVInfoListView *)self footerView];
+  [footerView tv_margin];
   v99 = v30;
   v100 = v29;
   v32 = v31;
   v34 = v33;
 
-  v35 = [(_TVInfoListView *)self footerView];
+  footerView2 = [(_TVInfoListView *)self footerView];
   v123 = v18;
-  [v35 tv_sizeThatFits:{v18 - (v32 + v34), 0.0}];
+  [footerView2 tv_sizeThatFits:{v18 - (v32 + v34), 0.0}];
   v98 = v36;
 
   v37 = *MEMORY[0x277CBF3A8];
@@ -472,7 +472,7 @@ LABEL_15:
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v117 = self;
+  selfCopy = self;
   obj = [(_TVInfoListView *)self groupedInfos];
   v118 = [obj countByEnumeratingWithState:&v144 objects:v150 count:16];
   if (!v118)
@@ -507,7 +507,7 @@ LABEL_15:
       v129 = v17;
       v125 = i;
       v44 = *(*(&v144 + 1) + 8 * i);
-      [(_TVInfoListView *)v117 _maxWidthForGroupInfos:v44, *&v98, *&v99, *&v100, *&v101, *&v102, *&v103];
+      [(_TVInfoListView *)selfCopy _maxWidthForGroupInfos:v44, *&v98, *&v99, *&v100, *&v101, *&v102, *&v103];
       v46 = v45;
       v134 = [v44 count];
       v140 = 0u;
@@ -559,23 +559,23 @@ LABEL_15:
             [v56 headerPadding];
             v62 = v61;
             v64 = v63;
-            v65 = [v56 headerContentView];
-            [v65 tv_sizeThatFits:{v51, 0.0}];
+            headerContentView = [v56 headerContentView];
+            [headerContentView tv_sizeThatFits:{v51, 0.0}];
             v67 = v66;
             v69 = v68;
 
-            v70 = [v47 firstObject];
+            firstObject = [v47 firstObject];
 
             v71 = v54 + v131 + v64 + v130 + v62 + v69;
             v72 = v64 + v62 + v69;
             v52 = v132;
-            if (v56 == v70)
+            if (v56 == firstObject)
             {
               v52 = v72;
             }
 
             v73 = v133;
-            if (v56 == v70)
+            if (v56 == firstObject)
             {
               v73 = v131;
             }
@@ -583,15 +583,15 @@ LABEL_15:
             v133 = v73;
             v138 = 0u;
             v139 = 0u;
-            if (v56 != v70)
+            if (v56 != firstObject)
             {
               v54 = v71;
             }
 
             v136 = 0uLL;
             v137 = 0uLL;
-            v74 = [v56 dataViews];
-            v75 = [v74 countByEnumeratingWithState:&v136 objects:v148 count:16];
+            dataViews = [v56 dataViews];
+            v75 = [dataViews countByEnumeratingWithState:&v136 objects:v148 count:16];
             if (v75)
             {
               v76 = v75;
@@ -602,7 +602,7 @@ LABEL_15:
                 {
                   if (*v137 != v77)
                   {
-                    objc_enumerationMutation(v74);
+                    objc_enumerationMutation(dataViews);
                   }
 
                   v79 = *(*(&v136 + 1) + 8 * j);
@@ -620,10 +620,10 @@ LABEL_15:
                     v54 = 0.0;
                   }
 
-                  v80 = [v56 dataViews];
-                  v81 = [v80 firstObject];
+                  dataViews2 = [v56 dataViews];
+                  firstObject2 = [dataViews2 firstObject];
 
-                  if (v79 == v81)
+                  if (v79 == firstObject2)
                   {
                     v82 = v54;
                   }
@@ -639,7 +639,7 @@ LABEL_15:
                   v67 = fmax(v67, v84);
                 }
 
-                v76 = [v74 countByEnumeratingWithState:&v136 objects:v148 count:16];
+                v76 = [dataViews countByEnumeratingWithState:&v136 objects:v148 count:16];
                 if (v76)
                 {
                   continue;
@@ -780,10 +780,10 @@ LABEL_57:
   v126 = v10;
   [(_TVInfoListView *)self lineSpacing];
   v119 = v11;
-  v12 = [(_TVInfoListView *)self maxLineCount];
-  if (v12)
+  maxLineCount = [(_TVInfoListView *)self maxLineCount];
+  if (maxLineCount)
   {
-    v13 = v12;
+    v13 = maxLineCount;
   }
 
   else
@@ -793,41 +793,41 @@ LABEL_57:
 
   v14 = 0.0;
   v15 = fmax(v4 - v7 - v9, 0.0);
-  v16 = [(_TVInfoListView *)self headerView];
-  [v16 tv_margin];
+  headerView = [(_TVInfoListView *)self headerView];
+  [headerView tv_margin];
   v152 = v17;
   v154 = v18;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(_TVInfoListView *)self headerView];
+  headerView2 = [(_TVInfoListView *)self headerView];
   v24 = v15 - (v20 + v22);
-  [v23 tv_sizeThatFits:{v24, 0.0}];
+  [headerView2 tv_sizeThatFits:{v24, 0.0}];
   v26 = v25;
 
-  v27 = [(_TVInfoListView *)self footerView];
-  [v27 tv_margin];
+  footerView = [(_TVInfoListView *)self footerView];
+  [footerView tv_margin];
   v117 = v28;
   v30 = v29;
   v32 = v31;
 
-  v33 = [(_TVInfoListView *)self footerView];
+  footerView2 = [(_TVInfoListView *)self footerView];
   v116 = v30;
   v124 = v15;
-  [v33 tv_sizeThatFits:{v15 - (v30 + v32), 0.0}];
+  [footerView2 tv_sizeThatFits:{v15 - (v30 + v32), 0.0}];
   v115 = v34;
 
-  v35 = [(_TVInfoListView *)self headerView];
+  headerView3 = [(_TVInfoListView *)self headerView];
   v148 = v7;
   v118 = v24;
-  [v35 setFrame:{v7 + v20, v147 + v152, v24, v26}];
+  [headerView3 setFrame:{v7 + v20, v147 + v152, v24, v26}];
 
   v125 = v154 + v147 + v152 + v26;
   v174 = 0u;
   v175 = 0u;
   v172 = 0u;
   v173 = 0u;
-  v149 = self;
+  selfCopy = self;
   obj = [(_TVInfoListView *)self groupedInfos];
   v122 = [obj countByEnumeratingWithState:&v172 objects:v181 count:16];
   if (v122)
@@ -855,7 +855,7 @@ LABEL_57:
         v130 = v37;
         v132 = v14;
         v41 = *(*(&v172 + 1) + 8 * v39);
-        [(_TVInfoListView *)v149 _maxWidthForGroupInfos:v41];
+        [(_TVInfoListView *)selfCopy _maxWidthForGroupInfos:v41];
         v43 = v42;
         v153 = [v41 count];
         v168 = 0u;
@@ -904,17 +904,17 @@ LABEL_14:
             [v51 headerPadding];
             v57 = v56;
             v59 = v58;
-            v60 = [v51 headerContentView];
-            v61 = [v51 headerContentView];
-            [v61 tv_sizeThatFits:{v46, 0.0}];
+            headerContentView = [v51 headerContentView];
+            headerContentView2 = [v51 headerContentView];
+            [headerContentView2 tv_sizeThatFits:{v46, 0.0}];
             v63 = v62;
             v65 = v64;
 
-            v145 = v60;
-            [v60 setBounds:{0.0, 0.0, v63, v65}];
-            v66 = [v137 firstObject];
+            v145 = headerContentView;
+            [headerContentView setBounds:{0.0, 0.0, v63, v65}];
+            firstObject = [v137 firstObject];
 
-            if (v51 == v66)
+            if (v51 == firstObject)
             {
               v67 = v144;
             }
@@ -928,7 +928,7 @@ LABEL_14:
             v166 = 0u;
             v167 = 0u;
             v68 = v150;
-            if (v51 == v66)
+            if (v51 == firstObject)
             {
               v68 = v59 + v57 + v65;
             }
@@ -937,8 +937,8 @@ LABEL_14:
             v151 = v67;
             v164 = 0uLL;
             v165 = 0uLL;
-            v69 = [v51 dataViews];
-            v70 = [v69 countByEnumeratingWithState:&v164 objects:v179 count:16];
+            dataViews = [v51 dataViews];
+            v70 = [dataViews countByEnumeratingWithState:&v164 objects:v179 count:16];
             if (v70)
             {
               v71 = v70;
@@ -949,7 +949,7 @@ LABEL_14:
                 {
                   if (*v165 != v72)
                   {
-                    objc_enumerationMutation(v69);
+                    objc_enumerationMutation(dataViews);
                   }
 
                   v74 = *(*(&v164 + 1) + 8 * i);
@@ -967,10 +967,10 @@ LABEL_14:
                     v49 = 0.0;
                   }
 
-                  v75 = [v51 dataViews];
-                  v76 = [v75 firstObject];
+                  dataViews2 = [v51 dataViews];
+                  firstObject2 = [dataViews2 firstObject];
 
-                  if (v74 != v76)
+                  if (v74 != firstObject2)
                   {
                     v49 = v53 + v49;
                   }
@@ -985,7 +985,7 @@ LABEL_14:
                   v13 = v155;
                 }
 
-                v71 = [v69 countByEnumeratingWithState:&v164 objects:v179 count:16];
+                v71 = [dataViews countByEnumeratingWithState:&v164 objects:v179 count:16];
                 if (v71)
                 {
                   continue;
@@ -1093,25 +1093,25 @@ LABEL_37:
               [v89 headerPadding];
               v96 = v95;
               v140 = v97;
-              v98 = [v89 headerContentView];
-              [v98 bounds];
+              headerContentView3 = [v89 headerContentView];
+              [headerContentView3 bounds];
               v100 = v99;
-              v101 = [v83 firstObject];
+              firstObject3 = [v83 firstObject];
 
-              if (v89 != v101)
+              if (v89 != firstObject3)
               {
                 v87 = v87 + v142;
               }
 
-              v143 = v98;
-              [(_TVInfoListView *)v149 _layouCellContentView:v98 inCellBounds:v148 + v84, v96 + v147 + v87, v81, v100];
+              v143 = headerContentView3;
+              [(_TVInfoListView *)selfCopy _layouCellContentView:headerContentView3 inCellBounds:v148 + v84, v96 + v147 + v87, v81, v100];
               v158 = 0u;
               v159 = 0u;
               v87 = v87 + v94 + v140 + v96 + v100;
               v156 = 0u;
               v157 = 0u;
-              v102 = [v89 dataViews];
-              v103 = [v102 countByEnumeratingWithState:&v156 objects:v177 count:16];
+              dataViews3 = [v89 dataViews];
+              v103 = [dataViews3 countByEnumeratingWithState:&v156 objects:v177 count:16];
               if (v103)
               {
                 v104 = v103;
@@ -1122,7 +1122,7 @@ LABEL_37:
                   {
                     if (*v157 != v105)
                     {
-                      objc_enumerationMutation(v102);
+                      objc_enumerationMutation(dataViews3);
                     }
 
                     v107 = *(*(&v156 + 1) + 8 * j);
@@ -1145,10 +1145,10 @@ LABEL_37:
                       v108 = v84;
                     }
 
-                    v109 = [v89 dataViews];
-                    v110 = [v109 firstObject];
+                    dataViews4 = [v89 dataViews];
+                    firstObject4 = [dataViews4 firstObject];
 
-                    if (v107 == v110)
+                    if (v107 == firstObject4)
                     {
                       v111 = v87;
                     }
@@ -1161,13 +1161,13 @@ LABEL_37:
                     [v107 bounds];
                     v113 = v112;
                     v84 = v108;
-                    [(_TVInfoListView *)v149 _layouCellContentView:v107 inCellBounds:v148 + v108, v147 + v111, v81];
+                    [(_TVInfoListView *)selfCopy _layouCellContentView:v107 inCellBounds:v148 + v108, v147 + v111, v81];
                     v87 = v111 + v113;
                     ++v85;
                     v13 = v155;
                   }
 
-                  v104 = [v102 countByEnumeratingWithState:&v156 objects:v177 count:16];
+                  v104 = [dataViews3 countByEnumeratingWithState:&v156 objects:v177 count:16];
                   if (v104)
                   {
                     continue;
@@ -1218,19 +1218,19 @@ LABEL_78:
     while (v122);
   }
 
-  v114 = [(_TVInfoListView *)v149 footerView];
-  [v114 setFrame:{v148 + v116, v117 + v125 + v14, v118, v115}];
+  footerView3 = [(_TVInfoListView *)selfCopy footerView];
+  [footerView3 setFrame:{v148 + v116, v117 + v125 + v14, v118, v115}];
 }
 
-- (double)_maxWidthForGroupInfos:(id)a3
+- (double)_maxWidthForGroupInfos:(id)infos
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infosCopy = infos;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [infosCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1243,7 +1243,7 @@ LABEL_78:
         v9 = v7;
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infosCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -1259,7 +1259,7 @@ LABEL_78:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [infosCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1273,29 +1273,29 @@ LABEL_78:
   return v7;
 }
 
-- (void)_layouCellContentView:(id)a3 inCellBounds:(CGRect)a4
+- (void)_layouCellContentView:(id)view inCellBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  [v13 bounds];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  [viewCopy bounds];
   v9 = v8;
-  v10 = [v13 tv_alignment];
+  tv_alignment = [viewCopy tv_alignment];
   v11 = x + width * 0.5;
   v12 = x + v9 * 0.5;
-  if (v10 == 3)
+  if (tv_alignment == 3)
   {
     v12 = x + width + v9 * -0.5;
   }
 
-  if (v10 != 2)
+  if (tv_alignment != 2)
   {
     v11 = v12;
   }
 
-  [v13 setCenter:{v11, y + height * 0.5}];
+  [viewCopy setCenter:{v11, y + height * 0.5}];
 }
 
 @end

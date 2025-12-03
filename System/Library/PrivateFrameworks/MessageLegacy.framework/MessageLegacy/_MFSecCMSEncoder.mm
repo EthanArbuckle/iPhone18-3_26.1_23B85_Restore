@@ -1,16 +1,16 @@
 @interface _MFSecCMSEncoder
 - (id)data;
-- (id)initForEncryptionWithCompositionSpecification:(id)a3 error:(id *)a4;
-- (id)initForSigningWithSender:(id)a3 compositionSpecification:(id)a4 error:(id *)a5;
-- (int64_t)appendData:(id)a3;
-- (void)_appendBytes:(const void *)a3 length:(unint64_t)a4;
+- (id)initForEncryptionWithCompositionSpecification:(id)specification error:(id *)error;
+- (id)initForSigningWithSender:(id)sender compositionSpecification:(id)specification error:(id *)error;
+- (int64_t)appendData:(id)data;
+- (void)_appendBytes:(const void *)bytes length:(unint64_t)length;
 - (void)dealloc;
 - (void)done;
 @end
 
 @implementation _MFSecCMSEncoder
 
-- (id)initForSigningWithSender:(id)a3 compositionSpecification:(id)a4 error:(id *)a5
+- (id)initForSigningWithSender:(id)sender compositionSpecification:(id)specification error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   v35.receiver = self;
@@ -21,7 +21,7 @@
     goto LABEL_26;
   }
 
-  v9 = [a4 objectForKey:@"SigningIdentity"];
+  v9 = [specification objectForKey:@"SigningIdentity"];
   if (!v9)
   {
     v15 = MFLogGeneral();
@@ -31,7 +31,7 @@
     }
 
     *buf = 138412290;
-    *&buf[4] = a3;
+    *&buf[4] = sender;
     v16 = "#SMIMEErrors Found no identity for %@";
     v17 = v15;
     v18 = 12;
@@ -132,7 +132,7 @@ LABEL_15:
   }
 
   *buf = 0;
-  v30 = [a4 objectForKey:@"EncryptionIdentity"];
+  v30 = [specification objectForKey:@"EncryptionIdentity"];
   if (v30)
   {
     SecIdentityCopyCertificate(v30, buf);
@@ -194,9 +194,9 @@ LABEL_15:
 LABEL_20:
   if (!v8->_encoder && !v8->_message || v8->_SecCMSError)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = +[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1036, [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"SMIME_CANT_SIGN_MESSAGE", @"An error occurred while trying to sign this message with a certificate from “%@”. Verify that your certificate for this address is correct, and that its private key is in your keychain.", @"Delayed", a3]);
+      *error = +[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1036, [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"SMIME_CANT_SIGN_MESSAGE", @"An error occurred while trying to sign this message with a certificate from “%@”. Verify that your certificate for this address is correct, and that its private key is in your keychain.", @"Delayed", sender]);
     }
 
     v8 = 0;
@@ -207,7 +207,7 @@ LABEL_26:
   return v8;
 }
 
-- (id)initForEncryptionWithCompositionSpecification:(id)a3 error:(id *)a4
+- (id)initForEncryptionWithCompositionSpecification:(id)specification error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v40.receiver = self;
@@ -219,7 +219,7 @@ LABEL_26:
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [a3 objectForKey:@"RecipientCertificates"];
+  v8 = [specification objectForKey:@"RecipientCertificates"];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -247,8 +247,8 @@ LABEL_26:
     while (v10);
   }
 
-  v13 = [a3 objectForKey:@"EncryptionIdentity"];
-  if (v13 || (v13 = [a3 objectForKey:@"SigningIdentity"]) != 0)
+  v13 = [specification objectForKey:@"EncryptionIdentity"];
+  if (v13 || (v13 = [specification objectForKey:@"SigningIdentity"]) != 0)
   {
     certificateRef = 0;
     SecIdentityCopyCertificate(v13, &certificateRef);
@@ -387,9 +387,9 @@ LABEL_33:
 
   if (!v6->_encoder && !v6->_message || v6->_SecCMSError)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:MFLookupLocalizedString(@"SMIME_CANT_ENCRYPT_MESSAGE", @"An error occurred while trying to encrypt your message. Verify that you have valid certificates in your keychain for all of the recipients.", @"Delayed")];
+      *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:MFLookupLocalizedString(@"SMIME_CANT_ENCRYPT_MESSAGE", @"An error occurred while trying to encrypt your message. Verify that you have valid certificates in your keychain for all of the recipients.", @"Delayed")];
     }
 
     v6 = 0;
@@ -417,7 +417,7 @@ LABEL_39:
   [(MFBufferedDataConsumer *)&v3 dealloc];
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
   if (self->_SecCMSError)
   {
@@ -442,8 +442,8 @@ LABEL_39:
     return -1;
   }
 
-  v11 = [a3 length];
-  v20[1] = [a3 bytes];
+  v11 = [data length];
+  v20[1] = [data bytes];
   self->_singleShot = objc_alloc_init(MEMORY[0x277D24F70]);
   message = self->_message;
   v15 = SecCmsMessageEncode();
@@ -467,15 +467,15 @@ LABEL_39:
 
 - (void)done
 {
-  OUTLINED_FUNCTION_2_1(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_1(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_0_3(&dword_258BDA000, v1, v2, "#SMIMEErrors SecCmsEncoderFinish on -done returned %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendBytes:(const void *)a3 length:(unint64_t)a4
+- (void)_appendBytes:(const void *)bytes length:(unint64_t)length
 {
-  v5 = [objc_alloc(MEMORY[0x277D24F00]) initWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+  v5 = [objc_alloc(MEMORY[0x277D24F00]) initWithBytesNoCopy:bytes length:length freeWhenDone:0];
   v6.receiver = self;
   v6.super_class = _MFSecCMSEncoder;
   [(MFBufferedDataConsumer *)&v6 appendData:v5];

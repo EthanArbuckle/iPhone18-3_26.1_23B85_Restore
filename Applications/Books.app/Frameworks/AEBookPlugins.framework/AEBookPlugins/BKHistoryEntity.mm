@@ -1,8 +1,8 @@
 @interface BKHistoryEntity
 - (BKHistoryEntity)init;
 - (id)description;
-- (int64_t)pageForLookupKey:(id)a3;
-- (void)setPage:(int64_t)a3 forLookupKey:(id)a4;
+- (int64_t)pageForLookupKey:(id)key;
+- (void)setPage:(int64_t)page forLookupKey:(id)key;
 @end
 
 @implementation BKHistoryEntity
@@ -22,50 +22,50 @@
   return v2;
 }
 
-- (int64_t)pageForLookupKey:(id)a3
+- (int64_t)pageForLookupKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BKHistoryEntity *)self pagination];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  pagination = [(BKHistoryEntity *)self pagination];
+  v6 = [pagination objectForKey:keyCopy];
 
   if (v6)
   {
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    intValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return intValue;
 }
 
-- (void)setPage:(int64_t)a3 forLookupKey:(id)a4
+- (void)setPage:(int64_t)page forLookupKey:(id)key
 {
-  v9 = a4;
-  v6 = [v9 length];
-  if ((a3 - 1) <= 0x7FFFFFFFFFFFFFFDLL && v6)
+  keyCopy = key;
+  v6 = [keyCopy length];
+  if ((page - 1) <= 0x7FFFFFFFFFFFFFFDLL && v6)
   {
-    v7 = [[NSNumber alloc] initWithInteger:a3];
-    v8 = [(BKHistoryEntity *)self pagination];
-    [v8 setObject:v7 forKey:v9];
+    v7 = [[NSNumber alloc] initWithInteger:page];
+    pagination = [(BKHistoryEntity *)self pagination];
+    [pagination setObject:v7 forKey:keyCopy];
   }
 }
 
 - (id)description
 {
-  v3 = [(BKHistoryEntity *)self pagination];
-  v4 = [v3 allValues];
-  v5 = [v4 lastObject];
+  pagination = [(BKHistoryEntity *)self pagination];
+  allValues = [pagination allValues];
+  lastObject = [allValues lastObject];
 
   v6 = objc_opt_class();
-  v7 = [(BKHistoryEntity *)self location];
+  location = [(BKHistoryEntity *)self location];
   v8 = objc_opt_class();
-  v9 = [(BKHistoryEntity *)self location];
-  v10 = [v9 ordinal];
-  v11 = [(BKHistoryEntity *)self pagination];
-  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p>(Location: %@ {Ordinal: %d}-- Pagination Keys: %d -- {Last Page Value: %@})", v6, self, v8, v10, [v11 count], v5);
+  location2 = [(BKHistoryEntity *)self location];
+  ordinal = [location2 ordinal];
+  pagination2 = [(BKHistoryEntity *)self pagination];
+  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p>(Location: %@ {Ordinal: %d}-- Pagination Keys: %d -- {Last Page Value: %@})", v6, self, v8, ordinal, [pagination2 count], lastObject);
 
   return v12;
 }

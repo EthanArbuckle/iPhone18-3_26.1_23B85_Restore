@@ -1,28 +1,28 @@
 @interface PendingPublishRequest
-+ (id)predicateForStatusTypeIdentifier:(id)a3;
-+ (id)predicateForStatusUniqueIdentifier:(id)a3;
++ (id)predicateForStatusTypeIdentifier:(id)identifier;
++ (id)predicateForStatusUniqueIdentifier:(id)identifier;
 @end
 
 @implementation PendingPublishRequest
 
-+ (id)predicateForStatusTypeIdentifier:(id)a3
++ (id)predicateForStatusTypeIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[PendingPublishRequest statusTypeIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
-+ (id)predicateForStatusUniqueIdentifier:(id)a3
++ (id)predicateForStatusUniqueIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[PendingPublishRequest statusUniqueIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface ARCoreRESkeletonResults
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)imageResolution;
-- (__n128)setCameraIntrinsics:(__n128)a3;
-- (id)anchorsForCameraWithTransform:(float32x4_t)a3 referenceOriginTransform:(float32x4_t)a4 existingAnchors:(float32x4_t)a5 anchorsToRemove:(uint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (__n128)setCameraIntrinsics:(__n128)intrinsics;
+- (id)anchorsForCameraWithTransform:(float32x4_t)transform referenceOriginTransform:(float32x4_t)originTransform existingAnchors:(float32x4_t)anchors anchorsToRemove:(uint64_t)remove;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ARCoreRESkeletonResults
 
-- (id)anchorsForCameraWithTransform:(float32x4_t)a3 referenceOriginTransform:(float32x4_t)a4 existingAnchors:(float32x4_t)a5 anchorsToRemove:(uint64_t)a6
+- (id)anchorsForCameraWithTransform:(float32x4_t)transform referenceOriginTransform:(float32x4_t)originTransform existingAnchors:(float32x4_t)anchors anchorsToRemove:(uint64_t)remove
 {
   v89 = *MEMORY[0x1E69E9840];
   v48 = a7;
@@ -35,8 +35,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 identifier];
-          [v65 setObject:v11 forKey:v12];
+          identifier = [v11 identifier];
+          [v65 setObject:v11 forKey:identifier];
         }
       }
 
@@ -51,8 +51,8 @@
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v49 = [a1 retargetedSkeletons];
-  v13 = [v49 countByEnumeratingWithState:&v70 objects:v87 count:16];
+  retargetedSkeletons = [self retargetedSkeletons];
+  v13 = [retargetedSkeletons countByEnumeratingWithState:&v70 objects:v87 count:16];
   if (v13)
   {
     v51 = *v71;
@@ -63,7 +63,7 @@
       {
         if (*v71 != v51)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(retargetedSkeletons);
         }
 
         v16 = *(*(&v70 + 1) + 8 * j);
@@ -111,7 +111,7 @@
         v81 = v85;
         do
         {
-          *(&v82 + v34) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v78 + v34))), a3, *&v78.f32[v34 / 4], 1), a4, *(&v78 + v34), 2), a5, *(&v78 + v34), 3);
+          *(&v82 + v34) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v78 + v34))), transform, *&v78.f32[v34 / 4], 1), originTransform, *(&v78 + v34), 2), anchors, *(&v78 + v34), 3);
           v34 += 16;
         }
 
@@ -120,29 +120,29 @@
         v60 = *v83.i64;
         v62 = *v84.i64;
         v64 = *v85.i64;
-        v35 = [v16 identifier];
-        v36 = [v65 objectForKeyedSubscript:v35];
+        identifier2 = [v16 identifier];
+        v36 = [v65 objectForKeyedSubscript:identifier2];
 
         v37 = [ARBodyAnchor alloc];
         if (v36)
         {
-          v38 = [v36 identifier];
-          v39 = [(ARBodyAnchor *)v37 initWithIdentifier:v38 transform:1 tracked:v16 skeletonData:v58, v60, v62, v64];
+          identifier3 = [v36 identifier];
+          v39 = [(ARBodyAnchor *)v37 initWithIdentifier:identifier3 transform:1 tracked:v16 skeletonData:v58, v60, v62, v64];
 
-          v40 = [v16 identifier];
-          [v65 removeObjectForKey:v40];
+          identifier4 = [v16 identifier];
+          [v65 removeObjectForKey:identifier4];
         }
 
         else
         {
-          v40 = [v16 identifier];
-          v39 = [(ARBodyAnchor *)v37 initWithIdentifier:v40 transform:1 tracked:v16 skeletonData:v58, v60, v62, v64];
+          identifier4 = [v16 identifier];
+          v39 = [(ARBodyAnchor *)v37 initWithIdentifier:identifier4 transform:1 tracked:v16 skeletonData:v58, v60, v62, v64];
         }
 
         [v56 addObject:v39];
       }
 
-      v13 = [v49 countByEnumeratingWithState:&v70 objects:v87 count:16];
+      v13 = [retargetedSkeletons countByEnumeratingWithState:&v70 objects:v87 count:16];
     }
 
     while (v13);
@@ -152,8 +152,8 @@
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v41 = [v65 allValues];
-  v42 = [v41 countByEnumeratingWithState:&v66 objects:v86 count:16];
+  allValues = [v65 allValues];
+  v42 = [allValues countByEnumeratingWithState:&v66 objects:v86 count:16];
   if (v42)
   {
     v43 = *v67;
@@ -163,7 +163,7 @@
       {
         if (*v67 != v43)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(allValues);
         }
 
         v45 = *(*(&v66 + 1) + 8 * k);
@@ -174,7 +174,7 @@
         }
       }
 
-      v42 = [v41 countByEnumeratingWithState:&v66 objects:v86 count:16];
+      v42 = [allValues countByEnumeratingWithState:&v66 objects:v86 count:16];
     }
 
     while (v42);
@@ -183,11 +183,11 @@
   return v56;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_timestamp;
-  v6 = [(NSArray *)self->_retargetedSkeletons copyWithZone:a3];
+  v6 = [(NSArray *)self->_retargetedSkeletons copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -200,12 +200,12 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v9 = *(v5 + 2) == self->_timestamp && ([v5[1] isEqual:self->_retargetedSkeletons] & 1) == 0 && (v7 = vdupq_n_s32(0x38FA0000u), v8 = vandq_s8(vandq_s8(vcgeq_f32(v7, vabdq_f32(v6[4], *&self[1]._timestamp)), vcgeq_f32(v7, vabdq_f32(v6[3], *&self[1].super.isa))), vcgeq_f32(v7, vabdq_f32(v6[5], *&self[1]._imageResolution.height))), v8.i32[3] = v8.i32[2], (vminvq_u32(v8) & 0x80000000) != 0) && *v6[2].i64 == self->_imageResolution.height && *&v6[1].i64[1] == self->_imageResolution.width;
   }
@@ -218,10 +218,10 @@
   return v9;
 }
 
-- (__n128)setCameraIntrinsics:(__n128)a3
+- (__n128)setCameraIntrinsics:(__n128)intrinsics
 {
   result[3] = a2;
-  result[4] = a3;
+  result[4] = intrinsics;
   result[5] = a4;
   return result;
 }

@@ -1,19 +1,19 @@
 @interface HKMedicationControl
 + (id)serverInterface;
 - (HKMedicationControl)init;
-- (HKMedicationControl)initWithHealthStore:(id)a3;
-- (void)accountDevicesInfoTriggeringUpdate:(BOOL)a3 completion:(id)a4;
-- (void)allDismissedDrugInteractionsWithCompletion:(id)a3;
-- (void)allDismissedPregnancyLactationInteractionsWithCompletion:(id)a3;
-- (void)allDismissedRemoteScheduleUnavailableRecordsWithCompletion:(id)a3;
-- (void)deleteDismissedDrugInteractionsForMedication:(id)a3 completion:(id)a4;
-- (void)deleteDismissedPregnancyLactationInteractionsForMedication:(id)a3 interactionTypes:(id)a4 completion:(id)a5;
-- (void)deleteDismissedRemoteScheduleUnavailableForMedication:(id)a3 completion:(id)a4;
-- (void)markDrugInteractionAsDismissed:(id)a3 completion:(id)a4;
-- (void)markPregnancyLactationInteractionForMedicationAsDismissed:(id)a3 interactionType:(int64_t)a4 completion:(id)a5;
-- (void)markRemoteScheduleUnavailableRecordsAsDismissed:(id)a3 completion:(id)a4;
-- (void)unitTest_noOpWithCompletion:(id)a3;
-- (void)updateLocalDeviceValuesNowWithCompletion:(id)a3;
+- (HKMedicationControl)initWithHealthStore:(id)store;
+- (void)accountDevicesInfoTriggeringUpdate:(BOOL)update completion:(id)completion;
+- (void)allDismissedDrugInteractionsWithCompletion:(id)completion;
+- (void)allDismissedPregnancyLactationInteractionsWithCompletion:(id)completion;
+- (void)allDismissedRemoteScheduleUnavailableRecordsWithCompletion:(id)completion;
+- (void)deleteDismissedDrugInteractionsForMedication:(id)medication completion:(id)completion;
+- (void)deleteDismissedPregnancyLactationInteractionsForMedication:(id)medication interactionTypes:(id)types completion:(id)completion;
+- (void)deleteDismissedRemoteScheduleUnavailableForMedication:(id)medication completion:(id)completion;
+- (void)markDrugInteractionAsDismissed:(id)dismissed completion:(id)completion;
+- (void)markPregnancyLactationInteractionForMedicationAsDismissed:(id)dismissed interactionType:(int64_t)type completion:(id)completion;
+- (void)markRemoteScheduleUnavailableRecordsAsDismissed:(id)dismissed completion:(id)completion;
+- (void)unitTest_noOpWithCompletion:(id)completion;
+- (void)updateLocalDeviceValuesNowWithCompletion:(id)completion;
 @end
 
 @implementation HKMedicationControl
@@ -28,20 +28,20 @@
   return 0;
 }
 
-- (HKMedicationControl)initWithHealthStore:(id)a3
+- (HKMedicationControl)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = HKMedicationControl;
   v6 = [(HKMedicationControl *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc(MEMORY[0x277CCDAA0]);
     healthStore = v7->_healthStore;
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v8 initWithHealthStore:healthStore taskIdentifier:@"HKMedicationControlServerIdentifier" exportedObject:v7 taskUUID:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v11 = [v8 initWithHealthStore:healthStore taskIdentifier:@"HKMedicationControlServerIdentifier" exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v11;
 
@@ -51,9 +51,9 @@
   return v7;
 }
 
-- (void)updateLocalDeviceValuesNowWithCompletion:(id)a3
+- (void)updateLocalDeviceValuesNowWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -69,15 +69,15 @@
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)accountDevicesInfoTriggeringUpdate:(BOOL)a3 completion:(id)a4
+- (void)accountDevicesInfoTriggeringUpdate:(BOOL)update completion:(id)completion
 {
-  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__HKMedicationControl_accountDevicesInfoTriggeringUpdate_completion___block_invoke;
   v11[3] = &unk_2796CACA8;
-  v13 = a3;
+  updateCopy = update;
   v12 = v6;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -88,28 +88,28 @@
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 
-- (void)markRemoteScheduleUnavailableRecordsAsDismissed:(id)a3 completion:(id)a4
+- (void)markRemoteScheduleUnavailableRecordsAsDismissed:(id)dismissed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dismissedCopy = dismissed;
+  completionCopy = completion;
+  if (!dismissedCopy)
   {
     [HKMedicationControl markRemoteScheduleUnavailableRecordsAsDismissed:completion:];
   }
 
-  if (![v6 count])
+  if (![dismissedCopy count])
   {
     [HKMedicationControl markRemoteScheduleUnavailableRecordsAsDismissed:completion:];
   }
 
-  v8 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v8 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__HKMedicationControl_markRemoteScheduleUnavailableRecordsAsDismissed_completion___block_invoke;
   v14[3] = &unk_2796CACD0;
-  v15 = v6;
+  v15 = dismissedCopy;
   v16 = v8;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -117,13 +117,13 @@
   v12[3] = &unk_2796CA298;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
+  v11 = dismissedCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)allDismissedRemoteScheduleUnavailableRecordsWithCompletion:(id)a3
+- (void)allDismissedRemoteScheduleUnavailableRecordsWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -139,16 +139,16 @@
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)deleteDismissedRemoteScheduleUnavailableForMedication:(id)a3 completion:(id)a4
+- (void)deleteDismissedRemoteScheduleUnavailableForMedication:(id)medication completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  medicationCopy = medication;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __88__HKMedicationControl_deleteDismissedRemoteScheduleUnavailableForMedication_completion___block_invoke;
   v13[3] = &unk_2796CACD0;
-  v14 = v6;
+  v14 = medicationCopy;
   v15 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -156,27 +156,27 @@
   v11[3] = &unk_2796CA298;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = medicationCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)markDrugInteractionAsDismissed:(id)a3 completion:(id)a4
+- (void)markDrugInteractionAsDismissed:(id)dismissed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dismissedCopy = dismissed;
+  completionCopy = completion;
+  if (!dismissedCopy)
   {
     [HKMedicationControl markDrugInteractionAsDismissed:completion:];
   }
 
-  v8 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v8 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__HKMedicationControl_markDrugInteractionAsDismissed_completion___block_invoke;
   v14[3] = &unk_2796CACD0;
-  v15 = v6;
+  v15 = dismissedCopy;
   v16 = v8;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -184,13 +184,13 @@
   v12[3] = &unk_2796CA298;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
+  v11 = dismissedCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)allDismissedDrugInteractionsWithCompletion:(id)a3
+- (void)allDismissedDrugInteractionsWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -206,25 +206,25 @@
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)deleteDismissedDrugInteractionsForMedication:(id)a3 completion:(id)a4
+- (void)deleteDismissedDrugInteractionsForMedication:(id)medication completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstConceptIdentifier];
+  medicationCopy = medication;
+  completionCopy = completion;
+  firstConceptIdentifier = [medicationCopy firstConceptIdentifier];
 
-  if (!v8)
+  if (!firstConceptIdentifier)
   {
     [HKMedicationControl deleteDismissedDrugInteractionsForMedication:completion:];
   }
 
-  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__HKMedicationControl_deleteDismissedDrugInteractionsForMedication_completion___block_invoke;
   v15[3] = &unk_2796CACD0;
-  v16 = v6;
+  v16 = medicationCopy;
   v17 = v9;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -232,30 +232,30 @@
   v13[3] = &unk_2796CA298;
   v14 = v17;
   v11 = v17;
-  v12 = v6;
+  v12 = medicationCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 
-- (void)markPregnancyLactationInteractionForMedicationAsDismissed:(id)a3 interactionType:(int64_t)a4 completion:(id)a5
+- (void)markPregnancyLactationInteractionForMedicationAsDismissed:(id)dismissed interactionType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 firstConceptIdentifier];
+  dismissedCopy = dismissed;
+  completionCopy = completion;
+  firstConceptIdentifier = [dismissedCopy firstConceptIdentifier];
 
-  if (!v10)
+  if (!firstConceptIdentifier)
   {
     [HKMedicationControl markPregnancyLactationInteractionForMedicationAsDismissed:interactionType:completion:];
   }
 
-  v11 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v9];
+  v11 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __108__HKMedicationControl_markPregnancyLactationInteractionForMedicationAsDismissed_interactionType_completion___block_invoke;
   v17[3] = &unk_2796CACF8;
-  v18 = v8;
-  v20 = a4;
+  v18 = dismissedCopy;
+  typeCopy = type;
   v19 = v11;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -263,13 +263,13 @@
   v15[3] = &unk_2796CA298;
   v16 = v19;
   v13 = v19;
-  v14 = v8;
+  v14 = dismissedCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)allDismissedPregnancyLactationInteractionsWithCompletion:(id)a3
+- (void)allDismissedPregnancyLactationInteractionsWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -285,27 +285,27 @@
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)deleteDismissedPregnancyLactationInteractionsForMedication:(id)a3 interactionTypes:(id)a4 completion:(id)a5
+- (void)deleteDismissedPregnancyLactationInteractionsForMedication:(id)medication interactionTypes:(id)types completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstConceptIdentifier];
+  medicationCopy = medication;
+  typesCopy = types;
+  completionCopy = completion;
+  firstConceptIdentifier = [medicationCopy firstConceptIdentifier];
 
-  if (!v11)
+  if (!firstConceptIdentifier)
   {
     [HKMedicationControl deleteDismissedPregnancyLactationInteractionsForMedication:interactionTypes:completion:];
   }
 
-  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __110__HKMedicationControl_deleteDismissedPregnancyLactationInteractionsForMedication_interactionTypes_completion___block_invoke;
   v19[3] = &unk_2796CAD20;
-  v20 = v8;
-  v21 = v9;
+  v20 = medicationCopy;
+  v21 = typesCopy;
   v22 = v12;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -313,8 +313,8 @@
   v17[3] = &unk_2796CA298;
   v18 = v22;
   v14 = v22;
-  v15 = v9;
-  v16 = v8;
+  v15 = typesCopy;
+  v16 = medicationCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v19 errorHandler:v17];
 }
 
@@ -332,23 +332,23 @@
   return v2;
 }
 
-- (void)unitTest_noOpWithCompletion:(id)a3
+- (void)unitTest_noOpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  completionCopy = completion;
+  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__HKMedicationControl_unitTest_noOpWithCompletion___block_invoke;
   v11[3] = &unk_2796CAC80;
-  v12 = v4;
+  v12 = completionCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__HKMedicationControl_unitTest_noOpWithCompletion___block_invoke_2;
   v9[3] = &unk_2796CA298;
   v10 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 

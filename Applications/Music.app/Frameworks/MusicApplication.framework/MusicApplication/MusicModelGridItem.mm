@@ -1,13 +1,13 @@
 @interface MusicModelGridItem
 + (id)requiredStoreLibraryPersonalizationProperties;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFavoritedModelObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFavoritedModelObject:(id)object;
 - (id)backgroundArtworkCatalog;
 - (id)editorialArtworkCatalog;
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
-- (id)storeContentItemObjectPropertiesFor:(id)a3;
+- (id)storeContentItemObjectPropertiesFor:(id)for;
 - (id)videoBackgroundArtworkCatalog;
 @end
 
@@ -15,11 +15,11 @@
 
 - (id)backgroundArtworkCatalog
 {
-  v3 = [(MusicModelGridItem *)self backgroundArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  backgroundArtworkCatalogBlock = [(MusicModelGridItem *)self backgroundArtworkCatalogBlock];
+  v4 = backgroundArtworkCatalogBlock;
+  if (backgroundArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(backgroundArtworkCatalogBlock + 16))(backgroundArtworkCatalogBlock, self);
   }
 
   else
@@ -32,11 +32,11 @@
 
 - (id)editorialArtworkCatalog
 {
-  v3 = [(MusicModelGridItem *)self editorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  editorialArtworkCatalogBlock = [(MusicModelGridItem *)self editorialArtworkCatalogBlock];
+  v4 = editorialArtworkCatalogBlock;
+  if (editorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(editorialArtworkCatalogBlock + 16))(editorialArtworkCatalogBlock, self);
   }
 
   else
@@ -49,11 +49,11 @@
 
 - (id)videoBackgroundArtworkCatalog
 {
-  v3 = [(MusicModelGridItem *)self videoBackgroundArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  videoBackgroundArtworkCatalogBlock = [(MusicModelGridItem *)self videoBackgroundArtworkCatalogBlock];
+  v4 = videoBackgroundArtworkCatalogBlock;
+  if (videoBackgroundArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(videoBackgroundArtworkCatalogBlock + 16))(videoBackgroundArtworkCatalogBlock, self);
   }
 
   else
@@ -84,20 +84,20 @@
   return v5;
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(MusicModelGridItem *)self contentItem];
-  v6 = [v4 relationships];
+  propertiesCopy = properties;
+  contentItem = [(MusicModelGridItem *)self contentItem];
+  relationships = [propertiesCopy relationships];
 
-  v7 = [v6 objectForKey:@"MusicModelRelationshipGridItemContentItem"];
+  v7 = [relationships objectForKey:@"MusicModelRelationshipGridItemContentItem"];
   v8 = v7;
   if (!v7)
   {
     v8 = +[MPPropertySet emptyPropertySet];
   }
 
-  v9 = [v5 personalizationScopedPropertiesForProperties:v8];
+  v9 = [contentItem personalizationScopedPropertiesForProperties:v8];
   v10 = v9;
   if (v9)
   {
@@ -120,24 +120,24 @@
 
 - (id)relativeModelObjectForStoreLibraryPersonalization
 {
-  v2 = [(MusicModelGridItem *)self contentItem];
-  v3 = [v2 relativeModelObjectForStoreLibraryPersonalization];
+  contentItem = [(MusicModelGridItem *)self contentItem];
+  relativeModelObjectForStoreLibraryPersonalization = [contentItem relativeModelObjectForStoreLibraryPersonalization];
 
-  return v3;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MusicModelGridItem *)self identifiers];
+  objectCopy = object;
+  identifiers = [(MusicModelGridItem *)self identifiers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __79__MusicModelGridItem_objectWithStoreLibraryPersonalizationRelativeModelObject___block_invoke;
   v9[3] = &unk_CEF1E8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(MusicModelGridItem *)self copyWithIdentifiers:v5 block:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [(MusicModelGridItem *)self copyWithIdentifiers:identifiers block:v9];
 
   return v7;
 }
@@ -152,9 +152,9 @@ void __79__MusicModelGridItem_objectWithStoreLibraryPersonalizationRelativeModel
   [v4 setContentItem:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -166,9 +166,9 @@ void __79__MusicModelGridItem_objectWithStoreLibraryPersonalizationRelativeModel
     v7[1] = 3221225472;
     v7[2] = __30__MusicModelGridItem_isEqual___block_invoke;
     v7[3] = &unk_CEF210;
-    v9 = self;
+    selfCopy = self;
     v10 = &v11;
-    v8 = v4;
+    v8 = equalCopy;
     [MPModelObject performWithoutEnforcement:v7];
     v5 = *(v12 + 24);
 
@@ -460,28 +460,28 @@ void __30__MusicModelGridItem_isEqual___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isFavoritedModelObject:(id)a3
+- (BOOL)isFavoritedModelObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 isFavorite];
+    isFavorite = [objectCopy isFavorite];
   }
 
   else
   {
-    v4 = 0;
+    isFavorite = 0;
   }
 
-  return v4;
+  return isFavorite;
 }
 
-- (id)storeContentItemObjectPropertiesFor:(id)a3
+- (id)storeContentItemObjectPropertiesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_272264(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_272264(forCopy);
 
   return v6;
 }

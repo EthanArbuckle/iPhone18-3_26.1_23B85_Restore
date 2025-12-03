@@ -1,55 +1,55 @@
 @interface AMSPushParsableGenericNotification
-+ (BOOL)_shouldPresentAlertForPayload:(id)a3;
-+ (id)_generateDialogRequestFromPayload:(id)a3 config:(id)a4;
-+ (id)_generateNotificationFromPayload:(id)a3 config:(id)a4;
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5;
++ (BOOL)_shouldPresentAlertForPayload:(id)payload;
++ (id)_generateDialogRequestFromPayload:(id)payload config:(id)config;
++ (id)_generateNotificationFromPayload:(id)payload config:(id)config;
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag;
 @end
 
 @implementation AMSPushParsableGenericNotification
 
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 clientIdentifier];
+  payloadCopy = payload;
+  configCopy = config;
+  bagCopy = bag;
+  clientIdentifier = [payloadCopy clientIdentifier];
   v12 = +[AMSLogConfig sharedPushNotificationConfig];
   if (!v12)
   {
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v8 logKey];
+    logKey = [payloadCopy logKey];
     *buf = 138543874;
-    v28 = a1;
+    selfCopy4 = self;
     v29 = 2114;
-    v30 = v14;
+    v30 = logKey;
     v31 = 2114;
-    v32 = v11;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification with identifier: %{public}@", buf, 0x20u);
+    v32 = clientIdentifier;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification with identifier: %{public}@", buf, 0x20u);
   }
 
-  if ([a1 _shouldPresentAlertForPayload:v8])
+  if ([self _shouldPresentAlertForPayload:payloadCopy])
   {
-    v15 = [a1 _generateDialogRequestFromPayload:v8 config:v9];
+    v15 = [self _generateDialogRequestFromPayload:payloadCopy config:configCopy];
     if (v15)
     {
       v16 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v15];
-      v17 = [(AMSSystemAlertDialogTask *)v16 present];
+      present = [(AMSSystemAlertDialogTask *)v16 present];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __75__AMSPushParsableGenericNotification_handleNotificationPayload_config_bag___block_invoke;
       v23[3] = &unk_1E73B85C8;
-      v24 = v10;
-      v26 = a1;
-      v25 = v8;
-      [v17 addFinishBlock:v23];
+      v24 = bagCopy;
+      selfCopy2 = self;
+      v25 = payloadCopy;
+      [present addFinishBlock:v23];
 
-      v18 = v24;
+      oSLogObject2 = v24;
     }
 
     else
@@ -60,26 +60,26 @@
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [(AMSSystemAlertDialogTask *)v16 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [(AMSSystemAlertDialogTask *)v16 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v8 logKey];
+        logKey2 = [payloadCopy logKey];
         *buf = 138543618;
-        v28 = a1;
+        selfCopy4 = self;
         v29 = 2114;
-        v30 = v20;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine dialog request.", buf, 0x16u);
+        v30 = logKey2;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine dialog request.", buf, 0x16u);
       }
     }
   }
 
   else
   {
-    v19 = [[AMSUserNotification alloc] initWithPayload:v8 andConfig:v9];
+    v19 = [[AMSUserNotification alloc] initWithPayload:payloadCopy andConfig:configCopy];
     if (v19)
     {
       v15 = v19;
-      v16 = [AMSUserNotificationCenter postNotification:v19 bag:v10 centerBundleId:v11];
+      v16 = [AMSUserNotificationCenter postNotification:v19 bag:bagCopy centerBundleId:clientIdentifier];
       [(AMSSystemAlertDialogTask *)v16 waitUntilFinished];
     }
 
@@ -91,15 +91,15 @@
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v21 = [(AMSSystemAlertDialogTask *)v16 OSLogObject];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [(AMSSystemAlertDialogTask *)v16 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v8 logKey];
+        logKey3 = [payloadCopy logKey];
         *buf = 138543618;
-        v28 = a1;
+        selfCopy4 = self;
         v29 = 2114;
-        v30 = v22;
-        _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine user notification.", buf, 0x16u);
+        v30 = logKey3;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine user notification.", buf, 0x16u);
       }
 
       v15 = 0;
@@ -143,15 +143,15 @@ void __75__AMSPushParsableGenericNotification_handleNotificationPayload_config_b
   }
 }
 
-+ (BOOL)_shouldPresentAlertForPayload:(id)a3
++ (BOOL)_shouldPresentAlertForPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 clientIdentifier];
-  v5 = [v4 length];
+  payloadCopy = payload;
+  clientIdentifier = [payloadCopy clientIdentifier];
+  v5 = [clientIdentifier length];
 
   if (v5)
   {
-    v6 = [v3 alertType] != 2;
+    v6 = [payloadCopy alertType] != 2;
   }
 
   else
@@ -162,10 +162,10 @@ void __75__AMSPushParsableGenericNotification_handleNotificationPayload_config_b
   return v6;
 }
 
-+ (id)_generateDialogRequestFromPayload:(id)a3 config:(id)a4
++ (id)_generateDialogRequestFromPayload:(id)payload config:(id)config
 {
-  v4 = a3;
-  v5 = [v4 aps];
+  payloadCopy = payload;
+  v5 = [payloadCopy aps];
   v6 = [v5 objectForKeyedSubscript:@"alert"];
 
   objc_opt_class();
@@ -191,7 +191,7 @@ void __75__AMSPushParsableGenericNotification_handleNotificationPayload_config_b
       v6 = 0;
     }
 
-    v10 = [v4 aps];
+    v10 = [payloadCopy aps];
     v11 = [v10 objectForKeyedSubscript:@"uuid"];
 
     v12 = [v7 objectForKeyedSubscript:@"title"];
@@ -231,8 +231,8 @@ LABEL_16:
         }
 
         v21 = MEMORY[0x1E695DFF8];
-        v22 = [v4 URLString];
-        v23 = [v21 URLWithString:v22];
+        uRLString = [payloadCopy URLString];
+        v23 = [v21 URLWithString:uRLString];
 
         v9 = [[AMSDialogRequest alloc] initWithTitle:v13 message:v6];
         [(AMSDialogRequest *)v9 setIdentifier:v11];
@@ -259,8 +259,8 @@ LABEL_16:
     {
     }
 
-    v18 = [MEMORY[0x1E696AAE8] ams_AppleMediaServicesBundle];
-    v17 = [v18 localizedStringForKey:@"OK" value:&stru_1F071BA78 table:0];
+    ams_AppleMediaServicesBundle = [MEMORY[0x1E696AAE8] ams_AppleMediaServicesBundle];
+    v17 = [ams_AppleMediaServicesBundle localizedStringForKey:@"OK" value:&stru_1F071BA78 table:0];
 
     v16 = 0;
     goto LABEL_16;
@@ -275,12 +275,12 @@ LABEL_25:
   return v9;
 }
 
-+ (id)_generateNotificationFromPayload:(id)a3 config:(id)a4
++ (id)_generateNotificationFromPayload:(id)payload config:(id)config
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 aps];
+  payloadCopy = payload;
+  configCopy = config;
+  v7 = [payloadCopy aps];
   v8 = [v7 objectForKeyedSubscript:@"alert"];
 
   objc_opt_class();
@@ -337,8 +337,8 @@ LABEL_6:
   if (!v16)
   {
 LABEL_15:
-    v19 = [MEMORY[0x1E696AAE8] ams_AppleMediaServicesBundle];
-    v18 = [v19 localizedStringForKey:@"OK" value:&stru_1F071BA78 table:0];
+    ams_AppleMediaServicesBundle = [MEMORY[0x1E696AAE8] ams_AppleMediaServicesBundle];
+    v18 = [ams_AppleMediaServicesBundle localizedStringForKey:@"OK" value:&stru_1F071BA78 table:0];
 
     v17 = 0;
     goto LABEL_16;
@@ -349,10 +349,10 @@ LABEL_15:
 LABEL_16:
 
   v20 = MEMORY[0x1E695DFF8];
-  v21 = [v5 URLString];
-  v22 = [v20 URLWithString:v21];
+  uRLString = [payloadCopy URLString];
+  v22 = [v20 URLWithString:uRLString];
 
-  v23 = [v5 clientIdentifier];
+  clientIdentifier = [payloadCopy clientIdentifier];
   if ([v14 length])
   {
     v24 = v14;
@@ -361,17 +361,17 @@ LABEL_16:
     v12 = [[AMSUserNotification alloc] initWithTitle:v24];
     v36 = v11;
     [(AMSUserNotification *)v12 setInformativeText:v11];
-    v26 = [v5 logKey];
-    [(AMSUserNotification *)v12 setLogKey:v26];
+    logKey = [payloadCopy logKey];
+    [(AMSUserNotification *)v12 setLogKey:logKey];
 
-    v27 = [v5 account];
-    [(AMSUserNotification *)v12 setAccount:v27];
+    account = [payloadCopy account];
+    [(AMSUserNotification *)v12 setAccount:account];
 
-    [(AMSUserNotification *)v12 setCenterBundleIdentifier:v23];
-    v28 = [v6 userNotificationExtensionId];
-    [(AMSUserNotification *)v12 setCategoryIdentifier:v28];
+    [(AMSUserNotification *)v12 setCenterBundleIdentifier:clientIdentifier];
+    userNotificationExtensionId = [configCopy userNotificationExtensionId];
+    [(AMSUserNotification *)v12 setCategoryIdentifier:userNotificationExtensionId];
 
-    v29 = [v5 aps];
+    v29 = [payloadCopy aps];
     v30 = [v29 objectForKeyedSubscript:@"uuid"];
 
     if ([v30 length])

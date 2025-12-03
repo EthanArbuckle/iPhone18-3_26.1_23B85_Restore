@@ -1,7 +1,7 @@
 @interface MapsSuggestionsVehicleBluetoothFeeler
 - (BOOL)updateSignals;
-- (MapsSuggestionsVehicleBluetoothFeeler)initWithDelegate:(id)a3 name:(id)a4;
-- (void)_updateForConnectionState:(int)a3;
+- (MapsSuggestionsVehicleBluetoothFeeler)initWithDelegate:(id)delegate name:(id)name;
+- (void)_updateForConnectionState:(int)state;
 - (void)dealloc;
 @end
 
@@ -14,14 +14,14 @@
   return 1;
 }
 
-- (MapsSuggestionsVehicleBluetoothFeeler)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsVehicleBluetoothFeeler)initWithDelegate:(id)delegate name:(id)name
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, delegate);
+  nameCopy = name;
   v7 = objc_loadWeakRetained(&location);
   v24.receiver = self;
   v24.super_class = MapsSuggestionsVehicleBluetoothFeeler;
-  v8 = [(MapsSuggestionsBaseFeeler *)&v24 initWithDelegate:v7 name:v6];
+  v8 = [(MapsSuggestionsBaseFeeler *)&v24 initWithDelegate:v7 name:nameCopy];
 
   if (v8)
   {
@@ -93,11 +93,11 @@
   [(MapsSuggestionsVehicleBluetoothFeeler *)&v6 dealloc];
 }
 
-- (void)_updateForConnectionState:(int)a3
+- (void)_updateForConnectionState:(int)state
 {
-  if (sub_1000040F0(self) != a3)
+  if (sub_1000040F0(self) != state)
   {
-    sub_10004CBA8(self, a3);
+    sub_10004CBA8(self, state);
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {

@@ -2,37 +2,37 @@
 - (id)clear;
 - (id)clearUpNextItems;
 - (id)clearUpcomingItems;
-- (id)replaceWithPlaybackIntent:(id)a3 replaceIntent:(int64_t)a4;
+- (id)replaceWithPlaybackIntent:(id)intent replaceIntent:(int64_t)replaceIntent;
 @end
 
 @implementation _MPCPlayerResetTracklistCommand
 
-- (id)replaceWithPlaybackIntent:(id)a3 replaceIntent:(int64_t)a4
+- (id)replaceWithPlaybackIntent:(id)intent replaceIntent:(int64_t)replaceIntent
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_MPCPlayerCommand *)self response];
-  if (v7 && ![(_MPCPlayerResetTracklistCommand *)self supportsSetQueueCommand])
+  intentCopy = intent;
+  response = [(_MPCPlayerCommand *)self response];
+  if (response && ![(_MPCPlayerResetTracklistCommand *)self supportsSetQueueCommand])
   {
     v20 = 0;
     goto LABEL_11;
   }
 
-  v8 = +[MPCPlaybackIntent tracklistDataSourceClassForSource:](MPCPlaybackIntent, [v6 tracklistSource]);
-  v9 = [(_MPCPlayerCommand *)self playerPath];
-  v10 = [v9 resolvedPlaybackIntentDestination];
-  v11 = [(_MPCPlayerResetTracklistCommand *)self supportedQueueTypes];
-  v12 = [(_MPCPlayerResetTracklistCommand *)self supportedCustomDataQueueIdentifiers];
-  v13 = [v8 isValidReplaceIntent:v6 forDestination:v10 supportedQueueTypes:v11 supportedCustomDataQueueIdentifiers:v12];
+  v8 = +[MPCPlaybackIntent tracklistDataSourceClassForSource:](MPCPlaybackIntent, [intentCopy tracklistSource]);
+  playerPath = [(_MPCPlayerCommand *)self playerPath];
+  resolvedPlaybackIntentDestination = [playerPath resolvedPlaybackIntentDestination];
+  supportedQueueTypes = [(_MPCPlayerResetTracklistCommand *)self supportedQueueTypes];
+  supportedCustomDataQueueIdentifiers = [(_MPCPlayerResetTracklistCommand *)self supportedCustomDataQueueIdentifiers];
+  v13 = [v8 isValidReplaceIntent:intentCopy forDestination:resolvedPlaybackIntentDestination supportedQueueTypes:supportedQueueTypes supportedCustomDataQueueIdentifiers:supportedCustomDataQueueIdentifiers];
 
   v23[0] = @"MPCPlayerCommandRequestMediaRemoteOptionPlaybackIntent";
   v23[1] = @"MPCPlayerCommandRequestMediaRemoteOptionReplaceIntent";
-  v24[0] = v6;
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v24[0] = intentCopy;
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:replaceIntent];
   v24[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
 
-  if (v7)
+  if (response)
   {
     if (!v13)
     {
@@ -41,17 +41,17 @@
     }
 
     v16 = [MPCPlayerCommandRequest alloc];
-    v17 = [v7 controller];
-    v18 = [v7 request];
-    v19 = [v18 label];
-    v20 = [(MPCPlayerCommandRequest *)v16 initWithMediaRemoteCommand:122 options:v15 controller:v17 label:v19];
+    controller = [response controller];
+    request = [response request];
+    label = [request label];
+    v20 = [(MPCPlayerCommandRequest *)v16 initWithMediaRemoteCommand:122 options:v15 controller:controller label:label];
   }
 
   else
   {
     v21 = [MPCPlayerCommandRequest alloc];
-    v17 = [(_MPCPlayerCommand *)self playerPath];
-    v20 = [(MPCPlayerCommandRequest *)v21 initWithMediaRemoteCommand:122 options:v15 playerPath:v17 label:@"presumptuous command"];
+    controller = [(_MPCPlayerCommand *)self playerPath];
+    v20 = [(MPCPlayerCommandRequest *)v21 initWithMediaRemoteCommand:122 options:v15 playerPath:controller label:@"presumptuous command"];
   }
 
 LABEL_10:
@@ -62,18 +62,18 @@ LABEL_11:
 
 - (id)clearUpcomingItems
 {
-  v2 = [(_MPCPlayerCommand *)self response];
-  v3 = [v2 builder];
-  v4 = [v2 chain];
-  v5 = [v3 playerCommandEnabled:0 command:25021 chain:v4];
+  response = [(_MPCPlayerCommand *)self response];
+  builder = [response builder];
+  chain = [response chain];
+  v5 = [builder playerCommandEnabled:0 command:25021 chain:chain];
 
   if (v5)
   {
     v6 = [MPCPlayerCommandRequest alloc];
-    v7 = [v2 controller];
-    v8 = [v2 request];
-    v9 = [v8 label];
-    v10 = [(MPCPlayerCommandRequest *)v6 initWithMediaRemoteCommand:25021 options:MEMORY[0x1E695E0F8] controller:v7 label:v9];
+    controller = [response controller];
+    request = [response request];
+    label = [request label];
+    v10 = [(MPCPlayerCommandRequest *)v6 initWithMediaRemoteCommand:25021 options:MEMORY[0x1E695E0F8] controller:controller label:label];
   }
 
   else
@@ -86,18 +86,18 @@ LABEL_11:
 
 - (id)clearUpNextItems
 {
-  v2 = [(_MPCPlayerCommand *)self response];
-  v3 = [v2 builder];
-  v4 = [v2 chain];
-  v5 = [v3 playerCommandEnabled:0 command:144 chain:v4];
+  response = [(_MPCPlayerCommand *)self response];
+  builder = [response builder];
+  chain = [response chain];
+  v5 = [builder playerCommandEnabled:0 command:144 chain:chain];
 
   if (v5)
   {
     v6 = [MPCPlayerCommandRequest alloc];
-    v7 = [v2 controller];
-    v8 = [v2 request];
-    v9 = [v8 label];
-    v10 = [(MPCPlayerCommandRequest *)v6 initWithMediaRemoteCommand:144 options:MEMORY[0x1E695E0F8] controller:v7 label:v9];
+    controller = [response controller];
+    request = [response request];
+    label = [request label];
+    v10 = [(MPCPlayerCommandRequest *)v6 initWithMediaRemoteCommand:144 options:MEMORY[0x1E695E0F8] controller:controller label:label];
   }
 
   else
@@ -111,8 +111,8 @@ LABEL_11:
 - (id)clear
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_MPCPlayerCommand *)self response];
-  if (!v3 || ([(_MPCPlayerResetTracklistCommand *)self supportedQueueTypes]& 0x100) != 0)
+  response = [(_MPCPlayerCommand *)self response];
+  if (!response || ([(_MPCPlayerResetTracklistCommand *)self supportedQueueTypes]& 0x100) != 0)
   {
     MRSystemAppPlaybackQueueCreate();
     MRSystemAppPlaybackQueueSetReplaceIntent();
@@ -121,10 +121,10 @@ LABEL_11:
     v13[0] = ExternalRepresentation;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v7 = [MPCPlayerCommandRequest alloc];
-    v8 = [v3 controller];
-    v9 = [v3 request];
-    v10 = [v9 label];
-    v4 = [(MPCPlayerCommandRequest *)v7 initWithMediaRemoteCommand:122 options:v6 controller:v8 label:v10];
+    controller = [response controller];
+    request = [response request];
+    label = [request label];
+    v4 = [(MPCPlayerCommandRequest *)v7 initWithMediaRemoteCommand:122 options:v6 controller:controller label:label];
   }
 
   else

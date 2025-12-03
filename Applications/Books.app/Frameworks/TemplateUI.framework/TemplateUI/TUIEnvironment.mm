@@ -1,43 +1,43 @@
 @interface TUIEnvironment
-- (BOOL)_setValue:(ResolvedValue *)a3 forName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEnvironment:(id)a3;
-- (BOOL)isSanitizedTraitCollectionEqualTo:(id)a3;
-- (BOOL)setFloat:(double)a3 forName:(id)a4;
-- (BOOL)setSymbol:(id)a3 forName:(id)a4;
+- (BOOL)_setValue:(ResolvedValue *)value forName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEnvironment:(id)environment;
+- (BOOL)isSanitizedTraitCollectionEqualTo:(id)to;
+- (BOOL)setFloat:(double)float forName:(id)name;
+- (BOOL)setSymbol:(id)symbol forName:(id)name;
 - (CGSize)viewSize;
 - (CGSize)viewSizeWithinSafeArea;
 - (CGSize)windowSize;
-- (ResolvedValue)lookupName:(SEL)a3 symtab:(Entry)a4;
-- (TUIEnvironment)initWithOther:(id)a3;
-- (TUIEnvironment)initWithTraitCollection:(id)a3 viewController:(id)a4 viewSize:(CGSize)a5 viewSafeAreaInsets:(UIEdgeInsets)a6;
-- (TUIEnvironment)initWithTraitCollection:(id)a3 viewController:(id)a4 viewSize:(CGSize)a5 viewSafeAreaInsets:(UIEdgeInsets)a6 windowSize:(CGSize)a7;
-- (TUIEnvironment)initWithViewController:(id)a3 viewSize:(CGSize)a4 viewSafeAreaInsets:(UIEdgeInsets)a5;
-- (TUIEnvironment)initWithViewController:(id)a3 viewSize:(CGSize)a4 viewSafeAreaInsets:(UIEdgeInsets)a5 windowSize:(CGSize)a6;
-- (TUIEnvironment)initWithViewSize:(CGSize)a3 viewSafeAreaInsets:(UIEdgeInsets)a4 traitCollection:(id)a5;
+- (ResolvedValue)lookupName:(SEL)name symtab:(Entry)symtab;
+- (TUIEnvironment)initWithOther:(id)other;
+- (TUIEnvironment)initWithTraitCollection:(id)collection viewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets;
+- (TUIEnvironment)initWithTraitCollection:(id)collection viewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets windowSize:(CGSize)windowSize;
+- (TUIEnvironment)initWithViewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets;
+- (TUIEnvironment)initWithViewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets windowSize:(CGSize)windowSize;
+- (TUIEnvironment)initWithViewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection;
 - (UIEdgeInsets)viewSafeAreaInsets;
 - (id).cxx_construct;
-- (id)_printDiffFromSelfToEnvironment:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)differenceMaskWithEnvironment:(id)a3;
+- (id)_printDiffFromSelfToEnvironment:(id)environment;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)differenceMaskWithEnvironment:(id)environment;
 - (void)_updateValues;
-- (void)setActiveAppearance:(unint64_t)a3;
-- (void)setContentSizeCategory:(unint64_t)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setDemoMode:(BOOL)a3;
-- (void)setDeviceClass:(unint64_t)a3;
-- (void)setDisplayClass:(unint64_t)a3;
-- (void)setHeightClass:(unint64_t)a3;
-- (void)setLanguage:(id)a3;
-- (void)setLayoutDirection:(unint64_t)a3;
-- (void)setOrientation:(unint64_t)a3;
-- (void)setSplit:(unint64_t)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTintColor:(id)a3;
-- (void)setViewSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setViewSize:(CGSize)a3;
-- (void)setWidthClass:(unint64_t)a3;
-- (void)setWindowSize:(CGSize)a3;
+- (void)setActiveAppearance:(unint64_t)appearance;
+- (void)setContentSizeCategory:(unint64_t)category;
+- (void)setContentsScale:(double)scale;
+- (void)setDemoMode:(BOOL)mode;
+- (void)setDeviceClass:(unint64_t)class;
+- (void)setDisplayClass:(unint64_t)class;
+- (void)setHeightClass:(unint64_t)class;
+- (void)setLanguage:(id)language;
+- (void)setLayoutDirection:(unint64_t)direction;
+- (void)setOrientation:(unint64_t)orientation;
+- (void)setSplit:(unint64_t)split;
+- (void)setStyle:(unint64_t)style;
+- (void)setTintColor:(id)color;
+- (void)setViewSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setViewSize:(CGSize)size;
+- (void)setWidthClass:(unint64_t)class;
+- (void)setWindowSize:(CGSize)size;
 @end
 
 @implementation TUIEnvironment
@@ -266,26 +266,26 @@
   self->_activeAppearanceValue.var0._integer = v52;
 }
 
-- (TUIEnvironment)initWithViewSize:(CGSize)a3 viewSafeAreaInsets:(UIEdgeInsets)a4 traitCollection:(id)a5
+- (TUIEnvironment)initWithViewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets traitCollection:(id)collection
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v13 = a5;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
   v27.receiver = self;
   v27.super_class = TUIEnvironment;
   v14 = [(TUIEnvironment *)&v27 init];
   if (v14)
   {
-    v15 = [(UITraitCollection *)v13 traitCollectionByModifyingTraits:&stru_2620A0];
+    v15 = [(UITraitCollection *)collectionCopy traitCollectionByModifyingTraits:&stru_2620A0];
     sanitizedTraitCollection = v14->_sanitizedTraitCollection;
     v14->_sanitizedTraitCollection = v15;
 
-    objc_storeStrong(&v14->_traitCollection, a5);
-    v14->_activeAppearance = _determineActiveAppearance(v13);
+    objc_storeStrong(&v14->_traitCollection, collection);
+    v14->_activeAppearance = _determineActiveAppearance(collectionCopy);
     v14->_viewSize.width = width;
     v14->_viewSize.height = height;
     v14->_viewSafeAreaInsets.top = top;
@@ -293,9 +293,9 @@
     v14->_viewSafeAreaInsets.bottom = bottom;
     v14->_viewSafeAreaInsets.right = right;
     v17 = +[UIWindow _applicationKeyWindow];
-    v18 = [v17 windowScene];
-    v19 = [v18 statusBarManager];
-    [v19 statusBarHeight];
+    windowScene = [v17 windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarHeight];
     v14->_statusBarHeight = v20;
 
     v14->_contentSizeCategory = 4;
@@ -306,11 +306,11 @@
     tintColor = v14->_tintColor;
     v14->_tintColor = v21;
 
-    objc_storeStrong(&v14->_traitCollection, a5);
+    objc_storeStrong(&v14->_traitCollection, collection);
     v23 = +[NSBundle mainBundle];
-    v24 = [v23 preferredLocalizations];
-    v25 = [v24 firstObject];
-    [(TUIEnvironment *)v14 setLanguage:v25];
+    preferredLocalizations = [v23 preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
+    [(TUIEnvironment *)v14 setLanguage:firstObject];
 
     [(TUIEnvironment *)v14 _updateValues];
   }
@@ -318,21 +318,21 @@
   return v14;
 }
 
-- (TUIEnvironment)initWithViewController:(id)a3 viewSize:(CGSize)a4 viewSafeAreaInsets:(UIEdgeInsets)a5
+- (TUIEnvironment)initWithViewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = [v12 viewIfLoaded];
-  v14 = [v13 window];
-  v15 = v14;
-  if (v14)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  viewIfLoaded = [controllerCopy viewIfLoaded];
+  window = [viewIfLoaded window];
+  v15 = window;
+  if (window)
   {
-    v16 = v14;
+    v16 = window;
   }
 
   else
@@ -343,44 +343,44 @@
   v17 = v16;
 
   [v17 bounds];
-  v20 = [(TUIEnvironment *)self initWithViewController:v12 viewSize:width viewSafeAreaInsets:height windowSize:top, left, bottom, right, v18, v19];
+  v20 = [(TUIEnvironment *)self initWithViewController:controllerCopy viewSize:width viewSafeAreaInsets:height windowSize:top, left, bottom, right, v18, v19];
 
   return v20;
 }
 
-- (TUIEnvironment)initWithViewController:(id)a3 viewSize:(CGSize)a4 viewSafeAreaInsets:(UIEdgeInsets)a5 windowSize:(CGSize)a6
+- (TUIEnvironment)initWithViewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets windowSize:(CGSize)windowSize
 {
-  height = a6.height;
-  width = a6.width;
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v12 = a4.height;
-  v13 = a4.width;
-  v15 = a3;
-  v16 = [v15 traitCollection];
-  v17 = [(TUIEnvironment *)self initWithTraitCollection:v16 viewController:v15 viewSize:v13 viewSafeAreaInsets:v12 windowSize:top, left, bottom, right, width, height];
+  height = windowSize.height;
+  width = windowSize.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  v12 = size.height;
+  v13 = size.width;
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
+  height = [(TUIEnvironment *)self initWithTraitCollection:traitCollection viewController:controllerCopy viewSize:v13 viewSafeAreaInsets:v12 windowSize:top, left, bottom, right, width, height];
 
-  return v17;
+  return height;
 }
 
-- (TUIEnvironment)initWithTraitCollection:(id)a3 viewController:(id)a4 viewSize:(CGSize)a5 viewSafeAreaInsets:(UIEdgeInsets)a6
+- (TUIEnvironment)initWithTraitCollection:(id)collection viewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a4;
-  v16 = [v15 viewIfLoaded];
-  v17 = [v16 window];
-  v18 = v17;
-  if (v17)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
+  controllerCopy = controller;
+  viewIfLoaded = [controllerCopy viewIfLoaded];
+  window = [viewIfLoaded window];
+  v18 = window;
+  if (window)
   {
-    v19 = v17;
+    v19 = window;
   }
 
   else
@@ -391,29 +391,29 @@
   v20 = v19;
 
   [v20 bounds];
-  v23 = [(TUIEnvironment *)self initWithTraitCollection:v14 viewController:v15 viewSize:width viewSafeAreaInsets:height windowSize:top, left, bottom, right, v21, v22];
+  v23 = [(TUIEnvironment *)self initWithTraitCollection:collectionCopy viewController:controllerCopy viewSize:width viewSafeAreaInsets:height windowSize:top, left, bottom, right, v21, v22];
 
   return v23;
 }
 
-- (TUIEnvironment)initWithTraitCollection:(id)a3 viewController:(id)a4 viewSize:(CGSize)a5 viewSafeAreaInsets:(UIEdgeInsets)a6 windowSize:(CGSize)a7
+- (TUIEnvironment)initWithTraitCollection:(id)collection viewController:(id)controller viewSize:(CGSize)size viewSafeAreaInsets:(UIEdgeInsets)insets windowSize:(CGSize)windowSize
 {
-  height = a7.height;
-  width = a7.width;
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  v13 = a5.height;
-  v14 = a5.width;
-  v17 = a3;
-  v18 = a4;
-  v19 = [(TUIEnvironment *)self initWithViewSize:v17 viewSafeAreaInsets:v14 traitCollection:v13, top, left, bottom, right];
-  v20 = v19;
-  if (v19)
+  height = windowSize.height;
+  width = windowSize.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  v13 = size.height;
+  v14 = size.width;
+  collectionCopy = collection;
+  controllerCopy = controller;
+  right = [(TUIEnvironment *)self initWithViewSize:collectionCopy viewSafeAreaInsets:v14 traitCollection:v13, top, left, bottom, right];
+  v20 = right;
+  if (right)
   {
-    [(TUIEnvironment *)v19 setWindowSize:width, height];
-    v21 = v17;
+    [(TUIEnvironment *)right setWindowSize:width, height];
+    v21 = collectionCopy;
     if (qword_2E6558 != -1)
     {
       sub_19BAD8();
@@ -553,20 +553,20 @@
     }
 
     [(TUIEnvironment *)v20 setSplit:v34];
-    v38 = v18;
-    v39 = [(UIViewController *)v38 _rotatingToInterfaceOrientation];
-    if (!v39)
+    v38 = controllerCopy;
+    _rotatingToInterfaceOrientation = [(UIViewController *)v38 _rotatingToInterfaceOrientation];
+    if (!_rotatingToInterfaceOrientation)
     {
-      v39 = [(UIViewController *)v38 interfaceOrientation];
-      if (!v39)
+      _rotatingToInterfaceOrientation = [(UIViewController *)v38 interfaceOrientation];
+      if (!_rotatingToInterfaceOrientation)
       {
         v40 = +[UIWindow _applicationKeyWindow];
-        v41 = [v40 windowScene];
-        v39 = [v41 interfaceOrientation];
+        windowScene = [v40 windowScene];
+        _rotatingToInterfaceOrientation = [windowScene interfaceOrientation];
       }
     }
 
-    if ((v39 - 1) < 2)
+    if ((_rotatingToInterfaceOrientation - 1) < 2)
     {
       v42 = 1;
     }
@@ -590,107 +590,107 @@
 
     [(TUIEnvironment *)v20 setStyle:v44];
     v45 = v43;
-    v46 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+    preferredContentSizeCategory = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-    if (v46 == UIContentSizeCategoryAccessibilityExtraExtraExtraLarge)
+    if (preferredContentSizeCategory == UIContentSizeCategoryAccessibilityExtraExtraExtraLarge)
     {
       v58 = 12;
     }
 
     else
     {
-      v47 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-      if (v47 == UIContentSizeCategoryAccessibilityExtraExtraLarge)
+      if (preferredContentSizeCategory2 == UIContentSizeCategoryAccessibilityExtraExtraLarge)
       {
         v58 = 11;
       }
 
       else
       {
-        v48 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+        preferredContentSizeCategory3 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-        if (v48 == UIContentSizeCategoryAccessibilityExtraLarge)
+        if (preferredContentSizeCategory3 == UIContentSizeCategoryAccessibilityExtraLarge)
         {
           v58 = 10;
         }
 
         else
         {
-          v49 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+          preferredContentSizeCategory4 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-          if (v49 == UIContentSizeCategoryAccessibilityLarge)
+          if (preferredContentSizeCategory4 == UIContentSizeCategoryAccessibilityLarge)
           {
             v58 = 9;
           }
 
           else
           {
-            v50 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+            preferredContentSizeCategory5 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-            if (v50 == UIContentSizeCategoryAccessibilityMedium)
+            if (preferredContentSizeCategory5 == UIContentSizeCategoryAccessibilityMedium)
             {
               v58 = 8;
             }
 
             else
             {
-              v51 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+              preferredContentSizeCategory6 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-              if (v51 == UIContentSizeCategoryExtraExtraExtraLarge)
+              if (preferredContentSizeCategory6 == UIContentSizeCategoryExtraExtraExtraLarge)
               {
                 v58 = 7;
               }
 
               else
               {
-                v52 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+                preferredContentSizeCategory7 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-                if (v52 == UIContentSizeCategoryExtraExtraLarge)
+                if (preferredContentSizeCategory7 == UIContentSizeCategoryExtraExtraLarge)
                 {
                   v58 = 6;
                 }
 
                 else
                 {
-                  v53 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+                  preferredContentSizeCategory8 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-                  if (v53 == UIContentSizeCategoryExtraLarge)
+                  if (preferredContentSizeCategory8 == UIContentSizeCategoryExtraLarge)
                   {
                     v58 = 5;
                   }
 
                   else
                   {
-                    v54 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+                    preferredContentSizeCategory9 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-                    if (v54 == UIContentSizeCategoryLarge)
+                    if (preferredContentSizeCategory9 == UIContentSizeCategoryLarge)
                     {
                       v58 = 4;
                     }
 
                     else
                     {
-                      v55 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+                      preferredContentSizeCategory10 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-                      if (v55 == UIContentSizeCategoryMedium)
+                      if (preferredContentSizeCategory10 == UIContentSizeCategoryMedium)
                       {
                         v58 = 3;
                       }
 
                       else
                       {
-                        v56 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+                        preferredContentSizeCategory11 = [(UITraitCollection *)v45 preferredContentSizeCategory];
 
-                        if (v56 == UIContentSizeCategorySmall)
+                        if (preferredContentSizeCategory11 == UIContentSizeCategorySmall)
                         {
                           v58 = 2;
                         }
 
                         else
                         {
-                          v57 = [(UITraitCollection *)v45 preferredContentSizeCategory];
-                          v58 = v57 == UIContentSizeCategoryExtraSmall;
+                          preferredContentSizeCategory12 = [(UITraitCollection *)v45 preferredContentSizeCategory];
+                          v58 = preferredContentSizeCategory12 == UIContentSizeCategoryExtraSmall;
                         }
                       }
                     }
@@ -706,9 +706,9 @@
     [(TUIEnvironment *)v20 setContentSizeCategory:v58];
     [(UITraitCollection *)v45 displayScale];
     [(TUIEnvironment *)v20 setContentsScale:?];
-    v59 = [(UIViewController *)v38 viewIfLoaded];
-    v60 = [v59 tintColor];
-    [(TUIEnvironment *)v20 setTintColor:v60];
+    viewIfLoaded = [(UIViewController *)v38 viewIfLoaded];
+    tintColor = [viewIfLoaded tintColor];
+    [(TUIEnvironment *)v20 setTintColor:tintColor];
 
     [(TUIEnvironment *)v20 setLayoutDirection:_determineLayoutDirection(v45, v38)];
     [(TUIEnvironment *)v20 setAccessibilityElementsNeeded:_AXSApplicationAccessibilityEnabled() != 0];
@@ -717,60 +717,60 @@
   return v20;
 }
 
-- (TUIEnvironment)initWithOther:(id)a3
+- (TUIEnvironment)initWithOther:(id)other
 {
-  v4 = a3;
-  [v4 viewSize];
+  otherCopy = other;
+  [otherCopy viewSize];
   v6 = v5;
   v8 = v7;
-  [v4 viewSafeAreaInsets];
+  [otherCopy viewSafeAreaInsets];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v4 traitCollection];
-  v18 = [(TUIEnvironment *)self initWithViewSize:v17 viewSafeAreaInsets:v6 traitCollection:v8, v10, v12, v14, v16];
+  traitCollection = [otherCopy traitCollection];
+  v18 = [(TUIEnvironment *)self initWithViewSize:traitCollection viewSafeAreaInsets:v6 traitCollection:v8, v10, v12, v14, v16];
 
   if (v18)
   {
-    v18->_deviceClass = [v4 deviceClass];
-    v18->_widthClass = [v4 widthClass];
-    v18->_heightClass = [v4 heightClass];
-    v18->_displayClass = [v4 displayClass];
-    v18->_split = [v4 split];
-    [v4 windowSize];
+    v18->_deviceClass = [otherCopy deviceClass];
+    v18->_widthClass = [otherCopy widthClass];
+    v18->_heightClass = [otherCopy heightClass];
+    v18->_displayClass = [otherCopy displayClass];
+    v18->_split = [otherCopy split];
+    [otherCopy windowSize];
     v18->_windowSize.width = v19;
     v18->_windowSize.height = v20;
-    v18->_orientation = [v4 orientation];
-    v18->_style = [v4 style];
-    v18->_contentSizeCategory = [v4 contentSizeCategory];
-    v18->_layoutDirection = [v4 layoutDirection];
-    v18->_accessibilityElementsNeeded = [v4 accessibilityElementsNeeded];
-    v21 = [v4 language];
+    v18->_orientation = [otherCopy orientation];
+    v18->_style = [otherCopy style];
+    v18->_contentSizeCategory = [otherCopy contentSizeCategory];
+    v18->_layoutDirection = [otherCopy layoutDirection];
+    v18->_accessibilityElementsNeeded = [otherCopy accessibilityElementsNeeded];
+    language = [otherCopy language];
     language = v18->_language;
-    v18->_language = v21;
+    v18->_language = language;
 
-    v18->_useFontFallback = [v4 useFontFallback];
+    v18->_useFontFallback = [otherCopy useFontFallback];
     [(TUIEnvironment *)v18 _updateValues];
   }
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithOther:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [(TUIEnvironment *)self isEqualToEnvironment:v4];
+    v6 = [(TUIEnvironment *)self isEqualToEnvironment:equalCopy];
   }
 
   else
@@ -781,35 +781,35 @@
   return v6;
 }
 
-- (BOOL)isEqualToEnvironment:(id)a3
+- (BOOL)isEqualToEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(TUIEnvironment *)self deviceClass];
-  if (v5 != [v4 deviceClass])
+  environmentCopy = environment;
+  deviceClass = [(TUIEnvironment *)self deviceClass];
+  if (deviceClass != [environmentCopy deviceClass])
   {
     goto LABEL_28;
   }
 
-  v6 = [(TUIEnvironment *)self widthClass];
-  if (v6 != [v4 widthClass])
+  widthClass = [(TUIEnvironment *)self widthClass];
+  if (widthClass != [environmentCopy widthClass])
   {
     goto LABEL_28;
   }
 
-  v7 = [(TUIEnvironment *)self heightClass];
-  if (v7 != [v4 heightClass])
+  heightClass = [(TUIEnvironment *)self heightClass];
+  if (heightClass != [environmentCopy heightClass])
   {
     goto LABEL_28;
   }
 
-  v8 = [(TUIEnvironment *)self displayClass];
-  if (v8 != [v4 displayClass])
+  displayClass = [(TUIEnvironment *)self displayClass];
+  if (displayClass != [environmentCopy displayClass])
   {
     goto LABEL_28;
   }
 
-  v9 = [(TUIEnvironment *)self split];
-  if (v9 != [v4 split])
+  split = [(TUIEnvironment *)self split];
+  if (split != [environmentCopy split])
   {
     goto LABEL_28;
   }
@@ -817,14 +817,14 @@
   [(TUIEnvironment *)self windowSize];
   v11 = v10;
   v13 = v12;
-  [v4 windowSize];
+  [environmentCopy windowSize];
   v15 = 0;
   if (v11 == v16 && v13 == v14)
   {
     [(TUIEnvironment *)self viewSize];
     v18 = v17;
     v20 = v19;
-    [v4 viewSize];
+    [environmentCopy viewSize];
     v15 = 0;
     if (v18 == v22 && v20 == v21)
     {
@@ -833,80 +833,80 @@
       v26 = v25;
       v28 = v27;
       v30 = v29;
-      [v4 viewSafeAreaInsets];
+      [environmentCopy viewSafeAreaInsets];
       v15 = 0;
       if (v26 == v34 && v24 == v31 && v30 == v33 && v28 == v32)
       {
         [(TUIEnvironment *)self statusBarHeight];
         v36 = v35;
-        [v4 statusBarHeight];
+        [environmentCopy statusBarHeight];
         if (v36 != v37)
         {
           goto LABEL_28;
         }
 
-        v38 = [(TUIEnvironment *)self style];
-        if (v38 != [v4 style])
+        style = [(TUIEnvironment *)self style];
+        if (style != [environmentCopy style])
         {
           goto LABEL_28;
         }
 
-        v39 = [(TUIEnvironment *)self demoMode];
-        if (v39 != [v4 demoMode])
+        demoMode = [(TUIEnvironment *)self demoMode];
+        if (demoMode != [environmentCopy demoMode])
         {
           goto LABEL_28;
         }
 
-        v40 = [(TUIEnvironment *)self orientation];
-        if (v40 != [v4 orientation])
+        orientation = [(TUIEnvironment *)self orientation];
+        if (orientation != [environmentCopy orientation])
         {
           goto LABEL_28;
         }
 
-        v41 = [(TUIEnvironment *)self contentSizeCategory];
-        if (v41 != [v4 contentSizeCategory])
+        contentSizeCategory = [(TUIEnvironment *)self contentSizeCategory];
+        if (contentSizeCategory != [environmentCopy contentSizeCategory])
         {
           goto LABEL_28;
         }
 
         [(TUIEnvironment *)self contentsScale];
         v43 = v42;
-        [v4 contentsScale];
+        [environmentCopy contentsScale];
         if (v43 != v44)
         {
           goto LABEL_28;
         }
 
-        v45 = [(TUIEnvironment *)self layoutDirection];
-        if (v45 != [v4 layoutDirection])
+        layoutDirection = [(TUIEnvironment *)self layoutDirection];
+        if (layoutDirection != [environmentCopy layoutDirection])
         {
           goto LABEL_28;
         }
 
-        v46 = [(TUIEnvironment *)self activeAppearance];
-        if (v46 != [v4 activeAppearance])
+        activeAppearance = [(TUIEnvironment *)self activeAppearance];
+        if (activeAppearance != [environmentCopy activeAppearance])
         {
           goto LABEL_28;
         }
 
-        v47 = [(TUIEnvironment *)self accessibilityElementsNeeded];
-        if (v47 != [v4 accessibilityElementsNeeded])
+        accessibilityElementsNeeded = [(TUIEnvironment *)self accessibilityElementsNeeded];
+        if (accessibilityElementsNeeded != [environmentCopy accessibilityElementsNeeded])
         {
           goto LABEL_28;
         }
 
-        v48 = [(TUIEnvironment *)self language];
-        v49 = [v4 language];
-        v50 = v49;
-        if (v48 == v49)
+        language = [(TUIEnvironment *)self language];
+        language2 = [environmentCopy language];
+        v50 = language2;
+        if (language == language2)
         {
         }
 
         else
         {
-          v51 = [(TUIEnvironment *)self language];
-          v52 = [v4 language];
-          v53 = [v51 isEqualToString:v52];
+          language3 = [(TUIEnvironment *)self language];
+          language4 = [environmentCopy language];
+          v53 = [language3 isEqualToString:language4];
 
           if (!v53)
           {
@@ -916,10 +916,10 @@ LABEL_28:
           }
         }
 
-        v54 = [(TUIEnvironment *)self useFontFallback];
-        if (v54 == [v4 useFontFallback])
+        useFontFallback = [(TUIEnvironment *)self useFontFallback];
+        if (useFontFallback == [environmentCopy useFontFallback])
         {
-          v15 = [(TUIEnvironment *)self isSanitizedTraitCollectionEqualTo:v4];
+          v15 = [(TUIEnvironment *)self isSanitizedTraitCollectionEqualTo:environmentCopy];
           goto LABEL_29;
         }
 
@@ -933,17 +933,17 @@ LABEL_29:
   return v15;
 }
 
-- (unint64_t)differenceMaskWithEnvironment:(id)a3
+- (unint64_t)differenceMaskWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  environmentCopy = environment;
+  v5 = environmentCopy;
+  if (!environmentCopy)
   {
     v37 = 61;
     goto LABEL_48;
   }
 
-  if (self == v4)
+  if (self == environmentCopy)
   {
     v37 = 0;
     goto LABEL_48;
@@ -980,11 +980,11 @@ LABEL_29:
     }
   }
 
-  v34 = [(TUIEnvironment *)self widthClass];
-  if (v34 == [(TUIEnvironment *)v5 widthClass])
+  widthClass = [(TUIEnvironment *)self widthClass];
+  if (widthClass == [(TUIEnvironment *)v5 widthClass])
   {
-    v35 = [(TUIEnvironment *)self heightClass];
-    v36 = v35 == [(TUIEnvironment *)v5 heightClass];
+    heightClass = [(TUIEnvironment *)self heightClass];
+    v36 = heightClass == [(TUIEnvironment *)v5 heightClass];
   }
 
   else
@@ -992,11 +992,11 @@ LABEL_29:
     v36 = 0;
   }
 
-  v38 = [(TUIEnvironment *)self split];
-  if (v38 == [(TUIEnvironment *)v5 split])
+  split = [(TUIEnvironment *)self split];
+  if (split == [(TUIEnvironment *)v5 split])
   {
-    v39 = [(TUIEnvironment *)self orientation];
-    v40 = v39 == [(TUIEnvironment *)v5 orientation];
+    orientation = [(TUIEnvironment *)self orientation];
+    v40 = orientation == [(TUIEnvironment *)v5 orientation];
   }
 
   else
@@ -1004,56 +1004,56 @@ LABEL_29:
     v40 = 0;
   }
 
-  v41 = [(TUIEnvironment *)self style];
-  if (v41 != [(TUIEnvironment *)v5 style])
+  style = [(TUIEnvironment *)self style];
+  if (style != [(TUIEnvironment *)v5 style])
   {
     goto LABEL_23;
   }
 
-  v42 = [(TUIEnvironment *)self tintColor];
-  v43 = [(TUIEnvironment *)v5 tintColor];
-  v44 = v43;
-  if (v42 == v43)
+  tintColor = [(TUIEnvironment *)self tintColor];
+  tintColor2 = [(TUIEnvironment *)v5 tintColor];
+  v44 = tintColor2;
+  if (tintColor == tintColor2)
   {
 
     goto LABEL_25;
   }
 
-  v45 = [(TUIEnvironment *)self tintColor];
-  v46 = [(TUIEnvironment *)v5 tintColor];
-  v47 = [v45 isEqual:v46];
+  tintColor3 = [(TUIEnvironment *)self tintColor];
+  tintColor4 = [(TUIEnvironment *)v5 tintColor];
+  v47 = [tintColor3 isEqual:tintColor4];
 
   if (v47)
   {
 LABEL_25:
-    v49 = [(TUIEnvironment *)self activeAppearance];
-    v48 = v49 == [(TUIEnvironment *)v5 activeAppearance];
+    activeAppearance = [(TUIEnvironment *)self activeAppearance];
+    v48 = activeAppearance == [(TUIEnvironment *)v5 activeAppearance];
     goto LABEL_26;
   }
 
 LABEL_23:
   v48 = 0;
 LABEL_26:
-  v50 = [(TUIEnvironment *)self deviceClass];
-  if (v50 != [(TUIEnvironment *)v5 deviceClass])
+  deviceClass = [(TUIEnvironment *)self deviceClass];
+  if (deviceClass != [(TUIEnvironment *)v5 deviceClass])
   {
     goto LABEL_38;
   }
 
-  v51 = [(TUIEnvironment *)self displayClass];
-  if (v51 != [(TUIEnvironment *)v5 displayClass])
+  displayClass = [(TUIEnvironment *)self displayClass];
+  if (displayClass != [(TUIEnvironment *)v5 displayClass])
   {
     goto LABEL_38;
   }
 
-  v52 = [(TUIEnvironment *)self demoMode];
-  if (v52 != [(TUIEnvironment *)v5 demoMode])
+  demoMode = [(TUIEnvironment *)self demoMode];
+  if (demoMode != [(TUIEnvironment *)v5 demoMode])
   {
     goto LABEL_38;
   }
 
-  v53 = [(TUIEnvironment *)self contentSizeCategory];
-  if (v53 != [(TUIEnvironment *)v5 contentSizeCategory])
+  contentSizeCategory = [(TUIEnvironment *)self contentSizeCategory];
+  if (contentSizeCategory != [(TUIEnvironment *)v5 contentSizeCategory])
   {
     goto LABEL_38;
   }
@@ -1066,30 +1066,30 @@ LABEL_26:
     goto LABEL_38;
   }
 
-  v57 = [(TUIEnvironment *)self layoutDirection];
-  if (v57 != [(TUIEnvironment *)v5 layoutDirection])
+  layoutDirection = [(TUIEnvironment *)self layoutDirection];
+  if (layoutDirection != [(TUIEnvironment *)v5 layoutDirection])
   {
     goto LABEL_38;
   }
 
-  v58 = [(TUIEnvironment *)self accessibilityElementsNeeded];
-  if (v58 != [(TUIEnvironment *)v5 accessibilityElementsNeeded])
+  accessibilityElementsNeeded = [(TUIEnvironment *)self accessibilityElementsNeeded];
+  if (accessibilityElementsNeeded != [(TUIEnvironment *)v5 accessibilityElementsNeeded])
   {
     goto LABEL_38;
   }
 
-  v68 = [(TUIEnvironment *)self language];
-  v59 = [(TUIEnvironment *)v5 language];
-  v60 = v59;
-  if (v68 == v59)
+  language = [(TUIEnvironment *)self language];
+  language2 = [(TUIEnvironment *)v5 language];
+  v60 = language2;
+  if (language == language2)
   {
   }
 
   else
   {
-    v61 = [(TUIEnvironment *)self language];
-    v62 = [(TUIEnvironment *)v5 language];
-    v63 = [v61 isEqualToString:v62];
+    language3 = [(TUIEnvironment *)self language];
+    language4 = [(TUIEnvironment *)v5 language];
+    v63 = [language3 isEqualToString:language4];
 
     if (!v63)
     {
@@ -1097,8 +1097,8 @@ LABEL_26:
     }
   }
 
-  v64 = [(TUIEnvironment *)self useFontFallback];
-  if (v64 == [(TUIEnvironment *)v5 useFontFallback])
+  useFontFallback = [(TUIEnvironment *)self useFontFallback];
+  if (useFontFallback == [(TUIEnvironment *)v5 useFontFallback])
   {
     v65 = [(TUIEnvironment *)self isSanitizedTraitCollectionEqualTo:v5];
     goto LABEL_39;
@@ -1138,26 +1138,26 @@ LABEL_48:
   return v37;
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  objc_storeStrong(&self->_language, a3);
-  v5 = a3;
-  v6 = [TUIFontSpec determineUseFontFallbackFromLanguage:v5];
+  objc_storeStrong(&self->_language, language);
+  languageCopy = language;
+  v6 = [TUIFontSpec determineUseFontFallbackFromLanguage:languageCopy];
 
   self->_useFontFallback = v6;
 }
 
-- (void)setDeviceClass:(unint64_t)a3
+- (void)setDeviceClass:(unint64_t)class
 {
-  self->_deviceClass = a3;
-  if (a3 > 6)
+  self->_deviceClass = class;
+  if (class > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D358[a3];
+    v3 = qword_24D358[class];
     v5 = 7;
   }
 
@@ -1168,17 +1168,17 @@ LABEL_48:
   self->_deviceClassValue.var0._integer = v3;
 }
 
-- (void)setWidthClass:(unint64_t)a3
+- (void)setWidthClass:(unint64_t)class
 {
-  self->_widthClass = a3;
-  if (a3 > 3)
+  self->_widthClass = class;
+  if (class > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D390[a3];
+    v3 = qword_24D390[class];
     v5 = 7;
   }
 
@@ -1189,17 +1189,17 @@ LABEL_48:
   self->_widthClassValue.var0._integer = v3;
 }
 
-- (void)setHeightClass:(unint64_t)a3
+- (void)setHeightClass:(unint64_t)class
 {
-  self->_heightClass = a3;
-  if (a3 > 3)
+  self->_heightClass = class;
+  if (class > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D390[a3];
+    v3 = qword_24D390[class];
     v5 = 7;
   }
 
@@ -1210,17 +1210,17 @@ LABEL_48:
   self->_heightClassValue.var0._integer = v3;
 }
 
-- (void)setDisplayClass:(unint64_t)a3
+- (void)setDisplayClass:(unint64_t)class
 {
-  self->_displayClass = a3;
-  if (a3 > 2)
+  self->_displayClass = class;
+  if (class > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D3B0[a3];
+    v3 = qword_24D3B0[class];
     v5 = 7;
   }
 
@@ -1231,17 +1231,17 @@ LABEL_48:
   self->_displayClassValue.var0._integer = v3;
 }
 
-- (void)setSplit:(unint64_t)a3
+- (void)setSplit:(unint64_t)split
 {
-  self->_split = a3;
-  if (a3 > 4)
+  self->_split = split;
+  if (split > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D3C8[a3];
+    v3 = qword_24D3C8[split];
     v5 = 7;
   }
 
@@ -1252,17 +1252,17 @@ LABEL_48:
   self->_splitValue.var0._integer = v3;
 }
 
-- (void)setOrientation:(unint64_t)a3
+- (void)setOrientation:(unint64_t)orientation
 {
-  self->_orientation = a3;
-  if (a3 > 2)
+  self->_orientation = orientation;
+  if (orientation > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D3F0[a3];
+    v3 = qword_24D3F0[orientation];
     v5 = 7;
   }
 
@@ -1273,9 +1273,9 @@ LABEL_48:
   self->_orientationValue.var0._integer = v3;
 }
 
-- (void)setWindowSize:(CGSize)a3
+- (void)setWindowSize:(CGSize)size
 {
-  self->_windowSize = a3;
+  self->_windowSize = size;
   v4 = [NSValue valueWithCGSize:?];
   self->_windowSizeValue._kind = 3;
   object = self->_windowSizeValue._object;
@@ -1283,9 +1283,9 @@ LABEL_48:
   v6 = v4;
 }
 
-- (void)setViewSize:(CGSize)a3
+- (void)setViewSize:(CGSize)size
 {
-  self->_viewSize = a3;
+  self->_viewSize = size;
   v4 = [NSValue valueWithCGSize:?];
   self->_viewSizeValue._kind = 3;
   object = self->_viewSizeValue._object;
@@ -1300,17 +1300,17 @@ LABEL_48:
   v9 = v7;
 }
 
-- (void)setViewSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setViewSafeAreaInsets:(UIEdgeInsets)insets
 {
-  self->_viewSafeAreaInsets = a3;
-  v10 = a3;
-  v4 = [[NSData alloc] initWithBytes:&v10 length:32];
+  self->_viewSafeAreaInsets = insets;
+  insetsCopy = insets;
+  v4 = [[NSData alloc] initWithBytes:&insetsCopy length:32];
   self->_viewSafeAreaInsetsValue._kind = 4;
   object = self->_viewSafeAreaInsetsValue._object;
   self->_viewSafeAreaInsetsValue._object = v4;
   v6 = v4;
 
-  [(TUIEnvironment *)self viewSizeWithinSafeArea:*&v10.top];
+  [(TUIEnvironment *)self viewSizeWithinSafeArea:*&insetsCopy.top];
   v7 = [NSValue valueWithCGSize:?];
   self->_viewSizeWithinSafeAreaValue._kind = 3;
   v8 = self->_viewSizeWithinSafeAreaValue._object;
@@ -1327,17 +1327,17 @@ LABEL_48:
   return result;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
-  if (a3 > 2)
+  self->_style = style;
+  if (style > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D408[a3];
+    v3 = qword_24D408[style];
     v5 = 7;
   }
 
@@ -1348,17 +1348,17 @@ LABEL_48:
   self->_styleValue.var0._integer = v3;
 }
 
-- (void)setActiveAppearance:(unint64_t)a3
+- (void)setActiveAppearance:(unint64_t)appearance
 {
-  self->_activeAppearance = a3;
-  if (a3 > 2)
+  self->_activeAppearance = appearance;
+  if (appearance > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D4A8[a3];
+    v3 = qword_24D4A8[appearance];
     v5 = 7;
   }
 
@@ -1369,22 +1369,22 @@ LABEL_48:
   self->_activeAppearanceValue.var0._integer = v3;
 }
 
-- (void)setDemoMode:(BOOL)a3
+- (void)setDemoMode:(BOOL)mode
 {
-  self->_demoMode = a3;
-  v4 = a3;
+  self->_demoMode = mode;
+  modeCopy = mode;
   self->_demoModeValue._kind = 12;
   object = self->_demoModeValue._object;
   self->_demoModeValue._object = 0;
 
-  self->_demoModeValue.var0._integer = v4;
+  self->_demoModeValue.var0._integer = modeCopy;
 }
 
-- (void)setContentSizeCategory:(unint64_t)a3
+- (void)setContentSizeCategory:(unint64_t)category
 {
-  self->_contentSizeCategory = a3;
-  v4 = (&unk_24D420 + 8 * a3);
-  if (a3 >= 0xD)
+  self->_contentSizeCategory = category;
+  v4 = (&unk_24D420 + 8 * category);
+  if (category >= 0xD)
   {
     v4 = &unk_24D488;
   }
@@ -1398,46 +1398,46 @@ LABEL_48:
   self->_contentSizeCategoryValue.var0._integer = v5;
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
-    v4 = 1.0;
+    scaleCopy = 1.0;
   }
 
   else
   {
-    v4 = a3;
+    scaleCopy = scale;
   }
 
-  self->_contentsScale = v4;
+  self->_contentsScale = scaleCopy;
   self->_contentsScaleValue._kind = 1;
   object = self->_contentsScaleValue._object;
   self->_contentsScaleValue._object = 0;
 
-  self->_contentsScaleValue.var0._float = v4;
+  self->_contentsScaleValue.var0._float = scaleCopy;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
-  objc_storeStrong(&self->_tintColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_tintColor, color);
   self->_tintColorValue._kind = 11;
   object = self->_tintColorValue._object;
-  self->_tintColorValue._object = v5;
+  self->_tintColorValue._object = colorCopy;
 }
 
-- (void)setLayoutDirection:(unint64_t)a3
+- (void)setLayoutDirection:(unint64_t)direction
 {
-  self->_layoutDirection = a3;
-  if (a3 > 2)
+  self->_layoutDirection = direction;
+  if (direction > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = qword_24D490[a3];
+    v3 = qword_24D490[direction];
     v5 = 7;
   }
 
@@ -1448,11 +1448,11 @@ LABEL_48:
   self->_layoutDirectionValue.var0._integer = v3;
 }
 
-- (ResolvedValue)lookupName:(SEL)a3 symtab:(Entry)a4
+- (ResolvedValue)lookupName:(SEL)name symtab:(Entry)symtab
 {
-  v5 = self;
-  v29 = a4;
-  if (a4.var0 == 1)
+  selfCopy = self;
+  symtabCopy = symtab;
+  if (symtab.var0 == 1)
   {
     v7 = *(a5 + 5);
     v8 = (*(a5 + 6) - v7) >> 1;
@@ -1466,11 +1466,11 @@ LABEL_48:
       v9 = v7[9];
     }
 
-    if (v9 == a4.var1)
+    if (v9 == symtab.var1)
     {
       retstr->_kind = self->_object;
       self = self->var0._integer;
-      integer = *&v5[1]._kind;
+      integer = *&selfCopy[1]._kind;
       goto LABEL_94;
     }
 
@@ -1484,11 +1484,11 @@ LABEL_48:
       v12 = v7[10];
     }
 
-    if (v12 == a4.var1)
+    if (v12 == symtab.var1)
     {
       retstr->_kind = self[1]._object;
       self = self[1].var0._integer;
-      integer = *&v5[2]._kind;
+      integer = *&selfCopy[2]._kind;
       goto LABEL_94;
     }
 
@@ -1502,11 +1502,11 @@ LABEL_48:
       v13 = v7[11];
     }
 
-    if (v13 == a4.var1)
+    if (v13 == symtab.var1)
     {
       retstr->_kind = self[2]._object;
       self = self[2].var0._integer;
-      integer = *&v5[3]._kind;
+      integer = *&selfCopy[3]._kind;
       goto LABEL_94;
     }
 
@@ -1520,11 +1520,11 @@ LABEL_48:
       v14 = v7[13];
     }
 
-    if (v14 == a4.var1)
+    if (v14 == symtab.var1)
     {
       retstr->_kind = self[9]._object;
       self = self[9].var0._integer;
-      integer = *&v5[10]._kind;
+      integer = *&selfCopy[10]._kind;
       goto LABEL_94;
     }
 
@@ -1538,11 +1538,11 @@ LABEL_48:
       v15 = v7[12];
     }
 
-    if (v15 == a4.var1)
+    if (v15 == symtab.var1)
     {
       retstr->_kind = self[4]._object;
       self = self[4].var0._integer;
-      integer = *&v5[5]._kind;
+      integer = *&selfCopy[5]._kind;
       goto LABEL_94;
     }
 
@@ -1556,11 +1556,11 @@ LABEL_48:
       v16 = v7[89];
     }
 
-    if (v16 == a4.var1)
+    if (v16 == symtab.var1)
     {
       retstr->_kind = self[5]._object;
       self = self[5].var0._integer;
-      integer = *&v5[6]._kind;
+      integer = *&selfCopy[6]._kind;
       goto LABEL_94;
     }
 
@@ -1574,11 +1574,11 @@ LABEL_48:
       v17 = v7[113];
     }
 
-    if (v17 == a4.var1)
+    if (v17 == symtab.var1)
     {
       retstr->_kind = self[6]._object;
       self = self[6].var0._integer;
-      integer = *&v5[7]._kind;
+      integer = *&selfCopy[7]._kind;
       goto LABEL_94;
     }
 
@@ -1592,11 +1592,11 @@ LABEL_48:
       v18 = v7[114];
     }
 
-    if (v18 == a4.var1)
+    if (v18 == symtab.var1)
     {
       retstr->_kind = self[7]._object;
       self = self[7].var0._integer;
-      integer = *&v5[8]._kind;
+      integer = *&selfCopy[8]._kind;
       goto LABEL_94;
     }
 
@@ -1610,11 +1610,11 @@ LABEL_48:
       v19 = v7[115];
     }
 
-    if (v19 == a4.var1)
+    if (v19 == symtab.var1)
     {
       retstr->_kind = self[8]._object;
       self = self[8].var0._integer;
-      integer = *&v5[9]._kind;
+      integer = *&selfCopy[9]._kind;
       goto LABEL_94;
     }
 
@@ -1628,11 +1628,11 @@ LABEL_48:
       v20 = v7[14];
     }
 
-    if (v20 == a4.var1)
+    if (v20 == symtab.var1)
     {
       retstr->_kind = self[10]._object;
       self = self[10].var0._integer;
-      integer = *&v5[11]._kind;
+      integer = *&selfCopy[11]._kind;
       goto LABEL_94;
     }
 
@@ -1646,11 +1646,11 @@ LABEL_48:
       v21 = v7[29];
     }
 
-    if (v21 == a4.var1)
+    if (v21 == symtab.var1)
     {
       retstr->_kind = self[11]._object;
       self = self[11].var0._integer;
-      integer = *&v5[12]._kind;
+      integer = *&selfCopy[12]._kind;
       goto LABEL_94;
     }
 
@@ -1664,11 +1664,11 @@ LABEL_48:
       v22 = v7[95];
     }
 
-    if (v22 == a4.var1)
+    if (v22 == symtab.var1)
     {
       retstr->_kind = self[12]._object;
       self = self[12].var0._integer;
-      integer = *&v5[13]._kind;
+      integer = *&selfCopy[13]._kind;
       goto LABEL_94;
     }
 
@@ -1682,11 +1682,11 @@ LABEL_48:
       v23 = v7[42];
     }
 
-    if (v23 == a4.var1)
+    if (v23 == symtab.var1)
     {
       retstr->_kind = self[13]._object;
       self = self[13].var0._integer;
-      integer = *&v5[14]._kind;
+      integer = *&selfCopy[14]._kind;
       goto LABEL_94;
     }
 
@@ -1700,11 +1700,11 @@ LABEL_48:
       v24 = v7[49];
     }
 
-    if (v24 == a4.var1)
+    if (v24 == symtab.var1)
     {
       retstr->_kind = self[14]._object;
       self = self[14].var0._integer;
-      integer = *&v5[15]._kind;
+      integer = *&selfCopy[15]._kind;
       goto LABEL_94;
     }
 
@@ -1718,11 +1718,11 @@ LABEL_48:
       v25 = v7[50];
     }
 
-    if (v25 == a4.var1)
+    if (v25 == symtab.var1)
     {
       retstr->_kind = self[15]._object;
       self = self[15].var0._integer;
-      integer = *&v5[16]._kind;
+      integer = *&selfCopy[16]._kind;
       goto LABEL_94;
     }
 
@@ -1736,11 +1736,11 @@ LABEL_48:
       v26 = v7[58];
     }
 
-    if (v26 == a4.var1)
+    if (v26 == symtab.var1)
     {
       retstr->_kind = self[16]._object;
       self = self[16].var0._integer;
-      integer = *&v5[17]._kind;
+      integer = *&selfCopy[17]._kind;
       goto LABEL_94;
     }
 
@@ -1754,11 +1754,11 @@ LABEL_48:
       v27 = v7[86];
     }
 
-    if (v27 == a4.var1)
+    if (v27 == symtab.var1)
     {
       retstr->_kind = self[3]._object;
       self = self[3].var0._integer;
-      integer = *&v5[4]._kind;
+      integer = *&selfCopy[4]._kind;
       goto LABEL_94;
     }
 
@@ -1772,11 +1772,11 @@ LABEL_48:
       v28 = v7[110];
     }
 
-    if (v28 == a4.var1)
+    if (v28 == symtab.var1)
     {
       retstr->_kind = self[17]._object;
       self = self[17].var0._integer;
-      integer = *&v5[18]._kind;
+      integer = *&selfCopy[18]._kind;
       goto LABEL_94;
     }
 
@@ -1786,63 +1786,63 @@ LABEL_96:
     return self;
   }
 
-  self = sub_26874(&self[20]._kind, &v29.var0);
+  self = sub_26874(&self[20]._kind, &symtabCopy.var0);
   if (!self)
   {
     goto LABEL_96;
   }
 
-  v10 = self;
+  selfCopy2 = self;
   retstr->_kind = self[1]._kind;
   self = self[1]._object;
-  integer = v10[1].var0._integer;
+  integer = selfCopy2[1].var0._integer;
 LABEL_94:
   retstr->_object = self;
   retstr->var0._integer = integer;
   return self;
 }
 
-- (BOOL)setFloat:(double)a3 forName:(id)a4
+- (BOOL)setFloat:(double)float forName:(id)name
 {
   v6 = 1;
   v7 = 0;
-  v8 = a3;
-  v4 = [(TUIEnvironment *)self _setValue:&v6 forName:*&a4];
+  floatCopy = float;
+  v4 = [(TUIEnvironment *)self _setValue:&v6 forName:*&name];
 
   return v4;
 }
 
-- (BOOL)setSymbol:(id)a3 forName:(id)a4
+- (BOOL)setSymbol:(id)symbol forName:(id)name
 {
   v6 = 6;
   v7 = 0;
-  var0 = a3.var0;
-  v4 = [(TUIEnvironment *)self _setValue:&v6 forName:*&a4];
+  var0 = symbol.var0;
+  v4 = [(TUIEnvironment *)self _setValue:&v6 forName:*&name];
 
   return v4;
 }
 
-- (BOOL)_setValue:(ResolvedValue *)a3 forName:(id)a4
+- (BOOL)_setValue:(ResolvedValue *)value forName:(id)name
 {
-  IsValid = TUINameIsValid(*&a4);
+  IsValid = TUINameIsValid(*&name);
   result = 0;
-  if (IsValid && (a4.var0 & 0xFFFE) != 0)
+  if (IsValid && (name.var0 & 0xFFFE) != 0)
   {
-    if (a3->_kind)
+    if (value->_kind)
     {
-      v10 = a4;
-      LOWORD(v11) = a4.var0;
+      nameCopy = name;
+      LOWORD(v11) = name.var0;
       if (!sub_11F88(&self->_extendedNameSpaces.__table_.__bucket_list_.__ptr_, &v11))
       {
-        LOWORD(v11) = a4.var0;
+        LOWORD(v11) = name.var0;
         sub_1241E0(&self->_extendedNameSpaces.__table_.__bucket_list_.__ptr_, &v11);
       }
 
-      v11 = &v10;
-      v9 = sub_124414(&self->_extendedValues.__table_.__bucket_list_.__ptr_, &v10.var0);
-      *(v9 + 6) = a3->_kind;
-      objc_storeStrong(v9 + 4, a3->_object);
-      v9[5] = a3->var0._integer;
+      v11 = &nameCopy;
+      v9 = sub_124414(&self->_extendedValues.__table_.__bucket_list_.__ptr_, &nameCopy.var0);
+      *(v9 + 6) = value->_kind;
+      objc_storeStrong(v9 + 4, value->_object);
+      v9[5] = value->var0._integer;
       result = 1;
       self->_hasExtendedValues = 1;
     }
@@ -1934,21 +1934,21 @@ LABEL_94:
   return self;
 }
 
-- (BOOL)isSanitizedTraitCollectionEqualTo:(id)a3
+- (BOOL)isSanitizedTraitCollectionEqualTo:(id)to
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = TUIEnvironment.isSanitizedTraitCollectionEqual(to:)(v3);
+  toCopy = to;
+  toCopy2 = to;
+  selfCopy = self;
+  LOBYTE(toCopy) = TUIEnvironment.isSanitizedTraitCollectionEqual(to:)(toCopy);
 
-  return v3 & 1;
+  return toCopy & 1;
 }
 
-- (id)_printDiffFromSelfToEnvironment:(id)a3
+- (id)_printDiffFromSelfToEnvironment:(id)environment
 {
-  v5 = a3;
-  v6 = self;
-  TUIEnvironment._printDiffFromSelf(toEnvironment:)(a3);
+  environmentCopy = environment;
+  selfCopy = self;
+  TUIEnvironment._printDiffFromSelf(toEnvironment:)(environment);
 
   v7 = sub_19C518();
 

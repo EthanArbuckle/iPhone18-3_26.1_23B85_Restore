@@ -1,13 +1,13 @@
 @interface RAPAuxiliaryControlsRecorder
-+ (void)fetchCurrentlyConnectedControlsRecordingOrigin:(int64_t)a3 completion:(id)a4;
++ (void)fetchCurrentlyConnectedControlsRecordingOrigin:(int64_t)origin completion:(id)completion;
 - (RAPAuxiliaryControlsRecording)copyCurrentPartialRecording;
-- (void)_addControlIfNotDuplicate:(id)a3;
+- (void)_addControlIfNotDuplicate:(id)duplicate;
 - (void)_setOriginatingControlToCurrentActiveWatch;
 - (void)_updateCurrentCarPlayControl;
-- (void)_updateWatchControlsWithFetchCompletion:(id)a3;
+- (void)_updateWatchControlsWithFetchCompletion:(id)completion;
 - (void)dealloc;
-- (void)setOriginatingDeviceFromOrigin:(int64_t)a3;
-- (void)startWithFetchCompletion:(id)a3;
+- (void)setOriginatingDeviceFromOrigin:(int64_t)origin;
+- (void)startWithFetchCompletion:(id)completion;
 - (void)stop;
 @end
 
@@ -52,8 +52,8 @@
         if (v10)
         {
           v11 = objc_alloc_init(GEORPAuxiliaryControl);
-          v12 = [v10 reportAProblemControlMessage];
-          [v11 setCar:v12];
+          reportAProblemControlMessage = [v10 reportAProblemControlMessage];
+          [v11 setCar:reportAProblemControlMessage];
 
           [v3 addObject:v11];
         }
@@ -75,8 +75,8 @@
         if (v15)
         {
           v16 = objc_alloc_init(GEORPAuxiliaryControl);
-          v17 = [v15 reportAProblemControlMessage];
-          [v16 setWatch:v17];
+          reportAProblemControlMessage2 = [v15 reportAProblemControlMessage];
+          [v16 setWatch:reportAProblemControlMessage2];
 
           [v3 addObject:v16];
         }
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)_updateWatchControlsWithFetchCompletion:(id)a3
+- (void)_updateWatchControlsWithFetchCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   ++self->_countOfNanoRegistryFetchesInFlight;
   v5 = +[NRPairedDeviceRegistry sharedInstance];
   v7[0] = _NSConcreteStackBlock;
@@ -126,23 +126,23 @@
   v7[2] = sub_100C7943C;
   v7[3] = &unk_1016552A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 getDevicesWithBlock:v7];
 }
 
 - (void)_updateCurrentCarPlayControl
 {
   v3 = +[MapsCarPlayExternalDeviceMonitor sharedInstance];
-  v9 = [v3 carPlayExternalDevice];
+  carPlayExternalDevice = [v3 carPlayExternalDevice];
 
-  v4 = v9;
-  if (v9)
+  v4 = carPlayExternalDevice;
+  if (carPlayExternalDevice)
   {
     v5 = [RAPAuxiliaryControlCarPlay alloc];
     v6 = +[MapsExternalDevice sharedInstance];
     v7 = +[CarDisplayController sharedInstance];
-    v8 = [(RAPAuxiliaryControlCarPlay *)v5 initWithInformationFromDevice:v9 accessory:v6 displayController:v7];
+    v8 = [(RAPAuxiliaryControlCarPlay *)v5 initWithInformationFromDevice:carPlayExternalDevice accessory:v6 displayController:v7];
 
     if (v8)
     {
@@ -154,13 +154,13 @@
       [(RAPAuxiliaryControlsRecorder *)self _addControlIfNotDuplicate:v8];
     }
 
-    v4 = v9;
+    v4 = carPlayExternalDevice;
   }
 }
 
-- (void)_addControlIfNotDuplicate:(id)a3
+- (void)_addControlIfNotDuplicate:(id)duplicate
 {
-  v4 = a3;
+  duplicateCopy = duplicate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -181,7 +181,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v9) isSameControlAsControl:{v4, v13}])
+        if ([*(*(&v13 + 1) + 8 * v9) isSameControlAsControl:{duplicateCopy, v13}])
         {
 
           goto LABEL_13;
@@ -211,18 +211,18 @@
     relevantAuxiliaryControls = self->_relevantAuxiliaryControls;
   }
 
-  [(NSMutableArray *)relevantAuxiliaryControls addObject:v4, v13];
+  [(NSMutableArray *)relevantAuxiliaryControls addObject:duplicateCopy, v13];
 LABEL_13:
 }
 
-- (void)setOriginatingDeviceFromOrigin:(int64_t)a3
+- (void)setOriginatingDeviceFromOrigin:(int64_t)origin
 {
-  if (a3 == 2)
+  if (origin == 2)
   {
     [(RAPAuxiliaryControlsRecorder *)self _setOriginatingControlToCurrentActiveWatch];
   }
 
-  else if (a3 == 1)
+  else if (origin == 1)
   {
     [(RAPAuxiliaryControlsRecorder *)self _setOriginatingControlToCurrentCarPlayScreen];
   }
@@ -249,15 +249,15 @@ LABEL_13:
   }
 }
 
-- (void)startWithFetchCompletion:(id)a3
+- (void)startWithFetchCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_started || self->_stopped)
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, self);
+      (*(completionCopy + 2))(completionCopy, self);
     }
   }
 
@@ -279,17 +279,17 @@ LABEL_13:
   }
 }
 
-+ (void)fetchCurrentlyConnectedControlsRecordingOrigin:(int64_t)a3 completion:(id)a4
++ (void)fetchCurrentlyConnectedControlsRecordingOrigin:(int64_t)origin completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_alloc_init(RAPAuxiliaryControlsRecorder);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100C79BD8;
   v8[3] = &unk_10164F690;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
+  v9 = completionCopy;
+  originCopy = origin;
+  v7 = completionCopy;
   [(RAPAuxiliaryControlsRecorder *)v6 startWithFetchCompletion:v8];
 }
 

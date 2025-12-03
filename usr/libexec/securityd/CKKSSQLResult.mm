@@ -3,7 +3,7 @@
 - (id)asBase64DecodedData;
 - (id)asISO8601Date;
 - (id)asNSNumberInteger;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (int64_t)asNSInteger;
 @end
 
@@ -11,13 +11,13 @@
 
 - (id)asBase64DecodedData
 {
-  v3 = [(CKKSSQLResult *)self stringValue];
+  stringValue = [(CKKSSQLResult *)self stringValue];
 
-  if (v3)
+  if (stringValue)
   {
     v4 = [NSData alloc];
-    v5 = [(CKKSSQLResult *)self stringValue];
-    v6 = [v4 initWithBase64EncodedString:v5 options:0];
+    stringValue2 = [(CKKSSQLResult *)self stringValue];
+    v6 = [v4 initWithBase64EncodedString:stringValue2 options:0];
   }
 
   else
@@ -30,13 +30,13 @@
 
 - (id)asISO8601Date
 {
-  v3 = [(CKKSSQLResult *)self stringValue];
+  stringValue = [(CKKSSQLResult *)self stringValue];
 
-  if (v3)
+  if (stringValue)
   {
     v4 = objc_alloc_init(NSISO8601DateFormatter);
-    v5 = [(CKKSSQLResult *)self stringValue];
-    v6 = [v4 dateFromString:v5];
+    stringValue2 = [(CKKSSQLResult *)self stringValue];
+    v6 = [v4 dateFromString:stringValue2];
   }
 
   else
@@ -49,12 +49,12 @@
 
 - (id)asNSNumberInteger
 {
-  v3 = [(CKKSSQLResult *)self stringValue];
+  stringValue = [(CKKSSQLResult *)self stringValue];
 
-  if (v3)
+  if (stringValue)
   {
-    v4 = [(CKKSSQLResult *)self stringValue];
-    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 integerValue]);
+    stringValue2 = [(CKKSSQLResult *)self stringValue];
+    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [stringValue2 integerValue]);
   }
 
   else
@@ -67,30 +67,30 @@
 
 - (int64_t)asNSInteger
 {
-  v2 = [(CKKSSQLResult *)self stringValue];
-  v3 = [v2 integerValue];
+  stringValue = [(CKKSSQLResult *)self stringValue];
+  integerValue = [stringValue integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)asBOOL
 {
-  v2 = [(CKKSSQLResult *)self stringValue];
-  v3 = [v2 BOOLValue];
+  stringValue = [(CKKSSQLResult *)self stringValue];
+  bOOLValue = [stringValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v9.receiver = self;
   v9.super_class = CKKSSQLResult;
   v6 = [(CKKSSQLResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stringValue, a3);
+    objc_storeStrong(&v6->_stringValue, init);
   }
 
   return v7;

@@ -1,34 +1,34 @@
 @interface DCMapsURLGenerator
-+ (id)URLWithMapsLink:(id)a3;
-- (DCMapsURLGenerator)initWithMapsLink:(id)a3;
++ (id)URLWithMapsLink:(id)link;
+- (DCMapsURLGenerator)initWithMapsLink:(id)link;
 - (NSMutableDictionary)queryDictionary;
 - (id)URL;
 - (id)directionsMode;
 - (id)mapType;
 - (id)query;
 - (void)populateQueryDictionary;
-- (void)setString:(id)a3 forQueryKey:(id)a4;
+- (void)setString:(id)string forQueryKey:(id)key;
 @end
 
 @implementation DCMapsURLGenerator
 
-- (void)setString:(id)a3 forQueryKey:(id)a4
+- (void)setString:(id)string forQueryKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 length])
+  stringCopy = string;
+  keyCopy = key;
+  if ([stringCopy length])
   {
-    v7 = [(DCMapsURLGenerator *)self queryDictionary];
-    [v7 setValue:v8 forKey:v6];
+    queryDictionary = [(DCMapsURLGenerator *)self queryDictionary];
+    [queryDictionary setValue:stringCopy forKey:keyCopy];
   }
 }
 
 - (id)mapType
 {
-  v3 = [(DCMapsURLGenerator *)self mapsLink];
-  v4 = [v3 showsStreetView];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  showsStreetView = [mapsLink showsStreetView];
 
-  if (v4)
+  if (showsStreetView)
   {
     v5 = DCStandardMapsLinkMapTypeHybrid;
 LABEL_5:
@@ -36,12 +36,12 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v6 = [(DCMapsURLGenerator *)self mapsLink];
-  v7 = [v6 mapType];
+  mapsLink2 = [(DCMapsURLGenerator *)self mapsLink];
+  mapType = [mapsLink2 mapType];
 
-  if ((v7 - 1) <= 2)
+  if ((mapType - 1) <= 2)
   {
-    v5 = off_278345308[v7 - 1];
+    v5 = off_278345308[mapType - 1];
     goto LABEL_5;
   }
 
@@ -53,17 +53,17 @@ LABEL_7:
 
 - (id)directionsMode
 {
-  v2 = [(DCMapsURLGenerator *)self mapsLink];
-  v3 = [v2 directionsMode];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  directionsMode = [mapsLink directionsMode];
 
-  if ((v3 - 1) > 4)
+  if ((directionsMode - 1) > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_2783452E0[v3 - 1];
+    v4 = *off_2783452E0[directionsMode - 1];
   }
 
   return v4;
@@ -71,38 +71,38 @@ LABEL_7:
 
 - (void)populateQueryDictionary
 {
-  v12 = [(DCMapsURLGenerator *)self mapsLink];
-  v3 = [v12 searchQuery];
-  [(DCMapsURLGenerator *)self setString:v3 forQueryKey:@"q"];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  searchQuery = [mapsLink searchQuery];
+  [(DCMapsURLGenerator *)self setString:searchQuery forQueryKey:@"q"];
 
-  v4 = [v12 searchNearQuery];
-  [(DCMapsURLGenerator *)self setString:v4 forQueryKey:@"near"];
+  searchNearQuery = [mapsLink searchNearQuery];
+  [(DCMapsURLGenerator *)self setString:searchNearQuery forQueryKey:@"near"];
 
-  v5 = [v12 searchLocation];
-  [(DCMapsURLGenerator *)self setString:v5 forQueryKey:@"sll"];
+  searchLocation = [mapsLink searchLocation];
+  [(DCMapsURLGenerator *)self setString:searchLocation forQueryKey:@"sll"];
 
-  v6 = [v12 startAddress];
-  [(DCMapsURLGenerator *)self setString:v6 forQueryKey:@"saddr"];
+  startAddress = [mapsLink startAddress];
+  [(DCMapsURLGenerator *)self setString:startAddress forQueryKey:@"saddr"];
 
-  v7 = [v12 destinationAddress];
-  [(DCMapsURLGenerator *)self setString:v7 forQueryKey:@"daddr"];
+  destinationAddress = [mapsLink destinationAddress];
+  [(DCMapsURLGenerator *)self setString:destinationAddress forQueryKey:@"daddr"];
 
-  v8 = [(DCMapsURLGenerator *)self directionsMode];
-  [(DCMapsURLGenerator *)self setString:v8 forQueryKey:@"dirflg"];
+  directionsMode = [(DCMapsURLGenerator *)self directionsMode];
+  [(DCMapsURLGenerator *)self setString:directionsMode forQueryKey:@"dirflg"];
 
-  v9 = [v12 centerLocation];
-  [(DCMapsURLGenerator *)self setString:v9 forQueryKey:@"ll"];
+  centerLocation = [mapsLink centerLocation];
+  [(DCMapsURLGenerator *)self setString:centerLocation forQueryKey:@"ll"];
 
-  v10 = [(DCMapsURLGenerator *)self mapType];
-  [(DCMapsURLGenerator *)self setString:v10 forQueryKey:@"t"];
+  mapType = [(DCMapsURLGenerator *)self mapType];
+  [(DCMapsURLGenerator *)self setString:mapType forQueryKey:@"t"];
 
-  if ([v12 zoomLevel])
+  if ([mapsLink zoomLevel])
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v12, "zoomLevel")];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(mapsLink, "zoomLevel")];
     [(DCMapsURLGenerator *)self setString:v11 forQueryKey:@"z"];
   }
 
-  if ([v12 showsTraffic])
+  if ([mapsLink showsTraffic])
   {
     [(DCMapsURLGenerator *)self setString:@"t" forQueryKey:@"layer"];
   }
@@ -126,8 +126,8 @@ LABEL_7:
 
 - (id)URL
 {
-  v3 = [(DCMapsURLGenerator *)self queryDictionary];
-  v4 = [v3 count];
+  queryDictionary = [(DCMapsURLGenerator *)self queryDictionary];
+  v4 = [queryDictionary count];
 
   if (v4)
   {
@@ -147,30 +147,30 @@ LABEL_7:
 - (id)query
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(DCMapsURLGenerator *)self queryDictionary];
-  v4 = [v2 dc_queryStringWithQueryDictionary:v3];
+  queryDictionary = [(DCMapsURLGenerator *)self queryDictionary];
+  v4 = [v2 dc_queryStringWithQueryDictionary:queryDictionary];
 
   return v4;
 }
 
-- (DCMapsURLGenerator)initWithMapsLink:(id)a3
+- (DCMapsURLGenerator)initWithMapsLink:(id)link
 {
-  v5 = a3;
+  linkCopy = link;
   v6 = [(DCMapsURLGenerator *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapsLink, a3);
+    objc_storeStrong(&v6->_mapsLink, link);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)URLWithMapsLink:(id)a3
++ (id)URLWithMapsLink:(id)link
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMapsLink:v4];
+  linkCopy = link;
+  v5 = [[self alloc] initWithMapsLink:linkCopy];
 
   v6 = [v5 URL];
 

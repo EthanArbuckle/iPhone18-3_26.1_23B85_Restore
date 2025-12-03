@@ -1,44 +1,44 @@
 @interface WDClinicalSettingsOptInNib
 - (UITextViewDelegate)textViewDelegate;
 - (id)_footerTextViewString;
-- (id)instantiateWithOwner:(id)a3 options:(id)a4;
+- (id)instantiateWithOwner:(id)owner options:(id)options;
 @end
 
 @implementation WDClinicalSettingsOptInNib
 
-- (id)instantiateWithOwner:(id)a3 options:(id)a4
+- (id)instantiateWithOwner:(id)owner options:(id)options
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E69DD050]) initWithReuseIdentifier:0];
   v6 = objc_alloc(MEMORY[0x1E69DD168]);
   v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setScrollEnabled:0];
   [v7 setUserInteractionEnabled:1];
-  v9 = [(WDClinicalSettingsOptInNib *)self textViewDelegate];
-  [v7 setDelegate:v9];
+  textViewDelegate = [(WDClinicalSettingsOptInNib *)self textViewDelegate];
+  [v7 setDelegate:textViewDelegate];
 
   [v7 setEditable:0];
   [v7 _setInteractiveTextSelectionDisabled:1];
   [v7 setDataDetectorTypes:2];
-  v10 = [(WDClinicalSettingsOptInNib *)self _footerTextViewString];
-  [v7 setAttributedText:v10];
+  _footerTextViewString = [(WDClinicalSettingsOptInNib *)self _footerTextViewString];
+  [v7 setAttributedText:_footerTextViewString];
 
-  v11 = [v5 contentView];
-  [v11 addSubview:v7];
+  contentView = [v5 contentView];
+  [contentView addSubview:v7];
 
   v12 = _NSDictionaryOfVariableBindings(&cfstr_Textview.isa, v7, 0);
   v13 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-[textView]-|" options:40 metrics:0 views:v12];
-  v14 = [v5 contentView];
-  [v14 addConstraints:v13];
+  contentView2 = [v5 contentView];
+  [contentView2 addConstraints:v13];
 
   v15 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-0-[textView]-17-|" options:40 metrics:0 views:v12];
 
-  v16 = [v5 contentView];
-  [v16 addConstraints:v15];
+  contentView3 = [v5 contentView];
+  [contentView3 addConstraints:v15];
 
   v19[0] = v5;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -57,8 +57,8 @@
   v6 = objc_alloc(MEMORY[0x1E696AD40]);
   v7 = *MEMORY[0x1E69DB650];
   v28[0] = *MEMORY[0x1E69DB650];
-  v8 = [MEMORY[0x1E69DC888] grayColor];
-  v29[0] = v8;
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  v29[0] = grayColor;
   v9 = *MEMORY[0x1E69DB648];
   v28[1] = *MEMORY[0x1E69DB648];
   v10 = *MEMORY[0x1E69DDD28];

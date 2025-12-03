@@ -1,28 +1,28 @@
 @interface NSPPrivacyProxyQuotaServiceResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequestType:(id)a3;
+- (int)StringAsRequestType:(id)type;
 - (int)requestType;
 - (unint64_t)hash;
 - (void)clearOneofValuesForRequestType;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setResponse:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setResponse:(id)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyQuotaServiceResponse
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(NSPPrivacyProxyQuotaServiceResponse *)self clearOneofValuesForRequestType];
   *&self->_has |= 1u;
   self->_requestType = 1;
   response = self->_response;
-  self->_response = v4;
+  self->_response = responseCopy;
 }
 
 - (int)requestType
@@ -38,17 +38,17 @@
   }
 }
 
-- (int)StringAsRequestType:(id)a3
+- (int)StringAsRequestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"response"];
+    v4 = [typeCopy isEqualToString:@"response"];
   }
 
   return v4;
@@ -69,20 +69,20 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyQuotaServiceResponse;
   v4 = [(NSPPrivacyProxyQuotaServiceResponse *)&v8 description];
-  v5 = [(NSPPrivacyProxyQuotaServiceResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyQuotaServiceResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   response = self->_response;
   if (response)
   {
-    v5 = [(NSPPrivacyProxyGetQuotaResponse *)response dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"response"];
+    dictionaryRepresentation = [(NSPPrivacyProxyGetQuotaResponse *)response dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"response"];
   }
 
   if (*&self->_has)
@@ -106,13 +106,13 @@
       v7 = @"PBUNSET";
     }
 
-    [v3 setObject:v7 forKey:@"RequestType"];
+    [dictionary setObject:v7 forKey:@"RequestType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_response)
   {
@@ -120,26 +120,26 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_requestType;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_requestType;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_response)
   {
-    v5 = v4;
-    [v4 setResponse:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setResponse:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -147,31 +147,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSPPrivacyProxyGetQuotaResponse *)self->_response copyWithZone:a3];
+  v7 = [(NSPPrivacyProxyGetQuotaResponse *)self->_response copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_requestType != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_requestType != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -179,7 +179,7 @@ LABEL_9:
   }
 
   response = self->_response;
-  if (response | *(v4 + 2))
+  if (response | *(equalCopy + 2))
   {
     v7 = [(NSPPrivacyProxyGetQuotaResponse *)response isEqual:?];
   }
@@ -209,13 +209,13 @@ LABEL_10:
   return [(NSPPrivacyProxyGetQuotaResponse *)self->_response hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_requestType = v4[2];
+    self->_requestType = fromCopy[2];
     *&self->_has |= 1u;
   }
 

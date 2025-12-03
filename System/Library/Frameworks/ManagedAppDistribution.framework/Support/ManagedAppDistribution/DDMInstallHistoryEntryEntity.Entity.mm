@@ -1,8 +1,8 @@
 @interface DDMInstallHistoryEntryEntity.Entity
 + (id)databaseTable;
 - (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)init;
-- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPersistentID:(int64_t)a3 onConnection:(id)a4;
-- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPropertyValues:(id)a3 onConnection:(id)a4;
+- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPersistentID:(int64_t)d onConnection:(id)connection;
+- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPropertyValues:(id)values onConnection:(id)connection;
 @end
 
 @implementation DDMInstallHistoryEntryEntity.Entity
@@ -14,22 +14,22 @@
   return v2;
 }
 
-- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPersistentID:(int64_t)a3 onConnection:(id)a4
+- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPersistentID:(int64_t)d onConnection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DDMInstallHistoryEntryEntity.Entity();
-  return [(ASUSQLiteEntity *)&v7 initWithPersistentID:a3 onConnection:a4];
+  return [(ASUSQLiteEntity *)&v7 initWithPersistentID:d onConnection:connection];
 }
 
-- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPropertyValues:(id)a3 onConnection:(id)a4
+- (_TtCV28ManagedAppDistributionDaemon28DDMInstallHistoryEntryEntity6Entity)initWithPropertyValues:(id)values onConnection:(id)connection
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
+  connectionCopy = connection;
   isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for DDMInstallHistoryEntryEntity.Entity();
-  v8 = [(ASUSQLiteEntity *)&v10 initWithPropertyValues:isa onConnection:v6];
+  v8 = [(ASUSQLiteEntity *)&v10 initWithPropertyValues:isa onConnection:connectionCopy];
 
   return v8;
 }

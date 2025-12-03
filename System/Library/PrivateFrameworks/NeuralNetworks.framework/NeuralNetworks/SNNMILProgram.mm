@@ -1,35 +1,35 @@
 @interface SNNMILProgram
-+ (void)loadContentsOfURL:(id)a3 withContext:(id)a4 completion:(id)a5;
++ (void)loadContentsOfURL:(id)l withContext:(id)context completion:(id)completion;
 - (BOOL)isReferencingBlobFile;
 - (NSArray)functionNames;
-- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std:(id)a4 :default_delete<MIL::IRProgram>>)a3 :IRProgram sourceFilePath:;
-- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std::default_delete<MIL::IRProgram>>)a3 :IRProgram;
+- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std:(id)l :default_delete<MIL::IRProgram>>)a3 :IRProgram sourceFilePath:;
+- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std::default_delete<MIL::IRProgram>>)l :IRProgram;
 - (id).cxx_construct;
 - (id)description;
-- (id)functionWithName:(id)a3;
-- (id)serializeToProtobufWithError:(id *)a3;
+- (id)functionWithName:(id)name;
+- (id)serializeToProtobufWithError:(id *)error;
 - (shared_ptr<MIL::IRProgram>)milProgram;
-- (void)writeToFile:(id)a3;
+- (void)writeToFile:(id)file;
 @end
 
 @implementation SNNMILProgram
 
-+ (void)loadContentsOfURL:(id)a3 withContext:(id)a4 completion:(id)a5
++ (void)loadContentsOfURL:(id)l withContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v7 hasPathExtension:@"mil"];
-  if ((v11 & 1) != 0 || (v11 = [v7 hasPathExtension:@"txt"], v11))
+  v11 = [lCopy hasPathExtension:@"mil"];
+  if ((v11 & 1) != 0 || (v11 = [lCopy hasPathExtension:@"txt"], v11))
   {
     MIL::ParserOptions::Make(&v36, v11);
     v12 = v36;
-    v13 = [v7 path];
-    v14 = v13;
-    if (v13)
+    path = [lCopy path];
+    v14 = path;
+    if (path)
     {
-      [v13 cxxString];
+      [path cxxString];
     }
 
     else
@@ -45,9 +45,9 @@
       operator delete(__p[0]);
     }
 
-    if (v8)
+    if (contextCopy)
     {
-      [v8 context];
+      [contextCopy context];
     }
 
     else
@@ -66,8 +66,8 @@
     v16 = v33;
     v33 = 0;
     v31[0] = v16;
-    v17 = [v7 path];
-    v18 = [(SNNMILProgram *)v15 initWithProgram:v31 sourceFilePath:v17];
+    path2 = [lCopy path];
+    v18 = [(SNNMILProgram *)v15 initWithProgram:v31 sourceFilePath:path2];
 
     v19 = v31[0];
     v31[0] = 0;
@@ -76,7 +76,7 @@
       (*(*v19 + 8))(v19);
     }
 
-    v9[2](v9, v18, 0);
+    completionCopy[2](completionCopy, v18, 0);
 
     v20 = v33;
     v33 = 0;
@@ -93,42 +93,42 @@
     }
   }
 
-  else if ([v7 hasPathExtension:@"mlpackage"])
+  else if ([lCopy hasPathExtension:@"mlpackage"])
   {
     v22 = MEMORY[0x277CBFF20];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __58__SNNMILProgram_loadContentsOfURL_withContext_completion___block_invoke;
     v28[3] = &unk_279971910;
-    v30 = v9;
-    v29 = v8;
-    [v22 compileModelAtURL:v7 completionHandler:v28];
+    v30 = completionCopy;
+    v29 = contextCopy;
+    [v22 compileModelAtURL:lCopy completionHandler:v28];
   }
 
   else
   {
-    if ([v7 hasPathExtension:@"mlmodelc"])
+    if ([lCopy hasPathExtension:@"mlmodelc"])
     {
-      v23 = [v7 URLByAppendingPathComponent:@"model.mil"];
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
-      v25 = [v23 path];
-      v26 = [v24 fileExistsAtPath:v25];
+      v23 = [lCopy URLByAppendingPathComponent:@"model.mil"];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path3 = [v23 path];
+      v26 = [defaultManager fileExistsAtPath:path3];
 
       if (v26)
       {
-        [SNNMILProgram loadContentsOfURL:v23 withContext:v8 completion:v9];
+        [SNNMILProgram loadContentsOfURL:v23 withContext:contextCopy completion:completionCopy];
       }
 
       else
       {
         v27 = [SNNError errorWithCode:-8 description:@"Model package must be exported as a MLProgram."];
-        (v9)[2](v9, 0, v27);
+        (completionCopy)[2](completionCopy, 0, v27);
       }
     }
 
     else
       v23 = {;
-      (v9)[2](v9, 0, v23);
+      (completionCopy)[2](completionCopy, 0, v23);
     }
   }
 
@@ -164,23 +164,23 @@ void __58__SNNMILProgram_loadContentsOfURL_withContext_completion___block_invoke
   }
 }
 
-- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std:(id)a4 :default_delete<MIL::IRProgram>>)a3 :IRProgram sourceFilePath:
+- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std:(id)l :default_delete<MIL::IRProgram>>)a3 :IRProgram sourceFilePath:
 {
-  v6 = a4;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = SNNMILProgram;
   v7 = [(SNNMILProgram *)&v10 init];
   std::shared_ptr<MIL::IRProgram>::operator=[abi:ne200100]<MIL::IRProgram,std::default_delete<MIL::IRProgram>,0>(&v7->_program.__ptr_, a3.var0);
   milFilePath = v7->_milFilePath;
-  v7->_milFilePath = v6;
+  v7->_milFilePath = lCopy;
 
   return v7;
 }
 
-- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std::default_delete<MIL::IRProgram>>)a3 :IRProgram
+- (SNNMILProgram)initWithProgram:()unique_ptr<MIL:(std::default_delete<MIL::IRProgram>>)l :IRProgram
 {
-  v3 = *a3.var0;
-  *a3.var0 = 0;
+  v3 = *l.var0;
+  *l.var0 = 0;
   v7 = v3;
   v4 = [(SNNMILProgram *)self initWithProgram:&v7 sourceFilePath:0];
   v5 = v7;
@@ -242,8 +242,8 @@ void __58__SNNMILProgram_loadContentsOfURL_withContext_completion___block_invoke
             v35 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v5 = [v4 attributes];
-            v6 = [v5 countByEnumeratingWithState:&v32 objects:v41 count:16];
+            attributes = [v4 attributes];
+            v6 = [attributes countByEnumeratingWithState:&v32 objects:v41 count:16];
             if (v6)
             {
               v7 = *v33;
@@ -253,11 +253,11 @@ LABEL_11:
               {
                 if (*v33 != v7)
                 {
-                  objc_enumerationMutation(v5);
+                  objc_enumerationMutation(attributes);
                 }
 
                 v9 = *(*(&v32 + 1) + 8 * v8);
-                v10 = [v9 value];
+                value = [v9 value];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
@@ -268,7 +268,7 @@ LABEL_11:
 
                 if (v6 == ++v8)
                 {
-                  v6 = [v5 countByEnumeratingWithState:&v32 objects:v41 count:16];
+                  v6 = [attributes countByEnumeratingWithState:&v32 objects:v41 count:16];
                   if (v6)
                   {
                     goto LABEL_11;
@@ -283,8 +283,8 @@ LABEL_11:
             v31 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v5 = [v4 inputs];
-            v12 = [v5 countByEnumeratingWithState:&v28 objects:v40 count:16];
+            attributes = [v4 inputs];
+            v12 = [attributes countByEnumeratingWithState:&v28 objects:v40 count:16];
             if (v12)
             {
               v13 = *v29;
@@ -294,11 +294,11 @@ LABEL_19:
               {
                 if (*v29 != v13)
                 {
-                  objc_enumerationMutation(v5);
+                  objc_enumerationMutation(attributes);
                 }
 
                 v15 = *(*(&v28 + 1) + 8 * v14);
-                v16 = [v15 value];
+                value2 = [v15 value];
                 objc_opt_class();
                 v17 = objc_opt_isKindOfClass();
 
@@ -309,7 +309,7 @@ LABEL_19:
 
                 if (v12 == ++v14)
                 {
-                  v12 = [v5 countByEnumeratingWithState:&v28 objects:v40 count:16];
+                  v12 = [attributes countByEnumeratingWithState:&v28 objects:v40 count:16];
                   if (v12)
                   {
                     goto LABEL_19;
@@ -372,13 +372,13 @@ LABEL_32:
   return v3;
 }
 
-- (id)functionWithName:(id)a3
+- (id)functionWithName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    [v4 cxxString];
+    [nameCopy cxxString];
   }
 
   else
@@ -479,15 +479,15 @@ LABEL_19:
   return v12;
 }
 
-- (void)writeToFile:(id)a3
+- (void)writeToFile:(id)file
 {
-  v4 = a3;
-  MIL::Text::SerializerOptions::Make(&v10, v4);
+  fileCopy = file;
+  MIL::Text::SerializerOptions::Make(&v10, fileCopy);
   (*(*v10 + 88))(v10, 1);
   v5 = v10;
-  if (v4)
+  if (fileCopy)
   {
-    [(MIL::Text::SerializerOptions *)v4 cxxString];
+    [(MIL::Text::SerializerOptions *)fileCopy cxxString];
   }
 
   else
@@ -513,7 +513,7 @@ LABEL_19:
   }
 }
 
-- (id)serializeToProtobufWithError:(id *)a3
+- (id)serializeToProtobufWithError:(id *)error
 {
   MIL::Opsets::Common::CreateMILContext(&v14, self);
   if (v14)

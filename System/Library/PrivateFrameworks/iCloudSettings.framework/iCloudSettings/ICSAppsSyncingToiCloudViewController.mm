@@ -1,26 +1,26 @@
 @interface ICSAppsSyncingToiCloudViewController
-- (ICSAppsSyncingToiCloudViewController)initWithAccountManager:(id)a3;
+- (ICSAppsSyncingToiCloudViewController)initWithAccountManager:(id)manager;
 - (id)_specifiersForAppsSyncingToDrive;
 - (id)account;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
 @implementation ICSAppsSyncingToiCloudViewController
 
-- (ICSAppsSyncingToiCloudViewController)initWithAccountManager:(id)a3
+- (ICSAppsSyncingToiCloudViewController)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = [(ICSDataclassViewController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(ICSDataclassViewController *)v5 setAccountManager:v4];
+    [(ICSDataclassViewController *)v5 setAccountManager:managerCopy];
     v7 = [ICSAppsSyncingToDriveSpecifierProvider alloc];
-    v8 = [(ICSDataclassViewController *)v6 accountManager];
-    v9 = [(ICSAppsSyncingToDriveSpecifierProvider *)v7 initWithAccountManager:v8 presenter:v6];
+    accountManager = [(ICSDataclassViewController *)v6 accountManager];
+    v9 = [(ICSAppsSyncingToDriveSpecifierProvider *)v7 initWithAccountManager:accountManager presenter:v6];
     appsSyncingToDriveSpecifierProvider = v6->_appsSyncingToDriveSpecifierProvider;
     v6->_appsSyncingToDriveSpecifierProvider = v9;
 
@@ -32,9 +32,9 @@
 
 - (id)account
 {
-  v2 = [(ICSDataclassViewController *)self accountManager];
-  v3 = [v2 accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accountManager = [(ICSDataclassViewController *)self accountManager];
+  accounts = [accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v4;
 }
@@ -46,7 +46,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_275819000, v3, OS_LOG_TYPE_DEFAULT, "AAUISyncingToiCloudViewController dealloc %@", buf, 0xCu);
   }
 
@@ -67,20 +67,20 @@
   [(ACUIDataclassConfigurationViewController *)&v2 viewDidLoad];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = ICSAppsSyncingToiCloudViewController;
-  [(ICSAppsSyncingToiCloudViewController *)&v11 setSpecifier:v4];
+  [(ICSAppsSyncingToiCloudViewController *)&v11 setSpecifier:specifierCopy];
   v5 = [ICSAppsSyncingToDriveSpecifierProvider alloc];
-  v6 = [(ICSDataclassViewController *)self accountManager];
-  v7 = [(ICSAppsSyncingToDriveSpecifierProvider *)v5 initWithAccountManager:v6 presenter:self];
+  accountManager = [(ICSDataclassViewController *)self accountManager];
+  v7 = [(ICSAppsSyncingToDriveSpecifierProvider *)v5 initWithAccountManager:accountManager presenter:self];
   appsSyncingToDriveSpecifierProvider = self->_appsSyncingToDriveSpecifierProvider;
   self->_appsSyncingToDriveSpecifierProvider = v7;
 
   [(ICSAppsSyncingToDriveSpecifierProvider *)self->_appsSyncingToDriveSpecifierProvider setDelegate:self];
-  v9 = [v4 objectForKeyedSubscript:@"icloudAccountManager"];
+  v9 = [specifierCopy objectForKeyedSubscript:@"icloudAccountManager"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -119,8 +119,8 @@
     [v5 addObject:v6];
     if (self->_appsSyncingToDriveSpecifierProvider)
     {
-      v9 = [(ICSAppsSyncingToiCloudViewController *)self _specifiersForAppsSyncingToDrive];
-      [v5 addObjectsFromArray:v9];
+      _specifiersForAppsSyncingToDrive = [(ICSAppsSyncingToiCloudViewController *)self _specifiersForAppsSyncingToDrive];
+      [v5 addObjectsFromArray:_specifiersForAppsSyncingToDrive];
     }
 
     v10 = [v5 copy];
@@ -151,8 +151,8 @@
     v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"APPS SYNCING"];
     [v3 addObject:v4];
 
-    v5 = [(ICSAppsSyncingToDriveSpecifierProvider *)self->_appsSyncingToDriveSpecifierProvider specifiers];
-    [v3 addObjectsFromArray:v5];
+    specifiers = [(ICSAppsSyncingToDriveSpecifierProvider *)self->_appsSyncingToDriveSpecifierProvider specifiers];
+    [v3 addObjectsFromArray:specifiers];
   }
 
   v6 = [v3 copy];

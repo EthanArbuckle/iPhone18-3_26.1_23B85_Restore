@@ -1,47 +1,47 @@
 @interface MRIDSCompanionTransport
-- (MRIDSCompanionTransport)initWithOutputDevice:(id)a3;
+- (MRIDSCompanionTransport)initWithOutputDevice:(id)device;
 - (id)_generateSessionUID;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (id)createConnectionWithUserInfo:(id)info;
 - (id)error;
 - (id)name;
 - (id)uid;
-- (void)_handleDeviceConnected:(id)a3;
-- (void)_handleDeviceDisconnected:(id)a3;
-- (void)_synchronized_setSessionUID:(id)a3;
-- (void)resetWithError:(id)a3;
-- (void)setSessionUID:(id)a3;
+- (void)_handleDeviceConnected:(id)connected;
+- (void)_handleDeviceDisconnected:(id)disconnected;
+- (void)_synchronized_setSessionUID:(id)d;
+- (void)resetWithError:(id)error;
+- (void)setSessionUID:(id)d;
 @end
 
 @implementation MRIDSCompanionTransport
 
-- (MRIDSCompanionTransport)initWithOutputDevice:(id)a3
+- (MRIDSCompanionTransport)initWithOutputDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = MRIDSCompanionTransport;
   v6 = [(MRIDSCompanionTransport *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputDevice, a3);
+    objc_storeStrong(&v6->_outputDevice, device);
     v8 = objc_alloc_init(MRDeviceInfo);
-    v9 = [v5 name];
-    [(MRDeviceInfo *)v8 setName:v9];
+    name = [deviceCopy name];
+    [(MRDeviceInfo *)v8 setName:name];
 
-    v10 = [v5 primaryID];
-    [(MRDeviceInfo *)v8 setDeviceUID:v10];
+    primaryID = [deviceCopy primaryID];
+    [(MRDeviceInfo *)v8 setDeviceUID:primaryID];
 
     deviceInfo = v7->_deviceInfo;
     v7->_deviceInfo = v8;
     v12 = v8;
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v14 = +[MRIDSCompanionConnection sharedManager];
-    [v13 addObserver:v7 selector:sel__handleDeviceConnected_ name:@"MRIDSCompanionConnectionDeviceDidConnect" object:v14];
+    [defaultCenter addObserver:v7 selector:sel__handleDeviceConnected_ name:@"MRIDSCompanionConnectionDeviceDidConnect" object:v14];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v16 = +[MRIDSCompanionConnection sharedManager];
-    [v15 addObserver:v7 selector:sel__handleDeviceDisconnected_ name:@"MRIDSCompanionConnectionDeviceDidDisconnect" object:v16];
+    [defaultCenter2 addObserver:v7 selector:sel__handleDeviceDisconnected_ name:@"MRIDSCompanionConnectionDeviceDidDisconnect" object:v16];
   }
 
   return v7;
@@ -49,49 +49,49 @@
 
 - (id)name
 {
-  v2 = [(MRIDSCompanionTransport *)self deviceInfo];
-  v3 = [v2 name];
+  deviceInfo = [(MRIDSCompanionTransport *)self deviceInfo];
+  name = [deviceInfo name];
 
-  return v3;
+  return name;
 }
 
 - (id)uid
 {
-  v2 = [(MRIDSCompanionTransport *)self deviceInfo];
-  v3 = [v2 WHAIdentifier];
+  deviceInfo = [(MRIDSCompanionTransport *)self deviceInfo];
+  wHAIdentifier = [deviceInfo WHAIdentifier];
 
-  return v3;
+  return wHAIdentifier;
 }
 
 - (id)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_error;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_error;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRIDSCompanionTransport *)v5 sessionUID];
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionUID = [(MRIDSCompanionTransport *)selfCopy sessionUID];
 
-  if (v6)
+  if (sessionUID)
   {
     goto LABEL_2;
   }
 
-  v8 = [(MRIDSCompanionTransport *)v5 _generateSessionUID];
-  [(MRIDSCompanionTransport *)v5 setSessionUID:v8];
+  _generateSessionUID = [(MRIDSCompanionTransport *)selfCopy _generateSessionUID];
+  [(MRIDSCompanionTransport *)selfCopy setSessionUID:_generateSessionUID];
 
   v9 = +[MRIDSCompanionConnection sharedManager];
-  v10 = [v9 isConnected];
+  isConnected = [v9 isConnected];
 
-  if (v10)
+  if (isConnected)
   {
     v36 = 0;
     v37 = &v36;
@@ -100,17 +100,17 @@
     v40 = __Block_byref_object_dispose__20;
     v41 = 0;
     v11 = +[MRIDSCompanionConnection sharedManager];
-    v12 = [(MRIDSCompanionTransport *)v5 uid];
-    v13 = [(MRIDSCompanionTransport *)v5 sessionUID];
-    [v11 setMessageHandler:&__block_literal_global_47 forType:@"Protobuf" destination:v12 session:v13];
+    v12 = [(MRIDSCompanionTransport *)selfCopy uid];
+    sessionUID2 = [(MRIDSCompanionTransport *)selfCopy sessionUID];
+    [v11 setMessageHandler:&__block_literal_global_47 forType:@"Protobuf" destination:v12 session:sessionUID2];
 
     v14 = dispatch_semaphore_create(0);
     v35 = 0;
-    v15 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v35];
+    v15 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:200 options:0 error:&v35];
     v31 = v35;
     v16 = +[MRIDSCompanionConnection sharedManager];
-    v17 = [(MRIDSCompanionTransport *)v5 uid];
-    v18 = [(MRIDSCompanionTransport *)v5 sessionUID];
+    v17 = [(MRIDSCompanionTransport *)selfCopy uid];
+    sessionUID3 = [(MRIDSCompanionTransport *)selfCopy sessionUID];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __56__MRIDSCompanionTransport_createConnectionWithUserInfo___block_invoke_3;
@@ -118,9 +118,9 @@
     v34 = &v36;
     v19 = v14;
     v33 = v19;
-    [v16 sendMessage:v15 type:@"ConnectRemoteControl" destination:v17 session:v18 options:0 priority:300 response:v32];
+    [v16 sendMessage:v15 type:@"ConnectRemoteControl" destination:v17 session:sessionUID3 options:0 priority:300 response:v32];
 
-    if (v5->_shouldUseSystemAuthenticationPrompt)
+    if (selfCopy->_shouldUseSystemAuthenticationPrompt)
     {
       v20 = 90000000000;
     }
@@ -139,25 +139,25 @@
       _Block_object_dispose(&v36, 8);
       v24 = [MRIDSCompanionTransportConnection alloc];
       v25 = +[MRIDSCompanionConnection sharedManager];
-      v26 = [(MRIDSCompanionTransport *)v5 uid];
-      v27 = [(MRIDSCompanionTransport *)v5 sessionUID];
-      v28 = [(MRIDSCompanionTransportConnection *)v24 initWithConnection:v25 type:@"RemoteControl" destination:v26 session:v27];
-      connection = v5->_connection;
-      v5->_connection = v28;
+      v26 = [(MRIDSCompanionTransport *)selfCopy uid];
+      sessionUID4 = [(MRIDSCompanionTransport *)selfCopy sessionUID];
+      v28 = [(MRIDSCompanionTransportConnection *)v24 initWithConnection:v25 type:@"RemoteControl" destination:v26 session:sessionUID4];
+      connection = selfCopy->_connection;
+      selfCopy->_connection = v28;
 
 LABEL_2:
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
 
-      v7 = v5->_connection;
+      v7 = selfCopy->_connection;
       goto LABEL_12;
     }
 
-    objc_storeStrong(&v5->_error, v23);
+    objc_storeStrong(&selfCopy->_error, v23);
 
     _Block_object_dispose(&v36, 8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v7 = 0;
 LABEL_12:
@@ -221,28 +221,28 @@ void __56__MRIDSCompanionTransport_createConnectionWithUserInfo___block_invoke_3
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)resetWithError:(id)a3
+- (void)resetWithError:(id)error
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MRIDSCompanionTransport *)v4 _synchronized_setSessionUID:0];
-  [(MRIDSCompanionTransportConnection *)v4->_connection closeWithError:v5];
-  objc_sync_exit(v4);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRIDSCompanionTransport *)selfCopy _synchronized_setSessionUID:0];
+  [(MRIDSCompanionTransportConnection *)selfCopy->_connection closeWithError:errorCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSessionUID:(id)a3
+- (void)setSessionUID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MRIDSCompanionTransport *)v4 _synchronized_setSessionUID:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRIDSCompanionTransport *)selfCopy _synchronized_setSessionUID:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_synchronized_setSessionUID:(id)a3
+- (void)_synchronized_setSessionUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (self->_sessionUID)
   {
     v6 = +[MRIDSCompanionConnection sharedManager];
@@ -254,7 +254,7 @@ void __56__MRIDSCompanionTransport_createConnectionWithUserInfo___block_invoke_3
     [v8 removeMessageHandlerForType:@"Protobuf" destination:v9 session:self->_sessionUID];
   }
 
-  objc_storeStrong(&self->_sessionUID, a3);
+  objc_storeStrong(&self->_sessionUID, d);
   if (self->_sessionUID)
   {
     objc_initWeak(&location, self);
@@ -287,20 +287,20 @@ void __55__MRIDSCompanionTransport__synchronized_setSessionUID___block_invoke(ui
 - (id)_generateSessionUID
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 initWithFormat:@"%@-%d", v4, ++_generateSessionUID_sessionUID_0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [v2 initWithFormat:@"%@-%d", uUIDString, ++_generateSessionUID_sessionUID_0];
 
   return v5;
 }
 
-- (void)_handleDeviceConnected:(id)a3
+- (void)_handleDeviceConnected:(id)connected
 {
   v4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:105 description:@"IDSConnection Reset"];
   [(MRIDSCompanionTransport *)self resetWithError:v4];
 }
 
-- (void)_handleDeviceDisconnected:(id)a3
+- (void)_handleDeviceDisconnected:(id)disconnected
 {
   v4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:105 description:@"IDSConnection Disconnected"];
   [(MRIDSCompanionTransport *)self resetWithError:v4];

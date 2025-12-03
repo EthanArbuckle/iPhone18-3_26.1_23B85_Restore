@@ -1,10 +1,10 @@
 @interface AirDropAlertUIViewController
 - (void)activateIfNeeded;
-- (void)configureWithCompletion:(id)a3;
+- (void)configureWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updatedTransfer:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updatedTransfer:(id)transfer;
 - (void)viewDidLoad;
 @end
 
@@ -26,75 +26,75 @@
   imgView = self->_imgView;
   self->_imgView = v3;
 
-  v5 = [(AirDropAlertUIViewController *)self view];
-  [v5 addSubview:self->_imgView];
+  view = [(AirDropAlertUIViewController *)self view];
+  [view addSubview:self->_imgView];
 
   [(UIImageView *)self->_imgView setContentMode:2];
   v6 = objc_alloc_init(AirDropAlertUIProgressAlertView);
   progressAlertView = self->_progressAlertView;
   self->_progressAlertView = v6;
 
-  v8 = [(AirDropAlertUIViewController *)self view];
-  [v8 addSubview:self->_progressAlertView];
+  view2 = [(AirDropAlertUIViewController *)self view];
+  [view2 addSubview:self->_progressAlertView];
 
   [(AirDropAlertUIProgressAlertView *)self->_progressAlertView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView leftAnchor];
-  v10 = [(AirDropAlertUIViewController *)self view];
-  v11 = [v10 leftAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  leftAnchor = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView leftAnchor];
+  view3 = [(AirDropAlertUIViewController *)self view];
+  leftAnchor2 = [view3 leftAnchor];
+  v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v12 setActive:1];
 
-  v13 = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView rightAnchor];
-  v14 = [(AirDropAlertUIViewController *)self view];
-  v15 = [v14 rightAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  rightAnchor = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView rightAnchor];
+  view4 = [(AirDropAlertUIViewController *)self view];
+  rightAnchor2 = [view4 rightAnchor];
+  v16 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v16 setActive:1];
 
-  v17 = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView topAnchor];
-  v18 = [(AirDropAlertUIViewController *)self view];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  topAnchor = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView topAnchor];
+  view5 = [(AirDropAlertUIViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v20 setActive:1];
 
-  v21 = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView bottomAnchor];
-  v22 = [(AirDropAlertUIViewController *)self view];
-  v23 = [v22 bottomAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:-24.0];
+  bottomAnchor = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView bottomAnchor];
+  view6 = [(AirDropAlertUIViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-24.0];
   [v24 setActive:1];
 
   [(AirDropAlertUIProgressAlertView *)self->_progressAlertView setHidden:1];
-  v25 = [(AirDropAlertUIViewController *)self view];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view7 = [(AirDropAlertUIViewController *)self view];
+  [view7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v26 = airdrop_ui_log();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(AirDropAlertUIViewController *)self extensionContext];
-    v28 = [v27 inputItems];
+    extensionContext = [(AirDropAlertUIViewController *)self extensionContext];
+    inputItems = [extensionContext inputItems];
     *buf = 138412290;
-    v43 = v28;
+    v43 = inputItems;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Extension items: %@", buf, 0xCu);
   }
 
-  v29 = [(AirDropAlertUIViewController *)self extensionContext];
-  v30 = [v29 inputItems];
+  extensionContext2 = [(AirDropAlertUIViewController *)self extensionContext];
+  inputItems2 = [extensionContext2 inputItems];
 
   v31 = airdrop_ui_log();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [(AirDropAlertUIViewController *)self view];
-    v33 = [v32 superview];
+    view8 = [(AirDropAlertUIViewController *)self view];
+    superview = [view8 superview];
     *buf = 138412290;
-    v43 = v33;
+    v43 = superview;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "View loaded with superview: %@", buf, 0xCu);
   }
 
-  v34 = [v30 firstObject];
-  v35 = v34;
-  if (v34)
+  firstObject = [inputItems2 firstObject];
+  v35 = firstObject;
+  if (firstObject)
   {
-    v36 = [v34 userInfo];
-    v37 = [v36 objectForKeyedSubscript:@"id"];
+    userInfo = [firstObject userInfo];
+    v37 = [userInfo objectForKeyedSubscript:@"id"];
 
     v38 = v37;
     if (v38)
@@ -150,21 +150,21 @@
   {
     if (![v5 userResponse]&& [v5 needsAction])
     {
-      v10 = [v5 metaData];
-      v11 = [v10 previewImage];
+      metaData = [v5 metaData];
+      previewImage = [metaData previewImage];
 
-      v6 = airdrop_ui_log();
-      v12 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-      if (v11)
+      transferProgress = airdrop_ui_log();
+      v12 = os_log_type_enabled(transferProgress, OS_LOG_TYPE_DEFAULT);
+      if (previewImage)
       {
         if (v12)
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Preview image available.", buf, 2u);
+          _os_log_impl(&_mh_execute_header, transferProgress, OS_LOG_TYPE_DEFAULT, "Preview image available.", buf, 2u);
         }
 
-        v6 = [UIImage imageWithCGImage:v11];
-        [v6 size];
+        transferProgress = [UIImage imageWithCGImage:previewImage];
+        [transferProgress size];
         if (v13 <= 270.0)
         {
           v14 = v13;
@@ -175,9 +175,9 @@
           v14 = 270.0;
         }
 
-        [v6 size];
+        [transferProgress size];
         v16 = v14 / v15;
-        [v6 size];
+        [transferProgress size];
         if (v17 * v16 <= 300.0)
         {
           v18 = v17 * v16;
@@ -188,10 +188,10 @@
           v18 = 300.0;
         }
 
-        v19 = [v5 metaData];
-        v20 = [v19 transferTypes];
+        metaData2 = [v5 metaData];
+        transferTypes = [metaData2 transferTypes];
 
-        if ((v20 & 0x80) != 0)
+        if ((transferTypes & 0x80) != 0)
         {
           [(UIImageView *)self->_imgView setContentMode:1];
           v18 = 117.0;
@@ -199,15 +199,15 @@
         }
 
         [(AirDropAlertUIViewController *)self setPreferredContentSize:v14, v18];
-        [(UIImageView *)self->_imgView setImage:v6];
-        v21 = [(AirDropAlertUIViewController *)self view];
-        [v21 bounds];
+        [(UIImageView *)self->_imgView setImage:transferProgress];
+        view = [(AirDropAlertUIViewController *)self view];
+        [view bounds];
         v23 = v22;
         v25 = v24;
         v27 = v26;
         v29 = v28;
 
-        if ((v20 & 0x80) != 0)
+        if ((transferTypes & 0x80) != 0)
         {
           v30 = 90.0;
         }
@@ -223,7 +223,7 @@
       else if (v12)
       {
         v32[0] = 0;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No preview image available.", v32, 2u);
+        _os_log_impl(&_mh_execute_header, transferProgress, OS_LOG_TYPE_DEFAULT, "No preview image available.", v32, 2u);
       }
 
       goto LABEL_34;
@@ -231,8 +231,8 @@
 
     if ([v5 transferState]== 6 && [v5 needsAction])
     {
-      v6 = airdrop_ui_log();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      transferProgress = airdrop_ui_log();
+      if (os_log_type_enabled(transferProgress, OS_LOG_TYPE_ERROR))
       {
         sub_1000029F8();
       }
@@ -258,14 +258,14 @@ LABEL_37:
     goto LABEL_42;
   }
 
-  v6 = [v5 transferProgress];
+  transferProgress = [v5 transferProgress];
   v7 = airdrop_ui_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (transferProgress)
   {
     if (v8)
     {
-      sub_100002A2C(v6, v7);
+      sub_100002A2C(transferProgress, v7);
     }
 
 LABEL_34:
@@ -284,42 +284,42 @@ LABEL_34:
 LABEL_42:
 }
 
-- (void)updatedTransfer:(id)a3
+- (void)updatedTransfer:(id)transfer
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:self->_identifier];
+  transferCopy = transfer;
+  identifier = [transferCopy identifier];
+  v7 = [identifier isEqualToString:self->_identifier];
 
   if (v7)
   {
     v8 = airdrop_ui_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100002B40(v5, self, v8);
+      sub_100002B40(transferCopy, self, v8);
     }
 
-    objc_storeStrong(&self->_relevantTransfer, a3);
+    objc_storeStrong(&self->_relevantTransfer, transfer);
     [(AirDropAlertUIViewController *)self activateIfNeeded];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000018A4;
   block[3] = &unk_1000081F0;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v8 = v13;
-  v9 = v11;
+  pathCopy = path;
+  selfCopy = self;
+  objectCopy = object;
+  v8 = objectCopy;
+  v9 = pathCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)configureWithCompletion:(id)a3
+- (void)configureWithCompletion:(id)completion
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(completion);
   completion = self->_completion;
   self->_completion = v4;
 
@@ -337,11 +337,11 @@ LABEL_42:
 
   if (self->_observingProgress)
   {
-    v4 = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView progress];
-    [v4 removeObserver:self forKeyPath:@"fractionCompleted"];
+    progress = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView progress];
+    [progress removeObserver:self forKeyPath:@"fractionCompleted"];
 
-    v5 = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView progress];
-    [v5 removeObserver:self forKeyPath:@"finished"];
+    progress2 = [(AirDropAlertUIProgressAlertView *)self->_progressAlertView progress];
+    [progress2 removeObserver:self forKeyPath:@"finished"];
   }
 
   relevantTransfer = self->_relevantTransfer;

@@ -1,32 +1,32 @@
 @interface TSPDatabaseArchiverWriter
-- (BOOL)serializeArchive:(const Message *)a3;
+- (BOOL)serializeArchive:(const Message *)archive;
 - (NSString)fileStateIdentifier;
-- (TSPDatabaseArchiverWriter)initWithDatabase:(id)a3 fileManager:(id)a4;
+- (TSPDatabaseArchiverWriter)initWithDatabase:(id)database fileManager:(id)manager;
 - (int64_t)dataStateIdentifier;
-- (void)_writeDataFromInputStreamToFile:(id)a3 length:(int64_t)a4;
-- (void)serializeDataFromStream:(id)a3 length:(int64_t)a4;
+- (void)_writeDataFromInputStreamToFile:(id)file length:(int64_t)length;
+- (void)serializeDataFromStream:(id)stream length:(int64_t)length;
 @end
 
 @implementation TSPDatabaseArchiverWriter
 
-- (TSPDatabaseArchiverWriter)initWithDatabase:(id)a3 fileManager:(id)a4
+- (TSPDatabaseArchiverWriter)initWithDatabase:(id)database fileManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = TSPDatabaseArchiverWriter;
   v9 = [(TSPDatabaseArchiverWriter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
-    objc_storeStrong(&v10->_fileManager, a4);
+    objc_storeStrong(&v9->_database, database);
+    objc_storeStrong(&v10->_fileManager, manager);
   }
 
   return v10;
 }
 
-- (BOOL)serializeArchive:(const Message *)a3
+- (BOOL)serializeArchive:(const Message *)archive
 {
   v28 = *MEMORY[0x277D85DE8];
   if (self->_forceFileStorage)
@@ -39,7 +39,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  v12 = (*(a3->var0 + 9))(a3);
+  v12 = (*(archive->var0 + 9))(archive);
   if (v12 >> 31)
   {
     v18 = MEMORY[0x277D81150];
@@ -56,7 +56,7 @@
     v14 = objc_msgSend__openDatabaseBlobWithSize_(self, v13, v12);
     sub_276AE3EC8(v25, v14);
     google::protobuf::io::CodedOutputStream::CodedOutputStream(v26, v25, 1);
-    v27 = (*(a3->var0 + 12))(a3, v27, v26);
+    v27 = (*(archive->var0 + 12))(archive, v27, v26);
     v27 = google::protobuf::io::EpsCopyOutputStream::FlushAndResetBuffer(v26, v27);
     v15 = v26[56] ^ 1;
     google::protobuf::io::CodedOutputStream::~CodedOutputStream(v26);
@@ -99,25 +99,25 @@
   return fileStateIdentifier;
 }
 
-- (void)serializeDataFromStream:(id)a3 length:(int64_t)a4
+- (void)serializeDataFromStream:(id)stream length:(int64_t)length
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 >= 40960 || self->_forceFileStorage)
+  streamCopy = stream;
+  v7 = streamCopy;
+  if (length >= 40960 || self->_forceFileStorage)
   {
-    objc_msgSend__writeDataFromInputStreamToFile_length_(self, v6, v6, a4);
+    objc_msgSend__writeDataFromInputStreamToFile_length_(self, streamCopy, streamCopy, length);
   }
 
   else
   {
-    objc_msgSend__writeDataFromInputStreamToDatabase_length_(self, v6, v6, a4);
+    objc_msgSend__writeDataFromInputStreamToDatabase_length_(self, streamCopy, streamCopy, length);
   }
 }
 
-- (void)_writeDataFromInputStreamToFile:(id)a3 length:(int64_t)a4
+- (void)_writeDataFromInputStreamToFile:(id)file length:(int64_t)length
 {
-  v18 = a3;
-  if (!v18)
+  fileCopy = file;
+  if (!fileCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPDatabaseArchiverWriter _writeDataFromInputStreamToFile:length:]");
@@ -129,19 +129,19 @@
 
   if (self->_hasFileState)
   {
-    objc_msgSend_setDataFromInputStream_length_forIdentifier_(self->_fileManager, v6, v18, a4, self->_fileStateIdentifier);
+    objc_msgSend_setDataFromInputStream_length_forIdentifier_(self->_fileManager, v6, fileCopy, length, self->_fileStateIdentifier);
   }
 
   else
   {
     if (objc_msgSend_length(self->_filenameHint, v6, v7))
     {
-      objc_msgSend_addDataFromInputStream_length_filenameHint_(self->_fileManager, v15, v18, a4, self->_filenameHint);
+      objc_msgSend_addDataFromInputStream_length_filenameHint_(self->_fileManager, v15, fileCopy, length, self->_filenameHint);
     }
 
     else
     {
-      objc_msgSend_addDataFromInputStream_length_filenameHint_(self->_fileManager, v15, v18, a4, @"obj");
+      objc_msgSend_addDataFromInputStream_length_filenameHint_(self->_fileManager, v15, fileCopy, length, @"obj");
     }
     v16 = ;
     objc_msgSend_setFileStateIdentifier_(self, v17, v16);

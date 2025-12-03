@@ -1,36 +1,36 @@
 @interface PFCloudKitArchivingUtilities
-- (id)encodeRecord:(void *)a3 error:;
-- (id)newArchivedDataForSystemFieldsOfRecord:(uint64_t)a1;
-- (id)recordFromEncodedData:(void *)a3 error:;
-- (void)shareFromEncodedData:(char *)a3 inZoneWithID:(void *)a4 error:;
+- (id)encodeRecord:(void *)record error:;
+- (id)newArchivedDataForSystemFieldsOfRecord:(uint64_t)record;
+- (id)recordFromEncodedData:(void *)data error:;
+- (void)shareFromEncodedData:(char *)data inZoneWithID:(void *)d error:;
 @end
 
 @implementation PFCloudKitArchivingUtilities
 
-- (id)newArchivedDataForSystemFieldsOfRecord:(uint64_t)a1
+- (id)newArchivedDataForSystemFieldsOfRecord:(uint64_t)record
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (record)
   {
     v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
     [a2 encodeSystemFieldsWithCoder:v3];
-    v4 = [v3 encodedData];
+    encodedData = [v3 encodedData];
     [v3 finishEncoding];
   }
 
   else
   {
-    v4 = 0;
+    encodedData = 0;
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return encodedData;
 }
 
-- (id)encodeRecord:(void *)a3 error:
+- (id)encodeRecord:(void *)record error:
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v8 = 0;
     goto LABEL_14;
@@ -46,10 +46,10 @@
     v10 = v15;
     if (v10)
     {
-      if (a3)
+      if (record)
       {
         v8 = 0;
-        *a3 = v10;
+        *record = v10;
         goto LABEL_13;
       }
     }
@@ -90,10 +90,10 @@ LABEL_14:
   return v8;
 }
 
-- (id)recordFromEncodedData:(void *)a3 error:
+- (id)recordFromEncodedData:(void *)data error:
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v10 = 0;
     goto LABEL_14;
@@ -109,10 +109,10 @@ LABEL_14:
     v12 = v17;
     if (v12)
     {
-      if (a3)
+      if (data)
       {
         v10 = 0;
-        *a3 = v12;
+        *data = v12;
         goto LABEL_13;
       }
     }
@@ -153,10 +153,10 @@ LABEL_14:
   return v10;
 }
 
-- (void)shareFromEncodedData:(char *)a3 inZoneWithID:(void *)a4 error:
+- (void)shareFromEncodedData:(char *)data inZoneWithID:(void *)d error:
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v4 = 0;
     goto LABEL_21;
@@ -178,31 +178,31 @@ LABEL_14:
 
     v4 = v13;
     objc_autoreleasePoolPop(v8);
-    if (([a3 isEqual:{objc_msgSend(objc_msgSend(v4, "recordID"), "zoneID")}] & 1) == 0)
+    if (([data isEqual:{objc_msgSend(objc_msgSend(v4, "recordID"), "zoneID")}] & 1) == 0)
     {
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v4 recordID];
+        recordID = [v4 recordID];
         *buf = 138412802;
-        v31 = a3;
+        dataCopy2 = data;
         v32 = 2112;
-        v33 = v25;
+        v33 = recordID;
         v34 = 2112;
-        v35 = a1;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Decoded share zoneID doesn't match row: %@\n%@\n%@\n", buf, 0x20u);
       }
 
       v15 = _PFLogGetLogStream(17);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
       {
-        v26 = [v4 recordID];
+        recordID2 = [v4 recordID];
         *buf = 138412802;
-        v31 = a3;
+        dataCopy2 = data;
         v32 = 2112;
-        v33 = v26;
+        v33 = recordID2;
         v34 = 2112;
-        v35 = a1;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_18565F000, v15, OS_LOG_TYPE_FAULT, "CoreData: Decoded share zoneID doesn't match row: %@\n%@\n%@", buf, 0x20u);
       }
 
@@ -216,10 +216,10 @@ LABEL_12:
       v20 = v18;
       if (v20)
       {
-        if (a4)
+        if (d)
         {
           v4 = 0;
-          *a4 = v20;
+          *d = v20;
           goto LABEL_20;
         }
       }
@@ -230,7 +230,7 @@ LABEL_12:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
-          v31 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitArchivingUtilities.m";
+          dataCopy2 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitArchivingUtilities.m";
           v32 = 1024;
           LODWORD(v33) = 130;
           _os_log_error_impl(&dword_18565F000, v21, OS_LOG_TYPE_ERROR, "CoreData: fault: Illegal attempt to return an error without one in %s:%d\n", buf, 0x12u);
@@ -240,7 +240,7 @@ LABEL_12:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
         {
           *buf = 136315394;
-          v31 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitArchivingUtilities.m";
+          dataCopy2 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitArchivingUtilities.m";
           v32 = 1024;
           LODWORD(v33) = 130;
           _os_log_fault_impl(&dword_18565F000, v22, OS_LOG_TYPE_FAULT, "CoreData: Illegal attempt to return an error without one in %s:%d", buf, 0x12u);

@@ -1,6 +1,6 @@
 @interface HFResidentDeviceItemProvider
 - (HFResidentDeviceItemProvider)init;
-- (HFResidentDeviceItemProvider)initWithHome:(id)a3;
+- (HFResidentDeviceItemProvider)initWithHome:(id)home;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -9,23 +9,23 @@
 
 - (HFResidentDeviceItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFResidentDeviceItemProvider.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HFResidentDeviceItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFResidentDeviceItemProvider.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HFResidentDeviceItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFResidentDeviceItemProvider)initWithHome:(id)a3
+- (HFResidentDeviceItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFResidentDeviceItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     residentDeviceItems = v7->_residentDeviceItems;
     v7->_residentDeviceItems = v8;
@@ -37,10 +37,10 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HFResidentDeviceItemProvider *)self home];
-  v4 = [v3 residentDevices];
-  v5 = [(HFResidentDeviceItemProvider *)self filter];
-  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v4 filter:v5 itemMap:&__block_literal_global_179];
+  home = [(HFResidentDeviceItemProvider *)self home];
+  residentDevices = [home residentDevices];
+  filter = [(HFResidentDeviceItemProvider *)self filter];
+  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:residentDevices filter:filter itemMap:&__block_literal_global_179];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__HFResidentDeviceItemProvider_reloadItems__block_invoke_2;
@@ -83,8 +83,8 @@ id __43__HFResidentDeviceItemProvider_reloadItems__block_invoke_2(uint64_t a1, v
 {
   v5.receiver = self;
   v5.super_class = HFResidentDeviceItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"residentDevice"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"residentDevice"];
 
   return v3;
 }

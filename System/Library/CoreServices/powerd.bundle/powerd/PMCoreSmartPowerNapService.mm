@@ -1,19 +1,19 @@
 @interface PMCoreSmartPowerNapService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PMCoreSmartPowerNapService)init;
 - (void)enterCoreSmartPowerNap;
 - (void)exitCoreSmartPowerNap;
 - (void)registerForLockStateUpdates;
-- (void)registerWithIdentifier:(id)a3;
-- (void)setCSPNMotionAlarmStartThreshold:(unsigned int)a3;
-- (void)setCSPNMotionAlarmThreshold:(unsigned int)a3;
-- (void)setCSPNQueryDelta:(unsigned int)a3;
-- (void)setCSPNRequeryDelta:(unsigned int)a3;
-- (void)setState:(unsigned __int8)a3;
-- (void)syncStateWithHandler:(id)a3;
-- (void)unregisterWithIdentifier:(id)a3;
-- (void)updateLockState:(unint64_t)a3;
+- (void)registerWithIdentifier:(id)identifier;
+- (void)setCSPNMotionAlarmStartThreshold:(unsigned int)threshold;
+- (void)setCSPNMotionAlarmThreshold:(unsigned int)threshold;
+- (void)setCSPNQueryDelta:(unsigned int)delta;
+- (void)setCSPNRequeryDelta:(unsigned int)delta;
+- (void)setState:(unsigned __int8)state;
+- (void)syncStateWithHandler:(id)handler;
+- (void)unregisterWithIdentifier:(id)identifier;
+- (void)updateLockState:(unint64_t)state;
 @end
 
 @implementation PMCoreSmartPowerNapService
@@ -74,17 +74,17 @@
 
 - (void)registerForLockStateUpdates
 {
-  v2 = self;
+  selfCopy = self;
   out_token = 0;
-  v3 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100016CB4;
   v5[3] = &unk_1000991E8;
-  v5[4] = v2;
-  LODWORD(v2) = notify_register_dispatch("com.apple.springboard.lockstate", &out_token, v3, v5);
+  v5[4] = selfCopy;
+  LODWORD(selfCopy) = notify_register_dispatch("com.apple.springboard.lockstate", &out_token, mainQueue, v5);
 
-  if (v2)
+  if (selfCopy)
   {
     v4 = qword_1000AB9A8;
     if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_ERROR))
@@ -94,90 +94,90 @@
   }
 }
 
-- (void)updateLockState:(unint64_t)a3
+- (void)updateLockState:(unint64_t)state
 {
-  v4 = [(PMCoreSmartPowerNapService *)self predictor];
-  [v4 updateInactiveState:a3];
+  predictor = [(PMCoreSmartPowerNapService *)self predictor];
+  [predictor updateInactiveState:state];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____PMCoreSmartPowerNapProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     v11[0] = 67109120;
-    v11[1] = [v5 processIdentifier];
+    v11[1] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CSPN: listener: accepted new connection from pid %d", v11, 8u);
   }
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____PMCoreSmartPowerNapCallbackProtocol];
-  [v5 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (void)registerWithIdentifier:(id)a3
+- (void)registerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100048054;
   block[3] = &unk_100099278;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = identifierCopy;
+  dispatch_async(mainQueue, block);
 }
 
-- (void)unregisterWithIdentifier:(id)a3
+- (void)unregisterWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  identifierCopy = identifier;
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000483A0;
   v7[3] = &unk_1000992A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setState:(unsigned __int8)a3
+- (void)setState:(unsigned __int8)state
 {
-  v5 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000487E4;
   v6[3] = &unk_1000991C0;
-  v7 = a3;
+  stateCopy = state;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(mainQueue, v6);
 }
 
-- (void)syncStateWithHandler:(id)a3
+- (void)syncStateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  handlerCopy = handler;
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000489E8;
   v7[3] = &unk_1000992E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(mainQueue, v7);
 }
 
 - (void)enterCoreSmartPowerNap
@@ -239,9 +239,9 @@
   if (v4)
   {
     v5 = v4;
-    v6 = [(PMCoreSmartPowerNapService *)self cached_idle_timer];
+    cached_idle_timer = [(PMCoreSmartPowerNapService *)self cached_idle_timer];
 
-    if (v6)
+    if (cached_idle_timer)
     {
       v7 = qword_1000AB9A8;
       if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
@@ -250,8 +250,8 @@
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: changing back idle timer", v11, 2u);
       }
 
-      v8 = [(PMCoreSmartPowerNapService *)self cached_idle_timer];
-      IORegistryEntrySetCFProperty(v5, @"System Idle Seconds", v8);
+      cached_idle_timer2 = [(PMCoreSmartPowerNapService *)self cached_idle_timer];
+      IORegistryEntrySetCFProperty(v5, @"System Idle Seconds", cached_idle_timer2);
     }
   }
 
@@ -269,84 +269,84 @@
   }
 }
 
-- (void)setCSPNQueryDelta:(unsigned int)a3
+- (void)setCSPNQueryDelta:(unsigned int)delta
 {
   v5 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    deltaCopy = delta;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating CSPN Query delta to %u", buf, 8u);
   }
 
-  v6 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100048ED0;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  deltaCopy2 = delta;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setCSPNRequeryDelta:(unsigned int)a3
+- (void)setCSPNRequeryDelta:(unsigned int)delta
 {
   v5 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    deltaCopy = delta;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating CSPN requery delta to %u", buf, 8u);
   }
 
-  v6 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100049038;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  deltaCopy2 = delta;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setCSPNMotionAlarmThreshold:(unsigned int)a3
+- (void)setCSPNMotionAlarmThreshold:(unsigned int)threshold
 {
   v5 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    thresholdCopy = threshold;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating CSPN motion alarm threshold to %u", buf, 8u);
   }
 
-  v6 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000491A4;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  thresholdCopy2 = threshold;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)setCSPNMotionAlarmStartThreshold:(unsigned int)a3
+- (void)setCSPNMotionAlarmStartThreshold:(unsigned int)threshold
 {
   v5 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = a3;
+    thresholdCopy = threshold;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating CSPN motion alarm start threshold to %u", buf, 8u);
   }
 
-  v6 = [(PMCoreSmartPowerNapService *)self mainQueue];
+  mainQueue = [(PMCoreSmartPowerNapService *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004930C;
   v7[3] = &unk_100099310;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  thresholdCopy2 = threshold;
+  dispatch_async(mainQueue, v7);
 }
 
 @end

@@ -1,53 +1,53 @@
 @interface HUSoftwareLibraryLookupRequest
-- (HUSoftwareLibraryLookupRequest)initWithAccessory:(id)a3;
-- (HUSoftwareLibraryLookupRequest)initWithBundleID:(id)a3 storeID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUSoftwareLibraryLookupRequest)initWithAccessory:(id)accessory;
+- (HUSoftwareLibraryLookupRequest)initWithBundleID:(id)d storeID:(id)iD;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUSoftwareLibraryLookupRequest
 
-- (HUSoftwareLibraryLookupRequest)initWithBundleID:(id)a3 storeID:(id)a4
+- (HUSoftwareLibraryLookupRequest)initWithBundleID:(id)d storeID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = HUSoftwareLibraryLookupRequest;
   v9 = [(HUSoftwareLibraryLookupRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleID, a3);
-    objc_storeStrong(&v10->_storeID, a4);
+    objc_storeStrong(&v9->_bundleID, d);
+    objc_storeStrong(&v10->_storeID, iD);
   }
 
   return v10;
 }
 
-- (HUSoftwareLibraryLookupRequest)initWithAccessory:(id)a3
+- (HUSoftwareLibraryLookupRequest)initWithAccessory:(id)accessory
 {
-  v5 = a3;
-  v6 = [v5 bundleID];
-  v7 = [v5 storeID];
-  v8 = [(HUSoftwareLibraryLookupRequest *)self initWithBundleID:v6 storeID:v7];
+  accessoryCopy = accessory;
+  bundleID = [accessoryCopy bundleID];
+  storeID = [accessoryCopy storeID];
+  v8 = [(HUSoftwareLibraryLookupRequest *)self initWithBundleID:bundleID storeID:storeID];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_accessory, a3);
+    objc_storeStrong(&v8->_accessory, accessory);
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HUSoftwareLibraryLookupRequest *)self bundleID];
-  v6 = [(HUSoftwareLibraryLookupRequest *)self storeID];
-  v7 = [v4 initWithBundleID:v5 storeID:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  bundleID = [(HUSoftwareLibraryLookupRequest *)self bundleID];
+  storeID = [(HUSoftwareLibraryLookupRequest *)self storeID];
+  v7 = [v4 initWithBundleID:bundleID storeID:storeID];
 
-  v8 = [(HUSoftwareLibraryLookupRequest *)self accessory];
+  accessory = [(HUSoftwareLibraryLookupRequest *)self accessory];
   v9 = v7[3];
-  v7[3] = v8;
+  v7[3] = accessory;
 
   return v7;
 }

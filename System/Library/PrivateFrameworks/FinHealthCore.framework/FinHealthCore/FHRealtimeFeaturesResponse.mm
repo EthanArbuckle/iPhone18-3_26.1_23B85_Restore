@@ -42,7 +42,7 @@
       v6 = 0;
       v7 = *v48;
       v31 = *v48;
-      v32 = self;
+      selfCopy = self;
       do
       {
         v8 = 0;
@@ -87,31 +87,31 @@
 
                   v11 = *(*(&v43 + 1) + 8 * v12);
 
-                  v14 = [v11 eventIdentifiers];
+                  eventIdentifiers = [v11 eventIdentifiers];
 
                   v15 = MEMORY[0x277CBEAC0];
-                  v16 = [v11 featureLabel];
-                  v17 = [v11 featureRank];
-                  v18 = v17;
-                  if (v14)
+                  featureLabel = [v11 featureLabel];
+                  featureRank = [v11 featureRank];
+                  v18 = featureRank;
+                  if (eventIdentifiers)
                   {
-                    v19 = [v11 eventIdentifiers];
+                    eventIdentifiers2 = [v11 eventIdentifiers];
                     v20 = MEMORY[0x277CCABB0];
-                    v21 = [v11 eventStartDate];
-                    [v21 timeIntervalSinceReferenceDate];
+                    eventStartDate = [v11 eventStartDate];
+                    [eventStartDate timeIntervalSinceReferenceDate];
                     v22 = [v20 numberWithDouble:?];
                     v23 = MEMORY[0x277CCABB0];
-                    v24 = [v11 eventEndDate];
-                    [v24 timeIntervalSinceReferenceDate];
+                    eventEndDate = [v11 eventEndDate];
+                    [eventEndDate timeIntervalSinceReferenceDate];
                     v25 = [v23 numberWithDouble:?];
-                    v26 = [v15 dictionaryWithObjectsAndKeys:{v16, @"featureLabel", v18, @"featureRank", v19, @"featureEventIdentifiers", v22, @"featureEventStartDate", v25, @"featureEventEndDate", 0}];
+                    v26 = [v15 dictionaryWithObjectsAndKeys:{featureLabel, @"featureLabel", v18, @"featureRank", eventIdentifiers2, @"featureEventIdentifiers", v22, @"featureEventStartDate", v25, @"featureEventEndDate", 0}];
                     [v41 addObject:v26];
                   }
 
                   else
                   {
-                    v19 = [v15 dictionaryWithObjectsAndKeys:{v16, @"featureLabel", v17, @"featureRank", 0}];
-                    [v41 addObject:v19];
+                    eventIdentifiers2 = [v15 dictionaryWithObjectsAndKeys:{featureLabel, @"featureLabel", featureRank, @"featureRank", 0}];
+                    [v41 addObject:eventIdentifiers2];
                   }
 
                   ++v12;
@@ -125,7 +125,7 @@
               while (v42);
 
               v7 = v31;
-              self = v32;
+              self = selfCopy;
               v5 = v33;
               v8 = v37;
               v6 = v38;

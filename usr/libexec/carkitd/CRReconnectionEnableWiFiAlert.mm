@@ -1,6 +1,6 @@
 @interface CRReconnectionEnableWiFiAlert
-- (BOOL)presentAlertWithCompletion:(id)a3;
-- (CRReconnectionEnableWiFiAlert)initWithVehicle:(id)a3;
+- (BOOL)presentAlertWithCompletion:(id)completion;
+- (CRReconnectionEnableWiFiAlert)initWithVehicle:(id)vehicle;
 - (id)alertAcceptButtonTitle;
 - (id)alertTitle;
 - (id)lockscreenMessage;
@@ -8,16 +8,16 @@
 
 @implementation CRReconnectionEnableWiFiAlert
 
-- (CRReconnectionEnableWiFiAlert)initWithVehicle:(id)a3
+- (CRReconnectionEnableWiFiAlert)initWithVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v8.receiver = self;
   v8.super_class = CRReconnectionEnableWiFiAlert;
   v5 = [(CRReconnectionEnableWiFiAlert *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CRReconnectionEnableWiFiAlert *)v5 setVehicle:v4];
+    [(CRReconnectionEnableWiFiAlert *)v5 setVehicle:vehicleCopy];
   }
 
   return v6;
@@ -47,16 +47,16 @@
   return v3;
 }
 
-- (BOOL)presentAlertWithCompletion:(id)a3
+- (BOOL)presentAlertWithCompletion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003E808;
   v7[3] = &unk_1000DE970;
-  v8 = a3;
+  completionCopy = completion;
   v6.receiver = self;
   v6.super_class = CRReconnectionEnableWiFiAlert;
-  v4 = v8;
+  v4 = completionCopy;
   LOBYTE(self) = [(CRAlert *)&v6 presentAlertWithCompletion:v7];
 
   return self;

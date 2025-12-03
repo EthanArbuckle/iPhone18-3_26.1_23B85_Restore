@@ -1,109 +1,109 @@
 @interface SXCondition
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3;
++ (id)jsonPropertyNameForObjCPropertyName:(id)name;
 - (NSSet)types;
-- (double)maxViewportAspectRatioWithValue:(id)a3 withType:(int)a4;
-- (double)maxViewportWidthWithValue:(id)a3 withType:(int)a4;
-- (double)minViewportAspectRatioWithValue:(id)a3 withType:(int)a4;
-- (double)minViewportWidthWithValue:(id)a3 withType:(int)a4;
-- (id)contentSizeCategoryFromJSONContentSizeCategory:(id)a3;
-- (id)followingWithValue:(id)a3 withType:(int)a4;
-- (id)maxContentSizeCategoryWithValue:(id)a3 withType:(int)a4;
-- (id)minContentSizeCategoryWithValue:(id)a3 withType:(int)a4;
-- (id)offerIdentifierWithValue:(id)a3 withType:(int)a4;
-- (int64_t)horizontalSizeClassWithValue:(id)a3 withType:(int)a4;
-- (int64_t)interfaceSizeClassFromJSONSizeClass:(id)a3;
-- (int64_t)offerUpsellScenarioWithValue:(id)a3 withType:(int)a4;
-- (int64_t)subscriptionActivationEligibilityWithValue:(id)a3 withType:(int)a4;
-- (int64_t)verticalSizeClassWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)newsletterSubscriptionStatusWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)preferredColorSchemeWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)testingWithValue:(id)a3 withType:(int)a4;
+- (double)maxViewportAspectRatioWithValue:(id)value withType:(int)type;
+- (double)maxViewportWidthWithValue:(id)value withType:(int)type;
+- (double)minViewportAspectRatioWithValue:(id)value withType:(int)type;
+- (double)minViewportWidthWithValue:(id)value withType:(int)type;
+- (id)contentSizeCategoryFromJSONContentSizeCategory:(id)category;
+- (id)followingWithValue:(id)value withType:(int)type;
+- (id)maxContentSizeCategoryWithValue:(id)value withType:(int)type;
+- (id)minContentSizeCategoryWithValue:(id)value withType:(int)type;
+- (id)offerIdentifierWithValue:(id)value withType:(int)type;
+- (int64_t)horizontalSizeClassWithValue:(id)value withType:(int)type;
+- (int64_t)interfaceSizeClassFromJSONSizeClass:(id)class;
+- (int64_t)offerUpsellScenarioWithValue:(id)value withType:(int)type;
+- (int64_t)subscriptionActivationEligibilityWithValue:(id)value withType:(int)type;
+- (int64_t)verticalSizeClassWithValue:(id)value withType:(int)type;
+- (unint64_t)newsletterSubscriptionStatusWithValue:(id)value withType:(int)type;
+- (unint64_t)preferredColorSchemeWithValue:(id)value withType:(int)type;
+- (unint64_t)testingWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXCondition
 
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3
++ (id)jsonPropertyNameForObjCPropertyName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"testing"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"testing"])
   {
     v5 = @"_anf_testing";
   }
 
-  else if ([v4 isEqualToString:@"newsletterSubscriptionStatus"])
+  else if ([nameCopy isEqualToString:@"newsletterSubscriptionStatus"])
   {
     v5 = @"newsletter";
   }
 
-  else if ([v4 isEqualToString:@"offerUpsellScenario"])
+  else if ([nameCopy isEqualToString:@"offerUpsellScenario"])
   {
     v5 = @"upsellScenario";
   }
 
-  else if ([v4 isEqualToString:@"experimentTreatmentGroup"])
+  else if ([nameCopy isEqualToString:@"experimentTreatmentGroup"])
   {
     v5 = @"experimentVariant";
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXCondition;
-    v5 = objc_msgSendSuper2(&v7, sel_jsonPropertyNameForObjCPropertyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_jsonPropertyNameForObjCPropertyName_, nameCopy);
   }
 
   return v5;
 }
 
-- (double)minViewportWidthWithValue:(id)a3 withType:(int)a4
+- (double)minViewportWidthWithValue:(id)value withType:(int)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     return 0.0;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
   return result;
 }
 
-- (double)maxViewportWidthWithValue:(id)a3 withType:(int)a4
+- (double)maxViewportWidthWithValue:(id)value withType:(int)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     return 1.79769313e308;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
   return result;
 }
 
-- (double)minViewportAspectRatioWithValue:(id)a3 withType:(int)a4
+- (double)minViewportAspectRatioWithValue:(id)value withType:(int)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     return 0.0;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
   return result;
 }
 
-- (double)maxViewportAspectRatioWithValue:(id)a3 withType:(int)a4
+- (double)maxViewportAspectRatioWithValue:(id)value withType:(int)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     return 1.79769313e308;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
   return result;
 }
 
-- (int64_t)horizontalSizeClassWithValue:(id)a3 withType:(int)a4
+- (int64_t)horizontalSizeClassWithValue:(id)value withType:(int)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    return [(SXCondition *)self interfaceSizeClassFromJSONSizeClass:a3];
+    return [(SXCondition *)self interfaceSizeClassFromJSONSizeClass:value];
   }
 
   else
@@ -112,11 +112,11 @@
   }
 }
 
-- (int64_t)verticalSizeClassWithValue:(id)a3 withType:(int)a4
+- (int64_t)verticalSizeClassWithValue:(id)value withType:(int)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    return [(SXCondition *)self interfaceSizeClassFromJSONSizeClass:a3];
+    return [(SXCondition *)self interfaceSizeClassFromJSONSizeClass:value];
   }
 
   else
@@ -125,12 +125,12 @@
   }
 }
 
-- (id)minContentSizeCategoryWithValue:(id)a3 withType:(int)a4
+- (id)minContentSizeCategoryWithValue:(id)value withType:(int)type
 {
   v7 = *MEMORY[0x1E69DDC90];
-  if (a4 == 3)
+  if (type == 3)
   {
-    v8 = [(SXCondition *)self contentSizeCategoryFromJSONContentSizeCategory:a3];
+    v8 = [(SXCondition *)self contentSizeCategoryFromJSONContentSizeCategory:value];
 
     v7 = v8;
   }
@@ -138,12 +138,12 @@
   return v7;
 }
 
-- (id)maxContentSizeCategoryWithValue:(id)a3 withType:(int)a4
+- (id)maxContentSizeCategoryWithValue:(id)value withType:(int)type
 {
   v7 = *MEMORY[0x1E69DDC90];
-  if (a4 == 3)
+  if (type == 3)
   {
-    v8 = [(SXCondition *)self contentSizeCategoryFromJSONContentSizeCategory:a3];
+    v8 = [(SXCondition *)self contentSizeCategoryFromJSONContentSizeCategory:value];
 
     v7 = v8;
   }
@@ -151,27 +151,27 @@
   return v7;
 }
 
-- (unint64_t)testingWithValue:(id)a3 withType:(int)a4
+- (unint64_t)testingWithValue:(id)value withType:(int)type
 {
-  result = a3;
-  if (a3)
+  result = value;
+  if (value)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      return [a3 BOOLValue];
+      return [value BOOLValue];
     }
   }
 
   return result;
 }
 
-- (unint64_t)preferredColorSchemeWithValue:(id)a3 withType:(int)a4
+- (unint64_t)preferredColorSchemeWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    v7 = v5;
+    v7 = valueCopy;
     if ([v7 length])
     {
       if ([v7 isEqualToString:@"light"])
@@ -209,13 +209,13 @@
   return v8;
 }
 
-- (unint64_t)newsletterSubscriptionStatusWithValue:(id)a3 withType:(int)a4
+- (unint64_t)newsletterSubscriptionStatusWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    v7 = v5;
+    v7 = valueCopy;
     v8 = v7;
     if (v7 && [v7 length])
     {
@@ -259,25 +259,25 @@
   return v9;
 }
 
-- (id)followingWithValue:(id)a3 withType:(int)a4
+- (id)followingWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  if (a4 == 2)
+  valueCopy = value;
+  if (type == 2)
   {
     v9 = [SXFollowingCondition alloc];
-    v7 = [v5 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     v6 = v9;
     v8 = 0;
     goto LABEL_5;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v6 = [SXFollowingCondition alloc];
-    v7 = 1;
-    v8 = v5;
+    bOOLValue = 1;
+    v8 = valueCopy;
 LABEL_5:
-    v10 = [(SXFollowingCondition *)v6 initWithFollowing:v7 tagIdentifier:v8];
+    v10 = [(SXFollowingCondition *)v6 initWithFollowing:bOOLValue tagIdentifier:v8];
     goto LABEL_7;
   }
 
@@ -287,13 +287,13 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)offerUpsellScenarioWithValue:(id)a3 withType:(int)a4
+- (int64_t)offerUpsellScenarioWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    v7 = v5;
+    v7 = valueCopy;
     v8 = v7;
     if (v7 && [v7 length] && (objc_msgSend(v8, "isEqualToString:", @"undefined") & 1) == 0)
     {
@@ -357,13 +357,13 @@ LABEL_7:
   return v9;
 }
 
-- (int64_t)subscriptionActivationEligibilityWithValue:(id)a3 withType:(int)a4
+- (int64_t)subscriptionActivationEligibilityWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    v7 = v5;
+    v7 = valueCopy;
     v8 = v7;
     if (v7 && [v7 length] && (objc_msgSend(v8, "isEqualToString:", @"unknown") & 1) == 0)
     {
@@ -407,13 +407,13 @@ LABEL_7:
   return v9;
 }
 
-- (id)offerIdentifierWithValue:(id)a3 withType:(int)a4
+- (id)offerIdentifierWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    v7 = v5;
+    v7 = valueCopy;
   }
 
   else
@@ -427,9 +427,9 @@ LABEL_7:
 - (NSSet)types
 {
   v2 = MEMORY[0x1E695DFA8];
-  v3 = [(SXJSONObject *)self JSONRepresentation];
-  v4 = [v3 allKeys];
-  v5 = [v2 setWithArray:v4];
+  jSONRepresentation = [(SXJSONObject *)self JSONRepresentation];
+  allKeys = [jSONRepresentation allKeys];
+  v5 = [v2 setWithArray:allKeys];
 
   v6 = SXConditionTypes();
   [v5 intersectSet:v6];
@@ -437,15 +437,15 @@ LABEL_7:
   return v5;
 }
 
-- (int64_t)interfaceSizeClassFromJSONSizeClass:(id)a3
+- (int64_t)interfaceSizeClassFromJSONSizeClass:(id)class
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"compact"])
+  classCopy = class;
+  if ([classCopy isEqualToString:@"compact"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"regular"])
+  else if ([classCopy isEqualToString:@"regular"])
   {
     v4 = 2;
   }
@@ -458,67 +458,67 @@ LABEL_7:
   return v4;
 }
 
-- (id)contentSizeCategoryFromJSONContentSizeCategory:(id)a3
+- (id)contentSizeCategoryFromJSONContentSizeCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"XS"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"XS"])
   {
     v4 = MEMORY[0x1E69DDC68];
   }
 
-  else if ([v3 isEqualToString:@"S"])
+  else if ([categoryCopy isEqualToString:@"S"])
   {
     v4 = MEMORY[0x1E69DDC88];
   }
 
-  else if ([v3 isEqualToString:@"M"])
+  else if ([categoryCopy isEqualToString:@"M"])
   {
     v4 = MEMORY[0x1E69DDC78];
   }
 
-  else if ([v3 isEqualToString:@"L"])
+  else if ([categoryCopy isEqualToString:@"L"])
   {
     v4 = MEMORY[0x1E69DDC70];
   }
 
-  else if ([v3 isEqualToString:@"XL"])
+  else if ([categoryCopy isEqualToString:@"XL"])
   {
     v4 = MEMORY[0x1E69DDC60];
   }
 
-  else if ([v3 isEqualToString:@"XXL"])
+  else if ([categoryCopy isEqualToString:@"XXL"])
   {
     v4 = MEMORY[0x1E69DDC58];
   }
 
-  else if ([v3 isEqualToString:@"XXXL"])
+  else if ([categoryCopy isEqualToString:@"XXXL"])
   {
     v4 = MEMORY[0x1E69DDC50];
   }
 
-  else if ([v3 isEqualToString:@"AX-M"])
+  else if ([categoryCopy isEqualToString:@"AX-M"])
   {
     v4 = MEMORY[0x1E69DDC40];
   }
 
-  else if ([v3 isEqualToString:@"AX-L"])
+  else if ([categoryCopy isEqualToString:@"AX-L"])
   {
     v4 = MEMORY[0x1E69DDC38];
   }
 
-  else if ([v3 isEqualToString:@"AX-XL"])
+  else if ([categoryCopy isEqualToString:@"AX-XL"])
   {
     v4 = MEMORY[0x1E69DDC30];
   }
 
-  else if ([v3 isEqualToString:@"AX-XXL"])
+  else if ([categoryCopy isEqualToString:@"AX-XXL"])
   {
     v4 = MEMORY[0x1E69DDC28];
   }
 
   else
   {
-    v5 = [v3 isEqualToString:@"AX-XXXL"];
+    v5 = [categoryCopy isEqualToString:@"AX-XXXL"];
     v4 = MEMORY[0x1E69DDC90];
     if (v5)
     {

@@ -1,8 +1,8 @@
 @interface WFWidgetConfigurationAttributionView
-+ (id)attributionViewForAppBundleIdentifier:(id)a3;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (WFWidgetConfigurationAttributionView)initWithLegacyWidgetAttributionAttributedString:(id)a3;
-- (WFWidgetConfigurationAttributionView)initWithWidgetAttributionAttributedString:(id)a3;
++ (id)attributionViewForAppBundleIdentifier:(id)identifier;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (WFWidgetConfigurationAttributionView)initWithLegacyWidgetAttributionAttributedString:(id)string;
+- (WFWidgetConfigurationAttributionView)initWithWidgetAttributionAttributedString:(id)string;
 - (id)_attributionFont;
 - (id)_paragraphStyle;
 - (void)_configureAttributedString;
@@ -11,17 +11,17 @@
 
 @implementation WFWidgetConfigurationAttributionView
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = a4;
-  if ((a6 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  lCopy = l;
+  if ((interaction - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v8 = dispatch_get_global_queue(2, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100015D0C;
     block[3] = &unk_10002DA10;
-    v11 = v7;
+    v11 = lCopy;
     dispatch_async(v8, block);
   }
 
@@ -42,21 +42,21 @@
   [(NSMutableAttributedString *)self->_widgetAttributedString removeAttribute:NSForegroundColorAttributeName range:0, v3];
   [(NSMutableAttributedString *)self->_widgetAttributedString removeAttribute:NSFontAttributeName range:0, v3];
   widgetAttributedString = self->_widgetAttributedString;
-  v5 = [(WFWidgetConfigurationAttributionView *)self _attributionFont];
-  [(NSMutableAttributedString *)widgetAttributedString addAttribute:NSFontAttributeName value:v5 range:0, v3];
+  _attributionFont = [(WFWidgetConfigurationAttributionView *)self _attributionFont];
+  [(NSMutableAttributedString *)widgetAttributedString addAttribute:NSFontAttributeName value:_attributionFont range:0, v3];
 
   v6 = self->_widgetAttributedString;
-  v7 = [(WFWidgetConfigurationAttributionView *)self _paragraphStyle];
-  [(NSMutableAttributedString *)v6 addAttribute:NSParagraphStyleAttributeName value:v7 range:0, v3];
+  _paragraphStyle = [(WFWidgetConfigurationAttributionView *)self _paragraphStyle];
+  [(NSMutableAttributedString *)v6 addAttribute:NSParagraphStyleAttributeName value:_paragraphStyle range:0, v3];
 
-  v8 = [(WFWidgetConfigurationAttributionView *)self _attributionTitleColor];
-  [(NSMutableAttributedString *)self->_widgetAttributedString addAttribute:NSForegroundColorAttributeName value:v8 range:0, v3];
+  _attributionTitleColor = [(WFWidgetConfigurationAttributionView *)self _attributionTitleColor];
+  [(NSMutableAttributedString *)self->_widgetAttributedString addAttribute:NSForegroundColorAttributeName value:_attributionTitleColor range:0, v3];
   v11[0] = NSForegroundColorAttributeName;
   v11[1] = NSUnderlineStyleAttributeName;
-  v12[0] = v8;
+  v12[0] = _attributionTitleColor;
   v12[1] = &off_10002E258;
   v11[2] = NSUnderlineColorAttributeName;
-  v9 = [v8 colorWithAlphaComponent:0.4];
+  v9 = [_attributionTitleColor colorWithAlphaComponent:0.4];
   v12[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
   [(WFWidgetConfigurationAttributionView *)self setLinkTextAttributes:v10];
@@ -83,21 +83,21 @@
   return v5;
 }
 
-- (WFWidgetConfigurationAttributionView)initWithWidgetAttributionAttributedString:(id)a3
+- (WFWidgetConfigurationAttributionView)initWithWidgetAttributionAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = WFWidgetConfigurationAttributionView;
   v5 = [(WFWidgetConfigurationAttributionView *)&v12 initWithFrame:0 textContainer:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    v6 = [[NSMutableAttributedString alloc] initWithAttributedString:v4];
+    v6 = [[NSMutableAttributedString alloc] initWithAttributedString:stringCopy];
     widgetAttributedString = v5->_widgetAttributedString;
     v5->_widgetAttributedString = v6;
 
     [(WFWidgetConfigurationAttributionView *)v5 _configureAttributedString];
-    v8 = [(WFWidgetConfigurationAttributionView *)v5 _attributionBackgroundColor];
-    [(WFWidgetConfigurationAttributionView *)v5 setBackgroundColor:v8];
+    _attributionBackgroundColor = [(WFWidgetConfigurationAttributionView *)v5 _attributionBackgroundColor];
+    [(WFWidgetConfigurationAttributionView *)v5 setBackgroundColor:_attributionBackgroundColor];
 
     [(WFWidgetConfigurationAttributionView *)v5 setOpaque:0];
     [(WFWidgetConfigurationAttributionView *)v5 setEditable:0];
@@ -115,24 +115,24 @@
   return v5;
 }
 
-- (WFWidgetConfigurationAttributionView)initWithLegacyWidgetAttributionAttributedString:(id)a3
+- (WFWidgetConfigurationAttributionView)initWithLegacyWidgetAttributionAttributedString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 length];
+  stringCopy = string;
+  v5 = [stringCopy length];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = sub_100016618;
   v30 = sub_100016628;
   v31 = 0;
-  if ([v4 containsAttachmentsInRange:{0, v5}])
+  if ([stringCopy containsAttachmentsInRange:{0, v5}])
   {
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100016630;
     v23[3] = &unk_10002D8D0;
     v25 = &v26;
-    v24 = v4;
+    v24 = stringCopy;
     [v24 enumerateAttribute:NSAttachmentAttributeName inRange:0 options:v5 usingBlock:{0, v23}];
   }
 
@@ -148,7 +148,7 @@
   v13[3] = &unk_10002D8F8;
   v15 = &v26;
   v16 = &v17;
-  v6 = v4;
+  v6 = stringCopy;
   v14 = v6;
   [v6 enumerateAttribute:NSLinkAttributeName inRange:0 options:v5 usingBlock:{0, v13}];
   if (v18[5] || v27[5])
@@ -179,10 +179,10 @@
   return v11;
 }
 
-+ (id)attributionViewForAppBundleIdentifier:(id)a3
++ (id)attributionViewForAppBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.stocks"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.stocks"])
   {
     v4 = [NSMutableAttributedString alloc];
     v22 = 0;
@@ -227,7 +227,7 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  if ([v3 isEqualToString:@"com.apple.weather"])
+  if ([identifierCopy isEqualToString:@"com.apple.weather"])
   {
     v22 = 0;
     v23 = &v22;

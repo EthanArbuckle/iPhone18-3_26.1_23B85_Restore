@@ -1,12 +1,12 @@
 @interface _UIFluidSliderInteractionConfiguration
-+ (id)configurationWithTrackSize:(CGSize)a3;
++ (id)configurationWithTrackSize:(CGSize)size;
 - (CGSize)trackSize;
 - (_UIFluidSliderInteractionConfiguration)init;
-- (id)copyWithTrackSize:(CGSize)a3;
-- (id)copyWithVelocityMultiplier:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithTrackSize:(CGSize)size;
+- (id)copyWithVelocityMultiplier:(double)multiplier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_setCustomDrivers:(id)a3;
+- (void)_setCustomDrivers:(id)drivers;
 @end
 
 @implementation _UIFluidSliderInteractionConfiguration
@@ -41,10 +41,10 @@
   return result;
 }
 
-+ (id)configurationWithTrackSize:(CGSize)a3
++ (id)configurationWithTrackSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_opt_new();
   v5[9] = width;
   v5[10] = height;
@@ -52,26 +52,26 @@
   return v5;
 }
 
-- (id)copyWithTrackSize:(CGSize)a3
+- (id)copyWithTrackSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   result = [(_UIFluidSliderInteractionConfiguration *)self copy];
   *(result + 9) = width;
   *(result + 10) = height;
   return result;
 }
 
-- (id)copyWithVelocityMultiplier:(double)a3
+- (id)copyWithVelocityMultiplier:(double)multiplier
 {
   result = [(_UIFluidSliderInteractionConfiguration *)self copy];
-  *(result + 3) = a3;
+  *(result + 3) = multiplier;
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(_UIFluidSliderInteractionConfiguration *)self trackSize];
   v4[9] = v5;
   v4[10] = v6;
@@ -87,24 +87,24 @@
   [v4 setPreferredInputMethods:{-[_UIFluidSliderInteractionConfiguration preferredInputMethods](self, "preferredInputMethods")}];
   [(_UIFluidSliderInteractionConfiguration *)self neutralPosition];
   [v4 setNeutralPosition:?];
-  v7 = [(_UIFluidSliderInteractionConfiguration *)self _customDrivers];
+  _customDrivers = [(_UIFluidSliderInteractionConfiguration *)self _customDrivers];
   v8 = v4[1];
-  v4[1] = v7;
+  v4[1] = _customDrivers;
 
   return v4;
 }
 
-- (void)_setCustomDrivers:(id)a3
+- (void)_setCustomDrivers:(id)drivers
 {
-  v5 = a3;
+  driversCopy = drivers;
   if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIFluidSliderInteraction.m" lineNumber:89 description:@"This SPI may only be used by approved clients."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFluidSliderInteraction.m" lineNumber:89 description:@"This SPI may only be used by approved clients."];
   }
 
   customDrivers = self->_customDrivers;
-  v13 = v5;
+  v13 = driversCopy;
   v7 = customDrivers;
   if (v7 == v13)
   {
@@ -155,15 +155,15 @@ LABEL_13:
   [v3 appendFormat:@"; min = %lu", v9];
   [(_UIFluidSliderInteractionConfiguration *)self maxValue];
   [v3 appendFormat:@"; max = %lu", v10];
-  v11 = [(_UIFluidSliderInteractionConfiguration *)self preferredInputMethods];
+  preferredInputMethods = [(_UIFluidSliderInteractionConfiguration *)self preferredInputMethods];
   v12 = objc_opt_new();
   v13 = v12;
-  if (v11)
+  if (preferredInputMethods)
   {
     [v12 addObject:@"touch"];
   }
 
-  if ((v11 & 2) != 0)
+  if ((preferredInputMethods & 2) != 0)
   {
     [v13 addObject:@"volumeButtons"];
   }
@@ -171,8 +171,8 @@ LABEL_13:
   v14 = [v13 componentsJoinedByString:{@", "}];
   [v3 appendFormat:@"; inputMethods = (%@)", v14];
 
-  v15 = [(_UIFluidSliderInteractionConfiguration *)self _customDrivers];
-  v16 = [v15 count];
+  _customDrivers = [(_UIFluidSliderInteractionConfiguration *)self _customDrivers];
+  v16 = [_customDrivers count];
 
   if (v16)
   {
@@ -181,8 +181,8 @@ LABEL_13:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v18 = [(_UIFluidSliderInteractionConfiguration *)self _customDrivers];
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    _customDrivers2 = [(_UIFluidSliderInteractionConfiguration *)self _customDrivers];
+    v19 = [_customDrivers2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v19)
     {
       v20 = v19;
@@ -193,14 +193,14 @@ LABEL_13:
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(_customDrivers2);
           }
 
-          v23 = [*(*(&v26 + 1) + 8 * i) name];
-          [v17 addObject:v23];
+          name = [*(*(&v26 + 1) + 8 * i) name];
+          [v17 addObject:name];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v20 = [_customDrivers2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v20);

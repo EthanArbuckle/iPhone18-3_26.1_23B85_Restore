@@ -1,19 +1,19 @@
 @interface _GCConfigurationDataManager
 - (_GCConfigurationDataManager)init;
-- (_GCConfigurationDataManager)initWithProvider:(id)a3;
-- (id)configurationBundleLocatorForType:(id)a3;
-- (id)serviceFor:(id)a3 client:(id)a4;
+- (_GCConfigurationDataManager)initWithProvider:(id)provider;
+- (id)configurationBundleLocatorForType:(id)type;
+- (id)serviceFor:(id)for client:(id)client;
 @end
 
 @implementation _GCConfigurationDataManager
 
-- (_GCConfigurationDataManager)initWithProvider:(id)a3
+- (_GCConfigurationDataManager)initWithProvider:(id)provider
 {
   v10.receiver = self;
   v10.super_class = _GCConfigurationDataManager;
-  v3 = a3;
+  providerCopy = provider;
   v4 = [(_GCConfigurationDataManager *)&v10 init];
-  objc_storeWeak(&v4->_provider, v3);
+  objc_storeWeak(&v4->_provider, providerCopy);
 
   v5 = dispatch_workloop_create("Workloop.GameController.ConfigurationData");
   workloop = v4->_workloop;
@@ -33,36 +33,36 @@
   return 0;
 }
 
-- (id)configurationBundleLocatorForType:(id)a3
+- (id)configurationBundleLocatorForType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_locators objectForKey:v4];
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_locators objectForKey:typeCopy];
   if (!v6)
   {
-    v6 = [[_GCConfigurationBundleLocator alloc] initWithConfigurationType:v4 provider:v5];
-    [(NSMutableDictionary *)v5->_locators setObject:v6 forKey:v4];
+    v6 = [[_GCConfigurationBundleLocator alloc] initWithConfigurationType:typeCopy provider:selfCopy];
+    [(NSMutableDictionary *)selfCopy->_locators setObject:v6 forKey:typeCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)serviceFor:(id)a3 client:(id)a4
+- (id)serviceFor:(id)for client:(id)client
 {
-  if (&unk_1F4E42070 == a3)
+  if (&unk_1F4E42070 == for)
   {
     v9 = self->_workloop;
   }
 
   else
   {
-    v6 = a4;
-    v7 = a3;
+    clientCopy = client;
+    forCopy = for;
     WeakRetained = objc_loadWeakRetained(&self->_provider);
-    v9 = [WeakRetained serviceFor:v7 client:v6];
+    v9 = [WeakRetained serviceFor:forCopy client:clientCopy];
   }
 
   return v9;

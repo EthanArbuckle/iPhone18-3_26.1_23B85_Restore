@@ -1,11 +1,11 @@
 @interface ExtensionListViewController
 - (ExtensionListViewController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (void)_loadExtensions;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ExtensionListViewController
@@ -22,8 +22,8 @@
   v5.receiver = self;
   v5.super_class = ExtensionListViewController;
   [(ExtensionListViewController *)&v5 viewDidLoad];
-  v3 = [(ExtensionListViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"extension"];
+  tableView = [(ExtensionListViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"extension"];
 
   v4 = objc_opt_new();
   [v4 addTarget:self action:sel__loadExtensions forControlEvents:4096];
@@ -31,11 +31,11 @@
   [(ExtensionListViewController *)self _loadExtensions];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ExtensionListViewController;
-  [(ExtensionListViewController *)&v3 viewWillAppear:a3];
+  [(ExtensionListViewController *)&v3 viewWillAppear:appear];
 }
 
 - (void)_loadExtensions
@@ -49,7 +49,7 @@
     v6[2] = __46__ExtensionListViewController__loadExtensions__block_invoke;
     v6[3] = &unk_2782C58B0;
     v7 = v3;
-    v8 = self;
+    selfCopy = self;
     v5 = v3;
     dispatch_async(v4, v6);
   }
@@ -143,30 +143,30 @@ void __46__ExtensionListViewController__loadExtensions__block_invoke_5(uint64_t 
   [v1 endRefreshing];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"extension" forIndexPath:v6];
-  v8 = [v7 defaultContentConfiguration];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"extension" forIndexPath:pathCopy];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
   extensions = self->_extensions;
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSArray *)extensions objectAtIndex:v10];
-  v12 = [v11 name];
-  [v8 setText:v12];
+  name = [v11 name];
+  [defaultContentConfiguration setText:name];
 
-  [v7 setContentConfiguration:v8];
+  [v7 setContentConfiguration:defaultContentConfiguration];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndex:](self->_extensions, "objectAtIndex:", [v7 row]);
-  if ([v8 wasEverActivated] && (v9 = MEMORY[0x277D753C0], v15[0] = MEMORY[0x277D85DD0], v15[1] = 3221225472, v15[2] = __92__ExtensionListViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke, v15[3] = &unk_2782C6DB0, v16 = v8, v17 = v6, v18 = v7, objc_msgSend(v9, "contextualActionWithStyle:title:handler:", 1, @"Invalidate", v15), v10 = objc_claimAutoreleasedReturnValue(), v18, v17, v16, v10))
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndex:](self->_extensions, "objectAtIndex:", [pathCopy row]);
+  if ([v8 wasEverActivated] && (v9 = MEMORY[0x277D753C0], v15[0] = MEMORY[0x277D85DD0], v15[1] = 3221225472, v15[2] = __92__ExtensionListViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke, v15[3] = &unk_2782C6DB0, v16 = v8, v17 = viewCopy, v18 = pathCopy, objc_msgSend(v9, "contextualActionWithStyle:title:handler:", 1, @"Invalidate", v15), v10 = objc_claimAutoreleasedReturnValue(), v18, v17, v16, v10))
   {
     v11 = MEMORY[0x277D75AD8];
     v19[0] = v10;
@@ -196,29 +196,29 @@ void __92__ExtensionListViewController_tableView_trailingSwipeActionsConfigurati
   v6[2](v6, 1);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndex:](self->_extensions, "objectAtIndex:", [v7 row]);
-  v9 = [v8 activate];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndex:](self->_extensions, "objectAtIndex:", [pathCopy row]);
+  activate = [v8 activate];
   v10 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [v9 setDelegate:self];
+    [activate setDelegate:self];
   }
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__ExtensionListViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v14[3] = &unk_2782C58B0;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
-  [(ExtensionListViewController *)self presentViewController:v9 animated:1 completion:v14];
+  v15 = viewCopy;
+  v16 = pathCopy;
+  v12 = pathCopy;
+  v13 = viewCopy;
+  [(ExtensionListViewController *)self presentViewController:activate animated:1 completion:v14];
 }
 
 void __65__ExtensionListViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1)

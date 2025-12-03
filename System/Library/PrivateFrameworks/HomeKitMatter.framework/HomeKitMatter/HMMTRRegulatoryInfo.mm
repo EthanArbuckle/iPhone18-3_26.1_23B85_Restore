@@ -1,7 +1,7 @@
 @interface HMMTRRegulatoryInfo
 + (id)logCategory;
 - (id)countryCode;
-- (id)iso3166_1FromISO3166_2CountryCode:(id)a3;
+- (id)iso3166_1FromISO3166_2CountryCode:(id)code;
 @end
 
 @implementation HMMTRRegulatoryInfo
@@ -26,28 +26,28 @@ uint64_t __34__HMMTRRegulatoryInfo_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)iso3166_1FromISO3166_2CountryCode:(id)a3
+- (id)iso3166_1FromISO3166_2CountryCode:(id)code
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] < 2)
+  codeCopy = code;
+  if ([codeCopy length] < 2)
   {
 LABEL_2:
     v5 = 0;
     goto LABEL_8;
   }
 
-  if ([v4 length] == 2)
+  if ([codeCopy length] == 2)
   {
-    v6 = v4;
+    v6 = codeCopy;
   }
 
   else
   {
-    if ([v4 characterAtIndex:2] != 45)
+    if ([codeCopy characterAtIndex:2] != 45)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -55,7 +55,7 @@ LABEL_2:
         v13 = 138543618;
         v14 = v12;
         v15 = 2112;
-        v16 = v4;
+        v16 = codeCopy;
         _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_ERROR, "%{public}@Malformatted ISO-3166-2 country code: %@", &v13, 0x16u);
       }
 
@@ -63,7 +63,7 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    v6 = [v4 substringToIndex:2];
+    v6 = [codeCopy substringToIndex:2];
   }
 
   v5 = v6;
@@ -77,17 +77,17 @@ LABEL_8:
 - (id)countryCode
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D443A8] currentEstimates];
-  if (![v3 count])
+  currentEstimates = [MEMORY[0x277D443A8] currentEstimates];
+  if (![currentEstimates count])
   {
-    v4 = [MEMORY[0x277D443A8] lastKnownEstimates];
+    lastKnownEstimates = [MEMORY[0x277D443A8] lastKnownEstimates];
 
-    v3 = v4;
+    currentEstimates = lastKnownEstimates;
   }
 
-  v5 = [v3 count];
+  v5 = [currentEstimates count];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
   if (v5)
@@ -95,19 +95,19 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v3 objectAtIndexedSubscript:0];
-      v12 = [v11 countryCode];
+      v11 = [currentEstimates objectAtIndexedSubscript:0];
+      countryCode = [v11 countryCode];
       v19 = 138543618;
       v20 = v10;
       v21 = 2112;
-      v22 = v12;
+      v22 = countryCode;
       _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@Estimated country code: %@", &v19, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v13 = [v3 objectAtIndexedSubscript:0];
-    v14 = [v13 countryCode];
-    v15 = [(HMMTRRegulatoryInfo *)v7 iso3166_1FromISO3166_2CountryCode:v14];
+    v13 = [currentEstimates objectAtIndexedSubscript:0];
+    countryCode2 = [v13 countryCode];
+    v15 = [(HMMTRRegulatoryInfo *)selfCopy iso3166_1FromISO3166_2CountryCode:countryCode2];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface TUIElementSupported
 + (id)attributesToIgnoreWhenResolving;
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementSupported
@@ -17,15 +17,15 @@
   return v3;
 }
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v27 = a6;
-  var0 = a4.var0;
-  v9 = a5;
-  v10 = [v9 constantNameForAttribute:137 node:a4.var0];
-  v11 = [v9 stringForAttribute:71 node:var0];
-  v12 = [v9 stringForAttribute:81 node:var0];
-  v13 = [v9 stringForAttribute:14 node:var0];
+  contextCopy = context;
+  var0 = node.var0;
+  attributesCopy = attributes;
+  v10 = [attributesCopy constantNameForAttribute:137 node:node.var0];
+  v11 = [attributesCopy stringForAttribute:71 node:var0];
+  v12 = [attributesCopy stringForAttribute:81 node:var0];
+  v13 = [attributesCopy stringForAttribute:14 node:var0];
 
   v14 = [TUIAttributeRegistry lookupAttributeWithName:v13];
   v15 = v14;
@@ -42,24 +42,24 @@
       v20 = 0;
       if (v14 == 0xFFFF)
       {
-        v21 = v27;
+        v21 = contextCopy;
         if (!v12)
         {
           goto LABEL_21;
         }
 
-        v24 = [v27 manager];
-        v25 = [v24 elementRegistry];
-        v20 = [v25 supportFeature:v12];
+        manager = [contextCopy manager];
+        elementRegistry = [manager elementRegistry];
+        v20 = [elementRegistry supportFeature:v12];
       }
     }
 
     goto LABEL_20;
   }
 
-  v16 = [v27 manager];
-  v17 = [v16 elementRegistry];
-  v18 = [v17 elementClassForName:v11];
+  manager2 = [contextCopy manager];
+  elementRegistry2 = [manager2 elementRegistry];
+  v18 = [elementRegistry2 elementClassForName:v11];
 
   v19 = v18 != 0;
   if (v13)
@@ -68,11 +68,11 @@
     if (v15 == 0xFFFF)
     {
 LABEL_20:
-      v21 = v27;
+      v21 = contextCopy;
       goto LABEL_21;
     }
 
-    v21 = v27;
+    v21 = contextCopy;
     if (!v18)
     {
       goto LABEL_21;
@@ -85,12 +85,12 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v22 = [v18 supportedAttributes];
-    v19 = [v22 containsAttribute:v15];
+    supportedAttributes = [v18 supportedAttributes];
+    v19 = [supportedAttributes containsAttribute:v15];
   }
 
   v20 = ((v12 == 0) & v19);
-  v21 = v27;
+  v21 = contextCopy;
   if (v12 && v19)
   {
     if (objc_opt_respondsToSelector())

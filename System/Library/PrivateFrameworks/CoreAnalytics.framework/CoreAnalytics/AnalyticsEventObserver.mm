@@ -1,12 +1,12 @@
 @interface AnalyticsEventObserver
 - (AnalyticsEventObserver)init;
 - (AnalyticsEventObserverDelegate)delegate;
-- (BOOL)startObservingEventList:(id)a3 withErrorHandler:(id)a4;
+- (BOOL)startObservingEventList:(id)list withErrorHandler:(id)handler;
 - (BOOL)stopObserving;
 - (id).cxx_construct;
 - (uint64_t)startObservingEventList:withErrorHandler:;
 - (void)dealloc;
-- (void)setEventObserverDelegate:(id)a3 queue:(id)a4;
+- (void)setEventObserverDelegate:(id)delegate queue:(id)queue;
 - (void)startObservingEventList:withErrorHandler:;
 @end
 
@@ -49,23 +49,23 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEventObserverDelegate:(id)a3 queue:(id)a4
+- (void)setEventObserverDelegate:(id)delegate queue:(id)queue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   CASPIEnter();
-  v8 = [(AnalyticsEventObserver *)self queue];
+  queue = [(AnalyticsEventObserver *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__AnalyticsEventObserver_setEventObserverDelegate_queue___block_invoke;
   v12[3] = &unk_1E7A2A538;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, v12);
+  v13 = delegateCopy;
+  v14 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_barrier_async(queue, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -79,11 +79,11 @@ uint64_t __57__AnalyticsEventObserver_setEventObserverDelegate_queue___block_inv
   return [v3 setDelegateQueue:v2];
 }
 
-- (BOOL)startObservingEventList:(id)a3 withErrorHandler:(id)a4
+- (BOOL)startObservingEventList:(id)list withErrorHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  handlerCopy = handler;
   CASPIEnter();
   v38 = 0xAAAAAAAAAAAAAAAALL;
   applesauce::xpc::dict::create(&v38);
@@ -93,7 +93,7 @@ uint64_t __57__AnalyticsEventObserver_setEventObserverDelegate_queue___block_inv
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = v6;
+  v8 = listCopy;
   v9 = [v8 countByEnumeratingWithState:&v43 objects:v42 count:16];
   if (v9)
   {
@@ -135,9 +135,9 @@ uint64_t __57__AnalyticsEventObserver_setEventObserverDelegate_queue___block_inv
   v35 = 0;
 
   v20 = CoreAnalytics::Client::get(v19);
-  if (v7)
+  if (handlerCopy)
   {
-    v21 = MEMORY[0x1B2704490](v7);
+    v21 = MEMORY[0x1B2704490](handlerCopy);
     v39 = &unk_1F241FC98;
     v40 = v21;
     v41 = &v39;
@@ -169,13 +169,13 @@ uint64_t __57__AnalyticsEventObserver_setEventObserverDelegate_queue___block_inv
     }
   }
 
-  v23 = [(AnalyticsEventObserver *)self queue];
+  queue = [(AnalyticsEventObserver *)self queue];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __67__AnalyticsEventObserver_startObservingEventList_withErrorHandler___block_invoke;
   v30[3] = &unk_1E7A2A560;
   v30[4] = self;
-  dispatch_barrier_async(v23, v30);
+  dispatch_barrier_async(queue, v30);
 
   v24 = v34;
   v34 = 0;
@@ -205,13 +205,13 @@ void __67__AnalyticsEventObserver_startObservingEventList_withErrorHandler___blo
 {
   v6[5] = *MEMORY[0x1E69E9840];
   CASPIEnter();
-  v3 = [(AnalyticsEventObserver *)self queue];
+  queue = [(AnalyticsEventObserver *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__AnalyticsEventObserver_stopObserving__block_invoke;
   v6[3] = &unk_1E7A2A560;
   v6[4] = self;
-  dispatch_barrier_async(v3, v6);
+  dispatch_barrier_async(queue, v6);
 
   v4 = *MEMORY[0x1E69E9840];
   return 1;
@@ -257,7 +257,7 @@ void __39__AnalyticsEventObserver_stopObserving__block_invoke(uint64_t a1)
     *&v8 = *(a2 + 16);
   }
 
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   if ((SBYTE7(v8) & 0x80u) == 0)
   {
     v4 = __p;
@@ -282,7 +282,7 @@ void __39__AnalyticsEventObserver_stopObserving__block_invoke(uint64_t a1)
 - (uint64_t)startObservingEventList:withErrorHandler:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

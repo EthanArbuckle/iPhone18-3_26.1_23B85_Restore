@@ -1,20 +1,20 @@
 @interface PUBrowsingBackgroundTileViewController
 - (CGRect)_emptyPlaceholderFrame;
-- (CGRect)_emptyPlaceholderFrameForLayoutInfo:(id)a3;
-- (PUBrowsingBackgroundTileViewController)initWithReuseIdentifier:(id)a3;
-- (void)_invalidateColorWithAnimatorBlock:(id)a3;
-- (void)_setEmptyPlaceholderFrame:(CGRect)a3;
-- (void)_updateBackgroundBlurViewAnimated:(BOOL)a3;
+- (CGRect)_emptyPlaceholderFrameForLayoutInfo:(id)info;
+- (PUBrowsingBackgroundTileViewController)initWithReuseIdentifier:(id)identifier;
+- (void)_invalidateColorWithAnimatorBlock:(id)block;
+- (void)_setEmptyPlaceholderFrame:(CGRect)frame;
+- (void)_updateBackgroundBlurViewAnimated:(BOOL)animated;
 - (void)_updateColorIfNeeded;
-- (void)_updateEmptyPlaceholderAnimated:(BOOL)a3;
-- (void)applyLayoutInfo:(id)a3;
+- (void)_updateEmptyPlaceholderAnimated:(BOOL)animated;
+- (void)applyLayoutInfo:(id)info;
 - (void)becomeReusable;
-- (void)setBackgroundColorOverride:(id)a3;
-- (void)setShouldDisplayEmptyPlaceholder:(BOOL)a3;
-- (void)setViewModel:(id)a3;
-- (void)setVisualEffect:(id)a3;
+- (void)setBackgroundColorOverride:(id)override;
+- (void)setShouldDisplayEmptyPlaceholder:(BOOL)placeholder;
+- (void)setViewModel:(id)model;
+- (void)setVisualEffect:(id)effect;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUBrowsingBackgroundTileViewController
@@ -32,57 +32,57 @@
   return result;
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 chromeVisibilityDidChange])
+  modelCopy = model;
+  changeCopy = change;
+  if ([changeCopy chromeVisibilityDidChange])
   {
-    v7 = [(PUBrowsingBackgroundTileViewController *)self backgroundColorOverride];
+    backgroundColorOverride = [(PUBrowsingBackgroundTileViewController *)self backgroundColorOverride];
 
-    if (!v7)
+    if (!backgroundColorOverride)
     {
-      v8 = PUBackgroundColorAnimatorBlockForChromeAnimation(v9);
+      v8 = PUBackgroundColorAnimatorBlockForChromeAnimation(modelCopy);
       [(PUBrowsingBackgroundTileViewController *)self _invalidateColorWithAnimatorBlock:v8];
     }
   }
 
-  if ([v6 assetsDataSourceDidChange])
+  if ([changeCopy assetsDataSourceDidChange])
   {
     [(PUBrowsingBackgroundTileViewController *)self _updateEmptyPlaceholderAnimated:1];
     [(PUBrowsingBackgroundTileViewController *)self _updateBackgroundBlurViewAnimated:1];
   }
 }
 
-- (void)_updateBackgroundBlurViewAnimated:(BOOL)a3
+- (void)_updateBackgroundBlurViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(PUTileViewController *)self isViewLoaded])
   {
     return;
   }
 
-  v5 = [(PUBrowsingBackgroundTileViewController *)self visualEffect];
+  visualEffect = [(PUBrowsingBackgroundTileViewController *)self visualEffect];
 
-  v6 = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
+  _backgroundBlurView = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
 
-  if (!v5)
+  if (!visualEffect)
   {
-    if (!v6)
+    if (!_backgroundBlurView)
     {
       return;
     }
 
-    v17 = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
-    v18 = v17;
-    if (v3)
+    _backgroundBlurView2 = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
+    v18 = _backgroundBlurView2;
+    if (animatedCopy)
     {
       v19 = MEMORY[0x1E69DD250];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __76__PUBrowsingBackgroundTileViewController__updateBackgroundBlurViewAnimated___block_invoke_2;
       v28[3] = &unk_1E7B80DD0;
-      v29 = v17;
+      v29 = _backgroundBlurView2;
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __76__PUBrowsingBackgroundTileViewController__updateBackgroundBlurViewAnimated___block_invoke_3;
@@ -93,30 +93,30 @@
 
     else
     {
-      [v17 removeFromSuperview];
+      [_backgroundBlurView2 removeFromSuperview];
     }
 
     [(PUBrowsingBackgroundTileViewController *)self _setBackgroundBlurView:0];
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!_backgroundBlurView)
   {
     v20 = objc_alloc(MEMORY[0x1E69DD298]);
-    v21 = [(PUBrowsingBackgroundTileViewController *)self visualEffect];
-    v18 = [v20 initWithEffect:v21];
+    visualEffect2 = [(PUBrowsingBackgroundTileViewController *)self visualEffect];
+    v18 = [v20 initWithEffect:visualEffect2];
 
-    v22 = [(PUTileViewController *)self view];
-    [v22 bounds];
+    view = [(PUTileViewController *)self view];
+    [view bounds];
     [v18 setFrame:?];
 
     [v18 setAutoresizingMask:18];
     [v18 setNeedsUpdateConstraints];
     [(PUBrowsingBackgroundTileViewController *)self _setBackgroundBlurView:v18];
-    v23 = [(PUTileViewController *)self view];
-    [v23 addSubview:v18];
+    view2 = [(PUTileViewController *)self view];
+    [view2 addSubview:v18];
 
-    if (v3)
+    if (animatedCopy)
     {
       [v18 setAlpha:0.0];
       v24 = MEMORY[0x1E69DD250];
@@ -133,34 +133,34 @@ LABEL_15:
     return;
   }
 
-  v7 = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
+  _backgroundBlurView3 = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
 
-  if (v7)
+  if (_backgroundBlurView3)
   {
-    v25 = [(PUTileViewController *)self view];
-    [v25 bounds];
+    view3 = [(PUTileViewController *)self view];
+    [view3 bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    _backgroundBlurView4 = [(PUBrowsingBackgroundTileViewController *)self _backgroundBlurView];
+    [_backgroundBlurView4 setFrame:{v9, v11, v13, v15}];
   }
 }
 
-- (void)setVisualEffect:(id)a3
+- (void)setVisualEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   if (([(UIVisualEffect *)self->_visualEffect isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_visualEffect, a3);
+    objc_storeStrong(&self->_visualEffect, effect);
     [(PUBrowsingBackgroundTileViewController *)self _updateBackgroundBlurViewAnimated:0];
   }
 }
 
-- (void)_updateEmptyPlaceholderAnimated:(BOOL)a3
+- (void)_updateEmptyPlaceholderAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(PUTileViewController *)self isViewLoaded])
   {
     return;
@@ -171,9 +171,9 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v5 = [(PUBrowsingBackgroundTileViewController *)self viewModel];
-  v6 = [v5 assetsDataSource];
-  if (([v6 isEmpty] & 1) == 0)
+  viewModel = [(PUBrowsingBackgroundTileViewController *)self viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
+  if (([assetsDataSource isEmpty] & 1) == 0)
   {
 
     goto LABEL_11;
@@ -185,23 +185,23 @@ LABEL_15:
   if (IsNull)
   {
 LABEL_11:
-    v18 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
+    _emptyPlaceholderView = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
 
-    if (!v18)
+    if (!_emptyPlaceholderView)
     {
       return;
     }
 
-    v19 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
-    v20 = v19;
-    if (v3)
+    _emptyPlaceholderView2 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
+    emptyConfiguration = _emptyPlaceholderView2;
+    if (animatedCopy)
     {
       v21 = MEMORY[0x1E69DD250];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __74__PUBrowsingBackgroundTileViewController__updateEmptyPlaceholderAnimated___block_invoke_2;
       v41[3] = &unk_1E7B80DD0;
-      v42 = v19;
+      v42 = _emptyPlaceholderView2;
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __74__PUBrowsingBackgroundTileViewController__updateEmptyPlaceholderAnimated___block_invoke_3;
@@ -212,57 +212,57 @@ LABEL_11:
 
     else
     {
-      [v19 removeFromSuperview];
+      [_emptyPlaceholderView2 removeFromSuperview];
     }
 
     [(PUBrowsingBackgroundTileViewController *)self _setEmptyPlaceholderView:0];
     goto LABEL_16;
   }
 
-  v8 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
+  _emptyPlaceholderView3 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
 
-  if (!v8)
+  if (!_emptyPlaceholderView3)
   {
     [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderFrame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v20 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-    v30 = [(PUBrowsingBackgroundTileViewController *)self emptyPlaceholderCustomTitle];
-    if (v30)
+    emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+    emptyPlaceholderCustomTitle = [(PUBrowsingBackgroundTileViewController *)self emptyPlaceholderCustomTitle];
+    if (emptyPlaceholderCustomTitle)
     {
-      [v20 setText:v30];
+      [emptyConfiguration setText:emptyPlaceholderCustomTitle];
     }
 
     else
     {
       v31 = PXPhotoKitLocalizedTitleForEmptyCollectionListFetchResult();
-      [v20 setText:v31];
+      [emptyConfiguration setText:v31];
     }
 
-    v32 = [(PUBrowsingBackgroundTileViewController *)self emptyPlaceholderCustomSubtitle];
-    if (v32)
+    emptyPlaceholderCustomSubtitle = [(PUBrowsingBackgroundTileViewController *)self emptyPlaceholderCustomSubtitle];
+    if (emptyPlaceholderCustomSubtitle)
     {
-      [v20 setSecondaryText:v32];
+      [emptyConfiguration setSecondaryText:emptyPlaceholderCustomSubtitle];
     }
 
     else
     {
       v33 = PXPhotoKitLocalizedMessageForEmptyCollectionListFetchResult();
-      v34 = [v33 string];
-      [v20 setSecondaryText:v34];
+      string = [v33 string];
+      [emptyConfiguration setSecondaryText:string];
     }
 
-    v35 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:v20];
+    v35 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:emptyConfiguration];
     [v35 setFrame:{v23, v25, v27, v29}];
     [v35 setAutoresizingMask:18];
     [v35 setNeedsUpdateConstraints];
     [(PUBrowsingBackgroundTileViewController *)self _setEmptyPlaceholderView:v35];
-    v36 = [(PUTileViewController *)self view];
-    [v36 addSubview:v35];
+    view = [(PUTileViewController *)self view];
+    [view addSubview:v35];
 
-    if (v3)
+    if (animatedCopy)
     {
       [v35 setAlpha:0.0];
       v37 = MEMORY[0x1E69DD250];
@@ -278,27 +278,27 @@ LABEL_16:
     return;
   }
 
-  v9 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
+  _emptyPlaceholderView4 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
 
-  if (v9)
+  if (_emptyPlaceholderView4)
   {
     [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderFrame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v38 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
-    [v38 setFrame:{v11, v13, v15, v17}];
+    _emptyPlaceholderView5 = [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderView];
+    [_emptyPlaceholderView5 setFrame:{v11, v13, v15, v17}];
   }
 }
 
-- (CGRect)_emptyPlaceholderFrameForLayoutInfo:(id)a3
+- (CGRect)_emptyPlaceholderFrameForLayoutInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(PUTileViewController *)self view];
-  [v5 bounds];
+  infoCopy = info;
+  view = [(PUTileViewController *)self view];
+  [view bounds];
 
-  [v4 expandedRectInsets];
+  [infoCopy expandedRectInsets];
   PXEdgeInsetsAbsoluteValue();
 
   PXEdgeInsetsInsetRect();
@@ -309,14 +309,14 @@ LABEL_16:
   return result;
 }
 
-- (void)_setEmptyPlaceholderFrame:(CGRect)a3
+- (void)_setEmptyPlaceholderFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_emptyPlaceholderFrame = &self->__emptyPlaceholderFrame;
-  if (!CGRectEqualToRect(self->__emptyPlaceholderFrame, a3))
+  if (!CGRectEqualToRect(self->__emptyPlaceholderFrame, frame))
   {
     p_emptyPlaceholderFrame->origin.x = x;
     p_emptyPlaceholderFrame->origin.y = y;
@@ -327,11 +327,11 @@ LABEL_16:
   }
 }
 
-- (void)setShouldDisplayEmptyPlaceholder:(BOOL)a3
+- (void)setShouldDisplayEmptyPlaceholder:(BOOL)placeholder
 {
-  if (self->_shouldDisplayEmptyPlaceholder != a3)
+  if (self->_shouldDisplayEmptyPlaceholder != placeholder)
   {
-    self->_shouldDisplayEmptyPlaceholder = a3;
+    self->_shouldDisplayEmptyPlaceholder = placeholder;
     [(PUBrowsingBackgroundTileViewController *)self _updateEmptyPlaceholderAnimated:0];
   }
 }
@@ -342,20 +342,20 @@ LABEL_16:
   {
     if ([(PUTileViewController *)self isViewLoaded])
     {
-      v3 = [(PUBrowsingBackgroundTileViewController *)self viewModel];
+      viewModel = [(PUBrowsingBackgroundTileViewController *)self viewModel];
 
-      if (v3)
+      if (viewModel)
       {
         [(PUBrowsingBackgroundTileViewController *)self _setNeedsUpdateColor:0];
-        v4 = [(PUBrowsingBackgroundTileViewController *)self backgroundColorOverride];
-        if (!v4)
+        backgroundColorOverride = [(PUBrowsingBackgroundTileViewController *)self backgroundColorOverride];
+        if (!backgroundColorOverride)
         {
-          v5 = [(PUBrowsingBackgroundTileViewController *)self viewModel];
-          v6 = [v5 isChromeVisible];
+          viewModel2 = [(PUBrowsingBackgroundTileViewController *)self viewModel];
+          isChromeVisible = [viewModel2 isChromeVisible];
 
           v7 = +[PUInterfaceManager currentTheme];
           v8 = v7;
-          if (v6)
+          if (isChromeVisible)
           {
             [v7 photoBrowserChromeVisibleBackgroundColor];
           }
@@ -364,16 +364,16 @@ LABEL_16:
           {
             [v7 photoBrowserChromeHiddenBackgroundColor];
           }
-          v4 = ;
+          backgroundColorOverride = ;
         }
 
         v13 = MEMORY[0x1E69E9820];
         v14 = 3221225472;
         v15 = __62__PUBrowsingBackgroundTileViewController__updateColorIfNeeded__block_invoke;
         v16 = &unk_1E7B80C38;
-        v17 = self;
-        v18 = v4;
-        v9 = v4;
+        selfCopy = self;
+        v18 = backgroundColorOverride;
+        v9 = backgroundColorOverride;
         v10 = _Block_copy(&v13);
         v11 = [(PUBrowsingBackgroundTileViewController *)self _nextColorUpdateAnimatorBlock:v13];
         v12 = v11;
@@ -397,33 +397,33 @@ void __62__PUBrowsingBackgroundTileViewController__updateColorIfNeeded__block_in
   [v2 setBackgroundColor:*(a1 + 40)];
 }
 
-- (void)_invalidateColorWithAnimatorBlock:(id)a3
+- (void)_invalidateColorWithAnimatorBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PUBrowsingBackgroundTileViewController *)self _setNeedsUpdateColor:1];
-  [(PUBrowsingBackgroundTileViewController *)self _setNextColorUpdateAnimatorBlock:v4];
+  [(PUBrowsingBackgroundTileViewController *)self _setNextColorUpdateAnimatorBlock:blockCopy];
 
   [(PUBrowsingBackgroundTileViewController *)self _updateColorIfNeeded];
 }
 
-- (void)setBackgroundColorOverride:(id)a3
+- (void)setBackgroundColorOverride:(id)override
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_backgroundColorOverride != v5)
+  overrideCopy = override;
+  v6 = overrideCopy;
+  if (self->_backgroundColorOverride != overrideCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = overrideCopy;
+    overrideCopy = [overrideCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((overrideCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_backgroundColorOverride, a3);
-      v5 = [(PUBrowsingBackgroundTileViewController *)self _invalidateColor];
+      objc_storeStrong(&self->_backgroundColorOverride, override);
+      overrideCopy = [(PUBrowsingBackgroundTileViewController *)self _invalidateColor];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](overrideCopy, v6);
 }
 
 - (void)becomeReusable
@@ -436,30 +436,30 @@ void __62__PUBrowsingBackgroundTileViewController__updateColorIfNeeded__block_in
   [(PUBrowsingBackgroundTileViewController *)self setVisualEffect:0];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUBrowsingViewModel *)viewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PUBrowsingViewModel *)self->_viewModel registerChangeObserver:self];
     viewModel = [(PUBrowsingBackgroundTileViewController *)self _invalidateColor];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](viewModel, v5);
+  MEMORY[0x1EEE66BB8](viewModel, modelCopy);
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   v13.receiver = self;
   v13.super_class = PUBrowsingBackgroundTileViewController;
-  v4 = a3;
-  [(PUTileViewController *)&v13 applyLayoutInfo:v4];
-  [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderFrameForLayoutInfo:v4, v13.receiver, v13.super_class];
+  infoCopy = info;
+  [(PUTileViewController *)&v13 applyLayoutInfo:infoCopy];
+  [(PUBrowsingBackgroundTileViewController *)self _emptyPlaceholderFrameForLayoutInfo:infoCopy, v13.receiver, v13.super_class];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -478,11 +478,11 @@ void __62__PUBrowsingBackgroundTileViewController__updateColorIfNeeded__block_in
   [(PUBrowsingBackgroundTileViewController *)self _updateBackgroundBlurViewAnimated:0];
 }
 
-- (PUBrowsingBackgroundTileViewController)initWithReuseIdentifier:(id)a3
+- (PUBrowsingBackgroundTileViewController)initWithReuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = PUBrowsingBackgroundTileViewController;
-  result = [(PUTileViewController *)&v5 initWithReuseIdentifier:a3];
+  result = [(PUTileViewController *)&v5 initWithReuseIdentifier:identifier];
   if (result)
   {
     v4 = *(MEMORY[0x1E695F050] + 16);

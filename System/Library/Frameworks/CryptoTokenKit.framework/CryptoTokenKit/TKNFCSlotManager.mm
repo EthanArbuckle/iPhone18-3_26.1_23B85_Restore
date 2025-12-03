@@ -1,48 +1,48 @@
 @interface TKNFCSlotManager
-- (BOOL)_startNFCSlotWithPromptMessage:(id)a3 appIdentifiers:(id)a4 connectionErrorHandler:(id)a5 error:(id *)a6;
-- (TKNFCSlotManager)initWithSlotServerConnectionProvider:(id)a3 tokenWatcherProvider:(id)a4 queue:(id)a5 slotTimeoutLimit:(double)a6;
-- (id)_slotServerConnectionWithErrorHandler:(id)a3;
-- (id)_startNFCOperationWithTokenID:(id)a3;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_configureTokenWatcherForToken:(id)a3 expectedSlotName:(id)a4 connectionErrorHandler:(id)a5 tokenFoundHandler:(id)a6;
-- (void)_handleConnectionCloseWithInvalidate:(BOOL)a3;
-- (void)_handleRegisteredTokenDetection:(id)a3;
+- (BOOL)_startNFCSlotWithPromptMessage:(id)message appIdentifiers:(id)identifiers connectionErrorHandler:(id)handler error:(id *)error;
+- (TKNFCSlotManager)initWithSlotServerConnectionProvider:(id)provider tokenWatcherProvider:(id)watcherProvider queue:(id)queue slotTimeoutLimit:(double)limit;
+- (id)_slotServerConnectionWithErrorHandler:(id)handler;
+- (id)_startNFCOperationWithTokenID:(id)d;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_configureTokenWatcherForToken:(id)token expectedSlotName:(id)name connectionErrorHandler:(id)handler tokenFoundHandler:(id)foundHandler;
+- (void)_handleConnectionCloseWithInvalidate:(BOOL)invalidate;
+- (void)_handleRegisteredTokenDetection:(id)detection;
 - (void)_postponeNFCSlotTermination;
 - (void)_refreshNFCOperationTerminationTimer;
 - (void)_releaseNFCOperationResource;
 - (void)_setupNFCOperationSlot;
-- (void)_setupTimeoutForToken:(id)a3 withCompletion:(id)a4;
-- (void)_startNFCSlotWithTokenID:(id)a3 tokenRegistration:(id)a4 appIdentifiers:(id)a5 completion:(id)a6;
+- (void)_setupTimeoutForToken:(id)token withCompletion:(id)completion;
+- (void)_startNFCSlotWithTokenID:(id)d tokenRegistration:(id)registration appIdentifiers:(id)identifiers completion:(id)completion;
 - (void)_terminateSlotConnection;
-- (void)connectionDidActivate:(id)a3;
-- (void)createNFCSlotForTokenID:(id)a3 tokenRegistration:(id)a4 appIdentifiers:(id)a5 completion:(id)a6;
+- (void)connectionDidActivate:(id)activate;
+- (void)createNFCSlotForTokenID:(id)d tokenRegistration:(id)registration appIdentifiers:(id)identifiers completion:(id)completion;
 - (void)dealloc;
 - (void)endNFCSlotIfActive;
-- (void)postponeSlotTerminationForTokenID:(id)a3;
-- (void)setSlotWithName:(id)a3 endpoint:(id)a4 type:(id)a5 reply:(id)a6;
+- (void)postponeSlotTerminationForTokenID:(id)d;
+- (void)setSlotWithName:(id)name endpoint:(id)endpoint type:(id)type reply:(id)reply;
 @end
 
 @implementation TKNFCSlotManager
 
-- (TKNFCSlotManager)initWithSlotServerConnectionProvider:(id)a3 tokenWatcherProvider:(id)a4 queue:(id)a5 slotTimeoutLimit:(double)a6
+- (TKNFCSlotManager)initWithSlotServerConnectionProvider:(id)provider tokenWatcherProvider:(id)watcherProvider queue:(id)queue slotTimeoutLimit:(double)limit
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  providerCopy = provider;
+  watcherProviderCopy = watcherProvider;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = TKNFCSlotManager;
   v14 = [(TKNFCSlotManager *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_slotServerConnectionProvider, a3);
+    objc_storeStrong(&v14->_slotServerConnectionProvider, provider);
     v16 = objc_alloc_init(NSRecursiveLock);
     slotServerConnectionLock = v15->_slotServerConnectionLock;
     v15->_slotServerConnectionLock = v16;
 
-    if (v13)
+    if (queueCopy)
     {
-      v18 = v13;
+      v18 = queueCopy;
     }
 
     else
@@ -53,14 +53,14 @@
     queue = v15->_queue;
     v15->_queue = v18;
 
-    v20 = objc_retainBlock(v12);
+    v20 = objc_retainBlock(watcherProviderCopy);
     tokenWatcherProvider = v15->_tokenWatcherProvider;
     v15->_tokenWatcherProvider = v20;
 
     tokenWatcher = v15->_tokenWatcher;
     v15->_tokenWatcher = 0;
 
-    v15->_slotTimeoutLimit = a6;
+    v15->_slotTimeoutLimit = limit;
     v15->_slotIdleTerminationLimit = 1.8;
     v15->_nfcSlotState = 0;
     [(TKNFCSlotManager *)v15 _setupNFCOperationSlot];
@@ -104,66 +104,66 @@
   objc_destroyWeak(&location);
 }
 
-- (void)createNFCSlotForTokenID:(id)a3 tokenRegistration:(id)a4 appIdentifiers:(id)a5 completion:(id)a6
+- (void)createNFCSlotForTokenID:(id)d tokenRegistration:(id)registration appIdentifiers:(id)identifiers completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  objc_sync_enter(v14);
-  if (v14->_nfcSlotState)
+  dCopy = d;
+  registrationCopy = registration;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_nfcSlotState)
   {
     v15 = [NSError errorWithCode:-7 debugDescription:@"Another NFC operation is already in progress. Please retry again."];
-    v13[2](v13, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v14->_nfcSlotState = 1;
-    objc_sync_exit(v14);
+    selfCopy->_nfcSlotState = 1;
+    objc_sync_exit(selfCopy);
 
     v16 = sub_100014350();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      sub_100020030(v10, v11);
+      sub_100020030(dCopy, registrationCopy);
     }
 
-    [(TKNFCSlotManager *)v14 _startNFCSlotWithTokenID:v10 tokenRegistration:v11 appIdentifiers:v12 completion:v13];
+    [(TKNFCSlotManager *)selfCopy _startNFCSlotWithTokenID:dCopy tokenRegistration:registrationCopy appIdentifiers:identifiersCopy completion:completionCopy];
   }
 }
 
-- (void)postponeSlotTerminationForTokenID:(id)a3
+- (void)postponeSlotTerminationForTokenID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_nfcSlotState != 2)
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_nfcSlotState != 2)
   {
     goto LABEL_14;
   }
 
-  p_activeTokenID = &v5->_activeTokenID;
-  activeTokenID = v5->_activeTokenID;
+  p_activeTokenID = &selfCopy->_activeTokenID;
+  activeTokenID = selfCopy->_activeTokenID;
   if (!activeTokenID)
   {
     goto LABEL_12;
   }
 
-  v8 = [(TKTokenID *)activeTokenID stringRepresentation];
-  v9 = [v4 stringRepresentation];
-  v10 = [v8 isEqualToString:v9];
+  stringRepresentation = [(TKTokenID *)activeTokenID stringRepresentation];
+  stringRepresentation2 = [dCopy stringRepresentation];
+  v10 = [stringRepresentation isEqualToString:stringRepresentation2];
 
   if (v10)
   {
     v11 = +[NSDate date];
     v12 = v11;
-    if (!v5->_lastPostponementTime || ([v11 timeIntervalSinceDate:?], v13 >= 0.6))
+    if (!selfCopy->_lastPostponementTime || ([v11 timeIntervalSinceDate:?], v13 >= 0.6))
     {
-      [(TKNFCSlotManager *)v5 _postponeNFCSlotTermination];
-      objc_storeStrong(&v5->_lastPostponementTime, v12);
+      [(TKNFCSlotManager *)selfCopy _postponeNFCSlotTermination];
+      objc_storeStrong(&selfCopy->_lastPostponementTime, v12);
       v14 = sub_100014350();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -176,32 +176,32 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v5->_nfcSlotState != 2)
+  if (selfCopy->_nfcSlotState != 2)
   {
 LABEL_14:
     v12 = sub_100014350();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000200C8(&v5->_nfcSlotState);
+      sub_1000200C8(&selfCopy->_nfcSlotState);
     }
 
     goto LABEL_16;
   }
 
-  if (!*p_activeTokenID || ([*p_activeTokenID stringRepresentation], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "stringRepresentation"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, (v17 & 1) == 0))
+  if (!*p_activeTokenID || ([*p_activeTokenID stringRepresentation], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dCopy, "stringRepresentation"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, (v17 & 1) == 0))
   {
 LABEL_12:
     v12 = sub_100014350();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_100020198(&v5->_activeTokenID);
+      sub_100020198(&selfCopy->_activeTokenID);
     }
 
     goto LABEL_16;
   }
 
 LABEL_17:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)endNFCSlotIfActive
@@ -234,20 +234,20 @@ LABEL_17:
   }
 }
 
-- (void)_startNFCSlotWithTokenID:(id)a3 tokenRegistration:(id)a4 appIdentifiers:(id)a5 completion:(id)a6
+- (void)_startNFCSlotWithTokenID:(id)d tokenRegistration:(id)registration appIdentifiers:(id)identifiers completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  registrationCopy = registration;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   objc_initWeak(location, self);
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
   v41 = sub_100014B7C;
   v42 = sub_100014BA8;
-  v27 = v13;
-  v43 = objc_retainBlock(v13);
+  v27 = completionCopy;
+  v43 = objc_retainBlock(completionCopy);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_100014BB0;
@@ -273,18 +273,18 @@ LABEL_17:
   v29[2] = sub_100014D40;
   v29[3] = &unk_100038F28;
   objc_copyWeak(&v32, location);
-  v20 = v10;
+  v20 = dCopy;
   v30 = v20;
   v21 = v17;
   v31 = v21;
   [(TKNFCSlotManager *)self _configureTokenWatcherForToken:v20 expectedSlotName:v19 connectionErrorHandler:v18 tokenFoundHandler:v29];
   if (v39[5])
   {
-    v22 = v12;
-    v23 = v11;
-    v24 = [v11 promptMessage];
+    v22 = identifiersCopy;
+    v23 = registrationCopy;
+    promptMessage = [registrationCopy promptMessage];
     v28 = 0;
-    v25 = [(TKNFCSlotManager *)self _startNFCSlotWithPromptMessage:v24 appIdentifiers:v12 connectionErrorHandler:v18 error:&v28];
+    v25 = [(TKNFCSlotManager *)self _startNFCSlotWithPromptMessage:promptMessage appIdentifiers:identifiersCopy connectionErrorHandler:v18 error:&v28];
     v26 = v28;
 
     if (v25)
@@ -297,8 +297,8 @@ LABEL_17:
       (v21[2])(v21, 0, v26);
     }
 
-    v11 = v23;
-    v12 = v22;
+    registrationCopy = v23;
+    identifiersCopy = v22;
   }
 
   objc_destroyWeak(&v32);
@@ -310,42 +310,42 @@ LABEL_17:
   objc_destroyWeak(location);
 }
 
-- (void)_setupTimeoutForToken:(id)a3 withCompletion:(id)a4
+- (void)_setupTimeoutForToken:(id)token withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  timeoutTimer = v8->_timeoutTimer;
+  tokenCopy = token;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timeoutTimer = selfCopy->_timeoutTimer;
   if (timeoutTimer)
   {
     dispatch_source_cancel(timeoutTimer);
-    v10 = v8->_timeoutTimer;
-    v8->_timeoutTimer = 0;
+    v10 = selfCopy->_timeoutTimer;
+    selfCopy->_timeoutTimer = 0;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v8->_queue);
-  v12 = v8->_timeoutTimer;
-  v8->_timeoutTimer = v11;
+  v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, selfCopy->_queue);
+  v12 = selfCopy->_timeoutTimer;
+  selfCopy->_timeoutTimer = v11;
 
-  v13 = v8->_timeoutTimer;
-  v14 = dispatch_time(0, (v8->_slotTimeoutLimit * 1000000000.0));
+  v13 = selfCopy->_timeoutTimer;
+  v14 = dispatch_time(0, (selfCopy->_slotTimeoutLimit * 1000000000.0));
   dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, 0);
-  objc_initWeak(&location, v8);
-  v15 = v8->_timeoutTimer;
+  objc_initWeak(&location, selfCopy);
+  v15 = selfCopy->_timeoutTimer;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100014F5C;
   v19[3] = &unk_100038F50;
   objc_copyWeak(&v22, &location);
-  v16 = v7;
+  v16 = completionCopy;
   v21 = v16;
-  v17 = v6;
+  v17 = tokenCopy;
   v20 = v17;
   dispatch_source_set_event_handler(v15, v19);
-  v18 = v8->_timeoutTimer;
+  v18 = selfCopy->_timeoutTimer;
   if (v18)
   {
     dispatch_resume(v18);
@@ -355,11 +355,11 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_startNFCSlotWithPromptMessage:(id)a3 appIdentifiers:(id)a4 connectionErrorHandler:(id)a5 error:(id *)a6
+- (BOOL)_startNFCSlotWithPromptMessage:(id)message appIdentifiers:(id)identifiers connectionErrorHandler:(id)handler error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  messageCopy = message;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -370,18 +370,18 @@ LABEL_17:
   v20 = sub_1000151C4;
   v21 = sub_1000151D4;
   v22 = 0;
-  v13 = [(TKNFCSlotManager *)self _synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v13 = [(TKNFCSlotManager *)self _synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000151DC;
   v16[3] = &unk_100038F78;
   v16[4] = &v23;
   v16[5] = &v17;
-  [v13 startNFCSlotWithName:TKNFCSlotName uiSheetMessage:v10 supportedAppIdentifiers:v11 reply:v16];
+  [v13 startNFCSlotWithName:TKNFCSlotName uiSheetMessage:messageCopy supportedAppIdentifiers:identifiersCopy reply:v16];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v18[5];
+    *error = v18[5];
   }
 
   v14 = *(v24 + 24);
@@ -391,12 +391,12 @@ LABEL_17:
   return v14;
 }
 
-- (void)_configureTokenWatcherForToken:(id)a3 expectedSlotName:(id)a4 connectionErrorHandler:(id)a5 tokenFoundHandler:(id)a6
+- (void)_configureTokenWatcherForToken:(id)token expectedSlotName:(id)name connectionErrorHandler:(id)handler tokenFoundHandler:(id)foundHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tokenCopy = token;
+  nameCopy = name;
+  handlerCopy = handler;
+  foundHandlerCopy = foundHandler;
   v14 = (*(self->_tokenWatcherProvider + 2))();
   tokenWatcher = self->_tokenWatcher;
   self->_tokenWatcher = v14;
@@ -410,11 +410,11 @@ LABEL_17:
   v20[3] = &unk_100038FA0;
   objc_copyWeak(&v24, &from);
   objc_copyWeak(&v25, &location);
-  v17 = v10;
+  v17 = tokenCopy;
   v21 = v17;
-  v18 = v11;
+  v18 = nameCopy;
   v22 = v18;
-  v19 = v13;
+  v19 = foundHandlerCopy;
   v23 = v19;
   [(TKTokenWatcher *)v16 setInsertionHandler:v20];
 
@@ -424,56 +424,56 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleRegisteredTokenDetection:(id)a3
+- (void)_handleRegisteredTokenDetection:(id)detection
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  timeoutTimer = v4->_timeoutTimer;
+  detectionCopy = detection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timeoutTimer = selfCopy->_timeoutTimer;
   if (timeoutTimer)
   {
     dispatch_source_cancel(timeoutTimer);
-    v6 = v4->_timeoutTimer;
-    v4->_timeoutTimer = 0;
+    v6 = selfCopy->_timeoutTimer;
+    selfCopy->_timeoutTimer = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v7 = [(TKNFCSlotManager *)v4 _startNFCOperationWithTokenID:v8];
-  [(TKNFCSlotManager *)v4 _refreshNFCOperationTerminationTimer];
+  v7 = [(TKNFCSlotManager *)selfCopy _startNFCOperationWithTokenID:detectionCopy];
+  [(TKNFCSlotManager *)selfCopy _refreshNFCOperationTerminationTimer];
 }
 
-- (id)_startNFCOperationWithTokenID:(id)a3
+- (id)_startNFCOperationWithTokenID:(id)d
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  activeTokenID = v6->_activeTokenID;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeTokenID = selfCopy->_activeTokenID;
   if (activeTokenID)
   {
-    v8 = [(TKTokenID *)activeTokenID stringRepresentation];
-    v9 = [v5 stringRepresentation];
-    v10 = [v8 isEqualToString:v9];
+    stringRepresentation = [(TKTokenID *)activeTokenID stringRepresentation];
+    stringRepresentation2 = [dCopy stringRepresentation];
+    v10 = [stringRepresentation isEqualToString:stringRepresentation2];
 
     if ((v10 & 1) == 0)
     {
       v11 = sub_100014350();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        sub_100020524(v5, &v6->_activeTokenID);
+        sub_100020524(dCopy, &selfCopy->_activeTokenID);
       }
     }
   }
 
-  objc_storeStrong(&v6->_activeTokenID, a3);
+  objc_storeStrong(&selfCopy->_activeTokenID, d);
   v12 = sub_100014350();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [(TKSharedResourceSlot *)v6->_nfcOperationSlot idleTimeout];
-    sub_10002059C(v5, buf, v12, v13);
+    [(TKSharedResourceSlot *)selfCopy->_nfcOperationSlot idleTimeout];
+    sub_10002059C(dCopy, buf, v12, v13);
   }
 
-  nfcOperationSlot = v6->_nfcOperationSlot;
+  nfcOperationSlot = selfCopy->_nfcOperationSlot;
   v20 = 0;
   v15 = [(TKSharedResourceSlot *)nfcOperationSlot resourceWithError:&v20];
   v16 = v20;
@@ -490,11 +490,11 @@ LABEL_17:
 
   else
   {
-    objc_storeStrong(&v6->_activeNFCOperation, v15);
+    objc_storeStrong(&selfCopy->_activeNFCOperation, v15);
     v18 = v15;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
@@ -522,45 +522,45 @@ LABEL_17:
 
 - (void)_refreshNFCOperationTerminationTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_activeNFCOperation)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activeNFCOperation)
   {
     v3 = sub_100014350();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      [(TKSharedResourceSlot *)v2->_nfcOperationSlot idleTimeout];
+      [(TKSharedResourceSlot *)selfCopy->_nfcOperationSlot idleTimeout];
       sub_100020658(v6, v3, v4);
     }
 
-    activeNFCOperation = v2->_activeNFCOperation;
-    v2->_activeNFCOperation = 0;
+    activeNFCOperation = selfCopy->_activeNFCOperation;
+    selfCopy->_activeNFCOperation = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_postponeNFCSlotTermination
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_nfcOperationSlot && v2->_activeTokenID)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_nfcOperationSlot && selfCopy->_activeTokenID)
   {
     v3 = sub_100014350();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      sub_10002069C(&v2->_activeTokenID);
+      sub_10002069C(&selfCopy->_activeTokenID);
     }
 
-    activeNFCOperation = v2->_activeNFCOperation;
-    v2->_activeNFCOperation = 0;
+    activeNFCOperation = selfCopy->_activeNFCOperation;
+    selfCopy->_activeNFCOperation = 0;
 
-    nfcOperationSlot = v2->_nfcOperationSlot;
+    nfcOperationSlot = selfCopy->_nfcOperationSlot;
     v10 = 0;
     v6 = [(TKSharedResourceSlot *)nfcOperationSlot resourceWithError:&v10];
     v7 = v10;
-    v8 = v2->_activeNFCOperation;
-    v2->_activeNFCOperation = v6;
+    v8 = selfCopy->_activeNFCOperation;
+    selfCopy->_activeNFCOperation = v6;
 
     if (v7)
     {
@@ -571,41 +571,41 @@ LABEL_17:
       }
     }
 
-    [(TKNFCSlotManager *)v2 _refreshNFCOperationTerminationTimer];
+    [(TKNFCSlotManager *)selfCopy _refreshNFCOperationTerminationTimer];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_terminateSlotConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  tokenWatcher = v2->_tokenWatcher;
-  v2->_tokenWatcher = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  tokenWatcher = selfCopy->_tokenWatcher;
+  selfCopy->_tokenWatcher = 0;
 
-  [(TKNFCSlotManager *)v2 _releaseNFCOperationResource];
-  objc_sync_exit(v2);
+  [(TKNFCSlotManager *)selfCopy _releaseNFCOperationResource];
+  objc_sync_exit(selfCopy);
 
-  [(TKNFCSlotManager *)v2 _handleConnectionCloseWithInvalidate:1];
+  [(TKNFCSlotManager *)selfCopy _handleConnectionCloseWithInvalidate:1];
 }
 
-- (void)setSlotWithName:(id)a3 endpoint:(id)a4 type:(id)a5 reply:(id)a6
+- (void)setSlotWithName:(id)name endpoint:(id)endpoint type:(id)type reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  objc_sync_enter(v14);
-  if ([v10 isEqual:TKNFCSlotName])
+  nameCopy = name;
+  endpointCopy = endpoint;
+  typeCopy = type;
+  replyCopy = reply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([nameCopy isEqual:TKNFCSlotName])
   {
-    nfcSlotState = v14->_nfcSlotState;
-    if (v11)
+    nfcSlotState = selfCopy->_nfcSlotState;
+    if (endpointCopy)
     {
       if (!nfcSlotState)
       {
-        v14->_nfcSlotState = 1;
+        selfCopy->_nfcSlotState = 1;
         v16 = sub_100014350();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
@@ -622,7 +622,7 @@ LABEL_17:
         sub_1000207C0(v17);
       }
 
-      nfcSlotCompletionBlock = v14->_nfcSlotCompletionBlock;
+      nfcSlotCompletionBlock = selfCopy->_nfcSlotCompletionBlock;
       if (nfcSlotCompletionBlock)
       {
         v21 = NSLocalizedDescriptionKey;
@@ -632,19 +632,19 @@ LABEL_17:
         nfcSlotCompletionBlock[2](nfcSlotCompletionBlock, 0, v20);
       }
 
-      v14->_nfcSlotState = 0;
-      [(TKNFCSlotManager *)v14 _terminateSlotConnection];
+      selfCopy->_nfcSlotState = 0;
+      [(TKNFCSlotManager *)selfCopy _terminateSlotConnection];
     }
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
-  v13[2](v13);
+  replyCopy[2](replyCopy);
 }
 
-- (id)_slotServerConnectionWithErrorHandler:(id)a3
+- (id)_slotServerConnectionWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(NSRecursiveLock *)self->_slotServerConnectionLock lock];
   if (self->_slotServerConnection)
   {
@@ -661,7 +661,7 @@ LABEL_17:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(TKXPCConnection *)self->_slotServerConnection synchronousRemoteObjectProxyWithErrorHandler:v4];
+  v7 = [(TKXPCConnection *)self->_slotServerConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100015E5C;
@@ -684,12 +684,12 @@ LABEL_5:
 
   else
   {
-    v13 = [NSString stringWithFormat:@"XPC connection to %@ could not be created", TKProtocolSlotClientName];
-    v9 = [NSError errorWithCode:-2 debugDescription:v13];
+    tKProtocolSlotClientName = [NSString stringWithFormat:@"XPC connection to %@ could not be created", TKProtocolSlotClientName];
+    v9 = [NSError errorWithCode:-2 debugDescription:tKProtocolSlotClientName];
 
-    if (v4 && v9)
+    if (handlerCopy && v9)
     {
-      v4[2](v4, v9);
+      handlerCopy[2](handlerCopy, v9);
     }
   }
 
@@ -700,9 +700,9 @@ LABEL_5:
   return v10;
 }
 
-- (void)_handleConnectionCloseWithInvalidate:(BOOL)a3
+- (void)_handleConnectionCloseWithInvalidate:(BOOL)invalidate
 {
-  v3 = a3;
+  invalidateCopy = invalidate;
   [(NSRecursiveLock *)self->_slotServerConnectionLock lock];
   if (self->_slotServerConnection)
   {
@@ -712,7 +712,7 @@ LABEL_5:
       sub_100020804();
     }
 
-    if (v3)
+    if (invalidateCopy)
     {
       [(TKXPCConnection *)self->_slotServerConnection invalidate];
     }
@@ -724,18 +724,18 @@ LABEL_5:
   [(NSRecursiveLock *)self->_slotServerConnectionLock unlock];
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TKNFCSlotManager *)self _slotServerConnectionWithErrorHandler:v4];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(TKNFCSlotManager *)self _slotServerConnectionWithErrorHandler:handlerCopy];
+  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)connectionDidActivate:(id)a3
+- (void)connectionDidActivate:(id)activate
 {
-  v3 = a3;
+  activateCopy = activate;
   v4 = sub_100014350();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {

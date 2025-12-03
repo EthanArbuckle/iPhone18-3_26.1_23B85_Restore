@@ -1,15 +1,15 @@
 @interface AVInputViewController
-- (AVInputViewController)initWithBundleID:(id)a3;
-- (AVInputViewController)initWithBundleID:(id)a3 controls:(unint64_t)a4;
+- (AVInputViewController)initWithBundleID:(id)d;
+- (AVInputViewController)initWithBundleID:(id)d controls:(unint64_t)controls;
 - (AVInputViewControllerDelegate)delegate;
 - (BOOL)isDiscoveryEnabled;
 - (void)_updateInputOptionsCountIfNeeded;
 - (void)loadView;
-- (void)setBundleID:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDiscoveryEnabled:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setBundleID:(id)d;
+- (void)setDelegate:(id)delegate;
+- (void)setDiscoveryEnabled:(BOOL)enabled;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation AVInputViewController
@@ -60,29 +60,29 @@ void __57__AVInputViewController__updateInputOptionsCountIfNeeded__block_invoke(
   }
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if (AVInputIsValidBundleID())
   {
-    v4 = [v6 copy];
+    v4 = [dCopy copy];
     bundleID = self->_bundleID;
     self->_bundleID = v4;
 
-    [(AVControlCenterMicrophonePickerWrapper *)self->_pickerWrapper setApplicationBundleID:v6];
+    [(AVControlCenterMicrophonePickerWrapper *)self->_pickerWrapper setApplicationBundleID:dCopy];
   }
 }
 
-- (void)setDiscoveryEnabled:(BOOL)a3
+- (void)setDiscoveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (AVInputIsValidBundleID())
   {
-    if ([(AVControlCenterMicrophonePickerWrapper *)self->_pickerWrapper discovering]!= v3)
+    if ([(AVControlCenterMicrophonePickerWrapper *)self->_pickerWrapper discovering]!= enabledCopy)
     {
       pickerWrapper = self->_pickerWrapper;
 
-      [(AVControlCenterMicrophonePickerWrapper *)pickerWrapper setDiscovering:v3];
+      [(AVControlCenterMicrophonePickerWrapper *)pickerWrapper setDiscovering:enabledCopy];
     }
   }
 
@@ -126,9 +126,9 @@ void __57__AVInputViewController__updateInputOptionsCountIfNeeded__block_invoke(
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -140,23 +140,23 @@ void __57__AVInputViewController__updateInputOptionsCountIfNeeded__block_invoke(
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = AVInputViewController;
-  [(AVInputViewController *)&v4 viewDidDisappear:a3];
+  [(AVInputViewController *)&v4 viewDidDisappear:disappear];
   [(AVControlCenterMicrophonePickerWrapper *)self->_pickerWrapper setOnScreen:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AVInputViewController;
-  [(AVInputViewController *)&v6 viewDidAppear:a3];
-  v4 = [(AVInputViewController *)self viewIfLoaded];
-  v5 = [v4 window];
+  [(AVInputViewController *)&v6 viewDidAppear:appear];
+  viewIfLoaded = [(AVInputViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v5)
+  if (window)
   {
     [(AVControlCenterMicrophonePickerWrapper *)self->_pickerWrapper setDiscovering:1];
     [(AVControlCenterMicrophonePickerWrapper *)self->_pickerWrapper setOnScreen:1];
@@ -179,25 +179,25 @@ void __57__AVInputViewController__updateInputOptionsCountIfNeeded__block_invoke(
     self->_hostingController = v5;
 
     [(AVInputViewController *)self addChildViewController:self->_hostingController];
-    v7 = [(AVInputViewController *)self view];
-    [v7 bounds];
+    view = [(AVInputViewController *)self view];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(UIViewController *)self->_hostingController view];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    view2 = [(UIViewController *)self->_hostingController view];
+    [view2 setFrame:{v9, v11, v13, v15}];
 
-    v17 = [(UIViewController *)self->_hostingController view];
-    [v17 setAutoresizingMask:18];
+    view3 = [(UIViewController *)self->_hostingController view];
+    [view3 setAutoresizingMask:18];
 
-    v18 = [(AVInputViewController *)self view];
-    v19 = [(UIViewController *)self->_hostingController view];
-    [v18 addSubview:v19];
+    view4 = [(AVInputViewController *)self view];
+    view5 = [(UIViewController *)self->_hostingController view];
+    [view4 addSubview:view5];
 
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    v21 = [(UIViewController *)self->_hostingController view];
-    [v21 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    view6 = [(UIViewController *)self->_hostingController view];
+    [view6 setBackgroundColor:clearColor];
 
     [(UIViewController *)self->_hostingController didMoveToParentViewController:self];
     [(AVInputViewController *)self _updateInputOptionsCountIfNeeded];
@@ -247,15 +247,15 @@ void __33__AVInputViewController_loadView__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (AVInputViewController)initWithBundleID:(id)a3
+- (AVInputViewController)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = AVInputViewController;
   v5 = [(AVInputViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
   }
@@ -263,15 +263,15 @@ void __33__AVInputViewController_loadView__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (AVInputViewController)initWithBundleID:(id)a3 controls:(unint64_t)a4
+- (AVInputViewController)initWithBundleID:(id)d controls:(unint64_t)controls
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = AVInputViewController;
   v6 = [(AVInputViewController *)&v10 initWithNibName:0 bundle:0];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [dCopy copy];
     bundleID = v6->_bundleID;
     v6->_bundleID = v7;
   }

@@ -1,28 +1,28 @@
 @interface MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor
-- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)a3 personalizationStyle:(int64_t)a4;
+- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)model personalizationStyle:(int64_t)style;
 @end
 
 @implementation MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor
 
-- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)a3 personalizationStyle:(int64_t)a4
+- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)model personalizationStyle:(int64_t)style
 {
-  v6 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor;
   v7 = [(MusicKit_SoftLinking_MPStoreLibraryPersonalizationContentDescriptor *)&v15 init];
   if (v7)
   {
-    if ((a4 - 1) >= 4)
+    if ((style - 1) >= 4)
     {
-      v8 = 0;
+      styleCopy = 0;
     }
 
     else
     {
-      v8 = a4;
+      styleCopy = style;
     }
 
-    v9 = [v6 _underlyingObject];
+    _underlyingObject = [modelCopy _underlyingObject];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2050000000;
@@ -41,7 +41,7 @@
 
     v11 = v10;
     _Block_object_dispose(&v17, 8);
-    v12 = [[v10 alloc] initWithModel:v9 personalizationStyle:v8];
+    v12 = [[v10 alloc] initWithModel:_underlyingObject personalizationStyle:styleCopy];
     underlyingContentDescriptor = v7->_underlyingContentDescriptor;
     v7->_underlyingContentDescriptor = v12;
   }

@@ -8,8 +8,8 @@
 
 - (id)mpc_userInfoJSONValue
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 msv_compactMapValues:&__block_literal_global_4788];
+  userInfo = [self userInfo];
+  v2 = [userInfo msv_compactMapValues:&__block_literal_global_4788];
 
   return v2;
 }
@@ -18,22 +18,22 @@
 {
   v9[3] = *MEMORY[0x1E69E9840];
   v8[0] = @"domain";
-  v2 = [a1 domain];
-  v9[0] = v2;
+  domain = [self domain];
+  v9[0] = domain;
   v8[1] = @"code";
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
   v9[1] = v3;
   v8[2] = @"userInfo";
-  v4 = [a1 mpc_userInfoJSONValue];
-  v5 = v4;
-  if (!v4)
+  mpc_userInfoJSONValue = [self mpc_userInfoJSONValue];
+  null = mpc_userInfoJSONValue;
+  if (!mpc_userInfoJSONValue)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v9[2] = v5;
+  v9[2] = null;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
-  if (!v4)
+  if (!mpc_userInfoJSONValue)
   {
   }
 
@@ -47,11 +47,11 @@
   {
     v5 = [v4 objectForKeyedSubscript:@"domain"];
     v6 = [v4 objectForKeyedSubscript:@"code"];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     v8 = MEMORY[0x1E696ABC0];
     v9 = [v4 objectForKeyedSubscript:@"userInfo"];
     v10 = [v8 mpc_userInfoFromJSONValue:v9];
-    v11 = [a1 errorWithDomain:v5 code:v7 userInfo:v10];
+    v11 = [self errorWithDomain:v5 code:integerValue userInfo:v10];
   }
 
   else

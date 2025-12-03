@@ -1,51 +1,51 @@
 @interface NTKCollieFaceViewComplicationFactory
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5;
-- (void)loadLayoutRulesForFaceView:(id)a3;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view;
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView;
+- (void)loadLayoutRulesForFaceView:(id)view;
 @end
 
 @implementation NTKCollieFaceViewComplicationFactory
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view
 {
-  v10 = a6;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = NTKCollieFaceViewComplicationFactory;
-  v11 = a5;
-  v12 = [(NTKCollieFaceViewComplicationFactory *)&v15 newLegacyViewForComplication:a3 family:a4 slot:v11 faceView:v10];
-  LODWORD(a4) = [v11 isEqualToString:{NTKComplicationSlotDate, v15.receiver, v15.super_class}];
+  slotCopy = slot;
+  v12 = [(NTKCollieFaceViewComplicationFactory *)&v15 newLegacyViewForComplication:complication family:family slot:slotCopy faceView:viewCopy];
+  LODWORD(family) = [slotCopy isEqualToString:{NTKComplicationSlotDate, v15.receiver, v15.super_class}];
 
-  if (a4)
+  if (family)
   {
-    v13 = [v10 _dateComplicationFont];
-    [v12 setFont:v13];
+    _dateComplicationFont = [viewCopy _dateComplicationFont];
+    [v12 setFont:_dateComplicationFont];
   }
 
   return v12;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView
 {
-  v8 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = NTKCollieFaceViewComplicationFactory;
-  v9 = a4;
-  [(NTKCollieFaceViewComplicationFactory *)&v10 configureComplicationView:v8 forSlot:v9 faceView:a5];
-  LODWORD(a5) = [v9 isEqualToString:{NTKComplicationSlotBottom, v10.receiver, v10.super_class}];
+  slotCopy = slot;
+  [(NTKCollieFaceViewComplicationFactory *)&v10 configureComplicationView:viewCopy forSlot:slotCopy faceView:faceView];
+  LODWORD(faceView) = [slotCopy isEqualToString:{NTKComplicationSlotBottom, v10.receiver, v10.super_class}];
 
-  if (a5)
+  if (faceView)
   {
-    [v8 setPlacement:4];
+    [viewCopy setPlacement:4];
   }
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v43.receiver = self;
   v43.super_class = NTKCollieFaceViewComplicationFactory;
-  [(NTKCollieFaceViewComplicationFactory *)&v43 loadLayoutRulesForFaceView:v4];
-  v5 = [(NTKCollieFaceViewComplicationFactory *)self device];
+  [(NTKCollieFaceViewComplicationFactory *)&v43 loadLayoutRulesForFaceView:viewCopy];
+  device = [(NTKCollieFaceViewComplicationFactory *)self device];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -69,11 +69,11 @@
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        v13 = [v4 complicationLayoutforSlot:{v12, v24}];
+        v13 = [viewCopy complicationLayoutforSlot:{v12, v24}];
         if ([v12 isEqualToString:v9])
         {
-          [v4 _dateComplicationFrame];
-          v14 = [NTKComplicationLayoutRule layoutRuleForDevice:v5 withReferenceFrame:3 horizontalLayout:3 verticalLayout:?];
+          [viewCopy _dateComplicationFrame];
+          v14 = [NTKComplicationLayoutRule layoutRuleForDevice:device withReferenceFrame:3 horizontalLayout:3 verticalLayout:?];
           v33 = _NSConcreteStackBlock;
           v34 = 3221225472;
           v35 = sub_12410;
@@ -91,7 +91,7 @@
             goto LABEL_11;
           }
 
-          [v5 screenBounds];
+          [device screenBounds];
           v17 = v16;
           v19 = v18;
           v21 = v20;
@@ -103,7 +103,7 @@
           v30 = v19;
           v31 = v21;
           v32 = v23;
-          v28 = v5;
+          v28 = device;
           NTKEnumerateComplicationStates();
 
           v15 = v27;

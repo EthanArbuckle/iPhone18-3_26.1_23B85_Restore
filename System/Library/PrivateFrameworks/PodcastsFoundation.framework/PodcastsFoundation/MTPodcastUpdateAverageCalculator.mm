@@ -1,16 +1,16 @@
 @interface MTPodcastUpdateAverageCalculator
 - (MTPodcastUpdateAverageCalculator)init;
-- (void)unsafeSetUpdateAverageWithPodcast:(id)a3 on:(id)a4;
+- (void)unsafeSetUpdateAverageWithPodcast:(id)podcast on:(id)on;
 @end
 
 @implementation MTPodcastUpdateAverageCalculator
 
-- (void)unsafeSetUpdateAverageWithPodcast:(id)a3 on:(id)a4
+- (void)unsafeSetUpdateAverageWithPodcast:(id)podcast on:(id)on
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D8FDBB24(v6, v7);
+  podcastCopy = podcast;
+  onCopy = on;
+  selfCopy = self;
+  sub_1D8FDBB24(podcastCopy, onCopy);
 }
 
 - (MTPodcastUpdateAverageCalculator)init

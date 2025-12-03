@@ -1,10 +1,10 @@
 @interface SKUITextFooterSettingsHeaderFooterDescription
-- (Class)_viewClassForSettingsHeaderFooterDescription:(id)a3;
+- (Class)_viewClassForSettingsHeaderFooterDescription:(id)description;
 @end
 
 @implementation SKUITextFooterSettingsHeaderFooterDescription
 
-- (Class)_viewClassForSettingsHeaderFooterDescription:(id)a3
+- (Class)_viewClassForSettingsHeaderFooterDescription:(id)description
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {

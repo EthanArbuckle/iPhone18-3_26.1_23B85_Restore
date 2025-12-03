@@ -1,33 +1,33 @@
 @interface PowerTableAssetStore
-+ (BOOL)directoryExistsAtPath:(id)a3;
-+ (BOOL)fileExistsAtPath:(id)a3;
-- (BOOL)commitStagedAsset:(id)a3;
-- (BOOL)rejectStagedAsset:(id)a3;
-- (BOOL)stageAsset:(id)a3;
-- (BOOL)unstageStagedAsset:(id)a3;
-- (PowerTableAssetStore)initWithSubsystem:(int64_t)a3;
-- (id)loadAssetWithIdentifier:(id)a3 state:(int64_t)a4;
-- (id)pathForAsset:(id)a3;
-- (id)pathForAssetWithIdentifier:(id)a3 state:(int64_t)a4;
++ (BOOL)directoryExistsAtPath:(id)path;
++ (BOOL)fileExistsAtPath:(id)path;
+- (BOOL)commitStagedAsset:(id)asset;
+- (BOOL)rejectStagedAsset:(id)asset;
+- (BOOL)stageAsset:(id)asset;
+- (BOOL)unstageStagedAsset:(id)asset;
+- (PowerTableAssetStore)initWithSubsystem:(int64_t)subsystem;
+- (id)loadAssetWithIdentifier:(id)identifier state:(int64_t)state;
+- (id)pathForAsset:(id)asset;
+- (id)pathForAssetWithIdentifier:(id)identifier state:(int64_t)state;
 - (void)activate;
 - (void)dealloc;
 - (void)loadState;
 - (void)log;
-- (void)purgeAsset:(id)a3;
+- (void)purgeAsset:(id)asset;
 - (void)refresh;
 - (void)saveState;
 @end
 
 @implementation PowerTableAssetStore
 
-- (PowerTableAssetStore)initWithSubsystem:(int64_t)a3
+- (PowerTableAssetStore)initWithSubsystem:(int64_t)subsystem
 {
   v5.receiver = self;
   v5.super_class = PowerTableAssetStore;
   result = [(PowerTableAssetStore *)&v5 init];
   if (result)
   {
-    result->_subsystem = a3;
+    result->_subsystem = subsystem;
   }
 
   return result;
@@ -73,9 +73,9 @@ LABEL_6:
   [(PowerTableAssetStore *)self refresh];
 }
 
-- (BOOL)stageAsset:(id)a3
+- (BOOL)stageAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -86,11 +86,11 @@ LABEL_6:
     v87 = 2114;
     v88 = v8;
     v89 = 2114;
-    v90 = v5;
+    v90 = assetCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@", buf, 0x20u);
   }
 
-  if ([(NSString *)v5 subsystem]!= self->_subsystem)
+  if ([(NSString *)assetCopy subsystem]!= self->_subsystem)
   {
     v50 = sub_100025204();
     if (!os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -101,7 +101,7 @@ LABEL_30:
       v48 = 0;
       v17 = 0;
 LABEL_31:
-      v22 = 0;
+      stagedAsset = 0;
 LABEL_49:
 
       v44 = 0;
@@ -111,7 +111,7 @@ LABEL_49:
 
     v51 = [objc_opt_class() description];
     NSStringFromSelector(a2);
-    v53 = v52 = v5;
+    v53 = v52 = assetCopy;
     v54 = [PowerTableAsset subsystemAsString:[(NSString *)v52 subsystem]];
     *buf = 138543874;
     v86 = v51;
@@ -123,11 +123,11 @@ LABEL_49:
 LABEL_51:
     _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, v55, buf, 0x20u);
 
-    v5 = v52;
+    assetCopy = v52;
     goto LABEL_30;
   }
 
-  if ([(NSString *)v5 state])
+  if ([(NSString *)assetCopy state])
   {
     v50 = sub_100025204();
     if (!os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -137,7 +137,7 @@ LABEL_51:
 
     v51 = [objc_opt_class() description];
     NSStringFromSelector(a2);
-    v53 = v52 = v5;
+    v53 = v52 = assetCopy;
     v54 = [PowerTableAsset stateAsString:[(NSString *)v52 state]];
     *buf = 138543874;
     v86 = v51;
@@ -183,7 +183,7 @@ LABEL_51:
     {
       v66 = [objc_opt_class() description];
       NSStringFromSelector(a2);
-      v68 = v67 = v5;
+      v68 = v67 = assetCopy;
       v69 = self->_stateDirPath;
       *buf = 138544130;
       v86 = v66;
@@ -195,7 +195,7 @@ LABEL_51:
       v92 = v17;
       _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: failed to create %{public}@: %{public}@", buf, 0x2Au);
 
-      v5 = v67;
+      assetCopy = v67;
     }
 
     v31 = 0;
@@ -220,7 +220,7 @@ LABEL_51:
     {
       v70 = [objc_opt_class() description];
       NSStringFromSelector(a2);
-      v72 = v71 = v5;
+      v72 = v71 = assetCopy;
       v73 = self->_stateDirPath;
       *buf = 138544130;
       v86 = v70;
@@ -232,25 +232,25 @@ LABEL_51:
       v92 = v9;
       _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: failed to set permissions on %{public}@: %{public}@", buf, 0x2Au);
 
-      v5 = v71;
+      assetCopy = v71;
     }
 
     v31 = 0;
     v30 = 0;
     v48 = 0;
-    v22 = 0;
+    stagedAsset = 0;
     v17 = v9;
     goto LABEL_49;
   }
 
 LABEL_11:
-  v22 = [(PowerTableAssetStore *)self stagedAsset];
+  stagedAsset = [(PowerTableAssetStore *)self stagedAsset];
 
   aSelector = a2;
-  if (v22)
+  if (stagedAsset)
   {
-    v23 = [(PowerTableAssetStore *)self stagedAsset];
-    v22 = [(PowerTableAssetStore *)self pathForAsset:v23];
+    stagedAsset2 = [(PowerTableAssetStore *)self stagedAsset];
+    stagedAsset = [(PowerTableAssetStore *)self pathForAsset:stagedAsset2];
 
     v24 = sub_100025204();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -262,13 +262,13 @@ LABEL_11:
       v87 = 2114;
       v88 = v26;
       v89 = 2114;
-      v90 = v22;
+      v90 = stagedAsset;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: removing %{public}@", buf, 0x20u);
     }
 
     v27 = +[NSFileManager defaultManager];
     v80 = v9;
-    v28 = [v27 removeItemAtPath:v22 error:&v80];
+    v28 = [v27 removeItemAtPath:stagedAsset error:&v80];
     v17 = v80;
 
     if ((v28 & 1) == 0)
@@ -278,18 +278,18 @@ LABEL_11:
       {
         v63 = [objc_opt_class() description];
         NSStringFromSelector(a2);
-        v65 = v64 = v5;
+        v65 = v64 = assetCopy;
         *buf = 138544130;
         v86 = v63;
         v87 = 2114;
         v88 = v65;
         v89 = 2114;
-        v90 = v22;
+        v90 = stagedAsset;
         v91 = 2114;
         v92 = v17;
         _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: failed to remove %{public}@: %{public}@", buf, 0x2Au);
 
-        v5 = v64;
+        assetCopy = v64;
       }
 
       v31 = 0;
@@ -301,9 +301,9 @@ LABEL_11:
     v9 = v17;
   }
 
-  v29 = [(NSString *)v5 assetByChangingState:1];
-  v76 = v5;
-  v30 = [(PowerTableAssetStore *)self pathForAsset:v5];
+  v29 = [(NSString *)assetCopy assetByChangingState:1];
+  v76 = assetCopy;
+  v30 = [(PowerTableAssetStore *)self pathForAsset:assetCopy];
   v75 = v29;
   v31 = [(PowerTableAssetStore *)self pathForAsset:v29];
   if ([objc_opt_class() directoryExistsAtPath:v31])
@@ -349,7 +349,7 @@ LABEL_11:
       }
 
 LABEL_47:
-      v5 = v76;
+      assetCopy = v76;
 LABEL_48:
       v48 = v75;
       goto LABEL_49;
@@ -408,7 +408,7 @@ LABEL_53:
     goto LABEL_47;
   }
 
-  v42 = v22;
+  v42 = stagedAsset;
   v43 = +[NSFileManager defaultManager];
   v83 = NSFilePosixPermissions;
   v84 = &off_10006D8D8;
@@ -421,8 +421,8 @@ LABEL_53:
   if ((v46 & 1) == 0)
   {
     v50 = sub_100025204();
-    v5 = v76;
-    v22 = v42;
+    assetCopy = v76;
+    stagedAsset = v42;
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
       v61 = [objc_opt_class() description];
@@ -437,16 +437,16 @@ LABEL_53:
       v92 = v47;
       _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: failed to set permissions on %{public}@: %{public}@", buf, 0x2Au);
 
-      v5 = v76;
+      assetCopy = v76;
     }
 
     v17 = v47;
     goto LABEL_48;
   }
 
-  v5 = v76;
+  assetCopy = v76;
   v48 = v75;
-  v22 = v42;
+  stagedAsset = v42;
 LABEL_26:
   [(PowerTableAssetStore *)self setStagedAsset:?];
   [(PowerTableAssetStore *)self saveState];
@@ -455,9 +455,9 @@ LABEL_26:
   return v44;
 }
 
-- (BOOL)commitStagedAsset:(id)a3
+- (BOOL)commitStagedAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -468,25 +468,25 @@ LABEL_26:
     v14 = 2114;
     v15 = v8;
     v16 = 2114;
-    v17 = v5;
+    v17 = assetCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@", &v12, 0x20u);
   }
 
-  if ([v5 subsystem] != self->_subsystem)
+  if ([assetCopy subsystem] != self->_subsystem)
   {
-    sub_10002D7B0(self, a2, v5);
+    sub_10002D7B0(self, a2, assetCopy);
 LABEL_9:
     v10 = 0;
     goto LABEL_6;
   }
 
-  if ([v5 state] != 1)
+  if ([assetCopy state] != 1)
   {
-    sub_10002D8B8(self, a2, v5);
+    sub_10002D8B8(self, a2, assetCopy);
     goto LABEL_9;
   }
 
-  v9 = [v5 assetByChangingState:2];
+  v9 = [assetCopy assetByChangingState:2];
   [(PowerTableAssetStore *)self setActiveAsset:v9];
 
   [(PowerTableAssetStore *)self setStagedAsset:0];
@@ -498,9 +498,9 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)rejectStagedAsset:(id)a3
+- (BOOL)rejectStagedAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -511,11 +511,11 @@ LABEL_6:
     v32 = 2114;
     v33 = v8;
     v34 = 2114;
-    v35 = v5;
+    v35 = assetCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@", buf, 0x20u);
   }
 
-  if ([v5 subsystem] != self->_subsystem)
+  if ([assetCopy subsystem] != self->_subsystem)
   {
     v22 = sub_100025204();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -532,7 +532,7 @@ LABEL_19:
 
     v23 = [objc_opt_class() description];
     v24 = NSStringFromSelector(a2);
-    v25 = +[PowerTableAsset subsystemAsString:](PowerTableAsset, "subsystemAsString:", [v5 subsystem]);
+    v25 = +[PowerTableAsset subsystemAsString:](PowerTableAsset, "subsystemAsString:", [assetCopy subsystem]);
     *buf = 138543874;
     v31 = v23;
     v32 = 2114;
@@ -546,7 +546,7 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  if ([v5 state] != 1)
+  if ([assetCopy state] != 1)
   {
     v22 = sub_100025204();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -556,7 +556,7 @@ LABEL_21:
 
     v23 = [objc_opt_class() description];
     v24 = NSStringFromSelector(a2);
-    v25 = +[PowerTableAsset stateAsString:](PowerTableAsset, "stateAsString:", [v5 state]);
+    v25 = +[PowerTableAsset stateAsString:](PowerTableAsset, "stateAsString:", [assetCopy state]);
     *buf = 138543874;
     v31 = v23;
     v32 = 2114;
@@ -567,25 +567,25 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v9 = [v5 assetByChangingState:3];
-  v10 = [(PowerTableAssetStore *)self rejectedAssets];
+  v9 = [assetCopy assetByChangingState:3];
+  rejectedAssets = [(PowerTableAssetStore *)self rejectedAssets];
 
-  if (v10)
+  if (rejectedAssets)
   {
-    v11 = [(PowerTableAssetStore *)self rejectedAssets];
-    v12 = [v11 setByAddingObject:v9];
+    rejectedAssets2 = [(PowerTableAssetStore *)self rejectedAssets];
+    v12 = [rejectedAssets2 setByAddingObject:v9];
     [(PowerTableAssetStore *)self setRejectedAssets:v12];
   }
 
   else
   {
-    v11 = [NSSet setWithObject:v9];
-    [(PowerTableAssetStore *)self setRejectedAssets:v11];
+    rejectedAssets2 = [NSSet setWithObject:v9];
+    [(PowerTableAssetStore *)self setRejectedAssets:rejectedAssets2];
   }
 
   [(PowerTableAssetStore *)self setStagedAsset:0];
   [(PowerTableAssetStore *)self saveState];
-  v13 = [(PowerTableAssetStore *)self pathForAsset:v5];
+  v13 = [(PowerTableAssetStore *)self pathForAsset:assetCopy];
   v14 = sub_100025204();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -633,9 +633,9 @@ LABEL_12:
   return v20;
 }
 
-- (BOOL)unstageStagedAsset:(id)a3
+- (BOOL)unstageStagedAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -646,11 +646,11 @@ LABEL_12:
     v28 = 2114;
     v29 = v8;
     v30 = 2114;
-    v31 = v5;
+    v31 = assetCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@", buf, 0x20u);
   }
 
-  if ([v5 subsystem] != self->_subsystem)
+  if ([assetCopy subsystem] != self->_subsystem)
   {
     v18 = sub_100025204();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -666,7 +666,7 @@ LABEL_16:
 
     v19 = [objc_opt_class() description];
     v20 = NSStringFromSelector(a2);
-    v21 = +[PowerTableAsset subsystemAsString:](PowerTableAsset, "subsystemAsString:", [v5 subsystem]);
+    v21 = +[PowerTableAsset subsystemAsString:](PowerTableAsset, "subsystemAsString:", [assetCopy subsystem]);
     *buf = 138543874;
     v27 = v19;
     v28 = 2114;
@@ -680,7 +680,7 @@ LABEL_18:
     goto LABEL_13;
   }
 
-  if ([v5 state] != 1)
+  if ([assetCopy state] != 1)
   {
     v18 = sub_100025204();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -690,7 +690,7 @@ LABEL_18:
 
     v19 = [objc_opt_class() description];
     v20 = NSStringFromSelector(a2);
-    v21 = +[PowerTableAsset stateAsString:](PowerTableAsset, "stateAsString:", [v5 state]);
+    v21 = +[PowerTableAsset stateAsString:](PowerTableAsset, "stateAsString:", [assetCopy state]);
     *buf = 138543874;
     v27 = v19;
     v28 = 2114;
@@ -703,7 +703,7 @@ LABEL_18:
 
   [(PowerTableAssetStore *)self setStagedAsset:0];
   [(PowerTableAssetStore *)self saveState];
-  v9 = [(PowerTableAssetStore *)self pathForAsset:v5];
+  v9 = [(PowerTableAssetStore *)self pathForAsset:assetCopy];
   v10 = sub_100025204();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -751,9 +751,9 @@ LABEL_9:
   return v16;
 }
 
-- (void)purgeAsset:(id)a3
+- (void)purgeAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -764,23 +764,23 @@ LABEL_9:
     v32 = 2114;
     v33 = v8;
     v34 = 2114;
-    v35 = v5;
+    v35 = assetCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@", buf, 0x20u);
   }
 
-  if (v5)
+  if (assetCopy)
   {
-    v9 = [v5 state];
-    if (v9 > 1)
+    state = [assetCopy state];
+    if (state > 1)
     {
-      if (v9 != 2)
+      if (state != 2)
       {
-        if (v9 == 3)
+        if (state == 3)
         {
-          v12 = [(PowerTableAssetStore *)self rejectedAssets];
-          v13 = [v12 mutableCopy];
+          rejectedAssets = [(PowerTableAssetStore *)self rejectedAssets];
+          v13 = [rejectedAssets mutableCopy];
 
-          [v13 removeObject:v5];
+          [v13 removeObject:assetCopy];
           if ([v13 count])
           {
             v14 = [v13 copy];
@@ -796,8 +796,8 @@ LABEL_9:
         goto LABEL_26;
       }
 
-      v17 = [(PowerTableAssetStore *)self activeAsset];
-      v18 = [v17 isEqual:v5];
+      activeAsset = [(PowerTableAssetStore *)self activeAsset];
+      v18 = [activeAsset isEqual:assetCopy];
 
       if (v18)
       {
@@ -807,10 +807,10 @@ LABEL_9:
 
     else
     {
-      if (!v9)
+      if (!state)
       {
-        v15 = [(PowerTableAssetStore *)self availableAsset];
-        v16 = [v15 isEqual:v5];
+        availableAsset = [(PowerTableAssetStore *)self availableAsset];
+        v16 = [availableAsset isEqual:assetCopy];
 
         if (v16)
         {
@@ -820,7 +820,7 @@ LABEL_9:
         goto LABEL_26;
       }
 
-      if (v9 != 1)
+      if (state != 1)
       {
 LABEL_26:
         [(PowerTableAssetStore *)self saveState];
@@ -828,8 +828,8 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v10 = [(PowerTableAssetStore *)self stagedAsset];
-      v11 = [v10 isEqual:v5];
+      stagedAsset = [(PowerTableAssetStore *)self stagedAsset];
+      v11 = [stagedAsset isEqual:assetCopy];
 
       if (v11)
       {
@@ -837,7 +837,7 @@ LABEL_26:
       }
     }
 
-    v19 = [(PowerTableAssetStore *)self pathForAsset:v5];
+    v19 = [(PowerTableAssetStore *)self pathForAsset:assetCopy];
     v20 = sub_100025204();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -882,13 +882,13 @@ LABEL_26:
 LABEL_27:
 }
 
-- (id)pathForAsset:(id)a3
+- (id)pathForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 state];
+  assetCopy = asset;
+  identifier = [assetCopy identifier];
+  state = [assetCopy state];
 
-  v7 = [(PowerTableAssetStore *)self pathForAssetWithIdentifier:v5 state:v6];
+  v7 = [(PowerTableAssetStore *)self pathForAssetWithIdentifier:identifier state:state];
 
   return v7;
 }
@@ -921,13 +921,13 @@ LABEL_27:
   {
     v11 = [objc_opt_class() description];
     v12 = NSStringFromSelector(a2);
-    v13 = [(PowerTableAssetStore *)self availableAsset];
+    availableAsset = [(PowerTableAssetStore *)self availableAsset];
     v26 = 138543874;
     v27 = v11;
     v28 = 2114;
     v29 = v12;
     v30 = 2114;
-    v31 = v13;
+    v31 = availableAsset;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: available %{public}@", &v26, 0x20u);
   }
 
@@ -936,13 +936,13 @@ LABEL_27:
   {
     v15 = [objc_opt_class() description];
     v16 = NSStringFromSelector(a2);
-    v17 = [(PowerTableAssetStore *)self stagedAsset];
+    stagedAsset = [(PowerTableAssetStore *)self stagedAsset];
     v26 = 138543874;
     v27 = v15;
     v28 = 2114;
     v29 = v16;
     v30 = 2114;
-    v31 = v17;
+    v31 = stagedAsset;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: staged %{public}@", &v26, 0x20u);
   }
 
@@ -951,13 +951,13 @@ LABEL_27:
   {
     v19 = [objc_opt_class() description];
     v20 = NSStringFromSelector(a2);
-    v21 = [(PowerTableAssetStore *)self activeAsset];
+    activeAsset = [(PowerTableAssetStore *)self activeAsset];
     v26 = 138543874;
     v27 = v19;
     v28 = 2114;
     v29 = v20;
     v30 = 2114;
-    v31 = v21;
+    v31 = activeAsset;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: active %{public}@", &v26, 0x20u);
   }
 
@@ -966,25 +966,25 @@ LABEL_27:
   {
     v23 = [objc_opt_class() description];
     v24 = NSStringFromSelector(a2);
-    v25 = [(PowerTableAssetStore *)self rejectedAssets];
+    rejectedAssets = [(PowerTableAssetStore *)self rejectedAssets];
     v26 = 138543874;
     v27 = v23;
     v28 = 2114;
     v29 = v24;
     v30 = 2114;
-    v31 = v25;
+    v31 = rejectedAssets;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: rejected %{public}@", &v26, 0x20u);
   }
 }
 
-- (id)pathForAssetWithIdentifier:(id)a3 state:(int64_t)a4
+- (id)pathForAssetWithIdentifier:(id)identifier state:(int64_t)state
 {
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (a4 <= 3)
+    if (state <= 3)
     {
-      v4 = [*(&self->super.isa + qword_1000364E8[a4]) stringByAppendingPathComponent:v7];
+      v4 = [*(&self->super.isa + qword_1000364E8[state]) stringByAppendingPathComponent:identifierCopy];
     }
   }
 
@@ -996,12 +996,12 @@ LABEL_27:
   return v4;
 }
 
-+ (BOOL)fileExistsAtPath:(id)a3
++ (BOOL)fileExistsAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:&v12];
+  v6 = [v5 fileExistsAtPath:pathCopy isDirectory:&v12];
 
   if ((v6 & 1) == 0)
   {
@@ -1021,7 +1021,7 @@ LABEL_9:
     v15 = 2114;
     v16 = v11;
     v17 = 2114;
-    v18 = v4;
+    v18 = pathCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@ does not exist", buf, 0x20u);
 LABEL_7:
 
@@ -1043,7 +1043,7 @@ LABEL_7:
     v15 = 2114;
     v16 = v11;
     v17 = 2114;
-    v18 = v4;
+    v18 = pathCopy;
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: %{public}@ is a directory", buf, 0x20u);
     goto LABEL_7;
   }
@@ -1054,12 +1054,12 @@ LABEL_4:
   return v7;
 }
 
-+ (BOOL)directoryExistsAtPath:(id)a3
++ (BOOL)directoryExistsAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:&v12];
+  v6 = [v5 fileExistsAtPath:pathCopy isDirectory:&v12];
 
   if ((v6 & 1) == 0)
   {
@@ -1079,7 +1079,7 @@ LABEL_9:
     v15 = 2114;
     v16 = v11;
     v17 = 2114;
-    v18 = v4;
+    v18 = pathCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@ does not exist", buf, 0x20u);
 LABEL_7:
 
@@ -1101,7 +1101,7 @@ LABEL_7:
     v15 = 2114;
     v16 = v11;
     v17 = 2114;
-    v18 = v4;
+    v18 = pathCopy;
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: %{public}@ is not a directory", buf, 0x20u);
     goto LABEL_7;
   }
@@ -1212,8 +1212,8 @@ LABEL_25:
     goto LABEL_13;
   }
 
-  v19 = [(PowerTableAssetStore *)self activeAsset];
-  v20 = [v18 isEqual:v19];
+  activeAsset = [(PowerTableAssetStore *)self activeAsset];
+  v20 = [v18 isEqual:activeAsset];
 
   if (v20)
   {
@@ -1233,8 +1233,8 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v21 = [(PowerTableAssetStore *)self rejectedAssets];
-  v22 = [v21 containsObject:v18];
+  rejectedAssets = [(PowerTableAssetStore *)self rejectedAssets];
+  v22 = [rejectedAssets containsObject:v18];
 
   if (v22)
   {
@@ -1258,9 +1258,9 @@ LABEL_13:
   [(PowerTableAssetStore *)self log];
 }
 
-- (id)loadAssetWithIdentifier:(id)a3 state:(int64_t)a4
+- (id)loadAssetWithIdentifier:(id)identifier state:(int64_t)state
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = &airship_ch_interface_close_ptr;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1291,7 +1291,7 @@ LABEL_55:
     goto LABEL_26;
   }
 
-  v13 = [(PowerTableAssetStore *)self pathForAssetWithIdentifier:v11 state:a4];
+  v13 = [(PowerTableAssetStore *)self pathForAssetWithIdentifier:identifierCopy state:state];
   if (!v13)
   {
     v40 = sub_100025204();
@@ -1340,13 +1340,13 @@ LABEL_29:
       v107 = [objc_opt_class() description];
       v115 = sub_10001B03C(v107, v108, v109, v110, v111, v112, v113, v114, v200, v209, v218, a2);
       NSStringFromSelector(v115);
-      v117 = v116 = v11;
+      v117 = v116 = identifierCopy;
       sub_10001AFC4();
       v242 = v118;
       v243 = v6;
       sub_10001B160(&_mh_execute_header, &airship_ch_interface_close_ptr, v119, "%{public}@::%{public}@: failed to read %{public}@", buf);
 
-      v11 = v116;
+      identifierCopy = v116;
       v12 = &airship_ch_interface_close_ptr;
     }
 
@@ -1357,7 +1357,7 @@ LABEL_29:
   }
 
   v15 = v14;
-  v239 = v11;
+  v239 = identifierCopy;
   v7 = [v14 mutableCopy];
   [v7 removeObjectForKey:@"PowerTableVersionInfoDict"];
   v16 = sub_100025204();
@@ -1556,8 +1556,8 @@ LABEL_57:
     goto LABEL_53;
   }
 
-  v11 = v239;
-  v22 = [[PowerTableAsset alloc] initWithSubsystem:self->_subsystem identifier:v239 version:v5 state:a4 firstSupportedBuild:v6 lastSupportedBuild:v7 firstSupportedOS:v8 lastSupportedOS:v4];
+  identifierCopy = v239;
+  v22 = [[PowerTableAsset alloc] initWithSubsystem:self->_subsystem identifier:v239 version:v5 state:state firstSupportedBuild:v6 lastSupportedBuild:v7 firstSupportedOS:v8 lastSupportedOS:v4];
   v12 = sub_100025204();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -1570,7 +1570,7 @@ LABEL_57:
     sub_10001B0E8(&_mh_execute_header, v12, v25, "%{public}@::%{public}@: %{public}@", buf);
 
 LABEL_20:
-    v11 = v239;
+    identifierCopy = v239;
   }
 
 LABEL_21:
@@ -1756,12 +1756,12 @@ LABEL_29:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [objc_opt_class() description];
-    v2 = NSStringFromSelector(a2);
+    identifier = NSStringFromSelector(a2);
     v6 = [PowerTableAsset subsystemAsString:self->_subsystem];
     *buf = 138543874;
     v172 = v5;
     v173 = 2114;
-    v174 = v2;
+    v174 = identifier;
     v175 = 2112;
     v176 = v6;
     sub_10001B0E8(&_mh_execute_header, v4, v7, "%{public}@::%{public}@: %@", buf);
@@ -1775,35 +1775,35 @@ LABEL_29:
   }
 
   v8 = objc_alloc_init(NSMutableDictionary);
-  v9 = [(PowerTableAssetStore *)self activeAsset];
+  activeAsset = [(PowerTableAssetStore *)self activeAsset];
 
-  if (v9)
+  if (activeAsset)
   {
-    v10 = [(PowerTableAssetStore *)self activeAsset];
-    v2 = [v10 identifier];
+    activeAsset2 = [(PowerTableAssetStore *)self activeAsset];
+    identifier = [activeAsset2 identifier];
     [sub_10001B19C() setObject:? forKey:?];
   }
 
-  v11 = [(PowerTableAssetStore *)self stagedAsset];
+  stagedAsset = [(PowerTableAssetStore *)self stagedAsset];
 
-  if (v11)
+  if (stagedAsset)
   {
-    v12 = [(PowerTableAssetStore *)self stagedAsset];
-    v2 = [v12 identifier];
+    stagedAsset2 = [(PowerTableAssetStore *)self stagedAsset];
+    identifier = [stagedAsset2 identifier];
     [sub_10001B19C() setObject:? forKey:?];
   }
 
-  v13 = [(PowerTableAssetStore *)self rejectedAssets];
+  rejectedAssets = [(PowerTableAssetStore *)self rejectedAssets];
 
-  if (v13)
+  if (rejectedAssets)
   {
-    v13 = objc_alloc_init(NSMutableArray);
+    rejectedAssets = objc_alloc_init(NSMutableArray);
     *v163 = 0u;
     v164 = 0u;
     *v165 = 0u;
     v166 = 0u;
-    v2 = [(PowerTableAssetStore *)self rejectedAssets];
-    v14 = [v2 countByEnumeratingWithState:v163 objects:v179 count:16];
+    identifier = [(PowerTableAssetStore *)self rejectedAssets];
+    v14 = [identifier countByEnumeratingWithState:v163 objects:v179 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1814,20 +1814,20 @@ LABEL_29:
         {
           if (*v164 != v16)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(identifier);
           }
 
-          v18 = [*(v163[1] + 8 * i) identifier];
-          [v13 addObject:v18];
+          identifier2 = [*(v163[1] + 8 * i) identifier];
+          [rejectedAssets addObject:identifier2];
         }
 
-        v15 = [v2 countByEnumeratingWithState:v163 objects:v179 count:16];
+        v15 = [identifier countByEnumeratingWithState:v163 objects:v179 count:16];
       }
 
       while (v15);
     }
 
-    [v8 setObject:v13 forKey:@"rejectedAssetSubDirs"];
+    [v8 setObject:rejectedAssets forKey:@"rejectedAssetSubDirs"];
   }
 
   v19 = sub_100025204();
@@ -1836,7 +1836,7 @@ LABEL_29:
     v20 = [objc_opt_class() description];
     v28 = sub_10001B190(v20, v21, v22, v23, v24, v25, v26, v27, aSelectora);
     v29 = NSStringFromSelector(v28);
-    HIDWORD(v172) = HIDWORD(v2);
+    HIDWORD(v172) = HIDWORD(identifier);
     v173 = 2114;
     v174 = v29;
     v175 = 2114;
@@ -1863,15 +1863,15 @@ LABEL_29:
         v70 = NSStringFromSelector(v69);
         stateDirPath = self->_stateDirPath;
         sub_10001B0C4();
-        *(v72 + 4) = v2;
+        *(v72 + 4) = identifier;
         sub_10001AFDC(v73);
         sub_10001B048(&_mh_execute_header, v74, v75, "%{public}@::%{public}@: creating %{public}@", v76, v77, v78, v79, aSelectord, v158, v159, v160, v161, v162, v163[0], v163[1], v164, *(&v164 + 1), v165[0], v165[1], v166, *(&v166 + 1), v167, v168, v169, v170, buf[0]);
       }
 
-      v2 = +[NSFileManager defaultManager];
+      identifier = +[NSFileManager defaultManager];
       v80 = self->_stateDirPath;
       v161 = 0;
-      v81 = [v2 createDirectoryAtPath:v80 withIntermediateDirectories:1 attributes:0 error:&v161];
+      v81 = [identifier createDirectoryAtPath:v80 withIntermediateDirectories:1 attributes:0 error:&v161];
       v36 = v161;
 
       if ((v81 & 1) == 0)
@@ -1894,13 +1894,13 @@ LABEL_29:
         goto LABEL_42;
       }
 
-      v2 = +[NSFileManager defaultManager];
+      identifier = +[NSFileManager defaultManager];
       v169 = NSFilePosixPermissions;
       v170 = &off_10006D8D8;
       v82 = [NSDictionary dictionaryWithObjects:&v170 forKeys:&v169 count:1];
       v83 = self->_stateDirPath;
       v160 = v36;
-      v84 = [v2 setAttributes:v82 ofItemAtPath:v83 error:&v160];
+      v84 = [identifier setAttributes:v82 ofItemAtPath:v83 error:&v160];
       v38 = v160;
 
       if ((v84 & 1) == 0)
@@ -1936,25 +1936,25 @@ LABEL_51:
       v95 = NSStringFromSelector(v94);
       statePlistPath = self->_statePlistPath;
       sub_10001B0C4();
-      *(v97 + 4) = v2;
+      *(v97 + 4) = identifier;
       sub_10001AFDC(v98);
       sub_10001B048(&_mh_execute_header, v99, v100, "%{public}@::%{public}@: writing %{public}@", v101, v102, v103, v104, aSelectore, v158, v159, v160, v161, v162, v163[0], v163[1], v164, *(&v164 + 1), v165[0], v165[1], v166, *(&v166 + 1), v167, v168, v169, v170, buf[0]);
     }
 
-    v2 = [NSURL fileURLWithPath:self->_statePlistPath];
+    identifier = [NSURL fileURLWithPath:self->_statePlistPath];
     v159 = v38;
     v105 = [sub_10001B19C() writeToURL:? error:?];
     v36 = v38;
 
     if (v105)
     {
-      v2 = +[NSFileManager defaultManager];
+      identifier = +[NSFileManager defaultManager];
       v167 = NSFilePosixPermissions;
       v168 = &off_10006D8F0;
       v106 = [NSDictionary dictionaryWithObjects:&v168 forKeys:&v167 count:1];
       v107 = self->_statePlistPath;
       v158 = v36;
-      v108 = [v2 setAttributes:v106 ofItemAtPath:v107 error:&v158];
+      v108 = [identifier setAttributes:v106 ofItemAtPath:v107 error:&v158];
       v38 = v158;
 
       if (v108)
@@ -2011,15 +2011,15 @@ LABEL_51:
       v49 = NSStringFromSelector(v48);
       v50 = self->_stateDirPath;
       *buf = 138543874;
-      v172 = v2;
+      v172 = identifier;
       sub_10001B118(v49);
       sub_10001B048(&_mh_execute_header, v51, v52, "%{public}@::%{public}@: removing %{public}@", v53, v54, v55, v56, aSelectorc, v158, v159, v160, v161, v162, v163[0], v163[1], v164, *(&v164 + 1), v165[0], v165[1], v166, *(&v166 + 1), v167, v168, v169, v170, buf[0]);
     }
 
-    v2 = +[NSFileManager defaultManager];
+    identifier = +[NSFileManager defaultManager];
     v57 = self->_stateDirPath;
     v162 = 0;
-    v58 = [v2 removeItemAtPath:v57 error:&v162];
+    v58 = [identifier removeItemAtPath:v57 error:&v162];
     v36 = v162;
 
     if (v58)

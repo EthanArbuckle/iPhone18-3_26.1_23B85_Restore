@@ -1,36 +1,36 @@
 @interface PDSRegistrar
-- (BOOL)addRegistration:(id)a3 toUser:(id)a4 error:(id *)a5;
-- (BOOL)batchUpdateRegistrations:(id)a3 forUser:(id)a4 error:(id *)a5;
-- (BOOL)deleteRegistration:(id)a3 fromUser:(id)a4 error:(id *)a5;
-- (BOOL)ensureRegistrationPresent:(id)a3 forUser:(id)a4 error:(id *)a5;
-- (BOOL)removeAllRegistrationsFromUser:(id)a3 error:(id *)a4;
-- (BOOL)removeRegistration:(id)a3 fromUser:(id)a4 error:(id *)a5;
-- (PDSRegistrar)initWithClientID:(id)a3 error:(id *)a4;
-- (id)_activeRegistrationsFromEntries:(id)a3;
-- (id)_registrationsFromEntries:(id)a3;
-- (id)_wrappedErrorForFailedRemote:(id)a3;
-- (id)_wrappedErrorForGivenError:(id)a3 XPCError:(id)a4;
-- (id)activeUsersWithError:(id *)a3;
-- (id)allEntriesWithError:(id *)a3;
-- (id)allRegistrationsForUser:(id)a3 error:(id *)a4;
-- (id)allRegistrationsWithError:(id *)a3;
-- (id)currentRegistrationsForUser:(id)a3 error:(id *)a4;
-- (id)usersWithError:(id *)a3;
-- (void)activeUsersWithCompletion:(id)a3;
-- (void)allEntriesWithCompletion:(id)a3;
-- (void)allRegistrationsForUser:(id)a3 completion:(id)a4;
-- (void)allRegistrationsWithCompletion:(id)a3;
-- (void)currentRegistrationsForUser:(id)a3 completion:(id)a4;
-- (void)usersWithCompletion:(id)a3;
+- (BOOL)addRegistration:(id)registration toUser:(id)user error:(id *)error;
+- (BOOL)batchUpdateRegistrations:(id)registrations forUser:(id)user error:(id *)error;
+- (BOOL)deleteRegistration:(id)registration fromUser:(id)user error:(id *)error;
+- (BOOL)ensureRegistrationPresent:(id)present forUser:(id)user error:(id *)error;
+- (BOOL)removeAllRegistrationsFromUser:(id)user error:(id *)error;
+- (BOOL)removeRegistration:(id)registration fromUser:(id)user error:(id *)error;
+- (PDSRegistrar)initWithClientID:(id)d error:(id *)error;
+- (id)_activeRegistrationsFromEntries:(id)entries;
+- (id)_registrationsFromEntries:(id)entries;
+- (id)_wrappedErrorForFailedRemote:(id)remote;
+- (id)_wrappedErrorForGivenError:(id)error XPCError:(id)cError;
+- (id)activeUsersWithError:(id *)error;
+- (id)allEntriesWithError:(id *)error;
+- (id)allRegistrationsForUser:(id)user error:(id *)error;
+- (id)allRegistrationsWithError:(id *)error;
+- (id)currentRegistrationsForUser:(id)user error:(id *)error;
+- (id)usersWithError:(id *)error;
+- (void)activeUsersWithCompletion:(id)completion;
+- (void)allEntriesWithCompletion:(id)completion;
+- (void)allRegistrationsForUser:(id)user completion:(id)completion;
+- (void)allRegistrationsWithCompletion:(id)completion;
+- (void)currentRegistrationsForUser:(id)user completion:(id)completion;
+- (void)usersWithCompletion:(id)completion;
 @end
 
 @implementation PDSRegistrar
 
-- (PDSRegistrar)initWithClientID:(id)a3 error:(id *)a4
+- (PDSRegistrar)initWithClientID:(id)d error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
     [PDSRegistrar initWithClientID:error:];
   }
@@ -40,11 +40,11 @@
   v8 = [(PDSRegistrar *)&v28 init];
   if (v8)
   {
-    v9 = [PDSRemoteRegistry remoteVendorForClientID:v7];
+    v9 = [PDSRemoteRegistry remoteVendorForClientID:dCopy];
     remoteVendor = v8->_remoteVendor;
     v8->_remoteVendor = v9;
 
-    objc_storeStrong(&v8->_clientID, a3);
+    objc_storeStrong(&v8->_clientID, d);
     v11 = pds_defaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -77,8 +77,8 @@
         v17 = 0;
       }
 
-      v18 = [v15 domain];
-      v19 = [v18 isEqualToString:PDSXPCErrorDomain];
+      domain = [v15 domain];
+      v19 = [domain isEqualToString:PDSXPCErrorDomain];
 
       if (v19)
       {
@@ -92,10 +92,10 @@
 
       v21 = [MEMORY[0x277CCA9B8] errorWithDomain:PDSRegistrarErrorDomain code:v20 userInfo:v17];
       v16 = v21;
-      if (a4)
+      if (error)
       {
         v22 = v21;
-        *a4 = v16;
+        *error = v16;
       }
 
       v8 = 0;
@@ -124,17 +124,17 @@
   return v8;
 }
 
-- (BOOL)addRegistration:(id)a3 toUser:(id)a4 error:(id *)a5
+- (BOOL)addRegistration:(id)registration toUser:(id)user error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  registrationCopy = registration;
+  userCopy = user;
+  if (!registrationCopy)
   {
     [PDSRegistrar addRegistration:toUser:error:];
   }
 
-  if (!v9)
+  if (!userCopy)
   {
     [PDSRegistrar addRegistration:toUser:error:];
   }
@@ -143,18 +143,18 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v8;
+    *&buf[4] = registrationCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = userCopy;
     *&buf[22] = 2112;
-    v37 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25DECA000, v10, OS_LOG_TYPE_DEFAULT, "PDSRegistrar addRegistration %@ for user %@ {self: %@}", buf, 0x20u);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v37 = __Block_byref_object_copy__0;
+  selfCopy = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = 0;
   remoteVendor = self->_remoteVendor;
@@ -173,8 +173,8 @@
   if (v12)
   {
     v13 = [PDSEntry alloc];
-    v14 = [(PDSRegistrar *)self clientID];
-    v15 = [(PDSEntry *)v13 initWithUser:v9 registration:v8 clientID:v14];
+    clientID = [(PDSRegistrar *)self clientID];
+    v15 = [(PDSEntry *)v13 initWithUser:userCopy registration:registrationCopy clientID:clientID];
 
     v16 = [MEMORY[0x277CBEB98] setWithObject:v15];
     v24[0] = MEMORY[0x277D85DD0];
@@ -194,17 +194,17 @@
 
   v18 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v17 XPCError:*(*&buf[8] + 40)];
   v19 = v18;
-  if (a5 && v18)
+  if (error && v18)
   {
     v20 = v18;
-    *a5 = v19;
+    *error = v19;
   }
 
   v21 = pds_defaultLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *v32 = 138412546;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2112;
     v35 = v19;
     _os_log_impl(&dword_25DECA000, v21, OS_LOG_TYPE_DEFAULT, "PDSRegistrar completed addRegistration {self: %@, overallError: %@}", v32, 0x16u);
@@ -217,17 +217,17 @@
   return v19 == 0;
 }
 
-- (BOOL)ensureRegistrationPresent:(id)a3 forUser:(id)a4 error:(id *)a5
+- (BOOL)ensureRegistrationPresent:(id)present forUser:(id)user error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  presentCopy = present;
+  userCopy = user;
+  if (!presentCopy)
   {
     [PDSRegistrar ensureRegistrationPresent:forUser:error:];
   }
 
-  if (!v9)
+  if (!userCopy)
   {
     [PDSRegistrar ensureRegistrationPresent:forUser:error:];
   }
@@ -236,18 +236,18 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v8;
+    *&buf[4] = presentCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = userCopy;
     *&buf[22] = 2112;
-    v42 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25DECA000, v10, OS_LOG_TYPE_DEFAULT, "PDSRegistrar ensureRegistrationPresent %@ for user %@ {self: %@}", buf, 0x20u);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v42 = __Block_byref_object_copy__0;
+  selfCopy = __Block_byref_object_copy__0;
   v43 = __Block_byref_object_dispose__0;
   v44 = 0;
   remoteVendor = self->_remoteVendor;
@@ -266,8 +266,8 @@
   if (v12)
   {
     v13 = [PDSEntry alloc];
-    v14 = [(PDSRegistrar *)self clientID];
-    v15 = [(PDSEntry *)v13 initWithUser:v9 registration:v8 clientID:v14];
+    clientID = [(PDSRegistrar *)self clientID];
+    v15 = [(PDSEntry *)v13 initWithUser:userCopy registration:presentCopy clientID:clientID];
 
     v16 = [MEMORY[0x277CBEB98] setWithObject:v15];
     v29[0] = MEMORY[0x277D85DD0];
@@ -289,18 +289,18 @@
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 userInfo];
-    v21 = [v20 objectForKey:*MEMORY[0x277CCA7E8]];
+    userInfo = [v18 userInfo];
+    v21 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
     if (v21)
     {
-      v22 = [v21 domain];
-      v23 = [v22 isEqualToString:PDSCDCacheErrorDomain];
+      domain = [v21 domain];
+      v23 = [domain isEqualToString:PDSCDCacheErrorDomain];
 
       if (v23)
       {
-        v24 = [v21 code];
-        if (v24 == -402 || v24 == -400)
+        code = [v21 code];
+        if (code == -402 || code == -400)
         {
 
           v19 = 0;
@@ -308,10 +308,10 @@
       }
     }
 
-    if (a5)
+    if (error)
     {
       v25 = v19;
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -319,7 +319,7 @@
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *v37 = 138412546;
-    v38 = self;
+    selfCopy2 = self;
     v39 = 2112;
     v40 = v19;
     _os_log_impl(&dword_25DECA000, v26, OS_LOG_TYPE_DEFAULT, "PDSRegistrar completed ensureRegistrationPresent {self: %@, overallError: %@}", v37, 0x16u);
@@ -332,21 +332,21 @@
   return v19 == 0;
 }
 
-- (BOOL)batchUpdateRegistrations:(id)a3 forUser:(id)a4 error:(id *)a5
+- (BOOL)batchUpdateRegistrations:(id)registrations forUser:(id)user error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v32 = v7;
-  if (!v7)
+  registrationsCopy = registrations;
+  userCopy = user;
+  v32 = registrationsCopy;
+  if (!registrationsCopy)
   {
-    v29 = v8;
+    v29 = userCopy;
     [PDSRegistrar batchUpdateRegistrations:forUser:error:];
-    v8 = v29;
+    userCopy = v29;
   }
 
-  v33 = v8;
-  if (!v8)
+  v33 = userCopy;
+  if (!userCopy)
   {
     [PDSRegistrar batchUpdateRegistrations:forUser:error:];
   }
@@ -409,8 +409,8 @@
 
           v17 = *(*(&v35 + 1) + 8 * i);
           v18 = [PDSEntry alloc];
-          v19 = [(PDSRegistrar *)self clientID];
-          v20 = [(PDSEntry *)v18 initWithUser:v33 registration:v17 clientID:v19];
+          clientID = [(PDSRegistrar *)self clientID];
+          v20 = [(PDSEntry *)v18 initWithUser:v33 registration:v17 clientID:clientID];
 
           [v12 addObject:v20];
         }
@@ -421,13 +421,13 @@
       while (v14);
     }
 
-    v21 = [(PDSRegistrar *)self clientID];
+    clientID2 = [(PDSRegistrar *)self clientID];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __55__PDSRegistrar_batchUpdateRegistrations_forUser_error___block_invoke_2;
     v34[3] = &unk_2799F78D0;
     v34[4] = &v39;
-    [v31 batchUpdateEntries:v12 forClientID:v21 withCompletion:v34];
+    [v31 batchUpdateEntries:v12 forClientID:clientID2 withCompletion:v34];
 
     v22 = v40[5];
   }
@@ -439,17 +439,17 @@
 
   v23 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v22 XPCError:*(*(&buf + 1) + 40)];
   v24 = v23;
-  if (a5 && v23)
+  if (error && v23)
   {
     v25 = v23;
-    *a5 = v24;
+    *error = v24;
   }
 
   v26 = pds_defaultLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *v46 = 138412546;
-    v47 = self;
+    selfCopy = self;
     v48 = 2112;
     v49 = v24;
     _os_log_impl(&dword_25DECA000, v26, OS_LOG_TYPE_DEFAULT, "PDSRegistrar completed batchUpdateRegistrations {self: %@, overallError: %@}", v46, 0x16u);
@@ -462,17 +462,17 @@
   return v24 == 0;
 }
 
-- (BOOL)removeRegistration:(id)a3 fromUser:(id)a4 error:(id *)a5
+- (BOOL)removeRegistration:(id)registration fromUser:(id)user error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  registrationCopy = registration;
+  userCopy = user;
+  if (!registrationCopy)
   {
     [PDSRegistrar removeRegistration:fromUser:error:];
   }
 
-  if (!v9)
+  if (!userCopy)
   {
     [PDSRegistrar removeRegistration:fromUser:error:];
   }
@@ -483,9 +483,9 @@
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = registrationCopy;
     *&buf[22] = 2112;
-    v37 = v9;
+    v37 = userCopy;
     _os_log_impl(&dword_25DECA000, v10, OS_LOG_TYPE_DEFAULT, "PDSRegistrar removeRegistration {self: %@, registration: %@, user: %@}", buf, 0x20u);
   }
 
@@ -511,8 +511,8 @@
   if (v12)
   {
     v13 = [PDSEntry alloc];
-    v14 = [(PDSRegistrar *)self clientID];
-    v15 = [(PDSEntry *)v13 initWithUser:v9 registration:v8 clientID:v14 state:2];
+    clientID = [(PDSRegistrar *)self clientID];
+    v15 = [(PDSEntry *)v13 initWithUser:userCopy registration:registrationCopy clientID:clientID state:2];
 
     v16 = [MEMORY[0x277CBEB98] setWithObject:v15];
     v24[0] = MEMORY[0x277D85DD0];
@@ -532,17 +532,17 @@
 
   v18 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v17 XPCError:*(*&buf[8] + 40)];
   v19 = v18;
-  if (a5 && v18)
+  if (error && v18)
   {
     v20 = v18;
-    *a5 = v19;
+    *error = v19;
   }
 
   v21 = pds_defaultLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *v32 = 138412546;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v19;
     _os_log_impl(&dword_25DECA000, v21, OS_LOG_TYPE_DEFAULT, "PDSRegistrar completed removeRegistration {self: %@, overallError: %@}", v32, 0x16u);
@@ -555,11 +555,11 @@
   return v19 == 0;
 }
 
-- (BOOL)removeAllRegistrationsFromUser:(id)a3 error:(id *)a4
+- (BOOL)removeAllRegistrationsFromUser:(id)user error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  userCopy = user;
+  if (!userCopy)
   {
     [PDSRegistrar removeAllRegistrationsFromUser:error:];
   }
@@ -570,7 +570,7 @@
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = userCopy;
     _os_log_impl(&dword_25DECA000, v7, OS_LOG_TYPE_DEFAULT, "PDSRegistrar removeAllRegistrations {self: %@, user: %@}", buf, 0x16u);
   }
 
@@ -595,13 +595,13 @@
   v24 = 0;
   if (v9)
   {
-    v10 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __53__PDSRegistrar_removeAllRegistrationsFromUser_error___block_invoke_2;
     v18[3] = &unk_2799F78D0;
     v18[4] = &v19;
-    [v9 removeAllEntriesForUser:v6 withClientID:v10 withCompletion:v18];
+    [v9 removeAllEntriesForUser:userCopy withClientID:clientID withCompletion:v18];
 
     v11 = v20[5];
   }
@@ -613,17 +613,17 @@
 
   v12 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v11 XPCError:*(*&buf[8] + 40)];
   v13 = v12;
-  if (a4 && v12)
+  if (error && v12)
   {
     v14 = v12;
-    *a4 = v13;
+    *error = v13;
   }
 
   v15 = pds_defaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *v26 = 138412546;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v13;
     _os_log_impl(&dword_25DECA000, v15, OS_LOG_TYPE_DEFAULT, "PDSRegistrar completed removeAllRegistrations {self: %@, overallError: %@}", v26, 0x16u);
@@ -636,11 +636,11 @@
   return v13 == 0;
 }
 
-- (id)currentRegistrationsForUser:(id)a3 error:(id *)a4
+- (id)currentRegistrationsForUser:(id)user error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  userCopy = user;
+  if (!userCopy)
   {
     [PDSRegistrar currentRegistrationsForUser:error:];
   }
@@ -651,7 +651,7 @@
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = userCopy;
     _os_log_impl(&dword_25DECA000, v7, OS_LOG_TYPE_DEFAULT, "PDSRegistrar currentRegistrationsForUser {self: %@, user: %@}", buf, 0x16u);
   }
 
@@ -682,7 +682,7 @@
   v26 = 0;
   if (v9)
   {
-    v10 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __50__PDSRegistrar_currentRegistrationsForUser_error___block_invoke_2;
@@ -690,7 +690,7 @@
     v20[4] = self;
     v20[5] = &v21;
     v20[6] = &v27;
-    [v9 entriesForUser:v6 clientID:v10 withCompletion:v20];
+    [v9 entriesForUser:userCopy clientID:clientID withCompletion:v20];
 
     v11 = v28[5];
   }
@@ -702,10 +702,10 @@
 
   v12 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v11 XPCError:*(*&buf[8] + 40)];
   v13 = v12;
-  if (a4 && v12)
+  if (error && v12)
   {
     v14 = v12;
-    *a4 = v13;
+    *error = v13;
   }
 
   v15 = pds_defaultLog();
@@ -713,7 +713,7 @@
   {
     v16 = v22[5];
     *v34 = 138412802;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v13;
     v38 = 2112;
@@ -745,15 +745,15 @@ void __50__PDSRegistrar_currentRegistrationsForUser_error___block_invoke_2(uint6
   *(v9 + 40) = v5;
 }
 
-- (void)currentRegistrationsForUser:(id)a3 completion:(id)a4
+- (void)currentRegistrationsForUser:(id)user completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  userCopy = user;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (userCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -774,9 +774,9 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v6;
+    v22 = userCopy;
     _os_log_impl(&dword_25DECA000, v9, OS_LOG_TYPE_DEFAULT, "PDSRegistrar async currentRegistrationsForUser {self: %@, user: %@}", buf, 0x16u);
   }
 
@@ -786,14 +786,14 @@ LABEL_3:
   v12 = v18;
   if (v11)
   {
-    v13 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __55__PDSRegistrar_currentRegistrationsForUser_completion___block_invoke;
     v16[3] = &unk_2799F7970;
     v16[4] = self;
     v17 = v8;
-    [v11 entriesForUser:v6 clientID:v13 withCompletion:v16];
+    [v11 entriesForUser:userCopy clientID:clientID withCompletion:v16];
   }
 
   else
@@ -833,7 +833,7 @@ void __55__PDSRegistrar_currentRegistrationsForUser_completion___block_invoke(ui
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)activeUsersWithError:(id *)a3
+- (id)activeUsersWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = pds_defaultLog();
@@ -871,14 +871,14 @@ void __55__PDSRegistrar_currentRegistrationsForUser_completion___block_invoke(ui
   v24 = 0;
   if (v7)
   {
-    v8 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __37__PDSRegistrar_activeUsersWithError___block_invoke_2;
     v18[3] = &unk_2799F7998;
     v18[4] = &v25;
     v18[5] = &v19;
-    [v7 activeUsersWithClientID:v8 withCompletion:v18];
+    [v7 activeUsersWithClientID:clientID withCompletion:v18];
 
     v9 = v26[5];
   }
@@ -890,10 +890,10 @@ void __55__PDSRegistrar_currentRegistrationsForUser_completion___block_invoke(ui
 
   v10 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v9 XPCError:*(*(&buf + 1) + 40)];
   v11 = v10;
-  if (a3 && v10)
+  if (error && v10)
   {
     v12 = v10;
-    *a3 = v11;
+    *error = v11;
   }
 
   v13 = pds_defaultLog();
@@ -901,7 +901,7 @@ void __55__PDSRegistrar_currentRegistrationsForUser_completion___block_invoke(ui
   {
     v14 = v20[5];
     *v32 = 138412802;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v11;
     v36 = 2112;
@@ -930,11 +930,11 @@ void __37__PDSRegistrar_activeUsersWithError___block_invoke_2(uint64_t a1, void 
   *(v6 + 40) = v5;
 }
 
-- (void)activeUsersWithCompletion:(id)a3
+- (void)activeUsersWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PDSRegistrar activeUsersWithCompletion:];
   }
@@ -943,7 +943,7 @@ void __37__PDSRegistrar_activeUsersWithError___block_invoke_2(uint64_t a1, void 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25DECA000, v5, OS_LOG_TYPE_DEFAULT, "PDSRegistrar async activeUsersWithError {self: %@}", buf, 0xCu);
   }
 
@@ -953,20 +953,20 @@ void __37__PDSRegistrar_activeUsersWithError___block_invoke_2(uint64_t a1, void 
   v8 = v14;
   if (v7)
   {
-    v9 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __42__PDSRegistrar_activeUsersWithCompletion___block_invoke;
     v12[3] = &unk_2799F7970;
     v12[4] = self;
-    v13 = v4;
-    [v7 activeUsersWithClientID:v9 withCompletion:v12];
+    v13 = completionCopy;
+    [v7 activeUsersWithClientID:clientID withCompletion:v12];
   }
 
   else
   {
     v10 = [(PDSRegistrar *)self _wrappedErrorForFailedRemote:v8];
-    (*(v4 + 2))(v4, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
 
     v8 = v10;
   }
@@ -999,7 +999,7 @@ void __42__PDSRegistrar_activeUsersWithCompletion___block_invoke(uint64_t a1, vo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)usersWithError:(id *)a3
+- (id)usersWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = pds_defaultLog();
@@ -1037,14 +1037,14 @@ void __42__PDSRegistrar_activeUsersWithCompletion___block_invoke(uint64_t a1, vo
   v24 = 0;
   if (v7)
   {
-    v8 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __31__PDSRegistrar_usersWithError___block_invoke_2;
     v18[3] = &unk_2799F7998;
     v18[4] = &v25;
     v18[5] = &v19;
-    [v7 usersWithClientID:v8 withCompletion:v18];
+    [v7 usersWithClientID:clientID withCompletion:v18];
 
     v9 = v26[5];
   }
@@ -1056,10 +1056,10 @@ void __42__PDSRegistrar_activeUsersWithCompletion___block_invoke(uint64_t a1, vo
 
   v10 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v9 XPCError:*(*(&buf + 1) + 40)];
   v11 = v10;
-  if (a3 && v10)
+  if (error && v10)
   {
     v12 = v10;
-    *a3 = v11;
+    *error = v11;
   }
 
   v13 = pds_defaultLog();
@@ -1067,7 +1067,7 @@ void __42__PDSRegistrar_activeUsersWithCompletion___block_invoke(uint64_t a1, vo
   {
     v14 = v20[5];
     *v32 = 138412802;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v11;
     v36 = 2112;
@@ -1096,19 +1096,19 @@ void __31__PDSRegistrar_usersWithError___block_invoke_2(uint64_t a1, void *a2, v
   *(v6 + 40) = v5;
 }
 
-- (void)usersWithCompletion:(id)a3
+- (void)usersWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pds_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25DECA000, v5, OS_LOG_TYPE_DEFAULT, "PDSRegistrar async usersWithError {self: %@}", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!completionCopy)
   {
     [PDSRegistrar usersWithCompletion:];
   }
@@ -1119,20 +1119,20 @@ void __31__PDSRegistrar_usersWithError___block_invoke_2(uint64_t a1, void *a2, v
   v8 = v14;
   if (v7)
   {
-    v9 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __36__PDSRegistrar_usersWithCompletion___block_invoke;
     v12[3] = &unk_2799F7970;
     v12[4] = self;
-    v13 = v4;
-    [v7 usersWithClientID:v9 withCompletion:v12];
+    v13 = completionCopy;
+    [v7 usersWithClientID:clientID withCompletion:v12];
   }
 
   else
   {
     v10 = [(PDSRegistrar *)self _wrappedErrorForFailedRemote:v8];
-    (*(v4 + 2))(v4, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
 
     v8 = v10;
   }
@@ -1165,11 +1165,11 @@ void __36__PDSRegistrar_usersWithCompletion___block_invoke(uint64_t a1, void *a2
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allRegistrationsForUser:(id)a3 error:(id *)a4
+- (id)allRegistrationsForUser:(id)user error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  userCopy = user;
+  if (!userCopy)
   {
     [PDSRegistrar allRegistrationsForUser:error:];
   }
@@ -1180,7 +1180,7 @@ void __36__PDSRegistrar_usersWithCompletion___block_invoke(uint64_t a1, void *a2
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = userCopy;
     _os_log_impl(&dword_25DECA000, v7, OS_LOG_TYPE_DEFAULT, "PDSRegistrar allRegistrationsForUser {self: %@, user: %@}", buf, 0x16u);
   }
 
@@ -1211,7 +1211,7 @@ void __36__PDSRegistrar_usersWithCompletion___block_invoke(uint64_t a1, void *a2
   v26 = 0;
   if (v9)
   {
-    v10 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __46__PDSRegistrar_allRegistrationsForUser_error___block_invoke_2;
@@ -1219,7 +1219,7 @@ void __36__PDSRegistrar_usersWithCompletion___block_invoke(uint64_t a1, void *a2
     v20[4] = self;
     v20[5] = &v21;
     v20[6] = &v27;
-    [v9 entriesForUser:v6 clientID:v10 withCompletion:v20];
+    [v9 entriesForUser:userCopy clientID:clientID withCompletion:v20];
 
     v11 = v28[5];
   }
@@ -1231,10 +1231,10 @@ void __36__PDSRegistrar_usersWithCompletion___block_invoke(uint64_t a1, void *a2
 
   v12 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v11 XPCError:*(*&buf[8] + 40)];
   v13 = v12;
-  if (a4 && v12)
+  if (error && v12)
   {
     v14 = v12;
-    *a4 = v13;
+    *error = v13;
   }
 
   v15 = pds_defaultLog();
@@ -1242,7 +1242,7 @@ void __36__PDSRegistrar_usersWithCompletion___block_invoke(uint64_t a1, void *a2
   {
     v16 = v22[5];
     *v34 = 138412802;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v13;
     v38 = 2112;
@@ -1274,15 +1274,15 @@ void __46__PDSRegistrar_allRegistrationsForUser_error___block_invoke_2(uint64_t 
   *(v9 + 40) = v5;
 }
 
-- (void)allRegistrationsForUser:(id)a3 completion:(id)a4
+- (void)allRegistrationsForUser:(id)user completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  userCopy = user;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (userCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1303,9 +1303,9 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v6;
+    v22 = userCopy;
     _os_log_impl(&dword_25DECA000, v9, OS_LOG_TYPE_DEFAULT, "PDSRegistrar async allRegistrationsForUser {self: %@, user: %@}", buf, 0x16u);
   }
 
@@ -1315,14 +1315,14 @@ LABEL_3:
   v12 = v18;
   if (v11)
   {
-    v13 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __51__PDSRegistrar_allRegistrationsForUser_completion___block_invoke;
     v16[3] = &unk_2799F7970;
     v16[4] = self;
     v17 = v8;
-    [v11 entriesForUser:v6 clientID:v13 withCompletion:v16];
+    [v11 entriesForUser:userCopy clientID:clientID withCompletion:v16];
   }
 
   else
@@ -1362,18 +1362,18 @@ void __51__PDSRegistrar_allRegistrationsForUser_completion___block_invoke(uint64
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allRegistrationsWithError:(id *)a3
+- (id)allRegistrationsWithError:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = pds_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25DECA000, v5, OS_LOG_TYPE_DEFAULT, "PDSRegistrar allRegistrations {self: %@}", &v10, 0xCu);
   }
 
-  v6 = [(PDSRegistrar *)self allEntriesWithError:a3];
+  v6 = [(PDSRegistrar *)self allEntriesWithError:error];
   v7 = [(PDSRegistrar *)self _registrationsFromEntries:v6];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1381,11 +1381,11 @@ void __51__PDSRegistrar_allRegistrationsForUser_completion___block_invoke(uint64
   return v7;
 }
 
-- (void)allRegistrationsWithCompletion:(id)a3
+- (void)allRegistrationsWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PDSRegistrar allRegistrationsWithCompletion:];
   }
@@ -1394,7 +1394,7 @@ void __51__PDSRegistrar_allRegistrationsForUser_completion___block_invoke(uint64
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25DECA000, v5, OS_LOG_TYPE_DEFAULT, "PDSRegistrar async allRegistrations {self: %@}", buf, 0xCu);
   }
 
@@ -1403,8 +1403,8 @@ void __51__PDSRegistrar_allRegistrationsForUser_completion___block_invoke(uint64
   v8[2] = __47__PDSRegistrar_allRegistrationsWithCompletion___block_invoke;
   v8[3] = &unk_2799F7970;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   [(PDSRegistrar *)self allEntriesWithCompletion:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1435,7 +1435,7 @@ void __47__PDSRegistrar_allRegistrationsWithCompletion___block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allEntriesWithError:(id *)a3
+- (id)allEntriesWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = pds_defaultLog();
@@ -1473,14 +1473,14 @@ void __47__PDSRegistrar_allRegistrationsWithCompletion___block_invoke(uint64_t a
   v24 = 0;
   if (v7)
   {
-    v8 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __36__PDSRegistrar_allEntriesWithError___block_invoke_2;
     v18[3] = &unk_2799F7998;
     v18[4] = &v19;
     v18[5] = &v25;
-    [v7 entriesForClientID:v8 withCompletion:v18];
+    [v7 entriesForClientID:clientID withCompletion:v18];
 
     v9 = v26[5];
   }
@@ -1492,10 +1492,10 @@ void __47__PDSRegistrar_allRegistrationsWithCompletion___block_invoke(uint64_t a
 
   v10 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v9 XPCError:*(*(&buf + 1) + 40)];
   v11 = v10;
-  if (a3 && v10)
+  if (error && v10)
   {
     v12 = v10;
-    *a3 = v11;
+    *error = v11;
   }
 
   v13 = pds_defaultLog();
@@ -1503,7 +1503,7 @@ void __47__PDSRegistrar_allRegistrationsWithCompletion___block_invoke(uint64_t a
   {
     v14 = v20[5];
     *v32 = 138412802;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v11;
     v36 = 2112;
@@ -1536,19 +1536,19 @@ void __36__PDSRegistrar_allEntriesWithError___block_invoke_2(uint64_t a1, void *
   *(v9 + 40) = v6;
 }
 
-- (void)allEntriesWithCompletion:(id)a3
+- (void)allEntriesWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pds_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25DECA000, v5, OS_LOG_TYPE_DEFAULT, "PDSRegistrar async allEntries {self: %@}", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!completionCopy)
   {
     [PDSRegistrar allEntriesWithCompletion:];
   }
@@ -1559,20 +1559,20 @@ void __36__PDSRegistrar_allEntriesWithError___block_invoke_2(uint64_t a1, void *
   v8 = v14;
   if (v7)
   {
-    v9 = [(PDSRegistrar *)self clientID];
+    clientID = [(PDSRegistrar *)self clientID];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __41__PDSRegistrar_allEntriesWithCompletion___block_invoke;
     v12[3] = &unk_2799F7970;
     v12[4] = self;
-    v13 = v4;
-    [v7 entriesForClientID:v9 withCompletion:v12];
+    v13 = completionCopy;
+    [v7 entriesForClientID:clientID withCompletion:v12];
   }
 
   else
   {
     v10 = [(PDSRegistrar *)self _wrappedErrorForFailedRemote:v8];
-    (*(v4 + 2))(v4, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
 
     v8 = v10;
   }
@@ -1605,17 +1605,17 @@ void __41__PDSRegistrar_allEntriesWithCompletion___block_invoke(uint64_t a1, voi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteRegistration:(id)a3 fromUser:(id)a4 error:(id *)a5
+- (BOOL)deleteRegistration:(id)registration fromUser:(id)user error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  registrationCopy = registration;
+  userCopy = user;
+  if (!registrationCopy)
   {
     [PDSRegistrar deleteRegistration:fromUser:error:];
   }
 
-  if (!v9)
+  if (!userCopy)
   {
     [PDSRegistrar deleteRegistration:fromUser:error:];
   }
@@ -1626,9 +1626,9 @@ void __41__PDSRegistrar_allEntriesWithCompletion___block_invoke(uint64_t a1, voi
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = registrationCopy;
     *&buf[22] = 2112;
-    v37 = v9;
+    v37 = userCopy;
     _os_log_impl(&dword_25DECA000, v10, OS_LOG_TYPE_DEFAULT, "PDSRegistrar deleteRegistration {self: %@, registration: %@, user: %@}", buf, 0x20u);
   }
 
@@ -1654,8 +1654,8 @@ void __41__PDSRegistrar_allEntriesWithCompletion___block_invoke(uint64_t a1, voi
   if (v12)
   {
     v13 = [PDSEntry alloc];
-    v14 = [(PDSRegistrar *)self clientID];
-    v15 = [(PDSEntry *)v13 initWithUser:v9 registration:v8 clientID:v14 state:2];
+    clientID = [(PDSRegistrar *)self clientID];
+    v15 = [(PDSEntry *)v13 initWithUser:userCopy registration:registrationCopy clientID:clientID state:2];
 
     v16 = [MEMORY[0x277CBEB98] setWithObject:v15];
     v24[0] = MEMORY[0x277D85DD0];
@@ -1675,17 +1675,17 @@ void __41__PDSRegistrar_allEntriesWithCompletion___block_invoke(uint64_t a1, voi
 
   v18 = [(PDSRegistrar *)self _wrappedErrorForGivenError:v17 XPCError:*(*&buf[8] + 40)];
   v19 = v18;
-  if (a5 && v18)
+  if (error && v18)
   {
     v20 = v18;
-    *a5 = v19;
+    *error = v19;
   }
 
   v21 = pds_defaultLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *v32 = 138412546;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v19;
     _os_log_impl(&dword_25DECA000, v21, OS_LOG_TYPE_DEFAULT, "PDSRegistrar completed deleteRegistration {self: %@, overallError: %@}", v32, 0x16u);
@@ -1698,15 +1698,15 @@ void __41__PDSRegistrar_allEntriesWithCompletion___block_invoke(uint64_t a1, voi
   return v19 == 0;
 }
 
-- (id)_wrappedErrorForFailedRemote:(id)a3
+- (id)_wrappedErrorForFailedRemote:(id)remote
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  remoteCopy = remote;
+  v4 = remoteCopy;
+  if (remoteCopy)
   {
     v9 = *MEMORY[0x277CCA7E8];
-    v10[0] = v3;
+    v10[0] = remoteCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -1722,18 +1722,18 @@ void __41__PDSRegistrar_allEntriesWithCompletion___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (id)_wrappedErrorForGivenError:(id)a3 XPCError:(id)a4
+- (id)_wrappedErrorForGivenError:(id)error XPCError:(id)cError
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  errorCopy = error;
+  cErrorCopy = cError;
+  v7 = cErrorCopy;
+  if (cErrorCopy)
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = PDSRegistrarErrorDomain;
     v26 = *MEMORY[0x277CCA7E8];
-    v27[0] = v6;
+    v27[0] = cErrorCopy;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v11 = v8;
     v12 = v9;
@@ -1744,10 +1744,10 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (v5)
+  if (errorCopy)
   {
-    v17 = [v5 domain];
-    v18 = [v17 isEqualToString:PDSCDCacheErrorDomain];
+    domain = [errorCopy domain];
+    v18 = [domain isEqualToString:PDSCDCacheErrorDomain];
 
     v19 = MEMORY[0x277CCA9B8];
     v20 = PDSRegistrarErrorDomain;
@@ -1755,7 +1755,7 @@ LABEL_3:
     if (v18)
     {
       v24 = *MEMORY[0x277CCA7E8];
-      v25 = v5;
+      v25 = errorCopy;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v11 = v19;
       v12 = v20;
@@ -1765,7 +1765,7 @@ LABEL_3:
     else
     {
       v22 = *MEMORY[0x277CCA7E8];
-      v23 = v5;
+      v23 = errorCopy;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v11 = v19;
       v12 = v20;
@@ -1783,11 +1783,11 @@ LABEL_4:
   return v14;
 }
 
-- (id)_activeRegistrationsFromEntries:(id)a3
+- (id)_activeRegistrationsFromEntries:(id)entries
 {
-  if (a3)
+  if (entries)
   {
-    v4 = [a3 __imArrayByApplyingBlock:&__block_literal_global_1];
+    v4 = [entries __imArrayByApplyingBlock:&__block_literal_global_1];
   }
 
   else
@@ -1814,11 +1814,11 @@ id __48__PDSRegistrar__activeRegistrationsFromEntries___block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)_registrationsFromEntries:(id)a3
+- (id)_registrationsFromEntries:(id)entries
 {
-  if (a3)
+  if (entries)
   {
-    v4 = [a3 __imArrayByApplyingBlock:&__block_literal_global_31];
+    v4 = [entries __imArrayByApplyingBlock:&__block_literal_global_31];
   }
 
   else

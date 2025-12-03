@@ -1,11 +1,11 @@
 @interface IHKHarmonizationResult
-- (IHKHarmonizationResult)initWithHarmonized:(CGImage *)a3 gatingScore:(float)a4 shouldHarmonize:(BOOL)a5;
+- (IHKHarmonizationResult)initWithHarmonized:(CGImage *)harmonized gatingScore:(float)score shouldHarmonize:(BOOL)harmonize;
 - (void)dealloc;
 @end
 
 @implementation IHKHarmonizationResult
 
-- (IHKHarmonizationResult)initWithHarmonized:(CGImage *)a3 gatingScore:(float)a4 shouldHarmonize:(BOOL)a5
+- (IHKHarmonizationResult)initWithHarmonized:(CGImage *)harmonized gatingScore:(float)score shouldHarmonize:(BOOL)harmonize
 {
   v12.receiver = self;
   v12.super_class = IHKHarmonizationResult;
@@ -13,9 +13,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_gatingScore = a4;
-    v8->_harmonized = CGImageRetain(a3);
-    v9->_shouldHarmonize = a5;
+    v8->_gatingScore = score;
+    v8->_harmonized = CGImageRetain(harmonized);
+    v9->_shouldHarmonize = harmonize;
     v10 = v9;
   }
 

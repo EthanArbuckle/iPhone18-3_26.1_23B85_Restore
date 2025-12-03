@@ -1,24 +1,24 @@
 @interface PHResourceChooserListResourceInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOriginalResource;
-- (BOOL)locallyGeneratableForAsset:(id)a3;
-- (CGSize)approximateSizeFromAsset:(id)a3;
-- (PHResourceChooserListResourceInfo)initWithResourceType:(unsigned int)a3 recipeID:(unsigned int)a4 resourceVersion:(unsigned int)a5 resourceScale:(double)a6 qualitySort:(int)a7 isDerivative:(BOOL)a8 isPrimaryFormat:(BOOL)a9 canDownload:(BOOL)a10 isHintBased:(BOOL)a11 uti:(id)a12 store:(id)a13 key:(id)a14 localAvailabilityTarget:(signed __int16)a15;
+- (BOOL)locallyGeneratableForAsset:(id)asset;
+- (CGSize)approximateSizeFromAsset:(id)asset;
+- (PHResourceChooserListResourceInfo)initWithResourceType:(unsigned int)type recipeID:(unsigned int)d resourceVersion:(unsigned int)version resourceScale:(double)scale qualitySort:(int)sort isDerivative:(BOOL)derivative isPrimaryFormat:(BOOL)format canDownload:(BOOL)self0 isHintBased:(BOOL)self1 uti:(id)self2 store:(id)self3 key:(id)self4 localAvailabilityTarget:(signed __int16)self5;
 - (signed)localAvailability;
 - (unint64_t)hash;
 @end
 
 @implementation PHResourceChooserListResourceInfo
 
-- (BOOL)locallyGeneratableForAsset:(id)a3
+- (BOOL)locallyGeneratableForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PHResourceChooserListResourceInfo *)self recipeID];
-  v6 = [(PHResourceChooserListResourceInfo *)self localAvailabilityTarget];
+  assetCopy = asset;
+  recipeID = [(PHResourceChooserListResourceInfo *)self recipeID];
+  localAvailabilityTarget = [(PHResourceChooserListResourceInfo *)self localAvailabilityTarget];
   v7 = 1;
-  if ((v5 - 65938 > 8 || ((1 << (v5 + 110)) & 0x141) == 0) && v5 != 65749)
+  if ((recipeID - 65938 > 8 || ((1 << (recipeID + 110)) & 0x141) == 0) && recipeID != 65749)
   {
-    v7 = v6 == 1 && v5 != 65747 || [v4 mediaType] == 2 && v5 == 65741;
+    v7 = localAvailabilityTarget == 1 && recipeID != 65747 || [assetCopy mediaType] == 2 && recipeID == 65741;
   }
 
   return v7;
@@ -26,15 +26,15 @@
 
 - (BOOL)isOriginalResource
 {
-  v2 = self;
-  if ([(PHResourceChooserListResourceInfo *)v2 version])
+  selfCopy = self;
+  if ([(PHResourceChooserListResourceInfo *)selfCopy version])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = ([(PHResourceChooserListResourceInfo *)v2 recipeID]& 1) == 0;
+    v3 = ([(PHResourceChooserListResourceInfo *)selfCopy recipeID]& 1) == 0;
   }
 
   return v3;
@@ -42,9 +42,9 @@
 
 - (signed)localAvailability
 {
-  v2 = [(PHResourceChooserListResourceInfo *)self dataStoreKey];
+  dataStoreKey = [(PHResourceChooserListResourceInfo *)self dataStoreKey];
 
-  if (v2)
+  if (dataStoreKey)
   {
     return 1;
   }
@@ -55,17 +55,17 @@
   }
 }
 
-- (CGSize)approximateSizeFromAsset:(id)a3
+- (CGSize)approximateSizeFromAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 hasAdjustments] && !-[PHResourceChooserListResourceInfo version](self, "version"))
+  assetCopy = asset;
+  if ([assetCopy hasAdjustments] && !-[PHResourceChooserListResourceInfo version](self, "version"))
   {
-    [v4 originalUnorientedSize];
+    [assetCopy originalUnorientedSize];
   }
 
   else
   {
-    [v4 unorientedSize];
+    [assetCopy unorientedSize];
   }
 
   [(PHResourceChooserListResourceInfo *)self resourceScale];
@@ -80,10 +80,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -93,16 +93,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHResourceChooserListResourceInfo *)self isHintBased];
-      if (v6 == [(PHResourceChooserListResourceInfo *)v5 isHintBased]&& (v7 = [(PHResourceChooserListResourceInfo *)self resourceType], v7 == [(PHResourceChooserListResourceInfo *)v5 resourceType]) && (v8 = [(PHResourceChooserListResourceInfo *)self recipeID], v8 == [(PHResourceChooserListResourceInfo *)v5 recipeID]) && (v9 = [(PHResourceChooserListResourceInfo *)self version], v9 == [(PHResourceChooserListResourceInfo *)v5 version]) && ([(PHResourceChooserListResourceInfo *)self resourceScale], v11 = v10, [(PHResourceChooserListResourceInfo *)v5 resourceScale], v11 == v12) && (v13 = [(PHResourceChooserListResourceInfo *)self isDerivative], v13 == [(PHResourceChooserListResourceInfo *)v5 isDerivative]) && (v14 = [(PHResourceChooserListResourceInfo *)self isPrimaryFormat], v14 == [(PHResourceChooserListResourceInfo *)v5 isPrimaryFormat]) && (v15 = [(PHResourceChooserListResourceInfo *)self canDownload], v15 == [(PHResourceChooserListResourceInfo *)v5 canDownload]) && (v16 = [(PHResourceChooserListResourceInfo *)self localAvailabilityTarget], v16 == [(PHResourceChooserListResourceInfo *)v5 localAvailabilityTarget]))
+      v5 = equalCopy;
+      isHintBased = [(PHResourceChooserListResourceInfo *)self isHintBased];
+      if (isHintBased == [(PHResourceChooserListResourceInfo *)v5 isHintBased]&& (v7 = [(PHResourceChooserListResourceInfo *)self resourceType], v7 == [(PHResourceChooserListResourceInfo *)v5 resourceType]) && (v8 = [(PHResourceChooserListResourceInfo *)self recipeID], v8 == [(PHResourceChooserListResourceInfo *)v5 recipeID]) && (v9 = [(PHResourceChooserListResourceInfo *)self version], v9 == [(PHResourceChooserListResourceInfo *)v5 version]) && ([(PHResourceChooserListResourceInfo *)self resourceScale], v11 = v10, [(PHResourceChooserListResourceInfo *)v5 resourceScale], v11 == v12) && (v13 = [(PHResourceChooserListResourceInfo *)self isDerivative], v13 == [(PHResourceChooserListResourceInfo *)v5 isDerivative]) && (v14 = [(PHResourceChooserListResourceInfo *)self isPrimaryFormat], v14 == [(PHResourceChooserListResourceInfo *)v5 isPrimaryFormat]) && (v15 = [(PHResourceChooserListResourceInfo *)self canDownload], v15 == [(PHResourceChooserListResourceInfo *)v5 canDownload]) && (v16 = [(PHResourceChooserListResourceInfo *)self localAvailabilityTarget], v16 == [(PHResourceChooserListResourceInfo *)v5 localAvailabilityTarget]))
       {
-        v17 = [(PHResourceChooserListResourceInfo *)self store];
-        v18 = [(PHResourceChooserListResourceInfo *)v5 store];
+        store = [(PHResourceChooserListResourceInfo *)self store];
+        store2 = [(PHResourceChooserListResourceInfo *)v5 store];
         if (PLObjectIsEqual())
         {
-          v19 = [(PHResourceChooserListResourceInfo *)self dataStoreKey];
-          v20 = [(PHResourceChooserListResourceInfo *)v5 dataStoreKey];
+          dataStoreKey = [(PHResourceChooserListResourceInfo *)self dataStoreKey];
+          dataStoreKey2 = [(PHResourceChooserListResourceInfo *)v5 dataStoreKey];
           IsEqual = PLObjectIsEqual();
         }
 
@@ -129,43 +129,43 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PHResourceChooserListResourceInfo *)self isHintBased];
-  v4 = [(PHResourceChooserListResourceInfo *)self recipeID]^ v3;
-  v5 = [(PHResourceChooserListResourceInfo *)self version];
-  v6 = v4 ^ v5 ^ [(PHResourceChooserListResourceInfo *)self resourceType];
-  v7 = [(PHResourceChooserListResourceInfo *)self dataStoreKey];
-  v8 = [v7 hash];
-  v9 = [(PHResourceChooserListResourceInfo *)self store];
-  v10 = v8 ^ [v9 hash];
+  isHintBased = [(PHResourceChooserListResourceInfo *)self isHintBased];
+  v4 = [(PHResourceChooserListResourceInfo *)self recipeID]^ isHintBased;
+  version = [(PHResourceChooserListResourceInfo *)self version];
+  v6 = v4 ^ version ^ [(PHResourceChooserListResourceInfo *)self resourceType];
+  dataStoreKey = [(PHResourceChooserListResourceInfo *)self dataStoreKey];
+  v8 = [dataStoreKey hash];
+  store = [(PHResourceChooserListResourceInfo *)self store];
+  v10 = v8 ^ [store hash];
 
   return v10 ^ v6;
 }
 
-- (PHResourceChooserListResourceInfo)initWithResourceType:(unsigned int)a3 recipeID:(unsigned int)a4 resourceVersion:(unsigned int)a5 resourceScale:(double)a6 qualitySort:(int)a7 isDerivative:(BOOL)a8 isPrimaryFormat:(BOOL)a9 canDownload:(BOOL)a10 isHintBased:(BOOL)a11 uti:(id)a12 store:(id)a13 key:(id)a14 localAvailabilityTarget:(signed __int16)a15
+- (PHResourceChooserListResourceInfo)initWithResourceType:(unsigned int)type recipeID:(unsigned int)d resourceVersion:(unsigned int)version resourceScale:(double)scale qualitySort:(int)sort isDerivative:(BOOL)derivative isPrimaryFormat:(BOOL)format canDownload:(BOOL)self0 isHintBased:(BOOL)self1 uti:(id)self2 store:(id)self3 key:(id)self4 localAvailabilityTarget:(signed __int16)self5
 {
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
+  utiCopy = uti;
+  storeCopy = store;
+  keyCopy = key;
   v30.receiver = self;
   v30.super_class = PHResourceChooserListResourceInfo;
   v23 = [(PHResourceChooserListResourceInfo *)&v30 init];
   v24 = v23;
   if (v23)
   {
-    v23->_recipeID = a4;
-    v23->_resourceType = a3;
-    v23->_version = a5;
-    objc_storeStrong(&v23->_uniformTypeIdentifier, a12);
-    v25 = a6;
-    v24->_resourceScale = v25;
-    v24->_qualitySortValue = a7;
-    v24->_isDerivative = a8;
-    v24->_isPrimaryFormat = a9;
-    v24->_canDownload = a10;
-    v24->_isHintBased = a11;
-    objc_storeStrong(&v24->_store, a13);
-    objc_storeStrong(&v24->_dataStoreKey, a14);
-    v24->_localAvailabilityTarget = a15;
+    v23->_recipeID = d;
+    v23->_resourceType = type;
+    v23->_version = version;
+    objc_storeStrong(&v23->_uniformTypeIdentifier, uti);
+    scaleCopy = scale;
+    v24->_resourceScale = scaleCopy;
+    v24->_qualitySortValue = sort;
+    v24->_isDerivative = derivative;
+    v24->_isPrimaryFormat = format;
+    v24->_canDownload = download;
+    v24->_isHintBased = based;
+    objc_storeStrong(&v24->_store, store);
+    objc_storeStrong(&v24->_dataStoreKey, key);
+    v24->_localAvailabilityTarget = target;
   }
 
   return v24;

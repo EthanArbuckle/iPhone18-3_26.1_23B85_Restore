@@ -12,30 +12,30 @@
 - (NSArray)effectiveLocations;
 - (NSArray)locations;
 - (_TtC26DocumentManagerExecutables22DOCHierarchyController)init;
-- (_TtC26DocumentManagerExecutables22DOCHierarchyController)initWithConfiguration:(id)a3 sourceObserver:(id)a4 minParentLocations:(unint64_t)a5;
+- (_TtC26DocumentManagerExecutables22DOCHierarchyController)initWithConfiguration:(id)configuration sourceObserver:(id)observer minParentLocations:(unint64_t)locations;
 - (_TtP26DocumentManagerExecutables30DOCHierarchyControllerDelegate_)delegate;
 - (unint64_t)defaultTab;
 - (unint64_t)effectiveTabSwitcherTab;
 - (void)invalidateAllAssertions;
 - (void)invalidateLocations;
-- (void)loadAllParentsHiddenByEffectiveRootLocation:(id)a3;
-- (void)performWhileForcingChangeInPreparationQueue:(id)a3;
-- (void)performWhilePreventingLoading:(id)a3;
+- (void)loadAllParentsHiddenByEffectiveRootLocation:(id)location;
+- (void)performWhileForcingChangeInPreparationQueue:(id)queue;
+- (void)performWhilePreventingLoading:(id)loading;
 - (void)receiveInvalidateLocationsNotification;
-- (void)removeTrailingLocationCount:(int64_t)a3 animated:(BOOL)a4;
+- (void)removeTrailingLocationCount:(int64_t)count animated:(BOOL)animated;
 - (void)reset;
-- (void)resetFromRootWith:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)resetWith:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)resetWith:(id)a3 effectiveRootLocation:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)resetWithDefaultLocationWithAnimated:(BOOL)a3;
-- (void)restoreLastBrowsedStateForTab:(unint64_t)a3;
-- (void)revealLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setDefaultTab:(unint64_t)a3;
-- (void)setIsResetBeingPerformed:(BOOL)a3;
-- (void)setLocations:(id)a3;
-- (void)setPickerContext:(id)a3;
-- (void)setShouldForceChangeInPreparationQueue:(BOOL)a3;
-- (void)tagsDidChangeWithNotification:(id)a3;
+- (void)resetFromRootWith:(id)with animated:(BOOL)animated completionHandler:(id)handler;
+- (void)resetWith:(id)with animated:(BOOL)animated completionHandler:(id)handler;
+- (void)resetWith:(id)with effectiveRootLocation:(id)location animated:(BOOL)animated completionHandler:(id)handler;
+- (void)resetWithDefaultLocationWithAnimated:(BOOL)animated;
+- (void)restoreLastBrowsedStateForTab:(unint64_t)tab;
+- (void)revealLocation:(id)location animated:(BOOL)animated completion:(id)completion;
+- (void)setDefaultTab:(unint64_t)tab;
+- (void)setIsResetBeingPerformed:(BOOL)performed;
+- (void)setLocations:(id)locations;
+- (void)setPickerContext:(id)context;
+- (void)setShouldForceChangeInPreparationQueue:(BOOL)queue;
+- (void)tagsDidChangeWithNotification:(id)notification;
 @end
 
 @implementation DOCHierarchyController
@@ -58,17 +58,17 @@
   return v2.super.isa;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for DOCConcreteLocation);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   DOCHierarchyController.locations.setter(v4);
 }
 
 - (NSArray)effectiveLocations
 {
-  v2 = self;
+  selfCopy = self;
   DOCHierarchyController.effectiveLocations.getter();
 
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for DOCConcreteLocation);
@@ -84,11 +84,11 @@
   return *(self + v3);
 }
 
-- (void)setDefaultTab:(unint64_t)a3
+- (void)setDefaultTab:(unint64_t)tab
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables22DOCHierarchyController_defaultTab;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = tab;
 }
 
 - (BOOL)hasPendingLocationChange
@@ -107,7 +107,7 @@
 
 - (DOCConcreteLocation)locationForDeterminingCurrentEffectiveTab
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCHierarchyController.locationForDeterminingCurrentEffectiveTab.getter();
 
   return v3;
@@ -115,7 +115,7 @@
 
 - (DOCConcreteLocation)effectiveRootLocation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCHierarchyController.effectiveRootLocation.getter();
 
   return v3;
@@ -158,7 +158,7 @@ LABEL_3:
       return result;
     }
 
-    v7 = self;
+    selfCopy = self;
 
     v8 = MEMORY[0x24C1FC540](v6, v4);
 
@@ -179,18 +179,18 @@ LABEL_8:
 
 - (BOOL)effectiveRootLocationIsHidingParentLocations
 {
-  v2 = self;
+  selfCopy = self;
   IsHidingParent = DOCHierarchyController.effectiveRootLocationIsHidingParentLocations.getter();
 
   return IsHidingParent & 1;
 }
 
-- (void)loadAllParentsHiddenByEffectiveRootLocation:(id)a3
+- (void)loadAllParentsHiddenByEffectiveRootLocation:(id)location
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(location);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   DOCHierarchyController.loadAllParentsHiddenByEffectiveRootLocation(_:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> (), v5);
 }
 
@@ -201,16 +201,16 @@ LABEL_8:
   return *(self + v3);
 }
 
-- (void)setIsResetBeingPerformed:(BOOL)a3
+- (void)setIsResetBeingPerformed:(BOOL)performed
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables22DOCHierarchyController_isResetBeingPerformed;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = performed;
 }
 
 - (BOOL)isFetchingLocations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCHierarchyController.isFetchingLocations.getter();
 
   return v3 & 1;
@@ -218,7 +218,7 @@ LABEL_8:
 
 - (BOOL)isLoadingDisabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCHierarchyController.isLoadingDisabled.getter();
 
   return v3 & 1;
@@ -226,17 +226,17 @@ LABEL_8:
 
 - (void)invalidateAllAssertions
 {
-  v3 = self;
+  selfCopy = self;
   v2 = DOCHierarchyController.loadingDisabledAssertions.getter();
   (*(*v2 + 144))(v2);
 }
 
-- (void)performWhilePreventingLoading:(id)a3
+- (void)performWhilePreventingLoading:(id)loading
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(loading);
   _Block_copy(v4);
-  v5 = self;
-  specialized DOCHierarchyController.performWhilePreventingLoading(_:)(v5, v4);
+  selfCopy = self;
+  specialized DOCHierarchyController.performWhilePreventingLoading(_:)(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
@@ -248,22 +248,22 @@ LABEL_8:
   return *(self + v3);
 }
 
-- (void)setShouldForceChangeInPreparationQueue:(BOOL)a3
+- (void)setShouldForceChangeInPreparationQueue:(BOOL)queue
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables22DOCHierarchyController_shouldForceChangeInPreparationQueue;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = queue;
 }
 
-- (void)performWhileForcingChangeInPreparationQueue:(id)a3
+- (void)performWhileForcingChangeInPreparationQueue:(id)queue
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(queue);
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables22DOCHierarchyController_shouldForceChangeInPreparationQueue;
   swift_beginAccess();
   v6 = *(self + v5);
   *(self + v5) = 1;
   v7 = v4[2];
-  v8 = self;
+  selfCopy = self;
   v7(v4);
   _Block_release(v4);
   *(self + v5) = v6;
@@ -276,40 +276,40 @@ LABEL_8:
   return *(self + v3);
 }
 
-- (void)setPickerContext:(id)a3
+- (void)setPickerContext:(id)context
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables22DOCHierarchyController_pickerContext;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = context;
+  contextCopy = context;
 }
 
-- (_TtC26DocumentManagerExecutables22DOCHierarchyController)initWithConfiguration:(id)a3 sourceObserver:(id)a4 minParentLocations:(unint64_t)a5
+- (_TtC26DocumentManagerExecutables22DOCHierarchyController)initWithConfiguration:(id)configuration sourceObserver:(id)observer minParentLocations:(unint64_t)locations
 {
   ObjectType = swift_getObjectType();
   v9 = objc_opt_self();
-  v10 = a3;
-  v11 = a4;
-  v12 = [v9 defaultManager];
-  v13 = [objc_opt_self() sharedStore];
+  configurationCopy = configuration;
+  observerCopy = observer;
+  defaultManager = [v9 defaultManager];
+  sharedStore = [objc_opt_self() sharedStore];
   v14 = objc_allocWithZone(ObjectType);
-  v15 = DOCHierarchyController.init(configuration:sourceObserver:minParentLocations:itemManager:userInterfaceStateStore:)(v10, v11, a5, v12, v13);
+  v15 = DOCHierarchyController.init(configuration:sourceObserver:minParentLocations:itemManager:userInterfaceStateStore:)(configurationCopy, observerCopy, locations, defaultManager, sharedStore);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v15;
 }
 
-- (void)resetWithDefaultLocationWithAnimated:(BOOL)a3
+- (void)resetWithDefaultLocationWithAnimated:(BOOL)animated
 {
-  v4 = self;
-  DOCHierarchyController.resetWithDefaultLocation(animated:)(a3);
+  selfCopy = self;
+  DOCHierarchyController.resetWithDefaultLocation(animated:)(animated);
 }
 
-- (void)resetWith:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)resetWith:(id)with animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = _Block_copy(a5);
+  animatedCopy = animated;
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -322,17 +322,17 @@ LABEL_8:
     v9 = 0;
   }
 
-  v11 = a3;
-  v10 = self;
-  DOCHierarchyController.reset(with:effectiveRootLocation:animated:shouldSave:shouldShowPlaceholder:completionHandler:)(v11, a3, v5, 1, 0, v8, v9);
+  withCopy = with;
+  selfCopy = self;
+  DOCHierarchyController.reset(with:effectiveRootLocation:animated:shouldSave:shouldShowPlaceholder:completionHandler:)(withCopy, with, animatedCopy, 1, 0, v8, v9);
 
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v8);
 }
 
-- (void)resetWith:(id)a3 effectiveRootLocation:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)resetWith:(id)with effectiveRootLocation:(id)location animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a5;
-  v10 = _Block_copy(a6);
+  animatedCopy = animated;
+  v10 = _Block_copy(handler);
   if (v10)
   {
     v11 = swift_allocObject();
@@ -345,17 +345,17 @@ LABEL_8:
     v11 = 0;
   }
 
-  v12 = a3;
-  v14 = a4;
-  v13 = self;
-  DOCHierarchyController.reset(with:effectiveRootLocation:animated:shouldSave:shouldShowPlaceholder:completionHandler:)(v12, a4, v6, 1, 0, v10, v11);
+  withCopy = with;
+  locationCopy = location;
+  selfCopy = self;
+  DOCHierarchyController.reset(with:effectiveRootLocation:animated:shouldSave:shouldShowPlaceholder:completionHandler:)(withCopy, location, animatedCopy, 1, 0, v10, v11);
 
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v10);
 }
 
-- (void)resetFromRootWith:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)resetFromRootWith:(id)with animated:(BOOL)animated completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -368,16 +368,16 @@ LABEL_8:
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  DOCHierarchyController.resetFromRoot(with:animated:completionHandler:)(v10, a4, v8, v9);
+  withCopy = with;
+  selfCopy = self;
+  DOCHierarchyController.resetFromRoot(with:animated:completionHandler:)(withCopy, animated, v8, v9);
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v8);
 }
 
-- (void)revealLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)revealLocation:(id)location animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = _Block_copy(a5);
+  animatedCopy = animated;
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -390,22 +390,22 @@ LABEL_8:
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  DOCHierarchyController.revealLocation(_:animated:completion:)(v10, v5, v8, v9);
+  locationCopy = location;
+  selfCopy = self;
+  DOCHierarchyController.revealLocation(_:animated:completion:)(locationCopy, animatedCopy, v8, v9);
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v8);
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   DOCHierarchyController.reset()();
 }
 
-- (void)removeTrailingLocationCount:(int64_t)a3 animated:(BOOL)a4
+- (void)removeTrailingLocationCount:(int64_t)count animated:(BOOL)animated
 {
-  v5 = self;
-  specialized DOCHierarchyController.removeTrailingLocationCount(_:animated:)(a3);
+  selfCopy = self;
+  specialized DOCHierarchyController.removeTrailingLocationCount(_:animated:)(count);
 }
 
 - (_TtC26DocumentManagerExecutables22DOCHierarchyController)init
@@ -418,47 +418,47 @@ LABEL_8:
 - (void)receiveInvalidateLocationsNotification
 {
   v3 = objc_opt_self();
-  v4 = self;
-  [v3 cancelPreviousPerformRequestsWithTarget:v4 selector:sel_invalidateLocations object:0];
-  [(DOCHierarchyController *)v4 performSelector:sel_invalidateLocations withObject:0 afterDelay:0.2];
+  selfCopy = self;
+  [v3 cancelPreviousPerformRequestsWithTarget:selfCopy selector:sel_invalidateLocations object:0];
+  [(DOCHierarchyController *)selfCopy performSelector:sel_invalidateLocations withObject:0 afterDelay:0.2];
 }
 
 - (void)invalidateLocations
 {
-  v2 = self;
+  selfCopy = self;
   DOCHierarchyController.invalidateLocations()();
 }
 
-- (void)restoreLastBrowsedStateForTab:(unint64_t)a3
+- (void)restoreLastBrowsedStateForTab:(unint64_t)tab
 {
-  v4 = self;
-  DOCHierarchyController.restoreLastBrowsedState(forTab:)(a3);
+  selfCopy = self;
+  DOCHierarchyController.restoreLastBrowsedState(forTab:)(tab);
 }
 
-- (void)tagsDidChangeWithNotification:(id)a3
+- (void)tagsDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   specialized DOCHierarchyController.tagsDidChange(notification:)();
 }
 
 - (unint64_t)effectiveTabSwitcherTab
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCHierarchyController.locationForDeterminingCurrentEffectiveTab.getter();
   if (v3)
   {
     v4 = v3;
-    v5 = [v3 effectiveTabSwitcherTab];
+    effectiveTabSwitcherTab = [v3 effectiveTabSwitcherTab];
 
-    return v5;
+    return effectiveTabSwitcherTab;
   }
 
   else
   {
     v7 = OBJC_IVAR____TtC26DocumentManagerExecutables22DOCHierarchyController_defaultTab;
     swift_beginAccess();
-    v8 = *(v2 + v7);
+    v8 = *(selfCopy + v7);
 
     return v8;
   }

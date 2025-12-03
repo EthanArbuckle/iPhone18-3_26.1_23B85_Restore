@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotSpamReportInformation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotSpamReportInformation:(id)a3;
-- (CTLazuliChatBotSpamReportInformation)initWithCoder:(id)a3;
-- (CTLazuliChatBotSpamReportInformation)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotSpamReportInformation:(id)information;
+- (CTLazuliChatBotSpamReportInformation)initWithCoder:(id)coder;
+- (CTLazuliChatBotSpamReportInformation)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotSpamReportInformation
@@ -13,33 +13,33 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotSpamReportInformation *)self chatbotUri];
-  [v3 appendFormat:@", chatbotUri = %@", v4];
+  chatbotUri = [(CTLazuliChatBotSpamReportInformation *)self chatbotUri];
+  [v3 appendFormat:@", chatbotUri = %@", chatbotUri];
 
-  v5 = [(CTLazuliChatBotSpamReportInformation *)self messageIDList];
-  [v3 appendFormat:@", messageIDList = %@", v5];
+  messageIDList = [(CTLazuliChatBotSpamReportInformation *)self messageIDList];
+  [v3 appendFormat:@", messageIDList = %@", messageIDList];
 
-  v6 = [(CTLazuliChatBotSpamReportInformation *)self spamType];
-  v9 = [(CTLazuliChatBotSpamReportInformation *)self spamType];
-  [v3 appendFormat:@", spamType = [%ld - %s]", v6, print_CTLazuliSpamReportType(&v9)];
-  v7 = [(CTLazuliChatBotSpamReportInformation *)self freeBodyText];
-  [v3 appendFormat:@", freeBodyText = %@", v7];
+  spamType = [(CTLazuliChatBotSpamReportInformation *)self spamType];
+  spamType2 = [(CTLazuliChatBotSpamReportInformation *)self spamType];
+  [v3 appendFormat:@", spamType = [%ld - %s]", spamType, print_CTLazuliSpamReportType(&spamType2)];
+  freeBodyText = [(CTLazuliChatBotSpamReportInformation *)self freeBodyText];
+  [v3 appendFormat:@", freeBodyText = %@", freeBodyText];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotSpamReportInformation:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotSpamReportInformation:(id)information
 {
-  v5 = a3;
-  v6 = [(CTLazuliChatBotSpamReportInformation *)self chatbotUri];
-  v7 = [v5 chatbotUri];
-  if (v6 != v7)
+  informationCopy = information;
+  chatbotUri = [(CTLazuliChatBotSpamReportInformation *)self chatbotUri];
+  chatbotUri2 = [informationCopy chatbotUri];
+  if (chatbotUri != chatbotUri2)
   {
-    v20 = [(CTLazuliChatBotSpamReportInformation *)self chatbotUri];
-    v18 = [v5 chatbotUri];
-    if (![v20 isEqualToString:?])
+    chatbotUri3 = [(CTLazuliChatBotSpamReportInformation *)self chatbotUri];
+    chatbotUri4 = [informationCopy chatbotUri];
+    if (![chatbotUri3 isEqualToString:?])
     {
       v8 = 0;
 LABEL_15:
@@ -48,13 +48,13 @@ LABEL_15:
     }
   }
 
-  v9 = [(CTLazuliChatBotSpamReportInformation *)self messageIDList];
-  v10 = [v5 messageIDList];
-  if (v9 != v10)
+  messageIDList = [(CTLazuliChatBotSpamReportInformation *)self messageIDList];
+  messageIDList2 = [informationCopy messageIDList];
+  if (messageIDList != messageIDList2)
   {
-    v19 = [(CTLazuliChatBotSpamReportInformation *)self messageIDList];
-    v3 = [v5 messageIDList];
-    if (![v19 isEqualToCTLazuliMessageIDList:v3])
+    messageIDList3 = [(CTLazuliChatBotSpamReportInformation *)self messageIDList];
+    messageIDList4 = [informationCopy messageIDList];
+    if (![messageIDList3 isEqualToCTLazuliMessageIDList:messageIDList4])
     {
       v8 = 0;
 LABEL_13:
@@ -63,13 +63,13 @@ LABEL_13:
     }
   }
 
-  v11 = [(CTLazuliChatBotSpamReportInformation *)self spamType];
-  if (v11 == [v5 spamType])
+  spamType = [(CTLazuliChatBotSpamReportInformation *)self spamType];
+  if (spamType == [informationCopy spamType])
   {
-    v17 = [(CTLazuliChatBotSpamReportInformation *)self freeBodyText];
-    v12 = [v5 freeBodyText];
-    v13 = v12;
-    if (v17 == v12)
+    freeBodyText = [(CTLazuliChatBotSpamReportInformation *)self freeBodyText];
+    freeBodyText2 = [informationCopy freeBodyText];
+    v13 = freeBodyText2;
+    if (freeBodyText == freeBodyText2)
     {
 
       v8 = 1;
@@ -77,9 +77,9 @@ LABEL_13:
 
     else
     {
-      v14 = [(CTLazuliChatBotSpamReportInformation *)self freeBodyText];
-      v15 = [v5 freeBodyText];
-      v8 = [v14 isEqualToString:v15];
+      freeBodyText3 = [(CTLazuliChatBotSpamReportInformation *)self freeBodyText];
+      freeBodyText4 = [informationCopy freeBodyText];
+      v8 = [freeBodyText3 isEqualToString:freeBodyText4];
     }
   }
 
@@ -88,14 +88,14 @@ LABEL_13:
     v8 = 0;
   }
 
-  if (v9 != v10)
+  if (messageIDList != messageIDList2)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  if (v6 != v7)
+  if (chatbotUri != chatbotUri2)
   {
     goto LABEL_15;
   }
@@ -105,70 +105,70 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotSpamReportInformation *)self isEqualToCTLazuliChatBotSpamReportInformation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotSpamReportInformation *)self isEqualToCTLazuliChatBotSpamReportInformation:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotSpamReportInformation allocWithZone:?];
-  v6 = [(NSString *)self->_chatbotUri copyWithZone:a3];
+  v6 = [(NSString *)self->_chatbotUri copyWithZone:zone];
   [(CTLazuliChatBotSpamReportInformation *)v5 setChatbotUri:v6];
 
-  v7 = [(CTLazuliMessageIDList *)self->_messageIDList copyWithZone:a3];
+  v7 = [(CTLazuliMessageIDList *)self->_messageIDList copyWithZone:zone];
   [(CTLazuliChatBotSpamReportInformation *)v5 setMessageIDList:v7];
 
   [(CTLazuliChatBotSpamReportInformation *)v5 setSpamType:self->_spamType];
-  v8 = [(NSString *)self->_freeBodyText copyWithZone:a3];
+  v8 = [(NSString *)self->_freeBodyText copyWithZone:zone];
   [(CTLazuliChatBotSpamReportInformation *)v5 setFreeBodyText:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_chatbotUri forKey:@"kChatbotUriKey"];
-  [v5 encodeObject:self->_messageIDList forKey:@"kMessageIDListKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_chatbotUri forKey:@"kChatbotUriKey"];
+  [coderCopy encodeObject:self->_messageIDList forKey:@"kMessageIDListKey"];
   v4 = [MEMORY[0x1E696AD98] numberWithLong:self->_spamType];
-  [v5 encodeObject:v4 forKey:@"kSpamTypeKey"];
+  [coderCopy encodeObject:v4 forKey:@"kSpamTypeKey"];
 
-  [v5 encodeObject:self->_freeBodyText forKey:@"kFreeBodyTextKey"];
+  [coderCopy encodeObject:self->_freeBodyText forKey:@"kFreeBodyTextKey"];
 }
 
-- (CTLazuliChatBotSpamReportInformation)initWithCoder:(id)a3
+- (CTLazuliChatBotSpamReportInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CTLazuliChatBotSpamReportInformation;
   v5 = [(CTLazuliChatBotSpamReportInformation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kChatbotUriKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kChatbotUriKey"];
     chatbotUri = v5->_chatbotUri;
     v5->_chatbotUri = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMessageIDListKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMessageIDListKey"];
     messageIDList = v5->_messageIDList;
     v5->_messageIDList = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSpamTypeKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSpamTypeKey"];
     v5->_spamType = [v10 longValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kFreeBodyTextKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kFreeBodyTextKey"];
     freeBodyText = v5->_freeBodyText;
     v5->_freeBodyText = v11;
   }
@@ -176,36 +176,36 @@ LABEL_16:
   return v5;
 }
 
-- (CTLazuliChatBotSpamReportInformation)initWithReflection:(const void *)a3
+- (CTLazuliChatBotSpamReportInformation)initWithReflection:(const void *)reflection
 {
   v17.receiver = self;
   v17.super_class = CTLazuliChatBotSpamReportInformation;
   v4 = [(CTLazuliChatBotSpamReportInformation *)&v17 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     chatbotUri = v4->_chatbotUri;
     v4->_chatbotUri = v6;
 
-    v8 = [[CTLazuliMessageIDList alloc] initWithReflection:a3 + 24];
+    v8 = [[CTLazuliMessageIDList alloc] initWithReflection:reflection + 24];
     messageIDList = v4->_messageIDList;
     v4->_messageIDList = v8;
 
-    v4->_spamType = encode_CTLazuliSpamReportType(a3 + 12);
-    if (*(a3 + 80) == 1)
+    v4->_spamType = encode_CTLazuliSpamReportType(reflection + 12);
+    if (*(reflection + 80) == 1)
     {
-      v12 = *(a3 + 7);
-      v11 = a3 + 56;
+      v12 = *(reflection + 7);
+      v11 = reflection + 56;
       v10 = v12;
       if (v11[23] >= 0)
       {

@@ -1,16 +1,16 @@
 @interface PTGlobalVideoHeaderMetadataVersion1
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4;
-- (PTGlobalVideoHeaderMetadataVersion1)initWithData:(id)a3;
-- (PTGlobalVideoHeaderMetadataVersion1)initWithMinorVersion:(unsigned int)a3;
+- (BOOL)writeToData:(id)data withOptions:(id)options;
+- (PTGlobalVideoHeaderMetadataVersion1)initWithData:(id)data;
+- (PTGlobalVideoHeaderMetadataVersion1)initWithMinorVersion:(unsigned int)version;
 @end
 
 @implementation PTGlobalVideoHeaderMetadataVersion1
 
-- (PTGlobalVideoHeaderMetadataVersion1)initWithMinorVersion:(unsigned int)a3
+- (PTGlobalVideoHeaderMetadataVersion1)initWithMinorVersion:(unsigned int)version
 {
   v7.receiver = self;
   v7.super_class = PTGlobalVideoHeaderMetadataVersion1;
-  v3 = [(PTGlobalVideoHeaderMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&a3];
+  v3 = [(PTGlobalVideoHeaderMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&version];
   v4 = v3;
   if (v3)
   {
@@ -20,15 +20,15 @@
   return v4;
 }
 
-- (PTGlobalVideoHeaderMetadataVersion1)initWithData:(id)a3
+- (PTGlobalVideoHeaderMetadataVersion1)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = bswap32(v5[3]);
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = bswap32(bytes[3]);
   v12.receiver = self;
   v12.super_class = PTGlobalVideoHeaderMetadataVersion1;
   v7 = [(PTGlobalVideoHeaderMetadata *)&v12 initWithMajorVersion:1 minorVersion:v6];
-  if (v7 && ((v8 = bswap32(*v5), [v4 length] == v8) ? (v9 = (v8 & 7) == 0) : (v9 = 0), v9 && -[PTGlobalVideoHeaderMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalVideoHeaderMetadata majorVersion](v7, "majorVersion") == bswap32(v5[2])))
+  if (v7 && ((v8 = bswap32(*bytes), [dataCopy length] == v8) ? (v9 = (v8 & 7) == 0) : (v9 = 0), v9 && -[PTGlobalVideoHeaderMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalVideoHeaderMetadata majorVersion](v7, "majorVersion") == bswap32(bytes[2])))
   {
     v10 = v7;
   }
@@ -41,18 +41,18 @@
   return v10;
 }
 
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4
+- (BOOL)writeToData:(id)data withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTGlobalVideoHeaderMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
-  if ([v6 length] >= v8 && -[PTGlobalVideoHeaderMetadata majorVersion](self, "majorVersion") == 1)
+  dataCopy = data;
+  optionsCopy = options;
+  v8 = [(PTGlobalVideoHeaderMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
+  if ([dataCopy length] >= v8 && -[PTGlobalVideoHeaderMetadata majorVersion](self, "majorVersion") == 1)
   {
-    v9 = [v6 mutableBytes];
-    *v9 = bswap32([(PTGlobalVideoHeaderMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7]);
-    v9[1] = 1919182966;
-    v9[2] = bswap32([(PTGlobalVideoHeaderMetadata *)self majorVersion]);
-    v9[3] = bswap32([(PTGlobalVideoHeaderMetadata *)self minorVersion]);
+    mutableBytes = [dataCopy mutableBytes];
+    *mutableBytes = bswap32([(PTGlobalVideoHeaderMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy]);
+    mutableBytes[1] = 1919182966;
+    mutableBytes[2] = bswap32([(PTGlobalVideoHeaderMetadata *)self majorVersion]);
+    mutableBytes[3] = bswap32([(PTGlobalVideoHeaderMetadata *)self minorVersion]);
     v10 = 1;
   }
 

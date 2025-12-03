@@ -1,32 +1,32 @@
 @interface PITimeVaryingPipelineStateSetting
-- (id)nu_evaluateWithPipelineState:(id)a3 error:(id *)a4;
-- (void)setRawTime:(id *)a3;
-- (void)setTime:(id *)a3;
+- (id)nu_evaluateWithPipelineState:(id)state error:(id *)error;
+- (void)setRawTime:(id *)time;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PITimeVaryingPipelineStateSetting
 
-- (void)setRawTime:(id *)a3
+- (void)setRawTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_rawTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_rawTime.epoch = time->var3;
   *&self->_rawTime.value = v3;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 
-- (id)nu_evaluateWithPipelineState:(id)a3 error:(id *)a4
+- (id)nu_evaluateWithPipelineState:(id)state error:(id *)error
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(PITimeVaryingPipelineStateSetting);
-  if (v4)
+  if (stateCopy)
   {
-    [v4 time];
+    [stateCopy time];
   }
 
   else
@@ -38,10 +38,10 @@
   v9 = v11;
   v10 = v12;
   [(PITimeVaryingPipelineStateSetting *)v5 setTime:&v9];
-  -[PITimeVaryingPipelineStateSetting setSampleMode:](v5, "setSampleMode:", [v4 sampleMode]);
-  if (v4)
+  -[PITimeVaryingPipelineStateSetting setSampleMode:](v5, "setSampleMode:", [stateCopy sampleMode]);
+  if (stateCopy)
   {
-    [v4 rawTime];
+    [stateCopy rawTime];
   }
 
   else

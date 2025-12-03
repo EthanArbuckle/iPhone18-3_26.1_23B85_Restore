@@ -1,11 +1,11 @@
 @interface HoverTextService
 + (_TtC17HoverTextServices16HoverTextService)sharedInstance;
-- (BOOL)startHoverTextAndReturnError:(id *)a3;
-- (BOOL)startHoverTextTypingAndReturnError:(id *)a3;
-- (BOOL)stopHoverTextAndReturnError:(id *)a3;
-- (BOOL)stopHoverTextTypingAndReturnError:(id *)a3;
+- (BOOL)startHoverTextAndReturnError:(id *)error;
+- (BOOL)startHoverTextTypingAndReturnError:(id *)error;
+- (BOOL)stopHoverTextAndReturnError:(id *)error;
+- (BOOL)stopHoverTextTypingAndReturnError:(id *)error;
 - (_TtC17HoverTextServices16HoverTextService)init;
-- (void)showAlert:(id)a3;
+- (void)showAlert:(id)alert;
 @end
 
 @implementation HoverTextService
@@ -36,7 +36,7 @@
   return [(HoverTextService *)&v8 init];
 }
 
-- (BOOL)startHoverTextAndReturnError:(id *)a3
+- (BOOL)startHoverTextAndReturnError:(id *)error
 {
   sub_2546121F8(self + OBJC_IVAR____TtC17HoverTextServices16HoverTextService_serviceImpl, v6);
   v3 = v7;
@@ -47,7 +47,7 @@
   return 1;
 }
 
-- (BOOL)stopHoverTextAndReturnError:(id *)a3
+- (BOOL)stopHoverTextAndReturnError:(id *)error
 {
   sub_2546121F8(self + OBJC_IVAR____TtC17HoverTextServices16HoverTextService_serviceImpl, v6);
   v3 = v7;
@@ -58,7 +58,7 @@
   return 1;
 }
 
-- (void)showAlert:(id)a3
+- (void)showAlert:(id)alert
 {
   v4 = sub_254612948();
   v6 = v5;
@@ -67,13 +67,13 @@
   v8 = v13;
   __swift_project_boxed_opaque_existential_1(v11, v12);
   v9 = *(v8 + 24);
-  v10 = self;
+  selfCopy = self;
   v9(v4, v6, v7, v8);
 
   __swift_destroy_boxed_opaque_existential_0(v11);
 }
 
-- (BOOL)startHoverTextTypingAndReturnError:(id *)a3
+- (BOOL)startHoverTextTypingAndReturnError:(id *)error
 {
   sub_2546121F8(self + OBJC_IVAR____TtC17HoverTextServices16HoverTextService_serviceImpl, v6);
   v3 = v7;
@@ -84,7 +84,7 @@
   return 1;
 }
 
-- (BOOL)stopHoverTextTypingAndReturnError:(id *)a3
+- (BOOL)stopHoverTextTypingAndReturnError:(id *)error
 {
   sub_2546121F8(self + OBJC_IVAR____TtC17HoverTextServices16HoverTextService_serviceImpl, v6);
   v3 = v7;

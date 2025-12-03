@@ -1,19 +1,19 @@
 @interface IDSServerBagRawContents
-- (IDSServerBagRawContents)initWithLoadDate:(id)a3 timeToLive:(double)a4 serverSignature:(id)a5 serverCerts:(id)a6 signedBag:(id)a7;
+- (IDSServerBagRawContents)initWithLoadDate:(id)date timeToLive:(double)live serverSignature:(id)signature serverCerts:(id)certs signedBag:(id)bag;
 - (id)description;
 @end
 
 @implementation IDSServerBagRawContents
 
-- (IDSServerBagRawContents)initWithLoadDate:(id)a3 timeToLive:(double)a4 serverSignature:(id)a5 serverCerts:(id)a6 signedBag:(id)a7
+- (IDSServerBagRawContents)initWithLoadDate:(id)date timeToLive:(double)live serverSignature:(id)signature serverCerts:(id)certs signedBag:(id)bag
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  v18 = 0;
-  if (v13 && a4 != 0.0 && v14 && v15 && v16)
+  dateCopy = date;
+  signatureCopy = signature;
+  certsCopy = certs;
+  bagCopy = bag;
+  v17 = bagCopy;
+  selfCopy = 0;
+  if (dateCopy && live != 0.0 && signatureCopy && certsCopy && bagCopy)
   {
     v24.receiver = self;
     v24.super_class = IDSServerBagRawContents;
@@ -21,21 +21,21 @@
     v20 = v19;
     if (v19)
     {
-      objc_storeStrong(&v19->_loadDate, a3);
-      v20->_timeToLive = a4;
-      objc_storeStrong(&v20->_serverSignature, a5);
-      objc_storeStrong(&v20->_serverCerts, a6);
-      objc_storeStrong(&v20->_signedBag, a7);
-      v21 = [v13 dateByAddingTimeInterval:a4];
+      objc_storeStrong(&v19->_loadDate, date);
+      v20->_timeToLive = live;
+      objc_storeStrong(&v20->_serverSignature, signature);
+      objc_storeStrong(&v20->_serverCerts, certs);
+      objc_storeStrong(&v20->_signedBag, bag);
+      v21 = [dateCopy dateByAddingTimeInterval:live];
       expirationDate = v20->_expirationDate;
       v20->_expirationDate = v21;
     }
 
     self = v20;
-    v18 = self;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)description

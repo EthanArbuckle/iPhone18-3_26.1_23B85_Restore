@@ -1,20 +1,20 @@
 @interface INUIImageSizeProvider
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)imageSizeForImage:(id)a3;
-+ (id)downscaledPNGImageForImage:(id)a3 size:(id)a4 error:(id *)a5;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)imageSizeForImage:(id)image;
++ (id)downscaledPNGImageForImage:(id)image size:(id)size error:(id *)error;
 @end
 
 @implementation INUIImageSizeProvider
 
-+ (id)downscaledPNGImageForImage:(id)a3 size:(id)a4 error:(id *)a5
++ (id)downscaledPNGImageForImage:(id)image size:(id)size error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v94[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
+  imageCopy = image;
+  v9 = imageCopy;
   if (var0 == 0.0 || var1 == 0.0)
   {
-    if (!a5)
+    if (!error)
     {
       v18 = 0;
       goto LABEL_53;
@@ -23,20 +23,20 @@
     v16 = MEMORY[0x277CCA9B8];
     v17 = *MEMORY[0x277CD3848];
     v93 = *MEMORY[0x277CCA068];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Image size is zero"];
-    v94[0] = v10;
+    _imageData = [MEMORY[0x277CCACA8] stringWithFormat:@"Image size is zero"];
+    v94[0] = _imageData;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v94 forKeys:&v93 count:1];
     [v16 errorWithDomain:v17 code:6009 userInfo:v12];
-    *a5 = v18 = 0;
+    *error = v18 = 0;
     goto LABEL_52;
   }
 
-  v10 = [v8 _imageData];
-  v11 = [v9 _uri];
-  v12 = v11;
-  if (v10)
+  _imageData = [imageCopy _imageData];
+  _uri = [v9 _uri];
+  v12 = _uri;
+  if (_imageData)
   {
-    v13 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(v10 countStyle:{"length"), 0}];
+    v13 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(_imageData countStyle:{"length"), 0}];
     v14 = *MEMORY[0x277CD38C8];
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
     {
@@ -51,18 +51,18 @@
       _os_log_impl(&dword_22CA36000, v14, OS_LOG_TYPE_INFO, "%s Creating image source from Data, size: %@, target image size: {%f, %f}", buf, 0x2Au);
     }
 
-    v15 = CGImageSourceCreateWithData(v10, 0);
+    v15 = CGImageSourceCreateWithData(_imageData, 0);
     goto LABEL_14;
   }
 
-  if (v11)
+  if (_uri)
   {
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
-    v20 = [v12 path];
-    v21 = [v19 attributesOfItemAtPath:v20 error:0];
-    v22 = [v21 fileSize];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v12 path];
+    v21 = [defaultManager attributesOfItemAtPath:path error:0];
+    fileSize = [v21 fileSize];
 
-    v13 = [MEMORY[0x277CCA8E8] stringFromByteCount:v22 countStyle:0];
+    v13 = [MEMORY[0x277CCA8E8] stringFromByteCount:fileSize countStyle:0];
     v23 = *MEMORY[0x277CD38C8];
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
     {
@@ -109,7 +109,7 @@ LABEL_14:
               v59 = @"data";
               *buf = 136316674;
               v72 = "+[INUIImageSizeProvider downscaledPNGImageForImage:size:error:]";
-              if (!v10)
+              if (!_imageData)
               {
                 v59 = @"URL";
               }
@@ -141,7 +141,7 @@ LABEL_14:
               v37 = @"data";
               *buf = 136316674;
               v72 = "+[INUIImageSizeProvider downscaledPNGImageForImage:size:error:]";
-              if (!v10)
+              if (!_imageData)
               {
                 v37 = @"URL";
               }
@@ -182,11 +182,11 @@ LABEL_14:
             v64 = v41;
             ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v24, 0, v41);
             v43 = ThumbnailAtIndex;
-            if (v10)
+            if (_imageData)
             {
               v44 = objc_alloc_init(MEMORY[0x277CBEB28]);
-              v45 = [*MEMORY[0x277CE1E10] identifier];
-              v46 = CGImageDestinationCreateWithData(v44, v45, 1uLL, 0);
+              identifier = [*MEMORY[0x277CE1E10] identifier];
+              v46 = CGImageDestinationCreateWithData(v44, identifier, 1uLL, 0);
 
               v47 = v44;
               v48 = v43;
@@ -201,8 +201,8 @@ LABEL_14:
 
             else if (v12)
             {
-              v62 = [*MEMORY[0x277CE1E10] identifier];
-              v63 = CGImageDestinationCreateWithURL(v12, v62, 1uLL, 0);
+              identifier2 = [*MEMORY[0x277CE1E10] identifier];
+              v63 = CGImageDestinationCreateWithURL(v12, identifier2, 1uLL, 0);
 
               v48 = v43;
               CGImageDestinationAddImage(v63, v43, 0);
@@ -230,7 +230,7 @@ LABEL_14:
               v50 = @"data";
               *buf = 136316674;
               v72 = "+[INUIImageSizeProvider downscaledPNGImageForImage:size:error:]";
-              if (!v10)
+              if (!_imageData)
               {
                 v50 = @"URL";
               }
@@ -257,7 +257,7 @@ LABEL_14:
         else
         {
           CFRelease(v24);
-          if (a5)
+          if (error)
           {
             v66 = MEMORY[0x277CCA9B8];
             v55 = *MEMORY[0x277CD3848];
@@ -267,7 +267,7 @@ LABEL_14:
             v86 = v56;
             [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
             v58 = v57 = v28;
-            *a5 = [v66 errorWithDomain:v55 code:6009 userInfo:v58];
+            *error = [v66 errorWithDomain:v55 code:6009 userInfo:v58];
 
             v28 = v57;
             v30 = v68;
@@ -280,7 +280,7 @@ LABEL_14:
       else
       {
         CFRelease(v24);
-        if (!a5)
+        if (!error)
         {
           v27 = 0;
           v18 = 0;
@@ -294,7 +294,7 @@ LABEL_14:
         v88 = v28;
         v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
         [v53 errorWithDomain:v54 code:6009 userInfo:v30];
-        *a5 = v18 = 0;
+        *error = v18 = 0;
       }
 
 LABEL_51:
@@ -302,7 +302,7 @@ LABEL_51:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v51 = MEMORY[0x277CCA9B8];
     v52 = *MEMORY[0x277CD3848];
@@ -311,7 +311,7 @@ LABEL_51:
     v92 = v25;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
     [v51 errorWithDomain:v52 code:6009 userInfo:v27];
-    *a5 = v18 = 0;
+    *error = v18 = 0;
     goto LABEL_51;
   }
 
@@ -324,21 +324,21 @@ LABEL_53:
   return v18;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)imageSizeForImage:(id)a3
++ ($F24F406B2B787EFB06265DBA3D28CBD5)imageSizeForImage:(id)image
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 _imageData];
-  v5 = [v3 _uri];
+  imageCopy = image;
+  _imageData = [imageCopy _imageData];
+  _uri = [imageCopy _uri];
 
-  if (v4)
+  if (_imageData)
   {
-    v6 = CGImageSourceCreateWithData(v4, 0);
+    v6 = CGImageSourceCreateWithData(_imageData, 0);
   }
 
   else
   {
-    if (!v5)
+    if (!_uri)
     {
 LABEL_8:
       v13 = 0.0;
@@ -346,7 +346,7 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    v6 = CGImageSourceCreateWithURL(v5, 0);
+    v6 = CGImageSourceCreateWithURL(_uri, 0);
   }
 
   v7 = v6;

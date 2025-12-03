@@ -1,20 +1,20 @@
 @interface MRRegisterGameControllerMessage
-- (MRRegisterGameControllerMessage)initWithProperties:(id)a3;
+- (MRRegisterGameControllerMessage)initWithProperties:(id)properties;
 - (_MRGameControllerPropertiesProtobuf)properties;
 @end
 
 @implementation MRRegisterGameControllerMessage
 
-- (MRRegisterGameControllerMessage)initWithProperties:(id)a3
+- (MRRegisterGameControllerMessage)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8.receiver = self;
   v8.super_class = MRRegisterGameControllerMessage;
   v5 = [(MRProtocolMessage *)&v8 init];
   if (v5)
   {
     v6 = objc_alloc_init(_MRRegisterGameControllerMessageProtobuf);
-    [(_MRRegisterGameControllerMessageProtobuf *)v6 setProperties:v4];
+    [(_MRRegisterGameControllerMessageProtobuf *)v6 setProperties:propertiesCopy];
     [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v6];
   }
 
@@ -23,10 +23,10 @@
 
 - (_MRGameControllerPropertiesProtobuf)properties
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 properties];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  properties = [underlyingCodableMessage properties];
 
-  return v3;
+  return properties;
 }
 
 @end

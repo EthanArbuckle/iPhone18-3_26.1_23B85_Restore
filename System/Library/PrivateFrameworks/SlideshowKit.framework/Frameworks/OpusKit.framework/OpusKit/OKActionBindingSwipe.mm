@@ -1,12 +1,12 @@
 @interface OKActionBindingSwipe
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingSwipe)init;
-- (OKActionBindingSwipe)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingSwipe)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handleSwipe:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)handleSwipe:(id)swipe;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -26,20 +26,20 @@
   return result;
 }
 
-- (OKActionBindingSwipe)initWithSettings:(id)a3
+- (OKActionBindingSwipe)initWithSettings:(id)settings
 {
   v8.receiver = self;
   v8.super_class = OKActionBindingSwipe;
   v4 = [(OKActionBinding *)&v8 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"direction"];
+    v5 = [settings objectForKey:@"direction"];
     if (v5)
     {
       v4->_direction = [v5 unsignedIntegerValue];
     }
 
-    v6 = [a3 objectForKey:@"numberOfTouchesRequired"];
+    v6 = [settings objectForKey:@"numberOfTouchesRequired"];
     if (v6)
     {
       v4->_numberOfTouchesRequired = [v6 unsignedIntegerValue];
@@ -64,11 +64,11 @@
   [(OKActionBinding *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingSwipe;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -82,7 +82,7 @@
 + (id)supportedSettings
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKActionBindingSwipe;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v10[0] = @"numberOfTouchesRequired";
@@ -104,17 +104,17 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v10.receiver = self;
   v10.super_class = OKActionBindingSwipe;
-  [(OKActionBindingProxy *)&v10 loadForResponder:a3 scope:a4];
+  [(OKActionBindingProxy *)&v10 loadForResponder:responder scope:scope];
   if (([(OKActionBindingProxy *)self scope]& 1) != 0)
   {
-    v6 = [a3 actionView];
-    if (v6)
+    actionView = [responder actionView];
+    if (actionView)
     {
-      v7 = v6;
+      v7 = actionView;
       v8 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel_handleSwipe_];
       self->_swipeGestureRecognizer = v8;
       [(UISwipeGestureRecognizer *)v8 setDelegate:self];
@@ -145,23 +145,23 @@
   [(OKActionBindingProxy *)&v4 unload];
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v7 = [(OKActionBindingProxy *)self scope];
-  result = ([a3 scope] & v7) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (a4 || objc_msgSend(a3, "touchCount") == self->_numberOfTouchesRequired) && objc_msgSend(a3, "direction") == self->_direction;
+  scope = [(OKActionBindingProxy *)self scope];
+  result = ([action scope] & scope) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (agnostic || objc_msgSend(action, "touchCount") == self->_numberOfTouchesRequired) && objc_msgSend(action, "direction") == self->_direction;
   return result;
 }
 
-- (void)handleSwipe:(id)a3
+- (void)handleSwipe:(id)swipe
 {
-  if ([a3 state] == 3)
+  if ([swipe state] == 3)
   {
-    [(OKActionBindingProxy *)self locationForActionFromGesture:a3];
+    [(OKActionBindingProxy *)self locationForActionFromGesture:swipe];
     v6 = v5;
     v8 = v7;
-    v9 = [(OKActionBindingSwipe *)self direction];
-    v10 = [a3 numberOfTouches];
-    v11 = +[OKActionSwipe swipeActionWithLocation:direction:touchCount:context:](OKActionSwipe, "swipeActionWithLocation:direction:touchCount:context:", v9, v10, [MEMORY[0x277CBEB38] dictionary], v6, v8);
+    direction = [(OKActionBindingSwipe *)self direction];
+    numberOfTouches = [swipe numberOfTouches];
+    v11 = +[OKActionSwipe swipeActionWithLocation:direction:touchCount:context:](OKActionSwipe, "swipeActionWithLocation:direction:touchCount:context:", direction, numberOfTouches, [MEMORY[0x277CBEB38] dictionary], v6, v8);
 
     [(OKActionBindingProxy *)self performAction:v11];
   }

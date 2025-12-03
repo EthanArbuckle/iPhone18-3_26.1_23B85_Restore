@@ -1,5 +1,5 @@
 @interface MFExpandedMessageCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityDragSourceDescriptors;
 - (id)accessibilityElements;
 - (id)accessibilityLabel;
@@ -7,41 +7,41 @@
 
 @implementation MFExpandedMessageCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WKContentView"];
-  [v3 validateClass:@"MFExpandedMessageCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"MFExpandedMessageCell" hasInstanceMethod:@"messageViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"_accessibilityShouldUseCollectionViewCellAccessibilityElements" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UICollectionViewCellAccessibilityElement" hasInstanceMethod:@"indexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFModernAddressAtom" hasInstanceVariable:@"_atomView" withType:"CNAtomView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WKContentView"];
+  [validationsCopy validateClass:@"MFExpandedMessageCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"MFExpandedMessageCell" hasInstanceMethod:@"messageViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"_accessibilityShouldUseCollectionViewCellAccessibilityElements" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UICollectionViewCellAccessibilityElement" hasInstanceMethod:@"indexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFModernAddressAtom" hasInstanceVariable:@"_atomView" withType:"CNAtomView"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(MFExpandedMessageCellAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_4];
   v4 = [v3 safeValueForKey:@"_atomView"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
   v12 = 0;
   objc_opt_class();
   v6 = __UIAccessibilityCastAsSafeCategory();
-  v7 = [v6 _accessibilityMessageIndexDescription];
+  _accessibilityMessageIndexDescription = [v6 _accessibilityMessageIndexDescription];
 
-  if (v7)
+  if (_accessibilityMessageIndexDescription)
   {
-    v8 = __AXStringForVariables();
+    accessibilityLabel2 = __AXStringForVariables();
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MFExpandedMessageCellAccessibility;
-    v8 = [(MFExpandedMessageCellAccessibility *)&v11 accessibilityLabel];
+    accessibilityLabel2 = [(MFExpandedMessageCellAccessibility *)&v11 accessibilityLabel];
   }
 
-  v9 = v8;
+  v9 = accessibilityLabel2;
 
   return v9;
 }
@@ -61,17 +61,17 @@ uint64_t __56__MFExpandedMessageCellAccessibility_accessibilityLabel__block_invo
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [v3 accessibilityDragSourceDescriptors];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MFExpandedMessageCellAccessibility;
-    v5 = [(MFExpandedMessageCellAccessibility *)&v8 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(MFExpandedMessageCellAccessibility *)&v8 accessibilityDragSourceDescriptors];
   }
 
-  v6 = v5;
+  v6 = accessibilityDragSourceDescriptors;
 
   return v6;
 }
@@ -92,12 +92,12 @@ uint64_t __56__MFExpandedMessageCellAccessibility_accessibilityLabel__block_invo
   v5 = [(MFExpandedMessageCellAccessibility *)self safeValueForKey:@"messageViewController"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 view];
+  view = [v6 view];
 
-  if (v7)
+  if (view)
   {
-    v13[0] = v7;
-    v8 = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
+    v13[0] = view;
+    accessibilityElements = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
   }
 
   else
@@ -105,12 +105,12 @@ uint64_t __56__MFExpandedMessageCellAccessibility_accessibilityLabel__block_invo
 LABEL_4:
     v11.receiver = self;
     v11.super_class = MFExpandedMessageCellAccessibility;
-    v8 = [(MFExpandedMessageCellAccessibility *)&v11 accessibilityElements];
+    accessibilityElements = [(MFExpandedMessageCellAccessibility *)&v11 accessibilityElements];
   }
 
   v9 = *MEMORY[0x29EDCA608];
 
-  return v8;
+  return accessibilityElements;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface AVTPresetResources
-- (AVTPresetResources)initWithPreset:(id)a3;
+- (AVTPresetResources)initWithPreset:(id)preset;
 - (NSString)presetIdentifier;
 - (id)resources;
-- (id)volatileIdentifierForScope:(id)a3;
+- (id)volatileIdentifierForScope:(id)scope;
 @end
 
 @implementation AVTPresetResources
 
-- (AVTPresetResources)initWithPreset:(id)a3
+- (AVTPresetResources)initWithPreset:(id)preset
 {
-  v5 = a3;
+  presetCopy = preset;
   v9.receiver = self;
   v9.super_class = AVTPresetResources;
   v6 = [(AVTPresetResources *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preset, a3);
+    objc_storeStrong(&v6->_preset, preset);
   }
 
   return v7;
@@ -24,29 +24,29 @@
 
 - (NSString)presetIdentifier
 {
-  v2 = [(AVTPresetResources *)self preset];
-  v3 = [v2 identifier];
-  v4 = [v3 copy];
+  preset = [(AVTPresetResources *)self preset];
+  identifier = [preset identifier];
+  v4 = [identifier copy];
 
   return v4;
 }
 
 - (id)resources
 {
-  v2 = [(AVTPresetResources *)self preset];
-  v3 = [v2 cache];
+  preset = [(AVTPresetResources *)self preset];
+  cache = [preset cache];
 
-  return v3;
+  return cache;
 }
 
-- (id)volatileIdentifierForScope:(id)a3
+- (id)volatileIdentifierForScope:(id)scope
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(AVTPresetResources *)self preset];
-  v6 = [v5 category];
-  v7 = [(AVTPresetResources *)self preset];
-  v8 = [v7 identifier];
-  v9 = [v4 stringWithFormat:@"%ld_%@", v6, v8];
+  preset = [(AVTPresetResources *)self preset];
+  category = [preset category];
+  preset2 = [(AVTPresetResources *)self preset];
+  identifier = [preset2 identifier];
+  v9 = [v4 stringWithFormat:@"%ld_%@", category, identifier];
 
   return v9;
 }

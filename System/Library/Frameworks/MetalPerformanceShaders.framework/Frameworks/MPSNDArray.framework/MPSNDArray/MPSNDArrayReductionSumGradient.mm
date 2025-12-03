@@ -1,38 +1,38 @@
 @interface MPSNDArrayReductionSumGradient
-- (MPSNDArrayReductionSumGradient)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayReductionSumGradient)initWithDevice:(id)a3 axis:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayReductionSumGradient)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayReductionSumGradient)initWithDevice:(id)device axis:(unint64_t)axis;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayReductionSumGradient
 
-- (MPSNDArrayReductionSumGradient)initWithDevice:(id)a3 axis:(unint64_t)a4
+- (MPSNDArrayReductionSumGradient)initWithDevice:(id)device axis:(unint64_t)axis
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayReductionSumGradient;
-  return [(MPSNDArrayReductionSumGradient *)&v5 initWithDevice:a3 axis:a4];
+  return [(MPSNDArrayReductionSumGradient *)&v5 initWithDevice:device axis:axis];
 }
 
-- (MPSNDArrayReductionSumGradient)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayReductionSumGradient)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayReductionSumGradient;
-  return [(MPSNDArrayReductionGradient *)&v5 initWithCoder:a3 device:a4];
+  return [(MPSNDArrayReductionGradient *)&v5 initWithCoder:coder device:device];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MPSNDArrayReductionSumGradient;
-  [(MPSNDArrayReductionGradient *)&v3 encodeWithCoder:a3];
+  [(MPSNDArrayReductionGradient *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayReductionSumGradient;
-  return [(MPSNDArrayReductionGradient *)&v5 copyWithZone:a3 device:a4];
+  return [(MPSNDArrayReductionGradient *)&v5 copyWithZone:zone device:device];
 }
 
 @end

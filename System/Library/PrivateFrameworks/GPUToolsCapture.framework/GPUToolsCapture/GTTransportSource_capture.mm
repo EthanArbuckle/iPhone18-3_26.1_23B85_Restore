@@ -1,21 +1,21 @@
 @interface GTTransportSource_capture
 - (GTTransportSource_capture)init;
-- (id)_initWithQueue:(id)a3 transport:(id)a4;
+- (id)_initWithQueue:(id)queue transport:(id)transport;
 - (void)_callCancellationHandler;
 - (void)_callRegistrationHandler;
 - (void)_cancel;
-- (void)_dispatch:(id)a3;
+- (void)_dispatch:(id)_dispatch;
 - (void)_register;
 - (void)cancel;
 - (void)dealloc;
-- (void)setCancellationHandler:(id)a3;
-- (void)setMessageHandler:(id)a3;
-- (void)setRegistrationHandler:(id)a3;
+- (void)setCancellationHandler:(id)handler;
+- (void)setMessageHandler:(id)handler;
+- (void)setRegistrationHandler:(id)handler;
 @end
 
 @implementation GTTransportSource_capture
 
-- (void)_dispatch:(id)a3
+- (void)_dispatch:(id)_dispatch
 {
   mqueue = self->_mqueue;
   v4[0] = _NSConcreteStackBlock;
@@ -23,7 +23,7 @@
   v4[2] = __31__GTTransportSource__dispatch___block_invoke;
   v4[3] = &unk_2F2550;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = _dispatch;
   dispatch_async(mqueue, v4);
 }
 
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)setRegistrationHandler:(id)a3
+- (void)setRegistrationHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   dispatch_suspend(self->_mqueue);
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -109,9 +109,9 @@
   dispatch_async(queue, v6);
 }
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   dispatch_suspend(self->_mqueue);
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -123,9 +123,9 @@
   dispatch_async(queue, v6);
 }
 
-- (void)setMessageHandler:(id)a3
+- (void)setMessageHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   dispatch_suspend(self->_mqueue);
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -173,9 +173,9 @@
   [(GTTransportSource_capture *)&v5 dealloc];
 }
 
-- (id)_initWithQueue:(id)a3 transport:(id)a4
+- (id)_initWithQueue:(id)queue transport:(id)transport
 {
-  if (!a3)
+  if (!queue)
   {
     if (s_logUsingOsLog == 1)
     {
@@ -198,7 +198,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!transport)
   {
     if (s_logUsingOsLog == 1)
     {
@@ -225,13 +225,13 @@ LABEL_12:
   v6 = [(GTTransportSource_capture *)&v18 init];
   if (v6)
   {
-    v6->_transport = a4;
+    v6->_transport = transport;
     v7 = [+[NSString stringWithFormat:](NSString UTF8String:@"gputools.%@.%p.%@"];
-    v8 = dispatch_queue_create_with_target_V2(v7, 0, a3);
+    v8 = dispatch_queue_create_with_target_V2(v7, 0, queue);
     v6->_queue = v8;
     dispatch_suspend(v8);
     v9 = [+[NSString stringWithFormat:](NSString UTF8String:@"gputools.%@.%p.%@"];
-    v10 = dispatch_queue_create_with_target_V2(v9, 0, a3);
+    v10 = dispatch_queue_create_with_target_V2(v9, 0, queue);
     v6->_mqueue = v10;
     dispatch_suspend(v10);
     queue = v6->_queue;

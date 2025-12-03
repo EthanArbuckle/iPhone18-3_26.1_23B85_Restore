@@ -1,16 +1,16 @@
 @interface HSPCCleanEnergyAutomationViewController
-- (HSPCCleanEnergyAutomationViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCCleanEnergyAutomationViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_enableCleanEnergyAutomation;
 - (id)_notNowTapped;
-- (void)_hasOnboardedForCleanEnergyAutomationWithCompletion:(id)a3;
+- (void)_hasOnboardedForCleanEnergyAutomationWithCompletion:(id)completion;
 @end
 
 @implementation HSPCCleanEnergyAutomationViewController
 
-- (HSPCCleanEnergyAutomationViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCCleanEnergyAutomationViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [PRXImageView imageViewWithStyle:0];
   [v9 setContentMode:1];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -21,9 +21,9 @@
   v11 = v10;
   if (v10)
   {
-    v49 = v7;
-    objc_storeStrong(&v10->_config, a4);
-    objc_storeStrong(&v11->_coordinator, a3);
+    v49 = coordinatorCopy;
+    objc_storeStrong(&v10->_config, config);
+    objc_storeStrong(&v11->_coordinator, coordinator);
     v12 = sub_100063A44(@"HSThermostatCleanEnergy_Title");
     [(HSPCCleanEnergyAutomationViewController *)v11 setTitle:v12];
 
@@ -33,19 +33,19 @@
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v8 home];
-      v16 = [v15 hf_hasUtilitySubscription];
+      home = [configCopy home];
+      hf_hasUtilitySubscription = [home hf_hasUtilitySubscription];
       *buf = 136315394;
       v54 = "[HSPCCleanEnergyAutomationViewController initWithCoordinator:config:]";
       v55 = 1024;
-      v56 = v16;
+      v56 = hf_hasUtilitySubscription;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "(%s): Home has utility subscription: %{BOOL}d", buf, 0x12u);
     }
 
-    v17 = [v8 home];
-    v18 = [v17 hf_hasUtilitySubscription];
+    home2 = [configCopy home];
+    hf_hasUtilitySubscription2 = [home2 hf_hasUtilitySubscription];
 
-    if (v18)
+    if (hf_hasUtilitySubscription2)
     {
       v19 = @"HSThermostatCleanEnergy_TOUDescription";
     }
@@ -64,7 +64,7 @@
     v23 = sub_100063A44(@"HSThermostatSetUpLater");
     v24 = [(HSPCCleanEnergyAutomationViewController *)v11 addOptionalButtonWithTitleKey:v23 target:v11 futureSelector:"_notNowTapped"];
 
-    v48 = v8;
+    v48 = configCopy;
     v25 = +[UIColor systemGreenColor];
     v26 = [v25 colorWithAlphaComponent:0.5];
     v52[0] = v26;
@@ -85,27 +85,27 @@
     [(UIImageView *)v11->_boltImage setSemanticContentAttribute:3];
     [(UIImageView *)v11->_boltImage setTranslatesAutoresizingMaskIntoConstraints:0];
     [v9 addSubview:v11->_boltImage];
-    v46 = [(UIImageView *)v11->_boltImage centerYAnchor];
-    v45 = [v9 centerYAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    centerYAnchor = [(UIImageView *)v11->_boltImage centerYAnchor];
+    centerYAnchor2 = [v9 centerYAnchor];
+    v44 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v51[0] = v44;
-    v43 = [(UIImageView *)v11->_boltImage centerXAnchor];
-    v42 = [v9 centerXAnchor];
-    v33 = [v43 constraintEqualToAnchor:v42];
+    centerXAnchor = [(UIImageView *)v11->_boltImage centerXAnchor];
+    centerXAnchor2 = [v9 centerXAnchor];
+    v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v51[1] = v33;
-    v34 = [(UIImageView *)v11->_boltImage widthAnchor];
-    v35 = [v9 widthAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 multiplier:1.0];
+    widthAnchor = [(UIImageView *)v11->_boltImage widthAnchor];
+    widthAnchor2 = [v9 widthAnchor];
+    v36 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
     v51[2] = v36;
-    v37 = [(UIImageView *)v11->_boltImage heightAnchor];
-    v38 = [v9 heightAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38 multiplier:0.85];
+    heightAnchor = [(UIImageView *)v11->_boltImage heightAnchor];
+    heightAnchor2 = [v9 heightAnchor];
+    v39 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.85];
     v51[3] = v39;
     v40 = [NSArray arrayWithObjects:v51 count:4];
     [NSLayoutConstraint activateConstraints:v40];
 
-    v8 = v48;
-    v7 = v49;
+    configCopy = v48;
+    coordinatorCopy = v49;
   }
 
   return v11;
@@ -155,20 +155,20 @@
   return v4;
 }
 
-- (void)_hasOnboardedForCleanEnergyAutomationWithCompletion:(id)a3
+- (void)_hasOnboardedForCleanEnergyAutomationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HSPCCleanEnergyAutomationViewController *)self config];
-  v6 = [v5 addedAccessory];
-  v7 = [v6 hf_setHasOnboardedForCleanEnergyAutomation];
+  completionCopy = completion;
+  config = [(HSPCCleanEnergyAutomationViewController *)self config];
+  addedAccessory = [config addedAccessory];
+  hf_setHasOnboardedForCleanEnergyAutomation = [addedAccessory hf_setHasOnboardedForCleanEnergyAutomation];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10003B338;
   v10[3] = &unk_1000C65F8;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  v9 = [v7 addCompletionBlock:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = [hf_setHasOnboardedForCleanEnergyAutomation addCompletionBlock:v10];
 }
 
 @end

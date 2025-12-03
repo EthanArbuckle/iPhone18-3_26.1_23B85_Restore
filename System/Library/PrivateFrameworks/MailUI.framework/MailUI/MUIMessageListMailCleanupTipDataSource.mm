@@ -1,14 +1,14 @@
 @interface MUIMessageListMailCleanupTipDataSource
 + (OS_os_log)log;
-- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)a3;
-- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)a3 bucket:(int64_t)a4 iCloudMailCleanupService:(id)a5;
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6;
+- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)configuration;
+- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)configuration bucket:(int64_t)bucket iCloudMailCleanupService:(id)service;
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier;
 - (id)currentTip;
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5;
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d;
 - (void)_dismissMailCleanupTip;
-- (void)_mailCleanupDataDidChange:(id)a3;
+- (void)_mailCleanupDataDidChange:(id)change;
 - (void)_onAppearMailCleanupTip;
-- (void)_refreshMailCleanupTipAnimated:(BOOL)a3 cleanSnapshot:(BOOL)a4;
+- (void)_refreshMailCleanupTipAnimated:(BOOL)animated cleanSnapshot:(BOOL)snapshot;
 - (void)_showSetupView;
 - (void)dealloc;
 @end
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __45__MUIMessageListMailCleanupTipDataSource_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_12 != -1)
   {
     dispatch_once(&log_onceToken_12, block);
@@ -41,23 +41,23 @@ void __45__MUIMessageListMailCleanupTipDataSource_log__block_invoke(uint64_t a1)
   log_log_12 = v2;
 }
 
-- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)a3 bucket:(int64_t)a4 iCloudMailCleanupService:(id)a5
+- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)configuration bucket:(int64_t)bucket iCloudMailCleanupService:(id)service
 {
-  v8 = a5;
-  v9 = a3;
-  [(MUIMessageListMailCleanupTipDataSource *)self setSelectedBucket:a4];
-  [(MUIMessageListMailCleanupTipDataSource *)self setICloudMailCleanupService:v8];
+  serviceCopy = service;
+  configurationCopy = configuration;
+  [(MUIMessageListMailCleanupTipDataSource *)self setSelectedBucket:bucket];
+  [(MUIMessageListMailCleanupTipDataSource *)self setICloudMailCleanupService:serviceCopy];
 
-  v10 = [(MUIMessageListMailCleanupTipDataSource *)self initWithConfiguration:v9];
+  v10 = [(MUIMessageListMailCleanupTipDataSource *)self initWithConfiguration:configurationCopy];
   return v10;
 }
 
-- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)a3
+- (MUIMessageListMailCleanupTipDataSource)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = MUIMessageListMailCleanupTipDataSource;
-  v5 = [(MessageListSectionDataSource *)&v20 initWithConfiguration:v4];
+  v5 = [(MessageListSectionDataSource *)&v20 initWithConfiguration:configurationCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -72,8 +72,8 @@ void __45__MUIMessageListMailCleanupTipDataSource_log__block_invoke(uint64_t a1)
     cellRegistration = v5->_cellRegistration;
     v5->_cellRegistration = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v5 selector:sel__mailCleanupDataDidChange_ name:@"mailCleanupDataDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__mailCleanupDataDidChange_ name:@"mailCleanupDataDidChange" object:0];
 
     v11 = [objc_alloc(MEMORY[0x277D06E60]) initAsEphemeralID:1];
     itemIdentifier = v5->_itemIdentifier;
@@ -95,13 +95,13 @@ void __64__MUIMessageListMailCleanupTipDataSource_initWithConfiguration___block_
   [WeakRetained _configureCell:v9 atIndexPath:v8 itemID:v7];
 }
 
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
-  if (v11)
+  cellCopy = cell;
+  pathCopy = path;
+  dCopy = d;
+  currentTip = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
+  if (currentTip)
   {
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
@@ -119,7 +119,7 @@ void __64__MUIMessageListMailCleanupTipDataSource_initWithConfiguration___block_
     v12[2] = __76__MUIMessageListMailCleanupTipDataSource__configureCell_atIndexPath_itemID___block_invoke_3;
     v12[3] = &unk_278188CD0;
     objc_copyWeak(&v13, &location);
-    [v8 configureForTip:v11 onSetupClick:v16 onDismissClick:v14 onAppear:v12];
+    [cellCopy configureForTip:currentTip onSetupClick:v16 onDismissClick:v14 onAppear:v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v17);
@@ -162,13 +162,13 @@ void __76__MUIMessageListMailCleanupTipDataSource__configureCell_atIndexPath_ite
 
 - (id)currentTip
 {
-  v3 = [(MessageListSectionDataSource *)self state];
-  v4 = [v3 containsOnlyInboxScope];
+  state = [(MessageListSectionDataSource *)self state];
+  containsOnlyInboxScope = [state containsOnlyInboxScope];
 
-  if (v4)
+  if (containsOnlyInboxScope)
   {
-    v5 = [(MUIMessageListMailCleanupTipDataSource *)self iCloudMailCleanupService];
-    v6 = [v5 tipForMailboxType:@"Inbox" bucket:{-[MUIMessageListMailCleanupTipDataSource selectedBucket](self, "selectedBucket")}];
+    iCloudMailCleanupService = [(MUIMessageListMailCleanupTipDataSource *)self iCloudMailCleanupService];
+    v6 = [iCloudMailCleanupService tipForMailboxType:@"Inbox" bucket:{-[MUIMessageListMailCleanupTipDataSource selectedBucket](self, "selectedBucket")}];
   }
 
   else
@@ -179,15 +179,15 @@ void __76__MUIMessageListMailCleanupTipDataSource__configureCell_atIndexPath_ite
   return v6;
 }
 
-- (void)_mailCleanupDataDidChange:(id)a3
+- (void)_mailCleanupDataDidChange:(id)change
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __68__MUIMessageListMailCleanupTipDataSource__mailCleanupDataDidChange___block_invoke;
   v4[3] = &unk_278188BB0;
   v4[4] = self;
-  v3 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v3 performBlock:v4];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performBlock:v4];
 }
 
 uint64_t __68__MUIMessageListMailCleanupTipDataSource__mailCleanupDataDidChange___block_invoke(uint64_t a1)
@@ -204,14 +204,14 @@ uint64_t __68__MUIMessageListMailCleanupTipDataSource__mailCleanupDataDidChange_
 
 - (void)_showSetupView
 {
-  v3 = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
+  currentTip = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
 
-  if (v3)
+  if (currentTip)
   {
-    v6 = [(MessageListSectionDataSource *)self delegate];
-    v4 = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
-    v5 = [v4 tipId];
-    [v6 presentMailCleanupViewForMailCleanupTipId:v5];
+    delegate = [(MessageListSectionDataSource *)self delegate];
+    currentTip2 = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
+    tipId = [currentTip2 tipId];
+    [delegate presentMailCleanupViewForMailCleanupTipId:tipId];
 
     [(MUIMessageListMailCleanupTipDataSource *)self _refreshMailCleanupTipAnimated:1 cleanSnapshot:0];
   }
@@ -219,37 +219,37 @@ uint64_t __68__MUIMessageListMailCleanupTipDataSource__mailCleanupDataDidChange_
 
 - (void)_dismissMailCleanupTip
 {
-  v5 = [(MessageListSectionDataSource *)self delegate];
-  v3 = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
-  v4 = [v3 tipId];
-  [v5 dismissMailCleanupTipForMailCleanupTipId:v4];
+  delegate = [(MessageListSectionDataSource *)self delegate];
+  currentTip = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
+  tipId = [currentTip tipId];
+  [delegate dismissMailCleanupTipForMailCleanupTipId:tipId];
 
   [(MUIMessageListMailCleanupTipDataSource *)self _refreshMailCleanupTipAnimated:1 cleanSnapshot:0];
 }
 
-- (void)_refreshMailCleanupTipAnimated:(BOOL)a3 cleanSnapshot:(BOOL)a4
+- (void)_refreshMailCleanupTipAnimated:(BOOL)animated cleanSnapshot:(BOOL)snapshot
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __87__MUIMessageListMailCleanupTipDataSource__refreshMailCleanupTipAnimated_cleanSnapshot___block_invoke;
   v4[3] = &unk_27818AB18;
   v4[4] = self;
-  v5 = a4;
-  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:a3 cleanSnapshot:a4 isLastUpdate:1 prepare:0 update:v4 completion:0];
+  snapshotCopy = snapshot;
+  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:animated cleanSnapshot:snapshot isLastUpdate:1 prepare:0 update:v4 completion:0];
 }
 
 - (void)_onAppearMailCleanupTip
 {
-  v5 = [(MessageListSectionDataSource *)self delegate];
-  v3 = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
-  v4 = [v3 tipId];
-  [v5 onAppearForMailCleanupTipId:v4];
+  delegate = [(MessageListSectionDataSource *)self delegate];
+  currentTip = [(MUIMessageListMailCleanupTipDataSource *)self currentTip];
+  tipId = [currentTip tipId];
+  [delegate onAppearForMailCleanupTipId:tipId];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MUIMessageListMailCleanupTipDataSource;
@@ -338,7 +338,7 @@ id __87__MUIMessageListMailCleanupTipDataSource__refreshMailCleanupTipAnimated_c
   return v23;
 }
 
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier
 {
   if (self)
   {
@@ -350,7 +350,7 @@ id __87__MUIMessageListMailCleanupTipDataSource__refreshMailCleanupTipAnimated_c
     cellRegistration = 0;
   }
 
-  return [a3 dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:a4 item:{a5, a6}];
+  return [view dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:path item:{d, identifier}];
 }
 
 @end

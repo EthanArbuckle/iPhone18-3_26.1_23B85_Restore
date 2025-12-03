@@ -14,29 +14,29 @@
   {
     v4 = v3;
     v5 = MEMORY[0x277CCD5C0];
-    v6 = [v4 codings];
-    v7 = [(HKMedicalCoding *)v5 _medicalCodingsWithCodable:v6];
+    codings = [v4 codings];
+    v7 = [(HKMedicalCoding *)v5 _medicalCodingsWithCodable:codings];
 
     if (v7)
     {
       v8 = MEMORY[0x277CCD550];
-      v9 = [v4 value];
-      v10 = [v8 createWithCodable:v9];
+      value = [v4 value];
+      v10 = [v8 createWithCodable:value];
 
       if (v10)
       {
-        v11 = [v4 referenceRanges];
+        referenceRanges = [v4 referenceRanges];
 
-        if (v11)
+        if (referenceRanges)
         {
           v22 = v10;
-          v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
+          referenceRanges = objc_alloc_init(MEMORY[0x277CBEB18]);
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v12 = [v4 referenceRanges];
-          v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          referenceRanges2 = [v4 referenceRanges];
+          v13 = [referenceRanges2 countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v13)
           {
             v14 = v13;
@@ -47,7 +47,7 @@
               {
                 if (*v24 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(referenceRanges2);
                 }
 
                 v17 = [MEMORY[0x277CCD890] createWithCodable:*(*(&v23 + 1) + 8 * i)];
@@ -60,10 +60,10 @@
                 }
 
                 v18 = v17;
-                [v11 addObject:v17];
+                [referenceRanges addObject:v17];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+              v14 = [referenceRanges2 countByEnumeratingWithState:&v23 objects:v27 count:16];
               if (v14)
               {
                 continue;
@@ -76,7 +76,7 @@
           v10 = v22;
         }
 
-        v19 = [MEMORY[0x277CCD1A0] codedValueWithCodings:v7 value:v10 referenceRanges:v11];
+        v19 = [MEMORY[0x277CCD1A0] codedValueWithCodings:v7 value:v10 referenceRanges:referenceRanges];
 LABEL_19:
       }
 
@@ -106,16 +106,16 @@ LABEL_19:
 {
   v2 = objc_alloc_init(HDCodableCodedValue);
   v3 = MEMORY[0x277CCD5C0];
-  v4 = [a1 codings];
-  v5 = [(HKMedicalCoding *)v3 _codeableRepresentationForMedicalCodings:v4];
+  codings = [self codings];
+  v5 = [(HKMedicalCoding *)v3 _codeableRepresentationForMedicalCodings:codings];
   [(HDCodableCodedValue *)v2 setCodings:v5];
 
-  v6 = [a1 value];
-  v7 = [v6 codableRepresentationForSync];
-  [(HDCodableCodedValue *)v2 setValue:v7];
+  value = [self value];
+  codableRepresentationForSync = [value codableRepresentationForSync];
+  [(HDCodableCodedValue *)v2 setValue:codableRepresentationForSync];
 
-  v8 = [a1 referenceRanges];
-  v9 = [v8 hk_map:&__block_literal_global_495];
+  referenceRanges = [self referenceRanges];
+  v9 = [referenceRanges hk_map:&__block_literal_global_495];
   v10 = [v9 mutableCopy];
   [(HDCodableCodedValue *)v2 setReferenceRanges:v10];
 

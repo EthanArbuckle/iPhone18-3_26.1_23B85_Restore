@@ -1,8 +1,8 @@
 @interface CMDiagramShapeVennMapper
 - (CGRect)circumscribedBounds;
-- (CGRect)nodeBoundsWithIndex:(unsigned int)a3;
-- (CGSize)textSizeForShapeSize:(CGSize)a3;
-- (void)mapChildrenAt:(id)a3 withState:(id)a4;
+- (CGRect)nodeBoundsWithIndex:(unsigned int)index;
+- (CGSize)textSizeForShapeSize:(CGSize)size;
+- (void)mapChildrenAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramShapeVennMapper
@@ -26,7 +26,7 @@
   return CGRectInset(*&v3, v7, v8);
 }
 
-- (CGRect)nodeBoundsWithIndex:(unsigned int)a3
+- (CGRect)nodeBoundsWithIndex:(unsigned int)index
 {
   mChildCount = self->super.mChildCount;
   v4 = dbl_25D710CB0[mChildCount > 4];
@@ -40,7 +40,7 @@
     v5 = 0.25;
   }
 
-  v6 = (2 * a3) * 3.14159265 / mChildCount + -1.57079633;
+  v6 = (2 * index) * 3.14159265 / mChildCount + -1.57079633;
   v7 = __sincosf_stret(v6);
 
   v8 = TSURectWithCenterAndSize((v5 * v7.__cosval), (v5 * v7.__sinval), v4);
@@ -51,12 +51,12 @@
   return result;
 }
 
-- (void)mapChildrenAt:(id)a3 withState:(id)a4
+- (void)mapChildrenAt:(id)at withState:(id)state
 {
-  v20 = a3;
-  v19 = a4;
-  v6 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  v21 = [v6 children];
+  atCopy = at;
+  stateCopy = state;
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  children = [documentPoint children];
 
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   CGRectGetWidth(v23);
@@ -66,19 +66,19 @@
   CGRectGetWidth(v25);
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   CGRectGetHeight(v26);
-  v7 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   v9 = v8;
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
-  [v7 translateXBy:v9 yBy:?];
-  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:v7];
+  [transform translateXBy:v9 yBy:?];
+  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:transform];
   [(CMDiagramShapeMapper *)self setDefaultFonSize];
   if (self->super.mChildCount)
   {
     v10 = 0;
     do
     {
-      v11 = [v21 objectAtIndex:v10];
+      v11 = [children objectAtIndex:v10];
       [(CMDiagramShapeVennMapper *)self nodeBoundsWithIndex:v10];
       [CMShapeUtils transformRect:"transformRect:scale:offsetX:offsetY:" scale:? offsetX:? offsetY:?];
       v16 = [[OADOrientedBounds alloc] initWithBounds:v12, v13, v14, v15];
@@ -86,16 +86,16 @@
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"circ%d", ++v10];
       [(CMDiagramPointMapper *)v17 setPresentationName:v18];
 
-      [(CMDiagramPointEllipseMapper *)v17 mapAt:v20 withState:v19];
+      [(CMDiagramPointEllipseMapper *)v17 mapAt:atCopy withState:stateCopy];
     }
 
     while (self->super.mChildCount > v10);
   }
 }
 
-- (CGSize)textSizeForShapeSize:(CGSize)a3
+- (CGSize)textSizeForShapeSize:(CGSize)size
 {
-  [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds:a3.width];
+  [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds:size.width];
   v4 = v3 * 0.4;
   v6 = v5 * 0.4;
   result.height = v6;

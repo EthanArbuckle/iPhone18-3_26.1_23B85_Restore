@@ -1,8 +1,8 @@
 @interface MapsSuggestionsContactActivitySource
 + (BOOL)isEnabled;
-- (MapsSuggestionsContactActivitySource)initWithContactActivity:(id)a3 delegate:(id)a4 guardian:(id)a5 name:(id)a6;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
+- (MapsSuggestionsContactActivitySource)initWithContactActivity:(id)activity delegate:(id)delegate guardian:(id)guardian name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
 - (void)contactActivityUpdated;
 - (void)start;
 - (void)stop;
@@ -22,13 +22,13 @@
   [(MapsSuggestionsAppGuardian *)self->_guardian registerBundleID:MapsSuggestionsFindMyAppBundleID withSource:self];
 }
 
-- (MapsSuggestionsContactActivitySource)initWithContactActivity:(id)a3 delegate:(id)a4 guardian:(id)a5 name:(id)a6
+- (MapsSuggestionsContactActivitySource)initWithContactActivity:(id)activity delegate:(id)delegate guardian:(id)guardian name:(id)name
 {
-  v11 = a3;
-  v12 = a5;
+  activityCopy = activity;
+  guardianCopy = guardian;
   v18.receiver = self;
   v18.super_class = MapsSuggestionsContactActivitySource;
-  v13 = [(MapsSuggestionsBaseSource *)&v18 initWithDelegate:a4 name:a6];
+  v13 = [(MapsSuggestionsBaseSource *)&v18 initWithDelegate:delegate name:name];
   if (v13)
   {
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -36,20 +36,20 @@
     queue = v13->_queue;
     v13->_queue = v15;
 
-    objc_storeStrong(&v13->_contactActivity, a3);
+    objc_storeStrong(&v13->_contactActivity, activity);
     [(MapsSuggestionsContactActivity *)v13->_contactActivity setContactActivityDelegate:v13];
-    objc_storeStrong(&v13->_guardian, a5);
+    objc_storeStrong(&v13->_guardian, guardian);
   }
 
   return v13;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -69,13 +69,13 @@ LABEL_8:
 
 LABEL_9:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v8 = [v6 oneContactActivity];
+  oneContactActivity = [depotCopy oneContactActivity];
 
-  if (!v8)
+  if (!oneContactActivity)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -95,15 +95,15 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [v6 oneContactActivity];
-  v10 = [v6 oneSourceDelegate];
-  v11 = [v6 oneAppGuardian];
-  self = [(MapsSuggestionsContactActivitySource *)self initWithContactActivity:v9 delegate:v10 guardian:v11 name:v7];
+  oneContactActivity2 = [depotCopy oneContactActivity];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
+  oneAppGuardian = [depotCopy oneAppGuardian];
+  self = [(MapsSuggestionsContactActivitySource *)self initWithContactActivity:oneContactActivity2 delegate:oneSourceDelegate guardian:oneAppGuardian name:nameCopy];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
 + (BOOL)isEnabled
@@ -141,16 +141,16 @@ LABEL_10:
   [(MapsSuggestionsContactActivitySource *)self updateSuggestionEntriesWithHandler:0];
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsBaseSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseSource *)self uniqueName];
     *buf = 138412546;
-    v24 = v6;
+    v24 = uniqueName;
     v25 = 2080;
     v26 = "updateSuggestionEntriesWithHandler";
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -173,17 +173,17 @@ LABEL_10:
     }
 
     [(MapsSuggestionsBaseSource *)self addOrUpdateMySuggestionEntries:MEMORY[0x1E695E0F0]];
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
 
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(MapsSuggestionsBaseSource *)self uniqueName];
+      uniqueName2 = [(MapsSuggestionsBaseSource *)self uniqueName];
       *buf = 138412546;
-      v24 = v14;
+      v24 = uniqueName2;
       v25 = 2080;
       v26 = "updateSuggestionEntries";
       _os_log_impl(&dword_1C5126000, v13, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -209,17 +209,17 @@ LABEL_10:
     }
 
     [(MapsSuggestionsBaseSource *)self addOrUpdateMySuggestionEntries:MEMORY[0x1E695E0F0]];
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
 
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(MapsSuggestionsBaseSource *)self uniqueName];
+      uniqueName3 = [(MapsSuggestionsBaseSource *)self uniqueName];
       *buf = 138412546;
-      v24 = v10;
+      v24 = uniqueName3;
       v25 = 2080;
       v26 = "updateSuggestionEntries";
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -245,7 +245,7 @@ LABEL_10:
     block[3] = &unk_1E81F5DB0;
     objc_copyWeak(&v22, buf);
     block[4] = self;
-    v21 = v4;
+    v21 = handlerCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v22);
@@ -261,17 +261,17 @@ LABEL_10:
   }
 
   [(MapsSuggestionsBaseSource *)self addOrUpdateMySuggestionEntries:MEMORY[0x1E695E0F0]];
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   v18 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [(MapsSuggestionsBaseSource *)self uniqueName];
+    uniqueName4 = [(MapsSuggestionsBaseSource *)self uniqueName];
     *buf = 138412546;
-    v24 = v19;
+    v24 = uniqueName4;
     v25 = 2080;
     v26 = "updateSuggestionEntries";
     _os_log_impl(&dword_1C5126000, v18, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);

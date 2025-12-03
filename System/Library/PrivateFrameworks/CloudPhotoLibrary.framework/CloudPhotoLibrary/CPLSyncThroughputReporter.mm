@@ -1,14 +1,14 @@
 @interface CPLSyncThroughputReporter
-- (CPLSyncThroughputReporter)initWithCategory:(id)a3 parentMetrics:(id)a4;
-- (CPLSyncThroughputReporter)initWithCategory:(id)a3 parentReport:(id)a4;
+- (CPLSyncThroughputReporter)initWithCategory:(id)category parentMetrics:(id)metrics;
+- (CPLSyncThroughputReporter)initWithCategory:(id)category parentReport:(id)report;
 - (CPLSyncThroughputReporterDelegate)delegate;
-- (id)_beginKindOfWorkIfNecessary:(id *)a1;
-- (id)makeChildReportForCategory:(id)a3;
-- (id)makeSiblingReportForCategory:(id)a3;
-- (void)addCompletedWorkItemCount:(unint64_t)a3;
-- (void)addCompletedWorkItemCount:(unint64_t)a3 kindOfWork:(id)a4;
-- (void)beginKindOfWork:(id)a3;
-- (void)endKindOfWork:(id)a3;
+- (id)_beginKindOfWorkIfNecessary:(id *)necessary;
+- (id)makeChildReportForCategory:(id)category;
+- (id)makeSiblingReportForCategory:(id)category;
+- (void)addCompletedWorkItemCount:(unint64_t)count;
+- (void)addCompletedWorkItemCount:(unint64_t)count kindOfWork:(id)work;
+- (void)beginKindOfWork:(id)work;
+- (void)endKindOfWork:(id)work;
 - (void)endTrackingWork;
 - (void)startTrackingWork;
 @end
@@ -25,10 +25,10 @@
 - (void)endTrackingWork
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(CPLSyncThroughputReporter *)self metrics];
-  v4 = [v3 startTime];
+  metrics = [(CPLSyncThroughputReporter *)self metrics];
+  startTime = [metrics startTime];
 
-  if (v4)
+  if (startTime)
   {
     if ([(NSMutableDictionary *)self->_kindOfWorkReporters count])
     {
@@ -69,60 +69,60 @@
       self->_kindOfWorkReporters = 0;
     }
 
-    v12 = [(CPLSyncThroughputReporter *)self delegate];
-    [v12 throughputReporterDidFinish:self];
+    delegate = [(CPLSyncThroughputReporter *)self delegate];
+    [delegate throughputReporterDidFinish:self];
 
-    v13 = [(CPLSyncThroughputReporter *)self metrics];
-    [v13 setStartTime:0];
+    metrics2 = [(CPLSyncThroughputReporter *)self metrics];
+    [metrics2 setStartTime:0];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endKindOfWork:(id)a3
+- (void)endKindOfWork:(id)work
 {
-  v6 = a3;
+  workCopy = work;
   v4 = [(NSMutableDictionary *)self->_kindOfWorkReporters objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
   {
     [v4 endTrackingWork];
-    [(NSMutableDictionary *)self->_kindOfWorkReporters removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_kindOfWorkReporters removeObjectForKey:workCopy];
   }
 }
 
-- (void)beginKindOfWork:(id)a3
+- (void)beginKindOfWork:(id)work
 {
-  v5 = [(CPLSyncThroughputReporter *)&self->super.isa _beginKindOfWorkIfNecessary:a3];
-  v3 = [v5 metrics];
-  v4 = [v3 startTime];
+  v5 = [(CPLSyncThroughputReporter *)&self->super.isa _beginKindOfWorkIfNecessary:work];
+  metrics = [v5 metrics];
+  startTime = [metrics startTime];
 
-  if (!v4)
+  if (!startTime)
   {
     [v5 startTrackingWork];
   }
 }
 
-- (id)_beginKindOfWorkIfNecessary:(id *)a1
+- (id)_beginKindOfWorkIfNecessary:(id *)necessary
 {
   v3 = a2;
-  if (a1)
+  if (necessary)
   {
-    v4 = a1[1];
+    v4 = necessary[1];
     if (!v4)
     {
       v5 = objc_opt_new();
-      v6 = a1[1];
-      a1[1] = v5;
+      v6 = necessary[1];
+      necessary[1] = v5;
 
-      v4 = a1[1];
+      v4 = necessary[1];
     }
 
     v7 = [v4 objectForKeyedSubscript:v3];
     if (!v7)
     {
-      v7 = [a1 makeChildReportForCategory:v3];
-      [a1[1] setObject:v7 forKeyedSubscript:v3];
+      v7 = [necessary makeChildReportForCategory:v3];
+      [necessary[1] setObject:v7 forKeyedSubscript:v3];
     }
   }
 
@@ -134,119 +134,119 @@
   return v7;
 }
 
-- (void)addCompletedWorkItemCount:(unint64_t)a3 kindOfWork:(id)a4
+- (void)addCompletedWorkItemCount:(unint64_t)count kindOfWork:(id)work
 {
-  v16 = a4;
-  v6 = [(CPLSyncThroughputReporter *)self metrics];
-  v7 = [v6 startTime];
+  workCopy = work;
+  metrics = [(CPLSyncThroughputReporter *)self metrics];
+  startTime = [metrics startTime];
 
-  if (!v7)
+  if (!startTime)
   {
     v8 = [MEMORY[0x1E695DF00] now];
-    v9 = [(CPLSyncThroughputReporter *)self metrics];
-    [v9 setStartTime:v8];
+    metrics2 = [(CPLSyncThroughputReporter *)self metrics];
+    [metrics2 setStartTime:v8];
   }
 
-  if (v16)
+  if (workCopy)
   {
-    v10 = [(CPLSyncThroughputReporter *)&self->super.isa _beginKindOfWorkIfNecessary:v16];
-    v11 = [(CPLSyncThroughputReporter *)v10 metrics];
-    v12 = [v11 startTime];
+    selfCopy = [(CPLSyncThroughputReporter *)&self->super.isa _beginKindOfWorkIfNecessary:workCopy];
+    metrics3 = [(CPLSyncThroughputReporter *)selfCopy metrics];
+    startTime2 = [metrics3 startTime];
 
-    if (!v12)
+    if (!startTime2)
     {
-      v13 = [(CPLSyncThroughputReporter *)self metrics];
-      v14 = [v13 startTime];
-      v15 = [(CPLSyncThroughputReporter *)v10 metrics];
-      [v15 setStartTime:v14];
+      metrics4 = [(CPLSyncThroughputReporter *)self metrics];
+      startTime3 = [metrics4 startTime];
+      metrics5 = [(CPLSyncThroughputReporter *)selfCopy metrics];
+      [metrics5 setStartTime:startTime3];
     }
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  [(CPLSyncThroughputReporter *)v10 addCompletedWorkItemCount:a3];
+  [(CPLSyncThroughputReporter *)selfCopy addCompletedWorkItemCount:count];
 }
 
-- (void)addCompletedWorkItemCount:(unint64_t)a3
+- (void)addCompletedWorkItemCount:(unint64_t)count
 {
-  v5 = [(CPLSyncThroughputReporter *)self metrics];
-  v6 = [v5 startTime];
+  metrics = [(CPLSyncThroughputReporter *)self metrics];
+  startTime = [metrics startTime];
 
-  if (!v6)
+  if (!startTime)
   {
     v7 = [MEMORY[0x1E695DF00] now];
-    v8 = [(CPLSyncThroughputReporter *)self metrics];
-    [v8 setStartTime:v7];
+    metrics2 = [(CPLSyncThroughputReporter *)self metrics];
+    [metrics2 setStartTime:v7];
   }
 
-  v9 = [(CPLSyncThroughputReporter *)self metrics];
-  [v9 setTotalCount:{objc_msgSend(v9, "totalCount") + a3}];
+  metrics3 = [(CPLSyncThroughputReporter *)self metrics];
+  [metrics3 setTotalCount:{objc_msgSend(metrics3, "totalCount") + count}];
 
-  v10 = [(CPLSyncThroughputReporter *)self delegate];
-  [v10 throughputReporter:self addedItemCount:a3];
+  delegate = [(CPLSyncThroughputReporter *)self delegate];
+  [delegate throughputReporter:self addedItemCount:count];
 }
 
 - (void)startTrackingWork
 {
   v4 = [MEMORY[0x1E695DF00] now];
-  v3 = [(CPLSyncThroughputReporter *)self metrics];
-  [v3 setStartTime:v4];
+  metrics = [(CPLSyncThroughputReporter *)self metrics];
+  [metrics setStartTime:v4];
 }
 
-- (id)makeSiblingReportForCategory:(id)a3
+- (id)makeSiblingReportForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithCategory:v4 parentMetrics:self->_parentMetricsIdentifier];
+  categoryCopy = category;
+  v5 = [objc_alloc(objc_opt_class()) initWithCategory:categoryCopy parentMetrics:self->_parentMetricsIdentifier];
 
-  v6 = [(CPLSyncThroughputReporter *)self delegate];
-  [v5 setDelegate:v6];
+  delegate = [(CPLSyncThroughputReporter *)self delegate];
+  [v5 setDelegate:delegate];
 
   return v5;
 }
 
-- (id)makeChildReportForCategory:(id)a3
+- (id)makeChildReportForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [[CPLSyncThroughputReporter alloc] initWithCategory:v4 parentReport:self];
+  categoryCopy = category;
+  v5 = [[CPLSyncThroughputReporter alloc] initWithCategory:categoryCopy parentReport:self];
 
   return v5;
 }
 
-- (CPLSyncThroughputReporter)initWithCategory:(id)a3 parentReport:(id)a4
+- (CPLSyncThroughputReporter)initWithCategory:(id)category parentReport:(id)report
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 metrics];
-  v9 = [v8 metricsIdentifier];
-  v10 = [(CPLSyncThroughputReporter *)self initWithCategory:v7 parentMetrics:v9];
+  reportCopy = report;
+  categoryCopy = category;
+  metrics = [reportCopy metrics];
+  metricsIdentifier = [metrics metricsIdentifier];
+  v10 = [(CPLSyncThroughputReporter *)self initWithCategory:categoryCopy parentMetrics:metricsIdentifier];
 
-  v11 = [v6 delegate];
+  delegate = [reportCopy delegate];
 
-  [(CPLSyncThroughputReporter *)v10 setDelegate:v11];
+  [(CPLSyncThroughputReporter *)v10 setDelegate:delegate];
   return v10;
 }
 
-- (CPLSyncThroughputReporter)initWithCategory:(id)a3 parentMetrics:(id)a4
+- (CPLSyncThroughputReporter)initWithCategory:(id)category parentMetrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  metricsCopy = metrics;
   v14.receiver = self;
   v14.super_class = CPLSyncThroughputReporter;
   v8 = [(CPLSyncThroughputReporter *)&v14 init];
   if (v8)
   {
-    v9 = v6;
-    if (v7)
+    v9 = categoryCopy;
+    if (metricsCopy)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, v9];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", metricsCopy, v9];
 
       v9 = v10;
     }
 
-    objc_storeStrong(&v8->_parentMetricsIdentifier, a4);
+    objc_storeStrong(&v8->_parentMetricsIdentifier, metrics);
     v11 = [[CPLSyncSessionThroughputMetrics alloc] initWithIdentifier:v9];
     metrics = v8->_metrics;
     v8->_metrics = v11;

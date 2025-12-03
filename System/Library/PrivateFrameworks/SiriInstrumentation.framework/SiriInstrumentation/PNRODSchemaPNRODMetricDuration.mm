@@ -1,28 +1,28 @@
 @interface PNRODSchemaPNRODMetricDuration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODMetricDuration)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODMetricDuration)initWithJSON:(id)a3;
+- (PNRODSchemaPNRODMetricDuration)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODMetricDuration)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEndEventIndex:(BOOL)a3;
-- (void)setHasStartEventIndex:(BOOL)a3;
-- (void)setHasStartTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEndEventIndex:(BOOL)index;
+- (void)setHasStartEventIndex:(BOOL)index;
+- (void)setHasStartTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODMetricDuration
 
-- (PNRODSchemaPNRODMetricDuration)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODMetricDuration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PNRODSchemaPNRODMetricDuration;
   v5 = [(PNRODSchemaPNRODMetricDuration *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"metricValue"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"metricValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,21 +30,21 @@
       [(PNRODSchemaPNRODMetricDuration *)v5 setMetricValue:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"startTimestamp"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"startTimestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODMetricDuration setStartTimestamp:](v5, "setStartTimestamp:", [v7 longLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"startEventIndex"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"startEventIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODMetricDuration setStartEventIndex:](v5, "setStartEventIndex:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"endEventIndex"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"endEventIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODMetricDuration)initWithJSON:(id)a3
+- (PNRODSchemaPNRODMetricDuration)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODMetricDuration *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODMetricDuration *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODMetricDuration *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,12 +93,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODMetricDuration endEventIndex](self, "endEventIndex")}];
-    [v3 setObject:v7 forKeyedSubscript:@"endEventIndex"];
+    [dictionary setObject:v7 forKeyedSubscript:@"endEventIndex"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -121,7 +121,7 @@ LABEL_3:
   v8 = MEMORY[0x1E696AD98];
   [(PNRODSchemaPNRODMetricDuration *)self metricValue];
   v9 = [v8 numberWithDouble:?];
-  [v3 setObject:v9 forKeyedSubscript:@"metricValue"];
+  [dictionary setObject:v9 forKeyedSubscript:@"metricValue"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -137,19 +137,19 @@ LABEL_4:
 
 LABEL_11:
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODMetricDuration startEventIndex](self, "startEventIndex")}];
-  [v3 setObject:v10 forKeyedSubscript:@"startEventIndex"];
+  [dictionary setObject:v10 forKeyedSubscript:@"startEventIndex"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODMetricDuration startTimestamp](self, "startTimestamp")}];
-    [v3 setObject:v5 forKeyedSubscript:@"startTimestamp"];
+    [dictionary setObject:v5 forKeyedSubscript:@"startTimestamp"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -225,16 +225,16 @@ LABEL_12:
   return v8 ^ v4 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -243,14 +243,14 @@ LABEL_12:
   if (*&has)
   {
     metricValue = self->_metricValue;
-    [v4 metricValue];
+    [equalCopy metricValue];
     if (metricValue != v8)
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -262,13 +262,13 @@ LABEL_12:
   if (v9)
   {
     startTimestamp = self->_startTimestamp;
-    if (startTimestamp != [v4 startTimestamp])
+    if (startTimestamp != [equalCopy startTimestamp])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v11 = (*&has >> 2) & 1;
@@ -280,10 +280,10 @@ LABEL_12:
   if (v11)
   {
     startEventIndex = self->_startEventIndex;
-    if (startEventIndex == [v4 startEventIndex])
+    if (startEventIndex == [equalCopy startEventIndex])
     {
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
       goto LABEL_14;
     }
 
@@ -302,7 +302,7 @@ LABEL_14:
   if (v13)
   {
     endEventIndex = self->_endEventIndex;
-    if (endEventIndex != [v4 endEventIndex])
+    if (endEventIndex != [equalCopy endEventIndex])
     {
       goto LABEL_18;
     }
@@ -314,9 +314,9 @@ LABEL_19:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -363,9 +363,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasEndEventIndex:(BOOL)a3
+- (void)setHasEndEventIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 8;
   }
@@ -378,9 +378,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasStartEventIndex:(BOOL)a3
+- (void)setHasStartEventIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -393,9 +393,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStartTimestamp:(BOOL)a3
+- (void)setHasStartTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }

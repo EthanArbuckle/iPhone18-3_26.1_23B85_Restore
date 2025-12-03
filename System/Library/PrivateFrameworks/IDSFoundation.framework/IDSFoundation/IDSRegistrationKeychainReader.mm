@@ -1,12 +1,12 @@
 @interface IDSRegistrationKeychainReader
-+ (id)keychainAccountForVersion:(unint64_t)a3;
-+ (id)keychainServiceForVersion:(unint64_t)a3;
++ (id)keychainAccountForVersion:(unint64_t)version;
++ (id)keychainServiceForVersion:(unint64_t)version;
 + (id)sharedInstance;
 - (IDSRegistrationKeychainReader)init;
 - (id)registrationData;
-- (id)registrationWithServiceType:(id)a3 accountType:(int)a4 isTemporary:(BOOL)a5 value:(id)a6;
+- (id)registrationWithServiceType:(id)type accountType:(int)accountType isTemporary:(BOOL)temporary value:(id)value;
 - (void)_flush;
-- (void)_reloadFromDictionaryLocked:(id)a3;
+- (void)_reloadFromDictionaryLocked:(id)locked;
 - (void)_reloadFromKeychainLocked;
 - (void)_setPurgeTimer;
 - (void)dealloc;
@@ -23,11 +23,11 @@
   registrationData = self->_registrationData;
   self->_registrationData = 0;
 
-  v5 = [MEMORY[0x1E69A6138] keychainManager];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  keychainManager = [MEMORY[0x1E69A6138] keychainManager];
+  if (os_log_type_enabled(keychainManager, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "Purged keychain reader", v6, 2u);
+    _os_log_impl(&dword_1A7AD9000, keychainManager, OS_LOG_TYPE_DEFAULT, "Purged keychain reader", v6, 2u);
   }
 
   pthread_mutex_unlock(&stru_1EB2B3410);
@@ -100,9 +100,9 @@
   [(IDSRegistrationKeychainReader *)&v3 dealloc];
 }
 
-+ (id)keychainServiceForVersion:(unint64_t)a3
++ (id)keychainServiceForVersion:(unint64_t)version
 {
-  if (a3)
+  if (version)
   {
     v4 = @"com.apple.facetime";
   }
@@ -115,19 +115,19 @@
   return v4;
 }
 
-+ (id)keychainAccountForVersion:(unint64_t)a3
++ (id)keychainAccountForVersion:(unint64_t)version
 {
-  if (a3)
+  if (version)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@V%d", @"registration", a3];
+    version = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@V%d", @"registration", version];
   }
 
   else
   {
-    v3 = @"VeniceInfo";
+    version = @"VeniceInfo";
   }
 
-  return v3;
+  return version;
 }
 
 - (void)_setPurgeTimer
@@ -136,27 +136,27 @@
   dispatch_async(v3, self->_purgeEnqueueBlock);
 }
 
-- (void)_reloadFromDictionaryLocked:(id)a3
+- (void)_reloadFromDictionaryLocked:(id)locked
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"data"];
-  v6 = [v4 objectForKey:@"save-identifier"];
+  lockedCopy = locked;
+  v5 = [lockedCopy objectForKey:@"data"];
+  v6 = [lockedCopy objectForKey:@"save-identifier"];
 
-  v7 = [v6 unsignedIntValue];
+  unsignedIntValue = [v6 unsignedIntValue];
   v8 = [v5 mutableCopy];
   registrationData = self->_registrationData;
   self->_registrationData = v8;
 
   v10 = [(NSMutableArray *)self->_registrationData count];
-  v11 = [MEMORY[0x1E69A6138] keychainManager];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  keychainManager = [MEMORY[0x1E69A6138] keychainManager];
+  if (os_log_type_enabled(keychainManager, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109376;
     v12[1] = v10;
     v13 = 1024;
-    v14 = v7;
-    _os_log_impl(&dword_1A7AD9000, v11, OS_LOG_TYPE_DEFAULT, "Loaded keychain dictionary, %d entries, saveIdentifier %u", v12, 0xEu);
+    v14 = unsignedIntValue;
+    _os_log_impl(&dword_1A7AD9000, keychainManager, OS_LOG_TYPE_DEFAULT, "Loaded keychain dictionary, %d entries, saveIdentifier %u", v12, 0xEu);
   }
 }
 
@@ -190,8 +190,8 @@
     v8 = [objc_opt_class() keychainAccountForVersion:v5];
     v9 = [objc_opt_class() keychainAccessGroupForVersion:v5];
     v53 = 0;
-    v10 = [MEMORY[0x1E69A6138] keychainManager];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    keychainManager = [MEMORY[0x1E69A6138] keychainManager];
+    if (os_log_type_enabled(keychainManager, OS_LOG_TYPE_INFO))
     {
       *buf = 67109890;
       *v55 = v5;
@@ -201,7 +201,7 @@
       v57 = v8;
       v58 = 2112;
       v59 = v9;
-      _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_INFO, "Attempting to load V%d keychain blob from service: %@   account: %@   accessGroup: %@", buf, 0x26u);
+      _os_log_impl(&dword_1A7AD9000, keychainManager, OS_LOG_TYPE_INFO, "Attempting to load V%d keychain blob from service: %@   account: %@   accessGroup: %@", buf, 0x26u);
     }
 
     v52[1] = v6;
@@ -225,12 +225,12 @@
     }
   }
 
-  v12 = [MEMORY[0x1E69A6138] keychainManager];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  keychainManager2 = [MEMORY[0x1E69A6138] keychainManager];
+  if (os_log_type_enabled(keychainManager2, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
     *v55 = v5;
-    _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_INFO, "  => Found V%d keychain blob", buf, 8u);
+    _os_log_impl(&dword_1A7AD9000, keychainManager2, OS_LOG_TYPE_INFO, "  => Found V%d keychain blob", buf, 8u);
   }
 
 LABEL_12:
@@ -242,18 +242,18 @@ LABEL_12:
     v16 = v15;
     if (!v14)
     {
-      v19 = [MEMORY[0x1E69A6138] keychainManager];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      keychainManager3 = [MEMORY[0x1E69A6138] keychainManager];
+      if (os_log_type_enabled(keychainManager3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         *v55 = v16;
-        _os_log_impl(&dword_1A7AD9000, v19, OS_LOG_TYPE_DEFAULT, "Unable to parse property list: %@", buf, 0xCu);
+        _os_log_impl(&dword_1A7AD9000, keychainManager3, OS_LOG_TYPE_DEFAULT, "Unable to parse property list: %@", buf, 0xCu);
       }
 
       v20 = [objc_opt_class() keychainServiceForVersion:v5];
       v21 = [objc_opt_class() keychainAccountForVersion:v5];
-      v22 = [MEMORY[0x1E69A6138] keychainManager];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      keychainManager4 = [MEMORY[0x1E69A6138] keychainManager];
+      if (os_log_type_enabled(keychainManager4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109634;
         *v55 = v5;
@@ -261,18 +261,18 @@ LABEL_12:
         *&v55[6] = v20;
         v56 = 2112;
         v57 = v21;
-        _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "Removing invalid keychain data (V%d) for service: %@   account: %@", buf, 0x1Cu);
+        _os_log_impl(&dword_1A7AD9000, keychainManager4, OS_LOG_TYPE_DEFAULT, "Removing invalid keychain data (V%d) for service: %@   account: %@", buf, 0x1Cu);
       }
 
       v53 = 0;
       if ((IMRemoveKeychainData() & 1) == 0)
       {
-        v23 = [MEMORY[0x1E69A6138] keychainManager];
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        keychainManager5 = [MEMORY[0x1E69A6138] keychainManager];
+        if (os_log_type_enabled(keychainManager5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
           *v55 = v53;
-          _os_log_impl(&dword_1A7AD9000, v23, OS_LOG_TYPE_DEFAULT, "  => Unable to remove invalid keychain blob (error: %d)", buf, 8u);
+          _os_log_impl(&dword_1A7AD9000, keychainManager5, OS_LOG_TYPE_DEFAULT, "  => Unable to remove invalid keychain blob (error: %d)", buf, 8u);
         }
       }
 
@@ -284,25 +284,25 @@ LABEL_12:
     v16 = v17;
     if (v17)
     {
-      v18 = [v17 unsignedIntegerValue];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
     }
 
     else
     {
-      v18 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    if (v18 >= 3)
+    if (unsignedIntegerValue >= 3)
     {
       goto LABEL_82;
     }
 
-    v24 = [MEMORY[0x1E69A6138] keychainManager];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    keychainManager6 = [MEMORY[0x1E69A6138] keychainManager];
+    if (os_log_type_enabled(keychainManager6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *v55 = v18;
-      _os_log_impl(&dword_1A7AD9000, v24, OS_LOG_TYPE_DEFAULT, "Keychain dictionary V%d needs upgrade", buf, 8u);
+      *v55 = unsignedIntegerValue;
+      _os_log_impl(&dword_1A7AD9000, keychainManager6, OS_LOG_TYPE_DEFAULT, "Keychain dictionary V%d needs upgrade", buf, 8u);
     }
 
     v21 = v14;
@@ -319,15 +319,15 @@ LABEL_82:
 
     v25 = v21;
     v26 = [v25 objectForKey:@"version"];
-    v27 = [v26 unsignedIntegerValue];
-    v28 = [MEMORY[0x1E69A6138] keychainManager];
-    v29 = v28;
-    if (v27 > 3)
+    unsignedIntegerValue2 = [v26 unsignedIntegerValue];
+    keychainManager7 = [MEMORY[0x1E69A6138] keychainManager];
+    v29 = keychainManager7;
+    if (unsignedIntegerValue2 > 3)
     {
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(keychainManager7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109376;
-        *v55 = v27;
+        *v55 = unsignedIntegerValue2;
         *&v55[4] = 1024;
         *&v55[6] = 3;
         _os_log_impl(&dword_1A7AD9000, v29, OS_LOG_TYPE_DEFAULT, "Invalid keychain dict version (%d) -- current is %d", buf, 0xEu);
@@ -339,30 +339,30 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(keychainManager7, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
       *v55 = 3;
       _os_log_impl(&dword_1A7AD9000, v29, OS_LOG_TYPE_INFO, "Updating keychain dict to current version (%d)", buf, 8u);
     }
 
-    v30 = [MEMORY[0x1E69A6138] keychainManager];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+    keychainManager8 = [MEMORY[0x1E69A6138] keychainManager];
+    if (os_log_type_enabled(keychainManager8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       *v55 = v25;
-      _os_log_impl(&dword_1A7AD9000, v30, OS_LOG_TYPE_INFO, "Keychain dictionary before upgrade : %@", buf, 0xCu);
+      _os_log_impl(&dword_1A7AD9000, keychainManager8, OS_LOG_TYPE_INFO, "Keychain dictionary before upgrade : %@", buf, 0xCu);
     }
 
-    if (v27 >= 3)
+    if (unsignedIntegerValue2 >= 3)
     {
 LABEL_76:
-      v50 = [MEMORY[0x1E69A6138] keychainManager];
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
+      keychainManager9 = [MEMORY[0x1E69A6138] keychainManager];
+      if (os_log_type_enabled(keychainManager9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         *v55 = v25;
-        _os_log_impl(&dword_1A7AD9000, v50, OS_LOG_TYPE_INFO, "Keychain dictionary after upgrade : %@", buf, 0xCu);
+        _os_log_impl(&dword_1A7AD9000, keychainManager9, OS_LOG_TYPE_INFO, "Keychain dictionary after upgrade : %@", buf, 0xCu);
       }
 
       v25 = v25;
@@ -373,86 +373,86 @@ LABEL_76:
     v51 = v26;
     while (1)
     {
-      if (v27 == 2)
+      if (unsignedIntegerValue2 == 2)
       {
-        v33 = [MEMORY[0x1E69A6138] keychainManager];
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+        keychainManager10 = [MEMORY[0x1E69A6138] keychainManager];
+        if (os_log_type_enabled(keychainManager10, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&dword_1A7AD9000, v33, OS_LOG_TYPE_INFO, "  => Updating from V2 to V3", buf, 2u);
+          _os_log_impl(&dword_1A7AD9000, keychainManager10, OS_LOG_TYPE_INFO, "  => Updating from V2 to V3", buf, 2u);
         }
 
-        v27 = 3;
+        unsignedIntegerValue2 = 3;
         goto LABEL_75;
       }
 
-      if (v27 == 1)
+      if (unsignedIntegerValue2 == 1)
       {
-        v33 = [MEMORY[0x1E69A6138] keychainManager];
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+        keychainManager10 = [MEMORY[0x1E69A6138] keychainManager];
+        if (os_log_type_enabled(keychainManager10, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&dword_1A7AD9000, v33, OS_LOG_TYPE_INFO, "  => Updating from V1 to V2", buf, 2u);
+          _os_log_impl(&dword_1A7AD9000, keychainManager10, OS_LOG_TYPE_INFO, "  => Updating from V1 to V2", buf, 2u);
         }
 
-        v27 = 2;
+        unsignedIntegerValue2 = 2;
         goto LABEL_75;
       }
 
-      v31 = [MEMORY[0x1E69A6138] keychainManager];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+      keychainManager11 = [MEMORY[0x1E69A6138] keychainManager];
+      if (os_log_type_enabled(keychainManager11, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_1A7AD9000, v31, OS_LOG_TYPE_INFO, "  => Updating from V0 to V1", buf, 2u);
+        _os_log_impl(&dword_1A7AD9000, keychainManager11, OS_LOG_TYPE_INFO, "  => Updating from V0 to V1", buf, 2u);
       }
 
       v32 = v25;
-      v33 = v32;
+      keychainManager10 = v32;
       if (!v32 || ![v32 count])
       {
-        v35 = [MEMORY[0x1E69A6138] keychainManager];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+        keychainManager12 = [MEMORY[0x1E69A6138] keychainManager];
+        if (os_log_type_enabled(keychainManager12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_1A7AD9000, v35, OS_LOG_TYPE_DEFAULT, "Unable to upgrade an empty keychain data from V0 to V1", buf, 2u);
+          _os_log_impl(&dword_1A7AD9000, keychainManager12, OS_LOG_TYPE_DEFAULT, "Unable to upgrade an empty keychain data from V0 to V1", buf, 2u);
         }
 
         v25 = 0;
         goto LABEL_74;
       }
 
-      v34 = [MEMORY[0x1E695DF90] dictionary];
-      v35 = [v33 mutableCopy];
-      v36 = [v33 mutableCopy];
-      v37 = [v33 objectForKey:@"type"];
-      v38 = [v37 intValue];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      keychainManager12 = [keychainManager10 mutableCopy];
+      v36 = [keychainManager10 mutableCopy];
+      v37 = [keychainManager10 objectForKey:@"type"];
+      intValue = [v37 intValue];
 
-      if (!v38)
+      if (!intValue)
       {
         break;
       }
 
-      if (v38 == 1)
+      if (intValue == 1)
       {
-        v39 = [v33 objectForKey:@"phone-number"];
+        v39 = [keychainManager10 objectForKey:@"phone-number"];
         if (v39)
         {
-          CFDictionarySetValue(v35, @"main-id", v39);
+          CFDictionarySetValue(keychainManager12, @"main-id", v39);
         }
 
-        v40 = [v33 objectForKey:@"phone-number"];
+        v40 = [keychainManager10 objectForKey:@"phone-number"];
         if (v40)
         {
           CFDictionarySetValue(v36, @"main-id", v40);
         }
 
-        v41 = [v33 objectForKey:@"user-id"];
+        v41 = [keychainManager10 objectForKey:@"user-id"];
         if (v41)
         {
-          CFDictionarySetValue(v35, @"profile-id", v41);
+          CFDictionarySetValue(keychainManager12, @"profile-id", v41);
         }
 
-        v42 = [v33 objectForKey:@"user-id"];
+        v42 = [keychainManager10 objectForKey:@"user-id"];
         if (v42)
         {
           v43 = v36;
@@ -464,40 +464,40 @@ LABEL_76:
       }
 
 LABEL_73:
-      CFDictionarySetValue(v35, @"migrated-v0-dictionary", v33);
-      CFDictionarySetValue(v36, @"migrated-v0-dictionary", v33);
+      CFDictionarySetValue(keychainManager12, @"migrated-v0-dictionary", keychainManager10);
+      CFDictionarySetValue(v36, @"migrated-v0-dictionary", keychainManager10);
       v46 = _StringForIDSRegistrationServiceType(@"FaceTime");
-      [v35 setObject:v46 forKey:@"service"];
+      [keychainManager12 setObject:v46 forKey:@"service"];
 
       v47 = _StringForIDSRegistrationServiceType(@"iMessage");
       [(__CFDictionary *)v36 setObject:v47 forKey:@"service"];
 
       v48 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:1];
-      v25 = v34;
-      [v34 setObject:v48 forKey:@"version"];
+      v25 = dictionary;
+      [dictionary setObject:v48 forKey:@"version"];
 
-      v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v35, v36, 0}];
-      [v34 setObject:v49 forKey:@"data"];
+      v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:{keychainManager12, v36, 0}];
+      [dictionary setObject:v49 forKey:@"data"];
 
       v26 = v51;
 LABEL_74:
 
-      v27 = 1;
+      unsignedIntegerValue2 = 1;
 LABEL_75:
 
-      if (v27 >= 3)
+      if (unsignedIntegerValue2 >= 3)
       {
         goto LABEL_76;
       }
     }
 
-    v45 = [v33 objectForKey:@"phone-number"];
+    v45 = [keychainManager10 objectForKey:@"phone-number"];
     if (v45)
     {
-      CFDictionarySetValue(v35, @"main-id", v45);
+      CFDictionarySetValue(keychainManager12, @"main-id", v45);
     }
 
-    v42 = [v33 objectForKey:@"phone-number"];
+    v42 = [keychainManager10 objectForKey:@"phone-number"];
     if (v42)
     {
       v43 = v36;
@@ -516,20 +516,20 @@ LABEL_83:
   [(IDSRegistrationKeychainReader *)self _reloadFromDictionaryLocked:v14];
 }
 
-- (id)registrationWithServiceType:(id)a3 accountType:(int)a4 isTemporary:(BOOL)a5 value:(id)a6
+- (id)registrationWithServiceType:(id)type accountType:(int)accountType isTemporary:(BOOL)temporary value:(id)value
 {
-  v7 = a5;
+  temporaryCopy = temporary;
   v49 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v33 = a6;
+  typeCopy = type;
+  valueCopy = value;
   pthread_mutex_lock(&stru_1EB2B3410);
-  if (a4 == 2)
+  if (accountType == 2)
   {
-    v10 = [MEMORY[0x1E69A6138] keychainManager];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    keychainManager = [MEMORY[0x1E69A6138] keychainManager];
+    if (os_log_type_enabled(keychainManager, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_INFO, "Ignoring keychain registration request for local account", buf, 2u);
+      _os_log_impl(&dword_1A7AD9000, keychainManager, OS_LOG_TYPE_INFO, "Ignoring keychain registration request for local account", buf, 2u);
     }
 
     v11 = 0;
@@ -542,16 +542,16 @@ LABEL_83:
       [(IDSRegistrationKeychainReader *)self _reloadFromKeychainLocked];
     }
 
-    v12 = [MEMORY[0x1E69A6138] keychainManager];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    keychainManager2 = [MEMORY[0x1E69A6138] keychainManager];
+    if (os_log_type_enabled(keychainManager2, OS_LOG_TYPE_INFO))
     {
-      v13 = _StringForIDSRegistrationServiceType(v35);
-      v14 = _StringForIDSAccountType(a4);
+      v13 = _StringForIDSRegistrationServiceType(typeCopy);
+      v14 = _StringForIDSAccountType(accountType);
       v15 = v14;
       v16 = @"NO";
       *buf = 138413058;
       v42 = v13;
-      if (v7)
+      if (temporaryCopy)
       {
         v16 = @"YES";
       }
@@ -561,8 +561,8 @@ LABEL_83:
       v45 = 2112;
       v46 = v16;
       v47 = 2112;
-      v48 = v33;
-      _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_INFO, "Looking up registration with service type: %@  account type: %@  temporary: %@  value: %@", buf, 0x2Au);
+      v48 = valueCopy;
+      _os_log_impl(&dword_1A7AD9000, keychainManager2, OS_LOG_TYPE_INFO, "Looking up registration with service type: %@  account type: %@  temporary: %@  value: %@", buf, 0x2Au);
     }
 
     v38 = 0u;
@@ -575,7 +575,7 @@ LABEL_83:
     {
       v18 = v17;
       v19 = *v37;
-      if (v7)
+      if (temporaryCopy)
       {
         v20 = 2;
       }
@@ -585,8 +585,8 @@ LABEL_83:
         v20 = 0;
       }
 
-      v21 = a4 == 0;
-      if (a4)
+      v21 = accountType == 0;
+      if (accountType)
       {
         v22 = 1;
       }
@@ -618,15 +618,15 @@ LABEL_83:
 
           v25 = *(*(&v36 + 1) + 8 * i);
           v26 = [v25 objectForKey:@"type"];
-          v27 = [v26 intValue];
+          intValue = [v26 intValue];
 
           v28 = [v25 objectForKey:@"service"];
           v29 = _IDSRegistrationServiceTypeForString(v28);
 
-          if (v27 == v22 && (v29 == v35 || [v29 isEqualToString:v35]))
+          if (intValue == v22 && (v29 == typeCopy || [v29 isEqualToString:typeCopy]))
           {
             v30 = [v25 objectForKey:v32];
-            if ([v30 isEqualToString:v33])
+            if ([v30 isEqualToString:valueCopy])
             {
               v11 = v25;
 

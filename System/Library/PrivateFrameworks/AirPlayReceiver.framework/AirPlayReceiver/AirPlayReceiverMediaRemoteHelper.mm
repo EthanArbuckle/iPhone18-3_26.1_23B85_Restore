@@ -1,29 +1,29 @@
 @interface AirPlayReceiverMediaRemoteHelper
 + (void)becomeNowPlayingApplication;
 + (void)resignAsNowPlayingApplication;
-+ (void)setIsNowPlayingApplication:(unsigned __int8)a3;
-- (AirPlayReceiverMediaRemoteHelper)initWithPlayerID:(__CFString *)a3 withSystemInfo:(OpaqueAPReceiverSystemInfo *)a4 withReceiverServer:(AirPlayReceiverServerPrivate *)a5;
-- (unsigned)handleMediaRemoteCommand:(unsigned int)a3 withOptions:(__CFDictionary *)a4;
-- (void)associateNowPlayingSessionWithAudioSession:(unsigned int)a3;
++ (void)setIsNowPlayingApplication:(unsigned __int8)application;
+- (AirPlayReceiverMediaRemoteHelper)initWithPlayerID:(__CFString *)d withSystemInfo:(OpaqueAPReceiverSystemInfo *)info withReceiverServer:(AirPlayReceiverServerPrivate *)server;
+- (unsigned)handleMediaRemoteCommand:(unsigned int)command withOptions:(__CFDictionary *)options;
+- (void)associateNowPlayingSessionWithAudioSession:(unsigned int)session;
 - (void)broadcastPauseCommand;
 - (void)dealloc;
-- (void)handleActiveSessionWillBeHijacked:(id)a3;
-- (void)handleLocalDeviceRoutingContextIDDidChange:(id)a3;
-- (void)handlePlaybackStateDidChange:(id)a3;
-- (void)handleSilentPrimaryStateDidChange:(id)a3;
+- (void)handleActiveSessionWillBeHijacked:(id)hijacked;
+- (void)handleLocalDeviceRoutingContextIDDidChange:(id)change;
+- (void)handlePlaybackStateDidChange:(id)change;
+- (void)handleSilentPrimaryStateDidChange:(id)change;
 - (void)makeNowPlayingPlayer;
 - (void)registerCommandHandler;
 - (void)removeNowPlayingArtwork;
-- (void)setAPNowPlayingInfo:(__CFDictionary *)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIsNowPlaying:(unsigned __int8)a3;
-- (void)setMRNowPlayingClient:(__CFData *)a3;
-- (void)setMRNowPlayingInfo:(__CFDictionary *)a3 withMergePolicy:(unsigned __int8)a4;
-- (void)setMRPlaybackState:(unsigned int)a3;
-- (void)setMRSupportedCommands:(__CFArray *)a3;
-- (void)setMRSupportedCommandsFromSerializedArray:(__CFArray *)a3;
+- (void)setAPNowPlayingInfo:(__CFDictionary *)info;
+- (void)setDelegate:(id)delegate;
+- (void)setIsNowPlaying:(unsigned __int8)playing;
+- (void)setMRNowPlayingClient:(__CFData *)client;
+- (void)setMRNowPlayingInfo:(__CFDictionary *)info withMergePolicy:(unsigned __int8)policy;
+- (void)setMRPlaybackState:(unsigned int)state;
+- (void)setMRSupportedCommands:(__CFArray *)commands;
+- (void)setMRSupportedCommandsFromSerializedArray:(__CFArray *)array;
 - (void)startNowPlayingSession;
-- (void)startNowPlayingSessionWithCompletion:(id)a3;
+- (void)startNowPlayingSessionWithCompletion:(id)completion;
 - (void)stopNowPlayingSession;
 - (void)unregisterCommandHandler;
 @end
@@ -34,7 +34,7 @@
 {
   if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
   {
-    v12 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
@@ -121,7 +121,7 @@
   [(AirPlayReceiverMediaRemoteHelper *)&v13 dealloc];
 }
 
-- (AirPlayReceiverMediaRemoteHelper)initWithPlayerID:(__CFString *)a3 withSystemInfo:(OpaqueAPReceiverSystemInfo *)a4 withReceiverServer:(AirPlayReceiverServerPrivate *)a5
+- (AirPlayReceiverMediaRemoteHelper)initWithPlayerID:(__CFString *)d withSystemInfo:(OpaqueAPReceiverSystemInfo *)info withReceiverServer:(AirPlayReceiverServerPrivate *)server
 {
   v38 = *MEMORY[0x277D85DE8];
   v21.receiver = self;
@@ -144,7 +144,7 @@
     v20 = v9;
     SNPrintF();
     v9->_notificationQueue = dispatch_queue_create(label, 0);
-    if (a3)
+    if (d)
     {
       v27 = 0;
       v28 = &v27;
@@ -165,7 +165,7 @@
       }
 
       _Block_object_dispose(&v27, 8);
-      v12 = [[v11 alloc] initWithIdentifier:a3 displayName:{a3, v9}];
+      v12 = [[v11 alloc] initWithIdentifier:d displayName:{d, v9}];
       v27 = 0;
       v28 = &v27;
       v29 = 0x3052000000;
@@ -193,9 +193,9 @@
       v12 = 0;
     }
 
-    v9->_systemInfo = CFRetain(a4);
-    v9->_server = CFRetain(a5);
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
+    v9->_systemInfo = CFRetain(info);
+    v9->_server = CFRetain(server);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v22 = 0;
     v23 = &v22;
     v24 = 0x2020000000;
@@ -218,7 +218,7 @@
     _Block_object_dispose(&v22, 8);
     if (v15)
     {
-      [v14 addObserver:v9 selector:sel_handlePlaybackStateDidChange_ name:*v15 object:0];
+      [defaultCenter addObserver:v9 selector:sel_handlePlaybackStateDidChange_ name:*v15 object:0];
       soft_MRMediaRemoteSetWantsNowPlayingNotifications(1);
       if (APSMultiPrimariesEnabled() && APSNowPlayingSessionDataSourceEnabled())
       {
@@ -258,7 +258,7 @@ LABEL_18:
   return v9;
 }
 
-- (void)handleActiveSessionWillBeHijacked:(id)a3
+- (void)handleActiveSessionWillBeHijacked:(id)hijacked
 {
   if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
   {
@@ -268,7 +268,7 @@ LABEL_18:
   CFObjectControlAsync();
 }
 
-- (void)handleLocalDeviceRoutingContextIDDidChange:(id)a3
+- (void)handleLocalDeviceRoutingContextIDDidChange:(id)change
 {
   v10 = 0;
   v11 = &v10;
@@ -301,7 +301,7 @@ LABEL_18:
   APReceiverSystemInfoSetProperty(self->_systemInfo, v6, @"RoutingContextID", v7, v8);
 }
 
-- (void)handleSilentPrimaryStateDidChange:(id)a3
+- (void)handleSilentPrimaryStateDidChange:(id)change
 {
   v6 = 0;
   v7 = &v6;
@@ -334,9 +334,9 @@ LABEL_18:
   CFObjectSetProperty();
 }
 
-- (void)handlePlaybackStateDidChange:(id)a3
+- (void)handlePlaybackStateDidChange:(id)change
 {
-  v5 = [a3 userInfo];
+  userInfo = [change userInfo];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -361,8 +361,8 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  v8 = [v5 objectForKeyedSubscript:*v6];
-  v9 = [a3 userInfo];
+  v8 = [userInfo objectForKeyedSubscript:*v6];
+  userInfo2 = [change userInfo];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -391,7 +391,7 @@ LABEL_15:
     _Unwind_Resume(v18);
   }
 
-  v12 = [objc_msgSend(v9 objectForKeyedSubscript:{*v10), "intValue"}];
+  v12 = [objc_msgSend(userInfo2 objectForKeyedSubscript:{*v10), "intValue"}];
   if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 30 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
   {
     v13 = [objc_msgSend(v8 "origin")];
@@ -400,7 +400,7 @@ LABEL_15:
     v23 = v12;
     v20 = v13;
     v21 = v14;
-    v19 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
@@ -408,7 +408,7 @@ LABEL_15:
   {
     if ([objc_msgSend(v8 "client")])
     {
-      v15 = self;
+      selfCopy2 = self;
       v16 = v8;
       notificationQueue = self->_notificationQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -445,7 +445,7 @@ void __65__AirPlayReceiverMediaRemoteHelper_handlePlaybackStateDidChange___block
   v3 = *(a1 + 40);
 }
 
-- (void)setMRNowPlayingClient:(__CFData *)a3
+- (void)setMRNowPlayingClient:(__CFData *)client
 {
   v12 = 0;
   v13 = &v12;
@@ -473,7 +473,7 @@ void __65__AirPlayReceiverMediaRemoteHelper_handlePlaybackStateDidChange___block
     goto LABEL_8;
   }
 
-  v7 = v5(a3);
+  v7 = v5(client);
   if (!v7)
   {
 LABEL_8:
@@ -532,9 +532,9 @@ void __58__AirPlayReceiverMediaRemoteHelper_setMRNowPlayingClient___block_invoke
   CFRelease(*(a1 + 40));
 }
 
-- (void)setAPNowPlayingInfo:(__CFDictionary *)a3
+- (void)setAPNowPlayingInfo:(__CFDictionary *)info
 {
-  CFDictionaryGetValue(a3, @"artworkData");
+  CFDictionaryGetValue(info, @"artworkData");
   if (FigCFEqual())
   {
     [(AirPlayReceiverMediaRemoteHelper *)self removeNowPlayingArtwork];
@@ -620,11 +620,11 @@ LABEL_12:
   {
     if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
     {
-      v5 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
-    [(AirPlayReceiverMediaRemoteHelper *)self setMRNowPlayingInfo:v8[3] withMergePolicy:1, v5];
+    [(AirPlayReceiverMediaRemoteHelper *)self setMRNowPlayingInfo:v8[3] withMergePolicy:1, selfCopy];
     v4 = v8[3];
     if (v4)
     {
@@ -741,9 +741,9 @@ uint64_t __56__AirPlayReceiverMediaRemoteHelper_makeNowPlayingPlayer__block_invo
   return (v2)(v1, 0, 0);
 }
 
-- (void)setMRSupportedCommandsFromSerializedArray:(__CFArray *)a3
+- (void)setMRSupportedCommandsFromSerializedArray:(__CFArray *)array
 {
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(array);
   v6 = *MEMORY[0x277CBECE8];
   Mutable = CFArrayCreateMutable(*MEMORY[0x277CBECE8], Count, MEMORY[0x277CBF128]);
   if (!Mutable)
@@ -753,14 +753,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15 = self;
+  selfCopy = self;
   if (Count >= 1)
   {
     v8 = 0;
     self = &v16;
     while (1)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a3, v8);
+      ValueAtIndex = CFArrayGetValueAtIndex(array, v8);
       v16 = 0;
       v17 = &v16;
       v18 = 0x2020000000;
@@ -789,16 +789,16 @@ LABEL_11:
       }
     }
 
-    v14 = dlerror();
+    selfCopy2 = dlerror();
     abort_report_np();
     goto LABEL_11;
   }
 
 LABEL_8:
-  self = v15;
+  self = selfCopy;
   if (CFArrayGetCount(Mutable))
   {
-    [(AirPlayReceiverMediaRemoteHelper *)v15 setMRSupportedCommands:Mutable];
+    [(AirPlayReceiverMediaRemoteHelper *)selfCopy setMRSupportedCommands:Mutable];
     v13 = Mutable;
 LABEL_23:
     CFRelease(v13);
@@ -808,7 +808,7 @@ LABEL_23:
 LABEL_12:
   if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
   {
-    v14 = self;
+    selfCopy2 = self;
     LogPrintF();
   }
 
@@ -828,25 +828,25 @@ LABEL_12:
     CFRelease(Mutable);
   }
 
-  [(AirPlayReceiverMediaRemoteHelper *)self setMRSupportedCommands:v13, v14];
+  [(AirPlayReceiverMediaRemoteHelper *)self setMRSupportedCommands:v13, selfCopy2];
   if (v13)
   {
     goto LABEL_23;
   }
 }
 
-- (void)setMRSupportedCommands:(__CFArray *)a3
+- (void)setMRSupportedCommands:(__CFArray *)commands
 {
-  if (a3)
+  if (commands)
   {
-    CFRetain(a3);
+    CFRetain(commands);
     dataTransferQueue = self->_dataTransferQueue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __59__AirPlayReceiverMediaRemoteHelper_setMRSupportedCommands___block_invoke;
     v7[3] = &unk_278C60A58;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = commands;
     [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v7];
   }
 
@@ -995,7 +995,7 @@ CFArrayRef __58__AirPlayReceiverMediaRemoteHelper_registerCommandHandler__block_
   return v4;
 }
 
-- (unsigned)handleMediaRemoteCommand:(unsigned int)a3 withOptions:(__CFDictionary *)a4
+- (unsigned)handleMediaRemoteCommand:(unsigned int)command withOptions:(__CFDictionary *)options
 {
   v17 = 0;
   v18 = &v17;
@@ -1006,7 +1006,7 @@ CFArrayRef __58__AirPlayReceiverMediaRemoteHelper_registerCommandHandler__block_
     LogPrintF();
   }
 
-  if (a4 && ((v7 = getkMRMediaRemoteOptionRemoteControlInterfaceIdentifier(), Value = CFDictionaryGetValue(a4, v7), Value == @"com.apple.airplay.mrhelper") || Value && CFEqual(Value, @"com.apple.airplay.mrhelper")))
+  if (options && ((v7 = getkMRMediaRemoteOptionRemoteControlInterfaceIdentifier(), Value = CFDictionaryGetValue(options, v7), Value == @"com.apple.airplay.mrhelper") || Value && CFEqual(Value, @"com.apple.airplay.mrhelper")))
   {
     if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
     {
@@ -1028,9 +1028,9 @@ CFArrayRef __58__AirPlayReceiverMediaRemoteHelper_registerCommandHandler__block_
     if (v10)
     {
       CFRetain(v10);
-      if (a4)
+      if (options)
       {
-        CFRetain(a4);
+        CFRetain(options);
       }
 
       notificationQueue = self->_notificationQueue;
@@ -1038,9 +1038,9 @@ CFArrayRef __58__AirPlayReceiverMediaRemoteHelper_registerCommandHandler__block_
       v14[1] = 3221225472;
       v14[2] = __73__AirPlayReceiverMediaRemoteHelper_handleMediaRemoteCommand_withOptions___block_invoke_2;
       v14[3] = &unk_278C5FCC0;
-      v15 = a3;
+      commandCopy = command;
       v14[4] = &v17;
-      v14[5] = a4;
+      v14[5] = options;
       dispatch_async(notificationQueue, v14);
     }
 
@@ -1084,7 +1084,7 @@ void __73__AirPlayReceiverMediaRemoteHelper_handleMediaRemoteCommand_withOptions
   }
 }
 
-- (void)setMRPlaybackState:(unsigned int)a3
+- (void)setMRPlaybackState:(unsigned int)state
 {
   dataTransferQueue = self->_dataTransferQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1092,7 +1092,7 @@ void __73__AirPlayReceiverMediaRemoteHelper_handleMediaRemoteCommand_withOptions
   v4[2] = __55__AirPlayReceiverMediaRemoteHelper_setMRPlaybackState___block_invoke;
   v4[3] = &unk_278C5FB28;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v4];
 }
 
@@ -1130,19 +1130,19 @@ uint64_t __55__AirPlayReceiverMediaRemoteHelper_setMRPlaybackState___block_invok
   return (v4)(v2, v3, 0, 0);
 }
 
-- (void)setMRNowPlayingInfo:(__CFDictionary *)a3 withMergePolicy:(unsigned __int8)a4
+- (void)setMRNowPlayingInfo:(__CFDictionary *)info withMergePolicy:(unsigned __int8)policy
 {
-  if (a3)
+  if (info)
   {
-    CFRetain(a3);
+    CFRetain(info);
     dataTransferQueue = self->_dataTransferQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __72__AirPlayReceiverMediaRemoteHelper_setMRNowPlayingInfo_withMergePolicy___block_invoke;
     v8[3] = &unk_278C5F658;
-    v9 = a4;
+    policyCopy = policy;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = info;
     [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v8];
   }
 }
@@ -1269,14 +1269,14 @@ void __57__AirPlayReceiverMediaRemoteHelper_broadcastPauseCommand__block_invoke(
   }
 }
 
-- (void)associateNowPlayingSessionWithAudioSession:(unsigned int)a3
+- (void)associateNowPlayingSessionWithAudioSession:(unsigned int)session
 {
-  v3 = *&a3;
+  v3 = *&session;
   if (APSMultiPrimariesEnabled())
   {
     if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
     {
-      v6 = self;
+      selfCopy = self;
       v7 = v3;
       LogPrintF();
     }
@@ -1288,7 +1288,7 @@ void __57__AirPlayReceiverMediaRemoteHelper_broadcastPauseCommand__block_invoke(
     v8[3] = &unk_278C5FB28;
     v8[4] = self;
     v9 = v3;
-    [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v8, v6, v7];
+    [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v8, selfCopy, v7];
     [(NSOperationQueue *)self->_dataTransferQueue waitUntilAllOperationsAreFinished];
   }
 }
@@ -1402,7 +1402,7 @@ intptr_t __79__AirPlayReceiverMediaRemoteHelper_associateNowPlayingSessionWithAu
   {
     if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
     {
-      v4 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
@@ -1482,7 +1482,7 @@ LABEL_7:
   }
 }
 
-- (void)startNowPlayingSessionWithCompletion:(id)a3
+- (void)startNowPlayingSessionWithCompletion:(id)completion
 {
   if (APSMultiPrimariesEnabled())
   {
@@ -1490,7 +1490,7 @@ LABEL_7:
     v5 = mach_absolute_time();
     if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
     {
-      v7 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
@@ -1499,10 +1499,10 @@ LABEL_7:
     v8[1] = 3221225472;
     v8[2] = __73__AirPlayReceiverMediaRemoteHelper_startNowPlayingSessionWithCompletion___block_invoke;
     v8[3] = &unk_278C5F5E8;
-    v8[5] = a3;
+    v8[5] = completion;
     v8[6] = v5;
     v8[4] = self;
-    [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v8, v7];
+    [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v8, selfCopy];
   }
 
   else if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 90 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
@@ -1580,7 +1580,7 @@ intptr_t __73__AirPlayReceiverMediaRemoteHelper_startNowPlayingSessionWithComple
     v3 = mach_absolute_time();
     if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
     {
-      v5 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
@@ -1591,7 +1591,7 @@ intptr_t __73__AirPlayReceiverMediaRemoteHelper_startNowPlayingSessionWithComple
     v6[3] = &unk_278C60A58;
     v6[4] = self;
     v6[5] = v3;
-    [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v6, v5];
+    [(NSOperationQueue *)dataTransferQueue addOperationWithBlock:v6, selfCopy];
     [(NSOperationQueue *)self->_dataTransferQueue waitUntilAllOperationsAreFinished];
   }
 
@@ -1650,15 +1650,15 @@ intptr_t __58__AirPlayReceiverMediaRemoteHelper_startNowPlayingSession__block_in
   return dispatch_semaphore_signal(v4);
 }
 
-- (void)setIsNowPlaying:(unsigned __int8)a3
+- (void)setIsNowPlaying:(unsigned __int8)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v4 = objc_opt_class();
 
-  [v4 setIsNowPlayingApplication:v3];
+  [v4 setIsNowPlayingApplication:playingCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   if (gLogCategory_AirPlayReceiverMediaRemoteHelper <= 50 && (gLogCategory_AirPlayReceiverMediaRemoteHelper != -1 || _LogCategory_Initialize()))
   {
@@ -1671,7 +1671,7 @@ intptr_t __58__AirPlayReceiverMediaRemoteHelper_startNowPlayingSession__block_in
   block[2] = __48__AirPlayReceiverMediaRemoteHelper_setDelegate___block_invoke;
   block[3] = &unk_278C60A08;
   block[4] = self;
-  block[5] = a3;
+  block[5] = delegate;
   dispatch_sync(dataTransferQueueInternal, block);
 }
 
@@ -1700,25 +1700,25 @@ uint64_t __48__AirPlayReceiverMediaRemoteHelper_setDelegate___block_invoke(uint6
   }
 }
 
-+ (void)setIsNowPlayingApplication:(unsigned __int8)a3
++ (void)setIsNowPlayingApplication:(unsigned __int8)application
 {
-  v3 = a3;
+  applicationCopy = application;
   if (APSMultiPrimariesEnabled())
   {
 
     APSLogErrorAt();
   }
 
-  else if (v3)
+  else if (applicationCopy)
   {
 
-    [a1 becomeNowPlayingApplication];
+    [self becomeNowPlayingApplication];
   }
 
   else
   {
 
-    [a1 resignAsNowPlayingApplication];
+    [self resignAsNowPlayingApplication];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface MPNowPlayingInfoTransportableSessionResponse
-+ (id)responseWithIdentifier:(id)a3 sessionType:(id)a4 data:(id)a5;
++ (id)responseWithIdentifier:(id)identifier sessionType:(id)type data:(id)data;
 - (id)_init;
 @end
 
@@ -12,25 +12,25 @@
   return [(MPNowPlayingInfoTransportableSessionResponse *)&v3 init];
 }
 
-+ (id)responseWithIdentifier:(id)a3 sessionType:(id)a4 data:(id)a5
++ (id)responseWithIdentifier:(id)identifier sessionType:(id)type data:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] _init];
-  v12 = [v10 copy];
+  dataCopy = data;
+  typeCopy = type;
+  identifierCopy = identifier;
+  _init = [[self alloc] _init];
+  v12 = [identifierCopy copy];
 
-  v13 = v11[1];
-  v11[1] = v12;
+  v13 = _init[1];
+  _init[1] = v12;
 
-  v14 = [v9 copy];
-  v15 = v11[2];
-  v11[2] = v14;
+  v14 = [typeCopy copy];
+  v15 = _init[2];
+  _init[2] = v14;
 
-  v16 = v11[3];
-  v11[3] = v8;
+  v16 = _init[3];
+  _init[3] = dataCopy;
 
-  return v11;
+  return _init;
 }
 
 @end

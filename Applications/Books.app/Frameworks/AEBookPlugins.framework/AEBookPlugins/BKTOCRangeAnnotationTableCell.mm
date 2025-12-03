@@ -1,99 +1,99 @@
 @interface BKTOCRangeAnnotationTableCell
-+ (CGRect)dateLabelFrameForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 minY:(double)a6 layoutDirection:(int64_t)a7;
-+ (CGRect)dateLabelFrameInPopoverForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 minY:(double)a6 pageLabelFrame:(CGRect)a7 layoutDirection:(int64_t)a8;
-+ (CGRect)highlightedTextFrameForAnnotation:(id)a3 font:(id)a4 bounds:(CGRect)a5 letMargin:(double)a6 numberOfLines:(int)a7 pageLabelFrame:(CGRect)a8 layoutDirection:(int64_t)a9;
-+ (CGRect)highlightedTextFrameForAnnotation:(id)a3 font:(id)a4 bounds:(CGRect)a5 pageLabelFrame:(CGRect)a6 layoutDirection:(int64_t)a7;
-+ (CGRect)highlightedTextFrameInPopoverForAnnotation:(id)a3 font:(id)a4 bounds:(CGRect)a5 pageLabelFrame:(CGRect)a6 layoutDirection:(int64_t)a7;
-+ (CGRect)pageLabelFrameInPopoverForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 layoutDirection:(int64_t)a6;
++ (CGRect)dateLabelFrameForString:(id)string font:(id)font bounds:(CGRect)bounds minY:(double)y layoutDirection:(int64_t)direction;
++ (CGRect)dateLabelFrameInPopoverForString:(id)string font:(id)font bounds:(CGRect)bounds minY:(double)y pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction;
++ (CGRect)highlightedTextFrameForAnnotation:(id)annotation font:(id)font bounds:(CGRect)bounds letMargin:(double)margin numberOfLines:(int)lines pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction;
++ (CGRect)highlightedTextFrameForAnnotation:(id)annotation font:(id)font bounds:(CGRect)bounds pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction;
++ (CGRect)highlightedTextFrameInPopoverForAnnotation:(id)annotation font:(id)font bounds:(CGRect)bounds pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction;
++ (CGRect)pageLabelFrameInPopoverForString:(id)string font:(id)font bounds:(CGRect)bounds layoutDirection:(int64_t)direction;
 + (double)bottomPadding;
-+ (double)cellHeightInPopoverForBounds:(CGRect)a3 highlightFont:(id)a4 annotation:(id)a5 dateString:(id)a6 pageString:(id)a7 layoutDirection:(int64_t)a8;
-+ (double)noteTextFrameForString:(CGFloat)a3 font:(CGFloat)a4 bounds:(double)a5 spacingToItemAbove:(uint64_t)a6 numberOfLines:(uint64_t)a7 matchesWidthOfHighlightedText:(void *)a8 highlightedTextFrame:(void *)a9 pageLabelFrame:(int)a10;
++ (double)cellHeightInPopoverForBounds:(CGRect)bounds highlightFont:(id)font annotation:(id)annotation dateString:(id)string pageString:(id)pageString layoutDirection:(int64_t)direction;
++ (double)noteTextFrameForString:(CGFloat)string font:(CGFloat)font bounds:(double)bounds spacingToItemAbove:(uint64_t)above numberOfLines:(uint64_t)lines matchesWidthOfHighlightedText:(void *)text highlightedTextFrame:(void *)frame pageLabelFrame:(int)self0;
 + (double)pageNumberAndHighlightedTextFontSize;
 + (id)noteFontForPopover;
 - (AEHighlightedTextLabel)highlightedTextLabel;
-- (void)layoutSubviewsNotEditingWithBounds:(CGRect)a3;
+- (void)layoutSubviewsNotEditingWithBounds:(CGRect)bounds;
 - (void)prepareForReuse;
 @end
 
 @implementation BKTOCRangeAnnotationTableCell
 
-- (void)layoutSubviewsNotEditingWithBounds:(CGRect)a3
+- (void)layoutSubviewsNotEditingWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(BKTOCTableViewCell *)self usesPopoverStyle];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  usesPopoverStyle = [(BKTOCTableViewCell *)self usesPopoverStyle];
   v9 = objc_opt_class();
-  v10 = [(BKTOCTableViewCell *)self pageLabel];
-  v11 = [v10 text];
-  v12 = [(BKTOCTableViewCell *)self pageLabel];
-  v13 = [v12 font];
-  v14 = [(BKTOCRangeAnnotationTableCell *)self effectiveUserInterfaceLayoutDirection];
-  if (v8)
+  pageLabel = [(BKTOCTableViewCell *)self pageLabel];
+  text = [pageLabel text];
+  pageLabel2 = [(BKTOCTableViewCell *)self pageLabel];
+  font = [pageLabel2 font];
+  effectiveUserInterfaceLayoutDirection = [(BKTOCRangeAnnotationTableCell *)self effectiveUserInterfaceLayoutDirection];
+  if (usesPopoverStyle)
   {
-    [v9 pageLabelFrameInPopoverForString:v11 font:v13 bounds:v14 layoutDirection:{x, y, width, height}];
+    [v9 pageLabelFrameInPopoverForString:text font:font bounds:effectiveUserInterfaceLayoutDirection layoutDirection:{x, y, width, height}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v169 = height;
     v22 = v21;
-    v23 = [(BKTOCTableViewCell *)self pageLabel];
-    [v23 setFrame:{v16, v18, v20, v22}];
+    pageLabel3 = [(BKTOCTableViewCell *)self pageLabel];
+    [pageLabel3 setFrame:{v16, v18, v20, v22}];
 
     v24 = objc_opt_class();
-    v25 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    v26 = [v25 annotation];
-    v27 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    v28 = [v27 font];
-    v29 = [(BKTOCTableViewCell *)self pageLabel];
-    [v29 frame];
-    [v24 highlightedTextFrameInPopoverForAnnotation:v26 font:v28 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self pageLabelFrame:"effectiveUserInterfaceLayoutDirection") layoutDirection:{x, y, width, v169, v30, v31, v32, v33}];
+    highlightedTextLabel = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    annotation = [highlightedTextLabel annotation];
+    highlightedTextLabel2 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    font2 = [highlightedTextLabel2 font];
+    pageLabel4 = [(BKTOCTableViewCell *)self pageLabel];
+    [pageLabel4 frame];
+    [v24 highlightedTextFrameInPopoverForAnnotation:annotation font:font2 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self pageLabelFrame:"effectiveUserInterfaceLayoutDirection") layoutDirection:{x, y, width, v169, v30, v31, v32, v33}];
     v35 = v34;
     v37 = v36;
     v39 = v38;
     v41 = v40;
-    v42 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v42 setFrame:{v35, v37, v39, v41}];
+    highlightedTextLabel3 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel3 setFrame:{v35, v37, v39, v41}];
 
-    v43 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v43 frame];
+    highlightedTextLabel4 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel4 frame];
     v44 = CGRectGetWidth(v171);
-    v45 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v45 setFullLineWidth:v44];
+    highlightedTextLabel5 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel5 setFullLineWidth:v44];
 
     v46 = objc_opt_class();
-    v47 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    v48 = [v47 text];
-    v49 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    v50 = [v49 font];
-    v51 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v51 frame];
+    noteLabel = [(BKTOCAnnotationTableCell *)self noteLabel];
+    text2 = [noteLabel text];
+    noteLabel2 = [(BKTOCAnnotationTableCell *)self noteLabel];
+    font3 = [noteLabel2 font];
+    highlightedTextLabel6 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel6 frame];
     v53 = v52;
     v55 = v54;
     v57 = v56;
     v59 = v58;
-    v60 = [(BKTOCTableViewCell *)self pageLabel];
-    [v60 frame];
-    [v46 noteTextFrameInPopoverForString:v48 font:v50 bounds:x highlightedTextFrame:y pageLabelFrame:{width, v169, v53, v55, v57, v59, v61, v62, v63, v64}];
+    pageLabel5 = [(BKTOCTableViewCell *)self pageLabel];
+    [pageLabel5 frame];
+    [v46 noteTextFrameInPopoverForString:text2 font:font3 bounds:x highlightedTextFrame:y pageLabelFrame:{width, v169, v53, v55, v57, v59, v61, v62, v63, v64}];
     v66 = v65;
     v68 = v67;
     v70 = v69;
     v72 = v71;
-    v73 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    [v73 setFrame:{v66, v68, v70, v72}];
+    noteLabel3 = [(BKTOCAnnotationTableCell *)self noteLabel];
+    [noteLabel3 setFrame:{v66, v68, v70, v72}];
 
     v74 = objc_opt_class();
-    v75 = [(BKTOCAnnotationTableCell *)self dateLabel];
-    v76 = [v75 text];
-    v77 = [(BKTOCAnnotationTableCell *)self dateLabel];
-    v78 = [v77 font];
-    v79 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    [v79 frame];
+    dateLabel = [(BKTOCAnnotationTableCell *)self dateLabel];
+    text3 = [dateLabel text];
+    dateLabel2 = [(BKTOCAnnotationTableCell *)self dateLabel];
+    font4 = [dateLabel2 font];
+    noteLabel4 = [(BKTOCAnnotationTableCell *)self noteLabel];
+    [noteLabel4 frame];
     MaxY = CGRectGetMaxY(v172);
 
-    v81 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v81 frame];
+    highlightedTextLabel7 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel7 frame];
     v82 = CGRectGetMaxY(v173);
 
     if (MaxY < v82)
@@ -101,81 +101,81 @@
       MaxY = v82;
     }
 
-    v83 = [(BKTOCTableViewCell *)self pageLabel];
-    [v83 frame];
+    pageLabel6 = [(BKTOCTableViewCell *)self pageLabel];
+    [pageLabel6 frame];
     height = v169;
-    [v74 dateLabelFrameInPopoverForString:v76 font:v78 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self minY:"effectiveUserInterfaceLayoutDirection") pageLabelFrame:x layoutDirection:{y, width, v169, MaxY, v84, v85, v86, v87}];
+    [v74 dateLabelFrameInPopoverForString:text3 font:font4 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self minY:"effectiveUserInterfaceLayoutDirection") pageLabelFrame:x layoutDirection:{y, width, v169, MaxY, v84, v85, v86, v87}];
     v89 = v88;
     v91 = v90;
     v93 = v92;
     v95 = v94;
-    v96 = [(BKTOCAnnotationTableCell *)self dateLabel];
-    [v96 setFrame:{v89, v91, v93, v95}];
+    dateLabel3 = [(BKTOCAnnotationTableCell *)self dateLabel];
+    [dateLabel3 setFrame:{v89, v91, v93, v95}];
   }
 
   else
   {
-    [v9 pageLabelFrameForString:v11 font:v13 bounds:v14 layoutDirection:{x, y, width, height}];
+    [v9 pageLabelFrameForString:text font:font bounds:effectiveUserInterfaceLayoutDirection layoutDirection:{x, y, width, height}];
     v98 = v97;
     v100 = v99;
     v102 = v101;
     v104 = v103;
-    v105 = [(BKTOCTableViewCell *)self pageLabel];
-    [v105 setFrame:{v98, v100, v102, v104}];
+    pageLabel7 = [(BKTOCTableViewCell *)self pageLabel];
+    [pageLabel7 setFrame:{v98, v100, v102, v104}];
 
     v106 = objc_opt_class();
-    v107 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    v108 = [v107 annotation];
-    v109 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    v110 = [v109 font];
-    v111 = [(BKTOCTableViewCell *)self pageLabel];
-    [v111 frame];
-    [v106 highlightedTextFrameForAnnotation:v108 font:v110 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self pageLabelFrame:"effectiveUserInterfaceLayoutDirection") layoutDirection:{x, y, width, height, v112, v113, v114, v115}];
+    highlightedTextLabel8 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    annotation2 = [highlightedTextLabel8 annotation];
+    highlightedTextLabel9 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    font5 = [highlightedTextLabel9 font];
+    pageLabel8 = [(BKTOCTableViewCell *)self pageLabel];
+    [pageLabel8 frame];
+    [v106 highlightedTextFrameForAnnotation:annotation2 font:font5 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self pageLabelFrame:"effectiveUserInterfaceLayoutDirection") layoutDirection:{x, y, width, height, v112, v113, v114, v115}];
     v117 = v116;
     v119 = v118;
     v121 = v120;
     v123 = v122;
-    v124 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v124 setFrame:{v117, v119, v121, v123}];
+    highlightedTextLabel10 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel10 setFrame:{v117, v119, v121, v123}];
 
-    v125 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v125 frame];
+    highlightedTextLabel11 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel11 frame];
     v126 = CGRectGetWidth(v174);
-    v127 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v127 setFullLineWidth:v126];
+    highlightedTextLabel12 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel12 setFullLineWidth:v126];
 
     v128 = objc_opt_class();
-    v129 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    v130 = [v129 text];
-    v131 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    v132 = [v131 font];
-    v133 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v133 frame];
+    noteLabel5 = [(BKTOCAnnotationTableCell *)self noteLabel];
+    text4 = [noteLabel5 text];
+    noteLabel6 = [(BKTOCAnnotationTableCell *)self noteLabel];
+    font6 = [noteLabel6 font];
+    highlightedTextLabel13 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel13 frame];
     v135 = v134;
     v137 = v136;
     v139 = v138;
     v141 = v140;
-    v142 = [(BKTOCTableViewCell *)self pageLabel];
-    [v142 frame];
-    [v128 noteTextFrameForString:v130 font:v132 bounds:x highlightedTextFrame:y pageLabelFrame:{width, height, v135, v137, v139, v141, v143, v144, v145, v146}];
+    pageLabel9 = [(BKTOCTableViewCell *)self pageLabel];
+    [pageLabel9 frame];
+    [v128 noteTextFrameForString:text4 font:font6 bounds:x highlightedTextFrame:y pageLabelFrame:{width, height, v135, v137, v139, v141, v143, v144, v145, v146}];
     v148 = v147;
     v150 = v149;
     v152 = v151;
     v154 = v153;
-    v155 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    [v155 setFrame:{v148, v150, v152, v154}];
+    noteLabel7 = [(BKTOCAnnotationTableCell *)self noteLabel];
+    [noteLabel7 setFrame:{v148, v150, v152, v154}];
 
     v156 = objc_opt_class();
-    v75 = [(BKTOCAnnotationTableCell *)self dateLabel];
-    v76 = [v75 text];
-    v77 = [(BKTOCAnnotationTableCell *)self dateLabel];
-    v78 = [v77 font];
-    v157 = [(BKTOCAnnotationTableCell *)self noteLabel];
-    [v157 frame];
+    dateLabel = [(BKTOCAnnotationTableCell *)self dateLabel];
+    text3 = [dateLabel text];
+    dateLabel2 = [(BKTOCAnnotationTableCell *)self dateLabel];
+    font4 = [dateLabel2 font];
+    noteLabel8 = [(BKTOCAnnotationTableCell *)self noteLabel];
+    [noteLabel8 frame];
     v158 = CGRectGetMaxY(v175);
 
-    v159 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
-    [v159 frame];
+    highlightedTextLabel14 = [(BKTOCRangeAnnotationTableCell *)self highlightedTextLabel];
+    [highlightedTextLabel14 frame];
     v160 = CGRectGetMaxY(v176);
 
     if (v158 < v160)
@@ -183,13 +183,13 @@
       v158 = v160;
     }
 
-    [v156 dateLabelFrameForString:v76 font:v78 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self minY:"effectiveUserInterfaceLayoutDirection") layoutDirection:{x, y, width, height, v158}];
+    [v156 dateLabelFrameForString:text3 font:font4 bounds:-[BKTOCRangeAnnotationTableCell effectiveUserInterfaceLayoutDirection](self minY:"effectiveUserInterfaceLayoutDirection") layoutDirection:{x, y, width, height, v158}];
     v162 = v161;
     v164 = v163;
     v166 = v165;
     v168 = v167;
-    v83 = [(BKTOCAnnotationTableCell *)self dateLabel];
-    [v83 setFrame:{v162, v164, v166, v168}];
+    pageLabel6 = [(BKTOCAnnotationTableCell *)self dateLabel];
+    [pageLabel6 setFrame:{v162, v164, v166, v168}];
   }
 
   v170.receiver = self;
@@ -228,8 +228,8 @@
 
     [(AEHighlightedTextLabel *)self->_highlightedTextLabel setNumberOfLines:v6];
     [(AEHighlightedTextLabel *)self->_highlightedTextLabel setOpaque:0];
-    v7 = [(BKTOCRangeAnnotationTableCell *)self contentView];
-    [v7 addSubview:self->_highlightedTextLabel];
+    contentView = [(BKTOCRangeAnnotationTableCell *)self contentView];
+    [contentView addSubview:self->_highlightedTextLabel];
 
     highlightedTextLabel = self->_highlightedTextLabel;
   }
@@ -258,15 +258,15 @@
   return result;
 }
 
-+ (CGRect)pageLabelFrameInPopoverForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 layoutDirection:(int64_t)a6
++ (CGRect)pageLabelFrameInPopoverForString:(id)string font:(id)font bounds:(CGRect)bounds layoutDirection:(int64_t)direction
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a4;
-  v13 = a3;
-  [objc_opt_class() pageLabelFrameForString:v13 font:v12 bounds:a6 topMargin:x layoutDirection:{y, width, height, 8.0}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  fontCopy = font;
+  stringCopy = string;
+  [objc_opt_class() pageLabelFrameForString:stringCopy font:fontCopy bounds:direction topMargin:x layoutDirection:{y, width, height, 8.0}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -283,9 +283,9 @@
   return result;
 }
 
-+ (CGRect)highlightedTextFrameInPopoverForAnnotation:(id)a3 font:(id)a4 bounds:(CGRect)a5 pageLabelFrame:(CGRect)a6 layoutDirection:(int64_t)a7
++ (CGRect)highlightedTextFrameInPopoverForAnnotation:(id)annotation font:(id)font bounds:(CGRect)bounds pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction
 {
-  [a1 highlightedTextFrameForAnnotation:a3 font:a4 bounds:3 letMargin:a7 numberOfLines:a5.origin.x pageLabelFrame:a5.origin.y layoutDirection:{a5.size.width, a5.size.height, 8.0, *&a6.origin.x, *&a6.origin.y, *&a6.size.width, *&a6.size.height}];
+  [self highlightedTextFrameForAnnotation:annotation font:font bounds:3 letMargin:direction numberOfLines:bounds.origin.x pageLabelFrame:bounds.origin.y layoutDirection:{bounds.size.width, bounds.size.height, 8.0, *&frame.origin.x, *&frame.origin.y, *&frame.size.width, *&frame.size.height}];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -293,9 +293,9 @@
   return result;
 }
 
-+ (CGRect)highlightedTextFrameForAnnotation:(id)a3 font:(id)a4 bounds:(CGRect)a5 pageLabelFrame:(CGRect)a6 layoutDirection:(int64_t)a7
++ (CGRect)highlightedTextFrameForAnnotation:(id)annotation font:(id)font bounds:(CGRect)bounds pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction
 {
-  [a1 highlightedTextFrameForAnnotation:a3 font:a4 bounds:2 letMargin:a7 numberOfLines:a5.origin.x pageLabelFrame:a5.origin.y layoutDirection:{a5.size.width, a5.size.height, 15.0, *&a6.origin.x, *&a6.origin.y, *&a6.size.width, *&a6.size.height}];
+  [self highlightedTextFrameForAnnotation:annotation font:font bounds:2 letMargin:direction numberOfLines:bounds.origin.x pageLabelFrame:bounds.origin.y layoutDirection:{bounds.size.width, bounds.size.height, 15.0, *&frame.origin.x, *&frame.origin.y, *&frame.size.width, *&frame.size.height}];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -303,22 +303,22 @@
   return result;
 }
 
-+ (CGRect)highlightedTextFrameForAnnotation:(id)a3 font:(id)a4 bounds:(CGRect)a5 letMargin:(double)a6 numberOfLines:(int)a7 pageLabelFrame:(CGRect)a8 layoutDirection:(int64_t)a9
++ (CGRect)highlightedTextFrameForAnnotation:(id)annotation font:(id)font bounds:(CGRect)bounds letMargin:(double)margin numberOfLines:(int)lines pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a3;
-  v17 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  annotationCopy = annotation;
+  fontCopy = font;
   v32 = CGRectZero.size.height;
-  MinY = CGRectGetMinY(a8);
+  MinY = CGRectGetMinY(frame);
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
   v35.size.height = height;
   MinX = CGRectGetMinX(v35);
-  if (CGRectGetWidth(a8) <= 0.0)
+  if (CGRectGetWidth(frame) <= 0.0)
   {
     v37.origin.x = x;
     v37.origin.y = y;
@@ -331,14 +331,14 @@
 
   else
   {
-    if (a9 == 1)
+    if (direction == 1)
     {
       v36.origin.x = x;
       v36.origin.y = y;
       v36.size.width = width;
       v36.size.height = height;
       rect = CGRectGetWidth(v36);
-      v18 = rect - CGRectGetMaxX(a8);
+      v18 = rect - CGRectGetMaxX(frame);
       v20 = v32;
       v19 = MinY;
     }
@@ -346,7 +346,7 @@
     else
     {
       recta = CGRectZero.size.width;
-      v22 = CGRectGetMinX(a8);
+      v22 = CGRectGetMinX(frame);
       v19 = MinY;
       v38.origin.x = MinX;
       v38.origin.y = MinY;
@@ -356,21 +356,21 @@
       v18 = v22 - CGRectGetMinX(v38);
     }
 
-    v21 = v18 - a6;
+    v21 = v18 - margin;
   }
 
   v23 = MinX;
-  if (v16)
+  if (annotationCopy)
   {
     v39.origin.x = MinX;
     v39.origin.y = v19;
     v39.size.width = v21;
     v39.size.height = v20;
-    [AEHighlightedTextLabel sizeForAnnotation:v16 font:v17 width:a7 numberOfLines:0 useSelectedText:CGRectGetWidth(v39)];
+    [AEHighlightedTextLabel sizeForAnnotation:annotationCopy font:fontCopy width:lines numberOfLines:0 useSelectedText:CGRectGetWidth(v39)];
     v20 = v24;
   }
 
-  if (a9 == 1)
+  if (direction == 1)
   {
     v40.origin.x = x;
     v40.origin.y = y;
@@ -390,26 +390,26 @@
   return result;
 }
 
-+ (double)noteTextFrameForString:(CGFloat)a3 font:(CGFloat)a4 bounds:(double)a5 spacingToItemAbove:(uint64_t)a6 numberOfLines:(uint64_t)a7 matchesWidthOfHighlightedText:(void *)a8 highlightedTextFrame:(void *)a9 pageLabelFrame:(int)a10
++ (double)noteTextFrameForString:(CGFloat)string font:(CGFloat)font bounds:(double)bounds spacingToItemAbove:(uint64_t)above numberOfLines:(uint64_t)lines matchesWidthOfHighlightedText:(void *)text highlightedTextFrame:(void *)frame pageLabelFrame:(int)self0
 {
-  v29 = a17;
-  v28 = a18;
-  v31 = a15;
+  stringCopy = a17;
+  fontCopy = a18;
+  selfCopy = a15;
   v30 = a16;
-  v32 = a8;
-  v33 = a9;
+  textCopy = text;
+  frameCopy = frame;
   height = CGRectZero.size.height;
   v50.origin.x = a15;
   v50.origin.y = a16;
   v50.size.width = a17;
   v50.size.height = a18;
   MaxY = CGRectGetMaxY(v50);
-  v51.origin.x = a1;
+  v51.origin.x = self;
   v51.origin.y = a2;
-  v51.size.width = a3;
-  v51.size.height = a4;
+  v51.size.width = string;
+  v51.size.height = font;
   MinX = CGRectGetMinX(v51);
-  if ([v32 isNotWhitespace])
+  if ([textCopy isNotWhitespace])
   {
     if ((a11 & 1) == 0)
     {
@@ -424,32 +424,32 @@
       v53.size.height = a22;
       if (v43 >= CGRectGetMaxY(v53))
       {
-        v28 = a4;
-        v29 = a3;
+        fontCopy = font;
+        stringCopy = string;
         v30 = a2;
-        v31 = a1;
+        selfCopy = self;
       }
     }
 
-    v54.origin.x = v31;
+    v54.origin.x = selfCopy;
     v54.origin.y = v30;
-    v54.size.width = v29;
-    v54.size.height = v28;
+    v54.size.width = stringCopy;
+    v54.size.height = fontCopy;
     Width = CGRectGetWidth(v54);
-    [v33 lineHeight];
+    [frameCopy lineHeight];
     v36 = v35;
     v37 = objc_alloc_init(NSStringDrawingContext);
     v55.size.height = height;
     v38 = MinX;
     v55.origin.x = MinX;
-    v55.origin.y = MaxY + a5;
+    v55.origin.y = MaxY + bounds;
     v55.size.width = Width;
     v39 = CGRectGetWidth(v55);
-    v40 = v36 * a10;
+    v40 = v36 * labelFrame;
     v48 = NSFontAttributeName;
-    v49 = v33;
+    v49 = frameCopy;
     v41 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-    [v32 boundingRectWithSize:35 options:v41 attributes:v37 context:{v39, v40}];
+    [textCopy boundingRectWithSize:35 options:v41 attributes:v37 context:{v39, v40}];
   }
 
   else
@@ -460,28 +460,28 @@
   return v38;
 }
 
-+ (CGRect)dateLabelFrameForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 minY:(double)a6 layoutDirection:(int64_t)a7
++ (CGRect)dateLabelFrameForString:(id)string font:(id)font bounds:(CGRect)bounds minY:(double)y layoutDirection:(int64_t)direction
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a6 + 3.0;
-  v15 = a4;
-  v16 = a3;
-  [v15 ascender];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v14 = y + 3.0;
+  fontCopy = font;
+  stringCopy = string;
+  [fontCopy ascender];
   v18 = v17;
-  [v15 descender];
+  [fontCopy descender];
   *&v19 = v14 + (v18 - v19) * 0.200000003;
   v20 = floorf(*&v19);
-  [a1 dateLabelSizeForString:v16 font:v15 bounds:{x, y, width, height}];
+  [self dateLabelSizeForString:stringCopy font:fontCopy bounds:{x, y, width, height}];
   v22 = v21;
 
   v23 = x;
-  v24 = y;
+  yCopy = y;
   v25 = width;
   v26 = height;
-  if (a7 == 1)
+  if (direction == 1)
   {
     MaxX = CGRectGetMaxX(*&v23);
     v32.origin.x = CGRectZero.origin.x;
@@ -506,14 +506,14 @@
   return result;
 }
 
-+ (CGRect)dateLabelFrameInPopoverForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 minY:(double)a6 pageLabelFrame:(CGRect)a7 layoutDirection:(int64_t)a8
++ (CGRect)dateLabelFrameInPopoverForString:(id)string font:(id)font bounds:(CGRect)bounds minY:(double)y pageLabelFrame:(CGRect)frame layoutDirection:(int64_t)direction
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a6 + 5.0;
-  [a1 dateLabelSizeForString:a3 font:a4 bounds:{a8, a5.origin.x}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v12 = y + 5.0;
+  [self dateLabelSizeForString:string font:font bounds:{direction, bounds.origin.x}];
   v14 = v13;
   v20.origin.x = x;
   v20.origin.y = y;
@@ -547,19 +547,19 @@
   return result;
 }
 
-+ (double)cellHeightInPopoverForBounds:(CGRect)a3 highlightFont:(id)a4 annotation:(id)a5 dateString:(id)a6 pageString:(id)a7 layoutDirection:(int64_t)a8
++ (double)cellHeightInPopoverForBounds:(CGRect)bounds highlightFont:(id)font annotation:(id)annotation dateString:(id)string pageString:(id)pageString layoutDirection:(int64_t)direction
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v58 = a3.origin.x;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = [a1 pageNumberFontForPopover];
-  [a1 pageLabelFrameInPopoverForString:v17 font:v21 bounds:a8 layoutDirection:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v58 = bounds.origin.x;
+  pageStringCopy = pageString;
+  stringCopy = string;
+  annotationCopy = annotation;
+  fontCopy = font;
+  pageNumberFontForPopover = [self pageNumberFontForPopover];
+  [self pageLabelFrameInPopoverForString:pageStringCopy font:pageNumberFontForPopover bounds:direction layoutDirection:{x, y, width, height}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -568,23 +568,23 @@
   v60 = v25;
   v61 = v23;
   v59 = v29;
-  [a1 highlightedTextFrameInPopoverForAnnotation:v19 font:v20 bounds:a8 pageLabelFrame:x layoutDirection:{y, width, height, v23, v25, v27, v29}];
+  [self highlightedTextFrameInPopoverForAnnotation:annotationCopy font:fontCopy bounds:direction pageLabelFrame:x layoutDirection:{y, width, height, v23, v25, v27, v29}];
   v56 = v31;
   v57 = v30;
   v54 = v33;
   v55 = v32;
   v34 = v33;
 
-  v35 = [a1 noteFontForPopover];
-  v36 = [v19 annotationNote];
+  noteFontForPopover = [self noteFontForPopover];
+  annotationNote = [annotationCopy annotationNote];
 
-  [a1 noteTextFrameInPopoverForString:v36 font:v35 bounds:v58 highlightedTextFrame:y pageLabelFrame:{width, height, v57, v56, v55, v34, *&v23, *&v25, *&v27, *&v29}];
+  [self noteTextFrameInPopoverForString:annotationNote font:noteFontForPopover bounds:v58 highlightedTextFrame:y pageLabelFrame:{width, height, v57, v56, v55, v34, *&v23, *&v25, *&v27, *&v29}];
   v38 = v37;
   v40 = v39;
   v42 = v41;
   v44 = v43;
 
-  v45 = [a1 dateFontForPopover];
+  dateFontForPopover = [self dateFontForPopover];
   v62.origin.x = v38;
   v62.origin.y = v40;
   v62.size.width = v42;
@@ -605,7 +605,7 @@
     v48 = v47;
   }
 
-  [a1 dateLabelFrameInPopoverForString:v18 font:v45 bounds:a8 minY:v58 pageLabelFrame:y layoutDirection:{width, height, v48, *&v61, *&v60, *&v27, *&v59}];
+  [self dateLabelFrameInPopoverForString:stringCopy font:dateFontForPopover bounds:direction minY:v58 pageLabelFrame:y layoutDirection:{width, height, v48, *&v61, *&v60, *&v27, *&v59}];
   v50 = v49;
 
   v51 = v44 + 5.0;

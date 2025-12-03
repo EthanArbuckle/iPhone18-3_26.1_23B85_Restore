@@ -1,18 +1,18 @@
 @interface FMDAVRouteController
-- (BOOL)getVolume:(float *)a3 forCategory:(id)a4 route:(id)a5;
-- (BOOL)setPickedRoute:(id)a3;
-- (BOOL)setVolume:(float)a3 forCategory:(id)a4 route:(id)a5;
-- (id)pickableRoutesForCategory:(id)a3;
+- (BOOL)getVolume:(float *)volume forCategory:(id)category route:(id)route;
+- (BOOL)setPickedRoute:(id)route;
+- (BOOL)setVolume:(float)volume forCategory:(id)category route:(id)route;
+- (id)pickableRoutesForCategory:(id)category;
 @end
 
 @implementation FMDAVRouteController
 
-- (id)pickableRoutesForCategory:(id)a3
+- (id)pickableRoutesForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v17 = +[AVSystemController sharedAVSystemController];
-  v18 = v3;
-  v4 = [v17 pickableRoutesForCategory:v3];
+  v18 = categoryCopy;
+  v4 = [v17 pickableRoutesForCategory:categoryCopy];
   v5 = +[NSMutableArray array];
   v20 = 0u;
   v21 = 0u;
@@ -60,42 +60,42 @@
   return v5;
 }
 
-- (BOOL)setPickedRoute:(id)a3
+- (BOOL)setPickedRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   v4 = +[AVSystemController sharedAVSystemController];
-  v5 = [v3 rawRouteInfo];
+  rawRouteInfo = [routeCopy rawRouteInfo];
 
-  LOBYTE(v3) = [v4 setPickedRouteWithPassword:v5 withPassword:&stru_10001FD20];
-  return v3;
+  LOBYTE(routeCopy) = [v4 setPickedRouteWithPassword:rawRouteInfo withPassword:&stru_10001FD20];
+  return routeCopy;
 }
 
-- (BOOL)setVolume:(float)a3 forCategory:(id)a4 route:(id)a5
+- (BOOL)setVolume:(float)volume forCategory:(id)category route:(id)route
 {
-  v7 = a5;
-  v8 = a4;
+  routeCopy = route;
+  categoryCopy = category;
   v9 = +[AVSystemController sharedAVSystemController];
-  v10 = [v7 routeType];
-  v11 = [v7 routeID];
-  v12 = [v7 routeSubType];
+  routeType = [routeCopy routeType];
+  routeID = [routeCopy routeID];
+  routeSubType = [routeCopy routeSubType];
 
-  *&v13 = a3;
-  LOBYTE(v7) = [v9 setVolumeForRouteTo:v8 forCategory:0 mode:v10 route:v11 deviceIdentifier:v12 andRouteSubtype:v13];
+  *&v13 = volume;
+  LOBYTE(routeCopy) = [v9 setVolumeForRouteTo:categoryCopy forCategory:0 mode:routeType route:routeID deviceIdentifier:routeSubType andRouteSubtype:v13];
 
-  return v7;
+  return routeCopy;
 }
 
-- (BOOL)getVolume:(float *)a3 forCategory:(id)a4 route:(id)a5
+- (BOOL)getVolume:(float *)volume forCategory:(id)category route:(id)route
 {
-  v7 = a5;
-  v8 = a4;
+  routeCopy = route;
+  categoryCopy = category;
   v9 = +[AVSystemController sharedAVSystemController];
-  v10 = [v7 routeType];
-  v11 = [v7 routeID];
-  v12 = [v7 routeSubType];
+  routeType = [routeCopy routeType];
+  routeID = [routeCopy routeID];
+  routeSubType = [routeCopy routeSubType];
 
-  LOBYTE(a3) = [v9 getVolumeForRoute:a3 forCategory:v8 mode:0 route:v10 deviceIdentifier:v11 andRouteSubtype:v12];
-  return a3;
+  LOBYTE(volume) = [v9 getVolumeForRoute:volume forCategory:categoryCopy mode:0 route:routeType deviceIdentifier:routeID andRouteSubtype:routeSubType];
+  return volume;
 }
 
 @end

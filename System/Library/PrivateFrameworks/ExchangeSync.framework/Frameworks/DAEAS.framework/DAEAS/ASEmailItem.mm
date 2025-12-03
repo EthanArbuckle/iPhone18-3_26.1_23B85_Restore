@@ -5,21 +5,21 @@
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
-- (ASEmailItem)initWithCoder:(id)a3;
+- (ASEmailItem)initWithCoder:(id)coder;
 - (NSData)meetingRequestMetaData;
 - (NSString)meetingRequestUUID;
 - (id)description;
 - (int)meetingMessageType;
-- (int64_t)compare:(id)a3;
-- (void)_processApplicationData:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
-- (void)setBCCString:(id)a3;
-- (void)setCCString:(id)a3;
-- (void)setFromString:(id)a3;
-- (void)setMimeData:(id)a3;
-- (void)setReplyToString:(id)a3;
-- (void)setToString:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)_processApplicationData:(BOOL)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
+- (void)setBCCString:(id)string;
+- (void)setCCString:(id)string;
+- (void)setFromString:(id)string;
+- (void)setMimeData:(id)data;
+- (void)setReplyToString:(id)string;
+- (void)setToString:(id)string;
 @end
 
 @implementation ASEmailItem
@@ -33,7 +33,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_26 = v2;
     acceptsTopLevelLeaves___haveChecked_26 = 1;
   }
@@ -50,7 +50,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_26 = v2;
     parsingLeafNode___haveChecked_26 = 1;
   }
@@ -67,7 +67,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_26 = v2;
     parsingWithSubItems___haveChecked_26 = 1;
   }
@@ -84,7 +84,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_26 = v2;
     frontingBasicTypes___haveChecked_26 = 1;
   }
@@ -101,7 +101,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_26 = v2;
     notifyOfUnknownTokens___haveChecked_26 = 1;
   }
@@ -112,12 +112,12 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v50.receiver = a1;
+    v50.receiver = self;
     v50.super_class = &OBJC_METACLASS___ASEmailItem;
     v6 = objc_msgSendSuper2(&v50, sel_asParseRules);
     v45 = [v6 mutableCopy];
@@ -130,7 +130,7 @@
     v49 = [MEMORY[0x277CCABB0] numberWithInt:546];
     v7 = [ASParseRule alloc];
     v8 = objc_opt_class();
-    v44 = a1;
+    selfCopy = self;
     v9 = MEMORY[0x277CBEAC0];
     v41 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:2 token:5 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v40 = [MEMORY[0x277CCABB0] numberWithInt:517];
@@ -165,19 +165,19 @@
     v5 = v45;
     [v45 addEntriesFromDictionary:v43];
     v24 = +[ASItem parseRuleCache];
-    v25 = NSStringFromClass(v44);
+    v25 = NSStringFromClass(selfCopy);
     [v24 setObject:v45 forKey:v25];
   }
 
   return v5;
 }
 
-- (void)_processApplicationData:(BOOL)a3
+- (void)_processApplicationData:(BOOL)data
 {
-  v3 = a3;
-  v5 = [(ASChangedCollectionLeaf *)self applicationData];
+  dataCopy = data;
+  applicationData = [(ASChangedCollectionLeaf *)self applicationData];
   v6 = [MEMORY[0x277CCABB0] numberWithInt:534];
-  v7 = [v5 objectForKey:v6];
+  v7 = [applicationData objectForKey:v6];
 
   if (v7)
   {
@@ -188,9 +188,9 @@
     }
   }
 
-  v8 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData2 = [(ASChangedCollectionLeaf *)self applicationData];
   v9 = [MEMORY[0x277CCABB0] numberWithInt:535];
-  v10 = [v8 objectForKey:v9];
+  v10 = [applicationData2 objectForKey:v9];
 
   if (v10)
   {
@@ -201,9 +201,9 @@
     }
   }
 
-  v11 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData3 = [(ASChangedCollectionLeaf *)self applicationData];
   v12 = [MEMORY[0x277CCABB0] numberWithInt:5654];
-  v13 = [v11 objectForKey:v12];
+  v13 = [applicationData3 objectForKey:v12];
 
   if (v13)
   {
@@ -214,9 +214,9 @@
     }
   }
 
-  v14 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData4 = [(ASChangedCollectionLeaf *)self applicationData];
   v15 = [MEMORY[0x277CCABB0] numberWithInt:536];
-  v16 = [v14 objectForKey:v15];
+  v16 = [applicationData4 objectForKey:v15];
 
   if (v16)
   {
@@ -227,9 +227,9 @@
     }
   }
 
-  v17 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData5 = [(ASChangedCollectionLeaf *)self applicationData];
   v18 = [MEMORY[0x277CCABB0] numberWithInt:537];
-  v19 = [v17 objectForKey:v18];
+  v19 = [applicationData5 objectForKey:v18];
 
   if (v19)
   {
@@ -240,9 +240,9 @@
     }
   }
 
-  v20 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData6 = [(ASChangedCollectionLeaf *)self applicationData];
   v21 = [MEMORY[0x277CCABB0] numberWithInt:527];
-  v22 = [v20 objectForKey:v21];
+  v22 = [applicationData6 objectForKey:v21];
 
   if (v22)
   {
@@ -254,9 +254,9 @@
     }
   }
 
-  v24 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData7 = [(ASChangedCollectionLeaf *)self applicationData];
   v25 = [MEMORY[0x277CCABB0] numberWithInt:532];
-  v26 = [v24 objectForKey:v25];
+  v26 = [applicationData7 objectForKey:v25];
 
   if (v26)
   {
@@ -267,9 +267,9 @@
     }
   }
 
-  v27 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData8 = [(ASChangedCollectionLeaf *)self applicationData];
   v28 = [MEMORY[0x277CCABB0] numberWithInt:529];
-  v29 = [v27 objectForKey:v28];
+  v29 = [applicationData8 objectForKey:v28];
 
   if (v29)
   {
@@ -280,9 +280,9 @@
     }
   }
 
-  v30 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData9 = [(ASChangedCollectionLeaf *)self applicationData];
   v31 = [MEMORY[0x277CCABB0] numberWithInt:530];
-  v32 = [v30 objectForKey:v31];
+  v32 = [applicationData9 objectForKey:v31];
 
   if (v32)
   {
@@ -293,9 +293,9 @@
     }
   }
 
-  v33 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData10 = [(ASChangedCollectionLeaf *)self applicationData];
   v34 = [MEMORY[0x277CCABB0] numberWithInt:533];
-  v35 = [v33 objectForKey:v34];
+  v35 = [applicationData10 objectForKey:v34];
 
   if (v35)
   {
@@ -306,9 +306,9 @@
     }
   }
 
-  v36 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData11 = [(ASChangedCollectionLeaf *)self applicationData];
   v37 = [MEMORY[0x277CCABB0] numberWithInt:5643];
-  v38 = [v36 objectForKey:v37];
+  v38 = [applicationData11 objectForKey:v37];
 
   if (v38)
   {
@@ -319,9 +319,9 @@
     }
   }
 
-  v39 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData12 = [(ASChangedCollectionLeaf *)self applicationData];
   v40 = [MEMORY[0x277CCABB0] numberWithInt:5646];
-  v41 = [v39 objectForKey:v40];
+  v41 = [applicationData12 objectForKey:v40];
 
   if (v41)
   {
@@ -332,9 +332,9 @@
     }
   }
 
-  v42 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData13 = [(ASChangedCollectionLeaf *)self applicationData];
   v43 = [MEMORY[0x277CCABB0] numberWithInt:5653];
-  v44 = [v42 objectForKey:v43];
+  v44 = [applicationData13 objectForKey:v43];
 
   if (v44)
   {
@@ -345,9 +345,9 @@
     }
   }
 
-  v45 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData14 = [(ASChangedCollectionLeaf *)self applicationData];
   v46 = [MEMORY[0x277CCABB0] numberWithInt:6420];
-  v47 = [v45 objectForKey:v46];
+  v47 = [applicationData14 objectForKey:v46];
 
   if (v47)
   {
@@ -358,9 +358,9 @@
     }
   }
 
-  v48 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData15 = [(ASChangedCollectionLeaf *)self applicationData];
   v49 = [MEMORY[0x277CCABB0] numberWithInt:6421];
-  v50 = [v48 objectForKey:v49];
+  v50 = [applicationData15 objectForKey:v49];
 
   if (v50)
   {
@@ -371,8 +371,8 @@
     }
   }
 
-  v51 = [(ASChangedCollectionLeaf *)self applicationData];
-  v95 = [v51 objectForKeyedSubscript:&unk_285D57C90];
+  applicationData16 = [(ASChangedCollectionLeaf *)self applicationData];
+  v95 = [applicationData16 objectForKeyedSubscript:&unk_285D57C90];
 
   if (v95)
   {
@@ -388,11 +388,11 @@
       }
     }
 
-    v54 = [(ASEmailItem *)self bodyType];
+    bodyType = [(ASEmailItem *)self bodyType];
     v55 = [MEMORY[0x277CCABB0] numberWithInt:4363];
     v56 = [v95 objectForKey:v55];
 
-    if (v54 != 4)
+    if (bodyType != 4)
     {
       if (v56)
       {
@@ -433,9 +433,9 @@
 
   else
   {
-    v60 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData17 = [(ASChangedCollectionLeaf *)self applicationData];
     v61 = [MEMORY[0x277CCABB0] numberWithInt:524];
-    v62 = [v60 objectForKey:v61];
+    v62 = [applicationData17 objectForKey:v61];
 
     if (v62)
     {
@@ -446,9 +446,9 @@
       }
     }
 
-    v63 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData18 = [(ASChangedCollectionLeaf *)self applicationData];
     v64 = [MEMORY[0x277CCABB0] numberWithInt:525];
-    v65 = [v63 objectForKey:v64];
+    v65 = [applicationData18 objectForKey:v64];
 
     if (v65)
     {
@@ -459,9 +459,9 @@
       }
     }
 
-    v66 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData19 = [(ASChangedCollectionLeaf *)self applicationData];
     v67 = [MEMORY[0x277CCABB0] numberWithInt:526];
-    v68 = [v66 objectForKey:v67];
+    v68 = [applicationData19 objectForKey:v67];
 
     if (v68)
     {
@@ -472,9 +472,9 @@
       }
     }
 
-    v69 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData20 = [(ASChangedCollectionLeaf *)self applicationData];
     v70 = [MEMORY[0x277CCABB0] numberWithInt:566];
-    v56 = [v69 objectForKey:v70];
+    v56 = [applicationData20 objectForKey:v70];
   }
 
   if (v56)
@@ -488,9 +488,9 @@
 
 LABEL_73:
 
-  v71 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData21 = [(ASChangedCollectionLeaf *)self applicationData];
   v72 = [MEMORY[0x277CCABB0] numberWithInt:531];
-  v73 = [v71 objectForKey:v72];
+  v73 = [applicationData21 objectForKey:v72];
 
   if (v73)
   {
@@ -501,9 +501,9 @@ LABEL_73:
     }
   }
 
-  v74 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData22 = [(ASChangedCollectionLeaf *)self applicationData];
   v75 = [MEMORY[0x277CCABB0] numberWithInt:4366];
-  v76 = [v74 objectForKey:v75];
+  v76 = [applicationData22 objectForKey:v75];
 
   if (v76)
   {
@@ -516,9 +516,9 @@ LABEL_73:
 
   if (!self->_attachments)
   {
-    v77 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData23 = [(ASChangedCollectionLeaf *)self applicationData];
     v78 = [MEMORY[0x277CCABB0] numberWithInt:518];
-    v79 = [v77 objectForKey:v78];
+    v79 = [applicationData23 objectForKey:v78];
 
     if (v79)
     {
@@ -530,9 +530,9 @@ LABEL_73:
     }
   }
 
-  v80 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData24 = [(ASChangedCollectionLeaf *)self applicationData];
   v81 = [MEMORY[0x277CCABB0] numberWithInt:546];
-  v82 = [v80 objectForKey:v81];
+  v82 = [applicationData24 objectForKey:v81];
 
   if (v82)
   {
@@ -543,9 +543,9 @@ LABEL_73:
     }
   }
 
-  v83 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData25 = [(ASChangedCollectionLeaf *)self applicationData];
   v84 = [MEMORY[0x277CCABB0] numberWithInt:565];
-  v85 = [v83 objectForKey:v84];
+  v85 = [applicationData25 objectForKey:v84];
 
   if (v85)
   {
@@ -556,9 +556,9 @@ LABEL_73:
     }
   }
 
-  v86 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData26 = [(ASChangedCollectionLeaf *)self applicationData];
   v87 = [MEMORY[0x277CCABB0] numberWithInt:5641];
-  v88 = [v86 objectForKey:v87];
+  v88 = [applicationData26 objectForKey:v87];
 
   if (v88)
   {
@@ -569,9 +569,9 @@ LABEL_73:
     }
   }
 
-  v89 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData27 = [(ASChangedCollectionLeaf *)self applicationData];
   v90 = [MEMORY[0x277CCABB0] numberWithInt:5642];
-  v91 = [v89 objectForKey:v90];
+  v91 = [applicationData27 objectForKey:v90];
 
   if (v91)
   {
@@ -582,8 +582,8 @@ LABEL_73:
     }
   }
 
-  v92 = [(ASChangedCollectionLeaf *)self applicationData];
-  v93 = [v92 objectForKeyedSubscript:&unk_285D57CA8];
+  applicationData28 = [(ASChangedCollectionLeaf *)self applicationData];
+  v93 = [applicationData28 objectForKeyedSubscript:&unk_285D57CA8];
 
   if (v93)
   {
@@ -591,40 +591,40 @@ LABEL_73:
     -[ASEmailItem setFlagged:](self, "setFlagged:", [v94 intValue] == 2);
   }
 
-  if (v3)
+  if (dataCopy)
   {
     [(ASChangedCollectionLeaf *)self setApplicationData:0];
   }
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v64 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  contextCopy = context;
+  rootCopy = root;
+  parentCopy = parent;
+  dictCopy = dict;
+  callbackDictCopy = callbackDict;
+  accountCopy = account;
   if ([(ASEmailItem *)self _isSearchResult])
   {
-    v57 = 0;
-    v20 = 0;
+    v22Parent = 0;
+    parent = 0;
   }
 
   else
   {
-    v20 = [v16 parent];
-    v21 = [v20 collectionId];
-    [(ASEmailItem *)self setFolderId:v21];
+    parent = [parentCopy parent];
+    collectionId = [parent collectionId];
+    [(ASEmailItem *)self setFolderId:collectionId];
 
-    v22 = [v20 parent];
-    v57 = [v22 parent];
+    v20Parent = [parent parent];
+    v22Parent = [v20Parent parent];
   }
 
   v62.receiver = self;
   v62.super_class = ASEmailItem;
-  [(ASChangedCollectionLeaf *)&v62 parseASParseContext:v14 root:v15 parent:v16 callbackDict:v17 streamCallbackDict:v18 account:v19];
+  [(ASChangedCollectionLeaf *)&v62 parseASParseContext:contextCopy root:rootCopy parent:parentCopy callbackDict:dictCopy streamCallbackDict:callbackDictCopy account:accountCopy];
   parsingState = self->super.super._parsingState;
   if (parsingState >= 2)
   {
@@ -634,21 +634,21 @@ LABEL_73:
       goto LABEL_8;
     }
 
-    v56 = v20;
+    v56 = parent;
     if (![(ASChangedCollectionLeaf *)self changeType]|| [(ASChangedCollectionLeaf *)self changeType]== 1 || [(ASChangedCollectionLeaf *)self changeType]== 3)
     {
-      v51 = v18;
-      v52 = v17;
-      v53 = v16;
-      v54 = v15;
-      v55 = v14;
+      v51 = callbackDictCopy;
+      v52 = dictCopy;
+      v53 = parentCopy;
+      v54 = rootCopy;
+      v55 = contextCopy;
       [(ASEmailItem *)self postProcessApplicationData];
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v25 = [(ASEmailItem *)self attachments];
-      v26 = [v25 countByEnumeratingWithState:&v58 objects:v63 count:16];
+      attachments = [(ASEmailItem *)self attachments];
+      v26 = [attachments countByEnumeratingWithState:&v58 objects:v63 count:16];
       if (v26)
       {
         v27 = v26;
@@ -660,34 +660,34 @@ LABEL_73:
           {
             if (*v59 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(attachments);
             }
 
             v31 = *(*(&v58 + 1) + 8 * i);
-            v32 = [v19 protocol];
-            v33 = [v32 allAttachmentsAreBase64ed];
+            protocol = [accountCopy protocol];
+            allAttachmentsAreBase64ed = [protocol allAttachmentsAreBase64ed];
 
-            if (v33)
+            if (allAttachmentsAreBase64ed)
             {
               [v31 setHasBase64Transfer:v29];
             }
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v58 objects:v63 count:16];
+          v27 = [attachments countByEnumeratingWithState:&v58 objects:v63 count:16];
         }
 
         while (v27);
       }
 
-      v34 = [(ASEmailItem *)self meetingRequest];
-      [v34 takeValuesFromParentEmailForAccount:v19];
+      meetingRequest = [(ASEmailItem *)self meetingRequest];
+      [meetingRequest takeValuesFromParentEmailForAccount:accountCopy];
 
-      v15 = v54;
-      v14 = v55;
-      v17 = v52;
-      v16 = v53;
-      v18 = v51;
-      v20 = v56;
+      rootCopy = v54;
+      contextCopy = v55;
+      dictCopy = v52;
+      parentCopy = v53;
+      callbackDictCopy = v51;
+      parent = v56;
     }
 
     if (![(ASEmailItem *)self _isSearchResult])
@@ -696,8 +696,8 @@ LABEL_73:
       {
         if ([(ASChangedCollectionLeaf *)self changeType]== 2)
         {
-          v35 = [(ASChangedCollectionLeaf *)self serverID];
-          [v57 addDeliveryIdToClear:v35];
+          serverID = [(ASChangedCollectionLeaf *)self serverID];
+          [v22Parent addDeliveryIdToClear:serverID];
         }
 
         else
@@ -707,8 +707,8 @@ LABEL_73:
             goto LABEL_8;
           }
 
-          v35 = [(ASChangedCollectionLeaf *)self serverID];
-          [v57 addDeliveryIdToSoftClear:v35];
+          serverID = [(ASChangedCollectionLeaf *)self serverID];
+          [v22Parent addDeliveryIdToSoftClear:serverID];
         }
 
 LABEL_45:
@@ -716,89 +716,89 @@ LABEL_45:
         goto LABEL_8;
       }
 
-      v36 = [(ASEmailItem *)self meetingRequest];
+      meetingRequest2 = [(ASEmailItem *)self meetingRequest];
 
-      if (v36)
+      if (meetingRequest2)
       {
-        v37 = [(ASEmailItem *)self messageClass];
+        messageClass = [(ASEmailItem *)self messageClass];
 
-        if (v37)
+        if (messageClass)
         {
-          v38 = [(ASEmailItem *)self messageClass];
-          v37 = 1;
-          v39 = [v38 compare:@"IPM.Schedule.Meeting.Request" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Request", "length")}];
+          messageClass2 = [(ASEmailItem *)self messageClass];
+          messageClass = 1;
+          v39 = [messageClass2 compare:@"IPM.Schedule.Meeting.Request" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Request", "length")}];
 
           if (v39)
           {
-            v40 = [(ASEmailItem *)self messageClass];
-            v41 = [v40 compare:@"IPM.Schedule.Meeting.Canceled" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Canceled", "length")}];
+            messageClass3 = [(ASEmailItem *)self messageClass];
+            v41 = [messageClass3 compare:@"IPM.Schedule.Meeting.Canceled" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Canceled", "length")}];
 
             if (v41)
             {
-              v42 = [(ASEmailItem *)self messageClass];
-              v43 = [v42 compare:@"IPM.Schedule.Meeting.Resp.Pos" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Resp.Pos", "length")}];
+              messageClass4 = [(ASEmailItem *)self messageClass];
+              v43 = [messageClass4 compare:@"IPM.Schedule.Meeting.Resp.Pos" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Resp.Pos", "length")}];
 
               if (v43)
               {
-                v44 = [(ASEmailItem *)self messageClass];
-                v45 = [v44 compare:@"IPM.Schedule.Meeting.Resp.Tent" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Resp.Tent", "length")}];
+                messageClass5 = [(ASEmailItem *)self messageClass];
+                v45 = [messageClass5 compare:@"IPM.Schedule.Meeting.Resp.Tent" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Resp.Tent", "length")}];
 
                 if (v45)
                 {
-                  v46 = [(ASEmailItem *)self messageClass];
-                  v47 = [v46 compare:@"IPM.Schedule.Meeting.Resp.Neg" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Resp.Neg", "length")}];
+                  messageClass6 = [(ASEmailItem *)self messageClass];
+                  v47 = [messageClass6 compare:@"IPM.Schedule.Meeting.Resp.Neg" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Resp.Neg", "length")}];
 
                   if (v47)
                   {
-                    v48 = [(ASEmailItem *)self messageClass];
-                    v49 = [v48 compare:@"IPM.Schedule.Meeting.Notification.Forward" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Notification.Forward", "length")}];
+                    messageClass7 = [(ASEmailItem *)self messageClass];
+                    v49 = [messageClass7 compare:@"IPM.Schedule.Meeting.Notification.Forward" options:1 range:{0, objc_msgSend(@"IPM.Schedule.Meeting.Notification.Forward", "length")}];
 
                     if (v49)
                     {
-                      v37 = 0;
+                      messageClass = 0;
                     }
 
                     else
                     {
-                      v37 = 6;
+                      messageClass = 6;
                     }
                   }
 
                   else
                   {
-                    v37 = 5;
+                    messageClass = 5;
                   }
                 }
 
                 else
                 {
-                  v37 = 4;
+                  messageClass = 4;
                 }
               }
 
               else
               {
-                v37 = 3;
+                messageClass = 3;
               }
             }
 
             else
             {
-              v37 = 2;
+              messageClass = 2;
             }
           }
         }
 
-        v50 = [(ASEmailItem *)self meetingRequest];
-        [v50 setMeetingClassType:v37];
+        meetingRequest3 = [(ASEmailItem *)self meetingRequest];
+        [meetingRequest3 setMeetingClassType:messageClass];
 
-        v20 = v56;
-        if ([v19 enabledForDADataclass:4])
+        parent = v56;
+        if ([accountCopy enabledForDADataclass:4])
         {
-          if ([v56 sniffableTypeForAccount:v19] == 1)
+          if ([v56 sniffableTypeForAccount:accountCopy] == 1)
           {
-            v35 = [(ASEmailItem *)self meetingRequestMetaData];
-            [v57 addMeetingRequestData:v35];
+            serverID = [(ASEmailItem *)self meetingRequestMetaData];
+            [v22Parent addMeetingRequestData:serverID];
             goto LABEL_45;
           }
         }
@@ -818,79 +818,79 @@ LABEL_8:
   v25 = NSStringFromClass(v3);
   v24 = [(ASEmailItem *)self to];
   v23 = [(ASEmailItem *)self cc];
-  v30 = [(ASEmailItem *)self from];
-  v22 = [(ASEmailItem *)self replyTo];
-  v29 = [(ASEmailItem *)self date];
-  v21 = [(ASEmailItem *)self subject];
-  v28 = [(ASEmailItem *)self displayTo];
-  v20 = [(ASEmailItem *)self importance];
-  v19 = [(ASEmailItem *)self read];
-  v18 = [(ASEmailItem *)self flagged];
-  v17 = [(ASEmailItem *)self lastVerb];
-  v16 = [(ASEmailItem *)self bodySize];
-  v15 = [(ASEmailItem *)self bodyTruncated];
-  v14 = [(ASEmailItem *)self messageClass];
-  v13 = [(ASEmailItem *)self body];
-  v12 = [(ASEmailItem *)self attachments];
-  v11 = [(ASEmailItem *)self meetingRequest];
-  v4 = [(ASEmailItem *)self threadTopic];
-  v5 = [(ASEmailItem *)self mimeData];
-  v6 = [v5 length];
-  v7 = [(ASEmailItem *)self longID];
-  v8 = [(ASEmailItem *)self conversationId];
-  v9 = [(ASEmailItem *)self conversationIndex];
-  v27 = [v26 stringWithFormat:@"<%@: To: %@\nCc: %@\nFrom: %@\nReplyTo: %@\nDate: %@\nSubject: %@\nDisplayTo: %@\nImportance %d\nRead %x\nFlagged %x\nLastVerb %x\nBody Size %d\nBodyTruncated %x\nMessage Class %@\nBody %@\nAttachments %@\nMeeting Request %@\nThread Topic %@\nMIMEData <data of size %ld>\nLongID %@\nConversationID %@\nConversation Index %@>", v25, v24, v23, v30, v22, v29, v21, v28, v20, v19, v18, v17, v16, v15, v14, v13, v12, v11, v4, v6, v7, v8, v9];
+  from = [(ASEmailItem *)self from];
+  replyTo = [(ASEmailItem *)self replyTo];
+  date = [(ASEmailItem *)self date];
+  subject = [(ASEmailItem *)self subject];
+  displayTo = [(ASEmailItem *)self displayTo];
+  importance = [(ASEmailItem *)self importance];
+  read = [(ASEmailItem *)self read];
+  flagged = [(ASEmailItem *)self flagged];
+  lastVerb = [(ASEmailItem *)self lastVerb];
+  bodySize = [(ASEmailItem *)self bodySize];
+  bodyTruncated = [(ASEmailItem *)self bodyTruncated];
+  messageClass = [(ASEmailItem *)self messageClass];
+  body = [(ASEmailItem *)self body];
+  attachments = [(ASEmailItem *)self attachments];
+  meetingRequest = [(ASEmailItem *)self meetingRequest];
+  threadTopic = [(ASEmailItem *)self threadTopic];
+  mimeData = [(ASEmailItem *)self mimeData];
+  v6 = [mimeData length];
+  longID = [(ASEmailItem *)self longID];
+  conversationId = [(ASEmailItem *)self conversationId];
+  conversationIndex = [(ASEmailItem *)self conversationIndex];
+  v27 = [v26 stringWithFormat:@"<%@: To: %@\nCc: %@\nFrom: %@\nReplyTo: %@\nDate: %@\nSubject: %@\nDisplayTo: %@\nImportance %d\nRead %x\nFlagged %x\nLastVerb %x\nBody Size %d\nBodyTruncated %x\nMessage Class %@\nBody %@\nAttachments %@\nMeeting Request %@\nThread Topic %@\nMIMEData <data of size %ld>\nLongID %@\nConversationID %@\nConversation Index %@>", v25, v24, v23, from, replyTo, date, subject, displayTo, importance, read, flagged, lastVerb, bodySize, bodyTruncated, messageClass, body, attachments, meetingRequest, threadTopic, v6, longID, conversationId, conversationIndex];
 
   return v27;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = [a3 date];
-  v5 = [(ASEmailItem *)self date];
-  v6 = [v4 compare:v5];
+  date = [compare date];
+  date2 = [(ASEmailItem *)self date];
+  v6 = [date compare:date2];
 
   return v6;
 }
 
 - (NSString)meetingRequestUUID
 {
-  v2 = [(ASEmailItem *)self meetingRequest];
-  v3 = [v2 eventUID];
-  v4 = [v3 uidForCalFramework];
+  meetingRequest = [(ASEmailItem *)self meetingRequest];
+  eventUID = [meetingRequest eventUID];
+  uidForCalFramework = [eventUID uidForCalFramework];
 
-  return v4;
+  return uidForCalFramework;
 }
 
 - (NSData)meetingRequestMetaData
 {
   v2 = MEMORY[0x277CCAAB0];
-  v3 = [(ASEmailItem *)self meetingRequest];
-  v4 = [v2 archivedDataWithRootObject:v3];
+  meetingRequest = [(ASEmailItem *)self meetingRequest];
+  v4 = [v2 archivedDataWithRootObject:meetingRequest];
 
   return v4;
 }
 
 - (int)meetingMessageType
 {
-  v3 = [(ASEmailItem *)self meetingRequest];
+  meetingRequest = [(ASEmailItem *)self meetingRequest];
 
-  if (!v3)
+  if (!meetingRequest)
   {
     return 0;
   }
 
-  v4 = [(ASEmailItem *)self meetingRequest];
-  v5 = [v4 meetingMessageType];
+  meetingRequest2 = [(ASEmailItem *)self meetingRequest];
+  meetingMessageType = [meetingRequest2 meetingMessageType];
 
-  return v5;
+  return meetingMessageType;
 }
 
-- (void)setMimeData:(id)a3
+- (void)setMimeData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   mimeData = [(ASEmailItem *)self mimeData];
-  if (mimeData != v8)
+  if (mimeData != dataCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -900,85 +900,85 @@ LABEL_8:
       goto LABEL_5;
     }
 
-    v6 = [(NSString *)v8 mutableCopy];
+    v6 = [(NSString *)dataCopy mutableCopy];
 
     [v6 replaceOccurrencesOfString:@"\r\n" withString:@"\n" options:0 range:{0, objc_msgSend(v6, "length")}];
     [v6 replaceOccurrencesOfString:@"\r" withString:@"\n" options:0 range:{0, objc_msgSend(v6, "length")}];
     v7 = v6;
     mimeData = self->_mimeData;
-    v8 = v7;
+    dataCopy = v7;
     self->_mimeData = v7;
   }
 
 LABEL_5:
 }
 
-- (void)setToString:(id)a3
+- (void)setToString:(id)string
 {
-  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:a3];
+  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:string];
   [(ASEmailItem *)self setTo:v4];
 }
 
-- (void)setCCString:(id)a3
+- (void)setCCString:(id)string
 {
-  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:a3];
+  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:string];
   [(ASEmailItem *)self setCc:v4];
 }
 
-- (void)setBCCString:(id)a3
+- (void)setBCCString:(id)string
 {
-  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:a3];
+  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:string];
   [(ASEmailItem *)self setBcc:v4];
 }
 
-- (void)setFromString:(id)a3
+- (void)setFromString:(id)string
 {
-  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:a3];
+  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:string];
   [(ASEmailItem *)self setFrom:v4];
 }
 
-- (void)setReplyToString:(id)a3
+- (void)setReplyToString:(id)string
 {
-  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:a3];
+  v4 = [MEMORY[0x277D24F40] addressListFromEncodedString:string];
   [(ASEmailItem *)self setReplyTo:v4];
 }
 
-- (ASEmailItem)initWithCoder:(id)a3
+- (ASEmailItem)initWithCoder:(id)coder
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASEmailItem *)a2 initWithCoder:?];
   }
 
   v49.receiver = self;
   v49.super_class = ASEmailItem;
-  v6 = [(ASChangedCollectionLeaf *)&v49 initWithCoder:v5];
+  v6 = [(ASChangedCollectionLeaf *)&v49 initWithCoder:coderCopy];
   if (v6)
   {
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v5 decodeObjectOfClasses:v9 forKey:@"ASETo"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"ASETo"];
     [(ASEmailItem *)v6 setTo:v10];
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v5 decodeObjectOfClasses:v13 forKey:@"ASECC"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ASECC"];
     [(ASEmailItem *)v6 setCc:v14];
 
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v5 decodeObjectOfClasses:v17 forKey:@"ASEFrom"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"ASEFrom"];
     [(ASEmailItem *)v6 setFrom:v18];
 
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v5 decodeObjectOfClasses:v21 forKey:@"ASEReplyTo"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"ASEReplyTo"];
     [(ASEmailItem *)v6 setReplyTo:v22];
 
     v23 = MEMORY[0x277CBEB98];
@@ -986,153 +986,153 @@ LABEL_5:
     v50[1] = objc_opt_class();
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
     v25 = [v23 setWithArray:v24];
-    v26 = [v5 decodeObjectOfClasses:v25 forKey:@"ASEDate"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"ASEDate"];
     [(ASEmailItem *)v6 setDate:v26];
 
-    v27 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASESubject"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASESubject"];
     [(ASEmailItem *)v6 setSubject:v27];
 
-    v28 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEDisplayTo"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEDisplayTo"];
     [(ASEmailItem *)v6 setDisplayTo:v28];
 
-    -[ASEmailItem setImportance:](v6, "setImportance:", [v5 decodeIntForKey:@"ASEImportance"]);
-    -[ASEmailItem setRead:](v6, "setRead:", [v5 decodeBoolForKey:@"ASERead"]);
-    -[ASEmailItem setFlagged:](v6, "setFlagged:", [v5 decodeBoolForKey:@"ASEFlagged"]);
-    v29 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEBody"];
+    -[ASEmailItem setImportance:](v6, "setImportance:", [coderCopy decodeIntForKey:@"ASEImportance"]);
+    -[ASEmailItem setRead:](v6, "setRead:", [coderCopy decodeBoolForKey:@"ASERead"]);
+    -[ASEmailItem setFlagged:](v6, "setFlagged:", [coderCopy decodeBoolForKey:@"ASEFlagged"]);
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEBody"];
     [(ASEmailItem *)v6 setBody:v29];
 
-    -[ASEmailItem setBodySize:](v6, "setBodySize:", [v5 decodeIntForKey:@"ASEBodySize"]);
-    -[ASEmailItem setBodyTruncated:](v6, "setBodyTruncated:", [v5 decodeBoolForKey:@"ASEBodyTruncated"]);
-    v30 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEMessageClass"];
+    -[ASEmailItem setBodySize:](v6, "setBodySize:", [coderCopy decodeIntForKey:@"ASEBodySize"]);
+    -[ASEmailItem setBodyTruncated:](v6, "setBodyTruncated:", [coderCopy decodeBoolForKey:@"ASEBodyTruncated"]);
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEMessageClass"];
     [(ASEmailItem *)v6 setMessageClass:v30];
 
     v31 = MEMORY[0x277CBEB98];
     v32 = objc_opt_class();
     v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-    v34 = [v5 decodeObjectOfClasses:v33 forKey:@"ASEAttachments"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"ASEAttachments"];
     [(ASEmailItem *)v6 setAttachments:v34];
 
-    v35 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEMeetingRequest"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEMeetingRequest"];
     [(ASEmailItem *)v6 _setMeetingRequest:v35];
 
-    v36 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEThreadTopic"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEThreadTopic"];
     [(ASEmailItem *)v6 setThreadTopic:v36];
 
-    v37 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEConversationId"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEConversationId"];
     [(ASEmailItem *)v6 setConversationId:v37];
 
-    v38 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEConversationIndex"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEConversationIndex"];
     [(ASEmailItem *)v6 setConversationIndex:v38];
 
-    v39 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEMIMEData"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEMIMEData"];
     [(ASEmailItem *)v6 setMimeData:v39];
 
-    v40 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASEFolderId"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASEFolderId"];
     [(ASEmailItem *)v6 setFolderId:v40];
 
-    v41 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASELongID"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASELongID"];
     [(ASEmailItem *)v6 setLongID:v41];
 
-    -[ASEmailItem setBodyType:](v6, "setBodyType:", [v5 decodeIntForKey:@"ASEBodyType"]);
-    -[ASEmailItem setReadIsSet:](v6, "setReadIsSet:", [v5 decodeBoolForKey:@"ASEReadIsSet"]);
-    -[ASEmailItem setFlaggedIsSet:](v6, "setFlaggedIsSet:", [v5 decodeBoolForKey:@"ASEFlaggedIsSet"]);
-    -[ASEmailItem setLastVerb:](v6, "setLastVerb:", [v5 decodeIntForKey:@"ASELastVerb"]);
-    -[ASEmailItem setVerbIsSet:](v6, "setVerbIsSet:", [v5 decodeBoolForKey:@"ASEVerbIsSet"]);
-    v42 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASESender"];
+    -[ASEmailItem setBodyType:](v6, "setBodyType:", [coderCopy decodeIntForKey:@"ASEBodyType"]);
+    -[ASEmailItem setReadIsSet:](v6, "setReadIsSet:", [coderCopy decodeBoolForKey:@"ASEReadIsSet"]);
+    -[ASEmailItem setFlaggedIsSet:](v6, "setFlaggedIsSet:", [coderCopy decodeBoolForKey:@"ASEFlaggedIsSet"]);
+    -[ASEmailItem setLastVerb:](v6, "setLastVerb:", [coderCopy decodeIntForKey:@"ASELastVerb"]);
+    -[ASEmailItem setVerbIsSet:](v6, "setVerbIsSet:", [coderCopy decodeBoolForKey:@"ASEVerbIsSet"]);
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASESender"];
     [(ASEmailItem *)v6 setSender:v42];
 
     v43 = MEMORY[0x277CBEB98];
     v44 = objc_opt_class();
     v45 = [v43 setWithObjects:{v44, objc_opt_class(), 0}];
-    v46 = [v5 decodeObjectOfClasses:v45 forKey:@"ASEBCC"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"ASEBCC"];
     [(ASEmailItem *)v6 setBcc:v46];
 
-    -[ASEmailItem setIsDraft:](v6, "setIsDraft:", [v5 decodeBoolForKey:@"ASEIsDraft"]);
+    -[ASEmailItem setIsDraft:](v6, "setIsDraft:", [coderCopy decodeBoolForKey:@"ASEIsDraft"]);
   }
 
   v47 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASEmailItem *)a2 encodeWithCoder:?];
   }
 
   v25.receiver = self;
   v25.super_class = ASEmailItem;
-  [(ASChangedCollectionLeaf *)&v25 encodeWithCoder:v5];
+  [(ASChangedCollectionLeaf *)&v25 encodeWithCoder:coderCopy];
   v6 = [(ASEmailItem *)self to];
-  [v5 encodeObject:v6 forKey:@"ASETo"];
+  [coderCopy encodeObject:v6 forKey:@"ASETo"];
 
   v7 = [(ASEmailItem *)self cc];
-  [v5 encodeObject:v7 forKey:@"ASECC"];
+  [coderCopy encodeObject:v7 forKey:@"ASECC"];
 
-  v8 = [(ASEmailItem *)self from];
-  [v5 encodeObject:v8 forKey:@"ASEFrom"];
+  from = [(ASEmailItem *)self from];
+  [coderCopy encodeObject:from forKey:@"ASEFrom"];
 
-  v9 = [(ASEmailItem *)self replyTo];
-  [v5 encodeObject:v9 forKey:@"ASEReplyTo"];
+  replyTo = [(ASEmailItem *)self replyTo];
+  [coderCopy encodeObject:replyTo forKey:@"ASEReplyTo"];
 
-  v10 = [(ASEmailItem *)self date];
-  [v5 encodeObject:v10 forKey:@"ASEDate"];
+  date = [(ASEmailItem *)self date];
+  [coderCopy encodeObject:date forKey:@"ASEDate"];
 
-  v11 = [(ASEmailItem *)self subject];
-  [v5 encodeObject:v11 forKey:@"ASESubject"];
+  subject = [(ASEmailItem *)self subject];
+  [coderCopy encodeObject:subject forKey:@"ASESubject"];
 
-  v12 = [(ASEmailItem *)self displayTo];
-  [v5 encodeObject:v12 forKey:@"ASEDisplayTo"];
+  displayTo = [(ASEmailItem *)self displayTo];
+  [coderCopy encodeObject:displayTo forKey:@"ASEDisplayTo"];
 
-  [v5 encodeInt:-[ASEmailItem importance](self forKey:{"importance"), @"ASEImportance"}];
-  [v5 encodeBool:-[ASEmailItem read](self forKey:{"read"), @"ASERead"}];
-  [v5 encodeBool:-[ASEmailItem flagged](self forKey:{"flagged"), @"ASEFlagged"}];
-  v13 = [(ASEmailItem *)self body];
-  [v5 encodeObject:v13 forKey:@"ASEBody"];
+  [coderCopy encodeInt:-[ASEmailItem importance](self forKey:{"importance"), @"ASEImportance"}];
+  [coderCopy encodeBool:-[ASEmailItem read](self forKey:{"read"), @"ASERead"}];
+  [coderCopy encodeBool:-[ASEmailItem flagged](self forKey:{"flagged"), @"ASEFlagged"}];
+  body = [(ASEmailItem *)self body];
+  [coderCopy encodeObject:body forKey:@"ASEBody"];
 
-  [v5 encodeInt:-[ASEmailItem bodySize](self forKey:{"bodySize"), @"ASEBodySize"}];
-  [v5 encodeBool:-[ASEmailItem bodyTruncated](self forKey:{"bodyTruncated"), @"ASEBodyTruncated"}];
-  v14 = [(ASEmailItem *)self messageClass];
-  [v5 encodeObject:v14 forKey:@"ASEMessageClass"];
+  [coderCopy encodeInt:-[ASEmailItem bodySize](self forKey:{"bodySize"), @"ASEBodySize"}];
+  [coderCopy encodeBool:-[ASEmailItem bodyTruncated](self forKey:{"bodyTruncated"), @"ASEBodyTruncated"}];
+  messageClass = [(ASEmailItem *)self messageClass];
+  [coderCopy encodeObject:messageClass forKey:@"ASEMessageClass"];
 
-  v15 = [(ASEmailItem *)self attachments];
-  [v5 encodeObject:v15 forKey:@"ASEAttachments"];
+  attachments = [(ASEmailItem *)self attachments];
+  [coderCopy encodeObject:attachments forKey:@"ASEAttachments"];
 
-  v16 = [(ASEmailItem *)self meetingRequest];
-  [v5 encodeObject:v16 forKey:@"ASEMeetingRequest"];
+  meetingRequest = [(ASEmailItem *)self meetingRequest];
+  [coderCopy encodeObject:meetingRequest forKey:@"ASEMeetingRequest"];
 
-  v17 = [(ASEmailItem *)self threadTopic];
-  [v5 encodeObject:v17 forKey:@"ASEThreadTopic"];
+  threadTopic = [(ASEmailItem *)self threadTopic];
+  [coderCopy encodeObject:threadTopic forKey:@"ASEThreadTopic"];
 
-  v18 = [(ASEmailItem *)self conversationId];
-  [v5 encodeObject:v18 forKey:@"ASEConversationId"];
+  conversationId = [(ASEmailItem *)self conversationId];
+  [coderCopy encodeObject:conversationId forKey:@"ASEConversationId"];
 
-  v19 = [(ASEmailItem *)self conversationIndex];
-  [v5 encodeObject:v19 forKey:@"ASEConversationIndex"];
+  conversationIndex = [(ASEmailItem *)self conversationIndex];
+  [coderCopy encodeObject:conversationIndex forKey:@"ASEConversationIndex"];
 
-  v20 = [(ASEmailItem *)self mimeData];
-  [v5 encodeObject:v20 forKey:@"ASEMIMEData"];
+  mimeData = [(ASEmailItem *)self mimeData];
+  [coderCopy encodeObject:mimeData forKey:@"ASEMIMEData"];
 
-  v21 = [(ASEmailItem *)self folderId];
-  [v5 encodeObject:v21 forKey:@"ASEFolderId"];
+  folderId = [(ASEmailItem *)self folderId];
+  [coderCopy encodeObject:folderId forKey:@"ASEFolderId"];
 
-  v22 = [(ASEmailItem *)self longID];
-  [v5 encodeObject:v22 forKey:@"ASELongID"];
+  longID = [(ASEmailItem *)self longID];
+  [coderCopy encodeObject:longID forKey:@"ASELongID"];
 
-  [v5 encodeInt:-[ASEmailItem bodyType](self forKey:{"bodyType"), @"ASEBodyType"}];
-  [v5 encodeBool:-[ASEmailItem readIsSet](self forKey:{"readIsSet"), @"ASEReadIsSet"}];
-  [v5 encodeBool:-[ASEmailItem flaggedIsSet](self forKey:{"flaggedIsSet"), @"ASEFlaggedIsSet"}];
-  [v5 encodeInt:-[ASEmailItem lastVerb](self forKey:{"lastVerb"), @"ASELastVerb"}];
-  [v5 encodeBool:-[ASEmailItem verbIsSet](self forKey:{"verbIsSet"), @"ASEVerbIsSet"}];
-  v23 = [(ASEmailItem *)self sender];
-  [v5 encodeObject:v23 forKey:@"ASESender"];
+  [coderCopy encodeInt:-[ASEmailItem bodyType](self forKey:{"bodyType"), @"ASEBodyType"}];
+  [coderCopy encodeBool:-[ASEmailItem readIsSet](self forKey:{"readIsSet"), @"ASEReadIsSet"}];
+  [coderCopy encodeBool:-[ASEmailItem flaggedIsSet](self forKey:{"flaggedIsSet"), @"ASEFlaggedIsSet"}];
+  [coderCopy encodeInt:-[ASEmailItem lastVerb](self forKey:{"lastVerb"), @"ASELastVerb"}];
+  [coderCopy encodeBool:-[ASEmailItem verbIsSet](self forKey:{"verbIsSet"), @"ASEVerbIsSet"}];
+  sender = [(ASEmailItem *)self sender];
+  [coderCopy encodeObject:sender forKey:@"ASESender"];
 
   v24 = [(ASEmailItem *)self bcc];
-  [v5 encodeObject:v24 forKey:@"ASEBCC"];
+  [coderCopy encodeObject:v24 forKey:@"ASEBCC"];
 
-  [v5 encodeBool:-[ASEmailItem isDraft](self forKey:{"isDraft"), @"ASEIsDraft"}];
+  [coderCopy encodeBool:-[ASEmailItem isDraft](self forKey:{"isDraft"), @"ASEIsDraft"}];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

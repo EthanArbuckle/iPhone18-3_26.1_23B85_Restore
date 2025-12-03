@@ -1,28 +1,28 @@
 @interface DOCItemBookmark
-+ (BOOL)isAnyItemBookmarkAFault:(id)a3;
-+ (BOOL)isAnyNodeAFault:(id)a3;
-+ (id)_contentTypeForURL:(id)a3;
-+ (id)documentsURLsForItemBookmarks:(id)a3;
-+ (void)_fetchDocumentURLFromBookmarkableString:(id)a3 completion:(id)a4;
-- (DOCItemBookmark)initWithBookmarkableString:(id)a3 node:(id)a4;
-- (DOCItemBookmark)initWithCoder:(id)a3;
-- (DOCItemBookmark)initWithURL:(id)a3 node:(id)a4;
++ (BOOL)isAnyItemBookmarkAFault:(id)fault;
++ (BOOL)isAnyNodeAFault:(id)fault;
++ (id)_contentTypeForURL:(id)l;
++ (id)documentsURLsForItemBookmarks:(id)bookmarks;
++ (void)_fetchDocumentURLFromBookmarkableString:(id)string completion:(id)completion;
+- (DOCItemBookmark)initWithBookmarkableString:(id)string node:(id)node;
+- (DOCItemBookmark)initWithCoder:(id)coder;
+- (DOCItemBookmark)initWithURL:(id)l node:(id)node;
 - (id)coordinatedFileURL;
 - (id)description;
-- (void)convertAndCopyURLToInbox:(id)a3 ofType:(id)a4 conversionRules:(id)a5 completion:(id)a6;
+- (void)convertAndCopyURLToInbox:(id)inbox ofType:(id)type conversionRules:(id)rules completion:(id)completion;
 - (void)coordinatedFileURL;
-- (void)copyURLToInbox:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)prepareForMode:(unint64_t)a3 usingBookmark:(BOOL)a4 shouldConvert:(BOOL)a5 conversionRules:(id)a6 completionBlock:(id)a7;
+- (void)copyURLToInbox:(id)inbox completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)prepareForMode:(unint64_t)mode usingBookmark:(BOOL)bookmark shouldConvert:(BOOL)convert conversionRules:(id)rules completionBlock:(id)block;
 @end
 
 @implementation DOCItemBookmark
 
-- (DOCItemBookmark)initWithBookmarkableString:(id)a3 node:(id)a4
+- (DOCItemBookmark)initWithBookmarkableString:(id)string node:(id)node
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  nodeCopy = node;
   v14.receiver = self;
   v14.super_class = DOCItemBookmark;
   v8 = [(DOCItemBookmark *)&v14 init];
@@ -39,16 +39,16 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v16 = v6;
+      v16 = stringCopy;
       v17 = 2114;
-      v18 = v7;
+      v18 = nodeCopy;
       _os_log_impl(&dword_1E57D8000, v10, OS_LOG_TYPE_INFO, "DOCItemBookmark: initWithBookmarkableString: %@, node: %{public}@", buf, 0x16u);
     }
 
-    [(DOCItemBookmark *)v8 setBookmarkableString:v6];
-    [(DOCItemBookmark *)v8 setNode:v7];
-    v11 = [v7 contentType];
-    [(DOCItemBookmark *)v8 setContentType:v11];
+    [(DOCItemBookmark *)v8 setBookmarkableString:stringCopy];
+    [(DOCItemBookmark *)v8 setNode:nodeCopy];
+    contentType = [nodeCopy contentType];
+    [(DOCItemBookmark *)v8 setContentType:contentType];
 
     v8->_needsToBeImported = 0;
     v12 = v8;
@@ -57,11 +57,11 @@
   return v8;
 }
 
-- (DOCItemBookmark)initWithURL:(id)a3 node:(id)a4
+- (DOCItemBookmark)initWithURL:(id)l node:(id)node
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  nodeCopy = node;
   v27.receiver = self;
   v27.super_class = DOCItemBookmark;
   v8 = [(DOCItemBookmark *)&v27 init];
@@ -78,13 +78,13 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = lCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = nodeCopy;
       _os_log_impl(&dword_1E57D8000, v10, OS_LOG_TYPE_INFO, "DOCItemBookmark: initWithURL: %@, node: %{public}@", buf, 0x16u);
     }
 
-    v11 = [v6 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -98,7 +98,7 @@
     v25[1] = 3221225472;
     v25[2] = __36__DOCItemBookmark_initWithURL_node___block_invoke;
     v25[3] = &unk_1E8783630;
-    [v12 coordinateReadingItemAtURL:v6 options:0 error:&v26 byAccessor:v25];
+    [v12 coordinateReadingItemAtURL:lCopy options:0 error:&v26 byAccessor:v25];
     v13 = v26;
     if (v13)
     {
@@ -112,9 +112,9 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *v28 = 138412802;
-        v29 = v6;
+        v29 = lCopy;
         v30 = 2114;
-        v31 = v7;
+        v31 = nodeCopy;
         v32 = 2112;
         v33 = v13;
         _os_log_error_impl(&dword_1E57D8000, v14, OS_LOG_TYPE_ERROR, "Failed to coordinate on bookmark item with URL: %@, node: %{public}@, error: %@", v28, 0x20u);
@@ -128,34 +128,34 @@
       {
         v17 = v16;
 
-        v6 = v17;
+        lCopy = v17;
       }
     }
 
     _Block_object_dispose(buf, 8);
     v24 = v13;
-    v18 = [DOCItemBookmark _wrapperForURL:v6 error:&v24];
+    v18 = [DOCItemBookmark _wrapperForURL:lCopy error:&v24];
     v19 = v24;
 
     wrapper = v8->_wrapper;
     v8->_wrapper = v18;
 
-    if (v11)
+    if (startAccessingSecurityScopedResource)
     {
-      [v6 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
     }
 
     if (v8->_wrapper)
     {
-      if (v7)
+      if (nodeCopy)
       {
-        [(DOCItemBookmark *)v8 setNode:v7];
-        [v7 contentType];
+        [(DOCItemBookmark *)v8 setNode:nodeCopy];
+        [nodeCopy contentType];
       }
 
       else
       {
-        [DOCItemBookmark _contentTypeForURL:v6];
+        [DOCItemBookmark _contentTypeForURL:lCopy];
       }
       v22 = ;
       [(DOCItemBookmark *)v8 setContentType:v22];
@@ -176,9 +176,9 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        *&buf[4] = v6;
+        *&buf[4] = lCopy;
         *&buf[12] = 2114;
-        *&buf[14] = v7;
+        *&buf[14] = nodeCopy;
         *&buf[22] = 2112;
         v35 = v19;
         _os_log_error_impl(&dword_1E57D8000, v21, OS_LOG_TYPE_ERROR, "Failed to create FPSandboxingURLWrapper with URL: %@, node: %{public}@, error: %@", buf, 0x20u);
@@ -196,21 +196,21 @@
   return v15;
 }
 
-+ (id)_contentTypeForURL:(id)a3
++ (id)_contentTypeForURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  if ([v4 length])
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  if ([pathExtension length])
   {
-    v5 = [MEMORY[0x1E6982C38] typeWithFilenameExtension:v4];
+    v5 = [MEMORY[0x1E6982C38] typeWithFilenameExtension:pathExtension];
   }
 
   else
   {
     v11 = 0;
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v3 path];
-    [v6 fileExistsAtPath:v7 isDirectory:&v11];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v11];
 
     v8 = MEMORY[0x1E6982D78];
     if (!v11)
@@ -226,37 +226,37 @@
   return v9;
 }
 
-+ (void)_fetchDocumentURLFromBookmarkableString:(id)a3 completion:(id)a4
++ (void)_fetchDocumentURLFromBookmarkableString:(id)string completion:(id)completion
 {
-  v5 = a4;
-  v4 = v5;
+  completionCopy = completion;
+  v4 = completionCopy;
   FPDocumentURLFromBookmarkableString();
 }
 
-- (void)prepareForMode:(unint64_t)a3 usingBookmark:(BOOL)a4 shouldConvert:(BOOL)a5 conversionRules:(id)a6 completionBlock:(id)a7
+- (void)prepareForMode:(unint64_t)mode usingBookmark:(BOOL)bookmark shouldConvert:(BOOL)convert conversionRules:(id)rules completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
+  convertCopy = convert;
+  bookmarkCopy = bookmark;
   v64[1] = *MEMORY[0x1E69E9840];
-  v13 = a6;
-  v14 = a7;
-  v15 = [(DOCItemBookmark *)self fileURL];
+  rulesCopy = rules;
+  blockCopy = block;
+  fileURL = [(DOCItemBookmark *)self fileURL];
 
-  if (v15)
+  if (fileURL)
   {
     v59 = MEMORY[0x1E69E9820];
     v60 = 3221225472;
     v61 = __94__DOCItemBookmark_prepareForMode_usingBookmark_shouldConvert_conversionRules_completionBlock___block_invoke;
     v62 = &unk_1E87823C0;
-    v63 = v14;
+    v63 = blockCopy;
     DOCRunInMainThread();
   }
 
-  if (!v9)
+  if (!bookmarkCopy)
   {
     v20 = self->_wrapper != 0;
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Trying to prepare a DOCItem in mode %lu without using bookmark and with a nil _wrapper", a3];
-    LOBYTE(v20) = DOCAssertWithIntenalBuildAlert(v20, 0, @"[INTERNAL BUILD] Elusive Bug Alert", @"Trying to prepare a DOCItemBookmark with usingBookmark==NO and with a nil _wrapper.\n\n Please file a radar to DocumentManager | iOS and attach a sysdiagnose.\n\n We will now abort the action.", v21, 0);
+    mode = [MEMORY[0x1E696AEC0] stringWithFormat:@"Trying to prepare a DOCItem in mode %lu without using bookmark and with a nil _wrapper", mode];
+    LOBYTE(v20) = DOCAssertWithIntenalBuildAlert(v20, 0, @"[INTERNAL BUILD] Elusive Bug Alert", @"Trying to prepare a DOCItemBookmark with usingBookmark==NO and with a nil _wrapper.\n\n Please file a radar to DocumentManager | iOS and attach a sysdiagnose.\n\n We will now abort the action.", mode, 0);
 
     if ((v20 & 1) == 0)
     {
@@ -264,7 +264,7 @@
       v46 = 3221225472;
       v47 = __94__DOCItemBookmark_prepareForMode_usingBookmark_shouldConvert_conversionRules_completionBlock___block_invoke_5;
       v48 = &unk_1E87823C0;
-      v49 = v14;
+      v49 = blockCopy;
       DOCRunInMainThread();
       v19 = v49;
       goto LABEL_27;
@@ -273,17 +273,17 @@
     v22 = [(FPSandboxingURLWrapper *)self->_wrapper url];
     [(DOCItemBookmark *)self setFileURL:v22];
 
-    if (a3 && ![(DOCItemBookmark *)self needsToBeImported])
+    if (mode && ![(DOCItemBookmark *)self needsToBeImported])
     {
-      v41 = v14;
+      v41 = blockCopy;
       DOCRunInMainThread();
       v19 = v41;
       goto LABEL_27;
     }
 
-    v23 = [(DOCItemBookmark *)self fileURL];
+    fileURL2 = [(DOCItemBookmark *)self fileURL];
 
-    if (!v23)
+    if (!fileURL2)
     {
       [DOCItemBookmark prepareForMode:a2 usingBookmark:self shouldConvert:? conversionRules:? completionBlock:?];
     }
@@ -293,34 +293,34 @@
     v43[2] = __94__DOCItemBookmark_prepareForMode_usingBookmark_shouldConvert_conversionRules_completionBlock___block_invoke_6;
     v43[3] = &unk_1E8783680;
     v43[4] = self;
-    v24 = v14;
+    v24 = blockCopy;
     v44 = v24;
     v25 = MEMORY[0x1E692E2E0](v43);
-    v26 = [(DOCItemBookmark *)self fileURL];
-    v27 = v26;
-    if (v8)
+    fileURL3 = [(DOCItemBookmark *)self fileURL];
+    v27 = fileURL3;
+    if (convertCopy)
     {
       v40 = v25;
-      v28 = [v26 startAccessingSecurityScopedResource];
+      startAccessingSecurityScopedResource = [fileURL3 startAccessingSecurityScopedResource];
 
-      v29 = [(DOCItemBookmark *)self fileURL];
+      fileURL4 = [(DOCItemBookmark *)self fileURL];
       v30 = *MEMORY[0x1E695DAA0];
       v64[0] = *MEMORY[0x1E695DAA0];
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:1];
       v42 = 0;
-      v27 = [v29 promisedItemResourceValuesForKeys:v31 error:&v42];
+      v27 = [fileURL4 promisedItemResourceValuesForKeys:v31 error:&v42];
       v32 = v42;
 
-      if (v28)
+      if (startAccessingSecurityScopedResource)
       {
-        v33 = [(DOCItemBookmark *)self fileURL];
-        [v33 stopAccessingSecurityScopedResource];
+        fileURL5 = [(DOCItemBookmark *)self fileURL];
+        [fileURL5 stopAccessingSecurityScopedResource];
       }
 
       v34 = [v27 valueForKey:v30];
-      v35 = [v34 identifier];
+      identifier = [v34 identifier];
 
-      if (v32 || !v35)
+      if (v32 || !identifier)
       {
         v24[2](v24, 0);
 
@@ -329,34 +329,34 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v36 = [MEMORY[0x1E6982C38] typeWithIdentifier:v35];
-      v37 = [v13 allKeys];
-      v38 = [v37 containsObject:v36];
+      v36 = [MEMORY[0x1E6982C38] typeWithIdentifier:identifier];
+      allKeys = [rulesCopy allKeys];
+      v38 = [allKeys containsObject:v36];
 
-      v39 = [(DOCItemBookmark *)self fileURL];
+      fileURL6 = [(DOCItemBookmark *)self fileURL];
       v25 = v40;
       if (v38)
       {
-        [(DOCItemBookmark *)self copyURLToInbox:v39 completion:v40];
+        [(DOCItemBookmark *)self copyURLToInbox:fileURL6 completion:v40];
       }
 
       else
       {
-        [(DOCItemBookmark *)self convertAndCopyURLToInbox:v39 ofType:v36 conversionRules:v13 completion:v40];
+        [(DOCItemBookmark *)self convertAndCopyURLToInbox:fileURL6 ofType:v36 conversionRules:rulesCopy completion:v40];
       }
     }
 
     else
     {
-      [(DOCItemBookmark *)self copyURLToInbox:v26 completion:v25];
+      [(DOCItemBookmark *)self copyURLToInbox:fileURL3 completion:v25];
     }
 
     goto LABEL_26;
   }
 
   v16 = self->_bookmarkableString != 0;
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Trying to prepare a DOCItem in mode %lu with a nil bookmarkableString", a3];
-  LOBYTE(v16) = DOCAssertWithIntenalBuildAlert(v16, 0, @"[INTERNAL BUILD] Elusive Bug Alert", @"Trying to prepare a DOCItemBookmark with usingBookmark==YES and with a nil bookmarkableString.\n\n Please file a radar to DocumentManager | iOS and attach a sysdiagnose.\n\n We will now abort the action.", v17, 0);
+  mode2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Trying to prepare a DOCItem in mode %lu with a nil bookmarkableString", mode];
+  LOBYTE(v16) = DOCAssertWithIntenalBuildAlert(v16, 0, @"[INTERNAL BUILD] Elusive Bug Alert", @"Trying to prepare a DOCItemBookmark with usingBookmark==YES and with a nil bookmarkableString.\n\n Please file a radar to DocumentManager | iOS and attach a sysdiagnose.\n\n We will now abort the action.", mode2, 0);
 
   if (v16)
   {
@@ -366,8 +366,8 @@ LABEL_26:
     v50[2] = __94__DOCItemBookmark_prepareForMode_usingBookmark_shouldConvert_conversionRules_completionBlock___block_invoke_3;
     v50[3] = &unk_1E87836A8;
     v50[4] = self;
-    v51 = v14;
-    v52 = a3;
+    v51 = blockCopy;
+    modeCopy = mode;
     v53 = a2;
     [DOCItemBookmark _fetchDocumentURLFromBookmarkableString:bookmarkableString completion:v50];
     v19 = v51;
@@ -379,7 +379,7 @@ LABEL_26:
     v55 = 3221225472;
     v56 = __94__DOCItemBookmark_prepareForMode_usingBookmark_shouldConvert_conversionRules_completionBlock___block_invoke_2;
     v57 = &unk_1E87823C0;
-    v58 = v14;
+    v58 = blockCopy;
     DOCRunInMainThread();
     v19 = v58;
   }
@@ -493,25 +493,25 @@ void __94__DOCItemBookmark_prepareForMode_usingBookmark_shouldConvert_conversion
   (*(v1 + 16))(v1, v2 != 0);
 }
 
-- (void)convertAndCopyURLToInbox:(id)a3 ofType:(id)a4 conversionRules:(id)a5 completion:(id)a6
+- (void)convertAndCopyURLToInbox:(id)inbox ofType:(id)type conversionRules:(id)rules completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  inboxCopy = inbox;
+  typeCopy = type;
+  rulesCopy = rules;
+  completionCopy = completion;
   v13 = dispatch_get_global_queue(21, 0);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__DOCItemBookmark_convertAndCopyURLToInbox_ofType_conversionRules_completion___block_invoke;
   v18[3] = &unk_1E8783720;
-  v19 = v9;
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  v17 = v9;
+  v19 = inboxCopy;
+  v20 = rulesCopy;
+  v21 = typeCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = typeCopy;
+  v16 = rulesCopy;
+  v17 = inboxCopy;
   dispatch_async(v13, v18);
 }
 
@@ -663,19 +663,19 @@ void __78__DOCItemBookmark_convertAndCopyURLToInbox_ofType_conversionRules_compl
   *(*(a1[5] + 8) + 24) = v7;
 }
 
-- (void)copyURLToInbox:(id)a3 completion:(id)a4
+- (void)copyURLToInbox:(id)inbox completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  inboxCopy = inbox;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(21, 0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke;
   v10[3] = &unk_1E8782630;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = inboxCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = inboxCopy;
   dispatch_async(v7, v10);
 }
 
@@ -837,16 +837,16 @@ void __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke_2(uint64_t a
   return v8;
 }
 
-+ (id)documentsURLsForItemBookmarks:(id)a3
++ (id)documentsURLsForItemBookmarks:(id)bookmarks
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  bookmarksCopy = bookmarks;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(bookmarksCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = bookmarksCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -861,8 +861,8 @@ void __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke_2(uint64_t a
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) fileURL];
-        [v4 addObject:v10];
+        fileURL = [*(*(&v13 + 1) + 8 * i) fileURL];
+        [v4 addObject:fileURL];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -876,19 +876,19 @@ void __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke_2(uint64_t a
   return v11;
 }
 
-- (DOCItemBookmark)initWithCoder:(id)a3
+- (DOCItemBookmark)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = DOCItemBookmark;
   v5 = [(DOCItemBookmark *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contentType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentType"];
     contentType = v5->_contentType;
     v5->_contentType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wrapper"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wrapper"];
     wrapper = v5->_wrapper;
     v5->_wrapper = v8;
 
@@ -896,56 +896,56 @@ void __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke_2(uint64_t a
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_node"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_node"];
     node = v5->_node;
     v5->_node = v14;
 
     if (!v5->_node)
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fileProviderItem"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fileProviderItem"];
       v17 = v5->_node;
       v5->_node = v16;
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bookmarkableString"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bookmarkableString"];
     bookmarkableString = v5->_bookmarkableString;
     v5->_bookmarkableString = v18;
 
-    -[DOCItemBookmark setNeedsToBeImported:](v5, "setNeedsToBeImported:", [v4 decodeBoolForKey:@"_needsToBeImported"]);
+    -[DOCItemBookmark setNeedsToBeImported:](v5, "setNeedsToBeImported:", [coderCopy decodeBoolForKey:@"_needsToBeImported"]);
     v20 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   if (self->_contentType)
   {
-    v4 = [(DOCItemBookmark *)self contentType];
-    [v8 encodeObject:v4 forKey:@"_contentType"];
+    contentType = [(DOCItemBookmark *)self contentType];
+    [coderCopy encodeObject:contentType forKey:@"_contentType"];
   }
 
   wrapper = self->_wrapper;
   if (wrapper)
   {
-    [v8 encodeObject:wrapper forKey:@"_wrapper"];
+    [coderCopy encodeObject:wrapper forKey:@"_wrapper"];
   }
 
   node = self->_node;
   if (node)
   {
-    [v8 encodeObject:node forKey:@"_node"];
+    [coderCopy encodeObject:node forKey:@"_node"];
   }
 
   bookmarkableString = self->_bookmarkableString;
   if (bookmarkableString)
   {
-    [v8 encodeObject:bookmarkableString forKey:@"_bookmarkableString"];
+    [coderCopy encodeObject:bookmarkableString forKey:@"_bookmarkableString"];
   }
 
-  [v8 encodeBool:-[DOCItemBookmark needsToBeImported](self forKey:{"needsToBeImported"), @"_needsToBeImported"}];
+  [coderCopy encodeBool:-[DOCItemBookmark needsToBeImported](self forKey:{"needsToBeImported"), @"_needsToBeImported"}];
 }
 
 - (id)description
@@ -959,15 +959,15 @@ void __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke_2(uint64_t a
   return v5;
 }
 
-+ (BOOL)isAnyItemBookmarkAFault:(id)a3
++ (BOOL)isAnyItemBookmarkAFault:(id)fault
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  faultCopy = fault;
+  v4 = [faultCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -977,15 +977,15 @@ void __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke_2(uint64_t a
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(faultCopy);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) node];
-        if ([v7 isCloudItem])
+        node = [*(*(&v10 + 1) + 8 * i) node];
+        if ([node isCloudItem])
         {
-          v8 = [v7 isDownloaded];
+          isDownloaded = [node isDownloaded];
 
-          if ((v8 & 1) == 0)
+          if ((isDownloaded & 1) == 0)
           {
             LOBYTE(v4) = 1;
             goto LABEL_12;
@@ -997,7 +997,7 @@ void __45__DOCItemBookmark_copyURLToInbox_completion___block_invoke_2(uint64_t a
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [faultCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1008,15 +1008,15 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)isAnyNodeAFault:(id)a3
++ (BOOL)isAnyNodeAFault:(id)fault
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  faultCopy = fault;
+  v4 = [faultCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -1026,7 +1026,7 @@ LABEL_12:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(faultCopy);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -1037,7 +1037,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [faultCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1066,8 +1066,8 @@ void __94__DOCItemBookmark_prepareForMode_usingBookmark_shouldConvert_conversion
 
 - (void)coordinatedFileURL
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"DOCItemBookmark.m" lineNumber:327 description:@"Trying to prepare a coordinatedFileURL with a nil wrapper"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"DOCItemBookmark.m" lineNumber:327 description:@"Trying to prepare a coordinatedFileURL with a nil wrapper"];
 
   *a4 = *a3;
 }

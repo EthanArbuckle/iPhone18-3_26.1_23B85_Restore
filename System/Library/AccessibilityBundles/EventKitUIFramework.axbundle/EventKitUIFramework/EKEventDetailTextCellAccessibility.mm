@@ -1,47 +1,47 @@
 @interface EKEventDetailTextCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
-- (CGRect)_accessibilityChargedLineBoundsForRange:(_NSRange)a3;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
+- (CGRect)_accessibilityChargedLineBoundsForRange:(_NSRange)range;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme;
 - (id)_accessibilityInternalTextLinks;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
 - (id)accessibilityValue;
 @end
 
 @implementation EKEventDetailTextCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKEventDetailTextCell" hasInstanceVariable:@"_textView" withType:"UITextView"];
-  [v3 validateClass:@"EKEventDetailTextCell" hasInstanceVariable:@"_title" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKEventDetailTextCell" hasInstanceVariable:@"_textView" withType:"UITextView"];
+  [validationsCopy validateClass:@"EKEventDetailTextCell" hasInstanceVariable:@"_title" withType:"NSString"];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(EKEventDetailTextCellAccessibility *)self safeUIViewForKey:@"_textView"];
-  v3 = [v2 accessibilityValue];
-  v4 = v3;
-  if (v3)
+  accessibilityValue = [v2 accessibilityValue];
+  v4 = accessibilityValue;
+  if (accessibilityValue)
   {
-    v5 = v3;
+    accessibilityLabel = accessibilityValue;
   }
 
   else
   {
-    v5 = [v2 accessibilityLabel];
+    accessibilityLabel = [v2 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
 
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme
 {
-  y = a3.y;
-  x = a3.x;
+  y = scheme.y;
+  x = scheme.x;
   v6 = [(EKEventDetailTextCellAccessibility *)self safeValueForKey:@"_textView"];
   [(EKEventDetailTextCellAccessibility *)self convertPoint:v6 toView:x, y];
   v8 = v7;
@@ -53,21 +53,21 @@
   return v12;
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = [(EKEventDetailTextCellAccessibility *)self safeValueForKey:@"_textView"];
   v6 = [v5 _accessibilityLineNumberAndColumnForPoint:{x, y}];
 
   return v6;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v4 = a3;
+  columnCopy = column;
   v5 = [(EKEventDetailTextCellAccessibility *)self safeValueForKey:@"_textView"];
-  v6 = [v5 _accessibilityRangeForLineNumberAndColumn:v4];
+  v6 = [v5 _accessibilityRangeForLineNumberAndColumn:columnCopy];
   v8 = v7;
 
   v9 = v6;
@@ -77,10 +77,10 @@
   return result;
 }
 
-- (CGRect)_accessibilityChargedLineBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityChargedLineBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(EKEventDetailTextCellAccessibility *)self safeValueForKey:@"_textView"];
   [v5 _accessibilityChargedLineBoundsForRange:{location, length}];
   v7 = v6;
@@ -99,10 +99,10 @@
   return result;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(EKEventDetailTextCellAccessibility *)self safeValueForKey:@"_textView"];
   [v5 _accessibilityBoundsForRange:{location, length}];
   v7 = v6;
@@ -124,9 +124,9 @@
 - (id)_accessibilityInternalTextLinks
 {
   v2 = [(EKEventDetailTextCellAccessibility *)self safeValueForKey:@"_textView"];
-  v3 = [v2 _accessibilityInternalTextLinks];
+  _accessibilityInternalTextLinks = [v2 _accessibilityInternalTextLinks];
 
-  return v3;
+  return _accessibilityInternalTextLinks;
 }
 
 @end

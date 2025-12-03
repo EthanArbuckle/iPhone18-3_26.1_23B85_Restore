@@ -1,34 +1,34 @@
 @interface SPApplicationManager
 + (id)sharedInstance;
-- (BOOL)applicationContainsWK1Application:(id)a3;
-- (BOOL)applicationContainsWK2Application:(id)a3;
-- (BOOL)pluginHasFinishedBeginUsing:(id)a3;
-- (BOOL)wasExtensionKilledDueToAppDeath:(id)a3;
-- (BOOL)willXcodeInstallSockPuppetAppWithCompanionAppID:(id)a3;
+- (BOOL)applicationContainsWK1Application:(id)application;
+- (BOOL)applicationContainsWK2Application:(id)application;
+- (BOOL)pluginHasFinishedBeginUsing:(id)using;
+- (BOOL)wasExtensionKilledDueToAppDeath:(id)death;
+- (BOOL)willXcodeInstallSockPuppetAppWithCompanionAppID:(id)d;
 - (SPApplicationManager)init;
-- (id)gizmoApplicationInfoWithIdentifier:(id)a3;
+- (id)gizmoApplicationInfoWithIdentifier:(id)identifier;
 - (id)gizmoPersistentDomain;
-- (id)identifierForPluginProxy:(id)a3;
-- (id)pluginIdentifierForProtocolIdentifier:(id)a3;
+- (id)identifierForPluginProxy:(id)proxy;
+- (id)pluginIdentifierForProtocolIdentifier:(id)identifier;
 - (id)savedGizmoBuildVersion;
-- (void)beginUsingPlugin:(id)a3 withCompletion:(id)a4;
-- (void)callEndUsingCompletionsForPluginWithIdentifier:(id)a3;
-- (void)clearXcodeWillInstallSockPuppetAppWithCompanionAppIDState:(id)a3;
-- (void)discoverAllPlugIns:(id)a3;
-- (void)discoverPlugInForIdentifier:(id)a3 found:(id)a4;
-- (void)fetchInstalledApplicationsWithCompletion:(id)a3;
-- (void)getOrBeginActivePlugInForApplication:(id)a3 setupBlock:(id)a4 completion:(id)a5;
-- (void)handleInstallationsReportedByLaunchServices:(id)a3;
-- (void)markPluginWithIdentifierNeedsBeginUsing:(id)a3;
-- (void)notifyActiveForPluginWithIdentifier:(id)a3;
-- (void)notifyInactiveForPluginWithIdentifier:(id)a3 completion:(id)a4;
+- (void)beginUsingPlugin:(id)plugin withCompletion:(id)completion;
+- (void)callEndUsingCompletionsForPluginWithIdentifier:(id)identifier;
+- (void)clearXcodeWillInstallSockPuppetAppWithCompanionAppIDState:(id)state;
+- (void)discoverAllPlugIns:(id)ins;
+- (void)discoverPlugInForIdentifier:(id)identifier found:(id)found;
+- (void)fetchInstalledApplicationsWithCompletion:(id)completion;
+- (void)getOrBeginActivePlugInForApplication:(id)application setupBlock:(id)block completion:(id)completion;
+- (void)handleInstallationsReportedByLaunchServices:(id)services;
+- (void)markPluginWithIdentifierNeedsBeginUsing:(id)using;
+- (void)notifyActiveForPluginWithIdentifier:(id)identifier;
+- (void)notifyInactiveForPluginWithIdentifier:(id)identifier completion:(id)completion;
 - (void)registerForContinuousPluginDiscovery;
-- (void)saveGizmoBuildVersion:(id)a3;
-- (void)setExtension:(id)a3 wasKilledDueToAppDeath:(BOOL)a4;
-- (void)stopUsingPluginIfNecessary:(id)a3;
-- (void)updateCoreDuetSession:(id)a3;
-- (void)waitForPreviousPluginToFinishEnding:(id)a3 toComplete:(id)a4;
-- (void)xcodeWillInstallSockPuppetAppWithCompanionAppID:(id)a3;
+- (void)saveGizmoBuildVersion:(id)version;
+- (void)setExtension:(id)extension wasKilledDueToAppDeath:(BOOL)death;
+- (void)stopUsingPluginIfNecessary:(id)necessary;
+- (void)updateCoreDuetSession:(id)session;
+- (void)waitForPreviousPluginToFinishEnding:(id)ending toComplete:(id)complete;
+- (void)xcodeWillInstallSockPuppetAppWithCompanionAppID:(id)d;
 @end
 
 @implementation SPApplicationManager
@@ -97,9 +97,9 @@
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 persistentDomainForName:@"com.apple.companionappd"];
   v5 = [v4 objectForKey:@"SPEnableExcessivePluginLoadingLogging"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = wk_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -126,20 +126,20 @@
   v15 = @"WKAppBundleIdentifier";
   v16 = @"<>";
   v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v11 = [(SPApplicationManager *)self pluginsFoundBlock];
-  v12 = [v9 continuouslyDiscoverPlugInsForAttributes:v10 flags:0 found:v11];
+  pluginsFoundBlock = [(SPApplicationManager *)self pluginsFoundBlock];
+  v12 = [v9 continuouslyDiscoverPlugInsForAttributes:v10 flags:0 found:pluginsFoundBlock];
   [(SPApplicationManager *)self setWkContinuousDiscoveryToken:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 }
 
-- (void)callEndUsingCompletionsForPluginWithIdentifier:(id)a3
+- (void)callEndUsingCompletionsForPluginWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SPApplicationManager *)self continuouslyDiscoveredPlugins];
-  v6 = v4;
-  v7 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  continuouslyDiscoveredPlugins = [(SPApplicationManager *)self continuouslyDiscoveredPlugins];
+  v6 = identifierCopy;
+  v7 = [continuouslyDiscoveredPlugins objectForKeyedSubscript:identifierCopy];
 
   [v7 removeObjectForKey:@"previousPlugin"];
   v8 = [v7 objectForKeyedSubscript:@"didEndCompletions"];
@@ -200,56 +200,56 @@
   }
 }
 
-- (void)waitForPreviousPluginToFinishEnding:(id)a3 toComplete:(id)a4
+- (void)waitForPreviousPluginToFinishEnding:(id)ending toComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  endingCopy = ending;
+  completeCopy = complete;
   objc_initWeak(&location, self);
-  v8 = [(SPApplicationManager *)self pkPluginManagementQueue];
+  pkPluginManagementQueue = [(SPApplicationManager *)self pkPluginManagementQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100017F38;
   v11[3] = &unk_100045D98;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = endingCopy;
+  v13 = completeCopy;
+  v9 = endingCopy;
+  v10 = completeCopy;
   objc_copyWeak(&v14, &location);
-  dispatch_async(v8, v11);
+  dispatch_async(pkPluginManagementQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)beginUsingPlugin:(id)a3 withCompletion:(id)a4
+- (void)beginUsingPlugin:(id)plugin withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPApplicationManager *)self pkPluginManagementQueue];
+  pkPluginManagementQueue = [(SPApplicationManager *)self pkPluginManagementQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001879C;
   block[3] = &unk_100045E38;
-  v12 = v6;
-  v9 = v6;
+  v12 = pluginCopy;
+  v9 = pluginCopy;
   objc_copyWeak(&v15, &location);
-  v13 = self;
-  v14 = v7;
-  v10 = v7;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  dispatch_async(pkPluginManagementQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)getOrBeginActivePlugInForApplication:(id)a3 setupBlock:(id)a4 completion:(id)a5
+- (void)getOrBeginActivePlugInForApplication:(id)application setupBlock:(id)block completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  blockCopy = block;
+  completionCopy = completion;
   v11 = +[SPApplicationManager sharedInstance];
-  v12 = [v11 pluginIdentifierForProtocolIdentifier:v8];
+  v12 = [v11 pluginIdentifierForProtocolIdentifier:applicationCopy];
 
   if (v12)
   {
@@ -260,10 +260,10 @@
     v14[3] = &unk_100045ED8;
     v15 = v12;
     objc_copyWeak(&v20, &location);
-    v18 = v10;
-    v16 = self;
-    v17 = v8;
-    v19 = v9;
+    v18 = completionCopy;
+    selfCopy = self;
+    v17 = applicationCopy;
+    v19 = blockCopy;
     [(SPApplicationManager *)self waitForPreviousPluginToFinishEnding:v15 toComplete:v14];
 
     objc_destroyWeak(&v20);
@@ -278,14 +278,14 @@
       sub_100029BBC();
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)setExtension:(id)a3 wasKilledDueToAppDeath:(BOOL)a4
+- (void)setExtension:(id)extension wasKilledDueToAppDeath:(BOOL)death
 {
-  v4 = a4;
-  v6 = a3;
+  deathCopy = death;
+  extensionCopy = extension;
   v7 = wk_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -294,9 +294,9 @@
     v15 = 1024;
     v16 = 506;
     v17 = 2114;
-    v18 = v6;
+    v18 = extensionCopy;
     v19 = 1024;
-    v20 = v4;
+    v20 = deathCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: app %{public}@ wasKilledDueToAppDeath=%d", buf, 0x22u);
   }
 
@@ -305,16 +305,16 @@
   block[1] = 3221225472;
   block[2] = sub_100019FE8;
   block[3] = &unk_100045A88;
-  v12 = v4;
+  v12 = deathCopy;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = extensionCopy;
+  v9 = extensionCopy;
   dispatch_barrier_sync(extensionsKilledDueToAppDeathAccessQueue, block);
 }
 
-- (BOOL)wasExtensionKilledDueToAppDeath:(id)a3
+- (BOOL)wasExtensionKilledDueToAppDeath:(id)death
 {
-  v4 = a3;
+  deathCopy = death;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -324,10 +324,10 @@
   block[1] = 3221225472;
   block[2] = sub_10001A14C;
   block[3] = &unk_100045A40;
-  v9 = v4;
+  v9 = deathCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = deathCopy;
   dispatch_sync(extensionsKilledDueToAppDeathAccessQueue, block);
   LOBYTE(extensionsKilledDueToAppDeathAccessQueue) = *(v12 + 24);
 
@@ -335,16 +335,16 @@
   return extensionsKilledDueToAppDeathAccessQueue;
 }
 
-- (void)handleInstallationsReportedByLaunchServices:(id)a3
+- (void)handleInstallationsReportedByLaunchServices:(id)services
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"isPlaceholder"];
-  v6 = [v5 BOOLValue];
+  servicesCopy = services;
+  v5 = [servicesCopy objectForKeyedSubscript:@"isPlaceholder"];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v25 = v4;
-    [v4 objectForKeyedSubscript:@"bundleIDs"];
+    v25 = servicesCopy;
+    [servicesCopy objectForKeyedSubscript:@"bundleIDs"];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -379,8 +379,8 @@
             v34 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v16 = [v15 plugInKitPlugins];
-            v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            plugInKitPlugins = [v15 plugInKitPlugins];
+            v17 = [plugInKitPlugins countByEnumeratingWithState:&v31 objects:v39 count:16];
             if (v17)
             {
               v18 = v17;
@@ -391,12 +391,12 @@
                 {
                   if (*v32 != v19)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(plugInKitPlugins);
                   }
 
                   v21 = *(*(&v31 + 1) + 8 * i);
-                  v22 = [v21 protocol];
-                  v23 = [v22 isEqualToString:@"com.apple.watchkit"];
+                  protocol = [v21 protocol];
+                  v23 = [protocol isEqualToString:@"com.apple.watchkit"];
 
                   if (v23)
                   {
@@ -408,7 +408,7 @@
                   }
                 }
 
-                v18 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+                v18 = [plugInKitPlugins countByEnumeratingWithState:&v31 objects:v39 count:16];
               }
 
               while (v18);
@@ -433,7 +433,7 @@
       while (v9);
     }
 
-    v4 = v25;
+    servicesCopy = v25;
   }
 }
 
@@ -464,16 +464,16 @@
   return v5;
 }
 
-- (id)gizmoApplicationInfoWithIdentifier:(id)a3
+- (id)gizmoApplicationInfoWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(SPApplicationManager *)self gizmoPersistentDomain];
-  DeepCopy = [v6 objectForKeyedSubscript:v4];
+  gizmoPersistentDomain = [(SPApplicationManager *)self gizmoPersistentDomain];
+  DeepCopy = [gizmoPersistentDomain objectForKeyedSubscript:identifierCopy];
 
   if (DeepCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:v4];
+    v8 = [gizmoPersistentDomain objectForKeyedSubscript:identifierCopy];
     DeepCopy = CFPropertyListCreateDeepCopy(kCFAllocatorDefault, v8, 0);
   }
 
@@ -482,19 +482,19 @@
   return DeepCopy;
 }
 
-- (id)pluginIdentifierForProtocolIdentifier:(id)a3
+- (id)pluginIdentifierForProtocolIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SPApplicationManager *)self gizmoPersistentDomain];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  gizmoPersistentDomain = [(SPApplicationManager *)self gizmoPersistentDomain];
+  v6 = [gizmoPersistentDomain objectForKeyedSubscript:identifierCopy];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 objectForKeyedSubscript:@"SPPluginBundleIdKey"];
     v9 = [v7 objectForKeyedSubscript:@"s"];
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
 
-    if (v10 - 4 > 0xFFFFFFFD)
+    if (intValue - 4 > 0xFFFFFFFD)
     {
       v12 = [v8 copy];
     }
@@ -509,7 +509,7 @@
         v16 = 1024;
         v17 = 588;
         v18 = 2114;
-        v19 = v4;
+        v19 = identifierCopy;
         v20 = 2114;
         v21 = v8;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: Asked for plugin for %{public}@. Answer is %{public}@, but status is not installed, so returning nil.", &v14, 0x26u);
@@ -527,59 +527,59 @@
   return v12;
 }
 
-- (id)identifierForPluginProxy:(id)a3
+- (id)identifierForPluginProxy:(id)proxy
 {
-  v3 = [a3 pluginKitDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"NSExtensionAttributes"];
+  pluginKitDictionary = [proxy pluginKitDictionary];
+  v4 = [pluginKitDictionary objectForKeyedSubscript:@"NSExtensionAttributes"];
   v5 = [v4 objectForKeyedSubscript:@"WKAppBundleIdentifier"];
 
   return v5;
 }
 
-- (void)stopUsingPluginIfNecessary:(id)a3
+- (void)stopUsingPluginIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(SPApplicationManager *)self gizmoApplicationInfoWithIdentifier:v4];
+  necessaryCopy = necessary;
+  v5 = [(SPApplicationManager *)self gizmoApplicationInfoWithIdentifier:necessaryCopy];
   v6 = [v5 objectForKeyedSubscript:@"SPPluginBundleIdKey"];
   if (v6)
   {
     objc_initWeak(&location, self);
-    v7 = [(SPApplicationManager *)self pkPluginManagementQueue];
+    pkPluginManagementQueue = [(SPApplicationManager *)self pkPluginManagementQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001A9C8;
     block[3] = &unk_100045D00;
     v9 = v6;
     objc_copyWeak(&v10, &location);
-    dispatch_async(v7, block);
+    dispatch_async(pkPluginManagementQueue, block);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 }
 
-- (BOOL)applicationContainsWK2Application:(id)a3
+- (BOOL)applicationContainsWK2Application:(id)application
 {
   v9 = 0;
-  v3 = [a3 bundleURL];
-  v4 = [v3 path];
-  v5 = [v4 stringByAppendingPathComponent:@"Watch"];
+  bundleURL = [application bundleURL];
+  path = [bundleURL path];
+  v5 = [path stringByAppendingPathComponent:@"Watch"];
 
   v6 = +[NSFileManager defaultManager];
-  LOBYTE(v4) = [v6 fileExistsAtPath:v5 isDirectory:&v9];
+  LOBYTE(path) = [v6 fileExistsAtPath:v5 isDirectory:&v9];
   v7 = v9;
 
-  return v4 & v7;
+  return path & v7;
 }
 
-- (BOOL)applicationContainsWK1Application:(id)a3
+- (BOOL)applicationContainsWK1Application:(id)application
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 plugInKitPlugins];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  plugInKitPlugins = [application plugInKitPlugins];
+  v4 = [plugInKitPlugins countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -590,11 +590,11 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(plugInKitPlugins);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) protocol];
-        v9 = [v8 isEqualToString:@"com.apple.watchkit"];
+        protocol = [*(*(&v12 + 1) + 8 * i) protocol];
+        v9 = [protocol isEqualToString:@"com.apple.watchkit"];
 
         if (v9)
         {
@@ -603,7 +603,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [plugInKitPlugins countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -619,46 +619,46 @@ LABEL_11:
   return v10;
 }
 
-- (void)fetchInstalledApplicationsWithCompletion:(id)a3
+- (void)fetchInstalledApplicationsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[ACXDeviceConnection sharedDeviceConnection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001AFB0;
   v6[3] = &unk_100045F50;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 fetchInstalledApplicationsForPairedDevice:0 completion:v6];
 }
 
-- (void)xcodeWillInstallSockPuppetAppWithCompanionAppID:(id)a3
+- (void)xcodeWillInstallSockPuppetAppWithCompanionAppID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = v4;
-    v5 = [(SPApplicationManager *)self companionAppIDsInstalledViaXcodeLock];
-    objc_sync_enter(v5);
-    v6 = [(SPApplicationManager *)self companionAppIDsInstalledViaXcode];
-    [v6 addObject:v7];
+    v7 = dCopy;
+    companionAppIDsInstalledViaXcodeLock = [(SPApplicationManager *)self companionAppIDsInstalledViaXcodeLock];
+    objc_sync_enter(companionAppIDsInstalledViaXcodeLock);
+    companionAppIDsInstalledViaXcode = [(SPApplicationManager *)self companionAppIDsInstalledViaXcode];
+    [companionAppIDsInstalledViaXcode addObject:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(companionAppIDsInstalledViaXcodeLock);
+    dCopy = v7;
   }
 }
 
-- (BOOL)willXcodeInstallSockPuppetAppWithCompanionAppID:(id)a3
+- (BOOL)willXcodeInstallSockPuppetAppWithCompanionAppID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(SPApplicationManager *)self companionAppIDsInstalledViaXcodeLock];
-    objc_sync_enter(v5);
-    v6 = [(SPApplicationManager *)self companionAppIDsInstalledViaXcode];
-    v7 = [v6 containsObject:v4];
+    companionAppIDsInstalledViaXcodeLock = [(SPApplicationManager *)self companionAppIDsInstalledViaXcodeLock];
+    objc_sync_enter(companionAppIDsInstalledViaXcodeLock);
+    companionAppIDsInstalledViaXcode = [(SPApplicationManager *)self companionAppIDsInstalledViaXcode];
+    v7 = [companionAppIDsInstalledViaXcode containsObject:dCopy];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(companionAppIDsInstalledViaXcodeLock);
   }
 
   else
@@ -669,30 +669,30 @@ LABEL_11:
   return v7;
 }
 
-- (void)clearXcodeWillInstallSockPuppetAppWithCompanionAppIDState:(id)a3
+- (void)clearXcodeWillInstallSockPuppetAppWithCompanionAppIDState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
-    v7 = v4;
-    v5 = [(SPApplicationManager *)self companionAppIDsInstalledViaXcodeLock];
-    objc_sync_enter(v5);
-    v6 = [(SPApplicationManager *)self companionAppIDsInstalledViaXcode];
-    [v6 removeObject:v7];
+    v7 = stateCopy;
+    companionAppIDsInstalledViaXcodeLock = [(SPApplicationManager *)self companionAppIDsInstalledViaXcodeLock];
+    objc_sync_enter(companionAppIDsInstalledViaXcodeLock);
+    companionAppIDsInstalledViaXcode = [(SPApplicationManager *)self companionAppIDsInstalledViaXcode];
+    [companionAppIDsInstalledViaXcode removeObject:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(companionAppIDsInstalledViaXcodeLock);
+    stateCopy = v7;
   }
 }
 
-- (void)updateCoreDuetSession:(id)a3
+- (void)updateCoreDuetSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"i"];
-  v6 = [v4 objectForKeyedSubscript:@"cda"];
+  sessionCopy = session;
+  v5 = [sessionCopy objectForKeyedSubscript:@"i"];
+  v6 = [sessionCopy objectForKeyedSubscript:@"cda"];
 
-  v7 = [(SPApplicationManager *)self gizmoPersistentDomain];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  gizmoPersistentDomain = [(SPApplicationManager *)self gizmoPersistentDomain];
+  v8 = [gizmoPersistentDomain objectForKeyedSubscript:v5];
 
   if (v8)
   {
@@ -724,16 +724,16 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: calling [_CDClientContext addObjects:] with %{public}@", &v31, 0x1Cu);
       }
 
-      v13 = [sub_10001B538() userContext];
-      v21 = [sub_10001B618(v13 v14];
-      [v13 addObjects:v11 toArrayAtKeyPath:v21];
+      userContext = [sub_10001B538() userContext];
+      v21 = [sub_10001B618(userContext v14];
+      [userContext addObjects:v11 toArrayAtKeyPath:v21];
     }
 
     else
     {
       v22 = [v6 isEqualToString:@"d"];
       v23 = wk_default_log();
-      v13 = v23;
+      userContext = v23;
       if (!v22)
       {
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -752,12 +752,12 @@ LABEL_11:
         v34 = 723;
         v35 = 2114;
         v36 = v11;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: calling [_CDClientContext removeObjects:] with %{public}@", &v31, 0x1Cu);
+        _os_log_impl(&_mh_execute_header, userContext, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: calling [_CDClientContext removeObjects:] with %{public}@", &v31, 0x1Cu);
       }
 
-      v13 = [sub_10001B538() userContext];
-      v21 = [sub_10001B618(v13 v24];
-      [v13 removeObjects:v11 fromArrayAtKeyPath:v21];
+      userContext = [sub_10001B538() userContext];
+      v21 = [sub_10001B618(userContext v24];
+      [userContext removeObjects:v11 fromArrayAtKeyPath:v21];
     }
 
 LABEL_19:
@@ -773,9 +773,9 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)discoverAllPlugIns:(id)a3
+- (void)discoverAllPlugIns:(id)ins
 {
-  v4 = a3;
+  insCopy = ins;
   v5 = +[PKHost defaultHost];
   v10 = @"WKAppBundleIdentifier";
   v11 = @"<>";
@@ -785,32 +785,32 @@ LABEL_20:
   v8[2] = sub_10001B824;
   v8[3] = &unk_100045F78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = insCopy;
+  v7 = insCopy;
   [v5 discoverPlugInsForAttributes:v6 flags:0 found:v8];
 }
 
-- (void)discoverPlugInForIdentifier:(id)a3 found:(id)a4
+- (void)discoverPlugInForIdentifier:(id)identifier found:(id)found
 {
-  v6 = a4;
+  foundCopy = found;
   v13 = @"WKAppBundleIdentifier";
-  v14 = a3;
-  v7 = a3;
-  v8 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  v8 = [NSDictionary dictionaryWithObjects:&identifierCopy forKeys:&v13 count:1];
   v9 = +[PKHost defaultHost];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001BA00;
   v11[3] = &unk_100045F78;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = foundCopy;
+  v10 = foundCopy;
   [v9 discoverPlugInsForAttributes:v8 flags:0 found:v11];
 }
 
-- (void)markPluginWithIdentifierNeedsBeginUsing:(id)a3
+- (void)markPluginWithIdentifierNeedsBeginUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v5 = wk_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -819,40 +819,40 @@ LABEL_20:
     v13 = 1024;
     v14 = 768;
     v15 = 2114;
-    v16 = v4;
+    v16 = usingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: pluginIdentifier is %{public}@", buf, 0x1Cu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(SPApplicationManager *)self pkPluginManagementQueue];
+  pkPluginManagementQueue = [(SPApplicationManager *)self pkPluginManagementQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001BD54;
   v8[3] = &unk_1000459C8;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = usingCopy;
+  v7 = usingCopy;
+  dispatch_async(pkPluginManagementQueue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (BOOL)pluginHasFinishedBeginUsing:(id)a3
+- (BOOL)pluginHasFinishedBeginUsing:(id)using
 {
-  v4 = a3;
-  v5 = [(SPApplicationManager *)self continuouslyDiscoveredPlugins];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  usingCopy = using;
+  continuouslyDiscoveredPlugins = [(SPApplicationManager *)self continuouslyDiscoveredPlugins];
+  v6 = [continuouslyDiscoveredPlugins objectForKeyedSubscript:usingCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"finishedBeginUsing"];
-  LOBYTE(v4) = [v7 BOOLValue];
+  LOBYTE(usingCopy) = [v7 BOOLValue];
 
-  return v4;
+  return usingCopy;
 }
 
-- (void)notifyActiveForPluginWithIdentifier:(id)a3
+- (void)notifyActiveForPluginWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = wk_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -861,29 +861,29 @@ LABEL_20:
     v13 = 1024;
     v14 = 785;
     v15 = 2114;
-    v16 = v4;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: notifyActiveForPluginWithIdentifier:%{public}@", buf, 0x1Cu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(SPApplicationManager *)self pkPluginManagementQueue];
+  pkPluginManagementQueue = [(SPApplicationManager *)self pkPluginManagementQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001C004;
   v8[3] = &unk_1000459C8;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  dispatch_async(pkPluginManagementQueue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)notifyInactiveForPluginWithIdentifier:(id)a3 completion:(id)a4
+- (void)notifyInactiveForPluginWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = wk_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -892,22 +892,22 @@ LABEL_20:
     v18 = 1024;
     v19 = 796;
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: notifyInactiveForPluginWithIdentifier:%{public}@", buf, 0x1Cu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPApplicationManager *)self pkPluginManagementQueue];
+  pkPluginManagementQueue = [(SPApplicationManager *)self pkPluginManagementQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001C250;
   block[3] = &unk_100045FC8;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = identifierCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
+  dispatch_async(pkPluginManagementQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -915,23 +915,23 @@ LABEL_20:
 
 - (id)savedGizmoBuildVersion
 {
-  v3 = [(SPApplicationManager *)self domainUpdateLock];
-  objc_sync_enter(v3);
-  v4 = [(NPSDomainAccessor *)self->_watchKitAppsDomain synchronize];
+  domainUpdateLock = [(SPApplicationManager *)self domainUpdateLock];
+  objc_sync_enter(domainUpdateLock);
+  synchronize = [(NPSDomainAccessor *)self->_watchKitAppsDomain synchronize];
   v5 = [(NPSDomainAccessor *)self->_watchKitAppsDomain objectForKey:@"SPGizmoBuildVersion"];
-  objc_sync_exit(v3);
+  objc_sync_exit(domainUpdateLock);
 
   return v5;
 }
 
-- (void)saveGizmoBuildVersion:(id)a3
+- (void)saveGizmoBuildVersion:(id)version
 {
-  v6 = a3;
-  v4 = [(SPApplicationManager *)self domainUpdateLock];
-  objc_sync_enter(v4);
-  [(NPSDomainAccessor *)self->_watchKitAppsDomain setObject:v6 forKey:@"SPGizmoBuildVersion"];
-  v5 = [(NPSDomainAccessor *)self->_watchKitAppsDomain synchronize];
-  objc_sync_exit(v4);
+  versionCopy = version;
+  domainUpdateLock = [(SPApplicationManager *)self domainUpdateLock];
+  objc_sync_enter(domainUpdateLock);
+  [(NPSDomainAccessor *)self->_watchKitAppsDomain setObject:versionCopy forKey:@"SPGizmoBuildVersion"];
+  synchronize = [(NPSDomainAccessor *)self->_watchKitAppsDomain synchronize];
+  objc_sync_exit(domainUpdateLock);
 }
 
 @end

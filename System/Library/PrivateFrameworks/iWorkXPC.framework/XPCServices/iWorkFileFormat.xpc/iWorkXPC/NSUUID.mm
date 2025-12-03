@@ -1,77 +1,77 @@
 @interface NSUUID
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 UUID:(id)a4;
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 bytes:(const void *)a4 size:(unint64_t)a5;
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 doubleValue:(double)a4;
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 integerValue:(int64_t)a4;
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 name:(id)a4;
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 timeInterval:(double)a4;
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 unsignedIntegerValue:(unint64_t)a4;
-- (int64_t)tsu_compare:(id)a3;
++ (id)tsu_UUIDWithNamespaceUUID:(id)d UUID:(id)iD;
++ (id)tsu_UUIDWithNamespaceUUID:(id)d bytes:(const void *)bytes size:(unint64_t)size;
++ (id)tsu_UUIDWithNamespaceUUID:(id)d doubleValue:(double)value;
++ (id)tsu_UUIDWithNamespaceUUID:(id)d integerValue:(int64_t)value;
++ (id)tsu_UUIDWithNamespaceUUID:(id)d name:(id)name;
++ (id)tsu_UUIDWithNamespaceUUID:(id)d timeInterval:(double)interval;
++ (id)tsu_UUIDWithNamespaceUUID:(id)d unsignedIntegerValue:(unint64_t)value;
+- (int64_t)tsu_compare:(id)tsu_compare;
 @end
 
 @implementation NSUUID
 
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 name:(id)a4
++ (id)tsu_UUIDWithNamespaceUUID:(id)d name:(id)name
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [a4 UTF8String];
-  v10 = [a1 tsu_UUIDWithNamespaceUUID:v8 bytes:v9 size:strlen(v9)];
+  nameCopy = name;
+  dCopy = d;
+  uTF8String = [name UTF8String];
+  v10 = [self tsu_UUIDWithNamespaceUUID:dCopy bytes:uTF8String size:strlen(uTF8String)];
 
   return v10;
 }
 
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 UUID:(id)a4
++ (id)tsu_UUIDWithNamespaceUUID:(id)d UUID:(id)iD
 {
   v9[0] = 0;
   v9[1] = 0;
-  v6 = a3;
-  [a4 getUUIDBytes:v9];
-  v7 = [a1 tsu_UUIDWithNamespaceUUID:v6 bytes:v9 size:16];
+  dCopy = d;
+  [iD getUUIDBytes:v9];
+  v7 = [self tsu_UUIDWithNamespaceUUID:dCopy bytes:v9 size:16];
 
   return v7;
 }
 
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 timeInterval:(double)a4
++ (id)tsu_UUIDWithNamespaceUUID:(id)d timeInterval:(double)interval
 {
-  v6 = a4;
-  v4 = [a1 tsu_UUIDWithNamespaceUUID:a3 bytes:&v6 size:8];
+  intervalCopy = interval;
+  v4 = [self tsu_UUIDWithNamespaceUUID:d bytes:&intervalCopy size:8];
 
   return v4;
 }
 
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 doubleValue:(double)a4
++ (id)tsu_UUIDWithNamespaceUUID:(id)d doubleValue:(double)value
 {
-  v6 = a4;
-  v4 = [a1 tsu_UUIDWithNamespaceUUID:a3 bytes:&v6 size:8];
+  valueCopy = value;
+  v4 = [self tsu_UUIDWithNamespaceUUID:d bytes:&valueCopy size:8];
 
   return v4;
 }
 
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 unsignedIntegerValue:(unint64_t)a4
++ (id)tsu_UUIDWithNamespaceUUID:(id)d unsignedIntegerValue:(unint64_t)value
 {
-  v6 = a4;
-  v4 = [a1 tsu_UUIDWithNamespaceUUID:a3 bytes:&v6 size:8];
+  valueCopy = value;
+  v4 = [self tsu_UUIDWithNamespaceUUID:d bytes:&valueCopy size:8];
 
   return v4;
 }
 
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 integerValue:(int64_t)a4
++ (id)tsu_UUIDWithNamespaceUUID:(id)d integerValue:(int64_t)value
 {
-  v6 = a4;
-  v4 = [a1 tsu_UUIDWithNamespaceUUID:a3 bytes:&v6 size:8];
+  valueCopy = value;
+  v4 = [self tsu_UUIDWithNamespaceUUID:d bytes:&valueCopy size:8];
 
   return v4;
 }
 
-+ (id)tsu_UUIDWithNamespaceUUID:(id)a3 bytes:(const void *)a4 size:(unint64_t)a5
++ (id)tsu_UUIDWithNamespaceUUID:(id)d bytes:(const void *)bytes size:(unint64_t)size
 {
-  v5 = a5;
-  v7 = a3;
+  sizeCopy = size;
+  dCopy = d;
   memset(&c, 0, sizeof(c));
   CC_SHA1_Init(&c);
   data = 0uLL;
-  if (!v7)
+  if (!dCopy)
   {
     v8 = +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -90,12 +90,12 @@
     [TSUAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:47 isFatal:0 description:"invalid nil value for '%{public}s'", "namespaceUUID"];
 
     +[TSUAssertionHandler logBacktraceThrottled];
-    v7 = objc_alloc_init(NSUUID);
+    dCopy = objc_alloc_init(NSUUID);
   }
 
-  [v7 getUUIDBytes:&data];
+  [dCopy getUUIDBytes:&data];
   CC_SHA1_Update(&c, &data, 0x10u);
-  CC_SHA1_Update(&c, a4, v5);
+  CC_SHA1_Update(&c, bytes, sizeCopy);
   CC_SHA1_Final(md, &c);
   data = *md;
   BYTE6(data) = md[6] & 0xF | 0x50;
@@ -105,15 +105,15 @@
   return v12;
 }
 
-- (int64_t)tsu_compare:(id)a3
+- (int64_t)tsu_compare:(id)tsu_compare
 {
   v14 = 0;
   v15 = 0;
   v12 = 0;
   v13 = 0;
-  v4 = a3;
+  tsu_compareCopy = tsu_compare;
   [(NSUUID *)self getUUIDBytes:&v14];
-  [v4 getUUIDBytes:&v12];
+  [tsu_compareCopy getUUIDBytes:&v12];
 
   v5 = bswap64(v14);
   v6 = bswap64(v12);

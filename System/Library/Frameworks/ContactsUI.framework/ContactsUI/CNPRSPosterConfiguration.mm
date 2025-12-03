@@ -1,19 +1,19 @@
 @interface CNPRSPosterConfiguration
-- (CNPRSPosterConfiguration)initWithPosterConfiguration:(id)a3;
+- (CNPRSPosterConfiguration)initWithPosterConfiguration:(id)configuration;
 @end
 
 @implementation CNPRSPosterConfiguration
 
-- (CNPRSPosterConfiguration)initWithPosterConfiguration:(id)a3
+- (CNPRSPosterConfiguration)initWithPosterConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = CNPRSPosterConfiguration;
   v6 = [(CNPRSPosterConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedPosterConfiguration, a3);
+    objc_storeStrong(&v6->_wrappedPosterConfiguration, configuration);
   }
 
   return v7;

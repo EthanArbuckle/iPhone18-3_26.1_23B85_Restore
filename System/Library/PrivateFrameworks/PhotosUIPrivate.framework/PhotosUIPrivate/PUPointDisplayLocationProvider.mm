@@ -1,7 +1,7 @@
 @interface PUPointDisplayLocationProvider
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)point;
-- (PUPointDisplayLocationProvider)initWithPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
+- (PUPointDisplayLocationProvider)initWithPoint:(CGPoint)point inCoordinateSpace:(id)space;
 @end
 
 @implementation PUPointDisplayLocationProvider
@@ -15,14 +15,14 @@
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PUPointDisplayLocationProvider *)self point];
   v6 = v5;
   v8 = v7;
-  v9 = [(PUPointDisplayLocationProvider *)self coordinateSpace];
-  [v9 convertPoint:v4 toCoordinateSpace:{v6, v8}];
+  coordinateSpace = [(PUPointDisplayLocationProvider *)self coordinateSpace];
+  [coordinateSpace convertPoint:viewCopy toCoordinateSpace:{v6, v8}];
   v11 = v10;
   v13 = v12;
 
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (PUPointDisplayLocationProvider)initWithPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (PUPointDisplayLocationProvider)initWithPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
   v12.receiver = self;
   v12.super_class = PUPointDisplayLocationProvider;
   v9 = [(PUPointDisplayLocationProvider *)&v12 init];
@@ -46,7 +46,7 @@
   {
     v9->_point.x = x;
     v9->_point.y = y;
-    objc_storeStrong(&v9->_coordinateSpace, a4);
+    objc_storeStrong(&v9->_coordinateSpace, space);
   }
 
   return v10;

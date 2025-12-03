@@ -1,11 +1,11 @@
 @interface MOSuggestionPickerPrivacyBadge
-- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithEffect:(id)a3;
+- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithEffect:(id)effect;
 @end
 
 @implementation MOSuggestionPickerPrivacyBadge
 
-- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithCoder:(id)a3
+- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge_iconView;
   v5 = CGRectMake();
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithEffect:(id)a3
+- (_TtC16MomentsUIService30MOSuggestionPickerPrivacyBadge)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

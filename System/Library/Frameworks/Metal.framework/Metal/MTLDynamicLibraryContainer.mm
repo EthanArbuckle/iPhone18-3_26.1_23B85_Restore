@@ -1,22 +1,22 @@
 @interface MTLDynamicLibraryContainer
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (MTLDynamicLibraryContainer)initWithLibrary:(void *)a3 binaryData:(id)a4 device:(id)a5 error:(id *)a6;
-- (MTLDynamicLibraryContainer)initWithURL:(id)a3 device:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (MTLDynamicLibraryContainer)initWithLibrary:(void *)library binaryData:(id)data device:(id)device error:(id *)error;
+- (MTLDynamicLibraryContainer)initWithURL:(id)l device:(id)device options:(unint64_t)options error:(id *)error;
 - (id)airData;
 - (id)reflectionData;
 - (void)dealloc;
 - (void)initReflectionData;
-- (void)initWithURL:(void *)a1 device:(unint64_t *)a2 options:error:;
+- (void)initWithURL:(void *)l device:(unint64_t *)device options:error:;
 - (void)release;
 @end
 
 @implementation MTLDynamicLibraryContainer
 
-- (MTLDynamicLibraryContainer)initWithLibrary:(void *)a3 binaryData:(id)a4 device:(id)a5 error:(id *)a6
+- (MTLDynamicLibraryContainer)initWithLibrary:(void *)library binaryData:(id)data device:(id)device error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v25.receiver = self;
@@ -24,12 +24,12 @@
   v10 = [(MTLDynamicLibraryContainer *)&v25 init];
   if (v10)
   {
-    *(v10 + 2) = a5;
-    v11 = (*(*a3 + 32))(a3);
+    *(v10 + 2) = device;
+    v11 = (*(*library + 32))(library);
     *(v10 + 10) = v11;
     *(v10 + 14) = [v11 length];
-    *(v10 + 34) = [MTLLoader sliceIDForAIR:a3]>> 32;
-    v12 = (*(*a3 + 56))(a3);
+    *(v10 + 34) = [MTLLoader sliceIDForAIR:library]>> 32;
+    v12 = (*(*library + 56))(library);
     v13 = MEMORY[0x1E695E0F0];
     if (v12)
     {
@@ -42,7 +42,7 @@
     }
 
     *(v10 + 6) = v14;
-    v15 = (*(*a3 + 40))(a3);
+    v15 = (*(*library + 40))(library);
     if (v15)
     {
       v16 = v15;
@@ -54,7 +54,7 @@
     }
 
     *(v10 + 5) = v16;
-    v17 = (*(*a3 + 72))(a3);
+    v17 = (*(*library + 72))(library);
     if (v17)
     {
       v18 = v17;
@@ -66,7 +66,7 @@
     }
 
     *(v10 + 8) = v18;
-    v19 = (*(*a3 + 64))(a3);
+    v19 = (*(*library + 64))(library);
     if (v19)
     {
       v20 = v19;
@@ -78,27 +78,27 @@
     }
 
     *(v10 + 7) = v20;
-    v21 = (*(*a3 + 104))(a3);
+    v21 = (*(*library + 104))(library);
     *(v10 + 9) = v21;
     if (v21 && [v21 length])
     {
-      v22 = (*(*a3 + 344))(a3);
+      v22 = (*(*library + 344))(library);
       v23 = *v22;
       *(v10 + 156) = v22[1];
       *(v10 + 140) = v23;
-      (*(*a3 + 256))(a3, v10 + 88, v10 + 96);
-      (*(*a3 + 264))(a3, v10 + 120, v10 + 128, v10 + 132, a6);
-      *(v10 + 3) = a4;
-      dispatch_retain(a4);
+      (*(*library + 256))(library, v10 + 88, v10 + 96);
+      (*(*library + 264))(library, v10 + 120, v10 + 128, v10 + 132, error);
+      *(v10 + 3) = data;
+      dispatch_retain(data);
       *(v10 + 4) = 0;
       *(v10 + 46) = 0;
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = newErrorWithMessage(&cfstr_LibraryHasNoIn.isa, MTLDynamicLibraryErrorCompilationFailure);
+        *error = newErrorWithMessage(&cfstr_LibraryHasNoIn.isa, MTLDynamicLibraryErrorCompilationFailure);
       }
 
       return 0;
@@ -108,9 +108,9 @@
   return v10;
 }
 
-- (MTLDynamicLibraryContainer)initWithURL:(id)a3 device:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (MTLDynamicLibraryContainer)initWithURL:(id)l device:(id)device options:(unint64_t)options error:(id *)error
 {
-  v7 = a5;
+  optionsCopy = options;
   v84.receiver = self;
   v84.super_class = MTLDynamicLibraryContainer;
   v10 = [(MTLDynamicLibraryContainer *)&v84 init];
@@ -119,9 +119,9 @@
     return v10;
   }
 
-  *(v10 + 2) = a4;
-  v11 = *(a4 + 61);
-  v12 = [(MTLLoader *)v11 loadFileWithURL:a3 error:a6 errorDomain:&cfstr_Mtldynamiclibr.isa invalidFileErrorCode:1];
+  *(v10 + 2) = device;
+  v11 = *(device + 61);
+  v12 = [(MTLLoader *)v11 loadFileWithURL:l error:error errorDomain:&cfstr_Mtldynamiclibr.isa invalidFileErrorCode:1];
   if (!v12)
   {
 
@@ -132,10 +132,10 @@
   v14 = [(MTLLoader *)v11 associateLoadedFile:v12 withObject:0];
   if (!v14)
   {
-    v16 = [(MTLLoadedFile *)v13 contents];
+    contents = [(MTLLoadedFile *)v13 contents];
     v83 = 0;
     v82 = 0;
-    v81 = [MTLLoader sliceIDForDevice:a4 legacyDriverVersion:&v83 airntDriverVersion:&v82];
+    v81 = [MTLLoader sliceIDForDevice:device legacyDriverVersion:&v83 airntDriverVersion:&v82];
     v17 = [MTLLoader sliceIDForAIR:?];
     v77 = 0;
     v78 = &v77;
@@ -168,7 +168,7 @@
     memset(v57, 0, sizeof(v57));
     v58 = 1065353216;
     *v50 = 0;
-    v18 = _MTLGetMTLCompilerLLVMVersionForDevice(a4);
+    v18 = _MTLGetMTLCompilerLLVMVersionForDevice(device);
     _MTLGetMaxAIRAndLanguageVersions(v18, &v50[1], v50);
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
@@ -184,14 +184,14 @@
     v48[10] = &v65;
     v48[11] = &v73;
     v48[4] = v10;
-    v48[5] = v16;
+    v48[5] = contents;
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __63__MTLDynamicLibraryContainer_initWithURL_device_options_error___block_invoke_2;
     v47[3] = &unk_1E6EEA990;
-    v47[4] = v16;
-    v19 = [MTLLoader deserializeUniversalBinaryHeaderWithHandler:v48 reader:v47 bytes:[(NSData *)v16 length]];
-    if (*(v78 + 24) == 1 && (v20 = isVendorSliceCompatible(&v81, v16, v70[3], a4), *(v78 + 24) = v20, (v20 & 1) != 0) || (v21 = [a4 getMostCompatibleArchitecture:v60[5]], !objc_msgSend(v21, "cpuType")))
+    v47[4] = contents;
+    v19 = [MTLLoader deserializeUniversalBinaryHeaderWithHandler:v48 reader:v47 bytes:[(NSData *)contents length]];
+    if (*(v78 + 24) == 1 && (v20 = isVendorSliceCompatible(&v81, contents, v70[3], device), *(v78 + 24) = v20, (v20 & 1) != 0) || (v21 = [device getMostCompatibleArchitecture:v60[5]], !objc_msgSend(v21, "cpuType")))
     {
       v26 = 0;
     }
@@ -199,8 +199,8 @@
     else
     {
       v22 = v52;
-      v23 = [v21 cpuType];
-      v46 = [v21 cpuSubtype] | (v23 << 32);
+      cpuType = [v21 cpuType];
+      v46 = [v21 cpuSubtype] | (cpuType << 32);
       v24 = std::unordered_map<unsigned long long,[MTLDynamicLibraryContainer initWithURL:device:options:error:]::archSliceId>::operator[](v22 + 6, &v46);
       v25 = v24[1];
       v70[3] = *v24;
@@ -221,7 +221,7 @@
         v44[2] = __63__MTLDynamicLibraryContainer_initWithURL_device_options_error___block_invoke_3;
         v44[3] = &unk_1E6EEB0C8;
         v44[4] = v10;
-        v44[5] = v16;
+        v44[5] = contents;
         v44[6] = &v73;
         v44[7] = &v69;
         v44[8] = v83;
@@ -231,7 +231,7 @@
         v43[1] = 3221225472;
         v43[2] = __63__MTLDynamicLibraryContainer_initWithURL_device_options_error___block_invoke_4;
         v43[3] = &unk_1E6EEB0F0;
-        v43[4] = v16;
+        v43[4] = contents;
         v43[5] = &v69;
         v28 = [MTLLoader deserializeMachOWrapperWithType:v44 payloadHandler:v43 reader:?];
         v27 = v78;
@@ -250,34 +250,34 @@
       v29 = *(v10 + 10);
       if (v74[3])
       {
-        v30 = [v10 airData];
-        v35 = MTLLibraryBuilder::newLibraryWithData(*(*(v10 + 2) + 440), *(v10 + 2), v30, a6, v31, v32, v33, v34);
+        airData = [v10 airData];
+        v35 = MTLLibraryBuilder::newLibraryWithData(*(*(v10 + 2) + 440), *(v10 + 2), airData, error, v31, v32, v33, v34);
         v36 = v35;
         if (v35)
         {
-          v37 = [(_MTLLibrary *)v35 libraryData];
-          (*(*v37 + 256))(v37, v10 + 88, v10 + 96);
-          v38 = [(_MTLLibrary *)v36 libraryData];
-          (*(*v38 + 264))(v38, v10 + 120, v10 + 128, v10 + 132, a6);
+          libraryData = [(_MTLLibrary *)v35 libraryData];
+          (*(*libraryData + 256))(libraryData, v10 + 88, v10 + 96);
+          libraryData2 = [(_MTLLibrary *)v36 libraryData];
+          (*(*libraryData2 + 264))(libraryData2, v10 + 120, v10 + 128, v10 + 132, error);
           v39 = *(v10 + 13);
           *(v10 + 11) += v39;
           *(v10 + 15) += v39;
-          if ((v7 & 2) != 0)
+          if ((optionsCopy & 2) != 0)
           {
             [(_MTLLibrary *)v36 setShaderValidationEnabled:1];
           }
 
-          dispatch_release(v30);
+          dispatch_release(airData);
           if ((v78[3] & 1) == 0)
           {
-            v40 = [*(v10 + 2) newDynamicLibrary:v36 error:a6];
+            v40 = [*(v10 + 2) newDynamicLibrary:v36 error:error];
             goto LABEL_30;
           }
         }
 
         else
         {
-          dispatch_release(v30);
+          dispatch_release(airData);
           if ((v78[3] & 1) == 0)
           {
             v40 = 0;
@@ -285,7 +285,7 @@ LABEL_30:
 
             if (v40)
             {
-              v15 = [v40 container];
+              container = [v40 container];
 
               [(MTLLoader *)v11 releaseLoadedFile:v13];
 LABEL_34:
@@ -299,23 +299,23 @@ LABEL_34:
       }
     }
 
-    else if ((v7 & 1) == 0)
+    else if ((optionsCopy & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"MTLDynamicLibrary could not be loaded as its AIR slice is missing"], MTLDynamicLibraryErrorInvalidFile);
+        *error = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"MTLDynamicLibrary could not be loaded as its AIR slice is missing"], MTLDynamicLibraryErrorInvalidFile);
       }
 
       [(MTLLoader *)v11 releaseLoadedFile:v13];
 
       v41 = 0;
-      v15 = 0;
+      container = 0;
       goto LABEL_36;
     }
 
 LABEL_32:
-    v15 = [(MTLLoader *)v11 associateLoadedFile:v13 withObject:v10];
-    if (v15)
+    container = [(MTLLoader *)v11 associateLoadedFile:v13 withObject:v10];
+    if (container)
     {
       [(MTLLoader *)v11 releaseLoadedFile:v13];
 
@@ -336,16 +336,16 @@ LABEL_36:
     _Block_object_dispose(&v77, 8);
     if ((v41 & 1) == 0)
     {
-      return v15;
+      return container;
     }
 
     return v10;
   }
 
-  v15 = v14;
+  container = v14;
   [(MTLLoader *)v11 releaseLoadedFile:v13];
 
-  return v15;
+  return container;
 }
 
 uint64_t __63__MTLDynamicLibraryContainer_initWithURL_device_options_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -383,10 +383,10 @@ uint64_t __63__MTLDynamicLibraryContainer_initWithURL_device_options_error___blo
   return 1;
 }
 
-- (void)initWithURL:(void *)a1 device:(unint64_t *)a2 options:error:
+- (void)initWithURL:(void *)l device:(unint64_t *)device options:error:
 {
-  v2 = *a2;
-  v3 = a1[1];
+  v2 = *device;
+  v3 = l[1];
   if (!*&v3)
   {
     goto LABEL_18;
@@ -396,7 +396,7 @@ uint64_t __63__MTLDynamicLibraryContainer_initWithURL_device_options_error___blo
   v4.i16[0] = vaddlv_u8(v4);
   if (v4.u32[0] > 1uLL)
   {
-    v5 = *a2;
+    v5 = *device;
     if (v2 >= *&v3)
     {
       v5 = v2 % *&v3;
@@ -408,7 +408,7 @@ uint64_t __63__MTLDynamicLibraryContainer_initWithURL_device_options_error___blo
     v5 = (*&v3 - 1) & v2;
   }
 
-  v6 = *(*a1 + 8 * v5);
+  v6 = *(*l + 8 * v5);
   if (!v6 || (v7 = *v6) == 0)
   {
 LABEL_18:
@@ -632,7 +632,7 @@ id __37__MTLDynamicLibraryContainer_release__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v13[0] = 0;
   v13[1] = v13;
@@ -646,7 +646,7 @@ id __37__MTLDynamicLibraryContainer_release__block_invoke(uint64_t a1)
   v12[5] = 0;
   if (!self->_airData)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -655,27 +655,27 @@ id __37__MTLDynamicLibraryContainer_release__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if (!a3 || ![a3 path] || !objc_msgSend(a3, "filePathURL"))
+  if (!l || ![l path] || !objc_msgSend(l, "filePathURL"))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
 
     v9 = newErrorWithMessage(&cfstr_InvalidUrl.isa, MTLDynamicLibraryErrorInvalidFile);
 LABEL_11:
-    *a5 = v9;
+    *error = v9;
     goto LABEL_14;
   }
 
-  if (stat([objc_msgSend(objc_msgSend(a3 "URLByDeletingLastPathComponent")], &v11) != -1)
+  if (stat([objc_msgSend(objc_msgSend(l "URLByDeletingLastPathComponent")], &v11) != -1)
   {
     v8 = objc_autoreleasePoolPush();
     [MTLLoader sliceIDForDevice:0 andDriverVersion:?];
     operator new();
   }
 
-  if (a5)
+  if (error)
   {
     v9 = newErrorWithMessage(&cfstr_InvalidUrl.isa, MTLDynamicLibraryErrorInvalidFile);
     goto LABEL_11;
@@ -721,12 +721,12 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v3 = [(NSData *)self->_airData bytes];
+    bytes = [(NSData *)self->_airData bytes];
     reflectionOffset = self->_reflectionOffset;
     buffer[0] = 0;
     if (malloc_type_posix_memalign(buffer, 0x10uLL, self->_uncompressedReflectionSize, 0x7BC230F3uLL))
     {
-      if (!MTLDecompressData(buffer[0], self->_uncompressedReflectionSize, &v3[reflectionOffset], self->_reflectionSize))
+      if (!MTLDecompressData(buffer[0], self->_uncompressedReflectionSize, &bytes[reflectionOffset], self->_reflectionSize))
       {
         free(buffer[0]);
         goto LABEL_9;

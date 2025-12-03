@@ -1,8 +1,8 @@
 @interface CRLWPFontVerifier
 + (id)sharedInstance;
-- (BOOL)isCoreTextDownloadableFontName:(id)a3;
-- (BOOL)isDownloadableFontName:(id)a3;
-- (BOOL)isFontWithPostscriptNameInstalled:(id)a3;
+- (BOOL)isCoreTextDownloadableFontName:(id)name;
+- (BOOL)isDownloadableFontName:(id)name;
+- (BOOL)isFontWithPostscriptNameInstalled:(id)installed;
 @end
 
 @implementation CRLWPFontVerifier
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (BOOL)isFontWithPostscriptNameInstalled:(id)a3
+- (BOOL)isFontWithPostscriptNameInstalled:(id)installed
 {
-  v3 = a3;
+  installedCopy = installed;
   v4 = +[CRLWPFontVerifier missingFontName];
-  v5 = [(__CFString *)v3 containsString:v4];
+  v5 = [(__CFString *)installedCopy containsString:v4];
 
   if (v5)
   {
@@ -32,7 +32,7 @@
 
   else
   {
-    if ([CRLWPFont isSystemFontName:v3])
+    if ([CRLWPFont isSystemFontName:installedCopy])
     {
       v7 = 1025;
     }
@@ -42,7 +42,7 @@
       v7 = 1;
     }
 
-    v8 = CTFontCreateWithNameAndOptions(v3, 0.0, 0, v7);
+    v8 = CTFontCreateWithNameAndOptions(installedCopy, 0.0, 0, v7);
     if (v8)
     {
       v9 = v8;
@@ -63,13 +63,13 @@
   return v6;
 }
 
-- (BOOL)isCoreTextDownloadableFontName:(id)a3
+- (BOOL)isCoreTextDownloadableFontName:(id)name
 {
   v10[0] = kCTFontNameAttribute;
   v10[1] = kCTFontDownloadableAttribute;
-  v11[0] = a3;
+  v11[0] = name;
   v11[1] = &__kCFBooleanTrue;
-  v3 = a3;
+  nameCopy = name;
   v4 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v5 = CTFontDescriptorCreateWithAttributes(v4);
@@ -90,17 +90,17 @@
   return v8;
 }
 
-- (BOOL)isDownloadableFontName:(id)a3
+- (BOOL)isDownloadableFontName:(id)name
 {
-  v4 = a3;
-  if ([(CRLWPFontVerifier *)self isCloudKitDownloadableFontName:v4])
+  nameCopy = name;
+  if ([(CRLWPFontVerifier *)self isCloudKitDownloadableFontName:nameCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(CRLWPFontVerifier *)self isCoreTextDownloadableFontName:v4];
+    v5 = [(CRLWPFontVerifier *)self isCoreTextDownloadableFontName:nameCopy];
   }
 
   return v5;

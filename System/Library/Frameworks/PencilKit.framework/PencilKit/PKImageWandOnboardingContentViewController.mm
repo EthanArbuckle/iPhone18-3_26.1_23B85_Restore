@@ -1,5 +1,5 @@
 @interface PKImageWandOnboardingContentViewController
-- (id)initWithTitle:(void *)a3 titleBadgeText:(uint64_t)a4 detailText:(uint64_t)a5 symbolName:(uint64_t)a6 contentLayout:;
+- (id)initWithTitle:(void *)title titleBadgeText:(uint64_t)text detailText:(uint64_t)detailText symbolName:(uint64_t)name contentLayout:;
 - (void)_updateHeaderLabelTextLayoutGuideConstraints;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -7,40 +7,40 @@
 
 @implementation PKImageWandOnboardingContentViewController
 
-- (id)initWithTitle:(void *)a3 titleBadgeText:(uint64_t)a4 detailText:(uint64_t)a5 symbolName:(uint64_t)a6 contentLayout:
+- (id)initWithTitle:(void *)title titleBadgeText:(uint64_t)text detailText:(uint64_t)detailText symbolName:(uint64_t)name contentLayout:
 {
   v71[4] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (!a1)
+  titleCopy = title;
+  if (!self)
   {
     v13 = 0;
     goto LABEL_10;
   }
 
-  v69.receiver = a1;
+  v69.receiver = self;
   v69.super_class = PKImageWandOnboardingContentViewController;
-  v12 = objc_msgSendSuper2(&v69, sel_initWithTitle_detailText_symbolName_contentLayout_, a2, a4, a5, a6);
+  v12 = objc_msgSendSuper2(&v69, sel_initWithTitle_detailText_symbolName_contentLayout_, a2, text, detailText, name);
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 headerView];
+    headerView = [v12 headerView];
     v15 = objc_opt_respondsToSelector();
 
     *(v13 + 1272) = v15 & 1;
     if (v15)
     {
-      v16 = [v13 headerView];
-      [v16 setBadgeText:v11];
+      headerView2 = [v13 headerView];
+      [headerView2 setBadgeText:titleCopy];
     }
 
     else
     {
-      if (!v11)
+      if (!titleCopy)
       {
         goto LABEL_9;
       }
 
-      v17 = [v13 headerView];
+      headerView3 = [v13 headerView];
       v18 = objc_opt_respondsToSelector();
 
       if ((v18 & 1) == 0)
@@ -48,34 +48,34 @@
         goto LABEL_9;
       }
 
-      v16 = objc_alloc_init(MEMORY[0x1E69DCC20]);
-      v19 = [v13 headerView];
-      v20 = [v19 headerLabel];
-      [v20 addLayoutGuide:v16];
+      headerView2 = objc_alloc_init(MEMORY[0x1E69DCC20]);
+      headerView4 = [v13 headerView];
+      headerLabel = [headerView4 headerLabel];
+      [headerLabel addLayoutGuide:headerView2];
 
-      v21 = [v16 topAnchor];
-      v22 = [v13 headerView];
-      v23 = [v22 headerLabel];
-      v24 = [v23 topAnchor];
-      v25 = [v21 constraintEqualToAnchor:v24];
+      topAnchor = [headerView2 topAnchor];
+      headerView5 = [v13 headerView];
+      headerLabel2 = [headerView5 headerLabel];
+      topAnchor2 = [headerLabel2 topAnchor];
+      v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v26 = v13[155];
       v13[155] = v25;
 
-      v27 = [v16 leadingAnchor];
-      v28 = [v13 headerView];
-      v29 = [v28 headerLabel];
-      v30 = [v29 leadingAnchor];
-      v31 = [v27 constraintEqualToAnchor:v30];
+      leadingAnchor = [headerView2 leadingAnchor];
+      headerView6 = [v13 headerView];
+      headerLabel3 = [headerView6 headerLabel];
+      leadingAnchor2 = [headerLabel3 leadingAnchor];
+      v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v32 = v13[156];
       v13[156] = v31;
 
-      v33 = [v16 widthAnchor];
-      v34 = [v33 constraintEqualToConstant:0.0];
+      widthAnchor = [headerView2 widthAnchor];
+      v34 = [widthAnchor constraintEqualToConstant:0.0];
       v35 = v13[157];
       v13[157] = v34;
 
-      v36 = [v16 heightAnchor];
-      v37 = [v36 constraintEqualToConstant:0.0];
+      heightAnchor = [headerView2 heightAnchor];
+      v37 = [heightAnchor constraintEqualToConstant:0.0];
       v38 = v13[158];
       v13[158] = v37;
 
@@ -91,19 +91,19 @@
       v42 = v13[153];
       v13[153] = v41;
 
-      [v13[153] setText:v11];
+      [v13[153] setText:titleCopy];
       [v13[153] setTranslatesAutoresizingMaskIntoConstraints:0];
-      v43 = [v13 headerView];
-      [v43 addSubview:v13[153]];
+      headerView7 = [v13 headerView];
+      [headerView7 addSubview:v13[153]];
 
       v68 = MEMORY[0x1E696ACD8];
-      v44 = [v13[153] centerYAnchor];
-      v45 = [v16 centerYAnchor];
-      v46 = [v44 constraintEqualToAnchor:v45];
+      centerYAnchor = [v13[153] centerYAnchor];
+      centerYAnchor2 = [headerView2 centerYAnchor];
+      v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v70[0] = v46;
-      v47 = [v13[153] leadingAnchor];
-      v48 = [v16 trailingAnchor];
-      v49 = [v47 constraintEqualToAnchor:v48 constant:2.0];
+      leadingAnchor3 = [v13[153] leadingAnchor];
+      trailingAnchor = [headerView2 trailingAnchor];
+      v49 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:2.0];
       v70[1] = v49;
       v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
       [v68 activateConstraints:v50];
@@ -124,17 +124,17 @@ LABEL_9:
     v60 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"pencil.and.sparkles"];
     [v13 addBulletedListItemWithTitle:v57 description:v59 image:v60];
 
-    v61 = [MEMORY[0x1E69B7D00] boldButton];
+    boldButton = [MEMORY[0x1E69B7D00] boldButton];
     v62 = v13[160];
-    v13[160] = v61;
+    v13[160] = boldButton;
 
     v63 = v13[160];
     v64 = _PencilKitBundle();
     v65 = [v64 localizedStringForKey:@"CONTINUE_BUTTON" value:&stru_1F476BD20 table:@"ImageWand"];
     [v63 setTitle:v65 forState:0];
 
-    v66 = [v13 buttonTray];
-    [v66 addButton:v13[160]];
+    buttonTray = [v13 buttonTray];
+    [buttonTray addButton:v13[160]];
 
     [(PKImageWandOnboardingContentViewController *)v13 _updateHeaderLabelTextLayoutGuideConstraints];
   }
@@ -146,33 +146,33 @@ LABEL_10:
 
 - (void)_updateHeaderLabelTextLayoutGuideConstraints
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 viewIfLoaded];
-    if (v2)
+    viewIfLoaded = [self viewIfLoaded];
+    if (viewIfLoaded)
     {
-      v3 = a1[1272];
+      v3 = self[1272];
 
       if ((v3 & 1) == 0)
       {
-        v4 = [a1 headerView];
-        v5 = [v4 headerLabel];
-        [v5 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+        headerView = [self headerView];
+        headerLabel = [headerView headerLabel];
+        [headerLabel systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
         v7 = v6;
         v9 = v8;
 
-        v10 = [a1 headerView];
-        v11 = [v10 headerLabel];
-        v12 = [a1 headerView];
-        v13 = [v12 headerLabel];
-        [v13 bounds];
+        headerView2 = [self headerView];
+        headerLabel2 = [headerView2 headerLabel];
+        headerView3 = [self headerView];
+        headerLabel3 = [headerView3 headerLabel];
+        [headerLabel3 bounds];
         v15 = v14;
         v17 = v16;
         v19 = v18;
         v21 = v20;
-        v22 = [a1 headerView];
-        v23 = [v22 headerLabel];
-        [v11 textRectForBounds:objc_msgSend(v23 limitedToNumberOfLines:{"numberOfLines"), v15, v17, v19, v21}];
+        headerView4 = [self headerView];
+        headerLabel4 = [headerView4 headerLabel];
+        [headerLabel2 textRectForBounds:objc_msgSend(headerLabel4 limitedToNumberOfLines:{"numberOfLines"), v15, v17, v19, v21}];
         v25 = v24;
         v27 = v26;
 
@@ -191,7 +191,7 @@ LABEL_10:
         v30[0] = MEMORY[0x1E69E9820];
         v30[2] = __90__PKImageWandOnboardingContentViewController__updateHeaderLabelTextLayoutGuideConstraints__block_invoke;
         v30[3] = &unk_1E82DBA20;
-        v30[4] = a1;
+        v30[4] = self;
         if (v27 >= 0.0)
         {
           v28 = v27;

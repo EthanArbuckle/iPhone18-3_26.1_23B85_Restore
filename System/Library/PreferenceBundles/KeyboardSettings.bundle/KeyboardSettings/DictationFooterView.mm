@@ -1,20 +1,20 @@
 @interface DictationFooterView
 + (id)dictationAutoPunctuationText;
-- (DictationFooterView)initWithSpecifier:(id)a3;
-- (id)explanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4 lowStorage:(BOOL)a5;
-- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4;
+- (DictationFooterView)initWithSpecifier:(id)specifier;
+- (id)explanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text lowStorage:(BOOL)storage;
+- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text;
 @end
 
 @implementation DictationFooterView
 
-- (DictationFooterView)initWithSpecifier:(id)a3
+- (DictationFooterView)initWithSpecifier:(id)specifier
 {
   v23.receiver = self;
   v23.super_class = DictationFooterView;
   v4 = [(DictationFooterView *)&v23 initWithSpecifier:?];
   if (v4)
   {
-    v5 = [a3 target];
+    target = [specifier target];
     v6 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"DICTATION_ON_DEVICE_ABOUT_LINK", &stru_49C80, @"Keyboard"];
     v7 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"DICTATION_ON_DEVICE_MANAGE_STORAGE_LINK", &stru_49C80, @"Keyboard"];
     v8 = +[DictationFooterView dictationAutoPunctuationText];
@@ -25,17 +25,17 @@
     }
 
     [(DictationFooterView *)v4 setText:v9];
-    v10 = [v5 lowStorageOnDeviceAssetStringWithLinkString:v7];
+    v10 = [target lowStorageOnDeviceAssetStringWithLinkString:v7];
     v11 = AFDeviceHighestLanguageModelCapabilityIdentifier();
-    v12 = [v5 offlineStatusForLanguage];
+    offlineStatusForLanguage = [target offlineStatusForLanguage];
     if (v11 == 10)
     {
-      v13 = [(DictationFooterView *)v4 explanationSuffixTextWithOfflineDictationStatus:v12 privacyLinkText:v9 lowStorage:v10 != 0];
+      v13 = [(DictationFooterView *)v4 explanationSuffixTextWithOfflineDictationStatus:offlineStatusForLanguage privacyLinkText:v9 lowStorage:v10 != 0];
     }
 
     else
     {
-      v13 = [(DictationFooterView *)v4 offlineExplanationSuffixTextWithOfflineDictationStatus:v12 privacyLinkText:v9];
+      v13 = [(DictationFooterView *)v4 offlineExplanationSuffixTextWithOfflineDictationStatus:offlineStatusForLanguage privacyLinkText:v9];
     }
 
     v14 = v13;
@@ -44,33 +44,33 @@
       [(DictationFooterView *)v4 setText:v13];
     }
 
-    v15 = [(DictationFooterView *)v4 text];
+    text = [(DictationFooterView *)v4 text];
     if (v10)
     {
-      -[DictationFooterView setText:](v4, "setText:", [v15 stringByAppendingFormat:@"\n\n%@", v10]);
-      v16 = [(DictationFooterView *)v4 text];
-      [a3 setProperty:v16 forKey:PSFooterTextGroupKey];
+      -[DictationFooterView setText:](v4, "setText:", [text stringByAppendingFormat:@"\n\n%@", v10]);
+      text2 = [(DictationFooterView *)v4 text];
+      [specifier setProperty:text2 forKey:PSFooterTextGroupKey];
       v17 = [-[DictationFooterView text](v4 "text")];
-      [a3 addFooterHyperlinkWithRange:v17 target:v18 action:{v5, "presentPrivacySheet:"}];
+      [specifier addFooterHyperlinkWithRange:v17 target:v18 action:{target, "presentPrivacySheet:"}];
       v19 = &selRef_launchManageStorage_;
     }
 
     else
     {
-      [a3 setProperty:v15 forKey:PSFooterTextGroupKey];
+      [specifier setProperty:text forKey:PSFooterTextGroupKey];
       v19 = &selRef_presentPrivacySheet_;
       v7 = v6;
     }
 
     v20 = [-[DictationFooterView text](v4 "text")];
-    [a3 addFooterHyperlinkWithRange:v20 target:v21 action:{v5, *v19}];
-    [(DictationFooterView *)v4 refreshContentsWithSpecifier:a3];
+    [specifier addFooterHyperlinkWithRange:v20 target:v21 action:{target, *v19}];
+    [(DictationFooterView *)v4 refreshContentsWithSpecifier:specifier];
   }
 
   return v4;
 }
 
-- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4
+- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text
 {
   v18 = 0;
   v19 = &v18;
@@ -88,7 +88,7 @@
   v13[3] = &unk_48FB8;
   v13[4] = &v18;
   v13[5] = &v14;
-  [a3 enumerateKeysAndObjectsUsingBlock:v13];
+  [status enumerateKeysAndObjectsUsingBlock:v13];
   if ([v19[5] count])
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -117,19 +117,19 @@
     if (v9)
     {
 LABEL_9:
-      v10 = [NSString stringWithFormat:@"%@ %@", v9, a4];
+      text = [NSString stringWithFormat:@"%@ %@", v9, text];
       goto LABEL_10;
     }
   }
 
-  v10 = 0;
+  text = 0;
 LABEL_10:
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v18, 8);
-  return v10;
+  return text;
 }
 
-- (id)explanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4 lowStorage:(BOOL)a5
+- (id)explanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text lowStorage:(BOOL)storage
 {
   v8 = [+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController "sharedInputModeController")];
   if ([(NSArray *)v8 count]== &dword_0 + 1 && (v9 = +[TIInputModeController sharedInputModeController], (objc_opt_respondsToSelector() & 1) != 0))
@@ -137,8 +137,8 @@ LABEL_10:
     v10 = [v9 defaultDictationLanguagesForKeyboardLanguage:{-[NSArray firstObject](v8, "firstObject")}];
     if (!v10)
     {
-      v30 = [(NSArray *)v8 firstObject];
-      v10 = [NSArray arrayWithObjects:&v30 count:1];
+      firstObject = [(NSArray *)v8 firstObject];
+      v10 = [NSArray arrayWithObjects:&firstObject count:1];
     }
   }
 
@@ -161,7 +161,7 @@ LABEL_10:
       v13 = v11;
     }
 
-    [a3 objectForKeyedSubscript:v13];
+    [status objectForKeyedSubscript:v13];
     if (AFOfflineDictationStatusStringIsHighQualityModelSupported())
     {
       IsInstalled = AFOfflineDictationStatusStringIsInstalled();
@@ -180,8 +180,8 @@ LABEL_10:
         }
 
         v18 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"DICTATION_ON_DEVICE_PRIVATE_PROCESSING", &stru_49C80, @"Keyboard"];
-        v28 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:v17, &stru_49C80, @"Keyboard"];
-        v29 = a4;
+        textCopy3 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:v17, &stru_49C80, @"Keyboard"];
+        textCopy = text;
         v27 = v18;
         v19 = @"%@ %@ %@";
         goto LABEL_28;
@@ -191,20 +191,20 @@ LABEL_10:
       v23 = v22;
       if (IsInstalling)
       {
-        if (!a5)
+        if (!storage)
         {
           v24 = [NSBundle bundleForClass:objc_opt_class()];
           v25 = @"DICTATION_ON_DEVICE_SUPPORT_DOWNLOADING";
 LABEL_27:
-          v28 = a4;
-          v29 = [(NSBundle *)v24 localizedStringForKey:v25 value:&stru_49C80 table:@"Keyboard"];
+          textCopy3 = text;
+          textCopy = [(NSBundle *)v24 localizedStringForKey:v25 value:&stru_49C80 table:@"Keyboard"];
           v27 = v23;
           v19 = @"%@ %@\n\n%@";
           goto LABEL_28;
         }
       }
 
-      else if (!a5)
+      else if (!storage)
       {
         v26 = [NSBundle bundleForClass:objc_opt_class()];
         v25 = SFLocalizableWAPIStringKeyForKey();
@@ -213,22 +213,22 @@ LABEL_27:
       }
 
       v27 = v22;
-      v28 = a4;
+      textCopy3 = text;
       v19 = @"%@ %@";
 LABEL_28:
-      v20 = [NSString stringWithFormat:v19, v27, v28, v29];
-      return v20;
+      textCopy = [NSString stringWithFormat:v19, v27, textCopy3, textCopy];
+      return textCopy;
     }
 
-    v20 = [NSString stringWithFormat:@"%@ %@", [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"DICTATION_ON_DEVICE_SERVER", &stru_49C80, @"Keyboard"], a4, v29];
+    textCopy = [NSString stringWithFormat:@"%@ %@", [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"DICTATION_ON_DEVICE_SERVER", &stru_49C80, @"Keyboard"], text, textCopy];
   }
 
   else
   {
-    v20 = 0;
+    textCopy = 0;
   }
 
-  return v20;
+  return textCopy;
 }
 
 + (id)dictationAutoPunctuationText

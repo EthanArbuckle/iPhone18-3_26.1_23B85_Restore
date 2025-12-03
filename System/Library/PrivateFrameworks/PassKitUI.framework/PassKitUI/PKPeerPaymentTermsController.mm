@@ -1,32 +1,32 @@
 @interface PKPeerPaymentTermsController
-- (PKPeerPaymentTermsController)initWithTermsURL:(id)a3 termsIdentifier:(id)a4 passUniqueID:(id)a5 webService:(id)a6;
+- (PKPeerPaymentTermsController)initWithTermsURL:(id)l termsIdentifier:(id)identifier passUniqueID:(id)d webService:(id)service;
 - (UIViewController)currentHostController;
-- (void)_presentRemoteUIControllerWithUpdatedTermsViewController:(id)a3;
-- (void)peerPaymentUpdatedTermsViewController:(id)a3 didSelectContinue:(BOOL)a4;
-- (void)presentTermsOverController:(id)a3 showInterstitialViewController:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)_presentRemoteUIControllerWithUpdatedTermsViewController:(id)controller;
+- (void)peerPaymentUpdatedTermsViewController:(id)controller didSelectContinue:(BOOL)continue;
+- (void)presentTermsOverController:(id)controller showInterstitialViewController:(BOOL)viewController withCompletionHandler:(id)handler;
 @end
 
 @implementation PKPeerPaymentTermsController
 
-- (PKPeerPaymentTermsController)initWithTermsURL:(id)a3 termsIdentifier:(id)a4 passUniqueID:(id)a5 webService:(id)a6
+- (PKPeerPaymentTermsController)initWithTermsURL:(id)l termsIdentifier:(id)identifier passUniqueID:(id)d webService:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  dCopy = d;
+  serviceCopy = service;
   v29.receiver = self;
   v29.super_class = PKPeerPaymentTermsController;
   v15 = [(PKPeerPaymentTermsController *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_termsURL, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_termsURL, l);
+    v17 = [identifierCopy copy];
     termsIdentifier = v16->_termsIdentifier;
     v16->_termsIdentifier = v17;
 
-    objc_storeStrong(&v16->_passUniqueID, a5);
-    objc_storeStrong(&v16->_webService, a6);
+    objc_storeStrong(&v16->_passUniqueID, d);
+    objc_storeStrong(&v16->_webService, service);
     v19 = objc_alloc_init(MEMORY[0x1E69C7048]);
     remoteUIController = v16->_remoteUIController;
     v16->_remoteUIController = v19;
@@ -45,30 +45,30 @@
     v25 = 1;
     [(UINavigationController *)v16->_navigationController setModalInPresentation:1];
     [(RemoteUIController *)v16->_remoteUIController setNavigationController:v16->_navigationController];
-    v26 = [(RemoteUIController *)v16->_remoteUIController loader];
-    v27 = [(PKPeerPaymentWebService *)v16->_webService context];
-    if (([v27 devSigned] & 1) == 0)
+    loader = [(RemoteUIController *)v16->_remoteUIController loader];
+    context = [(PKPeerPaymentWebService *)v16->_webService context];
+    if (([context devSigned] & 1) == 0)
     {
       v25 = os_variant_allows_internal_security_policies();
     }
 
-    [v26 setAllowNonSecureHTTP:v25];
+    [loader setAllowNonSecureHTTP:v25];
   }
 
   return v16;
 }
 
-- (void)presentTermsOverController:(id)a3 showInterstitialViewController:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)presentTermsOverController:(id)controller showInterstitialViewController:(BOOL)viewController withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  objc_storeWeak(&self->_currentHostController, a3);
-  v9 = [v8 copy];
+  viewControllerCopy = viewController;
+  handlerCopy = handler;
+  objc_storeWeak(&self->_currentHostController, controller);
+  v9 = [handlerCopy copy];
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v9;
 
-  if (v5)
+  if (viewControllerCopy)
   {
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -107,14 +107,14 @@
   }
 }
 
-- (void)peerPaymentUpdatedTermsViewController:(id)a3 didSelectContinue:(BOOL)a4
+- (void)peerPaymentUpdatedTermsViewController:(id)controller didSelectContinue:(BOOL)continue
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  continueCopy = continue;
+  controllerCopy = controller;
+  if (continueCopy)
   {
-    v8 = v6;
-    objc_storeWeak(&self->_currentHostController, v6);
+    v8 = controllerCopy;
+    objc_storeWeak(&self->_currentHostController, controllerCopy);
     [(PKPeerPaymentTermsController *)self setCustomPresentationHandler:&__block_literal_global_167];
     [(PKPeerPaymentTermsController *)self _presentRemoteUIControllerWithUpdatedTermsViewController:v8];
   }
@@ -127,11 +127,11 @@
       goto LABEL_6;
     }
 
-    v8 = v6;
+    v8 = controllerCopy;
     completionHandler[2](completionHandler, 1, 0);
   }
 
-  v6 = v8;
+  controllerCopy = v8;
 LABEL_6:
 }
 
@@ -143,10 +143,10 @@ void __88__PKPeerPaymentTermsController_peerPaymentUpdatedTermsViewController_di
   [v5 presentViewController:v4 withTransition:1 completion:0];
 }
 
-- (void)_presentRemoteUIControllerWithUpdatedTermsViewController:(id)a3
+- (void)_presentRemoteUIControllerWithUpdatedTermsViewController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,7 +159,7 @@ void __88__PKPeerPaymentTermsController_peerPaymentUpdatedTermsViewController_di
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Presenting peer payment terms with URL: %@, termsIdentifier: %@", buf, 0x16u);
   }
 
-  [v4 showSpinner:1];
+  [controllerCopy showSpinner:1];
   objc_initWeak(buf, self);
   remoteUIController = self->_remoteUIController;
   v9 = self->_termsURL;
@@ -168,9 +168,9 @@ void __88__PKPeerPaymentTermsController_peerPaymentUpdatedTermsViewController_di
   v11[2] = __89__PKPeerPaymentTermsController__presentRemoteUIControllerWithUpdatedTermsViewController___block_invoke;
   v11[3] = &unk_1E801D6E0;
   objc_copyWeak(&v14, buf);
-  v10 = v4;
+  v10 = controllerCopy;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   [(RemoteUIController *)remoteUIController loadURL:v9 postBody:0 completion:v11];
 
   objc_destroyWeak(&v14);

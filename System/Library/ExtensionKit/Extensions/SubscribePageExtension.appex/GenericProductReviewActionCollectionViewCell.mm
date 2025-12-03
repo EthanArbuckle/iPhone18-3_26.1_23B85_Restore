@@ -1,5 +1,5 @@
 @interface GenericProductReviewActionCollectionViewCell
-- (_TtC22SubscribePageExtension44GenericProductReviewActionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension44GenericProductReviewActionCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A478C();
 }
 
@@ -22,12 +22,12 @@
   sub_1002A46BC(0);
 }
 
-- (_TtC22SubscribePageExtension44GenericProductReviewActionCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension44GenericProductReviewActionCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC22SubscribePageExtension44GenericProductReviewActionCollectionViewCell_itemLayoutContext;
   v9 = sub_1007469A4();
   (*(*(v9 - 8) + 56))(self + v8, 1, 1, v9);

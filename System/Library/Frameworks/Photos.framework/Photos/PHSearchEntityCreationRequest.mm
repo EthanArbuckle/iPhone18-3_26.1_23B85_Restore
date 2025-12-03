@@ -1,49 +1,49 @@
 @interface PHSearchEntityCreationRequest
-+ (id)_placeholderForCreatedObjectWithClass:(Class)a3 uuid:(id)a4;
++ (id)_placeholderForCreatedObjectWithClass:(Class)class uuid:(id)uuid;
 + (id)creationRequestForNewSearchRankings;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (PHSearchEntityCreationRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (id)addSearchRankingWithLabel:(id)a3 identifier:(id)a4 type:(unint64_t)a5 rankingScore:(double)a6 localeIdentifier:(id)a7 synonyms:(id)a8;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (PHSearchEntityCreationRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (id)addSearchRankingWithLabel:(id)label identifier:(id)identifier type:(unint64_t)type rankingScore:(double)score localeIdentifier:(id)localeIdentifier synonyms:(id)synonyms;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (id)placeholderForCreatedSearchEntity;
-- (void)encodeToXPCDict:(id)a3;
+- (void)encodeToXPCDict:(id)dict;
 @end
 
 @implementation PHSearchEntityCreationRequest
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  libraryCopy = library;
   if ([(NSMutableArray *)self->_assetSearchEntities count])
   {
-    v9 = [v8 managedObjectContext];
-    [v9 deleteObject:v7];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    [managedObjectContext deleteObject:objectCopy];
 
-    [MEMORY[0x1E69BE780] setSearchRankingsFromDictionaries:self->_assetSearchEntities inLibrary:v8];
+    [MEMORY[0x1E69BE780] setSearchRankingsFromDictionaries:self->_assetSearchEntities inLibrary:libraryCopy];
   }
 
   return 1;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v5 = [a3 managedObjectContext];
-  v6 = [MEMORY[0x1E69BE780] newNodeContainerWithManagedObjectContext:v5];
-  v7 = [(PHChangeRequest *)self uuid];
-  [v6 setUuid:v7];
+  managedObjectContext = [library managedObjectContext];
+  v6 = [MEMORY[0x1E69BE780] newNodeContainerWithManagedObjectContext:managedObjectContext];
+  uuid = [(PHChangeRequest *)self uuid];
+  [v6 setUuid:uuid];
 
-  v8 = [v6 sourceNode];
+  sourceNode = [v6 sourceNode];
 
-  return v8;
+  return sourceNode;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v5 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:v5];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
   if (self->_assetSearchEntities)
   {
@@ -51,13 +51,13 @@
   }
 }
 
-- (PHSearchEntityCreationRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHSearchEntityCreationRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
+  dictCopy = dict;
+  requestCopy = request;
   v24.receiver = self;
   v24.super_class = PHSearchEntityCreationRequest;
-  v10 = [(PHSearchEntityChangeRequest *)&v24 initWithXPCDict:v8 request:v9 clientAuthorization:a5];
+  v10 = [(PHSearchEntityChangeRequest *)&v24 initWithXPCDict:dictCopy request:requestCopy clientAuthorization:authorization];
   v11 = v10;
   if (v10)
   {
@@ -67,7 +67,7 @@
     v21 = &unk_1E75AAEB0;
     v12 = v10;
     v22 = v12;
-    v23 = v9;
+    v23 = requestCopy;
     v13 = _Block_copy(&v18);
     v14 = PLArrayFromXPCDictionary();
     v15 = [v14 mutableCopy];
@@ -103,74 +103,74 @@ uint64_t __77__PHSearchEntityCreationRequest_initWithXPCDict_request_clientAutho
     helper = v2->super.super._helper;
     v2->super.super._helper = v3;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     assetSearchEntities = v2->_assetSearchEntities;
-    v2->_assetSearchEntities = v5;
+    v2->_assetSearchEntities = array;
   }
 
   return v2;
 }
 
-- (id)addSearchRankingWithLabel:(id)a3 identifier:(id)a4 type:(unint64_t)a5 rankingScore:(double)a6 localeIdentifier:(id)a7 synonyms:(id)a8
+- (id)addSearchRankingWithLabel:(id)label identifier:(id)identifier type:(unint64_t)type rankingScore:(double)score localeIdentifier:(id)localeIdentifier synonyms:(id)synonyms
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  if (!a5)
+  labelCopy = label;
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
+  synonymsCopy = synonyms;
+  if (!type)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PHSearchEntityChangeRequest.m" lineNumber:137 description:@"Must specify a type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchEntityChangeRequest.m" lineNumber:137 description:@"Must specify a type"];
   }
 
-  if (a6 == 0.0)
+  if (score == 0.0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PHSearchEntityChangeRequest.m" lineNumber:138 description:@"Must specify a search ranking"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchEntityChangeRequest.m" lineNumber:138 description:@"Must specify a search ranking"];
   }
 
-  if (!(v15 | v16))
+  if (!(labelCopy | identifierCopy))
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PHSearchEntityChangeRequest.m" lineNumber:139 description:@"Must specify a label or identifier"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchEntityChangeRequest.m" lineNumber:139 description:@"Must specify a label or identifier"];
   }
 
-  v19 = [MEMORY[0x1E695DF90] dictionary];
-  v20 = [MEMORY[0x1E696AFB0] UUID];
-  v21 = [v20 UUIDString];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [v19 setObject:v21 forKeyedSubscript:@"uuid"];
-  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  [v19 setObject:v22 forKeyedSubscript:@"type"];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"uuid"];
+  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [dictionary setObject:v22 forKeyedSubscript:@"type"];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-  [v19 setObject:v23 forKeyedSubscript:@"rankingScore"];
+  v23 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+  [dictionary setObject:v23 forKeyedSubscript:@"rankingScore"];
 
-  [v19 setObject:v15 forKeyedSubscript:@"label"];
-  [v19 setObject:v16 forKeyedSubscript:@"identifier"];
-  [v19 setObject:v18 forKeyedSubscript:@"synonyms"];
-  [v19 setObject:v17 forKeyedSubscript:@"localeIdentifier"];
-  [(NSMutableArray *)self->_assetSearchEntities addObject:v19];
+  [dictionary setObject:labelCopy forKeyedSubscript:@"label"];
+  [dictionary setObject:identifierCopy forKeyedSubscript:@"identifier"];
+  [dictionary setObject:synonymsCopy forKeyedSubscript:@"synonyms"];
+  [dictionary setObject:localeIdentifierCopy forKeyedSubscript:@"localeIdentifier"];
+  [(NSMutableArray *)self->_assetSearchEntities addObject:dictionary];
   [(PHChangeRequest *)self didMutate];
-  v24 = [PHSearchEntityCreationRequest _placeholderForCreatedObjectWithClass:objc_opt_class() uuid:v21];
+  v24 = [PHSearchEntityCreationRequest _placeholderForCreatedObjectWithClass:objc_opt_class() uuid:uUIDString];
 
   return v24;
 }
 
 - (id)placeholderForCreatedSearchEntity
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-+ (id)_placeholderForCreatedObjectWithClass:(Class)a3 uuid:(id)a4
++ (id)_placeholderForCreatedObjectWithClass:(Class)class uuid:(id)uuid
 {
-  v5 = a4;
+  uuidCopy = uuid;
   +[PHPhotoLibrary assertTransaction];
   v6 = [PHObjectPlaceholder alloc];
-  v7 = [(objc_class *)a3 localIdentifierWithUUID:v5];
+  v7 = [(objc_class *)class localIdentifierWithUUID:uuidCopy];
 
   v8 = [(PHObjectPlaceholder *)v6 initWithLocalIdentifier:v7];
 
@@ -179,9 +179,9 @@ uint64_t __77__PHSearchEntityCreationRequest_initWithXPCDict_request_clientAutho
 
 + (id)creationRequestForNewSearchRankings
 {
-  v2 = [[PHSearchEntityCreationRequest alloc] initForNewObject];
+  initForNewObject = [[PHSearchEntityCreationRequest alloc] initForNewObject];
 
-  return v2;
+  return initForNewObject;
 }
 
 @end

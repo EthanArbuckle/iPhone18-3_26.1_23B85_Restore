@@ -1,12 +1,12 @@
 @interface HTMLToSuper_BODY_Frame
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation HTMLToSuper_BODY_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v12 = IMCopyNormalizedAttributes(a8, 1, 0);
+  v12 = IMCopyNormalizedAttributes(attributes, 1, 0);
   v9 = [v12 objectForKey:@"dir"];
   if (!v9)
   {
@@ -32,7 +32,7 @@ LABEL_4:
   }
 
 LABEL_6:
-  [a4 setBaseWritingDirection:v11];
+  [context setBaseWritingDirection:v11];
 }
 
 @end

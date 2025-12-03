@@ -1,26 +1,26 @@
 @interface AKAuthorizationAgeValidator
-+ (BOOL)isValidAgeForRequest:(id)a3 account:(id)a4;
++ (BOOL)isValidAgeForRequest:(id)request account:(id)account;
 @end
 
 @implementation AKAuthorizationAgeValidator
 
-+ (BOOL)isValidAgeForRequest:(id)a3 account:(id)a4
++ (BOOL)isValidAgeForRequest:(id)request account:(id)account
 {
   v49 = *MEMORY[0x1E69E9840];
-  v42 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, account);
   v14 = +[AKAccountManager sharedInstance];
   v15 = [(AKAccountManager *)v14 authorizationUsedForAccount:v40];
   MEMORY[0x1E69E5920](v14);
   v39 = v15;
-  v16 = v42;
-  v17 = [location[0] authorizationRequest];
-  v18 = [v16 _isAuthorizedCredentialState:{objc_msgSend(v17, "existingStatus")}];
-  MEMORY[0x1E69E5920](v17);
+  v16 = selfCopy;
+  authorizationRequest = [location[0] authorizationRequest];
+  v18 = [v16 _isAuthorizedCredentialState:{objc_msgSend(authorizationRequest, "existingStatus")}];
+  MEMORY[0x1E69E5920](authorizationRequest);
   v38 = v18;
   v19 = +[AKAccountManager sharedInstance];
   v20 = 0;
@@ -33,12 +33,12 @@
   if (v20)
   {
     v9 = +[AKFeatureManager sharedManager];
-    v37 = [v9 isTiburonU13Enabled];
+    isTiburonU13Enabled = [v9 isTiburonU13Enabled];
     MEMORY[0x1E69E5920](v9);
     v10 = +[AKURLBag sharedBag];
-    v11 = [v10 isSIWAForPAAChildEnabled];
+    isSIWAForPAAChildEnabled = [v10 isSIWAForPAAChildEnabled];
     MEMORY[0x1E69E5920](v10);
-    v36 = v11;
+    v36 = isSIWAForPAAChildEnabled;
     v12 = 0;
     if (v39)
     {
@@ -54,12 +54,12 @@
     v33 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_4_4_0_4_0_4_0_4_0(v48, v37 & 1, v39, v36 & 1, v38 & 1);
+      __os_log_helper_16_0_4_4_0_4_0_4_0_4_0(v48, isTiburonU13Enabled & 1, v39, v36 & 1, v38 & 1);
       _os_log_debug_impl(&dword_193225000, v34, v33, "allowUnderageRequest %d hasUsedAuthorization %d isSIWAForPAAChildEnabled %d hasAuthorizedCredential %d", v48, 0x1Au);
     }
 
     objc_storeStrong(&v34, 0);
-    if (v37)
+    if (isTiburonU13Enabled)
     {
       v32 = _AKLogSystem();
       v31 = OS_LOG_TYPE_DEFAULT;
@@ -105,10 +105,10 @@
   }
 
   v5 = +[AKAccountManager sharedInstance];
-  v6 = [(AKAccountManager *)v5 primaryiCloudAccountHasPendingDOB];
+  primaryiCloudAccountHasPendingDOB = [(AKAccountManager *)v5 primaryiCloudAccountHasPendingDOB];
   MEMORY[0x1E69E5920](v5);
-  v24 = v6;
-  if (!v6)
+  v24 = primaryiCloudAccountHasPendingDOB;
+  if (!primaryiCloudAccountHasPendingDOB)
   {
     goto LABEL_29;
   }

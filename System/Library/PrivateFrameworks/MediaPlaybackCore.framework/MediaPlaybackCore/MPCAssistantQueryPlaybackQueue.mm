@@ -1,34 +1,34 @@
 @interface MPCAssistantQueryPlaybackQueue
-+ (id)queryQueueWithContextID:(id)a3 query:(id)a4;
-- (MPCAssistantQueryPlaybackQueue)initWithContextID:(id)a3 query:(id)a4;
++ (id)queryQueueWithContextID:(id)d query:(id)query;
+- (MPCAssistantQueryPlaybackQueue)initWithContextID:(id)d query:(id)query;
 - (id)description;
-- (void)getPlaybackQueueWithDestination:(id)a3 completion:(id)a4;
+- (void)getPlaybackQueueWithDestination:(id)destination completion:(id)completion;
 @end
 
 @implementation MPCAssistantQueryPlaybackQueue
 
-- (void)getPlaybackQueueWithDestination:(id)a3 completion:(id)a4
+- (void)getPlaybackQueueWithDestination:(id)destination completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E69706C8]);
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MPCAssistantQueryPlaybackQueue: %@", self->_query];
   [v8 setLabel:v9];
 
   [v8 setLegacyMediaQuery:self->_query forTransport:1];
-  v10 = [MEMORY[0x1E6970778] identityKind];
-  [v8 setItemKind:v10];
+  identityKind = [MEMORY[0x1E6970778] identityKind];
+  [v8 setItemKind:identityKind];
 
   if (self->_firstItem)
   {
     v11 = objc_alloc(MEMORY[0x1E6970550]);
-    v12 = [MEMORY[0x1E6970778] identityKind];
+    identityKind2 = [MEMORY[0x1E6970778] identityKind];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __77__MPCAssistantQueryPlaybackQueue_getPlaybackQueueWithDestination_completion___block_invoke;
     v25[3] = &unk_1E82389D8;
     v25[4] = self;
-    v13 = [v11 initWithSource:@"MPCAssistant" modelKind:v12 block:v25];
+    v13 = [v11 initWithSource:@"MPCAssistant" modelKind:identityKind2 block:v25];
   }
 
   else
@@ -48,12 +48,12 @@
     goto LABEL_14;
   }
 
-  v16 = [v6 outputDeviceUIDs];
-  if (![v16 count])
+  outputDeviceUIDs = [destinationCopy outputDeviceUIDs];
+  if (![outputDeviceUIDs count])
   {
-    if ([v6 origin])
+    if ([destinationCopy origin])
     {
-      [v6 origin];
+      [destinationCopy origin];
       IsLocalOrigin = MROriginIsLocalOrigin();
 
       if (!IsLocalOrigin)
@@ -78,11 +78,11 @@ LABEL_15:
   v21[1] = 3221225472;
   v21[2] = __77__MPCAssistantQueryPlaybackQueue_getPlaybackQueueWithDestination_completion___block_invoke_3;
   v21[3] = &unk_1E8236DF8;
-  v23 = self;
-  v24 = v7;
+  selfCopy = self;
+  v24 = completionCopy;
   v22 = v15;
   v19 = v15;
-  v20 = v7;
+  v20 = completionCopy;
   [v19 getRemotePlaybackQueueWithDestination:v17 completion:v21];
 }
 
@@ -159,26 +159,26 @@ void __77__MPCAssistantQueryPlaybackQueue_getPlaybackQueueWithDestination_comple
   return v5;
 }
 
-- (MPCAssistantQueryPlaybackQueue)initWithContextID:(id)a3 query:(id)a4
+- (MPCAssistantQueryPlaybackQueue)initWithContextID:(id)d query:(id)query
 {
-  v7 = a4;
+  queryCopy = query;
   v11.receiver = self;
   v11.super_class = MPCAssistantQueryPlaybackQueue;
-  v8 = [(MPCAssistantPlaybackQueue *)&v11 initWithContextID:a3];
+  v8 = [(MPCAssistantPlaybackQueue *)&v11 initWithContextID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_query, a4);
+    objc_storeStrong(&v8->_query, query);
   }
 
   return v9;
 }
 
-+ (id)queryQueueWithContextID:(id)a3 query:(id)a4
++ (id)queryQueueWithContextID:(id)d query:(id)query
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithContextID:v7 query:v6];
+  queryCopy = query;
+  dCopy = d;
+  v8 = [[self alloc] initWithContextID:dCopy query:queryCopy];
 
   return v8;
 }

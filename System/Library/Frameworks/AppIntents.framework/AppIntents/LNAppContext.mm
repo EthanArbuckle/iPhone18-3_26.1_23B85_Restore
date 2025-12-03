@@ -1,513 +1,513 @@
 @interface LNAppContext
-- (void)createAsyncIteratorForSequence:(LNAsyncSequenceReference *)a3 options:(id)a4 connectionIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)exportTransientEntities:(NSArray *)a3 withConfiguration:(LNExportedContentConfiguration *)a4 connectionIdentifier:(NSNumber *)a5 completionHandler:(id)a6;
-- (void)fetchActionAppContextForAction:(id)a3 completionHandler:(id)a4;
-- (void)fetchActionListenerEndpoint:(LNAction *)a3 auditToken:(id *)a4 connectionIdentifier:(int64_t)a5 completionHandler:(id)a6;
-- (void)fetchActionOutputValueForConnection:(NSXPCConnection *)a3 withIdentifier:(NSUUID *)a4 completionHandler:(id)a5;
-- (void)fetchAppShortcutParametersForMangledName:(NSString *)a3 withCompletionHandler:(id)a4;
-- (void)fetchDestinationMDMAccountIdentifierForAction:(id)a3 completionHandler:(id)a4;
-- (void)fetchDisplayRepresentationForActions:(NSArray *)a3 completionHandler:(id)a4;
-- (void)fetchEntityURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchOptionsDefaultValuesForAction:(id)a3 connectionIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)fetchOptionsForAction:(id)a3 actionMetadata:(id)a4 parameterMetadata:(id)a5 optionsProviderReference:(id)a6 searchTerm:(id)a7 localeIdentifier:(id)a8 connectionIdentifier:(id)a9 completionHandler:(id)a10;
-- (void)fetchParameterOptionDefaultValueForAction:(id)a3 actionMetadata:(id)a4 parameterIdentifier:(NSString *)a5 connectionIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)fetchStateForAppIntentIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)a3 forEntityIdentifiers:(id)a4 completionHandler:(id)a5;
-- (void)fetchSuggestedActionsForStartWorkoutAction:(id)a3 completionHandler:(id)a4;
-- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)a3;
-- (void)fetchSuggestedActionsWithSiriLanguageCode:(NSString *)a3 completionHandler:(id)a4;
-- (void)fetchSuggestedFocusActionsForActionMetadata:(id)a3 suggestionContext:(id)a4 completionHandler:(id)a5;
-- (void)fetchURLForEnumWithIdentifier:(NSString *)a3 caseIdentifier:(NSString *)a4 completionHandler:(id)a5;
-- (void)fetchURLsForEnumWithIdentifier:(NSString *)a3 completionHandler:(id)a4;
-- (void)fetchValueForPropertyWithIdentifier:(NSString *)a3 entity:(id)a4 auditToken:(id *)a5 connectionIdentifier:(int64_t)a6 completionHandler:(id)a7;
-- (void)fetchViewActionsWithCompletionHandler:(id)a3;
-- (void)fetchViewEntitiesWithInteractionIDs:(id)a3 completionHandler:(id)a4;
-- (void)linkUndoManager:(_NSAuxiliaryUndoManagerReference *)a3 completionHandler:(id)a4;
-- (void)performAction:(id)a3 options:(id)a4 reportingProgress:(NSProgress *)a5 delegate:(LNPerformActionExecutorDelegate *)a6 auditToken:(id *)a7 completionHandler:(id)a8;
-- (void)performConfigurableQuery:(LNConfigurableQueryRequest *)a3 auditToken:(id *)a4 connectionIdentifier:(NSNumber *)a5 completionHandler:(id)a6;
-- (void)performQuery:(id)a3 auditToken:(id *)a4 connectionIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)performSuggestedResultsQueryWithEntityType:(id)a3 auditToken:(id *)a4 connectionIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)removeAllDeferredOutputsFor:(id)a3;
-- (void)removeContextForConnection:(id)a3;
-- (void)stageContextWithRequest:(LNStageContextRequest *)a3 completionHandler:(id)a4;
-- (void)updateAppShortcutParametersWithCompletionHandler:(id)a3;
-- (void)updateContextForConnection:(NSXPCConnection *)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)updateProperties:(id)a3 withQuery:(id)a4 completionHandler:(id)a5;
+- (void)createAsyncIteratorForSequence:(LNAsyncSequenceReference *)sequence options:(id)options connectionIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)exportTransientEntities:(NSArray *)entities withConfiguration:(LNExportedContentConfiguration *)configuration connectionIdentifier:(NSNumber *)identifier completionHandler:(id)handler;
+- (void)fetchActionAppContextForAction:(id)action completionHandler:(id)handler;
+- (void)fetchActionListenerEndpoint:(LNAction *)endpoint auditToken:(id *)token connectionIdentifier:(int64_t)identifier completionHandler:(id)handler;
+- (void)fetchActionOutputValueForConnection:(NSXPCConnection *)connection withIdentifier:(NSUUID *)identifier completionHandler:(id)handler;
+- (void)fetchAppShortcutParametersForMangledName:(NSString *)name withCompletionHandler:(id)handler;
+- (void)fetchDestinationMDMAccountIdentifierForAction:(id)action completionHandler:(id)handler;
+- (void)fetchDisplayRepresentationForActions:(NSArray *)actions completionHandler:(id)handler;
+- (void)fetchEntityURL:(id)l completionHandler:(id)handler;
+- (void)fetchOptionsDefaultValuesForAction:(id)action connectionIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchOptionsForAction:(id)action actionMetadata:(id)metadata parameterMetadata:(id)parameterMetadata optionsProviderReference:(id)reference searchTerm:(id)term localeIdentifier:(id)identifier connectionIdentifier:(id)connectionIdentifier completionHandler:(id)self0;
+- (void)fetchParameterOptionDefaultValueForAction:(id)action actionMetadata:(id)metadata parameterIdentifier:(NSString *)identifier connectionIdentifier:(id)connectionIdentifier completionHandler:(id)handler;
+- (void)fetchStateForAppIntentIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)identifier forEntityIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchSuggestedActionsForStartWorkoutAction:(id)action completionHandler:(id)handler;
+- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)handler;
+- (void)fetchSuggestedActionsWithSiriLanguageCode:(NSString *)code completionHandler:(id)handler;
+- (void)fetchSuggestedFocusActionsForActionMetadata:(id)metadata suggestionContext:(id)context completionHandler:(id)handler;
+- (void)fetchURLForEnumWithIdentifier:(NSString *)identifier caseIdentifier:(NSString *)caseIdentifier completionHandler:(id)handler;
+- (void)fetchURLsForEnumWithIdentifier:(NSString *)identifier completionHandler:(id)handler;
+- (void)fetchValueForPropertyWithIdentifier:(NSString *)identifier entity:(id)entity auditToken:(id *)token connectionIdentifier:(int64_t)connectionIdentifier completionHandler:(id)handler;
+- (void)fetchViewActionsWithCompletionHandler:(id)handler;
+- (void)fetchViewEntitiesWithInteractionIDs:(id)ds completionHandler:(id)handler;
+- (void)linkUndoManager:(_NSAuxiliaryUndoManagerReference *)manager completionHandler:(id)handler;
+- (void)performAction:(id)action options:(id)options reportingProgress:(NSProgress *)progress delegate:(LNPerformActionExecutorDelegate *)delegate auditToken:(id *)token completionHandler:(id)handler;
+- (void)performConfigurableQuery:(LNConfigurableQueryRequest *)query auditToken:(id *)token connectionIdentifier:(NSNumber *)identifier completionHandler:(id)handler;
+- (void)performQuery:(id)query auditToken:(id *)token connectionIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)performSuggestedResultsQueryWithEntityType:(id)type auditToken:(id *)token connectionIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeAllDeferredOutputsFor:(id)for;
+- (void)removeContextForConnection:(id)connection;
+- (void)stageContextWithRequest:(LNStageContextRequest *)request completionHandler:(id)handler;
+- (void)updateAppShortcutParametersWithCompletionHandler:(id)handler;
+- (void)updateContextForConnection:(NSXPCConnection *)connection context:(id)context completionHandler:(id)handler;
+- (void)updateProperties:(id)properties withQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation LNAppContext
 
-- (void)updateContextForConnection:(NSXPCConnection *)a3 context:(id)a4 completionHandler:(id)a5
+- (void)updateContextForConnection:(NSXPCConnection *)connection context:(id)context completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = connection;
+  v9[3] = context;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v11 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)removeAllDeferredOutputsFor:(id)a3
+- (void)removeAllDeferredOutputsFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  AppContext.removeAllDeferredOutputs(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  AppContext.removeAllDeferredOutputs(for:)(forCopy);
 }
 
-- (void)fetchParameterOptionDefaultValueForAction:(id)a3 actionMetadata:(id)a4 parameterIdentifier:(NSString *)a5 connectionIdentifier:(id)a6 completionHandler:(id)a7
+- (void)fetchParameterOptionDefaultValueForAction:(id)action actionMetadata:(id)metadata parameterIdentifier:(NSString *)identifier connectionIdentifier:(id)connectionIdentifier completionHandler:(id)handler
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
-  v13[4] = a5;
-  v13[5] = a6;
+  v13[2] = action;
+  v13[3] = metadata;
+  v13[4] = identifier;
+  v13[5] = connectionIdentifier;
   v13[6] = v12;
   v13[7] = self;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v14 = a5;
+  identifierCopy = identifier;
   swift_unknownObjectRetain();
-  v15 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)updateProperties:(id)a3 withQuery:(id)a4 completionHandler:(id)a5
+- (void)updateProperties:(id)properties withQuery:(id)query completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = properties;
+  v9[3] = query;
   v9[4] = v8;
   v9[5] = self;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchViewEntitiesWithInteractionIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchViewEntitiesWithInteractionIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = ds;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchViewActionsWithCompletionHandler:(id)a3
+- (void)fetchViewActionsWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)a3 forEntityIdentifiers:(id)a4 completionHandler:(id)a5
+- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)identifier forEntityIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = identifier;
+  v9[3] = identifiers;
   v9[4] = v8;
   v9[5] = self;
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)updateAppShortcutParametersWithCompletionHandler:(id)a3
+- (void)updateAppShortcutParametersWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)stageContextWithRequest:(LNStageContextRequest *)a3 completionHandler:(id)a4
+- (void)stageContextWithRequest:(LNStageContextRequest *)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = request;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  requestCopy = request;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)removeContextForConnection:(id)a3
+- (void)removeContextForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  AppContext.removeContext(connection:)(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  AppContext.removeContext(connection:)(connectionCopy);
 }
 
-- (void)fetchStateForAppIntentIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchStateForAppIntentIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_18F521CAC();
   _Block_copy(v5);
-  v7 = self;
-  sub_18F1F9678(v6, v7, v5);
+  selfCopy = self;
+  sub_18F1F9678(v6, selfCopy, v5);
   _Block_release(v5);
 }
 
-- (void)createAsyncIteratorForSequence:(LNAsyncSequenceReference *)a3 options:(id)a4 connectionIdentifier:(id)a5 completionHandler:(id)a6
+- (void)createAsyncIteratorForSequence:(LNAsyncSequenceReference *)sequence options:(id)options connectionIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = sequence;
+  v11[3] = options;
+  v11[4] = identifier;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
+  sequenceCopy = sequence;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v13 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)a3
+- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchSuggestedActionsWithSiriLanguageCode:(NSString *)a3 completionHandler:(id)a4
+- (void)fetchSuggestedActionsWithSiriLanguageCode:(NSString *)code completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = code;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  codeCopy = code;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchSuggestedActionsForStartWorkoutAction:(id)a3 completionHandler:(id)a4
+- (void)fetchSuggestedActionsForStartWorkoutAction:(id)action completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = action;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)performAction:(id)a3 options:(id)a4 reportingProgress:(NSProgress *)a5 delegate:(LNPerformActionExecutorDelegate *)a6 auditToken:(id *)a7 completionHandler:(id)a8
+- (void)performAction:(id)action options:(id)options reportingProgress:(NSProgress *)progress delegate:(LNPerformActionExecutorDelegate *)delegate auditToken:(id *)token completionHandler:(id)handler
 {
-  v17 = *&a7->var0[4];
-  v18 = *a7->var0;
-  v13 = _Block_copy(a8);
+  v17 = *&token->var0[4];
+  v18 = *token->var0;
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
-  *(v14 + 32) = a5;
-  *(v14 + 40) = a6;
+  *(v14 + 16) = action;
+  *(v14 + 24) = options;
+  *(v14 + 32) = progress;
+  *(v14 + 40) = delegate;
   *(v14 + 48) = v18;
   *(v14 + 64) = v17;
   *(v14 + 80) = v13;
   *(v14 + 88) = self;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v15 = a5;
+  progressCopy = progress;
   swift_unknownObjectRetain();
-  v16 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)performQuery:(id)a3 auditToken:(id *)a4 connectionIdentifier:(id)a5 completionHandler:(id)a6
+- (void)performQuery:(id)query auditToken:(id *)token connectionIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v12 = *&a4->var0[4];
-  v13 = *a4->var0;
-  v9 = _Block_copy(a6);
+  v12 = *&token->var0[4];
+  v13 = *token->var0;
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
-  *(v10 + 16) = a3;
+  *(v10 + 16) = query;
   *(v10 + 24) = v13;
   *(v10 + 40) = v12;
-  *(v10 + 56) = a5;
+  *(v10 + 56) = identifier;
   *(v10 + 64) = v9;
   *(v10 + 72) = self;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)performSuggestedResultsQueryWithEntityType:(id)a3 auditToken:(id *)a4 connectionIdentifier:(id)a5 completionHandler:(id)a6
+- (void)performSuggestedResultsQueryWithEntityType:(id)type auditToken:(id *)token connectionIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v12 = *&a4->var0[4];
-  v13 = *a4->var0;
-  v9 = _Block_copy(a6);
+  v12 = *&token->var0[4];
+  v13 = *token->var0;
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
-  *(v10 + 16) = a3;
+  *(v10 + 16) = type;
   *(v10 + 24) = v13;
   *(v10 + 40) = v12;
-  *(v10 + 56) = a5;
+  *(v10 + 56) = identifier;
   *(v10 + 64) = v9;
   *(v10 + 72) = self;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)performConfigurableQuery:(LNConfigurableQueryRequest *)a3 auditToken:(id *)a4 connectionIdentifier:(NSNumber *)a5 completionHandler:(id)a6
+- (void)performConfigurableQuery:(LNConfigurableQueryRequest *)query auditToken:(id *)token connectionIdentifier:(NSNumber *)identifier completionHandler:(id)handler
 {
-  v14 = *&a4->var0[4];
-  v15 = *a4->var0;
-  v9 = _Block_copy(a6);
+  v14 = *&token->var0[4];
+  v15 = *token->var0;
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
-  *(v10 + 16) = a3;
+  *(v10 + 16) = query;
   *(v10 + 24) = v15;
   *(v10 + 40) = v14;
-  *(v10 + 56) = a5;
+  *(v10 + 56) = identifier;
   *(v10 + 64) = v9;
   *(v10 + 72) = self;
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
+  queryCopy = query;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchSuggestedFocusActionsForActionMetadata:(id)a3 suggestionContext:(id)a4 completionHandler:(id)a5
+- (void)fetchSuggestedFocusActionsForActionMetadata:(id)metadata suggestionContext:(id)context completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = metadata;
+  v9[3] = context;
   v9[4] = v8;
   v9[5] = self;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)linkUndoManager:(_NSAuxiliaryUndoManagerReference *)a3 completionHandler:(id)a4
+- (void)linkUndoManager:(_NSAuxiliaryUndoManagerReference *)manager completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = manager;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  managerCopy = manager;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchEntityURL:(id)a3 completionHandler:(id)a4
+- (void)fetchEntityURL:(id)l completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = l;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchActionListenerEndpoint:(LNAction *)a3 auditToken:(id *)a4 connectionIdentifier:(int64_t)a5 completionHandler:(id)a6
+- (void)fetchActionListenerEndpoint:(LNAction *)endpoint auditToken:(id *)token connectionIdentifier:(int64_t)identifier completionHandler:(id)handler
 {
-  v13 = *&a4->var0[4];
-  v14 = *a4->var0;
-  v9 = _Block_copy(a6);
+  v13 = *&token->var0[4];
+  v14 = *token->var0;
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
-  *(v10 + 16) = a3;
+  *(v10 + 16) = endpoint;
   *(v10 + 24) = v14;
   *(v10 + 40) = v13;
-  *(v10 + 56) = a5;
+  *(v10 + 56) = identifier;
   *(v10 + 64) = v9;
   *(v10 + 72) = self;
-  v11 = a3;
-  v12 = self;
+  endpointCopy = endpoint;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchDestinationMDMAccountIdentifierForAction:(id)a3 completionHandler:(id)a4
+- (void)fetchDestinationMDMAccountIdentifierForAction:(id)action completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = action;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchURLForEnumWithIdentifier:(NSString *)a3 caseIdentifier:(NSString *)a4 completionHandler:(id)a5
+- (void)fetchURLForEnumWithIdentifier:(NSString *)identifier caseIdentifier:(NSString *)caseIdentifier completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = identifier;
+  v9[3] = caseIdentifier;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  identifierCopy = identifier;
+  caseIdentifierCopy = caseIdentifier;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchURLsForEnumWithIdentifier:(NSString *)a3 completionHandler:(id)a4
+- (void)fetchURLsForEnumWithIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = identifier;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchDisplayRepresentationForActions:(NSArray *)a3 completionHandler:(id)a4
+- (void)fetchDisplayRepresentationForActions:(NSArray *)actions completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = actions;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  actionsCopy = actions;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchActionAppContextForAction:(id)a3 completionHandler:(id)a4
+- (void)fetchActionAppContextForAction:(id)action completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = action;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchActionOutputValueForConnection:(NSXPCConnection *)a3 withIdentifier:(NSUUID *)a4 completionHandler:(id)a5
+- (void)fetchActionOutputValueForConnection:(NSXPCConnection *)connection withIdentifier:(NSUUID *)identifier completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = connection;
+  v9[3] = identifier;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchAppShortcutParametersForMangledName:(NSString *)a3 withCompletionHandler:(id)a4
+- (void)fetchAppShortcutParametersForMangledName:(NSString *)name withCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = name;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  nameCopy = name;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchValueForPropertyWithIdentifier:(NSString *)a3 entity:(id)a4 auditToken:(id *)a5 connectionIdentifier:(int64_t)a6 completionHandler:(id)a7
+- (void)fetchValueForPropertyWithIdentifier:(NSString *)identifier entity:(id)entity auditToken:(id *)token connectionIdentifier:(int64_t)connectionIdentifier completionHandler:(id)handler
 {
-  v15 = *&a5->var0[4];
-  v16 = *a5->var0;
-  v11 = _Block_copy(a7);
+  v15 = *&token->var0[4];
+  v16 = *token->var0;
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
-  *(v12 + 24) = a4;
+  *(v12 + 16) = identifier;
+  *(v12 + 24) = entity;
   *(v12 + 32) = v16;
   *(v12 + 48) = v15;
-  *(v12 + 64) = a6;
+  *(v12 + 64) = connectionIdentifier;
   *(v12 + 72) = v11;
   *(v12 + 80) = self;
-  v13 = a3;
+  identifierCopy = identifier;
   swift_unknownObjectRetain();
-  v14 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)exportTransientEntities:(NSArray *)a3 withConfiguration:(LNExportedContentConfiguration *)a4 connectionIdentifier:(NSNumber *)a5 completionHandler:(id)a6
+- (void)exportTransientEntities:(NSArray *)entities withConfiguration:(LNExportedContentConfiguration *)configuration connectionIdentifier:(NSNumber *)identifier completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = entities;
+  v11[3] = configuration;
+  v11[4] = identifier;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
+  entitiesCopy = entities;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchOptionsForAction:(id)a3 actionMetadata:(id)a4 parameterMetadata:(id)a5 optionsProviderReference:(id)a6 searchTerm:(id)a7 localeIdentifier:(id)a8 connectionIdentifier:(id)a9 completionHandler:(id)a10
+- (void)fetchOptionsForAction:(id)action actionMetadata:(id)metadata parameterMetadata:(id)parameterMetadata optionsProviderReference:(id)reference searchTerm:(id)term localeIdentifier:(id)identifier connectionIdentifier:(id)connectionIdentifier completionHandler:(id)self0
 {
-  v17 = _Block_copy(a10);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
-  v18[6] = a7;
-  v18[7] = a8;
-  v18[8] = a9;
+  v18[2] = action;
+  v18[3] = metadata;
+  v18[4] = parameterMetadata;
+  v18[5] = reference;
+  v18[6] = term;
+  v18[7] = identifier;
+  v18[8] = connectionIdentifier;
   v18[9] = v17;
   v18[10] = self;
   swift_unknownObjectRetain();
@@ -517,22 +517,22 @@
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v19 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }
 
-- (void)fetchOptionsDefaultValuesForAction:(id)a3 connectionIdentifier:(id)a4 completionHandler:(id)a5
+- (void)fetchOptionsDefaultValuesForAction:(id)action connectionIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = action;
+  v9[3] = identifier;
   v9[4] = v8;
   v9[5] = self;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
 
   sub_18F10B344();
 }

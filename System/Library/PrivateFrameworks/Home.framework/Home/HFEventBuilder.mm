@@ -1,27 +1,27 @@
 @interface HFEventBuilder
-+ (id)eventBuilderForEvent:(id)a3;
-- (HFEventBuilder)initWithEvent:(id)a3;
++ (id)eventBuilderForEvent:(id)event;
+- (HFEventBuilder)initWithEvent:(id)event;
 - (id)buildNewEventsFromCurrentState;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)comparisonKey;
-- (id)naturalLanguageNameWithOptions:(id)a3;
+- (id)naturalLanguageNameWithOptions:(id)options;
 - (unint64_t)hash;
 @end
 
 @implementation HFEventBuilder
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
-  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:v4];
+  objectCopy = object;
+  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:objectCopy];
 
   return v5;
 }
 
-+ (id)eventBuilderForEvent:(id)a3
++ (id)eventBuilderForEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -81,20 +81,20 @@ LABEL_15:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v3;
+    v12 = eventCopy;
     _os_log_error_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_ERROR, "No HFEventBuilder can handle the event: %@", &v11, 0xCu);
   }
 
   v6 = 0;
 LABEL_19:
-  v8 = [[v6 alloc] initWithEvent:v3];
+  v8 = [[v6 alloc] initWithEvent:eventCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (HFEventBuilder)initWithEvent:(id)a3
+- (HFEventBuilder)initWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = HFEventBuilder;
@@ -103,16 +103,16 @@ LABEL_19:
 
 - (id)buildNewEventsFromCurrentState
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFEventBuilder.m" lineNumber:68 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFEventBuilder buildNewEventsFromCurrentState]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFEventBuilder.m" lineNumber:68 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFEventBuilder buildNewEventsFromCurrentState]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3
+- (id)naturalLanguageNameWithOptions:(id)options
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFEventBuilder.m" lineNumber:74 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFEventBuilder naturalLanguageNameWithOptions:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFEventBuilder.m" lineNumber:74 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFEventBuilder naturalLanguageNameWithOptions:]", objc_opt_class()}];
 
   return 0;
 }

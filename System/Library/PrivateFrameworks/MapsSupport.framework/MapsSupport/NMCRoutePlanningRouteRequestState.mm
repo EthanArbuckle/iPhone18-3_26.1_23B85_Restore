@@ -1,25 +1,25 @@
 @interface NMCRoutePlanningRouteRequestState
-+ (int64_t)requiredInitialStateForRequest:(id)a3;
-- (void)_launchMapsWithURL:(id)a3 companionRouteContext:(id)a4;
++ (int64_t)requiredInitialStateForRequest:(id)request;
+- (void)_launchMapsWithURL:(id)l companionRouteContext:(id)context;
 - (void)start;
 @end
 
 @implementation NMCRoutePlanningRouteRequestState
 
-+ (int64_t)requiredInitialStateForRequest:(id)a3
++ (int64_t)requiredInitialStateForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v5 = [v4 waypoints];
+  waypoints = [requestCopy waypoints];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000B1A0;
   v9[3] = &unk_1000850D0;
   v9[4] = &v10;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [waypoints enumerateObjectsUsingBlock:v9];
 
   if (v11[3])
   {
@@ -28,9 +28,9 @@
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NMCRoutePlanningRouteRequestState;
-    v6 = objc_msgSendSuper2(&v8, "requiredInitialStateForRequest:", v4);
+    v6 = objc_msgSendSuper2(&v8, "requiredInitialStateForRequest:", requestCopy);
   }
 
   _Block_object_dispose(&v10, 8);
@@ -40,57 +40,57 @@
 
 - (void)start
 {
-  v3 = [(NanoRoutePlanningState *)self manager];
-  v4 = [v3 request];
+  manager = [(NanoRoutePlanningState *)self manager];
+  request = [manager request];
 
   v5 = sub_100053324();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 waypoints];
+    waypoints = [request waypoints];
     *buf = 138477827;
-    *&buf[4] = v6;
+    *&buf[4] = waypoints;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "-start, will generate map-ish items for waypoints: %{private}@", buf, 0xCu);
   }
 
-  v7 = [v4 waypoints];
-  v8 = sub_1000282B8(v7, &stru_100085110);
+  waypoints2 = [request waypoints];
+  v8 = sub_1000282B8(waypoints2, &stru_100085110);
 
   v9 = [v8 count];
-  v10 = [v4 waypoints];
-  v11 = [v10 count];
+  waypoints3 = [request waypoints];
+  v11 = [waypoints3 count];
 
   if (v9 == v11)
   {
-    v12 = [v4 transportType];
-    if (v12 > 5)
+    transportType = [request transportType];
+    if (transportType > 5)
     {
       v13 = 1;
     }
 
     else
     {
-      v13 = qword_100065980[v12];
+      v13 = qword_100065980[transportType];
     }
 
-    v18 = [v4 departureDate];
-    v19 = [v4 arrivalDate];
-    v20 = [v4 companionRouteContext];
-    if (v19)
+    departureDate = [request departureDate];
+    arrivalDate = [request arrivalDate];
+    companionRouteContext = [request companionRouteContext];
+    if (arrivalDate)
     {
       v21 = 1;
-      v22 = v19;
+      v22 = arrivalDate;
     }
 
     else
     {
-      if (!v18)
+      if (!departureDate)
       {
         v27 = objc_alloc_init(NSMutableDictionary);
         goto LABEL_20;
       }
 
       v21 = 0;
-      v22 = v18;
+      v22 = departureDate;
     }
 
     v25 = objc_alloc_init(GEOURLTimePoint);
@@ -110,7 +110,7 @@ LABEL_20:
       if (v13 == 4)
       {
         [v27 setObject:MKLaunchOptionsDirectionsModeTransit forKeyedSubscript:MKLaunchOptionsDirectionsModeKey];
-        v28 = [v4 transitOptions];
+        transitOptions = [request transitOptions];
         v29 = &MKLaunchOptionsTransitOptionsKey;
         goto LABEL_30;
       }
@@ -118,7 +118,7 @@ LABEL_20:
       if (v13 == 8)
       {
         [v27 setObject:MKLaunchOptionsDirectionsModeCycling forKeyedSubscript:MKLaunchOptionsDirectionsModeKey];
-        v28 = [v4 cyclingOptions];
+        transitOptions = [request cyclingOptions];
         v29 = &MKLaunchOptionsCyclingOptionsKey;
         goto LABEL_30;
       }
@@ -129,7 +129,7 @@ LABEL_20:
       if (v13 == 1)
       {
         [v27 setObject:MKLaunchOptionsDirectionsModeDriving forKeyedSubscript:MKLaunchOptionsDirectionsModeKey];
-        v28 = [v4 automobileOptions];
+        transitOptions = [request automobileOptions];
         v29 = &MKLaunchOptionsAutomobileOptionsKey;
         goto LABEL_30;
       }
@@ -137,10 +137,10 @@ LABEL_20:
       if (v13 == 2)
       {
         [v27 setObject:MKLaunchOptionsDirectionsModeWalking forKeyedSubscript:MKLaunchOptionsDirectionsModeKey];
-        v28 = [v4 walkingOptions];
+        transitOptions = [request walkingOptions];
         v29 = &MKLaunchOptionsWalkingOptionsKey;
 LABEL_30:
-        [v27 setObject:v28 forKeyedSubscript:*v29];
+        [v27 setObject:transitOptions forKeyedSubscript:*v29];
 
         goto LABEL_31;
       }
@@ -157,7 +157,7 @@ LABEL_31:
     }
 
     v31 = [MKMapItem urlForMapItems:v8 options:v27];
-    [(NMCRoutePlanningRouteRequestState *)self _launchMapsWithURL:v31 companionRouteContext:v20];
+    [(NMCRoutePlanningRouteRequestState *)self _launchMapsWithURL:v31 companionRouteContext:companionRouteContext];
 
     goto LABEL_34;
   }
@@ -186,47 +186,47 @@ LABEL_31:
 
   v23 = [NSError errorWithDomain:@"NanoRoutePlanningSession" code:4 userInfo:v17];
 
-  v24 = [(NanoRoutePlanningState *)self manager];
+  manager2 = [(NanoRoutePlanningState *)self manager];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10000BA84;
   v32[3] = &unk_100085138;
   v33 = v23;
-  v18 = v23;
-  [v24 updateWithBlock:v32];
+  departureDate = v23;
+  [manager2 updateWithBlock:v32];
 
-  v19 = v33;
+  arrivalDate = v33;
 LABEL_34:
 }
 
-- (void)_launchMapsWithURL:(id)a3 companionRouteContext:(id)a4
+- (void)_launchMapsWithURL:(id)l companionRouteContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  lCopy = l;
   v8 = sub_100053324();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 simpleDescription];
+    simpleDescription = [contextCopy simpleDescription];
     *buf = 138412290;
-    v18 = v9;
+    v18 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Will launch Maps to load directions with context %@", buf, 0xCu);
   }
 
   v10 = +[MapsCompanionDaemonIPCInterface sharedInterface];
   v11 = objc_alloc_init(IPCLoadDirectionsMessage);
-  [(IPCLoadDirectionsMessage *)v11 setUrl:v7];
+  [(IPCLoadDirectionsMessage *)v11 setUrl:lCopy];
 
   [(IPCLoadDirectionsMessage *)v11 setOriginIsWatch:1];
-  v12 = [v6 data];
-  [(IPCLoadDirectionsMessage *)v11 setRouteContextData:v12];
+  data = [contextCopy data];
+  [(IPCLoadDirectionsMessage *)v11 setRouteContextData:data];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000BC58;
   v14[3] = &unk_1000851A0;
-  v15 = v6;
-  v16 = self;
-  v13 = v6;
+  v15 = contextCopy;
+  selfCopy = self;
+  v13 = contextCopy;
   [v10 loadDirections:v11 completion:v14];
 }
 

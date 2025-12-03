@@ -1,11 +1,11 @@
 @interface VoiceOverActivityViewBridge
-+ (id)makeViewControllerWithGet:(id)a3 set:(id)a4;
++ (id)makeViewControllerWithGet:(id)get set:(id)set;
 - (_TtC21AccessibilitySettings27VoiceOverActivityViewBridge)init;
 @end
 
 @implementation VoiceOverActivityViewBridge
 
-+ (id)makeViewControllerWithGet:(id)a3 set:(id)a4
++ (id)makeViewControllerWithGet:(id)get set:(id)set
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2B9E60);
   __chkstk_darwin(v6 - 8);
@@ -13,8 +13,8 @@
   v9 = type metadata accessor for VoiceOverActivityVoiceSelectionView();
   __chkstk_darwin(v9 - 8);
   v11 = &v21 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a3);
-  v13 = _Block_copy(a4);
+  v12 = _Block_copy(get);
+  v13 = _Block_copy(set);
   v14 = swift_allocObject();
   *(v14 + 16) = v12;
   v15 = swift_allocObject();

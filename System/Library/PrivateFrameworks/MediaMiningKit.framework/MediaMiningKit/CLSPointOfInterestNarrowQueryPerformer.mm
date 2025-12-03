@@ -1,21 +1,21 @@
 @interface CLSPointOfInterestNarrowQueryPerformer
 + (id)categories;
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4;
-- (CLSPointOfInterestNarrowQueryPerformer)initWithPOICache:(id)a3 locationCache:(id)a4;
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions;
+- (CLSPointOfInterestNarrowQueryPerformer)initWithPOICache:(id)cache locationCache:(id)locationCache;
 @end
 
 @implementation CLSPointOfInterestNarrowQueryPerformer
 
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 radius];
+  regionCopy = region;
+  regionsCopy = regions;
+  [regionCopy radius];
   if (v8 <= 20.0)
   {
     v11.receiver = self;
     v11.super_class = CLSPointOfInterestNarrowQueryPerformer;
-    v9 = [(CLSBusinessItemGenericQueryPerformer *)&v11 shouldQueryItemsForRegion:v6 selectedRegions:v7];
+    v9 = [(CLSBusinessItemGenericQueryPerformer *)&v11 shouldQueryItemsForRegion:regionCopy selectedRegions:regionsCopy];
   }
 
   else
@@ -26,11 +26,11 @@
   return v9;
 }
 
-- (CLSPointOfInterestNarrowQueryPerformer)initWithPOICache:(id)a3 locationCache:(id)a4
+- (CLSPointOfInterestNarrowQueryPerformer)initWithPOICache:(id)cache locationCache:(id)locationCache
 {
   v5.receiver = self;
   v5.super_class = CLSPointOfInterestNarrowQueryPerformer;
-  return [(CLSBusinessItemGenericQueryPerformer *)&v5 initWithBusinessCategoryCache:a3 locationCache:a4];
+  return [(CLSBusinessItemGenericQueryPerformer *)&v5 initWithBusinessCategoryCache:cache locationCache:locationCache];
 }
 
 + (id)categories

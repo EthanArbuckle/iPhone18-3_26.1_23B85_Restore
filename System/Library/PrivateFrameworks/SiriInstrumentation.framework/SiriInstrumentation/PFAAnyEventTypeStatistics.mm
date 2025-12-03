@@ -1,43 +1,43 @@
 @interface PFAAnyEventTypeStatistics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PFAAnyEventTypeStatistics)initWithDictionary:(id)a3;
-- (PFAAnyEventTypeStatistics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PFAAnyEventTypeStatistics)initWithDictionary:(id)dictionary;
+- (PFAAnyEventTypeStatistics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addEventStatistics:(id)a3;
-- (void)setHasMessageCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEventStatistics:(id)statistics;
+- (void)setHasMessageCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFAAnyEventTypeStatistics
 
-- (PFAAnyEventTypeStatistics)initWithDictionary:(id)a3
+- (PFAAnyEventTypeStatistics)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PFAAnyEventTypeStatistics;
   v5 = [(PFAAnyEventTypeStatistics *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anyEventType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anyEventType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PFAAnyEventTypeStatistics setAnyEventType:](v5, "setAnyEventType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"messageCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"messageCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PFAAnyEventTypeStatistics setMessageCount:](v5, "setMessageCount:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"eventStatistics"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"eventStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,30 +91,30 @@
   return v5;
 }
 
-- (PFAAnyEventTypeStatistics)initWithJSON:(id)a3
+- (PFAAnyEventTypeStatistics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFAAnyEventTypeStatistics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFAAnyEventTypeStatistics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFAAnyEventTypeStatistics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -128,7 +128,7 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(PFAAnyEventTypeStatistics *)self anyEventType]- 1;
@@ -142,12 +142,12 @@
       v5 = off_1E78DFE70[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"anyEventType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"anyEventType"];
   }
 
   if ([(NSArray *)self->_eventStatistics count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -167,16 +167,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -186,18 +186,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"eventStatistics"];
+    [dictionary setObject:array forKeyedSubscript:@"eventStatistics"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PFAAnyEventTypeStatistics messageCount](self, "messageCount")}];
-    [v3 setObject:v14 forKeyedSubscript:@"messageCount"];
+    [dictionary setObject:v14 forKeyedSubscript:@"messageCount"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -226,16 +226,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSArray *)self->_eventStatistics hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -244,27 +244,27 @@ LABEL_3:
   if (*&has)
   {
     anyEventType = self->_anyEventType;
-    if (anyEventType != [v4 anyEventType])
+    if (anyEventType != [equalCopy anyEventType])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (messageCount = self->_messageCount, messageCount == [v4 messageCount]))
+    if (!v8 || (messageCount = self->_messageCount, messageCount == [equalCopy messageCount]))
     {
-      v10 = [(PFAAnyEventTypeStatistics *)self eventStatistics];
-      v11 = [v4 eventStatistics];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      eventStatistics = [(PFAAnyEventTypeStatistics *)self eventStatistics];
+      eventStatistics2 = [equalCopy eventStatistics];
+      v12 = eventStatistics2;
+      if ((eventStatistics != 0) != (eventStatistics2 == 0))
       {
-        v13 = [(PFAAnyEventTypeStatistics *)self eventStatistics];
-        if (!v13)
+        eventStatistics3 = [(PFAAnyEventTypeStatistics *)self eventStatistics];
+        if (!eventStatistics3)
         {
 
 LABEL_17:
@@ -272,10 +272,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(PFAAnyEventTypeStatistics *)self eventStatistics];
-        v16 = [v4 eventStatistics];
-        v17 = [v15 isEqual:v16];
+        v14 = eventStatistics3;
+        eventStatistics4 = [(PFAAnyEventTypeStatistics *)self eventStatistics];
+        eventStatistics5 = [equalCopy eventStatistics];
+        v17 = [eventStatistics4 isEqual:eventStatistics5];
 
         if (v17)
         {
@@ -296,10 +296,10 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -341,27 +341,27 @@ LABEL_15:
   }
 }
 
-- (void)addEventStatistics:(id)a3
+- (void)addEventStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   eventStatistics = self->_eventStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!eventStatistics)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_eventStatistics;
-    self->_eventStatistics = v6;
+    self->_eventStatistics = array;
 
-    v4 = v8;
+    statisticsCopy = v8;
     eventStatistics = self->_eventStatistics;
   }
 
-  [(NSArray *)eventStatistics addObject:v4];
+  [(NSArray *)eventStatistics addObject:statisticsCopy];
 }
 
-- (void)setHasMessageCount:(BOOL)a3
+- (void)setHasMessageCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -374,14 +374,14 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PFAAnyEventTypeStatistics;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PFAAnyEventTypeStatistics *)self eventStatistics:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(PFAAnyEventTypeStatistics *)self setEventStatistics:v7];
 

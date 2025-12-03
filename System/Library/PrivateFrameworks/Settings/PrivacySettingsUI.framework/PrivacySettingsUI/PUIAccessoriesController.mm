@@ -1,12 +1,12 @@
 @interface PUIAccessoriesController
-- (id)localizedRemainingNumberOfApprovedAccessories:(id)a3;
-- (id)specifierForApp:(id)a3;
+- (id)localizedRemainingNumberOfApprovedAccessories:(id)accessories;
+- (id)specifierForApp:(id)app;
 - (id)specifiers;
-- (void)handleSessionEvent:(id)a3;
+- (void)handleSessionEvent:(id)event;
 - (void)provideNavigationDonations;
 - (void)refreshDADevices;
 - (void)refreshDADevicesSynchronously;
-- (void)remakeUI:(id)a3;
+- (void)remakeUI:(id)i;
 - (void)viewDidLoad;
 @end
 
@@ -67,15 +67,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"ACCESSORY_SETUP" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"ACCESSORY_SETUP" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -92,9 +92,9 @@
   [(PUIAccessoriesController *)&v10 viewDidLoad];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(PUIAccessoriesController *)self session];
+    session = [(PUIAccessoriesController *)self session];
 
-    if (!v3)
+    if (!session)
     {
       v4 = objc_opt_new();
       [(PUIAccessoriesController *)self setSession:v4];
@@ -105,8 +105,8 @@
       v5 = [(PUIAccessoriesController *)self session:v7];
       [v5 setEventHandler:&v7];
 
-      v6 = [(PUIAccessoriesController *)self session];
-      [v6 activate];
+      session2 = [(PUIAccessoriesController *)self session];
+      [session2 activate];
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -121,12 +121,12 @@ void __39__PUIAccessoriesController_viewDidLoad__block_invoke(uint64_t a1, void 
   [WeakRetained handleSessionEvent:v3];
 }
 
-- (id)specifierForApp:(id)a3
+- (id)specifierForApp:(id)app
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
-  v6 = [v5 localizedName];
-  v7 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+  appCopy = app;
+  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:appCopy allowPlaceholder:1 error:0];
+  localizedName = [v5 localizedName];
+  v7 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
   v8 = [v7 count];
 
   v9 = MEMORY[0x277D3FAD8];
@@ -140,22 +140,22 @@ void __39__PUIAccessoriesController_viewDidLoad__block_invoke(uint64_t a1, void 
     v10 = objc_opt_class();
   }
 
-  v11 = [v9 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:v10 cell:2 edit:0];
+  v11 = [v9 preferenceSpecifierNamed:localizedName target:self set:0 get:0 detail:v10 cell:2 edit:0];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v11 setProperty:v12 forKey:*MEMORY[0x277D40020]];
 
-  [v11 setProperty:v4 forKey:*MEMORY[0x277D40008]];
-  [v11 setProperty:v4 forKey:@"bundleID"];
+  [v11 setProperty:appCopy forKey:*MEMORY[0x277D40008]];
+  [v11 setProperty:appCopy forKey:@"bundleID"];
   [v11 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  v13 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+  v13 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
   v14 = [v13 count];
 
-  v15 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
-  v16 = v15;
+  v15 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
+  name2 = v15;
   if (v14 == 1)
   {
-    v17 = [v15 firstObject];
-    v18 = [v17 name];
+    firstObject = [v15 firstObject];
+    name = [firstObject name];
 LABEL_13:
 
     goto LABEL_14;
@@ -163,57 +163,57 @@ LABEL_13:
 
   v19 = [v15 count];
 
-  v20 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+  v20 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
   v21 = v20;
   if (v19 == 2)
   {
     v22 = [v20 objectAtIndexedSubscript:0];
-    v16 = [v22 name];
+    name2 = [v22 name];
 
-    v23 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+    v23 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
     [v23 objectAtIndexedSubscript:1];
     v51 = v8;
-    v24 = v6;
+    v24 = localizedName;
     v26 = v25 = v5;
-    v17 = [v26 name];
+    firstObject = [v26 name];
 
     v27 = MEMORY[0x277CCACA8];
     v28 = PUI_LocalizedStringForPrivacy(@"ACCESSORY_SETUP_ENUMERATE_TWO");
-    v18 = [v27 stringWithFormat:v28, v16, v17];
+    name = [v27 stringWithFormat:v28, name2, firstObject];
 
     v5 = v25;
-    v6 = v24;
+    localizedName = v24;
     v8 = v51;
     goto LABEL_13;
   }
 
-  v52 = v6;
+  v52 = localizedName;
   v29 = [v20 count];
 
-  v30 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+  v30 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
   v31 = v30;
   if (v29 == 3)
   {
     v32 = [v30 objectAtIndexedSubscript:0];
-    v16 = [v32 name];
+    name2 = [v32 name];
 
-    v33 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+    v33 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
     [v33 objectAtIndexedSubscript:1];
     v34 = v50 = v5;
-    v17 = [v34 name];
+    firstObject = [v34 name];
 
-    v35 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+    v35 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
     v36 = [v35 objectAtIndexedSubscript:2];
-    v37 = [v36 name];
+    name3 = [v36 name];
 
     v38 = MEMORY[0x277CCACA8];
     v39 = PUI_LocalizedStringForPrivacy(@"ACCESSORY_SETUP_ENUMERATE_THREE");
 LABEL_12:
     v45 = v39;
-    v18 = [v38 stringWithFormat:v39, v16, v17, v37];
+    name = [v38 stringWithFormat:v39, name2, firstObject, name3];
 
     v5 = v50;
-    v6 = v52;
+    localizedName = v52;
     goto LABEL_13;
   }
 
@@ -221,67 +221,67 @@ LABEL_12:
 
   if (v40 >= 4)
   {
-    v41 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+    v41 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
     v42 = [v41 objectAtIndexedSubscript:0];
-    v16 = [v42 name];
+    name2 = [v42 name];
 
-    v43 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
+    v43 = [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
     v44 = [v43 objectAtIndexedSubscript:1];
-    v17 = [v44 name];
+    firstObject = [v44 name];
 
-    v37 = [(PUIAccessoriesController *)self localizedRemainingNumberOfApprovedAccessories:v4];
+    name3 = [(PUIAccessoriesController *)self localizedRemainingNumberOfApprovedAccessories:appCopy];
     v38 = MEMORY[0x277CCACA8];
     v39 = PUI_LocalizedStringForPrivacy(@"ACCESSORY_SETUP_ENUMERATE_MORE");
     v50 = v5;
     goto LABEL_12;
   }
 
-  v18 = 0;
-  v6 = v52;
+  name = 0;
+  localizedName = v52;
 LABEL_14:
-  [v11 setProperty:v18 forKey:*MEMORY[0x277D40160]];
+  [v11 setProperty:name forKey:*MEMORY[0x277D40160]];
   if (v8 == 1)
   {
-    [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:v4];
-    v47 = v46 = v6;
-    v48 = [v47 firstObject];
-    [v11 setProperty:v48 forKey:@"device"];
+    [(NSMutableDictionary *)self->_accessoriesManagementMap objectForKeyedSubscript:appCopy];
+    v47 = v46 = localizedName;
+    firstObject2 = [v47 firstObject];
+    [v11 setProperty:firstObject2 forKey:@"device"];
 
-    v6 = v46;
+    localizedName = v46;
     [v11 setProperty:self->_session forKey:@"session"];
   }
 
   return v11;
 }
 
-- (id)localizedRemainingNumberOfApprovedAccessories:(id)a3
+- (id)localizedRemainingNumberOfApprovedAccessories:(id)accessories
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSMutableDictionary *)self->_accessoriesManagementApprovedMap objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_accessoriesManagementApprovedMap objectForKeyedSubscript:accessories];
   v5 = [v3 localizedStringWithFormat:@"%lu", objc_msgSend(v4, "count") - 2];
 
   return v5;
 }
 
-- (void)handleSessionEvent:(id)a3
+- (void)handleSessionEvent:(id)event
 {
-  v4 = [a3 eventType];
-  if (v4 <= 0x2A && ((1 << v4) & 0x60000000400) != 0)
+  eventType = [event eventType];
+  if (eventType <= 0x2A && ((1 << eventType) & 0x60000000400) != 0)
   {
 
     [(PUIAccessoriesController *)self refreshDADevices];
   }
 }
 
-- (void)remakeUI:(id)a3
+- (void)remakeUI:(id)i
 {
   v68 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  iCopy = i;
+  v4 = iCopy;
+  if (!iCopy || ![iCopy count])
   {
-    v5 = [(PUIAccessoriesController *)self appSpecifiers];
-    [(PUIAccessoriesController *)self removeContiguousSpecifiers:v5];
+    appSpecifiers = [(PUIAccessoriesController *)self appSpecifiers];
+    [(PUIAccessoriesController *)self removeContiguousSpecifiers:appSpecifiers];
 
     accessoriesManagementMap = self->_accessoriesManagementMap;
     self->_accessoriesManagementMap = 0;
@@ -292,8 +292,8 @@ LABEL_14:
     [(PUIAccessoriesController *)self setAppSpecifiers:0];
   }
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -329,10 +329,10 @@ LABEL_14:
         v58 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v14 = [v12 appAccessInfoMap];
-        v15 = [v14 allKeys];
+        appAccessInfoMap = [v12 appAccessInfoMap];
+        allKeys = [appAccessInfoMap allKeys];
 
-        v16 = [v15 countByEnumeratingWithState:&v55 objects:v64 count:16];
+        v16 = [allKeys countByEnumeratingWithState:&v55 objects:v64 count:16];
         if (v16)
         {
           v17 = v16;
@@ -343,40 +343,40 @@ LABEL_14:
             {
               if (*v56 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allKeys);
               }
 
               v20 = *(*(&v55 + 1) + 8 * i);
-              v21 = [v8 objectForKeyedSubscript:{v20, v45}];
+              v21 = [dictionary objectForKeyedSubscript:{v20, v45}];
 
               if (!v21)
               {
-                v22 = [MEMORY[0x277CBEB18] array];
-                [v8 setObject:v22 forKeyedSubscript:v20];
+                array = [MEMORY[0x277CBEB18] array];
+                [dictionary setObject:array forKeyedSubscript:v20];
               }
 
-              v23 = [v8 objectForKeyedSubscript:v20];
+              v23 = [dictionary objectForKeyedSubscript:v20];
               [v23 addObject:v12];
 
-              v24 = [v12 appAccessInfoMap];
-              v25 = [v24 objectForKeyedSubscript:v20];
+              appAccessInfoMap2 = [v12 appAccessInfoMap];
+              v25 = [appAccessInfoMap2 objectForKeyedSubscript:v20];
 
               if (v25)
               {
-                v26 = [v9 objectForKeyedSubscript:v20];
+                v26 = [dictionary2 objectForKeyedSubscript:v20];
 
                 if (!v26)
                 {
-                  v27 = [MEMORY[0x277CBEB18] array];
-                  [v9 setObject:v27 forKeyedSubscript:v20];
+                  array2 = [MEMORY[0x277CBEB18] array];
+                  [dictionary2 setObject:array2 forKeyedSubscript:v20];
                 }
 
-                v28 = [v9 objectForKeyedSubscript:v20];
+                v28 = [dictionary2 objectForKeyedSubscript:v20];
                 [v28 addObject:v12];
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v55 objects:v64 count:16];
+            v17 = [allKeys countByEnumeratingWithState:&v55 objects:v64 count:16];
           }
 
           while (v17);
@@ -392,21 +392,21 @@ LABEL_14:
     while (v49);
   }
 
-  v29 = [v8 copy];
+  v29 = [dictionary copy];
   v30 = self->_accessoriesManagementMap;
   self->_accessoriesManagementMap = v29;
 
-  v31 = [v9 copy];
+  v31 = [dictionary2 copy];
   v32 = self->_accessoriesManagementApprovedMap;
   self->_accessoriesManagementApprovedMap = v31;
 
-  v33 = [v8 allKeys];
-  v34 = [MEMORY[0x277CBEB18] array];
+  allKeys2 = [dictionary allKeys];
+  array3 = [MEMORY[0x277CBEB18] array];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v35 = v33;
+  v35 = allKeys2;
   v36 = [v35 countByEnumeratingWithState:&v51 objects:v63 count:16];
   if (v36)
   {
@@ -422,7 +422,7 @@ LABEL_14:
         }
 
         v40 = [(PUIAccessoriesController *)self specifierForApp:*(*(&v51 + 1) + 8 * j), v45];
-        [v34 addObject:v40];
+        [array3 addObject:v40];
       }
 
       v37 = [v35 countByEnumeratingWithState:&v51 objects:v63 count:16];
@@ -431,15 +431,15 @@ LABEL_14:
     while (v37);
   }
 
-  [v34 sortUsingComparator:&__block_literal_global_4];
-  v41 = [(PUIAccessoriesController *)self appSpecifiers];
-  [(PUIAccessoriesController *)self removeContiguousSpecifiers:v41];
+  [array3 sortUsingComparator:&__block_literal_global_4];
+  appSpecifiers2 = [(PUIAccessoriesController *)self appSpecifiers];
+  [(PUIAccessoriesController *)self removeContiguousSpecifiers:appSpecifiers2];
 
-  v42 = [v34 copy];
+  v42 = [array3 copy];
   [(PUIAccessoriesController *)self setAppSpecifiers:v42];
 
-  v43 = [(PUIAccessoriesController *)self appSpecifiers];
-  [(PUIAccessoriesController *)self insertContiguousSpecifiers:v43 afterSpecifierID:@"APP_GROUP"];
+  appSpecifiers3 = [(PUIAccessoriesController *)self appSpecifiers];
+  [(PUIAccessoriesController *)self insertContiguousSpecifiers:appSpecifiers3 afterSpecifierID:@"APP_GROUP"];
 
   v44 = *MEMORY[0x277D85DE8];
 }
@@ -462,13 +462,13 @@ uint64_t __37__PUIAccessoriesController_remakeUI___block_invoke(uint64_t a1, voi
 
 - (void)refreshDADevices
 {
-  v3 = [(PUIAccessoriesController *)self session];
+  session = [(PUIAccessoriesController *)self session];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__PUIAccessoriesController_refreshDADevices__block_invoke;
   v4[3] = &unk_279BA1828;
   v4[4] = self;
-  [v3 getDevicesWithFlags:8 completionHandler:v4];
+  [session getDevicesWithFlags:8 completionHandler:v4];
 }
 
 void __44__PUIAccessoriesController_refreshDADevices__block_invoke(uint64_t a1, void *a2, void *a3)

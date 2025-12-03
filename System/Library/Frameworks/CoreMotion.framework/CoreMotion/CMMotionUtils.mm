@@ -1,15 +1,15 @@
 @interface CMMotionUtils
-+ (BOOL)featureAvailability:(const char *)a3;
-+ (BOOL)hasEntitlement:(id)a3;
-+ (id)fileHandleForWritingToURL:(id)a3;
-+ (id)getExecutablePathFromPid:(int)a3;
++ (BOOL)featureAvailability:(const char *)availability;
++ (BOOL)hasEntitlement:(id)entitlement;
++ (id)fileHandleForWritingToURL:(id)l;
++ (id)getExecutablePathFromPid:(int)pid;
 + (id)logDirectory;
-+ (id)sendMessage:(shared_ptr<CLConnectionMessage>)a3 withReplyClassesSync:(id)a4;
-+ (int64_t)isAuthorizedForEntitlement:(id)a3;
-+ (shared_ptr<CLConnectionMessage>)sendMessageSync:(shared_ptr<CLConnectionMessage>)a3;
-+ (unint64_t)copyDataFrom:(id)a3 to:(id)a4;
-+ (void)sendMessage:(shared_ptr<CLConnectionMessage>)a3 withReplyClasses:(id)a4 callback:(id)a5;
-+ (void)tccServiceMotionAccessWithLabel:(id)a3;
++ (id)sendMessage:(shared_ptr<CLConnectionMessage>)message withReplyClassesSync:(id)sync;
++ (int64_t)isAuthorizedForEntitlement:(id)entitlement;
++ (shared_ptr<CLConnectionMessage>)sendMessageSync:(shared_ptr<CLConnectionMessage>)sync;
++ (unint64_t)copyDataFrom:(id)from to:(id)to;
++ (void)sendMessage:(shared_ptr<CLConnectionMessage>)message withReplyClasses:(id)classes callback:(id)callback;
++ (void)tccServiceMotionAccessWithLabel:(id)label;
 @end
 
 @implementation CMMotionUtils
@@ -27,9 +27,9 @@
   return objc_msgSend_stringByAppendingPathComponent_(v18, v19, @"CoreMotion");
 }
 
-+ (void)sendMessage:(shared_ptr<CLConnectionMessage>)a3 withReplyClasses:(id)a4 callback:(id)a5
++ (void)sendMessage:(shared_ptr<CLConnectionMessage>)message withReplyClasses:(id)classes callback:(id)callback
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   if (qword_1ED71D710 != -1)
   {
     dispatch_once(&qword_1ED71D710, &unk_1F0E2A320);
@@ -50,18 +50,18 @@
   }
 }
 
-+ (id)sendMessage:(shared_ptr<CLConnectionMessage>)a3 withReplyClassesSync:(id)a4
++ (id)sendMessage:(shared_ptr<CLConnectionMessage>)message withReplyClassesSync:(id)sync
 {
-  var1 = a3.var1;
-  v5 = *(a3.var0 + 1);
-  v10 = *a3.var0;
+  var1 = message.var1;
+  v5 = *(message.var0 + 1);
+  v10 = *message.var0;
   v11 = v5;
   if (v5)
   {
     atomic_fetch_add_explicit(&v5->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  objc_msgSend_sendMessageSync_(CMMotionUtils, a2, &v10, a3.var1, a4);
+  objc_msgSend_sendMessageSync_(CMMotionUtils, a2, &v10, message.var1, sync);
   if (v11)
   {
     sub_19B41FFEC(v11);
@@ -88,9 +88,9 @@
   return v8;
 }
 
-+ (shared_ptr<CLConnectionMessage>)sendMessageSync:(shared_ptr<CLConnectionMessage>)a3
++ (shared_ptr<CLConnectionMessage>)sendMessageSync:(shared_ptr<CLConnectionMessage>)sync
 {
-  var0 = a3.var0;
+  var0 = sync.var0;
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1ED71D720 != -1)
   {
@@ -150,7 +150,7 @@
   return result;
 }
 
-+ (BOOL)hasEntitlement:(id)a3
++ (BOOL)hasEntitlement:(id)entitlement
 {
   v4 = SecTaskCreateFromSelf(0);
   if (!v4)
@@ -160,7 +160,7 @@
 
   v5 = v4;
   error = 0;
-  v6 = SecTaskCopyValueForEntitlement(v4, a3, &error);
+  v6 = SecTaskCopyValueForEntitlement(v4, entitlement, &error);
   if (v6)
   {
     v7 = v6;
@@ -178,7 +178,7 @@
   return v9;
 }
 
-+ (void)tccServiceMotionAccessWithLabel:(id)a3
++ (void)tccServiceMotionAccessWithLabel:(id)label
 {
   v15 = *MEMORY[0x1E69E9840];
   if (sub_19B4215D8())
@@ -226,7 +226,7 @@
       if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v14 = a3;
+        labelCopy = label;
         _os_log_impl(&dword_19B41C000, v9, OS_LOG_TYPE_FAULT, "Warning - invoking %@ on main may lead to deadlock.", buf, 0xCu);
       }
 
@@ -257,7 +257,7 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)featureAvailability:(const char *)a3
++ (BOOL)featureAvailability:(const char *)availability
 {
   if ((sub_19B4215D8() & 1) == 0)
   {
@@ -267,9 +267,9 @@
   return 0;
 }
 
-+ (int64_t)isAuthorizedForEntitlement:(id)a3
++ (int64_t)isAuthorizedForEntitlement:(id)entitlement
 {
-  if (objc_msgSend_hasEntitlement_(CMMotionUtils, a2, a3))
+  if (objc_msgSend_hasEntitlement_(CMMotionUtils, a2, entitlement))
   {
     return 3;
   }
@@ -294,10 +294,10 @@
   }
 }
 
-+ (id)getExecutablePathFromPid:(int)a3
++ (id)getExecutablePathFromPid:(int)pid
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (proc_pidpath(a3, buffer, 0x1000u) < 1)
+  if (proc_pidpath(pid, buffer, 0x1000u) < 1)
   {
     result = 0;
   }
@@ -311,10 +311,10 @@
   return result;
 }
 
-+ (id)fileHandleForWritingToURL:(id)a3
++ (id)fileHandleForWritingToURL:(id)l
 {
   v68 = *MEMORY[0x1E69E9840];
-  if ((objc_msgSend_isFileURL(a3, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isFileURL(l, a2, l) & 1) == 0)
   {
     if (qword_1ED71C830 != -1)
     {
@@ -345,7 +345,7 @@
   }
 
   v6 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v4, v5);
-  v9 = objc_msgSend_path(a3, v7, v8);
+  v9 = objc_msgSend_path(l, v7, v8);
   if (objc_msgSend_fileExistsAtPath_(v6, v10, v9))
   {
     if (qword_1ED71C830 != -1)
@@ -387,7 +387,7 @@ LABEL_25:
   }
 
   v20 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v11, v12);
-  v23 = objc_msgSend_path(a3, v21, v22);
+  v23 = objc_msgSend_path(l, v21, v22);
   if ((objc_msgSend_createFileAtPath_contents_attributes_(v20, v24, v23, 0, 0) & 1) == 0)
   {
     if (qword_1ED71C830 != -1)
@@ -419,7 +419,7 @@ LABEL_25:
   }
 
   v59 = 0;
-  result = objc_msgSend_fileHandleForWritingToURL_error_(MEMORY[0x1E696AC00], v25, a3, &v59);
+  result = objc_msgSend_fileHandleForWritingToURL_error_(MEMORY[0x1E696AC00], v25, l, &v59);
   if (!result || v59)
   {
     if (qword_1EAFE29A8 != -1)
@@ -430,7 +430,7 @@ LABEL_25:
     v26 = qword_1EAFE29B0;
     if (os_log_type_enabled(qword_1EAFE29B0, OS_LOG_TYPE_ERROR))
     {
-      v29 = objc_msgSend_absoluteString(a3, v27, v28);
+      v29 = objc_msgSend_absoluteString(l, v27, v28);
       v32 = objc_msgSend_UTF8String(v29, v30, v31);
       v35 = objc_msgSend_description(v59, v33, v34);
       v38 = objc_msgSend_UTF8String(v35, v36, v37);
@@ -450,7 +450,7 @@ LABEL_25:
         dispatch_once(&qword_1EAFE29A8, &unk_1F0E27C40);
       }
 
-      v44 = objc_msgSend_absoluteString(a3, v42, v43);
+      v44 = objc_msgSend_absoluteString(l, v42, v43);
       v47 = objc_msgSend_UTF8String(v44, v45, v46);
       v50 = objc_msgSend_description(v59, v48, v49);
       v53 = objc_msgSend_UTF8String(v50, v51, v52);
@@ -467,7 +467,7 @@ LABEL_25:
     }
 
     v55 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v40, v41);
-    objc_msgSend_removeItemAtURL_error_(v55, v56, a3, 0);
+    objc_msgSend_removeItemAtURL_error_(v55, v56, l, 0);
     goto LABEL_25;
   }
 
@@ -476,11 +476,11 @@ LABEL_26:
   return result;
 }
 
-+ (unint64_t)copyDataFrom:(id)a3 to:(id)a4
++ (unint64_t)copyDataFrom:(id)from to:(id)to
 {
-  objc_msgSend_seekToFileOffset_(a3, a2, 0);
-  objc_msgSend_seekToFileOffset_(a4, v6, 0);
-  DataOfLength = objc_msgSend_readDataOfLength_(a3, v7, 0x2000);
+  objc_msgSend_seekToFileOffset_(from, a2, 0);
+  objc_msgSend_seekToFileOffset_(to, v6, 0);
+  DataOfLength = objc_msgSend_readDataOfLength_(from, v7, 0x2000);
   if (!DataOfLength)
   {
     return 0;
@@ -495,9 +495,9 @@ LABEL_26:
       break;
     }
 
-    objc_msgSend_writeData_(a4, v13, v11);
+    objc_msgSend_writeData_(to, v13, v11);
     v12 += objc_msgSend_length(v11, v14, v15);
-    v11 = objc_msgSend_readDataOfLength_(a3, v16, 0x2000);
+    v11 = objc_msgSend_readDataOfLength_(from, v16, 0x2000);
   }
 
   while (v11);

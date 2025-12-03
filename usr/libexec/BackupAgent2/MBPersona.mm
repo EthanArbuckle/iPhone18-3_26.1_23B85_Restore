@@ -1,37 +1,37 @@
 @interface MBPersona
-+ (id)_stashFileAtURL:(id)a3 prefetchDirectory:(id)a4 error:(id *)a5;
++ (id)_stashFileAtURL:(id)l prefetchDirectory:(id)directory error:(id *)error;
 + (id)allPersonae;
-+ (id)copyPersonalPreferencesValueForKey:(id)a3 class:(Class)a4;
-+ (id)personalPersonaWithError:(id *)a3;
-+ (unsigned)getPersonalBooleanValueForKey:(id)a3 keyExists:(char *)a4;
++ (id)copyPersonalPreferencesValueForKey:(id)key class:(Class)class;
++ (id)personalPersonaWithError:(id *)error;
++ (unsigned)getPersonalBooleanValueForKey:(id)key keyExists:(char *)exists;
 + (void)removeBackupSnapshotsForAllPersonae;
 + (void)removeBackupSnapshotsForPersonalPersona;
 + (void)removeTemporaryDirectoriesForAllPersonae;
-+ (void)setPersonalPreferencesValue:(id)a3 forKey:(id)a4;
-- (BOOL)_fileSystemSupportsSparseFiles:(id)a3;
-- (BOOL)_moveRestoreDirectoryFrom:(id)a3 toFinalLocation:(id)a4 error:(id *)a5;
-- (BOOL)cleanupRestoreDirectoriesWithError:(id *)a3;
-- (BOOL)copyPlaceholderIPAsForAppInstallationExcluding:(id)a3 error:(id *)a4;
-- (BOOL)createRestoreDirectoriesWithError:(id *)a3;
-- (BOOL)finalizeRestoreDirectoriesWithError:(id *)a3;
++ (void)setPersonalPreferencesValue:(id)value forKey:(id)key;
+- (BOOL)_fileSystemSupportsSparseFiles:(id)files;
+- (BOOL)_moveRestoreDirectoryFrom:(id)from toFinalLocation:(id)location error:(id *)error;
+- (BOOL)cleanupRestoreDirectoriesWithError:(id *)error;
+- (BOOL)copyPlaceholderIPAsForAppInstallationExcluding:(id)excluding error:(id *)error;
+- (BOOL)createRestoreDirectoriesWithError:(id *)error;
+- (BOOL)finalizeRestoreDirectoriesWithError:(id *)error;
 - (BOOL)shouldRestoreFilesSparse;
-- (id)copyPreferencesValueForKey:(id)a3 class:(Class)a4;
-- (id)sharedSystemContainerRestoreRootWithContainerID:(id)a3;
-- (id)stashAsset:(id)a3 forDomain:(id)a4 error:(id *)a5;
-- (id)systemContainerRestoreRootWithContainerID:(id)a3;
-- (unint64_t)_removeRestorePrefetchCacheAtPath:(id)a3 earliestDate:(id)a4;
-- (unint64_t)removeRestorePrefetchCachesOlderThanDate:(id)a3;
-- (unsigned)getBooleanValueForKey:(id)a3 keyExists:(char *)a4;
+- (id)copyPreferencesValueForKey:(id)key class:(Class)class;
+- (id)sharedSystemContainerRestoreRootWithContainerID:(id)d;
+- (id)stashAsset:(id)asset forDomain:(id)domain error:(id *)error;
+- (id)systemContainerRestoreRootWithContainerID:(id)d;
+- (unint64_t)_removeRestorePrefetchCacheAtPath:(id)path earliestDate:(id)date;
+- (unint64_t)removeRestorePrefetchCachesOlderThanDate:(id)date;
+- (unsigned)getBooleanValueForKey:(id)key keyExists:(char *)exists;
 - (void)_removeTemporaryDirectories;
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4;
+- (void)setPreferencesValue:(id)value forKey:(id)key;
 @end
 
 @implementation MBPersona
 
-+ (void)setPersonalPreferencesValue:(id)a3 forKey:(id)a4
++ (void)setPersonalPreferencesValue:(id)value forKey:(id)key
 {
-  v5 = a4;
-  CFPreferencesSetValue(v5, a3, @"com.apple.MobileBackup", @"mobile", kCFPreferencesCurrentHost);
+  keyCopy = key;
+  CFPreferencesSetValue(keyCopy, value, @"com.apple.MobileBackup", @"mobile", kCFPreferencesCurrentHost);
   if (!CFPreferencesSynchronize(@"com.apple.MobileBackup", @"mobile", kCFPreferencesCurrentHost))
   {
     v6 = MBGetDefaultLog();
@@ -40,29 +40,29 @@
       *buf = 138543618;
       v8 = @"com.apple.MobileBackup";
       v9 = 2112;
-      v10 = v5;
+      v10 = keyCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Failed to sync preferences for %{public}@ domain (%@)", buf, 0x16u);
       _MBLog();
     }
   }
 }
 
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4
+- (void)setPreferencesValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  valueCopy = value;
+  keyCopy = key;
+  if (!keyCopy)
   {
     sub_10009E48C();
   }
 
-  v8 = v7;
+  v8 = keyCopy;
   if (![(MBPersona *)self isPersonalPersona])
   {
-    v9 = [(MBPersona *)self preferencesDirectory];
+    preferencesDirectory = [(MBPersona *)self preferencesDirectory];
     v10 = +[NSFileManager defaultManager];
     v33 = 0;
-    v11 = [v10 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v33];
+    v11 = [v10 createDirectoryAtPath:preferencesDirectory withIntermediateDirectories:1 attributes:0 error:&v33];
     v12 = v33;
 
     if ((v11 & 1) == 0)
@@ -71,17 +71,17 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v35 = v9;
+        v35 = preferencesDirectory;
         v36 = 2112;
         v37 = v12;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to create the directory at %{public}@: %@", buf, 0x16u);
-        v25 = v9;
+        v25 = preferencesDirectory;
         v27 = v12;
         _MBLog();
       }
     }
 
-    v14 = [v9 stringByAppendingPathComponent:@"com.apple.MobileBackup.plist", v25, v27];
+    v14 = [preferencesDirectory stringByAppendingPathComponent:@"com.apple.MobileBackup.plist", v25, v27];
     v15 = objc_opt_class();
     objc_sync_enter(v15);
     v32 = v12;
@@ -157,9 +157,9 @@
       if (v18)
       {
 LABEL_22:
-        if (v6)
+        if (valueCopy)
         {
-          [v18 setObject:v6 forKeyedSubscript:v8];
+          [v18 setObject:valueCopy forKeyedSubscript:v8];
         }
 
         else
@@ -222,23 +222,23 @@ LABEL_35:
     goto LABEL_22;
   }
 
-  [objc_opt_class() setPersonalPreferencesValue:v6 forKey:v8];
+  [objc_opt_class() setPersonalPreferencesValue:valueCopy forKey:v8];
 LABEL_37:
 }
 
-- (id)copyPreferencesValueForKey:(id)a3 class:(Class)a4
+- (id)copyPreferencesValueForKey:(id)key class:(Class)class
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     sub_10009E4B8();
   }
 
-  v6 = v5;
+  v6 = keyCopy;
   if (![(MBPersona *)self isPersonalPersona])
   {
-    v8 = [(MBPersona *)self preferencesDirectory];
-    v9 = [v8 stringByAppendingPathComponent:@"com.apple.MobileBackup.plist"];
+    preferencesDirectory = [(MBPersona *)self preferencesDirectory];
+    v9 = [preferencesDirectory stringByAppendingPathComponent:@"com.apple.MobileBackup.plist"];
 
     v20 = 0;
     v10 = [NSData dataWithContentsOfFile:v9 options:0 error:&v20];
@@ -351,17 +351,17 @@ LABEL_25:
   return v7;
 }
 
-+ (id)copyPersonalPreferencesValueForKey:(id)a3 class:(Class)a4
++ (id)copyPersonalPreferencesValueForKey:(id)key class:(Class)class
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _copyPersonalPreferencesValueForKey:v4];
+  keyCopy = key;
+  v5 = [objc_opt_class() _copyPersonalPreferencesValueForKey:keyCopy];
   if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v6 = MBGetDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v9 = v4;
+      v9 = keyCopy;
       v10 = 2112;
       v11 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Invalid class for %{public}@ key: %@", buf, 0x16u);
@@ -374,64 +374,64 @@ LABEL_25:
   return v5;
 }
 
-+ (unsigned)getPersonalBooleanValueForKey:(id)a3 keyExists:(char *)a4
++ (unsigned)getPersonalBooleanValueForKey:(id)key keyExists:(char *)exists
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_opt_class();
-  v7 = [v6 copyPersonalPreferencesValueForKey:v5 class:objc_opt_class()];
+  v7 = [v6 copyPersonalPreferencesValueForKey:keyCopy class:objc_opt_class()];
 
   if (v7)
   {
-    if (a4)
+    if (exists)
     {
-      *a4 = 1;
+      *exists = 1;
     }
 
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
-    if (a4)
+    bOOLValue = 0;
+    if (exists)
     {
-      *a4 = 0;
+      *exists = 0;
     }
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (unsigned)getBooleanValueForKey:(id)a3 keyExists:(char *)a4
+- (unsigned)getBooleanValueForKey:(id)key keyExists:(char *)exists
 {
-  v6 = a3;
-  v7 = [(MBPersona *)self copyPreferencesValueForKey:v6 class:objc_opt_class()];
+  keyCopy = key;
+  v7 = [(MBPersona *)self copyPreferencesValueForKey:keyCopy class:objc_opt_class()];
 
   if (v7)
   {
-    if (a4)
+    if (exists)
     {
-      *a4 = 1;
+      *exists = 1;
     }
 
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
-    if (a4)
+    bOOLValue = 0;
+    if (exists)
     {
-      *a4 = 0;
+      *exists = 0;
     }
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (id)personalPersonaWithError:(id *)a3
++ (id)personalPersonaWithError:(id *)error
 {
-  v4 = [UMUserPersonaAttributes personaAttributesForPersonaType:0 withError:a3];
+  v4 = [UMUserPersonaAttributes personaAttributesForPersonaType:0 withError:error];
   if (v4)
   {
     v5 = [MBPersona personaWithAttributes:v4 volumeMountPoint:@"/private/var/mobile"];
@@ -448,10 +448,10 @@ LABEL_25:
       _MBLog();
     }
 
-    if (a3)
+    if (error)
     {
       [MBError errorWithCode:1 format:@"nil personaAttributes"];
-      *a3 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else
@@ -478,12 +478,12 @@ LABEL_25:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 personaLayoutPathURL];
-    v8 = [v7 path];
+    personaLayoutPathURL = [v5 personaLayoutPathURL];
+    path = [personaLayoutPathURL path];
 
-    if (v8)
+    if (path)
     {
-      v9 = [MBPersona personaWithAttributes:v6 volumeMountPoint:v8];
+      v9 = [MBPersona personaWithAttributes:v6 volumeMountPoint:path];
       [v2 addObject:v9];
     }
 
@@ -492,14 +492,14 @@ LABEL_25:
       v9 = MBGetDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 userPersonaUniqueString];
+        userPersonaUniqueString = [v6 userPersonaUniqueString];
         *buf = 134218242;
         v15 = 2;
         v16 = 2114;
-        v17 = v10;
+        v17 = userPersonaUniqueString;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "nil volumeMountPoint for %ld persona (%{public}@)", buf, 0x16u);
 
-        v12 = [v6 userPersonaUniqueString];
+        userPersonaUniqueString2 = [v6 userPersonaUniqueString];
         _MBLog();
       }
     }
@@ -563,8 +563,8 @@ LABEL_25:
 
         v12 = *(*(&v15 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 volumesToBackUp];
-        [MBFileSystemManager deleteAllSnapshotsAcrossVolumes:v14 withPrefix:@"com.apple.mobilebackup" error:0];
+        volumesToBackUp = [v12 volumesToBackUp];
+        [MBFileSystemManager deleteAllSnapshotsAcrossVolumes:volumesToBackUp withPrefix:@"com.apple.mobilebackup" error:0];
 
         objc_autoreleasePoolPop(v13);
         v11 = v11 + 1;
@@ -625,21 +625,21 @@ LABEL_25:
 
   else
   {
-    v3 = [(MBPersona *)self volumeMountPoint];
-    if (!v3)
+    volumeMountPoint = [(MBPersona *)self volumeMountPoint];
+    if (!volumeMountPoint)
     {
       sub_10009EBEC();
     }
 
-    v17 = v3;
-    v4 = [v3 stringByAppendingPathComponent:@"tmp"];
+    v17 = volumeMountPoint;
+    v4 = [volumeMountPoint stringByAppendingPathComponent:@"tmp"];
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 enumeratorAtPath:v4];
 
-    v7 = [v6 nextObject];
-    if (v7)
+    nextObject = [v6 nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      v8 = nextObject;
       do
       {
         v9 = objc_autoreleasePoolPush();
@@ -676,12 +676,12 @@ LABEL_25:
         }
 
         objc_autoreleasePoolPop(v9);
-        v16 = [v6 nextObject];
+        nextObject2 = [v6 nextObject];
 
-        v8 = v16;
+        v8 = nextObject2;
       }
 
-      while (v16);
+      while (nextObject2);
     }
   }
 }
@@ -723,70 +723,70 @@ LABEL_25:
   }
 }
 
-- (id)systemContainerRestoreRootWithContainerID:(id)a3
+- (id)systemContainerRestoreRootWithContainerID:(id)d
 {
-  v4 = a3;
-  sub_10009436C(v4);
-  v5 = [(MBPersona *)self systemDataContainerRestoreDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  dCopy = d;
+  sub_10009436C(dCopy);
+  systemDataContainerRestoreDirectory = [(MBPersona *)self systemDataContainerRestoreDirectory];
+  v6 = [systemDataContainerRestoreDirectory stringByAppendingPathComponent:dCopy];
 
   return v6;
 }
 
-- (id)sharedSystemContainerRestoreRootWithContainerID:(id)a3
+- (id)sharedSystemContainerRestoreRootWithContainerID:(id)d
 {
-  v4 = a3;
-  sub_10009436C(v4);
-  v5 = [(MBPersona *)self systemSharedDataContainerRestoreDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  dCopy = d;
+  sub_10009436C(dCopy);
+  systemSharedDataContainerRestoreDirectory = [(MBPersona *)self systemSharedDataContainerRestoreDirectory];
+  v6 = [systemSharedDataContainerRestoreDirectory stringByAppendingPathComponent:dCopy];
 
   return v6;
 }
 
-- (id)stashAsset:(id)a3 forDomain:(id)a4 error:(id *)a5
+- (id)stashAsset:(id)asset forDomain:(id)domain error:(id *)error
 {
-  v8 = a3;
-  v9 = [(MBPersona *)self restorePrefetchDirectoryForDomain:a4];
-  v10 = [objc_opt_class() _stashFileAtURL:v8 prefetchDirectory:v9 error:a5];
+  assetCopy = asset;
+  v9 = [(MBPersona *)self restorePrefetchDirectoryForDomain:domain];
+  v10 = [objc_opt_class() _stashFileAtURL:assetCopy prefetchDirectory:v9 error:error];
 
   if (v10)
   {
-    v11 = [v10 path];
+    path = [v10 path];
   }
 
   else
   {
-    v11 = 0;
+    path = 0;
   }
 
-  return v11;
+  return path;
 }
 
-+ (id)_stashFileAtURL:(id)a3 prefetchDirectory:(id)a4 error:(id *)a5
++ (id)_stashFileAtURL:(id)l prefetchDirectory:(id)directory error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  directoryCopy = directory;
+  if (!lCopy)
   {
     sub_1000A0F24();
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = directoryCopy;
+  if (!directoryCopy)
   {
     sub_1000A0EF8();
   }
 
-  if (!a5)
+  if (!error)
   {
     sub_1000A0ECC();
   }
 
-  v10 = [MBFileOperation createPathInDirectory:v8 fileName:0];
+  v10 = [MBFileOperation createPathInDirectory:directoryCopy fileName:0];
   v11 = [[NSURL alloc] initFileURLWithPath:v10];
   v12 = +[NSFileManager defaultManager];
   v30 = 0;
-  v13 = [v12 moveItemAtURL:v7 toURL:v11 error:&v30];
+  v13 = [v12 moveItemAtURL:lCopy toURL:v11 error:&v30];
   v14 = v30;
 
   if (v13)
@@ -795,12 +795,12 @@ LABEL_25:
     goto LABEL_21;
   }
 
-  v16 = [v7 path];
+  path = [lCopy path];
   v17 = MBGetDefaultLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     buf.st_dev = 138412802;
-    *&buf.st_mode = v16;
+    *&buf.st_mode = path;
     WORD2(buf.st_ino) = 2112;
     *(&buf.st_ino + 6) = v10;
     HIWORD(buf.st_gid) = 2112;
@@ -810,9 +810,9 @@ LABEL_25:
   }
 
   v18 = v14;
-  *a5 = v14;
+  *error = v14;
   memset(&buf, 0, sizeof(buf));
-  v19 = lstat([v16 fileSystemRepresentation], &buf);
+  v19 = lstat([path fileSystemRepresentation], &buf);
   v20 = MBGetDefaultLog();
   v21 = v20;
   if (v19)
@@ -824,7 +824,7 @@ LABEL_25:
 
     v22 = *__error();
     *v31 = 138412546;
-    v32 = v16;
+    v32 = path;
     v33 = 1024;
     v34 = v22;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "lstat failed at %@: %{errno}d", v31, 0x12u);
@@ -839,7 +839,7 @@ LABEL_25:
     }
 
     *v31 = 138412290;
-    v32 = v16;
+    v32 = path;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Found source file at %@", v31, 0xCu);
   }
 
@@ -888,27 +888,27 @@ LABEL_21:
     *buf = 138412546;
     v21 = v5;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%@: persona:%@", buf, 0x16u);
 
     v17 = NSStringFromSelector(a2);
-    v18 = self;
+    selfCopy2 = self;
     _MBLog();
   }
 
-  v6 = [(MBPersona *)self volumeMountPoint];
+  volumeMountPoint = [(MBPersona *)self volumeMountPoint];
   if (qword_10011E4F0 != -1)
   {
     sub_1000A0F50();
   }
 
   os_unfair_lock_lock(&dword_10011E4F8);
-  v7 = [qword_10011E4E8 objectForKeyedSubscript:v6];
+  v7 = [qword_10011E4E8 objectForKeyedSubscript:volumeMountPoint];
   if (!v7)
   {
     v19 = 0;
     v8 = [(MBPersona *)self getBooleanValueForKey:@"RestoreFilesSparse" keyExists:&v19];
-    v9 = [(MBPersona *)self _fileSystemSupportsSparseFiles:v6];
+    v9 = [(MBPersona *)self _fileSystemSupportsSparseFiles:volumeMountPoint];
     v10 = 0;
     if (v9)
     {
@@ -925,9 +925,9 @@ LABEL_21:
       v10 = v11;
     }
 
-    v12 = [NSNumber numberWithInt:v10, v17, v18];
-    [qword_10011E4E8 setObject:v12 forKeyedSubscript:v6];
-    v7 = v12;
+    selfCopy2 = [NSNumber numberWithInt:v10, v17, selfCopy2];
+    [qword_10011E4E8 setObject:selfCopy2 forKeyedSubscript:volumeMountPoint];
+    v7 = selfCopy2;
     v13 = MBGetDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -950,15 +950,15 @@ LABEL_21:
   }
 
   os_unfair_lock_unlock(&dword_10011E4F8);
-  v15 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v15;
+  return bOOLValue;
 }
 
-- (BOOL)_fileSystemSupportsSparseFiles:(id)a3
+- (BOOL)_fileSystemSupportsSparseFiles:(id)files
 {
-  v3 = a3;
-  v4 = open([v3 fileSystemRepresentation], 0);
+  filesCopy = files;
+  v4 = open([filesCopy fileSystemRepresentation], 0);
   if (v4 < 0)
   {
     v7 = MBGetDefaultLog();
@@ -966,7 +966,7 @@ LABEL_21:
     {
       v8 = *__error();
       *v17 = 138412546;
-      *&v17[4] = v3;
+      *&v17[4] = filesCopy;
       *&v17[12] = 1024;
       *&v17[14] = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Unable to open %@: %{errno}d while checking if FS supports sparse files", v17, 0x12u);
@@ -994,7 +994,7 @@ LABEL_21:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v3;
+      v16 = filesCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Couldn't get attr list for filesystem path %@ while checking if it can support sparse files", buf, 0xCu);
       _MBLog();
     }
@@ -1008,7 +1008,7 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)createRestoreDirectoriesWithError:(id *)a3
+- (BOOL)createRestoreDirectoriesWithError:(id *)error
 {
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1017,7 +1017,7 @@ LABEL_11:
     *buf = 138412546;
     v30 = v7;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@: persona:%@", buf, 0x16u);
 
     v23 = NSStringFromSelector(a2);
@@ -1027,50 +1027,50 @@ LABEL_11:
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(MBPersona *)self userIncompleteRestoreDirectory];
+    userIncompleteRestoreDirectory = [(MBPersona *)self userIncompleteRestoreDirectory];
     *buf = 138412290;
-    v30 = v9;
+    v30 = userIncompleteRestoreDirectory;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Creating user incomplete restore directory: %@", buf, 0xCu);
 
-    v24 = [(MBPersona *)self userIncompleteRestoreDirectory];
+    userIncompleteRestoreDirectory2 = [(MBPersona *)self userIncompleteRestoreDirectory];
     _MBLog();
   }
 
-  v10 = [(MBPersona *)self userIncompleteRestoreDirectory];
+  userIncompleteRestoreDirectory3 = [(MBPersona *)self userIncompleteRestoreDirectory];
   v28 = 0;
-  v11 = sub_1000951B0(v10, 2, &v28);
+  v11 = sub_1000951B0(userIncompleteRestoreDirectory3, 2, &v28);
   v12 = v28;
 
   if (v11)
   {
-    v13 = [(MBPersona *)self shouldRestoreToSharedVolume];
+    shouldRestoreToSharedVolume = [(MBPersona *)self shouldRestoreToSharedVolume];
     v14 = MBGetDefaultLog();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-    if (v13)
+    if (shouldRestoreToSharedVolume)
     {
       if (v15)
       {
-        v16 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+        sharedIncompleteRestoreDirectory = [(MBPersona *)self sharedIncompleteRestoreDirectory];
         *buf = 138412290;
-        v30 = v16;
+        v30 = sharedIncompleteRestoreDirectory;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Creating shared incomplete restore directory: %@", buf, 0xCu);
 
-        v25 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+        sharedIncompleteRestoreDirectory2 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
         _MBLog();
       }
 
-      v17 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+      sharedIncompleteRestoreDirectory3 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
       v27 = v12;
       v18 = 1;
-      v19 = sub_1000951B0(v17, 1, &v27);
+      v19 = sub_1000951B0(sharedIncompleteRestoreDirectory3, 1, &v27);
       v20 = v27;
 
       if ((v19 & 1) == 0)
       {
-        if (a3)
+        if (error)
         {
           [MBError errorWithCode:102 error:v20 format:@"Error creating incomplete shared restore directory"];
-          *a3 = v18 = 0;
+          *error = v18 = 0;
         }
 
         else
@@ -1086,12 +1086,12 @@ LABEL_11:
     {
       if (v15)
       {
-        v21 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+        sharedIncompleteRestoreDirectory4 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
         *buf = 138412290;
-        v30 = v21;
+        v30 = sharedIncompleteRestoreDirectory4;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Skipping shared creating incomplete restore directory: %@", buf, 0xCu);
 
-        v26 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+        sharedIncompleteRestoreDirectory5 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
         _MBLog();
       }
 
@@ -1099,10 +1099,10 @@ LABEL_11:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     [MBError errorWithCode:102 error:v12 format:@"Error creating incomplete user restore directory"];
-    *a3 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -1113,7 +1113,7 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)cleanupRestoreDirectoriesWithError:(id *)a3
+- (BOOL)cleanupRestoreDirectoriesWithError:(id *)error
 {
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1122,7 +1122,7 @@ LABEL_11:
     *buf = 138412546;
     v16 = v7;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@: persona:%@", buf, 0x16u);
 
     v14 = NSStringFromSelector(a2);
@@ -1130,15 +1130,15 @@ LABEL_11:
   }
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [(MBPersona *)self userRestoreDirectory];
-  v10 = [v8 mb_moveToTmpDirThenRemoveItemAtPath:v9 error:a3];
+  userRestoreDirectory = [(MBPersona *)self userRestoreDirectory];
+  v10 = [v8 mb_moveToTmpDirThenRemoveItemAtPath:userRestoreDirectory error:error];
 
   if (v10)
   {
     if ([(MBPersona *)self shouldRestoreToSharedVolume])
     {
-      v11 = [(MBPersona *)self sharedRestoreDirectory];
-      v12 = [v8 mb_moveToTmpDirThenRemoveItemAtPath:v11 error:a3];
+      sharedRestoreDirectory = [(MBPersona *)self sharedRestoreDirectory];
+      v12 = [v8 mb_moveToTmpDirThenRemoveItemAtPath:sharedRestoreDirectory error:error];
     }
 
     else
@@ -1155,9 +1155,9 @@ LABEL_11:
   return v12;
 }
 
-- (unint64_t)removeRestorePrefetchCachesOlderThanDate:(id)a3
+- (unint64_t)removeRestorePrefetchCachesOlderThanDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1165,11 +1165,11 @@ LABEL_11:
     *buf = 138412546;
     v23 = v7;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@: persona:%@", buf, 0x16u);
 
     v15 = NSStringFromSelector(a2);
-    v16 = self;
+    selfCopy2 = self;
     _MBLog();
   }
 
@@ -1177,8 +1177,8 @@ LABEL_11:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(MBPersona *)self restorePrefetchDirectories];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  restorePrefetchDirectories = [(MBPersona *)self restorePrefetchDirectories];
+  v9 = [restorePrefetchDirectories countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1190,13 +1190,13 @@ LABEL_11:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(restorePrefetchDirectories);
         }
 
-        v11 += [(MBPersona *)self _removeRestorePrefetchCacheAtPath:*(*(&v17 + 1) + 8 * i) earliestDate:v5, v15, v16];
+        v11 += [(MBPersona *)self _removeRestorePrefetchCacheAtPath:*(*(&v17 + 1) + 8 * i) earliestDate:dateCopy, v15, selfCopy2];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [restorePrefetchDirectories countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -1210,28 +1210,28 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)_removeRestorePrefetchCacheAtPath:(id)a3 earliestDate:(id)a4
+- (unint64_t)_removeRestorePrefetchCacheAtPath:(id)path earliestDate:(id)date
 {
-  v5 = a3;
-  v43 = a4;
+  pathCopy = path;
+  dateCopy = date;
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v50 = v5;
+    v50 = pathCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removing the prefetch directory at %{public}@", buf, 0xCu);
-    v38 = v5;
+    v38 = pathCopy;
     _MBLog();
   }
 
   v7 = +[NSFileManager defaultManager];
-  if (([v7 fileExistsAtPath:v5] & 1) == 0)
+  if (([v7 fileExistsAtPath:pathCopy] & 1) == 0)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v50 = v5;
+      v50 = pathCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "No prefetch directory found at %{public}@", buf, 0xCu);
       _MBLog();
     }
@@ -1239,18 +1239,18 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  v40 = v5;
+  v40 = pathCopy;
   v42 = v7;
-  if (!v43)
+  if (!dateCopy)
   {
     v48 = 0;
-    v23 = [MBTemporaryDirectory temporaryDirectoryOnSameVolumeAsPath:v5 identifiedBy:@"prefetch-dir-cleanup" error:&v48];
+    v23 = [MBTemporaryDirectory temporaryDirectoryOnSameVolumeAsPath:pathCopy identifiedBy:@"prefetch-dir-cleanup" error:&v48];
     v24 = v48;
     if (v23)
     {
-      v25 = [v23 makeTemporaryFilePath];
+      makeTemporaryFilePath = [v23 makeTemporaryFilePath];
       v46 = v24;
-      v26 = [v42 moveItemAtPath:v5 toPath:v25 error:&v46];
+      v26 = [v42 moveItemAtPath:pathCopy toPath:makeTemporaryFilePath error:&v46];
       v8 = v46;
 
       if (v26)
@@ -1259,9 +1259,9 @@ LABEL_11:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           *buf = 138543618;
-          v50 = v5;
+          v50 = pathCopy;
           v51 = 2114;
-          v52 = v25;
+          v52 = makeTemporaryFilePath;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Moved prefetch directory from %{public}@ -> %{public}@", buf, 0x16u);
           _MBLog();
         }
@@ -1271,7 +1271,7 @@ LABEL_11:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v50 = v5;
+          v50 = pathCopy;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Removed prefetch directory at %{public}@", buf, 0xCu);
           _MBLog();
         }
@@ -1289,9 +1289,9 @@ LABEL_11:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
         {
           *buf = 138543874;
-          v50 = v5;
+          v50 = pathCopy;
           v51 = 2114;
-          v52 = v25;
+          v52 = makeTemporaryFilePath;
           v53 = 2112;
           v54 = v8;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_FAULT, "Failed to move prefetch directory from %{public}@ -> %{public}@: %@", buf, 0x20u);
@@ -1303,9 +1303,9 @@ LABEL_51:
       else if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v50 = v5;
+        v50 = pathCopy;
         v51 = 2114;
-        v52 = v25;
+        v52 = makeTemporaryFilePath;
         v53 = 2112;
         v54 = v8;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Failed to move prefetch directory from %{public}@ -> %{public}@: %@", buf, 0x20u);
@@ -1322,7 +1322,7 @@ LABEL_51:
     v31 = v30;
     if (v29)
     {
-      v5 = v40;
+      pathCopy = v40;
       v7 = v42;
       if (!os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
       {
@@ -1336,7 +1336,7 @@ LABEL_51:
 
     else
     {
-      v5 = v40;
+      pathCopy = v40;
       v7 = v42;
       if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -1352,7 +1352,7 @@ LABEL_51:
 LABEL_45:
 
     v47 = v24;
-    v35 = [v7 removeItemAtPath:v5 error:&v47];
+    v35 = [v7 removeItemAtPath:pathCopy error:&v47];
     v8 = v47;
 
     if ((v35 & 1) == 0)
@@ -1361,7 +1361,7 @@ LABEL_45:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v50 = v5;
+        v50 = pathCopy;
         v51 = 2112;
         v52 = v8;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Failed to remove %{public}@: %@", buf, 0x16u);
@@ -1374,23 +1374,23 @@ LABEL_24:
     goto LABEL_53;
   }
 
-  v8 = [v7 enumeratorAtPath:v5];
+  v8 = [v7 enumeratorAtPath:pathCopy];
   v9 = objc_autoreleasePoolPush();
-  v10 = [v8 nextObject];
-  if (v10)
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v11 = v10;
+    nextObject2 = nextObject;
     v41 = 0;
     do
     {
-      v12 = [v5 stringByAppendingPathComponent:{v11, v38, v39}];
+      v12 = [pathCopy stringByAppendingPathComponent:{nextObject2, v38, v39}];
       v45 = 0;
       v13 = [v7 attributesOfItemAtPath:v12 error:&v45];
       v14 = v45;
       if (v13)
       {
         v15 = [v13 objectForKeyedSubscript:NSFileCreationDate];
-        if (v15 && [v43 compare:v15] == -1)
+        if (v15 && [dateCopy compare:v15] == -1)
         {
           v17 = v14;
         }
@@ -1404,7 +1404,7 @@ LABEL_24:
           if (v16)
           {
             v18 = [v13 objectForKeyedSubscript:NSFileSize];
-            v19 = [v18 unsignedLongLongValue];
+            unsignedLongLongValue = [v18 unsignedLongLongValue];
 
             v20 = MBGetDefaultLog();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -1412,14 +1412,14 @@ LABEL_24:
               *buf = 138412546;
               v50 = v12;
               v51 = 2048;
-              v52 = v19;
+              v52 = unsignedLongLongValue;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Removed %@: %llu bytes", buf, 0x16u);
               v38 = v12;
-              v39 = v19;
+              v39 = unsignedLongLongValue;
               _MBLog();
             }
 
-            v41 += v19;
+            v41 += unsignedLongLongValue;
           }
 
           else
@@ -1438,7 +1438,7 @@ LABEL_24:
             }
           }
 
-          v5 = v40;
+          pathCopy = v40;
         }
 
         v14 = v17;
@@ -1447,10 +1447,10 @@ LABEL_24:
 
       objc_autoreleasePoolPop(v9);
       v9 = objc_autoreleasePoolPush();
-      v11 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
     }
 
-    while (v11);
+    while (nextObject2);
   }
 
   else
@@ -1466,7 +1466,7 @@ LABEL_34:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v50 = v5;
+    v50 = pathCopy;
     v51 = 2048;
     v52 = v22;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Removed %{public}@ (%llu bytes)", buf, 0x16u);
@@ -1478,9 +1478,9 @@ LABEL_53:
   return v22;
 }
 
-- (BOOL)finalizeRestoreDirectoriesWithError:(id *)a3
+- (BOOL)finalizeRestoreDirectoriesWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     sub_1000A0F78();
   }
@@ -1492,34 +1492,34 @@ LABEL_53:
     *buf = 138412546;
     v46 = v7;
     v47 = 2112;
-    v48 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@: persona:%@", buf, 0x16u);
 
     v41 = NSStringFromSelector(a2);
-    v42 = self;
+    selfCopy2 = self;
     _MBLog();
   }
 
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(MBPersona *)self userIncompleteRestoreDirectory];
-    v10 = [(MBPersona *)self userRestoreDirectory];
+    userIncompleteRestoreDirectory = [(MBPersona *)self userIncompleteRestoreDirectory];
+    userRestoreDirectory = [(MBPersona *)self userRestoreDirectory];
     *buf = 138412546;
-    v46 = v9;
+    v46 = userIncompleteRestoreDirectory;
     v47 = 2112;
-    v48 = v10;
+    selfCopy = userRestoreDirectory;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Moving user restore directory into place: %@ -> %@", buf, 0x16u);
 
-    v11 = [(MBPersona *)self userIncompleteRestoreDirectory];
+    userIncompleteRestoreDirectory2 = [(MBPersona *)self userIncompleteRestoreDirectory];
     [(MBPersona *)self userRestoreDirectory];
-    v42 = v41 = v11;
+    selfCopy2 = v41 = userIncompleteRestoreDirectory2;
     _MBLog();
   }
 
-  v12 = [(MBPersona *)self userIncompleteRestoreDirectory];
-  v13 = [(MBPersona *)self userRestoreDirectory];
-  v14 = [(MBPersona *)self _moveRestoreDirectoryFrom:v12 toFinalLocation:v13 error:a3];
+  userIncompleteRestoreDirectory3 = [(MBPersona *)self userIncompleteRestoreDirectory];
+  userRestoreDirectory2 = [(MBPersona *)self userRestoreDirectory];
+  v14 = [(MBPersona *)self _moveRestoreDirectoryFrom:userIncompleteRestoreDirectory3 toFinalLocation:userRestoreDirectory2 error:error];
 
   if (!v14)
   {
@@ -1531,23 +1531,23 @@ LABEL_53:
     v15 = MBGetDefaultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
-      v17 = [(MBPersona *)self sharedRestoreDirectory];
+      sharedIncompleteRestoreDirectory = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+      sharedRestoreDirectory = [(MBPersona *)self sharedRestoreDirectory];
       *buf = 138412546;
-      v46 = v16;
+      v46 = sharedIncompleteRestoreDirectory;
       v47 = 2112;
-      v48 = v17;
+      selfCopy = sharedRestoreDirectory;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Moving shared restore directory into place: %@ -> %@", buf, 0x16u);
 
-      v18 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+      sharedIncompleteRestoreDirectory2 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
       [(MBPersona *)self sharedRestoreDirectory];
-      v42 = v41 = v18;
+      selfCopy2 = v41 = sharedIncompleteRestoreDirectory2;
       _MBLog();
     }
 
-    v19 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
-    v20 = [(MBPersona *)self sharedRestoreDirectory];
-    v21 = [(MBPersona *)self _moveRestoreDirectoryFrom:v19 toFinalLocation:v20 error:a3];
+    sharedIncompleteRestoreDirectory3 = [(MBPersona *)self sharedIncompleteRestoreDirectory];
+    sharedRestoreDirectory2 = [(MBPersona *)self sharedRestoreDirectory];
+    v21 = [(MBPersona *)self _moveRestoreDirectoryFrom:sharedIncompleteRestoreDirectory3 toFinalLocation:sharedRestoreDirectory2 error:error];
 
     if (!v21)
     {
@@ -1556,17 +1556,17 @@ LABEL_53:
   }
 
   v22 = [MBBehaviorOptions sharedOptions:v41];
-  v23 = [v22 plistPath];
+  plistPath = [v22 plistPath];
 
   if (MBIsInternalInstall())
   {
     v24 = +[NSFileManager defaultManager];
-    v25 = [v24 fileExistsAtPath:v23];
+    v25 = [v24 fileExistsAtPath:plistPath];
 
     if (v25)
     {
-      v26 = [(MBPersona *)self userRestoreDirectory];
-      v27 = [v26 stringByAppendingPathComponent:v23];
+      userRestoreDirectory3 = [(MBPersona *)self userRestoreDirectory];
+      v27 = [userRestoreDirectory3 stringByAppendingPathComponent:plistPath];
 
       v28 = +[NSFileManager defaultManager];
       v29 = [v28 fileExistsAtPath:v27];
@@ -1609,16 +1609,16 @@ LABEL_53:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v46 = v23;
+        v46 = plistPath;
         v47 = 2112;
-        v48 = v27;
+        selfCopy = v27;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Moving local MBBehaviorOptions plist from %@ -> %@", buf, 0x16u);
         _MBLog();
       }
 
       v37 = +[NSFileManager defaultManager];
       v43 = v33;
-      v38 = [v37 moveItemAtPath:v23 toPath:v27 error:&v43];
+      v38 = [v37 moveItemAtPath:plistPath toPath:v27 error:&v43];
       v39 = v43;
 
       if ((v38 & 1) == 0)
@@ -1638,18 +1638,18 @@ LABEL_53:
   return 1;
 }
 
-- (BOOL)_moveRestoreDirectoryFrom:(id)a3 toFinalLocation:(id)a4 error:(id *)a5
+- (BOOL)_moveRestoreDirectoryFrom:(id)from toFinalLocation:(id)location error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!a5)
+  fromCopy = from;
+  locationCopy = location;
+  if (!error)
   {
     sub_1000A0FA4();
   }
 
-  v9 = v8;
+  v9 = locationCopy;
   v10 = +[NSFileManager defaultManager];
-  if ([v10 fileExistsAtPath:v7 isDirectory:0])
+  if ([v10 fileExistsAtPath:fromCopy isDirectory:0])
   {
     if ([v10 fileExistsAtPath:v9 isDirectory:0])
     {
@@ -1671,12 +1671,12 @@ LABEL_53:
           _MBLog();
         }
 
-        *a5 = [MBError errorWithCode:102 error:v12 path:v9 format:@"Failed to remove existing restore directory"];
+        *error = [MBError errorWithCode:102 error:v12 path:v9 format:@"Failed to remove existing restore directory"];
       }
     }
 
     v20 = 0;
-    v14 = [v10 moveItemAtPath:v7 toPath:v9 error:{&v20, v18, v19}];
+    v14 = [v10 moveItemAtPath:fromCopy toPath:v9 error:{&v20, v18, v19}];
     v15 = v20;
     if ((v14 & 1) == 0)
     {
@@ -1684,7 +1684,7 @@ LABEL_53:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v23 = v7;
+        v23 = fromCopy;
         v24 = 2114;
         v25 = v9;
         v26 = 2114;
@@ -1693,7 +1693,7 @@ LABEL_53:
         _MBLog();
       }
 
-      *a5 = [MBError errorWithCode:101 path:v9 format:@"Failed to move restore sandbox into place"];
+      *error = [MBError errorWithCode:101 path:v9 format:@"Failed to move restore sandbox into place"];
     }
   }
 
@@ -1704,7 +1704,7 @@ LABEL_53:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v23 = v7;
+      v23 = fromCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "No restore sandbox at %{public}@", buf, 0xCu);
       _MBLog();
     }
@@ -1713,25 +1713,25 @@ LABEL_53:
   return v14;
 }
 
-- (BOOL)copyPlaceholderIPAsForAppInstallationExcluding:(id)a3 error:(id *)a4
+- (BOOL)copyPlaceholderIPAsForAppInstallationExcluding:(id)excluding error:(id *)error
 {
-  v48 = a3;
-  v49 = self;
-  v52 = [(MBPersona *)self userIncompleteRestoreDirectory];
-  v5 = [(MBPersona *)self isPersonalPersona];
-  v6 = [(MBPersona *)self appPlaceholderArchiveDirectory];
-  v7 = v6;
-  if ((v5 & 1) == 0 && [v6 hasPrefix:@"/private"])
+  excludingCopy = excluding;
+  selfCopy = self;
+  userIncompleteRestoreDirectory = [(MBPersona *)self userIncompleteRestoreDirectory];
+  isPersonalPersona = [(MBPersona *)self isPersonalPersona];
+  appPlaceholderArchiveDirectory = [(MBPersona *)self appPlaceholderArchiveDirectory];
+  v7 = appPlaceholderArchiveDirectory;
+  if ((isPersonalPersona & 1) == 0 && [appPlaceholderArchiveDirectory hasPrefix:@"/private"])
   {
     v8 = [v7 substringFromIndex:{objc_msgSend(@"/private", "length")}];
 
     v7 = v8;
   }
 
-  v51 = [v52 stringByAppendingPathComponent:v7];
+  v51 = [userIncompleteRestoreDirectory stringByAppendingPathComponent:v7];
 
-  v9 = [(MBPersona *)v49 placeholderRestoreDirectory];
-  v50 = [v52 stringByAppendingPathComponent:v9];
+  placeholderRestoreDirectory = [(MBPersona *)selfCopy placeholderRestoreDirectory];
+  v50 = [userIncompleteRestoreDirectory stringByAppendingPathComponent:placeholderRestoreDirectory];
 
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1810,35 +1810,35 @@ LABEL_53:
               goto LABEL_41;
             }
 
-            v19 = [v15 path];
+            path = [v15 path];
             if ([v18 BOOLValue])
             {
-              v20 = [v19 lastPathComponent];
-              v21 = [v20 pathExtension];
-              if ([v21 isEqualToString:@"ipa"])
+              lastPathComponent = [path lastPathComponent];
+              pathExtension = [lastPathComponent pathExtension];
+              if ([pathExtension isEqualToString:@"ipa"])
               {
-                v22 = [v20 stringByDeletingPathExtension];
-                if ([v48 containsObject:v22])
+                stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+                if ([excludingCopy containsObject:stringByDeletingPathExtension])
                 {
                   v23 = MBGetDefaultLog();
                   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                   {
                     *v63 = 138412546;
-                    v64 = v19;
+                    v64 = path;
                     v65 = 2112;
-                    v66 = v22;
+                    v66 = stringByDeletingPathExtension;
                     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "=restore-placeholder= Not moving restored placeholder .ipa at %@ corresponding to excluded bundleID %@", v63, 0x16u);
-                    v42 = v19;
-                    v43 = v22;
+                    v42 = path;
+                    v43 = stringByDeletingPathExtension;
                     _MBLog();
                   }
                 }
 
                 else
                 {
-                  v23 = [v50 stringByAppendingPathComponent:v22];
+                  v23 = [v50 stringByAppendingPathComponent:stringByDeletingPathExtension];
                   v24 = MBMobileFileAttributes();
-                  v25 = [v54 createDirectoryAtPath:v23 withIntermediateDirectories:1 attributes:v24 error:a4];
+                  v25 = [v54 createDirectoryAtPath:v23 withIntermediateDirectories:1 attributes:v24 error:error];
 
                   if ((v25 & 1) == 0)
                   {
@@ -1846,8 +1846,8 @@ LABEL_53:
                     goto LABEL_60;
                   }
 
-                  v26 = [v23 stringByAppendingPathComponent:v20];
-                  if (([v54 copyItemAtPath:v19 toPath:v26 error:a4] & 1) == 0)
+                  v26 = [v23 stringByAppendingPathComponent:lastPathComponent];
+                  if (([v54 copyItemAtPath:path toPath:v26 error:error] & 1) == 0)
                   {
 
                     goto LABEL_60;
@@ -1857,11 +1857,11 @@ LABEL_53:
                   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                   {
                     *v63 = 138412546;
-                    v64 = v19;
+                    v64 = path;
                     v65 = 2112;
                     v66 = v26;
                     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "=restore-placeholder= Moved restored placeholder .ipa from %@ to %@", v63, 0x16u);
-                    v42 = v19;
+                    v42 = path;
                     v43 = v26;
                     _MBLog();
                   }
@@ -1870,13 +1870,13 @@ LABEL_53:
 
               else
               {
-                v22 = MBGetDefaultLog();
-                if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
+                stringByDeletingPathExtension = MBGetDefaultLog();
+                if (os_log_type_enabled(stringByDeletingPathExtension, OS_LOG_TYPE_FAULT))
                 {
                   *v63 = 138412290;
-                  v64 = v19;
-                  _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "=restore-placeholder= Not moving non-ipa file at %@ for RestorePostProcess", v63, 0xCu);
-                  v42 = v19;
+                  v64 = path;
+                  _os_log_impl(&_mh_execute_header, stringByDeletingPathExtension, OS_LOG_TYPE_FAULT, "=restore-placeholder= Not moving non-ipa file at %@ for RestorePostProcess", v63, 0xCu);
+                  v42 = path;
                   _MBLog();
                 }
               }
@@ -1884,13 +1884,13 @@ LABEL_53:
 
             else
             {
-              v20 = MBGetDefaultLog();
-              if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+              lastPathComponent = MBGetDefaultLog();
+              if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_DEFAULT))
               {
                 *v63 = 138412290;
-                v64 = v19;
-                _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "=restore-placeholder= Not moving non-regular file at %@", v63, 0xCu);
-                v42 = v19;
+                v64 = path;
+                _os_log_impl(&_mh_execute_header, lastPathComponent, OS_LOG_TYPE_DEFAULT, "=restore-placeholder= Not moving non-regular file at %@", v63, 0xCu);
+                v42 = path;
                 _MBLog();
               }
             }
@@ -1911,10 +1911,10 @@ LABEL_41:
       v32 = *(*&buf[8] + 40);
       if (v32)
       {
-        if (a4)
+        if (error)
         {
           v29 = 0;
-          *a4 = v32;
+          *error = v32;
 LABEL_61:
 
           _Block_object_dispose(buf, 8);
@@ -1926,11 +1926,11 @@ LABEL_60:
         goto LABEL_61;
       }
 
-      if ([(MBPersona *)v49 isEnterprisePersona])
+      if ([(MBPersona *)selfCopy isEnterprisePersona])
       {
         v33 = v50;
-        v34 = [(MBPersona *)v49 placeholderRestoreDirectory];
-        if (([v54 mb_moveToTmpDirThenRemoveItemAtPath:v34 error:a4] & 1) == 0)
+        placeholderRestoreDirectory2 = [(MBPersona *)selfCopy placeholderRestoreDirectory];
+        if (([v54 mb_moveToTmpDirThenRemoveItemAtPath:placeholderRestoreDirectory2 error:error] & 1) == 0)
         {
 
           goto LABEL_60;
@@ -1942,21 +1942,21 @@ LABEL_60:
           *v63 = 138412546;
           v64 = v33;
           v65 = 2112;
-          v66 = v34;
+          v66 = placeholderRestoreDirectory2;
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "=restore-placeholders= Moving EDS placeholders from %@ to %@", v63, 0x16u);
           _MBLog();
         }
 
         v55 = 0;
-        v36 = [v54 moveItemAtPath:v33 toPath:v34 error:&v55];
+        v36 = [v54 moveItemAtPath:v33 toPath:placeholderRestoreDirectory2 error:&v55];
         v37 = v55;
         v38 = v37;
         if ((v36 & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v39 = v37;
-            *a4 = v38;
+            *error = v38;
           }
 
           v40 = MBGetDefaultLog();
@@ -1965,7 +1965,7 @@ LABEL_60:
             *v63 = 138412546;
             v64 = v33;
             v65 = 2112;
-            v66 = v34;
+            v66 = placeholderRestoreDirectory2;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "=restore-placeholders= Failed to move EDS placeholders from %@ to %@", v63, 0x16u);
             _MBLog();
           }
@@ -1978,10 +1978,10 @@ LABEL_60:
       goto LABEL_61;
     }
 
-    if (a4)
+    if (error)
     {
       [MBError errorWithCode:4 path:v50 format:@"Restore placeholders not found"];
-      *a4 = v29 = 0;
+      *error = v29 = 0;
     }
 
     else

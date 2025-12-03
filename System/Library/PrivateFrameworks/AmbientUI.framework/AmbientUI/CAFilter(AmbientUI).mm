@@ -12,7 +12,7 @@
   v2 = objc_alloc(MEMORY[0x277CD9EA0]);
   v3 = [v2 initWithType:*MEMORY[0x277CDA328]];
   [v3 setValue:MEMORY[0x277CBEC38] forKey:@"inputNormalizeEdges"];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   [v3 setValue:v4 forKey:@"inputRadius"];
 
   [v3 setValue:@"medium" forKey:@"inputQuality"];
@@ -24,7 +24,7 @@
 {
   v2 = objc_alloc(MEMORY[0x277CD9EA0]);
   v3 = [v2 initWithType:*MEMORY[0x277CDA290]];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   [v3 setValue:v4 forKey:@"inputAmount"];
 
   return v3;
@@ -34,7 +34,7 @@
 {
   v2 = objc_alloc(MEMORY[0x277CD9EA0]);
   v3 = [v2 initWithType:*MEMORY[0x277CDA2D0]];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   [v3 setValue:v4 forKey:@"inputAmount"];
 
   return v3;

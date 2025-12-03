@@ -1,34 +1,34 @@
 @interface MPSPluginCNNConvolutionDescriptor
-- (MPSPluginCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 strideInPixelsX:(unint64_t)a7 strideInPixelsY:(unint64_t)a8 groups:(unint64_t)a9 dilationRateX:(unint64_t)a10 dilationRateY:(unint64_t)a11 channelMultiplier:(unint64_t)a12 subPixelScaleFactor:(unint64_t)a13 isFullyConnected:(BOOL)a14 isConvolutionTranspose:(BOOL)a15 fusedNeuronDescriptor:(id)a16;
+- (MPSPluginCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels strideInPixelsX:(unint64_t)x strideInPixelsY:(unint64_t)y groups:(unint64_t)groups dilationRateX:(unint64_t)self0 dilationRateY:(unint64_t)self1 channelMultiplier:(unint64_t)self2 subPixelScaleFactor:(unint64_t)self3 isFullyConnected:(BOOL)self4 isConvolutionTranspose:(BOOL)self5 fusedNeuronDescriptor:(id)self6;
 - (void)dealloc;
 @end
 
 @implementation MPSPluginCNNConvolutionDescriptor
 
-- (MPSPluginCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 strideInPixelsX:(unint64_t)a7 strideInPixelsY:(unint64_t)a8 groups:(unint64_t)a9 dilationRateX:(unint64_t)a10 dilationRateY:(unint64_t)a11 channelMultiplier:(unint64_t)a12 subPixelScaleFactor:(unint64_t)a13 isFullyConnected:(BOOL)a14 isConvolutionTranspose:(BOOL)a15 fusedNeuronDescriptor:(id)a16
+- (MPSPluginCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels strideInPixelsX:(unint64_t)x strideInPixelsY:(unint64_t)y groups:(unint64_t)groups dilationRateX:(unint64_t)self0 dilationRateY:(unint64_t)self1 channelMultiplier:(unint64_t)self2 subPixelScaleFactor:(unint64_t)self3 isFullyConnected:(BOOL)self4 isConvolutionTranspose:(BOOL)self5 fusedNeuronDescriptor:(id)self6
 {
   v25.receiver = self;
   v25.super_class = MPSPluginCNNConvolutionDescriptor;
   result = [(MPSPluginCNNConvolutionDescriptor *)&v25 init];
   if (result)
   {
-    result->_kernelWidth = a3;
-    result->_kernelHeight = a4;
-    result->_inputFeatureChannels = a5;
-    result->_outputFeatureChannels = a6;
-    result->_strideInPixelsX = a7;
-    result->_strideInPixelsY = a8;
-    result->_groups = a9;
-    result->_dilationRateX = a10;
-    result->_dilationRateY = a11;
-    result->_channelMultiplier = a12;
-    result->_subPixelScaleFactor = a13;
-    result->_isFullyConnected = a14;
-    result->_isConvolutionTranspose = a15;
+    result->_kernelWidth = width;
+    result->_kernelHeight = height;
+    result->_inputFeatureChannels = channels;
+    result->_outputFeatureChannels = featureChannels;
+    result->_strideInPixelsX = x;
+    result->_strideInPixelsY = y;
+    result->_groups = groups;
+    result->_dilationRateX = rateX;
+    result->_dilationRateY = rateY;
+    result->_channelMultiplier = multiplier;
+    result->_subPixelScaleFactor = factor;
+    result->_isFullyConnected = connected;
+    result->_isConvolutionTranspose = transpose;
     v23 = result;
-    v24 = a16;
+    descriptorCopy = descriptor;
     result = v23;
-    v23->_fusedNeuronDescriptor = v24;
+    v23->_fusedNeuronDescriptor = descriptorCopy;
   }
 
   return result;

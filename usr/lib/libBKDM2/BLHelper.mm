@@ -3,44 +3,44 @@
 + (id)buildVersionString;
 + (id)deviceBatteryLevel;
 + (id)deviceSerialNumberString;
-+ (id)encryptData:(id)a3;
-+ (id)numberForBootArg:(id)a3;
-+ (id)numberFromDouble:(double)a3;
-+ (id)numberFromFloat:(float)a3;
-+ (id)objectOrNSNull:(id)a3;
-+ (id)stringFromFrameType:(unsigned int)a3;
-+ (id)stringFromSequenceType:(unsigned int)a3;
++ (id)encryptData:(id)data;
++ (id)numberForBootArg:(id)arg;
++ (id)numberFromDouble:(double)double;
++ (id)numberFromFloat:(float)float;
++ (id)objectOrNSNull:(id)null;
++ (id)stringFromFrameType:(unsigned int)type;
++ (id)stringFromSequenceType:(unsigned int)type;
 + (uint64_t)deviceBatteryLevel;
-+ (void)displayUserPrompt:(unint64_t)a3 strings:(id)a4 completion:(id)a5;
-+ (void)median:(unsigned __int16 *)a3 count:(unint64_t)a4 queue:(id)a5 completionBlock:(id)a6;
-+ (void)writeTailspinToFile:(id)a3;
++ (void)displayUserPrompt:(unint64_t)prompt strings:(id)strings completion:(id)completion;
++ (void)median:(unsigned __int16 *)median count:(unint64_t)count queue:(id)queue completionBlock:(id)block;
++ (void)writeTailspinToFile:(id)file;
 @end
 
 @implementation BLHelper
 
-+ (id)stringFromSequenceType:(unsigned int)a3
++ (id)stringFromSequenceType:(unsigned int)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_29EE54BB0[a3];
+    return off_29EE54BB0[type];
   }
 }
 
-+ (id)stringFromFrameType:(unsigned int)a3
++ (id)stringFromFrameType:(unsigned int)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_29EE54BD0[a3];
+    return off_29EE54BD0[type];
   }
 }
 
@@ -72,7 +72,7 @@ void __36__BLHelper_deviceSerialNumberString__block_invoke()
 
 + (id)deviceBatteryLevel
 {
-  v2 = [MEMORY[0x29EDB8E28] null];
+  null = [MEMORY[0x29EDB8E28] null];
   v3 = IOPSCopyPowerSourcesInfo();
   if (!v3)
   {
@@ -105,7 +105,7 @@ LABEL_12:
   }
 
   v8 = Count;
-  v22 = v2;
+  v22 = null;
   v23 = 0;
   v9 = 0;
   v10 = 0;
@@ -138,18 +138,18 @@ LABEL_12:
   CFRelease(v6);
   if (!v10)
   {
-    v2 = v22;
+    null = v22;
     goto LABEL_12;
   }
 
-  v2 = [MEMORY[0x29EDBA070] numberWithDouble:v23 * 100.0 / v10];
+  null = [MEMORY[0x29EDBA070] numberWithDouble:v23 * 100.0 / v10];
 
 LABEL_13:
   CFRelease(v4);
 LABEL_14:
-  v20 = v2;
+  v20 = null;
 
-  return v2;
+  return null;
 }
 
 + (id)bootArgs
@@ -203,16 +203,16 @@ LABEL_8:
   bootArgs_bootArgs = v5;
 }
 
-+ (id)numberForBootArg:(id)a3
++ (id)numberForBootArg:(id)arg
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  argCopy = arg;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [a1 bootArgs];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  bootArgs = [self bootArgs];
+  v6 = [bootArgs countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -224,12 +224,12 @@ LABEL_8:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bootArgs);
         }
 
         v11 = [*(*(&v19 + 1) + 8 * i) componentsSeparatedByString:@"="];
         v12 = [v11 objectAtIndexedSubscript:0];
-        v13 = [v12 isEqualToString:v4];
+        v13 = [v12 isEqualToString:argCopy];
 
         if (v13 && [v11 count] == 2)
         {
@@ -241,7 +241,7 @@ LABEL_8:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [bootArgs countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -283,16 +283,16 @@ void __30__BLHelper_buildVersionString__block_invoke()
   }
 }
 
-+ (id)encryptData:(id)a3
++ (id)encryptData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [MEMORY[0x29EDB8DA0] dataWithBytesNoCopy:biolog_cert_pem length:1631 freeWhenDone:0];
   if (!v4)
   {
     +[BLHelper encryptData:];
     v6 = 0;
 LABEL_10:
-    v7 = 0;
+    data = 0;
     goto LABEL_5;
   }
 
@@ -304,7 +304,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x29EDB8DF8] data];
+  data = [MEMORY[0x29EDB8DF8] data];
   v8 = SecCMSCreateEnvelopedData();
   if (v8)
   {
@@ -314,8 +314,8 @@ LABEL_10:
 
   else
   {
-    v6 = v7;
-    v7 = v6;
+    v6 = data;
+    data = v6;
   }
 
 LABEL_5:
@@ -381,11 +381,11 @@ uint64_t __49__BLHelper_displayUserPrompt_strings_completion___block_invoke(uint
   return result;
 }
 
-+ (void)writeTailspinToFile:(id)a3
++ (void)writeTailspinToFile:(id)file
 {
   v10[1] = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = open([v3 fileSystemRepresentation], 514, 384);
+  fileCopy = file;
+  v4 = open([fileCopy fileSystemRepresentation], 514, 384);
   if (v4 != -1)
   {
     v5 = v4;
@@ -396,8 +396,8 @@ uint64_t __49__BLHelper_displayUserPrompt_strings_completion___block_invoke(uint
 
     if ((v7 & 1) == 0)
     {
-      NSLog(&cfstr_Writetailspint.isa, v3);
-      unlink([v3 fileSystemRepresentation]);
+      NSLog(&cfstr_Writetailspint.isa, fileCopy);
+      unlink([fileCopy fileSystemRepresentation]);
     }
 
     close(v5);
@@ -406,11 +406,11 @@ uint64_t __49__BLHelper_displayUserPrompt_strings_completion___block_invoke(uint
   v8 = *MEMORY[0x29EDCA608];
 }
 
-+ (id)numberFromFloat:(float)a3
++ (id)numberFromFloat:(float)float
 {
   v3 = [MEMORY[0x29EDBA070] numberWithFloat:?];
-  v4 = [MEMORY[0x29EDB9F90] notANumber];
-  v5 = [(__CFString *)v3 isEqualToNumber:v4];
+  notANumber = [MEMORY[0x29EDB9F90] notANumber];
+  v5 = [(__CFString *)v3 isEqualToNumber:notANumber];
 
   if (v5)
   {
@@ -421,11 +421,11 @@ uint64_t __49__BLHelper_displayUserPrompt_strings_completion___block_invoke(uint
   return v3;
 }
 
-+ (id)numberFromDouble:(double)a3
++ (id)numberFromDouble:(double)double
 {
-  v3 = [MEMORY[0x29EDBA070] numberWithDouble:a3];
-  v4 = [MEMORY[0x29EDB9F90] notANumber];
-  v5 = [(__CFString *)v3 isEqualToNumber:v4];
+  v3 = [MEMORY[0x29EDBA070] numberWithDouble:double];
+  notANumber = [MEMORY[0x29EDB9F90] notANumber];
+  v5 = [(__CFString *)v3 isEqualToNumber:notANumber];
 
   if (v5)
   {
@@ -436,24 +436,24 @@ uint64_t __49__BLHelper_displayUserPrompt_strings_completion___block_invoke(uint
   return v3;
 }
 
-+ (id)objectOrNSNull:(id)a3
++ (id)objectOrNSNull:(id)null
 {
-  v3 = a3;
-  if (!v3)
+  nullCopy = null;
+  if (!nullCopy)
   {
-    v3 = [MEMORY[0x29EDB8E28] null];
+    nullCopy = [MEMORY[0x29EDB8E28] null];
   }
 
-  return v3;
+  return nullCopy;
 }
 
-+ (void)median:(unsigned __int16 *)a3 count:(unint64_t)a4 queue:(id)a5 completionBlock:(id)a6
++ (void)median:(unsigned __int16 *)median count:(unint64_t)count queue:(id)queue completionBlock:(id)block
 {
-  v9 = a5;
-  v10 = a6;
-  if (a3)
+  queueCopy = queue;
+  blockCopy = block;
+  if (median)
   {
-    v11 = [MEMORY[0x29EDB8DF8] dataWithBytes:a3 length:2 * a4];
+    v11 = [MEMORY[0x29EDB8DF8] dataWithBytes:median length:2 * count];
     v12 = v11;
     if (v11)
     {
@@ -462,9 +462,9 @@ uint64_t __49__BLHelper_displayUserPrompt_strings_completion___block_invoke(uint
       block[2] = __47__BLHelper_median_count_queue_completionBlock___block_invoke;
       block[3] = &unk_29EE54B90;
       v14 = v11;
-      v16 = a4;
-      v15 = v10;
-      dispatch_async(v9, block);
+      countCopy = count;
+      v15 = blockCopy;
+      dispatch_async(queueCopy, block);
     }
 
     else
@@ -572,14 +572,14 @@ uint64_t __47__BLHelper_median_count_queue_completionBlock___block_invoke(uint64
   return v16();
 }
 
-+ (void)displayUserPrompt:(unint64_t)a3 strings:(id)a4 completion:(id)a5
++ (void)displayUserPrompt:(unint64_t)prompt strings:(id)strings completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  NSLog(&cfstr_Displayuserpro.isa, a3, v7 != 0, v8 != 0);
-  if (v7)
+  stringsCopy = strings;
+  completionCopy = completion;
+  NSLog(&cfstr_Displayuserpro.isa, prompt, stringsCopy != 0, completionCopy != 0);
+  if (stringsCopy)
   {
-    if ([v7 count])
+    if ([stringsCopy count])
     {
       if ((displayUserPrompt_strings_completion__displaying & 1) == 0)
       {
@@ -589,9 +589,9 @@ uint64_t __47__BLHelper_median_count_queue_completionBlock___block_invoke(uint64
         block[1] = 3221225472;
         block[2] = __49__BLHelper_displayUserPrompt_strings_completion___block_invoke;
         block[3] = &unk_29EE54B90;
-        v11 = v7;
-        v13 = a3;
-        v12 = v8;
+        v11 = stringsCopy;
+        promptCopy = prompt;
+        v12 = completionCopy;
         dispatch_async(v9, block);
       }
     }

@@ -1,49 +1,49 @@
 @interface ATXSlotResolutionParameters
-- (ATXSlotResolutionParameters)initWithAction:(id)a3 slots:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ATXSlotResolutionParameters)initWithAction:(id)action slots:(id)slots;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation ATXSlotResolutionParameters
 
-- (ATXSlotResolutionParameters)initWithAction:(id)a3 slots:(id)a4
+- (ATXSlotResolutionParameters)initWithAction:(id)action slots:(id)slots
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  slotsCopy = slots;
   v56.receiver = self;
   v56.super_class = ATXSlotResolutionParameters;
   v9 = [(ATXSlotResolutionParameters *)&v56 init];
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
-    objc_storeStrong(&v9->_action, a3);
-    objc_storeStrong(&v9->_slots, a4);
-    if ([v7 actionType] == 1 || objc_msgSend(v7, "actionType") == 6 || objc_msgSend(v7, "actionType") == 7)
+    objc_storeStrong(&v9->_action, action);
+    objc_storeStrong(&v9->_slots, slots);
+    if ([actionCopy actionType] == 1 || objc_msgSend(actionCopy, "actionType") == 6 || objc_msgSend(actionCopy, "actionType") == 7)
     {
-      v9->_hash = [v7 hash];
+      v9->_hash = [actionCopy hash];
     }
 
     else
     {
-      v12 = [v8 parameters];
+      parameters = [slotsCopy parameters];
 
-      if (v12)
+      if (parameters)
       {
         v41 = v10;
-        v44 = v7;
-        v13 = [v8 hash];
+        v44 = actionCopy;
+        v13 = [slotsCopy hash];
         v42 = v9;
-        v14 = [(ATXAction *)v9->_action intent];
-        v15 = [v14 atx_nonNilParametersByName];
+        intent = [(ATXAction *)v9->_action intent];
+        atx_nonNilParametersByName = [intent atx_nonNilParametersByName];
 
-        v16 = [v8 parameters];
-        v17 = [v16 allObjects];
-        v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+        parameters2 = [slotsCopy parameters];
+        allObjects = [parameters2 allObjects];
+        v18 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
         v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
-        v43 = v8;
-        v20 = [v8 parameters];
+        v43 = slotsCopy;
+        parameters3 = [slotsCopy parameters];
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
@@ -55,7 +55,7 @@
           v22 = v21;
           v23 = *v53;
           v45 = v19;
-          v46 = v15;
+          v46 = atx_nonNilParametersByName;
           do
           {
             for (i = 0; i != v22; ++i)
@@ -66,22 +66,22 @@
               }
 
               v25 = *(*(&v52 + 1) + 8 * i);
-              if (!v20 || [v20 containsObject:*(*(&v52 + 1) + 8 * i)])
+              if (!parameters3 || [parameters3 containsObject:*(*(&v52 + 1) + 8 * i)])
               {
                 v26 = [v25 hash];
-                v27 = [v15 objectForKeyedSubscript:v25];
+                v27 = [atx_nonNilParametersByName objectForKeyedSubscript:v25];
                 v28 = v27;
                 if (v27)
                 {
-                  v29 = v27;
+                  null = v27;
                 }
 
                 else
                 {
-                  v29 = [MEMORY[0x1E695DFB0] null];
+                  null = [MEMORY[0x1E695DFB0] null];
                 }
 
-                v30 = v29;
+                v30 = null;
                 v13 = v26 - v13 + 32 * v13;
 
                 [(NSArray *)v19 addObject:v30];
@@ -97,8 +97,8 @@
 
                   else
                   {
-                    v32 = [v30 location];
-                    v33 = [v32 atx_locationHashWithLevel:17];
+                    location = [v30 location];
+                    v33 = [location atx_locationHashWithLevel:17];
                     v13 = 31 * (31 * v13 + HIDWORD(v33)) + v33;
                   }
                 }
@@ -137,7 +137,7 @@
                     }
 
                     v19 = v45;
-                    v15 = v46;
+                    atx_nonNilParametersByName = v46;
                   }
 
                   else
@@ -159,15 +159,15 @@
         v42->_values = v19;
         v42->_hash = v13;
 
-        v8 = v43;
-        v7 = v44;
+        slotsCopy = v43;
+        actionCopy = v44;
         v10 = v41;
       }
 
       else
       {
-        v40 = [v7 intent];
-        v9->_hash = [v40 atx_backingStoreDataHash];
+        intent2 = [actionCopy intent];
+        v9->_hash = [intent2 atx_backingStoreDataHash];
       }
     }
 
@@ -177,10 +177,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_38;
@@ -193,7 +193,7 @@
     goto LABEL_38;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (self->_hash != v5->_hash)
   {
 LABEL_7:
@@ -201,9 +201,9 @@ LABEL_7:
     goto LABEL_37;
   }
 
-  v6 = [(ATXSlotSet *)self->_slots parameters];
+  parameters = [(ATXSlotSet *)self->_slots parameters];
 
-  if (!v6)
+  if (!parameters)
   {
     v11 = self->_action;
     v12 = v11;
@@ -304,13 +304,13 @@ LABEL_30:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v21 location];
-    v27 = [v23 location];
-    v28 = v27;
+    location = [v21 location];
+    location2 = [v23 location];
+    v28 = location2;
     v25 = 0;
-    if (v26 && v27)
+    if (location && location2)
     {
-      [v26 distanceFromLocation:v27];
+      [location distanceFromLocation:location2];
       v25 = v29 < 100.0;
     }
 
@@ -343,9 +343,9 @@ LABEL_38:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ATXSlotSet *)self->_slots parameters];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+  parameters = [(ATXSlotSet *)self->_slots parameters];
+  allObjects = [parameters allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:sel_compare_];
   v9 = [v8 componentsJoinedByString:@" "];
   v10 = [v3 stringWithFormat:@"<%@ %@>", v5, v9];
 

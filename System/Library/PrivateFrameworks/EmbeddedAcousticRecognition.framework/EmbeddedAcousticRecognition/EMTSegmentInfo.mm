@@ -1,29 +1,29 @@
 @interface EMTSegmentInfo
 + (id)segmentInfo;
-+ (id)segmentInfoWithData:(const void *)a3;
-- (EMTSegmentInfo)initWithCoder:(id)a3;
++ (id)segmentInfoWithData:(const void *)data;
+- (EMTSegmentInfo)initWithCoder:(id)coder;
 - (SegmentInfo)getData;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMTSegmentInfo
 
 + (id)segmentInfo
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)segmentInfoWithData:(const void *)a3
++ (id)segmentInfoWithData:(const void *)data
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setIsStable:*(a3 + 8)];
-  [v4 setIsSourceSideBoundary:*(a3 + 10)];
+  v4 = objc_alloc_init(self);
+  [v4 setIsStable:*(data + 8)];
+  [v4 setIsSourceSideBoundary:*(data + 10)];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = *(a3 + 2);
-  for (i = *(a3 + 3); v6 != i; ++v6)
+  v6 = *(data + 2);
+  for (i = *(data + 3); v6 != i; ++v6)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:*v6];
     [v5 addObject:v8];
@@ -31,8 +31,8 @@
 
   [v4 setSourceTokenIDs:v5];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = *(a3 + 5);
-  for (j = *(a3 + 6); v10 != j; ++v10)
+  v10 = *(data + 5);
+  for (j = *(data + 6); v10 != j; ++v10)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithInt:*v10];
     [v9 addObject:v12];
@@ -228,13 +228,13 @@ void __25__EMTSegmentInfo_getData__block_invoke_2(uint64_t a1, void *a2)
   v4[12] = v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSArray *)self->_sourceTokenIDs copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSArray *)self->_sourceTokenIDs copyWithZone:zone];
   [v5 setSourceTokenIDs:v6];
 
-  v7 = [(NSArray *)self->_targetTokenIDs copyWithZone:a3];
+  v7 = [(NSArray *)self->_targetTokenIDs copyWithZone:zone];
   [v5 setTargetTokenIDs:v7];
 
   [v5 setIsStable:self->_isStable];
@@ -242,33 +242,33 @@ void __25__EMTSegmentInfo_getData__block_invoke_2(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_sourceTokenIDs forKey:@"sourceTokenIDsData"];
-  [v4 encodeObject:self->_targetTokenIDs forKey:@"targetTokenIDsData"];
-  [v4 encodeBool:self->_isStable forKey:@"isStableData"];
-  [v4 encodeBool:self->_isSourceSideBoundary forKey:@"isSourceSideBoundaryData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_sourceTokenIDs forKey:@"sourceTokenIDsData"];
+  [coderCopy encodeObject:self->_targetTokenIDs forKey:@"targetTokenIDsData"];
+  [coderCopy encodeBool:self->_isStable forKey:@"isStableData"];
+  [coderCopy encodeBool:self->_isSourceSideBoundary forKey:@"isSourceSideBoundaryData"];
 }
 
-- (EMTSegmentInfo)initWithCoder:(id)a3
+- (EMTSegmentInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = EMTSegmentInfo;
   v5 = [(EMTSegmentInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"sourceTokenIDsData"];
+    v6 = [coderCopy decodeObjectForKey:@"sourceTokenIDsData"];
     sourceTokenIDs = v5->_sourceTokenIDs;
     v5->_sourceTokenIDs = v6;
 
-    v8 = [v4 decodeObjectForKey:@"targetTokenIDsData"];
+    v8 = [coderCopy decodeObjectForKey:@"targetTokenIDsData"];
     targetTokenIDs = v5->_targetTokenIDs;
     v5->_targetTokenIDs = v8;
 
-    v5->_isStable = [v4 decodeBoolForKey:@"isStableData"];
-    v5->_isSourceSideBoundary = [v4 decodeBoolForKey:@"isSourceSideBoundaryData"];
+    v5->_isStable = [coderCopy decodeBoolForKey:@"isStableData"];
+    v5->_isSourceSideBoundary = [coderCopy decodeBoolForKey:@"isSourceSideBoundaryData"];
   }
 
   return v5;

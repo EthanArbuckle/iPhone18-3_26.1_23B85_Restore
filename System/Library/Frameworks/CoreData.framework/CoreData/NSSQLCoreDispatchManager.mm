@@ -1,10 +1,10 @@
 @interface NSSQLCoreDispatchManager
-- (NSSQLCoreDispatchManager)initWithSQLCore:(id)a3 seedConnection:(id)a4;
+- (NSSQLCoreDispatchManager)initWithSQLCore:(id)core seedConnection:(id)connection;
 - (uint64_t)disconnectAllConnections;
 - (uint64_t)enumerateAvailableConnectionsWithBlock:(uint64_t)result;
 - (uint64_t)routeStoreRequest:(uint64_t)result;
 - (void)dealloc;
-- (void)scheduleBarrierBlock:(id)a3;
+- (void)scheduleBarrierBlock:(id)block;
 @end
 
 @implementation NSSQLCoreDispatchManager
@@ -59,7 +59,7 @@
   [(NSSQLCoreDispatchManager *)&v3 dealloc];
 }
 
-- (NSSQLCoreDispatchManager)initWithSQLCore:(id)a3 seedConnection:(id)a4
+- (NSSQLCoreDispatchManager)initWithSQLCore:(id)core seedConnection:(id)connection
 {
   v10.receiver = self;
   v10.super_class = NSSQLCoreDispatchManager;
@@ -67,9 +67,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_sqlCore = a3;
+    v6->_sqlCore = core;
     v6->_connectionManagers = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [(NSSQLConnectionManager *)[NSSQLDefaultConnectionManager alloc] initWithSQLCore:a3 seedConnection:a4];
+    v8 = [(NSSQLConnectionManager *)[NSSQLDefaultConnectionManager alloc] initWithSQLCore:core seedConnection:connection];
     if (v8)
     {
       [(NSMutableArray *)v7->_connectionManagers addObject:v8];
@@ -138,11 +138,11 @@ LABEL_13:
   return result;
 }
 
-- (void)scheduleBarrierBlock:(id)a3
+- (void)scheduleBarrierBlock:(id)block
 {
-  v4 = [(NSMutableArray *)self->_connectionManagers firstObject];
+  firstObject = [(NSMutableArray *)self->_connectionManagers firstObject];
 
-  [v4 scheduleBarrierBlock:a3];
+  [firstObject scheduleBarrierBlock:block];
 }
 
 - (uint64_t)enumerateAvailableConnectionsWithBlock:(uint64_t)result

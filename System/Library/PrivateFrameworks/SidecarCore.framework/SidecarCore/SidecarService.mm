@@ -3,13 +3,13 @@
 + (NSArray)allServices;
 + (NSArray)returnTypes;
 + (NSSet)allReturnTypes;
-+ (id)extensionForIdentifier:(id)a3;
++ (id)extensionForIdentifier:(id)identifier;
 + (id)menuServices;
 + (id)name;
-+ (id)serviceWithIdentifier:(id)a3;
-+ (id)serviceWithName:(id)a3;
++ (id)serviceWithIdentifier:(id)identifier;
++ (id)serviceWithName:(id)name;
 + (id)services;
-+ (id)servicesForPasteboardSendTypes:(id)a3 returnTypes:(id)a4;
++ (id)servicesForPasteboardSendTypes:(id)types returnTypes:(id)returnTypes;
 + (int64_t)minimumRapportVersion;
 - (BOOL)isEnabled;
 - (NSArray)returnTypes;
@@ -20,9 +20,9 @@
 - (NSString)serviceIdentifier;
 - (NSString)symbolName;
 - (SidecarService)init;
-- (SidecarService)initWithDevice:(id)a3;
-- (id)copyWithDevice:(id)a3;
-- (id)makeRequestToDevice:(id)a3;
+- (SidecarService)initWithDevice:(id)device;
+- (id)copyWithDevice:(id)device;
+- (id)makeRequestToDevice:(id)device;
 - (id)mutableRequestMessage;
 @end
 
@@ -78,19 +78,19 @@ void __36__SidecarService_Camera_returnTypes__block_invoke()
   returnTypes_types_611 = v6;
 }
 
-- (id)copyWithDevice:(id)a3
+- (id)copyWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [objc_alloc(objc_opt_class()) initWithDevice:deviceCopy];
 
   return v4;
 }
 
-- (id)makeRequestToDevice:(id)a3
+- (id)makeRequestToDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = filterTargetDevice(self, v4, 0);
+  deviceCopy = device;
+  v5 = filterTargetDevice(self, deviceCopy, 0);
   if (v5)
   {
     goto LABEL_4;
@@ -100,13 +100,13 @@ void __36__SidecarService_Camera_returnTypes__block_invoke()
   v7 = v6;
   if (v6 && os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v4 identifier];
+    identifier = [deviceCopy identifier];
     v15 = 138412290;
-    v16 = v13;
+    v16 = identifier;
     _os_log_impl(&dword_26604C000, v7, OS_LOG_TYPE_DEFAULT, "While trying to make a request to device with IDS identifier [%@], the target device was not found. Forcing a fetch to SidecarRelay to find the device.", &v15, 0xCu);
   }
 
-  v5 = filterTargetDevice(self, v4, 1);
+  v5 = filterTargetDevice(self, deviceCopy, 1);
   if (v5)
   {
 LABEL_4:
@@ -120,9 +120,9 @@ LABEL_4:
     v8 = v12;
     if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 identifier];
+      identifier2 = [deviceCopy identifier];
       v15 = 138412290;
-      v16 = v14;
+      v16 = identifier2;
       _os_log_impl(&dword_26604C000, v8, OS_LOG_TYPE_DEFAULT, "Even after forcing a fetch to SidecarRelay, the device with identifier [%@] could not be found.  Will not be able to make a request to it.", &v15, 0xCu);
     }
 
@@ -159,8 +159,8 @@ LABEL_4:
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
   SidecarMessageSetType(v3, 1);
-  v4 = [(SidecarService *)self name];
-  [v3 setObject:v4 forKey:&unk_2877BFCB0];
+  name = [(SidecarService *)self name];
+  [v3 setObject:name forKey:&unk_2877BFCB0];
 
   return v3;
 }
@@ -181,8 +181,8 @@ LABEL_4:
 
 - (BOOL)isEnabled
 {
-  v2 = [(SidecarService *)self devices];
-  v3 = [v2 count] != 0;
+  devices = [(SidecarService *)self devices];
+  v3 = [devices count] != 0;
 
   return v3;
 }
@@ -201,29 +201,29 @@ LABEL_4:
   return [v2 name];
 }
 
-- (SidecarService)initWithDevice:(id)a3
+- (SidecarService)initWithDevice:(id)device
 {
-  v5 = a3;
-  v6 = [objc_opt_class() minimumRapportVersion];
-  if ([v5 rapportVersion] >= v6)
+  deviceCopy = device;
+  minimumRapportVersion = [objc_opt_class() minimumRapportVersion];
+  if ([deviceCopy rapportVersion] >= minimumRapportVersion)
   {
     v8 = [(SidecarService *)self init];
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_targetDevice, a3);
+      objc_storeStrong(&v8->_targetDevice, device);
     }
 
     self = v9;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (SidecarService)init
@@ -232,7 +232,7 @@ LABEL_4:
   if (v3 == objc_opt_class())
   {
     _NSRequestConcreteObject();
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -240,10 +240,10 @@ LABEL_4:
     v6.receiver = self;
     v6.super_class = SidecarService;
     self = [(SidecarService *)&v6 init];
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 + (int64_t)minimumRapportVersion
@@ -326,14 +326,14 @@ void __32__SidecarService_allReturnTypes__block_invoke()
   return 0;
 }
 
-+ (id)servicesForPasteboardSendTypes:(id)a3 returnTypes:(id)a4
++ (id)servicesForPasteboardSendTypes:(id)types returnTypes:(id)returnTypes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  returnTypesCopy = returnTypes;
   v5 = +[SidecarService services];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v19 = v4;
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v19 = returnTypesCopy;
+  v7 = [MEMORY[0x277CBEB98] setWithArray:returnTypesCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -354,8 +354,8 @@ void __32__SidecarService_allReturnTypes__block_invoke()
         }
 
         v13 = MEMORY[0x277CBEB98];
-        v14 = [*(*(&v20 + 1) + 8 * i) returnTypes];
-        v15 = [v13 setWithArray:v14];
+        returnTypes = [*(*(&v20 + 1) + 8 * i) returnTypes];
+        v15 = [v13 setWithArray:returnTypes];
 
         if ([v15 intersectsSet:v7])
         {
@@ -375,16 +375,16 @@ void __32__SidecarService_allReturnTypes__block_invoke()
   return v6;
 }
 
-+ (id)extensionForIdentifier:(id)a3
++ (id)extensionForIdentifier:(id)identifier
 {
   v3 = extensionForIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&extensionForIdentifier__onceToken, &__block_literal_global_44);
   }
 
-  v5 = [extensionForIdentifier__serviceToExtension objectForKeyedSubscript:v4];
+  v5 = [extensionForIdentifier__serviceToExtension objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
@@ -511,10 +511,10 @@ void __41__SidecarService_extensionForIdentifier___block_invoke()
   return v3;
 }
 
-+ (id)serviceWithName:(id)a3
++ (id)serviceWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   +[SidecarService services];
   v12 = 0u;
   v13 = 0u;
@@ -533,8 +533,8 @@ void __41__SidecarService_extensionForIdentifier___block_invoke()
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) name];
-        v9 = [v3 isEqualToString:v8];
+        name = [*(*(&v12 + 1) + 8 * i) name];
+        v9 = [nameCopy isEqualToString:name];
 
         if (v9)
         {
@@ -560,10 +560,10 @@ LABEL_11:
   return v5;
 }
 
-+ (id)serviceWithIdentifier:(id)a3
++ (id)serviceWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   +[SidecarService allServices];
   v13 = 0u;
   v14 = 0u;
@@ -583,8 +583,8 @@ LABEL_11:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 serviceIdentifier];
-        v10 = [v3 isEqualToString:v9];
+        serviceIdentifier = [v8 serviceIdentifier];
+        v10 = [identifierCopy isEqualToString:serviceIdentifier];
 
         if (v10)
         {

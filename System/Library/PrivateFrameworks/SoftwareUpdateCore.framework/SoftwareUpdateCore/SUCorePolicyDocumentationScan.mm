@@ -1,12 +1,12 @@
 @interface SUCorePolicyDocumentationScan
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUCorePolicyDocumentationScan)init;
-- (SUCorePolicyDocumentationScan)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCorePolicyDocumentationScan)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
 - (void)backToDefaults;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCorePolicyDocumentationScan
@@ -38,21 +38,21 @@
   self->_additionalOptions = 0;
 }
 
-- (SUCorePolicyDocumentationScan)initWithCoder:(id)a3
+- (SUCorePolicyDocumentationScan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUCorePolicyDocumentationScan;
   v5 = [(SUCorePolicyDocumentationScan *)&v9 init];
   if (v5)
   {
-    v5->_specifiedFields = [v4 decodeInt64ForKey:@"SpecifiedFields"];
-    v5->_allowsCellular = [v4 decodeBoolForKey:@"AllowsCellular"];
-    v5->_discretionary = [v4 decodeBoolForKey:@"Discretionary"];
-    v5->_disableUI = [v4 decodeBoolForKey:@"DisableUI"];
-    v5->_requiresPowerPluggedIn = [v4 decodeBoolForKey:@"RequiresPowerPluggedIn"];
-    v5->_downloadTimeoutSecs = [v4 decodeIntForKey:@"DownloadTimeoutSecs"];
-    v5->_liveServerCatalogOnly = [v4 decodeBoolForKey:@"LiveServerCatalogOnly"];
+    v5->_specifiedFields = [coderCopy decodeInt64ForKey:@"SpecifiedFields"];
+    v5->_allowsCellular = [coderCopy decodeBoolForKey:@"AllowsCellular"];
+    v5->_discretionary = [coderCopy decodeBoolForKey:@"Discretionary"];
+    v5->_disableUI = [coderCopy decodeBoolForKey:@"DisableUI"];
+    v5->_requiresPowerPluggedIn = [coderCopy decodeBoolForKey:@"RequiresPowerPluggedIn"];
+    v5->_downloadTimeoutSecs = [coderCopy decodeIntForKey:@"DownloadTimeoutSecs"];
+    v5->_liveServerCatalogOnly = [coderCopy decodeBoolForKey:@"LiveServerCatalogOnly"];
     additionalServerParams = v5->_additionalServerParams;
     v5->_additionalServerParams = 0;
 
@@ -63,43 +63,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SUCorePolicyDocumentationScan specifiedFields](self forKey:{"specifiedFields"), @"SpecifiedFields"}];
-  [v4 encodeBool:-[SUCorePolicyDocumentationScan allowsCellular](self forKey:{"allowsCellular"), @"AllowsCellular"}];
-  [v4 encodeBool:-[SUCorePolicyDocumentationScan discretionary](self forKey:{"discretionary"), @"Discretionary"}];
-  [v4 encodeBool:-[SUCorePolicyDocumentationScan disableUI](self forKey:{"disableUI"), @"DisableUI"}];
-  [v4 encodeBool:-[SUCorePolicyDocumentationScan requiresPowerPluggedIn](self forKey:{"requiresPowerPluggedIn"), @"RequiresPowerPluggedIn"}];
-  [v4 encodeInt:-[SUCorePolicyDocumentationScan downloadTimeoutSecs](self forKey:{"downloadTimeoutSecs"), @"DownloadTimeoutSecs"}];
-  [v4 encodeBool:-[SUCorePolicyDocumentationScan liveServerCatalogOnly](self forKey:{"liveServerCatalogOnly"), @"LiveServerCatalogOnly"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SUCorePolicyDocumentationScan specifiedFields](self forKey:{"specifiedFields"), @"SpecifiedFields"}];
+  [coderCopy encodeBool:-[SUCorePolicyDocumentationScan allowsCellular](self forKey:{"allowsCellular"), @"AllowsCellular"}];
+  [coderCopy encodeBool:-[SUCorePolicyDocumentationScan discretionary](self forKey:{"discretionary"), @"Discretionary"}];
+  [coderCopy encodeBool:-[SUCorePolicyDocumentationScan disableUI](self forKey:{"disableUI"), @"DisableUI"}];
+  [coderCopy encodeBool:-[SUCorePolicyDocumentationScan requiresPowerPluggedIn](self forKey:{"requiresPowerPluggedIn"), @"RequiresPowerPluggedIn"}];
+  [coderCopy encodeInt:-[SUCorePolicyDocumentationScan downloadTimeoutSecs](self forKey:{"downloadTimeoutSecs"), @"DownloadTimeoutSecs"}];
+  [coderCopy encodeBool:-[SUCorePolicyDocumentationScan liveServerCatalogOnly](self forKey:{"liveServerCatalogOnly"), @"LiveServerCatalogOnly"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAllowsCellular:{-[SUCorePolicyDocumentationScan allowsCellular](self, "allowsCellular")}];
   [v5 setDiscretionary:{-[SUCorePolicyDocumentationScan discretionary](self, "discretionary")}];
   [v5 setDisableUI:{-[SUCorePolicyDocumentationScan disableUI](self, "disableUI")}];
   [v5 setRequiresPowerPluggedIn:{-[SUCorePolicyDocumentationScan requiresPowerPluggedIn](self, "requiresPowerPluggedIn")}];
   [v5 setDownloadTimeoutSecs:{-[SUCorePolicyDocumentationScan downloadTimeoutSecs](self, "downloadTimeoutSecs")}];
   [v5 setLiveServerCatalogOnly:{-[SUCorePolicyDocumentationScan liveServerCatalogOnly](self, "liveServerCatalogOnly")}];
-  v6 = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
-  v7 = [v6 copyWithZone:a3];
+  additionalServerParams = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
+  v7 = [additionalServerParams copyWithZone:zone];
   [v5 setAdditionalServerParams:v7];
 
-  v8 = [(SUCorePolicyDocumentationScan *)self additionalOptions];
-  v9 = [v8 copyWithZone:a3];
+  additionalOptions = [(SUCorePolicyDocumentationScan *)self additionalOptions];
+  v9 = [additionalOptions copyWithZone:zone];
   [v5 setAdditionalOptions:v9];
 
   [v5 setSpecifiedFields:{-[SUCorePolicyDocumentationScan specifiedFields](self, "specifiedFields")}];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -109,12 +109,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCorePolicyDocumentationScan *)v5 allowsCellular];
-      if (v6 == [(SUCorePolicyDocumentationScan *)self allowsCellular]&& (v7 = [(SUCorePolicyDocumentationScan *)v5 discretionary], v7 == [(SUCorePolicyDocumentationScan *)self discretionary]) && (v8 = [(SUCorePolicyDocumentationScan *)v5 disableUI], v8 == [(SUCorePolicyDocumentationScan *)self disableUI]) && (v9 = [(SUCorePolicyDocumentationScan *)v5 requiresPowerPluggedIn], v9 == [(SUCorePolicyDocumentationScan *)self requiresPowerPluggedIn]) && (v10 = [(SUCorePolicyDocumentationScan *)v5 downloadTimeoutSecs], v10 == [(SUCorePolicyDocumentationScan *)self downloadTimeoutSecs]) && (v11 = [(SUCorePolicyDocumentationScan *)v5 liveServerCatalogOnly], v11 == [(SUCorePolicyDocumentationScan *)self liveServerCatalogOnly]))
+      v5 = equalCopy;
+      allowsCellular = [(SUCorePolicyDocumentationScan *)v5 allowsCellular];
+      if (allowsCellular == [(SUCorePolicyDocumentationScan *)self allowsCellular]&& (v7 = [(SUCorePolicyDocumentationScan *)v5 discretionary], v7 == [(SUCorePolicyDocumentationScan *)self discretionary]) && (v8 = [(SUCorePolicyDocumentationScan *)v5 disableUI], v8 == [(SUCorePolicyDocumentationScan *)self disableUI]) && (v9 = [(SUCorePolicyDocumentationScan *)v5 requiresPowerPluggedIn], v9 == [(SUCorePolicyDocumentationScan *)self requiresPowerPluggedIn]) && (v10 = [(SUCorePolicyDocumentationScan *)v5 downloadTimeoutSecs], v10 == [(SUCorePolicyDocumentationScan *)self downloadTimeoutSecs]) && (v11 = [(SUCorePolicyDocumentationScan *)v5 liveServerCatalogOnly], v11 == [(SUCorePolicyDocumentationScan *)self liveServerCatalogOnly]))
       {
-        v14 = [(SUCorePolicyDocumentationScan *)v5 specifiedFields];
-        v12 = v14 == [(SUCorePolicyDocumentationScan *)self specifiedFields];
+        specifiedFields = [(SUCorePolicyDocumentationScan *)v5 specifiedFields];
+        v12 = specifiedFields == [(SUCorePolicyDocumentationScan *)self specifiedFields];
       }
 
       else
@@ -135,7 +135,7 @@
 - (id)description
 {
   v17 = MEMORY[0x277CCACA8];
-  v16 = [(SUCorePolicyDocumentationScan *)self specifiedFields];
+  specifiedFields = [(SUCorePolicyDocumentationScan *)self specifiedFields];
   v3 = @"NO";
   if ([(SUCorePolicyDocumentationScan *)self allowsCellular])
   {
@@ -178,32 +178,32 @@
     v7 = @"NO";
   }
 
-  v8 = [(SUCorePolicyDocumentationScan *)self downloadTimeoutSecs];
+  downloadTimeoutSecs = [(SUCorePolicyDocumentationScan *)self downloadTimeoutSecs];
   if ([(SUCorePolicyDocumentationScan *)self liveServerCatalogOnly])
   {
     v3 = @"YES";
   }
 
-  v9 = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
-  v10 = @"none";
-  if (v9)
+  additionalServerParams = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
+  additionalServerParams2 = @"none";
+  if (additionalServerParams)
   {
-    v10 = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
+    additionalServerParams2 = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
   }
 
-  v11 = [(SUCorePolicyDocumentationScan *)self additionalOptions];
-  if (v11)
+  additionalOptions = [(SUCorePolicyDocumentationScan *)self additionalOptions];
+  if (additionalOptions)
   {
-    v12 = [(SUCorePolicyDocumentationScan *)self additionalOptions];
-    v13 = [v17 stringWithFormat:@"SUCorePolicyDocumentationScan(specifiedFields:0x%llX|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|liveServerCatalogOnly:%@|additionalServerParams:%@|additionalOptions:%@)", v16, v15, v5, v6, v7, v8, v3, v10, v12];
+    additionalOptions2 = [(SUCorePolicyDocumentationScan *)self additionalOptions];
+    v13 = [v17 stringWithFormat:@"SUCorePolicyDocumentationScan(specifiedFields:0x%llX|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|liveServerCatalogOnly:%@|additionalServerParams:%@|additionalOptions:%@)", specifiedFields, v15, v5, v6, v7, downloadTimeoutSecs, v3, additionalServerParams2, additionalOptions2];
   }
 
   else
   {
-    v13 = [v17 stringWithFormat:@"SUCorePolicyDocumentationScan(specifiedFields:0x%llX|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|liveServerCatalogOnly:%@|additionalServerParams:%@|additionalOptions:%@)", v16, v15, v5, v6, v7, v8, v3, v10, @"none"];
+    v13 = [v17 stringWithFormat:@"SUCorePolicyDocumentationScan(specifiedFields:0x%llX|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|liveServerCatalogOnly:%@|additionalServerParams:%@|additionalOptions:%@)", specifiedFields, v15, v5, v6, v7, downloadTimeoutSecs, v3, additionalServerParams2, @"none"];
   }
 
-  if (v9)
+  if (additionalServerParams)
   {
   }
 
@@ -276,8 +276,8 @@
     v9 = v13;
   }
 
-  v14 = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
-  if (v14)
+  additionalServerParams = [(SUCorePolicyDocumentationScan *)self additionalServerParams];
+  if (additionalServerParams)
   {
     v15 = @"|withAdditionalServerParams";
   }
@@ -289,8 +289,8 @@
 
   v16 = [v9 stringByAppendingString:v15];
 
-  v17 = [(SUCorePolicyDocumentationScan *)self additionalOptions];
-  if (v17)
+  additionalOptions = [(SUCorePolicyDocumentationScan *)self additionalOptions];
+  if (additionalOptions)
   {
     v18 = @"|withAdditionalOptions";
   }

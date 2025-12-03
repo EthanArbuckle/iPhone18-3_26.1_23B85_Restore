@@ -1,15 +1,15 @@
 @interface TransitDirectionsInstructionsCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation TransitDirectionsInstructionsCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TransitDirectionsInstructionsCell" isKindOfClass:@"TransitDirectionsCell"];
-  [v3 validateClass:@"TransitDirectionsCell" hasInstanceVariable:@"_stepView" withType:"TransitDirectionsStepView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsCell" isKindOfClass:@"TransitDirectionsCell"];
+  [validationsCopy validateClass:@"TransitDirectionsCell" hasInstanceVariable:@"_stepView" withType:"TransitDirectionsStepView"];
 }
 
 - (id)accessibilityElements

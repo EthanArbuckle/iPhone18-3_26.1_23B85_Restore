@@ -1,24 +1,24 @@
 @interface MediaSocialContentItemEntity
-+ (id)newEntityValuesWithMediaSocialPostItem:(id)a3;
++ (id)newEntityValuesWithMediaSocialPostItem:(id)item;
 @end
 
 @implementation MediaSocialContentItemEntity
 
-+ (id)newEntityValuesWithMediaSocialPostItem:(id)a3
++ (id)newEntityValuesWithMediaSocialPostItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 identifier];
-  if (v5)
+  identifier = [itemCopy identifier];
+  if (identifier)
   {
-    [v4 setObject:v5 forKey:@"item_id"];
+    [v4 setObject:identifier forKey:@"item_id"];
   }
 
-  v6 = [v3 type];
+  type = [itemCopy type];
 
-  if (v6)
+  if (type)
   {
-    [v4 setObject:v6 forKey:@"type"];
+    [v4 setObject:type forKey:@"type"];
   }
 
   return v4;

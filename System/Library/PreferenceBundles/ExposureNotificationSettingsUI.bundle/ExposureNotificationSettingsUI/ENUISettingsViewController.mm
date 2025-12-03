@@ -19,30 +19,30 @@
 - (id)_viewExposureInAppSpecifiers;
 - (id)_weeklySummarySpecifiers;
 - (id)areAvailabilityAlertsEnabled;
-- (id)specifierForHealthAgencyModel:(id)a3;
+- (id)specifierForHealthAgencyModel:(id)model;
 - (id)specifiers;
-- (void)_toggleWeeklySummarySwitch:(id)a3 specifier:(id)a4;
-- (void)addFooterText:(id)a3 withLinkText:(id)a4 toGroup:(id)a5 action:(SEL)a6;
+- (void)_toggleWeeklySummarySwitch:(id)switch specifier:(id)specifier;
+- (void)addFooterText:(id)text withLinkText:(id)linkText toGroup:(id)group action:(SEL)action;
 - (void)appWillEnterForeground;
 - (void)dealloc;
 - (void)didConfirmTurnOffExposureNotifications;
-- (void)didTapDeleteExposureData:(id)a3;
+- (void)didTapDeleteExposureData:(id)data;
 - (void)didTapLearnMore;
 - (void)didTapRegionFAQWebsite;
 - (void)didTapRegionWebsite;
 - (void)didTapShareDiagnosisLink;
-- (void)didTapTurnOffExposureNotifications:(id)a3;
-- (void)didTapTurnOnExposureNotifications:(id)a3;
+- (void)didTapTurnOffExposureNotifications:(id)notifications;
+- (void)didTapTurnOnExposureNotifications:(id)notifications;
 - (void)didTapViewInApp;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)presentOnboardingForPath:(id)a3 fromDeepLink:(BOOL)a4 completion:(id)a5;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)presentOnboardingForPath:(id)path fromDeepLink:(BOOL)link completion:(id)completion;
 - (void)presentPreAuthorizedKeyReleasedThankYouScreen;
-- (void)presentUIFlowStack:(id)a3 forRegionModel:(id)a4 onboardingSource:(int64_t)a5 completion:(id)a6;
+- (void)presentUIFlowStack:(id)stack forRegionModel:(id)model onboardingSource:(int64_t)source completion:(id)completion;
 - (void)refreshRegionsAndReloadSpecifiers;
-- (void)setLatestNotification:(id)a3;
-- (void)showExposureLoggingController:(id)a3;
-- (void)showLatestExposureDetailWithCompletion:(id)a3;
-- (void)toggleAvailabilityAlertsSwitch:(id)a3 specifier:(id)a4;
+- (void)setLatestNotification:(id)notification;
+- (void)showExposureLoggingController:(id)controller;
+- (void)showLatestExposureDetailWithCompletion:(id)completion;
+- (void)toggleAvailabilityAlertsSwitch:(id)switch specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -85,20 +85,20 @@
   [(ENUISettingsViewController *)&v4 dealloc];
 }
 
-- (void)setLatestNotification:(id)a3
+- (void)setLatestNotification:(id)notification
 {
-  v5 = a3;
-  if (self->_latestNotification != v5)
+  notificationCopy = notification;
+  if (self->_latestNotification != notificationCopy)
   {
-    objc_storeStrong(&self->_latestNotification, a3);
+    objc_storeStrong(&self->_latestNotification, notification);
     v6 = [(ENUISettingsViewController *)self specifierForID:@"latest-notification"];
     v7 = v6;
     if (v6)
     {
       v12 = v6;
       v8 = [NSArray arrayWithObjects:&v12 count:1];
-      v9 = [(ENUISettingsViewController *)self _latestNotificationSpecifier];
-      v11 = v9;
+      _latestNotificationSpecifier = [(ENUISettingsViewController *)self _latestNotificationSpecifier];
+      v11 = _latestNotificationSpecifier;
       v10 = [NSArray arrayWithObjects:&v11 count:1];
       [(ENUISettingsViewController *)self replaceContiguousSpecifiers:v8 withSpecifiers:v10];
     }
@@ -118,13 +118,13 @@
   [(ENUISettingsViewController *)self setPresentationController:v4];
 
   v5 = [ENStatusChangeObserver alloc];
-  v6 = [(ENUISettingsViewController *)self adapter];
+  adapter = [(ENUISettingsViewController *)self adapter];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_3C24;
   v12 = &unk_2C778;
   objc_copyWeak(&v13, &location);
-  v7 = [v5 initWithAdapter:v6 didChangeHandler:&v9];
+  v7 = [v5 initWithAdapter:adapter didChangeHandler:&v9];
   [(ENUISettingsViewController *)self setStatusChangeObserver:v7, v9, v10, v11, v12];
 
   v8 = +[NSNotificationCenter defaultCenter];
@@ -148,7 +148,7 @@
   v32 = v4;
   [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel refreshRegionsWithCompletion:v31];
   dispatch_group_enter(v4);
-  v5 = [(ENUISettingsViewController *)self adapter];
+  adapter = [(ENUISettingsViewController *)self adapter];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_4298;
@@ -156,10 +156,10 @@
   objc_copyWeak(&v30, location);
   v6 = v4;
   v29 = v6;
-  [v5 latestExposureNotification:v28];
+  [adapter latestExposureNotification:v28];
 
   dispatch_group_enter(v6);
-  v7 = [(ENUISettingsViewController *)self exposureStore];
+  exposureStore = [(ENUISettingsViewController *)self exposureStore];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_42FC;
@@ -167,10 +167,10 @@
   objc_copyWeak(&v27, location);
   v8 = v6;
   v26 = v8;
-  [v7 fetchExtraLoggingEnabledWithCompletion:v25];
+  [exposureStore fetchExtraLoggingEnabledWithCompletion:v25];
 
   dispatch_group_enter(v8);
-  v9 = [(ENUISettingsViewController *)self exposureStore];
+  exposureStore2 = [(ENUISettingsViewController *)self exposureStore];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_43A0;
@@ -178,10 +178,10 @@
   objc_copyWeak(&v24, location);
   v10 = v8;
   v23 = v10;
-  [v9 fetchExposureCheckSessionsWithCompletion:v22];
+  [exposureStore2 fetchExposureCheckSessionsWithCompletion:v22];
 
   dispatch_group_enter(v10);
-  v11 = [(ENUISettingsViewController *)self exposureStore];
+  exposureStore3 = [(ENUISettingsViewController *)self exposureStore];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_4488;
@@ -189,17 +189,17 @@
   objc_copyWeak(&v21, location);
   v12 = v10;
   v20 = v12;
-  [v11 fetchWeeklySummaryEnabledWithCompletion:v19];
+  [exposureStore3 fetchWeeklySummaryEnabledWithCompletion:v19];
 
   dispatch_group_enter(v12);
-  v13 = [(ENUISettingsViewController *)self adapter];
+  adapter2 = [(ENUISettingsViewController *)self adapter];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_452C;
   v17[3] = &unk_2C750;
   v14 = v12;
   v18 = v14;
-  [v13 refreshStatusWithCompletion:v17];
+  [adapter2 refreshStatusWithCompletion:v17];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -220,11 +220,11 @@
   objc_destroyWeak(location);
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"path"];
+  lCopy = l;
+  completionCopy = completion;
+  v8 = [lCopy objectForKeyedSubscript:@"path"];
   objc_initWeak(location, self);
   v81[0] = _NSConcreteStackBlock;
   v81[1] = 3221225472;
@@ -247,16 +247,16 @@
       {
         if (v10 == 1)
         {
-          [(ENUISettingsViewController *)self presentOnboardingForPath:v8 fromDeepLink:1 completion:v7];
+          [(ENUISettingsViewController *)self presentOnboardingForPath:v8 fromDeepLink:1 completion:completionCopy];
         }
 
         goto LABEL_45;
       }
 
       v15 = +[ENUIViewControllerFactory sharedInstance];
-      v16 = [v15 inflightOnboardingStack];
+      inflightOnboardingStack = [v15 inflightOnboardingStack];
 
-      if (v16)
+      if (inflightOnboardingStack)
       {
         v13 = ENUILogForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -266,24 +266,24 @@
 
 LABEL_20:
 
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7);
+          completionCopy[2](completionCopy);
         }
 
         goto LABEL_45;
       }
 
-      v35 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v36 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
       v69[0] = _NSConcreteStackBlock;
       v69[1] = 3221225472;
       v69[2] = sub_56B8;
       v69[3] = &unk_2CA10;
-      v28 = v35;
+      v28 = lastPathComponent;
       v70 = v28;
-      v71 = self;
-      v72 = v7;
+      selfCopy = self;
+      v72 = completionCopy;
       v73 = v9;
       [v36 fetchAgencyModelForRegionCode:v28 reason:0 completion:v69];
 
@@ -295,16 +295,16 @@ LABEL_36:
 
     if (v10 == 2)
     {
-      v26 = [v8 lastPathComponent];
+      lastPathComponent2 = [v8 lastPathComponent];
       v27 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
       v64[0] = _NSConcreteStackBlock;
       v64[1] = 3221225472;
       v64[2] = sub_57C0;
       v64[3] = &unk_2CA10;
-      v28 = v26;
+      v28 = lastPathComponent2;
       v65 = v28;
-      v66 = self;
-      v67 = v7;
+      selfCopy2 = self;
+      v67 = completionCopy;
       v68 = v9;
       [v27 fetchAgencyModelForRegionCode:v28 reason:0 completion:v64];
 
@@ -322,7 +322,7 @@ LABEL_36:
     v62[2] = sub_592C;
     v62[3] = &unk_2CA60;
     v62[4] = self;
-    v63 = v7;
+    v63 = completionCopy;
     [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel refreshRegionsWithCompletion:v62];
     v14 = v63;
 LABEL_44:
@@ -335,9 +335,9 @@ LABEL_44:
     if (v10 == 5)
     {
       v17 = +[ENUIViewControllerFactory sharedInstance];
-      v18 = [v17 inflightVerificationStack];
+      inflightVerificationStack = [v17 inflightVerificationStack];
 
-      if (v18)
+      if (inflightVerificationStack)
       {
         v19 = ENUILogForCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -347,27 +347,27 @@ LABEL_44:
         }
 
         v20 = +[ENUIViewControllerFactory sharedInstance];
-        v21 = [v20 inflightVerificationStack];
-        [v21 dismissViewControllerAnimated:1 completion:0];
+        inflightVerificationStack2 = [v20 inflightVerificationStack];
+        [inflightVerificationStack2 dismissViewControllerAnimated:1 completion:0];
 
         v22 = +[ENUIViewControllerFactory sharedInstance];
         [v22 setInflightVerificationStack:0];
       }
 
-      v45 = [v6 objectForKeyedSubscript:@"sessionIdentifier"];
-      v23 = [v6 objectForKeyedSubscript:@"reportType"];
+      v45 = [lCopy objectForKeyedSubscript:@"sessionIdentifier"];
+      v23 = [lCopy objectForKeyedSubscript:@"reportType"];
       v43 = v23;
       if ([v23 length] == &dword_0 + 1)
       {
-        v24 = [v23 integerValue];
-        if (v24 >= 6)
+        integerValue = [v23 integerValue];
+        if (integerValue >= 6)
         {
           v25 = 0;
         }
 
         else
         {
-          v25 = v24;
+          v25 = integerValue;
         }
       }
 
@@ -376,7 +376,7 @@ LABEL_44:
         v25 = 0;
       }
 
-      v30 = [v6 objectForKeyedSubscript:{@"region", v43}];
+      v30 = [lCopy objectForKeyedSubscript:{@"region", v43}];
       if (v30)
       {
         v31 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
@@ -388,7 +388,7 @@ LABEL_44:
         v53 = v45;
         v57 = v25;
         v55 = v9;
-        v56 = v7;
+        v56 = completionCopy;
         v54 = v30;
         [v31 getAgencyModelForRegionCode:v54 completion:v52];
         v32 = &v53;
@@ -406,7 +406,7 @@ LABEL_44:
         v48 = v45;
         v51 = v25;
         v49 = v9;
-        v50 = v7;
+        v50 = completionCopy;
         [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel refreshRegionsWithCompletion:v47];
         v32 = &v48;
         v33 = &v49;
@@ -419,9 +419,9 @@ LABEL_44:
     else
     {
       v11 = +[ENUIViewControllerFactory sharedInstance];
-      v12 = [v11 inflightOnboardingStack];
+      inflightOnboardingStack2 = [v11 inflightOnboardingStack];
 
-      if (v12)
+      if (inflightOnboardingStack2)
       {
         v13 = ENUILogForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -434,9 +434,9 @@ LABEL_44:
       }
 
       v37 = +[ENUIViewControllerFactory sharedInstance];
-      v38 = [v37 inflightPreAuthorizationStack];
+      inflightPreAuthorizationStack = [v37 inflightPreAuthorizationStack];
 
-      if (v38)
+      if (inflightPreAuthorizationStack)
       {
         v39 = ENUILogForCategory();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -446,8 +446,8 @@ LABEL_44:
         }
 
         v40 = +[ENUIViewControllerFactory sharedInstance];
-        v41 = [v40 inflightPreAuthorizationStack];
-        [v41 dismissViewControllerAnimated:1 completion:0];
+        inflightPreAuthorizationStack2 = [v40 inflightPreAuthorizationStack];
+        [inflightPreAuthorizationStack2 dismissViewControllerAnimated:1 completion:0];
 
         v42 = +[ENUIViewControllerFactory sharedInstance];
         [v42 setInflightPreAuthorizationStack:0];
@@ -459,7 +459,7 @@ LABEL_44:
       v74[3] = &unk_2C9E8;
       v74[4] = self;
       v76 = v46;
-      v77 = v7;
+      v77 = completionCopy;
       v75 = v8;
       [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel refreshRegionsWithCompletion:v74];
 
@@ -483,7 +483,7 @@ LABEL_44:
     v58[3] = &unk_2CAB0;
     v58[4] = self;
     v59 = v8;
-    v60 = v7;
+    v60 = completionCopy;
     objc_copyWeak(&v61, location);
     [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel refreshRegionsWithCompletion:v58];
     objc_destroyWeak(&v61);
@@ -509,14 +509,14 @@ LABEL_45:
   [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel refreshRegionsWithCompletion:v2];
 }
 
-- (void)presentOnboardingForPath:(id)a3 fromDeepLink:(BOOL)a4 completion:(id)a5
+- (void)presentOnboardingForPath:(id)path fromDeepLink:(BOOL)link completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  completionCopy = completion;
   v10 = +[ENUIViewControllerFactory sharedInstance];
-  v11 = [v10 inflightOnboardingStack];
+  inflightOnboardingStack = [v10 inflightOnboardingStack];
 
-  if (v11)
+  if (inflightOnboardingStack)
   {
     v12 = ENUILogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -524,9 +524,9 @@ LABEL_45:
       sub_1B730();
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -545,9 +545,9 @@ LABEL_45:
     v49[3] = sub_65B8;
     v49[4] = sub_65C8;
     v50 = 0;
-    v14 = [v8 pathComponents];
-    v15 = [v14 firstObject];
-    if ([v15 isEqualToString:@"AUTHORIZE"])
+    pathComponents = [pathCopy pathComponents];
+    firstObject = [pathComponents firstObject];
+    if ([firstObject isEqualToString:@"AUTHORIZE"])
     {
       v16 = 5;
     }
@@ -562,14 +562,14 @@ LABEL_45:
     v41[2] = sub_65D0;
     v41[3] = &unk_2CBA0;
     v46 = v49;
-    v17 = v8;
+    v17 = pathCopy;
     v42 = v17;
-    v43 = self;
-    v48 = a4;
+    selfCopy = self;
+    linkCopy = link;
     v47 = v16;
     v18 = v13;
     v44 = v18;
-    v19 = v9;
+    v19 = completionCopy;
     v45 = v19;
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
@@ -580,8 +580,8 @@ LABEL_45:
     v35 = v20;
     v21 = v17;
     v33 = v21;
-    v34 = self;
-    v40 = a4;
+    selfCopy2 = self;
+    linkCopy2 = link;
     v39 = v16;
     v22 = v18;
     v36 = v22;
@@ -591,9 +591,9 @@ LABEL_45:
     v26[1] = 3221225472;
     v26[2] = sub_6F48;
     v26[3] = &unk_2CC40;
-    v24 = v14;
+    v24 = pathComponents;
     v27 = v24;
-    v28 = self;
+    selfCopy3 = self;
     v31 = v49;
     v25 = v23;
     v30 = v25;
@@ -606,49 +606,49 @@ LABEL_45:
   }
 }
 
-- (id)specifierForHealthAgencyModel:(id)a3
+- (id)specifierForHealthAgencyModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = ENUILogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_1B844(v4, v5);
+    sub_1B844(modelCopy, v5);
   }
 
-  v6 = [v4 name];
-  v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+  name = [modelCopy name];
+  v7 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-  v8 = [v4 region];
-  v9 = [v8 regionCode];
-  [v7 setIdentifier:v9];
+  region = [modelCopy region];
+  regionCode = [region regionCode];
+  [v7 setIdentifier:regionCode];
 
-  [v7 setUserInfo:v4];
+  [v7 setUserInfo:modelCopy];
   [v7 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
-  v10 = [v4 name];
-  [v7 setObject:v10 forKeyedSubscript:PSTitleKey];
+  name2 = [modelCopy name];
+  [v7 setObject:name2 forKeyedSubscript:PSTitleKey];
 
   return v7;
 }
 
-- (void)presentUIFlowStack:(id)a3 forRegionModel:(id)a4 onboardingSource:(int64_t)a5 completion:(id)a6
+- (void)presentUIFlowStack:(id)stack forRegionModel:(id)model onboardingSource:(int64_t)source completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  stackCopy = stack;
+  modelCopy = model;
+  completionCopy = completion;
+  if (stackCopy)
   {
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_7604;
     v18 = &unk_2C840;
-    v19 = self;
-    v20 = v10;
+    selfCopy = self;
+    v20 = stackCopy;
     dispatch_async(&_dispatch_main_q, &v15);
-    if (v11 && a5)
+    if (modelCopy && source)
     {
       v13 = [(ENUISettingsViewController *)self adapter:v15];
-      v14 = [v11 region];
-      [v13 onboardingDidStartForRegion:v14 source:a5];
+      region = [modelCopy region];
+      [v13 onboardingDidStartForRegion:region source:source];
     }
 
     else
@@ -661,23 +661,23 @@ LABEL_45:
     }
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)showLatestExposureDetailWithCompletion:(id)a3
+- (void)showLatestExposureDetailWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_7718;
   v7[3] = &unk_2CC68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 latestExposureNotification:v7];
 }
 
@@ -695,30 +695,30 @@ LABEL_45:
     else
     {
       v6 = objc_alloc_init(NSMutableArray);
-      v7 = [(ENUISettingsViewController *)self _loggingProfileSpecifiers];
-      [v6 addObjectsFromArray:v7];
+      _loggingProfileSpecifiers = [(ENUISettingsViewController *)self _loggingProfileSpecifiers];
+      [v6 addObjectsFromArray:_loggingProfileSpecifiers];
 
       if ([(ENUISettingsViewController *)self shouldShowSplashScreen])
       {
-        v8 = [(ENUISettingsViewController *)self _featureAvailableSpecifiers];
-        [v6 addObjectsFromArray:v8];
+        _featureAvailableSpecifiers = [(ENUISettingsViewController *)self _featureAvailableSpecifiers];
+        [v6 addObjectsFromArray:_featureAvailableSpecifiers];
 
-        v9 = [(ENUISettingsViewController *)self _availabilityAlertSpecifiers];
+        _availabilityAlertSpecifiers = [(ENUISettingsViewController *)self _availabilityAlertSpecifiers];
       }
 
       else
       {
-        v10 = [(ENUISettingsViewController *)self _systemFunctionalitySpecifiers];
-        [v6 addObjectsFromArray:v10];
+        _systemFunctionalitySpecifiers = [(ENUISettingsViewController *)self _systemFunctionalitySpecifiers];
+        [v6 addObjectsFromArray:_systemFunctionalitySpecifiers];
 
-        v11 = [(ENUISettingsViewController *)self _shareDiagnosisSpecifiers];
-        [v6 addObjectsFromArray:v11];
+        _shareDiagnosisSpecifiers = [(ENUISettingsViewController *)self _shareDiagnosisSpecifiers];
+        [v6 addObjectsFromArray:_shareDiagnosisSpecifiers];
 
-        v12 = [(ENUISettingsViewController *)self _weeklySummarySpecifiers];
-        [v6 addObjectsFromArray:v12];
+        _weeklySummarySpecifiers = [(ENUISettingsViewController *)self _weeklySummarySpecifiers];
+        [v6 addObjectsFromArray:_weeklySummarySpecifiers];
 
-        v13 = [(ENUISettingsViewController *)self _availabilityAlertSpecifiers];
-        [v6 addObjectsFromArray:v13];
+        _availabilityAlertSpecifiers2 = [(ENUISettingsViewController *)self _availabilityAlertSpecifiers];
+        [v6 addObjectsFromArray:_availabilityAlertSpecifiers2];
 
         v14 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
 
@@ -731,11 +731,11 @@ LABEL_45:
         {
           [(ENUISettingsViewController *)self _deleteExposureDataSpecifiers];
         }
-        v9 = ;
+        _availabilityAlertSpecifiers = ;
       }
 
-      v15 = v9;
-      [v6 addObjectsFromArray:v9];
+      v15 = _availabilityAlertSpecifiers;
+      [v6 addObjectsFromArray:_availabilityAlertSpecifiers];
 
       v16 = [v6 copy];
       v17 = *&self->PSListController_opaque[v3];
@@ -756,9 +756,9 @@ LABEL_45:
 - (BOOL)shouldShowSplashScreen
 {
   v3 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
-  v4 = [v3 isExposureLoggingDataPresent];
+  isExposureLoggingDataPresent = [v3 isExposureLoggingDataPresent];
 
-  if ((v4 & 1) == 0 && !+[ENUITCCUtilities hasExposureNotificationAppsFromTCC])
+  if ((isExposureLoggingDataPresent & 1) == 0 && !+[ENUITCCUtilities hasExposureNotificationAppsFromTCC])
   {
     v6 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
     v7 = v6;
@@ -902,29 +902,29 @@ LABEL_26:
   return v2;
 }
 
-- (void)addFooterText:(id)a3 withLinkText:(id)a4 toGroup:(id)a5 action:(SEL)a6
+- (void)addFooterText:(id)text withLinkText:(id)linkText toGroup:(id)group action:(SEL)action
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  groupCopy = group;
+  linkTextCopy = linkText;
+  textCopy = text;
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v10 setObject:v14 forKeyedSubscript:PSFooterCellClassGroupKey];
+  [groupCopy setObject:v14 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-  [v10 setObject:v12 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
-  v15 = [v12 rangeOfString:v11];
+  [groupCopy setObject:textCopy forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+  v15 = [textCopy rangeOfString:linkTextCopy];
   v17 = v16;
 
   v22.location = v15;
   v22.length = v17;
   v18 = NSStringFromRange(v22);
-  [v10 setObject:v18 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
+  [groupCopy setObject:v18 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
   v19 = [NSValue valueWithNonretainedObject:self];
-  [v10 setObject:v19 forKeyedSubscript:PSFooterHyperlinkViewTargetKey];
+  [groupCopy setObject:v19 forKeyedSubscript:PSFooterHyperlinkViewTargetKey];
 
-  v20 = NSStringFromSelector(a6);
-  [v10 setObject:v20 forKeyedSubscript:PSFooterHyperlinkViewActionKey];
+  v20 = NSStringFromSelector(action);
+  [groupCopy setObject:v20 forKeyedSubscript:PSFooterHyperlinkViewActionKey];
 }
 
 - (id)_loadingSpecifier
@@ -937,21 +937,21 @@ LABEL_26:
 
 - (id)_loggingStatusSpecifier
 {
-  v3 = [(ENUISettingsViewController *)self lastKnownStatus];
+  lastKnownStatus = [(ENUISettingsViewController *)self lastKnownStatus];
   v4 = ENUILocalizedString();
   v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:0 get:0 detail:0 cell:1 edit:0];
 
   [v5 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
   v13[0] = @"sectionKey";
   v6 = ENUILocalizedString();
-  v7 = v3 == 1;
+  v7 = lastKnownStatus == 1;
   v14[0] = v6;
   v13[1] = @"titleKey";
   v8 = ENUILocalizedString();
   v14[1] = v8;
   v13[2] = @"subtitleKey";
-  v9 = [(ENUISettingsViewController *)self _exposureNotificationStatusText];
-  v14[2] = v9;
+  _exposureNotificationStatusText = [(ENUISettingsViewController *)self _exposureNotificationStatusText];
+  v14[2] = _exposureNotificationStatusText;
   v13[3] = @"showTitleIconKey";
   v10 = [NSNumber numberWithBool:v7];
   v14[3] = v10;
@@ -965,11 +965,11 @@ LABEL_26:
 
 - (id)_activeRegionSpecifiers
 {
-  v3 = [(ENUISettingsViewController *)self lastKnownStatus];
+  lastKnownStatus = [(ENUISettingsViewController *)self lastKnownStatus];
   v4 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
   if (!v4)
   {
-    v16 = v3 != 4;
+    v16 = lastKnownStatus != 4;
     v6 = ENUILocalizedString();
     v14 = [PSSpecifier preferenceSpecifierNamed:@"active-region" target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
     [v14 setIdentifier:@"active-region"];
@@ -988,23 +988,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = v3 != 4;
+  v5 = lastKnownStatus != 4;
   v6 = [PSSpecifier preferenceSpecifierNamed:@"active-region" target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
   [v6 setIdentifier:@"active-region"];
   [v6 setUserInfo:v4];
   v7 = objc_opt_class();
   v8 = PSCellClassKey;
   [v6 setObject:v7 forKeyedSubscript:PSCellClassKey];
-  v9 = [v4 name];
-  [v6 setObject:v9 forKeyedSubscript:PSTitleKey];
+  name = [v4 name];
+  [v6 setObject:name forKeyedSubscript:PSTitleKey];
 
   [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:PSValueKey];
   v10 = [NSNumber numberWithInt:v5];
   [v6 setObject:v10 forKeyedSubscript:PSEnabledKey];
 
-  v11 = [v4 regionFAQWebsiteURL];
-  v12 = [v11 absoluteString];
-  v13 = [v12 length];
+  regionFAQWebsiteURL = [v4 regionFAQWebsiteURL];
+  absoluteString = [regionFAQWebsiteURL absoluteString];
+  v13 = [absoluteString length];
 
   if (v13)
   {
@@ -1020,9 +1020,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v19 = [v4 regionWebsiteURL];
-  v20 = [v19 absoluteString];
-  v21 = [v20 length];
+  regionWebsiteURL = [v4 regionWebsiteURL];
+  absoluteString2 = [regionWebsiteURL absoluteString];
+  v21 = [absoluteString2 length];
 
   if (v21)
   {
@@ -1106,8 +1106,8 @@ LABEL_9:
 
 - (id)_availabilityAlertSpecifiers
 {
-  v3 = [(ENUISettingsViewController *)self adapter];
-  v4 = [v3 isAvailabilityAlertsSwitchEnabled];
+  adapter = [(ENUISettingsViewController *)self adapter];
+  isAvailabilityAlertsSwitchEnabled = [adapter isAvailabilityAlertsSwitchEnabled];
 
   v5 = [PSSpecifier groupSpecifierWithID:@"notify-when-available"];
   v6 = ENUILocalizedString();
@@ -1116,7 +1116,7 @@ LABEL_9:
   v7 = ENUILocalizedString();
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"toggleAvailabilityAlertsSwitch:specifier:" get:"areAvailabilityAlertsEnabled" detail:0 cell:6 edit:0];
 
-  v9 = [NSNumber numberWithBool:v4];
+  v9 = [NSNumber numberWithBool:isAvailabilityAlertsSwitchEnabled];
   [v8 setObject:v9 forKeyedSubscript:PSEnabledKey];
 
   v12[0] = v5;
@@ -1153,15 +1153,15 @@ LABEL_9:
   v3 = [PSSpecifier preferenceSpecifierNamed:&stru_2D818 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
   [v3 setIdentifier:@"latest-notification"];
   [v3 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v4 = [(ENUISettingsViewController *)self lastKnownStatus];
+  lastKnownStatus = [(ENUISettingsViewController *)self lastKnownStatus];
   latestNotification = self->_latestNotification;
-  if (v4 == 1)
+  if (lastKnownStatus == 1)
   {
     if (!latestNotification)
     {
-      v6 = [(ENUISettingsViewController *)self lastExposureCheckTime];
+      lastExposureCheckTime = [(ENUISettingsViewController *)self lastExposureCheckTime];
 
-      if (v6)
+      if (lastExposureCheckTime)
       {
         if (qword_340F8 != -1)
         {
@@ -1169,8 +1169,8 @@ LABEL_9:
         }
 
         v7 = qword_340F0;
-        v8 = [(ENUISettingsViewController *)self lastExposureCheckTime];
-        v9 = [v7 stringFromDate:v8];
+        lastExposureCheckTime2 = [(ENUISettingsViewController *)self lastExposureCheckTime];
+        v9 = [v7 stringFromDate:lastExposureCheckTime2];
 
         v10 = ENUILocalizedString();
         v11 = [NSString stringWithFormat:v10, v9];
@@ -1227,36 +1227,36 @@ LABEL_9:
 
   v44 = v3;
   v12 = +[NSCalendar currentCalendar];
-  v13 = [(ENExposureNotification *)self->_latestNotification classification];
-  v14 = [v13 date];
+  classification = [(ENExposureNotification *)self->_latestNotification classification];
+  date = [classification date];
 
-  if (v14)
+  if (date)
   {
     v15 = objc_alloc_init(NSDateIntervalFormatter);
     v16 = +[NSLocale currentLocale];
     v17 = [NSDateFormatter dateFormatFromTemplate:@"MMMMd" options:0 locale:v16];
     [v15 setDateTemplate:v17];
 
-    v18 = [v12 dateByAddingUnit:16 value:1 toDate:v14 options:0];
+    v18 = [v12 dateByAddingUnit:16 value:1 toDate:date options:0];
     v19 = [v12 dateByAddingUnit:128 value:-1 toDate:v18 options:0];
 
-    v20 = [(ENExposureNotification *)self->_latestNotification notificationDate];
-    if (v20 && [v19 compare:v20] == &dword_0 + 1)
+    notificationDate = [(ENExposureNotification *)self->_latestNotification notificationDate];
+    if (notificationDate && [v19 compare:notificationDate] == &dword_0 + 1)
     {
-      v21 = v20;
+      v21 = notificationDate;
 
       v19 = v21;
     }
 
-    v22 = [v15 stringFromDate:v14 toDate:v19];
+    v22 = [v15 stringFromDate:date toDate:v19];
   }
 
   else
   {
-    v14 = [(ENExposureNotification *)self->_latestNotification notificationDate];
+    date = [(ENExposureNotification *)self->_latestNotification notificationDate];
     v15 = objc_alloc_init(NSDateFormatter);
     v19 = +[NSDate date];
-    v23 = [v12 component:4 fromDate:v14];
+    v23 = [v12 component:4 fromDate:date];
     if (v23 == [v12 component:4 fromDate:v19])
     {
       v24 = @"MMMMd";
@@ -1268,7 +1268,7 @@ LABEL_9:
     }
 
     [v15 setLocalizedDateFormatFromTemplate:v24];
-    v22 = [v15 stringFromDate:v14];
+    v22 = [v15 stringFromDate:date];
   }
 
   if (v22)
@@ -1282,7 +1282,7 @@ LABEL_9:
     v26 = &stru_2D818;
   }
 
-  v27 = [(ENExposureNotification *)self->_latestNotification localizedSubjectText];
+  localizedSubjectText = [(ENExposureNotification *)self->_latestNotification localizedSubjectText];
   if ([(ENExposureNotification *)self->_latestNotification revoked])
   {
     v28 = 1;
@@ -1293,12 +1293,12 @@ LABEL_9:
     v28 = 2;
   }
 
-  if (![v27 length])
+  if (![localizedSubjectText length])
   {
     [(ENExposureNotification *)self->_latestNotification revoked];
     v29 = ENUILocalizedString();
 
-    v27 = v29;
+    localizedSubjectText = v29;
   }
 
   v47[0] = @"sectionKey";
@@ -1309,7 +1309,7 @@ LABEL_9:
   v47[2] = @"status";
   v31 = [NSNumber numberWithUnsignedInteger:v28];
   v48[2] = v31;
-  v48[3] = v27;
+  v48[3] = localizedSubjectText;
   v47[3] = @"titleKey";
   v47[4] = @"subtitleKey";
   v47[5] = @"notification";
@@ -1331,12 +1331,12 @@ LABEL_29:
 {
   v3 = [PSSpecifier groupSpecifierWithID:@"view-in-app-group"];
   v4 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
-  v5 = [v4 installedAppName];
+  installedAppName = [v4 installedAppName];
 
-  if ([v5 length])
+  if ([installedAppName length])
   {
     v6 = ENUILocalizedString();
-    v7 = [NSString stringWithFormat:v6, v5];
+    v7 = [NSString stringWithFormat:v6, installedAppName];
     [v3 setObject:v7 forKeyedSubscript:PSFooterTextGroupKey];
   }
 
@@ -1366,24 +1366,24 @@ LABEL_29:
 
   if (v6)
   {
-    v9 = [(ENUISettingsViewController *)self _viewExposureInAppSpecifiers];
-    [v3 addObjectsFromArray:v9];
-    v10 = v4;
+    _viewExposureInAppSpecifiers = [(ENUISettingsViewController *)self _viewExposureInAppSpecifiers];
+    [v3 addObjectsFromArray:_viewExposureInAppSpecifiers];
+    _latestNotificationSpecifier = v4;
   }
 
   else
   {
-    v10 = [(ENUISettingsViewController *)self _latestNotificationSpecifier];
+    _latestNotificationSpecifier = [(ENUISettingsViewController *)self _latestNotificationSpecifier];
     [v3 addObject:v4];
-    v9 = v10;
+    _viewExposureInAppSpecifiers = _latestNotificationSpecifier;
   }
 
-  [v3 addObject:v10];
+  [v3 addObject:_latestNotificationSpecifier];
 
-  v11 = [(ENUISettingsViewController *)self _loggingStatusSpecifier];
-  [v3 addObject:v11];
-  v12 = [(ENUISettingsViewController *)self _activeRegionSpecifiers];
-  [v3 addObjectsFromArray:v12];
+  _loggingStatusSpecifier = [(ENUISettingsViewController *)self _loggingStatusSpecifier];
+  [v3 addObject:_loggingStatusSpecifier];
+  _activeRegionSpecifiers = [(ENUISettingsViewController *)self _activeRegionSpecifiers];
+  [v3 addObjectsFromArray:_activeRegionSpecifiers];
 
   return v3;
 }
@@ -1409,17 +1409,17 @@ LABEL_29:
   {
     v4 = [PSSpecifier groupSpecifierWithID:@"share-diagnosis"];
     v5 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
-    v6 = [v5 isRegionUsingApp];
+    isRegionUsingApp = [v5 isRegionUsingApp];
 
     v7 = ENUILocalizedString();
-    if (v6)
+    if (isRegionUsingApp)
     {
       [v4 setObject:v7 forKeyedSubscript:PSFooterTextGroupKey];
 
       v8 = ENUILocalizedString();
       v9 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
-      v10 = [v9 installedAppName];
-      v7 = [NSString stringWithFormat:v8, v10];
+      installedAppName = [v9 installedAppName];
+      v7 = [NSString stringWithFormat:v8, installedAppName];
 
       v11 = "didTapViewInApp";
     }
@@ -1482,9 +1482,9 @@ LABEL_29:
 - (id)_weeklySummarySpecifiers
 {
   v3 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
-  v4 = [v3 installedAppName];
+  installedAppName = [v3 installedAppName];
 
-  if (v4)
+  if (installedAppName)
   {
     v5 = [PSSpecifier groupSpecifierWithID:@"weekly-alert-enabled"];
     v6 = ENUILocalizedString();
@@ -1506,19 +1506,19 @@ LABEL_29:
   return v9;
 }
 
-- (void)showExposureLoggingController:(id)a3
+- (void)showExposureLoggingController:(id)controller
 {
   v4 = [ENUIExposureLoggingViewController alloc];
-  v5 = [(ENUISettingsViewController *)self exposureStore];
-  v7 = [(ENUIExposureLoggingViewController *)v4 initWithStore:v5];
+  exposureStore = [(ENUISettingsViewController *)self exposureStore];
+  v7 = [(ENUIExposureLoggingViewController *)v4 initWithStore:exposureStore];
 
-  v6 = [(ENUISettingsViewController *)self navigationController];
-  [v6 pushViewController:v7 animated:1];
+  navigationController = [(ENUISettingsViewController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
-- (void)didTapTurnOnExposureNotifications:(id)a3
+- (void)didTapTurnOnExposureNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   if ([(ENUISettingsViewController *)self lastKnownStatus]== &dword_0 + 2 || [(ENUISettingsViewController *)self lastKnownStatus]== &dword_4 + 2 || [(ENUISettingsViewController *)self lastKnownStatus]== &dword_4)
   {
     v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
@@ -1548,9 +1548,9 @@ LABEL_29:
   }
 }
 
-- (void)didTapTurnOffExposureNotifications:(id)a3
+- (void)didTapTurnOffExposureNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = ENUILocalizedString();
   v6 = ENUILocalizedString();
   v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:0];
@@ -1574,9 +1574,9 @@ LABEL_29:
   objc_destroyWeak(&location);
 }
 
-- (void)didTapDeleteExposureData:(id)a3
+- (void)didTapDeleteExposureData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = ENUILocalizedString();
   v6 = ENUILocalizedString();
   v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:0];
@@ -1600,22 +1600,22 @@ LABEL_29:
   objc_destroyWeak(&location);
 }
 
-- (void)toggleAvailabilityAlertsSwitch:(id)a3 specifier:(id)a4
+- (void)toggleAvailabilityAlertsSwitch:(id)switch specifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [(ENUISettingsViewController *)self adapter];
-  v6 = [v5 BOOLValue];
+  switchCopy = switch;
+  adapter = [(ENUISettingsViewController *)self adapter];
+  bOOLValue = [switchCopy BOOLValue];
 
-  [v7 setAvailabilityAlertsEnabled:v6 completion:&stru_2CCF0];
+  [adapter setAvailabilityAlertsEnabled:bOOLValue completion:&stru_2CCF0];
 }
 
 - (id)areAvailabilityAlertsEnabled
 {
-  v3 = [(ENUISettingsViewController *)self adapter];
-  if ([v3 isAvailabilityAlertsSwitchEnabled])
+  adapter = [(ENUISettingsViewController *)self adapter];
+  if ([adapter isAvailabilityAlertsSwitchEnabled])
   {
-    v4 = [(ENUISettingsViewController *)self adapter];
-    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 areAvailabilityAlertsEnabled]);
+    adapter2 = [(ENUISettingsViewController *)self adapter];
+    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [adapter2 areAvailabilityAlertsEnabled]);
   }
 
   else
@@ -1626,36 +1626,36 @@ LABEL_29:
   return v5;
 }
 
-- (void)_toggleWeeklySummarySwitch:(id)a3 specifier:(id)a4
+- (void)_toggleWeeklySummarySwitch:(id)switch specifier:(id)specifier
 {
-  v5 = a3;
-  -[ENUISettingsViewController setIsWeeklySummaryEnabled:](self, "setIsWeeklySummaryEnabled:", [v5 BOOLValue]);
-  v7 = [(ENUISettingsViewController *)self adapter];
-  v6 = [v5 BOOLValue];
+  switchCopy = switch;
+  -[ENUISettingsViewController setIsWeeklySummaryEnabled:](self, "setIsWeeklySummaryEnabled:", [switchCopy BOOLValue]);
+  adapter = [(ENUISettingsViewController *)self adapter];
+  bOOLValue = [switchCopy BOOLValue];
 
-  [v7 setWeeklySummaryEnabled:v6 completion:&stru_2CD10];
+  [adapter setWeeklySummaryEnabled:bOOLValue completion:&stru_2CD10];
 }
 
 - (id)_isWeeklySummaryEnabled
 {
-  v2 = [(ENUISettingsViewController *)self isWeeklySummaryEnabled];
+  isWeeklySummaryEnabled = [(ENUISettingsViewController *)self isWeeklySummaryEnabled];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:isWeeklySummaryEnabled];
 }
 
 - (void)didConfirmTurnOffExposureNotifications
 {
-  v3 = [(ENUISettingsViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(ENUISettingsViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   objc_initWeak(&location, self);
-  v4 = [(ENUISettingsViewController *)self adapter];
+  adapter = [(ENUISettingsViewController *)self adapter];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_A928;
   v5[3] = &unk_2CD38;
   objc_copyWeak(&v6, &location);
-  [v4 resetAllDataAndDisableExposureNotifications:v5];
+  [adapter resetAllDataAndDisableExposureNotifications:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -1684,30 +1684,30 @@ LABEL_29:
 - (void)didTapRegionFAQWebsite
 {
   v7 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
-  v2 = [v7 regionFAQWebsiteURL];
-  v3 = [v2 absoluteString];
-  v4 = [v3 length];
+  regionFAQWebsiteURL = [v7 regionFAQWebsiteURL];
+  absoluteString = [regionFAQWebsiteURL absoluteString];
+  v4 = [absoluteString length];
 
   if (v4)
   {
     v5 = +[LSApplicationWorkspace defaultWorkspace];
-    v6 = [v7 regionFAQWebsiteURL];
-    [v5 openURL:v6 withOptions:0];
+    regionFAQWebsiteURL2 = [v7 regionFAQWebsiteURL];
+    [v5 openURL:regionFAQWebsiteURL2 withOptions:0];
   }
 }
 
 - (void)didTapRegionWebsite
 {
   v7 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
-  v2 = [v7 regionWebsiteURL];
-  v3 = [v2 absoluteString];
-  v4 = [v3 length];
+  regionWebsiteURL = [v7 regionWebsiteURL];
+  absoluteString = [regionWebsiteURL absoluteString];
+  v4 = [absoluteString length];
 
   if (v4)
   {
     v5 = +[LSApplicationWorkspace defaultWorkspace];
-    v6 = [v7 regionWebsiteURL];
-    [v5 openURL:v6 withOptions:0];
+    regionWebsiteURL2 = [v7 regionWebsiteURL];
+    [v5 openURL:regionWebsiteURL2 withOptions:0];
   }
 }
 

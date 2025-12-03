@@ -1,14 +1,14 @@
 @interface ExpandViewController
-- (_TtC17PromotedContentUI20ExpandViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)closeButtonTappedWithSender:(id)a3;
+- (_TtC17PromotedContentUI20ExpandViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)closeButtonTappedWithSender:(id)sender;
 - (void)dealloc;
-- (void)tapRecognized:(id)a3;
+- (void)tapRecognized:(id)recognized;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 - (void)webProcessMRAIDJSODidCallClose;
-- (void)webProcessMRAIDJSODidCallExpand:(id)a3 withMaximumWidth:(double)a4 andHeight:(double)a5;
-- (void)webProcessMRAIDJSODidCallOpen:(id)a3;
+- (void)webProcessMRAIDJSODidCallExpand:(id)expand withMaximumWidth:(double)width andHeight:(double)height;
+- (void)webProcessMRAIDJSODidCallOpen:(id)open;
 - (void)webProcessPlugInBrowserContextControllerGlobalObjectIsAvailableForFrame;
 @end
 
@@ -18,36 +18,36 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI20ExpandViewController_webView);
-  v5 = self;
+  selfCopy = self;
   v6 = v4;
   sub_1C1A65B5C();
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(ExpandViewController *)&v7 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19B2B18();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1C19B30B4(a3);
+  selfCopy = self;
+  sub_1C19B30B4(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19B3294();
 }
 
-- (void)closeButtonTappedWithSender:(id)a3
+- (void)closeButtonTappedWithSender:(id)sender
 {
-  v4 = self;
+  selfCopy = self;
   sub_1C1A6F65C();
   sub_1C199E4CC();
   v3 = sub_1C1A6F8EC();
@@ -56,14 +56,14 @@
   sub_1C19B35B0();
 }
 
-- (void)tapRecognized:(id)a3
+- (void)tapRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
+  recognizedCopy = recognized;
+  selfCopy = self;
   sub_1C19B4254();
 }
 
-- (_TtC17PromotedContentUI20ExpandViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17PromotedContentUI20ExpandViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -72,11 +72,11 @@
 
 - (void)webProcessPlugInBrowserContextControllerGlobalObjectIsAvailableForFrame
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19B3A78();
 }
 
-- (void)webProcessMRAIDJSODidCallOpen:(id)a3
+- (void)webProcessMRAIDJSODidCallOpen:(id)open
 {
   v4 = sub_1C1A6D48C();
   v5 = *(v4 - 8);
@@ -89,7 +89,7 @@
     v9 = Strong;
     if ([Strong respondsToSelector_])
     {
-      v10 = self;
+      selfCopy = self;
       v11 = sub_1C1A6D41C();
       [v9 webProcessMRAIDJSODidCallOpen_];
       swift_unknownObjectRelease();
@@ -106,11 +106,11 @@
 
 - (void)webProcessMRAIDJSODidCallClose
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19B3D30();
 }
 
-- (void)webProcessMRAIDJSODidCallExpand:(id)a3 withMaximumWidth:(double)a4 andHeight:(double)a5
+- (void)webProcessMRAIDJSODidCallExpand:(id)expand withMaximumWidth:(double)width andHeight:(double)height
 {
   v5 = sub_1C1A6D48C();
   v6 = *(v5 - 8);

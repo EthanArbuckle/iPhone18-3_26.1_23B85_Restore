@@ -1,5 +1,5 @@
 @interface IDSDailyAccountAddedNotificationsMetric
-- (IDSDailyAccountAddedNotificationsMetric)initWithNotificationsPostedToday:(id)a3 duplicateNotificationPostedToday:(id)a4;
+- (IDSDailyAccountAddedNotificationsMetric)initWithNotificationsPostedToday:(id)today duplicateNotificationPostedToday:(id)postedToday;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -24,18 +24,18 @@
   return v4;
 }
 
-- (IDSDailyAccountAddedNotificationsMetric)initWithNotificationsPostedToday:(id)a3 duplicateNotificationPostedToday:(id)a4
+- (IDSDailyAccountAddedNotificationsMetric)initWithNotificationsPostedToday:(id)today duplicateNotificationPostedToday:(id)postedToday
 {
-  v7 = a3;
-  v8 = a4;
+  todayCopy = today;
+  postedTodayCopy = postedToday;
   v12.receiver = self;
   v12.super_class = IDSDailyAccountAddedNotificationsMetric;
   v9 = [(IDSDailyAccountAddedNotificationsMetric *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dailyNotificationsPosted, a3);
-    objc_storeStrong(&v10->_dailyDuplicateNotificationsPosted, a4);
+    objc_storeStrong(&v9->_dailyNotificationsPosted, today);
+    objc_storeStrong(&v10->_dailyDuplicateNotificationsPosted, postedToday);
   }
 
   return v10;

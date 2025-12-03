@@ -1,46 +1,46 @@
 @interface ASDiscoveredAccessory
-- (ASDiscoveredAccessory)initWithCoder:(id)a3;
-- (ASDiscoveredAccessory)initWithDADevice:(id)a3 bundleID:(id)a4;
-- (ASDiscoveredAccessory)initWithXPCObject:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (ASDiscoveredAccessory)initWithCoder:(id)coder;
+- (ASDiscoveredAccessory)initWithDADevice:(id)device bundleID:(id)d;
+- (ASDiscoveredAccessory)initWithXPCObject:(id)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ASDiscoveredAccessory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ASDiscoveredAccessory;
-  [(ASAccessory *)&v8 encodeWithCoder:v4];
+  [(ASAccessory *)&v8 encodeWithCoder:coderCopy];
   v5 = self->_bluetoothAdvertisementData;
   v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
   if (v6)
   {
-    [v4 encodeObject:v6 forKey:@"btAdv"];
+    [coderCopy encodeObject:v6 forKey:@"btAdv"];
   }
 
   bluetoothRSSI = self->_bluetoothRSSI;
   if (bluetoothRSSI)
   {
-    [v4 encodeObject:bluetoothRSSI forKey:@"btRSSI"];
+    [coderCopy encodeObject:bluetoothRSSI forKey:@"btRSSI"];
   }
 }
 
-- (ASDiscoveredAccessory)initWithCoder:(id)a3
+- (ASDiscoveredAccessory)initWithCoder:(id)coder
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ASDiscoveredAccessory;
-  v5 = [(ASAccessory *)&v10 initWithCoder:v4];
+  v5 = [(ASAccessory *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -51,30 +51,30 @@
 
   else
   {
-    [ASDiscoveredAccessory initWithCoder:v4];
+    [ASDiscoveredAccessory initWithCoder:coderCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = ASDiscoveredAccessory;
-  [(ASAccessory *)&v13 encodeWithXPCObject:v4];
+  [(ASAccessory *)&v13 encodeWithXPCObject:objectCopy];
   v5 = self->_bluetoothAdvertisementData;
   v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
   v7 = v6;
   if (v6)
   {
     v8 = v6;
-    v9 = v4;
-    v10 = [v7 bytes];
-    if (v10)
+    v9 = objectCopy;
+    bytes = [v7 bytes];
+    if (bytes)
     {
-      v11 = v10;
+      v11 = bytes;
     }
 
     else
@@ -85,23 +85,23 @@
     xpc_dictionary_set_data(v9, "btAdv", v11, [v7 length]);
   }
 
-  v12 = [(NSNumber *)self->_bluetoothRSSI intValue];
-  if (v12)
+  intValue = [(NSNumber *)self->_bluetoothRSSI intValue];
+  if (intValue)
   {
-    xpc_dictionary_set_int64(v4, "btRSSI", v12);
+    xpc_dictionary_set_int64(objectCopy, "btRSSI", intValue);
   }
 }
 
-- (ASDiscoveredAccessory)initWithXPCObject:(id)a3 error:(id *)a4
+- (ASDiscoveredAccessory)initWithXPCObject:(id)object error:(id *)error
 {
   v23[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v22.receiver = self;
   v22.super_class = ASDiscoveredAccessory;
-  v7 = [(ASAccessory *)&v22 initWithXPCObject:v6 error:a4];
+  v7 = [(ASAccessory *)&v22 initWithXPCObject:objectCopy error:error];
   if (v7)
   {
-    if (MEMORY[0x2383B4C90](v6) == MEMORY[0x277D86468])
+    if (MEMORY[0x2383B4C90](objectCopy) == MEMORY[0x277D86468])
     {
       CUXPCDecodeNSData();
       v23[0] = 0;
@@ -122,10 +122,10 @@
       v17 = v7;
     }
 
-    else if (a4)
+    else if (error)
     {
       ASErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v20);
-      *a4 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -136,7 +136,7 @@
 
   else
   {
-    [ASAccessory initWithXPCObject:a4 error:v23];
+    [ASAccessory initWithXPCObject:error error:v23];
     v17 = v23[0];
   }
 
@@ -144,11 +144,11 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = ASDiscoveredAccessory;
-  v4 = [(ASAccessory *)&v10 copyWithZone:a3];
+  v4 = [(ASAccessory *)&v10 copyWithZone:zone];
   v5 = [(NSDictionary *)self->_bluetoothAdvertisementData copy];
   v6 = v4[10];
   v4[10] = v5;
@@ -160,13 +160,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (![(ASDiscoveredAccessory *)v6 isMemberOfClass:objc_opt_class()])
     {
       v13 = 0;
@@ -175,10 +175,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(ASAccessory *)self identifier];
-    v8 = [(ASAccessory *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(ASAccessory *)self identifier];
+    identifier2 = [(ASAccessory *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -208,9 +208,9 @@ LABEL_26:
     }
 
     bluetoothAdvertisementData = self->_bluetoothAdvertisementData;
-    v15 = [(ASDiscoveredAccessory *)v6 bluetoothAdvertisementData];
+    bluetoothAdvertisementData = [(ASDiscoveredAccessory *)v6 bluetoothAdvertisementData];
     v16 = bluetoothAdvertisementData;
-    v17 = v15;
+    v17 = bluetoothAdvertisementData;
     v18 = v17;
     if (v16 == v17)
     {
@@ -239,9 +239,9 @@ LABEL_25:
     }
 
     bluetoothRSSI = self->_bluetoothRSSI;
-    v21 = [(ASDiscoveredAccessory *)v6 bluetoothRSSI];
+    bluetoothRSSI = [(ASDiscoveredAccessory *)v6 bluetoothRSSI];
     v22 = bluetoothRSSI;
-    v23 = v21;
+    v23 = bluetoothRSSI;
     v16 = v23;
     if (v22 == v23)
     {
@@ -267,9 +267,9 @@ LABEL_28:
   return v13;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -281,8 +281,8 @@ LABEL_28:
     v4 = 0;
   }
 
-  v5 = [(ASAccessory *)self identifier];
-  if (v5)
+  identifier = [(ASAccessory *)self identifier];
+  if (identifier)
   {
     CUAppendF();
     v6 = v4;
@@ -321,41 +321,41 @@ LABEL_28:
   return v12;
 }
 
-- (ASDiscoveredAccessory)initWithDADevice:(id)a3 bundleID:(id)a4
+- (ASDiscoveredAccessory)initWithDADevice:(id)device bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  dCopy = d;
   v8 = [(ASDiscoveredAccessory *)self init];
-  if (v8 && ([v6 flags] & 8) != 0)
+  if (v8 && ([deviceCopy flags] & 8) != 0)
   {
-    v9 = [v6 identifier];
-    if (v9)
+    identifier = [deviceCopy identifier];
+    if (identifier)
     {
-      [(ASAccessory *)v8 setIdentifier:v9];
+      [(ASAccessory *)v8 setIdentifier:identifier];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCAD78] UUID];
-      v11 = [v10 UUIDString];
-      [(ASAccessory *)v8 setIdentifier:v11];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [(ASAccessory *)v8 setIdentifier:uUIDString];
     }
 
-    v12 = [v6 bluetoothAdvertisementData];
-    v13 = [v12 copy];
+    bluetoothAdvertisementData = [deviceCopy bluetoothAdvertisementData];
+    v13 = [bluetoothAdvertisementData copy];
     [(ASDiscoveredAccessory *)v8 setBluetoothAdvertisementData:v13];
 
-    v14 = [v6 bluetoothRSSI];
-    v15 = [v14 copy];
+    bluetoothRSSI = [deviceCopy bluetoothRSSI];
+    v15 = [bluetoothRSSI copy];
     [(ASDiscoveredAccessory *)v8 setBluetoothRSSI:v15];
 
-    v16 = [v6 appAccessInfoMap];
-    v17 = [v16 objectForKeyedSubscript:v7];
-    v18 = [v17 appDiscoveryConfiguration];
+    appAccessInfoMap = [deviceCopy appAccessInfoMap];
+    v17 = [appAccessInfoMap objectForKeyedSubscript:dCopy];
+    appDiscoveryConfiguration = [v17 appDiscoveryConfiguration];
 
-    if (v18)
+    if (appDiscoveryConfiguration)
     {
-      v19 = [[ASDiscoveryDescriptor alloc] initWithDiscoveryConfiguration:v18];
+      v19 = [[ASDiscoveryDescriptor alloc] initWithDiscoveryConfiguration:appDiscoveryConfiguration];
     }
 
     else
@@ -364,16 +364,16 @@ LABEL_28:
     }
 
     [(ASAccessory *)v8 setDescriptor:v19];
-    v20 = [v6 name];
-    if (v20)
+    name = [deviceCopy name];
+    if (name)
     {
-      [(ASAccessory *)v8 setDisplayName:v20];
+      [(ASAccessory *)v8 setDisplayName:name];
     }
 
     else
     {
-      v21 = [v18 displayName];
-      [(ASAccessory *)v8 setDisplayName:v21];
+      displayName = [appDiscoveryConfiguration displayName];
+      [(ASAccessory *)v8 setDisplayName:displayName];
     }
 
     [(ASAccessory *)v8 setState:0];

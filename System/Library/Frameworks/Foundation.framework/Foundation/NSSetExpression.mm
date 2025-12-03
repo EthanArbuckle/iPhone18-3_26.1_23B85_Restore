@@ -1,29 +1,29 @@
 @interface NSSetExpression
-- (BOOL)isEqual:(id)a3;
-- (NSSetExpression)initWithCoder:(id)a3;
-- (NSSetExpression)initWithType:(unint64_t)a3 leftExpression:(id)a4 rightExpression:(id)a5;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSSetExpression)initWithCoder:(id)coder;
+- (NSSetExpression)initWithType:(unint64_t)type leftExpression:(id)expression rightExpression:(id)rightExpression;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)predicateFormat;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)allowEvaluation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSetExpression
 
-- (NSSetExpression)initWithType:(unint64_t)a3 leftExpression:(id)a4 rightExpression:(id)a5
+- (NSSetExpression)initWithType:(unint64_t)type leftExpression:(id)expression rightExpression:(id)rightExpression
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = NSSetExpression;
-  v7 = [(NSExpression *)&v9 initWithExpressionType:a3];
+  v7 = [(NSExpression *)&v9 initWithExpressionType:type];
   if (v7)
   {
-    v7->_left = a4;
-    v7->_right = a5;
+    v7->_left = expression;
+    v7->_right = rightExpression;
   }
 
   return v7;
@@ -50,25 +50,25 @@
   [(NSExpression *)&v3 allowEvaluation];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSSetExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:-[NSSetExpression leftExpression](self forKey:{"leftExpression"), @"NSLeftExpression"}];
-  [a3 encodeObject:-[NSSetExpression rightExpression](self forKey:{"rightExpression"), @"NSRightExpression"}];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:-[NSSetExpression leftExpression](self forKey:{"leftExpression"), @"NSLeftExpression"}];
+  [coder encodeObject:-[NSSetExpression rightExpression](self forKey:{"rightExpression"), @"NSRightExpression"}];
 }
 
-- (NSSetExpression)initWithCoder:(id)a3
+- (NSSetExpression)initWithCoder:(id)coder
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -76,14 +76,14 @@
 
   v12.receiver = self;
   v12.super_class = NSSetExpression;
-  v5 = [(NSExpression *)&v12 initWithCoder:a3];
+  v5 = [(NSExpression *)&v12 initWithCoder:coder];
   if (v5)
   {
-    v6 = [a3 allowedClasses];
-    v7 = [v6 count];
+    allowedClasses = [coder allowedClasses];
+    v7 = [allowedClasses count];
     if (v7)
     {
-      v8 = [v6 mutableCopy];
+      v8 = [allowedClasses mutableCopy];
       [v8 unionSet:{+[_NSPredicateUtilities _expressionClassesForSecureCoding](_NSPredicateUtilities, "_expressionClassesForSecureCoding")}];
     }
 
@@ -92,8 +92,8 @@
       v8 = +[_NSPredicateUtilities _expressionClassesForSecureCoding];
     }
 
-    v5->_left = [a3 decodeObjectOfClasses:v8 forKey:@"NSLeftExpression"];
-    v5->_right = [a3 decodeObjectOfClasses:v8 forKey:@"NSRightExpression"];
+    v5->_left = [coder decodeObjectOfClasses:v8 forKey:@"NSLeftExpression"];
+    v5->_right = [coder decodeObjectOfClasses:v8 forKey:@"NSRightExpression"];
     if (objc_opt_isKindOfClass())
     {
       if (objc_opt_isKindOfClass())
@@ -136,44 +136,44 @@ LABEL_13:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [-[NSSetExpression leftExpression](self leftExpression];
+  leftExpression = [-[NSSetExpression leftExpression](self leftExpression];
   v5 = [-[NSSetExpression rightExpression](self "rightExpression")];
-  v6 = [[NSSetExpression alloc] initWithType:[(NSExpression *)self expressionType] leftExpression:v4 rightExpression:v5];
+  v6 = [[NSSetExpression alloc] initWithType:[(NSExpression *)self expressionType] leftExpression:leftExpression rightExpression:v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSExpression *)self expressionType];
-  if (v5 != [a3 expressionType] || !objc_msgSend(-[NSSetExpression leftExpression](self, "leftExpression"), "isEqual:", objc_msgSend(a3, "leftExpression")))
+  expressionType = [(NSExpression *)self expressionType];
+  if (expressionType != [equal expressionType] || !objc_msgSend(-[NSSetExpression leftExpression](self, "leftExpression"), "isEqual:", objc_msgSend(equal, "leftExpression")))
   {
     return 0;
   }
 
-  v6 = [(NSSetExpression *)self rightExpression];
-  v7 = [a3 rightExpression];
+  rightExpression = [(NSSetExpression *)self rightExpression];
+  rightExpression2 = [equal rightExpression];
 
-  return [v6 isEqual:v7];
+  return [rightExpression isEqual:rightExpression2];
 }
 
 - (id)predicateFormat
 {
-  v3 = [(NSExpression *)self expressionType];
+  expressionType = [(NSExpression *)self expressionType];
   v4 = @"MINUS";
-  if (v3 == NSIntersectSetExpressionType)
+  if (expressionType == NSIntersectSetExpressionType)
   {
     v4 = @"INTERSECT";
   }
 
-  if (v3 == NSUnionSetExpressionType)
+  if (expressionType == NSUnionSetExpressionType)
   {
     v5 = @"UNION";
   }
@@ -186,17 +186,17 @@ LABEL_13:
   return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@ %@", [-[NSSetExpression leftExpression](self "leftExpression")], v5, objc_msgSend(-[NSSetExpression rightExpression](self, "rightExpression"), "predicateFormat"));
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
-  if (a4)
+  if (flags)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
       [-[NSSetExpression leftExpression](self "leftExpression")];
-      v7 = [(NSSetExpression *)self rightExpression];
+      rightExpression = [(NSSetExpression *)self rightExpression];
 
-      [v7 acceptVisitor:a3 flags:a4];
+      [rightExpression acceptVisitor:visitor flags:flags];
     }
 
     else
@@ -204,24 +204,24 @@ LABEL_13:
       [-[NSSetExpression leftExpression](self "leftExpression")];
       [-[NSSetExpression rightExpression](self "rightExpression")];
 
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
   }
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
 
-  v3 = -[NSSetExpression initWithType:leftExpression:rightExpression:]([NSSetExpression alloc], "initWithType:leftExpression:rightExpression:", -[NSExpression expressionType](self, "expressionType"), [-[NSSetExpression leftExpression](self "leftExpression")], objc_msgSend(-[NSSetExpression rightExpression](self, "rightExpression"), "_expressionWithSubstitutionVariables:", a3));
+  v3 = -[NSSetExpression initWithType:leftExpression:rightExpression:]([NSSetExpression alloc], "initWithType:leftExpression:rightExpression:", -[NSExpression expressionType](self, "expressionType"), [-[NSSetExpression leftExpression](self "leftExpression")], objc_msgSend(-[NSSetExpression rightExpression](self, "rightExpression"), "_expressionWithSubstitutionVariables:", variables));
 
   return v3;
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   if (![(NSExpression *)self _allowsEvaluation])
   {
@@ -229,7 +229,7 @@ LABEL_13:
   }
 
   v7 = [[_NSPerformanceMeter alloc] initWithTarget:self, 0];
-  v8 = [objc_msgSend(-[NSSetExpression leftExpression](self "leftExpression")];
+  array = [objc_msgSend(-[NSSetExpression leftExpression](self "leftExpression")];
   v9 = [-[NSSetExpression rightExpression](self "rightExpression")];
   if ((_NSIsNSSet() & 1) == 0)
   {
@@ -243,15 +243,15 @@ LABEL_13:
       if (!_NSIsNSOrderedSet())
       {
         v18 = MEMORY[0x1E695DF30];
-        v19 = [NSString stringWithFormat:@"Can't evaluate set expression; left subexpression not a set (lhs = %@ rhs = %@)", v8, v9];
+        v19 = [NSString stringWithFormat:@"Can't evaluate set expression; left subexpression not a set (lhs = %@ rhs = %@)", array, v9];
         goto LABEL_34;
       }
 
       v10 = MEMORY[0x1E695DFA8];
-      v8 = [v8 array];
+      array = [array array];
     }
 
-    v8 = [v10 setWithArray:v8];
+    array = [v10 setWithArray:array];
   }
 
   if (v9 && (_NSIsNSSet() & 1) == 0)
@@ -267,53 +267,53 @@ LABEL_17:
     if (_NSIsNSOrderedSet())
     {
       v12 = MEMORY[0x1E695DFD8];
-      v13 = [v9 array];
+      array2 = [v9 array];
 LABEL_16:
-      v11 = [v12 setWithArray:v13];
+      v11 = [v12 setWithArray:array2];
       goto LABEL_17;
     }
 
     if (_NSIsNSDictionary())
     {
       v12 = MEMORY[0x1E695DFD8];
-      v13 = [v9 allValues];
+      array2 = [v9 allValues];
       goto LABEL_16;
     }
 
     v18 = MEMORY[0x1E695DF30];
-    v19 = [NSString stringWithFormat:@"Can't evaluate set expression; right subexpression not a set (lhs = %@ rhs = %@)", v8, v9];
+    v19 = [NSString stringWithFormat:@"Can't evaluate set expression; right subexpression not a set (lhs = %@ rhs = %@)", array, v9];
 LABEL_34:
     objc_exception_throw([v18 exceptionWithName:*MEMORY[0x1E695D940] reason:v19 userInfo:0]);
   }
 
 LABEL_18:
-  v14 = [(NSExpression *)self expressionType];
-  switch(v14)
+  expressionType = [(NSExpression *)self expressionType];
+  switch(expressionType)
   {
     case NSMinusSetExpressionType:
       if (v9)
       {
-        [v8 minusSet:v9];
+        [array minusSet:v9];
       }
 
       break;
     case NSIntersectSetExpressionType:
       if (v9)
       {
-        [v8 intersectSet:v9];
+        [array intersectSet:v9];
       }
 
       break;
     case NSUnionSetExpressionType:
       if (v9)
       {
-        [v8 unionSet:v9];
+        [array unionSet:v9];
       }
 
       break;
     default:
       v16 = MEMORY[0x1E695DF30];
-      v17 = [NSString stringWithFormat:@"Can't evaluate set expression; unknown expression type (%lu)", v14];
+      v17 = [NSString stringWithFormat:@"Can't evaluate set expression; unknown expression type (%lu)", expressionType];
       objc_exception_throw([v16 exceptionWithName:*MEMORY[0x1E695D940] reason:v17 userInfo:0]);
   }
 
@@ -322,7 +322,7 @@ LABEL_18:
     [(_NSPerformanceMeter *)v7 invalidate];
   }
 
-  return v8;
+  return array;
 }
 
 @end

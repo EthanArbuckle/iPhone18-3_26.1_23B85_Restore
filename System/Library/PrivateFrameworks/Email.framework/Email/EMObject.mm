@@ -1,12 +1,12 @@
 @interface EMObject
-- (BOOL)isEqual:(id)a3;
-- (EMObject)initWithCoder:(id)a3;
-- (EMObject)initWithObjectID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EMObject)initWithCoder:(id)coder;
+- (EMObject)initWithObjectID:(id)d;
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
 - (unint64_t)hash;
-- (void)_commonInitWithObjectID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_commonInitWithObjectID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMObject
@@ -15,85 +15,85 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EMObject *)self objectID];
-  v6 = [v5 stringHash];
-  v7 = [v6 ef_publicDescription];
-  v8 = [v3 stringWithFormat:@"<%@: %p: %@>", v4, self, v7];
+  objectID = [(EMObject *)self objectID];
+  stringHash = [objectID stringHash];
+  ef_publicDescription = [stringHash ef_publicDescription];
+  v8 = [v3 stringWithFormat:@"<%@: %p: %@>", v4, self, ef_publicDescription];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(EMObject *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(EMObject *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
 
-- (EMObject)initWithObjectID:(id)a3
+- (EMObject)initWithObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7.receiver = self;
   v7.super_class = EMObject;
   v5 = [(EMObject *)&v7 init];
   if (v5)
   {
-    if (!v4)
+    if (!dCopy)
     {
-      v4 = [[EMObjectID alloc] initAsEphemeralID:1];
+      dCopy = [[EMObjectID alloc] initAsEphemeralID:1];
     }
 
-    [(EMObject *)v5 _commonInitWithObjectID:v4];
+    [(EMObject *)v5 _commonInitWithObjectID:dCopy];
   }
 
   return v5;
 }
 
-- (void)_commonInitWithObjectID:(id)a3
+- (void)_commonInitWithObjectID:(id)d
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dCopy = d;
+  v4 = [dCopy copy];
   objectID = self->_objectID;
   self->_objectID = v4;
 }
 
-- (EMObject)initWithCoder:(id)a3
+- (EMObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = EMObject;
   v5 = [(EMObject *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_objectID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_objectID"];
     [(EMObject *)v5 _commonInitWithObjectID:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(EMObject *)self objectID];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_objectID"];
+  coderCopy = coder;
+  objectID = [(EMObject *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"EFPropertyKey_objectID"];
 }
 
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EMObject *)self objectID];
-  v6 = [v3 stringWithFormat:@"<%@: %p>\n\tObjectID: %@", v4, self, v5];
+  objectID = [(EMObject *)self objectID];
+  v6 = [v3 stringWithFormat:@"<%@: %p>\n\tObjectID: %@", v4, self, objectID];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -103,10 +103,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(EMObject *)self objectID];
-      v7 = [(EMObject *)v5 objectID];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      objectID = [(EMObject *)self objectID];
+      objectID2 = [(EMObject *)v5 objectID];
+      v8 = [objectID isEqual:objectID2];
     }
 
     else

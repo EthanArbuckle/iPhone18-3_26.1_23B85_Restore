@@ -11,9 +11,9 @@
   v2 = [(_HKStackedBarLevel *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     segments = v2->_segments;
-    v2->_segments = v3;
+    v2->_segments = array;
   }
 
   return v2;

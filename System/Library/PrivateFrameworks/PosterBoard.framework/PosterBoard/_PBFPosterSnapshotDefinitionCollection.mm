@@ -1,7 +1,7 @@
 @interface _PBFPosterSnapshotDefinitionCollection
 - (_PBFPosterSnapshotDefinitionCollection)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)requestStatusForDisplayContext:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)requestStatusForDisplayContext:(id)context;
 - (void)cancel;
 - (void)invalidate;
 @end
@@ -31,7 +31,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_PBFPosterSnapshotDefinitionCollection allocWithZone:?]];
   [(NSMutableDictionary *)v4->_snapshotBundleFutureForDisplayContext addEntriesFromDictionary:self->_snapshotBundleFutureForDisplayContext];
@@ -42,18 +42,18 @@
   return v4;
 }
 
-- (int64_t)requestStatusForDisplayContext:(id)a3
+- (int64_t)requestStatusForDisplayContext:(id)context
 {
-  v4 = a3;
-  if (v4 && ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
+  contextCopy = context;
+  if (contextCopy && ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
-    v7 = [(_PBFPosterSnapshotDefinitionCollection *)self displayContextRequestFailures];
-    v8 = [v7 countForObject:v4];
+    displayContextRequestFailures = [(_PBFPosterSnapshotDefinitionCollection *)self displayContextRequestFailures];
+    v8 = [displayContextRequestFailures countForObject:contextCopy];
 
     if (v8 <= 2)
     {
-      v9 = [(_PBFPosterSnapshotDefinitionCollection *)self snapshotBundleFutureForDisplayContext];
-      v10 = [v9 objectForKey:v4];
+      snapshotBundleFutureForDisplayContext = [(_PBFPosterSnapshotDefinitionCollection *)self snapshotBundleFutureForDisplayContext];
+      v10 = [snapshotBundleFutureForDisplayContext objectForKey:contextCopy];
 
       if (v10)
       {
@@ -107,11 +107,11 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(_PBFPosterSnapshotDefinitionCollection *)self snapshotBundleFutureForDisplayContext];
-    v4 = [v3 copy];
-    v5 = [v4 objectEnumerator];
+    snapshotBundleFutureForDisplayContext = [(_PBFPosterSnapshotDefinitionCollection *)self snapshotBundleFutureForDisplayContext];
+    v4 = [snapshotBundleFutureForDisplayContext copy];
+    objectEnumerator = [v4 objectEnumerator];
 
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -123,14 +123,14 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v10 + 1) + 8 * v9++) cancel];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -150,12 +150,12 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v3 = [(_PBFPosterSnapshotDefinitionCollection *)self snapshotBundleFutureForDisplayContext];
-    v4 = [v3 copy];
-    v5 = [v4 objectEnumerator];
+    snapshotBundleFutureForDisplayContext = [(_PBFPosterSnapshotDefinitionCollection *)self snapshotBundleFutureForDisplayContext];
+    v4 = [snapshotBundleFutureForDisplayContext copy];
+    objectEnumerator = [v4 objectEnumerator];
 
-    obj = v5;
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    obj = objectEnumerator;
+    v6 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;

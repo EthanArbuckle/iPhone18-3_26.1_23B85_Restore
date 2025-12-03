@@ -1,14 +1,14 @@
 @interface AMSSigningSecurityService
 + (AMSSigningSecurityService)sharedService;
 - (AMSSigningSecurityService)init;
-- (AMSSigningSecurityService)initWithServiceBroker:(id)a3;
-- (id)_defaultSecurityServiceWithDelegate:(id)a3;
-- (id)_handleResponse:(id)a3 bag:(id)a4 securityServicePromise:(id)a5 onDenied:(id)a6;
-- (id)_headersForRequest:(id)a3 buyParams:(id)a4 securityServicePromise:(id)a5 onDenied:(id)a6;
-- (id)handleResponse:(id)a3 bag:(id)a4;
-- (id)headersForRequest:(id)a3 buyParams:(id)a4 bag:(id)a5;
-- (id)signatureForRequest:(id)a3;
-- (void)_handleSecurityServicePromise:(id)a3 onConnected:(id)a4 onDenied:(id)a5 onError:(id)a6;
+- (AMSSigningSecurityService)initWithServiceBroker:(id)broker;
+- (id)_defaultSecurityServiceWithDelegate:(id)delegate;
+- (id)_handleResponse:(id)response bag:(id)bag securityServicePromise:(id)promise onDenied:(id)denied;
+- (id)_headersForRequest:(id)request buyParams:(id)params securityServicePromise:(id)promise onDenied:(id)denied;
+- (id)handleResponse:(id)response bag:(id)bag;
+- (id)headersForRequest:(id)request buyParams:(id)params bag:(id)bag;
+- (id)signatureForRequest:(id)request;
+- (void)_handleSecurityServicePromise:(id)promise onConnected:(id)connected onDenied:(id)denied onError:(id)error;
 @end
 
 @implementation AMSSigningSecurityService
@@ -21,16 +21,16 @@
   return v4;
 }
 
-- (AMSSigningSecurityService)initWithServiceBroker:(id)a3
+- (AMSSigningSecurityService)initWithServiceBroker:(id)broker
 {
-  v5 = a3;
+  brokerCopy = broker;
   v9.receiver = self;
   v9.super_class = AMSSigningSecurityService;
   v6 = [(AMSSigningSecurityService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceBroker, a3);
+    objc_storeStrong(&v6->_serviceBroker, broker);
   }
 
   return v7;
@@ -55,20 +55,20 @@ uint64_t __42__AMSSigningSecurityService_sharedService__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)handleResponse:(id)a3 bag:(id)a4
+- (id)handleResponse:(id)response bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSSigningSecurityService *)self serviceBroker];
-  v9 = [v8 securityServiceProxyWithDelegate:0];
+  responseCopy = response;
+  bagCopy = bag;
+  serviceBroker = [(AMSSigningSecurityService *)self serviceBroker];
+  v9 = [serviceBroker securityServiceProxyWithDelegate:0];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__AMSSigningSecurityService_handleResponse_bag___block_invoke;
   v14[3] = &unk_1E73B6AA8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = responseCopy;
+  v16 = bagCopy;
+  v10 = bagCopy;
+  v11 = responseCopy;
   v12 = [(AMSSigningSecurityService *)self _handleResponse:v11 bag:v10 securityServicePromise:v9 onDenied:v14];
 
   return v12;
@@ -82,41 +82,41 @@ id __48__AMSSigningSecurityService_handleResponse_bag___block_invoke(uint64_t a1
   return v2;
 }
 
-- (id)headersForRequest:(id)a3 buyParams:(id)a4 bag:(id)a5
+- (id)headersForRequest:(id)request buyParams:(id)params bag:(id)bag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AMSSigningSecurityService *)self serviceBroker];
-  v12 = [v11 securityServiceProxyWithDelegate:0];
+  requestCopy = request;
+  paramsCopy = params;
+  bagCopy = bag;
+  serviceBroker = [(AMSSigningSecurityService *)self serviceBroker];
+  v12 = [serviceBroker securityServiceProxyWithDelegate:0];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __61__AMSSigningSecurityService_headersForRequest_buyParams_bag___block_invoke;
   v18[3] = &unk_1E73B5860;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v19 = requestCopy;
+  v20 = paramsCopy;
+  v21 = bagCopy;
+  v13 = bagCopy;
+  v14 = paramsCopy;
+  v15 = requestCopy;
   v16 = [(AMSSigningSecurityService *)self _headersForRequest:v15 buyParams:v14 securityServicePromise:v12 onDenied:v18];
 
   return v16;
 }
 
-- (id)signatureForRequest:(id)a3
+- (id)signatureForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AMSSigningSecurityService *)self serviceBroker];
-  v6 = [(AMSSigningSecurityService *)self serviceBroker];
-  v7 = [v6 securityServiceProxyWithDelegate:0];
+  requestCopy = request;
+  serviceBroker = [(AMSSigningSecurityService *)self serviceBroker];
+  serviceBroker2 = [(AMSSigningSecurityService *)self serviceBroker];
+  v7 = [serviceBroker2 securityServiceProxyWithDelegate:0];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__AMSSigningSecurityService_signatureForRequest___block_invoke;
   v11[3] = &unk_1E73BBE10;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v5 callService:v7 then:v11];
+  v12 = requestCopy;
+  v8 = requestCopy;
+  v9 = [serviceBroker callService:v7 then:v11];
 
   return v9;
 }
@@ -132,33 +132,33 @@ AMSPromise *__49__AMSSigningSecurityService_signatureForRequest___block_invoke(u
   return v4;
 }
 
-- (id)_handleResponse:(id)a3 bag:(id)a4 securityServicePromise:(id)a5 onDenied:(id)a6
+- (id)_handleResponse:(id)response bag:(id)bag securityServicePromise:(id)promise onDenied:(id)denied
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
+  responseCopy = response;
+  deniedCopy = denied;
+  promiseCopy = promise;
   v12 = objc_opt_new();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __81__AMSSigningSecurityService__handleResponse_bag_securityServicePromise_onDenied___block_invoke;
   v24[3] = &unk_1E73BBE38;
-  v25 = v9;
+  v25 = responseCopy;
   v26 = v12;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __81__AMSSigningSecurityService__handleResponse_bag_securityServicePromise_onDenied___block_invoke_3;
   v21[3] = &unk_1E73B36D0;
   v22 = v26;
-  v23 = v10;
+  v23 = deniedCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __81__AMSSigningSecurityService__handleResponse_bag_securityServicePromise_onDenied___block_invoke_4;
   v19[3] = &unk_1E73B34B8;
   v13 = v22;
   v20 = v13;
-  v14 = v10;
-  v15 = v9;
-  [(AMSSigningSecurityService *)self _handleSecurityServicePromise:v11 onConnected:v24 onDenied:v21 onError:v19];
+  v14 = deniedCopy;
+  v15 = responseCopy;
+  [(AMSSigningSecurityService *)self _handleSecurityServicePromise:promiseCopy onConnected:v24 onDenied:v21 onError:v19];
 
   v16 = v20;
   v17 = v13;
@@ -191,36 +191,36 @@ void __81__AMSSigningSecurityService__handleResponse_bag_securityServicePromise_
   [v1 finishWithPromise:v2];
 }
 
-- (id)_headersForRequest:(id)a3 buyParams:(id)a4 securityServicePromise:(id)a5 onDenied:(id)a6
+- (id)_headersForRequest:(id)request buyParams:(id)params securityServicePromise:(id)promise onDenied:(id)denied
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  requestCopy = request;
+  paramsCopy = params;
+  deniedCopy = denied;
+  promiseCopy = promise;
   v14 = objc_opt_new();
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __90__AMSSigningSecurityService__headersForRequest_buyParams_securityServicePromise_onDenied___block_invoke;
   v27[3] = &unk_1E73BBE60;
-  v28 = v10;
-  v29 = v11;
+  v28 = requestCopy;
+  v29 = paramsCopy;
   v30 = v14;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __90__AMSSigningSecurityService__headersForRequest_buyParams_securityServicePromise_onDenied___block_invoke_3;
   v24[3] = &unk_1E73B36D0;
   v25 = v30;
-  v26 = v12;
+  v26 = deniedCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __90__AMSSigningSecurityService__headersForRequest_buyParams_securityServicePromise_onDenied___block_invoke_4;
   v22[3] = &unk_1E73B34B8;
   v15 = v25;
   v23 = v15;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  [(AMSSigningSecurityService *)self _handleSecurityServicePromise:v13 onConnected:v27 onDenied:v24 onError:v22];
+  v16 = deniedCopy;
+  v17 = paramsCopy;
+  v18 = requestCopy;
+  [(AMSSigningSecurityService *)self _handleSecurityServicePromise:promiseCopy onConnected:v27 onDenied:v24 onError:v22];
 
   v19 = v23;
   v20 = v15;
@@ -247,31 +247,31 @@ void __90__AMSSigningSecurityService__headersForRequest_buyParams_securityServic
   [v1 finishWithPromise:v2];
 }
 
-- (id)_defaultSecurityServiceWithDelegate:(id)a3
+- (id)_defaultSecurityServiceWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = objc_opt_new();
-  v5 = [v4 securityServiceProxyWithDelegate:v3];
+  v5 = [v4 securityServiceProxyWithDelegate:delegateCopy];
 
   return v5;
 }
 
-- (void)_handleSecurityServicePromise:(id)a3 onConnected:(id)a4 onDenied:(id)a5 onError:(id)a6
+- (void)_handleSecurityServicePromise:(id)promise onConnected:(id)connected onDenied:(id)denied onError:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  connectedCopy = connected;
+  deniedCopy = denied;
+  errorCopy = error;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __88__AMSSigningSecurityService__handleSecurityServicePromise_onConnected_onDenied_onError___block_invoke;
   v15[3] = &unk_1E73BBE88;
-  v16 = v9;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
-  [a3 addFinishBlock:v15];
+  v16 = connectedCopy;
+  v17 = deniedCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = deniedCopy;
+  v14 = connectedCopy;
+  [promise addFinishBlock:v15];
 }
 
 void __88__AMSSigningSecurityService__handleSecurityServicePromise_onConnected_onDenied_onError___block_invoke(void *a1, void *a2, void *a3)

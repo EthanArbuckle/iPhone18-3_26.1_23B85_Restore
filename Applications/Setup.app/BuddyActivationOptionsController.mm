@@ -3,10 +3,10 @@
 - (BOOL)controllerNeedsToRun;
 - (BuddyActivationOptionsController)init;
 - (id)_titleFont;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -38,27 +38,27 @@
 
 - (void)viewDidLoad
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9.receiver = self;
   v9.super_class = BuddyActivationOptionsController;
   [(BuddyActivationOptionsController *)&v9 viewDidLoad];
   v2 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [(BuddyActivationOptionsController *)v11 setTableView:v2];
+  [(BuddyActivationOptionsController *)selfCopy setTableView:v2];
 
-  v3 = v11;
-  v4 = [(BuddyActivationOptionsController *)v11 tableView];
-  [v4 setDelegate:v3];
+  v3 = selfCopy;
+  tableView = [(BuddyActivationOptionsController *)selfCopy tableView];
+  [tableView setDelegate:v3];
 
-  v5 = v11;
-  v6 = [(BuddyActivationOptionsController *)v11 tableView];
-  [v6 setDataSource:v5];
+  v5 = selfCopy;
+  tableView2 = [(BuddyActivationOptionsController *)selfCopy tableView];
+  [tableView2 setDataSource:v5];
 
-  v7 = [(BuddyActivationOptionsController *)v11 tableView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView3 = [(BuddyActivationOptionsController *)selfCopy tableView];
+  [tableView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(BuddyActivationOptionsController *)v11 tableView];
-  [v8 setSeparatorStyle:0];
+  tableView4 = [(BuddyActivationOptionsController *)selfCopy tableView];
+  [tableView4 setSeparatorStyle:0];
 }
 
 - (id)_titleFont
@@ -77,20 +77,20 @@
 - (BOOL)controllerNeedsToRun
 {
   v2 = [(BuddyActivationOptionsController *)self activationState:a2];
-  v3 = [(BuddyActivationState *)v2 error];
-  v4 = v3 != 0;
+  error = [(BuddyActivationState *)v2 error];
+  v4 = error != 0;
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, path);
   v18 = [location[0] dequeueReusableCellWithIdentifier:@"cell"];
   if (!v18)
   {
@@ -101,19 +101,19 @@
   v5 = +[UIColor secondarySystemBackgroundColor];
   [v18 setBackgroundColor:v5];
 
-  v6 = [(BuddyActivationOptionsController *)v21 _titleFont];
-  v7 = [v18 textLabel];
-  [v7 setFont:v6];
+  _titleFont = [(BuddyActivationOptionsController *)selfCopy _titleFont];
+  textLabel = [v18 textLabel];
+  [textLabel setFont:_titleFont];
 
-  v8 = -[BuddyActivationOptionsController _activationMethodForSection:](v21, "_activationMethodForSection:", [v19 section]);
+  v8 = -[BuddyActivationOptionsController _activationMethodForSection:](selfCopy, "_activationMethodForSection:", [v19 section]);
   if (v8)
   {
     if (v8 == 1)
     {
       v9 = +[NSBundle mainBundle];
       v10 = [(NSBundle *)v9 localizedStringForKey:@"USE_MAC_OR_PC" value:&stru_10032F900 table:@"Localizable"];
-      v11 = [v18 textLabel];
-      [v11 setText:v10];
+      textLabel2 = [v18 textLabel];
+      [textLabel2 setText:v10];
     }
   }
 
@@ -122,8 +122,8 @@
     v12 = +[NSBundle mainBundle];
     v13 = SFLocalizableWAPIStringKeyForKey();
     v14 = [(NSBundle *)v12 localizedStringForKey:v13 value:&stru_10032F900 table:@"Localizable"];
-    v15 = [v18 textLabel];
-    [v15 setText:v14];
+    textLabel3 = [v18 textLabel];
+    [textLabel3 setText:v14];
   }
 
   v16 = v18;
@@ -133,36 +133,36 @@
   return v16;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, path);
   [location[0] deselectRowAtIndexPath:v20 animated:1];
-  v19 = -[BuddyActivationOptionsController _activationMethodForSection:](v22, "_activationMethodForSection:", [v20 section]);
+  v19 = -[BuddyActivationOptionsController _activationMethodForSection:](selfCopy, "_activationMethodForSection:", [v20 section]);
   if (v19)
   {
     if (v19 == 1)
@@ -173,15 +173,15 @@
       v14 = 0;
       v15 = sub_1001B7F28;
       v16 = &unk_10032B0D0;
-      v17 = v22;
+      v17 = selfCopy;
       [v18 setSkipWiFi:&v12];
       v7 = _NSConcreteStackBlock;
       v8 = 3221225472;
       v9 = sub_1001B7FD4;
       v10 = &unk_10032B0D0;
-      v11 = v22;
+      v11 = selfCopy;
       [v18 setUseWiFi:&v7];
-      [(BuddyActivationOptionsController *)v22 presentViewController:v18 animated:1 completion:0, v7, v8, v9, v10];
+      [(BuddyActivationOptionsController *)selfCopy presentViewController:v18 animated:1 completion:0, v7, v8, v9, v10];
       objc_storeStrong(&v11, 0);
       objc_storeStrong(&v17, 0);
       objc_storeStrong(&v18, 0);
@@ -190,11 +190,11 @@
 
   else
   {
-    v5 = [(BuddyActivationOptionsController *)v22 miscState];
-    [(BuddyMiscState *)v5 setUserSelectedCellularActivation:0];
+    miscState = [(BuddyActivationOptionsController *)selfCopy miscState];
+    [(BuddyMiscState *)miscState setUserSelectedCellularActivation:0];
 
-    v6 = [(BuddyActivationOptionsController *)v22 delegate];
-    [(BFFFlowItemDelegate *)v6 presentWiFiPaneForFlowItem:v22];
+    delegate = [(BuddyActivationOptionsController *)selfCopy delegate];
+    [(BFFFlowItemDelegate *)delegate presentWiFiPaneForFlowItem:selfCopy];
   }
 
   objc_storeStrong(&v20, 0);

@@ -2,12 +2,12 @@
 - (NSString)description;
 - (_TtC14CopresenceCore23IDSGroupSessionProvider)init;
 - (void)dealloc;
-- (void)groupSessionDidTerminate:(id)a3;
-- (void)groupSessionEnded:(id)a3 withReason:(unsigned int)a4 error:(id)a5;
-- (void)session:(id)a3 didReceiveActiveLightweightParticipants:(id)a4 success:(BOOL)a5;
-- (void)sessionDidJoinGroup:(id)a3 participantUpdate:(id)a4 error:(id)a5;
-- (void)sessionDidLeaveGroup:(id)a3 error:(id)a4;
-- (void)sessiondidReceiveKeyUpdate:(id)a3;
+- (void)groupSessionDidTerminate:(id)terminate;
+- (void)groupSessionEnded:(id)ended withReason:(unsigned int)reason error:(id)error;
+- (void)session:(id)session didReceiveActiveLightweightParticipants:(id)participants success:(BOOL)success;
+- (void)sessionDidJoinGroup:(id)group participantUpdate:(id)update error:(id)error;
+- (void)sessionDidLeaveGroup:(id)group error:(id)error;
+- (void)sessiondidReceiveKeyUpdate:(id)update;
 @end
 
 @implementation IDSGroupSessionProvider
@@ -17,7 +17,7 @@
   v3 = OBJC_IVAR____TtC14CopresenceCore23IDSGroupSessionProvider_groupSession;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 invalidate];
@@ -30,7 +30,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IDSGroupSessionProvider.description.getter();
   v5 = v4;
 
@@ -46,52 +46,52 @@
   return result;
 }
 
-- (void)sessionDidJoinGroup:(id)a3 participantUpdate:(id)a4 error:(id)a5
+- (void)sessionDidJoinGroup:(id)group participantUpdate:(id)update error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  IDSGroupSessionProvider.sessionDidJoinGroup(_:participantUpdate:error:)(v8, v9, a5);
+  groupCopy = group;
+  updateCopy = update;
+  selfCopy = self;
+  errorCopy = error;
+  IDSGroupSessionProvider.sessionDidJoinGroup(_:participantUpdate:error:)(groupCopy, updateCopy, error);
 }
 
-- (void)groupSessionDidTerminate:(id)a3
+- (void)groupSessionDidTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
-  IDSGroupSessionProvider.groupSessionDidTerminate(_:)(v4);
+  terminateCopy = terminate;
+  selfCopy = self;
+  IDSGroupSessionProvider.groupSessionDidTerminate(_:)(terminateCopy);
 }
 
-- (void)groupSessionEnded:(id)a3 withReason:(unsigned int)a4 error:(id)a5
+- (void)groupSessionEnded:(id)ended withReason:(unsigned int)reason error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  IDSGroupSessionProvider.groupSessionEnded(_:with:error:)(v8, a4, a5);
+  endedCopy = ended;
+  selfCopy = self;
+  errorCopy = error;
+  IDSGroupSessionProvider.groupSessionEnded(_:with:error:)(endedCopy, reason, error);
 }
 
-- (void)sessionDidLeaveGroup:(id)a3 error:(id)a4
+- (void)sessionDidLeaveGroup:(id)group error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  IDSGroupSessionProvider.sessionDidLeaveGroup(_:error:)(v6, a4);
+  groupCopy = group;
+  selfCopy = self;
+  errorCopy = error;
+  IDSGroupSessionProvider.sessionDidLeaveGroup(_:error:)(groupCopy, error);
 }
 
-- (void)sessiondidReceiveKeyUpdate:(id)a3
+- (void)sessiondidReceiveKeyUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   specialized IDSGroupSessionProvider.sessiondidReceiveKeyUpdate(_:)();
 }
 
-- (void)session:(id)a3 didReceiveActiveLightweightParticipants:(id)a4 success:(BOOL)a5
+- (void)session:(id)session didReceiveActiveLightweightParticipants:(id)participants success:(BOOL)success
 {
   type metadata accessor for NSObject(0, &lazy cache variable for type metadata for IDSGroupSessionActiveParticipant, 0x1E69A5290);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = self;
-  specialized IDSGroupSessionProvider.session(_:didReceiveActiveLightweightParticipants:success:)(v8, a5);
+  sessionCopy = session;
+  selfCopy = self;
+  specialized IDSGroupSessionProvider.session(_:didReceiveActiveLightweightParticipants:success:)(v8, success);
 }
 
 @end

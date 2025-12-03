@@ -1,26 +1,26 @@
 @interface ICASAttachmentSnapshotData
-- (ICASAttachmentSnapshotData)initWithAttachmentSnapshotSummary:(id)a3 docScanSnapshotSummary:(id)a4 drawingSnapshotSummary:(id)a5 tableSnapshotSummary:(id)a6;
+- (ICASAttachmentSnapshotData)initWithAttachmentSnapshotSummary:(id)summary docScanSnapshotSummary:(id)snapshotSummary drawingSnapshotSummary:(id)drawingSnapshotSummary tableSnapshotSummary:(id)tableSnapshotSummary;
 - (id)toDict;
 @end
 
 @implementation ICASAttachmentSnapshotData
 
-- (ICASAttachmentSnapshotData)initWithAttachmentSnapshotSummary:(id)a3 docScanSnapshotSummary:(id)a4 drawingSnapshotSummary:(id)a5 tableSnapshotSummary:(id)a6
+- (ICASAttachmentSnapshotData)initWithAttachmentSnapshotSummary:(id)summary docScanSnapshotSummary:(id)snapshotSummary drawingSnapshotSummary:(id)drawingSnapshotSummary tableSnapshotSummary:(id)tableSnapshotSummary
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  summaryCopy = summary;
+  snapshotSummaryCopy = snapshotSummary;
+  drawingSnapshotSummaryCopy = drawingSnapshotSummary;
+  tableSnapshotSummaryCopy = tableSnapshotSummary;
   v18.receiver = self;
   v18.super_class = ICASAttachmentSnapshotData;
   v15 = [(ICASAttachmentSnapshotData *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_attachmentSnapshotSummary, a3);
-    objc_storeStrong(&v16->_docScanSnapshotSummary, a4);
-    objc_storeStrong(&v16->_drawingSnapshotSummary, a5);
-    objc_storeStrong(&v16->_tableSnapshotSummary, a6);
+    objc_storeStrong(&v15->_attachmentSnapshotSummary, summary);
+    objc_storeStrong(&v16->_docScanSnapshotSummary, snapshotSummary);
+    objc_storeStrong(&v16->_drawingSnapshotSummary, drawingSnapshotSummary);
+    objc_storeStrong(&v16->_tableSnapshotSummary, tableSnapshotSummary);
   }
 
   return v16;
@@ -30,61 +30,61 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v18[0] = @"attachmentSnapshotSummary";
-  v3 = [(ICASAttachmentSnapshotData *)self attachmentSnapshotSummary];
-  if (v3)
+  attachmentSnapshotSummary = [(ICASAttachmentSnapshotData *)self attachmentSnapshotSummary];
+  if (attachmentSnapshotSummary)
   {
-    v4 = [(ICASAttachmentSnapshotData *)self attachmentSnapshotSummary];
+    attachmentSnapshotSummary2 = [(ICASAttachmentSnapshotData *)self attachmentSnapshotSummary];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    attachmentSnapshotSummary2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v19[0] = v4;
+  v5 = attachmentSnapshotSummary2;
+  v19[0] = attachmentSnapshotSummary2;
   v18[1] = @"docScanSnapshotSummary";
-  v6 = [(ICASAttachmentSnapshotData *)self docScanSnapshotSummary];
-  if (v6)
+  docScanSnapshotSummary = [(ICASAttachmentSnapshotData *)self docScanSnapshotSummary];
+  if (docScanSnapshotSummary)
   {
-    v7 = [(ICASAttachmentSnapshotData *)self docScanSnapshotSummary];
+    docScanSnapshotSummary2 = [(ICASAttachmentSnapshotData *)self docScanSnapshotSummary];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    docScanSnapshotSummary2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v19[1] = v7;
+  v8 = docScanSnapshotSummary2;
+  v19[1] = docScanSnapshotSummary2;
   v18[2] = @"drawingSnapshotSummary";
-  v9 = [(ICASAttachmentSnapshotData *)self drawingSnapshotSummary];
-  if (v9)
+  drawingSnapshotSummary = [(ICASAttachmentSnapshotData *)self drawingSnapshotSummary];
+  if (drawingSnapshotSummary)
   {
-    v10 = [(ICASAttachmentSnapshotData *)self drawingSnapshotSummary];
+    drawingSnapshotSummary2 = [(ICASAttachmentSnapshotData *)self drawingSnapshotSummary];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    drawingSnapshotSummary2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v19[2] = v10;
+  v11 = drawingSnapshotSummary2;
+  v19[2] = drawingSnapshotSummary2;
   v18[3] = @"tableSnapshotSummary";
-  v12 = [(ICASAttachmentSnapshotData *)self tableSnapshotSummary];
-  if (v12)
+  tableSnapshotSummary = [(ICASAttachmentSnapshotData *)self tableSnapshotSummary];
+  if (tableSnapshotSummary)
   {
-    v13 = [(ICASAttachmentSnapshotData *)self tableSnapshotSummary];
+    tableSnapshotSummary2 = [(ICASAttachmentSnapshotData *)self tableSnapshotSummary];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    tableSnapshotSummary2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v19[3] = v13;
+  v14 = tableSnapshotSummary2;
+  v19[3] = tableSnapshotSummary2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
   v16 = *MEMORY[0x277D85DE8];

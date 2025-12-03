@@ -1,14 +1,14 @@
 @interface SeparatorView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation SeparatorView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  v7 = sub_1E418C11C(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  v7 = sub_1E418C11C(only, width);
   v9 = v8;
 
   v10 = v7;

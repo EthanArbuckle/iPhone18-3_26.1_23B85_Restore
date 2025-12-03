@@ -7,8 +7,8 @@
 - (id)findApplicationRecordWithError:()LSUtilities
 {
   v5 = objc_alloc(MEMORY[0x1E69635F8]);
-  v6 = [a1 bundleIdentifier];
-  v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:a3];
+  bundleIdentifier = [self bundleIdentifier];
+  v7 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:a3];
 
   return v7;
 }

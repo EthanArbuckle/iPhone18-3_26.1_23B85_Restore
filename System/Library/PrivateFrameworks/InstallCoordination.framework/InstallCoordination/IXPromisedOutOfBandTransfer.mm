@@ -1,18 +1,18 @@
 @interface IXPromisedOutOfBandTransfer
-- (IXPromisedOutOfBandTransfer)initWithCoder:(id)a3;
-- (IXPromisedOutOfBandTransfer)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5;
-- (IXPromisedOutOfBandTransfer)initWithSeed:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IXPromisedOutOfBandTransfer)initWithCoder:(id)coder;
+- (IXPromisedOutOfBandTransfer)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed;
+- (IXPromisedOutOfBandTransfer)initWithSeed:(id)seed;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXPromisedOutOfBandTransfer
 
-- (IXPromisedOutOfBandTransfer)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5
+- (IXPromisedOutOfBandTransfer)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed
 {
-  v8 = a3;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = IXPromisedOutOfBandTransfer;
-  v9 = [(IXDataPromise *)&v22 initWithName:v8 client:a4 diskSpaceNeeded:a5];
+  v9 = [(IXDataPromise *)&v22 initWithName:nameCopy client:client diskSpaceNeeded:needed];
   if (!v9)
   {
     goto LABEL_5;
@@ -36,18 +36,18 @@
     goto LABEL_7;
   }
 
-  v12 = [(IXDataPromise *)v9 seed];
+  seed = [(IXDataPromise *)v9 seed];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__IXPromisedOutOfBandTransfer_initWithName_client_diskSpaceNeeded___block_invoke_1;
   v14[3] = &unk_1E85C66A0;
   v16 = &v18;
   v15 = v9;
-  [(IXPromisedOutOfBandTransfer *)v11 _remote_createOutOfBandTransferPromiseWithSeed:v12 completion:v14];
+  [(IXPromisedOutOfBandTransfer *)v11 _remote_createOutOfBandTransferPromiseWithSeed:seed completion:v14];
 
-  LOBYTE(v12) = *(v19 + 24);
+  LOBYTE(seed) = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
-  if (v12)
+  if (seed)
   {
     v11 = 0;
   }
@@ -108,25 +108,25 @@ void __67__IXPromisedOutOfBandTransfer_initWithName_client_diskSpaceNeeded___blo
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (IXPromisedOutOfBandTransfer)initWithCoder:(id)a3
+- (IXPromisedOutOfBandTransfer)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = IXPromisedOutOfBandTransfer;
-  return [(IXOpaqueDataPromise *)&v4 initWithCoder:a3];
+  return [(IXOpaqueDataPromise *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = IXPromisedOutOfBandTransfer;
-  [(IXOpaqueDataPromise *)&v3 encodeWithCoder:a3];
+  [(IXOpaqueDataPromise *)&v3 encodeWithCoder:coder];
 }
 
-- (IXPromisedOutOfBandTransfer)initWithSeed:(id)a3
+- (IXPromisedOutOfBandTransfer)initWithSeed:(id)seed
 {
   v4.receiver = self;
   v4.super_class = IXPromisedOutOfBandTransfer;
-  return [(IXDataPromise *)&v4 initWithSeed:a3];
+  return [(IXDataPromise *)&v4 initWithSeed:seed];
 }
 
 @end

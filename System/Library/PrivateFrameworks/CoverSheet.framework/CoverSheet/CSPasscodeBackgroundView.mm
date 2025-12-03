@@ -1,9 +1,9 @@
 @interface CSPasscodeBackgroundView
-- (CSPasscodeBackgroundView)initWithFrame:(CGRect)a3;
-- (void)_setPlusDBackgroundColorWithWeighting:(double)a3;
+- (CSPasscodeBackgroundView)initWithFrame:(CGRect)frame;
+- (void)_setPlusDBackgroundColorWithWeighting:(double)weighting;
 - (void)layoutSubviews;
-- (void)setReduceTransparencyBackingColor:(id)a3;
-- (void)setWeighting:(double)a3;
+- (void)setReduceTransparencyBackingColor:(id)color;
+- (void)setWeighting:(double)weighting;
 @end
 
 @implementation CSPasscodeBackgroundView
@@ -25,11 +25,11 @@
   [(UIView *)self->_plusDView setFrame:v4, v6, v8, v10];
 }
 
-- (CSPasscodeBackgroundView)initWithFrame:(CGRect)a3
+- (CSPasscodeBackgroundView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = CSPasscodeBackgroundView;
-  v3 = [(CSPasscodeBackgroundView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSPasscodeBackgroundView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (UIAccessibilityIsReduceTransparencyEnabled())
@@ -38,8 +38,8 @@
       reduceTransparencyBackingView = v3->_reduceTransparencyBackingView;
       v3->_reduceTransparencyBackingView = v4;
 
-      v6 = [MEMORY[0x277D75348] whiteColor];
-      [(CSPasscodeBackgroundView *)v3 setReduceTransparencyBackingColor:v6];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(CSPasscodeBackgroundView *)v3 setReduceTransparencyBackingColor:whiteColor];
 
       [(CSPasscodeBackgroundView *)v3 addSubview:v3->_reduceTransparencyBackingView];
       v7 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -48,8 +48,8 @@
       v3->_reduceTransparencyTintingView = v7;
 
       v10 = v3->_reduceTransparencyTintingView;
-      v11 = [MEMORY[0x277D75348] blackColor];
-      v12 = [v11 colorWithAlphaComponent:0.35];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v12 = [blackColor colorWithAlphaComponent:0.35];
       [(UIView *)v10 setBackgroundColor:v12];
     }
 
@@ -63,8 +63,8 @@
 
       [(MTMaterialView *)v3->_materialView setShouldCrossfade:1];
       [(CSPasscodeBackgroundView *)v3 addSubview:v3->_materialView];
-      v17 = [(CSPasscodeBackgroundView *)v3 layer];
-      [v17 setAllowsGroupBlending:0];
+      layer = [(CSPasscodeBackgroundView *)v3 layer];
+      [layer setAllowsGroupBlending:0];
 
       v18 = objc_alloc_init(MEMORY[0x277D75D18]);
       lightenSourceOverView = v3->_lightenSourceOverView;
@@ -74,9 +74,9 @@
       v21 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.25];
       [(UIView *)v20 setBackgroundColor:v21];
 
-      v22 = [(UIView *)v3->_lightenSourceOverView layer];
+      layer2 = [(UIView *)v3->_lightenSourceOverView layer];
       v23 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA550]];
-      [v22 setCompositingFilter:v23];
+      [layer2 setCompositingFilter:v23];
 
       [(CSPasscodeBackgroundView *)v3 addSubview:v3->_lightenSourceOverView];
       v24 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -85,9 +85,9 @@
       v3->_plusDView = v24;
 
       [(CSPasscodeBackgroundView *)v3 _setPlusDBackgroundColorWithWeighting:1.0];
-      v11 = [(UIView *)v3->_plusDView layer];
+      blackColor = [(UIView *)v3->_plusDView layer];
       v12 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5D8]];
-      [v11 setCompositingFilter:v12];
+      [blackColor setCompositingFilter:v12];
     }
 
     [(CSPasscodeBackgroundView *)v3 addSubview:*p_reduceTransparencyTintingView];
@@ -96,47 +96,47 @@
   return v3;
 }
 
-- (void)setReduceTransparencyBackingColor:(id)a3
+- (void)setReduceTransparencyBackingColor:(id)color
 {
-  v5 = a3;
-  if (self->_reduceTransparencyBackingColor != v5)
+  colorCopy = color;
+  if (self->_reduceTransparencyBackingColor != colorCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_reduceTransparencyBackingColor, a3);
+    v11 = colorCopy;
+    objc_storeStrong(&self->_reduceTransparencyBackingColor, color);
     reduceTransparencyBackingColor = self->_reduceTransparencyBackingColor;
     if (reduceTransparencyBackingColor)
     {
-      v7 = reduceTransparencyBackingColor;
+      whiteColor = reduceTransparencyBackingColor;
     }
 
     else
     {
-      v7 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
     }
 
-    v8 = v7;
+    v8 = whiteColor;
     reduceTransparencyBackingView = self->_reduceTransparencyBackingView;
-    v10 = [(UIColor *)v7 colorWithAlphaComponent:1.0];
+    v10 = [(UIColor *)whiteColor colorWithAlphaComponent:1.0];
     [(UIView *)reduceTransparencyBackingView setBackgroundColor:v10];
 
-    v5 = v11;
+    colorCopy = v11;
   }
 }
 
-- (void)setWeighting:(double)a3
+- (void)setWeighting:(double)weighting
 {
   [(UIView *)self->_reduceTransparencyBackingView setAlpha:?];
-  [(UIView *)self->_reduceTransparencyTintingView setAlpha:a3];
-  [(MTMaterialView *)self->_materialView setWeighting:a3];
-  [(UIView *)self->_lightenSourceOverView setAlpha:a3];
+  [(UIView *)self->_reduceTransparencyTintingView setAlpha:weighting];
+  [(MTMaterialView *)self->_materialView setWeighting:weighting];
+  [(UIView *)self->_lightenSourceOverView setAlpha:weighting];
 
-  [(CSPasscodeBackgroundView *)self _setPlusDBackgroundColorWithWeighting:a3];
+  [(CSPasscodeBackgroundView *)self _setPlusDBackgroundColorWithWeighting:weighting];
 }
 
-- (void)_setPlusDBackgroundColorWithWeighting:(double)a3
+- (void)_setPlusDBackgroundColorWithWeighting:(double)weighting
 {
   plusDView = self->_plusDView;
-  v4 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:a3 * 0.2];
+  v4 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:weighting * 0.2];
   [(UIView *)plusDView setBackgroundColor:v4];
 }
 

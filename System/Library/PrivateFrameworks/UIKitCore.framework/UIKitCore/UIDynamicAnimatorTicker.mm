@@ -1,23 +1,23 @@
 @interface UIDynamicAnimatorTicker
 - (UIDynamicAnimator)animator;
-- (void)_displayLinkTick:(id)a3;
-- (void)_uiUpdateSequenceTick:(double)a3;
+- (void)_displayLinkTick:(id)tick;
+- (void)_uiUpdateSequenceTick:(double)tick;
 @end
 
 @implementation UIDynamicAnimatorTicker
 
-- (void)_displayLinkTick:(id)a3
+- (void)_displayLinkTick:(id)tick
 {
-  [a3 timestamp];
+  [tick timestamp];
   v5 = v4;
-  v6 = [(UIDynamicAnimatorTicker *)self animator];
-  [v6 _performAnimationTickForTimestamp:v5];
+  animator = [(UIDynamicAnimatorTicker *)self animator];
+  [animator _performAnimationTickForTimestamp:v5];
 }
 
-- (void)_uiUpdateSequenceTick:(double)a3
+- (void)_uiUpdateSequenceTick:(double)tick
 {
-  v4 = [(UIDynamicAnimatorTicker *)self animator];
-  [v4 _performAnimationTickForTimestamp:a3];
+  animator = [(UIDynamicAnimatorTicker *)self animator];
+  [animator _performAnimationTickForTimestamp:tick];
 }
 
 - (UIDynamicAnimator)animator

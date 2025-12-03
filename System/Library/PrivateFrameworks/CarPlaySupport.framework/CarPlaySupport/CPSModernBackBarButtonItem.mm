@@ -1,21 +1,21 @@
 @interface CPSModernBackBarButtonItem
-- (CPSModernBackBarButtonItem)initWithCPBarButton:(id)a3;
+- (CPSModernBackBarButtonItem)initWithCPBarButton:(id)button;
 @end
 
 @implementation CPSModernBackBarButtonItem
 
-- (CPSModernBackBarButtonItem)initWithCPBarButton:(id)a3
+- (CPSModernBackBarButtonItem)initWithCPBarButton:(id)button
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [(CPSModernBarButtonItem *)v3 initWithCPBarButton:location[0] type:1];
-  v5 = MEMORY[0x277D82BE0](v7);
+  objc_storeStrong(location, button);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(CPSModernBarButtonItem *)v3 initWithCPBarButton:location[0] type:1];
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 

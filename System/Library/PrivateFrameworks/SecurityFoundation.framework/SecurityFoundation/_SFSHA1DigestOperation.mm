@@ -1,22 +1,22 @@
 @interface _SFSHA1DigestOperation
-+ (id)digest:(id)a3;
++ (id)digest:(id)digest;
 - (NSData)hashValue;
 - (_SFSHA1DigestOperation)init;
-- (_SFSHA1DigestOperation)initWithCoder:(id)a3;
-- (void)addData:(id)a3;
+- (_SFSHA1DigestOperation)initWithCoder:(id)coder;
+- (void)addData:(id)data;
 @end
 
 @implementation _SFSHA1DigestOperation
 
-+ (id)digest:(id)a3
++ (id)digest:(id)digest
 {
-  v3 = a3;
+  digestCopy = digest;
   v4 = objc_alloc_init(_SFSHA1DigestOperation);
-  [(_SFSHA1DigestOperation *)v4 addData:v3];
+  [(_SFSHA1DigestOperation *)v4 addData:digestCopy];
 
-  v5 = [(_SFSHA1DigestOperation *)v4 hashValue];
+  hashValue = [(_SFSHA1DigestOperation *)v4 hashValue];
 
-  return v5;
+  return hashValue;
 }
 
 - (_SFSHA1DigestOperation)init
@@ -36,7 +36,7 @@
   return v2;
 }
 
-- (_SFSHA1DigestOperation)initWithCoder:(id)a3
+- (_SFSHA1DigestOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFSHA1DigestOperation;
@@ -64,15 +64,15 @@
   return v7;
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
   sha1DigestOperationInternal = self->_sha1DigestOperationInternal;
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  CC_SHA1_Update((sha1DigestOperationInternal + 8), v7, v8);
+  CC_SHA1_Update((sha1DigestOperationInternal + 8), bytes, v8);
 }
 
 @end

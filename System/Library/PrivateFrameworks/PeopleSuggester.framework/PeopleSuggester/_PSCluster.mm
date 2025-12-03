@@ -1,18 +1,18 @@
 @interface _PSCluster
-- (BOOL)containsPoint:(id)a3;
+- (BOOL)containsPoint:(id)point;
 - (_PSCluster)init;
-- (_PSCluster)initWithCoder:(id)a3;
-- (_PSCluster)initWithPoints:(id)a3 andHull:(id)a4;
+- (_PSCluster)initWithCoder:(id)coder;
+- (_PSCluster)initWithPoints:(id)points andHull:(id)hull;
 - (id)description;
-- (id)pointAtIndex:(unint64_t)a3;
-- (int)orientationOfPoints:(id)a3 and:(id)a4 and:(id)a5;
-- (int64_t)compareByAnglePoint:(id)a3 andPoint:(id)a4 withRef:(id)a5;
+- (id)pointAtIndex:(unint64_t)index;
+- (int)orientationOfPoints:(id)points and:(id)and and:(id)a5;
+- (int64_t)compareByAnglePoint:(id)point andPoint:(id)andPoint withRef:(id)ref;
 - (unint64_t)count;
-- (void)addPointToCluster:(id)a3;
+- (void)addPointToCluster:(id)cluster;
 - (void)clearCluster;
 - (void)computeConvexHull;
-- (void)encodeWithCoder:(id)a3;
-- (void)sortArray:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)sortArray:(id)array;
 @end
 
 @implementation _PSCluster
@@ -24,30 +24,30 @@
   v2 = [(_PSCluster *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     points = v2->_points;
-    v2->_points = v3;
+    v2->_points = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     convexHull = v2->_convexHull;
-    v2->_convexHull = v5;
+    v2->_convexHull = array2;
   }
 
   return v2;
 }
 
-- (_PSCluster)initWithPoints:(id)a3 andHull:(id)a4
+- (_PSCluster)initWithPoints:(id)points andHull:(id)hull
 {
-  v7 = a3;
-  v8 = a4;
+  pointsCopy = points;
+  hullCopy = hull;
   v12.receiver = self;
   v12.super_class = _PSCluster;
   v9 = [(_PSCluster *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_points, a3);
-    objc_storeStrong(&v10->_convexHull, a4);
+    objc_storeStrong(&v9->_points, points);
+    objc_storeStrong(&v10->_convexHull, hull);
   }
 
   return v10;
@@ -55,71 +55,71 @@
 
 - (unint64_t)count
 {
-  v2 = [(_PSCluster *)self points];
-  v3 = [v2 count];
+  points = [(_PSCluster *)self points];
+  v3 = [points count];
 
   return v3;
 }
 
-- (id)pointAtIndex:(unint64_t)a3
+- (id)pointAtIndex:(unint64_t)index
 {
-  v4 = [(_PSCluster *)self points];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  points = [(_PSCluster *)self points];
+  v5 = [points objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (void)addPointToCluster:(id)a3
+- (void)addPointToCluster:(id)cluster
 {
-  v7 = a3;
-  v4 = [(_PSCluster *)self points];
-  v5 = [v4 containsObject:v7];
+  clusterCopy = cluster;
+  points = [(_PSCluster *)self points];
+  v5 = [points containsObject:clusterCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(_PSCluster *)self points];
-    [v6 addObject:v7];
+    points2 = [(_PSCluster *)self points];
+    [points2 addObject:clusterCopy];
   }
 }
 
 - (void)clearCluster
 {
-  v2 = [(_PSCluster *)self points];
-  [v2 removeAllObjects];
+  points = [(_PSCluster *)self points];
+  [points removeAllObjects];
 }
 
-- (BOOL)containsPoint:(id)a3
+- (BOOL)containsPoint:(id)point
 {
-  v4 = a3;
-  v5 = [(_PSCluster *)self points];
-  v6 = [v5 containsObject:v4];
+  pointCopy = point;
+  points = [(_PSCluster *)self points];
+  v6 = [points containsObject:pointCopy];
 
   return v6;
 }
 
-- (int)orientationOfPoints:(id)a3 and:(id)a4 and:(id)a5
+- (int)orientationOfPoints:(id)points and:(id)and and:(id)a5
 {
   v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  andCopy = and;
+  pointsCopy = points;
   [v7 x];
   v11 = v10;
-  [v8 x];
+  [andCopy x];
   v13 = v11 - v12;
-  [v8 y];
+  [andCopy y];
   v15 = v14;
-  [v9 y];
+  [pointsCopy y];
   v17 = v15 - v16;
-  [v8 x];
+  [andCopy x];
   v19 = v18;
-  [v9 x];
+  [pointsCopy x];
   v21 = v20;
 
   v22 = v19 - v21;
   [v7 y];
   v24 = v23;
 
-  [v8 y];
+  [andCopy y];
   v26 = v25;
 
   v27 = v13 * v17 - v22 * (v24 - v26);
@@ -134,12 +134,12 @@
   }
 }
 
-- (int64_t)compareByAnglePoint:(id)a3 andPoint:(id)a4 withRef:(id)a5
+- (int64_t)compareByAnglePoint:(id)point andPoint:(id)andPoint withRef:(id)ref
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_PSCluster *)self orientationOfPoints:v10 and:v8 and:v9];
+  pointCopy = point;
+  andPointCopy = andPoint;
+  refCopy = ref;
+  v11 = [(_PSCluster *)self orientationOfPoints:refCopy and:pointCopy and:andPointCopy];
   if (v11)
   {
     v12 = v11 == 2;
@@ -147,9 +147,9 @@
 
   else
   {
-    [v10 euclideanDistanceToPoint:v9];
+    [refCopy euclideanDistanceToPoint:andPointCopy];
     v14 = v13;
-    [v10 euclideanDistanceToPoint:v8];
+    [refCopy euclideanDistanceToPoint:pointCopy];
     v12 = v14 - v15 > -2.22044605e-16;
   }
 
@@ -166,17 +166,17 @@
   return v16;
 }
 
-- (void)sortArray:(id)a3
+- (void)sortArray:(id)array
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v4 mutableCopy];
+  arrayCopy = array;
+  v5 = [arrayCopy objectAtIndexedSubscript:0];
+  v6 = [arrayCopy mutableCopy];
   [v6 removeObjectAtIndex:0];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __24___PSCluster_sortArray___block_invoke;
   v13 = &unk_1E7C25D60;
-  v14 = self;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
   [v6 sortUsingComparator:&v10];
@@ -186,7 +186,7 @@
     do
     {
       v9 = [v6 objectAtIndexedSubscript:v8];
-      [v4 setObject:v9 atIndexedSubscript:++v8];
+      [arrayCopy setObject:v9 atIndexedSubscript:++v8];
     }
 
     while (v8 < [v6 count]);
@@ -195,23 +195,23 @@
 
 - (void)computeConvexHull
 {
-  v2 = self;
-  v3 = [(_PSCluster *)self convexHull];
-  v4 = [v3 count];
+  selfCopy = self;
+  convexHull = [(_PSCluster *)self convexHull];
+  v4 = [convexHull count];
 
   if (v4)
   {
-    v5 = [(_PSCluster *)v2 convexHull];
-    [v5 removeAllObjects];
+    convexHull2 = [(_PSCluster *)selfCopy convexHull];
+    [convexHull2 removeAllObjects];
   }
 
-  v6 = [(_PSCluster *)v2 points];
-  v7 = [v6 count];
+  points = [(_PSCluster *)selfCopy points];
+  v7 = [points count];
 
   if (v7 >= 3)
   {
-    v8 = [(_PSCluster *)v2 points];
-    v9 = [v8 count];
+    points2 = [(_PSCluster *)selfCopy points];
+    v9 = [points2 count];
 
     v10 = 0;
     if (v9)
@@ -220,8 +220,8 @@
       v12 = 1.79769313e308;
       do
       {
-        v13 = [(_PSCluster *)v2 points];
-        v14 = [v13 objectAtIndexedSubscript:v11];
+        points3 = [(_PSCluster *)selfCopy points];
+        v14 = [points3 objectAtIndexedSubscript:v11];
         [v14 y];
         if (v12 - v15 > 2.22044605e-16)
         {
@@ -229,8 +229,8 @@
 
         else
         {
-          v16 = [(_PSCluster *)v2 points];
-          v17 = [v16 objectAtIndexedSubscript:v11];
+          points4 = [(_PSCluster *)selfCopy points];
+          v17 = [points4 objectAtIndexedSubscript:v11];
           [v17 y];
           if (vabdd_f64(v18, v12) >= 2.22044605e-16)
           {
@@ -238,13 +238,13 @@
             goto LABEL_13;
           }
 
-          v19 = [(_PSCluster *)v2 points];
-          [v19 objectAtIndexedSubscript:v10];
+          points5 = [(_PSCluster *)selfCopy points];
+          [points5 objectAtIndexedSubscript:v10];
           v20 = v69 = v10;
           [v20 x];
           v22 = v21;
-          v23 = [(_PSCluster *)v2 points];
-          v24 = [v23 objectAtIndexedSubscript:v11];
+          points6 = [(_PSCluster *)selfCopy points];
+          v24 = [points6 objectAtIndexedSubscript:v11];
           [v24 x];
           v26 = v22 - v25;
 
@@ -255,8 +255,8 @@
           }
         }
 
-        v13 = [(_PSCluster *)v2 points];
-        v14 = [v13 objectAtIndexedSubscript:v11];
+        points3 = [(_PSCluster *)selfCopy points];
+        v14 = [points3 objectAtIndexedSubscript:v11];
         [v14 y];
         v12 = v27;
         v10 = v11;
@@ -264,36 +264,36 @@ LABEL_13:
 
 LABEL_14:
         ++v11;
-        v28 = [(_PSCluster *)v2 points];
-        v29 = [v28 count];
+        points7 = [(_PSCluster *)selfCopy points];
+        v29 = [points7 count];
       }
 
       while (v11 < v29);
     }
 
-    v30 = [(_PSCluster *)v2 points];
-    [v30 exchangeObjectAtIndex:0 withObjectAtIndex:v10];
+    points8 = [(_PSCluster *)selfCopy points];
+    [points8 exchangeObjectAtIndex:0 withObjectAtIndex:v10];
 
-    v31 = [(_PSCluster *)v2 points];
-    [(_PSCluster *)v2 sortArray:v31];
+    points9 = [(_PSCluster *)selfCopy points];
+    [(_PSCluster *)selfCopy sortArray:points9];
 
-    v67 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v32 = [MEMORY[0x1E696AD98] numberWithInteger:0];
-    [v67 addObject:v32];
+    [array addObject:v32];
 
-    v33 = [(_PSCluster *)v2 points];
-    v34 = [v33 count];
+    points10 = [(_PSCluster *)selfCopy points];
+    v34 = [points10 count];
 
     if (v34 >= 2)
     {
       v35 = 1;
       v36 = 1;
-      v71 = v2;
+      v71 = selfCopy;
       do
       {
         v68 = v36;
-        v37 = [(_PSCluster *)v2 points];
-        if (v35 >= [v37 count] - 1)
+        points11 = [(_PSCluster *)selfCopy points];
+        if (v35 >= [points11 count] - 1)
         {
 LABEL_20:
 
@@ -304,37 +304,37 @@ LABEL_20:
         {
           while (1)
           {
-            v70 = [(_PSCluster *)v2 points];
-            v38 = [v70 objectAtIndexedSubscript:0];
-            v39 = [(_PSCluster *)v2 points];
-            v40 = [v39 objectAtIndexedSubscript:v35];
-            v41 = [(_PSCluster *)v2 points];
+            points12 = [(_PSCluster *)selfCopy points];
+            v38 = [points12 objectAtIndexedSubscript:0];
+            points13 = [(_PSCluster *)selfCopy points];
+            v40 = [points13 objectAtIndexedSubscript:v35];
+            points14 = [(_PSCluster *)selfCopy points];
             v42 = v35 + 1;
-            v43 = [v41 objectAtIndexedSubscript:v35 + 1];
-            v44 = [(_PSCluster *)v2 orientationOfPoints:v38 and:v40 and:v43];
+            v43 = [points14 objectAtIndexedSubscript:v35 + 1];
+            v44 = [(_PSCluster *)selfCopy orientationOfPoints:v38 and:v40 and:v43];
 
             if (v44)
             {
               break;
             }
 
-            v37 = [(_PSCluster *)v2 points];
+            points11 = [(_PSCluster *)selfCopy points];
             ++v35;
-            if (v42 >= [v37 count] - 1)
+            if (v42 >= [points11 count] - 1)
             {
               goto LABEL_20;
             }
           }
         }
 
-        v45 = [(_PSCluster *)v2 points];
-        [v45 exchangeObjectAtIndex:v68 withObjectAtIndex:v35];
+        points15 = [(_PSCluster *)selfCopy points];
+        [points15 exchangeObjectAtIndex:v68 withObjectAtIndex:v35];
 
         v36 = v68 + 1;
-        v46 = [(_PSCluster *)v71 points];
-        v47 = [v46 count];
+        points16 = [(_PSCluster *)v71 points];
+        v47 = [points16 count];
 
-        v2 = v71;
+        selfCopy = v71;
         v35 = v42;
       }
 
@@ -343,12 +343,12 @@ LABEL_20:
       {
         for (i = 0; i != 3; ++i)
         {
-          v49 = [(_PSCluster *)v2 convexHull];
-          v50 = [(_PSCluster *)v71 points];
-          v51 = [v50 objectAtIndexedSubscript:i];
-          [v49 addObject:v51];
+          convexHull3 = [(_PSCluster *)selfCopy convexHull];
+          points17 = [(_PSCluster *)v71 points];
+          v51 = [points17 objectAtIndexedSubscript:i];
+          [convexHull3 addObject:v51];
 
-          v2 = v71;
+          selfCopy = v71;
         }
 
         if (v68 != 2)
@@ -358,32 +358,32 @@ LABEL_20:
           {
             while (1)
             {
-              v53 = [(_PSCluster *)v2 convexHull];
-              v54 = [(_PSCluster *)v2 convexHull];
-              v55 = [v53 objectAtIndexedSubscript:{objc_msgSend(v54, "count") - 2}];
-              v56 = [(_PSCluster *)v2 convexHull];
-              v57 = [(_PSCluster *)v2 convexHull];
-              v58 = [v56 objectAtIndexedSubscript:{objc_msgSend(v57, "count") - 1}];
-              v59 = [(_PSCluster *)v71 points];
-              v60 = [v59 objectAtIndexedSubscript:v52];
+              convexHull4 = [(_PSCluster *)selfCopy convexHull];
+              convexHull5 = [(_PSCluster *)selfCopy convexHull];
+              v55 = [convexHull4 objectAtIndexedSubscript:{objc_msgSend(convexHull5, "count") - 2}];
+              convexHull6 = [(_PSCluster *)selfCopy convexHull];
+              convexHull7 = [(_PSCluster *)selfCopy convexHull];
+              v58 = [convexHull6 objectAtIndexedSubscript:{objc_msgSend(convexHull7, "count") - 1}];
+              points18 = [(_PSCluster *)v71 points];
+              v60 = [points18 objectAtIndexedSubscript:v52];
               v61 = [(_PSCluster *)v71 orientationOfPoints:v55 and:v58 and:v60];
 
-              v2 = v71;
-              v62 = [(_PSCluster *)v71 convexHull];
-              v63 = v62;
+              selfCopy = v71;
+              convexHull8 = [(_PSCluster *)v71 convexHull];
+              v63 = convexHull8;
               if (v61 == 2)
               {
                 break;
               }
 
-              [v62 removeLastObject];
+              [convexHull8 removeLastObject];
             }
 
-            v64 = [(_PSCluster *)v71 points];
-            v65 = [v64 objectAtIndexedSubscript:v52];
+            points19 = [(_PSCluster *)v71 points];
+            v65 = [points19 objectAtIndexedSubscript:v52];
             [v63 addObject:v65];
 
-            v2 = v71;
+            selfCopy = v71;
           }
 
           while (v52++ != v68);
@@ -393,22 +393,22 @@ LABEL_20:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_PSCluster *)self points];
+  coderCopy = coder;
+  points = [(_PSCluster *)self points];
   v6 = NSStringFromSelector(sel_points);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:points forKey:v6];
 
-  v8 = [(_PSCluster *)self convexHull];
+  convexHull = [(_PSCluster *)self convexHull];
   v7 = NSStringFromSelector(sel_convexHull);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:convexHull forKey:v7];
 }
 
-- (_PSCluster)initWithCoder:(id)a3
+- (_PSCluster)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -416,10 +416,10 @@ LABEL_20:
   v10 = objc_opt_class();
   v11 = [v4 setWithObjects:{v6, v7, v8, v9, v10, objc_opt_class(), 0}];
   v12 = NSStringFromSelector(sel_points);
-  v13 = [v5 decodeObjectOfClasses:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClasses:v11 forKey:v12];
 
   v14 = NSStringFromSelector(sel_convexHull);
-  v15 = [v5 decodeObjectOfClasses:v11 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClasses:v11 forKey:v14];
 
   v16 = [(_PSCluster *)self initWithPoints:v13 andHull:v15];
   return v16;
@@ -430,18 +430,18 @@ LABEL_20:
   v51 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(_PSCluster *)self points];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  points = [(_PSCluster *)self points];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(points, "count")}];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(_PSCluster *)self convexHull];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+  convexHull = [(_PSCluster *)self convexHull];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(convexHull, "count")}];
   v10 = [v3 stringWithFormat:@"Points, convex hulls:<%@ %@>", v6, v9];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v38 = self;
+  selfCopy = self;
   obj = [(_PSCluster *)self points];
   v11 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v11)
@@ -487,7 +487,7 @@ LABEL_20:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obja = [(_PSCluster *)v38 convexHull];
+  obja = [(_PSCluster *)selfCopy convexHull];
   v24 = [obja countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v24)
   {

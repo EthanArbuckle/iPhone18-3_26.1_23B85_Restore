@@ -7,19 +7,19 @@
 - (int)getRemaining;
 - (int)getTotalIn;
 - (int)getTotalOut;
-- (int)inflateWithByteArray:(id)a3;
-- (int)inflateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (int)inflateWithByteArray:(id)array;
+- (int)inflateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (int64_t)getBytesRead;
 - (int64_t)getBytesWritten;
 - (uint64_t)checkOpen;
 - (void)dealloc;
 - (void)end;
-- (void)endImplWithLong:(int64_t)a3;
+- (void)endImplWithLong:(int64_t)long;
 - (void)reset;
-- (void)setDictionaryWithByteArray:(id)a3;
-- (void)setDictionaryWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)setInputWithByteArray:(id)a3;
-- (void)setInputWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (void)setDictionaryWithByteArray:(id)array;
+- (void)setDictionaryWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)setInputWithByteArray:(id)array;
+- (void)setInputWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation JavaUtilZipInflater
@@ -47,12 +47,12 @@
   objc_sync_exit(self);
 }
 
-- (void)endImplWithLong:(int64_t)a3
+- (void)endImplWithLong:(int64_t)long
 {
-  inflateEnd(a3);
+  inflateEnd(long);
   free(self->inBuffer_);
 
-  free(a3);
+  free(long);
 }
 
 - (void)dealloc
@@ -150,27 +150,27 @@
   return v3;
 }
 
-- (int)inflateWithByteArray:(id)a3
+- (int)inflateWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaUtilZipInflater *)self inflateWithByteArray:a3 withInt:0 withInt:v4];
+  return [(JavaUtilZipInflater *)self inflateWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (int)inflateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (int)inflateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
   [JavaUtilZipInflater checkOpen]_0(self);
   if ([(JavaUtilZipInflater *)self needsInput])
   {
@@ -181,7 +181,7 @@
   {
     needsDictionary = self->needsDictionary_;
     self->needsDictionary_ = 0;
-    v9 = sub_10026BD54(self, a3, a4, a5, self->streamHandle_);
+    v9 = sub_10026BD54(self, array, int, withInt, self->streamHandle_);
     if (self->needsDictionary_ && needsDictionary)
     {
       v12 = new_JavaUtilZipDataFormatException_initWithNSString_(@"Needs dictionary");
@@ -220,60 +220,60 @@
   objc_sync_exit(self);
 }
 
-- (void)setDictionaryWithByteArray:(id)a3
+- (void)setDictionaryWithByteArray:(id)array
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilZipInflater *)self setDictionaryWithByteArray:a3 withInt:0 withInt:*(a3 + 2)];
+  [(JavaUtilZipInflater *)self setDictionaryWithByteArray:array withInt:0 withInt:*(array + 2)];
 
   objc_sync_exit(self);
 }
 
-- (void)setDictionaryWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)setDictionaryWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
   [JavaUtilZipInflater checkOpen]_0(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
-  sub_10026C08C(a3, a4, a5, self->streamHandle_);
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
+  sub_10026C08C(array, int, withInt, self->streamHandle_);
 
   objc_sync_exit(self);
 }
 
-- (void)setInputWithByteArray:(id)a3
+- (void)setInputWithByteArray:(id)array
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilZipInflater *)self setInputWithByteArray:a3 withInt:0 withInt:*(a3 + 2)];
+  [(JavaUtilZipInflater *)self setInputWithByteArray:array withInt:0 withInt:*(array + 2)];
 
   objc_sync_exit(self);
 }
 
-- (void)setInputWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)setInputWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
   [JavaUtilZipInflater checkOpen]_0(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
-  self->inLength_ = a5;
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
+  self->inLength_ = withInt;
   self->inRead_ = 0;
-  sub_100152D7C(self, a3, a4, a5, self->streamHandle_);
+  sub_100152D7C(self, array, int, withInt, self->streamHandle_);
 
   objc_sync_exit(self);
 }

@@ -1,55 +1,55 @@
 @interface TRIClient
-+ (BOOL)_isFactorRecordFileType:(id)a3;
++ (BOOL)_isFactorRecordFileType:(id)type;
 + (BOOL)isPlatformBinary;
-+ (BOOL)sysdiagnoseInfoToDir:(id)a3 error:(id *)a4;
++ (BOOL)sysdiagnoseInfoToDir:(id)dir error:(id *)error;
 + (id)_sysdiagnoseLogProviders;
-+ (id)activeRolloutInformation:(id *)a3;
-+ (id)clientWithExperimentIdentifiers:(id)a3;
-+ (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)a3;
++ (id)activeRolloutInformation:(id *)information;
++ (id)clientWithExperimentIdentifiers:(id)identifiers;
++ (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)error;
 + (id)printedNCVInformation;
-+ (id)printedOnDemandReferenceCountsPerUserInformationWithError:(id *)a3;
++ (id)printedOnDemandReferenceCountsPerUserInformationWithError:(id *)error;
 + (void)logSystemCovariates;
 + (void)printCurrentSettings;
-- (BOOL)_hasAppropriatePermissionsForNamespaceName:(id)a3;
-- (BOOL)deregisterNamespaceName:(id)a3 error:(id *)a4;
-- (BOOL)enumerateCounterfactualsWithNamespace:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)hasCounterfactualsForNamespace:(id)a3;
-- (BOOL)hasDownloadedNamespaceWithName:(id)a3;
-- (BOOL)promoteFactorsForNamespace:(id)a3 error:(id *)a4;
-- (BOOL)setFactorsProvisionalForNamespace:(id)a3 error:(id *)a4;
-- (BOOL)setPurgeabilityLevelsForFactors:(id)a3 withNamespaceName:(id)a4;
-- (BOOL)trialIdentifiersWithNamespaceName:(id)a3 experimentId:(id *)a4 deploymentId:(int *)a5 treatmentId:(id *)a6;
+- (BOOL)_hasAppropriatePermissionsForNamespaceName:(id)name;
+- (BOOL)deregisterNamespaceName:(id)name error:(id *)error;
+- (BOOL)enumerateCounterfactualsWithNamespace:(id)namespace error:(id *)error usingBlock:(id)block;
+- (BOOL)hasCounterfactualsForNamespace:(id)namespace;
+- (BOOL)hasDownloadedNamespaceWithName:(id)name;
+- (BOOL)promoteFactorsForNamespace:(id)namespace error:(id *)error;
+- (BOOL)setFactorsProvisionalForNamespace:(id)namespace error:(id *)error;
+- (BOOL)setPurgeabilityLevelsForFactors:(id)factors withNamespaceName:(id)name;
+- (BOOL)trialIdentifiersWithNamespaceName:(id)name experimentId:(id *)id deploymentId:(int *)deploymentId treatmentId:(id *)treatmentId;
 - (TRIClient)init;
-- (TRIClient)initWithClientIdentifier:(int)a3 paths:(id)a4 factorsState:(id)a5 staleFactorsUsageGracePeriod:(double)a6 logger:(id)a7;
+- (TRIClient)initWithClientIdentifier:(int)identifier paths:(id)paths factorsState:(id)state staleFactorsUsageGracePeriod:(double)period logger:(id)logger;
 - (TRITrackingId)trackingId;
-- (id)_rampIdForRolloutDeployment:(id)a3;
-- (id)_refresh:(BOOL)a3;
-- (id)addUpdateHandlerForNamespaceName:(id)a3 queue:(id)a4 usingBlock:(id)a5;
-- (id)addUpdateHandlerForNamespaceName:(id)a3 usingBlock:(id)a4;
-- (id)experimentIdWithNamespaceName:(id)a3;
-- (id)experimentIdentifiersWithNamespaceName:(id)a3;
-- (id)factorLevelsWithNamespaceName:(id)a3;
-- (id)levelForFactor:(id)a3 withNamespaceName:(id)a4;
-- (id)purgeabilityLevelsForFactorsWithNamespaceName:(id)a3;
-- (id)rolloutIdWithNamespaceName:(id)a3;
-- (id)rolloutIdentifiersWithNamespaceName:(id)a3;
-- (id)sizesForFactors:(id)a3 withNamespaceName:(id)a4 forMetric:(unint64_t)a5 error:(id *)a6;
-- (id)treatmentIdWithNamespaceName:(id)a3;
-- (int64_t)_appContainerType:(id)a3;
-- (unint64_t)statusOfDownloadForFactors:(id)a3 withNamespace:(id)a4 token:(id *)a5 queue:(id)a6 progress:(id)a7 completion:(id)a8;
+- (id)_rampIdForRolloutDeployment:(id)deployment;
+- (id)_refresh:(BOOL)_refresh;
+- (id)addUpdateHandlerForNamespaceName:(id)name queue:(id)queue usingBlock:(id)block;
+- (id)addUpdateHandlerForNamespaceName:(id)name usingBlock:(id)block;
+- (id)experimentIdWithNamespaceName:(id)name;
+- (id)experimentIdentifiersWithNamespaceName:(id)name;
+- (id)factorLevelsWithNamespaceName:(id)name;
+- (id)levelForFactor:(id)factor withNamespaceName:(id)name;
+- (id)purgeabilityLevelsForFactorsWithNamespaceName:(id)name;
+- (id)rolloutIdWithNamespaceName:(id)name;
+- (id)rolloutIdentifiersWithNamespaceName:(id)name;
+- (id)sizesForFactors:(id)factors withNamespaceName:(id)name forMetric:(unint64_t)metric error:(id *)error;
+- (id)treatmentIdWithNamespaceName:(id)name;
+- (int64_t)_appContainerType:(id)type;
+- (unint64_t)statusOfDownloadForFactors:(id)factors withNamespace:(id)namespace token:(id *)token queue:(id)queue progress:(id)progress completion:(id)completion;
 - (void)_checkEntitlements;
 - (void)_invalidateFactors;
 - (void)_lazyInit;
-- (void)_registerUpdateHandlerForNamespaceName:(id)a3 notificationCallback:(id)a4 clientMethodNameForLogging:(const char *)a5 callingFunctionReturnAddressForLogging:(void *)a6;
-- (void)_setupExcessiveStaleFactorsUsageTimerWithGuardedData:(id)a3 namespace:(id)a4 clientMethodNameForLogging:(const char *)a5 callingFunctionReturnAddressForLogging:(void *)a6;
-- (void)cacheFactorLevelsWithNamespaceName:(id)a3;
+- (void)_registerUpdateHandlerForNamespaceName:(id)name notificationCallback:(id)callback clientMethodNameForLogging:(const char *)logging callingFunctionReturnAddressForLogging:(void *)forLogging;
+- (void)_setupExcessiveStaleFactorsUsageTimerWithGuardedData:(id)data namespace:(id)namespace clientMethodNameForLogging:(const char *)logging callingFunctionReturnAddressForLogging:(void *)forLogging;
+- (void)cacheFactorLevelsWithNamespaceName:(id)name;
 - (void)dealloc;
-- (void)downloadLevelsForFactors:(id)a3 withNamespace:(id)a4 queue:(id)a5 options:(id)a6 progress:(id)a7 completion:(id)a8;
-- (void)downloadNamespaceWithName:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6;
-- (void)removeDownloadStatusHandlersWithToken:(id)a3;
-- (void)removeLevelsForFactors:(id)a3 withNamespace:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)removeLevelsForFactorsImmediately:(id)a3 withNamespace:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)removeUpdateHandlerForToken:(id)a3;
+- (void)downloadLevelsForFactors:(id)factors withNamespace:(id)namespace queue:(id)queue options:(id)options progress:(id)progress completion:(id)completion;
+- (void)downloadNamespaceWithName:(id)name options:(id)options progress:(id)progress completion:(id)completion;
+- (void)removeDownloadStatusHandlersWithToken:(id)token;
+- (void)removeLevelsForFactors:(id)factors withNamespace:(id)namespace queue:(id)queue completion:(id)completion;
+- (void)removeLevelsForFactorsImmediately:(id)immediately withNamespace:(id)namespace queue:(id)queue completion:(id)completion;
+- (void)removeUpdateHandlerForToken:(id)token;
 @end
 
 @implementation TRIClient
@@ -123,18 +123,18 @@ void __29__TRIClient_isPlatformBinary__block_invoke()
 - (void)_checkEntitlements
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() requiresTrialDataVaultAccess];
-  v4 = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
-  v5 = [v4 fileSystemRepresentation];
+  requiresTrialDataVaultAccess = [objc_opt_class() requiresTrialDataVaultAccess];
+  namespaceDescriptorsDir = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
+  fileSystemRepresentation = [namespaceDescriptorsDir fileSystemRepresentation];
 
   *__error() = 0;
-  if (v3 && access(v5, 4) && *__error() == 1)
+  if (requiresTrialDataVaultAccess && access(fileSystemRepresentation, 4) && *__error() == 1)
   {
     v6 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 136315138;
-      v9 = v5;
+      v9 = fileSystemRepresentation;
       _os_log_fault_impl(&dword_22EA6B000, v6, OS_LOG_TYPE_FAULT, "Cannot access %s - Please ensure you have set the entitlement <key>com.apple.trial.client</key> to the right value(s)", &v8, 0xCu);
     }
   }
@@ -174,20 +174,20 @@ void __20__TRIClient_dealloc__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)clientWithExperimentIdentifiers:(id)a3
++ (id)clientWithExperimentIdentifiers:(id)identifiers
 {
-  v4 = [a3 asFactorsState];
-  v5 = [a1 clientWithProjectId:0 factorsState:v4];
+  asFactorsState = [identifiers asFactorsState];
+  v5 = [self clientWithProjectId:0 factorsState:asFactorsState];
 
   return v5;
 }
 
-- (TRIClient)initWithClientIdentifier:(int)a3 paths:(id)a4 factorsState:(id)a5 staleFactorsUsageGracePeriod:(double)a6 logger:(id)a7
+- (TRIClient)initWithClientIdentifier:(int)identifier paths:(id)paths factorsState:(id)state staleFactorsUsageGracePeriod:(double)period logger:(id)logger
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  pathsCopy = paths;
+  stateCopy = state;
+  loggerCopy = logger;
   v33.receiver = self;
   v33.super_class = TRIClient;
   v16 = [(TRIClient *)&v33 init];
@@ -204,16 +204,16 @@ void __20__TRIClient_dealloc__block_invoke(uint64_t a1, void *a2)
     _os_log_impl(&dword_22EA6B000, v17, OS_LOG_TYPE_DEFAULT, "Initializing TRIClient. Trial version: %@", buf, 0xCu);
   }
 
-  objc_storeStrong(&v16->_paths, a4);
-  v18 = [[TRIDefaultFactorProvider alloc] initWithPaths:v13 factorsState:v14];
+  objc_storeStrong(&v16->_paths, paths);
+  v18 = [[TRIDefaultFactorProvider alloc] initWithPaths:pathsCopy factorsState:stateCopy];
   defaultFactorProvider = v16->_defaultFactorProvider;
   v16->_defaultFactorProvider = v18;
 
   if (v16->_defaultFactorProvider)
   {
-    v16->_projectId = a3;
-    objc_storeStrong(&v16->_logger, a7);
-    v16->_staleFactorsUsageGracePeriod = a6;
+    v16->_projectId = identifier;
+    objc_storeStrong(&v16->_logger, logger);
+    v16->_staleFactorsUsageGracePeriod = period;
     v20 = objc_opt_new();
     v21 = objc_opt_new();
     v22 = *(v20 + 16);
@@ -232,7 +232,7 @@ void __20__TRIClient_dealloc__block_invoke(uint64_t a1, void *a2)
     notificationQueue = v16->_notificationQueue;
     v16->_notificationQueue = v27;
 
-    objc_storeStrong(&v16->_factorsState, a5);
+    objc_storeStrong(&v16->_factorsState, state);
 LABEL_6:
     v29 = v16;
     goto LABEL_10;
@@ -252,7 +252,7 @@ LABEL_10:
   return v29;
 }
 
-- (id)_refresh:(BOOL)a3
+- (id)_refresh:(BOOL)_refresh
 {
   [(TRIClient *)self _lazyInit];
   v10 = 0;
@@ -266,7 +266,7 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = __22__TRIClient__refresh___block_invoke;
   v8[3] = &unk_27885F0C8;
-  v9 = a3;
+  _refreshCopy = _refresh;
   v8[4] = self;
   v8[5] = &v10;
   [(_PASLock *)lock runWithLockAcquired:v8];
@@ -339,98 +339,98 @@ void __22__TRIClient__refresh___block_invoke(uint64_t a1, void *a2)
 
   if (!v5)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:351 description:@"trackingId unexpectedly not assigned"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:351 description:@"trackingId unexpectedly not assigned"];
   }
 
   return v5;
 }
 
-- (id)levelForFactor:(id)a3 withNamespaceName:(id)a4
+- (id)levelForFactor:(id)factor withNamespaceName:(id)name
 {
-  v7 = a4;
-  v8 = a3;
+  nameCopy = name;
+  factorCopy = factor;
   [(TRIClient *)self _lazyInit];
-  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:v7 notificationCallback:0 clientMethodNameForLogging:"[TRIClient levelForFactor:withNamespaceName:]" callingFunctionReturnAddressForLogging:v4];
-  v9 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider levelForFactor:v8 withNamespaceName:v7];
+  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:nameCopy notificationCallback:0 clientMethodNameForLogging:"[TRIClient levelForFactor:withNamespaceName:]" callingFunctionReturnAddressForLogging:v4];
+  v9 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider levelForFactor:factorCopy withNamespaceName:nameCopy];
 
   return v9;
 }
 
-- (id)factorLevelsWithNamespaceName:(id)a3
+- (id)factorLevelsWithNamespaceName:(id)name
 {
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   [(TRIClient *)self _lazyInit];
-  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:v6 notificationCallback:0 clientMethodNameForLogging:"[TRIClient factorLevelsWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
-  v7 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider factorLevelsWithNamespaceName:v6];
+  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:nameCopy notificationCallback:0 clientMethodNameForLogging:"[TRIClient factorLevelsWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
+  v7 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider factorLevelsWithNamespaceName:nameCopy];
 
   return v7;
 }
 
-- (void)cacheFactorLevelsWithNamespaceName:(id)a3
+- (void)cacheFactorLevelsWithNamespaceName:(id)name
 {
-  v7 = a3;
-  if (!v7)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:384 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:384 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   [(TRIClient *)self _lazyInit];
-  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:v7 notificationCallback:0 clientMethodNameForLogging:"[TRIClient cacheFactorLevelsWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
-  [(TRIDefaultFactorProvider *)self->_defaultFactorProvider cacheFactorLevelsWithNamespaceName:v7];
+  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:nameCopy notificationCallback:0 clientMethodNameForLogging:"[TRIClient cacheFactorLevelsWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
+  [(TRIDefaultFactorProvider *)self->_defaultFactorProvider cacheFactorLevelsWithNamespaceName:nameCopy];
 }
 
-- (id)addUpdateHandlerForNamespaceName:(id)a3 usingBlock:(id)a4
+- (id)addUpdateHandlerForNamespaceName:(id)name usingBlock:(id)block
 {
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  nameCopy = name;
   [(TRIClient *)self _lazyInit];
   v9 = objc_opt_new();
   [v9 setQueue:self->_notificationQueue];
-  [v9 setHandler:v7];
+  [v9 setHandler:blockCopy];
 
-  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:v8 notificationCallback:v9 clientMethodNameForLogging:"[TRIClient addUpdateHandlerForNamespaceName:usingBlock:]" callingFunctionReturnAddressForLogging:v4];
+  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:nameCopy notificationCallback:v9 clientMethodNameForLogging:"[TRIClient addUpdateHandlerForNamespaceName:usingBlock:]" callingFunctionReturnAddressForLogging:v4];
 
   return v9;
 }
 
-- (id)addUpdateHandlerForNamespaceName:(id)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addUpdateHandlerForNamespaceName:(id)name queue:(id)queue usingBlock:(id)block
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  blockCopy = block;
+  queueCopy = queue;
+  nameCopy = name;
   [(TRIClient *)self _lazyInit];
   v12 = objc_opt_new();
   v13 = v12;
-  notificationQueue = v10;
-  if (!v10)
+  notificationQueue = queueCopy;
+  if (!queueCopy)
   {
     notificationQueue = self->_notificationQueue;
   }
 
   [v12 setQueue:notificationQueue];
 
-  [v13 setHandler:v9];
-  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:v11 notificationCallback:v13 clientMethodNameForLogging:"[TRIClient addUpdateHandlerForNamespaceName:queue:usingBlock:]" callingFunctionReturnAddressForLogging:v5];
+  [v13 setHandler:blockCopy];
+  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:nameCopy notificationCallback:v13 clientMethodNameForLogging:"[TRIClient addUpdateHandlerForNamespaceName:queue:usingBlock:]" callingFunctionReturnAddressForLogging:v5];
 
   return v13;
 }
 
-- (void)removeUpdateHandlerForToken:(id)a3
+- (void)removeUpdateHandlerForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   [(TRIClient *)self _lazyInit];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = tokenCopy;
     if (v5)
     {
       lock = self->_lock;
@@ -481,11 +481,11 @@ void __41__TRIClient_removeUpdateHandlerForToken___block_invoke_2(uint64_t a1, v
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupExcessiveStaleFactorsUsageTimerWithGuardedData:(id)a3 namespace:(id)a4 clientMethodNameForLogging:(const char *)a5 callingFunctionReturnAddressForLogging:(void *)a6
+- (void)_setupExcessiveStaleFactorsUsageTimerWithGuardedData:(id)data namespace:(id)namespace clientMethodNameForLogging:(const char *)logging callingFunctionReturnAddressForLogging:(void *)forLogging
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10[4])
+  dataCopy = data;
+  namespaceCopy = namespace;
+  if (!dataCopy[4])
   {
     objc_initWeak(&location, self);
     v16 = MEMORY[0x277D85DD0];
@@ -493,13 +493,13 @@ void __41__TRIClient_removeUpdateHandlerForToken___block_invoke_2(uint64_t a1, v
     v18 = __142__TRIClient__setupExcessiveStaleFactorsUsageTimerWithGuardedData_namespace_clientMethodNameForLogging_callingFunctionReturnAddressForLogging___block_invoke;
     v19 = &unk_27885F168;
     objc_copyWeak(v20, &location);
-    v20[1] = a6;
-    v20[2] = a5;
+    v20[1] = forLogging;
+    v20[2] = logging;
     v12 = MEMORY[0x2318F2490](&v16);
     v13 = [TRIExcessiveStaleFactorsUsageTimer alloc];
-    v14 = [(TRIExcessiveStaleFactorsUsageTimer *)v13 initWithNamespaceName:v11 delayTimeInSeconds:v12 block:self->_staleFactorsUsageGracePeriod, v16, v17, v18, v19];
-    v15 = v10[4];
-    v10[4] = v14;
+    v14 = [(TRIExcessiveStaleFactorsUsageTimer *)v13 initWithNamespaceName:namespaceCopy delayTimeInSeconds:v12 block:self->_staleFactorsUsageGracePeriod, v16, v17, v18, v19];
+    v15 = dataCopy[4];
+    dataCopy[4] = v14;
 
     objc_destroyWeak(v20);
     objc_destroyWeak(&location);
@@ -560,22 +560,22 @@ void __142__TRIClient__setupExcessiveStaleFactorsUsageTimerWithGuardedData_names
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerUpdateHandlerForNamespaceName:(id)a3 notificationCallback:(id)a4 clientMethodNameForLogging:(const char *)a5 callingFunctionReturnAddressForLogging:(void *)a6
+- (void)_registerUpdateHandlerForNamespaceName:(id)name notificationCallback:(id)callback clientMethodNameForLogging:(const char *)logging callingFunctionReturnAddressForLogging:(void *)forLogging
 {
-  v10 = a3;
-  v11 = a4;
+  nameCopy = name;
+  callbackCopy = callback;
   lock = self->_lock;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __139__TRIClient__registerUpdateHandlerForNamespaceName_notificationCallback_clientMethodNameForLogging_callingFunctionReturnAddressForLogging___block_invoke;
   v15[3] = &unk_27885F1B8;
-  v16 = v11;
-  v17 = v10;
-  v18 = self;
-  v19 = a5;
-  v20 = a6;
-  v13 = v10;
-  v14 = v11;
+  v16 = callbackCopy;
+  v17 = nameCopy;
+  selfCopy = self;
+  loggingCopy = logging;
+  forLoggingCopy = forLogging;
+  v13 = nameCopy;
+  v14 = callbackCopy;
   [(_PASLock *)lock runWithLockAcquired:v15];
 }
 
@@ -764,60 +764,60 @@ void __139__TRIClient__registerUpdateHandlerForNamespaceName_notificationCallbac
   v2[2](v2, *(a1 + 40));
 }
 
-- (id)rolloutIdWithNamespaceName:(id)a3
+- (id)rolloutIdWithNamespaceName:(id)name
 {
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:538 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:538 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   [(TRIClient *)self _lazyInit];
-  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:v6 notificationCallback:0 clientMethodNameForLogging:"[TRIClient rolloutIdWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
-  v7 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider factorPackIdForRolloutWithNamespaceName:v6];
+  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:nameCopy notificationCallback:0 clientMethodNameForLogging:"[TRIClient rolloutIdWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
+  v7 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider factorPackIdForRolloutWithNamespaceName:nameCopy];
 
   return v7;
 }
 
-- (id)treatmentIdWithNamespaceName:(id)a3
+- (id)treatmentIdWithNamespaceName:(id)name
 {
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:548 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:548 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   [(TRIClient *)self _lazyInit];
-  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:v6 notificationCallback:0 clientMethodNameForLogging:"[TRIClient treatmentIdWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
-  v7 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider treatmentIdWithNamespaceName:v6];
+  [(TRIClient *)self _registerUpdateHandlerForNamespaceName:nameCopy notificationCallback:0 clientMethodNameForLogging:"[TRIClient treatmentIdWithNamespaceName:]" callingFunctionReturnAddressForLogging:v3];
+  v7 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider treatmentIdWithNamespaceName:nameCopy];
 
   return v7;
 }
 
-- (id)experimentIdentifiersWithNamespaceName:(id)a3
+- (id)experimentIdentifiersWithNamespaceName:(id)name
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
-  v6 = [(TRIPaths *)self->_paths treatmentsDir];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  treatmentsDir = [(TRIPaths *)self->_paths treatmentsDir];
+  namespaceDescriptorsDir = [treatmentsDir stringByAppendingPathComponent:nameCopy];
 
   v8 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138477827;
-    v24 = v5;
+    v24 = nameCopy;
     _os_log_debug_impl(&dword_22EA6B000, v8, OS_LOG_TYPE_DEBUG, "Looking for experiment identifiers for namespace name: %{private}@", buf, 0xCu);
   }
 
-  if (access([v7 fileSystemRepresentation], 4))
+  if (access([namespaceDescriptorsDir fileSystemRepresentation], 4))
   {
     if (*__error() == 1)
     {
@@ -825,21 +825,21 @@ void __139__TRIClient__registerUpdateHandlerForNamespaceName_notificationCallbac
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v24 = v7;
+        v24 = namespaceDescriptorsDir;
         _os_log_error_impl(&dword_22EA6B000, v9, OS_LOG_TYPE_ERROR, "Cannot access %@ - Please ensure you have set the entitlement \n<key>com.apple.trial.client</key> to the right value(s)", buf, 0xCu);
       }
     }
 
-    v10 = [MEMORY[0x277D73B50] namespaceIdFromName:v5];
-    v11 = [(TRIPaths *)self->_paths treatmentsDir];
+    v10 = [MEMORY[0x277D73B50] namespaceIdFromName:nameCopy];
+    treatmentsDir2 = [(TRIPaths *)self->_paths treatmentsDir];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", v10];
-    v13 = [v11 stringByAppendingPathComponent:v12];
+    v13 = [treatmentsDir2 stringByAppendingPathComponent:v12];
 
     v14 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478083;
-      v24 = v5;
+      v24 = nameCopy;
       v25 = 1024;
       LODWORD(v26) = v10;
       _os_log_debug_impl(&dword_22EA6B000, v14, OS_LOG_TYPE_DEBUG, "Looking for experiment identifiers for namespace name: %{private}@ and namespace id: %d", buf, 0x12u);
@@ -861,40 +861,40 @@ LABEL_22:
     }
   }
 
-  v7 = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
-  if (access([v7 fileSystemRepresentation], 4) && *__error() == 1)
+  namespaceDescriptorsDir = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
+  if (access([namespaceDescriptorsDir fileSystemRepresentation], 4) && *__error() == 1)
   {
     v13 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v24 = v7;
+      v24 = namespaceDescriptorsDir;
       _os_log_fault_impl(&dword_22EA6B000, v13, OS_LOG_TYPE_FAULT, "Cannot access %@ - Please ensure you have set the entitlement \n<key>com.apple.trial.client</key> to the right value(s)", buf, 0xCu);
     }
 
     goto LABEL_22;
   }
 
-  v7 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider experimentDeploymentWithNamespaceName:v5];
-  v17 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider treatmentIdWithNamespaceName:v5];
+  namespaceDescriptorsDir = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider experimentDeploymentWithNamespaceName:nameCopy];
+  v17 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider treatmentIdWithNamespaceName:nameCopy];
   v13 = v17;
-  if (v7 && v17)
+  if (namespaceDescriptorsDir && v17)
   {
     v18 = [TRIExperimentIdentifiers alloc];
-    v19 = [v7 experimentId];
-    v16 = [(TRIExperimentIdentifiers *)v18 initWithExperimentId:v19 deploymentId:[v7 deploymentId] treatmentId:v13];
+    experimentId = [namespaceDescriptorsDir experimentId];
+    v16 = [(TRIExperimentIdentifiers *)v18 initWithExperimentId:experimentId deploymentId:[namespaceDescriptorsDir deploymentId] treatmentId:v13];
   }
 
   else
   {
-    v19 = TRILogCategory_ClientFramework();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    experimentId = TRILogCategory_ClientFramework();
+    if (os_log_type_enabled(experimentId, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478083;
-      v24 = v7;
+      v24 = namespaceDescriptorsDir;
       v25 = 2113;
       v26 = v13;
-      _os_log_debug_impl(&dword_22EA6B000, v19, OS_LOG_TYPE_DEBUG, "Either of ExperimentDeployment %{private}@ or Treatment %{private}@ is nil", buf, 0x16u);
+      _os_log_debug_impl(&dword_22EA6B000, experimentId, OS_LOG_TYPE_DEBUG, "Either of ExperimentDeployment %{private}@ or Treatment %{private}@ is nil", buf, 0x16u);
     }
 
     v16 = 0;
@@ -906,23 +906,23 @@ LABEL_30:
   return v16;
 }
 
-- (id)rolloutIdentifiersWithNamespaceName:(id)a3
+- (id)rolloutIdentifiersWithNamespaceName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:616 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:616 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
-  v6 = [(TRIPaths *)self->_paths treatmentsDir];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  treatmentsDir = [(TRIPaths *)self->_paths treatmentsDir];
+  v7 = [treatmentsDir stringByAppendingPathComponent:nameCopy];
 
-  v8 = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
+  namespaceDescriptorsDir = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
   if (![(TRIClient *)self _hasAccessToDirectory:v7])
   {
-    v9 = [MEMORY[0x277D73B50] namespaceIdFromName:v5];
+    v9 = [MEMORY[0x277D73B50] namespaceIdFromName:nameCopy];
     if (!v9)
     {
       v21 = TRILogCategory_ClientFramework();
@@ -941,9 +941,9 @@ LABEL_19:
     }
 
     v10 = v9;
-    v11 = [(TRIPaths *)self->_paths treatmentsDir];
+    treatmentsDir2 = [(TRIPaths *)self->_paths treatmentsDir];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", v10];
-    v13 = [v11 stringByAppendingPathComponent:v12];
+    v13 = [treatmentsDir2 stringByAppendingPathComponent:v12];
 
     if (![(TRIClient *)self _hasAccessToDirectory:v13])
     {
@@ -961,13 +961,13 @@ LABEL_19:
     }
   }
 
-  if (![(TRIClient *)self _hasAccessToDirectory:v8])
+  if (![(TRIClient *)self _hasAccessToDirectory:namespaceDescriptorsDir])
   {
     v21 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v27 = v8;
+      v27 = namespaceDescriptorsDir;
 LABEL_24:
       _os_log_error_impl(&dword_22EA6B000, v21, OS_LOG_TYPE_ERROR, "Cannot access %@ - Please ensure you have set the entitlement \n<key>com.apple.trial.client</key> to the right value(s)", buf, 0xCu);
       goto LABEL_15;
@@ -976,16 +976,16 @@ LABEL_24:
     goto LABEL_15;
   }
 
-  v14 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider rolloutDeploymentWithNamespaceName:v5];
-  v15 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider factorPackIdForRolloutWithNamespaceName:v5];
+  v14 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider rolloutDeploymentWithNamespaceName:nameCopy];
+  v15 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider factorPackIdForRolloutWithNamespaceName:nameCopy];
   v16 = v15;
   v17 = 0;
   if (v14 && v15)
   {
     v18 = [(TRIClient *)self _rampIdForRolloutDeployment:v14];
     v19 = [TRIRolloutIdentifiers alloc];
-    v20 = [v14 rolloutId];
-    v17 = -[TRIRolloutIdentifiers initWithRolloutId:deploymentId:factorPackId:rampId:](v19, "initWithRolloutId:deploymentId:factorPackId:rampId:", v20, [v14 deploymentId], v16, v18);
+    rolloutId = [v14 rolloutId];
+    v17 = -[TRIRolloutIdentifiers initWithRolloutId:deploymentId:factorPackId:rampId:](v19, "initWithRolloutId:deploymentId:factorPackId:rampId:", rolloutId, [v14 deploymentId], v16, v18);
   }
 
 LABEL_20:
@@ -994,18 +994,18 @@ LABEL_20:
   return v17;
 }
 
-- (id)_rampIdForRolloutDeployment:(id)a3
+- (id)_rampIdForRolloutDeployment:(id)deployment
 {
   v25 = *MEMORY[0x277D85DE8];
   paths = self->_paths;
-  v4 = a3;
-  v5 = [(TRIPaths *)paths namespaceDescriptorsDir];
+  deploymentCopy = deployment;
+  namespaceDescriptorsDir = [(TRIPaths *)paths namespaceDescriptorsDir];
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [v4 rolloutId];
-  v8 = [v4 deploymentId];
+  rolloutId = [deploymentCopy rolloutId];
+  deploymentId = [deploymentCopy deploymentId];
 
-  v9 = [v6 initWithFormat:@"v2/rolloutV2/%@/%d/%@", v7, v8, @"rampId"];
-  v10 = [v5 stringByAppendingPathComponent:v9];
+  v9 = [v6 initWithFormat:@"v2/rolloutV2/%@/%d/%@", rolloutId, deploymentId, @"rampId"];
+  v10 = [namespaceDescriptorsDir stringByAppendingPathComponent:v9];
 
   v20 = 0;
   v11 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v10 encoding:4 error:&v20];
@@ -1022,8 +1022,8 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  v15 = [v12 domain];
-  if (([v15 isEqualToString:*MEMORY[0x277CCA050]] & 1) == 0)
+  domain = [v12 domain];
+  if (([domain isEqualToString:*MEMORY[0x277CCA050]] & 1) == 0)
   {
 
 LABEL_9:
@@ -1040,9 +1040,9 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v16 = [v13 code];
+  code = [v13 code];
 
-  if (v16 != 260)
+  if (code != 260)
   {
     goto LABEL_9;
   }
@@ -1065,49 +1065,49 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)trialIdentifiersWithNamespaceName:(id)a3 experimentId:(id *)a4 deploymentId:(int *)a5 treatmentId:(id *)a6
+- (BOOL)trialIdentifiersWithNamespaceName:(id)name experimentId:(id *)id deploymentId:(int *)deploymentId treatmentId:(id *)treatmentId
 {
-  v10 = a3;
-  if ([(TRIClient *)self _hasAppropriatePermissionsForNamespaceName:v10])
+  nameCopy = name;
+  if ([(TRIClient *)self _hasAppropriatePermissionsForNamespaceName:nameCopy])
   {
-    if (a4)
+    if (id)
     {
-      *a4 = 0;
+      *id = 0;
     }
 
-    if (a5)
+    if (deploymentId)
     {
-      *a5 = -1;
+      *deploymentId = -1;
     }
 
-    if (a6)
+    if (treatmentId)
     {
-      *a6 = 0;
+      *treatmentId = 0;
     }
 
-    v11 = [(TRIClient *)self treatmentIdWithNamespaceName:v10];
+    v11 = [(TRIClient *)self treatmentIdWithNamespaceName:nameCopy];
     v12 = v11;
     if (v11)
     {
-      if (a6)
+      if (treatmentId)
       {
         v13 = v11;
-        *a6 = v12;
+        *treatmentId = v12;
       }
 
-      v14 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider experimentDeploymentWithNamespaceName:v10];
+      v14 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider experimentDeploymentWithNamespaceName:nameCopy];
       v15 = v14;
       v16 = v14 != 0;
       if (v14)
       {
-        if (a4)
+        if (id)
         {
-          *a4 = [v14 experimentId];
+          *id = [v14 experimentId];
         }
 
-        if (a5)
+        if (deploymentId)
         {
-          *a5 = [v15 deploymentId];
+          *deploymentId = [v15 deploymentId];
         }
       }
     }
@@ -1126,17 +1126,17 @@ LABEL_12:
   return v16;
 }
 
-- (id)experimentIdWithNamespaceName:(id)a3
+- (id)experimentIdWithNamespaceName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:720 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:720 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   v13 = 0;
-  v6 = [(TRIClient *)self trialIdentifiersWithNamespaceName:v5 experimentId:&v13 deploymentId:0 treatmentId:0];
+  v6 = [(TRIClient *)self trialIdentifiersWithNamespaceName:nameCopy experimentId:&v13 deploymentId:0 treatmentId:0];
   v7 = v13;
   v8 = v7;
   if (v6)
@@ -1154,17 +1154,17 @@ LABEL_12:
   return v9;
 }
 
-- (int64_t)_appContainerType:(id)a3
+- (int64_t)_appContainerType:(id)type
 {
-  v3 = a3;
-  if (v3 && (v4 = MEMORY[0x277D425B0], TRILogCategory_ClientFramework(), v5 = objc_claimAutoreleasedReturnValue(), LODWORD(v4) = [v4 hasTrueBooleanEntitlement:@"application-identifier" logHandle:v5], v5, v4))
+  typeCopy = type;
+  if (typeCopy && (v4 = MEMORY[0x277D425B0], TRILogCategory_ClientFramework(), v5 = objc_claimAutoreleasedReturnValue(), LODWORD(v4) = [v4 hasTrueBooleanEntitlement:@"application-identifier" logHandle:v5], v5, v4))
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (v7)
+    if (bundleIdentifier)
     {
-      if ([v3 isEqualToString:v7])
+      if ([typeCopy isEqualToString:bundleIdentifier])
       {
         v8 = 2;
       }
@@ -1189,82 +1189,82 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)deregisterNamespaceName:(id)a3 error:(id *)a4
+- (BOOL)deregisterNamespaceName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   [(TRIClient *)self _lazyInit];
   v7 = objc_opt_new();
-  v8 = [v7 deregisterNamespaceWithNamespaceName:v6 error:a4];
+  v8 = [v7 deregisterNamespaceWithNamespaceName:nameCopy error:error];
   if (v8)
   {
-    [(TRIDefaultFactorProvider *)self->_defaultFactorProvider setContainer:0 forNamespaceName:v6];
+    [(TRIDefaultFactorProvider *)self->_defaultFactorProvider setContainer:0 forNamespaceName:nameCopy];
   }
 
   return v8;
 }
 
-- (BOOL)hasDownloadedNamespaceWithName:(id)a3
+- (BOOL)hasDownloadedNamespaceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_autoreleasePoolPush();
-  if ([(TRIDefaultFactorProvider *)self->_defaultFactorProvider hasTreatmentInAnyOfLayers:38 withNamespaceName:v4])
+  if ([(TRIDefaultFactorProvider *)self->_defaultFactorProvider hasTreatmentInAnyOfLayers:38 withNamespaceName:nameCopy])
   {
-    v6 = 1;
+    lastFetchWasSuccess = 1;
   }
 
   else
   {
     v7 = [[TRINamespaceStatusProvider alloc] initWithPaths:self->_paths];
-    v8 = [(TRINamespaceStatusProvider *)v7 statusForNamespaceWithName:v4];
-    v9 = [(TRIClient *)self compatibilityVersionWithNamespaceName:v4];
+    v8 = [(TRINamespaceStatusProvider *)v7 statusForNamespaceWithName:nameCopy];
+    v9 = [(TRIClient *)self compatibilityVersionWithNamespaceName:nameCopy];
     if (v8 && [v8 compatibilityVersion] == v9)
     {
-      v10 = [v8 lastFetchAttempt];
-      if (v10)
+      lastFetchAttempt = [v8 lastFetchAttempt];
+      if (lastFetchAttempt)
       {
-        v6 = [v8 lastFetchWasSuccess];
+        lastFetchWasSuccess = [v8 lastFetchWasSuccess];
       }
 
       else
       {
-        v6 = 0;
+        lastFetchWasSuccess = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      lastFetchWasSuccess = 0;
     }
   }
 
   objc_autoreleasePoolPop(v5);
 
-  return v6;
+  return lastFetchWasSuccess;
 }
 
-- (void)downloadNamespaceWithName:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)downloadNamespaceWithName:(id)name options:(id)options progress:(id)progress completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  optionsCopy = options;
+  progressCopy = progress;
+  completionCopy = completion;
   [(TRIClient *)self _lazyInit];
-  if ([(TRIClient *)self hasRegisteredNamespaceWithName:v10])
+  if ([(TRIClient *)self hasRegisteredNamespaceWithName:nameCopy])
   {
-    if ([(TRIClient *)self hasDownloadedNamespaceWithName:v10])
+    if ([(TRIClient *)self hasDownloadedNamespaceWithName:nameCopy])
     {
       v14 = TRILogCategory_ClientFramework();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v48 = v10;
+        v48 = nameCopy;
         _os_log_debug_impl(&dword_22EA6B000, v14, OS_LOG_TYPE_DEBUG, "namespace %@ already has downloaded treatment", buf, 0xCu);
       }
 
-      if (v13)
+      if (completionCopy)
       {
-        v13[2](v13, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
     }
 
@@ -1274,9 +1274,9 @@ LABEL_12:
       v42[1] = 3221225472;
       v42[2] = __67__TRIClient_downloadNamespaceWithName_options_progress_completion___block_invoke;
       v42[3] = &unk_27885F208;
-      v20 = v10;
+      v20 = nameCopy;
       v43 = v20;
-      v21 = v13;
+      v21 = completionCopy;
       v44 = v21;
       v32 = MEMORY[0x2318F2490](v42);
       v22 = [(TRIClient *)self addUpdateHandlerForNamespaceName:v20 usingBlock:?];
@@ -1286,10 +1286,10 @@ LABEL_12:
       v36[3] = &unk_27885F230;
       v23 = v20;
       v37 = v23;
-      v40 = v12;
+      v40 = progressCopy;
       v24 = v21;
       v41 = v24;
-      v38 = self;
+      selfCopy = self;
       v34 = v22;
       v39 = v34;
       v31 = MEMORY[0x2318F2490](v36);
@@ -1304,7 +1304,7 @@ LABEL_12:
 
       v26 = objc_opt_new();
       v35 = 0;
-      v27 = [v26 startNamespaceDownloadWithName:v23 options:v11 error:&v35];
+      v27 = [v26 startNamespaceDownloadWithName:v23 options:optionsCopy error:&v35];
       v28 = v35;
       if ((v27 & 1) == 0)
       {
@@ -1336,20 +1336,20 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v48 = v10;
+      v48 = nameCopy;
       _os_log_debug_impl(&dword_22EA6B000, v15, OS_LOG_TYPE_DEBUG, "cannot download treatment because namespace %@ is not registered", buf, 0xCu);
     }
 
-    if (v13)
+    if (completionCopy)
     {
       v16 = MEMORY[0x277CCA9B8];
       v45 = *MEMORY[0x277CCA450];
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"namespace is not registered: %@", v10];
-      v46 = v17;
+      nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"namespace is not registered: %@", nameCopy];
+      v46 = nameCopy;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
       v19 = [v16 errorWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v18];
 
-      (v13)[2](v13, 0, v19);
+      (completionCopy)[2](completionCopy, 0, v19);
     }
   }
 
@@ -1467,16 +1467,16 @@ LABEL_20:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sizesForFactors:(id)a3 withNamespaceName:(id)a4 forMetric:(unint64_t)a5 error:(id *)a6
+- (id)sizesForFactors:(id)factors withNamespaceName:(id)name forMetric:(unint64_t)metric error:(id *)error
 {
   v96[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (!v11)
+  factorsCopy = factors;
+  nameCopy = name;
+  v13 = nameCopy;
+  if (!factorsCopy)
   {
-    v56 = [MEMORY[0x277CCA890] currentHandler];
-    [v56 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
 
     if (v13)
     {
@@ -1484,13 +1484,13 @@ LABEL_20:
     }
 
 LABEL_57:
-    v57 = [MEMORY[0x277CCA890] currentHandler];
-    [v57 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:954 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:954 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
     goto LABEL_3;
   }
 
-  if (!v12)
+  if (!nameCopy)
   {
     goto LABEL_57;
   }
@@ -1522,10 +1522,10 @@ LABEL_3:
     v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v96 forKeys:&v95 count:1];
     v45 = [v43 initWithDomain:@"TRIGeneralErrorDomain" code:3 userInfo:v44];
 
-    if (a6)
+    if (error)
     {
       v46 = v45;
-      *a6 = v45;
+      *error = v45;
     }
 
     v42 = 0;
@@ -1536,13 +1536,13 @@ LABEL_3:
   v75 = 0;
   v73 = 0;
   [(TRIClient *)self _lazyInit];
-  if (![TRIFactorDownloadValidator validateDownloadForFactors:v11 withNamespace:v13 paths:self->_paths container:0 factorsState:self->_factorsState assetIndexesByTreatment:&v74 experimentIds:0 assetIdsByFactorPack:&v73 rolloutFactorNames:0 rolloutDeployments:0 error:&v75])
+  if (![TRIFactorDownloadValidator validateDownloadForFactors:factorsCopy withNamespace:v13 paths:self->_paths container:0 factorsState:self->_factorsState assetIndexesByTreatment:&v74 experimentIds:0 assetIdsByFactorPack:&v73 rolloutFactorNames:0 rolloutDeployments:0 error:&v75])
   {
     v41 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v90 = v11;
+      v90 = factorsCopy;
       v91 = 2112;
       v92 = v13;
       v93 = 2112;
@@ -1551,9 +1551,9 @@ LABEL_3:
     }
 
     v42 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v75;
+      *error = v75;
     }
 
     goto LABEL_51;
@@ -1564,7 +1564,7 @@ LABEL_3:
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v17 = v11;
+  v17 = factorsCopy;
   v66 = [v17 countByEnumeratingWithState:&v69 objects:v88 count:16];
   if (!v66)
   {
@@ -1575,14 +1575,14 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  v60 = a5;
+  metricCopy = metric;
   v18 = 0;
   v67 = *v70;
   v63 = v13;
   v64 = *MEMORY[0x277CCA450];
-  v65 = self;
-  v58 = a6;
-  v59 = v11;
+  selfCopy = self;
+  errorCopy = error;
+  v59 = factorsCopy;
   v61 = v16;
   obj = v17;
   do
@@ -1611,8 +1611,8 @@ LABEL_44:
 
         objc_autoreleasePoolPop(v21);
         v18 = v49;
-        v40 = v58;
-        v11 = v59;
+        v40 = errorCopy;
+        factorsCopy = v59;
         v16 = v61;
         v38 = obj;
         goto LABEL_46;
@@ -1640,8 +1640,8 @@ LABEL_44:
       {
         v29 = MEMORY[0x277CCA9B8];
         v82 = v64;
-        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Factor %@ is not file / directory typed", v20];
-        v83 = v27;
+        asset = [MEMORY[0x277CCACA8] stringWithFormat:@"Factor %@ is not file / directory typed", v20];
+        v83 = asset;
         v30 = MEMORY[0x277CBEAC0];
         v31 = &v83;
         v32 = &v82;
@@ -1658,24 +1658,24 @@ LABEL_24:
       {
         v29 = MEMORY[0x277CCA9B8];
         v80 = v64;
-        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"No asset metadata found for factor %@", v20];
-        v81 = v27;
+        asset = [MEMORY[0x277CCACA8] stringWithFormat:@"No asset metadata found for factor %@", v20];
+        v81 = asset;
         v30 = MEMORY[0x277CBEAC0];
         v31 = &v81;
         v32 = &v80;
         goto LABEL_24;
       }
 
-      v27 = [v26 asset];
-      if ([v27 hasSize])
+      asset = [v26 asset];
+      if ([asset hasSize])
       {
-        if (v60)
+        if (metricCopy)
         {
           v28 = 1;
           goto LABEL_26;
         }
 
-        v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v27, "size")}];
+        v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(asset, "size")}];
         [v61 setObject:v33 forKeyedSubscript:v20];
         v28 = 1;
       }
@@ -1701,8 +1701,8 @@ LABEL_26:
       objc_autoreleasePoolPop(v21);
       if (!v28)
       {
-        v40 = v58;
-        v11 = v59;
+        v40 = errorCopy;
+        factorsCopy = v59;
         v16 = v61;
         v38 = obj;
         v18 = v68;
@@ -1710,14 +1710,14 @@ LABEL_26:
       }
 
       ++v19;
-      self = v65;
+      self = selfCopy;
     }
 
     while (v66 != v19);
     v38 = obj;
     v39 = [obj countByEnumeratingWithState:&v69 objects:v88 count:16];
-    v40 = v58;
-    v11 = v59;
+    v40 = errorCopy;
+    factorsCopy = v59;
     v16 = v61;
     v18 = v68;
     v66 = v39;
@@ -1863,18 +1863,18 @@ void __63__TRIClient_sizesForFactors_withNamespaceName_forMetric_error___block_i
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)downloadLevelsForFactors:(id)a3 withNamespace:(id)a4 queue:(id)a5 options:(id)a6 progress:(id)a7 completion:(id)a8
+- (void)downloadLevelsForFactors:(id)factors withNamespace:(id)namespace queue:(id)queue options:(id)options progress:(id)progress completion:(id)completion
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v15)
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  queueCopy = queue;
+  optionsCopy = options;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (factorsCopy)
   {
-    if (v16)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
@@ -1882,17 +1882,17 @@ void __63__TRIClient_sizesForFactors_withNamespaceName_forMetric_error___block_i
 
   else
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1096 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1096 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
 
-    if (v16)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1097 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1097 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   if (qword_280ACAE98 != -1)
@@ -1906,10 +1906,10 @@ LABEL_3:
     v32 = 0;
     v30 = 0;
     [(TRIClient *)self _lazyInit];
-    if ([TRIFactorDownloadValidator validateDownloadForFactors:v15 withNamespace:v16 paths:self->_paths container:0 factorsState:self->_factorsState assetIndexesByTreatment:&v31 experimentIds:0 assetIdsByFactorPack:&v30 rolloutFactorNames:0 rolloutDeployments:0 error:&v32])
+    if ([TRIFactorDownloadValidator validateDownloadForFactors:factorsCopy withNamespace:namespaceCopy paths:self->_paths container:0 factorsState:self->_factorsState assetIndexesByTreatment:&v31 experimentIds:0 assetIdsByFactorPack:&v30 rolloutFactorNames:0 rolloutDeployments:0 error:&v32])
     {
       v21 = objc_opt_new();
-      [v21 downloadLevelsForFactors:v15 withNamespace:v16 queue:v17 factorsState:self->_factorsState options:v18 progress:v19 completion:v20];
+      [v21 downloadLevelsForFactors:factorsCopy withNamespace:namespaceCopy queue:queueCopy factorsState:self->_factorsState options:optionsCopy progress:progressCopy completion:completionCopy];
     }
 
     else
@@ -1918,17 +1918,17 @@ LABEL_3:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v34 = v15;
+        v34 = factorsCopy;
         v35 = 2112;
-        v36 = v16;
+        v36 = namespaceCopy;
         v37 = 2112;
         v38 = v32;
         _os_log_impl(&dword_22EA6B000, v26, OS_LOG_TYPE_DEFAULT, "Download not allowed for factors:%@, namespace:%@. Error: %@", buf, 0x20u);
       }
 
-      if (v20)
+      if (completionCopy)
       {
-        v20[2](v20, 0, v32);
+        completionCopy[2](completionCopy, 0, v32);
       }
     }
   }
@@ -1949,9 +1949,9 @@ LABEL_3:
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
     v25 = [v23 initWithDomain:@"TRIGeneralErrorDomain" code:3 userInfo:v24];
 
-    if (v20)
+    if (completionCopy)
     {
-      v20[2](v20, 0, v25);
+      completionCopy[2](completionCopy, 0, v25);
     }
   }
 
@@ -1977,24 +1977,24 @@ void __86__TRIClient_downloadLevelsForFactors_withNamespace_queue_options_progre
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)removeLevelsForFactors:(id)a3 withNamespace:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)removeLevelsForFactors:(id)factors withNamespace:(id)namespace queue:(id)queue completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (factorsCopy)
   {
-    if (v12)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1158 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1158 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -2002,70 +2002,70 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1157 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1157 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
 
-  if (!v12)
+  if (!namespaceCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v14)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   [(TRIClient *)self _lazyInit];
   v15 = objc_opt_new();
   factorsState = self->_factorsState;
   v26 = 0;
-  v17 = [v15 removeLevelsForFactors:v11 withNamespace:v12 factorsState:factorsState removeImmediately:0 error:&v26];
+  v17 = [v15 removeLevelsForFactors:factorsCopy withNamespace:namespaceCopy factorsState:factorsState removeImmediately:0 error:&v26];
   v18 = v26;
-  if (v14)
+  if (completionCopy)
   {
-    if (v13)
+    if (queueCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __67__TRIClient_removeLevelsForFactors_withNamespace_queue_completion___block_invoke;
       block[3] = &unk_27885F2A0;
-      v24 = v14;
+      v24 = completionCopy;
       v25 = v17;
       v23 = v18;
-      dispatch_async(v13, block);
+      dispatch_async(queueCopy, block);
     }
 
     else
     {
-      (*(v14 + 2))(v14, v17, v18);
+      (*(completionCopy + 2))(completionCopy, v17, v18);
     }
   }
 }
 
-- (void)removeLevelsForFactorsImmediately:(id)a3 withNamespace:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)removeLevelsForFactorsImmediately:(id)immediately withNamespace:(id)namespace queue:(id)queue completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  immediatelyCopy = immediately;
+  namespaceCopy = namespace;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (immediatelyCopy)
   {
-    if (v12)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1189 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1189 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -2073,61 +2073,61 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1188 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1188 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
 
-  if (!v12)
+  if (!namespaceCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v14)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1190 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1190 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   [(TRIClient *)self _lazyInit];
   v15 = objc_opt_new();
   factorsState = self->_factorsState;
   v26 = 0;
-  v17 = [v15 removeLevelsForFactors:v11 withNamespace:v12 factorsState:factorsState removeImmediately:1 error:&v26];
+  v17 = [v15 removeLevelsForFactors:immediatelyCopy withNamespace:namespaceCopy factorsState:factorsState removeImmediately:1 error:&v26];
   v18 = v26;
-  if (v14)
+  if (completionCopy)
   {
-    if (v13)
+    if (queueCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __78__TRIClient_removeLevelsForFactorsImmediately_withNamespace_queue_completion___block_invoke;
       block[3] = &unk_27885F2A0;
-      v24 = v14;
+      v24 = completionCopy;
       v25 = v17;
       v23 = v18;
-      dispatch_async(v13, block);
+      dispatch_async(queueCopy, block);
     }
 
     else
     {
-      (*(v14 + 2))(v14, v17, v18);
+      (*(completionCopy + 2))(completionCopy, v17, v18);
     }
   }
 }
 
-- (BOOL)setPurgeabilityLevelsForFactors:(id)a3 withNamespaceName:(id)a4
+- (BOOL)setPurgeabilityLevelsForFactors:(id)factors withNamespaceName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  factorsCopy = factors;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (factorsCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -2135,8 +2135,8 @@ LABEL_4:
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1217 description:{@"Invalid parameter not satisfying: %@", @"factorsWithPurgeabilityLevels"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1217 description:{@"Invalid parameter not satisfying: %@", @"factorsWithPurgeabilityLevels"}];
 
     if (v9)
     {
@@ -2144,15 +2144,15 @@ LABEL_4:
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1218 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1218 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   if ([(TRIClient *)self _hasAppropriatePermissionsForNamespaceName:v9])
   {
     v10 = objc_opt_new();
     v18 = 0;
-    v11 = [v10 setPurgeabilityLevelsForFactors:v7 forNamespaceName:v9 error:&v18];
+    v11 = [v10 setPurgeabilityLevelsForFactors:factorsCopy forNamespaceName:v9 error:&v18];
     v12 = v18;
     if ((v11 & 1) == 0)
     {
@@ -2177,22 +2177,22 @@ LABEL_3:
   return v11;
 }
 
-- (id)purgeabilityLevelsForFactorsWithNamespaceName:(id)a3
+- (id)purgeabilityLevelsForFactorsWithNamespaceName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1240 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1240 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  if ([(TRIClient *)self _hasAppropriatePermissionsForNamespaceName:v5])
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([(TRIClient *)self _hasAppropriatePermissionsForNamespaceName:nameCopy])
   {
     v7 = objc_opt_new();
     v20 = 0;
-    v8 = [v7 loadNamespaceMetadataForNamespaceName:v5 error:&v20];
+    v8 = [v7 loadNamespaceMetadataForNamespaceName:nameCopy error:&v20];
     v9 = v20;
     if (!v8)
     {
@@ -2200,21 +2200,21 @@ LABEL_3:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v22 = v5;
+        v22 = nameCopy;
         v23 = 2112;
         v24 = v9;
         _os_log_error_impl(&dword_22EA6B000, v10, OS_LOG_TYPE_ERROR, "Failed to save purgeability levels for namespace %@ : %@", buf, 0x16u);
       }
     }
 
-    v11 = [v8 factorNamePurgeabilityLevels];
+    factorNamePurgeabilityLevels = [v8 factorNamePurgeabilityLevels];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __59__TRIClient_purgeabilityLevelsForFactorsWithNamespaceName___block_invoke;
     v18[3] = &unk_27885F2C8;
-    v12 = v6;
+    v12 = dictionary;
     v19 = v12;
-    [v11 enumerateKeysAndEnumsUsingBlock:v18];
+    [factorNamePurgeabilityLevels enumerateKeysAndEnumsUsingBlock:v18];
 
     v13 = v19;
     v14 = v12;
@@ -2222,7 +2222,7 @@ LABEL_3:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return dictionary;
 }
 
 void __59__TRIClient_purgeabilityLevelsForFactorsWithNamespaceName___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2233,22 +2233,22 @@ void __59__TRIClient_purgeabilityLevelsForFactorsWithNamespaceName___block_invok
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (BOOL)setFactorsProvisionalForNamespace:(id)a3 error:(id *)a4
+- (BOOL)setFactorsProvisionalForNamespace:(id)namespace error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  namespaceCopy = namespace;
+  if (!namespaceCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1269 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1269 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   [(TRIClient *)self _lazyInit];
-  v8 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider promotableFactorPackIdForNamespaceName:v7];
+  v8 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider promotableFactorPackIdForNamespaceName:namespaceCopy];
   if (!v8)
   {
     v11 = 0;
     v10 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -2258,14 +2258,14 @@ void __59__TRIClient_purgeabilityLevelsForFactorsWithNamespaceName___block_invok
 
   v9 = objc_opt_new();
   v15 = 0;
-  v10 = [v9 setProvisionalFactorPackId:v8 forNamespaceName:v7 error:&v15];
+  v10 = [v9 setProvisionalFactorPackId:v8 forNamespaceName:namespaceCopy error:&v15];
   v11 = v15;
 
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_6:
@@ -2273,22 +2273,22 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)promoteFactorsForNamespace:(id)a3 error:(id *)a4
+- (BOOL)promoteFactorsForNamespace:(id)namespace error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  namespaceCopy = namespace;
+  if (!namespaceCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1289 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1289 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   [(TRIClient *)self _lazyInit];
-  v8 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider promotableFactorPackIdForNamespaceName:v7];
+  v8 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider promotableFactorPackIdForNamespaceName:namespaceCopy];
   if (!v8)
   {
     v13 = 0;
     v14 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -2296,12 +2296,12 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v9 = [(TRIClient *)self rolloutIdentifiersWithNamespaceName:v7];
+  v9 = [(TRIClient *)self rolloutIdentifiersWithNamespaceName:namespaceCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 rolloutId];
-    v12 = +[TRIRolloutDeployment deploymentWithRolloutId:deploymentId:](TRIRolloutDeployment, "deploymentWithRolloutId:deploymentId:", v11, [v10 deploymentId]);
+    rolloutId = [v9 rolloutId];
+    v12 = +[TRIRolloutDeployment deploymentWithRolloutId:deploymentId:](TRIRolloutDeployment, "deploymentWithRolloutId:deploymentId:", rolloutId, [v10 deploymentId]);
   }
 
   else
@@ -2311,14 +2311,14 @@ LABEL_6:
 
   v15 = objc_opt_new();
   v19 = 0;
-  v14 = [v15 promoteFactorPackId:v8 forNamespaceName:v7 rolloutDeployment:v12 error:&v19];
+  v14 = [v15 promoteFactorPackId:v8 forNamespaceName:namespaceCopy rolloutDeployment:v12 error:&v19];
   v13 = v19;
 
-  if (a4)
+  if (error)
   {
 LABEL_10:
     v16 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_11:
@@ -2326,22 +2326,22 @@ LABEL_11:
   return v14;
 }
 
-- (unint64_t)statusOfDownloadForFactors:(id)a3 withNamespace:(id)a4 token:(id *)a5 queue:(id)a6 progress:(id)a7 completion:(id)a8
+- (unint64_t)statusOfDownloadForFactors:(id)factors withNamespace:(id)namespace token:(id *)token queue:(id)queue progress:(id)progress completion:(id)completion
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (a5)
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  queueCopy = queue;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (token)
   {
-    *a5 = 0;
+    *token = 0;
   }
 
-  if (v15)
+  if (factorsCopy)
   {
-    if (v16)
+    if (namespaceCopy)
     {
       goto LABEL_5;
     }
@@ -2349,26 +2349,26 @@ LABEL_11:
 
   else
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1322 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1322 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
 
-    if (v16)
+    if (namespaceCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v46 = [MEMORY[0x277CCA890] currentHandler];
-  [v46 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1323 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClient.m" lineNumber:1323 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_5:
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __86__TRIClient_statusOfDownloadForFactors_withNamespace_token_queue_progress_completion___block_invoke;
   v61[3] = &unk_27885F2F0;
-  v20 = v19;
+  v20 = completionCopy;
   v63 = v20;
-  v21 = v17;
+  v21 = queueCopy;
   v62 = v21;
   v22 = MEMORY[0x2318F2490](v61);
   if (qword_280ACAEA0 != -1)
@@ -2382,7 +2382,7 @@ LABEL_5:
     v60 = 0;
     v58 = 0;
     [(TRIClient *)self _lazyInit];
-    if ([TRIFactorDownloadValidator validateDownloadForFactors:v15 withNamespace:v16 paths:self->_paths container:0 factorsState:self->_factorsState assetIndexesByTreatment:&v59 experimentIds:0 assetIdsByFactorPack:&v58 rolloutFactorNames:0 rolloutDeployments:0 error:&v60])
+    if ([TRIFactorDownloadValidator validateDownloadForFactors:factorsCopy withNamespace:namespaceCopy paths:self->_paths container:0 factorsState:self->_factorsState assetIndexesByTreatment:&v59 experimentIds:0 assetIdsByFactorPack:&v58 rolloutFactorNames:0 rolloutDeployments:0 error:&v60])
     {
       if ([v59 count] || objc_msgSend(v58, "count"))
       {
@@ -2390,24 +2390,24 @@ LABEL_5:
         v51[1] = 3221225472;
         v51[2] = __86__TRIClient_statusOfDownloadForFactors_withNamespace_token_queue_progress_completion___block_invoke_320;
         v51[3] = &unk_27885F318;
-        v23 = v18;
-        v52 = v18;
+        v23 = progressCopy;
+        v52 = progressCopy;
         v53 = v20;
         v24 = MEMORY[0x2318F2490](v51);
         *buf = 0;
         v50 = 0;
         v25 = objc_opt_new();
-        v26 = [v25 statusOfDownloadForFactors:v15 withNamespace:v16 factorsState:self->_factorsState notificationKey:buf error:&v50];
+        v26 = [v25 statusOfDownloadForFactors:factorsCopy withNamespace:namespaceCopy factorsState:self->_factorsState notificationKey:buf error:&v50];
         v27 = v26;
         if ((v26 - 2) < 2)
         {
           if (*buf)
           {
             v33 = [TRIDownloadNotification registerDownloadNotificationForKey:*buf queue:v21 usingBlock:v24];
-            if (a5)
+            if (token)
             {
               v33 = v33;
-              *a5 = v33;
+              *token = v33;
             }
           }
         }
@@ -2425,19 +2425,19 @@ LABEL_5:
           (v22)[2](v22, 0, v50);
         }
 
-        v18 = v23;
+        progressCopy = v23;
       }
 
       else
       {
         v47 = v20;
         v48 = v21;
-        v49 = v18;
+        v49 = progressCopy;
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v36 = v15;
+        v36 = factorsCopy;
         v37 = [v36 countByEnumeratingWithState:&v54 objects:v64 count:16];
         if (v37)
         {
@@ -2452,7 +2452,7 @@ LABEL_5:
                 objc_enumerationMutation(v36);
               }
 
-              v41 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider levelForFactor:*(*(&v54 + 1) + 8 * i) withNamespaceName:v16];
+              v41 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider levelForFactor:*(*(&v54 + 1) + 8 * i) withNamespaceName:namespaceCopy];
               if (v41)
               {
                 v42 = v41;
@@ -2482,7 +2482,7 @@ LABEL_5:
         v27 = 4;
 LABEL_42:
         v21 = v48;
-        v18 = v49;
+        progressCopy = v49;
         v20 = v47;
       }
     }
@@ -2493,9 +2493,9 @@ LABEL_42:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        *&buf[4] = v15;
+        *&buf[4] = factorsCopy;
         v66 = 2112;
-        v67 = v16;
+        v67 = namespaceCopy;
         v68 = 2112;
         v69 = v60;
         _os_log_impl(&dword_22EA6B000, v32, OS_LOG_TYPE_INFO, "Download not allowed for factors:%@, namespace:%@. Error: %@", buf, 0x20u);
@@ -2648,25 +2648,25 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)removeDownloadStatusHandlersWithToken:(id)a3
+- (void)removeDownloadStatusHandlersWithToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v4 = a3;
+    tokenCopy = token;
     [(TRIClient *)self _lazyInit];
-    [TRIDownloadNotification deregisterNotificationWithToken:v4];
+    [TRIDownloadNotification deregisterNotificationWithToken:tokenCopy];
   }
 }
 
-- (BOOL)_hasAppropriatePermissionsForNamespaceName:(id)a3
+- (BOOL)_hasAppropriatePermissionsForNamespaceName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D73B50] namespaceIdFromName:a3];
-  v5 = [(TRIPaths *)self->_paths treatmentsDir];
+  v4 = [MEMORY[0x277D73B50] namespaceIdFromName:name];
+  treatmentsDir = [(TRIPaths *)self->_paths treatmentsDir];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", v4];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v7 = [treatmentsDir stringByAppendingPathComponent:v6];
 
-  v8 = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
+  namespaceDescriptorsDir = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
   if (access([v7 fileSystemRepresentation], 4) && *__error() == 1)
   {
     v9 = TRILogCategory_ClientFramework();
@@ -2681,7 +2681,7 @@ LABEL_12:
 
   else
   {
-    if (!access([v8 fileSystemRepresentation], 4) || *__error() != 1)
+    if (!access([namespaceDescriptorsDir fileSystemRepresentation], 4) || *__error() != 1)
     {
       v10 = 1;
       goto LABEL_10;
@@ -2691,7 +2691,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v8;
+      v14 = namespaceDescriptorsDir;
       goto LABEL_12;
     }
   }
@@ -2703,18 +2703,18 @@ LABEL_10:
   return v10;
 }
 
-+ (id)activeRolloutInformation:(id *)a3
++ (id)activeRolloutInformation:(id *)information
 {
   v4 = objc_opt_new();
-  v5 = [v4 activeRolloutInformation:a3];
+  v5 = [v4 activeRolloutInformation:information];
 
   return v5;
 }
 
-+ (BOOL)_isFactorRecordFileType:(id)a3
++ (BOOL)_isFactorRecordFileType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"assetReference"];
+  typeCopy = type;
+  v4 = [typeCopy objectForKey:@"assetReference"];
   if (v4)
   {
     v5 = 1;
@@ -2722,7 +2722,7 @@ LABEL_10:
 
   else
   {
-    v6 = [v3 objectForKey:@"path"];
+    v6 = [typeCopy objectForKey:@"path"];
     if (v6)
     {
       v5 = 1;
@@ -2730,7 +2730,7 @@ LABEL_10:
 
     else
     {
-      v7 = [v3 objectForKey:@"type"];
+      v7 = [typeCopy objectForKey:@"type"];
       v5 = [@"file" isEqual:v7];
     }
   }
@@ -2744,8 +2744,8 @@ LABEL_10:
   v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v2 addObject:@"NCVs:"];
   v3 = +[TRIStandardPaths sharedPaths];
-  v4 = [v3 namespaceDescriptorsDefaultDir];
-  v5 = [TRINamespaceDescriptor descriptorsForDirectory:v4 filterBlock:0];
+  namespaceDescriptorsDefaultDir = [v3 namespaceDescriptorsDefaultDir];
+  v5 = [TRINamespaceDescriptor descriptorsForDirectory:namespaceDescriptorsDefaultDir filterBlock:0];
 
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_346];
 
@@ -2771,21 +2771,21 @@ LABEL_10:
         v11 = *(*(&v26 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
         v13 = objc_alloc(MEMORY[0x277CCACA8]);
-        v14 = [v11 namespaceName];
-        v15 = [v13 initWithFormat:@"    - %@", v14];
+        namespaceName = [v11 namespaceName];
+        v15 = [v13 initWithFormat:@"    - %@", namespaceName];
         [v2 addObject:v15];
 
         v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"       downloadNCV: %u", objc_msgSend(v11, "downloadNCV")];
         [v2 addObject:v16];
 
-        v17 = [v11 upgradeNCVs];
+        upgradeNCVs = [v11 upgradeNCVs];
 
-        if (v17)
+        if (upgradeNCVs)
         {
           v18 = objc_alloc(MEMORY[0x277CCACA8]);
-          v19 = [v11 upgradeNCVs];
-          v20 = [v19 allObjects];
-          v21 = [v20 componentsJoinedByString:{@", "}];
+          upgradeNCVs2 = [v11 upgradeNCVs];
+          allObjects = [upgradeNCVs2 allObjects];
+          v21 = [allObjects componentsJoinedByString:{@", "}];
           v22 = [v18 initWithFormat:@"       upgradeNCVs: [%@]", v21];
           [v2 addObject:v22];
         }
@@ -2814,23 +2814,23 @@ uint64_t __34__TRIClient_printedNCVInformation__block_invoke(uint64_t a1, void *
   return v7;
 }
 
-+ (id)printedOnDemandReferenceCountsPerUserInformationWithError:(id *)a3
++ (id)printedOnDemandReferenceCountsPerUserInformationWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_opt_new();
   v6 = +[TRIStandardPaths sharedPaths];
   v7 = [v6 treatmentsDirUsingGlobal:1];
-  v8 = [v5 getOnDemandReferenceCountsPerUserAtGlobalPath:v7 error:a3];
+  v8 = [v5 getOnDemandReferenceCountsPerUserAtGlobalPath:v7 error:error];
 
-  if (*a3)
+  if (*error)
   {
     v9 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v15 = [*a3 localizedDescription];
+      localizedDescription = [*error localizedDescription];
       *buf = 138412290;
-      v19 = v15;
+      v19 = localizedDescription;
       _os_log_error_impl(&dword_22EA6B000, v9, OS_LOG_TYPE_ERROR, "Could not get the on-demand references: %@", buf, 0xCu);
     }
 
@@ -2948,17 +2948,17 @@ void __71__TRIClient_printedOnDemandReferenceCountsPerUserInformationWithError__
   return v18;
 }
 
-+ (BOOL)sysdiagnoseInfoToDir:(id)a3 error:(id *)a4
++ (BOOL)sysdiagnoseInfoToDir:(id)dir error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 _sysdiagnoseLogProviders];
-  v8 = [[TRISysdiagnoseLogWriter alloc] initWithDirectory:v6];
+  dirCopy = dir;
+  _sysdiagnoseLogProviders = [self _sysdiagnoseLogProviders];
+  v8 = [[TRISysdiagnoseLogWriter alloc] initWithDirectory:dirCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v7;
+  v9 = _sysdiagnoseLogProviders;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -2981,7 +2981,7 @@ void __71__TRIClient_printedOnDemandReferenceCountsPerUserInformationWithError__
         objc_autoreleasePoolPop(v15);
         if (!v16)
         {
-          if (a4)
+          if (error)
           {
             if (!v17)
             {
@@ -2989,7 +2989,7 @@ void __71__TRIClient_printedOnDemandReferenceCountsPerUserInformationWithError__
             }
 
             v19 = v17;
-            *a4 = v17;
+            *error = v17;
           }
 
           v18 = 0;
@@ -3021,11 +3021,11 @@ LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
   v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
   v3 = [v2 integerForKey:@"com.apple.triald.population.override"];
-  v4 = [MEMORY[0x277D42590] isInternalBuild];
+  isInternalBuild = [MEMORY[0x277D42590] isInternalBuild];
   v5 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (isInternalBuild)
     {
       v6 = @"INTERNAL";
     }
@@ -3076,13 +3076,13 @@ LABEL_15:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)a3
++ (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
   if (+[TRIProcessInfo hostingProcessIsCoreAnalytics])
   {
     v4 = objc_opt_new();
-    v5 = [v4 getSandboxExtensionTokensForIdentifierQueryWithError:a3];
+    v5 = [v4 getSandboxExtensionTokensForIdentifierQueryWithError:error];
   }
 
   else
@@ -3095,13 +3095,13 @@ LABEL_15:
       _os_log_error_impl(&dword_22EA6B000, v6, OS_LOG_TYPE_ERROR, "Error generating sandbox tokens: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v11 = *MEMORY[0x277CCA450];
       v12 = @"Process is not allowlisted to access getSandboxExtensionTokensForIdentifierQueryWithError, please contact Trial team to request access if necessary.";
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-      *a3 = [v7 initWithDomain:@"TRIGeneralErrorDomain" code:16 userInfo:v8];
+      *error = [v7 initWithDomain:@"TRIGeneralErrorDomain" code:16 userInfo:v8];
     }
 
     v5 = objc_opt_new();
@@ -3112,19 +3112,19 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)hasCounterfactualsForNamespace:(id)a3
+- (BOOL)hasCounterfactualsForNamespace:(id)namespace
 {
-  v3 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider counterfactualFactorsStatesForNamespace:a3];
+  v3 = [(TRIDefaultFactorProvider *)self->_defaultFactorProvider counterfactualFactorsStatesForNamespace:namespace];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (BOOL)enumerateCounterfactualsWithNamespace:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateCounterfactualsWithNamespace:(id)namespace error:(id *)error usingBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  [(TRIDefaultFactorProvider *)self->_defaultFactorProvider counterfactualFactorsStatesForNamespace:a3];
+  blockCopy = block;
+  [(TRIDefaultFactorProvider *)self->_defaultFactorProvider counterfactualFactorsStatesForNamespace:namespace];
   v26 = 0;
   v22 = 0u;
   v23 = 0u;
@@ -3149,27 +3149,27 @@ LABEL_3:
         break;
       }
 
-      v13 = [*(*(&v22 + 1) + 8 * v12) experimentIdentifiers];
-      v14 = [v13 treatmentId];
+      experimentIdentifiers = [*(*(&v22 + 1) + 8 * v12) experimentIdentifiers];
+      treatmentId = [experimentIdentifiers treatmentId];
 
-      if (v14)
+      if (treatmentId)
       {
         v15 = [TRIExperimentIdentifiers alloc];
-        v16 = [v13 experimentId];
-        v17 = [v13 deploymentId];
-        v18 = [v13 treatmentId];
-        v19 = [(TRIExperimentIdentifiers *)v15 initWithExperimentId:v16 deploymentId:v17 treatmentId:v18];
-        v7[2](v7, v19, &v26);
+        experimentId = [experimentIdentifiers experimentId];
+        deploymentId = [experimentIdentifiers deploymentId];
+        treatmentId2 = [experimentIdentifiers treatmentId];
+        v19 = [(TRIExperimentIdentifiers *)v15 initWithExperimentId:experimentId deploymentId:deploymentId treatmentId:treatmentId2];
+        blockCopy[2](blockCopy, v19, &v26);
       }
 
       else
       {
-        v16 = TRILogCategory_ClientFramework();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        experimentId = TRILogCategory_ClientFramework();
+        if (os_log_type_enabled(experimentId, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v28 = v13;
-          _os_log_error_impl(&dword_22EA6B000, v16, OS_LOG_TYPE_ERROR, "Skipping counterfactual due to not having a treatment ID: %@", buf, 0xCu);
+          v28 = experimentIdentifiers;
+          _os_log_error_impl(&dword_22EA6B000, experimentId, OS_LOG_TYPE_ERROR, "Skipping counterfactual due to not having a treatment ID: %@", buf, 0xCu);
         }
       }
 

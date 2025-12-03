@@ -5,18 +5,18 @@
 - (NSSet)keys;
 - (PersonalizedItemPrioritizedStringAdornment)title;
 - (PersonalizedItemSource)source;
-- (SearchResultMapItemBase)initWithSearchResult:(id)a3;
-- (void)isVisitedMapItem:(id)a3 completionHandler:(id)a4;
+- (SearchResultMapItemBase)initWithSearchResult:(id)result;
+- (void)isVisitedMapItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SearchResultMapItemBase
 
-- (void)isVisitedMapItem:(id)a3 completionHandler:(id)a4
+- (void)isVisitedMapItem:(id)item completionHandler:(id)handler
 {
   v6 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v6 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = type metadata accessor for TaskPriority();
@@ -24,10 +24,10 @@
   v12 = swift_allocObject();
   v12[2] = 0;
   v12[3] = 0;
-  v12[4] = a3;
+  v12[4] = item;
   v12[5] = sub_1000D2CB0;
   v12[6] = v10;
-  v13 = a3;
+  itemCopy = item;
   sub_10020AAE4(0, 0, v8, &unk_1011E47A0, v12);
 }
 
@@ -40,26 +40,26 @@
 
 - (PersonalizedItemPrioritizedStringAdornment)title
 {
-  v2 = [(SearchResult *)self->_searchResult title];
-  v3 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v2 priority:1];
+  title = [(SearchResult *)self->_searchResult title];
+  v3 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:title priority:1];
 
   return v3;
 }
 
 - (GEOLabelGeometry)labelGeometry
 {
-  v2 = [(SearchResultMapItemBase *)self mapItem];
-  v3 = [v2 _labelGeometry];
+  mapItem = [(SearchResultMapItemBase *)self mapItem];
+  _labelGeometry = [mapItem _labelGeometry];
 
-  return v3;
+  return _labelGeometry;
 }
 
 - (GEOEnhancedPlacement)enhancedPlacement
 {
-  v2 = [(SearchResultMapItemBase *)self mapItem];
-  v3 = [v2 _enhancedPlacement];
+  mapItem = [(SearchResultMapItemBase *)self mapItem];
+  _enhancedPlacement = [mapItem _enhancedPlacement];
 
-  return v3;
+  return _enhancedPlacement;
 }
 
 - (CLLocationCoordinate2D)coordinate
@@ -100,19 +100,19 @@
   return v2;
 }
 
-- (SearchResultMapItemBase)initWithSearchResult:(id)a3
+- (SearchResultMapItemBase)initWithSearchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = SearchResultMapItemBase;
   v6 = [(SearchResultMapItemBase *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchResult, a3);
-    v8 = [v5 personalizedItemKey];
+    objc_storeStrong(&v6->_searchResult, result);
+    personalizedItemKey = [resultCopy personalizedItemKey];
     key = v7->_key;
-    v7->_key = v8;
+    v7->_key = personalizedItemKey;
 
     v7->_shouldBeHiddenFromMap = 0;
   }

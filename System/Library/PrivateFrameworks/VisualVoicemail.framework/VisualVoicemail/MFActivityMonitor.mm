@@ -1,7 +1,7 @@
 @interface MFActivityMonitor
 + (id)currentTracebleMonitor;
 + (id)imapTaskMap;
-+ (int64_t)voicemailTaskTypeForTaskName:(id)a3;
++ (int64_t)voicemailTaskTypeForTaskName:(id)name;
 @end
 
 @implementation MFActivityMonitor
@@ -32,31 +32,31 @@
   return v3;
 }
 
-+ (int64_t)voicemailTaskTypeForTaskName:(id)a3
++ (int64_t)voicemailTaskTypeForTaskName:(id)name
 {
-  v3 = a3;
-  if (v3)
+  nameCopy = name;
+  if (nameCopy)
   {
     v4 = +[MFActivityMonitor imapTaskMap];
-    v5 = [v4 objectForKey:v3];
+    v5 = [v4 objectForKey:nameCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 integerValue];
+      integerValue = [v5 integerValue];
     }
 
     else
     {
-      v7 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 @end

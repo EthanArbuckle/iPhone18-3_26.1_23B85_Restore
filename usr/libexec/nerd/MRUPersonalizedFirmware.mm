@@ -1,22 +1,22 @@
 @interface MRUPersonalizedFirmware
-- (MRUPersonalizedFirmware)initWithPayload:(id)a3 manifest:(id)a4;
+- (MRUPersonalizedFirmware)initWithPayload:(id)payload manifest:(id)manifest;
 - (id)description;
 @end
 
 @implementation MRUPersonalizedFirmware
 
-- (MRUPersonalizedFirmware)initWithPayload:(id)a3 manifest:(id)a4
+- (MRUPersonalizedFirmware)initWithPayload:(id)payload manifest:(id)manifest
 {
-  v7 = a3;
-  v8 = a4;
+  payloadCopy = payload;
+  manifestCopy = manifest;
   v12.receiver = self;
   v12.super_class = MRUPersonalizedFirmware;
   v9 = [(MRUPersonalizedFirmware *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_payload, a3);
-    objc_storeStrong(&v10->_manifest, a4);
+    objc_storeStrong(&v9->_payload, payload);
+    objc_storeStrong(&v10->_manifest, manifest);
   }
 
   return v10;

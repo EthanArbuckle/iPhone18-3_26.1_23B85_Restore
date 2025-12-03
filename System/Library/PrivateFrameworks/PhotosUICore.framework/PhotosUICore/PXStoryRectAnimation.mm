@@ -4,9 +4,9 @@
 - ($810C7C628FE0F9AC50A6216490AB88B8)targetRect;
 - (CGRect)outerBounds;
 - (CGSize)referenceSize;
-- (PXStoryRectAnimation)initWithDuration:(id *)a3 curveInfo:(id)a4;
-- (PXStoryRectAnimation)initWithIdentifier:(id)a3 duration:(id *)a4 curveInfo:(id)a5;
-- (PXStoryRectAnimation)initWithIdentifier:(id)a3 sourceRect:(id *)a4 targetRect:(id *)a5 outerBounds:(CGRect)a6 referenceSize:(CGSize)a7 duration:(id *)a8 curveInfo:(id)a9;
+- (PXStoryRectAnimation)initWithDuration:(id *)duration curveInfo:(id)info;
+- (PXStoryRectAnimation)initWithIdentifier:(id)identifier duration:(id *)duration curveInfo:(id)info;
+- (PXStoryRectAnimation)initWithIdentifier:(id)identifier sourceRect:(id *)rect targetRect:(id *)targetRect outerBounds:(CGRect)bounds referenceSize:(CGSize)size duration:(id *)duration curveInfo:(id)info;
 @end
 
 @implementation PXStoryRectAnimation
@@ -60,25 +60,25 @@
   return self;
 }
 
-- (PXStoryRectAnimation)initWithIdentifier:(id)a3 sourceRect:(id *)a4 targetRect:(id *)a5 outerBounds:(CGRect)a6 referenceSize:(CGSize)a7 duration:(id *)a8 curveInfo:(id)a9
+- (PXStoryRectAnimation)initWithIdentifier:(id)identifier sourceRect:(id *)rect targetRect:(id *)targetRect outerBounds:(CGRect)bounds referenceSize:(CGSize)size duration:(id *)duration curveInfo:(id)info
 {
-  height = a7.height;
-  width = a7.width;
+  height = size.height;
+  width = size.width;
   v20.receiver = self;
   v20.super_class = PXStoryRectAnimation;
-  *&v19.a = *&a8->var0;
-  *&v19.c = a8->var3;
-  v13 = [(PXStoryValueAnimation *)&v20 initWithIdentifier:a3 duration:&v19 curveInfo:a9.var0, *&a9.var1.var0];
+  *&v19.a = *&duration->var0;
+  *&v19.c = duration->var3;
+  v13 = [(PXStoryValueAnimation *)&v20 initWithIdentifier:identifier duration:&v19 curveInfo:info.var0, *&info.var1.var0];
   if (v13)
   {
-    v15 = *&a4->var0.c;
-    v14 = *&a4->var0.tx;
-    *(v13 + 440) = *&a4->var0.a;
+    v15 = *&rect->var0.c;
+    v14 = *&rect->var0.tx;
+    *(v13 + 440) = *&rect->var0.a;
     *(v13 + 456) = v15;
     *(v13 + 472) = v14;
-    v16 = *&a5->var0.a;
-    v17 = *&a5->var0.tx;
-    *(v13 + 504) = *&a5->var0.c;
+    v16 = *&targetRect->var0.a;
+    v17 = *&targetRect->var0.tx;
+    *(v13 + 504) = *&targetRect->var0.c;
     *(v13 + 520) = v17;
     *(v13 + 488) = v16;
     *(v13 + 49) = width;
@@ -90,19 +90,19 @@
   return 0;
 }
 
-- (PXStoryRectAnimation)initWithIdentifier:(id)a3 duration:(id *)a4 curveInfo:(id)a5
+- (PXStoryRectAnimation)initWithIdentifier:(id)identifier duration:(id *)duration curveInfo:(id)info
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"PXStoryRectAnimation.m" lineNumber:27 description:{@"%s is not available as initializer", "-[PXStoryRectAnimation initWithIdentifier:duration:curveInfo:]"}];
+  identifierCopy = identifier;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRectAnimation.m" lineNumber:27 description:{@"%s is not available as initializer", "-[PXStoryRectAnimation initWithIdentifier:duration:curveInfo:]"}];
 
   abort();
 }
 
-- (PXStoryRectAnimation)initWithDuration:(id *)a3 curveInfo:(id)a4
+- (PXStoryRectAnimation)initWithDuration:(id *)duration curveInfo:(id)info
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryRectAnimation.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXStoryRectAnimation initWithDuration:curveInfo:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRectAnimation.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXStoryRectAnimation initWithDuration:curveInfo:]"}];
 
   abort();
 }

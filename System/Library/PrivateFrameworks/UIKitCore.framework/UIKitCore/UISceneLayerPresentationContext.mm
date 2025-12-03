@@ -1,10 +1,10 @@
 @interface UISceneLayerPresentationContext
 - (BOOL)_isEqualToDefaultContext;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UISceneLayerPresentationContext)init;
-- (id)_initWithSceneLayerPresentationContext:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithSceneLayerPresentationContext:(id)context;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -34,21 +34,21 @@
   return v3;
 }
 
-- (id)_initWithSceneLayerPresentationContext:(id)a3
+- (id)_initWithSceneLayerPresentationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = UISceneLayerPresentationContext;
   v5 = [(UISceneLayerPresentationContext *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v5->_alpha = *(v4 + 2);
-    v5->_hidden = *(v4 + 24);
-    objc_storeStrong(&v5->_transformer, *(v4 + 1));
-    v6->_clippingDisabled = *(v4 + 25);
-    v6->_renderingMode = *(v4 + 4);
-    v7 = [*(v4 + 5) copy];
+    v5->_alpha = *(contextCopy + 2);
+    v5->_hidden = *(contextCopy + 24);
+    objc_storeStrong(&v5->_transformer, *(contextCopy + 1));
+    v6->_clippingDisabled = *(contextCopy + 25);
+    v6->_renderingMode = *(contextCopy + 4);
+    v7 = [*(contextCopy + 5) copy];
     minificationFilterName = v6->_minificationFilterName;
     v6->_minificationFilterName = v7;
   }
@@ -77,10 +77,10 @@ void __59__UISceneLayerPresentationContext__isEqualToDefaultContext__block_invok
 
 - (id)succinctDescription
 {
-  v2 = [(UISceneLayerPresentationContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISceneLayerPresentationContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -100,12 +100,12 @@ void __59__UISceneLayerPresentationContext__isEqualToDefaultContext__block_invok
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneLayerPresentationContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneLayerPresentationContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (unint64_t)hash
@@ -113,24 +113,24 @@ void __59__UISceneLayerPresentationContext__isEqualToDefaultContext__block_invok
   alpha = self->_alpha;
   v4 = self->_hidden + self->_clippingDisabled;
   v5 = v4 + [(UITransformer *)self->_transformer hash]+ alpha;
-  v6 = [(UISceneLayerPresentationContext *)self renderingMode];
-  v7 = v5 - v6 + 8 * v6;
-  v8 = [(UISceneLayerPresentationContext *)self _minificationFilterName];
-  v9 = [v8 hash];
+  renderingMode = [(UISceneLayerPresentationContext *)self renderingMode];
+  v7 = v5 - renderingMode + 8 * renderingMode;
+  _minificationFilterName = [(UISceneLayerPresentationContext *)self _minificationFilterName];
+  v9 = [_minificationFilterName hash];
 
   return v7 + v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   transformer = self->_transformer;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __43__UISceneLayerPresentationContext_isEqual___block_invoke;
   v38[3] = &unk_1E70F66F0;
-  v7 = v4;
+  v7 = equalCopy;
   v39 = v7;
   v8 = [v5 appendObject:transformer counterpart:v38];
   hidden = self->_hidden;
@@ -157,28 +157,28 @@ void __59__UISceneLayerPresentationContext__isEqualToDefaultContext__block_invok
   v16 = v13;
   v33 = v16;
   v17 = [v5 appendCGFloat:v32 counterpart:alpha];
-  v18 = [(UISceneLayerPresentationContext *)self renderingMode];
+  renderingMode = [(UISceneLayerPresentationContext *)self renderingMode];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __43__UISceneLayerPresentationContext_isEqual___block_invoke_5;
   v30[3] = &unk_1E7109EE0;
   v19 = v16;
   v31 = v19;
-  v20 = [v5 appendUnsignedInteger:v18 counterpart:v30];
-  v21 = [(UISceneLayerPresentationContext *)self _minificationFilterName];
+  v20 = [v5 appendUnsignedInteger:renderingMode counterpart:v30];
+  _minificationFilterName = [(UISceneLayerPresentationContext *)self _minificationFilterName];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __43__UISceneLayerPresentationContext_isEqual___block_invoke_6;
   v28 = &unk_1E70F66F0;
   v29 = v19;
   v22 = v19;
-  v23 = [v5 appendObject:v21 counterpart:&v25];
+  v23 = [v5 appendObject:_minificationFilterName counterpart:&v25];
 
-  LOBYTE(v21) = [v5 isEqual];
-  return v21;
+  LOBYTE(_minificationFilterName) = [v5 isEqual];
+  return _minificationFilterName;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UIMutableSceneLayerPresentationContext alloc];
 

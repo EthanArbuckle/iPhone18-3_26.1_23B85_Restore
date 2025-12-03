@@ -1,30 +1,30 @@
 @interface SASActivationInstrumentationMessage
-- (BOOL)isEqual:(id)a3;
-- (SASActivationInstrumentationMessage)initWithCoder:(id)a3;
-- (SASActivationInstrumentationMessage)initWithEvent:(id)a3 activationEventIdentifier:(id)a4 machAbsoluteTime:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (SASActivationInstrumentationMessage)initWithCoder:(id)coder;
+- (SASActivationInstrumentationMessage)initWithEvent:(id)event activationEventIdentifier:(id)identifier machAbsoluteTime:(unint64_t)time;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SASActivationInstrumentationMessage
 
-- (SASActivationInstrumentationMessage)initWithEvent:(id)a3 activationEventIdentifier:(id)a4 machAbsoluteTime:(unint64_t)a5
+- (SASActivationInstrumentationMessage)initWithEvent:(id)event activationEventIdentifier:(id)identifier machAbsoluteTime:(unint64_t)time
 {
-  v9 = a3;
-  v10 = a4;
+  eventCopy = event;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = SASActivationInstrumentationMessage;
   v11 = [(SASActivationInstrumentationMessage *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_event, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_event, event);
+    v13 = [identifierCopy copy];
     activationEventIdentifier = v12->_activationEventIdentifier;
     v12->_activationEventIdentifier = v13;
 
-    v12->_machAbsoluteTime = a5;
+    v12->_machAbsoluteTime = time;
   }
 
   return v12;
@@ -68,10 +68,10 @@
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -81,17 +81,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       machAbsoluteTime = self->_machAbsoluteTime;
       if (machAbsoluteTime == [(SASActivationInstrumentationMessage *)v5 machAbsoluteTime])
       {
-        v7 = [(SASActivationInstrumentationMessage *)v5 event];
+        event = [(SASActivationInstrumentationMessage *)v5 event];
         event = self->_event;
-        if (event == v7 || [(ACTVSchemaACTVClientEvent *)event isEqual:v7])
+        if (event == event || [(ACTVSchemaACTVClientEvent *)event isEqual:event])
         {
-          v9 = [(SASActivationInstrumentationMessage *)v5 activationEventIdentifier];
+          activationEventIdentifier = [(SASActivationInstrumentationMessage *)v5 activationEventIdentifier];
           activationEventIdentifier = self->_activationEventIdentifier;
-          v11 = activationEventIdentifier == v9 || [(NSUUID *)activationEventIdentifier isEqual:v9];
+          v11 = activationEventIdentifier == activationEventIdentifier || [(NSUUID *)activationEventIdentifier isEqual:activationEventIdentifier];
         }
 
         else
@@ -115,27 +115,27 @@
   return v11;
 }
 
-- (SASActivationInstrumentationMessage)initWithCoder:(id)a3
+- (SASActivationInstrumentationMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASActivationInstrumentationMessage::event"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASActivationInstrumentationMessage::activationEventIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASActivationInstrumentationMessage::machAbsoluteTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASActivationInstrumentationMessage::event"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASActivationInstrumentationMessage::activationEventIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASActivationInstrumentationMessage::machAbsoluteTime"];
 
-  v8 = [v7 unsignedLongLongValue];
-  v9 = [(SASActivationInstrumentationMessage *)self initWithEvent:v5 activationEventIdentifier:v6 machAbsoluteTime:v8];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
+  v9 = [(SASActivationInstrumentationMessage *)self initWithEvent:v5 activationEventIdentifier:v6 machAbsoluteTime:unsignedLongLongValue];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   event = self->_event;
-  v5 = a3;
-  [v5 encodeObject:event forKey:@"SASActivationInstrumentationMessage::event"];
-  [v5 encodeObject:self->_activationEventIdentifier forKey:@"SASActivationInstrumentationMessage::activationEventIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:event forKey:@"SASActivationInstrumentationMessage::event"];
+  [coderCopy encodeObject:self->_activationEventIdentifier forKey:@"SASActivationInstrumentationMessage::activationEventIdentifier"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_machAbsoluteTime];
-  [v5 encodeObject:v6 forKey:@"SASActivationInstrumentationMessage::machAbsoluteTime"];
+  [coderCopy encodeObject:v6 forKey:@"SASActivationInstrumentationMessage::machAbsoluteTime"];
 }
 
 @end

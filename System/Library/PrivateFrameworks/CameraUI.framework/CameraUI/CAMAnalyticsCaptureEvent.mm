@@ -1,54 +1,54 @@
 @interface CAMAnalyticsCaptureEvent
-- (CAMAnalyticsCaptureEvent)initWithEvent:(id)a3;
-- (CAMAnalyticsCaptureEvent)initWithGraphConfiguration:(id)a3 outputToExternalStorage:(BOOL)a4;
-- (id)_defaultRangeStringForValue:(float)a3 lowerBound:(float)a4 upperBound:(float)a5 defaultValue:(float)a6;
-- (id)_zoomRangeStringForDisplayZoomValue:(double)a3 zoomPoints:(id)a4 mode:(int64_t)a5 device:(int64_t)a6;
-- (void)_populateFromCaptureRequest:(id)a3;
-- (void)_trackAnchor:(int64_t)a3;
-- (void)populateAEAFLocked:(BOOL)a3;
-- (void)populateBurstLength:(int64_t)a3;
-- (void)populateDesiredFlashMode:(int64_t)a3 desiredLivePhotoMode:(int64_t)a4 desiredHDRMode:(int64_t)a5 timerDuration:(int64_t)a6;
-- (void)populateDesiredMacroMode:(int64_t)a3 isMacroCapture:(BOOL)a4 isMacroSuggested:(BOOL)a5;
-- (void)populateDesiredNightModeControlMode:(unint64_t)a3 resolvedNightModeControlMode:(unint64_t)a4 resolvedNightMode:(int64_t)a5 nightModeStatus:(int64_t)a6;
-- (void)populateDesiredTorchMode:(int64_t)a3;
-- (void)populateDeviceOrientation:(int64_t)a3 isDeviceOrientationLocked:(BOOL)a4;
-- (void)populateDuration:(double)a3;
-- (void)populateExposureSliderBias:(float)a3 exposureTapAndBias:(float)a4 totalExposureBias:(float)a5;
-- (void)populateForTimelapseCaptureOrientation:(int64_t)a3 captureMirrored:(BOOL)a4 origin:(int64_t)a5 pressType:(int64_t)a6 startDate:(id)a7;
-- (void)populateFromPanoramaCaptureRequest:(id)a3;
-- (void)populateFromPanoramaCaptureStoppingReason:(int64_t)a3;
-- (void)populateFromStillImageCaptureRequest:(id)a3 burst:(BOOL)a4 preferences:(id)a5;
-- (void)populateFromStillImageCaptureResponse:(id)a3;
-- (void)populateFromVideoCaptureRequest:(id)a3 preferences:(id)a4;
-- (void)populateFromVideoCaptureResponse:(id)a3;
-- (void)populateObjectResultsWithNumberOfFaces:(unint64_t)a3 numberOfCats:(unint64_t)a4 numberOfDogs:(unint64_t)a5;
-- (void)populatePanoramaDirection:(int64_t)a3;
-- (void)populatePanoramaInstruction:(int64_t)a3;
-- (void)populatePortraitStatus:(int64_t)a3 lightingEffectIntensity:(double)a4 apertureValue:(double)a5 zoomFactor:(double)a6 isDepthSuggestionAllowed:(BOOL)a7 request:(id)a8;
-- (void)populateSharedLibraryMode:(int64_t)a3;
-- (void)populateZoomFieldOfView:(int64_t)a3 graphConfiguration:(id)a4 smartFramingSource:(int64_t)a5;
-- (void)populateZoomFromDisplayZoomValue:(double)a3 zoomPoints:(id)a4 zoomInteractionType:(int64_t)a5;
-- (void)populateZoomFromZoomButtonSymbol:(int64_t)a3 zoomInteractionType:(int64_t)a4;
-- (void)trackFrontRearSimultaneousVideoPIPMoveToAnchor:(int64_t)a3;
+- (CAMAnalyticsCaptureEvent)initWithEvent:(id)event;
+- (CAMAnalyticsCaptureEvent)initWithGraphConfiguration:(id)configuration outputToExternalStorage:(BOOL)storage;
+- (id)_defaultRangeStringForValue:(float)value lowerBound:(float)bound upperBound:(float)upperBound defaultValue:(float)defaultValue;
+- (id)_zoomRangeStringForDisplayZoomValue:(double)value zoomPoints:(id)points mode:(int64_t)mode device:(int64_t)device;
+- (void)_populateFromCaptureRequest:(id)request;
+- (void)_trackAnchor:(int64_t)anchor;
+- (void)populateAEAFLocked:(BOOL)locked;
+- (void)populateBurstLength:(int64_t)length;
+- (void)populateDesiredFlashMode:(int64_t)mode desiredLivePhotoMode:(int64_t)photoMode desiredHDRMode:(int64_t)rMode timerDuration:(int64_t)duration;
+- (void)populateDesiredMacroMode:(int64_t)mode isMacroCapture:(BOOL)capture isMacroSuggested:(BOOL)suggested;
+- (void)populateDesiredNightModeControlMode:(unint64_t)mode resolvedNightModeControlMode:(unint64_t)controlMode resolvedNightMode:(int64_t)nightMode nightModeStatus:(int64_t)status;
+- (void)populateDesiredTorchMode:(int64_t)mode;
+- (void)populateDeviceOrientation:(int64_t)orientation isDeviceOrientationLocked:(BOOL)locked;
+- (void)populateDuration:(double)duration;
+- (void)populateExposureSliderBias:(float)bias exposureTapAndBias:(float)andBias totalExposureBias:(float)exposureBias;
+- (void)populateForTimelapseCaptureOrientation:(int64_t)orientation captureMirrored:(BOOL)mirrored origin:(int64_t)origin pressType:(int64_t)type startDate:(id)date;
+- (void)populateFromPanoramaCaptureRequest:(id)request;
+- (void)populateFromPanoramaCaptureStoppingReason:(int64_t)reason;
+- (void)populateFromStillImageCaptureRequest:(id)request burst:(BOOL)burst preferences:(id)preferences;
+- (void)populateFromStillImageCaptureResponse:(id)response;
+- (void)populateFromVideoCaptureRequest:(id)request preferences:(id)preferences;
+- (void)populateFromVideoCaptureResponse:(id)response;
+- (void)populateObjectResultsWithNumberOfFaces:(unint64_t)faces numberOfCats:(unint64_t)cats numberOfDogs:(unint64_t)dogs;
+- (void)populatePanoramaDirection:(int64_t)direction;
+- (void)populatePanoramaInstruction:(int64_t)instruction;
+- (void)populatePortraitStatus:(int64_t)status lightingEffectIntensity:(double)intensity apertureValue:(double)value zoomFactor:(double)factor isDepthSuggestionAllowed:(BOOL)allowed request:(id)request;
+- (void)populateSharedLibraryMode:(int64_t)mode;
+- (void)populateZoomFieldOfView:(int64_t)view graphConfiguration:(id)configuration smartFramingSource:(int64_t)source;
+- (void)populateZoomFromDisplayZoomValue:(double)value zoomPoints:(id)points zoomInteractionType:(int64_t)type;
+- (void)populateZoomFromZoomButtonSymbol:(int64_t)symbol zoomInteractionType:(int64_t)type;
+- (void)trackFrontRearSimultaneousVideoPIPMoveToAnchor:(int64_t)anchor;
 @end
 
 @implementation CAMAnalyticsCaptureEvent
 
-- (CAMAnalyticsCaptureEvent)initWithGraphConfiguration:(id)a3 outputToExternalStorage:(BOOL)a4
+- (CAMAnalyticsCaptureEvent)initWithGraphConfiguration:(id)configuration outputToExternalStorage:(BOOL)storage
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = CAMAnalyticsCaptureEvent;
   v7 = [(CAMAnalyticsEvent *)&v12 init];
   if (v7)
   {
-    v7->__captureMode = [v6 mode];
-    v7->__captureDevice = [v6 device];
-    v7->__captureDevicePosition = [v6 devicePosition];
-    v7->__captureVideoConfiguration = [v6 videoConfiguration];
-    v7->__videoStabilizationStrength = [v6 videoStabilizationStrength];
-    v7->__outputToExternalStorage = a4;
-    v7->__colorSpace = [v6 colorSpace];
+    v7->__captureMode = [configurationCopy mode];
+    v7->__captureDevice = [configurationCopy device];
+    v7->__captureDevicePosition = [configurationCopy devicePosition];
+    v7->__captureVideoConfiguration = [configurationCopy videoConfiguration];
+    v7->__videoStabilizationStrength = [configurationCopy videoStabilizationStrength];
+    v7->__outputToExternalStorage = storage;
+    v7->__colorSpace = [configurationCopy colorSpace];
     v7->__frontRearSimultaneousVideoPIPInteractionCount = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     trackedFrontRearSimultaneousVideoAnchors = v7->__trackedFrontRearSimultaneousVideoAnchors;
@@ -60,22 +60,22 @@
   return v7;
 }
 
-- (CAMAnalyticsCaptureEvent)initWithEvent:(id)a3
+- (CAMAnalyticsCaptureEvent)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = CAMAnalyticsCaptureEvent;
-  v5 = [(CAMAnalyticsEvent *)&v10 initWithEvent:v4];
+  v5 = [(CAMAnalyticsEvent *)&v10 initWithEvent:eventCopy];
   if (v5)
   {
-    v5->__captureMode = [v4 _captureMode];
-    v5->__captureDevice = [v4 _captureDevice];
-    v5->__captureDevicePosition = [v4 _captureDevicePosition];
-    v5->__captureVideoConfiguration = [v4 _captureVideoConfiguration];
-    v5->__mediaType = [v4 _mediaType];
-    v5->__isStillDuringVideo = [v4 _isStillDuringVideo];
-    v5->__outputToExternalStorage = [v4 _outputToExternalStorage];
-    v5->__colorSpace = [v4 _colorSpace];
+    v5->__captureMode = [eventCopy _captureMode];
+    v5->__captureDevice = [eventCopy _captureDevice];
+    v5->__captureDevicePosition = [eventCopy _captureDevicePosition];
+    v5->__captureVideoConfiguration = [eventCopy _captureVideoConfiguration];
+    v5->__mediaType = [eventCopy _mediaType];
+    v5->__isStillDuringVideo = [eventCopy _isStillDuringVideo];
+    v5->__outputToExternalStorage = [eventCopy _outputToExternalStorage];
+    v5->__colorSpace = [eventCopy _colorSpace];
     v5->__frontRearSimultaneousVideoPIPInteractionCount = 0;
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     trackedFrontRearSimultaneousVideoAnchors = v5->__trackedFrontRearSimultaneousVideoAnchors;
@@ -87,127 +87,127 @@
   return v5;
 }
 
-- (void)_populateFromCaptureRequest:(id)a3
+- (void)_populateFromCaptureRequest:(id)request
 {
-  v43 = a3;
-  v4 = [v43 type];
-  if (v4 == 2)
+  requestCopy = request;
+  type = [requestCopy type];
+  if (type == 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
-    if (v4 != 1)
+    v5 = type;
+    if (type != 1)
     {
-      if (v4)
+      if (type)
       {
         goto LABEL_8;
       }
 
-      v6 = [v43 ctmCaptureType];
-      if (v6 >= 3)
+      ctmCaptureType = [requestCopy ctmCaptureType];
+      if (ctmCaptureType >= 3)
       {
         goto LABEL_8;
       }
 
-      v5 = qword_1A3A6AC48[v6];
+      v5 = qword_1A3A6AC48[ctmCaptureType];
     }
   }
 
   [(CAMAnalyticsCaptureEvent *)self set_mediaType:v5];
 LABEL_8:
-  v7 = [v43 captureMode];
-  if (v7 > 9)
+  captureMode = [requestCopy captureMode];
+  if (captureMode > 9)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_1E76FE288[v7];
+    v8 = off_1E76FE288[captureMode];
   }
 
-  v9 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v9 setObject:v8 forKeyedSubscript:@"captureMode"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v8 forKeyedSubscript:@"captureMode"];
 
-  v10 = [v43 captureDevice];
-  if (v10 > 0xB)
+  captureDevice = [requestCopy captureDevice];
+  if (captureDevice > 0xB)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = off_1E76FE458[v10];
+    v11 = off_1E76FE458[captureDevice];
   }
 
-  v12 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v12 setObject:v11 forKeyedSubscript:@"device"];
+  _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap2 setObject:v11 forKeyedSubscript:@"device"];
 
-  v13 = [v43 captureDevicePosition];
+  captureDevicePosition = [requestCopy captureDevicePosition];
   v14 = @"Front";
-  if (v13 != 1)
+  if (captureDevicePosition != 1)
   {
     v14 = 0;
   }
 
-  if (!v13)
+  if (!captureDevicePosition)
   {
     v14 = @"Back";
   }
 
   v15 = v14;
-  v16 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v16 setObject:v15 forKeyedSubscript:@"devicePosition"];
+  _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap3 setObject:v15 forKeyedSubscript:@"devicePosition"];
 
-  v17 = [v43 captureOrientation];
+  captureOrientation = [requestCopy captureOrientation];
   v18 = 0;
-  if (v17 <= 4)
+  if (captureOrientation <= 4)
   {
-    v18 = off_1E76FE4B8[v17];
+    v18 = off_1E76FE4B8[captureOrientation];
   }
 
-  v19 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v19 setObject:v18 forKeyedSubscript:@"orientation"];
+  _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap4 setObject:v18 forKeyedSubscript:@"orientation"];
 
-  v20 = [v43 origin];
+  origin = [requestCopy origin];
   v21 = @"MessagesCamera";
-  if (v20 != 1)
+  if (origin != 1)
   {
     v21 = 0;
   }
 
-  if (!v20)
+  if (!origin)
   {
     v21 = @"Camera";
   }
 
   v22 = v21;
-  v23 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v23 setObject:v22 forKeyedSubscript:@"origin"];
+  _eventMap5 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap5 setObject:v22 forKeyedSubscript:@"origin"];
 
   v24 = +[CAMCaptureCapabilities capabilities];
-  v25 = [v24 hostProcess];
+  hostProcess = [v24 hostProcess];
   v26 = 0;
-  if (v25 <= 5)
+  if (hostProcess <= 5)
   {
-    v26 = off_1E76FE4E0[v25];
+    v26 = off_1E76FE4E0[hostProcess];
   }
 
-  v27 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v27 setObject:v26 forKeyedSubscript:@"hostProcess"];
+  _eventMap6 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap6 setObject:v26 forKeyedSubscript:@"hostProcess"];
 
-  v28 = [MEMORY[0x1E696AAE8] mainBundle];
-  v29 = [v28 bundleIdentifier];
-  v30 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v30 setObject:v29 forKeyedSubscript:@"bundleID"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  _eventMap7 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap7 setObject:bundleIdentifier forKeyedSubscript:@"bundleID"];
 
-  v31 = [v43 pressType];
-  if (v31 <= 105)
+  pressType = [requestCopy pressType];
+  if (pressType <= 105)
   {
-    switch(v31)
+    switch(pressType)
     {
       case 'f':
         v32 = @"Secondary";
@@ -225,15 +225,15 @@ LABEL_38:
     goto LABEL_42;
   }
 
-  if (v31 > 107)
+  if (pressType > 107)
   {
-    if (v31 == 108)
+    if (pressType == 108)
     {
       v32 = @"HeadphonesRightButton";
       goto LABEL_42;
     }
 
-    if (v31 == 601)
+    if (pressType == 601)
     {
       v32 = @"CameraCaseShutter";
       goto LABEL_42;
@@ -242,7 +242,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (v31 == 106)
+  if (pressType == 106)
   {
     v32 = @"CameraButton";
   }
@@ -253,158 +253,158 @@ LABEL_38:
   }
 
 LABEL_42:
-  v33 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v33 setObject:v32 forKeyedSubscript:@"pressType"];
+  _eventMap8 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap8 setObject:v32 forKeyedSubscript:@"pressType"];
 
-  v34 = [(CAMAnalyticsCaptureEvent *)self _mediaType];
+  _mediaType = [(CAMAnalyticsCaptureEvent *)self _mediaType];
   v35 = @"Video";
-  if (v34 != 1)
+  if (_mediaType != 1)
   {
     v35 = 0;
   }
 
-  if (!v34)
+  if (!_mediaType)
   {
     v35 = @"Photo";
   }
 
   v36 = v35;
-  v37 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v37 setObject:v36 forKeyedSubscript:@"captureType"];
+  _eventMap9 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap9 setObject:v36 forKeyedSubscript:@"captureType"];
 
   v38 = 0;
-  v39 = [v43 audioConfiguration] - 1;
+  v39 = [requestCopy audioConfiguration] - 1;
   if (v39 <= 2)
   {
     v38 = off_1E76FE2D8[v39];
   }
 
-  v40 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v40 setObject:v38 forKeyedSubscript:@"audioConfiguration"];
+  _eventMap10 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap10 setObject:v38 forKeyedSubscript:@"audioConfiguration"];
 
-  if ([v43 captureDevicePosition] == 1)
+  if ([requestCopy captureDevicePosition] == 1)
   {
-    v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v43, "isCaptureMirrored")}];
-    v42 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v42 setObject:v41 forKeyedSubscript:@"isCaptureMirrored"];
+    v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "isCaptureMirrored")}];
+    _eventMap11 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap11 setObject:v41 forKeyedSubscript:@"isCaptureMirrored"];
   }
 }
 
-- (void)populateFromStillImageCaptureRequest:(id)a3 burst:(BOOL)a4 preferences:(id)a5
+- (void)populateFromStillImageCaptureRequest:(id)request burst:(BOOL)burst preferences:(id)preferences
 {
-  v61 = a3;
-  v7 = a5;
+  requestCopy = request;
+  preferencesCopy = preferences;
   v8 = +[CAMCaptureCapabilities capabilities];
-  [(CAMAnalyticsCaptureEvent *)self _populateFromCaptureRequest:v61];
-  -[CAMAnalyticsCaptureEvent set_isStillDuringVideo:](self, "set_isStillDuringVideo:", [v61 stillDuringVideo]);
-  v9 = [v61 captureMode];
+  [(CAMAnalyticsCaptureEvent *)self _populateFromCaptureRequest:requestCopy];
+  -[CAMAnalyticsCaptureEvent set_isStillDuringVideo:](self, "set_isStillDuringVideo:", [requestCopy stillDuringVideo]);
+  captureMode = [requestCopy captureMode];
   if (![(CAMAnalyticsCaptureEvent *)self _mediaType])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAMAnalyticsCaptureEvent _isStillDuringVideo](self, "_isStillDuringVideo")}];
-    v11 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v11 setObject:v10 forKeyedSubscript:@"isStillDuringVideo"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v10 forKeyedSubscript:@"isStillDuringVideo"];
 
     if (![(CAMAnalyticsCaptureEvent *)self _isStillDuringVideo])
     {
       if ([v8 isLivePhotoSupportedForMode:-[CAMAnalyticsCaptureEvent _captureMode](self devicePosition:{"_captureMode"), -[CAMAnalyticsCaptureEvent _captureDevicePosition](self, "_captureDevicePosition")}])
       {
-        v12 = [v61 irisMode];
-        if (v12 > 2)
+        irisMode = [requestCopy irisMode];
+        if (irisMode > 2)
         {
           v13 = 0;
         }
 
         else
         {
-          v13 = off_1E76FE628[v12];
+          v13 = off_1E76FE628[irisMode];
         }
 
-        v14 = [(CAMAnalyticsEvent *)self _eventMap];
-        [v14 setObject:v13 forKeyedSubscript:@"resolvedLivePhotoMode"];
+        _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+        [_eventMap2 setObject:v13 forKeyedSubscript:@"resolvedLivePhotoMode"];
       }
 
-      if ([v8 isHDRSupportedForMode:objc_msgSend(v61 devicePosition:{"captureMode"), objc_msgSend(v61, "captureDevicePosition")}])
+      if ([v8 isHDRSupportedForMode:objc_msgSend(requestCopy devicePosition:{"captureMode"), objc_msgSend(requestCopy, "captureDevicePosition")}])
       {
-        v15 = [v61 hdrMode];
+        hdrMode = [requestCopy hdrMode];
         v16 = @"On";
-        if (v15 != 1)
+        if (hdrMode != 1)
         {
           v16 = 0;
         }
 
-        if (!v15)
+        if (!hdrMode)
         {
           v16 = @"Off";
         }
 
         v17 = v16;
-        v18 = [(CAMAnalyticsEvent *)self _eventMap];
-        [v18 setObject:v17 forKeyedSubscript:@"resolvedHDRMode"];
+        _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+        [_eventMap3 setObject:v17 forKeyedSubscript:@"resolvedHDRMode"];
       }
 
-      if ([v8 isNightModeSupportedForMode:objc_msgSend(v61 device:{"captureMode"), objc_msgSend(v61, "captureDevice")}])
+      if ([v8 isNightModeSupportedForMode:objc_msgSend(requestCopy device:{"captureMode"), objc_msgSend(requestCopy, "captureDevice")}])
       {
-        v19 = [v61 nightMode];
-        if (v19 > 2)
+        nightMode = [requestCopy nightMode];
+        if (nightMode > 2)
         {
           v20 = 0;
         }
 
         else
         {
-          v20 = off_1E76FE5F0[v19];
+          v20 = off_1E76FE5F0[nightMode];
         }
 
-        v21 = [(CAMAnalyticsEvent *)self _eventMap];
-        [v21 setObject:v20 forKeyedSubscript:@"resolvedLowLightMode"];
+        _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+        [_eventMap4 setObject:v20 forKeyedSubscript:@"resolvedLowLightMode"];
       }
 
-      if ([v8 isLightingControlSupportedForMode:{objc_msgSend(v61, "captureMode")}])
+      if ([v8 isLightingControlSupportedForMode:{objc_msgSend(requestCopy, "captureMode")}])
       {
-        -[CAMAnalyticsCaptureEvent set_lightingEffectType:](self, "set_lightingEffectType:", [v61 lightingEffectType]);
-        v22 = [v61 lightingEffectType];
-        if (v22 > 6)
+        -[CAMAnalyticsCaptureEvent set_lightingEffectType:](self, "set_lightingEffectType:", [requestCopy lightingEffectType]);
+        lightingEffectType = [requestCopy lightingEffectType];
+        if (lightingEffectType > 6)
         {
           v23 = 0;
         }
 
         else
         {
-          v23 = off_1E76FE2F0[v22];
+          v23 = off_1E76FE2F0[lightingEffectType];
         }
 
-        v24 = [(CAMAnalyticsEvent *)self _eventMap];
-        [v24 setObject:v23 forKeyedSubscript:@"lightingType"];
+        _eventMap5 = [(CAMAnalyticsEvent *)self _eventMap];
+        [_eventMap5 setObject:v23 forKeyedSubscript:@"lightingType"];
       }
 
       if ([v8 semanticStylesSupport])
       {
-        v25 = [v61 semanticStyle];
+        semanticStyle = [requestCopy semanticStyle];
 
-        if (v25)
+        if (semanticStyle)
         {
-          v26 = [v61 semanticStyle];
-          v27 = [v26 analyticsDictionaryForCapture];
+          semanticStyle2 = [requestCopy semanticStyle];
+          analyticsDictionaryForCapture = [semanticStyle2 analyticsDictionaryForCapture];
 
-          v28 = [(CAMAnalyticsEvent *)self _eventMap];
-          [v28 addEntriesFromDictionary:v27];
+          _eventMap6 = [(CAMAnalyticsEvent *)self _eventMap];
+          [_eventMap6 addEntriesFromDictionary:analyticsDictionaryForCapture];
         }
       }
 
       v29 = +[CAMCaptureCapabilities capabilities];
-      v30 = [v29 isLinearDNGSupported];
+      isLinearDNGSupported = [v29 isLinearDNGSupported];
 
-      v31 = [v7 rawControlEnabled];
-      if (v30 && v31)
+      rawControlEnabled = [preferencesCopy rawControlEnabled];
+      if (isLinearDNGSupported && rawControlEnabled)
       {
-        if ([v61 photoEncodingBehavior] == 2)
+        if ([requestCopy photoEncodingBehavior] == 2)
         {
           v32 = [MEMORY[0x1E696AD98] numberWithBool:1];
-          v33 = [(CAMAnalyticsEvent *)self _eventMap];
-          [v33 setObject:v32 forKeyedSubscript:@"linearDNG"];
+          _eventMap7 = [(CAMAnalyticsEvent *)self _eventMap];
+          [_eventMap7 setObject:v32 forKeyedSubscript:@"linearDNG"];
 
           v34 = MEMORY[0x1E696AD98];
-          v35 = [v61 maximumPhotoResolution] - 1;
+          v35 = [requestCopy maximumPhotoResolution] - 1;
           if (v35 > 2)
           {
             v36 = 0;
@@ -416,29 +416,29 @@ LABEL_42:
           }
 
           v37 = [v34 numberWithInteger:v36];
-          v38 = [(CAMAnalyticsEvent *)self _eventMap];
-          v39 = v38;
+          _eventMap8 = [(CAMAnalyticsEvent *)self _eventMap];
+          v39 = _eventMap8;
           v40 = @"linearDNGResolution";
         }
 
         else
         {
           v37 = [MEMORY[0x1E696AD98] numberWithBool:0];
-          v38 = [(CAMAnalyticsEvent *)self _eventMap];
-          v39 = v38;
+          _eventMap8 = [(CAMAnalyticsEvent *)self _eventMap];
+          v39 = _eventMap8;
           v40 = @"linearDNG";
         }
 
-        [v38 setObject:v37 forKeyedSubscript:v40];
+        [_eventMap8 setObject:v37 forKeyedSubscript:v40];
       }
 
-      v41 = [v8 supportedPhotoResolutionsForMode:objc_msgSend(v61 devicePosition:"captureMode") photoEncoding:{objc_msgSend(v61, "captureDevicePosition"), objc_msgSend(v61, "photoEncodingBehavior")}];
+      v41 = [v8 supportedPhotoResolutionsForMode:objc_msgSend(requestCopy devicePosition:"captureMode") photoEncoding:{objc_msgSend(requestCopy, "captureDevicePosition"), objc_msgSend(requestCopy, "photoEncodingBehavior")}];
       v42 = [v41 count];
 
       if (v42 >= 2)
       {
         v43 = MEMORY[0x1E696AD98];
-        v44 = [v61 maximumPhotoResolution] - 1;
+        v44 = [requestCopy maximumPhotoResolution] - 1;
         if (v44 > 2)
         {
           v45 = 0;
@@ -450,120 +450,120 @@ LABEL_42:
         }
 
         v46 = [v43 numberWithInteger:v45];
-        v47 = [(CAMAnalyticsEvent *)self _eventMap];
-        [v47 setObject:v46 forKeyedSubscript:@"desiredMaximumResolution"];
+        _eventMap9 = [(CAMAnalyticsEvent *)self _eventMap];
+        [_eventMap9 setObject:v46 forKeyedSubscript:@"desiredMaximumResolution"];
       }
     }
   }
 
   v48 = +[CAMCaptureCapabilities capabilities];
-  v49 = [v48 isFlashSupportedForMode:objc_msgSend(v61 devicePosition:{"captureMode"), objc_msgSend(v61, "captureDevicePosition")}];
+  v49 = [v48 isFlashSupportedForMode:objc_msgSend(requestCopy devicePosition:{"captureMode"), objc_msgSend(requestCopy, "captureDevicePosition")}];
 
   if (v49 && ![(CAMAnalyticsCaptureEvent *)self _isStillDuringVideo])
   {
-    v50 = [v61 flashMode];
-    if (v50 > 2)
+    flashMode = [requestCopy flashMode];
+    if (flashMode > 2)
     {
       v51 = 0;
     }
 
     else
     {
-      v51 = off_1E76FE628[v50];
+      v51 = off_1E76FE628[flashMode];
     }
 
-    v52 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v52 setObject:v51 forKeyedSubscript:@"resolvedFlashMode"];
+    _eventMap10 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap10 setObject:v51 forKeyedSubscript:@"resolvedFlashMode"];
   }
 
   v53 = +[CAMCaptureCapabilities capabilities];
-  v54 = [v53 isAspectRatioCropSupportedForMode:objc_msgSend(v61 devicePosition:{"captureMode"), objc_msgSend(v61, "captureDevicePosition")}];
+  v54 = [v53 isAspectRatioCropSupportedForMode:objc_msgSend(requestCopy devicePosition:{"captureMode"), objc_msgSend(requestCopy, "captureDevicePosition")}];
 
   if (v54)
   {
-    v55 = [v61 aspectRatioCrop];
-    if (v55 > 6)
+    aspectRatioCrop = [requestCopy aspectRatioCrop];
+    if (aspectRatioCrop > 6)
     {
       v56 = 0;
     }
 
     else
     {
-      v56 = off_1E76FE328[v55];
+      v56 = off_1E76FE328[aspectRatioCrop];
     }
 
-    v57 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v57 setObject:v56 forKeyedSubscript:@"aspectRatio"];
+    _eventMap11 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap11 setObject:v56 forKeyedSubscript:@"aspectRatio"];
   }
 
-  if (v9 <= 7 && (((0xC0u >> v9) | (0x11u >> v9)) & 1) != 0)
+  if (captureMode <= 7 && (((0xC0u >> captureMode) | (0x11u >> captureMode)) & 1) != 0)
   {
-    v58 = [v61 effectFilterType];
-    if (v58 > 0x10)
+    effectFilterType = [requestCopy effectFilterType];
+    if (effectFilterType > 0x10)
     {
       v59 = 0;
     }
 
     else
     {
-      v59 = off_1E76FE360[v58];
+      v59 = off_1E76FE360[effectFilterType];
     }
 
-    v60 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v60 setObject:v59 forKeyedSubscript:@"filterType"];
+    _eventMap12 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap12 setObject:v59 forKeyedSubscript:@"filterType"];
   }
 }
 
-- (void)populateFromVideoCaptureRequest:(id)a3 preferences:(id)a4
+- (void)populateFromVideoCaptureRequest:(id)request preferences:(id)preferences
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  preferencesCopy = preferences;
   v72 = +[CAMCaptureCapabilities capabilities];
-  [(CAMAnalyticsCaptureEvent *)self _populateFromCaptureRequest:v6];
-  if ([v6 trueVideoEnabled] && objc_msgSend(v6, "captureMode") == 8)
+  [(CAMAnalyticsCaptureEvent *)self _populateFromCaptureRequest:requestCopy];
+  if ([requestCopy trueVideoEnabled] && objc_msgSend(requestCopy, "captureMode") == 8)
   {
     v8 = @"SpatialPhoto";
 LABEL_7:
-    v9 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v9 setObject:v8 forKeyedSubscript:@"captureMode"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v8 forKeyedSubscript:@"captureMode"];
 
     goto LABEL_8;
   }
 
-  if ([v6 trueVideoEnabled] && objc_msgSend(v6, "captureMode") == 1)
+  if ([requestCopy trueVideoEnabled] && objc_msgSend(requestCopy, "captureMode") == 1)
   {
     v8 = @"Photo";
     goto LABEL_7;
   }
 
 LABEL_8:
-  if ([v72 isFlashOrTorchSupportedForMode:objc_msgSend(v6 devicePosition:{"captureMode"), objc_msgSend(v6, "captureDevicePosition")}])
+  if ([v72 isFlashOrTorchSupportedForMode:objc_msgSend(requestCopy devicePosition:{"captureMode"), objc_msgSend(requestCopy, "captureDevicePosition")}])
   {
-    v10 = [v6 torchMode];
-    if (v10 > 2)
+    torchMode = [requestCopy torchMode];
+    if (torchMode > 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = off_1E76FE628[v10];
+      v11 = off_1E76FE628[torchMode];
     }
 
-    v12 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v12 setObject:v11 forKeyedSubscript:@"resolvedTorchMode"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v11 forKeyedSubscript:@"resolvedTorchMode"];
   }
 
-  v13 = [v7 prefersHDR10BitVideoForCapabilities:v72];
-  v14 = [v6 captureMode];
-  v15 = [v6 captureDevice];
-  v16 = [v6 videoEncodingBehavior];
-  v17 = [v6 captureVideoConfiguration];
-  v18 = [(CAMAnalyticsCaptureEvent *)self _outputToExternalStorage];
-  LOBYTE(v65) = [v6 isFrontRearSimultaneousVideoEnabled];
+  v13 = [preferencesCopy prefersHDR10BitVideoForCapabilities:v72];
+  captureMode = [requestCopy captureMode];
+  captureDevice = [requestCopy captureDevice];
+  videoEncodingBehavior = [requestCopy videoEncodingBehavior];
+  captureVideoConfiguration = [requestCopy captureVideoConfiguration];
+  _outputToExternalStorage = [(CAMAnalyticsCaptureEvent *)self _outputToExternalStorage];
+  LOBYTE(v65) = [requestCopy isFrontRearSimultaneousVideoEnabled];
   v69 = v13;
-  v19 = [v72 resolvedVideoConfigurationForMode:v14 device:v15 videoEncodingBehavior:v16 videoConfiguration:v17 outputToExternalStorage:v18 prefersHDR10BitVideo:v13 frontRearSimultaneousVideoEnabled:v65];
+  v19 = [v72 resolvedVideoConfigurationForMode:captureMode device:captureDevice videoEncodingBehavior:videoEncodingBehavior videoConfiguration:captureVideoConfiguration outputToExternalStorage:_outputToExternalStorage prefersHDR10BitVideo:v13 frontRearSimultaneousVideoEnabled:v65];
   if (v19 > 9999)
   {
     if (v19 > 10002)
@@ -672,26 +672,26 @@ LABEL_8:
     }
   }
 
-  v29 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v29 setObject:v20 forKeyedSubscript:@"videoConfiguration"];
+  _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap3 setObject:v20 forKeyedSubscript:@"videoConfiguration"];
 
-  v30 = [v72 isProResVideoSupported];
-  v31 = [v7 isProResControlEnabled];
-  if (v30 && v31)
+  isProResVideoSupported = [v72 isProResVideoSupported];
+  isProResControlEnabled = [preferencesCopy isProResControlEnabled];
+  if (isProResVideoSupported && isProResControlEnabled)
   {
-    v32 = [v6 videoEncodingBehavior] == 2;
+    v32 = [requestCopy videoEncodingBehavior] == 2;
     v33 = [MEMORY[0x1E696AD98] numberWithBool:v32];
-    v34 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v34 setObject:v33 forKeyedSubscript:@"proRes"];
+    _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap4 setObject:v33 forKeyedSubscript:@"proRes"];
   }
 
-  v35 = [v6 captureMode];
-  if (v35 == 2)
+  captureMode2 = [requestCopy captureMode];
+  if (captureMode2 == 2)
   {
-    v36 = [v7 slomoConfiguration];
-    if (v36 <= 9999)
+    slomoConfiguration = [preferencesCopy slomoConfiguration];
+    if (slomoConfiguration <= 9999)
     {
-      switch(v36)
+      switch(slomoConfiguration)
       {
         case 0:
 LABEL_37:
@@ -765,15 +765,15 @@ LABEL_105:
 
   else
   {
-    if (v35 != 1)
+    if (captureMode2 != 1)
     {
       goto LABEL_56;
     }
 
-    v36 = [v7 videoConfiguration];
-    if (v36 <= 9999)
+    slomoConfiguration = [preferencesCopy videoConfiguration];
+    if (slomoConfiguration <= 9999)
     {
-      switch(v36)
+      switch(slomoConfiguration)
       {
         case 0:
           goto LABEL_37;
@@ -813,12 +813,12 @@ LABEL_105:
 
   v38 = @"ImagePickerVGA";
   v39 = @"ImagePickeriFrame540p";
-  if (v36 != 10005)
+  if (slomoConfiguration != 10005)
   {
     v39 = 0;
   }
 
-  if (v36 == 10004)
+  if (slomoConfiguration == 10004)
   {
     v40 = @"ImagePickeriFrame720p";
   }
@@ -828,24 +828,24 @@ LABEL_105:
     v40 = v39;
   }
 
-  if (v36 != 10003)
+  if (slomoConfiguration != 10003)
   {
     v38 = v40;
   }
 
   v41 = @"ImagePickerMedium";
   v42 = @"ImagePickerLow";
-  if (v36 != 10002)
+  if (slomoConfiguration != 10002)
   {
     v42 = 0;
   }
 
-  if (v36 != 10001)
+  if (slomoConfiguration != 10001)
   {
     v41 = v42;
   }
 
-  if (v36 == 10000)
+  if (slomoConfiguration == 10000)
   {
     v43 = @"ImagePickerHigh";
   }
@@ -855,7 +855,7 @@ LABEL_105:
     v43 = v41;
   }
 
-  if (v36 <= 10002)
+  if (slomoConfiguration <= 10002)
   {
     v37 = v43;
   }
@@ -866,8 +866,8 @@ LABEL_105:
   }
 
 LABEL_55:
-  v44 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v44 setObject:v37 forKeyedSubscript:@"preferredVideoConfiguration"];
+  _eventMap5 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap5 setObject:v37 forKeyedSubscript:@"preferredVideoConfiguration"];
 
 LABEL_56:
   v76 = 0u;
@@ -877,10 +877,10 @@ LABEL_56:
   v73 = [&unk_1F16C9CC8 countByEnumeratingWithState:&v74 objects:v78 count:16];
   if (v73)
   {
-    v70 = self;
-    v71 = v6;
+    selfCopy = self;
+    v71 = requestCopy;
     v45 = 0;
-    v67 = v7;
+    v67 = preferencesCopy;
     v68 = *v75;
     do
     {
@@ -891,45 +891,45 @@ LABEL_56:
           objc_enumerationMutation(&unk_1F16C9CC8);
         }
 
-        v47 = [*(*(&v74 + 1) + 8 * i) integerValue];
-        v48 = [v71 captureMode];
-        v49 = [v71 captureDevice];
-        v50 = [v71 captureVideoConfiguration];
-        v51 = [v71 videoEncodingBehavior];
-        v52 = [(CAMAnalyticsCaptureEvent *)v70 _outputToExternalStorage];
-        v53 = [v71 trueVideoEnabled];
+        integerValue = [*(*(&v74 + 1) + 8 * i) integerValue];
+        captureMode3 = [v71 captureMode];
+        captureDevice2 = [v71 captureDevice];
+        captureVideoConfiguration2 = [v71 captureVideoConfiguration];
+        videoEncodingBehavior2 = [v71 videoEncodingBehavior];
+        _outputToExternalStorage2 = [(CAMAnalyticsCaptureEvent *)selfCopy _outputToExternalStorage];
+        trueVideoEnabled = [v71 trueVideoEnabled];
         BYTE2(v66) = [v71 isFrontRearSimultaneousVideoEnabled];
         BYTE1(v66) = v69;
-        LOBYTE(v66) = v53;
-        v45 |= [v72 isVideoStabilizationStrength:v47 supportedForMode:v48 device:v49 videoConfiguration:v50 videoEncodingBehavior:v51 outputToExternalStorage:v52 trueVideoEnabled:v66 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?];
+        LOBYTE(v66) = trueVideoEnabled;
+        v45 |= [v72 isVideoStabilizationStrength:integerValue supportedForMode:captureMode3 device:captureDevice2 videoConfiguration:captureVideoConfiguration2 videoEncodingBehavior:videoEncodingBehavior2 outputToExternalStorage:_outputToExternalStorage2 trueVideoEnabled:v66 prefersHDR10BitVideo:? frontRearSimultaneousVideoEnabled:?];
       }
 
       v73 = [&unk_1F16C9CC8 countByEnumeratingWithState:&v74 objects:v78 count:16];
     }
 
     while (v73);
-    self = v70;
-    v6 = v71;
-    v7 = v67;
+    self = selfCopy;
+    requestCopy = v71;
+    preferencesCopy = v67;
     if (v45)
     {
-      v54 = [(CAMAnalyticsCaptureEvent *)v70 _videoStabilizationStrength];
-      if (v54 > 3)
+      _videoStabilizationStrength = [(CAMAnalyticsCaptureEvent *)selfCopy _videoStabilizationStrength];
+      if (_videoStabilizationStrength > 3)
       {
         v55 = 0;
       }
 
       else
       {
-        v55 = off_1E76FE3E8[v54];
+        v55 = off_1E76FE3E8[_videoStabilizationStrength];
       }
 
-      v56 = [(CAMAnalyticsEvent *)v70 _eventMap];
-      [v56 setObject:v55 forKeyedSubscript:@"videoStabilizationStrength"];
+      _eventMap6 = [(CAMAnalyticsEvent *)selfCopy _eventMap];
+      [_eventMap6 setObject:v55 forKeyedSubscript:@"videoStabilizationStrength"];
     }
   }
 
-  if ([v72 isExternalStorageOutputSupportedForMode:objc_msgSend(v6 videoEncodingBehavior:{"captureMode"), objc_msgSend(v6, "videoEncodingBehavior")}])
+  if ([v72 isExternalStorageOutputSupportedForMode:objc_msgSend(requestCopy videoEncodingBehavior:{"captureMode"), objc_msgSend(requestCopy, "videoEncodingBehavior")}])
   {
     v57 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAMAnalyticsCaptureEvent _outputToExternalStorage](self, "_outputToExternalStorage")}];
     [(CAMAnalyticsEvent *)self _eventMap];
@@ -939,171 +939,171 @@ LABEL_56:
     self = v58;
   }
 
-  v60 = [(CAMAnalyticsCaptureEvent *)self _colorSpace];
-  if (v60 > 3)
+  _colorSpace = [(CAMAnalyticsCaptureEvent *)self _colorSpace];
+  if (_colorSpace > 3)
   {
     v61 = 0;
   }
 
   else
   {
-    v61 = off_1E76FE408[v60];
+    v61 = off_1E76FE408[_colorSpace];
   }
 
-  v62 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v62 setObject:v61 forKeyedSubscript:@"colorSpace"];
+  _eventMap7 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap7 setObject:v61 forKeyedSubscript:@"colorSpace"];
 
-  if ([v72 isFrontRearSimultaneousVideoSupportedForMode:{objc_msgSend(v6, "captureMode")}])
+  if ([v72 isFrontRearSimultaneousVideoSupportedForMode:{objc_msgSend(requestCopy, "captureMode")}])
   {
-    v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "isFrontRearSimultaneousVideoEnabled")}];
-    v64 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v64 setObject:v63 forKeyedSubscript:@"frontRearVideoEnabled"];
+    v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "isFrontRearSimultaneousVideoEnabled")}];
+    _eventMap8 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap8 setObject:v63 forKeyedSubscript:@"frontRearVideoEnabled"];
   }
 }
 
-- (void)populateFromPanoramaCaptureRequest:(id)a3
+- (void)populateFromPanoramaCaptureRequest:(id)request
 {
-  [(CAMAnalyticsCaptureEvent *)self _populateFromCaptureRequest:a3];
-  v4 = [(CAMAnalyticsEvent *)self _eventMap];
+  [(CAMAnalyticsCaptureEvent *)self _populateFromCaptureRequest:request];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
   v5 = MEMORY[0x1E695E110];
-  [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"slowDownPanoramaInstruction"];
+  [_eventMap setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"slowDownPanoramaInstruction"];
 
-  v6 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v6 setObject:v5 forKeyedSubscript:@"moveUpPanoramaInstruction"];
+  _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap2 setObject:v5 forKeyedSubscript:@"moveUpPanoramaInstruction"];
 
-  v7 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v7 setObject:v5 forKeyedSubscript:@"moveDownPanoramaInstruction"];
+  _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap3 setObject:v5 forKeyedSubscript:@"moveDownPanoramaInstruction"];
 
-  v8 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v8 setObject:@"Shutter" forKeyedSubscript:@"panoramaStopReason"];
+  _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap4 setObject:@"Shutter" forKeyedSubscript:@"panoramaStopReason"];
 }
 
-- (void)populatePanoramaDirection:(int64_t)a3
+- (void)populatePanoramaDirection:(int64_t)direction
 {
-  if (a3 > 2)
+  if (direction > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E76FE428[a3];
+    v3 = off_1E76FE428[direction];
   }
 
-  v4 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v4 setObject:v3 forKeyedSubscript:@"panoramaCaptureDirection"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v3 forKeyedSubscript:@"panoramaCaptureDirection"];
 }
 
-- (void)populatePanoramaInstruction:(int64_t)a3
+- (void)populatePanoramaInstruction:(int64_t)instruction
 {
-  if ((a3 - 3) <= 2)
+  if ((instruction - 3) <= 2)
   {
-    v4 = off_1E76FE440[a3 - 3];
-    v5 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v4];
+    v4 = off_1E76FE440[instruction - 3];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:MEMORY[0x1E695E118] forKeyedSubscript:v4];
   }
 }
 
-- (void)populateFromPanoramaCaptureStoppingReason:(int64_t)a3
+- (void)populateFromPanoramaCaptureStoppingReason:(int64_t)reason
 {
   v4 = @"ReachedMaximumSize";
-  if (a3 != -6000)
+  if (reason != -6000)
   {
     v4 = 0;
   }
 
-  if (a3 == -6001)
+  if (reason == -6001)
   {
     v4 = @"ChangedDirection";
   }
 
   v5 = v4;
-  v6 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v6 setObject:v5 forKeyedSubscript:@"panoramaStopReason"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v5 forKeyedSubscript:@"panoramaStopReason"];
 }
 
-- (void)populateForTimelapseCaptureOrientation:(int64_t)a3 captureMirrored:(BOOL)a4 origin:(int64_t)a5 pressType:(int64_t)a6 startDate:(id)a7
+- (void)populateForTimelapseCaptureOrientation:(int64_t)orientation captureMirrored:(BOOL)mirrored origin:(int64_t)origin pressType:(int64_t)type startDate:(id)date
 {
-  v9 = a4;
-  v12 = a7;
+  mirroredCopy = mirrored;
+  dateCopy = date;
   [(CAMAnalyticsCaptureEvent *)self set_mediaType:1];
   [(CAMAnalyticsCaptureEvent *)self set_isStillDuringVideo:0];
-  v13 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v13 setObject:@"Timelapse" forKeyedSubscript:@"captureMode"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:@"Timelapse" forKeyedSubscript:@"captureMode"];
 
-  v14 = [(CAMAnalyticsCaptureEvent *)self _captureDevice];
-  if (v14 > 0xB)
+  _captureDevice = [(CAMAnalyticsCaptureEvent *)self _captureDevice];
+  if (_captureDevice > 0xB)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = off_1E76FE458[v14];
+    v15 = off_1E76FE458[_captureDevice];
   }
 
-  v16 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v16 setObject:v15 forKeyedSubscript:@"device"];
+  _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap2 setObject:v15 forKeyedSubscript:@"device"];
 
-  v17 = [(CAMAnalyticsCaptureEvent *)self _captureDevicePosition];
+  _captureDevicePosition = [(CAMAnalyticsCaptureEvent *)self _captureDevicePosition];
   v18 = @"Front";
-  if (v17 != 1)
+  if (_captureDevicePosition != 1)
   {
     v18 = 0;
   }
 
-  if (!v17)
+  if (!_captureDevicePosition)
   {
     v18 = @"Back";
   }
 
   v19 = v18;
-  v20 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v20 setObject:v19 forKeyedSubscript:@"devicePosition"];
+  _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap3 setObject:v19 forKeyedSubscript:@"devicePosition"];
 
   v21 = 0;
-  if (a3 <= 4)
+  if (orientation <= 4)
   {
-    v21 = off_1E76FE4B8[a3];
+    v21 = off_1E76FE4B8[orientation];
   }
 
-  v22 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v22 setObject:v21 forKeyedSubscript:@"orientation"];
+  _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap4 setObject:v21 forKeyedSubscript:@"orientation"];
 
   v23 = @"MessagesCamera";
-  if (a5 != 1)
+  if (origin != 1)
   {
     v23 = 0;
   }
 
-  if (!a5)
+  if (!origin)
   {
     v23 = @"Camera";
   }
 
   v24 = v23;
-  v25 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v25 setObject:v24 forKeyedSubscript:@"origin"];
+  _eventMap5 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap5 setObject:v24 forKeyedSubscript:@"origin"];
 
   v26 = +[CAMCaptureCapabilities capabilities];
-  v27 = [v26 hostProcess];
+  hostProcess = [v26 hostProcess];
   v28 = 0;
-  if (v27 <= 5)
+  if (hostProcess <= 5)
   {
-    v28 = off_1E76FE4E0[v27];
+    v28 = off_1E76FE4E0[hostProcess];
   }
 
-  v29 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v29 setObject:v28 forKeyedSubscript:@"hostProcess"];
+  _eventMap6 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap6 setObject:v28 forKeyedSubscript:@"hostProcess"];
 
-  v30 = [MEMORY[0x1E696AAE8] mainBundle];
-  v31 = [v30 bundleIdentifier];
-  v32 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v32 setObject:v31 forKeyedSubscript:@"bundleID"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  _eventMap7 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap7 setObject:bundleIdentifier forKeyedSubscript:@"bundleID"];
 
-  if (a6 <= 105)
+  if (type <= 105)
   {
-    switch(a6)
+    switch(type)
     {
       case 'f':
         v33 = @"Secondary";
@@ -1121,15 +1121,15 @@ LABEL_28:
     goto LABEL_32;
   }
 
-  if (a6 > 107)
+  if (type > 107)
   {
-    if (a6 == 108)
+    if (type == 108)
     {
       v33 = @"HeadphonesRightButton";
       goto LABEL_32;
     }
 
-    if (a6 == 601)
+    if (type == 601)
     {
       v33 = @"CameraCaseShutter";
       goto LABEL_32;
@@ -1138,7 +1138,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (a6 == 106)
+  if (type == 106)
   {
     v33 = @"CameraButton";
   }
@@ -1149,47 +1149,47 @@ LABEL_28:
   }
 
 LABEL_32:
-  v34 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v34 setObject:v33 forKeyedSubscript:@"pressType"];
+  _eventMap8 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap8 setObject:v33 forKeyedSubscript:@"pressType"];
 
-  v35 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v35 setObject:@"Video" forKeyedSubscript:@"captureType"];
+  _eventMap9 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap9 setObject:@"Video" forKeyedSubscript:@"captureType"];
 
-  v36 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v42 = [v36 components:32 fromDate:v12];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v42 = [currentCalendar components:32 fromDate:dateCopy];
 
-  v37 = [v42 hour];
-  v38 = [MEMORY[0x1E696AD98] numberWithInteger:v37];
-  v39 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v39 setObject:v38 forKeyedSubscript:@"userLocalTimeHour"];
+  hour = [v42 hour];
+  v38 = [MEMORY[0x1E696AD98] numberWithInteger:hour];
+  _eventMap10 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap10 setObject:v38 forKeyedSubscript:@"userLocalTimeHour"];
 
   if ([(CAMAnalyticsCaptureEvent *)self _captureDevicePosition]== 1)
   {
-    v40 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-    v41 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v41 setObject:v40 forKeyedSubscript:@"isCaptureMirrored"];
+    v40 = [MEMORY[0x1E696AD98] numberWithBool:mirroredCopy];
+    _eventMap11 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap11 setObject:v40 forKeyedSubscript:@"isCaptureMirrored"];
   }
 }
 
-- (void)populateFromStillImageCaptureResponse:(id)a3
+- (void)populateFromStillImageCaptureResponse:(id)response
 {
-  v15 = a3;
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v15 captureDate];
-  v6 = [v4 components:32 fromDate:v5];
+  responseCopy = response;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  captureDate = [responseCopy captureDate];
+  v6 = [currentCalendar components:32 fromDate:captureDate];
 
-  v7 = [v6 hour];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-  v9 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v9 setObject:v8 forKeyedSubscript:@"userLocalTimeHour"];
+  hour = [v6 hour];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:hour];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v8 forKeyedSubscript:@"userLocalTimeHour"];
 
   v10 = +[CAMCaptureCapabilities capabilities];
-  LODWORD(v9) = [v10 isSemanticDevelopmentSupportedForMode:{-[CAMAnalyticsCaptureEvent _captureMode](self, "_captureMode")}];
+  LODWORD(_eventMap) = [v10 isSemanticDevelopmentSupportedForMode:{-[CAMAnalyticsCaptureEvent _captureMode](self, "_captureMode")}];
 
-  v11 = [v15 semanticEnhanceScene];
-  if (v9 && v11 && ![(CAMAnalyticsCaptureEvent *)self _isStillDuringVideo])
+  semanticEnhanceScene = [responseCopy semanticEnhanceScene];
+  if (_eventMap && semanticEnhanceScene && ![(CAMAnalyticsCaptureEvent *)self _isStillDuringVideo])
   {
-    v12 = [v15 semanticEnhanceScene] + 1;
+    v12 = [responseCopy semanticEnhanceScene] + 1;
     if (v12 > 4)
     {
       v13 = 0;
@@ -1200,18 +1200,18 @@ LABEL_32:
       v13 = off_1E76FE510[v12];
     }
 
-    v14 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v14 setObject:v13 forKeyedSubscript:@"semanticEnhanceScene"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v13 forKeyedSubscript:@"semanticEnhanceScene"];
   }
 }
 
-- (void)populateFromVideoCaptureResponse:(id)a3
+- (void)populateFromVideoCaptureResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  responseCopy = response;
+  v5 = responseCopy;
+  if (responseCopy)
   {
-    [v4 duration];
+    [responseCopy duration];
   }
 
   else
@@ -1220,34 +1220,34 @@ LABEL_32:
   }
 
   [(CAMAnalyticsCaptureEvent *)self populateDuration:CMTimeGetSeconds(&time)];
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [v5 captureDate];
-  v8 = [v6 components:32 fromDate:v7];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  captureDate = [v5 captureDate];
+  v8 = [currentCalendar components:32 fromDate:captureDate];
 
-  v9 = [v8 hour];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
-  v11 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v11 setObject:v10 forKeyedSubscript:@"userLocalTimeHour"];
+  hour = [v8 hour];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:hour];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v10 forKeyedSubscript:@"userLocalTimeHour"];
 
   v12 = [v5 reason] - 1;
   if (v12 <= 4)
   {
     v13 = off_1E76FE538[v12];
-    v14 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v14 setObject:v13 forKeyedSubscript:@"videoCaptureError"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v13 forKeyedSubscript:@"videoCaptureError"];
   }
 }
 
-- (void)populateAEAFLocked:(BOOL)a3
+- (void)populateAEAFLocked:(BOOL)locked
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  v4 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v4 setObject:v5 forKeyedSubscript:@"aeafLock"];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:locked];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v5 forKeyedSubscript:@"aeafLock"];
 }
 
-- (void)populateZoomFromDisplayZoomValue:(double)a3 zoomPoints:(id)a4 zoomInteractionType:(int64_t)a5
+- (void)populateZoomFromDisplayZoomValue:(double)value zoomPoints:(id)points zoomInteractionType:(int64_t)type
 {
-  v18 = a4;
+  pointsCopy = points;
   v8 = +[CAMCaptureCapabilities capabilities];
   v9 = [v8 isZoomAllowedForMode:-[CAMAnalyticsCaptureEvent _captureMode](self device:"_captureMode") videoConfiguration:-[CAMAnalyticsCaptureEvent _captureDevice](self videoStabilizationStrength:{"_captureDevice"), -[CAMAnalyticsCaptureEvent _captureVideoConfiguration](self, "_captureVideoConfiguration"), -[CAMAnalyticsCaptureEvent _videoStabilizationStrength](self, "_videoStabilizationStrength")}];
 
@@ -1256,74 +1256,74 @@ LABEL_32:
 
   if ((v9 & 1) != 0 || v11)
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    v13 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v13 setObject:v12 forKeyedSubscript:@"zoomFactor"];
+    v12 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v12 forKeyedSubscript:@"zoomFactor"];
 
-    v14 = [(CAMAnalyticsCaptureEvent *)self _zoomRangeStringForDisplayZoomValue:v18 zoomPoints:[(CAMAnalyticsCaptureEvent *)self _captureMode] mode:[(CAMAnalyticsCaptureEvent *)self _captureDevice] device:a3];
-    v15 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v15 setObject:v14 forKeyedSubscript:@"zoomFactorRange"];
+    v14 = [(CAMAnalyticsCaptureEvent *)self _zoomRangeStringForDisplayZoomValue:pointsCopy zoomPoints:[(CAMAnalyticsCaptureEvent *)self _captureMode] mode:[(CAMAnalyticsCaptureEvent *)self _captureDevice] device:value];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v14 forKeyedSubscript:@"zoomFactorRange"];
 
-    if (a5 > 7)
+    if (type > 7)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = off_1E76FE578[a5];
+      v16 = off_1E76FE578[type];
     }
 
-    v17 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v17 setObject:v16 forKeyedSubscript:@"zoomInteractionType"];
+    _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap3 setObject:v16 forKeyedSubscript:@"zoomInteractionType"];
   }
 }
 
-- (void)populateZoomFieldOfView:(int64_t)a3 graphConfiguration:(id)a4 smartFramingSource:(int64_t)a5
+- (void)populateZoomFieldOfView:(int64_t)view graphConfiguration:(id)configuration smartFramingSource:(int64_t)source
 {
-  v8 = a4;
+  configurationCopy = configuration;
   v9 = +[CAMCaptureCapabilities capabilities];
   v10 = [v9 isDynamicAspectRatioSupportedForMode:-[CAMAnalyticsCaptureEvent _captureMode](self devicePosition:{"_captureMode"), -[CAMAnalyticsCaptureEvent _captureDevicePosition](self, "_captureDevicePosition")}];
 
-  v11 = [v8 videoDynamicAspectRatio];
+  videoDynamicAspectRatio = [configurationCopy videoDynamicAspectRatio];
   if (v10)
   {
     v12 = @"Wide";
     v13 = @"RotatedWide";
     v14 = @"RotatedNarrow";
-    if (a3 != 4)
+    if (view != 4)
     {
       v14 = 0;
     }
 
-    if (a3 != 3)
+    if (view != 3)
     {
       v13 = v14;
     }
 
-    if (a3 != 2)
+    if (view != 2)
     {
       v12 = v13;
     }
 
     v15 = @"Rotated";
-    if (v11 != 1)
+    if (videoDynamicAspectRatio != 1)
     {
       v15 = 0;
     }
 
     v16 = @"Narrow";
-    if (a3 != 1)
+    if (view != 1)
     {
       v16 = 0;
     }
 
-    if (a3)
+    if (view)
     {
       v15 = v16;
     }
 
-    if (a3 <= 1)
+    if (view <= 1)
     {
       v17 = v15;
     }
@@ -1333,30 +1333,30 @@ LABEL_32:
       v17 = v12;
     }
 
-    v18 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v18 setObject:v17 forKeyedSubscript:@"frontFacingZoom"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v17 forKeyedSubscript:@"frontFacingZoom"];
 
-    if (a3)
+    if (view)
     {
       v19 = @"Auto";
-      if (a5 != 1)
+      if (source != 1)
       {
         v19 = 0;
       }
 
-      if (a5 == 2)
+      if (source == 2)
       {
         v19 = @"OverrodeAuto";
       }
 
       v20 = v19;
-      v21 = [(CAMAnalyticsEvent *)self _eventMap];
-      [v21 setObject:v20 forKeyedSubscript:@"smartFramingSource"];
+      _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+      [_eventMap2 setObject:v20 forKeyedSubscript:@"smartFramingSource"];
     }
   }
 }
 
-- (void)populateZoomFromZoomButtonSymbol:(int64_t)a3 zoomInteractionType:(int64_t)a4
+- (void)populateZoomFromZoomButtonSymbol:(int64_t)symbol zoomInteractionType:(int64_t)type
 {
   v7 = +[CAMCaptureCapabilities capabilities];
   v8 = [v7 isZoomAllowedForMode:-[CAMAnalyticsCaptureEvent _captureMode](self device:"_captureMode") videoConfiguration:-[CAMAnalyticsCaptureEvent _captureDevice](self videoStabilizationStrength:{"_captureDevice"), -[CAMAnalyticsCaptureEvent _captureVideoConfiguration](self, "_captureVideoConfiguration"), -[CAMAnalyticsCaptureEvent _videoStabilizationStrength](self, "_videoStabilizationStrength")}];
@@ -1366,52 +1366,52 @@ LABEL_32:
 
   if ((v8 & 1) != 0 || v10)
   {
-    if (a3 > 2)
+    if (symbol > 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = off_1E76FE560[a3];
+      v11 = off_1E76FE560[symbol];
     }
 
-    v12 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v12 setObject:v11 forKeyedSubscript:@"frontFacingZoom"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v11 forKeyedSubscript:@"frontFacingZoom"];
 
-    if (a4 > 7)
+    if (type > 7)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = off_1E76FE578[a4];
+      v13 = off_1E76FE578[type];
     }
 
-    v14 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v14 setObject:v13 forKeyedSubscript:@"zoomInteractionType"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v13 forKeyedSubscript:@"zoomInteractionType"];
   }
 }
 
-- (void)populateExposureSliderBias:(float)a3 exposureTapAndBias:(float)a4 totalExposureBias:(float)a5
+- (void)populateExposureSliderBias:(float)bias exposureTapAndBias:(float)andBias totalExposureBias:(float)exposureBias
 {
   v9 = +[CAMCaptureCapabilities capabilities];
   v10 = [v9 isTapAndBiasSupportedForMode:{-[CAMAnalyticsCaptureEvent _captureMode](self, "_captureMode")}];
 
   if (v10)
   {
-    *&v11 = a4;
+    *&v11 = andBias;
     v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-    v13 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v13 setObject:v12 forKeyedSubscript:@"exposureTapAndBias"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v12 forKeyedSubscript:@"exposureTapAndBias"];
 
     LODWORD(v14) = -4.0;
     LODWORD(v15) = 4.0;
-    *&v16 = a4;
+    *&v16 = andBias;
     v17 = [(CAMAnalyticsCaptureEvent *)self _defaultRangeStringForValue:v16 lowerBound:v14 upperBound:v15 defaultValue:0.0];
-    v18 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v18 setObject:v17 forKeyedSubscript:@"exposureTapAndBiasRange"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v17 forKeyedSubscript:@"exposureTapAndBiasRange"];
   }
 
   v19 = +[CAMCaptureCapabilities capabilities];
@@ -1419,33 +1419,33 @@ LABEL_32:
 
   if (v20)
   {
-    *&v21 = a3;
+    *&v21 = bias;
     v22 = [MEMORY[0x1E696AD98] numberWithFloat:v21];
-    v23 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v23 setObject:v22 forKeyedSubscript:@"exposureSliderBias"];
+    _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap3 setObject:v22 forKeyedSubscript:@"exposureSliderBias"];
 
-    *&v24 = a5;
+    *&v24 = exposureBias;
     v25 = [MEMORY[0x1E696AD98] numberWithFloat:v24];
-    v26 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v26 setObject:v25 forKeyedSubscript:@"exposureTotalBias"];
+    _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap4 setObject:v25 forKeyedSubscript:@"exposureTotalBias"];
 
     LODWORD(v27) = -2.0;
     LODWORD(v28) = 2.0;
-    *&v29 = a3;
+    *&v29 = bias;
     v30 = [(CAMAnalyticsCaptureEvent *)self _defaultRangeStringForValue:v29 lowerBound:v27 upperBound:v28 defaultValue:0.0];
-    v31 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v31 setObject:v30 forKeyedSubscript:@"exposureSliderBiasRange"];
+    _eventMap5 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap5 setObject:v30 forKeyedSubscript:@"exposureSliderBiasRange"];
 
     LODWORD(v32) = -4.0;
     LODWORD(v33) = 4.0;
-    *&v34 = a5;
+    *&v34 = exposureBias;
     v36 = [(CAMAnalyticsCaptureEvent *)self _defaultRangeStringForValue:v34 lowerBound:v32 upperBound:v33 defaultValue:0.0];
-    v35 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v35 setObject:v36 forKeyedSubscript:@"exposureTotalBiasRange"];
+    _eventMap6 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap6 setObject:v36 forKeyedSubscript:@"exposureTotalBiasRange"];
   }
 }
 
-- (void)populateDesiredFlashMode:(int64_t)a3 desiredLivePhotoMode:(int64_t)a4 desiredHDRMode:(int64_t)a5 timerDuration:(int64_t)a6
+- (void)populateDesiredFlashMode:(int64_t)mode desiredLivePhotoMode:(int64_t)photoMode desiredHDRMode:(int64_t)rMode timerDuration:(int64_t)duration
 {
   if ([(CAMAnalyticsCaptureEvent *)self _isStillDuringVideo])
   {
@@ -1466,18 +1466,18 @@ LABEL_32:
 
   if (v12)
   {
-    if (a3 > 2)
+    if (mode > 2)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = off_1E76FE628[a3];
+      v20 = off_1E76FE628[mode];
     }
 
-    v21 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v21 setObject:v20 forKeyedSubscript:@"desiredFlashMode"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v20 forKeyedSubscript:@"desiredFlashMode"];
 
     if (!v14)
     {
@@ -1496,18 +1496,18 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (a4 > 2)
+  if (photoMode > 2)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = off_1E76FE628[a4];
+    v22 = off_1E76FE628[photoMode];
   }
 
-  v23 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v23 setObject:v22 forKeyedSubscript:@"desiredLivePhotoMode"];
+  _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap2 setObject:v22 forKeyedSubscript:@"desiredLivePhotoMode"];
 
   if (!v16)
   {
@@ -1522,63 +1522,63 @@ LABEL_5:
 
 LABEL_20:
   v24 = @"On";
-  if (a5 != 1)
+  if (rMode != 1)
   {
     v24 = 0;
   }
 
-  if (!a5)
+  if (!rMode)
   {
     v24 = @"Off";
   }
 
   v25 = v24;
-  v26 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v26 setObject:v25 forKeyedSubscript:@"desiredHDRMode"];
+  _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap3 setObject:v25 forKeyedSubscript:@"desiredHDRMode"];
 
   if (v18)
   {
 LABEL_6:
-    if (a6 > 3)
+    if (duration > 3)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = off_1E76FE5B8[a6];
+      v19 = off_1E76FE5B8[duration];
     }
 
-    v27 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v27 setObject:v19 forKeyedSubscript:@"timerDuration"];
+    _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap4 setObject:v19 forKeyedSubscript:@"timerDuration"];
   }
 }
 
-- (void)populateDesiredMacroMode:(int64_t)a3 isMacroCapture:(BOOL)a4 isMacroSuggested:(BOOL)a5
+- (void)populateDesiredMacroMode:(int64_t)mode isMacroCapture:(BOOL)capture isMacroSuggested:(BOOL)suggested
 {
-  v5 = a5;
-  v6 = a4;
+  suggestedCopy = suggested;
+  captureCopy = capture;
   v8 = +[CAMCaptureCapabilities capabilities];
   v9 = [v8 isSuperWideAutoMacroSupportedForMode:-[CAMAnalyticsCaptureEvent _captureMode](self device:"_captureMode") videoConfiguration:-[CAMAnalyticsCaptureEvent _captureDevice](self videoStabilizationStrength:"_captureDevice") frontRearSimultaneousVideoEnabled:{-[CAMAnalyticsCaptureEvent _captureVideoConfiguration](self, "_captureVideoConfiguration"), -[CAMAnalyticsCaptureEvent _videoStabilizationStrength](self, "_videoStabilizationStrength"), 0}];
 
   v10 = +[CAMUserPreferences preferences];
-  v11 = [v10 isSuperWideAutoMacroControlAllowed];
+  isSuperWideAutoMacroControlAllowed = [v10 isSuperWideAutoMacroControlAllowed];
 
   if (v9)
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:v6];
-    v13 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v13 setObject:v12 forKeyedSubscript:@"isMacroCapture"];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:captureCopy];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v12 forKeyedSubscript:@"isMacroCapture"];
 
-    if (v5)
+    if (suggestedCopy)
     {
       v14 = @"ButtonOff";
-      if (v6)
+      if (captureCopy)
       {
         v14 = @"ButtonOn";
       }
 
-      if (v11)
+      if (isSuperWideAutoMacroControlAllowed)
       {
         v15 = v14;
       }
@@ -1588,13 +1588,13 @@ LABEL_6:
         v15 = @"AutoOn";
       }
 
-      v16 = [(CAMAnalyticsEvent *)self _eventMap];
-      [v16 setObject:v15 forKeyedSubscript:@"macroBehavior"];
+      _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+      [_eventMap2 setObject:v15 forKeyedSubscript:@"macroBehavior"];
     }
   }
 }
 
-- (void)populateDesiredNightModeControlMode:(unint64_t)a3 resolvedNightModeControlMode:(unint64_t)a4 resolvedNightMode:(int64_t)a5 nightModeStatus:(int64_t)a6
+- (void)populateDesiredNightModeControlMode:(unint64_t)mode resolvedNightModeControlMode:(unint64_t)controlMode resolvedNightMode:(int64_t)nightMode nightModeStatus:(int64_t)status
 {
   if (![(CAMAnalyticsCaptureEvent *)self _isStillDuringVideo])
   {
@@ -1603,62 +1603,62 @@ LABEL_6:
 
     if (v12)
     {
-      if (a3 > 2)
+      if (mode > 2)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = off_1E76FE5D8[a3];
+        v13 = off_1E76FE5D8[mode];
       }
 
-      v14 = [(CAMAnalyticsEvent *)self _eventMap];
-      [v14 setObject:v13 forKeyedSubscript:@"desiredNightModeControlMode"];
+      _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+      [_eventMap setObject:v13 forKeyedSubscript:@"desiredNightModeControlMode"];
 
-      if (a4 > 2)
+      if (controlMode > 2)
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = off_1E76FE5D8[a4];
+        v15 = off_1E76FE5D8[controlMode];
       }
 
-      v16 = [(CAMAnalyticsEvent *)self _eventMap];
-      [v16 setObject:v15 forKeyedSubscript:@"resolvedNightModeControlMode"];
+      _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+      [_eventMap2 setObject:v15 forKeyedSubscript:@"resolvedNightModeControlMode"];
 
-      if (a5 > 2)
+      if (nightMode > 2)
       {
         v17 = 0;
       }
 
       else
       {
-        v17 = off_1E76FE5F0[a5];
+        v17 = off_1E76FE5F0[nightMode];
       }
 
-      v18 = [(CAMAnalyticsEvent *)self _eventMap];
-      [v18 setObject:v17 forKeyedSubscript:@"resolvedLowLightMode"];
+      _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+      [_eventMap3 setObject:v17 forKeyedSubscript:@"resolvedLowLightMode"];
 
-      if ((a6 + 1) > 3)
+      if ((status + 1) > 3)
       {
         v19 = 0;
       }
 
       else
       {
-        v19 = off_1E76FE608[a6 + 1];
+        v19 = off_1E76FE608[status + 1];
       }
 
-      v20 = [(CAMAnalyticsEvent *)self _eventMap];
-      [v20 setObject:v19 forKeyedSubscript:@"nightModeStatus"];
+      _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+      [_eventMap4 setObject:v19 forKeyedSubscript:@"nightModeStatus"];
     }
   }
 }
 
-- (void)populateDesiredTorchMode:(int64_t)a3
+- (void)populateDesiredTorchMode:(int64_t)mode
 {
   if (![(CAMAnalyticsCaptureEvent *)self _isStillDuringVideo])
   {
@@ -1667,75 +1667,75 @@ LABEL_6:
 
     if (v6)
     {
-      if (a3 > 2)
+      if (mode > 2)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = off_1E76FE628[a3];
+        v7 = off_1E76FE628[mode];
       }
 
-      v8 = [(CAMAnalyticsEvent *)self _eventMap];
-      [v8 setObject:v7 forKeyedSubscript:@"desiredTorchMode"];
+      _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+      [_eventMap setObject:v7 forKeyedSubscript:@"desiredTorchMode"];
     }
   }
 }
 
-- (void)populatePortraitStatus:(int64_t)a3 lightingEffectIntensity:(double)a4 apertureValue:(double)a5 zoomFactor:(double)a6 isDepthSuggestionAllowed:(BOOL)a7 request:(id)a8
+- (void)populatePortraitStatus:(int64_t)status lightingEffectIntensity:(double)intensity apertureValue:(double)value zoomFactor:(double)factor isDepthSuggestionAllowed:(BOOL)allowed request:(id)request
 {
-  v8 = a7;
-  v63 = a8;
-  v14 = [(CAMAnalyticsCaptureEvent *)self _captureMode];
-  v15 = v14;
-  if ((v14 - 6) >= 2)
+  allowedCopy = allowed;
+  requestCopy = request;
+  _captureMode = [(CAMAnalyticsCaptureEvent *)self _captureMode];
+  v15 = _captureMode;
+  if ((_captureMode - 6) >= 2)
   {
-    if (v14 || !v8)
+    if (_captureMode || !allowedCopy)
     {
       goto LABEL_26;
     }
 
-    if (a3 > 0xF)
+    if (status > 0xF)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = off_1E76FE640[a3];
+      v17 = off_1E76FE640[status];
     }
 
-    v19 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v19 setObject:v17 forKeyedSubscript:@"portraitStatus"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v17 forKeyedSubscript:@"portraitStatus"];
   }
 
   else
   {
-    if (a3 > 0xF)
+    if (status > 0xF)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = off_1E76FE640[a3];
+      v16 = off_1E76FE640[status];
     }
 
-    v18 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v18 setObject:v16 forKeyedSubscript:@"portraitStatus"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v16 forKeyedSubscript:@"portraitStatus"];
 
-    if (!v8)
+    if (!allowedCopy)
     {
       goto LABEL_20;
     }
   }
 
-  if (![v63 type])
+  if (![requestCopy type])
   {
-    v20 = v63;
-    v21 = [v20 adjustmentFilters];
-    v22 = [CAMEffectFilterManager isDepthEffectInFilters:v21];
+    v20 = requestCopy;
+    adjustmentFilters = [v20 adjustmentFilters];
+    v22 = [CAMEffectFilterManager isDepthEffectInFilters:adjustmentFilters];
 
     if (v22)
     {
@@ -1752,8 +1752,8 @@ LABEL_6:
       v23 = @"None";
     }
 
-    v24 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v24 setObject:v23 forKeyedSubscript:@"portraitInPhotoMode"];
+    _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap3 setObject:v23 forKeyedSubscript:@"portraitInPhotoMode"];
   }
 
 LABEL_20:
@@ -1780,22 +1780,22 @@ LABEL_20:
     [v34 defaultPortraitEffectIntensity];
     v36 = v35;
 
-    v37 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-    v38 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v38 setObject:v37 forKeyedSubscript:@"lightingEffectIntensity"];
+    v37 = [MEMORY[0x1E696AD98] numberWithDouble:intensity];
+    _eventMap4 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap4 setObject:v37 forKeyedSubscript:@"lightingEffectIntensity"];
 
-    *&v39 = a4;
+    *&v39 = intensity;
     *&v40 = v30;
     *&v41 = v33;
     *&v42 = v36;
     v25 = [(CAMAnalyticsCaptureEvent *)self _defaultRangeStringForValue:v39 lowerBound:v40 upperBound:v41 defaultValue:v42];
-    v43 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v43 setObject:v25 forKeyedSubscript:@"lightingEffectIntensityRange"];
+    _eventMap5 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap5 setObject:v25 forKeyedSubscript:@"lightingEffectIntensityRange"];
   }
 
 LABEL_24:
   v44 = +[CAMCaptureCapabilities capabilities];
-  v45 = [v44 isDepthEffectApertureSupportedForMode:v15 devicePosition:-[CAMAnalyticsCaptureEvent _captureDevicePosition](self depthSuggestionEnabled:{"_captureDevicePosition"), v8}];
+  v45 = [v44 isDepthEffectApertureSupportedForMode:v15 devicePosition:-[CAMAnalyticsCaptureEvent _captureDevicePosition](self depthSuggestionEnabled:{"_captureDevicePosition"), allowedCopy}];
 
   if (v45)
   {
@@ -1808,50 +1808,50 @@ LABEL_24:
     v51 = v50;
 
     v52 = +[CAMCaptureCapabilities capabilities];
-    [v52 defaultDepthEffectApertureForMode:v15 device:-[CAMAnalyticsCaptureEvent _captureDevice](self zoomFactor:{"_captureDevice"), a6}];
+    [v52 defaultDepthEffectApertureForMode:v15 device:-[CAMAnalyticsCaptureEvent _captureDevice](self zoomFactor:{"_captureDevice"), factor}];
     v54 = v53;
 
-    v55 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
-    v56 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v56 setObject:v55 forKeyedSubscript:@"apertureValue"];
+    v55 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+    _eventMap6 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap6 setObject:v55 forKeyedSubscript:@"apertureValue"];
 
-    *&v57 = a5;
+    *&v57 = value;
     *&v58 = v48;
     *&v59 = v51;
     *&v60 = v54;
     v61 = [(CAMAnalyticsCaptureEvent *)self _defaultRangeStringForValue:v57 lowerBound:v58 upperBound:v59 defaultValue:v60];
-    v62 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v62 setObject:v61 forKeyedSubscript:@"apertureRange"];
+    _eventMap7 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap7 setObject:v61 forKeyedSubscript:@"apertureRange"];
   }
 
 LABEL_26:
 }
 
-- (void)populateDuration:(double)a3
+- (void)populateDuration:(double)duration
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:vcvtpd_s64_f64(a3)];
-  v6 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v6 setObject:v5 forKeyedSubscript:@"duration"];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:vcvtpd_s64_f64(duration)];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v5 forKeyedSubscript:@"duration"];
 
-  v8 = [objc_opt_class() durationRangeStringForDuration:a3];
-  v7 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v7 setObject:v8 forKeyedSubscript:@"durationRange"];
+  v8 = [objc_opt_class() durationRangeStringForDuration:duration];
+  _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap2 setObject:v8 forKeyedSubscript:@"durationRange"];
 }
 
-- (void)populateBurstLength:(int64_t)a3
+- (void)populateBurstLength:(int64_t)length
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v4 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v4 setObject:v5 forKeyedSubscript:@"burstLength"];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:length];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v5 forKeyedSubscript:@"burstLength"];
 }
 
-- (void)populateObjectResultsWithNumberOfFaces:(unint64_t)a3 numberOfCats:(unint64_t)a4 numberOfDogs:(unint64_t)a5
+- (void)populateObjectResultsWithNumberOfFaces:(unint64_t)faces numberOfCats:(unint64_t)cats numberOfDogs:(unint64_t)dogs
 {
-  [objc_opt_class() bucketedPowerOf2ForValue:1 allowZero:a3 minPositiveValue:1.0 maxValue:10.0];
+  [objc_opt_class() bucketedPowerOf2ForValue:1 allowZero:faces minPositiveValue:1.0 maxValue:10.0];
   v9 = v8;
-  [objc_opt_class() bucketedPowerOf2ForValue:1 allowZero:a4 minPositiveValue:1.0 maxValue:2.0];
+  [objc_opt_class() bucketedPowerOf2ForValue:1 allowZero:cats minPositiveValue:1.0 maxValue:2.0];
   v11 = v10;
-  [objc_opt_class() bucketedPowerOf2ForValue:1 allowZero:a5 minPositiveValue:1.0 maxValue:2.0];
+  [objc_opt_class() bucketedPowerOf2ForValue:1 allowZero:dogs minPositiveValue:1.0 maxValue:2.0];
   v13 = v12;
   if (v9)
   {
@@ -1864,8 +1864,8 @@ LABEL_26:
   }
 
   v15 = v11;
-  v16 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v16 setObject:v14 forKeyedSubscript:@"numberOfFaces"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v14 forKeyedSubscript:@"numberOfFaces"];
 
   if (v9)
   {
@@ -1882,8 +1882,8 @@ LABEL_26:
   }
 
   v18 = v13;
-  v19 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v19 setObject:v17 forKeyedSubscript:@"numberOfCats"];
+  _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap2 setObject:v17 forKeyedSubscript:@"numberOfCats"];
 
   if (v15)
   {
@@ -1899,33 +1899,33 @@ LABEL_26:
     v21 = 0;
   }
 
-  v20 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v20 setObject:v21 forKeyedSubscript:@"numberOfDogs"];
+  _eventMap3 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap3 setObject:v21 forKeyedSubscript:@"numberOfDogs"];
 
   if (v18)
   {
   }
 }
 
-- (void)populateSharedLibraryMode:(int64_t)a3
+- (void)populateSharedLibraryMode:(int64_t)mode
 {
   v5 = +[CAMUserPreferences preferences];
-  v6 = [v5 sharedLibraryEnabled];
+  sharedLibraryEnabled = [v5 sharedLibraryEnabled];
 
-  if (v6)
+  if (sharedLibraryEnabled)
   {
-    if (a3 > 5)
+    if (mode > 5)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = off_1E76FE6C0[a3];
+      v7 = off_1E76FE6C0[mode];
     }
 
-    v8 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v8 setObject:v7 forKeyedSubscript:@"sharedLibraryMode"];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:v7 forKeyedSubscript:@"sharedLibraryMode"];
 
     v11 = +[CAMUserPreferences preferences];
     if ([v11 sharedLibraryAutoBehaviorEnabled])
@@ -1938,92 +1938,92 @@ LABEL_26:
       v9 = @"Manual";
     }
 
-    v10 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v10 setObject:v9 forKeyedSubscript:@"sharedLibrarySetting"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:v9 forKeyedSubscript:@"sharedLibrarySetting"];
   }
 }
 
-- (void)populateDeviceOrientation:(int64_t)a3 isDeviceOrientationLocked:(BOOL)a4
+- (void)populateDeviceOrientation:(int64_t)orientation isDeviceOrientationLocked:(BOOL)locked
 {
-  v4 = a4;
-  if (a3 >= 7)
+  lockedCopy = locked;
+  if (orientation >= 7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", a3];
+    orientation = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", orientation];
   }
 
   else
   {
-    v6 = off_1E76FE6F0[a3];
+    orientation = off_1E76FE6F0[orientation];
   }
 
-  v7 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v7 setObject:v6 forKeyedSubscript:@"deviceOrientation"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:orientation forKeyedSubscript:@"deviceOrientation"];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  v8 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v8 setObject:v9 forKeyedSubscript:@"deviceOrientationLocked"];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:lockedCopy];
+  _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap2 setObject:v9 forKeyedSubscript:@"deviceOrientationLocked"];
 }
 
-- (void)trackFrontRearSimultaneousVideoPIPMoveToAnchor:(int64_t)a3
+- (void)trackFrontRearSimultaneousVideoPIPMoveToAnchor:(int64_t)anchor
 {
-  v5 = [(CAMAnalyticsCaptureEvent *)self _trackedFrontRearSimultaneousVideoAnchors];
-  v6 = [v5 count];
+  _trackedFrontRearSimultaneousVideoAnchors = [(CAMAnalyticsCaptureEvent *)self _trackedFrontRearSimultaneousVideoAnchors];
+  v6 = [_trackedFrontRearSimultaneousVideoAnchors count];
 
   if (v6)
   {
     [(CAMAnalyticsCaptureEvent *)self set_frontRearSimultaneousVideoPIPInteractionCount:[(CAMAnalyticsCaptureEvent *)self _frontRearSimultaneousVideoPIPInteractionCount]+ 1];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsCaptureEvent _frontRearSimultaneousVideoPIPInteractionCount](self, "_frontRearSimultaneousVideoPIPInteractionCount")}];
-    v8 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v8 setObject:v7 forKeyedSubscript:@"frontRearVideoPIPInteractionCount"];
+    _eventMap2 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsCaptureEvent _frontRearSimultaneousVideoPIPInteractionCount](self, "_frontRearSimultaneousVideoPIPInteractionCount")}];
+    _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap setObject:_eventMap2 forKeyedSubscript:@"frontRearVideoPIPInteractionCount"];
   }
 
   else
   {
-    v7 = [(CAMAnalyticsEvent *)self _eventMap];
-    [v7 setObject:&unk_1F16C8708 forKeyedSubscript:@"frontRearVideoPIPInteractionCount"];
+    _eventMap2 = [(CAMAnalyticsEvent *)self _eventMap];
+    [_eventMap2 setObject:&unk_1F16C8708 forKeyedSubscript:@"frontRearVideoPIPInteractionCount"];
   }
 
-  [(CAMAnalyticsCaptureEvent *)self _trackAnchor:a3];
+  [(CAMAnalyticsCaptureEvent *)self _trackAnchor:anchor];
 }
 
-- (void)_trackAnchor:(int64_t)a3
+- (void)_trackAnchor:(int64_t)anchor
 {
-  if (a3 <= 3)
+  if (anchor <= 3)
   {
-    v4 = off_1E76FE728[a3];
-    v5 = [(CAMAnalyticsCaptureEvent *)self _trackedFrontRearSimultaneousVideoAnchors];
-    [v5 addObject:v4];
+    v4 = off_1E76FE728[anchor];
+    _trackedFrontRearSimultaneousVideoAnchors = [(CAMAnalyticsCaptureEvent *)self _trackedFrontRearSimultaneousVideoAnchors];
+    [_trackedFrontRearSimultaneousVideoAnchors addObject:v4];
   }
 
-  v6 = [(CAMAnalyticsCaptureEvent *)self _trackedFrontRearSimultaneousVideoAnchors];
-  v7 = [v6 allObjects];
-  v10 = [v7 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  _trackedFrontRearSimultaneousVideoAnchors2 = [(CAMAnalyticsCaptureEvent *)self _trackedFrontRearSimultaneousVideoAnchors];
+  allObjects = [_trackedFrontRearSimultaneousVideoAnchors2 allObjects];
+  v10 = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   v8 = [v10 componentsJoinedByString:{@", "}];
-  v9 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v9 setObject:v8 forKeyedSubscript:@"frontRearVideoPIPAnchors"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:v8 forKeyedSubscript:@"frontRearVideoPIPAnchors"];
 }
 
-- (id)_defaultRangeStringForValue:(float)a3 lowerBound:(float)a4 upperBound:(float)a5 defaultValue:(float)a6
+- (id)_defaultRangeStringForValue:(float)value lowerBound:(float)bound upperBound:(float)upperBound defaultValue:(float)defaultValue
 {
-  v6 = a3;
-  if (a4 + 0.01 >= v6)
+  valueCopy = value;
+  if (bound + 0.01 >= valueCopy)
   {
     return @"Min";
   }
 
-  v7 = a6;
-  if (v7 + -0.01 > v6)
+  defaultValueCopy = defaultValue;
+  if (defaultValueCopy + -0.01 > valueCopy)
   {
     return @"Low";
   }
 
-  if (v7 + 0.01 >= v6)
+  if (defaultValueCopy + 0.01 >= valueCopy)
   {
     return @"Default";
   }
 
-  if (a5 + -0.01 <= v6)
+  if (upperBound + -0.01 <= valueCopy)
   {
     return @"Max";
   }
@@ -2031,20 +2031,20 @@ LABEL_26:
   return @"High";
 }
 
-- (id)_zoomRangeStringForDisplayZoomValue:(double)a3 zoomPoints:(id)a4 mode:(int64_t)a5 device:(int64_t)a6
+- (id)_zoomRangeStringForDisplayZoomValue:(double)value zoomPoints:(id)points mode:(int64_t)mode device:(int64_t)device
 {
   v51 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  pointsCopy = points;
   v11 = +[CAMCaptureCapabilities capabilities];
   v12 = v11;
-  if ((a6 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = qword_1A3A6AC78[a6 - 1];
+    v13 = qword_1A3A6AC78[device - 1];
   }
 
   v14 = [v11 isSuperWideSupportedForDevicePosition:v13];
@@ -2055,17 +2055,17 @@ LABEL_26:
   v19 = v18;
   [v12 telephotoDisplayZoomFactor];
   v21 = v20;
-  v22 = [v12 isQuadraWideZoomButtonSupportedForMode:a5 devicePosition:v13 videoConfiguration:{-[CAMAnalyticsCaptureEvent _captureVideoConfiguration](self, "_captureVideoConfiguration")}];
+  v22 = [v12 isQuadraWideZoomButtonSupportedForMode:mode devicePosition:v13 videoConfiguration:{-[CAMAnalyticsCaptureEvent _captureVideoConfiguration](self, "_captureVideoConfiguration")}];
   [v12 quadraWideDisplayZoomFactor];
   v24 = v23;
-  v25 = [v12 isQuadraTeleZoomButtonSupportedForMode:a5 devicePosition:v13 videoConfiguration:{-[CAMAnalyticsCaptureEvent _captureVideoConfiguration](self, "_captureVideoConfiguration")}];
+  v25 = [v12 isQuadraTeleZoomButtonSupportedForMode:mode devicePosition:v13 videoConfiguration:{-[CAMAnalyticsCaptureEvent _captureVideoConfiguration](self, "_captureVideoConfiguration")}];
   [v12 quadraTeleDisplayZoomFactor];
   v27 = v26;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v28 = v10;
+  v28 = pointsCopy;
   v29 = [v28 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v29)
   {
@@ -2084,7 +2084,7 @@ LABEL_26:
         if ([v33 isCustomLens])
         {
           [v33 displayZoomFactor];
-          if (vabdd_f64(a3, v34) < 0.001)
+          if (vabdd_f64(value, v34) < 0.001)
           {
             v36 = [v12 effectiveFocalLengthForCustomLens:{objc_msgSend(v33, "customLens")}];
             v37 = 0;
@@ -2110,14 +2110,14 @@ LABEL_26:
     }
   }
 
-  if (v19 == a3)
+  if (v19 == value)
   {
     v35 = @"Wide";
   }
 
   else
   {
-    if (v24 == a3)
+    if (v24 == value)
     {
       v39 = v22;
     }
@@ -2134,7 +2134,7 @@ LABEL_26:
 
     else
     {
-      if (v27 == a3)
+      if (v27 == value)
       {
         v40 = v25;
       }
@@ -2151,17 +2151,17 @@ LABEL_26:
 
       else
       {
-        if (v19 <= a3)
+        if (v19 <= value)
         {
           v41 = @">Wide";
           v42 = @"Wide-Telephoto";
           v45 = @">Telephoto";
-          if (v21 == a3)
+          if (v21 == value)
           {
             v45 = @"Telephoto";
           }
 
-          if (v21 <= a3)
+          if (v21 <= value)
           {
             v42 = v45;
           }
@@ -2174,12 +2174,12 @@ LABEL_26:
           v41 = @"<Wide";
           v42 = @"<UltraWide";
           v43 = @"UltraWide-Wide";
-          if (v17 == a3)
+          if (v17 == value)
           {
             v43 = @"UltraWide";
           }
 
-          if (v17 <= a3)
+          if (v17 <= value)
           {
             v42 = v43;
           }

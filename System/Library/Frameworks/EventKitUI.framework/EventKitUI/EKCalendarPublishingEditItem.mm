@@ -1,12 +1,12 @@
 @interface EKCalendarPublishingEditItem
-- (BOOL)configureWithCalendar:(id)a3;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)configureWithCalendar:(id)calendar;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)footerTitle;
 - (id)pubishURL;
 - (unint64_t)numberOfSubitems;
-- (void)_publishChanged:(id)a3;
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)_publishChanged:(id)changed;
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem;
 - (void)reset;
 @end
 
@@ -26,11 +26,11 @@
   return v3;
 }
 
-- (BOOL)configureWithCalendar:(id)a3
+- (BOOL)configureWithCalendar:(id)calendar
 {
-  v4 = a3;
-  -[EKCalendarPublishingEditItem setPublished:](self, "setPublished:", [v4 isPublished]);
-  LOBYTE(self) = [v4 canBePublished];
+  calendarCopy = calendar;
+  -[EKCalendarPublishingEditItem setPublished:](self, "setPublished:", [calendarCopy isPublished]);
+  LOBYTE(self) = [calendarCopy canBePublished];
 
   return self;
 }
@@ -42,8 +42,8 @@
     return 1;
   }
 
-  v3 = [(EKCalendar *)self->super._calendar publishURL];
-  if (v3)
+  publishURL = [(EKCalendar *)self->super._calendar publishURL];
+  if (publishURL)
   {
     v4 = 2;
   }
@@ -56,7 +56,7 @@
   return v4;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   if (EKUIUnscaledCatalyst())
   {
@@ -71,18 +71,18 @@
   }
 }
 
-- (void)_publishChanged:(id)a3
+- (void)_publishChanged:(id)changed
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (changed)
   {
-    v4 = a3;
-    -[EKCalendarPublishingEditItem setPublished:](self, "setPublished:", [v4 isOn]);
-    v5 = [v4 isOn];
+    changedCopy = changed;
+    -[EKCalendarPublishingEditItem setPublished:](self, "setPublished:", [changedCopy isOn]);
+    isOn = [changedCopy isOn];
 
-    [(EKCalendar *)self->super._calendar setIsPublished:v5];
-    v6 = [(EKCalendarEditItem *)self delegate];
-    v7 = [v6 editorForCalendarEditItem:self];
+    [(EKCalendar *)self->super._calendar setIsPublished:isOn];
+    delegate = [(EKCalendarEditItem *)self delegate];
+    v7 = [delegate editorForCalendarEditItem:self];
 
     calendar = self->super._calendar;
     v18 = 0;
@@ -99,31 +99,31 @@
       }
     }
 
-    v12 = [(EKCalendarEditItem *)self delegate];
-    [v12 calendarItemStartedEditing:self];
+    delegate2 = [(EKCalendarEditItem *)self delegate];
+    [delegate2 calendarItemStartedEditing:self];
 
     [(EKCalendarPublishingEditItem *)self reset];
-    v13 = [(EKCalendarEditItem *)self delegate];
-    v14 = [v13 tableView];
+    delegate3 = [(EKCalendarEditItem *)self delegate];
+    tableView = [delegate3 tableView];
     v15 = MEMORY[0x1E696AC90];
-    v16 = [(EKCalendarEditItem *)self delegate];
-    v17 = [v15 indexSetWithIndex:{objc_msgSend(v16, "sectionForCalendarEditItem:", self)}];
-    [v14 reloadSections:v17 withRowAnimation:100];
+    delegate4 = [(EKCalendarEditItem *)self delegate];
+    v17 = [v15 indexSetWithIndex:{objc_msgSend(delegate4, "sectionForCalendarEditItem:", self)}];
+    [tableView reloadSections:v17 withRowAnimation:100];
   }
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     v5 = [[EKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"ShareCell"];
     v11 = EventKitUIBundle();
     v12 = [v11 localizedStringForKey:@"Share Link…" value:&stru_1F4EF6790 table:0];
-    v13 = [(EKUITableViewCell *)v5 textLabel];
-    [v13 setText:v12];
+    textLabel = [(EKUITableViewCell *)v5 textLabel];
+    [textLabel setText:v12];
   }
 
-  else if (a3)
+  else if (index)
   {
     v5 = 0;
   }
@@ -135,7 +135,7 @@
     v19 = 3221225472;
     v20 = __54__EKCalendarPublishingEditItem_cellForSubitemAtIndex___block_invoke;
     v21 = &unk_1E843EFB8;
-    v22 = self;
+    selfCopy = self;
     v5 = v4;
     v23 = v5;
     v6 = _Block_copy(&v18);
@@ -158,8 +158,8 @@
 
     v8 = EventKitUIBundle();
     v9 = [v8 localizedStringForKey:@"Public Calendar" value:&stru_1F4EF6790 table:0];
-    v10 = [(EKUITableViewCell *)v5 textLabel];
-    [v10 setText:v9];
+    textLabel2 = [(EKUITableViewCell *)v5 textLabel];
+    [textLabel2 setText:v9];
 
     [(EKUITableViewCell *)v5 setSelectionStyle:0];
   }
@@ -175,24 +175,24 @@ void __54__EKCalendarPublishingEditItem_cellForSubitemAtIndex___block_invoke(uin
   [*(a1 + 40) setAccessoryView:v2];
 }
 
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 1)
+  editorCopy = editor;
+  if (subitem == 1)
   {
     v7 = [CalendarPublishingActivityViewController alloc];
-    v8 = [(EKCalendarPublishingEditItem *)self pubishURL];
-    v16[0] = v8;
+    pubishURL = [(EKCalendarPublishingEditItem *)self pubishURL];
+    v16[0] = pubishURL;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v10 = [(CalendarPublishingActivityViewController *)v7 initWithActivityItems:v9 applicationActivities:0];
 
     [(CalendarPublishingActivityViewController *)v10 setActivityDelegate:self];
-    v11 = [v6 view];
-    if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v11))
+    view = [editorCopy view];
+    if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view))
     {
-      v12 = [v6 view];
-      IsRegular = EKUICurrentHeightSizeClassIsRegular(v12);
+      view2 = [editorCopy view];
+      IsRegular = EKUICurrentHeightSizeClassIsRegular(view2);
 
       if (IsRegular)
       {
@@ -205,18 +205,18 @@ void __54__EKCalendarPublishingEditItem_cellForSubitemAtIndex___block_invoke(uin
     {
     }
 
-    v14 = [(EKCalendarEditItem *)self delegate];
-    v15 = [v14 owningNavigationController];
-    [v15 presentModalViewController:v10 withTransition:8];
+    delegate = [(EKCalendarEditItem *)self delegate];
+    owningNavigationController = [delegate owningNavigationController];
+    [owningNavigationController presentModalViewController:v10 withTransition:8];
   }
 }
 
 - (id)pubishURL
 {
-  v2 = [(EKCalendar *)self->super._calendar publishURL];
-  v3 = [v2 absoluteString];
+  publishURL = [(EKCalendar *)self->super._calendar publishURL];
+  absoluteString = [publishURL absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
 @end

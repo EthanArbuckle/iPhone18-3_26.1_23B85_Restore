@@ -1,7 +1,7 @@
 @interface MPArtworkColorAnalysisOperation
-- (CGImage)_createImageFromSource:(CGImageSource *)a3 size:(unint64_t)a4;
-- (CGImageSource)_createImageFromURL:(id)a3;
-- (MPArtworkColorAnalysisOperation)initWithURL:(id)a3;
+- (CGImage)_createImageFromSource:(CGImageSource *)source size:(unint64_t)size;
+- (CGImageSource)_createImageFromURL:(id)l;
+- (MPArtworkColorAnalysisOperation)initWithURL:(id)l;
 - (void)cancel;
 - (void)main;
 @end
@@ -19,23 +19,23 @@
   [(MPArtworkColorAnalysisOperation *)&v5 cancel];
 }
 
-- (CGImage)_createImageFromSource:(CGImageSource *)a3 size:(unint64_t)a4
+- (CGImage)_createImageFromSource:(CGImageSource *)source size:(unint64_t)size
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = *MEMORY[0x1E696E0A8];
   v10[0] = MEMORY[0x1E695E110];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, a4, v6);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(source, size, v6);
 
   return ImageAtIndex;
 }
 
-- (CGImageSource)_createImageFromURL:(id)a3
+- (CGImageSource)_createImageFromURL:(id)l
 {
-  v3 = a3;
-  if (v3 && ([MEMORY[0x1E696AC08] defaultManager], v4 = objc_claimAutoreleasedReturnValue(), -[__CFURL path](v3, "path"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "fileExistsAtPath:", v5), v5, v4, v6))
+  lCopy = l;
+  if (lCopy && ([MEMORY[0x1E696AC08] defaultManager], v4 = objc_claimAutoreleasedReturnValue(), -[__CFURL path](lCopy, "path"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "fileExistsAtPath:", v5), v5, v4, v6))
   {
-    v7 = CGImageSourceCreateWithURL(v3, 0);
+    v7 = CGImageSourceCreateWithURL(lCopy, 0);
   }
 
   else
@@ -54,11 +54,11 @@
     v4 = v3;
     v5 = [(MPArtworkColorAnalysisOperation *)self _createImageFromSource:v3 size:0];
     v13 = [objc_alloc(MEMORY[0x1E69B13B0]) initWithSourceImage:v5];
-    v6 = [(NSError *)v13 analyze];
-    v7 = v6;
-    if (v6)
+    analyze = [(NSError *)v13 analyze];
+    v7 = analyze;
+    if (analyze)
     {
-      v8 = v6;
+      v8 = analyze;
       colorAnalysis = self->_colorAnalysis;
       self->_colorAnalysis = v8;
     }
@@ -88,16 +88,16 @@
   }
 }
 
-- (MPArtworkColorAnalysisOperation)initWithURL:(id)a3
+- (MPArtworkColorAnalysisOperation)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = MPArtworkColorAnalysisOperation;
   v6 = [(MPArtworkColorAnalysisOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceURL, a3);
+    objc_storeStrong(&v6->_sourceURL, l);
   }
 
   return v7;

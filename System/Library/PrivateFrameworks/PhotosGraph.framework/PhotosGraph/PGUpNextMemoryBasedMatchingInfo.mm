@@ -1,10 +1,10 @@
 @interface PGUpNextMemoryBasedMatchingInfo
-+ (id)matchingInfosWithMemoryNodes:(id)a3;
++ (id)matchingInfosWithMemoryNodes:(id)nodes;
 - (BOOL)_implIsTripMemory;
 - (NSString)debugInfo;
 - (PGGraphFeatureNodeCollection)memoryFeatureNodes;
-- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)a3;
-- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)a3 momentNodes:(id)a4;
+- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)collection;
+- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)collection momentNodes:(id)nodes;
 - (unint64_t)nodeIdentifier;
 @end
 
@@ -13,18 +13,18 @@
 - (NSString)debugInfo
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection uniqueMemoryIdentifiers];
-  v4 = [v3 anyObject];
-  v5 = [v2 stringWithFormat:@"Memory unique identifier %@", v4];
+  uniqueMemoryIdentifiers = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection uniqueMemoryIdentifiers];
+  anyObject = [uniqueMemoryIdentifiers anyObject];
+  v5 = [v2 stringWithFormat:@"Memory unique identifier %@", anyObject];
 
   return v5;
 }
 
 - (BOOL)_implIsTripMemory
 {
-  v2 = [(MANodeCollection *)self->_memoryNodeAsCollection labels];
+  labels = [(MANodeCollection *)self->_memoryNodeAsCollection labels];
   v3 = [PGGraphBuilder memoryLabelForCategory:19];
-  v4 = [v2 containsObject:v3];
+  v4 = [labels containsObject:v3];
 
   return v4;
 }
@@ -34,10 +34,10 @@
   memoryFeatureNodes = self->_memoryFeatureNodes;
   if (!memoryFeatureNodes)
   {
-    v4 = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection featureNodes];
-    v5 = [(MAElementCollection *)self->_memoryNodeAsCollection graph];
-    v6 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:v5];
-    v7 = [v4 collectionBySubtracting:v6];
+    featureNodes = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection featureNodes];
+    graph = [(MAElementCollection *)self->_memoryNodeAsCollection graph];
+    v6 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:graph];
+    v7 = [featureNodes collectionBySubtracting:v6];
 
     v8 = self->_memoryFeatureNodes;
     self->_memoryFeatureNodes = v7;
@@ -50,69 +50,69 @@
 
 - (unint64_t)nodeIdentifier
 {
-  v2 = [(MAElementCollection *)self->_memoryNodeAsCollection elementIdentifiers];
-  v3 = [v2 firstElement];
+  elementIdentifiers = [(MAElementCollection *)self->_memoryNodeAsCollection elementIdentifiers];
+  firstElement = [elementIdentifiers firstElement];
 
-  return v3;
+  return firstElement;
 }
 
-- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)a3 momentNodes:(id)a4
+- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)collection momentNodes:(id)nodes
 {
-  v7 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = PGUpNextMemoryBasedMatchingInfo;
-  v8 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v11 initWithMomentNodes:a4];
+  v8 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v11 initWithMomentNodes:nodes];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_memoryNodeAsCollection, a3);
+    objc_storeStrong(&v8->_memoryNodeAsCollection, collection);
   }
 
   return v9;
 }
 
-- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)a3
+- (PGUpNextMemoryBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)collection
 {
-  v5 = a3;
-  v6 = [v5 momentNodes];
+  collectionCopy = collection;
+  momentNodes = [collectionCopy momentNodes];
   v9.receiver = self;
   v9.super_class = PGUpNextMemoryBasedMatchingInfo;
-  v7 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v9 initWithMomentNodes:v6];
+  v7 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v9 initWithMomentNodes:momentNodes];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_memoryNodeAsCollection, a3);
+    objc_storeStrong(&v7->_memoryNodeAsCollection, collection);
   }
 
   return v7;
 }
 
-+ (id)matchingInfosWithMemoryNodes:(id)a3
++ (id)matchingInfosWithMemoryNodes:(id)nodes
 {
   v79[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 graph];
-  v58 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  nodesCopy = nodes;
+  graph = [nodesCopy graph];
+  v58 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(nodesCopy, "count")}];
   v5 = MEMORY[0x277D22BF8];
   v6 = +[PGGraphMemoryNode momentOfMemory];
   v7 = objc_opt_self();
-  v61 = [v5 adjacencyWithSources:v3 relation:v6 targetsClass:v7];
+  v61 = [v5 adjacencyWithSources:nodesCopy relation:v6 targetsClass:v7];
 
-  v8 = [v61 targets];
+  targets = [v61 targets];
   v9 = MEMORY[0x277D22BF8];
   v10 = +[PGGraphMomentNode personExcludingMeInMoment];
   v11 = objc_opt_self();
-  v56 = [v9 adjacencyWithSources:v8 relation:v10 targetsClass:v11];
+  v56 = [v9 adjacencyWithSources:targets relation:v10 targetsClass:v11];
 
   v12 = MEMORY[0x277D22BF8];
   v13 = +[PGGraphMomentNode sceneOfMoment];
   v14 = objc_opt_self();
-  v54 = [v12 adjacencyWithSources:v8 relation:v13 targetsClass:v14];
+  v54 = [v12 adjacencyWithSources:targets relation:v13 targetsClass:v14];
 
   v15 = MEMORY[0x277D22BF8];
   v16 = +[PGGraphMomentNode meaningOfMoment];
   v17 = objc_opt_self();
-  v18 = [v15 adjacencyWithSources:v8 relation:v16 targetsClass:v17];
+  v18 = [v15 adjacencyWithSources:targets relation:v16 targetsClass:v17];
 
   v19 = @"Gathering";
   v79[0] = @"Gathering";
@@ -120,34 +120,34 @@
   v79[1] = @"HolidayEvent";
   v60 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:2];
 
-  v57 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v60 inGraph:v4];
+  v57 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v60 inGraph:graph];
   v21 = [v18 subtractingTargetsWith:v57];
 
   v22 = MEMORY[0x277D22BF8];
   v23 = +[PGGraphMomentNode addressOfMoment];
   v24 = objc_opt_self();
-  v25 = [v22 adjacencyWithSources:v8 relation:v23 targetsClass:v24];
+  v25 = [v22 adjacencyWithSources:targets relation:v23 targetsClass:v24];
 
   v26 = MEMORY[0x277D22BF8];
   v27 = +[PGGraphMemoryNode featureOfMemory];
   v28 = objc_opt_self();
-  v29 = [v26 adjacencyWithSources:v3 relation:v27 targetsClass:v28];
+  v29 = [v26 adjacencyWithSources:nodesCopy relation:v27 targetsClass:v28];
 
-  v55 = v4;
-  v30 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:v4];
-  v31 = [v30 featureNodeCollection];
-  v32 = [v29 subtractingTargetsWith:v31];
+  v55 = graph;
+  v30 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:graph];
+  featureNodeCollection = [v30 featureNodeCollection];
+  v32 = [v29 subtractingTargetsWith:featureNodeCollection];
 
-  v33 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:19 inGraph:v4];
+  v33 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:19 inGraph:graph];
   v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v35 = [v25 targets];
+  targets2 = [v25 targets];
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = __64__PGUpNextMemoryBasedMatchingInfo_matchingInfosWithMemoryNodes___block_invoke;
   v77[3] = &unk_278889878;
   v36 = v34;
   v78 = v36;
-  [v35 enumerateNodesUsingBlock:v77];
+  [targets2 enumerateNodesUsingBlock:v77];
 
   v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v75[0] = MEMORY[0x277D85DD0];
@@ -156,7 +156,7 @@
   v75[3] = &unk_2788898A0;
   v38 = v37;
   v76 = v38;
-  [v8 enumerateUniversalStartDatesUsingBlock:v75];
+  [targets enumerateUniversalStartDatesUsingBlock:v75];
   v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v73[0] = MEMORY[0x277D85DD0];
   v73[1] = 3221225472;
@@ -164,7 +164,7 @@
   v73[3] = &unk_2788898A0;
   v40 = v39;
   v74 = v40;
-  [v8 enumerateUniversalEndDatesUsingBlock:v73];
+  [targets enumerateUniversalEndDatesUsingBlock:v73];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __64__PGUpNextMemoryBasedMatchingInfo_matchingInfosWithMemoryNodes___block_invoke_4;

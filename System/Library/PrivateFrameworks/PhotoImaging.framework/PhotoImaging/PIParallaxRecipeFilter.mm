@@ -1,7 +1,7 @@
 @interface PIParallaxRecipeFilter
 - (NSDictionary)resolvedParameters;
-- (PIParallaxRecipeFilter)initWithRecipe:(id)a3;
-- (id)_evaluateImageWithFilterDefinitions:(id)a3 inputImage:(id)a4;
+- (PIParallaxRecipeFilter)initWithRecipe:(id)recipe;
+- (id)_evaluateImageWithFilterDefinitions:(id)definitions inputImage:(id)image;
 - (id)outputBackgroundImage;
 - (id)outputForegroundImage;
 - (id)outputMatteImage;
@@ -9,12 +9,12 @@
 
 @implementation PIParallaxRecipeFilter
 
-- (id)_evaluateImageWithFilterDefinitions:(id)a3 inputImage:(id)a4
+- (id)_evaluateImageWithFilterDefinitions:(id)definitions inputImage:(id)image
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  definitionsCopy = definitions;
+  imageCopy = image;
+  if (!definitionsCopy)
   {
     v30 = NUAssertLogger_12725();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v32 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v34 = NUAssertLogger_12725();
     v35 = os_log_type_enabled(v34, OS_LOG_TYPE_ERROR);
@@ -33,11 +33,11 @@
     {
       if (v35)
       {
-        v48 = dispatch_get_specific(*v32);
+        v48 = dispatch_get_specific(*callStackSymbols);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v32 = [v49 callStackSymbols];
-        v51 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v49 callStackSymbols];
+        v51 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v48;
         v70 = 2114;
@@ -48,10 +48,10 @@
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v69 = v32;
+      v69 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -59,8 +59,8 @@
     goto LABEL_38;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = imageCopy;
+  if (!imageCopy)
   {
     v37 = NUAssertLogger_12725();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -71,7 +71,7 @@
       _os_log_error_impl(&dword_1C7694000, v37, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v32 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v39 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v34 = NUAssertLogger_12725();
     v40 = os_log_type_enabled(v34, OS_LOG_TYPE_ERROR);
@@ -79,10 +79,10 @@
     {
       if (v40)
       {
-        v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v32 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v69 = v32;
+        v69 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -95,11 +95,11 @@ LABEL_40:
 LABEL_38:
     if (v40)
     {
-      v52 = dispatch_get_specific(*v32);
+      v52 = dispatch_get_specific(*callStackSymbols);
       v53 = MEMORY[0x1E696AF00];
       v54 = v52;
-      v32 = [v53 callStackSymbols];
-      v55 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v53 callStackSymbols];
+      v55 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v69 = v52;
       v70 = 2114;
@@ -111,38 +111,38 @@ LABEL_38:
   }
 
   v9 = objc_alloc_init(PIParallaxStyleEvaluationContext);
-  v10 = [(PIParallaxRecipeFilter *)self resolvedParameters];
-  [(PIParallaxStyleEvaluationContext *)v9 setParameters:v10];
+  resolvedParameters = [(PIParallaxRecipeFilter *)self resolvedParameters];
+  [(PIParallaxStyleEvaluationContext *)v9 setParameters:resolvedParameters];
 
-  v11 = [(PIParallaxFilter *)self inputGuideImage];
-  [(PIParallaxStyleEvaluationContext *)v9 setGuideImage:v11];
+  inputGuideImage = [(PIParallaxFilter *)self inputGuideImage];
+  [(PIParallaxStyleEvaluationContext *)v9 setGuideImage:inputGuideImage];
 
   [(PIParallaxStyleEvaluationContext *)v9 setInputImage:v8];
   v61 = v8;
-  v12 = [v8 imageByClampingToExtent];
-  [(PIParallaxStyleEvaluationContext *)v9 setOutputImage:v12];
+  imageByClampingToExtent = [v8 imageByClampingToExtent];
+  [(PIParallaxStyleEvaluationContext *)v9 setOutputImage:imageByClampingToExtent];
 
-  v13 = [(PIParallaxFilter *)self inputMatteImage];
-  [(PIParallaxStyleEvaluationContext *)v9 setMatteImage:v13];
+  inputMatteImage = [(PIParallaxFilter *)self inputMatteImage];
+  [(PIParallaxStyleEvaluationContext *)v9 setMatteImage:inputMatteImage];
 
-  v14 = [(PIParallaxFilter *)self inputBackgroundImage];
-  [(PIParallaxStyleEvaluationContext *)v9 setBackgroundImage:v14];
+  inputBackgroundImage = [(PIParallaxFilter *)self inputBackgroundImage];
+  [(PIParallaxStyleEvaluationContext *)v9 setBackgroundImage:inputBackgroundImage];
 
   [(PIParallaxFilter *)self visibleFrame];
   [(PIParallaxStyleEvaluationContext *)v9 setVisibleRect:?];
   [(PIParallaxFilter *)self renderScale];
   [(PIParallaxStyleEvaluationContext *)v9 setRenderScale:?];
-  v15 = [(PIParallaxFilter *)self localLightData];
-  [(PIParallaxStyleEvaluationContext *)v9 setLocalLightData:v15];
+  localLightData = [(PIParallaxFilter *)self localLightData];
+  [(PIParallaxStyleEvaluationContext *)v9 setLocalLightData:localLightData];
 
-  v16 = [(PIParallaxFilter *)self cache];
-  [(PIParallaxStyleEvaluationContext *)v9 setCache:v16];
+  cache = [(PIParallaxFilter *)self cache];
+  [(PIParallaxStyleEvaluationContext *)v9 setCache:cache];
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v17 = v6;
+  v17 = definitionsCopy;
   v18 = [v17 countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (v18)
   {
@@ -196,9 +196,9 @@ LABEL_38:
     while (v19);
   }
 
-  v27 = [(PIParallaxStyleEvaluationContext *)v9 outputImage];
+  outputImage = [(PIParallaxStyleEvaluationContext *)v9 outputImage];
   [v61 extent];
-  v28 = [v27 imageByCroppingToRect:?];
+  v28 = [outputImage imageByCroppingToRect:?];
 
   if (!v28)
   {
@@ -211,7 +211,7 @@ LABEL_38:
       _os_log_error_impl(&dword_1C7694000, v42, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v32 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v44 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v34 = NUAssertLogger_12725();
     v45 = os_log_type_enabled(v34, OS_LOG_TYPE_ERROR);
@@ -219,8 +219,8 @@ LABEL_38:
     {
       if (v45)
       {
-        v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v47 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v69 = v47;
         _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -232,11 +232,11 @@ LABEL_38:
 LABEL_41:
     if (v45)
     {
-      v56 = dispatch_get_specific(*v32);
+      v56 = dispatch_get_specific(*callStackSymbols);
       v57 = MEMORY[0x1E696AF00];
       v58 = v56;
-      v59 = [v57 callStackSymbols];
-      v60 = [v59 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v57 callStackSymbols];
+      v60 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v69 = v56;
       v70 = 2114;
@@ -254,18 +254,18 @@ LABEL_43:
 
 - (NSDictionary)resolvedParameters
 {
-  v3 = [(PIParallaxRecipeFilter *)self recipe];
-  v4 = [v3 parameters];
-  v5 = [v4 mutableCopy];
+  recipe = [(PIParallaxRecipeFilter *)self recipe];
+  parameters = [recipe parameters];
+  v5 = [parameters mutableCopy];
 
-  v6 = [(PIParallaxRecipeFilter *)self parameters];
+  parameters2 = [(PIParallaxRecipeFilter *)self parameters];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PIParallaxRecipeFilter_resolvedParameters__block_invoke;
   v9[3] = &unk_1E82AADA0;
   v7 = v5;
   v10 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [parameters2 enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -378,14 +378,14 @@ LABEL_19:
 
 - (id)outputMatteImage
 {
-  v3 = [(PIParallaxFilter *)self inputMatteImage];
+  inputMatteImage = [(PIParallaxFilter *)self inputMatteImage];
 
-  if (v3)
+  if (inputMatteImage)
   {
-    v4 = [(PIParallaxRecipeFilter *)self recipe];
-    v5 = [v4 matteFilters];
-    v6 = [(PIParallaxFilter *)self inputMatteImage];
-    v7 = [(PIParallaxRecipeFilter *)self _evaluateImageWithFilterDefinitions:v5 inputImage:v6];
+    recipe = [(PIParallaxRecipeFilter *)self recipe];
+    matteFilters = [recipe matteFilters];
+    inputMatteImage2 = [(PIParallaxFilter *)self inputMatteImage];
+    v7 = [(PIParallaxRecipeFilter *)self _evaluateImageWithFilterDefinitions:matteFilters inputImage:inputMatteImage2];
   }
 
   else
@@ -398,14 +398,14 @@ LABEL_19:
 
 - (id)outputForegroundImage
 {
-  v3 = [(PIParallaxFilter *)self inputForegroundImage];
+  inputForegroundImage = [(PIParallaxFilter *)self inputForegroundImage];
 
-  if (v3)
+  if (inputForegroundImage)
   {
-    v4 = [(PIParallaxRecipeFilter *)self recipe];
-    v5 = [v4 foregroundFilters];
-    v6 = [(PIParallaxFilter *)self inputForegroundImage];
-    v7 = [(PIParallaxRecipeFilter *)self _evaluateImageWithFilterDefinitions:v5 inputImage:v6];
+    recipe = [(PIParallaxRecipeFilter *)self recipe];
+    foregroundFilters = [recipe foregroundFilters];
+    inputForegroundImage2 = [(PIParallaxFilter *)self inputForegroundImage];
+    v7 = [(PIParallaxRecipeFilter *)self _evaluateImageWithFilterDefinitions:foregroundFilters inputImage:inputForegroundImage2];
   }
 
   else
@@ -418,14 +418,14 @@ LABEL_19:
 
 - (id)outputBackgroundImage
 {
-  v3 = [(PIParallaxFilter *)self inputBackgroundImage];
+  inputBackgroundImage = [(PIParallaxFilter *)self inputBackgroundImage];
 
-  if (v3)
+  if (inputBackgroundImage)
   {
-    v4 = [(PIParallaxRecipeFilter *)self recipe];
-    v5 = [v4 backgroundFilters];
-    v6 = [(PIParallaxFilter *)self inputBackgroundImage];
-    v7 = [(PIParallaxRecipeFilter *)self _evaluateImageWithFilterDefinitions:v5 inputImage:v6];
+    recipe = [(PIParallaxRecipeFilter *)self recipe];
+    backgroundFilters = [recipe backgroundFilters];
+    inputBackgroundImage2 = [(PIParallaxFilter *)self inputBackgroundImage];
+    v7 = [(PIParallaxRecipeFilter *)self _evaluateImageWithFilterDefinitions:backgroundFilters inputImage:inputBackgroundImage2];
   }
 
   else
@@ -436,15 +436,15 @@ LABEL_19:
   return v7;
 }
 
-- (PIParallaxRecipeFilter)initWithRecipe:(id)a3
+- (PIParallaxRecipeFilter)initWithRecipe:(id)recipe
 {
-  v4 = a3;
+  recipeCopy = recipe;
   v10.receiver = self;
   v10.super_class = PIParallaxRecipeFilter;
   v5 = [(PIParallaxRecipeFilter *)&v10 init];
   recipe = v5->_recipe;
-  v5->_recipe = v4;
-  v7 = v4;
+  v5->_recipe = recipeCopy;
+  v7 = recipeCopy;
 
   parameters = v5->_parameters;
   v5->_parameters = MEMORY[0x1E695E0F8];

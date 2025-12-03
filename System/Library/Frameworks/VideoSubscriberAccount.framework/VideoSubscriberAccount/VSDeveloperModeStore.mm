@@ -1,23 +1,23 @@
 @interface VSDeveloperModeStore
 - (VSDeveloperModeStore)init;
-- (id)_developerIdentityProviderInContext:(id)a3;
+- (id)_developerIdentityProviderInContext:(id)context;
 - (id)_identityProviderFetchRequest;
-- (id)_nullableObjectOrNSNull:(id)a3;
+- (id)_nullableObjectOrNSNull:(id)null;
 - (id)legacySettingsPropertiesPath;
 - (id)settingsPropertiesURL;
 - (void)_noteProvidersDidChange;
 - (void)_noteServiceDidChange;
 - (void)_noteSettingsDidChange;
-- (void)_performIdentityProviderBlock:(id)a3;
-- (void)addDeveloperIdentityProvider:(id)a3 completionHandler:(id)a4;
-- (void)fetchDeveloperIdentityProvidersWithCompletionHandler:(id)a3;
-- (void)fetchDeveloperSettingsWithCompletionHandler:(id)a3;
+- (void)_performIdentityProviderBlock:(id)block;
+- (void)addDeveloperIdentityProvider:(id)provider completionHandler:(id)handler;
+- (void)fetchDeveloperIdentityProvidersWithCompletionHandler:(id)handler;
+- (void)fetchDeveloperSettingsWithCompletionHandler:(id)handler;
 - (void)legacySettingsPropertiesPath;
 - (void)migrateSettingsPropertyFileIfNecessary;
-- (void)removeDeveloperIdentityProviderWithUniqueID:(id)a3 completionHandler:(id)a4;
+- (void)removeDeveloperIdentityProviderWithUniqueID:(id)d completionHandler:(id)handler;
 - (void)settingsPropertiesURL;
-- (void)updateDeveloperSettings:(id)a3 completionHandler:(id)a4;
-- (void)updateExistingDeveloperIdentityProvider:(id)a3 completionHandler:(id)a4;
+- (void)updateDeveloperSettings:(id)settings completionHandler:(id)handler;
+- (void)updateExistingDeveloperIdentityProvider:(id)provider completionHandler:(id)handler;
 @end
 
 @implementation VSDeveloperModeStore
@@ -63,33 +63,33 @@
 {
   v2 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v3 = [v2 URLsForDirectory:5 inDomains:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    v5 = firstObject;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (v7)
+    if (bundleIdentifier)
     {
-      v8 = [v5 URLByAppendingPathComponent:v7];
+      v8 = [v5 URLByAppendingPathComponent:bundleIdentifier];
       v9 = v8;
       if (v8)
       {
-        v10 = [v8 path];
+        path = [v8 path];
 
-        if (!v10)
+        if (!path)
         {
           [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [containerDirectoryOrNil path] parameter must not be nil."];
         }
 
-        v11 = [v9 path];
+        path2 = [v9 path];
         v18 = 0;
-        if (([v2 fileExistsAtPath:v11 isDirectory:&v18] & 1) == 0)
+        if (([v2 fileExistsAtPath:path2 isDirectory:&v18] & 1) == 0)
         {
           v17 = 0;
-          v12 = [v2 createDirectoryAtPath:v11 withIntermediateDirectories:0 attributes:0 error:&v17];
+          v12 = [v2 createDirectoryAtPath:path2 withIntermediateDirectories:0 attributes:0 error:&v17];
           v13 = v17;
           if ((v12 & 1) == 0)
           {
@@ -134,16 +134,16 @@
 {
   v2 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v3 = [v2 URLsForDirectory:9 inDomains:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v6 && ([v4 URLByAppendingPathComponent:v6], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (bundleIdentifier && ([firstObject URLByAppendingPathComponent:bundleIdentifier], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = [v8 path];
-    if (v9)
+    path = [v8 path];
+    if (path)
     {
       v10 = [v8 URLByAppendingPathComponent:@"DeveloperSettings.plist"];
     }
@@ -186,69 +186,69 @@
 
 - (id)_identityProviderFetchRequest
 {
-  v2 = [(VSDeveloperModeStore *)self persistentContainer];
-  v3 = [v2 developerIdentityProviderFetchRequest];
+  persistentContainer = [(VSDeveloperModeStore *)self persistentContainer];
+  developerIdentityProviderFetchRequest = [persistentContainer developerIdentityProviderFetchRequest];
 
-  return v3;
+  return developerIdentityProviderFetchRequest;
 }
 
-- (id)_developerIdentityProviderInContext:(id)a3
+- (id)_developerIdentityProviderInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(VSDeveloperModeStore *)self persistentContainer];
-  v6 = [v5 insertDeveloperIdentityProviderInContext:v4];
+  contextCopy = context;
+  persistentContainer = [(VSDeveloperModeStore *)self persistentContainer];
+  v6 = [persistentContainer insertDeveloperIdentityProviderInContext:contextCopy];
 
   return v6;
 }
 
-- (void)_performIdentityProviderBlock:(id)a3
+- (void)_performIdentityProviderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(VSDeveloperModeStore *)self persistentContainer];
-  [v5 performBlock:v4];
+  blockCopy = block;
+  persistentContainer = [(VSDeveloperModeStore *)self persistentContainer];
+  [persistentContainer performBlock:blockCopy];
 }
 
 - (void)_noteServiceDidChange
 {
-  v2 = [(VSDeveloperModeStore *)self serviceChangeRemoteNotifier];
-  [v2 postNotification];
+  serviceChangeRemoteNotifier = [(VSDeveloperModeStore *)self serviceChangeRemoteNotifier];
+  [serviceChangeRemoteNotifier postNotification];
 }
 
 - (void)_noteSettingsDidChange
 {
-  v2 = [(VSDeveloperModeStore *)self settingsChangeRemoteNotifier];
-  [v2 postNotification];
+  settingsChangeRemoteNotifier = [(VSDeveloperModeStore *)self settingsChangeRemoteNotifier];
+  [settingsChangeRemoteNotifier postNotification];
 }
 
 - (void)_noteProvidersDidChange
 {
-  v2 = [(VSDeveloperModeStore *)self providersChangeRemoteNotifier];
-  [v2 postNotification];
+  providersChangeRemoteNotifier = [(VSDeveloperModeStore *)self providersChangeRemoteNotifier];
+  [providersChangeRemoteNotifier postNotification];
 }
 
-- (id)_nullableObjectOrNSNull:(id)a3
+- (id)_nullableObjectOrNSNull:(id)null
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nullCopy = null;
+  v4 = nullCopy;
+  if (nullCopy)
   {
-    v5 = v3;
+    null = nullCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v6 = v5;
+  v6 = null;
 
   return v6;
 }
 
-- (void)fetchDeveloperIdentityProvidersWithCompletionHandler:(id)a3
+- (void)fetchDeveloperIdentityProvidersWithCompletionHandler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -257,7 +257,7 @@
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!handlerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
   }
@@ -267,8 +267,8 @@
   v7[2] = __77__VSDeveloperModeStore_fetchDeveloperIdentityProvidersWithCompletionHandler___block_invoke;
   v7[3] = &unk_278B73988;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(VSDeveloperModeStore *)self fetchDeveloperSettingsWithCompletionHandler:v7];
 }
 
@@ -493,11 +493,11 @@ void __77__VSDeveloperModeStore_fetchDeveloperIdentityProvidersWithCompletionHan
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)addDeveloperIdentityProvider:(id)a3 completionHandler:(id)a4
+- (void)addDeveloperIdentityProvider:(id)provider completionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -506,7 +506,7 @@ void __77__VSDeveloperModeStore_fetchDeveloperIdentityProvidersWithCompletionHan
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v6)
+  if (!providerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProvider parameter must not be nil."];
   }
@@ -516,10 +516,10 @@ void __77__VSDeveloperModeStore_fetchDeveloperIdentityProvidersWithCompletionHan
   v11[2] = __71__VSDeveloperModeStore_addDeveloperIdentityProvider_completionHandler___block_invoke;
   v11[3] = &unk_278B746A0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = providerCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = providerCopy;
   [(VSDeveloperModeStore *)self _performIdentityProviderBlock:v11];
 }
 
@@ -582,11 +582,11 @@ void __71__VSDeveloperModeStore_addDeveloperIdentityProvider_completionHandler__
   }
 }
 
-- (void)updateExistingDeveloperIdentityProvider:(id)a3 completionHandler:(id)a4
+- (void)updateExistingDeveloperIdentityProvider:(id)provider completionHandler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -595,19 +595,19 @@ void __71__VSDeveloperModeStore_addDeveloperIdentityProvider_completionHandler__
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", &v9, 0xCu);
   }
 
-  if (!v6)
+  if (!providerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProvider parameter must not be nil."];
   }
 
-  [(VSDeveloperModeStore *)self addDeveloperIdentityProvider:v6 completionHandler:v7];
+  [(VSDeveloperModeStore *)self addDeveloperIdentityProvider:providerCopy completionHandler:handlerCopy];
 }
 
-- (void)removeDeveloperIdentityProviderWithUniqueID:(id)a3 completionHandler:(id)a4
+- (void)removeDeveloperIdentityProviderWithUniqueID:(id)d completionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -616,7 +616,7 @@ void __71__VSDeveloperModeStore_addDeveloperIdentityProvider_completionHandler__
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The uniqueID parameter must not be nil."];
   }
@@ -626,10 +626,10 @@ void __71__VSDeveloperModeStore_addDeveloperIdentityProvider_completionHandler__
   v11[2] = __86__VSDeveloperModeStore_removeDeveloperIdentityProviderWithUniqueID_completionHandler___block_invoke;
   v11[3] = &unk_278B746A0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   [(VSDeveloperModeStore *)self _performIdentityProviderBlock:v11];
 }
 
@@ -812,10 +812,10 @@ void __86__VSDeveloperModeStore_removeDeveloperIdentityProviderWithUniqueID_comp
   }
 }
 
-- (void)fetchDeveloperSettingsWithCompletionHandler:(id)a3
+- (void)fetchDeveloperSettingsWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -824,15 +824,15 @@ void __86__VSDeveloperModeStore_removeDeveloperIdentityProviderWithUniqueID_comp
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v6 = [(VSDeveloperModeStore *)self settingsQueue];
+  settingsQueue = [(VSDeveloperModeStore *)self settingsQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__VSDeveloperModeStore_fetchDeveloperSettingsWithCompletionHandler___block_invoke;
   v8[3] = &unk_278B73758;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(settingsQueue, v8);
 }
 
 void __68__VSDeveloperModeStore_fetchDeveloperSettingsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -946,11 +946,11 @@ void __68__VSDeveloperModeStore_fetchDeveloperSettingsWithCompletionHandler___bl
   }
 }
 
-- (void)updateDeveloperSettings:(id)a3 completionHandler:(id)a4
+- (void)updateDeveloperSettings:(id)settings completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -959,22 +959,22 @@ void __68__VSDeveloperModeStore_fetchDeveloperSettingsWithCompletionHandler___bl
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v6)
+  if (!settingsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The settings parameter must not be nil."];
   }
 
-  v9 = [(VSDeveloperModeStore *)self settingsQueue];
+  settingsQueue = [(VSDeveloperModeStore *)self settingsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__VSDeveloperModeStore_updateDeveloperSettings_completionHandler___block_invoke;
   block[3] = &unk_278B73848;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = settingsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = settingsCopy;
+  dispatch_async(settingsQueue, block);
 }
 
 void __66__VSDeveloperModeStore_updateDeveloperSettings_completionHandler___block_invoke(uint64_t a1)

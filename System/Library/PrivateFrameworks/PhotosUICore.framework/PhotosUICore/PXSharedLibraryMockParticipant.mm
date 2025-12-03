@@ -35,10 +35,10 @@
   v2 = [(PXSharedLibraryMockParticipant *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     localIdentifier = v2->_localIdentifier;
-    v2->_localIdentifier = v4;
+    v2->_localIdentifier = uUIDString;
   }
 
   return v2;

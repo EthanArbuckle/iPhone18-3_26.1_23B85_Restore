@@ -1,22 +1,22 @@
 @interface _UIFocusLinearMovementDebugViewLineElement
-+ (id)elementWithCGPathElement:(const CGPathElement *)a3;
++ (id)elementWithCGPathElement:(const CGPathElement *)element;
 - (CGPoint)cp1;
 - (CGPoint)cp2;
 - (CGPoint)point;
-- (_UIFocusLinearMovementDebugViewLineElement)initWithType:(int)a3 point:(CGPoint)a4 cp1:(CGPoint)a5 cp2:(CGPoint)a6;
+- (_UIFocusLinearMovementDebugViewLineElement)initWithType:(int)type point:(CGPoint)point cp1:(CGPoint)cp1 cp2:(CGPoint)cp2;
 @end
 
 @implementation _UIFocusLinearMovementDebugViewLineElement
 
-+ (id)elementWithCGPathElement:(const CGPathElement *)a3
++ (id)elementWithCGPathElement:(const CGPathElement *)element
 {
   v3 = *MEMORY[0x1E695EFF8];
-  type = a3->type;
-  if (a3->type > kCGPathElementAddLineToPoint)
+  type = element->type;
+  if (element->type > kCGPathElementAddLineToPoint)
   {
     if (type == kCGPathElementAddQuadCurveToPoint)
     {
-      points = a3->points;
+      points = element->points;
       v6 = *points;
       v5 = points[1];
     }
@@ -27,7 +27,7 @@
       v6 = *MEMORY[0x1E695EFF8];
       if (type == kCGPathElementAddCurveToPoint)
       {
-        v7 = a3->points;
+        v7 = element->points;
         v3 = v7[1];
         v5 = v7[2];
         v6 = *v7;
@@ -44,31 +44,31 @@
 
     else
     {
-      v5 = *a3->points;
+      v5 = *element->points;
     }
 
     v6 = *MEMORY[0x1E695EFF8];
   }
 
-  v9 = [[a1 alloc] initWithType:a3->type point:v5 cp1:v6 cp2:v3];
+  v9 = [[self alloc] initWithType:element->type point:v5 cp1:v6 cp2:v3];
 
   return v9;
 }
 
-- (_UIFocusLinearMovementDebugViewLineElement)initWithType:(int)a3 point:(CGPoint)a4 cp1:(CGPoint)a5 cp2:(CGPoint)a6
+- (_UIFocusLinearMovementDebugViewLineElement)initWithType:(int)type point:(CGPoint)point cp1:(CGPoint)cp1 cp2:(CGPoint)cp2
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
+  y = cp2.y;
+  x = cp2.x;
+  v8 = cp1.y;
+  v9 = cp1.x;
+  v10 = point.y;
+  v11 = point.x;
   v14.receiver = self;
   v14.super_class = _UIFocusLinearMovementDebugViewLineElement;
   result = [(_UIFocusLinearMovementDebugViewLineElement *)&v14 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
     result->_point.x = v11;
     result->_point.y = v10;
     result->_cp1.x = v9;

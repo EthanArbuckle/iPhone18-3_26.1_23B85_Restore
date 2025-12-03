@@ -2,27 +2,27 @@
 - (BOOL)isFindingSessionActive;
 - (TVRUIDevice)device;
 - (TVRUIFindingSession)init;
-- (id)startFindingSessionForDevice:(id)a3 dismissedHandler:(id)a4;
-- (void)setDevice:(id)a3;
-- (void)setFindingSessionPresentationController:(id)a3;
-- (void)setFindingVC:(id)a3;
+- (id)startFindingSessionForDevice:(id)device dismissedHandler:(id)handler;
+- (void)setDevice:(id)device;
+- (void)setFindingSessionPresentationController:(id)controller;
+- (void)setFindingVC:(id)c;
 - (void)stopFindingSession;
 @end
 
 @implementation TVRUIFindingSession
 
-- (void)setFindingVC:(id)a3
+- (void)setFindingVC:(id)c
 {
   v4 = *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_findingVC);
-  *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_findingVC) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_findingVC) = c;
+  cCopy = c;
 }
 
-- (void)setFindingSessionPresentationController:(id)a3
+- (void)setFindingSessionPresentationController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_findingSessionPresentationController);
-  *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_findingSessionPresentationController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_findingSessionPresentationController) = controller;
+  controllerCopy = controller;
 }
 
 - (TVRUIDevice)device
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_device) = a3;
+  *(&self->super.isa + OBJC_IVAR___TVRUIFindingSession_device) = device;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -42,30 +42,30 @@
 
 - (BOOL)isFindingSessionActive
 {
-  v2 = self;
-  v3 = [(TVRUIFindingSession *)v2 findingVC];
-  if (v3)
+  selfCopy = self;
+  findingVC = [(TVRUIFindingSession *)selfCopy findingVC];
+  if (findingVC)
   {
-    v4 = v3;
-    v5 = [(UIViewController *)v3 isBeingPresented];
+    v4 = findingVC;
+    isBeingPresented = [(UIViewController *)findingVC isBeingPresented];
   }
 
   else
   {
-    v5 = 0;
+    isBeingPresented = 0;
   }
 
-  return v5;
+  return isBeingPresented;
 }
 
-- (id)startFindingSessionForDevice:(id)a3 dismissedHandler:(id)a4
+- (id)startFindingSessionForDevice:(id)device dismissedHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = TVRUIFindingSession.start(for:dismissedHandler:)(a3, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v7);
+  selfCopy = self;
+  v9 = TVRUIFindingSession.start(for:dismissedHandler:)(device, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v7);
   swift_unknownObjectRelease();
 
   return v9;
@@ -73,7 +73,7 @@
 
 - (void)stopFindingSession
 {
-  v2 = self;
+  selfCopy = self;
   TVRUIFindingSession.stop()();
 }
 

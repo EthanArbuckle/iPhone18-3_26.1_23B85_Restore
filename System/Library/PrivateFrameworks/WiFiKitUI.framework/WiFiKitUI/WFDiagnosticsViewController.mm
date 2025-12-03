@@ -1,23 +1,23 @@
 @interface WFDiagnosticsViewController
-- (WFDiagnosticsViewController)initWithNANUI:(BOOL)a3;
+- (WFDiagnosticsViewController)initWithNANUI:(BOOL)i;
 - (id)_defaultSections;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)setSaving:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)setSaving:(BOOL)saving;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFDiagnosticsViewController
 
-- (WFDiagnosticsViewController)initWithNANUI:(BOOL)a3
+- (WFDiagnosticsViewController)initWithNANUI:(BOOL)i
 {
   v4 = [(WFDiagnosticsViewController *)self initWithStyle:1];
-  v4->_showNANUI = a3;
+  v4->_showNANUI = i;
   v5 = MEMORY[0x277CBEB70];
-  v6 = [(WFDiagnosticsViewController *)v4 _defaultSections];
-  v7 = [v5 orderedSetWithArray:v6];
+  _defaultSections = [(WFDiagnosticsViewController *)v4 _defaultSections];
+  v7 = [v5 orderedSetWithArray:_defaultSections];
   sections = v4->_sections;
   v4->_sections = v7;
 
@@ -37,35 +37,35 @@
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v5 nibWithNibName:@"WFTextFieldCell" bundle:v6];
 
-  v8 = [(WFDiagnosticsViewController *)self tableView];
-  [v8 registerNib:v7 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
+  tableView = [(WFDiagnosticsViewController *)self tableView];
+  [tableView registerNib:v7 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
 
-  v9 = [(WFDiagnosticsViewController *)self tableView];
-  [v9 setCellLayoutMarginsFollowReadableWidth:0];
+  tableView2 = [(WFDiagnosticsViewController *)self tableView];
+  [tableView2 setCellLayoutMarginsFollowReadableWidth:0];
 
   v10 = *MEMORY[0x277D76F30];
-  v11 = [(WFDiagnosticsViewController *)self tableView];
-  [v11 setRowHeight:v10];
+  tableView3 = [(WFDiagnosticsViewController *)self tableView];
+  [tableView3 setRowHeight:v10];
 
-  v12 = [(WFDiagnosticsViewController *)self tableView];
-  [v12 setEstimatedRowHeight:44.0];
+  tableView4 = [(WFDiagnosticsViewController *)self tableView];
+  [tableView4 setEstimatedRowHeight:44.0];
 
-  v13 = [(WFDiagnosticsViewController *)self tableView];
-  [v13 setEstimatedSectionHeaderHeight:0.0];
+  tableView5 = [(WFDiagnosticsViewController *)self tableView];
+  [tableView5 setEstimatedSectionHeaderHeight:0.0];
 
-  v14 = [(WFDiagnosticsViewController *)self tableView];
-  [v14 setEstimatedSectionFooterHeight:0.0];
+  tableView6 = [(WFDiagnosticsViewController *)self tableView];
+  [tableView6 setEstimatedSectionFooterHeight:0.0];
 }
 
-- (void)setSaving:(BOOL)a3
+- (void)setSaving:(BOOL)saving
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  self->_saving = a3;
-  v3 = [(WFDiagnosticsViewController *)self tableView];
+  self->_saving = saving;
+  tableView = [(WFDiagnosticsViewController *)self tableView];
   v4 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v3 reloadRowsAtIndexPaths:v5 withRowAnimation:100];
+  [tableView reloadRowsAtIndexPaths:v5 withRowAnimation:100];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -83,23 +83,23 @@
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFDiagnosticsViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFDiagnosticsViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFDiagnosticsViewController *)self sections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
-  v10 = [v9 unsignedIntegerValue];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(WFDiagnosticsViewController *)self sections];
+  v9 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  switch(v10)
+  switch(unsignedIntegerValue)
   {
     case 2:
       if (![(WFDiagnosticsViewController *)self showNANUI])
@@ -125,8 +125,8 @@ LABEL_15:
       }
 
       v30 = [v27 localizedStringForKey:v29 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v31 = [v11 textLabel];
-      [v31 setText:v30];
+      textLabel = [v11 textLabel];
+      [textLabel setText:v30];
 
       [v11 setAccessoryType:1];
       v32 = v11;
@@ -134,10 +134,10 @@ LABEL_15:
       break;
     case 1:
       v11 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
-      v19 = [(WFDiagnosticsViewController *)self saving];
+      saving = [(WFDiagnosticsViewController *)self saving];
       v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v21 = v20;
-      if (v19)
+      if (saving)
       {
         v22 = @"kWFLocDiagnosticsSavingInProgressTitle";
       }
@@ -148,8 +148,8 @@ LABEL_15:
       }
 
       v23 = [v20 localizedStringForKey:v22 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v24 = [v11 textLabel];
-      [v24 setText:v23];
+      textLabel2 = [v11 textLabel];
+      [textLabel2 setText:v23];
 
       if ([(WFDiagnosticsViewController *)self saving])
       {
@@ -161,26 +161,26 @@ LABEL_15:
         [MEMORY[0x277D75348] systemBlueColor];
       }
       v34 = ;
-      v35 = [v11 textLabel];
-      [v35 setTextColor:v34];
+      textLabel3 = [v11 textLabel];
+      [textLabel3 setTextColor:v34];
 
       v33 = [(WFDiagnosticsViewController *)self saving]^ 1;
       v32 = v11;
       break;
     case 0:
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"kWFTextFieldCellIdentifier" forIndexPath:v7];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"kWFTextFieldCellIdentifier" forIndexPath:pathCopy];
       v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v13 = [v12 localizedStringForKey:@"kWFLocDiagnosticsCommentTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v14 = [v11 label];
-      [v14 setText:v13];
+      label = [v11 label];
+      [label setText:v13];
 
       v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v16 = [v15 localizedStringForKey:@"kWFLocDiagnosticsCommentPlaceholder" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v17 = [v11 textField];
-      [v17 setPlaceholder:v16];
+      textField = [v11 textField];
+      [textField setPlaceholder:v16];
 
-      v18 = [v11 textField];
-      [v18 setTextAlignment:0];
+      textField2 = [v11 textField];
+      [textField2 setTextAlignment:0];
 
       objc_initWeak(&location, self);
       v37[0] = MEMORY[0x277D85DD0];
@@ -209,16 +209,16 @@ void __63__WFDiagnosticsViewController_tableView_cellForRowAtIndexPath___block_i
   [WeakRetained setComment:v3];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFDiagnosticsViewController *)self sections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
-  v10 = [v9 unsignedIntegerValue];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(WFDiagnosticsViewController *)self sections];
+  v9 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  if (v10 == 2)
+  if (unsignedIntegerValue == 2)
   {
     v17 = WFLogForCategory(0);
     v18 = OSLogForWFLogLevel(3uLL);
@@ -229,12 +229,12 @@ void __63__WFDiagnosticsViewController_tableView_cellForRowAtIndexPath___block_i
       _os_log_impl(&dword_273FB9000, v17, v18, "%s: tapped on NAN row", &v23, 0xCu);
     }
 
-    v19 = objc_alloc_init(WFNANTableViewController);
-    [(UIViewController *)self wf_pushViewController:v19 animated:1];
+    saveHandler2 = objc_alloc_init(WFNANTableViewController);
+    [(UIViewController *)self wf_pushViewController:saveHandler2 animated:1];
     goto LABEL_21;
   }
 
-  if (!v10 && ![(WFDiagnosticsViewController *)self saving])
+  if (!unsignedIntegerValue && ![(WFDiagnosticsViewController *)self saving])
   {
     v11 = WFLogForCategory(0);
     v12 = OSLogForWFLogLevel(3uLL);
@@ -243,20 +243,20 @@ void __63__WFDiagnosticsViewController_tableView_cellForRowAtIndexPath___block_i
       v13 = v11;
       if (os_log_type_enabled(v13, v12))
       {
-        v14 = [(WFDiagnosticsViewController *)self comment];
-        v15 = [v14 length];
+        comment = [(WFDiagnosticsViewController *)self comment];
+        v15 = [comment length];
         if (v15)
         {
-          v16 = [(WFDiagnosticsViewController *)self comment];
+          comment2 = [(WFDiagnosticsViewController *)self comment];
         }
 
         else
         {
-          v16 = @"<nil>";
+          comment2 = @"<nil>";
         }
 
         v23 = 138412290;
-        v24 = v16;
+        v24 = comment2;
         _os_log_impl(&dword_273FB9000, v13, v12, "Saving logs with comment %@", &v23, 0xCu);
         if (v15)
         {
@@ -264,30 +264,30 @@ void __63__WFDiagnosticsViewController_tableView_cellForRowAtIndexPath___block_i
       }
     }
 
-    v20 = [(WFDiagnosticsViewController *)self saveHandler];
+    saveHandler = [(WFDiagnosticsViewController *)self saveHandler];
 
-    if (v20)
+    if (saveHandler)
     {
-      v19 = [(WFDiagnosticsViewController *)self saveHandler];
-      v21 = [(WFDiagnosticsViewController *)self comment];
-      (v19->super.super.super._overrideTransitioningDelegate)(v19, v21);
+      saveHandler2 = [(WFDiagnosticsViewController *)self saveHandler];
+      comment3 = [(WFDiagnosticsViewController *)self comment];
+      (saveHandler2->super.super.super._overrideTransitioningDelegate)(saveHandler2, comment3);
 
 LABEL_21:
     }
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(WFDiagnosticsViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 unsignedIntegerValue];
+  sections = [(WFDiagnosticsViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7)
+  if (unsignedIntegerValue)
   {
     v8 = 0;
   }

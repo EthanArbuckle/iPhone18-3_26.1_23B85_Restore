@@ -1,16 +1,16 @@
 @interface TNPageContentRep
-- (TNPageContentRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TNPageContentRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)pageController;
 - (void)willBeRemoved;
 @end
 
 @implementation TNPageContentRep
 
-- (TNPageContentRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TNPageContentRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v18.receiver = self;
   v18.super_class = TNPageContentRep;
-  v4 = [(TSDRep *)&v18 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v18 initWithLayout:layout canvas:canvas];
   v7 = v4;
   if (v4)
   {

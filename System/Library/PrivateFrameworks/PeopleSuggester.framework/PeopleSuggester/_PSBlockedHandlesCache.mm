@@ -1,12 +1,12 @@
 @interface _PSBlockedHandlesCache
 + (id)sharedBlockedHandlesCache;
-- (BOOL)isHandleBlocked:(id)a3;
+- (BOOL)isHandleBlocked:(id)blocked;
 - (_PSBlockedHandlesCache)init;
 - (uint64_t)beginSyncingWithTU;
 - (void)beginSyncingWithTU;
-- (void)handlePrivacyManagerChangeNotification:(id)a3;
+- (void)handlePrivacyManagerChangeNotification:(id)notification;
 - (void)rebuildCacheFromPrivacyManager;
-- (void)rebuildCacheWithBlockedHandles:(id)a3;
+- (void)rebuildCacheWithBlockedHandles:(id)handles;
 @end
 
 @implementation _PSBlockedHandlesCache
@@ -37,14 +37,14 @@
   return v3;
 }
 
-- (BOOL)isHandleBlocked:(id)a3
+- (BOOL)isHandleBlocked:(id)blocked
 {
-  v4 = a3;
+  blockedCopy = blocked;
   v5 = (*(self->_isHandleBlocked + 2))();
   v6 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(_PSBlockedHandlesCache *)v4 isHandleBlocked:v5, v6];
+    [(_PSBlockedHandlesCache *)blockedCopy isHandleBlocked:v5, v6];
   }
 
   v7 = (*(self->_isHandleBlocked + 2))();
@@ -53,7 +53,7 @@
 
 - (void)beginSyncingWithTU
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -75,12 +75,12 @@
   _Block_object_dispose(&v10, 8);
   if (!v4)
   {
-    v7 = [_PSBlockedHandlesCache beginSyncingWithTU];
+    beginSyncingWithTU = [_PSBlockedHandlesCache beginSyncingWithTU];
     _Block_object_dispose(&v10, 8);
-    _Unwind_Resume(v7);
+    _Unwind_Resume(beginSyncingWithTU);
   }
 
-  [v3 addObserver:self selector:sel_handlePrivacyManagerChangeNotification_ name:*v4 object:0];
+  [defaultCenter addObserver:self selector:sel_handlePrivacyManagerChangeNotification_ name:*v4 object:0];
 
   v6 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -92,7 +92,7 @@
   [(_PSBlockedHandlesCache *)self rebuildCacheFromPrivacyManager];
 }
 
-- (void)handlePrivacyManagerChangeNotification:(id)a3
+- (void)handlePrivacyManagerChangeNotification:(id)notification
 {
   v4 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -136,30 +136,30 @@
 
   v5 = v4;
   _Block_object_dispose(&v10, 8);
-  v6 = [v4 sharedPrivacyManager];
-  v7 = [v6 privacyRules];
-  v8 = [v7 _pas_mappedArrayWithTransform:&__block_literal_global_16_0];
+  sharedPrivacyManager = [v4 sharedPrivacyManager];
+  privacyRules = [sharedPrivacyManager privacyRules];
+  v8 = [privacyRules _pas_mappedArrayWithTransform:&__block_literal_global_16_0];
 
   [(_PSBlockedHandlesCache *)self rebuildCacheWithBlockedHandles:v8];
 }
 
-- (void)rebuildCacheWithBlockedHandles:(id)a3
+- (void)rebuildCacheWithBlockedHandles:(id)handles
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  handlesCopy = handles;
+  if ([handlesCopy count])
   {
-    if ([v4 count] > 0x3E7)
+    if ([handlesCopy count] > 0x3E7)
     {
       v13 = MEMORY[0x1E69C5CC8];
-      v14 = [v4 count];
+      v14 = [handlesCopy count];
       LODWORD(v15) = 897988541;
       v16 = [v13 bloomFilterInMemoryWithNumberOfValuesN:v14 errorRateP:v15];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v17 = v4;
+      v17 = handlesCopy;
       v18 = [v17 countByEnumeratingWithState:&v35 objects:v45 count:16];
       if (v18)
       {
@@ -194,8 +194,8 @@
         while (v19);
       }
 
-      v26 = self;
-      objc_sync_enter(v26);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __57___PSBlockedHandlesCache_rebuildCacheWithBlockedHandles___block_invoke_3;
@@ -203,18 +203,18 @@
       v34 = v16;
       v27 = v16;
       v28 = MEMORY[0x1B8C8C060](v33);
-      isHandleBlocked = v26->_isHandleBlocked;
-      v26->_isHandleBlocked = v28;
+      isHandleBlocked = selfCopy->_isHandleBlocked;
+      selfCopy->_isHandleBlocked = v28;
 
-      objc_sync_exit(v26);
+      objc_sync_exit(selfCopy);
       v10 = @"bloom filter";
     }
 
     else
     {
-      v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v4];
-      v6 = self;
-      objc_sync_enter(v6);
+      v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:handlesCopy];
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __57___PSBlockedHandlesCache_rebuildCacheWithBlockedHandles___block_invoke_2;
@@ -222,29 +222,29 @@
       v40 = v5;
       v7 = v5;
       v8 = MEMORY[0x1B8C8C060](v39);
-      v9 = v6->_isHandleBlocked;
-      v6->_isHandleBlocked = v8;
+      v9 = selfCopy2->_isHandleBlocked;
+      selfCopy2->_isHandleBlocked = v8;
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy2);
       v10 = @"set";
     }
   }
 
   else
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    v12 = v11->_isHandleBlocked;
-    v11->_isHandleBlocked = &__block_literal_global_22_0;
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    v12 = selfCopy3->_isHandleBlocked;
+    selfCopy3->_isHandleBlocked = &__block_literal_global_22_0;
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy3);
     v10 = @"empty";
   }
 
   v30 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v4 count];
+    v31 = [handlesCopy count];
     *buf = 134218242;
     v42 = v31;
     v43 = 2112;

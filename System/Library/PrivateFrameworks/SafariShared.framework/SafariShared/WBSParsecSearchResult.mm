@@ -1,13 +1,13 @@
 @interface WBSParsecSearchResult
-+ (int64_t)typeForSFSearchResult:(id)a3;
-- (BOOL)isPredictionFromServerMatchingUserTypedQuery:(id)a3;
++ (int64_t)typeForSFSearchResult:(id)result;
+- (BOOL)isPredictionFromServerMatchingUserTypedQuery:(id)query;
 - (NSString)debugDescription;
 - (NSString)descriptionText;
 - (NSString)stringForType;
 - (NSString)title;
 - (NSString)urlString;
 - (NSURL)appPunchoutURL;
-- (WBSParsecSearchResult)initWithSFSearchResult:(id)a3;
+- (WBSParsecSearchResult)initWithSFSearchResult:(id)result;
 - (int64_t)subtype;
 - (int64_t)type;
 - (void)type;
@@ -15,24 +15,24 @@
 
 @implementation WBSParsecSearchResult
 
-- (WBSParsecSearchResult)initWithSFSearchResult:(id)a3
+- (WBSParsecSearchResult)initWithSFSearchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v19.receiver = self;
   v19.super_class = WBSParsecSearchResult;
   v6 = [(WBSParsecSearchResult *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sfSearchResult, a3);
-    v8 = [(WBSParsecSearchResult *)v7 sfSearchResultValue];
-    v9 = [v8 safari_firstInlineCardSectionOfClass:objc_opt_class()];
-    v10 = [v9 thumbnail];
+    objc_storeStrong(&v6->_sfSearchResult, result);
+    sfSearchResultValue = [(WBSParsecSearchResult *)v7 sfSearchResultValue];
+    v9 = [sfSearchResultValue safari_firstInlineCardSectionOfClass:objc_opt_class()];
+    thumbnail = [v9 thumbnail];
 
-    if (v10 || (-[WBSParsecSearchResult sfSearchResultValue](v7, "sfSearchResultValue"), v11 = objc_claimAutoreleasedReturnValue(), [v11 safari_firstInlineCardSectionOfClass:objc_opt_class()], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "image"), v10 = objc_claimAutoreleasedReturnValue(), v12, v11, v10))
+    if (thumbnail || (-[WBSParsecSearchResult sfSearchResultValue](v7, "sfSearchResultValue"), v11 = objc_claimAutoreleasedReturnValue(), [v11 safari_firstInlineCardSectionOfClass:objc_opt_class()], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "image"), thumbnail = objc_claimAutoreleasedReturnValue(), v12, v11, thumbnail))
     {
-      v13 = [v10 dictionaryRepresentation];
-      v14 = [v13 objectForKeyedSubscript:@"urlValue"];
+      dictionaryRepresentation = [thumbnail dictionaryRepresentation];
+      v14 = [dictionaryRepresentation objectForKeyedSubscript:@"urlValue"];
       v15 = [v14 objectForKeyedSubscript:@"address"];
       imageURL = v7->_imageURL;
       v7->_imageURL = v15;
@@ -62,66 +62,66 @@
 
 - (NSString)stringForType
 {
-  v2 = [(WBSParsecSearchResult *)self type];
-  if ((v2 - 1) > 4)
+  type = [(WBSParsecSearchResult *)self type];
+  if ((type - 1) > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return &off_1E7FC85A8[v2 - 1]->isa;
+    return &off_1E7FC85A8[type - 1]->isa;
   }
 }
 
-+ (int64_t)typeForSFSearchResult:(id)a3
++ (int64_t)typeForSFSearchResult:(id)result
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 resultType];
-  v5 = [v4 isEqualToString:@"flights"];
+  resultCopy = result;
+  resultType = [resultCopy resultType];
+  v5 = [resultType isEqualToString:@"flights"];
 
   if (v5)
   {
-    v6 = 5;
+    integerValue = 5;
   }
 
   else
   {
-    v7 = [v3 resultType];
-    v8 = [v7 isEqualToString:@"sports"];
+    resultType2 = [resultCopy resultType];
+    v8 = [resultType2 isEqualToString:@"sports"];
 
     if (v8)
     {
-      v6 = 4;
+      integerValue = 4;
     }
 
     else
     {
-      v9 = [v3 resultType];
-      v10 = [v9 isEqualToString:@"maps"];
+      resultType3 = [resultCopy resultType];
+      v10 = [resultType3 isEqualToString:@"maps"];
 
       if (v10)
       {
-        v6 = 2;
+        integerValue = 2;
       }
 
       else
       {
-        v11 = [v3 inlineCard];
-        v12 = [v11 cardSections];
+        inlineCard = [resultCopy inlineCard];
+        cardSections = [inlineCard cardSections];
 
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v13 = v12;
+        v13 = cardSections;
         v14 = [v13 countByEnumeratingWithState:&v22 objects:v28 count:16];
         if (v14)
         {
           v15 = v14;
           v16 = *v23;
-          v6 = 4;
+          integerValue = 4;
           while (2)
           {
             v17 = 0;
@@ -160,34 +160,34 @@
         v26[2] = @"generic";
         v27[2] = &unk_1F3A9AF10;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:{3, v22}];
-        v19 = [v3 resultTemplate];
-        v20 = [v18 objectForKeyedSubscript:v19];
-        v6 = [v20 integerValue];
+        resultTemplate = [resultCopy resultTemplate];
+        v20 = [v18 objectForKeyedSubscript:resultTemplate];
+        integerValue = [v20 integerValue];
 
 LABEL_17:
       }
     }
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (int64_t)subtype
 {
-  v2 = [(SFSearchResult *)self->_sfSearchResult resultType];
-  v3 = [&unk_1F3A9B3E8 objectForKeyedSubscript:v2];
+  resultType = [(SFSearchResult *)self->_sfSearchResult resultType];
+  v3 = [&unk_1F3A9B3E8 objectForKeyedSubscript:resultType];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)title
@@ -201,9 +201,9 @@ LABEL_17:
       v5 = [(SFSearchResult *)self->_sfSearchResult safari_firstInlineCardSectionOfClass:objc_opt_class()];
       if (v5)
       {
-        v6 = v5;
-        v7 = [v5 title];
-        v8 = [v7 text];
+        title2 = v5;
+        title = [v5 title];
+        text = [title text];
 
         goto LABEL_7;
       }
@@ -212,11 +212,11 @@ LABEL_17:
     sfSearchResult = self->_sfSearchResult;
   }
 
-  v6 = [sfSearchResult title];
-  v8 = [v6 text];
+  title2 = [sfSearchResult title];
+  text = [title2 text];
 LABEL_7:
 
-  return v8;
+  return text;
 }
 
 - (NSString)descriptionText
@@ -225,60 +225,60 @@ LABEL_7:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 subtitle];
-    v6 = [v5 text];
+    subtitle = [v3 subtitle];
+    text = [subtitle text];
   }
 
   else
   {
     if ([WBSParsecSearchResult typeForSFSearchResult:self->_sfSearchResult]== 3 && ([(SFSearchResult *)self->_sfSearchResult safari_firstInlineCardSectionOfClass:objc_opt_class()], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = v7;
-      v8 = [v7 secondaryTitle];
+      subtitle = v7;
+      secondaryTitle = [v7 secondaryTitle];
     }
 
     else
     {
-      v5 = [(SFSearchResult *)self->_sfSearchResult descriptions];
-      v8 = [v5 firstObject];
+      subtitle = [(SFSearchResult *)self->_sfSearchResult descriptions];
+      secondaryTitle = [subtitle firstObject];
     }
 
-    v9 = v8;
-    v6 = [v8 text];
+    v9 = secondaryTitle;
+    text = [secondaryTitle text];
   }
 
-  return v6;
+  return text;
 }
 
 - (NSString)urlString
 {
   v2 = [(SFSearchResult *)self->_sfSearchResult url];
-  v3 = [v2 absoluteString];
+  absoluteString = [v2 absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
 - (NSURL)appPunchoutURL
 {
-  v2 = [(SFSearchResult *)self->_sfSearchResult punchout];
-  v3 = [v2 preferredOpenableURL];
+  punchout = [(SFSearchResult *)self->_sfSearchResult punchout];
+  preferredOpenableURL = [punchout preferredOpenableURL];
 
-  return v3;
+  return preferredOpenableURL;
 }
 
-- (BOOL)isPredictionFromServerMatchingUserTypedQuery:(id)a3
+- (BOOL)isPredictionFromServerMatchingUserTypedQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   if ([(SFSearchResult *)self->_sfSearchResult topHit])
   {
-    v5 = [v4 queryString];
-    if (v5)
+    queryString = [queryCopy queryString];
+    if (queryString)
     {
-      v6 = [(SFSearchResult *)self->_sfSearchResult completedQuery];
-      v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v8 = [v6 stringByTrimmingCharactersInSet:v7];
+      completedQuery = [(SFSearchResult *)self->_sfSearchResult completedQuery];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v8 = [completedQuery stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-      if ([v8 hasPrefix:v5])
+      if ([v8 hasPrefix:queryString])
       {
         v9 = [v8 length] != 0;
       }
@@ -308,9 +308,9 @@ LABEL_7:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBSParsecSearchResult *)self title];
-  v7 = [(WBSParsecSearchResult *)self urlString];
-  v8 = [v3 stringWithFormat:@"<%@: %p title = %@ url = %@>", v5, self, v6, v7];;
+  title = [(WBSParsecSearchResult *)self title];
+  urlString = [(WBSParsecSearchResult *)self urlString];
+  v8 = [v3 stringWithFormat:@"<%@: %p title = %@ url = %@>", v5, self, title, urlString];;
 
   return v8;
 }
@@ -318,11 +318,11 @@ LABEL_7:
 - (void)type
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 resultTemplate];
+  selfCopy = self;
+  resultTemplate = [a2 resultTemplate];
   v5 = 138543362;
-  v6 = v4;
-  _os_log_error_impl(&dword_1BB6F3000, v3, OS_LOG_TYPE_ERROR, "Received result of unknown type %{public}@", &v5, 0xCu);
+  v6 = resultTemplate;
+  _os_log_error_impl(&dword_1BB6F3000, selfCopy, OS_LOG_TYPE_ERROR, "Received result of unknown type %{public}@", &v5, 0xCu);
 }
 
 @end

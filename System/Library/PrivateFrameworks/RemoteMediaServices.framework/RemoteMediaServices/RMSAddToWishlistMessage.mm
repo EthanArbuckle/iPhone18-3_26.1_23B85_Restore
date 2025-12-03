@@ -1,21 +1,21 @@
 @interface RMSAddToWishlistMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasItemID:(BOOL)a3;
-- (void)setHasSessionIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasItemID:(BOOL)d;
+- (void)setHasSessionIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSAddToWishlistMessage
 
-- (void)setHasItemID:(BOOL)a3
+- (void)setHasItemID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSessionIdentifier:(BOOL)a3
+- (void)setHasSessionIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = RMSAddToWishlistMessage;
   v4 = [(RMSAddToWishlistMessage *)&v8 description];
-  v5 = [(RMSAddToWishlistMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSAddToWishlistMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_itemID];
-    [v3 setObject:v7 forKey:@"itemID"];
+    [dictionary setObject:v7 forKey:@"itemID"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -83,29 +83,29 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_databaseID];
-  [v3 setObject:v8 forKey:@"databaseID"];
+  [dictionary setObject:v8 forKey:@"databaseID"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_sessionIdentifier];
-    [v3 setObject:v5 forKey:@"sessionIdentifier"];
+    [dictionary setObject:v5 forKey:@"sessionIdentifier"];
   }
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -125,25 +125,25 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_itemID;
-    *(v4 + 28) |= 2u;
+    toCopy[2] = self->_itemID;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -162,21 +162,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[1] = self->_databaseID;
-  *(v4 + 28) |= 1u;
+  toCopy[1] = self->_databaseID;
+  *(toCopy + 28) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 6) = self->_sessionIdentifier;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 6) = self->_sessionIdentifier;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -213,23 +213,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_itemID != *(v4 + 2))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_itemID != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -238,21 +238,21 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_databaseID != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_databaseID != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_sessionIdentifier != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_sessionIdentifier != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
@@ -305,15 +305,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_itemID = *(v4 + 2);
+    self->_itemID = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -326,17 +326,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 1) == 0)
+  else if ((*(fromCopy + 28) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_databaseID = *(v4 + 1);
+  self->_databaseID = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_4:
-    self->_sessionIdentifier = *(v4 + 6);
+    self->_sessionIdentifier = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 

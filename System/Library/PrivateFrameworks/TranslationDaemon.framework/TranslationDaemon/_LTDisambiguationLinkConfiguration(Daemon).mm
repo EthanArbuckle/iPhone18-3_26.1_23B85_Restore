@@ -43,19 +43,19 @@
   v10 = a5;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 alternatives];
-    v12 = v11;
+    alternatives = [v8 alternatives];
+    v12 = alternatives;
     v13 = MEMORY[0x277CBEBF8];
-    if (v11)
+    if (alternatives)
     {
-      v13 = v11;
+      v13 = alternatives;
     }
 
     v14 = v13;
 
     v15 = [v14 _ltCompactMap:&__block_literal_global_9];
-    v16 = [v8 source];
-    v18 = [v9 lt_codeUnitsRangeFromCodePointsRange:{v16, v17}];
+    source = [v8 source];
+    v18 = [v9 lt_codeUnitsRangeFromCodePointsRange:{source, v17}];
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v20 = _LTOSLogDisambiguation();
@@ -72,8 +72,8 @@
       v22 = v18;
       v23 = v19;
       v34 = v15;
-      v24 = [v8 projection];
-      v26 = [v10 lt_codeUnitsRangeFromCodePointsRange:{v24, v25}];
+      projection = [v8 projection];
+      v26 = [v10 lt_codeUnitsRangeFromCodePointsRange:{projection, v25}];
       if (v26 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v28 = _LTOSLogDisambiguation();
@@ -92,7 +92,7 @@
         v31 = [v14 count];
         v32 = v29;
         v15 = v34;
-        v21 = [a1 _linkConfigurationWithSourceRange:v22 targetRange:v23 unvalidatedAdjacencyList:v32 expectedNumberOfEdges:{v30, v34, v31}];
+        v21 = [self _linkConfigurationWithSourceRange:v22 targetRange:v23 unvalidatedAdjacencyList:v32 expectedNumberOfEdges:{v30, v34, v31}];
       }
     }
   }
@@ -111,12 +111,12 @@
   v11 = a4;
   v12 = a5;
   v13 = a6;
-  v14 = [v10 alternatives];
-  v15 = v14;
+  alternatives = [v10 alternatives];
+  v15 = alternatives;
   v16 = MEMORY[0x277CBEBF8];
-  if (v14)
+  if (alternatives)
   {
-    v16 = v14;
+    v16 = alternatives;
   }
 
   v17 = v16;
@@ -128,15 +128,15 @@
   v49 = v11;
   v18 = v11;
   v19 = [v17 _ltCompactMap:v48];
-  v20 = [v10 source_range];
-  v21 = v20;
-  if (v20)
+  source_range = [v10 source_range];
+  v21 = source_range;
+  if (source_range)
   {
-    v44 = a1;
+    selfCopy = self;
     v46 = v13;
-    v22 = [v20 start];
+    start = [source_range start];
     v23 = [v21 length];
-    v24 = [v12 lt_codeUnitsRangeFromCodePointsRange:{v22, v23}];
+    v24 = [v12 lt_codeUnitsRangeFromCodePointsRange:{start, v23}];
     if (v24 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v45 = v17;
@@ -145,7 +145,7 @@
       v28 = _LTOSLogDisambiguation();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        [_LTDisambiguationLinkConfiguration(Daemon) linkConfigurationWithFTSelectionSpan:v28 descriptions:v22 sourceText:v23 targetText:?];
+        [_LTDisambiguationLinkConfiguration(Daemon) linkConfigurationWithFTSelectionSpan:v28 descriptions:start sourceText:v23 targetText:?];
       }
 
       v29 = 0;
@@ -157,10 +157,10 @@
 
     v31 = v24;
     v32 = v25;
-    v33 = [v10 projection_ranges];
-    v34 = [v33 firstObject];
+    projection_ranges = [v10 projection_ranges];
+    firstObject = [projection_ranges firstObject];
 
-    if (!v34)
+    if (!firstObject)
     {
       v40 = _LTOSLogDisambiguation();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
@@ -175,10 +175,10 @@
     }
 
     v43 = v18;
-    v35 = [v34 start];
-    v36 = [v34 length];
-    v42 = v35;
-    v37 = [v46 lt_codeUnitsRangeFromCodePointsRange:{v35, v36}];
+    start2 = [firstObject start];
+    v36 = [firstObject length];
+    v42 = start2;
+    v37 = [v46 lt_codeUnitsRangeFromCodePointsRange:{start2, v36}];
     if (v37 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v39 = _LTOSLogDisambiguation();
@@ -195,7 +195,7 @@
 
     else
     {
-      v29 = [v44 _linkConfigurationWithSourceRange:v31 targetRange:v32 unvalidatedAdjacencyList:v37 expectedNumberOfEdges:{v38, v19, objc_msgSend(v17, "count")}];
+      v29 = [selfCopy _linkConfigurationWithSourceRange:v31 targetRange:v32 unvalidatedAdjacencyList:v37 expectedNumberOfEdges:{v38, v19, objc_msgSend(v17, "count")}];
     }
 
     v13 = v46;

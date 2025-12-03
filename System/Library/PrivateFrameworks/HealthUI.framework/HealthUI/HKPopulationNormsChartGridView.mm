@@ -1,35 +1,35 @@
 @interface HKPopulationNormsChartGridView
-- (CGRect)_determineCanvasRectInRect:(CGRect)a3 yAxisWidth:(double)a4 xAxisHeight:(double)a5;
+- (CGRect)_determineCanvasRectInRect:(CGRect)rect yAxisWidth:(double)width xAxisHeight:(double)height;
 - (CGRect)determineCanvasRect;
-- (HKPopulationNormsChartGridView)initWithXAxisLabels:(id)a3 YAxisLabels:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (HKPopulationNormsChartGridView)initWithXAxisLabels:(id)labels YAxisLabels:(id)axisLabels;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 - (void)relocalizeAxisLabels;
 @end
 
 @implementation HKPopulationNormsChartGridView
 
-- (HKPopulationNormsChartGridView)initWithXAxisLabels:(id)a3 YAxisLabels:(id)a4
+- (HKPopulationNormsChartGridView)initWithXAxisLabels:(id)labels YAxisLabels:(id)axisLabels
 {
-  v6 = a3;
-  v7 = a4;
+  labelsCopy = labels;
+  axisLabelsCopy = axisLabels;
   v14.receiver = self;
   v14.super_class = HKPopulationNormsChartGridView;
   v8 = [(HKPopulationNormsChartGridView *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v8)
   {
-    v9 = [[HKPopulationNormsAxisView alloc] initWithOrientation:1 axisLabels:v6];
+    v9 = [[HKPopulationNormsAxisView alloc] initWithOrientation:1 axisLabels:labelsCopy];
     xAxisView = v8->_xAxisView;
     v8->_xAxisView = v9;
 
-    v11 = [[HKPopulationNormsAxisView alloc] initWithOrientation:0 axisLabels:v7];
+    v11 = [[HKPopulationNormsAxisView alloc] initWithOrientation:0 axisLabels:axisLabelsCopy];
     yAxisView = v8->_yAxisView;
     v8->_yAxisView = v11;
 
     [(HKPopulationNormsChartGridView *)v8 addSubview:v8->_xAxisView];
     [(HKPopulationNormsChartGridView *)v8 addSubview:v8->_yAxisView];
-    v8->_xAxisSegmentCount = [v6 count];
-    v8->_yAxisSegmentCount = [v7 count];
+    v8->_xAxisSegmentCount = [labelsCopy count];
+    v8->_yAxisSegmentCount = [axisLabelsCopy count];
   }
 
   return v8;
@@ -54,12 +54,12 @@
   return result;
 }
 
-- (CGRect)_determineCanvasRectInRect:(CGRect)a3 yAxisWidth:(double)a4 xAxisHeight:(double)a5
+- (CGRect)_determineCanvasRectInRect:(CGRect)rect yAxisWidth:(double)width xAxisHeight:(double)height
 {
-  v5 = a3.origin.x + 0.0;
-  v6 = a3.origin.y + 0.0;
-  v7 = a3.size.width - (a4 + 0.0);
-  v8 = a3.size.height - (a5 + 0.0);
+  v5 = rect.origin.x + 0.0;
+  v6 = rect.origin.y + 0.0;
+  v7 = rect.size.width - (width + 0.0);
+  v8 = rect.size.height - (height + 0.0);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -91,12 +91,12 @@
   [(HKPopulationNormsAxisView *)self->_yAxisView setFrame:v6, 0.0, v4, v8];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25.receiver = self;
   v25.super_class = HKPopulationNormsChartGridView;
   [(HKPopulationNormsChartGridView *)&v25 drawRect:?];
@@ -125,8 +125,8 @@
   v14 = v13;
   [(HKPopulationNormsChartGridView *)self _determineXAxisHeight];
   v16 = v15;
-  v17 = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
-  CGContextSetStrokeColorWithColor(CurrentContext, [v17 CGColor]);
+  hk_chartAxisMajorGridColor = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
+  CGContextSetStrokeColorWithColor(CurrentContext, [hk_chartAxisMajorGridColor CGColor]);
 
   CGContextSetLineWidth(CurrentContext, 0.5);
   CGContextBeginPath(CurrentContext);
@@ -159,8 +159,8 @@
     CGContextStrokePath(CurrentContext);
   }
 
-  v21 = [MEMORY[0x1E69DC888] hk_chartAxisMinorGridColor];
-  CGContextSetStrokeColorWithColor(CurrentContext, [v21 CGColor]);
+  hk_chartAxisMinorGridColor = [MEMORY[0x1E69DC888] hk_chartAxisMinorGridColor];
+  CGContextSetStrokeColorWithColor(CurrentContext, [hk_chartAxisMinorGridColor CGColor]);
 
   if (self->_xAxisSegmentCount >= 2)
   {

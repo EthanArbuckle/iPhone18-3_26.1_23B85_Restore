@@ -1,8 +1,8 @@
 @interface RCPEventScreen
 - (CGSize)pointSize;
-- (RCPEventScreen)initWithCoder:(id)a3;
+- (RCPEventScreen)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCPEventScreen
@@ -33,26 +33,26 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scale = self->_scale;
-  v5 = a3;
-  [v5 encodeDouble:@"scale" forKey:scale];
-  [v5 encodeDouble:@"width" forKey:self->_pointSize.width];
-  [v5 encodeDouble:@"height" forKey:self->_pointSize.height];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"scale" forKey:scale];
+  [coderCopy encodeDouble:@"width" forKey:self->_pointSize.width];
+  [coderCopy encodeDouble:@"height" forKey:self->_pointSize.height];
 }
 
-- (RCPEventScreen)initWithCoder:(id)a3
+- (RCPEventScreen)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RCPEventScreen *)self init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     v5->_scale = v6;
-    [v4 decodeDoubleForKey:@"width"];
+    [coderCopy decodeDoubleForKey:@"width"];
     v5->_pointSize.width = v7;
-    [v4 decodeDoubleForKey:@"height"];
+    [coderCopy decodeDoubleForKey:@"height"];
     v5->_pointSize.height = v8;
   }
 

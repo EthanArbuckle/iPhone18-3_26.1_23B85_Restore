@@ -11,7 +11,7 @@
   v12 = 0;
   v5 = *MEMORY[0x277CBE7C8];
   v11 = 0;
-  v6 = [a1 getResourceValue:&v12 forKey:v5 error:&v11];
+  v6 = [self getResourceValue:&v12 forKey:v5 error:&v11];
   v7 = v12;
   v8 = v11;
   if (v6)
@@ -27,7 +27,7 @@
     v9 = _log_2();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(QLTExtensions) *)v8 qlt_getDocumentIdentifier:a1, v9];
+      [(NSURL(QLTExtensions) *)v8 qlt_getDocumentIdentifier:self, v9];
     }
   }
 
@@ -37,7 +37,7 @@
 - (BOOL)qlt_getDeviceIdentifier:()QLTExtensions
 {
   memset(&v6, 0, sizeof(v6));
-  v4 = stat([a1 fileSystemRepresentation], &v6);
+  v4 = stat([self fileSystemRepresentation], &v6);
   if (a3 && !v4)
   {
     *a3 = v6.st_dev;
@@ -50,12 +50,12 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   memset(&v15, 0, 512);
-  if (statfs([a1 fileSystemRepresentation], &v15))
+  if (statfs([self fileSystemRepresentation], &v15))
   {
     v5 = _log_2();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(QLTExtensions) *)a1 qlt_getVolumeUUID:v5];
+      [(NSURL(QLTExtensions) *)self qlt_getVolumeUUID:v5];
     }
 
     v6 = 0;

@@ -1,10 +1,10 @@
 @interface FMDBatteryInfo
 - (FMDBatteryInfo)init;
-- (FMDBatteryInfo)initWithCoder:(id)a3;
-- (FMDBatteryInfo)initWithType:(unint64_t)a3 level:(double)a4 state:(unint64_t)a5;
+- (FMDBatteryInfo)initWithCoder:(id)coder;
+- (FMDBatteryInfo)initWithType:(unint64_t)type level:(double)level state:(unint64_t)state;
 - (NSDictionary)dictionaryValue;
-- (id)batteryStatusForState:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)batteryStatusForState:(unint64_t)state;
+- (void)encodeWithCoder:(id)coder;
 - (void)populateBatterStatsForCurrentDevice;
 @end
 
@@ -169,24 +169,24 @@ LABEL_20:
   return v3;
 }
 
-- (FMDBatteryInfo)initWithType:(unint64_t)a3 level:(double)a4 state:(unint64_t)a5
+- (FMDBatteryInfo)initWithType:(unint64_t)type level:(double)level state:(unint64_t)state
 {
   v9.receiver = self;
   v9.super_class = FMDBatteryInfo;
   result = [(FMDBatteryInfo *)&v9 init];
   if (result)
   {
-    result->_batteryLevel = a4;
-    result->_batteryState = a5;
-    result->_batteryType = a3;
+    result->_batteryLevel = level;
+    result->_batteryState = state;
+    result->_batteryType = type;
   }
 
   return result;
 }
 
-- (FMDBatteryInfo)initWithCoder:(id)a3
+- (FMDBatteryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = FMDBatteryInfo;
   v5 = [(FMDBatteryInfo *)&v17 init];
@@ -194,51 +194,51 @@ LABEL_20:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("batteryLevel");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     [v8 doubleValue];
     v5->_batteryLevel = v9;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector("batteryState");
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     v5->_batteryState = [v12 unsignedIntegerValue];
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector("batteryType");
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     v5->_batteryType = [v15 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batteryLevel = self->_batteryLevel;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [NSNumber numberWithDouble:batteryLevel];
   v7 = NSStringFromSelector("batteryLevel");
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 
   v8 = [NSNumber numberWithUnsignedInteger:self->_batteryState];
   v9 = NSStringFromSelector("batteryState");
-  [v5 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 
   v11 = [NSNumber numberWithUnsignedInteger:self->_batteryType];
   v10 = NSStringFromSelector("batteryType");
-  [v5 encodeObject:v11 forKey:v10];
+  [coderCopy encodeObject:v11 forKey:v10];
 }
 
-- (id)batteryStatusForState:(unint64_t)a3
+- (id)batteryStatusForState:(unint64_t)state
 {
-  if (a3 - 1 > 2)
+  if (state - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1002CF258 + a3 - 1);
+    return *(&off_1002CF258 + state - 1);
   }
 }
 

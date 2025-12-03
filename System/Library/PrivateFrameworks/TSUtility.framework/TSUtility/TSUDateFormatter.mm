@@ -1,14 +1,14 @@
 @interface TSUDateFormatter
-+ (id)datePortionOfDateTimeFormatString:(id)a3;
++ (id)datePortionOfDateTimeFormatString:(id)string;
 + (id)defaultDateTimeFormat;
 + (id)shortMonthNamesForNonCachedCurrentLocale;
 + (id)supportedDateFormats;
 + (id)supportedTimeFormats;
-+ (id)timePortionOfDateTimeFormatString:(id)a3;
-+ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)a3;
++ (id)timePortionOfDateTimeFormatString:(id)string;
++ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)string;
 - (TSUDateFormatter)init;
-- (id)appropriateOutputFormatStringForInputFormatString:(id)a3;
-- (id)fullDateString:(id)a3;
+- (id)appropriateOutputFormatStringForInputFormatString:(id)string;
+- (id)fullDateString:(id)string;
 - (void)dealloc;
 @end
 
@@ -171,21 +171,21 @@
   return v5;
 }
 
-+ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)a3
++ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)string
 {
-  v4 = [a3 length];
-  v5 = [MEMORY[0x277CCAC80] scannerWithString:a3];
+  v4 = [string length];
+  v5 = [MEMORY[0x277CCAC80] scannerWithString:string];
   [v5 setCharactersToBeSkipped:0];
   v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"'hHmsSakKZ"];
   v11 = 0;
-  v7 = [v5 scanLocation];
-  if (v7 < [a3 length])
+  scanLocation = [v5 scanLocation];
+  if (scanLocation < [string length])
   {
     while (1)
     {
       [v5 scanUpToCharactersFromSet:v6 intoString:&v11];
-      v8 = [v5 scanLocation];
-      if (v8 >= [a3 length] || objc_msgSend(a3, "characterAtIndex:", objc_msgSend(v5, "scanLocation")) != 39)
+      scanLocation2 = [v5 scanLocation];
+      if (scanLocation2 >= [string length] || objc_msgSend(string, "characterAtIndex:", objc_msgSend(v5, "scanLocation")) != 39)
       {
         break;
       }
@@ -195,8 +195,8 @@
       [v5 scanUpToString:@"'" intoString:&v11];
       [v5 setScanLocation:{objc_msgSend(v5, "scanLocation") + 1}];
       [v5 scanLocation];
-      v9 = [v5 scanLocation];
-      if (v9 >= [a3 length])
+      scanLocation3 = [v5 scanLocation];
+      if (scanLocation3 >= [string length])
       {
         return v4;
       }
@@ -208,26 +208,26 @@
   return v4;
 }
 
-+ (id)datePortionOfDateTimeFormatString:(id)a3
++ (id)datePortionOfDateTimeFormatString:(id)string
 {
-  v3 = [a3 substringToIndex:{objc_msgSend(a1, "p_DateTimeSplitLocationInFormatString:")}];
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [string substringToIndex:{objc_msgSend(self, "p_DateTimeSplitLocationInFormatString:")}];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
 
-  return [v3 stringByTrimmingCharactersInSet:v4];
+  return [v3 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 }
 
-+ (id)timePortionOfDateTimeFormatString:(id)a3
++ (id)timePortionOfDateTimeFormatString:(id)string
 {
-  v4 = [a1 p_DateTimeSplitLocationInFormatString:?];
-  if (v4 >= [a3 length])
+  v4 = [self p_DateTimeSplitLocationInFormatString:?];
+  if (v4 >= [string length])
   {
     return &stru_287DDF830;
   }
 
-  v5 = [a3 substringFromIndex:v4];
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [string substringFromIndex:v4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
 
-  return [v5 stringByTrimmingCharactersInSet:v6];
+  return [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 }
 
 + (id)shortMonthNamesForNonCachedCurrentLocale
@@ -271,21 +271,21 @@
   [(TSUDateFormatter *)&v3 dealloc];
 }
 
-- (id)fullDateString:(id)a3
+- (id)fullDateString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  StringWithDate = CFDateFormatterCreateStringWithDate(0, self->mFullDateFormatter, a3);
+  StringWithDate = CFDateFormatterCreateStringWithDate(0, self->mFullDateFormatter, string);
 
   return StringWithDate;
 }
 
-- (id)appropriateOutputFormatStringForInputFormatString:(id)a3
+- (id)appropriateOutputFormatStringForInputFormatString:(id)string
 {
-  v4 = TSUGregorianUnitsPresentInFormatString(a3);
+  v4 = TSUGregorianUnitsPresentInFormatString(string);
   if (v4 >= 8 && (v4 & 7) != 0)
   {
     return [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", self->mDateOnlyFormatString, self->mTimeOnlyFormatString];

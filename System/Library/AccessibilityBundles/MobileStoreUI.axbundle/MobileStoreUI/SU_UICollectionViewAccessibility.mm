@@ -1,13 +1,13 @@
 @interface SU_UICollectionViewAccessibility
 - (BOOL)_accessibilityOnlyComparesByXAxis;
 - (BOOL)_accessibilityShouldOverrideScrollViewContentOffsetLimits;
-- (BOOL)_accessibilityUseXRightOffsetForScrollOpaqueElementIntoViewDirection:(int64_t)a3;
+- (BOOL)_accessibilityUseXRightOffsetForScrollOpaqueElementIntoViewDirection:(int64_t)direction;
 - (BOOL)_axIsCollectionViewCarousel;
 - (double)_accessibilityCellWidth;
 - (double)_accessibilityLeftOpaqueScrollViewContentOffsetLimit;
 - (double)_accessibilityRightOpaqueScrollViewContentOffsetLimit;
 - (id)_accessibilityScrollStatus;
-- (id)_accessibilitySortedElementsWithinWithOptions:(id)a3;
+- (id)_accessibilitySortedElementsWithinWithOptions:(id)options;
 - (unint64_t)_accessibilityActualCellCount;
 - (unint64_t)_accessibilityModelCellCount;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -17,16 +17,16 @@
 
 - (BOOL)_axIsCollectionViewCarousel
 {
-  v3 = [(SU_UICollectionViewAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"ShelfCollectionView"])
+  accessibilityIdentifier = [(SU_UICollectionViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"ShelfCollectionView"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SU_UICollectionViewAccessibility *)self accessibilityIdentifier];
-    v4 = [v5 isEqualToString:@"SUUICarouselCollection"];
+    accessibilityIdentifier2 = [(SU_UICollectionViewAccessibility *)self accessibilityIdentifier];
+    v4 = [accessibilityIdentifier2 isEqualToString:@"SUUICarouselCollection"];
   }
 
   return v4;
@@ -68,47 +68,47 @@
     v3 = MEMORY[0x29EDBA0F8];
     v4 = accessibilityLocalizedString(@"top.shelf.carousel.status");
     v5 = AXFormatInteger();
-    v6 = [v3 stringWithFormat:v4, v5];
+    _accessibilityScrollStatus = [v3 stringWithFormat:v4, v5];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SU_UICollectionViewAccessibility;
-    v6 = [(SU_UICollectionViewAccessibility *)&v8 _accessibilityScrollStatus];
+    _accessibilityScrollStatus = [(SU_UICollectionViewAccessibility *)&v8 _accessibilityScrollStatus];
   }
 
-  return v6;
+  return _accessibilityScrollStatus;
 }
 
-- (BOOL)_accessibilityUseXRightOffsetForScrollOpaqueElementIntoViewDirection:(int64_t)a3
+- (BOOL)_accessibilityUseXRightOffsetForScrollOpaqueElementIntoViewDirection:(int64_t)direction
 {
-  v5 = [(SU_UICollectionViewAccessibility *)self _axIsCollectionViewCarousel];
-  if (v5)
+  _axIsCollectionViewCarousel = [(SU_UICollectionViewAccessibility *)self _axIsCollectionViewCarousel];
+  if (_axIsCollectionViewCarousel)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
-      LOBYTE(v5) = [(SU_UICollectionViewAccessibility *)self _accessibilityIsRTL]^ 1;
+      LOBYTE(_axIsCollectionViewCarousel) = [(SU_UICollectionViewAccessibility *)self _accessibilityIsRTL]^ 1;
     }
 
-    else if (a3 == 1)
+    else if (direction == 1)
     {
 
-      LOBYTE(v5) = [(SU_UICollectionViewAccessibility *)self _accessibilityIsRTL];
+      LOBYTE(_axIsCollectionViewCarousel) = [(SU_UICollectionViewAccessibility *)self _accessibilityIsRTL];
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(_axIsCollectionViewCarousel) = 0;
     }
   }
 
-  return v5;
+  return _axIsCollectionViewCarousel;
 }
 
-- (id)_accessibilitySortedElementsWithinWithOptions:(id)a3
+- (id)_accessibilitySortedElementsWithinWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (_accessibilitySortedElementsWithinWithOptions__onceToken != -1)
   {
     [SU_UICollectionViewAccessibility _accessibilitySortedElementsWithinWithOptions:];
@@ -116,8 +116,8 @@
 
   if (_accessibilitySortedElementsWithinWithOptions__IsIBooks == 1 && [(SU_UICollectionViewAccessibility *)self _axIsCollectionViewCarousel])
   {
-    v5 = [(SU_UICollectionViewAccessibility *)self subviews];
-    v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_315];
+    subviews = [(SU_UICollectionViewAccessibility *)self subviews];
+    v6 = [subviews sortedArrayUsingComparator:&__block_literal_global_315];
 
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
@@ -138,7 +138,7 @@
   {
     v10.receiver = self;
     v10.super_class = SU_UICollectionViewAccessibility;
-    v6 = [(SU_UICollectionViewAccessibility *)&v10 _accessibilitySortedElementsWithinWithOptions:v4];
+    v6 = [(SU_UICollectionViewAccessibility *)&v10 _accessibilitySortedElementsWithinWithOptions:optionsCopy];
   }
 
   return v6;
@@ -150,15 +150,15 @@
   {
     if ([(SU_UICollectionViewAccessibility *)self _accessibilityApplicationIsRTL])
     {
-      v3 = [(SU_UICollectionViewAccessibility *)self _accessibilityActualCellCount];
+      _accessibilityActualCellCount = [(SU_UICollectionViewAccessibility *)self _accessibilityActualCellCount];
     }
 
     else
     {
-      v3 = [(SU_UICollectionViewAccessibility *)self _accessibilityModelCellCount];
+      _accessibilityActualCellCount = [(SU_UICollectionViewAccessibility *)self _accessibilityModelCellCount];
     }
 
-    v5 = v3;
+    v5 = _accessibilityActualCellCount;
     if ([(SU_UICollectionViewAccessibility *)self _accessibilityShouldOverrideScrollViewContentOffsetLimits])
     {
       [(SU_UICollectionViewAccessibility *)self _accessibilityCellWidth];
@@ -186,8 +186,8 @@
     v3 = 0.0;
     if ([(SU_UICollectionViewAccessibility *)self _accessibilityApplicationIsRTL])
     {
-      v4 = [(SU_UICollectionViewAccessibility *)self _accessibilityActualCellCount];
-      v3 = (v4 + ~[(SU_UICollectionViewAccessibility *)self _accessibilityModelCellCount]);
+      _accessibilityActualCellCount = [(SU_UICollectionViewAccessibility *)self _accessibilityActualCellCount];
+      v3 = (_accessibilityActualCellCount + ~[(SU_UICollectionViewAccessibility *)self _accessibilityModelCellCount]);
     }
 
     if ([(SU_UICollectionViewAccessibility *)self _accessibilityShouldOverrideScrollViewContentOffsetLimits])
@@ -267,9 +267,9 @@
 
 - (double)_accessibilityCellWidth
 {
-  v3 = [(SU_UICollectionViewAccessibility *)self _axIsCollectionViewCarousel];
+  _axIsCollectionViewCarousel = [(SU_UICollectionViewAccessibility *)self _axIsCollectionViewCarousel];
   result = 0.0;
-  if (v3)
+  if (_axIsCollectionViewCarousel)
   {
     [(SU_UICollectionViewAccessibility *)self contentSize];
     return v5 / [(SU_UICollectionViewAccessibility *)self _accessibilityActualCellCount];

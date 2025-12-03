@@ -1,8 +1,8 @@
 @interface NDNotificationPoolRefreshManager
 - (NDNotificationPoolRefreshManager)init;
-- (NDNotificationPoolRefreshManager)initWithNotificationPool:(id)a3 configManager:(id)a4;
+- (NDNotificationPoolRefreshManager)initWithNotificationPool:(id)pool configManager:(id)manager;
 - (void)_cancelSystemTask;
-- (void)_handleSystemTask:(id)a3;
+- (void)_handleSystemTask:(id)task;
 - (void)_prepareToHandleSystemTask;
 - (void)_setupSystemTask;
 - (void)activate;
@@ -33,18 +33,18 @@
   objc_exception_throw(v4);
 }
 
-- (NDNotificationPoolRefreshManager)initWithNotificationPool:(id)a3 configManager:(id)a4
+- (NDNotificationPoolRefreshManager)initWithNotificationPool:(id)pool configManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  poolCopy = pool;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = NDNotificationPoolRefreshManager;
   v9 = [(NDNotificationPoolRefreshManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_notificationPool, a3);
-    objc_storeStrong(&v10->_configManager, a4);
+    objc_storeStrong(&v9->_notificationPool, pool);
+    objc_storeStrong(&v10->_configManager, manager);
   }
 
   return v10;
@@ -52,11 +52,11 @@
 
 - (void)activate
 {
-  v3 = [(NDNotificationPoolRefreshManager *)self configManager];
-  v4 = [v3 possiblyUnfetchedAppConfiguration];
-  v5 = [v4 useNotificationsV2];
+  configManager = [(NDNotificationPoolRefreshManager *)self configManager];
+  possiblyUnfetchedAppConfiguration = [configManager possiblyUnfetchedAppConfiguration];
+  useNotificationsV2 = [possiblyUnfetchedAppConfiguration useNotificationsV2];
 
-  if (v5)
+  if (useNotificationsV2)
   {
     [(NDNotificationPoolRefreshManager *)self _prepareToHandleSystemTask];
 
@@ -104,18 +104,18 @@
 
 - (void)_setupSystemTask
 {
-  v2 = [(NDNotificationPoolRefreshManager *)self configManager];
-  v3 = [v2 possiblyUnfetchedAppConfiguration];
-  v4 = [v3 notificationPoolAutoRefreshInterval];
+  configManager = [(NDNotificationPoolRefreshManager *)self configManager];
+  possiblyUnfetchedAppConfiguration = [configManager possiblyUnfetchedAppConfiguration];
+  notificationPoolAutoRefreshInterval = [possiblyUnfetchedAppConfiguration notificationPoolAutoRefreshInterval];
 
-  if (v4 <= 300)
+  if (notificationPoolAutoRefreshInterval <= 300)
   {
     v5 = 300;
   }
 
   else
   {
-    v5 = v4;
+    v5 = notificationPoolAutoRefreshInterval;
   }
 
   objc_opt_class();
@@ -210,9 +210,9 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)_handleSystemTask:(id)a3
+- (void)_handleSystemTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = FCNotificationsLog;
   if (os_log_type_enabled(FCNotificationsLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -220,15 +220,15 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "will handle notification pool refresh task", buf, 2u);
   }
 
-  v6 = [(NDNotificationPoolRefreshManager *)self notificationPool];
+  notificationPool = [(NDNotificationPoolRefreshManager *)self notificationPool];
   v7 = +[NSDate date];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000F924;
   v9[3] = &unk_100072348;
-  v10 = v4;
-  v8 = v4;
-  [v6 refreshIfOlderThan:v7 completionHandler:v9];
+  v10 = taskCopy;
+  v8 = taskCopy;
+  [notificationPool refreshIfOlderThan:v7 completionHandler:v9];
 }
 
 - (void)_cancelSystemTask

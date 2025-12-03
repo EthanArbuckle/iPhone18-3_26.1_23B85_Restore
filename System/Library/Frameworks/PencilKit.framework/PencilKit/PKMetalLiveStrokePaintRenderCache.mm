@@ -1,25 +1,25 @@
 @interface PKMetalLiveStrokePaintRenderCache
-- (void)addBuffer:(uint64_t)a1;
-- (void)initWithRenderZoomFactor:(void *)a1;
+- (void)addBuffer:(uint64_t)buffer;
+- (void)initWithRenderZoomFactor:(void *)factor;
 @end
 
 @implementation PKMetalLiveStrokePaintRenderCache
 
-- (void)initWithRenderZoomFactor:(void *)a1
+- (void)initWithRenderZoomFactor:(void *)factor
 {
-  if (!a1)
+  if (!factor)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = factor;
   v9.super_class = PKMetalLiveStrokePaintRenderCache;
   v3 = objc_msgSendSuper2(&v9, sel_init);
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = v3[1];
-    v3[1] = v4;
+    v3[1] = array;
 
     v6 = *MEMORY[0x1E695F050];
     v7 = *(MEMORY[0x1E695F050] + 16);
@@ -32,13 +32,13 @@
   return v3;
 }
 
-- (void)addBuffer:(uint64_t)a1
+- (void)addBuffer:(uint64_t)buffer
 {
   v3 = a2;
-  if (a1)
+  if (buffer)
   {
     v5 = v3;
-    [*(a1 + 8) addObject:v3];
+    [*(buffer + 8) addObject:v3];
     v3 = v5;
     if (v5)
     {
@@ -50,7 +50,7 @@
       v4 = 0;
     }
 
-    *(a1 + 16) += v4;
+    *(buffer + 16) += v4;
   }
 }
 

@@ -6,25 +6,25 @@
 
 - (double)searchUIHorizontallyScrollingSectionModel_widthDimensionMultiplier
 {
-  v2 = [a1 image];
-  v3 = [v2 visual_elements];
-  v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 image_element];
-  v6 = [v5 sources];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  image = [self image];
+  visual_elements = [image visual_elements];
+  v4 = [visual_elements objectAtIndexedSubscript:0];
+  image_element = [v4 image_element];
+  sources = [image_element sources];
+  v7 = [sources objectAtIndexedSubscript:0];
   v8 = [v7 url];
-  v9 = [v8 image_style];
+  image_style = [v8 image_style];
 
-  if (v9 > 0x1E)
+  if (image_style > 0x1E)
   {
     return 0.5;
   }
 
-  if (((1 << v9) & 0x44A000E1) != 0)
+  if (((1 << image_style) & 0x44A000E1) != 0)
   {
-    v10 = [MEMORY[0x1E69D9240] isMacOS];
+    isMacOS = [MEMORY[0x1E69D9240] isMacOS];
     result = 0.666666667;
-    if (v10)
+    if (isMacOS)
     {
       return 0.8;
     }
@@ -32,16 +32,16 @@
     return result;
   }
 
-  if (((1 << v9) & 0x2000E00) != 0)
+  if (((1 << image_style) & 0x2000E00) != 0)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &off_1F56856A8;
     objc_msgSendSuper2(&v12, sel_searchUIHorizontallyScrollingSectionModel_widthDimensionMultiplier);
     return result;
   }
 
   result = 1.0;
-  if (((1 << v9) & 0x1000100) == 0)
+  if (((1 << image_style) & 0x1000100) == 0)
   {
     return 0.5;
   }

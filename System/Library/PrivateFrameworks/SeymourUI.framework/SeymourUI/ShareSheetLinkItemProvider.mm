@@ -1,16 +1,16 @@
 @interface ShareSheetLinkItemProvider
-- (_TtC9SeymourUI26ShareSheetLinkItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (_TtC9SeymourUI26ShareSheetLinkItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 - (id)item;
 @end
 
 @implementation ShareSheetLinkItemProvider
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI26ShareSheetLinkItemProvider_artworkItemProvider))
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_20BB7A6B4();
   }
 
@@ -32,7 +32,7 @@
   return v7;
 }
 
-- (_TtC9SeymourUI26ShareSheetLinkItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC9SeymourUI26ShareSheetLinkItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_20C13DA64();

@@ -1,11 +1,11 @@
 @interface ATXNotificationCategorizationClient
 - (ATXNotificationCategorizationClient)init;
-- (void)collectCoreAnalyticsJsonForNotification:(id)a3 completion:(id)a4;
-- (void)collectDynamicBreakthroughFeaturesForNotification:(id)a3 completion:(id)a4;
-- (void)fetchContextForMailWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchContextForMessageWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchContextForNotificationWithRequest:(id)a3 completion:(id)a4;
-- (void)rankUserNotificationWithRequest:(id)a3 completion:(id)a4;
+- (void)collectCoreAnalyticsJsonForNotification:(id)notification completion:(id)completion;
+- (void)collectDynamicBreakthroughFeaturesForNotification:(id)notification completion:(id)completion;
+- (void)fetchContextForMailWithRequest:(id)request completion:(id)completion;
+- (void)fetchContextForMessageWithRequest:(id)request completion:(id)completion;
+- (void)fetchContextForNotificationWithRequest:(id)request completion:(id)completion;
+- (void)rankUserNotificationWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ATXNotificationCategorizationClient
@@ -51,11 +51,11 @@ void __43__ATXNotificationCategorizationClient_init__block_invoke_8()
   }
 }
 
-- (void)collectDynamicBreakthroughFeaturesForNotification:(id)a3 completion:(id)a4
+- (void)collectDynamicBreakthroughFeaturesForNotification:(id)notification completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  notificationCopy = notification;
+  completionCopy = completion;
   v9 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,7 +64,7 @@ void __43__ATXNotificationCategorizationClient_init__block_invoke_8()
     _os_log_impl(&dword_1BF549000, v9, OS_LOG_TYPE_DEFAULT, "Starting %s", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v21[0] = MEMORY[0x1E69E9820];
@@ -73,7 +73,7 @@ void __43__ATXNotificationCategorizationClient_init__block_invoke_8()
     v21[3] = &unk_1E80C1100;
     v23 = a2;
     v21[4] = self;
-    v11 = v8;
+    v11 = completionCopy;
     v22 = v11;
     v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -81,7 +81,7 @@ void __43__ATXNotificationCategorizationClient_init__block_invoke_8()
     v19[2] = __100__ATXNotificationCategorizationClient_collectDynamicBreakthroughFeaturesForNotification_completion___block_invoke_16;
     v19[3] = &unk_1E80C1938;
     v20 = v11;
-    [v12 collectDynamicBreakthroughFeaturesForNotification:v7 completion:v19];
+    [v12 collectDynamicBreakthroughFeaturesForNotification:notificationCopy completion:v19];
   }
 
   else
@@ -129,11 +129,11 @@ void __100__ATXNotificationCategorizationClient_collectDynamicBreakthroughFeatur
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)collectCoreAnalyticsJsonForNotification:(id)a3 completion:(id)a4
+- (void)collectCoreAnalyticsJsonForNotification:(id)notification completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  notificationCopy = notification;
+  completionCopy = completion;
   v9 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -142,7 +142,7 @@ void __100__ATXNotificationCategorizationClient_collectDynamicBreakthroughFeatur
     _os_log_impl(&dword_1BF549000, v9, OS_LOG_TYPE_DEFAULT, "Starting %s", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v21[0] = MEMORY[0x1E69E9820];
@@ -151,7 +151,7 @@ void __100__ATXNotificationCategorizationClient_collectDynamicBreakthroughFeatur
     v21[3] = &unk_1E80C1100;
     v23 = a2;
     v21[4] = self;
-    v11 = v8;
+    v11 = completionCopy;
     v22 = v11;
     v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -159,7 +159,7 @@ void __100__ATXNotificationCategorizationClient_collectDynamicBreakthroughFeatur
     v19[2] = __90__ATXNotificationCategorizationClient_collectCoreAnalyticsJsonForNotification_completion___block_invoke_18;
     v19[3] = &unk_1E80C1960;
     v20 = v11;
-    [v12 collectCoreAnalyticsJsonForNotification:v7 completion:v19];
+    [v12 collectCoreAnalyticsJsonForNotification:notificationCopy completion:v19];
   }
 
   else
@@ -207,11 +207,11 @@ void __90__ATXNotificationCategorizationClient_collectCoreAnalyticsJsonForNotifi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)rankUserNotificationWithRequest:(id)a3 completion:(id)a4
+- (void)rankUserNotificationWithRequest:(id)request completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -220,7 +220,7 @@ void __90__ATXNotificationCategorizationClient_collectCoreAnalyticsJsonForNotifi
     _os_log_impl(&dword_1BF549000, v9, OS_LOG_TYPE_DEFAULT, "Starting %s", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v21[0] = MEMORY[0x1E69E9820];
@@ -229,7 +229,7 @@ void __90__ATXNotificationCategorizationClient_collectCoreAnalyticsJsonForNotifi
     v21[3] = &unk_1E80C1100;
     v23 = a2;
     v21[4] = self;
-    v11 = v8;
+    v11 = completionCopy;
     v22 = v11;
     v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -237,7 +237,7 @@ void __90__ATXNotificationCategorizationClient_collectCoreAnalyticsJsonForNotifi
     v19[2] = __82__ATXNotificationCategorizationClient_rankUserNotificationWithRequest_completion___block_invoke_20;
     v19[3] = &unk_1E80C1988;
     v20 = v11;
-    [v12 rankUserNotificationWithRequest:v7 completion:v19];
+    [v12 rankUserNotificationWithRequest:requestCopy completion:v19];
   }
 
   else
@@ -285,11 +285,11 @@ void __82__ATXNotificationCategorizationClient_rankUserNotificationWithRequest_c
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchContextForNotificationWithRequest:(id)a3 completion:(id)a4
+- (void)fetchContextForNotificationWithRequest:(id)request completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -298,7 +298,7 @@ void __82__ATXNotificationCategorizationClient_rankUserNotificationWithRequest_c
     _os_log_impl(&dword_1BF549000, v9, OS_LOG_TYPE_DEFAULT, "Fetching notification context %s", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v21[0] = MEMORY[0x1E69E9820];
@@ -307,7 +307,7 @@ void __82__ATXNotificationCategorizationClient_rankUserNotificationWithRequest_c
     v21[3] = &unk_1E80C1100;
     v23 = a2;
     v21[4] = self;
-    v11 = v8;
+    v11 = completionCopy;
     v22 = v11;
     v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -315,7 +315,7 @@ void __82__ATXNotificationCategorizationClient_rankUserNotificationWithRequest_c
     v19[2] = __89__ATXNotificationCategorizationClient_fetchContextForNotificationWithRequest_completion___block_invoke_22;
     v19[3] = &unk_1E80C19B0;
     v20 = v11;
-    [v12 fetchContextForNotificationWithRequest:v7 completion:v19];
+    [v12 fetchContextForNotificationWithRequest:requestCopy completion:v19];
   }
 
   else
@@ -363,11 +363,11 @@ void __89__ATXNotificationCategorizationClient_fetchContextForNotificationWithRe
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchContextForMailWithRequest:(id)a3 completion:(id)a4
+- (void)fetchContextForMailWithRequest:(id)request completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -376,7 +376,7 @@ void __89__ATXNotificationCategorizationClient_fetchContextForNotificationWithRe
     _os_log_impl(&dword_1BF549000, v9, OS_LOG_TYPE_DEFAULT, "Fetching mail context %s", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v21[0] = MEMORY[0x1E69E9820];
@@ -385,7 +385,7 @@ void __89__ATXNotificationCategorizationClient_fetchContextForNotificationWithRe
     v21[3] = &unk_1E80C1100;
     v23 = a2;
     v21[4] = self;
-    v11 = v8;
+    v11 = completionCopy;
     v22 = v11;
     v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -393,7 +393,7 @@ void __89__ATXNotificationCategorizationClient_fetchContextForNotificationWithRe
     v19[2] = __81__ATXNotificationCategorizationClient_fetchContextForMailWithRequest_completion___block_invoke_24;
     v19[3] = &unk_1E80C19D8;
     v20 = v11;
-    [v12 fetchContextForMailWithRequest:v7 completion:v19];
+    [v12 fetchContextForMailWithRequest:requestCopy completion:v19];
   }
 
   else
@@ -441,11 +441,11 @@ void __81__ATXNotificationCategorizationClient_fetchContextForMailWithRequest_co
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchContextForMessageWithRequest:(id)a3 completion:(id)a4
+- (void)fetchContextForMessageWithRequest:(id)request completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -454,7 +454,7 @@ void __81__ATXNotificationCategorizationClient_fetchContextForMailWithRequest_co
     _os_log_impl(&dword_1BF549000, v9, OS_LOG_TYPE_DEFAULT, "Fetching message context %s", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v21[0] = MEMORY[0x1E69E9820];
@@ -463,7 +463,7 @@ void __81__ATXNotificationCategorizationClient_fetchContextForMailWithRequest_co
     v21[3] = &unk_1E80C1100;
     v23 = a2;
     v21[4] = self;
-    v11 = v8;
+    v11 = completionCopy;
     v22 = v11;
     v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x1E69E9820];
@@ -471,7 +471,7 @@ void __81__ATXNotificationCategorizationClient_fetchContextForMailWithRequest_co
     v19[2] = __84__ATXNotificationCategorizationClient_fetchContextForMessageWithRequest_completion___block_invoke_26;
     v19[3] = &unk_1E80C1A00;
     v20 = v11;
-    [v12 fetchContextForMessageWithRequest:v7 completion:v19];
+    [v12 fetchContextForMessageWithRequest:requestCopy completion:v19];
   }
 
   else

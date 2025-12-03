@@ -6,9 +6,9 @@
 
 - (id)fm_commaSeparatedString
 {
-  v3 = [(NSError *)self code];
-  v4 = [(NSError *)self localizedDescription];
-  v5 = [NSString stringWithFormat:@"%ld, %@", v3, v4];
+  code = [(NSError *)self code];
+  localizedDescription = [(NSError *)self localizedDescription];
+  v5 = [NSString stringWithFormat:@"%ld, %@", code, localizedDescription];
 
   return v5;
 }

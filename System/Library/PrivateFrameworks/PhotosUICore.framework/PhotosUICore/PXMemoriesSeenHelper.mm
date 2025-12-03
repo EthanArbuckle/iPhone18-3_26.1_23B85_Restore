@@ -1,26 +1,26 @@
 @interface PXMemoriesSeenHelper
 + (id)defaultHelper;
 - (PXMemoriesSeenHelper)init;
-- (void)_clearPendingNotificationForMemory:(id)a3;
-- (void)clearAnyPendingNotificationsFromMemories:(id)a3;
-- (void)clearAnyPendingStateFromMemories:(id)a3;
+- (void)_clearPendingNotificationForMemory:(id)memory;
+- (void)clearAnyPendingNotificationsFromMemories:(id)memories;
+- (void)clearAnyPendingStateFromMemories:(id)memories;
 @end
 
 @implementation PXMemoriesSeenHelper
 
-- (void)_clearPendingNotificationForMemory:(id)a3
+- (void)_clearPendingNotificationForMemory:(id)memory
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 photoLibrary];
+  memoryCopy = memory;
+  photoLibrary = [memoryCopy photoLibrary];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __59__PXMemoriesSeenHelper__clearPendingNotificationForMemory___block_invoke;
   v18[3] = &unk_1E774C648;
-  v5 = v3;
+  v5 = memoryCopy;
   v19 = v5;
   v17 = 0;
-  v6 = [v4 performChangesAndWait:v18 error:&v17];
+  v6 = [photoLibrary performChangesAndWait:v18 error:&v17];
   v7 = v17;
   if (v6)
   {
@@ -48,10 +48,10 @@
     }
   }
 
-  v14 = [v4 assetsdClient];
-  v15 = [v14 notificationClient];
-  v16 = [v5 uuid];
-  [v15 asyncNotifyInterestingMemoryNotificationViewedForColletionID:v16];
+  assetsdClient = [photoLibrary assetsdClient];
+  notificationClient = [assetsdClient notificationClient];
+  uuid = [v5 uuid];
+  [notificationClient asyncNotifyInterestingMemoryNotificationViewedForColletionID:uuid];
 }
 
 void __59__PXMemoriesSeenHelper__clearPendingNotificationForMemory___block_invoke(uint64_t a1)
@@ -60,16 +60,16 @@ void __59__PXMemoriesSeenHelper__clearPendingNotificationForMemory___block_invok
   [v1 setNotificationState:2];
 }
 
-- (void)clearAnyPendingStateFromMemories:(id)a3
+- (void)clearAnyPendingStateFromMemories:(id)memories
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
-  v5 = v3;
+  memoriesCopy = memories;
+  v4 = [memoriesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
+  photoLibrary = memoriesCopy;
   if (v4)
   {
     v6 = v4;
@@ -80,7 +80,7 @@ LABEL_3:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(memoriesCopy);
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
@@ -91,20 +91,20 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [memoriesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           goto LABEL_3;
         }
 
-        v5 = v3;
+        photoLibrary = memoriesCopy;
         goto LABEL_12;
       }
     }
 
-    v5 = [v9 photoLibrary];
+    photoLibrary = [v9 photoLibrary];
 
-    if (!v5)
+    if (!photoLibrary)
     {
       goto LABEL_13;
     }
@@ -113,8 +113,8 @@ LABEL_3:
     v10[1] = 3221225472;
     v10[2] = __57__PXMemoriesSeenHelper_clearAnyPendingStateFromMemories___block_invoke;
     v10[3] = &unk_1E774C648;
-    v11 = v3;
-    [v5 performChanges:v10 completionHandler:&__block_literal_global_192_140075];
+    v11 = memoriesCopy;
+    [photoLibrary performChanges:v10 completionHandler:&__block_literal_global_192_140075];
   }
 
 LABEL_12:
@@ -175,15 +175,15 @@ void __57__PXMemoriesSeenHelper_clearAnyPendingStateFromMemories___block_invoke_
   }
 }
 
-- (void)clearAnyPendingNotificationsFromMemories:(id)a3
+- (void)clearAnyPendingNotificationsFromMemories:(id)memories
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  memoriesCopy = memories;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [memoriesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -195,7 +195,7 @@ void __57__PXMemoriesSeenHelper_clearAnyPendingStateFromMemories___block_invoke_
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(memoriesCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -211,7 +211,7 @@ void __57__PXMemoriesSeenHelper_clearAnyPendingStateFromMemories___block_invoke_
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [memoriesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

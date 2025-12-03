@@ -1,7 +1,7 @@
 @interface ATXCompletedDigestBiomeStream
 - (ATXCompletedDigestBiomeStream)init;
-- (id)initFromDigestEventBiomeStream:(id)a3;
-- (id)publisherFromStartTime:(double)a3;
+- (id)initFromDigestEventBiomeStream:(id)stream;
+- (id)publisherFromStartTime:(double)time;
 @end
 
 @implementation ATXCompletedDigestBiomeStream
@@ -14,24 +14,24 @@
   return v4;
 }
 
-- (id)initFromDigestEventBiomeStream:(id)a3
+- (id)initFromDigestEventBiomeStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXCompletedDigestBiomeStream;
   v6 = [(ATXCompletedDigestBiomeStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawDigestEventStream, a3);
+    objc_storeStrong(&v6->_rawDigestEventStream, stream);
   }
 
   return v7;
 }
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
-  v3 = [(ATXUserNotificationDigestBiomeStream *)self->_rawDigestEventStream publisherFromStartTime:a3];
+  v3 = [(ATXUserNotificationDigestBiomeStream *)self->_rawDigestEventStream publisherFromStartTime:time];
   v4 = objc_opt_new();
   v5 = [v3 scanWithInitial:v4 nextPartialResult:&__block_literal_global_115];
   v6 = [v5 filterWithIsIncluded:&__block_literal_global_73];

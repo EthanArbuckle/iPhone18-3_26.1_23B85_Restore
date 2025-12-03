@@ -1,21 +1,21 @@
 @interface _SFActivityExtensionItemProvider
-- (_SFActivityExtensionItemProvider)initWithExtensionItem:(id)a3 URL:(id)a4 pageTitle:(id)a5 webView:(id)a6;
-- (id)_itemForActivityType:(id)a3;
+- (_SFActivityExtensionItemProvider)initWithExtensionItem:(id)item URL:(id)l pageTitle:(id)title webView:(id)view;
+- (id)_itemForActivityType:(id)type;
 - (id)item;
 @end
 
 @implementation _SFActivityExtensionItemProvider
 
-- (_SFActivityExtensionItemProvider)initWithExtensionItem:(id)a3 URL:(id)a4 pageTitle:(id)a5 webView:(id)a6
+- (_SFActivityExtensionItemProvider)initWithExtensionItem:(id)item URL:(id)l pageTitle:(id)title webView:(id)view
 {
-  v11 = a3;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = _SFActivityExtensionItemProvider;
-  v12 = [(_SFActivityItemProvider *)&v15 initWithPlaceholderItem:v11 URL:a4 pageTitle:a5 webView:a6];
+  v12 = [(_SFActivityItemProvider *)&v15 initWithPlaceholderItem:itemCopy URL:l pageTitle:title webView:view];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_extensionItem, a3);
+    objc_storeStrong(&v12->_extensionItem, item);
   }
 
   return v13;
@@ -23,16 +23,16 @@
 
 - (id)item
 {
-  v3 = [(UIActivityItemProvider *)self activityType];
-  v4 = [(_SFActivityExtensionItemProvider *)self _itemForActivityType:v3];
+  activityType = [(UIActivityItemProvider *)self activityType];
+  v4 = [(_SFActivityExtensionItemProvider *)self _itemForActivityType:activityType];
 
   return v4;
 }
 
-- (id)_itemForActivityType:(id)a3
+- (id)_itemForActivityType:(id)type
 {
-  v4 = [(UIActivityItemProvider *)self activityType];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69CDA78]];
+  activityType = [(UIActivityItemProvider *)self activityType];
+  v5 = [activityType isEqualToString:*MEMORY[0x1E69CDA78]];
 
   if (v5)
   {

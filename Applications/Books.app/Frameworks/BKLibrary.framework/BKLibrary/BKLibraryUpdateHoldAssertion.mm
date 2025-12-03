@@ -1,20 +1,20 @@
 @interface BKLibraryUpdateHoldAssertion
-- (BKLibraryUpdateHoldAssertion)initWithRelease:(id)a3;
+- (BKLibraryUpdateHoldAssertion)initWithRelease:(id)release;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation BKLibraryUpdateHoldAssertion
 
-- (BKLibraryUpdateHoldAssertion)initWithRelease:(id)a3
+- (BKLibraryUpdateHoldAssertion)initWithRelease:(id)release
 {
-  v4 = a3;
+  releaseCopy = release;
   v9.receiver = self;
   v9.super_class = BKLibraryUpdateHoldAssertion;
   v5 = [(BKLibraryUpdateHoldAssertion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [releaseCopy copy];
     releaseBlock = v5->_releaseBlock;
     v5->_releaseBlock = v6;
   }

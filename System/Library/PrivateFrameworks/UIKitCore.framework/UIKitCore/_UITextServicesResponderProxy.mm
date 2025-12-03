@@ -1,23 +1,23 @@
 @interface _UITextServicesResponderProxy
-+ (id)_proxyWithResponder:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
++ (id)_proxyWithResponder:(id)responder;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (UIResponder)responder;
 - (_UITextServicesResponderProxyDelegate)delegate;
 - (id)nextResponder;
-- (void)_addShortcut:(id)a3;
-- (void)_define:(id)a3;
-- (void)_lookup:(id)a3;
-- (void)_share:(id)a3;
-- (void)_translate:(id)a3;
+- (void)_addShortcut:(id)shortcut;
+- (void)_define:(id)_define;
+- (void)_lookup:(id)_lookup;
+- (void)_share:(id)_share;
+- (void)_translate:(id)_translate;
 @end
 
 @implementation _UITextServicesResponderProxy
 
-+ (id)_proxyWithResponder:(id)a3
++ (id)_proxyWithResponder:(id)responder
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  objc_storeWeak(v5 + 2, v4);
+  responderCopy = responder;
+  v5 = objc_alloc_init(self);
+  objc_storeWeak(v5 + 2, responderCopy);
 
   return v5;
 }
@@ -29,48 +29,48 @@
   return WeakRetained;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(_UITextServicesResponderProxy *)self delegate];
-  LOBYTE(a3) = [v7 canPerformAction:a3 withSender:v6];
+  senderCopy = sender;
+  delegate = [(_UITextServicesResponderProxy *)self delegate];
+  LOBYTE(action) = [delegate canPerformAction:action withSender:senderCopy];
 
-  return a3;
+  return action;
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v4 = a3;
-  v5 = [(_UITextServicesResponderProxy *)self delegate];
-  [v5 _beginSessionWithType:8 sender:v4];
+  _shareCopy = _share;
+  delegate = [(_UITextServicesResponderProxy *)self delegate];
+  [delegate _beginSessionWithType:8 sender:_shareCopy];
 }
 
-- (void)_addShortcut:(id)a3
+- (void)_addShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(_UITextServicesResponderProxy *)self delegate];
-  [v5 _beginSessionWithType:4 sender:v4];
+  shortcutCopy = shortcut;
+  delegate = [(_UITextServicesResponderProxy *)self delegate];
+  [delegate _beginSessionWithType:4 sender:shortcutCopy];
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
-  v4 = a3;
-  v5 = [(_UITextServicesResponderProxy *)self delegate];
-  [v5 _beginSessionWithType:2 sender:v4];
+  _defineCopy = _define;
+  delegate = [(_UITextServicesResponderProxy *)self delegate];
+  [delegate _beginSessionWithType:2 sender:_defineCopy];
 }
 
-- (void)_lookup:(id)a3
+- (void)_lookup:(id)_lookup
 {
-  v4 = a3;
-  v5 = [(_UITextServicesResponderProxy *)self delegate];
-  [v5 _beginSessionWithType:16 sender:v4];
+  _lookupCopy = _lookup;
+  delegate = [(_UITextServicesResponderProxy *)self delegate];
+  [delegate _beginSessionWithType:16 sender:_lookupCopy];
 }
 
-- (void)_translate:(id)a3
+- (void)_translate:(id)_translate
 {
-  v4 = a3;
-  v5 = [(_UITextServicesResponderProxy *)self delegate];
-  [v5 _beginSessionWithType:32 sender:v4];
+  _translateCopy = _translate;
+  delegate = [(_UITextServicesResponderProxy *)self delegate];
+  [delegate _beginSessionWithType:32 sender:_translateCopy];
 }
 
 - (UIResponder)responder

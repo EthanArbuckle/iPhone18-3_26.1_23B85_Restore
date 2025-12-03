@@ -1,10 +1,10 @@
 @interface WDCharacterRun
-- (WDCharacterRun)initWithParagraph:(id)a3;
-- (WDCharacterRun)initWithParagraph:(id)a3 string:(id)a4;
+- (WDCharacterRun)initWithParagraph:(id)paragraph;
+- (WDCharacterRun)initWithParagraph:(id)paragraph string:(id)string;
 - (id)description;
 - (void)clearString;
-- (void)copyPropertiesFrom:(id)a3;
-- (void)removeLastCharacter:(unsigned __int16)a3;
+- (void)copyPropertiesFrom:(id)from;
+- (void)removeLastCharacter:(unsigned __int16)character;
 - (void)setPropertiesForDocument;
 @end
 
@@ -12,10 +12,10 @@
 
 - (void)setPropertiesForDocument
 {
-  v7 = [(WDCharacterProperties *)self->super.mProperties document];
-  v3 = [v7 styleSheet];
-  v4 = [v3 defaultCharacterProperties];
-  v5 = [v4 copy];
+  document = [(WDCharacterProperties *)self->super.mProperties document];
+  styleSheet = [document styleSheet];
+  defaultCharacterProperties = [styleSheet defaultCharacterProperties];
+  v5 = [defaultCharacterProperties copy];
   mProperties = self->super.mProperties;
   self->super.mProperties = v5;
 }
@@ -26,17 +26,17 @@
   self->mString = 0;
 }
 
-- (WDCharacterRun)initWithParagraph:(id)a3
+- (WDCharacterRun)initWithParagraph:(id)paragraph
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   v12.receiver = self;
   v12.super_class = WDCharacterRun;
-  v5 = [(WDRunWithCharacterProperties *)&v12 initWithParagraph:v4];
+  v5 = [(WDRunWithCharacterProperties *)&v12 initWithParagraph:paragraphCopy];
   if (v5)
   {
     v6 = [WDCharacterProperties alloc];
-    v7 = [v4 document];
-    v8 = [(WDCharacterProperties *)v6 initWithDocument:v7];
+    document = [paragraphCopy document];
+    v8 = [(WDCharacterProperties *)v6 initWithDocument:document];
     [(WDRunWithCharacterProperties *)v5 setProperties:v8];
 
     v9 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -49,28 +49,28 @@
   return v5;
 }
 
-- (WDCharacterRun)initWithParagraph:(id)a3 string:(id)a4
+- (WDCharacterRun)initWithParagraph:(id)paragraph string:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WDCharacterRun *)self initWithParagraph:v6];
+  paragraphCopy = paragraph;
+  stringCopy = string;
+  v8 = [(WDCharacterRun *)self initWithParagraph:paragraphCopy];
   v9 = v8;
   if (v8)
   {
-    [(NSMutableString *)v8->mString setString:v7];
+    [(NSMutableString *)v8->mString setString:stringCopy];
   }
 
   return v9;
 }
 
-- (void)removeLastCharacter:(unsigned __int16)a3
+- (void)removeLastCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   v5 = [(NSMutableString *)self->mString length];
   if (v5)
   {
     v6 = v5 - 1;
-    if ([(NSMutableString *)self->mString characterAtIndex:v5 - 1]== v3)
+    if ([(NSMutableString *)self->mString characterAtIndex:v5 - 1]== characterCopy)
     {
       mString = self->mString;
       v8 = [(NSMutableString *)mString substringWithRange:0, v6];
@@ -79,15 +79,15 @@
   }
 }
 
-- (void)copyPropertiesFrom:(id)a3
+- (void)copyPropertiesFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7[2] copy];
+  fromCopy = from;
+  v4 = [fromCopy[2] copy];
   mProperties = self->super.mProperties;
   self->super.mProperties = v4;
   v6 = v4;
 
-  [v7[2] copyPropertiesInto:self->super.mProperties];
+  [fromCopy[2] copyPropertiesInto:self->super.mProperties];
 }
 
 - (id)description

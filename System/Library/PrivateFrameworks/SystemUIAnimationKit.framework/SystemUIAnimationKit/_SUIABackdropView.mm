@@ -6,9 +6,9 @@
 
 - (id)backdropLayer
 {
-  v2 = [(_SUIABackdropView *)self layer];
+  layer = [(_SUIABackdropView *)self layer];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = layer;
   if (v3)
   {
     if (objc_opt_isKindOfClass())

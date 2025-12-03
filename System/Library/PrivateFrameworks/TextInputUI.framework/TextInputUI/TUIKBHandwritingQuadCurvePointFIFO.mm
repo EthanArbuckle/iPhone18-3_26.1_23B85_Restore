@@ -1,14 +1,14 @@
 @interface TUIKBHandwritingQuadCurvePointFIFO
-- (TUIKBHandwritingQuadCurvePointFIFO)initWithFIFO:(id)a3 scale:(double)a4;
-- (void)addPoint:(id *)a3;
+- (TUIKBHandwritingQuadCurvePointFIFO)initWithFIFO:(id)o scale:(double)scale;
+- (void)addPoint:(id *)point;
 - (void)clear;
 - (void)flush;
-- (void)setLastPoint:(id *)a3;
+- (void)setLastPoint:(id *)point;
 @end
 
 @implementation TUIKBHandwritingQuadCurvePointFIFO
 
-- (void)setLastPoint:(id *)a3
+- (void)setLastPoint:(id *)point
 {
   self->_lastPoint.point.x = v3;
   self->_lastPoint.point.y = v4;
@@ -17,8 +17,8 @@
 
 - (void)clear
 {
-  v3 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-  [v3 removeAllObjects];
+  prevPoints = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+  [prevPoints removeAllObjects];
 
   v4.receiver = self;
   v4.super_class = TUIKBHandwritingQuadCurvePointFIFO;
@@ -27,8 +27,8 @@
 
 - (void)flush
 {
-  v3 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-  v4 = [v3 count];
+  prevPoints = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+  v4 = [prevPoints count];
 
   if (v4)
   {
@@ -36,9 +36,9 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-    v12 = [v11 lastObject];
-    [v12 TUIKBHandwritingPointValue];
+    prevPoints2 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+    lastObject = [prevPoints2 lastObject];
+    [lastObject TUIKBHandwritingPointValue];
     v14 = v13;
     v16 = v15;
     v28 = v17;
@@ -65,8 +65,8 @@
     v24 = [MEMORY[0x1E696B098] valueWithTUIKBHandwritingPoint:{v27, v16, v28, *&v27}];
     [v19 addObject:v24];
 
-    v25 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-    [v25 removeAllObjects];
+    prevPoints3 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+    [prevPoints3 removeAllObjects];
 
     emissionHandler = self->_emissionHandler;
     if (emissionHandler)
@@ -80,18 +80,18 @@
   [(TUIKBHandwritingPointFIFO *)&v29 flush];
 }
 
-- (void)addPoint:(id *)a3
+- (void)addPoint:(id *)point
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
   v57[1] = *MEMORY[0x1E69E9840];
-  v10 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+  prevPoints = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
   v11 = [MEMORY[0x1E696B098] valueWithTUIKBHandwritingPoint:{v8, v7, v6}];
-  [v10 addObject:v11];
+  [prevPoints addObject:v11];
 
-  v12 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-  v13 = [v12 count];
+  prevPoints2 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+  v13 = [prevPoints2 count];
 
   if (v13 == 1)
   {
@@ -108,8 +108,8 @@
 
   else
   {
-    v17 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-    v18 = [v17 count];
+    prevPoints3 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+    v18 = [prevPoints3 count];
 
     if (v18 == 3)
     {
@@ -117,15 +117,15 @@
       v20 = v19;
       v52 = v21;
       v54 = v22;
-      v23 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-      v24 = [v23 objectAtIndexedSubscript:1];
+      prevPoints4 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+      v24 = [prevPoints4 objectAtIndexedSubscript:1];
       [v24 TUIKBHandwritingPointValue];
       v26 = v25;
       v28 = v27;
       v30 = v29;
 
-      v31 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-      v32 = [v31 objectAtIndexedSubscript:2];
+      prevPoints5 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+      v32 = [prevPoints5 objectAtIndexedSubscript:2];
       [v32 TUIKBHandwritingPointValue];
       v34 = v33;
       v36 = v35;
@@ -134,8 +134,8 @@
       v39 = (v28 + v36) * 0.5;
       v53 = v30;
       v40 = (v30 + v38) * 0.5;
-      v41 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
-      [v41 removeObjectAtIndex:0];
+      prevPoints6 = [(TUIKBHandwritingQuadCurvePointFIFO *)self prevPoints];
+      [prevPoints6 removeObjectAtIndex:0];
 
       v55 = hypot(v20 - v26, v52 - v28);
       v42 = (v26 + v34) * 0.5;
@@ -171,17 +171,17 @@
   }
 }
 
-- (TUIKBHandwritingQuadCurvePointFIFO)initWithFIFO:(id)a3 scale:(double)a4
+- (TUIKBHandwritingQuadCurvePointFIFO)initWithFIFO:(id)o scale:(double)scale
 {
   v9.receiver = self;
   v9.super_class = TUIKBHandwritingQuadCurvePointFIFO;
-  v5 = [(TUIKBHandwritingPointFIFO *)&v9 initWithFIFO:a3];
+  v5 = [(TUIKBHandwritingPointFIFO *)&v9 initWithFIFO:o];
   v6 = v5;
   if (v5)
   {
-    v5->_scale = a4;
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(TUIKBHandwritingQuadCurvePointFIFO *)v6 setPrevPoints:v7];
+    v5->_scale = scale;
+    array = [MEMORY[0x1E695DF70] array];
+    [(TUIKBHandwritingQuadCurvePointFIFO *)v6 setPrevPoints:array];
   }
 
   return v6;

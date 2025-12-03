@@ -7,12 +7,12 @@
 
 - (void)_accessibilityWithdrawActiveItem
 {
-  v5 = [(UIAccessibilityDismissDraftElement *)self mailApplicationScene];
-  v3 = v5;
+  mailApplicationScene = [(UIAccessibilityDismissDraftElement *)self mailApplicationScene];
+  v3 = mailApplicationScene;
   AXPerformSafeBlock();
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
-  v4 = [(UIAccessibilityDismissDraftElement *)self accessibilityContainer];
-  [v4 _accessibilitySetAdditionalElements:0];
+  accessibilityContainer = [(UIAccessibilityDismissDraftElement *)self accessibilityContainer];
+  [accessibilityContainer _accessibilitySetAdditionalElements:0];
 }
 
 - (id)mailApplicationScene

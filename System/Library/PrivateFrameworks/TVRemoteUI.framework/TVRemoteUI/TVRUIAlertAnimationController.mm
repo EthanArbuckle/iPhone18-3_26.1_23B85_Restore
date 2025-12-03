@@ -1,25 +1,25 @@
 @interface TVRUIAlertAnimationController
 - (CGAffineTransform)scaleTransform;
-- (TVRUIAlertAnimationController)initWithAnimationType:(int64_t)a3 visualStyle:(id)a4;
-- (void)_runDismissalAnimationWithTransition:(id)a3;
-- (void)_runPresentationAnimationWithTransition:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)setScaleTransform:(CGAffineTransform *)a3;
+- (TVRUIAlertAnimationController)initWithAnimationType:(int64_t)type visualStyle:(id)style;
+- (void)_runDismissalAnimationWithTransition:(id)transition;
+- (void)_runPresentationAnimationWithTransition:(id)transition;
+- (void)animateTransition:(id)transition;
+- (void)setScaleTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TVRUIAlertAnimationController
 
-- (TVRUIAlertAnimationController)initWithAnimationType:(int64_t)a3 visualStyle:(id)a4
+- (TVRUIAlertAnimationController)initWithAnimationType:(int64_t)type visualStyle:(id)style
 {
-  v7 = a4;
+  styleCopy = style;
   v13.receiver = self;
   v13.super_class = TVRUIAlertAnimationController;
   v8 = [(TVRUIAlertAnimationController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_visualStyle, a4);
-    v9->_animationType = a3;
+    objc_storeStrong(&v8->_visualStyle, style);
+    v9->_animationType = type;
     v9->_foregroundBlurRadius = 20.0;
     CGAffineTransformMakeScale(&v12, 1.92, 1.92);
     v10 = *&v12.c;
@@ -31,23 +31,23 @@
   return v9;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   if ([(TVRUIAlertAnimationController *)self animationType])
   {
-    [(TVRUIAlertAnimationController *)self _runDismissalAnimationWithTransition:v4];
+    [(TVRUIAlertAnimationController *)self _runDismissalAnimationWithTransition:transitionCopy];
   }
 
   else
   {
-    [(TVRUIAlertAnimationController *)self _runPresentationAnimationWithTransition:v4];
+    [(TVRUIAlertAnimationController *)self _runPresentationAnimationWithTransition:transitionCopy];
   }
 }
 
-- (void)_runPresentationAnimationWithTransition:(id)a3
+- (void)_runPresentationAnimationWithTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -55,31 +55,31 @@
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Animate transition: presenting", buf, 2u);
   }
 
-  v6 = [v4 viewForKey:*MEMORY[0x277D77248]];
-  v7 = [v4 viewForKey:*MEMORY[0x277D77238]];
-  v8 = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
+  v6 = [transitionCopy viewForKey:*MEMORY[0x277D77248]];
+  v7 = [transitionCopy viewForKey:*MEMORY[0x277D77238]];
+  backgroundMaterialView = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
 
-  if (v8)
+  if (backgroundMaterialView)
   {
     [v7 bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
-    [v17 setFrame:{v10, v12, v14, v16}];
+    backgroundMaterialView2 = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
+    [backgroundMaterialView2 setFrame:{v10, v12, v14, v16}];
 
-    v18 = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
-    [v18 setAutoresizingMask:18];
+    backgroundMaterialView3 = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
+    [backgroundMaterialView3 setAutoresizingMask:18];
 
-    v19 = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
-    [v7 insertSubview:v19 atIndex:0];
+    backgroundMaterialView4 = [(TVRUIAlertAnimationController *)self backgroundMaterialView];
+    [v7 insertSubview:backgroundMaterialView4 atIndex:0];
   }
 
   v20 = objc_alloc(MEMORY[0x277D75D68]);
-  v21 = [(TVRUIAlertAnimationController *)self visualStyle];
-  v22 = [v21 foregroundVisualEffect];
-  v23 = [v20 initWithEffect:v22];
+  visualStyle = [(TVRUIAlertAnimationController *)self visualStyle];
+  foregroundVisualEffect = [visualStyle foregroundVisualEffect];
+  v23 = [v20 initWithEffect:foregroundVisualEffect];
   [(TVRUIAlertAnimationController *)self setForegroundVisualEffectView:v23];
 
   [v6 bounds];
@@ -87,11 +87,11 @@
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
-  [v32 setFrame:{v25, v27, v29, v31}];
+  foregroundVisualEffectView = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
+  [foregroundVisualEffectView setFrame:{v25, v27, v29, v31}];
 
-  v33 = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
-  [v6 addSubview:v33];
+  foregroundVisualEffectView2 = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
+  [v6 addSubview:foregroundVisualEffectView2];
 
   [v6 setAlpha:0.0];
   [(TVRUIAlertAnimationController *)self scaleTransform];
@@ -112,9 +112,9 @@
   v38 = 3221225472;
   v39 = __73__TVRUIAlertAnimationController__runPresentationAnimationWithTransition___block_invoke_2;
   v40 = &unk_279D882A0;
-  v41 = self;
-  v42 = v4;
-  v36 = v4;
+  selfCopy = self;
+  v42 = transitionCopy;
+  v36 = transitionCopy;
   [v34 addCompletion:&v37];
   [v34 startAnimation];
 }
@@ -146,9 +146,9 @@ uint64_t __73__TVRUIAlertAnimationController__runPresentationAnimationWithTransi
   return [v3 completeTransition:1];
 }
 
-- (void)_runDismissalAnimationWithTransition:(id)a3
+- (void)_runDismissalAnimationWithTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,7 +156,7 @@ uint64_t __73__TVRUIAlertAnimationController__runPresentationAnimationWithTransi
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Animate transition: dismissing", buf, 2u);
   }
 
-  v6 = [v4 viewForKey:*MEMORY[0x277D77238]];
+  v6 = [transitionCopy viewForKey:*MEMORY[0x277D77238]];
   v7 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
   [(TVRUIAlertAnimationController *)self setForegroundVisualEffectView:v7];
 
@@ -165,11 +165,11 @@ uint64_t __73__TVRUIAlertAnimationController__runPresentationAnimationWithTransi
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  foregroundVisualEffectView = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
+  [foregroundVisualEffectView setFrame:{v9, v11, v13, v15}];
 
-  v17 = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
-  [v6 addSubview:v17];
+  foregroundVisualEffectView2 = [(TVRUIAlertAnimationController *)self foregroundVisualEffectView];
+  [v6 addSubview:foregroundVisualEffectView2];
 
   [v6 setAlpha:1.0];
   v18 = *(MEMORY[0x277CBF2C0] + 16);
@@ -190,8 +190,8 @@ uint64_t __73__TVRUIAlertAnimationController__runPresentationAnimationWithTransi
   v22[1] = 3221225472;
   v22[2] = __70__TVRUIAlertAnimationController__runDismissalAnimationWithTransition___block_invoke_2;
   v22[3] = &unk_279D88028;
-  v23 = v4;
-  v21 = v4;
+  v23 = transitionCopy;
+  v21 = transitionCopy;
   [v19 addCompletion:v22];
   [v19 startAnimation];
 }
@@ -237,11 +237,11 @@ void __70__TVRUIAlertAnimationController__runDismissalAnimationWithTransition___
   return self;
 }
 
-- (void)setScaleTransform:(CGAffineTransform *)a3
+- (void)setScaleTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_scaleTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_scaleTransform.c = *&transform->c;
   *&self->_scaleTransform.tx = v4;
   *&self->_scaleTransform.a = v3;
 }

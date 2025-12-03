@@ -1,42 +1,42 @@
 @interface POMMESSchemaPOMMESPegasusRequestEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusRequestEnded)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusRequestEnded)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESPegasusRequestEnded)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusRequestEnded)initWithJSON:(id)n;
 - (POMMESSchemaPOMMESPegasusResponseClientDrivenContext)clientDriven;
 - (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)serverDriven;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteClientDriven;
 - (void)deleteServerDriven;
-- (void)setClientDriven:(id)a3;
-- (void)setHasConfidenceScore:(BOOL)a3;
-- (void)setHasIsRewrittenUtteranceUsed:(BOOL)a3;
-- (void)setHasPayloadSizeInKB:(BOOL)a3;
-- (void)setServerDriven:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setClientDriven:(id)driven;
+- (void)setHasConfidenceScore:(BOOL)score;
+- (void)setHasIsRewrittenUtteranceUsed:(BOOL)used;
+- (void)setHasPayloadSizeInKB:(BOOL)b;
+- (void)setServerDriven:(id)driven;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusRequestEnded
 
-- (POMMESSchemaPOMMESPegasusRequestEnded)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusRequestEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = POMMESSchemaPOMMESPegasusRequestEnded;
   v5 = [(POMMESSchemaPOMMESPegasusRequestEnded *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"status"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusRequestEnded setStatus:](v5, "setStatus:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"confidenceScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"confidenceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(POMMESSchemaPOMMESPegasusRequestEnded *)v5 setConfidenceScore:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:{@"payloadSizeInKB", v7}];
+    v8 = [dictionaryCopy objectForKeyedSubscript:{@"payloadSizeInKB", v7}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
     }
 
     v23 = v6;
-    v9 = [v4 objectForKeyedSubscript:@"serverDriven"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"serverDriven"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(POMMESSchemaPOMMESPegasusRequestEnded *)v5 setServerDriven:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"clientDriven"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"clientDriven"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(POMMESSchemaPOMMESPegasusRequestEnded *)v5 setClientDriven:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"pegasusDomain"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"pegasusDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,14 +77,14 @@
       [(POMMESSchemaPOMMESPegasusRequestEnded *)v5 setPegasusDomain:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isRewrittenUtteranceUsed"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isRewrittenUtteranceUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusRequestEnded setIsRewrittenUtteranceUsed:](v5, "setIsRewrittenUtteranceUsed:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"requestArguments"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"requestArguments"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       [(POMMESSchemaPOMMESPegasusRequestEnded *)v5 setRequestArguments:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"kfedLatency"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"kfedLatency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,30 +106,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusRequestEnded)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -142,20 +142,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clientDriven)
   {
-    v4 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clientDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
+    dictionaryRepresentation = [clientDriven dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clientDriven"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clientDriven"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clientDriven"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clientDriven"];
     }
   }
 
@@ -165,7 +165,7 @@
     v8 = MEMORY[0x1E696AD98];
     [(POMMESSchemaPOMMESPegasusRequestEnded *)self confidenceScore];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"confidenceScore"];
+    [dictionary setObject:v9 forKeyedSubscript:@"confidenceScore"];
 
     has = self->_has;
   }
@@ -173,22 +173,22 @@
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusRequestEnded isRewrittenUtteranceUsed](self, "isRewrittenUtteranceUsed")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isRewrittenUtteranceUsed"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isRewrittenUtteranceUsed"];
   }
 
   if (self->_kfedLatency)
   {
-    v11 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    kfedLatency = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
+    dictionaryRepresentation2 = [kfedLatency dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"kfedLatency"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"kfedLatency"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"kfedLatency"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"kfedLatency"];
     }
   }
 
@@ -197,45 +197,45 @@
     v14 = MEMORY[0x1E696AD98];
     [(POMMESSchemaPOMMESPegasusRequestEnded *)self payloadSizeInKB];
     v15 = [v14 numberWithDouble:?];
-    [v3 setObject:v15 forKeyedSubscript:@"payloadSizeInKB"];
+    [dictionary setObject:v15 forKeyedSubscript:@"payloadSizeInKB"];
   }
 
   if (self->_pegasusDomain)
   {
-    v16 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"pegasusDomain"];
+    pegasusDomain = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
+    v17 = [pegasusDomain copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"pegasusDomain"];
   }
 
   if (self->_requestArguments)
   {
-    v18 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    requestArguments = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
+    dictionaryRepresentation3 = [requestArguments dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"requestArguments"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"requestArguments"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"requestArguments"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"requestArguments"];
     }
   }
 
   if (self->_serverDriven)
   {
-    v21 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
+    dictionaryRepresentation4 = [serverDriven dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"serverDriven"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"serverDriven"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"serverDriven"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"serverDriven"];
     }
   }
 
@@ -252,12 +252,12 @@
       v25 = off_1E78E0F00[v24];
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"status"];
+    [dictionary setObject:v25 forKeyedSubscript:@"status"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -360,22 +360,22 @@ LABEL_9:
   return v18 ^ v19 ^ [(POMMESSchemaPOMMESPegasusRequestKfedLatency *)self->_kfedLatency hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   v5 = *&self->_hasKfedLatency;
-  if (v5 != [v4 whichContextevent])
+  if (v5 != [equalCopy whichContextevent])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v7 = v4[80];
+  v7 = equalCopy[80];
   if ((*&has & 1) != (v7 & 1))
   {
     goto LABEL_42;
@@ -384,13 +384,13 @@ LABEL_9:
   if (*&has)
   {
     status = self->_status;
-    if (status != [v4 status])
+    if (status != [equalCopy status])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v7 = v4[80];
+    v7 = equalCopy[80];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -399,14 +399,14 @@ LABEL_9:
     if (v9)
     {
       confidenceScore = self->_confidenceScore;
-      [v4 confidenceScore];
+      [equalCopy confidenceScore];
       if (confidenceScore != v11)
       {
         goto LABEL_42;
       }
 
       has = self->_has;
-      v7 = v4[80];
+      v7 = equalCopy[80];
     }
 
     v12 = (*&has >> 2) & 1;
@@ -418,27 +418,27 @@ LABEL_9:
     if (v12)
     {
       payloadSizeInKB = self->_payloadSizeInKB;
-      [v4 payloadSizeInKB];
+      [equalCopy payloadSizeInKB];
       if (payloadSizeInKB != v14)
       {
         goto LABEL_42;
       }
     }
 
-    v15 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
-    v16 = [v4 serverDriven];
-    if ((v15 != 0) == (v16 == 0))
+    serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
+    serverDriven2 = [equalCopy serverDriven];
+    if ((serverDriven != 0) == (serverDriven2 == 0))
     {
       goto LABEL_41;
     }
 
-    v17 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
-    if (v17)
+    serverDriven3 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
+    if (serverDriven3)
     {
-      v18 = v17;
-      v19 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
-      v20 = [v4 serverDriven];
-      v21 = [v19 isEqual:v20];
+      v18 = serverDriven3;
+      serverDriven4 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
+      serverDriven5 = [equalCopy serverDriven];
+      v21 = [serverDriven4 isEqual:serverDriven5];
 
       if (!v21)
       {
@@ -450,20 +450,20 @@ LABEL_9:
     {
     }
 
-    v15 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
-    v16 = [v4 clientDriven];
-    if ((v15 != 0) == (v16 == 0))
+    serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
+    serverDriven2 = [equalCopy clientDriven];
+    if ((serverDriven != 0) == (serverDriven2 == 0))
     {
       goto LABEL_41;
     }
 
-    v22 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
-    if (v22)
+    clientDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
+    if (clientDriven)
     {
-      v23 = v22;
-      v24 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
-      v25 = [v4 clientDriven];
-      v26 = [v24 isEqual:v25];
+      v23 = clientDriven;
+      clientDriven2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
+      clientDriven3 = [equalCopy clientDriven];
+      v26 = [clientDriven2 isEqual:clientDriven3];
 
       if (!v26)
       {
@@ -475,20 +475,20 @@ LABEL_9:
     {
     }
 
-    v15 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
-    v16 = [v4 pegasusDomain];
-    if ((v15 != 0) == (v16 == 0))
+    serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
+    serverDriven2 = [equalCopy pegasusDomain];
+    if ((serverDriven != 0) == (serverDriven2 == 0))
     {
       goto LABEL_41;
     }
 
-    v27 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
-    if (v27)
+    pegasusDomain = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
+    if (pegasusDomain)
     {
-      v28 = v27;
-      v29 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
-      v30 = [v4 pegasusDomain];
-      v31 = [v29 isEqual:v30];
+      v28 = pegasusDomain;
+      pegasusDomain2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
+      pegasusDomain3 = [equalCopy pegasusDomain];
+      v31 = [pegasusDomain2 isEqual:pegasusDomain3];
 
       if (!v31)
       {
@@ -501,7 +501,7 @@ LABEL_9:
     }
 
     v32 = (*&self->_has >> 3) & 1;
-    if (v32 != ((v4[80] >> 3) & 1))
+    if (v32 != ((equalCopy[80] >> 3) & 1))
     {
       goto LABEL_42;
     }
@@ -509,26 +509,26 @@ LABEL_9:
     if (v32)
     {
       isRewrittenUtteranceUsed = self->_isRewrittenUtteranceUsed;
-      if (isRewrittenUtteranceUsed != [v4 isRewrittenUtteranceUsed])
+      if (isRewrittenUtteranceUsed != [equalCopy isRewrittenUtteranceUsed])
       {
         goto LABEL_42;
       }
     }
 
-    v15 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
-    v16 = [v4 requestArguments];
-    if ((v15 != 0) == (v16 == 0))
+    serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
+    serverDriven2 = [equalCopy requestArguments];
+    if ((serverDriven != 0) == (serverDriven2 == 0))
     {
       goto LABEL_41;
     }
 
-    v34 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
-    if (v34)
+    requestArguments = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
+    if (requestArguments)
     {
-      v35 = v34;
-      v36 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
-      v37 = [v4 requestArguments];
-      v38 = [v36 isEqual:v37];
+      v35 = requestArguments;
+      requestArguments2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
+      requestArguments3 = [equalCopy requestArguments];
+      v38 = [requestArguments2 isEqual:requestArguments3];
 
       if (!v38)
       {
@@ -540,12 +540,12 @@ LABEL_9:
     {
     }
 
-    v15 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
-    v16 = [v4 kfedLatency];
-    if ((v15 != 0) != (v16 == 0))
+    serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
+    serverDriven2 = [equalCopy kfedLatency];
+    if ((serverDriven != 0) != (serverDriven2 == 0))
     {
-      v39 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
-      if (!v39)
+      kfedLatency = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
+      if (!kfedLatency)
       {
 
 LABEL_45:
@@ -553,10 +553,10 @@ LABEL_45:
         goto LABEL_43;
       }
 
-      v40 = v39;
-      v41 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
-      v42 = [v4 kfedLatency];
-      v43 = [v41 isEqual:v42];
+      v40 = kfedLatency;
+      kfedLatency2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
+      kfedLatency3 = [equalCopy kfedLatency];
+      v43 = [kfedLatency2 isEqual:kfedLatency3];
 
       if (v43)
       {
@@ -577,9 +577,9 @@ LABEL_43:
   return v44;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -610,25 +610,25 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
+  serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
 
-  if (v5)
+  if (serverDriven)
   {
-    v6 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
+    serverDriven2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
+  clientDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
 
-  if (v7)
+  if (clientDriven)
   {
-    v8 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
+    clientDriven2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
+  pegasusDomain = [(POMMESSchemaPOMMESPegasusRequestEnded *)self pegasusDomain];
 
-  if (v9)
+  if (pegasusDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -638,29 +638,29 @@ LABEL_5:
     PBDataWriterWriteBOOLField();
   }
 
-  v10 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
+  requestArguments = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
 
-  if (v10)
+  if (requestArguments)
   {
-    v11 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
+    requestArguments2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
+  kfedLatency = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (kfedLatency)
   {
-    v14 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
+    kfedLatency2 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (void)setHasIsRewrittenUtteranceUsed:(BOOL)a3
+- (void)setHasIsRewrittenUtteranceUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 8;
   }
@@ -698,21 +698,21 @@ LABEL_5:
   return v3;
 }
 
-- (void)setClientDriven:(id)a3
+- (void)setClientDriven:(id)driven
 {
-  v4 = a3;
+  drivenCopy = driven;
   serverDriven = self->_serverDriven;
   self->_serverDriven = 0;
 
   v6 = 5;
-  if (!v4)
+  if (!drivenCopy)
   {
     v6 = 0;
   }
 
   *&self->_hasKfedLatency = v6;
   clientDriven = self->_clientDriven;
-  self->_clientDriven = v4;
+  self->_clientDriven = drivenCopy;
 }
 
 - (void)deleteServerDriven
@@ -740,20 +740,20 @@ LABEL_5:
   return v3;
 }
 
-- (void)setServerDriven:(id)a3
+- (void)setServerDriven:(id)driven
 {
-  v4 = a3;
+  drivenCopy = driven;
   clientDriven = self->_clientDriven;
   self->_clientDriven = 0;
 
-  *&self->_hasKfedLatency = 4 * (v4 != 0);
+  *&self->_hasKfedLatency = 4 * (drivenCopy != 0);
   serverDriven = self->_serverDriven;
-  self->_serverDriven = v4;
+  self->_serverDriven = drivenCopy;
 }
 
-- (void)setHasPayloadSizeInKB:(BOOL)a3
+- (void)setHasPayloadSizeInKB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 4;
   }
@@ -766,9 +766,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasConfidenceScore:(BOOL)a3
+- (void)setHasConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -781,44 +781,44 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = POMMESSchemaPOMMESPegasusRequestEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  serverDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self serverDriven];
+  v7 = [serverDriven applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(POMMESSchemaPOMMESPegasusRequestEnded *)self deleteServerDriven];
   }
 
-  v9 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  clientDriven = [(POMMESSchemaPOMMESPegasusRequestEnded *)self clientDriven];
+  v10 = [clientDriven applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(POMMESSchemaPOMMESPegasusRequestEnded *)self deleteClientDriven];
   }
 
-  v12 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  requestArguments = [(POMMESSchemaPOMMESPegasusRequestEnded *)self requestArguments];
+  v13 = [requestArguments applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(POMMESSchemaPOMMESPegasusRequestEnded *)self deleteRequestArguments];
   }
 
-  v15 = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  kfedLatency = [(POMMESSchemaPOMMESPegasusRequestEnded *)self kfedLatency];
+  v16 = [kfedLatency applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(POMMESSchemaPOMMESPegasusRequestEnded *)self deleteKfedLatency];
   }

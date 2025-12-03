@@ -4,10 +4,10 @@
 - (DCAnalytics)init;
 - (NSMutableDictionary)perfIdMap;
 - (OS_os_log)perfLog;
-- (id)convertCategory:(unint64_t)a3;
+- (id)convertCategory:(unint64_t)category;
 - (void)dealloc;
-- (void)sendPayload:(id)a3 forEvent:(id)a4 withError:(id)a5;
-- (void)sendPerformanceForCategory:(unint64_t)a3 eventType:(unint64_t)a4;
+- (void)sendPayload:(id)payload forEvent:(id)event withError:(id)error;
+- (void)sendPerformanceForCategory:(unint64_t)category eventType:(unint64_t)type;
 @end
 
 @implementation DCAnalytics
@@ -38,8 +38,8 @@ uint64_t __21__DCAnalytics_shared__block_invoke()
   v2 = [(DCAnalytics *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    [v3 addNetworkReachableObserver:v2 selector:sel_networkReachabilityChanged_];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    [mEMORY[0x277CEC5B8] addNetworkReachableObserver:v2 selector:sel_networkReachabilityChanged_];
   }
 
   return v2;
@@ -84,8 +84,8 @@ uint64_t __21__DCAnalytics_shared__block_invoke()
 
   else
   {
-    v4 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    self->_isNetworkReachable = [v4 isNetworkReachable];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    self->_isNetworkReachable = [mEMORY[0x277CEC5B8] isNetworkReachable];
 
     return self->_isNetworkReachable;
   }
@@ -93,26 +93,26 @@ uint64_t __21__DCAnalytics_shared__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v3 removeNetworkReachableObserver:self];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 
   v4.receiver = self;
   v4.super_class = DCAnalytics;
   [(DCAnalytics *)&v4 dealloc];
 }
 
-- (void)sendPayload:(id)a3 forEvent:(id)a4 withError:(id)a5
+- (void)sendPayload:(id)payload forEvent:(id)event withError:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  eventCopy = event;
+  errorCopy = error;
   v18 = MEMORY[0x277D85DD0];
-  v11 = v8;
+  v11 = payloadCopy;
   v19 = v11;
-  v12 = v10;
+  v12 = errorCopy;
   v20 = v12;
-  v13 = v9;
+  v13 = eventCopy;
   v21 = v13;
   v14 = AnalyticsSendEventLazy();
   if (DCLogSystem_onceToken_0 != -1)
@@ -133,9 +133,9 @@ uint64_t __21__DCAnalytics_shared__block_invoke()
     v28 = 2112;
     v29 = v13;
     v30 = 2048;
-    v31 = [v12 code];
+    code = [v12 code];
     v32 = 1024;
-    v33 = [(DCAnalytics *)self isNetworkReachable];
+    isNetworkReachable = [(DCAnalytics *)self isNetworkReachable];
     _os_log_impl(&dword_238044000, v16, OS_LOG_TYPE_DEBUG, "%25s:%-5d Attempted to submit analytics event. { didSend=%d, event=%@, errorClass=%ld, networkReachable=%d }", buf, 0x32u);
   }
 
@@ -161,14 +161,14 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)sendPerformanceForCategory:(unint64_t)a3 eventType:(unint64_t)a4
+- (void)sendPerformanceForCategory:(unint64_t)category eventType:(unint64_t)type
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(DCAnalytics *)v6 convertCategory:a3];
-  v8 = [(DCAnalytics *)v6 perfLog];
-  v9 = os_signpost_enabled(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(DCAnalytics *)selfCopy convertCategory:category];
+  perfLog = [(DCAnalytics *)selfCopy perfLog];
+  v9 = os_signpost_enabled(perfLog);
 
   if (!v9)
   {
@@ -192,22 +192,22 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
     goto LABEL_113;
   }
 
-  v10 = [(DCAnalytics *)v6 perfIdMap];
-  v11 = [v10 objectForKey:v7];
+  perfIdMap = [(DCAnalytics *)selfCopy perfIdMap];
+  v11 = [perfIdMap objectForKey:v7];
   [v11 doubleValue];
   v13 = v12;
 
   if (!v13)
   {
-    v14 = [(DCAnalytics *)v6 perfLog];
-    v13 = os_signpost_id_generate(v14);
+    perfLog2 = [(DCAnalytics *)selfCopy perfLog];
+    v13 = os_signpost_id_generate(perfLog2);
 
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
-    v16 = [(DCAnalytics *)v6 perfIdMap];
-    [v16 setObject:v15 forKeyedSubscript:v7];
+    perfIdMap2 = [(DCAnalytics *)selfCopy perfIdMap];
+    [perfIdMap2 setObject:v15 forKeyedSubscript:v7];
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     if (DCLogSystem_onceToken_0 != -1)
     {
@@ -228,15 +228,15 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
       _os_log_impl(&dword_238044000, v21, OS_LOG_TYPE_DEBUG, "%25s:%-5d Dropping signpost end. { eventName=%@, eventId=%llu }", v46, 0x26u);
     }
 
-    if (a3 > 8)
+    if (category > 8)
     {
-      if (a3 <= 10)
+      if (category <= 10)
       {
-        if (a3 == 9)
+        if (category == 9)
         {
-          v35 = [(DCAnalytics *)v6 perfLog];
-          v23 = v35;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v35))
+          perfLog3 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog3;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog3))
           {
             goto LABEL_111;
           }
@@ -248,9 +248,9 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
 
         else
         {
-          v31 = [(DCAnalytics *)v6 perfLog];
-          v23 = v31;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v31))
+          perfLog4 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog4;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog4))
           {
             goto LABEL_111;
           }
@@ -263,12 +263,12 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
         goto LABEL_110;
       }
 
-      switch(a3)
+      switch(category)
       {
         case 0xBuLL:
-          v41 = [(DCAnalytics *)v6 perfLog];
-          v23 = v41;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v41))
+          perfLog5 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog5;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog5))
           {
             goto LABEL_111;
           }
@@ -278,9 +278,9 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
           v25 = " enableTelemetry=YES com.apple.devicecheck.appattestdevice.attestKey";
           goto LABEL_110;
         case 0xCuLL:
-          v43 = [(DCAnalytics *)v6 perfLog];
-          v23 = v43;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v43))
+          perfLog6 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog6;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog6))
           {
             goto LABEL_111;
           }
@@ -290,9 +290,9 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
           v25 = " enableTelemetry=YES com.apple.devicecheck.appattest.generateAssertion";
           goto LABEL_110;
         case 0xDuLL:
-          v27 = [(DCAnalytics *)v6 perfLog];
-          v23 = v27;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v27))
+          perfLog7 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog7;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog7))
           {
             goto LABEL_111;
           }
@@ -306,13 +306,13 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
 
     else
     {
-      if (a3 > 5)
+      if (category > 5)
       {
-        if (a3 == 6)
+        if (category == 6)
         {
-          v40 = [(DCAnalytics *)v6 perfLog];
-          v23 = v40;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v40))
+          perfLog8 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog8;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog8))
           {
             goto LABEL_111;
           }
@@ -322,11 +322,11 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
           v25 = " enableTelemetry=YES com.apple.devicecheck.appattest.generateKey";
         }
 
-        else if (a3 == 7)
+        else if (category == 7)
         {
-          v42 = [(DCAnalytics *)v6 perfLog];
-          v23 = v42;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v42))
+          perfLog9 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog9;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog9))
           {
             goto LABEL_111;
           }
@@ -338,9 +338,9 @@ id __46__DCAnalytics_sendPayload_forEvent_withError___block_invoke(uint64_t a1)
 
         else
         {
-          v22 = [(DCAnalytics *)v6 perfLog];
-          v23 = v22;
-          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v22))
+          perfLog10 = [(DCAnalytics *)selfCopy perfLog];
+          v23 = perfLog10;
+          if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog10))
           {
             goto LABEL_111;
           }
@@ -357,11 +357,11 @@ LABEL_111:
         goto LABEL_112;
       }
 
-      if (!a3)
+      if (!category)
       {
-        v34 = [(DCAnalytics *)v6 perfLog];
-        v23 = v34;
-        if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v34))
+        perfLog11 = [(DCAnalytics *)selfCopy perfLog];
+        v23 = perfLog11;
+        if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog11))
         {
           goto LABEL_111;
         }
@@ -372,11 +372,11 @@ LABEL_111:
         goto LABEL_110;
       }
 
-      if (a3 == 1)
+      if (category == 1)
       {
-        v30 = [(DCAnalytics *)v6 perfLog];
-        v23 = v30;
-        if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v30))
+        perfLog12 = [(DCAnalytics *)selfCopy perfLog];
+        v23 = perfLog12;
+        if (v13 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(perfLog12))
         {
           goto LABEL_111;
         }
@@ -389,13 +389,13 @@ LABEL_111:
     }
 
 LABEL_112:
-    v44 = [(DCAnalytics *)v6 perfIdMap];
-    [v44 removeObjectForKey:v7];
+    perfIdMap3 = [(DCAnalytics *)selfCopy perfIdMap];
+    [perfIdMap3 removeObjectForKey:v7];
 
     goto LABEL_113;
   }
 
-  if (!a4)
+  if (!type)
   {
     if (DCLogSystem_onceToken_0 != -1)
     {
@@ -416,15 +416,15 @@ LABEL_112:
       _os_log_impl(&dword_238044000, v17, OS_LOG_TYPE_DEBUG, "%25s:%-5d Dropping signpost begin. { eventName=%@, eventId=%llu }", v46, 0x26u);
     }
 
-    if (a3 > 8)
+    if (category > 8)
     {
-      if (a3 <= 10)
+      if (category <= 10)
       {
-        if (a3 == 9)
+        if (category == 9)
         {
-          v33 = [(DCAnalytics *)v6 perfLog];
-          v19 = v33;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
+          perfLog13 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog13;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog13))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "attestKeyPriv", " enableTelemetry=YES com.apple.devicecheck.appattestpriv.attestKey", v46, 2u);
@@ -433,9 +433,9 @@ LABEL_112:
 
         else
         {
-          v29 = [(DCAnalytics *)v6 perfLog];
-          v19 = v29;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
+          perfLog14 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog14;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog14))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "attestKeyWeb", " enableTelemetry=YES com.apple.devicecheck.appattestweb.attestKey", v46, 2u);
@@ -445,12 +445,12 @@ LABEL_112:
         goto LABEL_97;
       }
 
-      switch(a3)
+      switch(category)
       {
         case 0xBuLL:
-          v37 = [(DCAnalytics *)v6 perfLog];
-          v19 = v37;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v37))
+          perfLog15 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog15;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog15))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "attestKeyDevice", " enableTelemetry=YES com.apple.devicecheck.appattestdevice.attestKey", v46, 2u);
@@ -458,9 +458,9 @@ LABEL_112:
 
           goto LABEL_97;
         case 0xCuLL:
-          v39 = [(DCAnalytics *)v6 perfLog];
-          v19 = v39;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
+          perfLog16 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog16;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog16))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "generateAssertion", " enableTelemetry=YES com.apple.devicecheck.appattest.generateAssertion", v46, 2u);
@@ -468,9 +468,9 @@ LABEL_112:
 
           goto LABEL_97;
         case 0xDuLL:
-          v26 = [(DCAnalytics *)v6 perfLog];
-          v19 = v26;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
+          perfLog17 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog17;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog17))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "generateAssertionPriv", " enableTelemetry=YES com.apple.devicecheck.appattestpriv.generateAssertion", v46, 2u);
@@ -482,24 +482,24 @@ LABEL_112:
 
     else
     {
-      if (a3 > 5)
+      if (category > 5)
       {
-        if (a3 == 6)
+        if (category == 6)
         {
-          v36 = [(DCAnalytics *)v6 perfLog];
-          v19 = v36;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
+          perfLog18 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog18;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog18))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "generateKey", " enableTelemetry=YES com.apple.devicecheck.appattest.generateKey", v46, 2u);
           }
         }
 
-        else if (a3 == 7)
+        else if (category == 7)
         {
-          v38 = [(DCAnalytics *)v6 perfLog];
-          v19 = v38;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v38))
+          perfLog19 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog19;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog19))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "generateKeyPriv", " enableTelemetry=YES com.apple.devicecheck.appattestpriv.generateKey", v46, 2u);
@@ -508,9 +508,9 @@ LABEL_112:
 
         else
         {
-          v18 = [(DCAnalytics *)v6 perfLog];
-          v19 = v18;
-          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
+          perfLog20 = [(DCAnalytics *)selfCopy perfLog];
+          v19 = perfLog20;
+          if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog20))
           {
             *v46 = 0;
             _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "attestKey", " enableTelemetry=YES com.apple.devicecheck.appattest.attestKey", v46, 2u);
@@ -522,11 +522,11 @@ LABEL_97:
         goto LABEL_113;
       }
 
-      if (!a3)
+      if (!category)
       {
-        v32 = [(DCAnalytics *)v6 perfLog];
-        v19 = v32;
-        if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
+        perfLog21 = [(DCAnalytics *)selfCopy perfLog];
+        v19 = perfLog21;
+        if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog21))
         {
           *v46 = 0;
           _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "isSupported", " enableTelemetry=YES com.apple.devicecheck.isSupported", v46, 2u);
@@ -535,11 +535,11 @@ LABEL_97:
         goto LABEL_97;
       }
 
-      if (a3 == 1)
+      if (category == 1)
       {
-        v28 = [(DCAnalytics *)v6 perfLog];
-        v19 = v28;
-        if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
+        perfLog22 = [(DCAnalytics *)selfCopy perfLog];
+        v19 = perfLog22;
+        if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(perfLog22))
         {
           *v46 = 0;
           _os_signpost_emit_with_name_impl(&dword_238044000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v13, "generateToken", " enableTelemetry=YES com.apple.devicecheck.generateToken", v46, 2u);
@@ -552,20 +552,20 @@ LABEL_97:
 
 LABEL_113:
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (id)convertCategory:(unint64_t)a3
+- (id)convertCategory:(unint64_t)category
 {
-  if (a3 > 0xD)
+  if (category > 0xD)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_278A46300[a3];
+    return off_278A46300[category];
   }
 }
 

@@ -44,11 +44,11 @@ LABEL_8:
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D01108]);
-    v5 = [v3 identifier];
-    v6 = [v3 settledState];
-    v7 = [v6 unsignedIntegerValue];
-    v8 = [v3 start];
-    v9 = [v4 initWithIdentifier:v5 settledState:v7 start:v8 accessPoints:0];
+    identifier = [v3 identifier];
+    settledState = [v3 settledState];
+    unsignedIntegerValue = [settledState unsignedIntegerValue];
+    start = [v3 start];
+    v9 = [v4 initWithIdentifier:identifier settledState:unsignedIntegerValue start:start accessPoints:0];
   }
 
   else
@@ -70,7 +70,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTFingerprintMO managedObjectWithFingerprint:a1 inManagedObjectContext:a3];
+    v3 = [RTFingerprintMO managedObjectWithFingerprint:self inManagedObjectContext:a3];
   }
 
   else

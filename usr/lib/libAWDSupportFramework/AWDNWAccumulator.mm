@@ -1,13 +1,13 @@
 @interface AWDNWAccumulator
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addDurations:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addDurations:(id)durations;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNWAccumulator
@@ -21,7 +21,7 @@
   [(AWDNWAccumulator *)&v3 dealloc];
 }
 
-- (void)addDurations:(id)a3
+- (void)addDurations:(id)durations
 {
   durations = self->_durations;
   if (!durations)
@@ -30,7 +30,7 @@
     self->_durations = durations;
   }
 
-  [(NSMutableArray *)durations addObject:a3];
+  [(NSMutableArray *)durations addObject:durations];
 }
 
 - (id)description
@@ -43,12 +43,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if ([(NSMutableArray *)self->_durations count])
@@ -89,7 +89,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x29EDCA608];
   if (self->_name)
@@ -132,34 +132,34 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_name)
   {
-    [a3 setName:?];
+    [to setName:?];
   }
 
   if ([(AWDNWAccumulator *)self durationsCount])
   {
-    [a3 clearDurations];
-    v5 = [(AWDNWAccumulator *)self durationsCount];
-    if (v5)
+    [to clearDurations];
+    durationsCount = [(AWDNWAccumulator *)self durationsCount];
+    if (durationsCount)
     {
-      v6 = v5;
+      v6 = durationsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addDurations:{-[AWDNWAccumulator durationsAtIndex:](self, "durationsAtIndex:", i)}];
+        [to addDurations:{-[AWDNWAccumulator durationsAtIndex:](self, "durationsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[2] = [(NSString *)self->_name copyWithZone:a3];
+  v5[2] = [(NSString *)self->_name copyWithZone:zone];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -180,7 +180,7 @@
           objc_enumerationMutation(durations);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addDurations:v11];
 
         ++v10;
@@ -197,16 +197,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     name = self->_name;
-    if (!(name | *(a3 + 2)) || (v5 = [(NSString *)name isEqual:?]) != 0)
+    if (!(name | *(equal + 2)) || (v5 = [(NSString *)name isEqual:?]) != 0)
     {
       durations = self->_durations;
-      if (durations | *(a3 + 1))
+      if (durations | *(equal + 1))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)durations isEqual:?];
@@ -222,10 +222,10 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDNWAccumulator *)self setName:?];
   }
@@ -234,7 +234,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 1);
+  v5 = *(from + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

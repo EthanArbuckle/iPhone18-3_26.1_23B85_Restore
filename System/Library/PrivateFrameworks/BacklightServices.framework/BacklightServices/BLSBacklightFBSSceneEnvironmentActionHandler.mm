@@ -1,22 +1,22 @@
 @interface BLSBacklightFBSSceneEnvironmentActionHandler
-+ (id)desiredFidelityRequestFromAction:(id)a3;
-+ (id)frameSpecifiersRequestFromAction:(id)a3;
-- (id)respondToActions:(id)a3 forFBSScene:(id)a4 fromTransitionContext:(id)a5;
++ (id)desiredFidelityRequestFromAction:(id)action;
++ (id)frameSpecifiersRequestFromAction:(id)action;
+- (id)respondToActions:(id)actions forFBSScene:(id)scene fromTransitionContext:(id)context;
 @end
 
 @implementation BLSBacklightFBSSceneEnvironmentActionHandler
 
-+ (id)desiredFidelityRequestFromAction:(id)a3
++ (id)desiredFidelityRequestFromAction:(id)action
 {
-  v3 = a3;
-  if (v3)
+  actionCopy = action;
+  if (actionCopy)
   {
     v4 = [BLSDesiredFidelityRequest alloc];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __81__BLSBacklightFBSSceneEnvironmentActionHandler_desiredFidelityRequestFromAction___block_invoke;
     v7[3] = &unk_278428768;
-    v8 = v3;
+    v8 = actionCopy;
     v5 = [(BLSDesiredFidelityRequest *)v4 initWithCompletion:v7];
   }
 
@@ -52,21 +52,21 @@ void __81__BLSBacklightFBSSceneEnvironmentActionHandler_desiredFidelityRequestFr
   }
 }
 
-+ (id)frameSpecifiersRequestFromAction:(id)a3
++ (id)frameSpecifiersRequestFromAction:(id)action
 {
-  v3 = a3;
-  if (v3)
+  actionCopy = action;
+  if (actionCopy)
   {
     v4 = [BLSFrameSpecifiersRequest alloc];
-    v5 = [v3 dateInterval];
-    v6 = [v3 previousPresentationDate];
-    v7 = [v3 shouldReset];
+    dateInterval = [actionCopy dateInterval];
+    previousPresentationDate = [actionCopy previousPresentationDate];
+    shouldReset = [actionCopy shouldReset];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __81__BLSBacklightFBSSceneEnvironmentActionHandler_frameSpecifiersRequestFromAction___block_invoke;
     v10[3] = &unk_2784291A0;
-    v11 = v3;
-    v8 = [(BLSFrameSpecifiersRequest *)v4 initWithDateInterval:v5 previousPresentationDate:v6 shouldReset:v7 completion:v10];
+    v11 = actionCopy;
+    v8 = [(BLSFrameSpecifiersRequest *)v4 initWithDateInterval:dateInterval previousPresentationDate:previousPresentationDate shouldReset:shouldReset completion:v10];
   }
 
   else
@@ -103,23 +103,23 @@ void __81__BLSBacklightFBSSceneEnvironmentActionHandler_frameSpecifiersRequestFr
   }
 }
 
-- (id)respondToActions:(id)a3 forFBSScene:(id)a4 fromTransitionContext:(id)a5
+- (id)respondToActions:(id)actions forFBSScene:(id)scene fromTransitionContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v6 = [MEMORY[0x277CBEB18] array];
+  actionsCopy = actions;
+  v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(actionsCopy, "count")}];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = bls_scenes_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [BLSBacklightFBSSceneEnvironmentActionHandler respondToActions:v5 forFBSScene:? fromTransitionContext:?];
+    [BLSBacklightFBSSceneEnvironmentActionHandler respondToActions:actionsCopy forFBSScene:? fromTransitionContext:?];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v5;
+  v8 = actionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v9)
   {
@@ -147,7 +147,7 @@ void __81__BLSBacklightFBSSceneEnvironmentActionHandler_frameSpecifiersRequestFr
             _os_log_debug_impl(&dword_21FE25000, v14, OS_LOG_TYPE_DEBUG, "respondToActions expect to handle action:%@", buf, 0xCu);
           }
 
-          v15 = v6;
+          v15 = array;
         }
 
         else
@@ -175,14 +175,14 @@ void __81__BLSBacklightFBSSceneEnvironmentActionHandler_frameSpecifiersRequestFr
     while (v16);
   }
 
-  if ([v6 count])
+  if ([array count])
   {
     v17 = dispatch_time(0, 5000000000);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __99__BLSBacklightFBSSceneEnvironmentActionHandler_respondToActions_forFBSScene_fromTransitionContext___block_invoke;
     block[3] = &unk_2784291C8;
-    v24 = v6;
+    v24 = array;
     dispatch_after(v17, MEMORY[0x277D85CD0], block);
   }
 

@@ -1,7 +1,7 @@
 @interface FxParameterGroup
 - (FxParameterGroup)init;
 - (void)dealloc;
-- (void)setSubPins:(id)a3;
+- (void)setSubPins:(id)pins;
 @end
 
 @implementation FxParameterGroup
@@ -46,14 +46,14 @@
   [(FxPinParameter *)&v10 dealloc];
 }
 
-- (void)setSubPins:(id)a3
+- (void)setSubPins:(id)pins
 {
   var0 = self->_groupPriv->var0;
   if (var0)
   {
   }
 
-  self->_groupPriv->var0 = a3;
+  self->_groupPriv->var0 = pins;
 }
 
 @end

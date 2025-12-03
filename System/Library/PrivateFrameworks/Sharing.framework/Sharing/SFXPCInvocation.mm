@@ -1,7 +1,7 @@
 @interface SFXPCInvocation
 - (SFXPCInvocation)init;
-- (SFXPCInvocation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFXPCInvocation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFXPCInvocation
@@ -22,24 +22,24 @@
   return [(SFXPCInvocation *)&v10 init];
 }
 
-- (SFXPCInvocation)initWithCoder:(id)a3
+- (SFXPCInvocation)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1A98548EC(v3);
+  coderCopy = coder;
+  v4 = sub_1A98548EC(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (*&self->name[OBJC_IVAR___SFXPCInvocation_name])
   {
     v4 = *(&self->super.isa + OBJC_IVAR___SFXPCInvocation_name);
-    v5 = a3;
-    v8 = self;
+    coderCopy = coder;
+    selfCopy = self;
     v6 = sub_1A99767E0();
     v7 = sub_1A99767E0();
-    [v5 encodeObject:v6 forKey:v7];
+    [coderCopy encodeObject:v6 forKey:v7];
   }
 }
 

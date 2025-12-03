@@ -1,71 +1,71 @@
 @interface MPFavoritesTableViewController
 + ($1FF454C5B48E436092D281DABF654916)badge;
-+ (id)moveObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4 inArray:(id)a5;
++ (id)moveObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex inArray:(id)array;
 - (BOOL)shouldNavigationControllerPresentLargeTitles;
 - (BOOL)shouldSnapshot;
 - (CNAvatarViewControllerSettings)avatarViewControllerSettings;
 - (MPFavoritesTableViewController)init;
-- (MPFavoritesTableViewController)initWithCoder:(id)a3;
-- (MPFavoritesTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (MPFavoritesTableViewController)initWithStyle:(int64_t)a3;
-- (MPFavoritesTableViewController)initWithStyle:(int64_t)a3 favoritesController:(id)a4;
+- (MPFavoritesTableViewController)initWithCoder:(id)coder;
+- (MPFavoritesTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (MPFavoritesTableViewController)initWithStyle:(int64_t)style;
+- (MPFavoritesTableViewController)initWithStyle:(int64_t)style favoritesController:(id)controller;
 - (UIBarButtonItem)addButtonItem;
-- (id)contactCacheKeyForFavoritesEntry:(id)a3;
-- (id)favoritesEntryAtIndex:(int64_t)a3;
-- (id)favoritesEntryPickerContactForContact:(id)a3 contactStore:(id)a4;
+- (id)contactCacheKeyForFavoritesEntry:(id)entry;
+- (id)favoritesEntryAtIndex:(int64_t)index;
+- (id)favoritesEntryPickerContactForContact:(id)contact contactStore:(id)store;
 - (id)tabBarIconName;
 - (id)tabBarSystemItemTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)addButtonAction:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)addButtonAction:(id)action;
 - (void)commonInit;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)dealloc;
-- (void)favoritesEntryPicker:(id)a3 didPickEntry:(id)a4;
-- (void)handleTPFavoritesControllerFavoritesEntriesDidChangeNotification:(id)a3;
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3;
-- (void)handleUIContentSizeCategoryDidChangeNotification:(id)a3;
+- (void)favoritesEntryPicker:(id)picker didPickEntry:(id)entry;
+- (void)handleTPFavoritesControllerFavoritesEntriesDidChangeNotification:(id)notification;
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification;
+- (void)handleUIContentSizeCategoryDidChangeNotification:(id)notification;
 - (void)makeUIForDefaultPNG;
 - (void)postCNContactsClientDidDisplayFavoritesNotification;
-- (void)presentContactPickerViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentContactPickerViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)refreshView;
 - (void)reloadDataIfNeeded;
 - (void)reloadDataSource;
-- (void)removeFavoriteEntryAtIndexPath:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNavigationItemsForEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldShowAddButtonItem:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)removeFavoriteEntryAtIndexPath:(id)path;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setNavigationItemsForEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setShouldShowAddButtonItem:(BOOL)item animated:(BOOL)animated;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)tipKitActionFavoriteAdded;
 - (void)tipKitLogAnalyticsAddFavoritesEvent;
 - (void)tipKitStartObservation;
 - (void)tipKitStopObservation;
-- (void)updateTableViewCell:(id)a3 withContactUsingFavoritesEntry:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateTableViewCell:(id)cell withContactUsingFavoritesEntry:(id)entry;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MPFavoritesTableViewController
 
-- (MPFavoritesTableViewController)initWithStyle:(int64_t)a3 favoritesController:(id)a4
+- (MPFavoritesTableViewController)initWithStyle:(int64_t)style favoritesController:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = MPFavoritesTableViewController;
-  v8 = [(PHTableViewController *)&v14 initWithStyle:a3];
+  v8 = [(PHTableViewController *)&v14 initWithStyle:style];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_favoritesController, a4);
+    objc_storeStrong(&v8->_favoritesController, controller);
     v10 = dispatch_queue_create("com.apple.mobilephone.favorites", 0);
     contactsQueue = v9->_contactsQueue;
     v9->_contactsQueue = v10;
@@ -84,21 +84,21 @@
   return 0;
 }
 
-- (MPFavoritesTableViewController)initWithCoder:(id)a3
+- (MPFavoritesTableViewController)initWithCoder:(id)coder
 {
   [(MPFavoritesTableViewController *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (MPFavoritesTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MPFavoritesTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(MPFavoritesTableViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(MPFavoritesTableViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }
 
-- (MPFavoritesTableViewController)initWithStyle:(int64_t)a3
+- (MPFavoritesTableViewController)initWithStyle:(int64_t)style
 {
   [(MPFavoritesTableViewController *)self doesNotRecognizeSelector:a2];
 
@@ -132,9 +132,9 @@
   avatarViewControllerSettings = self->_avatarViewControllerSettings;
   if (!avatarViewControllerSettings)
   {
-    v4 = [(MPFavoritesTableViewController *)self favoritesController];
-    v5 = [v4 contactStore];
-    v6 = [CNAvatarViewControllerSettings settingsWithContactStore:v5 threeDTouchEnabled:1];
+    favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
+    contactStore = [favoritesController contactStore];
+    v6 = [CNAvatarViewControllerSettings settingsWithContactStore:contactStore threeDTouchEnabled:1];
     v7 = self->_avatarViewControllerSettings;
     self->_avatarViewControllerSettings = v6;
 
@@ -149,34 +149,34 @@
   v34.receiver = self;
   v34.super_class = MPFavoritesTableViewController;
   [(PHTableViewController *)&v34 viewDidLoad];
-  v3 = [(MPFavoritesTableViewController *)self tableView];
-  [v3 setRowHeight:UITableViewAutomaticDimension];
+  tableView = [(MPFavoritesTableViewController *)self tableView];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
 
-  v4 = [(MPFavoritesTableViewController *)self tableView];
-  [v4 setSeparatorInsetReference:1];
+  tableView2 = [(MPFavoritesTableViewController *)self tableView];
+  [tableView2 setSeparatorInsetReference:1];
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
-  [(PHContactTableViewCell *)MPFavoritesTableViewCell separatorInsetForContentSizeCategory:v6];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  [(PHContactTableViewCell *)MPFavoritesTableViewCell separatorInsetForContentSizeCategory:preferredContentSizeCategory];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(MPFavoritesTableViewController *)self tableView];
-  [v15 setSeparatorInset:{v8, v10, v12, v14}];
+  tableView3 = [(MPFavoritesTableViewController *)self tableView];
+  [tableView3 setSeparatorInset:{v8, v10, v12, v14}];
 
   +[(PHContactTableViewCell *)MPFavoritesTableViewCell];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(MPFavoritesTableViewController *)self tableView];
-  [v24 setContentInset:{v17, v19, v21, v23}];
+  tableView4 = [(MPFavoritesTableViewController *)self tableView];
+  [tableView4 setContentInset:{v17, v19, v21, v23}];
 
-  v25 = [(MPFavoritesTableViewController *)self tableView];
+  tableView5 = [(MPFavoritesTableViewController *)self tableView];
   v26 = objc_opt_class();
   v27 = +[(PHTableViewCell *)MPFavoritesTableViewCell];
-  [v25 registerClass:v26 forCellReuseIdentifier:v27];
+  [tableView5 registerClass:v26 forCellReuseIdentifier:v27];
 
   v28 = +[NSBundle mainBundle];
   v29 = [v28 localizedStringForKey:@"FAVORITES_CONTENT_UNAVAILABLE_VIEW_TITLE" value:&stru_10028F310 table:@"Favorites"];
@@ -196,15 +196,15 @@
   self->_featureFlags = v32;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v17.receiver = self;
   v17.super_class = MPFavoritesTableViewController;
-  [(MPFavoritesTableViewController *)&v17 viewIsAppearing:a3];
+  [(MPFavoritesTableViewController *)&v17 viewIsAppearing:appearing];
   v4 = objc_alloc_init(TUFeatureFlags);
-  v5 = [v4 nameAndPhotoEnabledC3];
+  nameAndPhotoEnabledC3 = [v4 nameAndPhotoEnabledC3];
 
-  if (v5)
+  if (nameAndPhotoEnabledC3)
   {
     v6 = PHDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -213,28 +213,28 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Going to present CNKCNSharedProfileOnboardingController on launch", v16, 2u);
     }
 
-    v7 = [(MPFavoritesTableViewController *)self onboardingController];
+    onboardingController = [(MPFavoritesTableViewController *)self onboardingController];
 
-    if (!v7)
+    if (!onboardingController)
     {
       v8 = objc_opt_new();
       [(MPFavoritesTableViewController *)self setOnboardingController:v8];
     }
 
-    v9 = [(MPFavoritesTableViewController *)self onboardingController];
+    onboardingController2 = [(MPFavoritesTableViewController *)self onboardingController];
     v10 = +[TUCallCenter sharedInstance];
-    v11 = [v10 contactStore];
-    [v9 presentOnboardingControllerOnLaunchIfNeededFrom:self withContactStore:v11];
+    contactStore = [v10 contactStore];
+    [onboardingController2 presentOnboardingControllerOnLaunchIfNeededFrom:self withContactStore:contactStore];
   }
 
-  v12 = [(MPFavoritesTableViewController *)self favoritesEntries];
+  favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
 
-  if (!v12)
+  if (!favoritesEntries)
   {
-    v13 = [(MPFavoritesTableViewController *)self favoritesController];
-    v14 = [v13 favoritesEntries];
+    favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
+    favoritesEntries2 = [favoritesController favoritesEntries];
 
-    if (v14)
+    if (favoritesEntries2)
     {
       [(PHTableViewController *)self setNeedsReloadData:1];
       [(MPFavoritesTableViewController *)self reloadDataIfNeeded];
@@ -242,8 +242,8 @@
 
     else
     {
-      v15 = [(MPFavoritesTableViewController *)self favoritesController];
-      [v15 fetchIfNeeded];
+      favoritesController2 = [(MPFavoritesTableViewController *)self favoritesController];
+      [favoritesController2 fetchIfNeeded];
     }
   }
 
@@ -252,11 +252,11 @@
   [(MPFavoritesTableViewController *)self setViewHadAppeared:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = MPFavoritesTableViewController;
-  [(PHTableViewController *)&v8 viewDidAppear:a3];
+  [(PHTableViewController *)&v8 viewDidAppear:appear];
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -269,24 +269,24 @@
   [v6 postNotificationName:@"PHPhoneTabBarControllerTabViewDidAppearNotification" object:v5];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = MPFavoritesTableViewController;
   [(PHTableViewController *)&v5 viewWillDisappear:?];
   if ([(MPFavoritesTableViewController *)self isEditing])
   {
-    [(MPFavoritesTableViewController *)self setEditing:0 animated:v3];
+    [(MPFavoritesTableViewController *)self setEditing:0 animated:disappearCopy];
   }
 
   [(MPFavoritesTableViewController *)self tipKitStopObservation];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   +[CATransaction begin];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -296,29 +296,29 @@
   [CATransaction setCompletionBlock:v10];
   v9.receiver = self;
   v9.super_class = MPFavoritesTableViewController;
-  [(MPFavoritesTableViewController *)&v9 setEditing:v5 animated:v4];
-  [(MPFavoritesTableViewController *)self setNavigationItemsForEditing:v5 animated:v4];
+  [(MPFavoritesTableViewController *)&v9 setEditing:editingCopy animated:animatedCopy];
+  [(MPFavoritesTableViewController *)self setNavigationItemsForEditing:editingCopy animated:animatedCopy];
   +[CATransaction commit];
-  v7 = [(MPFavoritesTableViewController *)self tableView];
-  [v7 beginUpdates];
+  tableView = [(MPFavoritesTableViewController *)self tableView];
+  [tableView beginUpdates];
 
-  v8 = [(MPFavoritesTableViewController *)self tableView];
-  [v8 endUpdates];
+  tableView2 = [(MPFavoritesTableViewController *)self tableView];
+  [tableView2 endUpdates];
 }
 
 - (void)reloadDataIfNeeded
 {
   if ([(PHTableViewController *)self needsReloadData])
   {
-    v3 = [(MPFavoritesTableViewController *)self tableView];
-    v4 = [(PHTableViewController *)self tableViewCanPerformReloadData:v3];
+    tableView = [(MPFavoritesTableViewController *)self tableView];
+    v4 = [(PHTableViewController *)self tableViewCanPerformReloadData:tableView];
 
     if (v4)
     {
       [(MPFavoritesTableViewController *)self reloadDataSource];
-      v5 = [(MPFavoritesTableViewController *)self favoritesEntries];
+      favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
 
-      if (v5)
+      if (favoritesEntries)
       {
         [(MPFavoritesTableViewController *)self refreshView];
         [(PHTableViewController *)self setNeedsReloadData:0];
@@ -331,11 +331,11 @@
 
 - (BOOL)shouldNavigationControllerPresentLargeTitles
 {
-  v3 = [(MPFavoritesTableViewController *)self favoritesEntries];
-  if (v3)
+  favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
+  if (favoritesEntries)
   {
-    v4 = [(MPFavoritesTableViewController *)self favoritesEntries];
-    v5 = [v4 count] != 0;
+    favoritesEntries2 = [(MPFavoritesTableViewController *)self favoritesEntries];
+    v5 = [favoritesEntries2 count] != 0;
   }
 
   else
@@ -370,9 +370,9 @@
     return 0;
   }
 
-  v4 = [(MPFavoritesTableViewController *)self navigationController];
-  v5 = [v4 visibleViewController];
-  v3 = v5 == self;
+  navigationController = [(MPFavoritesTableViewController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
+  v3 = visibleViewController == self;
 
   return v3;
 }
@@ -385,80 +385,80 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[(PHTableViewCell *)MPFavoritesTableViewCell];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
-  v10 = [(MPFavoritesTableViewController *)self featureFlags];
-  [v9 setTapTargets:{objc_msgSend(v10, "favoritesCallTapTargetsEnabled")}];
+  featureFlags = [(MPFavoritesTableViewController *)self featureFlags];
+  [v9 setTapTargets:{objc_msgSend(featureFlags, "favoritesCallTapTargetsEnabled")}];
 
   v11 = +[NSUUID UUID];
   [v9 setUUID:v11];
 
-  v12 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [v7 row]);
+  v12 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [pathCopy row]);
   if (v12)
   {
-    v13 = [v9 avatarViewController];
-    if (!v13)
+    avatarViewController = [v9 avatarViewController];
+    if (!avatarViewController)
     {
       v14 = [CNAvatarViewController alloc];
-      v15 = [(MPFavoritesTableViewController *)self avatarViewControllerSettings];
-      v13 = [v14 initWithSettings:v15];
+      avatarViewControllerSettings = [(MPFavoritesTableViewController *)self avatarViewControllerSettings];
+      avatarViewController = [v14 initWithSettings:avatarViewControllerSettings];
 
-      [v13 setObjectViewControllerDelegate:self];
-      [v9 setAvatarViewController:v13];
-      v16 = [v9 avatarViewController];
-      v17 = [v16 view];
+      [avatarViewController setObjectViewControllerDelegate:self];
+      [v9 setAvatarViewController:avatarViewController];
+      avatarViewController2 = [v9 avatarViewController];
+      view = [avatarViewController2 view];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v19 = [v9 avatarViewController];
-        v20 = [v19 view];
+        avatarViewController3 = [v9 avatarViewController];
+        view2 = [avatarViewController3 view];
 
-        [v20 setAllowStaleRendering:1];
+        [view2 setAllowStaleRendering:1];
       }
     }
 
-    v21 = [v12 actionType];
-    [v9 setActionType:v21];
+    actionType = [v12 actionType];
+    [v9 setActionType:actionType];
 
-    v22 = [v12 name];
-    v23 = [v9 titleLabel];
-    [v23 setText:v22];
+    name = [v12 name];
+    titleLabel = [v9 titleLabel];
+    [titleLabel setText:name];
 
-    v24 = [(MPFavoritesTableViewController *)self favoritesController];
-    v25 = [v24 transportNameForFavoritesEntry:v12];
-    v26 = [v9 subtitleLabel];
-    [v26 setText:v25];
+    favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
+    v25 = [favoritesController transportNameForFavoritesEntry:v12];
+    subtitleLabel = [v9 subtitleLabel];
+    [subtitleLabel setText:v25];
 
-    v27 = [v12 contactProperty];
-    v28 = [v27 contact];
+    contactProperty = [v12 contactProperty];
+    contact = [contactProperty contact];
 
-    if (v28)
+    if (contact)
     {
-      v29 = [v12 contactProperty];
-      v30 = [v29 contact];
-      v45 = v30;
+      contactProperty2 = [v12 contactProperty];
+      contact2 = [contactProperty2 contact];
+      v45 = contact2;
       v31 = [NSArray arrayWithObjects:&v45 count:1];
-      v32 = [v9 avatarViewController];
-      [v32 setContacts:v31];
+      avatarViewController4 = [v9 avatarViewController];
+      [avatarViewController4 setContacts:v31];
     }
 
     else
     {
-      v33 = [v9 avatarViewController];
-      [v33 setContacts:&__NSArray0__struct];
+      avatarViewController5 = [v9 avatarViewController];
+      [avatarViewController5 setContacts:&__NSArray0__struct];
     }
 
-    v34 = [(MPFavoritesTableViewController *)self featureFlags];
-    v35 = [v34 favoritesCallTapTargetsEnabled];
+    featureFlags2 = [(MPFavoritesTableViewController *)self featureFlags];
+    favoritesCallTapTargetsEnabled = [featureFlags2 favoritesCallTapTargetsEnabled];
 
-    if (v35 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (favoritesCallTapTargetsEnabled && (objc_opt_respondsToSelector() & 1) != 0)
     {
       objc_initWeak(&location, self);
       v37 = _NSConcreteStackBlock;
@@ -466,8 +466,8 @@
       v39 = __66__MPFavoritesTableViewController_tableView_cellForRowAtIndexPath___block_invoke;
       v40 = &unk_100285C30;
       objc_copyWeak(&v43, &location);
-      v41 = v7;
-      v42 = v6;
+      v41 = pathCopy;
+      v42 = viewCopy;
       [v9 setActionButtonTappedHandler:&v37];
 
       objc_destroyWeak(&v43);
@@ -542,25 +542,25 @@ void __66__MPFavoritesTableViewController_tableView_cellForRowAtIndexPath___bloc
   }
 }
 
-- (void)updateTableViewCell:(id)a3 withContactUsingFavoritesEntry:(id)a4
+- (void)updateTableViewCell:(id)cell withContactUsingFavoritesEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UUID];
+  cellCopy = cell;
+  entryCopy = entry;
+  uUID = [cellCopy UUID];
   objc_initWeak(&location, self);
-  v9 = [(MPFavoritesTableViewController *)self contactsQueue];
+  contactsQueue = [(MPFavoritesTableViewController *)self contactsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __85__MPFavoritesTableViewController_updateTableViewCell_withContactUsingFavoritesEntry___block_invoke;
   block[3] = &unk_1002854F8;
   objc_copyWeak(&v17, &location);
-  v14 = v7;
-  v15 = v6;
-  v16 = v8;
-  v10 = v8;
-  v11 = v6;
-  v12 = v7;
-  dispatch_async(v9, block);
+  v14 = entryCopy;
+  v15 = cellCopy;
+  v16 = uUID;
+  v10 = uUID;
+  v11 = cellCopy;
+  v12 = entryCopy;
+  dispatch_async(contactsQueue, block);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -620,62 +620,62 @@ void __85__MPFavoritesTableViewController_updateTableViewCell_withContactUsingFa
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    [(MPFavoritesTableViewController *)self removeFavoriteEntryAtIndexPath:a5];
+    [(MPFavoritesTableViewController *)self removeFavoriteEntryAtIndexPath:path];
   }
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  if (a4 && a5)
+  if (path && indexPath)
   {
-    v7 = a5;
-    v8 = [a4 row];
-    v9 = [v7 row];
+    indexPathCopy = indexPath;
+    v8 = [path row];
+    v9 = [indexPathCopy row];
 
-    v10 = [(MPFavoritesTableViewController *)self favoritesEntries];
-    v13 = [MPFavoritesTableViewController moveObjectAtIndex:v8 toIndex:v9 inArray:v10];
+    favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
+    v13 = [MPFavoritesTableViewController moveObjectAtIndex:v8 toIndex:v9 inArray:favoritesEntries];
 
     v11 = v13;
     if (v13)
     {
       [(MPFavoritesTableViewController *)self setFavoritesEntries:v13];
-      v12 = [(MPFavoritesTableViewController *)self favoritesController];
-      [v12 moveEntryAtIndex:v8 toIndex:v9];
+      favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
+      [favoritesController moveEntryAtIndex:v8 toIndex:v9];
 
       v11 = v13;
     }
   }
 }
 
-+ (id)moveObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4 inArray:(id)a5
++ (id)moveObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex inArray:(id)array
 {
-  v7 = a5;
-  if ([v7 count] <= a3)
+  arrayCopy = array;
+  if ([arrayCopy count] <= index)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [v7 count];
+    v8 = [arrayCopy count];
     v9 = 0;
-    if (a3 != a4 && v8 > a4)
+    if (index != toIndex && v8 > toIndex)
     {
-      v9 = [v7 mutableCopy];
-      v10 = [v9 objectAtIndex:a3];
-      [v9 removeObjectAtIndex:a3];
-      if ([v9 count] <= a4)
+      v9 = [arrayCopy mutableCopy];
+      v10 = [v9 objectAtIndex:index];
+      [v9 removeObjectAtIndex:index];
+      if ([v9 count] <= toIndex)
       {
         [v9 addObject:v10];
       }
 
       else
       {
-        [v9 insertObject:v10 atIndex:a4];
+        [v9 insertObject:v10 atIndex:toIndex];
       }
     }
   }
@@ -683,21 +683,21 @@ void __85__MPFavoritesTableViewController_updateTableViewCell_withContactUsingFa
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MPFavoritesTableViewController *)self favoritesEntries:a3];
+  v4 = [(MPFavoritesTableViewController *)self favoritesEntries:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a4;
+  obj = paths;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -728,8 +728,8 @@ void __85__MPFavoritesTableViewController_updateTableViewCell_withContactUsingFa
           v14 = [NSString stringWithFormat:@"%@", v13];
           [v12 setName:v14];
 
-          v15 = [(PHTableViewController *)self dataSourcePrefetchingOperationQueue];
-          [v15 addOperation:v12];
+          dataSourcePrefetchingOperationQueue = [(PHTableViewController *)self dataSourcePrefetchingOperationQueue];
+          [dataSourcePrefetchingOperationQueue addOperation:v12];
         }
       }
 
@@ -748,57 +748,57 @@ void __69__MPFavoritesTableViewController_tableView_prefetchRowsAtIndexPaths___b
   v4 = [*(a1 + 40) name];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = MPFavoritesTableViewController;
-  v8 = a5;
-  [(PHTableViewController *)&v16 tableView:a3 willDisplayCell:a4 forRowAtIndexPath:v8];
-  v9 = [v8 row];
+  pathCopy = path;
+  [(PHTableViewController *)&v16 tableView:view willDisplayCell:cell forRowAtIndexPath:pathCopy];
+  v9 = [pathCopy row];
 
   v10 = [(MPFavoritesTableViewController *)self favoritesEntryAtIndex:v9];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 contactProperty];
-    v13 = [v12 contact];
+    contactProperty = [v10 contactProperty];
+    contact = [contactProperty contact];
 
-    if (v13)
+    if (contact)
     {
-      v14 = [(MPFavoritesTableViewController *)self contactCache];
+      contactCache = [(MPFavoritesTableViewController *)self contactCache];
       v15 = [(MPFavoritesTableViewController *)self contactCacheKeyForFavoritesEntry:v11];
-      [v14 setObject:v13 forKey:v15];
+      [contactCache setObject:contact forKey:v15];
     }
   }
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = MPFavoritesTableViewController;
-  v8 = a5;
-  [(PHTableViewController *)&v13 tableView:a3 didEndDisplayingCell:a4 forRowAtIndexPath:v8];
-  v9 = [v8 row];
+  pathCopy = path;
+  [(PHTableViewController *)&v13 tableView:view didEndDisplayingCell:cell forRowAtIndexPath:pathCopy];
+  v9 = [pathCopy row];
 
   v10 = [(MPFavoritesTableViewController *)self favoritesEntryAtIndex:v9];
   if (v10)
   {
-    v11 = [(MPFavoritesTableViewController *)self contactCache];
+    contactCache = [(MPFavoritesTableViewController *)self contactCache];
     v12 = [(MPFavoritesTableViewController *)self contactCacheKeyForFavoritesEntry:v10];
-    [v11 removeObjectForKey:v12];
+    [contactCache removeObjectForKey:v12];
   }
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [a4 row]);
+  v5 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [path row]);
   if (v5)
   {
-    v6 = [(MPFavoritesTableViewController *)self favoritesController];
+    favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
     v7 = +[CNContactViewController descriptorForRequiredKeys];
     v15 = v7;
     v8 = [NSArray arrayWithObjects:&v15 count:1];
-    v9 = [v6 contactForFavoritesEntry:v5 keyDescriptors:v8];
+    v9 = [favoritesController contactForFavoritesEntry:v5 keyDescriptors:v8];
 
     if (v9)
     {
@@ -808,34 +808,34 @@ void __69__MPFavoritesTableViewController_tableView_prefetchRowsAtIndexPaths___b
       {
         [v10 setAllowsActions:1];
         [v11 setActions:{objc_msgSend(v11, "actions") | 0x80}];
-        v12 = [(MPFavoritesTableViewController *)self avatarViewControllerSettings];
-        v13 = [v12 contactStore];
-        [v11 setContactStore:v13];
+        avatarViewControllerSettings = [(MPFavoritesTableViewController *)self avatarViewControllerSettings];
+        contactStore = [avatarViewControllerSettings contactStore];
+        [v11 setContactStore:contactStore];
 
-        v14 = [(MPFavoritesTableViewController *)self navigationController];
-        [v14 pushViewController:v11 animated:1];
+        navigationController = [(MPFavoritesTableViewController *)self navigationController];
+        [navigationController pushViewController:v11 animated:1];
       }
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPFavoritesTableViewController *)self featureFlags];
-  v9 = [v8 favoritesCallTapTargetsEnabled];
+  viewCopy = view;
+  pathCopy = path;
+  featureFlags = [(MPFavoritesTableViewController *)self featureFlags];
+  favoritesCallTapTargetsEnabled = [featureFlags favoritesCallTapTargetsEnabled];
 
-  if (v9)
+  if (favoritesCallTapTargetsEnabled)
   {
-    v10 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [v7 row]);
+    v10 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [pathCopy row]);
     if (v10)
     {
-      v11 = [(MPFavoritesTableViewController *)self favoritesController];
+      favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
       v12 = +[CNContactViewController descriptorForRequiredKeys];
       v27 = v12;
       v13 = [NSArray arrayWithObjects:&v27 count:1];
-      v14 = [v11 contactForFavoritesEntry:v10 keyDescriptors:v13];
+      v14 = [favoritesController contactForFavoritesEntry:v10 keyDescriptors:v13];
 
       if (v14)
       {
@@ -845,33 +845,33 @@ void __69__MPFavoritesTableViewController_tableView_prefetchRowsAtIndexPaths___b
         {
           [v15 setAllowsActions:1];
           [v16 setActions:{objc_msgSend(v16, "actions") | 0x80}];
-          v17 = [(MPFavoritesTableViewController *)self avatarViewControllerSettings];
-          v18 = [v17 contactStore];
-          [v16 setContactStore:v18];
+          avatarViewControllerSettings = [(MPFavoritesTableViewController *)self avatarViewControllerSettings];
+          contactStore = [avatarViewControllerSettings contactStore];
+          [v16 setContactStore:contactStore];
 
-          v19 = [(MPFavoritesTableViewController *)self navigationController];
-          [v19 pushViewController:v16 animated:1];
+          navigationController = [(MPFavoritesTableViewController *)self navigationController];
+          [navigationController pushViewController:v16 animated:1];
         }
       }
     }
 
-    [v6 deselectRowAtIndexPath:v7 animated:0];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if (v7 && [v7 row] != 0x7FFFFFFFFFFFFFFFLL)
+  if (pathCopy && [pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [v7 row]);
+    v10 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [pathCopy row]);
     if (v10)
     {
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = __68__MPFavoritesTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v21[3] = &unk_100285C08;
-      v22 = v6;
-      v23 = v7;
+      v22 = viewCopy;
+      v23 = pathCopy;
       v24 = v10;
       [v24 performActionWithCompletion:v21];
 
@@ -880,12 +880,12 @@ LABEL_16:
 
     else
     {
-      [v6 deselectRowAtIndexPath:v7 animated:0];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
       v20 = PHDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v7;
+        v26 = pathCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[WARN] Could not retrieve a favorite at index path (%@).", buf, 0xCu);
       }
     }
@@ -931,21 +931,21 @@ void __68__MPFavoritesTableViewController_tableView_didSelectRowAtIndexPath___bl
   return addButtonItem;
 }
 
-- (void)presentContactPickerViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentContactPickerViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v14 = a4;
-  v6 = [(MPFavoritesTableViewController *)self navigationController];
-  if (v6)
+  animatedCopy = animated;
+  completionCopy = completion;
+  navigationController = [(MPFavoritesTableViewController *)self navigationController];
+  if (navigationController)
   {
-    v7 = v6;
-    v8 = [v6 presentedViewController];
-    if (v8)
+    v7 = navigationController;
+    presentedViewController = [navigationController presentedViewController];
+    if (presentedViewController)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = presentedViewController;
 
         v7 = v9;
       }
@@ -966,92 +966,92 @@ void __68__MPFavoritesTableViewController_tableView_didSelectRowAtIndexPath___bl
     [v10 setPrompt:v13];
 
     [v10 setDefinesPresentationContext:0];
-    [v7 presentViewController:v10 animated:v4 completion:v14];
+    [v7 presentViewController:v10 animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)setShouldShowAddButtonItem:(BOOL)a3 animated:(BOOL)a4
+- (void)setShouldShowAddButtonItem:(BOOL)item animated:(BOOL)animated
 {
-  if (self->_shouldShowAddButtonItem != a3)
+  if (self->_shouldShowAddButtonItem != item)
   {
-    v5 = a4;
-    self->_shouldShowAddButtonItem = a3;
-    v7 = [(MPFavoritesTableViewController *)self isEditing];
+    animatedCopy = animated;
+    self->_shouldShowAddButtonItem = item;
+    isEditing = [(MPFavoritesTableViewController *)self isEditing];
 
-    [(MPFavoritesTableViewController *)self setNavigationItemsForEditing:v7 animated:v5];
+    [(MPFavoritesTableViewController *)self setNavigationItemsForEditing:isEditing animated:animatedCopy];
   }
 }
 
-- (void)addButtonAction:(id)a3
+- (void)addButtonAction:(id)action
 {
   [(MPFavoritesTableViewController *)self tipKitStopObservation];
 
   [(MPFavoritesTableViewController *)self presentContactPickerViewControllerAnimated:1 completion:0];
 }
 
-- (id)contactCacheKeyForFavoritesEntry:(id)a3
+- (id)contactCacheKeyForFavoritesEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 contactProperty];
-  v5 = [v4 contact];
-  v6 = [v5 identifier];
-  v7 = v6;
-  if (v6)
+  entryCopy = entry;
+  contactProperty = [entryCopy contactProperty];
+  contact = [contactProperty contact];
+  identifier = [contact identifier];
+  v7 = identifier;
+  if (identifier)
   {
-    v8 = v6;
+    v8 = identifier;
   }
 
   else
   {
-    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 hash]);
+    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [entryCopy hash]);
     v8 = [NSString stringWithFormat:@"%@", v9];
   }
 
   return v8;
 }
 
-- (id)favoritesEntryAtIndex:(int64_t)a3
+- (id)favoritesEntryAtIndex:(int64_t)index
 {
-  v4 = [(MPFavoritesTableViewController *)self favoritesEntries];
-  v5 = v4;
-  if (a3 < 0 || [v4 count] <= a3)
+  favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
+  v5 = favoritesEntries;
+  if (index < 0 || [favoritesEntries count] <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [v5 objectAtIndexedSubscript:index];
   }
 
   return v6;
 }
 
-- (id)favoritesEntryPickerContactForContact:(id)a3 contactStore:(id)a4
+- (id)favoritesEntryPickerContactForContact:(id)contact contactStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  storeCopy = store;
   v7 = +[CNUIFavoritesEntryPicker descriptorForRequiredKeys];
   v23 = v7;
   v8 = [NSArray arrayWithObjects:&v23 count:1];
 
-  if ([v5 areKeysAvailable:v8])
+  if ([contactCopy areKeysAvailable:v8])
   {
-    v9 = v5;
+    v9 = contactCopy;
   }
 
   else
   {
     v10 = [NSMutableArray arrayWithArray:v8];
-    v11 = [v5 availableKeyDescriptor];
-    if (v11)
+    availableKeyDescriptor = [contactCopy availableKeyDescriptor];
+    if (availableKeyDescriptor)
     {
-      [v10 addObject:v11];
+      [v10 addObject:availableKeyDescriptor];
     }
 
-    v12 = [v5 identifier];
+    identifier = [contactCopy identifier];
     v16 = 0;
-    v9 = [v6 unifiedContactWithIdentifier:v12 keysToFetch:v10 error:&v16];
+    v9 = [storeCopy unifiedContactWithIdentifier:identifier keysToFetch:v10 error:&v16];
     v13 = v16;
 
     if (!v9)
@@ -1060,9 +1060,9 @@ void __68__MPFavoritesTableViewController_tableView_didSelectRowAtIndexPath___bl
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v18 = v5;
+        v18 = contactCopy;
         v19 = 2112;
-        v20 = v6;
+        v20 = storeCopy;
         v21 = 2112;
         v22 = v13;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Could not retrieve a compatible contact using contact (%@) and contact store (%@) due to an error (%@).", buf, 0x20u);
@@ -1080,16 +1080,16 @@ void __68__MPFavoritesTableViewController_tableView_didSelectRowAtIndexPath___bl
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.contacts.clientDidDisplayFavorites", 0, 0, 0);
 }
 
-- (void)removeFavoriteEntryAtIndexPath:(id)a3
+- (void)removeFavoriteEntryAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MPFavoritesTableViewController *)self tableView];
+  pathCopy = path;
+  tableView = [(MPFavoritesTableViewController *)self tableView];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block_invoke;
   v9[3] = &unk_1002852E0;
   v9[4] = self;
-  v10 = v4;
+  v10 = pathCopy;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block_invoke_2;
@@ -1097,7 +1097,7 @@ void __68__MPFavoritesTableViewController_tableView_didSelectRowAtIndexPath___bl
   v7[4] = self;
   v8 = v10;
   v6 = v10;
-  [v5 performBatchUpdates:v9 completion:v7];
+  [tableView performBatchUpdates:v9 completion:v7];
 }
 
 void __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block_invoke(uint64_t a1)
@@ -1139,48 +1139,48 @@ void __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block
   [v6 removeEntriesAtIndexes:v7];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = [(MPFavoritesTableViewController *)self navigationController];
+  navigationController = [(MPFavoritesTableViewController *)self navigationController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __57__MPFavoritesTableViewController_contactPickerDidCancel___block_invoke;
   v5[3] = &unk_100284FD0;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [navigationController dismissViewControllerAnimated:1 completion:v5];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v14 = a3;
-  v6 = a4;
-  [v14 invalidateSelectionAnimated:1];
-  v7 = [(MPFavoritesTableViewController *)self favoritesController];
-  v8 = [v7 contactStore];
-  v9 = [(MPFavoritesTableViewController *)self favoritesEntryPickerContactForContact:v6 contactStore:v8];
+  pickerCopy = picker;
+  contactCopy = contact;
+  [pickerCopy invalidateSelectionAnimated:1];
+  favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
+  contactStore = [favoritesController contactStore];
+  v9 = [(MPFavoritesTableViewController *)self favoritesEntryPickerContactForContact:contactCopy contactStore:contactStore];
 
   if (v9)
   {
-    v10 = [[CNUIFavoritesEntryPicker alloc] initWithContact:v6];
+    v10 = [[CNUIFavoritesEntryPicker alloc] initWithContact:contactCopy];
     [(MPFavoritesTableViewController *)self setFavoritesEntryPicker:v10];
 
-    v11 = [(MPFavoritesTableViewController *)self favoritesEntryPicker];
-    [v11 setDelegate:self];
+    favoritesEntryPicker = [(MPFavoritesTableViewController *)self favoritesEntryPicker];
+    [favoritesEntryPicker setDelegate:self];
 
-    v12 = [(MPFavoritesTableViewController *)self favoritesEntryPicker];
-    v13 = [v12 viewController];
-    [v14 presentViewController:v13 animated:1 completion:0];
+    favoritesEntryPicker2 = [(MPFavoritesTableViewController *)self favoritesEntryPicker];
+    viewController = [favoritesEntryPicker2 viewController];
+    [pickerCopy presentViewController:viewController animated:1 completion:0];
   }
 }
 
-- (void)favoritesEntryPicker:(id)a3 didPickEntry:(id)a4
+- (void)favoritesEntryPicker:(id)picker didPickEntry:(id)entry
 {
-  v5 = a4;
+  entryCopy = entry;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v5;
+    v19 = entryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Favorite was picked: %@", buf, 0xCu);
   }
 
@@ -1190,8 +1190,8 @@ void __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block
   v17[3] = &unk_100284FD0;
   v17[4] = self;
   v7 = objc_retainBlock(v17);
-  v8 = [(MPFavoritesTableViewController *)self favoritesEntries];
-  v9 = [v8 containsObject:v5];
+  favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
+  v9 = [favoritesEntries containsObject:entryCopy];
 
   if (v9)
   {
@@ -1199,7 +1199,7 @@ void __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v5;
+      v19 = entryCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Not adding favorites entry as it exists already: %@", buf, 0xCu);
     }
 
@@ -1214,13 +1214,13 @@ void __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block
       [(MPFavoritesTableViewController *)self setNavigationItemsForEditing:[(MPFavoritesTableViewController *)self isEditing] animated:0];
     }
 
-    v11 = [(MPFavoritesTableViewController *)self tableView];
+    tableView = [(MPFavoritesTableViewController *)self tableView];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = __68__MPFavoritesTableViewController_favoritesEntryPicker_didPickEntry___block_invoke_3;
     v15[3] = &unk_1002852E0;
     v15[4] = self;
-    v16 = v5;
+    v16 = entryCopy;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __68__MPFavoritesTableViewController_favoritesEntryPicker_didPickEntry___block_invoke_4;
@@ -1228,7 +1228,7 @@ void __65__MPFavoritesTableViewController_removeFavoriteEntryAtIndexPath___block
     v12[4] = self;
     v13 = v16;
     v14 = v7;
-    [v11 performBatchUpdates:v15 completion:v12];
+    [tableView performBatchUpdates:v15 completion:v12];
   }
 }
 
@@ -1278,30 +1278,30 @@ uint64_t __68__MPFavoritesTableViewController_favoritesEntryPicker_didPickEntry_
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)handleTPFavoritesControllerFavoritesEntriesDidChangeNotification:(id)a3
+- (void)handleTPFavoritesControllerFavoritesEntriesDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4)
+  object = [notification object];
+  v5 = object;
+  if (object)
   {
-    -[MPFavoritesTableViewController setShouldShowAddButtonItem:](self, "setShouldShowAddButtonItem:", [v4 canAddEntry]);
-    v6 = [v5 favoritesEntries];
-    v7 = [v6 count];
-    v8 = [(MPFavoritesTableViewController *)self favoritesEntries];
-    v9 = [v8 count];
+    -[MPFavoritesTableViewController setShouldShowAddButtonItem:](self, "setShouldShowAddButtonItem:", [object canAddEntry]);
+    favoritesEntries = [v5 favoritesEntries];
+    v7 = [favoritesEntries count];
+    favoritesEntries2 = [(MPFavoritesTableViewController *)self favoritesEntries];
+    v9 = [favoritesEntries2 count];
 
     if (v7 == v9)
     {
       v31 = v5;
-      v10 = [(MPFavoritesTableViewController *)self tableView];
-      v11 = [v10 indexPathsForVisibleRows];
+      tableView = [(MPFavoritesTableViewController *)self tableView];
+      indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
       v32 = objc_alloc_init(NSMutableArray);
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      obj = v11;
+      obj = indexPathsForVisibleRows;
       v12 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v12)
       {
@@ -1317,7 +1317,7 @@ uint64_t __68__MPFavoritesTableViewController_favoritesEntryPicker_didPickEntry_
             }
 
             v15 = *(*(&v36 + 1) + 8 * i);
-            v16 = [v6 objectAtIndexedSubscript:{objc_msgSend(v15, "row")}];
+            v16 = [favoritesEntries objectAtIndexedSubscript:{objc_msgSend(v15, "row")}];
             v17 = -[MPFavoritesTableViewController favoritesEntryAtIndex:](self, "favoritesEntryAtIndex:", [v15 row]);
             v18 = [v17 isEqual:v16];
 
@@ -1328,22 +1328,22 @@ uint64_t __68__MPFavoritesTableViewController_favoritesEntryPicker_didPickEntry_
               goto LABEL_18;
             }
 
-            v19 = v6;
+            v19 = favoritesEntries;
             v20 = [(MPFavoritesTableViewController *)self contactCacheKeyForFavoritesEntry:v16];
-            v21 = [v16 contactProperty];
-            v22 = [v21 contact];
+            contactProperty = [v16 contactProperty];
+            contact = [contactProperty contact];
 
-            v23 = [(MPFavoritesTableViewController *)self contactCache];
-            v24 = [v23 objectForKey:v20];
+            contactCache = [(MPFavoritesTableViewController *)self contactCache];
+            v24 = [contactCache objectForKey:v20];
 
-            if (v22 && ([v22 isEqualIgnoringIdentifiers:v24] & 1) == 0)
+            if (contact && ([contact isEqualIgnoringIdentifiers:v24] & 1) == 0)
             {
               [v32 addObject:v15];
-              v25 = [(MPFavoritesTableViewController *)self contactCache];
-              [v25 setObject:v22 forKey:v20];
+              contactCache2 = [(MPFavoritesTableViewController *)self contactCache];
+              [contactCache2 setObject:contact forKey:v20];
             }
 
-            v6 = v19;
+            favoritesEntries = v19;
           }
 
           v13 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -1368,17 +1368,17 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Update Favorite Cells", buf, 2u);
         }
 
-        v30 = [(MPFavoritesTableViewController *)self tableView];
-        [v30 reconfigureRowsAtIndexPaths:v32];
+        tableView2 = [(MPFavoritesTableViewController *)self tableView];
+        [tableView2 reconfigureRowsAtIndexPaths:v32];
       }
     }
 
     else
     {
       [(PHTableViewController *)self setNeedsReloadData:[(MPFavoritesTableViewController *)self viewHadAppeared]];
-      v26 = [v6 count];
-      v27 = [(MPFavoritesTableViewController *)self favoritesEntries];
-      v28 = [v27 count];
+      v26 = [favoritesEntries count];
+      favoritesEntries3 = [(MPFavoritesTableViewController *)self favoritesEntries];
+      v28 = [favoritesEntries3 count];
 
       if (v26 > v28)
       {
@@ -1390,45 +1390,45 @@ LABEL_18:
   }
 }
 
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v9 = objc_opt_class();
     v10 = 2112;
-    v11 = v4;
+    v11 = notificationCopy;
     v6 = v9;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", buf, 0x16u);
   }
 
   v7.receiver = self;
   v7.super_class = MPFavoritesTableViewController;
-  [(PHTableViewController *)&v7 handleUIApplicationWillEnterForegroundNotification:v4];
+  [(PHTableViewController *)&v7 handleUIApplicationWillEnterForegroundNotification:notificationCopy];
   [(MPFavoritesTableViewController *)self postCNContactsClientDidDisplayFavoritesNotification];
 }
 
-- (void)handleUIContentSizeCategoryDidChangeNotification:(id)a3
+- (void)handleUIContentSizeCategoryDidChangeNotification:(id)notification
 {
   v12.receiver = self;
   v12.super_class = MPFavoritesTableViewController;
-  v4 = a3;
-  [(PHTableViewController *)&v12 handleUIContentSizeCategoryDidChangeNotification:v4];
-  v5 = [v4 userInfo];
+  notificationCopy = notification;
+  [(PHTableViewController *)&v12 handleUIContentSizeCategoryDidChangeNotification:notificationCopy];
+  userInfo = [notificationCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:UIContentSizeCategoryNewValueKey];
+  v6 = [userInfo objectForKeyedSubscript:UIContentSizeCategoryNewValueKey];
 
-  v7 = [(MPFavoritesTableViewController *)self tableView];
+  tableView = [(MPFavoritesTableViewController *)self tableView];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __83__MPFavoritesTableViewController_handleUIContentSizeCategoryDidChangeNotification___block_invoke_2;
   v9[3] = &unk_100285C58;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
-  [v7 performBatchUpdates:&__block_literal_global_10 completion:v9];
+  [tableView performBatchUpdates:&__block_literal_global_10 completion:v9];
 }
 
 void __83__MPFavoritesTableViewController_handleUIContentSizeCategoryDidChangeNotification___block_invoke_2(uint64_t a1)
@@ -1450,28 +1450,28 @@ void __83__MPFavoritesTableViewController_handleUIContentSizeCategoryDidChangeNo
   v6.receiver = self;
   v6.super_class = MPFavoritesTableViewController;
   [(PHTableViewController *)&v6 makeUIForDefaultPNG];
-  v3 = [(MPFavoritesTableViewController *)self favoritesEntries];
-  v4 = [v3 count];
+  favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
+  v4 = [favoritesEntries count];
 
   if (!v4)
   {
-    v5 = [(PHTableViewController *)self contentUnavailableView];
-    [v5 setTitle:0];
+    contentUnavailableView = [(PHTableViewController *)self contentUnavailableView];
+    [contentUnavailableView setTitle:0];
   }
 }
 
 - (void)reloadDataSource
 {
-  v3 = [(MPFavoritesTableViewController *)self favoritesController];
-  v4 = [v3 favoritesEntries];
-  v5 = [v4 mutableCopy];
+  favoritesController = [(MPFavoritesTableViewController *)self favoritesController];
+  favoritesEntries = [favoritesController favoritesEntries];
+  v5 = [favoritesEntries mutableCopy];
   [(MPFavoritesTableViewController *)self setFavoritesEntries:v5];
 
-  v6 = [(MPFavoritesTableViewController *)self favoritesController];
-  -[MPFavoritesTableViewController setShouldShowAddButtonItem:](self, "setShouldShowAddButtonItem:", [v6 canAddEntry]);
+  favoritesController2 = [(MPFavoritesTableViewController *)self favoritesController];
+  -[MPFavoritesTableViewController setShouldShowAddButtonItem:](self, "setShouldShowAddButtonItem:", [favoritesController2 canAddEntry]);
 
-  v7 = [(MPFavoritesTableViewController *)self favoritesEntries];
-  -[MPFavoritesTableViewController tipKitSetNumberOfFavorites:](self, "tipKitSetNumberOfFavorites:", [v7 count]);
+  favoritesEntries2 = [(MPFavoritesTableViewController *)self favoritesEntries];
+  -[MPFavoritesTableViewController tipKitSetNumberOfFavorites:](self, "tipKitSetNumberOfFavorites:", [favoritesEntries2 count]);
 }
 
 - (void)refreshView
@@ -1479,58 +1479,58 @@ void __83__MPFavoritesTableViewController_handleUIContentSizeCategoryDidChangeNo
   [(MPFavoritesTableViewController *)self view];
   if (objc_claimAutoreleasedReturnValue() && [(MPFavoritesTableViewController *)self isViewLoaded])
   {
-    v3 = [(MPFavoritesTableViewController *)self favoritesEntries];
-    -[PHTableViewController setContentUnavailable:animated:](self, "setContentUnavailable:animated:", [v3 count] == 0, 0);
+    favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
+    -[PHTableViewController setContentUnavailable:animated:](self, "setContentUnavailable:animated:", [favoritesEntries count] == 0, 0);
     [(MPFavoritesTableViewController *)self setNavigationItemsForEditing:[(MPFavoritesTableViewController *)self isEditing] animated:0];
-    v4 = [(MPFavoritesTableViewController *)self tableView];
-    [v4 reloadData];
+    tableView = [(MPFavoritesTableViewController *)self tableView];
+    [tableView reloadData];
   }
 
   _objc_release_x1();
 }
 
-- (void)setNavigationItemsForEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setNavigationItemsForEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(MPFavoritesTableViewController *)self navigationItem];
-  if (v6)
+  animatedCopy = animated;
+  navigationItem = [(MPFavoritesTableViewController *)self navigationItem];
+  if (navigationItem)
   {
-    v12 = v6;
+    v12 = navigationItem;
     if ([(MPFavoritesTableViewController *)self isViewLoaded])
     {
-      v7 = [(MPFavoritesTableViewController *)self favoritesEntries];
+      favoritesEntries = [(MPFavoritesTableViewController *)self favoritesEntries];
       if (([(MPFavoritesTableViewController *)self isEditing]& 1) != 0 || ![(MPFavoritesTableViewController *)self shouldShowAddButtonItem])
       {
-        v8 = 0;
+        addButtonItem = 0;
       }
 
       else
       {
-        v8 = [(MPFavoritesTableViewController *)self addButtonItem];
+        addButtonItem = [(MPFavoritesTableViewController *)self addButtonItem];
       }
 
-      if ([v7 count])
+      if ([favoritesEntries count])
       {
-        v9 = [(MPFavoritesTableViewController *)self editButtonItem];
+        editButtonItem = [(MPFavoritesTableViewController *)self editButtonItem];
       }
 
       else
       {
-        v9 = 0;
+        editButtonItem = 0;
       }
 
-      v10 = [v12 leftBarButtonItem];
+      leftBarButtonItem = [v12 leftBarButtonItem];
 
-      if (v10 != v9)
+      if (leftBarButtonItem != editButtonItem)
       {
-        [v12 setLeftBarButtonItem:v9 animated:v4];
+        [v12 setLeftBarButtonItem:editButtonItem animated:animatedCopy];
       }
 
-      v11 = [v12 rightBarButtonItem];
+      rightBarButtonItem = [v12 rightBarButtonItem];
 
-      if (v11 != v8)
+      if (rightBarButtonItem != addButtonItem)
       {
-        [v12 setRightBarButtonItem:v8 animated:v4];
+        [v12 setRightBarButtonItem:addButtonItem animated:animatedCopy];
       }
     }
   }
@@ -1541,7 +1541,7 @@ void __83__MPFavoritesTableViewController_handleUIContentSizeCategoryDidChangeNo
 - (void)tipKitStartObservation
 {
   type metadata accessor for TPTipsHelper();
-  v3 = self;
+  selfCopy = self;
   static TPTipsHelper.taskQueue.getter();
   swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -1551,7 +1551,7 @@ void __83__MPFavoritesTableViewController_handleUIContentSizeCategoryDidChangeNo
 
 - (void)tipKitStopObservation
 {
-  v2 = self;
+  selfCopy = self;
   specialized MPFavoritesTableViewController.dismissPopover()();
   type metadata accessor for TPTipsHelper();
   static TPTipsHelper.taskQueue.getter();

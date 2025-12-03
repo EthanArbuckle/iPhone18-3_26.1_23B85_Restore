@@ -1,8 +1,8 @@
 @interface ABPKMLModelConfiguration2DBreakthrough
 - (ABPKMLModelConfiguration2DBreakthrough)init;
 - (CGSize)inputDimensions;
-- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)a3;
-- (id)configStringForABPKDeviceOrientation:(int64_t)a3;
+- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)orientation;
+- (id)configStringForABPKDeviceOrientation:(int64_t)orientation;
 - (id)inputTensorNames;
 - (id)outputTensorNames;
 @end
@@ -55,9 +55,9 @@
   return result;
 }
 
-- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)a3
+- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)orientation
 {
-  if (ABPKDeviceOrientationIsLandscape(a3))
+  if (ABPKDeviceOrientationIsLandscape(orientation))
   {
     v4 = 384.0;
     v5 = 288.0;
@@ -65,7 +65,7 @@
 
   else
   {
-    IsPortrait = ABPKDeviceOrientationIsPortrait(a3);
+    IsPortrait = ABPKDeviceOrientationIsPortrait(orientation);
     if (IsPortrait)
     {
       v5 = 384.0;
@@ -88,9 +88,9 @@
   return result;
 }
 
-- (id)configStringForABPKDeviceOrientation:(int64_t)a3
+- (id)configStringForABPKDeviceOrientation:(int64_t)orientation
 {
-  if (ABPKDeviceOrientationIsLandscape(a3))
+  if (ABPKDeviceOrientationIsLandscape(orientation))
   {
     v4 = &kABPK2DBreakthroughLandscapeConfigMode;
 LABEL_5:
@@ -98,7 +98,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (ABPKDeviceOrientationIsPortrait(a3))
+  if (ABPKDeviceOrientationIsPortrait(orientation))
   {
     v4 = kABPK2DBreakthroughPortraitConfigMode;
     goto LABEL_5;

@@ -1,15 +1,15 @@
 @interface DismissibleBoldTitleHeaderView
 - (id)accessibilityAccessoryLabel;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DismissibleBoldTitleHeaderView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA3D55B4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA3D55B4(change);
 }
 
 - (id)accessibilityAccessoryLabel

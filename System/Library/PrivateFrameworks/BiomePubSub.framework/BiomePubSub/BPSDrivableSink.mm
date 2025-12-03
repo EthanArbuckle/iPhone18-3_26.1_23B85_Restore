@@ -1,17 +1,17 @@
 @interface BPSDrivableSink
-- (BPSDrivableSink)initWithReceiveBookmarkCompletion:(id)a3 shouldContinue:(id)a4;
-- (BPSDrivableSink)initWithReceiveBookmarkedCompletion:(id)a3 shouldContinue:(id)a4;
-- (BPSDrivableSink)initWithReceiveCompletion:(id)a3 shouldContinue:(id)a4;
+- (BPSDrivableSink)initWithReceiveBookmarkCompletion:(id)completion shouldContinue:(id)continue;
+- (BPSDrivableSink)initWithReceiveBookmarkedCompletion:(id)completion shouldContinue:(id)continue;
+- (BPSDrivableSink)initWithReceiveCompletion:(id)completion shouldContinue:(id)continue;
 - (id)newBookmark;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)_cancel;
-- (void)_cancelPublisher:(id)a3;
+- (void)_cancelPublisher:(id)publisher;
 - (void)cancel;
-- (void)completeWithError:(id)a3;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (void)completeWithError:(id)error;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 - (void)requestNextEvents;
-- (void)subscribeTo:(id)a3;
+- (void)subscribeTo:(id)to;
 @end
 
 @implementation BPSDrivableSink
@@ -21,28 +21,28 @@
   os_unfair_recursive_lock_lock_with_options();
   if (![(BPSDrivableSink *)self finished])
   {
-    v3 = [(BPSDrivableSink *)self publisher];
-    v4 = [v3 nextEvent];
+    publisher = [(BPSDrivableSink *)self publisher];
+    nextEvent = [publisher nextEvent];
 
-    if (v4)
+    if (nextEvent)
     {
       while (1)
       {
         v5 = objc_autoreleasePoolPush();
-        v6 = [(BPSDrivableSink *)self shouldContinue];
-        v7 = (v6)[2](v6, v4);
+        shouldContinue = [(BPSDrivableSink *)self shouldContinue];
+        v7 = (shouldContinue)[2](shouldContinue, nextEvent);
 
         if (!v7)
         {
           break;
         }
 
-        v8 = [(BPSDrivableSink *)self publisher];
-        v9 = [v8 nextEvent];
+        publisher2 = [(BPSDrivableSink *)self publisher];
+        nextEvent2 = [publisher2 nextEvent];
 
         objc_autoreleasePoolPop(v5);
-        v4 = v9;
-        if (!v9)
+        nextEvent = nextEvent2;
+        if (!nextEvent2)
         {
           goto LABEL_5;
         }
@@ -55,10 +55,10 @@
     else
     {
 LABEL_5:
-      v10 = [(BPSDrivableSink *)self publisher];
-      v11 = [v10 completed];
+      publisher3 = [(BPSDrivableSink *)self publisher];
+      completed = [publisher3 completed];
 
-      if (v11)
+      if (completed)
       {
         [(BPSDrivableSink *)self completeWithError:0];
       }
@@ -68,19 +68,19 @@ LABEL_5:
   os_unfair_recursive_lock_unlock();
 }
 
-- (BPSDrivableSink)initWithReceiveBookmarkedCompletion:(id)a3 shouldContinue:(id)a4
+- (BPSDrivableSink)initWithReceiveBookmarkedCompletion:(id)completion shouldContinue:(id)continue
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  continueCopy = continue;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shouldContinue___block_invoke;
   v11[3] = &unk_1E8320C80;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v12 = v8;
-  v9 = [(BPSDrivableSink *)self initWithReceiveCompletion:v11 shouldContinue:v7];
+  v9 = [(BPSDrivableSink *)self initWithReceiveCompletion:v11 shouldContinue:continueCopy];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -105,65 +105,65 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
 
 - (id)newBookmark
 {
-  v3 = [(BPSDrivableSink *)self status];
-  v4 = [v3 subscription];
-  v5 = [v4 conformsToProtocol:&unk_1F4871E60];
+  status = [(BPSDrivableSink *)self status];
+  subscription = [status subscription];
+  v5 = [subscription conformsToProtocol:&unk_1F4871E60];
 
   if (v5)
   {
-    v6 = [(BPSDrivableSink *)self status];
-    v7 = [v6 subscription];
+    status2 = [(BPSDrivableSink *)self status];
+    subscription2 = [status2 subscription];
 
-    v8 = [v7 newBookmark];
+    newBookmark = [subscription2 newBookmark];
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shouldContinue___block_invoke_cold_1(v8, v9);
+      __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shouldContinue___block_invoke_cold_1(newBookmark, v9);
     }
   }
 
   else
   {
-    v7 = __biome_log_for_category();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    subscription2 = __biome_log_for_category();
+    if (os_log_type_enabled(subscription2, OS_LOG_TYPE_ERROR))
     {
       [(BPSDrivableSink(BMBookmark) *)self newBookmark];
     }
 
-    v8 = 0;
+    newBookmark = 0;
   }
 
-  return v8;
+  return newBookmark;
 }
 
-- (BPSDrivableSink)initWithReceiveCompletion:(id)a3 shouldContinue:(id)a4
+- (BPSDrivableSink)initWithReceiveCompletion:(id)completion shouldContinue:(id)continue
 {
-  v6 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__BPSDrivableSink_initWithReceiveCompletion_shouldContinue___block_invoke;
   v10[3] = &unk_1E8320D98;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(BPSDrivableSink *)self initWithReceiveBookmarkCompletion:v10 shouldContinue:a4];
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = [(BPSDrivableSink *)self initWithReceiveBookmarkCompletion:v10 shouldContinue:continue];
 
   return v8;
 }
 
-- (BPSDrivableSink)initWithReceiveBookmarkCompletion:(id)a3 shouldContinue:(id)a4
+- (BPSDrivableSink)initWithReceiveBookmarkCompletion:(id)completion shouldContinue:(id)continue
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  continueCopy = continue;
   v16.receiver = self;
   v16.super_class = BPSDrivableSink;
   v8 = [(BPSDrivableSink *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [completionCopy copy];
     receivedCompletion = v8->_receivedCompletion;
     v8->_receivedCompletion = v9;
 
-    v11 = [v7 copy];
+    v11 = [continueCopy copy];
     shouldContinue = v8->_shouldContinue;
     v8->_shouldContinue = v11;
 
@@ -177,64 +177,64 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
   return v8;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v8 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(BPSDrivableSink *)self status];
-  v5 = [v4 state];
+  status = [(BPSDrivableSink *)self status];
+  state = [status state];
 
-  if (v5)
+  if (state)
   {
     os_unfair_lock_unlock(&self->_lock);
-    [v8 cancel];
+    [subscriptionCopy cancel];
   }
 
   else
   {
-    v6 = [(BPSDrivableSink *)self status];
-    [v6 setState:1];
+    status2 = [(BPSDrivableSink *)self status];
+    [status2 setState:1];
 
-    v7 = [(BPSDrivableSink *)self status];
-    [v7 setSubscription:v8];
+    status3 = [(BPSDrivableSink *)self status];
+    [status3 setSubscription:subscriptionCopy];
 
     os_unfair_lock_unlock(&self->_lock);
-    [v8 requestDemand:1];
+    [subscriptionCopy requestDemand:1];
   }
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
+  completionCopy = completion;
+  selfCopy = self;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [BPSSink receiveCompletion:];
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  if (![(BPSDrivableSink *)v5 finished])
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if (![(BPSDrivableSink *)selfCopy finished])
   {
-    os_unfair_lock_unlock(&v5->_lock);
-    v7 = [(BPSDrivableSink *)v5 receivedCompletion];
-    (v7)[2](v7, v4, 0);
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    receivedCompletion = [(BPSDrivableSink *)selfCopy receivedCompletion];
+    (receivedCompletion)[2](receivedCompletion, completionCopy, 0);
 
-    os_unfair_lock_lock(&v5->_lock);
-    [(BPSDrivableSink *)v5 setFinished:1];
+    os_unfair_lock_lock(&selfCopy->_lock);
+    [(BPSDrivableSink *)selfCopy setFinished:1];
     v8 = +[BPSSubscriptionStatus terminal];
-    [(BPSDrivableSink *)v5 setStatus:v8];
+    [(BPSDrivableSink *)selfCopy setStatus:v8];
   }
 
-  os_unfair_lock_unlock(&v5->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(BPSDrivableSink *)v4 shouldContinue];
-  v7 = (v6)[2](v6, v5);
+  selfCopy = self;
+  inputCopy = input;
+  shouldContinue = [(BPSDrivableSink *)selfCopy shouldContinue];
+  v7 = (shouldContinue)[2](shouldContinue, inputCopy);
 
   if (v7)
   {
@@ -243,14 +243,14 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
 
   else
   {
-    v9 = [(BPSDrivableSink *)v4 receivedCompletion];
+    receivedCompletion = [(BPSDrivableSink *)selfCopy receivedCompletion];
     v10 = +[BPSCompletion success];
-    (v9)[2](v9, v10, 0);
+    (receivedCompletion)[2](receivedCompletion, v10, 0);
 
-    [(BPSDrivableSink *)v4 cancel];
-    os_unfair_lock_lock(&v4->_lock);
-    [(BPSDrivableSink *)v4 setFinished:1];
-    os_unfair_lock_unlock(&v4->_lock);
+    [(BPSDrivableSink *)selfCopy cancel];
+    os_unfair_lock_lock(&selfCopy->_lock);
+    [(BPSDrivableSink *)selfCopy setFinished:1];
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v8 = 0;
   }
 
@@ -259,14 +259,14 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(BPSDrivableSink *)v2 publisher];
-  v4 = BPSPipelineSupportsPullBasedPublishers(v3);
+  publisher = [(BPSDrivableSink *)selfCopy publisher];
+  v4 = BPSPipelineSupportsPullBasedPublishers(publisher);
 
   if (v4)
   {
-    [(BPSDrivableSink *)v2 _cancel];
+    [(BPSDrivableSink *)selfCopy _cancel];
     os_unfair_recursive_lock_unlock();
   }
 
@@ -279,36 +279,36 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
       [BPSSink cancel];
     }
 
-    os_unfair_lock_lock(&v2->_lock);
-    v6 = [(BPSDrivableSink *)v2 status];
-    v7 = [v6 state];
+    os_unfair_lock_lock(&selfCopy->_lock);
+    status = [(BPSDrivableSink *)selfCopy status];
+    state = [status state];
 
-    if (v7 == 1)
+    if (state == 1)
     {
-      v8 = [(BPSDrivableSink *)v2 status];
-      v9 = [v8 subscription];
+      status2 = [(BPSDrivableSink *)selfCopy status];
+      subscription = [status2 subscription];
 
       v10 = +[BPSSubscriptionStatus terminal];
-      [(BPSDrivableSink *)v2 setStatus:v10];
+      [(BPSDrivableSink *)selfCopy setStatus:v10];
 
-      os_unfair_lock_unlock(&v2->_lock);
-      [v9 cancel];
+      os_unfair_lock_unlock(&selfCopy->_lock);
+      [subscription cancel];
     }
 
     else
     {
-      os_unfair_lock_unlock(&v2->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
     }
   }
 }
 
-- (void)subscribeTo:(id)a3
+- (void)subscribeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   os_unfair_recursive_lock_lock_with_options();
-  [(BPSDrivableSink *)self setPublisher:v4];
-  v5 = [(BPSDrivableSink *)self publisher];
-  v6 = [v5 startWithSubscriber:self];
+  [(BPSDrivableSink *)self setPublisher:toCopy];
+  publisher = [(BPSDrivableSink *)self publisher];
+  v6 = [publisher startWithSubscriber:self];
 
   if (v6)
   {
@@ -344,31 +344,31 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
-  v11 = a3;
+  errorCopy = error;
   os_unfair_recursive_lock_lock_with_options();
   if (![(BPSDrivableSink *)self finished])
   {
-    v4 = [(BPSDrivableSink *)self publisher];
-    v5 = [v4 conformsToProtocol:&unk_1F4872E18];
+    publisher = [(BPSDrivableSink *)self publisher];
+    v5 = [publisher conformsToProtocol:&unk_1F4872E18];
 
     if (v5)
     {
-      v6 = [(BPSDrivableSink *)self publisher];
-      v7 = [v6 bookmarkNode];
+      publisher2 = [(BPSDrivableSink *)self publisher];
+      bookmarkNode = [publisher2 bookmarkNode];
     }
 
     else
     {
-      v7 = 0;
+      bookmarkNode = 0;
     }
 
-    v8 = [(BPSDrivableSink *)self publisher];
-    [v8 reset];
+    publisher3 = [(BPSDrivableSink *)self publisher];
+    [publisher3 reset];
 
-    v9 = [(BPSDrivableSink *)self receivedCompletion];
-    if (v11)
+    receivedCompletion = [(BPSDrivableSink *)self receivedCompletion];
+    if (errorCopy)
     {
       [BPSCompletion failureWithError:?];
     }
@@ -378,7 +378,7 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
       +[BPSCompletion success];
     }
     v10 = ;
-    (v9)[2](v9, v10, v7);
+    (receivedCompletion)[2](receivedCompletion, v10, bookmarkNode);
 
     [(BPSDrivableSink *)self setFinished:1];
     [(BPSDrivableSink *)self setPublisher:0];
@@ -390,29 +390,29 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
 - (void)_cancel
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(BPSDrivableSink *)self publisher];
-  [(BPSDrivableSink *)self _cancelPublisher:v3];
+  publisher = [(BPSDrivableSink *)self publisher];
+  [(BPSDrivableSink *)self _cancelPublisher:publisher];
 
   [(BPSDrivableSink *)self completeWithError:0];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)_cancelPublisher:(id)a3
+- (void)_cancelPublisher:(id)publisher
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  publisherCopy = publisher;
   if (objc_opt_respondsToSelector())
   {
-    [v4 performSelector:sel_cancel];
+    [publisherCopy performSelector:sel_cancel];
   }
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 upstreamPublishers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  upstreamPublishers = [publisherCopy upstreamPublishers];
+  v6 = [upstreamPublishers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -424,14 +424,14 @@ void __82__BPSDrivableSink_BMBookmark__initWithReceiveBookmarkedCompletion_shoul
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(upstreamPublishers);
         }
 
         [(BPSDrivableSink *)self _cancelPublisher:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [upstreamPublishers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

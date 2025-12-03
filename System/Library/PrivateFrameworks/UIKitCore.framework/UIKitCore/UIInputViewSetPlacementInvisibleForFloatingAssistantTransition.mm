@@ -1,16 +1,16 @@
 @interface UIInputViewSetPlacementInvisibleForFloatingAssistantTransition
-+ (id)placementWithPlacement:(id)a3;
++ (id)placementWithPlacement:(id)placement;
 - (CGAffineTransform)transform;
 - (id)subPlacements;
 @end
 
 @implementation UIInputViewSetPlacementInvisibleForFloatingAssistantTransition
 
-+ (id)placementWithPlacement:(id)a3
++ (id)placementWithPlacement:(id)placement
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 isVisible] & 1) == 0)
+  placementCopy = placement;
+  if (([placementCopy isVisible] & 1) == 0)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -35,11 +35,11 @@
     }
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 5, a3);
+    objc_storeStrong(v6 + 5, placement);
   }
 
   return v7;
@@ -48,17 +48,17 @@
 - (id)subPlacements
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIInputViewSetPlacement *)self->super.super._actualPlacement subPlacements];
-  v4 = [v3 count];
+  subPlacements = [(UIInputViewSetPlacement *)self->super.super._actualPlacement subPlacements];
+  v4 = [subPlacements count];
 
   if (v4)
   {
     cachedSecondaryPlacement = self->_cachedSecondaryPlacement;
     if (!cachedSecondaryPlacement)
     {
-      v6 = [(UIInputViewSetPlacement *)self->super.super._actualPlacement subPlacements];
-      v7 = [v6 firstObject];
-      v8 = [UIInputViewSetPlacementInvisibleForFloatingAssistantTransition placementWithPlacement:v7];
+      subPlacements2 = [(UIInputViewSetPlacement *)self->super.super._actualPlacement subPlacements];
+      firstObject = [subPlacements2 firstObject];
+      v8 = [UIInputViewSetPlacementInvisibleForFloatingAssistantTransition placementWithPlacement:firstObject];
       v9 = self->_cachedSecondaryPlacement;
       self->_cachedSecondaryPlacement = v8;
 

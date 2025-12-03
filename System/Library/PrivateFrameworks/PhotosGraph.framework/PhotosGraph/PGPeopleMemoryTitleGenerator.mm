@@ -1,8 +1,8 @@
 @interface PGPeopleMemoryTitleGenerator
-+ (id)peopleOverTimeTimeTitleOptionsWithMomentNodes:(id)a3;
-- (BOOL)_person:(id)a3 isPresentInAnyMomentOfMomentNodes:(id)a4;
-- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)a3 personNodes:(id)a4 seasonName:(id)a5 type:(unint64_t)a6 titleGenerationContext:(id)a7;
-- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)a3 personNodes:(id)a4 timeTitleOptions:(id)a5 type:(unint64_t)a6 titleGenerationContext:(id)a7;
++ (id)peopleOverTimeTimeTitleOptionsWithMomentNodes:(id)nodes;
+- (BOOL)_person:(id)_person isPresentInAnyMomentOfMomentNodes:(id)nodes;
+- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)nodes personNodes:(id)personNodes seasonName:(id)name type:(unint64_t)type titleGenerationContext:(id)context;
+- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)nodes personNodes:(id)personNodes timeTitleOptions:(id)options type:(unint64_t)type titleGenerationContext:(id)context;
 - (id)_birthdayTitleForPeople;
 - (id)_timeTitleForEarlyMoments;
 - (id)_timeTitleForPeople;
@@ -10,15 +10,15 @@
 - (id)_titleForEarlyMoments;
 - (id)_titleForPeople;
 - (id)_titleForSocialGroup;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGPeopleMemoryTitleGenerator
 
 - (id)_timeTitleForPeople
 {
-  v2 = [(PGTitleGenerator *)self momentNodes];
-  v3 = [PGTimeTitleUtility peopleTimeTitleWithEventNodes:v2];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  v3 = [PGTimeTitleUtility peopleTimeTitleWithEventNodes:momentNodes];
 
   v4 = [PGTitle titleWithString:v3 category:5];
 
@@ -32,28 +32,28 @@
   if ([(NSSet *)self->_personNodes count]!= 1)
   {
     v4 = +[PGLogging sharedLogging];
-    v5 = [v4 loggingConnection];
+    loggingConnection = [v4 loggingConnection];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v17 = [(NSSet *)self->_personNodes count];
       *buf = 134217984;
       v19 = v17;
-      _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "Trying to create birthday title with %lu people. Choosing any person.", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Trying to create birthday title with %lu people. Choosing any person.", buf, 0xCu);
     }
 
-    v6 = [(NSSet *)self->_personNodes anyObject];
-    if (v6)
+    anyObject = [(NSSet *)self->_personNodes anyObject];
+    if (anyObject)
     {
-      v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
+      v7 = [MEMORY[0x277CBEB98] setWithObject:anyObject];
 
       v3 = v7;
     }
   }
 
-  v8 = [(PGTitleGenerator *)self titleGenerationContext];
-  v9 = [v8 serviceManager];
-  v10 = [PGPeopleTitleUtility nameStringForPersonNodes:v3 includeMe:0 insertLineBreaks:1 serviceManager:v9];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  serviceManager = [titleGenerationContext serviceManager];
+  v10 = [PGPeopleTitleUtility nameStringForPersonNodes:v3 includeMe:0 insertLineBreaks:1 serviceManager:serviceManager];
 
   if (v10 && [v10 length])
   {
@@ -73,13 +73,13 @@
   return v14;
 }
 
-- (BOOL)_person:(id)a3 isPresentInAnyMomentOfMomentNodes:(id)a4
+- (BOOL)_person:(id)_person isPresentInAnyMomentOfMomentNodes:(id)nodes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && [v6 count])
+  _personCopy = _person;
+  nodesCopy = nodes;
+  v7 = nodesCopy;
+  if (_personCopy && [nodesCopy count])
   {
     v16 = 0u;
     v17 = 0u;
@@ -99,7 +99,7 @@
             objc_enumerationMutation(v8);
           }
 
-          if ([*(*(&v14 + 1) + 8 * i) hasEdgeFromNode:{v5, v14}])
+          if ([*(*(&v14 + 1) + 8 * i) hasEdgeFromNode:{_personCopy, v14}])
           {
             LOBYTE(v9) = 1;
             goto LABEL_14;
@@ -131,13 +131,13 @@ LABEL_14:
 - (id)_timeTitleForEarlyMoments
 {
   v3 = objc_opt_new();
-  v4 = [(PGTitleGenerator *)self momentNodes];
-  [v3 setMomentNodes:v4];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  [v3 setMomentNodes:momentNodes];
 
   [v3 setAllowedFormats:4];
   [v3 setFilterDates:0];
-  v5 = [(PGTitleGenerator *)self featuredYearNodes];
-  [v3 setFeaturedYearNodes:v5];
+  featuredYearNodes = [(PGTitleGenerator *)self featuredYearNodes];
+  [v3 setFeaturedYearNodes:featuredYearNodes];
 
   v6 = [PGTimeTitleUtility timeTitleWithOptions:v3];
   v7 = [PGTitle titleWithString:v6 category:5];
@@ -148,26 +148,26 @@ LABEL_14:
 - (id)_titleForEarlyMoments
 {
   v3 = [PGSpecBasedTitleGenerator alloc];
-  v4 = [(PGTitleGenerator *)self momentNodes];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
   personNodes = self->_personNodes;
-  v6 = [(PGTitleGenerator *)self titleGenerationContext];
-  v7 = [(PGSpecBasedTitleGenerator *)v3 initWithMomentNodes:v4 personNodes:personNodes memoryCategory:219 subcategory:0 titleGenerationContext:v6];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  v7 = [(PGSpecBasedTitleGenerator *)v3 initWithMomentNodes:momentNodes personNodes:personNodes memoryCategory:219 subcategory:0 titleGenerationContext:titleGenerationContext];
 
-  v8 = [(PGSpecBasedTitleGenerator *)v7 title];
+  title = [(PGSpecBasedTitleGenerator *)v7 title];
 
-  return v8;
+  return title;
 }
 
 - (id)_titleForChildAndPerson
 {
-  v3 = [(NSSet *)self->_personNodes anyObject];
-  v4 = [v3 graph];
-  v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v4];
-  v6 = [v5 anyNode];
+  anyObject = [(NSSet *)self->_personNodes anyObject];
+  graph = [anyObject graph];
+  v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
+  anyNode = [v5 anyNode];
 
-  if (v6)
+  if (anyNode)
   {
-    v7 = [(NSSet *)self->_personNodes containsObject:v6];
+    v7 = [(NSSet *)self->_personNodes containsObject:anyNode];
   }
 
   else
@@ -176,9 +176,9 @@ LABEL_14:
   }
 
   personNodes = self->_personNodes;
-  v9 = [(PGTitleGenerator *)self titleGenerationContext];
-  v10 = [v9 serviceManager];
-  v11 = [PGPeopleTitleUtility nameStringForPersonNodes:personNodes includeMe:v7 allowUnnamed:1 allowedGroupsFormat:1 insertLineBreaks:1 serviceManager:v10];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  serviceManager = [titleGenerationContext serviceManager];
+  v11 = [PGPeopleTitleUtility nameStringForPersonNodes:personNodes includeMe:v7 allowUnnamed:1 allowedGroupsFormat:1 insertLineBreaks:1 serviceManager:serviceManager];
 
   v12 = [PGTitle titleWithString:v11 category:3];
 
@@ -187,22 +187,22 @@ LABEL_14:
 
 - (id)_titleForSocialGroup
 {
-  v3 = [(NSSet *)self->_personNodes anyObject];
-  v4 = [v3 graph];
-  v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v4];
-  v6 = [v5 anyNode];
+  anyObject = [(NSSet *)self->_personNodes anyObject];
+  graph = [anyObject graph];
+  v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
+  anyNode = [v5 anyNode];
 
-  if (v6)
+  if (anyNode)
   {
-    if ([(NSSet *)self->_personNodes containsObject:v6])
+    if ([(NSSet *)self->_personNodes containsObject:anyNode])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(PGTitleGenerator *)self momentNodes];
-      v7 = [(PGPeopleMemoryTitleGenerator *)self _person:v6 isPresentInAnyMomentOfMomentNodes:v8];
+      momentNodes = [(PGTitleGenerator *)self momentNodes];
+      v7 = [(PGPeopleMemoryTitleGenerator *)self _person:anyNode isPresentInAnyMomentOfMomentNodes:momentNodes];
     }
   }
 
@@ -212,9 +212,9 @@ LABEL_14:
   }
 
   personNodes = self->_personNodes;
-  v10 = [(PGTitleGenerator *)self titleGenerationContext];
-  v11 = [v10 serviceManager];
-  v12 = [PGPeopleTitleUtility nameStringForPersonNodes:personNodes includeMe:v7 insertLineBreaks:1 serviceManager:v11];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  serviceManager = [titleGenerationContext serviceManager];
+  v12 = [PGPeopleTitleUtility nameStringForPersonNodes:personNodes includeMe:v7 insertLineBreaks:1 serviceManager:serviceManager];
 
   v13 = [PGTitle titleWithString:v12 category:3];
 
@@ -224,18 +224,18 @@ LABEL_14:
 - (id)_titleForPeople
 {
   personNodes = self->_personNodes;
-  v3 = [(PGTitleGenerator *)self titleGenerationContext];
-  v4 = [v3 serviceManager];
-  v5 = [PGPeopleTitleUtility nameStringForPersonNodes:personNodes includeMe:0 insertLineBreaks:1 serviceManager:v4];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  serviceManager = [titleGenerationContext serviceManager];
+  v5 = [PGPeopleTitleUtility nameStringForPersonNodes:personNodes includeMe:0 insertLineBreaks:1 serviceManager:serviceManager];
 
   v6 = [PGTitle titleWithString:v5 category:3];
 
   return v6;
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v12 = a3;
+  resultCopy = result;
   if (self->_timeTitleOptions)
   {
     v4 = [PGTimeTitleUtility timeTitleWithOptions:?];
@@ -255,13 +255,13 @@ LABEL_14:
     v5 = 0;
   }
 
-  v6 = 0;
+  _titleForEarlyMoments = 0;
   type = self->_type;
   if (type <= 2)
   {
     if (type < 2)
     {
-      v8 = [(PGPeopleMemoryTitleGenerator *)self _titleForPeople];
+      _titleForPeople = [(PGPeopleMemoryTitleGenerator *)self _titleForPeople];
     }
 
     else
@@ -271,91 +271,91 @@ LABEL_14:
         goto LABEL_22;
       }
 
-      v8 = [(PGPeopleMemoryTitleGenerator *)self _titleForSocialGroup];
+      _titleForPeople = [(PGPeopleMemoryTitleGenerator *)self _titleForSocialGroup];
     }
 
 LABEL_16:
-    v6 = v8;
+    _titleForEarlyMoments = _titleForPeople;
     if (v5)
     {
       goto LABEL_22;
     }
 
-    v9 = [(PGPeopleMemoryTitleGenerator *)self _timeTitleForPeople];
+    _timeTitleForPeople = [(PGPeopleMemoryTitleGenerator *)self _timeTitleForPeople];
     goto LABEL_18;
   }
 
   switch(type)
   {
     case 3:
-      v6 = [(PGPeopleMemoryTitleGenerator *)self _titleForEarlyMoments];
+      _titleForEarlyMoments = [(PGPeopleMemoryTitleGenerator *)self _titleForEarlyMoments];
       if (!v5)
       {
-        v9 = [(PGPeopleMemoryTitleGenerator *)self _timeTitleForEarlyMoments];
+        _timeTitleForPeople = [(PGPeopleMemoryTitleGenerator *)self _timeTitleForEarlyMoments];
 LABEL_18:
-        v5 = v9;
+        v5 = _timeTitleForPeople;
       }
 
       break;
     case 4:
-      v6 = [(PGPeopleMemoryTitleGenerator *)self _titleForPeople];
-      v10 = [(PGTitleGenerator *)self momentNodes];
-      v11 = [PGSeasonMemoryTitleGenerator seasonSubtitleWithMomentNodes:v10 seasonName:self->_seasonName];
+      _titleForEarlyMoments = [(PGPeopleMemoryTitleGenerator *)self _titleForPeople];
+      momentNodes = [(PGTitleGenerator *)self momentNodes];
+      v11 = [PGSeasonMemoryTitleGenerator seasonSubtitleWithMomentNodes:momentNodes seasonName:self->_seasonName];
 
       v5 = v11;
       break;
     case 5:
-      v8 = [(PGPeopleMemoryTitleGenerator *)self _titleForChildAndPerson];
+      _titleForPeople = [(PGPeopleMemoryTitleGenerator *)self _titleForChildAndPerson];
       goto LABEL_16;
     default:
       break;
   }
 
 LABEL_22:
-  if (v12)
+  if (resultCopy)
   {
-    v12[2](v12, v6, v5);
+    resultCopy[2](resultCopy, _titleForEarlyMoments, v5);
   }
 }
 
-- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)a3 personNodes:(id)a4 seasonName:(id)a5 type:(unint64_t)a6 titleGenerationContext:(id)a7
+- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)nodes personNodes:(id)personNodes seasonName:(id)name type:(unint64_t)type titleGenerationContext:(id)context
 {
-  v13 = a5;
-  v14 = [(PGPeopleMemoryTitleGenerator *)self initWithMomentNodes:a3 personNodes:a4 type:a6 titleGenerationContext:a7];
+  nameCopy = name;
+  v14 = [(PGPeopleMemoryTitleGenerator *)self initWithMomentNodes:nodes personNodes:personNodes type:type titleGenerationContext:context];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_seasonName, a5);
+    objc_storeStrong(&v14->_seasonName, name);
   }
 
   return v15;
 }
 
-- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)a3 personNodes:(id)a4 timeTitleOptions:(id)a5 type:(unint64_t)a6 titleGenerationContext:(id)a7
+- (PGPeopleMemoryTitleGenerator)initWithMomentNodes:(id)nodes personNodes:(id)personNodes timeTitleOptions:(id)options type:(unint64_t)type titleGenerationContext:(id)context
 {
-  v13 = a4;
-  v14 = a5;
+  personNodesCopy = personNodes;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = PGPeopleMemoryTitleGenerator;
-  v15 = [(PGTitleGenerator *)&v19 initWithMomentNodes:a3 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:a7];
+  v15 = [(PGTitleGenerator *)&v19 initWithMomentNodes:nodes referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:context];
   v16 = v15;
   if (v15)
   {
-    v15->_type = a6;
-    objc_storeStrong(&v15->_personNodes, a4);
-    objc_storeStrong(&v16->_timeTitleOptions, a5);
-    v17 = [(PGTitleGenerator *)v16 locale];
-    [(PGTimeTitleOptions *)v16->_timeTitleOptions setLocale:v17];
+    v15->_type = type;
+    objc_storeStrong(&v15->_personNodes, personNodes);
+    objc_storeStrong(&v16->_timeTitleOptions, options);
+    locale = [(PGTitleGenerator *)v16 locale];
+    [(PGTimeTitleOptions *)v16->_timeTitleOptions setLocale:locale];
   }
 
   return v16;
 }
 
-+ (id)peopleOverTimeTimeTitleOptionsWithMomentNodes:(id)a3
++ (id)peopleOverTimeTimeTitleOptionsWithMomentNodes:(id)nodes
 {
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = objc_alloc_init(PGTimeTitleOptions);
-  [(PGTimeTitleOptions *)v4 setMomentNodes:v3];
+  [(PGTimeTitleOptions *)v4 setMomentNodes:nodesCopy];
 
   [(PGTimeTitleOptions *)v4 setAllowedFormats:20];
   [(PGTimeTitleOptions *)v4 setUsePeopleSubtitleFormatWithYears:1];

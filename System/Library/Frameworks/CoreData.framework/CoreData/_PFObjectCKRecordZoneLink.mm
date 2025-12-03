@@ -1,19 +1,19 @@
 @interface _PFObjectCKRecordZoneLink
-- (_PFObjectCKRecordZoneLink)initWithObjectID:(id)a3 recordName:(id)a4;
+- (_PFObjectCKRecordZoneLink)initWithObjectID:(id)d recordName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation _PFObjectCKRecordZoneLink
 
-- (_PFObjectCKRecordZoneLink)initWithObjectID:(id)a3 recordName:(id)a4
+- (_PFObjectCKRecordZoneLink)initWithObjectID:(id)d recordName:(id)name
 {
   v8.receiver = self;
   v8.super_class = _PFObjectCKRecordZoneLink;
   v6 = [(_PFObjectCKRecordZoneLink *)&v8 init];
   if (v6)
   {
-    v6->_objectID = a3;
-    v6->_recordName = a4;
+    v6->_objectID = d;
+    v6->_recordName = name;
   }
 
   return v6;

@@ -1,6 +1,6 @@
 @interface PodcastsFlowTabBarController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -16,19 +16,19 @@
   PodcastsTabBarPresenter.viewDidLoad()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10002FB54(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10002FB54(change);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

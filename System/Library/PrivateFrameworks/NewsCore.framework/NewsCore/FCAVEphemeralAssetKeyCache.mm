@@ -1,11 +1,11 @@
 @interface FCAVEphemeralAssetKeyCache
 - (FCAVEphemeralAssetKeyCache)init;
-- (id)assetKeyForURI:(id)a3;
+- (id)assetKeyForURI:(id)i;
 - (void)clearKeyServerCertificate;
-- (void)importAVAssetKey:(id)a3;
+- (void)importAVAssetKey:(id)key;
 - (void)removeAllAssetKeys;
-- (void)saveAssetKeyData:(id)a3 creationDate:(id)a4 expirationDate:(id)a5 forURI:(id)a6;
-- (void)saveKeyServerCertificate:(id)a3;
+- (void)saveAssetKeyData:(id)data creationDate:(id)date expirationDate:(id)expirationDate forURI:(id)i;
+- (void)saveKeyServerCertificate:(id)certificate;
 @end
 
 @implementation FCAVEphemeralAssetKeyCache
@@ -25,34 +25,34 @@
   return v2;
 }
 
-- (id)assetKeyForURI:(id)a3
+- (id)assetKeyForURI:(id)i
 {
   if (self)
   {
     self = self->_dictionary;
   }
 
-  return [(FCAVEphemeralAssetKeyCache *)self objectForKey:a3];
+  return [(FCAVEphemeralAssetKeyCache *)self objectForKey:i];
 }
 
-- (void)saveAssetKeyData:(id)a3 creationDate:(id)a4 expirationDate:(id)a5 forURI:(id)a6
+- (void)saveAssetKeyData:(id)data creationDate:(id)date expirationDate:(id)expirationDate forURI:(id)i
 {
   v10 = MEMORY[0x1E69B6CD8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  iCopy = i;
+  expirationDateCopy = expirationDate;
+  dateCopy = date;
+  dataCopy = data;
   v19 = objc_alloc_init(v10);
-  v15 = [v11 absoluteString];
-  [v19 setIdentifier:v15];
+  absoluteString = [iCopy absoluteString];
+  [v19 setIdentifier:absoluteString];
 
-  [v19 setKeyData:v14];
-  v16 = [v13 pbDate];
+  [v19 setKeyData:dataCopy];
+  pbDate = [dateCopy pbDate];
 
-  [v19 setCreatedAt:v16];
-  v17 = [v12 pbDate];
+  [v19 setCreatedAt:pbDate];
+  pbDate2 = [expirationDateCopy pbDate];
 
-  [v19 setExpiresAt:v17];
+  [v19 setExpiresAt:pbDate2];
   if (self)
   {
     dictionary = self->_dictionary;
@@ -63,10 +63,10 @@
     dictionary = 0;
   }
 
-  [(FCThreadSafeMutableDictionary *)dictionary setObject:v19 forKey:v11];
+  [(FCThreadSafeMutableDictionary *)dictionary setObject:v19 forKey:iCopy];
 }
 
-- (void)importAVAssetKey:(id)a3
+- (void)importAVAssetKey:(id)key
 {
   if (self)
   {
@@ -80,10 +80,10 @@
 
   v5 = MEMORY[0x1E695DFF8];
   v6 = dictionary;
-  v7 = a3;
-  v9 = [v7 identifier];
-  v8 = [v5 URLWithString:v9];
-  [(FCThreadSafeMutableDictionary *)v6 setObject:v7 forKey:v8];
+  keyCopy = key;
+  identifier = [keyCopy identifier];
+  v8 = [v5 URLWithString:identifier];
+  [(FCThreadSafeMutableDictionary *)v6 setObject:keyCopy forKey:v8];
 }
 
 - (void)removeAllAssetKeys
@@ -96,9 +96,9 @@
   [(FCAVEphemeralAssetKeyCache *)self removeAllObjects];
 }
 
-- (void)saveKeyServerCertificate:(id)a3
+- (void)saveKeyServerCertificate:(id)certificate
 {
-  v4 = [a3 copy];
+  v4 = [certificate copy];
   keyServerCertificate = self->_keyServerCertificate;
   self->_keyServerCertificate = v4;
 

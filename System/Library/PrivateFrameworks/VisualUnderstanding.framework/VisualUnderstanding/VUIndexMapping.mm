@@ -1,14 +1,14 @@
 @interface VUIndexMapping
-- (VUIndexMapping)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (VUIndexMapping)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation VUIndexMapping
 
-- (VUIndexMapping)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (VUIndexMapping)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for VUIndexMapping();
-  return [(VUIndexMapping *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(VUIndexMapping *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

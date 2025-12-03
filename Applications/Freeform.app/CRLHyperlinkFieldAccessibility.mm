@@ -1,5 +1,5 @@
 @interface CRLHyperlinkFieldAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CGRect)accessibilityFrame;
 - (NSString)crlaxLinkTitle;
 - (NSURL)crlaxLinkURL;
@@ -9,27 +9,27 @@
 
 @implementation CRLHyperlinkFieldAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (NSString)crlaxLinkTitle
 {
-  v2 = [(CRLHyperlinkFieldAccessibility *)self crlaxTarget];
-  v3 = [v2 displayText];
+  crlaxTarget = [(CRLHyperlinkFieldAccessibility *)self crlaxTarget];
+  displayText = [crlaxTarget displayText];
 
-  return v3;
+  return displayText;
 }
 
 - (NSURL)crlaxLinkURL
 {
-  v2 = [(CRLHyperlinkFieldAccessibility *)self crlaxTarget];
-  v3 = [v2 url];
+  crlaxTarget = [(CRLHyperlinkFieldAccessibility *)self crlaxTarget];
+  v3 = [crlaxTarget url];
 
   return v3;
 }
@@ -42,9 +42,9 @@
   v17 = sub_100556B54;
   v18 = sub_100556B64;
   v19 = 0;
-  v3 = [(CRLWPSmartFieldAccessibility *)self crlaxParentTextRep];
-  v5 = [(CRLWPSmartFieldAccessibility *)self crlaxFieldRange];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  crlaxParentTextRep = [(CRLWPSmartFieldAccessibility *)self crlaxParentTextRep];
+  crlaxFieldRange = [(CRLWPSmartFieldAccessibility *)self crlaxFieldRange];
+  if (crlaxFieldRange != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v4;
     if (v4)
@@ -54,8 +54,8 @@
       v9[2] = sub_100556B6C;
       v9[3] = &unk_1018427D8;
       v11 = &v14;
-      v10 = v3;
-      v12 = v5;
+      v10 = crlaxParentTextRep;
+      v12 = crlaxFieldRange;
       v13 = v6;
       if (__CRLAccessibilityPerformSafeBlock(v9))
       {
@@ -81,9 +81,9 @@
 - (CGRect)accessibilityFrame
 {
   LOBYTE(v41) = 0;
-  v3 = [(CRLWPSmartFieldAccessibility *)self crlaxParentTextRep];
+  crlaxParentTextRep = [(CRLWPSmartFieldAccessibility *)self crlaxParentTextRep];
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v41);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, crlaxParentTextRep, 1, &v41);
   if (v41 == 1)
   {
     goto LABEL_8;
@@ -91,11 +91,11 @@
 
   v6 = v5;
 
-  v7 = [v6 crlaxInteractiveCanvasController];
+  crlaxInteractiveCanvasController = [v6 crlaxInteractiveCanvasController];
   LOBYTE(v41) = 0;
-  v8 = [v7 crlaxCanvasView];
+  crlaxCanvasView = [crlaxInteractiveCanvasController crlaxCanvasView];
   v9 = objc_opt_class();
-  v10 = __CRLAccessibilityCastAsClass(v9, v8, 1, &v41);
+  v10 = __CRLAccessibilityCastAsClass(v9, crlaxCanvasView, 1, &v41);
   if (v41 == 1)
   {
     goto LABEL_8;
@@ -138,7 +138,7 @@
         v24 = v42[7];
         _Block_object_dispose(&v41, 8);
         [v20 crlaxConvertNaturalRectToUnscaledCanvas:{v21, v22, v23, v24, v33, v34, v35, v36}];
-        [v7 crlaxConvertUnscaledToBoundsRect:?];
+        [crlaxInteractiveCanvasController crlaxConvertUnscaledToBoundsRect:?];
         [v11 crlaxFrameFromBounds:?];
         x = v25;
         y = v26;

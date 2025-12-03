@@ -1,19 +1,19 @@
 @interface MTATimerControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation MTATimerControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_timePicker" withType:"MTATimerIntervalPickerView"];
-  [v3 validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_timeView" withType:"UILabel"];
-  [v3 validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_state" withType:"Q"];
-  [v3 validateClass:@"MTATimerControlsView" hasInstanceMethod:@"setState: animate:" withFullSignature:{"v", "Q", "B", 0}];
-  [v3 validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_tableView" withType:"UITableView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_timePicker" withType:"MTATimerIntervalPickerView"];
+  [validationsCopy validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_timeView" withType:"UILabel"];
+  [validationsCopy validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_state" withType:"Q"];
+  [validationsCopy validateClass:@"MTATimerControlsView" hasInstanceMethod:@"setState: animate:" withFullSignature:{"v", "Q", "B", 0}];
+  [validationsCopy validateClass:@"MTATimerControlsView" hasInstanceVariable:@"_tableView" withType:"UITableView"];
 }
 
 - (void)layoutSubviews

@@ -1,26 +1,26 @@
 @interface WKEditorUndoTarget
-- (void)redoEditing:(id)a3;
-- (void)undoEditing:(id)a3;
+- (void)redoEditing:(id)editing;
+- (void)undoEditing:(id)editing;
 @end
 
 @implementation WKEditorUndoTarget
 
-- (void)undoEditing:(id)a3
+- (void)undoEditing:(id)editing
 {
-  v3 = [a3 command];
-  CFRetain(v3[1]);
-  WebKit::WebEditCommandProxy::unapply(v3);
-  v4 = v3[1];
+  command = [editing command];
+  CFRetain(command[1]);
+  WebKit::WebEditCommandProxy::unapply(command);
+  v4 = command[1];
 
   CFRelease(v4);
 }
 
-- (void)redoEditing:(id)a3
+- (void)redoEditing:(id)editing
 {
-  v3 = [a3 command];
-  CFRetain(v3[1]);
-  WebKit::WebEditCommandProxy::reapply(v3);
-  v4 = v3[1];
+  command = [editing command];
+  CFRetain(command[1]);
+  WebKit::WebEditCommandProxy::reapply(command);
+  v4 = command[1];
 
   CFRelease(v4);
 }

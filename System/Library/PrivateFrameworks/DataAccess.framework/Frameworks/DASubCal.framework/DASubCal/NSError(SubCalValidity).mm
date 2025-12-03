@@ -6,10 +6,10 @@
 
 - (BOOL)isSubCalAuthError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277D03F90]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277D03F90]])
   {
-    v3 = [a1 code] == 5;
+    v3 = [self code] == 5;
   }
 
   else

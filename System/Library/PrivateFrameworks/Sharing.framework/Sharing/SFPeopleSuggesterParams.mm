@@ -1,13 +1,13 @@
 @interface SFPeopleSuggesterParams
-- (SFPeopleSuggesterParams)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFPeopleSuggesterParams)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPeopleSuggesterParams
 
-- (SFPeopleSuggesterParams)initWithCoder:(id)a3
+- (SFPeopleSuggesterParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFPeopleSuggesterParams;
   v5 = [(SFPeopleSuggesterParams *)&v9 init];
@@ -27,7 +27,7 @@
       v5->_maxPeople = v10;
     }
 
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"exclBf"])
     {
       v5->_excludeBackfills = [v6 decodeBoolForKey:@"exclBf"];
@@ -39,35 +39,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   contactIDs = self->_contactIDs;
-  v8 = v4;
+  v8 = coderCopy;
   if (contactIDs)
   {
-    [v4 encodeObject:contactIDs forKey:@"cids"];
-    v4 = v8;
+    [coderCopy encodeObject:contactIDs forKey:@"cids"];
+    coderCopy = v8;
   }
 
   flags = self->_flags;
   if (flags)
   {
     [v8 encodeInt64:flags forKey:@"flags"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   maxPeople = self->_maxPeople;
   if (maxPeople)
   {
     [v8 encodeInt64:maxPeople forKey:@"maxP"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   if (self->_excludeBackfills)
   {
     [v8 encodeBool:1 forKey:@"exclBf"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 

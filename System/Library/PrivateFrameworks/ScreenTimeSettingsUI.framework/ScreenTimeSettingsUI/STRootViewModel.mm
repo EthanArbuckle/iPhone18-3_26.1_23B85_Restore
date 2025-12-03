@@ -52,9 +52,9 @@
 - (BOOL)isScreenTimeEnabled
 {
   v2 = [(STRootViewModel *)self me];
-  v3 = [v2 isScreenTimeEnabled];
+  isScreenTimeEnabled = [v2 isScreenTimeEnabled];
 
-  return v3;
+  return isScreenTimeEnabled;
 }
 
 - (BOOL)canStartScreenTime
@@ -73,23 +73,23 @@
   v3 = [(STRootViewModel *)self me];
   if ([v3 isRemoteUser] || (v4 = objc_msgSend(v3, "type"), v4 < 5))
   {
-    v2 = [v3 isScreenTimeEnabled];
+    isScreenTimeEnabled = [v3 isScreenTimeEnabled];
   }
 
   else if (v4 - 5 < 3)
   {
     if ([v3 isScreenTimeEnabled])
     {
-      v2 = [v3 isManaged] ^ 1;
+      isScreenTimeEnabled = [v3 isManaged] ^ 1;
     }
 
     else
     {
-      v2 = 0;
+      isScreenTimeEnabled = 0;
     }
   }
 
-  return v2 & 1;
+  return isScreenTimeEnabled & 1;
 }
 
 - (BOOL)canStopSharingScreenTime
@@ -97,20 +97,20 @@
   v2 = [(STRootViewModel *)self me];
   if ([v2 isManaged])
   {
-    v3 = [v2 type];
-    v4 = 1;
-    if (v3 <= 7 && v3 != 5)
+    type = [v2 type];
+    isRemoteUser = 1;
+    if (type <= 7 && type != 5)
     {
-      v4 = [v2 isRemoteUser];
+      isRemoteUser = [v2 isRemoteUser];
     }
   }
 
   else
   {
-    v4 = 0;
+    isRemoteUser = 0;
   }
 
-  return v4;
+  return isRemoteUser;
 }
 
 - (BOOL)isSharingUsageData
@@ -118,23 +118,23 @@
   v2 = [(STRootViewModel *)self me];
   if (![v2 isScreenTimeEnabled] || (objc_msgSend(v2, "isRemoteUser") & 1) != 0 || (objc_msgSend(v2, "type") - 5) > 2)
   {
-    v3 = 0;
+    isManaged = 0;
   }
 
   else
   {
-    v3 = [v2 isManaged];
+    isManaged = [v2 isManaged];
   }
 
-  return v3;
+  return isManaged;
 }
 
 - (BOOL)isWebUsageEnabled
 {
   v2 = [(STRootViewModel *)self me];
-  v3 = [v2 isWebUsageEnabled];
+  isWebUsageEnabled = [v2 isWebUsageEnabled];
 
-  return v3;
+  return isWebUsageEnabled;
 }
 
 - (BOOL)isRemoteUnmanagedChild
@@ -160,21 +160,21 @@
   {
     if ([v2 isRemoteUser])
     {
-      v3 = [v2 isManaged];
+      isManaged = [v2 isManaged];
     }
 
     else
     {
-      v3 = 0;
+      isManaged = 0;
     }
   }
 
   else
   {
-    v3 = 1;
+    isManaged = 1;
   }
 
-  return v3;
+  return isManaged;
 }
 
 - (BOOL)isLocalOrRemotelyManagedUserWithScreenTimeDisabled
@@ -187,24 +187,24 @@
 
   if (![v2 isRemoteUser])
   {
-    v3 = 1;
+    isManaged = 1;
     goto LABEL_7;
   }
 
   if (![v2 isRemoteUser])
   {
 LABEL_2:
-    v3 = 0;
+    isManaged = 0;
   }
 
   else
   {
-    v3 = [v2 isManaged];
+    isManaged = [v2 isManaged];
   }
 
 LABEL_7:
 
-  return v3;
+  return isManaged;
 }
 
 - (BOOL)isRemotelyManagedUserWithPasscode
@@ -212,15 +212,15 @@ LABEL_7:
   v2 = [(STRootViewModel *)self me];
   if ([v2 isRemoteUser] && (objc_msgSend(v2, "type") - 5) <= 2 && objc_msgSend(v2, "isManaged"))
   {
-    v3 = [v2 hasPasscode];
+    hasPasscode = [v2 hasPasscode];
   }
 
   else
   {
-    v3 = 0;
+    hasPasscode = 0;
   }
 
-  return v3;
+  return hasPasscode;
 }
 
 - (BOOL)canSignIn
@@ -241,10 +241,10 @@ LABEL_7:
 
   else
   {
-    v4 = [v2 type];
-    if (v4 <= 7)
+    type = [v2 type];
+    if (type <= 7)
     {
-      v3 = 0xFEu >> v4;
+      v3 = 0xFEu >> type;
     }
 
     else
@@ -287,16 +287,16 @@ LABEL_7:
 
 - (BOOL)canViewAskForTimeRequests
 {
-  v3 = [(STRootViewModel *)self isScreenTimeEnabled];
-  if (v3)
+  isScreenTimeEnabled = [(STRootViewModel *)self isScreenTimeEnabled];
+  if (isScreenTimeEnabled)
   {
     v4 = [(STRootViewModel *)self me];
-    v5 = [v4 isRemoteUser];
+    isRemoteUser = [v4 isRemoteUser];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isScreenTimeEnabled) = isRemoteUser;
   }
 
-  return v3;
+  return isScreenTimeEnabled;
 }
 
 - (BOOL)forceParentalControls
@@ -328,8 +328,8 @@ LABEL_7:
   v3 = [(STRootViewModel *)self me];
   if (-[STRootViewModel isCloudSyncEnabled](self, "isCloudSyncEnabled") || [v3 isRemoteUser])
   {
-    v4 = [v3 dsid];
-    v5 = v4 != 0;
+    dsid = [v3 dsid];
+    v5 = dsid != 0;
   }
 
   else
@@ -344,13 +344,13 @@ LABEL_7:
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"lastPasscodeUseDate" ascending:0];
-  v4 = [(STRootViewModel *)self devices];
+  devices = [(STRootViewModel *)self devices];
   v9[0] = v3;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v6 = [v4 sortedArrayUsingDescriptors:v5];
-  v7 = [v6 firstObject];
+  v6 = [devices sortedArrayUsingDescriptors:v5];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (BOOL)shouldShowMisconfiguredAdultPrompt
@@ -358,18 +358,18 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
   {
-    v3 = [MEMORY[0x277CF0130] sharedInstance];
-    v4 = [v3 primaryAuthKitAccount];
-    if (v4)
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    primaryAuthKitAccount = [mEMORY[0x277CF0130] primaryAuthKitAccount];
+    if (primaryAuthKitAccount)
     {
-      v5 = [v3 isEligibleToMigrateToChildForAccount:v4];
-      v6 = [v5 BOOLValue];
+      v5 = [mEMORY[0x277CF0130] isEligibleToMigrateToChildForAccount:primaryAuthKitAccount];
+      bOOLValue = [v5 BOOLValue];
 
-      if (v6)
+      if (bOOLValue)
       {
         v7 = [(STRootViewModel *)self me];
-        v8 = [v7 altDSID];
-        if (([v3 hasPrimaryiCloudAccountForAltDSID:v8]& 1) != 0)
+        altDSID = [v7 altDSID];
+        if (([mEMORY[0x277CF0130] hasPrimaryiCloudAccountForAltDSID:altDSID]& 1) != 0)
         {
           if (([v7 shouldConfirmAge]& 1) != 0)
           {
@@ -436,11 +436,11 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v3 = +[STUILog ageMigrationTip];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  mEMORY[0x277CF0130] = +[STUILog ageMigrationTip];
+  if (os_log_type_enabled(mEMORY[0x277CF0130], OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v16) = 0;
-    _os_log_impl(&dword_264BA2000, v3, OS_LOG_TYPE_DEFAULT, "Age migration tip feature is not enabled.", &v16, 2u);
+    _os_log_impl(&dword_264BA2000, mEMORY[0x277CF0130], OS_LOG_TYPE_DEFAULT, "Age migration tip feature is not enabled.", &v16, 2u);
   }
 
   v9 = 0;

@@ -1,22 +1,22 @@
 @interface APContentData
-+ (id)journeyStartRelayValuesFrom:(id)a3;
-- (APContentData)initWithAdData:(id)a3 identifier:(id)a4 contextIdentifier:(id)a5 placementType:(int64_t)a6 maxSize:(id)a7;
-- (APContentData)initWithUnfilledReason:(int64_t)a3 error:(id)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 containerSize:(id)a7 placementType:(int64_t)a8;
-- (id)_createInstallAttributionFromAdData:(id)a3;
-- (id)_createRepresentationsFromAdData:(id)a3 placementType:(int64_t)a4 maxSize:(id)a5 mediaAssets:(id)a6;
-- (id)initRateLimitedForContextId:(id)a3 containerSize:(id)a4 placementType:(int64_t)a5;
-- (void)addRepresentationWithSize:(id)a3 andPlacementType:(int64_t)a4;
++ (id)journeyStartRelayValuesFrom:(id)from;
+- (APContentData)initWithAdData:(id)data identifier:(id)identifier contextIdentifier:(id)contextIdentifier placementType:(int64_t)type maxSize:(id)size;
+- (APContentData)initWithUnfilledReason:(int64_t)reason error:(id)error contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier containerSize:(id)size placementType:(int64_t)type;
+- (id)_createInstallAttributionFromAdData:(id)data;
+- (id)_createRepresentationsFromAdData:(id)data placementType:(int64_t)type maxSize:(id)size mediaAssets:(id)assets;
+- (id)initRateLimitedForContextId:(id)id containerSize:(id)size placementType:(int64_t)type;
+- (void)addRepresentationWithSize:(id)size andPlacementType:(int64_t)type;
 @end
 
 @implementation APContentData
 
-- (APContentData)initWithAdData:(id)a3 identifier:(id)a4 contextIdentifier:(id)a5 placementType:(int64_t)a6 maxSize:(id)a7
+- (APContentData)initWithAdData:(id)data identifier:(id)identifier contextIdentifier:(id)contextIdentifier placementType:(int64_t)type maxSize:(id)size
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  var1 = size.var1;
+  var0 = size.var0;
+  dataCopy = data;
+  identifierCopy = identifier;
+  contextIdentifierCopy = contextIdentifier;
   v16 = [(APContentData *)self init];
   v17 = v16;
   if (!v16)
@@ -26,42 +26,42 @@ LABEL_79:
     goto LABEL_80;
   }
 
-  [(APContentData *)v16 setIdentifier:v14];
-  [(APContentData *)v17 setContextIdentifier:v15];
-  if ([v13 hasUniqueIdentifier])
+  [(APContentData *)v16 setIdentifier:identifierCopy];
+  [(APContentData *)v17 setContextIdentifier:contextIdentifierCopy];
+  if ([dataCopy hasUniqueIdentifier])
   {
-    v18 = [v13 uniqueIdentifier];
-    [(APContentData *)v17 setUniqueIdentifier:v18];
+    uniqueIdentifier = [dataCopy uniqueIdentifier];
+    [(APContentData *)v17 setUniqueIdentifier:uniqueIdentifier];
   }
 
-  v19 = [v13 mediaFiles];
-  v20 = [v19 mediaAssets];
-  v113 = a6;
-  v21 = [(APContentData *)v17 _createRepresentationsFromAdData:v13 placementType:a6 maxSize:v20 mediaAssets:var0, var1];
+  mediaFiles = [dataCopy mediaFiles];
+  mediaAssets = [mediaFiles mediaAssets];
+  typeCopy = type;
+  var1 = [(APContentData *)v17 _createRepresentationsFromAdData:dataCopy placementType:type maxSize:mediaAssets mediaAssets:var0, var1];
 
-  v114 = v15;
-  if ([v13 hasMediaFiles])
+  v114 = contextIdentifierCopy;
+  if ([dataCopy hasMediaFiles])
   {
-    v22 = [v13 mediaFiles];
-    v23 = [v22 mediaAssets];
-    v24 = [v23 count];
+    mediaFiles2 = [dataCopy mediaFiles];
+    mediaAssets2 = [mediaFiles2 mediaAssets];
+    v24 = [mediaAssets2 count];
 
     if (v24)
     {
-      v111 = v14;
+      v111 = identifierCopy;
       v25 = +[APDeviceInfo current];
-      v26 = [v25 signalStrength];
-      v27 = [v26 unsignedIntegerValue];
+      signalStrength = [v25 signalStrength];
+      unsignedIntegerValue = [signalStrength unsignedIntegerValue];
 
       v28 = +[APDeviceInfo current];
-      v29 = [v28 connectionType];
+      connectionType = [v28 connectionType];
 
       v119 = 0u;
       v120 = 0u;
       v117 = 0u;
       v118 = 0u;
-      v30 = v21;
-      v31 = v21;
+      v30 = var1;
+      v31 = var1;
       v32 = [v31 countByEnumeratingWithState:&v117 objects:v129 count:16];
       if (v32)
       {
@@ -77,8 +77,8 @@ LABEL_79:
             }
 
             v36 = *(*(&v117 + 1) + 8 * i);
-            [v36 setSignalStrength:v27];
-            [v36 setConnectionType:v29];
+            [v36 setSignalStrength:unsignedIntegerValue];
+            [v36 setConnectionType:connectionType];
           }
 
           v33 = [v31 countByEnumeratingWithState:&v117 objects:v129 count:16];
@@ -87,58 +87,58 @@ LABEL_79:
         while (v33);
       }
 
-      v14 = v111;
-      v21 = v30;
+      identifierCopy = v111;
+      var1 = v30;
     }
   }
 
-  [(APContentData *)v17 addRepresentations:v21];
-  v37 = [v13 actions];
-  v38 = [v37 firstObject];
+  [(APContentData *)v17 addRepresentations:var1];
+  actions = [dataCopy actions];
+  firstObject = [actions firstObject];
 
-  v115 = v21;
-  if (!v38)
+  v115 = var1;
+  if (!firstObject)
   {
-    v40 = 0;
-    if (![v13 hasInstallAttribution])
+    firstObject2 = 0;
+    if (![dataCopy hasInstallAttribution])
     {
       goto LABEL_32;
     }
 
 LABEL_20:
-    v41 = [v13 installAttribution];
-    v42 = [(APContentData *)v17 _createInstallAttributionFromAdData:v41];
+    installAttribution = [dataCopy installAttribution];
+    v42 = [(APContentData *)v17 _createInstallAttributionFromAdData:installAttribution];
     [(APContentData *)v17 setInstallAttribution:v42];
 
-    v43 = [v13 installAttribution];
-    v44 = [v43 attributionSignature];
-    if (v44)
+    installAttribution2 = [dataCopy installAttribution];
+    attributionSignature = [installAttribution2 attributionSignature];
+    if (attributionSignature)
     {
-      v45 = v44;
-      v46 = v14;
-      v47 = [v13 installAttribution];
-      v48 = [v47 attributionSignature];
-      if ([v48 isEqualToString:&stru_1004810B8] && v40)
+      v45 = attributionSignature;
+      v46 = identifierCopy;
+      installAttribution3 = [dataCopy installAttribution];
+      attributionSignature2 = [installAttribution3 attributionSignature];
+      if ([attributionSignature2 isEqualToString:&stru_1004810B8] && firstObject2)
       {
-        v49 = [v40 action];
+        action = [firstObject2 action];
 
-        v50 = v49 == 8;
-        v14 = v46;
+        v50 = action == 8;
+        identifierCopy = v46;
         goto LABEL_26;
       }
 
-      v14 = v46;
+      identifierCopy = v46;
     }
 
     else
     {
-      if (v40)
+      if (firstObject2)
       {
-        v51 = [v40 action];
+        action2 = [firstObject2 action];
 
-        v50 = v51 == 8;
+        v50 = action2 == 8;
 LABEL_26:
-        v21 = v115;
+        var1 = v115;
         if (!v50)
         {
           goto LABEL_32;
@@ -150,51 +150,51 @@ LABEL_28:
       }
     }
 
-    v21 = v115;
+    var1 = v115;
     goto LABEL_32;
   }
 
-  v39 = [v13 actions];
-  v40 = [v39 firstObject];
+  actions2 = [dataCopy actions];
+  firstObject2 = [actions2 firstObject];
 
-  if ([v13 hasInstallAttribution])
+  if ([dataCopy hasInstallAttribution])
   {
     goto LABEL_20;
   }
 
-  if (v40 && [v40 action] == 8)
+  if (firstObject2 && [firstObject2 action] == 8)
   {
     goto LABEL_28;
   }
 
 LABEL_32:
-  if ([v13 hasUnfilledReasonCode])
+  if ([dataCopy hasUnfilledReasonCode])
   {
-    -[APContentData setServerUnfilledReason:](v17, "setServerUnfilledReason:", +[APLegacyTypeTranslator AdDataUnfilledReasonCodeToUnfilledReasonCode:](APLegacyTypeTranslator, "AdDataUnfilledReasonCodeToUnfilledReasonCode:", [v13 unfilledReasonCode]));
+    -[APContentData setServerUnfilledReason:](v17, "setServerUnfilledReason:", +[APLegacyTypeTranslator AdDataUnfilledReasonCodeToUnfilledReasonCode:](APLegacyTypeTranslator, "AdDataUnfilledReasonCodeToUnfilledReasonCode:", [dataCopy unfilledReasonCode]));
     v52 = APLogForCategory();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
     {
-      v53 = [v13 unfilledReasonCode];
-      v54 = [v13 unfilledReasonCode];
-      if ((v54 - 201) >= 5)
+      unfilledReasonCode = [dataCopy unfilledReasonCode];
+      unfilledReasonCode2 = [dataCopy unfilledReasonCode];
+      if ((unfilledReasonCode2 - 201) >= 5)
       {
-        v55 = [NSString stringWithFormat:@"(unknown: %i)", v54];
+        v55 = [NSString stringWithFormat:@"(unknown: %i)", unfilledReasonCode2];
       }
 
       else
       {
-        v55 = *(&off_10047D268 + (v54 - 201));
+        v55 = *(&off_10047D268 + (unfilledReasonCode2 - 201));
       }
 
-      v90 = [v13 unfilledReasonInfo];
+      unfilledReasonInfo = [dataCopy unfilledReasonInfo];
       *buf = 138544130;
-      v122 = v14;
+      v122 = identifierCopy;
       v123 = 2048;
-      v124 = v53;
+      v124 = unfilledReasonCode;
       v125 = 2114;
       v126 = v55;
       v127 = 2114;
-      v128 = v90;
+      v128 = unfilledReasonInfo;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "Ad %{public}@ returned unfilled with code %ld (%{public}@) and reason %{public}@", buf, 0x2Au);
     }
 
@@ -205,37 +205,37 @@ LABEL_32:
   if (+[APSystemInternal isAppleInternalInstall])
   {
     v56 = +[APMockAdServerSettings settings];
-    v57 = [v56 statusConditionExpression];
+    statusConditionExpression = [v56 statusConditionExpression];
 
-    if (v57)
+    if (statusConditionExpression)
     {
       v58 = +[APMockAdServerSettings settings];
-      v59 = [v58 statusConditionExpression];
-      v60 = [NSString stringWithFormat:@"%@", v59];
-      [v13 setExpressionToEvaluate:v60];
+      statusConditionExpression2 = [v58 statusConditionExpression];
+      v60 = [NSString stringWithFormat:@"%@", statusConditionExpression2];
+      [dataCopy setExpressionToEvaluate:v60];
 
       v61 = APLogForCategory();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
       {
-        v62 = [v13 expressionToEvaluate];
+        expressionToEvaluate = [dataCopy expressionToEvaluate];
         *buf = 138412290;
-        v122 = v62;
+        v122 = expressionToEvaluate;
         _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_INFO, "Forcing status condition expression from defaults write: %@", buf, 0xCu);
       }
     }
   }
 
-  if ([v13 hasExpressionToEvaluate])
+  if ([dataCopy hasExpressionToEvaluate])
   {
     v63 = +[PCStatusConditionsService sharedInstance];
-    v64 = [v13 expressionToEvaluate];
+    expressionToEvaluate2 = [dataCopy expressionToEvaluate];
     v116 = 0;
-    v65 = [v63 evaluate:v64 error:&v116];
+    v65 = [v63 evaluate:expressionToEvaluate2 error:&v116];
     v66 = v116;
 
     if (v66)
     {
-      v67 = v14;
+      v67 = identifierCopy;
       v68 = APLogForCategory();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
       {
@@ -246,12 +246,12 @@ LABEL_32:
         _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_INFO, "Error in status condition for content %{public}@: %{public}@", buf, 0x16u);
       }
 
-      v69 = [v66 localizedDescription];
-      v70 = [APLegacyInterfaceError validationErrorWithCode:4507 andReason:v69];
+      localizedDescription = [v66 localizedDescription];
+      v70 = [APLegacyInterfaceError validationErrorWithCode:4507 andReason:localizedDescription];
       [(APContentData *)v17 setError:v70];
 
       [(APContentData *)v17 setServerUnfilledReason:1021];
-      v14 = v67;
+      identifierCopy = v67;
     }
 
     if (v65)
@@ -259,11 +259,11 @@ LABEL_32:
       v71 = APLogForCategory();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
       {
-        v72 = [v13 expressionToEvaluate];
+        expressionToEvaluate3 = [dataCopy expressionToEvaluate];
         *buf = 138543618;
-        v122 = v14;
+        v122 = identifierCopy;
         v123 = 2112;
-        v124 = v72;
+        v124 = expressionToEvaluate3;
         _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "Discarding content %{public}@ for status condition %@", buf, 0x16u);
       }
 
@@ -274,18 +274,18 @@ LABEL_32:
     }
   }
 
-  if ([v13 hasStartDate])
+  if ([dataCopy hasStartDate])
   {
-    [v13 startDate];
+    [dataCopy startDate];
     v74 = [NSDate dateWithTimeIntervalSince1970:?];
     [(APContentData *)v17 setStartDate:v74];
   }
 
-  if (![v13 hasExpirationDate])
+  if (![dataCopy hasExpirationDate])
   {
-    v85 = [v13 adDataResponseIdentifier];
-    v86 = [(APContentData *)v17 identifier];
-    v87 = [NSString stringWithFormat:@"Ad %@ with adOpID %@ has no expiration date set.", v85, v86];
+    adDataResponseIdentifier = [dataCopy adDataResponseIdentifier];
+    identifier = [(APContentData *)v17 identifier];
+    v87 = [NSString stringWithFormat:@"Ad %@ with adOpID %@ has no expiration date set.", adDataResponseIdentifier, identifier];
     v88 = [APLegacyInterfaceError validationErrorWithCode:4502 andReason:v87];
     [(APContentData *)v17 setError:v88];
 
@@ -294,9 +294,9 @@ LABEL_32:
     goto LABEL_61;
   }
 
-  [v13 expirationDate];
+  [dataCopy expirationDate];
   v75 = [NSDate dateWithTimeIntervalSince1970:?];
-  if (+[APSystemInternal isAppleInternalInstall]&& [APMockAdServerSettings isAdResponseMockedForPlacementType:v113])
+  if (+[APSystemInternal isAppleInternalInstall]&& [APMockAdServerSettings isAdResponseMockedForPlacementType:typeCopy])
   {
     v76 = +[NSDate date];
     v77 = [v76 dateByAddingTimeInterval:14400.0];
@@ -313,180 +313,180 @@ LABEL_32:
     v92 = +[NSMutableDictionary dictionary];
     [(APContentData *)v17 setMetadata:v92];
 
-    v93 = [v13 nativeMetadatas];
+    nativeMetadatas = [dataCopy nativeMetadatas];
 
-    if (v93)
+    if (nativeMetadatas)
     {
-      v94 = [v13 nativeMetadatas];
-      v95 = [APLegacyTypeTranslator parameterArrayToDictionaryForMetadata:v94];
+      nativeMetadatas2 = [dataCopy nativeMetadatas];
+      v95 = [APLegacyTypeTranslator parameterArrayToDictionaryForMetadata:nativeMetadatas2];
 
-      v96 = [(APContentData *)v17 metadata];
-      [v96 setValue:v95 forKey:@"nativeMetadata"];
+      metadata = [(APContentData *)v17 metadata];
+      [metadata setValue:v95 forKey:@"nativeMetadata"];
     }
 
-    if ([v13 hasTransparencyDetails])
+    if ([dataCopy hasTransparencyDetails])
     {
-      v97 = [v13 transparencyDetails];
-      v98 = [v97 transparencyRendererURL];
-      v99 = [NSURL URLWithString:v98];
+      transparencyDetails = [dataCopy transparencyDetails];
+      transparencyRendererURL = [transparencyDetails transparencyRendererURL];
+      v99 = [NSURL URLWithString:transparencyRendererURL];
       [(APContentData *)v17 setDisclosureURL:v99];
 
-      v100 = [v13 transparencyDetails];
-      v101 = [v100 transparencyRendererPayload];
-      [(APContentData *)v17 setDisclosureRendererPayload:v101];
+      transparencyDetails2 = [dataCopy transparencyDetails];
+      transparencyRendererPayload = [transparencyDetails2 transparencyRendererPayload];
+      [(APContentData *)v17 setDisclosureRendererPayload:transparencyRendererPayload];
 
-      v102 = [v13 transparencyDetails];
-      v103 = [v102 targetingExpressionId];
-      [(APContentData *)v17 setTargetingExpressionId:v103];
+      transparencyDetails3 = [dataCopy transparencyDetails];
+      targetingExpressionId = [transparencyDetails3 targetingExpressionId];
+      [(APContentData *)v17 setTargetingExpressionId:targetingExpressionId];
     }
 
-    if ([v13 hasMinimumIntervalBetweenPresentations])
+    if ([dataCopy hasMinimumIntervalBetweenPresentations])
     {
-      [v13 minimumIntervalBetweenPresentations];
+      [dataCopy minimumIntervalBetweenPresentations];
       [(APContentData *)v17 setMinimumTimeBetweenPresentation:v104];
     }
 
-    if ([v13 hasHumanReadableName])
+    if ([dataCopy hasHumanReadableName])
     {
-      v105 = [v13 humanReadableName];
-      [(APContentData *)v17 setBrandName:v105];
+      humanReadableName = [dataCopy humanReadableName];
+      [(APContentData *)v17 setBrandName:humanReadableName];
 
-      v106 = [v13 humanReadableName];
-      [(APContentData *)v17 setHumanReadableName:v106];
+      humanReadableName2 = [dataCopy humanReadableName];
+      [(APContentData *)v17 setHumanReadableName:humanReadableName2];
     }
 
-    if ([v13 hasAccessibilityDescription])
+    if ([dataCopy hasAccessibilityDescription])
     {
-      v107 = [v13 accessibilityDescription];
-      [(APContentData *)v17 setCampaignText:v107];
+      accessibilityDescription = [dataCopy accessibilityDescription];
+      [(APContentData *)v17 setCampaignText:accessibilityDescription];
     }
 
-    if ([v13 hasBannerImpressionThreshold])
+    if ([dataCopy hasBannerImpressionThreshold])
     {
-      [v13 bannerImpressionThreshold];
+      [dataCopy bannerImpressionThreshold];
       [(APContentData *)v17 setImpressionThreshold:v108];
     }
 
-    v15 = v114;
+    contextIdentifierCopy = v114;
     goto LABEL_79;
   }
 
-  [v13 adDataResponseIdentifier];
-  v80 = v112 = v14;
-  v81 = [(APContentData *)v17 identifier];
-  v82 = [NSString stringWithFormat:@"Ad %@ with adOpID %@ has an invalid expiration date.", v80, v81];
+  [dataCopy adDataResponseIdentifier];
+  v80 = v112 = identifierCopy;
+  identifier2 = [(APContentData *)v17 identifier];
+  v82 = [NSString stringWithFormat:@"Ad %@ with adOpID %@ has an invalid expiration date.", v80, identifier2];
   v83 = [APLegacyInterfaceError validationErrorWithCode:4502 andReason:v82];
   [(APContentData *)v17 setError:v83];
 
-  v14 = v112;
+  identifierCopy = v112;
   [(APContentData *)v17 setServerUnfilledReason:1021];
   v84 = v17;
 
 LABEL_61:
-  v21 = v115;
+  var1 = v115;
 LABEL_65:
 
-  v15 = v114;
+  contextIdentifierCopy = v114;
 LABEL_80:
 
   return v17;
 }
 
-- (id)initRateLimitedForContextId:(id)a3 containerSize:(id)a4 placementType:(int64_t)a5
+- (id)initRateLimitedForContextId:(id)id containerSize:(id)size placementType:(int64_t)type
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
+  var1 = size.var1;
+  var0 = size.var0;
+  idCopy = id;
   v10 = [(APContentData *)self init];
   v11 = v10;
   if (v10)
   {
-    [(APContentData *)v10 setContextIdentifier:v9];
+    [(APContentData *)v10 setContextIdentifier:idCopy];
     [(APContentData *)v11 setServerUnfilledReason:1000];
-    [(APContentData *)v11 addRepresentationWithSize:a5 andPlacementType:var0, var1];
+    [(APContentData *)v11 addRepresentationWithSize:type andPlacementType:var0, var1];
   }
 
   return v11;
 }
 
-- (APContentData)initWithUnfilledReason:(int64_t)a3 error:(id)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 containerSize:(id)a7 placementType:(int64_t)a8
+- (APContentData)initWithUnfilledReason:(int64_t)reason error:(id)error contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier containerSize:(id)size placementType:(int64_t)type
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  var1 = size.var1;
+  var0 = size.var0;
+  errorCopy = error;
+  identifierCopy = identifier;
+  contextIdentifierCopy = contextIdentifier;
   v18 = [(APContentData *)self init];
   v19 = v18;
   if (v18)
   {
-    [(APContentData *)v18 setIdentifier:v16];
-    [(APContentData *)v19 setContextIdentifier:v17];
-    [(APContentData *)v19 setError:v15];
-    [(APContentData *)v19 setServerUnfilledReason:a3];
-    [(APContentData *)v19 addRepresentationWithSize:a8 andPlacementType:var0, var1];
+    [(APContentData *)v18 setIdentifier:identifierCopy];
+    [(APContentData *)v19 setContextIdentifier:contextIdentifierCopy];
+    [(APContentData *)v19 setError:errorCopy];
+    [(APContentData *)v19 setServerUnfilledReason:reason];
+    [(APContentData *)v19 addRepresentationWithSize:type andPlacementType:var0, var1];
   }
 
   return v19;
 }
 
-- (void)addRepresentationWithSize:(id)a3 andPlacementType:(int64_t)a4
+- (void)addRepresentationWithSize:(id)size andPlacementType:(int64_t)type
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v8 = objc_alloc_init(APRepresentationData);
-  [v8 setPlacementType:a4];
+  [v8 setPlacementType:type];
   [APLegacyTypeTranslator errorAdSizeForContainerSize:var0, var1];
   [v8 setSize:?];
   [(APContentData *)self addRepresentation:v8];
 }
 
-- (id)_createInstallAttributionFromAdData:(id)a3
+- (id)_createInstallAttributionFromAdData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(APInstallAttribution);
-  [v4 setAdamId:{objc_msgSend(v3, "adamId")}];
-  v5 = [v3 adNetworkId];
-  [v4 setAdNetworkId:v5];
+  [v4 setAdamId:{objc_msgSend(dataCopy, "adamId")}];
+  adNetworkId = [dataCopy adNetworkId];
+  [v4 setAdNetworkId:adNetworkId];
 
-  v6 = [v3 attributionSignature];
-  [v4 setAttributionSignature:v6];
+  attributionSignature = [dataCopy attributionSignature];
+  [v4 setAttributionSignature:attributionSignature];
 
-  [v4 setCampaignId:{objc_msgSend(v3, "campaignId")}];
+  [v4 setCampaignId:{objc_msgSend(dataCopy, "campaignId")}];
   v7 = [NSUUID alloc];
-  v8 = [v3 uuid];
-  v9 = [v7 initWithUUIDString:v8];
+  uuid = [dataCopy uuid];
+  v9 = [v7 initWithUUIDString:uuid];
   [v4 setContextIdentifier:v9];
 
-  [v4 setSourceAppAdamId:{objc_msgSend(v3, "sourceAppAdamId")}];
-  [v4 setTimestamp:{objc_msgSend(v3, "timestamp")}];
-  v10 = [v3 version];
+  [v4 setSourceAppAdamId:{objc_msgSend(dataCopy, "sourceAppAdamId")}];
+  [v4 setTimestamp:{objc_msgSend(dataCopy, "timestamp")}];
+  version = [dataCopy version];
 
-  [v4 setVersion:v10];
+  [v4 setVersion:version];
 
   return v4;
 }
 
-- (id)_createRepresentationsFromAdData:(id)a3 placementType:(int64_t)a4 maxSize:(id)a5 mediaAssets:(id)a6
+- (id)_createRepresentationsFromAdData:(id)data placementType:(int64_t)type maxSize:(id)size mediaAssets:(id)assets
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v10 = a3;
-  v11 = a6;
+  var1 = size.var1;
+  var0 = size.var0;
+  dataCopy = data;
+  assetsCopy = assets;
   v12 = +[NSMutableArray array];
   v40 = v12;
-  if ([v10 adLayoutDatasCount])
+  if ([dataCopy adLayoutDatasCount])
   {
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v13 = [v10 adLayoutDatas];
-    v14 = [v13 countByEnumeratingWithState:&v49 objects:v56 count:16];
+    adLayoutDatas = [dataCopy adLayoutDatas];
+    v14 = [adLayoutDatas countByEnumeratingWithState:&v49 objects:v56 count:16];
     if (v14)
     {
       v15 = v14;
-      v39 = v11;
+      v39 = assetsCopy;
       v16 = 0;
       v17 = *v50;
       do
@@ -496,13 +496,13 @@ LABEL_80:
           v19 = v16;
           if (*v50 != v17)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(adLayoutDatas);
           }
 
           v20 = *(*(&v49 + 1) + 8 * i);
           v21 = [PCNativeRepresentation alloc];
           v48 = v16;
-          v22 = [v21 initWithAdData:v10 placementType:a4 maxSize:v20 nativeLayout:&v48 error:{var0, var1}];
+          v22 = [v21 initWithAdData:dataCopy placementType:type maxSize:v20 nativeLayout:&v48 error:{var0, var1}];
           v16 = v48;
 
           if (v16)
@@ -520,9 +520,9 @@ LABEL_80:
             v23 = APLogForCategory();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
-              v24 = [(APContentData *)self identifier];
+              identifier = [(APContentData *)self identifier];
               *buf = 138543362;
-              v55 = v24;
+              v55 = identifier;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Unknown error creating representation for content %{public}@", buf, 0xCu);
 
               v12 = v40;
@@ -530,12 +530,12 @@ LABEL_80:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v49 objects:v56 count:16];
+        v15 = [adLayoutDatas countByEnumeratingWithState:&v49 objects:v56 count:16];
       }
 
       while (v15);
 LABEL_32:
-      v11 = v39;
+      assetsCopy = v39;
       goto LABEL_41;
     }
 
@@ -544,18 +544,18 @@ LABEL_33:
     goto LABEL_41;
   }
 
-  if (v11)
+  if (assetsCopy)
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v13 = v11;
-    v25 = [v13 countByEnumeratingWithState:&v44 objects:v53 count:16];
+    adLayoutDatas = assetsCopy;
+    v25 = [adLayoutDatas countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v25)
     {
       v26 = v25;
-      v39 = v11;
+      v39 = assetsCopy;
       v16 = 0;
       v27 = *v45;
       do
@@ -565,13 +565,13 @@ LABEL_33:
           v29 = v16;
           if (*v45 != v27)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(adLayoutDatas);
           }
 
           v30 = *(*(&v44 + 1) + 8 * j);
           v31 = [APRepresentationData alloc];
           v43 = v16;
-          v32 = [v31 initWithAdData:v10 placementType:a4 maxSize:v30 mediaAsset:&v43 error:{var0, var1}];
+          v32 = [v31 initWithAdData:dataCopy placementType:type maxSize:v30 mediaAsset:&v43 error:{var0, var1}];
           v16 = v43;
 
           if (v16)
@@ -589,9 +589,9 @@ LABEL_33:
             v33 = APLogForCategory();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
-              v34 = [(APContentData *)self identifier];
+              identifier2 = [(APContentData *)self identifier];
               *buf = 138543362;
-              v55 = v34;
+              v55 = identifier2;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Unknown error creating representation for content %{public}@", buf, 0xCu);
 
               v12 = v40;
@@ -599,7 +599,7 @@ LABEL_33:
           }
         }
 
-        v26 = [v13 countByEnumeratingWithState:&v44 objects:v53 count:16];
+        v26 = [adLayoutDatas countByEnumeratingWithState:&v44 objects:v53 count:16];
       }
 
       while (v26);
@@ -610,16 +610,16 @@ LABEL_33:
   }
 
   v42 = 0;
-  v13 = [[APRepresentationData alloc] initWithAdData:v10 placementType:a4 maxSize:0 mediaAsset:&v42 error:{var0, var1}];
+  adLayoutDatas = [[APRepresentationData alloc] initWithAdData:dataCopy placementType:type maxSize:0 mediaAsset:&v42 error:{var0, var1}];
   v16 = v42;
   if (v16)
   {
     [(APContentData *)self setError:v16];
   }
 
-  else if (v13)
+  else if (adLayoutDatas)
   {
-    [v12 addObject:v13];
+    [v12 addObject:adLayoutDatas];
   }
 
   else
@@ -627,9 +627,9 @@ LABEL_33:
     v35 = APLogForCategory();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v36 = [(APContentData *)self identifier];
+      identifier3 = [(APContentData *)self identifier];
       *buf = 138543362;
-      v55 = v36;
+      v55 = identifier3;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Unknown error creating representation for content %{public}@", buf, 0xCu);
     }
   }
@@ -641,10 +641,10 @@ LABEL_41:
   return v37;
 }
 
-+ (id)journeyStartRelayValuesFrom:(id)a3
++ (id)journeyStartRelayValuesFrom:(id)from
 {
-  v3 = a3;
-  sub_1003204D0(v3);
+  fromCopy = from;
+  sub_1003204D0(fromCopy);
 
   sub_1001E27A8(&unk_1004D5850);
   v4.super.isa = sub_100398E48().super.isa;

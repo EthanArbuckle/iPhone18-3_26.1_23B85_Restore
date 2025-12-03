@@ -1,20 +1,20 @@
 @interface _TUITransactionAutoProxy
-- (_TUITransactionAutoProxy)initWithTransaction:(id)a3;
+- (_TUITransactionAutoProxy)initWithTransaction:(id)transaction;
 - (void)dealloc;
 @end
 
 @implementation _TUITransactionAutoProxy
 
-- (_TUITransactionAutoProxy)initWithTransaction:(id)a3
+- (_TUITransactionAutoProxy)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v9.receiver = self;
   v9.super_class = _TUITransactionAutoProxy;
   v6 = [(_TUITransactionAutoProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tx, a3);
+    objc_storeStrong(&v6->_tx, transaction);
   }
 
   return v7;

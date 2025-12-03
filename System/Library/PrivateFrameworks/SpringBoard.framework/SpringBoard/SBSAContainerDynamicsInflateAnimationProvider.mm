@@ -1,17 +1,17 @@
 @interface SBSAContainerDynamicsInflateAnimationProvider
-- (id)_identitiesWithMilestoneReached:(id)a3;
-- (id)preferencesFromContext:(id)a3;
-- (void)_addMilestonesIfNecessaryForUntrackedBoundsExpansionsForElementIdentities:(id)a3 preferencesMutator:(id)a4 context:(id)a5;
+- (id)_identitiesWithMilestoneReached:(id)reached;
+- (id)preferencesFromContext:(id)context;
+- (void)_addMilestonesIfNecessaryForUntrackedBoundsExpansionsForElementIdentities:(id)identities preferencesMutator:(id)mutator context:(id)context;
 @end
 
 @implementation SBSAContainerDynamicsInflateAnimationProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v171 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = contextCopy;
   if (v5)
   {
     v7 = v6;
@@ -41,9 +41,9 @@
   v161 = __Block_byref_object_copy__25;
   v162 = __Block_byref_object_dispose__25;
   v113 = v9;
-  v10 = [v9 preferences];
+  preferences = [v9 preferences];
   v11 = objc_opt_class();
-  v12 = v10;
+  v12 = preferences;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -65,11 +65,11 @@
   v14 = v13;
 
   v163 = v14;
-  v15 = [v159[5] containerViewDescriptions];
-  v115 = [v15 mutableCopy];
+  containerViewDescriptions = [v159[5] containerViewDescriptions];
+  v115 = [containerViewDescriptions mutableCopy];
 
-  v16 = [v159[5] elementDescriptions];
-  v110 = [v16 mutableCopy];
+  elementDescriptions = [v159[5] elementDescriptions];
+  v110 = [elementDescriptions mutableCopy];
 
   v119 = [MEMORY[0x277CBEB58] set];
   v114 = [MEMORY[0x277CBEB58] set];
@@ -105,16 +105,16 @@
   pendingMilestonePropertyIdentitiesToElementIdentities = self->_pendingMilestonePropertyIdentitiesToElementIdentities;
   if (pendingMilestonePropertyIdentitiesToElementIdentities)
   {
-    v24 = pendingMilestonePropertyIdentitiesToElementIdentities;
+    strongToStrongObjectsMapTable = pendingMilestonePropertyIdentitiesToElementIdentities;
   }
 
   else
   {
-    v24 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   }
 
   v25 = self->_pendingMilestonePropertyIdentitiesToElementIdentities;
-  self->_pendingMilestonePropertyIdentitiesToElementIdentities = v24;
+  self->_pendingMilestonePropertyIdentitiesToElementIdentities = strongToStrongObjectsMapTable;
 
   [(SBSAContainerDynamicsInflateAnimationProvider *)self _identitiesWithMilestoneReached:v113];
   v156 = 0u;
@@ -141,10 +141,10 @@
         v151 = 0u;
         v152 = 0u;
         v153 = 0u;
-        v28 = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities keyEnumerator];
-        v29 = [v28 allObjects];
+        keyEnumerator = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities keyEnumerator];
+        allObjects = [keyEnumerator allObjects];
 
-        v30 = [v29 countByEnumeratingWithState:&v150 objects:v169 count:16];
+        v30 = [allObjects countByEnumeratingWithState:&v150 objects:v169 count:16];
         if (v30)
         {
           v31 = *v151;
@@ -154,7 +154,7 @@
             {
               if (*v151 != v31)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(allObjects);
               }
 
               v33 = *(*(&v150 + 1) + 8 * i);
@@ -167,7 +167,7 @@
               }
             }
 
-            v30 = [v29 countByEnumeratingWithState:&v150 objects:v169 count:16];
+            v30 = [allObjects countByEnumeratingWithState:&v150 objects:v169 count:16];
           }
 
           while (v30);
@@ -189,14 +189,14 @@
   {
     v37 = [v115 objectAtIndexedSubscript:j];
     v38 = [SBSAElementIdentification alloc];
-    v39 = [v37 associatedSystemApertureElementIdentity];
-    v40 = [(SBSAElementIdentification *)v38 initWithElementIdentification:v39];
+    associatedSystemApertureElementIdentity = [v37 associatedSystemApertureElementIdentity];
+    v40 = [(SBSAElementIdentification *)v38 initWithElementIdentification:associatedSystemApertureElementIdentity];
 
-    v41 = [v113 elementContexts];
-    v42 = SBSAElementContextAssociatedWithContainerViewDescription(v37, v41, 0);
+    elementContexts = [v113 elementContexts];
+    v42 = SBSAElementContextAssociatedWithContainerViewDescription(v37, elementContexts, 0);
 
-    v43 = [v42 activeDynamicAnimation];
-    if (v43 == 2)
+    activeDynamicAnimation = [v42 activeDynamicAnimation];
+    if (activeDynamicAnimation == 2)
     {
       [v119 addObject:v40];
       if (j)
@@ -224,17 +224,17 @@
       }
     }
 
-    v46 = [v113 preferences];
-    v47 = [v46 lastChangingElementLayoutTransition];
+    preferences2 = [v113 preferences];
+    lastChangingElementLayoutTransition = [preferences2 lastChangingElementLayoutTransition];
 
-    v48 = [v47 targetElementContexts];
-    v49 = [v48 firstObject];
+    targetElementContexts = [lastChangingElementLayoutTransition targetElementContexts];
+    firstObject = [targetElementContexts firstObject];
 
-    if (![v47 isTransitionToSingleCompact] || !SAElementIdentityEqualToIdentity())
+    if (![lastChangingElementLayoutTransition isTransitionToSingleCompact] || !SAElementIdentityEqualToIdentity())
     {
 
 LABEL_52:
-      if (v43 == 2)
+      if (activeDynamicAnimation == 2)
       {
         v50 = v114;
       }
@@ -275,10 +275,10 @@ LABEL_56:
   v149 = 0u;
   v146 = 0u;
   v147 = 0u;
-  v52 = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities keyEnumerator];
-  v53 = [v52 allObjects];
+  keyEnumerator2 = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
 
-  v54 = [v53 countByEnumeratingWithState:&v146 objects:v168 count:16];
+  v54 = [allObjects2 countByEnumeratingWithState:&v146 objects:v168 count:16];
   if (v54)
   {
     v55 = *v147;
@@ -288,7 +288,7 @@ LABEL_56:
       {
         if (*v147 != v55)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(allObjects2);
         }
 
         v57 = *(*(&v146 + 1) + 8 * k);
@@ -301,7 +301,7 @@ LABEL_56:
         }
       }
 
-      v54 = [v53 countByEnumeratingWithState:&v146 objects:v168 count:16];
+      v54 = [allObjects2 countByEnumeratingWithState:&v146 objects:v168 count:16];
     }
 
     while (v54);
@@ -324,11 +324,11 @@ LABEL_56:
   {
     v64 = [v115 objectAtIndexedSubscript:m];
     v65 = [SBSAElementIdentification alloc];
-    v66 = [v64 associatedSystemApertureElementIdentity];
-    v67 = [(SBSAElementIdentification *)v65 initWithElementIdentification:v66];
+    associatedSystemApertureElementIdentity2 = [v64 associatedSystemApertureElementIdentity];
+    v67 = [(SBSAElementIdentification *)v65 initWithElementIdentification:associatedSystemApertureElementIdentity2];
 
-    v68 = [v121 elementContexts];
-    v69 = SBSAElementContextAssociatedWithContainerViewDescription(v64, v68, 0);
+    elementContexts2 = [v121 elementContexts];
+    v69 = SBSAElementContextAssociatedWithContainerViewDescription(v64, elementContexts2, 0);
 
     v70 = [v114 containsObject:v67];
     if ([v112 containsObject:v67])
@@ -343,8 +343,8 @@ LABEL_56:
 
     if ((v70 | v71))
     {
-      v72 = [v121 elementContexts];
-      v73 = SBSAElementContextAssociatedWithContainerViewDescription(v64, v72, 0);
+      elementContexts3 = [v121 elementContexts];
+      v73 = SBSAElementContextAssociatedWithContainerViewDescription(v64, elementContexts3, 0);
 
       *buf = 0x7FFFFFFFFFFFFFFFLL;
       v74 = SBSAElementDescriptionAssociatedWithElementIdentity(v73, v110, buf);
@@ -400,9 +400,9 @@ LABEL_56:
       v81 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
       {
-        v82 = [v121 queryIteration];
+        queryIteration = [v121 queryIteration];
         *buf = 134349314;
-        *&buf[4] = v82;
+        *&buf[4] = queryIteration;
         v166 = 2112;
         v167 = v67;
         _os_log_debug_impl(&dword_21ED4E000, v81, OS_LOG_TYPE_DEBUG, "[%{public}lu] [Inflate] Applying deflate to element:'%@'", buf, 0x16u);
@@ -445,9 +445,9 @@ LABEL_56:
         v91 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
         if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
         {
-          v92 = [v121 queryIteration];
+          queryIteration2 = [v121 queryIteration];
           *buf = 134349314;
-          *&buf[4] = v92;
+          *&buf[4] = queryIteration2;
           v166 = 2112;
           v167 = v90;
           _os_log_debug_impl(&dword_21ED4E000, v91, OS_LOG_TYPE_DEBUG, "[%{public}lu] [Inflate] Applying inflate to element:'%@'", buf, 0x16u);
@@ -1055,24 +1055,24 @@ void __72__SBSAContainerDynamicsInflateAnimationProvider_preferencesFromContext_
   [v7 setElementDescriptions:*(a1 + 48)];
 }
 
-- (id)_identitiesWithMilestoneReached:(id)a3
+- (id)_identitiesWithMilestoneReached:(id)reached
 {
   v40 = *MEMORY[0x277D85DE8];
-  v25 = a3;
+  reachedCopy = reached;
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [objc_opt_class() settings];
-  [v5 expansionToCompactBeginInflationProgress];
+  settings = [objc_opt_class() settings];
+  [settings expansionToCompactBeginInflationProgress];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = self;
-  v6 = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities keyEnumerator];
-  v7 = [v6 allObjects];
+  selfCopy = self;
+  keyEnumerator = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  obj = v7;
-  v24 = [v7 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  obj = allObjects;
+  v24 = [allObjects countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v24)
   {
     v22 = *v31;
@@ -1086,15 +1086,15 @@ void __72__SBSAContainerDynamicsInflateAnimationProvider_preferencesFromContext_
         }
 
         v9 = *(*(&v30 + 1) + 8 * i);
-        v10 = [(NSMapTable *)v23->_pendingMilestonePropertyIdentitiesToElementIdentities objectForKey:v9];
+        v10 = [(NSMapTable *)selfCopy->_pendingMilestonePropertyIdentitiesToElementIdentities objectForKey:v9];
         if (v10)
         {
           v28 = 0u;
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v11 = [v25 animatedTransitionResults];
-          v12 = [v11 countByEnumeratingWithState:&v26 objects:v38 count:16];
+          animatedTransitionResults = [reachedCopy animatedTransitionResults];
+          v12 = [animatedTransitionResults countByEnumeratingWithState:&v26 objects:v38 count:16];
           if (!v12)
           {
             goto LABEL_21;
@@ -1108,11 +1108,11 @@ void __72__SBSAContainerDynamicsInflateAnimationProvider_preferencesFromContext_
             {
               if (*v27 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(animatedTransitionResults);
               }
 
               v16 = *(*(&v26 + 1) + 8 * j);
-              v17 = [v16 associatedInterfaceElementPropertyIdentity];
+              associatedInterfaceElementPropertyIdentity = [v16 associatedInterfaceElementPropertyIdentity];
               if (BSEqualObjects())
               {
                 [v16 targetedMilestone];
@@ -1122,29 +1122,29 @@ void __72__SBSAContainerDynamicsInflateAnimationProvider_preferencesFromContext_
 
                 else
                 {
-                  v18 = [v16 finished];
+                  finished = [v16 finished];
 
-                  if ((v18 & 1) == 0)
+                  if ((finished & 1) == 0)
                   {
                     continue;
                   }
                 }
 
                 [v4 addObject:v10];
-                v17 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
-                if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+                associatedInterfaceElementPropertyIdentity = SBLogSystemAperturePreferencesStackDynamicsAnimations();
+                if (os_log_type_enabled(associatedInterfaceElementPropertyIdentity, OS_LOG_TYPE_DEBUG))
                 {
-                  v19 = [v25 queryIteration];
+                  queryIteration = [reachedCopy queryIteration];
                   *buf = 134349314;
-                  v35 = v19;
+                  v35 = queryIteration;
                   v36 = 2112;
                   v37 = v9;
-                  _os_log_debug_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEBUG, "[%{public}lu] [Inflate] Reached milestone for expansion'%@'", buf, 0x16u);
+                  _os_log_debug_impl(&dword_21ED4E000, associatedInterfaceElementPropertyIdentity, OS_LOG_TYPE_DEBUG, "[%{public}lu] [Inflate] Reached milestone for expansion'%@'", buf, 0x16u);
                 }
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v26 objects:v38 count:16];
+            v13 = [animatedTransitionResults countByEnumeratingWithState:&v26 objects:v38 count:16];
             if (!v13)
             {
 LABEL_21:
@@ -1164,19 +1164,19 @@ LABEL_21:
   return v4;
 }
 
-- (void)_addMilestonesIfNecessaryForUntrackedBoundsExpansionsForElementIdentities:(id)a3 preferencesMutator:(id)a4 context:(id)a5
+- (void)_addMilestonesIfNecessaryForUntrackedBoundsExpansionsForElementIdentities:(id)identities preferencesMutator:(id)mutator context:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v36 = a4;
-  v37 = a5;
+  identitiesCopy = identities;
+  mutatorCopy = mutator;
+  contextCopy = context;
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities objectEnumerator];
-  v11 = [v10 allObjects];
-  v12 = [v9 setWithArray:v11];
+  objectEnumerator = [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v12 = [v9 setWithArray:allObjects];
 
-  v34 = v8;
-  v13 = [v8 mutableCopy];
+  v34 = identitiesCopy;
+  v13 = [identitiesCopy mutableCopy];
   v33 = v12;
   [v13 minusSet:v12];
   v41 = 0u;
@@ -1200,35 +1200,35 @@ LABEL_21:
         }
 
         v18 = *(*(&v39 + 1) + 8 * v17);
-        v19 = [v37 preferences];
-        v20 = [v19 containerViewDescriptions];
+        preferences = [contextCopy preferences];
+        containerViewDescriptions = [preferences containerViewDescriptions];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __150__SBSAContainerDynamicsInflateAnimationProvider__addMilestonesIfNecessaryForUntrackedBoundsExpansionsForElementIdentities_preferencesMutator_context___block_invoke;
         v38[3] = &unk_2783B0210;
         v38[4] = v18;
-        v21 = [v20 bs_firstObjectPassingTest:v38];
+        v21 = [containerViewDescriptions bs_firstObjectPassingTest:v38];
 
         v22 = [SBSAInterfaceElementPropertyIdentity alloc];
-        v23 = [v21 interfaceElementIdentifier];
-        v24 = [(SBSAInterfaceElementPropertyIdentity *)v22 initWithAssociatedInterfaceElementIdentifier:v23 andProperty:@"bounds"];
+        interfaceElementIdentifier = [v21 interfaceElementIdentifier];
+        v24 = [(SBSAInterfaceElementPropertyIdentity *)v22 initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier andProperty:@"bounds"];
 
-        v25 = [objc_opt_class() settings];
-        [v25 expansionToCompactBeginInflationProgress];
+        settings = [objc_opt_class() settings];
+        [settings expansionToCompactBeginInflationProgress];
         v27 = v26;
 
         v28 = MEMORY[0x277CBEB98];
         v29 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
         v30 = [v28 setWithObject:v29];
-        [v36 addMilestones:v30 forPropertyIdentity:v24];
+        [mutatorCopy addMilestones:v30 forPropertyIdentity:v24];
 
         [(NSMapTable *)self->_pendingMilestonePropertyIdentitiesToElementIdentities setObject:v18 forKey:v24];
         v31 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
-          v32 = [v37 queryIteration];
+          queryIteration = [contextCopy queryIteration];
           *buf = 134349314;
-          v44 = v32;
+          v44 = queryIteration;
           v45 = 2112;
           v46 = v24;
           _os_log_debug_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_DEBUG, "[%{public}lu] [Inflate] Adding milestone for expansion'%@'", buf, 0x16u);

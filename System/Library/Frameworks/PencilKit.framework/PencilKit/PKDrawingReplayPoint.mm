@@ -1,11 +1,11 @@
 @interface PKDrawingReplayPoint
-- ($FF38E1E694A259ECA75E65D4243A6BF6)pkInputPointWithOffset:(SEL)a3;
+- ($FF38E1E694A259ECA75E65D4243A6BF6)pkInputPointWithOffset:(SEL)offset;
 - (CGPoint)point;
 @end
 
 @implementation PKDrawingReplayPoint
 
-- ($FF38E1E694A259ECA75E65D4243A6BF6)pkInputPointWithOffset:(SEL)a3
+- ($FF38E1E694A259ECA75E65D4243A6BF6)pkInputPointWithOffset:(SEL)offset
 {
   y = a4.y;
   x = a4.x;

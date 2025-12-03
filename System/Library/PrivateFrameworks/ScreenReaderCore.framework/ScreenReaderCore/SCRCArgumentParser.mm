@@ -1,11 +1,11 @@
 @interface SCRCArgumentParser
 + (id)commandPath;
 - (BOOL)parse;
-- (SCRCArgumentParser)initWithArgc:(int)a3 argv:(const char *)a4;
-- (id)_displayHelp:(id)a3;
-- (id)setRunningAtStartup:(id)a3;
+- (SCRCArgumentParser)initWithArgc:(int)argc argv:(const char *)argv;
+- (id)_displayHelp:(id)help;
+- (id)setRunningAtStartup:(id)startup;
 - (int)run;
-- (void)addSubcommand:(id)a3;
+- (void)addSubcommand:(id)subcommand;
 - (void)stop;
 @end
 
@@ -15,31 +15,31 @@
 {
   if (_Parser)
   {
-    v2 = [_Parser _arguments];
-    v3 = [v2 firstObject];
+    _arguments = [_Parser _arguments];
+    firstObject = [_arguments firstObject];
   }
 
   else
   {
-    v3 = @"unknown";
+    firstObject = @"unknown";
   }
 
-  return v3;
+  return firstObject;
 }
 
-- (SCRCArgumentParser)initWithArgc:(int)a3 argv:(const char *)a4
+- (SCRCArgumentParser)initWithArgc:(int)argc argv:(const char *)argv
 {
   v17.receiver = self;
   v17.super_class = SCRCArgumentParser;
-  v4 = [(SCRCArgumentSubcommand *)&v17 init:*&a3];
+  v4 = [(SCRCArgumentSubcommand *)&v17 init:*&argc];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    v6 = [v5 processName];
-    [(SCRCArgumentParser *)v4 setAppName:v6];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [(SCRCArgumentParser *)v4 setAppName:processName];
 
-    v7 = [(SCRCArgumentParser *)v4 appName];
-    v8 = [v7 length];
+    appName = [(SCRCArgumentParser *)v4 appName];
+    v8 = [appName length];
 
     if (!v8 || ([MEMORY[0x277CCAC38] processInfo], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "arguments"), v10 = objc_claimAutoreleasedReturnValue(), -[SCRCArgumentParser set_arguments:](v4, "set_arguments:", v10), v10, v9, -[SCRCArgumentParser _arguments](v4, "_arguments"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, !v12))
     {
@@ -61,16 +61,16 @@ LABEL_7:
   return v15;
 }
 
-- (void)addSubcommand:(id)a3
+- (void)addSubcommand:(id)subcommand
 {
-  v7 = a3;
-  v4 = [(SCRCArgumentParser *)self _subcommandArray];
-  v5 = [v4 containsObject:v7];
+  subcommandCopy = subcommand;
+  _subcommandArray = [(SCRCArgumentParser *)self _subcommandArray];
+  v5 = [_subcommandArray containsObject:subcommandCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SCRCArgumentParser *)self _subcommandArray];
-    [v6 addObject:v7];
+    _subcommandArray2 = [(SCRCArgumentParser *)self _subcommandArray];
+    [_subcommandArray2 addObject:subcommandCopy];
   }
 }
 
@@ -78,20 +78,20 @@ LABEL_7:
 {
   v62 = *MEMORY[0x277D85DE8];
   [(SCRCArgumentParser *)self set_subcommand:0];
-  v3 = [(SCRCArgumentParser *)self _arguments];
-  v4 = [v3 count];
+  _arguments = [(SCRCArgumentParser *)self _arguments];
+  v4 = [_arguments count];
 
   if (v4 >= 2)
   {
-    v5 = [(SCRCArgumentParser *)self _arguments];
-    v6 = [v5 objectAtIndexedSubscript:1];
+    _arguments2 = [(SCRCArgumentParser *)self _arguments];
+    v6 = [_arguments2 objectAtIndexedSubscript:1];
 
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v7 = [(SCRCArgumentParser *)self _subcommandArray];
-    v8 = [v7 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    _subcommandArray = [(SCRCArgumentParser *)self _subcommandArray];
+    v8 = [_subcommandArray countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v8)
     {
       v9 = v8;
@@ -102,12 +102,12 @@ LABEL_7:
         {
           if (*v56 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_subcommandArray);
           }
 
           v12 = *(*(&v55 + 1) + 8 * i);
-          v13 = [v12 subcommandName];
-          v14 = [v13 isEqualToString:v6];
+          subcommandName = [v12 subcommandName];
+          v14 = [subcommandName isEqualToString:v6];
 
           if (v14)
           {
@@ -116,7 +116,7 @@ LABEL_7:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v9 = [_subcommandArray countByEnumeratingWithState:&v55 objects:v61 count:16];
         if (v9)
         {
           continue;
@@ -130,24 +130,24 @@ LABEL_12:
   }
 
   v15 = MEMORY[0x277CBEB18];
-  v16 = [(SCRCArgumentSubcommand *)self optionArray];
-  v17 = [v15 arrayWithArray:v16];
+  optionArray = [(SCRCArgumentSubcommand *)self optionArray];
+  v17 = [v15 arrayWithArray:optionArray];
 
-  v18 = [(SCRCArgumentParser *)self _subcommand];
-  v19 = [v18 optionArray];
-  v20 = [v19 count];
+  _subcommand = [(SCRCArgumentParser *)self _subcommand];
+  optionArray2 = [_subcommand optionArray];
+  v20 = [optionArray2 count];
 
   if (v20)
   {
-    v21 = [(SCRCArgumentParser *)self _subcommand];
-    v22 = [v21 optionArray];
-    [v17 addObjectsFromArray:v22];
+    _subcommand2 = [(SCRCArgumentParser *)self _subcommand];
+    optionArray3 = [_subcommand2 optionArray];
+    [v17 addObjectsFromArray:optionArray3];
   }
 
   if ([v17 count])
   {
-    v23 = self;
-    v46 = [MEMORY[0x277CBEB18] array];
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
     [MEMORY[0x277CBEBD0] standardUserDefaults];
     v45 = v44 = v17;
     v51 = 0u;
@@ -170,25 +170,25 @@ LABEL_12:
           }
 
           v29 = *(*(&v51 + 1) + 8 * j);
-          v30 = [v29 option];
-          if (v30)
+          option = [v29 option];
+          if (option)
           {
-            v31 = v30;
-            v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"-%@", v30];
-            v33 = [(SCRCArgumentParser *)v23 _arguments];
-            v34 = [v33 containsObject:v32];
+            _subcommandArray2 = option;
+            v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"-%@", option];
+            _arguments3 = [(SCRCArgumentParser *)selfCopy _arguments];
+            v34 = [_arguments3 containsObject:v32];
 
             if (v34)
             {
-              v35 = [v29 argument];
-              v36 = [v35 length];
+              argument = [v29 argument];
+              v36 = [argument length];
 
               if (v36)
               {
-                v37 = [v45 objectForKey:v31];
-                if (!v37 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+                _subcommand3 = [v45 objectForKey:_subcommandArray2];
+                if (!_subcommand3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                 {
-                  [(SCRCArgumentParser *)v23 _subcommand];
+                  [(SCRCArgumentParser *)selfCopy _subcommand];
 
 LABEL_44:
                   v17 = v44;
@@ -198,19 +198,19 @@ LABEL_46:
                   goto LABEL_47;
                 }
 
-                [v29 setArgument:v37];
-                [v46 addObject:v29];
+                [v29 setArgument:_subcommand3];
+                [array addObject:v29];
               }
 
               else
               {
-                [v46 addObject:v29];
+                [array addObject:v29];
               }
             }
 
             else if ([v29 required])
             {
-              v37 = [(SCRCArgumentParser *)v23 _subcommand];
+              _subcommand3 = [(SCRCArgumentParser *)selfCopy _subcommand];
               goto LABEL_44;
             }
           }
@@ -230,7 +230,7 @@ LABEL_46:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v24 = v46;
+    v24 = array;
     v38 = [v24 countByEnumeratingWithState:&v47 objects:v59 count:16];
     if (v38)
     {
@@ -248,8 +248,8 @@ LABEL_46:
 
           if (([*(*(&v47 + 1) + 8 * k) process] & 1) == 0)
           {
-            v31 = [(SCRCArgumentParser *)v23 _subcommandArray];
-            [v31 count];
+            _subcommandArray2 = [(SCRCArgumentParser *)selfCopy _subcommandArray];
+            [_subcommandArray2 count];
             goto LABEL_46;
           }
         }
@@ -284,50 +284,50 @@ LABEL_47:
 
 - (int)run
 {
-  v2 = [(SCRCArgumentParser *)self _subcommand];
-  v3 = [v2 run];
+  _subcommand = [(SCRCArgumentParser *)self _subcommand];
+  v3 = [_subcommand run];
 
   return v3;
 }
 
 - (void)stop
 {
-  v2 = [(SCRCArgumentParser *)self _subcommand];
-  [v2 stop];
+  _subcommand = [(SCRCArgumentParser *)self _subcommand];
+  [_subcommand stop];
 }
 
-- (id)_displayHelp:(id)a3
+- (id)_displayHelp:(id)help
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = [objc_opt_class() versionString];
-  v5 = [(SCRCArgumentParser *)self _subcommand];
-  if (v5)
+  versionString = [objc_opt_class() versionString];
+  _subcommand = [(SCRCArgumentParser *)self _subcommand];
+  if (_subcommand)
   {
-    v6 = [(SCRCArgumentParser *)self _subcommand];
-    v7 = [v6 optionArray];
+    _subcommand2 = [(SCRCArgumentParser *)self _subcommand];
+    optionArray = [_subcommand2 optionArray];
   }
 
   else
   {
-    v7 = [(SCRCArgumentSubcommand *)self optionArray];
+    optionArray = [(SCRCArgumentSubcommand *)self optionArray];
   }
 
-  v8 = [v7 sortedArrayUsingSelector:?];
-  v9 = [(SCRCArgumentParser *)self _subcommand];
-  if (v9)
+  v8 = [optionArray sortedArrayUsingSelector:?];
+  _subcommand3 = [(SCRCArgumentParser *)self _subcommand];
+  if (_subcommand3)
   {
-    v10 = [(SCRCArgumentParser *)self _subcommand];
-    v11 = [v10 subcommandName];
+    _subcommand4 = [(SCRCArgumentParser *)self _subcommand];
+    subcommandName = [_subcommand4 subcommandName];
   }
 
   else
   {
-    v11 = @"<subcommand>";
+    subcommandName = @"<subcommand>";
   }
 
   [v8 count];
-  v12 = [(SCRCArgumentParser *)self _subcommand];
-  v13 = [v12 formattedHelpHeader];
+  _subcommand5 = [(SCRCArgumentParser *)self _subcommand];
+  formattedHelpHeader = [_subcommand5 formattedHelpHeader];
 
   v42 = 0u;
   v43 = 0u;
@@ -338,10 +338,10 @@ LABEL_47:
   if (v15)
   {
     v16 = v15;
-    v39 = v13;
-    v17 = v7;
-    v18 = v11;
-    v19 = v4;
+    v39 = formattedHelpHeader;
+    v17 = optionArray;
+    v18 = subcommandName;
+    v19 = versionString;
     v20 = 0;
     v21 = *v41;
     do
@@ -357,8 +357,8 @@ LABEL_47:
 
         v20 = *(*(&v40 + 1) + 8 * v22);
 
-        v24 = [v20 argument];
-        [v24 length];
+        argument = [v20 argument];
+        [argument length];
 
         ++v22;
         v23 = v20;
@@ -370,16 +370,16 @@ LABEL_47:
 
     while (v16);
 
-    v4 = v19;
-    v11 = v18;
-    v7 = v17;
-    v13 = v39;
+    versionString = v19;
+    subcommandName = v18;
+    optionArray = v17;
+    formattedHelpHeader = v39;
   }
 
-  v25 = [(SCRCArgumentParser *)self _subcommand];
-  if (v25)
+  _subcommand6 = [(SCRCArgumentParser *)self _subcommand];
+  if (_subcommand6)
   {
-    v26 = v25;
+    objectEnumerator = _subcommand6;
     v27 = v14;
 LABEL_17:
 
@@ -387,62 +387,62 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v32 = [(SCRCArgumentParser *)self _subcommandArray];
-  v33 = [v32 count];
+  _subcommandArray = [(SCRCArgumentParser *)self _subcommandArray];
+  v33 = [_subcommandArray count];
 
   if (v33)
   {
-    v34 = [(SCRCArgumentParser *)self _subcommandArray];
-    v27 = [v34 sortedArrayUsingSelector:sel_compare_];
+    _subcommandArray2 = [(SCRCArgumentParser *)self _subcommandArray];
+    v27 = [_subcommandArray2 sortedArrayUsingSelector:sel_compare_];
 
-    v26 = [v27 objectEnumerator];
-    v35 = [v26 nextObject];
-    v36 = [v35 subcommandName];
+    objectEnumerator = [v27 objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    subcommandName2 = [nextObject subcommandName];
 
-    if (v36)
+    if (subcommandName2)
     {
       do
       {
-        [v36 length];
-        v37 = [v26 nextObject];
-        v38 = [v37 subcommandName];
+        [subcommandName2 length];
+        nextObject2 = [objectEnumerator nextObject];
+        subcommandName3 = [nextObject2 subcommandName];
 
-        v36 = v38;
+        subcommandName2 = subcommandName3;
       }
 
-      while (v38);
+      while (subcommandName3);
     }
 
     goto LABEL_17;
   }
 
 LABEL_18:
-  v28 = [(SCRCArgumentParser *)self _subcommand];
-  v29 = [v28 formattedHelpFooter];
+  _subcommand7 = [(SCRCArgumentParser *)self _subcommand];
+  formattedHelpFooter = [_subcommand7 formattedHelpFooter];
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:0];
 
   return v30;
 }
 
-- (id)setRunningAtStartup:(id)a3
+- (id)setRunningAtStartup:(id)startup
 {
   [(SCRCArgumentParser *)self setIsLaunchedAtLogin:1];
   memset(&context, 0, sizeof(context));
   v3 = SCDynamicStoreCreate(0, @"watchForConsoleUserChanges", _consoleUserChanged, &context);
   if (!v3)
   {
-    v13 = [_Parser appName];
-    v14 = [v13 UTF8String];
+    appName = [_Parser appName];
+    uTF8String = [appName UTF8String];
     v15 = getpid();
-    syslog(3, "%s[%d]: could not open session with configd\n", v14, v15);
+    syslog(3, "%s[%d]: could not open session with configd\n", uTF8String, v15);
 
-    v16 = [_Parser appName];
-    v17 = [v16 UTF8String];
+    appName2 = [_Parser appName];
+    uTF8String2 = [appName2 UTF8String];
     v18 = getpid();
     v19 = SCError();
     v20 = SCErrorString(v19);
-    syslog(3, "%s[%d]: error = %s\n", v17, v18, v20);
+    syslog(3, "%s[%d]: error = %s\n", uTF8String2, v18, v20);
 
     goto LABEL_9;
   }
@@ -455,8 +455,8 @@ LABEL_18:
   CFRelease(Mutable);
   if (v6)
   {
-    v7 = [_Parser appName];
-    [v7 UTF8String];
+    appName3 = [_Parser appName];
+    [appName3 UTF8String];
     getpid();
     syslog(3, "%s[%d]: could not register notification keys\n");
   }
@@ -473,18 +473,18 @@ LABEL_18:
       goto LABEL_8;
     }
 
-    v7 = [_Parser appName];
-    [v7 UTF8String];
+    appName3 = [_Parser appName];
+    [appName3 UTF8String];
     getpid();
     syslog(3, "%s[%d]: could not create runloop source\n");
   }
 
-  v8 = [_Parser appName];
-  v9 = [v8 UTF8String];
+  appName4 = [_Parser appName];
+  uTF8String3 = [appName4 UTF8String];
   v10 = getpid();
   v11 = SCError();
   v12 = SCErrorString(v11);
-  syslog(3, "%s[%d]: error = %s\n", v9, v10, v12);
+  syslog(3, "%s[%d]: error = %s\n", uTF8String3, v10, v12);
 
 LABEL_8:
   CFRelease(v4);

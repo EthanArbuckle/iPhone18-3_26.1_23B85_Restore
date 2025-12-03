@@ -1,7 +1,7 @@
 @interface HomeDeletion
-- (HomeDeletion)initWithObject:(id)a3 indexPath:(id)a4 identifierPath:(id)a5 contextualActionCompletionHandler:(id)a6;
+- (HomeDeletion)initWithObject:(id)object indexPath:(id)path identifierPath:(id)identifierPath contextualActionCompletionHandler:(id)handler;
 - (id)description;
-- (void)markAsCompletedWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)markAsCompletedWithSuccess:(BOOL)success error:(id)error;
 - (void)markAsTentativelyDeleted;
 @end
 
@@ -53,18 +53,18 @@
   return v14;
 }
 
-- (void)markAsCompletedWithSuccess:(BOOL)a3 error:(id)a4
+- (void)markAsCompletedWithSuccess:(BOOL)success error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   if (!self->_completed)
   {
     self->_completed = 1;
-    self->_success = a3;
-    if (!a3)
+    self->_success = success;
+    if (!success)
     {
-      v8 = v7;
-      objc_storeStrong(&self->_error, a4);
-      v7 = v8;
+      v8 = errorCopy;
+      objc_storeStrong(&self->_error, error);
+      errorCopy = v8;
     }
   }
 }
@@ -77,22 +77,22 @@
   }
 }
 
-- (HomeDeletion)initWithObject:(id)a3 indexPath:(id)a4 identifierPath:(id)a5 contextualActionCompletionHandler:(id)a6
+- (HomeDeletion)initWithObject:(id)object indexPath:(id)path identifierPath:(id)identifierPath contextualActionCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  pathCopy = path;
+  identifierPathCopy = identifierPath;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = HomeDeletion;
   v15 = [(HomeDeletion *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_object, a3);
-    objc_storeStrong(&v16->_indexPath, a4);
-    objc_storeStrong(&v16->_identifierPath, a5);
-    v17 = objc_retainBlock(v14);
+    objc_storeStrong(&v15->_object, object);
+    objc_storeStrong(&v16->_indexPath, path);
+    objc_storeStrong(&v16->_identifierPath, identifierPath);
+    v17 = objc_retainBlock(handlerCopy);
     contextualActionCompletionHandler = v16->_contextualActionCompletionHandler;
     v16->_contextualActionCompletionHandler = v17;
   }

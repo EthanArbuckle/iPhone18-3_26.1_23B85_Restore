@@ -1,19 +1,19 @@
 @interface VCAudioSessionMediaProperties
 - (AudioStreamBasicDescription)inputFormat;
 - (AudioStreamBasicDescription)outputFormat;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)setInputFormat:(AudioStreamBasicDescription *)a3;
-- (void)setOutputFormat:(AudioStreamBasicDescription *)a3;
+- (void)setInputFormat:(AudioStreamBasicDescription *)format;
+- (void)setOutputFormat:(AudioStreamBasicDescription *)format;
 @end
 
 @implementation VCAudioSessionMediaProperties
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v85 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
-  if (!a3 || ([a3 isMemberOfClass:v5] & 1) == 0)
+  if (!equal || ([equal isMemberOfClass:v5] & 1) == 0)
   {
     if (objc_opt_class() != self)
     {
@@ -49,9 +49,9 @@
       *&buf[28] = 2112;
       *&buf[30] = v16;
       *&buf[38] = 2048;
-      v81 = self;
+      selfCopy8 = self;
       v82 = 2112;
-      *v83 = a3;
+      *v83 = equal;
       *&v83[8] = 2112;
       v84 = NSStringFromClass(v5);
       v26 = " [%s] %s:%d %@(%p) VCAudioSessionMediaProperties property changed: object=%@ is nil or not of class=%@";
@@ -76,9 +76,9 @@
       *&buf[22] = 1024;
       *&buf[24] = 21;
       *&buf[28] = 2112;
-      *&buf[30] = a3;
+      *&buf[30] = equal;
       *&buf[38] = 2112;
-      v81 = NSStringFromClass(v5);
+      selfCopy8 = NSStringFromClass(v5);
       v26 = " [%s] %s:%d VCAudioSessionMediaProperties property changed: object=%@ is nil or not of class=%@";
       v27 = v25;
       goto LABEL_63;
@@ -87,7 +87,7 @@
     goto LABEL_93;
   }
 
-  [a3 preferredSampleRate];
+  [equal preferredSampleRate];
   v7 = v6;
   if (v6 != self->_preferredSampleRate)
   {
@@ -113,7 +113,7 @@
         *&buf[28] = 2048;
         *&buf[30] = preferredSampleRate;
         *&buf[38] = 2048;
-        v81 = *&v7;
+        selfCopy8 = *&v7;
         v26 = " [%s] %s:%d VCAudioSessionMediaProperties property changed: preferredSampleRate=%f became preferredSampleRate=%f";
         goto LABEL_62;
       }
@@ -154,7 +154,7 @@
     *&buf[28] = 2112;
     *&buf[30] = v17;
     *&buf[38] = 2048;
-    v81 = self;
+    selfCopy8 = self;
     v82 = 2048;
     *v83 = v50;
     *&v83[8] = 2048;
@@ -163,7 +163,7 @@
     goto LABEL_90;
   }
 
-  [a3 preferredBlockSize];
+  [equal preferredBlockSize];
   v9 = v8;
   if (v8 != self->_preferredBlockSize)
   {
@@ -189,7 +189,7 @@
         *&buf[28] = 2048;
         *&buf[30] = preferredBlockSize;
         *&buf[38] = 2048;
-        v81 = *&v9;
+        selfCopy8 = *&v9;
         v26 = " [%s] %s:%d VCAudioSessionMediaProperties property changed: preferredBlockSize=%f became preferredBlockSize=%f";
         goto LABEL_62;
       }
@@ -230,7 +230,7 @@
     *&buf[28] = 2112;
     *&buf[30] = v18;
     *&buf[38] = 2048;
-    v81 = self;
+    selfCopy8 = self;
     v82 = 2048;
     *v83 = v52;
     *&v83[8] = 2048;
@@ -243,10 +243,10 @@ LABEL_91:
     goto LABEL_92;
   }
 
-  v10 = [a3 vpOperatingMode];
-  if (v10 != self->_vpOperatingMode)
+  vpOperatingMode = [equal vpOperatingMode];
+  if (vpOperatingMode != self->_vpOperatingMode)
   {
-    v19 = v10;
+    v19 = vpOperatingMode;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -310,7 +310,7 @@ LABEL_91:
     *&buf[28] = 2112;
     *&buf[30] = v20;
     *&buf[38] = 2048;
-    v81 = self;
+    selfCopy8 = self;
     v82 = 1024;
     *v83 = v55;
     *&v83[4] = 1024;
@@ -323,8 +323,8 @@ LABEL_81:
     goto LABEL_92;
   }
 
-  v11 = [a3 audioClockDeviceEnabled];
-  if (self->_audioClockDeviceEnabled != v11)
+  audioClockDeviceEnabled = [equal audioClockDeviceEnabled];
+  if (self->_audioClockDeviceEnabled != audioClockDeviceEnabled)
   {
     if (objc_opt_class() == self)
     {
@@ -351,7 +351,7 @@ LABEL_81:
       *&buf[28] = 1024;
       *&buf[30] = audioClockDeviceEnabled;
       *&buf[34] = 1024;
-      *&buf[36] = v11;
+      *&buf[36] = audioClockDeviceEnabled;
       v26 = " [%s] %s:%d VCAudioSessionMediaProperties property changed: audioClockDeviceEnabled=%u became audioClockDeviceEnabled=%u";
       goto LABEL_97;
     }
@@ -389,20 +389,20 @@ LABEL_81:
     *&buf[28] = 2112;
     *&buf[30] = v21;
     *&buf[38] = 2048;
-    v81 = self;
+    selfCopy8 = self;
     v82 = 1024;
     *v83 = v57;
     *&v83[4] = 1024;
-    *&v83[6] = v11;
+    *&v83[6] = audioClockDeviceEnabled;
     v26 = " [%s] %s:%d %@(%p) VCAudioSessionMediaProperties property changed: audioClockDeviceEnabled=%u became audioClockDeviceEnabled=%u";
     goto LABEL_80;
   }
 
-  v12 = [a3 networkUplinkClockUsesBaseband];
-  if (v11)
+  networkUplinkClockUsesBaseband = [equal networkUplinkClockUsesBaseband];
+  if (audioClockDeviceEnabled)
   {
-    v13 = v12;
-    if (self->_networkUplinkClockUsesBaseband != v12)
+    v13 = networkUplinkClockUsesBaseband;
+    if (self->_networkUplinkClockUsesBaseband != networkUplinkClockUsesBaseband)
     {
       if (objc_opt_class() != self)
       {
@@ -439,7 +439,7 @@ LABEL_81:
         *&buf[28] = 2112;
         *&buf[30] = v30;
         *&buf[38] = 2048;
-        v81 = self;
+        selfCopy8 = self;
         v82 = 1024;
         *v83 = networkUplinkClockUsesBaseband;
         *&v83[4] = 1024;
@@ -491,10 +491,10 @@ LABEL_97:
   v73 = v14;
   v74 = v14;
   v75 = v14;
-  [a3 inputFormat];
+  [equal inputFormat];
   if (!memcmp(v70, &self->_inputFormat, 0x28uLL))
   {
-    [a3 outputFormat];
+    [equal outputFormat];
     v70[0] = *buf;
     v70[1] = *&buf[16];
     v71 = *&buf[32];
@@ -540,7 +540,7 @@ LABEL_97:
       *&buf[28] = 2112;
       *&buf[30] = v23;
       *&buf[38] = 2048;
-      v81 = self;
+      selfCopy8 = self;
       v82 = 2080;
       *v83 = v62;
       *&v83[8] = 2080;
@@ -570,7 +570,7 @@ LABEL_97:
       *&buf[28] = 2080;
       *&buf[30] = v45;
       *&buf[38] = 2080;
-      v81 = v46;
+      selfCopy8 = v46;
       v26 = " [%s] %s:%d VCAudioSessionMediaProperties property changed: outputFormat=%s became outputFormat=%s";
 LABEL_62:
       v27 = v32;
@@ -620,7 +620,7 @@ LABEL_92:
     *&buf[28] = 2112;
     *&buf[30] = v22;
     *&buf[38] = 2048;
-    v81 = self;
+    selfCopy8 = self;
     v82 = 2080;
     *v83 = v59;
     *&v83[8] = 2080;
@@ -650,7 +650,7 @@ LABEL_92:
     *&buf[28] = 2080;
     *&buf[30] = v42;
     *&buf[38] = 2080;
-    v81 = v43;
+    selfCopy8 = v43;
     v26 = " [%s] %s:%d VCAudioSessionMediaProperties property changed: inputFormat=%s became inputFormat=%s";
     goto LABEL_62;
   }
@@ -694,11 +694,11 @@ LABEL_93:
   return self;
 }
 
-- (void)setInputFormat:(AudioStreamBasicDescription *)a3
+- (void)setInputFormat:(AudioStreamBasicDescription *)format
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_inputFormat.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&format->mSampleRate;
+  v4 = *&format->mBytesPerPacket;
+  *&self->_inputFormat.mBitsPerChannel = *&format->mBitsPerChannel;
   *&self->_inputFormat.mSampleRate = v3;
   *&self->_inputFormat.mBytesPerPacket = v4;
 }
@@ -712,11 +712,11 @@ LABEL_93:
   return self;
 }
 
-- (void)setOutputFormat:(AudioStreamBasicDescription *)a3
+- (void)setOutputFormat:(AudioStreamBasicDescription *)format
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_outputFormat.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&format->mSampleRate;
+  v4 = *&format->mBytesPerPacket;
+  *&self->_outputFormat.mBitsPerChannel = *&format->mBitsPerChannel;
   *&self->_outputFormat.mBytesPerPacket = v4;
   *&self->_outputFormat.mSampleRate = v3;
 }

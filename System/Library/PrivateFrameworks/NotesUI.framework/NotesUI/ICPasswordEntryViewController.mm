@@ -1,5 +1,5 @@
 @interface ICPasswordEntryViewController
-- (ICPasswordEntryViewController)initWithNibName:(id)a3 bundle:(id)a4 note:(id)a5 intent:(unint64_t)a6;
+- (ICPasswordEntryViewController)initWithNibName:(id)name bundle:(id)bundle note:(id)note intent:(unint64_t)intent;
 - (ICTextBackgroundView)backgroundView;
 - (UIButton)largeUnlockButton;
 - (UIButton)unlockButton;
@@ -8,27 +8,27 @@
 - (void)applyEntryViewMode;
 - (void)beginAuthentication;
 - (void)dealloc;
-- (void)setMode:(unint64_t)a3;
-- (void)unlockPasswordButtonPressed:(id)a3;
+- (void)setMode:(unint64_t)mode;
+- (void)unlockPasswordButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation ICPasswordEntryViewController
 
-- (ICPasswordEntryViewController)initWithNibName:(id)a3 bundle:(id)a4 note:(id)a5 intent:(unint64_t)a6
+- (ICPasswordEntryViewController)initWithNibName:(id)name bundle:(id)bundle note:(id)note intent:(unint64_t)intent
 {
-  v10 = a5;
+  noteCopy = note;
   v11 = MEMORY[0x1E696AAE8];
-  v12 = a3;
+  nameCopy = name;
   v13 = [v11 bundleForClass:objc_opt_class()];
   v16.receiver = self;
   v16.super_class = ICPasswordEntryViewController;
-  v14 = [(ICPasswordEntryViewController *)&v16 initWithNibName:v12 bundle:v13];
+  v14 = [(ICPasswordEntryViewController *)&v16 initWithNibName:nameCopy bundle:v13];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_note, a5);
-    v14->_intent = a6;
+    objc_storeStrong(&v14->_note, note);
+    v14->_intent = intent;
   }
 
   return v14;
@@ -36,19 +36,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICPasswordEntryViewController;
   [(ICPasswordEntryViewController *)&v4 dealloc];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(ICPasswordEntryViewController *)self applyEntryViewMode];
   }
 }
@@ -58,9 +58,9 @@
   mode = self->_mode;
   if (mode == 1)
   {
-    v7 = [(ICPasswordEntryViewController *)self titleLabel];
+    titleLabel = [(ICPasswordEntryViewController *)self titleLabel];
     v6 = 1;
-    [v7 setHidden:1];
+    [titleLabel setHidden:1];
 
     v5 = 1;
   }
@@ -72,18 +72,18 @@
       return;
     }
 
-    v4 = [(ICPasswordEntryViewController *)self titleLabel];
-    [v4 setHidden:0];
+    titleLabel2 = [(ICPasswordEntryViewController *)self titleLabel];
+    [titleLabel2 setHidden:0];
 
     v5 = 0;
     v6 = [(ICPasswordEntryViewController *)self intent]!= 0;
   }
 
-  v8 = [(ICPasswordEntryViewController *)self unlockButton];
-  [v8 setHidden:v6];
+  unlockButton = [(ICPasswordEntryViewController *)self unlockButton];
+  [unlockButton setHidden:v6];
 
-  v9 = [(ICPasswordEntryViewController *)self largeUnlockButton];
-  [v9 setHidden:v5];
+  largeUnlockButton = [(ICPasswordEntryViewController *)self largeUnlockButton];
+  [largeUnlockButton setHidden:v5];
 }
 
 - (void)viewDidLoad
@@ -91,101 +91,101 @@
   v21.receiver = self;
   v21.super_class = ICPasswordEntryViewController;
   [(ICPasswordEntryViewController *)&v21 viewDidLoad];
-  v4 = [MEMORY[0x1E69DC888] ICBackgroundColor];
-  v5 = [(ICPasswordEntryViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  iCBackgroundColor = [MEMORY[0x1E69DC888] ICBackgroundColor];
+  view = [(ICPasswordEntryViewController *)self view];
+  [view setBackgroundColor:iCBackgroundColor];
 
-  v6 = [MEMORY[0x1E69DC938] ic_isVision];
-  v7 = v6;
-  if (v6)
+  ic_isVision = [MEMORY[0x1E69DC938] ic_isVision];
+  v7 = ic_isVision;
+  if (ic_isVision)
   {
     [MEMORY[0x1E69DC888] ic_dynamicWhiteBlackColor];
   }
 
   else
   {
-    v2 = [(ICPasswordEntryViewController *)self backgroundView];
-    [v2 backgroundColor];
+    backgroundView = [(ICPasswordEntryViewController *)self backgroundView];
+    [backgroundView backgroundColor];
   }
   v8 = ;
-  v9 = [(ICPasswordEntryViewController *)self backgroundView];
-  [v9 setBackgroundColor:v8];
+  backgroundView2 = [(ICPasswordEntryViewController *)self backgroundView];
+  [backgroundView2 setBackgroundColor:v8];
 
   if ((v7 & 1) == 0)
   {
 
-    v8 = v2;
+    v8 = backgroundView;
   }
 
-  v10 = [MEMORY[0x1E69DC938] ic_isVision];
-  v11 = v10;
-  if (v10)
+  ic_isVision2 = [MEMORY[0x1E69DC938] ic_isVision];
+  v11 = ic_isVision2;
+  if (ic_isVision2)
   {
     [MEMORY[0x1E69DC888] systemGrayColor];
   }
 
   else
   {
-    v2 = [(ICPasswordEntryViewController *)self lockImage];
-    [v2 tintColor];
+    backgroundView = [(ICPasswordEntryViewController *)self lockImage];
+    [backgroundView tintColor];
   }
   v12 = ;
-  v13 = [(ICPasswordEntryViewController *)self lockImage];
-  [v13 setTintColor:v12];
+  lockImage = [(ICPasswordEntryViewController *)self lockImage];
+  [lockImage setTintColor:v12];
 
   if ((v11 & 1) == 0)
   {
 
-    v12 = v2;
+    v12 = backgroundView;
   }
 
-  v14 = [MEMORY[0x1E69DC888] ic_noteEditorLabelColor];
-  v15 = [(ICPasswordEntryViewController *)self titleLabel];
-  [v15 setTextColor:v14];
+  ic_noteEditorLabelColor = [MEMORY[0x1E69DC888] ic_noteEditorLabelColor];
+  titleLabel = [(ICPasswordEntryViewController *)self titleLabel];
+  [titleLabel setTextColor:ic_noteEditorLabelColor];
 
-  v16 = [(ICPasswordEntryViewController *)self unlockButton];
-  [v16 _accessibilitySetIsSpeakThisElement:1];
+  unlockButton = [(ICPasswordEntryViewController *)self unlockButton];
+  [unlockButton _accessibilitySetIsSpeakThisElement:1];
 
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
-    v17 = [(ICPasswordEntryViewController *)self unlockButton];
-    [v17 setTitleColor:0 forState:0];
+    unlockButton2 = [(ICPasswordEntryViewController *)self unlockButton];
+    [unlockButton2 setTitleColor:0 forState:0];
 
-    v18 = [MEMORY[0x1E69DC740] ic_filledTintedButtonConfiguration];
-    v19 = [(ICPasswordEntryViewController *)self unlockButton];
-    [v19 setConfiguration:v18];
+    ic_filledTintedButtonConfiguration = [MEMORY[0x1E69DC740] ic_filledTintedButtonConfiguration];
+    unlockButton3 = [(ICPasswordEntryViewController *)self unlockButton];
+    [unlockButton3 setConfiguration:ic_filledTintedButtonConfiguration];
   }
 
-  v20 = [(ICPasswordEntryViewController *)self largeUnlockButton];
-  [v20 setIsAccessibilityElement:0];
+  largeUnlockButton = [(ICPasswordEntryViewController *)self largeUnlockButton];
+  [largeUnlockButton setIsAccessibilityElement:0];
 
   [(ICPasswordEntryViewController *)self applyEntryViewMode];
 }
 
 - (void)beginAuthentication
 {
-  v3 = [(ICPasswordEntryViewController *)self unlockButton];
-  [(ICPasswordEntryViewController *)self unlockPasswordButtonPressed:v3];
+  unlockButton = [(ICPasswordEntryViewController *)self unlockButton];
+  [(ICPasswordEntryViewController *)self unlockPasswordButtonPressed:unlockButton];
 }
 
-- (void)unlockPasswordButtonPressed:(id)a3
+- (void)unlockPasswordButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_initWeak(&location, self);
-  v5 = [(ICPasswordEntryViewController *)self intent];
-  v6 = [(ICPasswordEntryViewController *)self note];
-  v7 = [ICAuthenticationPrompt promptForIntent:v5 object:v6];
+  intent = [(ICPasswordEntryViewController *)self intent];
+  note = [(ICPasswordEntryViewController *)self note];
+  v7 = [ICAuthenticationPrompt promptForIntent:intent object:note];
 
   v8 = +[ICAuthentication shared];
-  v9 = [(ICPasswordEntryViewController *)self view];
-  v10 = [v9 window];
+  view = [(ICPasswordEntryViewController *)self view];
+  window = [view window];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__ICPasswordEntryViewController_unlockPasswordButtonPressed___block_invoke;
   v11[3] = &unk_1E8469280;
   objc_copyWeak(&v12, &location);
   v11[4] = self;
-  [v8 authenticateWithPrompt:v7 displayWindow:v10 completionHandler:v11];
+  [v8 authenticateWithPrompt:v7 displayWindow:window completionHandler:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

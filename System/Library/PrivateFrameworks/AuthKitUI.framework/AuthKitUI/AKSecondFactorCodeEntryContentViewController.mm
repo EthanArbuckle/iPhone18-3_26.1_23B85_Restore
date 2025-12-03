@@ -2,15 +2,15 @@
 - (NSString)reason;
 - (void)_configureCodeGenView;
 - (void)_configureTitleHeaderView;
-- (void)_updateFontContstraints:(id)a3;
+- (void)_updateFontContstraints:(id)contstraints;
 - (void)clearSecondFactorEntry;
 - (void)dealloc;
 - (void)jiggleAView;
 - (void)loadView;
-- (void)setPasscodeFieldDisabled:(BOOL)a3;
-- (void)setReason:(id)a3;
+- (void)setPasscodeFieldDisabled:(BOOL)disabled;
+- (void)setReason:(id)reason;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -18,38 +18,38 @@
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:v6 name:*MEMORY[0x277D76810] object:0];
-  *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
-  v4.receiver = v6;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x277D76810] object:0];
+  *&v2 = MEMORY[0x277D82BD8](defaultCenter).n128_u64[0];
+  v4.receiver = selfCopy;
   v4.super_class = AKSecondFactorCodeEntryContentViewController;
   [(AKSecondFactorCodeEntryContentViewController *)&v4 dealloc];
 }
 
 - (void)_configureTitleHeaderView
 {
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
   v2 = [[AKBasicLoginContentViewController alloc] initWithNibName:0 bundle:?];
-  titleHeaderViewController = v30->_titleHeaderViewController;
-  v30->_titleHeaderViewController = v2;
-  if ([(AKSecondFactorCodeEntryContentViewController *)v30 piggybackingForTrustedDevice])
+  titleHeaderViewController = selfCopy->_titleHeaderViewController;
+  selfCopy->_titleHeaderViewController = v2;
+  if ([(AKSecondFactorCodeEntryContentViewController *)selfCopy piggybackingForTrustedDevice])
   {
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = [v17 localizedStringForKey:@"VERIFICATION_HEADER_REPAIR" value:&stru_28358EF68 table:@"Localizable"];
-    v15 = [(AKBasicLoginContentViewController *)v30->_titleHeaderViewController contentContainerView];
-    [(AKBasicLoginContentViewControllerContainerView *)v15 setTitleText:v16];
-    MEMORY[0x277D82BD8](v15);
+    contentContainerView = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+    [(AKBasicLoginContentViewControllerContainerView *)contentContainerView setTitleText:v16];
+    MEMORY[0x277D82BD8](contentContainerView);
     MEMORY[0x277D82BD8](v16);
-    v18 = [(AKSecondFactorCodeEntryContentViewController *)v30 authenticationContext];
-    v19 = [(AKAppleIDAuthenticationContext *)v18 _message];
+    authenticationContext = [(AKSecondFactorCodeEntryContentViewController *)selfCopy authenticationContext];
+    _message = [(AKAppleIDAuthenticationContext *)authenticationContext _message];
     v27 = 0;
     v25 = 0;
-    if (v19)
+    if (_message)
     {
-      v14 = v19;
+      v14 = _message;
     }
 
     else
@@ -61,9 +61,9 @@
       v14 = v26;
     }
 
-    v13 = [(AKBasicLoginContentViewController *)v30->_titleHeaderViewController contentContainerView];
-    [(AKBasicLoginContentViewControllerContainerView *)v13 setMessageText:v14];
-    MEMORY[0x277D82BD8](v13);
+    contentContainerView2 = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+    [(AKBasicLoginContentViewControllerContainerView *)contentContainerView2 setMessageText:v14];
+    MEMORY[0x277D82BD8](contentContainerView2);
     if (v25)
     {
       MEMORY[0x277D82BD8](v26);
@@ -74,25 +74,25 @@
       MEMORY[0x277D82BD8](v28);
     }
 
-    MEMORY[0x277D82BD8](v19);
-    v4 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+    MEMORY[0x277D82BD8](_message);
+    v4 = MEMORY[0x277D82BD8](authenticationContext).n128_u64[0];
   }
 
   else
   {
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v10 localizedStringForKey:@"VERIFICATION_HEADER_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
-    v8 = [(AKBasicLoginContentViewController *)v30->_titleHeaderViewController contentContainerView];
-    [(AKBasicLoginContentViewControllerContainerView *)v8 setTitleText:v9];
-    MEMORY[0x277D82BD8](v8);
+    contentContainerView3 = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+    [(AKBasicLoginContentViewControllerContainerView *)contentContainerView3 setTitleText:v9];
+    MEMORY[0x277D82BD8](contentContainerView3);
     MEMORY[0x277D82BD8](v9);
-    v11 = [(AKSecondFactorCodeEntryContentViewController *)v30 authenticationContext];
-    v12 = [(AKAppleIDAuthenticationContext *)v11 _message];
+    authenticationContext2 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy authenticationContext];
+    _message2 = [(AKAppleIDAuthenticationContext *)authenticationContext2 _message];
     v23 = 0;
     v21 = 0;
-    if (v12)
+    if (_message2)
     {
-      v7 = v12;
+      v7 = _message2;
     }
 
     else
@@ -104,9 +104,9 @@
       v7 = v22;
     }
 
-    v6 = [(AKBasicLoginContentViewController *)v30->_titleHeaderViewController contentContainerView];
-    [(AKBasicLoginContentViewControllerContainerView *)v6 setMessageText:v7];
-    MEMORY[0x277D82BD8](v6);
+    contentContainerView4 = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+    [(AKBasicLoginContentViewControllerContainerView *)contentContainerView4 setMessageText:v7];
+    MEMORY[0x277D82BD8](contentContainerView4);
     if (v21)
     {
       MEMORY[0x277D82BD8](v22);
@@ -117,17 +117,17 @@
       MEMORY[0x277D82BD8](v24);
     }
 
-    MEMORY[0x277D82BD8](v12);
-    v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+    MEMORY[0x277D82BD8](_message2);
+    v4 = MEMORY[0x277D82BD8](authenticationContext2).n128_u64[0];
   }
 
-  [(AKSecondFactorCodeEntryContentViewController *)v30 addChildViewController:v30->_titleHeaderViewController, *&v4];
-  v20 = [(AKBasicLoginContentViewController *)v30->_titleHeaderViewController view];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(AKSecondFactorCodeEntryContentViewController *)v30 view];
-  [v5 addSubview:v20];
-  MEMORY[0x277D82BD8](v5);
-  objc_storeStrong(&v20, 0);
+  [(AKSecondFactorCodeEntryContentViewController *)selfCopy addChildViewController:selfCopy->_titleHeaderViewController, *&v4];
+  view = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+  [view2 addSubview:view];
+  MEMORY[0x277D82BD8](view2);
+  objc_storeStrong(&view, 0);
 }
 
 - (void)_configureCodeGenView
@@ -136,117 +136,117 @@
   v3 = [(AKCodeEntryView *)v2 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   codeGeneratorView = self->_codeGeneratorView;
   self->_codeGeneratorView = v3;
-  v5 = [(AKSecondFactorCodeEntryContentViewController *)self view];
-  [v5 addSubview:self->_codeGeneratorView];
-  MEMORY[0x277D82BD8](v5);
+  view = [(AKSecondFactorCodeEntryContentViewController *)self view];
+  [view addSubview:self->_codeGeneratorView];
+  MEMORY[0x277D82BD8](view);
 }
 
 - (void)updateViewConstraints
 {
   v68[1] = *MEMORY[0x277D85DE8];
-  v66 = self;
+  selfCopy = self;
   v65 = a2;
   v64.receiver = self;
   v64.super_class = AKSecondFactorCodeEntryContentViewController;
   [(AKSecondFactorCodeEntryContentViewController *)&v64 updateViewConstraints];
-  if (v66->_activeConstraints)
+  if (selfCopy->_activeConstraints)
   {
-    [MEMORY[0x277CCAAD0] deactivateConstraints:v66->_activeConstraints];
+    [MEMORY[0x277CCAAD0] deactivateConstraints:selfCopy->_activeConstraints];
   }
 
   v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v45 = MEMORY[0x277CCAAD0];
-  v48 = [(AKBasicLoginContentViewController *)v66->_titleHeaderViewController view];
-  v47 = [(AKSecondFactorCodeEntryContentViewController *)v66 view];
-  v46 = [v45 constraintWithItem:v48 attribute:3 relatedBy:0 toItem:1.0 attribute:0.0 multiplier:? constant:?];
+  view = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController view];
+  view2 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+  v46 = [v45 constraintWithItem:view attribute:3 relatedBy:0 toItem:1.0 attribute:0.0 multiplier:? constant:?];
   [v63 addObject:?];
   MEMORY[0x277D82BD8](v46);
-  MEMORY[0x277D82BD8](v47);
-  v49 = [MEMORY[0x277CF0228] sharedManager];
-  v50 = [v49 isAuthKitSolariumFeatureEnabled];
-  *&v2 = MEMORY[0x277D82BD8](v49).n128_u64[0];
-  if (v50)
+  MEMORY[0x277D82BD8](view2);
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled)
   {
     v37 = MEMORY[0x277CCAAD0];
-    v40 = [(AKBasicLoginContentViewController *)v66->_titleHeaderViewController view];
-    v39 = [(AKSecondFactorCodeEntryContentViewController *)v66 view];
-    v38 = [v37 constraintWithItem:v40 attribute:5 relatedBy:? toItem:? attribute:? multiplier:? constant:?];
+    view3 = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController view];
+    view4 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+    v38 = [v37 constraintWithItem:view3 attribute:5 relatedBy:? toItem:? attribute:? multiplier:? constant:?];
     [v63 addObject:?];
     MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
-    *&v3 = MEMORY[0x277D82BD8](v40).n128_u64[0];
+    MEMORY[0x277D82BD8](view4);
+    *&v3 = MEMORY[0x277D82BD8](view3).n128_u64[0];
     v42 = MEMORY[0x277CCAAD0];
-    codeGeneratorView = v66->_codeGeneratorView;
-    v44 = [(AKSecondFactorCodeEntryContentViewController *)v66 view];
+    codeGeneratorView = selfCopy->_codeGeneratorView;
+    view5 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
     v43 = [v42 constraintWithItem:codeGeneratorView attribute:5 relatedBy:0 toItem:1.0 attribute:16.0 multiplier:? constant:?];
     [v63 addObject:?];
     MEMORY[0x277D82BD8](v43);
-    MEMORY[0x277D82BD8](v44);
+    MEMORY[0x277D82BD8](view5);
   }
 
   else
   {
     v29 = MEMORY[0x277CCAAD0];
-    v32 = [(AKBasicLoginContentViewController *)v66->_titleHeaderViewController view];
-    v31 = [(AKSecondFactorCodeEntryContentViewController *)v66 view];
-    v30 = [v29 constraintWithItem:v32 attribute:9 relatedBy:? toItem:? attribute:? multiplier:? constant:?];
+    view6 = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController view];
+    view7 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+    v30 = [v29 constraintWithItem:view6 attribute:9 relatedBy:? toItem:? attribute:? multiplier:? constant:?];
     [v63 addObject:?];
     MEMORY[0x277D82BD8](v30);
-    MEMORY[0x277D82BD8](v31);
-    *&v4 = MEMORY[0x277D82BD8](v32).n128_u64[0];
+    MEMORY[0x277D82BD8](view7);
+    *&v4 = MEMORY[0x277D82BD8](view6).n128_u64[0];
     v34 = MEMORY[0x277CCAAD0];
-    v33 = v66->_codeGeneratorView;
-    v36 = [(AKSecondFactorCodeEntryContentViewController *)v66 view];
+    v33 = selfCopy->_codeGeneratorView;
+    view8 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
     v35 = [v34 constraintWithItem:v33 attribute:9 relatedBy:0 toItem:1.0 attribute:0.0 multiplier:? constant:?];
     [v63 addObject:?];
     MEMORY[0x277D82BD8](v35);
-    MEMORY[0x277D82BD8](v36);
+    MEMORY[0x277D82BD8](view8);
   }
 
   v62 = objc_alloc_init(MEMORY[0x277D74260]);
   [v62 setWantsBaselineOffset:1];
   v61 = +[AKCodeEntryView generatorFieldFont];
-  v20 = [(AKBasicLoginContentViewController *)v66->_titleHeaderViewController contentContainerView];
-  v19 = [(AKBasicLoginContentViewControllerContainerView *)v20 messageText];
+  contentContainerView = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+  messageText = [(AKBasicLoginContentViewControllerContainerView *)contentContainerView messageText];
   v59 = 0x7FEFFFFFFFFFFFFFLL;
   v60 = 0x7FEFFFFFFFFFFFFFLL;
   v67 = *MEMORY[0x277D740A8];
   v68[0] = v61;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:&v67 count:1];
-  [NSString boundingRectWithSize:v19 options:"boundingRectWithSize:options:attributes:context:" attributes:1.79769313e308 context:1.79769313e308];
+  [NSString boundingRectWithSize:messageText options:"boundingRectWithSize:options:attributes:context:" attributes:1.79769313e308 context:1.79769313e308];
   v55 = v5;
   v56 = v6;
   v57 = v7;
   v58 = v8;
   MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  *&v9 = MEMORY[0x277D82BD8](v20).n128_u64[0];
+  MEMORY[0x277D82BD8](messageText);
+  *&v9 = MEMORY[0x277D82BD8](contentContainerView).n128_u64[0];
   [v62 baselineOffset];
   v54 = v10;
   v53 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
   v21 = MEMORY[0x277CCAAD0];
-  v22 = v66->_codeGeneratorView;
-  v23 = [(AKBasicLoginContentViewController *)v66->_titleHeaderViewController view];
+  v22 = selfCopy->_codeGeneratorView;
+  view9 = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController view];
   [v53 scaledValueForValue:50.0];
   CGCeiling(v11 - v54);
-  v52 = [v21 constraintWithItem:v22 attribute:3 relatedBy:0 toItem:v23 attribute:11 multiplier:? constant:?];
-  *&v12 = MEMORY[0x277D82BD8](v23).n128_u64[0];
+  v52 = [v21 constraintWithItem:v22 attribute:3 relatedBy:0 toItem:view9 attribute:11 multiplier:? constant:?];
+  *&v12 = MEMORY[0x277D82BD8](view9).n128_u64[0];
   [v63 addObject:{v52, v12}];
   [v61 descender];
   v51 = v13;
   v26 = v63;
   v24 = MEMORY[0x277CCAAD0];
-  v25 = v66->_codeGeneratorView;
-  v28 = [(AKSecondFactorCodeEntryContentViewController *)v66 view];
+  v25 = selfCopy->_codeGeneratorView;
+  view10 = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
   [v53 scaledValueForValue:-32.0];
-  v27 = [v24 constraintWithItem:v25 attribute:4 relatedBy:0 toItem:v28 attribute:1.0 multiplier:CGCeiling(v14 - v51) constant:?];
+  v27 = [v24 constraintWithItem:v25 attribute:4 relatedBy:0 toItem:view10 attribute:1.0 multiplier:CGCeiling(v14 - v51) constant:?];
   [v26 addObject:?];
   MEMORY[0x277D82BD8](v27);
-  *&v15 = MEMORY[0x277D82BD8](v28).n128_u64[0];
+  *&v15 = MEMORY[0x277D82BD8](view10).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v63, v15}];
   v16 = [v63 copy];
-  activeConstraints = v66->_activeConstraints;
-  v66->_activeConstraints = v16;
+  activeConstraints = selfCopy->_activeConstraints;
+  selfCopy->_activeConstraints = v16;
   MEMORY[0x277D82BD8](activeConstraints);
   objc_storeStrong(&v52, 0);
   objc_storeStrong(&v53, 0);
@@ -258,119 +258,119 @@
 
 - (void)loadView
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = AKSecondFactorCodeEntryContentViewController;
   [(AKSecondFactorCodeEntryContentViewController *)&v10 loadView];
-  v5 = [(AKSecondFactorCodeEntryContentViewController *)v12 extensionContext];
-  v4 = [v5 inputItems];
-  v9 = [v4 firstObject];
-  MEMORY[0x277D82BD8](v4);
-  *&v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  v6 = [v9 ak_context];
-  [(AKSecondFactorCodeEntryContentViewController *)v12 setAuthenticationContext:?];
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v8 = [(AKSecondFactorCodeEntryContentViewController *)v12 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(AKSecondFactorCodeEntryContentViewController *)v12 _configureTitleHeaderView];
-  [(AKSecondFactorCodeEntryContentViewController *)v12 _configureCodeGenView];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:v12 selector:sel__updateFontContstraints_ name:*MEMORY[0x277D76810] object:?];
-  MEMORY[0x277D82BD8](v7);
-  objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  extensionContext = [(AKSecondFactorCodeEntryContentViewController *)selfCopy extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
+  MEMORY[0x277D82BD8](inputItems);
+  *&v2 = MEMORY[0x277D82BD8](extensionContext).n128_u64[0];
+  ak_context = [firstObject ak_context];
+  [(AKSecondFactorCodeEntryContentViewController *)selfCopy setAuthenticationContext:?];
+  *&v3 = MEMORY[0x277D82BD8](ak_context).n128_u64[0];
+  view = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(AKSecondFactorCodeEntryContentViewController *)selfCopy _configureTitleHeaderView];
+  [(AKSecondFactorCodeEntryContentViewController *)selfCopy _configureCodeGenView];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__updateFontContstraints_ name:*MEMORY[0x277D76810] object:?];
+  MEMORY[0x277D82BD8](defaultCenter);
+  objc_storeStrong(&view, 0);
+  objc_storeStrong(&firstObject, 0);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = AKSecondFactorCodeEntryContentViewController;
   [(AKSecondFactorCodeEntryContentViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(AKSecondFactorCodeEntryContentViewController *)v7 view];
-  [v3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C80], *(MEMORY[0x277D76C80] + 8)}];
+  view = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+  [view systemLayoutSizeFittingSize:{*MEMORY[0x277D76C80], *(MEMORY[0x277D76C80] + 8)}];
   v4 = v2;
-  MEMORY[0x277D82BD8](v3);
-  [(AKSecondFactorCodeEntryContentViewController *)v7 setPreferredContentSize:270.0, v4];
+  MEMORY[0x277D82BD8](view);
+  [(AKSecondFactorCodeEntryContentViewController *)selfCopy setPreferredContentSize:270.0, v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = AKSecondFactorCodeEntryContentViewController;
-  [(AKSecondFactorCodeEntryContentViewController *)&v3 viewDidAppear:a3];
-  [(AKCodeEntryView *)v6->_codeGeneratorView becomeFirstResponder];
+  [(AKSecondFactorCodeEntryContentViewController *)&v3 viewDidAppear:appear];
+  [(AKCodeEntryView *)selfCopy->_codeGeneratorView becomeFirstResponder];
 }
 
-- (void)_updateFontContstraints:(id)a3
+- (void)_updateFontContstraints:(id)contstraints
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKSecondFactorCodeEntryContentViewController *)v5 view];
-  [v3 setNeedsUpdateConstraints];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, contstraints);
+  view = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+  [view setNeedsUpdateConstraints];
+  MEMORY[0x277D82BD8](view);
   objc_storeStrong(location, 0);
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v4 = location[0];
-  v5 = [(AKBasicLoginContentViewController *)v8->_titleHeaderViewController contentContainerView];
-  [(AKBasicLoginContentViewControllerContainerView *)v5 setMessageText:v4];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  v6 = [(AKSecondFactorCodeEntryContentViewController *)v8 view];
-  [v6 setNeedsUpdateConstraints];
-  MEMORY[0x277D82BD8](v6);
+  contentContainerView = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+  [(AKBasicLoginContentViewControllerContainerView *)contentContainerView setMessageText:v4];
+  *&v3 = MEMORY[0x277D82BD8](contentContainerView).n128_u64[0];
+  view = [(AKSecondFactorCodeEntryContentViewController *)selfCopy view];
+  [view setNeedsUpdateConstraints];
+  MEMORY[0x277D82BD8](view);
   objc_storeStrong(location, 0);
 }
 
 - (NSString)reason
 {
-  v3 = [(AKBasicLoginContentViewController *)self->_titleHeaderViewController contentContainerView];
-  v4 = [(AKBasicLoginContentViewControllerContainerView *)v3 messageText];
-  MEMORY[0x277D82BD8](v3);
+  contentContainerView = [(AKBasicLoginContentViewController *)self->_titleHeaderViewController contentContainerView];
+  messageText = [(AKBasicLoginContentViewControllerContainerView *)contentContainerView messageText];
+  MEMORY[0x277D82BD8](contentContainerView);
 
-  return v4;
+  return messageText;
 }
 
 - (void)jiggleAView
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v18[0] = [(AKCodeEntryView *)self->_codeGeneratorView layer];
-  v17 = [MEMORY[0x277CD9FA0] animation];
-  [v17 setMass:1.20000005];
-  [v17 setStiffness:1200.0];
-  [v17 setDamping:12.0];
-  [v17 setDuration:1.39999998];
-  [v17 setVelocity:0.0];
-  [v17 setFillMode:*MEMORY[0x277CDA228]];
-  [v17 setDelegate:v19];
-  v9 = v17;
+  animation = [MEMORY[0x277CD9FA0] animation];
+  [animation setMass:1.20000005];
+  [animation setStiffness:1200.0];
+  [animation setDamping:12.0];
+  [animation setDuration:1.39999998];
+  [animation setVelocity:0.0];
+  [animation setFillMode:*MEMORY[0x277CDA228]];
+  [animation setDelegate:selfCopy];
+  v9 = animation;
   LODWORD(v2) = 30.0;
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v2];
   [v9 setFromValue:?];
   MEMORY[0x277D82BD8](v10);
-  v11 = v17;
+  v11 = animation;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
   [v11 setToValue:?];
   *&v3 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-  v13 = v17;
+  v13 = animation;
   v14 = [MEMORY[0x277CDA008] functionWithName:{*MEMORY[0x277CDA9C8], v3}];
   [v13 setValueFunction:?];
   v4 = MEMORY[0x277D82BD8](v14);
-  v15 = v17;
+  v15 = animation;
   v4.n128_u32[0] = 1028389654;
   LODWORD(v5) = 990057071;
   LODWORD(v6) = 1059712716;
@@ -378,15 +378,15 @@
   v16 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v4.n128_f64[0] :v5 :v6 :v7];
   [v15 setTimingFunction:?];
   *&v8 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  [v17 setKeyPath:{@"transform", v8}];
-  [v18[0] addAnimation:v17 forKey:@"shake"];
-  objc_storeStrong(&v17, 0);
+  [animation setKeyPath:{@"transform", v8}];
+  [v18[0] addAnimation:animation forKey:@"shake"];
+  objc_storeStrong(&animation, 0);
   objc_storeStrong(v18, 0);
 }
 
 - (void)clearSecondFactorEntry
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -399,13 +399,13 @@
   }
 
   objc_storeStrong(location, 0);
-  [(AKCodeEntryView *)v7->_codeGeneratorView setStringValue:&stru_28358EF68];
+  [(AKCodeEntryView *)selfCopy->_codeGeneratorView setStringValue:&stru_28358EF68];
 }
 
-- (void)setPasscodeFieldDisabled:(BOOL)a3
+- (void)setPasscodeFieldDisabled:(BOOL)disabled
 {
-  [(AKCodeEntryView *)self->_codeGeneratorView setPasscodeFieldDisabled:a3];
-  if (a3)
+  [(AKCodeEntryView *)self->_codeGeneratorView setPasscodeFieldDisabled:disabled];
+  if (disabled)
   {
     [(AKCodeEntryView *)self->_codeGeneratorView resignFirstResponder];
   }

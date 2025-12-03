@@ -1,10 +1,10 @@
 @interface _PUIDPointerRenderingClientSourceContainer
 - (NSArray)contentMatchMoveSources;
 - (NSArray)pointerPortalSourceCollections;
-- (void)addContentMatchMoveSource:(id)a3;
-- (void)addPointerPortalSourceCollection:(id)a3;
-- (void)removeContentMatchMoveSource:(id)a3;
-- (void)removePointerPortalSourceCollection:(id)a3;
+- (void)addContentMatchMoveSource:(id)source;
+- (void)addPointerPortalSourceCollection:(id)collection;
+- (void)removeContentMatchMoveSource:(id)source;
+- (void)removePointerPortalSourceCollection:(id)collection;
 @end
 
 @implementation _PUIDPointerRenderingClientSourceContainer
@@ -23,27 +23,27 @@
   return v2;
 }
 
-- (void)addPointerPortalSourceCollection:(id)a3
+- (void)addPointerPortalSourceCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   pointerPortalSourceCollections = self->_pointerPortalSourceCollections;
-  v8 = v4;
+  v8 = collectionCopy;
   if (!pointerPortalSourceCollections)
   {
     v6 = [[NSMutableArray alloc] initWithCapacity:1];
     v7 = self->_pointerPortalSourceCollections;
     self->_pointerPortalSourceCollections = v6;
 
-    v4 = v8;
+    collectionCopy = v8;
     pointerPortalSourceCollections = self->_pointerPortalSourceCollections;
   }
 
-  [(NSMutableArray *)pointerPortalSourceCollections addObject:v4];
+  [(NSMutableArray *)pointerPortalSourceCollections addObject:collectionCopy];
 }
 
-- (void)removePointerPortalSourceCollection:(id)a3
+- (void)removePointerPortalSourceCollection:(id)collection
 {
-  [(NSMutableArray *)self->_pointerPortalSourceCollections removeObject:a3];
+  [(NSMutableArray *)self->_pointerPortalSourceCollections removeObject:collection];
   if (![(NSMutableArray *)self->_pointerPortalSourceCollections count])
   {
     pointerPortalSourceCollections = self->_pointerPortalSourceCollections;
@@ -51,27 +51,27 @@
   }
 }
 
-- (void)addContentMatchMoveSource:(id)a3
+- (void)addContentMatchMoveSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   contentMatchMoveSources = self->_contentMatchMoveSources;
-  v8 = v4;
+  v8 = sourceCopy;
   if (!contentMatchMoveSources)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_contentMatchMoveSources;
     self->_contentMatchMoveSources = v6;
 
-    v4 = v8;
+    sourceCopy = v8;
     contentMatchMoveSources = self->_contentMatchMoveSources;
   }
 
-  [(NSMutableArray *)contentMatchMoveSources addObject:v4];
+  [(NSMutableArray *)contentMatchMoveSources addObject:sourceCopy];
 }
 
-- (void)removeContentMatchMoveSource:(id)a3
+- (void)removeContentMatchMoveSource:(id)source
 {
-  [(NSMutableArray *)self->_contentMatchMoveSources removeObject:a3];
+  [(NSMutableArray *)self->_contentMatchMoveSources removeObject:source];
   if (![(NSMutableArray *)self->_contentMatchMoveSources count])
   {
     contentMatchMoveSources = self->_contentMatchMoveSources;

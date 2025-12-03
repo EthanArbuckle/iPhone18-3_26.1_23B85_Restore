@@ -2,12 +2,12 @@
 + (BOOL)_devicePrefersOverlayInRegularWidth;
 + (BOOL)doesOverridePreferredInterfaceOrientationForPresentation;
 - (BOOL)_allowsDimmedSecondaryAsDeepestUnambiguousResponder;
-- (BOOL)_canTileSidebarColumn:(int64_t)a3;
+- (BOOL)_canTileSidebarColumn:(int64_t)column;
 - (BOOL)_forceDisplayModeBarButtonHidden;
 - (BOOL)_hasPreferredInterfaceOrientationForPresentation;
 - (BOOL)_ignoresSheetContext;
 - (BOOL)_isViewControllerForObservableScrollViewAmbiguous;
-- (BOOL)_navigationControllerShouldNotAdjustTransitioningSizeForChildContainer:(id)a3;
+- (BOOL)_navigationControllerShouldNotAdjustTransitioningSizeForChildContainer:(id)container;
 - (BOOL)_shouldUseFluidSidebarGestures;
 - (BOOL)_shouldUseSeparateStatusBarStyles;
 - (BOOL)_showsSeparators;
@@ -15,13 +15,13 @@
 - (BOOL)_super_prefersHomeIndicatorAutoHidden;
 - (BOOL)_super_prefersInterfaceOrientationLocked;
 - (BOOL)_super_prefersPointerLocked;
-- (BOOL)_super_shouldUpdateFocusInContext:(id)a3;
+- (BOOL)_super_shouldUpdateFocusInContext:(id)context;
 - (BOOL)_supplementaryColumnAdoptsPrimaryBackgroundStyle;
 - (BOOL)_supportsGlobalSearchHosting;
 - (BOOL)_visibleToggleButtonRequiresPresentsWithGesture;
-- (BOOL)_wrapsNavigationController:(id *)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)isShowingColumn:(int64_t)a3;
+- (BOOL)_wrapsNavigationController:(id *)controller;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)isShowingColumn:(int64_t)column;
 - (BOOL)showsSecondaryOnlyButton;
 - (CGFloat)maximumSupplementaryColumnWidth;
 - (CGFloat)minimumSupplementaryColumnWidth;
@@ -29,18 +29,18 @@
 - (CGFloat)preferredSupplementaryColumnWidth;
 - (CGFloat)preferredSupplementaryColumnWidthFraction;
 - (CGFloat)supplementaryColumnWidth;
-- (CGRect)_frameForChildContentContainer:(id)a3;
-- (CGSize)_contentSizeForChildViewController:(id)a3 inPopoverController:(id)a4;
+- (CGRect)_frameForChildContentContainer:(id)container;
+- (CGSize)_contentSizeForChildViewController:(id)controller inPopoverController:(id)popoverController;
 - (CGSize)_super_preferredContentSize;
-- (CGSize)_super_sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)_super_sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (CGSize)preferredContentSize;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (NSArray)_primaryEdgeAdditionalBarButtonItemGroups;
 - (NSArray)_secondaryEdgeAdditionalBarButtonItemGroups;
 - (NSArray)possibleStates;
 - (NSString)description;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
-- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)a3;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
+- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)controller;
 - (UIScreenEdgePanGestureRecognizer)_fluidOpenSidebarPresentationGestureRecognizer;
 - (UISlidingBarConfiguration)configuration;
 - (UISlidingBarState)currentState;
@@ -63,11 +63,11 @@
 - (double)preferredSecondaryColumnWidthFraction;
 - (id)_deepestActionResponder;
 - (id)_effectiveInteractionActivityTrackingBaseName;
-- (id)_navigationController:(id)a3 navigationBarAdditionalActionsForBackButtonMenu:(id)a4;
-- (id)_navigationControllerForTriggeringToolbarCustomizationWithSender:(id)a3;
-- (id)_nextResponderUsingTargetActionStrategyFromChildViewController:(id)a3 didTraverseToParentViewController:(BOOL *)a4;
+- (id)_navigationController:(id)controller navigationBarAdditionalActionsForBackButtonMenu:(id)menu;
+- (id)_navigationControllerForTriggeringToolbarCustomizationWithSender:(id)sender;
+- (id)_nextResponderUsingTargetActionStrategyFromChildViewController:(id)controller didTraverseToParentViewController:(BOOL *)viewController;
 - (id)_panelImpl;
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)_sharedImpl;
 - (id)_super_childViewControllerForStatusBarStyle;
 - (id)_super_childViewControllersToSendViewWillTransitionToSize;
@@ -77,121 +77,121 @@
 - (id)_super_overridingPreferredFocusEnvironment;
 - (id)_super_preferredFocusEnvironments;
 - (id)_super_preferredFocusedView;
-- (id)_topLevelViewControllerForColumn:(void *)a1;
+- (id)_topLevelViewControllerForColumn:(void *)column;
 - (id)_viewControllerForObservableScrollView;
 - (id)transitionCoordinator;
-- (int64_t)_columnForMonitoredNavigationController:(id)a3;
-- (int64_t)_columnForViewController:(id)a3;
+- (int64_t)_columnForMonitoredNavigationController:(id)controller;
+- (int64_t)_columnForViewController:(id)controller;
 - (int64_t)_preferredModalPresentationStyle;
 - (int64_t)_subclassPreferredFocusedViewPrioritizationType;
 - (int64_t)_super_preferredInterfaceOrientationForPresentation;
 - (unint64_t)_super_preferredScreenEdgesDeferringSystemGestures;
 - (unint64_t)_super_supportedInterfaceOrientations;
-- (void)_allowingMutationsInDelegateCallback:(id)a3;
-- (void)_animateToRequest:(id)a3;
+- (void)_allowingMutationsInDelegateCallback:(id)callback;
+- (void)_animateToRequest:(id)request;
 - (void)_commonInit;
 - (void)_didChangeChildModalViewControllers;
-- (void)_didChangeToFirstResponder:(id)a3;
-- (void)_didEndSnapshotSession:(id)a3;
-- (void)_intelligenceCollectSubelementsIn:(CGRect)a3 using:(id)a4 transformToRoot:(id)a5;
-- (void)_navigationController:(id)a3 navigationBar:(id)a4 itemBackButtonUpdated:(id)a5;
-- (void)_navigationController:(id)a3 navigationBar:(id)a4 topItemUpdatedContentLayout:(id)a5;
-- (void)_navigationControllerDidChangeNavigationBarHidden:(id)a3;
-- (void)_navigationControllerDidUpdateNavigationBarSize:(id)a3;
-- (void)_navigationControllerDidUpdateStack:(id)a3;
-- (void)_navigationControllerDidUpdateTopViewController:(id)a3;
-- (void)_preparePresentationControllerForPresenting:(id)a3;
+- (void)_didChangeToFirstResponder:(id)responder;
+- (void)_didEndSnapshotSession:(id)session;
+- (void)_intelligenceCollectSubelementsIn:(CGRect)in using:(id)using transformToRoot:(id)root;
+- (void)_navigationController:(id)controller navigationBar:(id)bar itemBackButtonUpdated:(id)updated;
+- (void)_navigationController:(id)controller navigationBar:(id)bar topItemUpdatedContentLayout:(id)layout;
+- (void)_navigationControllerDidChangeNavigationBarHidden:(id)hidden;
+- (void)_navigationControllerDidUpdateNavigationBarSize:(id)size;
+- (void)_navigationControllerDidUpdateStack:(id)stack;
+- (void)_navigationControllerDidUpdateTopViewController:(id)controller;
+- (void)_preparePresentationControllerForPresenting:(id)presenting;
 - (void)_safeAreaInsetsDidChangeForView;
-- (void)_setAllowsDimmedSecondaryAsDeepestUnambiguousResponder:(BOOL)a3;
-- (void)_setDisplayModeButtonItemTitle:(id)a3;
-- (void)_setForceDisplayModeBarButtonHidden:(BOOL)a3;
-- (void)_setIgnoresSheetContext:(BOOL)a3;
-- (void)_setPrefersOverlayInRegularWidthPhone:(BOOL)a3;
-- (void)_setPrimaryEdgeAdditionalBarButtonItemGroups:(id)a3;
-- (void)_setSecondaryEdgeAdditionalBarButtonItemGroups:(id)a3;
-- (void)_setShowsSeparators:(BOOL)a3;
-- (void)_setSupplementaryColumnAdoptsPrimaryBackgroundStyle:(BOOL)a3;
-- (void)_setTabBarHostedView:(id)a3;
-- (void)_setUsesDeviceOverlayPreferences:(BOOL)a3;
-- (void)_setUsesExtraWidePrimaryColumn:(BOOL)a3;
-- (void)_setVisibleToggleButtonRequiresPresentsWithGesture:(BOOL)a3;
-- (void)_super_didUpdateFocusInContext:(id)a3;
-- (void)_super_removeChildViewController:(id)a3;
-- (void)_super_setView:(id)a3;
-- (void)_super_viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)_super_willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
-- (void)_tabBarControllerDidChangeSelection:(id)a3;
+- (void)_setAllowsDimmedSecondaryAsDeepestUnambiguousResponder:(BOOL)responder;
+- (void)_setDisplayModeButtonItemTitle:(id)title;
+- (void)_setForceDisplayModeBarButtonHidden:(BOOL)hidden;
+- (void)_setIgnoresSheetContext:(BOOL)context;
+- (void)_setPrefersOverlayInRegularWidthPhone:(BOOL)phone;
+- (void)_setPrimaryEdgeAdditionalBarButtonItemGroups:(id)groups;
+- (void)_setSecondaryEdgeAdditionalBarButtonItemGroups:(id)groups;
+- (void)_setShowsSeparators:(BOOL)separators;
+- (void)_setSupplementaryColumnAdoptsPrimaryBackgroundStyle:(BOOL)style;
+- (void)_setTabBarHostedView:(id)view;
+- (void)_setUsesDeviceOverlayPreferences:(BOOL)preferences;
+- (void)_setUsesExtraWidePrimaryColumn:(BOOL)column;
+- (void)_setVisibleToggleButtonRequiresPresentsWithGesture:(BOOL)gesture;
+- (void)_super_didUpdateFocusInContext:(id)context;
+- (void)_super_removeChildViewController:(id)controller;
+- (void)_super_setView:(id)view;
+- (void)_super_viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)_super_willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
+- (void)_tabBarControllerDidChangeSelection:(id)selection;
 - (void)_updateDisplayModeButtonItem;
 - (void)_updateLayoutForStatusBarAndInterfaceOrientation;
 - (void)_updateScrollEdgeBehaviorForDetailNavigationController;
-- (void)_viewControllerChildViewControllersDidChange:(id)a3;
-- (void)_willBeginSnapshotSession:(id)a3;
-- (void)addChildViewController:(id)a3;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_viewControllerChildViewControllersDidChange:(id)change;
+- (void)_willBeginSnapshotSession:(id)session;
+- (void)addChildViewController:(id)controller;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)hideColumn:(UISplitViewControllerColumn)column;
-- (void)removeChildViewController:(id)a3;
+- (void)removeChildViewController:(id)controller;
 - (void)removeFromParentViewController;
-- (void)runToolbarCustomizationPalette:(id)a3;
-- (void)setAutomaticallyAdjustsScrollViewInsets:(BOOL)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDefinesPresentationContext:(BOOL)a3;
+- (void)runToolbarCustomizationPalette:(id)palette;
+- (void)setAutomaticallyAdjustsScrollViewInsets:(BOOL)insets;
+- (void)setConfiguration:(id)configuration;
+- (void)setDefinesPresentationContext:(BOOL)context;
 - (void)setDelegate:(id)delegate;
 - (void)setDisplayModeButtonVisibility:(UISplitViewControllerDisplayModeButtonVisibility)displayModeButtonVisibility;
-- (void)setEdgesForExtendedLayout:(unint64_t)a3;
-- (void)setExtendedLayoutIncludesOpaqueBars:(BOOL)a3;
-- (void)setGutterWidth:(float)a3;
-- (void)setHidesMasterViewInPortrait:(BOOL)a3;
-- (void)setMaximumInspectorColumnWidth:(double)a3;
+- (void)setEdgesForExtendedLayout:(unint64_t)layout;
+- (void)setExtendedLayoutIncludesOpaqueBars:(BOOL)bars;
+- (void)setGutterWidth:(float)width;
+- (void)setHidesMasterViewInPortrait:(BOOL)portrait;
+- (void)setMaximumInspectorColumnWidth:(double)width;
 - (void)setMaximumPrimaryColumnWidth:(CGFloat)maximumPrimaryColumnWidth;
 - (void)setMaximumSupplementaryColumnWidth:(CGFloat)maximumSupplementaryColumnWidth;
-- (void)setMinimumInspectorColumnWidth:(double)a3;
+- (void)setMinimumInspectorColumnWidth:(double)width;
 - (void)setMinimumPrimaryColumnWidth:(CGFloat)minimumPrimaryColumnWidth;
-- (void)setMinimumSecondaryColumnWidth:(double)a3;
+- (void)setMinimumSecondaryColumnWidth:(double)width;
 - (void)setMinimumSupplementaryColumnWidth:(CGFloat)minimumSupplementaryColumnWidth;
-- (void)setModalPresentationCapturesStatusBarAppearance:(BOOL)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)setModalTransitionStyle:(int64_t)a3;
-- (void)setOverrideTraitCollection:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setModalPresentationCapturesStatusBarAppearance:(BOOL)appearance;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)setModalTransitionStyle:(int64_t)style;
+- (void)setOverrideTraitCollection:(id)collection;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)setPreferredDisplayMode:(UISplitViewControllerDisplayMode)preferredDisplayMode;
-- (void)setPreferredInspectorColumnWidth:(double)a3;
-- (void)setPreferredInspectorColumnWidthFraction:(double)a3;
+- (void)setPreferredInspectorColumnWidth:(double)width;
+- (void)setPreferredInspectorColumnWidthFraction:(double)fraction;
 - (void)setPreferredPrimaryColumnWidth:(CGFloat)preferredPrimaryColumnWidth;
 - (void)setPreferredPrimaryColumnWidthFraction:(CGFloat)preferredPrimaryColumnWidthFraction;
-- (void)setPreferredSecondaryColumnWidth:(double)a3;
-- (void)setPreferredSecondaryColumnWidthFraction:(double)a3;
+- (void)setPreferredSecondaryColumnWidth:(double)width;
+- (void)setPreferredSecondaryColumnWidthFraction:(double)fraction;
 - (void)setPreferredSplitBehavior:(UISplitViewControllerSplitBehavior)preferredSplitBehavior;
 - (void)setPreferredSupplementaryColumnWidth:(CGFloat)preferredSupplementaryColumnWidth;
 - (void)setPreferredSupplementaryColumnWidthFraction:(CGFloat)preferredSupplementaryColumnWidthFraction;
 - (void)setPrimaryBackgroundStyle:(UISplitViewControllerBackgroundStyle)primaryBackgroundStyle;
 - (void)setPrimaryEdge:(UISplitViewControllerPrimaryEdge)primaryEdge;
-- (void)setProvidesPresentationContextTransitionStyle:(BOOL)a3;
-- (void)setRestoresFocusAfterTransition:(BOOL)a3;
+- (void)setProvidesPresentationContextTransitionStyle:(BOOL)style;
+- (void)setRestoresFocusAfterTransition:(BOOL)transition;
 - (void)setShowsSecondaryOnlyButton:(BOOL)showsSecondaryOnlyButton;
-- (void)setStateRequest:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setView:(id)a3;
+- (void)setStateRequest:(id)request;
+- (void)setStyle:(int64_t)style;
+- (void)setView:(id)view;
 - (void)setViewController:(UIViewController *)vc forColumn:(UISplitViewControllerColumn)column;
 - (void)setViewControllers:(NSArray *)viewControllers;
-- (void)setViewRespectsSystemMinimumLayoutMargins:(BOOL)a3;
+- (void)setViewRespectsSystemMinimumLayoutMargins:(BOOL)margins;
 - (void)showColumn:(UISplitViewControllerColumn)column;
-- (void)toggleInspector:(id)a3;
-- (void)toggleSidebar:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)unloadViewForced:(BOOL)a3;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)toggleInspector:(id)inspector;
+- (void)toggleSidebar:(id)sidebar;
+- (void)traitCollectionDidChange:(id)change;
+- (void)unloadViewForced:(BOOL)forced;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation UISplitViewController
@@ -202,30 +202,30 @@
   {
     v10.receiver = self;
     v10.super_class = UISplitViewController;
-    v3 = [(UIViewController *)&v10 _viewControllerForObservableScrollView];
+    _viewControllerForObservableScrollView = [(UIViewController *)&v10 _viewControllerForObservableScrollView];
   }
 
   else
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    v5 = [v4 _viewControllerForObservableScrollView];
-    v6 = v5;
-    if (v5)
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _viewControllerForObservableScrollView2 = [_sharedImpl _viewControllerForObservableScrollView];
+    v6 = _viewControllerForObservableScrollView2;
+    if (_viewControllerForObservableScrollView2)
     {
-      v7 = v5;
+      _viewControllerForObservableScrollView3 = _viewControllerForObservableScrollView2;
     }
 
     else
     {
       v9.receiver = self;
       v9.super_class = UISplitViewController;
-      v7 = [(UIViewController *)&v9 _viewControllerForObservableScrollView];
+      _viewControllerForObservableScrollView3 = [(UIViewController *)&v9 _viewControllerForObservableScrollView];
     }
 
-    v3 = v7;
+    _viewControllerForObservableScrollView = _viewControllerForObservableScrollView3;
   }
 
-  return v3;
+  return _viewControllerForObservableScrollView;
 }
 
 - (BOOL)_supportsGlobalSearchHosting
@@ -235,31 +235,31 @@
     return 0;
   }
 
-  v4 = [(UIViewController *)self _lastNotifiedTraitCollection];
-  v5 = v4;
-  if (v4)
+  _lastNotifiedTraitCollection = [(UIViewController *)self _lastNotifiedTraitCollection];
+  v5 = _lastNotifiedTraitCollection;
+  if (_lastNotifiedTraitCollection)
   {
-    v6 = v4;
+    traitCollection = _lastNotifiedTraitCollection;
   }
 
   else
   {
-    v6 = [(UIViewController *)self traitCollection];
+    traitCollection = [(UIViewController *)self traitCollection];
   }
 
-  v7 = v6;
+  v7 = traitCollection;
 
   if (([v7 userInterfaceIdiom] | 4) == 5)
   {
-    v3 = [(_UISplitViewControllerImplementing *)self->_impl supportsGlobalSearchHosting];
+    supportsGlobalSearchHosting = [(_UISplitViewControllerImplementing *)self->_impl supportsGlobalSearchHosting];
   }
 
   else
   {
-    v3 = 0;
+    supportsGlobalSearchHosting = 0;
   }
 
-  return v3;
+  return supportsGlobalSearchHosting;
 }
 
 - (void)viewWillLayoutSubviews
@@ -275,9 +275,9 @@
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    if (!v4)
+    if (!userInterfaceIdiom)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"UISplitViewController is only supported when running under UIUserInterfaceIdiomPad"];
     }
@@ -286,9 +286,9 @@
   v5 = +[UISplitViewControllerImplFactory sharedInstance];
   v6 = [v5 implClassForSplitViewController:self];
 
-  v7 = [v6 _defaultVisualStyle];
+  _defaultVisualStyle = [v6 _defaultVisualStyle];
   v8 = +[_UIVisualStyleRegistry defaultRegistry];
-  [v8 registerVisualStyleClass:v7 forStylableClass:objc_opt_class()];
+  [v8 registerVisualStyleClass:_defaultVisualStyle forStylableClass:objc_opt_class()];
 
   v9 = +[UIDevice currentDevice];
   v10 = +[_UIVisualStyleRegistry registryForIdiom:](_UIVisualStyleRegistry, "registryForIdiom:", [v9 userInterfaceIdiom]);
@@ -303,9 +303,9 @@
   self->_impl = v14;
 
   [(_UISplitViewControllerImplementing *)self->_impl _commonInit];
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 addObserver:self selector:sel__willBeginSnapshotSession_ name:@"UISceneWillBeginSystemSnapshotSequence" object:0];
-  [v16 addObserver:self selector:sel__didEndSnapshotSession_ name:@"UISceneDidCompleteSystemSnapshotSequence" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__willBeginSnapshotSession_ name:@"UISceneWillBeginSystemSnapshotSequence" object:0];
+  [defaultCenter addObserver:self selector:sel__didEndSnapshotSession_ name:@"UISceneDidCompleteSystemSnapshotSequence" object:0];
 }
 
 - (id)_sharedImpl
@@ -370,19 +370,19 @@
 
 - (void)_updateScrollEdgeBehaviorForDetailNavigationController
 {
-  v9 = [(UISplitViewController *)self masterViewController];
+  masterViewController = [(UISplitViewController *)self masterViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [(UISplitViewController *)self detailViewController];
+    detailViewController = [(UISplitViewController *)self detailViewController];
     goto LABEL_6;
   }
 
-  v3 = [v9 navigationBar];
-  v4 = [v3 prefersLargeTitles];
+  navigationBar = [masterViewController navigationBar];
+  prefersLargeTitles = [navigationBar prefersLargeTitles];
 
-  v5 = [(UISplitViewController *)self detailViewController];
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  detailViewController = [(UISplitViewController *)self detailViewController];
+  if (!prefersLargeTitles || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_6:
     objc_opt_class();
@@ -392,13 +392,13 @@ LABEL_6:
     }
   }
 
-  v6 = [v5 navigationBar];
+  navigationBar2 = [detailViewController navigationBar];
   if (_UIBarAppearanceAPIVersion() >= 1 && (_UIBarsApplyChromelessEverywhere() & 1) == 0)
   {
-    v7 = [(UIViewController *)self traitCollection];
-    v8 = [v7 verticalSizeClass] != 1;
+    traitCollection = [(UIViewController *)self traitCollection];
+    v8 = [traitCollection verticalSizeClass] != 1;
 
-    [v6 _setForceScrollEdgeAppearance:v8];
+    [navigationBar2 _setForceScrollEdgeAppearance:v8];
   }
 
 LABEL_11:
@@ -421,35 +421,35 @@ LABEL_11:
 
 - (BOOL)_isViewControllerForObservableScrollViewAmbiguous
 {
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  v4 = v3;
-  if (v3)
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  v4 = _sharedImpl;
+  if (_sharedImpl)
   {
-    v5 = [v3 _isViewControllerForObservableScrollViewAmbiguous];
+    _isViewControllerForObservableScrollViewAmbiguous = [_sharedImpl _isViewControllerForObservableScrollViewAmbiguous];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UISplitViewController;
-    v5 = [(UIViewController *)&v8 _isViewControllerForObservableScrollViewAmbiguous];
+    _isViewControllerForObservableScrollViewAmbiguous = [(UIViewController *)&v8 _isViewControllerForObservableScrollViewAmbiguous];
   }
 
-  v6 = v5;
+  v6 = _isViewControllerForObservableScrollViewAmbiguous;
 
   return v6;
 }
 
 - (id)transitionCoordinator
 {
-  if (!-[_UISplitViewControllerImplementing style](self->_impl, "style") || (-[UISplitViewController _sharedImpl](self, "_sharedImpl"), v3 = objc_claimAutoreleasedReturnValue(), [v3 transitionCoordinator], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  if (!-[_UISplitViewControllerImplementing style](self->_impl, "style") || (-[UISplitViewController _sharedImpl](self, "_sharedImpl"), v3 = objc_claimAutoreleasedReturnValue(), [v3 transitionCoordinator], transitionCoordinator = objc_claimAutoreleasedReturnValue(), v3, !transitionCoordinator))
   {
     v6.receiver = self;
     v6.super_class = UISplitViewController;
-    v4 = [(UIViewController *)&v6 transitionCoordinator];
+    transitionCoordinator = [(UIViewController *)&v6 transitionCoordinator];
   }
 
-  return v4;
+  return transitionCoordinator;
 }
 
 - (id)_panelImpl
@@ -471,16 +471,16 @@ LABEL_11:
 - (UISplitViewControllerSplitBehavior)preferredSplitBehavior
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  v4 = [v3 preferredSplitBehavior];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  preferredSplitBehavior = [_sharedImpl preferredSplitBehavior];
 
-  return v4;
+  return preferredSplitBehavior;
 }
 
 - (CGFloat)preferredPrimaryColumnWidth
 {
-  v2 = [(UISplitViewController *)self _sharedImpl];
-  [v2 preferredPrimaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl preferredPrimaryColumnWidth];
   v4 = v3;
 
   return v4;
@@ -525,23 +525,23 @@ LABEL_11:
 - (UISplitViewControllerDisplayModeButtonVisibility)displayModeButtonVisibility
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  v4 = [v3 displayModeButtonVisibility];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  displayModeButtonVisibility = [_sharedImpl displayModeButtonVisibility];
 
-  return v4;
+  return displayModeButtonVisibility;
 }
 
-- (void)_intelligenceCollectSubelementsIn:(CGRect)a3 using:(id)a4 transformToRoot:(id)a5
+- (void)_intelligenceCollectSubelementsIn:(CGRect)in using:(id)using transformToRoot:(id)root
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = _Block_copy(a5);
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
+  v11 = _Block_copy(root);
   _Block_copy(v11);
-  v12 = a4;
-  v13 = self;
-  sub_188E7DDA0(v12, v13, v11, x, y, width, height);
+  usingCopy = using;
+  selfCopy = self;
+  sub_188E7DDA0(usingCopy, selfCopy, v11, x, y, width, height);
   _Block_release(v11);
   _Block_release(v11);
 }
@@ -557,14 +557,14 @@ LABEL_11:
     [(UISplitViewController *)v5 _commonInit];
     if ([(UISplitViewController *)v6 _shouldInitializeColumnStyle])
     {
-      v7 = [(UISplitViewController *)v6 _sharedImpl];
-      if (!v7)
+      _sharedImpl = [(UISplitViewController *)v6 _sharedImpl];
+      if (!_sharedImpl)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:a2 object:v6 file:@"UISplitViewController.m" lineNumber:131 description:@"Wrong implementation class for column-style UISplitViewController support"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v6 file:@"UISplitViewController.m" lineNumber:131 description:@"Wrong implementation class for column-style UISplitViewController support"];
       }
 
-      [v7 setStyle:1];
+      [_sharedImpl setStyle:1];
     }
   }
 
@@ -587,21 +587,21 @@ LABEL_11:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UISplitViewController;
-  v4 = a3;
-  [(UIViewController *)&v5 encodeWithCoder:v4];
-  [(_UISplitViewControllerImplementing *)self->_impl encodeWithCoder:v4, v5.receiver, v5.super_class];
+  coderCopy = coder;
+  [(UIViewController *)&v5 encodeWithCoder:coderCopy];
+  [(_UISplitViewControllerImplementing *)self->_impl encodeWithCoder:coderCopy, v5.receiver, v5.super_class];
 }
 
 - (UISplitViewController)initWithStyle:(UISplitViewControllerStyle)style
 {
   if (style == UISplitViewControllerStyleUnspecified)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UISplitViewController.m" lineNumber:162 description:@"API misuse. -initWithStyle: may not be used with UISplitViewControllerStyleUnspecified"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISplitViewController.m" lineNumber:162 description:@"API misuse. -initWithStyle: may not be used with UISplitViewControllerStyleUnspecified"];
   }
 
   v12.receiver = self;
@@ -612,29 +612,29 @@ LABEL_11:
   {
     v6->_initializerForcedColumnStyle = 1;
     [(UISplitViewController *)v6 _commonInit];
-    v8 = [(UISplitViewController *)v7 _sharedImpl];
-    if (!v8)
+    _sharedImpl = [(UISplitViewController *)v7 _sharedImpl];
+    if (!_sharedImpl)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:v7 file:@"UISplitViewController.m" lineNumber:173 description:@"Wrong implementation class for column-style UISplitViewController support"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v7 file:@"UISplitViewController.m" lineNumber:173 description:@"Wrong implementation class for column-style UISplitViewController support"];
     }
 
-    [v8 setStyle:style];
+    [_sharedImpl setStyle:style];
   }
 
   return v7;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UISplitViewController.m" lineNumber:186 description:@"SPI misuse. -setStyle: should be used by IB to set up UISplitViewController for column-style behavior using UISplitViewControllerStyleDoubleColumn or -TripleColumn"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISplitViewController.m" lineNumber:186 description:@"SPI misuse. -setStyle: should be used by IB to set up UISplitViewController for column-style behavior using UISplitViewControllerStyleDoubleColumn or -TripleColumn"];
   }
 
-  v7 = [(UISplitViewController *)self _sharedImpl];
-  [v7 setStyle:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setStyle:style];
 }
 
 - (void)setShowsSecondaryOnlyButton:(BOOL)showsSecondaryOnlyButton
@@ -649,17 +649,17 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setShowsSecondaryOnlyButton:v3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setShowsSecondaryOnlyButton:v3];
 }
 
 - (BOOL)showsSecondaryOnlyButton
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  v4 = [v3 showsSecondaryOnlyButton];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  showsSecondaryOnlyButton = [_sharedImpl showsSecondaryOnlyButton];
 
-  return v4;
+  return showsSecondaryOnlyButton;
 }
 
 - (void)setPreferredSplitBehavior:(UISplitViewControllerSplitBehavior)preferredSplitBehavior
@@ -673,17 +673,17 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredSplitBehavior:preferredSplitBehavior];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredSplitBehavior:preferredSplitBehavior];
 }
 
 - (UISplitViewControllerSplitBehavior)splitBehavior
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  v4 = [v3 splitBehavior];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  splitBehavior = [_sharedImpl splitBehavior];
 
-  return v4;
+  return splitBehavior;
 }
 
 - (void)setViewController:(UIViewController *)vc forColumn:(UISplitViewControllerColumn)column
@@ -710,25 +710,25 @@ LABEL_11:
     [v13 raise:v14 format:{@"Non-nil view controller not accepted for %@ column in %@ UISplitViewController", v15, v16}];
   }
 
-  v17 = [(UISplitViewController *)self _sharedImpl];
-  [v17 setViewController:v7 forColumn:column];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setViewController:v7 forColumn:column];
 }
 
 - (UIViewController)viewControllerForColumn:(UISplitViewControllerColumn)column
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  v6 = [v5 viewControllerForColumn:column];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  v6 = [_sharedImpl viewControllerForColumn:column];
 
   return v6;
 }
 
-- (id)_topLevelViewControllerForColumn:(void *)a1
+- (id)_topLevelViewControllerForColumn:(void *)column
 {
-  if (a1)
+  if (column)
   {
-    v3 = [a1 _sharedImpl];
-    v4 = [v3 _topLevelViewControllerForColumn:a2];
+    _sharedImpl = [column _sharedImpl];
+    v4 = [_sharedImpl _topLevelViewControllerForColumn:a2];
   }
 
   else
@@ -742,8 +742,8 @@ LABEL_11:
 - (void)hideColumn:(UISplitViewControllerColumn)column
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  if (([v9 inCollapsingToProposedTopColumnCallback] & 1) == 0 && (objc_msgSend(v9, "inExpandingToProposedDisplayModeCallback") & 1) == 0 && -[_UISplitViewControllerImplementing lockedForDelegateCallback](self->_impl, "lockedForDelegateCallback"))
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  if (([_sharedImpl inCollapsingToProposedTopColumnCallback] & 1) == 0 && (objc_msgSend(_sharedImpl, "inExpandingToProposedDisplayModeCallback") & 1) == 0 && -[_UISplitViewControllerImplementing lockedForDelegateCallback](self->_impl, "lockedForDelegateCallback"))
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -756,15 +756,15 @@ LABEL_11:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Programmatic column hiding not supported for Compact column of UISplitViewController"];
   }
 
-  [v9 hideColumn:column];
+  [_sharedImpl hideColumn:column];
 }
 
 - (void)showColumn:(UISplitViewControllerColumn)column
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v6 = [(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback];
+  lockedForDelegateCallback = [(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback];
   v7 = MEMORY[0x1E695D940];
-  if (v6)
+  if (lockedForDelegateCallback)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -777,8 +777,8 @@ LABEL_11:
     [MEMORY[0x1E695DF30] raise:*v7 format:@"Programmatic column showing not supported for Compact column of UISplitViewController"];
   }
 
-  v11 = [(UISplitViewController *)self _sharedImpl];
-  [v11 showColumn:column];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl showColumn:column];
 }
 
 - (void)setPreferredSupplementaryColumnWidth:(CGFloat)preferredSupplementaryColumnWidth
@@ -793,16 +793,16 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredSupplementaryColumnWidth:preferredSupplementaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredSupplementaryColumnWidth:preferredSupplementaryColumnWidth];
 }
 
 - (CGFloat)preferredSupplementaryColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   _supplementaryColumnWidthSupportCheck(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 preferredSupplementaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl preferredSupplementaryColumnWidth];
   v5 = v4;
 
   return v5;
@@ -820,16 +820,16 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredSupplementaryColumnWidthFraction:preferredSupplementaryColumnWidthFraction];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredSupplementaryColumnWidthFraction:preferredSupplementaryColumnWidthFraction];
 }
 
 - (CGFloat)preferredSupplementaryColumnWidthFraction
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   _supplementaryColumnWidthSupportCheck(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 preferredSupplementaryColumnWidthFraction];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl preferredSupplementaryColumnWidthFraction];
   v5 = v4;
 
   return v5;
@@ -847,16 +847,16 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setMinimumSupplementaryColumnWidth:minimumSupplementaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setMinimumSupplementaryColumnWidth:minimumSupplementaryColumnWidth];
 }
 
 - (CGFloat)minimumSupplementaryColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   _supplementaryColumnWidthSupportCheck(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 minimumSupplementaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl minimumSupplementaryColumnWidth];
   v5 = v4;
 
   return v5;
@@ -874,16 +874,16 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setMaximumSupplementaryColumnWidth:maximumSupplementaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setMaximumSupplementaryColumnWidth:maximumSupplementaryColumnWidth];
 }
 
 - (CGFloat)maximumSupplementaryColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   _supplementaryColumnWidthSupportCheck(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 maximumSupplementaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl maximumSupplementaryColumnWidth];
   v5 = v4;
 
   return v5;
@@ -893,14 +893,14 @@ LABEL_11:
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   _supplementaryColumnWidthSupportCheck(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 supplementaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl supplementaryColumnWidth];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setPreferredSecondaryColumnWidthFraction:(double)a3
+- (void)setPreferredSecondaryColumnWidthFraction:(double)fraction
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
@@ -911,21 +911,21 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredSecondaryColumnWidthFraction:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredSecondaryColumnWidthFraction:fraction];
 }
 
 - (double)preferredSecondaryColumnWidthFraction
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 preferredSecondaryColumnWidthFraction];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl preferredSecondaryColumnWidthFraction];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setPreferredSecondaryColumnWidth:(double)a3
+- (void)setPreferredSecondaryColumnWidth:(double)width
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
@@ -936,21 +936,21 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredSecondaryColumnWidth:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredSecondaryColumnWidth:width];
 }
 
 - (double)preferredSecondaryColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 preferredSecondaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl preferredSecondaryColumnWidth];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setMinimumSecondaryColumnWidth:(double)a3
+- (void)setMinimumSecondaryColumnWidth:(double)width
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
@@ -961,21 +961,21 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setMinimumSecondaryColumnWidth:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setMinimumSecondaryColumnWidth:width];
 }
 
 - (double)minimumSecondaryColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 minimumSecondaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl minimumSecondaryColumnWidth];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setPreferredInspectorColumnWidthFraction:(double)a3
+- (void)setPreferredInspectorColumnWidthFraction:(double)fraction
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
@@ -986,21 +986,21 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredInspectorColumnWidthFraction:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredInspectorColumnWidthFraction:fraction];
 }
 
 - (double)preferredInspectorColumnWidthFraction
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 preferredInspectorColumnWidthFraction];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl preferredInspectorColumnWidthFraction];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setPreferredInspectorColumnWidth:(double)a3
+- (void)setPreferredInspectorColumnWidth:(double)width
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
@@ -1011,21 +1011,21 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredInspectorColumnWidth:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredInspectorColumnWidth:width];
 }
 
 - (double)preferredInspectorColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 preferredInspectorColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl preferredInspectorColumnWidth];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setMinimumInspectorColumnWidth:(double)a3
+- (void)setMinimumInspectorColumnWidth:(double)width
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
@@ -1036,15 +1036,15 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setMinimumInspectorColumnWidth:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setMinimumInspectorColumnWidth:width];
 }
 
 - (double)effectiveMinimumInspectorColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 effectiveMinimumInspectorColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl effectiveMinimumInspectorColumnWidth];
   v5 = v4;
 
   return v5;
@@ -1053,14 +1053,14 @@ LABEL_11:
 - (double)minimumInspectorColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 minimumInspectorColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl minimumInspectorColumnWidth];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setMaximumInspectorColumnWidth:(double)a3
+- (void)setMaximumInspectorColumnWidth:(double)width
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
@@ -1071,15 +1071,15 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setMaximumInspectorColumnWidth:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setMaximumInspectorColumnWidth:width];
 }
 
 - (double)maximumInspectorColumnWidth
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v3 = [(UISplitViewController *)self _sharedImpl];
-  [v3 maximumInspectorColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl maximumInspectorColumnWidth];
   v5 = v4;
 
   return v5;
@@ -1088,8 +1088,8 @@ LABEL_11:
 - (void)setDisplayModeButtonVisibility:(UISplitViewControllerDisplayModeButtonVisibility)displayModeButtonVisibility
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 setDisplayModeButtonVisibility:displayModeButtonVisibility];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setDisplayModeButtonVisibility:displayModeButtonVisibility];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers
@@ -1120,122 +1120,122 @@ LABEL_11:
   [(_UISplitViewControllerImplementing *)self->_impl setDelegate:v8];
 }
 
-- (void)_setVisibleToggleButtonRequiresPresentsWithGesture:(BOOL)a3
+- (void)_setVisibleToggleButtonRequiresPresentsWithGesture:(BOOL)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    [v5 _setVisibleToggleButtonRequiresPresentsWithGesture:v3];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _setVisibleToggleButtonRequiresPresentsWithGesture:gestureCopy];
   }
 }
 
 - (BOOL)_visibleToggleButtonRequiresPresentsWithGesture
 {
-  v3 = [(_UISplitViewControllerImplementing *)self->_impl style];
-  if (v3)
+  style = [(_UISplitViewControllerImplementing *)self->_impl style];
+  if (style)
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    v5 = [v4 _visibleToggleButtonRequiresPresentsWithGesture];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _visibleToggleButtonRequiresPresentsWithGesture = [_sharedImpl _visibleToggleButtonRequiresPresentsWithGesture];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(style) = _visibleToggleButtonRequiresPresentsWithGesture;
   }
 
-  return v3;
+  return style;
 }
 
-- (void)_setForceDisplayModeBarButtonHidden:(BOOL)a3
+- (void)_setForceDisplayModeBarButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    [v5 _setForceDisplayModeBarButtonHidden:v3];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _setForceDisplayModeBarButtonHidden:hiddenCopy];
   }
 }
 
 - (BOOL)_forceDisplayModeBarButtonHidden
 {
-  v3 = [(_UISplitViewControllerImplementing *)self->_impl style];
-  if (v3)
+  style = [(_UISplitViewControllerImplementing *)self->_impl style];
+  if (style)
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    v5 = [v4 _forceDisplayModeBarButtonHidden];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _forceDisplayModeBarButtonHidden = [_sharedImpl _forceDisplayModeBarButtonHidden];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(style) = _forceDisplayModeBarButtonHidden;
   }
 
-  return v3;
+  return style;
 }
 
-- (void)_setAllowsDimmedSecondaryAsDeepestUnambiguousResponder:(BOOL)a3
+- (void)_setAllowsDimmedSecondaryAsDeepestUnambiguousResponder:(BOOL)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    [v5 _setAllowsDimmedSecondaryAsDeepestUnambiguousResponder:v3];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _setAllowsDimmedSecondaryAsDeepestUnambiguousResponder:responderCopy];
   }
 }
 
 - (BOOL)_allowsDimmedSecondaryAsDeepestUnambiguousResponder
 {
-  v3 = [(_UISplitViewControllerImplementing *)self->_impl style];
-  if (v3)
+  style = [(_UISplitViewControllerImplementing *)self->_impl style];
+  if (style)
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    v5 = [v4 _allowsDimmedSecondaryAsDeepestUnambiguousResponder];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _allowsDimmedSecondaryAsDeepestUnambiguousResponder = [_sharedImpl _allowsDimmedSecondaryAsDeepestUnambiguousResponder];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(style) = _allowsDimmedSecondaryAsDeepestUnambiguousResponder;
   }
 
-  return v3;
+  return style;
 }
 
-- (void)_setIgnoresSheetContext:(BOOL)a3
+- (void)_setIgnoresSheetContext:(BOOL)context
 {
-  v3 = a3;
+  contextCopy = context;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    [v5 _setIgnoresSheetContext:v3];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _setIgnoresSheetContext:contextCopy];
   }
 }
 
 - (BOOL)_ignoresSheetContext
 {
-  v3 = [(_UISplitViewControllerImplementing *)self->_impl style];
-  if (v3)
+  style = [(_UISplitViewControllerImplementing *)self->_impl style];
+  if (style)
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    v5 = [v4 _ignoresSheetContext];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _ignoresSheetContext = [_sharedImpl _ignoresSheetContext];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(style) = _ignoresSheetContext;
   }
 
-  return v3;
+  return style;
 }
 
-- (void)_setShowsSeparators:(BOOL)a3
+- (void)_setShowsSeparators:(BOOL)separators
 {
-  v3 = a3;
-  v4 = [(UISplitViewController *)self _sharedImpl];
-  [v4 _setShowsSeparators:v3];
+  separatorsCopy = separators;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl _setShowsSeparators:separatorsCopy];
 }
 
 - (BOOL)_showsSeparators
 {
-  v2 = [(UISplitViewController *)self _sharedImpl];
-  v3 = [v2 _showsSeparators];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  _showsSeparators = [_sharedImpl _showsSeparators];
 
-  return v3;
+  return _showsSeparators;
 }
 
 - (void)setPreferredDisplayMode:(UISplitViewControllerDisplayMode)preferredDisplayMode
 {
-  v6 = [(_UISplitViewControllerImplementing *)self->_impl style];
+  style = [(_UISplitViewControllerImplementing *)self->_impl style];
   v7 = 6;
-  if (!v6)
+  if (!style)
   {
     v7 = 3;
   }
@@ -1271,8 +1271,8 @@ LABEL_11:
     [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
   }
 
-  v9 = [(UISplitViewController *)self _sharedImpl];
-  [v9 setPreferredPrimaryColumnWidth:preferredPrimaryColumnWidth];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPreferredPrimaryColumnWidth:preferredPrimaryColumnWidth];
 }
 
 - (void)setPreferredPrimaryColumnWidthFraction:(CGFloat)preferredPrimaryColumnWidthFraction
@@ -1320,51 +1320,51 @@ LABEL_11:
   [(_UISplitViewControllerImplementing *)impl setMaximumPrimaryColumnWidth:maximumPrimaryColumnWidth];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = UISplitViewController;
-  [(UIViewController *)&v3 didMoveToParentViewController:a3];
+  [(UIViewController *)&v3 didMoveToParentViewController:controller];
 }
 
-- (BOOL)isShowingColumn:(int64_t)a3
+- (BOOL)isShowingColumn:(int64_t)column
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  LOBYTE(a3) = [v5 isShowingColumn:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  LOBYTE(column) = [_sharedImpl isShowingColumn:column];
 
-  return a3;
+  return column;
 }
 
 - (id)_effectiveInteractionActivityTrackingBaseName
 {
-  v3 = [(UIViewController *)self interactionActivityTrackingBaseName];
-  if (!v3)
+  interactionActivityTrackingBaseName = [(UIViewController *)self interactionActivityTrackingBaseName];
+  if (!interactionActivityTrackingBaseName)
   {
     if ([(UISplitViewController *)self isMemberOfClass:objc_opt_class()])
     {
-      v4 = [(UISplitViewController *)self masterViewController];
-      v5 = [v4 _effectiveInteractionActivityTrackingBaseName];
+      masterViewController = [(UISplitViewController *)self masterViewController];
+      _effectiveInteractionActivityTrackingBaseName = [masterViewController _effectiveInteractionActivityTrackingBaseName];
 
-      if (v5)
+      if (_effectiveInteractionActivityTrackingBaseName)
       {
-        v3 = [@"UISVC-" stringByAppendingString:v5];
+        interactionActivityTrackingBaseName = [@"UISVC-" stringByAppendingString:_effectiveInteractionActivityTrackingBaseName];
       }
 
       else
       {
-        v3 = 0;
+        interactionActivityTrackingBaseName = 0;
       }
     }
 
     else
     {
       v6 = objc_opt_class();
-      v3 = NSStringFromClass(v6);
+      interactionActivityTrackingBaseName = NSStringFromClass(v6);
     }
   }
 
-  return v3;
+  return interactionActivityTrackingBaseName;
 }
 
 - (void)setPrimaryEdge:(UISplitViewControllerPrimaryEdge)primaryEdge
@@ -1382,7 +1382,7 @@ LABEL_11:
   [(_UISplitViewControllerImplementing *)impl setPrimaryEdge:primaryEdge];
 }
 
-- (void)setGutterWidth:(float)a3
+- (void)setGutterWidth:(float)width
 {
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
@@ -1393,14 +1393,14 @@ LABEL_11:
   }
 
   impl = self->_impl;
-  *&v6 = a3;
+  *&v6 = width;
 
   [(_UISplitViewControllerImplementing *)impl setGutterWidth:v6];
 }
 
-- (void)setHidesMasterViewInPortrait:(BOOL)a3
+- (void)setHidesMasterViewInPortrait:(BOOL)portrait
 {
-  v3 = a3;
+  portraitCopy = portrait;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -1411,12 +1411,12 @@ LABEL_11:
 
   impl = self->_impl;
 
-  [(_UISplitViewControllerImplementing *)impl setHidesMasterViewInPortrait:v3];
+  [(_UISplitViewControllerImplementing *)impl setHidesMasterViewInPortrait:portraitCopy];
 }
 
-- (void)_setDisplayModeButtonItemTitle:(id)a3
+- (void)_setDisplayModeButtonItemTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v5 = MEMORY[0x1E695DF30];
@@ -1425,7 +1425,7 @@ LABEL_11:
     [v5 raise:v6 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v7}];
   }
 
-  [(_UISplitViewControllerImplementing *)self->_impl _setDisplayModeButtonItemTitle:v8];
+  [(_UISplitViewControllerImplementing *)self->_impl _setDisplayModeButtonItemTitle:titleCopy];
 }
 
 + (BOOL)_devicePrefersOverlayInRegularWidth
@@ -1444,9 +1444,9 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
   _MergedGlobals_15_1 = _UIScreenIsPhyiscallyLargePhone([v0 _screenType]);
 }
 
-- (void)_setPrefersOverlayInRegularWidthPhone:(BOOL)a3
+- (void)_setPrefersOverlayInRegularWidthPhone:(BOOL)phone
 {
-  v3 = a3;
+  phoneCopy = phone;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -1457,12 +1457,12 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
 
   impl = self->_impl;
 
-  [(_UISplitViewControllerImplementing *)impl setPrefersOverlayInRegularWidthPhone:v3];
+  [(_UISplitViewControllerImplementing *)impl setPrefersOverlayInRegularWidthPhone:phoneCopy];
 }
 
-- (void)_setUsesDeviceOverlayPreferences:(BOOL)a3
+- (void)_setUsesDeviceOverlayPreferences:(BOOL)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -1473,12 +1473,12 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
 
   impl = self->_impl;
 
-  [(_UISplitViewControllerImplementing *)impl setUsesDeviceOverlayPreferences:v3];
+  [(_UISplitViewControllerImplementing *)impl setUsesDeviceOverlayPreferences:preferencesCopy];
 }
 
-- (void)_setUsesExtraWidePrimaryColumn:(BOOL)a3
+- (void)_setUsesExtraWidePrimaryColumn:(BOOL)column
 {
-  v3 = a3;
+  columnCopy = column;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -1489,19 +1489,19 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
 
   impl = self->_impl;
 
-  [(_UISplitViewControllerImplementing *)impl _setUsesExtraWidePrimaryColumn:v3];
+  [(_UISplitViewControllerImplementing *)impl _setUsesExtraWidePrimaryColumn:columnCopy];
 }
 
-- (void)_allowingMutationsInDelegateCallback:(id)a3
+- (void)_allowingMutationsInDelegateCallback:(id)callback
 {
-  v4 = a3;
-  if (v4)
+  callbackCopy = callback;
+  if (callbackCopy)
   {
-    v6 = v4;
+    v6 = callbackCopy;
     if ([(_UISplitViewControllerImplementing *)self->_impl style])
     {
-      v5 = [(UISplitViewController *)self _sharedImpl];
-      [v5 _allowingMutationsInDelegateCallback:v6];
+      _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+      [_sharedImpl _allowingMutationsInDelegateCallback:v6];
     }
 
     else
@@ -1509,136 +1509,136 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
       v6[2]();
     }
 
-    v4 = v6;
+    callbackCopy = v6;
   }
 }
 
-- (BOOL)_canTileSidebarColumn:(int64_t)a3
+- (BOOL)_canTileSidebarColumn:(int64_t)column
 {
   _UISplitViewControllerCheckSupportColumnStyleRaiseIfNot(self);
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  LOBYTE(a3) = [v5 canTileSidebarColumn:a3];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  LOBYTE(column) = [_sharedImpl canTileSidebarColumn:column];
 
-  return a3;
+  return column;
 }
 
-- (void)_setPrimaryEdgeAdditionalBarButtonItemGroups:(id)a3
+- (void)_setPrimaryEdgeAdditionalBarButtonItemGroups:(id)groups
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 setPrimaryEdgeAdditionalBarButtonItemGroups:v4];
+  groupsCopy = groups;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setPrimaryEdgeAdditionalBarButtonItemGroups:groupsCopy];
 }
 
 - (NSArray)_primaryEdgeAdditionalBarButtonItemGroups
 {
-  v2 = [(UISplitViewController *)self _sharedImpl];
-  v3 = [v2 primaryEdgeAdditionalBarButtonItemGroups];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  primaryEdgeAdditionalBarButtonItemGroups = [_sharedImpl primaryEdgeAdditionalBarButtonItemGroups];
 
-  return v3;
+  return primaryEdgeAdditionalBarButtonItemGroups;
 }
 
-- (void)_setSecondaryEdgeAdditionalBarButtonItemGroups:(id)a3
+- (void)_setSecondaryEdgeAdditionalBarButtonItemGroups:(id)groups
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 setSecondaryEdgeAdditionalBarButtonItemGroups:v4];
+  groupsCopy = groups;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setSecondaryEdgeAdditionalBarButtonItemGroups:groupsCopy];
 }
 
 - (NSArray)_secondaryEdgeAdditionalBarButtonItemGroups
 {
-  v2 = [(UISplitViewController *)self _sharedImpl];
-  v3 = [v2 secondaryEdgeAdditionalBarButtonItemGroups];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  secondaryEdgeAdditionalBarButtonItemGroups = [_sharedImpl secondaryEdgeAdditionalBarButtonItemGroups];
 
-  return v3;
+  return secondaryEdgeAdditionalBarButtonItemGroups;
 }
 
-- (void)_preparePresentationControllerForPresenting:(id)a3
+- (void)_preparePresentationControllerForPresenting:(id)presenting
 {
   v6.receiver = self;
   v6.super_class = UISplitViewController;
-  v4 = a3;
-  [(UIViewController *)&v6 _preparePresentationControllerForPresenting:v4];
+  presentingCopy = presenting;
+  [(UIViewController *)&v6 _preparePresentationControllerForPresenting:presentingCopy];
   v5 = [(UISplitViewController *)self _sharedImpl:v6.receiver];
-  [v5 _preparePresentationControllerForPresenting:v4];
+  [v5 _preparePresentationControllerForPresenting:presentingCopy];
 }
 
-- (void)_viewControllerChildViewControllersDidChange:(id)a3
+- (void)_viewControllerChildViewControllersDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    [v4 _viewControllerChildViewControllersDidChange:v5];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _viewControllerChildViewControllersDidChange:changeCopy];
   }
 }
 
-- (void)_tabBarControllerDidChangeSelection:(id)a3
+- (void)_tabBarControllerDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 _tabBarControllerDidChangeSelection:v4];
+  selectionCopy = selection;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl _tabBarControllerDidChangeSelection:selectionCopy];
 }
 
-- (void)_navigationControllerDidUpdateStack:(id)a3
+- (void)_navigationControllerDidUpdateStack:(id)stack
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 _navigationControllerDidUpdateStack:v4];
+  stackCopy = stack;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl _navigationControllerDidUpdateStack:stackCopy];
 }
 
-- (void)_navigationControllerDidUpdateTopViewController:(id)a3
+- (void)_navigationControllerDidUpdateTopViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 _navigationControllerDidUpdateTopViewController:v4];
+  controllerCopy = controller;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl _navigationControllerDidUpdateTopViewController:controllerCopy];
 }
 
-- (void)_navigationControllerDidUpdateNavigationBarSize:(id)a3
+- (void)_navigationControllerDidUpdateNavigationBarSize:(id)size
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 _navigationControllerDidUpdateNavigationBarSize:v4];
+  sizeCopy = size;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl _navigationControllerDidUpdateNavigationBarSize:sizeCopy];
 }
 
-- (void)_navigationControllerDidChangeNavigationBarHidden:(id)a3
+- (void)_navigationControllerDidChangeNavigationBarHidden:(id)hidden
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 _navigationControllerDidChangeNavigationBarHidden:v4];
+  hiddenCopy = hidden;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl _navigationControllerDidChangeNavigationBarHidden:hiddenCopy];
 }
 
-- (void)_navigationController:(id)a3 navigationBar:(id)a4 topItemUpdatedContentLayout:(id)a5
+- (void)_navigationController:(id)controller navigationBar:(id)bar topItemUpdatedContentLayout:(id)layout
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  barCopy = bar;
+  layoutCopy = layout;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v10 = [(UISplitViewController *)self _sharedImpl];
-    [v10 _navigationController:v11 navigationBar:v8 topItemUpdatedContentLayout:v9];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _navigationController:controllerCopy navigationBar:barCopy topItemUpdatedContentLayout:layoutCopy];
   }
 }
 
-- (void)_navigationController:(id)a3 navigationBar:(id)a4 itemBackButtonUpdated:(id)a5
+- (void)_navigationController:(id)controller navigationBar:(id)bar itemBackButtonUpdated:(id)updated
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  barCopy = bar;
+  updatedCopy = updated;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v10 = [(UISplitViewController *)self _sharedImpl];
-    [v10 _navigationController:v11 navigationBar:v8 itemBackButtonUpdated:v9];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _navigationController:controllerCopy navigationBar:barCopy itemBackButtonUpdated:updatedCopy];
   }
 }
 
-- (id)_navigationController:(id)a3 navigationBarAdditionalActionsForBackButtonMenu:(id)a4
+- (id)_navigationController:(id)controller navigationBarAdditionalActionsForBackButtonMenu:(id)menu
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  menuCopy = menu;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v8 = [(UISplitViewController *)self _sharedImpl];
-    v9 = [v8 _navigationController:v6 navigationBarAdditionalActionsForBackButtonMenu:v7];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    v9 = [_sharedImpl _navigationController:controllerCopy navigationBarAdditionalActionsForBackButtonMenu:menuCopy];
   }
 
   else
@@ -1649,13 +1649,13 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
   return v9;
 }
 
-- (BOOL)_navigationControllerShouldNotAdjustTransitioningSizeForChildContainer:(id)a3
+- (BOOL)_navigationControllerShouldNotAdjustTransitioningSizeForChildContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    v6 = [v5 _navigationControllerShouldNotAdjustTransitioningSizeForChildContainer:v4];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    v6 = [_sharedImpl _navigationControllerShouldNotAdjustTransitioningSizeForChildContainer:containerCopy];
   }
 
   else
@@ -1666,13 +1666,13 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
   return v6;
 }
 
-- (int64_t)_columnForViewController:(id)a3
+- (int64_t)_columnForViewController:(id)controller
 {
-  v4 = a3;
-  if (v4 && [(_UISplitViewControllerImplementing *)self->_impl style])
+  controllerCopy = controller;
+  if (controllerCopy && [(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    v6 = [v5 _columnForViewController:v4];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    v6 = [_sharedImpl _columnForViewController:controllerCopy];
   }
 
   else
@@ -1683,14 +1683,14 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
   return v6;
 }
 
-- (int64_t)_columnForMonitoredNavigationController:(id)a3
+- (int64_t)_columnForMonitoredNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  if (v5)
+  controllerCopy = controller;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  if (_sharedImpl)
   {
-    v6 = [(UISplitViewController *)self _sharedImpl];
-    v7 = [v6 _columnForMonitoredNavigationController:v4];
+    _sharedImpl2 = [(UISplitViewController *)self _sharedImpl];
+    v7 = [_sharedImpl2 _columnForMonitoredNavigationController:controllerCopy];
   }
 
   else
@@ -1701,19 +1701,19 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
   return v7;
 }
 
-- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)a3
+- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = 0.0;
-  if (v4)
+  if (controllerCopy)
   {
     v6 = 0.0;
     v7 = 0.0;
     v8 = 0.0;
     if ([(_UISplitViewControllerImplementing *)self->_impl style])
     {
-      v9 = [(UISplitViewController *)self _sharedImpl];
-      [v9 _tvOSColumnStyleExtraInsetsForChildViewController:v4];
+      _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+      [_sharedImpl _tvOSColumnStyleExtraInsetsForChildViewController:controllerCopy];
       v5 = v10;
       v6 = v11;
       v7 = v12;
@@ -1741,68 +1741,68 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
 
 - (UIScreenEdgePanGestureRecognizer)_fluidOpenSidebarPresentationGestureRecognizer
 {
-  v2 = [(UISplitViewController *)self _sharedImpl];
-  v3 = [v2 _fluidOpenSidebarPresentationGestureRecognizer];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  _fluidOpenSidebarPresentationGestureRecognizer = [_sharedImpl _fluidOpenSidebarPresentationGestureRecognizer];
 
-  return v3;
+  return _fluidOpenSidebarPresentationGestureRecognizer;
 }
 
 - (BOOL)_shouldUseFluidSidebarGestures
 {
-  v3 = [(_UISplitViewControllerImplementing *)self->_impl style];
-  if (v3)
+  style = [(_UISplitViewControllerImplementing *)self->_impl style];
+  if (style)
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    v5 = [v4 _shouldUseFluidSidebarGestures];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _shouldUseFluidSidebarGestures = [_sharedImpl _shouldUseFluidSidebarGestures];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(style) = _shouldUseFluidSidebarGestures;
   }
 
-  return v3;
+  return style;
 }
 
-- (CGSize)_contentSizeForChildViewController:(id)a3 inPopoverController:(id)a4
+- (CGSize)_contentSizeForChildViewController:(id)controller inPopoverController:(id)popoverController
 {
-  [(_UISplitViewControllerImplementing *)self->_impl _contentSizeForChildViewController:a3 inPopoverController:a4];
+  [(_UISplitViewControllerImplementing *)self->_impl _contentSizeForChildViewController:controller inPopoverController:popoverController];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)_willBeginSnapshotSession:(id)a3
+- (void)_willBeginSnapshotSession:(id)session
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [session object];
+  if (object)
   {
-    v8 = v4;
-    v5 = [(UIViewController *)self viewIfLoaded];
-    v6 = [v5 window];
-    v7 = [v6 windowScene];
+    v8 = object;
+    viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    windowScene = [window windowScene];
 
-    v4 = v8;
-    if (v8 == v7)
+    object = v8;
+    if (v8 == windowScene)
     {
       [(_UISplitViewControllerImplementing *)self->_impl _willBeginSnapshotSession];
-      v4 = v8;
+      object = v8;
     }
   }
 }
 
-- (void)_didEndSnapshotSession:(id)a3
+- (void)_didEndSnapshotSession:(id)session
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [session object];
+  if (object)
   {
-    v8 = v4;
-    v5 = [(UIViewController *)self viewIfLoaded];
-    v6 = [v5 window];
-    v7 = [v6 windowScene];
+    v8 = object;
+    viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    windowScene = [window windowScene];
 
-    v4 = v8;
-    if (v8 == v7)
+    object = v8;
+    if (v8 == windowScene)
     {
       [(_UISplitViewControllerImplementing *)self->_impl _didEndSnapshotSession];
-      v4 = v8;
+      object = v8;
     }
   }
 }
@@ -1822,120 +1822,120 @@ void __60__UISplitViewController__devicePrefersOverlayInRegularWidth__block_invo
   [(_UISplitViewControllerImplementing *)impl setPrimaryBackgroundStyle:primaryBackgroundStyle];
 }
 
-- (void)_setSupplementaryColumnAdoptsPrimaryBackgroundStyle:(BOOL)a3
+- (void)_setSupplementaryColumnAdoptsPrimaryBackgroundStyle:(BOOL)style
 {
-  v3 = a3;
-  v4 = [(UISplitViewController *)self _sharedImpl];
-  [v4 setSupplementaryColumnAdoptsPrimaryBackgroundStyle:v3];
+  styleCopy = style;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setSupplementaryColumnAdoptsPrimaryBackgroundStyle:styleCopy];
 }
 
 - (BOOL)_supplementaryColumnAdoptsPrimaryBackgroundStyle
 {
-  v2 = [(UISplitViewController *)self _sharedImpl];
-  v3 = [v2 supplementaryColumnAdoptsPrimaryBackgroundStyle];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  supplementaryColumnAdoptsPrimaryBackgroundStyle = [_sharedImpl supplementaryColumnAdoptsPrimaryBackgroundStyle];
 
-  return v3;
+  return supplementaryColumnAdoptsPrimaryBackgroundStyle;
 }
 
-- (void)toggleSidebar:(id)a3
+- (void)toggleSidebar:(id)sidebar
 {
-  v5 = a3;
+  sidebarCopy = sidebar;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    [v4 _triggerSidebarKeyCommandAction:v5];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _triggerSidebarKeyCommandAction:sidebarCopy];
   }
 }
 
-- (void)toggleInspector:(id)a3
+- (void)toggleInspector:(id)inspector
 {
-  v5 = a3;
+  inspectorCopy = inspector;
   if ([(_UISplitViewControllerImplementing *)self->_impl style])
   {
-    v4 = [(UISplitViewController *)self _sharedImpl];
-    [v4 _triggerInspectorKeyCommandAction:v5];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _triggerInspectorKeyCommandAction:inspectorCopy];
   }
 }
 
-- (void)runToolbarCustomizationPalette:(id)a3
+- (void)runToolbarCustomizationPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 _triggerToolbarCustomizationCommandAction:v4];
+  paletteCopy = palette;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl _triggerToolbarCustomizationCommandAction:paletteCopy];
 }
 
-- (id)_navigationControllerForTriggeringToolbarCustomizationWithSender:(id)a3
+- (id)_navigationControllerForTriggeringToolbarCustomizationWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  v6 = [v5 _navigationControllerForTriggeringToolbarCustomizationWithSender:v4];
+  senderCopy = sender;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  v6 = [_sharedImpl _navigationControllerForTriggeringToolbarCustomizationWithSender:senderCopy];
 
   return v6;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_toggleSidebar_ == a3)
+  senderCopy = sender;
+  if (sel_toggleSidebar_ == action)
   {
-    v8 = [(UISplitViewController *)self _sharedImpl];
-    v9 = [v8 _allowsTriggeringSidebarKeyCommandAction];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _allowsTriggeringSidebarKeyCommandAction = [_sharedImpl _allowsTriggeringSidebarKeyCommandAction];
 LABEL_8:
-    v7 = v9;
+    v7 = _allowsTriggeringSidebarKeyCommandAction;
 
     goto LABEL_9;
   }
 
-  if (sel_toggleInspector_ == a3)
+  if (sel_toggleInspector_ == action)
   {
-    v8 = [(UISplitViewController *)self _sharedImpl];
-    v9 = [v8 _allowsTriggeringInspectorKeyCommandAction];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _allowsTriggeringSidebarKeyCommandAction = [_sharedImpl _allowsTriggeringInspectorKeyCommandAction];
     goto LABEL_8;
   }
 
-  if (sel_runToolbarCustomizationPalette_ == a3)
+  if (sel_runToolbarCustomizationPalette_ == action)
   {
-    v8 = [(UISplitViewController *)self _sharedImpl];
-    v9 = [v8 _allowsTriggeringToolbarCustomizationCommandActionWithSender:v6];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    _allowsTriggeringSidebarKeyCommandAction = [_sharedImpl _allowsTriggeringToolbarCustomizationCommandActionWithSender:senderCopy];
     goto LABEL_8;
   }
 
   v11.receiver = self;
   v11.super_class = UISplitViewController;
-  v7 = [(UIViewController *)&v11 canPerformAction:a3 withSender:v6];
+  v7 = [(UIViewController *)&v11 canPerformAction:action withSender:senderCopy];
 LABEL_9:
 
   return v7;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  if ([v4 action] == sel_toggleSidebar_)
+  commandCopy = command;
+  if ([commandCopy action] == sel_toggleSidebar_)
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    [v5 _validateTriggerSidebarKeyCommand:v4];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _validateTriggerSidebarKeyCommand:commandCopy];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if ([v4 action] == sel_toggleInspector_)
+  if ([commandCopy action] == sel_toggleInspector_)
   {
-    v5 = [(UISplitViewController *)self _sharedImpl];
-    [v5 _validateTriggerInspectorKeyCommand:v4];
+    _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+    [_sharedImpl _validateTriggerInspectorKeyCommand:commandCopy];
     goto LABEL_6;
   }
 
   v6.receiver = self;
   v6.super_class = UISplitViewController;
-  [(UIResponder *)&v6 validateCommand:v4];
+  [(UIResponder *)&v6 validateCommand:commandCopy];
 LABEL_7:
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v5 = MEMORY[0x1E695DF30];
@@ -1944,56 +1944,56 @@ LABEL_7:
     [v5 raise:v6 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v7}];
   }
 
-  [(_UISplitViewControllerImplementing *)self->_impl setView:v8];
+  [(_UISplitViewControllerImplementing *)self->_impl setView:viewCopy];
 }
 
-- (void)_super_setView:(id)a3
+- (void)_super_setView:(id)view
 {
   v3.receiver = self;
   v3.super_class = UISplitViewController;
-  [(UIViewController *)&v3 setView:a3];
+  [(UIViewController *)&v3 setView:view];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = UISplitViewController;
   [(UIViewController *)&v5 viewWillAppear:?];
-  [(_UISplitViewControllerImplementing *)self->_impl viewWillAppear:v3];
+  [(_UISplitViewControllerImplementing *)self->_impl viewWillAppear:appearCopy];
   [(UISplitViewController *)self _updateScrollEdgeBehaviorForDetailNavigationController];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = UISplitViewController;
   [(UIViewController *)&v5 viewDidAppear:?];
-  [(_UISplitViewControllerImplementing *)self->_impl viewDidAppear:v3];
+  [(_UISplitViewControllerImplementing *)self->_impl viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = UISplitViewController;
   [(UIViewController *)&v5 viewWillDisappear:?];
-  [(_UISplitViewControllerImplementing *)self->_impl viewWillDisappear:v3];
+  [(_UISplitViewControllerImplementing *)self->_impl viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = UISplitViewController;
   [(UIViewController *)&v5 viewDidDisappear:?];
-  [(_UISplitViewControllerImplementing *)self->_impl viewDidDisappear:v3];
+  [(_UISplitViewControllerImplementing *)self->_impl viewDidDisappear:disappearCopy];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2004,13 +2004,13 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 addChildViewController:v5];
+  [(UIViewController *)&v9 addChildViewController:controllerCopy];
   [(UISplitViewController *)self _updateScrollEdgeBehaviorForDetailNavigationController];
 }
 
-- (void)setDefinesPresentationContext:(BOOL)a3
+- (void)setDefinesPresentationContext:(BOOL)context
 {
-  v3 = a3;
+  contextCopy = context;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2021,12 +2021,12 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setDefinesPresentationContext:v3];
+  [(UIViewController *)&v9 setDefinesPresentationContext:contextCopy];
 }
 
-- (void)setProvidesPresentationContextTransitionStyle:(BOOL)a3
+- (void)setProvidesPresentationContextTransitionStyle:(BOOL)style
 {
-  v3 = a3;
+  styleCopy = style;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2037,12 +2037,12 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setProvidesPresentationContextTransitionStyle:v3];
+  [(UIViewController *)&v9 setProvidesPresentationContextTransitionStyle:styleCopy];
 }
 
-- (void)setRestoresFocusAfterTransition:(BOOL)a3
+- (void)setRestoresFocusAfterTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2053,25 +2053,10 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setRestoresFocusAfterTransition:v3];
+  [(UIViewController *)&v9 setRestoresFocusAfterTransition:transitionCopy];
 }
 
-- (void)setModalTransitionStyle:(int64_t)a3
-{
-  if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
-  {
-    v6 = MEMORY[0x1E695DF30];
-    v7 = *MEMORY[0x1E695D940];
-    v8 = NSStringFromSelector(a2);
-    [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
-  }
-
-  v9.receiver = self;
-  v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setModalTransitionStyle:a3];
-}
-
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalTransitionStyle:(int64_t)style
 {
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
@@ -2083,26 +2068,10 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setModalPresentationStyle:a3];
+  [(UIViewController *)&v9 setModalTransitionStyle:style];
 }
 
-- (void)setModalPresentationCapturesStatusBarAppearance:(BOOL)a3
-{
-  v3 = a3;
-  if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
-  {
-    v6 = MEMORY[0x1E695DF30];
-    v7 = *MEMORY[0x1E695D940];
-    v8 = NSStringFromSelector(a2);
-    [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
-  }
-
-  v9.receiver = self;
-  v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setModalPresentationCapturesStatusBarAppearance:v3];
-}
-
-- (void)setEdgesForExtendedLayout:(unint64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
@@ -2114,12 +2083,12 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setEdgesForExtendedLayout:a3];
+  [(UIViewController *)&v9 setModalPresentationStyle:style];
 }
 
-- (void)setExtendedLayoutIncludesOpaqueBars:(BOOL)a3
+- (void)setModalPresentationCapturesStatusBarAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2130,12 +2099,11 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setExtendedLayoutIncludesOpaqueBars:v3];
+  [(UIViewController *)&v9 setModalPresentationCapturesStatusBarAppearance:appearanceCopy];
 }
 
-- (void)setAutomaticallyAdjustsScrollViewInsets:(BOOL)a3
+- (void)setEdgesForExtendedLayout:(unint64_t)layout
 {
-  v3 = a3;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2146,13 +2114,45 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setAutomaticallyAdjustsScrollViewInsets:v3];
+  [(UIViewController *)&v9 setEdgesForExtendedLayout:layout];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setExtendedLayoutIncludesOpaqueBars:(BOOL)bars
 {
-  height = a3.height;
-  width = a3.width;
+  barsCopy = bars;
+  if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
+  {
+    v6 = MEMORY[0x1E695DF30];
+    v7 = *MEMORY[0x1E695D940];
+    v8 = NSStringFromSelector(a2);
+    [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
+  }
+
+  v9.receiver = self;
+  v9.super_class = UISplitViewController;
+  [(UIViewController *)&v9 setExtendedLayoutIncludesOpaqueBars:barsCopy];
+}
+
+- (void)setAutomaticallyAdjustsScrollViewInsets:(BOOL)insets
+{
+  insetsCopy = insets;
+  if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
+  {
+    v6 = MEMORY[0x1E695DF30];
+    v7 = *MEMORY[0x1E695D940];
+    v8 = NSStringFromSelector(a2);
+    [v6 raise:v7 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v8}];
+  }
+
+  v9.receiver = self;
+  v9.super_class = UISplitViewController;
+  [(UIViewController *)&v9 setAutomaticallyAdjustsScrollViewInsets:insetsCopy];
+}
+
+- (void)setPreferredContentSize:(CGSize)size
+{
+  height = size.height;
+  width = size.width;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v7 = MEMORY[0x1E695DF30];
@@ -2176,9 +2176,9 @@ LABEL_7:
   return result;
 }
 
-- (void)setOverrideTraitCollection:(id)a3
+- (void)setOverrideTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2189,12 +2189,12 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setOverrideTraitCollection:v5];
+  [(UIViewController *)&v9 setOverrideTraitCollection:collectionCopy];
 }
 
-- (void)setViewRespectsSystemMinimumLayoutMargins:(BOOL)a3
+- (void)setViewRespectsSystemMinimumLayoutMargins:(BOOL)margins
 {
-  v3 = a3;
+  marginsCopy = margins;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v6 = MEMORY[0x1E695DF30];
@@ -2205,7 +2205,7 @@ LABEL_7:
 
   v9.receiver = self;
   v9.super_class = UISplitViewController;
-  [(UIViewController *)&v9 setViewRespectsSystemMinimumLayoutMargins:v3];
+  [(UIViewController *)&v9 setViewRespectsSystemMinimumLayoutMargins:marginsCopy];
 }
 
 - (void)removeFromParentViewController
@@ -2223,52 +2223,52 @@ LABEL_7:
   [(UIViewController *)&v7 removeFromParentViewController];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  [(_UISplitViewControllerImplementing *)self->_impl sizeForChildContentContainer:a3 withParentContainerSize:a4.width, a4.height];
+  [(_UISplitViewControllerImplementing *)self->_impl sizeForChildContentContainer:container withParentContainerSize:size.width, size.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_super_sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)_super_sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
   v6.receiver = self;
   v6.super_class = UISplitViewController;
-  [(UIViewController *)&v6 sizeForChildContentContainer:a3 withParentContainerSize:a4.width, a4.height];
+  [(UIViewController *)&v6 sizeForChildContentContainer:container withParentContainerSize:size.width, size.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)_super_willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)_super_willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  [(UIViewController *)&v4 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
+  [(UIViewController *)&v4 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  [(_UISplitViewControllerImplementing *)self->_impl traitCollectionDidChange:a3];
+  [(_UISplitViewControllerImplementing *)self->_impl traitCollectionDidChange:change];
 
   [(UISplitViewController *)self _updateScrollEdgeBehaviorForDetailNavigationController];
 }
 
-- (void)_super_viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)_super_viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  [(UIViewController *)&v4 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(UIViewController *)&v4 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
 }
 
 - (id)_super_preferredFocusedView
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIViewController *)&v4 preferredFocusedView];
+  preferredFocusedView = [(UIViewController *)&v4 preferredFocusedView];
 
-  return v2;
+  return preferredFocusedView;
 }
 
 - (int64_t)_subclassPreferredFocusedViewPrioritizationType
@@ -2321,25 +2321,25 @@ LABEL_7:
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIViewController *)&v4 preferredFocusEnvironments];
+  preferredFocusEnvironments = [(UIViewController *)&v4 preferredFocusEnvironments];
 
-  return v2;
+  return preferredFocusEnvironments;
 }
 
 - (id)_super_overridingPreferredFocusEnvironment
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIViewController *)&v4 _overridingPreferredFocusEnvironment];
+  _overridingPreferredFocusEnvironment = [(UIViewController *)&v4 _overridingPreferredFocusEnvironment];
 
-  return v2;
+  return _overridingPreferredFocusEnvironment;
 }
 
-- (BOOL)_super_shouldUpdateFocusInContext:(id)a3
+- (BOOL)_super_shouldUpdateFocusInContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  return [(UIViewController *)&v4 shouldUpdateFocusInContext:a3];
+  return [(UIViewController *)&v4 shouldUpdateFocusInContext:context];
 }
 
 - (BOOL)_shouldUseSeparateStatusBarStyles
@@ -2367,8 +2367,8 @@ LABEL_7:
     return 1;
   }
 
-  v5 = [(UISplitViewController *)self viewControllers];
-  v3 = [v5 count] == 2;
+  viewControllers = [(UISplitViewController *)self viewControllers];
+  v3 = [viewControllers count] == 2;
 
   return v3;
 }
@@ -2377,9 +2377,9 @@ LABEL_7:
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIViewController *)&v4 childViewControllerForStatusBarStyle];
+  childViewControllerForStatusBarStyle = [(UIViewController *)&v4 childViewControllerForStatusBarStyle];
 
-  return v2;
+  return childViewControllerForStatusBarStyle;
 }
 
 - (BOOL)_super_prefersPointerLocked
@@ -2410,33 +2410,33 @@ LABEL_7:
   return [(UIViewController *)&v3 preferredScreenEdgesDeferringSystemGestures];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   if (!_UIAppUseModernRotationAndPresentationBehaviors())
   {
     impl = self->_impl;
 
-    [(_UISplitViewControllerImplementing *)impl willRotateToInterfaceOrientation:a3 duration:a4];
+    [(_UISplitViewControllerImplementing *)impl willRotateToInterfaceOrientation:orientation duration:duration];
   }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   if (!_UIAppUseModernRotationAndPresentationBehaviors())
   {
     impl = self->_impl;
 
-    [(_UISplitViewControllerImplementing *)impl willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+    [(_UISplitViewControllerImplementing *)impl willAnimateRotationToInterfaceOrientation:orientation duration:duration];
   }
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   if (!_UIAppUseModernRotationAndPresentationBehaviors())
   {
     impl = self->_impl;
 
-    [(_UISplitViewControllerImplementing *)impl didRotateFromInterfaceOrientation:a3];
+    [(_UISplitViewControllerImplementing *)impl didRotateFromInterfaceOrientation:orientation];
   }
 }
 
@@ -2462,9 +2462,9 @@ LABEL_7:
   return [(UIViewController *)&v3 preferredInterfaceOrientationForPresentation];
 }
 
-- (void)removeChildViewController:(id)a3
+- (void)removeChildViewController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   if ([(_UISplitViewControllerImplementing *)self->_impl lockedForDelegateCallback])
   {
     v5 = MEMORY[0x1E695DF30];
@@ -2473,47 +2473,47 @@ LABEL_7:
     [v5 raise:v6 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v7}];
   }
 
-  [(_UISplitViewControllerImplementing *)self->_impl removeChildViewController:v8];
+  [(_UISplitViewControllerImplementing *)self->_impl removeChildViewController:controllerCopy];
 }
 
-- (void)_super_removeChildViewController:(id)a3
+- (void)_super_removeChildViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = UISplitViewController;
-  [(UIViewController *)&v3 removeChildViewController:a3];
+  [(UIViewController *)&v3 removeChildViewController:controller];
 }
 
-- (void)unloadViewForced:(BOOL)a3
+- (void)unloadViewForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   v5.receiver = self;
   v5.super_class = UISplitViewController;
   [(UIViewController *)&v5 unloadViewForced:?];
-  [(_UISplitViewControllerImplementing *)self->_impl unloadViewForced:v3];
+  [(_UISplitViewControllerImplementing *)self->_impl unloadViewForced:forcedCopy];
 }
 
-- (void)_super_didUpdateFocusInContext:(id)a3
+- (void)_super_didUpdateFocusInContext:(id)context
 {
   v3.receiver = self;
   v3.super_class = UISplitViewController;
-  [(UIViewController *)&v3 _didUpdateFocusInContext:a3];
+  [(UIViewController *)&v3 _didUpdateFocusInContext:context];
 }
 
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
   if (self && dyld_program_sdk_at_least() && [(_UISplitViewControllerImplementing *)self->_impl style])
   {
     v13.receiver = self;
     v13.super_class = UISplitViewController;
-    v11 = [(UIViewController *)&v13 _presentationControllerForPresentedController:v8 presentingController:v9 sourceController:v10];
+    v11 = [(UIViewController *)&v13 _presentationControllerForPresentedController:controllerCopy presentingController:presentingControllerCopy sourceController:sourceControllerCopy];
   }
 
   else
   {
-    v11 = [[_UISheetPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v9];
+    v11 = [[_UISheetPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy];
     [(UISheetPresentationController *)v11 _setWantsBottomAttached:1];
   }
 
@@ -2524,14 +2524,14 @@ LABEL_7:
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIViewController *)&v4 _multitaskingDragExclusionRects];
+  _multitaskingDragExclusionRects = [(UIViewController *)&v4 _multitaskingDragExclusionRects];
 
-  return v2;
+  return _multitaskingDragExclusionRects;
 }
 
-- (CGRect)_frameForChildContentContainer:(id)a3
+- (CGRect)_frameForChildContentContainer:(id)container
 {
-  [(_UISplitViewControllerImplementing *)self->_impl _frameForChildContentContainer:a3];
+  [(_UISplitViewControllerImplementing *)self->_impl _frameForChildContentContainer:container];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2543,12 +2543,12 @@ LABEL_7:
 {
   v3 = objc_opt_class();
 
-  return [a1 doesOverrideViewControllerMethod:sel_preferredInterfaceOrientationForPresentation inBaseClass:v3];
+  return [self doesOverrideViewControllerMethod:sel_preferredInterfaceOrientationForPresentation inBaseClass:v3];
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  [(_UISplitViewControllerImplementing *)self->_impl _edgeInsetsForChildViewController:a3 insetsAreAbsolute:a4];
+  [(_UISplitViewControllerImplementing *)self->_impl _edgeInsetsForChildViewController:controller insetsAreAbsolute:absolute];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -2560,9 +2560,9 @@ LABEL_7:
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIViewController *)&v4 _childViewControllersToSendViewWillTransitionToSize];
+  _childViewControllersToSendViewWillTransitionToSize = [(UIViewController *)&v4 _childViewControllersToSendViewWillTransitionToSize];
 
-  return v2;
+  return _childViewControllersToSendViewWillTransitionToSize;
 }
 
 - (void)_didChangeChildModalViewControllers
@@ -2573,11 +2573,11 @@ LABEL_7:
   [(_UISplitViewControllerImplementing *)self->_impl _didChangeChildModalViewControllers];
 }
 
-- (BOOL)_wrapsNavigationController:(id *)a3
+- (BOOL)_wrapsNavigationController:(id *)controller
 {
-  if (a3)
+  if (controller)
   {
-    *a3 = 0;
+    *controller = 0;
   }
 
   return 0;
@@ -2585,26 +2585,26 @@ LABEL_7:
 
 - (_UITabContainerView)_tabBarHostedView
 {
-  v2 = [(UISplitViewController *)self _sharedImpl];
-  v3 = [v2 tabBarHostedView];
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  tabBarHostedView = [_sharedImpl tabBarHostedView];
 
-  return v3;
+  return tabBarHostedView;
 }
 
-- (void)_setTabBarHostedView:(id)a3
+- (void)_setTabBarHostedView:(id)view
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _sharedImpl];
-  [v5 setTabBarHostedView:v4];
+  viewCopy = view;
+  _sharedImpl = [(UISplitViewController *)self _sharedImpl];
+  [_sharedImpl setTabBarHostedView:viewCopy];
 }
 
-- (void)_didChangeToFirstResponder:(id)a3
+- (void)_didChangeToFirstResponder:(id)responder
 {
   v5.receiver = self;
   v5.super_class = UISplitViewController;
-  v4 = a3;
-  [(UIResponder *)&v5 _didChangeToFirstResponder:v4];
-  [(_UISplitViewControllerImplementing *)self->_impl _didChangeToFirstResponder:v4, v5.receiver, v5.super_class];
+  responderCopy = responder;
+  [(UIResponder *)&v5 _didChangeToFirstResponder:responderCopy];
+  [(_UISplitViewControllerImplementing *)self->_impl _didChangeToFirstResponder:responderCopy, v5.receiver, v5.super_class];
 }
 
 - (id)_deepestActionResponder
@@ -2623,14 +2623,14 @@ LABEL_7:
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIViewController *)&v4 _deepestActionResponder];
+  _deepestActionResponder = [(UIViewController *)&v4 _deepestActionResponder];
 
-  return v2;
+  return _deepestActionResponder;
 }
 
-- (id)_nextResponderUsingTargetActionStrategyFromChildViewController:(id)a3 didTraverseToParentViewController:(BOOL *)a4
+- (id)_nextResponderUsingTargetActionStrategyFromChildViewController:(id)controller didTraverseToParentViewController:(BOOL *)viewController
 {
-  v6 = a3;
+  controllerCopy = controller;
   if (qword_1ED49BFC8 != -1)
   {
     dispatch_once(&qword_1ED49BFC8, &__block_literal_global_178);
@@ -2638,7 +2638,7 @@ LABEL_7:
 
   if ((byte_1ED49BFA9 & 1) == 0 && dyld_program_sdk_at_least())
   {
-    v7 = v6;
+    v7 = controllerCopy;
     if (v7)
     {
       v8 = v7;
@@ -2657,9 +2657,9 @@ LABEL_7:
         }
       }
 
-      v10 = [v9 _deepestActionResponder];
+      _deepestActionResponder = [v9 _deepestActionResponder];
 
-      if (!a4)
+      if (!viewController)
       {
         goto LABEL_11;
       }
@@ -2668,45 +2668,45 @@ LABEL_7:
     else
     {
 LABEL_9:
-      v10 = 0;
-      if (!a4)
+      _deepestActionResponder = 0;
+      if (!viewController)
       {
         goto LABEL_11;
       }
     }
 
-    *a4 = 1;
+    *viewController = 1;
 LABEL_11:
-    if (!v10)
+    if (!_deepestActionResponder)
     {
-      v11 = [(UIViewController *)self _existingView];
-      v12 = [v11 window];
+      _existingView = [(UIViewController *)self _existingView];
+      window = [_existingView window];
 
-      if (v12)
+      if (window)
       {
-        v13 = [v11 _deepestActionResponder];
+        selfCopy = [_existingView _deepestActionResponder];
       }
 
       else
       {
-        v13 = self;
+        selfCopy = self;
       }
 
-      v10 = v13;
+      _deepestActionResponder = selfCopy;
     }
 
     goto LABEL_17;
   }
 
-  if (a4)
+  if (viewController)
   {
-    *a4 = 1;
+    *viewController = 1;
   }
 
-  v10 = [v6 nextResponder];
+  _deepestActionResponder = [controllerCopy nextResponder];
 LABEL_17:
 
-  return v10;
+  return _deepestActionResponder;
 }
 
 void __122__UISplitViewController__nextResponderUsingTargetActionStrategyFromChildViewController_didTraverseToParentViewController___block_invoke()
@@ -2729,47 +2729,47 @@ void __122__UISplitViewController__nextResponderUsingTargetActionStrategyFromChi
   }
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   impl = self->_impl;
-  v5 = a3;
-  [(_UISplitViewControllerImplementing *)impl encodeRestorableStateWithCoder:v5];
+  coderCopy = coder;
+  [(_UISplitViewControllerImplementing *)impl encodeRestorableStateWithCoder:coderCopy];
   v6.receiver = self;
   v6.super_class = UISplitViewController;
-  [(UIViewController *)&v6 encodeRestorableStateWithCoder:v5];
+  [(UIViewController *)&v6 encodeRestorableStateWithCoder:coderCopy];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   impl = self->_impl;
-  v5 = a3;
-  [(_UISplitViewControllerImplementing *)impl decodeRestorableStateWithCoder:v5];
+  coderCopy = coder;
+  [(_UISplitViewControllerImplementing *)impl decodeRestorableStateWithCoder:coderCopy];
   v6.receiver = self;
   v6.super_class = UISplitViewController;
-  [(UIResponder *)&v6 decodeRestorableStateWithCoder:v5];
+  [(UIResponder *)&v6 decodeRestorableStateWithCoder:coderCopy];
 }
 
 - (id)_super_effectiveActivityItemsConfiguration
 {
   v4.receiver = self;
   v4.super_class = UISplitViewController;
-  v2 = [(UIResponder *)&v4 _effectiveActivityItemsConfiguration];
+  _effectiveActivityItemsConfiguration = [(UIResponder *)&v4 _effectiveActivityItemsConfiguration];
 
-  return v2;
+  return _effectiveActivityItemsConfiguration;
 }
 
 - (UISlidingBarConfiguration)configuration
 {
-  v2 = [(UISplitViewController *)self _panelImpl];
-  v3 = [v2 configuration];
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  configuration = [_panelImpl configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   impl = self->_impl;
-  v6 = a3;
+  configurationCopy = configuration;
   if ([(_UISplitViewControllerImplementing *)impl lockedForDelegateCallback])
   {
     v7 = MEMORY[0x1E695DF30];
@@ -2778,38 +2778,38 @@ void __122__UISplitViewController__nextResponderUsingTargetActionStrategyFromChi
     [v7 raise:v8 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v9}];
   }
 
-  v10 = [(UISplitViewController *)self _panelImpl];
-  [v10 setConfiguration:v6];
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  [_panelImpl setConfiguration:configurationCopy];
 }
 
 - (UISlidingBarState)currentState
 {
-  v2 = [(UISplitViewController *)self _panelImpl];
-  v3 = [v2 currentState];
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  currentState = [_panelImpl currentState];
 
-  return v3;
+  return currentState;
 }
 
 - (NSArray)possibleStates
 {
-  v2 = [(UISplitViewController *)self _panelImpl];
-  v3 = [v2 possibleStates];
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  possibleStates = [_panelImpl possibleStates];
 
-  return v3;
+  return possibleStates;
 }
 
 - (UISlidingBarStateRequest)stateRequest
 {
-  v2 = [(UISplitViewController *)self _panelImpl];
-  v3 = [v2 stateRequest];
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  stateRequest = [_panelImpl stateRequest];
 
-  return v3;
+  return stateRequest;
 }
 
-- (void)setStateRequest:(id)a3
+- (void)setStateRequest:(id)request
 {
   impl = self->_impl;
-  v6 = a3;
+  requestCopy = request;
   if ([(_UISplitViewControllerImplementing *)impl lockedForDelegateCallback])
   {
     v7 = MEMORY[0x1E695DF30];
@@ -2818,21 +2818,21 @@ void __122__UISplitViewController__nextResponderUsingTargetActionStrategyFromChi
     [v7 raise:v8 format:{@"Mutating UISplitViewController with -%@ is not allowed during a delegate callback.", v9}];
   }
 
-  v10 = [(UISplitViewController *)self _panelImpl];
-  [v10 setStateRequest:v6];
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  [_panelImpl setStateRequest:requestCopy];
 }
 
-- (void)_animateToRequest:(id)a3
+- (void)_animateToRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(UISplitViewController *)self _panelImpl];
-  [v5 animateToRequest:v4];
+  requestCopy = request;
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  [_panelImpl animateToRequest:requestCopy];
 }
 
 - (void)_updateDisplayModeButtonItem
 {
-  v2 = [(UISplitViewController *)self _panelImpl];
-  [v2 updateDisplayModeButtonItem];
+  _panelImpl = [(UISplitViewController *)self _panelImpl];
+  [_panelImpl updateDisplayModeButtonItem];
 }
 
 @end

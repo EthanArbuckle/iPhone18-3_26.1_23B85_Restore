@@ -1,20 +1,20 @@
 @interface _OUCamera
 - (CGSize)imageResolution;
-- (_OUCamera)initWithDictionary:(id)a3;
-- (__n128)initWithIntrinsic:(__n128)a3 transform:(__n128)a4;
+- (_OUCamera)initWithDictionary:(id)dictionary;
+- (__n128)initWithIntrinsic:(__n128)intrinsic transform:(__n128)transform;
 - (__n128)intrinsics;
 - (__n128)pose;
-- (__n128)setIntrinsics:(__n128)a3;
-- (__n128)setPose:(__n128)a3;
-- (__n128)setTransform:(__n128)a3;
+- (__n128)setIntrinsics:(__n128)intrinsics;
+- (__n128)setPose:(__n128)pose;
+- (__n128)setTransform:(__n128)transform;
 - (__n128)transform;
 @end
 
 @implementation _OUCamera
 
-- (_OUCamera)initWithDictionary:(id)a3
+- (_OUCamera)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = _OUCamera;
   v5 = [(_OUCamera *)&v34 init];
@@ -23,7 +23,7 @@
     goto LABEL_24;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"intrinsic"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"intrinsic"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -67,7 +67,7 @@ LABEL_17:
     *&v5[16 * i + 32] = v18;
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"image_resolution"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"image_resolution"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -92,7 +92,7 @@ LABEL_17:
   [v23 floatValue];
   *(v5 + 2) = v24;
 
-  v25 = [v4 objectForKeyedSubscript:@"pose"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"pose"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -110,7 +110,7 @@ LABEL_17:
 
     if (v28)
     {
-      v29 = [v4 objectForKeyedSubscript:@"transform"];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"transform"];
       v27 = objc_cast<NSArray>(v29);
 
       if (!v27)
@@ -138,17 +138,17 @@ LABEL_25:
 
 - (__n128)transform
 {
-  result = *(a1 + 80);
-  v2 = *(a1 + 96);
-  v3 = *(a1 + 112);
-  v4 = *(a1 + 128);
+  result = *(self + 80);
+  v2 = *(self + 96);
+  v3 = *(self + 112);
+  v4 = *(self + 128);
   return result;
 }
 
-- (__n128)setTransform:(__n128)a3
+- (__n128)setTransform:(__n128)transform
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = transform;
   result[7] = a4;
   result[8] = a5;
   return result;
@@ -156,16 +156,16 @@ LABEL_25:
 
 - (__n128)intrinsics
 {
-  result = *(a1 + 32);
-  v2 = *(a1 + 48);
-  v3 = *(a1 + 64);
+  result = *(self + 32);
+  v2 = *(self + 48);
+  v3 = *(self + 64);
   return result;
 }
 
-- (__n128)setIntrinsics:(__n128)a3
+- (__n128)setIntrinsics:(__n128)intrinsics
 {
   result[2] = a2;
-  result[3] = a3;
+  result[3] = intrinsics;
   result[4] = a4;
   return result;
 }
@@ -181,32 +181,32 @@ LABEL_25:
 
 - (__n128)pose
 {
-  result = *(a1 + 144);
-  v2 = *(a1 + 160);
-  v3 = *(a1 + 176);
-  v4 = *(a1 + 192);
+  result = *(self + 144);
+  v2 = *(self + 160);
+  v3 = *(self + 176);
+  v4 = *(self + 192);
   return result;
 }
 
-- (__n128)setPose:(__n128)a3
+- (__n128)setPose:(__n128)pose
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = pose;
   result[11] = a4;
   result[12] = a5;
   return result;
 }
 
-- (__n128)initWithIntrinsic:(__n128)a3 transform:(__n128)a4
+- (__n128)initWithIntrinsic:(__n128)intrinsic transform:(__n128)transform
 {
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = _OUCamera;
   v8 = [(_OUCamera *)&v17 init];
   if (v8)
   {
     *v8->_anon_20 = a2;
-    *&v8->_anon_20[16] = a3;
-    *&v8->_anon_20[32] = a4;
+    *&v8->_anon_20[16] = intrinsic;
+    *&v8->_anon_20[32] = transform;
     *v8->_anon_50 = a5;
     result = a8;
     *&v8->_anon_50[16] = a6;

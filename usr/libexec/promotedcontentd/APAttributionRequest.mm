@@ -3,8 +3,8 @@
 - (NSDictionary)payloadForRequestHeaderABCLog;
 - (id)requestBody;
 - (id)requestHeader;
-- (void)addCapData:(id)a3;
-- (void)addMetaData:(id)a3;
+- (void)addCapData:(id)data;
+- (void)addMetaData:(id)data;
 - (void)loadDeviceInfo;
 - (void)loadIDAccountDetails;
 @end
@@ -21,65 +21,65 @@
   [(APAttributionRequest *)self setDaemonBundleId:@"com.apple.ap.promotedcontentd"];
   v5 = +[APDeviceInfo current];
   v6 = +[APIDAccountProvider privateUserAccount];
-  v7 = [v6 storefront];
-  v8 = [v5 userAgentStringForBundleID:@"com.apple.ap.promotedcontentd" storefront:v7];
+  storefront = [v6 storefront];
+  v8 = [v5 userAgentStringForBundleID:@"com.apple.ap.promotedcontentd" storefront:storefront];
   [(APAttributionRequest *)self setUserAgent:v8];
 
-  v9 = [v5 systemName];
-  [(APAttributionRequest *)self setOsPlatform:v9];
+  systemName = [v5 systemName];
+  [(APAttributionRequest *)self setOsPlatform:systemName];
 
-  v10 = [v5 systemVersion];
-  [(APAttributionRequest *)self setOsVersion:v10];
+  systemVersion = [v5 systemVersion];
+  [(APAttributionRequest *)self setOsVersion:systemVersion];
 
-  v11 = [v5 buildVersion];
-  [(APAttributionRequest *)self setOsBuild:v11];
+  buildVersion = [v5 buildVersion];
+  [(APAttributionRequest *)self setOsBuild:buildVersion];
 
-  v12 = [v5 deviceModel];
-  [(APAttributionRequest *)self setDevice:v12];
+  deviceModel = [v5 deviceModel];
+  [(APAttributionRequest *)self setDevice:deviceModel];
 }
 
 - (void)loadIDAccountDetails
 {
   v6 = +[APIDAccountProvider privateUserAccount];
-  v3 = [v6 toroID];
-  [(APAttributionRequest *)self setToroId:v3];
+  toroID = [v6 toroID];
+  [(APAttributionRequest *)self setToroId:toroID];
 
-  v4 = [v6 anonymousDemandID];
-  [(APAttributionRequest *)self setAnonymousDemandId:v4];
+  anonymousDemandID = [v6 anonymousDemandID];
+  [(APAttributionRequest *)self setAnonymousDemandId:anonymousDemandID];
 
-  v5 = [v6 storefront];
-  [(APAttributionRequest *)self setStorefront:v5];
+  storefront = [v6 storefront];
+  [(APAttributionRequest *)self setStorefront:storefront];
 }
 
-- (void)addCapData:(id)a3
+- (void)addCapData:(id)data
 {
-  v6 = a3;
-  -[APAttributionRequest setAttributionDownloadType:](self, "setAttributionDownloadType:", [v6 attributionDownloadType]);
-  [v6 searchAdClickTimestamp];
+  dataCopy = data;
+  -[APAttributionRequest setAttributionDownloadType:](self, "setAttributionDownloadType:", [dataCopy attributionDownloadType]);
+  [dataCopy searchAdClickTimestamp];
   [(APAttributionRequest *)self setSearchAdClickTimestamp:?];
-  -[APAttributionRequest setAttributionDownloadType:](self, "setAttributionDownloadType:", [v6 attributionDownloadType]);
-  [v6 downloadClickTimestamp];
+  -[APAttributionRequest setAttributionDownloadType:](self, "setAttributionDownloadType:", [dataCopy attributionDownloadType]);
+  [dataCopy downloadClickTimestamp];
   [(APAttributionRequest *)self setDownloadClickTimestamp:?];
-  [v6 downloadClickTimestamp];
+  [dataCopy downloadClickTimestamp];
   if (v4 != 0.0)
   {
     [(APAttributionRequest *)self setAttributionMetadataExistsOnDevice:1];
   }
 
-  v5 = [v6 adMetadata];
-  [(APAttributionRequest *)self setAdMetadata:v5];
+  adMetadata = [dataCopy adMetadata];
+  [(APAttributionRequest *)self setAdMetadata:adMetadata];
 }
 
-- (void)addMetaData:(id)a3
+- (void)addMetaData:(id)data
 {
-  v15 = a3;
-  -[APAttributionRequest setAttributionMetadataExistsOnDevice:](self, "setAttributionMetadataExistsOnDevice:", [v15 isAttributed]);
+  dataCopy = data;
+  -[APAttributionRequest setAttributionMetadataExistsOnDevice:](self, "setAttributionMetadataExistsOnDevice:", [dataCopy isAttributed]);
   v4 = +[NSISO8601DateFormatter apDefaultSharedFormatter];
-  v5 = [v15 purchaseDate];
-  [(APAttributionRequest *)self setPurchaseTimestamp:v5];
+  purchaseDate = [dataCopy purchaseDate];
+  [(APAttributionRequest *)self setPurchaseTimestamp:purchaseDate];
 
-  v6 = [v15 impressionDate];
-  v7 = [v4 dateFromString:v6];
+  impressionDate = [dataCopy impressionDate];
+  v7 = [v4 dateFromString:impressionDate];
   [v7 timeIntervalSince1970];
   v9 = v8;
 
@@ -88,8 +88,8 @@
     [(APAttributionRequest *)self setIAdImpressionTimestamp:v9];
   }
 
-  v10 = [v15 conversionDate];
-  v11 = [v4 dateFromString:v10];
+  conversionDate = [dataCopy conversionDate];
+  v11 = [v4 dateFromString:conversionDate];
   [v11 timeIntervalSince1970];
   v13 = v12;
 
@@ -98,28 +98,28 @@
     [(APAttributionRequest *)self setIAdConversionTimestamp:v13];
   }
 
-  v14 = [v15 adamID];
-  [(APAttributionRequest *)self setAdamId:v14];
+  adamID = [dataCopy adamID];
+  [(APAttributionRequest *)self setAdamId:adamID];
 }
 
 - (id)requestHeader
 {
-  v3 = [(APAttributionRequest *)self timestamp];
-  if (!v3)
+  timestamp = [(APAttributionRequest *)self timestamp];
+  if (!timestamp)
   {
     goto LABEL_19;
   }
 
-  v4 = v3;
-  v5 = [(APAttributionRequest *)self osBuild];
-  if (!v5)
+  v4 = timestamp;
+  osBuild = [(APAttributionRequest *)self osBuild];
+  if (!osBuild)
   {
     goto LABEL_18;
   }
 
-  v6 = v5;
-  v7 = [(APAttributionRequest *)self osPlatform];
-  if (!v7)
+  v6 = osBuild;
+  osPlatform = [(APAttributionRequest *)self osPlatform];
+  if (!osPlatform)
   {
 LABEL_17:
 
@@ -129,54 +129,54 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v8 = v7;
-  v9 = [(APAttributionRequest *)self osVersion];
-  if (!v9)
+  v8 = osPlatform;
+  osVersion = [(APAttributionRequest *)self osVersion];
+  if (!osVersion)
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v10 = v9;
-  v11 = [(APAttributionRequest *)self storefront];
-  if (!v11)
+  v10 = osVersion;
+  storefront = [(APAttributionRequest *)self storefront];
+  if (!storefront)
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v12 = v11;
-  v13 = [(APAttributionRequest *)self daemonBundleId];
-  if (!v13)
+  v12 = storefront;
+  daemonBundleId = [(APAttributionRequest *)self daemonBundleId];
+  if (!daemonBundleId)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v14 = v13;
-  v15 = [(APAttributionRequest *)self userAgent];
-  if (!v15)
+  v14 = daemonBundleId;
+  userAgent = [(APAttributionRequest *)self userAgent];
+  if (!userAgent)
   {
 
     goto LABEL_14;
   }
 
-  v16 = v15;
-  v17 = [(APAttributionRequest *)self mescalSignature];
-  if (v17 || ([(APAttributionRequest *)self fpdiSignature], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
+  v16 = userAgent;
+  mescalSignature = [(APAttributionRequest *)self mescalSignature];
+  if (mescalSignature || ([(APAttributionRequest *)self fpdiSignature], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = [(APAttributionRequest *)self mescalSignature];
-    if (v18)
+    mescalSignature2 = [(APAttributionRequest *)self mescalSignature];
+    if (mescalSignature2)
     {
-      v19 = v18;
-      v20 = [(APAttributionRequest *)self fpdiSignature];
-      v38 = v20 != 0;
+      v19 = mescalSignature2;
+      fpdiSignature = [(APAttributionRequest *)self fpdiSignature];
+      v38 = fpdiSignature != 0;
 
       v21 = v38;
-      if (v17)
+      if (mescalSignature)
       {
         goto LABEL_28;
       }
@@ -184,7 +184,7 @@ LABEL_14:
 
     else
     {
-      if (v17)
+      if (mescalSignature)
       {
 
         goto LABEL_29;
@@ -208,46 +208,46 @@ LABEL_28:
 
 LABEL_29:
   v39[0] = @"timestamp";
-  v24 = [(APAttributionRequest *)self timestamp];
-  v40[0] = v24;
+  timestamp2 = [(APAttributionRequest *)self timestamp];
+  v40[0] = timestamp2;
   v39[1] = @"osPlatform";
-  v25 = [(APAttributionRequest *)self osPlatform];
-  v40[1] = v25;
+  osPlatform2 = [(APAttributionRequest *)self osPlatform];
+  v40[1] = osPlatform2;
   v39[2] = @"osVersion";
-  v26 = [(APAttributionRequest *)self osVersion];
-  v40[2] = v26;
+  osVersion2 = [(APAttributionRequest *)self osVersion];
+  v40[2] = osVersion2;
   v39[3] = @"osBuild";
-  v27 = [(APAttributionRequest *)self osBuild];
-  v40[3] = v27;
+  osBuild2 = [(APAttributionRequest *)self osBuild];
+  v40[3] = osBuild2;
   v39[4] = @"storefront";
-  v28 = [(APAttributionRequest *)self storefront];
-  v40[4] = v28;
+  storefront2 = [(APAttributionRequest *)self storefront];
+  v40[4] = storefront2;
   v39[5] = @"bundleId";
-  v29 = [(APAttributionRequest *)self daemonBundleId];
-  v40[5] = v29;
+  daemonBundleId2 = [(APAttributionRequest *)self daemonBundleId];
+  v40[5] = daemonBundleId2;
   v39[6] = @"User-Agent";
-  v30 = [(APAttributionRequest *)self userAgent];
-  v40[6] = v30;
+  userAgent2 = [(APAttributionRequest *)self userAgent];
+  v40[6] = userAgent2;
   v31 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:7];
   v32 = [NSMutableDictionary dictionaryWithDictionary:v31];
 
-  v33 = [(APAttributionRequest *)self mescalSignature];
+  mescalSignature3 = [(APAttributionRequest *)self mescalSignature];
 
-  if (v33)
+  if (mescalSignature3)
   {
-    v34 = [(APAttributionRequest *)self mescalSignature];
+    mescalSignature4 = [(APAttributionRequest *)self mescalSignature];
     v35 = @"X-Apple-ActionSignature";
 LABEL_33:
-    [v32 setObject:v34 forKey:v35];
+    [v32 setObject:mescalSignature4 forKey:v35];
 
     goto LABEL_34;
   }
 
-  v36 = [(APAttributionRequest *)self fpdiSignature];
+  fpdiSignature2 = [(APAttributionRequest *)self fpdiSignature];
 
-  if (v36)
+  if (fpdiSignature2)
   {
-    v34 = [(APAttributionRequest *)self fpdiSignature];
+    mescalSignature4 = [(APAttributionRequest *)self fpdiSignature];
     v35 = @"X-Apple-ActionSignature2";
     goto LABEL_33;
   }
@@ -263,11 +263,11 @@ LABEL_20:
 - (NSDictionary)payloadForRequestHeaderABCLog
 {
   v32[0] = @"timestamp";
-  v3 = [(APAttributionRequest *)self timestamp];
-  v31 = v3;
-  if (v3)
+  timestamp = [(APAttributionRequest *)self timestamp];
+  v31 = timestamp;
+  if (timestamp)
   {
-    v4 = v3;
+    v4 = timestamp;
   }
 
   else
@@ -277,11 +277,11 @@ LABEL_20:
 
   v33[0] = v4;
   v32[1] = @"osPlatform";
-  v5 = [(APAttributionRequest *)self osPlatform];
-  v6 = v5;
-  if (v5)
+  osPlatform = [(APAttributionRequest *)self osPlatform];
+  v6 = osPlatform;
+  if (osPlatform)
   {
-    v7 = v5;
+    v7 = osPlatform;
   }
 
   else
@@ -291,11 +291,11 @@ LABEL_20:
 
   v33[1] = v7;
   v32[2] = @"osVersion";
-  v8 = [(APAttributionRequest *)self osVersion];
-  v9 = v8;
-  if (v8)
+  osVersion = [(APAttributionRequest *)self osVersion];
+  v9 = osVersion;
+  if (osVersion)
   {
-    v10 = v8;
+    v10 = osVersion;
   }
 
   else
@@ -305,11 +305,11 @@ LABEL_20:
 
   v33[2] = v10;
   v32[3] = @"osBuild";
-  v11 = [(APAttributionRequest *)self osBuild];
-  v12 = v11;
-  if (v11)
+  osBuild = [(APAttributionRequest *)self osBuild];
+  v12 = osBuild;
+  if (osBuild)
   {
-    v13 = v11;
+    v13 = osBuild;
   }
 
   else
@@ -319,11 +319,11 @@ LABEL_20:
 
   v33[3] = v13;
   v32[4] = @"storefront";
-  v14 = [(APAttributionRequest *)self storefront];
-  v15 = v14;
-  if (v14)
+  storefront = [(APAttributionRequest *)self storefront];
+  v15 = storefront;
+  if (storefront)
   {
-    v16 = v14;
+    v16 = storefront;
   }
 
   else
@@ -333,11 +333,11 @@ LABEL_20:
 
   v33[4] = v16;
   v32[5] = @"bundleId";
-  v17 = [(APAttributionRequest *)self daemonBundleId];
-  v18 = v17;
-  if (v17)
+  daemonBundleId = [(APAttributionRequest *)self daemonBundleId];
+  v18 = daemonBundleId;
+  if (daemonBundleId)
   {
-    v19 = v17;
+    v19 = daemonBundleId;
   }
 
   else
@@ -347,11 +347,11 @@ LABEL_20:
 
   v33[5] = v19;
   v32[6] = @"User-Agent";
-  v20 = [(APAttributionRequest *)self userAgent];
-  v21 = v20;
-  if (v20)
+  userAgent = [(APAttributionRequest *)self userAgent];
+  v21 = userAgent;
+  if (userAgent)
   {
-    v22 = v20;
+    v22 = userAgent;
   }
 
   else
@@ -361,11 +361,11 @@ LABEL_20:
 
   v33[6] = v22;
   v32[7] = @"X-Apple-ActionSignature";
-  v23 = [(APAttributionRequest *)self mescalSignature];
-  v24 = v23;
-  if (v23)
+  mescalSignature = [(APAttributionRequest *)self mescalSignature];
+  v24 = mescalSignature;
+  if (mescalSignature)
   {
-    v25 = v23;
+    v25 = mescalSignature;
   }
 
   else
@@ -375,11 +375,11 @@ LABEL_20:
 
   v33[7] = v25;
   v32[8] = @"X-Apple-ActionSignature2";
-  v26 = [(APAttributionRequest *)self fpdiSignature];
-  v27 = v26;
-  if (v26)
+  fpdiSignature = [(APAttributionRequest *)self fpdiSignature];
+  v27 = fpdiSignature;
+  if (fpdiSignature)
   {
-    v28 = v26;
+    v28 = fpdiSignature;
   }
 
   else
@@ -396,39 +396,39 @@ LABEL_20:
 - (id)requestBody
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(APAttributionRequest *)self toroId];
-  if (!v4)
+  toroId = [(APAttributionRequest *)self toroId];
+  if (!toroId)
   {
     goto LABEL_22;
   }
 
-  v5 = v4;
-  v6 = [(APAttributionRequest *)self anonymousDemandId];
-  if (v6)
+  v5 = toroId;
+  anonymousDemandId = [(APAttributionRequest *)self anonymousDemandId];
+  if (anonymousDemandId)
   {
-    v7 = v6;
-    v8 = [(APAttributionRequest *)self bundleId];
-    if (v8)
+    v7 = anonymousDemandId;
+    bundleId = [(APAttributionRequest *)self bundleId];
+    if (bundleId)
     {
-      v9 = v8;
-      v10 = [(APAttributionRequest *)self attributionKey];
+      v9 = bundleId;
+      attributionKey = [(APAttributionRequest *)self attributionKey];
 
-      if (v10)
+      if (attributionKey)
       {
         v5 = +[NSISO8601DateFormatter apDefaultSharedFormatter];
-        v11 = [(APAttributionRequest *)self toroId];
-        v12 = [v11 UUIDString];
-        [v3 setObject:v12 forKey:@"toroId"];
+        toroId2 = [(APAttributionRequest *)self toroId];
+        uUIDString = [toroId2 UUIDString];
+        [v3 setObject:uUIDString forKey:@"toroId"];
 
-        v13 = [(APAttributionRequest *)self anonymousDemandId];
-        v14 = [v13 UUIDString];
-        [v3 setObject:v14 forKey:@"anonymousDemandId"];
+        anonymousDemandId2 = [(APAttributionRequest *)self anonymousDemandId];
+        uUIDString2 = [anonymousDemandId2 UUIDString];
+        [v3 setObject:uUIDString2 forKey:@"anonymousDemandId"];
 
-        v15 = [(APAttributionRequest *)self bundleId];
-        [v3 setObject:v15 forKey:@"bundleId"];
+        bundleId2 = [(APAttributionRequest *)self bundleId];
+        [v3 setObject:bundleId2 forKey:@"bundleId"];
 
-        v16 = [(APAttributionRequest *)self attributionKey];
-        [v3 setObject:v16 forKey:@"attributionKey"];
+        attributionKey2 = [(APAttributionRequest *)self attributionKey];
+        [v3 setObject:attributionKey2 forKey:@"attributionKey"];
 
         v17 = [NSNumber numberWithBool:[(APAttributionRequest *)self attributionMetadataExistsOnDevice]];
         [v3 setObject:v17 forKey:@"attributionMetadataExistsOnDevice"];
@@ -439,28 +439,28 @@ LABEL_20:
         v19 = [NSNumber numberWithBool:[(APAttributionRequest *)self developmentApp]];
         [v3 setObject:v19 forKey:@"developmentApp"];
 
-        v20 = [(APAttributionRequest *)self purchaseTimestamp];
+        purchaseTimestamp = [(APAttributionRequest *)self purchaseTimestamp];
 
-        if (v20)
+        if (purchaseTimestamp)
         {
-          v21 = [(APAttributionRequest *)self purchaseTimestamp];
-          [v3 setObject:v21 forKey:@"purchaseTimestamp"];
+          purchaseTimestamp2 = [(APAttributionRequest *)self purchaseTimestamp];
+          [v3 setObject:purchaseTimestamp2 forKey:@"purchaseTimestamp"];
         }
 
-        v22 = [(APAttributionRequest *)self adamId];
+        adamId = [(APAttributionRequest *)self adamId];
 
-        if (v22)
+        if (adamId)
         {
-          v23 = [(APAttributionRequest *)self adamId];
-          [v3 setObject:v23 forKey:@"adamId"];
+          adamId2 = [(APAttributionRequest *)self adamId];
+          [v3 setObject:adamId2 forKey:@"adamId"];
         }
 
-        v24 = [(APAttributionRequest *)self adMetadata];
+        adMetadata = [(APAttributionRequest *)self adMetadata];
 
-        if (v24)
+        if (adMetadata)
         {
-          v25 = [(APAttributionRequest *)self adMetadata];
-          [v3 setObject:v25 forKey:@"adMetadata"];
+          adMetadata2 = [(APAttributionRequest *)self adMetadata];
+          [v3 setObject:adMetadata2 forKey:@"adMetadata"];
         }
 
         [(APAttributionRequest *)self iAdConversionTimestamp];
@@ -526,11 +526,11 @@ LABEL_26:
 - (NSDictionary)payloadForRequestBodyABCLog
 {
   v17[0] = @"toroId";
-  v3 = [(APAttributionRequest *)self toroId];
-  v4 = v3;
-  if (v3)
+  toroId = [(APAttributionRequest *)self toroId];
+  v4 = toroId;
+  if (toroId)
   {
-    v5 = v3;
+    v5 = toroId;
   }
 
   else
@@ -540,11 +540,11 @@ LABEL_26:
 
   v18[0] = v5;
   v17[1] = @"anonymousDemandId";
-  v6 = [(APAttributionRequest *)self anonymousDemandId];
-  v7 = v6;
-  if (v6)
+  anonymousDemandId = [(APAttributionRequest *)self anonymousDemandId];
+  v7 = anonymousDemandId;
+  if (anonymousDemandId)
   {
-    v8 = v6;
+    v8 = anonymousDemandId;
   }
 
   else
@@ -554,11 +554,11 @@ LABEL_26:
 
   v18[1] = v8;
   v17[2] = @"osPlatform";
-  v9 = [(APAttributionRequest *)self bundleId];
-  v10 = v9;
-  if (v9)
+  bundleId = [(APAttributionRequest *)self bundleId];
+  v10 = bundleId;
+  if (bundleId)
   {
-    v11 = v9;
+    v11 = bundleId;
   }
 
   else
@@ -568,11 +568,11 @@ LABEL_26:
 
   v18[2] = v11;
   v17[3] = @"osVersion";
-  v12 = [(APAttributionRequest *)self attributionKey];
-  v13 = v12;
-  if (v12)
+  attributionKey = [(APAttributionRequest *)self attributionKey];
+  v13 = attributionKey;
+  if (attributionKey)
   {
-    v14 = v12;
+    v14 = attributionKey;
   }
 
   else

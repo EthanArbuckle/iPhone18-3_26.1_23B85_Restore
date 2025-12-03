@@ -1,34 +1,34 @@
 @interface SBDistanceFieldView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)invertsShape;
 - (CGColor)foregroundColor;
 - (NSString)renderMode;
 - (double)lineWidth;
 - (double)offset;
 - (double)sharpness;
-- (void)setForegroundColor:(CGColor *)a3;
-- (void)setInvertsShape:(BOOL)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setOffset:(double)a3;
-- (void)setRenderMode:(id)a3;
-- (void)setSharpness:(double)a3;
+- (void)setForegroundColor:(CGColor *)color;
+- (void)setInvertsShape:(BOOL)shape;
+- (void)setLineWidth:(double)width;
+- (void)setOffset:(double)offset;
+- (void)setRenderMode:(id)mode;
+- (void)setSharpness:(double)sharpness;
 @end
 
 @implementation SBDistanceFieldView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = SBDistanceFieldView;
-  if (-[SBDistanceFieldView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, v4) || ([v4 isEqualToString:@"foregroundColor"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"sharpness") & 1) != 0)
+  if (-[SBDistanceFieldView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, keyCopy) || ([keyCopy isEqualToString:@"foregroundColor"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"sharpness") & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"offset"];
+    v5 = [keyCopy isEqualToString:@"offset"];
   }
 
   return v5;
@@ -36,91 +36,91 @@
 
 - (NSString)renderMode
 {
-  v2 = [(SBDistanceFieldView *)self layer];
-  v3 = [v2 renderMode];
+  layer = [(SBDistanceFieldView *)self layer];
+  renderMode = [layer renderMode];
 
-  return v3;
+  return renderMode;
 }
 
-- (void)setRenderMode:(id)a3
+- (void)setRenderMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(SBDistanceFieldView *)self layer];
-  [v5 setRenderMode:v4];
+  modeCopy = mode;
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer setRenderMode:modeCopy];
 }
 
 - (BOOL)invertsShape
 {
-  v2 = [(SBDistanceFieldView *)self layer];
-  v3 = [v2 invertsShape];
+  layer = [(SBDistanceFieldView *)self layer];
+  invertsShape = [layer invertsShape];
 
-  return v3;
+  return invertsShape;
 }
 
-- (void)setInvertsShape:(BOOL)a3
+- (void)setInvertsShape:(BOOL)shape
 {
-  v3 = a3;
-  v4 = [(SBDistanceFieldView *)self layer];
-  [v4 setInvertsShape:v3];
+  shapeCopy = shape;
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer setInvertsShape:shapeCopy];
 }
 
 - (CGColor)foregroundColor
 {
-  v2 = [(SBDistanceFieldView *)self layer];
-  v3 = [v2 foregroundColor];
+  layer = [(SBDistanceFieldView *)self layer];
+  foregroundColor = [layer foregroundColor];
 
-  return v3;
+  return foregroundColor;
 }
 
-- (void)setForegroundColor:(CGColor *)a3
+- (void)setForegroundColor:(CGColor *)color
 {
-  v4 = [(SBDistanceFieldView *)self layer];
-  [v4 setForegroundColor:a3];
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer setForegroundColor:color];
 }
 
 - (double)offset
 {
-  v2 = [(SBDistanceFieldView *)self layer];
-  [v2 offset];
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer offset];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
-  v4 = [(SBDistanceFieldView *)self layer];
-  [v4 setOffset:a3];
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer setOffset:offset];
 }
 
 - (double)sharpness
 {
-  v2 = [(SBDistanceFieldView *)self layer];
-  [v2 sharpness];
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer sharpness];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSharpness:(double)a3
+- (void)setSharpness:(double)sharpness
 {
-  v4 = [(SBDistanceFieldView *)self layer];
-  [v4 setSharpness:a3];
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer setSharpness:sharpness];
 }
 
 - (double)lineWidth
 {
-  v2 = [(SBDistanceFieldView *)self layer];
-  [v2 lineWidth];
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer lineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  v4 = [(SBDistanceFieldView *)self layer];
-  [v4 setLineWidth:a3];
+  layer = [(SBDistanceFieldView *)self layer];
+  [layer setLineWidth:width];
 }
 
 @end

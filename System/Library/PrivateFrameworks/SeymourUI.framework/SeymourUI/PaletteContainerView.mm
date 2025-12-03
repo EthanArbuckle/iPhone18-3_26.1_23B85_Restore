@@ -1,7 +1,7 @@
 @interface PaletteContainerView
 - (NSArray)interactions;
-- (_TtC9SeymourUI20PaletteContainerView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI20PaletteContainerView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI20PaletteContainerView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI20PaletteContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -10,19 +10,19 @@
 - (NSArray)interactions
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI20PaletteContainerView_containerView);
-  v3 = self;
-  v4 = [v2 interactions];
-  if (!v4)
+  selfCopy = self;
+  interactions = [v2 interactions];
+  if (!interactions)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C76F6F8);
     sub_20C13CC74();
-    v4 = sub_20C13CC54();
+    interactions = sub_20C13CC54();
   }
 
-  return v4;
+  return interactions;
 }
 
-- (_TtC9SeymourUI20PaletteContainerView)initWithCoder:(id)a3
+- (_TtC9SeymourUI20PaletteContainerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9SeymourUI20PaletteContainerView_containerView;
   type metadata accessor for PaletteContainerView.ContainerView();
@@ -38,11 +38,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BE4BAE4();
 }
 
-- (_TtC9SeymourUI20PaletteContainerView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI20PaletteContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

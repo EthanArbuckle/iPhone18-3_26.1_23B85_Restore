@@ -1,37 +1,37 @@
 @interface CompositeComponentCollectionView
 - (BOOL)_isEditing;
-- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)a3;
+- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)path;
 - (BOOL)isEditing;
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view;
 - (CGRect)frame;
 - (NSArray)indexPathsForVisibleItems;
 - (NSArray)visibleCells;
 - (UIEdgeInsets)contentInset;
-- (_TtC12NowPlayingUI32CompositeComponentCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4;
-- (id)dequeueReusableSupplementaryViewOfKind:(id)a3 withReuseIdentifier:(id)a4 forIndexPath:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)indexPathForCell:(id)a3;
-- (id)indexPathForItemAtPoint:(CGPoint)a3;
-- (void)_invalidateLayoutWithContext:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4;
+- (_TtC12NowPlayingUI32CompositeComponentCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path;
+- (id)dequeueReusableSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier forIndexPath:(id)path;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)indexPathForCell:(id)cell;
+- (id)indexPathForItemAtPoint:(CGPoint)point;
+- (void)_invalidateLayoutWithContext:(id)context;
+- (void)bringSubviewToFront:(id)front;
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated;
 - (void)endInteractiveMovement;
 - (void)layoutSubviews;
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4;
-- (void)moveSection:(int64_t)a3 toSection:(int64_t)a4;
-- (void)performBatchUpdates:(id)a3 completion:(id)a4;
-- (void)registerClass:(Class)a3 forCellWithReuseIdentifier:(id)a4;
-- (void)registerClass:(Class)a3 forSupplementaryViewOfKind:(id)a4 withReuseIdentifier:(id)a5;
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)moveSection:(int64_t)section toSection:(int64_t)toSection;
+- (void)performBatchUpdates:(id)updates completion:(id)completion;
+- (void)registerClass:(Class)class forCellWithReuseIdentifier:(id)identifier;
+- (void)registerClass:(Class)class forSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier;
 - (void)reloadData;
-- (void)scrollToItemAtIndexPath:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5;
-- (void)sendSubviewToBack:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)updateInteractiveMovementTargetPosition:(CGPoint)a3;
+- (void)scrollToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position animated:(BOOL)animated;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position;
+- (void)sendSubviewToBack:(id)back;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setEditing:(BOOL)editing;
+- (void)setFrame:(CGRect)frame;
+- (void)updateInteractiveMovementTargetPosition:(CGPoint)position;
 @end
 
 @implementation CompositeComponentCollectionView
@@ -48,12 +48,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -67,11 +67,11 @@
   }
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
-  v4 = a3;
-  v5 = self;
-  sub_12C128(v4, &selRef_bringSubviewToFront_);
+  frontCopy = front;
+  selfCopy = self;
+  sub_12C128(frontCopy, &selRef_bringSubviewToFront_);
 }
 
 - (void)layoutSubviews
@@ -89,16 +89,16 @@
   }
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
-  v4 = a3;
-  v5 = self;
-  sub_12C128(v4, &selRef_sendSubviewToBack_);
+  backCopy = back;
+  selfCopy = self;
+  sub_12C128(backCopy, &selRef_sendSubviewToBack_);
 }
 
-- (void)registerClass:(Class)a3 forCellWithReuseIdentifier:(id)a4
+- (void)registerClass:(Class)class forCellWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (class)
   {
     ObjCClassMetadata = swift_getObjCClassMetadata();
   }
@@ -110,13 +110,13 @@
 
   v6 = sub_1448DC();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_12C270(ObjCClassMetadata, v6, v8);
 }
 
-- (void)registerClass:(Class)a3 forSupplementaryViewOfKind:(id)a4 withReuseIdentifier:(id)a5
+- (void)registerClass:(Class)class forSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (class)
   {
     ObjCClassMetadata = swift_getObjCClassMetadata();
   }
@@ -130,11 +130,11 @@
   v9 = v8;
   v10 = sub_1448DC();
   v12 = v11;
-  v13 = self;
+  selfCopy = self;
   sub_12C4A0(ObjCClassMetadata, v7, v9, v10, v12);
 }
 
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path
 {
   v5 = sub_140C2C();
   v6 = *(v5 - 8);
@@ -143,7 +143,7 @@
   v9 = sub_1448DC();
   v11 = v10;
   sub_140BAC();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_12C748(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);
@@ -151,7 +151,7 @@
   return v13;
 }
 
-- (id)dequeueReusableSupplementaryViewOfKind:(id)a3 withReuseIdentifier:(id)a4 forIndexPath:(id)a5
+- (id)dequeueReusableSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier forIndexPath:(id)path
 {
   v6 = sub_140C2C();
   v7 = *(v6 - 8);
@@ -162,7 +162,7 @@
   v13 = sub_1448DC();
   v15 = v14;
   sub_140BAC();
-  v16 = self;
+  selfCopy = self;
   v17 = sub_12CC78(v10, v12, v13, v15, v9);
 
   (*(v7 + 8))(v9, v6);
@@ -172,7 +172,7 @@
 
 - (NSArray)indexPathsForVisibleItems
 {
-  v2 = self;
+  selfCopy = self;
   sub_12D320();
 
   sub_140C2C();
@@ -183,7 +183,7 @@
 
 - (NSArray)visibleCells
 {
-  v2 = self;
+  selfCopy = self;
   sub_12DCE8();
 
   sub_2B860(0, &qword_1CA670);
@@ -192,7 +192,7 @@
   return v3.super.isa;
 }
 
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v5 = sub_140C2C();
   v6 = *(v5 - 8);
@@ -202,7 +202,7 @@
   v11 = &v14 - v10;
   sub_140BAC();
   sub_140BAC();
-  v12 = self;
+  selfCopy = self;
   sub_12EBE8(v11, v8);
 
   v13 = *(v6 + 8);
@@ -210,26 +210,26 @@
   v13(v11, v5);
 }
 
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated
 {
   v6 = sub_140C2C();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v10 = self;
-  sub_12F2C8(v9, a4);
+  selfCopy = self;
+  sub_12F2C8(v9, animated);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position
 {
-  v6 = a4;
+  animatedCopy = animated;
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1C4A80);
   __chkstk_darwin(v9 - 8);
   v11 = &v15 - v10;
-  if (a3)
+  if (path)
   {
     sub_140BAC();
     v12 = sub_140C2C();
@@ -242,33 +242,33 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = self;
-  sub_12F6F8(v11, v6, a5);
+  selfCopy = self;
+  sub_12F6F8(v11, animatedCopy, position);
 
   sub_15340(v11, &unk_1C4A80);
 }
 
-- (void)scrollToItemAtIndexPath:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5
+- (void)scrollToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position animated:(BOOL)animated
 {
   v8 = sub_140C2C();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v13 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v12 = self;
-  sub_12FED0(v11, a4, a5);
+  selfCopy = self;
+  sub_12FED0(v11, position, animated);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (id)indexPathForItemAtPoint:(CGPoint)a3
+- (id)indexPathForItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1C4A80);
   __chkstk_darwin(v6 - 8);
   v8 = &v16 - v7;
-  v9 = self;
+  selfCopy = self;
   sub_130318(v8, x, y);
 
   v10 = sub_140C2C();
@@ -285,14 +285,14 @@
   return v13;
 }
 
-- (id)indexPathForCell:(id)a3
+- (id)indexPathForCell:(id)cell
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1C4A80);
   __chkstk_darwin(v5 - 8);
   v7 = &v16 - v6;
-  v8 = a3;
-  v9 = self;
-  sub_130AA8(v8, v7);
+  cellCopy = cell;
+  selfCopy = self;
+  sub_130AA8(cellCopy, v7);
 
   v10 = sub_140C2C();
   v11 = *(v10 - 8);
@@ -308,51 +308,51 @@
   return v13;
 }
 
-- (void)moveSection:(int64_t)a3 toSection:(int64_t)a4
+- (void)moveSection:(int64_t)section toSection:(int64_t)toSection
 {
-  v6 = self;
-  sub_131B54(a3, a4);
+  selfCopy = self;
+  sub_131B54(section, toSection);
 }
 
-- (void)_invalidateLayoutWithContext:(id)a3
+- (void)_invalidateLayoutWithContext:(id)context
 {
-  v5 = a3;
-  v6 = self;
-  sub_131E8C(a3);
+  contextCopy = context;
+  selfCopy = self;
+  sub_131E8C(context);
 }
 
-- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)a3
+- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)path
 {
   v4 = sub_140C2C();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_132220(v7);
 
   (*(v5 + 8))(v7, v4);
   return v9 & 1;
 }
 
-- (void)updateInteractiveMovementTargetPosition:(CGPoint)a3
+- (void)updateInteractiveMovementTargetPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = position.y;
+  x = position.x;
+  selfCopy = self;
   sub_1324C8(x, y);
 }
 
 - (void)endInteractiveMovement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1329BC();
 }
 
-- (void)performBatchUpdates:(id)a3 completion:(id)a4
+- (void)performBatchUpdates:(id)updates completion:(id)completion
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(updates);
+  v7 = _Block_copy(completion);
   v8 = v7;
   if (v6)
   {
@@ -381,7 +381,7 @@ LABEL_3:
   v11 = 0;
   v10 = 0;
 LABEL_6:
-  v12 = self;
+  selfCopy = self;
   sub_132B30(v6, v9, v11, v10);
   sub_2173C(v11);
   sub_2173C(v6);
@@ -399,13 +399,13 @@ LABEL_6:
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  selfCopy = self;
   sub_13303C(top, left, bottom, right);
 }
 
@@ -416,9 +416,9 @@ LABEL_6:
   return [(CompositeComponentCollectionView *)&v3 isEditing];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -428,7 +428,7 @@ LABEL_6:
   {
     v6.receiver = self;
     v6.super_class = type metadata accessor for CompositeComponentCollectionView();
-    [(CompositeComponentCollectionView *)&v6 setEditing:v3];
+    [(CompositeComponentCollectionView *)&v6 setEditing:editingCopy];
   }
 }
 
@@ -438,9 +438,9 @@ LABEL_6:
   if (Strong)
   {
     v4 = Strong;
-    v5 = [Strong mt_isEditing];
+    mt_isEditing = [Strong mt_isEditing];
 
-    return v5;
+    return mt_isEditing;
   }
 
   else
@@ -453,35 +453,35 @@ LABEL_6:
 
 - (void)reloadData
 {
-  v2 = self;
+  selfCopy = self;
   sub_133390();
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view
 {
-  sub_133538(self, a3.x, a3.y, a2, a4, &selRef_convertPoint_toView_);
+  sub_133538(self, point.x, point.y, a2, view, &selRef_convertPoint_toView_);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view
 {
-  sub_133538(self, a3.x, a3.y, a2, a4, &selRef_convertPoint_fromView_);
+  sub_133538(self, point.x, point.y, a2, view, &selRef_convertPoint_fromView_);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v9 = Strong;
-    v10 = [Strong hitTest:a4 withEvent:{x, y}];
+    v10 = [Strong hitTest:event withEvent:{x, y}];
 
     v11 = v10;
   }
@@ -490,22 +490,22 @@ LABEL_6:
   {
     v13.receiver = self;
     v13.super_class = type metadata accessor for CompositeComponentCollectionView();
-    v11 = [(CompositeComponentCollectionView *)&v13 hitTest:a4 withEvent:x, y];
+    v11 = [(CompositeComponentCollectionView *)&v13 hitTest:event withEvent:x, y];
   }
 
   return v11;
 }
 
-- (_TtC12NowPlayingUI32CompositeComponentCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC12NowPlayingUI32CompositeComponentCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI32CompositeComponentCollectionView_isInvalidatingLayout) = 0;
   swift_unknownObjectWeakInit();
   v10 = OBJC_IVAR____TtC12NowPlayingUI32CompositeComponentCollectionView_registeredReusableViewClasses;
-  v11 = a4;
+  layoutCopy = layout;
   *(&self->super.super.super.super.super.isa + v10) = sub_13AFB4(_swiftEmptyArrayStorage);
   v12 = OBJC_IVAR____TtC12NowPlayingUI32CompositeComponentCollectionView_reorderingItemGlobalIndexPath;
   v13 = sub_140C2C();
@@ -520,9 +520,9 @@ LABEL_6:
   v16[1] = 0;
   v20.receiver = self;
   v20.super_class = v17;
-  v18 = [(CompositeComponentCollectionView *)&v20 initWithFrame:v11 collectionViewLayout:x, y, width, height];
+  height = [(CompositeComponentCollectionView *)&v20 initWithFrame:layoutCopy collectionViewLayout:x, y, width, height];
 
-  return v18;
+  return height;
 }
 
 @end

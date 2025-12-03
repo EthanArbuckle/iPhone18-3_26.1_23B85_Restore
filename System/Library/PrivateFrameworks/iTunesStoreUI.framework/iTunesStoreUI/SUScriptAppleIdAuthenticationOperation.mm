@@ -1,33 +1,33 @@
 @interface SUScriptAppleIdAuthenticationOperation
-- (SUScriptAppleIdAuthenticationOperation)initWithUsername:(id)a3 password:(id)a4 viewController:(id)a5;
+- (SUScriptAppleIdAuthenticationOperation)initWithUsername:(id)username password:(id)password viewController:(id)controller;
 - (void)run;
-- (void)sendCompletionCallback:(id)a3;
+- (void)sendCompletionCallback:(id)callback;
 @end
 
 @implementation SUScriptAppleIdAuthenticationOperation
 
-- (SUScriptAppleIdAuthenticationOperation)initWithUsername:(id)a3 password:(id)a4 viewController:(id)a5
+- (SUScriptAppleIdAuthenticationOperation)initWithUsername:(id)username password:(id)password viewController:(id)controller
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  usernameCopy = username;
+  passwordCopy = password;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v15 = [MEMORY[0x1E69D4938] sharedConfig];
-    v16 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 &= 2u;
     }
@@ -44,11 +44,11 @@
       {
 LABEL_14:
 
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_15;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v24, v22}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v24, v22}];
       free(v20);
       SSFileLog();
     }
@@ -65,22 +65,22 @@ LABEL_14:
     authenticationContext = v11->_authenticationContext;
     v11->_authenticationContext = v12;
 
-    [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setUsername:v8];
-    [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext _setPassword:v9];
+    [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setUsername:usernameCopy];
+    [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext _setPassword:passwordCopy];
     [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setShouldForceInteractiveAuth:0];
     [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setIsUsernameEditable:1];
     [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setShouldUpdatePersistentServiceTokens:1];
-    [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setPresentingViewController:v10];
+    [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setPresentingViewController:controllerCopy];
     [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setFirstTimeLogin:1];
     [(AKAppleIDAuthenticationInAppContext *)v11->_authenticationContext setIsUsernameEditable:0];
-    objc_storeStrong(&v11->_viewController, a5);
+    objc_storeStrong(&v11->_viewController, controller);
   }
 
   self = v11;
-  v14 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)run
@@ -230,13 +230,13 @@ LABEL_12:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)sendCompletionCallback:(id)a3
+- (void)sendCompletionCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(SUScriptAppleIdAuthenticationOperation *)self error];
-  v6 = [v5 code];
+  callbackCopy = callback;
+  error = [(SUScriptAppleIdAuthenticationOperation *)self error];
+  code = [error code];
 
-  if (v6 == -7064)
+  if (code == -7064)
   {
     status = self->_status;
     v8 = @"cancel";
@@ -244,9 +244,9 @@ LABEL_12:
 
   else
   {
-    v9 = [(SUScriptAppleIdAuthenticationOperation *)self success];
+    success = [(SUScriptAppleIdAuthenticationOperation *)self success];
     status = self->_status;
-    if (v9)
+    if (success)
     {
       v8 = @"success";
     }
@@ -259,7 +259,7 @@ LABEL_12:
 
   self->_status = &v8->isa;
 
-  v10 = v4;
+  v10 = callbackCopy;
   WebThreadRun();
 }
 

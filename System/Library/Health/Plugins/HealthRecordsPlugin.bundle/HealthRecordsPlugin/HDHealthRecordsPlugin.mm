@@ -1,67 +1,67 @@
 @interface HDHealthRecordsPlugin
-- (id)_databaseSchemaForProtectionClass:(int64_t)a3;
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
-- (id)ontologyFeatureEvaluatorsForDaemon:(id)a3;
+- (id)_databaseSchemaForProtectionClass:(int64_t)class;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
+- (id)ontologyFeatureEvaluatorsForDaemon:(id)daemon;
 - (id)orderedSyncEntities;
 - (id)taskServerClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation HDHealthRecordsPlugin
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
-  v3 = a3;
-  v4 = [[HDHealthRecordsDaemonExtension alloc] initWithHealthDaemon:v3];
+  daemonCopy = daemon;
+  v4 = [[HDHealthRecordsDaemonExtension alloc] initWithHealthDaemon:daemonCopy];
 
   return v4;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [[HDHealthRecordsProfileExtension alloc] initWithProfile:v3];
+  profileCopy = profile;
+  v4 = [[HDHealthRecordsProfileExtension alloc] initWithProfile:profileCopy];
 
   return v4;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHealthRecordsPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 currentSchemaVersion];
+  v3 = [(HDHealthRecordsPlugin *)self _databaseSchemaForProtectionClass:class];
+  currentSchemaVersion = [v3 currentSchemaVersion];
 
-  return v4;
+  return currentSchemaVersion;
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHealthRecordsPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 databaseEntities];
+  v3 = [(HDHealthRecordsPlugin *)self _databaseSchemaForProtectionClass:class];
+  databaseEntities = [v3 databaseEntities];
 
-  return v4;
+  return databaseEntities;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v6 = a4;
-  v8 = [(HDHealthRecordsPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v7 = [(HDHealthRecordsPlugin *)self schemaName];
-  [v8 registerMigrationStepsWithMigrator:v6 schemaName:v7];
+  migratorCopy = migrator;
+  v8 = [(HDHealthRecordsPlugin *)self _databaseSchemaForProtectionClass:class];
+  schemaName = [(HDHealthRecordsPlugin *)self schemaName];
+  [v8 registerMigrationStepsWithMigrator:migratorCopy schemaName:schemaName];
 }
 
-- (id)_databaseSchemaForProtectionClass:(int64_t)a3
+- (id)_databaseSchemaForProtectionClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v4 = &off_1047C8;
   }
 
   else
   {
-    if (a3 != 2)
+    if (class != 2)
     {
       goto LABEL_6;
     }
@@ -108,12 +108,12 @@ LABEL_6:
   return v2;
 }
 
-- (id)ontologyFeatureEvaluatorsForDaemon:(id)a3
+- (id)ontologyFeatureEvaluatorsForDaemon:(id)daemon
 {
-  v3 = [a3 healthRecordsDaemonExtension];
-  v4 = [v3 ontologyFeatureEvaluators];
+  healthRecordsDaemonExtension = [daemon healthRecordsDaemonExtension];
+  ontologyFeatureEvaluators = [healthRecordsDaemonExtension ontologyFeatureEvaluators];
 
-  return v4;
+  return ontologyFeatureEvaluators;
 }
 
 @end

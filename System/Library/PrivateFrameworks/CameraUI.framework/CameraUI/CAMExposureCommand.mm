@@ -1,10 +1,10 @@
 @interface CAMExposureCommand
-- (CAMExposureCommand)initWithCoder:(id)a3;
-- (CAMExposureCommand)initWithExposureMode:(int64_t)a3 atPointOfInterest:(CGPoint)a4 configureSecondaryDevice:(BOOL)a5;
+- (CAMExposureCommand)initWithCoder:(id)coder;
+- (CAMExposureCommand)initWithExposureMode:(int64_t)mode atPointOfInterest:(CGPoint)interest configureSecondaryDevice:(BOOL)device;
 - (CGPoint)_exposurePointOfInterest;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMExposureCommand
@@ -18,46 +18,46 @@
   return result;
 }
 
-- (CAMExposureCommand)initWithExposureMode:(int64_t)a3 atPointOfInterest:(CGPoint)a4 configureSecondaryDevice:(BOOL)a5
+- (CAMExposureCommand)initWithExposureMode:(int64_t)mode atPointOfInterest:(CGPoint)interest configureSecondaryDevice:(BOOL)device
 {
-  y = a4.y;
-  x = a4.x;
+  y = interest.y;
+  x = interest.x;
   v13.receiver = self;
   v13.super_class = CAMExposureCommand;
   v9 = [(CAMCaptureCommand *)&v13 initWithSubcommands:0];
   v10 = v9;
   if (v9)
   {
-    v9->__exposureMode = a3;
+    v9->__exposureMode = mode;
     v9->__exposurePointOfInterest.x = x;
     v9->__exposurePointOfInterest.y = y;
-    v9->__configureSecondaryDevice = a5;
+    v9->__configureSecondaryDevice = device;
     v11 = v9;
   }
 
   return v10;
 }
 
-- (CAMExposureCommand)initWithCoder:(id)a3
+- (CAMExposureCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMExposureCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMExposureCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
   v4[4] = [(CAMExposureCommand *)self _exposureMode];
   [(CAMExposureCommand *)self _exposurePointOfInterest];
   v4[5] = v5;
@@ -66,16 +66,16 @@
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
   if ([(CAMExposureCommand *)self _configureSecondaryDevice])
   {
-    v6 = [v4 currentSecondaryVideoDevice];
+    currentSecondaryVideoDevice = [contextCopy currentSecondaryVideoDevice];
 
-    v5 = v6;
+    currentVideoDevice = currentSecondaryVideoDevice;
   }
 
   v7 = [CAMCaptureConversions captureExposureModeForExposureMode:[(CAMExposureCommand *)self _exposureMode]];
@@ -97,10 +97,10 @@
   }
 
   v14 = v12 && v13;
-  if ([v5 isExposurePointOfInterestSupported] && v14)
+  if ([currentVideoDevice isExposurePointOfInterestSupported] && v14)
   {
     [(CAMExposureCommand *)self _exposurePointOfInterest];
-    [v5 setExposurePointOfInterest:?];
+    [currentVideoDevice setExposurePointOfInterest:?];
   }
 
   else if (v14)
@@ -111,15 +111,15 @@
       v17 = 138543618;
       v18 = DictionaryRepresentation;
       v19 = 2114;
-      v20 = v5;
+      v20 = currentVideoDevice;
       _os_log_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEFAULT, "Failed to set exposure point of interest (%{public}@), as it is not supported by %{public}@", &v17, 0x16u);
     }
   }
 
   CFRelease(DictionaryRepresentation);
-  if ([v5 isExposureModeSupported:v7])
+  if ([currentVideoDevice isExposureModeSupported:v7])
   {
-    [v5 setExposureMode:v7];
+    [currentVideoDevice setExposureMode:v7];
   }
 
   else
@@ -130,7 +130,7 @@
       v17 = 134218242;
       v18 = v7;
       v19 = 2114;
-      v20 = v5;
+      v20 = currentVideoDevice;
       _os_log_impl(&dword_1A3640000, v16, OS_LOG_TYPE_DEFAULT, "Failed to set exposure mode %ld, as it is not supported by %{public}@", &v17, 0x16u);
     }
   }

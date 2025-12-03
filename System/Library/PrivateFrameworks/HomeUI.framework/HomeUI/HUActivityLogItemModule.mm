@@ -1,23 +1,23 @@
 @interface HUActivityLogItemModule
-- (HUActivityLogItemModule)initWithHome:(id)a3 itemUpdater:(id)a4;
-- (HUActivityLogItemModule)initWithItemUpdater:(id)a3;
+- (HUActivityLogItemModule)initWithHome:(id)home itemUpdater:(id)updater;
+- (HUActivityLogItemModule)initWithItemUpdater:(id)updater;
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUActivityLogItemModule
 
-- (HUActivityLogItemModule)initWithHome:(id)a3 itemUpdater:(id)a4
+- (HUActivityLogItemModule)initWithHome:(id)home itemUpdater:(id)updater
 {
-  v5 = a3;
+  homeCopy = home;
   swift_unknownObjectRetain();
-  v6 = sub_20CFC8F5C(v5, a4);
+  v6 = sub_20CFC8F5C(homeCopy, updater);
 
   swift_unknownObjectRelease();
   return v6;
 }
 
-- (HUActivityLogItemModule)initWithItemUpdater:(id)a3
+- (HUActivityLogItemModule)initWithItemUpdater:(id)updater
 {
   result = sub_20D568A58();
   __break(1u);
@@ -26,7 +26,7 @@
 
 - (id)buildItemProviders
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20CFC82F4();
 
   if (v3)
@@ -44,9 +44,9 @@
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v3 = self;
+  selfCopy = self;
   sub_20CFC9124();
 
   sub_20CECF940(0, &unk_28111FFD0);

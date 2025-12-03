@@ -1,20 +1,20 @@
 @interface SBStartupTransitionToApp
-- (void)performTransitionWithCompletionBlock:(id)a3;
+- (void)performTransitionWithCompletionBlock:(id)block;
 @end
 
 @implementation SBStartupTransitionToApp
 
-- (void)performTransitionWithCompletionBlock:(id)a3
+- (void)performTransitionWithCompletionBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SBStartupTransitionToApp *)a2 performTransitionWithCompletionBlock:?];
   }
 
-  v6 = [(SBBaseStartupTransition *)self context];
-  v7 = [v6 applicationLaunchURL];
-  if (!v7)
+  context = [(SBBaseStartupTransition *)self context];
+  applicationLaunchURL = [context applicationLaunchURL];
+  if (!applicationLaunchURL)
   {
     [(SBStartupTransitionToApp *)a2 performTransitionWithCompletionBlock:?];
   }
@@ -23,11 +23,11 @@
   v10[1] = 3221225472;
   v10[2] = __65__SBStartupTransitionToApp_performTransitionWithCompletionBlock___block_invoke;
   v10[3] = &unk_2783AB410;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
-  SBWorkspaceActivateApplicationFromURL(v7, 0, v10);
+  v11 = context;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = context;
+  SBWorkspaceActivateApplicationFromURL(applicationLaunchURL, 0, v10);
 }
 
 void __65__SBStartupTransitionToApp_performTransitionWithCompletionBlock___block_invoke(uint64_t a1, void *a2)

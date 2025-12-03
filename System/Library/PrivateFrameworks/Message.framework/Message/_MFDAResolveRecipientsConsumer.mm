@@ -2,8 +2,8 @@
 - (NSError)error;
 - (_MFDAResolveRecipientsConsumer)init;
 - (id)waitForResolvedRecipients;
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5;
-- (void)resolvedRecipientsByEmailAddress:(id)a3;
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error;
+- (void)resolvedRecipientsByEmailAddress:(id)address;
 @end
 
 @implementation _MFDAResolveRecipientsConsumer
@@ -41,34 +41,34 @@
   return v3;
 }
 
-- (void)resolvedRecipientsByEmailAddress:(id)a3
+- (void)resolvedRecipientsByEmailAddress:(id)address
 {
-  v6 = a3;
+  addressCopy = address;
   [(MFConditionLock *)self->_conditionLock lock];
-  v4 = [v6 copy];
+  v4 = [addressCopy copy];
   resolvedRecipientsByEmailAddress = self->_resolvedRecipientsByEmailAddress;
   self->_resolvedRecipientsByEmailAddress = v4;
 
   [(MFConditionLock *)self->_conditionLock unlockWithCondition:1];
 }
 
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  taskCopy = task;
+  errorCopy = error;
   [(MFConditionLock *)self->_conditionLock lock];
   v10 = DALoggingwithCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v12 = 138412546;
-    v13 = v8;
+    v13 = taskCopy;
     v14 = 2048;
-    v15 = a3;
+    failedCopy = failed;
     _os_log_impl(&dword_1B0389000, v10, OS_LOG_TYPE_ERROR, "reslove recipients task %@ failed with code %ld", &v12, 0x16u);
   }
 
-  objc_storeStrong(&self->_error, a5);
+  objc_storeStrong(&self->_error, error);
   [(MFConditionLock *)self->_conditionLock unlockWithCondition:1];
 
   v11 = *MEMORY[0x1E69E9840];

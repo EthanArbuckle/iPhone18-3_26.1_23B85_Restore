@@ -1,28 +1,28 @@
 @interface MUIFeedbackNotificationViewController
-- (MUIFeedbackNotificationViewController)initWithTitleText:(id)a3 messageText:(id)a4;
+- (MUIFeedbackNotificationViewController)initWithTitleText:(id)text messageText:(id)messageText;
 - (void)_arrangeAndConfigureLeadingAccessoryView;
 - (void)_arrangeAndConfigureTrailingAccessoryView;
-- (void)setLeadingAccessoryView:(id)a3;
-- (void)setTrailingAccessoryView:(id)a3;
+- (void)setLeadingAccessoryView:(id)view;
+- (void)setTrailingAccessoryView:(id)view;
 - (void)viewDidLoad;
 @end
 
 @implementation MUIFeedbackNotificationViewController
 
-- (MUIFeedbackNotificationViewController)initWithTitleText:(id)a3 messageText:(id)a4
+- (MUIFeedbackNotificationViewController)initWithTitleText:(id)text messageText:(id)messageText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  messageTextCopy = messageText;
   v14.receiver = self;
   v14.super_class = MUIFeedbackNotificationViewController;
   v8 = [(MUIFeedbackNotificationViewController *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [textCopy copy];
     titleText = v8->_titleText;
     v8->_titleText = v9;
 
-    v11 = [v7 copy];
+    v11 = [messageTextCopy copy];
     messageText = v8->_messageText;
     v8->_messageText = v11;
   }
@@ -36,9 +36,9 @@
   v35.receiver = self;
   v35.super_class = MUIFeedbackNotificationViewController;
   [(MUIFeedbackNotificationViewController *)&v35 viewDidLoad];
-  v3 = [(MUIFeedbackNotificationViewController *)self view];
-  [v3 setInsetsLayoutMarginsFromSafeArea:0];
-  [v3 setLayoutMargins:{8.0, 8.0, 8.0, 8.0}];
+  view = [(MUIFeedbackNotificationViewController *)self view];
+  [view setInsetsLayoutMarginsFromSafeArea:0];
+  [view setLayoutMargins:{8.0, 8.0, 8.0, 8.0}];
   v4 = objc_alloc_init(MEMORY[0x277D75A68]);
   containerStackView = self->_containerStackView;
   self->_containerStackView = v4;
@@ -46,8 +46,8 @@
   [(UIStackView *)self->_containerStackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_containerStackView setAlignment:3];
   [(UIStackView *)self->_containerStackView setSpacing:8.0];
-  v31 = v3;
-  [v3 addSubview:self->_containerStackView];
+  v31 = view;
+  [view addSubview:self->_containerStackView];
   v6 = objc_alloc_init(MEMORY[0x277D75A68]);
   [v6 setAxis:1];
   [v6 setAlignment:3];
@@ -59,8 +59,8 @@
   v9 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76968] weight:*MEMORY[0x277D743F8]];
   [v34 setFont:v9];
 
-  v10 = [MEMORY[0x277D75348] labelColor];
-  [v34 setTextColor:v10];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v34 setTextColor:labelColor];
 
   [v34 setText:self->_titleText];
   v33 = v6;
@@ -69,32 +69,32 @@
   v11 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v8 weight:*MEMORY[0x277D74410]];
   [v32 setFont:v11];
 
-  v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v32 setTextColor:v12];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v32 setTextColor:secondaryLabelColor];
 
   [v32 setText:self->_messageText];
   [v6 addArrangedSubview:v32];
-  v13 = [v3 layoutMarginsGuide];
-  v14 = [(UIStackView *)self->_containerStackView leadingAnchor];
-  v15 = [v13 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:24.0];
+  layoutMarginsGuide = [view layoutMarginsGuide];
+  leadingAnchor = [(UIStackView *)self->_containerStackView leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:24.0];
   containerLeadingConstraint = self->_containerLeadingConstraint;
   self->_containerLeadingConstraint = v16;
 
-  v18 = [v13 trailingAnchor];
-  v19 = [(UIStackView *)self->_containerStackView trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:24.0];
+  trailingAnchor = [layoutMarginsGuide trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_containerStackView trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:24.0];
   containerTrailingContraint = self->_containerTrailingContraint;
   self->_containerTrailingContraint = v20;
 
   v30 = MEMORY[0x277CCAAD0];
-  v22 = [(UIStackView *)self->_containerStackView topAnchor];
-  v23 = [v13 topAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  topAnchor = [(UIStackView *)self->_containerStackView topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[0] = v24;
-  v25 = [(UIStackView *)self->_containerStackView bottomAnchor];
-  v26 = [v13 bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  bottomAnchor = [(UIStackView *)self->_containerStackView bottomAnchor];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v28 = self->_containerLeadingConstraint;
   v36[1] = v27;
   v36[2] = v28;
@@ -108,39 +108,39 @@
   [(MUIFeedbackNotificationViewController *)self setPreferredContentSize:?];
 }
 
-- (void)setLeadingAccessoryView:(id)a3
+- (void)setLeadingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leadingAccessoryView = self->_leadingAccessoryView;
-  if (leadingAccessoryView != v5)
+  if (leadingAccessoryView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (leadingAccessoryView)
     {
       [(UIStackView *)self->_containerStackView removeArrangedSubview:?];
     }
 
-    objc_storeStrong(&self->_leadingAccessoryView, a3);
+    objc_storeStrong(&self->_leadingAccessoryView, view);
     [(MUIFeedbackNotificationViewController *)self _arrangeAndConfigureLeadingAccessoryView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setTrailingAccessoryView:(id)a3
+- (void)setTrailingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   trailingAccessoryView = self->_trailingAccessoryView;
-  if (trailingAccessoryView != v5)
+  if (trailingAccessoryView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (trailingAccessoryView)
     {
       [(UIStackView *)self->_containerStackView removeArrangedSubview:?];
     }
 
-    objc_storeStrong(&self->_trailingAccessoryView, a3);
+    objc_storeStrong(&self->_trailingAccessoryView, view);
     [(MUIFeedbackNotificationViewController *)self _arrangeAndConfigureTrailingAccessoryView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -158,11 +158,11 @@
   if (leadingAccessoryView)
   {
     v5 = MEMORY[0x277CCAAD0];
-    v6 = [(UIView *)leadingAccessoryView widthAnchor];
-    v7 = [v6 constraintEqualToConstant:32.0];
+    widthAnchor = [(UIView *)leadingAccessoryView widthAnchor];
+    v7 = [widthAnchor constraintEqualToConstant:32.0];
     v11[0] = v7;
-    v8 = [(UIView *)self->_leadingAccessoryView heightAnchor];
-    v9 = [v8 constraintEqualToConstant:32.0];
+    heightAnchor = [(UIView *)self->_leadingAccessoryView heightAnchor];
+    v9 = [heightAnchor constraintEqualToConstant:32.0];
     v11[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
     [v5 activateConstraints:v10];
@@ -185,11 +185,11 @@
   if (trailingAccessoryView)
   {
     v5 = MEMORY[0x277CCAAD0];
-    v6 = [(UIView *)trailingAccessoryView widthAnchor];
-    v7 = [v6 constraintEqualToConstant:32.0];
+    widthAnchor = [(UIView *)trailingAccessoryView widthAnchor];
+    v7 = [widthAnchor constraintEqualToConstant:32.0];
     v11[0] = v7;
-    v8 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-    v9 = [v8 constraintEqualToConstant:32.0];
+    heightAnchor = [(UIView *)self->_trailingAccessoryView heightAnchor];
+    v9 = [heightAnchor constraintEqualToConstant:32.0];
     v11[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
     [v5 activateConstraints:v10];

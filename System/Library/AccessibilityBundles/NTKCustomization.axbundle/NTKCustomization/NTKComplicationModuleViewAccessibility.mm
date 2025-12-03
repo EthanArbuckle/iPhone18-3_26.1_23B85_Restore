@@ -1,15 +1,15 @@
 @interface NTKComplicationModuleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 @end
 
 @implementation NTKComplicationModuleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKComplicationModuleView" hasInstanceMethod:@"isXL" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NTKEmptyModuleView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKComplicationModuleView" hasInstanceMethod:@"isXL" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NTKEmptyModuleView"];
 }
 
 - (BOOL)isAccessibilityElement

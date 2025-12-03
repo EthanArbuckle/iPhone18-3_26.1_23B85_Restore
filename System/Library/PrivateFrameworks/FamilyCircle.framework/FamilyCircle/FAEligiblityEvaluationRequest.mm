@@ -1,25 +1,25 @@
 @interface FAEligiblityEvaluationRequest
-- (FAEligiblityEvaluationRequest)initWithPropertyName:(id)a3 bundleID:(id)a4;
-- (unint64_t)fetchEligibilityWithError:(id *)a3;
-- (void)startRequestWithCompletion:(id)a3;
+- (FAEligiblityEvaluationRequest)initWithPropertyName:(id)name bundleID:(id)d;
+- (unint64_t)fetchEligibilityWithError:(id *)error;
+- (void)startRequestWithCompletion:(id)completion;
 @end
 
 @implementation FAEligiblityEvaluationRequest
 
-- (FAEligiblityEvaluationRequest)initWithPropertyName:(id)a3 bundleID:(id)a4
+- (FAEligiblityEvaluationRequest)initWithPropertyName:(id)name bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = FAEligiblityEvaluationRequest;
   v8 = [(FAFamilyCircleRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     propertyName = v8->_propertyName;
     v8->_propertyName = v9;
 
-    v11 = [v7 copy];
+    v11 = [dCopy copy];
     bundleID = v8->_bundleID;
     v8->_bundleID = v11;
   }
@@ -27,18 +27,18 @@
   return v8;
 }
 
-- (void)startRequestWithCompletion:(id)a3
+- (void)startRequestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FAEligiblityEvaluationRequest *)self propertyName];
+  completionCopy = completion;
+  propertyName = [(FAEligiblityEvaluationRequest *)self propertyName];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __60__FAEligiblityEvaluationRequest_startRequestWithCompletion___block_invoke;
   v12 = &unk_1E7CA49A0;
-  v13 = v5;
-  v14 = v4;
-  v6 = v4;
-  v7 = v5;
+  v13 = propertyName;
+  v14 = completionCopy;
+  v6 = completionCopy;
+  v7 = propertyName;
   v8 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:&v9];
   [v8 fetchEligibilityForPropertyName:self->_propertyName bundleID:self->_bundleID completion:{v6, v9, v10, v11, v12}];
 }
@@ -55,7 +55,7 @@ void __60__FAEligiblityEvaluationRequest_startRequestWithCompletion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (unint64_t)fetchEligibilityWithError:(id *)a3
+- (unint64_t)fetchEligibilityWithError:(id *)error
 {
   v17 = 0;
   v18[0] = &v17;
@@ -91,9 +91,9 @@ void __60__FAEligiblityEvaluationRequest_startRequestWithCompletion___block_invo
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = *(v18[0] + 40);
+    *error = *(v18[0] + 40);
   }
 
   v9 = v14[3];

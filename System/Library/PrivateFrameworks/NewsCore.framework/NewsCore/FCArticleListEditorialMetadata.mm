@@ -1,18 +1,18 @@
 @interface FCArticleListEditorialMetadata
-- (FCArticleListEditorialMetadata)initWithDictionary:(id)a3;
+- (FCArticleListEditorialMetadata)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCArticleListEditorialMetadata
 
-- (FCArticleListEditorialMetadata)initWithDictionary:(id)a3
+- (FCArticleListEditorialMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FCArticleListEditorialMetadata;
   v5 = [(FCArticleListEditorialMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"publishDate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"publishDate"];
     if (v6)
     {
       v7 = [MEMORY[0x1E695DF00] fc_dateFromStringWithISO8601Format:v6];
@@ -20,7 +20,7 @@
       v5->_publishDate = v7;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"articleMetadata"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"articleMetadata"];
     v10 = [v9 fc_dictionaryByTransformingValuesWithBlock:&__block_literal_global_144];
     articleMetadata = v5->_articleMetadata;
     v5->_articleMetadata = v10;

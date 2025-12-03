@@ -1,9 +1,9 @@
 @interface CLIndoorTileEvictionPolicy
-- (BOOL)tileLastModified:(double)a3 needsEvictionAt:(double)a4;
+- (BOOL)tileLastModified:(double)modified needsEvictionAt:(double)at;
 - (CLIndoorTileEvictionPolicy)init;
-- (CLIndoorTileEvictionPolicy)initWithCoder:(id)a3;
+- (CLIndoorTileEvictionPolicy)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLIndoorTileEvictionPolicy
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (CLIndoorTileEvictionPolicy)initWithCoder:(id)a3
+- (CLIndoorTileEvictionPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CLIndoorTileEvictionPolicy;
   v6 = [(CLIndoorTileEvictionPolicy *)&v17 init];
   if (v6)
   {
-    objc_msgSend_decodeDoubleForKey_(v4, v5, v7, v8, v9, @"_maxModifiedAge");
+    objc_msgSend_decodeDoubleForKey_(coderCopy, v5, v7, v8, v9, @"_maxModifiedAge");
     v6->_maxModifiedAge = v10;
-    v6->_forceClean = objc_msgSend_decodeBoolForKey_(v4, v11, v10, v12, v13, @"_forceClean");
+    v6->_forceClean = objc_msgSend_decodeBoolForKey_(coderCopy, v11, v10, v12, v13, @"_forceClean");
     activity = v6->_activity;
     v6->_activity = 0;
 
@@ -47,15 +47,15 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  objc_msgSend_encodeDouble_forKey_(v11, v4, self->_maxModifiedAge, v5, v6, @"_maxModifiedAge");
+  coderCopy = coder;
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v4, self->_maxModifiedAge, v5, v6, @"_maxModifiedAge");
   LOBYTE(v7) = self->_forceClean;
-  objc_msgSend_encodeDouble_forKey_(v11, v8, v7, v9, v10, @"_forceClean");
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v8, v7, v9, v10, @"_forceClean");
 }
 
-- (BOOL)tileLastModified:(double)a3 needsEvictionAt:(double)a4
+- (BOOL)tileLastModified:(double)modified needsEvictionAt:(double)at
 {
   v22 = *MEMORY[0x277D85DE8];
   if (qword_27EE33010 != -1)
@@ -68,7 +68,7 @@
     }
 
 LABEL_5:
-    v8 = a4 - a3;
+    v8 = at - modified;
     goto LABEL_6;
   }
 
@@ -79,18 +79,18 @@ LABEL_5:
   }
 
 LABEL_3:
-  v8 = a4 - a3;
+  v8 = at - modified;
   maxModifiedAge = self->_maxModifiedAge;
   v12 = 134350080;
-  v13 = a4;
+  atCopy = at;
   v14 = 2050;
-  v15 = a3;
+  modifiedCopy = modified;
   v16 = 2050;
-  v17 = a4 - a3;
+  v17 = at - modified;
   v18 = 2050;
   v19 = maxModifiedAge;
   v20 = 1024;
-  v21 = a4 - a3 >= maxModifiedAge;
+  v21 = at - modified >= maxModifiedAge;
   _os_log_impl(&dword_245A2E000, v7, OS_LOG_TYPE_INFO, "@EvictCheck, modified, %{public}.1f, %{public}.1f, ages, %{public}.1f, %{public}.1f, evict, %d", &v12, 0x30u);
 LABEL_6:
   result = v8 >= self->_maxModifiedAge;

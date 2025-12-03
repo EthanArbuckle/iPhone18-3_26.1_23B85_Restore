@@ -1,14 +1,14 @@
 @interface NTKDigitalTimeGraphicCircularView
 - ($58D15C9700E10FDF418FBC0C790388C2)layoutConstants;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (void)_startClockUpdates;
 - (void)_stopClockUpdates;
 - (void)_updateProgress;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setLayoutConstants:(id *)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setLayoutConstants:(id *)constants;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 @end
 
 @implementation NTKDigitalTimeGraphicCircularView
@@ -35,8 +35,8 @@
   }
 
   v9 = v8 * 0.5;
-  v10 = [(NTKDigitalTimeGraphicCircularView *)self layer];
-  [v10 setCornerRadius:v9];
+  layer = [(NTKDigitalTimeGraphicCircularView *)self layer];
+  [layer setCornerRadius:v9];
   v33.origin.x = x;
   v33.origin.y = y;
   v33.size.width = width;
@@ -61,10 +61,10 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [(NTKDigitalTimeGraphicCircularView *)self unfilledSecondsDialView];
-  v29[0] = v15;
-  v16 = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
-  v29[1] = v16;
+  unfilledSecondsDialView = [(NTKDigitalTimeGraphicCircularView *)self unfilledSecondsDialView];
+  v29[0] = unfilledSecondsDialView;
+  filledSecondsDialView = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
+  v29[1] = filledSecondsDialView;
   v17 = [NSArray arrayWithObjects:v29 count:2];
 
   v18 = [v17 countByEnumeratingWithState:&v24 objects:v30 count:16];
@@ -92,20 +92,20 @@
     while (v19);
   }
 
-  v23 = [(NTKDigitalTimeGraphicCircularView *)self timeLabel];
-  [v23 setBounds:{0.0, 0.0, v11, v12}];
-  [v23 setCenter:{MidX, MidY}];
+  timeLabel = [(NTKDigitalTimeGraphicCircularView *)self timeLabel];
+  [timeLabel setBounds:{0.0, 0.0, v11, v12}];
+  [timeLabel setCenter:{MidX, MidY}];
 }
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v29.receiver = self;
   v29.super_class = NTKDigitalTimeGraphicCircularView;
   v5 = [(NTKDigitalTimeGraphicCircularView *)&v29 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    [objc_opt_class() _layoutConstantsForDevice:v4];
+    [objc_opt_class() _layoutConstantsForDevice:deviceCopy];
     v7 = v6;
     v5->_layoutConstants.secondsTickSize.width = v8;
     v5->_layoutConstants.secondsTickSize.height = v9;
@@ -137,10 +137,10 @@
     [(NTKRichComplicationDialView *)v5->_filledSecondsDialView setProgress:v18];
     [(NTKDigitalTimeGraphicCircularView *)v5 addSubview:v5->_filledSecondsDialView];
     v19 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:v7 design:UIFontWeightSemibold];
-    v20 = [v19 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation = [v19 CLKFontWithAlternativePunctuation];
 
-    v21 = [[NTKDigitalTimeLabel alloc] initWithTimeLabelOptions:1 forDevice:v4];
-    [v21 setFont:v20];
+    v21 = [[NTKDigitalTimeLabel alloc] initWithTimeLabelOptions:1 forDevice:deviceCopy];
+    [v21 setFont:cLKFontWithAlternativePunctuation];
     v22 = +[UIColor whiteColor];
     [v21 setColor:v22];
 
@@ -157,85 +157,85 @@
   return v5;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 metadata];
-  v7 = [v6 objectForKey:@"NTKDigitalTimeGraphicCircularViewOverrideDateKey"];
-  v8 = [v5 tritium_isTritiumInactiveFullColorImageProvider];
+  providerCopy = provider;
+  metadata = [providerCopy metadata];
+  v7 = [metadata objectForKey:@"NTKDigitalTimeGraphicCircularViewOverrideDateKey"];
+  tritium_isTritiumInactiveFullColorImageProvider = [providerCopy tritium_isTritiumInactiveFullColorImageProvider];
 
-  if (v8 && !v7)
+  if (tritium_isTritiumInactiveFullColorImageProvider && !v7)
   {
     v7 = +[CLKDate complicationDate];
   }
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
-  [(NTKDigitalTimeGraphicCircularView *)v9 setOverrideDate:v10];
+  [(NTKDigitalTimeGraphicCircularView *)selfCopy2 setOverrideDate:v10];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_5C2C;
   v13[3] = &unk_10528;
-  v14 = v8;
+  v14 = tritium_isTritiumInactiveFullColorImageProvider;
   v11 = objc_retainBlock(v13);
-  v12 = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
-  (v11[2])(v11, v12);
+  filledSecondsDialView = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
+  (v11[2])(v11, filledSecondsDialView);
   [(NTKDigitalTimeGraphicCircularView *)self _updateProgress];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [objc_opt_class() _filterStyle];
-  v6 = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
-  v7 = [v6 device];
+  _filterStyle = [objc_opt_class() _filterStyle];
+  filterProvider = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
+  device = [filterProvider device];
   v8 = NTKShowGossamerUI();
 
   if (v8)
   {
-    v5 = 0;
+    _filterStyle = 0;
   }
 
-  v9 = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
-  v23 = [v9 filtersForView:self style:v5 fraction:a3];
+  filterProvider2 = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
+  v23 = [filterProvider2 filtersForView:self style:_filterStyle fraction:fraction];
 
   if (v23)
   {
-    v10 = [(NTKDigitalTimeGraphicCircularView *)self timeLabel];
-    v11 = [v10 layer];
-    [v11 setFilters:v23];
+    timeLabel = [(NTKDigitalTimeGraphicCircularView *)self timeLabel];
+    layer = [timeLabel layer];
+    [layer setFilters:v23];
   }
 
-  v12 = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
-  v13 = [v12 device];
+  filterProvider3 = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
+  device2 = [filterProvider3 device];
   v14 = NTKShowGossamerUI();
 
   if (v14)
   {
-    v15 = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
-    v16 = [v15 colorForView:self accented:1];
+    filterProvider4 = [(NTKDigitalTimeGraphicCircularView *)self filterProvider];
+    v16 = [filterProvider4 colorForView:self accented:1];
 
     v17 = +[UIColor whiteColor];
     v18 = NTKInterpolateBetweenColors();
 
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v19 = [(NTKDigitalTimeGraphicCircularView *)self unfilledSecondsDialView];
+    unfilledSecondsDialView = [(NTKDigitalTimeGraphicCircularView *)self unfilledSecondsDialView];
     v20 = [v18 colorWithAlphaComponent:self->_inactiveTickAccentAlpha];
-    [v19 setTickColor:v20];
+    [unfilledSecondsDialView setTickColor:v20];
 
-    v21 = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
+    filledSecondsDialView = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
     v22 = [v18 colorWithAlphaComponent:self->_activeTickAccentAlpha];
-    [v21 setTickColor:v22];
+    [filledSecondsDialView setTickColor:v22];
 
     +[CATransaction commit];
   }
@@ -243,8 +243,8 @@
 
 - (void)_startClockUpdates
 {
-  v3 = [(NTKDigitalTimeGraphicCircularView *)self clockTimerToken];
-  if (!v3)
+  clockTimerToken = [(NTKDigitalTimeGraphicCircularView *)self clockTimerToken];
+  if (!clockTimerToken)
   {
     objc_initWeak(&location, self);
     v4 = +[CLKClockTimer sharedInstance];
@@ -253,9 +253,9 @@
     v7 = sub_5FE8;
     v8 = &unk_104A0;
     objc_copyWeak(&v9, &location);
-    v3 = [v4 startUpdatesWithUpdateFrequency:1 withHandler:&v5 identificationLog:&stru_10548];
+    clockTimerToken = [v4 startUpdatesWithUpdateFrequency:1 withHandler:&v5 identificationLog:&stru_10548];
 
-    [(NTKDigitalTimeGraphicCircularView *)self setClockTimerToken:v3, v5, v6, v7, v8];
+    [(NTKDigitalTimeGraphicCircularView *)self setClockTimerToken:clockTimerToken, v5, v6, v7, v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
@@ -263,25 +263,25 @@
 
 - (void)_stopClockUpdates
 {
-  v3 = [(NTKDigitalTimeGraphicCircularView *)self clockTimerToken];
-  if (v3)
+  clockTimerToken = [(NTKDigitalTimeGraphicCircularView *)self clockTimerToken];
+  if (clockTimerToken)
   {
-    v5 = v3;
+    v5 = clockTimerToken;
     v4 = +[CLKClockTimer sharedInstance];
     [v4 stopUpdatesForToken:v5];
 
     [(NTKDigitalTimeGraphicCircularView *)self setClockTimerToken:0];
-    v3 = v5;
+    clockTimerToken = v5;
   }
 }
 
 - (void)_updateProgress
 {
-  v3 = [(NTKDigitalTimeGraphicCircularView *)self overrideDate];
-  v4 = v3;
-  if (v3)
+  overrideDate = [(NTKDigitalTimeGraphicCircularView *)self overrideDate];
+  v4 = overrideDate;
+  if (overrideDate)
   {
-    v5 = v3;
+    v5 = overrideDate;
   }
 
   else
@@ -292,9 +292,9 @@
   v6 = v5;
   v7 = +[NSCalendar currentCalendar];
   v8 = ([v7 component:128 fromDate:v6] % 60) / 60.0;
-  v9 = [(NTKDigitalTimeGraphicCircularView *)self timeLabel];
-  v10 = [v9 timeFormatter];
-  v11 = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
+  timeLabel = [(NTKDigitalTimeGraphicCircularView *)self timeLabel];
+  timeFormatter = [timeLabel timeFormatter];
+  filledSecondsDialView = [(NTKDigitalTimeGraphicCircularView *)self filledSecondsDialView];
   +[CATransaction begin];
   [CATransaction setAnimationDuration:0.0];
   v15 = _NSConcreteStackBlock;
@@ -302,12 +302,12 @@
   v17 = sub_62A0;
   v18 = &unk_10570;
   v22 = v8;
-  v19 = v11;
-  v20 = v10;
+  v19 = filledSecondsDialView;
+  v20 = timeFormatter;
   v21 = v4;
   v12 = v4;
-  v13 = v10;
-  v14 = v11;
+  v13 = timeFormatter;
+  v14 = filledSecondsDialView;
   [UIView performWithoutAnimation:&v15];
   [CATransaction commit:v15];
 }
@@ -328,7 +328,7 @@
   return self;
 }
 
-- (void)setLayoutConstants:(id *)a3
+- (void)setLayoutConstants:(id *)constants
 {
   self->_layoutConstants.secondsTickSize.width = v3;
   self->_layoutConstants.secondsTickSize.height = v4;

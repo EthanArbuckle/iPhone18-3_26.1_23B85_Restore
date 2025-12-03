@@ -1,11 +1,11 @@
 @interface PKBarcodePaymentEvent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBarcodePaymentEvent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBarcodePaymentEvent:(id)event;
 - (PKBarcodePaymentEvent)init;
-- (PKBarcodePaymentEvent)initWithCoder:(id)a3;
+- (PKBarcodePaymentEvent)initWithCoder:(id)coder;
 - (id)data;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKBarcodePaymentEvent
@@ -58,18 +58,18 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKBarcodePaymentEvent *)self isEqualToBarcodePaymentEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKBarcodePaymentEvent *)self isEqualToBarcodePaymentEvent:v5];
   }
 
   return v6;
@@ -77,12 +77,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_timestamp];
-  [v3 safelyAddObject:self->_barcodeIdentifier];
-  [v3 safelyAddObject:self->_eventMetadata];
-  [v3 safelyAddObject:self->_deviceAccountIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_timestamp];
+  [array safelyAddObject:self->_barcodeIdentifier];
+  [array safelyAddObject:self->_eventMetadata];
+  [array safelyAddObject:self->_deviceAccountIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_version - v4 + 32 * v4;
   v6 = self->_eventType - v5 + 32 * v5;
   v7 = self->_biometricsChanged - v6 + 32 * v6;
@@ -91,31 +91,31 @@
   return v8;
 }
 
-- (PKBarcodePaymentEvent)initWithCoder:(id)a3
+- (PKBarcodePaymentEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKBarcodePaymentEvent;
   v5 = [(PKBarcodePaymentEvent *)&v15 init];
   if (v5)
   {
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v6;
 
-    v5->_eventType = [v4 decodeIntegerForKey:@"eventType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"barcodeIdentifier"];
+    v5->_eventType = [coderCopy decodeIntegerForKey:@"eventType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"barcodeIdentifier"];
     barcodeIdentifier = v5->_barcodeIdentifier;
     v5->_barcodeIdentifier = v8;
 
-    v5->_biometricsChanged = [v4 decodeBoolForKey:@"biometricsChanged"];
-    v5->_authenticationType = [v4 decodeIntegerForKey:@"authenticationType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventMetadata"];
+    v5->_biometricsChanged = [coderCopy decodeBoolForKey:@"biometricsChanged"];
+    v5->_authenticationType = [coderCopy decodeIntegerForKey:@"authenticationType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventMetadata"];
     eventMetadata = v5->_eventMetadata;
     v5->_eventMetadata = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceAccountIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceAccountIdentifier"];
     deviceAccountIdentifier = v5->_deviceAccountIdentifier;
     v5->_deviceAccountIdentifier = v12;
   }
@@ -123,30 +123,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"version"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeInteger:self->_eventType forKey:@"eventType"];
-  [v5 encodeObject:self->_barcodeIdentifier forKey:@"barcodeIdentifier"];
-  [v5 encodeBool:self->_biometricsChanged forKey:@"biometricsChanged"];
-  [v5 encodeInteger:self->_authenticationType forKey:@"authenticationType"];
-  [v5 encodeObject:self->_eventMetadata forKey:@"eventMetadata"];
-  [v5 encodeObject:self->_deviceAccountIdentifier forKey:@"deviceAccountIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeInteger:self->_eventType forKey:@"eventType"];
+  [coderCopy encodeObject:self->_barcodeIdentifier forKey:@"barcodeIdentifier"];
+  [coderCopy encodeBool:self->_biometricsChanged forKey:@"biometricsChanged"];
+  [coderCopy encodeInteger:self->_authenticationType forKey:@"authenticationType"];
+  [coderCopy encodeObject:self->_eventMetadata forKey:@"eventMetadata"];
+  [coderCopy encodeObject:self->_deviceAccountIdentifier forKey:@"deviceAccountIdentifier"];
 }
 
-- (BOOL)isEqualToBarcodePaymentEvent:(id)a3
+- (BOOL)isEqualToBarcodePaymentEvent:(id)event
 {
-  v4 = a3;
-  if (self->_version != v4[2])
+  eventCopy = event;
+  if (self->_version != eventCopy[2])
   {
     goto LABEL_27;
   }
 
   timestamp = self->_timestamp;
-  v6 = v4[3];
+  v6 = eventCopy[3];
   if (timestamp)
   {
     v7 = v6 == 0;
@@ -174,9 +174,9 @@
     }
   }
 
-  if (self->_eventType == v4[4])
+  if (self->_eventType == eventCopy[4])
   {
-    v9 = v4[5];
+    v9 = eventCopy[5];
     v10 = self->_barcodeIdentifier;
     v11 = v9;
     v12 = v11;
@@ -202,10 +202,10 @@ LABEL_30:
       }
     }
 
-    if (self->_biometricsChanged == *(v4 + 8) && self->_authenticationType == v4[6])
+    if (self->_biometricsChanged == *(eventCopy + 8) && self->_authenticationType == eventCopy[6])
     {
       eventMetadata = self->_eventMetadata;
-      v15 = v4[8];
+      v15 = eventCopy[8];
       if (eventMetadata && v15)
       {
         if (([(NSData *)eventMetadata isEqual:?]& 1) != 0)
@@ -218,7 +218,7 @@ LABEL_30:
       {
 LABEL_22:
         deviceAccountIdentifier = self->_deviceAccountIdentifier;
-        v17 = v4[7];
+        v17 = eventCopy[7];
         v10 = deviceAccountIdentifier;
         v18 = v17;
         v12 = v18;

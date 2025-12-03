@@ -1,8 +1,8 @@
 @interface WFFocusConfigurationHostContext
 + (id)_allowedItemPayloadClasses;
 - (WFFocusConfigurationHostContextDelegate)focusConfigurationDelegate;
-- (void)configurationUIStateDidUpdate:(id)a3;
-- (void)didPressButtonWithIdentifier:(id)a3 cellFrame:(CGRect)a4;
+- (void)configurationUIStateDidUpdate:(id)update;
+- (void)didPressButtonWithIdentifier:(id)identifier cellFrame:(CGRect)frame;
 @end
 
 @implementation WFFocusConfigurationHostContext
@@ -21,22 +21,22 @@
   return WeakRetained;
 }
 
-- (void)didPressButtonWithIdentifier:(id)a3 cellFrame:(CGRect)a4
+- (void)didPressButtonWithIdentifier:(id)identifier cellFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(WFFocusConfigurationHostContext *)self focusConfigurationDelegate];
-  [v10 focusConfigurationHostContext:self didPressButtonWithIdentifier:v9 cellFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
+  focusConfigurationDelegate = [(WFFocusConfigurationHostContext *)self focusConfigurationDelegate];
+  [focusConfigurationDelegate focusConfigurationHostContext:self didPressButtonWithIdentifier:identifierCopy cellFrame:{x, y, width, height}];
 }
 
-- (void)configurationUIStateDidUpdate:(id)a3
+- (void)configurationUIStateDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(WFFocusConfigurationHostContext *)self focusConfigurationDelegate];
-  [v5 focusConfigurationHostContext:self configurationUIStateDidChange:v4];
+  updateCopy = update;
+  focusConfigurationDelegate = [(WFFocusConfigurationHostContext *)self focusConfigurationDelegate];
+  [focusConfigurationDelegate focusConfigurationHostContext:self configurationUIStateDidChange:updateCopy];
 }
 
 @end

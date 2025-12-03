@@ -1,22 +1,22 @@
 @interface SessionResult
 - (_TtC19ProximityReaderCore13SessionResult)init;
-- (_TtC19ProximityReaderCore13SessionResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC19ProximityReaderCore13SessionResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SessionResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SessionResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SessionResult.encode(with:)(coderCopy);
 }
 
-- (_TtC19ProximityReaderCore13SessionResult)initWithCoder:(id)a3
+- (_TtC19ProximityReaderCore13SessionResult)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_2611DEFFC(v3);
+  coderCopy = coder;
+  v4 = sub_2611DEFFC(coderCopy);
 
   return v4;
 }

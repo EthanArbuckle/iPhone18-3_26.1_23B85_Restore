@@ -1,39 +1,39 @@
 @interface CALNEventRepresentationDataSourceUtils
-+ (id)_userActivityUserInfoForEvent:(id)a3;
-+ (void)updateEventRepresentation:(id)a3 forEvent:(id)a4;
++ (id)_userActivityUserInfoForEvent:(id)event;
++ (void)updateEventRepresentation:(id)representation forEvent:(id)event;
 @end
 
 @implementation CALNEventRepresentationDataSourceUtils
 
-+ (void)updateEventRepresentation:(id)a3 forEvent:(id)a4
++ (void)updateEventRepresentation:(id)representation forEvent:(id)event
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [a1 _userActivityUserInfoForEvent:v6];
-  [v12 setUserActivityUserInfo:v7];
-  v8 = [v12 organizerContactDictionary];
+  representationCopy = representation;
+  eventCopy = event;
+  v7 = [self _userActivityUserInfoForEvent:eventCopy];
+  [representationCopy setUserActivityUserInfo:v7];
+  organizerContactDictionary = [representationCopy organizerContactDictionary];
 
-  if (!v8)
+  if (!organizerContactDictionary)
   {
-    v9 = [v6 organizer];
-    v10 = v9;
-    if (v9 && ([v9 isCurrentUser] & 1) == 0)
+    organizer = [eventCopy organizer];
+    v10 = organizer;
+    if (organizer && ([organizer isCurrentUser] & 1) == 0)
     {
-      v11 = [v6 organizer];
-      [v12 setOrganizerForContactDictionary:v11];
+      organizer2 = [eventCopy organizer];
+      [representationCopy setOrganizerForContactDictionary:organizer2];
     }
   }
 }
 
-+ (id)_userActivityUserInfoForEvent:(id)a3
++ (id)_userActivityUserInfoForEvent:(id)event
 {
   v3 = MEMORY[0x277CF7CF0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithEvent:v4 view:1 forceLocal:1];
+  eventCopy = event;
+  v5 = [[v3 alloc] initWithEvent:eventCopy view:1 forceLocal:1];
 
-  v6 = [v5 dictionary];
+  dictionary = [v5 dictionary];
 
-  return v6;
+  return dictionary;
 }
 
 @end

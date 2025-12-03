@@ -1,15 +1,15 @@
 @interface DropletMaterialEffect.ContentProxy
 - (_TtCC22UserNotificationsUIKit21DropletMaterialEffectP33_14CD243C8142B7E189D98278765B16FF12ContentProxy)init;
-- (void)addEffectToView:(id)a3;
+- (void)addEffectToView:(id)view;
 @end
 
 @implementation DropletMaterialEffect.ContentProxy
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtCC22UserNotificationsUIKit21DropletMaterialEffectP33_14CD243C8142B7E189D98278765B16FF12ContentProxy_contentView);
-  *(&self->super.super.isa + OBJC_IVAR____TtCC22UserNotificationsUIKit21DropletMaterialEffectP33_14CD243C8142B7E189D98278765B16FF12ContentProxy_contentView) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtCC22UserNotificationsUIKit21DropletMaterialEffectP33_14CD243C8142B7E189D98278765B16FF12ContentProxy_contentView) = view;
+  viewCopy = view;
 }
 
 - (_TtCC22UserNotificationsUIKit21DropletMaterialEffectP33_14CD243C8142B7E189D98278765B16FF12ContentProxy)init

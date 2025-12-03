@@ -1,42 +1,42 @@
 @interface RequesterRequest
 - (NSString)description;
-- (RequesterRequest)initWithDate:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 itemIdentifier:(id)a6 localizations:(id)a7 offerName:(id)a8 status:(int64_t)a9;
-- (RequesterRequest)initWithDictionary:(id)a3;
+- (RequesterRequest)initWithDate:(id)date requestIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier itemIdentifier:(id)itemIdentifier localizations:(id)localizations offerName:(id)name status:(int64_t)status;
+- (RequesterRequest)initWithDictionary:(id)dictionary;
 - (id)compile;
 @end
 
 @implementation RequesterRequest
 
-- (RequesterRequest)initWithDate:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 itemIdentifier:(id)a6 localizations:(id)a7 offerName:(id)a8 status:(int64_t)a9
+- (RequesterRequest)initWithDate:(id)date requestIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier itemIdentifier:(id)itemIdentifier localizations:(id)localizations offerName:(id)name status:(int64_t)status
 {
-  v16 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v17 = a7;
-  v18 = a8;
+  dateCopy = date;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  itemIdentifierCopy = itemIdentifier;
+  localizationsCopy = localizations;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = RequesterRequest;
   v19 = [(RequesterRequest *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_date, a3);
-    objc_storeStrong(&v20->_requestIdentifier, a4);
-    objc_storeStrong(&v20->_uniqueIdentifier, a5);
-    objc_storeStrong(&v20->_itemIdentifier, a6);
-    objc_storeStrong(&v20->_localizations, a7);
-    objc_storeStrong(&v20->_offerName, a8);
-    v20->_status = a9;
+    objc_storeStrong(&v19->_date, date);
+    objc_storeStrong(&v20->_requestIdentifier, identifier);
+    objc_storeStrong(&v20->_uniqueIdentifier, uniqueIdentifier);
+    objc_storeStrong(&v20->_itemIdentifier, itemIdentifier);
+    objc_storeStrong(&v20->_localizations, localizations);
+    objc_storeStrong(&v20->_offerName, name);
+    v20->_status = status;
   }
 
   return v20;
 }
 
-- (RequesterRequest)initWithDictionary:(id)a3
+- (RequesterRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"date"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"date"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -57,7 +57,7 @@ LABEL_5:
   v7 = 0;
 LABEL_7:
 
-  v8 = [v4 objectForKeyedSubscript:@"identifier"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -69,7 +69,7 @@ LABEL_7:
     v9 = 0;
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"uniqueIdentifier"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"uniqueIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -81,7 +81,7 @@ LABEL_7:
     v11 = 0;
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"itemIdentifier"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"itemIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -94,7 +94,7 @@ LABEL_7:
   }
 
   v14 = [RequestLocalizations alloc];
-  v15 = [v4 objectForKeyedSubscript:@"localizations"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"localizations"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -107,7 +107,7 @@ LABEL_7:
   }
 
   v17 = [(RequestLocalizations *)v14 initWithDictionary:v16];
-  v18 = [v4 objectForKeyedSubscript:@"offerName"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"offerName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -119,7 +119,7 @@ LABEL_7:
     v19 = 0;
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"status"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"status"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -133,45 +133,45 @@ LABEL_7:
 
   if (v21)
   {
-    v22 = [v21 integerValue];
+    integerValue = [v21 integerValue];
   }
 
   else
   {
-    v22 = -2;
+    integerValue = -2;
   }
 
-  v23 = 0;
+  selfCopy = 0;
   if (v7 && v9 && v11 && v13 && v17)
   {
-    self = [(RequesterRequest *)self initWithDate:v7 requestIdentifier:v9 uniqueIdentifier:v11 itemIdentifier:v13 localizations:v17 offerName:v19 status:v22];
-    v23 = self;
+    self = [(RequesterRequest *)self initWithDate:v7 requestIdentifier:v9 uniqueIdentifier:v11 itemIdentifier:v13 localizations:v17 offerName:v19 status:integerValue];
+    selfCopy = self;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (id)compile
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RequesterRequest *)self date];
-  [v3 ap_setNullableObject:v4 forKey:@"date"];
+  date = [(RequesterRequest *)self date];
+  [v3 ap_setNullableObject:date forKey:@"date"];
 
-  v5 = [(RequesterRequest *)self requestIdentifier];
-  [v3 ap_setNullableObject:v5 forKey:@"identifier"];
+  requestIdentifier = [(RequesterRequest *)self requestIdentifier];
+  [v3 ap_setNullableObject:requestIdentifier forKey:@"identifier"];
 
-  v6 = [(RequesterRequest *)self uniqueIdentifier];
-  [v3 ap_setNullableObject:v6 forKey:@"uniqueIdentifier"];
+  uniqueIdentifier = [(RequesterRequest *)self uniqueIdentifier];
+  [v3 ap_setNullableObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v7 = [(RequesterRequest *)self itemIdentifier];
-  [v3 ap_setNullableObject:v7 forKey:@"itemIdentifier"];
+  itemIdentifier = [(RequesterRequest *)self itemIdentifier];
+  [v3 ap_setNullableObject:itemIdentifier forKey:@"itemIdentifier"];
 
-  v8 = [(RequesterRequest *)self localizations];
-  v9 = [v8 compile];
-  [v3 ap_setNullableObject:v9 forKey:@"localizations"];
+  localizations = [(RequesterRequest *)self localizations];
+  compile = [localizations compile];
+  [v3 ap_setNullableObject:compile forKey:@"localizations"];
 
-  v10 = [(RequesterRequest *)self offerName];
-  [v3 ap_setNullableObject:v10 forKey:@"offerName"];
+  offerName = [(RequesterRequest *)self offerName];
+  [v3 ap_setNullableObject:offerName forKey:@"offerName"];
 
   v11 = [NSNumber numberWithInteger:[(RequesterRequest *)self status]];
   [v3 ap_setNullableObject:v11 forKey:@"status"];
@@ -181,8 +181,8 @@ LABEL_7:
 
 - (NSString)description
 {
-  v3 = [(RequesterRequest *)self compile];
-  v4 = [(RequesterRequest *)self ap_generateDescriptionWithSubObjects:v3];
+  compile = [(RequesterRequest *)self compile];
+  v4 = [(RequesterRequest *)self ap_generateDescriptionWithSubObjects:compile];
 
   return v4;
 }

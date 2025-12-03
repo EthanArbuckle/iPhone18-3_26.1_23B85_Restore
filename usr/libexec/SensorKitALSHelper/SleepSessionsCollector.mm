@@ -1,24 +1,24 @@
 @interface SleepSessionsCollector
 + (void)initialize;
-- (SleepSessionsCollector)initWithLaunchEvents:(id)a3 sensorWriter:(id)a4 defaults:(id)a5 q:(id)a6;
+- (SleepSessionsCollector)initWithLaunchEvents:(id)events sensorWriter:(id)writer defaults:(id)defaults q:(id)q;
 - (void)dealloc;
-- (void)launchEventRunActivity:(id)a3;
-- (void)querySleepSessionsWithStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
+- (void)launchEventRunActivity:(id)activity;
+- (void)querySleepSessionsWithStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
 @end
 
 @implementation SleepSessionsCollector
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B2A0 = os_log_create("com.apple.SensorKit", "SRLogSleepSessionsCollector");
   }
 }
 
-- (SleepSessionsCollector)initWithLaunchEvents:(id)a3 sensorWriter:(id)a4 defaults:(id)a5 q:(id)a6
+- (SleepSessionsCollector)initWithLaunchEvents:(id)events sensorWriter:(id)writer defaults:(id)defaults q:(id)q
 {
   v15.receiver = self;
   v15.super_class = SleepSessionsCollector;
@@ -26,14 +26,14 @@
   v12 = v10;
   if (v10)
   {
-    objc_setProperty_nonatomic(v10, v11, a5, 32);
-    v12->_sensorWriter = a4;
-    v12->_queue = a6;
-    v13 = a3;
-    v12->_launchEvents = v13;
-    if (v13)
+    objc_setProperty_nonatomic(v10, v11, defaults, 32);
+    v12->_sensorWriter = writer;
+    v12->_queue = q;
+    eventsCopy = events;
+    v12->_launchEvents = eventsCopy;
+    if (eventsCopy)
     {
-      objc_storeWeak(&v13->_delegate, v12);
+      objc_storeWeak(&eventsCopy->_delegate, v12);
     }
 
     [(SRSensorWriter *)v12->_sensorWriter setDelegate:v12];
@@ -55,15 +55,15 @@
   [(SleepSessionsCollector *)&v4 dealloc];
 }
 
-- (void)querySleepSessionsWithStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)querySleepSessionsWithStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
-  v7 = [[BMPublisherOptions alloc] initWithStartDate:a3 endDate:a4 maxEvents:0 lastN:0 reversed:0];
+  v7 = [[BMPublisherOptions alloc] initWithStartDate:date endDate:endDate maxEvents:0 lastN:0 reversed:0];
   v8 = +[BMPairedEventSession sessionPublisherWithStreamPublisher:startingBlock:sessionKeyBlock:options:](BMPairedEventSession, "sessionPublisherWithStreamPublisher:startingBlock:sessionKeyBlock:options:", [objc_msgSend(objc_msgSend(BiomeLibrary() "Sleep")], &stru_100024BB8, 0, 4);
 
   if (self)
   {
-    v9 = [(SRDataCollectorsDefaults *)self->_defaults sleepSessionsBookmark];
-    objc_setProperty_nonatomic(self, v10, v9, 48);
+    sleepSessionsBookmark = [(SRDataCollectorsDefaults *)self->_defaults sleepSessionsBookmark];
+    objc_setProperty_nonatomic(self, v10, sleepSessionsBookmark, 48);
     objc_initWeak(&location, self);
     self = self->_sleepSessionsBookmark;
   }
@@ -79,7 +79,7 @@
   v13[2] = sub_1000091CC;
   v13[3] = &unk_100024BE0;
   objc_copyWeak(&v14, &location);
-  v13[4] = a5;
+  v13[4] = handler;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100009330;
@@ -91,7 +91,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
   v4 = qword_10002B2A0;
   if (os_log_type_enabled(qword_10002B2A0, OS_LOG_TYPE_INFO))
@@ -105,7 +105,7 @@
   [(RDLaunchEvents *)launchEvents registerForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
   v4 = qword_10002B2A0;
   if (os_log_type_enabled(qword_10002B2A0, OS_LOG_TYPE_DEBUG))
@@ -119,18 +119,18 @@
   [(RDLaunchEvents *)launchEvents unregisterForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)launchEventRunActivity:(id)a3
+- (void)launchEventRunActivity:(id)activity
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_queue;
   }
 
   dispatch_assert_queue_V2(&self->super);
-  if (a3)
+  if (activity)
   {
-    v5 = *(a3 + 1);
+    v5 = *(activity + 1);
   }
 
   else
@@ -144,12 +144,12 @@
     v11 = 3221225472;
     v12 = sub_100009A98;
     v13 = &unk_100024A10;
-    v14 = a3;
-    if (v4)
+    activityCopy = activity;
+    if (selfCopy)
     {
-      v6 = [(SRDataCollectorsDefaults *)v4->_defaults lastSleepSessionsQueryDate:v10];
+      v6 = [(SRDataCollectorsDefaults *)selfCopy->_defaults lastSleepSessionsQueryDate:v10];
       v7 = [NSDate dateWithSRAbsoluteTime:fmax(SRAbsoluteTimeGetCurrent(), 0.0)];
-      objc_initWeak(&location, v4);
+      objc_initWeak(&location, selfCopy);
       *&buf = _NSConcreteStackBlock;
       *(&buf + 1) = 3221225472;
       v17 = sub_100009614;
@@ -157,7 +157,7 @@
       objc_copyWeak(&v21, &location);
       v19 = v7;
       v20 = &v10;
-      [(SleepSessionsCollector *)v4 querySleepSessionsWithStartDate:v6 endDate:v7 completionHandler:&buf];
+      [(SleepSessionsCollector *)selfCopy querySleepSessionsWithStartDate:v6 endDate:v7 completionHandler:&buf];
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
     }
@@ -168,9 +168,9 @@
     v8 = qword_10002B2A0;
     if (os_log_type_enabled(qword_10002B2A0, OS_LOG_TYPE_FAULT))
     {
-      if (a3)
+      if (activity)
       {
-        v9 = *(a3 + 1);
+        v9 = *(activity + 1);
       }
 
       else
@@ -183,7 +183,7 @@
       _os_log_fault_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Told to run unsupported XPC activity %@", &buf, 0xCu);
     }
 
-    [a3 markCompleted];
+    [activity markCompleted];
   }
 }
 

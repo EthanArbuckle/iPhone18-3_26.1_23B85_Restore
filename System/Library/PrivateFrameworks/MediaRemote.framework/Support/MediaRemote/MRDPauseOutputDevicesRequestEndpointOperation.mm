@@ -1,23 +1,23 @@
 @interface MRDPauseOutputDevicesRequestEndpointOperation
-- (MRDPauseOutputDevicesRequestEndpointOperation)initWithEndpoint:(id)a3;
+- (MRDPauseOutputDevicesRequestEndpointOperation)initWithEndpoint:(id)endpoint;
 - (NSError)error;
 - (double)duration;
-- (void)endEvent:(id)a3 withError:(id)a4;
-- (void)startEvent:(id)a3;
+- (void)endEvent:(id)event withError:(id)error;
+- (void)startEvent:(id)event;
 @end
 
 @implementation MRDPauseOutputDevicesRequestEndpointOperation
 
-- (MRDPauseOutputDevicesRequestEndpointOperation)initWithEndpoint:(id)a3
+- (MRDPauseOutputDevicesRequestEndpointOperation)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = MRDPauseOutputDevicesRequestEndpointOperation;
   v6 = [(MRDPauseOutputDevicesRequestEndpointOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
+    objc_storeStrong(&v6->_endpoint, endpoint);
     v8 = objc_alloc_init(NSMutableArray);
     events = v7->_events;
     v7->_events = v8;
@@ -26,11 +26,11 @@
   return v7;
 }
 
-- (void)startEvent:(id)a3
+- (void)startEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6 = objc_alloc_init(MRDPauseOutputDevicesRequestEndpointOperationEvent);
-  [(MRDPauseOutputDevicesRequestEndpointOperationEvent *)v6 setName:v4];
+  [(MRDPauseOutputDevicesRequestEndpointOperationEvent *)v6 setName:eventCopy];
 
   v5 = +[NSDate now];
   [(MRDPauseOutputDevicesRequestEndpointOperationEvent *)v6 setStartDate:v5];
@@ -38,10 +38,10 @@
   [(NSMutableArray *)self->_events addObject:v6];
 }
 
-- (void)endEvent:(id)a3 withError:(id)a4
+- (void)endEvent:(id)event withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  errorCopy = error;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -62,8 +62,8 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v14 isEqualToString:v6];
+        name = [v13 name];
+        v15 = [name isEqualToString:eventCopy];
 
         if (v15)
         {
@@ -72,7 +72,7 @@
 
           if ((MRMediaRemoteErrorIsInformational() & 1) == 0)
           {
-            [v13 setError:v7];
+            [v13 setError:errorCopy];
           }
         }
       }
@@ -87,9 +87,9 @@
 - (NSError)error
 {
   v2 = [(NSMutableArray *)self->_events msv_firstWhere:&stru_1004BB728];
-  v3 = [v2 error];
+  error = [v2 error];
 
-  return v3;
+  return error;
 }
 
 - (double)duration
@@ -97,12 +97,12 @@
   v3 = [(NSMutableArray *)self->_events msv_map:&stru_1004BB768];
   v4 = [(NSMutableArray *)self->_events msv_map:&stru_1004BB788];
   v5 = [v3 sortedArrayUsingComparator:&stru_1004BB7C8];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
   v7 = [v4 sortedArrayUsingComparator:&stru_1004BB7E8];
-  v8 = [v7 lastObject];
+  lastObject = [v7 lastObject];
 
-  [v6 timeIntervalSinceDate:v8];
+  [firstObject timeIntervalSinceDate:lastObject];
   v10 = -v9;
 
   return v10;

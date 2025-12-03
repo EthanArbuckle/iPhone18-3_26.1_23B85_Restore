@@ -1,12 +1,12 @@
 @interface TSCHChartGridRenderer
 - (CGRect)p_frame;
 - (id)allRenderingFills;
-- (id)p_majorLocationsWithAxis:(id)a3;
-- (void)p_debugRenderIntoContext:(CGContext *)a3 visible:(CGRect)a4;
-- (void)p_renderBackground:(CGContext *)a3 style:(id)a4;
-- (void)p_renderGridlines:(CGContext *)a3 axis:(id)a4 locations:(id)a5 showProperty:(int)a6 strokeProperty:(int)a7 shadowProperty:(int)a8 opacityProperty:(int)a9;
-- (void)p_renderGridlinesWithContext:(CGContext *)a3 axis:(id)a4 stroke:(id)a5 locations:(id)a6 frame:(CGRect)a7;
-- (void)p_renderIntoContext:(CGContext *)a3 visible:(CGRect)a4;
+- (id)p_majorLocationsWithAxis:(id)axis;
+- (void)p_debugRenderIntoContext:(CGContext *)context visible:(CGRect)visible;
+- (void)p_renderBackground:(CGContext *)background style:(id)style;
+- (void)p_renderGridlines:(CGContext *)gridlines axis:(id)axis locations:(id)locations showProperty:(int)property strokeProperty:(int)strokeProperty shadowProperty:(int)shadowProperty opacityProperty:(int)opacityProperty;
+- (void)p_renderGridlinesWithContext:(CGContext *)context axis:(id)axis stroke:(id)stroke locations:(id)locations frame:(CGRect)frame;
+- (void)p_renderIntoContext:(CGContext *)context visible:(CGRect)visible;
 @end
 
 @implementation TSCHChartGridRenderer
@@ -31,15 +31,15 @@
   return result;
 }
 
-- (id)p_majorLocationsWithAxis:(id)a3
+- (id)p_majorLocationsWithAxis:(id)axis
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  axisCopy = axis;
   v5 = MEMORY[0x277CBEB18];
-  v10 = objc_msgSend_majorGridLocations(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_majorGridLocations(axisCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_arrayWithArray_(v5, v11, v12, v13, v14, v10);
 
-  v20 = objc_msgSend_intValueForProperty_defaultValue_(v4, v16, v17, v18, v19, 1054, 0);
+  v20 = objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v16, v17, v18, v19, 1054, 0);
   v25 = objc_msgSend_chartInfo(self, v21, v22, v23, v24);
   v30 = objc_msgSend_intValueForProperty_defaultValue_(v25, v26, v27, v28, v29, 1112, 0);
   v31 = v30 != 0;
@@ -72,12 +72,12 @@
           }
 
           v54 = *(*(&v90 + 1) + 8 * v53);
-          objc_msgSend_interceptForAxis_(v4, v47, v48, v49, v50, v54);
+          objc_msgSend_interceptForAxis_(axisCopy, v47, v48, v49, v50, v54);
           v56 = v55;
-          objc_msgSend_min(v4, v57, v55, v58, v59);
+          objc_msgSend_min(axisCopy, v57, v55, v58, v59);
           if (v56 > v48)
           {
-            objc_msgSend_max(v4, v47, v48, v49, v50);
+            objc_msgSend_max(axisCopy, v47, v48, v49, v50);
             if (v56 < v48)
             {
               v60 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v47, v56, v49, v50);
@@ -164,49 +164,49 @@ LABEL_33:
   return v15;
 }
 
-- (void)p_renderGridlinesWithContext:(CGContext *)a3 axis:(id)a4 stroke:(id)a5 locations:(id)a6 frame:(CGRect)a7
+- (void)p_renderGridlinesWithContext:(CGContext *)context axis:(id)axis stroke:(id)stroke locations:(id)locations frame:(CGRect)frame
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v20 = objc_msgSend_axisID(v13, v16, v17, v18, v19);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  axisCopy = axis;
+  strokeCopy = stroke;
+  locationsCopy = locations;
+  v20 = objc_msgSend_axisID(axisCopy, v16, v17, v18, v19);
   v25 = objc_msgSend_type(v20, v21, v22, v23, v24);
 
   v30 = 0.0;
-  if (v14 && objc_msgSend_shouldRender(v14, v26, v27, v28, v29))
+  if (strokeCopy && objc_msgSend_shouldRender(strokeCopy, v26, v27, v28, v29))
   {
-    objc_msgSend_width(v14, v26, v27, v28, v29);
+    objc_msgSend_width(strokeCopy, v26, v27, v28, v29);
     v30 = v27;
   }
 
-  if (objc_msgSend_count(v15, v26, v27, v28, v29))
+  if (objc_msgSend_count(locationsCopy, v26, v27, v28, v29))
   {
     v34 = 0;
     v35 = height;
     v36 = y + height;
     do
     {
-      v37 = objc_msgSend_objectAtIndexedSubscript_(v15, v31, v35, v32, v33, v34);
+      v37 = objc_msgSend_objectAtIndexedSubscript_(locationsCopy, v31, v35, v32, v33, v34);
       objc_msgSend_doubleValue(v37, v38, v39, v40, v41);
       v43 = v42;
       v44 = v42;
 
       if ((*&v44 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
       {
-        objc_msgSend_unitSpaceValueForDataSpaceValue_(v13, v45, v43, v47, v48);
+        objc_msgSend_unitSpaceValueForDataSpaceValue_(axisCopy, v45, v43, v47, v48);
         v49 = v46;
         if ((*&v46 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
         {
-          objc_msgSend_min(v13, v45, v46, v47, v48);
+          objc_msgSend_min(axisCopy, v45, v46, v47, v48);
           v51 = v50;
-          objc_msgSend_max(v13, v52, v50, v53, v54);
+          objc_msgSend_max(axisCopy, v52, v50, v53, v54);
           if (v51 == v56)
           {
-            v59 = objc_msgSend_count(v15, v55, v56, v57, v58);
+            v59 = objc_msgSend_count(locationsCopy, v55, v56, v57, v58);
             v49 = 0.0;
             if (v59 >= 2)
             {
@@ -250,66 +250,66 @@ LABEL_33:
 
           v65 = v61;
           v66 = v60;
-          sub_27628C654(a3, &v67, &v65, 0, v30);
-          CGContextBeginPath(a3);
-          CGContextMoveToPoint(a3, v67, v68);
-          CGContextAddLineToPoint(a3, v65, v66);
-          CGContextStrokePath(a3);
+          sub_27628C654(context, &v67, &v65, 0, v30);
+          CGContextBeginPath(context);
+          CGContextMoveToPoint(context, v67, v68);
+          CGContextAddLineToPoint(context, v65, v66);
+          CGContextStrokePath(context);
         }
       }
 
       ++v34;
     }
 
-    while (v34 < objc_msgSend_count(v15, v45, v46, v47, v48));
+    while (v34 < objc_msgSend_count(locationsCopy, v45, v46, v47, v48));
   }
 }
 
-- (void)p_debugRenderIntoContext:(CGContext *)a3 visible:(CGRect)a4
+- (void)p_debugRenderIntoContext:(CGContext *)context visible:(CGRect)visible
 {
-  objc_msgSend_p_frame(self, a2, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  objc_msgSend_p_frame(self, a2, visible.origin.x, visible.origin.y, visible.size.width, visible.size.height);
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v15 = objc_msgSend_greenColor(MEMORY[0x277D81180], v13, v5, v7, v9);
-  objc_msgSend_debugRenderLayoutRect_inContext_withColor_alpha_fillRect_(TSCHRenderUtilities, v14, v6, v8, v10, a3, v15, 1, v12, 0.4);
+  objc_msgSend_debugRenderLayoutRect_inContext_withColor_alpha_fillRect_(TSCHRenderUtilities, v14, v6, v8, v10, context, v15, 1, v12, 0.4);
 }
 
-- (void)p_renderBackground:(CGContext *)a3 style:(id)a4
+- (void)p_renderBackground:(CGContext *)background style:(id)style
 {
-  v6 = a4;
+  styleCopy = style;
   objc_msgSend_p_frame(self, v7, v8, v9, v10);
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v35 = objc_msgSend_objectValueForProperty_(v6, v19, v11, v13, v15, 1101);
+  v35 = objc_msgSend_objectValueForProperty_(styleCopy, v19, v11, v13, v15, 1101);
   LODWORD(v20) = 1.0;
-  objc_msgSend_floatValueForProperty_defaultValue_(v6, v21, v20, v22, v23, 1102);
+  objc_msgSend_floatValueForProperty_defaultValue_(styleCopy, v21, v20, v22, v23, 1102);
   v25 = v24;
 
-  sub_27628CB34(a3, v12, v14, v16, v18, 0.0);
+  sub_27628CB34(background, v12, v14, v16, v18, 0.0);
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  CGContextSaveGState(a3);
-  CGContextSetAlpha(a3, v25);
-  objc_msgSend_p_drawFillWithContext_fill_frameToDraw_(self, v34, v27, v29, v31, a3, v35, v33);
-  CGContextRestoreGState(a3);
+  CGContextSaveGState(background);
+  CGContextSetAlpha(background, v25);
+  objc_msgSend_p_drawFillWithContext_fill_frameToDraw_(self, v34, v27, v29, v31, background, v35, v33);
+  CGContextRestoreGState(background);
 }
 
-- (void)p_renderGridlines:(CGContext *)a3 axis:(id)a4 locations:(id)a5 showProperty:(int)a6 strokeProperty:(int)a7 shadowProperty:(int)a8 opacityProperty:(int)a9
+- (void)p_renderGridlines:(CGContext *)gridlines axis:(id)axis locations:(id)locations showProperty:(int)property strokeProperty:(int)strokeProperty shadowProperty:(int)shadowProperty opacityProperty:(int)opacityProperty
 {
-  v9 = *&a8;
-  v10 = *&a7;
-  v11 = *&a6;
-  v90 = a4;
-  v15 = a5;
-  if (objc_msgSend_intValueForProperty_defaultValue_(v90, v16, v17, v18, v19, v11, 0))
+  v9 = *&shadowProperty;
+  v10 = *&strokeProperty;
+  v11 = *&property;
+  axisCopy = axis;
+  locationsCopy = locations;
+  if (objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v16, v17, v18, v19, v11, 0))
   {
-    v24 = objc_msgSend_objectValueForProperty_(v90, v20, v21, v22, v23, v10);
+    v24 = objc_msgSend_objectValueForProperty_(axisCopy, v20, v21, v22, v23, v10);
     v29 = v24;
     if (v24)
     {
@@ -318,29 +318,29 @@ LABEL_33:
         if (TSDCGContextHasBackgroundsSuppressed())
         {
           v34 = 0;
-          v35 = v90;
+          v35 = axisCopy;
         }
 
         else
         {
-          v51 = objc_msgSend_objectValueForProperty_(v90, v30, v31, v32, v33, v9);
-          v35 = v90;
+          v51 = objc_msgSend_objectValueForProperty_(axisCopy, v30, v31, v32, v33, v9);
+          v35 = axisCopy;
           v34 = v51;
         }
 
         LODWORD(v31) = 1.0;
-        objc_msgSend_floatValueForProperty_defaultValue_(v35, v35, v31, v32, v33, a9);
+        objc_msgSend_floatValueForProperty_defaultValue_(v35, v35, v31, v32, v33, opacityProperty);
         v53 = v52;
-        CGContextSaveGState(a3);
-        CGContextSetAlpha(a3, v53);
+        CGContextSaveGState(gridlines);
+        CGContextSetAlpha(gridlines, v53);
         if (objc_msgSend_hasShadow_(TSCHStyleUtilities, v54, v55, v56, v57, v34) && (objc_msgSend_chartRep(self, v58, v59, v60, v61), v62 = objc_claimAutoreleasedReturnValue(), v67 = objc_msgSend_shadowsEnabled(v62, v63, v64, v65, v66), v62, v67))
         {
-          objc_msgSend_tLayerRectForContext_(self, v58, v59, v60, v61, a3);
-          CGContextBeginTransparencyLayerWithRect(a3, v92, 0);
+          objc_msgSend_tLayerRectForContext_(self, v58, v59, v60, v61, gridlines);
+          CGContextBeginTransparencyLayerWithRect(gridlines, v92, 0);
           objc_msgSend_viewScale(self, v68, v69, v70, v71);
           v73 = v72;
-          v77 = sub_27631FD2C(a3, v74, v72, v75, v76);
-          objc_msgSend_applyToContext_viewScale_flipped_(v34, v78, v73, v79, v80, a3, v77);
+          v77 = sub_27631FD2C(gridlines, v74, v72, v75, v76);
+          objc_msgSend_applyToContext_viewScale_flipped_(v34, v78, v73, v79, v80, gridlines, v77);
           v81 = 1;
         }
 
@@ -349,15 +349,15 @@ LABEL_33:
           v81 = 0;
         }
 
-        objc_msgSend_applyToContext_(v29, v58, v59, v60, v61, a3);
+        objc_msgSend_applyToContext_(v29, v58, v59, v60, v61, gridlines);
         objc_msgSend_p_frame(self, v82, v83, v84, v85);
-        objc_msgSend_p_renderGridlinesWithContext_axis_stroke_locations_frame_(self, v86, v87, v88, v89, a3, v90, v29, v15);
+        objc_msgSend_p_renderGridlinesWithContext_axis_stroke_locations_frame_(self, v86, v87, v88, v89, gridlines, axisCopy, v29, locationsCopy);
         if (v81)
         {
-          CGContextEndTransparencyLayer(a3);
+          CGContextEndTransparencyLayer(gridlines);
         }
 
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(gridlines);
       }
     }
 
@@ -373,16 +373,16 @@ LABEL_33:
   }
 }
 
-- (void)p_renderIntoContext:(CGContext *)a3 visible:(CGRect)a4
+- (void)p_renderIntoContext:(CGContext *)context visible:(CGRect)visible
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_chartRep(self, a2, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v6 = objc_msgSend_chartRep(self, a2, visible.origin.x, visible.origin.y, visible.size.width, visible.size.height);
   v11 = objc_msgSend_renderGrid(v6, v7, v8, v9, v10);
 
   if (v11)
   {
     v16 = objc_msgSend_chartInfo(self, v12, v13, v14, v15);
-    objc_msgSend_p_renderBackground_style_(self, v17, v18, v19, v20, a3, v16);
+    objc_msgSend_p_renderBackground_style_(self, v17, v18, v19, v20, context, v16);
 
     v62 = 0u;
     v63 = 0u;
@@ -409,10 +409,10 @@ LABEL_33:
           v42 = *(*(&v60 + 1) + 8 * i);
           v43 = objc_msgSend_p_majorLocationsWithAxis_(self, v35, v36, v37, v38, v42);
           LODWORD(v57) = 1036;
-          objc_msgSend_p_renderGridlines_axis_locations_showProperty_strokeProperty_shadowProperty_opacityProperty_(self, v44, v45, v46, v47, a3, v42, v43, 1054, 1038, 1037, v57);
+          objc_msgSend_p_renderGridlines_axis_locations_showProperty_strokeProperty_shadowProperty_opacityProperty_(self, v44, v45, v46, v47, context, v42, v43, 1054, 1038, 1037, v57);
           v52 = objc_msgSend_minorGridLocations(v42, v48, v49, v50, v51);
           LODWORD(v58) = 1039;
-          objc_msgSend_p_renderGridlines_axis_locations_showProperty_strokeProperty_shadowProperty_opacityProperty_(self, v53, v54, v55, v56, a3, v42, v52, 1057, 1041, 1040, v58);
+          objc_msgSend_p_renderGridlines_axis_locations_showProperty_strokeProperty_shadowProperty_opacityProperty_(self, v53, v54, v55, v56, context, v42, v52, 1057, 1041, 1040, v58);
         }
 
         v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v35, v36, v37, v38, &v60, v64, 16);

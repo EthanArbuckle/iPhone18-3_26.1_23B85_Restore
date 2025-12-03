@@ -1,47 +1,47 @@
 @interface RBSBaseMemoryGrant
-+ (id)grantWithCategory:(id)a3 strength:(unsigned __int8)a4;
-- (BOOL)isEqual:(id)a3;
-- (RBSBaseMemoryGrant)initWithRBSXPCCoder:(id)a3;
-- (_BYTE)_initWithCategory:(char)a3 strength:;
++ (id)grantWithCategory:(id)category strength:(unsigned __int8)strength;
+- (BOOL)isEqual:(id)equal;
+- (RBSBaseMemoryGrant)initWithRBSXPCCoder:(id)coder;
+- (_BYTE)_initWithCategory:(char)category strength:;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSBaseMemoryGrant
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSBaseMemoryGrant;
-  v5 = [(RBSAttribute *)&v7 isEqual:v4]&& [(NSString *)self->_category isEqualToString:v4[1]]&& self->_strength == *(v4 + 16);
+  v5 = [(RBSAttribute *)&v7 isEqual:equalCopy]&& [(NSString *)self->_category isEqualToString:equalCopy[1]]&& self->_strength == *(equalCopy + 16);
 
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSBaseMemoryGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeObject:self->_category forKey:{@"_category", v5.receiver, v5.super_class}];
-  [v4 encodeInt64:self->_strength forKey:@"_strength"];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_category forKey:{@"_category", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt64:self->_strength forKey:@"_strength"];
 }
 
-- (RBSBaseMemoryGrant)initWithRBSXPCCoder:(id)a3
+- (RBSBaseMemoryGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSBaseMemoryGrant;
-  v5 = [(RBSAttribute *)&v9 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v9 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"_category"];
+    v6 = [coderCopy decodeStringForKey:@"_category"];
     category = v5->_category;
     v5->_category = v6;
 
-    v5->_strength = [v4 decodeInt64ForKey:@"_strength"];
+    v5->_strength = [coderCopy decodeInt64ForKey:@"_strength"];
   }
 
   return v5;
@@ -69,29 +69,29 @@
   return v9;
 }
 
-- (_BYTE)_initWithCategory:(char)a3 strength:
+- (_BYTE)_initWithCategory:(char)category strength:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = RBSBaseMemoryGrant;
     v7 = objc_msgSendSuper2(&v9, sel__init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       objc_storeStrong(v7 + 1, a2);
-      a1[16] = a3;
+      self[16] = category;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)grantWithCategory:(id)a3 strength:(unsigned __int8)a4
++ (id)grantWithCategory:(id)category strength:(unsigned __int8)strength
 {
-  v5 = a3;
-  v6 = [[RBSBaseMemoryGrant alloc] _initWithCategory:v5 strength:a4];
+  categoryCopy = category;
+  v6 = [[RBSBaseMemoryGrant alloc] _initWithCategory:categoryCopy strength:strength];
 
   return v6;
 }

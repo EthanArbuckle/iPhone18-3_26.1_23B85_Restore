@@ -1,16 +1,16 @@
 @interface RouteStepListTableCell
-+ (double)heightForItem:(id)a3 width:(double)a4 maximumHeight:(double)a5;
-- (RouteStepListTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setItem:(id)a3;
++ (double)heightForItem:(id)item width:(double)width maximumHeight:(double)height;
+- (RouteStepListTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setItem:(id)item;
 @end
 
 @implementation RouteStepListTableCell
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = a3;
-  [(RouteStepListView *)self->_stepView setItem:v4];
-  v11 = v4;
+  itemCopy = item;
+  [(RouteStepListView *)self->_stepView setItem:itemCopy];
+  v11 = itemCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -29,11 +29,11 @@
     v7 = +[UIColor clearColor];
     [(RouteStepListView *)self->_stepView setBackgroundColor:v7];
 
-    v8 = [v6 backgroundColor];
-    if (!v8)
+    backgroundColor = [v6 backgroundColor];
+    if (!backgroundColor)
     {
-      v9 = [objc_opt_class() _fallbackBackgroundColor];
-      [(UIView *)self->_backgroundView setBackgroundColor:v9];
+      _fallbackBackgroundColor = [objc_opt_class() _fallbackBackgroundColor];
+      [(UIView *)self->_backgroundView setBackgroundColor:_fallbackBackgroundColor];
 
       v10 = 0;
       goto LABEL_9;
@@ -42,19 +42,19 @@
 
   else
   {
-    v8 = [objc_opt_class() _fallbackBackgroundColor];
+    backgroundColor = [objc_opt_class() _fallbackBackgroundColor];
   }
 
-  v10 = v8;
-  [(UIView *)self->_backgroundView setBackgroundColor:v8];
+  v10 = backgroundColor;
+  [(UIView *)self->_backgroundView setBackgroundColor:backgroundColor];
 LABEL_9:
 }
 
-- (RouteStepListTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RouteStepListTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v24.receiver = self;
   v24.super_class = RouteStepListTableCell;
-  v4 = [(RouteStepListTableCell *)&v24 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RouteStepListTableCell *)&v24 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_class();
@@ -66,40 +66,40 @@ LABEL_9:
     v4->_backgroundView = v7;
 
     [(UIView *)v4->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [objc_opt_class() _fallbackBackgroundColor];
-    [(UIView *)v4->_backgroundView setBackgroundColor:v9];
+    _fallbackBackgroundColor = [objc_opt_class() _fallbackBackgroundColor];
+    [(UIView *)v4->_backgroundView setBackgroundColor:_fallbackBackgroundColor];
 
     [(RouteStepListTableCell *)v4 addSubview:v4->_backgroundView];
     LODWORD(v10) = 1148846080;
     v11 = [(UIView *)v4->_backgroundView _maps_constraintsEqualToEdgesOfView:v4 priority:v10];
-    v12 = [v11 allConstraints];
-    [NSLayoutConstraint activateConstraints:v12];
+    allConstraints = [v11 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
     v13 = [objc_msgSend(objc_opt_class() "stepViewClass")];
-    v14 = [(RouteStepListTableCell *)v4 contentView];
-    [v14 bounds];
+    contentView = [(RouteStepListTableCell *)v4 contentView];
+    [contentView bounds];
     v15 = [v13 initWithFrame:?];
     stepView = v4->_stepView;
     v4->_stepView = v15;
 
     [(RouteStepListView *)v4->_stepView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(RouteStepListTableCell *)v4 contentView];
-    [v17 addSubview:v4->_stepView];
+    contentView2 = [(RouteStepListTableCell *)v4 contentView];
+    [contentView2 addSubview:v4->_stepView];
 
     v18 = v4->_stepView;
-    v19 = [(RouteStepListTableCell *)v4 contentView];
+    contentView3 = [(RouteStepListTableCell *)v4 contentView];
     LODWORD(v20) = 1148846080;
-    v21 = [(RouteStepListView *)v18 _maps_constraintsEqualToEdgesOfView:v19 priority:v20];
-    v22 = [v21 allConstraints];
-    [NSLayoutConstraint activateConstraints:v22];
+    v21 = [(RouteStepListView *)v18 _maps_constraintsEqualToEdgesOfView:contentView3 priority:v20];
+    allConstraints2 = [v21 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints2];
   }
 
   return v4;
 }
 
-+ (double)heightForItem:(id)a3 width:(double)a4 maximumHeight:(double)a5
++ (double)heightForItem:(id)item width:(double)width maximumHeight:(double)height
 {
-  v7 = a3;
+  itemCopy = item;
   [objc_msgSend(objc_opt_class() "stepViewClass")];
   v9 = v8;
 

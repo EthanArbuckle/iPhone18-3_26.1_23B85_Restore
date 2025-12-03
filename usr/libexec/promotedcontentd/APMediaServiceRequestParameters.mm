@@ -11,75 +11,75 @@
 
 - (BOOL)validate
 {
-  v3 = [(APMediaServiceRequestParameters *)self context];
-  if (!v3)
+  context = [(APMediaServiceRequestParameters *)self context];
+  if (!context)
   {
-    return v3;
+    return context;
   }
 
-  v4 = v3;
-  v5 = [(APMediaServiceRequestParameters *)self requestID];
-  if (!v5)
+  v4 = context;
+  requestID = [(APMediaServiceRequestParameters *)self requestID];
+  if (!requestID)
   {
 
     goto LABEL_9;
   }
 
-  v6 = v5;
-  v7 = [(APMediaServiceRequestParameters *)self idAccount];
+  v6 = requestID;
+  idAccount = [(APMediaServiceRequestParameters *)self idAccount];
 
-  if (!v7)
+  if (!idAccount)
   {
 LABEL_9:
-    LOBYTE(v3) = 0;
-    return v3;
+    LOBYTE(context) = 0;
+    return context;
   }
 
-  LOBYTE(v3) = [(APMediaServiceRequestParameters *)self placement]== 7005 || [(APMediaServiceRequestParameters *)self placement]== 7006 || [(APMediaServiceRequestParameters *)self placement]== 7007 || [(APMediaServiceRequestParameters *)self placement]== 7008;
-  return v3;
+  LOBYTE(context) = [(APMediaServiceRequestParameters *)self placement]== 7005 || [(APMediaServiceRequestParameters *)self placement]== 7006 || [(APMediaServiceRequestParameters *)self placement]== 7007 || [(APMediaServiceRequestParameters *)self placement]== 7008;
+  return context;
 }
 
 - (NSString)storeFront
 {
-  v2 = [(APMediaServiceRequestParameters *)self context];
-  v3 = [v2 supplementalContext];
-  v4 = [v3 objectForKey:@"storeFront"];
+  context = [(APMediaServiceRequestParameters *)self context];
+  supplementalContext = [context supplementalContext];
+  v4 = [supplementalContext objectForKey:@"storeFront"];
 
   return v4;
 }
 
 - (NSString)storeFrontLocale
 {
-  v2 = [(APMediaServiceRequestParameters *)self context];
-  v3 = [v2 supplementalContext];
-  v4 = [v3 objectForKey:@"storeFrontLocale"];
+  context = [(APMediaServiceRequestParameters *)self context];
+  supplementalContext = [context supplementalContext];
+  v4 = [supplementalContext objectForKey:@"storeFrontLocale"];
 
   return v4;
 }
 
 - (NSDictionary)appMetadataFields
 {
-  v2 = [(APMediaServiceRequestParameters *)self context];
-  v3 = [v2 supplementalContext];
-  v4 = [v3 objectForKey:@"appMetadataFields"];
+  context = [(APMediaServiceRequestParameters *)self context];
+  supplementalContext = [context supplementalContext];
+  v4 = [supplementalContext objectForKey:@"appMetadataFields"];
 
   return v4;
 }
 
 - (NSDate)requestTime
 {
-  v2 = [(APMediaServiceRequestParameters *)self context];
-  v3 = [v2 supplementalContext];
-  v4 = [v3 objectForKey:@"requestTime"];
+  context = [(APMediaServiceRequestParameters *)self context];
+  supplementalContext = [context supplementalContext];
+  v4 = [supplementalContext objectForKey:@"requestTime"];
 
   return v4;
 }
 
 - (NSString)adamId
 {
-  v2 = [(APMediaServiceRequestParameters *)self context];
-  v3 = [v2 supplementalContext];
-  v4 = [v3 objectForKey:@"adamId"];
+  context = [(APMediaServiceRequestParameters *)self context];
+  supplementalContext = [context supplementalContext];
+  v4 = [supplementalContext objectForKey:@"adamId"];
 
   return v4;
 }

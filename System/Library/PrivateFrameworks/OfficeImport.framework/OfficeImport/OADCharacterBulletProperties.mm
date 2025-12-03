@@ -1,27 +1,27 @@
 @interface OADCharacterBulletProperties
-- (BOOL)isEqual:(id)a3;
-- (OADCharacterBulletProperties)initWithBullet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADCharacterBulletProperties)initWithBullet:(id)bullet;
 @end
 
 @implementation OADCharacterBulletProperties
 
-- (OADCharacterBulletProperties)initWithBullet:(id)a3
+- (OADCharacterBulletProperties)initWithBullet:(id)bullet
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  bulletCopy = bullet;
+  v5 = [bulletCopy copy];
   mBullet = self->mBullet;
   self->mBullet = v5;
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->mBullet isEqual:v4[1]];
+    v5 = [(NSString *)self->mBullet isEqual:equalCopy[1]];
   }
 
   else

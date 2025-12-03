@@ -1,46 +1,46 @@
 @interface SFAvatarStackView
 + (id)randomContactIdentifiers;
-- (CGRect)_contentRectForContentWidth:(double)a3 viewWith:(double)a4;
+- (CGRect)_contentRectForContentWidth:(double)width viewWith:(double)with;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeForParticipantCount:(int64_t)a3;
-- (SFAvatarStackView)initWithFrame:(CGRect)a3;
-- (double)_widthForParticipantCount:(int64_t)a3;
-- (id)_avatarViewControllerForParticipantIdentifier:(id)a3;
+- (CGSize)sizeForParticipantCount:(int64_t)count;
+- (SFAvatarStackView)initWithFrame:(CGRect)frame;
+- (double)_widthForParticipantCount:(int64_t)count;
+- (id)_avatarViewControllerForParticipantIdentifier:(id)identifier;
 - (id)_overflowLabel;
 - (id)_overflowView;
-- (id)_viewForParticipantIdentifier:(id)a3;
-- (void)_layOutIndexes:(id)a3 ofParticipantIdentifiers:(id)a4 targetWidth:(id)a5;
+- (id)_viewForParticipantIdentifier:(id)identifier;
+- (void)_layOutIndexes:(id)indexes ofParticipantIdentifiers:(id)identifiers targetWidth:(id)width;
 - (void)_loadOverflowView;
-- (void)_removeViewsForIndexes:(id)a3 ofParticipantIdentifiers:(id)a4;
-- (void)_setIndexes:(id)a3 ofParticipantIdentifiers:(id)a4 transitioning:(BOOL)a5 completion:(id)a6;
-- (void)_setVisibleParticipantIdentifiers:(id)a3;
+- (void)_removeViewsForIndexes:(id)indexes ofParticipantIdentifiers:(id)identifiers;
+- (void)_setIndexes:(id)indexes ofParticipantIdentifiers:(id)identifiers transitioning:(BOOL)transitioning completion:(id)completion;
+- (void)_setVisibleParticipantIdentifiers:(id)identifiers;
 - (void)_updateVisibleParticipants;
 - (void)layoutSubviews;
-- (void)setAvatarDiameter:(double)a3;
-- (void)setShareParticipants:(id)a3;
-- (void)setSpacing:(double)a3;
+- (void)setAvatarDiameter:(double)diameter;
+- (void)setShareParticipants:(id)participants;
+- (void)setSpacing:(double)spacing;
 @end
 
 @implementation SFAvatarStackView
 
-- (SFAvatarStackView)initWithFrame:(CGRect)a3
+- (SFAvatarStackView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SFAvatarStackView;
-  v3 = [(SFAvatarStackView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFAvatarStackView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFAvatarStackView *)v3 setUserInteractionEnabled:0];
     v4->_alignment = 1;
     v4->_avatarDiameter = 22.0;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     avatarViewControllersByParticipantIdentifier = v4->_avatarViewControllersByParticipantIdentifier;
-    v4->_avatarViewControllersByParticipantIdentifier = v5;
+    v4->_avatarViewControllersByParticipantIdentifier = dictionary;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     contactsByParticipantIdentifer = v4->_contactsByParticipantIdentifer;
-    v4->_contactsByParticipantIdentifer = v7;
+    v4->_contactsByParticipantIdentifer = dictionary2;
 
     v4->_spacing = -6.0;
     visibleParticipantIdentifiers = v4->_visibleParticipantIdentifiers;
@@ -52,25 +52,25 @@
   return v4;
 }
 
-- (void)setAvatarDiameter:(double)a3
+- (void)setAvatarDiameter:(double)diameter
 {
-  if (self->_avatarDiameter != a3)
+  if (self->_avatarDiameter != diameter)
   {
-    self->_avatarDiameter = a3;
+    self->_avatarDiameter = diameter;
     [(SFAvatarStackView *)self invalidateIntrinsicContentSize];
 
     [(SFAvatarStackView *)self setNeedsLayout];
   }
 }
 
-- (void)setShareParticipants:(id)a3
+- (void)setShareParticipants:(id)participants
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  participantsCopy = participants;
+  v5 = [participantsCopy copy];
   shareParticipants = self->_shareParticipants;
   self->_shareParticipants = v5;
 
-  v7 = [v4 count];
+  v7 = [participantsCopy count];
   if (v7 >= 4)
   {
     v8 = v7 - 2;
@@ -78,28 +78,28 @@
     v10 = v9;
     if (v8 < 0xA)
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-      v12 = [v10 stringFromNumber:v11];
-      v13 = [(SFAvatarStackView *)self _overflowLabel];
-      [v13 setText:v12];
+      plusSign = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+      _overflowLabel2 = [v10 stringFromNumber:plusSign];
+      _overflowLabel = [(SFAvatarStackView *)self _overflowLabel];
+      [_overflowLabel setText:_overflowLabel2];
     }
 
     else
     {
-      v11 = [v9 plusSign];
-      v12 = [(SFAvatarStackView *)self _overflowLabel];
-      [v12 setText:v11];
+      plusSign = [v9 plusSign];
+      _overflowLabel2 = [(SFAvatarStackView *)self _overflowLabel];
+      [_overflowLabel2 setText:plusSign];
     }
   }
 
   [(SFAvatarStackView *)self _updateVisibleParticipants];
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
-  if (self->_spacing != a3)
+  if (self->_spacing != spacing)
   {
-    self->_spacing = a3;
+    self->_spacing = spacing;
     [(SFAvatarStackView *)self setNeedsLayout];
   }
 }
@@ -128,10 +128,10 @@
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
-        v9 = [v8 safari_contact];
+        safari_contact = [v8 safari_contact];
         contactsByParticipantIdentifer = self->_contactsByParticipantIdentifer;
-        v11 = [v8 safari_shareParticipantIdentifier];
-        [(NSMutableDictionary *)contactsByParticipantIdentifer setObject:v9 forKeyedSubscript:v11];
+        safari_shareParticipantIdentifier = [v8 safari_shareParticipantIdentifier];
+        [(NSMutableDictionary *)contactsByParticipantIdentifer setObject:safari_contact forKeyedSubscript:safari_shareParticipantIdentifier];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -146,7 +146,7 @@
   v24 = 3221225472;
   v25 = __47__SFAvatarStackView__updateVisibleParticipants__block_invoke;
   v26 = &unk_1E721C048;
-  v27 = self;
+  selfCopy = self;
   v14 = v12;
   v28 = v14;
   v15 = [(NSArray *)shareParticipants sortedArrayUsingComparator:&v23];
@@ -194,30 +194,30 @@ uint64_t __47__SFAvatarStackView__updateVisibleParticipants__block_invoke(uint64
   return v12;
 }
 
-- (void)_setVisibleParticipantIdentifiers:(id)a3
+- (void)_setVisibleParticipantIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   objc_initWeak(&location, self);
   v6 = self->_visibleParticipantIdentifiers;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_visibleParticipantIdentifiers, a3);
+    objc_storeStrong(&self->_visibleParticipantIdentifiers, identifiers);
     [(SFAvatarStackView *)self invalidateIntrinsicContentSize];
     [(SFAvatarStackView *)self setNeedsLayout];
-    v7 = [v5 differenceFromArray:v6 withOptions:4];
+    v7 = [identifiersCopy differenceFromArray:v6 withOptions:4];
     if ([MEMORY[0x1E69DD250] areAnimationsEnabled] && (-[SFAvatarStackView window](self, "window"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [v7 safari_insertionIndexes];
-      v10 = [v7 safari_removalIndexes];
+      safari_insertionIndexes = [v7 safari_insertionIndexes];
+      safari_removalIndexes = [v7 safari_removalIndexes];
       v11 = MEMORY[0x1E69DD250];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __55__SFAvatarStackView__setVisibleParticipantIdentifiers___block_invoke;
       v27[3] = &unk_1E721B650;
       v27[4] = self;
-      v12 = v9;
-      v28 = v12;
-      v13 = v5;
+      safari_removalIndexes2 = safari_insertionIndexes;
+      v28 = safari_removalIndexes2;
+      v13 = identifiersCopy;
       v29 = v13;
       [v11 performWithoutAnimation:v27];
       v14 = MEMORY[0x1E69DD250];
@@ -227,7 +227,7 @@ uint64_t __47__SFAvatarStackView__updateVisibleParticipants__block_invoke(uint64
       v22[3] = &unk_1E721C090;
       objc_copyWeak(&v26, &location);
       v23 = v13;
-      v15 = v10;
+      v15 = safari_removalIndexes;
       v24 = v15;
       v16 = v6;
       v25 = v16;
@@ -248,8 +248,8 @@ uint64_t __47__SFAvatarStackView__updateVisibleParticipants__block_invoke(uint64
 
     else
     {
-      v12 = [v7 safari_removalIndexes];
-      [(SFAvatarStackView *)self _removeViewsForIndexes:v12 ofParticipantIdentifiers:v6];
+      safari_removalIndexes2 = [v7 safari_removalIndexes];
+      [(SFAvatarStackView *)self _removeViewsForIndexes:safari_removalIndexes2 ofParticipantIdentifiers:v6];
     }
   }
 
@@ -314,35 +314,35 @@ void __55__SFAvatarStackView__setVisibleParticipantIdentifiers___block_invoke_3(
   return result;
 }
 
-- (CGSize)sizeForParticipantCount:(int64_t)a3
+- (CGSize)sizeForParticipantCount:(int64_t)count
 {
-  if (a3 >= 3)
+  if (count >= 3)
   {
-    a3 = 3;
+    count = 3;
   }
 
-  [(SFAvatarStackView *)self _widthForParticipantCount:a3];
+  [(SFAvatarStackView *)self _widthForParticipantCount:count];
   avatarDiameter = self->_avatarDiameter;
   result.height = avatarDiameter;
   result.width = v4;
   return result;
 }
 
-- (void)_layOutIndexes:(id)a3 ofParticipantIdentifiers:(id)a4 targetWidth:(id)a5
+- (void)_layOutIndexes:(id)indexes ofParticipantIdentifiers:(id)identifiers targetWidth:(id)width
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifiersCopy = identifiers;
+  widthCopy = width;
+  indexesCopy = indexes;
   [(SFAvatarStackView *)self bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  -[SFAvatarStackView _widthForParticipantCount:](self, "_widthForParticipantCount:", [v8 count]);
+  -[SFAvatarStackView _widthForParticipantCount:](self, "_widthForParticipantCount:", [identifiersCopy count]);
   v20 = v19;
-  if (v9)
+  if (widthCopy)
   {
-    [v9 doubleValue];
+    [widthCopy doubleValue];
   }
 
   else
@@ -368,7 +368,7 @@ void __55__SFAvatarStackView__setVisibleParticipantIdentifiers___block_invoke_3(
   *&v26[10] = v14;
   *&v26[11] = v16;
   *&v26[12] = v18;
-  [v8 enumerateObjectsAtIndexes:v10 options:0 usingBlock:v26];
+  [identifiersCopy enumerateObjectsAtIndexes:indexesCopy options:0 usingBlock:v26];
 }
 
 void __73__SFAvatarStackView__layOutIndexes_ofParticipantIdentifiers_targetWidth___block_invoke(uint64_t a1, uint64_t a2, unint64_t a3)
@@ -393,14 +393,14 @@ void __73__SFAvatarStackView__layOutIndexes_ofParticipantIdentifiers_targetWidth
   [v12 layoutIfNeeded];
 }
 
-- (void)_setIndexes:(id)a3 ofParticipantIdentifiers:(id)a4 transitioning:(BOOL)a5 completion:(id)a6
+- (void)_setIndexes:(id)indexes ofParticipantIdentifiers:(id)identifiers transitioning:(BOOL)transitioning completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  transitioningCopy = transitioning;
+  indexesCopy = indexes;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v13 = MEMORY[0x1E69DD250];
-  if (v7)
+  if (transitioningCopy)
   {
     v14 = 0.0;
   }
@@ -414,18 +414,18 @@ void __73__SFAvatarStackView__layOutIndexes_ofParticipantIdentifiers_targetWidth
   v20[1] = 3221225472;
   v20[2] = __83__SFAvatarStackView__setIndexes_ofParticipantIdentifiers_transitioning_completion___block_invoke;
   v20[3] = &unk_1E721C130;
-  v21 = v11;
-  v22 = v10;
-  v23 = self;
-  v24 = v7;
+  v21 = identifiersCopy;
+  v22 = indexesCopy;
+  selfCopy = self;
+  v24 = transitioningCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__SFAvatarStackView__setIndexes_ofParticipantIdentifiers_transitioning_completion___block_invoke_3;
   v18[3] = &unk_1E721BA70;
-  v19 = v12;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = indexesCopy;
+  v17 = identifiersCopy;
   [v13 sf_animate:1 usingDefaultMotionWithDelay:98 options:v20 animations:v18 completion:v14];
 }
 
@@ -468,14 +468,14 @@ uint64_t __83__SFAvatarStackView__setIndexes_ofParticipantIdentifiers_transition
   return result;
 }
 
-- (CGRect)_contentRectForContentWidth:(double)a3 viewWith:(double)a4
+- (CGRect)_contentRectForContentWidth:(double)width viewWith:(double)with
 {
   alignment = self->_alignment;
   if (alignment == 1)
   {
-    v9 = [(UIView *)self _sf_usesLeftToRightLayout];
-    v8 = a4 - a3;
-    if (!v9)
+    _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
+    v8 = with - width;
+    if (!_sf_usesLeftToRightLayout)
     {
       v8 = 0.0;
     }
@@ -483,7 +483,7 @@ uint64_t __83__SFAvatarStackView__setIndexes_ofParticipantIdentifiers_transition
 
   else
   {
-    v8 = (a4 - a3) * 0.5;
+    v8 = (with - width) * 0.5;
     if (alignment)
     {
       v8 = 0.0;
@@ -492,51 +492,51 @@ uint64_t __83__SFAvatarStackView__setIndexes_ofParticipantIdentifiers_transition
 
   avatarDiameter = self->_avatarDiameter;
   v11 = 0.0;
-  v12 = a3;
+  widthCopy = width;
   result.size.height = avatarDiameter;
-  result.size.width = v12;
+  result.size.width = widthCopy;
   result.origin.y = v11;
   result.origin.x = v8;
   return result;
 }
 
-- (double)_widthForParticipantCount:(int64_t)a3
+- (double)_widthForParticipantCount:(int64_t)count
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    v3 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  return self->_spacing * (v3 - 1) + a3 * self->_avatarDiameter;
+  return self->_spacing * (countCopy - 1) + count * self->_avatarDiameter;
 }
 
-- (id)_viewForParticipantIdentifier:(id)a3
+- (id)_viewForParticipantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (WBSIsEqual())
   {
-    v5 = [(SFAvatarStackView *)self _overflowView];
+    _overflowView = [(SFAvatarStackView *)self _overflowView];
   }
 
   else
   {
-    v6 = [(SFAvatarStackView *)self _avatarViewControllerForParticipantIdentifier:v4];
-    v5 = [v6 view];
+    v6 = [(SFAvatarStackView *)self _avatarViewControllerForParticipantIdentifier:identifierCopy];
+    _overflowView = [v6 view];
   }
 
-  return v5;
+  return _overflowView;
 }
 
-- (id)_avatarViewControllerForParticipantIdentifier:(id)a3
+- (id)_avatarViewControllerForParticipantIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_avatarViewControllersByParticipantIdentifier objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_avatarViewControllersByParticipantIdentifier objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -545,12 +545,12 @@ uint64_t __83__SFAvatarStackView__setIndexes_ofParticipantIdentifiers_transition
 
   else
   {
-    v8 = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
-    v9 = [v8 contactStore];
+    mEMORY[0x1E69C8F00] = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
+    contactStore = [mEMORY[0x1E69C8F00] contactStore];
 
-    v10 = [MEMORY[0x1E695D0E0] settingsWithContactStore:v9];
+    v10 = [MEMORY[0x1E695D0E0] settingsWithContactStore:contactStore];
     v7 = [objc_alloc(MEMORY[0x1E695D0C8]) initWithSettings:v10];
-    v11 = [(NSMutableDictionary *)self->_contactsByParticipantIdentifer objectForKeyedSubscript:v4];
+    v11 = [(NSMutableDictionary *)self->_contactsByParticipantIdentifer objectForKeyedSubscript:identifierCopy];
     v12 = v11;
     if (v11)
     {
@@ -559,20 +559,20 @@ uint64_t __83__SFAvatarStackView__setIndexes_ofParticipantIdentifiers_transition
       [v7 setContacts:v13];
     }
 
-    [(NSMutableDictionary *)self->_avatarViewControllersByParticipantIdentifier setObject:v7 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_avatarViewControllersByParticipantIdentifier setObject:v7 forKeyedSubscript:identifierCopy];
   }
 
   return v7;
 }
 
-- (void)_removeViewsForIndexes:(id)a3 ofParticipantIdentifiers:(id)a4
+- (void)_removeViewsForIndexes:(id)indexes ofParticipantIdentifiers:(id)identifiers
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__SFAvatarStackView__removeViewsForIndexes_ofParticipantIdentifiers___block_invoke;
   v4[3] = &unk_1E721C158;
   v4[4] = self;
-  [a4 enumerateObjectsAtIndexes:a3 options:0 usingBlock:v4];
+  [identifiers enumerateObjectsAtIndexes:indexes options:0 usingBlock:v4];
 }
 
 void __69__SFAvatarStackView__removeViewsForIndexes_ofParticipantIdentifiers___block_invoke(uint64_t a1, void *a2)
@@ -617,15 +617,15 @@ void __69__SFAvatarStackView__removeViewsForIndexes_ofParticipantIdentifiers___b
   overflowView = self->_overflowView;
   self->_overflowView = v3;
 
-  v5 = [MEMORY[0x1E69DC888] systemGray4Color];
-  [(UIView *)self->_overflowView setBackgroundColor:v5];
+  systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+  [(UIView *)self->_overflowView setBackgroundColor:systemGray4Color];
 
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   overflowLabel = self->_overflowLabel;
   self->_overflowLabel = v6;
 
-  v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_overflowLabel setTextColor:v8];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_overflowLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_overflowLabel setTextAlignment:1];
   v9 = [MEMORY[0x1E69DB878] systemFontOfSize:10.0];
@@ -640,12 +640,12 @@ void __69__SFAvatarStackView__removeViewsForIndexes_ofParticipantIdentifiers___b
 
 + (id)randomContactIdentifiers
 {
-  v2 = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
-  v3 = [v2 defaultContainerIdentifier];
-  if (v3)
+  mEMORY[0x1E69C8F00] = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
+  defaultContainerIdentifier = [mEMORY[0x1E69C8F00] defaultContainerIdentifier];
+  if (defaultContainerIdentifier)
   {
-    v4 = [MEMORY[0x1E695CD58] predicateForContactsInContainerWithIdentifier:v3];
-    v5 = [v2 unifiedContactsMatchingPredicate:v4 keysToFetch:MEMORY[0x1E695E0F0] error:0];
+    v4 = [MEMORY[0x1E695CD58] predicateForContactsInContainerWithIdentifier:defaultContainerIdentifier];
+    v5 = [mEMORY[0x1E69C8F00] unifiedContactsMatchingPredicate:v4 keysToFetch:MEMORY[0x1E695E0F0] error:0];
     v6 = [v5 mutableCopy];
 
     v7 = [v6 count];
@@ -659,18 +659,18 @@ void __69__SFAvatarStackView__removeViewsForIndexes_ofParticipantIdentifiers___b
       v8 = [v6 count];
     }
 
-    v10 = [MEMORY[0x1E695DF70] array];
-    v9 = v10;
-    while ([v10 count] < v8)
+    array = [MEMORY[0x1E695DF70] array];
+    v9 = array;
+    while ([array count] < v8)
     {
       v11 = arc4random();
       v12 = v11 % [v6 count];
       v13 = [v6 objectAtIndexedSubscript:v12];
-      v14 = [v13 identifier];
-      [v9 addObject:v14];
+      identifier = [v13 identifier];
+      [v9 addObject:identifier];
 
       [v6 removeObjectAtIndex:v12];
-      v10 = v9;
+      array = v9;
     }
   }
 

@@ -1,18 +1,18 @@
 @interface DDURLMatch
-- (DDURLMatch)initWithRange:(_NSRange)a3 url:(id)a4;
+- (DDURLMatch)initWithRange:(_NSRange)range url:(id)url;
 - (_NSRange)range;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
 @end
 
 @implementation DDURLMatch
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = [a3 range];
+  range = [compare range];
   location = self->_range.location;
-  v7 = location > v4;
-  if (location == v4)
+  v7 = location > range;
+  if (location == range)
   {
     v7 = self->_range.length > v5;
   }
@@ -44,10 +44,10 @@
   [(DDURLMatch *)&v3 dealloc];
 }
 
-- (DDURLMatch)initWithRange:(_NSRange)a3 url:(id)a4
+- (DDURLMatch)initWithRange:(_NSRange)range url:(id)url
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = DDURLMatch;
   v7 = [(DDURLMatch *)&v10 init];
@@ -56,7 +56,7 @@
   {
     v7->_range.location = location;
     v7->_range.length = length;
-    v7->_url = [a4 copyWithZone:0];
+    v7->_url = [url copyWithZone:0];
   }
 
   return v8;

@@ -1,29 +1,29 @@
 @interface BSUIDynamicArray
-- (BSUIDynamicArray)initWithArray:(id)a3 options:(id)a4;
+- (BSUIDynamicArray)initWithArray:(id)array options:(id)options;
 - (NSArray)internalArray;
-- (id)objectAtIndex:(int64_t)a3;
+- (id)objectAtIndex:(int64_t)index;
 - (int64_t)length;
-- (void)addObserver:(id)a3;
-- (void)addWeakObserver:(id)a3;
-- (void)notifyObserversWithGeneration:(id)a3;
-- (void)performBatchUpdatesWithGeneration:(id)a3 block:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)updateArray:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addWeakObserver:(id)observer;
+- (void)notifyObserversWithGeneration:(id)generation;
+- (void)performBatchUpdatesWithGeneration:(id)generation block:(id)block;
+- (void)removeObserver:(id)observer;
+- (void)updateArray:(id)array;
 @end
 
 @implementation BSUIDynamicArray
 
-- (BSUIDynamicArray)initWithArray:(id)a3 options:(id)a4
+- (BSUIDynamicArray)initWithArray:(id)array options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BSUIDynamicArrayProvider alloc] initWithArray:v7 options:v6 dynamicArray:self];
-  v9 = [(BSUIDynamicArrayProvider *)v8 currentGeneration];
-  v10 = [v7 count];
+  optionsCopy = options;
+  arrayCopy = array;
+  v8 = [[BSUIDynamicArrayProvider alloc] initWithArray:arrayCopy options:optionsCopy dynamicArray:self];
+  currentGeneration = [(BSUIDynamicArrayProvider *)v8 currentGeneration];
+  v10 = [arrayCopy count];
 
   v22.receiver = self;
   v22.super_class = BSUIDynamicArray;
-  v11 = [(BSUIDynamicArray *)&v22 initWithDataProvider:v8 generation:v9 count:v10];
+  v11 = [(BSUIDynamicArray *)&v22 initWithDataProvider:v8 generation:currentGeneration count:v10];
 
   if (v11)
   {
@@ -47,7 +47,7 @@
     }
 
     objc_opt_class();
-    v19 = [v6 objectForKeyedSubscript:@"debugName"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"debugName"];
     v20 = BUDynamicCast();
     [(BSUIDynamicArray *)v11 setDebugName:v20];
   }
@@ -55,33 +55,33 @@
   return v11;
 }
 
-- (void)updateArray:(id)a3
+- (void)updateArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   objc_opt_class();
-  v5 = [(BSUIDynamicArray *)self dataProvider];
+  dataProvider = [(BSUIDynamicArray *)self dataProvider];
   v6 = BUDynamicCast();
 
-  [v6 updateArray:v4 batchUpdatesBlock:0];
+  [v6 updateArray:arrayCopy batchUpdatesBlock:0];
 }
 
-- (void)performBatchUpdatesWithGeneration:(id)a3 block:(id)a4
+- (void)performBatchUpdatesWithGeneration:(id)generation block:(id)block
 {
   v7.receiver = self;
   v7.super_class = BSUIDynamicArray;
-  v6 = a3;
-  [(BSUIDynamicArray *)&v7 performBatchUpdatesWithGeneration:v6 block:a4];
-  [(BSUIDynamicArray *)self notifyObserversWithGeneration:v6, v7.receiver, v7.super_class];
+  generationCopy = generation;
+  [(BSUIDynamicArray *)&v7 performBatchUpdatesWithGeneration:generationCopy block:block];
+  [(BSUIDynamicArray *)self notifyObserversWithGeneration:generationCopy, v7.receiver, v7.super_class];
 }
 
-- (void)notifyObserversWithGeneration:(id)a3
+- (void)notifyObserversWithGeneration:(id)generation
 {
-  v4 = a3;
+  generationCopy = generation;
   objc_opt_class();
-  v5 = [(BSUIDynamicArray *)self dataProvider];
+  dataProvider = [(BSUIDynamicArray *)self dataProvider];
   v6 = BUDynamicCast();
 
-  v7 = [v6 arrayForGeneration:v4];
+  v7 = [v6 arrayForGeneration:generationCopy];
 
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -99,14 +99,14 @@
   objc_destroyWeak(&location);
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
   objc_opt_class();
-  v5 = [(BSUIDynamicArray *)self dataProvider];
+  dataProvider = [(BSUIDynamicArray *)self dataProvider];
   v6 = BUDynamicCast();
 
-  v7 = [v6 currentGeneration];
-  v8 = [v6 objectAtIndex:a3 generation:v7];
+  currentGeneration = [v6 currentGeneration];
+  v8 = [v6 objectAtIndex:index generation:currentGeneration];
 
   return v8;
 }
@@ -114,11 +114,11 @@
 - (NSArray)internalArray
 {
   objc_opt_class();
-  v3 = [(BSUIDynamicArray *)self dataProvider];
+  dataProvider = [(BSUIDynamicArray *)self dataProvider];
   v4 = BUDynamicCast();
 
-  v5 = [v4 currentGeneration];
-  v6 = [v4 arrayForGeneration:v5];
+  currentGeneration = [v4 currentGeneration];
+  v6 = [v4 arrayForGeneration:currentGeneration];
 
   return v6;
 }
@@ -126,43 +126,43 @@
 - (int64_t)length
 {
   objc_opt_class();
-  v3 = [(BSUIDynamicArray *)self dataProvider];
+  dataProvider = [(BSUIDynamicArray *)self dataProvider];
   v4 = BUDynamicCast();
 
-  v5 = [v4 currentGeneration];
-  v6 = [v4 countForGeneration:v5];
+  currentGeneration = [v4 currentGeneration];
+  v6 = [v4 countForGeneration:currentGeneration];
 
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(BSUIDynamicArray *)self strongObservers];
-  [v5 addObject:v4];
+  strongObservers = [(BSUIDynamicArray *)self strongObservers];
+  [strongObservers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(BSUIDynamicArray *)self strongObservers];
-  [v5 removeObject:v4];
+  strongObservers = [(BSUIDynamicArray *)self strongObservers];
+  [strongObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }
 
-- (void)addWeakObserver:(id)a3
+- (void)addWeakObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(BSUIDynamicArray *)self weakObservers];
-  v6 = [JSManagedValue managedValueWithValue:v4];
+  weakObservers = [(BSUIDynamicArray *)self weakObservers];
+  v6 = [JSManagedValue managedValueWithValue:observerCopy];
 
-  [v5 addObject:v6];
+  [weakObservers addObject:v6];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }

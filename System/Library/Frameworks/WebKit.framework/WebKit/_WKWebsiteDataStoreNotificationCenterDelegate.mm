@@ -1,15 +1,15 @@
 @interface _WKWebsiteDataStoreNotificationCenterDelegate
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation _WKWebsiteDataStoreNotificationCenterDelegate
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  [WKWebsiteDataStore handleNotificationResponse:a4];
-  v6 = *(a5 + 2);
+  [WKWebsiteDataStore handleNotificationResponse:response];
+  v6 = *(handler + 2);
 
-  v6(a5);
+  v6(handler);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface MultiwayStream
 - (double)averageJBTargetSizeChanges;
 - (double)averageJitterBufferDelay;
-- (id)initStreamWithID:(id)a3;
+- (id)initStreamWithID:(id)d;
 - (void)dealloc;
-- (void)processData:(id)a3 algosScorer:(id)a4 algosScorerAlternate:(id)a5 algosScorerBounded:(id)a6 timestamp:(double)a7;
-- (void)processRTXData:(id)a3;
-- (void)updateMinimumAndMaximumAVSyncOffset:(id)a3;
+- (void)processData:(id)data algosScorer:(id)scorer algosScorerAlternate:(id)alternate algosScorerBounded:(id)bounded timestamp:(double)timestamp;
+- (void)processRTXData:(id)data;
+- (void)updateMinimumAndMaximumAVSyncOffset:(id)offset;
 @end
 
 @implementation MultiwayStream
 
-- (id)initStreamWithID:(id)a3
+- (id)initStreamWithID:(id)d
 {
   v6.receiver = self;
   v6.super_class = MultiwayStream;
   v4 = [(VCReportingCommon *)&v6 init];
   if (v4)
   {
-    v4->_streamID = [a3 copy];
+    v4->_streamID = [d copy];
     reportingGetDefaults(&v4->_interval, &v4->_frequency);
     v4->_minVideoFrameRate = 60;
     v4->_evictedFramesLatePacketDelayHist = [[VCReportingHistogram alloc] initWithType:79 bucketValues:0];
@@ -51,9 +51,9 @@
   [(VCReportingCommon *)&v3 dealloc];
 }
 
-- (void)updateMinimumAndMaximumAVSyncOffset:(id)a3
+- (void)updateMinimumAndMaximumAVSyncOffset:(id)offset
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVSyncOffsetMax", "integerValue"}];
+  v5 = [objc_msgSend(offset objectForKeyedSubscript:{@"AVSyncOffsetMax", "integerValue"}];
   maxAVSyncOffset = self->_maxAVSyncOffset;
   if (maxAVSyncOffset <= v5)
   {
@@ -61,7 +61,7 @@
   }
 
   self->_maxAVSyncOffset = maxAVSyncOffset;
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVSyncOffsetMin", "integerValue"}];
+  v7 = [objc_msgSend(offset objectForKeyedSubscript:{@"AVSyncOffsetMin", "integerValue"}];
   minAVSyncOffset = self->_minAVSyncOffset;
   if (minAVSyncOffset >= v7)
   {
@@ -71,9 +71,9 @@
   self->_minAVSyncOffset = minAVSyncOffset;
 }
 
-- (void)processData:(id)a3 algosScorer:(id)a4 algosScorerAlternate:(id)a5 algosScorerBounded:(id)a6 timestamp:(double)a7
+- (void)processData:(id)data algosScorer:(id)scorer algosScorerAlternate:(id)alternate algosScorerBounded:(id)bounded timestamp:(double)timestamp
 {
-  v13 = [a3 objectForKeyedSubscript:@"VST"];
+  v13 = [data objectForKeyedSubscript:@"VST"];
   if (v13)
   {
     [v13 doubleValue];
@@ -90,9 +90,9 @@
         }
 
         self->_totalVideoStallTime = currentStallTime + self->_totalVideoStallTime;
-        [a4 addVideoStallWithStartTime:a7 - self->_currentStallTime / 1000.0 endStallTime:a7];
-        [a5 addVideoStallWithStartTime:a7 - self->_currentStallTime / 1000.0 endStallTime:a7];
-        [a6 addVideoStallWithStartTime:a7 - self->_currentStallTime / 1000.0 endStallTime:a7];
+        [scorer addVideoStallWithStartTime:timestamp - self->_currentStallTime / 1000.0 endStallTime:timestamp];
+        [alternate addVideoStallWithStartTime:timestamp - self->_currentStallTime / 1000.0 endStallTime:timestamp];
+        [bounded addVideoStallWithStartTime:timestamp - self->_currentStallTime / 1000.0 endStallTime:timestamp];
         maxVideoStallTime = self->_currentStallTime;
         if (maxVideoStallTime < self->_maxVideoStallTime)
         {
@@ -111,7 +111,7 @@
     }
   }
 
-  v19 = [a3 objectForKeyedSubscript:@"FrameErasureRate"];
+  v19 = [data objectForKeyedSubscript:@"FrameErasureRate"];
   if (v19)
   {
     [v19 doubleValue];
@@ -122,7 +122,7 @@
     }
   }
 
-  v22 = [a3 objectForKeyedSubscript:@"FrameErasureRateAlt"];
+  v22 = [data objectForKeyedSubscript:@"FrameErasureRateAlt"];
   if (v22)
   {
     [v22 doubleValue];
@@ -133,7 +133,7 @@
     }
   }
 
-  v25 = [a3 objectForKeyedSubscript:@"FrameErasureCount"];
+  v25 = [data objectForKeyedSubscript:@"FrameErasureCount"];
   if (v25)
   {
     v26 = v25;
@@ -142,50 +142,50 @@
     self->_maxAudioErasureCount = fmax(v27, [v26 intValue]);
   }
 
-  v28 = [a3 objectForKeyedSubscript:@"LKFASC"];
+  v28 = [data objectForKeyedSubscript:@"LKFASC"];
   if (v28)
   {
     self->_lateKeyFrameAssembledCount += [v28 intValue];
   }
 
-  v29 = [a3 objectForKeyedSubscript:@"LPFASC"];
+  v29 = [data objectForKeyedSubscript:@"LPFASC"];
   if (v29)
   {
     self->_latePFrameAssembledCount += [v29 intValue];
   }
 
-  v30 = [a3 objectForKeyedSubscript:@"VRxIDRC"];
+  v30 = [data objectForKeyedSubscript:@"VRxIDRC"];
   if (v30)
   {
     self->_idrReceivedCount += [v30 intValue];
   }
 
-  v31 = [a3 objectForKeyedSubscript:@"VTxDeltaKeyFramesSent"];
+  v31 = [data objectForKeyedSubscript:@"VTxDeltaKeyFramesSent"];
   if (v31)
   {
     self->_idrSentCount += [v31 intValue];
   }
 
-  v32 = [a3 objectForKeyedSubscript:@"WindowedFrameErasureRate"];
+  v32 = [data objectForKeyedSubscript:@"WindowedFrameErasureRate"];
   if (v32)
   {
     v33 = v32;
     [v32 floatValue];
-    [a4 addLargeGapErasureWithTime:a7 largeGapErasureRate:v34];
+    [scorer addLargeGapErasureWithTime:timestamp largeGapErasureRate:v34];
     [v33 floatValue];
-    [a5 addLargeGapErasureWithTime:a7 largeGapErasureRate:v35];
+    [alternate addLargeGapErasureWithTime:timestamp largeGapErasureRate:v35];
     [v33 floatValue];
-    [a6 addLargeGapErasureWithTime:a7 largeGapErasureRate:v36];
+    [bounded addLargeGapErasureWithTime:timestamp largeGapErasureRate:v36];
   }
 
-  v37 = [a3 objectForKeyedSubscript:@"VSTCNT"];
+  v37 = [data objectForKeyedSubscript:@"VSTCNT"];
   if (v37)
   {
     LOWORD(v38) = self->_maxVideoStallCount;
     self->_maxVideoStallCount = fmax(v38, [v37 intValue]);
   }
 
-  v39 = [a3 objectForKeyedSubscript:@"NJB"];
+  v39 = [data objectForKeyedSubscript:@"NJB"];
   [v39 doubleValue];
   if (v40 != 0.0)
   {
@@ -197,17 +197,17 @@
   JBTarget = self->_JBTarget;
   [v39 doubleValue];
   [(VCHistogram *)JBTarget addValue:v43];
-  v44 = [a3 objectForKeyedSubscript:@"UJBL"];
+  v44 = [data objectForKeyedSubscript:@"UJBL"];
   JBUnclippedTarget = self->_JBUnclippedTarget;
   [v44 doubleValue];
   [(VCHistogram *)JBUnclippedTarget addValue:v46];
-  v47 = [a3 objectForKeyedSubscript:@"EnhancedJBAdaptationsEnabled"];
+  v47 = [data objectForKeyedSubscript:@"EnhancedJBAdaptationsEnabled"];
   if (v47)
   {
     self->_enhancedJBAdaptationsEnabled = [v47 intValue];
   }
 
-  v48 = [a3 objectForKeyedSubscript:@"JitterBufferTargetChanges"];
+  v48 = [data objectForKeyedSubscript:@"JitterBufferTargetChanges"];
   if (v48)
   {
     v49 = v48;
@@ -217,14 +217,14 @@
     self->_maxTargetJBSizeChanges = fmax(v50, [v49 intValue]);
   }
 
-  v51 = [a3 objectForKeyedSubscript:@"NRFr"];
+  v51 = [data objectForKeyedSubscript:@"NRFr"];
   if (v51)
   {
     v52 = v51;
-    v53 = [v51 intValue];
+    intValue = [v51 intValue];
     LOWORD(v54) = self->_minVideoFrameRate;
     v55 = v54;
-    if (v53)
+    if (intValue)
     {
       v55 = fmin(v55, [v52 intValue]);
     }
@@ -232,7 +232,7 @@
     self->_minVideoFrameRate = v55;
   }
 
-  v56 = [a3 objectForKeyedSubscript:@"ARFr"];
+  v56 = [data objectForKeyedSubscript:@"ARFr"];
   if (v56)
   {
     [v56 doubleValue];
@@ -240,14 +240,14 @@
     ++self->_averageFramerateReportCounter;
   }
 
-  if ([a3 objectForKeyedSubscript:@"ARxR"] || objc_msgSend(a3, "objectForKeyedSubscript:", @"VRxR"))
+  if ([data objectForKeyedSubscript:@"ARxR"] || objc_msgSend(data, "objectForKeyedSubscript:", @"VRxR"))
   {
-    v58 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ARxR", "integerValue"}];
-    self->_averageReceiveBitrateSum = self->_averageReceiveBitrateSum + ([objc_msgSend(a3 objectForKeyedSubscript:{@"VRxR", "integerValue"}] + v58);
+    v58 = [objc_msgSend(data objectForKeyedSubscript:{@"ARxR", "integerValue"}];
+    self->_averageReceiveBitrateSum = self->_averageReceiveBitrateSum + ([objc_msgSend(data objectForKeyedSubscript:{@"VRxR", "integerValue"}] + v58);
     ++self->_averageReceiveBitrateReportCounter;
   }
 
-  v59 = [a3 objectForKeyedSubscript:@"VJ"];
+  v59 = [data objectForKeyedSubscript:@"VJ"];
   if (v59)
   {
     [v59 doubleValue];
@@ -255,8 +255,8 @@
     ++self->_averageVideoJitterReportCounter;
   }
 
-  v61 = [a3 objectForKeyedSubscript:@"VPktRx"];
-  v62 = [a3 objectForKeyedSubscript:@"VRSOOOCnt"];
+  v61 = [data objectForKeyedSubscript:@"VPktRx"];
+  v62 = [data objectForKeyedSubscript:@"VRSOOOCnt"];
   if (v61)
   {
     v63 = v62;
@@ -267,37 +267,37 @@
     }
   }
 
-  v64 = [a3 objectForKeyedSubscript:@"VFIRDCnt"];
+  v64 = [data objectForKeyedSubscript:@"VFIRDCnt"];
   if (v64)
   {
     self->_totalFIRDemandCounter += [v64 intValue];
   }
 
-  v65 = [a3 objectForKeyedSubscript:@"VFIRCnt"];
+  v65 = [data objectForKeyedSubscript:@"VFIRCnt"];
   if (v65)
   {
     self->_totalFIRCounter += [v65 intValue];
   }
 
-  v66 = [a3 objectForKeyedSubscript:@"VFIRFSCnt"];
+  v66 = [data objectForKeyedSubscript:@"VFIRFSCnt"];
   if (v66)
   {
     self->_totalFIRFailSafeCounter += [v66 intValue];
   }
 
-  v67 = [a3 objectForKeyedSubscript:@"VFDBSCnt"];
+  v67 = [data objectForKeyedSubscript:@"VFDBSCnt"];
   if (v67)
   {
     self->_videoFrameDecodedButSkippedCounter += [v67 intValue];
   }
 
-  v68 = [a3 objectForKeyedSubscript:@"VFTICnt"];
+  v68 = [data objectForKeyedSubscript:@"VFTICnt"];
   if (v68)
   {
     self->_videoFrameTotalIncompleteCounter += [v68 intValue];
   }
 
-  v69 = [a3 objectForKeyedSubscript:@"DVFECnt"];
+  v69 = [data objectForKeyedSubscript:@"DVFECnt"];
   if (v69)
   {
     v70 = v69;
@@ -315,54 +315,54 @@
       v74 = 0.0;
     }
 
-    [a4 setVideoFramerate:v74];
-    [a5 setVideoFramerate:v74];
-    [a6 setVideoFramerate:v74];
+    [scorer setVideoFramerate:v74];
+    [alternate setVideoFramerate:v74];
+    [bounded setVideoFramerate:v74];
   }
 
-  v75 = [a3 objectForKeyedSubscript:@"VFEVTrCnt"];
+  v75 = [data objectForKeyedSubscript:@"VFEVTrCnt"];
   if (v75)
   {
     self->_evictedFramesTrackedCount += [v75 intValue];
   }
 
-  v76 = [a3 objectForKeyedSubscript:@"VRxMR"];
+  v76 = [data objectForKeyedSubscript:@"VRxMR"];
   if (v76)
   {
     self->_averageVideoRxMediaBitrate += [v76 unsignedIntValue];
   }
 
-  v77 = [a3 objectForKeyedSubscript:@"VRxDMR"];
+  v77 = [data objectForKeyedSubscript:@"VRxDMR"];
   if (v77)
   {
     self->_averageVideoRxDecoderMediaBitrate += [v77 unsignedIntValue];
   }
 
-  v78 = [a3 objectForKeyedSubscript:@"VTxRMedia"];
+  v78 = [data objectForKeyedSubscript:@"VTxRMedia"];
   if (v78)
   {
     self->_averageVideoTxMediaBitrate += [v78 intValue];
   }
 
-  v79 = [a3 objectForKeyedSubscript:@"VTxRHDR"];
+  v79 = [data objectForKeyedSubscript:@"VTxRHDR"];
   if (v79)
   {
     self->_averageVideoTxHeaderBitrate += [v79 intValue];
   }
 
-  v80 = [a3 objectForKeyedSubscript:@"VFEVRecoveredCnt"];
+  v80 = [data objectForKeyedSubscript:@"VFEVRecoveredCnt"];
   if (v80)
   {
     self->_evictedFramesRecoveredCount += [v80 intValue];
   }
 
-  v81 = [a3 objectForKeyedSubscript:@"VFrLateCount"];
+  v81 = [data objectForKeyedSubscript:@"VFrLateCount"];
   if (v81)
   {
     self->_lateFramesScheduledCount += [v81 intValue];
   }
 
-  v82 = [a3 objectForKeyedSubscript:@"VFEVLtPktDelay"];
+  v82 = [data objectForKeyedSubscript:@"VFEVLtPktDelay"];
   if (v82)
   {
     [v82 doubleValue];
@@ -373,7 +373,7 @@
     }
   }
 
-  v84 = [a3 objectForKeyedSubscript:@"VFEVMaxLtPktDelay"];
+  v84 = [data objectForKeyedSubscript:@"VFEVMaxLtPktDelay"];
   if (v84)
   {
     evictedFramesMaxLatePacketDelay = self->_evictedFramesMaxLatePacketDelay;
@@ -386,7 +386,7 @@
     self->_evictedFramesMaxLatePacketDelay = v86;
   }
 
-  v87 = [a3 objectForKeyedSubscript:@"VFEVLtPktDelayHist"];
+  v87 = [data objectForKeyedSubscript:@"VFEVLtPktDelayHist"];
   if (v87)
   {
     v88 = v87;
@@ -408,107 +408,107 @@
     }
   }
 
-  [(VCReportingDeltaDistribution *)self->_transmitterAVHostTimeData updateWithPayload:a3];
-  v93 = [a3 objectForKeyedSubscript:@"AVSyncOffset"];
-  if ([a3 objectForKeyedSubscript:@"VCSPUUID"] && v93)
+  [(VCReportingDeltaDistribution *)self->_transmitterAVHostTimeData updateWithPayload:data];
+  v93 = [data objectForKeyedSubscript:@"AVSyncOffset"];
+  if ([data objectForKeyedSubscript:@"VCSPUUID"] && v93)
   {
     ++self->_averageAVSyncOffsetCounter;
     self->_averageAVSyncOffsetSum += [v93 integerValue];
-    [(MultiwayStream *)self updateMinimumAndMaximumAVSyncOffset:a3];
+    [(MultiwayStream *)self updateMinimumAndMaximumAVSyncOffset:data];
   }
 
-  v94 = [a3 objectForKeyedSubscript:@"DecNoShowFrameCnt"];
+  v94 = [data objectForKeyedSubscript:@"DecNoShowFrameCnt"];
   if (v94)
   {
     self->_decodeNoShowFrameCount += [v94 intValue];
   }
 
-  v95 = [a3 objectForKeyedSubscript:@"VPDECAC"];
+  v95 = [data objectForKeyedSubscript:@"VPDECAC"];
   if (v95)
   {
     self->_videoPlayerDecodeAlarmCount += [v95 unsignedIntValue];
   }
 
-  v96 = [a3 objectForKeyedSubscript:@"VPDISAC"];
+  v96 = [data objectForKeyedSubscript:@"VPDISAC"];
   if (v96)
   {
     self->_videoPlayerDisplayAlarmCount += [v96 unsignedIntValue];
   }
 
-  v97 = [a3 objectForKeyedSubscript:@"VTxRFEC"];
+  v97 = [data objectForKeyedSubscript:@"VTxRFEC"];
   if (v97)
   {
     self->_averageVideoTxFecBitrate += [v97 unsignedIntValue];
   }
 
-  v98 = [a3 objectForKeyedSubscript:@"VRxR"];
+  v98 = [data objectForKeyedSubscript:@"VRxR"];
   if (v98)
   {
     self->_averageVideoRxBitrate += [v98 unsignedIntValue];
   }
 
-  v99 = [a3 objectForKeyedSubscript:@"VRFECRxR"];
+  v99 = [data objectForKeyedSubscript:@"VRFECRxR"];
   if (v99)
   {
     self->_averageVideoRxFecBitrate += [v99 unsignedIntValue];
   }
 
-  v100 = [a3 objectForKeyedSubscript:@"VTxMetadataOverhead"];
+  v100 = [data objectForKeyedSubscript:@"VTxMetadataOverhead"];
   if (v100)
   {
     self->_averageVideoTxMetadataOverheadBitrate += [v100 unsignedIntValue];
   }
 
-  v101 = [a3 objectForKeyedSubscript:@"VRxMetadataOverhead"];
+  v101 = [data objectForKeyedSubscript:@"VRxMetadataOverhead"];
   if (v101)
   {
     self->_averageVideoRxMetadataOverheadBitrate += [v101 unsignedIntValue];
   }
 
-  v102 = [a3 objectForKeyedSubscript:@"EncOutFrameCnt"];
+  v102 = [data objectForKeyedSubscript:@"EncOutFrameCnt"];
   if (v102)
   {
     self->_encodedVideoFrameCount += [v102 intValue];
     ++self->_encodedVideoReportCount;
   }
 
-  [(MultiwayStream *)self processRTXData:a3];
-  [(VCVideoFECData *)self->_videoTxFecData updateWithPayload:a3];
-  [(VCReportingDistribution *)self->_cameraCaptureData updateWithPayload:a3];
-  [(VCReportingDistribution *)self->_videoPlayerDisplayData updateWithPayload:a3];
-  [(VCReportingDeltaDistribution *)self->_videoPlayerAVHostTimeData updateWithPayload:a3];
-  [(VCReportingDeltaDistribution *)self->_videoPlayerAVSyncOffsetData updateWithPayload:a3];
+  [(MultiwayStream *)self processRTXData:data];
+  [(VCVideoFECData *)self->_videoTxFecData updateWithPayload:data];
+  [(VCReportingDistribution *)self->_cameraCaptureData updateWithPayload:data];
+  [(VCReportingDistribution *)self->_videoPlayerDisplayData updateWithPayload:data];
+  [(VCReportingDeltaDistribution *)self->_videoPlayerAVHostTimeData updateWithPayload:data];
+  [(VCReportingDeltaDistribution *)self->_videoPlayerAVSyncOffsetData updateWithPayload:data];
 }
 
-- (void)processRTXData:(id)a3
+- (void)processRTXData:(id)data
 {
-  if ([a3 objectForKeyedSubscript:@"NacksSent"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"NacksFulfilled") && objc_msgSend(a3, "objectForKeyedSubscript:", @"NacksFulfilledOnTime"))
+  if ([data objectForKeyedSubscript:@"NacksSent"] && objc_msgSend(data, "objectForKeyedSubscript:", @"NacksFulfilled") && objc_msgSend(data, "objectForKeyedSubscript:", @"NacksFulfilledOnTime"))
   {
-    v5 = [a3 objectForKeyedSubscript:@"NacksSent"];
+    v5 = [data objectForKeyedSubscript:@"NacksSent"];
     if (v5)
     {
       self->_nacksSent += [v5 intValue];
     }
 
-    v6 = [a3 objectForKeyedSubscript:@"NacksFulfilled"];
+    v6 = [data objectForKeyedSubscript:@"NacksFulfilled"];
     if (v6)
     {
       self->_nacksFulfilled += [v6 intValue];
     }
 
-    v7 = [a3 objectForKeyedSubscript:@"NacksFulfilledOnTime"];
+    v7 = [data objectForKeyedSubscript:@"NacksFulfilledOnTime"];
     if (v7)
     {
       self->_nacksFulfilledOnTime += [v7 intValue];
     }
 
-    v8 = [a3 objectForKeyedSubscript:@"UniqueNacksSent"];
+    v8 = [data objectForKeyedSubscript:@"UniqueNacksSent"];
     if (v8)
     {
       self->_uniqueNacksSent += [v8 intValue];
     }
 
-    v9 = [a3 objectForKeyedSubscript:@"NacksAvgResponseTime"];
+    v9 = [data objectForKeyedSubscript:@"NacksAvgResponseTime"];
     if (v9)
     {
       nacksRTXResponseTime = self->_nacksRTXResponseTime;
@@ -516,7 +516,7 @@
       [(VCHistogram *)nacksRTXResponseTime addValue:v11];
     }
 
-    v12 = [a3 objectForKeyedSubscript:@"NacksLateTime"];
+    v12 = [data objectForKeyedSubscript:@"NacksLateTime"];
     if (v12)
     {
       nacksRTXLateTime = self->_nacksRTXLateTime;
@@ -524,7 +524,7 @@
       [(VCHistogram *)nacksRTXLateTime addValue:v14];
     }
 
-    v15 = [a3 objectForKeyedSubscript:@"NacksMediaBitRate"];
+    v15 = [data objectForKeyedSubscript:@"NacksMediaBitRate"];
     if (v15)
     {
       nacksRTXMediaBitRate = self->_nacksRTXMediaBitRate;
@@ -532,7 +532,7 @@
       [(VCHistogram *)nacksRTXMediaBitRate addValue:v17];
     }
 
-    v18 = [a3 objectForKeyedSubscript:@"NacksRTXMediaBitRate"];
+    v18 = [data objectForKeyedSubscript:@"NacksRTXMediaBitRate"];
     if (v18)
     {
       nacksRTXRetransmittedMediaBitRate = self->_nacksRTXRetransmittedMediaBitRate;
@@ -540,25 +540,25 @@
       [(VCHistogram *)nacksRTXRetransmittedMediaBitRate addValue:v20];
     }
 
-    v21 = [a3 objectForKeyedSubscript:@"NacksPLRWithRTX"];
+    v21 = [data objectForKeyedSubscript:@"NacksPLRWithRTX"];
     if (v21)
     {
       -[VCHistogram addValue:](self->_nacksPLRWithRTX, "addValue:", [v21 unsignedIntValue]);
     }
 
-    v22 = [a3 objectForKeyedSubscript:@"NacksPLRWithoutRTX"];
+    v22 = [data objectForKeyedSubscript:@"NacksPLRWithoutRTX"];
     if (v22)
     {
       -[VCHistogram addValue:](self->_nacksPLRWithoutRTX, "addValue:", [v22 unsignedIntValue]);
     }
 
-    v23 = [a3 objectForKeyedSubscript:@"NacksFrmsAssemWithRTX"];
+    v23 = [data objectForKeyedSubscript:@"NacksFrmsAssemWithRTX"];
     if (v23)
     {
       self->_assembledFramesWithRTXPacketsCount += [v23 intValue];
     }
 
-    v24 = [a3 objectForKeyedSubscript:@"NacksFrmsFailedAssemWithRTX"];
+    v24 = [data objectForKeyedSubscript:@"NacksFrmsFailedAssemWithRTX"];
     if (v24)
     {
       self->_failedToAssembleFramesWithRTXPacketsCount += [v24 intValue];
@@ -567,45 +567,45 @@
     self->_isRTXTelemetryAvailable = 1;
   }
 
-  if ([a3 objectForKeyedSubscript:@"UNRPC"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"UNFPC") && objc_msgSend(a3, "objectForKeyedSubscript:", @"ULNACKCHCNT") && objc_msgSend(a3, "objectForKeyedSubscript:", @"ULNACKCMCNT") && objc_msgSend(a3, "objectForKeyedSubscript:", @"ULNACKNRCNT"))
+  if ([data objectForKeyedSubscript:@"UNRPC"] && objc_msgSend(data, "objectForKeyedSubscript:", @"UNFPC") && objc_msgSend(data, "objectForKeyedSubscript:", @"ULNACKCHCNT") && objc_msgSend(data, "objectForKeyedSubscript:", @"ULNACKCMCNT") && objc_msgSend(data, "objectForKeyedSubscript:", @"ULNACKNRCNT"))
   {
-    v25 = [a3 objectForKeyedSubscript:@"UNRPC"];
+    v25 = [data objectForKeyedSubscript:@"UNRPC"];
     if (v25)
     {
       self->super._retransmissionRequestPacketCount += [v25 intValue];
     }
 
-    v26 = [a3 objectForKeyedSubscript:@"UNFPC"];
+    v26 = [data objectForKeyedSubscript:@"UNFPC"];
     if (v26)
     {
       self->super._retransmissionFulfilledPacketCount += [v26 intValue];
     }
 
-    v27 = [a3 objectForKeyedSubscript:@"UNCHPC"];
+    v27 = [data objectForKeyedSubscript:@"UNCHPC"];
     if (v27)
     {
       self->super._retransmissionCacheHitCount += [v27 intValue];
     }
 
-    v28 = [a3 objectForKeyedSubscript:@"UNCMPC"];
+    v28 = [data objectForKeyedSubscript:@"UNCMPC"];
     if (v28)
     {
       self->super._retransmissionCacheMissCount += [v28 intValue];
     }
 
-    v29 = [a3 objectForKeyedSubscript:@"UNTRC"];
+    v29 = [data objectForKeyedSubscript:@"UNTRC"];
     if (v29)
     {
       self->super._retransmissionNACKReceivedCount += [v29 intValue];
     }
 
-    v30 = [a3 objectForKeyedSubscript:@"UNRRC"];
+    v30 = [data objectForKeyedSubscript:@"UNRRC"];
     if (v30)
     {
       self->super._retransmissionRequestRepeatedCount += [v30 intValue];
     }
 
-    v31 = [a3 objectForKeyedSubscript:@"UNRRMC"];
+    v31 = [data objectForKeyedSubscript:@"UNRRMC"];
     if (v31)
     {
       v32 = v31;
@@ -615,7 +615,7 @@
       }
     }
 
-    v33 = [a3 objectForKeyedSubscript:@"UNART"];
+    v33 = [data objectForKeyedSubscript:@"UNART"];
     if (v33)
     {
       retransmissionResponseTime = self->super._retransmissionResponseTime;
@@ -623,7 +623,7 @@
       [(VCHistogram *)retransmissionResponseTime addValue:(v35 * 100.0)];
     }
 
-    v36 = [a3 objectForKeyedSubscript:@"UNALT"];
+    v36 = [data objectForKeyedSubscript:@"UNALT"];
     if (v36)
     {
       retransmissionLateTime = self->super._retransmissionLateTime;
@@ -631,13 +631,13 @@
       [(VCHistogram *)retransmissionLateTime addValue:(v38 * 100.0)];
     }
 
-    v39 = [a3 objectForKeyedSubscript:@"UNMB"];
+    v39 = [data objectForKeyedSubscript:@"UNMB"];
     if (v39)
     {
       -[VCHistogram addValue:](self->super._retransmissionActualMediaBitrate, "addValue:", [v39 unsignedIntValue]);
     }
 
-    v40 = [a3 objectForKeyedSubscript:@"UNRB"];
+    v40 = [data objectForKeyedSubscript:@"UNRB"];
     if (v40)
     {
       -[VCHistogram addValue:](self->super._retransmissionBitrate, "addValue:", [v40 unsignedIntValue]);

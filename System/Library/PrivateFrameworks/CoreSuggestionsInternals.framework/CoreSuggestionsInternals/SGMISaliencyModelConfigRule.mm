@@ -1,29 +1,29 @@
 @interface SGMISaliencyModelConfigRule
-- (SGMISaliencyModelConfigRule)initWithDictionary:(id)a3;
-- (SGMISaliencyModelConfigRule)initWithFeatureName:(id)a3 strictLowerBound:(id)a4 strictUpperBound:(id)a5 output:(id)a6;
+- (SGMISaliencyModelConfigRule)initWithDictionary:(id)dictionary;
+- (SGMISaliencyModelConfigRule)initWithFeatureName:(id)name strictLowerBound:(id)bound strictUpperBound:(id)upperBound output:(id)output;
 @end
 
 @implementation SGMISaliencyModelConfigRule
 
-- (SGMISaliencyModelConfigRule)initWithDictionary:(id)a3
+- (SGMISaliencyModelConfigRule)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SGMISaliencyModelConfigRule;
   v5 = [(SGMISaliencyModelConfigRule *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"feature"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"feature"];
     v7 = +[SGMIFeature prettyNamesReverseMapping];
     v8 = [v7 objectForKeyedSubscript:v6];
     featureName = v5->_featureName;
     v5->_featureName = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"strictLowerBound"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"strictLowerBound"];
     strictLowerBound = v5->_strictLowerBound;
     v5->_strictLowerBound = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"strictUpperBound"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"strictUpperBound"];
     strictUpperBound = v5->_strictUpperBound;
     v5->_strictUpperBound = v12;
   }
@@ -31,22 +31,22 @@
   return v5;
 }
 
-- (SGMISaliencyModelConfigRule)initWithFeatureName:(id)a3 strictLowerBound:(id)a4 strictUpperBound:(id)a5 output:(id)a6
+- (SGMISaliencyModelConfigRule)initWithFeatureName:(id)name strictLowerBound:(id)bound strictUpperBound:(id)upperBound output:(id)output
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  boundCopy = bound;
+  upperBoundCopy = upperBound;
+  outputCopy = output;
   v18.receiver = self;
   v18.super_class = SGMISaliencyModelConfigRule;
   v15 = [(SGMISaliencyModelConfigRule *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_featureName, a3);
-    objc_storeStrong(&v16->_strictLowerBound, a4);
-    objc_storeStrong(&v16->_strictUpperBound, a5);
-    objc_storeStrong(&v16->_output, a6);
+    objc_storeStrong(&v15->_featureName, name);
+    objc_storeStrong(&v16->_strictLowerBound, bound);
+    objc_storeStrong(&v16->_strictUpperBound, upperBound);
+    objc_storeStrong(&v16->_output, output);
   }
 
   return v16;

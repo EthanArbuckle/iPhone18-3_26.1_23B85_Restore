@@ -10,9 +10,9 @@
 {
   v4.receiver = self;
   v4.super_class = TSCHMultiDataChartType;
-  v2 = [(TSCHChartType *)&v4 genericToSpecificPropertyMap];
+  genericToSpecificPropertyMap = [(TSCHChartType *)&v4 genericToSpecificPropertyMap];
 
-  return v2;
+  return genericToSpecificPropertyMap;
 }
 
 - (id)cellsCreatedWarning

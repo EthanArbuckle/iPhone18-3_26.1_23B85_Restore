@@ -1,21 +1,21 @@
 @interface FBSCoreSettingsExtension
-+ (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6;
++ (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation FBSCoreSettingsExtension
 
-+ (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6
++ (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v10 = a3;
-  v11 = a5;
+  settingsCopy = settings;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 descriptionProvider];
+    descriptionProvider = [objectCopy descriptionProvider];
 
-    if (!v12)
+    if (!descriptionProvider)
     {
-      v13 = [v10 keyForSetting:a6];
+      v13 = [settingsCopy keyForSetting:setting];
       v14 = v13;
       if (v13)
       {
@@ -25,16 +25,16 @@
           v16 = v15;
           if ([(objc_class *)v15 isSubclassOfClass:objc_opt_class()])
           {
-            [v11 setDescriptionProvider:v16];
+            [objectCopy setDescriptionProvider:v16];
           }
         }
       }
     }
   }
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS___FBSCoreSettingsExtension;
-  v17 = objc_msgSendSuper2(&v19, sel_settings_valueDescriptionForFlag_object_ofSetting_, v10, a4, v11, a6);
+  v17 = objc_msgSendSuper2(&v19, sel_settings_valueDescriptionForFlag_object_ofSetting_, settingsCopy, flag, objectCopy, setting);
 
   return v17;
 }

@@ -3,9 +3,9 @@
 - (BOOL)setupH264Rules;
 - (BOOL)setupHEVCRules;
 - (BOOL)setupRules;
-- (VCVideoRuleCollectionsScreenAirplayEmbedded)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsScreenAirplayEmbedded)initWithHardwareSettings:(id)settings;
 - (void)initSupportedPayloads;
-- (void)selectPreferredRule:(id)a3 screenSize:(CGSize)a4;
+- (void)selectPreferredRule:(id)rule screenSize:(CGSize)size;
 @end
 
 @implementation VCVideoRuleCollectionsScreenAirplayEmbedded
@@ -27,7 +27,7 @@ VCVideoRuleCollectionsScreenAirplayEmbedded *__61__VCVideoRuleCollectionsScreenA
   return result;
 }
 
-- (VCVideoRuleCollectionsScreenAirplayEmbedded)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsScreenAirplayEmbedded)initWithHardwareSettings:(id)settings
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -36,7 +36,7 @@ VCVideoRuleCollectionsScreenAirplayEmbedded *__61__VCVideoRuleCollectionsScreenA
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     [(VCVideoRuleCollectionsScreenAirplayEmbedded *)v4 initSupportedPayloads];
     if (![(VCVideoRuleCollectionsScreenAirplayEmbedded *)v5 setupRules]|| ([(VCHardwareSettingsEmbeddedProtocol *)v5->_hardwareSettings isPixelFormatAvailable]& 1) == 0)
     {
@@ -58,16 +58,16 @@ VCVideoRuleCollectionsScreenAirplayEmbedded *__61__VCVideoRuleCollectionsScreenA
 
 - (void)initSupportedPayloads
 {
-  v3 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-  if ((v3 - 1) >= 4)
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  if ((deviceClass - 1) >= 4)
   {
-    if (v3 == 6)
+    if (deviceClass == 6)
     {
       v4 = 123;
       goto LABEL_3;
     }
 
-    if (v3 != 8)
+    if (deviceClass != 8)
     {
       return;
     }
@@ -80,16 +80,16 @@ LABEL_3:
   [(VCVideoRuleCollections *)self addSupportedPayload:v4];
 }
 
-- (void)selectPreferredRule:(id)a3 screenSize:(CGSize)a4
+- (void)selectPreferredRule:(id)rule screenSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+  v7 = [rule countByEnumeratingWithState:&v27 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -102,16 +102,16 @@ LABEL_3:
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(rule);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
         if (width == [v13 iWidth])
         {
-          v14 = [v13 iHeight];
-          if (height == v14)
+          iHeight = [v13 iHeight];
+          if (height == iHeight)
           {
-            LODWORD(v14) = 1.0;
+            LODWORD(iHeight) = 1.0;
             v17 = v13;
             goto LABEL_22;
           }
@@ -132,7 +132,7 @@ LABEL_3:
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+      v8 = [rule countByEnumeratingWithState:&v27 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -143,10 +143,10 @@ LABEL_3:
 
     if (v9)
     {
-      LODWORD(v14) = 1.0;
+      LODWORD(iHeight) = 1.0;
       v17 = v9;
 LABEL_22:
-      [v17 setFPref:v14];
+      [v17 setFPref:iHeight];
       return;
     }
   }
@@ -170,14 +170,14 @@ LABEL_22:
 
 - (BOOL)setupRules
 {
-  v3 = [(VCVideoRuleCollectionsScreenAirplayEmbedded *)self setupH264Rules];
-  if (v3)
+  setupH264Rules = [(VCVideoRuleCollectionsScreenAirplayEmbedded *)self setupH264Rules];
+  if (setupH264Rules)
   {
 
-    LOBYTE(v3) = [(VCVideoRuleCollectionsScreenAirplayEmbedded *)self setupHEVCRules];
+    LOBYTE(setupH264Rules) = [(VCVideoRuleCollectionsScreenAirplayEmbedded *)self setupHEVCRules];
   }
 
-  return v3;
+  return setupH264Rules;
 }
 
 - (BOOL)setupH264Rules
@@ -204,42 +204,42 @@ LABEL_53:
     v4 = 0.0;
     if ([(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass]!= 6)
     {
-      v5 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
-      if (!v5)
+      screenWidth = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
+      if (!screenWidth)
       {
         [(VCVideoRuleCollectionsScreenAirplayEmbedded *)&v28 setupH264Rules];
         goto LABEL_53;
       }
 
-      v6 = v5;
-      v7 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
-      if (!v7)
+      v6 = screenWidth;
+      screenHeight = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
+      if (!screenHeight)
       {
         [(VCVideoRuleCollectionsScreenAirplayEmbedded *)&v28 setupH264Rules];
         goto LABEL_53;
       }
 
       v4 = v6;
-      v3 = v7;
+      v3 = screenHeight;
     }
   }
 
-  v8 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType];
-  if (v8 == -1)
+  videoEncoderType = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType];
+  if (videoEncoderType == -1)
   {
     [(VCVideoRuleCollectionsScreenAirplayEmbedded *)&v28 setupH264Rules];
     goto LABEL_53;
   }
 
-  v9 = v8;
-  v10 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  v9 = videoEncoderType;
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
   v11 = 0;
-  if (v10 > 3)
+  if (deviceClass > 3)
   {
-    if (v10 != 4 && v10 != 6)
+    if (deviceClass != 4 && deviceClass != 6)
     {
       v12 = 0;
-      if (v10 != 8)
+      if (deviceClass != 8)
       {
         goto LABEL_33;
       }
@@ -248,9 +248,9 @@ LABEL_53:
     goto LABEL_19;
   }
 
-  if (v10 != 1)
+  if (deviceClass != 1)
   {
-    if (v10 == 2)
+    if (deviceClass == 2)
     {
       if (v9 == 2)
       {
@@ -299,7 +299,7 @@ LABEL_53:
     }
 
     v12 = 0;
-    if (v10 != 3)
+    if (deviceClass != 3)
     {
       goto LABEL_33;
     }
@@ -409,38 +409,38 @@ LABEL_32:
     v9 = 0.0;
     if ([(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass]!= 6)
     {
-      v10 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
-      if (!v10)
+      screenWidth = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
+      if (!screenWidth)
       {
         [(VCVideoRuleCollectionsScreenAirplayEmbedded *)&v41 setupHEVCRules];
         goto LABEL_87;
       }
 
-      v11 = v10;
-      v12 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
-      if (!v12)
+      v11 = screenWidth;
+      screenHeight = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
+      if (!screenHeight)
       {
         [(VCVideoRuleCollectionsScreenAirplayEmbedded *)&v41 setupHEVCRules];
         goto LABEL_87;
       }
 
       v9 = v11;
-      v8 = v12;
+      v8 = screenHeight;
     }
   }
 
-  v13 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType];
-  if (v13 == -1)
+  videoEncoderType = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType];
+  if (videoEncoderType == -1)
   {
     [(VCVideoRuleCollectionsScreenAirplayEmbedded *)&v41 setupHEVCRules];
     goto LABEL_87;
   }
 
-  v14 = v13;
-  v15 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-  if (v15 > 2)
+  v14 = videoEncoderType;
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  if (deviceClass > 2)
   {
-    switch(v15)
+    switch(deviceClass)
     {
       case 8:
         goto LABEL_14;
@@ -496,11 +496,11 @@ LABEL_32:
 LABEL_54:
           v25 = v23;
 LABEL_59:
-          v31 = self;
+          selfCopy2 = self;
           v32 = v25;
           v33 = 1;
 LABEL_60:
-          [(VCVideoRuleCollections *)v31 addVideoRules:v32 transportType:1 payload:100 encodingType:v33];
+          [(VCVideoRuleCollections *)selfCopy2 addVideoRules:v32 transportType:1 payload:100 encodingType:v33];
           goto LABEL_75;
         }
 
@@ -572,7 +572,7 @@ LABEL_87:
     goto LABEL_41;
   }
 
-  if (v15 == 1)
+  if (deviceClass == 1)
   {
     if (v4)
     {
@@ -616,7 +616,7 @@ LABEL_74:
     goto LABEL_59;
   }
 
-  if (v15 == 2)
+  if (deviceClass == 2)
   {
     if (v7)
     {
@@ -697,7 +697,7 @@ LABEL_73:
 
     v17 = v38;
     v6 = 1;
-    v31 = self;
+    selfCopy2 = self;
     v32 = v17;
     v33 = 2;
     goto LABEL_60;

@@ -12,7 +12,7 @@
 
 - (uint64_t)ar_remoteProcessIdentifier
 {
-  result = [a1 processIdentifier];
+  result = [self processIdentifier];
   if (!result)
   {
 
@@ -24,26 +24,26 @@
 
 - (uint64_t)ar_processBundleIdentifier
 {
-  v1 = [a1 ar_remoteProcessIdentifier];
+  ar_remoteProcessIdentifier = [self ar_remoteProcessIdentifier];
 
-  return MEMORY[0x282143728](v1);
+  return MEMORY[0x282143728](ar_remoteProcessIdentifier);
 }
 
 - (uint64_t)ar_processName
 {
-  v1 = [a1 ar_remoteProcessIdentifier];
+  ar_remoteProcessIdentifier = [self ar_remoteProcessIdentifier];
 
-  return MEMORY[0x282138400](v1);
+  return MEMORY[0x282138400](ar_remoteProcessIdentifier);
 }
 
 - (id)ar_valueForEntitlement:()ARAdditions
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 processIdentifier])
+  if ([self processIdentifier])
   {
     v5 = *MEMORY[0x277CBECE8];
-    [a1 auditToken];
+    [self auditToken];
     v6 = SecTaskCreateWithAuditToken(v5, &token);
   }
 
@@ -77,17 +77,17 @@
       {
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        v14 = [a1 ar_processName];
-        v15 = [a1 ar_remoteProcessIdentifier];
+        ar_processName = [self ar_processName];
+        ar_remoteProcessIdentifier = [self ar_remoteProcessIdentifier];
         v16 = CFErrorCopyDescription(error);
         token.val[0] = 138544386;
         *&token.val[1] = v13;
         LOWORD(token.val[3]) = 2048;
-        *(&token.val[3] + 2) = a1;
+        *(&token.val[3] + 2) = self;
         HIWORD(token.val[5]) = 2114;
-        *&token.val[6] = v14;
+        *&token.val[6] = ar_processName;
         v26 = 1026;
-        v27 = v15;
+        v27 = ar_remoteProcessIdentifier;
         v28 = 2112;
         v29 = v16;
         v17 = "%{public}@ <%p>: Error retrieving entitlements for process %{public}@ (%{public}u): %@";
@@ -102,17 +102,17 @@ LABEL_14:
     {
       v20 = objc_opt_class();
       v13 = NSStringFromClass(v20);
-      v14 = [a1 ar_processName];
-      v21 = [a1 ar_remoteProcessIdentifier];
+      ar_processName = [self ar_processName];
+      ar_remoteProcessIdentifier2 = [self ar_remoteProcessIdentifier];
       v16 = CFErrorCopyDescription(error);
       token.val[0] = 138544386;
       *&token.val[1] = v13;
       LOWORD(token.val[3]) = 2048;
-      *(&token.val[3] + 2) = a1;
+      *(&token.val[3] + 2) = self;
       HIWORD(token.val[5]) = 2114;
-      *&token.val[6] = v14;
+      *&token.val[6] = ar_processName;
       v26 = 1026;
-      v27 = v21;
+      v27 = ar_remoteProcessIdentifier2;
       v28 = 2112;
       v29 = v16;
       v17 = "Error: %{public}@ <%p>: Error retrieving entitlements for process %{public}@ (%{public}u): %@";
@@ -134,7 +134,7 @@ LABEL_17:
 
 - (id)ar_entitlementsArray
 {
-  v1 = [a1 ar_valueForEntitlement:@"com.apple.private.security.arkit"];
+  v1 = [self ar_valueForEntitlement:@"com.apple.private.security.arkit"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -152,26 +152,26 @@ LABEL_17:
 - (uint64_t)ar_hasPrivateAREntitlement:()ARAdditions
 {
   v4 = a3;
-  v5 = [a1 ar_entitlementsArray];
-  v6 = [v5 containsObject:v4];
+  ar_entitlementsArray = [self ar_entitlementsArray];
+  v6 = [ar_entitlementsArray containsObject:v4];
 
   return v6;
 }
 
 - (uint64_t)ar_BOOLeanValueForEntitlement:()ARAdditions
 {
-  v1 = [a1 ar_valueForEntitlement:?];
+  v1 = [self ar_valueForEntitlement:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

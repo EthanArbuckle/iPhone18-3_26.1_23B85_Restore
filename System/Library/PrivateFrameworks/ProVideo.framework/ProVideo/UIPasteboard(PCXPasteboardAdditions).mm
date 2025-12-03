@@ -29,7 +29,7 @@
 - (uint64_t)pcxTypes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v1 = [a1 pasteboardTypesForItemSet:0];
+  v1 = [self pasteboardTypesForItemSet:0];
   v2 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
@@ -95,9 +95,9 @@
 
 - (uint64_t)pcxClearContents
 {
-  [a1 setItems:MEMORY[0x277CBEBF8]];
+  [self setItems:MEMORY[0x277CBEBF8]];
 
-  return [a1 changeCount];
+  return [self changeCount];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface VKCVisualSearchCornerView
-- (BOOL)_itemObscuredByViewport:(id)a3;
+- (BOOL)_itemObscuredByViewport:(id)viewport;
 - (CGRect)normalizedVisibleRect;
 - (CGSize)intrinsicContentSize;
 - (VKCVisualSearchCornerView)init;
@@ -7,21 +7,21 @@
 - (double)buttonSpacing;
 - (double)windowScale;
 - (id)_resultItems;
-- (void)_showCornerLookupButtonsForResults:(id)a3;
-- (void)_updateButtonFramesWithScale:(double)a3;
-- (void)addMetadataToVSFeedbackItem:(id)a3;
+- (void)_showCornerLookupButtonsForResults:(id)results;
+- (void)_updateButtonFramesWithScale:(double)scale;
+- (void)addMetadataToVSFeedbackItem:(id)item;
 - (void)automaticallyShowVisualSearchResultsIfApplicable;
-- (void)generateVisualSearchResultForItems:(id)a3 queryID:(unint64_t)a4 completionHandler:(id)a5;
+- (void)generateVisualSearchResultForItems:(id)items queryID:(unint64_t)d completionHandler:(id)handler;
 - (void)invalidateButtonsForResults;
-- (void)lookupButton:(id)a3 didProcessResultWithDuration:(double)a4;
-- (void)lookupButton:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4;
-- (void)lookupButtonDidDismissController:(id)a3;
-- (void)sendDismissedAnalyticsEventEventWithItem:(id)a3;
-- (void)sendProcessingAnalyticsEventEventWithItem:(id)a3 duration:(double)a4;
-- (void)setAnalysis:(id)a3;
-- (void)setNormalizedVisibleRect:(CGRect)a3;
+- (void)lookupButton:(id)button didProcessResultWithDuration:(double)duration;
+- (void)lookupButton:(id)button didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box;
+- (void)lookupButtonDidDismissController:(id)controller;
+- (void)sendDismissedAnalyticsEventEventWithItem:(id)item;
+- (void)sendProcessingAnalyticsEventEventWithItem:(id)item duration:(double)duration;
+- (void)setAnalysis:(id)analysis;
+- (void)setNormalizedVisibleRect:(CGRect)rect;
 - (void)showVisualSearchResultView;
-- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)a3 userFeedbackPayload:(id)a4 sfReportData:(id)a5;
+- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data;
 @end
 
 @implementation VKCVisualSearchCornerView
@@ -37,8 +37,8 @@
   {
     v2->_normalizedVisibleRect.origin = VKMRectUnit;
     v2->_normalizedVisibleRect.size = *&qword_1B44285A8;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__contentSizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
 
     if ([MEMORY[0x1E69DC938] vk_isiPad])
     {
@@ -52,17 +52,17 @@
   return v3;
 }
 
-- (void)setAnalysis:(id)a3
+- (void)setAnalysis:(id)analysis
 {
-  v5 = a3;
-  if (self->_analysis != v5)
+  analysisCopy = analysis;
+  if (self->_analysis != analysisCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_analysis, a3);
-    v6 = [(VKCVisualSearchCornerView *)self _resultItems];
-    [(VKCVisualSearchCornerView *)self _showCornerLookupButtonsForResults:v6];
+    v7 = analysisCopy;
+    objc_storeStrong(&self->_analysis, analysis);
+    _resultItems = [(VKCVisualSearchCornerView *)self _resultItems];
+    [(VKCVisualSearchCornerView *)self _showCornerLookupButtonsForResults:_resultItems];
 
-    v5 = v7;
+    analysisCopy = v7;
   }
 }
 
@@ -76,25 +76,25 @@
 
 - (id)_resultItems
 {
-  v2 = [(VKImageAnalysis *)self->_analysis imageAnalysisResult];
-  v3 = [v2 visualSearchResult];
-  v4 = [v3 resultItems];
+  imageAnalysisResult = [(VKImageAnalysis *)self->_analysis imageAnalysisResult];
+  visualSearchResult = [imageAnalysisResult visualSearchResult];
+  resultItems = [visualSearchResult resultItems];
 
-  return v4;
+  return resultItems;
 }
 
 - (void)automaticallyShowVisualSearchResultsIfApplicable
 {
-  v3 = [(VKCVisualSearchCornerView *)self _resultItems];
-  v4 = [v3 firstObject];
+  _resultItems = [(VKCVisualSearchCornerView *)self _resultItems];
+  firstObject = [_resultItems firstObject];
 
   cornerButtons = self->_cornerButtons;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__VKCVisualSearchCornerView_automaticallyShowVisualSearchResultsIfApplicable__block_invoke;
   v8[3] = &unk_1E7BE3F20;
-  v9 = v4;
-  v6 = v4;
+  v9 = firstObject;
+  v6 = firstObject;
   v7 = [(NSMutableArray *)cornerButtons vk_objectPassingTest:v8];
   [v7 setShouldShowResultWhenVisible:1];
 }
@@ -107,16 +107,16 @@ BOOL __77__VKCVisualSearchCornerView_automaticallyShowVisualSearchResultsIfAppli
   return v4;
 }
 
-- (void)_showCornerLookupButtonsForResults:(id)a3
+- (void)_showCornerLookupButtonsForResults:(id)results
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -134,7 +134,7 @@ BOOL __77__VKCVisualSearchCornerView_automaticallyShowVisualSearchResultsIfAppli
         v11 = *(*(&v12 + 1) + 8 * i);
         if (([v11 shouldPlaceInCorner] & 1) != 0 || -[VKCVisualSearchCornerView _itemObscuredByViewport:](self, "_itemObscuredByViewport:", v11))
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -144,25 +144,25 @@ BOOL __77__VKCVisualSearchCornerView_automaticallyShowVisualSearchResultsIfAppli
     while (v8);
   }
 
-  if (![(NSArray *)self->_cornerResultItems isEqualToArray:v5])
+  if (![(NSArray *)self->_cornerResultItems isEqualToArray:array])
   {
-    objc_storeStrong(&self->_cornerResultItems, v5);
+    objc_storeStrong(&self->_cornerResultItems, array);
     [(VKCVisualSearchCornerView *)self invalidateButtonsForResults];
   }
 }
 
 - (void)showVisualSearchResultView
 {
-  v3 = [(VKCVisualSearchCornerView *)self _resultItems];
-  v4 = [v3 firstObject];
+  _resultItems = [(VKCVisualSearchCornerView *)self _resultItems];
+  firstObject = [_resultItems firstObject];
 
   cornerButtons = self->_cornerButtons;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__VKCVisualSearchCornerView_showVisualSearchResultView__block_invoke;
   v8[3] = &unk_1E7BE3F20;
-  v9 = v4;
-  v6 = v4;
+  v9 = firstObject;
+  v6 = firstObject;
   v7 = [(NSMutableArray *)cornerButtons vk_objectPassingTest:v8];
   [v7 showVisualSearchResultView];
 }
@@ -177,15 +177,15 @@ BOOL __55__VKCVisualSearchCornerView_showVisualSearchResultView__block_invoke(ui
 
 - (double)buttonSpacing
 {
-  v3 = [MEMORY[0x1E69DC938] vk_isiPad];
+  vk_isiPad = [MEMORY[0x1E69DC938] vk_isiPad];
   result = 10.0;
-  if (v3)
+  if (vk_isiPad)
   {
-    v5 = [(VKCVisualSearchCornerView *)self traitCollection];
-    v6 = [v5 vk_hasCompactSize];
+    traitCollection = [(VKCVisualSearchCornerView *)self traitCollection];
+    vk_hasCompactSize = [traitCollection vk_hasCompactSize];
 
     result = 10.0;
-    if (v6)
+    if (vk_hasCompactSize)
     {
       return 14.0;
     }
@@ -227,9 +227,9 @@ BOOL __55__VKCVisualSearchCornerView_showVisualSearchResultView__block_invoke(ui
     while (v5);
   }
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   cornerButtons = self->_cornerButtons;
-  self->_cornerButtons = v8;
+  self->_cornerButtons = array;
 
   v24 = 0u;
   v25 = 0u;
@@ -277,15 +277,15 @@ BOOL __55__VKCVisualSearchCornerView_showVisualSearchResultView__block_invoke(ui
   [(VKCVisualSearchCornerView *)self invalidateIntrinsicContentSize];
 }
 
-- (BOOL)_itemObscuredByViewport:(id)a3
+- (BOOL)_itemObscuredByViewport:(id)viewport
 {
-  v4 = a3;
+  viewportCopy = viewport;
   [(VKCVisualSearchCornerView *)self normalizedVisibleRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 normalizedIconLocation];
+  [viewportCopy normalizedIconLocation];
   v14 = v13;
   v16 = v15;
 
@@ -308,8 +308,8 @@ BOOL __55__VKCVisualSearchCornerView_showVisualSearchResultView__block_invoke(ui
     v3 = v5 * v4;
   }
 
-  v6 = [(NSMutableArray *)self->_cornerButtons firstObject];
-  [v6 cornerButtonSize];
+  firstObject = [(NSMutableArray *)self->_cornerButtons firstObject];
+  [firstObject cornerButtonSize];
   v8 = v7;
 
   v9 = v3 + v8 * [(NSMutableArray *)self->_cornerButtons count];
@@ -319,7 +319,7 @@ BOOL __55__VKCVisualSearchCornerView_showVisualSearchResultView__block_invoke(ui
   return result;
 }
 
-- (void)_updateButtonFramesWithScale:(double)a3
+- (void)_updateButtonFramesWithScale:(double)scale
 {
   [(VKCVisualSearchCornerView *)self buttonSpacing];
   v5 = v4;
@@ -341,101 +341,101 @@ BOOL __55__VKCVisualSearchCornerView_showVisualSearchResultView__block_invoke(ui
   [(VKCVisualSearchCornerView *)self frame];
   v10 = v9;
   v12 = v11;
-  v13 = [(VKCVisualSearchCornerView *)self intrinsicContentSize];
-  VKMRectWithOriginAndSize(v13, v10, v12, v14, v15);
+  intrinsicContentSize = [(VKCVisualSearchCornerView *)self intrinsicContentSize];
+  VKMRectWithOriginAndSize(intrinsicContentSize, v10, v12, v14, v15);
 
   [(VKCVisualSearchCornerView *)self setFrame:?];
 }
 
-- (void)generateVisualSearchResultForItems:(id)a3 queryID:(unint64_t)a4 completionHandler:(id)a5
+- (void)generateVisualSearchResultForItems:(id)items queryID:(unint64_t)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(VKCVisualSearchCornerView *)self delegate];
-  [v10 generateVisualSearchResultForItems:v9 queryID:a4 completionHandler:v8];
+  handlerCopy = handler;
+  itemsCopy = items;
+  delegate = [(VKCVisualSearchCornerView *)self delegate];
+  [delegate generateVisualSearchResultForItems:itemsCopy queryID:d completionHandler:handlerCopy];
 }
 
-- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)a3 userFeedbackPayload:(id)a4 sfReportData:(id)a5
+- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(VKCVisualSearchCornerView *)self delegate];
-  [v11 submitVisualSearchUserFeedbackForReportIdentifier:v10 userFeedbackPayload:v9 sfReportData:v8];
+  dataCopy = data;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  delegate = [(VKCVisualSearchCornerView *)self delegate];
+  [delegate submitVisualSearchUserFeedbackForReportIdentifier:identifierCopy userFeedbackPayload:payloadCopy sfReportData:dataCopy];
 }
 
-- (void)lookupButton:(id)a3 didProcessResultWithDuration:(double)a4
+- (void)lookupButton:(id)button didProcessResultWithDuration:(double)duration
 {
-  v6 = [a3 resultItem];
-  [(VKCVisualSearchCornerView *)self sendProcessingAnalyticsEventEventWithItem:v6 duration:a4];
+  resultItem = [button resultItem];
+  [(VKCVisualSearchCornerView *)self sendProcessingAnalyticsEventEventWithItem:resultItem duration:duration];
 }
 
-- (void)lookupButtonDidDismissController:(id)a3
+- (void)lookupButtonDidDismissController:(id)controller
 {
-  v4 = [a3 resultItem];
-  [(VKCVisualSearchCornerView *)self sendDismissedAnalyticsEventEventWithItem:v4];
+  resultItem = [controller resultItem];
+  [(VKCVisualSearchCornerView *)self sendDismissedAnalyticsEventEventWithItem:resultItem];
 
-  v5 = [(VKCVisualSearchCornerView *)self delegate];
-  [v5 visualSearchCornerViewDidDismissVisualSearchController:self];
+  delegate = [(VKCVisualSearchCornerView *)self delegate];
+  [delegate visualSearchCornerViewDidDismissVisualSearchController:self];
 }
 
-- (void)addMetadataToVSFeedbackItem:(id)a3
+- (void)addMetadataToVSFeedbackItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VKCVisualSearchCornerView *)self delegate];
-  [v5 addMetadataToVSFeedbackItem:v4];
+  itemCopy = item;
+  delegate = [(VKCVisualSearchCornerView *)self delegate];
+  [delegate addMetadataToVSFeedbackItem:itemCopy];
 }
 
-- (void)setNormalizedVisibleRect:(CGRect)a3
+- (void)setNormalizedVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_normalizedVisibleRect = &self->_normalizedVisibleRect;
-  if (!CGRectEqualToRect(self->_normalizedVisibleRect, a3))
+  if (!CGRectEqualToRect(self->_normalizedVisibleRect, rect))
   {
     p_normalizedVisibleRect->origin.x = x;
     p_normalizedVisibleRect->origin.y = y;
     p_normalizedVisibleRect->size.width = width;
     p_normalizedVisibleRect->size.height = height;
-    v9 = [(VKCVisualSearchCornerView *)self _resultItems];
-    [(VKCVisualSearchCornerView *)self _showCornerLookupButtonsForResults:v9];
+    _resultItems = [(VKCVisualSearchCornerView *)self _resultItems];
+    [(VKCVisualSearchCornerView *)self _showCornerLookupButtonsForResults:_resultItems];
   }
 }
 
-- (void)lookupButton:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4
+- (void)lookupButton:(id)button didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(VKCVisualSearchCornerView *)self delegate];
-  [v9 visualSearchCornerView:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  delegate = [(VKCVisualSearchCornerView *)self delegate];
+  [delegate visualSearchCornerView:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
 }
 
-- (void)sendProcessingAnalyticsEventEventWithItem:(id)a3 duration:(double)a4
+- (void)sendProcessingAnalyticsEventEventWithItem:(id)item duration:(double)duration
 {
-  v6 = a3;
-  v11 = [(VKCVisualSearchCornerView *)self _resultItems];
+  itemCopy = item;
+  _resultItems = [(VKCVisualSearchCornerView *)self _resultItems];
   v7 = [VKAnalyticsVisualSearchEvent alloc];
-  v8 = [(VKCVisualSearchCornerView *)self _customAnalyticsIdentifier];
-  v9 = [(VKAnalyticsVisualSearchEvent *)v7 initWithType:2 items:v11 interactedItem:v6 serverProcessingTime:v8 customIdentifier:a4];
+  _customAnalyticsIdentifier = [(VKCVisualSearchCornerView *)self _customAnalyticsIdentifier];
+  v9 = [(VKAnalyticsVisualSearchEvent *)v7 initWithType:2 items:_resultItems interactedItem:itemCopy serverProcessingTime:_customAnalyticsIdentifier customIdentifier:duration];
 
-  v10 = [(VKCVisualSearchCornerView *)self delegate];
-  [v10 visualSearchCornerView:self analyticsEventDidOccur:v9];
+  delegate = [(VKCVisualSearchCornerView *)self delegate];
+  [delegate visualSearchCornerView:self analyticsEventDidOccur:v9];
 }
 
-- (void)sendDismissedAnalyticsEventEventWithItem:(id)a3
+- (void)sendDismissedAnalyticsEventEventWithItem:(id)item
 {
-  v4 = a3;
-  v9 = [(VKCVisualSearchCornerView *)self _resultItems];
+  itemCopy = item;
+  _resultItems = [(VKCVisualSearchCornerView *)self _resultItems];
   v5 = [VKAnalyticsVisualSearchEvent alloc];
-  v6 = [(VKCVisualSearchCornerView *)self _customAnalyticsIdentifier];
-  v7 = [(VKAnalyticsVisualSearchEvent *)v5 initWithType:3 items:v9 interactedItem:v4 serverProcessingTime:v6 customIdentifier:0.0];
+  _customAnalyticsIdentifier = [(VKCVisualSearchCornerView *)self _customAnalyticsIdentifier];
+  v7 = [(VKAnalyticsVisualSearchEvent *)v5 initWithType:3 items:_resultItems interactedItem:itemCopy serverProcessingTime:_customAnalyticsIdentifier customIdentifier:0.0];
 
-  v8 = [(VKCVisualSearchCornerView *)self delegate];
-  [v8 visualSearchCornerView:self analyticsEventDidOccur:v7];
+  delegate = [(VKCVisualSearchCornerView *)self delegate];
+  [delegate visualSearchCornerView:self analyticsEventDidOccur:v7];
 }
 
 - (CGRect)normalizedVisibleRect

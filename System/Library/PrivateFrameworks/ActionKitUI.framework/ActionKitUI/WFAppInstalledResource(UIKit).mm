@@ -10,16 +10,16 @@
 - (void)appSearchViewController:()UIKit didFinishWithApp:
 {
   v6 = a3;
-  v7 = [a4 correspondingApplicationRecord];
-  v8 = [objc_alloc(MEMORY[0x277CD3A58]) initWithApplicationRecord:v7];
-  [a1 updateDescriptorsWithSelectedApp:v8];
-  [a1 notifyDelegateWithUpdatedDescriptor:v8];
-  [a1 refreshAvailabilityWithNotification];
+  correspondingApplicationRecord = [a4 correspondingApplicationRecord];
+  v8 = [objc_alloc(MEMORY[0x277CD3A58]) initWithApplicationRecord:correspondingApplicationRecord];
+  [self updateDescriptorsWithSelectedApp:v8];
+  [self notifyDelegateWithUpdatedDescriptor:v8];
+  [self refreshAvailabilityWithNotification];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__WFAppInstalledResource_UIKit__appSearchViewController_didFinishWithApp___block_invoke;
   v9[3] = &unk_278C37538;
-  v9[4] = a1;
+  v9[4] = self;
   [v6 dismissViewControllerAnimated:1 completion:v9];
 }
 
@@ -29,7 +29,7 @@
   v4[1] = 3221225472;
   v4[2] = __66__WFAppInstalledResource_UIKit__appSearchViewControllerDidCancel___block_invoke;
   v4[3] = &unk_278C37538;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 dismissViewControllerAnimated:1 completion:v4];
 }
 
@@ -43,8 +43,8 @@
     if ([v9 code] == 1)
     {
       v12 = [objc_alloc(MEMORY[0x277D7D2A8]) initWithAppSearchType:0];
-      [v12 setDelegate:a1];
-      [a1 setRecoveryCompletionHandler:v11];
+      [v12 setDelegate:self];
+      [self setRecoveryCompletionHandler:v11];
       v13 = WFViewControllerFromUserInterface();
       [v13 presentViewController:v12 animated:1 completion:0];
     }
@@ -63,14 +63,14 @@
     v14[3] = &unk_278C364D0;
     v16 = v11;
     v15 = v10;
-    [a1 fetchiTunesStoreObjectForAppWithCompletionBlock:v14];
+    [self fetchiTunesStoreObjectForAppWithCompletionBlock:v14];
   }
 }
 
 - (void)setRecoveryCompletionHandler:()UIKit
 {
   v4 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, sel_recoveryCompletionHandler, v4, 1);
+  objc_setAssociatedObject(self, sel_recoveryCompletionHandler, v4, 1);
 }
 
 @end

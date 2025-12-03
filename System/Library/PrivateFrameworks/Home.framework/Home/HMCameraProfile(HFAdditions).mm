@@ -19,11 +19,11 @@
 
 - (HFCameraManager)hf_cameraManager
 {
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
-    v4 = [[HFCameraManager alloc] initWithCameraProfile:a1];
-    objc_setAssociatedObject(a1, a2, v4, 1);
+    v4 = [[HFCameraManager alloc] initWithCameraProfile:self];
+    objc_setAssociatedObject(self, a2, v4, 1);
   }
 
   return v4;
@@ -31,11 +31,11 @@
 
 - (BOOL)hf_supportsBidirectionalAudio
 {
-  v2 = [a1 speakerControl];
-  if (v2)
+  speakerControl = [self speakerControl];
+  if (speakerControl)
   {
-    v3 = [a1 microphoneControl];
-    v4 = v3 != 0;
+    microphoneControl = [self microphoneControl];
+    v4 = microphoneControl != 0;
   }
 
   else
@@ -48,10 +48,10 @@
 
 - (uint64_t)hf_supportsRecordingEvents
 {
-  v1 = [a1 userSettings];
-  v2 = [v1 supportedFeatures];
+  userSettings = [self userSettings];
+  supportedFeatures = [userSettings supportedFeatures];
 
-  return (v2 >> 1) & 1;
+  return (supportedFeatures >> 1) & 1;
 }
 
 - (uint64_t)hf_shouldDisableLiveStream
@@ -61,28 +61,28 @@
     return 1;
   }
 
-  v4 = [a1 userSettings];
-  v5 = [v4 currentAccessMode];
+  userSettings = [self userSettings];
+  currentAccessMode = [userSettings currentAccessMode];
 
-  v3 = 1;
-  if (v5 && v5 != 3)
+  isCameraManuallyDisabled = 1;
+  if (currentAccessMode && currentAccessMode != 3)
   {
-    v1 = [a1 userSettings];
-    v3 = [v1 isCameraManuallyDisabled];
+    userSettings2 = [self userSettings];
+    isCameraManuallyDisabled = [userSettings2 isCameraManuallyDisabled];
   }
 
-  if (v5 && v5 != 3)
+  if (currentAccessMode && currentAccessMode != 3)
   {
   }
 
-  return v3;
+  return isCameraManuallyDisabled;
 }
 
 - (unint64_t)hf_thermalShutdownMode
 {
-  v1 = [a1 accessory];
-  v2 = [v1 services];
-  v3 = [v2 na_firstObjectPassingTest:&__block_literal_global_84];
+  accessory = [self accessory];
+  services = [accessory services];
+  v3 = [services na_firstObjectPassingTest:&__block_literal_global_84];
 
   if (([v3 lastKnownOperatingStateAbnormalReasons] & 2) != 0)
   {
@@ -99,16 +99,16 @@
 
 - (BOOL)hf_cameraIsNotSetToRecord
 {
-  v2 = [a1 userSettings];
-  if ([v2 accessModeForPresenceType:3] == 2)
+  userSettings = [self userSettings];
+  if ([userSettings accessModeForPresenceType:3] == 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [a1 userSettings];
-    v3 = [v4 accessModeForPresenceType:4] != 2;
+    userSettings2 = [self userSettings];
+    v3 = [userSettings2 accessModeForPresenceType:4] != 2;
   }
 
   return v3;
@@ -116,8 +116,8 @@
 
 - (BOOL)hf_hasDoorbellService
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_serviceOfType:*MEMORY[0x277CD0E38]];
+  accessory = [self accessory];
+  v2 = [accessory hf_serviceOfType:*MEMORY[0x277CD0E38]];
   v3 = v2 != 0;
 
   return v3;
@@ -125,14 +125,14 @@
 
 - (uint64_t)hf_supportsReachabilityNotifications
 {
-  result = [a1 hf_supportsRecordingEvents];
+  result = [self hf_supportsRecordingEvents];
   if (result)
   {
-    v3 = [a1 accessory];
-    v4 = [v3 home];
-    v5 = [v4 hf_supportsReachabilityNotifications];
+    accessory = [self accessory];
+    home = [accessory home];
+    hf_supportsReachabilityNotifications = [home hf_supportsReachabilityNotifications];
 
-    return v5;
+    return hf_supportsReachabilityNotifications;
   }
 
   return result;
@@ -140,11 +140,11 @@
 
 - (id)hf_doorbellNotificationBulletin
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_serviceOfType:*MEMORY[0x277CD0E38]];
-  v3 = [v2 bulletinBoardNotification];
+  accessory = [self accessory];
+  v2 = [accessory hf_serviceOfType:*MEMORY[0x277CD0E38]];
+  bulletinBoardNotification = [v2 bulletinBoardNotification];
 
-  return v3;
+  return bulletinBoardNotification;
 }
 
 - (id)hf_doorbellChimeMuteCharacteristic
@@ -155,14 +155,14 @@
   v9 = __Block_byref_object_copy__11;
   v10 = __Block_byref_object_dispose__11;
   v11 = 0;
-  v1 = [a1 accessory];
-  v2 = [v1 services];
+  accessory = [self accessory];
+  services = [accessory services];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__HMCameraProfile_HFAdditions__hf_doorbellChimeMuteCharacteristic__block_invoke;
   v5[3] = &unk_277DF9E30;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [services enumerateObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -173,10 +173,10 @@
 - (void)hf_updateDoorbellChime:()HFAdditions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [a1 accessory];
-  v6 = [v5 home];
+  accessory = [self accessory];
+  home = [accessory home];
 
-  v7 = [a1 hf_doorbellChimeMuteCharacteristic];
+  hf_doorbellChimeMuteCharacteristic = [self hf_doorbellChimeMuteCharacteristic];
   v8 = MEMORY[0x277CBEC38];
   if (a3)
   {
@@ -190,23 +190,23 @@
     v18[0] = 67109378;
     v18[1] = [v9 BOOLValue];
     v19 = 2112;
-    v20 = v7;
+    v20 = hf_doorbellChimeMuteCharacteristic;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "Attempt to update doorbell chime - should mute = %{BOOL}d for characteristic:%@", v18, 0x12u);
   }
 
-  if (v7)
+  if (hf_doorbellChimeMuteCharacteristic)
   {
-    v11 = [v6 hf_characteristicValueManager];
+    hf_characteristicValueManager = [home hf_characteristicValueManager];
     v12 = objc_opt_new();
-    [v11 beginTransactionWithReason:@"HFDoorbellMute-Toggle" readPolicy:v12 logger:0];
+    [hf_characteristicValueManager beginTransactionWithReason:@"HFDoorbellMute-Toggle" readPolicy:v12 logger:0];
 
     v13 = objc_alloc_init(HFCharacteristicValueSet);
-    [(HFCharacteristicValueSet *)v13 setValue:v9 forCharacteristic:v7];
-    v14 = [v6 hf_characteristicValueManager];
-    v15 = [v14 writeValuesForCharacteristics:v13];
+    [(HFCharacteristicValueSet *)v13 setValue:v9 forCharacteristic:hf_doorbellChimeMuteCharacteristic];
+    hf_characteristicValueManager2 = [home hf_characteristicValueManager];
+    v15 = [hf_characteristicValueManager2 writeValuesForCharacteristics:v13];
 
-    v16 = [v6 hf_characteristicValueManager];
-    [v16 commitTransactionWithReason:@"HFDoorbellMute-Toggle"];
+    hf_characteristicValueManager3 = [home hf_characteristicValueManager];
+    [hf_characteristicValueManager3 commitTransactionWithReason:@"HFDoorbellMute-Toggle"];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -241,8 +241,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * i) userSettings];
-        v13 = [v12 accessModeForPresenceType:a4];
+        userSettings = [*(*(&v21 + 1) + 8 * i) userSettings];
+        v13 = [userSettings accessModeForPresenceType:a4];
 
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -277,7 +277,7 @@
 - (id)hf_significantEventWithIdentifier:()HFAdditions
 {
   v4 = a3;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v5 = MEMORY[0x277D2C900];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -302,7 +302,7 @@
   v14[1] = 3221225472;
   v14[2] = __68__HMCameraProfile_HFAdditions__hf_faceCropImageForSignificantEvent___block_invoke;
   v14[3] = &unk_277DF61F0;
-  v14[4] = a1;
+  v14[4] = self;
   v6 = v4;
   v15 = v6;
   v7 = [v5 futureWithCompletionHandlerAdapterBlock:v14];

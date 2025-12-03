@@ -1,29 +1,29 @@
 @interface PFDispatchingFairPlayValidationManaging
-+ (id)receiveOn:(id)a3 manager:(id)a4;
++ (id)receiveOn:(id)on manager:(id)manager;
 - (PFDispatchingFairPlayValidationManaging)init;
-- (void)validateDownloadedEpisodesWithCompletion:(id)a3;
+- (void)validateDownloadedEpisodesWithCompletion:(id)completion;
 @end
 
 @implementation PFDispatchingFairPlayValidationManaging
 
-+ (id)receiveOn:(id)a3 manager:(id)a4
++ (id)receiveOn:(id)on manager:(id)manager
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v7 = objc_allocWithZone(ObjCClassMetadata);
-  *&v7[OBJC_IVAR___PFDispatchingFairPlayValidationManaging_wrappedInstance] = a4;
-  *&v7[OBJC_IVAR___PFDispatchingFairPlayValidationManaging_responseQueue] = a3;
+  *&v7[OBJC_IVAR___PFDispatchingFairPlayValidationManaging_wrappedInstance] = manager;
+  *&v7[OBJC_IVAR___PFDispatchingFairPlayValidationManaging_responseQueue] = on;
   v11.receiver = v7;
   v11.super_class = ObjCClassMetadata;
-  v8 = a3;
+  onCopy = on;
   swift_unknownObjectRetain();
   v9 = objc_msgSendSuper2(&v11, sel_init);
 
   return v9;
 }
 
-- (void)validateDownloadedEpisodesWithCompletion:(id)a3
+- (void)validateDownloadedEpisodesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -38,7 +38,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   DispatchingFairPlayValidationManaging.validateDownloadedEpisodes(completion:)(v7, v6);
   sub_1D8D15664(v7);
 }

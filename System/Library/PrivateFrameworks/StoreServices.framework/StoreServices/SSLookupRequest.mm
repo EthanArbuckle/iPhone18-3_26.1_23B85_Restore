@@ -2,13 +2,13 @@
 - (BOOL)start;
 - (SSLookupProperties)_lookupProperties;
 - (SSLookupRequest)init;
-- (SSLookupRequest)initWithLocation:(id)a3;
-- (SSLookupRequest)initWithXPCEncoding:(id)a3;
+- (SSLookupRequest)initWithLocation:(id)location;
+- (SSLookupRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)setAuthenticatesIfNeeded:(BOOL)a3;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithLookupBlock:(id)a3;
+- (void)setAuthenticatesIfNeeded:(BOOL)needed;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithLookupBlock:(id)block;
 @end
 
 @implementation SSLookupRequest
@@ -28,13 +28,13 @@
   return v2;
 }
 
-- (SSLookupRequest)initWithLocation:(id)a3
+- (SSLookupRequest)initWithLocation:(id)location
 {
   v4 = [(SSLookupRequest *)self init];
   v5 = v4;
   if (v4)
   {
-    [(SSLookupProperties *)v4->_properties setLocation:a3];
+    [(SSLookupProperties *)v4->_properties setLocation:location];
   }
 
   return v5;
@@ -47,16 +47,16 @@
   [(SSRequest *)&v3 dealloc];
 }
 
-- (void)setAuthenticatesIfNeeded:(BOOL)a3
+- (void)setAuthenticatesIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  if ([(SSLookupRequest *)self authenticatesIfNeeded]!= a3)
+  neededCopy = needed;
+  if ([(SSLookupRequest *)self authenticatesIfNeeded]!= needed)
   {
-    self->_personalizationStyle = v3;
+    self->_personalizationStyle = neededCopy;
   }
 }
 
-- (void)startWithLookupBlock:(id)a3
+- (void)startWithLookupBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -67,15 +67,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -110,7 +110,7 @@
   v20[2] = __40__SSLookupRequest_startWithLookupBlock___block_invoke;
   v20[3] = &unk_1E84AC760;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = block;
   [(SSRequest *)self _startWithMessageID:85 messageBlock:v20, v18];
 }
 
@@ -190,13 +190,13 @@ uint64_t __24__SSLookupRequest_start__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__SSLookupRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84B12A8;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSLookupRequest *)self startWithLookupBlock:v3];
 }
 
@@ -245,18 +245,18 @@ uint64_t __44__SSLookupRequest_startWithCompletionBlock___block_invoke_2(uint64_
   return v3;
 }
 
-- (SSLookupRequest)initWithXPCEncoding:(id)a3
+- (SSLookupRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSLookupRequest;
     v5 = [(SSRequest *)&v7 init];
     if (v5)
     {
-      v5->_authenticationContext = [[SSAuthenticationContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "0")];
-      v5->_personalizationStyle = xpc_dictionary_get_int64(a3, "1");
-      v5->_properties = [[SSLookupProperties alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "2")];
+      v5->_authenticationContext = [[SSAuthenticationContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "0")];
+      v5->_personalizationStyle = xpc_dictionary_get_int64(encoding, "1");
+      v5->_properties = [[SSLookupProperties alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "2")];
     }
   }
 

@@ -1,8 +1,8 @@
 @interface AXRDeviceRemoteScrollAccumulator
 - (AXRDeviceRemoteScrollAccumulator)init;
 - (AXRDeviceRemoteScrollAccumulatorDelegate)delegate;
-- (void)_queue_accumulateScrollAmount:(int64_t)a3;
-- (void)accumulateScrollAmount:(int64_t)a3;
+- (void)_queue_accumulateScrollAmount:(int64_t)amount;
+- (void)accumulateScrollAmount:(int64_t)amount;
 @end
 
 @implementation AXRDeviceRemoteScrollAccumulator
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (void)accumulateScrollAmount:(int64_t)a3
+- (void)accumulateScrollAmount:(int64_t)amount
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -33,25 +33,25 @@
   v4[2] = sub_100002BD0;
   v4[3] = &unk_100008680;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = amount;
   dispatch_async(queue, v4);
 }
 
-- (void)_queue_accumulateScrollAmount:(int64_t)a3
+- (void)_queue_accumulateScrollAmount:(int64_t)amount
 {
   +[NSDate timeIntervalSinceReferenceDate];
   if (v5 - self->_lastScrollEventTime >= 0.25)
   {
     self->_scrollIsActive = 0;
     self->_lastScrollEventTime = v5;
-    self->_currentAccumulatedScroll = a3;
+    self->_currentAccumulatedScroll = amount;
     return;
   }
 
   currentAccumulatedScroll = self->_currentAccumulatedScroll;
   self->_scrollIsActive = 1;
   self->_lastScrollEventTime = v5;
-  v7 = currentAccumulatedScroll + a3;
+  v7 = currentAccumulatedScroll + amount;
   self->_currentAccumulatedScroll = v7;
   if (v7 < 51)
   {

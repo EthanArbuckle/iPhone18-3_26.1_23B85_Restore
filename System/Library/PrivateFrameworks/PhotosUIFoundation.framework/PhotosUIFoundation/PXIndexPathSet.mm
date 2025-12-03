@@ -1,50 +1,50 @@
 @interface PXIndexPathSet
 + (id)indexPathSet;
-+ (id)indexPathSetWithIndexPath:(PXSimpleIndexPath *)a3;
-+ (id)indexPathSetWithItemIndexPaths:(id)a3 dataSourceIdentifier:(int64_t)a4;
-+ (id)indexPathSetWithItemIndexes:(id)a3 dataSourceIdentifier:(int64_t)a4 section:(int64_t)a5;
-+ (id)indexPathSetWithSectionIndexes:(id)a3 dataSourceIdentifier:(int64_t)a4;
-+ (id)indexPathSetWithSubitemIndexes:(id)a3 dataSourceIdentifier:(int64_t)a4 section:(int64_t)a5 item:(int64_t)a6;
-- (BOOL)containsIndexPath:(PXSimpleIndexPath *)a3;
-- (BOOL)intersectsSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSupersetOfSet:(id)a3;
++ (id)indexPathSetWithIndexPath:(PXSimpleIndexPath *)path;
++ (id)indexPathSetWithItemIndexPaths:(id)paths dataSourceIdentifier:(int64_t)identifier;
++ (id)indexPathSetWithItemIndexes:(id)indexes dataSourceIdentifier:(int64_t)identifier section:(int64_t)section;
++ (id)indexPathSetWithSectionIndexes:(id)indexes dataSourceIdentifier:(int64_t)identifier;
++ (id)indexPathSetWithSubitemIndexes:(id)indexes dataSourceIdentifier:(int64_t)identifier section:(int64_t)section item:(int64_t)item;
+- (BOOL)containsIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)intersectsSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSupersetOfSet:(id)set;
 - (PXIndexPathSet)init;
 - (PXSimpleIndexPath)anyIndexPath;
 - (PXSimpleIndexPath)anyItemIndexPath;
 - (PXSimpleIndexPath)anySectionIndexPath;
 - (PXSimpleIndexPath)anySubitemIndexPath;
-- (PXSimpleIndexPath)firstItemIndexPathForDataSourceIdentifier:(SEL)a3;
-- (PXSimpleIndexPath)indexPathGreaterThanIndexPath:(SEL)a3;
-- (PXSimpleIndexPath)indexPathLessThanIndexPath:(SEL)a3;
-- (PXSimpleIndexPath)lastItemIndexPathForDataSourceIdentifier:(SEL)a3;
+- (PXSimpleIndexPath)firstItemIndexPathForDataSourceIdentifier:(SEL)identifier;
+- (PXSimpleIndexPath)indexPathGreaterThanIndexPath:(SEL)path;
+- (PXSimpleIndexPath)indexPathLessThanIndexPath:(SEL)path;
+- (PXSimpleIndexPath)lastItemIndexPathForDataSourceIdentifier:(SEL)identifier;
 - (id)description;
-- (id)indexPathSetByFilteringAndReplacingDataSourceIdentifier:(int64_t)a3 withDataSourceIdentifier:(int64_t)a4;
-- (id)itemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4;
-- (id)itemsWithSubitemsForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sectionIndexSetForDataSourceIdentifier:(int64_t)a3;
-- (id)sectionsWithItemsForDataSourceIdentifier:(int64_t)a3;
-- (id)subitemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4 item:(int64_t)a5;
+- (id)indexPathSetByFilteringAndReplacingDataSourceIdentifier:(int64_t)identifier withDataSourceIdentifier:(int64_t)sourceIdentifier;
+- (id)itemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section;
+- (id)itemsWithSubitemsForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sectionIndexSetForDataSourceIdentifier:(int64_t)identifier;
+- (id)sectionsWithItemsForDataSourceIdentifier:(int64_t)identifier;
+- (id)subitemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section item:(int64_t)item;
 - (int64_t)count;
 - (int64_t)itemCount;
 - (int64_t)sectionCount;
 - (int64_t)subitemCount;
-- (void)enumerateAllIndexPathsUsingBlock:(id)a3;
-- (void)enumerateDataSourceIdentifiers:(id)a3;
-- (void)enumerateItemIndexPathsUsingBlock:(id)a3;
-- (void)enumerateItemIndexSetsUsingBlock:(id)a3;
-- (void)enumerateSectionIndexPathsUsingBlock:(id)a3;
-- (void)enumerateSectionIndexSetsUsingBlock:(id)a3;
-- (void)enumerateSubitemIndexPathsUsingBlock:(id)a3;
-- (void)enumerateSubitemIndexSetsUsingBlock:(id)a3;
+- (void)enumerateAllIndexPathsUsingBlock:(id)block;
+- (void)enumerateDataSourceIdentifiers:(id)identifiers;
+- (void)enumerateItemIndexPathsUsingBlock:(id)block;
+- (void)enumerateItemIndexSetsUsingBlock:(id)block;
+- (void)enumerateSectionIndexPathsUsingBlock:(id)block;
+- (void)enumerateSectionIndexSetsUsingBlock:(id)block;
+- (void)enumerateSubitemIndexPathsUsingBlock:(id)block;
+- (void)enumerateSubitemIndexSetsUsingBlock:(id)block;
 @end
 
 @implementation PXIndexPathSet
 
 + (id)indexPathSet
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -137,35 +137,35 @@
   return v5;
 }
 
-- (id)indexPathSetByFilteringAndReplacingDataSourceIdentifier:(int64_t)a3 withDataSourceIdentifier:(int64_t)a4
+- (id)indexPathSetByFilteringAndReplacingDataSourceIdentifier:(int64_t)identifier withDataSourceIdentifier:(int64_t)sourceIdentifier
 {
   v7 = objc_alloc_init(PXMutableIndexPathSet);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __99__PXIndexPathSet_indexPathSetByFilteringAndReplacingDataSourceIdentifier_withDataSourceIdentifier___block_invoke;
   v22[3] = &unk_1E7BB5B50;
-  v24 = a3;
+  identifierCopy = identifier;
   v8 = v7;
   v23 = v8;
-  v25 = a4;
+  sourceIdentifierCopy = sourceIdentifier;
   [(PXIndexPathSet *)self enumerateSectionIndexSetsUsingBlock:v22];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __99__PXIndexPathSet_indexPathSetByFilteringAndReplacingDataSourceIdentifier_withDataSourceIdentifier___block_invoke_3;
   v18[3] = &unk_1E7BB5B78;
-  v20 = a3;
+  identifierCopy2 = identifier;
   v9 = v8;
   v19 = v9;
-  v21 = a4;
+  sourceIdentifierCopy2 = sourceIdentifier;
   [(PXIndexPathSet *)self enumerateItemIndexSetsUsingBlock:v18];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__PXIndexPathSet_indexPathSetByFilteringAndReplacingDataSourceIdentifier_withDataSourceIdentifier___block_invoke_5;
   v14[3] = &unk_1E7BB5BA0;
-  v16 = a3;
+  identifierCopy3 = identifier;
   v10 = v9;
   v15 = v10;
-  v17 = a4;
+  sourceIdentifierCopy3 = sourceIdentifier;
   [(PXIndexPathSet *)self enumerateSubitemIndexSetsUsingBlock:v14];
   v11 = v15;
   v12 = v10;
@@ -224,7 +224,7 @@ void __99__PXIndexPathSet_indexPathSetByFilteringAndReplacingDataSourceIdentifie
   }
 }
 
-- (PXSimpleIndexPath)indexPathLessThanIndexPath:(SEL)a3
+- (PXSimpleIndexPath)indexPathLessThanIndexPath:(SEL)path
 {
   v41 = *MEMORY[0x1E69E9840];
   *retstr = *PXSimpleIndexPathNull;
@@ -234,7 +234,7 @@ void __99__PXIndexPathSet_indexPathSetByFilteringAndReplacingDataSourceIdentifie
     return self;
   }
 
-  v8 = self;
+  selfCopy = self;
   item = a4->item;
   if (a4->section != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -296,8 +296,8 @@ LABEL_14:
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v22 = [v17 allKeys];
-      v23 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      allKeys = [v17 allKeys];
+      v23 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v23)
       {
         v24 = v23;
@@ -308,13 +308,13 @@ LABEL_14:
           {
             if (*v37 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(allKeys);
             }
 
             [v21 addIndex:{objc_msgSend(*(*(&v36 + 1) + 8 * i), "unsignedIntegerValue")}];
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          v24 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
         }
 
         while (v24);
@@ -327,12 +327,12 @@ LABEL_14:
         v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
         v30 = [v17 objectForKeyedSubscript:v29];
 
-        v31 = [v30 lastIndex];
-        if (v31 != 0x7FFFFFFFFFFFFFFFLL)
+        lastIndex = [v30 lastIndex];
+        if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
           retstr->dataSourceIdentifier = dataSourceIdentifier;
           retstr->section = v28;
-          retstr->item = v31;
+          retstr->item = lastIndex;
           retstr->subitem = 0x7FFFFFFFFFFFFFFFLL;
         }
       }
@@ -344,9 +344,9 @@ LABEL_14:
   if (subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_32:
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    v34 = NSStringFromSelector(a3);
-    [v33 handleFailureInMethod:a3 object:v8 file:@"PXIndexPathSet.m" lineNumber:483 description:{@"%@ not implementd for subitems", v34}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v34 = NSStringFromSelector(path);
+    [currentHandler handleFailureInMethod:path object:selfCopy file:@"PXIndexPathSet.m" lineNumber:483 description:{@"%@ not implementd for subitems", v34}];
 
     abort();
   }
@@ -354,7 +354,7 @@ LABEL_32:
   return self;
 }
 
-- (PXSimpleIndexPath)indexPathGreaterThanIndexPath:(SEL)a3
+- (PXSimpleIndexPath)indexPathGreaterThanIndexPath:(SEL)path
 {
   v41 = *MEMORY[0x1E69E9840];
   *retstr = *PXSimpleIndexPathNull;
@@ -364,7 +364,7 @@ LABEL_32:
     return self;
   }
 
-  v8 = self;
+  selfCopy = self;
   item = a4->item;
   if (a4->section != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -426,8 +426,8 @@ LABEL_14:
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v22 = [v17 allKeys];
-      v23 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      allKeys = [v17 allKeys];
+      v23 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v23)
       {
         v24 = v23;
@@ -438,13 +438,13 @@ LABEL_14:
           {
             if (*v37 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(allKeys);
             }
 
             [v21 addIndex:{objc_msgSend(*(*(&v36 + 1) + 8 * i), "unsignedIntegerValue")}];
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          v24 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
         }
 
         while (v24);
@@ -457,12 +457,12 @@ LABEL_14:
         v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
         v30 = [v17 objectForKeyedSubscript:v29];
 
-        v31 = [v30 firstIndex];
-        if (v31 != 0x7FFFFFFFFFFFFFFFLL)
+        firstIndex = [v30 firstIndex];
+        if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
           retstr->dataSourceIdentifier = dataSourceIdentifier;
           retstr->section = v28;
-          retstr->item = v31;
+          retstr->item = firstIndex;
           retstr->subitem = 0x7FFFFFFFFFFFFFFFLL;
         }
       }
@@ -474,9 +474,9 @@ LABEL_14:
   if (subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_32:
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    v34 = NSStringFromSelector(a3);
-    [v33 handleFailureInMethod:a3 object:v8 file:@"PXIndexPathSet.m" lineNumber:446 description:{@"%@ not implementd for subitems", v34}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v34 = NSStringFromSelector(path);
+    [currentHandler handleFailureInMethod:path object:selfCopy file:@"PXIndexPathSet.m" lineNumber:446 description:{@"%@ not implementd for subitems", v34}];
 
     abort();
   }
@@ -484,7 +484,7 @@ LABEL_32:
   return self;
 }
 
-- (PXSimpleIndexPath)lastItemIndexPathForDataSourceIdentifier:(SEL)a3
+- (PXSimpleIndexPath)lastItemIndexPathForDataSourceIdentifier:(SEL)identifier
 {
   *retstr = *PXSimpleIndexPathNull;
   v15 = [(PXIndexPathSet *)self sectionsWithItemsForDataSourceIdentifier:?];
@@ -499,11 +499,11 @@ LABEL_32:
 
     if ([v11 count])
     {
-      v12 = [v15 lastIndex];
-      v13 = [v11 lastIndex];
+      lastIndex = [v15 lastIndex];
+      lastIndex2 = [v11 lastIndex];
       retstr->dataSourceIdentifier = a4;
-      retstr->section = v12;
-      retstr->item = v13;
+      retstr->section = lastIndex;
+      retstr->item = lastIndex2;
       retstr->subitem = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
@@ -511,7 +511,7 @@ LABEL_32:
   return result;
 }
 
-- (PXSimpleIndexPath)firstItemIndexPathForDataSourceIdentifier:(SEL)a3
+- (PXSimpleIndexPath)firstItemIndexPathForDataSourceIdentifier:(SEL)identifier
 {
   *retstr = *PXSimpleIndexPathNull;
   v15 = [(PXIndexPathSet *)self sectionsWithItemsForDataSourceIdentifier:?];
@@ -526,11 +526,11 @@ LABEL_32:
 
     if ([v11 count])
     {
-      v12 = [v15 firstIndex];
-      v13 = [v11 firstIndex];
+      firstIndex = [v15 firstIndex];
+      firstIndex2 = [v11 firstIndex];
       retstr->dataSourceIdentifier = a4;
-      retstr->section = v12;
-      retstr->item = v13;
+      retstr->section = firstIndex;
+      retstr->item = firstIndex2;
       retstr->subitem = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
@@ -538,17 +538,17 @@ LABEL_32:
   return result;
 }
 
-- (void)enumerateDataSourceIdentifiers:(id)a3
+- (void)enumerateDataSourceIdentifiers:(id)identifiers
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v32 = 0;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(NSMutableDictionary *)self->__sectionIndexesByDataSourceIdentifier keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->__sectionIndexesByDataSourceIdentifier keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -559,10 +559,10 @@ LABEL_3:
     {
       if (*v29 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(keyEnumerator);
       }
 
-      v4[2](v4, [*(*(&v28 + 1) + 8 * v9) unsignedIntValue], &v32);
+      identifiersCopy[2](identifiersCopy, [*(*(&v28 + 1) + 8 * v9) unsignedIntValue], &v32);
       if (v32)
       {
         break;
@@ -570,7 +570,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v28 objects:v35 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -587,8 +587,8 @@ LABEL_3:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [(NSMutableDictionary *)self->__itemIndexesBySectionByDataSourceIdentifier keyEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    keyEnumerator2 = [(NSMutableDictionary *)self->__itemIndexesBySectionByDataSourceIdentifier keyEnumerator];
+    v11 = [keyEnumerator2 countByEnumeratingWithState:&v24 objects:v34 count:16];
     if (v11)
     {
       v12 = v11;
@@ -599,10 +599,10 @@ LABEL_12:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
-        v4[2](v4, [*(*(&v24 + 1) + 8 * v14) unsignedIntValue], &v32);
+        identifiersCopy[2](identifiersCopy, [*(*(&v24 + 1) + 8 * v14) unsignedIntValue], &v32);
         if (v32)
         {
           break;
@@ -610,7 +610,7 @@ LABEL_12:
 
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v24 objects:v34 count:16];
+          v12 = [keyEnumerator2 countByEnumeratingWithState:&v24 objects:v34 count:16];
           if (v12)
           {
             goto LABEL_12;
@@ -627,8 +627,8 @@ LABEL_12:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v15 = [(NSMutableDictionary *)self->__subitemIndexesByItemBySectionByDataSourceIdentifier keyEnumerator];
-      v16 = [v15 countByEnumeratingWithState:&v20 objects:v33 count:16];
+      keyEnumerator3 = [(NSMutableDictionary *)self->__subitemIndexesByItemBySectionByDataSourceIdentifier keyEnumerator];
+      v16 = [keyEnumerator3 countByEnumeratingWithState:&v20 objects:v33 count:16];
       if (v16)
       {
         v17 = v16;
@@ -639,10 +639,10 @@ LABEL_21:
         {
           if (*v21 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(keyEnumerator3);
           }
 
-          v4[2](v4, [*(*(&v20 + 1) + 8 * v19) unsignedIntValue], &v32);
+          identifiersCopy[2](identifiersCopy, [*(*(&v20 + 1) + 8 * v19) unsignedIntValue], &v32);
           if (v32)
           {
             break;
@@ -650,7 +650,7 @@ LABEL_21:
 
           if (v17 == ++v19)
           {
-            v17 = [v15 countByEnumeratingWithState:&v20 objects:v33 count:16];
+            v17 = [keyEnumerator3 countByEnumeratingWithState:&v20 objects:v33 count:16];
             if (v17)
             {
               goto LABEL_21;
@@ -664,9 +664,9 @@ LABEL_21:
   }
 }
 
-- (void)enumerateAllIndexPathsUsingBlock:(id)a3
+- (void)enumerateAllIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -675,7 +675,7 @@ LABEL_21:
   v13[1] = 3221225472;
   v13[2] = __51__PXIndexPathSet_enumerateAllIndexPathsUsingBlock___block_invoke;
   v13[3] = &unk_1E7BB5B28;
-  v5 = v4;
+  v5 = blockCopy;
   v14 = v5;
   v15 = &v16;
   [(PXIndexPathSet *)self enumerateSectionIndexPathsUsingBlock:v13];
@@ -744,9 +744,9 @@ uint64_t __51__PXIndexPathSet_enumerateAllIndexPathsUsingBlock___block_invoke_3(
   return result;
 }
 
-- (void)enumerateSubitemIndexPathsUsingBlock:(id)a3
+- (void)enumerateSubitemIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -755,7 +755,7 @@ uint64_t __51__PXIndexPathSet_enumerateAllIndexPathsUsingBlock___block_invoke_3(
   v6[1] = 3221225472;
   v6[2] = __55__PXIndexPathSet_enumerateSubitemIndexPathsUsingBlock___block_invoke;
   v6[3] = &unk_1E7BB5B00;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(PXIndexPathSet *)self enumerateSubitemIndexSetsUsingBlock:v6];
@@ -794,9 +794,9 @@ uint64_t __55__PXIndexPathSet_enumerateSubitemIndexPathsUsingBlock___block_invok
   return result;
 }
 
-- (void)enumerateItemIndexPathsUsingBlock:(id)a3
+- (void)enumerateItemIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -805,7 +805,7 @@ uint64_t __55__PXIndexPathSet_enumerateSubitemIndexPathsUsingBlock___block_invok
   v6[1] = 3221225472;
   v6[2] = __52__PXIndexPathSet_enumerateItemIndexPathsUsingBlock___block_invoke;
   v6[3] = &unk_1E7BB5AB0;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(PXIndexPathSet *)self enumerateItemIndexSetsUsingBlock:v6];
@@ -842,9 +842,9 @@ uint64_t __52__PXIndexPathSet_enumerateItemIndexPathsUsingBlock___block_invoke_2
   return result;
 }
 
-- (void)enumerateSectionIndexPathsUsingBlock:(id)a3
+- (void)enumerateSectionIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -853,7 +853,7 @@ uint64_t __52__PXIndexPathSet_enumerateItemIndexPathsUsingBlock___block_invoke_2
   v6[1] = 3221225472;
   v6[2] = __55__PXIndexPathSet_enumerateSectionIndexPathsUsingBlock___block_invoke;
   v6[3] = &unk_1E7BB5A60;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(PXIndexPathSet *)self enumerateSectionIndexSetsUsingBlock:v6];
@@ -892,67 +892,67 @@ uint64_t __55__PXIndexPathSet_enumerateSectionIndexPathsUsingBlock___block_invok
   return result;
 }
 
-- (id)subitemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4 item:(int64_t)a5
+- (id)subitemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section item:(int64_t)item
 {
   subitemIndexesByItemBySectionByDataSourceIdentifier = self->__subitemIndexesByItemBySectionByDataSourceIdentifier;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v9 = [(NSMutableDictionary *)subitemIndexesByItemBySectionByDataSourceIdentifier objectForKeyedSubscript:v8];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v11 = [v9 objectForKeyedSubscript:v10];
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:item];
   v13 = [v11 objectForKeyedSubscript:v12];
   v14 = [v13 copy];
 
   return v14;
 }
 
-- (id)itemsWithSubitemsForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4
+- (id)itemsWithSubitemsForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section
 {
   indexesForItemsWithSubitemsBySectionByDataSourceIdentifier = self->__indexesForItemsWithSubitemsBySectionByDataSourceIdentifier;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v7 = [(NSMutableDictionary *)indexesForItemsWithSubitemsBySectionByDataSourceIdentifier objectForKeyedSubscript:v6];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v9 = [v7 objectForKeyedSubscript:v8];
   v10 = [v9 copy];
 
   return v10;
 }
 
-- (id)itemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4
+- (id)itemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section
 {
   itemIndexesBySectionByDataSourceIdentifier = self->__itemIndexesBySectionByDataSourceIdentifier;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v7 = [(NSMutableDictionary *)itemIndexesBySectionByDataSourceIdentifier objectForKeyedSubscript:v6];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v9 = [v7 objectForKeyedSubscript:v8];
   v10 = [v9 copy];
 
   return v10;
 }
 
-- (id)sectionsWithItemsForDataSourceIdentifier:(int64_t)a3
+- (id)sectionsWithItemsForDataSourceIdentifier:(int64_t)identifier
 {
   indexesForSectionsWithItemsByDataSourceIdentifier = self->__indexesForSectionsWithItemsByDataSourceIdentifier;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v5 = [(NSMutableDictionary *)indexesForSectionsWithItemsByDataSourceIdentifier objectForKeyedSubscript:v4];
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)sectionIndexSetForDataSourceIdentifier:(int64_t)a3
+- (id)sectionIndexSetForDataSourceIdentifier:(int64_t)identifier
 {
   sectionIndexesByDataSourceIdentifier = self->__sectionIndexesByDataSourceIdentifier;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v5 = [(NSMutableDictionary *)sectionIndexesByDataSourceIdentifier objectForKeyedSubscript:v4];
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (void)enumerateSubitemIndexSetsUsingBlock:(id)a3
+- (void)enumerateSubitemIndexSetsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -962,7 +962,7 @@ uint64_t __55__PXIndexPathSet_enumerateSectionIndexPathsUsingBlock___block_invok
   v7[1] = 3221225472;
   v7[2] = __54__PXIndexPathSet_enumerateSubitemIndexSetsUsingBlock___block_invoke;
   v7[3] = &unk_1E7BB5A10;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
   [(NSMutableDictionary *)subitemIndexesByItemBySectionByDataSourceIdentifier enumerateKeysAndObjectsUsingBlock:v7];
@@ -1019,9 +1019,9 @@ void __54__PXIndexPathSet_enumerateSubitemIndexSetsUsingBlock___block_invoke_3(v
   }
 }
 
-- (void)enumerateItemIndexSetsUsingBlock:(id)a3
+- (void)enumerateItemIndexSetsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -1032,7 +1032,7 @@ void __54__PXIndexPathSet_enumerateSubitemIndexSetsUsingBlock___block_invoke_3(v
   v7[2] = __51__PXIndexPathSet_enumerateItemIndexSetsUsingBlock___block_invoke;
   v7[3] = &unk_1E7BB5998;
   v7[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
   [(NSMutableDictionary *)itemIndexesBySectionByDataSourceIdentifier enumerateKeysAndObjectsUsingBlock:v7];
@@ -1076,16 +1076,16 @@ void __51__PXIndexPathSet_enumerateItemIndexSetsUsingBlock___block_invoke_2(void
   }
 }
 
-- (void)enumerateSectionIndexSetsUsingBlock:(id)a3
+- (void)enumerateSectionIndexSetsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   sectionIndexesByDataSourceIdentifier = self->__sectionIndexesByDataSourceIdentifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__PXIndexPathSet_enumerateSectionIndexSetsUsingBlock___block_invoke;
   v7[3] = &unk_1E7BB5970;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)sectionIndexesByDataSourceIdentifier enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1099,10 +1099,10 @@ void __54__PXIndexPathSet_enumerateSectionIndexSetsUsingBlock___block_invoke(uin
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -1110,9 +1110,9 @@ void __54__PXIndexPathSet_enumerateSectionIndexSetsUsingBlock___block_invoke(uin
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableDictionary *)self->__sectionIndexesByDataSourceIdentifier isEqual:v4->__sectionIndexesByDataSourceIdentifier]&& [(NSMutableDictionary *)self->__itemIndexesBySectionByDataSourceIdentifier isEqual:v4->__itemIndexesBySectionByDataSourceIdentifier])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableDictionary *)self->__sectionIndexesByDataSourceIdentifier isEqual:equalCopy->__sectionIndexesByDataSourceIdentifier]&& [(NSMutableDictionary *)self->__itemIndexesBySectionByDataSourceIdentifier isEqual:equalCopy->__itemIndexesBySectionByDataSourceIdentifier])
     {
-      v5 = [(NSMutableDictionary *)self->__subitemIndexesByItemBySectionByDataSourceIdentifier isEqual:v4->__subitemIndexesByItemBySectionByDataSourceIdentifier];
+      v5 = [(NSMutableDictionary *)self->__subitemIndexesByItemBySectionByDataSourceIdentifier isEqual:equalCopy->__subitemIndexesByItemBySectionByDataSourceIdentifier];
     }
 
     else
@@ -1328,26 +1328,26 @@ uint64_t __23__PXIndexPathSet_count__block_invoke_3(uint64_t a1, uint64_t a2, ui
   return result;
 }
 
-- (BOOL)isSupersetOfSet:(id)a3
+- (BOOL)isSupersetOfSet:(id)set
 {
-  v4 = [a3 mutableCopy];
+  v4 = [set mutableCopy];
   [v4 minusIndexPathSet:self];
   LOBYTE(self) = [v4 count] == 0;
 
   return self;
 }
 
-- (BOOL)intersectsSet:(id)a3
+- (BOOL)intersectsSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = setCopy;
   v7 = [(PXIndexPathSet *)v6 count];
-  if (v7 >= [(PXIndexPathSet *)v5 count])
+  if (v7 >= [(PXIndexPathSet *)selfCopy count])
   {
     v8 = v6;
   }
@@ -1355,8 +1355,8 @@ uint64_t __23__PXIndexPathSet_count__block_invoke_3(uint64_t a1, uint64_t a2, ui
   else
   {
 
-    v8 = v5;
-    v5 = v6;
+    v8 = selfCopy;
+    selfCopy = v6;
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -1366,7 +1366,7 @@ uint64_t __23__PXIndexPathSet_count__block_invoke_3(uint64_t a1, uint64_t a2, ui
   v9 = v8;
   v13 = v9;
   v14 = &v15;
-  [(PXIndexPathSet *)v5 enumerateAllIndexPathsUsingBlock:v12];
+  [(PXIndexPathSet *)selfCopy enumerateAllIndexPathsUsingBlock:v12];
   v10 = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
@@ -1389,37 +1389,37 @@ uint64_t __32__PXIndexPathSet_intersectsSet___block_invoke(uint64_t a1, _OWORD *
   return result;
 }
 
-- (BOOL)containsIndexPath:(PXSimpleIndexPath *)a3
+- (BOOL)containsIndexPath:(PXSimpleIndexPath *)path
 {
-  if (!a3->dataSourceIdentifier)
+  if (!path->dataSourceIdentifier)
   {
     return 0;
   }
 
-  item = a3->item;
-  if (a3->section != 0x7FFFFFFFFFFFFFFFLL)
+  item = path->item;
+  if (path->section != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
       sectionIndexesByDataSourceIdentifier = self->__sectionIndexesByDataSourceIdentifier;
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
       v9 = [(NSMutableDictionary *)sectionIndexesByDataSourceIdentifier objectForKeyedSubscript:v8];
-      v6 = [v9 containsIndex:a3->section];
+      v6 = [v9 containsIndex:path->section];
 LABEL_13:
 
       return v6;
     }
 
-    subitem = a3->subitem;
+    subitem = path->subitem;
 LABEL_9:
     if (subitem == 0x7FFFFFFFFFFFFFFFLL)
     {
       itemIndexesBySectionByDataSourceIdentifier = self->__itemIndexesBySectionByDataSourceIdentifier;
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
       v9 = [(NSMutableDictionary *)itemIndexesBySectionByDataSourceIdentifier objectForKeyedSubscript:v8];
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3->section];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:path->section];
       v12 = [v9 objectForKeyedSubscript:v11];
-      v6 = [v12 containsIndex:a3->item];
+      v6 = [v12 containsIndex:path->item];
 LABEL_12:
 
       goto LABEL_13;
@@ -1429,16 +1429,16 @@ LABEL_11:
     subitemIndexesByItemBySectionByDataSourceIdentifier = self->__subitemIndexesByItemBySectionByDataSourceIdentifier;
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     v9 = [(NSMutableDictionary *)subitemIndexesByItemBySectionByDataSourceIdentifier objectForKeyedSubscript:v8];
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3->section];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:path->section];
     v12 = [v9 objectForKeyedSubscript:v11];
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3->item];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:path->item];
     v15 = [v12 objectForKeyedSubscript:v14];
-    v6 = [v15 containsIndex:a3->subitem];
+    v6 = [v15 containsIndex:path->subitem];
 
     goto LABEL_12;
   }
 
-  subitem = a3->subitem;
+  subitem = path->subitem;
   if (item != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_9;
@@ -1452,38 +1452,38 @@ LABEL_11:
   return 0;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXMutableIndexPathSet);
   [(PXMutableIndexPathSet *)v4 unionIndexPathSet:self];
   return v4;
 }
 
-+ (id)indexPathSetWithSubitemIndexes:(id)a3 dataSourceIdentifier:(int64_t)a4 section:(int64_t)a5 item:(int64_t)a6
++ (id)indexPathSetWithSubitemIndexes:(id)indexes dataSourceIdentifier:(int64_t)identifier section:(int64_t)section item:(int64_t)item
 {
-  v9 = a3;
+  indexesCopy = indexes;
   v10 = objc_alloc_init(PXMutableIndexPathSet);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__PXIndexPathSet_indexPathSetWithSubitemIndexes_dataSourceIdentifier_section_item___block_invoke;
   v13[3] = &unk_1E7BB58D0;
-  v14 = v9;
-  v11 = v9;
-  [(PXMutableIndexPathSet *)v10 modifySubitemIndexSetForDataSourceIdentifier:a4 section:a5 item:a6 usingBlock:v13];
+  v14 = indexesCopy;
+  v11 = indexesCopy;
+  [(PXMutableIndexPathSet *)v10 modifySubitemIndexSetForDataSourceIdentifier:identifier section:section item:item usingBlock:v13];
 
   return v10;
 }
 
-+ (id)indexPathSetWithItemIndexPaths:(id)a3 dataSourceIdentifier:(int64_t)a4
++ (id)indexPathSetWithItemIndexPaths:(id)paths dataSourceIdentifier:(int64_t)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathsCopy = paths;
   v6 = objc_alloc_init(PXMutableIndexPathSet);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = pathsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -1499,13 +1499,13 @@ LABEL_11:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 px_section];
+        px_section = [v12 px_section];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __70__PXIndexPathSet_indexPathSetWithItemIndexPaths_dataSourceIdentifier___block_invoke;
         v15[3] = &unk_1E7BB58D0;
         v15[4] = v12;
-        [(PXMutableIndexPathSet *)v6 modifyItemIndexSetForDataSourceIdentifier:a4 section:v13 usingBlock:v15];
+        [(PXMutableIndexPathSet *)v6 modifyItemIndexSetForDataSourceIdentifier:identifier section:px_section usingBlock:v15];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1524,41 +1524,41 @@ void __70__PXIndexPathSet_indexPathSetWithItemIndexPaths_dataSourceIdentifier___
   [v3 addIndex:{objc_msgSend(v2, "px_item")}];
 }
 
-+ (id)indexPathSetWithItemIndexes:(id)a3 dataSourceIdentifier:(int64_t)a4 section:(int64_t)a5
++ (id)indexPathSetWithItemIndexes:(id)indexes dataSourceIdentifier:(int64_t)identifier section:(int64_t)section
 {
-  v7 = a3;
+  indexesCopy = indexes;
   v8 = objc_alloc_init(PXMutableIndexPathSet);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__PXIndexPathSet_indexPathSetWithItemIndexes_dataSourceIdentifier_section___block_invoke;
   v11[3] = &unk_1E7BB58D0;
-  v12 = v7;
-  v9 = v7;
-  [(PXMutableIndexPathSet *)v8 modifyItemIndexSetForDataSourceIdentifier:a4 section:a5 usingBlock:v11];
+  v12 = indexesCopy;
+  v9 = indexesCopy;
+  [(PXMutableIndexPathSet *)v8 modifyItemIndexSetForDataSourceIdentifier:identifier section:section usingBlock:v11];
 
   return v8;
 }
 
-+ (id)indexPathSetWithSectionIndexes:(id)a3 dataSourceIdentifier:(int64_t)a4
++ (id)indexPathSetWithSectionIndexes:(id)indexes dataSourceIdentifier:(int64_t)identifier
 {
-  v5 = a3;
+  indexesCopy = indexes;
   v6 = objc_alloc_init(PXMutableIndexPathSet);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__PXIndexPathSet_indexPathSetWithSectionIndexes_dataSourceIdentifier___block_invoke;
   v9[3] = &unk_1E7BB58D0;
-  v10 = v5;
-  v7 = v5;
-  [(PXMutableIndexPathSet *)v6 modifySectionIndexSetForDataSourceIdentifier:a4 usingBlock:v9];
+  v10 = indexesCopy;
+  v7 = indexesCopy;
+  [(PXMutableIndexPathSet *)v6 modifySectionIndexSetForDataSourceIdentifier:identifier usingBlock:v9];
 
   return v6;
 }
 
-+ (id)indexPathSetWithIndexPath:(PXSimpleIndexPath *)a3
++ (id)indexPathSetWithIndexPath:(PXSimpleIndexPath *)path
 {
   v4 = objc_alloc_init(PXMutableIndexPathSet);
-  v5 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  v5 = *&path->item;
+  v7[0] = *&path->dataSourceIdentifier;
   v7[1] = v5;
   [(PXMutableIndexPathSet *)v4 addIndexPath:v7];
 

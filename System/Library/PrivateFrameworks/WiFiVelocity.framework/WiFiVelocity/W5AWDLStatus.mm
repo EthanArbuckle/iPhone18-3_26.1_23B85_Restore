@@ -1,12 +1,12 @@
 @interface W5AWDLStatus
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAWDLStatus:(id)a3;
-- (W5AWDLStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAWDLStatus:(id)status;
+- (W5AWDLStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5AWDLStatus
@@ -199,27 +199,27 @@
   return v27;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5AWDLStatus;
-  if (-[W5AWDLStatus conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5AWDLStatus conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToAWDLStatus:(id)a3
+- (BOOL)isEqualToAWDLStatus:(id)status
 {
   macAddress = self->_macAddress;
   if (!macAddress)
   {
-    if (![a3 macAddress])
+    if (![status macAddress])
     {
       goto LABEL_5;
     }
@@ -227,7 +227,7 @@
     macAddress = self->_macAddress;
   }
 
-  if (!-[NSString isEqual:](macAddress, "isEqual:", [a3 macAddress]))
+  if (!-[NSString isEqual:](macAddress, "isEqual:", [status macAddress]))
   {
     return 0;
   }
@@ -236,7 +236,7 @@ LABEL_5:
   hardwareMACAddress = self->_hardwareMACAddress;
   if (!hardwareMACAddress)
   {
-    if (![a3 hardwareMACAddress])
+    if (![status hardwareMACAddress])
     {
       goto LABEL_9;
     }
@@ -244,7 +244,7 @@ LABEL_5:
     hardwareMACAddress = self->_hardwareMACAddress;
   }
 
-  if (!-[NSString isEqual:](hardwareMACAddress, "isEqual:", [a3 hardwareMACAddress]))
+  if (!-[NSString isEqual:](hardwareMACAddress, "isEqual:", [status hardwareMACAddress]))
   {
     return 0;
   }
@@ -253,7 +253,7 @@ LABEL_9:
   interfaceName = self->_interfaceName;
   if (!interfaceName)
   {
-    if (![a3 interfaceName])
+    if (![status interfaceName])
     {
       goto LABEL_13;
     }
@@ -261,14 +261,14 @@ LABEL_9:
     interfaceName = self->_interfaceName;
   }
 
-  if (!-[NSString isEqual:](interfaceName, "isEqual:", [a3 interfaceName]))
+  if (!-[NSString isEqual:](interfaceName, "isEqual:", [status interfaceName]))
   {
     return 0;
   }
 
 LABEL_13:
   power = self->_power;
-  if (power != [a3 power])
+  if (power != [status power])
   {
     return 0;
   }
@@ -279,11 +279,11 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  if ([a3 ipv6Addresses])
+  if ([status ipv6Addresses])
   {
     ipv6Addresses = self->_ipv6Addresses;
 LABEL_17:
-    if (-[NSArray isEqual:](ipv6Addresses, "isEqual:", [a3 ipv6Addresses]))
+    if (-[NSArray isEqual:](ipv6Addresses, "isEqual:", [status ipv6Addresses]))
     {
       goto LABEL_18;
     }
@@ -293,31 +293,31 @@ LABEL_17:
 
 LABEL_18:
   isAWDLRealTimeMode = self->_isAWDLRealTimeMode;
-  if (isAWDLRealTimeMode != [a3 isAWDLRealTimeMode])
+  if (isAWDLRealTimeMode != [status isAWDLRealTimeMode])
   {
     return 0;
   }
 
   airDropDiscoverableMode = self->_airDropDiscoverableMode;
-  if (airDropDiscoverableMode != [a3 airDropDiscoverableMode] || !-[NSData isEqualToData:](self->_awdlSyncEnabled, "isEqualToData:", objc_msgSend(a3, "awdlSyncEnabled")) || !-[NSData isEqualToData:](self->_awdlOpMode, "isEqualToData:", objc_msgSend(a3, "awdlOpMode")) || !-[NSData isEqualToData:](self->_awdlSyncState, "isEqualToData:", objc_msgSend(a3, "awdlSyncState")) || !-[NSData isEqualToData:](self->_awdlStrategy, "isEqualToData:", objc_msgSend(a3, "awdlStrategy")) || !-[NSData isEqualToData:](self->_awdlMasterChannel, "isEqualToData:", objc_msgSend(a3, "awdlMasterChannel")) || !-[NSData isEqualToData:](self->_awdlSecondaryMasterChannel, "isEqualToData:", objc_msgSend(a3, "awdlSecondaryMasterChannel")) || !-[NSData isEqualToData:](self->_awdlSyncParameters, "isEqualToData:", objc_msgSend(a3, "awdlSyncParameters")) || !-[NSData isEqualToData:](self->_awdlElectionParameters, "isEqualToData:", objc_msgSend(a3, "awdlElectionParameters")) || !-[NSData isEqualToData:](self->_awdlSyncChannelSequence, "isEqualToData:", objc_msgSend(a3, "awdlSyncChannelSequence")) || !-[NSData isEqualToData:](self->_awdlPeerDatabase, "isEqualToData:", objc_msgSend(a3, "awdlPeerDatabase")))
+  if (airDropDiscoverableMode != [status airDropDiscoverableMode] || !-[NSData isEqualToData:](self->_awdlSyncEnabled, "isEqualToData:", objc_msgSend(status, "awdlSyncEnabled")) || !-[NSData isEqualToData:](self->_awdlOpMode, "isEqualToData:", objc_msgSend(status, "awdlOpMode")) || !-[NSData isEqualToData:](self->_awdlSyncState, "isEqualToData:", objc_msgSend(status, "awdlSyncState")) || !-[NSData isEqualToData:](self->_awdlStrategy, "isEqualToData:", objc_msgSend(status, "awdlStrategy")) || !-[NSData isEqualToData:](self->_awdlMasterChannel, "isEqualToData:", objc_msgSend(status, "awdlMasterChannel")) || !-[NSData isEqualToData:](self->_awdlSecondaryMasterChannel, "isEqualToData:", objc_msgSend(status, "awdlSecondaryMasterChannel")) || !-[NSData isEqualToData:](self->_awdlSyncParameters, "isEqualToData:", objc_msgSend(status, "awdlSyncParameters")) || !-[NSData isEqualToData:](self->_awdlElectionParameters, "isEqualToData:", objc_msgSend(status, "awdlElectionParameters")) || !-[NSData isEqualToData:](self->_awdlSyncChannelSequence, "isEqualToData:", objc_msgSend(status, "awdlSyncChannelSequence")) || !-[NSData isEqualToData:](self->_awdlPeerDatabase, "isEqualToData:", objc_msgSend(status, "awdlPeerDatabase")))
   {
     return 0;
   }
 
   awdlSidecarDiagnostics = self->_awdlSidecarDiagnostics;
-  v13 = [a3 awdlSidecarDiagnostics];
+  awdlSidecarDiagnostics = [status awdlSidecarDiagnostics];
 
-  return [(NSData *)awdlSidecarDiagnostics isEqualToData:v13];
+  return [(NSData *)awdlSidecarDiagnostics isEqualToData:awdlSidecarDiagnostics];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -328,10 +328,10 @@ LABEL_18:
     return 0;
   }
 
-  return [(W5AWDLStatus *)self isEqualToAWDLStatus:a3];
+  return [(W5AWDLStatus *)self isEqualToAWDLStatus:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5AWDLStatus allocWithZone:?]];
   [(W5AWDLStatus *)v4 setMacAddress:self->_macAddress];
@@ -355,57 +355,57 @@ LABEL_18:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_macAddress forKey:@"_macAddress"];
-  [a3 encodeObject:self->_hardwareMACAddress forKey:@"_hardwareMACAddress"];
-  [a3 encodeObject:self->_interfaceName forKey:@"_interfaceName"];
-  [a3 encodeObject:self->_ipv6Addresses forKey:@"_ipv6Addresses"];
-  [a3 encodeBool:self->_power forKey:@"_power"];
-  [a3 encodeBool:self->_isAWDLRealTimeMode forKey:@"_isAWDLRealTimeMode"];
-  [a3 encodeObject:self->_awdlSyncState forKey:@"_awdlSyncState"];
-  [a3 encodeObject:self->_awdlSyncEnabled forKey:@"_awdlSyncEnabled"];
-  [a3 encodeObject:self->_awdlSyncChannelSequence forKey:@"_awdlSyncChannelSequence"];
-  [a3 encodeObject:self->_awdlStrategy forKey:@"_awdlStrategy"];
-  [a3 encodeObject:self->_awdlElectionParameters forKey:@"_awdlElectionParameters"];
-  [a3 encodeObject:self->_awdlMasterChannel forKey:@"_awdlMasterChannel"];
-  [a3 encodeObject:self->_awdlSecondaryMasterChannel forKey:@"_awdlSecondaryMasterChannel"];
-  [a3 encodeObject:self->_awdlOpMode forKey:@"_awdlOpMode"];
-  [a3 encodeObject:self->_awdlSyncParameters forKey:@"_awdlSyncParameters"];
-  [a3 encodeObject:self->_awdlPeerDatabase forKey:@"_awdlPeerDatabase"];
-  [a3 encodeInteger:self->_airDropDiscoverableMode forKey:@"_airDropDiscoverableMode"];
+  [coder encodeObject:self->_macAddress forKey:@"_macAddress"];
+  [coder encodeObject:self->_hardwareMACAddress forKey:@"_hardwareMACAddress"];
+  [coder encodeObject:self->_interfaceName forKey:@"_interfaceName"];
+  [coder encodeObject:self->_ipv6Addresses forKey:@"_ipv6Addresses"];
+  [coder encodeBool:self->_power forKey:@"_power"];
+  [coder encodeBool:self->_isAWDLRealTimeMode forKey:@"_isAWDLRealTimeMode"];
+  [coder encodeObject:self->_awdlSyncState forKey:@"_awdlSyncState"];
+  [coder encodeObject:self->_awdlSyncEnabled forKey:@"_awdlSyncEnabled"];
+  [coder encodeObject:self->_awdlSyncChannelSequence forKey:@"_awdlSyncChannelSequence"];
+  [coder encodeObject:self->_awdlStrategy forKey:@"_awdlStrategy"];
+  [coder encodeObject:self->_awdlElectionParameters forKey:@"_awdlElectionParameters"];
+  [coder encodeObject:self->_awdlMasterChannel forKey:@"_awdlMasterChannel"];
+  [coder encodeObject:self->_awdlSecondaryMasterChannel forKey:@"_awdlSecondaryMasterChannel"];
+  [coder encodeObject:self->_awdlOpMode forKey:@"_awdlOpMode"];
+  [coder encodeObject:self->_awdlSyncParameters forKey:@"_awdlSyncParameters"];
+  [coder encodeObject:self->_awdlPeerDatabase forKey:@"_awdlPeerDatabase"];
+  [coder encodeInteger:self->_airDropDiscoverableMode forKey:@"_airDropDiscoverableMode"];
   awdlSidecarDiagnostics = self->_awdlSidecarDiagnostics;
 
-  [a3 encodeObject:awdlSidecarDiagnostics forKey:@"_awdlSidecarDiagnostics"];
+  [coder encodeObject:awdlSidecarDiagnostics forKey:@"_awdlSidecarDiagnostics"];
 }
 
-- (W5AWDLStatus)initWithCoder:(id)a3
+- (W5AWDLStatus)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = W5AWDLStatus;
   v4 = [(W5AWDLStatus *)&v8 init];
   if (v4)
   {
-    v4->_macAddress = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_macAddress", "copy"}];
-    v4->_hardwareMACAddress = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_hardwareMACAddress", "copy"}];
-    v4->_interfaceName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_interfaceName", "copy"}];
+    v4->_macAddress = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_macAddress", "copy"}];
+    v4->_hardwareMACAddress = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_hardwareMACAddress", "copy"}];
+    v4->_interfaceName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_interfaceName", "copy"}];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v4->_ipv6Addresses = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_ipv6Addresses", "copy"}];
-    v4->_power = [a3 decodeBoolForKey:@"_power"];
-    v4->_isAWDLRealTimeMode = [a3 decodeBoolForKey:@"_isAWDLRealTimeMode"];
-    v4->_awdlSyncState = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncState", "copy"}];
-    v4->_awdlSyncEnabled = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncEnabled", "copy"}];
-    v4->_awdlSyncChannelSequence = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncChannelSequence", "copy"}];
-    v4->_awdlStrategy = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlStrategy", "copy"}];
-    v4->_awdlElectionParameters = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlElectionParameters", "copy"}];
-    v4->_awdlMasterChannel = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlMasterChannel", "copy"}];
-    v4->_awdlSecondaryMasterChannel = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSecondaryMasterChannel", "copy"}];
-    v4->_awdlOpMode = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlOpMode", "copy"}];
-    v4->_awdlSyncParameters = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncParameters", "copy"}];
-    v4->_awdlPeerDatabase = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlPeerDatabase", "copy"}];
-    v4->_airDropDiscoverableMode = [a3 decodeIntegerForKey:@"_airDropDiscoverableMode"];
-    v4->_awdlSidecarDiagnostics = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSidecarDiagnostics", "copy"}];
+    v4->_ipv6Addresses = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_ipv6Addresses", "copy"}];
+    v4->_power = [coder decodeBoolForKey:@"_power"];
+    v4->_isAWDLRealTimeMode = [coder decodeBoolForKey:@"_isAWDLRealTimeMode"];
+    v4->_awdlSyncState = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncState", "copy"}];
+    v4->_awdlSyncEnabled = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncEnabled", "copy"}];
+    v4->_awdlSyncChannelSequence = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncChannelSequence", "copy"}];
+    v4->_awdlStrategy = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlStrategy", "copy"}];
+    v4->_awdlElectionParameters = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlElectionParameters", "copy"}];
+    v4->_awdlMasterChannel = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlMasterChannel", "copy"}];
+    v4->_awdlSecondaryMasterChannel = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSecondaryMasterChannel", "copy"}];
+    v4->_awdlOpMode = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlOpMode", "copy"}];
+    v4->_awdlSyncParameters = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSyncParameters", "copy"}];
+    v4->_awdlPeerDatabase = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlPeerDatabase", "copy"}];
+    v4->_airDropDiscoverableMode = [coder decodeIntegerForKey:@"_airDropDiscoverableMode"];
+    v4->_awdlSidecarDiagnostics = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdlSidecarDiagnostics", "copy"}];
   }
 
   return v4;

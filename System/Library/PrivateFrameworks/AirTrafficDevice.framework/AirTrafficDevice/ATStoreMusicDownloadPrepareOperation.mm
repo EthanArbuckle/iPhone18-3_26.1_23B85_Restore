@@ -1,16 +1,16 @@
 @interface ATStoreMusicDownloadPrepareOperation
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3 operationResult:(id)a4;
+- (void)finishWithError:(id)error operationResult:(id)result;
 @end
 
 @implementation ATStoreMusicDownloadPrepareOperation
 
-- (void)finishWithError:(id)a3 operationResult:(id)a4
+- (void)finishWithError:(id)error operationResult:(id)result
 {
   v6.receiver = self;
   v6.super_class = ATStoreMusicDownloadPrepareOperation;
-  [(ATStoreDownloadOperation *)&v6 finishWithError:a3 operationResult:a4];
+  [(ATStoreDownloadOperation *)&v6 finishWithError:error operationResult:result];
   redownloadRequest = self->_redownloadRequest;
   self->_redownloadRequest = 0;
 }
@@ -29,11 +29,11 @@
   v3 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ATStoreDownloadOperation *)self asset];
+    asset = [(ATStoreDownloadOperation *)self asset];
     *buf = 138543618;
-    v53 = self;
+    selfCopy6 = self;
     v54 = 2114;
-    *v55 = v4;
+    *v55 = asset;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting prepare phase for asset %{public}@", buf, 0x16u);
   }
 
@@ -44,17 +44,17 @@
   v51[3] = &unk_2784E5638;
   v51[4] = self;
   v6 = [v5 initWithBlock:v51];
-  v7 = [(ATStoreDownloadOperation *)self asset];
-  v8 = [v7 storeInfo];
+  asset2 = [(ATStoreDownloadOperation *)self asset];
+  storeInfo = [asset2 storeInfo];
 
-  v9 = [v8 endpointType];
-  v10 = [v9 integerValue];
+  endpointType = [storeInfo endpointType];
+  integerValue = [endpointType integerValue];
 
-  if (v10 > 1)
+  if (integerValue > 1)
   {
-    if (v10 != 2)
+    if (integerValue != 2)
     {
-      if (v10 != 3)
+      if (integerValue != 3)
       {
         goto LABEL_21;
       }
@@ -62,28 +62,28 @@
       v16 = _ATLogCategoryStoreDownloads();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v8 adamID];
-        v18 = [v17 unsignedLongLongValue];
+        adamID = [storeInfo adamID];
+        unsignedLongLongValue = [adamID unsignedLongLongValue];
         *buf = 138543618;
-        v53 = self;
+        selfCopy6 = self;
         v54 = 2048;
-        *v55 = v18;
+        *v55 = unsignedLongLongValue;
         _os_log_impl(&dword_223819000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ performing subscription redownload. subscriptionItemID=%lld", buf, 0x16u);
       }
 
       v19 = objc_alloc(MEMORY[0x277D7FC48]);
-      v14 = [v8 adamID];
-      v15 = [v19 initWithRequestContext:v6 subscriptionItemID:{objc_msgSend(v14, "unsignedLongLongValue")}];
-      v10 = 3;
+      adamID2 = [storeInfo adamID];
+      v15 = [v19 initWithRequestContext:v6 subscriptionItemID:{objc_msgSend(adamID2, "unsignedLongLongValue")}];
+      integerValue = 3;
       goto LABEL_19;
     }
 
     goto LABEL_16;
   }
 
-  if (v10)
+  if (integerValue)
   {
-    if (v10 != 1)
+    if (integerValue != 1)
     {
       goto LABEL_21;
     }
@@ -92,18 +92,18 @@ LABEL_6:
     v11 = _ATLogCategoryStoreDownloads();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v8 redownloadParams];
+      redownloadParams = [storeInfo redownloadParams];
       *buf = 138543618;
-      v53 = self;
+      selfCopy6 = self;
       v54 = 2114;
-      *v55 = v12;
+      *v55 = redownloadParams;
       _os_log_impl(&dword_223819000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ performing purchase redownload. redownloadParams=%{public}@", buf, 0x16u);
     }
 
     v13 = objc_alloc(MEMORY[0x277D7FBC8]);
-    v14 = [v8 redownloadParams];
-    v15 = [v13 initWithRequestContext:v6 redownloadParametersString:v14];
-    v10 = 1;
+    adamID2 = [storeInfo redownloadParams];
+    v15 = [v13 initWithRequestContext:v6 redownloadParametersString:adamID2];
+    integerValue = 1;
 LABEL_19:
     redownloadRequest = self->_redownloadRequest;
     self->_redownloadRequest = v15;
@@ -112,11 +112,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v20 = [v8 sagaID];
-  if ([v20 unsignedLongLongValue])
+  sagaID = [storeInfo sagaID];
+  if ([sagaID unsignedLongLongValue])
   {
-    v21 = [v8 redownloadParams];
-    v22 = [v21 length];
+    redownloadParams2 = [storeInfo redownloadParams];
+    v22 = [redownloadParams2 length];
 
     if (v22)
     {
@@ -124,18 +124,18 @@ LABEL_16:
       v23 = _ATLogCategoryStoreDownloads();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v8 redownloadParams];
+        redownloadParams3 = [storeInfo redownloadParams];
         *buf = 138543618;
-        v53 = self;
+        selfCopy6 = self;
         v54 = 2114;
-        *v55 = v24;
+        *v55 = redownloadParams3;
         _os_log_impl(&dword_223819000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ performing match redownload. redownloadParams=%{public}@", buf, 0x16u);
       }
 
       v25 = objc_alloc(MEMORY[0x277D7FB00]);
-      v14 = [v8 redownloadParams];
-      v15 = [v25 initWithRequestContext:v6 redownloadParametersString:v14];
-      v10 = 2;
+      adamID2 = [storeInfo redownloadParams];
+      v15 = [v25 initWithRequestContext:v6 redownloadParametersString:adamID2];
+      integerValue = 2;
       goto LABEL_19;
     }
   }
@@ -144,22 +144,22 @@ LABEL_16:
   {
   }
 
-  v14 = [v8 adamID];
-  if (![v14 unsignedLongLongValue])
+  adamID2 = [storeInfo adamID];
+  if (![adamID2 unsignedLongLongValue])
   {
-    v10 = 0;
+    integerValue = 0;
     goto LABEL_20;
   }
 
-  v45 = [v8 redownloadParams];
-  v46 = [v45 length];
+  redownloadParams4 = [storeInfo redownloadParams];
+  v46 = [redownloadParams4 length];
 
   if (v46)
   {
     goto LABEL_6;
   }
 
-  v10 = 0;
+  integerValue = 0;
 LABEL_21:
   if (!self->_redownloadRequest)
   {
@@ -167,9 +167,9 @@ LABEL_21:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v53 = self;
+      selfCopy6 = self;
       v54 = 2048;
-      *v55 = v10;
+      *v55 = integerValue;
       _os_log_impl(&dword_223819000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ unsupported endpoint type %ld", buf, 0x16u);
     }
 
@@ -189,18 +189,18 @@ LABEL_27:
   }
 
   v30 = [MEMORY[0x277CCAB68] stringWithString:@"com.apple.AirTraffic.ATStoreMusicDownloadPrepareOperation"];
-  v31 = [(ATStoreDownloadOperation *)self asset];
-  v32 = [v31 canUseCellularData];
+  asset3 = [(ATStoreDownloadOperation *)self asset];
+  canUseCellularData = [asset3 canUseCellularData];
 
-  if ((v32 & 1) == 0)
+  if ((canUseCellularData & 1) == 0)
   {
     [v30 appendString:@".wifi"];
   }
 
-  v33 = [(ATStoreDownloadOperation *)self asset];
-  v34 = [v33 canProxyUseCellularData];
+  asset4 = [(ATStoreDownloadOperation *)self asset];
+  canProxyUseCellularData = [asset4 canProxyUseCellularData];
 
-  if ((v34 & 1) == 0)
+  if ((canProxyUseCellularData & 1) == 0)
   {
     [v30 appendString:@".proxywifi"];
   }
@@ -208,31 +208,31 @@ LABEL_27:
   v35 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [(ATStoreDownloadOperation *)self asset];
-    v37 = [v36 canUseCellularData];
-    v38 = [(ATStoreDownloadOperation *)self asset];
-    v39 = [v38 canProxyUseCellularData];
+    asset5 = [(ATStoreDownloadOperation *)self asset];
+    canUseCellularData2 = [asset5 canUseCellularData];
+    asset6 = [(ATStoreDownloadOperation *)self asset];
+    canProxyUseCellularData2 = [asset6 canProxyUseCellularData];
     *buf = 138543874;
-    v53 = self;
+    selfCopy6 = self;
     v54 = 1024;
-    *v55 = v37;
+    *v55 = canUseCellularData2;
     *&v55[4] = 1024;
-    *&v55[6] = v39;
+    *&v55[6] = canProxyUseCellularData2;
     _os_log_impl(&dword_223819000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@ creating url session with constraints: canUseCellularData:%{BOOL}u, canProxyUseCellularData:%{BOOL}u, ", buf, 0x18u);
   }
 
-  v40 = [MEMORY[0x277D7FC90] sharedSessionManager];
+  mEMORY[0x277D7FC90] = [MEMORY[0x277D7FC90] sharedSessionManager];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __47__ATStoreMusicDownloadPrepareOperation_execute__block_invoke_27;
   v50[3] = &unk_2784E5660;
   v50[4] = self;
-  v41 = [v40 sessionWithIdentifier:v30 creationBlock:v50];
+  v41 = [mEMORY[0x277D7FC90] sessionWithIdentifier:v30 creationBlock:v50];
 
   [(ICMediaRedownloadRequest *)self->_redownloadRequest setUrlSession:v41];
-  v42 = [(ICRequestOperation *)self progress];
-  v43 = [(ICMediaRedownloadRequest *)self->_redownloadRequest progress];
-  [v42 addChild:v43 withPendingUnitCount:100];
+  progress = [(ICRequestOperation *)self progress];
+  progress2 = [(ICMediaRedownloadRequest *)self->_redownloadRequest progress];
+  [progress addChild:progress2 withPendingUnitCount:100];
 
   v44 = self->_redownloadRequest;
   v47[0] = MEMORY[0x277D85DD0];
@@ -240,7 +240,7 @@ LABEL_27:
   v47[2] = __47__ATStoreMusicDownloadPrepareOperation_execute__block_invoke_2;
   v47[3] = &unk_2784E5688;
   v47[4] = self;
-  v49 = v10;
+  v49 = integerValue;
   v48 = v6;
   [(ICMediaRedownloadRequest *)v44 performRequestWithResponseHandler:v47];
 

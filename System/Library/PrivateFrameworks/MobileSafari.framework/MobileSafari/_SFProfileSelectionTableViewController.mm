@@ -1,7 +1,7 @@
 @interface _SFProfileSelectionTableViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setProfiles:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setProfiles:(id)profiles;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -12,48 +12,48 @@
   v4.receiver = self;
   v4.super_class = _SFProfileSelectionTableViewController;
   [(_SFProfileSelectionTableViewController *)&v4 viewDidLoad];
-  v3 = [(_SFProfileSelectionTableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellIdentifier"];
+  tableView = [(_SFProfileSelectionTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CellIdentifier"];
 }
 
-- (void)setProfiles:(id)a3
+- (void)setProfiles:(id)profiles
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_profiles != v4)
+  profilesCopy = profiles;
+  v5 = profilesCopy;
+  if (self->_profiles != profilesCopy)
   {
-    v10 = v4;
-    v6 = [(NSArray *)v4 copy];
+    v10 = profilesCopy;
+    v6 = [(NSArray *)profilesCopy copy];
     profiles = self->_profiles;
     self->_profiles = v6;
 
     self->_selectedRow = 0;
-    v8 = [(_SFProfileSelectionTableViewController *)self isViewLoaded];
+    isViewLoaded = [(_SFProfileSelectionTableViewController *)self isViewLoaded];
     v5 = v10;
-    if (v8)
+    if (isViewLoaded)
     {
-      v9 = [(_SFProfileSelectionTableViewController *)self tableView];
-      [v9 reloadData];
+      tableView = [(_SFProfileSelectionTableViewController *)self tableView];
+      [tableView reloadData];
 
       v5 = v10;
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellIdentifier"];
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_profiles, "objectAtIndexedSubscript:", [v6 row]);
-  v9 = [v8 title];
-  v10 = [v7 textLabel];
-  [v10 setText:v9];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_profiles, "objectAtIndexedSubscript:", [pathCopy row]);
+  title = [v8 title];
+  textLabel = [v7 textLabel];
+  [textLabel setText:title];
 
-  v11 = [v8 symbolImage];
-  v12 = [v7 imageView];
-  [v12 setImage:v11];
+  symbolImage = [v8 symbolImage];
+  imageView = [v7 imageView];
+  [imageView setImage:symbolImage];
 
-  v13 = [v6 row];
+  v13 = [pathCopy row];
   if (v13 == self->_selectedRow)
   {
     v14 = 3;
@@ -69,19 +69,19 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v8 = [MEMORY[0x1E696AC88] indexPathForRow:self->_selectedRow inSection:0];
-  v9 = [v7 cellForRowAtIndexPath:v8];
+  v9 = [viewCopy cellForRowAtIndexPath:v8];
   [v9 setAccessoryType:0];
 
-  v10 = [v7 cellForRowAtIndexPath:v6];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v10 setAccessoryType:3];
-  v11 = [v6 row];
+  v11 = [pathCopy row];
 
   self->_selectedRow = v11;
 }

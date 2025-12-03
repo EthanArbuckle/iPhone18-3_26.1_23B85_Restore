@@ -1,23 +1,23 @@
 @interface CHWorkoutDetailTwoValueTableViewCell
-- (CHWorkoutDetailTwoValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CHWorkoutDetailTwoValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_constrainViews;
-- (void)configureWithTitle1:(id)a3 value1:(id)a4;
-- (void)configureWithTitle2:(id)a3 value2:(id)a4;
-- (void)expandForExtraTallTextIfNecessary:(id)a3;
+- (void)configureWithTitle1:(id)title1 value1:(id)value1;
+- (void)configureWithTitle2:(id)title2 value2:(id)value2;
+- (void)expandForExtraTallTextIfNecessary:(id)necessary;
 - (void)prepareForReuse;
 - (void)removeLeadingPadding;
 @end
 
 @implementation CHWorkoutDetailTwoValueTableViewCell
 
-- (void)expandForExtraTallTextIfNecessary:(id)a3
+- (void)expandForExtraTallTextIfNecessary:(id)necessary
 {
-  attrString = a3;
+  attrString = necessary;
   v4 = +[NSLocale currentLocale];
   v5 = [NSLocale localeWithLocaleIdentifier:@"ur"];
-  v6 = [v5 languageCode];
-  v7 = [v4 languageCode];
-  v8 = [v6 isEqualToString:v7];
+  languageCode = [v5 languageCode];
+  languageCode2 = [v4 languageCode];
+  v8 = [languageCode isEqualToString:languageCode2];
 
   if (v8)
   {
@@ -33,11 +33,11 @@
   }
 }
 
-- (CHWorkoutDetailTwoValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailTwoValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v31.receiver = self;
   v31.super_class = CHWorkoutDetailTwoValueTableViewCell;
-  v4 = [(CHWorkoutDetailTwoValueTableViewCell *)&v31 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CHWorkoutDetailTwoValueTableViewCell *)&v31 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor systemBackgroundColor];
@@ -54,8 +54,8 @@
     [(UILabel *)v4->_titleLabel1 setTextColor:v9];
 
     [(UILabel *)v4->_titleLabel1 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
-    [v10 addSubview:v4->_titleLabel1];
+    contentView = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel1];
 
     v11 = objc_alloc_init(UILabel);
     titleLabel2 = v4->_titleLabel2;
@@ -68,8 +68,8 @@
     [(UILabel *)v4->_titleLabel2 setTextColor:v14];
 
     [(UILabel *)v4->_titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
-    [v15 addSubview:v4->_titleLabel2];
+    contentView2 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_titleLabel2];
 
     v16 = objc_alloc_init(UILabel);
     valueLabel1 = v4->_valueLabel1;
@@ -83,8 +83,8 @@
 
     [(UILabel *)v4->_valueLabel1 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_valueLabel1 setNumberOfLines:0];
-    v20 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
-    [v20 addSubview:v4->_valueLabel1];
+    contentView3 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_valueLabel1];
 
     v21 = objc_alloc_init(UILabel);
     valueLabel2 = v4->_valueLabel2;
@@ -98,8 +98,8 @@
 
     [(UILabel *)v4->_valueLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_valueLabel2 setNumberOfLines:0];
-    v25 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
-    [v25 addSubview:v4->_valueLabel2];
+    contentView4 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_valueLabel2];
 
     v26 = objc_alloc_init(UIView);
     separatorView = v4->_separatorView;
@@ -109,8 +109,8 @@
     v28 = +[UIColor separatorColor];
     [(UIView *)v4->_separatorView setBackgroundColor:v28];
 
-    v29 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
-    [v29 addSubview:v4->_separatorView];
+    contentView5 = [(CHWorkoutDetailTwoValueTableViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_separatorView];
 
     [(CHWorkoutDetailTwoValueTableViewCell *)v4 _constrainViews];
   }
@@ -118,22 +118,22 @@
   return v4;
 }
 
-- (void)configureWithTitle1:(id)a3 value1:(id)a4
+- (void)configureWithTitle1:(id)title1 value1:(id)value1
 {
   titleLabel1 = self->_titleLabel1;
-  v7 = a4;
-  [(UILabel *)titleLabel1 setText:a3];
-  [(UILabel *)self->_valueLabel1 setAttributedText:v7];
-  [(CHWorkoutDetailTwoValueTableViewCell *)self expandForExtraTallTextIfNecessary:v7];
+  value1Copy = value1;
+  [(UILabel *)titleLabel1 setText:title1];
+  [(UILabel *)self->_valueLabel1 setAttributedText:value1Copy];
+  [(CHWorkoutDetailTwoValueTableViewCell *)self expandForExtraTallTextIfNecessary:value1Copy];
 }
 
-- (void)configureWithTitle2:(id)a3 value2:(id)a4
+- (void)configureWithTitle2:(id)title2 value2:(id)value2
 {
   titleLabel2 = self->_titleLabel2;
-  v7 = a4;
-  [(UILabel *)titleLabel2 setText:a3];
-  [(UILabel *)self->_valueLabel2 setAttributedText:v7];
-  [(CHWorkoutDetailTwoValueTableViewCell *)self expandForExtraTallTextIfNecessary:v7];
+  value2Copy = value2;
+  [(UILabel *)titleLabel2 setText:title2];
+  [(UILabel *)self->_valueLabel2 setAttributedText:value2Copy];
+  [(CHWorkoutDetailTwoValueTableViewCell *)self expandForExtraTallTextIfNecessary:value2Copy];
 }
 
 - (void)removeLeadingPadding
@@ -165,27 +165,27 @@
   if (!self->_didAddConstraints)
   {
     titleLabel1 = self->_titleLabel1;
-    v4 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v57 = [NSLayoutConstraint constraintWithItem:titleLabel1 attribute:11 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:28.0];
+    contentView = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v57 = [NSLayoutConstraint constraintWithItem:titleLabel1 attribute:11 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:28.0];
 
     v5 = self->_titleLabel1;
-    v6 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v7 = [NSLayoutConstraint constraintWithItem:v5 attribute:5 relatedBy:0 toItem:v6 attribute:5 multiplier:1.0 constant:sub_1000B7B88()];
+    contentView2 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v7 = [NSLayoutConstraint constraintWithItem:v5 attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:sub_1000B7B88()];
     title1Leading = self->_title1Leading;
     self->_title1Leading = v7;
 
     v9 = self->_titleLabel1;
-    v10 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:5 relatedBy:0 toItem:v10 attribute:5 multiplier:1.0 constant:0.0];
+    contentView3 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:5 relatedBy:0 toItem:contentView3 attribute:5 multiplier:1.0 constant:0.0];
     title1NoLeading = self->_title1NoLeading;
     self->_title1NoLeading = v11;
 
-    v13 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    contentView4 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
     v14 = self->_title1Leading;
     v62[0] = v57;
     v62[1] = v14;
     v15 = [NSArray arrayWithObjects:v62 count:2];
-    [v13 addConstraints:v15];
+    [contentView4 addConstraints:v15];
 
     v16 = +[UIScreen mainScreen];
     [v16 bounds];
@@ -193,14 +193,14 @@
 
     v56 = [NSLayoutConstraint constraintWithItem:self->_titleLabel2 attribute:11 relatedBy:0 toItem:self->_titleLabel1 attribute:11 multiplier:1.0 constant:0.0];
     titleLabel2 = self->_titleLabel2;
-    v20 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v55 = [NSLayoutConstraint constraintWithItem:titleLabel2 attribute:5 relatedBy:0 toItem:v20 attribute:5 multiplier:1.0 constant:v18];
+    contentView5 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v55 = [NSLayoutConstraint constraintWithItem:titleLabel2 attribute:5 relatedBy:0 toItem:contentView5 attribute:5 multiplier:1.0 constant:v18];
 
-    v21 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    contentView6 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
     v61[0] = v56;
     v61[1] = v55;
     v22 = [NSArray arrayWithObjects:v61 count:2];
-    [v21 addConstraints:v22];
+    [contentView6 addConstraints:v22];
 
     v23 = [NSLayoutConstraint constraintWithItem:self->_valueLabel1 attribute:11 relatedBy:0 toItem:self->_titleLabel1 attribute:11 multiplier:1.0 constant:30.0];
     value1Baseline = self->_value1Baseline;
@@ -208,39 +208,39 @@
 
     v54 = [NSLayoutConstraint constraintWithItem:self->_valueLabel1 attribute:5 relatedBy:0 toItem:self->_titleLabel1 attribute:5 multiplier:1.0 constant:0.0];
     valueLabel1 = self->_valueLabel1;
-    v26 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v27 = [NSLayoutConstraint constraintWithItem:valueLabel1 attribute:11 relatedBy:0 toItem:v26 attribute:4 multiplier:1.0 constant:-16.0];
+    contentView7 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v27 = [NSLayoutConstraint constraintWithItem:valueLabel1 attribute:11 relatedBy:0 toItem:contentView7 attribute:4 multiplier:1.0 constant:-16.0];
 
-    v28 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    contentView8 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
     v60[0] = self->_value1Baseline;
     v60[1] = v54;
     v60[2] = v27;
     v29 = [NSArray arrayWithObjects:v60 count:3];
-    [v28 addConstraints:v29];
+    [contentView8 addConstraints:v29];
 
     v30 = [NSLayoutConstraint constraintWithItem:self->_valueLabel2 attribute:11 relatedBy:0 toItem:self->_valueLabel1 attribute:11 multiplier:1.0 constant:0.0];
     v31 = [NSLayoutConstraint constraintWithItem:self->_valueLabel2 attribute:5 relatedBy:0 toItem:self->_titleLabel2 attribute:5 multiplier:1.0 constant:0.0];
-    v32 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    contentView9 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
     v59[0] = v30;
     v59[1] = v31;
     v33 = [NSArray arrayWithObjects:v59 count:2];
-    [v32 addConstraints:v33];
+    [contentView9 addConstraints:v33];
 
     separatorView = self->_separatorView;
-    v35 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v36 = [NSLayoutConstraint constraintWithItem:separatorView attribute:5 relatedBy:0 toItem:v35 attribute:5 multiplier:1.0 constant:0.0];
+    contentView10 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v36 = [NSLayoutConstraint constraintWithItem:separatorView attribute:5 relatedBy:0 toItem:contentView10 attribute:5 multiplier:1.0 constant:0.0];
     separatorNoLeading = self->_separatorNoLeading;
     self->_separatorNoLeading = v36;
 
     v38 = self->_separatorView;
-    v39 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v40 = [NSLayoutConstraint constraintWithItem:v38 attribute:6 relatedBy:0 toItem:v39 attribute:6 multiplier:1.0 constant:-sub_1000B7B88()];
+    contentView11 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v40 = [NSLayoutConstraint constraintWithItem:v38 attribute:6 relatedBy:0 toItem:contentView11 attribute:6 multiplier:1.0 constant:-sub_1000B7B88()];
     separatorTrailing = self->_separatorTrailing;
     self->_separatorTrailing = v40;
 
     v42 = self->_separatorView;
-    v43 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
-    v44 = sub_1000B7F00(v42, v43, 0, 0.0);
+    contentView12 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    v44 = sub_1000B7F00(v42, contentView12, 0, 0.0);
 
     v45 = [v44 objectAtIndexedSubscript:0];
     separatorLeading = self->_separatorLeading;
@@ -250,7 +250,7 @@
     separatorNoTrailing = self->_separatorNoTrailing;
     self->_separatorNoTrailing = v47;
 
-    v49 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
+    contentView13 = [(CHWorkoutDetailTwoValueTableViewCell *)self contentView];
     v58[0] = self->_separatorLeading;
     v50 = [v44 objectAtIndexedSubscript:1];
     v51 = self->_separatorTrailing;
@@ -259,7 +259,7 @@
     v52 = [v44 objectAtIndexedSubscript:3];
     v58[3] = v52;
     v53 = [NSArray arrayWithObjects:v58 count:4];
-    [v49 addConstraints:v53];
+    [contentView13 addConstraints:v53];
 
     self->_didAddConstraints = 1;
   }

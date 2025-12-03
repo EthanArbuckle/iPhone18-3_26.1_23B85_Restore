@@ -1,6 +1,6 @@
 @interface GDKnosisResultContext
-- (BOOL)enumerateAnswersForEntityIdentifier:(id)a3 block:(id)a4 error:(id *)a5;
-- (BOOL)enumerateAnswersUsingBlock:(id)a3 error:(id *)a4;
+- (BOOL)enumerateAnswersForEntityIdentifier:(id)identifier block:(id)block error:(id *)error;
+- (BOOL)enumerateAnswersUsingBlock:(id)block error:(id *)error;
 - (_TtC20IntelligencePlatform26_GDSwiftGraphObjectContext)context;
 - (id)answers;
 @end
@@ -16,7 +16,7 @@
 
 - (id)answers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1ABC6CE60();
 
   sub_1ABAFF390(0, &qword_1EB4CE6C0, off_1E7960290);
@@ -25,22 +25,22 @@
   return v3;
 }
 
-- (BOOL)enumerateAnswersUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateAnswersUsingBlock:(id)block error:(id *)error
 {
-  v7 = _Block_copy(a3);
-  v5 = self;
+  v7 = _Block_copy(block);
+  selfCopy = self;
   sub_1ABC6CF90(sub_1ABC6D520);
 
   _Block_release(v7);
   return 1;
 }
 
-- (BOOL)enumerateAnswersForEntityIdentifier:(id)a3 block:(id)a4 error:(id *)a5
+- (BOOL)enumerateAnswersForEntityIdentifier:(id)identifier block:(id)block error:(id *)error
 {
-  v10 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
-  sub_1ABC6D170(v7, sub_1ABC6D3EC);
+  v10 = _Block_copy(block);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_1ABC6D170(identifierCopy, sub_1ABC6D3EC);
 
   _Block_release(v10);
   return 1;

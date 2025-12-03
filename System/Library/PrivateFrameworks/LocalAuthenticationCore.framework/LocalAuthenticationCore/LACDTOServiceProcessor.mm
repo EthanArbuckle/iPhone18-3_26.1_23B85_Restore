@@ -1,22 +1,22 @@
 @interface LACDTOServiceProcessor
-- (BOOL)canProcessRequest:(id)a3;
-- (LACDTOServiceProcessor)initWithSubprocessors:(id)a3;
-- (id)_entitlementsForRequest:(id)a3;
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5;
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (BOOL)canProcessRequest:(id)request;
+- (LACDTOServiceProcessor)initWithSubprocessors:(id)subprocessors;
+- (id)_entitlementsForRequest:(id)request;
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion;
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation LACDTOServiceProcessor
 
-- (LACDTOServiceProcessor)initWithSubprocessors:(id)a3
+- (LACDTOServiceProcessor)initWithSubprocessors:(id)subprocessors
 {
-  v4 = a3;
+  subprocessorsCopy = subprocessors;
   v9.receiver = self;
   v9.super_class = LACDTOServiceProcessor;
   v5 = [(LACDTOServiceProcessor *)&v9 init];
   if (v5)
   {
-    v6 = [LACEvaluationRequestProcessorFactory makeProcessorWithSubprocessors:v4];
+    v6 = [LACEvaluationRequestProcessorFactory makeProcessorWithSubprocessors:subprocessorsCopy];
     compoundProcessor = v5->_compoundProcessor;
     v5->_compoundProcessor = v6;
   }
@@ -24,27 +24,27 @@
   return v5;
 }
 
-- (BOOL)canProcessRequest:(id)a3
+- (BOOL)canProcessRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 policy];
-  v5 = [v3 options];
+  requestCopy = request;
+  policy = [requestCopy policy];
+  options = [requestCopy options];
 
-  v6 = [LACPolicyUtilities isDTOPolicy:v4 options:v5];
+  v6 = [LACPolicyUtilities isDTOPolicy:policy options:options];
   return v6;
 }
 
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = a4;
-  v9 = a5;
+  requestCopy = request;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(LACDTOServiceProcessor *)self _entitlementsForRequest:v8];
+  v10 = [(LACDTOServiceProcessor *)self _entitlementsForRequest:requestCopy];
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -61,16 +61,16 @@
         }
 
         v15 = *(*(&v23 + 1) + 8 * v14);
-        v16 = [v8 client];
-        v17 = [v16 checkEntitlement:v15];
+        client = [requestCopy client];
+        v17 = [client checkEntitlement:v15];
 
         if ((v17 & 1) == 0)
         {
           v19 = [LACError missingEntitlementError:v15];
           v20 = [LACEvaluationResult resultWithFailure:v19];
-          v9[2](v9, v20);
+          completionCopy[2](completionCopy, v20);
 
-          v18 = v22;
+          v18 = configurationCopy;
           goto LABEL_11;
         }
 
@@ -88,47 +88,47 @@
     }
   }
 
-  v18 = v22;
-  [(LACEvaluationRequestProcessor *)self->_compoundProcessor processRequest:v8 configuration:v22 completion:v9];
+  v18 = configurationCopy;
+  [(LACEvaluationRequestProcessor *)self->_compoundProcessor processRequest:requestCopy configuration:configurationCopy completion:completionCopy];
 LABEL_11:
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion
 {
-  v11 = a3;
+  requestCopy = request;
   compoundProcessor = self->_compoundProcessor;
-  v9 = a5;
-  v10 = a4;
+  completionCopy = completion;
+  resultCopy = result;
   if (objc_opt_respondsToSelector())
   {
-    [(LACEvaluationRequestProcessor *)self->_compoundProcessor postProcessRequest:v11 result:v10 completion:v9];
+    [(LACEvaluationRequestProcessor *)self->_compoundProcessor postProcessRequest:requestCopy result:resultCopy completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9, v10);
+    completionCopy[2](completionCopy, resultCopy);
   }
 }
 
-- (id)_entitlementsForRequest:(id)a3
+- (id)_entitlementsForRequest:(id)request
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
   v18[0] = @"com.apple.private.CoreAuthentication.SPI";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v6 = [v4 initWithArray:v5];
 
-  if ([v3 policy] == 1026)
+  if ([requestCopy policy] == 1026)
   {
     [v6 addObject:@"com.apple.private.LocalAuthentication.DTO"];
   }
 
-  v7 = [v3 options];
+  options = [requestCopy options];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:1061];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [options objectForKeyedSubscript:v8];
 
   if (v9)
   {
@@ -136,7 +136,7 @@ LABEL_11:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:1062];
-  v11 = [v7 objectForKeyedSubscript:v10];
+  v11 = [options objectForKeyedSubscript:v10];
 
   if (v11)
   {
@@ -144,7 +144,7 @@ LABEL_11:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:1068];
-  v13 = [v7 objectForKeyedSubscript:v12];
+  v13 = [options objectForKeyedSubscript:v12];
 
   if (v13)
   {
@@ -152,7 +152,7 @@ LABEL_11:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithInteger:1085];
-  v15 = [v7 objectForKeyedSubscript:v14];
+  v15 = [options objectForKeyedSubscript:v14];
 
   if (v15)
   {

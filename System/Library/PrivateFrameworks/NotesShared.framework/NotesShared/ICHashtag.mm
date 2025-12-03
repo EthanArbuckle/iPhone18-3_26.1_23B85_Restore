@@ -1,47 +1,47 @@
 @interface ICHashtag
-+ (BOOL)regenerateStandardizedContentForAllHashtagsInContext:(id)a3 hasChanges:(BOOL *)a4;
-+ (id)allVisibleHashtagsForAccount:(id)a3;
-+ (id)allVisibleHashtagsInContext:(id)a3;
-+ (id)canonicalHashtagsInContext:(id)a3;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)hashtagObjectIDWithStandardizedContent:(id)a3 context:(id)a4;
-+ (id)hashtagObjectIDsWithStandardizedContents:(id)a3 context:(id)a4;
-+ (id)hashtagWithDisplayText:(id)a3 account:(id)a4 createIfNecessary:(BOOL)a5;
-+ (id)hashtagWithIdentifier:(id)a3 context:(id)a4;
-+ (id)hashtagWithStandardizedContent:(id)a3 account:(id)a4;
-+ (id)hashtagWithStandardizedContent:(id)a3 onlyVisible:(BOOL)a4 account:(id)a5;
-+ (id)hashtagsWithStandardizedContent:(id)a3 onlyVisible:(BOOL)a4 account:(id)a5 context:(id)a6;
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)newHashtagWithIdentifier:(id)a3 displayText:(id)a4 account:(id)a5;
-+ (id)predicateForHashtagWithStandardizedContent:(id)a3 onlyVisible:(BOOL)a4 account:(id)a5;
-+ (id)renameHashtagsWithStandardizedContent:(id)a3 newDisplayText:(id)a4 context:(id)a5;
-+ (id)standardizedHashtagRepresentationForDisplayText:(id)a3;
-+ (void)dedupeHashtagsInAccount:(id)a3 atomicityExploitationCallback:(id)a4;
-+ (void)purgeHashtag:(id)a3;
-- (BOOL)canRenameTagWithNewDisplayText:(id)a3;
++ (BOOL)regenerateStandardizedContentForAllHashtagsInContext:(id)context hasChanges:(BOOL *)changes;
++ (id)allVisibleHashtagsForAccount:(id)account;
++ (id)allVisibleHashtagsInContext:(id)context;
++ (id)canonicalHashtagsInContext:(id)context;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)hashtagObjectIDWithStandardizedContent:(id)content context:(id)context;
++ (id)hashtagObjectIDsWithStandardizedContents:(id)contents context:(id)context;
++ (id)hashtagWithDisplayText:(id)text account:(id)account createIfNecessary:(BOOL)necessary;
++ (id)hashtagWithIdentifier:(id)identifier context:(id)context;
++ (id)hashtagWithStandardizedContent:(id)content account:(id)account;
++ (id)hashtagWithStandardizedContent:(id)content onlyVisible:(BOOL)visible account:(id)account;
++ (id)hashtagsWithStandardizedContent:(id)content onlyVisible:(BOOL)visible account:(id)account context:(id)context;
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context;
++ (id)newHashtagWithIdentifier:(id)identifier displayText:(id)text account:(id)account;
++ (id)predicateForHashtagWithStandardizedContent:(id)content onlyVisible:(BOOL)visible account:(id)account;
++ (id)renameHashtagsWithStandardizedContent:(id)content newDisplayText:(id)text context:(id)context;
++ (id)standardizedHashtagRepresentationForDisplayText:(id)text;
++ (void)dedupeHashtagsInAccount:(id)account atomicityExploitationCallback:(id)callback;
++ (void)purgeHashtag:(id)hashtag;
+- (BOOL)canRenameTagWithNewDisplayText:(id)text;
 - (BOOL)isInICloudAccount;
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6;
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state;
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet;
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet;
 - (NSString)searchDomainIdentifier;
 - (NSString)searchIndexingIdentifier;
 - (id)ic_loggingValues;
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4;
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state;
 - (id)searchableTextContent;
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3;
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set;
 @end
 
 @implementation ICHashtag
 
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state
 {
-  v10 = a3;
-  if (a5)
+  recordCopy = record;
+  if (approach)
   {
     v11 = MEMORY[0x277D36198];
-    v12 = [(ICHashtag *)self className];
-    v13 = ICStringFromSyncingApproach(a5);
-    [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICHashtag(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", v12, v13}];
+    className = [(ICHashtag *)self className];
+    v13 = ICStringFromSyncingApproach(approach);
+    [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICHashtag(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", className, v13}];
 
 LABEL_5:
     v23 = 0;
@@ -50,27 +50,27 @@ LABEL_5:
 
   v25.receiver = self;
   v25.super_class = ICHashtag;
-  if (![(ICCloudSyncingObject *)&v25 mergeCloudKitRecord:v10 accountID:a4 approach:0 mergeableFieldState:a6])
+  if (![(ICCloudSyncingObject *)&v25 mergeCloudKitRecord:recordCopy accountID:d approach:0 mergeableFieldState:state])
   {
     goto LABEL_5;
   }
 
-  v14 = [v10 recordID];
-  v15 = [v14 recordName];
-  [(ICHashtag *)self setIdentifier:v15];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  [(ICHashtag *)self setIdentifier:recordName];
 
-  v16 = [v10 objectForKeyedSubscript:@"CreationDate"];
+  v16 = [recordCopy objectForKeyedSubscript:@"CreationDate"];
   [(ICHashtag *)self setCreationDate:v16];
 
-  v17 = [v10 encryptedValues];
-  v18 = [v17 objectForKeyedSubscript:@"DisplayTextEncrypted"];
-  v19 = [v18 ic_stringValue];
-  [(ICHashtag *)self setDisplayText:v19];
+  encryptedValues = [recordCopy encryptedValues];
+  v18 = [encryptedValues objectForKeyedSubscript:@"DisplayTextEncrypted"];
+  ic_stringValue = [v18 ic_stringValue];
+  [(ICHashtag *)self setDisplayText:ic_stringValue];
 
-  v20 = [v10 encryptedValues];
-  v21 = [v20 objectForKeyedSubscript:@"StandardizedContentEncrypted"];
-  v22 = [v21 ic_stringValue];
-  [(ICHashtag *)self setStandardizedContent:v22];
+  encryptedValues2 = [recordCopy encryptedValues];
+  v21 = [encryptedValues2 objectForKeyedSubscript:@"StandardizedContentEncrypted"];
+  ic_stringValue2 = [v21 ic_stringValue];
+  [(ICHashtag *)self setStandardizedContent:ic_stringValue2];
 
   v23 = 1;
 LABEL_6:
@@ -78,13 +78,13 @@ LABEL_6:
   return v23;
 }
 
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state
 {
-  if (a3)
+  if (approach)
   {
     v6 = MEMORY[0x277D36198];
-    v7 = [(ICHashtag *)self className:a3];
-    v8 = ICStringFromSyncingApproach(a3);
+    v7 = [(ICHashtag *)self className:approach];
+    v8 = ICStringFromSyncingApproach(approach);
     [v6 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICHashtag(CloudKit) makeCloudKitRecordForApproach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", v7, v8}];
 
     v9 = 0;
@@ -94,63 +94,63 @@ LABEL_6:
   {
     v21.receiver = self;
     v21.super_class = ICHashtag;
-    v9 = [(ICCloudSyncingObject *)&v21 makeCloudKitRecordForApproach:0 mergeableFieldState:a4];
-    v10 = [(ICCloudSyncingObject *)self creationDate];
+    v9 = [(ICCloudSyncingObject *)&v21 makeCloudKitRecordForApproach:0 mergeableFieldState:state];
+    creationDate = [(ICCloudSyncingObject *)self creationDate];
 
-    if (v10)
+    if (creationDate)
     {
-      v11 = [(ICCloudSyncingObject *)self creationDate];
-      [v9 setObject:v11 forKeyedSubscript:@"CreationDate"];
+      creationDate2 = [(ICCloudSyncingObject *)self creationDate];
+      [v9 setObject:creationDate2 forKeyedSubscript:@"CreationDate"];
     }
 
-    v12 = [(ICHashtag *)self displayText];
+    displayText = [(ICHashtag *)self displayText];
 
-    if (v12)
+    if (displayText)
     {
-      v13 = [(ICHashtag *)self displayText];
-      v14 = [v13 ic_dataValue];
-      v15 = [v9 encryptedValues];
-      [v15 setObject:v14 forKeyedSubscript:@"DisplayTextEncrypted"];
+      displayText2 = [(ICHashtag *)self displayText];
+      ic_dataValue = [displayText2 ic_dataValue];
+      encryptedValues = [v9 encryptedValues];
+      [encryptedValues setObject:ic_dataValue forKeyedSubscript:@"DisplayTextEncrypted"];
     }
 
-    v16 = [(ICHashtag *)self standardizedContent];
+    standardizedContent = [(ICHashtag *)self standardizedContent];
 
-    if (v16)
+    if (standardizedContent)
     {
-      v17 = [(ICHashtag *)self standardizedContent];
-      v18 = [v17 ic_dataValue];
-      v19 = [v9 encryptedValues];
-      [v19 setObject:v18 forKeyedSubscript:@"StandardizedContentEncrypted"];
+      standardizedContent2 = [(ICHashtag *)self standardizedContent];
+      ic_dataValue2 = [standardizedContent2 ic_dataValue];
+      encryptedValues2 = [v9 encryptedValues];
+      [encryptedValues2 setObject:ic_dataValue2 forKeyedSubscript:@"StandardizedContentEncrypted"];
     }
   }
 
   return v9;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
-  v6 = a5;
-  v7 = [a3 recordName];
-  v8 = [ICHashtag hashtagWithIdentifier:v7 context:v6];
+  contextCopy = context;
+  recordName = [d recordName];
+  v8 = [ICHashtag hashtagWithIdentifier:recordName context:contextCopy];
 
   return v8;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [ICAccount cloudKitAccountWithIdentifier:v7 context:a5];
-  v10 = [v8 recordID];
-  v11 = [v10 recordName];
-  v12 = [ICHashtag newHashtagWithIdentifier:v11 displayText:&stru_2827172C0 account:v9];
+  dCopy = d;
+  recordCopy = record;
+  v9 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:context];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v12 = [ICHashtag newHashtagWithIdentifier:recordName displayText:&stru_2827172C0 account:v9];
 
   [v9 addHashtagsObject:v12];
-  v13 = [MEMORY[0x277CBEAA8] distantPast];
-  [v12 setCreationDate:v13];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [v12 setCreationDate:distantPast];
 
-  [v12 mergeCloudKitRecord:v8 accountID:v7 approach:0];
-  [v12 setServerRecord:v8];
+  [v12 mergeCloudKitRecord:recordCopy accountID:dCopy approach:0];
+  [v12 setServerRecord:recordCopy];
 
   [v12 setInCloud:1];
   [v12 clearChangeCountWithReason:@"Created tag"];
@@ -161,23 +161,23 @@ LABEL_6:
 
 - (BOOL)isInICloudAccount
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICHashtag *)self managedObjectContext];
+  managedObjectContext = [(ICHashtag *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__ICHashtag_CloudKit__isInICloudAccount__block_invoke;
   v5[3] = &unk_278194D68;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __40__ICHashtag_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
@@ -196,131 +196,131 @@ void __40__ICHashtag_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
 
 - (NSString)searchIndexingIdentifier
 {
-  v2 = [(ICHashtag *)self objectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  objectID = [(ICHashtag *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (NSString)searchDomainIdentifier
 {
-  v2 = [(ICHashtag *)self account];
-  v3 = [v2 identifier];
+  account = [(ICHashtag *)self account];
+  identifier = [account identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet
 {
   v3 = [objc_alloc(MEMORY[0x277CC34B8]) initWithItemContentType:@"com.apple.notes.spotlightrecord"];
-  v4 = [(ICCloudSyncingObject *)self creationDate];
-  [v3 setContentCreationDate:v4];
+  creationDate = [(ICCloudSyncingObject *)self creationDate];
+  [v3 setContentCreationDate:creationDate];
 
-  v5 = [(ICCloudSyncingObject *)self creationDate];
-  [v3 setAddedDate:v5];
+  creationDate2 = [(ICCloudSyncingObject *)self creationDate];
+  [v3 setAddedDate:creationDate2];
 
   return v3;
 }
 
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet
 {
-  v3 = [(ICHashtag *)self userActivityContentAttributeSet];
-  v4 = [(ICHashtag *)self displayText];
-  [v3 setDisplayName:v4];
-  [v3 setTextContent:v4];
-  [v3 setIc_searchResultType:4];
-  [v3 ic_populateValuesForSpecializedFields];
-  [v3 setDataOwnerType:&unk_282747B20];
+  userActivityContentAttributeSet = [(ICHashtag *)self userActivityContentAttributeSet];
+  displayText = [(ICHashtag *)self displayText];
+  [userActivityContentAttributeSet setDisplayName:displayText];
+  [userActivityContentAttributeSet setTextContent:displayText];
+  [userActivityContentAttributeSet setIc_searchResultType:4];
+  [userActivityContentAttributeSet ic_populateValuesForSpecializedFields];
+  [userActivityContentAttributeSet setDataOwnerType:&unk_282747B20];
   if (objc_opt_respondsToSelector())
   {
-    [(ICHashtag *)self associateAppEntityWithSearchableItemAttributeSet:v3];
+    [(ICHashtag *)self associateAppEntityWithSearchableItemAttributeSet:userActivityContentAttributeSet];
   }
 
-  return v3;
+  return userActivityContentAttributeSet;
 }
 
 - (id)searchableTextContent
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICHashtag *)self displayText];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  displayText = [(ICHashtag *)self displayText];
+  if (displayText)
   {
-    [v3 addObject:v4];
+    [array addObject:displayText];
   }
 
-  v5 = [(ICHashtag *)self standardizedContent];
-  if (v5)
+  standardizedContent = [(ICHashtag *)self standardizedContent];
+  if (standardizedContent)
   {
-    [v3 addObject:v5];
+    [array addObject:standardizedContent];
   }
 
-  v6 = [v3 componentsJoinedByString:@" "];
+  v6 = [array componentsJoinedByString:@" "];
 
   return v6;
 }
 
-+ (id)hashtagWithDisplayText:(id)a3 account:(id)a4 createIfNecessary:(BOOL)a5
++ (id)hashtagWithDisplayText:(id)text account:(id)account createIfNecessary:(BOOL)necessary
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 standardizedHashtagRepresentationForDisplayText:v8];
-  v11 = [a1 hashtagWithStandardizedContent:v10 account:v9];
-  if (!v11 && v5)
+  necessaryCopy = necessary;
+  textCopy = text;
+  accountCopy = account;
+  v10 = [self standardizedHashtagRepresentationForDisplayText:textCopy];
+  v11 = [self hashtagWithStandardizedContent:v10 account:accountCopy];
+  if (!v11 && necessaryCopy)
   {
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v11 = [a1 newHashtagWithIdentifier:v13 displayText:v8 account:v9];
+    v11 = [self newHashtagWithIdentifier:uUIDString displayText:textCopy account:accountCopy];
     [v11 updateChangeCountWithReason:@"Created tag"];
   }
 
   return v11;
 }
 
-+ (id)newHashtagWithIdentifier:(id)a3 displayText:(id)a4 account:(id)a5
++ (id)newHashtagWithIdentifier:(id)identifier displayText:(id)text account:(id)account
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 managedObjectContext];
-  v12 = [a1 newObjectWithIdentifier:v10 context:v11];
+  accountCopy = account;
+  textCopy = text;
+  identifierCopy = identifier;
+  managedObjectContext = [accountCopy managedObjectContext];
+  v12 = [self newObjectWithIdentifier:identifierCopy context:managedObjectContext];
 
   v13 = [MEMORY[0x277CBEAA8] now];
   [v12 setCreationDate:v13];
 
-  v14 = [v9 ic_withoutHashtagPrefix];
-  [v12 setDisplayText:v14];
+  ic_withoutHashtagPrefix = [textCopy ic_withoutHashtagPrefix];
+  [v12 setDisplayText:ic_withoutHashtagPrefix];
 
-  v15 = [a1 standardizedHashtagRepresentationForDisplayText:v9];
+  v15 = [self standardizedHashtagRepresentationForDisplayText:textCopy];
 
   [v12 setStandardizedContent:v15];
-  v16 = [v8 persistentStore];
-  [v12 assignToPersistentStore:v16];
+  persistentStore = [accountCopy persistentStore];
+  [v12 assignToPersistentStore:persistentStore];
 
-  [v8 addHashtagsObject:v12];
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
+  [accountCopy addHashtagsObject:v12];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v12, @"ICAccountDidAddHashtagNotificationHashtagKey", 0}];
-  [v17 postNotificationName:@"ICAccountDidAddHashtagNotification" object:v8 userInfo:v18];
+  [defaultCenter postNotificationName:@"ICAccountDidAddHashtagNotification" object:accountCopy userInfo:v18];
 
   return v12;
 }
 
-+ (id)allVisibleHashtagsInContext:(id)a3
++ (id)allVisibleHashtagsInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 predicateForVisibleObjects];
-  v6 = [a1 ic_objectsMatchingPredicate:v5 context:v4];
+  contextCopy = context;
+  predicateForVisibleObjects = [self predicateForVisibleObjects];
+  v6 = [self ic_objectsMatchingPredicate:predicateForVisibleObjects context:contextCopy];
 
   return v6;
 }
 
-+ (id)canonicalHashtagsInContext:(id)a3
++ (id)canonicalHashtagsInContext:(id)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [a1 allVisibleHashtagsInContext:a3];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  v3 = [self allVisibleHashtagsInContext:context];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -341,12 +341,12 @@ void __40__ICHashtag_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 standardizedContent];
-        v11 = [v4 objectForKeyedSubscript:v10];
+        standardizedContent = [v9 standardizedContent];
+        v11 = [dictionary objectForKeyedSubscript:standardizedContent];
         v12 = v11;
         if (!v11 || ([v11 creationDate], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "creationDate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "compare:", v14), v14, v13, v15 >= 1))
         {
-          [v4 setObject:v9 forKeyedSubscript:v10];
+          [dictionary setObject:v9 forKeyedSubscript:standardizedContent];
         }
       }
 
@@ -360,24 +360,24 @@ void __40__ICHashtag_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
   v17 = NSStringFromSelector(sel_standardizedContent);
   v18 = [v16 sortDescriptorWithKey:v17 ascending:1];
 
-  v19 = [v4 allValues];
+  allValues = [dictionary allValues];
   v28 = v18;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-  v21 = [v19 sortedArrayUsingDescriptors:v20];
+  v21 = [allValues sortedArrayUsingDescriptors:v20];
 
   return v21;
 }
 
-- (BOOL)canRenameTagWithNewDisplayText:(id)a3
+- (BOOL)canRenameTagWithNewDisplayText:(id)text
 {
-  v4 = [ICHashtag standardizedHashtagRepresentationForDisplayText:a3];
-  v5 = [(ICHashtag *)self account];
-  v6 = [ICHashtag hashtagWithStandardizedContent:v4 account:v5];
+  v4 = [ICHashtag standardizedHashtagRepresentationForDisplayText:text];
+  account = [(ICHashtag *)self account];
+  v6 = [ICHashtag hashtagWithStandardizedContent:v4 account:account];
 
   if (v6)
   {
-    v7 = [(ICHashtag *)self standardizedContent];
-    v8 = [v7 isEqualToString:v4];
+    standardizedContent = [(ICHashtag *)self standardizedContent];
+    v8 = [standardizedContent isEqualToString:v4];
   }
 
   else
@@ -388,31 +388,31 @@ void __40__ICHashtag_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (id)hashtagWithIdentifier:(id)a3 context:(id)a4
++ (id)hashtagWithIdentifier:(id)identifier context:(id)context
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"identifier = %@", a3];
-  v9 = [a1 ic_objectsMatchingPredicate:v8 context:v7];
+  contextCopy = context;
+  identifier = [v6 predicateWithFormat:@"identifier = %@", identifier];
+  v9 = [self ic_objectsMatchingPredicate:identifier context:contextCopy];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)hashtagsWithStandardizedContent:(id)a3 onlyVisible:(BOOL)a4 account:(id)a5 context:(id)a6
++ (id)hashtagsWithStandardizedContent:(id)content onlyVisible:(BOOL)visible account:(id)account context:(id)context
 {
-  v7 = a4;
+  visibleCopy = visible;
   v16[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if (a3)
+  contextCopy = context;
+  if (content)
   {
-    v11 = [a1 predicateForHashtagWithStandardizedContent:a3 onlyVisible:v7 account:a5];
+    v11 = [self predicateForHashtagWithStandardizedContent:content onlyVisible:visibleCopy account:account];
     v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
     v16[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
 
-    v14 = [a1 ic_objectsMatchingPredicate:v11 sortDescriptors:v13 context:v10];
+    v14 = [self ic_objectsMatchingPredicate:v11 sortDescriptors:v13 context:contextCopy];
   }
 
   else
@@ -424,17 +424,17 @@ void __40__ICHashtag_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
   return v14;
 }
 
-+ (id)hashtagObjectIDsWithStandardizedContents:(id)a3 context:(id)a4
++ (id)hashtagObjectIDsWithStandardizedContents:(id)contents context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invoke;
   v14 = &unk_2781997B8;
-  v15 = v6;
-  v16 = a1;
-  v7 = v6;
-  v8 = [a3 ic_flatMap:&v11];
+  v15 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
+  v8 = [contents ic_flatMap:&v11];
   v9 = [MEMORY[0x277CBEB98] setWithArray:{v8, v11, v12, v13, v14}];
 
   return v9;
@@ -448,82 +448,82 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
   return v3;
 }
 
-+ (id)hashtagObjectIDWithStandardizedContent:(id)a3 context:(id)a4
++ (id)hashtagObjectIDWithStandardizedContent:(id)content context:(id)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  contentCopy = content;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v13 count:1];
+  contextCopy = context;
+  contentCopy2 = content;
+  v9 = [v6 arrayWithObjects:&contentCopy count:1];
 
-  v10 = [a1 hashtagObjectIDsWithStandardizedContents:v9 context:{v7, v13, v14}];
+  v10 = [self hashtagObjectIDsWithStandardizedContents:v9 context:{contextCopy, contentCopy, v14}];
 
-  v11 = [v10 anyObject];
+  anyObject = [v10 anyObject];
 
-  return v11;
+  return anyObject;
 }
 
-+ (id)hashtagWithStandardizedContent:(id)a3 account:(id)a4
++ (id)hashtagWithStandardizedContent:(id)content account:(id)account
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 managedObjectContext];
-  v9 = [a1 hashtagsWithStandardizedContent:v7 onlyVisible:1 account:v6 context:v8];
+  accountCopy = account;
+  contentCopy = content;
+  managedObjectContext = [accountCopy managedObjectContext];
+  v9 = [self hashtagsWithStandardizedContent:contentCopy onlyVisible:1 account:accountCopy context:managedObjectContext];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)hashtagWithStandardizedContent:(id)a3 onlyVisible:(BOOL)a4 account:(id)a5
++ (id)hashtagWithStandardizedContent:(id)content onlyVisible:(BOOL)visible account:(id)account
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 managedObjectContext];
-  v11 = [a1 hashtagsWithStandardizedContent:v9 onlyVisible:v5 account:v8 context:v10];
+  visibleCopy = visible;
+  accountCopy = account;
+  contentCopy = content;
+  managedObjectContext = [accountCopy managedObjectContext];
+  v11 = [self hashtagsWithStandardizedContent:contentCopy onlyVisible:visibleCopy account:accountCopy context:managedObjectContext];
 
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)allVisibleHashtagsForAccount:(id)a3
++ (id)allVisibleHashtagsForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [a1 predicateForHashtagWithStandardizedContent:0 onlyVisible:1 account:v4];
-  v6 = [v4 managedObjectContext];
+  accountCopy = account;
+  v5 = [self predicateForHashtagWithStandardizedContent:0 onlyVisible:1 account:accountCopy];
+  managedObjectContext = [accountCopy managedObjectContext];
 
-  v7 = [a1 ic_objectsMatchingPredicate:v5 context:v6];
+  v7 = [self ic_objectsMatchingPredicate:v5 context:managedObjectContext];
 
   return v7;
 }
 
-+ (id)predicateForHashtagWithStandardizedContent:(id)a3 onlyVisible:(BOOL)a4 account:(id)a5
++ (id)predicateForHashtagWithStandardizedContent:(id)content onlyVisible:(BOOL)visible account:(id)account
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  visibleCopy = visible;
+  contentCopy = content;
+  accountCopy = account;
   v10 = objc_opt_new();
-  if (v6)
+  if (visibleCopy)
   {
-    v11 = [a1 predicateForVisibleObjects];
-    [v10 addObject:v11];
+    predicateForVisibleObjects = [self predicateForVisibleObjects];
+    [v10 addObject:predicateForVisibleObjects];
   }
 
-  if (v9)
+  if (accountCopy)
   {
     v12 = MEMORY[0x277CCAC30];
-    v13 = [v9 identifier];
-    v14 = [v12 predicateWithFormat:@"account.identifier == %@", v13];
+    identifier = [accountCopy identifier];
+    v14 = [v12 predicateWithFormat:@"account.identifier == %@", identifier];
     [v10 addObject:v14];
   }
 
-  if ([v8 length])
+  if ([contentCopy length])
   {
-    v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"standardizedContent == %@", v8];
-    [v10 addObject:v15];
+    contentCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"standardizedContent == %@", contentCopy];
+    [v10 addObject:contentCopy];
   }
 
   v16 = MEMORY[0x277CCA920];
@@ -533,47 +533,47 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
   return v18;
 }
 
-+ (void)purgeHashtag:(id)a3
++ (void)purgeHashtag:(id)hashtag
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 postNotificationName:@"ICAccountDidPurgeHashtagNotification" object:0 userInfo:0];
+  hashtagCopy = hashtag;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotificationName:@"ICAccountDidPurgeHashtagNotification" object:0 userInfo:0];
 
-  v6 = [v4 managedObjectContext];
-  [v6 deleteObject:v4];
+  managedObjectContext = [hashtagCopy managedObjectContext];
+  [managedObjectContext deleteObject:hashtagCopy];
 }
 
-+ (id)standardizedHashtagRepresentationForDisplayText:(id)a3
++ (id)standardizedHashtagRepresentationForDisplayText:(id)text
 {
   v3 = MEMORY[0x277CBEAF8];
-  v4 = a3;
-  v5 = [v3 currentLocale];
-  v6 = [v4 stringByFoldingWithOptions:257 locale:v5];
+  textCopy = text;
+  currentLocale = [v3 currentLocale];
+  v6 = [textCopy stringByFoldingWithOptions:257 locale:currentLocale];
 
-  v7 = [v6 ic_trimmedString];
+  ic_trimmedString = [v6 ic_trimmedString];
 
   v8 = MEMORY[0x277CCA900];
-  v9 = [MEMORY[0x277CCACA8] ic_hashtagCharacterString];
-  v10 = [v8 characterSetWithCharactersInString:v9];
-  v11 = [v7 ic_stringByTrimmingLeadingCharactersInSet:v10];
+  ic_hashtagCharacterString = [MEMORY[0x277CCACA8] ic_hashtagCharacterString];
+  v10 = [v8 characterSetWithCharactersInString:ic_hashtagCharacterString];
+  v11 = [ic_trimmedString ic_stringByTrimmingLeadingCharactersInSet:v10];
 
-  v12 = [v11 uppercaseString];
+  uppercaseString = [v11 uppercaseString];
 
-  v13 = [v12 stringByReplacingOccurrencesOfString:@" " withString:&stru_2827172C0];
+  v13 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:&stru_2827172C0];
 
   return v13;
 }
 
-+ (void)dedupeHashtagsInAccount:(id)a3 atomicityExploitationCallback:(id)a4
++ (void)dedupeHashtagsInAccount:(id)account atomicityExploitationCallback:(id)callback
 {
   v86[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v66 = a4;
+  accountCopy = account;
+  callbackCopy = callback;
   v7 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [ICHashtag dedupeHashtagsInAccount:v6 atomicityExploitationCallback:v7];
+    [ICHashtag dedupeHashtagsInAccount:accountCopy atomicityExploitationCallback:v7];
   }
 
   v8 = MEMORY[0x277CCA9C0];
@@ -590,40 +590,40 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
   v14 = +[ICCloudSyncingObject predicateForVisibleObjects];
   v85[0] = v14;
   v15 = MEMORY[0x277CCAC30];
-  v16 = [v6 identifier];
-  v17 = [v15 predicateWithFormat:@"account.identifier == %@", v16];
+  identifier = [accountCopy identifier];
+  v17 = [v15 predicateWithFormat:@"account.identifier == %@", identifier];
   v85[1] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:2];
   v19 = [v13 andPredicateWithSubpredicates:v18];
 
   v20 = v19;
-  v21 = [a1 fetchRequest];
-  [v21 setPredicate:v19];
-  [v21 setPropertiesToGroupBy:&unk_2827480C0];
+  fetchRequest = [self fetchRequest];
+  [fetchRequest setPredicate:v19];
+  [fetchRequest setPropertiesToGroupBy:&unk_2827480C0];
   v84[0] = @"standardizedContent";
   v84[1] = v12;
   v84[2] = @"objectID";
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v84 count:3];
-  [v21 setPropertiesToFetch:v22];
+  [fetchRequest setPropertiesToFetch:v22];
 
-  [v21 setResultType:2];
-  v23 = [v6 managedObjectContext];
+  [fetchRequest setResultType:2];
+  managedObjectContext = [accountCopy managedObjectContext];
   v76 = 0;
-  v24 = [v23 executeFetchRequest:v21 error:&v76];
+  v24 = [managedObjectContext executeFetchRequest:fetchRequest error:&v76];
   v25 = v76;
 
   if (v25)
   {
     v26 = MEMORY[0x277D36198];
-    v27 = [v6 identifier];
-    [v26 handleFailedAssertWithCondition:"__objc_no" functionName:"+[ICHashtag dedupeHashtagsInAccount:atomicityExploitationCallback:]" simulateCrash:1 showAlert:0 format:{@"Failed to fetch unique hashtags for account %@: %@", v27, v25}];
-    v28 = v66;
+    identifier2 = [accountCopy identifier];
+    [v26 handleFailedAssertWithCondition:"__objc_no" functionName:"+[ICHashtag dedupeHashtagsInAccount:atomicityExploitationCallback:]" simulateCrash:1 showAlert:0 format:{@"Failed to fetch unique hashtags for account %@: %@", identifier2, v25}];
+    v28 = callbackCopy;
   }
 
   else
   {
-    v59 = a1;
-    v60 = v21;
+    selfCopy = self;
+    v60 = fetchRequest;
     v62 = v11;
     v63 = v20;
     v61 = v12;
@@ -632,19 +632,19 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       v30 = [v24 count];
-      v31 = [v6 identifier];
+      identifier3 = [accountCopy identifier];
       *buf = 134218242;
       v81 = v30;
       v82 = 2112;
-      v83 = v31;
+      v83 = identifier3;
       _os_log_impl(&dword_214D51000, v29, OS_LOG_TYPE_DEFAULT, "Found %lu unique hashtags for account: %@", buf, 0x16u);
 
       v24 = v65;
     }
 
-    v64 = v6;
+    v64 = accountCopy;
 
-    v27 = [MEMORY[0x277CBEB58] set];
+    identifier2 = [MEMORY[0x277CBEB58] set];
     v32 = [MEMORY[0x277CBEB58] set];
     v72 = 0u;
     v73 = 0u;
@@ -667,7 +667,7 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
 
           v38 = *(*(&v72 + 1) + 8 * i);
           v39 = [v38 objectForKeyedSubscript:@"objectID"];
-          [v27 addObject:v39];
+          [identifier2 addObject:v39];
 
           v40 = [v38 objectForKeyedSubscript:@"standardizedContent"];
           [v32 addObject:v40];
@@ -679,34 +679,34 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
       while (v35);
     }
 
-    v28 = v66;
-    if (v66)
+    v28 = callbackCopy;
+    if (callbackCopy)
     {
-      (*(v66 + 2))(v66);
+      (*(callbackCopy + 2))(callbackCopy);
     }
 
-    v41 = [v59 fetchRequest];
+    fetchRequest2 = [selfCopy fetchRequest];
     v42 = MEMORY[0x277CCA920];
     v78[0] = v20;
     v43 = [MEMORY[0x277CCAC30] predicateWithFormat:@"standardizedContent IN %@", v32];
     v78[1] = v43;
-    v44 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (self IN %@)", v27];
+    v44 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (self IN %@)", identifier2];
     v78[2] = v44;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:3];
     v46 = [v42 andPredicateWithSubpredicates:v45];
-    [v41 setPredicate:v46];
+    [fetchRequest2 setPredicate:v46];
 
-    v6 = v64;
-    v47 = [v64 managedObjectContext];
+    accountCopy = v64;
+    managedObjectContext2 = [v64 managedObjectContext];
     v71 = 0;
-    v48 = [v47 executeFetchRequest:v41 error:&v71];
+    v48 = [managedObjectContext2 executeFetchRequest:fetchRequest2 error:&v71];
     v25 = v71;
 
     if (v25)
     {
       v49 = MEMORY[0x277D36198];
-      v50 = [v64 identifier];
-      [v49 handleFailedAssertWithCondition:"__objc_no" functionName:"+[ICHashtag dedupeHashtagsInAccount:atomicityExploitationCallback:]" simulateCrash:1 showAlert:0 format:{@"Failed to fetch hashtags to delete for account %@: %@", v50, v25}];
+      identifier4 = [v64 identifier];
+      [v49 handleFailedAssertWithCondition:"__objc_no" functionName:"+[ICHashtag dedupeHashtagsInAccount:atomicityExploitationCallback:]" simulateCrash:1 showAlert:0 format:{@"Failed to fetch hashtags to delete for account %@: %@", identifier4, v25}];
     }
 
     else
@@ -747,10 +747,10 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
         while (v53);
       }
 
-      v6 = v64;
-      v50 = [v64 managedObjectContext];
-      [v50 ic_save];
-      v28 = v66;
+      accountCopy = v64;
+      identifier4 = [v64 managedObjectContext];
+      [identifier4 ic_save];
+      v28 = callbackCopy;
       v20 = v63;
       v25 = 0;
       v48 = v58;
@@ -758,18 +758,18 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
 
     v12 = v61;
     v11 = v62;
-    v21 = v60;
+    fetchRequest = v60;
     v24 = v65;
   }
 }
 
-+ (BOOL)regenerateStandardizedContentForAllHashtagsInContext:(id)a3 hasChanges:(BOOL *)a4
++ (BOOL)regenerateStandardizedContentForAllHashtagsInContext:(id)context hasChanges:(BOOL *)changes
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 predicateForHashtagWithStandardizedContent:0 onlyVisible:1 account:0];
-  v25 = v6;
-  [a1 ic_objectsMatchingPredicate:v7 context:v6];
+  contextCopy = context;
+  v7 = [self predicateForHashtagWithStandardizedContent:0 onlyVisible:1 account:0];
+  v25 = contextCopy;
+  [self ic_objectsMatchingPredicate:v7 context:contextCopy];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -779,7 +779,7 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
   {
 
     v20 = 0;
-    if (!a4)
+    if (!changes)
     {
       goto LABEL_17;
     }
@@ -789,7 +789,7 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
 
   v10 = v9;
   v22 = v7;
-  v23 = a4;
+  changesCopy = changes;
   v24 = 0;
   v11 = *v27;
   do
@@ -803,16 +803,16 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
 
       v13 = *(*(&v26 + 1) + 8 * i);
       v14 = objc_autoreleasePoolPush();
-      v15 = [v13 displayText];
-      v16 = [a1 standardizedHashtagRepresentationForDisplayText:v15];
+      displayText = [v13 displayText];
+      v16 = [self standardizedHashtagRepresentationForDisplayText:displayText];
 
-      v17 = [v13 standardizedContent];
-      v18 = [v16 isEqualToString:v17];
+      standardizedContent = [v13 standardizedContent];
+      v18 = [v16 isEqualToString:standardizedContent];
 
       if ((v18 & 1) == 0)
       {
-        v19 = [v13 standardizedContent];
-        [ICInlineAttachment regenerateTokenContentIdentifierForHashtagAttachmentsInContext:v25 currentTokenContentIdentifier:v19 save:0];
+        standardizedContent2 = [v13 standardizedContent];
+        [ICInlineAttachment regenerateTokenContentIdentifierForHashtagAttachmentsInContext:v25 currentTokenContentIdentifier:standardizedContent2 save:0];
 
         [v13 setStandardizedContent:v16];
         [v13 updateChangeCountWithReason:@"Regenerated standardized content"];
@@ -839,11 +839,11 @@ id __62__ICHashtag_hashtagObjectIDsWithStandardizedContents_context___block_invo
   }
 
   v7 = v22;
-  a4 = v23;
-  if (v23)
+  changes = changesCopy;
+  if (changesCopy)
   {
 LABEL_16:
-    *a4 = v20;
+    *changes = v20;
   }
 
 LABEL_17:
@@ -851,33 +851,33 @@ LABEL_17:
   return 1;
 }
 
-+ (id)renameHashtagsWithStandardizedContent:(id)a3 newDisplayText:(id)a4 context:(id)a5
++ (id)renameHashtagsWithStandardizedContent:(id)content newDisplayText:(id)text context:(id)context
 {
   v68 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (![v7 length])
+  contentCopy = content;
+  textCopy = text;
+  contextCopy = context;
+  if (![textCopy length])
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"newDisplayText.length" functionName:"+[ICHashtag renameHashtagsWithStandardizedContent:newDisplayText:context:]" simulateCrash:1 showAlert:0 format:@"Hashtag must have a non-empty display text"];
   }
 
   v9 = 0x278192000uLL;
-  v10 = [ICHashtag standardizedHashtagRepresentationForDisplayText:v7];
-  v42 = v7;
-  v11 = [v7 ic_withHashtagPrefix];
-  v41 = [MEMORY[0x277CBEB18] array];
+  v10 = [ICHashtag standardizedHashtagRepresentationForDisplayText:textCopy];
+  v42 = textCopy;
+  ic_withHashtagPrefix = [textCopy ic_withHashtagPrefix];
+  array = [MEMORY[0x277CBEB18] array];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [ICAccount allActiveAccountsInContext:v8];
+  obj = [ICAccount allActiveAccountsInContext:contextCopy];
   v45 = [obj countByEnumeratingWithState:&v60 objects:v67 count:16];
   if (v45)
   {
     v43 = *v61;
-    v44 = v8;
-    v50 = v11;
+    v44 = contextCopy;
+    v50 = ic_withHashtagPrefix;
     do
     {
       v12 = 0;
@@ -890,13 +890,13 @@ LABEL_17:
 
         v49 = v12;
         v13 = *(*(&v60 + 1) + 8 * v12);
-        v14 = [*(v9 + 3328) hashtagWithStandardizedContent:v51 account:v13];
+        v14 = [*(v9 + 3328) hashtagWithStandardizedContent:contentCopy account:v13];
         [v14 markForDeletion];
         v48 = v14;
         if (v14)
         {
           v15 = [*(v9 + 3328) hashtagWithDisplayText:v42 account:v13 createIfNecessary:1];
-          [v41 addObject:v15];
+          [array addObject:v15];
         }
 
         v47 = v13;
@@ -905,11 +905,11 @@ LABEL_17:
         v66[0] = v17;
         v18 = [ICInlineAttachment predicateForTypeUTI:@"com.apple.notes.inlinetextattachment.hashtag"];
         v66[1] = v18;
-        v19 = [ICInlineAttachment predicateForTokenContentIdentifier:v51];
+        v19 = [ICInlineAttachment predicateForTokenContentIdentifier:contentCopy];
         v66[2] = v19;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:3];
         v21 = [v16 andPredicateWithSubpredicates:v20];
-        v22 = [ICInlineAttachment ic_objectsMatchingPredicate:v21 context:v8];
+        v22 = [ICInlineAttachment ic_objectsMatchingPredicate:v21 context:contextCopy];
 
         v58 = 0u;
         v59 = 0u;
@@ -949,7 +949,7 @@ LABEL_17:
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v30 = [ICFolder visibleSmartFoldersForHashtagStandardizedContent:v51 account:v47];
+        v30 = [ICFolder visibleSmartFoldersForHashtagStandardizedContent:contentCopy account:v47];
         v31 = [v30 countByEnumeratingWithState:&v52 objects:v64 count:16];
         if (v31)
         {
@@ -965,8 +965,8 @@ LABEL_17:
               }
 
               v35 = *(*(&v52 + 1) + 8 * j);
-              v36 = [v35 smartFolderQuery];
-              v37 = [v36 replacingTagIdentifier:v51 withNewTagIdentifier:v10];
+              smartFolderQuery = [v35 smartFolderQuery];
+              v37 = [smartFolderQuery replacingTagIdentifier:contentCopy withNewTagIdentifier:v10];
               [v35 setSmartFolderQuery:v37];
 
               [v35 updateChangeCountWithReason:@"Renamed tag"];
@@ -979,9 +979,9 @@ LABEL_17:
         }
 
         [ICInlineAttachment regenerateDerivedDataForInlineAttachments:v46 reason:@"Renamed tag"];
-        v11 = v50;
+        ic_withHashtagPrefix = v50;
         v12 = v49 + 1;
-        v8 = v44;
+        contextCopy = v44;
         v9 = 0x278192000;
       }
 
@@ -992,7 +992,7 @@ LABEL_17:
     while (v45);
   }
 
-  v38 = [v41 copy];
+  v38 = [array copy];
 
   return v38;
 }
@@ -1001,18 +1001,18 @@ LABEL_17:
 {
   v12.receiver = self;
   v12.super_class = ICHashtag;
-  v3 = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(ICHashtag *)self managedObjectContext];
+  managedObjectContext = [(ICHashtag *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __29__ICHashtag_ic_loggingValues__block_invoke;
   v9[3] = &unk_278194AD8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v5 performBlockAndWait:v9];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v6;
   return v6;
@@ -1050,11 +1050,11 @@ void __29__ICHashtag_ic_loggingValues__block_invoke(uint64_t a1)
   [*(a1 + 32) setObject:v7 forKeyedSubscript:@"standardizedContentHash"];
 }
 
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  ICHashtag.associateAppEntity(with:)(v4);
+  setCopy = set;
+  selfCopy = self;
+  ICHashtag.associateAppEntity(with:)(setCopy);
 }
 
 + (void)dedupeHashtagsInAccount:(void *)a1 atomicityExploitationCallback:(NSObject *)a2 .cold.1(void *a1, NSObject *a2)

@@ -1,20 +1,20 @@
 @interface AMSPurchaseProtocolHandler
-+ (id)reversePushSamplingPercentageForTask:(id)a3;
++ (id)reversePushSamplingPercentageForTask:(id)task;
 - (AMSPurchaseProtocolHandler)init;
-- (BOOL)_isEquivalentURL:(id)a3 toURL:(id)a4;
-- (BOOL)_shouldRetryForFailureAction:(id)a3 response:(id)a4 task:(id)a5 decodedObject:(id)a6 responseDictionary:(id)a7;
-- (id)_determineUpdatedBuyParamsFromResponse:(id)a3 urlAction:(id)a4 selectedAction:(id)a5 purchaseInfo:(id)a6;
-- (id)_shouldRedirectWithPurchaseInfo:(id)a3 bag:(id)a4 urlAction:(id)a5 currentURL:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
-- (void)_syncKeybagFromResponse:(id)a3 purchaseInfo:(id)a4;
-- (void)_updatePasswordSettingWithBuyParams:(id)a3 account:(id)a4;
-- (void)_updateSubscriptionStatusFromBody:(id)a3 account:(id)a4;
-- (void)didCreateTask:(id)a3 fromRequest:(id)a4 completionHandler:(id)a5;
-- (void)handleCompletionWithTask:(id)a3 metrics:(id)a4 decodedObject:(id)a5 completionHandler:(id)a6;
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6;
-- (void)setSession:(id)a3;
+- (BOOL)_isEquivalentURL:(id)l toURL:(id)rL;
+- (BOOL)_shouldRetryForFailureAction:(id)action response:(id)response task:(id)task decodedObject:(id)object responseDictionary:(id)dictionary;
+- (id)_determineUpdatedBuyParamsFromResponse:(id)response urlAction:(id)action selectedAction:(id)selectedAction purchaseInfo:(id)info;
+- (id)_shouldRedirectWithPurchaseInfo:(id)info bag:(id)bag urlAction:(id)action currentURL:(id)l;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
+- (void)_syncKeybagFromResponse:(id)response purchaseInfo:(id)info;
+- (void)_updatePasswordSettingWithBuyParams:(id)params account:(id)account;
+- (void)_updateSubscriptionStatusFromBody:(id)body account:(id)account;
+- (void)didCreateTask:(id)task fromRequest:(id)request completionHandler:(id)handler;
+- (void)handleCompletionWithTask:(id)task metrics:(id)metrics decodedObject:(id)object completionHandler:(id)handler;
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler;
+- (void)setSession:(id)session;
 @end
 
 @implementation AMSPurchaseProtocolHandler
@@ -32,30 +32,30 @@
   return result;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock_with_options();
-  [v4 setDelegate:self];
+  [sessionCopy setDelegate:self];
   v5.receiver = self;
   v5.super_class = AMSPurchaseProtocolHandler;
-  [(AMSURLProtocolHandler *)&v5 setSession:v4];
+  [(AMSURLProtocolHandler *)&v5 setSession:sessionCopy];
 
   os_unfair_lock_unlock(&self->_propertiesLock);
 }
 
-- (void)handleCompletionWithTask:(id)a3 metrics:(id)a4 decodedObject:(id)a5 completionHandler:(id)a6
+- (void)handleCompletionWithTask:(id)task metrics:(id)metrics decodedObject:(id)object completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v38 = a4;
-  v13 = [AMSURLTaskInfo taskInfoForTask:v10];
-  v14 = [v13 properties];
-  v15 = [v14 purchaseInfo];
+  taskCopy = task;
+  objectCopy = object;
+  handlerCopy = handler;
+  metricsCopy = metrics;
+  v13 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  properties = [v13 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v16 = v11;
+  v16 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -68,7 +68,7 @@
   }
 
   v18 = [v17 objectForKeyedSubscript:@"failureType"];
-  v19 = [v15 delegate];
+  delegate = [purchaseInfo delegate];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
@@ -79,29 +79,29 @@
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v36 = v12;
-    v37 = v10;
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    v36 = handlerCopy;
+    v37 = taskCopy;
+    oSLogObject = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v15 purchase];
-      v24 = [v23 logUUID];
+      purchase = [purchaseInfo purchase];
+      logUUID = [purchase logUUID];
       *buf = 138543362;
-      v49 = v24;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Calling will process response", buf, 0xCu);
+      v49 = logUUID;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Calling will process response", buf, 0xCu);
     }
 
-    v25 = [v15 delegate];
-    v26 = [v15 purchase];
+    delegate2 = [purchaseInfo delegate];
+    purchase2 = [purchaseInfo purchase];
     v27 = [v17 copy];
-    [v25 purchase:v26 willProcessResponse:v27];
+    [delegate2 purchase:purchase2 willProcessResponse:v27];
 
-    v12 = v36;
-    v10 = v37;
+    handlerCopy = v36;
+    taskCopy = v37;
   }
 
-  v28 = [v15 account];
-  [(AMSPurchaseProtocolHandler *)self _updateSubscriptionStatusFromBody:v17 account:v28];
+  account = [purchaseInfo account];
+  [(AMSPurchaseProtocolHandler *)self _updateSubscriptionStatusFromBody:v17 account:account];
 
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
@@ -109,22 +109,22 @@
   v40[3] = &unk_1E73BB0B0;
   v40[4] = self;
   v41 = v17;
-  v42 = v15;
+  v42 = purchaseInfo;
   v43 = v13;
-  v44 = v10;
+  v44 = taskCopy;
   v45 = v18;
   v46 = v16;
-  v47 = v12;
+  v47 = handlerCopy;
   v39.receiver = self;
   v39.super_class = AMSPurchaseProtocolHandler;
-  v29 = v12;
+  v29 = handlerCopy;
   v30 = v16;
   v31 = v18;
-  v32 = v10;
+  v32 = taskCopy;
   v33 = v13;
-  v34 = v15;
+  v34 = purchaseInfo;
   v35 = v17;
-  [(AMSURLProtocolHandler *)&v39 handleCompletionWithTask:v32 metrics:v38 decodedObject:v30 completionHandler:v40];
+  [(AMSURLProtocolHandler *)&v39 handleCompletionWithTask:v32 metrics:metricsCopy decodedObject:v30 completionHandler:v40];
 }
 
 void __95__AMSPurchaseProtocolHandler_handleCompletionWithTask_metrics_decodedObject_completionHandler___block_invoke(id *a1, void *a2)
@@ -461,40 +461,40 @@ void __95__AMSPurchaseProtocolHandler_handleCompletionWithTask_metrics_decodedOb
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v9 = a4;
-  v45 = a6;
-  v46 = v9;
-  v10 = [AMSURLTaskInfo taskInfoForTask:v9];
-  v11 = [v10 properties];
-  v12 = [v11 purchaseInfo];
+  requestCopy = request;
+  taskCopy = task;
+  handlerCopy = handler;
+  v46 = taskCopy;
+  v10 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  properties = [v10 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v13 = [v12 account];
-  v14 = [v13 ams_DSID];
-  if (v14)
+  account = [purchaseInfo account];
+  ams_DSID = [account ams_DSID];
+  if (ams_DSID)
   {
-    v15 = v14;
-    v44 = v13;
-    v16 = [v10 properties];
-    v17 = [v16 account];
-    v18 = [v17 ams_DSID];
-    if (v18)
+    v15 = ams_DSID;
+    v44 = account;
+    properties2 = [v10 properties];
+    account2 = [properties2 account];
+    ams_DSID2 = [account2 ams_DSID];
+    if (ams_DSID2)
     {
-      v19 = v18;
-      v20 = [v44 ams_DSID];
+      v19 = ams_DSID2;
+      ams_DSID3 = [v44 ams_DSID];
       [v10 properties];
-      v21 = v43 = v12;
-      v22 = [v21 account];
-      v23 = [v22 ams_DSID];
-      LODWORD(v42) = [v20 isEqual:v23];
+      v21 = v43 = purchaseInfo;
+      account3 = [v21 account];
+      ams_DSID4 = [account3 ams_DSID];
+      LODWORD(purchase2) = [ams_DSID3 isEqual:ams_DSID4];
 
-      v12 = v43;
-      v13 = v44;
+      purchaseInfo = v43;
+      account = v44;
 
-      if (v42)
+      if (purchase2)
       {
         v24 = +[AMSLogConfig sharedPurchaseConfig];
         if (!v24)
@@ -502,19 +502,19 @@ void __95__AMSPurchaseProtocolHandler_handleCompletionWithTask_metrics_decodedOb
           v24 = +[AMSLogConfig sharedConfig];
         }
 
-        v25 = [v24 OSLogObject];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [v24 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v43 purchase];
-          v27 = [v26 logUUID];
+          purchase = [v43 purchase];
+          logUUID = [purchase logUUID];
           v28 = MEMORY[0x1E696AEC0];
           v29 = objc_opt_class();
           v30 = v29;
-          if (v27)
+          if (logUUID)
           {
-            v42 = [v43 purchase];
-            v41 = [v42 logUUID];
-            [v28 stringWithFormat:@"%@: [%@] ", v30, v41];
+            purchase2 = [v43 purchase];
+            logUUID2 = [purchase2 logUUID];
+            [v28 stringWithFormat:@"%@: [%@] ", v30, logUUID2];
           }
 
           else
@@ -522,22 +522,22 @@ void __95__AMSPurchaseProtocolHandler_handleCompletionWithTask_metrics_decodedOb
             [v28 stringWithFormat:@"%@: ", v29];
           }
           v31 = ;
-          v13 = v44;
+          account = v44;
           v32 = AMSHashIfNeeded(v44);
           *buf = 138543618;
           v56 = v31;
           v57 = 2114;
           v58 = v32;
-          _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Purchase account has changed to: %{public}@", buf, 0x16u);
-          if (v27)
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Purchase account has changed to: %{public}@", buf, 0x16u);
+          if (logUUID)
           {
 
-            v31 = v42;
+            v31 = purchase2;
           }
         }
 
-        v33 = [v10 properties];
-        [v33 setAccount:v13];
+        properties3 = [v10 properties];
+        [properties3 setAccount:account];
       }
     }
 
@@ -546,10 +546,10 @@ void __95__AMSPurchaseProtocolHandler_handleCompletionWithTask_metrics_decodedOb
     }
   }
 
-  v34 = [v47 mutableCopy];
-  v35 = [v10 properties];
-  v36 = [v35 bag];
-  v37 = [AMSPurchaseRequestEncoder configureRequest:v34 purchaseInfo:v12 bag:v36];
+  v34 = [requestCopy mutableCopy];
+  properties4 = [v10 properties];
+  v36 = [properties4 bag];
+  v37 = [AMSPurchaseRequestEncoder configureRequest:v34 purchaseInfo:purchaseInfo bag:v36];
 
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -557,10 +557,10 @@ void __95__AMSPurchaseProtocolHandler_handleCompletionWithTask_metrics_decodedOb
   v49[3] = &unk_1E73BB0D8;
   v50 = v34;
   v51 = v46;
-  v54 = a5;
-  v52 = self;
-  v53 = v45;
-  v38 = v45;
+  redirectCopy = redirect;
+  selfCopy = self;
+  v53 = handlerCopy;
+  v38 = handlerCopy;
   v39 = v46;
   v40 = v34;
   [v37 addFinishBlock:v49];
@@ -578,20 +578,20 @@ void __92__AMSPurchaseProtocolHandler_reconfigureNewRequest_originalTask_redirec
   objc_msgSendSuper2(&v7, sel_reconfigureNewRequest_originalTask_redirect_completionHandler_, v3, v4, v5, v6);
 }
 
-- (void)didCreateTask:(id)a3 fromRequest:(id)a4 completionHandler:(id)a5
+- (void)didCreateTask:(id)task fromRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [AMSURLTaskInfo taskInfoForTask:v8];
-  v12 = [v11 properties];
-  v13 = [v12 purchaseInfo];
+  taskCopy = task;
+  requestCopy = request;
+  handlerCopy = handler;
+  v11 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  properties = [v11 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v14 = [v13 purchase];
-  v15 = v14;
-  if (v13)
+  purchase = [purchaseInfo purchase];
+  v15 = purchase;
+  if (purchaseInfo)
   {
-    v16 = v14 == 0;
+    v16 = purchase == 0;
   }
 
   else
@@ -601,10 +601,10 @@ void __92__AMSPurchaseProtocolHandler_reconfigureNewRequest_originalTask_redirec
 
   if (!v16)
   {
-    v17 = [v13 buyParams];
-    v18 = [v17 containsKey:@"pkPayment"];
+    buyParams = [purchaseInfo buyParams];
+    v18 = [buyParams containsKey:@"pkPayment"];
 
-    v19 = [v15 activityLabel];
+    activityLabel = [v15 activityLabel];
     if ([v15 purchaseType] || (v18 & 1) == 0)
     {
       if ((([v15 purchaseType] == 3) & v18) != 0)
@@ -614,7 +614,7 @@ void __92__AMSPurchaseProtocolHandler_reconfigureNewRequest_originalTask_redirec
 
       else
       {
-        v20 = v19;
+        v20 = activityLabel;
       }
     }
 
@@ -624,24 +624,24 @@ void __92__AMSPurchaseProtocolHandler_reconfigureNewRequest_originalTask_redirec
     }
 
     v34 = v11;
-    v21 = [v15 metricsActivities];
-    v22 = [v21 count];
+    metricsActivities = [v15 metricsActivities];
+    v22 = [metricsActivities count];
 
     v23 = [AMSMetricsActivity alloc];
     v24 = v23;
     if (v22)
     {
-      v25 = [v15 metricsActivities];
-      [v25 firstObject];
-      v33 = self;
-      v26 = v10;
-      v28 = v27 = v9;
-      v29 = [v28 nwActivity];
-      v30 = [(AMSMetricsActivity *)v24 initWithLabel:v20 parent:v29];
+      metricsActivities2 = [v15 metricsActivities];
+      [metricsActivities2 firstObject];
+      selfCopy = self;
+      v26 = handlerCopy;
+      v28 = v27 = requestCopy;
+      nwActivity = [v28 nwActivity];
+      v30 = [(AMSMetricsActivity *)v24 initWithLabel:v20 parent:nwActivity];
 
-      v9 = v27;
-      v10 = v26;
-      self = v33;
+      requestCopy = v27;
+      handlerCopy = v26;
+      self = selfCopy;
     }
 
     else
@@ -649,39 +649,39 @@ void __92__AMSPurchaseProtocolHandler_reconfigureNewRequest_originalTask_redirec
       v30 = [(AMSMetricsActivity *)v23 initWithLabel:v20];
     }
 
-    v31 = [v15 metricsActivities];
-    [v31 addObject:v30];
+    metricsActivities3 = [v15 metricsActivities];
+    [metricsActivities3 addObject:v30];
 
     [(AMSMetricsActivity *)v30 activate];
-    v32 = [(AMSMetricsActivity *)v30 nwActivity];
-    [v8 set_nw_activity:v32];
+    nwActivity2 = [(AMSMetricsActivity *)v30 nwActivity];
+    [taskCopy set_nw_activity:nwActivity2];
 
     v11 = v34;
   }
 
   v35.receiver = self;
   v35.super_class = AMSPurchaseProtocolHandler;
-  [(AMSURLProtocolHandler *)&v35 didCreateTask:v8 fromRequest:v9 completionHandler:v10];
+  [(AMSURLProtocolHandler *)&v35 didCreateTask:taskCopy fromRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [AMSURLTaskInfo taskInfoForTask:a4];
-  v11 = [v10 properties];
-  v12 = [v11 purchaseInfo];
+  requestCopy = request;
+  completionCopy = completion;
+  v10 = [AMSURLTaskInfo taskInfoForTask:task];
+  properties = [v10 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v13 = [v12 delegate];
-  v14 = [v12 purchase];
-  v15 = [v14 isUserInitiated];
+  delegate = [purchaseInfo delegate];
+  purchase = [purchaseInfo purchase];
+  isUserInitiated = [purchase isUserInitiated];
 
-  if ((v15 & 1) == 0)
+  if ((isUserInitiated & 1) == 0)
   {
     v24 = @"Not user initiated";
 LABEL_6:
     v25 = AMSError(2, @"Purchase Dialog Failed", v24, 0);
-    v9[2](v9, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
 
     goto LABEL_7;
   }
@@ -692,29 +692,29 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v16 = [v12 purchase];
-  v17 = [v16 metricsOverlay];
+  purchase2 = [purchaseInfo purchase];
+  metricsOverlay = [purchase2 metricsOverlay];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __80__AMSPurchaseProtocolHandler_AMSURLSession_task_handleDialogRequest_completion___block_invoke;
   v29[3] = &unk_1E73B55D8;
-  v18 = v8;
+  v18 = requestCopy;
   v30 = v18;
-  [v17 enumerateKeysAndObjectsUsingBlock:v29];
+  [metricsOverlay enumerateKeysAndObjectsUsingBlock:v29];
 
-  v19 = [v10 properties];
-  v20 = [v19 purchaseInfo];
-  v21 = [v20 account];
+  properties2 = [v10 properties];
+  purchaseInfo2 = [properties2 purchaseInfo];
+  account = [purchaseInfo2 account];
 
-  v22 = [v12 purchase];
+  purchase3 = [purchaseInfo purchase];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __80__AMSPurchaseProtocolHandler_AMSURLSession_task_handleDialogRequest_completion___block_invoke_2;
   v26[3] = &unk_1E73BB100;
-  v27 = v21;
-  v28 = v9;
-  v23 = v21;
-  [v13 purchase:v22 handleDialogRequest:v18 completion:v26];
+  v27 = account;
+  v28 = completionCopy;
+  v23 = account;
+  [delegate purchase:purchase3 handleDialogRequest:v18 completion:v26];
 
 LABEL_7:
 }
@@ -778,92 +778,92 @@ void __80__AMSPurchaseProtocolHandler_AMSURLSession_task_handleDialogRequest_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v14 = a5;
-  v8 = a6;
-  v9 = [AMSURLTaskInfo taskInfoForTask:a4];
-  v10 = [v9 properties];
-  v11 = [v10 purchaseInfo];
+  requestCopy = request;
+  completionCopy = completion;
+  v9 = [AMSURLTaskInfo taskInfoForTask:task];
+  properties = [v9 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v12 = [v11 delegate];
+  delegate = [purchaseInfo delegate];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v11 purchase];
-    [v12 purchase:v13 handleAuthenticateRequest:v14 completion:v8];
+    purchase = [purchaseInfo purchase];
+    [delegate purchase:purchase handleAuthenticateRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = AMSError(2, @"Purchase Authentication Failed", @"Purchase delegate not observing callback", 0);
-    v8[2](v8, 0, v13);
+    purchase = AMSError(2, @"Purchase Authentication Failed", @"Purchase delegate not observing callback", 0);
+    completionCopy[2](completionCopy, 0, purchase);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v24 = a5;
-  v8 = a6;
-  v9 = [AMSURLTaskInfo taskInfoForTask:a4];
-  v10 = [v9 properties];
-  v11 = [v10 purchaseInfo];
+  requestCopy = request;
+  completionCopy = completion;
+  v9 = [AMSURLTaskInfo taskInfoForTask:task];
+  properties = [v9 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v12 = [v11 delegate];
-  v13 = [v24 metricsOverlay];
-  if (v13 && (v14 = v13, [v11 purchase], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "metricsOverlay"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16))
+  delegate = [purchaseInfo delegate];
+  metricsOverlay = [requestCopy metricsOverlay];
+  if (metricsOverlay && (v14 = metricsOverlay, [purchaseInfo purchase], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "metricsOverlay"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16))
   {
-    v17 = [v24 metricsOverlay];
-    v18 = [v11 purchase];
-    v19 = [v18 metricsOverlay];
-    v20 = [v17 ams_dictionaryByAddingEntriesFromDictionary:v19];
-    [v24 setMetricsOverlay:v20];
+    metricsOverlay2 = [requestCopy metricsOverlay];
+    purchase = [purchaseInfo purchase];
+    metricsOverlay3 = [purchase metricsOverlay];
+    v20 = [metricsOverlay2 ams_dictionaryByAddingEntriesFromDictionary:metricsOverlay3];
+    [requestCopy setMetricsOverlay:v20];
   }
 
   else
   {
-    v21 = [v11 purchase];
-    v22 = [v21 metricsOverlay];
+    purchase2 = [purchaseInfo purchase];
+    metricsOverlay4 = [purchase2 metricsOverlay];
 
-    if (!v22)
+    if (!metricsOverlay4)
     {
       goto LABEL_7;
     }
 
-    v17 = [v11 purchase];
-    v18 = [v17 metricsOverlay];
-    [v24 setMetricsOverlay:v18];
+    metricsOverlay2 = [purchaseInfo purchase];
+    purchase = [metricsOverlay2 metricsOverlay];
+    [requestCopy setMetricsOverlay:purchase];
   }
 
 LABEL_7:
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v11 purchase];
-    [v12 purchase:v23 handleEngagementRequest:v24 completion:v8];
+    purchase3 = [purchaseInfo purchase];
+    [delegate purchase:purchase3 handleEngagementRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    v23 = AMSError(2, @"Purchase Engagement Failed", @"Purchase delegate not observing callback", 0);
-    v8[2](v8, 0, v23);
+    purchase3 = AMSError(2, @"Purchase Engagement Failed", @"Purchase delegate not observing callback", 0);
+    completionCopy[2](completionCopy, 0, purchase3);
   }
 }
 
-+ (id)reversePushSamplingPercentageForTask:(id)a3
++ (id)reversePushSamplingPercentageForTask:(id)task
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = [AMSURLTaskInfo taskInfoForTask:a3];
-  v7 = [v6 properties];
-  v8 = [v7 purchaseInfo];
+  v6 = [AMSURLTaskInfo taskInfoForTask:task];
+  properties = [v6 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v9 = [v8 buyParams];
-  v10 = v9;
-  if (v9)
+  buyParams = [purchaseInfo buyParams];
+  v10 = buyParams;
+  if (buyParams)
   {
-    v11 = [v9 parameterForKey:0x1F0722118];
+    v11 = [buyParams parameterForKey:0x1F0722118];
     if (v11)
     {
-      v12 = [v6 properties];
-      v13 = [v12 bag];
+      properties2 = [v6 properties];
+      v13 = [properties2 bag];
 
       if (v13)
       {
@@ -874,7 +874,7 @@ LABEL_7:
         v40[2] = __67__AMSPurchaseProtocolHandler_reversePushSamplingPercentageForTask___block_invoke;
         v40[3] = &unk_1E73BB128;
         v41 = v6;
-        v44 = a1;
+        selfCopy = self;
         v16 = v14;
         v42 = v16;
         v43 = v11;
@@ -900,19 +900,19 @@ LABEL_7:
         v27 = +[AMSLogConfig sharedConfig];
       }
 
-      v28 = [v27 OSLogObject];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v27 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
-        v39 = [v6 properties];
-        v29 = [v39 logUUID];
+        properties3 = [v6 properties];
+        logUUID = [properties3 logUUID];
         v30 = MEMORY[0x1E696AEC0];
         v31 = objc_opt_class();
         v32 = v31;
-        if (v29)
+        if (logUUID)
         {
-          v37 = [v6 properties];
-          v4 = [v37 logUUID];
-          [v30 stringWithFormat:@"%@: [%@] ", v32, v4];
+          properties4 = [v6 properties];
+          logUUID2 = [properties4 logUUID];
+          [v30 stringWithFormat:@"%@: [%@] ", v32, logUUID2];
         }
 
         else
@@ -925,11 +925,11 @@ LABEL_7:
         v46 = v33;
         v47 = 2114;
         v48 = v35;
-        _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_DEBUG, "%{public}@Failed to fetch the APS sampling percentage. The buy params have no product type. buyParams = %{public}@", buf, 0x16u);
-        if (v29)
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Failed to fetch the APS sampling percentage. The buy params have no product type. buyParams = %{public}@", buf, 0x16u);
+        if (logUUID)
         {
 
-          v33 = v37;
+          v33 = properties4;
         }
       }
 
@@ -946,19 +946,19 @@ LABEL_7:
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v6 properties];
-      v22 = [v21 logUUID];
+      properties5 = [v6 properties];
+      logUUID3 = [properties5 logUUID];
       v23 = MEMORY[0x1E696AEC0];
       v24 = objc_opt_class();
       v25 = v24;
-      if (v22)
+      if (logUUID3)
       {
-        v38 = [v6 properties];
-        v3 = [v38 logUUID];
-        [v23 stringWithFormat:@"%@: [%@] ", v25, v3];
+        properties6 = [v6 properties];
+        logUUID4 = [properties6 logUUID];
+        [v23 stringWithFormat:@"%@: [%@] ", v25, logUUID4];
       }
 
       else
@@ -968,11 +968,11 @@ LABEL_7:
       v26 = ;
       *buf = 138543362;
       v46 = v26;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Failed to fetch the APS sampling percentage. The task has no buy params.", buf, 0xCu);
-      if (v22)
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@Failed to fetch the APS sampling percentage. The task has no buy params.", buf, 0xCu);
+      if (logUUID3)
       {
 
-        v26 = v38;
+        v26 = properties6;
       }
     }
 
@@ -1099,23 +1099,23 @@ LABEL_2:
   }
 }
 
-- (id)_shouldRedirectWithPurchaseInfo:(id)a3 bag:(id)a4 urlAction:(id)a5 currentURL:(id)a6
+- (id)_shouldRedirectWithPurchaseInfo:(id)info bag:(id)bag urlAction:(id)action currentURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && [v12 actionType] != 3 && (objc_msgSend(v10, "buyParams"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "dictionary"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14, v16))
+  infoCopy = info;
+  bagCopy = bag;
+  actionCopy = action;
+  lCopy = l;
+  if (infoCopy && [actionCopy actionType] != 3 && (objc_msgSend(infoCopy, "buyParams"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "dictionary"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14, v16))
   {
-    v17 = [AMSPurchaseRequestEncoder bagURLFromPurchaseInfo:v10 bag:v11];
+    v17 = [AMSPurchaseRequestEncoder bagURLFromPurchaseInfo:infoCopy bag:bagCopy];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __87__AMSPurchaseProtocolHandler__shouldRedirectWithPurchaseInfo_bag_urlAction_currentURL___block_invoke;
     v20[3] = &unk_1E73BB150;
     v20[4] = self;
-    v21 = v13;
-    v22 = v10;
-    v23 = v12;
+    v21 = lCopy;
+    v22 = infoCopy;
+    v23 = actionCopy;
     v18 = [v17 continueWithBlock:v20];
   }
 
@@ -1198,79 +1198,79 @@ id __87__AMSPurchaseProtocolHandler__shouldRedirectWithPurchaseInfo_bag_urlActio
   return v8;
 }
 
-- (BOOL)_isEquivalentURL:(id)a3 toURL:(id)a4
+- (BOOL)_isEquivalentURL:(id)l toURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqual:v6])
+  lCopy = l;
+  rLCopy = rL;
+  if ([lCopy isEqual:rLCopy])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 scheme];
-    v9 = [v6 scheme];
-    v10 = [v8 caseInsensitiveCompare:v9];
+    scheme = [lCopy scheme];
+    scheme2 = [rLCopy scheme];
+    v10 = [scheme caseInsensitiveCompare:scheme2];
 
-    if (v10 || ([v5 host], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "host"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "caseInsensitiveCompare:", v12), v12, v11, v13))
+    if (v10 || ([lCopy host], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(rLCopy, "host"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "caseInsensitiveCompare:", v12), v12, v11, v13))
     {
       v7 = 0;
     }
 
     else
     {
-      v15 = [v5 path];
-      v16 = [v6 path];
-      v7 = [v15 caseInsensitiveCompare:v16] == 0;
+      path = [lCopy path];
+      path2 = [rLCopy path];
+      v7 = [path caseInsensitiveCompare:path2] == 0;
     }
   }
 
   return v7;
 }
 
-- (id)_determineUpdatedBuyParamsFromResponse:(id)a3 urlAction:(id)a4 selectedAction:(id)a5 purchaseInfo:(id)a6
+- (id)_determineUpdatedBuyParamsFromResponse:(id)response urlAction:(id)action selectedAction:(id)selectedAction purchaseInfo:(id)info
 {
   v73 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v66 = v11;
-  if (v11)
+  responseCopy = response;
+  actionCopy = action;
+  selectedActionCopy = selectedAction;
+  infoCopy = info;
+  v66 = selectedActionCopy;
+  if (selectedActionCopy)
   {
-    v13 = [v11 ams_buyParams];
-    if (v13)
+    ams_buyParams = [selectedActionCopy ams_buyParams];
+    if (ams_buyParams)
     {
-      v14 = v13;
+      updatedBuyParams = ams_buyParams;
       v15 = +[AMSLogConfig sharedConfig];
       if (!v15)
       {
         v15 = +[AMSLogConfig sharedConfig];
       }
 
-      v16 = [v15 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v15 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v12 purchase];
-        v18 = [v17 logUUID];
+        purchase = [infoCopy purchase];
+        logUUID = [purchase logUUID];
         *buf = 138543362;
-        v68 = v18;
-        _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Updating buy params from selected action", buf, 0xCu);
+        v68 = logUUID;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Updating buy params from selected action", buf, 0xCu);
       }
 
       goto LABEL_26;
     }
   }
 
-  if ([v10 actionType] == 3 || (objc_msgSend(v10, "updatedHeaders"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "ams_firstKeyObjectPassingTest:", &__block_literal_global_116), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
+  if ([actionCopy actionType] == 3 || (objc_msgSend(actionCopy, "updatedHeaders"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "ams_firstKeyObjectPassingTest:", &__block_literal_global_116), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
   {
 LABEL_25:
-    v14 = [v10 updatedBuyParams];
+    updatedBuyParams = [actionCopy updatedBuyParams];
     goto LABEL_26;
   }
 
-  v21 = [v9 objectForKeyedSubscript:@"dialog"];
+  v21 = [responseCopy objectForKeyedSubscript:@"dialog"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1302,9 +1302,9 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  v14 = v25;
+  updatedBuyParams = v25;
 
-  if (!v14)
+  if (!updatedBuyParams)
   {
 LABEL_24:
 
@@ -1317,41 +1317,41 @@ LABEL_24:
     v26 = +[AMSLogConfig sharedConfig];
   }
 
-  v27 = [v26 OSLogObject];
-  if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v26 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [v12 purchase];
-    v29 = [v28 logUUID];
+    purchase2 = [infoCopy purchase];
+    logUUID2 = [purchase2 logUUID];
     *buf = 138543874;
-    v68 = v29;
+    v68 = logUUID2;
     v69 = 2114;
-    v70 = v10;
+    v70 = actionCopy;
     v71 = 2114;
     v72 = v66;
-    _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Updating buy params from any action the current URLAction is %{public}@ selected action is %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Updating buy params from any action the current URLAction is %{public}@ selected action is %{public}@", buf, 0x20u);
   }
 
 LABEL_26:
-  v30 = [v14 componentsSeparatedByString:@"&"];
+  v30 = [updatedBuyParams componentsSeparatedByString:@"&"];
   v31 = [v30 mutableCopy];
 
-  v32 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
   if ([v31 count])
   {
     v33 = 0;
     do
     {
       v34 = [v31 objectAtIndexedSubscript:v33];
-      if (([v34 ams_isPercentEncodedForAllowedCharacters:v32] & 1) == 0)
+      if (([v34 ams_isPercentEncodedForAllowedCharacters:uRLQueryAllowedCharacterSet] & 1) == 0)
       {
-        v35 = [v34 stringByRemovingPercentEncoding];
-        v36 = v35;
-        if (!v35)
+        stringByRemovingPercentEncoding = [v34 stringByRemovingPercentEncoding];
+        v36 = stringByRemovingPercentEncoding;
+        if (!stringByRemovingPercentEncoding)
         {
-          v35 = v34;
+          stringByRemovingPercentEncoding = v34;
         }
 
-        v37 = [v35 stringByAddingPercentEncodingWithAllowedCharacters:v32];
+        v37 = [stringByRemovingPercentEncoding stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
         v34 = v37;
       }
@@ -1364,14 +1364,14 @@ LABEL_26:
     while (v33 < [v31 count]);
   }
 
-  v65 = v10;
+  v65 = actionCopy;
   if ([v31 count])
   {
-    v63 = v9;
+    v63 = responseCopy;
     v38 = [[AMSBuyParams alloc] initWithArray:v31];
-    v39 = [v12 paymentToken];
+    paymentToken = [infoCopy paymentToken];
 
-    if (v39)
+    if (paymentToken)
     {
       v40 = +[AMSLogConfig sharedPurchaseConfig];
       if (!v40)
@@ -1379,19 +1379,19 @@ LABEL_26:
         v40 = +[AMSLogConfig sharedConfig];
       }
 
-      v41 = [v40 OSLogObject];
-      if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v40 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [v12 purchase];
-        v42 = [v61 logUUID];
+        purchase3 = [infoCopy purchase];
+        logUUID3 = [purchase3 logUUID];
         v43 = MEMORY[0x1E696AEC0];
         v44 = objc_opt_class();
         v45 = v44;
-        if (v42)
+        if (logUUID3)
         {
-          v60 = [v12 purchase];
-          v59 = [v60 logUUID];
-          [v43 stringWithFormat:@"%@: [%@] ", v45, v59];
+          purchase4 = [infoCopy purchase];
+          logUUID4 = [purchase4 logUUID];
+          [v43 stringWithFormat:@"%@: [%@] ", v45, logUUID4];
         }
 
         else
@@ -1401,21 +1401,21 @@ LABEL_26:
         v46 = ;
         *buf = 138543362;
         v68 = v46;
-        _os_log_impl(&dword_192869000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@Appending payment token to buyParams", buf, 0xCu);
-        if (v42)
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Appending payment token to buyParams", buf, 0xCu);
+        if (logUUID3)
         {
 
-          v46 = v60;
+          v46 = purchase4;
         }
       }
 
-      v47 = [v12 paymentToken];
-      [(AMSBuyParams *)v38 setParameter:v47 forKey:@"pkPayment"];
+      paymentToken2 = [infoCopy paymentToken];
+      [(AMSBuyParams *)v38 setParameter:paymentToken2 forKey:@"pkPayment"];
     }
 
-    v48 = [v12 paymentMethodType];
+    paymentMethodType = [infoCopy paymentMethodType];
 
-    if (v48)
+    if (paymentMethodType)
     {
       v49 = +[AMSLogConfig sharedPurchaseConfig];
       if (!v49)
@@ -1423,42 +1423,42 @@ LABEL_26:
         v49 = +[AMSLogConfig sharedConfig];
       }
 
-      v50 = [v49 OSLogObject];
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+      oSLogObject4 = [v49 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
-        v62 = [v12 purchase];
-        v51 = [v62 logUUID];
+        purchase5 = [infoCopy purchase];
+        logUUID5 = [purchase5 logUUID];
         v52 = MEMORY[0x1E696AEC0];
         v53 = objc_opt_class();
         v54 = v53;
-        if (v51)
+        if (logUUID5)
         {
-          self = [v12 purchase];
-          v60 = [(AMSPurchaseProtocolHandler *)self logUUID];
-          [v52 stringWithFormat:@"%@: [%@] ", v54, v60];
+          self = [infoCopy purchase];
+          purchase4 = [(AMSPurchaseProtocolHandler *)self logUUID];
+          [v52 stringWithFormat:@"%@: [%@] ", v54, purchase4];
         }
 
         else
         {
           [v52 stringWithFormat:@"%@: ", v53];
         }
-        v55 = ;
+        selfCopy = ;
         *buf = 138543362;
-        v68 = v55;
-        _os_log_impl(&dword_192869000, v50, OS_LOG_TYPE_DEFAULT, "%{public}@Appending ApplePay payment method type to buyParams", buf, 0xCu);
-        if (v51)
+        v68 = selfCopy;
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@Appending ApplePay payment method type to buyParams", buf, 0xCu);
+        if (logUUID5)
         {
 
-          v55 = self;
+          selfCopy = self;
         }
       }
 
-      v56 = [v12 paymentMethodType];
-      v57 = [v56 stringValue];
-      [(AMSBuyParams *)v38 setParameter:v57 forKey:@"applePayPaymentMethodType"];
+      paymentMethodType2 = [infoCopy paymentMethodType];
+      stringValue = [paymentMethodType2 stringValue];
+      [(AMSBuyParams *)v38 setParameter:stringValue forKey:@"applePayPaymentMethodType"];
     }
 
-    v9 = v63;
+    responseCopy = v63;
   }
 
   else
@@ -1485,34 +1485,34 @@ uint64_t __107__AMSPurchaseProtocolHandler__determineUpdatedBuyParamsFromRespons
   return v5;
 }
 
-- (BOOL)_shouldRetryForFailureAction:(id)a3 response:(id)a4 task:(id)a5 decodedObject:(id)a6 responseDictionary:(id)a7
+- (BOOL)_shouldRetryForFailureAction:(id)action response:(id)response task:(id)task decodedObject:(id)object responseDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a7;
-  v11 = [AMSURLTaskInfo taskInfoForTask:a5];
-  v12 = [v11 properties];
-  v13 = [v12 purchaseInfo];
+  actionCopy = action;
+  dictionaryCopy = dictionary;
+  v11 = [AMSURLTaskInfo taskInfoForTask:task];
+  properties = [v11 properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  v14 = [v10 objectForKeyedSubscript:@"dialog"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"dialog"];
 
-  if (v14 || ([v13 hasRetriedOriginalOwnerAccount] & 1) != 0 || (objc_msgSend(v13, "purchase"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "ownerAccountId"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
+  if (v14 || ([purchaseInfo hasRetriedOriginalOwnerAccount] & 1) != 0 || (objc_msgSend(purchaseInfo, "purchase"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "ownerAccountId"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
   {
     v27 = 0;
   }
 
   else
   {
-    [v13 setHasRetriedOriginalOwnerAccount:1];
-    v17 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v18 = [v13 purchase];
-    v19 = [v18 ownerAccountId];
-    v20 = [v17 ams_iTunesAccountWithDSID:v19];
-    [v13 setAccount:v20];
+    [purchaseInfo setHasRetriedOriginalOwnerAccount:1];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    purchase = [purchaseInfo purchase];
+    ownerAccountId = [purchase ownerAccountId];
+    v20 = [ams_sharedAccountStore ams_iTunesAccountWithDSID:ownerAccountId];
+    [purchaseInfo setAccount:v20];
 
-    v21 = [v13 account];
-    v22 = [v11 properties];
-    [v22 setAccount:v21];
+    account = [purchaseInfo account];
+    properties2 = [v11 properties];
+    [properties2 setAccount:account];
 
     v23 = +[AMSLogConfig sharedConfig];
     if (!v23)
@@ -1520,23 +1520,23 @@ uint64_t __107__AMSPurchaseProtocolHandler__determineUpdatedBuyParamsFromRespons
       v23 = +[AMSLogConfig sharedConfig];
     }
 
-    v24 = [v23 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v23 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v13 purchase];
-      v26 = [v25 logUUID];
+      purchase2 = [purchaseInfo purchase];
+      logUUID = [purchase2 logUUID];
       v32 = 138543362;
-      v33 = v26;
-      _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Falling back to owner account", &v32, 0xCu);
+      v33 = logUUID;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "AMSPurchaseProtocolHandler: [%{public}@] Falling back to owner account", &v32, 0xCu);
     }
 
     v27 = 1;
   }
 
-  v28 = [v9 error];
-  v29 = [v28 code];
+  error = [actionCopy error];
+  code = [error code];
 
-  if ((v29 - 513) < 0xFFFFFFFFFFFFFFFELL)
+  if ((code - 513) < 0xFFFFFFFFFFFFFFFELL)
   {
     v30 = v27;
   }
@@ -1549,11 +1549,11 @@ uint64_t __107__AMSPurchaseProtocolHandler__determineUpdatedBuyParamsFromRespons
   return v30;
 }
 
-- (void)_syncKeybagFromResponse:(id)a3 purchaseInfo:(id)a4
+- (void)_syncKeybagFromResponse:(id)response purchaseInfo:(id)info
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"keybag"];
+  infoCopy = info;
+  v6 = [response objectForKeyedSubscript:@"keybag"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1580,44 +1580,44 @@ uint64_t __107__AMSPurchaseProtocolHandler__determineUpdatedBuyParamsFromRespons
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v5 purchase];
-        v14 = [v13 logUUID];
-        v15 = [v5 account];
-        v16 = [v15 ams_DSID];
+        purchase = [infoCopy purchase];
+        logUUID = [purchase logUUID];
+        account = [infoCopy account];
+        ams_DSID = [account ams_DSID];
         *buf = 138543874;
-        v19 = v14;
+        v19 = logUUID;
         v20 = 2114;
-        v21 = v16;
+        v21 = ams_DSID;
         v22 = 2114;
         v23 = v10;
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "AMSPurchaseProtocolHandler: [%{public}@] Error importing keybag data for account: %{public}@ error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "AMSPurchaseProtocolHandler: [%{public}@] Error importing keybag data for account: %{public}@ error: %{public}@", buf, 0x20u);
       }
     }
   }
 }
 
-- (void)_updatePasswordSettingWithBuyParams:(id)a3 account:(id)a4
+- (void)_updatePasswordSettingWithBuyParams:(id)params account:(id)account
 {
-  v9 = a4;
-  v5 = [a3 parameterForKey:@"asn"];
+  accountCopy = account;
+  v5 = [params parameterForKey:@"asn"];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 integerValue];
-    [v9 ams_setFreePasswordPromptSetting:{+[AMSSyncPasswordSettingsTask freePasswordSettingFromServerValue:](AMSSyncPasswordSettingsTask, "freePasswordSettingFromServerValue:", v6)}];
-    [v9 ams_setPaidPasswordPromptSetting:{+[AMSSyncPasswordSettingsTask paidPasswordSettingFromServerValue:](AMSSyncPasswordSettingsTask, "paidPasswordSettingFromServerValue:", v6)}];
-    v7 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v8 = [v7 ams_saveAccount:v9];
+    integerValue = [v5 integerValue];
+    [accountCopy ams_setFreePasswordPromptSetting:{+[AMSSyncPasswordSettingsTask freePasswordSettingFromServerValue:](AMSSyncPasswordSettingsTask, "freePasswordSettingFromServerValue:", integerValue)}];
+    [accountCopy ams_setPaidPasswordPromptSetting:{+[AMSSyncPasswordSettingsTask paidPasswordSettingFromServerValue:](AMSSyncPasswordSettingsTask, "paidPasswordSettingFromServerValue:", integerValue)}];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    v8 = [ams_sharedAccountStore ams_saveAccount:accountCopy];
   }
 }
 
-- (void)_updateSubscriptionStatusFromBody:(id)a3 account:(id)a4
+- (void)_updateSubscriptionStatusFromBody:(id)body account:(id)account
 {
   v18[7] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  bodyCopy = body;
+  accountCopy = account;
   v17[0] = @"newsEntitlements";
   v17[1] = @"appStoreEntitlements";
   v18[0] = &unk_1F0779910;
@@ -1637,9 +1637,9 @@ uint64_t __107__AMSPurchaseProtocolHandler__determineUpdatedBuyParamsFromRespons
   v14[1] = 3221225472;
   v14[2] = __72__AMSPurchaseProtocolHandler__updateSubscriptionStatusFromBody_account___block_invoke;
   v14[3] = &unk_1E73BB198;
-  v8 = v5;
+  v8 = bodyCopy;
   v15 = v8;
-  v9 = v6;
+  v9 = accountCopy;
   v16 = v9;
   [v7 enumerateKeysAndObjectsUsingBlock:v14];
   v10 = [v8 objectForKeyedSubscript:@"subscriptionStatus"];

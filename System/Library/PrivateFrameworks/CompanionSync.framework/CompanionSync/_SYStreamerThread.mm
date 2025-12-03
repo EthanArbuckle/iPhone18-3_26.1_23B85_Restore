@@ -71,9 +71,9 @@
 - (void)main
 {
   [(NSConditionLock *)self->_startupLock lock];
-  v3 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
   threadRunLoop = self->_threadRunLoop;
-  self->_threadRunLoop = v3;
+  self->_threadRunLoop = currentRunLoop;
 
   v8 = 0;
   v7.version = 0;
@@ -88,8 +88,8 @@
     do
     {
       v5 = self->_threadRunLoop;
-      v6 = [MEMORY[0x1E695DF00] distantFuture];
-      [(NSRunLoop *)v5 runMode:@"_SYWaitingForStream" beforeDate:v6];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      [(NSRunLoop *)v5 runMode:@"_SYWaitingForStream" beforeDate:distantFuture];
     }
 
     while (!v8);

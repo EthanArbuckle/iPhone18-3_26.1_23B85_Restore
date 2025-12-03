@@ -1,47 +1,47 @@
 @interface DDCopyAction
-+ (BOOL)actionAvailableForContact:(id)a3;
-+ (id)actionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
-- (DDCopyAction)initWithQueryString:(id)a3 range:(_NSRange)a4 context:(id)a5;
-- (DDCopyAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
++ (BOOL)actionAvailableForContact:(id)contact;
++ (id)actionWithURL:(id)l result:(__DDResult *)result context:(id)context;
+- (DDCopyAction)initWithQueryString:(id)string range:(_NSRange)range context:(id)context;
+- (DDCopyAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)iconName;
 - (id)localizedName;
-- (void)_copyURL:(id)a3;
-- (void)copyStringOnly:(id)a3;
-- (void)performFromView:(id)a3;
+- (void)_copyURL:(id)l;
+- (void)copyStringOnly:(id)only;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDCopyAction
 
-+ (id)actionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)actionWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithURL:v9 result:a4 context:v8];
+  contextCopy = context;
+  lCopy = l;
+  v10 = [[self alloc] initWithURL:lCopy result:result context:contextCopy];
 
   return v10;
 }
 
-- (DDCopyAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDCopyAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v9.receiver = self;
   v9.super_class = DDCopyAction;
-  result = [(DDAction *)&v9 initWithURL:a3 result:a4 context:a5];
+  result = [(DDAction *)&v9 initWithURL:l result:result context:context];
   if (result && result->super._result && !result->super._url)
   {
-    v6 = result;
+    resultCopy = result;
     v7 = _DDURLFromResult(result->super._result);
-    url = v6->super._url;
-    v6->super._url = v7;
+    url = resultCopy->super._url;
+    resultCopy->super._url = v7;
 
-    return v6;
+    return resultCopy;
   }
 
   return result;
 }
 
-+ (BOOL)actionAvailableForContact:(id)a3
++ (BOOL)actionAvailableForContact:(id)contact
 {
-  v3 = DDDefaultAddressForContact(a3);
+  v3 = DDDefaultAddressForContact(contact);
   v4 = v3 != 0;
 
   return v4;
@@ -74,9 +74,9 @@
         goto LABEL_43;
       }
 
-      v24 = [(NSURL *)self->super._url scheme];
-      v25 = [v24 lowercaseString];
-      v26 = [v25 isEqualToString:@"mailto"];
+      scheme = [(NSURL *)self->super._url scheme];
+      lowercaseString = [scheme lowercaseString];
+      v26 = [lowercaseString isEqualToString:@"mailto"];
 
       if (v26)
       {
@@ -153,8 +153,8 @@ LABEL_49:
   v9 = self->super._url;
   if (v9)
   {
-    v10 = [(NSURL *)v9 scheme];
-    v11 = [v10 lowercaseString];
+    scheme2 = [(NSURL *)v9 scheme];
+    lowercaseString2 = [scheme2 lowercaseString];
 
     isAnySimpleTelephonyScheme = dd_isAnySimpleTelephonyScheme(self->super._url);
     v13 = self->super._url;
@@ -162,14 +162,14 @@ LABEL_49:
     {
       if (![(__CFString *)v13 dd_isMaps:1]|| (DDMapAddressFromURL(self->super._url), v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
       {
-        if ([v11 isEqualToString:@"mailto"])
+        if ([lowercaseString2 isEqualToString:@"mailto"])
         {
           v17 = 1;
         }
 
         else
         {
-          dd_schemeIsHttp(v11);
+          dd_schemeIsHttp(lowercaseString2);
           v17 = 0;
         }
 
@@ -286,15 +286,15 @@ LABEL_51:
     v4 = *MEMORY[0x277D040C8];
     if ((DDResultHasType() & 1) == 0)
     {
-      v5 = [(NSURL *)self->super._url scheme];
-      v6 = [v5 lowercaseString];
-      v7 = [v6 isEqualToString:@"mailto"];
+      scheme = [(NSURL *)self->super._url scheme];
+      lowercaseString = [scheme lowercaseString];
+      v7 = [lowercaseString isEqualToString:@"mailto"];
 
       if ((v7 & 1) == 0 && (dd_isAnySimpleTelephonyScheme(self->super._url) & 1) == 0)
       {
-        v8 = [(NSURL *)self->super._url scheme];
-        v9 = [v8 lowercaseString];
-        v10 = [v9 isEqualToString:@"upi"];
+        scheme2 = [(NSURL *)self->super._url scheme];
+        lowercaseString2 = [scheme2 lowercaseString];
+        v10 = [lowercaseString2 isEqualToString:@"upi"];
 
         if ((v10 & 1) == 0)
         {
@@ -312,10 +312,10 @@ LABEL_51:
     return @"doc.on.doc";
   }
 
-  v13 = [(NSURL *)url scheme];
-  v14 = [v13 lowercaseString];
+  scheme3 = [(NSURL *)url scheme];
+  lowercaseString3 = [scheme3 lowercaseString];
 
-  if (!dd_schemeIsHttp(v14) || ([v14 isEqualToString:@"mailto"] & 1) != 0 || (dd_isAnySimpleTelephonyScheme(self->super._url) & 1) != 0)
+  if (!dd_schemeIsHttp(lowercaseString3) || ([lowercaseString3 isEqualToString:@"mailto"] & 1) != 0 || (dd_isAnySimpleTelephonyScheme(self->super._url) & 1) != 0)
   {
 
     return @"doc.on.doc";
@@ -340,39 +340,39 @@ LABEL_51:
   }
 }
 
-- (void)_copyURL:(id)a3
+- (void)_copyURL:(id)l
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
-    v6 = [(__CFString *)v4 scheme];
-    v7 = [v6 lowercaseString];
+    scheme = [(__CFString *)lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if ([v7 isEqualToString:@"mailto"])
+    if ([lowercaseString isEqualToString:@"mailto"])
     {
-      v8 = dd_emailFromMailtoScheme(v5);
-      if (!v8)
+      _web_userVisibleString = dd_emailFromMailtoScheme(v5);
+      if (!_web_userVisibleString)
       {
         goto LABEL_13;
       }
     }
 
-    else if ([v7 isEqualToString:@"tel"])
+    else if ([lowercaseString isEqualToString:@"tel"])
     {
-      v8 = dd_phoneNumberFromTelScheme(v5);
-      if (!v8)
+      _web_userVisibleString = dd_phoneNumberFromTelScheme(v5);
+      if (!_web_userVisibleString)
       {
         goto LABEL_13;
       }
     }
 
-    else if (![(__CFString *)v5 dd_isMaps:1]|| (DDMapAddressFromURL(v5), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+    else if (![(__CFString *)v5 dd_isMaps:1]|| (DDMapAddressFromURL(v5), (_web_userVisibleString = objc_claimAutoreleasedReturnValue()) == 0))
     {
 LABEL_13:
-      v8 = [(__CFString *)v5 _web_userVisibleString];
-      if (![v8 length])
+      _web_userVisibleString = [(__CFString *)v5 _web_userVisibleString];
+      if (![_web_userVisibleString length])
       {
         goto LABEL_14;
       }
@@ -380,13 +380,13 @@ LABEL_13:
       goto LABEL_8;
     }
 
-    if (![v8 length])
+    if (![_web_userVisibleString length])
     {
 LABEL_14:
       v21 = MEMORY[0x277CBEA60];
       v22 = MEMORY[0x277CBEAC0];
-      v23 = [*MEMORY[0x277CE1E90] identifier];
-      v24 = [v22 dictionaryWithObjectsAndKeys:{v5, v23, 0}];
+      identifier = [*MEMORY[0x277CE1E90] identifier];
+      v24 = [v22 dictionaryWithObjectsAndKeys:{v5, identifier, 0}];
       v20 = [v21 arrayWithObject:v24];
 
 LABEL_15:
@@ -405,15 +405,15 @@ LABEL_15:
 
 LABEL_8:
     v9 = MEMORY[0x277CBEB38];
-    v10 = [*MEMORY[0x277CE1EB0] identifier];
-    v11 = [*MEMORY[0x277CE1E90] identifier];
-    v12 = [v9 dictionaryWithObjectsAndKeys:{v8, v10, v5, v11, 0}];
+    identifier2 = [*MEMORY[0x277CE1EB0] identifier];
+    identifier3 = [*MEMORY[0x277CE1E90] identifier];
+    v12 = [v9 dictionaryWithObjectsAndKeys:{_web_userVisibleString, identifier2, v5, identifier3, 0}];
 
     v13 = objc_alloc(MEMORY[0x277CCA898]);
     v33 = *MEMORY[0x277D740E8];
     v34[0] = v5;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v15 = [v13 initWithString:v8 attributes:v14];
+    v15 = [v13 initWithString:_web_userVisibleString attributes:v14];
 
     v16 = [v15 length];
     v31 = *MEMORY[0x277D74090];
@@ -423,8 +423,8 @@ LABEL_8:
 
     if (v18)
     {
-      v19 = [*MEMORY[0x277CE1E50] identifier];
-      [v12 setObject:v18 forKey:v19];
+      identifier4 = [*MEMORY[0x277CE1E50] identifier];
+      [v12 setObject:v18 forKey:identifier4];
     }
 
     v20 = [MEMORY[0x277CBEA60] arrayWithObject:v12];
@@ -443,17 +443,17 @@ void __25__DDCopyAction__copyURL___block_invoke(uint64_t a1)
   [v2 setItems:*(a1 + 32)];
 }
 
-- (void)copyStringOnly:(id)a3
+- (void)copyStringOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   v5 = MEMORY[0x277D75810];
   dataOwner = self->_dataOwner;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__DDCopyAction_copyStringOnly___block_invoke;
   v8[3] = &unk_278290B50;
-  v9 = v4;
-  v7 = v4;
+  v9 = onlyCopy;
+  v7 = onlyCopy;
   [v5 _performAsDataOwner:dataOwner block:v8];
 }
 
@@ -482,19 +482,19 @@ void __31__DDCopyAction_copyStringOnly___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
   if (self->_query)
   {
-    v28 = [MEMORY[0x277D75810] generalPasteboard];
-    [v28 setString:self->_query];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    [generalPasteboard setString:self->_query];
 
     return;
   }
 
-  self->_dataOwner = [a3 _dataOwnerForCopy];
-  v4 = [(NSURL *)self->super._url scheme];
-  v5 = [v4 lowercaseString];
+  self->_dataOwner = [view _dataOwnerForCopy];
+  scheme = [(NSURL *)self->super._url scheme];
+  lowercaseString = [scheme lowercaseString];
 
   DDUIRecordOtherActionInSheetForResultIfNeeded(self->super._result);
   if (dd_isAnySimpleTelephonyScheme(self->super._url))
@@ -508,8 +508,8 @@ void __31__DDCopyAction_copyStringOnly___block_invoke(uint64_t a1)
     url = self->super._url;
     v29 = 0;
     v9 = [(NSURL *)url dd_phoneNumberFromTelSchemeAndExtractBody:&v29 serviceID:0 suggestions:?];
-    v10 = v29;
-    if (v10 || ![v9 length] || (objc_msgSend(v9, "isEqualToString:", @"open") & 1) != 0)
+    generalPasteboard3 = v29;
+    if (generalPasteboard3 || ![v9 length] || (objc_msgSend(v9, "isEqualToString:", @"open") & 1) != 0)
     {
       [(DDCopyAction *)self _copyURL:self->super._url];
     }
@@ -522,7 +522,7 @@ void __31__DDCopyAction_copyStringOnly___block_invoke(uint64_t a1)
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:@"upi"])
+  if ([lowercaseString isEqualToString:@"upi"])
   {
     if (self->super._result)
     {
@@ -540,7 +540,7 @@ void __31__DDCopyAction_copyStringOnly___block_invoke(uint64_t a1)
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"mailto"])
+  if ([lowercaseString isEqualToString:@"mailto"])
   {
     v30 = 0;
     if (self->super._result)
@@ -566,7 +566,7 @@ LABEL_30:
     return;
   }
 
-  if (dd_schemeIsHttp(v5))
+  if (dd_schemeIsHttp(lowercaseString))
   {
     goto LABEL_29;
   }
@@ -576,10 +576,10 @@ LABEL_30:
     v14 = DDResultCopyAuthCode();
     if (v14)
     {
-      v15 = v14;
-      v16 = [MEMORY[0x277D75810] generalPasteboard];
-      v17 = v16;
-      v18 = v15;
+      generalPasteboard6 = v14;
+      generalPasteboard2 = [MEMORY[0x277D75810] generalPasteboard];
+      v17 = generalPasteboard2;
+      v18 = generalPasteboard6;
     }
 
     else
@@ -589,10 +589,10 @@ LABEL_30:
       if (Category == 3)
       {
 LABEL_26:
-        v10 = [MEMORY[0x277D75810] generalPasteboard];
+        generalPasteboard3 = [MEMORY[0x277D75810] generalPasteboard];
         v11 = self->super._result;
-        v12 = DDResultGetMatchedString();
-        [(__CFString *)v10 setString:v12];
+        generalPasteboard4 = DDResultGetMatchedString();
+        [(__CFString *)generalPasteboard3 setString:generalPasteboard4];
 LABEL_27:
 
 LABEL_16:
@@ -603,19 +603,19 @@ LABEL_16:
       {
         if (Category == 1)
         {
-          v10 = _DDURLFromResult(self->super._result);
-          if (v10)
+          generalPasteboard3 = _DDURLFromResult(self->super._result);
+          if (generalPasteboard3)
           {
-            v12 = [MEMORY[0x277D75810] generalPasteboard];
-            [v12 setURL:v10];
+            generalPasteboard4 = [MEMORY[0x277D75810] generalPasteboard];
+            [generalPasteboard4 setURL:generalPasteboard3];
           }
 
           else
           {
             v26 = self->super._result;
-            v12 = DDResultGetMatchedString();
-            v27 = [MEMORY[0x277D75810] generalPasteboard];
-            [v27 setString:v12];
+            generalPasteboard4 = DDResultGetMatchedString();
+            generalPasteboard5 = [MEMORY[0x277D75810] generalPasteboard];
+            [generalPasteboard5 setString:generalPasteboard4];
           }
 
           goto LABEL_27;
@@ -630,12 +630,12 @@ LABEL_16:
 
       v25 = self->super._result;
       v17 = DDResultGetMatchedString();
-      v16 = [MEMORY[0x277D75810] generalPasteboard];
-      v15 = v16;
+      generalPasteboard2 = [MEMORY[0x277D75810] generalPasteboard];
+      generalPasteboard6 = generalPasteboard2;
       v18 = v17;
     }
 
-    [v16 setString:v18];
+    [generalPasteboard2 setString:v18];
     goto LABEL_35;
   }
 
@@ -652,9 +652,9 @@ LABEL_16:
         goto LABEL_36;
       }
 
-      v15 = [MEMORY[0x277D75810] generalPasteboard];
+      generalPasteboard6 = [MEMORY[0x277D75810] generalPasteboard];
       v21 = [MEMORY[0x277CBDB80] stringFromPostalAddress:v17 style:0];
-      [v15 setString:v21];
+      [generalPasteboard6 setString:v21];
 
 LABEL_35:
 LABEL_36:
@@ -675,16 +675,16 @@ LABEL_36:
   }
 }
 
-- (DDCopyAction)initWithQueryString:(id)a3 range:(_NSRange)a4 context:(id)a5
+- (DDCopyAction)initWithQueryString:(id)string range:(_NSRange)range context:(id)context
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 substringWithRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  v10 = [string substringWithRange:{location, length}];
   query = self->_query;
   self->_query = v10;
 
-  v12 = [(DDCopyAction *)self initWithURL:0 result:0 context:v9];
+  v12 = [(DDCopyAction *)self initWithURL:0 result:0 context:contextCopy];
   return v12;
 }
 

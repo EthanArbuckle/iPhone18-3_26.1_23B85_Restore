@@ -1,32 +1,32 @@
 @interface TSDLayoutGeometry
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3;
-- (BOOL)differsInMoreThanTranslationFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform;
+- (BOOL)differsInMoreThanTranslationFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)fullTransform;
 - (CGAffineTransform)inverseTransform;
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)a3;
+- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)to;
 - (CGPoint)center;
 - (CGRect)frame;
 - (CGSize)size;
 - (TSDLayoutGeometry)init;
-- (TSDLayoutGeometry)initWithFrame:(CGRect)a3;
-- (TSDLayoutGeometry)initWithInfoGeometry:(id)a3;
-- (TSDLayoutGeometry)initWithSize:(CGSize)a3 transform:(CGAffineTransform *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSDLayoutGeometry)initWithFrame:(CGRect)frame;
+- (TSDLayoutGeometry)initWithInfoGeometry:(id)geometry;
+- (TSDLayoutGeometry)initWithSize:(CGSize)size transform:(CGAffineTransform *)transform;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)geometryByOutsettingBy:(CGSize)a3;
-- (id)geometryByTransformingBy:(CGAffineTransform *)a3;
+- (id)geometryByOutsettingBy:(CGSize)by;
+- (id)geometryByTransformingBy:(CGAffineTransform *)by;
 - (id)infoGeometry;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSDLayoutGeometry
 
-- (TSDLayoutGeometry)initWithSize:(CGSize)a3 transform:(CGAffineTransform *)a4
+- (TSDLayoutGeometry)initWithSize:(CGSize)size transform:(CGAffineTransform *)transform
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = TSDLayoutGeometry;
   result = [(TSDLayoutGeometry *)&v10 init];
@@ -34,9 +34,9 @@
   {
     result->mSize.width = width;
     result->mSize.height = height;
-    v8 = *&a4->a;
-    v9 = *&a4->c;
-    *&result->mTransform.tx = *&a4->tx;
+    v8 = *&transform->a;
+    v9 = *&transform->c;
+    *&result->mTransform.tx = *&transform->tx;
     *&result->mTransform.c = v9;
     *&result->mTransform.a = v8;
   }
@@ -53,32 +53,32 @@
   return [(TSDLayoutGeometry *)self initWithSize:v4 transform:100.0, 100.0];
 }
 
-- (TSDLayoutGeometry)initWithFrame:(CGRect)a3
+- (TSDLayoutGeometry)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  CGAffineTransformMakeTranslation(&v7, a3.origin.x, a3.origin.y);
+  height = frame.size.height;
+  width = frame.size.width;
+  CGAffineTransformMakeTranslation(&v7, frame.origin.x, frame.origin.y);
   return [(TSDLayoutGeometry *)self initWithSize:&v7 transform:width, height];
 }
 
-- (TSDLayoutGeometry)initWithInfoGeometry:(id)a3
+- (TSDLayoutGeometry)initWithInfoGeometry:(id)geometry
 {
-  if (a3)
+  if (geometry)
   {
-    if (![a3 heightValid] || (objc_msgSend(a3, "widthValid") & 1) == 0)
+    if (![geometry heightValid] || (objc_msgSend(geometry, "widthValid") & 1) == 0)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDLayoutGeometry initWithInfoGeometry:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDLayoutGeometry.m"), 49, @"can't create layout geometry from info geometry if width and height are not valid"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDLayoutGeometry.m"), 49, @"can't create layout geometry from info geometry if width and height are not valid"}];
     }
 
-    [a3 size];
+    [geometry size];
     v8 = v7;
     v10 = v9;
     v16 = 0u;
     v17 = 0u;
     v15 = 0u;
-    [a3 transform];
+    [geometry transform];
     v14[0] = v15;
     v14[1] = v16;
     v14[2] = v17;
@@ -87,40 +87,40 @@
 
   else
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDLayoutGeometry initWithInfoGeometry:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDLayoutGeometry.m"), 45, @"invalid nil value for '%s'", "infoGeometry"}];
+    [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDLayoutGeometry.m"), 45, @"invalid nil value for '%s'", "infoGeometry"}];
     return 0;
   }
 }
 
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->a;
-  v4 = *&a3->c;
+  v5 = *&transform->a;
+  v4 = *&transform->c;
   v6 = sqrt(COERCE_DOUBLE(*&vmulq_f64(v5, v5).f64[1]) + v5.f64[0] * v5.f64[0]);
   v7 = sqrt(COERCE_DOUBLE(*&vmulq_f64(v4, v4).f64[1]) + v4.f64[0] * v4.f64[0]);
   if (v6 > 0.01)
   {
-    *&a3->a = vdivq_f64(v5, vdupq_lane_s64(*&v6, 0));
+    *&transform->a = vdivq_f64(v5, vdupq_lane_s64(*&v6, 0));
   }
 
   v12 = v6;
   if (v7 > 0.01)
   {
-    *&a3->c = vdivq_f64(v4, vdupq_lane_s64(*&v7, 0));
+    *&transform->c = vdivq_f64(v4, vdupq_lane_s64(*&v7, 0));
   }
 
   v11 = v7;
   v8 = [TSDLayoutGeometry alloc];
-  v9 = *&a3->c;
-  v13[0] = *&a3->a;
+  v9 = *&transform->c;
+  v13[0] = *&transform->a;
   v13[1] = v9;
-  v13[2] = *&a3->tx;
+  v13[2] = *&transform->tx;
   return [(TSDLayoutGeometry *)v8 initWithSize:v13 transform:v12, v11];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   width = self->mSize.width;
@@ -132,7 +132,7 @@
   return [v4 initWithSize:v9 transform:{width, height}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableLayoutGeometry alloc];
   width = self->mSize.width;
@@ -144,14 +144,14 @@
   return [(TSDLayoutGeometry *)v4 initWithSize:v9 transform:width, height];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -162,7 +162,7 @@
     return 0;
   }
 
-  if (self->mSize.width != *(a3 + 1) || self->mSize.height != *(a3 + 2))
+  if (self->mSize.width != *(equal + 1) || self->mSize.height != *(equal + 2))
   {
     return 0;
   }
@@ -171,10 +171,10 @@
   *&t1.a = *&self->mTransform.a;
   *&t1.c = v7;
   *&t1.tx = *&self->mTransform.tx;
-  v8 = *(a3 + 40);
-  *&v9.a = *(a3 + 24);
+  v8 = *(equal + 40);
+  *&v9.a = *(equal + 24);
   *&v9.c = v8;
-  *&v9.tx = *(a3 + 56);
+  *&v9.tx = *(equal + 56);
   return CGAffineTransformEqualToTransform(&t1, &v9);
 }
 
@@ -251,7 +251,7 @@
   return [(TSDInfoGeometry *)v3 initWithTransform:&v5 size:?];
 }
 
-- (id)geometryByTransformingBy:(CGAffineTransform *)a3
+- (id)geometryByTransformingBy:(CGAffineTransform *)by
 {
   memset(&v17, 0, sizeof(v17));
   if (self)
@@ -264,10 +264,10 @@
     memset(&t1, 0, sizeof(t1));
   }
 
-  v5 = *&a3->c;
-  *&v15.a = *&a3->a;
+  v5 = *&by->c;
+  *&v15.a = *&by->a;
   *&v15.c = v5;
-  *&v15.tx = *&a3->tx;
+  *&v15.tx = *&by->tx;
   CGAffineTransformConcat(&v17, &t1, &v15);
   t1 = v17;
   v6 = TSDTransformXYScale(&t1.a);
@@ -284,17 +284,17 @@
   return [(TSDLayoutGeometry *)v13 initWithSize:&v15 transform:v10, v12];
 }
 
-- (id)geometryByOutsettingBy:(CGSize)a3
+- (id)geometryByOutsettingBy:(CGSize)by
 {
-  height = a3.height;
-  width = a3.width;
+  height = by.height;
+  width = by.width;
   v5 = [(TSDLayoutGeometry *)self mutableCopy];
   [v5 outsetBy:{width, height}];
 
   return v5;
 }
 
-- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)a3
+- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)to
 {
   v4 = *&a4->c;
   *&t1.a = *&a4->a;
@@ -307,9 +307,9 @@
   return CGAffineTransformConcat(retstr, &t1, &v7);
 }
 
-- (BOOL)differsInMoreThanTranslationFrom:(id)a3
+- (BOOL)differsInMoreThanTranslationFrom:(id)from
 {
-  if (!a3)
+  if (!from)
   {
     return 1;
   }
@@ -317,7 +317,7 @@
   [(TSDLayoutGeometry *)self frame];
   v6 = v5;
   v8 = v7;
-  [a3 frame];
+  [from frame];
   if (v6 != v10 || v8 != v9)
   {
     return 1;
@@ -333,7 +333,7 @@
     memset(v14, 0, sizeof(v14));
   }
 
-  [a3 transform];
+  [from transform];
   return !TSDTransformsDifferOnlyByTranslation(v14, &v13);
 }
 

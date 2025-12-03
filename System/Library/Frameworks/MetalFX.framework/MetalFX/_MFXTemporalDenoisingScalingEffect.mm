@@ -1,17 +1,17 @@
 @interface _MFXTemporalDenoisingScalingEffect
 - (CGPoint)jitterOffset;
 - (CGPoint)motionVectorScale;
-- (_MFXTemporalDenoisingScalingEffect)initWithDevice:(id)a3 descriptor:(id)a4 history:(id)a5;
-- (__n128)setViewToClipMatrix:(__n128)a3;
-- (__n128)setWorldToViewMatrix:(__n128)a3;
+- (_MFXTemporalDenoisingScalingEffect)initWithDevice:(id)device descriptor:(id)descriptor history:(id)history;
+- (__n128)setViewToClipMatrix:(__n128)matrix;
+- (__n128)setWorldToViewMatrix:(__n128)matrix;
 - (__n128)viewToClipMatrix;
 - (__n128)worldToViewMatrix;
 - (float)jitterOffsetX;
 - (float)motionVectorScaleX;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3;
-- (void)encodeToCommandQueue:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer;
+- (void)encodeToCommandQueue:(id)queue;
 @end
 
 @implementation _MFXTemporalDenoisingScalingEffect
@@ -48,32 +48,32 @@
   return result;
 }
 
-- (_MFXTemporalDenoisingScalingEffect)initWithDevice:(id)a3 descriptor:(id)a4 history:(id)a5
+- (_MFXTemporalDenoisingScalingEffect)initWithDevice:(id)device descriptor:(id)descriptor history:(id)history
 {
-  v104 = a3;
-  v9 = a4;
-  v106 = a5;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  historyCopy = history;
   v113.receiver = self;
   v113.super_class = _MFXTemporalDenoisingScalingEffect;
   v10 = [(_MTLFXEffectBase *)&v113 init];
 
-  objc_storeStrong(&v10->_device, a3);
-  v10->_colorTextureFormat = [v9 colorTextureFormat];
-  v10->_depthTextureFormat = [v9 depthTextureFormat];
-  v10->_motionTextureFormat = [v9 motionTextureFormat];
-  v10->_outputTextureFormat = [v9 outputTextureFormat];
-  v10->_reactiveMaskTextureFormat = [v9 reactiveMaskTextureFormat];
-  v10->_diffuseAlbedoTextureFormat = [v9 diffuseAlbedoTextureFormat];
-  v10->_specularAlbedoTextureFormat = [v9 specularAlbedoTextureFormat];
-  v10->_normalTextureFormat = [v9 normalTextureFormat];
-  v10->_roughnessTextureFormat = [v9 roughnessTextureFormat];
-  v10->_specularHitDistanceTextureFormat = [v9 specularHitDistanceTextureFormat];
-  v10->_denoiseStrengthMaskTextureFormat = [v9 denoiseStrengthMaskTextureFormat];
-  v10->_preUpscaleComposeTextureFormat = [v9 transparencyOverlayTextureFormat];
-  v10->_inputWidth = [v9 inputWidth];
-  v10->_inputHeight = [v9 inputHeight];
-  v10->_outputWidth = [v9 outputWidth];
-  v10->_outputHeight = [v9 outputHeight];
+  objc_storeStrong(&v10->_device, device);
+  v10->_colorTextureFormat = [descriptorCopy colorTextureFormat];
+  v10->_depthTextureFormat = [descriptorCopy depthTextureFormat];
+  v10->_motionTextureFormat = [descriptorCopy motionTextureFormat];
+  v10->_outputTextureFormat = [descriptorCopy outputTextureFormat];
+  v10->_reactiveMaskTextureFormat = [descriptorCopy reactiveMaskTextureFormat];
+  v10->_diffuseAlbedoTextureFormat = [descriptorCopy diffuseAlbedoTextureFormat];
+  v10->_specularAlbedoTextureFormat = [descriptorCopy specularAlbedoTextureFormat];
+  v10->_normalTextureFormat = [descriptorCopy normalTextureFormat];
+  v10->_roughnessTextureFormat = [descriptorCopy roughnessTextureFormat];
+  v10->_specularHitDistanceTextureFormat = [descriptorCopy specularHitDistanceTextureFormat];
+  v10->_denoiseStrengthMaskTextureFormat = [descriptorCopy denoiseStrengthMaskTextureFormat];
+  v10->_preUpscaleComposeTextureFormat = [descriptorCopy transparencyOverlayTextureFormat];
+  v10->_inputWidth = [descriptorCopy inputWidth];
+  v10->_inputHeight = [descriptorCopy inputHeight];
+  v10->_outputWidth = [descriptorCopy outputWidth];
+  v10->_outputHeight = [descriptorCopy outputHeight];
   v10->_preExposure = 1.0;
   v10->_reset = 1;
   inputWidth = v10->_inputWidth;
@@ -99,9 +99,9 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [(MTLDevice *)v14 gpuCoreCount];
+    gpuCoreCount = [(MTLDevice *)v14 gpuCoreCount];
 
-    if (v16 >= 0x14)
+    if (gpuCoreCount >= 0x14)
     {
       v10->_useANE = 0;
     }
@@ -112,9 +112,9 @@
 LABEL_7:
   }
 
-  v10->_reactiveMaskEnabled = [v9 isReactiveMaskTextureEnabled];
+  v10->_reactiveMaskEnabled = [descriptorCopy isReactiveMaskTextureEnabled];
   v10->_midBicubicWarp = 1;
-  v10->_specularHitDistEnabled = [v9 isSpecularHitDistanceTextureEnabled];
+  v10->_specularHitDistEnabled = [descriptorCopy isSpecularHitDistanceTextureEnabled];
   v10->_enableLateLatch = 1;
   if (isInternalBuild(void)::once != -1)
   {
@@ -232,15 +232,15 @@ LABEL_7:
   v99 = [v100 pathForResource:@"default" ofType:@"metallib"];
   v28 = [MEMORY[0x277CBEBC0] URLWithString:v99];
   v112 = 0;
-  v101 = [v104 newLibraryWithURL:v28 error:&v112];
+  v101 = [deviceCopy newLibraryWithURL:v28 error:&v112];
   v98 = v112;
 
   v105 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:v10->_outputWidth height:v10->_outputHeight mipmapped:0];
   [v105 setUsage:3];
   [v105 setCompressionMode:1];
-  v29 = v106;
-  v30 = v106;
-  if (!v106)
+  v29 = historyCopy;
+  v30 = historyCopy;
+  if (!historyCopy)
   {
     v30 = [(MTLDevice *)v10->_device newTextureWithDescriptor:v105];
     v29 = 0;
@@ -284,29 +284,29 @@ LABEL_7:
   commandQueue = v10->_commandQueue;
   v10->_commandQueue = v38;
 
-  v40 = [(MTLDevice *)v10->_device newEvent];
+  newEvent = [(MTLDevice *)v10->_device newEvent];
   inputEvent = v10->_inputEvent;
-  v10->_inputEvent = v40;
+  v10->_inputEvent = newEvent;
 
-  v42 = [(MTLDevice *)v10->_device newEvent];
+  newEvent2 = [(MTLDevice *)v10->_device newEvent];
   outputEvent = v10->_outputEvent;
-  v10->_outputEvent = v42;
+  v10->_outputEvent = newEvent2;
 
-  v44 = [(MTLDevice *)v10->_device newEvent];
+  newEvent3 = [(MTLDevice *)v10->_device newEvent];
   midProcessingStartEvent = v10->_midProcessingStartEvent;
-  v10->_midProcessingStartEvent = v44;
+  v10->_midProcessingStartEvent = newEvent3;
 
-  v46 = [(MTLDevice *)v10->_device newEvent];
+  newEvent4 = [(MTLDevice *)v10->_device newEvent];
   midProcessingDoneEvent = v10->_midProcessingDoneEvent;
-  v10->_midProcessingDoneEvent = v46;
+  v10->_midProcessingDoneEvent = newEvent4;
 
   if (v10->_useANE)
   {
-    v48 = [(MTLDevice *)v10->_device newSharedEvent];
+    newSharedEvent = [(MTLDevice *)v10->_device newSharedEvent];
     framePowerOnSharedEvent = v10->_framePowerOnSharedEvent;
-    v10->_framePowerOnSharedEvent = v48;
+    v10->_framePowerOnSharedEvent = newSharedEvent;
 
-    v50 = [(MTLDevice *)v10->_device newSharedEvent];
+    newSharedEvent2 = [(MTLDevice *)v10->_device newSharedEvent];
   }
 
   else
@@ -314,11 +314,11 @@ LABEL_7:
     v51 = v10->_framePowerOnSharedEvent;
     v10->_framePowerOnSharedEvent = 0;
 
-    v50 = [(MTLDevice *)v10->_device newEvent];
+    newSharedEvent2 = [(MTLDevice *)v10->_device newEvent];
   }
 
   frameSharedEvent = v10->_frameSharedEvent;
-  v10->_frameSharedEvent = v50;
+  v10->_frameSharedEvent = newSharedEvent2;
 
   v53 = v10->_outputEvent;
   if (objc_opt_respondsToSelector())
@@ -326,9 +326,9 @@ LABEL_7:
     [(MTLEvent *)v10->_outputEvent setEnableBarrier:0];
   }
 
-  v54 = [(MTLDevice *)v10->_device newFence];
+  newFence = [(MTLDevice *)v10->_device newFence];
   dummyFence = v10->_dummyFence;
-  v10->_dummyFence = v54;
+  v10->_dummyFence = newFence;
 
   v56 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v57 = dispatch_queue_attr_make_with_qos_class(v56, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -340,7 +340,7 @@ LABEL_7:
 
   v10->_inputContentWidth = v10->_inputWidth;
   v10->_inputContentHeight = v10->_inputHeight;
-  v10->_autoExposureEnabled = [v9 isAutoExposureEnabled];
+  v10->_autoExposureEnabled = [descriptorCopy isAutoExposureEnabled];
   v60 = getenv("MTLFX_FORCE_AUTO_EXPOSURE");
   if (!v60)
   {
@@ -352,11 +352,11 @@ LABEL_7:
     v10->_autoExposureEnabled = 1;
   }
 
-  if ([v9 isInputContentPropertiesEnabled])
+  if ([descriptorCopy isInputContentPropertiesEnabled])
   {
-    [v9 inputContentMinScale];
+    [descriptorCopy inputContentMinScale];
     v10->_inputContentMinScale = v61;
-    [v9 inputContentMaxScale];
+    [descriptorCopy inputContentMaxScale];
     v10->_inputContentMaxScale = v62;
     inputContentMinScale = v10->_inputContentMinScale;
     v64 = v62;
@@ -387,7 +387,7 @@ LABEL_7:
       v76 = v10->_outputHeight;
     }
 
-    else if ([v9 isInputContentPropertiesEnabled])
+    else if ([descriptorCopy isInputContentPropertiesEnabled])
     {
       inputContentMaxScale = v10->_inputContentMaxScale;
       v73 = ceilf(v10->_outputWidth / inputContentMaxScale);
@@ -402,7 +402,7 @@ LABEL_7:
       v76 = 2 * LODWORD(v10->_inputHeight);
     }
 
-    v89 = v104;
+    v89 = deviceCopy;
     v108 = v89;
     v109 = 0;
     v110 = 0;
@@ -501,16 +501,16 @@ LABEL_7:
   [(_MFXTemporalDenoisingScalingEffect *)&v2 dealloc];
 }
 
-- (void)encodeToCommandQueue:(id)a3
+- (void)encodeToCommandQueue:(id)queue
 {
-  v4 = [a3 commandBuffer];
+  commandBuffer = [queue commandBuffer];
   [(_MFXTemporalDenoisingScalingEffect *)self encodeToCommandBuffer:?];
-  [v4 commit];
+  [commandBuffer commit];
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
-  v32 = a3;
+  bufferCopy = buffer;
   [(_MTLFXEffectBase *)self _beginEncode];
   *(self->_filter + 136) = *(self->_filter + 136) == 0;
   *(self->_denoiseFilter + 299) = *(self->_denoiseFilter + 299) == 0;
@@ -578,9 +578,9 @@ LABEL_7:
   memset(obj, 0, sizeof(obj));
   if (self->_useANE)
   {
-    [v32 encodeSignalEvent:self->_inputEvent value:inputEventValue];
-    [v32 encodeWaitForEvent:self->_midProcessingStartEvent value:?];
-    MFXComputeEncoder3::beginEncoding(obj, v32);
+    [bufferCopy encodeSignalEvent:self->_inputEvent value:inputEventValue];
+    [bufferCopy encodeWaitForEvent:self->_midProcessingStartEvent value:?];
+    MFXComputeEncoder3::beginEncoding(obj, bufferCopy);
     locationa = obj[0];
     [locationa setLabel:@"MetalFX_Denoiser_DMidProcessing"];
     [(_MTLFXEffect *)self _didCreateComputeCommandEncoder:locationa forEncode:encodeID];
@@ -588,7 +588,7 @@ LABEL_7:
     BRNet_v3_Filter<MFXDevice3>::encodeMidForDenoise();
   }
 
-  MFXComputeEncoder3::beginEncoding(obj, v32);
+  MFXComputeEncoder3::beginEncoding(obj, bufferCopy);
   location = obj[0];
   [location setLabel:@"MetalFX_Denoiser_DPreProcessing"];
   location;
@@ -606,17 +606,17 @@ LABEL_7:
 
 - (__n128)worldToViewMatrix
 {
-  result = *(a1 + 704);
-  v2 = *(a1 + 720);
-  v3 = *(a1 + 736);
-  v4 = *(a1 + 752);
+  result = *(self + 704);
+  v2 = *(self + 720);
+  v3 = *(self + 736);
+  v4 = *(self + 752);
   return result;
 }
 
-- (__n128)setWorldToViewMatrix:(__n128)a3
+- (__n128)setWorldToViewMatrix:(__n128)matrix
 {
   result[44] = a2;
-  result[45] = a3;
+  result[45] = matrix;
   result[46] = a4;
   result[47] = a5;
   return result;
@@ -624,17 +624,17 @@ LABEL_7:
 
 - (__n128)viewToClipMatrix
 {
-  result = *(a1 + 768);
-  v2 = *(a1 + 784);
-  v3 = *(a1 + 800);
-  v4 = *(a1 + 816);
+  result = *(self + 768);
+  v2 = *(self + 784);
+  v3 = *(self + 800);
+  v4 = *(self + 816);
   return result;
 }
 
-- (__n128)setViewToClipMatrix:(__n128)a3
+- (__n128)setViewToClipMatrix:(__n128)matrix
 {
   result[48] = a2;
-  result[49] = a3;
+  result[49] = matrix;
   result[50] = a4;
   result[51] = a5;
   return result;

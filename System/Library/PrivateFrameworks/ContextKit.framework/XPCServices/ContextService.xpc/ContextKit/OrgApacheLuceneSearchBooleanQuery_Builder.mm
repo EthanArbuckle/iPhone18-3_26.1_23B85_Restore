@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneSearchBooleanQuery_Builder
 - (OrgApacheLuceneSearchBooleanQuery_Builder)init;
-- (id)addWithOrgApacheLuceneSearchBooleanClause:(id)a3;
-- (id)addWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)a4;
+- (id)addWithOrgApacheLuceneSearchBooleanClause:(id)clause;
+- (id)addWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)enum;
 - (id)build;
 - (void)dealloc;
 @end
@@ -15,18 +15,18 @@
   return self;
 }
 
-- (id)addWithOrgApacheLuceneSearchBooleanClause:(id)a3
+- (id)addWithOrgApacheLuceneSearchBooleanClause:(id)clause
 {
-  if (!a3)
+  if (!clause)
   {
     JreThrowNullPointerException();
   }
 
-  -[OrgApacheLuceneSearchBooleanQuery_Builder addWithOrgApacheLuceneSearchQuery:withOrgApacheLuceneSearchBooleanClause_OccurEnum:](self, "addWithOrgApacheLuceneSearchQuery:withOrgApacheLuceneSearchBooleanClause_OccurEnum:", [a3 getQuery], objc_msgSend(a3, "getOccur"));
+  -[OrgApacheLuceneSearchBooleanQuery_Builder addWithOrgApacheLuceneSearchQuery:withOrgApacheLuceneSearchBooleanClause_OccurEnum:](self, "addWithOrgApacheLuceneSearchQuery:withOrgApacheLuceneSearchBooleanClause_OccurEnum:", [clause getQuery], objc_msgSend(clause, "getOccur"));
   return self;
 }
 
-- (id)addWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)a4
+- (id)addWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)enum
 {
   clauses = self->clauses_;
   if (!clauses)
@@ -41,7 +41,7 @@
     objc_exception_throw(v10);
   }
 
-  [(JavaUtilList *)self->clauses_ addWithId:new_OrgApacheLuceneSearchBooleanClause_initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchBooleanClause_OccurEnum_(a3, a4)];
+  [(JavaUtilList *)self->clauses_ addWithId:new_OrgApacheLuceneSearchBooleanClause_initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchBooleanClause_OccurEnum_(query, enum)];
   return self;
 }
 

@@ -1,32 +1,32 @@
 @interface MTMetricsUtils
-- (id)metricsBuyParamsStringWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 callerSuppliedBuyParams:(id)a6;
+- (id)metricsBuyParamsStringWithPageId:(id)id pageType:(id)type pageContext:(id)context callerSuppliedBuyParams:(id)params;
 @end
 
 @implementation MTMetricsUtils
 
-- (id)metricsBuyParamsStringWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 callerSuppliedBuyParams:(id)a6
+- (id)metricsBuyParamsStringWithPageId:(id)id pageType:(id)type pageContext:(id)context callerSuppliedBuyParams:(id)params
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MTObject *)self metricsKit];
-  v15 = [v14 config];
-  v16 = [v15 sources];
+  idCopy = id;
+  typeCopy = type;
+  contextCopy = context;
+  paramsCopy = params;
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
+  sources = [config sources];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __96__MTMetricsUtils_metricsBuyParamsStringWithPageId_pageType_pageContext_callerSuppliedBuyParams___block_invoke;
   v23[3] = &unk_2798CE888;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
-  v27 = self;
-  v28 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
-  v21 = [v16 thenWithBlock:v23];
+  v24 = idCopy;
+  v25 = typeCopy;
+  v26 = contextCopy;
+  selfCopy = self;
+  v28 = paramsCopy;
+  v17 = paramsCopy;
+  v18 = contextCopy;
+  v19 = typeCopy;
+  v20 = idCopy;
+  v21 = [sources thenWithBlock:v23];
 
   return v21;
 }

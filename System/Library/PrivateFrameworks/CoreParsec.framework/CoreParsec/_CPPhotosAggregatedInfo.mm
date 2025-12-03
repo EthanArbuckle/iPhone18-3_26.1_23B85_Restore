@@ -1,18 +1,18 @@
 @interface _CPPhotosAggregatedInfo
-- (BOOL)isEqual:(id)a3;
-- (_CPPhotosAggregatedInfo)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPPhotosAggregatedInfo)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPPhotosAggregatedInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (totalNumberOfAssets = self->_totalNumberOfAssets, totalNumberOfAssets == objc_msgSend(v4, "totalNumberOfAssets")) && (totalNumberOfEmbeddingMatchedAssets = self->_totalNumberOfEmbeddingMatchedAssets, totalNumberOfEmbeddingMatchedAssets == objc_msgSend(v4, "totalNumberOfEmbeddingMatchedAssets")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (totalNumberOfAssets = self->_totalNumberOfAssets, totalNumberOfAssets == objc_msgSend(equalCopy, "totalNumberOfAssets")) && (totalNumberOfEmbeddingMatchedAssets = self->_totalNumberOfEmbeddingMatchedAssets, totalNumberOfEmbeddingMatchedAssets == objc_msgSend(equalCopy, "totalNumberOfEmbeddingMatchedAssets")))
   {
     totalNumberOfMetadataMatchedAssets = self->_totalNumberOfMetadataMatchedAssets;
-    v8 = totalNumberOfMetadataMatchedAssets == [v4 totalNumberOfMetadataMatchedAssets];
+    v8 = totalNumberOfMetadataMatchedAssets == [equalCopy totalNumberOfMetadataMatchedAssets];
   }
 
   else
@@ -23,9 +23,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPPhotosAggregatedInfo *)self totalNumberOfAssets])
   {
     totalNumberOfAssets = self->_totalNumberOfAssets;
@@ -47,15 +47,15 @@
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPPhotosAggregatedInfo)initWithFacade:(id)a3
+- (_CPPhotosAggregatedInfo)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPPhotosAggregatedInfo *)self init];
   if (v5)
   {
-    -[_CPPhotosAggregatedInfo setTotalNumberOfAssets:](v5, "setTotalNumberOfAssets:", [v4 totalNumberOfAssets]);
-    -[_CPPhotosAggregatedInfo setTotalNumberOfEmbeddingMatchedAssets:](v5, "setTotalNumberOfEmbeddingMatchedAssets:", [v4 totalNumberOfEmbeddingMatchedAssets]);
-    -[_CPPhotosAggregatedInfo setTotalNumberOfMetadataMatchedAssets:](v5, "setTotalNumberOfMetadataMatchedAssets:", [v4 totalNumberOfMetadataMatchedAssets]);
+    -[_CPPhotosAggregatedInfo setTotalNumberOfAssets:](v5, "setTotalNumberOfAssets:", [facadeCopy totalNumberOfAssets]);
+    -[_CPPhotosAggregatedInfo setTotalNumberOfEmbeddingMatchedAssets:](v5, "setTotalNumberOfEmbeddingMatchedAssets:", [facadeCopy totalNumberOfEmbeddingMatchedAssets]);
+    -[_CPPhotosAggregatedInfo setTotalNumberOfMetadataMatchedAssets:](v5, "setTotalNumberOfMetadataMatchedAssets:", [facadeCopy totalNumberOfMetadataMatchedAssets]);
     v6 = v5;
   }
 

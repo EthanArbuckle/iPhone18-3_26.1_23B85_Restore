@@ -9,35 +9,35 @@
 
 - (id)laui_didStartHandler
 {
-  v1 = [a1 delegate];
+  delegate = [self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 didStartHandler];
+    didStartHandler = [delegate didStartHandler];
   }
 
   else
   {
-    v2 = 0;
+    didStartHandler = 0;
   }
 
-  return v2;
+  return didStartHandler;
 }
 
 - (void)laui_setDidStartHandler:()LAUICAUtilities
 {
   v5 = a3;
-  v4 = [a1 delegate];
-  if (v5 && !v4)
+  delegate = [self delegate];
+  if (v5 && !delegate)
   {
-    v4 = objc_alloc_init(LAUIAnimationDelegate);
-    [a1 setDelegate:v4];
+    delegate = objc_alloc_init(LAUIAnimationDelegate);
+    [self setDelegate:delegate];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(LAUIAnimationDelegate *)v4 setDidStartHandler:v5];
+    [(LAUIAnimationDelegate *)delegate setDidStartHandler:v5];
   }
 
   else if (v5)
@@ -48,35 +48,35 @@
 
 - (id)laui_didStopHandler
 {
-  v1 = [a1 delegate];
+  delegate = [self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 didStopHandler];
+    didStopHandler = [delegate didStopHandler];
   }
 
   else
   {
-    v2 = 0;
+    didStopHandler = 0;
   }
 
-  return v2;
+  return didStopHandler;
 }
 
 - (void)laui_setDidStopHandler:()LAUICAUtilities
 {
   v5 = a3;
-  v4 = [a1 delegate];
-  if (v5 && !v4)
+  delegate = [self delegate];
+  if (v5 && !delegate)
   {
-    v4 = objc_alloc_init(LAUIAnimationDelegate);
-    [a1 setDelegate:v4];
+    delegate = objc_alloc_init(LAUIAnimationDelegate);
+    [self setDelegate:delegate];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(LAUIAnimationDelegate *)v4 setDidStopHandler:v5];
+    [(LAUIAnimationDelegate *)delegate setDidStopHandler:v5];
   }
 
   else if (v5)

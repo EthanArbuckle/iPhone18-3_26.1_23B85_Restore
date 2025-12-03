@@ -1,6 +1,6 @@
 @interface _UIFocusGroupHistory
 - (_UIFocusGroupHistory)init;
-- (void)setLastFocusedItem:(id)a3 forGroupIdentifier:(id)a4;
+- (void)setLastFocusedItem:(id)item forGroupIdentifier:(id)identifier;
 @end
 
 @implementation _UIFocusGroupHistory
@@ -22,13 +22,13 @@
   return v2;
 }
 
-- (void)setLastFocusedItem:(id)a3 forGroupIdentifier:(id)a4
+- (void)setLastFocusedItem:(id)item forGroupIdentifier:(id)identifier
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  itemCopy = item;
+  identifierCopy = identifier;
+  if (itemCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -36,20 +36,20 @@
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIFocusGroupHistory.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusGroupHistory.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"item"}];
 
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"_UIFocusGroupHistory.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"groupIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusGroupHistory.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"groupIdentifier"}];
 
 LABEL_3:
-  [(NSMapTable *)self->_groupToItemMap setObject:v10 forKey:v7];
+  [(NSMapTable *)self->_groupToItemMap setObject:itemCopy forKey:identifierCopy];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface DDActionGroup
 + (DDActionGroup)emptyGroup;
-+ (DDActionGroup)groupWithAction:(uint64_t)a1;
-+ (DDActionGroup)groupWithActions:(uint64_t)a1;
++ (DDActionGroup)groupWithAction:(uint64_t)action;
++ (DDActionGroup)groupWithActions:(uint64_t)actions;
 - (BOOL)isEmpty;
-- (DDActionGroup)initWithActions:(id)a3;
-- (DDActionGroup)initWithSingleAction:(id)a3;
+- (DDActionGroup)initWithActions:(id)actions;
+- (DDActionGroup)initWithSingleAction:(id)action;
 - (id)_extractFirstAction;
 - (id)children;
 - (id)ddAction;
 - (id)extractDefaultActions;
-- (id)flattenedActions:(uint64_t)a1;
+- (id)flattenedActions:(uint64_t)actions;
 - (id)mainAction;
 - (id)nonnullChildren;
 - (uint64_t)count;
@@ -17,17 +17,17 @@
 - (uint64_t)inlinedGroup;
 - (uint64_t)setInlinedGroup:(uint64_t)result;
 - (void)_regroupByService;
-- (void)appendAction:(uint64_t)a1;
-- (void)appendActions:(_BYTE *)a1;
-- (void)appendGroup:(_BYTE *)a1;
+- (void)appendAction:(uint64_t)action;
+- (void)appendActions:(_BYTE *)actions;
+- (void)appendGroup:(_BYTE *)group;
 - (void)cleanup;
-- (void)enumerateActionsUsingBlock:(uint64_t)a1;
-- (void)finalizeWithFilter:(uint64_t)a1;
-- (void)insertAction:(uint64_t)a3 atIndex:;
-- (void)insertActions:(uint64_t)a3 atIndex:;
-- (void)insertGroup:(uint64_t)a3 atIndex:;
+- (void)enumerateActionsUsingBlock:(uint64_t)block;
+- (void)finalizeWithFilter:(uint64_t)filter;
+- (void)insertAction:(uint64_t)action atIndex:;
+- (void)insertActions:(uint64_t)actions atIndex:;
+- (void)insertGroup:(uint64_t)group atIndex:;
 - (void)regroupByService;
-- (void)removeChild:(id)a3;
+- (void)removeChild:(id)child;
 - (void)simplify;
 @end
 
@@ -89,16 +89,16 @@ LABEL_14:
   return v2;
 }
 
-+ (DDActionGroup)groupWithActions:(uint64_t)a1
++ (DDActionGroup)groupWithActions:(uint64_t)actions
 {
   v2 = a2;
   objc_opt_self();
   v3 = [v2 count];
   if (v3 == 1)
   {
-    v4 = [v2 firstObject];
+    firstObject = [v2 firstObject];
     objc_opt_self();
-    v5 = [[DDActionGroup alloc] initWithSingleAction:v4];
+    v5 = [[DDActionGroup alloc] initWithSingleAction:firstObject];
   }
 
   else if (v3 < 2)
@@ -114,7 +114,7 @@ LABEL_14:
   return v5;
 }
 
-+ (DDActionGroup)groupWithAction:(uint64_t)a1
++ (DDActionGroup)groupWithAction:(uint64_t)action
 {
   v2 = a2;
   objc_opt_self();
@@ -132,36 +132,36 @@ LABEL_14:
   return v1;
 }
 
-- (DDActionGroup)initWithSingleAction:(id)a3
+- (DDActionGroup)initWithSingleAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = DDActionGroup;
   v6 = [(DDActionGroup *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
   }
 
   return v7;
 }
 
-- (DDActionGroup)initWithActions:(id)a3
+- (DDActionGroup)initWithActions:(id)actions
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v22.receiver = self;
   v22.super_class = DDActionGroup;
   v5 = [(DDActionGroup *)&v22 init];
-  if (v5 && [v4 count])
+  if (v5 && [actionsCopy count])
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v4;
+    v7 = actionsCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {
@@ -231,13 +231,13 @@ LABEL_14:
 
 - (void)cleanup
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"DDActionGroup.m" lineNumber:276 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DDActionGroup.m" lineNumber:276 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  [(NSMutableArray *)self->_children removeObject:a3];
+  [(NSMutableArray *)self->_children removeObject:child];
 
   [(DDActionGroup *)self cleanup];
 }
@@ -312,15 +312,15 @@ LABEL_14:
       v9 = *(*(&v15 + 1) + 8 * i);
       [v9 _regroupByService];
       v10 = v9[3];
-      v11 = [v10 _serviceIdentifier];
-      if (v11)
+      _serviceIdentifier = [v10 _serviceIdentifier];
+      if (_serviceIdentifier)
       {
         if (!v6)
         {
           v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSMutableArray count](self->_children, "count")}];
         }
 
-        v12 = [v6 objectForKeyedSubscript:v11];
+        v12 = [v6 objectForKeyedSubscript:_serviceIdentifier];
         v13 = v12;
         if (v12)
         {
@@ -330,7 +330,7 @@ LABEL_14:
 
         else
         {
-          [v6 setObject:v9 forKeyedSubscript:v11];
+          [v6 setObject:v9 forKeyedSubscript:_serviceIdentifier];
         }
       }
     }
@@ -351,9 +351,9 @@ LABEL_18:
 
 - (uint64_t)extractedActions
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 17);
+    v1 = *(self + 17);
   }
 
   else
@@ -367,9 +367,9 @@ LABEL_18:
 - (uint64_t)count
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
       v1 = 1;
     }
@@ -429,9 +429,9 @@ LABEL_18:
 - (id)mainAction
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     if (v1)
     {
       v2 = v1;
@@ -441,26 +441,26 @@ LABEL_18:
     OUTLINED_FUNCTION_1_3();
     v4 = *(v3 + 8);
     OUTLINED_FUNCTION_0_4();
-    v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
-    if (v6)
+    mainAction = [v5 countByEnumeratingWithState:? objects:? count:?];
+    if (mainAction)
     {
-      v14 = v6;
+      v14 = mainAction;
       v15 = *v22;
       while (2)
       {
         v16 = 0;
         do
         {
-          OUTLINED_FUNCTION_2_3(v6, v7, v8, v9, v10, v11, v12, v13, v20, v21, v22);
+          OUTLINED_FUNCTION_2_3(mainAction, v7, v8, v9, v10, v11, v12, v13, v20, v21, v22);
           if (!v17)
           {
             objc_enumerationMutation(v4);
           }
 
-          v6 = [(DDActionGroup *)*(v21 + 8 * v16) mainAction];
-          if (v6)
+          mainAction = [(DDActionGroup *)*(v21 + 8 * v16) mainAction];
+          if (mainAction)
           {
-            v2 = v6;
+            v2 = mainAction;
 
             goto LABEL_15;
           }
@@ -470,9 +470,9 @@ LABEL_18:
 
         while (v14 != v16);
         OUTLINED_FUNCTION_0_4();
-        v6 = [v4 countByEnumeratingWithState:? objects:? count:?];
-        v14 = v6;
-        if (v6)
+        mainAction = [v4 countByEnumeratingWithState:? objects:? count:?];
+        v14 = mainAction;
+        if (mainAction)
         {
           continue;
         }
@@ -491,46 +491,46 @@ LABEL_15:
 
 - (id)children
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (a1[3] || ![a1[1] count])
+    selfCopy = self;
+    if (self[3] || ![self[1] count])
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = v2[1];
+      v3 = selfCopy[1];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)ddAction
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[3];
+    self = self[3];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)appendAction:(uint64_t)a1
+- (void)appendAction:(uint64_t)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
-    if (*(a1 + 16) == 1)
+    if (*(action + 16) == 1)
     {
       v10 = v3;
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = objc_opt_class();
       [OUTLINED_FUNCTION_3_3() handleFailureInMethod:v8 object:? file:? lineNumber:? description:?];
 
@@ -547,18 +547,18 @@ LABEL_15:
     }
 
     v9 = v3;
-    if (*(a1 + 24) || *(a1 + 8))
+    if (*(action + 24) || *(action + 8))
     {
-      v4 = [a1 nonnullChildren];
+      nonnullChildren = [action nonnullChildren];
       v5 = [[DDActionGroup alloc] initWithSingleAction:v9];
-      [v4 addObject:v5];
+      [nonnullChildren addObject:v5];
     }
 
     else
     {
       v6 = v3;
-      v4 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      nonnullChildren = *(action + 24);
+      *(action + 24) = v6;
     }
 
     v3 = v9;
@@ -567,16 +567,16 @@ LABEL_15:
 LABEL_8:
 }
 
-- (void)insertAction:(uint64_t)a3 atIndex:
+- (void)insertAction:(uint64_t)action atIndex:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 16) == 1)
+    if (*(self + 16) == 1)
     {
       v12 = v5;
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:sel_insertAction_atIndex_ object:a1 file:@"DDActionGroup.m" lineNumber:159 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_insertAction_atIndex_ object:self file:@"DDActionGroup.m" lineNumber:159 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
 
       v5 = v12;
       if (!v12)
@@ -591,26 +591,26 @@ LABEL_8:
     }
 
     v11 = v5;
-    if (*(a1 + 24) || *(a1 + 8))
+    if (*(self + 24) || *(self + 8))
     {
-      v6 = [a1 nonnullChildren];
+      nonnullChildren = [self nonnullChildren];
       v7 = [[DDActionGroup alloc] initWithSingleAction:v11];
-      [v6 insertObject:v7 atIndex:a3];
+      [nonnullChildren insertObject:v7 atIndex:action];
     }
 
     else
     {
-      if (a3)
+      if (action)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
-        [v10 handleFailureInMethod:sel_insertAction_atIndex_ object:a1 file:@"DDActionGroup.m" lineNumber:162 description:{@"Attempted to insert a DDAction in empty group at index %ld", a3}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel_insertAction_atIndex_ object:self file:@"DDActionGroup.m" lineNumber:162 description:{@"Attempted to insert a DDAction in empty group at index %ld", action}];
 
         v5 = v11;
       }
 
       v8 = v5;
-      v6 = *(a1 + 24);
-      *(a1 + 24) = v8;
+      nonnullChildren = *(self + 24);
+      *(self + 24) = v8;
     }
 
     v5 = v11;
@@ -619,16 +619,16 @@ LABEL_8:
 LABEL_8:
 }
 
-- (void)appendActions:(_BYTE *)a1
+- (void)appendActions:(_BYTE *)actions
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (actions)
   {
-    if (a1[16] == 1)
+    if (actions[16] == 1)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:sel_appendActions_ object:a1 file:@"DDActionGroup.m" lineNumber:172 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_appendActions_ object:actions file:@"DDActionGroup.m" lineNumber:172 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
     }
 
     v4 = [v3 count];
@@ -639,8 +639,8 @@ LABEL_8:
         goto LABEL_14;
       }
 
-      v5 = [v3 firstObject];
-      [(DDActionGroup *)a1 appendAction:v5];
+      firstObject = [v3 firstObject];
+      [(DDActionGroup *)actions appendAction:firstObject];
     }
 
     else
@@ -649,8 +649,8 @@ LABEL_8:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v5 = v3;
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      firstObject = v3;
+      v6 = [firstObject countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         v7 = v6;
@@ -662,19 +662,19 @@ LABEL_8:
           {
             if (*v16 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(firstObject);
             }
 
             v10 = *(*(&v15 + 1) + 8 * v9);
-            v11 = [a1 nonnullChildren];
+            nonnullChildren = [actions nonnullChildren];
             v12 = [[DDActionGroup alloc] initWithSingleAction:v10];
-            [v11 addObject:v12];
+            [nonnullChildren addObject:v12];
 
             ++v9;
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v7 = [firstObject countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v7);
@@ -687,16 +687,16 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertActions:(uint64_t)a3 atIndex:
+- (void)insertActions:(uint64_t)actions atIndex:
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (a1[16] == 1)
+    if (self[16] == 1)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:sel_insertActions_atIndex_ object:a1 file:@"DDActionGroup.m" lineNumber:185 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_insertActions_atIndex_ object:self file:@"DDActionGroup.m" lineNumber:185 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
     }
 
     v6 = [v5 count];
@@ -707,8 +707,8 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      v7 = [v5 firstObject];
-      [(DDActionGroup *)a1 insertAction:v7 atIndex:a3];
+      firstObject = [v5 firstObject];
+      [(DDActionGroup *)self insertAction:firstObject atIndex:actions];
     }
 
     else
@@ -717,8 +717,8 @@ LABEL_14:
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v7 = v5;
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      firstObject = v5;
+      v8 = [firstObject countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         v9 = v8;
@@ -730,20 +730,20 @@ LABEL_14:
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(firstObject);
             }
 
             v12 = *(*(&v17 + 1) + 8 * v11);
-            v13 = [a1 nonnullChildren];
+            nonnullChildren = [self nonnullChildren];
             v14 = [[DDActionGroup alloc] initWithSingleAction:v12];
-            [v13 insertObject:v14 atIndex:a3];
+            [nonnullChildren insertObject:v14 atIndex:actions];
 
-            ++a3;
+            ++actions;
             ++v11;
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v9 = [firstObject countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v9);
@@ -756,12 +756,12 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendGroup:(_BYTE *)a1
+- (void)appendGroup:(_BYTE *)group
 {
   v3 = a2;
-  if (a1)
+  if (group)
   {
-    if (a1[16] != 1)
+    if (group[16] != 1)
     {
       if (!v3)
       {
@@ -772,7 +772,7 @@ LABEL_14:
     }
 
     v8 = v3;
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v6 = objc_opt_class();
     [OUTLINED_FUNCTION_3_3() handleFailureInMethod:v6 object:? file:? lineNumber:? description:?];
 
@@ -781,8 +781,8 @@ LABEL_14:
     {
 LABEL_4:
       v7 = v3;
-      v4 = [a1 nonnullChildren];
-      [v4 addObject:v7];
+      nonnullChildren = [group nonnullChildren];
+      [nonnullChildren addObject:v7];
 
       v3 = v7;
     }
@@ -791,12 +791,12 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)insertGroup:(uint64_t)a3 atIndex:
+- (void)insertGroup:(uint64_t)group atIndex:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (a1[16] != 1)
+    if (self[16] != 1)
     {
       if (!v5)
       {
@@ -807,16 +807,16 @@ LABEL_5:
     }
 
     v9 = v5;
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:sel_insertGroup_atIndex_ object:a1 file:@"DDActionGroup.m" lineNumber:211 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel_insertGroup_atIndex_ object:self file:@"DDActionGroup.m" lineNumber:211 description:{@"Attempted to mutate immutable %@", objc_opt_class()}];
 
     v5 = v9;
     if (v9)
     {
 LABEL_4:
       v8 = v5;
-      v6 = [a1 nonnullChildren];
-      [v6 insertObject:v8 atIndex:a3];
+      nonnullChildren = [self nonnullChildren];
+      [nonnullChildren insertObject:v8 atIndex:group];
 
       v5 = v8;
     }
@@ -825,21 +825,21 @@ LABEL_4:
 LABEL_5:
 }
 
-- (id)flattenedActions:(uint64_t)a1
+- (id)flattenedActions:(uint64_t)actions
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (actions)
   {
-    if (*(a1 + 24))
+    if (*(actions + 24))
     {
-      v7[0] = *(a1 + 24);
+      v7[0] = *(actions + 24);
       v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
     }
 
-    else if ([*(a1 + 8) count])
+    else if ([*(actions + 8) count])
     {
       v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [a1 _fillFlattenedActions:v3 firstLevel:1 makeSubGroup:a2];
+      [actions _fillFlattenedActions:v3 firstLevel:1 makeSubGroup:a2];
     }
 
     else
@@ -858,19 +858,19 @@ LABEL_5:
   return v3;
 }
 
-- (void)enumerateActionsUsingBlock:(uint64_t)a1
+- (void)enumerateActionsUsingBlock:(uint64_t)block
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (block)
   {
-    if (*(a1 + 24))
+    if (*(block + 24))
     {
       (*(v3 + 2))(v3);
     }
 
-    else if (*(a1 + 8))
+    else if (*(block + 8))
     {
       OUTLINED_FUNCTION_1_3();
       v6 = v5;
@@ -910,9 +910,9 @@ LABEL_5:
 
 - (uint64_t)inlinedGroup
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 32);
+    v1 = *(self + 32);
   }
 
   else
@@ -923,25 +923,25 @@ LABEL_5:
   return v1 & 1;
 }
 
-- (void)finalizeWithFilter:(uint64_t)a1
+- (void)finalizeWithFilter:(uint64_t)filter
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1 && (*(a1 + 16) & 1) == 0)
+  if (filter && (*(filter + 16) & 1) == 0)
   {
-    if (*(a1 + 24))
+    if (*(filter + 24))
     {
       if (((*(v3 + 2))(v3) & 1) == 0)
       {
-        v5 = *(a1 + 24);
-        *(a1 + 24) = 0;
+        v5 = *(filter + 24);
+        *(filter + 24) = 0;
       }
     }
 
     else
     {
-      v6 = [*(a1 + 8) copy];
+      v6 = [*(filter + 8) copy];
       OUTLINED_FUNCTION_0_4();
       v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
       if (v8)
@@ -961,7 +961,7 @@ LABEL_5:
             [(DDActionGroup *)v12 finalizeWithFilter:v4];
             if ([v12 isEmpty])
             {
-              [a1 removeChild:v12];
+              [filter removeChild:v12];
             }
           }
 
@@ -973,8 +973,8 @@ LABEL_5:
       }
     }
 
-    [a1 cleanup];
-    *(a1 + 16) = 1;
+    [filter cleanup];
+    *(filter + 16) = 1;
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1015,45 +1015,45 @@ LABEL_5:
     v4 = 0;
   }
 
-  v5 = [(NSMutableArray *)v4 firstObject];
+  firstObject = [(NSMutableArray *)v4 firstObject];
 
-  if ([v5 isLeaf])
+  if ([firstObject isLeaf])
   {
-    v6 = v5;
+    _extractFirstAction = firstObject;
   }
 
   else
   {
-    v6 = [v5 _extractFirstAction];
+    _extractFirstAction = [firstObject _extractFirstAction];
   }
 
-  v7 = v6;
+  v7 = _extractFirstAction;
 
   return v7;
 }
 
 - (id)extractDefaultActions
 {
-  v1 = a1;
+  selfCopy = self;
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     objc_opt_self();
     v2 = [DDActionGroup alloc];
     v3 = [(DDActionGroup *)v2 initWithActions:MEMORY[0x277CBEBF8]];
     v3->_extractedActions = 1;
     v15 = 0;
-    if (v1[3])
+    if (selfCopy[3])
     {
       v4 = 0;
     }
 
     else
     {
-      v4 = [v1[1] count];
+      v4 = [selfCopy[1] count];
       if (v4)
       {
-        v4 = v1[1];
+        v4 = selfCopy[1];
       }
     }
 
@@ -1076,14 +1076,14 @@ LABEL_5:
           v11 = *(8 * i);
           if ([v11 isLeaf])
           {
-            [v1 removeChild:v11];
+            [selfCopy removeChild:v11];
             [(DDActionGroup *)v3 appendGroup:v11];
           }
 
           else
           {
-            v12 = [v11 _extractFirstAction];
-            [(DDActionGroup *)v3 appendGroup:v12];
+            _extractFirstAction = [v11 _extractFirstAction];
+            [(DDActionGroup *)v3 appendGroup:_extractFirstAction];
           }
         }
 
@@ -1096,25 +1096,25 @@ LABEL_5:
 
     if ([(DDActionGroup *)v3 count]< 1)
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      [v1 simplify];
+      [selfCopy simplify];
       if (v3)
       {
         v3->_inlinedGroup = 1;
       }
 
-      *(v1 + 17) = 1;
-      v1 = v3;
+      *(selfCopy + 17) = 1;
+      selfCopy = v3;
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)setInlinedGroup:(uint64_t)result

@@ -1,10 +1,10 @@
 @interface APOdmlAssetManagerCoordinator
 + (id)sharedAssetManagerCoordinator;
 - (APOdmlAssetManagerCoordinator)init;
-- (id)assetManagerForPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4;
-- (void)initializeAssetManagersforPlacementTypes:(id)a3;
-- (void)refreshTrialClientForPlacementTypes:(id)a3;
-- (void)setUpdateHandlerForNamespace:(id)a3;
+- (id)assetManagerForPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType;
+- (void)initializeAssetManagersforPlacementTypes:(id)types;
+- (void)refreshTrialClientForPlacementTypes:(id)types;
+- (void)setUpdateHandlerForNamespace:(id)namespace;
 @end
 
 @implementation APOdmlAssetManagerCoordinator
@@ -69,32 +69,32 @@
   return v2;
 }
 
-- (id)assetManagerForPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4
+- (id)assetManagerForPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_trialClient(self, a2, a3);
+  v7 = objc_msgSend_trialClient(self, a2, type);
 
   if (!v7)
   {
-    v10 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, a3);
+    v10 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, type);
     v23[0] = v10;
     v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v23, 1);
     objc_msgSend_refreshTrialClientForPlacementTypes_(self, v13, v12);
   }
 
   v14 = objc_msgSend_assetManagers(self, v8, v9);
-  v16 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], v15, a3);
+  v16 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], v15, type);
   v18 = objc_msgSend_objectForKey_(v14, v17, v16);
-  v20 = objc_msgSend_assetManagerForType_(v18, v19, a4);
+  v20 = objc_msgSend_assetManagerForType_(v18, v19, managerType);
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v20;
 }
 
-- (void)refreshTrialClientForPlacementTypes:(id)a3
+- (void)refreshTrialClientForPlacementTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v7 = objc_msgSend_refreshTrialLock(self, v5, v6);
   objc_msgSend_lock(v7, v8, v9);
 
@@ -103,21 +103,21 @@
 
   objc_msgSend_setUpdateHandlerForNamespace_(self, v13, @"AD_PLATFORMS_ODML");
   objc_msgSend_setUpdateHandlerForNamespace_(self, v14, @"SEARCH_ADS_COUNTERFACTUAL");
-  objc_msgSend_initializeAssetManagersforPlacementTypes_(self, v15, v4);
+  objc_msgSend_initializeAssetManagersforPlacementTypes_(self, v15, typesCopy);
 
   v20 = objc_msgSend_refreshTrialLock(self, v16, v17);
   objc_msgSend_unlock(v20, v18, v19);
 }
 
-- (void)initializeAssetManagersforPlacementTypes:(id)a3
+- (void)initializeAssetManagersforPlacementTypes:(id)types
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v20, v24, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(typesCopy, v5, &v20, v24, 16);
   if (v6)
   {
     v7 = v6;
@@ -129,7 +129,7 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(typesCopy);
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
@@ -142,7 +142,7 @@
       }
 
       while (v7 != v9);
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v18, &v20, v24, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(typesCopy, v18, &v20, v24, 16);
     }
 
     while (v7);
@@ -151,9 +151,9 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpdateHandlerForNamespace:(id)a3
+- (void)setUpdateHandlerForNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   objc_initWeak(&location, self);
   v7 = objc_msgSend_trialClient(self, v5, v6);
   v10[0] = MEMORY[0x277D85DD0];
@@ -161,7 +161,7 @@
   v10[2] = sub_260ECE558;
   v10[3] = &unk_279AC5F28;
   objc_copyWeak(&v11, &location);
-  v9 = objc_msgSend_addUpdateHandlerForNamespaceName_usingBlock_(v7, v8, v4, v10);
+  v9 = objc_msgSend_addUpdateHandlerForNamespaceName_usingBlock_(v7, v8, namespaceCopy, v10);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

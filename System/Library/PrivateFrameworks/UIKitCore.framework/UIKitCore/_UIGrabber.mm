@@ -1,14 +1,14 @@
 @interface _UIGrabber
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (_UIGrabber)initWithCoder:(id)a3;
-- (_UIGrabber)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_setBackgroundLuminanceLevel:(unint64_t)a3;
-- (void)_setBlurEnabled:(BOOL)a3;
-- (void)_setLumaTrackingEnabled:(BOOL)a3;
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (_UIGrabber)initWithCoder:(id)coder;
+- (_UIGrabber)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_setBackgroundLuminanceLevel:(unint64_t)level;
+- (void)_setBlurEnabled:(BOOL)enabled;
+- (void)_setLumaTrackingEnabled:(BOOL)enabled;
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level;
 - (void)layoutSubviews;
 @end
 
@@ -23,12 +23,12 @@
   y = v60.origin.y;
   width = v60.size.width;
   height = v60.size.height;
-  v7 = [(_UIGrabber *)self _lumaTrackingBackdropView];
-  [v7 setFrame:{x, y, width, height}];
+  _lumaTrackingBackdropView = [(_UIGrabber *)self _lumaTrackingBackdropView];
+  [_lumaTrackingBackdropView setFrame:{x, y, width, height}];
 
-  LODWORD(v7) = [(_UIGrabber *)self _isBlurEnabled];
-  v8 = [(_UIGrabber *)self _lumaTrackingBackdropView];
-  [v8 setHidden:v7 ^ 1];
+  LODWORD(_lumaTrackingBackdropView) = [(_UIGrabber *)self _isBlurEnabled];
+  _lumaTrackingBackdropView2 = [(_UIGrabber *)self _lumaTrackingBackdropView];
+  [_lumaTrackingBackdropView2 setHidden:_lumaTrackingBackdropView ^ 1];
 
   [(UIView *)self bounds];
   v62 = CGRectInset(v61, 0.0, -5.0);
@@ -36,16 +36,16 @@
   v10 = v62.origin.y;
   v11 = v62.size.width;
   v12 = v62.size.height;
-  v13 = [(_UIGrabber *)self _visualEffectView];
-  [v13 setFrame:{v9, v10, v11, v12}];
+  _visualEffectView = [(_UIGrabber *)self _visualEffectView];
+  [_visualEffectView setFrame:{v9, v10, v11, v12}];
 
-  v14 = [(UIView *)self traitCollection];
-  v15 = [(_UIGrabber *)self _backgroundLuminanceLevel];
-  if (v15 - 1 <= 1)
+  traitCollection = [(UIView *)self traitCollection];
+  _backgroundLuminanceLevel = [(_UIGrabber *)self _backgroundLuminanceLevel];
+  if (_backgroundLuminanceLevel - 1 <= 1)
   {
-    v16 = [v14 _traitCollectionByReplacingNSIntegerValue:v15 forTraitToken:0x1EFE323B0];
+    v16 = [traitCollection _traitCollectionByReplacingNSIntegerValue:_backgroundLuminanceLevel forTraitToken:0x1EFE323B0];
 
-    v14 = v16;
+    traitCollection = v16;
   }
 
   v17 = +[UIColor tertiaryLabelColor];
@@ -53,13 +53,13 @@
   v57 = 0.0;
   v54 = 0.0;
   v55 = 0.0;
-  v18 = [v17 resolvedColorWithTraitCollection:v14];
+  v18 = [v17 resolvedColorWithTraitCollection:traitCollection];
   [v18 getRed:&v57 green:&v56 blue:&v55 alpha:&v54];
 
-  v19 = [v14 userInterfaceStyle];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v20.f64[0] = v57;
   v20.f64[1] = v56;
-  if (v19 == 2)
+  if (userInterfaceStyle == 2)
   {
     v21 = vmulq_n_f64(v20, v54);
     v22 = v55;
@@ -91,12 +91,12 @@
   v29 = [UIBlurEffect effectWithBlurRadius:30.0];
   v58[1] = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
-  v31 = [(_UIGrabber *)self _visualEffectView];
-  [v31 setBackgroundEffects:v30];
+  _visualEffectView2 = [(_UIGrabber *)self _visualEffectView];
+  [_visualEffectView2 setBackgroundEffects:v30];
 
   LODWORD(v29) = [(_UIGrabber *)self _isBlurEnabled];
-  v32 = [(_UIGrabber *)self _visualEffectView];
-  [v32 setHidden:v29 ^ 1];
+  _visualEffectView3 = [(_UIGrabber *)self _visualEffectView];
+  [_visualEffectView3 setHidden:v29 ^ 1];
 
   if ([(_UIGrabber *)self _isBlurEnabled])
   {
@@ -111,8 +111,8 @@
   [(UIView *)self setBackgroundColor:v33];
   [(UIView *)self bounds];
   v34 = CGRectGetHeight(v63) * 0.5;
-  v35 = [(UIView *)self layer];
-  [v35 setCornerRadius:v34];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:v34];
 
   [(UIView *)self bounds];
   v38 = v37 + -44.0;
@@ -131,11 +131,11 @@
   [(UIView *)self _setTouchInsets:v40 * 0.5, v39, v40 * 0.5, v39];
 }
 
-- (_UIGrabber)initWithFrame:(CGRect)a3
+- (_UIGrabber)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIGrabber;
-  v3 = [(UIControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -145,11 +145,11 @@
   return v4;
 }
 
-- (_UIGrabber)initWithCoder:(id)a3
+- (_UIGrabber)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIGrabber;
-  v3 = [(UIControl *)&v6 initWithCoder:a3];
+  v3 = [(UIControl *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -159,7 +159,7 @@
   return v4;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
   v3 = 36.0;
   v4 = 5.0;
@@ -168,52 +168,52 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(UIView *)self pointInside:a4 withEvent:a3.x, a3.y])
+  if ([(UIView *)self pointInside:event withEvent:test.x, test.y])
   {
     if (UIViewIgnoresTouchEvents(self))
     {
-      v5 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v5 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)_setLumaTrackingEnabled:(BOOL)a3
+- (void)_setLumaTrackingEnabled:(BOOL)enabled
 {
-  if (self->__lumaTrackingEnabled != a3)
+  if (self->__lumaTrackingEnabled != enabled)
   {
-    v4 = a3;
-    self->__lumaTrackingEnabled = a3;
-    v5 = [(_UIGrabber *)self _lumaTrackingBackdropView];
-    [v5 setPaused:!v4];
+    enabledCopy = enabled;
+    self->__lumaTrackingEnabled = enabled;
+    _lumaTrackingBackdropView = [(_UIGrabber *)self _lumaTrackingBackdropView];
+    [_lumaTrackingBackdropView setPaused:!enabledCopy];
   }
 }
 
-- (void)_setBackgroundLuminanceLevel:(unint64_t)a3
+- (void)_setBackgroundLuminanceLevel:(unint64_t)level
 {
-  if (self->__backgroundLuminanceLevel != a3)
+  if (self->__backgroundLuminanceLevel != level)
   {
-    self->__backgroundLuminanceLevel = a3;
+    self->__backgroundLuminanceLevel = level;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level
 {
-  [(_UIGrabber *)self _setBackgroundLuminanceLevel:a4];
+  [(_UIGrabber *)self _setBackgroundLuminanceLevel:level];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54___UIGrabber_backgroundLumaView_didTransitionToLevel___block_invoke;
@@ -222,9 +222,9 @@
   [UIView animateWithSpringDuration:0 bounce:v5 initialSpringVelocity:0 delay:0.21 options:0.0 animations:0.0 completion:0.0];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  [(UIView *)self bounds:a3];
+  [(UIView *)self bounds:interaction];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -236,14 +236,14 @@
   return v18;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [[UITargetedPreview alloc] initWithView:self];
   [(UIView *)self center];
   v7 = v6;
   v9 = v8;
-  v10 = [(UIView *)self _screen];
-  [v10 scale];
+  _screen = [(UIView *)self _screen];
+  [_screen scale];
   UIRectCenteredAboutPointScale(0.0, 0.0, 48.0, 13.0, v7, v9, v11);
   v13 = v12;
   v15 = v14;
@@ -261,11 +261,11 @@
   return v22;
 }
 
-- (void)_setBlurEnabled:(BOOL)a3
+- (void)_setBlurEnabled:(BOOL)enabled
 {
-  if (self->__blurEnabled != a3)
+  if (self->__blurEnabled != enabled)
   {
-    self->__blurEnabled = a3;
+    self->__blurEnabled = enabled;
     [(UIView *)self setNeedsLayout];
   }
 }

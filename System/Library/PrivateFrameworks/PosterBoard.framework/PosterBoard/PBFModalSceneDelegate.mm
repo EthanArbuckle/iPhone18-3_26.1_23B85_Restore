@@ -1,7 +1,7 @@
 @interface PBFModalSceneDelegate
 - (PBFModalSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation PBFModalSceneDelegate
@@ -13,36 +13,36 @@
   v2 = [(PBFModalSceneDelegate *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.PosterTester"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.PosterTester"];
 
     if ((v5 & 1) == 0)
     {
       +[PBFModalRootViewController prewarmTopButtonLayout];
     }
 
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     sceneToWindowMap = v2->_sceneToWindowMap;
-    v2->_sceneToWindowMap = v6;
+    v2->_sceneToWindowMap = strongToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v24 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v12 isEqualToString:@"com.apple.PosterTester"];
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v13 = [bundleIdentifier isEqualToString:@"com.apple.PosterTester"];
 
   if ((v13 & 1) == 0)
   {
     v14 = objc_opt_class();
-    v15 = v24;
+    v15 = sceneCopy;
     if (v14)
     {
       if (objc_opt_isKindOfClass())
@@ -70,12 +70,12 @@
 
     v18 = [PBFModalRootViewController alloc];
     v19 = +[PBFPosterExtensionDataStoreXPCServiceGlue sharedInstance];
-    v20 = [v19 dataStore];
-    v21 = [(PBFModalRootViewController *)v18 initWithScene:v17 dataStore:v20];
+    dataStore = [v19 dataStore];
+    v21 = [(PBFModalRootViewController *)v18 initWithScene:v17 dataStore:dataStore];
 
     v22 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:v17];
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [v22 setBackgroundColor:v23];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v22 setBackgroundColor:clearColor];
 
     [v22 setRootViewController:v21];
     [v22 makeKeyAndVisible];
@@ -83,18 +83,18 @@
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v7 = a3;
+  disconnectCopy = disconnect;
   v4 = [(NSMapTable *)self->_sceneToWindowMap objectForKey:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 rootViewController];
-    [v6 invalidate];
+    rootViewController = [v4 rootViewController];
+    [rootViewController invalidate];
     [v5 setRootViewController:0];
     [v5 setHidden:1];
-    [(NSMapTable *)self->_sceneToWindowMap removeObjectForKey:v7];
+    [(NSMapTable *)self->_sceneToWindowMap removeObjectForKey:disconnectCopy];
   }
 }
 

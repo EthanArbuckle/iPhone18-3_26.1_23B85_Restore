@@ -1,17 +1,17 @@
 @interface _CPSpotlightEmbeddingState
-- (BOOL)isEqual:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSpotlightEmbeddingState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (embeddedPhotosAssetsCount = self->_embeddedPhotosAssetsCount, embeddedPhotosAssetsCount == objc_msgSend(v4, "embeddedPhotosAssetsCount")) && (totalPhotosAssetsCount = self->_totalPhotosAssetsCount, totalPhotosAssetsCount == objc_msgSend(v4, "totalPhotosAssetsCount")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (embeddedPhotosAssetsCount = self->_embeddedPhotosAssetsCount, embeddedPhotosAssetsCount == objc_msgSend(equalCopy, "embeddedPhotosAssetsCount")) && (totalPhotosAssetsCount = self->_totalPhotosAssetsCount, totalPhotosAssetsCount == objc_msgSend(equalCopy, "totalPhotosAssetsCount")))
   {
     embeddedPhotosAssetsPercentage = self->_embeddedPhotosAssetsPercentage;
-    v8 = embeddedPhotosAssetsPercentage == [v4 embeddedPhotosAssetsPercentage];
+    v8 = embeddedPhotosAssetsPercentage == [equalCopy embeddedPhotosAssetsPercentage];
   }
 
   else
@@ -22,9 +22,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPSpotlightEmbeddingState *)self embeddedPhotosAssetsCount])
   {
     embeddedPhotosAssetsCount = self->_embeddedPhotosAssetsCount;

@@ -1,5 +1,5 @@
 @interface MTLTelemetryComputePipelineState
-- (MTLTelemetryComputePipelineState)initWithComputePipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6;
+- (MTLTelemetryComputePipelineState)initWithComputePipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor;
 - (void)accumulateUsage;
 @end
 
@@ -28,30 +28,30 @@ uint64_t *__51__MTLTelemetryComputePipelineState_accumulateUsage__block_invoke(u
   return result;
 }
 
-- (MTLTelemetryComputePipelineState)initWithComputePipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6
+- (MTLTelemetryComputePipelineState)initWithComputePipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor
 {
   v14.receiver = self;
   v14.super_class = MTLTelemetryComputePipelineState;
-  v9 = [(MTLToolsObject *)&v14 initWithBaseObject:a3 parent:a5];
+  v9 = [(MTLToolsObject *)&v14 initWithBaseObject:state parent:parent];
   if (v9)
   {
-    if ([a5 enableTelemetry])
+    if ([parent enableTelemetry])
     {
-      v9->device = a5;
+      v9->device = parent;
       *(&v9->uniqueID + 1) = +[MTLTelemetryComputePipelineState generateUniqueID];
-      v10 = [objc_msgSend(a4 "performanceStatistics")];
-      v11 = *(a5 + 91);
+      v10 = [objc_msgSend(reflection "performanceStatistics")];
+      v11 = *(parent + 91);
       if (v11)
       {
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __94__MTLTelemetryComputePipelineState_initWithComputePipelineState_reflection_parent_descriptor___block_invoke;
         block[3] = &unk_2787B4A70;
-        block[4] = a3;
+        block[4] = state;
         block[5] = v9;
         block[6] = v10;
-        block[7] = a5;
-        block[8] = a4;
+        block[7] = parent;
+        block[8] = reflection;
         dispatch_sync(v11, block);
       }
     }

@@ -1,16 +1,16 @@
 @interface PDBarcodeServiceConnectionForbiddenErrorResponse
-- (PDBarcodeServiceConnectionForbiddenErrorResponse)initWithData:(id)a3;
+- (PDBarcodeServiceConnectionForbiddenErrorResponse)initWithData:(id)data;
 @end
 
 @implementation PDBarcodeServiceConnectionForbiddenErrorResponse
 
-- (PDBarcodeServiceConnectionForbiddenErrorResponse)initWithData:(id)a3
+- (PDBarcodeServiceConnectionForbiddenErrorResponse)initWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v15 = 0;
-    v5 = [NSJSONSerialization JSONObjectWithData:v4 options:0 error:&v15];
+    v5 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v15];
     serverDebugDescription = v15;
     if (serverDebugDescription)
     {

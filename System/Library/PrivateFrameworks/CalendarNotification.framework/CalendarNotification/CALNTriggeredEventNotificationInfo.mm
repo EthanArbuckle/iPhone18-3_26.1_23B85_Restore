@@ -1,102 +1,102 @@
 @interface CALNTriggeredEventNotificationInfo
-- (CALNTriggeredEventNotificationInfo)initWithTitle:(id)a3 location:(id)a4 locationWithoutPrediction:(id)a5 startDate:(id)a6 endDate:(id)a7 isAllDay:(BOOL)a8 isTimeSensitive:(BOOL)a9 eventID:(id)a10 eventOccurrenceID:(id)a11 eventObjectID:(id)a12 organizerPhoneNumber:(id)a13 organizerEmailAddress:(id)a14 calendarIdentifier:(id)a15 eventRepresentationDictionary:(id)a16 legacyIdentifier:(id)a17 preferredLocation:(id)a18 conferenceURL:(id)a19 conferenceURLIsBroadcast:(BOOL)a20 mailtoURL:(id)a21 hasSuggestedLocation:(BOOL)a22 eventHasAlarms:(BOOL)a23 allowsLocationAlerts:(BOOL)a24 forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)a25 travelAdvisoryDisabled:(BOOL)a26;
+- (CALNTriggeredEventNotificationInfo)initWithTitle:(id)title location:(id)location locationWithoutPrediction:(id)prediction startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day isTimeSensitive:(BOOL)sensitive eventID:(id)self0 eventOccurrenceID:(id)self1 eventObjectID:(id)self2 organizerPhoneNumber:(id)self3 organizerEmailAddress:(id)self4 calendarIdentifier:(id)self5 eventRepresentationDictionary:(id)self6 legacyIdentifier:(id)self7 preferredLocation:(id)self8 conferenceURL:(id)self9 conferenceURLIsBroadcast:(BOOL)broadcast mailtoURL:(id)rL hasSuggestedLocation:(BOOL)suggestedLocation eventHasAlarms:(BOOL)alarms allowsLocationAlerts:(BOOL)alerts forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)hypotheses travelAdvisoryDisabled:(BOOL)disabled;
 - (id)description;
 @end
 
 @implementation CALNTriggeredEventNotificationInfo
 
-- (CALNTriggeredEventNotificationInfo)initWithTitle:(id)a3 location:(id)a4 locationWithoutPrediction:(id)a5 startDate:(id)a6 endDate:(id)a7 isAllDay:(BOOL)a8 isTimeSensitive:(BOOL)a9 eventID:(id)a10 eventOccurrenceID:(id)a11 eventObjectID:(id)a12 organizerPhoneNumber:(id)a13 organizerEmailAddress:(id)a14 calendarIdentifier:(id)a15 eventRepresentationDictionary:(id)a16 legacyIdentifier:(id)a17 preferredLocation:(id)a18 conferenceURL:(id)a19 conferenceURLIsBroadcast:(BOOL)a20 mailtoURL:(id)a21 hasSuggestedLocation:(BOOL)a22 eventHasAlarms:(BOOL)a23 allowsLocationAlerts:(BOOL)a24 forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)a25 travelAdvisoryDisabled:(BOOL)a26
+- (CALNTriggeredEventNotificationInfo)initWithTitle:(id)title location:(id)location locationWithoutPrediction:(id)prediction startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day isTimeSensitive:(BOOL)sensitive eventID:(id)self0 eventOccurrenceID:(id)self1 eventObjectID:(id)self2 organizerPhoneNumber:(id)self3 organizerEmailAddress:(id)self4 calendarIdentifier:(id)self5 eventRepresentationDictionary:(id)self6 legacyIdentifier:(id)self7 preferredLocation:(id)self8 conferenceURL:(id)self9 conferenceURLIsBroadcast:(BOOL)broadcast mailtoURL:(id)rL hasSuggestedLocation:(BOOL)suggestedLocation eventHasAlarms:(BOOL)alarms allowsLocationAlerts:(BOOL)alerts forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)hypotheses travelAdvisoryDisabled:(BOOL)disabled
 {
-  v75 = a3;
-  v74 = a4;
-  v79 = a5;
-  v78 = a6;
-  v77 = a7;
-  v76 = a10;
-  v30 = a11;
-  v31 = a12;
-  v73 = a13;
-  v32 = a14;
-  v33 = a15;
-  v34 = a16;
-  v35 = a17;
-  v36 = a18;
-  v37 = a19;
-  v38 = a21;
+  titleCopy = title;
+  locationCopy = location;
+  predictionCopy = prediction;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  iDCopy = iD;
+  objectIDCopy = objectID;
+  numberCopy = number;
+  addressCopy = address;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  legacyIdentifierCopy = legacyIdentifier;
+  preferredLocationCopy = preferredLocation;
+  lCopy = l;
+  rLCopy = rL;
   v80.receiver = self;
   v80.super_class = CALNTriggeredEventNotificationInfo;
   v39 = [(CALNTriggeredEventNotificationInfo *)&v80 init];
   if (v39)
   {
-    v40 = [v75 copy];
+    v40 = [titleCopy copy];
     title = v39->_title;
     v39->_title = v40;
 
-    v42 = [v74 copy];
+    v42 = [locationCopy copy];
     location = v39->_location;
     v39->_location = v42;
 
-    v44 = [v79 copy];
+    v44 = [predictionCopy copy];
     locationWithoutPrediction = v39->_locationWithoutPrediction;
     v39->_locationWithoutPrediction = v44;
 
-    v46 = [v78 copy];
+    v46 = [dateCopy copy];
     startDate = v39->_startDate;
     v39->_startDate = v46;
 
-    v48 = [v77 copy];
+    v48 = [endDateCopy copy];
     endDate = v39->_endDate;
     v39->_endDate = v48;
 
-    v39->_isAllDay = a8;
-    v39->_isTimeSensitive = a9;
-    v50 = [v76 copy];
+    v39->_isAllDay = day;
+    v39->_isTimeSensitive = sensitive;
+    v50 = [dCopy copy];
     eventID = v39->_eventID;
     v39->_eventID = v50;
 
-    v52 = [v30 copy];
+    v52 = [iDCopy copy];
     eventOccurrenceID = v39->_eventOccurrenceID;
     v39->_eventOccurrenceID = v52;
 
-    v54 = [v31 copy];
+    v54 = [objectIDCopy copy];
     eventObjectID = v39->_eventObjectID;
     v39->_eventObjectID = v54;
 
-    v56 = [v73 copy];
+    v56 = [numberCopy copy];
     organizerPhoneNumber = v39->_organizerPhoneNumber;
     v39->_organizerPhoneNumber = v56;
 
-    v58 = [v32 copy];
+    v58 = [addressCopy copy];
     organizerEmailAddress = v39->_organizerEmailAddress;
     v39->_organizerEmailAddress = v58;
 
-    v60 = [v33 copy];
+    v60 = [identifierCopy copy];
     calendarIdentifier = v39->_calendarIdentifier;
     v39->_calendarIdentifier = v60;
 
-    v62 = [v34 copy];
+    v62 = [dictionaryCopy copy];
     eventRepresentationDictionary = v39->_eventRepresentationDictionary;
     v39->_eventRepresentationDictionary = v62;
 
-    v64 = [v35 copy];
+    v64 = [legacyIdentifierCopy copy];
     legacyIdentifier = v39->_legacyIdentifier;
     v39->_legacyIdentifier = v64;
 
-    objc_storeStrong(&v39->_preferredLocation, a18);
-    v66 = [v37 copy];
+    objc_storeStrong(&v39->_preferredLocation, preferredLocation);
+    v66 = [lCopy copy];
     conferenceURL = v39->_conferenceURL;
     v39->_conferenceURL = v66;
 
-    v39->_conferenceURLIsBroadcast = a20;
-    v68 = [v38 copy];
+    v39->_conferenceURLIsBroadcast = broadcast;
+    v68 = [rLCopy copy];
     mailtoURL = v39->_mailtoURL;
     v39->_mailtoURL = v68;
 
-    v39->_hasSuggestedLocation = a22;
-    v39->_eventHasAlarms = a23;
-    v39->_allowsLocationAlerts = a24;
-    v39->_forceDisplayOfNewTravelAdvisoryHypotheses = a25;
-    v39->_travelAdvisoryDisabled = a26;
+    v39->_hasSuggestedLocation = suggestedLocation;
+    v39->_eventHasAlarms = alarms;
+    v39->_allowsLocationAlerts = alerts;
+    v39->_forceDisplayOfNewTravelAdvisoryHypotheses = hypotheses;
+    v39->_travelAdvisoryDisabled = disabled;
   }
 
   return v39;
@@ -106,10 +106,10 @@
 {
   v26 = MEMORY[0x277CCACA8];
   v25 = objc_opt_class();
-  v28 = [(CALNTriggeredEventNotificationInfo *)self title];
-  v27 = [(CALNTriggeredEventNotificationInfo *)self location];
-  v24 = [(CALNTriggeredEventNotificationInfo *)self startDate];
-  v23 = [(CALNTriggeredEventNotificationInfo *)self endDate];
+  title = [(CALNTriggeredEventNotificationInfo *)self title];
+  location = [(CALNTriggeredEventNotificationInfo *)self location];
+  startDate = [(CALNTriggeredEventNotificationInfo *)self startDate];
+  endDate = [(CALNTriggeredEventNotificationInfo *)self endDate];
   v3 = @"YES";
   if ([(CALNTriggeredEventNotificationInfo *)self isAllDay])
   {
@@ -122,13 +122,13 @@
   }
 
   v22 = v4;
-  v21 = [(CALNTriggeredEventNotificationInfo *)self eventID];
-  v20 = [(CALNTriggeredEventNotificationInfo *)self eventOccurrenceID];
-  v19 = [(CALNTriggeredEventNotificationInfo *)self calendarIdentifier];
-  v5 = [(CALNTriggeredEventNotificationInfo *)self eventRepresentationDictionary];
-  v6 = [(CALNTriggeredEventNotificationInfo *)self legacyIdentifier];
-  v18 = [(CALNTriggeredEventNotificationInfo *)self preferredLocation];
-  v17 = [(CALNTriggeredEventNotificationInfo *)self conferenceURL];
+  eventID = [(CALNTriggeredEventNotificationInfo *)self eventID];
+  eventOccurrenceID = [(CALNTriggeredEventNotificationInfo *)self eventOccurrenceID];
+  calendarIdentifier = [(CALNTriggeredEventNotificationInfo *)self calendarIdentifier];
+  eventRepresentationDictionary = [(CALNTriggeredEventNotificationInfo *)self eventRepresentationDictionary];
+  legacyIdentifier = [(CALNTriggeredEventNotificationInfo *)self legacyIdentifier];
+  preferredLocation = [(CALNTriggeredEventNotificationInfo *)self preferredLocation];
+  conferenceURL = [(CALNTriggeredEventNotificationInfo *)self conferenceURL];
   if ([(CALNTriggeredEventNotificationInfo *)self conferenceURLIsBroadcast])
   {
     v7 = @"YES";
@@ -140,7 +140,7 @@
   }
 
   v16 = v7;
-  v8 = [(CALNTriggeredEventNotificationInfo *)self mailtoURL];
+  mailtoURL = [(CALNTriggeredEventNotificationInfo *)self mailtoURL];
   if ([(CALNTriggeredEventNotificationInfo *)self hasSuggestedLocation])
   {
     v9 = @"YES";
@@ -186,8 +186,8 @@
     v3 = @"NO";
   }
 
-  v13 = [(CALNTriggeredEventNotificationInfo *)self locationWithoutPrediction];
-  v14 = [v26 stringWithFormat:@"<%@: %p>(title = %@, location = %@, startDate = %@, endDate = %@, isAllDay = %@, eventID = %@, eventOccurrenceID = %@, calendarIdentifier = %@, eventRepresentationDictionary = %@, legacyIdentifier = %@, preferredLocation = %@, conferenceURLIsBroadcast = %@, conferenceURLIsBroadcast = %@, mailtoURL = %@, hasSuggestedLocation = %@, eventHasAlarms = %@, allowsLocationAlerts = %@, forceDisplayOfNewTravelAdvisoryHypotheses = %@, travelAdvisoryDisabled = %@, locationWithoutPrediction = %@)", v25, self, v28, v27, v24, v23, v22, v21, v20, v19, v5, v6, v18, v17, v16, v8, v9, v10, v11, v12, v3, v13];
+  locationWithoutPrediction = [(CALNTriggeredEventNotificationInfo *)self locationWithoutPrediction];
+  v14 = [v26 stringWithFormat:@"<%@: %p>(title = %@, location = %@, startDate = %@, endDate = %@, isAllDay = %@, eventID = %@, eventOccurrenceID = %@, calendarIdentifier = %@, eventRepresentationDictionary = %@, legacyIdentifier = %@, preferredLocation = %@, conferenceURLIsBroadcast = %@, conferenceURLIsBroadcast = %@, mailtoURL = %@, hasSuggestedLocation = %@, eventHasAlarms = %@, allowsLocationAlerts = %@, forceDisplayOfNewTravelAdvisoryHypotheses = %@, travelAdvisoryDisabled = %@, locationWithoutPrediction = %@)", v25, self, title, location, startDate, endDate, v22, eventID, eventOccurrenceID, calendarIdentifier, eventRepresentationDictionary, legacyIdentifier, preferredLocation, conferenceURL, v16, mailtoURL, v9, v10, v11, v12, v3, locationWithoutPrediction];
 
   return v14;
 }

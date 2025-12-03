@@ -1,36 +1,36 @@
 @interface MIContainer
-+ (BOOL)removeContainers:(id)a3 waitForDeletion:(BOOL)a4 error:(id *)a5;
-+ (id)_allContainersForIdentifier:(id)a3 persona:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-+ (id)_bundleContainerForIdentifier:(id)a3 forPersona:(id)a4 error:(id *)a5;
-+ (id)containerWithIdentifier:(id)a3 forPersona:(id)a4 ofContentClass:(unint64_t)a5 createIfNeeded:(BOOL)a6 created:(BOOL *)a7 error:(id *)a8;
-+ (id)containersForIdentifier:(id)a3 groupContainerIdentifier:(id)a4 ofContentClass:(unint64_t)a5 forPersona:(id)a6 fetchTransient:(BOOL)a7 createIfNeeded:(BOOL)a8 error:(id *)a9;
-+ (id)containersWithClass:(unint64_t)a3 error:(id *)a4;
-+ (id)containersWithClass:(unint64_t)a3 personaUniqueString:(id)a4 error:(id *)a5;
-+ (id)groupContainerURLsForBundleIdentifier:(id)a3 forPersona:(id)a4 error:(id *)a5;
-+ (id)tempContainerWithIdentifier:(id)a3 forPersona:(id)a4 ofContentClass:(unint64_t)a5 error:(id *)a6;
-- (BOOL)_deriveContainerStatusWithError:(id *)a3;
-- (BOOL)_doInitWithContainer:(id)a3 error:(id *)a4;
-- (BOOL)_isStagedUpdateContainer:(BOOL *)a3 withError:(id *)a4;
-- (BOOL)_replaceExistingContainer:(id)a3 replacementReason:(unint64_t)a4 waitForDeletion:(BOOL)a5 error:(id *)a6;
-- (BOOL)_setContainer:(id)a3 error:(id *)a4;
-- (BOOL)clearStagedUpdateContainerStatusWithError:(id *)a3;
++ (BOOL)removeContainers:(id)containers waitForDeletion:(BOOL)deletion error:(id *)error;
++ (id)_allContainersForIdentifier:(id)identifier persona:(id)persona options:(unint64_t)options error:(id *)error;
++ (id)_bundleContainerForIdentifier:(id)identifier forPersona:(id)persona error:(id *)error;
++ (id)containerWithIdentifier:(id)identifier forPersona:(id)persona ofContentClass:(unint64_t)class createIfNeeded:(BOOL)needed created:(BOOL *)created error:(id *)error;
++ (id)containersForIdentifier:(id)identifier groupContainerIdentifier:(id)containerIdentifier ofContentClass:(unint64_t)class forPersona:(id)persona fetchTransient:(BOOL)transient createIfNeeded:(BOOL)needed error:(id *)error;
++ (id)containersWithClass:(unint64_t)class error:(id *)error;
++ (id)containersWithClass:(unint64_t)class personaUniqueString:(id)string error:(id *)error;
++ (id)groupContainerURLsForBundleIdentifier:(id)identifier forPersona:(id)persona error:(id *)error;
++ (id)tempContainerWithIdentifier:(id)identifier forPersona:(id)persona ofContentClass:(unint64_t)class error:(id *)error;
+- (BOOL)_deriveContainerStatusWithError:(id *)error;
+- (BOOL)_doInitWithContainer:(id)container error:(id *)error;
+- (BOOL)_isStagedUpdateContainer:(BOOL *)container withError:(id *)error;
+- (BOOL)_replaceExistingContainer:(id)container replacementReason:(unint64_t)reason waitForDeletion:(BOOL)deletion error:(id *)error;
+- (BOOL)_setContainer:(id)container error:(id *)error;
+- (BOOL)clearStagedUpdateContainerStatusWithError:(id *)error;
 - (BOOL)isNew;
 - (BOOL)isTransient;
-- (BOOL)makeContainerLiveReplacingContainer:(id)a3 reason:(unint64_t)a4 waitForDeletion:(BOOL)a5 withError:(id *)a6;
-- (BOOL)markContainerAsStagedUpdateWithError:(id *)a3;
-- (BOOL)purgeContentWithError:(id *)a3;
-- (BOOL)recreateDefaultStructureWithError:(id *)a3;
-- (BOOL)regenerateDirectoryUUIDWithError:(id *)a3;
-- (BOOL)removeUnderlyingContainerWaitingForDeletion:(BOOL)a3 error:(id *)a4;
-- (BOOL)setInfoValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (MIContainer)initWithContainer:(id)a3 error:(id *)a4;
-- (MIContainer)initWithContainerURL:(id)a3;
-- (MIContainer)initWithToken:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)makeContainerLiveReplacingContainer:(id)container reason:(unint64_t)reason waitForDeletion:(BOOL)deletion withError:(id *)error;
+- (BOOL)markContainerAsStagedUpdateWithError:(id *)error;
+- (BOOL)purgeContentWithError:(id *)error;
+- (BOOL)recreateDefaultStructureWithError:(id *)error;
+- (BOOL)regenerateDirectoryUUIDWithError:(id *)error;
+- (BOOL)removeUnderlyingContainerWaitingForDeletion:(BOOL)deletion error:(id *)error;
+- (BOOL)setInfoValue:(id)value forKey:(id)key error:(id *)error;
+- (MIContainer)initWithContainer:(id)container error:(id *)error;
+- (MIContainer)initWithContainerURL:(id)l;
+- (MIContainer)initWithToken:(id)token options:(unint64_t)options error:(id *)error;
 - (NSString)identifier;
 - (NSString)personaUniqueString;
 - (NSURL)containerURL;
 - (id)description;
-- (id)infoValueForKey:(id)a3 error:(id *)a4;
+- (id)infoValueForKey:(id)key error:(id *)error;
 - (unint64_t)containerClass;
 - (unint64_t)diskUsage;
 - (void)dealloc;
@@ -38,22 +38,22 @@
 
 @implementation MIContainer
 
-- (MIContainer)initWithContainerURL:(id)a3
+- (MIContainer)initWithContainerURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = MIContainer;
   v6 = [(MIContainer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerURL, a3);
+    objc_storeStrong(&v6->_containerURL, l);
   }
 
   return v7;
 }
 
-- (BOOL)_deriveContainerStatusWithError:(id *)a3
+- (BOOL)_deriveContainerStatusWithError:(id *)error
 {
   if ([(MIContainer *)self isTransient])
   {
@@ -86,12 +86,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [v7 domain];
-  if ([v9 isEqualToString:@"MIContainerManagerErrorDomain"])
+  domain = [v7 domain];
+  if ([domain isEqualToString:@"MIContainerManagerErrorDomain"])
   {
-    v10 = [v5 code];
+    code = [v5 code];
 
-    if (v10 == 24)
+    if (code == 24)
     {
       goto LABEL_8;
     }
@@ -106,11 +106,11 @@ LABEL_8:
     MOLogWrite();
   }
 
-  if (a3)
+  if (error)
   {
     v13 = v5;
     v11 = 0;
-    *a3 = v5;
+    *error = v5;
   }
 
   else
@@ -123,16 +123,16 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_doInitWithContainer:(id)a3 error:(id *)a4
+- (BOOL)_doInitWithContainer:(id)container error:(id *)error
 {
-  v5 = a3;
-  v7 = a3;
-  objc_storeStrong(&self->_rawContainer, v5);
+  containerCopy = container;
+  containerCopy2 = container;
+  objc_storeStrong(&self->_rawContainer, containerCopy);
   v17 = 0;
-  LODWORD(v5) = [(MIContainer *)self _deriveContainerStatusWithError:&v17];
+  LODWORD(containerCopy) = [(MIContainer *)self _deriveContainerStatusWithError:&v17];
   v8 = v17;
   v9 = v8;
-  if (!v5)
+  if (!containerCopy)
   {
     v11 = v8;
     goto LABEL_6;
@@ -160,11 +160,11 @@ LABEL_10:
     }
 
 LABEL_6:
-    if (a4)
+    if (error)
     {
       v13 = v11;
       v12 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -181,9 +181,9 @@ LABEL_11:
   return v12;
 }
 
-- (MIContainer)initWithContainer:(id)a3 error:(id *)a4
+- (MIContainer)initWithContainer:(id)container error:(id *)error
 {
-  v6 = a3;
+  containerCopy = container;
   v16.receiver = self;
   v16.super_class = MIContainer;
   v7 = [(MIContainer *)&v16 init];
@@ -195,7 +195,7 @@ LABEL_11:
   }
 
   v15 = 0;
-  v9 = [(MIContainer *)v7 _doInitWithContainer:v6 error:&v15];
+  v9 = [(MIContainer *)v7 _doInitWithContainer:containerCopy error:&v15];
   v10 = v15;
   v11 = v10;
   if (v9)
@@ -205,11 +205,11 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v10;
     v13 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -222,10 +222,10 @@ LABEL_7:
   return v13;
 }
 
-- (MIContainer)initWithToken:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (MIContainer)initWithToken:(id)token options:(unint64_t)options error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  tokenCopy = token;
   v30.receiver = self;
   v30.super_class = MIContainer;
   v9 = [(MIContainer *)&v30 init];
@@ -235,26 +235,26 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v10 = [v8 containerURL];
-  if (!v10)
+  containerURL = [tokenCopy containerURL];
+  if (!containerURL)
   {
-    v14 = ~(v6 << 16);
+    v14 = ~(optionsCopy << 16);
     v15 = [MIMCMContainer alloc];
-    v16 = [v8 serializedContainerRepresentation];
+    serializedContainerRepresentation = [tokenCopy serializedContainerRepresentation];
     v29 = 0;
-    v17 = [(MIMCMContainer *)v15 initWithSerializedContainer:v16 matchingWithOptions:*&v14 & 0x30000 error:&v29];
+    v17 = [(MIMCMContainer *)v15 initWithSerializedContainer:serializedContainerRepresentation matchingWithOptions:*&v14 & 0x30000 error:&v29];
     v18 = v29;
 
     if (v17)
     {
-      v27 = a5;
-      v20 = [(MIMCMContainer *)v17 personaUniqueString];
-      v21 = [v8 personaUniqueString];
-      v22 = [(MIMCMContainer *)v17 identifier];
-      v23 = [v8 identifier];
-      if (![v23 isEqualToString:v22] || v21 && v20 && (objc_msgSend(v21, "isEqualToString:", v20) & 1) == 0)
+      errorCopy = error;
+      personaUniqueString = [(MIMCMContainer *)v17 personaUniqueString];
+      personaUniqueString2 = [tokenCopy personaUniqueString];
+      identifier = [(MIMCMContainer *)v17 identifier];
+      identifier2 = [tokenCopy identifier];
+      if (![identifier2 isEqualToString:identifier] || personaUniqueString2 && personaUniqueString && (objc_msgSend(personaUniqueString2, "isEqualToString:", personaUniqueString) & 1) == 0)
       {
-        v11 = _CreateAndLogError("[MIContainer initWithToken:options:error:]", 181, @"MIInstallerErrorDomain", 186, v18, 0, @"Deserialized container object had identity %@/%@ but the token was for %@/%@", v24, v22);
+        v11 = _CreateAndLogError("[MIContainer initWithToken:options:error:]", 181, @"MIInstallerErrorDomain", 186, v18, 0, @"Deserialized container object had identity %@/%@ but the token was for %@/%@", v24, identifier);
         v26 = 0;
       }
 
@@ -265,27 +265,27 @@ LABEL_7:
         v11 = v28;
       }
 
-      a5 = v27;
+      error = errorCopy;
       if (v26)
       {
         goto LABEL_4;
       }
 
-      if (v27)
+      if (errorCopy)
       {
 LABEL_17:
         v25 = v11;
         v12 = 0;
-        *a5 = v11;
+        *error = v11;
         goto LABEL_7;
       }
     }
 
     else
     {
-      v11 = _CreateAndLogError("[MIContainer initWithToken:options:error:]", 171, @"MIInstallerErrorDomain", 186, v18, 0, @"Failed to serialize container data %@", v19, v8);
+      v11 = _CreateAndLogError("[MIContainer initWithToken:options:error:]", 171, @"MIInstallerErrorDomain", 186, v18, 0, @"Failed to serialize container data %@", v19, tokenCopy);
 
-      if (a5)
+      if (error)
       {
         goto LABEL_17;
       }
@@ -295,7 +295,7 @@ LABEL_17:
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v9->_containerURL, v10);
+  objc_storeStrong(&v9->_containerURL, containerURL);
   v11 = 0;
 LABEL_4:
 
@@ -308,28 +308,28 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [(MIContainer *)self rawContainer];
+  rawContainer = [(MIContainer *)self rawContainer];
 
-  if (v3)
+  if (rawContainer)
   {
     v4 = +[MITestManager sharedInstance];
     v5 = [v4 testFlagsAreSet:64];
 
-    v6 = [(MIContainer *)self containerClass];
-    if ([(MIContainer *)self isTransient]&& ![(MIContainer *)self isStagedContainer]&& (v6 == 14 || v6 == 1) && (v5 & 1) == 0)
+    containerClass = [(MIContainer *)self containerClass];
+    if ([(MIContainer *)self isTransient]&& ![(MIContainer *)self isStagedContainer]&& (containerClass == 14 || containerClass == 1) && (v5 & 1) == 0)
     {
       if (!gLogHandle || *(gLogHandle + 44) >= 3)
       {
-        v9 = self;
+        selfCopy = self;
         MOLogWrite();
       }
 
       v12 = 0;
-      v8 = [(MIContainer *)self removeUnderlyingContainerWaitingForDeletion:0 error:&v12, v9];
+      selfCopy = [(MIContainer *)self removeUnderlyingContainerWaitingForDeletion:0 error:&v12, selfCopy];
       v7 = v12;
-      if (!v8 && (!gLogHandle || *(gLogHandle + 44) >= 3))
+      if (!selfCopy && (!gLogHandle || *(gLogHandle + 44) >= 3))
       {
-        v9 = [(MIContainer *)self identifier];
+        selfCopy = [(MIContainer *)self identifier];
         v10 = v7;
         MOLogWrite();
       }
@@ -343,47 +343,47 @@ LABEL_7:
 
   v11.receiver = self;
   v11.super_class = MIContainer;
-  [(MIContainer *)&v11 dealloc:v9];
+  [(MIContainer *)&v11 dealloc:selfCopy];
 }
 
 - (NSString)identifier
 {
-  v2 = [(MIContainer *)self rawContainer];
-  v3 = [v2 identifier];
+  rawContainer = [(MIContainer *)self rawContainer];
+  identifier = [rawContainer identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)personaUniqueString
 {
-  v2 = [(MIContainer *)self rawContainer];
-  v3 = [v2 personaUniqueString];
+  rawContainer = [(MIContainer *)self rawContainer];
+  personaUniqueString = [rawContainer personaUniqueString];
 
-  return v3;
+  return personaUniqueString;
 }
 
 - (unint64_t)containerClass
 {
-  v2 = [(MIContainer *)self rawContainer];
-  v3 = [v2 containerClass];
+  rawContainer = [(MIContainer *)self rawContainer];
+  containerClass = [rawContainer containerClass];
 
-  return v3;
+  return containerClass;
 }
 
 - (BOOL)isTransient
 {
-  v2 = [(MIContainer *)self rawContainer];
-  v3 = [v2 isTransient];
+  rawContainer = [(MIContainer *)self rawContainer];
+  isTransient = [rawContainer isTransient];
 
-  return v3;
+  return isTransient;
 }
 
 - (BOOL)isNew
 {
-  v2 = [(MIContainer *)self rawContainer];
-  v3 = [v2 isNew];
+  rawContainer = [(MIContainer *)self rawContainer];
+  isNew = [rawContainer isNew];
 
-  return v3;
+  return isNew;
 }
 
 - (NSURL)containerURL
@@ -391,43 +391,43 @@ LABEL_7:
   containerURL = self->_containerURL;
   if (containerURL)
   {
-    v3 = containerURL;
+    containerURL = containerURL;
   }
 
   else
   {
-    v4 = [(MIContainer *)self rawContainer];
-    v3 = [v4 containerURL];
+    rawContainer = [(MIContainer *)self rawContainer];
+    containerURL = [rawContainer containerURL];
   }
 
-  return v3;
+  return containerURL;
 }
 
-- (BOOL)_setContainer:(id)a3 error:(id *)a4
+- (BOOL)_setContainer:(id)container error:(id *)error
 {
-  v7 = a3;
-  v8 = [(MIContainer *)self rawContainer];
-  v9 = [v8 isEqual:v7];
+  containerCopy = container;
+  rawContainer = [(MIContainer *)self rawContainer];
+  v9 = [rawContainer isEqual:containerCopy];
 
   if ((v9 & 1) == 0)
   {
-    if (!v7)
+    if (!containerCopy)
     {
       [(MIContainer *)self setContainerURL:0];
       goto LABEL_8;
     }
 
-    v11 = [v7 containerClass];
-    if (v11 == [(MIContainer *)self containerClass])
+    containerClass = [containerCopy containerClass];
+    if (containerClass == [(MIContainer *)self containerClass])
     {
-      v12 = [v7 identifier];
-      v13 = [(MIContainer *)self identifier];
-      v14 = [v12 isEqualToString:v13];
+      identifier = [containerCopy identifier];
+      identifier2 = [(MIContainer *)self identifier];
+      v14 = [identifier isEqualToString:identifier2];
 
       if (v14)
       {
 
-        objc_storeStrong(&self->_rawContainer, a3);
+        objc_storeStrong(&self->_rawContainer, container);
 LABEL_8:
         v16 = 0;
         v10 = 1;
@@ -436,9 +436,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v16 = _CreateAndLogError("[MIContainer _setContainer:error:]", 289, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set container with mismatched identifier %@ on %@", v15, v12);
+      v16 = _CreateAndLogError("[MIContainer _setContainer:error:]", 289, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set container with mismatched identifier %@ on %@", v15, identifier);
 
-      if (!a4)
+      if (!error)
       {
 LABEL_12:
         v10 = 0;
@@ -449,8 +449,8 @@ LABEL_12:
     else
     {
       [(MIContainer *)self containerClass];
-      v16 = _CreateAndLogError("[MIContainer _setContainer:error:]", 283, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set container %@ with content class %llu on %@ which represents a container with class %llu", v17, v7);
-      if (!a4)
+      v16 = _CreateAndLogError("[MIContainer _setContainer:error:]", 283, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set container %@ with content class %llu on %@ which represents a container with class %llu", v17, containerCopy);
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -458,7 +458,7 @@ LABEL_12:
 
     v18 = v16;
     v10 = 0;
-    *a4 = v16;
+    *error = v16;
     goto LABEL_13;
   }
 
@@ -468,26 +468,26 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)removeUnderlyingContainerWaitingForDeletion:(BOOL)a3 error:(id *)a4
+- (BOOL)removeUnderlyingContainerWaitingForDeletion:(BOOL)deletion error:(id *)error
 {
-  v5 = a3;
+  deletionCopy = deletion;
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = [(MIContainer *)self rawContainer];
-  v17[0] = v7;
+  rawContainer = [(MIContainer *)self rawContainer];
+  v17[0] = rawContainer;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v16 = 0;
-  v9 = [MIMCMContainer deleteContainers:v8 waitForDeletion:v5 error:&v16];
+  v9 = [MIMCMContainer deleteContainers:v8 waitForDeletion:deletionCopy error:&v16];
   v10 = v16;
 
   if (!v9)
   {
-    v11 = [(MIContainer *)self rawContainer];
-    v13 = _CreateAndLogError("[MIContainer removeUnderlyingContainerWaitingForDeletion:error:]", 316, @"MIInstallerErrorDomain", 4, v10, 0, @"Failed to delete container_object_t for %@", v12, v11);
+    rawContainer2 = [(MIContainer *)self rawContainer];
+    v13 = _CreateAndLogError("[MIContainer removeUnderlyingContainerWaitingForDeletion:error:]", 316, @"MIInstallerErrorDomain", 4, v10, 0, @"Failed to delete container_object_t for %@", v12, rawContainer2);
 
-    if (a4)
+    if (error)
     {
       v14 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     v10 = v13;
@@ -496,27 +496,27 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)_replaceExistingContainer:(id)a3 replacementReason:(unint64_t)a4 waitForDeletion:(BOOL)a5 error:(id *)a6
+- (BOOL)_replaceExistingContainer:(id)container replacementReason:(unint64_t)reason waitForDeletion:(BOOL)deletion error:(id *)error
 {
-  v7 = a5;
+  deletionCopy = deletion;
   v29[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(MIContainer *)self identifier];
-  v12 = [(MIContainer *)self containerClass];
-  v13 = [(MIContainer *)self rawContainer];
-  v14 = [v10 rawContainer];
+  containerCopy = container;
+  identifier = [(MIContainer *)self identifier];
+  containerClass = [(MIContainer *)self containerClass];
+  rawContainer = [(MIContainer *)self rawContainer];
+  rawContainer2 = [containerCopy rawContainer];
 
   v27 = 0;
-  v15 = [v13 replaceExistingContainer:v14 error:&v27];
+  v15 = [rawContainer replaceExistingContainer:rawContainer2 error:&v27];
   v16 = v27;
 
   if (v15)
   {
-    if (v7)
+    if (deletionCopy)
     {
-      v17 = [(MIContainer *)self rawContainer];
+      rawContainer3 = [(MIContainer *)self rawContainer];
       v26 = 0;
-      v18 = [v17 reclaimDiskSpaceWithError:&v26];
+      v18 = [rawContainer3 reclaimDiskSpaceWithError:&v26];
       v19 = v26;
 
       if ((v18 & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
@@ -532,17 +532,17 @@ LABEL_14:
       v20 = 0;
     }
 
-    if (a4 == 1 && v12 == 1)
+    if (reason == 1 && containerClass == 1)
     {
       v28[0] = *MEMORY[0x1E695E4F0];
       v28[1] = @"MobileInstallationDemotionCompleteErrorOccurred";
-      v29[0] = v11;
+      v29[0] = identifier;
       v22 = [MEMORY[0x1E696AD98] numberWithBool:v20];
       v29[1] = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
 
-      v24 = [MEMORY[0x1E696ABB0] defaultCenter];
-      [v24 postNotificationName:@"MobileInstallationDemotionCompleteNotification" object:0 userInfo:v23 options:3];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+      [defaultCenter postNotificationName:@"MobileInstallationDemotionCompleteNotification" object:0 userInfo:v23 options:3];
 
       if (gLogHandle && *(gLogHandle + 44) >= 7)
       {
@@ -551,37 +551,37 @@ LABEL_14:
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v21 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   return v15;
 }
 
-+ (id)containersForIdentifier:(id)a3 groupContainerIdentifier:(id)a4 ofContentClass:(unint64_t)a5 forPersona:(id)a6 fetchTransient:(BOOL)a7 createIfNeeded:(BOOL)a8 error:(id *)a9
++ (id)containersForIdentifier:(id)identifier groupContainerIdentifier:(id)containerIdentifier ofContentClass:(unint64_t)class forPersona:(id)persona fetchTransient:(BOOL)transient createIfNeeded:(BOOL)needed error:(id *)error
 {
-  v9 = a8;
-  v10 = a7;
+  neededCopy = needed;
+  transientCopy = transient;
   v58 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  personaCopy = persona;
   v48 = objc_opt_new();
-  v46 = (v14 | v15) != 0;
-  if (v14 | v15)
+  v46 = (identifierCopy | containerIdentifierCopy) != 0;
+  if (identifierCopy | containerIdentifierCopy)
   {
-    if (v14)
+    if (identifierCopy)
     {
       v55 = 0;
       v18 = &v55;
-      v19 = [MIMCMContainer containersForBundleIdentifier:v14 contentClass:a5 forPersona:v16 create:v9 fetchTransient:v10 error:&v55];
+      v19 = [MIMCMContainer containersForBundleIdentifier:identifierCopy contentClass:class forPersona:personaCopy create:neededCopy fetchTransient:transientCopy error:&v55];
     }
 
     else
     {
-      if (!v15)
+      if (!containerIdentifierCopy)
       {
         v22 = 0;
         goto LABEL_31;
@@ -589,7 +589,7 @@ LABEL_14:
 
       v54 = 0;
       v18 = &v54;
-      v19 = [MIMCMContainer containersForGroupIdentifier:v15 forPersona:v16 create:v9 fetchTransient:v10 error:&v54];
+      v19 = [MIMCMContainer containersForGroupIdentifier:containerIdentifierCopy forPersona:personaCopy create:neededCopy fetchTransient:transientCopy error:&v54];
     }
   }
 
@@ -597,7 +597,7 @@ LABEL_14:
   {
     v56 = 0;
     v18 = &v56;
-    v19 = [MIMCMContainer containersForContentClass:a5 forPersona:v16 fetchTransient:v10 error:&v56];
+    v19 = [MIMCMContainer containersForContentClass:class forPersona:personaCopy fetchTransient:transientCopy error:&v56];
   }
 
   v20 = v19;
@@ -606,16 +606,16 @@ LABEL_14:
   if (!v20)
   {
 LABEL_31:
-    v25 = _CreateAndLogError("+[MIContainer containersForIdentifier:groupContainerIdentifier:ofContentClass:forPersona:fetchTransient:createIfNeeded:error:]", 388, @"MIInstallerErrorDomain", 4, v22, 0, @"Failed to retrieve any containers for identifier: %@ groupIdentifier: %@ container type: %llu persona: %@", v17, v14);
+    v25 = _CreateAndLogError("+[MIContainer containersForIdentifier:groupContainerIdentifier:ofContentClass:forPersona:fetchTransient:createIfNeeded:error:]", 388, @"MIInstallerErrorDomain", 4, v22, 0, @"Failed to retrieve any containers for identifier: %@ groupIdentifier: %@ container type: %llu persona: %@", v17, identifierCopy);
 
     obj = 0;
     v35 = 0;
     goto LABEL_32;
   }
 
-  v43 = v16;
-  v44 = v15;
-  v45 = v14;
+  v43 = personaCopy;
+  v44 = containerIdentifierCopy;
+  v45 = identifierCopy;
 
   v52 = 0u;
   v53 = 0u;
@@ -703,14 +703,14 @@ LABEL_31:
   }
 
 LABEL_29:
-  v15 = v44;
-  v14 = v45;
-  v16 = v43;
+  containerIdentifierCopy = v44;
+  identifierCopy = v45;
+  personaCopy = v43;
 LABEL_32:
-  if (a9 && !v35)
+  if (error && !v35)
   {
     v38 = v25;
-    *a9 = v25;
+    *error = v25;
   }
 
   v39 = v35;
@@ -718,21 +718,21 @@ LABEL_32:
   return v35;
 }
 
-+ (id)groupContainerURLsForBundleIdentifier:(id)a3 forPersona:(id)a4 error:(id *)a5
++ (id)groupContainerURLsForBundleIdentifier:(id)identifier forPersona:(id)persona error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identifierCopy = identifier;
   v33 = 0;
-  v8 = [MIMCMContainer containersForBundleIdentifier:v7 contentClass:7 forPersona:a4 create:1 fetchTransient:0 error:&v33];
+  v8 = [MIMCMContainer containersForBundleIdentifier:identifierCopy contentClass:7 forPersona:persona create:1 fetchTransient:0 error:&v33];
   v9 = v33;
   v11 = v9;
   if (!v8)
   {
-    v22 = _CreateAndLogError("+[MIContainer groupContainerURLsForBundleIdentifier:forPersona:error:]", 433, @"MIInstallerErrorDomain", 4, v9, 0, @"Failed to retrieve any shared data containers for %@", v10, v7);
+    v22 = _CreateAndLogError("+[MIContainer groupContainerURLsForBundleIdentifier:forPersona:error:]", 433, @"MIInstallerErrorDomain", 4, v9, 0, @"Failed to retrieve any shared data containers for %@", v10, identifierCopy);
 
     v21 = 0;
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -741,7 +741,7 @@ LABEL_32:
   }
 
   v26 = v9;
-  v28 = v7;
+  v28 = identifierCopy;
   v12 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
@@ -764,16 +764,16 @@ LABEL_32:
         }
 
         v18 = *(*(&v29 + 1) + 8 * i);
-        v19 = [v18 identifier];
-        v20 = [v18 containerURL];
-        if (v20)
+        identifier = [v18 identifier];
+        containerURL = [v18 containerURL];
+        if (containerURL)
         {
-          [v12 setObject:v20 forKeyedSubscript:v19];
+          [v12 setObject:containerURL forKeyedSubscript:identifier];
         }
 
         else if (!gLogHandle || *(gLogHandle + 44) >= 3)
         {
-          v25 = v19;
+          v25 = identifier;
           MOLogWrite();
         }
       }
@@ -785,16 +785,16 @@ LABEL_32:
   }
 
   v21 = [v12 copy];
-  v7 = v28;
+  identifierCopy = v28;
   v22 = v26;
   v8 = v27;
-  if (a5)
+  if (error)
   {
 LABEL_17:
     if (!v21)
     {
       v23 = v22;
-      *a5 = v22;
+      *error = v22;
     }
   }
 
@@ -803,13 +803,13 @@ LABEL_19:
   return v21;
 }
 
-+ (id)tempContainerWithIdentifier:(id)a3 forPersona:(id)a4 ofContentClass:(unint64_t)a5 error:(id *)a6
++ (id)tempContainerWithIdentifier:(id)identifier forPersona:(id)persona ofContentClass:(unint64_t)class error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  personaCopy = persona;
   v29 = 0;
-  v11 = [MIMCMContainer transientContainerForIdentifier:v9 contentClass:a5 forPersona:v10 create:1 error:&v29];
+  v11 = [MIMCMContainer transientContainerForIdentifier:identifierCopy contentClass:class forPersona:personaCopy create:1 error:&v29];
   v12 = v29;
   if (!v11)
   {
@@ -821,7 +821,7 @@ LABEL_19:
     goto LABEL_3;
   }
 
-  v25 = a6;
+  errorCopy = error;
   v30[0] = v11;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
   v28 = v12;
@@ -831,10 +831,10 @@ LABEL_19:
   if (v17)
   {
     v27 = v14;
-    v19 = [MIMCMContainer transientContainerForIdentifier:v9 contentClass:a5 forPersona:v10 create:1 error:&v27];
+    v19 = [MIMCMContainer transientContainerForIdentifier:identifierCopy contentClass:class forPersona:personaCopy create:1 error:&v27];
     v12 = v27;
 
-    a6 = v25;
+    error = errorCopy;
     if (v19)
     {
       if ([v19 isNew])
@@ -862,7 +862,7 @@ LABEL_3:
 
     else
     {
-      v22 = _CreateAndLogError("+[MIContainer tempContainerWithIdentifier:forPersona:ofContentClass:error:]", 478, @"MIInstallerErrorDomain", 4, v12, 0, @"Failed to create container for %@", v20, v9);
+      v22 = _CreateAndLogError("+[MIContainer tempContainerWithIdentifier:forPersona:ofContentClass:error:]", 478, @"MIInstallerErrorDomain", 4, v12, 0, @"Failed to create container for %@", v20, identifierCopy);
       v11 = 0;
       v14 = v12;
     }
@@ -870,19 +870,19 @@ LABEL_3:
 
   else
   {
-    v22 = _CreateAndLogError("+[MIContainer tempContainerWithIdentifier:forPersona:ofContentClass:error:]", 472, @"MIInstallerErrorDomain", 4, v14, 0, @"Failed to delete existing transient container for %@", v18, v9);
-    a6 = v25;
+    v22 = _CreateAndLogError("+[MIContainer tempContainerWithIdentifier:forPersona:ofContentClass:error:]", 472, @"MIInstallerErrorDomain", 4, v14, 0, @"Failed to delete existing transient container for %@", v18, identifierCopy);
+    error = errorCopy;
   }
 
 LABEL_13:
 
   v12 = v22;
 LABEL_14:
-  if (a6)
+  if (error)
   {
     v23 = v12;
     v13 = 0;
-    *a6 = v12;
+    *error = v12;
   }
 
   else
@@ -895,28 +895,28 @@ LABEL_17:
   return v13;
 }
 
-+ (id)containerWithIdentifier:(id)a3 forPersona:(id)a4 ofContentClass:(unint64_t)a5 createIfNeeded:(BOOL)a6 created:(BOOL *)a7 error:(id *)a8
++ (id)containerWithIdentifier:(id)identifier forPersona:(id)persona ofContentClass:(unint64_t)class createIfNeeded:(BOOL)needed created:(BOOL *)created error:(id *)error
 {
-  v9 = a6;
+  neededCopy = needed;
   v36[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  identifierCopy = identifier;
+  personaCopy = persona;
   v35 = 0;
-  v14 = [MIMCMContainer containerForIdentifier:v12 contentClass:a5 forPersona:v13 create:v9 error:&v35];
+  v14 = [MIMCMContainer containerForIdentifier:identifierCopy contentClass:class forPersona:personaCopy create:neededCopy error:&v35];
   v15 = v35;
   v17 = v15;
   if (!v14)
   {
-    if (!v9)
+    if (!neededCopy)
     {
-      v21 = [v15 domain];
-      if ([v21 isEqualToString:@"MIContainerManagerErrorDomain"])
+      domain = [v15 domain];
+      if ([domain isEqualToString:@"MIContainerManagerErrorDomain"])
       {
-        v22 = [v17 code];
+        code = [v17 code];
 
-        if (v22 == 21)
+        if (code == 21)
         {
-          LOBYTE(v18) = 0;
+          LOBYTE(isNew) = 0;
           v19 = 0;
           goto LABEL_17;
         }
@@ -927,11 +927,11 @@ LABEL_17:
       }
     }
 
-    v25 = _CreateAndLogError("+[MIContainer containerWithIdentifier:forPersona:ofContentClass:createIfNeeded:created:error:]", 514, @"MIInstallerErrorDomain", 4, v17, 0, @"Failed to find container of class %llu with identity %@/%@", v16, a5);
+    v25 = _CreateAndLogError("+[MIContainer containerWithIdentifier:forPersona:ofContentClass:createIfNeeded:created:error:]", 514, @"MIInstallerErrorDomain", 4, v17, 0, @"Failed to find container of class %llu with identity %@/%@", v16, class);
     goto LABEL_27;
   }
 
-  v18 = [v14 isNew];
+  isNew = [v14 isNew];
   v34 = v17;
   v19 = [objc_alloc(objc_opt_class()) initWithContainer:v14 error:&v34];
   v20 = v34;
@@ -945,7 +945,7 @@ LABEL_17:
   v23 = objc_opt_class();
   v25 = _CreateAndLogError("+[MIContainer containerWithIdentifier:forPersona:ofContentClass:createIfNeeded:created:error:]", 522, @"MIInstallerErrorDomain", 4, v20, 0, @"Failed to create %@ instance for %@", v24, v23);
 
-  if (v18)
+  if (isNew)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
@@ -965,12 +965,12 @@ LABEL_17:
     }
 
 LABEL_27:
-    v28 = a8;
+    errorCopy2 = error;
 
     v19 = 0;
     v17 = v25;
-    LOBYTE(v18) = v14 != 0;
-    if (!a7)
+    LOBYTE(isNew) = v14 != 0;
+    if (!created)
     {
       goto LABEL_19;
     }
@@ -981,34 +981,34 @@ LABEL_27:
   v19 = 0;
   v17 = v25;
 LABEL_17:
-  v28 = a8;
-  if (a7)
+  errorCopy2 = error;
+  if (created)
   {
 LABEL_18:
-    *a7 = v18;
+    *created = isNew;
   }
 
 LABEL_19:
-  if (v28 && !v19)
+  if (errorCopy2 && !v19)
   {
     v29 = v17;
-    *v28 = v17;
+    *errorCopy2 = v17;
   }
 
   return v19;
 }
 
-+ (BOOL)removeContainers:(id)a3 waitForDeletion:(BOOL)a4 error:(id *)a5
++ (BOOL)removeContainers:(id)containers waitForDeletion:(BOOL)deletion error:(id *)error
 {
-  v6 = a4;
+  deletionCopy = deletion;
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  containersCopy = containers;
   v8 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v7;
+  v9 = containersCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -1024,8 +1024,8 @@ LABEL_19:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * v13) rawContainer];
-        [v8 addObject:v14];
+        rawContainer = [*(*(&v18 + 1) + 8 * v13) rawContainer];
+        [v8 addObject:rawContainer];
 
         ++v13;
       }
@@ -1038,43 +1038,43 @@ LABEL_19:
   }
 
   v15 = [v8 copy];
-  v16 = [MIMCMContainer deleteContainers:v15 waitForDeletion:v6 error:a5];
+  v16 = [MIMCMContainer deleteContainers:v15 waitForDeletion:deletionCopy error:error];
 
   return v16;
 }
 
-+ (id)containersWithClass:(unint64_t)a3 error:(id *)a4
++ (id)containersWithClass:(unint64_t)class error:(id *)error
 {
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*MEMORY[0x1E69E9980]];
-  v7 = [objc_opt_class() containersWithClass:a3 personaUniqueString:v6 error:a4];
+  v7 = [objc_opt_class() containersWithClass:class personaUniqueString:v6 error:error];
 
   return v7;
 }
 
-+ (id)containersWithClass:(unint64_t)a3 personaUniqueString:(id)a4 error:(id *)a5
++ (id)containersWithClass:(unint64_t)class personaUniqueString:(id)string error:(id *)error
 {
-  v7 = a4;
-  v8 = [objc_opt_class() containersForIdentifier:0 groupContainerIdentifier:0 ofContentClass:a3 forPersona:v7 fetchTransient:0 createIfNeeded:0 error:a5];
+  stringCopy = string;
+  v8 = [objc_opt_class() containersForIdentifier:0 groupContainerIdentifier:0 ofContentClass:class forPersona:stringCopy fetchTransient:0 createIfNeeded:0 error:error];
 
   return v8;
 }
 
-- (BOOL)recreateDefaultStructureWithError:(id *)a3
+- (BOOL)recreateDefaultStructureWithError:(id *)error
 {
-  v5 = [(MIContainer *)self rawContainer];
+  rawContainer = [(MIContainer *)self rawContainer];
   v13 = 0;
-  v6 = [v5 recreateDefaultStructureWithError:&v13];
+  v6 = [rawContainer recreateDefaultStructureWithError:&v13];
   v7 = v13;
 
   if ((v6 & 1) == 0)
   {
-    v8 = [(MIContainer *)self rawContainer];
-    v10 = _CreateAndLogError("[MIContainer recreateDefaultStructureWithError:]", 573, @"MIInstallerErrorDomain", 4, v7, 0, @"Failed to recreate structure for %@", v9, v8);
+    rawContainer2 = [(MIContainer *)self rawContainer];
+    v10 = _CreateAndLogError("[MIContainer recreateDefaultStructureWithError:]", 573, @"MIInstallerErrorDomain", 4, v7, 0, @"Failed to recreate structure for %@", v9, rawContainer2);
 
-    if (a3)
+    if (error)
     {
       v11 = v10;
-      *a3 = v10;
+      *error = v10;
     }
 
     v7 = v10;
@@ -1083,20 +1083,20 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)makeContainerLiveReplacingContainer:(id)a3 reason:(unint64_t)a4 waitForDeletion:(BOOL)a5 withError:(id *)a6
+- (BOOL)makeContainerLiveReplacingContainer:(id)container reason:(unint64_t)reason waitForDeletion:(BOOL)deletion withError:(id *)error
 {
-  v7 = a5;
-  v11 = a3;
-  if (!v11 && a4 != 3)
+  deletionCopy = deletion;
+  containerCopy = container;
+  if (!containerCopy && reason != 3)
   {
-    _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 593, @"MIInstallerErrorDomain", 4, 0, 0, @"Existing container was nil but replacement reason was not NewContainer; given %ld", v10, a4);
+    _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 593, @"MIInstallerErrorDomain", 4, 0, 0, @"Existing container was nil but replacement reason was not NewContainer; given %ld", v10, reason);
     v12 = LABEL_4:;
     v13 = 0;
     goto LABEL_5;
   }
 
-  v16 = [(MIContainer *)self status];
-  if (v16 == 1)
+  status = [(MIContainer *)self status];
+  if (status == 1)
   {
     [(MIContainer *)self recreateDefaultStructureWithError:0];
     v12 = 0;
@@ -1106,19 +1106,19 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (v16 != 3)
+  if (status != 3)
   {
-    if (v16 != 2)
+    if (status != 2)
     {
-      v42 = [(MIContainer *)self status];
-      _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 664, @"MIInstallerErrorDomain", 4, 0, 0, @"Unknown container status: %lu", v29, v42);
+      status2 = [(MIContainer *)self status];
+      _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 664, @"MIInstallerErrorDomain", 4, 0, 0, @"Unknown container status: %lu", v29, status2);
       goto LABEL_4;
     }
 
-    v17 = [(MIContainer *)self identifier];
-    v18 = [(MIContainer *)self containerClass];
+    identifier = [(MIContainer *)self identifier];
+    containerClass = [(MIContainer *)self containerClass];
     v52 = 0;
-    v19 = [(MIContainer *)self _replaceExistingContainer:v11 replacementReason:a4 waitForDeletion:v7 error:&v52];
+    v19 = [(MIContainer *)self _replaceExistingContainer:containerCopy replacementReason:reason waitForDeletion:deletionCopy error:&v52];
     v20 = v52;
     v21 = v20;
     if (v19)
@@ -1128,28 +1128,28 @@ LABEL_48:
       goto LABEL_12;
     }
 
-    v31 = [v20 domain];
-    if ([v31 isEqualToString:@"MIContainerManagerErrorDomain"])
+    domain = [v20 domain];
+    if ([domain isEqualToString:@"MIContainerManagerErrorDomain"])
     {
-      v32 = [v21 code];
+      code = [v21 code];
 
-      if (v32 == 27)
+      if (code == 27)
       {
 
         if (!gLogHandle || *(gLogHandle + 44) >= 3)
         {
-          v41 = self;
+          selfCopy = self;
           MOLogWrite();
         }
 
         v51 = 0;
-        v34 = [(MIContainer *)self removeUnderlyingContainerWaitingForDeletion:0 error:&v51, v41];
+        selfCopy = [(MIContainer *)self removeUnderlyingContainerWaitingForDeletion:0 error:&v51, selfCopy];
         v35 = v51;
-        if (!v34)
+        if (!selfCopy)
         {
           if (!gLogHandle || *(gLogHandle + 44) >= 3)
           {
-            v43 = self;
+            selfCopy2 = self;
             v44 = v35;
             MOLogWrite();
           }
@@ -1158,7 +1158,7 @@ LABEL_48:
         }
 
         v50 = v35;
-        v13 = [MIMCMContainer containerForIdentifier:v17 contentClass:v18 forPersona:0 create:0 error:&v50, v43, v44];
+        v13 = [MIMCMContainer containerForIdentifier:identifier contentClass:containerClass forPersona:0 create:0 error:&v50, selfCopy2, v44];
         v21 = v50;
 
         if (v13)
@@ -1210,20 +1210,20 @@ LABEL_47:
             }
 
 LABEL_46:
-            v39 = [(MIContainer *)self containerURL];
-            v46 = [v39 path];
+            containerURL = [(MIContainer *)self containerURL];
+            path = [containerURL path];
             MOLogWrite();
 
             goto LABEL_47;
           }
 
-          v12 = _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 624, @"MIInstallerErrorDomain", 22, v22, 0, @"Failed to set container after fetching existing container found when making container live for %@", v38, v17);
+          v12 = _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 624, @"MIInstallerErrorDomain", 22, v22, 0, @"Failed to set container after fetching existing container found when making container live for %@", v38, identifier);
           v21 = v22;
         }
 
         else
         {
-          v12 = _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 619, @"MIInstallerErrorDomain", 22, v21, 0, @"Failed to get existing container when replacement found the live container was already present for %@", v36, v17);
+          v12 = _CreateAndLogError("[MIContainer makeContainerLiveReplacingContainer:reason:waitForDeletion:withError:]", 619, @"MIInstallerErrorDomain", 22, v21, 0, @"Failed to get existing container when replacement found the live container was already present for %@", v36, identifier);
         }
 
         goto LABEL_40;
@@ -1239,11 +1239,11 @@ LABEL_46:
 LABEL_40:
 
 LABEL_5:
-    if (a6)
+    if (error)
     {
       v14 = v12;
       v15 = 0;
-      *a6 = v12;
+      *error = v12;
     }
 
     else
@@ -1268,9 +1268,9 @@ LABEL_5:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 5)
   {
-    v27 = [(MIContainer *)self identifier];
-    v28 = [(MIContainer *)self containerURL];
-    v45 = [v28 path];
+    identifier2 = [(MIContainer *)self identifier];
+    containerURL2 = [(MIContainer *)self containerURL];
+    path2 = [containerURL2 path];
     MOLogWrite();
   }
 
@@ -1282,23 +1282,23 @@ LABEL_49:
   return v15;
 }
 
-- (BOOL)setInfoValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setInfoValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MIContainer *)self rawContainer];
+  valueCopy = value;
+  keyCopy = key;
+  rawContainer = [(MIContainer *)self rawContainer];
   v17 = 0;
-  v11 = [v10 setInfoValue:v8 forKey:v9 error:&v17];
+  v11 = [rawContainer setInfoValue:valueCopy forKey:keyCopy error:&v17];
   v12 = v17;
 
   if ((v11 & 1) == 0)
   {
-    v14 = _CreateAndLogError("[MIContainer setInfoValue:forKey:error:]", 688, @"MIInstallerErrorDomain", 4, v12, 0, @"Failed to set value %@ for key %@ for container %@", v13, v8);
+    v14 = _CreateAndLogError("[MIContainer setInfoValue:forKey:error:]", 688, @"MIInstallerErrorDomain", 4, v12, 0, @"Failed to set value %@ for key %@ for container %@", v13, valueCopy);
 
-    if (a5)
+    if (error)
     {
       v15 = v14;
-      *a5 = v14;
+      *error = v14;
     }
 
     v12 = v14;
@@ -1307,26 +1307,26 @@ LABEL_49:
   return v11;
 }
 
-- (id)infoValueForKey:(id)a3 error:(id *)a4
+- (id)infoValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIContainer *)self rawContainer];
-  v8 = [(MIContainer *)self isTransient];
-  v9 = [v7 identifier];
-  v10 = [v7 containerClass];
-  v11 = [v7 personaUniqueString];
-  if (v8)
+  keyCopy = key;
+  rawContainer = [(MIContainer *)self rawContainer];
+  isTransient = [(MIContainer *)self isTransient];
+  identifier = [rawContainer identifier];
+  containerClass = [rawContainer containerClass];
+  personaUniqueString = [rawContainer personaUniqueString];
+  if (isTransient)
   {
     v22 = 0;
     v12 = &v22;
-    v13 = [MIMCMContainer transientContainerForIdentifier:v9 contentClass:v10 forPersona:v11 create:0 error:&v22];
+    v13 = [MIMCMContainer transientContainerForIdentifier:identifier contentClass:containerClass forPersona:personaUniqueString create:0 error:&v22];
   }
 
   else
   {
     v21 = 0;
     v12 = &v21;
-    v13 = [MIMCMContainer containerForIdentifier:v9 contentClass:v10 forPersona:v11 create:0 error:&v21];
+    v13 = [MIMCMContainer containerForIdentifier:identifier contentClass:containerClass forPersona:personaUniqueString create:0 error:&v21];
   }
 
   v14 = v13;
@@ -1335,11 +1335,11 @@ LABEL_49:
   if (v14)
   {
     v20 = v15;
-    v16 = [v14 infoValueForKey:v6 error:&v20];
+    v16 = [v14 infoValueForKey:keyCopy error:&v20];
     v17 = v20;
 
     v15 = v17;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -1348,7 +1348,7 @@ LABEL_49:
   else
   {
     v16 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -1357,7 +1357,7 @@ LABEL_49:
   if (!v16)
   {
     v18 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_10:
@@ -1365,32 +1365,32 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)regenerateDirectoryUUIDWithError:(id *)a3
+- (BOOL)regenerateDirectoryUUIDWithError:(id *)error
 {
-  v4 = [(MIContainer *)self rawContainer];
+  rawContainer = [(MIContainer *)self rawContainer];
   v9 = 0;
-  v5 = [v4 regenerateDirectoryUUIDWithError:&v9];
+  v5 = [rawContainer regenerateDirectoryUUIDWithError:&v9];
   v6 = v9;
 
-  if (a3 && (v5 & 1) == 0)
+  if (error && (v5 & 1) == 0)
   {
     v7 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v5;
 }
 
-- (BOOL)purgeContentWithError:(id *)a3
+- (BOOL)purgeContentWithError:(id *)error
 {
-  v5 = [(MIContainer *)self containerClass];
-  if (v5 > 7 || ((1 << v5) & 0x94) == 0)
+  containerClass = [(MIContainer *)self containerClass];
+  if (containerClass > 7 || ((1 << containerClass) & 0x94) == 0)
   {
-    v10 = [(MIContainer *)self identifier];
-    v9 = _CreateAndLogError("[MIContainer purgeContentWithError:]", 753, @"MIInstallerErrorDomain", 4, 0, 0, @"Container for identifier %@ is not a data container found class %ld.", v11, v10);;
+    identifier = [(MIContainer *)self identifier];
+    v9 = _CreateAndLogError("[MIContainer purgeContentWithError:]", 753, @"MIInstallerErrorDomain", 4, 0, 0, @"Container for identifier %@ is not a data container found class %ld.", v11, identifier);;
 
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -1398,12 +1398,12 @@ LABEL_10:
 
   else
   {
-    v7 = [(MIContainer *)self rawContainer];
+    rawContainer = [(MIContainer *)self rawContainer];
     v14 = 0;
-    v8 = [v7 purgeContentWithError:&v14];
+    v8 = [rawContainer purgeContentWithError:&v14];
     v9 = v14;
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -1412,7 +1412,7 @@ LABEL_10:
   if ((v8 & 1) == 0)
   {
     v12 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
 LABEL_10:
@@ -1422,17 +1422,17 @@ LABEL_10:
 
 - (unint64_t)diskUsage
 {
-  v2 = [(MIContainer *)self rawContainer];
-  v3 = [v2 diskUsage];
+  rawContainer = [(MIContainer *)self rawContainer];
+  diskUsage = [rawContainer diskUsage];
 
-  return v3;
+  return diskUsage;
 }
 
-+ (id)_bundleContainerForIdentifier:(id)a3 forPersona:(id)a4 error:(id *)a5
++ (id)_bundleContainerForIdentifier:(id)identifier forPersona:(id)persona error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v15 = 0;
-  v7 = [MIBundleContainer privateAppBundleContainerWithIdentifier:v6 createIfNeeded:0 created:0 error:&v15];
+  v7 = [MIBundleContainer privateAppBundleContainerWithIdentifier:identifierCopy createIfNeeded:0 created:0 error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
@@ -1440,18 +1440,18 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v8 domain];
-  if ([v10 isEqualToString:@"MIContainerManagerErrorDomain"])
+  domain = [v8 domain];
+  if ([domain isEqualToString:@"MIContainerManagerErrorDomain"])
   {
-    v11 = [v9 code];
+    code = [v9 code];
 
-    if (v11 == 21)
+    if (code == 21)
     {
 
       v14 = 0;
-      v7 = [MIBundleContainer appBundleContainerWithIdentifier:v6 createIfNeeded:0 created:0 error:&v14];
+      v7 = [MIBundleContainer appBundleContainerWithIdentifier:identifierCopy createIfNeeded:0 created:0 error:&v14];
       v9 = v14;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -1465,7 +1465,7 @@ LABEL_10:
   }
 
   v7 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -1474,7 +1474,7 @@ LABEL_8:
   if (!v7)
   {
     v12 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
 LABEL_10:
@@ -1482,70 +1482,70 @@ LABEL_10:
   return v7;
 }
 
-+ (id)_allContainersForIdentifier:(id)a3 persona:(id)a4 options:(unint64_t)a5 error:(id *)a6
++ (id)_allContainersForIdentifier:(id)identifier persona:(id)persona options:(unint64_t)options error:(id *)error
 {
-  v7 = a5;
+  optionsCopy = options;
   v70 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  personaCopy = persona;
   v12 = objc_opt_new();
   v58 = objc_opt_new();
-  if ((v7 & 0xB) == 0)
+  if ((optionsCopy & 0xB) == 0)
   {
     v18 = v12;
     goto LABEL_72;
   }
 
   v13 = +[MIGlobalConfiguration sharedInstance];
-  v14 = [v13 primaryPersonaString];
+  primaryPersonaString = [v13 primaryPersonaString];
   v67 = 0;
-  v15 = [a1 _bundleContainerForIdentifier:v10 forPersona:v14 error:&v67];
+  v15 = [self _bundleContainerForIdentifier:identifierCopy forPersona:primaryPersonaString error:&v67];
   v16 = v67;
 
   if (!v15)
   {
-    v19 = [v16 domain];
-    if ([v19 isEqualToString:@"MIContainerManagerErrorDomain"])
+    domain = [v16 domain];
+    if ([domain isEqualToString:@"MIContainerManagerErrorDomain"])
     {
       v20 = v16;
-      v21 = [v16 code];
+      code = [v16 code];
 
-      if (v21 != 21)
+      if (code != 21)
       {
-        v17 = 0;
+        bundle = 0;
         v29 = 0;
         goto LABEL_68;
       }
 
-      if ((v7 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
 
         v57 = 0;
         goto LABEL_15;
       }
 
-      v16 = _CreateAndLogError("+[MIContainer _allContainersForIdentifier:persona:options:error:]", 840, @"MIInstallerErrorDomain", 26, 0, 0, @"No bundle container found for identifier %@", v22, v10);
+      v16 = _CreateAndLogError("+[MIContainer _allContainersForIdentifier:persona:options:error:]", 840, @"MIInstallerErrorDomain", 26, 0, 0, @"No bundle container found for identifier %@", v22, identifierCopy);
     }
 
     else
     {
     }
 
-    v17 = 0;
+    bundle = 0;
     v29 = 0;
     goto LABEL_68;
   }
 
   v57 = v16;
-  v17 = [v15 bundle];
-  if (v7)
+  bundle = [v15 bundle];
+  if (optionsCopy)
   {
     [v12 addObject:v15];
   }
 
-  if (v17)
+  if (bundle)
   {
-    if ((v7 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_7;
     }
@@ -1554,18 +1554,18 @@ LABEL_10:
   }
 
 LABEL_15:
-  if ((v7 & 0xA) != 0)
+  if ((optionsCopy & 0xA) != 0)
   {
     v23 = +[MIGlobalConfiguration sharedInstance];
-    v24 = [v23 systemAppBundleIDToInfoMap];
+    systemAppBundleIDToInfoMap = [v23 systemAppBundleIDToInfoMap];
 
-    v25 = [v24 objectForKeyedSubscript:v10];
-    if (!v25)
+    internalAppBundleIDToInfoMap = [systemAppBundleIDToInfoMap objectForKeyedSubscript:identifierCopy];
+    if (!internalAppBundleIDToInfoMap)
     {
       v26 = +[MIGlobalConfiguration sharedInstance];
-      v25 = [v26 internalAppBundleIDToInfoMap];
+      internalAppBundleIDToInfoMap = [v26 internalAppBundleIDToInfoMap];
 
-      v27 = [v25 objectForKeyedSubscript:v10];
+      v27 = [internalAppBundleIDToInfoMap objectForKeyedSubscript:identifierCopy];
       if (v27)
       {
         v28 = v27;
@@ -1574,28 +1574,28 @@ LABEL_15:
       else
       {
         v30 = MIDiskImageManagerProxy();
-        v28 = [v30 appInfoForBundleID:v10 onAttachedEntityType:1];
+        v28 = [v30 appInfoForBundleID:identifierCopy onAttachedEntityType:1];
 
         if (!v28)
         {
           v31 = MIDiskImageManagerProxy();
-          v28 = [v31 appInfoForBundleID:v10 onAttachedEntityType:2];
+          v28 = [v31 appInfoForBundleID:identifierCopy onAttachedEntityType:2];
 
           if (!v28)
           {
             if (gLogHandle && *(gLogHandle + 44) >= 7)
             {
-              v50 = v10;
+              v50 = identifierCopy;
               MOLogWrite();
             }
 
-            v17 = 0;
+            bundle = 0;
 LABEL_38:
 
-            if ((v7 & 2) == 0)
+            if ((optionsCopy & 2) == 0)
             {
 LABEL_7:
-              if (!v17)
+              if (!bundle)
               {
                 goto LABEL_8;
               }
@@ -1604,24 +1604,24 @@ LABEL_7:
             }
 
 LABEL_39:
-            v33 = [(MIContainer *)MIDataContainer containersForIdentifier:v10 groupContainerIdentifier:0 ofContentClass:2 forPersona:v11 fetchTransient:0 createIfNeeded:0 error:0, v51];
+            v33 = [(MIContainer *)MIDataContainer containersForIdentifier:identifierCopy groupContainerIdentifier:0 ofContentClass:2 forPersona:personaCopy fetchTransient:0 createIfNeeded:0 error:0, v51];
             if (v33)
             {
               [v12 addObjectsFromArray:v33];
             }
 
-            if (!v17)
+            if (!bundle)
             {
 LABEL_8:
-              if ((v7 & 8) == 0)
+              if ((optionsCopy & 8) == 0)
               {
                 goto LABEL_67;
               }
 
 LABEL_57:
-              v54 = v17;
+              v54 = bundle;
               v56 = v15;
-              v41 = a6;
+              errorCopy = error;
               v61 = 0u;
               v62 = 0u;
               v59 = 0u;
@@ -1641,7 +1641,7 @@ LABEL_57:
                       objc_enumerationMutation(v42);
                     }
 
-                    v47 = [(MIContainer *)MIGroupContainer containersForIdentifier:*(*(&v59 + 1) + 8 * i) groupContainerIdentifier:0 ofContentClass:7 forPersona:v11 fetchTransient:0 createIfNeeded:0 error:0];
+                    v47 = [(MIContainer *)MIGroupContainer containersForIdentifier:*(*(&v59 + 1) + 8 * i) groupContainerIdentifier:0 ofContentClass:7 forPersona:personaCopy fetchTransient:0 createIfNeeded:0 error:0];
                     if (v47)
                     {
                       [v12 addObjectsFromArray:v47];
@@ -1654,27 +1654,27 @@ LABEL_57:
                 while (v44);
               }
 
-              a6 = v41;
-              v17 = v54;
+              error = errorCopy;
+              bundle = v54;
               v15 = v56;
               goto LABEL_67;
             }
 
 LABEL_42:
-            if ((v7 & 0xA) == 0)
+            if ((optionsCopy & 0xA) == 0)
             {
               goto LABEL_67;
             }
 
             v55 = v15;
-            v52 = a6;
-            if ((v7 & 8) != 0)
+            errorCopy2 = error;
+            if ((optionsCopy & 8) != 0)
             {
-              [v58 addObject:v10];
+              [v58 addObject:identifierCopy];
             }
 
-            v53 = v17;
-            v34 = [v17 appExtensionBundlesPerformingPlatformValidation:0 withError:{0, v50}];
+            v53 = bundle;
+            v34 = [bundle appExtensionBundlesPerformingPlatformValidation:0 withError:{0, v50}];
             v63 = 0u;
             v64 = 0u;
             v65 = 0u;
@@ -1693,16 +1693,16 @@ LABEL_42:
                     objc_enumerationMutation(v34);
                   }
 
-                  v39 = [*(*(&v63 + 1) + 8 * j) identifier];
-                  v40 = [(MIContainer *)MIPluginDataContainer containersForIdentifier:v39 groupContainerIdentifier:0 ofContentClass:4 forPersona:v11 fetchTransient:0 createIfNeeded:0 error:0];
+                  identifier = [*(*(&v63 + 1) + 8 * j) identifier];
+                  v40 = [(MIContainer *)MIPluginDataContainer containersForIdentifier:identifier groupContainerIdentifier:0 ofContentClass:4 forPersona:personaCopy fetchTransient:0 createIfNeeded:0 error:0];
                   if (v40)
                   {
                     [v12 addObjectsFromArray:v40];
                   }
 
-                  if ((v7 & 8) != 0)
+                  if ((optionsCopy & 8) != 0)
                   {
-                    [v58 addObject:v39];
+                    [v58 addObject:identifier];
                   }
                 }
 
@@ -1712,10 +1712,10 @@ LABEL_42:
               while (v36);
             }
 
-            a6 = v52;
-            v17 = v53;
+            error = errorCopy2;
+            bundle = v53;
             v15 = v55;
-            if ((v7 & 8) == 0)
+            if ((optionsCopy & 8) == 0)
             {
               goto LABEL_67;
             }
@@ -1725,14 +1725,14 @@ LABEL_42:
         }
       }
 
-      v25 = v28;
+      internalAppBundleIDToInfoMap = v28;
     }
 
-    v32 = [v25 objectForKeyedSubscript:@"com.apple.MobileInstallation.bundleURL"];
+    v32 = [internalAppBundleIDToInfoMap objectForKeyedSubscript:@"com.apple.MobileInstallation.bundleURL"];
     if (v32)
     {
-      v17 = [(MIBundle *)MIExecutableBundle bundleForURL:v32 error:0];
-      if (v17)
+      bundle = [(MIBundle *)MIExecutableBundle bundleForURL:v32 error:0];
+      if (bundle)
       {
 LABEL_37:
 
@@ -1742,11 +1742,11 @@ LABEL_37:
       if (gLogHandle && *(gLogHandle + 44) < 3)
       {
 LABEL_36:
-        v17 = 0;
+        bundle = 0;
         goto LABEL_37;
       }
 
-      v50 = v10;
+      v50 = identifierCopy;
       v51 = v32;
     }
 
@@ -1757,22 +1757,22 @@ LABEL_36:
         goto LABEL_36;
       }
 
-      v50 = v10;
+      v50 = identifierCopy;
     }
 
     MOLogWrite();
     goto LABEL_36;
   }
 
-  v17 = 0;
+  bundle = 0;
 LABEL_67:
   v29 = [v12 copy];
   v16 = v57;
 LABEL_68:
-  if (a6 && !v29)
+  if (error && !v29)
   {
     v48 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   v18 = v29;
@@ -1782,12 +1782,12 @@ LABEL_72:
   return v18;
 }
 
-- (BOOL)markContainerAsStagedUpdateWithError:(id *)a3
+- (BOOL)markContainerAsStagedUpdateWithError:(id *)error
 {
   if (![(MIContainer *)self isTransient])
   {
     v7 = _CreateAndLogError("[MIContainer markContainerAsStagedUpdateWithError:]", 953, @"MIInstallerErrorDomain", 4, 0, 0, @"Non transient container can't be marked as a staged container", v5, v14);
-    if (!a3)
+    if (!error)
     {
 LABEL_7:
       v8 = 0;
@@ -1797,7 +1797,7 @@ LABEL_7:
 LABEL_5:
     v9 = v7;
     v8 = 0;
-    *a3 = v7;
+    *error = v7;
     goto LABEL_8;
   }
 
@@ -1806,11 +1806,11 @@ LABEL_5:
   v7 = v15;
   if (!v6)
   {
-    v10 = [(MIContainer *)self identifier];
-    v12 = _CreateAndLogError("[MIContainer markContainerAsStagedUpdateWithError:]", 958, @"MIInstallerErrorDomain", 4, v7, 0, @"Failed to set staged update container attribute for identifier %@ ", v11, v10);
+    identifier = [(MIContainer *)self identifier];
+    v12 = _CreateAndLogError("[MIContainer markContainerAsStagedUpdateWithError:]", 958, @"MIInstallerErrorDomain", 4, v7, 0, @"Failed to set staged update container attribute for identifier %@ ", v11, identifier);
 
     v7 = v12;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -1825,7 +1825,7 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)clearStagedUpdateContainerStatusWithError:(id *)a3
+- (BOOL)clearStagedUpdateContainerStatusWithError:(id *)error
 {
   v12 = 0;
   v5 = [(MIContainer *)self setInfoValue:0 forKey:@"com.apple.MobileContainerManager.StagedUpdateContainer" error:&v12];
@@ -1837,13 +1837,13 @@ LABEL_8:
 
   else
   {
-    v7 = [(MIContainer *)self identifier];
-    v9 = _CreateAndLogError("[MIContainer clearStagedUpdateContainerStatusWithError:]", 979, @"MIInstallerErrorDomain", 4, v6, 0, @"Failed to clear staged update container attribute for identifier %@ ", v8, v7);
+    identifier = [(MIContainer *)self identifier];
+    v9 = _CreateAndLogError("[MIContainer clearStagedUpdateContainerStatusWithError:]", 979, @"MIInstallerErrorDomain", 4, v6, 0, @"Failed to clear staged update container attribute for identifier %@ ", v8, identifier);
 
-    if (a3)
+    if (error)
     {
       v10 = v9;
-      *a3 = v9;
+      *error = v9;
     }
 
     v6 = v9;
@@ -1852,7 +1852,7 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)_isStagedUpdateContainer:(BOOL *)a3 withError:(id *)a4
+- (BOOL)_isStagedUpdateContainer:(BOOL *)container withError:(id *)error
 {
   v18 = 0;
   v6 = [(MIContainer *)self infoValueForKey:@"com.apple.MobileContainerManager.StagedUpdateContainer" error:&v18];
@@ -1874,8 +1874,8 @@ LABEL_8:
 
     if (v10)
     {
-      v13 = [v10 BOOLValue];
-      if (!a3)
+      bOOLValue = [v10 BOOLValue];
+      if (!container)
       {
 LABEL_12:
         v15 = 1;
@@ -1883,32 +1883,32 @@ LABEL_12:
       }
 
 LABEL_11:
-      *a3 = v13;
+      *container = bOOLValue;
       goto LABEL_12;
     }
 
     _CreateAndLogError("[MIContainer _isStagedUpdateContainer:withError:]", 1011, @"MIInstallerErrorDomain", 4, 0, 0, @"Value of key %@ on %@ was not a number", v14, @"com.apple.MobileContainerManager.StagedUpdateContainer");
-    v8 = v11 = v8;
+    v8 = domain = v8;
     goto LABEL_14;
   }
 
-  v11 = [v7 domain];
-  if (![v11 isEqualToString:@"MIContainerManagerErrorDomain"])
+  domain = [v7 domain];
+  if (![domain isEqualToString:@"MIContainerManagerErrorDomain"])
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v12 = [v8 code];
+  code = [v8 code];
 
-  if (v12 == 24)
+  if (code == 24)
   {
 
     v10 = 0;
-    v13 = 0;
+    bOOLValue = 0;
     v8 = 0;
-    if (!a3)
+    if (!container)
     {
       goto LABEL_12;
     }
@@ -1917,12 +1917,12 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (a4)
+  if (error)
   {
     v16 = v8;
     v10 = 0;
     v15 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -1940,9 +1940,9 @@ LABEL_18:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MIContainer *)self status];
-  v6 = [(MIContainer *)self rawContainer];
-  v7 = [v3 stringWithFormat:@"<%@ status:%lu container:%@>", v4, v5, v6];
+  status = [(MIContainer *)self status];
+  rawContainer = [(MIContainer *)self rawContainer];
+  v7 = [v3 stringWithFormat:@"<%@ status:%lu container:%@>", v4, status, rawContainer];
 
   return v7;
 }

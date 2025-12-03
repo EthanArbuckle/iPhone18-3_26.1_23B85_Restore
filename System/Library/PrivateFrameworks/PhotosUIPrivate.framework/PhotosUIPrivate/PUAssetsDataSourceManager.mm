@@ -1,6 +1,6 @@
 @interface PUAssetsDataSourceManager
 - (PUAssetsDataSourceManagerDelegate)delegate;
-- (void)setAssetsDataSource:(id)a3;
+- (void)setAssetsDataSource:(id)source;
 @end
 
 @implementation PUAssetsDataSourceManager
@@ -12,27 +12,27 @@
   return WeakRetained;
 }
 
-- (void)setAssetsDataSource:(id)a3
+- (void)setAssetsDataSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_assetsDataSource != v5)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_assetsDataSource != sourceCopy)
   {
-    v9 = v5;
-    v5 = [(PUTilingDataSource *)v5 isEqual:?];
+    v9 = sourceCopy;
+    sourceCopy = [(PUTilingDataSource *)sourceCopy isEqual:?];
     v6 = v9;
-    if ((v5 & 1) == 0)
+    if ((sourceCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_assetsDataSource, a3);
-      v7 = [(PUAssetsDataSourceManager *)self delegate];
-      v8 = [(PUAssetsDataSourceManager *)self assetsDataSource];
-      [v7 assetsDataSourceManager:self didChangeAssetsDataSource:v8];
+      objc_storeStrong(&self->_assetsDataSource, source);
+      delegate = [(PUAssetsDataSourceManager *)self delegate];
+      assetsDataSource = [(PUAssetsDataSourceManager *)self assetsDataSource];
+      [delegate assetsDataSourceManager:self didChangeAssetsDataSource:assetsDataSource];
 
       v6 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](sourceCopy, v6);
 }
 
 @end

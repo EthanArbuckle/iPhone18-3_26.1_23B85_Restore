@@ -1,18 +1,18 @@
 @interface NeRDOOBMessaging
-- (NeRDOOBMessaging)initWithEventHandler:(id)a3 completionHandler:(id)a4 options:(id)a5;
-- (void)_setupKitServerEventHandler:(id)a3;
-- (void)sendMessage:(id)a3 completion:(id)a4;
+- (NeRDOOBMessaging)initWithEventHandler:(id)handler completionHandler:(id)completionHandler options:(id)options;
+- (void)_setupKitServerEventHandler:(id)handler;
+- (void)sendMessage:(id)message completion:(id)completion;
 - (void)start;
-- (void)stop:(id)a3;
+- (void)stop:(id)stop;
 @end
 
 @implementation NeRDOOBMessaging
 
-- (NeRDOOBMessaging)initWithEventHandler:(id)a3 completionHandler:(id)a4 options:(id)a5
+- (NeRDOOBMessaging)initWithEventHandler:(id)handler completionHandler:(id)completionHandler options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  optionsCopy = options;
   v38.receiver = self;
   v38.super_class = NeRDOOBMessaging;
   v11 = [(NeRDOOBMessaging *)&v38 init];
@@ -59,11 +59,11 @@
     v26 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:4];
     v27 = [NSMutableDictionary dictionaryWithDictionary:v26];
 
-    v28 = [v10 objectForKeyedSubscript:@"NeRDSUInfoVersion"];
+    v28 = [optionsCopy objectForKeyedSubscript:@"NeRDSUInfoVersion"];
 
     if (v28)
     {
-      v29 = [v10 objectForKeyedSubscript:@"NeRDSUInfoVersion"];
+      v29 = [optionsCopy objectForKeyedSubscript:@"NeRDSUInfoVersion"];
       [v27 setValue:v29 forKey:@"NeRDSUInfoVersion"];
     }
 
@@ -80,16 +80,16 @@
     v35[3] = &unk_100099508;
     objc_copyWeak(&v36, &location);
     [(SKSetupServer *)v11->_server setEventHandler:v35];
-    if (v8)
+    if (handlerCopy)
     {
-      v30 = objc_retainBlock(v8);
+      v30 = objc_retainBlock(handlerCopy);
       eventHandler = v11->_eventHandler;
       v11->_eventHandler = v30;
     }
 
-    if (v9)
+    if (completionHandlerCopy)
     {
-      v32 = objc_retainBlock(v9);
+      v32 = objc_retainBlock(completionHandlerCopy);
       completionHandler = v11->_completionHandler;
       v11->_completionHandler = v32;
     }
@@ -108,17 +108,17 @@ void __67__NeRDOOBMessaging_initWithEventHandler_completionHandler_options___blo
   [WeakRetained _setupKitServerEventHandler:v3];
 }
 
-- (void)_setupKitServerEventHandler:(id)a3
+- (void)_setupKitServerEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __48__NeRDOOBMessaging__setupKitServerEventHandler___block_invoke;
   v7[3] = &unk_100099400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -543,17 +543,17 @@ void __25__NeRDOOBMessaging_start__block_invoke_439(uint64_t a1)
   v4[2](v4, *(a1 + 40));
 }
 
-- (void)stop:(id)a3
+- (void)stop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __25__NeRDOOBMessaging_stop___block_invoke;
   v7[3] = &unk_100099580;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stopCopy;
+  v6 = stopCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -668,20 +668,20 @@ void __25__NeRDOOBMessaging_stop___block_invoke_2_443(uint64_t a1)
   }
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   managerQueue = self->_managerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __43__NeRDOOBMessaging_sendMessage_completion___block_invoke;
   block[3] = &unk_100099698;
-  v12 = v6;
-  v13 = v7;
+  v12 = messageCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = messageCopy;
+  v10 = completionCopy;
   dispatch_async(managerQueue, block);
 }
 

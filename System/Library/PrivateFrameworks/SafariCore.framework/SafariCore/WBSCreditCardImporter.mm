@@ -2,26 +2,26 @@
 - (BOOL)_checkNotAtRootLevel;
 - (BOOL)_isParsingCreditCard;
 - (BOOL)_isParsingCreditCardArray;
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4;
-- (BOOL)jsonReaderBeginArray:(id)a3;
-- (BOOL)jsonReaderBeginObject:(id)a3;
-- (BOOL)jsonReaderEndArray:(id)a3;
-- (BOOL)jsonReaderEndObject:(id)a3;
-- (BOOL)parseFileHandle:(id)a3 error:(id *)a4;
-- (BOOL)parseURL:(id)a3 error:(id *)a4;
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value;
+- (BOOL)jsonReaderBeginArray:(id)array;
+- (BOOL)jsonReaderBeginObject:(id)object;
+- (BOOL)jsonReaderEndArray:(id)array;
+- (BOOL)jsonReaderEndObject:(id)object;
+- (BOOL)parseFileHandle:(id)handle error:(id *)error;
+- (BOOL)parseURL:(id)l error:(id *)error;
 - (WBSCreditCardImporterDelegate)delegate;
 - (id)_popKeyFromStackIfPossible;
-- (id)_sanitizedCardNumberFromImportedCardNumber:(id)a3;
+- (id)_sanitizedCardNumberFromImportedCardNumber:(id)number;
 @end
 
 @implementation WBSCreditCardImporter
 
-- (BOOL)parseURL:(id)a3 error:(id *)a4
+- (BOOL)parseURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:a3 options:0 createMode:0 error:a4];
+  v6 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:l options:0 createMode:0 error:error];
   if (v6)
   {
-    v7 = [(WBSCreditCardImporter *)self parseFileHandle:v6 error:a4];
+    v7 = [(WBSCreditCardImporter *)self parseFileHandle:v6 error:error];
   }
 
   else
@@ -32,26 +32,26 @@
   return v7;
 }
 
-- (BOOL)parseFileHandle:(id)a3 error:(id *)a4
+- (BOOL)parseFileHandle:(id)handle error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v6 = a3;
+  handleCopy = handle;
   v7 = objc_alloc_init(WBSJSONReader);
   [(WBSJSONReader *)v7 setDelegate:self];
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   stack = self->_stack;
-  self->_stack = v9;
+  self->_stack = array;
 
   self->_foundCreditCardArray = 0;
-  v11 = [(WBSJSONReader *)v7 parseFileHandle:v6 error:a4];
+  v11 = [(WBSJSONReader *)v7 parseFileHandle:handleCopy error:error];
 
   v12 = self->_lastError;
   if (!self->_foundCreditCardArray && !v12)
@@ -68,10 +68,10 @@
     v12 = self->_lastError;
   }
 
-  if (a4 && !*a4)
+  if (error && !*error)
   {
     v12 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   v17 = v12 == 0;
@@ -131,59 +131,59 @@
 
 - (id)_popKeyFromStackIfPossible
 {
-  v3 = [(NSMutableArray *)self->_stack lastObject];
+  lastObject = [(NSMutableArray *)self->_stack lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(NSMutableArray *)self->_stack lastObject];
+    lastObject2 = [(NSMutableArray *)self->_stack lastObject];
     [(NSMutableArray *)self->_stack removeLastObject];
   }
 
   else
   {
-    v5 = 0;
+    lastObject2 = 0;
   }
 
-  return v5;
+  return lastObject2;
 }
 
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value
 {
-  v6 = a4;
-  v7 = [(WBSCreditCardImporter *)self _checkNotAtRootLevel];
-  if (v7)
+  valueCopy = value;
+  _checkNotAtRootLevel = [(WBSCreditCardImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
-    v8 = [(WBSCreditCardImporter *)self _popKeyFromStackIfPossible];
-    if ([v8 isEqualToString:@"card_number"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    _popKeyFromStackIfPossible = [(WBSCreditCardImporter *)self _popKeyFromStackIfPossible];
+    if ([_popKeyFromStackIfPossible isEqualToString:@"card_number"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 32;
     }
 
-    else if ([v8 isEqualToString:@"card_name"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    else if ([_popKeyFromStackIfPossible isEqualToString:@"card_name"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 40;
     }
 
-    else if ([v8 isEqualToString:@"cardholder_name"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    else if ([_popKeyFromStackIfPossible isEqualToString:@"cardholder_name"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 48;
     }
 
-    else if ([v8 isEqualToString:@"card_expiration_month"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    else if ([_popKeyFromStackIfPossible isEqualToString:@"card_expiration_month"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 56;
     }
 
-    else if ([v8 isEqualToString:@"card_expiration_year"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    else if ([_popKeyFromStackIfPossible isEqualToString:@"card_expiration_year"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 64;
     }
 
     else
     {
-      if (![v8 isEqualToString:@"card_last_used_time_usec"])
+      if (![_popKeyFromStackIfPossible isEqualToString:@"card_last_used_time_usec"])
       {
         goto LABEL_21;
       }
@@ -197,17 +197,17 @@
       v9 = 72;
     }
 
-    objc_storeStrong((&self->super.isa + v9), a4);
+    objc_storeStrong((&self->super.isa + v9), value);
 LABEL_21:
   }
 
-  return v7;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderBeginArray:(id)a3
+- (BOOL)jsonReaderBeginArray:(id)array
 {
-  v4 = [(WBSCreditCardImporter *)self _checkNotAtRootLevel];
-  if (v4)
+  _checkNotAtRootLevel = [(WBSCreditCardImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
     [(NSMutableArray *)self->_stack addObject:&unk_1F308E1C8];
     if ([(WBSCreditCardImporter *)self _isParsingCreditCardArray])
@@ -216,10 +216,10 @@ LABEL_21:
     }
   }
 
-  return v4;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderBeginObject:(id)a3
+- (BOOL)jsonReaderBeginObject:(id)object
 {
   [(NSMutableArray *)self->_stack addObject:&unk_1F308E1B0];
   if ([(WBSCreditCardImporter *)self _isParsingCreditCard])
@@ -246,14 +246,14 @@ LABEL_21:
   return 1;
 }
 
-- (BOOL)jsonReaderEndArray:(id)a3
+- (BOOL)jsonReaderEndArray:(id)array
 {
   [(NSMutableArray *)self->_stack removeLastObject];
-  v4 = [(WBSCreditCardImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSCreditCardImporter *)self _popKeyFromStackIfPossible];
   return 1;
 }
 
-- (BOOL)jsonReaderEndObject:(id)a3
+- (BOOL)jsonReaderEndObject:(id)object
 {
   if ([(WBSCreditCardImporter *)self _isParsingCreditCard])
   {
@@ -291,15 +291,15 @@ LABEL_21:
   }
 
   [(NSMutableArray *)self->_stack removeLastObject];
-  v15 = [(WBSCreditCardImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSCreditCardImporter *)self _popKeyFromStackIfPossible];
   return 1;
 }
 
-- (id)_sanitizedCardNumberFromImportedCardNumber:(id)a3
+- (id)_sanitizedCardNumberFromImportedCardNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    v3 = WBSNormalizedCreditCardNumber(a3);
+    v3 = WBSNormalizedCreditCardNumber(number);
     if ([v3 length])
     {
       v4 = v3;

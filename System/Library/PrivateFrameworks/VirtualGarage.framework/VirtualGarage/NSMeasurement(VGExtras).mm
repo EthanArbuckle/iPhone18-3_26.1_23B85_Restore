@@ -7,8 +7,8 @@
 - (uint64_t)compare:()VGExtras
 {
   v4 = a3;
-  v5 = [v4 unit];
-  v6 = [a1 measurementByConvertingToUnit:v5];
+  unit = [v4 unit];
+  v6 = [self measurementByConvertingToUnit:unit];
   [v6 doubleValue];
   v8 = v7;
 

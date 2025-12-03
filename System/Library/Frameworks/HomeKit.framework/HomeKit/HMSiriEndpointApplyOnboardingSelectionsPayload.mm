@@ -1,9 +1,9 @@
 @interface HMSiriEndpointApplyOnboardingSelectionsPayload
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithAccessoryUUID:(id)a3 onboardingSelections:(id)a4;
-- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithAccessoryUUID:(id)d onboardingSelections:(id)selections;
+- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithPayload:(id)payload;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)payloadCopy;
@@ -14,16 +14,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
-  v3 = [v2 hash];
+  accessoryUUID = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
+  v3 = [accessoryUUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -44,13 +44,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
-      v8 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)v6 accessoryUUID];
-      if ([v7 hmf_isEqualToUUID:v8])
+      accessoryUUID = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
+      accessoryUUID2 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)v6 accessoryUUID];
+      if ([accessoryUUID hmf_isEqualToUUID:accessoryUUID2])
       {
-        v9 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self onboardingSelections];
-        v10 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)v6 onboardingSelections];
-        v11 = [v9 isEqual:v10];
+        onboardingSelections = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self onboardingSelections];
+        onboardingSelections2 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)v6 onboardingSelections];
+        v11 = [onboardingSelections isEqual:onboardingSelections2];
       }
 
       else
@@ -72,12 +72,12 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
-  v5 = [v3 initWithName:@"accessoryUUID" value:v4];
+  accessoryUUID = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
+  v5 = [v3 initWithName:@"accessoryUUID" value:accessoryUUID];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self onboardingSelections];
-  v8 = [v6 initWithName:@"onboardingSelections" value:v7];
+  onboardingSelections = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self onboardingSelections];
+  v8 = [v6 initWithName:@"onboardingSelections" value:onboardingSelections];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -93,24 +93,24 @@
   return [v2 shortDescription];
 }
 
-- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithPayload:(id)a3
+- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithPayload:(id)payload
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
-  v6 = [v4 hmf_dictionaryForKey:@"HMSiriEndpointOnboardingSelectionsPayloadKey"];
+  payloadCopy = payload;
+  v5 = [payloadCopy hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
+  v6 = [payloadCopy hmf_dictionaryForKey:@"HMSiriEndpointOnboardingSelectionsPayloadKey"];
   v7 = [[HMSiriEndpointOnboardingSelections alloc] initWithPayload:v6];
   v8 = v7;
   if (v5 && v7)
   {
-    v9 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self initWithAccessoryUUID:v5 onboardingSelections:v7];
-    v10 = v9;
+    selfCopy = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self initWithAccessoryUUID:v5 onboardingSelections:v7];
+    v10 = selfCopy;
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -118,7 +118,7 @@
       v16 = 138543618;
       v17 = v13;
       v18 = 2112;
-      v19 = v4;
+      v19 = payloadCopy;
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Failed to decode apply onboarding selections payload: %@", &v16, 0x16u);
     }
 
@@ -134,13 +134,13 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"HMAccessoryUUIDPayloadKey";
-  v3 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
-  v4 = [v3 UUIDString];
+  accessoryUUID = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
   v10[1] = @"HMSiriEndpointOnboardingSelectionsPayloadKey";
-  v11[0] = v4;
-  v5 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self onboardingSelections];
-  v6 = [v5 payloadCopy];
-  v11[1] = v6;
+  v11[0] = uUIDString;
+  onboardingSelections = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)self onboardingSelections];
+  payloadCopy = [onboardingSelections payloadCopy];
+  v11[1] = payloadCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -148,18 +148,18 @@
   return v7;
 }
 
-- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithAccessoryUUID:(id)a3 onboardingSelections:(id)a4
+- (HMSiriEndpointApplyOnboardingSelectionsPayload)initWithAccessoryUUID:(id)d onboardingSelections:(id)selections
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  selectionsCopy = selections;
   v12.receiver = self;
   v12.super_class = HMSiriEndpointApplyOnboardingSelectionsPayload;
   v9 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessoryUUID, a3);
-    objc_storeStrong(&v10->_onboardingSelections, a4);
+    objc_storeStrong(&v9->_accessoryUUID, d);
+    objc_storeStrong(&v10->_onboardingSelections, selections);
   }
 
   return v10;

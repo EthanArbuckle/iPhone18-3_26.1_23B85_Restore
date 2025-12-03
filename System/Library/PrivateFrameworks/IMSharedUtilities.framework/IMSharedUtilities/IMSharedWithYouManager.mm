@@ -1,9 +1,9 @@
 @interface IMSharedWithYouManager
-+ (BOOL)_isBundleIDAllowed:(id)a3;
++ (BOOL)_isBundleIDAllowed:(id)allowed;
 + (BOOL)defaultCollaborationAppsEnabled;
 + (BOOL)isSharedWithYouEnabled;
-+ (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)a3;
-+ (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)a3;
++ (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)d;
++ (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)d;
 + (BOOL)sharedWithYouKeyExists;
 + (id)_hiddenBundleIDs;
 + (id)appBundleIDsFromDefaults;
@@ -12,41 +12,41 @@
 + (id)onboardingAppBundleIDs;
 + (id)sharedManager;
 + (id)sharedWithYouApplicationBundleIDs;
-+ (void)setSharedWithYouEnabled:(BOOL)a3;
-+ (void)setSharedWithYouEnabled:(BOOL)a3 forApplicationWithBundleID:(id)a4;
-+ (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)a3;
++ (void)setSharedWithYouEnabled:(BOOL)enabled;
++ (void)setSharedWithYouEnabled:(BOOL)enabled forApplicationWithBundleID:(id)d;
++ (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)individually;
 - (BOOL)defaultCollaborationAppsEnabled;
-- (BOOL)isDataDetectedLinkAllowedForSWY:(id)a3;
+- (BOOL)isDataDetectedLinkAllowedForSWY:(id)y;
 - (BOOL)isSharedWithYouEnabled;
-- (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)a3;
-- (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)a3;
+- (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)d;
+- (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)d;
 - (BOOL)sharedWithYouKeyExists;
-- (BOOL)showPinningStatusTextForBundleID:(id)a3;
+- (BOOL)showPinningStatusTextForBundleID:(id)d;
 - (IMSharedWithYouManager)init;
-- (id)_installedLSAppRecordFromBundleIDs:(id)a3;
-- (id)appNameFromSharingURL:(id)a3;
-- (id)appStoreIDFromSharingURL:(id)a3;
-- (id)appStoreURLFromSharingURL:(id)a3;
+- (id)_installedLSAppRecordFromBundleIDs:(id)ds;
+- (id)appNameFromSharingURL:(id)l;
+- (id)appStoreIDFromSharingURL:(id)l;
+- (id)appStoreURLFromSharingURL:(id)l;
 - (id)defaultAppBundleIDs;
 - (id)enabledApps;
-- (id)lsAppRecordForAppStoreShareURL:(id)a3;
-- (id)lsAppRecordForShareBearURL:(id)a3;
-- (id)lsAppRecordForURL:(id)a3 checkInstalledAppsOnly:(BOOL)a4;
+- (id)lsAppRecordForAppStoreShareURL:(id)l;
+- (id)lsAppRecordForShareBearURL:(id)l;
+- (id)lsAppRecordForURL:(id)l checkInstalledAppsOnly:(BOOL)only;
 - (id)sharedWithYouApplicationBundleIDs;
 - (id)sharedWithYouApps;
 - (id)swyPublicEntitlementAppBundleIDs;
-- (id)urlMinusFragment:(id)a3 onlyCKURL:(BOOL)a4;
-- (int64_t)getPinCountForBundleID:(id)a3;
-- (void)appNameAndBundleIDFoURL:(id)a3 outAppName:(id *)a4 outBundleID:(id *)a5;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (id)urlMinusFragment:(id)fragment onlyCKURL:(BOOL)l;
+- (int64_t)getPinCountForBundleID:(id)d;
+- (void)appNameAndBundleIDFoURL:(id)l outAppName:(id *)name outBundleID:(id *)d;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)decrementPinCountForBundleID:(id)a3;
+- (void)decrementPinCountForBundleID:(id)d;
 - (void)deleteSharedWithYouPreferences;
-- (void)incrementPinCountForBundleID:(id)a3;
-- (void)setSharedWithYouEnabled:(BOOL)a3;
-- (void)setSharedWithYouEnabled:(BOOL)a3 forApplicationWithBundleID:(id)a4;
-- (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)a3;
+- (void)incrementPinCountForBundleID:(id)d;
+- (void)setSharedWithYouEnabled:(BOOL)enabled;
+- (void)setSharedWithYouEnabled:(BOOL)enabled forApplicationWithBundleID:(id)d;
+- (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)individually;
 - (void)updateEnabledApps;
 @end
 
@@ -71,8 +71,8 @@
   v2 = [(IMSharedWithYouManager *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] messagesAppDomain];
-    v4 = [v3 objectForKey:@"SharedWithYouPinsCache"];
+    messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+    v4 = [messagesAppDomain objectForKey:@"SharedWithYouPinsCache"];
     v5 = [v4 mutableCopy];
     swyPinsPerBundleID = v2->_swyPinsPerBundleID;
     v2->_swyPinsPerBundleID = v5;
@@ -84,8 +84,8 @@
       v2->_swyPinsPerBundleID = v7;
     }
 
-    v9 = [(IMSharedWithYouManager *)v2 _applicationWorkspace];
-    [v9 addObserver:v2];
+    _applicationWorkspace = [(IMSharedWithYouManager *)v2 _applicationWorkspace];
+    [_applicationWorkspace addObserver:v2];
 
     [(IMSharedWithYouManager *)v2 updateEnabledApps];
   }
@@ -95,12 +95,12 @@
 
 - (void)dealloc
 {
-  v3 = [(IMSharedWithYouManager *)self _applicationWorkspace];
-  [v3 removeObserver:self];
+  _applicationWorkspace = [(IMSharedWithYouManager *)self _applicationWorkspace];
+  [_applicationWorkspace removeObserver:self];
 
-  v4 = [MEMORY[0x1E695E000] messagesAppDomain];
-  v5 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-  [v4 setObject:v5 forKey:@"SharedWithYouPinsCache"];
+  messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+  swyPinsPerBundleID = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+  [messagesAppDomain setObject:swyPinsPerBundleID forKey:@"SharedWithYouPinsCache"];
 
   v6.receiver = self;
   v6.super_class = IMSharedWithYouManager;
@@ -140,28 +140,28 @@
 
     else
     {
-      v4 = [a1 cachedSharedWithYouEnabledValue];
-      v5 = [v4 BOOLValue];
+      cachedSharedWithYouEnabledValue = [self cachedSharedWithYouEnabledValue];
+      bOOLValue = [cachedSharedWithYouEnabledValue BOOLValue];
 
-      LOBYTE(v3) = v5;
+      LOBYTE(v3) = bOOLValue;
     }
   }
 
   return v3;
 }
 
-+ (void)setSharedWithYouEnabled:(BOOL)a3
++ (void)setSharedWithYouEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   CFPreferencesSetAppValue(@"SharedWithYouEnabled", [MEMORY[0x1E696AD98] numberWithBool:?], @"com.apple.SocialLayer");
   CFPreferencesAppSynchronize(@"com.apple.SocialLayer");
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v5 = qword_1EB3095F0;
   qword_1EB3095F0 = v4;
 
-  v6 = [@"SLSharedWithYouSettingHasChanged" UTF8String];
+  uTF8String = [@"SLSharedWithYouSettingHasChanged" UTF8String];
 
-  notify_post(v6);
+  notify_post(uTF8String);
 }
 
 - (BOOL)isSharedWithYouEnabled
@@ -171,7 +171,7 @@
   return [v2 isSharedWithYouEnabled];
 }
 
-- (void)setSharedWithYouEnabled:(BOOL)a3
+- (void)setSharedWithYouEnabled:(BOOL)enabled
 {
   v3 = objc_opt_class();
 
@@ -214,19 +214,19 @@
   return MEMORY[0x1EEE66B58](v2, sel_sharedWithYouKeyExists);
 }
 
-+ (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)a3
++ (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 isSharedWithYouEnabled])
+  dCopy = d;
+  if ([self isSharedWithYouEnabled])
   {
-    if (![v4 length] && IMOSLoggingEnabled())
+    if (![dCopy length] && IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Invalid bundleID:%@", &v12, 0xCu);
       }
     }
@@ -235,11 +235,11 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 objectForKey:v4];
+      v8 = [v6 objectForKey:dCopy];
 
       if (v8)
       {
-        v9 = [v7 objectForKey:v4];
+        v9 = [v7 objectForKey:dCopy];
         LOBYTE(v8) = [v9 BOOLValue];
       }
     }
@@ -252,7 +252,7 @@
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v12 = 138412290;
-          v13 = v4;
+          v13 = dCopy;
           _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Failed to find bundleID:%@ in the SharedWithYouApp's", &v12, 0xCu);
         }
       }
@@ -269,33 +269,33 @@
   return v8;
 }
 
-- (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)a3
+- (BOOL)isSharedWithYouEnabledForApplicationWithBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isSharedWithYouEnabledForApplicationWithBundleID:v3];
+  dCopy = d;
+  v4 = [objc_opt_class() isSharedWithYouEnabledForApplicationWithBundleID:dCopy];
 
   return v4;
 }
 
-+ (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)a3
++ (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 isSharedWithYouEnabled])
+  dCopy = d;
+  if ([self isSharedWithYouEnabled])
   {
-    if (![v4 length] && IMOSLoggingEnabled())
+    if (![dCopy length] && IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = dCopy;
         _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Invalid bundleID: %@", &v10, 0xCu);
       }
     }
 
     v6 = CFPreferencesCopyAppValue(@"SharedWithYouApps", @"com.apple.SocialLayer");
-    v7 = [v6 objectForKey:v4];
+    v7 = [v6 objectForKey:dCopy];
     v8 = v7 != 0;
   }
 
@@ -307,10 +307,10 @@
   return v8;
 }
 
-- (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)a3
+- (BOOL)isSharedWithYouSetUpForApplicationWithBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isSharedWithYouSetUpForApplicationWithBundleID:v3];
+  dCopy = d;
+  v4 = [objc_opt_class() isSharedWithYouSetUpForApplicationWithBundleID:dCopy];
 
   return v4;
 }
@@ -365,7 +365,7 @@
 + (id)onboardingAppBundleIDs
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -387,7 +387,7 @@
         v7 = *(*(&v9 + 1) + 8 * i);
         if ([objc_opt_class() _isBundleIDAllowed:v7])
         {
-          [v2 addObject:v7];
+          [array addObject:v7];
         }
       }
 
@@ -397,50 +397,50 @@
     while (v4);
   }
 
-  return v2;
+  return array;
 }
 
 - (id)defaultAppBundleIDs
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [objc_opt_class() onboardingAppBundleIDs];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  onboardingAppBundleIDs = [objc_opt_class() onboardingAppBundleIDs];
+  [array addObjectsFromArray:onboardingAppBundleIDs];
 
-  v5 = [objc_opt_class() collaborationAppBundleIDs];
-  [v3 addObjectsFromArray:v5];
+  collaborationAppBundleIDs = [objc_opt_class() collaborationAppBundleIDs];
+  [array addObjectsFromArray:collaborationAppBundleIDs];
 
-  v6 = [MEMORY[0x1E695DFA8] setWithArray:v3];
+  v6 = [MEMORY[0x1E695DFA8] setWithArray:array];
   v7 = MEMORY[0x1E695DFA8];
   v8 = +[IMSharedWithYouManager sharedWithYouApplicationBundleIDs];
   v9 = [v7 setWithArray:v8];
 
   [v9 minusSet:v6];
-  v10 = [(IMSharedWithYouManager *)self swyPublicEntitlementAppBundleIDs];
-  if ([v10 count])
+  swyPublicEntitlementAppBundleIDs = [(IMSharedWithYouManager *)self swyPublicEntitlementAppBundleIDs];
+  if ([swyPublicEntitlementAppBundleIDs count])
   {
-    [v3 addObjectsFromArray:v10];
+    [array addObjectsFromArray:swyPublicEntitlementAppBundleIDs];
   }
 
-  v11 = [v9 allObjects];
-  [v3 addObjectsFromArray:v11];
+  allObjects = [v9 allObjects];
+  [array addObjectsFromArray:allObjects];
 
   v12 = +[IMSharedWithYouManager _hiddenBundleIDs];
-  [v3 removeObjectsInArray:v12];
+  [array removeObjectsInArray:v12];
 
-  return v3;
+  return array;
 }
 
 + (id)collaborationAppBundleIDs
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v2 addObjectsFromArray:&unk_1F1BFAD60];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:&unk_1F1BFAD60];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v2;
+  v4 = array;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -458,7 +458,7 @@
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([objc_opt_class() _isBundleIDAllowed:{v9, v11}])
         {
-          [v3 addObject:v9];
+          [array2 addObject:v9];
         }
       }
 
@@ -468,7 +468,7 @@
     while (v6);
   }
 
-  return v3;
+  return array2;
 }
 
 + (id)_hiddenBundleIDs
@@ -483,13 +483,13 @@
 - (id)enabledApps
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(IMSharedWithYouManager *)self enabledBundleIDs];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  enabledBundleIDs = [(IMSharedWithYouManager *)self enabledBundleIDs];
+  v5 = [enabledBundleIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -500,23 +500,23 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(enabledBundleIDs);
         }
 
         v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:*(*(&v11 + 1) + 8 * i) allowPlaceholder:0 error:0];
         if (v9)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [enabledBundleIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)updateEnabledApps
@@ -545,10 +545,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) bundleIdentifier];
-        if (v10)
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * v9) bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [v4 addObject:v10];
+          [v4 addObject:bundleIdentifier];
         }
 
         ++v9;
@@ -561,8 +561,8 @@
     while (v7);
   }
 
-  v11 = [(IMSharedWithYouManager *)self enabledBundleIDs];
-  v12 = [v4 isEqualToSet:v11];
+  enabledBundleIDs = [(IMSharedWithYouManager *)self enabledBundleIDs];
+  v12 = [v4 isEqualToSet:enabledBundleIDs];
 
   if ((v12 & 1) == 0)
   {
@@ -573,7 +573,7 @@
 - (id)swyPublicEntitlementAppBundleIDs
 {
   v36 = *MEMORY[0x1E69E9840];
-  v26 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(IMSharedWithYouManager *)self enabledApps];
   v29 = 0u;
   v30 = 0u;
@@ -595,10 +595,10 @@
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
-        v9 = [v8 applicationState];
-        v10 = [v9 isRestricted];
+        applicationState = [v8 applicationState];
+        isRestricted = [applicationState isRestricted];
 
-        if (v10)
+        if (isRestricted)
         {
           if (!IMOSLoggingEnabled())
           {
@@ -608,17 +608,17 @@
           v11 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v12 = [v8 bundleIdentifier];
-            v13 = [v8 applicationState];
-            v14 = [v13 isRestricted];
+            bundleIdentifier = [v8 bundleIdentifier];
+            applicationState2 = [v8 applicationState];
+            isRestricted2 = [applicationState2 isRestricted];
             *buf = 138412546;
             v15 = @"NO";
-            if (v14)
+            if (isRestricted2)
             {
               v15 = @"YES";
             }
 
-            v32 = v12;
+            v32 = bundleIdentifier;
             v33 = 2112;
             v34 = v15;
             _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Not including bundleID %@ since isAppRestricted %@", buf, 0x16u);
@@ -628,21 +628,21 @@
         }
 
         v16 = +[IMSharedWithYouManager _hiddenBundleIDs];
-        v17 = [v8 bundleIdentifier];
-        if ([v16 containsObject:v17])
+        bundleIdentifier2 = [v8 bundleIdentifier];
+        if ([v16 containsObject:bundleIdentifier2])
         {
         }
 
         else
         {
           v18 = +[IMSharedWithYouManager collaborationAppBundleIDs];
-          v19 = [v8 bundleIdentifier];
-          v20 = [v18 containsObject:v19];
+          bundleIdentifier3 = [v8 bundleIdentifier];
+          v20 = [v18 containsObject:bundleIdentifier3];
 
           if ((v20 & 1) == 0)
           {
-            v22 = [v8 bundleIdentifier];
-            [v26 addObject:v22];
+            bundleIdentifier4 = [v8 bundleIdentifier];
+            [array addObject:bundleIdentifier4];
 
             continue;
           }
@@ -653,9 +653,9 @@
           v11 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v21 = [v8 bundleIdentifier];
+            bundleIdentifier5 = [v8 bundleIdentifier];
             *buf = v25;
-            v32 = v21;
+            v32 = bundleIdentifier5;
             _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Not including bundleID %@ since its to be hidden or is a default collaboration app", buf, 0xCu);
           }
 
@@ -671,7 +671,7 @@ LABEL_12:
     while (v4);
   }
 
-  v23 = [v26 copy];
+  v23 = [array copy];
 
   return v23;
 }
@@ -679,21 +679,21 @@ LABEL_12:
 + (id)appBundleIDsFromDefaults
 {
   v2 = CFPreferencesCopyAppValue(@"SharedWithYouApps", @"com.apple.SocialLayer");
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)sharedWithYouApps
 {
   v27 = *MEMORY[0x1E69E9840];
-  v16 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(IMSharedWithYouManager *)self defaultAppBundleIDs];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  defaultAppBundleIDs = [(IMSharedWithYouManager *)self defaultAppBundleIDs];
+  v4 = [defaultAppBundleIDs countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v4)
   {
     v5 = *v19;
@@ -703,7 +703,7 @@ LABEL_12:
       {
         if (*v19 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(defaultAppBundleIDs);
         }
 
         v7 = *(*(&v18 + 1) + 8 * i);
@@ -718,11 +718,11 @@ LABEL_12:
             v11 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
             {
-              v12 = [v10 localizedDescription];
+              localizedDescription = [v10 localizedDescription];
               *buf = 138412546;
               v23 = v7;
               v24 = 2112;
-              v25 = v12;
+              v25 = localizedDescription;
               _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Failed to create an Application record for bundle: %@. Error: %@", buf, 0x16u);
             }
           }
@@ -730,38 +730,38 @@ LABEL_12:
 
         else
         {
-          v13 = [v9 localizedName];
-          [v16 setValue:v7 forKey:v13];
+          localizedName = [v9 localizedName];
+          [dictionary setValue:v7 forKey:localizedName];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v4 = [defaultAppBundleIDs countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v4);
   }
 
-  v14 = [v16 copy];
+  v14 = [dictionary copy];
 
   return v14;
 }
 
-+ (BOOL)_isBundleIDAllowed:(id)a3
++ (BOOL)_isBundleIDAllowed:(id)allowed
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  allowedCopy = allowed;
+  if ([allowedCopy length])
   {
     v22 = 0;
-    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v22];
+    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:allowedCopy allowPlaceholder:0 error:&v22];
     v5 = v22;
-    v6 = [v4 applicationState];
-    v7 = [v6 isRestricted];
+    applicationState = [v4 applicationState];
+    isRestricted = [applicationState isRestricted];
 
-    v8 = [objc_opt_class() tvAppBundleID];
-    LODWORD(v6) = [v3 isEqualToString:v8];
+    tvAppBundleID = [objc_opt_class() tvAppBundleID];
+    LODWORD(applicationState) = [allowedCopy isEqualToString:tvAppBundleID];
 
-    if (v6)
+    if (applicationState)
     {
       if (qword_1ED8CA4A8 != -1)
       {
@@ -778,26 +778,26 @@ LABEL_12:
         }
       }
 
-      v10 = [qword_1ED8CA4A0 isFullTVAppEnabledCachedValue];
+      isFullTVAppEnabledCachedValue = [qword_1ED8CA4A0 isFullTVAppEnabledCachedValue];
       if (IMOSLoggingEnabled())
       {
         v11 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v24 = v10;
+          v24 = isFullTVAppEnabledCachedValue;
           _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "isFullTVAppEnabledCachedValue %@", buf, 0xCu);
         }
       }
 
-      if (v10)
+      if (isFullTVAppEnabledCachedValue)
       {
-        v12 = [v10 BOOLValue];
+        bOOLValue = [isFullTVAppEnabledCachedValue BOOLValue];
       }
 
       else
       {
-        v12 = 1;
+        bOOLValue = 1;
       }
 
       if (IMOSLoggingEnabled())
@@ -806,7 +806,7 @@ LABEL_12:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v17 = @"NO";
-          if (v7)
+          if (isRestricted)
           {
             v18 = @"YES";
           }
@@ -817,10 +817,10 @@ LABEL_12:
           }
 
           *buf = 138412802;
-          v24 = v3;
+          v24 = allowedCopy;
           v26 = v18;
           v25 = 2112;
-          if (v12)
+          if (bOOLValue)
           {
             v17 = @"YES";
           }
@@ -831,25 +831,25 @@ LABEL_12:
         }
       }
 
-      v13 = (v7 ^ 1) & v12;
+      v13 = (isRestricted ^ 1) & bOOLValue;
     }
 
     else
     {
-      v13 = v7 ^ 1;
+      v13 = isRestricted ^ 1;
       if (IMOSLoggingEnabled())
       {
         v14 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v15 = @"NO";
-          if (v7)
+          if (isRestricted)
           {
             v15 = @"YES";
           }
 
           *buf = 138412546;
-          v24 = v3;
+          v24 = allowedCopy;
           v25 = 2112;
           v26 = v15;
           _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "BundleID Allowed check for bundle ID %@ isAppRestricted %@", buf, 0x16u);
@@ -864,11 +864,11 @@ LABEL_12:
         v19 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = [v5 localizedDescription];
+          localizedDescription = [v5 localizedDescription];
           *buf = 138412546;
-          v24 = v3;
+          v24 = allowedCopy;
           v25 = 2112;
-          v26 = v20;
+          v26 = localizedDescription;
           _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_INFO, "Failed to create the Application record for bundle: %@. Error: %@", buf, 0x16u);
         }
       }
@@ -891,8 +891,8 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 allKeys];
-    v5 = [v4 mutableCopy];
+    allKeys = [v2 allKeys];
+    v5 = [allKeys mutableCopy];
   }
 
   else
@@ -937,18 +937,18 @@ LABEL_12:
   return [v2 sharedWithYouApplicationBundleIDs];
 }
 
-+ (void)setSharedWithYouEnabled:(BOOL)a3 forApplicationWithBundleID:(id)a4
++ (void)setSharedWithYouEnabled:(BOOL)enabled forApplicationWithBundleID:(id)d
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (![v5 length] && IMOSLoggingEnabled())
+  dCopy = d;
+  if (![dCopy length] && IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = dCopy;
       _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "Invalid bundleID:%@", &v14, 0xCu);
     }
   }
@@ -957,19 +957,19 @@ LABEL_12:
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 mutableCopy];
+    dictionary = [v7 mutableCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (IMOSLoggingEnabled())
     {
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = dCopy;
         _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Adding bundleID:%@ to the Shared With You Preferences", &v14, 0xCu);
       }
     }
@@ -981,44 +981,44 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = @"No";
-      if (v4)
+      if (enabledCopy)
       {
         v12 = @"Yes";
       }
 
       v14 = 138412546;
-      v15 = v5;
+      v15 = dCopy;
       v16 = 2112;
       v17 = v12;
       _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Setting bundleID:%@ to enabled:%@ in SharedWithYouApp Preferences", &v14, 0x16u);
     }
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  [v9 setObject:v13 forKey:v5];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  [dictionary setObject:v13 forKey:dCopy];
 
-  CFPreferencesSetAppValue(@"SharedWithYouApps", v9, @"com.apple.SocialLayer");
+  CFPreferencesSetAppValue(@"SharedWithYouApps", dictionary, @"com.apple.SocialLayer");
   CFPreferencesAppSynchronize(@"com.apple.SocialLayer");
   notify_post([@"SLSharedWithYouAppSettingHasChanged" UTF8String]);
 }
 
-- (void)setSharedWithYouEnabled:(BOOL)a3 forApplicationWithBundleID:(id)a4
+- (void)setSharedWithYouEnabled:(BOOL)enabled forApplicationWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = a4;
-  [objc_opt_class() setSharedWithYouEnabled:v4 forApplicationWithBundleID:v5];
+  enabledCopy = enabled;
+  dCopy = d;
+  [objc_opt_class() setSharedWithYouEnabled:enabledCopy forApplicationWithBundleID:dCopy];
 }
 
-+ (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)a3
++ (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)individually
 {
-  v3 = a3;
+  individuallyCopy = individually;
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a1 sharedWithYouApplicationBundleIDs];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sharedWithYouApplicationBundleIDs = [self sharedWithYouApplicationBundleIDs];
+  v6 = [sharedWithYouApplicationBundleIDs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1030,32 +1030,32 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sharedWithYouApplicationBundleIDs);
         }
 
-        [a1 setSharedWithYouEnabled:v3 forApplicationWithBundleID:*(*(&v10 + 1) + 8 * v9++)];
+        [self setSharedWithYouEnabled:individuallyCopy forApplicationWithBundleID:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [sharedWithYouApplicationBundleIDs countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)a3
+- (void)setSharedWithYouEnabledForAllApplicationsIndividually:(BOOL)individually
 {
   v3 = objc_opt_class();
 
   MEMORY[0x1EEE66B58](v3, sel_setSharedWithYouEnabledForAllApplicationsIndividually_);
 }
 
-- (BOOL)showPinningStatusTextForBundleID:(id)a3
+- (BOOL)showPinningStatusTextForBundleID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 length])
+  dCopy = d;
+  if (![dCopy length])
   {
     if (IMOSLoggingEnabled())
     {
@@ -1063,7 +1063,7 @@ LABEL_12:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = dCopy;
         _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "nil bundleID passed in. bundleID:%@", &v10, 0xCu);
       }
     }
@@ -1071,8 +1071,8 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v5 = [(IMSharedWithYouManager *)self swyPublicEntitlementAppBundleIDs];
-  v6 = [v5 containsObject:v4];
+  swyPublicEntitlementAppBundleIDs = [(IMSharedWithYouManager *)self swyPublicEntitlementAppBundleIDs];
+  v6 = [swyPublicEntitlementAppBundleIDs containsObject:dCopy];
 
   if (!v6)
   {
@@ -1081,40 +1081,40 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = ![IMSharedWithYouManager isSharedWithYouEnabledForApplicationWithBundleID:v4];
+  v7 = ![IMSharedWithYouManager isSharedWithYouEnabledForApplicationWithBundleID:dCopy];
 LABEL_9:
 
   return v7;
 }
 
-- (void)appNameAndBundleIDFoURL:(id)a3 outAppName:(id *)a4 outBundleID:(id *)a5
+- (void)appNameAndBundleIDFoURL:(id)l outAppName:(id *)name outBundleID:(id *)d
 {
-  v8 = a3;
-  if (v8)
+  lCopy = l;
+  if (lCopy)
   {
-    v9 = [(IMSharedWithYouManager *)self lsAppRecordForURL:v8 checkInstalledAppsOnly:1];
-    v10 = [v9 bundleIdentifier];
+    v9 = [(IMSharedWithYouManager *)self lsAppRecordForURL:lCopy checkInstalledAppsOnly:1];
+    bundleIdentifier = [v9 bundleIdentifier];
 
-    if (!v10)
+    if (!bundleIdentifier)
     {
       goto LABEL_23;
     }
 
-    v11 = [v9 bundleIdentifier];
-    v12 = [(IMSharedWithYouManager *)self showPinningStatusTextForBundleID:v11];
+    bundleIdentifier2 = [v9 bundleIdentifier];
+    v12 = [(IMSharedWithYouManager *)self showPinningStatusTextForBundleID:bundleIdentifier2];
 
     if (!v12)
     {
       goto LABEL_23;
     }
 
-    v13 = [v9 localizedName];
-    v14 = [v9 bundleIdentifier];
-    if (a4 && v13)
+    localizedName = [v9 localizedName];
+    bundleIdentifier3 = [v9 bundleIdentifier];
+    if (name && localizedName)
     {
-      v15 = v13;
-      *a4 = v13;
-      if (!a5)
+      v15 = localizedName;
+      *name = localizedName;
+      if (!d)
       {
         goto LABEL_18;
       }
@@ -1132,16 +1132,16 @@ LABEL_9:
         }
       }
 
-      if (!a5)
+      if (!d)
       {
         goto LABEL_18;
       }
     }
 
-    if (v14)
+    if (bundleIdentifier3)
     {
-      v17 = v14;
-      *a5 = v14;
+      v17 = bundleIdentifier3;
+      *d = bundleIdentifier3;
 LABEL_22:
 
 LABEL_23:
@@ -1177,19 +1177,19 @@ LABEL_18:
 LABEL_24:
 }
 
-- (id)lsAppRecordForURL:(id)a3 checkInstalledAppsOnly:(BOOL)a4
+- (id)lsAppRecordForURL:(id)l checkInstalledAppsOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v19 = 0;
     goto LABEL_25;
   }
 
   v25 = 0;
-  v7 = [MEMORY[0x1E69635C0] appLinksWithURL:v6 limit:1 includeLinksForCurrentApplication:1 error:&v25];
+  v7 = [MEMORY[0x1E69635C0] appLinksWithURL:lCopy limit:1 includeLinksForCurrentApplication:1 error:&v25];
   v8 = v25;
   if (!v7 && IMOSLoggingEnabled())
   {
@@ -1229,9 +1229,9 @@ LABEL_24:
       v15 = *(*(&v21 + 1) + 8 * i);
       if ([v15 isEnabled])
       {
-        v16 = [v15 targetApplicationRecord];
+        targetApplicationRecord = [v15 targetApplicationRecord];
 
-        v12 = v16;
+        v12 = targetApplicationRecord;
       }
     }
 
@@ -1240,16 +1240,16 @@ LABEL_24:
 
   while (v11);
 
-  if (v4)
+  if (onlyCopy)
   {
     if (v12)
     {
-      v17 = [v12 bundleIdentifier];
-      v18 = [v17 isEqualToString:@"com.apple.CloudKit.ShareBear"];
+      bundleIdentifier = [v12 bundleIdentifier];
+      v18 = [bundleIdentifier isEqualToString:@"com.apple.CloudKit.ShareBear"];
 
       if (v18)
       {
-        v19 = [(IMSharedWithYouManager *)self lsAppRecordForShareBearURL:v6];
+        v19 = [(IMSharedWithYouManager *)self lsAppRecordForShareBearURL:lCopy];
 LABEL_23:
 
         goto LABEL_24;
@@ -1265,17 +1265,17 @@ LABEL_25:
   return v19;
 }
 
-- (id)_installedLSAppRecordFromBundleIDs:(id)a3
+- (id)_installedLSAppRecordFromBundleIDs:(id)ds
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = v3;
+    v4 = dsCopy;
     v5 = 0;
     v6 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v6)
@@ -1295,8 +1295,8 @@ LABEL_25:
           v11 = [v10 initWithBundleIdentifier:v9 allowPlaceholder:0 error:{0, v19}];
 
           v5 = v11;
-          v12 = [v11 applicationState];
-          if ([v12 isInstalled])
+          applicationState = [v11 applicationState];
+          if ([applicationState isInstalled])
           {
             v13 = [v5 URL];
             v14 = v13 == 0;
@@ -1354,87 +1354,87 @@ LABEL_23:
   return v5;
 }
 
-- (id)lsAppRecordForShareBearURL:(id)a3
+- (id)lsAppRecordForShareBearURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(IMSyndicationUtilities);
-  v6 = [(IMSyndicationUtilities *)v5 bundleIDsForShareBearURL:v4];
+  v6 = [(IMSyndicationUtilities *)v5 bundleIDsForShareBearURL:lCopy];
 
   v7 = [(IMSharedWithYouManager *)self _installedLSAppRecordFromBundleIDs:v6];
 
   return v7;
 }
 
-- (void)incrementPinCountForBundleID:(id)a3
+- (void)incrementPinCountForBundleID:(id)d
 {
-  v12 = a3;
-  if ([v12 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v4 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-    v5 = [v4 objectForKey:v12];
-    v6 = [v5 integerValue];
+    swyPinsPerBundleID = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+    v5 = [swyPinsPerBundleID objectForKey:dCopy];
+    integerValue = [v5 integerValue];
 
-    v7 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v6 + 1];
-    [v7 setObject:v8 forKey:v12];
+    swyPinsPerBundleID2 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
+    [swyPinsPerBundleID2 setObject:v8 forKey:dCopy];
 
-    v9 = [MEMORY[0x1E695E000] messagesAppDomain];
-    v10 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-    [v9 setObject:v10 forKey:@"SharedWithYouPinsCache"];
+    messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+    swyPinsPerBundleID3 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+    [messagesAppDomain setObject:swyPinsPerBundleID3 forKey:@"SharedWithYouPinsCache"];
 
-    v11 = [MEMORY[0x1E695E000] messagesAppDomain];
-    [v11 synchronize];
+    messagesAppDomain2 = [MEMORY[0x1E695E000] messagesAppDomain];
+    [messagesAppDomain2 synchronize];
   }
 }
 
-- (void)decrementPinCountForBundleID:(id)a3
+- (void)decrementPinCountForBundleID:(id)d
 {
-  v14 = a3;
-  if ([v14 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v4 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-    v5 = [v4 objectForKey:v14];
-    v6 = [v5 integerValue];
+    swyPinsPerBundleID = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+    v5 = [swyPinsPerBundleID objectForKey:dCopy];
+    integerValue = [v5 integerValue];
 
-    v7 = v6 - (v6 > 0);
-    v8 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-    v9 = v8;
+    v7 = integerValue - (integerValue > 0);
+    swyPinsPerBundleID2 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+    v9 = swyPinsPerBundleID2;
     if (v7 <= 0)
     {
-      [v8 removeObjectForKey:v14];
+      [swyPinsPerBundleID2 removeObjectForKey:dCopy];
     }
 
     else
     {
       v10 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-      [v9 setObject:v10 forKey:v14];
+      [v9 setObject:v10 forKey:dCopy];
     }
 
-    v11 = [MEMORY[0x1E695E000] messagesAppDomain];
-    v12 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-    [v11 setObject:v12 forKey:@"SharedWithYouPinsCache"];
+    messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+    swyPinsPerBundleID3 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+    [messagesAppDomain setObject:swyPinsPerBundleID3 forKey:@"SharedWithYouPinsCache"];
 
-    v13 = [MEMORY[0x1E695E000] messagesAppDomain];
-    [v13 synchronize];
+    messagesAppDomain2 = [MEMORY[0x1E695E000] messagesAppDomain];
+    [messagesAppDomain2 synchronize];
   }
 }
 
-- (int64_t)getPinCountForBundleID:(id)a3
+- (int64_t)getPinCountForBundleID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
-    v6 = [v5 objectForKey:v4];
-    v7 = [v6 integerValue];
+    swyPinsPerBundleID = [(IMSharedWithYouManager *)self swyPinsPerBundleID];
+    v6 = [swyPinsPerBundleID objectForKey:dCopy];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (void)deleteSharedWithYouPreferences
@@ -1442,22 +1442,22 @@ LABEL_23:
   CFPreferencesSetAppValue(@"SharedWithYouApps", 0, @"com.apple.SocialLayer");
   CFPreferencesSetAppValue(@"SharedWithYouEnabled", 0, @"com.apple.SocialLayer");
   CFPreferencesAppSynchronize(@"com.apple.SocialLayer");
-  v2 = [@"SLSharedWithYouAppSettingHasChanged" UTF8String];
+  uTF8String = [@"SLSharedWithYouAppSettingHasChanged" UTF8String];
 
-  notify_post(v2);
+  notify_post(uTF8String);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  installCopy = install;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = installCopy;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "[IMSharedWithYouManager applicationInstallsDidInstall:%@]", &v6, 0xCu);
     }
   }
@@ -1465,17 +1465,17 @@ LABEL_23:
   [(IMSharedWithYouManager *)self updateEnabledApps];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  uninstallCopy = uninstall;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = uninstallCopy;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "[IMSharedWithYouManager applicationsDidUninstall:%@]", &v6, 0xCu);
     }
   }
@@ -1483,20 +1483,20 @@ LABEL_23:
   [(IMSharedWithYouManager *)self updateEnabledApps];
 }
 
-- (id)lsAppRecordForAppStoreShareURL:(id)a3
+- (id)lsAppRecordForAppStoreShareURL:(id)l
 {
-  v4 = a3;
-  v5 = [(IMSharedWithYouManager *)self lsAppRecordForURL:v4 checkInstalledAppsOnly:0];
+  lCopy = l;
+  v5 = [(IMSharedWithYouManager *)self lsAppRecordForURL:lCopy checkInstalledAppsOnly:0];
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 bundleIdentifier];
-    v8 = [v7 isEqualToString:@"com.apple.CloudKit.ShareBear"];
+    bundleIdentifier = [v5 bundleIdentifier];
+    v8 = [bundleIdentifier isEqualToString:@"com.apple.CloudKit.ShareBear"];
 
     if (v8)
     {
       v9 = +[IMSharedWithYouManager sharedManager];
-      v10 = [v9 lsAppRecordForShareBearURL:v4];
+      v10 = [v9 lsAppRecordForShareBearURL:lCopy];
 
       v6 = v10;
     }
@@ -1516,19 +1516,19 @@ LABEL_23:
   return v6;
 }
 
-- (id)appStoreIDFromSharingURL:(id)a3
+- (id)appStoreIDFromSharingURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = [(IMSharedWithYouManager *)self lsAppRecordForAppStoreShareURL:?];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 iTunesMetadata];
-      v6 = v5;
-      if (v5)
+      iTunesMetadata = [v3 iTunesMetadata];
+      v6 = iTunesMetadata;
+      if (iTunesMetadata)
       {
-        if ([v5 storeItemIdentifier])
+        if ([iTunesMetadata storeItemIdentifier])
         {
           v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"id%ld", -[NSObject storeItemIdentifier](v6, "storeItemIdentifier")];
 LABEL_17:
@@ -1578,16 +1578,16 @@ LABEL_18:
   return v7;
 }
 
-- (id)appNameFromSharingURL:(id)a3
+- (id)appNameFromSharingURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = [(IMSharedWithYouManager *)self lsAppRecordForAppStoreShareURL:?];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 localizedName];
-      if (v5)
+      localizedName = [v3 localizedName];
+      if (localizedName)
       {
         goto LABEL_13;
       }
@@ -1607,7 +1607,7 @@ LABEL_18:
         sub_1A88C2D94();
       }
 
-      v5 = 0;
+      localizedName = 0;
     }
   }
 
@@ -1619,28 +1619,28 @@ LABEL_18:
       sub_1A88C2E30();
     }
 
-    v5 = 0;
+    localizedName = 0;
   }
 
 LABEL_13:
 
-  return v5;
+  return localizedName;
 }
 
-- (id)appStoreURLFromSharingURL:(id)a3
+- (id)appStoreURLFromSharingURL:(id)l
 {
-  v4 = a3;
-  v5 = [(IMSharedWithYouManager *)self appNameFromSharingURL:v4];
-  v6 = [(IMSharedWithYouManager *)self appStoreIDFromSharingURL:v4];
+  lCopy = l;
+  v5 = [(IMSharedWithYouManager *)self appNameFromSharingURL:lCopy];
+  v6 = [(IMSharedWithYouManager *)self appStoreIDFromSharingURL:lCopy];
 
   if (v5 && v6)
   {
-    v7 = [v5 lowercaseString];
+    lowercaseString = [v5 lowercaseString];
 
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://apps.apple.com/us/app/%@/%@", v7, v6];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://apps.apple.com/us/app/%@/%@", lowercaseString, v6];
     v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
 
-    v5 = v7;
+    v5 = lowercaseString;
   }
 
   else
@@ -1657,42 +1657,42 @@ LABEL_13:
   return v9;
 }
 
-- (id)urlMinusFragment:(id)a3 onlyCKURL:(BOOL)a4
+- (id)urlMinusFragment:(id)fragment onlyCKURL:(BOOL)l
 {
-  v4 = a4;
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  fragmentCopy = fragment;
+  if (!fragmentCopy)
   {
     v11 = 0;
     goto LABEL_9;
   }
 
-  if (v4)
+  if (lCopy)
   {
-    v6 = +[IMSharedWithYouManager sharedManager];
-    v7 = [v6 lsAppRecordForURL:v5 checkInstalledAppsOnly:0];
+    absoluteString = +[IMSharedWithYouManager sharedManager];
+    v7 = [absoluteString lsAppRecordForURL:fragmentCopy checkInstalledAppsOnly:0];
     if (!v7)
     {
-      v11 = v5;
+      v11 = fragmentCopy;
       goto LABEL_8;
     }
 
     v8 = v7;
-    v9 = [v7 applicationIdentifier];
-    v10 = [v9 isEqualToString:@"com.apple.CloudKit.ShareBear"];
+    applicationIdentifier = [v7 applicationIdentifier];
+    v10 = [applicationIdentifier isEqualToString:@"com.apple.CloudKit.ShareBear"];
 
-    v11 = v5;
+    v11 = fragmentCopy;
     if (!v10)
     {
       goto LABEL_9;
     }
   }
 
-  v6 = [v5 absoluteString];
-  v12 = [v6 componentsSeparatedByString:@"#"];
+  absoluteString = [fragmentCopy absoluteString];
+  v12 = [absoluteString componentsSeparatedByString:@"#"];
   v13 = MEMORY[0x1E695DFF8];
-  v14 = [v12 firstObject];
-  v11 = [v13 URLWithString:v14];
+  firstObject = [v12 firstObject];
+  v11 = [v13 URLWithString:firstObject];
 
 LABEL_8:
 LABEL_9:
@@ -1700,19 +1700,19 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)isDataDetectedLinkAllowedForSWY:(id)a3
+- (BOOL)isDataDetectedLinkAllowedForSWY:(id)y
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  yCopy = y;
+  if (yCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(IMSharedWithYouManager *)self _supportedDataDetectedURLSchemes];
+    _supportedDataDetectedURLSchemes = [(IMSharedWithYouManager *)self _supportedDataDetectedURLSchemes];
     v6 = 0;
-    v7 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    v7 = [_supportedDataDetectedURLSchemes countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v7)
     {
       v8 = *v16;
@@ -1722,17 +1722,17 @@ LABEL_9:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_supportedDataDetectedURLSchemes);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v4 scheme];
-          LOBYTE(v10) = [v11 isEqualToString:v10];
+          scheme = [yCopy scheme];
+          LOBYTE(v10) = [scheme isEqualToString:v10];
 
           v6 |= v10;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v7 = [_supportedDataDetectedURLSchemes countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v7);

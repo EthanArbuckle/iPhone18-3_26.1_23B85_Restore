@@ -1,27 +1,27 @@
 @interface BCAlertActionItem
-- (BCAlertActionItem)initWithTitle:(id)a3 subTitle:(id)a4 iconName:(id)a5 actionType:(unint64_t)a6 handler:(id)a7;
+- (BCAlertActionItem)initWithTitle:(id)title subTitle:(id)subTitle iconName:(id)name actionType:(unint64_t)type handler:(id)handler;
 - (UIImage)icon;
 @end
 
 @implementation BCAlertActionItem
 
-- (BCAlertActionItem)initWithTitle:(id)a3 subTitle:(id)a4 iconName:(id)a5 actionType:(unint64_t)a6 handler:(id)a7
+- (BCAlertActionItem)initWithTitle:(id)title subTitle:(id)subTitle iconName:(id)name actionType:(unint64_t)type handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  titleCopy = title;
+  subTitleCopy = subTitle;
+  nameCopy = name;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = BCAlertActionItem;
   v17 = [(BCAlertActionItem *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
-    objc_storeStrong(&v18->_subTitle, a4);
-    objc_storeStrong(&v18->_iconName, a5);
-    v18->_actionType = a6;
-    v19 = objc_retainBlock(v16);
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v18->_subTitle, subTitle);
+    objc_storeStrong(&v18->_iconName, name);
+    v18->_actionType = type;
+    v19 = objc_retainBlock(handlerCopy);
     handler = v18->_handler;
     v18->_handler = v19;
   }
@@ -33,23 +33,23 @@
 {
   if (!self->_icon)
   {
-    v3 = [(BCAlertActionItem *)self iconName];
-    v4 = [v3 length];
+    iconName = [(BCAlertActionItem *)self iconName];
+    v4 = [iconName length];
 
     if (v4)
     {
       if ([(BCAlertActionItem *)self actionType]== 6 || [(BCAlertActionItem *)self actionType]== 3 || [(BCAlertActionItem *)self actionType]== 4)
       {
-        v5 = [(BCAlertActionItem *)self iconName];
-        v6 = [UIImage imageNamed:v5];
+        iconName2 = [(BCAlertActionItem *)self iconName];
+        iconName3 = [UIImage imageNamed:iconName2];
 
-        v7 = [v6 imageWithRenderingMode:2];
+        v7 = [iconName3 imageWithRenderingMode:2];
       }
 
       else
       {
-        v6 = [(BCAlertActionItem *)self iconName];
-        v7 = [UIImage imageNamed:v6];
+        iconName3 = [(BCAlertActionItem *)self iconName];
+        v7 = [UIImage imageNamed:iconName3];
       }
 
       icon = self->_icon;

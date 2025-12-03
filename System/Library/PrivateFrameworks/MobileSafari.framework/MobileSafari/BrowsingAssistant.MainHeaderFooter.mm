@@ -1,7 +1,7 @@
 @interface BrowsingAssistant.MainHeaderFooter
 - (id)leadingButtonActionHandler;
-- (void)setLeadingButtonActionHandler:(id)a3;
-- (void)setStepper:(id)a3;
+- (void)setLeadingButtonActionHandler:(id)handler;
+- (void)setStepper:(id)stepper;
 @end
 
 @implementation BrowsingAssistant.MainHeaderFooter
@@ -29,9 +29,9 @@
   return v3;
 }
 
-- (void)setLeadingButtonActionHandler:(id)a3
+- (void)setLeadingButtonActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -49,21 +49,21 @@
   v8 = *(self + OBJC_IVAR____TtCC12MobileSafari17BrowsingAssistant16MainHeaderFooter_leadingButtonActionHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_18B7E0A10(v8);
 }
 
-- (void)setStepper:(id)a3
+- (void)setStepper:(id)stepper
 {
   v5 = OBJC_IVAR____TtCC12MobileSafari17BrowsingAssistant16MainHeaderFooter_stepper;
   v6 = *(self + OBJC_IVAR____TtCC12MobileSafari17BrowsingAssistant16MainHeaderFooter_stepper);
   v7 = v6;
-  v8 = a3;
-  v11 = self;
-  sub_18BC180E0(a3);
+  stepperCopy = stepper;
+  selfCopy = self;
+  sub_18BC180E0(stepper);
   v9 = *(self + v5);
-  *(self + v5) = a3;
-  v10 = v8;
+  *(self + v5) = stepper;
+  v10 = stepperCopy;
 
   sub_18BC1810C(v6);
 }

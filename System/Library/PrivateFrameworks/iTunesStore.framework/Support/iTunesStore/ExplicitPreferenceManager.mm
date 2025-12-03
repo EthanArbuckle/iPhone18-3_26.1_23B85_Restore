@@ -1,8 +1,8 @@
 @interface ExplicitPreferenceManager
 + (id)sharedManager;
 - (ExplicitPreferenceManager)init;
-- (void)setExplicitPreferencesDisabled:(BOOL)a3;
-- (void)setLastChangeInducingBagExplicitOff:(BOOL)a3;
+- (void)setExplicitPreferencesDisabled:(BOOL)disabled;
+- (void)setLastChangeInducingBagExplicitOff:(BOOL)off;
 @end
 
 @implementation ExplicitPreferenceManager
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (void)setLastChangeInducingBagExplicitOff:(BOOL)a3
+- (void)setLastChangeInducingBagExplicitOff:(BOOL)off
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:off];
   v4 = kITunesStoreDaemonDefaultsID;
 
   CFPreferencesSetAppValue(@"ExplicitPreferenceManagerDefaultsKeyExplicitOff", v3, v4);
 }
 
-- (void)setExplicitPreferencesDisabled:(BOOL)a3
+- (void)setExplicitPreferencesDisabled:(BOOL)disabled
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:disabled];
   v4 = kITunesStoreDaemonDefaultsID;
 
   CFPreferencesSetAppValue(@"ExplicitPreferenceManagerDefaultsKeyExplicitPreferencesDisabled", v3, v4);
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001E4C90;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003840E8 != -1)
   {
     dispatch_once(&qword_1003840E8, block);

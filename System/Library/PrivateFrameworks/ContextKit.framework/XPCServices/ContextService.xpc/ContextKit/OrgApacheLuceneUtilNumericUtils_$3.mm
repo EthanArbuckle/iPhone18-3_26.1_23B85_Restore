@@ -12,9 +12,9 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(OrgApacheLuceneIndexTerms *)in iterator];
+  iterator = [(OrgApacheLuceneIndexTerms *)in iterator];
 
-  return OrgApacheLuceneUtilNumericUtils_filterPrefixCodedIntsWithOrgApacheLuceneIndexTermsEnum_(v3);
+  return OrgApacheLuceneUtilNumericUtils_filterPrefixCodedIntsWithOrgApacheLuceneIndexTermsEnum_(iterator);
 }
 
 @end

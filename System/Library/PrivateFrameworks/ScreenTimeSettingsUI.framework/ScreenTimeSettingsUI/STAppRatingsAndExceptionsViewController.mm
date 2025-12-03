@@ -1,5 +1,5 @@
 @interface STAppRatingsAndExceptionsViewController
-- (void)addChildViewController:(id)a3;
+- (void)addChildViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -9,7 +9,7 @@
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_error_impl(&dword_264BA2000, log, OS_LOG_TYPE_ERROR, "Cannot create AppRatings&Exceptions content controller. Coordinator:%{public}@ controller: %{public}@", &v3, 0x16u);
@@ -60,50 +60,50 @@ void __54__STAppRatingsAndExceptionsViewController_viewDidLoad__block_invoke_2(u
   }
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  [v4 willMoveToParentViewController:self];
+  [controllerCopy willMoveToParentViewController:self];
   v30.receiver = self;
   v30.super_class = STAppRatingsAndExceptionsViewController;
-  [(STAppRatingsAndExceptionsViewController *)&v30 addChildViewController:v4];
-  v6 = [(STAppRatingsAndExceptionsViewController *)self view];
-  v7 = [v4 view];
-  [v6 addSubview:v7];
+  [(STAppRatingsAndExceptionsViewController *)&v30 addChildViewController:controllerCopy];
+  view2 = [(STAppRatingsAndExceptionsViewController *)self view];
+  view3 = [controllerCopy view];
+  [view2 addSubview:view3];
 
   v20 = MEMORY[0x277CCAAD0];
-  v29 = [v4 view];
-  v27 = [v29 leadingAnchor];
-  v28 = [(STAppRatingsAndExceptionsViewController *)self view];
-  v26 = [v28 leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  view4 = [controllerCopy view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(STAppRatingsAndExceptionsViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[0] = v25;
-  v24 = [v4 view];
-  v22 = [v24 trailingAnchor];
-  v23 = [(STAppRatingsAndExceptionsViewController *)self view];
-  v21 = [v23 trailingAnchor];
-  v19 = [v22 constraintEqualToAnchor:v21];
+  view6 = [controllerCopy view];
+  trailingAnchor = [view6 trailingAnchor];
+  view7 = [(STAppRatingsAndExceptionsViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[1] = v19;
-  v18 = [v4 view];
-  v16 = [v18 topAnchor];
-  v17 = [(STAppRatingsAndExceptionsViewController *)self view];
-  v8 = [v17 topAnchor];
-  v9 = [v16 constraintEqualToAnchor:v8];
+  view8 = [controllerCopy view];
+  topAnchor = [view8 topAnchor];
+  view9 = [(STAppRatingsAndExceptionsViewController *)self view];
+  topAnchor2 = [view9 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[2] = v9;
-  v10 = [v4 view];
-  v11 = [v10 bottomAnchor];
-  v12 = [(STAppRatingsAndExceptionsViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view10 = [controllerCopy view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(STAppRatingsAndExceptionsViewController *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v31[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
   [v20 activateConstraints:v15];
 
-  [v4 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 @end

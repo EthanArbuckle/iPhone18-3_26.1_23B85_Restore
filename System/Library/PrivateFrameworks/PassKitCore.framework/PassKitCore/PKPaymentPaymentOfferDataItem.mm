@@ -1,10 +1,10 @@
 @interface PKPaymentPaymentOfferDataItem
-- (BOOL)_loadingDetailsAreValid:(id)a3 error:(id *)a4 errorStatus:(int64_t *)a5;
-- (BOOL)_selectedPaymentOfferIsValidWithError:(id *)a3 errorStatus:(int64_t *)a4;
-- (BOOL)isValidWithError:(id *)a3 errorStatus:(int64_t *)a4;
+- (BOOL)_loadingDetailsAreValid:(id)valid error:(id *)error errorStatus:(int64_t *)status;
+- (BOOL)_selectedPaymentOfferIsValidWithError:(id *)error errorStatus:(int64_t *)status;
+- (BOOL)isValidWithError:(id *)error errorStatus:(int64_t *)status;
 - (BOOL)requiresBillingAddress;
 - (PKSelectedPaymentOffer)selectedPaymentOffer;
-- (id)_errorLoadingPaymentOffersWithUnderlyingError:(id)a3;
+- (id)_errorLoadingPaymentOffersWithUnderlyingError:(id)error;
 - (id)_noPaymentOfferSelectedError;
 - (id)_selectedPaymentOfferInvalid;
 - (id)billingAddress;
@@ -14,24 +14,24 @@
 
 @implementation PKPaymentPaymentOfferDataItem
 
-- (BOOL)isValidWithError:(id *)a3 errorStatus:(int64_t *)a4
+- (BOOL)isValidWithError:(id *)error errorStatus:(int64_t *)status
 {
   v18 = 1;
-  v7 = [(PKPaymentDataItem *)self model];
-  v8 = [v7 paymentOffersController];
+  model = [(PKPaymentDataItem *)self model];
+  paymentOffersController = [model paymentOffersController];
 
-  v9 = [(PKPaymentDataItem *)self model];
-  v10 = [v9 fundingMode];
+  model2 = [(PKPaymentDataItem *)self model];
+  fundingMode = [model2 fundingMode];
 
-  if (v10 != 2)
+  if (fundingMode != 2)
   {
     goto LABEL_7;
   }
 
-  v11 = [v8 selectedOfferDetails];
-  if (![v11 requiresUserAction])
+  selectedOfferDetails = [paymentOffersController selectedOfferDetails];
+  if (![selectedOfferDetails requiresUserAction])
   {
-    v12 = [(PKPaymentPaymentOfferDataItem *)self _selectedPaymentOfferIsValidWithError:a3 errorStatus:&v18];
+    v12 = [(PKPaymentPaymentOfferDataItem *)self _selectedPaymentOfferIsValidWithError:error errorStatus:&v18];
 
     if (!v12)
     {
@@ -42,11 +42,11 @@ LABEL_7:
     if ([(PKPaymentPaymentOfferDataItem *)self requiresBillingAddress])
     {
       v13 = objc_opt_class();
-      v14 = [(PKPaymentDataItem *)self model];
-      v15 = [v14 billingAddress];
-      v16 = [v13 validateBillingAddressForItem:self billingAddress:v15 outError:a3];
+      model3 = [(PKPaymentDataItem *)self model];
+      billingAddress = [model3 billingAddress];
+      v16 = [v13 validateBillingAddressForItem:self billingAddress:billingAddress outError:error];
 
-      if (!a4)
+      if (!status)
       {
         goto LABEL_12;
       }
@@ -55,7 +55,7 @@ LABEL_7:
     else
     {
       v16 = 1;
-      if (!a4)
+      if (!status)
       {
         goto LABEL_12;
       }
@@ -65,17 +65,17 @@ LABEL_7:
   }
 
   v18 = 12;
-  if (a3)
+  if (error)
   {
-    *a3 = [(PKPaymentPaymentOfferDataItem *)self _selectedPaymentOfferInvalid];
+    *error = [(PKPaymentPaymentOfferDataItem *)self _selectedPaymentOfferInvalid];
   }
 
 LABEL_10:
   v16 = 0;
-  if (a4)
+  if (status)
   {
 LABEL_11:
-    *a4 = v18;
+    *status = v18;
   }
 
 LABEL_12:
@@ -83,50 +83,50 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)_selectedPaymentOfferIsValidWithError:(id *)a3 errorStatus:(int64_t *)a4
+- (BOOL)_selectedPaymentOfferIsValidWithError:(id *)error errorStatus:(int64_t *)status
 {
-  v7 = [(PKPaymentPaymentOfferDataItem *)self selectedPaymentOffer];
-  v8 = [(PKPaymentDataItem *)self model];
-  v9 = [v8 fundingMode];
+  selectedPaymentOffer = [(PKPaymentPaymentOfferDataItem *)self selectedPaymentOffer];
+  model = [(PKPaymentDataItem *)self model];
+  fundingMode = [model fundingMode];
 
   v10 = 1;
-  if (v9 == 2 && v7)
+  if (fundingMode == 2 && selectedPaymentOffer)
   {
     v17 = 1;
-    v11 = [(PKPaymentDataItem *)self model];
-    v12 = [v11 paymentOffersController];
+    model2 = [(PKPaymentDataItem *)self model];
+    paymentOffersController = [model2 paymentOffersController];
 
-    v13 = [v7 criteriaIdentifier];
-    v14 = [v7 passUniqueID];
-    v15 = [v12 loadingDetailsForPaymentOffersForCriteriaIdentifier:v13 passUniqueID:v14];
+    criteriaIdentifier = [selectedPaymentOffer criteriaIdentifier];
+    passUniqueID = [selectedPaymentOffer passUniqueID];
+    v15 = [paymentOffersController loadingDetailsForPaymentOffersForCriteriaIdentifier:criteriaIdentifier passUniqueID:passUniqueID];
 
-    v10 = [(PKPaymentPaymentOfferDataItem *)self _loadingDetailsAreValid:v15 error:a3 errorStatus:&v17];
-    if (a4)
+    v10 = [(PKPaymentPaymentOfferDataItem *)self _loadingDetailsAreValid:v15 error:error errorStatus:&v17];
+    if (status)
     {
-      *a4 = v17;
+      *status = v17;
     }
   }
 
   return v10;
 }
 
-- (BOOL)_loadingDetailsAreValid:(id)a3 error:(id *)a4 errorStatus:(int64_t *)a5
+- (BOOL)_loadingDetailsAreValid:(id)valid error:(id *)error errorStatus:(int64_t *)status
 {
-  v8 = a3;
-  v9 = v8;
-  if (!v8)
+  validCopy = valid;
+  v9 = validCopy;
+  if (!validCopy)
   {
     v12 = 1;
     goto LABEL_12;
   }
 
-  v10 = [v8 state];
-  if (!v10)
+  state = [validCopy state];
+  if (!state)
   {
-    if (a4)
+    if (error)
     {
       [(PKPaymentPaymentOfferDataItem *)self _noPaymentOfferSelectedError];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -135,7 +135,7 @@ LABEL_12:
     }
 
     v13 = 9;
-    if (!a5)
+    if (!status)
     {
       goto LABEL_12;
     }
@@ -143,11 +143,11 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (v10 == 1)
+  if (state == 1)
   {
     v12 = 0;
     v13 = 10;
-    if (!a5)
+    if (!status)
     {
       goto LABEL_12;
     }
@@ -155,11 +155,11 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (v10 != 2)
+  if (state != 2)
   {
     v13 = 1;
     v12 = 1;
-    if (!a5)
+    if (!status)
     {
       goto LABEL_12;
     }
@@ -167,18 +167,18 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
-    v11 = [v9 error];
-    *a4 = [(PKPaymentPaymentOfferDataItem *)self _errorLoadingPaymentOffersWithUnderlyingError:v11];
+    error = [v9 error];
+    *error = [(PKPaymentPaymentOfferDataItem *)self _errorLoadingPaymentOffersWithUnderlyingError:error];
   }
 
   v12 = 0;
   v13 = 11;
-  if (a5)
+  if (status)
   {
 LABEL_11:
-    *a5 = v13;
+    *status = v13;
   }
 
 LABEL_12:
@@ -188,28 +188,28 @@ LABEL_12:
 
 - (PKSelectedPaymentOffer)selectedPaymentOffer
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 selectedPaymentOffer];
+  model = [(PKPaymentDataItem *)self model];
+  selectedPaymentOffer = [model selectedPaymentOffer];
 
-  return v3;
+  return selectedPaymentOffer;
 }
 
 - (BOOL)requiresBillingAddress
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentRequest];
-  v4 = [v3 requiredBillingContactFields];
-  v5 = [v4 containsObject:@"post"];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  requiredBillingContactFields = [paymentRequest requiredBillingContactFields];
+  v5 = [requiredBillingContactFields containsObject:@"post"];
 
   return v5;
 }
 
 - (id)billingAddress
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 billingAddress];
+  model = [(PKPaymentDataItem *)self model];
+  billingAddress = [model billingAddress];
 
-  return v3;
+  return billingAddress;
 }
 
 - (id)errors
@@ -220,9 +220,9 @@ LABEL_12:
   v9[1] = @"name";
   v9[2] = @"phoneticName";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentErrors];
-  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:v6];
+  model = [(PKPaymentDataItem *)self model];
+  paymentErrors = [model paymentErrors];
+  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:paymentErrors];
 
   return v7;
 }
@@ -235,9 +235,9 @@ LABEL_12:
   v9[1] = @"name";
   v9[2] = @"phoneticName";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentContactFormatErrors];
-  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:v6];
+  model = [(PKPaymentDataItem *)self model];
+  paymentContactFormatErrors = [model paymentContactFormatErrors];
+  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:paymentContactFormatErrors];
 
   return v7;
 }
@@ -274,41 +274,41 @@ LABEL_12:
   return v6;
 }
 
-- (id)_errorLoadingPaymentOffersWithUnderlyingError:(id)a3
+- (id)_errorLoadingPaymentOffersWithUnderlyingError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = PKLocalizedPaymentOffersString(&cfstr_InAppPaymentOf_0.isa, 0);
   v5 = v4;
-  if (v3)
+  if (errorCopy)
   {
-    v6 = [v3 localizedFailureReason];
-    v7 = v6;
-    if (v6)
+    localizedFailureReason = [errorCopy localizedFailureReason];
+    v7 = localizedFailureReason;
+    if (localizedFailureReason)
     {
-      v8 = v6;
+      v8 = localizedFailureReason;
     }
 
     else
     {
-      v8 = PKTitleForDisplayableError(v3);
+      v8 = PKTitleForDisplayableError(errorCopy);
     }
 
     v9 = v8;
 
-    v10 = [v3 localizedRecoverySuggestion];
+    localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
   }
 
   else
   {
     v9 = v4;
-    v10 = 0;
+    localizedRecoverySuggestion = 0;
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  if (v10)
+  if (localizedRecoverySuggestion)
   {
-    v12 = v10;
+    v12 = localizedRecoverySuggestion;
   }
 
   else
@@ -317,7 +317,7 @@ LABEL_12:
   }
 
   [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696A588]];
-  [v11 setObject:v3 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+  [v11 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
   v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-9003 userInfo:v11];
 
   return v13;

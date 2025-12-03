@@ -1,7 +1,7 @@
 @interface MusicApplication
 + (id)_defaultContentSizeCategory;
 - (id)_extendLaunchTest;
-- (void)startedTest:(id)a3;
+- (void)startedTest:(id)test;
 @end
 
 @implementation MusicApplication
@@ -14,9 +14,9 @@
   return v2;
 }
 
-- (void)startedTest:(id)a3
+- (void)startedTest:(id)test
 {
-  if (a3)
+  if (test)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -28,7 +28,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   Application.startedTest(_:)(v8);

@@ -1,42 +1,42 @@
 @interface PLCollectionShare
-+ (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 kind:(signed __int16)a6 clientBundleIdentifier:(id)a7 unitTestMode:(BOOL)a8 inPhotoLibrary:(id)a9;
-+ (id)fetchCollectionSharesWithUUIDs:(id)a3 propertiesToFetch:(id)a4 managedObjectContext:(id)a5;
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4;
-+ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)a3;
++ (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title kind:(signed __int16)kind clientBundleIdentifier:(id)identifier unitTestMode:(BOOL)mode inPhotoLibrary:(id)library;
++ (id)fetchCollectionSharesWithUUIDs:(id)ds propertiesToFetch:(id)fetch managedObjectContext:(id)context;
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library;
++ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)identifier;
 + (id)propertiesToFetch;
-+ (id)scopeIdentifierPrefixInLibrary:(id)a3;
-+ (id)syncBackendForKind:(signed __int16)a3 photoLibrary:(id)a4;
++ (id)scopeIdentifierPrefixInLibrary:(id)library;
++ (id)syncBackendForKind:(signed __int16)kind photoLibrary:(id)library;
 - (BOOL)_shouldUpdateLastModifiedDate;
-- (BOOL)incrementallyDeleteAndSaveWithError:(id *)a3;
+- (BOOL)incrementallyDeleteAndSaveWithError:(id *)error;
 - (BOOL)isCurrentUserOwner;
 - (BOOL)isEligibleForSearchIndexing;
 - (BOOL)isSyncableChange;
-- (BOOL)locallyIncrementallyDeleteAndSaveWithError:(id *)a3;
+- (BOOL)locallyIncrementallyDeleteAndSaveWithError:(id *)error;
 - (BOOL)supportsCloudUpload;
 - (id)cplFullRecord;
 - (id)cplScopeChange;
 - (id)scopedIdentifier;
 - (id)syncBackend;
-- (void)_insertOwnedParticipantInLibrary:(id)a3 unitTestMode:(BOOL)a4;
-- (void)acceptWithCompletionHandler:(id)a3;
+- (void)_insertOwnedParticipantInLibrary:(id)library unitTestMode:(BOOL)mode;
+- (void)acceptWithCompletionHandler:(id)handler;
 - (void)checkServerForChanges;
-- (void)declineWithCompletionHandler:(id)a3;
+- (void)declineWithCompletionHandler:(id)handler;
 - (void)markAsViewed;
-- (void)markPendingInvitationAsSpamWithCompletionHandler:(id)a3;
+- (void)markPendingInvitationAsSpamWithCompletionHandler:(id)handler;
 - (void)prepareForDeletion;
-- (void)prioritizeDownloads:(BOOL)a3;
-- (void)publishAssets:(id)a3 withComment:(id)a4;
-- (void)publishWithCompletionHandler:(id)a3;
-- (void)reconcileModelRelationshipsWithCompletionHandler:(id)a3;
-- (void)removeShareParticipantUUIDs:(id)a3 photoLibrary:(id)a4;
-- (void)sendInvitationsForShareParticipantUUIDs:(id)a3 completionHandler:(id)a4;
-- (void)setLastModifiedDate:(id)a3;
+- (void)prioritizeDownloads:(BOOL)downloads;
+- (void)publishAssets:(id)assets withComment:(id)comment;
+- (void)publishWithCompletionHandler:(id)handler;
+- (void)reconcileModelRelationshipsWithCompletionHandler:(id)handler;
+- (void)removeShareParticipantUUIDs:(id)ds photoLibrary:(id)library;
+- (void)sendInvitationsForShareParticipantUUIDs:(id)ds completionHandler:(id)handler;
+- (void)setLastModifiedDate:(id)date;
 - (void)trash;
-- (void)unsubscribeWithCompletionHandler:(id)a3;
+- (void)unsubscribeWithCompletionHandler:(id)handler;
 - (void)updateCollectionShareCurrentUserContributionStateIfNeeded;
-- (void)updatePublicPermission:(int64_t)a3;
-- (void)updatePublicURLState:(signed __int16)a3;
-- (void)updateTitle:(id)a3;
+- (void)updatePublicPermission:(int64_t)permission;
+- (void)updatePublicURLState:(signed __int16)state;
+- (void)updateTitle:(id)title;
 - (void)willSave;
 @end
 
@@ -50,23 +50,23 @@
   }
 
   v4 = objc_opt_class();
-  v5 = [(PLManagedObject *)self photoLibrary];
-  v6 = [v4 isEligibleForSearchIndexingPredicateForLibraryIdentifier:{+[PLSpotlightDonationUtilities wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:](PLSpotlightDonationUtilities, "wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:", v5)}];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  v6 = [v4 isEligibleForSearchIndexingPredicateForLibraryIdentifier:{+[PLSpotlightDonationUtilities wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:](PLSpotlightDonationUtilities, "wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:", photoLibrary)}];
   v7 = [v6 evaluateWithObject:self];
 
   return v7;
 }
 
-+ (id)fetchCollectionSharesWithUUIDs:(id)a3 propertiesToFetch:(id)a4 managedObjectContext:(id)a5
++ (id)fetchCollectionSharesWithUUIDs:(id)ds propertiesToFetch:(id)fetch managedObjectContext:(id)context
 {
   v7 = MEMORY[0x1E696AE18];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 predicateWithFormat:@"uuid IN %@", v10];
-  v12 = [v10 count];
+  contextCopy = context;
+  fetchCopy = fetch;
+  dsCopy = ds;
+  dsCopy = [v7 predicateWithFormat:@"uuid IN %@", dsCopy];
+  v12 = [dsCopy count];
 
-  v13 = [(PLShare *)PLCollectionShare sharesWithPredicate:v11 fetchLimit:v12 includesPendingChanges:0 propertiesToFetch:v9 inManagedObjectContext:v8];
+  v13 = [(PLShare *)PLCollectionShare sharesWithPredicate:dsCopy fetchLimit:v12 includesPendingChanges:0 propertiesToFetch:fetchCopy inManagedObjectContext:contextCopy];
 
   if (v13)
   {
@@ -93,7 +93,7 @@
   return v2;
 }
 
-+ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)a3
++ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)identifier
 {
   pl_dispatch_once();
   v3 = isEligibleForSearchIndexingPredicateForLibraryIdentifier__predicate_35034;
@@ -115,34 +115,34 @@ void __94__PLCollectionShare_SearchIndexing__isEligibleForSearchIndexingPredicat
 
 - (void)markAsViewed
 {
-  v3 = [(PLCollectionShare *)self syncBackend];
-  [v3 markAsViewedForCollectionShare:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend markAsViewedForCollectionShare:self];
 }
 
-- (void)prioritizeDownloads:(BOOL)a3
+- (void)prioritizeDownloads:(BOOL)downloads
 {
-  v3 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 prioritizeDownloadsForCollectionShare:self shouldPrioritize:v3];
+  downloadsCopy = downloads;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend prioritizeDownloadsForCollectionShare:self shouldPrioritize:downloadsCopy];
 }
 
-- (void)reconcileModelRelationshipsWithCompletionHandler:(id)a3
+- (void)reconcileModelRelationshipsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 reconcileModelRelationshipsForCollectionShare:self completionHandler:v4];
+  handlerCopy = handler;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend reconcileModelRelationshipsForCollectionShare:self completionHandler:handlerCopy];
 }
 
 - (void)checkServerForChanges
 {
-  v3 = [(PLCollectionShare *)self syncBackend];
-  [v3 checkServerForChangesForCollectionShare:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend checkServerForChangesForCollectionShare:self];
 }
 
 - (void)updateCollectionShareCurrentUserContributionStateIfNeeded
 {
-  v4 = [(PLShare *)self currentUserParticipant];
-  v3 = [v4 permission] == 3;
+  currentUserParticipant = [(PLShare *)self currentUserParticipant];
+  v3 = [currentUserParticipant permission] == 3;
   if ([(PLCollectionShare *)self collectionShareCurrentUserContributionState]!= v3)
   {
     [(PLCollectionShare *)self setCollectionShareCurrentUserContributionState:v3];
@@ -153,11 +153,11 @@ void __94__PLCollectionShare_SearchIndexing__isEligibleForSearchIndexingPredicat
 {
   if ([(PLCollectionShare *)self collectionShareKind]== 2)
   {
-    v3 = [(PLShare *)self owner];
-    v4 = [v3 uuid];
-    v5 = [(PLShare *)self currentUserParticipant];
-    v6 = [v5 uuid];
-    v7 = v4 == v6;
+    owner = [(PLShare *)self owner];
+    uuid = [owner uuid];
+    currentUserParticipant = [(PLShare *)self currentUserParticipant];
+    uuid2 = [currentUserParticipant uuid];
+    v7 = uuid == uuid2;
   }
 
   else
@@ -170,42 +170,42 @@ void __94__PLCollectionShare_SearchIndexing__isEligibleForSearchIndexingPredicat
   return v7;
 }
 
-- (void)sendInvitationsForShareParticipantUUIDs:(id)a3 completionHandler:(id)a4
+- (void)sendInvitationsForShareParticipantUUIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLManagedObject *)self photoLibrary];
-  v9 = [PLShareParticipant participantsWithUUIDs:v7 inPhotoLibrary:v8];
+  handlerCopy = handler;
+  dsCopy = ds;
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  v9 = [PLShareParticipant participantsWithUUIDs:dsCopy inPhotoLibrary:photoLibrary];
 
-  v10 = [(PLCollectionShare *)self syncBackend];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__PLCollectionShare_sendInvitationsForShareParticipantUUIDs_completionHandler___block_invoke;
   v12[3] = &unk_1E7577430;
-  v13 = v6;
-  v11 = v6;
-  [v10 sendInvitationsForParticipants:v9 collectionShare:self completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [syncBackend sendInvitationsForParticipants:v9 collectionShare:self completionHandler:v12];
 }
 
-- (void)removeShareParticipantUUIDs:(id)a3 photoLibrary:(id)a4
+- (void)removeShareParticipantUUIDs:(id)ds photoLibrary:(id)library
 {
-  v6 = [PLShareParticipant participantsWithUUIDs:a3 inPhotoLibrary:a4];
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 removeParticipants:v6 collectionShare:self];
+  v6 = [PLShareParticipant participantsWithUUIDs:ds inPhotoLibrary:library];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend removeParticipants:v6 collectionShare:self];
 }
 
-- (void)markPendingInvitationAsSpamWithCompletionHandler:(id)a3
+- (void)markPendingInvitationAsSpamWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
+  handlerCopy = handler;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PLCollectionShare_markPendingInvitationAsSpamWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7576050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 markPendingInvitationAsSpamForCollectionShare:self completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [syncBackend markPendingInvitationAsSpamForCollectionShare:self completionHandler:v7];
 }
 
 void __70__PLCollectionShare_markPendingInvitationAsSpamWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -223,18 +223,18 @@ void __70__PLCollectionShare_markPendingInvitationAsSpamWithCompletionHandler___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)unsubscribeWithCompletionHandler:(id)a3
+- (void)unsubscribeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
+  handlerCopy = handler;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__PLCollectionShare_unsubscribeWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7576050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 unsubscribeFromCollectionShare:self completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [syncBackend unsubscribeFromCollectionShare:self completionHandler:v7];
 }
 
 void __54__PLCollectionShare_unsubscribeWithCompletionHandler___block_invoke(uint64_t a1)
@@ -255,18 +255,18 @@ void __54__PLCollectionShare_unsubscribeWithCompletionHandler___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)declineWithCompletionHandler:(id)a3
+- (void)declineWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
+  handlerCopy = handler;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PLCollectionShare_declineWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7576050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 declineCollectionShare:self completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [syncBackend declineCollectionShare:self completionHandler:v7];
 }
 
 void __50__PLCollectionShare_declineWithCompletionHandler___block_invoke(uint64_t a1)
@@ -287,155 +287,155 @@ void __50__PLCollectionShare_declineWithCompletionHandler___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)acceptWithCompletionHandler:(id)a3
+- (void)acceptWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(PLCollectionShare *)self collectionShareKind]== 1)
   {
     v8.receiver = self;
     v8.super_class = PLCollectionShare;
-    [(PLShare *)&v8 acceptWithCompletionHandler:v4];
+    [(PLShare *)&v8 acceptWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v5 = [(PLCollectionShare *)self syncBackend];
+    syncBackend = [(PLCollectionShare *)self syncBackend];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __49__PLCollectionShare_acceptWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E7577430;
-    v7 = v4;
-    [v5 acceptCollectionShare:self completionHandler:v6];
+    v7 = handlerCopy;
+    [syncBackend acceptCollectionShare:self completionHandler:v6];
   }
 }
 
-- (void)_insertOwnedParticipantInLibrary:(id)a3 unitTestMode:(BOOL)a4
+- (void)_insertOwnedParticipantInLibrary:(id)library unitTestMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PLCollectionShare *)self syncBackend];
-  [v7 insertOwnedParticipantInLibrary:v6 collectionShare:self unitTestMode:v4];
+  modeCopy = mode;
+  libraryCopy = library;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend insertOwnedParticipantInLibrary:libraryCopy collectionShare:self unitTestMode:modeCopy];
 }
 
-- (void)publishAssets:(id)a3 withComment:(id)a4
+- (void)publishAssets:(id)assets withComment:(id)comment
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLCollectionShare *)self syncBackend];
-  [v8 publishAssets:v7 withComment:v6 collectionShare:self];
+  commentCopy = comment;
+  assetsCopy = assets;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend publishAssets:assetsCopy withComment:commentCopy collectionShare:self];
 }
 
-- (void)setLastModifiedDate:(id)a3
+- (void)setLastModifiedDate:(id)date
 {
-  v10 = a3;
+  dateCopy = date;
   if ([(PLCollectionShare *)self collectionShareKind]!= 2)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLCollectionShare.m" lineNumber:294 description:{@"setLastModifiedDate: should only be called on SharedStream collection shares. For CPL collection shares, lastModifiedDate is automatically managed"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShare.m" lineNumber:294 description:{@"setLastModifiedDate: should only be called on SharedStream collection shares. For CPL collection shares, lastModifiedDate is automatically managed"}];
   }
 
-  v5 = [(PLCollectionShare *)self lastModifiedDate];
-  if (!v5 || (v6 = v5, -[PLCollectionShare lastModifiedDate](self, "lastModifiedDate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v10 compare:v7], v7, v6, v8 == 1))
+  lastModifiedDate = [(PLCollectionShare *)self lastModifiedDate];
+  if (!lastModifiedDate || (v6 = lastModifiedDate, -[PLCollectionShare lastModifiedDate](self, "lastModifiedDate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [dateCopy compare:v7], v7, v6, v8 == 1))
   {
-    [(PLManagedObject *)self pl_safeSetValue:v10 forKey:@"lastModifiedDate" valueDidChangeHandler:0];
+    [(PLManagedObject *)self pl_safeSetValue:dateCopy forKey:@"lastModifiedDate" valueDidChangeHandler:0];
   }
 }
 
-- (void)updatePublicURLState:(signed __int16)a3
+- (void)updatePublicURLState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 updatePublicURLState:v3 collectionShare:self];
+  stateCopy = state;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend updatePublicURLState:stateCopy collectionShare:self];
 }
 
-- (void)updatePublicPermission:(int64_t)a3
+- (void)updatePublicPermission:(int64_t)permission
 {
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 updatePublicPermission:a3 collectionShare:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend updatePublicPermission:permission collectionShare:self];
 }
 
-- (void)updateTitle:(id)a3
+- (void)updateTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 updateTitle:v4 collectionShare:self];
+  titleCopy = title;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend updateTitle:titleCopy collectionShare:self];
 }
 
-- (BOOL)locallyIncrementallyDeleteAndSaveWithError:(id *)a3
+- (BOOL)locallyIncrementallyDeleteAndSaveWithError:(id *)error
 {
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 deleteCollectionShareDirectory:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend deleteCollectionShareDirectory:self];
 
   v7.receiver = self;
   v7.super_class = PLCollectionShare;
-  return [(PLShare *)&v7 incrementallyDeleteAndSaveWithError:a3];
+  return [(PLShare *)&v7 incrementallyDeleteAndSaveWithError:error];
 }
 
-- (BOOL)incrementallyDeleteAndSaveWithError:(id *)a3
+- (BOOL)incrementallyDeleteAndSaveWithError:(id *)error
 {
-  v5 = [(PLCollectionShare *)self syncBackend];
-  [v5 deleteCollectionShareFromServer:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend deleteCollectionShareFromServer:self];
 
-  return [(PLCollectionShare *)self locallyIncrementallyDeleteAndSaveWithError:a3];
+  return [(PLCollectionShare *)self locallyIncrementallyDeleteAndSaveWithError:error];
 }
 
 - (void)trash
 {
-  v3 = [(PLCollectionShare *)self syncBackend];
-  [v3 trashCollectionShare:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  [syncBackend trashCollectionShare:self];
 }
 
-- (void)publishWithCompletionHandler:(id)a3
+- (void)publishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLCollectionShare *)self syncBackend];
+  handlerCopy = handler;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PLCollectionShare_publishWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E756C308;
-  v8 = v4;
-  v6 = v4;
-  [v5 publishCollectionShare:self completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [syncBackend publishCollectionShare:self completionHandler:v7];
 }
 
 - (id)cplScopeChange
 {
-  v3 = [(PLCollectionShare *)self syncBackend];
-  v4 = [v3 cplScopeChangeForCollectionShare:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  v4 = [syncBackend cplScopeChangeForCollectionShare:self];
 
   return v4;
 }
 
 - (BOOL)supportsCloudUpload
 {
-  v2 = self;
-  v3 = [(PLCollectionShare *)self syncBackend];
-  LOBYTE(v2) = [v3 supportsCloudUploadForCollectionShare:v2];
+  selfCopy = self;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  LOBYTE(selfCopy) = [syncBackend supportsCloudUploadForCollectionShare:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isSyncableChange
 {
-  v2 = self;
-  v3 = [(PLCollectionShare *)self syncBackend];
-  LOBYTE(v2) = [v3 isSyncableChangeForCollectionShare:v2];
+  selfCopy = self;
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  LOBYTE(selfCopy) = [syncBackend isSyncableChangeForCollectionShare:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)scopedIdentifier
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLCollectionShare.m" lineNumber:227 description:{@"%@ are synchronized as scope changes and don't have a scoped identifier", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShare.m" lineNumber:227 description:{@"%@ are synchronized as scope changes and don't have a scoped identifier", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)cplFullRecord
 {
-  v3 = [(PLCollectionShare *)self syncBackend];
-  v4 = [v3 cplFullRecordForCollectionShare:self];
+  syncBackend = [(PLCollectionShare *)self syncBackend];
+  v4 = [syncBackend cplFullRecordForCollectionShare:self];
 
   return v4;
 }
@@ -447,15 +447,15 @@ void __50__PLCollectionShare_declineWithCompletionHandler___block_invoke(uint64_
     return 0;
   }
 
-  v3 = [(PLCollectionShare *)self changedValues];
-  if ([v3 count] && (objc_msgSend(v3, "objectForKeyedSubscript:", @"lastModifiedDate"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  changedValues = [(PLCollectionShare *)self changedValues];
+  if ([changedValues count] && (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"lastModifiedDate"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [v3 allKeys];
-    v8 = [v6 setWithArray:v7];
+    allKeys = [changedValues allKeys];
+    v8 = [v6 setWithArray:allKeys];
 
-    v9 = [(PLCollectionShare *)self _listOfLastModifiedDateChangeProperties];
-    v5 = [v8 intersectsSet:v9];
+    _listOfLastModifiedDateChangeProperties = [(PLCollectionShare *)self _listOfLastModifiedDateChangeProperties];
+    v5 = [v8 intersectsSet:_listOfLastModifiedDateChangeProperties];
   }
 
   else
@@ -471,20 +471,20 @@ void __50__PLCollectionShare_declineWithCompletionHandler___block_invoke(uint64_
   v7.receiver = self;
   v7.super_class = PLCollectionShare;
   [(PLShare *)&v7 prepareForDeletion];
-  v3 = [(PLCollectionShare *)self managedObjectContext];
+  managedObjectContext = [(PLCollectionShare *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [PLDelayedSearchIndexUpdates recordCollectionShareIfNeeded:self];
-    if (([v3 mergingChanges] & 1) == 0)
+    if (([managedObjectContext mergingChanges] & 1) == 0)
     {
-      v4 = [(PLCollectionShare *)self syncBackend];
-      v5 = v4;
-      if (v4)
+      syncBackend = [(PLCollectionShare *)self syncBackend];
+      v5 = syncBackend;
+      if (syncBackend)
       {
-        [v4 recordCloudDeletionIfNeededForCollectionShare:self];
-        v6 = [v3 delayedSaveActions];
-        [v6 recordCollectionShareForCloudFeedUpdate:self];
+        [syncBackend recordCloudDeletionIfNeededForCollectionShare:self];
+        delayedSaveActions = [managedObjectContext delayedSaveActions];
+        [delayedSaveActions recordCollectionShareForCloudFeedUpdate:self];
       }
     }
   }
@@ -495,12 +495,12 @@ void __50__PLCollectionShare_declineWithCompletionHandler___block_invoke(uint64_
   v6.receiver = self;
   v6.super_class = PLCollectionShare;
   [(PLManagedObject *)&v6 willSave];
-  v3 = [(PLCollectionShare *)self managedObjectContext];
+  managedObjectContext = [(PLCollectionShare *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 delayedSaveActions];
-    [v4 recordCollectionShareForCloudFeedUpdate:self];
+    delayedSaveActions = [managedObjectContext delayedSaveActions];
+    [delayedSaveActions recordCollectionShareForCloudFeedUpdate:self];
 
     if (([(PLCollectionShare *)self isDeleted]& 1) == 0)
     {
@@ -519,9 +519,9 @@ void __50__PLCollectionShare_declineWithCompletionHandler___block_invoke(uint64_
   syncBackend = self->_syncBackend;
   if (!syncBackend)
   {
-    v4 = [(PLCollectionShare *)self collectionShareKind];
-    v5 = [(PLManagedObject *)self photoLibrary];
-    v6 = [PLCollectionShare syncBackendForKind:v4 photoLibrary:v5];
+    collectionShareKind = [(PLCollectionShare *)self collectionShareKind];
+    photoLibrary = [(PLManagedObject *)self photoLibrary];
+    v6 = [PLCollectionShare syncBackendForKind:collectionShareKind photoLibrary:photoLibrary];
     v7 = self->_syncBackend;
     self->_syncBackend = v6;
 
@@ -531,40 +531,40 @@ void __50__PLCollectionShare_declineWithCompletionHandler___block_invoke(uint64_
   return syncBackend;
 }
 
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library
 {
-  v4 = [PLCollectionShareCPLBackend insertOrUpdateShareWithCPLScopeChange:a3 inPhotoLibrary:a4];
+  v4 = [PLCollectionShareCPLBackend insertOrUpdateShareWithCPLScopeChange:change inPhotoLibrary:library];
   [v4 setCollectionShareKind:1];
 
   return v4;
 }
 
-+ (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 kind:(signed __int16)a6 clientBundleIdentifier:(id)a7 unitTestMode:(BOOL)a8 inPhotoLibrary:(id)a9
++ (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title kind:(signed __int16)kind clientBundleIdentifier:(id)identifier unitTestMode:(BOOL)mode inPhotoLibrary:(id)library
 {
-  v9 = a8;
-  v11 = a6;
-  v15 = a9;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [PLCollectionShare syncBackendForKind:v11 photoLibrary:v15];
-  v21 = [v20 createOwnedShareWithUUID:v19 creationDate:v18 title:v17 inPhotoLibrary:v15];
+  modeCopy = mode;
+  kindCopy = kind;
+  libraryCopy = library;
+  identifierCopy = identifier;
+  titleCopy = title;
+  dateCopy = date;
+  dCopy = d;
+  v20 = [PLCollectionShare syncBackendForKind:kindCopy photoLibrary:libraryCopy];
+  v21 = [v20 createOwnedShareWithUUID:dCopy creationDate:dateCopy title:titleCopy inPhotoLibrary:libraryCopy];
 
-  [v21 setCollectionShareKind:v11];
-  [v21 setClientBundleIdentifier:v16];
+  [v21 setCollectionShareKind:kindCopy];
+  [v21 setClientBundleIdentifier:identifierCopy];
 
-  [v21 _insertOwnedParticipantInLibrary:v15 unitTestMode:v9];
+  [v21 _insertOwnedParticipantInLibrary:libraryCopy unitTestMode:modeCopy];
 
   return v21;
 }
 
-+ (id)syncBackendForKind:(signed __int16)a3 photoLibrary:(id)a4
++ (id)syncBackendForKind:(signed __int16)kind photoLibrary:(id)library
 {
-  v4 = a3;
+  kindCopy = kind;
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [a4 libraryServicesManager];
-  v6 = [v5 collectionShareBackendForKind:v4];
+  libraryServicesManager = [library libraryServicesManager];
+  v6 = [libraryServicesManager collectionShareBackendForKind:kindCopy];
 
   if (v6)
   {
@@ -574,15 +574,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4)
+  if (kindCopy)
   {
-    if (v4 == 2)
+    if (kindCopy == 2)
     {
       v8 = PLCollectionShareSharedStreamBackend;
       goto LABEL_8;
     }
 
-    if (v4 == 1)
+    if (kindCopy == 1)
     {
       v8 = PLCollectionShareCPLBackend;
 LABEL_8:
@@ -605,7 +605,7 @@ LABEL_8:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v13[0] = 67109120;
-    v13[1] = v4;
+    v13[1] = kindCopy;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Invalid Collection Share Kind: %d", v13, 8u);
   }
 
@@ -615,13 +615,13 @@ LABEL_10:
   return v9;
 }
 
-+ (id)scopeIdentifierPrefixInLibrary:(id)a3
++ (id)scopeIdentifierPrefixInLibrary:(id)library
 {
-  v5 = [a3 mainScopeIdentifier];
-  if (!v5)
+  mainScopeIdentifier = [library mainScopeIdentifier];
+  if (!mainScopeIdentifier)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PLCollectionShare.m" lineNumber:72 description:@"Missing main scope identifier"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShare.m" lineNumber:72 description:@"Missing main scope identifier"];
   }
 
   v6 = CPLCollectionSharePrefixForScopeWithIdentifier();

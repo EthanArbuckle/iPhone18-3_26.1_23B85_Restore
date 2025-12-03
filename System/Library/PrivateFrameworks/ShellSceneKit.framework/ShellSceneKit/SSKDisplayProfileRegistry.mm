@@ -1,15 +1,15 @@
 @interface SSKDisplayProfileRegistry
 - (SSKDisplayProfileRegistry)init;
-- (SSKDisplayProfileRegistry)initWithDisplayTransformerRegistry:(id)a3;
+- (SSKDisplayProfileRegistry)initWithDisplayTransformerRegistry:(id)registry;
 - (void)activate;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)evaluateProfilesForConnectedDisplays;
-- (void)registerDisplayProfile:(id)a3;
+- (void)registerDisplayProfile:(id)profile;
 @end
 
 @implementation SSKDisplayProfileRegistry
 
-- (SSKDisplayProfileRegistry)initWithDisplayTransformerRegistry:(id)a3
+- (SSKDisplayProfileRegistry)initWithDisplayTransformerRegistry:(id)registry
 {
   v4 = self + OBJC_IVAR___SSKDisplayProfileRegistry_registration;
   *v4 = 0u;
@@ -32,18 +32,18 @@
   return v10;
 }
 
-- (void)registerDisplayProfile:(id)a3
+- (void)registerDisplayProfile:(id)profile
 {
-  v4 = a3;
-  v5 = self;
-  SSKDisplayProfileRegistry.register(_:)(v4);
+  profileCopy = profile;
+  selfCopy = self;
+  SSKDisplayProfileRegistry.register(_:)(profileCopy);
 }
 
 - (void)activate
 {
   sub_265FEC250();
   v4[2] = self;
-  v3 = self;
+  selfCopy = self;
   sub_265FE2014(sub_265FE7F68, v4);
 }
 
@@ -52,15 +52,15 @@
   v3 = *(&self->super.isa + OBJC_IVAR___SSKDisplayProfileRegistry_state);
   swift_getKeyPath();
   sub_265FE7AF8(&qword_2800556A0, type metadata accessor for RegistryState);
-  v4 = self;
+  selfCopy = self;
 
   sub_265FEBF30();
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   SSKDisplayProfileRegistry.appendDescription(toFormatter:)();
   swift_unknownObjectRelease();
 }

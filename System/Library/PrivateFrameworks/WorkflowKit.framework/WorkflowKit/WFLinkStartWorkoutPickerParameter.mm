@@ -1,7 +1,7 @@
 @interface WFLinkStartWorkoutPickerParameter
 - (WFLinkAction)action;
-- (WFLinkStartWorkoutPickerParameter)initWithDefinition:(id)a3;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (WFLinkStartWorkoutPickerParameter)initWithDefinition:(id)definition;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFLinkStartWorkoutPickerParameter
@@ -13,23 +13,23 @@
   return WeakRetained;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  enumerationCopy = enumeration;
+  termCopy = term;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v11 = [(WFLinkStartWorkoutPickerParameter *)self action];
-  v12 = [(WFLinkStartWorkoutPickerParameter *)self action];
-  v13 = [v12 processedParameters];
+  action = [(WFLinkStartWorkoutPickerParameter *)self action];
+  action2 = [(WFLinkStartWorkoutPickerParameter *)self action];
+  processedParameters = [action2 processedParameters];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __99__WFLinkStartWorkoutPickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
   v15[3] = &unk_1E8376AD8;
-  v14 = v10;
+  v14 = handlerCopy;
   v16 = v14;
   objc_copyWeak(&v17, &location);
-  [v11 getLinkActionWithProcessedParameters:v13 completionHandler:v15];
+  [action getLinkActionWithProcessedParameters:processedParameters completionHandler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -72,11 +72,11 @@ WFLinkStartWorkoutParameterState *__99__WFLinkStartWorkoutPickerParameter_loadPo
   return v3;
 }
 
-- (WFLinkStartWorkoutPickerParameter)initWithDefinition:(id)a3
+- (WFLinkStartWorkoutPickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFLinkStartWorkoutPickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

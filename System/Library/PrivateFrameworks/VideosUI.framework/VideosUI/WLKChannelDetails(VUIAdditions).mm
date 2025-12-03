@@ -6,8 +6,8 @@
 
 - (id)appIconURLForSize:()VUIAdditions
 {
-  v5 = [a1 images];
-  v6 = [v5 bestArtworkVariantOfType:10 forSize:{a2, a3}];
+  images = [self images];
+  v6 = [images bestArtworkVariantOfType:10 forSize:{a2, a3}];
   v7 = [v6 artworkURLForSize:@"png" format:{a2, a3}];
 
   return v7;

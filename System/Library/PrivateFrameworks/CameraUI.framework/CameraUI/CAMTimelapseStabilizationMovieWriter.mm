@@ -1,28 +1,28 @@
 @interface CAMTimelapseStabilizationMovieWriter
-+ (CGSize)_desiredOutputSizeForSourcePixelBuffer:(__CVBuffer *)a3;
-- (BOOL)_appendPixelBufferToMovie:(__CVBuffer *)a3;
++ (CGSize)_desiredOutputSizeForSourcePixelBuffer:(__CVBuffer *)buffer;
+- (BOOL)_appendPixelBufferToMovie:(__CVBuffer *)movie;
 - (CAMTimelapseStabilizationMovieWriter)init;
 - (CGAffineTransform)_movieTransform;
-- (__CVBuffer)_cropPixelBufferIfNeeded:(__CVBuffer *)a3;
+- (__CVBuffer)_cropPixelBufferIfNeeded:(__CVBuffer *)needed;
 - (__CVBuffer)_decodeFirstFrameAgain;
-- (__CVBuffer)copySourcePixelBufferForFrameNumber:(int64_t)a3 outputSampleTime:(id *)a4 stabilizer:(id)a5;
-- (id)copySourceStabilizationMetadataForFrameNumber:(int64_t)a3 outputSampleTime:(id *)a4 stabilizer:(id)a5;
-- (int)_copyNextSampleBufferFromStabilizer:(opaqueCMSampleBuffer *)a3;
-- (int)_copySourcePixelBufferForNextFrame:(__CVBuffer *)a3 skipBadFrames:(BOOL)a4;
-- (int)_startWritingWithOutputPath:(id)a3 width:(int64_t)a4 height:(int64_t)a5 videoFormatDescription:(opaqueCMFormatDescription *)a6 transform:(CGAffineTransform *)a7 framesPerSecond:(int64_t)a8 frameCount:(int64_t)a9 preferHEVC:(BOOL)a10 visMetadataCount:(int64_t)a11 videoMetadata:(id)a12;
+- (__CVBuffer)copySourcePixelBufferForFrameNumber:(int64_t)number outputSampleTime:(id *)time stabilizer:(id)stabilizer;
+- (id)copySourceStabilizationMetadataForFrameNumber:(int64_t)number outputSampleTime:(id *)time stabilizer:(id)stabilizer;
+- (int)_copyNextSampleBufferFromStabilizer:(opaqueCMSampleBuffer *)stabilizer;
+- (int)_copySourcePixelBufferForNextFrame:(__CVBuffer *)frame skipBadFrames:(BOOL)frames;
+- (int)_startWritingWithOutputPath:(id)path width:(int64_t)width height:(int64_t)height videoFormatDescription:(opaqueCMFormatDescription *)description transform:(CGAffineTransform *)transform framesPerSecond:(int64_t)second frameCount:(int64_t)count preferHEVC:(BOOL)self0 visMetadataCount:(int64_t)self1 videoMetadata:(id)self2;
 - (void)_cleanup;
 - (void)_decodeFirstFrameAgain;
-- (void)_finishMovieWithCompletionHandler:(id)a3;
+- (void)_finishMovieWithCompletionHandler:(id)handler;
 - (void)_finishMovieWithFailure;
 - (void)_finishMovieWithRestartUnstabilized;
 - (void)_requestNextFrameReadDecode;
 - (void)_reset;
 - (void)_restartUnstabilized;
-- (void)_setMetadataOnVideoTrackAssetWriterInput:(id)a3;
+- (void)_setMetadataOnVideoTrackAssetWriterInput:(id)input;
 - (void)_writeMovieAsynchronously;
 - (void)dealloc;
-- (void)setSuspended:(BOOL)a3;
-- (void)writeMovieFromImageFiles:(id)a3 visMetadataFiles:(id)a4 startDate:(id)a5 location:(id)a6 outputPath:(id)a7 transform:(CGAffineTransform *)a8 framesPerSecond:(int64_t)a9 preferHEVC:(BOOL)a10 completionHandler:(id)a11;
+- (void)setSuspended:(BOOL)suspended;
+- (void)writeMovieFromImageFiles:(id)files visMetadataFiles:(id)metadataFiles startDate:(id)date location:(id)location outputPath:(id)path transform:(CGAffineTransform *)transform framesPerSecond:(int64_t)second preferHEVC:(BOOL)self0 completionHandler:(id)self1;
 @end
 
 @implementation CAMTimelapseStabilizationMovieWriter
@@ -211,17 +211,17 @@ void __48__CAMTimelapseStabilizationMovieWriter__cleanup__block_invoke_13(uint64
   [(CAMTimelapseStabilizationMovieWriter *)self writeMovieFromImageFiles:v13 visMetadataFiles:0 startDate:v12 location:v11 outputPath:v10 transform:buf framesPerSecond:movieFramesPerSecond preferHEVC:v16 completionHandler:v14];
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (self->_suspended != a3)
+  if (self->_suspended != suspended)
   {
-    v3 = a3;
-    self->_suspended = a3;
+    suspendedCopy = suspended;
+    self->_suspended = suspended;
     if (self->__movieWritingQueue)
     {
       v5 = os_log_create("com.apple.camera", "Nebula");
       v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-      if (v3)
+      if (suspendedCopy)
       {
         if (v6)
         {
@@ -244,17 +244,17 @@ void __48__CAMTimelapseStabilizationMovieWriter__cleanup__block_invoke_13(uint64
   }
 }
 
-- (void)writeMovieFromImageFiles:(id)a3 visMetadataFiles:(id)a4 startDate:(id)a5 location:(id)a6 outputPath:(id)a7 transform:(CGAffineTransform *)a8 framesPerSecond:(int64_t)a9 preferHEVC:(BOOL)a10 completionHandler:(id)a11
+- (void)writeMovieFromImageFiles:(id)files visMetadataFiles:(id)metadataFiles startDate:(id)date location:(id)location outputPath:(id)path transform:(CGAffineTransform *)transform framesPerSecond:(int64_t)second preferHEVC:(BOOL)self0 completionHandler:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = v17;
-  v80 = v19;
-  v21 = a6;
-  v22 = a7;
-  v23 = a11;
-  v24 = [v17 count];
+  filesCopy = files;
+  metadataFilesCopy = metadataFiles;
+  dateCopy = date;
+  v20 = filesCopy;
+  v80 = dateCopy;
+  locationCopy = location;
+  pathCopy = path;
+  handlerCopy = handler;
+  v24 = [filesCopy count];
   v85 = 0;
   formatDescriptionOut = 0;
   [(CAMTimelapseStabilizationMovieWriter *)self _reset];
@@ -270,12 +270,12 @@ LABEL_29:
     }
 
     [(CAMTimelapseStabilizationMovieWriter *)self _reset];
-    if (v23)
+    if (handlerCopy)
     {
-      v76 = v23[2];
+      v76 = handlerCopy[2];
       v81 = *MEMORY[0x1E6960CC0];
       *&v82 = *(MEMORY[0x1E6960CC0] + 16);
-      v76(v23, 0, &v81, 0);
+      v76(handlerCopy, 0, &v81, 0);
     }
 
     goto LABEL_33;
@@ -285,23 +285,23 @@ LABEL_29:
   movieCreationDate = self->__movieCreationDate;
   self->__movieCreationDate = v25;
 
-  objc_storeStrong(&self->__movieCreationLocation, a6);
-  v27 = [v22 copy];
+  objc_storeStrong(&self->__movieCreationLocation, location);
+  v27 = [pathCopy copy];
   movieOutputPath = self->__movieOutputPath;
   self->__movieOutputPath = v27;
 
-  v29 = *&a8->a;
-  v30 = *&a8->tx;
-  *&self->__movieTransform.c = *&a8->c;
+  v29 = *&transform->a;
+  v30 = *&transform->tx;
+  *&self->__movieTransform.c = *&transform->c;
   *&self->__movieTransform.tx = v30;
   *&self->__movieTransform.a = v29;
-  self->__movieFramesPerSecond = a9;
-  self->__preferHEVC = a10;
-  v31 = [v17 copy];
+  self->__movieFramesPerSecond = second;
+  self->__preferHEVC = c;
+  v31 = [filesCopy copy];
   frameFilePaths = self->__frameFilePaths;
   self->__frameFilePaths = v31;
 
-  v33 = [v18 copy];
+  v33 = [metadataFilesCopy copy];
   visMetadataFilePaths = self->__visMetadataFilePaths;
   self->__visMetadataFilePaths = v33;
 
@@ -327,7 +327,7 @@ LABEL_29:
     }
   }
 
-  v79 = v23;
+  v79 = handlerCopy;
   v38 = dispatch_semaphore_create([(CAMTimelapseStabilizationMovieWriter *)self _frameLoadMode]!= 0);
   semFileReader = self->__semFileReader;
   self->__semFileReader = v38;
@@ -380,7 +380,7 @@ LABEL_29:
 
     else
     {
-      v78 = v22;
+      v78 = pathCopy;
       [objc_opt_class() _desiredOutputSizeForSourcePixelBuffer:self->__stashedSourceFrame];
       v56 = v55;
       v58 = v57;
@@ -388,26 +388,26 @@ LABEL_29:
       v60 = v55;
       v61 = v57;
       v62 = formatDescriptionOut;
-      v63 = [v18 count];
+      v63 = [metadataFilesCopy count];
       v64 = *&self->__movieTransform.c;
       v81 = *&self->__movieTransform.a;
       v82 = v64;
       v83 = *&self->__movieTransform.tx;
-      LOBYTE(v77) = a10;
-      v65 = [(CAMTimelapseStabilizationMovieWriter *)self _startWritingWithOutputPath:v59 width:v60 height:v61 videoFormatDescription:v62 transform:&v81 framesPerSecond:a9 frameCount:v24 preferHEVC:v77 visMetadataCount:v63 videoMetadata:v53];
+      LOBYTE(v77) = c;
+      v65 = [(CAMTimelapseStabilizationMovieWriter *)self _startWritingWithOutputPath:v59 width:v60 height:v61 videoFormatDescription:v62 transform:&v81 framesPerSecond:second frameCount:v24 preferHEVC:v77 visMetadataCount:v63 videoMetadata:v53];
       if (v65)
       {
         v74 = v65;
-        v20 = v17;
-        v23 = v79;
-        v22 = v78;
+        v20 = filesCopy;
+        handlerCopy = v79;
+        pathCopy = v78;
       }
 
       else
       {
-        v20 = v17;
-        v23 = v79;
-        v22 = v78;
+        v20 = filesCopy;
+        handlerCopy = v79;
+        pathCopy = v78;
         if (self->__stabilizer)
         {
           goto LABEL_24;
@@ -474,7 +474,7 @@ LABEL_26:
 LABEL_33:
 }
 
-- (__CVBuffer)_cropPixelBufferIfNeeded:(__CVBuffer *)a3
+- (__CVBuffer)_cropPixelBufferIfNeeded:(__CVBuffer *)needed
 {
   v23[4] = *MEMORY[0x1E69E9840];
   pixelBufferOut = 0;
@@ -484,10 +484,10 @@ LABEL_33:
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v5 = [(AVAssetWriterInputPixelBufferAdaptor *)self->__pixelBufferAdaptor pixelBufferPool];
-    if (v5)
+    pixelBufferPool = [(AVAssetWriterInputPixelBufferAdaptor *)self->__pixelBufferAdaptor pixelBufferPool];
+    if (pixelBufferPool)
     {
-      v6 = CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], v5, &pixelBufferOut);
+      v6 = CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], pixelBufferPool, &pixelBufferOut);
       *(v18 + 6) = v6;
       if (!v6)
       {
@@ -507,7 +507,7 @@ LABEL_33:
         v23[3] = &unk_1F16C8150;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:4];
 
-        CVBufferSetAttachment(a3, *MEMORY[0x1E6965D70], v13, kCVAttachmentMode_ShouldNotPropagate);
+        CVBufferSetAttachment(needed, *MEMORY[0x1E6965D70], v13, kCVAttachmentMode_ShouldNotPropagate);
         pixelTransferQueue = self->__pixelTransferQueue;
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
@@ -515,13 +515,13 @@ LABEL_33:
         v16[3] = &unk_1E76FCC68;
         v16[4] = self;
         v16[5] = &v17;
-        v16[6] = a3;
+        v16[6] = needed;
         v16[7] = pixelBufferOut;
         dispatch_sync(pixelTransferQueue, v16);
         if (!*(v18 + 6))
         {
-          CVPixelBufferRelease(a3);
-          a3 = pixelBufferOut;
+          CVPixelBufferRelease(needed);
+          needed = pixelBufferOut;
           pixelBufferOut = 0;
         }
       }
@@ -536,7 +536,7 @@ LABEL_33:
   }
 
   CVPixelBufferRelease(pixelBufferOut);
-  return a3;
+  return needed;
 }
 
 uint64_t __65__CAMTimelapseStabilizationMovieWriter__cropPixelBufferIfNeeded___block_invoke(uint64_t a1)
@@ -1017,7 +1017,7 @@ void __65__CAMTimelapseStabilizationMovieWriter__writeMovieAsynchronously__block
   }
 }
 
-- (int)_copyNextSampleBufferFromStabilizer:(opaqueCMSampleBuffer *)a3
+- (int)_copyNextSampleBufferFromStabilizer:(opaqueCMSampleBuffer *)stabilizer
 {
   v5 = 0;
   v20 = 0;
@@ -1030,7 +1030,7 @@ void __65__CAMTimelapseStabilizationMovieWriter__writeMovieAsynchronously__block
     if (v5)
     {
 LABEL_14:
-      *a3 = v6;
+      *stabilizer = v6;
       return v20;
     }
 
@@ -1086,7 +1086,7 @@ LABEL_14:
 
     if (v9)
     {
-      [(CAMTimelapseStabilizationMovieWriter *)v9 _copyNextSampleBufferFromStabilizer:v5, a3];
+      [(CAMTimelapseStabilizationMovieWriter *)v9 _copyNextSampleBufferFromStabilizer:v5, stabilizer];
       v17 = -7;
 LABEL_19:
       v20 = v17;
@@ -1095,7 +1095,7 @@ LABEL_19:
     }
   }
 
-  *a3 = 0;
+  *stabilizer = 0;
   nextSourceFrameIndex = self->__nextSourceFrameIndex;
   p_nextSourceFrameIndex = &self->__nextSourceFrameIndex;
   if (nextSourceFrameIndex < [*(p_nextSourceFrameIndex - 19) count])
@@ -1156,7 +1156,7 @@ intptr_t __67__CAMTimelapseStabilizationMovieWriter__requestNextFrameReadDecode_
   return result;
 }
 
-- (int)_copySourcePixelBufferForNextFrame:(__CVBuffer *)a3 skipBadFrames:(BOOL)a4
+- (int)_copySourcePixelBufferForNextFrame:(__CVBuffer *)frame skipBadFrames:(BOOL)frames
 {
   v31 = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -1171,7 +1171,7 @@ intptr_t __67__CAMTimelapseStabilizationMovieWriter__requestNextFrameReadDecode_
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v20[3] = 0;
-  if (a3)
+  if (frame)
   {
     if (self->__stashedSourceFrame)
     {
@@ -1196,7 +1196,7 @@ intptr_t __67__CAMTimelapseStabilizationMovieWriter__requestNextFrameReadDecode_
         }
 
         nextSourceFrameIndex = self->__nextSourceFrameIndex;
-        if (nextSourceFrameIndex >= [(NSArray *)frameFilePaths count]|| (syncQueue = self->__syncQueue, block[0] = MEMORY[0x1E69E9820], block[1] = 3221225472, block[2] = __89__CAMTimelapseStabilizationMovieWriter__copySourcePixelBufferForNextFrame_skipBadFrames___block_invoke, block[3] = &unk_1E76FCCE0, block[4] = self, block[5] = v20, v19 = a4, block[6] = &v25, block[7] = &v21, dispatch_sync(syncQueue, block), (v11 = self->__frameFilePaths) == 0) || (v12 = self->__nextSourceFrameIndex, v12 >= [(NSArray *)v11 count]))
+        if (nextSourceFrameIndex >= [(NSArray *)frameFilePaths count]|| (syncQueue = self->__syncQueue, block[0] = MEMORY[0x1E69E9820], block[1] = 3221225472, block[2] = __89__CAMTimelapseStabilizationMovieWriter__copySourcePixelBufferForNextFrame_skipBadFrames___block_invoke, block[3] = &unk_1E76FCCE0, block[4] = self, block[5] = v20, v19 = frames, block[6] = &v25, block[7] = &v21, dispatch_sync(syncQueue, block), (v11 = self->__frameFilePaths) == 0) || (v12 = self->__nextSourceFrameIndex, v12 >= [(NSArray *)v11 count]))
         {
           v7 = v26;
 LABEL_20:
@@ -1231,7 +1231,7 @@ LABEL_20:
     if (v15)
     {
       ++self->__nextSourceFrameIndex;
-      *a3 = v15;
+      *frame = v15;
     }
   }
 
@@ -1363,10 +1363,10 @@ LABEL_19:
   *(*(*(a1 + 48) + 8) + 24) = -3;
 }
 
-+ (CGSize)_desiredOutputSizeForSourcePixelBuffer:(__CVBuffer *)a3
++ (CGSize)_desiredOutputSizeForSourcePixelBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   v6 = Height;
   if (Height <= Width)
   {
@@ -1462,12 +1462,12 @@ LABEL_19:
   return result;
 }
 
-- (int)_startWritingWithOutputPath:(id)a3 width:(int64_t)a4 height:(int64_t)a5 videoFormatDescription:(opaqueCMFormatDescription *)a6 transform:(CGAffineTransform *)a7 framesPerSecond:(int64_t)a8 frameCount:(int64_t)a9 preferHEVC:(BOOL)a10 visMetadataCount:(int64_t)a11 videoMetadata:(id)a12
+- (int)_startWritingWithOutputPath:(id)path width:(int64_t)width height:(int64_t)height videoFormatDescription:(opaqueCMFormatDescription *)description transform:(CGAffineTransform *)transform framesPerSecond:(int64_t)second frameCount:(int64_t)count preferHEVC:(BOOL)self0 visMetadataCount:(int64_t)self1 videoMetadata:(id)self2
 {
   v55[3] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v48 = a12;
-  v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:v17];
+  pathCopy = path;
+  metadataCopy = metadata;
+  v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   v19 = objc_alloc(MEMORY[0x1E6987ED8]);
   v20 = *MEMORY[0x1E69874C0];
   v53 = 0;
@@ -1486,16 +1486,16 @@ LABEL_16:
   }
 
   v46 = v18;
-  v25 = v17;
-  [(AVAssetWriter *)self->__writer setMetadata:v48];
+  v25 = pathCopy;
+  [(AVAssetWriter *)self->__writer setMetadata:metadataCopy];
   v26 = +[CAMTimelapseSettings sharedInstance];
-  v27 = [v26 outputSettingsForWidth:a4 height:a5 videoFormatDescription:a6 framesPerSecond:a8 frameCount:a9 useHEVC:a10];
+  v27 = [v26 outputSettingsForWidth:width height:height videoFormatDescription:description framesPerSecond:second frameCount:count useHEVC:c];
 
   v28 = [MEMORY[0x1E6987EE0] assetWriterInputWithMediaType:*MEMORY[0x1E6987608] outputSettings:v27];
-  v29 = *&a7->c;
-  *v51 = *&a7->a;
+  v29 = *&transform->c;
+  *v51 = *&transform->a;
   *&v51[16] = v29;
-  v52 = *&a7->tx;
+  v52 = *&transform->tx;
   [v28 setTransform:v51];
   [(CAMTimelapseStabilizationMovieWriter *)self _setMetadataOnVideoTrackAssetWriterInput:v28];
   v30 = *MEMORY[0x1E6966130];
@@ -1503,10 +1503,10 @@ LABEL_16:
   v31 = *MEMORY[0x1E6966208];
   v54[0] = v30;
   v54[1] = v31;
-  v32 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v32 = [MEMORY[0x1E696AD98] numberWithInteger:width];
   v55[1] = v32;
   v54[2] = *MEMORY[0x1E69660B8];
-  v33 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v33 = [MEMORY[0x1E696AD98] numberWithInteger:height];
   v55[2] = v33;
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:3];
 
@@ -1527,7 +1527,7 @@ LABEL_16:
     pixelBufferAdaptor = *v51;
   }
 
-  v17 = v25;
+  pathCopy = v25;
   v18 = v46;
   if (!v36)
   {
@@ -1539,7 +1539,7 @@ LABEL_16:
   v22 = 0;
   if (![(AVAssetWriter *)*p_writer startWriting])
   {
-    [CAMTimelapseStabilizationMovieWriter _startWritingWithOutputPath:v17 width:&self->__writer height:? videoFormatDescription:? transform:? framesPerSecond:? frameCount:? preferHEVC:? visMetadataCount:? videoMetadata:?];
+    [CAMTimelapseStabilizationMovieWriter _startWritingWithOutputPath:pathCopy width:&self->__writer height:? videoFormatDescription:? transform:? framesPerSecond:? frameCount:? preferHEVC:? visMetadataCount:? videoMetadata:?];
     goto LABEL_16;
   }
 
@@ -1547,15 +1547,15 @@ LABEL_16:
   *v51 = *MEMORY[0x1E6960CC0];
   *&v51[16] = *(MEMORY[0x1E6960CC0] + 16);
   [(AVAssetWriter *)v39 startSessionAtSourceTime:v51];
-  if (a11 >= 1)
+  if (metadataCount >= 1)
   {
     memset(v51, 0, 24);
-    CMTimeMake(v51, 1, a8);
-    v40 = [(AVAssetWriterInputPixelBufferAdaptor *)self->__pixelBufferAdaptor pixelBufferPool];
+    CMTimeMake(v51, 1, second);
+    pixelBufferPool = [(AVAssetWriterInputPixelBufferAdaptor *)self->__pixelBufferAdaptor pixelBufferPool];
     v41 = objc_alloc(MEMORY[0x1E6987200]);
     v49 = *v51;
     v50 = *&v51[16];
-    v42 = [v41 initWithTargetFrameDuration:&v49 dataProvider:self destinationBufferPool:v40 stabilizationEnabled:1];
+    v42 = [v41 initWithTargetFrameDuration:&v49 dataProvider:self destinationBufferPool:pixelBufferPool stabilizationEnabled:1];
     stabilizer = self->__stabilizer;
     self->__stabilizer = v42;
 
@@ -1572,23 +1572,23 @@ LABEL_11:
   return v44;
 }
 
-- (void)_setMetadataOnVideoTrackAssetWriterInput:(id)a3
+- (void)_setMetadataOnVideoTrackAssetWriterInput:(id)input
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BF158] metadataItemForTimelapse];
-  v5 = v4;
-  if (v4)
+  inputCopy = input;
+  metadataItemForTimelapse = [MEMORY[0x1E69BF158] metadataItemForTimelapse];
+  v5 = metadataItemForTimelapse;
+  if (metadataItemForTimelapse)
   {
-    v7[0] = v4;
+    v7[0] = metadataItemForTimelapse;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-    [v3 setMetadata:v6];
+    [inputCopy setMetadata:v6];
   }
 }
 
-- (BOOL)_appendPixelBufferToMovie:(__CVBuffer *)a3
+- (BOOL)_appendPixelBufferToMovie:(__CVBuffer *)movie
 {
-  if (!a3)
+  if (!movie)
   {
     [CAMTimelapseStabilizationMovieWriter _appendPixelBufferToMovie:];
     return 0;
@@ -1598,7 +1598,7 @@ LABEL_11:
   CMTimeMake(&v8, self->__frameCountWrittenToMovie, self->__movieFramesPerSecond);
   pixelBufferAdaptor = self->__pixelBufferAdaptor;
   v7 = v8;
-  if (![(AVAssetWriterInputPixelBufferAdaptor *)pixelBufferAdaptor appendPixelBuffer:a3 withPresentationTime:&v7])
+  if (![(AVAssetWriterInputPixelBufferAdaptor *)pixelBufferAdaptor appendPixelBuffer:movie withPresentationTime:&v7])
   {
     [CAMTimelapseStabilizationMovieWriter _appendPixelBufferToMovie:];
     return 0;
@@ -1641,21 +1641,21 @@ void __63__CAMTimelapseStabilizationMovieWriter__finishMovieWithFailure__block_i
   }
 }
 
-- (void)_finishMovieWithCompletionHandler:(id)a3
+- (void)_finishMovieWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(AVAssetWriterInput *)self->__videoInput markAsFinished];
-  v5 = [(AVAssetWriter *)self->__writer metadata];
+  metadata = [(AVAssetWriter *)self->__writer metadata];
   writer = self->__writer;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__CAMTimelapseStabilizationMovieWriter__finishMovieWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E76FCD08;
-  v10 = v5;
-  v11 = v4;
+  v10 = metadata;
+  v11 = handlerCopy;
   v9[4] = self;
-  v7 = v5;
-  v8 = v4;
+  v7 = metadata;
+  v8 = handlerCopy;
   [(AVAssetWriter *)writer finishWritingWithCompletionHandler:v9];
 }
 
@@ -1673,7 +1673,7 @@ uint64_t __74__CAMTimelapseStabilizationMovieWriter__finishMovieWithCompletionHa
   return result;
 }
 
-- (__CVBuffer)copySourcePixelBufferForFrameNumber:(int64_t)a3 outputSampleTime:(id *)a4 stabilizer:(id)a5
+- (__CVBuffer)copySourcePixelBufferForFrameNumber:(int64_t)number outputSampleTime:(id *)time stabilizer:(id)stabilizer
 {
   v17 = 0;
   v8 = os_log_create("com.apple.camera", "Nebula");
@@ -1705,26 +1705,26 @@ uint64_t __74__CAMTimelapseStabilizationMovieWriter__finishMovieWithCompletionHa
         block[2] = __104__CAMTimelapseStabilizationMovieWriter_copySourcePixelBufferForFrameNumber_outputSampleTime_stabilizer___block_invoke;
         block[3] = &unk_1E76F7A38;
         block[4] = self;
-        block[5] = a3;
+        block[5] = number;
         dispatch_sync(syncQueue, block);
       }
 
-      v12 = [(CAMTimelapseStabilizationMovieWriter *)self _frameLoadMode];
-      if (v12 == 1 || v12 == 2 && a3 + 1 < [(AVOfflineVideoStabilizer *)self->__stabilizer preferredSourcePixelBufferPrimingFrameCount])
+      _frameLoadMode = [(CAMTimelapseStabilizationMovieWriter *)self _frameLoadMode];
+      if (_frameLoadMode == 1 || _frameLoadMode == 2 && number + 1 < [(AVOfflineVideoStabilizer *)self->__stabilizer preferredSourcePixelBufferPrimingFrameCount])
       {
         [(CAMTimelapseStabilizationMovieWriter *)self _requestNextFrameReadDecode];
       }
 
-      if (a4)
+      if (time)
       {
-        CMTimeMake(&v15, a3, self->__movieFramesPerSecond);
-        *a4 = v15;
+        CMTimeMake(&v15, number, self->__movieFramesPerSecond);
+        *time = v15;
       }
 
       value = os_log_create("com.apple.camera", "Nebula");
       if (os_log_type_enabled(value, OS_LOG_TYPE_DEBUG))
       {
-        [CAMTimelapseStabilizationMovieWriter copySourcePixelBufferForFrameNumber:a3 outputSampleTime:value stabilizer:?];
+        [CAMTimelapseStabilizationMovieWriter copySourcePixelBufferForFrameNumber:number outputSampleTime:value stabilizer:?];
       }
     }
 
@@ -1752,12 +1752,12 @@ void __104__CAMTimelapseStabilizationMovieWriter_copySourcePixelBufferForFrameNu
   [v4 addObject:v5];
 }
 
-- (id)copySourceStabilizationMetadataForFrameNumber:(int64_t)a3 outputSampleTime:(id *)a4 stabilizer:(id)a5
+- (id)copySourceStabilizationMetadataForFrameNumber:(int64_t)number outputSampleTime:(id *)time stabilizer:(id)stabilizer
 {
   v30 = *MEMORY[0x1E69E9840];
   p_nextMetadataFrameIndex = &self->__nextMetadataFrameIndex;
   nextMetadataFrameIndex = self->__nextMetadataFrameIndex;
-  if (nextMetadataFrameIndex >= [(NSArray *)self->__visMetadataFilePaths count:a3])
+  if (nextMetadataFrameIndex >= [(NSArray *)self->__visMetadataFilePaths count:number])
   {
     v17 = os_log_create("com.apple.camera", "Nebula");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1765,7 +1765,7 @@ void __104__CAMTimelapseStabilizationMovieWriter_copySourcePixelBufferForFrameNu
       v24 = self->__nextMetadataFrameIndex;
       v25 = [(NSArray *)self->__visMetadataFilePaths count];
       LODWORD(v28.value) = 134218496;
-      *(&v28.value + 4) = a3;
+      *(&v28.value + 4) = number;
       LOWORD(v28.flags) = 2048;
       *(&v28.flags + 2) = v24;
       HIWORD(v28.epoch) = 2048;
@@ -1773,7 +1773,7 @@ void __104__CAMTimelapseStabilizationMovieWriter_copySourcePixelBufferForFrameNu
       _os_log_debug_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEBUG, "Stabilizer asking for metadata frame %ld (our %ld), I only have %ld, returning nil (EOD)", &v28, 0x20u);
     }
 
-    v14 = 0;
+    dictionary = 0;
     v11 = 0;
     v22 = 0;
     v10 = 0;
@@ -1802,9 +1802,9 @@ void __104__CAMTimelapseStabilizationMovieWriter_copySourcePixelBufferForFrameNu
   }
 
   v26 = 0;
-  v14 = [MEMORY[0x1E696AE40] propertyListWithData:v11 options:0 format:0 error:&v26];
+  dictionary = [MEMORY[0x1E696AE40] propertyListWithData:v11 options:0 format:0 error:&v26];
   v15 = v26;
-  if (v14)
+  if (dictionary)
   {
     v16 = v15 == 0;
   }
@@ -1816,11 +1816,11 @@ void __104__CAMTimelapseStabilizationMovieWriter_copySourcePixelBufferForFrameNu
 
   if (v16)
   {
-    if (a4)
+    if (time)
     {
-      CMTimeMake(&v28, a3, self->__movieFramesPerSecond);
+      CMTimeMake(&v28, number, self->__movieFramesPerSecond);
       v22 = 0;
-      *a4 = v28;
+      *time = v28;
     }
 
     else
@@ -1832,12 +1832,12 @@ void __104__CAMTimelapseStabilizationMovieWriter_copySourcePixelBufferForFrameNu
   else
   {
     v22 = v15;
-    v23 = [CAMTimelapseStabilizationMovieWriter copySourceStabilizationMetadataForFrameNumber:v10 outputSampleTime:v15 stabilizer:v14 == 0];
+    v23 = [CAMTimelapseStabilizationMovieWriter copySourceStabilizationMetadataForFrameNumber:v10 outputSampleTime:v15 stabilizer:dictionary == 0];
     if (v23)
     {
 LABEL_27:
-      v14 = [MEMORY[0x1E695DF20] dictionary];
-      if (!v14)
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
+      if (!dictionary)
       {
         goto LABEL_17;
       }
@@ -1849,19 +1849,19 @@ LABEL_27:
   {
     if (v10)
     {
-      v20 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
     }
 
     else
     {
-      v20 = @"<invalid>";
+      lastPathComponent = @"<invalid>";
     }
 
     v21 = *p_nextMetadataFrameIndex;
     LODWORD(v28.value) = 138543874;
-    *(&v28.value + 4) = v20;
+    *(&v28.value + 4) = lastPathComponent;
     LOWORD(v28.flags) = 2048;
-    *(&v28.flags + 2) = a3;
+    *(&v28.flags + 2) = number;
     HIWORD(v28.epoch) = 2048;
     v29 = v21;
     _os_log_debug_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEBUG, "Returning %{public}@ for metadata frame %ld (our %ld)", &v28, 0x20u);
@@ -1874,7 +1874,7 @@ LABEL_16:
 
 LABEL_17:
   ++*p_nextMetadataFrameIndex;
-  v18 = v14;
+  v18 = dictionary;
 
   return v18;
 }

@@ -1,6 +1,6 @@
 @interface SGRealtimeSuggestionsTuple
 - (id)combinedSuggestions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)suggestionsCount;
 @end
@@ -51,7 +51,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -67,18 +67,18 @@
 
 - (unint64_t)suggestionsCount
 {
-  v3 = [(SGRealtimeSuggestionsTuple *)self contacts];
-  v4 = [v3 count];
-  v5 = [(SGRealtimeSuggestionsTuple *)self events];
-  v6 = [v5 count] + v4;
-  v7 = [(SGRealtimeSuggestionsTuple *)self reminders];
-  v8 = [v7 count];
-  v9 = [(SGRealtimeSuggestionsTuple *)self deliveries];
-  v10 = v6 + v8 + [v9 count];
-  v11 = [(SGRealtimeSuggestionsTuple *)self walletOrders];
-  v12 = [v11 count];
-  v13 = [(SGRealtimeSuggestionsTuple *)self walletPasses];
-  v14 = v12 + [v13 count];
+  contacts = [(SGRealtimeSuggestionsTuple *)self contacts];
+  v4 = [contacts count];
+  events = [(SGRealtimeSuggestionsTuple *)self events];
+  v6 = [events count] + v4;
+  reminders = [(SGRealtimeSuggestionsTuple *)self reminders];
+  v8 = [reminders count];
+  deliveries = [(SGRealtimeSuggestionsTuple *)self deliveries];
+  v10 = v6 + v8 + [deliveries count];
+  walletOrders = [(SGRealtimeSuggestionsTuple *)self walletOrders];
+  v12 = [walletOrders count];
+  walletPasses = [(SGRealtimeSuggestionsTuple *)self walletPasses];
+  v14 = v12 + [walletPasses count];
 
   return v10 + v14;
 }

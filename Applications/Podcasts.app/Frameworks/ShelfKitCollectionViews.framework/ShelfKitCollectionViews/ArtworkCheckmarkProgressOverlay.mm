@@ -1,12 +1,12 @@
 @interface ArtworkCheckmarkProgressOverlay
-- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ArtworkCheckmarkProgressOverlay
 
-- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay_progressStyle) = 2;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay_checkmarkInset) = 0;
@@ -32,7 +32,7 @@
   v8[2] = sub_19D688;
   v8[3] = &block_descriptor_3;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation:v6];
   _Block_release(v6);
@@ -44,7 +44,7 @@
   }
 }
 
-- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews31ArtworkCheckmarkProgressOverlay)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

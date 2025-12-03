@@ -1,12 +1,12 @@
 @interface WeekdayButton
-- (_TtC9SeymourUI13WeekdayButton)initWithCoder:(id)a3;
-- (void)buttonTapped:(id)a3;
+- (_TtC9SeymourUI13WeekdayButton)initWithCoder:(id)coder;
+- (void)buttonTapped:(id)tapped;
 - (void)updateConfiguration;
 @end
 
 @implementation WeekdayButton
 
-- (_TtC9SeymourUI13WeekdayButton)initWithCoder:(id)a3
+- (_TtC9SeymourUI13WeekdayButton)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI13WeekdayButton_onTap);
   *v4 = 0;
@@ -33,11 +33,11 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BD05100();
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI13WeekdayButton_item);
   if (v3)
@@ -46,7 +46,7 @@
     if (v4)
     {
       v5 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI13WeekdayButton_item);
-      v6 = self;
+      selfCopy = self;
       v7 = v3;
       sub_20B584050(v4);
       v4(v7, v5);

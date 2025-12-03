@@ -2,7 +2,7 @@
 + (uint64_t)shared;
 - (CGRect)boundingRect;
 - (const)_rb_xml_document;
-- (id)encodedDataForDelegate:(id)a3 error:(id *)a4;
+- (id)encodedDataForDelegate:(id)delegate error:(id *)error;
 @end
 
 @implementation RBEmptyDisplayListContents
@@ -39,7 +39,7 @@
   return [RBEmptyDisplayListContents _rb_xml_document]::shared_doc;
 }
 
-- (id)encodedDataForDelegate:(id)a3 error:(id *)a4
+- (id)encodedDataForDelegate:(id)delegate error:(id *)error
 {
   {
     operator new();
@@ -47,7 +47,7 @@
 
   v6 = [RBEmptyDisplayListContents encodedDataForDelegate:error:]::empty;
 
-  return encode_contents(v6, a3, a4);
+  return encode_contents(v6, delegate, error);
 }
 
 @end

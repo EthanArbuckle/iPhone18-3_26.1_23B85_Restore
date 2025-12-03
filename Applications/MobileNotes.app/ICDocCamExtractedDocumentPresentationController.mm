@@ -1,22 +1,22 @@
 @interface ICDocCamExtractedDocumentPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (ICDocCamExtractedDocumentPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (ICDocCamExtractedDocumentPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)containerViewWillLayoutSubviews;
 @end
 
 @implementation ICDocCamExtractedDocumentPresentationController
 
-- (ICDocCamExtractedDocumentPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (ICDocCamExtractedDocumentPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v5.receiver = self;
   v5.super_class = ICDocCamExtractedDocumentPresentationController;
-  return [(ICDocCamExtractedDocumentPresentationController *)&v5 initWithPresentedViewController:a3 presentingViewController:a4];
+  return [(ICDocCamExtractedDocumentPresentationController *)&v5 initWithPresentedViewController:controller presentingViewController:viewController];
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = [(ICDocCamExtractedDocumentPresentationController *)self containerView];
-  [v2 bounds];
+  containerView = [(ICDocCamExtractedDocumentPresentationController *)self containerView];
+  [containerView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -40,8 +40,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ICDocCamExtractedDocumentPresentationController *)self presentedView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  presentedView = [(ICDocCamExtractedDocumentPresentationController *)self presentedView];
+  [presentedView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

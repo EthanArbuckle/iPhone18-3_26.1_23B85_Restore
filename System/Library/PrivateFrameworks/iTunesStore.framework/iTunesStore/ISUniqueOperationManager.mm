@@ -1,16 +1,16 @@
 @interface ISUniqueOperationManager
 + (id)sharedInstance;
-+ (void)setSharedInstance:(id)a3;
++ (void)setSharedInstance:(id)instance;
 - (ISUniqueOperationManager)init;
 - (id)_activeContext;
-- (id)_contextForOperation:(id)a3;
-- (id)lockWithIdentifier:(id)a3;
-- (id)predecessorForKey:(id)a3 operation:(id)a4;
-- (void)checkInOperation:(id)a3;
-- (void)checkOutOperation:(id)a3;
+- (id)_contextForOperation:(id)operation;
+- (id)lockWithIdentifier:(id)identifier;
+- (id)predecessorForKey:(id)key operation:(id)operation;
+- (void)checkInOperation:(id)operation;
+- (void)checkOutOperation:(id)operation;
 - (void)dealloc;
-- (void)setPredecessorIfNeeded:(id)a3 forKey:(id)a4;
-- (void)uniqueOperationFinished:(id)a3 forKey:(id)a4;
+- (void)setPredecessorIfNeeded:(id)needed forKey:(id)key;
+- (void)uniqueOperationFinished:(id)finished forKey:(id)key;
 @end
 
 @implementation ISUniqueOperationManager
@@ -21,7 +21,7 @@
   v3 = __SharedInstance_0;
   if (!__SharedInstance_0)
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
     __SharedInstance_0 = v3;
   }
 
@@ -51,19 +51,19 @@
   [(ISUniqueOperationManager *)&v3 dealloc];
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
   pthread_mutex_lock(&__SharedInstanceLock_0);
-  if (__SharedInstance_0 != a3)
+  if (__SharedInstance_0 != instance)
   {
 
-    __SharedInstance_0 = a3;
+    __SharedInstance_0 = instance;
   }
 
   pthread_mutex_unlock(&__SharedInstanceLock_0);
 }
 
-- (void)checkInOperation:(id)a3
+- (void)checkInOperation:(id)operation
 {
   [(NSLock *)self->_lock lock];
   [-[ISUniqueOperationManager _activeContext](self "_activeContext")];
@@ -72,14 +72,14 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)checkOutOperation:(id)a3
+- (void)checkOutOperation:(id)operation
 {
   [(NSLock *)self->_lock lock];
-  v5 = [(ISUniqueOperationManager *)self _contextForOperation:a3];
+  v5 = [(ISUniqueOperationManager *)self _contextForOperation:operation];
   if (v5)
   {
     v6 = v5;
-    [(ISUniqueOperationContext *)v5 removeOperation:a3];
+    [(ISUniqueOperationContext *)v5 removeOperation:operation];
     if (![(ISUniqueOperationContext *)v6 countOfOperations])
     {
       activeContext = self->_activeContext;
@@ -98,7 +98,7 @@
   [(NSLock *)lock unlock];
 }
 
-- (id)lockWithIdentifier:(id)a3
+- (id)lockWithIdentifier:(id)identifier
 {
   [(NSLock *)self->_lock lock];
   lockPool = self->_lockPool;
@@ -108,12 +108,12 @@
     self->_lockPool = lockPool;
   }
 
-  v6 = [(NSMutableDictionary *)lockPool objectForKey:a3];
+  v6 = [(NSMutableDictionary *)lockPool objectForKey:identifier];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCAAF8]);
-    [v6 setName:a3];
-    [(NSMutableDictionary *)self->_lockPool setObject:v6 forKey:a3];
+    [v6 setName:identifier];
+    [(NSMutableDictionary *)self->_lockPool setObject:v6 forKey:identifier];
     v7 = v6;
   }
 
@@ -121,21 +121,21 @@
   return v6;
 }
 
-- (id)predecessorForKey:(id)a3 operation:(id)a4
+- (id)predecessorForKey:(id)key operation:(id)operation
 {
   [(NSLock *)self->_lock lock];
-  v7 = [-[ISUniqueOperationManager _contextForOperation:](self _contextForOperation:{a4), "uniqueOperationForKey:", a3}];
+  v7 = [-[ISUniqueOperationManager _contextForOperation:](self _contextForOperation:{operation), "uniqueOperationForKey:", key}];
   [(NSLock *)self->_lock unlock];
   return v7;
 }
 
-- (void)setPredecessorIfNeeded:(id)a3 forKey:(id)a4
+- (void)setPredecessorIfNeeded:(id)needed forKey:(id)key
 {
   [(NSLock *)self->_lock lock];
-  v7 = [(ISUniqueOperationManager *)self _contextForOperation:a3];
-  if (![v7 uniqueOperationForKey:a4])
+  v7 = [(ISUniqueOperationManager *)self _contextForOperation:needed];
+  if (![v7 uniqueOperationForKey:key])
   {
-    [v7 setUniqueOperation:a3 forKey:a4];
+    [v7 setUniqueOperation:needed forKey:key];
   }
 
   lock = self->_lock;
@@ -143,13 +143,13 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)uniqueOperationFinished:(id)a3 forKey:(id)a4
+- (void)uniqueOperationFinished:(id)finished forKey:(id)key
 {
   [(NSLock *)self->_lock lock];
-  v7 = [(ISUniqueOperationManager *)self _contextForOperation:a3];
-  if ([v7 uniqueOperationForKey:a4] == a3)
+  v7 = [(ISUniqueOperationManager *)self _contextForOperation:finished];
+  if ([v7 uniqueOperationForKey:key] == finished)
   {
-    [v7 setUniqueOperation:0 forKey:a4];
+    [v7 setUniqueOperation:0 forKey:key];
   }
 
   lock = self->_lock;
@@ -171,7 +171,7 @@
   return result;
 }
 
-- (id)_contextForOperation:(id)a3
+- (id)_contextForOperation:(id)operation
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -194,7 +194,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
-      if ([v9 containsOperation:a3])
+      if ([v9 containsOperation:operation])
       {
         break;
       }

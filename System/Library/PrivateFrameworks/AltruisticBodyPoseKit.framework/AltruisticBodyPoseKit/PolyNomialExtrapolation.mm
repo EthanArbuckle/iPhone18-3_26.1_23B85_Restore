@@ -1,17 +1,17 @@
 @interface PolyNomialExtrapolation
-- (PolyNomialExtrapolation)initWithHistorySize:(unint64_t)a3 degreeOfPolynomial:(unint64_t)a4;
+- (PolyNomialExtrapolation)initWithHistorySize:(unint64_t)size degreeOfPolynomial:(unint64_t)polynomial;
 - (double)predict;
 - (id).cxx_construct;
-- (void)printHistoryNamed:(id)a3;
+- (void)printHistoryNamed:(id)named;
 - (void)pushPoint:(PolyNomialExtrapolation *)self;
 @end
 
 @implementation PolyNomialExtrapolation
 
-- (PolyNomialExtrapolation)initWithHistorySize:(unint64_t)a3 degreeOfPolynomial:(unint64_t)a4
+- (PolyNomialExtrapolation)initWithHistorySize:(unint64_t)size degreeOfPolynomial:(unint64_t)polynomial
 {
-  v4 = a4;
-  v5 = a3;
+  polynomialCopy = polynomial;
+  sizeCopy = size;
   v25.receiver = self;
   v25.super_class = PolyNomialExtrapolation;
   v6 = [(PolyNomialExtrapolation *)&v25 init];
@@ -19,9 +19,9 @@
   v8 = v6;
   if (v6)
   {
-    *(v6 + 2) = v5;
-    *(v6 + 3) = v4;
-    std::vector<unsigned int>::resize((v6 + 112), v5);
+    *(v6 + 2) = sizeCopy;
+    *(v6 + 3) = polynomialCopy;
+    std::vector<unsigned int>::resize((v6 + 112), sizeCopy);
     begin = v8->_g.__begin_;
     end = v8->_g.__end_;
     if (begin != end)
@@ -100,38 +100,38 @@
 - (double)predict
 {
   v46 = *MEMORY[0x277D85DE8];
-  if ([a1 ready])
+  if ([self ready])
   {
-    v29 = *(a1 + 8);
+    v29 = *(self + 8);
     if (v29 >= 1)
     {
       v2 = 0;
-      v3 = *(a1 + 12);
+      v3 = *(self + 12);
       do
       {
         if ((v3 & 0x80000000) == 0)
         {
-          v4 = *(a1 + 32);
+          v4 = *(self + 32);
           if (v2 < v4)
           {
             v5 = 0;
-            v6 = *(a1 + 112);
-            v7 = *(a1 + 36);
+            v6 = *(self + 112);
+            v7 = *(self + 36);
             v8 = v3;
             v9 = v2;
             while (v7 != v5)
             {
               v10 = pow(*(v6 + 4 * v2), v8);
-              *(*(a1 + 16) + 4 * v9) = v10;
+              *(*(self + 16) + 4 * v9) = v10;
               v11 = pow(*(v6 + 4 * v2), v8);
-              v12 = *(a1 + 56);
-              if (v2 >= v12 || v5 >= *(a1 + 60))
+              v12 = *(self + 56);
+              if (v2 >= v12 || v5 >= *(self + 60))
               {
                 [PolyNomialExtrapolation predict];
               }
 
               v13 = v11;
-              *(*(a1 + 40) + 4 * (v2 + v12 * v5++)) = v13;
+              *(*(self + 40) + 4 * (v2 + v12 * v5++)) = v13;
               v9 += v4;
               --v8;
               if (v3 + 1 == v5)
@@ -154,7 +154,7 @@ LABEL_11:
     if (v29 >= 1)
     {
       v14 = 0;
-      v15 = *(a1 + 80);
+      v15 = *(self + 80);
       do
       {
         if (v15 == v14)
@@ -162,13 +162,13 @@ LABEL_11:
           [PolyNomialExtrapolation predict];
         }
 
-        *(*(a1 + 64) + 4 * v14) = *(*(*(a1 + 144) + (((v14 + *(a1 + 168)) >> 7) & 0x1FFFFFFFFFFFFF8)) + 4 * ((v14 + *(a1 + 168)) & 0x3FF));
-        if (v14 >= *(a1 + 104))
+        *(*(self + 64) + 4 * v14) = *(*(*(self + 144) + (((v14 + *(self + 168)) >> 7) & 0x1FFFFFFFFFFFFF8)) + 4 * ((v14 + *(self + 168)) & 0x3FF));
+        if (v14 >= *(self + 104))
         {
           [PolyNomialExtrapolation predict];
         }
 
-        *(*(a1 + 88) + 4 * v14) = *(*(*(a1 + 192) + (((v14 + *(a1 + 216)) >> 7) & 0x1FFFFFFFFFFFFF8)) + 4 * ((v14 + *(a1 + 216)) & 0x3FF));
+        *(*(self + 88) + 4 * v14) = *(*(*(self + 192) + (((v14 + *(self + 216)) >> 7) & 0x1FFFFFFFFFFFFF8)) + 4 * ((v14 + *(self + 216)) & 0x3FF));
         ++v14;
       }
 
@@ -176,9 +176,9 @@ LABEL_11:
     }
 
     v41 = 869711765;
-    cva::SVD<cva::Matrix<float,0u,0u,false>,true>::SVD<cva::Matrix<float,0u,0u,false>>(v33, (a1 + 16), 3, 0);
+    cva::SVD<cva::Matrix<float,0u,0u,false>,true>::SVD<cva::Matrix<float,0u,0u,false>>(v33, (self + 16), 3, 0);
     cva::SVD<cva::Matrix<float,0u,0u,false>,true>::inverse(v33, &v41, v36);
-    if (v38 != *(a1 + 80))
+    if (v38 != *(self + 80))
     {
       __assert_rtn("MatrixMultExpr", "matrixmultexpr.h", 100, "((lhs.ref().columns() == rhs.ref().rows())) || cva::detail::assertMessage(Matrix sizes are not compatible!)");
     }
@@ -188,8 +188,8 @@ LABEL_11:
     cva::MatrixData<int,0ul,0ul,false>::allocate(v39, v37);
     v40 = v37;
     v43 = v36;
-    v44 = a1 + 64;
-    if (v38 != *(a1 + 80))
+    v44 = self + 64;
+    if (v38 != *(self + 80))
     {
       __assert_rtn("MatrixMultExpr", "matrixmultexpr.h", 100, "((lhs.ref().columns() == rhs.ref().rows())) || cva::detail::assertMessage(Matrix sizes are not compatible!)");
     }
@@ -200,9 +200,9 @@ LABEL_11:
     free(v35);
     free(v34);
     free(v33[0]);
-    cva::SVD<cva::Matrix<float,0u,0u,false>,true>::SVD<cva::Matrix<float,0u,0u,false>>(v33, (a1 + 40), 3, 0);
+    cva::SVD<cva::Matrix<float,0u,0u,false>,true>::SVD<cva::Matrix<float,0u,0u,false>>(v33, (self + 40), 3, 0);
     cva::SVD<cva::Matrix<float,0u,0u,false>,true>::inverse(v33, &v41, v30);
-    if (v32 != *(a1 + 104))
+    if (v32 != *(self + 104))
     {
       __assert_rtn("MatrixMultExpr", "matrixmultexpr.h", 100, "((lhs.ref().columns() == rhs.ref().rows())) || cva::detail::assertMessage(Matrix sizes are not compatible!)");
     }
@@ -212,8 +212,8 @@ LABEL_11:
     cva::MatrixData<int,0ul,0ul,false>::allocate(v36, v31);
     v37 = v31;
     v43 = v30;
-    v44 = a1 + 88;
-    if (v32 != *(a1 + 104))
+    v44 = self + 88;
+    if (v32 != *(self + 104))
     {
       __assert_rtn("MatrixMultExpr", "matrixmultexpr.h", 100, "((lhs.ref().columns() == rhs.ref().rows())) || cva::detail::assertMessage(Matrix sizes are not compatible!)");
     }
@@ -224,7 +224,7 @@ LABEL_11:
     free(v35);
     free(v34);
     free(v33[0]);
-    v16 = *(a1 + 12);
+    v16 = *(self + 12);
     v17 = v36[0];
     if ((v16 & 0x80000000) != 0)
     {
@@ -240,7 +240,7 @@ LABEL_11:
 
       else
       {
-        v18 = *(a1 + 12);
+        v18 = *(self + 12);
       }
 
       if (v40 <= v18 || v37 == v18)
@@ -250,7 +250,7 @@ LABEL_11:
 
       v19 = v39[0];
       v20 = v16 + 1;
-      v21 = *(a1 + 8);
+      v21 = *(self + 8);
       v22 = 0;
       v23 = v36[0];
       do
@@ -280,10 +280,10 @@ LABEL_11:
   return *&v22;
 }
 
-- (void)printHistoryNamed:(id)a3
+- (void)printHistoryNamed:(id)named
 {
-  v5 = a3;
-  printf("%s = [", [a3 UTF8String]);
+  namedCopy = named;
+  printf("%s = [", [named UTF8String]);
   if (self->_x.__size_)
   {
     v6 = 0;

@@ -1,17 +1,17 @@
 @interface COSFeatureHighlightRowView
-- (CGSize)_sizeThatFits:(CGSize)a3 doLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (COSFeatureHighlightRowView)initWithFrame:(CGRect)a3;
+- (CGSize)_sizeThatFits:(CGSize)fits doLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (COSFeatureHighlightRowView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation COSFeatureHighlightRowView
 
-- (COSFeatureHighlightRowView)initWithFrame:(CGRect)a3
+- (COSFeatureHighlightRowView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = COSFeatureHighlightRowView;
-  v3 = [(COSFeatureHighlightRowView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSFeatureHighlightRowView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -76,11 +76,11 @@
   [(COSFeatureHighlightRowView *)self _sizeThatFits:1 doLayout:v3, v4];
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 doLayout:(BOOL)a4
+- (CGSize)_sizeThatFits:(CGSize)fits doLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  layoutCopy = layout;
+  height = fits.height;
+  width = fits.width;
   v8 = PSLocaleLanguageDirection();
   [(UIImageView *)self->_imageView sizeThatFits:CGSizeZero.width, CGSizeZero.height];
   v10 = v9;
@@ -131,7 +131,7 @@
   if (v8 != 2)
   {
     v40 = v22;
-    if (!v4)
+    if (!layoutCopy)
     {
       goto LABEL_9;
     }
@@ -145,7 +145,7 @@
   v45.size.height = v25;
   MaxY = CGRectGetMaxY(v45);
   v22 = 0.0;
-  if (v4)
+  if (layoutCopy)
   {
 LABEL_8:
     v34 = v30 + MaxY;
@@ -171,9 +171,9 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(COSFeatureHighlightRowView *)self _sizeThatFits:0 doLayout:a3.width, a3.height];
+  [(COSFeatureHighlightRowView *)self _sizeThatFits:0 doLayout:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

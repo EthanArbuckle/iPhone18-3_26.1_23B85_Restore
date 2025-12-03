@@ -1,14 +1,14 @@
 @interface HDWorkoutZonesEntity
-+ (BOOL)_insertZone:(uint64_t)a3 ownerID:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (BOOL)enumerateZonesWithOwnerID:(unint64_t)a3 database:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)enumerateZonesWithOwnerID:(unint64_t)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)insertZones:(id)a3 ownerID:(unint64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)insertZones:(id)a3 workoutUUID:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (BOOL)_insertZone:(uint64_t)zone ownerID:(void *)d transaction:(uint64_t)transaction error:;
++ (BOOL)enumerateZonesWithOwnerID:(unint64_t)d database:(id)database error:(id *)error handler:(id)handler;
++ (BOOL)enumerateZonesWithOwnerID:(unint64_t)d transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)insertZones:(id)zones ownerID:(unint64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)insertZones:(id)zones workoutUUID:(id)d transaction:(id)transaction error:(id *)error;
 + (id)_allProperties;
 + (id)foreignKeys;
 + (id)indices;
-+ (id)zoneEntityWithZoneUUID:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)setTimeInZone:(double)a3 transaction:(id)a4 error:(id *)a5;
++ (id)zoneEntityWithZoneUUID:(id)d transaction:(id)transaction error:(id *)error;
+- (BOOL)setTimeInZone:(double)zone transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDWorkoutZonesEntity
@@ -17,7 +17,7 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"owner_id";
-  v2 = [objc_msgSend(a1 "ownerEntityClass")];
+  v2 = [objc_msgSend(self "ownerEntityClass")];
   v7[0] = v2;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
@@ -31,11 +31,11 @@
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D10B40]);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [a1 databaseTable];
-  v6 = [v4 stringWithFormat:@"%@_owners", v5];
+  databaseTable = [self databaseTable];
+  v6 = [v4 stringWithFormat:@"%@_owners", databaseTable];
   v12 = @"owner_id";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
-  v8 = [v3 initWithEntity:a1 name:v6 columns:v7];
+  v8 = [v3 initWithEntity:self name:v6 columns:v7];
   v13[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
 
@@ -44,13 +44,13 @@
   return v9;
 }
 
-+ (BOOL)insertZones:(id)a3 workoutUUID:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertZones:(id)zones workoutUUID:(id)d transaction:(id)transaction error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 databaseForEntityClass:a1];
+  zonesCopy = zones;
+  dCopy = d;
+  transactionCopy = transaction;
+  v13 = [transactionCopy databaseForEntityClass:self];
   v14 = HDDataEntityPredicateForDataUUID();
   v35 = 0;
   v15 = [(HDDataEntity *)HDWorkoutEntity anyInDatabase:v13 predicate:v14 error:&v35];
@@ -62,13 +62,13 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v17 = v10;
+    v17 = zonesCopy;
     v18 = [v17 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v18)
     {
       v19 = v18;
-      v29 = v11;
-      v30 = v10;
+      v29 = dCopy;
+      v30 = zonesCopy;
       v20 = *v32;
       while (2)
       {
@@ -79,7 +79,7 @@
             objc_enumerationMutation(v17);
           }
 
-          if (!+[HDWorkoutZonesEntity _insertZone:ownerID:transaction:error:](a1, *(*(&v31 + 1) + 8 * i), [v15 persistentID], v12, a6))
+          if (!+[HDWorkoutZonesEntity _insertZone:ownerID:transaction:error:](self, *(*(&v31 + 1) + 8 * i), [v15 persistentID], transactionCopy, error))
           {
             v22 = 0;
             goto LABEL_12;
@@ -97,8 +97,8 @@
       }
 
 LABEL_12:
-      v11 = v29;
-      v10 = v30;
+      dCopy = v29;
+      zonesCopy = v30;
     }
 
     else
@@ -117,8 +117,8 @@ LABEL_12:
     else
     {
       v23 = MEMORY[0x277CCA9B8];
-      v24 = [v11 UUIDString];
-      v25 = [v23 hk_error:118 format:{@"Workout with UUID %@ does not exist when attempting to insert zones", v24}];
+      uUIDString = [dCopy UUIDString];
+      v25 = [v23 hk_error:118 format:{@"Workout with UUID %@ does not exist when attempting to insert zones", uUIDString}];
 
       v17 = v25;
       if (!v17)
@@ -129,11 +129,11 @@ LABEL_12:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v26 = v17;
       v22 = 0;
-      *a6 = v17;
+      *error = v17;
     }
 
     else
@@ -150,12 +150,12 @@ LABEL_22:
   return v22;
 }
 
-+ (BOOL)_insertZone:(uint64_t)a3 ownerID:(void *)a4 transaction:(uint64_t)a5 error:
++ (BOOL)_insertZone:(uint64_t)zone ownerID:(void *)d transaction:(uint64_t)transaction error:
 {
   v8 = a2;
-  v9 = a4;
+  dCopy = d;
   v10 = objc_opt_self();
-  v11 = [v9 databaseForEntityClass:v10];
+  v11 = [dCopy databaseForEntityClass:v10];
 
   v12 = +[HDWorkoutZonesEntity _allProperties];
   v16[0] = MEMORY[0x277D85DD0];
@@ -163,23 +163,23 @@ LABEL_22:
   v16[2] = __62__HDWorkoutZonesEntity__insertZone_ownerID_transaction_error___block_invoke;
   v16[3] = &unk_278616B10;
   v17 = v8;
-  v18 = a3;
+  zoneCopy = zone;
   v13 = v8;
-  v14 = [v10 insertOrReplaceEntity:0 database:v11 properties:v12 error:a5 bindingHandler:v16];
+  v14 = [v10 insertOrReplaceEntity:0 database:v11 properties:v12 error:transaction bindingHandler:v16];
 
   return v14 != 0;
 }
 
-+ (BOOL)insertZones:(id)a3 ownerID:(unint64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertZones:(id)zones ownerID:(unint64_t)d transaction:(id)transaction error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  zonesCopy = zones;
+  transactionCopy = transaction;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v10;
+  v12 = zonesCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -194,7 +194,7 @@ LABEL_22:
           objc_enumerationMutation(v12);
         }
 
-        if (![(HDWorkoutZonesEntity *)a1 _insertZone:a4 ownerID:v11 transaction:a6 error:?])
+        if (![(HDWorkoutZonesEntity *)self _insertZone:d ownerID:transactionCopy transaction:error error:?])
         {
           v17 = 0;
           goto LABEL_11;
@@ -218,22 +218,22 @@ LABEL_11:
   return v17;
 }
 
-+ (id)zoneEntityWithZoneUUID:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)zoneEntityWithZoneUUID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v10 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:v8];
+  dCopy = d;
+  v9 = [transaction databaseForEntityClass:self];
+  v10 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:dCopy];
 
-  v11 = [a1 anyInDatabase:v9 predicate:v10 error:a5];
+  v11 = [self anyInDatabase:v9 predicate:v10 error:error];
 
   return v11;
 }
 
-- (BOOL)setTimeInZone:(double)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)setTimeInZone:(double)zone transaction:(id)transaction error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [v8 databaseForEntityClass:objc_opt_class()];
+  transactionCopy = transaction;
+  v9 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
   v14[0] = @"time_in_zone";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -241,34 +241,34 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = __56__HDWorkoutZonesEntity_setTimeInZone_transaction_error___block_invoke;
   v13[3] = &__block_descriptor_40_e34_v16__0__HDSQLiteStatementBinder__8l;
-  *&v13[4] = a3;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v10 database:v9 error:a5 bindingHandler:v13];
+  *&v13[4] = zone;
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v10 database:v9 error:error bindingHandler:v13];
 
   v11 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-+ (BOOL)enumerateZonesWithOwnerID:(unint64_t)a3 database:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateZonesWithOwnerID:(unint64_t)d database:(id)database error:(id *)error handler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D10B18];
   v12 = MEMORY[0x277CCABB0];
-  v13 = a4;
-  v14 = [v12 numberWithUnsignedLongLong:a3];
+  databaseCopy = database;
+  v14 = [v12 numberWithUnsignedLongLong:d];
   v15 = [v11 predicateWithProperty:@"owner_id" equalToValue:v14];
 
-  v16 = [a1 queryWithDatabase:v13 predicate:v15];
+  v16 = [self queryWithDatabase:databaseCopy predicate:v15];
 
   v17 = +[HDWorkoutZonesEntity _allProperties];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __73__HDWorkoutZonesEntity_enumerateZonesWithOwnerID_database_error_handler___block_invoke;
   v20[3] = &unk_2786145A8;
-  v21 = v10;
-  v18 = v10;
-  LOBYTE(a5) = [v16 enumerateProperties:v17 error:a5 enumerationHandler:v20];
+  v21 = handlerCopy;
+  v18 = handlerCopy;
+  LOBYTE(error) = [v16 enumerateProperties:v17 error:error enumerationHandler:v20];
 
-  return a5;
+  return error;
 }
 
 + (id)_allProperties
@@ -324,13 +324,13 @@ uint64_t __73__HDWorkoutZonesEntity_enumerateZonesWithOwnerID_database_error_han
   return 1;
 }
 
-+ (BOOL)enumerateZonesWithOwnerID:(unint64_t)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateZonesWithOwnerID:(unint64_t)d transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v10 = a6;
-  v11 = [a4 databaseForEntityClass:a1];
-  LOBYTE(a5) = [a1 enumerateZonesWithOwnerID:a3 database:v11 error:a5 handler:v10];
+  handlerCopy = handler;
+  v11 = [transaction databaseForEntityClass:self];
+  LOBYTE(error) = [self enumerateZonesWithOwnerID:d database:v11 error:error handler:handlerCopy];
 
-  return a5;
+  return error;
 }
 
 void __62__HDWorkoutZonesEntity__insertZone_ownerID_transaction_error___block_invoke(uint64_t a1, uint64_t a2)

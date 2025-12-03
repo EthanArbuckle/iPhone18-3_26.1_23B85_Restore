@@ -56,8 +56,8 @@ void __32__AXMMADSService_sharedInstance__block_invoke()
 
     v5 = v4;
     _Block_object_dispose(&v14, 8);
-    v6 = [v4 service];
-    [(AXMMADSService *)v2 setService:v6];
+    service = [v4 service];
+    [(AXMMADSService *)v2 setService:service];
   }
 
   return v2;

@@ -2,8 +2,8 @@
 + (id)presentationTypeKeyMap;
 - (CGRect)popOverSourceRect;
 - (VUIModalPresentationConfiguration)init;
-- (VUIModalPresentationConfiguration)initWithOptions:(id)a3;
-- (void)_applyAlertActionsForController:(id)a3;
+- (VUIModalPresentationConfiguration)initWithOptions:(id)options;
+- (void)_applyAlertActionsForController:(id)controller;
 @end
 
 @implementation VUIModalPresentationConfiguration
@@ -80,15 +80,15 @@ void __59__VUIModalPresentationConfiguration_presentationTypeKeyMap__block_invok
   return v3;
 }
 
-- (VUIModalPresentationConfiguration)initWithOptions:(id)a3
+- (VUIModalPresentationConfiguration)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(VUIModalPresentationConfiguration *)self init];
   if (v5)
   {
-    v6 = [objc_opt_class() presentationTypeKeyMap];
-    v7 = [v4 objectForKey:@"presentationType"];
-    v8 = [v6 objectForKey:v7];
+    presentationTypeKeyMap = [objc_opt_class() presentationTypeKeyMap];
+    v7 = [optionsCopy objectForKey:@"presentationType"];
+    v8 = [presentationTypeKeyMap objectForKey:v7];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -107,11 +107,11 @@ void __59__VUIModalPresentationConfiguration_presentationTypeKeyMap__block_invok
   return v5;
 }
 
-- (void)_applyAlertActionsForController:(id)a3
+- (void)_applyAlertActionsForController:(id)controller
 {
-  v4 = a3;
-  v5 = [(VUIModalPresentationConfiguration *)self alertActions];
-  [v4 _setActions:v5];
+  controllerCopy = controller;
+  alertActions = [(VUIModalPresentationConfiguration *)self alertActions];
+  [controllerCopy _setActions:alertActions];
 }
 
 - (CGRect)popOverSourceRect

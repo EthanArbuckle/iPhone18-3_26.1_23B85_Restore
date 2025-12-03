@@ -14,9 +14,9 @@
   v4 = *MEMORY[0x29EDC7F70];
   if (v2)
   {
-    v5 = [v2 isEnabled];
+    isEnabled = [v2 isEnabled];
     v6 = *MEMORY[0x29EDC7FA8];
-    if (v5)
+    if (isEnabled)
     {
       v6 = 0;
     }
@@ -37,15 +37,15 @@
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    _accesibilityRawTraits = (*(v3 + 16))(v3);
   }
 
   else
   {
-    v5 = [(CCUIRoundButtonAccessibility *)self _accesibilityRawTraits];
+    _accesibilityRawTraits = [(CCUIRoundButtonAccessibility *)self _accesibilityRawTraits];
   }
 
-  v6 = v5;
+  v6 = _accesibilityRawTraits;
 
   return v6;
 }
@@ -54,7 +54,7 @@
 {
   v5.receiver = self;
   v5.super_class = CCUIRoundButtonAccessibility;
-  v2 = [(CCUIRoundButtonAccessibility *)&v5 accessibilityCustomActions];
+  accessibilityCustomActions = [(CCUIRoundButtonAccessibility *)&v5 accessibilityCustomActions];
   v3 = AXGuaranteedMutableArray();
 
   UIAccessibilityControlCenterAttachOpenCloseCustomActionsIfNeeded();

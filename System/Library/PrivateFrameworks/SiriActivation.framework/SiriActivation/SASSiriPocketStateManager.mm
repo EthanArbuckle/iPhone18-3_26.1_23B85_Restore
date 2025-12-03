@@ -1,10 +1,10 @@
 @interface SASSiriPocketStateManager
 + (id)sharedManager;
-- (BOOL)pocketStateShouldPreventVoiceTriggerForActivationRequest:(id)a3;
+- (BOOL)pocketStateShouldPreventVoiceTriggerForActivationRequest:(id)request;
 - (id)_init;
-- (id)_stringForPocketState:(int64_t)a3;
-- (void)_updateForPocketState:(int64_t)a3;
-- (void)queryForPocketStateWithCompletion:(id)a3;
+- (id)_stringForPocketState:(int64_t)state;
+- (void)_updateForPocketState:(int64_t)state;
+- (void)queryForPocketStateWithCompletion:(id)completion;
 @end
 
 @implementation SASSiriPocketStateManager
@@ -38,8 +38,8 @@ uint64_t __42__SASSiriPocketStateManager_sharedManager__block_invoke()
     v3 = objc_alloc_init(MEMORY[0x1E69634D8]);
     [(SASSiriPocketStateManager *)v2 _setPocketStateManager:v3];
 
-    v4 = [(SASSiriPocketStateManager *)v2 _pocketStateManager];
-    [v4 setDelegate:v2];
+    _pocketStateManager = [(SASSiriPocketStateManager *)v2 _pocketStateManager];
+    [_pocketStateManager setDelegate:v2];
 
     [(SASSiriPocketStateManager *)v2 _setCurrentPocketState:4];
   }
@@ -47,10 +47,10 @@ uint64_t __42__SASSiriPocketStateManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)queryForPocketStateWithCompletion:(id)a3
+- (void)queryForPocketStateWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -61,16 +61,16 @@ uint64_t __42__SASSiriPocketStateManager_sharedManager__block_invoke()
   }
 
   [(SASSiriPocketStateManager *)self _updateForPocketState:4];
-  v6 = [(SASSiriPocketStateManager *)self _pocketStateManager];
+  _pocketStateManager = [(SASSiriPocketStateManager *)self _pocketStateManager];
   v7 = MEMORY[0x1E69E96A0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__SASSiriPocketStateManager_queryForPocketStateWithCompletion___block_invoke;
   v10[3] = &unk_1E82F3760;
   objc_copyWeak(&v12, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v11 = v8;
-  [v6 queryStateOntoQueue:MEMORY[0x1E69E96A0] andMonitorFor:v10 withTimeout:0.5 andHandler:0.3];
+  [_pocketStateManager queryStateOntoQueue:MEMORY[0x1E69E96A0] andMonitorFor:v10 withTimeout:0.5 andHandler:0.3];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -121,43 +121,43 @@ void __63__SASSiriPocketStateManager_queryForPocketStateWithCompletion___block_i
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)pocketStateShouldPreventVoiceTriggerForActivationRequest:(id)a3
+- (BOOL)pocketStateShouldPreventVoiceTriggerForActivationRequest:(id)request
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 context];
-  v5 = [v4 speechRequestOptions];
-  v6 = [v5 voiceTriggerEventInfo];
+  context = [request context];
+  speechRequestOptions = [context speechRequestOptions];
+  voiceTriggerEventInfo = [speechRequestOptions voiceTriggerEventInfo];
 
-  if (v6 && ([v6 objectForKey:@"hfpTriggerDuringPhoneCall"], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, v8))
+  if (voiceTriggerEventInfo && ([voiceTriggerEventInfo objectForKey:@"hfpTriggerDuringPhoneCall"], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, v8))
   {
     v9 = *MEMORY[0x1E698D0A0];
-    v10 = 0;
+    pocketStateShouldPreventVoiceTrigger = 0;
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
     {
       v13 = 136315138;
       v14 = "[SASSiriPocketStateManager pocketStateShouldPreventVoiceTriggerForActivationRequest:]";
       _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation hfpTriggerDuringPhoneCall = YES bypassing pocket state detector", &v13, 0xCu);
-      v10 = 0;
+      pocketStateShouldPreventVoiceTrigger = 0;
     }
   }
 
   else
   {
-    v10 = [(SASSiriPocketStateManager *)self pocketStateShouldPreventVoiceTrigger];
+    pocketStateShouldPreventVoiceTrigger = [(SASSiriPocketStateManager *)self pocketStateShouldPreventVoiceTrigger];
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return pocketStateShouldPreventVoiceTrigger;
 }
 
-- (void)_updateForPocketState:(int64_t)a3
+- (void)_updateForPocketState:(int64_t)state
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SASSiriPocketStateManager *)self _stringForPocketState:a3];
+    v7 = [(SASSiriPocketStateManager *)self _stringForPocketState:state];
     v9 = 136315394;
     v10 = "[SASSiriPocketStateManager _updateForPocketState:]";
     v11 = 2112;
@@ -165,20 +165,20 @@ void __63__SASSiriPocketStateManager_queryForPocketStateWithCompletion___block_i
     _os_log_impl(&dword_1C8137000, v6, OS_LOG_TYPE_DEFAULT, "%s #SiriPocketStateManager: PocketState changed to %@", &v9, 0x16u);
   }
 
-  [(SASSiriPocketStateManager *)self _setCurrentPocketState:a3];
+  [(SASSiriPocketStateManager *)self _setCurrentPocketState:state];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stringForPocketState:(int64_t)a3
+- (id)_stringForPocketState:(int64_t)state
 {
-  if ((a3 - 1) > 3)
+  if ((state - 1) > 3)
   {
     return @"CMPocketStateTypeOutOfPocket";
   }
 
   else
   {
-    return off_1E82F3780[a3 - 1];
+    return off_1E82F3780[state - 1];
   }
 }
 

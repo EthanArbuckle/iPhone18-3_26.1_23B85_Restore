@@ -1,23 +1,23 @@
 @interface SearchUILinkPresentationCardSectionView
-+ (id)fallbackMetadataWithURL:(id)a3;
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
++ (id)fallbackMetadataWithURL:(id)l;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (id)setupContentView;
 - (void)_performCommand;
-- (void)fetchMetadataFromMessagesWithURL:(id)a3 completionBlock:(id)a4;
-- (void)updateWithRowModel:(id)a3;
+- (void)fetchMetadataFromMessagesWithURL:(id)l completionBlock:(id)block;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUILinkPresentationCardSectionView
 
-+ (id)fallbackMetadataWithURL:(id)a3
++ (id)fallbackMetadataWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  [v4 setOriginalURL:v3];
+  [v4 setOriginalURL:lCopy];
   v5 = SearchUIGeneralLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(SearchUILinkPresentationCardSectionView *)v3 fallbackMetadataWithURL:v5];
+    [(SearchUILinkPresentationCardSectionView *)lCopy fallbackMetadataWithURL:v5];
   }
 
   return v4;
@@ -26,8 +26,8 @@
 - (id)setupContentView
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 _setOverrideBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 _setOverrideBackgroundColor:clearColor];
 
   [v3 _setDisableAnimations:1];
   [v3 _setPreferredSizeClass:5];
@@ -43,10 +43,10 @@
   return v3;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   if (updateWithRowModel__onceToken_0 != -1)
   {
     [SearchUILinkPresentationCardSectionView updateWithRowModel:];
@@ -54,23 +54,23 @@
 
   v41.receiver = self;
   v41.super_class = SearchUILinkPresentationCardSectionView;
-  [(SearchUICardSectionView *)&v41 updateWithRowModel:v4];
+  [(SearchUICardSectionView *)&v41 updateWithRowModel:modelCopy];
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [(SearchUICardSectionView *)self section];
-  v7 = [v6 url];
+  section = [(SearchUICardSectionView *)self section];
+  v7 = [section url];
   v8 = [v5 URLWithString:v7];
 
-  v9 = [(SearchUILinkPresentationCardSectionView *)self linkView];
-  [v9 setURL:v8];
+  linkView = [(SearchUILinkPresentationCardSectionView *)self linkView];
+  [linkView setURL:v8];
 
-  v10 = [(SearchUILinkPresentationCardSectionView *)self linkView];
-  [v10 _setMetadata:0 isFinal:0];
+  linkView2 = [(SearchUILinkPresentationCardSectionView *)self linkView];
+  [linkView2 _setMetadata:0 isFinal:0];
 
-  v11 = [(SearchUILinkPresentationCardSectionView *)self linkView];
-  [v11 _setContactsForAttribution:0];
+  linkView3 = [(SearchUILinkPresentationCardSectionView *)self linkView];
+  [linkView3 _setContactsForAttribution:0];
 
-  v12 = [(SearchUILinkPresentationCardSectionView *)self linkView];
-  [v12 _setHighlightedForAttribution:0];
+  linkView4 = [(SearchUILinkPresentationCardSectionView *)self linkView];
+  [linkView4 _setHighlightedForAttribution:0];
 
   if (v8)
   {
@@ -79,8 +79,8 @@
     if (v13)
     {
       v14 = v13;
-      v15 = [(SearchUILinkPresentationCardSectionView *)self linkView];
-      [v15 setMetadata:v14];
+      linkView5 = [(SearchUILinkPresentationCardSectionView *)self linkView];
+      [linkView5 setMetadata:v14];
     }
 
     else
@@ -90,11 +90,11 @@
       v37[2] = __62__SearchUILinkPresentationCardSectionView_updateWithRowModel___block_invoke_2;
       v37[3] = &unk_1E85B3370;
       v38 = v8;
-      v39 = self;
-      v40 = v4;
+      selfCopy = self;
+      v40 = modelCopy;
       [(SearchUILinkPresentationCardSectionView *)self fetchMetadataFromMessagesWithURL:v38 completionBlock:v37];
 
-      v15 = v38;
+      linkView5 = v38;
     }
 
     v16 = objc_opt_new();
@@ -102,10 +102,10 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v17 = [(SearchUICardSectionView *)self section];
-    v18 = [v17 peopleToBadge];
+    section2 = [(SearchUICardSectionView *)self section];
+    peopleToBadge = [section2 peopleToBadge];
 
-    v19 = [v18 countByEnumeratingWithState:&v33 objects:v42 count:16];
+    v19 = [peopleToBadge countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v19)
     {
       v20 = v19;
@@ -116,20 +116,20 @@
         {
           if (*v34 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(peopleToBadge);
           }
 
           v23 = *(*(&v33 + 1) + 8 * i);
-          v24 = [v23 contactIdentifier];
+          contactIdentifier = [v23 contactIdentifier];
 
-          if (v24)
+          if (contactIdentifier)
           {
-            v25 = [v23 contactIdentifier];
-            [v16 addObject:v25];
+            contactIdentifier2 = [v23 contactIdentifier];
+            [v16 addObject:contactIdentifier2];
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v20 = [peopleToBadge countByEnumeratingWithState:&v33 objects:v42 count:16];
       }
 
       while (v20);
@@ -141,13 +141,13 @@
     v31[2] = __62__SearchUILinkPresentationCardSectionView_updateWithRowModel___block_invoke_2_20;
     v31[3] = &unk_1E85B29E8;
     v31[4] = self;
-    v32 = v4;
+    v32 = modelCopy;
     [v26 fetchContactsForIdentifiers:v16 completionHandler:v31];
 
-    v27 = [(SearchUICardSectionView *)self section];
-    v28 = [v27 isHighlighted];
-    v29 = [(SearchUILinkPresentationCardSectionView *)self linkView];
-    [v29 _setHighlightedForAttribution:v28];
+    section3 = [(SearchUICardSectionView *)self section];
+    isHighlighted = [section3 isHighlighted];
+    linkView6 = [(SearchUILinkPresentationCardSectionView *)self linkView];
+    [linkView6 _setHighlightedForAttribution:isHighlighted];
   }
 }
 
@@ -227,31 +227,31 @@ void __62__SearchUILinkPresentationCardSectionView_updateWithRowModel___block_in
   }
 }
 
-- (void)fetchMetadataFromMessagesWithURL:(id)a3 completionBlock:(id)a4
+- (void)fetchMetadataFromMessagesWithURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E6964E78] defaultSearchableIndex];
+  lCopy = l;
+  blockCopy = block;
+  defaultSearchableIndex = [MEMORY[0x1E6964E78] defaultSearchableIndex];
   v9 = [SearchUIUtilities bundleIdentifierForApp:10];
-  v10 = [(SearchUICardSectionView *)self section];
-  v11 = [v10 coreSpotlightIdentifier];
+  section = [(SearchUICardSectionView *)self section];
+  coreSpotlightIdentifier = [section coreSpotlightIdentifier];
 
-  if (v11)
+  if (coreSpotlightIdentifier)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __92__SearchUILinkPresentationCardSectionView_fetchMetadataFromMessagesWithURL_completionBlock___block_invoke;
     v13[3] = &unk_1E85B3398;
-    v15 = v7;
+    v15 = blockCopy;
     v13[4] = self;
-    v14 = v6;
-    [v8 provideDataForBundle:v9 identifier:v11 type:@"com.apple.metadata-importer.linkMetadata" completionHandler:v13];
+    v14 = lCopy;
+    [defaultSearchableIndex provideDataForBundle:v9 identifier:coreSpotlightIdentifier type:@"com.apple.metadata-importer.linkMetadata" completionHandler:v13];
   }
 
   else
   {
-    v12 = [objc_opt_class() fallbackMetadataWithURL:v6];
-    (*(v7 + 2))(v7, v12, 0);
+    v12 = [objc_opt_class() fallbackMetadataWithURL:lCopy];
+    (*(blockCopy + 2))(blockCopy, v12, 0);
   }
 }
 
@@ -309,19 +309,19 @@ void __92__SearchUILinkPresentationCardSectionView_fetchMetadataFromMessagesWith
   IDSBAASignerErrorDomain_block_invoke_objectClasses = v2;
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v9 = [(SearchUILinkPresentationCardSectionView *)self linkView];
+  height = size.height;
+  width = size.width;
+  subviewCopy = subview;
+  linkView = [(SearchUILinkPresentationCardSectionView *)self linkView];
 
-  if (v9 == v8)
+  if (linkView == subviewCopy)
   {
-    v10 = [(SearchUICardSectionView *)self rowModel];
-    v11 = [v10 sectionType];
+    rowModel = [(SearchUICardSectionView *)self rowModel];
+    sectionType = [rowModel sectionType];
 
-    if (v11)
+    if (sectionType)
     {
       goto LABEL_5;
     }
@@ -343,11 +343,11 @@ LABEL_5:
 
 - (void)_performCommand
 {
-  v3 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v6 = [SearchUIUtilities environmentForDelegate:v3];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  v6 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-  v4 = [(SearchUICardSectionView *)self rowModel];
-  v5 = [SearchUICommandHandler handlerForRowModel:v4 environment:v6];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  v5 = [SearchUICommandHandler handlerForRowModel:rowModel environment:v6];
   [v5 executeWithTriggerEvent:2];
 }
 

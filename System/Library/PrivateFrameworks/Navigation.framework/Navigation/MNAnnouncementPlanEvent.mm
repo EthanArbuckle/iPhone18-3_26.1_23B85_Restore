@@ -1,9 +1,9 @@
 @interface MNAnnouncementPlanEvent
-- (MNAnnouncementPlanEvent)initWithEvent:(id)a3 distance:(double)a4 speed:(double)a5 durations:(id)a6;
+- (MNAnnouncementPlanEvent)initWithEvent:(id)event distance:(double)distance speed:(double)speed durations:(id)durations;
 - (double)completionDistance;
 - (id)description;
-- (void)setTriggerDistance:(double)a3;
-- (void)setVariantIndex:(unint64_t)a3;
+- (void)setTriggerDistance:(double)distance;
+- (void)setVariantIndex:(unint64_t)index;
 @end
 
 @implementation MNAnnouncementPlanEvent
@@ -12,8 +12,8 @@
 {
   [(MNAnnouncementPlanEvent *)self triggerDistance];
   v4 = v3;
-  v5 = [(MNAnnouncementPlanEvent *)self announcementDurations];
-  v6 = [v5 objectAtIndexedSubscript:{-[MNAnnouncementPlanEvent variantIndex](self, "variantIndex")}];
+  announcementDurations = [(MNAnnouncementPlanEvent *)self announcementDurations];
+  v6 = [announcementDurations objectAtIndexedSubscript:{-[MNAnnouncementPlanEvent variantIndex](self, "variantIndex")}];
   [v6 doubleValue];
   v8 = v7;
   [(MNAnnouncementPlanEvent *)self speed];
@@ -22,14 +22,14 @@
   return v10;
 }
 
-- (void)setVariantIndex:(unint64_t)a3
+- (void)setVariantIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(MNAnnouncementPlanEvent *)self event];
-  v6 = [v5 announcements];
-  v7 = [v6 count];
+  event = [(MNAnnouncementPlanEvent *)self event];
+  announcements = [event announcements];
+  v7 = [announcements count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -46,24 +46,24 @@
     }
   }
 
-  self->_variantIndex = a3;
+  self->_variantIndex = index;
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTriggerDistance:(double)a3
+- (void)setTriggerDistance:(double)distance
 {
   [(MNAnnouncementPlanEvent *)self triggerDistance];
-  if (v5 != a3)
+  if (v5 != distance)
   {
-    self->_triggerDistance = a3;
+    self->_triggerDistance = distance;
   }
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MNAnnouncementPlanEvent *)self includeInPlan];
-  v5 = [(MNAnnouncementPlanEvent *)self variantIndex];
+  includeInPlan = [(MNAnnouncementPlanEvent *)self includeInPlan];
+  variantIndex = [(MNAnnouncementPlanEvent *)self variantIndex];
   [(MNAnnouncementPlanEvent *)self triggerDistance];
   v6 = -1.0;
   if (v7 > 0.0)
@@ -72,7 +72,7 @@
     v6 = v8;
   }
 
-  if (v4)
+  if (includeInPlan)
   {
     v9 = "YES";
   }
@@ -84,27 +84,27 @@
 
   [(MNAnnouncementPlanEvent *)self completionDistance];
   v11 = v10;
-  v12 = [(MNAnnouncementPlanEvent *)self event];
-  v13 = [v12 description];
-  v14 = [v3 stringWithFormat:@"in plan:%s variant:%lu trigger:%.2f complete:%.2f %@", v9, v5, *&v6, v11, v13];
+  event = [(MNAnnouncementPlanEvent *)self event];
+  v13 = [event description];
+  v14 = [v3 stringWithFormat:@"in plan:%s variant:%lu trigger:%.2f complete:%.2f %@", v9, variantIndex, *&v6, v11, v13];
 
   return v14;
 }
 
-- (MNAnnouncementPlanEvent)initWithEvent:(id)a3 distance:(double)a4 speed:(double)a5 durations:(id)a6
+- (MNAnnouncementPlanEvent)initWithEvent:(id)event distance:(double)distance speed:(double)speed durations:(id)durations
 {
-  v10 = a3;
-  v11 = a6;
+  eventCopy = event;
+  durationsCopy = durations;
   v19.receiver = self;
   v19.super_class = MNAnnouncementPlanEvent;
   v12 = [(MNAnnouncementPlanEvent *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    [(MNAnnouncementPlanEvent *)v12 setEvent:v10];
-    [(MNAnnouncementPlanEvent *)v13 setDistance:a4];
-    [(MNAnnouncementPlanEvent *)v13 setSpeed:a5];
-    [(MNAnnouncementPlanEvent *)v13 setDurations:v11];
+    [(MNAnnouncementPlanEvent *)v12 setEvent:eventCopy];
+    [(MNAnnouncementPlanEvent *)v13 setDistance:distance];
+    [(MNAnnouncementPlanEvent *)v13 setSpeed:speed];
+    [(MNAnnouncementPlanEvent *)v13 setDurations:durationsCopy];
     [(MNAnnouncementPlanEvent *)v13 setVariantIndex:0];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -112,7 +112,7 @@
     v17[3] = &unk_1E842A898;
     v14 = v13;
     v18 = v14;
-    [v10 triggerDistanceForSpeed:v17 andDuration:a5];
+    [eventCopy triggerDistanceForSpeed:v17 andDuration:speed];
     [(MNAnnouncementPlanEvent *)v14 setTriggerDistance:?];
     [(MNAnnouncementPlanEvent *)v14 triggerDistance];
     [(MNAnnouncementPlanEvent *)v14 setIncludeInPlan:v15 > 0.0];

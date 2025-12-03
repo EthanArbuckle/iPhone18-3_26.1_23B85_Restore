@@ -1,20 +1,20 @@
 @interface SBSAccidentalActivationMitigationClientSession
-- (SBSAccidentalActivationMitigationClientSession)initWithBundleIdentifier:(id)a3 callOutQueue:(id)a4;
+- (SBSAccidentalActivationMitigationClientSession)initWithBundleIdentifier:(id)identifier callOutQueue:(id)queue;
 - (int64_t)state;
-- (void)activateSessionWithDuration:(double)a3 accidentalActivationMitigationSessionCancellationPolicyClassName:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)mitigationSessionServiceClient:(id)a3 mitigationSessionDidTransitionToState:(int64_t)a4;
-- (void)removeObserver:(id)a3;
+- (void)activateSessionWithDuration:(double)duration accidentalActivationMitigationSessionCancellationPolicyClassName:(id)name;
+- (void)addObserver:(id)observer;
+- (void)mitigationSessionServiceClient:(id)client mitigationSessionDidTransitionToState:(int64_t)state;
+- (void)removeObserver:(id)observer;
 - (void)requestSessionCancellation;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation SBSAccidentalActivationMitigationClientSession
 
-- (SBSAccidentalActivationMitigationClientSession)initWithBundleIdentifier:(id)a3 callOutQueue:(id)a4
+- (SBSAccidentalActivationMitigationClientSession)initWithBundleIdentifier:(id)identifier callOutQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = SBSAccidentalActivationMitigationClientSession;
   v9 = [(SBSAccidentalActivationMitigationClientSession *)&v14 init];
@@ -27,46 +27,46 @@
     v10->_client = v11;
 
     [(SBSAccidentalActivationMitigationSessionServiceClient *)v10->_client setDelegate:v10];
-    objc_storeStrong(&v10->_bundleIdentifier, a3);
-    objc_storeStrong(&v10->_callOutQueue, a4);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
+    objc_storeStrong(&v10->_callOutQueue, queue);
   }
 
   return v10;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
+  observerCopy = observer;
   v4 = BSDispatchQueueAssert();
-  if (v8)
+  if (observerCopy)
   {
-    v4 = [(NSHashTable *)self->_observers containsObject:v8];
+    v4 = [(NSHashTable *)self->_observers containsObject:observerCopy];
     if ((v4 & 1) == 0)
     {
       observers = self->_observers;
       if (!observers)
       {
-        v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
         v7 = self->_observers;
-        self->_observers = v6;
+        self->_observers = weakObjectsHashTable;
 
         observers = self->_observers;
       }
 
-      v4 = [(NSHashTable *)observers addObject:v8];
+      v4 = [(NSHashTable *)observers addObject:observerCopy];
     }
   }
 
   MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssert();
-  if (v5)
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v5];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 
   if (![(NSHashTable *)self->_observers count])
@@ -76,24 +76,24 @@
   }
 }
 
-- (void)activateSessionWithDuration:(double)a3 accidentalActivationMitigationSessionCancellationPolicyClassName:(id)a4
+- (void)activateSessionWithDuration:(double)duration accidentalActivationMitigationSessionCancellationPolicyClassName:(id)name
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  nameCopy = name;
   BSDispatchQueueAssert();
   v7 = SBLogCameraCaptureAccidentalActivationMitigationSession();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412802;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    durationCopy = duration;
     v12 = 2112;
-    v13 = v6;
+    v13 = nameCopy;
     _os_log_impl(&dword_19169D000, v7, OS_LOG_TYPE_DEFAULT, "%@ activated session with duration: %f and cancellation policy: %@", &v8, 0x20u);
   }
 
-  [(SBSAccidentalActivationMitigationSessionServiceClient *)self->_client activateSessionForBundleIdentifier:self->_bundleIdentifier duration:v6 accidentalActivationMitigationSessionCancellationPolicyClassName:a3];
+  [(SBSAccidentalActivationMitigationSessionServiceClient *)self->_client activateSessionForBundleIdentifier:self->_bundleIdentifier duration:nameCopy accidentalActivationMitigationSessionCancellationPolicyClassName:duration];
 }
 
 - (void)requestSessionCancellation
@@ -104,7 +104,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_19169D000, v3, OS_LOG_TYPE_DEFAULT, "%@ requested session cancellation", &v5, 0xCu);
   }
 
@@ -119,17 +119,17 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_19169D000, v4, OS_LOG_TYPE_DEFAULT, "%@ is not able to cancel the session because it is not active", &v5, 0xCu);
     }
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_state == a3)
+  if (self->_lock_state == state)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -137,7 +137,7 @@
 
   else
   {
-    self->_lock_state = a3;
+    self->_lock_state = state;
     os_unfair_lock_unlock(&self->_lock);
     v15 = 0u;
     v16 = 0u;
@@ -188,11 +188,11 @@
   return lock_state;
 }
 
-- (void)mitigationSessionServiceClient:(id)a3 mitigationSessionDidTransitionToState:(int64_t)a4
+- (void)mitigationSessionServiceClient:(id)client mitigationSessionDidTransitionToState:(int64_t)state
 {
   BSDispatchQueueAssertMain();
 
-  [(SBSAccidentalActivationMitigationClientSession *)self setState:a4];
+  [(SBSAccidentalActivationMitigationClientSession *)self setState:state];
 }
 
 @end

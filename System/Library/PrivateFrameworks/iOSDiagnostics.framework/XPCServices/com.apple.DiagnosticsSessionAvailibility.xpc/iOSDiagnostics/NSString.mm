@@ -1,10 +1,10 @@
 @interface NSString
-- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)a3;
+- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)encoding;
 @end
 
 @implementation NSString
 
-- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)a3
+- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)encoding
 {
   v4 = [(NSString *)self lengthOfBytesUsingEncoding:1];
   v5 = malloc_type_malloc(v4 + 1, 0xFD54B8B3uLL);

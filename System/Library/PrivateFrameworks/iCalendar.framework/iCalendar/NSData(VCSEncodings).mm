@@ -8,16 +8,16 @@
 
 - (id)VCSDecodeBase64
 {
-  v1 = a1;
-  v2 = v1;
-  if (!v1)
+  selfCopy = self;
+  v2 = selfCopy;
+  if (!selfCopy)
   {
     v3 = 0;
     goto LABEL_76;
   }
 
-  v3 = [MEMORY[0x277CBEB28] dataWithCapacity:{(3 * objc_msgSend(v1, "length")) >> 2}];
-  v4 = [v2 bytes];
+  v3 = [MEMORY[0x277CBEB28] dataWithCapacity:{(3 * objc_msgSend(selfCopy, "length")) >> 2}];
+  bytes = [v2 bytes];
   v5 = [v2 length];
   if (v5 < 1)
   {
@@ -27,14 +27,14 @@
   v31 = v2;
   v6 = 0;
   v7 = 0;
-  v8 = &v4[v5];
+  v8 = &bytes[v5];
   while (2)
   {
     while (2)
     {
       v9 = 0;
       v10 = 0;
-      v11 = v4 + 1;
+      v11 = bytes + 1;
       v12 = 1;
       while (1)
       {
@@ -110,8 +110,8 @@ LABEL_38:
               v20 = v8;
             }
 
-            v21 = &v4[v10];
-            if (&v4[v10] != v20)
+            v21 = &bytes[v10];
+            if (&bytes[v10] != v20)
             {
               v34 = 0;
               v32 = v18 - 1;
@@ -120,7 +120,7 @@ LABEL_46:
               v33 = v7;
               do
               {
-                v23 = *v4++;
+                v23 = *bytes++;
                 v24 = Decode64Table[v23 & 0x7F];
                 if ((v24 & 0x80000000) == 0)
                 {
@@ -143,7 +143,7 @@ LABEL_46:
 
               while (v22);
               v7 = v33 - v21 + v20;
-              v4 = v32;
+              bytes = v32;
               goto LABEL_61;
             }
 
@@ -151,7 +151,7 @@ LABEL_46:
           }
 
 LABEL_69:
-          [v3 appendBytes:v4 length:{v8 - v4, v31}];
+          [v3 appendBytes:bytes length:{v8 - bytes, v31}];
           goto LABEL_70;
         }
       }
@@ -195,8 +195,8 @@ LABEL_55:
       {
         if (v27)
         {
-          [v3 appendBytes:v4 length:v26 - v4];
-          v4 = v26;
+          [v3 appendBytes:bytes length:v26 - bytes];
+          bytes = v26;
           continue;
         }
 
@@ -218,14 +218,14 @@ LABEL_55:
       v20 = v28;
     }
 
-    v21 = &v4[v10];
-    if (&v4[v10] != v20)
+    v21 = &bytes[v10];
+    if (&bytes[v10] != v20)
     {
       v32 = v26;
       goto LABEL_46;
     }
 
-    v4 = v26;
+    bytes = v26;
 LABEL_61:
     if (v34)
     {
@@ -264,13 +264,13 @@ LABEL_76:
 - (id)VCSConvert8bitBufferToUTF8From:()VCSEncodings
 {
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:objc_msgSend(a1 length:{"bytes"), objc_msgSend(a1, "length") - 1}];
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:objc_msgSend(self length:{"bytes"), objc_msgSend(self, "length") - 1}];
   v7 = [v5 initWithData:v6 encoding:CFStringConvertEncodingToNSStringEncoding(a3)];
 
   if (v7)
   {
-    v8 = [v7 UTF8String];
-    v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v8 length:strlen(v8)];
+    uTF8String = [v7 UTF8String];
+    v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:uTF8String length:strlen(uTF8String)];
   }
 
   else
@@ -289,17 +289,17 @@ LABEL_76:
 
 - (id)VCSDecodeQuotedPrintableForText:()VCSEncodings
 {
-  if (a1)
+  if (self)
   {
-    v5 = a1;
-    v6 = VCSByteBufferWithCapacity([a1 length] / 3uLL);
-    v7 = [v5 bytes];
-    v8 = [v5 length];
+    selfCopy = self;
+    v6 = VCSByteBufferWithCapacity([self length] / 3uLL);
+    bytes = [selfCopy bytes];
+    v8 = [selfCopy length];
     if (v8)
     {
       v9 = 0;
       v10 = a3;
-      v11 = v7;
+      v11 = bytes;
       do
       {
         v12 = v8 - 1;
@@ -315,9 +315,9 @@ LABEL_76:
           v15 = *v11;
           if (v15 == 32 || v15 == 10)
           {
-            if (v11 < v7 + v8)
+            if (v11 < bytes + v8)
             {
-              v17 = (v7 + 2);
+              v17 = (bytes + 2);
               v18 = v8 - 2;
               while (1)
               {
@@ -347,12 +347,12 @@ LABEL_76:
 
           else if (v8 != 2)
           {
-            v11 = (v7 + 3);
+            v11 = (bytes + 3);
             v22 = DecodeHexTable[v15 & 0x7F];
             v12 = v8 - 3;
-            if (v22 < 0 || (v23 = DecodeHexTable[*(v7 + 2) & 0x7F], v23 < 0))
+            if (v22 < 0 || (v23 = DecodeHexTable[*(bytes + 2) & 0x7F], v23 < 0))
             {
-              v26 = *(v7 + 2);
+              v26 = *(bytes + 2);
               VCSByteBufferAppendByte(v6, 61);
               VCSByteBufferAppendByte(v6, v15);
               v25 = v6;
@@ -408,18 +408,18 @@ LABEL_39:
         }
 
 LABEL_40:
-        v7 = v11;
+        bytes = v11;
         v8 = v12;
       }
 
       while (v12);
     }
 
-    a1 = VCSByteBufferData(v6);
+    self = VCSByteBufferData(v6);
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface MCWebContentFilterPayload
 + (id)pluginFilterKeysAndClasses;
 + (id)typeStrings;
-- (BOOL)_BOOLFromDict:(id)a3 key:(id)a4 outError:(id *)a5;
-- (BOOL)_BOOLFromDictOrDefaultTrue:(id)a3 key:(id)a4 outError:(id *)a5;
-- (MCWebContentFilterPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)_dictsFromDict:(id)a3 key:(id)a4 outError:(id *)a5;
-- (id)_stringsFromDict:(id)a3 key:(id)a4 outError:(id *)a5;
+- (BOOL)_BOOLFromDict:(id)dict key:(id)key outError:(id *)error;
+- (BOOL)_BOOLFromDictOrDefaultTrue:(id)true key:(id)key outError:(id *)error;
+- (MCWebContentFilterPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)_dictsFromDict:(id)dict key:(id)key outError:(id *)error;
+- (id)_stringsFromDict:(id)dict key:(id)key outError:(id *)error;
 - (id)installationWarnings;
 - (id)payloadDescriptionKeyValueSections;
 - (id)restrictions;
@@ -76,14 +76,14 @@ void __55__MCWebContentFilterPayload_pluginFilterKeysAndClasses__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (MCWebContentFilterPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCWebContentFilterPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v132 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v124.receiver = self;
   v124.super_class = MCWebContentFilterPayload;
-  v10 = [(MCPayload *)&v124 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v124 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   v11 = v10;
   if (!v10)
   {
@@ -91,7 +91,7 @@ void __55__MCWebContentFilterPayload_pluginFilterKeysAndClasses__block_invoke()
   }
 
   v123 = 0;
-  v12 = [(MCWebContentFilterPayload *)v10 _stringFromDict:v8 key:@"ContentFilterUUID" outError:&v123];
+  v12 = [(MCWebContentFilterPayload *)v10 _stringFromDict:dictionaryCopy key:@"ContentFilterUUID" outError:&v123];
   v13 = v123;
   contentFilterUUID = v11->_contentFilterUUID;
   v11->_contentFilterUUID = v12;
@@ -101,7 +101,7 @@ void __55__MCWebContentFilterPayload_pluginFilterKeysAndClasses__block_invoke()
     goto LABEL_3;
   }
 
-  v28 = [(MCWebContentFilterPayload *)v11 _stringFromDict:v8 key:@"FilterType" outError:0];
+  v28 = [(MCWebContentFilterPayload *)v11 _stringFromDict:dictionaryCopy key:@"FilterType" outError:0];
   v29 = v28;
   if (v28)
   {
@@ -115,19 +115,19 @@ void __55__MCWebContentFilterPayload_pluginFilterKeysAndClasses__block_invoke()
 
   objc_storeStrong(&v11->_filterType, v30);
 
-  v11->_hideDenyListURLs = [(MCWebContentFilterPayload *)v11 _BOOLFromDict:v8 key:@"HideDenyListURLs" outError:0];
-  v11->_safariHistoryRetentionEnabled = [(MCWebContentFilterPayload *)v11 _BOOLFromDictOrDefaultTrue:v8 key:@"SafariHistoryRetentionEnabled" outError:0];
-  v31 = [v9 isStub];
+  v11->_hideDenyListURLs = [(MCWebContentFilterPayload *)v11 _BOOLFromDict:dictionaryCopy key:@"HideDenyListURLs" outError:0];
+  v11->_safariHistoryRetentionEnabled = [(MCWebContentFilterPayload *)v11 _BOOLFromDictOrDefaultTrue:dictionaryCopy key:@"SafariHistoryRetentionEnabled" outError:0];
+  isStub = [profileCopy isStub];
   v32 = [(NSString *)v11->_filterType isEqualToString:@"Plugin"];
-  if (v31)
+  if (isStub)
   {
     if (v32)
     {
-      v33 = [(MCWebContentFilterPayload *)v11 _stringFromDict:v8 key:@"PluginBundleID" outError:0];
+      v33 = [(MCWebContentFilterPayload *)v11 _stringFromDict:dictionaryCopy key:@"PluginBundleID" outError:0];
       pluginBundleID = v11->_pluginBundleID;
       v11->_pluginBundleID = v33;
 
-      v35 = [(MCWebContentFilterPayload *)v11 _stringFromDict:v8 key:@"UserDefinedName" outError:0];
+      v35 = [(MCWebContentFilterPayload *)v11 _stringFromDict:dictionaryCopy key:@"UserDefinedName" outError:0];
       v13 = 0;
       name = v11->_name;
       v11->_name = v35;
@@ -136,11 +136,11 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v39 = [(MCWebContentFilterPayload *)v11 _BOOLFromDict:v8 key:@"AutoFilterEnabled" outError:0];
+    v39 = [(MCWebContentFilterPayload *)v11 _BOOLFromDict:dictionaryCopy key:@"AutoFilterEnabled" outError:0];
     v11->_autoFilterEnabled = v39;
     if (v39)
     {
-      v40 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:v8 key:@"PermittedURLs" outError:0];
+      v40 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:dictionaryCopy key:@"PermittedURLs" outError:0];
       v41 = v40;
       if (v40)
       {
@@ -155,11 +155,11 @@ LABEL_8:
       objc_storeStrong(&v11->_permittedURLStrings, v42);
     }
 
-    v43 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:v8 key:@"AllowListBookmarks" outError:0];
+    v43 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:dictionaryCopy key:@"AllowListBookmarks" outError:0];
     v44 = v43;
     if (!v43)
     {
-      v44 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:v8 key:@"WhitelistedBookmarks" outError:0];
+      v44 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:dictionaryCopy key:@"WhitelistedBookmarks" outError:0];
     }
 
     objc_storeStrong(&v11->_allowListBookmarks, v44);
@@ -167,11 +167,11 @@ LABEL_8:
     {
     }
 
-    name = [(MCWebContentFilterPayload *)v11 _stringsFromDict:v8 key:@"DenyListURLs" outError:0];
+    name = [(MCWebContentFilterPayload *)v11 _stringsFromDict:dictionaryCopy key:@"DenyListURLs" outError:0];
     v45 = name;
     if (!name)
     {
-      v45 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:v8 key:@"BlacklistedURLs" outError:0];
+      v45 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:dictionaryCopy key:@"BlacklistedURLs" outError:0];
     }
 
     objc_storeStrong(&v11->_denyListURLStrings, v45);
@@ -197,7 +197,7 @@ LABEL_51:
   {
     v36 = +[MCWebContentFilterPayload pluginFilterKeysAndClasses];
     v122 = 0;
-    v37 = [v8 MCMutableDictionaryContainingValidatedKeysAndClasses:v36 removeKeys:1 outError:&v122];
+    v37 = [dictionaryCopy MCMutableDictionaryContainingValidatedKeysAndClasses:v36 removeKeys:1 outError:&v122];
     v13 = v122;
     pluginConfiguration = v11->_pluginConfiguration;
     v11->_pluginConfiguration = v37;
@@ -236,10 +236,10 @@ LABEL_51:
 LABEL_3:
     v15 = [(MCPayload *)v11 malformedPayloadErrorWithError:v13];
     name = v15;
-    if (a5)
+    if (error)
     {
       v17 = v15;
-      *a5 = name;
+      *error = name;
     }
 
     v18 = _MCLogObjects;
@@ -248,11 +248,11 @@ LABEL_3:
       v19 = v18;
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [name MCVerboseDescription];
+      mCVerboseDescription = [name MCVerboseDescription];
       *buf = 138543618;
       v126 = v20;
       v127 = 2114;
-      v128 = v22;
+      v128 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v19, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -261,7 +261,7 @@ LABEL_3:
   }
 
   v121 = 0;
-  v46 = [(MCWebContentFilterPayload *)v11 _BOOLFromDict:v8 key:@"AutoFilterEnabled" outError:&v121];
+  v46 = [(MCWebContentFilterPayload *)v11 _BOOLFromDict:dictionaryCopy key:@"AutoFilterEnabled" outError:&v121];
   v47 = v121;
   v11->_autoFilterEnabled = v46;
   if (v47)
@@ -273,7 +273,7 @@ LABEL_3:
   if (v46)
   {
     v120 = 0;
-    v48 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:v8 key:@"PermittedURLs" outError:&v120];
+    v48 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:dictionaryCopy key:@"PermittedURLs" outError:&v120];
     v13 = v120;
     if (v48)
     {
@@ -329,7 +329,7 @@ LABEL_3:
   }
 
   v115 = 0;
-  v55 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:v8 key:@"DenyListURLs" outError:&v115];
+  v55 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:dictionaryCopy key:@"DenyListURLs" outError:&v115];
   v13 = v115;
   denyListURLStrings = v11->_denyListURLStrings;
   v11->_denyListURLStrings = v55;
@@ -348,7 +348,7 @@ LABEL_3:
   else
   {
     v114 = 0;
-    v87 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:v8 key:@"BlacklistedURLs" outError:&v114];
+    v87 = [(MCWebContentFilterPayload *)v11 _stringsFromDict:dictionaryCopy key:@"BlacklistedURLs" outError:&v114];
     v13 = v114;
     v88 = v11->_denyListURLStrings;
     v11->_denyListURLStrings = v87;
@@ -404,7 +404,7 @@ LABEL_3:
   }
 
   v109 = 0;
-  v65 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:v8 key:@"AllowListBookmarks" outError:&v109];
+  v65 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:dictionaryCopy key:@"AllowListBookmarks" outError:&v109];
   v13 = v109;
   allowListBookmarks = v11->_allowListBookmarks;
   v11->_allowListBookmarks = v65;
@@ -415,7 +415,7 @@ LABEL_3:
     if (!v67)
     {
       v108 = 0;
-      v89 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:v8 key:@"WhitelistedBookmarks" outError:&v108];
+      v89 = [(MCWebContentFilterPayload *)v11 _dictsFromDict:dictionaryCopy key:@"WhitelistedBookmarks" outError:&v108];
       v13 = v108;
       v90 = v11->_allowListBookmarks;
       v11->_allowListBookmarks = v89;
@@ -460,7 +460,7 @@ LABEL_84:
         goto LABEL_126;
       }
 
-      v100 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v70 = [v69 objectForKeyedSubscript:@"URL"];
       if (v70)
       {
@@ -472,7 +472,7 @@ LABEL_84:
           goto LABEL_125;
         }
 
-        [v100 setObject:v70 forKeyedSubscript:@"address"];
+        [dictionary setObject:v70 forKeyedSubscript:@"address"];
       }
 
       v97 = v70;
@@ -485,7 +485,7 @@ LABEL_84:
           v91 = [MCPayload badFieldTypeErrorWithField:@"bookmarkPath"];
 
 LABEL_125:
-          v13 = v100;
+          v13 = dictionary;
 LABEL_126:
 
           v13 = v91;
@@ -501,15 +501,15 @@ LABEL_127:
           v71 = v72;
         }
 
-        v73 = v100;
-        v74 = v100;
+        v73 = dictionary;
+        v74 = dictionary;
         v75 = v71;
       }
 
       else
       {
-        v73 = v100;
-        v74 = v100;
+        v73 = dictionary;
+        v74 = dictionary;
         v75 = @"/";
       }
 
@@ -531,7 +531,7 @@ LABEL_127:
 
       v80 = 0;
       v13 = v81;
-      v82 = v100;
+      v82 = dictionary;
 LABEL_108:
 
       if (!v80)
@@ -611,17 +611,17 @@ LABEL_41:
   }
 
 LABEL_9:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v23 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v24 = v23;
-      v25 = [(MCPayload *)v11 friendlyName];
+      friendlyName = [(MCPayload *)v11 friendlyName];
       *buf = 138543618;
-      v126 = v25;
+      v126 = friendlyName;
       v127 = 2114;
-      v128 = v8;
+      v128 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v24, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -631,49 +631,49 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)_BOOLFromDict:(id)a3 key:(id)a4 outError:(id *)a5
+- (BOOL)_BOOLFromDict:(id)dict key:(id)key outError:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:v7 isRequired:0 outError:a5];
+  keyCopy = key;
+  dictCopy = dict;
+  v9 = [dictCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:keyCopy isRequired:0 outError:error];
 
-  LOBYTE(v8) = [v9 BOOLValue];
-  return v8;
+  LOBYTE(dictCopy) = [v9 BOOLValue];
+  return dictCopy;
 }
 
-- (BOOL)_BOOLFromDictOrDefaultTrue:(id)a3 key:(id)a4 outError:(id *)a5
+- (BOOL)_BOOLFromDictOrDefaultTrue:(id)true key:(id)key outError:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:v7 isRequired:0 outError:a5];
+  keyCopy = key;
+  trueCopy = true;
+  v9 = [trueCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:keyCopy isRequired:0 outError:error];
 
   if (v9)
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (id)_stringsFromDict:(id)a3 key:(id)a4 outError:(id *)a5
+- (id)_stringsFromDict:(id)dict key:(id)key outError:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:v7 isRequired:0 outError:a5];
+  keyCopy = key;
+  dictCopy = dict;
+  v9 = [dictCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:keyCopy isRequired:0 outError:error];
 
   return v9;
 }
 
-- (id)_dictsFromDict:(id)a3 key:(id)a4 outError:(id *)a5
+- (id)_dictsFromDict:(id)dict key:(id)key outError:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:v7 isRequired:0 outError:a5];
+  keyCopy = key;
+  dictCopy = dict;
+  v9 = [dictCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:keyCopy isRequired:0 outError:error];
 
   return v9;
 }
@@ -682,113 +682,113 @@ LABEL_13:
 {
   v24.receiver = self;
   v24.super_class = MCWebContentFilterPayload;
-  v3 = [(MCPayload *)&v24 stubDictionary];
-  v4 = [(MCWebContentFilterPayload *)self contentFilterUUID];
+  stubDictionary = [(MCPayload *)&v24 stubDictionary];
+  contentFilterUUID = [(MCWebContentFilterPayload *)self contentFilterUUID];
 
-  if (v4)
+  if (contentFilterUUID)
   {
-    v5 = [(MCWebContentFilterPayload *)self contentFilterUUID];
-    [v3 setObject:v5 forKeyedSubscript:@"ContentFilterUUID"];
+    contentFilterUUID2 = [(MCWebContentFilterPayload *)self contentFilterUUID];
+    [stubDictionary setObject:contentFilterUUID2 forKeyedSubscript:@"ContentFilterUUID"];
   }
 
-  v6 = [(MCWebContentFilterPayload *)self filterType];
+  filterType = [(MCWebContentFilterPayload *)self filterType];
 
-  if (v6)
+  if (filterType)
   {
-    v7 = [(MCWebContentFilterPayload *)self filterType];
-    [v3 setObject:v7 forKeyedSubscript:@"FilterType"];
+    filterType2 = [(MCWebContentFilterPayload *)self filterType];
+    [stubDictionary setObject:filterType2 forKeyedSubscript:@"FilterType"];
   }
 
   if ([(MCWebContentFilterPayload *)self hideDenyListURLs])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWebContentFilterPayload hideDenyListURLs](self, "hideDenyListURLs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"HideDenyListURLs"];
+    [stubDictionary setObject:v8 forKeyedSubscript:@"HideDenyListURLs"];
   }
 
-  v9 = [(MCWebContentFilterPayload *)self filterType];
-  v10 = [v9 isEqualToString:@"Plugin"];
+  filterType3 = [(MCWebContentFilterPayload *)self filterType];
+  v10 = [filterType3 isEqualToString:@"Plugin"];
 
   if (v10)
   {
-    v11 = [(MCWebContentFilterPayload *)self pluginBundleID];
+    pluginBundleID = [(MCWebContentFilterPayload *)self pluginBundleID];
 
-    if (v11)
+    if (pluginBundleID)
     {
-      v12 = [(MCWebContentFilterPayload *)self pluginBundleID];
-      [v3 setObject:v12 forKeyedSubscript:@"PluginBundleID"];
+      pluginBundleID2 = [(MCWebContentFilterPayload *)self pluginBundleID];
+      [stubDictionary setObject:pluginBundleID2 forKeyedSubscript:@"PluginBundleID"];
     }
 
-    v13 = [(MCWebContentFilterPayload *)self name];
+    name = [(MCWebContentFilterPayload *)self name];
 
-    if (v13)
+    if (name)
     {
-      v14 = [(MCWebContentFilterPayload *)self name];
+      name2 = [(MCWebContentFilterPayload *)self name];
       v15 = @"UserDefinedName";
 LABEL_20:
-      [v3 setObject:v14 forKeyedSubscript:v15];
+      [stubDictionary setObject:name2 forKeyedSubscript:v15];
     }
   }
 
   else
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWebContentFilterPayload autoFilterEnabled](self, "autoFilterEnabled")}];
-    [v3 setObject:v16 forKeyedSubscript:@"AutoFilterEnabled"];
+    [stubDictionary setObject:v16 forKeyedSubscript:@"AutoFilterEnabled"];
 
-    v17 = [(MCWebContentFilterPayload *)self permittedURLStrings];
+    permittedURLStrings = [(MCWebContentFilterPayload *)self permittedURLStrings];
 
-    if (v17)
+    if (permittedURLStrings)
     {
-      v18 = [(MCWebContentFilterPayload *)self permittedURLStrings];
-      [v3 setObject:v18 forKeyedSubscript:@"PermittedURLs"];
+      permittedURLStrings2 = [(MCWebContentFilterPayload *)self permittedURLStrings];
+      [stubDictionary setObject:permittedURLStrings2 forKeyedSubscript:@"PermittedURLs"];
     }
 
-    v19 = [(MCWebContentFilterPayload *)self allowListBookmarks];
+    allowListBookmarks = [(MCWebContentFilterPayload *)self allowListBookmarks];
 
-    if (v19)
+    if (allowListBookmarks)
     {
-      v20 = [(MCWebContentFilterPayload *)self allowListBookmarks];
-      [v3 setObject:v20 forKeyedSubscript:@"AllowListBookmarks"];
+      allowListBookmarks2 = [(MCWebContentFilterPayload *)self allowListBookmarks];
+      [stubDictionary setObject:allowListBookmarks2 forKeyedSubscript:@"AllowListBookmarks"];
     }
 
-    v21 = [(MCWebContentFilterPayload *)self denyListURLStrings];
+    denyListURLStrings = [(MCWebContentFilterPayload *)self denyListURLStrings];
 
-    if (v21)
+    if (denyListURLStrings)
     {
-      v22 = [(MCWebContentFilterPayload *)self denyListURLStrings];
-      [v3 setObject:v22 forKeyedSubscript:@"DenyListURLs"];
+      denyListURLStrings2 = [(MCWebContentFilterPayload *)self denyListURLStrings];
+      [stubDictionary setObject:denyListURLStrings2 forKeyedSubscript:@"DenyListURLs"];
     }
 
     if ([(MCWebContentFilterPayload *)self safariHistoryRetentionEnabled])
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWebContentFilterPayload safariHistoryRetentionEnabled](self, "safariHistoryRetentionEnabled")}];
+      name2 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWebContentFilterPayload safariHistoryRetentionEnabled](self, "safariHistoryRetentionEnabled")}];
       v15 = @"SafariHistoryRetentionEnabled";
       goto LABEL_20;
     }
   }
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)restrictions
 {
   v51[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MCWebContentFilterPayload *)self filterType];
-  v4 = [v3 isEqualToString:@"Plugin"];
+  filterType = [(MCWebContentFilterPayload *)self filterType];
+  v4 = [filterType isEqualToString:@"Plugin"];
 
   if (v4)
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    [v5 setObject:v6 forKeyedSubscript:@"restrictedBool"];
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [v5 setObject:v7 forKeyedSubscript:@"intersection"];
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    [v5 setObject:v8 forKeyedSubscript:@"union"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary2 forKeyedSubscript:@"restrictedBool"];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary3 forKeyedSubscript:@"intersection"];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary4 forKeyedSubscript:@"union"];
     if ([(MCWebContentFilterPayload *)self autoFilterEnabled])
     {
       v50[0] = @"value";
@@ -796,35 +796,35 @@ LABEL_20:
       v51[0] = MEMORY[0x1E695E118];
       v51[1] = MEMORY[0x1E695E118];
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:2];
-      [v6 setObject:v9 forKeyedSubscript:@"forceWebContentFilterAuto"];
+      [dictionary2 setObject:v9 forKeyedSubscript:@"forceWebContentFilterAuto"];
     }
 
-    v10 = [(MCWebContentFilterPayload *)self permittedURLStrings];
+    permittedURLStrings = [(MCWebContentFilterPayload *)self permittedURLStrings];
 
-    if (v10)
+    if (permittedURLStrings)
     {
       v48 = @"values";
-      v11 = [(MCWebContentFilterPayload *)self permittedURLStrings];
-      v49 = v11;
+      permittedURLStrings2 = [(MCWebContentFilterPayload *)self permittedURLStrings];
+      v49 = permittedURLStrings2;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-      [v7 setObject:v12 forKeyedSubscript:@"webContentFilterAutoPermittedURLs"];
+      [dictionary3 setObject:v12 forKeyedSubscript:@"webContentFilterAutoPermittedURLs"];
     }
 
-    v13 = [(MCWebContentFilterPayload *)self allowListBookmarks];
+    allowListBookmarks = [(MCWebContentFilterPayload *)self allowListBookmarks];
 
-    if (v13)
+    if (allowListBookmarks)
     {
-      v34 = v8;
+      v34 = dictionary4;
       v14 = MEMORY[0x1E695DF70];
-      v15 = [(MCWebContentFilterPayload *)self allowListBookmarks];
-      v16 = [v14 arrayWithCapacity:{objc_msgSend(v15, "count")}];
+      allowListBookmarks2 = [(MCWebContentFilterPayload *)self allowListBookmarks];
+      v16 = [v14 arrayWithCapacity:{objc_msgSend(allowListBookmarks2, "count")}];
 
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v17 = [(MCWebContentFilterPayload *)self allowListBookmarks];
-      v18 = [v17 countByEnumeratingWithState:&v35 objects:v47 count:16];
+      allowListBookmarks3 = [(MCWebContentFilterPayload *)self allowListBookmarks];
+      v18 = [allowListBookmarks3 countByEnumeratingWithState:&v35 objects:v47 count:16];
       if (v18)
       {
         v19 = v18;
@@ -835,14 +835,14 @@ LABEL_20:
           {
             if (*v36 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(allowListBookmarks3);
             }
 
             v22 = [*(*(&v35 + 1) + 8 * i) objectForKeyedSubscript:@"address"];
             [v16 addObject:v22];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v35 objects:v47 count:16];
+          v19 = [allowListBookmarks3 countByEnumeratingWithState:&v35 objects:v47 count:16];
         }
 
         while (v19);
@@ -851,24 +851,24 @@ LABEL_20:
       v45 = @"values";
       v46 = v16;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-      [v7 setObject:v23 forKeyedSubscript:@"webContentFilterWhitelistedURLs"];
+      [dictionary3 setObject:v23 forKeyedSubscript:@"webContentFilterWhitelistedURLs"];
 
-      v8 = v34;
+      dictionary4 = v34;
     }
 
-    v24 = [(MCWebContentFilterPayload *)self denyListURLStrings];
+    denyListURLStrings = [(MCWebContentFilterPayload *)self denyListURLStrings];
 
-    if (v24)
+    if (denyListURLStrings)
     {
       v43 = @"values";
-      v25 = [(MCWebContentFilterPayload *)self denyListURLStrings];
-      v44 = v25;
+      denyListURLStrings2 = [(MCWebContentFilterPayload *)self denyListURLStrings];
+      v44 = denyListURLStrings2;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-      [v8 setObject:v26 forKeyedSubscript:@"webContentFilterBlacklistedURLs"];
+      [dictionary4 setObject:v26 forKeyedSubscript:@"webContentFilterBlacklistedURLs"];
     }
 
-    v27 = [(MCWebContentFilterPayload *)self filterType];
-    v28 = [v27 isEqualToString:@"BuiltIn"];
+    filterType2 = [(MCWebContentFilterPayload *)self filterType];
+    v28 = [filterType2 isEqualToString:@"BuiltIn"];
 
     if (v28 && [(MCWebContentFilterPayload *)self safariHistoryRetentionEnabled])
     {
@@ -878,34 +878,34 @@ LABEL_20:
       v42[0] = MEMORY[0x1E695E110];
       v42[1] = MEMORY[0x1E695E110];
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
-      [v6 setObject:v30 forKeyedSubscript:@"allowSafariPrivateBrowsing"];
+      [dictionary2 setObject:v30 forKeyedSubscript:@"allowSafariPrivateBrowsing"];
 
       v39[0] = @"value";
       v39[1] = @"preference";
       v40[0] = v29;
       v40[1] = v29;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
-      [v6 setObject:v31 forKeyedSubscript:@"allowSafariHistoryClearing"];
+      [dictionary2 setObject:v31 forKeyedSubscript:@"allowSafariHistoryClearing"];
     }
   }
 
   v32 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
 - (id)verboseDescription
 {
   v18.receiver = self;
   v18.super_class = MCWebContentFilterPayload;
-  v3 = [(MCPayload *)&v18 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v18 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCWebContentFilterPayload *)self filterType];
-  [v4 appendFormat:@"Type : %@\n", v5];
+  filterType = [(MCWebContentFilterPayload *)self filterType];
+  [v4 appendFormat:@"Type : %@\n", filterType];
 
-  v6 = [(MCWebContentFilterPayload *)self filterType];
-  v7 = [v6 isEqualToString:@"Plugin"];
+  filterType2 = [(MCWebContentFilterPayload *)self filterType];
+  v7 = [filterType2 isEqualToString:@"Plugin"];
 
   if ((v7 & 1) == 0)
   {
@@ -920,28 +920,28 @@ LABEL_20:
     }
 
     [v4 appendFormat:@"Auto Filter    : %@\n", v8];
-    v9 = [(MCWebContentFilterPayload *)self permittedURLStrings];
+    permittedURLStrings = [(MCWebContentFilterPayload *)self permittedURLStrings];
 
-    if (v9)
+    if (permittedURLStrings)
     {
-      v10 = [(MCWebContentFilterPayload *)self permittedURLStrings];
-      [v4 appendFormat:@"Permitted URLs:\n%@\n", v10];
+      permittedURLStrings2 = [(MCWebContentFilterPayload *)self permittedURLStrings];
+      [v4 appendFormat:@"Permitted URLs:\n%@\n", permittedURLStrings2];
     }
 
-    v11 = [(MCWebContentFilterPayload *)self allowListBookmarks];
+    allowListBookmarks = [(MCWebContentFilterPayload *)self allowListBookmarks];
 
-    if (v11)
+    if (allowListBookmarks)
     {
-      v12 = [(MCWebContentFilterPayload *)self allowListBookmarks];
-      [v4 appendFormat:@"Allowed bookmarks:\n%@\n", v12];
+      allowListBookmarks2 = [(MCWebContentFilterPayload *)self allowListBookmarks];
+      [v4 appendFormat:@"Allowed bookmarks:\n%@\n", allowListBookmarks2];
     }
 
-    v13 = [(MCWebContentFilterPayload *)self denyListURLStrings];
+    denyListURLStrings = [(MCWebContentFilterPayload *)self denyListURLStrings];
 
-    if (v13)
+    if (denyListURLStrings)
     {
-      v14 = [(MCWebContentFilterPayload *)self denyListURLStrings];
-      [v4 appendFormat:@"Denied URLs:\n%@\n", v14];
+      denyListURLStrings2 = [(MCWebContentFilterPayload *)self denyListURLStrings];
+      [v4 appendFormat:@"Denied URLs:\n%@\n", denyListURLStrings2];
     }
 
     if ([(MCWebContentFilterPayload *)self safariHistoryRetentionEnabled])
@@ -960,52 +960,52 @@ LABEL_20:
     }
   }
 
-  v16 = [(MCWebContentFilterPayload *)self contentFilterUUID];
-  [v4 appendFormat:@"ContentFilterUUID     : %@\n", v16];
+  contentFilterUUID = [(MCWebContentFilterPayload *)self contentFilterUUID];
+  [v4 appendFormat:@"ContentFilterUUID     : %@\n", contentFilterUUID];
 
   return v4;
 }
 
 - (id)subtitle1Description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(MCWebContentFilterPayload *)self autoFilterEnabled])
   {
     v11 = MCLocalizedFormat(@"WEB_FILTER_DESC_AUTOFILTER", v4, v5, v6, v7, v8, v9, v10, v45);
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
-  v12 = [(MCWebContentFilterPayload *)self allowListBookmarks];
-  v13 = [v12 count];
+  allowListBookmarks = [(MCWebContentFilterPayload *)self allowListBookmarks];
+  v13 = [allowListBookmarks count];
 
   if (v13)
   {
     v21 = MCLocalizedFormat(@"WEB_FILTER_DESC_ALLOW_LIST", v14, v15, v16, v17, v18, v19, v20, v45);
-    [v3 addObject:v21];
+    [array addObject:v21];
   }
 
-  v22 = [(MCWebContentFilterPayload *)self denyListURLStrings];
-  v23 = [v22 count];
+  denyListURLStrings = [(MCWebContentFilterPayload *)self denyListURLStrings];
+  v23 = [denyListURLStrings count];
 
   if (v23)
   {
     v31 = MCLocalizedFormat(@"WEB_FILTER_DESC_DENY_LIST", v24, v25, v26, v27, v28, v29, v30, v45);
-    [v3 addObject:v31];
+    [array addObject:v31];
   }
 
-  v32 = [(MCWebContentFilterPayload *)self filterType];
-  v33 = [v32 isEqualToString:@"Plugin"];
+  filterType = [(MCWebContentFilterPayload *)self filterType];
+  v33 = [filterType isEqualToString:@"Plugin"];
 
   if (v33)
   {
     v34 = MCLocalizedString(@"WEB_FILTER_DESC_PLUGIN");
-    [v3 addObject:v34];
+    [array addObject:v34];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
     v42 = MCLocalizedFormat(@"WEB_FILTER_SEPARATOR", v35, v36, v37, v38, v39, v40, v41, v45);
-    v43 = [v3 componentsJoinedByString:v42];
+    v43 = [array componentsJoinedByString:v42];
   }
 
   else
@@ -1027,26 +1027,26 @@ LABEL_20:
   v8 = [(MCKeyValue *)v5 initWithLocalizedString:v6 localizedKey:v7];
   [v4 addObject:v8];
 
-  v9 = [(MCWebContentFilterPayload *)self pluginBundleID];
+  pluginBundleID = [(MCWebContentFilterPayload *)self pluginBundleID];
 
-  if (v9)
+  if (pluginBundleID)
   {
     v10 = [MCKeyValue alloc];
-    v11 = [(MCWebContentFilterPayload *)self pluginBundleID];
+    pluginBundleID2 = [(MCWebContentFilterPayload *)self pluginBundleID];
     v12 = MCLocalizedString(@"PLUGIN_BUNDLE_ID");
-    v13 = [(MCKeyValue *)v10 initWithLocalizedString:v11 localizedKey:v12];
+    v13 = [(MCKeyValue *)v10 initWithLocalizedString:pluginBundleID2 localizedKey:v12];
 
     [v4 addObject:v13];
   }
 
-  v14 = [(MCWebContentFilterPayload *)self contentFilterUUID];
+  contentFilterUUID = [(MCWebContentFilterPayload *)self contentFilterUUID];
 
-  if (v14)
+  if (contentFilterUUID)
   {
     v15 = [MCKeyValue alloc];
-    v16 = [(MCWebContentFilterPayload *)self contentFilterUUID];
+    contentFilterUUID2 = [(MCWebContentFilterPayload *)self contentFilterUUID];
     v17 = MCLocalizedString(@"WEB_FILTER_CONTENTFILTERUUID");
-    v18 = [(MCKeyValue *)v15 initWithLocalizedString:v16 localizedKey:v17];
+    v18 = [(MCKeyValue *)v15 initWithLocalizedString:contentFilterUUID2 localizedKey:v17];
 
     [v4 addObject:v18];
   }
@@ -1067,14 +1067,14 @@ LABEL_20:
     [v3 addObject:v23];
   }
 
-  v24 = [(MCWebContentFilterPayload *)self permittedURLStrings];
-  v25 = [v24 count];
+  permittedURLStrings = [(MCWebContentFilterPayload *)self permittedURLStrings];
+  v25 = [permittedURLStrings count];
 
   if (v25)
   {
-    v26 = [(MCWebContentFilterPayload *)self permittedURLStrings];
+    permittedURLStrings2 = [(MCWebContentFilterPayload *)self permittedURLStrings];
     v27 = MCLocalizedString(@"PERMITTED_URLS");
-    v28 = [MCKeyValueSection sectionWithLocalizedArray:v26 title:v27 footer:0];
+    v28 = [MCKeyValueSection sectionWithLocalizedArray:permittedURLStrings2 title:v27 footer:0];
 
     [v3 addObject:v28];
   }
@@ -1085,8 +1085,8 @@ LABEL_20:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v30 = [(MCWebContentFilterPayload *)self allowListBookmarks];
-  v31 = [v30 countByEnumeratingWithState:&v52 objects:v56 count:16];
+  allowListBookmarks = [(MCWebContentFilterPayload *)self allowListBookmarks];
+  v31 = [allowListBookmarks countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v31)
   {
     v32 = v31;
@@ -1097,7 +1097,7 @@ LABEL_20:
       {
         if (*v53 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(allowListBookmarks);
         }
 
         v35 = *(*(&v52 + 1) + 8 * i);
@@ -1117,7 +1117,7 @@ LABEL_20:
         [v29 addObject:v37];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v52 objects:v56 count:16];
+      v32 = [allowListBookmarks countByEnumeratingWithState:&v52 objects:v56 count:16];
     }
 
     while (v32);
@@ -1132,8 +1132,8 @@ LABEL_20:
     [v51 addObject:v41];
   }
 
-  v42 = [(MCWebContentFilterPayload *)self denyListURLStrings];
-  v43 = [v42 count];
+  denyListURLStrings = [(MCWebContentFilterPayload *)self denyListURLStrings];
+  v43 = [denyListURLStrings count];
 
   if (v43)
   {
@@ -1150,15 +1150,15 @@ LABEL_20:
     v45 = MCLocalizedString(v44);
     if ([(MCWebContentFilterPayload *)self hideDenyListURLs])
     {
-      v46 = MEMORY[0x1E695E0F0];
+      denyListURLStrings2 = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v46 = [(MCWebContentFilterPayload *)self denyListURLStrings];
+      denyListURLStrings2 = [(MCWebContentFilterPayload *)self denyListURLStrings];
     }
 
-    v47 = [MCKeyValueSection sectionWithLocalizedArray:v46 title:v45 footer:0];
+    v47 = [MCKeyValueSection sectionWithLocalizedArray:denyListURLStrings2 title:v45 footer:0];
     [v51 addObject:v47];
   }
 
@@ -1175,8 +1175,8 @@ LABEL_20:
 
 - (id)installationWarnings
 {
-  v2 = [(MCWebContentFilterPayload *)self filterType];
-  v3 = [v2 isEqualToString:@"BuiltIn"];
+  filterType = [(MCWebContentFilterPayload *)self filterType];
+  v3 = [filterType isEqualToString:@"BuiltIn"];
 
   if (v3)
   {

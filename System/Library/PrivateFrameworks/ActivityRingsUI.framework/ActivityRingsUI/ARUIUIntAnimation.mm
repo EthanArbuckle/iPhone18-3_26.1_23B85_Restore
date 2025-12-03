@@ -1,27 +1,27 @@
 @interface ARUIUIntAnimation
-+ (id)animationWithDuration:(double)a3 startValue:(unint64_t)a4 endValue:(unint64_t)a5 timingFunction:(id)a6 applier:(id)a7;
++ (id)animationWithDuration:(double)duration startValue:(unint64_t)value endValue:(unint64_t)endValue timingFunction:(id)function applier:(id)applier;
 - (ARUIRingGroupAnimationDelegate)delegate;
-- (ARUIUIntAnimation)initWithDuration:(double)a3 startValue:(unint64_t)a4 endValue:(unint64_t)a5 timingFunction:(id)a6 applier:(id)a7;
+- (ARUIUIntAnimation)initWithDuration:(double)duration startValue:(unint64_t)value endValue:(unint64_t)endValue timingFunction:(id)function applier:(id)applier;
 - (void)completeAnimation;
 - (void)dealloc;
-- (void)update:(double)a3;
+- (void)update:(double)update;
 @end
 
 @implementation ARUIUIntAnimation
 
-+ (id)animationWithDuration:(double)a3 startValue:(unint64_t)a4 endValue:(unint64_t)a5 timingFunction:(id)a6 applier:(id)a7
++ (id)animationWithDuration:(double)duration startValue:(unint64_t)value endValue:(unint64_t)endValue timingFunction:(id)function applier:(id)applier
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = [[ARUIUIntAnimation alloc] initWithDuration:a4 startValue:a5 endValue:v12 timingFunction:v11 applier:a3];
+  applierCopy = applier;
+  functionCopy = function;
+  v13 = [[ARUIUIntAnimation alloc] initWithDuration:value startValue:endValue endValue:functionCopy timingFunction:applierCopy applier:duration];
 
   return v13;
 }
 
-- (ARUIUIntAnimation)initWithDuration:(double)a3 startValue:(unint64_t)a4 endValue:(unint64_t)a5 timingFunction:(id)a6 applier:(id)a7
+- (ARUIUIntAnimation)initWithDuration:(double)duration startValue:(unint64_t)value endValue:(unint64_t)endValue timingFunction:(id)function applier:(id)applier
 {
-  v13 = a6;
-  v14 = a7;
+  functionCopy = function;
+  applierCopy = applier;
   v20.receiver = self;
   v20.super_class = ARUIUIntAnimation;
   v15 = [(ARUIUIntAnimation *)&v20 init];
@@ -29,13 +29,13 @@
   if (v15)
   {
     v15->_completed = 0;
-    v15->_duration = a3;
+    v15->_duration = duration;
     v15->_percent = 0.0;
-    v15->_currentValue = a4;
-    v15->_endValue = a5;
-    v15->_startValue = a4;
-    objc_storeStrong(&v15->_timingFunction, a6);
-    v17 = MEMORY[0x1D3875270](v14);
+    v15->_currentValue = value;
+    v15->_endValue = endValue;
+    v15->_startValue = value;
+    objc_storeStrong(&v15->_timingFunction, function);
+    v17 = MEMORY[0x1D3875270](applierCopy);
     applier = v16->_applier;
     v16->_applier = v17;
   }
@@ -55,19 +55,19 @@
   [(ARUIUIntAnimation *)&v3 dealloc];
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
   if (self->_completed)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Should not call update on a ARUIUIntAnimation that has already completed"];
   }
 
-  v5 = self->_percent + a3 / self->_duration;
+  v5 = self->_percent + update / self->_duration;
   self->_percent = ARUISaturate(v5);
   [(CAMediaTimingFunction *)self->_timingFunction _solveForInput:?];
   self->_currentValue = ARUIMix(self->_startValue, self->_endValue, v6);
   v7 = *(self->_applier + 2);
-  v8.n128_f64[0] = a3;
+  v8.n128_f64[0] = update;
 
   v7(v8);
 }

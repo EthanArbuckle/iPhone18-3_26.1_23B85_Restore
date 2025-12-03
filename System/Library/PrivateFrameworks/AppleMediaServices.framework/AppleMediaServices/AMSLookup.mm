@@ -3,13 +3,13 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSLookup)initWithBag:(id)a3 caller:(id)a4 keyProfile:(id)a5;
-- (AMSLookup)initWithBagContract:(id)a3 caller:(id)a4 keyProfile:(id)a5;
-- (id)_compileQueryParametersWithBundleIds:(id)a3 itemIds:(id)a4;
+- (AMSLookup)initWithBag:(id)bag caller:(id)caller keyProfile:(id)profile;
+- (AMSLookup)initWithBagContract:(id)contract caller:(id)caller keyProfile:(id)profile;
+- (id)_compileQueryParametersWithBundleIds:(id)ids itemIds:(id)itemIds;
 - (id)contract;
-- (id)performLookupWithBundleIdentifiers:(id)a3 itemIdentifiers:(id)a4;
-- (void)_addJSSignatureToRequest:(id)a3;
-- (void)setContract:(id)a3;
+- (id)performLookupWithBundleIdentifiers:(id)identifiers itemIdentifiers:(id)itemIdentifiers;
+- (void)_addJSSignatureToRequest:(id)request;
+- (void)setContract:(id)contract;
 @end
 
 @implementation AMSLookup
@@ -21,39 +21,39 @@
   return v2;
 }
 
-- (AMSLookup)initWithBag:(id)a3 caller:(id)a4 keyProfile:(id)a5
+- (AMSLookup)initWithBag:(id)bag caller:(id)caller keyProfile:(id)profile
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bagCopy = bag;
+  callerCopy = caller;
+  profileCopy = profile;
   v17.receiver = self;
   v17.super_class = AMSLookup;
   v12 = [(AMSTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bag, a3);
+    objc_storeStrong(&v12->_bag, bag);
     v13->_version = 2;
     v14 = +[AMSProcessInfo currentProcess];
     clientInfo = v13->_clientInfo;
     v13->_clientInfo = v14;
 
-    objc_storeStrong(&v13->_caller, a4);
-    objc_storeStrong(&v13->_keyProfile, a5);
+    objc_storeStrong(&v13->_caller, caller);
+    objc_storeStrong(&v13->_keyProfile, profile);
   }
 
   return v13;
 }
 
-- (id)performLookupWithBundleIdentifiers:(id)a3 itemIdentifiers:(id)a4
+- (id)performLookupWithBundleIdentifiers:(id)identifiers itemIdentifiers:(id)itemIdentifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  itemIdentifiersCopy = itemIdentifiers;
   v8 = AMSGenerateLogCorrelationKey();
   v9 = [(AMSLookup *)self bag];
-  v10 = [(AMSLookup *)self contract];
-  if (v9 | v10)
+  contract = [(AMSLookup *)self contract];
+  if (v9 | contract)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -62,9 +62,9 @@
     v19[4] = self;
     v20 = v8;
     v21 = v9;
-    v22 = v10;
-    v23 = v6;
-    v24 = v7;
+    v22 = contract;
+    v23 = identifiersCopy;
+    v24 = itemIdentifiersCopy;
     v16 = [(AMSTask *)self performTaskWithPromiseBlock:v19];
   }
 
@@ -72,44 +72,44 @@
   {
     v11 = +[AMSUnitTests isRunningUnitTests];
     v12 = +[AMSLogConfig sharedConfig];
-    v13 = v12;
+    defaultCenter = v12;
     if (v11)
     {
       if (!v12)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
         v26 = objc_opt_class();
         v27 = 2114;
         v28 = v8;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] AMSLookup requires its bag or contract properties to be set.", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] AMSLookup requires its bag or contract properties to be set.", buf, 0x16u);
       }
 
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      v15 = +[AMSLogConfig sharedConfig];
-      [v13 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v15 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v12)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v13 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543618;
         v26 = objc_opt_class();
         v27 = 2114;
         v28 = v8;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] AMSLookup requires its bag or contract properties to be set.", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] AMSLookup requires its bag or contract properties to be set.", buf, 0x16u);
       }
     }
 
@@ -389,28 +389,28 @@ void __33__AMSLookup_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-- (void)_addJSSignatureToRequest:(id)a3
+- (void)_addJSSignatureToRequest:(id)request
 {
   v58[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v5 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v7 = v6;
 
   [v4 appendFormat:@"%.0f", v7];
   v46 = v7;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.0f"];
-  [v3 setValue:v8 forHTTPHeaderField:@"X-JS-TIMESTAMP"];
+  [requestCopy setValue:v8 forHTTPHeaderField:@"X-JS-TIMESTAMP"];
 
-  v9 = [v3 valueForHTTPHeaderField:@"X-Apple-Store-Front"];
+  v9 = [requestCopy valueForHTTPHeaderField:@"X-Apple-Store-Front"];
   if (v9)
   {
     [v4 appendString:v9];
@@ -424,8 +424,8 @@ void __33__AMSLookup_bagSubProfileVersion__block_invoke()
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -433,12 +433,12 @@ void __33__AMSLookup_bagSubProfileVersion__block_invoke()
       v52 = v12;
       v53 = 2114;
       v54 = v13;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] JS sign is missing a storefront", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] JS sign is missing a storefront", buf, 0x16u);
     }
   }
 
-  v14 = [v3 URL];
-  v15 = [v14 ams_parameters];
+  v14 = [requestCopy URL];
+  ams_parameters = [v14 ams_parameters];
 
   v58[0] = @"caller";
   v58[1] = @"id";
@@ -462,7 +462,7 @@ void __33__AMSLookup_bagSubProfileVersion__block_invoke()
           objc_enumerationMutation(v16);
         }
 
-        v21 = [v15 objectForKey:*(*(&v47 + 1) + 8 * i)];
+        v21 = [ams_parameters objectForKey:*(*(&v47 + 1) + 8 * i)];
         if (v21)
         {
           [v4 appendString:v21];
@@ -475,7 +475,7 @@ void __33__AMSLookup_bagSubProfileVersion__block_invoke()
     while (v18);
   }
 
-  v22 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
   if (![v4 length])
   {
     v35 = AMSErrorWithFormat(0, @"Lookup JS Failed", @"Signature string is empty", v23, v24, v25, v26, v27, v7);
@@ -488,7 +488,7 @@ void __33__AMSLookup_bagSubProfileVersion__block_invoke()
   }
 
   v28 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:20];
-  CC_SHA1(v22, [v4 length], objc_msgSend(v28, "mutableBytes"));
+  CC_SHA1(uTF8String, [v4 length], objc_msgSend(v28, "mutableBytes"));
   [v28 setLength:16];
   fd3fa4R8(3, [v28 mutableBytes]);
   if (v29)
@@ -504,7 +504,7 @@ void __33__AMSLookup_bagSubProfileVersion__block_invoke()
   v36 = [v28 base64EncodedStringWithOptions:0];
   if ([v36 length])
   {
-    [v3 setValue:v36 forHTTPHeaderField:@"X-JS-SP-TOKEN"];
+    [requestCopy setValue:v36 forHTTPHeaderField:@"X-JS-SP-TOKEN"];
   }
 
   else if (!v35)
@@ -521,8 +521,8 @@ LABEL_28:
       v42 = +[AMSLogConfig sharedConfig];
     }
 
-    v43 = [v42 OSLogObject];
-    if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v42 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v44 = objc_opt_class();
       v45 = AMSLogKey();
@@ -532,113 +532,113 @@ LABEL_28:
       v54 = v45;
       v55 = 2114;
       v56 = v35;
-      _os_log_impl(&dword_192869000, v43, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error occurred during JS sign: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error occurred during JS sign: %{public}@", buf, 0x20u);
     }
   }
 
 LABEL_33:
 }
 
-- (id)_compileQueryParametersWithBundleIds:(id)a3 itemIds:(id)a4
+- (id)_compileQueryParametersWithBundleIds:(id)ids itemIds:(id)itemIds
 {
-  v6 = a4;
+  itemIdsCopy = itemIds;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a3;
+  idsCopy = ids;
   v9 = objc_alloc_init(v7);
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[AMSLookup version](self, "version")];
   [v9 setObject:v10 forKeyedSubscript:@"version"];
 
-  v11 = [v8 componentsJoinedByString:{@", "}];
+  v11 = [idsCopy componentsJoinedByString:{@", "}];
 
-  if (v8)
+  if (idsCopy)
   {
     [v9 setObject:v11 forKeyedSubscript:@"bundleId"];
   }
 
-  v12 = [(AMSLookup *)self caller];
-  if (v12)
+  caller = [(AMSLookup *)self caller];
+  if (caller)
   {
-    v13 = v12;
+    bundleIdentifier = caller;
 LABEL_8:
-    [v9 setObject:v13 forKeyedSubscript:@"caller"];
+    [v9 setObject:bundleIdentifier forKeyedSubscript:@"caller"];
 
     goto LABEL_9;
   }
 
-  v14 = [(AMSLookup *)self clientInfo];
-  v13 = [v14 bundleIdentifier];
+  clientInfo = [(AMSLookup *)self clientInfo];
+  bundleIdentifier = [clientInfo bundleIdentifier];
 
-  if (v13)
+  if (bundleIdentifier)
   {
     goto LABEL_8;
   }
 
-  v15 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v15 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v13)
+  if (bundleIdentifier)
   {
     goto LABEL_8;
   }
 
-  v16 = [MEMORY[0x1E696AE30] processInfo];
-  v13 = [v16 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  bundleIdentifier = [processInfo processName];
 
-  if (v13)
+  if (bundleIdentifier)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  v17 = [(AMSLookup *)self imageProfile];
+  imageProfile = [(AMSLookup *)self imageProfile];
 
-  if (v17)
+  if (imageProfile)
   {
-    v18 = [(AMSLookup *)self imageProfile];
-    [v9 setObject:v18 forKeyedSubscript:@"artwork"];
+    imageProfile2 = [(AMSLookup *)self imageProfile];
+    [v9 setObject:imageProfile2 forKeyedSubscript:@"artwork"];
   }
 
-  v19 = [v6 componentsJoinedByString:{@", "}];
+  v19 = [itemIdsCopy componentsJoinedByString:{@", "}];
   if (v19)
   {
     [v9 setObject:v19 forKeyedSubscript:@"id"];
   }
 
-  v20 = [(AMSLookup *)self keyProfile];
+  keyProfile = [(AMSLookup *)self keyProfile];
 
-  if (v20)
+  if (keyProfile)
   {
-    v21 = [(AMSLookup *)self keyProfile];
-    [v9 setObject:v21 forKeyedSubscript:@"p"];
+    keyProfile2 = [(AMSLookup *)self keyProfile];
+    [v9 setObject:keyProfile2 forKeyedSubscript:@"p"];
   }
 
-  v22 = [(AMSLookup *)self platform];
+  platform = [(AMSLookup *)self platform];
 
-  if (v22)
+  if (platform)
   {
-    v23 = [(AMSLookup *)self platform];
-    [v9 setObject:v23 forKeyedSubscript:@"platform"];
+    platform2 = [(AMSLookup *)self platform];
+    [v9 setObject:platform2 forKeyedSubscript:@"platform"];
   }
 
-  v24 = [(AMSLookup *)self language];
+  language = [(AMSLookup *)self language];
 
-  if (v24)
+  if (language)
   {
-    v25 = [(AMSLookup *)self language];
-    [v9 setObject:v25 forKeyedSubscript:@"lang"];
+    language2 = [(AMSLookup *)self language];
+    [v9 setObject:language2 forKeyedSubscript:@"lang"];
   }
 
   return v9;
 }
 
-- (AMSLookup)initWithBagContract:(id)a3 caller:(id)a4 keyProfile:(id)a5
+- (AMSLookup)initWithBagContract:(id)contract caller:(id)caller keyProfile:(id)profile
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[AMSContractBagShim alloc] initWithBagContract:v10];
+  profileCopy = profile;
+  callerCopy = caller;
+  contractCopy = contract;
+  v11 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  v12 = [(AMSLookup *)self initWithBag:v11 caller:v9 keyProfile:v8];
+  v12 = [(AMSLookup *)self initWithBag:v11 caller:callerCopy keyProfile:profileCopy];
   return v12;
 }
 
@@ -651,10 +651,10 @@ LABEL_9:
   return v5;
 }
 
-- (void)setContract:(id)a3
+- (void)setContract:(id)contract
 {
-  v4 = a3;
-  v5 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+  contractCopy = contract;
+  v5 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
   [(AMSLookup *)self setBag:v5];
 }

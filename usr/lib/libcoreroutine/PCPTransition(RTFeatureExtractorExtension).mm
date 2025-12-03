@@ -10,41 +10,41 @@
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D3F8E8]);
-    v6 = [v4 visitIdentifierOrigin];
+    visitIdentifierOrigin = [v4 visitIdentifierOrigin];
 
-    if (v6)
+    if (visitIdentifierOrigin)
     {
       v7 = objc_alloc(MEMORY[0x277CBEA90]);
-      v8 = [v4 visitIdentifierOrigin];
-      v9 = [v7 initWithUUID:v8];
+      visitIdentifierOrigin2 = [v4 visitIdentifierOrigin];
+      v9 = [v7 initWithUUID:visitIdentifierOrigin2];
       [v5 setVisitIdentifierOrigin:v9];
     }
 
-    v10 = [v4 visitIdentifierDestination];
+    visitIdentifierDestination = [v4 visitIdentifierDestination];
 
-    if (v10)
+    if (visitIdentifierDestination)
     {
       v11 = objc_alloc(MEMORY[0x277CBEA90]);
-      v12 = [v4 visitIdentifierDestination];
-      v13 = [v11 initWithUUID:v12];
+      visitIdentifierDestination2 = [v4 visitIdentifierDestination];
+      v13 = [v11 initWithUUID:visitIdentifierDestination2];
       [v5 setVisitIdentifierDestination:v13];
     }
 
-    v14 = [v4 startDate];
+    startDate = [v4 startDate];
 
-    if (v14)
+    if (startDate)
     {
-      v15 = [v4 startDate];
-      [v15 timeIntervalSinceReferenceDate];
+      startDate2 = [v4 startDate];
+      [startDate2 timeIntervalSinceReferenceDate];
       [v5 setStartTimeCFAbsolute:?];
     }
 
-    v16 = [v4 stopDate];
+    stopDate = [v4 stopDate];
 
-    if (v16)
+    if (stopDate)
     {
-      v17 = [v4 stopDate];
-      [v17 timeIntervalSinceReferenceDate];
+      stopDate2 = [v4 stopDate];
+      [stopDate2 timeIntervalSinceReferenceDate];
       [v5 setStopTimeCFAbsolute:?];
     }
 

@@ -8,7 +8,7 @@
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 setCount:0];
+  [self setCount:0];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -29,7 +29,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [a1 addPointer:{*(*(&v11 + 1) + 8 * v9++), v11}];
+        [self addPointer:{*(*(&v11 + 1) + 8 * v9++), v11}];
       }
 
       while (v7 != v9);

@@ -1,6 +1,6 @@
 @interface MPSNDArrayASTCQuantizationDescriptor
 - (MPSNDArrayASTCQuantizationDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSNDArrayASTCQuantizationDescriptor
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayASTCQuantizationDescriptor;
-  result = [(MPSNDArrayQuantizationDescriptor *)&v5 copyWithZone:a3];
+  result = [(MPSNDArrayQuantizationDescriptor *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 24) = self->_hasMinValue;

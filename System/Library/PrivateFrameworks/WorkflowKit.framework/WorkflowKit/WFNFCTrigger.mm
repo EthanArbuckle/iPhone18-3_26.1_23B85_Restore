@@ -1,13 +1,13 @@
 @interface WFNFCTrigger
 + (BOOL)isSupportedOnThisDevice;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 - (BOOL)hasValidConfiguration;
-- (WFNFCTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFNFCTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
 - (id)suggestedActions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFNFCTrigger
@@ -20,33 +20,33 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = WFNFCTrigger;
-  v4 = [(WFTrigger *)&v8 copyWithZone:a3];
-  v5 = [(WFNFCTrigger *)self tagIdentifier];
-  [v4 setTagIdentifier:v5];
+  v4 = [(WFTrigger *)&v8 copyWithZone:zone];
+  tagIdentifier = [(WFNFCTrigger *)self tagIdentifier];
+  [v4 setTagIdentifier:tagIdentifier];
 
-  v6 = [(WFNFCTrigger *)self name];
-  [v4 setName:v6];
+  name = [(WFNFCTrigger *)self name];
+  [v4 setName:name];
 
   return v4;
 }
 
-- (WFNFCTrigger)initWithCoder:(id)a3
+- (WFNFCTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFNFCTrigger;
-  v5 = [(WFTrigger *)&v12 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tagIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tagIdentifier"];
     tagIdentifier = v5->_tagIdentifier;
     v5->_tagIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     v9 = v8;
     if (!v8)
     {
@@ -64,25 +64,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFNFCTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFNFCTrigger *)self tagIdentifier:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"tagIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"tagIdentifier"];
 
-  v6 = [(WFNFCTrigger *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(WFNFCTrigger *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 }
 
 - (id)localizedPastTenseDescription
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"“%@” detected");
-  v5 = [(WFNFCTrigger *)self name];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  name = [(WFNFCTrigger *)self name];
+  v6 = [v3 localizedStringWithFormat:v4, name];
 
   return v6;
 }
@@ -91,19 +91,19 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"When “%@” is detected");
-  v5 = [(WFNFCTrigger *)self name];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  name = [(WFNFCTrigger *)self name];
+  v6 = [v3 localizedStringWithFormat:v4, name];
 
   return v6;
 }
 
 - (BOOL)hasValidConfiguration
 {
-  v3 = [(WFNFCTrigger *)self tagIdentifier];
-  if (v3)
+  tagIdentifier = [(WFNFCTrigger *)self tagIdentifier];
+  if (tagIdentifier)
   {
-    v4 = [(WFNFCTrigger *)self name];
-    v5 = [v4 length] != 0;
+    name = [(WFNFCTrigger *)self name];
+    v5 = [name length] != 0;
   }
 
   else
@@ -114,11 +114,11 @@
   return v5;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"NFC", @"NFC");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -143,10 +143,10 @@
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 sharedHardwareManager];
-  v5 = [v4 isBackgroundTagReadingAvailable];
+  sharedHardwareManager = [v2 sharedHardwareManager];
+  isBackgroundTagReadingAvailable = [sharedHardwareManager isBackgroundTagReadingAvailable];
 
-  return v5;
+  return isBackgroundTagReadingAvailable;
 }
 
 @end

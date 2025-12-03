@@ -1,5 +1,5 @@
 @interface FTLocalMessage
-- (FTLocalMessage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (FTLocalMessage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (NSString)description;
 @end
 
@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   FTLocalMessage.description.getter();
 
   v3 = sub_1BC8F7BE4();
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (FTLocalMessage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (FTLocalMessage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  return FTLocalMessage.init(entity:insertInto:)(v5, a4);
+  entityCopy = entity;
+  contextCopy = context;
+  return FTLocalMessage.init(entity:insertInto:)(entityCopy, context);
 }
 
 @end

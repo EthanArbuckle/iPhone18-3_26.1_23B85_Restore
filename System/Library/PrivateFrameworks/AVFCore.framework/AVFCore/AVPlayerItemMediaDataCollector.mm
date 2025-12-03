@@ -1,6 +1,6 @@
 @interface AVPlayerItemMediaDataCollector
 - (AVPlayerItemMediaDataCollector)init;
-- (BOOL)_attachToPlayerItem:(id)a3;
+- (BOOL)_attachToPlayerItem:(id)item;
 - (void)_detatchFromPlayerItem;
 - (void)dealloc;
 @end
@@ -48,7 +48,7 @@
   [(AVPlayerItemMediaDataCollector *)&v4 dealloc];
 }
 
-- (BOOL)_attachToPlayerItem:(id)a3
+- (BOOL)_attachToPlayerItem:(id)item
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);

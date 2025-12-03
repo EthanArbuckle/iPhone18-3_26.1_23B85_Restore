@@ -2,8 +2,8 @@
 - (NSArray)requestedActions;
 - (NSDictionary)resultsSummary;
 - (PKSEConsistencyCheckResultCollector)init;
-- (void)addCleanupActions:(int64_t)a3;
-- (void)addCleanupActions:(int64_t)a3 cleanupReason:(id)a4 forDeviceCredential:(id)a5 passCredential:(id)a6;
+- (void)addCleanupActions:(int64_t)actions;
+- (void)addCleanupActions:(int64_t)actions cleanupReason:(id)reason forDeviceCredential:(id)credential passCredential:(id)passCredential;
 @end
 
 @implementation PKSEConsistencyCheckResultCollector
@@ -30,29 +30,29 @@
   return v2;
 }
 
-- (void)addCleanupActions:(int64_t)a3 cleanupReason:(id)a4 forDeviceCredential:(id)a5 passCredential:(id)a6
+- (void)addCleanupActions:(int64_t)actions cleanupReason:(id)reason forDeviceCredential:(id)credential passCredential:(id)passCredential
 {
-  v75 = a4;
-  v10 = a5;
-  v11 = a6;
-  [(PKSEConsistencyCheckResultCollector *)self addCleanupActions:a3];
-  if (a3 && v10)
+  reasonCopy = reason;
+  credentialCopy = credential;
+  passCredentialCopy = passCredential;
+  [(PKSEConsistencyCheckResultCollector *)self addCleanupActions:actions];
+  if (actions && credentialCopy)
   {
     v12 = [PKSEConsistencyCheckRequestedAction alloc];
-    v13 = [v11 address];
-    v14 = [(PKSEConsistencyCheckRequestedAction *)v12 initWithActions:a3 deviceCredential:v10 address:v13];
+    address = [passCredentialCopy address];
+    v14 = [(PKSEConsistencyCheckRequestedAction *)v12 initWithActions:actions deviceCredential:credentialCopy address:address];
 
     [(NSMutableArray *)self->_requestedActions addObject:v14];
   }
 
   if (self->_addCleanupActionsToResultsSummary)
   {
-    if (v11)
+    if (passCredentialCopy)
     {
-      v15 = [v11 type];
-      if (!v10 || !v15)
+      type = [passCredentialCopy type];
+      if (!credentialCopy || !type)
       {
-        if (!v15)
+        if (!type)
         {
           goto LABEL_14;
         }
@@ -61,29 +61,29 @@
       }
     }
 
-    else if (!v10)
+    else if (!credentialCopy)
     {
       goto LABEL_12;
     }
 
-    if (![v10 type])
+    if (![credentialCopy type])
     {
 LABEL_14:
-      v24 = v10;
-      v17 = v75;
-      v18 = [v11 paymentApplication];
-      v25 = [v18 applicationIdentifier];
-      if (v25)
+      v24 = credentialCopy;
+      v17 = reasonCopy;
+      paymentApplication = [passCredentialCopy paymentApplication];
+      applicationIdentifier = [paymentApplication applicationIdentifier];
+      if (applicationIdentifier)
       {
-        v19 = v25;
+        appletIdentifier = applicationIdentifier;
       }
 
       else
       {
-        v44 = [v24 address];
-        v19 = [v44 appletIdentifier];
+        address2 = [v24 address];
+        appletIdentifier = [address2 appletIdentifier];
 
-        if (!v19)
+        if (!appletIdentifier)
         {
 LABEL_71:
 
@@ -91,41 +91,41 @@ LABEL_71:
         }
       }
 
-      v20 = [(NSMutableDictionary *)self->_resultSummary objectForKey:v19];
+      v20 = [(NSMutableDictionary *)self->_resultSummary objectForKey:appletIdentifier];
       if (!v20)
       {
         v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        [(NSMutableDictionary *)self->_resultSummary setObject:v20 forKey:v19];
+        [(NSMutableDictionary *)self->_resultSummary setObject:v20 forKey:appletIdentifier];
       }
 
-      if (a3)
+      if (actions)
       {
         [v20 objectForKeyedSubscript:@"cleanupAction"];
-        v45 = v73 = v19;
+        v45 = v73 = appletIdentifier;
         v46 = v20;
-        v47 = [v45 integerValue];
+        integerValue = [v45 integerValue];
 
-        v48 = v47 | a3;
+        v48 = integerValue | actions;
         v20 = v46;
         v49 = [MEMORY[0x1E696AD98] numberWithInteger:v48];
         [v46 setObject:v49 forKeyedSubscript:@"cleanupAction"];
 
-        v19 = v73;
+        appletIdentifier = v73;
       }
 
-      if (v18)
+      if (paymentApplication)
       {
-        v50 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v18, "state")}];
+        v50 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(paymentApplication, "state")}];
         [v20 setObject:v50 forKeyedSubscript:@"passState"];
       }
 
       if (v24 && ![v24 type])
       {
-        v51 = [v24 underlyingCredentialState];
-        [v20 setObject:v51 forKeyedSubscript:@"appletState"];
+        underlyingCredentialState = [v24 underlyingCredentialState];
+        [v20 setObject:underlyingCredentialState forKeyedSubscript:@"appletState"];
       }
 
-      if (a3 && self->_sendCleanupReasons)
+      if (actions && self->_sendCleanupReasons)
       {
         [v20 setObject:v17 forKeyedSubscript:@"appletCleanupReason"];
       }
@@ -136,24 +136,24 @@ LABEL_70:
     }
 
 LABEL_12:
-    v16 = [v11 address];
-    v17 = v11;
-    v18 = v10;
-    v19 = v75;
-    v20 = v16;
-    v74 = [v17 subcredential];
-    v21 = [v18 address];
-    v22 = [v21 appletIdentifier];
-    if (v22)
+    address3 = [passCredentialCopy address];
+    v17 = passCredentialCopy;
+    paymentApplication = credentialCopy;
+    appletIdentifier = reasonCopy;
+    v20 = address3;
+    subcredential = [v17 subcredential];
+    address4 = [paymentApplication address];
+    appletIdentifier2 = [address4 appletIdentifier];
+    if (appletIdentifier2)
     {
-      v23 = v22;
+      appletIdentifier3 = appletIdentifier2;
     }
 
     else
     {
-      v23 = [v20 appletIdentifier];
+      appletIdentifier3 = [v20 appletIdentifier];
 
-      if (!v23)
+      if (!appletIdentifier3)
       {
 LABEL_69:
 
@@ -162,15 +162,15 @@ LABEL_69:
       }
     }
 
-    v26 = [(NSMutableDictionary *)self->_resultSummary objectForKey:v23];
+    v26 = [(NSMutableDictionary *)self->_resultSummary objectForKey:appletIdentifier3];
     if (!v26)
     {
       v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [(NSMutableDictionary *)self->_resultSummary setObject:v26 forKey:v23];
+      [(NSMutableDictionary *)self->_resultSummary setObject:v26 forKey:appletIdentifier3];
     }
 
-    v68 = v23;
-    v72 = v19;
+    v68 = appletIdentifier3;
+    v72 = appletIdentifier;
     v27 = [v26 objectForKey:@"subkeys"];
     if (!v27)
     {
@@ -179,21 +179,21 @@ LABEL_69:
     }
 
     v67 = v26;
-    v28 = [v18 address];
-    v29 = [v28 subcredentialIdentifier];
-    v30 = v29;
+    address5 = [paymentApplication address];
+    subcredentialIdentifier = [address5 subcredentialIdentifier];
+    v30 = subcredentialIdentifier;
     v69 = v20;
-    if (v29)
+    if (subcredentialIdentifier)
     {
-      v31 = v29;
+      subcredentialIdentifier2 = subcredentialIdentifier;
     }
 
     else
     {
-      v31 = [v20 subcredentialIdentifier];
+      subcredentialIdentifier2 = [v20 subcredentialIdentifier];
     }
 
-    v32 = v31;
+    v32 = subcredentialIdentifier2;
 
     v70 = v32;
     v33 = [v27 objectForKey:v32];
@@ -204,41 +204,41 @@ LABEL_69:
     }
 
     v71 = v17;
-    if (a3)
+    if (actions)
     {
       v34 = [v33 objectForKeyedSubscript:@"cleanupAction"];
-      v35 = [v34 integerValue];
+      integerValue2 = [v34 integerValue];
 
-      v36 = v35 | a3;
+      v36 = integerValue2 | actions;
       v17 = v71;
       v37 = [MEMORY[0x1E696AD98] numberWithInteger:v36];
       [v33 setObject:v37 forKeyedSubscript:@"cleanupAction"];
     }
 
-    v38 = v74;
-    if (v74)
+    v38 = subcredential;
+    if (subcredential)
     {
-      v39 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v74, "state")}];
+      v39 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(subcredential, "state")}];
       [v33 setObject:v39 forKeyedSubscript:@"passState"];
     }
 
-    if (!v18)
+    if (!paymentApplication)
     {
 LABEL_63:
-      v62 = [v38 credentialType];
-      if (v62)
+      credentialType = [v38 credentialType];
+      if (credentialType)
       {
-        v63 = v62;
-        v19 = v72;
+        v63 = credentialType;
+        appletIdentifier = v72;
         v64 = 0x1E696A000;
       }
 
       else
       {
-        v65 = [v18 credentialType];
-        v19 = v72;
+        credentialType2 = [paymentApplication credentialType];
+        appletIdentifier = v72;
         v64 = 0x1E696A000uLL;
-        if (!v65)
+        if (!credentialType2)
         {
 LABEL_68:
 
@@ -246,7 +246,7 @@ LABEL_68:
           goto LABEL_69;
         }
 
-        v63 = v65;
+        v63 = credentialType2;
       }
 
       v66 = [*(v64 + 3480) numberWithInteger:v63];
@@ -256,17 +256,17 @@ LABEL_68:
     }
 
     v40 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v41 = [v18 underlyingCredentialState];
-    [v40 setObject:v41 forKeyedSubscript:@"keyState"];
+    underlyingCredentialState2 = [paymentApplication underlyingCredentialState];
+    [v40 setObject:underlyingCredentialState2 forKeyedSubscript:@"keyState"];
 
-    v42 = [v18 type];
-    v43 = v42;
-    if (v42 == 2)
+    type2 = [paymentApplication type];
+    v43 = type2;
+    if (type2 == 2)
     {
-      v54 = [v18 underlyingCredentialState];
-      [v33 setObject:v54 forKeyedSubscript:@"isoKeyState"];
+      underlyingCredentialState3 = [paymentApplication underlyingCredentialState];
+      [v33 setObject:underlyingCredentialState3 forKeyedSubscript:@"isoKeyState"];
 
-      if (!a3 || !self->_sendCleanupReasons)
+      if (!actions || !self->_sendCleanupReasons)
       {
         goto LABEL_55;
       }
@@ -276,38 +276,38 @@ LABEL_68:
 
     else
     {
-      if (v42 != 1)
+      if (type2 != 1)
       {
-        if (!v42)
+        if (!type2)
         {
-          [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKSecureElementConsistencyChecker: tried to add an applet device credential to a subcredential state. Credential: %@", v18}];
+          [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKSecureElementConsistencyChecker: tried to add an applet device credential to a subcredential state. Credential: %@", paymentApplication}];
         }
 
         goto LABEL_55;
       }
 
-      v52 = [v18 underlyingCredentialState];
-      [v33 setObject:v52 forKeyedSubscript:@"keyState"];
+      underlyingCredentialState4 = [paymentApplication underlyingCredentialState];
+      [v33 setObject:underlyingCredentialState4 forKeyedSubscript:@"keyState"];
 
-      if (!a3 || !self->_sendCleanupReasons)
+      if (!actions || !self->_sendCleanupReasons)
       {
 LABEL_55:
-        if (a3 && self->_sendCleanupReasons)
+        if (actions && self->_sendCleanupReasons)
         {
           [v40 setObject:v72 forKeyedSubscript:@"cleanupReason"];
         }
 
-        v55 = [v71 keyMaterialHashForDeviceCredentialType];
+        keyMaterialHashForDeviceCredentialType = [v71 keyMaterialHashForDeviceCredentialType];
         v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v43];
-        v57 = [v55 objectForKeyedSubscript:v56];
+        v57 = [keyMaterialHashForDeviceCredentialType objectForKeyedSubscript:v56];
 
-        v58 = [v18 keyMaterialHash];
-        if (v57 | v58)
+        keyMaterialHash = [paymentApplication keyMaterialHash];
+        if (v57 | keyMaterialHash)
         {
           v59 = [v57 base64EncodedStringWithOptions:0];
           [v40 setObject:v59 forKeyedSubscript:@"passPayloadMaterialHash"];
 
-          v60 = [v58 base64EncodedStringWithOptions:0];
+          v60 = [keyMaterialHash base64EncodedStringWithOptions:0];
           [v40 setObject:v60 forKeyedSubscript:@"devicePayloadMaterialHash"];
         }
 
@@ -318,7 +318,7 @@ LABEL_55:
         }
 
         v17 = v71;
-        v38 = v74;
+        v38 = subcredential;
         goto LABEL_63;
       }
 
@@ -332,19 +332,19 @@ LABEL_55:
 LABEL_72:
 }
 
-- (void)addCleanupActions:(int64_t)a3
+- (void)addCleanupActions:(int64_t)actions
 {
   if (self->_addCleanupActionsToResultsSummary)
   {
-    v3 = a3;
+    actionsCopy = actions;
   }
 
   else
   {
-    v3 = a3 & 0xFFFFFFFFFFFFFFFELL;
+    actionsCopy = actions & 0xFFFFFFFFFFFFFFFELL;
   }
 
-  self->_cleanupActions |= v3;
+  self->_cleanupActions |= actionsCopy;
 }
 
 - (NSDictionary)resultsSummary

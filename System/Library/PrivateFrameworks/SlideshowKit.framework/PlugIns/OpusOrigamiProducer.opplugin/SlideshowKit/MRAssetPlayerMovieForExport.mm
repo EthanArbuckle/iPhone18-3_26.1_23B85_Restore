@@ -1,20 +1,20 @@
 @interface MRAssetPlayerMovieForExport
-- (MRAssetPlayerMovieForExport)initWithPath:(id)a3 size:(CGSize)a4 master:(id)a5 andOptions:(id)a6;
-- (id)_posterImage:(BOOL)a3;
-- (id)retainedByUserImageAtTime:(double)a3 displayLinkTimestamp:(double)a4;
-- (void)_finishLoadingAsset:(id)a3 andVideoTrack:(id)a4 forTime:(double)a5;
-- (void)_finishLoadingAsset:(id)a3 forTime:(double)a4 completion:(id)a5;
+- (MRAssetPlayerMovieForExport)initWithPath:(id)path size:(CGSize)size master:(id)master andOptions:(id)options;
+- (id)_posterImage:(BOOL)image;
+- (id)retainedByUserImageAtTime:(double)time displayLinkTimestamp:(double)timestamp;
+- (void)_finishLoadingAsset:(id)asset andVideoTrack:(id)track forTime:(double)time;
+- (void)_finishLoadingAsset:(id)asset forTime:(double)time completion:(id)completion;
 - (void)dealloc;
-- (void)loadForTime:(double)a3;
+- (void)loadForTime:(double)time;
 @end
 
 @implementation MRAssetPlayerMovieForExport
 
-- (MRAssetPlayerMovieForExport)initWithPath:(id)a3 size:(CGSize)a4 master:(id)a5 andOptions:(id)a6
+- (MRAssetPlayerMovieForExport)initWithPath:(id)path size:(CGSize)size master:(id)master andOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = MRAssetPlayerMovieForExport;
-  v6 = [(MRAssetPlayer *)&v8 initWithPath:a3 size:a5 master:a6 andOptions:a4.width, a4.height];
+  v6 = [(MRAssetPlayer *)&v8 initWithPath:path size:master master:options andOptions:size.width, size.height];
   if (v6)
   {
     v6->_loadingSemaphore = dispatch_semaphore_create(0);
@@ -62,37 +62,37 @@
   [(MRAssetPlayer *)&v7 dealloc];
 }
 
-- (void)loadForTime:(double)a3
+- (void)loadForTime:(double)time
 {
-  v5 = [(MRAssetMaster *)self->super._master imageManager];
-  v6 = [(MRAssetMaster *)self->super._master isEmbeddedAsset];
-  if (v6)
+  imageManager = [(MRAssetMaster *)self->super._master imageManager];
+  isEmbeddedAsset = [(MRAssetMaster *)self->super._master isEmbeddedAsset];
+  if (isEmbeddedAsset)
   {
-    v7 = 0;
+    assetManager = 0;
   }
 
   else
   {
-    v7 = [(MRContext *)[(MRImageManager *)v5 baseContext] assetManager];
+    assetManager = [(MRContext *)[(MRImageManager *)imageManager baseContext] assetManager];
   }
 
-  v8 = [(MZMediaManagement *)v7 avAssetForAssetAtPath:[(MRAssetMaster *)self->super._master path]];
+  v8 = [(MZMediaManagement *)assetManager avAssetForAssetAtPath:[(MRAssetMaster *)self->super._master path]];
   if (!v8)
   {
-    v9 = [(MRAssetMaster *)self->super._master path];
-    if ((v6 & 1) == 0)
+    path = [(MRAssetMaster *)self->super._master path];
+    if ((isEmbeddedAsset & 1) == 0)
     {
-      v9 = [(MZMediaManagement *)v7 absolutePathForAssetAtPath:v9 andSize:self->super._size.width, self->super._size.height];
+      path = [(MZMediaManagement *)assetManager absolutePathForAssetAtPath:path andSize:self->super._size.width, self->super._size.height];
     }
 
-    if ([(NSString *)v9 isAbsolutePath])
+    if ([(NSString *)path isAbsolutePath])
     {
-      v10 = [NSURL fileURLWithPath:v9];
+      v10 = [NSURL fileURLWithPath:path];
     }
 
     else
     {
-      v10 = [NSURL URLWithString:v9];
+      v10 = [NSURL URLWithString:path];
     }
 
     v8 = [AVURLAsset URLAssetWithURL:v10 options:0];
@@ -105,7 +105,7 @@
   v13[3] = &unk_1AB5C8;
   v13[4] = self;
   v13[5] = v8;
-  *&v13[7] = a3;
+  *&v13[7] = time;
   v13[6] = v11;
   [(AVURLAsset *)v8 loadValuesAsynchronouslyForKeys:&off_1BC048 completionHandler:v13];
   v12 = dispatch_time(0, 60000000000);
@@ -113,51 +113,51 @@
   dispatch_release(v11);
 }
 
-- (void)_finishLoadingAsset:(id)a3 forTime:(double)a4 completion:(id)a5
+- (void)_finishLoadingAsset:(id)asset forTime:(double)time completion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_DD0F8;
   v5[3] = &unk_1AB618;
   v5[4] = self;
-  v5[5] = a3;
-  *&v5[8] = a4;
-  v5[7] = a5;
-  [objc_msgSend(objc_msgSend(a3 tracksWithMediaType:{AVMediaTypeVideo), "lastObject"), "loadValuesAsynchronouslyForKeys:completionHandler:", &off_1BC060, v5}];
+  v5[5] = asset;
+  *&v5[8] = time;
+  v5[7] = completion;
+  [objc_msgSend(objc_msgSend(asset tracksWithMediaType:{AVMediaTypeVideo), "lastObject"), "loadValuesAsynchronouslyForKeys:completionHandler:", &off_1BC060, v5}];
 }
 
-- (void)_finishLoadingAsset:(id)a3 andVideoTrack:(id)a4 forTime:(double)a5
+- (void)_finishLoadingAsset:(id)asset andVideoTrack:(id)track forTime:(double)time
 {
-  v5 = a4;
+  trackCopy = track;
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  if (a4)
+  if (track)
   {
-    [a4 preferredTransform];
+    [track preferredTransform];
   }
 
   if (self->_startTime <= 0.0)
   {
-    v9 = a3;
+    assetCopy = asset;
   }
 
   else
   {
-    v8 = [v5 naturalTimeScale];
-    v9 = objc_alloc_init(AVMutableComposition);
+    naturalTimeScale = [trackCopy naturalTimeScale];
+    assetCopy = objc_alloc_init(AVMutableComposition);
     startTime = self->_startTime;
     v22 = 0;
-    CMTimeMake(&start, (startTime * v8), v8);
-    CMTimeMake(&duration, (self->_duration * v8), v8);
+    CMTimeMake(&start, (startTime * naturalTimeScale), naturalTimeScale);
+    CMTimeMake(&duration, (self->_duration * naturalTimeScale), naturalTimeScale);
     CMTimeRangeMake(&v21, &start, &duration);
     start = kCMTimeZero;
-    if (([v9 insertTimeRange:&v21 ofAsset:a3 atTime:&start error:&v22] & 1) == 0)
+    if (([assetCopy insertTimeRange:&v21 ofAsset:asset atTime:&start error:&v22] & 1) == 0)
     {
       NSLog(@"%@", v22);
     }
 
-    v5 = [objc_msgSend(v9 tracksWithMediaType:{AVMediaTypeVideo), "lastObject"}];
+    trackCopy = [objc_msgSend(assetCopy tracksWithMediaType:{AVMediaTypeVideo), "lastObject"}];
   }
 
   v28 = kCVOpenGLESTextureCacheMaximumTextureAgeKey;
@@ -175,14 +175,14 @@
   v27[2] = [NSNumber numberWithUnsignedInteger:self->super._size.width];
   v26[3] = kCVPixelBufferHeightKey;
   v27[3] = [NSNumber numberWithUnsignedInteger:self->super._size.height];
-  v13 = [[AVAssetReaderTrackOutput alloc] initWithTrack:v5 outputSettings:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v27, v26, 4)}];
+  v13 = [[AVAssetReaderTrackOutput alloc] initWithTrack:trackCopy outputSettings:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v27, v26, 4)}];
   self->_trackOutput = v13;
   [(AVAssetReaderTrackOutput *)v13 setAlwaysCopiesSampleData:0];
-  v14 = [[AVAssetReader alloc] initWithAsset:v9 error:0];
+  v14 = [[AVAssetReader alloc] initWithAsset:assetCopy error:0];
   self->_assetReader = v14;
   [(AVAssetReader *)v14 addOutput:self->_trackOutput];
   [(AVAssetReader *)self->_assetReader startReading];
-  if (v5)
+  if (trackCopy)
   {
     if (*&v23 == 1.0)
     {
@@ -238,7 +238,7 @@ LABEL_17:
   dispatch_semaphore_signal(self->_loadingSemaphore);
 }
 
-- (id)retainedByUserImageAtTime:(double)a3 displayLinkTimestamp:(double)a4
+- (id)retainedByUserImageAtTime:(double)time displayLinkTimestamp:(double)timestamp
 {
   loadingSemaphore = self->_loadingSemaphore;
   if (loadingSemaphore)
@@ -248,11 +248,11 @@ LABEL_17:
     self->_loadingSemaphore = 0;
   }
 
-  if ([(AVAssetReader *)self->_assetReader status:a3]== &dword_0 + 1)
+  if ([(AVAssetReader *)self->_assetReader status:time]== &dword_0 + 1)
   {
     trackOutput = self->_trackOutput;
     objc_sync_enter(trackOutput);
-    if (self->_nextSampleBufferTimestamp <= a3)
+    if (self->_nextSampleBufferTimestamp <= time)
     {
       nextSampleBuffer = 0;
       while (1)
@@ -268,15 +268,15 @@ LABEL_17:
           break;
         }
 
-        v9 = [(AVAssetReaderTrackOutput *)self->_trackOutput copyNextSampleBuffer];
-        self->_nextSampleBuffer = v9;
-        if (!v9)
+        copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_trackOutput copyNextSampleBuffer];
+        self->_nextSampleBuffer = copyNextSampleBuffer;
+        if (!copyNextSampleBuffer)
         {
           goto LABEL_18;
         }
 
         memset(&timingInfoOut, 0, sizeof(timingInfoOut));
-        SampleTimingInfo = CMSampleBufferGetSampleTimingInfo(v9, 0, &timingInfoOut);
+        SampleTimingInfo = CMSampleBufferGetSampleTimingInfo(copyNextSampleBuffer, 0, &timingInfoOut);
         if (SampleTimingInfo || timingInfoOut.presentationTimeStamp.timescale < 1)
         {
           NSLog(@"CMSampleBufferGetSampleTimingInfo() returned error %d for valid sample %@", SampleTimingInfo, self->_nextSampleBuffer);
@@ -289,7 +289,7 @@ LABEL_17:
         }
 
         self->_nextSampleBufferTimestamp = v11;
-        if (v11 > a3)
+        if (v11 > time)
         {
           goto LABEL_19;
         }
@@ -339,18 +339,18 @@ LABEL_19:
   image = self->super._image;
   if (!image)
   {
-    v20 = [-[MRAssetMaster thumbnailForFlagsMonochromatic:mipmap:powerOfTwo:](self->super._master thumbnailForFlagsMonochromatic:self->super._isMonochromatic mipmap:self->super._generatesMipmap powerOfTwo:{self->super._usesPowerOfTwo), "retainByUser"}];
-    if (!v20)
+    retainedByUserBlackImage = [-[MRAssetMaster thumbnailForFlagsMonochromatic:mipmap:powerOfTwo:](self->super._master thumbnailForFlagsMonochromatic:self->super._isMonochromatic mipmap:self->super._generatesMipmap powerOfTwo:{self->super._usesPowerOfTwo), "retainByUser"}];
+    if (!retainedByUserBlackImage)
     {
-      v20 = [(MRContext *)[(MRImageManager *)[(MRAssetMaster *)self->super._master imageManager] baseContext] retainedByUserBlackImage];
-      if (!v20)
+      retainedByUserBlackImage = [(MRContext *)[(MRImageManager *)[(MRAssetMaster *)self->super._master imageManager] baseContext] retainedByUserBlackImage];
+      if (!retainedByUserBlackImage)
       {
         image = self->super._image;
         return [(MRImage *)image retainByUser];
       }
     }
 
-    v18 = v20;
+    v18 = retainedByUserBlackImage;
 LABEL_29:
     objc_sync_enter(self);
     [(MRImage *)self->super._image releaseByUser];
@@ -362,26 +362,26 @@ LABEL_29:
   return [(MRImage *)image retainByUser];
 }
 
-- (id)_posterImage:(BOOL)a3
+- (id)_posterImage:(BOOL)image
 {
-  v3 = a3;
-  v5 = [(MRAssetMaster *)self->super._master imageManager];
+  imageCopy = image;
+  imageManager = [(MRAssetMaster *)self->super._master imageManager];
   if ([(MRAssetMaster *)self->super._master isEmbeddedAsset])
   {
-    v6 = 0;
+    assetManager = 0;
   }
 
   else
   {
-    v6 = [(MRContext *)[(MRImageManager *)v5 baseContext] assetManager];
+    assetManager = [(MRContext *)[(MRImageManager *)imageManager baseContext] assetManager];
   }
 
-  v7 = [(MRAssetMaster *)self->super._master path];
-  v8 = v3 || !self->super._thumbnailIsOK;
-  result = [(MZMediaManagement *)v6 CGImageForAssetAtPath:v7 andSize:&self->_orientation orientation:v3 thumbnailIfPossible:v8 now:self->super._size.width, self->super._size.height];
+  path = [(MRAssetMaster *)self->super._master path];
+  v8 = imageCopy || !self->super._thumbnailIsOK;
+  result = [(MZMediaManagement *)assetManager CGImageForAssetAtPath:path andSize:&self->_orientation orientation:imageCopy thumbnailIfPossible:v8 now:self->super._size.width, self->super._size.height];
   if (result)
   {
-    v10 = [[MRTextureSource alloc] initWithCGImage:result textureSize:self->super._size.width | (self->super._size.height << 32) orientation:0 imageManager:v5 monochromatic:self->super._isMonochromatic];
+    v10 = [[MRTextureSource alloc] initWithCGImage:result textureSize:self->super._size.width | (self->super._size.height << 32) orientation:0 imageManager:imageManager monochromatic:self->super._isMonochromatic];
     v11 = [[MRImage alloc] initWithTextureSource:v10 andSize:self->super._size.width, self->super._size.height];
 
     return v11;

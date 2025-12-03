@@ -156,9 +156,9 @@ void __28__STStorageCacheDelete_init__block_invoke_3()
   if (!v12)
   {
 LABEL_15:
-    v20 = [STStorageCacheDelete refreshPurgeableSpace];
+    refreshPurgeableSpace = [STStorageCacheDelete refreshPurgeableSpace];
     _Block_object_dispose(&v21, 8);
-    _Unwind_Resume(v20);
+    _Unwind_Resume(refreshPurgeableSpace);
   }
 
   v14 = v12(&unk_287C8E8D0);
@@ -176,9 +176,9 @@ LABEL_15:
   v17 = v16;
 
   os_unfair_lock_lock(&self->_updateLock);
-  v18 = [v11 longLongValue];
+  longLongValue = [v11 longLongValue];
   itemsDict = self->_itemsDict;
-  self->_totalPurgeable = v18;
+  self->_totalPurgeable = longLongValue;
   self->_itemsDict = v17;
 
   os_unfair_lock_unlock(&self->_updateLock);

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneUtilPackedAbstractPagedMutable
 - (NSString)description;
-- (int)lastPageSizeWithLong:(int64_t)a3;
+- (int)lastPageSizeWithLong:(int64_t)long;
 - (int64_t)baseRamBytesUsed;
-- (int64_t)getWithLong:(int64_t)a3;
+- (int64_t)getWithLong:(int64_t)long;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
 - (void)fillPages;
-- (void)setWithLong:(int64_t)a3 withLong:(int64_t)a4;
+- (void)setWithLong:(int64_t)long withLong:(int64_t)withLong;
 @end
 
 @implementation OrgApacheLuceneUtilPackedAbstractPagedMutable
@@ -53,12 +53,12 @@
   }
 }
 
-- (int)lastPageSizeWithLong:(int64_t)a3
+- (int)lastPageSizeWithLong:(int64_t)long
 {
   pageMask = self->pageMask_;
-  if ((pageMask & a3) != 0)
+  if ((pageMask & long) != 0)
   {
-    return pageMask & a3;
+    return pageMask & long;
   }
 
   else
@@ -67,7 +67,7 @@
   }
 }
 
-- (int64_t)getWithLong:(int64_t)a3
+- (int64_t)getWithLong:(int64_t)long
 {
   subMutables = self->subMutables_;
   if (!subMutables)
@@ -76,7 +76,7 @@
   }
 
   pageMask = self->pageMask_;
-  v5 = a3 >> self->pageShift_;
+  v5 = long >> self->pageShift_;
   size = subMutables->super.size_;
   if ((v5 & 0x80000000) != 0 || size <= v5)
   {
@@ -90,12 +90,12 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v8 = pageMask & a3;
+  v8 = pageMask & long;
 
   return [(IOSClass *)v7 getWithInt:v8];
 }
 
-- (void)setWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (void)setWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   subMutables = self->subMutables_;
   if (!subMutables)
@@ -104,7 +104,7 @@ LABEL_8:
   }
 
   pageMask = self->pageMask_;
-  v6 = a3 >> self->pageShift_;
+  v6 = long >> self->pageShift_;
   size = subMutables->super.size_;
   if ((v6 & 0x80000000) != 0 || size <= v6)
   {
@@ -118,9 +118,9 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v9 = pageMask & a3;
+  v9 = pageMask & long;
 
-  [(IOSClass *)v8 setWithInt:v9 withLong:a4];
+  [(IOSClass *)v8 setWithInt:v9 withLong:withLong];
 }
 
 - (int64_t)baseRamBytesUsed

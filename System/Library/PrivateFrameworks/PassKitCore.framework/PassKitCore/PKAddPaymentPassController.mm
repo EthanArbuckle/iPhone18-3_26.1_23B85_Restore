@@ -1,37 +1,37 @@
 @interface PKAddPaymentPassController
 + (BOOL)canAddPaymentPass;
 - (PKAddPaymentPassControllerDelegate)delegate;
-- (void)dismissWithCompletion:(id)a3;
-- (void)presentWithCompletion:(id)a3;
+- (void)dismissWithCompletion:(id)completion;
+- (void)presentWithCompletion:(id)completion;
 @end
 
 @implementation PKAddPaymentPassController
 
 + (BOOL)canAddPaymentPass
 {
-  if ([objc_msgSend(a1 "_desiredClass")])
+  if ([objc_msgSend(self "_desiredClass")])
   {
     return 0;
   }
 
-  v4 = [a1 _desiredClass];
+  _desiredClass = [self _desiredClass];
 
-  return [v4 canAddPaymentPass];
+  return [_desiredClass canAddPaymentPass];
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 

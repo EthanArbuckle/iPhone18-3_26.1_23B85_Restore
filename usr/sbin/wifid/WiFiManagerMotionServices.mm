@@ -81,11 +81,11 @@
   v3 = objc_autoreleasePoolPush();
   if ([(WiFiManagerMotionServices *)self motionStateChangeCb])
   {
-    v4 = [(WiFiManagerMotionServices *)self motionStateChangeCb];
-    v5 = [(WiFiManagerMotionServices *)self manager];
-    v6 = [(WiFiManagerMotionServices *)self motionState];
+    motionStateChangeCb = [(WiFiManagerMotionServices *)self motionStateChangeCb];
+    manager = [(WiFiManagerMotionServices *)self manager];
+    motionState = [(WiFiManagerMotionServices *)self motionState];
     [(WiFiManagerMotionServices *)self motionStartTime];
-    v4(v5, v6);
+    motionStateChangeCb(manager, motionState);
   }
 
   else

@@ -1,26 +1,26 @@
 @interface _NIRangingPeerInternal
-- (_NIRangingPeerInternal)initWithMacAddressAsData:(id)a3 secureRangingKeyID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NIRangingPeerInternal)initWithMacAddressAsData:(id)data secureRangingKeyID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _NIRangingPeerInternal
 
-- (_NIRangingPeerInternal)initWithMacAddressAsData:(id)a3 secureRangingKeyID:(id)a4
+- (_NIRangingPeerInternal)initWithMacAddressAsData:(id)data secureRangingKeyID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = _NIRangingPeerInternal;
   v8 = [(_NIRangingPeerInternal *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     macAddress = v8->_macAddress;
     v8->_macAddress = v9;
 
-    if (v8->_secureRangingKeyID != v7)
+    if (v8->_secureRangingKeyID != dCopy)
     {
-      v11 = [(NSData *)v7 copy];
+      v11 = [(NSData *)dCopy copy];
       secureRangingKeyID = v8->_secureRangingKeyID;
       v8->_secureRangingKeyID = v11;
     }
@@ -31,9 +31,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   macAddress = self->_macAddress;
   secureRangingKeyID = self->_secureRangingKeyID;
 

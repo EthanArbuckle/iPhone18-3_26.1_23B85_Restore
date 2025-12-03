@@ -1,7 +1,7 @@
 @interface PXCuratedLibraryGridLayoutMetrics
 - (PXCuratedLibraryGridLayoutMetrics)init;
 - (UIEdgeInsets)padding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXCuratedLibraryGridLayoutMetrics
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXCuratedLibraryGridLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v6 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v6 copyWithZone:zone];
   *(result + 3) = self->_numberOfColumns;
   v5 = *&self->_padding.bottom;
   *(result + 5) = *&self->_padding.top;

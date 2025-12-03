@@ -17,9 +17,9 @@
 
 - (id)_canonicalURL
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.canonicalURL"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.canonicalURL"];
   if (v2)
   {
     v3 = [MEMORY[0x277CBEBC0] URLWithDataRepresentation:v2 relativeToURL:0];
@@ -30,7 +30,7 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -39,10 +39,10 @@
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [v4 dataRepresentation];
-  [v5 _setPayload:v6 object:0 identifier:@"com.apple.synapse.canonicalURL"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataRepresentation = [v4 dataRepresentation];
+  [selfCopy _setPayload:dataRepresentation object:0 identifier:@"com.apple.synapse.canonicalURL"];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -83,7 +83,7 @@
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 userActivityCanonicalURLWasChanged:{v5, v15}];
+          [v13 userActivityCanonicalURLWasChanged:{selfCopy, v15}];
         }
 
         ++v12;
@@ -96,15 +96,15 @@
     while (v10);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_linkContextInfo
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.linkContextInfo"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.linkContextInfo"];
   if (v2)
   {
     v3 = MEMORY[0x277CCAAC8];
@@ -128,7 +128,7 @@
     v5 = 0;
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -136,8 +136,8 @@
 - (void)set_linkContextInfo:()SynapseExtensions
 {
   v5 = a3;
-  v6 = a1;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (v5)
   {
     v13 = 0;
@@ -150,7 +150,7 @@
     v12[3] = &unk_27856C618;
     v12[4] = &v13;
     [v5 enumerateKeysAndObjectsUsingBlock:v12];
-    if (v14[3] & 1) != 0 || ([MEMORY[0x277CCA890] currentHandler], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "handleFailureInMethod:object:file:lineNumber:description:", a2, v6, @"SYNSUserActivityExtensions.m", 112, @"linkContextInfo contains objects of unsupported classes."), v10, (v14[3]))
+    if (v14[3] & 1) != 0 || ([MEMORY[0x277CCA890] currentHandler], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "handleFailureInMethod:object:file:lineNumber:description:", a2, selfCopy, @"SYNSUserActivityExtensions.m", 112, @"linkContextInfo contains objects of unsupported classes."), v10, (v14[3]))
     {
       v11 = 0;
       v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v11];
@@ -178,17 +178,17 @@
     v7 = 0;
   }
 
-  [v6 _setPayload:v7 object:0 identifier:@"com.apple.synapse.linkContextInfo"];
+  [selfCopy _setPayload:v7 object:0 identifier:@"com.apple.synapse.linkContextInfo"];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_linkContextPreviewMetadata
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.linkContextPreviewMetadata"];
-  objc_sync_exit(v1);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.linkContextPreviewMetadata"];
+  objc_sync_exit(selfCopy);
 
   return v2;
 }
@@ -196,17 +196,17 @@
 - (void)set_linkContextPreviewMetadata:()SynapseExtensions
 {
   v5 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  [v4 _setPayload:v5 object:0 identifier:@"com.apple.synapse.linkContextPreviewMetadata"];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [selfCopy _setPayload:v5 object:0 identifier:@"com.apple.synapse.linkContextPreviewMetadata"];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_syUserInfoDomainIdentifiers
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"domainIdentifier"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"domainIdentifier"];
 
   if (v2)
   {
@@ -227,8 +227,8 @@
 - (id)_syUserInfoLinkIdentifiers
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"uuid"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"uuid"];
 
   if (v2)
   {
@@ -251,36 +251,36 @@
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [a1 activityType];
-  v6 = [a1 title];
-  v7 = [a1 userInfo];
-  v8 = [a1 persistentIdentifier];
-  v9 = [a1 _syRelatedUniqueIdentifier];
-  v10 = [v2 stringWithFormat:@"<%@: %p> type: %@, title: %@, userInfo: %@, persistentIdentifier: %@, relatedUniqueIdentifier: %@", v4, a1, v5, v6, v7, v8, v9];
+  activityType = [self activityType];
+  title = [self title];
+  userInfo = [self userInfo];
+  persistentIdentifier = [self persistentIdentifier];
+  _syRelatedUniqueIdentifier = [self _syRelatedUniqueIdentifier];
+  v10 = [v2 stringWithFormat:@"<%@: %p> type: %@, title: %@, userInfo: %@, persistentIdentifier: %@, relatedUniqueIdentifier: %@", v4, self, activityType, title, userInfo, persistentIdentifier, _syRelatedUniqueIdentifier];
 
   return v10;
 }
 
 - (uint64_t)_syIsBacklinkUserActivity
 {
-  v1 = [a1 activityType];
-  v2 = [v1 isEqualToString:@"com.apple.notes.activity.show-backlink"];
+  activityType = [self activityType];
+  v2 = [activityType isEqualToString:@"com.apple.notes.activity.show-backlink"];
 
   return v2;
 }
 
 - (BOOL)_syIsShowBacklinkIndicatorUserActivity
 {
-  if (![a1 _syIsBacklinkUserActivity])
+  if (![self _syIsBacklinkUserActivity])
   {
     return 0;
   }
 
-  v2 = [a1 _syUserInfoDomainIdentifiers];
-  v3 = [v2 count];
+  _syUserInfoDomainIdentifiers = [self _syUserInfoDomainIdentifiers];
+  v3 = [_syUserInfoDomainIdentifiers count];
 
-  v4 = [a1 _syUserInfoLinkIdentifiers];
-  v5 = [v4 count];
+  _syUserInfoLinkIdentifiers = [self _syUserInfoLinkIdentifiers];
+  v5 = [_syUserInfoLinkIdentifiers count];
 
   if (!v3)
   {

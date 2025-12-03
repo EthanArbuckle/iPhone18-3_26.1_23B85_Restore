@@ -1,13 +1,13 @@
 @interface __NSErrorRecoveryAttempter
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(int64_t)a4;
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(int64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(int64_t)index;
+- (void)attemptRecoveryFromError:(id)error optionIndex:(int64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info;
 @end
 
 @implementation __NSErrorRecoveryAttempter
 
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(int64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7
+- (void)attemptRecoveryFromError:(id)error optionIndex:(int64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info
 {
-  v11 = a3;
+  errorCopy = error;
   swift_unknownObjectRetain();
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss5Error_pMd);
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation16RecoverableError_pMd);
@@ -16,30 +16,30 @@
   v13 = v18;
   __swift_project_boxed_opaque_existential_1(v16, v17);
   v14 = swift_allocObject();
-  v14[2] = a5;
-  v14[3] = a6;
-  v14[4] = a7;
+  v14[2] = delegate;
+  v14[3] = selector;
+  v14[4] = info;
   v15 = *(v13 + 24);
   swift_unknownObjectRetain();
-  v15(a4, partial apply for closure #1 in __NSErrorRecoveryAttempter.attemptRecovery(fromError:optionIndex:delegate:didRecoverSelector:contextInfo:), v14, v12, v13);
+  v15(index, partial apply for closure #1 in __NSErrorRecoveryAttempter.attemptRecovery(fromError:optionIndex:delegate:didRecoverSelector:contextInfo:), v14, v12, v13);
 
   swift_unknownObjectRelease();
   __swift_destroy_boxed_opaque_existential_1(v16);
 }
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(int64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(int64_t)index
 {
-  v5 = a3;
+  errorCopy = error;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss5Error_pMd);
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation16RecoverableError_pMd);
   swift_dynamicCast();
   v6 = v10;
   v7 = v11;
   __swift_project_boxed_opaque_existential_1(v9, v10);
-  LOBYTE(a4) = (*(v7 + 32))(a4, v6, v7);
+  LOBYTE(index) = (*(v7 + 32))(index, v6, v7);
 
   __swift_destroy_boxed_opaque_existential_1(v9);
-  return a4 & 1;
+  return index & 1;
 }
 
 @end

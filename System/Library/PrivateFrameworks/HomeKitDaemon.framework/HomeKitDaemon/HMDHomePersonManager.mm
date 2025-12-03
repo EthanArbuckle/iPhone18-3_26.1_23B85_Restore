@@ -1,18 +1,18 @@
 @interface HMDHomePersonManager
 + (id)logCategory;
-+ (id)zoneNameForZoneUUID:(id)a3;
-- (BOOL)manager:(id)a3 shouldGrantWriteAccessToUser:(id)a4;
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4;
-- (BOOL)zoneManager:(id)a3 shouldRequestShareInvitationFromUser:(id)a4;
++ (id)zoneNameForZoneUUID:(id)d;
+- (BOOL)manager:(id)manager shouldGrantWriteAccessToUser:(id)user;
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user;
+- (BOOL)zoneManager:(id)manager shouldRequestShareInvitationFromUser:(id)user;
 - (HMDHome)home;
-- (HMDHomePersonManager)initWithHome:(id)a3 zoneUUID:(id)a4 workQueue:(id)a5;
-- (HMDHomePersonManager)initWithUUID:(id)a3 zoneManager:(id)a4 coreDataManager:(id)a5 dataInterfaces:(id)a6 workQueue:(id)a7 featuresDataSource:(id)a8 home:(id)a9;
+- (HMDHomePersonManager)initWithHome:(id)home zoneUUID:(id)d workQueue:(id)queue;
+- (HMDHomePersonManager)initWithUUID:(id)d zoneManager:(id)manager coreDataManager:(id)dataManager dataInterfaces:(id)interfaces workQueue:(id)queue featuresDataSource:(id)source home:(id)home;
 - (HMHomePersonManagerSettings)settings;
 - (HMIHomePersonManager)hmiPersonManager;
-- (void)configureWithHome:(id)a3;
-- (void)handleUpdatedSettings:(id)a3;
-- (void)handleUserCamerasAccessLevelDidChangeNotification:(id)a3;
-- (void)handleUserRemoteAccessDidChangeNotification:(id)a3;
+- (void)configureWithHome:(id)home;
+- (void)handleUpdatedSettings:(id)settings;
+- (void)handleUserCamerasAccessLevelDidChangeNotification:(id)notification;
+- (void)handleUserRemoteAccessDidChangeNotification:(id)notification;
 @end
 
 @implementation HMDHomePersonManager
@@ -24,45 +24,45 @@
   return WeakRetained;
 }
 
-- (BOOL)zoneManager:(id)a3 shouldRequestShareInvitationFromUser:(id)a4
+- (BOOL)zoneManager:(id)manager shouldRequestShareInvitationFromUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(v6) = [v5 isOwner];
-  return v6;
+  LOBYTE(workQueue) = [userCopy isOwner];
+  return workQueue;
 }
 
-- (BOOL)manager:(id)a3 shouldGrantWriteAccessToUser:(id)a4
+- (BOOL)manager:(id)manager shouldGrantWriteAccessToUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(v6) = [v5 isAdministrator];
-  return v6;
+  LOBYTE(workQueue) = [userCopy isAdministrator];
+  return workQueue;
 }
 
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(v6) = [v5 hasCameraClipsAccess];
-  return v6;
+  LOBYTE(workQueue) = [userCopy hasCameraClipsAccess];
+  return workQueue;
 }
 
-- (void)handleUserRemoteAccessDidChangeNotification:(id)a3
+- (void)handleUserRemoteAccessDidChangeNotification:(id)notification
 {
-  v4 = [(HMDPersonManager *)self workQueue];
+  workQueue = [(HMDPersonManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMDHomePersonManager_handleUserRemoteAccessDidChangeNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __68__HMDHomePersonManager_handleUserRemoteAccessDidChangeNotification___block_invoke(uint64_t a1)
@@ -71,15 +71,15 @@ void __68__HMDHomePersonManager_handleUserRemoteAccessDidChangeNotification___bl
   [v1 updateShareParticipants];
 }
 
-- (void)handleUserCamerasAccessLevelDidChangeNotification:(id)a3
+- (void)handleUserCamerasAccessLevelDidChangeNotification:(id)notification
 {
-  v4 = [(HMDPersonManager *)self workQueue];
+  workQueue = [(HMDPersonManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__HMDHomePersonManager_handleUserCamerasAccessLevelDidChangeNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __74__HMDHomePersonManager_handleUserCamerasAccessLevelDidChangeNotification___block_invoke(uint64_t a1)
@@ -88,15 +88,15 @@ void __74__HMDHomePersonManager_handleUserCamerasAccessLevelDidChangeNotificatio
   [v1 updateShareParticipants];
 }
 
-- (void)handleUpdatedSettings:(id)a3
+- (void)handleUpdatedSettings:(id)settings
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  settingsCopy = settings;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -104,18 +104,18 @@ void __74__HMDHomePersonManager_handleUserCamerasAccessLevelDidChangeNotificatio
     *buf = 138543618;
     v23 = v9;
     v24 = 2112;
-    v25 = v4;
+    v25 = settingsCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Home person manager settings changed: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDPersonManager *)v7 _createOrRemoveZonesForSettings:v4];
+  [(HMDPersonManager *)selfCopy _createOrRemoveZonesForSettings:settingsCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(HMDPersonManager *)v7 dataInterfaces];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  dataInterfaces = [(HMDPersonManager *)selfCopy dataInterfaces];
+  v11 = [dataInterfaces countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -127,20 +127,20 @@ void __74__HMDHomePersonManager_handleUserCamerasAccessLevelDidChangeNotificatio
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v15 = *(*(&v17 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 handleUpdatedSettings:v4 mirrorOutputFuture:0];
+          [v15 handleUpdatedSettings:settingsCopy mirrorOutputFuture:0];
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [dataInterfaces countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
@@ -149,22 +149,22 @@ void __74__HMDHomePersonManager_handleUserCamerasAccessLevelDidChangeNotificatio
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  homeCopy = home;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v4)
+  if (homeCopy)
   {
     v10.receiver = self;
     v10.super_class = HMDHomePersonManager;
-    [(HMDPersonManager *)&v10 configureWithHome:v4];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_handleUserCamerasAccessLevelDidChangeNotification_ name:@"HMDUserCamerasAccessLevelDidChangeNotification" object:0];
+    [(HMDPersonManager *)&v10 configureWithHome:homeCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleUserCamerasAccessLevelDidChangeNotification_ name:@"HMDUserCamerasAccessLevelDidChangeNotification" object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel_handleUserRemoteAccessDidChangeNotification_ name:@"HMDUserRemoteAccessDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_handleUserRemoteAccessDidChangeNotification_ name:@"HMDUserRemoteAccessDidChangeNotification" object:0];
   }
 
   else
@@ -176,19 +176,19 @@ void __74__HMDHomePersonManager_handleUserCamerasAccessLevelDidChangeNotificatio
 
 - (HMHomePersonManagerSettings)settings
 {
-  v2 = [(HMDHomePersonManager *)self home];
-  v3 = [v2 personManagerSettings];
+  home = [(HMDHomePersonManager *)self home];
+  personManagerSettings = [home personManagerSettings];
 
-  return v3;
+  return personManagerSettings;
 }
 
 - (HMIHomePersonManager)hmiPersonManager
 {
-  v2 = [(HMDPersonManager *)self dataInterfaces];
-  v3 = [v2 na_map:&__block_literal_global_117935];
-  v4 = [v3 anyObject];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v3 = [dataInterfaces na_map:&__block_literal_global_117935];
+  anyObject = [v3 anyObject];
 
-  return v4;
+  return anyObject;
 }
 
 id __40__HMDHomePersonManager_hmiPersonManager__block_invoke(uint64_t a1, void *a2)
@@ -207,25 +207,25 @@ id __40__HMDHomePersonManager_hmiPersonManager__block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (HMDHomePersonManager)initWithUUID:(id)a3 zoneManager:(id)a4 coreDataManager:(id)a5 dataInterfaces:(id)a6 workQueue:(id)a7 featuresDataSource:(id)a8 home:(id)a9
+- (HMDHomePersonManager)initWithUUID:(id)d zoneManager:(id)manager coreDataManager:(id)dataManager dataInterfaces:(id)interfaces workQueue:(id)queue featuresDataSource:(id)source home:(id)home
 {
   v18.receiver = self;
   v18.super_class = HMDHomePersonManager;
-  v15 = a9;
-  v16 = [(HMDPersonManager *)&v18 initWithUUID:a3 zoneManager:a4 coreDataManager:a5 dataInterfaces:a6 workQueue:a7 featuresDataSource:a8];
-  objc_storeWeak(&v16->_home, v15);
+  homeCopy = home;
+  v16 = [(HMDPersonManager *)&v18 initWithUUID:d zoneManager:manager coreDataManager:dataManager dataInterfaces:interfaces workQueue:queue featuresDataSource:source];
+  objc_storeWeak(&v16->_home, homeCopy);
 
   return v16;
 }
 
-- (HMDHomePersonManager)initWithHome:(id)a3 zoneUUID:(id)a4 workQueue:(id)a5
+- (HMDHomePersonManager)initWithHome:(id)home zoneUUID:(id)d workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  homeCopy = home;
+  queueCopy = queue;
   v10 = MEMORY[0x277CD1AA8];
-  v11 = a4;
-  v12 = [v8 uuid];
-  v13 = [v10 personManagerUUIDFromHomeUUID:v12];
+  dCopy = d;
+  uuid = [homeCopy uuid];
+  v13 = [v10 personManagerUUIDFromHomeUUID:uuid];
 
   v14 = [MEMORY[0x277CBEB58] set];
   v15 = +[HMDDeviceCapabilities deviceCapabilities];
@@ -234,43 +234,43 @@ id __40__HMDHomePersonManager_hmiPersonManager__block_invoke(uint64_t a1, void *
     goto LABEL_4;
   }
 
-  v16 = [v8 isOwnerUser];
+  isOwnerUser = [homeCopy isOwnerUser];
 
-  if (v16)
+  if (isOwnerUser)
   {
     v17 = [HMDHomeAIHomePersonDataInterface alloc];
-    v18 = [v8 uuid];
-    v15 = [(HMDHomeAIHomePersonDataInterface *)v17 initWithPersonManagerUUID:v13 homeUUID:v18 workQueue:v9];
+    uuid2 = [homeCopy uuid];
+    v15 = [(HMDHomeAIHomePersonDataInterface *)v17 initWithPersonManagerUUID:v13 homeUUID:uuid2 workQueue:queueCopy];
 
     [v14 addObject:v15];
 LABEL_4:
   }
 
   v19 = [HMDHomeKitPersonDataInterface alloc];
-  v20 = [v8 msgDispatcher];
-  v21 = [(HMDHomeKitPersonDataInterface *)v19 initWithUUID:v13 messageDispatcher:v20 workQueue:v9];
+  msgDispatcher = [homeCopy msgDispatcher];
+  v21 = [(HMDHomeKitPersonDataInterface *)v19 initWithUUID:v13 messageDispatcher:msgDispatcher workQueue:queueCopy];
   [v14 addObject:v21];
 
-  v22 = [[HMDRemotePersonDataMessenger alloc] initWithUUID:v13 home:v8 workQueue:v9];
+  v22 = [[HMDRemotePersonDataMessenger alloc] initWithUUID:v13 home:homeCopy workQueue:queueCopy];
   [v14 addObject:v22];
 
-  v23 = [HMDHomePersonManager zoneNameForZoneUUID:v11];
+  v23 = [HMDHomePersonManager zoneNameForZoneUUID:dCopy];
 
   v24 = [HMDDatabaseZoneManager alloc];
   v25 = +[HMDDatabase cameraClipsDatabase];
-  v26 = [(HMDDatabaseZoneManager *)v24 initWithDatabase:v25 zoneName:v23 home:v8 messageTargetUUID:v13 workQueue:v9];
+  v26 = [(HMDDatabaseZoneManager *)v24 initWithDatabase:v25 zoneName:v23 home:homeCopy messageTargetUUID:v13 workQueue:queueCopy];
 
-  v27 = [(HMDDatabaseZoneManager *)v26 defaultConfiguration];
-  v28 = [v27 mutableCopy];
+  defaultConfiguration = [(HMDDatabaseZoneManager *)v26 defaultConfiguration];
+  v28 = [defaultConfiguration mutableCopy];
 
-  [v28 setZoneOwner:{objc_msgSend(v8, "isOwnerUser")}];
+  [v28 setZoneOwner:{objc_msgSend(homeCopy, "isOwnerUser")}];
   v29 = +[HMDHomeKitVersion version7];
   [v28 setMinimumHomeKitVersion:v29];
 
   [(HMDDatabaseZoneManager *)v26 setDefaultConfiguration:v28];
-  v30 = [[HMDPersonCoreDataManager alloc] initWithUUID:v13 workQueue:v9 home:v8 userUUID:0];
+  v30 = [[HMDPersonCoreDataManager alloc] initWithUUID:v13 workQueue:queueCopy home:homeCopy userUUID:0];
   v31 = +[HMDFeaturesDataSource defaultDataSource];
-  v32 = [(HMDHomePersonManager *)self initWithUUID:v13 zoneManager:v26 coreDataManager:v30 dataInterfaces:v14 workQueue:v9 featuresDataSource:v31 home:v8];
+  v32 = [(HMDHomePersonManager *)self initWithUUID:v13 zoneManager:v26 coreDataManager:v30 dataInterfaces:v14 workQueue:queueCopy featuresDataSource:v31 home:homeCopy];
 
   return v32;
 }
@@ -295,11 +295,11 @@ void __35__HMDHomePersonManager_logCategory__block_invoke()
   logCategory__hmf_once_v2_117961 = v1;
 }
 
-+ (id)zoneNameForZoneUUID:(id)a3
++ (id)zoneNameForZoneUUID:(id)d
 {
   v3 = *MEMORY[0x277CD04B0];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringByAppendingString:v4];
+  uUIDString = [d UUIDString];
+  v5 = [v3 stringByAppendingString:uUIDString];
 
   return v5;
 }

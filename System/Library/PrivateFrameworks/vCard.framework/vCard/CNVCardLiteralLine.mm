@@ -1,25 +1,25 @@
 @interface CNVCardLiteralLine
-+ (id)lineWithLiteralValue:(id)a3;
-- (CNVCardLiteralLine)initWithLiteralValue:(id)a3;
++ (id)lineWithLiteralValue:(id)value;
+- (CNVCardLiteralLine)initWithLiteralValue:(id)value;
 @end
 
 @implementation CNVCardLiteralLine
 
-+ (id)lineWithLiteralValue:(id)a3
++ (id)lineWithLiteralValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithLiteralValue:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithLiteralValue:valueCopy];
 
   return v5;
 }
 
-- (CNVCardLiteralLine)initWithLiteralValue:(id)a3
+- (CNVCardLiteralLine)initWithLiteralValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [(CNVCardLiteralLine *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valueCopy copy];
     literalValue = v5->_literalValue;
     v5->_literalValue = v6;
 

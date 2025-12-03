@@ -1,13 +1,13 @@
 @interface CSUCaptionRuntimeParameters
-- (CSUCaptionRuntimeParameters)initWithOptions:(id)a3;
-- (void)_loadRuntimeParameters:(id)a3;
+- (CSUCaptionRuntimeParameters)initWithOptions:(id)options;
+- (void)_loadRuntimeParameters:(id)parameters;
 @end
 
 @implementation CSUCaptionRuntimeParameters
 
-- (CSUCaptionRuntimeParameters)initWithOptions:(id)a3
+- (CSUCaptionRuntimeParameters)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = CSUCaptionRuntimeParameters;
   v5 = [(CSUCaptionRuntimeParameters *)&v11 init];
@@ -16,23 +16,23 @@
   {
     *&v5->_captionModelMinimumConfidence = xmmword_1AC129B20;
     v5->_excludeGenderStrategy = 1;
-    NSLog(&stru_1F20D4DC8.isa, v4);
-    objc_msgSend__loadRuntimeParameters_(v6, v7, v4, v8, v9);
+    NSLog(&stru_1F20D4DC8.isa, optionsCopy);
+    objc_msgSend__loadRuntimeParameters_(v6, v7, optionsCopy, v8, v9);
   }
 
   return v6;
 }
 
-- (void)_loadRuntimeParameters:(id)a3
+- (void)_loadRuntimeParameters:(id)parameters
 {
   v250 = *MEMORY[0x1E69E9840];
-  v247 = a3;
-  v233 = v247;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v247, v3, @"captionModel", v4, v5);
+  parametersCopy = parameters;
+  v233 = parametersCopy;
+  v6 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v3, @"captionModel", v4, v5);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = objc_msgSend_objectForKeyedSubscript_(v247, v7, @"captionModel", v8, v9);
+    v10 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v7, @"captionModel", v8, v9);
 
     if (v10)
     {
@@ -131,7 +131,7 @@ LABEL_27:
   v231 = 0;
 LABEL_28:
 
-  v246 = &v247;
+  v246 = &parametersCopy;
   v79 = sub_1AC0A9A00(&v246, @"replacements");
   replacements = self->_replacements;
   self->_replacements = v79;
@@ -140,11 +140,11 @@ LABEL_28:
   excludeGenderReplacements = self->_excludeGenderReplacements;
   self->_excludeGenderReplacements = v81;
 
-  v86 = objc_msgSend_objectForKeyedSubscript_(v247, v83, @"excludeGenderTriggers", v84, v85);
+  v86 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v83, @"excludeGenderTriggers", v84, v85);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v90 = objc_msgSend_objectForKeyedSubscript_(v247, v87, @"excludeGenderTriggers", v88, v89);
+    v90 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v87, @"excludeGenderTriggers", v88, v89);
 
     if (v90)
     {
@@ -227,11 +227,11 @@ LABEL_47:
     sub_1AC11FEC8(&self->_genderOption, v135);
   }
 
-  v139 = objc_msgSend_objectForKeyedSubscript_(v247, v136, @"filterTokens", v137, v138);
+  v139 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v136, @"filterTokens", v137, v138);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v232 = objc_msgSend_objectForKeyedSubscript_(v247, v140, @"filterTokens", v141, v142);
+    v232 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v140, @"filterTokens", v141, v142);
 
     if (v232)
     {
@@ -282,11 +282,11 @@ LABEL_62:
   v232 = 0;
 LABEL_63:
 
-  v183 = objc_msgSend_objectForKeyedSubscript_(v247, v180, @"blacklistTokens", v181, v182);
+  v183 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v180, @"blacklistTokens", v181, v182);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v234 = objc_msgSend_objectForKeyedSubscript_(v247, v184, @"blacklistTokens", v185, v186);
+    v234 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v184, @"blacklistTokens", v185, v186);
   }
 
   else

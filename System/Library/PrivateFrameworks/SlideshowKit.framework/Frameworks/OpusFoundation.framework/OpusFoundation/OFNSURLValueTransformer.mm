@@ -1,21 +1,21 @@
 @interface OFNSURLValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation OFNSURLValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = [a3 absoluteString];
+  absoluteString = [value absoluteString];
 
-  return [v3 dataUsingEncoding:4 allowLossyConversion:0];
+  return [absoluteString dataUsingEncoding:4 allowLossyConversion:0];
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [a3 stringWithEncoding:4];
+  v4 = [value stringWithEncoding:4];
 
   return [v3 URLWithString:v4];
 }

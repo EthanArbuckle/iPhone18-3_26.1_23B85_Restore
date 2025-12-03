@@ -1,12 +1,12 @@
 @interface MTIDXPCSecretStore
 - (MTIDXPCSecretStore)init;
 - (id)debugInfo;
-- (id)maintainSchemes:(id)a3 options:(id)a4;
+- (id)maintainSchemes:(id)schemes options:(id)options;
 - (id)newXPCConnection;
-- (id)resetSchemes:(id)a3 options:(id)a4;
-- (id)secretForScheme:(id)a3 options:(id)a4;
+- (id)resetSchemes:(id)schemes options:(id)options;
+- (id)secretForScheme:(id)scheme options:(id)options;
 - (id)setupXPCConnection;
-- (id)syncForSchemes:(id)a3 options:(id)a4;
+- (id)syncForSchemes:(id)schemes options:(id)options;
 - (void)clearLocalData;
 @end
 
@@ -27,20 +27,20 @@
   return v2;
 }
 
-- (id)secretForScheme:(id)a3 options:(id)a4
+- (id)secretForScheme:(id)scheme options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTIDXPCSecretStore *)self setupXPCConnection];
+  schemeCopy = scheme;
+  optionsCopy = options;
+  setupXPCConnection = [(MTIDXPCSecretStore *)self setupXPCConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__MTIDXPCSecretStore_secretForScheme_options___block_invoke;
   v13[3] = &unk_2798CDFE0;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 thenWithBlock:v13];
+  v14 = schemeCopy;
+  v15 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = schemeCopy;
+  v11 = [setupXPCConnection thenWithBlock:v13];
 
   return v11;
 }
@@ -72,20 +72,20 @@ MTPromise *__46__MTIDXPCSecretStore_secretForScheme_options___block_invoke(uint6
   return v9;
 }
 
-- (id)resetSchemes:(id)a3 options:(id)a4
+- (id)resetSchemes:(id)schemes options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTIDXPCSecretStore *)self setupXPCConnection];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  setupXPCConnection = [(MTIDXPCSecretStore *)self setupXPCConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __43__MTIDXPCSecretStore_resetSchemes_options___block_invoke;
   v13[3] = &unk_2798CDFE0;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 thenWithBlock:v13];
+  v14 = schemesCopy;
+  v15 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = schemesCopy;
+  v11 = [setupXPCConnection thenWithBlock:v13];
 
   return v11;
 }
@@ -133,20 +133,20 @@ uint64_t __43__MTIDXPCSecretStore_resetSchemes_options___block_invoke_3(uint64_t
   return [v2 finishWithResult:v3 error:a2];
 }
 
-- (id)maintainSchemes:(id)a3 options:(id)a4
+- (id)maintainSchemes:(id)schemes options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTIDXPCSecretStore *)self setupXPCConnection];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  setupXPCConnection = [(MTIDXPCSecretStore *)self setupXPCConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__MTIDXPCSecretStore_maintainSchemes_options___block_invoke;
   v13[3] = &unk_2798CDFE0;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 thenWithBlock:v13];
+  v14 = schemesCopy;
+  v15 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = schemesCopy;
+  v11 = [setupXPCConnection thenWithBlock:v13];
 
   return v11;
 }
@@ -161,20 +161,20 @@ MTPromise *__46__MTIDXPCSecretStore_maintainSchemes_options___block_invoke(uint6
   return [MTPromise promiseWithResult:v4];
 }
 
-- (id)syncForSchemes:(id)a3 options:(id)a4
+- (id)syncForSchemes:(id)schemes options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTIDXPCSecretStore *)self setupXPCConnection];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  setupXPCConnection = [(MTIDXPCSecretStore *)self setupXPCConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__MTIDXPCSecretStore_syncForSchemes_options___block_invoke;
   v13[3] = &unk_2798CDFE0;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 thenWithBlock:v13];
+  v14 = schemesCopy;
+  v15 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = schemesCopy;
+  v11 = [setupXPCConnection thenWithBlock:v13];
 
   return v11;
 }
@@ -224,8 +224,8 @@ uint64_t __45__MTIDXPCSecretStore_syncForSchemes_options___block_invoke_3(uint64
 
 - (void)clearLocalData
 {
-  v2 = [(MTIDXPCSecretStore *)self setupXPCConnection];
-  [v2 addSuccessBlock:&__block_literal_global_9];
+  setupXPCConnection = [(MTIDXPCSecretStore *)self setupXPCConnection];
+  [setupXPCConnection addSuccessBlock:&__block_literal_global_9];
 }
 
 void __36__MTIDXPCSecretStore_clearLocalData__block_invoke(uint64_t a1, void *a2)
@@ -238,8 +238,8 @@ void __36__MTIDXPCSecretStore_clearLocalData__block_invoke(uint64_t a1, void *a2
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"xpcConnection";
-  v2 = [(MTIDXPCSecretStore *)self xpcConnection];
-  v3 = [v2 debugDescription];
+  xpcConnection = [(MTIDXPCSecretStore *)self xpcConnection];
+  v3 = [xpcConnection debugDescription];
   v4 = v3;
   v5 = @"null";
   if (v3)

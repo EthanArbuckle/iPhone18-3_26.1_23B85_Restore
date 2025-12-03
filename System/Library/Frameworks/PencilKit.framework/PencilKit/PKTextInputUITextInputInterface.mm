@@ -1,62 +1,62 @@
 @interface PKTextInputUITextInputInterface
-+ (BOOL)_callShouldChangeTextInRange:(id)a3 replacementText:(id)a4 inTextInput:(id)a5;
-+ (BOOL)_callShouldInsertText:(id)a3 inTextInput:(id)a4 isMarkedText:(BOOL)a5;
-+ (BOOL)_selectTextRange:(id)a3 inTextInput:(id)a4;
-+ (BOOL)configureSelectionStyleForDeletionPreviewInTextInput:(id)a3;
-+ (BOOL)configureSelectionStyleForHighlightInTextInput:(id)a3;
-+ (BOOL)configureSelectionStyleForNormalSelectionInTextInput:(id)a3;
-+ (BOOL)deleteTextInRange:(_NSRange)a3 inTextInput:(id)a4;
-+ (BOOL)insertCommittedText:(id)a3 withAlternatives:(id)a4 activePreviewText:(id)a5 replacingRange:(_NSRange)a6 inTextInput:(id)a7;
-+ (BOOL)isProtectedTextAttachment:(id)a3;
-+ (BOOL)isValidRange:(_NSRange)a3 inTextInput:(id)a4;
-+ (BOOL)makeTextInputFirstResponder:(id)a3 forPencilInput:(BOOL)a4;
-+ (BOOL)selectTextInRange:(_NSRange)a3 inTextInput:(id)a4;
-+ (BOOL)selectWordBoundaryAtPoint:(CGPoint)a3 inTextInput:(id)a4;
-+ (BOOL)setSelectionWithReferencePoint:(CGPoint)a3 inTextInput:(id)a4;
-+ (BOOL)showSelectionCommandsForTextInput:(id)a3;
-+ (CGRect)caretRectForCharacterIndex:(int64_t)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5;
-+ (CGRect)caretRectInCoordinateSpace:(id)a3 inTextInput:(id)a4;
-+ (CGRect)firstRectForRange:(_NSRange)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5;
-+ (_NSRange)_rangeFromUITextPosition:(id)a3 toUITextPosition:(id)a4 inTextInput:(id)a5;
-+ (_NSRange)activePreviewRangeInTextInput:(id)a3;
-+ (_NSRange)rangeOfCharacterAtIndex:(unint64_t)a3 inTextInput:(id)a4;
-+ (_NSRange)selectedRangeInTextInput:(id)a3;
-+ (id)_uiTextRangeForRange:(_NSRange)a3 inTextInput:(id)a4;
-+ (id)attributesAtCharacterIndex:(int64_t)a3 inTextInput:(id)a4;
++ (BOOL)_callShouldChangeTextInRange:(id)range replacementText:(id)text inTextInput:(id)input;
++ (BOOL)_callShouldInsertText:(id)text inTextInput:(id)input isMarkedText:(BOOL)markedText;
++ (BOOL)_selectTextRange:(id)range inTextInput:(id)input;
++ (BOOL)configureSelectionStyleForDeletionPreviewInTextInput:(id)input;
++ (BOOL)configureSelectionStyleForHighlightInTextInput:(id)input;
++ (BOOL)configureSelectionStyleForNormalSelectionInTextInput:(id)input;
++ (BOOL)deleteTextInRange:(_NSRange)range inTextInput:(id)input;
++ (BOOL)insertCommittedText:(id)text withAlternatives:(id)alternatives activePreviewText:(id)previewText replacingRange:(_NSRange)range inTextInput:(id)input;
++ (BOOL)isProtectedTextAttachment:(id)attachment;
++ (BOOL)isValidRange:(_NSRange)range inTextInput:(id)input;
++ (BOOL)makeTextInputFirstResponder:(id)responder forPencilInput:(BOOL)input;
++ (BOOL)selectTextInRange:(_NSRange)range inTextInput:(id)input;
++ (BOOL)selectWordBoundaryAtPoint:(CGPoint)point inTextInput:(id)input;
++ (BOOL)setSelectionWithReferencePoint:(CGPoint)point inTextInput:(id)input;
++ (BOOL)showSelectionCommandsForTextInput:(id)input;
++ (CGRect)caretRectForCharacterIndex:(int64_t)index inCoordinateSpace:(id)space inTextInput:(id)input;
++ (CGRect)caretRectInCoordinateSpace:(id)space inTextInput:(id)input;
++ (CGRect)firstRectForRange:(_NSRange)range inCoordinateSpace:(id)space inTextInput:(id)input;
++ (_NSRange)_rangeFromUITextPosition:(id)position toUITextPosition:(id)textPosition inTextInput:(id)input;
++ (_NSRange)activePreviewRangeInTextInput:(id)input;
++ (_NSRange)rangeOfCharacterAtIndex:(unint64_t)index inTextInput:(id)input;
++ (_NSRange)selectedRangeInTextInput:(id)input;
++ (id)_uiTextRangeForRange:(_NSRange)range inTextInput:(id)input;
++ (id)attributesAtCharacterIndex:(int64_t)index inTextInput:(id)input;
 + (id)editableTextAttachmentFileTypes;
-+ (id)insertTextPlaceholderWithSize:(CGSize)a3 inTextInput:(id)a4;
-+ (id)protectedCharacterIndexesInRange:(_NSRange)a3 inTextInput:(id)a4;
-+ (id)rectValuesForSelectionRects:(id)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5 intersectingRect:(CGRect)a6;
-+ (id)selectionRectsForRange:(_NSRange)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5 intersectingRect:(CGRect)a6;
-+ (id)stringInRange:(_NSRange)a3 inTextInput:(id)a4;
-+ (int64_t)characterIndexClosestToPoint:(CGPoint)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5 forInsertingText:(BOOL)a6 adjustForLastCharacter:(BOOL)a7;
-+ (int64_t)contentLengthForTextInput:(id)a3;
-+ (void)notifyTextDidChangeInTextInput:(id)a3;
-+ (void)notifyTextWillChangeInTextInput:(id)a3;
-+ (void)removeTextPlaceholder:(id)a3 inTextInput:(id)a4;
++ (id)insertTextPlaceholderWithSize:(CGSize)size inTextInput:(id)input;
++ (id)protectedCharacterIndexesInRange:(_NSRange)range inTextInput:(id)input;
++ (id)rectValuesForSelectionRects:(id)rects inCoordinateSpace:(id)space inTextInput:(id)input intersectingRect:(CGRect)rect;
++ (id)selectionRectsForRange:(_NSRange)range inCoordinateSpace:(id)space inTextInput:(id)input intersectingRect:(CGRect)rect;
++ (id)stringInRange:(_NSRange)range inTextInput:(id)input;
++ (int64_t)characterIndexClosestToPoint:(CGPoint)point inCoordinateSpace:(id)space inTextInput:(id)input forInsertingText:(BOOL)text adjustForLastCharacter:(BOOL)character;
++ (int64_t)contentLengthForTextInput:(id)input;
++ (void)notifyTextDidChangeInTextInput:(id)input;
++ (void)notifyTextWillChangeInTextInput:(id)input;
++ (void)removeTextPlaceholder:(id)placeholder inTextInput:(id)input;
 @end
 
 @implementation PKTextInputUITextInputInterface
 
-+ (BOOL)makeTextInputFirstResponder:(id)a3 forPencilInput:(BOOL)a4
++ (BOOL)makeTextInputFirstResponder:(id)responder forPencilInput:(BOOL)input
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  inputCopy = input;
+  responderCopy = responder;
+  if (inputCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 set_textInputSource:3];
+    [responderCopy set_textInputSource:3];
   }
 
-  if (([v5 isFirstResponder] & 1) == 0)
+  if (([responderCopy isFirstResponder] & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 textInputTraits];
-      v8 = v7;
-      if (v7 && ([v7 deferBecomingResponder] & 1) != 0)
+      textInputTraits = [responderCopy textInputTraits];
+      v8 = textInputTraits;
+      if (textInputTraits && ([textInputTraits deferBecomingResponder] & 1) != 0)
       {
         [v8 setDeferBecomingResponder:0];
-        v6 = [v5 becomeFirstResponder];
+        becomeFirstResponder = [responderCopy becomeFirstResponder];
         [v8 setDeferBecomingResponder:1];
 LABEL_12:
 
@@ -69,26 +69,26 @@ LABEL_12:
       v8 = 0;
     }
 
-    v6 = [v5 becomeFirstResponder];
+    becomeFirstResponder = [responderCopy becomeFirstResponder];
     goto LABEL_12;
   }
 
-  v6 = 1;
+  becomeFirstResponder = 1;
 LABEL_13:
-  v9 = [v5 isFirstResponder];
+  isFirstResponder = [responderCopy isFirstResponder];
 
-  return v9 & v6;
+  return isFirstResponder & becomeFirstResponder;
 }
 
-+ (BOOL)isValidRange:(_NSRange)a3 inTextInput:(id)a4
++ (BOOL)isValidRange:(_NSRange)range inTextInput:(id)input
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = [v6 beginningOfDocument];
-  v8 = [v6 positionFromPosition:v7 offset:location];
+  length = range.length;
+  location = range.location;
+  inputCopy = input;
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  v8 = [inputCopy positionFromPosition:beginningOfDocument offset:location];
 
-  v9 = [v6 positionFromPosition:v8 offset:length];
+  v9 = [inputCopy positionFromPosition:v8 offset:length];
 
   if (v8)
   {
@@ -105,19 +105,19 @@ LABEL_13:
   return v11;
 }
 
-+ (BOOL)_callShouldChangeTextInRange:(id)a3 replacementText:(id)a4 inTextInput:(id)a5
++ (BOOL)_callShouldChangeTextInRange:(id)range replacementText:(id)text inTextInput:(id)input
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 conformsToProtocol:&unk_1F483EDC0])
+  rangeCopy = range;
+  textCopy = text;
+  inputCopy = input;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [inputCopy conformsToProtocol:&unk_1F483EDC0])
   {
-    v11 = [v8 start];
-    v12 = [v8 end];
-    v13 = [a1 _rangeFromUITextPosition:v11 toUITextPosition:v12 inTextInput:v10];
+    start = [rangeCopy start];
+    v12 = [rangeCopy end];
+    v13 = [self _rangeFromUITextPosition:start toUITextPosition:v12 inTextInput:inputCopy];
     v15 = v14;
 
-    v16 = [v10 keyboardInput:v10 shouldReplaceTextInRange:v13 replacementText:{v15, v9}];
+    v16 = [inputCopy keyboardInput:inputCopy shouldReplaceTextInRange:v13 replacementText:{v15, textCopy}];
   }
 
   else
@@ -128,13 +128,13 @@ LABEL_13:
       goto LABEL_10;
     }
 
-    if (!v8)
+    if (!rangeCopy)
     {
       v17 = 0;
       goto LABEL_10;
     }
 
-    v16 = [v10 shouldChangeTextInRange:v8 replacementText:v9];
+    v16 = [inputCopy shouldChangeTextInRange:rangeCopy replacementText:textCopy];
   }
 
   v17 = v16;
@@ -143,22 +143,22 @@ LABEL_10:
   return v17;
 }
 
-+ (BOOL)_callShouldInsertText:(id)a3 inTextInput:(id)a4 isMarkedText:(BOOL)a5
++ (BOOL)_callShouldInsertText:(id)text inTextInput:(id)input isMarkedText:(BOOL)markedText
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 conformsToProtocol:&unk_1F483EDC0])
+  markedTextCopy = markedText;
+  textCopy = text;
+  inputCopy = input;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [inputCopy conformsToProtocol:&unk_1F483EDC0])
   {
-    v9 = [v8 keyboardInput:v8 shouldInsertText:v7 isMarkedText:v5];
+    v9 = [inputCopy keyboardInput:inputCopy shouldInsertText:textCopy isMarkedText:markedTextCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v10 = [v8 selectedTextRange];
-    if (v10)
+    selectedTextRange = [inputCopy selectedTextRange];
+    if (selectedTextRange)
     {
-      v9 = [v8 shouldChangeTextInRange:v10 replacementText:v7];
+      v9 = [inputCopy shouldChangeTextInRange:selectedTextRange replacementText:textCopy];
     }
 
     else
@@ -175,33 +175,33 @@ LABEL_10:
   return v9;
 }
 
-+ (BOOL)insertCommittedText:(id)a3 withAlternatives:(id)a4 activePreviewText:(id)a5 replacingRange:(_NSRange)a6 inTextInput:(id)a7
++ (BOOL)insertCommittedText:(id)text withAlternatives:(id)alternatives activePreviewText:(id)previewText replacingRange:(_NSRange)range inTextInput:(id)input
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   v67[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  textCopy = text;
+  alternativesCopy = alternatives;
+  previewTextCopy = previewText;
+  inputCopy = input;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [a1 _uiTextRangeForRange:location inTextInput:{length, v16}];
+    v17 = [self _uiTextRangeForRange:location inTextInput:{length, inputCopy}];
     if (!v17)
     {
       goto LABEL_39;
     }
 
-    [v16 setSelectedTextRange:v17];
+    [inputCopy setSelectedTextRange:v17];
   }
 
-  if ([v13 length] | length)
+  if ([textCopy length] | length)
   {
-    LODWORD(v17) = [a1 _callShouldInsertText:v13 inTextInput:v16 isMarkedText:0];
-    v18 = v16;
+    LODWORD(v17) = [self _callShouldInsertText:textCopy inTextInput:inputCopy isMarkedText:0];
+    v18 = inputCopy;
     if (v17)
     {
-      v55 = v14;
+      v55 = alternativesCopy;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if (objc_opt_respondsToSelector() & 1) == 0 || (isKindOfClass)
@@ -211,7 +211,7 @@ LABEL_10:
         v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
         if (v24)
         {
-          v14 = v55;
+          alternativesCopy = v55;
           if (v26)
           {
             v27 = objc_opt_class();
@@ -221,16 +221,16 @@ LABEL_10:
             v60 = 2112;
             v61 = v28;
             v62 = 2048;
-            v63 = [v13 length];
+            v63 = [textCopy length];
             _os_log_impl(&dword_1C7CCA000, v25, OS_LOG_TYPE_DEFAULT, "Text input <%p %@> does not support insertAttributedText:. Inserting text of length %ld.", buf, 0x20u);
           }
 
-          [v18 insertText:v13 alternatives:v55 style:1];
+          [v18 insertText:textCopy alternatives:v55 style:1];
         }
 
         else
         {
-          v14 = v55;
+          alternativesCopy = v55;
           if (v26)
           {
             v29 = objc_opt_class();
@@ -240,13 +240,13 @@ LABEL_10:
             v60 = 2112;
             v61 = v30;
             v62 = 2048;
-            v63 = [v13 length];
+            v63 = [textCopy length];
             v64 = 2048;
             v65 = [v55 count];
             _os_log_impl(&dword_1C7CCA000, v25, OS_LOG_TYPE_DEFAULT, "Text input <%p %@> does not support insertText:alternatives:style:. Inserting text of length %ld and ignoring %ld alternatives.", buf, 0x2Au);
           }
 
-          [v18 insertText:v13];
+          [v18 insertText:textCopy];
         }
       }
 
@@ -256,13 +256,13 @@ LABEL_10:
         if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && [v18 textAlignment] != 4)
         {
           v53 = 0;
-          v54 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v13];
+          v54 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy];
         }
 
         else
         {
           v20 = objc_opt_new();
-          if ([v13 _isNaturallyRTL])
+          if ([textCopy _isNaturallyRTL])
           {
             v21 = 2;
           }
@@ -278,23 +278,23 @@ LABEL_10:
           v67[0] = v20;
           v53 = v20;
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v66 count:1];
-          v54 = [v22 initWithString:v13 attributes:v23];
+          v54 = [v22 initWithString:textCopy attributes:v23];
         }
 
         v31 = objc_opt_respondsToSelector();
-        v14 = v55;
+        alternativesCopy = v55;
         if (v55 && (v31 & 1) != 0 && [v55 count])
         {
-          v32 = [objc_alloc(MEMORY[0x1E69DB7E8]) initWithPrimaryString:v13 alternativeStrings:v55];
-          v14 = v55;
+          v32 = [objc_alloc(MEMORY[0x1E69DB7E8]) initWithPrimaryString:textCopy alternativeStrings:v55];
+          alternativesCopy = v55;
           [v54 addAttribute:*MEMORY[0x1E69DB6D0] value:v32 range:{0, objc_msgSend(v54, "length")}];
         }
 
-        v33 = [a1 _uiTextRangeForRange:location inTextInput:{length, v18}];
+        v33 = [self _uiTextRangeForRange:location inTextInput:{length, v18}];
         if (v33 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v34 = [v33 start];
-          v35 = [v18 textStylingAtPosition:v34 inDirection:0];
+          start = [v33 start];
+          v35 = [v18 textStylingAtPosition:start inDirection:0];
           v36 = [v35 mutableCopy];
 
           if (v36)
@@ -318,7 +318,7 @@ LABEL_10:
             [v54 addAttributes:v36 range:{0, objc_msgSend(v54, "length")}];
           }
 
-          v14 = v55;
+          alternativesCopy = v55;
         }
 
         [v18 insertAttributedText:v54];
@@ -332,11 +332,11 @@ LABEL_10:
   }
 
 LABEL_39:
-  v39 = [v16 markedTextRange];
-  if (v39)
+  markedTextRange = [inputCopy markedTextRange];
+  if (markedTextRange)
   {
-    v40 = [v16 markedTextRange];
-    v41 = [v40 isEmpty] ^ 1;
+    markedTextRange2 = [inputCopy markedTextRange];
+    v41 = [markedTextRange2 isEmpty] ^ 1;
   }
 
   else
@@ -346,21 +346,21 @@ LABEL_39:
 
   if (v17)
   {
-    if (!(([(__CFString *)v15 length]!= 0) | v41 & 1))
+    if (!(([(__CFString *)previewTextCopy length]!= 0) | v41 & 1))
     {
 LABEL_53:
       v49 = 1;
       goto LABEL_54;
     }
 
-    if (!v15)
+    if (!previewTextCopy)
     {
-      v15 = &stru_1F476BD20;
+      previewTextCopy = &stru_1F476BD20;
     }
 
-    if ([a1 _callShouldInsertText:v15 inTextInput:v16 isMarkedText:1])
+    if ([self _callShouldInsertText:previewTextCopy inTextInput:inputCopy isMarkedText:1])
     {
-      v42 = [(__CFString *)v15 length];
+      v42 = [(__CFString *)previewTextCopy length];
       v43 = +[PKTextInputSettings sharedSettings];
       if ([v43 styledActivePreview])
       {
@@ -372,12 +372,12 @@ LABEL_53:
           v45 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:0.3];
           v57[0] = v45;
           v56[1] = *MEMORY[0x1E69DB600];
-          v46 = [MEMORY[0x1E69DC888] clearColor];
-          v57[1] = v46;
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
+          v57[1] = clearColor;
           v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
 
-          v48 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15 attributes:v47];
-          [v16 setAttributedMarkedText:v48 selectedRange:{v42, 0}];
+          v48 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:previewTextCopy attributes:v47];
+          [inputCopy setAttributedMarkedText:v48 selectedRange:{v42, 0}];
 
           goto LABEL_53;
         }
@@ -387,7 +387,7 @@ LABEL_53:
       {
       }
 
-      [v16 setMarkedText:v15 selectedRange:{v42, 0}];
+      [inputCopy setMarkedText:previewTextCopy selectedRange:{v42, 0}];
       goto LABEL_53;
     }
   }
@@ -398,33 +398,33 @@ LABEL_54:
   return v49;
 }
 
-+ (id)insertTextPlaceholderWithSize:(CGSize)a3 inTextInput:(id)a4
++ (id)insertTextPlaceholderWithSize:(CGSize)size inTextInput:(id)input
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [v7 selectedTextRange];
+  height = size.height;
+  width = size.width;
+  inputCopy = input;
+  selectedTextRange = [inputCopy selectedTextRange];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     if (width <= 0.0)
     {
       if (height <= 0.0)
       {
-        v9 = 0;
+        string = 0;
         goto LABEL_22;
       }
 
-      v16 = [v8 start];
-      [v7 caretRectForPosition:v16];
+      start = [selectedTextRange start];
+      [inputCopy caretRectForPosition:start];
       v18 = v17;
 
       v19 = vcvtpd_s64_f64(height / v18);
-      v9 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       if (v19 >= 1)
       {
         do
         {
-          [v9 appendString:@"\n"];
+          [string appendString:@"\n"];
           --v19;
         }
 
@@ -445,37 +445,37 @@ LABEL_54:
         v15 = v14;
       }
 
-      v9 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       do
       {
-        [v9 appendString:@" "];
+        [string appendString:@" "];
         --v15;
       }
 
       while (v15);
     }
 
-    if (v9 && [a1 _callShouldInsertText:v9 inTextInput:v7 isMarkedText:0])
+    if (string && [self _callShouldInsertText:string inTextInput:inputCopy isMarkedText:0])
     {
-      [a1 notifyTextWillChangeInTextInput:v7];
-      [v7 insertText:v9];
-      v20 = [v7 selectedTextRange];
-      v21 = [v8 start];
-      if (v21 && (v22 = v21, [v20 end], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
+      [self notifyTextWillChangeInTextInput:inputCopy];
+      [inputCopy insertText:string];
+      selectedTextRange2 = [inputCopy selectedTextRange];
+      start2 = [selectedTextRange start];
+      if (start2 && (v22 = start2, [selectedTextRange2 end], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
       {
-        v24 = [v8 start];
-        v25 = [v20 end];
-        v26 = [v7 textRangeFromPosition:v24 toPosition:v25];
+        start3 = [selectedTextRange start];
+        v25 = [selectedTextRange2 end];
+        v26 = [inputCopy textRangeFromPosition:start3 toPosition:v25];
 
-        v27 = [v7 selectionRectsForRange:v26];
-        v10 = [PKTextInputTextPlaceholder placeholderWithText:v9 rects:v27];
+        v27 = [inputCopy selectionRectsForRange:v26];
+        v10 = [PKTextInputTextPlaceholder placeholderWithText:string rects:v27];
       }
 
       else
       {
-        v26 = [v20 end];
-        [v7 caretRectForPosition:v26];
-        v10 = [PKTextInputTextPlaceholder placeholderWithToken:v9 frame:?];
+        v26 = [selectedTextRange2 end];
+        [inputCopy caretRectForPosition:v26];
+        v10 = [PKTextInputTextPlaceholder placeholderWithToken:string frame:?];
       }
 
       goto LABEL_3;
@@ -487,31 +487,31 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  [a1 notifyTextWillChangeInTextInput:v7];
-  v9 = [v7 insertTextPlaceholderWithSize:{width, height}];
-  v10 = [PKTextInputTextPlaceholder placeholderWithTextPlaceholder:v9];
+  [self notifyTextWillChangeInTextInput:inputCopy];
+  string = [inputCopy insertTextPlaceholderWithSize:{width, height}];
+  v10 = [PKTextInputTextPlaceholder placeholderWithTextPlaceholder:string];
 LABEL_3:
 
   if (v10)
   {
-    v11 = [v8 start];
-    v12 = [v8 start];
-    v13 = [v7 textRangeFromPosition:v11 toPosition:v12];
+    start4 = [selectedTextRange start];
+    start5 = [selectedTextRange start];
+    v13 = [inputCopy textRangeFromPosition:start4 toPosition:start5];
 
-    [v7 setSelectedTextRange:v13];
+    [inputCopy setSelectedTextRange:v13];
   }
 
-  [a1 notifyTextDidChangeInTextInput:v7];
+  [self notifyTextDidChangeInTextInput:inputCopy];
 LABEL_23:
 
   return v10;
 }
 
-+ (void)removeTextPlaceholder:(id)a3 inTextInput:(id)a4
++ (void)removeTextPlaceholder:(id)placeholder inTextInput:(id)input
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [v19 placeholder];
+  placeholderCopy = placeholder;
+  inputCopy = input;
+  placeholder = [placeholderCopy placeholder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -519,11 +519,11 @@ LABEL_23:
 
     if (v8)
     {
-      [a1 notifyTextWillChangeInTextInput:v6];
-      v9 = [v19 placeholder];
-      [v6 removeTextPlaceholder:v9];
+      [self notifyTextWillChangeInTextInput:inputCopy];
+      placeholder2 = [placeholderCopy placeholder];
+      [inputCopy removeTextPlaceholder:placeholder2];
 
-      [a1 notifyTextDidChangeInTextInput:v6];
+      [self notifyTextDidChangeInTextInput:inputCopy];
       goto LABEL_10;
     }
   }
@@ -532,42 +532,42 @@ LABEL_23:
   {
   }
 
-  v10 = [v19 placeholder];
+  placeholder3 = [placeholderCopy placeholder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [v19 placeholder];
-    v13 = [v6 selectedTextRange];
-    v14 = [v13 start];
-    v15 = [v6 positionFromPosition:v14 offset:{objc_msgSend(v12, "length")}];
+    placeholder4 = [placeholderCopy placeholder];
+    selectedTextRange = [inputCopy selectedTextRange];
+    start = [selectedTextRange start];
+    v15 = [inputCopy positionFromPosition:start offset:{objc_msgSend(placeholder4, "length")}];
 
-    v16 = [v13 start];
-    v17 = [v6 textRangeFromPosition:v16 toPosition:v15];
+    start2 = [selectedTextRange start];
+    v17 = [inputCopy textRangeFromPosition:start2 toPosition:v15];
 
-    v18 = [v6 textInRange:v17];
-    if ([v18 isEqualToString:v12] && objc_msgSend(a1, "_callShouldChangeTextInRange:replacementText:inTextInput:", v17, &stru_1F476BD20, v6))
+    v18 = [inputCopy textInRange:v17];
+    if ([v18 isEqualToString:placeholder4] && objc_msgSend(self, "_callShouldChangeTextInRange:replacementText:inTextInput:", v17, &stru_1F476BD20, inputCopy))
     {
-      [a1 notifyTextWillChangeInTextInput:v6];
-      [v6 replaceRange:v17 withText:&stru_1F476BD20];
-      [a1 notifyTextDidChangeInTextInput:v6];
+      [self notifyTextWillChangeInTextInput:inputCopy];
+      [inputCopy replaceRange:v17 withText:&stru_1F476BD20];
+      [self notifyTextDidChangeInTextInput:inputCopy];
     }
   }
 
 LABEL_10:
 }
 
-+ (BOOL)deleteTextInRange:(_NSRange)a3 inTextInput:(id)a4
++ (BOOL)deleteTextInRange:(_NSRange)range inTextInput:(id)input
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [a1 _uiTextRangeForRange:location inTextInput:{length, v7}];
-  if (v8 && [a1 _callShouldChangeTextInRange:v8 replacementText:&stru_1F476BD20 inTextInput:v7])
+  length = range.length;
+  location = range.location;
+  inputCopy = input;
+  v8 = [self _uiTextRangeForRange:location inTextInput:{length, inputCopy}];
+  if (v8 && [self _callShouldChangeTextInRange:v8 replacementText:&stru_1F476BD20 inTextInput:inputCopy])
   {
-    [v7 setSelectedTextRange:v8];
-    [v7 deleteBackward];
+    [inputCopy setSelectedTextRange:v8];
+    [inputCopy deleteBackward];
     v9 = 1;
   }
 
@@ -579,16 +579,16 @@ LABEL_10:
   return v9;
 }
 
-+ (_NSRange)selectedRangeInTextInput:(id)a3
++ (_NSRange)selectedRangeInTextInput:(id)input
 {
-  v4 = a3;
-  v5 = [v4 selectedTextRange];
-  v6 = v5;
-  if (v5)
+  inputCopy = input;
+  selectedTextRange = [inputCopy selectedTextRange];
+  v6 = selectedTextRange;
+  if (selectedTextRange)
   {
-    v7 = [v5 start];
+    start = [selectedTextRange start];
     v8 = [v6 end];
-    v9 = [a1 _rangeFromUITextPosition:v7 toUITextPosition:v8 inTextInput:v4];
+    v9 = [self _rangeFromUITextPosition:start toUITextPosition:v8 inTextInput:inputCopy];
     v11 = v10;
   }
 
@@ -605,42 +605,42 @@ LABEL_10:
   return result;
 }
 
-+ (BOOL)selectTextInRange:(_NSRange)a3 inTextInput:(id)a4
++ (BOOL)selectTextInRange:(_NSRange)range inTextInput:(id)input
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [a1 _uiTextRangeForRange:location inTextInput:{length, v7}];
-  LOBYTE(location) = [a1 _selectTextRange:v8 inTextInput:v7];
+  length = range.length;
+  location = range.location;
+  inputCopy = input;
+  v8 = [self _uiTextRangeForRange:location inTextInput:{length, inputCopy}];
+  LOBYTE(location) = [self _selectTextRange:v8 inTextInput:inputCopy];
 
   return location;
 }
 
-+ (BOOL)_selectTextRange:(id)a3 inTextInput:(id)a4
++ (BOOL)_selectTextRange:(id)range inTextInput:(id)input
 {
-  if (a3)
+  if (range)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [v5 inputDelegate];
-    [v7 selectionWillChange:v5];
-    [v5 setSelectedTextRange:v6];
+    inputCopy = input;
+    rangeCopy = range;
+    inputDelegate = [inputCopy inputDelegate];
+    [inputDelegate selectionWillChange:inputCopy];
+    [inputCopy setSelectedTextRange:rangeCopy];
 
-    [v7 selectionDidChange:v5];
+    [inputDelegate selectionDidChange:inputCopy];
   }
 
-  return a3 != 0;
+  return range != 0;
 }
 
-+ (BOOL)setSelectionWithReferencePoint:(CGPoint)a3 inTextInput:(id)a4
++ (BOOL)setSelectionWithReferencePoint:(CGPoint)point inTextInput:(id)input
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 closestPositionToPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  inputCopy = input;
+  v8 = [inputCopy closestPositionToPoint:{x, y}];
   if (v8)
   {
-    v9 = [v7 textRangeFromPosition:v8 toPosition:v8];
+    v9 = [inputCopy textRangeFromPosition:v8 toPosition:v8];
   }
 
   else
@@ -648,29 +648,29 @@ LABEL_10:
     v9 = 0;
   }
 
-  v10 = [a1 _selectTextRange:v9 inTextInput:v7];
+  v10 = [self _selectTextRange:v9 inTextInput:inputCopy];
 
   return v10;
 }
 
-+ (BOOL)selectWordBoundaryAtPoint:(CGPoint)a3 inTextInput:(id)a4
++ (BOOL)selectWordBoundaryAtPoint:(CGPoint)point inTextInput:(id)input
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 closestPositionToPoint:{x, y}];
-  v9 = [v7 beginningOfDocument];
-  v10 = [v7 endOfDocument];
+  y = point.y;
+  x = point.x;
+  inputCopy = input;
+  v8 = [inputCopy closestPositionToPoint:{x, y}];
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  endOfDocument = [inputCopy endOfDocument];
   v11 = v8;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextInput___block_invoke;
   aBlock[3] = &unk_1E82DC288;
-  v12 = v7;
+  v12 = inputCopy;
   v52 = v12;
-  v13 = v9;
+  v13 = beginningOfDocument;
   v53 = v13;
-  v14 = v10;
+  v14 = endOfDocument;
   v54 = v14;
   v15 = _Block_copy(aBlock);
   if (v11)
@@ -684,8 +684,8 @@ LABEL_10:
         break;
       }
 
-      v18 = [v12 tokenizer];
-      v19 = [v18 positionFromPosition:v16 toBoundary:1 inDirection:1];
+      tokenizer = [v12 tokenizer];
+      v19 = [tokenizer positionFromPosition:v16 toBoundary:1 inDirection:1];
 
       v16 = v19;
     }
@@ -750,8 +750,8 @@ LABEL_10:
         goto LABEL_16;
       }
 
-      v20 = [v12 tokenizer];
-      v21 = [v20 positionFromPosition:v11 toBoundary:1 inDirection:0];
+      tokenizer2 = [v12 tokenizer];
+      v21 = [tokenizer2 positionFromPosition:v11 toBoundary:1 inDirection:0];
 
       v11 = v21;
     }
@@ -765,7 +765,7 @@ LABEL_16:
       v23 = v22;
 
       v45 = [v12 textRangeFromPosition:v23 toPosition:v23];
-      v24 = [a1 _selectTextRange:v45 inTextInput:v12];
+      v24 = [self _selectTextRange:v45 inTextInput:v12];
 
       goto LABEL_18;
     }
@@ -807,16 +807,16 @@ uint64_t __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextI
   return v5;
 }
 
-+ (BOOL)showSelectionCommandsForTextInput:(id)a3
++ (BOOL)showSelectionCommandsForTextInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 inputDelegate];
+    inputDelegate = [inputCopy inputDelegate];
     v5 = objc_opt_respondsToSelector();
     if (v5)
     {
-      [v4 showSelectionCommands];
+      [inputDelegate showSelectionCommands];
     }
   }
 
@@ -828,17 +828,17 @@ uint64_t __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextI
   return v5 & 1;
 }
 
-+ (BOOL)configureSelectionStyleForHighlightInTextInput:(id)a3
++ (BOOL)configureSelectionStyleForHighlightInTextInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 interactionAssistant];
-    v5 = v4;
-    v6 = v4 != 0;
-    if (v4)
+    interactionAssistant = [inputCopy interactionAssistant];
+    v5 = interactionAssistant;
+    v6 = interactionAssistant != 0;
+    if (interactionAssistant)
     {
-      [v4 configureForPencilHighlightMode];
+      [interactionAssistant configureForPencilHighlightMode];
     }
   }
 
@@ -850,17 +850,17 @@ uint64_t __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextI
   return v6;
 }
 
-+ (BOOL)configureSelectionStyleForDeletionPreviewInTextInput:(id)a3
++ (BOOL)configureSelectionStyleForDeletionPreviewInTextInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 interactionAssistant];
-    v5 = v4;
-    v6 = v4 != 0;
-    if (v4)
+    interactionAssistant = [inputCopy interactionAssistant];
+    v5 = interactionAssistant;
+    v6 = interactionAssistant != 0;
+    if (interactionAssistant)
     {
-      [v4 configureForPencilDeletionPreviewMode];
+      [interactionAssistant configureForPencilDeletionPreviewMode];
     }
   }
 
@@ -872,17 +872,17 @@ uint64_t __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextI
   return v6;
 }
 
-+ (BOOL)configureSelectionStyleForNormalSelectionInTextInput:(id)a3
++ (BOOL)configureSelectionStyleForNormalSelectionInTextInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 interactionAssistant];
-    v5 = v4;
-    v6 = v4 != 0;
-    if (v4)
+    interactionAssistant = [inputCopy interactionAssistant];
+    v5 = interactionAssistant;
+    v6 = interactionAssistant != 0;
+    if (interactionAssistant)
     {
-      [v4 configureForSelectionMode];
+      [interactionAssistant configureForSelectionMode];
     }
   }
 
@@ -894,21 +894,21 @@ uint64_t __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextI
   return v6;
 }
 
-+ (CGRect)caretRectInCoordinateSpace:(id)a3 inTextInput:(id)a4
++ (CGRect)caretRectInCoordinateSpace:(id)space inTextInput:(id)input
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 selectedTextRange];
-  v8 = [v7 start];
-  [v5 caretRectForPosition:v8];
+  inputCopy = input;
+  spaceCopy = space;
+  selectedTextRange = [inputCopy selectedTextRange];
+  start = [selectedTextRange start];
+  [inputCopy caretRectForPosition:start];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [v5 textInputView];
+  textInputView = [inputCopy textInputView];
 
-  v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v17, v6, v10, v12, v14, v16);
+  v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(textInputView, spaceCopy, v10, v12, v14, v16);
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -924,22 +924,22 @@ uint64_t __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextI
   return result;
 }
 
-+ (_NSRange)activePreviewRangeInTextInput:(id)a3
++ (_NSRange)activePreviewRangeInTextInput:(id)input
 {
-  v3 = a3;
-  v4 = [v3 beginningOfDocument];
-  v5 = [v3 markedTextRange];
-  v6 = v5;
+  inputCopy = input;
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  markedTextRange = [inputCopy markedTextRange];
+  v6 = markedTextRange;
   v7 = 0;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v4 && v5)
+  if (beginningOfDocument && markedTextRange)
   {
-    v9 = [v5 start];
-    v8 = [v3 offsetFromPosition:v4 toPosition:v9];
+    start = [markedTextRange start];
+    v8 = [inputCopy offsetFromPosition:beginningOfDocument toPosition:start];
 
-    v10 = [v6 start];
+    start2 = [v6 start];
     v11 = [v6 end];
-    v7 = [v3 offsetFromPosition:v10 toPosition:v11];
+    v7 = [inputCopy offsetFromPosition:start2 toPosition:v11];
   }
 
   v12 = v8;
@@ -949,33 +949,33 @@ uint64_t __73__PKTextInputUITextInputInterface_selectWordBoundaryAtPoint_inTextI
   return result;
 }
 
-+ (int64_t)contentLengthForTextInput:(id)a3
++ (int64_t)contentLengthForTextInput:(id)input
 {
-  v4 = a3;
-  v5 = [v4 beginningOfDocument];
-  v6 = [v4 endOfDocument];
-  v7 = v6;
+  inputCopy = input;
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  endOfDocument = [inputCopy endOfDocument];
+  v7 = endOfDocument;
   v8 = 0;
-  if (v5 && v6)
+  if (beginningOfDocument && endOfDocument)
   {
-    v9 = [v4 beginningOfDocument];
-    v10 = [v4 endOfDocument];
-    [a1 _rangeFromUITextPosition:v9 toUITextPosition:v10 inTextInput:v4];
+    beginningOfDocument2 = [inputCopy beginningOfDocument];
+    endOfDocument2 = [inputCopy endOfDocument];
+    [self _rangeFromUITextPosition:beginningOfDocument2 toUITextPosition:endOfDocument2 inTextInput:inputCopy];
     v8 = v11;
   }
 
   return v8;
 }
 
-+ (id)stringInRange:(_NSRange)a3 inTextInput:(id)a4
++ (id)stringInRange:(_NSRange)range inTextInput:(id)input
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [a1 _uiTextRangeForRange:location inTextInput:{length, v7}];
+  length = range.length;
+  location = range.location;
+  inputCopy = input;
+  v8 = [self _uiTextRangeForRange:location inTextInput:{length, inputCopy}];
   if (v8)
   {
-    v9 = [v7 textInRange:v8];
+    v9 = [inputCopy textInRange:v8];
   }
 
   else
@@ -1005,16 +1005,16 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   _MergedGlobals_165 = v0;
 }
 
-+ (BOOL)isProtectedTextAttachment:(id)a3
++ (BOOL)isProtectedTextAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 fileType];
+  attachmentCopy = attachment;
+  fileType = [attachmentCopy fileType];
 
-  if (v5)
+  if (fileType)
   {
-    v6 = [a1 editableTextAttachmentFileTypes];
-    v7 = [v4 fileType];
-    v8 = [v6 containsObject:v7] ^ 1;
+    editableTextAttachmentFileTypes = [self editableTextAttachmentFileTypes];
+    fileType2 = [attachmentCopy fileType];
+    v8 = [editableTextAttachmentFileTypes containsObject:fileType2] ^ 1;
   }
 
   else
@@ -1025,17 +1025,17 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return v8;
 }
 
-+ (id)protectedCharacterIndexesInRange:(_NSRange)a3 inTextInput:(id)a4
++ (id)protectedCharacterIndexesInRange:(_NSRange)range inTextInput:(id)input
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [a1 _uiTextRangeForRange:location inTextInput:{length, v7}];
+  length = range.length;
+  location = range.location;
+  inputCopy = input;
+  v8 = [self _uiTextRangeForRange:location inTextInput:{length, inputCopy}];
   v9 = v8;
   if (v8 && ([v8 isEmpty] & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v22 = [a1 selectedRangeInTextInput:v7];
+    v22 = [self selectedRangeInTextInput:inputCopy];
     v20 = v11;
     if (length)
     {
@@ -1043,17 +1043,17 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
       v21 = *MEMORY[0x1E69DB5F8];
       do
       {
-        v13 = [v9 start];
-        v14 = [v7 positionFromPosition:v13 offset:v12];
+        start = [v9 start];
+        v14 = [inputCopy positionFromPosition:start offset:v12];
 
         if (v14)
         {
           v15 = 0;
-          if (v22 != location || v20 || ([v7 positionFromPosition:v14 offset:1], v16 = objc_claimAutoreleasedReturnValue(), v14, v14 = v16, v15 = 1, v16))
+          if (v22 != location || v20 || ([inputCopy positionFromPosition:v14 offset:1], v16 = objc_claimAutoreleasedReturnValue(), v14, v14 = v16, v15 = 1, v16))
           {
-            v17 = [v7 textStylingAtPosition:v14 inDirection:v15];
+            v17 = [inputCopy textStylingAtPosition:v14 inDirection:v15];
             v18 = [v17 objectForKeyedSubscript:v21];
-            if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [a1 isProtectedTextAttachment:v18])
+            if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [self isProtectedTextAttachment:v18])
             {
               [v10 addIndex:location];
             }
@@ -1077,14 +1077,14 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return v10;
 }
 
-+ (id)attributesAtCharacterIndex:(int64_t)a3 inTextInput:(id)a4
++ (id)attributesAtCharacterIndex:(int64_t)index inTextInput:(id)input
 {
-  v5 = a4;
-  v6 = [v5 beginningOfDocument];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0 && ([v5 positionFromPosition:v6 offset:a3], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  inputCopy = input;
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  if (beginningOfDocument && (objc_opt_respondsToSelector() & 1) != 0 && ([inputCopy positionFromPosition:beginningOfDocument offset:index], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = [v5 textStylingAtPosition:v7 inDirection:0];
+    v9 = [inputCopy textStylingAtPosition:v7 inDirection:0];
   }
 
   else
@@ -1095,12 +1095,12 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return v9;
 }
 
-+ (_NSRange)rangeOfCharacterAtIndex:(unint64_t)a3 inTextInput:(id)a4
++ (_NSRange)rangeOfCharacterAtIndex:(unint64_t)index inTextInput:(id)input
 {
-  v4 = a3;
-  if (a3 >= 0xA)
+  indexCopy = index;
+  if (index >= 0xA)
   {
-    v6 = a3 - 10;
+    v6 = index - 10;
   }
 
   else
@@ -1108,24 +1108,24 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
     v6 = 0;
   }
 
-  v7 = a3 + 20;
-  v8 = a4;
-  v9 = [a1 contentLengthForTextInput:v8] - 1;
+  v7 = index + 20;
+  inputCopy = input;
+  v9 = [self contentLengthForTextInput:inputCopy] - 1;
   if (v7 < v9)
   {
     v9 = v7;
   }
 
-  v10 = [a1 stringInRange:v6 inTextInput:{v9 - v6, v8}];
+  v10 = [self stringInRange:v6 inTextInput:{v9 - v6, inputCopy}];
 
-  if ([v10 length] <= v4 - v6)
+  if ([v10 length] <= indexCopy - v6)
   {
     v14 = 1;
   }
 
   else
   {
-    v11 = [v10 rangeOfComposedCharacterSequenceAtIndex:v4 - v6];
+    v11 = [v10 rangeOfComposedCharacterSequenceAtIndex:indexCopy - v6];
     v13 = v11 + v6;
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1139,27 +1139,27 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v4 = v13;
+      indexCopy = v13;
     }
   }
 
-  v15 = v4;
+  v15 = indexCopy;
   v16 = v14;
   result.length = v16;
   result.location = v15;
   return result;
 }
 
-+ (CGRect)firstRectForRange:(_NSRange)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5
++ (CGRect)firstRectForRange:(_NSRange)range inCoordinateSpace:(id)space inTextInput:(id)input
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _uiTextRangeForRange:location inTextInput:{length, v10}];
+  length = range.length;
+  location = range.location;
+  spaceCopy = space;
+  inputCopy = input;
+  v11 = [self _uiTextRangeForRange:location inTextInput:{length, inputCopy}];
   if (v11)
   {
-    [v10 firstRectForRange:v11];
+    [inputCopy firstRectForRange:v11];
     v15 = v12;
     v17 = v16;
     v18 = v13;
@@ -1169,11 +1169,11 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
       v12 = v13 / v14;
       if (v13 / v14 > 1.0 && length == 1)
       {
-        v21 = [v10 textInRange:{v11, v12}];
+        v21 = [inputCopy textInRange:{v11, v12}];
         if ([v21 length] == 1)
         {
-          v22 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-          v23 = [v22 characterIsMember:{objc_msgSend(v21, "characterAtIndex:", 0)}];
+          newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+          v23 = [newlineCharacterSet characterIsMember:{objc_msgSend(v21, "characterAtIndex:", 0)}];
 
           if (v23)
           {
@@ -1183,8 +1183,8 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
       }
     }
 
-    v24 = [v10 textInputView];
-    v25 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v24, v9, v15, v17, v18, v19);
+    textInputView = [inputCopy textInputView];
+    v25 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(textInputView, spaceCopy, v15, v17, v18, v19);
     v27 = v26;
     v29 = v28;
     v31 = v30;
@@ -1209,25 +1209,25 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return result;
 }
 
-+ (int64_t)characterIndexClosestToPoint:(CGPoint)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5 forInsertingText:(BOOL)a6 adjustForLastCharacter:(BOOL)a7
++ (int64_t)characterIndexClosestToPoint:(CGPoint)point inCoordinateSpace:(id)space inTextInput:(id)input forInsertingText:(BOOL)text adjustForLastCharacter:(BOOL)character
 {
-  v7 = a7;
-  v8 = a6;
-  y = a3.y;
-  x = a3.x;
-  v13 = a5;
-  v14 = a4;
-  v15 = [v13 textInputView];
-  v16 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v14, v15, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+  characterCopy = character;
+  textCopy = text;
+  y = point.y;
+  x = point.x;
+  inputCopy = input;
+  spaceCopy = space;
+  textInputView = [inputCopy textInputView];
+  v16 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(spaceCopy, textInputView, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
   v18 = v17;
 
-  v19 = [v13 closestPositionToPoint:{v16, v18}];
-  v20 = [v13 beginningOfDocument];
-  v21 = [v13 endOfDocument];
-  v22 = v21;
+  v19 = [inputCopy closestPositionToPoint:{v16, v18}];
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  endOfDocument = [inputCopy endOfDocument];
+  v22 = endOfDocument;
   if (v19)
   {
-    v23 = v20 == 0;
+    v23 = beginningOfDocument == 0;
   }
 
   else
@@ -1235,14 +1235,14 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
     v23 = 1;
   }
 
-  if (v23 || v21 == 0)
+  if (v23 || endOfDocument == 0)
   {
     v25 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v26 = [v13 offsetFromPosition:v20 toPosition:v19];
+    v26 = [inputCopy offsetFromPosition:beginningOfDocument toPosition:v19];
     if (v26 <= 1)
     {
       v27 = 1;
@@ -1254,7 +1254,7 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
     }
 
     v28 = v27 - 1;
-    if (v8)
+    if (textCopy)
     {
       v25 = v26;
     }
@@ -1264,15 +1264,15 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
       v25 = v28;
     }
 
-    if ([v13 offsetFromPosition:v20 toPosition:v22] >= 1 && objc_msgSend(v19, "isEqual:", v22) && v7)
+    if ([inputCopy offsetFromPosition:beginningOfDocument toPosition:v22] >= 1 && objc_msgSend(v19, "isEqual:", v22) && characterCopy)
     {
-      v30 = [v13 positionFromPosition:v22 offset:-1];
+      v30 = [inputCopy positionFromPosition:v22 offset:-1];
       if (v30)
       {
-        v31 = [a1 _rangeFromUITextPosition:v30 toUITextPosition:v22 inTextInput:v13];
+        v31 = [self _rangeFromUITextPosition:v30 toUITextPosition:v22 inTextInput:inputCopy];
         v33 = v32;
-        v34 = [v13 textInputView];
-        [a1 firstRectForRange:v31 inCoordinateSpace:v33 inTextInput:{v34, v13}];
+        textInputView2 = [inputCopy textInputView];
+        [self firstRectForRange:v31 inCoordinateSpace:v33 inTextInput:{textInputView2, inputCopy}];
         v36 = v35;
         v38 = v37;
         v40 = v39;
@@ -1295,11 +1295,11 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
             v51.origin.y = v38;
             v51.size.width = v40;
             v51.size.height = v42;
-            v45 = [v13 closestPositionToPoint:{v16, CGRectGetMidY(v51)}];
+            v45 = [inputCopy closestPositionToPoint:{v16, CGRectGetMidY(v51)}];
 
             if (v45)
             {
-              v46 = [v13 offsetFromPosition:v20 toPosition:v45];
+              v46 = [inputCopy offsetFromPosition:beginningOfDocument toPosition:v45];
               if (v46 <= 1)
               {
                 v47 = 1;
@@ -1327,22 +1327,22 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return v25;
 }
 
-+ (CGRect)caretRectForCharacterIndex:(int64_t)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5
++ (CGRect)caretRectForCharacterIndex:(int64_t)index inCoordinateSpace:(id)space inTextInput:(id)input
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 beginningOfDocument];
-  v10 = [v8 positionFromPosition:v9 offset:a3];
+  spaceCopy = space;
+  inputCopy = input;
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  v10 = [inputCopy positionFromPosition:beginningOfDocument offset:index];
 
   if (v10)
   {
-    [v8 caretRectForPosition:v10];
+    [inputCopy caretRectForPosition:v10];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v8 textInputView];
-    v20 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v19, v7, v12, v14, v16, v18);
+    textInputView = [inputCopy textInputView];
+    v20 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(textInputView, spaceCopy, v12, v14, v16, v18);
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1367,21 +1367,21 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return result;
 }
 
-+ (id)selectionRectsForRange:(_NSRange)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5 intersectingRect:(CGRect)a6
++ (id)selectionRectsForRange:(_NSRange)range inCoordinateSpace:(id)space inTextInput:(id)input intersectingRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  length = a3.length;
-  location = a3.location;
-  v14 = a4;
-  v15 = a5;
-  v16 = [a1 _uiTextRangeForRange:location inTextInput:{length, v15}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
+  spaceCopy = space;
+  inputCopy = input;
+  v16 = [self _uiTextRangeForRange:location inTextInput:{length, inputCopy}];
   if (v16)
   {
-    v17 = [v15 selectionRectsForRange:v16];
-    v18 = [a1 rectValuesForSelectionRects:v17 inCoordinateSpace:v14 inTextInput:v15 intersectingRect:{x, y, width, height}];
+    v17 = [inputCopy selectionRectsForRange:v16];
+    v18 = [self rectValuesForSelectionRects:v17 inCoordinateSpace:spaceCopy inTextInput:inputCopy intersectingRect:{x, y, width, height}];
   }
 
   else
@@ -1392,22 +1392,22 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return v18;
 }
 
-+ (id)rectValuesForSelectionRects:(id)a3 inCoordinateSpace:(id)a4 inTextInput:(id)a5 intersectingRect:(CGRect)a6
++ (id)rectValuesForSelectionRects:(id)rects inCoordinateSpace:(id)space inTextInput:(id)input intersectingRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [MEMORY[0x1E695DF70] array];
+  rectsCopy = rects;
+  spaceCopy = space;
+  inputCopy = input;
+  array = [MEMORY[0x1E695DF70] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v16 = v12;
+  v16 = rectsCopy;
   v17 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v17)
   {
@@ -1423,9 +1423,9 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
         }
 
         v21 = *(*(&v33 + 1) + 8 * i);
-        v22 = [v14 textInputView];
+        textInputView = [inputCopy textInputView];
         [v21 rect];
-        [v22 PK_convertRect:v13 toCoordinateSpace:?];
+        [textInputView PK_convertRect:spaceCopy toCoordinateSpace:?];
         v24 = v23;
         v26 = v25;
         v28 = v27;
@@ -1459,7 +1459,7 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
         if (!CGRectIsNull(v43))
         {
           v31 = [MEMORY[0x1E696B098] valueWithCGRect:{v24, v26, v28, v30}];
-          [v15 addObject:v31];
+          [array addObject:v31];
         }
       }
 
@@ -1469,38 +1469,38 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
     while (v18);
   }
 
-  return v15;
+  return array;
 }
 
-+ (void)notifyTextWillChangeInTextInput:(id)a3
++ (void)notifyTextWillChangeInTextInput:(id)input
 {
-  v4 = a3;
-  v3 = [v4 inputDelegate];
+  inputCopy = input;
+  inputDelegate = [inputCopy inputDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 willBeginPencilTextInputEditing];
+    [inputCopy willBeginPencilTextInputEditing];
   }
 
-  [v3 textWillChange:v4];
+  [inputDelegate textWillChange:inputCopy];
 }
 
-+ (void)notifyTextDidChangeInTextInput:(id)a3
++ (void)notifyTextDidChangeInTextInput:(id)input
 {
-  v4 = a3;
-  v3 = [v4 inputDelegate];
-  [v3 textDidChange:v4];
+  inputCopy = input;
+  inputDelegate = [inputCopy inputDelegate];
+  [inputDelegate textDidChange:inputCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didFinishPencilTextInputEditing];
+    [inputCopy didFinishPencilTextInputEditing];
   }
 }
 
-+ (id)_uiTextRangeForRange:(_NSRange)a3 inTextInput:(id)a4
++ (id)_uiTextRangeForRange:(_NSRange)range inTextInput:(id)input
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = v6;
+  length = range.length;
+  location = range.location;
+  inputCopy = input;
+  v7 = inputCopy;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -1508,8 +1508,8 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
 
   else
   {
-    v9 = [v6 beginningOfDocument];
-    v10 = [v7 positionFromPosition:v9 offset:location];
+    beginningOfDocument = [inputCopy beginningOfDocument];
+    v10 = [v7 positionFromPosition:beginningOfDocument offset:location];
 
     v11 = [v7 positionFromPosition:v10 offset:length];
     v12 = v11;
@@ -1523,19 +1523,19 @@ void __66__PKTextInputUITextInputInterface_editableTextAttachmentFileTypes__bloc
   return v8;
 }
 
-+ (_NSRange)_rangeFromUITextPosition:(id)a3 toUITextPosition:(id)a4 inTextInput:(id)a5
++ (_NSRange)_rangeFromUITextPosition:(id)position toUITextPosition:(id)textPosition inTextInput:(id)input
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 beginningOfDocument];
-  if (!v7 || !v10)
+  positionCopy = position;
+  textPositionCopy = textPosition;
+  inputCopy = input;
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  if (!positionCopy || !beginningOfDocument)
   {
 
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!textPositionCopy)
   {
 LABEL_6:
     v13 = 0;
@@ -1543,10 +1543,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v9 beginningOfDocument];
-  v12 = [v9 offsetFromPosition:v11 toPosition:v7];
+  beginningOfDocument2 = [inputCopy beginningOfDocument];
+  v12 = [inputCopy offsetFromPosition:beginningOfDocument2 toPosition:positionCopy];
 
-  v13 = [v9 offsetFromPosition:v7 toPosition:v8];
+  v13 = [inputCopy offsetFromPosition:positionCopy toPosition:textPositionCopy];
 LABEL_7:
 
   v14 = v12;

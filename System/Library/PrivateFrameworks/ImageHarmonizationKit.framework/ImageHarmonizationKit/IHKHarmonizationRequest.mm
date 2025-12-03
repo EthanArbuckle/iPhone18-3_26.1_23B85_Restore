@@ -1,11 +1,11 @@
 @interface IHKHarmonizationRequest
-- (IHKHarmonizationRequest)initWithForeground:(CGImage *)a3 background:(CGImage *)a4 forceHarmonization:(BOOL)a5 harmonizationStrength:(float)a6;
+- (IHKHarmonizationRequest)initWithForeground:(CGImage *)foreground background:(CGImage *)background forceHarmonization:(BOOL)harmonization harmonizationStrength:(float)strength;
 - (void)dealloc;
 @end
 
 @implementation IHKHarmonizationRequest
 
-- (IHKHarmonizationRequest)initWithForeground:(CGImage *)a3 background:(CGImage *)a4 forceHarmonization:(BOOL)a5 harmonizationStrength:(float)a6
+- (IHKHarmonizationRequest)initWithForeground:(CGImage *)foreground background:(CGImage *)background forceHarmonization:(BOOL)harmonization harmonizationStrength:(float)strength
 {
   v14.receiver = self;
   v14.super_class = IHKHarmonizationRequest;
@@ -13,10 +13,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_forceHarmonization = a5;
-    v10->_fg = CGImageRetain(a3);
-    v11->_bg = CGImageRetain(a4);
-    v11->_harmonizationStrength = a6;
+    v10->_forceHarmonization = harmonization;
+    v10->_fg = CGImageRetain(foreground);
+    v11->_bg = CGImageRetain(background);
+    v11->_harmonizationStrength = strength;
     v12 = v11;
   }
 

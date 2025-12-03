@@ -4,7 +4,7 @@
 + (id)ambientDefaultMetrics;
 + (id)ambientWidgetMetrics;
 + (id)defaultMetrics;
-+ (id)lockScreenNotificationListItemMetricsWithScaleFactor:(double)a3;
++ (id)lockScreenNotificationListItemMetricsWithScaleFactor:(double)factor;
 + (id)modalFullScreenMetrics;
 @end
 
@@ -13,13 +13,13 @@
 + (id)defaultMetrics
 {
   v3 = objc_alloc(getACUISActivityMetricsRequestClass());
-  v4 = [a1 lockScreenNotificationListItemMetricsWithScaleFactor:1.0];
+  v4 = [self lockScreenNotificationListItemMetricsWithScaleFactor:1.0];
   v5 = [v3 initWithLockScreenMetrics:v4];
 
   if (SBSIsSystemApertureAvailable())
   {
-    v6 = [a1 _systemApertureMetrics];
-    [v5 setSystemApertureMetrics:v6];
+    _systemApertureMetrics = [self _systemApertureMetrics];
+    [v5 setSystemApertureMetrics:_systemApertureMetrics];
   }
 
   return v5;
@@ -27,18 +27,18 @@
 
 + (id)ambientDefaultMetrics
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = [v2 traitCollection];
-  [v3 displayCornerRadius];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayCornerRadius];
   v5 = v4;
 
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 nativeBounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 nativeBounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 nativeScale];
+  mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen3 nativeScale];
   v13 = v12;
 
   v14 = [getACUISSizeDimensionRequestClass() fixed:v10 / v13];
@@ -63,24 +63,24 @@
 
 + (id)ambientWidgetMetrics
 {
-  v3 = [a1 lockScreenNotificationListItemMetricsWithScaleFactor:2.0];
+  v3 = [self lockScreenNotificationListItemMetricsWithScaleFactor:2.0];
   v4 = [objc_alloc(getACUISActivityMetricsRequestClass()) initWithLockScreenMetrics:v3];
   [v4 setAmbientMetrics:v3];
-  v5 = [a1 _systemApertureMetrics];
-  [v4 setSystemApertureMetrics:v5];
+  _systemApertureMetrics = [self _systemApertureMetrics];
+  [v4 setSystemApertureMetrics:_systemApertureMetrics];
 
   return v4;
 }
 
 + (id)modalFullScreenMetrics
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 nativeBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen nativeBounds];
   v4 = v3;
   v6 = v5;
 
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 nativeScale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 nativeScale];
   v9 = v8;
 
   v10 = [getACUISSizeDimensionRequestClass() fixed:v4 / v9];
@@ -154,12 +154,12 @@
   return v33;
 }
 
-+ (id)lockScreenNotificationListItemMetricsWithScaleFactor:(double)a3
++ (id)lockScreenNotificationListItemMetricsWithScaleFactor:(double)factor
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     +[SBUISearchUtilities idealSearchPlatterWidth];
     v7 = v6;
@@ -167,11 +167,11 @@
 
   else
   {
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 nativeBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen nativeBounds];
     v10 = v9;
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 nativeScale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 nativeScale];
     v13 = v12;
 
     v20 = 0;
@@ -201,7 +201,7 @@
 
   v15 = [getACUISSizeDimensionRequestClass() fixed:v7];
   v16 = [objc_alloc(getACUISSizeDimensionRequestClass()) initWithMinimum:64.0 maximum:160.0];
-  v17 = [objc_alloc(getACUISActivityItemMetricsRequestClass()) initWithWidth:v15 height:v16 cornerRadius:0 edgeInsets:23.5 clipMargin:1.0 scaleFactor:a3];
+  v17 = [objc_alloc(getACUISActivityItemMetricsRequestClass()) initWithWidth:v15 height:v16 cornerRadius:0 edgeInsets:23.5 clipMargin:1.0 scaleFactor:factor];
 
   return v17;
 }

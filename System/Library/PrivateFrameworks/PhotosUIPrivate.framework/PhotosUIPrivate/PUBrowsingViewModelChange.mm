@@ -62,8 +62,8 @@
       [v3 addObject:@"presentingOverOneUp"];
     }
 
-    v4 = [(PUBrowsingViewModelChange *)self assetViewModelChangesByAssetReference];
-    v5 = [v4 count];
+    assetViewModelChangesByAssetReference = [(PUBrowsingViewModelChange *)self assetViewModelChangesByAssetReference];
+    v5 = [assetViewModelChangesByAssetReference count];
 
     if (v5)
     {
@@ -232,16 +232,16 @@
     return 1;
   }
 
-  v3 = [(PUBrowsingViewModelChange *)self assetViewModelChangesByAssetReference];
-  v4 = [v3 count];
+  assetViewModelChangesByAssetReference = [(PUBrowsingViewModelChange *)self assetViewModelChangesByAssetReference];
+  v4 = [assetViewModelChangesByAssetReference count];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(PUBrowsingViewModelChange *)self assetSharedViewModelChangesByAssetUUID];
-  v6 = [v5 count];
+  assetSharedViewModelChangesByAssetUUID = [(PUBrowsingViewModelChange *)self assetSharedViewModelChangesByAssetUUID];
+  v6 = [assetSharedViewModelChangesByAssetUUID count];
 
   return v6 || [(PUBrowsingViewModelChange *)self videoOverlayPlayStateDidChange]|| [(PUBrowsingViewModelChange *)self isAttemptingToPlayVideoOverlayDidChange]|| [(PUBrowsingViewModelChange *)self isScrubbingActivationDidChange]|| [(PUBrowsingViewModelChange *)self isVideoContentAllowedDidChange]|| [(PUBrowsingViewModelChange *)self reviewScreenSelectionDidChange]|| [(PUBrowsingViewModelChange *)self navigationBarTitleDidChange]|| [(PUBrowsingViewModelChange *)self resizeTaskDescriptorViewModelDidChange]|| [(PUBrowsingViewModelChange *)self contentPrivacyStateDidChange]|| [(PUBrowsingViewModelChange *)self systemAuthenticationTypeDidChange]|| [(PUBrowsingViewModelChange *)self wantsContentUnavailableUnlockButtonVisibleDidChange]|| [(PUBrowsingViewModelChange *)self isInSelectionModeDidChange]|| [(PUBrowsingViewModelChange *)self isPresentedForPreviewDidChange]|| [(PUBrowsingViewModelChange *)self isFillScreenModeEnabledDidChange]|| [(PUBrowsingViewModelChange *)self videoPlayerDidChange]|| [(PUBrowsingViewModelChange *)self imageAnalysisInteractionDidChange]|| [(PUBrowsingViewModelChange *)self isInteractingWithVideoScrubberDidChange]|| [(PUBrowsingViewModelChange *)self isAnimatingPresentationSizeDidChange];
 }
@@ -251,9 +251,9 @@
   mutableSharedViewModelChangesByAssetUUID = self->_mutableSharedViewModelChangesByAssetUUID;
   if (!mutableSharedViewModelChangesByAssetUUID)
   {
-    v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v5 = self->_mutableSharedViewModelChangesByAssetUUID;
-    self->_mutableSharedViewModelChangesByAssetUUID = v4;
+    self->_mutableSharedViewModelChangesByAssetUUID = strongToStrongObjectsMapTable;
 
     mutableSharedViewModelChangesByAssetUUID = self->_mutableSharedViewModelChangesByAssetUUID;
   }

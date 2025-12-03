@@ -1,8 +1,8 @@
 @interface HDSleepIntervalSummaryBuilder
-- (id)_sampleForSleepAnalysisValue:(uint64_t)a1 averageInfo:(uint64_t)a2 sleepDayInterval:(void *)a3;
-- (id)_samplesForSleepAnalysisValue:(uint64_t)a1 dateIntervalTreesByMorningIndex:(void *)a2 sleepDayInterval:;
+- (id)_sampleForSleepAnalysisValue:(uint64_t)value averageInfo:(uint64_t)info sleepDayInterval:(void *)interval;
+- (id)_samplesForSleepAnalysisValue:(uint64_t)value dateIntervalTreesByMorningIndex:(void *)index sleepDayInterval:;
 - (id)sleepAnalysisSamples;
-- (void)_computeSleepIntervalAveragesFromSamples:(void *)a3;
+- (void)_computeSleepIntervalAveragesFromSamples:(void *)samples;
 @end
 
 @implementation HDSleepIntervalSummaryBuilder
@@ -12,13 +12,13 @@
   v84 = *MEMORY[0x277D85DE8];
   v72.receiver = self;
   v72.super_class = HDSleepIntervalSummaryBuilder;
-  v62 = [(HDSleepDaySummaryBuilder *)&v72 sleepAnalysisSamples];
+  sleepAnalysisSamples = [(HDSleepDaySummaryBuilder *)&v72 sleepAnalysisSamples];
   if (([(HDSleepDaySummaryBuilder *)self options]& 1) != 0)
   {
-    v61 = v62;
+    v61 = sleepAnalysisSamples;
     if (self)
     {
-      v28 = [(HDSleepDaySummaryBuilder *)self calendar];
+      calendar = [(HDSleepDaySummaryBuilder *)self calendar];
       memset(v78, 0, sizeof(v78));
       v77 = 0u;
       [(HDSleepIntervalSummaryBuilder *)&v77 _computeSleepIntervalAveragesFromSamples:v61];
@@ -46,9 +46,9 @@
             }
 
             v34 = *(*(&v79 + 1) + 8 * i);
-            v35 = [v34 value];
+            value = [v34 value];
             v36 = v66;
-            if (v35)
+            if (value)
             {
               v37 = v30;
             }
@@ -60,31 +60,31 @@
             }
 
             v38 = v36;
-            v39 = [v34 startDate];
-            v40 = [v39 hk_morningIndexWithCalendar:v28];
+            startDate = [v34 startDate];
+            v40 = [startDate hk_morningIndexWithCalendar:calendar];
 
             v41 = [MEMORY[0x277CCABB0] numberWithInteger:v40];
             v42 = [v38 objectForKeyedSubscript:v41];
             [v42 doubleValue];
             v44 = v43;
 
-            v45 = [v34 endDate];
-            v46 = [v34 startDate];
-            [v45 timeIntervalSinceDate:v46];
+            endDate = [v34 endDate];
+            startDate2 = [v34 startDate];
+            [endDate timeIntervalSinceDate:startDate2];
             v48 = v47;
 
-            v49 = [v34 startDate];
-            v50 = [v49 dateByAddingTimeInterval:v37 - v44];
+            startDate3 = [v34 startDate];
+            v50 = [startDate3 dateByAddingTimeInterval:v37 - v44];
 
             v51 = [v50 dateByAddingTimeInterval:v48];
             v52 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v50 endDate:v51];
-            v53 = [v52 hk_dateIntervalByMappingToSleepDayWithMorningIndex:-[HDSleepDaySummaryBuilder morningIndex](self calendar:{"morningIndex"), v28}];
+            v53 = [v52 hk_dateIntervalByMappingToSleepDayWithMorningIndex:-[HDSleepDaySummaryBuilder morningIndex](self calendar:{"morningIndex"), calendar}];
 
-            v54 = [v53 startDate];
-            [v34 _setStartDate:v54];
+            startDate4 = [v53 startDate];
+            [v34 _setStartDate:startDate4];
 
-            v55 = [v53 endDate];
-            [v34 _setEndDate:v55];
+            endDate2 = [v53 endDate];
+            [v34 _setEndDate:endDate2];
 
             [obja addObject:v34];
           }
@@ -106,12 +106,12 @@
 
   else
   {
-    v59 = v62;
+    v59 = sleepAnalysisSamples;
     if (self)
     {
-      v60 = [(HDSleepDaySummaryBuilder *)self calendar];
+      calendar2 = [(HDSleepDaySummaryBuilder *)self calendar];
       v58 = _HKCategoryValueSleepAnalysisDefaultAsleepValue();
-      v63 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndex:-[HDSleepDaySummaryBuilder morningIndex](self calendar:{"morningIndex"), v60}];
+      v63 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndex:-[HDSleepDaySummaryBuilder morningIndex](self calendar:{"morningIndex"), calendar2}];
       v65 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[HDSleepDaySummaryBuilder numberOfDays](self, "numberOfDays")}];
       v69 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[HDSleepDaySummaryBuilder numberOfDays](self, "numberOfDays")}];
       v81 = 0u;
@@ -137,17 +137,17 @@
           }
 
           v5 = *(*(&v79 + 1) + 8 * v4);
-          v6 = [v5 value];
-          v7 = (v6 - 3) < 3 || v6 == 1;
+          value2 = [v5 value];
+          v7 = (value2 - 3) < 3 || value2 == 1;
           v8 = v69;
           if (!v7)
           {
-            if (v6 == 2)
+            if (value2 == 2)
             {
               goto LABEL_16;
             }
 
-            if (v6)
+            if (value2)
             {
               v8 = v69;
             }
@@ -158,14 +158,14 @@
             }
           }
 
-          v9 = [(HDSleepDaySummaryBuilder *)self calendar];
-          v10 = [v5 startDate];
-          v11 = [v10 hk_morningIndexWithCalendar:v9];
+          calendar3 = [(HDSleepDaySummaryBuilder *)self calendar];
+          startDate5 = [v5 startDate];
+          v11 = [startDate5 hk_morningIndexWithCalendar:calendar3];
 
           v12 = objc_alloc(MEMORY[0x277CCA970]);
-          v13 = [v5 startDate];
-          v14 = [v5 endDate];
-          v15 = [v12 initWithStartDate:v13 endDate:v14];
+          startDate6 = [v5 startDate];
+          endDate3 = [v5 endDate];
+          v15 = [v12 initWithStartDate:startDate6 endDate:endDate3];
 
           v16 = v8;
           v17 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
@@ -229,19 +229,19 @@ LABEL_24:
   return obja;
 }
 
-- (void)_computeSleepIntervalAveragesFromSamples:(void *)a3
+- (void)_computeSleepIntervalAveragesFromSamples:(void *)samples
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a2 morningIndex];
-  v48 = [a2 calendar];
-  v6 = v5 - 1;
+  samplesCopy = samples;
+  morningIndex = [a2 morningIndex];
+  calendar = [a2 calendar];
+  v6 = morningIndex - 1;
   v67 = 0;
-  v68 = v5 - 1;
+  v68 = morningIndex - 1;
   v65 = 0;
   v66 = 0;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v63 = v5 - 1;
+  v63 = morningIndex - 1;
   v64 = v7;
   v61 = 0;
   v62 = 0;
@@ -252,7 +252,7 @@ LABEL_24:
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = samplesCopy;
   v50 = [obj countByEnumeratingWithState:&v55 objects:v71 count:16];
   if (!v50)
   {
@@ -261,7 +261,7 @@ LABEL_24:
     v39 = 0;
     v40 = 0;
     v36 = 0;
-    v35 = v5 - 1;
+    v35 = morningIndex - 1;
     v37 = 0;
     goto LABEL_17;
   }
@@ -303,9 +303,9 @@ LABEL_24:
 
       v51 = v12;
       v13 = v10;
-      v14 = v48;
-      v15 = [v13 startDate];
-      v16 = [v15 hk_morningIndexWithCalendar:v14];
+      v14 = calendar;
+      startDate = [v13 startDate];
+      v16 = [startDate hk_morningIndexWithCalendar:v14];
 
       v17 = [MEMORY[0x277CBEAA8] hk_sleepDayStartForMorningIndex:v16 calendar:v14];
       v18 = *v54;
@@ -317,8 +317,8 @@ LABEL_24:
 
       if (v18 != v16)
       {
-        v24 = [v13 startDate];
-        [v24 timeIntervalSinceDate:v17];
+        startDate2 = [v13 startDate];
+        [startDate2 timeIntervalSinceDate:v17];
         v26 = v25;
 
         v27 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
@@ -329,9 +329,9 @@ LABEL_24:
         ++v19;
       }
 
-      v29 = [v13 endDate];
-      v30 = [v13 startDate];
-      [v29 timeIntervalSinceDate:v30];
+      endDate = [v13 endDate];
+      startDate3 = [v13 startDate];
+      [endDate timeIntervalSinceDate:startDate3];
       v32 = v31;
 
       *v54 = v16;
@@ -360,38 +360,38 @@ LABEL_17:
 
   v41 = v7;
   v42 = v8;
-  a1[1] = 0u;
-  a1[2] = 0u;
-  *a1 = 0u;
+  self[1] = 0u;
+  self[2] = 0u;
+  *self = 0u;
   v70[0] = v35;
   v70[1] = v34;
   v70[2] = v37;
   v70[3] = v36;
   v43 = v41;
   v70[4] = v43;
-  _HDMakeSleepIntervalAverageInfo(a1, v70);
+  _HDMakeSleepIntervalAverageInfo(self, v70);
   v69[0] = v6;
   v69[1] = v38;
   v69[2] = v40;
   v69[3] = v39;
   v44 = v42;
   v69[4] = v44;
-  _HDMakeSleepIntervalAverageInfo(a1 + 24, v69);
+  _HDMakeSleepIntervalAverageInfo(self + 24, v69);
 
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_samplesForSleepAnalysisValue:(uint64_t)a1 dateIntervalTreesByMorningIndex:(void *)a2 sleepDayInterval:
+- (id)_samplesForSleepAnalysisValue:(uint64_t)value dateIntervalTreesByMorningIndex:(void *)index sleepDayInterval:
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a2;
+  indexCopy = index;
   v4 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = indexCopy;
   v17 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v17)
   {
@@ -411,8 +411,8 @@ LABEL_17:
         v22 = 0u;
         v23 = 0u;
         v19 = v7;
-        v8 = [v7 mergedIntervals];
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        mergedIntervals = [v7 mergedIntervals];
+        v9 = [mergedIntervals countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v9)
         {
           v10 = v9;
@@ -423,14 +423,14 @@ LABEL_17:
             {
               if (*v21 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(mergedIntervals);
               }
 
-              v13 = [MEMORY[0x277CCD0B0] categorySampleWithType:v4 value:a1 clampedInterval:*(*(&v20 + 1) + 8 * j)];
+              v13 = [MEMORY[0x277CCD0B0] categorySampleWithType:v4 value:value clampedInterval:*(*(&v20 + 1) + 8 * j)];
               [v5 addObject:v13];
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v10 = [mergedIntervals countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v10);
@@ -458,10 +458,10 @@ uint64_t __91__HDSleepIntervalSummaryBuilder__sleepConsistencySamplesAdjustedFor
   return v7;
 }
 
-- (id)_sampleForSleepAnalysisValue:(uint64_t)a1 averageInfo:(uint64_t)a2 sleepDayInterval:(void *)a3
+- (id)_sampleForSleepAnalysisValue:(uint64_t)value averageInfo:(uint64_t)info sleepDayInterval:(void *)interval
 {
-  v5 = a3;
-  if (*(a2 + 8) <= 2.22507386e-308)
+  intervalCopy = interval;
+  if (*(info + 8) <= 2.22507386e-308)
   {
     v10 = 0;
   }
@@ -469,11 +469,11 @@ uint64_t __91__HDSleepIntervalSummaryBuilder__sleepConsistencySamplesAdjustedFor
   else
   {
     v6 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
-    v7 = [v5 startDate];
-    v8 = [v7 dateByAddingTimeInterval:*a2];
+    startDate = [intervalCopy startDate];
+    v8 = [startDate dateByAddingTimeInterval:*info];
 
-    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v8 duration:*(a2 + 8)];
-    v10 = [MEMORY[0x277CCD0B0] categorySampleWithType:v6 value:a1 clampedInterval:v9];
+    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v8 duration:*(info + 8)];
+    v10 = [MEMORY[0x277CCD0B0] categorySampleWithType:v6 value:value clampedInterval:v9];
   }
 
   return v10;

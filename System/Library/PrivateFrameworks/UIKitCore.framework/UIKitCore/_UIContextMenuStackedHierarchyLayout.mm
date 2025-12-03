@@ -1,13 +1,13 @@
 @interface _UIContextMenuStackedHierarchyLayout
 - (CGSize)encompassingSize;
 - (UIEdgeInsets)_listSectionInsets;
-- (_UIContextMenuStackedHierarchyLayout)initWithMenuView:(id)a3;
+- (_UIContextMenuStackedHierarchyLayout)initWithMenuView:(id)view;
 - (_UIContextMenuView)menuView;
 - (id)_metrics;
-- (id)_suppressViewIfNeeded:(id)a3;
-- (void)navigateDownFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6;
-- (void)navigateUpFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6;
-- (void)performLayoutForComputingPreferredContentSize:(BOOL)a3 withMaxContainerSize:(CGSize)a4;
+- (id)_suppressViewIfNeeded:(id)needed;
+- (void)navigateDownFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion;
+- (void)navigateUpFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion;
+- (void)performLayoutForComputingPreferredContentSize:(BOOL)size withMaxContainerSize:(CGSize)containerSize;
 @end
 
 @implementation _UIContextMenuStackedHierarchyLayout
@@ -21,23 +21,23 @@
 
 - (id)_metrics
 {
-  v2 = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
-  v3 = [v2 traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  menuView = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
+  traitCollection = [menuView traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v4;
 }
 
-- (_UIContextMenuStackedHierarchyLayout)initWithMenuView:(id)a3
+- (_UIContextMenuStackedHierarchyLayout)initWithMenuView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _UIContextMenuStackedHierarchyLayout;
   v5 = [(_UIContextMenuStackedHierarchyLayout *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIContextMenuStackedHierarchyLayout *)v5 setMenuView:v4];
+    [(_UIContextMenuStackedHierarchyLayout *)v5 setMenuView:viewCopy];
   }
 
   return v6;
@@ -52,14 +52,14 @@
   v2 = *(MEMORY[0x1E695F050] + 16);
   v14 = *MEMORY[0x1E695F050];
   v15 = v2;
-  v3 = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
-  v4 = [v3 submenus];
+  menuView = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
+  submenus = [menuView submenus];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56___UIContextMenuStackedHierarchyLayout_encompassingSize__block_invoke;
   v9[3] = &unk_1E7116D28;
   v9[4] = &v10;
-  [v4 enumerateNodes:v9];
+  [submenus enumerateNodes:v9];
 
   v5 = v11[6];
   v6 = v11[7];
@@ -71,57 +71,57 @@
   return result;
 }
 
-- (void)performLayoutForComputingPreferredContentSize:(BOOL)a3 withMaxContainerSize:(CGSize)a4
+- (void)performLayoutForComputingPreferredContentSize:(BOOL)size withMaxContainerSize:(CGSize)containerSize
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
+  height = containerSize.height;
+  width = containerSize.width;
+  menuView = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
-  v9 = [v8 submenus];
-  v10 = [v9 nodes];
-  v11 = [v10 count] - 1;
+  submenus = [menuView submenus];
+  nodes = [submenus nodes];
+  v11 = [nodes count] - 1;
 
   v29[3] = v11;
-  [v8 bounds];
+  [menuView bounds];
   v13 = v12;
   v15 = v14;
-  v16 = [(_UIContextMenuStackedHierarchyLayout *)self _metrics];
-  v17 = [v8 submenus];
+  _metrics = [(_UIContextMenuStackedHierarchyLayout *)self _metrics];
+  submenus2 = [menuView submenus];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __107___UIContextMenuStackedHierarchyLayout_performLayoutForComputingPreferredContentSize_withMaxContainerSize___block_invoke;
   v20[3] = &unk_1E7116D50;
-  v28 = a3;
+  sizeCopy = size;
   v24 = width;
   v25 = height;
-  v18 = v8;
+  v18 = menuView;
   v21 = v18;
-  v19 = v16;
+  v19 = _metrics;
   v22 = v19;
   v23 = v29;
   v26 = v13;
   v27 = v15;
-  [v17 enumerateNodes:v20];
+  [submenus2 enumerateNodes:v20];
 
   _Block_object_dispose(v29, 8);
 }
 
-- (void)navigateDownFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)navigateDownFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v34 = a5;
-  v35 = a6;
-  v12 = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
-  v33 = v10;
-  v13 = [v10 listView];
-  v14 = [v11 listView];
-  v15 = [v14 displayedMenu];
-  v16 = [v13 cellForElement:v15];
+  nodeCopy = node;
+  toNodeCopy = toNode;
+  animationsCopy = animations;
+  completionCopy = completion;
+  menuView = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
+  v33 = nodeCopy;
+  listView = [nodeCopy listView];
+  listView2 = [toNodeCopy listView];
+  displayedMenu = [listView2 displayedMenu];
+  v16 = [listView cellForElement:displayedMenu];
 
-  [v13 setUserInteractionEnabled:0];
+  [listView setUserInteractionEnabled:0];
   v74[0] = 0;
   v74[1] = v74;
   v74[2] = 0x4010000000;
@@ -140,17 +140,17 @@
   v68 = __Block_byref_object_copy__133;
   v69 = __Block_byref_object_dispose__133;
   v70 = 0;
-  v17 = [v14 window];
+  window = [listView2 window];
 
-  if (!v17)
+  if (!window)
   {
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __99___UIContextMenuStackedHierarchyLayout_navigateDownFromNode_toNode_alongsideAnimations_completion___block_invoke;
     v62[3] = &unk_1E70F35B8;
-    v18 = v14;
+    v18 = listView2;
     v63 = v18;
-    v19 = v12;
+    v19 = menuView;
     v64 = v19;
     [UIView performWithoutAnimation:v62];
     v53[0] = MEMORY[0x1E69E9820];
@@ -159,16 +159,16 @@
     v53[3] = &unk_1E7116D78;
     v54 = v18;
     v55 = v16;
-    v56 = self;
+    selfCopy = self;
     v60 = v74;
     v57 = v19;
-    v58 = v11;
+    v58 = toNodeCopy;
     v61 = v71;
-    v59 = v13;
+    v59 = listView;
     [UIView _performWithoutRetargetingAnimations:v53];
   }
 
-  v20 = [v12 retainHighlightOnMenuNavigation];
+  retainHighlightOnMenuNavigation = [menuView retainHighlightOnMenuNavigation];
   v21 = [(_UIContextMenuStackedHierarchyLayout *)self _suppressViewIfNeeded:v16];
   v22 = v66[5];
   v66[5] = v21;
@@ -178,10 +178,10 @@
   v48[1] = 3221225472;
   v48[2] = __99___UIContextMenuStackedHierarchyLayout_navigateDownFromNode_toNode_alongsideAnimations_completion___block_invoke_3;
   v48[3] = &unk_1E70F5B18;
-  v52 = v20;
-  v24 = v13;
+  v52 = retainHighlightOnMenuNavigation;
+  v24 = listView;
   v49 = v24;
-  v50 = v14;
+  v50 = listView2;
   v25 = v16;
   v51 = v25;
   v46[0] = MEMORY[0x1E69E9820];
@@ -199,9 +199,9 @@
   v39[3] = &unk_1E7116DA0;
   v28 = v24;
   v40 = v28;
-  v29 = v34;
+  v29 = animationsCopy;
   v43 = v29;
-  v30 = v12;
+  v30 = menuView;
   v41 = v30;
   v31 = v26;
   v42 = v31;
@@ -212,7 +212,7 @@
   v36[2] = __99___UIContextMenuStackedHierarchyLayout_navigateDownFromNode_toNode_alongsideAnimations_completion___block_invoke_9;
   v36[3] = &unk_1E7114D50;
   v38 = &v65;
-  v32 = v35;
+  v32 = completionCopy;
   v37 = v32;
   [UIView _animateUsingSpringBehavior:v27 tracking:0 animations:v39 completion:v36];
 
@@ -221,39 +221,39 @@
   _Block_object_dispose(v74, 8);
 }
 
-- (void)navigateUpFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)navigateUpFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v29 = a5;
-  v30 = a6;
-  v12 = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
-  v13 = [v10 listView];
-  v14 = [v11 listView];
-  [v14 setUserInteractionEnabled:1];
-  LODWORD(a6) = [v12 retainHighlightOnMenuNavigation];
+  nodeCopy = node;
+  toNodeCopy = toNode;
+  animationsCopy = animations;
+  completionCopy = completion;
+  menuView = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
+  listView = [nodeCopy listView];
+  listView2 = [toNodeCopy listView];
+  [listView2 setUserInteractionEnabled:1];
+  LODWORD(completion) = [menuView retainHighlightOnMenuNavigation];
   v15 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.5];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __97___UIContextMenuStackedHierarchyLayout_navigateUpFromNode_toNode_alongsideAnimations_completion___block_invoke;
   v43[3] = &unk_1E70F5AF0;
-  v16 = v13;
+  v16 = listView;
   v44 = v16;
-  v46 = a6;
-  v17 = v14;
+  completionCopy2 = completion;
+  v17 = listView2;
   v45 = v17;
   [UIView _animateUsingSpringBehavior:v15 tracking:0 animations:v43 completion:0];
 
-  if (a6)
+  if (completion)
   {
-    v18 = [v16 displayedMenu];
-    v19 = [v17 indexPathForElement:v18];
+    displayedMenu = [v16 displayedMenu];
+    v19 = [v17 indexPathForElement:displayedMenu];
 
     [v17 highlightItemAtIndexPath:v19];
   }
 
-  v20 = [v16 displayedMenu];
-  v21 = [v17 cellForElement:v20];
+  displayedMenu2 = [v16 displayedMenu];
+  v21 = [v17 cellForElement:displayedMenu2];
 
   v41[0] = 0;
   v41[1] = v41;
@@ -270,19 +270,19 @@
   v35 = v23;
   v24 = v16;
   v36 = v24;
-  v25 = v29;
+  v25 = animationsCopy;
   v40 = v25;
-  v26 = v12;
+  v26 = menuView;
   v37 = v26;
   v27 = v21;
   v38 = v27;
-  v39 = self;
+  selfCopy = self;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __97___UIContextMenuStackedHierarchyLayout_navigateUpFromNode_toNode_alongsideAnimations_completion___block_invoke_5;
   v31[3] = &unk_1E7114D50;
   v33 = v41;
-  v28 = v30;
+  v28 = completionCopy;
   v32 = v28;
   [UIView _animateUsingSpringBehavior:v22 tracking:0 animations:v34 completion:v31];
 
@@ -291,15 +291,15 @@
 
 - (UIEdgeInsets)_listSectionInsets
 {
-  v3 = [(_UIContextMenuStackedHierarchyLayout *)self _metrics];
-  [v3 sectionInsets];
+  _metrics = [(_UIContextMenuStackedHierarchyLayout *)self _metrics];
+  [_metrics sectionInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
-  v13 = [v12 _shouldReverseLayoutDirection];
-  if (v13)
+  menuView = [(_UIContextMenuStackedHierarchyLayout *)self menuView];
+  _shouldReverseLayoutDirection = [menuView _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v14 = v11;
   }
@@ -309,7 +309,7 @@
     v14 = v7;
   }
 
-  if (!v13)
+  if (!_shouldReverseLayoutDirection)
   {
     v7 = v11;
   }
@@ -325,15 +325,15 @@
   return result;
 }
 
-- (id)_suppressViewIfNeeded:(id)a3
+- (id)_suppressViewIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuStackedHierarchyLayout *)self _metrics];
-  v6 = [v5 prefersGlassAppearance];
+  neededCopy = needed;
+  _metrics = [(_UIContextMenuStackedHierarchyLayout *)self _metrics];
+  prefersGlassAppearance = [_metrics prefersGlassAppearance];
 
-  if (v6)
+  if (prefersGlassAppearance)
   {
-    v7 = [v4 _vendAssertionForOverrideAlpha:0.0];
+    v7 = [neededCopy _vendAssertionForOverrideAlpha:0.0];
   }
 
   else

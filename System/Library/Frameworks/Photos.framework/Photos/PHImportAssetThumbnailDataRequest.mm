@@ -1,5 +1,5 @@
 @interface PHImportAssetThumbnailDataRequest
-- (PHImportAssetThumbnailDataRequest)initWithAsset:(id)a3 longestSide:(unint64_t)a4 priority:(unsigned __int8)a5;
+- (PHImportAssetThumbnailDataRequest)initWithAsset:(id)asset longestSide:(unint64_t)side priority:(unsigned __int8)priority;
 - (id)requestAsset;
 @end
 
@@ -7,42 +7,42 @@
 
 - (id)requestAsset
 {
-  v3 = [(PHImportAssetDataRequest *)self asset];
-  v4 = [v3 largeRender];
-  v5 = v4;
-  if (v4)
+  asset = [(PHImportAssetDataRequest *)self asset];
+  largeRender = [asset largeRender];
+  v5 = largeRender;
+  if (largeRender)
   {
-    v6 = v4;
+    v6 = largeRender;
   }
 
   else
   {
-    v7 = [(PHImportAssetDataRequest *)self asset];
-    v8 = [v7 largeMovieRender];
-    v9 = v8;
-    if (v8)
+    asset2 = [(PHImportAssetDataRequest *)self asset];
+    largeMovieRender = [asset2 largeMovieRender];
+    v9 = largeMovieRender;
+    if (largeMovieRender)
     {
-      v10 = v8;
+      asset3 = largeMovieRender;
     }
 
     else
     {
-      v10 = [(PHImportAssetDataRequest *)self asset];
+      asset3 = [(PHImportAssetDataRequest *)self asset];
     }
 
-    v6 = v10;
+    v6 = asset3;
   }
 
   return v6;
 }
 
-- (PHImportAssetThumbnailDataRequest)initWithAsset:(id)a3 longestSide:(unint64_t)a4 priority:(unsigned __int8)a5
+- (PHImportAssetThumbnailDataRequest)initWithAsset:(id)asset longestSide:(unint64_t)side priority:(unsigned __int8)priority
 {
-  result = [(PHImportAssetDataRequest *)self initWithAsset:a3];
+  result = [(PHImportAssetDataRequest *)self initWithAsset:asset];
   if (result)
   {
-    result->_longestSide = a4;
-    result->_priority = a5;
+    result->_longestSide = side;
+    result->_priority = priority;
   }
 
   return result;

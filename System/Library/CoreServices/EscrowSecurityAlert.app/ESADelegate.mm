@@ -83,13 +83,13 @@
 
 - (BOOL)isNotificationSnoozed
 {
-  v2 = [qword_100015A80 alertType];
-  if (v2)
+  alertType = [qword_100015A80 alertType];
+  if (alertType)
   {
-    LOBYTE(v2) = [qword_100015A80 alertType] < 3;
+    LOBYTE(alertType) = [qword_100015A80 alertType] < 3;
   }
 
-  return v2;
+  return alertType;
 }
 
 @end

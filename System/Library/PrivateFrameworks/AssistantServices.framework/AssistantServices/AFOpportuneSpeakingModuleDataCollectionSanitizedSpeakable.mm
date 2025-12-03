@@ -1,23 +1,23 @@
 @interface AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable
-- (AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable)initWithDate:(id)a3;
+- (AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable)initWithDate:(id)date;
 @end
 
 @implementation AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable
 
-- (AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable)initWithDate:(id)a3
+- (AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable;
   v6 = [(AFOpportuneSpeakingModuleDataCollectionSanitizedSpeakable *)&v11 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = uUIDString;
 
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
   }
 
   return v6;

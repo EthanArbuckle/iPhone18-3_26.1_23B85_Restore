@@ -1,8 +1,8 @@
 @interface MusicTermsUpdateOperation
-- (BOOL)_authenticateReturningError:(id *)a3;
-- (BOOL)_runRequestWithTermsCheckURL:(id)a3 allowingAuthentication:(BOOL)a4 returningError:(id *)a5 termsContentText:(id *)a6 hasAcceptedLatestTerms:(BOOL *)a7 latestStoreTermsVersion:(unint64_t *)a8;
+- (BOOL)_authenticateReturningError:(id *)error;
+- (BOOL)_runRequestWithTermsCheckURL:(id)l allowingAuthentication:(BOOL)authentication returningError:(id *)error termsContentText:(id *)text hasAcceptedLatestTerms:(BOOL *)terms latestStoreTermsVersion:(unint64_t *)version;
 - (BOOL)hasAcceptedLatestTerms;
-- (MusicTermsUpdateOperation)initWithAcceptedStoreTermsVersion:(unint64_t)a3 termsContext:(id)a4;
+- (MusicTermsUpdateOperation)initWithAcceptedStoreTermsVersion:(unint64_t)version termsContext:(id)context;
 - (NSString)termsContentText;
 - (id)error;
 - (void)main;
@@ -10,15 +10,15 @@
 
 @implementation MusicTermsUpdateOperation
 
-- (MusicTermsUpdateOperation)initWithAcceptedStoreTermsVersion:(unint64_t)a3 termsContext:(id)a4
+- (MusicTermsUpdateOperation)initWithAcceptedStoreTermsVersion:(unint64_t)version termsContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [(MusicTermsUpdateOperation *)self init];
   v8 = v7;
   if (v7)
   {
-    v7->_acceptedStoreTermsVersion = a3;
-    v9 = [v6 copy];
+    v7->_acceptedStoreTermsVersion = version;
+    v9 = [contextCopy copy];
     termsContext = v8->_termsContext;
     v8->_termsContext = v9;
   }
@@ -32,11 +32,11 @@
   v19 = 0;
   if (![(MusicTermsUpdateOperation *)self isCancelled])
   {
-    v5 = [(MusicTermsUpdateOperation *)self URLBagDictionary];
-    v6 = [v5 objectForKey:@"sub-terms-check"];
+    uRLBagDictionary = [(MusicTermsUpdateOperation *)self URLBagDictionary];
+    v6 = [uRLBagDictionary objectForKey:@"sub-terms-check"];
     if ((_NSIsNSString() & 1) == 0)
     {
-      v7 = [v5 objectForKey:@"terms-check"];
+      v7 = [uRLBagDictionary objectForKey:@"terms-check"];
 
       if ((_NSIsNSString() & 1) == 0)
       {
@@ -159,7 +159,7 @@ void __33__MusicTermsUpdateOperation_main__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)_authenticateReturningError:(id *)a3
+- (BOOL)_authenticateReturningError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -181,11 +181,11 @@ void __33__MusicTermsUpdateOperation_main__block_invoke(uint64_t a1)
     v9 = [[AMSAuthenticateRequest alloc] initWithDSID:v7 altDSID:0 username:0 options:v8];
     v10 = dispatch_semaphore_create(0);
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 keyWindow];
-    v13 = [v12 rootViewController];
+    keyWindow = [v11 keyWindow];
+    rootViewController = [keyWindow rootViewController];
 
-    v14 = [[AMSUIAuthenticateTask alloc] initWithRequest:v9 presentingViewController:v13];
-    v15 = [v14 performAuthentication];
+    v14 = [[AMSUIAuthenticateTask alloc] initWithRequest:v9 presentingViewController:rootViewController];
+    performAuthentication = [v14 performAuthentication];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = __57__MusicTermsUpdateOperation__authenticateReturningError___block_invoke;
@@ -193,7 +193,7 @@ void __33__MusicTermsUpdateOperation_main__block_invoke(uint64_t a1)
     v22 = &v24;
     v16 = v10;
     v21 = v16;
-    [v15 addFinishBlock:v20];
+    [performAuthentication addFinishBlock:v20];
 
     dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -205,9 +205,9 @@ void __33__MusicTermsUpdateOperation_main__block_invoke(uint64_t a1)
     v25[5] = v17;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v25[5];
+    *error = v25[5];
   }
 
   v18 = v25[5] == 0;
@@ -227,12 +227,12 @@ void __57__MusicTermsUpdateOperation__authenticateReturningError___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_runRequestWithTermsCheckURL:(id)a3 allowingAuthentication:(BOOL)a4 returningError:(id *)a5 termsContentText:(id *)a6 hasAcceptedLatestTerms:(BOOL *)a7 latestStoreTermsVersion:(unint64_t *)a8
+- (BOOL)_runRequestWithTermsCheckURL:(id)l allowingAuthentication:(BOOL)authentication returningError:(id *)error termsContentText:(id *)text hasAcceptedLatestTerms:(BOOL *)terms latestStoreTermsVersion:(unint64_t *)version
 {
-  v13 = a3;
+  lCopy = l;
   v75[0] = 0;
-  v74 = 0;
-  v14 = [[NSMutableURLRequest alloc] initWithURL:v13];
+  longLongValue = 0;
+  v14 = [[NSMutableURLRequest alloc] initWithURL:lCopy];
   [v14 setHTTPMethod:@"POST"];
   v15 = [[NSMutableDictionary alloc] initWithCapacity:2];
   v16 = v15;
@@ -248,9 +248,9 @@ void __57__MusicTermsUpdateOperation__authenticateReturningError___block_invoke(
     [v16 setObject:v18 forKey:@"accepted"];
   }
 
-  v46 = a5;
-  v47 = a6;
-  v48 = a7;
+  errorCopy = error;
+  textCopy = text;
+  termsCopy = terms;
   if ([v16 count])
   {
     v19 = [NSJSONSerialization dataWithJSONObject:v16 options:0 error:0];
@@ -293,14 +293,14 @@ void __57__MusicTermsUpdateOperation__authenticateReturningError___block_invoke(
   v55[6] = &v58;
   [v20 setOutputBlock:v55];
   [(MusicTermsUpdateOperation *)self runChildOperation:v20];
-  v22 = a8;
+  versionCopy = version;
   v23 = v59[3];
   if (!v23)
   {
-    v24 = [0 userInfo];
-    v25 = [v24 objectForKey:SSErrorHTTPStatusCodeKey];
-    v26 = [v25 integerValue];
-    v59[3] = v26;
+    userInfo = [0 userInfo];
+    v25 = [userInfo objectForKey:SSErrorHTTPStatusCodeKey];
+    integerValue = [v25 integerValue];
+    v59[3] = integerValue;
 
     v23 = v59[3];
   }
@@ -326,8 +326,8 @@ LABEL_30:
     v35 = [v69[5] objectForKey:@"status"];
     if (objc_opt_respondsToSelector())
     {
-      v36 = [v35 integerValue];
-      if (v36 == "b" || v36 == "ary/PrivateFrameworks/CarKit.framework/CarKit")
+      integerValue2 = [v35 integerValue];
+      if (integerValue2 == "b" || integerValue2 == "ary/PrivateFrameworks/CarKit.framework/CarKit")
       {
         v51 = 0;
         v42 = [(MusicTermsUpdateOperation *)self _authenticateReturningError:&v51];
@@ -347,7 +347,7 @@ LABEL_30:
         {
           v49 = 0;
           v50 = 0;
-          [(MusicTermsUpdateOperation *)self _runRequestWithTermsCheckURL:v13 allowingAuthentication:0 returningError:&v50 termsContentText:&v49 hasAcceptedLatestTerms:v75 latestStoreTermsVersion:&v74];
+          [(MusicTermsUpdateOperation *)self _runRequestWithTermsCheckURL:lCopy allowingAuthentication:0 returningError:&v50 termsContentText:&v49 hasAcceptedLatestTerms:v75 latestStoreTermsVersion:&longLongValue];
           v31 = v50;
           v32 = v49;
         }
@@ -363,7 +363,7 @@ LABEL_51:
         goto LABEL_52;
       }
 
-      if (!v36)
+      if (!integerValue2)
       {
         v37 = [v69[5] objectForKey:@"isCurrent"];
         if (objc_opt_respondsToSelector())
@@ -388,7 +388,7 @@ LABEL_51:
         v31 = 0;
         if (objc_opt_respondsToSelector())
         {
-          v74 = [v44 longLongValue];
+          longLongValue = [v44 longLongValue];
         }
 
         goto LABEL_51;
@@ -420,7 +420,7 @@ LABEL_52:
   {
     v52 = 0;
     v53 = 0;
-    [(MusicTermsUpdateOperation *)self _runRequestWithTermsCheckURL:v13 allowingAuthentication:0 returningError:&v53 termsContentText:&v52 hasAcceptedLatestTerms:v75 latestStoreTermsVersion:&v74];
+    [(MusicTermsUpdateOperation *)self _runRequestWithTermsCheckURL:lCopy allowingAuthentication:0 returningError:&v53 termsContentText:&v52 hasAcceptedLatestTerms:v75 latestStoreTermsVersion:&longLongValue];
     v31 = v53;
     v32 = v52;
   }
@@ -432,26 +432,26 @@ LABEL_52:
   }
 
 LABEL_31:
-  if (v46)
+  if (errorCopy)
   {
     v39 = v31;
-    *v46 = v31;
+    *errorCopy = v31;
   }
 
-  if (v47)
+  if (textCopy)
   {
     v40 = v32;
-    *v47 = v32;
+    *textCopy = v32;
   }
 
-  if (v48)
+  if (termsCopy)
   {
-    *v48 = v75[0];
+    *termsCopy = v75[0];
   }
 
-  if (v22)
+  if (versionCopy)
   {
-    *v22 = v74;
+    *versionCopy = longLongValue;
   }
 
   objc_destroyWeak(&v56);

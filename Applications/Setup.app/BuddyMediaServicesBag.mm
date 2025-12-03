@@ -19,9 +19,9 @@
   objc_storeStrong(&location, location);
   if (location)
   {
-    v2 = [objc_opt_class() createBagForSubProfile];
+    createBagForSubProfile = [objc_opt_class() createBagForSubProfile];
     v3 = *(location + 1);
-    *(location + 1) = v2;
+    *(location + 1) = createBagForSubProfile;
   }
 
   v4 = location;
@@ -31,14 +31,14 @@
 
 - (id)getAppStoreURL
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = +[ACAccountStore ams_sharedAccountStore];
-  v5 = [location[0] ams_activeiTunesAccount];
-  v2 = [(BuddyMediaServicesBag *)v7 underlyingBag];
-  v3 = [(AMSBag *)v2 URLForKey:@"postOnboardingUrl" account:v5];
+  ams_activeiTunesAccount = [location[0] ams_activeiTunesAccount];
+  underlyingBag = [(BuddyMediaServicesBag *)selfCopy underlyingBag];
+  v3 = [(AMSBag *)underlyingBag URLForKey:@"postOnboardingUrl" account:ams_activeiTunesAccount];
 
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&ams_activeiTunesAccount, 0);
   objc_storeStrong(location, 0);
 
   return v3;
@@ -62,7 +62,7 @@
 
 + (AMSBagKeySet)bagKeySet
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = objc_alloc_init(AMSMutableBagKeySet);
   [location[0] addBagKey:@"guid-urls/regex" valueType:0];
@@ -86,8 +86,8 @@
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagKeySet];
-  [AMSBagKeySet registerBagKeySet:v2 forProfile:@"setup" profileVersion:@"1"];
+  bagKeySet = [objc_opt_class() bagKeySet];
+  [AMSBagKeySet registerBagKeySet:bagKeySet forProfile:@"setup" profileVersion:@"1"];
 
   return [AMSBag bagForProfile:@"setup" profileVersion:@"1"];
 }

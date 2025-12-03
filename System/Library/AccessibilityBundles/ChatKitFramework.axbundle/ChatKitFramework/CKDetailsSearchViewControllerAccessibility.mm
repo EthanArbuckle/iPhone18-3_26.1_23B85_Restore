@@ -1,27 +1,27 @@
 @interface CKDetailsSearchViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4;
-- (id)dequeueReusableSupplementaryViewOfKind:(id)a3 withReuseIdentifier:(id)a4 forIndexPath:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path;
+- (id)dequeueReusableSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier forIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAddCellToMapWithSection:(id)a3 cell:(id)a4;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (void)_axAddCellToMapWithSection:(id)section cell:(id)cell;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation CKDetailsSearchViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKDetailsSearchViewController" isKindOfClass:@"CKSearchViewController"];
-  [v3 validateClass:@"CKSearchViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CKSearchViewController" conformsToProtocol:@"UICollectionViewDelegate"];
-  [v3 validateClass:@"CKSearchViewController" hasInstanceMethod:@"searchControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsSearchResultsTitleHeaderCell"];
-  [v3 validateProtocol:@"UICollectionViewDelegate" hasMethod:@"collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:" isInstanceMethod:1 isRequired:0];
-  [v3 validateClass:@"CKSearchController" hasInstanceMethod:@"cellForItemInCollectionView:atIndexPath:withIdentifier:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"dequeueReusableCellWithReuseIdentifier:forIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:" withFullSignature:{"@", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKDetailsSearchViewController" isKindOfClass:@"CKSearchViewController"];
+  [validationsCopy validateClass:@"CKSearchViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CKSearchViewController" conformsToProtocol:@"UICollectionViewDelegate"];
+  [validationsCopy validateClass:@"CKSearchViewController" hasInstanceMethod:@"searchControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsSearchResultsTitleHeaderCell"];
+  [validationsCopy validateProtocol:@"UICollectionViewDelegate" hasMethod:@"collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:" isInstanceMethod:1 isRequired:0];
+  [validationsCopy validateClass:@"CKSearchController" hasInstanceMethod:@"cellForItemInCollectionView:atIndexPath:withIdentifier:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"dequeueReusableCellWithReuseIdentifier:forIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:" withFullSignature:{"@", "@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -62,99 +62,99 @@ id __88__CKDetailsSearchViewControllerAccessibility__accessibilityLoadAccessibil
   return v2;
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
-  v8 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = CKDetailsSearchViewControllerAccessibility;
-  v9 = [(CKDetailsSearchViewControllerAccessibility *)&v12 cellForItemInCollectionView:a3 atIndexPath:v8 withIdentifier:a5];
+  v9 = [(CKDetailsSearchViewControllerAccessibility *)&v12 cellForItemInCollectionView:view atIndexPath:pathCopy withIdentifier:identifier];
   if (v9)
   {
-    v10 = [MEMORY[0x29EDBA070] numberWithInteger:{objc_msgSend(v8, "section")}];
+    v10 = [MEMORY[0x29EDBA070] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
     [(CKDetailsSearchViewControllerAccessibility *)self _axAddCellToMapWithSection:v10 cell:v9];
   }
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v10 = a4;
-  v11 = a6;
+  supplementaryViewCopy = supplementaryView;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CKDetailsSearchViewControllerAccessibility;
-  [(CKDetailsSearchViewControllerAccessibility *)&v13 collectionView:a3 willDisplaySupplementaryView:v10 forElementKind:a5 atIndexPath:v11];
-  if (v10)
+  [(CKDetailsSearchViewControllerAccessibility *)&v13 collectionView:view willDisplaySupplementaryView:supplementaryViewCopy forElementKind:kind atIndexPath:pathCopy];
+  if (supplementaryViewCopy)
   {
-    v12 = [MEMORY[0x29EDBA070] numberWithInteger:{objc_msgSend(v11, "section")}];
-    [(CKDetailsSearchViewControllerAccessibility *)self _axAddCellToMapWithSection:v12 cell:v10];
+    v12 = [MEMORY[0x29EDBA070] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+    [(CKDetailsSearchViewControllerAccessibility *)self _axAddCellToMapWithSection:v12 cell:supplementaryViewCopy];
   }
 }
 
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  identifierCopy = identifier;
   [(CKDetailsSearchViewControllerAccessibility *)self _setAXSectionMap:0];
   v10.receiver = self;
   v10.super_class = CKDetailsSearchViewControllerAccessibility;
-  v8 = [(CKDetailsSearchViewControllerAccessibility *)&v10 dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v6];
+  v8 = [(CKDetailsSearchViewControllerAccessibility *)&v10 dequeueReusableCellWithReuseIdentifier:identifierCopy forIndexPath:pathCopy];
 
   return v8;
 }
 
-- (id)dequeueReusableSupplementaryViewOfKind:(id)a3 withReuseIdentifier:(id)a4 forIndexPath:(id)a5
+- (id)dequeueReusableSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier forIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  pathCopy = path;
+  identifierCopy = identifier;
+  kindCopy = kind;
   [(CKDetailsSearchViewControllerAccessibility *)self _setAXSectionMap:0];
   v13.receiver = self;
   v13.super_class = CKDetailsSearchViewControllerAccessibility;
-  v11 = [(CKDetailsSearchViewControllerAccessibility *)&v13 dequeueReusableSupplementaryViewOfKind:v10 withReuseIdentifier:v9 forIndexPath:v8];
+  v11 = [(CKDetailsSearchViewControllerAccessibility *)&v13 dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:identifierCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (void)_axAddCellToMapWithSection:(id)a3 cell:(id)a4
+- (void)_axAddCellToMapWithSection:(id)section cell:(id)cell
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(CKDetailsSearchViewControllerAccessibility *)self _axSectionMap];
+  sectionCopy = section;
+  cellCopy = cell;
+  _axSectionMap = [(CKDetailsSearchViewControllerAccessibility *)self _axSectionMap];
 
-  if (!v7)
+  if (!_axSectionMap)
   {
-    v8 = [MEMORY[0x29EDB8E00] dictionary];
-    [(CKDetailsSearchViewControllerAccessibility *)self _setAXSectionMap:v8];
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
+    [(CKDetailsSearchViewControllerAccessibility *)self _setAXSectionMap:dictionary];
   }
 
-  v9 = [(CKDetailsSearchViewControllerAccessibility *)self _axSectionMap];
-  v10 = [v9 objectForKey:v13];
+  _axSectionMap2 = [(CKDetailsSearchViewControllerAccessibility *)self _axSectionMap];
+  v10 = [_axSectionMap2 objectForKey:sectionCopy];
 
   if (v10)
   {
-    v11 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     NSClassFromString(&cfstr_Ckdetailssearc_2.isa);
     if (objc_opt_isKindOfClass())
     {
-      [v11 axSafelyAddObject:v6];
-      [v11 axSafelyAddObjectsFromArray:v10];
+      [array axSafelyAddObject:cellCopy];
+      [array axSafelyAddObjectsFromArray:v10];
     }
 
     else
     {
-      [v11 axSafelyAddObjectsFromArray:v10];
-      [v11 axSafelyAddObject:v6];
+      [array axSafelyAddObjectsFromArray:v10];
+      [array axSafelyAddObject:cellCopy];
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v6}];
+    array = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, cellCopy}];
   }
 
-  v12 = [(CKDetailsSearchViewControllerAccessibility *)self _axSectionMap];
-  [v12 setObject:v11 forKey:v13];
+  _axSectionMap3 = [(CKDetailsSearchViewControllerAccessibility *)self _axSectionMap];
+  [_axSectionMap3 setObject:array forKey:sectionCopy];
 }
 
 @end

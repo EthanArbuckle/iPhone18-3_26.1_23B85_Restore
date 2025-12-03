@@ -2,12 +2,12 @@
 - (id)_label;
 - (void)_updateLabel;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShouldDrawUnderline:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setText:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShouldDrawUnderline:(BOOL)underline;
+- (void)setStyle:(int64_t)style;
+- (void)setText:(id)text;
 - (void)sizeToFit;
 @end
 
@@ -20,34 +20,34 @@
   [(SULinkControl *)&v3 dealloc];
 }
 
-- (void)setShouldDrawUnderline:(BOOL)a3
+- (void)setShouldDrawUnderline:(BOOL)underline
 {
-  if (self->_shouldDrawUnderline != a3)
+  if (self->_shouldDrawUnderline != underline)
   {
-    self->_shouldDrawUnderline = a3;
+    self->_shouldDrawUnderline = underline;
     [(SULinkControl *)self setNeedsDisplay];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(SULinkControl *)self _updateLabel];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [(SULinkControl *)self _label];
+  _label = [(SULinkControl *)self _label];
 
-  [v4 setText:a3];
+  [_label setText:text];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if ([(SULinkControl *)self isHighlighted:a3.origin.x])
+  if ([(SULinkControl *)self isHighlighted:rect.origin.x])
   {
     [objc_msgSend(MEMORY[0x1E69DC888] colorWithWhite:0.0980392157 alpha:{0.300000012), "set"}];
     v4 = MEMORY[0x1E69DC728];
@@ -88,17 +88,17 @@
   [(UILabel *)label setFrame:v6.origin.x, v6.origin.y, v6.size.width, v6.size.height];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = SULinkControl;
   [(SULinkControl *)&v6 setHighlighted:?];
-  v5 = [(SULinkControl *)self _label];
-  [v5 setHighlighted:v3];
-  if (v3)
+  _label = [(SULinkControl *)self _label];
+  [_label setHighlighted:highlightedCopy];
+  if (highlightedCopy)
   {
-    [v5 setShadowColor:0];
+    [_label setShadowColor:0];
   }
 
   else
@@ -114,9 +114,9 @@
   [(SULinkControl *)self frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(SULinkControl *)self _label];
-  [v7 sizeToFit];
-  [v7 frame];
+  _label = [(SULinkControl *)self _label];
+  [_label sizeToFit];
+  [_label frame];
   v9 = v8 + 6.0;
   v11 = v10 + 6.0;
 
@@ -151,7 +151,7 @@
     -[UILabel setShadowColor:](self->_label, "setShadowColor:", [MEMORY[0x1E69DC888] whiteColor]);
     [(UILabel *)self->_label setShadowOffset:0.0, 1.0];
     v5 = self->_label;
-    v10 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
   else
@@ -194,10 +194,10 @@
       v9 = 0.321568627;
     }
 
-    v10 = [v6 colorWithRed:v7 green:v8 blue:v9 alpha:1.0];
+    blackColor = [v6 colorWithRed:v7 green:v8 blue:v9 alpha:1.0];
   }
 
-  [(UILabel *)v5 setTextColor:v10];
+  [(UILabel *)v5 setTextColor:blackColor];
 }
 
 @end

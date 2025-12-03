@@ -1,19 +1,19 @@
 @interface STManagementStateObserver
-+ (void)createObserverWithDSID:(id)a3 completionHandler:(id)a4;
-- (id)_initWithDSID:(id)a3;
++ (void)createObserverWithDSID:(id)d completionHandler:(id)handler;
+- (id)_initWithDSID:(id)d;
 - (void)_screenTimeSettingsDidChange;
 - (void)dealloc;
 @end
 
 @implementation STManagementStateObserver
 
-- (id)_initWithDSID:(id)a3
+- (id)_initWithDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = STManagementStateObserver;
   v5 = [(STManagementStateObserver *)&v19 init];
-  v6 = [v4 copy];
+  v6 = [dCopy copy];
   dsid = v5->_dsid;
   v5->_dsid = v6;
 
@@ -57,21 +57,21 @@ void __43__STManagementStateObserver__initWithDSID___block_invoke(uint64_t a1)
   [(STManagementStateObserver *)&v3 dealloc];
 }
 
-+ (void)createObserverWithDSID:(id)a3 completionHandler:(id)a4
++ (void)createObserverWithDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithDSID:v7];
-  v9 = [v8 managementState];
+  handlerCopy = handler;
+  dCopy = d;
+  v8 = [[self alloc] _initWithDSID:dCopy];
+  managementState = [v8 managementState];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__STManagementStateObserver_createObserverWithDSID_completionHandler___block_invoke;
   v12[3] = &unk_1E7CE79B8;
   v13 = v8;
-  v14 = v6;
+  v14 = handlerCopy;
   v10 = v8;
-  v11 = v6;
-  [v9 contactManagementStateForDSID:v7 completionHandler:v12];
+  v11 = handlerCopy;
+  [managementState contactManagementStateForDSID:dCopy completionHandler:v12];
 }
 
 void __70__STManagementStateObserver_createObserverWithDSID_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -100,14 +100,14 @@ void __70__STManagementStateObserver_createObserverWithDSID_completionHandler___
 
 - (void)_screenTimeSettingsDidChange
 {
-  v3 = [(STManagementStateObserver *)self managementState];
-  v4 = [(STManagementStateObserver *)self dsid];
+  managementState = [(STManagementStateObserver *)self managementState];
+  dsid = [(STManagementStateObserver *)self dsid];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__STManagementStateObserver__screenTimeSettingsDidChange__block_invoke;
   v5[3] = &unk_1E7CE79E0;
   v5[4] = self;
-  [v3 contactManagementStateForDSID:v4 completionHandler:v5];
+  [managementState contactManagementStateForDSID:dsid completionHandler:v5];
 }
 
 void __57__STManagementStateObserver__screenTimeSettingsDidChange__block_invoke(uint64_t a1, uint64_t a2, void *a3)

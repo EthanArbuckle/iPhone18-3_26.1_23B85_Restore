@@ -1,8 +1,8 @@
 @interface WFLocalizationContext
 + (WFLocalizationContext)defaultContext;
-- (WFLocalizationContext)initWithLocale:(id)a3 stringLocalizer:(id)a4 localizationUsage:(id)a5;
-- (id)localize:(id)a3;
-- (id)localize:(id)a3 pluralizationNumber:(id)a4;
+- (WFLocalizationContext)initWithLocale:(id)locale stringLocalizer:(id)localizer localizationUsage:(id)usage;
+- (id)localize:(id)localize;
+- (id)localize:(id)localize pluralizationNumber:(id)number;
 @end
 
 @implementation WFLocalizationContext
@@ -19,50 +19,50 @@
   return v3;
 }
 
-- (id)localize:(id)a3 pluralizationNumber:(id)a4
+- (id)localize:(id)localize pluralizationNumber:(id)number
 {
   v6 = MEMORY[0x1E696B108];
-  v7 = a4;
-  v8 = a3;
+  numberCopy = number;
+  localizeCopy = localize;
   v9 = objc_alloc_init(v6);
-  [v9 setPluralizationNumber:v7];
+  [v9 setPluralizationNumber:numberCopy];
 
-  v10 = [(WFLocalizationContext *)self locale];
-  [v8 setLocale:v10];
+  locale = [(WFLocalizationContext *)self locale];
+  [localizeCopy setLocale:locale];
 
-  v11 = [v8 localizeWithOptions:v9];
+  v11 = [localizeCopy localizeWithOptions:v9];
 
   return v11;
 }
 
-- (id)localize:(id)a3
+- (id)localize:(id)localize
 {
-  v4 = a3;
-  v5 = [(WFLocalizationContext *)self locale];
-  [v4 setLocale:v5];
+  localizeCopy = localize;
+  locale = [(WFLocalizationContext *)self locale];
+  [localizeCopy setLocale:locale];
 
-  v6 = [v4 localize];
+  localize = [localizeCopy localize];
 
-  return v6;
+  return localize;
 }
 
-- (WFLocalizationContext)initWithLocale:(id)a3 stringLocalizer:(id)a4 localizationUsage:(id)a5
+- (WFLocalizationContext)initWithLocale:(id)locale stringLocalizer:(id)localizer localizationUsage:(id)usage
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  localeCopy = locale;
+  localizerCopy = localizer;
+  usageCopy = usage;
+  if (localeCopy)
   {
-    if (v11)
+    if (localizerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFLocalizationContext.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"stringLocalizer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLocalizationContext.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"stringLocalizer"}];
 
-    if (v12)
+    if (usageCopy)
     {
       goto LABEL_4;
     }
@@ -70,23 +70,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"WFLocalizationContext.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFLocalizationContext.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
 
-  if (!v11)
+  if (!localizerCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (usageCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"WFLocalizationContext.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"localizationUsage"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFLocalizationContext.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"localizationUsage"}];
 
 LABEL_4:
   v20.receiver = self;
@@ -95,9 +95,9 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_locale, a3);
-    objc_storeStrong(&v14->_stringLocalizer, a4);
-    objc_storeStrong(&v14->_localizationUsage, a5);
+    objc_storeStrong(&v13->_locale, locale);
+    objc_storeStrong(&v14->_stringLocalizer, localizer);
+    objc_storeStrong(&v14->_localizationUsage, usage);
     v15 = v14;
   }
 

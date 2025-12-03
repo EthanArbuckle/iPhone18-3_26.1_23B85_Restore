@@ -1,8 +1,8 @@
 @interface _DKSyncStreamsTombstoneRequirement
 - (id)eventPredicate;
 - (id)predicate;
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromEvent:(id)a4;
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromPartialEvent:(id)a4;
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromEvent:(id)event;
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromPartialEvent:(id)event;
 @end
 
 @implementation _DKSyncStreamsTombstoneRequirement
@@ -25,37 +25,37 @@
   return v4;
 }
 
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromEvent:(id)a4
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 metadata];
-  v12 = [v7 mutableCopy];
+  eventCopy = event;
+  tombstoneCopy = tombstone;
+  metadata = [tombstoneCopy metadata];
+  v12 = [metadata mutableCopy];
 
-  v8 = [v5 source];
+  source = [eventCopy source];
 
-  v9 = [v8 deviceID];
+  deviceID = [source deviceID];
   v10 = +[_DKTombstoneMetadataKey eventSourceDeviceID];
-  [v12 setObject:v9 forKeyedSubscript:v10];
+  [v12 setObject:deviceID forKeyedSubscript:v10];
 
   v11 = [v12 copy];
-  [v6 setMetadata:v11];
+  [tombstoneCopy setMetadata:v11];
 }
 
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromPartialEvent:(id)a4
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromPartialEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 metadata];
-  v11 = [v7 mutableCopy];
+  eventCopy = event;
+  tombstoneCopy = tombstone;
+  metadata = [tombstoneCopy metadata];
+  v11 = [metadata mutableCopy];
 
-  v8 = [v5 objectForKeyedSubscript:@"source.deviceID"];
+  v8 = [eventCopy objectForKeyedSubscript:@"source.deviceID"];
 
   v9 = +[_DKTombstoneMetadataKey eventSourceDeviceID];
   [v11 setObject:v8 forKeyedSubscript:v9];
 
   v10 = [v11 copy];
-  [v6 setMetadata:v10];
+  [tombstoneCopy setMetadata:v10];
 }
 
 @end

@@ -1,70 +1,70 @@
 @interface NTKFullscreenSubdialComplicationFactory
-- (BOOL)_convertCircularSlot:(id)a3 toPosition:(int64_t *)a4;
-- (CGPoint)_circularComplicationCenterForSlot:(id)a3 inFaceBounds:(CGRect)a4;
+- (BOOL)_convertCircularSlot:(id)slot toPosition:(int64_t *)position;
+- (CGPoint)_circularComplicationCenterForSlot:(id)slot inFaceBounds:(CGRect)bounds;
 - (CGPoint)circularComplicationDistanceFromCenter;
 - (NTKFaceView)faceView;
-- (id)initForDevice:(id)a3;
-- (id)keylineViewForComplicationSlot:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6;
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5;
+- (id)initForDevice:(id)device;
+- (id)keylineViewForComplicationSlot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view;
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView;
 - (void)loadLayoutRules;
-- (void)loadLayoutRulesForFaceView:(id)a3;
-- (void)setAlpha:(double)a3 faceView:(id)a4;
+- (void)loadLayoutRulesForFaceView:(id)view;
+- (void)setAlpha:(double)alpha faceView:(id)view;
 @end
 
 @implementation NTKFullscreenSubdialComplicationFactory
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = NTKFullscreenSubdialComplicationFactory;
-  v3 = [(NTKFaceViewComplicationFactory *)&v9 initForDevice:a3];
+  v3 = [(NTKFaceViewComplicationFactory *)&v9 initForDevice:device];
   v4 = v3;
   if (v3)
   {
     v5 = v3 + 10;
-    v6 = [v3 device];
-    *v5 = ___LayoutConstants_block_invoke_34(v6, v6);
+    device = [v3 device];
+    *v5 = ___LayoutConstants_block_invoke_34(device, device);
     *(v4 + 11) = v7;
   }
 
   return v4;
 }
 
-- (id)keylineViewForComplicationSlot:(id)a3
+- (id)keylineViewForComplicationSlot:(id)slot
 {
-  v4 = [a3 isEqualToString:@"subdial-top"];
-  v5 = [(NTKFaceViewComplicationFactory *)self device];
-  v6 = [NTKRichComplicationCircularBaseView keylineViewForDevice:v5 wide:v4 expanded:1];
+  v4 = [slot isEqualToString:@"subdial-top"];
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v6 = [NTKRichComplicationCircularBaseView keylineViewForDevice:device wide:v4 expanded:1];
 
   return v6;
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKFaceViewComplicationFactory *)self device];
+  device = [(NTKFaceViewComplicationFactory *)self device];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__NTKFullscreenSubdialComplicationFactory_loadLayoutRulesForFaceView___block_invoke;
   v16[3] = &unk_278782AA0;
-  v17 = v4;
-  v18 = self;
+  v17 = viewCopy;
+  selfCopy = self;
   v20 = v6;
   v21 = v8;
   v22 = v10;
   v23 = v12;
-  v19 = v13;
-  v14 = v13;
-  v15 = v4;
+  v19 = device;
+  v14 = device;
+  v15 = viewCopy;
   NTKEnumerateComplicationStates(v16);
 }
 
@@ -94,26 +94,26 @@ void __70__NTKFullscreenSubdialComplicationFactory_loadLayoutRulesForFaceView___
   [v10 setDefaultLayoutRule:v11 forState:a2];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = +[NTKRichComplicationCircularBaseView viewWithLegacyComplicationType:](NTKRichComplicationCircularBaseView, "viewWithLegacyComplicationType:", [a3 complicationType]);
-  [v8 _configureComplicationView:v10 forSlot:v9];
+  viewCopy = view;
+  slotCopy = slot;
+  v10 = +[NTKRichComplicationCircularBaseView viewWithLegacyComplicationType:](NTKRichComplicationCircularBaseView, "viewWithLegacyComplicationType:", [complication complicationType]);
+  [viewCopy _configureComplicationView:v10 forSlot:slotCopy];
 
   return v10;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = viewCopy;
     v10 = 0;
-    if ([(NTKFullscreenSubdialComplicationFactory *)self _convertCircularSlot:v8 toPosition:&v10])
+    if ([(NTKFullscreenSubdialComplicationFactory *)self _convertCircularSlot:slotCopy toPosition:&v10])
     {
       [v9 setPosition:v10];
     }
@@ -123,19 +123,19 @@ void __70__NTKFullscreenSubdialComplicationFactory_loadLayoutRulesForFaceView___
   }
 }
 
-- (void)setAlpha:(double)a3 faceView:(id)a4
+- (void)setAlpha:(double)alpha faceView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   [(NTKFaceViewComplicationFactory *)self alpha];
-  if (v7 != a3)
+  if (v7 != alpha)
   {
-    [(NTKFaceViewComplicationFactory *)self setAlpha:a3];
+    [(NTKFaceViewComplicationFactory *)self setAlpha:alpha];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __61__NTKFullscreenSubdialComplicationFactory_setAlpha_faceView___block_invoke;
     v8[3] = &unk_27877F148;
     v8[4] = self;
-    v9 = v6;
+    v9 = viewCopy;
     [v9 enumerateComplicationDisplayWrappersWithBlock:v8];
   }
 }
@@ -148,64 +148,64 @@ void __61__NTKFullscreenSubdialComplicationFactory_setAlpha_faceView___block_inv
   [v5 configureComplicationView:v7 forSlot:v6 faceView:*(a1 + 40)];
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
-  [(NTKFullscreenSubdialComplicationFactory *)self configureComplicationView:v7 forSlot:v6 faceView:v8];
+  slotCopy = slot;
+  viewCopy = view;
+  faceView = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
+  [(NTKFullscreenSubdialComplicationFactory *)self configureComplicationView:viewCopy forSlot:slotCopy faceView:faceView];
 }
 
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot
 {
-  v6 = a4;
-  v7 = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
-  v8 = [(NTKFaceViewComplicationFactory *)self legacyLayoutOverrideforComplicationType:a3 slot:v6 faceView:v7];
+  slotCopy = slot;
+  faceView = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
+  v8 = [(NTKFaceViewComplicationFactory *)self legacyLayoutOverrideforComplicationType:type slot:slotCopy faceView:faceView];
 
   return v8;
 }
 
 - (void)loadLayoutRules
 {
-  v3 = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
-  [(NTKFullscreenSubdialComplicationFactory *)self loadLayoutRulesForFaceView:v3];
+  faceView = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
+  [(NTKFullscreenSubdialComplicationFactory *)self loadLayoutRulesForFaceView:faceView];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
-  v11 = [(NTKFullscreenSubdialComplicationFactory *)self newLegacyViewForComplication:v9 family:a4 slot:v8 faceView:v10];
+  slotCopy = slot;
+  complicationCopy = complication;
+  faceView = [(NTKFullscreenSubdialComplicationFactory *)self faceView];
+  v11 = [(NTKFullscreenSubdialComplicationFactory *)self newLegacyViewForComplication:complicationCopy family:family slot:slotCopy faceView:faceView];
 
   return v11;
 }
 
-- (CGPoint)_circularComplicationCenterForSlot:(id)a3 inFaceBounds:(CGRect)a4
+- (CGPoint)_circularComplicationCenterForSlot:(id)slot inFaceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  slotCopy = slot;
   v10 = MEMORY[0x2318D8E70](x, y, width, height);
   v12 = v11;
-  if ([v9 isEqualToString:@"subdial-top"])
+  if ([slotCopy isEqualToString:@"subdial-top"])
   {
     v12 = v12 - self->_circularComplicationDistanceFromCenter.y;
   }
 
-  else if ([v9 isEqualToString:@"subdial-left"])
+  else if ([slotCopy isEqualToString:@"subdial-left"])
   {
     v10 = v10 - self->_circularComplicationDistanceFromCenter.x;
   }
 
-  else if ([v9 isEqualToString:@"subdial-right"])
+  else if ([slotCopy isEqualToString:@"subdial-right"])
   {
     v10 = v10 + self->_circularComplicationDistanceFromCenter.x;
   }
 
-  else if ([v9 isEqualToString:@"subdial-bottom"])
+  else if ([slotCopy isEqualToString:@"subdial-bottom"])
   {
     v12 = v12 + self->_circularComplicationDistanceFromCenter.y;
   }
@@ -217,27 +217,27 @@ void __61__NTKFullscreenSubdialComplicationFactory_setAlpha_faceView___block_inv
   return result;
 }
 
-- (BOOL)_convertCircularSlot:(id)a3 toPosition:(int64_t *)a4
+- (BOOL)_convertCircularSlot:(id)slot toPosition:(int64_t *)position
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"subdial-left"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"subdial-left"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"subdial-right"])
+  else if ([slotCopy isEqualToString:@"subdial-right"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"subdial-bottom"])
+  else if ([slotCopy isEqualToString:@"subdial-bottom"])
   {
     v6 = 2;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"subdial-top"])
+    if (![slotCopy isEqualToString:@"subdial-top"])
     {
       v7 = 0;
       goto LABEL_10;
@@ -246,7 +246,7 @@ void __61__NTKFullscreenSubdialComplicationFactory_setAlpha_faceView___block_inv
     v6 = 3;
   }
 
-  *a4 = v6;
+  *position = v6;
   v7 = 1;
 LABEL_10:
 
